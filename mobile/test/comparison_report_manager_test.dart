@@ -30,9 +30,9 @@ void main() {
   });
 
   test("onDeleteBait", () async {
-    Bait baitToRemove = Bait()..id = randomId();
+    var baitToRemove = Bait()..id = randomId();
 
-    ComparisonReport report = ComparisonReport()..id = randomId();
+    var report = ComparisonReport()..id = randomId();
     report.baitIds.add(baitToRemove.id);
 
     await comparisonReportManager.addOrUpdate(report);
@@ -55,9 +55,9 @@ void main() {
   });
 
   test("onDeleteFishingSpot", () async {
-    FishingSpot fishingSpotToRemove = FishingSpot()..id = randomId();
+    var fishingSpotToRemove = FishingSpot()..id = randomId();
 
-    ComparisonReport report = ComparisonReport()..id = randomId();
+    var report = ComparisonReport()..id = randomId();
     report.fishingSpotIds.add(fishingSpotToRemove.id);
 
     await comparisonReportManager.addOrUpdate(report);
@@ -80,9 +80,9 @@ void main() {
   });
 
   test("onDeleteSpecies", () async {
-    Species speciesToRemove = Species()..id = randomId();
+    var speciesToRemove = Species()..id = randomId();
 
-    ComparisonReport report = ComparisonReport()..id = randomId();
+    var report = ComparisonReport()..id = randomId();
     report.speciesIds.add(speciesToRemove.id);
 
     await comparisonReportManager.addOrUpdate(report);

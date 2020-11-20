@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:mobile/app_manager.dart';
 import 'package:package_info/package_info.dart';
 import 'package:provider/provider.dart';
+
+import '../app_manager.dart';
 
 class PackageInfoWrapper {
   static PackageInfoWrapper of(BuildContext context) =>

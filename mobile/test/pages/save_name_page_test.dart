@@ -7,8 +7,8 @@ import 'package:mockito/mockito.dart';
 
 import '../test_utils.dart';
 
-main() {
-  testWidgets("Editing a name renders old name", (WidgetTester tester) async {
+void main() {
+  testWidgets("Editing a name renders old name", (tester) async {
     await tester.pumpWidget(
       Testable(
         (_) => SaveNamePage(
@@ -23,7 +23,7 @@ main() {
   });
 
   testWidgets("New name renders error and disabled save button",
-      (WidgetTester tester) async {
+      (tester) async {
     await tester.pumpWidget(
       Testable(
         (_) => SaveNamePage(
@@ -36,8 +36,8 @@ main() {
   });
 
   testWidgets("Saving the same as old does not invoke callback",
-      (WidgetTester tester) async {
-    bool invoked = false;
+      (tester) async {
+    var invoked = false;
     await tester.pumpWidget(
       Testable(
         (_) => SaveNamePage(
@@ -52,9 +52,9 @@ main() {
     expect(invoked, isFalse);
   });
 
-  testWidgets("Null onSave pops page", (WidgetTester tester) async {
+  testWidgets("Null onSave pops page", (tester) async {
     var observer = MockNavigatorObserver();
-    bool popped = false;
+    var popped = false;
     when(observer.didPop(any, any)).thenAnswer((_) => popped = true);
 
     await tester.pumpWidget(Testable(
@@ -70,9 +70,9 @@ main() {
   });
 
   testWidgets("Non-null onSave pops page if returns true",
-      (WidgetTester tester) async {
+      (tester) async {
     var observer = MockNavigatorObserver();
-    bool popped = false;
+    var popped = false;
     when(observer.didPop(any, any)).thenAnswer((_) => popped = true);
 
     await tester.pumpWidget(Testable(
@@ -89,9 +89,9 @@ main() {
   });
 
   testWidgets("Non-null onSave does not pop page if returns false",
-      (WidgetTester tester) async {
+      (tester) async {
     var observer = MockNavigatorObserver();
-    bool popped = false;
+    var popped = false;
     when(observer.didPop(any, any)).thenAnswer((_) => popped = true);
 
     await tester.pumpWidget(Testable(
@@ -108,7 +108,7 @@ main() {
   });
 
   testWidgets("Invalid input disables save button",
-      (WidgetTester tester) async {
+      (tester) async {
     await tester.pumpWidget(
       Testable(
         (_) => SaveNamePage(

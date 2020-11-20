@@ -3,10 +3,11 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:mobile/model/gen/anglerslog.pb.dart';
+
+import '../model/gen/anglerslog.pb.dart';
 
 void moveMap(Completer<GoogleMapController> controller, LatLng latLng,
-    [bool animate = true]) {
+    {bool animate = true}) {
   controller.future.then((controller) {
     var update = CameraUpdate.newLatLng(latLng);
     if (animate) {
@@ -22,10 +23,10 @@ double distanceBetween(LatLng latLng1, LatLng latLng2) {
   // From https://sciencing.com/convert-distances-degrees-meters-7858322.html.
   var metersPerDegree = 111139;
 
-  double latDelta = (latLng1.latitude - latLng2.latitude).abs();
-  double lngDelta = (latLng1.longitude - latLng2.longitude).abs();
-  double latDistance = latDelta * metersPerDegree;
-  double lngDistance = lngDelta * metersPerDegree;
+  var latDelta = (latLng1.latitude - latLng2.latitude).abs();
+  var lngDelta = (latLng1.longitude - latLng2.longitude).abs();
+  var latDistance = latDelta * metersPerDegree;
+  var lngDistance = lngDelta * metersPerDegree;
 
   return sqrt(pow(latDistance, 2) + pow(lngDistance, 2));
 }

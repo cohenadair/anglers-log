@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:mobile/res/color.dart';
-import 'package:mobile/res/dimen.dart';
-import 'package:mobile/widgets/text.dart';
 import 'package:quiver/strings.dart';
+
+import '../res/color.dart';
+import '../res/dimen.dart';
+import '../widgets/text.dart';
 
 const defaultAnimationDuration = Duration(milliseconds: 150);
 

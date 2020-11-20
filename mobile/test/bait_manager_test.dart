@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/bait_category_manager.dart';
 import 'package:mobile/bait_manager.dart';
@@ -51,21 +50,21 @@ void main() {
         .thenAnswer((_) => Future.value(true));
     when(dataManager.replaceRows(any, any)).thenAnswer((_) => Future.value());
 
-    MockBaitListener baitListener = MockBaitListener();
+    var baitListener = MockBaitListener();
     when(baitListener.onDelete).thenReturn((_) {});
     when(baitListener.onAddOrUpdate).thenReturn(() {});
     baitManager.addListener(baitListener);
 
     // Add a BaitCategory.
-    Id baitCategoryId0 = randomId();
-    BaitCategory category = BaitCategory()
+    var baitCategoryId0 = randomId();
+    var category = BaitCategory()
       ..id = baitCategoryId0
       ..name = "Rapala";
     await baitCategoryManager.addOrUpdate(category);
 
     // Add a couple Baits that use the new category.
-    Id baitId0 = randomId();
-    Id baitId1 = randomId();
+    var baitId0 = randomId();
+    var baitId1 = randomId();
     await baitManager.addOrUpdate(Bait()
       ..id = baitId0
       ..name = "Test Bait"
@@ -88,11 +87,11 @@ void main() {
   });
 
   test("Number of catches", () {
-    Id speciesId0 = randomId();
+    var speciesId0 = randomId();
 
-    Id baitId0 = randomId();
-    Id baitId1 = randomId();
-    Id baitId2 = randomId();
+    var baitId0 = randomId();
+    var baitId1 = randomId();
+    var baitId2 = randomId();
 
     when(catchManager.list()).thenReturn([
       Catch()
@@ -128,7 +127,7 @@ void main() {
   });
 
   test("Format bait name", () async {
-    Id baitCategoryId0 = randomId();
+    var baitCategoryId0 = randomId();
     await baitCategoryManager.addOrUpdate(BaitCategory()
       ..id = baitCategoryId0
       ..name = "Test Category");
@@ -144,12 +143,12 @@ void main() {
   });
 
   test("Filtering", () async {
-    Id baitId0 = randomId();
-    Id baitId1 = randomId();
+    var baitId0 = randomId();
+    var baitId1 = randomId();
 
     expect(baitManager.matchesFilter(baitId0, ""), false);
 
-    Bait bait = Bait()
+    var bait = Bait()
       ..id = baitId1
       ..name = "Rapala";
 
@@ -161,7 +160,7 @@ void main() {
     expect(baitManager.matchesFilter(baitId1, "RAP"), true);
 
     // Bait category
-    BaitCategory category = BaitCategory()
+    var category = BaitCategory()
       ..id = randomId()
       ..name = "Bugger";
     await baitCategoryManager.addOrUpdate(category);
@@ -239,7 +238,7 @@ void main() {
     });
 
     test("false if IDs are equal", () async {
-      Id id = randomId();
+      var id = randomId();
       await baitManager.addOrUpdate(Bait()
         ..id = id
         ..name = "Rapala");
@@ -252,18 +251,18 @@ void main() {
     });
 
     test("true with all properties", () async {
-      CustomEntityValue value = CustomEntityValue()
+      var value = CustomEntityValue()
         ..customEntityId = randomId()
         ..value = "10";
-      Id categoryId = randomId();
+      var categoryId = randomId();
 
-      Bait bait1 = Bait()
+      var bait1 = Bait()
         ..id = randomId()
         ..name = "Rapala"
         ..baitCategoryId = categoryId;
       bait1.customEntityValues.add(value);
 
-      Bait bait2 = Bait()
+      var bait2 = Bait()
         ..id = randomId()
         ..name = "Rapala"
         ..baitCategoryId = categoryId;
@@ -288,7 +287,7 @@ void main() {
   });
 
   group("deleteMessage", () {
-    testWidgets("Input", (WidgetTester tester) async {
+    testWidgets("Input", (tester) async {
       expect(
         () => baitManager.deleteMessage(
             null,
@@ -298,13 +297,13 @@ void main() {
         throwsAssertionError,
       );
 
-      BuildContext context = await buildContext(tester);
+      var context = await buildContext(tester);
       expect(
           () => baitManager.deleteMessage(context, null), throwsAssertionError);
     });
 
-    testWidgets("Singular", (WidgetTester tester) async {
-      Bait bait = Bait()
+    testWidgets("Singular", (tester) async {
+      var bait = Bait()
         ..id = randomId()
         ..name = "Worm";
 
@@ -316,7 +315,7 @@ void main() {
           ..baitId = bait.id,
       ]);
 
-      BuildContext context = await buildContext(tester);
+      var context = await buildContext(tester);
       expect(
         baitManager.deleteMessage(context, bait),
         "Worm is associated with 1 catch; are you sure you want to delete it?"
@@ -324,14 +323,14 @@ void main() {
       );
     });
 
-    testWidgets("Plural zero", (WidgetTester tester) async {
-      Bait bait = Bait()
+    testWidgets("Plural zero", (tester) async {
+      var bait = Bait()
         ..id = randomId()
         ..name = "Worm";
 
       when(catchManager.list()).thenReturn([]);
 
-      BuildContext context = await buildContext(tester);
+      var context = await buildContext(tester);
       expect(
         baitManager.deleteMessage(context, bait),
         "Worm is associated with 0 catches; are you sure you want to delete "
@@ -339,8 +338,8 @@ void main() {
       );
     });
 
-    testWidgets("Plural none zero", (WidgetTester tester) async {
-      Bait bait = Bait()
+    testWidgets("Plural none zero", (tester) async {
+      var bait = Bait()
         ..id = randomId()
         ..name = "Worm";
 
@@ -357,7 +356,7 @@ void main() {
           ..baitId = bait.id,
       ]);
 
-      BuildContext context = await buildContext(tester);
+      var context = await buildContext(tester);
       expect(
         baitManager.deleteMessage(context, bait),
         "Worm is associated with 2 catches; are you sure you want to delete "
@@ -365,13 +364,13 @@ void main() {
       );
     });
 
-    testWidgets("With bait category", (WidgetTester tester) async {
-      BaitCategory category = BaitCategory()
+    testWidgets("With bait category", (tester) async {
+      var category = BaitCategory()
         ..id = randomId()
         ..name = "Live";
       baitCategoryManager.addOrUpdate(category);
 
-      Bait bait = Bait()
+      var bait = Bait()
         ..id = randomId()
         ..name = "Worm"
         ..baitCategoryId = category.id;
@@ -383,7 +382,7 @@ void main() {
           ..baitId = bait.id,
       ]);
 
-      BuildContext context = await buildContext(tester);
+      var context = await buildContext(tester);
       expect(
         baitManager.deleteMessage(context, bait),
         "Worm (Live) is associated with 1 catch; are you sure you want to "

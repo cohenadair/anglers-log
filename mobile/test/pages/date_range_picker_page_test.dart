@@ -7,7 +7,7 @@ import 'package:mockito/mockito.dart';
 import '../mock_app_manager.dart';
 import '../test_utils.dart';
 
-main() {
+void main() {
   MockAppManager appManager;
 
   setUp(() {
@@ -19,7 +19,7 @@ main() {
         .thenReturn(DateTime(2020, 1, 1));
   });
 
-  testWidgets("Initially set custom date range", (WidgetTester tester) async {
+  testWidgets("Initially set custom date range", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => DateRangePickerPage(
         initialValue: DisplayDateRange.newCustomFromDateRange(DateRange(
@@ -39,7 +39,7 @@ main() {
   });
 
   testWidgets("Selecting date range invokes callback",
-      (WidgetTester tester) async {
+      (tester) async {
     DisplayDateRange picked;
     await tester.pumpWidget(Testable(
       (_) => DateRangePickerPage(
@@ -54,7 +54,7 @@ main() {
   });
 
   testWidgets("Tapping custom date range opens date picker",
-      (WidgetTester tester) async {
+      (tester) async {
     await tester.pumpWidget(Testable(
       (_) => DateRangePickerPage(
         initialValue: DisplayDateRange.yesterday,
@@ -73,7 +73,7 @@ main() {
   });
 
   testWidgets("Cancelling date picker doesn't update state",
-      (WidgetTester tester) async {
+      (tester) async {
     await tester.pumpWidget(Testable(
       (_) => DateRangePickerPage(
         initialValue: DisplayDateRange.yesterday,
@@ -92,7 +92,7 @@ main() {
   });
 
   testWidgets("Start/end date are the same, set range of 1 day",
-      (WidgetTester tester) async {
+      (tester) async {
     BuildContext context;
     DisplayDateRange picked;
     await tester.pumpWidget(Testable(
@@ -112,7 +112,7 @@ main() {
     await tapAndSettle(tester, find.text("Custom"));
     await tapAndSettle(tester, find.text("OK"));
 
-    DateRange expected = DateRange(
+    var expected = DateRange(
       startDate: DateTime(2020, 1, 1),
       endDate: DateTime(2020, 1, 2),
     );

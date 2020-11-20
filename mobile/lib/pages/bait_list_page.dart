@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:mobile/bait_category_manager.dart';
-import 'package:mobile/bait_manager.dart';
-import 'package:mobile/i18n/strings.dart';
-import 'package:mobile/model/gen/anglerslog.pb.dart';
-import 'package:mobile/pages/bait_page.dart';
-import 'package:mobile/pages/manageable_list_page.dart';
-import 'package:mobile/pages/save_bait_page.dart';
-import 'package:mobile/res/dimen.dart';
-import 'package:mobile/utils/protobuf_utils.dart';
-import 'package:mobile/utils/string_utils.dart';
-import 'package:mobile/widgets/text.dart';
-import 'package:mobile/widgets/widget.dart';
+
+import '../bait_category_manager.dart';
+import '../bait_manager.dart';
+import '../i18n/strings.dart';
+import '../model/gen/anglerslog.pb.dart';
+import '../pages/bait_page.dart';
+import '../pages/manageable_list_page.dart';
+import '../pages/save_bait_page.dart';
+import '../res/dimen.dart';
+import '../utils/protobuf_utils.dart';
+import '../utils/string_utils.dart';
+import '../widgets/text.dart';
+import '../widgets/widget.dart';
 
 class BaitListPage extends StatefulWidget {
   final bool Function(BuildContext, Set<Bait>) onPicked;
@@ -45,7 +46,7 @@ class _BaitListPageState extends State<BaitListPage> {
       titleBuilder: _picking
           ? (_) => Text(Strings.of(context).baitListPagePickerTitle)
           : (baits) => Text(format(Strings.of(context).baitListPageTitle,
-              [baits.where((b) => b is Bait).length])),
+              [baits.whereType<Bait>().length])),
       forceCenterTitle: !_picking,
       searchDelegate: ManageableListPageSearchDelegate(
         hint: Strings.of(context).baitListPageSearchHint,
@@ -100,28 +101,28 @@ class _BaitListPageState extends State<BaitListPage> {
   }
 
   List<dynamic> _buildItems(String query) {
-    List<dynamic> result = [];
+    var result = <dynamic>[];
 
     var categories = List.from(_baitCategoryManager.listSortedByName());
     var baits = _baitManager.filteredList(query);
 
     // Add a category for baits that don't have a category. This is purposely
     // added to the end of the sorted list.
-    BaitCategory noCategory = BaitCategory()
+    var noCategory = BaitCategory()
       ..id = randomId()
       ..name = Strings.of(context).baitListPageOtherCategory;
     categories.add(noCategory);
 
     // First, organize baits in to category collections.
-    Map<Id, List<Bait>> map = {};
+    var map = <Id, List<Bait>>{};
     for (var bait in baits) {
-      Id id = bait.hasBaitCategoryId() ? bait.baitCategoryId : noCategory.id;
+      var id = bait.hasBaitCategoryId() ? bait.baitCategoryId : noCategory.id;
       map.putIfAbsent(id, () => []);
       map[id].add(bait);
     }
 
     // Next, iterate categories and create list items.
-    for (int i = 0; i < categories.length; i++) {
+    for (var i = 0; i < categories.length; i++) {
       BaitCategory category = categories[i];
 
       // Skip categories that don't have any baits.
@@ -135,8 +136,7 @@ class _BaitListPageState extends State<BaitListPage> {
       }
 
       result.add(category);
-      map[category.id]
-          .sort((Bait lhs, Bait rhs) => lhs.name.compareTo(rhs.name));
+      map[category.id].sort((lhs, rhs) => lhs.name.compareTo(rhs.name));
       result.addAll(map[category.id]);
     }
 

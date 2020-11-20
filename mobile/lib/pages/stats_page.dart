@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:mobile/comparison_report_manager.dart';
-import 'package:mobile/model/gen/anglerslog.pb.dart';
-import 'package:mobile/model/overview_report.dart';
-import 'package:mobile/summary_report_manager.dart';
-import 'package:mobile/entity_manager.dart';
-import 'package:mobile/pages/report_list_page.dart';
-import 'package:mobile/res/dimen.dart';
-import 'package:mobile/utils/page_utils.dart';
-import 'package:mobile/widgets/reports/comparison_report_view.dart';
-import 'package:mobile/widgets/reports/summary_report_view.dart';
-import 'package:mobile/widgets/reports/overview_report_view.dart';
-import 'package:mobile/widgets/widget.dart';
+
+import '../comparison_report_manager.dart';
+import '../entity_manager.dart';
+import '../model/gen/anglerslog.pb.dart';
+import '../model/overview_report.dart';
+import '../pages/report_list_page.dart';
+import '../res/dimen.dart';
+import '../summary_report_manager.dart';
+import '../utils/page_utils.dart';
+import '../widgets/reports/comparison_report_view.dart';
+import '../widgets/reports/overview_report_view.dart';
+import '../widgets/reports/summary_report_view.dart';
+import '../widgets/widget.dart';
 
 class StatsPage extends StatefulWidget {
   @override
@@ -37,8 +38,8 @@ class _StatsPageState extends State<StatsPage> {
             _comparisonReportManager,
             _summaryReportManager,
           ],
-          onUpdate: () => _updateCurrentReport(),
-          builder: (context) => _buildBody(context),
+          onUpdate: _updateCurrentReport,
+          builder: _buildBody,
         ),
       ),
     );

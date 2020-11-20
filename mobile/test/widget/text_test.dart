@@ -6,7 +6,7 @@ import '../test_utils.dart';
 
 void main() {
   group("IconNoteLabel", () {
-    testWidgets("Bad input", (WidgetTester tester) async {
+    testWidgets("Bad input", (tester) async {
       await tester.pumpWidget(
         Testable(
           (_) => IconNoteLabel(
@@ -18,7 +18,7 @@ void main() {
       expect(tester.takeException(), isAssertionError);
     });
 
-    testWidgets("Valid input", (WidgetTester tester) async {
+    testWidgets("Valid input", (tester) async {
       await tester.pumpWidget(
         Testable(
           (_) => IconNoteLabel(
@@ -32,7 +32,7 @@ void main() {
   });
 
   group("PrimaryLabel", () {
-    testWidgets("State color", (WidgetTester tester) async {
+    testWidgets("State color", (tester) async {
       await tester.pumpWidget(
         Testable(
           (_) => PrimaryLabel(
@@ -41,7 +41,7 @@ void main() {
           ),
         ),
       );
-      Color enabledColor =
+      var enabledColor =
           (tester.firstWidget(find.text("Test")) as Text).style.color;
 
       await tester.pumpWidget(
@@ -52,7 +52,7 @@ void main() {
           ),
         ),
       );
-      Color disabledColor =
+      var disabledColor =
           (tester.firstWidget(find.text("Test 2")) as Text).style.color;
 
       expect(enabledColor != disabledColor, isTrue);
@@ -60,7 +60,7 @@ void main() {
   });
 
   group("EnabledLabel", () {
-    testWidgets("State color", (WidgetTester tester) async {
+    testWidgets("State color", (tester) async {
       await tester.pumpWidget(
         Testable(
           (_) => EnabledLabel(
@@ -69,7 +69,7 @@ void main() {
           ),
         ),
       );
-      Color enabledColor =
+      var enabledColor =
           (tester.firstWidget(find.text("Test")) as Text).style.color;
 
       await tester.pumpWidget(
@@ -80,7 +80,7 @@ void main() {
           ),
         ),
       );
-      Color disabledColor =
+      var disabledColor =
           (tester.firstWidget(find.text("Test 2")) as Text).style.color;
 
       expect(enabledColor != disabledColor, isTrue);

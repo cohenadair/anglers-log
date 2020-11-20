@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:mobile/fishing_spot_manager.dart';
-import 'package:mobile/i18n/strings.dart';
-import 'package:mobile/model/gen/anglerslog.pb.dart';
-import 'package:mobile/pages/form_page.dart';
-import 'package:mobile/utils/protobuf_utils.dart';
-import 'package:mobile/widgets/input_controller.dart';
-import 'package:mobile/widgets/text_input.dart';
 import 'package:quiver/strings.dart';
+
+import '../fishing_spot_manager.dart';
+import '../i18n/strings.dart';
+import '../model/gen/anglerslog.pb.dart';
+import '../pages/form_page.dart';
+import '../utils/protobuf_utils.dart';
+import '../widgets/input_controller.dart';
+import '../widgets/text_input.dart';
 
 /// The [SaveFishingSpotPage] differs from other "save" pages in that it must
 /// be provided an "old" fishing spot. In cases where a new fishing spot is
@@ -58,7 +59,7 @@ class _SaveFishingSpotPageState extends State<SaveFishingSpotPage> {
 
   @override
   Widget build(BuildContext context) {
-    String title = Strings.of(context).saveFishingSpotPageNewTitle;
+    var title = Strings.of(context).saveFishingSpotPageNewTitle;
     if (widget.editing) {
       title = Strings.of(context).saveFishingSpotPageEditTitle;
     }
@@ -66,7 +67,7 @@ class _SaveFishingSpotPageState extends State<SaveFishingSpotPage> {
     return FormPage.immutable(
       title: Text(title),
       onSave: (_) {
-        FishingSpot newFishingSpot = FishingSpot()
+        var newFishingSpot = FishingSpot()
           ..id = _oldFishingSpot.id
           ..lat = _oldFishingSpot.lat
           ..lng = _oldFishingSpot.lng;

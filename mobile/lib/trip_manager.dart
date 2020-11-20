@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:mobile/app_manager.dart';
 import 'package:provider/provider.dart';
+
+import 'app_manager.dart';
 
 class TripManager {
   static TripManager of(BuildContext context) =>

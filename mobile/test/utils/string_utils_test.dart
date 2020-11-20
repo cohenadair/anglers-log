@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/utils/string_utils.dart';
 
@@ -14,8 +13,8 @@ void main() {
     expect(formatString, "You've added angler Cohen Adair to your log.");
   });
 
-  testWidgets("Format coordinates", (WidgetTester tester) async {
-    BuildContext context = await buildContext(tester);
+  testWidgets("Format coordinates", (tester) async {
+    var context = await buildContext(tester);
     expect(formatLatLng(context: context, lat: 0.003, lng: 0.004),
         "Lat: 0.003000, Lng: 0.004000");
     expect(formatLatLng(context: context, lat: 0.123456789, lng: 0.123456789),

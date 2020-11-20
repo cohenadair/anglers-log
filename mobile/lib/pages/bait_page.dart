@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:mobile/bait_category_manager.dart';
-import 'package:mobile/bait_manager.dart';
-import 'package:mobile/entity_manager.dart';
-import 'package:mobile/model/gen/anglerslog.pb.dart';
-import 'package:mobile/pages/entity_page.dart';
-import 'package:mobile/pages/save_bait_page.dart';
-import 'package:mobile/res/dimen.dart';
-import 'package:mobile/utils/page_utils.dart';
-import 'package:mobile/widgets/text.dart';
-import 'package:mobile/widgets/widget.dart';
+
+import '../bait_category_manager.dart';
+import '../bait_manager.dart';
+import '../entity_manager.dart';
+import '../model/gen/anglerslog.pb.dart';
+import '../pages/entity_page.dart';
+import '../pages/save_bait_page.dart';
+import '../res/dimen.dart';
+import '../utils/page_utils.dart';
+import '../widgets/text.dart';
+import '../widgets/widget.dart';
 
 class BaitPage extends StatefulWidget {
   final Id baitId;
@@ -71,8 +72,7 @@ class _BaitPageState extends State<BaitPage> {
   }
 
   Widget _buildBaitCategory() {
-    BaitCategory baitCategory =
-        _baitCategoryManager.entity(_bait.baitCategoryId);
+    var baitCategory = _baitCategoryManager.entity(_bait.baitCategoryId);
     if (baitCategory == null) {
       return Empty();
     }

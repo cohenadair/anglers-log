@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:mobile/res/color.dart';
-import 'package:mobile/res/dimen.dart';
-import 'package:mobile/utils/dialog_utils.dart';
-import 'package:mobile/widgets/button.dart';
-import 'package:mobile/widgets/widget.dart';
+
+import '../res/color.dart';
+import '../res/dimen.dart';
+import '../utils/dialog_utils.dart';
+import '../widgets/button.dart';
+import '../widgets/widget.dart';
 
 /// A [ListTile] wrapper with app default properties.
 class ListItem extends StatelessWidget {
@@ -84,7 +85,7 @@ class _ExpansionListItemState extends State<ExpansionListItem> {
               key: _key,
               title: widget.title,
               children: widget.children,
-              onExpansionChanged: (bool expanded) {
+              onExpansionChanged: (expanded) {
                 setState(() {
                   _expanded = expanded;
                 });
@@ -192,7 +193,7 @@ class _ManageableListItemState extends State<ManageableListItem>
       _editAnimController.reverse();
     }
 
-    Widget child = widget.child;
+    var child = widget.child;
     if (child is Text) {
       // If the child is just a plain Text widget, style it the same as a
       // system ListTile.

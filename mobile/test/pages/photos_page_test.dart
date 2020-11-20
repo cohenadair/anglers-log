@@ -1,4 +1,3 @@
-import 'dart:ui' as ui;
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/pages/photo_gallery_page.dart';
@@ -9,7 +8,7 @@ import 'package:mockito/mockito.dart';
 import '../mock_app_manager.dart';
 import '../test_utils.dart';
 
-main() {
+void main() {
   MockAppManager appManager;
 
   setUp(() {
@@ -22,7 +21,7 @@ main() {
         .thenReturn(["1", "2", "3", "4"]);
   });
 
-  testWidgets("No images", (WidgetTester tester) async {
+  testWidgets("No images", (tester) async {
     when(appManager.mockCatchManager.imageNamesSortedByTimestamp(any))
         .thenReturn([]);
 
@@ -34,7 +33,7 @@ main() {
     expect(find.byType(Photo), findsNothing);
   });
 
-  testWidgets("Thumbnails loaded", (WidgetTester tester) async {
+  testWidgets("Thumbnails loaded", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => PhotosPage(),
       appManager: appManager,
@@ -43,8 +42,8 @@ main() {
     expect(find.byType(Photo), findsNWidgets(4));
   });
 
-  testWidgets("Tapping thumbnail opens image", (WidgetTester tester) async {
-    ui.Image image = await loadImage(tester, "test/resources/flutter_logo.png");
+  testWidgets("Tapping thumbnail opens image", (tester) async {
+    var image = await loadImage(tester, "test/resources/flutter_logo.png");
     when(appManager.mockImageManager.dartImage(any, any, any))
         .thenAnswer((_) => Future.value(image));
 

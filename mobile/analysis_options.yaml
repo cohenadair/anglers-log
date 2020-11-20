@@ -1,2 +1,11 @@
+include: package:effective_dart/analysis_options.yaml
+
 analyzer:
-  exclude: lib/model/gen/**
+  exclude:
+    lib/model/gen/**
+    lib/res/gen/**
+
+linter:
+  rules:
+    public_member_api_docs: false
+

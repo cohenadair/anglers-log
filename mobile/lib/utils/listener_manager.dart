@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:mobile/log.dart';
+
+import '../log.dart';
 
 class ListenerManager<T> {
   final _log = Log("ListenerManager");
 
-  Set<T> _listeners = {};
+  final Set<T> _listeners = {};
 
   void addListener(T listener) {
     _listeners.add(listener);
@@ -18,6 +19,8 @@ class ListenerManager<T> {
 
   @protected
   void notify(void Function(T) notify) {
-    _listeners.forEach((listener) => notify(listener));
+    for (var listener in _listeners) {
+      notify(listener);
+    }
   }
 }

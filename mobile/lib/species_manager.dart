@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:mobile/app_manager.dart';
-import 'package:mobile/catch_manager.dart';
-import 'package:mobile/model/gen/anglerslog.pb.dart';
-import 'package:mobile/named_entity_manager.dart';
 import 'package:provider/provider.dart';
+
+import 'app_manager.dart';
+import 'catch_manager.dart';
+import 'model/gen/anglerslog.pb.dart';
+import 'named_entity_manager.dart';
 
 class SpeciesManager extends NamedEntityManager<Species> {
   static SpeciesManager of(BuildContext context) =>
@@ -39,7 +40,7 @@ class SpeciesManager extends NamedEntityManager<Species> {
     if (speciesId == null) {
       return 0;
     }
-    int result = 0;
+    var result = 0;
     _catchManager.list().forEach((cat) {
       if (speciesId == cat.speciesId) {
         result++;

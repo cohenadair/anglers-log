@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:mobile/i18n/strings.dart';
-import 'package:mobile/utils/string_utils.dart';
-import 'package:mobile/widgets/widget.dart';
+
+import '../i18n/strings.dart';
+import '../utils/string_utils.dart';
+import '../widgets/widget.dart';
 
 class TripListPage extends StatelessWidget {
   @override

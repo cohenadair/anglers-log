@@ -1,12 +1,14 @@
 import 'package:flutter/cupertino.dart';
-import 'package:mobile/i18n/strings.dart';
-import 'package:mobile/utils/string_utils.dart';
 import 'package:quiver/strings.dart';
+
+import '../i18n/strings.dart';
+import '../utils/string_utils.dart';
 
 /// A function called to validate input. A function is used so pass a
 /// [BuildContext] instance for using localized strings.
-typedef String ValidationCallback(BuildContext context);
+typedef ValidationCallback = String Function(BuildContext context);
 
+// ignore: one_member_abstracts
 abstract class Validator {
   ValidationCallback run(BuildContext context, String newValue);
 }

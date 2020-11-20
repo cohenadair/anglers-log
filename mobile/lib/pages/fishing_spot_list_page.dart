@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:mobile/fishing_spot_manager.dart';
-import 'package:mobile/i18n/strings.dart';
-import 'package:mobile/model/gen/anglerslog.pb.dart';
-import 'package:mobile/pages/manageable_list_page.dart';
-import 'package:mobile/pages/save_fishing_spot_page.dart';
-import 'package:mobile/utils/string_utils.dart';
-import 'package:mobile/widgets/text.dart';
 import 'package:quiver/strings.dart';
+
+import '../fishing_spot_manager.dart';
+import '../i18n/strings.dart';
+import '../model/gen/anglerslog.pb.dart';
+import '../pages/manageable_list_page.dart';
+import '../pages/save_fishing_spot_page.dart';
+import '../utils/string_utils.dart';
+import '../widgets/text.dart';
 
 class FishingSpotListPage extends StatelessWidget {
   final bool Function(BuildContext, Set<FishingSpot>) onPicked;
@@ -28,7 +29,7 @@ class FishingSpotListPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    FishingSpotManager fishingSpotManager = FishingSpotManager.of(context);
+    var fishingSpotManager = FishingSpotManager.of(context);
 
     String title;
     if (_picking && multiPicker) {

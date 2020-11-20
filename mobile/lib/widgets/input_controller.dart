@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:mobile/model/gen/google/protobuf/timestamp.pb.dart';
-import 'package:mobile/utils/date_time_utils.dart';
-import 'package:mobile/utils/protobuf_utils.dart';
-import 'package:mobile/utils/validator.dart';
 import 'package:quiver/strings.dart';
+
+import '../model/gen/google/protobuf/timestamp.pb.dart';
+import '../utils/date_time_utils.dart';
+import '../utils/protobuf_utils.dart';
+import '../utils/validator.dart';
 
 /// A class for storing a value of an input widget, such as a text field or
 /// check box.
@@ -36,7 +37,7 @@ class TextInputController extends InputController<String> {
         super();
 
   @override
-  get value {
+  String get value {
     var text = editingController.text.trim();
     if (isEmpty(text)) {
       return null;
@@ -95,9 +96,9 @@ class TimestampInputController extends InputController<Timestamp> {
   TimeOfDay time;
 
   TimestampInputController({
-    DateTime date,
+    this.date,
     this.time,
-  }) : date = date;
+  });
 
   @override
   Timestamp get value => date != null && time != null

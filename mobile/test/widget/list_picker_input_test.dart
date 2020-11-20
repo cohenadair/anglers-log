@@ -5,14 +5,14 @@ import 'package:mobile/widgets/widget.dart';
 
 import '../test_utils.dart';
 
-main() {
-  testWidgets("Title/value can't both be empty", (WidgetTester tester) async {
+void main() {
+  testWidgets("Title/value can't both be empty", (tester) async {
     await tester.pumpWidget(Testable((_) => ListPickerInput()));
     expect(tester.takeException(), isAssertionError);
   });
 
   testWidgets("If title is empty, value is used as title",
-      (WidgetTester tester) async {
+      (tester) async {
     await tester.pumpWidget(
       Testable(
         (_) => ListPickerInput(
@@ -26,7 +26,7 @@ main() {
   });
 
   testWidgets("Empty value renders not selected message",
-      (WidgetTester tester) async {
+      (tester) async {
     await tester.pumpWidget(
       Testable(
         (_) => ListPickerInput(

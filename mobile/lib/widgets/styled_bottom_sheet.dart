@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:mobile/res/dimen.dart';
-import 'package:mobile/res/style.dart';
-import 'package:mobile/widgets/widget.dart';
+
+import '../res/dimen.dart';
+import '../res/style.dart';
+import '../widgets/widget.dart';
 
 /// A widget that mimics Material Design bottom sheet behaviour and style. A
 /// [BottomSheet] and [ScaffoldState.showBottomSheet] isn't used here because
@@ -51,7 +52,7 @@ class _StyledBottomSheetState extends State<StyledBottomSheet>
       duration: Duration(milliseconds: _slideInDurationMs),
     );
 
-    _animationStatusListener = (AnimationStatus status) {
+    _animationStatusListener = (status) {
       if (status == AnimationStatus.dismissed) {
         widget.onDismissed();
       }

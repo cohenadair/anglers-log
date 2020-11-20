@@ -6,8 +6,8 @@ import 'package:mobile/widgets/static_fishing_spot.dart';
 
 import '../test_utils.dart';
 
-main() {
-  testWidgets("Fishing spot marker is shown", (WidgetTester tester) async {
+void main() {
+  testWidgets("Fishing spot marker is shown", (tester) async {
     await tester.pumpWidget(
       Testable(
         (_) => StaticFishingSpot(

@@ -11,7 +11,7 @@ import 'package:mockito/mockito.dart';
 import '../mock_app_manager.dart';
 import '../test_utils.dart';
 
-main() {
+void main() {
   MockAppManager appManager;
 
   setUp(() {
@@ -33,7 +33,7 @@ main() {
       ..name = "Steelhead");
   });
 
-  testWidgets("No bait renders empty", (WidgetTester tester) async {
+  testWidgets("No bait renders empty", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => CatchPage(randomId()),
       appManager: appManager,
@@ -44,7 +44,7 @@ main() {
   });
 
   testWidgets("Bait without category doesn't show subtitle",
-      (WidgetTester tester) async {
+      (tester) async {
     when(appManager.mockBaitManager.entity(any)).thenReturn(
       Bait()
         ..id = randomId()
@@ -61,7 +61,7 @@ main() {
     expect(find.byType(SubtitleLabel), findsOneWidget); // One for time label.
   });
 
-  testWidgets("Bait with category shows subtitle", (WidgetTester tester) async {
+  testWidgets("Bait with category shows subtitle", (tester) async {
     when(appManager.mockBaitManager.entity(any)).thenReturn(Bait()
       ..id = randomId()
       ..name = "Worm");
@@ -81,7 +81,7 @@ main() {
     expect(find.text("Live Bait"), findsOneWidget);
   });
 
-  testWidgets("No fishing spot renders empty", (WidgetTester tester) async {
+  testWidgets("No fishing spot renders empty", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => CatchPage(randomId()),
       appManager: appManager,
@@ -92,7 +92,7 @@ main() {
     expect(find.byType(StaticFishingSpot), findsNothing);
   });
 
-  testWidgets("Fishing spot renders", (WidgetTester tester) async {
+  testWidgets("Fishing spot renders", (tester) async {
     when(appManager.mockFishingSpotManager.entity(any)).thenReturn(
       FishingSpot()
         ..id = randomId()

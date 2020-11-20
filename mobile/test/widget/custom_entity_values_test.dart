@@ -9,7 +9,7 @@ import 'package:mockito/mockito.dart';
 import '../mock_app_manager.dart';
 import '../test_utils.dart';
 
-main() {
+void main() {
   MockAppManager appManager;
 
   setUp(() {
@@ -18,19 +18,19 @@ main() {
     );
   });
 
-  testWidgets("Null input", (WidgetTester tester) async {
+  testWidgets("Null input", (tester) async {
     await tester.pumpWidget(
         Testable((_) => CustomEntityValues(null), appManager: appManager));
     expect(find.byType(Empty), findsOneWidget);
   });
 
-  testWidgets("Empty input", (WidgetTester tester) async {
+  testWidgets("Empty input", (tester) async {
     await tester.pumpWidget(
         Testable((_) => CustomEntityValues([]), appManager: appManager));
     expect(find.byType(Empty), findsOneWidget);
   });
 
-  testWidgets("Value ID doesn't exist in manager", (WidgetTester tester) async {
+  testWidgets("Value ID doesn't exist in manager", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => CustomEntityValues([
         CustomEntityValue()..customEntityId = randomId(),
@@ -41,10 +41,10 @@ main() {
     expect(find.byType(Empty), findsOneWidget);
   });
 
-  testWidgets("Normal use case", (WidgetTester tester) async {
-    Id id1 = randomId();
-    Id id2 = randomId();
-    Id id3 = randomId();
+  testWidgets("Normal use case", (tester) async {
+    var id1 = randomId();
+    var id2 = randomId();
+    var id3 = randomId();
 
     when(appManager.mockCustomEntityManager.entity(id1)).thenReturn(
       CustomEntity()

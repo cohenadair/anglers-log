@@ -10,7 +10,7 @@ import 'package:mockito/mockito.dart';
 import '../../mock_app_manager.dart';
 import '../../test_utils.dart';
 
-main() {
+void main() {
   MockAppManager appManager;
 
   setUp(() {
@@ -23,7 +23,7 @@ main() {
       mockTimeManager: true,
     );
 
-    Species species = Species()
+    var species = Species()
       ..id = randomId()
       ..name = "Bass";
 
@@ -49,8 +49,8 @@ main() {
     when(appManager.mockBaitManager.list()).thenReturn([]);
   });
 
-  testWidgets("Models created correctly", (WidgetTester tester) async {
-    SummaryReport report = SummaryReport()
+  testWidgets("Models created correctly", (tester) async {
+    var report = SummaryReport()
       ..id = randomId()
       ..displayDateRangeId = DisplayDateRange.last7Days.id;
     when(appManager.mockSummaryReportManager.entity(any)).thenReturn(report);
@@ -65,7 +65,7 @@ main() {
     expect(find.text("Last 7 days"), findsNWidgets(2));
   });
 
-  testWidgets("Report ID doesn't exist", (WidgetTester tester) async {
+  testWidgets("Report ID doesn't exist", (tester) async {
     when(appManager.mockSummaryReportManager.entity(any)).thenReturn(null);
 
     await tester.pumpWidget(

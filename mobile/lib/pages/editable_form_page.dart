@@ -1,15 +1,16 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:mobile/custom_entity_manager.dart';
-import 'package:mobile/i18n/strings.dart';
-import 'package:mobile/model/gen/anglerslog.pb.dart';
-import 'package:mobile/pages/form_page.dart';
-import 'package:mobile/res/dimen.dart';
-import 'package:mobile/utils/protobuf_utils.dart';
-import 'package:mobile/widgets/input_data.dart';
-import 'package:mobile/widgets/input_type.dart';
-import 'package:mobile/widgets/widget.dart';
+
+import '../custom_entity_manager.dart';
+import '../i18n/strings.dart';
+import '../model/gen/anglerslog.pb.dart';
+import '../pages/form_page.dart';
+import '../res/dimen.dart';
+import '../utils/protobuf_utils.dart';
+import '../widgets/input_data.dart';
+import '../widgets/input_type.dart';
+import '../widgets/widget.dart';
 
 class EditableFormPage extends StatefulWidget {
   final Widget title;
@@ -66,7 +67,7 @@ class EditableFormPage extends StatefulWidget {
 
 class _EditableFormPageState extends State<EditableFormPage> {
   /// Options that are shown in the form, but not necessarily filled out.
-  Map<Id, InputData> _fields = {};
+  final Map<Id, InputData> _fields = {};
 
   CustomEntityManager get _customEntityManager =>
       CustomEntityManager.of(context);
@@ -83,13 +84,13 @@ class _EditableFormPageState extends State<EditableFormPage> {
     _fields[fakeInput.id] = fakeInput;
 
     // Add custom fields.
-    for (Id id in widget.customEntityIds) {
+    for (var id in widget.customEntityIds) {
       _fields[id] = InputData.fromCustomEntity(_customEntityManager.entity(id));
     }
 
     // Set custom fields' initial values.
-    for (CustomEntityValue value in widget.customEntityValues) {
-      CustomEntity entity = _customEntityManager.entity(value.customEntityId);
+    for (var value in widget.customEntityValues) {
+      var entity = _customEntityManager.entity(value.customEntityId);
       if (entity == null) {
         continue;
       }
@@ -122,7 +123,7 @@ class _EditableFormPageState extends State<EditableFormPage> {
       title: widget.title,
       runSpacing: widget.runSpacing,
       padding: widget.padding,
-      fieldBuilder: (BuildContext context) {
+      fieldBuilder: (context) {
         return Map.fromIterable(
           _fields.keys,
           key: (item) => item,
@@ -130,8 +131,8 @@ class _EditableFormPageState extends State<EditableFormPage> {
         );
       },
       onSave: (_) {
-        Map<Id, dynamic> customFieldValues = {};
-        for (Id id in _fields.keys) {
+        var customFieldValues = <Id, dynamic>{};
+        for (var id in _fields.keys) {
           if (_customEntityManager.entity(id) != null &&
               _fields[id].showing &&
               !_fields[id].fake) {
@@ -144,7 +145,7 @@ class _EditableFormPageState extends State<EditableFormPage> {
       addFieldOptions: _fields.keys
           .where((id) => !_fields[id].fake)
           .map(
-            (Id id) => FormPageFieldOption(
+            (id) => FormPageFieldOption(
               id: id,
               userFacingName: _fields[id].label(context),
               used: _fields[id].showing,
@@ -160,7 +161,7 @@ class _EditableFormPageState extends State<EditableFormPage> {
   Widget _inputWidget(Id id) {
     // For now, always show "fake" fields.
     if (_fields[id].fake) {
-      bool hasCustomFields = _fields.keys.firstWhere(
+      var hasCustomFields = _fields.keys.firstWhere(
               (id) => _customEntityManager.entity(id) != null,
               orElse: () => null) !=
           null;
@@ -178,7 +179,7 @@ class _EditableFormPageState extends State<EditableFormPage> {
       return Empty();
     }
 
-    CustomEntity customField = _customEntityManager.entity(id);
+    var customField = _customEntityManager.entity(id);
     if (customField != null) {
       return Padding(
         padding: insetsHorizontalDefault,
@@ -198,8 +199,8 @@ class _EditableFormPageState extends State<EditableFormPage> {
 
   void _addInputWidgets(Set<Id> ids) {
     // Handle the case of a new custom field being added.
-    for (Id id in ids) {
-      CustomEntity customField = _customEntityManager.entity(id);
+    for (var id in ids) {
+      var customField = _customEntityManager.entity(id);
       if (customField != null) {
         _fields.putIfAbsent(
           id,

@@ -10,10 +10,10 @@ import 'package:mockito/mockito.dart';
 import '../mock_app_manager.dart';
 import '../test_utils.dart';
 
-main() {
+void main() {
   MockAppManager appManager;
 
-  List<SummaryReport> summaries = [
+  var summaries = <SummaryReport>[
     SummaryReport()
       ..id = randomId()
       ..name = "Summary 1",
@@ -22,7 +22,7 @@ main() {
       ..name = "Summary 2",
   ];
 
-  List<ComparisonReport> comparisons = [
+  var comparisons = <ComparisonReport>[
     ComparisonReport()
       ..id = randomId()
       ..name = "Comparison 1",
@@ -41,7 +41,7 @@ main() {
     when(appManager.mockSummaryReportManager.list()).thenReturn(summaries);
   });
 
-  testWidgets("Current item is selected", (WidgetTester tester) async {
+  testWidgets("Current item is selected", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => ReportListPage.picker(
         currentItem: comparisons.first,
@@ -59,7 +59,7 @@ main() {
     );
   });
 
-  testWidgets("Callback is invoked", (WidgetTester tester) async {
+  testWidgets("Callback is invoked", (tester) async {
     dynamic pickedReport;
     await tester.pumpWidget(Testable(
       (_) => ReportListPage.picker(
@@ -80,7 +80,7 @@ main() {
   });
 
   testWidgets("Different item types are displayed correctly",
-      (WidgetTester tester) async {
+      (tester) async {
     await tester.pumpWidget(Testable(
       (_) => ReportListPage.picker(
         onPicked: (_, __) => true,
@@ -96,7 +96,7 @@ main() {
     expect(find.text("Summary 2"), findsOneWidget);
   });
 
-  testWidgets("Delete SummaryReport", (WidgetTester tester) async {
+  testWidgets("Delete SummaryReport", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => ReportListPage.picker(
         onPicked: (_, __) => true,
@@ -118,7 +118,7 @@ main() {
         .called(1);
   });
 
-  testWidgets("Delete ComparisonReport", (WidgetTester tester) async {
+  testWidgets("Delete ComparisonReport", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => ReportListPage.picker(
         onPicked: (_, __) => true,
@@ -140,7 +140,7 @@ main() {
         .called(1);
   });
 
-  testWidgets("Overview report cannot be deleted", (WidgetTester tester) async {
+  testWidgets("Overview report cannot be deleted", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => ReportListPage.picker(
         onPicked: (_, __) => true,
@@ -150,7 +150,7 @@ main() {
 
     await tapAndSettle(tester, find.text("EDIT"));
 
-    SizeTransition transition = tester.firstWidget<SizeTransition>(
+    var transition = tester.firstWidget<SizeTransition>(
       find.descendant(
         of: find.widgetWithText(ManageableListItem, "Overview"),
         matching: find.byType(SizeTransition),
@@ -160,7 +160,7 @@ main() {
   });
 
   testWidgets("Note shown when custom reports is empty",
-      (WidgetTester tester) async {
+      (tester) async {
     when(appManager.mockComparisonReportManager.list()).thenReturn([]);
     when(appManager.mockSummaryReportManager.list()).thenReturn([]);
 
@@ -175,7 +175,7 @@ main() {
   });
 
   testWidgets("Custom reports are sorted alphabetically",
-      (WidgetTester tester) async {
+      (tester) async {
     await tester.pumpWidget(Testable(
       (_) => ReportListPage.picker(
         onPicked: (_, __) => true,
@@ -183,7 +183,7 @@ main() {
       appManager: appManager,
     ));
 
-    Finder textWidgets = find.descendant(
+    var textWidgets = find.descendant(
       of: find.byType(ManageableListItem),
       matching: find.byType(Text),
     );

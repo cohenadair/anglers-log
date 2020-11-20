@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:mobile/res/dimen.dart';
-import 'package:mobile/res/style.dart';
-import 'package:mobile/utils/date_time_utils.dart';
 import 'package:quiver/strings.dart';
+
+import '../res/dimen.dart';
+import '../res/style.dart';
+import '../utils/date_time_utils.dart';
 
 /// A default text Widget that should be used in place of [Text].
 class Label extends StatelessWidget {
@@ -81,7 +82,7 @@ class IconNoteLabel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    List<String> strings = text.split("%s");
+    var strings = text.split("%s");
 
     return RichText(
       text: TextSpan(
@@ -120,7 +121,7 @@ class PrimaryLabel extends StatelessWidget {
   }
 
   TextStyle _style(BuildContext context) {
-    TextStyle style = Theme.of(context).textTheme.subtitle1;
+    var style = Theme.of(context).textTheme.subtitle1;
     if (!enabled) {
       style = style.copyWith(
         color: Theme.of(context).disabledColor,

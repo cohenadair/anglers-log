@@ -1,17 +1,15 @@
 import 'dart:io';
 
-import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/bait_category_manager.dart';
 import 'package:mobile/bait_manager.dart';
 import 'package:mobile/catch_manager.dart';
 import 'package:mobile/database/legacy_importer.dart';
 import 'package:mobile/fishing_spot_manager.dart';
-import 'package:mobile/model/gen/anglerslog.pb.dart';
 import 'package:mobile/species_manager.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mockito/mockito.dart';
-import 'package:path/path.dart' as Path;
+import 'package:path/path.dart' as path;
 
 import '../mock_app_manager.dart';
 import '../test_utils.dart';
@@ -27,7 +25,7 @@ void main() {
   FishingSpotManager fishingSpotManager;
   SpeciesManager speciesManager;
 
-  String tmpPath = "test/resources/tmp";
+  var tmpPath = "test/resources/tmp";
   Directory tmpDir;
 
   setUp(() {
@@ -77,27 +75,27 @@ void main() {
 
   void verifyIds() {
     // Legacy iOS files don't use UUIDs, so verify IDs are present and valid.
-    for (BaitCategory baitCategory in baitCategoryManager.list()) {
+    for (var baitCategory in baitCategoryManager.list()) {
       expect(baitCategory.id, isNotNull);
       expect(baitCategory.id.uuid, isNotEmpty);
     }
 
-    for (Bait bait in baitManager.list()) {
+    for (var bait in baitManager.list()) {
       expect(bait.id, isNotNull);
       expect(bait.id.uuid, isNotEmpty);
     }
 
-    for (Catch cat in catchManager.list()) {
+    for (var cat in catchManager.list()) {
       expect(cat.id, isNotNull);
       expect(cat.id.uuid, isNotEmpty);
     }
 
-    for (FishingSpot fishingSpot in fishingSpotManager.list()) {
+    for (var fishingSpot in fishingSpotManager.list()) {
       expect(fishingSpot.id, isNotNull);
       expect(fishingSpot.id.uuid, isNotEmpty);
     }
 
-    for (Species species in speciesManager.list()) {
+    for (var species in speciesManager.list()) {
       expect(species.id, isNotNull);
       expect(species.id.uuid, isNotEmpty);
     }
@@ -113,7 +111,7 @@ void main() {
     });
 
     test("Missing journal key", () async {
-      File file = File("test/resources/backups/no_journal.zip");
+      var file = File("test/resources/backups/no_journal.zip");
       await LegacyImporter(appManager, file)
           .start()
           .catchError(expectAsync1((error) {
@@ -122,7 +120,7 @@ void main() {
     });
 
     test("Missing userDefines key", () async {
-      File file = File("test/resources/backups/no_user_defines.zip");
+      var file = File("test/resources/backups/no_user_defines.zip");
       await LegacyImporter(appManager, file)
           .start()
           .catchError(expectAsync1((error) {
@@ -132,7 +130,7 @@ void main() {
   });
 
   test("Import legacy iOS", () async {
-    File file = File("test/resources/backups/legacy_ios_real.zip");
+    var file = File("test/resources/backups/legacy_ios_real.zip");
     await LegacyImporter(appManager, file).start();
 
     // Bait categories were never added to Anglers' Log iOS, so none should
@@ -147,7 +145,7 @@ void main() {
   });
 
   test("Import legacy Android", () async {
-    File file = File("test/resources/backups/legacy_android_real.zip");
+    var file = File("test/resources/backups/legacy_android_real.zip");
 
     await LegacyImporter(appManager, file).start();
 
@@ -161,7 +159,7 @@ void main() {
   });
 
   test("Empty user defines", () async {
-    File file = File("test/resources/backups/legacy_empty_entities.zip");
+    var file = File("test/resources/backups/legacy_empty_entities.zip");
     await LegacyImporter(appManager, file).start();
     expect(baitCategoryManager.entityCount, 0);
     expect(baitManager.entityCount, 0);
@@ -170,12 +168,12 @@ void main() {
     expect(speciesManager.entityCount, 0);
   });
 
-  testWidgets("Import iOS catches", (WidgetTester tester) async {
-    File file = File("test/resources/backups/legacy_ios_entities.zip");
+  testWidgets("Import iOS catches", (tester) async {
+    var file = File("test/resources/backups/legacy_ios_entities.zip");
     await LegacyImporter(appManager, file).start();
 
-    BuildContext context = await buildContext(tester);
-    List<Catch> catches = catchManager.catchesSortedByTimestamp(context);
+    var context = await buildContext(tester);
+    var catches = catchManager.catchesSortedByTimestamp(context);
 
     expect(catches, isNotNull);
     expect(catches.length, 4);
@@ -199,10 +197,10 @@ void main() {
   });
 
   test("Import iOS locations", () async {
-    File file = File("test/resources/backups/legacy_ios_entities.zip");
+    var file = File("test/resources/backups/legacy_ios_entities.zip");
     await LegacyImporter(appManager, file).start();
 
-    List<FishingSpot> fishingSpots = fishingSpotManager.list();
+    var fishingSpots = fishingSpotManager.list();
     expect(fishingSpots, isNotNull);
     expect(fishingSpots.length, 1);
     expect(fishingSpots.first.name, "Tennessee River - Sequoyah Hills Park");
@@ -211,10 +209,10 @@ void main() {
   });
 
   test("Import iOS baits", () async {
-    File file = File("test/resources/backups/legacy_ios_entities.zip");
+    var file = File("test/resources/backups/legacy_ios_entities.zip");
     await LegacyImporter(appManager, file).start();
 
-    List<Bait> baits = baitManager.list();
+    var baits = baitManager.list();
     expect(baits, isNotNull);
     expect(baits.length, 1);
     expect(baits.first.name, "Corn");
@@ -222,30 +220,30 @@ void main() {
   });
 
   test("Import iOS species", () async {
-    File file = File("test/resources/backups/legacy_ios_entities.zip");
+    var file = File("test/resources/backups/legacy_ios_entities.zip");
     await LegacyImporter(appManager, file).start();
 
-    List<Species> species = speciesManager.list();
+    var species = speciesManager.list();
     expect(species, isNotNull);
     expect(species.length, 1);
     expect(species.first.name, "Carp - Common");
   });
 
-  testWidgets("Import iOS images", (WidgetTester tester) async {
-    File zip = File("test/resources/backups/legacy_ios_photos.zip");
+  testWidgets("Import iOS images", (tester) async {
+    var zip = File("test/resources/backups/legacy_ios_photos.zip");
 
-    List<File> importedImages = [];
+    var importedImages = <File>[];
     when(imageManager.save(any, compress: anyNamed("compress")))
         .thenAnswer((invocation) {
       importedImages.addAll(invocation.positionalArguments[0]);
       return Future.value(
-          importedImages.map((f) => Path.basename(f.path)).toList());
+          importedImages.map((f) => path.basename(f.path)).toList());
     });
 
     await LegacyImporter(appManager, zip).start();
 
-    BuildContext context = await buildContext(tester);
-    List<Catch> catches = catchManager.catchesSortedByTimestamp(context);
+    var context = await buildContext(tester);
+    var catches = catchManager.catchesSortedByTimestamp(context);
 
     expect(catches, isNotNull);
     expect(catches.length, 2);
@@ -253,10 +251,10 @@ void main() {
   });
 
   test("Import Android catches", () async {
-    File file = File("test/resources/backups/legacy_android_entities.zip");
+    var file = File("test/resources/backups/legacy_android_entities.zip");
     await LegacyImporter(appManager, file).start();
 
-    List<Catch> catches = catchManager.list();
+    var catches = catchManager.list();
     expect(catches, isNotNull);
     expect(catches.length, 1);
 
@@ -273,10 +271,10 @@ void main() {
   });
 
   test("Import Android locations", () async {
-    File file = File("test/resources/backups/legacy_android_entities.zip");
+    var file = File("test/resources/backups/legacy_android_entities.zip");
     await LegacyImporter(appManager, file).start();
 
-    List<FishingSpot> fishingSpots = fishingSpotManager.list();
+    var fishingSpots = fishingSpotManager.list();
     expect(fishingSpots, isNotNull);
     expect(fishingSpots.length, 1);
     expect(fishingSpots.first.name, "Bow River - Sewer Run");
@@ -285,10 +283,10 @@ void main() {
   });
 
   test("Import Android baits", () async {
-    File file = File("test/resources/backups/legacy_android_entities.zip");
+    var file = File("test/resources/backups/legacy_android_entities.zip");
     await LegacyImporter(appManager, file).start();
 
-    List<Bait> baits = baitManager.listSortedByName();
+    var baits = baitManager.listSortedByName();
     expect(baits, isNotNull);
     expect(baits.length, 2);
 
@@ -301,41 +299,41 @@ void main() {
   });
 
   test("Import Android species", () async {
-    File file = File("test/resources/backups/legacy_android_entities.zip");
+    var file = File("test/resources/backups/legacy_android_entities.zip");
     await LegacyImporter(appManager, file).start();
 
-    List<Species> species = speciesManager.list();
+    var species = speciesManager.list();
     expect(species, isNotNull);
     expect(species.length, 1);
     expect(species.first.name, "Trout - Rainbow");
   });
 
   test("Import Android bait categories", () async {
-    File file = File("test/resources/backups/legacy_android_entities.zip");
+    var file = File("test/resources/backups/legacy_android_entities.zip");
     await LegacyImporter(appManager, file).start();
 
-    List<BaitCategory> categories = baitCategoryManager.list();
+    var categories = baitCategoryManager.list();
     expect(categories, isNotNull);
     expect(categories.length, 1);
     expect(categories.first.id.uuid, "b860cddd-dc47-48a2-8d02-c8112a2ed5eb");
     expect(categories.first.name, "Other");
   });
 
-  testWidgets("Import Android images", (WidgetTester tester) async {
-    File zip = File("test/resources/backups/legacy_android_photos.zip");
+  testWidgets("Import Android images", (tester) async {
+    var zip = File("test/resources/backups/legacy_android_photos.zip");
 
-    List<File> importedImages = [];
+    var importedImages = <File>[];
     when(imageManager.save(any, compress: anyNamed("compress")))
         .thenAnswer((invocation) {
       importedImages.addAll(invocation.positionalArguments[0]);
       return Future.value(
-          importedImages.map((f) => Path.basename(f.path)).toList());
+          importedImages.map((f) => path.basename(f.path)).toList());
     });
 
     await LegacyImporter(appManager, zip).start();
 
-    BuildContext context = await buildContext(tester);
-    List<Catch> catches = catchManager.catchesSortedByTimestamp(context);
+    var context = await buildContext(tester);
+    var catches = catchManager.catchesSortedByTimestamp(context);
 
     expect(catches, isNotNull);
     expect(catches.length, 2);

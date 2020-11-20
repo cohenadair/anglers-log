@@ -8,7 +8,7 @@ import 'package:mockito/mockito.dart';
 import '../mock_app_manager.dart';
 import '../test_utils.dart';
 
-main() {
+void main() {
   MockAppManager appManager;
 
   var baitCategories = [
@@ -30,7 +30,7 @@ main() {
     )).thenReturn(baitCategories);
   });
 
-  testWidgets("Picker title", (WidgetTester tester) async {
+  testWidgets("Picker title", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => BaitCategoryListPage.picker(
         onPicked: (_, __) => false,
@@ -40,7 +40,7 @@ main() {
     expect(find.text("Select Bait Category"), findsOneWidget);
   });
 
-  testWidgets("Normal title", (WidgetTester tester) async {
+  testWidgets("Normal title", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => BaitCategoryListPage(),
       appManager: appManager,
@@ -48,7 +48,7 @@ main() {
     expect(find.text("Bait Categories (2)"), findsOneWidget);
   });
 
-  testWidgets("Normal title filtered", (WidgetTester tester) async {
+  testWidgets("Normal title filtered", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => BaitCategoryListPage(),
       appManager: appManager,
@@ -65,7 +65,7 @@ main() {
     expect(find.text("Bait Categories (1)"), findsOneWidget);
   });
 
-  testWidgets("onPicked callback invoked", (WidgetTester tester) async {
+  testWidgets("onPicked callback invoked", (tester) async {
     BaitCategory pickedCategory;
     await tester.pumpWidget(Testable(
       (_) => BaitCategoryListPage.picker(

@@ -8,15 +8,15 @@ import 'package:mobile/widgets/text.dart';
 
 import '../test_utils.dart';
 
-main() {
-  PaddedCheckbox findCheckbox(WidgetTester tester, String option) =>
+void main() {
+  PaddedCheckbox findCheckbox(tester, String option) =>
       tester.widget<PaddedCheckbox>(find.descendant(
         of: find.widgetWithText(ListItem, option),
         matching: find.byType(PaddedCheckbox),
       ));
 
   testWidgets("Initial values in multi-select are selected",
-      (WidgetTester tester) async {
+      (tester) async {
     await tester.pumpWidget(
       Testable(
         (_) => PickerPage<String>(
@@ -37,7 +37,7 @@ main() {
   });
 
   testWidgets("Initial value in single-select is selected",
-      (WidgetTester tester) async {
+      (tester) async {
     await tester.pumpWidget(
       Testable(
         (_) => PickerPage<String>.single(
@@ -75,7 +75,7 @@ main() {
     );
   });
 
-  testWidgets("Multi-select shows a done button", (WidgetTester tester) async {
+  testWidgets("Multi-select shows a done button", (tester) async {
     await tester.pumpWidget(
       Testable(
         (_) => PickerPage<String>(
@@ -90,9 +90,8 @@ main() {
     expect(find.widgetWithText(ActionButton, "DONE"), findsOneWidget);
   });
 
-  testWidgets("Callback invoked when done button is pressed",
-      (WidgetTester tester) async {
-    bool called = false;
+  testWidgets("Callback invoked when done button is pressed", (tester) async {
+    var called = false;
     await tester.pumpWidget(
       Testable(
         (_) => PickerPage<String>(
@@ -109,7 +108,7 @@ main() {
   });
 
   testWidgets("Single-select does not show a done button",
-      (WidgetTester tester) async {
+      (tester) async {
     await tester.pumpWidget(
       Testable(
         (_) => PickerPage<String>.single(
@@ -124,7 +123,7 @@ main() {
     expect(find.widgetWithText(ActionButton, "DONE"), findsNothing);
   });
 
-  testWidgets("Action widget", (WidgetTester tester) async {
+  testWidgets("Action widget", (tester) async {
     await tester.pumpWidget(
       Testable(
         (_) => PickerPage<String>(
@@ -140,7 +139,7 @@ main() {
     expect(find.byIcon(Icons.search), findsOneWidget);
   });
 
-  testWidgets("List header", (WidgetTester tester) async {
+  testWidgets("List header", (tester) async {
     await tester.pumpWidget(
       Testable(
         (_) => PickerPage<String>(
@@ -156,7 +155,7 @@ main() {
     expect(find.text("This is a list header."), findsOneWidget);
   });
 
-  testWidgets("All-item", (WidgetTester tester) async {
+  testWidgets("All-item", (tester) async {
     await tester.pumpWidget(
       Testable(
         (_) => PickerPage<String>(
@@ -172,7 +171,7 @@ main() {
     expect(find.text("All"), findsOneWidget);
   });
 
-  testWidgets("Divider item", (WidgetTester tester) async {
+  testWidgets("Divider item", (tester) async {
     await tester.pumpWidget(
       Testable(
         (_) => PickerPage<String>(
@@ -189,7 +188,7 @@ main() {
     expect(find.byType(Divider), findsOneWidget);
   });
 
-  testWidgets("Heading item", (WidgetTester tester) async {
+  testWidgets("Heading item", (tester) async {
     await tester.pumpWidget(
       Testable(
         (_) => PickerPage<String>(
@@ -206,7 +205,7 @@ main() {
     expect(find.widgetWithText(HeadingLabel, "Heading"), findsOneWidget);
   });
 
-  testWidgets("Note item", (WidgetTester tester) async {
+  testWidgets("Note item", (tester) async {
     await tester.pumpWidget(
       Testable(
         (_) => PickerPage<String>(
@@ -223,7 +222,7 @@ main() {
     expect(find.widgetWithText(NoteLabel, "A note"), findsOneWidget);
   });
 
-  testWidgets("Note icon item", (WidgetTester tester) async {
+  testWidgets("Note icon item", (tester) async {
     await tester.pumpWidget(
       Testable(
         (_) => PickerPage<String>(
@@ -241,7 +240,7 @@ main() {
   });
 
   testWidgets("Enabled single-select item pops page and invokes callback",
-      (WidgetTester tester) async {
+      (tester) async {
     String pickedValue;
     await tester.pumpWidget(
       Testable(
@@ -258,9 +257,8 @@ main() {
     expect(pickedValue, "Option A");
   });
 
-  testWidgets("Enabled single-select item custom callback",
-      (WidgetTester tester) async {
-    bool tapped = false;
+  testWidgets("Enabled single-select item custom callback", (tester) async {
+    var tapped = false;
     await tester.pumpWidget(
       Testable(
         (_) => PickerPage<String>.single(
@@ -280,9 +278,8 @@ main() {
     expect(tapped, isTrue);
   });
 
-  testWidgets("Enabled multi-select item does not pop page",
-      (WidgetTester tester) async {
-    bool invoked = false;
+  testWidgets("Enabled multi-select item does not pop page", (tester) async {
+    var invoked = false;
     await tester.pumpWidget(
       Testable(
         (_) => PickerPage<String>(
@@ -298,7 +295,7 @@ main() {
     expect(invoked, isFalse);
   });
 
-  testWidgets("Item with subtitle", (WidgetTester tester) async {
+  testWidgets("Item with subtitle", (tester) async {
     await tester.pumpWidget(
       Testable(
         (_) => PickerPage<String>(
@@ -317,7 +314,7 @@ main() {
     expect(find.widgetWithText(SubtitleLabel, "Subtitle"), findsOneWidget);
   });
 
-  testWidgets("Item without subtitle", (WidgetTester tester) async {
+  testWidgets("Item without subtitle", (tester) async {
     await tester.pumpWidget(
       Testable(
         (_) => PickerPage<String>(
@@ -332,7 +329,7 @@ main() {
     expect(find.byType(SubtitleLabel), findsNothing);
   });
 
-  testWidgets("All item deselects other items", (WidgetTester tester) async {
+  testWidgets("All item deselects other items", (tester) async {
     await tester.pumpWidget(
       Testable(
         (_) => PickerPage<String>(
@@ -362,7 +359,7 @@ main() {
     expect(findCheckbox(tester, "Option C").checked, isFalse);
   });
 
-  testWidgets("Selection deselects All item", (WidgetTester tester) async {
+  testWidgets("Selection deselects All item", (tester) async {
     await tester.pumpWidget(
       Testable(
         (_) => PickerPage<String>(

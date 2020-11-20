@@ -14,7 +14,7 @@ import 'package:mockito/mockito.dart';
 import '../mock_app_manager.dart';
 import '../test_utils.dart';
 
-main() {
+void main() {
   MockAppManager appManager;
 
   setUp(() {
@@ -26,7 +26,7 @@ main() {
   });
 
   testWidgets("Save button disabled when isInputValid = false",
-      (WidgetTester tester) async {
+      (tester) async {
     await tester.pumpWidget(
       Testable(
         (_) => FormPage(
@@ -39,7 +39,7 @@ main() {
   });
 
   testWidgets("Save button enabled when isInputValid = true",
-      (WidgetTester tester) async {
+      (tester) async {
     await tester.pumpWidget(
       Testable(
         (_) => FormPage(
@@ -52,7 +52,7 @@ main() {
         findFirstWithText<ActionButton>(tester, "SAVE").onPressed, isNotNull);
   });
 
-  testWidgets("Custom save button text", (WidgetTester tester) async {
+  testWidgets("Custom save button text", (tester) async {
     await tester.pumpWidget(
       Testable(
         (_) => FormPage(
@@ -66,7 +66,7 @@ main() {
     expect(find.text("DONE"), findsOneWidget);
   });
 
-  testWidgets("Editable form shows overflow menu", (WidgetTester tester) async {
+  testWidgets("Editable form shows overflow menu", (tester) async {
     await tester.pumpWidget(
       Testable(
         (_) => FormPage(
@@ -79,7 +79,7 @@ main() {
   });
 
   testWidgets("Immutable form does not show overflow menu",
-      (WidgetTester tester) async {
+      (tester) async {
     await tester.pumpWidget(
       Testable(
         (_) => FormPage.immutable(
@@ -91,7 +91,7 @@ main() {
     expect(find.byIcon(FormPage.moreMenuIcon), findsNothing);
   });
 
-  testWidgets("All form fields are built", (WidgetTester tester) async {
+  testWidgets("All form fields are built", (tester) async {
     await tester.pumpWidget(
       Testable(
         (_) => FormPage.immutable(
@@ -119,7 +119,7 @@ main() {
     expect(find.byType(PaddedCheckbox), findsOneWidget);
   });
 
-  testWidgets("Null onSave does pops page", (WidgetTester tester) async {
+  testWidgets("Null onSave does pops page", (tester) async {
     var navObserver = MockNavigatorObserver();
     await tester.pumpWidget(Testable(
       (_) => FormPage.immutable(
@@ -135,7 +135,7 @@ main() {
   });
 
   testWidgets("onSave returns false does not pop page",
-      (WidgetTester tester) async {
+      (tester) async {
     var navObserver = MockNavigatorObserver();
     await tester.pumpWidget(Testable(
       (_) => FormPage.immutable(
@@ -150,7 +150,7 @@ main() {
     verifyNever(navObserver.didPop(any, any));
   });
 
-  testWidgets("onSave returns true pops page", (WidgetTester tester) async {
+  testWidgets("onSave returns true pops page", (tester) async {
     var navObserver = MockNavigatorObserver();
     await tester.pumpWidget(Testable(
       (_) => FormPage.immutable(
@@ -166,10 +166,10 @@ main() {
   });
 
   testWidgets("Form state validation failing does not invoke onSave",
-      (WidgetTester tester) async {
-    bool onFormSaveCalled = false;
-    bool onTextFieldSavedCalled = false;
-    bool validateCalled = false;
+      (tester) async {
+    var onFormSaveCalled = false;
+    var onTextFieldSavedCalled = false;
+    var validateCalled = false;
     await tester.pumpWidget(
       Testable(
         (_) => FormPage.immutable(
@@ -195,11 +195,11 @@ main() {
     expect(onTextFieldSavedCalled, isFalse);
   });
 
-  testWidgets("Selection page shows all options", (WidgetTester tester) async {
-    Id nameId = randomId();
-    Id descriptionId = randomId();
-    Id ageId = randomId();
-    Id enabledId = randomId();
+  testWidgets("Selection page shows all options", (tester) async {
+    var nameId = randomId();
+    var descriptionId = randomId();
+    var ageId = randomId();
+    var enabledId = randomId();
 
     await tester.pumpWidget(Testable(
       (_) => FormPage(
@@ -268,9 +268,8 @@ main() {
     expect(find.byType(PaddedCheckbox), findsNWidgets(4));
   });
 
-  testWidgets("Selection page invokes onAddFields",
-      (WidgetTester tester) async {
-    Id nameId = randomId();
+  testWidgets("Selection page invokes onAddFields", (tester) async {
+    var nameId = randomId();
     Set<Id> selectedIds;
     await tester.pumpWidget(Testable(
       (_) => FormPage(
@@ -300,9 +299,8 @@ main() {
     expect(selectedIds.first, nameId);
   });
 
-  testWidgets("Toggling fields removes them from callback",
-      (WidgetTester tester) async {
-    Id nameId = randomId();
+  testWidgets("Toggling fields removes them from callback", (tester) async {
+    var nameId = randomId();
     Set<Id> selectedIds;
     await tester.pumpWidget(Testable(
       (_) => FormPage(
@@ -335,7 +333,7 @@ main() {
   });
 
   testWidgets("Selection page add button opens save entity page",
-      (WidgetTester tester) async {
+      (tester) async {
     await tester.pumpWidget(Testable(
       (_) => FormPage(
         fieldBuilder: (context) => {},
@@ -352,8 +350,8 @@ main() {
   });
 
   testWidgets("Custom fields included in form are shown on selection page",
-      (WidgetTester tester) async {
-    Id customEntityId = randomId();
+      (tester) async {
+    var customEntityId = randomId();
     var customEntity = CustomEntity()
       ..id = customEntityId
       ..name = "Name"
@@ -385,8 +383,8 @@ main() {
   });
 
   testWidgets("Custom fields not included in form are shown on selection page",
-      (WidgetTester tester) async {
-    Id customEntityId = randomId();
+      (tester) async {
+    var customEntityId = randomId();
     var customEntity = CustomEntity()
       ..id = customEntityId
       ..name = "Name"
@@ -416,9 +414,9 @@ main() {
   });
 
   testWidgets("Selection page custom fields are in alphabetical order",
-      (WidgetTester tester) async {
-    Id customEntityId1 = randomId();
-    Id customEntityId2 = randomId();
+      (tester) async {
+    var customEntityId1 = randomId();
+    var customEntityId2 = randomId();
     var customEntity1 = CustomEntity()
       ..id = customEntityId1
       ..name = "Name"
@@ -475,7 +473,7 @@ main() {
   });
 
   testWidgets("Selection page no custom fields shows note",
-      (WidgetTester tester) async {
+      (tester) async {
     await tester.pumpWidget(Testable(
       (_) => FormPage(
         fieldBuilder: (_) => {},

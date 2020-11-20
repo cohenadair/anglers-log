@@ -12,7 +12,7 @@ import 'package:mockito/mockito.dart';
 import '../mock_app_manager.dart';
 import '../test_utils.dart';
 
-main() {
+void main() {
   MockAppManager appManager;
 
   setUp(() {
@@ -33,7 +33,7 @@ main() {
   // TODO (1): GoogleMap is a native widget; gesture testing doesn't work yet.
 
   testWidgets("Initial fishing spot shows bottom sheet",
-      (WidgetTester tester) async {
+      (tester) async {
     await tester.pumpWidget(Testable(
       (_) => FishingSpotPickerPage(
         onPicked: (_, __) {},
@@ -54,7 +54,7 @@ main() {
   });
 
   testWidgets("Bottom sheet not shown if fishing spot not selected",
-      (WidgetTester tester) async {
+      (tester) async {
     await tester.pumpWidget(Testable(
       (_) => FishingSpotPickerPage(
         onPicked: (_, __) {},
@@ -67,7 +67,7 @@ main() {
   });
 
   testWidgets("Center widget hidden with fishing spot is selected",
-      (WidgetTester tester) async {
+      (tester) async {
     await tester.pumpWidget(Testable(
       (_) => FishingSpotPickerPage(
         onPicked: (_, __) {},
@@ -85,7 +85,7 @@ main() {
   });
 
   testWidgets("Center widget shown when no fishing spot is selected",
-      (WidgetTester tester) async {
+      (tester) async {
     await tester.pumpWidget(Testable(
       (_) => FishingSpotPickerPage(
         onPicked: (_, __) {},
@@ -98,24 +98,24 @@ main() {
   });
 
   testWidgets("On map idle, pending fishing spot is added",
-      (WidgetTester tester) async {
+      (tester) async {
     // TODO (1)
     // TODO: Verify marker color
   });
 
   testWidgets("On map move started by drag, current spot is cleared",
-      (WidgetTester tester) async {
+      (tester) async {
     // TODO (1)
     // TODO: Verify pending marker isn't shown
   });
 
   testWidgets("On map move stopped after drag, pending spot is added",
-      (WidgetTester tester) async {
+      (tester) async {
     // TODO (1)
   });
 
   testWidgets("Center widget color depends on map type",
-      (WidgetTester tester) async {
+      (tester) async {
     await tester.pumpWidget(Testable(
       (_) => FishingSpotPickerPage(
         onPicked: (_, __) {},
@@ -141,7 +141,7 @@ main() {
     expect(tester.widget<Icon>(find.byIcon(Icons.add)).color, Colors.white);
   });
 
-  testWidgets("Custom done button text", (WidgetTester tester) async {
+  testWidgets("Custom done button text", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => FishingSpotPickerPage(
         onPicked: (_, __) {},
@@ -155,7 +155,7 @@ main() {
   });
 
   testWidgets("Done button disabled if fishing spot not selected",
-      (WidgetTester tester) async {
+      (tester) async {
     await tester.pumpWidget(Testable(
       (_) => FishingSpotPickerPage(
         onPicked: (_, __) {},
@@ -168,7 +168,7 @@ main() {
   });
 
   testWidgets("Done button enabled if fishing spot selected",
-      (WidgetTester tester) async {
+      (tester) async {
     await tester.pumpWidget(Testable(
       (_) => FishingSpotPickerPage(
         onPicked: (_, __) {},
@@ -187,7 +187,7 @@ main() {
   });
 
   testWidgets("Selecting fishing spot from search updates map",
-      (WidgetTester tester) async {
+      (tester) async {
     await tester.pumpWidget(Testable(
       (_) => FishingSpotPickerPage(
         onPicked: (_, __) {},
@@ -205,7 +205,7 @@ main() {
   });
 
   testWidgets("Selecting no fishing spot from search does not update map",
-      (WidgetTester tester) async {
+      (tester) async {
     await tester.pumpWidget(Testable(
       (_) => FishingSpotPickerPage(
         onPicked: (_, __) {},
@@ -221,7 +221,7 @@ main() {
   });
 
   testWidgets("Editing fishing spot updates bottom sheet",
-      (WidgetTester tester) async {
+      (tester) async {
     await tester.pumpWidget(Testable(
       (_) => FishingSpotPickerPage(
         onPicked: (_, __) {},

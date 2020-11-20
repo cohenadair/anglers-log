@@ -13,7 +13,7 @@ import 'package:mockito/mockito.dart';
 import '../mock_app_manager.dart';
 import '../test_utils.dart';
 
-main() {
+void main() {
   MockAppManager appManager;
 
   setUp(() {
@@ -25,7 +25,7 @@ main() {
   });
 
   testWidgets("Note shows when there are no custom values",
-      (WidgetTester tester) async {
+      (tester) async {
     await tester.pumpWidget(Testable(
       (_) => EditableFormPage(),
       appManager: appManager,
@@ -33,8 +33,8 @@ main() {
     expect(find.byType(IconNoteLabel), findsOneWidget);
   });
 
-  testWidgets("Custom fields without values", (WidgetTester tester) async {
-    CustomEntity customEntity = CustomEntity()
+  testWidgets("Custom fields without values", (tester) async {
+    var customEntity = CustomEntity()
       ..id = randomId()
       ..name = "Custom Field 1"
       ..type = CustomEntity_Type.TEXT;
@@ -54,7 +54,7 @@ main() {
   });
 
   testWidgets("CustomEntityValue that doesn't exist in fields is still added",
-      (WidgetTester tester) async {
+      (tester) async {
     when(appManager.mockCustomEntityManager.entity(any)).thenReturn(
       CustomEntity()
         ..id = randomId()
@@ -77,9 +77,9 @@ main() {
     expect(find.widgetWithText(TextField, "Test"), findsOneWidget);
   });
 
-  testWidgets("Hidden fields are not shown", (WidgetTester tester) async {
-    Id id1 = randomId();
-    Id id2 = randomId();
+  testWidgets("Hidden fields are not shown", (tester) async {
+    var id1 = randomId();
+    var id2 = randomId();
     await tester.pumpWidget(Testable(
       (_) => EditableFormPage(
         fields: {
@@ -105,10 +105,9 @@ main() {
     expect(find.text(id2.toString()), findsOneWidget);
   });
 
-  testWidgets("Field selection excludes fake InputData",
-      (WidgetTester tester) async {
-    Id id1 = randomId();
-    Id id2 = randomId();
+  testWidgets("Field selection excludes fake InputData", (tester) async {
+    var id1 = randomId();
+    var id2 = randomId();
     await tester.pumpWidget(Testable(
       (_) => EditableFormPage(
         fields: {
@@ -144,9 +143,9 @@ main() {
   });
 
   testWidgets("Selecting hidden field updates state to show field",
-      (WidgetTester tester) async {
-    Id id1 = randomId();
-    Id id2 = randomId();
+      (tester) async {
+    var id1 = randomId();
+    var id2 = randomId();
     await tester.pumpWidget(Testable(
       (_) => EditableFormPage(
         fields: {
@@ -200,8 +199,8 @@ main() {
   });
 
   testWidgets("Adding a new custom field updates state and shows field",
-      (WidgetTester tester) async {
-    CustomEntity customEntity = CustomEntity()
+      (tester) async {
+    var customEntity = CustomEntity()
       ..id = randomId()
       ..name = "Custom Field 1"
       ..type = CustomEntity_Type.TEXT;
@@ -233,7 +232,7 @@ main() {
   });
 
   testWidgets("Callback invoked with correct values",
-      (WidgetTester tester) async {
+      (tester) async {
     Map<Id, dynamic> onSaveMap;
     when(appManager.mockCustomEntityManager.entity(any)).thenReturn(
       CustomEntity()

@@ -5,9 +5,9 @@ import 'package:mobile/widgets/widget.dart';
 
 import '../test_utils.dart';
 
-main() {
+void main() {
   group("HeadingNoteDivider", () {
-    testWidgets("Input", (WidgetTester tester) async {
+    testWidgets("Input", (tester) async {
       await tester.pumpWidget(
         Testable(
           (_) => HeadingNoteDivider(
@@ -45,7 +45,7 @@ main() {
       expect(tester.takeException(), isAssertionError);
     });
 
-    testWidgets("Visible note", (WidgetTester tester) async {
+    testWidgets("Visible note", (tester) async {
       await tester.pumpWidget(
         Testable(
           (_) => HeadingNoteDivider(
@@ -60,7 +60,7 @@ main() {
       expect(find.byType(Empty), findsNothing);
     });
 
-    testWidgets("Hidden note", (WidgetTester tester) async {
+    testWidgets("Hidden note", (tester) async {
       await tester.pumpWidget(
         Testable(
           (_) => HeadingNoteDivider(
@@ -78,7 +78,7 @@ main() {
 
   group("EmptyFutureBuilder", () {
     testWidgets("Empty widget shown until finished",
-        (WidgetTester tester) async {
+        (tester) async {
       await tester.pumpWidget(
         Testable(
           (_) => EmptyFutureBuilder<bool>(
@@ -94,13 +94,13 @@ main() {
   });
 
   group("ChipWrap", () {
-    testWidgets("Empty input", (WidgetTester tester) async {
+    testWidgets("Empty input", (tester) async {
       await tester.pumpWidget(Testable((_) => ChipWrap()));
       expect(find.byType(Empty), findsOneWidget);
       expect(find.byType(Chip), findsNothing);
     });
 
-    testWidgets("All chips rendered", (WidgetTester tester) async {
+    testWidgets("All chips rendered", (tester) async {
       await tester.pumpWidget(
         Testable(
           (_) => ChipWrap({

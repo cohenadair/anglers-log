@@ -7,7 +7,7 @@ import 'package:uuid/uuid.dart';
 import '../mock_app_manager.dart';
 import '../test_utils.dart';
 
-main() {
+void main() {
   group("Id", () {
     test("Invalid input", () {
       expect(() => parseId(""), throwsAssertionError);
@@ -17,14 +17,14 @@ main() {
       expect(randomId(), isNotNull);
     });
 
-    /// Tests that the [Id] object can be used as a key in a [Map]. No matter the
-    /// structure of [Id], it needs to be equatable.
+    /// Tests that the [Id] object can be used as a key in a [Map]. No matter
+    /// the structure of [Id], it needs to be equatable.
     test("Id used in Map", () {
-      String uuid0 = randomId().uuid;
-      String uuid1 = randomId().uuid;
-      String uuid2 = randomId().uuid;
+      var uuid0 = randomId().uuid;
+      var uuid1 = randomId().uuid;
+      var uuid2 = randomId().uuid;
 
-      Map<Id, int> map = {
+      var map = <Id, int>{
         Id()..uuid = uuid0: 5,
         Id()..uuid = uuid1: 10,
         Id()..uuid = uuid2: 15,
@@ -67,7 +67,7 @@ main() {
     });
 
     test("0 count", () {
-      Catch cat = Catch()..id = randomId();
+      var cat = Catch()..id = randomId();
       cat.customEntityValues
           .add(CustomEntityValue()..customEntityId = randomId());
       expect(
@@ -78,10 +78,10 @@ main() {
     });
 
     test("Greater than 0 count", () {
-      Catch cat = Catch()..id = randomId();
+      var cat = Catch()..id = randomId();
 
-      Id customId1 = randomId();
-      Id customId2 = randomId();
+      var customId1 = randomId();
+      var customId2 = randomId();
       cat.customEntityValues
         ..add(CustomEntityValue()..customEntityId = customId1)
         ..add(CustomEntityValue()..customEntityId = customId2);
@@ -105,7 +105,7 @@ main() {
   });
 
   group("entityValuesMatchesFilter", () {
-    MockCustomEntityManager customEntityManager = MockCustomEntityManager();
+    var customEntityManager = MockCustomEntityManager();
     when(customEntityManager.matchesFilter(any, any)).thenReturn(false);
 
     test("Empty or null filter", () {
@@ -149,9 +149,9 @@ main() {
     });
 
     test("Parse values", () {
-      Id id1 = randomId();
-      Id id2 = randomId();
-      Id id3 = randomId();
+      var id1 = randomId();
+      var id2 = randomId();
+      var id3 = randomId();
 
       expect(
         entityValuesFromMap({
@@ -201,7 +201,7 @@ main() {
       );
     });
 
-    testWidgets("Bool with context", (WidgetTester tester) async {
+    testWidgets("Bool with context", (tester) async {
       expect(
         valueForCustomEntityType(CustomEntity_Type.BOOL,
             CustomEntityValue()..value = "1", await buildContext(tester)),
@@ -226,7 +226,7 @@ main() {
     });
 
     test("Good UUID string", () {
-      Id id = parseId(Uuid().v1());
+      var id = parseId(Uuid().v1());
       expect(id, isNotNull);
       expect(id.uuid, isNotEmpty);
     });

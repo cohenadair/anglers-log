@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:mobile/res/dimen.dart';
-import 'package:mobile/time_manager.dart';
-import 'package:mobile/widgets/text.dart';
-import 'package:mobile/widgets/widget.dart';
 import 'package:quiver/strings.dart';
+
+import '../res/dimen.dart';
+import '../time_manager.dart';
+import '../widgets/text.dart';
+import '../widgets/widget.dart';
 
 /// A container for separate date and time pickers. Renders a horizontal [Flex]
 /// widget with a 3:2 ratio for [DatePicker] and [TimePicker] respectively.
@@ -78,7 +79,7 @@ class DatePicker extends FormField<DateTime> {
         super(
           initialValue: initialDate ?? TimeManager.of(context).currentDateTime,
           validator: validator,
-          builder: (FormFieldState<DateTime> state) {
+          builder: (state) {
             return _Picker(
               label: label,
               errorText: state.errorText,
@@ -98,7 +99,7 @@ class DatePicker extends FormField<DateTime> {
                     // let the user pick any date.
                     firstDate: DateTime(1900),
                     lastDate: DateTime(3000),
-                  ).then((DateTime dateTime) {
+                  ).then((dateTime) {
                     if (dateTime == null) {
                       return;
                     }
@@ -124,7 +125,7 @@ class TimePicker extends FormField<TimeOfDay> {
         super(
           initialValue: initialTime ?? TimeManager.of(context).currentTime,
           validator: validator,
-          builder: (FormFieldState<TimeOfDay> state) {
+          builder: (state) {
             return _Picker(
               label: label,
               errorText: state.errorText,
@@ -140,7 +141,7 @@ class TimePicker extends FormField<TimeOfDay> {
                   showTimePicker(
                     context: state.context,
                     initialTime: state.value,
-                  ).then((TimeOfDay time) {
+                  ).then((time) {
                     if (time == null) {
                       return;
                     }

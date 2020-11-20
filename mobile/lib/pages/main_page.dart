@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:mobile/i18n/strings.dart';
-import 'package:mobile/pages/add_anything_page.dart';
-import 'package:mobile/pages/catch_list_page.dart';
-import 'package:mobile/pages/map_page.dart';
-import 'package:mobile/pages/more_page.dart';
-import 'package:mobile/pages/stats_page.dart';
-import 'package:mobile/res/gen/custom_icons.dart';
-import 'package:mobile/utils/page_utils.dart';
-import 'package:mobile/widgets/widget.dart';
+
+import '../i18n/strings.dart';
+import '../pages/add_anything_page.dart';
+import '../pages/catch_list_page.dart';
+import '../pages/map_page.dart';
+import '../pages/more_page.dart';
+import '../pages/stats_page.dart';
+import '../res/gen/custom_icons.dart';
+import '../utils/page_utils.dart';
+import '../widgets/widget.dart';
 
 class MainPage extends StatefulWidget {
   @override
@@ -29,7 +30,7 @@ class _MainPageState extends State<MainPage> {
       _BarItemData(
         page: _NavigatorPage(
           navigatorKey: GlobalKey<NavigatorState>(),
-          builder: (BuildContext context) => MapPage(),
+          builder: (context) => MapPage(),
         ),
         icon: Icons.map,
         titleBuilder: (context) => Strings.of(context).mapPageMenuLabel,
@@ -37,7 +38,7 @@ class _MainPageState extends State<MainPage> {
       _BarItemData(
         page: _NavigatorPage(
           navigatorKey: GlobalKey<NavigatorState>(),
-          builder: (BuildContext context) => CatchListPage(),
+          builder: (context) => CatchListPage(),
         ),
         icon: CustomIcons.catches,
         titleBuilder: (context) => Strings.of(context).catchListPageMenuLabel,
@@ -46,13 +47,13 @@ class _MainPageState extends State<MainPage> {
         icon: Icons.add_box_rounded,
         titleBuilder: (context) => Strings.of(context).add,
         onTapOverride: () {
-          fade(context, AddAnythingPage(), false);
+          fade(context, AddAnythingPage(), opaque: false);
         },
       ),
       _BarItemData(
         page: _NavigatorPage(
           navigatorKey: GlobalKey<NavigatorState>(),
-          builder: (BuildContext context) => StatsPage(),
+          builder: (context) => StatsPage(),
         ),
         icon: Icons.show_chart,
         titleBuilder: (context) => Strings.of(context).statsPageMenuTitle,
@@ -60,7 +61,7 @@ class _MainPageState extends State<MainPage> {
       _BarItemData(
         page: _NavigatorPage(
           navigatorKey: GlobalKey<NavigatorState>(),
-          builder: (BuildContext context) => MorePage(),
+          builder: (context) => MorePage(),
         ),
         icon: Icons.more_horiz,
         titleBuilder: (context) => Strings.of(context).morePageTitle,
@@ -79,7 +80,7 @@ class _MainPageState extends State<MainPage> {
         body: IndexedStack(
           index: _currentBarItem,
           children: _navItems
-              .map((_BarItemData data) => data.page ?? Empty())
+              .map((data) => data.page ?? Empty())
               .toList(),
         ),
         bottomNavigationBar: BottomNavigationBar(
@@ -87,7 +88,7 @@ class _MainPageState extends State<MainPage> {
           type: BottomNavigationBarType.fixed,
           items: _navItems
               .map(
-                (_BarItemData data) => BottomNavigationBarItem(
+                (data) => BottomNavigationBarItem(
                   icon: Icon(data.icon),
                   label: data.titleBuilder(context),
                 ),
@@ -149,7 +150,7 @@ class _NavigatorPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Navigator(
       key: navigatorKey,
-      onGenerateRoute: (RouteSettings settings) => MaterialPageRoute(
+      onGenerateRoute: (settings) => MaterialPageRoute(
         settings: settings,
         builder: builder,
       ),

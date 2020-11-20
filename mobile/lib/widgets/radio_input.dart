@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:mobile/res/dimen.dart';
-import 'package:mobile/widgets/text.dart';
-import 'package:mobile/widgets/widget.dart';
 import 'package:quiver/strings.dart';
+
+import '../res/dimen.dart';
+import '../widgets/text.dart';
+import '../widgets/widget.dart';
 
 /// A radio button selection widget. This should be used with three or fewer
 /// options are available. Anything more, or for dynamic lists,
@@ -56,7 +57,7 @@ class _RadioInputState extends State<RadioInput> {
                   child: HeadingLabel(widget.title),
                 ),
         ]..addAll(List<Widget>.generate(
-            widget.optionCount, (index) => _buildOption(index))),
+            widget.optionCount, _buildOption)),
       ),
     );
   }

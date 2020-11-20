@@ -2,10 +2,11 @@ import 'dart:math';
 import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
-import 'package:mobile/image_manager.dart';
-import 'package:mobile/res/gen/custom_icons.dart';
-import 'package:mobile/widgets/widget.dart';
 import 'package:quiver/strings.dart';
+
+import '../image_manager.dart';
+import '../res/gen/custom_icons.dart';
+import '../widgets/widget.dart';
 
 /// A widget that displays a photo on the screen. The photo source is one
 /// already saved to the app's sandbox (i.e. an image associated with an
@@ -77,10 +78,10 @@ class _PhotoState extends State<Photo> {
     return FutureBuilder<ui.Image>(
       future: _imageFuture,
       builder: (context, snapshot) {
-        ui.Image image = snapshot.data;
-        double w = widget.width;
-        double h = widget.height;
-        bool hasSize = w != null && h != null;
+        var image = snapshot.data;
+        var w = widget.width;
+        var h = widget.height;
+        var hasSize = w != null && h != null;
 
         Widget child;
         if (image == null) {
@@ -129,7 +130,7 @@ class _PhotoState extends State<Photo> {
       return null;
     }
 
-    double size = widget.cacheSize;
+    var size = widget.cacheSize;
     if (size == null) {
       size = widget.width == null
           ? null

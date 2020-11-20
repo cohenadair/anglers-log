@@ -2,23 +2,24 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:mobile/entity_manager.dart';
-import 'package:mobile/fishing_spot_manager.dart';
-import 'package:mobile/i18n/strings.dart';
-import 'package:mobile/location_monitor.dart';
-import 'package:mobile/model/gen/anglerslog.pb.dart';
-import 'package:mobile/pages/save_fishing_spot_page.dart';
-import 'package:mobile/res/dimen.dart';
-import 'package:mobile/res/style.dart';
-import 'package:mobile/utils/device_utils.dart';
-import 'package:mobile/utils/map_utils.dart';
-import 'package:mobile/utils/page_utils.dart';
-import 'package:mobile/utils/protobuf_utils.dart';
-import 'package:mobile/utils/string_utils.dart';
-import 'package:mobile/widgets/button.dart';
-import 'package:mobile/widgets/fishing_spot_map.dart';
-import 'package:mobile/widgets/floating_container.dart';
-import 'package:mobile/widgets/widget.dart';
+
+import '../entity_manager.dart';
+import '../fishing_spot_manager.dart';
+import '../i18n/strings.dart';
+import '../location_monitor.dart';
+import '../model/gen/anglerslog.pb.dart';
+import '../pages/save_fishing_spot_page.dart';
+import '../res/dimen.dart';
+import '../res/style.dart';
+import '../utils/device_utils.dart';
+import '../utils/map_utils.dart';
+import '../utils/page_utils.dart';
+import '../utils/protobuf_utils.dart';
+import '../utils/string_utils.dart';
+import '../widgets/button.dart';
+import '../widgets/fishing_spot_map.dart';
+import '../widgets/floating_container.dart';
+import '../widgets/widget.dart';
 
 class FishingSpotPickerPage extends StatefulWidget {
   final void Function(BuildContext, FishingSpot) onPicked;
@@ -48,7 +49,7 @@ class _FishingSpotPickerPageState extends State<FishingSpotPickerPage>
   Animation<Offset> _fishingSpotAnimOffset;
   double _pendingMarkerOffset = _pendingMarkerAnimOffset;
 
-  Map<FishingSpot, Marker> _fishingSpotMarkerMap = {};
+  final Map<FishingSpot, Marker> _fishingSpotMarkerMap = {};
 
   /// The selected fishing spot.
   FishingSpot _currentFishingSpot;
@@ -92,7 +93,8 @@ class _FishingSpotPickerPageState extends State<FishingSpotPickerPage>
 
     _startPosition = LocationMonitor.of(context).currentLocation;
 
-    // TODO #390: Initial 2 map drag attempts do not work when _startPosition is set to _currentFishingSpot
+    // TODO #390: Initial 2 map drag attempts do not work when _startPosition
+    //  is set to _currentFishingSpot
     // Show fishing spot widgets if the picker is shown with a fishing spot
     // selected.
     if (widget.fishingSpot != null) {
@@ -263,7 +265,7 @@ class _FishingSpotPickerPageState extends State<FishingSpotPickerPage>
   }
 
   Widget _buildPendingFishingSpotMarker() {
-    Size screenSize = MediaQuery.of(context).size;
+    var screenSize = MediaQuery.of(context).size;
     return AnimatedPositioned(
       duration: defaultAnimationDuration,
       top: screenSize.height / 2 - _pendingMarkerOffset,
@@ -311,7 +313,7 @@ class _FishingSpotPickerPageState extends State<FishingSpotPickerPage>
   }
 
   void _updateMarkers() {
-    List<FishingSpot> fishingSpots = _fishingSpotManager.list();
+    var fishingSpots = _fishingSpotManager.list();
     if (fishingSpots == null || fishingSpots.isEmpty) {
       fishingSpots = List.from(_fishingSpotMarkerMap.keys);
     }

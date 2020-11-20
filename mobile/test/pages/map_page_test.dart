@@ -13,10 +13,10 @@ import 'package:mockito/mockito.dart';
 import '../mock_app_manager.dart';
 import '../test_utils.dart';
 
-main() {
+void main() {
   MockAppManager appManager;
 
-  List<FishingSpot> fishingSpots = [
+  var fishingSpots = [
     FishingSpot()
       ..id = randomId()
       ..name = "A"
@@ -67,7 +67,7 @@ main() {
   // TODO (2): Camera movement verification when Google Map updates
   // TODO (3): Map tapping when Google Map updates
 
-  testWidgets("Active fishing spot with name", (WidgetTester tester) async {
+  testWidgets("Active fishing spot with name", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => MapPage(),
       appManager: appManager,
@@ -90,7 +90,7 @@ main() {
     // TODO (1): Verify marker color
   });
 
-  testWidgets("Active fishing spot without name", (WidgetTester tester) async {
+  testWidgets("Active fishing spot without name", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => MapPage(),
       appManager: appManager,
@@ -111,7 +111,7 @@ main() {
     // TODO (1): Verify marker color
   });
 
-  testWidgets("Clear button closes bottom sheet", (WidgetTester tester) async {
+  testWidgets("Clear button closes bottom sheet", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => MapPage(),
       appManager: appManager,
@@ -137,7 +137,7 @@ main() {
     expect(find.byType(StyledBottomSheet), findsNothing);
   });
 
-  testWidgets("No active fishing spot", (WidgetTester tester) async {
+  testWidgets("No active fishing spot", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => MapPage(),
       appManager: appManager,
@@ -153,12 +153,12 @@ main() {
   });
 
   testWidgets("Picking new spot from search moves map",
-      (WidgetTester tester) async {
+      (tester) async {
     // TODO (2): Verify camera movement
   });
 
   testWidgets("Tapping map drops pin and moves map",
-      (WidgetTester tester) async {
+      (tester) async {
     await tester.pumpWidget(Testable(
       (_) => MapPage(),
       appManager: appManager,
@@ -178,7 +178,7 @@ main() {
   });
 
   testWidgets("Updating fishing spot resets active spot",
-      (WidgetTester tester) async {
+      (tester) async {
     // Setup a real FishingSpotManager so update callbacks are called.
     var fishingSpotManager = FishingSpotManager(appManager);
     for (var fishingSpot in fishingSpots) {
@@ -207,7 +207,7 @@ main() {
   });
 
   testWidgets("Tapping my location clears active spot",
-      (WidgetTester tester) async {
+      (tester) async {
     await tester.pumpWidget(Testable(
       (_) => MapPage(),
       appManager: appManager,
@@ -229,7 +229,7 @@ main() {
   });
 
   testWidgets("Dismissing (swipe down) bottom sheet clears active spot",
-      (WidgetTester tester) async {
+      (tester) async {
     await tester.pumpWidget(Testable(
       (_) => MapPage(),
       appManager: appManager,
@@ -251,7 +251,7 @@ main() {
     expect(find.byType(StyledBottomSheet), findsNothing);
   });
 
-  testWidgets("Deleting spot clears active spot", (WidgetTester tester) async {
+  testWidgets("Deleting spot clears active spot", (tester) async {
     // Setup a real FishingSpotManager so update callbacks are called.
     var fishingSpotManager = FishingSpotManager(appManager);
     for (var fishingSpot in fishingSpots) {
@@ -280,7 +280,7 @@ main() {
     expect(find.byType(StyledBottomSheet), findsNothing);
   });
 
-  testWidgets("Edit chip opens edit page", (WidgetTester tester) async {
+  testWidgets("Edit chip opens edit page", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => MapPage(),
       appManager: appManager,
@@ -297,7 +297,7 @@ main() {
     expect(find.byType(SaveFishingSpotPage), findsOneWidget);
   });
 
-  testWidgets("Editing bottom sheet", (WidgetTester tester) async {
+  testWidgets("Editing bottom sheet", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => MapPage(),
       appManager: appManager,
@@ -315,7 +315,7 @@ main() {
     expect(find.text("Directions"), findsOneWidget);
   });
 
-  testWidgets("Not editing bottom sheet", (WidgetTester tester) async {
+  testWidgets("Not editing bottom sheet", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => MapPage(),
       appManager: appManager,

@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:mobile/model/gen/anglerslog.pb.dart';
-import 'package:mobile/utils/protobuf_utils.dart';
-import 'package:mobile/widgets/input_controller.dart';
-import 'package:mobile/widgets/input_type.dart';
+
+import '../model/gen/anglerslog.pb.dart';
+import '../utils/protobuf_utils.dart';
+import '../widgets/input_controller.dart';
+import '../widgets/input_type.dart';
 
 /// A simple structure for storing build information for a form's input fields.
 class InputData {

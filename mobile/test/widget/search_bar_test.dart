@@ -6,8 +6,8 @@ import 'package:mobile/widgets/widget.dart';
 
 import '../test_utils.dart';
 
-main() {
-  testWidgets("Custom leading widget", (WidgetTester tester) async {
+void main() {
+  testWidgets("Custom leading widget", (tester) async {
     await tester.pumpWidget(
       Testable(
         (_) => SearchBar(
@@ -20,7 +20,7 @@ main() {
     expect(find.byIcon(Icons.search), findsNothing);
   });
 
-  testWidgets("Default leading widget", (WidgetTester tester) async {
+  testWidgets("Default leading widget", (tester) async {
     await tester.pumpWidget(
       Testable(
         (_) => SearchBar(
@@ -31,7 +31,7 @@ main() {
     expect(find.byIcon(Icons.search), findsOneWidget);
   });
 
-  testWidgets("Custom trailing widget", (WidgetTester tester) async {
+  testWidgets("Custom trailing widget", (tester) async {
     await tester.pumpWidget(
       Testable(
         (_) => SearchBar(
@@ -44,7 +44,7 @@ main() {
     expect(find.byIcon(Icons.close), findsNothing);
   });
 
-  testWidgets("Initial text is shown", (WidgetTester tester) async {
+  testWidgets("Initial text is shown", (tester) async {
     await tester.pumpWidget(
       Testable(
         (_) => SearchBar(
@@ -58,7 +58,7 @@ main() {
 
   group("As button", () {
     testWidgets("Default trailing widget for button",
-        (WidgetTester tester) async {
+        (tester) async {
       await tester.pumpWidget(
         Testable(
           (_) => SearchBar(
@@ -70,8 +70,8 @@ main() {
       expect(find.byType(Empty), findsOneWidget);
     });
 
-    testWidgets("Delegate onTap is invoked", (WidgetTester tester) async {
-      bool tapped = false;
+    testWidgets("Delegate onTap is invoked", (tester) async {
+      var tapped = false;
       await tester.pumpWidget(
         Testable(
           (_) => SearchBar(
@@ -88,7 +88,7 @@ main() {
 
   group("As input", () {
     testWidgets("Default trailing widget for input",
-        (WidgetTester tester) async {
+        (tester) async {
       await tester.pumpWidget(
         Testable(
           (_) => SearchBar(
@@ -101,8 +101,8 @@ main() {
     });
 
     testWidgets("Delegate onTextChanged is invoked",
-        (WidgetTester tester) async {
-      int invokedCount = 0;
+        (tester) async {
+          var invokedCount = 0;
       await tester.pumpWidget(
         Testable(
           (_) => SearchBar(
@@ -116,9 +116,8 @@ main() {
       expect(invokedCount, 1);
     });
 
-    testWidgets("Clear invokes callback when text changes",
-        (WidgetTester tester) async {
-      int invokedCount = 0;
+    testWidgets("Clear invokes callback when text changes", (tester) async {
+      var invokedCount = 0;
       await tester.pumpWidget(
         Testable(
           (_) => SearchBar(
@@ -137,8 +136,8 @@ main() {
     });
 
     testWidgets("Clear does not invoke callback when text doesn't change",
-        (WidgetTester tester) async {
-      int invokedCount = 0;
+        (tester) async {
+      var invokedCount = 0;
       await tester.pumpWidget(
         Testable(
           (_) => SearchBar(

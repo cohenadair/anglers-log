@@ -10,7 +10,7 @@ import 'package:mockito/mockito.dart';
 import '../mock_app_manager.dart';
 import '../test_utils.dart';
 
-main() {
+void main() {
   MockAppManager appManager;
 
   setUp(() {
@@ -42,7 +42,7 @@ main() {
       ..name = "Steelhead");
   });
 
-  testWidgets("Adding disabled", (WidgetTester tester) async {
+  testWidgets("Adding disabled", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => CatchListPage(
         enableAdding: false,
@@ -52,7 +52,7 @@ main() {
     expect(find.byIcon(Icons.add), findsNothing);
   });
 
-  testWidgets("Adding enabled", (WidgetTester tester) async {
+  testWidgets("Adding enabled", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => CatchListPage(
         enableAdding: true,
@@ -63,7 +63,7 @@ main() {
   });
 
   testWidgets("Fishing spot with name used as subtitle",
-      (WidgetTester tester) async {
+      (tester) async {
     when(appManager.mockFishingSpotManager.entity(any)).thenReturn(FishingSpot()
       ..id = randomId()
       ..name = "Baskets"
@@ -78,7 +78,7 @@ main() {
   });
 
   testWidgets("Null fishing spot uses bait as subtitle",
-      (WidgetTester tester) async {
+      (tester) async {
     when(appManager.mockBaitManager.entity(any)).thenReturn(Bait()
       ..id = randomId()
       ..name = "Roe Bag");
@@ -93,7 +93,7 @@ main() {
   });
 
   testWidgets("Fishing spot without name uses bait as subtitle",
-      (WidgetTester tester) async {
+      (tester) async {
     when(appManager.mockFishingSpotManager.entity(any)).thenReturn(FishingSpot()
       ..id = randomId()
       ..lat = 1.234567
@@ -112,7 +112,7 @@ main() {
   });
 
   testWidgets("No subtitle if bait and fishing spot are null",
-      (WidgetTester tester) async {
+      (tester) async {
     await tester.pumpWidget(Testable(
       (_) => CatchListPage(),
       appManager: appManager,

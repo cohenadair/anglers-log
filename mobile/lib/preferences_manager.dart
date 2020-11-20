@@ -1,12 +1,13 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:mobile/app_manager.dart';
-import 'package:mobile/data_manager.dart';
-import 'package:mobile/entity_manager.dart';
-import 'package:mobile/model/gen/anglerslog.pb.dart';
-import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:provider/provider.dart';
+
+import 'app_manager.dart';
+import 'data_manager.dart';
+import 'entity_manager.dart';
+import 'model/gen/anglerslog.pb.dart';
+import 'utils/protobuf_utils.dart';
 
 class PreferencesManager {
   static PreferencesManager of(BuildContext context) =>
@@ -32,8 +33,9 @@ class PreferencesManager {
   DataManager get _dataManager => _appManager.dataManager;
 
   Future<void> initialize() async {
-    (await _dataManager.fetchAll(_tableName)).forEach(
-        (row) => _preferences[row[_keyId]] = jsonDecode(row[_keyValue]));
+    for (var row in (await _dataManager.fetchAll(_tableName))) {
+      _preferences[row[_keyId]] = jsonDecode(row[_keyValue]);
+    }
   }
 
   set baitCustomEntityIds(List<Id> ids) =>
@@ -75,7 +77,7 @@ class PreferencesManager {
   }
 
   List<Id> _idList(String key) {
-    return _stringList(key).map((str) => parseId(str)).toList();
+    return _stringList(key).map(parseId).toList();
   }
 
   void _onDeleteCustomEntity(CustomEntity entity) {

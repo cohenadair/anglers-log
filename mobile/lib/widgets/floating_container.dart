@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:mobile/res/dimen.dart';
-import 'package:mobile/res/style.dart';
-import 'package:mobile/widgets/list_item.dart';
-import 'package:mobile/widgets/text.dart';
-import 'package:mobile/widgets/widget.dart';
 import 'package:quiver/strings.dart';
+
+import '../res/dimen.dart';
+import '../res/style.dart';
+import '../widgets/list_item.dart';
+import '../widgets/text.dart';
+import '../widgets/widget.dart';
 
 /// A floating container aligned to the bottom of its container. This widget
 /// is meant to be used at the bottom of a map, or to appear floating above a

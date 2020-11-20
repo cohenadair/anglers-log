@@ -2,12 +2,13 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:mobile/model/gen/anglerslog.pb.dart';
-import 'package:mobile/res/dimen.dart';
-import 'package:mobile/utils/map_utils.dart';
-import 'package:mobile/utils/protobuf_utils.dart';
-import 'package:mobile/utils/string_utils.dart';
-import 'package:mobile/widgets/floating_container.dart';
+
+import '../model/gen/anglerslog.pb.dart';
+import '../res/dimen.dart';
+import '../utils/map_utils.dart';
+import '../utils/protobuf_utils.dart';
+import '../utils/string_utils.dart';
+import '../widgets/floating_container.dart';
 
 /// A widget for displaying a fishing spot on a small [GoogleMap]. The
 /// [FishingSpot] name and coordinates are rendered in a floating widget
@@ -45,13 +46,13 @@ class _StaticFishingSpotState extends State<StaticFishingSpot> {
     super.didUpdateWidget(oldWidget);
 
     if (widget.fishingSpot != oldWidget.fishingSpot) {
-      moveMap(_mapController, _cameraPosition, false);
+      moveMap(_mapController, _cameraPosition, animate: false);
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    LatLng cameraPosition = _cameraPosition;
+    var cameraPosition = _cameraPosition;
 
     return SafeArea(
       top: false,
@@ -65,7 +66,8 @@ class _StaticFishingSpotState extends State<StaticFishingSpot> {
               borderRadius: BorderRadius.all(
                 Radius.circular(floatingCornerRadius),
               ),
-              // TODO: Use a real static Google Map image if an API is ever made for Flutter.
+              // TODO: Use a real static Google Map image if an API is ever
+              //  made for Flutter.
               // TODO: Move Google logo - https://github.com/flutter/flutter/issues/39610
               child: GoogleMap(
                 onMapCreated: (controller) {
@@ -86,12 +88,12 @@ class _StaticFishingSpotState extends State<StaticFishingSpot> {
                 ),
                 myLocationEnabled: false,
                 myLocationButtonEnabled: false,
-                markers: Set.from([
+                markers: {
                   Marker(
                     markerId: MarkerId(widget.fishingSpot.id.uuid),
                     position: widget.fishingSpot.latLng,
                   ),
-                ]),
+                },
                 rotateGesturesEnabled: false,
                 scrollGesturesEnabled: false,
                 tiltGesturesEnabled: false,

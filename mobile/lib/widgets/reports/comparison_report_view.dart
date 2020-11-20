@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:mobile/comparison_report_manager.dart';
-import 'package:mobile/model/gen/anglerslog.pb.dart';
-import 'package:mobile/model/gen/google/protobuf/timestamp.pb.dart';
-import 'package:mobile/utils/date_time_utils.dart';
-import 'package:mobile/widgets/reports/report_summary.dart';
-import 'package:mobile/widgets/widget.dart';
 import 'package:quiver/strings.dart';
+
+import '../../comparison_report_manager.dart';
+import '../../model/gen/anglerslog.pb.dart';
+import '../../model/gen/google/protobuf/timestamp.pb.dart';
+import '../../utils/date_time_utils.dart';
+import '../../widgets/reports/report_summary.dart';
+import '../../widgets/widget.dart';
 
 class ComparisonReportView extends StatelessWidget {
   final Id reportId;
@@ -14,10 +15,10 @@ class ComparisonReportView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    ComparisonReportManager comparisonReportManager =
+    var comparisonReportManager =
         ComparisonReportManager.of(context);
 
-    ComparisonReport report = comparisonReportManager.entity(reportId);
+    var report = comparisonReportManager.entity(reportId);
     if (report == null) {
       return Empty();
     }
@@ -34,14 +35,14 @@ class ComparisonReportView extends StatelessWidget {
     BuildContext context,
     ComparisonReport report,
   ) {
-    ReportSummaryModel fromModel = _createModel(
+    var fromModel = _createModel(
       context,
       report,
       report.fromDisplayDateRangeId,
       report.fromStartTimestamp,
       report.fromEndTimestamp,
     );
-    ReportSummaryModel toModel = _createModel(
+    var toModel = _createModel(
       context,
       report,
       report.toDisplayDateRangeId,

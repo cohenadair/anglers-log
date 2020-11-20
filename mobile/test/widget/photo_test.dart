@@ -1,4 +1,3 @@
-import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -10,7 +9,7 @@ import 'package:mockito/mockito.dart';
 import '../mock_app_manager.dart';
 import '../test_utils.dart';
 
-main() {
+void main() {
   MockAppManager appManager;
 
   setUp(() {
@@ -19,7 +18,7 @@ main() {
     );
   });
 
-  testWidgets("Invalid image shows placeholder", (WidgetTester tester) async {
+  testWidgets("Invalid image shows placeholder", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => Photo(
         fileName: null,
@@ -34,7 +33,7 @@ main() {
   });
 
   testWidgets("Invalid image no size shows empty placeholder",
-      (WidgetTester tester) async {
+      (tester) async {
     await tester.pumpWidget(Testable(
       (_) => Photo(
         fileName: null,
@@ -47,7 +46,7 @@ main() {
     expect(find.byType(Empty), findsOneWidget);
   });
 
-  testWidgets("Circular placeholder", (WidgetTester tester) async {
+  testWidgets("Circular placeholder", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => Photo(
         fileName: null,
@@ -64,7 +63,7 @@ main() {
     expect(find.byType(ClipOval), findsOneWidget);
   });
 
-  testWidgets("Rectangular placeholder", (WidgetTester tester) async {
+  testWidgets("Rectangular placeholder", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => Photo(
         fileName: null,
@@ -80,8 +79,8 @@ main() {
     expect(find.byType(ClipOval), findsNothing);
   });
 
-  testWidgets("No cache size uses default", (WidgetTester tester) async {
-    ui.Image image = await loadImage(tester, "test/resources/flutter_logo.png");
+  testWidgets("No cache size uses default", (tester) async {
+    var image = await loadImage(tester, "test/resources/flutter_logo.png");
     when(appManager.mockImageManager.dartImage(any, any, any))
         .thenAnswer((_) => Future.value(image));
 
@@ -96,7 +95,7 @@ main() {
     expect(find.byType(RawImage), findsOneWidget);
   });
 
-  testWidgets("Given cache size is honored", (WidgetTester tester) async {
+  testWidgets("Given cache size is honored", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => Photo(
         fileName: "flutter_logo.png",
@@ -115,7 +114,7 @@ main() {
   });
 
   testWidgets("If no cache size, widget size is used",
-      (WidgetTester tester) async {
+      (tester) async {
     await tester.pumpWidget(Testable(
       (_) => Photo(
         fileName: "flutter_logo.png",

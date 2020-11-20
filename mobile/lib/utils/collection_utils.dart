@@ -1,5 +1,3 @@
-import 'dart:collection';
-
 /// Returns a sorted version of the given map. If [comparator] is null, the
 /// result will be sorted by value, largest to smallest.
 Map<T, int> sortedMap<T>(Map<T, int> map,
@@ -7,8 +5,10 @@ Map<T, int> sortedMap<T>(Map<T, int> map,
   comparator = comparator ?? (lhs, rhs) => map[rhs].compareTo(map[lhs]);
   var sortedKeys = map.keys.toList()..sort(comparator);
 
-  var sortedMap = LinkedHashMap<T, int>();
-  sortedKeys.forEach((key) => sortedMap[key] = map[key]);
+  var sortedMap = <T, int>{};
+  for (var key in sortedKeys) {
+    sortedMap[key] = map[key];
+  }
 
   return sortedMap;
 }
@@ -20,7 +20,7 @@ Map<T, int> firstElements<T>(Map<T, int> map, {int numberOfElements}) {
     return map;
   }
 
-  Map<T, int> result = {};
+  var result = <T, int>{};
   map.keys
       .toList()
       .sublist(0, numberOfElements)

@@ -1,28 +1,29 @@
 import 'package:flutter/material.dart';
-import 'package:mobile/bait_category_manager.dart';
-import 'package:mobile/bait_manager.dart';
-import 'package:mobile/catch_manager.dart';
-import 'package:mobile/comparison_report_manager.dart';
-import 'package:mobile/custom_entity_manager.dart';
-import 'package:mobile/summary_report_manager.dart';
-import 'package:mobile/data_manager.dart';
-import 'package:mobile/fishing_spot_manager.dart';
-import 'package:mobile/image_manager.dart';
-import 'package:mobile/location_monitor.dart';
-import 'package:mobile/preferences_manager.dart';
-import 'package:mobile/properties_manager.dart';
-import 'package:mobile/species_manager.dart';
-import 'package:mobile/time_manager.dart';
-import 'package:mobile/trip_manager.dart';
-import 'package:mobile/wrappers/file_picker_wrapper.dart';
-import 'package:mobile/wrappers/image_compress_wrapper.dart';
-import 'package:mobile/wrappers/image_picker_wrapper.dart';
-import 'package:mobile/wrappers/io_wrapper.dart';
-import 'package:mobile/wrappers/mail_sender_wrapper.dart';
-import 'package:mobile/wrappers/package_info_wrapper.dart';
-import 'package:mobile/wrappers/path_provider_wrapper.dart';
-import 'package:mobile/wrappers/photo_manager_wrapper.dart';
 import 'package:provider/provider.dart';
+
+import 'bait_category_manager.dart';
+import 'bait_manager.dart';
+import 'catch_manager.dart';
+import 'comparison_report_manager.dart';
+import 'custom_entity_manager.dart';
+import 'data_manager.dart';
+import 'fishing_spot_manager.dart';
+import 'image_manager.dart';
+import 'location_monitor.dart';
+import 'preferences_manager.dart';
+import 'properties_manager.dart';
+import 'species_manager.dart';
+import 'summary_report_manager.dart';
+import 'time_manager.dart';
+import 'trip_manager.dart';
+import 'wrappers/file_picker_wrapper.dart';
+import 'wrappers/image_compress_wrapper.dart';
+import 'wrappers/image_picker_wrapper.dart';
+import 'wrappers/io_wrapper.dart';
+import 'wrappers/mail_sender_wrapper.dart';
+import 'wrappers/package_info_wrapper.dart';
+import 'wrappers/path_provider_wrapper.dart';
+import 'wrappers/photo_manager_wrapper.dart';
 
 class AppManager {
   static AppManager of(BuildContext context) =>

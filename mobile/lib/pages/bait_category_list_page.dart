@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:mobile/bait_category_manager.dart';
-import 'package:mobile/i18n/strings.dart';
-import 'package:mobile/model/gen/anglerslog.pb.dart';
-import 'package:mobile/pages/manageable_list_page.dart';
-import 'package:mobile/pages/save_bait_category_page.dart';
-import 'package:mobile/utils/string_utils.dart';
-import 'package:mobile/widgets/text.dart';
+
+import '../bait_category_manager.dart';
+import '../i18n/strings.dart';
+import '../model/gen/anglerslog.pb.dart';
+import '../pages/manageable_list_page.dart';
+import '../pages/save_bait_category_page.dart';
+import '../utils/string_utils.dart';
+import '../widgets/text.dart';
 
 class BaitCategoryListPage extends StatelessWidget {
   final bool Function(BuildContext, BaitCategory) onPicked;
@@ -24,7 +25,7 @@ class BaitCategoryListPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    BaitCategoryManager baitCategoryManager = BaitCategoryManager.of(context);
+    var baitCategoryManager = BaitCategoryManager.of(context);
 
     return ManageableListPage<BaitCategory>(
       titleBuilder: _picking

@@ -1,21 +1,22 @@
 import 'package:flutter/material.dart';
-import 'package:mobile/bait_category_manager.dart';
-import 'package:mobile/bait_manager.dart';
-import 'package:mobile/catch_manager.dart';
-import 'package:mobile/entity_manager.dart';
-import 'package:mobile/fishing_spot_manager.dart';
-import 'package:mobile/model/gen/anglerslog.pb.dart';
-import 'package:mobile/pages/bait_page.dart';
-import 'package:mobile/pages/entity_page.dart';
-import 'package:mobile/pages/save_catch_page.dart';
-import 'package:mobile/res/dimen.dart';
-import 'package:mobile/species_manager.dart';
-import 'package:mobile/utils/date_time_utils.dart';
-import 'package:mobile/utils/page_utils.dart';
-import 'package:mobile/widgets/list_item.dart';
-import 'package:mobile/widgets/static_fishing_spot.dart';
-import 'package:mobile/widgets/text.dart';
-import 'package:mobile/widgets/widget.dart';
+
+import '../bait_category_manager.dart';
+import '../bait_manager.dart';
+import '../catch_manager.dart';
+import '../entity_manager.dart';
+import '../fishing_spot_manager.dart';
+import '../model/gen/anglerslog.pb.dart';
+import '../pages/bait_page.dart';
+import '../pages/entity_page.dart';
+import '../pages/save_catch_page.dart';
+import '../res/dimen.dart';
+import '../species_manager.dart';
+import '../utils/date_time_utils.dart';
+import '../utils/page_utils.dart';
+import '../widgets/list_item.dart';
+import '../widgets/static_fishing_spot.dart';
+import '../widgets/text.dart';
+import '../widgets/widget.dart';
 
 class CatchPage extends StatefulWidget {
   final Id catchId;
@@ -38,7 +39,7 @@ class _CatchPageState extends State<CatchPage> {
 
   // TODO: Remove this when Google Maps performance issue is fixed.
   // https://github.com/flutter/flutter/issues/28493
-  Future<bool> _fishingSpotFuture =
+  final Future<bool> _fishingSpotFuture =
       Future.delayed(Duration(milliseconds: 150), () => true);
 
   @override
@@ -95,14 +96,13 @@ class _CatchPageState extends State<CatchPage> {
   }
 
   Widget _buildBait() {
-    Bait bait = _baitManager.entity(_catch.baitId);
+    var bait = _baitManager.entity(_catch.baitId);
     if (bait == null) {
       return Empty();
     }
 
     Widget subtitle;
-    BaitCategory baitCategory =
-        _baitCategoryManager.entity(bait.baitCategoryId);
+    var baitCategory = _baitCategoryManager.entity(bait.baitCategoryId);
     if (baitCategory != null) {
       subtitle = SubtitleLabel(baitCategory.name);
     }
@@ -122,7 +122,7 @@ class _CatchPageState extends State<CatchPage> {
   }
 
   Widget _buildFishingSpot() {
-    FishingSpot fishingSpot = _fishingSpotManager.entity(_catch.fishingSpotId);
+    var fishingSpot = _fishingSpotManager.entity(_catch.fishingSpotId);
     if (fishingSpot == null) {
       return Empty();
     }

@@ -1,3 +1,5 @@
+// ignore_for_file: lines_longer_than_80_chars
+
 Map<String, Map<String, String>> get englishStrings => {
       "US": {},
       "CA": {},

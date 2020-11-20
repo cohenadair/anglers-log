@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:mobile/app_manager.dart';
-import 'package:mobile/log.dart';
 import 'package:provider/provider.dart';
+
+import 'app_manager.dart';
+import 'log.dart';
 
 class LocationMonitor {
   static LocationMonitor of(BuildContext context) =>
@@ -18,12 +19,12 @@ class LocationMonitor {
 
   Future<void> initialize() async {
     _lastKnownPosition = await _geolocator.getLastKnownPosition();
-    Stream<Position> stream = _geolocator.getPositionStream(
+    var stream = _geolocator.getPositionStream(
       LocationOptions(
         distanceFilter: distanceFilterMeters,
       ),
     );
-    stream.listen((Position position) {
+    stream.listen((position) {
       if (position != null) {
         _lastKnownPosition = position;
         _log.d("Received location update $currentLocation");

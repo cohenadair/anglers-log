@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:mobile/fishing_spot_manager.dart';
-import 'package:mobile/model/gen/anglerslog.pb.dart';
-import 'package:mobile/res/dimen.dart';
-import 'package:mobile/utils/string_utils.dart';
-import 'package:mobile/widgets/fishing_spot_map.dart';
-import 'package:mobile/widgets/floating_container.dart';
+
+import '../fishing_spot_manager.dart';
+import '../model/gen/anglerslog.pb.dart';
+import '../res/dimen.dart';
+import '../utils/string_utils.dart';
+import '../widgets/fishing_spot_map.dart';
+import '../widgets/floating_container.dart';
 
 class FishingSpotPage extends StatefulWidget {
   final Id fishingSpotId;
@@ -34,11 +35,11 @@ class _FishingSpotPageState extends State<FishingSpotPage> {
 
   @override
   Widget build(BuildContext context) {
-    FishingSpot fishingSpot =
+    var fishingSpot =
         FishingSpotManager.of(context).entity(widget.fishingSpotId);
     assert(fishingSpot != null);
 
-    LatLng latLng = LatLng(fishingSpot.lat, fishingSpot.lng);
+    var latLng = LatLng(fishingSpot.lat, fishingSpot.lng);
 
     return Scaffold(
       extendBodyBehindAppBar: true,

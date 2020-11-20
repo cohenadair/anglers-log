@@ -7,7 +7,7 @@ import 'package:mockito/mockito.dart';
 import '../mock_app_manager.dart';
 import '../test_utils.dart';
 
-main() {
+void main() {
   MockAppManager appManager;
 
   setUp(() {
@@ -44,7 +44,7 @@ main() {
     when(appManager.mockTimeManager.currentDateTime).thenReturn(DateTime.now());
   });
 
-  testWidgets("Tapping nav item opens page", (WidgetTester tester) async {
+  testWidgets("Tapping nav item opens page", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => MainPage(),
       appManager: appManager,
@@ -74,7 +74,7 @@ main() {
   });
 
   testWidgets("Navigation state is persisted when switching tabs",
-      (WidgetTester tester) async {
+      (tester) async {
     await tester.pumpWidget(Testable(
       (_) => MainPage(),
       appManager: appManager,
@@ -92,7 +92,7 @@ main() {
   });
 
   testWidgets("Tapping current nav item again pops all pages on current stack",
-      (WidgetTester tester) async {
+      (tester) async {
     await tester.pumpWidget(Testable(
       (_) => MainPage(),
       appManager: appManager,

@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:mobile/pages/form_page.dart';
-import 'package:mobile/utils/protobuf_utils.dart';
-import 'package:mobile/utils/string_utils.dart';
-import 'package:mobile/utils/validator.dart';
-import 'package:mobile/widgets/input_controller.dart';
-import 'package:mobile/widgets/text_input.dart';
 import 'package:quiver/strings.dart';
+
+import '../pages/form_page.dart';
+import '../utils/protobuf_utils.dart';
+import '../utils/string_utils.dart';
+import '../utils/validator.dart';
+import '../widgets/input_controller.dart';
+import '../widgets/text_input.dart';
 
 /// A generic page for getting a "Name" input from the user.
 class SaveNamePage extends StatefulWidget {

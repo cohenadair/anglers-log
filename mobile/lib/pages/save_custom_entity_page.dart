@@ -1,19 +1,19 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:mobile/custom_entity_manager.dart';
-import 'package:mobile/i18n/strings.dart';
-import 'package:mobile/log.dart';
-import 'package:mobile/model/gen/anglerslog.pb.dart';
-import 'package:mobile/utils/protobuf_utils.dart';
-import 'package:mobile/utils/validator.dart';
-import 'package:mobile/widgets/input_controller.dart';
-import 'package:mobile/widgets/input_type.dart';
-import 'package:mobile/widgets/radio_input.dart';
-import 'package:mobile/widgets/text_input.dart';
-import 'package:mobile/widgets/widget.dart';
 import 'package:quiver/strings.dart';
 
+import '../custom_entity_manager.dart';
+import '../i18n/strings.dart';
+import '../log.dart';
+import '../model/gen/anglerslog.pb.dart';
+import '../utils/protobuf_utils.dart';
+import '../utils/validator.dart';
+import '../widgets/input_controller.dart';
+import '../widgets/input_type.dart';
+import '../widgets/radio_input.dart';
+import '../widgets/text_input.dart';
+import '../widgets/widget.dart';
 import 'form_page.dart';
 
 /// A input page for users to create custom fields to be used elsewhere in the

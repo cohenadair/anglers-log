@@ -10,7 +10,7 @@ import 'package:mockito/mockito.dart';
 import '../mock_app_manager.dart';
 import '../test_utils.dart';
 
-main() {
+void main() {
   MockAppManager appManager;
 
   var baitCategories = [
@@ -56,7 +56,7 @@ main() {
     when(appManager.mockBaitManager.filteredList(any)).thenReturn(baits);
   });
 
-  testWidgets("Picker title", (WidgetTester tester) async {
+  testWidgets("Picker title", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => BaitListPage.picker(
         onPicked: (_, __) => false,
@@ -66,7 +66,7 @@ main() {
     expect(find.text("Select Bait"), findsOneWidget);
   });
 
-  testWidgets("Normal title", (WidgetTester tester) async {
+  testWidgets("Normal title", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => BaitListPage(),
       appManager: appManager,
@@ -74,7 +74,7 @@ main() {
     expect(find.text("Baits (5)"), findsOneWidget);
   });
 
-  testWidgets("Normal title when filtered", (WidgetTester tester) async {
+  testWidgets("Normal title when filtered", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => BaitListPage(),
       appManager: appManager,
@@ -92,7 +92,7 @@ main() {
     expect(find.text("Baits (2)"), findsOneWidget);
   });
 
-  testWidgets("onPicked callback invoked", (WidgetTester tester) async {
+  testWidgets("onPicked callback invoked", (tester) async {
     Set<Bait> pickedBaits;
     await tester.pumpWidget(Testable(
       (_) => BaitListPage.picker(
@@ -110,19 +110,19 @@ main() {
     expect(pickedBaits.first, baits[0]);
   });
 
-  testWidgets("Different item types are rendered", (WidgetTester tester) async {
+  testWidgets("Different item types are rendered", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => BaitListPage(),
       appManager: appManager,
     ));
 
-    List<Widget> baitCategoryHeadings =
+    var baitCategoryHeadings =
         tester.widgetList(find.byType(HeadingLabel)).toList();
     expect(baitCategoryHeadings.length, 2);
     expect((baitCategoryHeadings[0] as HeadingLabel).text, "Artificial");
     expect((baitCategoryHeadings[1] as HeadingLabel).text, "Live");
 
-    List<Widget> baitLabels =
+    var baitLabels =
         tester.widgetList(find.byType(PrimaryLabel)).toList();
     expect(baitLabels.length, 5);
     expect((baitLabels[0] as PrimaryLabel).text, "Countdown Rapala 7");

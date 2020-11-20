@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:mobile/widgets/photo.dart';
+
+import '../widgets/photo.dart';
 
 /// A page that displays a collection of images in a full screen pager.
 class PhotoGalleryPage extends StatefulWidget {

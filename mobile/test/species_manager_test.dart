@@ -30,9 +30,9 @@ void main() {
   });
 
   test("Number of catches", () {
-    Id speciesId0 = randomId();
-    Id speciesId3 = randomId();
-    Id speciesId4 = randomId();
+    var speciesId0 = randomId();
+    var speciesId3 = randomId();
+    var speciesId4 = randomId();
 
     when(catchManager.list()).thenReturn([
       Catch()

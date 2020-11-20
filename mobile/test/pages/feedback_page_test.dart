@@ -11,7 +11,7 @@ import 'package:package_info/package_info.dart';
 import '../mock_app_manager.dart';
 import '../test_utils.dart';
 
-main() {
+void main() {
   MockAppManager appManager;
 
   setUp(() {
@@ -32,13 +32,13 @@ main() {
         .thenReturn("%s%s%s%s%s%s%s%s");
   });
 
-  testWidgets("Message required for non-errors", (WidgetTester tester) async {
+  testWidgets("Message required for non-errors", (tester) async {
     await tester.pumpWidget(Testable((_) => FeedbackPage()));
     expect(findFirstWithText<ActionButton>(tester, "SEND").onPressed, isNull);
     expect(find.text("Required"), findsOneWidget);
   });
 
-  testWidgets("Custom title", (WidgetTester tester) async {
+  testWidgets("Custom title", (tester) async {
     await tester.pumpWidget(
       Testable(
         (_) => FeedbackPage(
@@ -49,12 +49,12 @@ main() {
     expect(find.text("Title"), findsOneWidget);
   });
 
-  testWidgets("Default title", (WidgetTester tester) async {
+  testWidgets("Default title", (tester) async {
     await tester.pumpWidget(Testable((_) => FeedbackPage()));
     expect(find.text("Send Feedback"), findsOneWidget);
   });
 
-  testWidgets("Warning message shown", (WidgetTester tester) async {
+  testWidgets("Warning message shown", (tester) async {
     await tester.pumpWidget(
       Testable(
         (_) => FeedbackPage(
@@ -66,7 +66,7 @@ main() {
     expect(find.text("This is a warning."), findsOneWidget);
   });
 
-  testWidgets("Warning message not shown", (WidgetTester tester) async {
+  testWidgets("Warning message not shown", (tester) async {
     await tester.pumpWidget(
       Testable(
         (_) => FeedbackPage(
@@ -78,7 +78,7 @@ main() {
   });
 
   testWidgets("Send button state updates when email changes",
-      (WidgetTester tester) async {
+      (tester) async {
     await tester.pumpWidget(Testable((_) => FeedbackPage()));
     expect(findFirstWithText<ActionButton>(tester, "SEND").onPressed, isNull);
 
@@ -100,7 +100,7 @@ main() {
   });
 
   testWidgets("For errors, type RadioInput is hidden",
-      (WidgetTester tester) async {
+      (tester) async {
     await tester.pumpWidget(
       Testable(
         (_) => FeedbackPage(
@@ -112,12 +112,12 @@ main() {
   });
 
   testWidgets("For non-errors, type RadioInput is shown",
-      (WidgetTester tester) async {
+      (tester) async {
     await tester.pumpWidget(Testable((_) => FeedbackPage()));
     expect(find.byType(RadioInput), findsOneWidget);
   });
 
-  testWidgets("Selecting type updates state", (WidgetTester tester) async {
+  testWidgets("Selecting type updates state", (tester) async {
     await tester.pumpWidget(Testable((_) => FeedbackPage()));
     expect(findSiblingOfText<Icon>(tester, InkWell, "Bug").icon,
         Icons.radio_button_checked);
@@ -137,7 +137,7 @@ main() {
         Icons.radio_button_checked);
   });
 
-  testWidgets("Snackbar shows for no connection", (WidgetTester tester) async {
+  testWidgets("Snackbar shows for no connection", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => FeedbackPage(
         error: "Error",
@@ -149,13 +149,16 @@ main() {
 
     await tapAndSettle(tester, find.text("SEND"));
     expect(
-        find.widgetWithText(SnackBar,
-            "No internet connection. Please check your connection and try again."),
-        findsOneWidget);
+      find.widgetWithText(
+        SnackBar,
+        "No internet connection. Please check your connection and try again.",
+      ),
+      findsOneWidget,
+    );
   });
 
   testWidgets("Error Snackbar shows for sending error",
-      (WidgetTester tester) async {
+      (tester) async {
     var navObserver = MockNavigatorObserver();
     await tester.pumpWidget(Testable(
       (_) => FeedbackPage(
@@ -175,7 +178,7 @@ main() {
     verifyNever(navObserver.didPop(any, any));
   });
 
-  testWidgets("Successful send closes page", (WidgetTester tester) async {
+  testWidgets("Successful send closes page", (tester) async {
     var navObserver = MockNavigatorObserver();
     await tester.pumpWidget(Testable(
       (_) => FeedbackPage(
@@ -184,7 +187,7 @@ main() {
       appManager: appManager,
       navigatorObserver: navObserver,
     ));
-    DateTime now = DateTime.now();
+    var now = DateTime.now();
     when(appManager.mockMailSenderWrapper.send(any, any))
         .thenAnswer((_) => Future.value(SendReport(Message(), now, now, now)));
 

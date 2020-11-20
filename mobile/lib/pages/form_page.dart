@@ -1,17 +1,18 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:mobile/custom_entity_manager.dart';
-import 'package:mobile/entity_manager.dart';
-import 'package:mobile/i18n/strings.dart';
-import 'package:mobile/model/gen/anglerslog.pb.dart';
-import 'package:mobile/pages/picker_page.dart';
-import 'package:mobile/pages/save_custom_entity_page.dart';
-import 'package:mobile/res/dimen.dart';
-import 'package:mobile/utils/page_utils.dart';
-import 'package:mobile/widgets/button.dart';
-import 'package:mobile/widgets/widget.dart';
 import 'package:quiver/core.dart';
+
+import '../custom_entity_manager.dart';
+import '../entity_manager.dart';
+import '../i18n/strings.dart';
+import '../model/gen/anglerslog.pb.dart';
+import '../pages/picker_page.dart';
+import '../pages/save_custom_entity_page.dart';
+import '../res/dimen.dart';
+import '../utils/page_utils.dart';
+import '../widgets/button.dart';
+import '../widgets/widget.dart';
 
 /// A function responsible for building all input widgets.
 ///
@@ -29,6 +30,7 @@ enum _OverflowOption {
 
 /// A small data structure that stores information on fields that can be added
 /// to the form by a user.
+@immutable
 class FormPageFieldOption {
   /// The unique ID of the field. Used for identification purposes.
   final Id id;
@@ -50,7 +52,7 @@ class FormPageFieldOption {
   });
 
   @override
-  bool operator ==(other) =>
+  bool operator ==(Object other) =>
       other is FormPageFieldOption &&
       id == other.id &&
       userFacingName == other.userFacingName &&
@@ -257,8 +259,8 @@ class _SelectionPageState extends State<_SelectionPage> {
     return EntityListenerBuilder(
       managers: [customEntityManager],
       builder: (context) {
-        List<PickerPageItem> items = pickerItems;
-        Set<FormPageFieldOption> used = items
+        var items = pickerItems;
+        var used = items
             .where(
                 (item) => item.value is FormPageFieldOption && item.value.used)
             .map((item) => item.value as FormPageFieldOption)
@@ -283,12 +285,12 @@ class _SelectionPageState extends State<_SelectionPage> {
   }
 
   List<PickerPageItem> get pickerItems {
-    List<PickerPageItem> result = [];
+    var result = <PickerPageItem>[];
 
     // Split custom fields and normal fields that are already included in the
     // form.
-    List<FormPageFieldOption> customFields = [];
-    List<FormPageFieldOption> normalFields = [];
+    var customFields = <FormPageFieldOption>[];
+    var normalFields = <FormPageFieldOption>[];
     for (var option in widget.options) {
       if (customEntityManager.entity(option.id) == null) {
         normalFields.add(option);
@@ -313,7 +315,7 @@ class _SelectionPageState extends State<_SelectionPage> {
 
     // Add customs fields that aren't already part of the form.
     for (var entity in customEntityManager.list()) {
-      FormPageFieldOption option = customFields.firstWhere(
+      var option = customFields.firstWhere(
         (field) => field.id == entity.id,
         orElse: () => null,
       );

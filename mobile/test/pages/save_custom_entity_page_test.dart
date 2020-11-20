@@ -9,7 +9,7 @@ import 'package:mockito/mockito.dart';
 import '../mock_app_manager.dart';
 import '../test_utils.dart';
 
-main() {
+void main() {
   MockAppManager appManager;
 
   setUp(() {
@@ -20,7 +20,7 @@ main() {
     when(appManager.mockCustomEntityManager.nameExists(any)).thenReturn(false);
   });
 
-  testWidgets("New title", (WidgetTester tester) async {
+  testWidgets("New title", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => SaveCustomEntityPage(),
       appManager: appManager,
@@ -28,7 +28,7 @@ main() {
     expect(find.text("New Field"), findsOneWidget);
   });
 
-  testWidgets("Edit title", (WidgetTester tester) async {
+  testWidgets("Edit title", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => SaveCustomEntityPage.edit(CustomEntity()..id = randomId()),
       appManager: appManager,
@@ -37,7 +37,7 @@ main() {
   });
 
   testWidgets("Save button state updates when name changes",
-      (WidgetTester tester) async {
+      (tester) async {
     await tester.pumpWidget(Testable(
       (_) => SaveCustomEntityPage(),
       appManager: appManager,
@@ -50,7 +50,7 @@ main() {
         findFirstWithText<ActionButton>(tester, "SAVE").onPressed, isNotNull);
   });
 
-  testWidgets("All type options are rendered", (WidgetTester tester) async {
+  testWidgets("All type options are rendered", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => SaveCustomEntityPage(),
       appManager: appManager,
@@ -61,8 +61,8 @@ main() {
     expect(find.text("Text"), findsOneWidget);
   });
 
-  testWidgets("Editing", (WidgetTester tester) async {
-    CustomEntity entity = CustomEntity()
+  testWidgets("Editing", (tester) async {
+    var entity = CustomEntity()
       ..id = randomId()
       ..name = "Water Depth"
       ..description = "How deep the water is."
@@ -89,7 +89,7 @@ main() {
     await tapAndSettle(tester, find.text("Checkbox"));
     await tapAndSettle(tester, find.text("SAVE"));
 
-    VerificationResult result =
+    var result =
         verify(appManager.mockCustomEntityManager.addOrUpdate(captureAny));
     result.called(1);
 
@@ -100,7 +100,7 @@ main() {
     expect(newEntity.description, "A description.");
   });
 
-  testWidgets("New with minimum properties", (WidgetTester tester) async {
+  testWidgets("New with minimum properties", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => SaveCustomEntityPage(),
       appManager: appManager,
@@ -110,7 +110,7 @@ main() {
         tester, find.widgetWithText(TextField, "Name"), "A Name");
     await tapAndSettle(tester, find.text("SAVE"));
 
-    VerificationResult result =
+    var result =
         verify(appManager.mockCustomEntityManager.addOrUpdate(captureAny));
     result.called(1);
 

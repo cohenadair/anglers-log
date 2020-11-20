@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:mobile/i18n/strings.dart';
-import 'package:mobile/model/gen/anglerslog.pb.dart';
-import 'package:mobile/pages/manageable_list_page.dart';
-import 'package:mobile/pages/save_species_page.dart';
-import 'package:mobile/species_manager.dart';
-import 'package:mobile/utils/dialog_utils.dart';
-import 'package:mobile/utils/string_utils.dart';
-import 'package:mobile/widgets/text.dart';
+
+import '../i18n/strings.dart';
+import '../model/gen/anglerslog.pb.dart';
+import '../pages/manageable_list_page.dart';
+import '../pages/save_species_page.dart';
+import '../species_manager.dart';
+import '../utils/dialog_utils.dart';
+import '../utils/string_utils.dart';
+import '../widgets/text.dart';
 
 class SpeciesListPage extends StatelessWidget {
   final bool Function(BuildContext, Set<Species>) onPicked;
@@ -28,7 +29,7 @@ class SpeciesListPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    SpeciesManager speciesManager = SpeciesManager.of(context);
+    var speciesManager = SpeciesManager.of(context);
 
     return ManageableListPage<Species>(
       titleBuilder: _picking
@@ -45,7 +46,7 @@ class SpeciesListPage extends StatelessWidget {
       ),
       pickerSettings: _picking
           ? ManageableListPagePickerSettings<Species>(
-              onPicked: (context, species) => onPicked(context, species),
+              onPicked: onPicked,
               multi: multiPicker,
               initialValues: initialValues,
             )
@@ -57,7 +58,7 @@ class SpeciesListPage extends StatelessWidget {
             Strings.of(context).speciesListPageConfirmDelete, [species.name])),
         deleteItem: (context, species) => speciesManager.delete(species.id),
         onTapDeleteButton: (species) {
-          int numOfCatches = speciesManager.numberOfCatches(species.id);
+          var numOfCatches = speciesManager.numberOfCatches(species.id);
           if (numOfCatches <= 0) {
             return false;
           }

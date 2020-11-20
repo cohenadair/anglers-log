@@ -7,10 +7,10 @@ import 'package:mobile/widgets/widget.dart';
 
 import '../test_utils.dart';
 
-main() {
+void main() {
   group("ExpansionListItem", () {
-    testWidgets("Expanded on tap", (WidgetTester tester) async {
-      bool changed = false;
+    testWidgets("Expanded on tap", (tester) async {
+      var changed = false;
       await tester.pumpWidget(
         Testable(
           (_) => ExpansionListItem(
@@ -41,7 +41,7 @@ main() {
 
   group("ManageableListItem", () {
     testWidgets("Editing shows edit/delete buttons",
-        (WidgetTester tester) async {
+        (tester) async {
       await tester.pumpWidget(
         Testable(
           (_) => ManageableListItem(
@@ -56,7 +56,7 @@ main() {
     });
 
     testWidgets("Custom text widget doesn't use default style",
-        (WidgetTester tester) async {
+        (tester) async {
       await tester.pumpWidget(
         Testable(
           (_) => ManageableListItem(
@@ -69,7 +69,7 @@ main() {
     });
 
     testWidgets("Tapping delete button shows dialog",
-        (WidgetTester tester) async {
+        (tester) async {
       await tester.pumpWidget(
         Testable(
           (_) => ManageableListItem(
@@ -86,8 +86,8 @@ main() {
       expect(find.text("A delete message."), findsOneWidget);
     });
 
-    testWidgets("onConfirmDelete invoked", (WidgetTester tester) async {
-      bool confirmed = false;
+    testWidgets("onConfirmDelete invoked", (tester) async {
+      var confirmed = false;
       await tester.pumpWidget(
         Testable(
           (_) => ManageableListItem(
@@ -107,8 +107,8 @@ main() {
       expect(confirmed, isTrue);
     });
 
-    testWidgets("Custom onTapDeleteButton", (WidgetTester tester) async {
-      bool tapped = false;
+    testWidgets("Custom onTapDeleteButton", (tester) async {
+      var tapped = false;
       await tester.pumpWidget(
         Testable(
           (_) => ManageableListItem(
@@ -124,7 +124,7 @@ main() {
     });
 
     testWidgets("Custom trailing widget doesn't show while editing",
-        (WidgetTester tester) async {
+        (tester) async {
       await tester.pumpWidget(
         Testable(
           (_) => ManageableListItem(
@@ -141,7 +141,7 @@ main() {
     });
 
     testWidgets("Custom trailing widget shows when not editing",
-        (WidgetTester tester) async {
+        (tester) async {
       await tester.pumpWidget(
         Testable(
           (_) => ManageableListItem(
@@ -157,7 +157,7 @@ main() {
     });
 
     testWidgets("Extra padding after delete button when editing",
-        (WidgetTester tester) async {
+        (tester) async {
       await tester.pumpWidget(
         Testable(
           (_) => ManageableListItem(

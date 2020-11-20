@@ -1,17 +1,16 @@
-import 'dart:io';
-
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:mobile/app_manager.dart';
-import 'package:mobile/database/legacy_importer.dart';
-import 'package:mobile/i18n/strings.dart';
-import 'package:mobile/pages/feedback_page.dart';
-import 'package:mobile/res/dimen.dart';
-import 'package:mobile/res/style.dart';
-import 'package:mobile/utils/page_utils.dart';
-import 'package:mobile/widgets/button.dart';
-import 'package:mobile/widgets/widget.dart';
-import 'package:mobile/wrappers/file_picker_wrapper.dart';
+
+import '../app_manager.dart';
+import '../database/legacy_importer.dart';
+import '../i18n/strings.dart';
+import '../pages/feedback_page.dart';
+import '../res/dimen.dart';
+import '../res/style.dart';
+import '../utils/page_utils.dart';
+import '../widgets/button.dart';
+import '../widgets/widget.dart';
+import '../wrappers/file_picker_wrapper.dart';
 
 class ImportPage extends StatefulWidget {
   @override
@@ -79,7 +78,7 @@ class _ImportPageState extends State<ImportPage> {
   }
 
   Widget _buildFeedbackWidgets() {
-    List<Widget> children = [];
+    var children = <Widget>[];
 
     switch (_importState) {
       case _State.none:
@@ -139,7 +138,7 @@ class _ImportPageState extends State<ImportPage> {
   }
 
   void _chooseFile() async {
-    File zipFile = await _filePickerWrapper.getFile(
+    var zipFile = await _filePickerWrapper.getFile(
       type: FileType.CUSTOM,
       fileExtension: "zip",
     );

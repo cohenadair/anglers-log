@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:mobile/i18n/strings.dart';
-import 'package:mobile/utils/search_timer.dart';
-import 'package:mobile/widgets/button.dart';
-import 'package:mobile/widgets/widget.dart';
 import 'package:quiver/strings.dart';
+
+import '../i18n/strings.dart';
+import '../utils/search_timer.dart';
+import '../widgets/button.dart';
+import '../widgets/widget.dart';
 
 class SearchPage extends StatefulWidget {
   final String hint;

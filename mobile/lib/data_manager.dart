@@ -1,14 +1,14 @@
-import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
-import 'package:mobile/app_manager.dart';
-import 'package:mobile/database/sqlite_open_helper.dart';
-import 'package:mobile/log.dart';
-import 'package:mobile/model/gen/anglerslog.pb.dart';
-import 'package:mobile/utils/listener_manager.dart';
-import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:provider/provider.dart';
 import 'package:sqflite/sqflite.dart';
+
+import 'app_manager.dart';
+import 'database/sqlite_open_helper.dart';
+import 'log.dart';
+import 'model/gen/anglerslog.pb.dart';
+import 'utils/listener_manager.dart';
+import 'utils/protobuf_utils.dart';
 
 class DataListener {
   /// Invoked when the database has been completely reset.
@@ -54,7 +54,7 @@ class DataManager extends ListenerManager<DataListener> {
 
   /// Commits a batch of SQL statements. See [Batch].
   Future<List<dynamic>> commitBatch(void Function(Batch) execute) async {
-    Batch batch = _database.batch();
+    var batch = _database.batch();
     execute(batch);
     return await batch.commit();
   }
@@ -94,7 +94,7 @@ class DataManager extends ListenerManager<DataListener> {
 
   /// Returns true if the given ID exists in the given table; false otherwise.
   Future<bool> _idExists(String tableName, Id id) async {
-    int count = Sqflite.firstIntValue(await _database.rawQuery(
+    var count = Sqflite.firstIntValue(await _database.rawQuery(
         "SELECT COUNT(*) FROM $tableName WHERE id = ?", [id.uint8List]));
     return count != null && count > 0;
   }
@@ -136,7 +136,7 @@ class DataManager extends ListenerManager<DataListener> {
 
   /// Deletes a given [Entity] from the given [tableName].
   Future<bool> deleteEntity(Id entityId, String tableName) async {
-    Uint8List id = entityId.uint8List;
+    var id = entityId.uint8List;
     if (await delete(tableName, where: "id = ?", whereArgs: [id])) {
       return true;
     } else {
@@ -152,7 +152,7 @@ class DataManager extends ListenerManager<DataListener> {
   Future<Map<String, dynamic>> fetchEntity(String tableName, String id) async {
     _log.w("fetch($tableName, $id) called");
 
-    List<Map<String, dynamic>> result =
+    var result =
         await query("SELECT * FROM $tableName WHERE id = ?", [id]);
     if (result.isEmpty) {
       return null;

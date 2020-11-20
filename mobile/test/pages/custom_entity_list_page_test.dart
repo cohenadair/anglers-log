@@ -7,10 +7,10 @@ import 'package:mockito/mockito.dart';
 import '../mock_app_manager.dart';
 import '../test_utils.dart';
 
-main() {
+void main() {
   MockAppManager appManager;
 
-  List<CustomEntity> entities = [
+  var entities = <CustomEntity>[
     CustomEntity()
       ..id = randomId()
       ..name = "Water Depth"
@@ -39,7 +39,7 @@ main() {
   });
 
   testWidgets("CustomEntity description rendered correctly",
-      (WidgetTester tester) async {
+      (tester) async {
     await tester.pumpWidget(Testable(
       (_) => CustomEntityListPage(),
       appManager: appManager,

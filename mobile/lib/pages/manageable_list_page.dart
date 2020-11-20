@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:mobile/entity_manager.dart';
-import 'package:mobile/i18n/strings.dart';
-import 'package:mobile/res/dimen.dart';
-import 'package:mobile/utils/page_utils.dart';
-import 'package:mobile/utils/search_timer.dart';
-import 'package:mobile/widgets/button.dart';
-import 'package:mobile/widgets/checkbox_input.dart';
-import 'package:mobile/widgets/list_item.dart';
-import 'package:mobile/widgets/no_results.dart';
-import 'package:mobile/widgets/search_bar.dart';
-import 'package:mobile/widgets/widget.dart';
 import 'package:quiver/strings.dart';
+
+import '../entity_manager.dart';
+import '../i18n/strings.dart';
+import '../res/dimen.dart';
+import '../utils/page_utils.dart';
+import '../utils/search_timer.dart';
+import '../widgets/button.dart';
+import '../widgets/checkbox_input.dart';
+import '../widgets/list_item.dart';
+import '../widgets/no_results.dart';
+import '../widgets/search_bar.dart';
+import '../widgets/widget.dart';
 
 /// A page that is able to manage a list of a given type, [T]. The page includes
 /// an optional [SearchBar] and can be used a single or multi-item picker.
@@ -172,7 +173,7 @@ class _ManageableListPageState<T> extends State<ManageableListPage<T>> {
             leadingPadding:
                 widget.itemsHaveThumbnail ? _thumbSearchTextOffset : null,
             elevated: false,
-            delegate: InputSearchBarDelegate((String text) {
+            delegate: InputSearchBarDelegate((text) {
               _searchText = text;
               _searchTimer.reset(_searchText);
             }),
@@ -191,7 +192,7 @@ class _ManageableListPageState<T> extends State<ManageableListPage<T>> {
   }
 
   List<Widget> _buildMultiPickerActions() {
-    List<Widget> result = [];
+    var result = <Widget>[];
 
     // Done button, for finishing picking.
     result.add(
@@ -199,7 +200,7 @@ class _ManageableListPageState<T> extends State<ManageableListPage<T>> {
         condensed: true,
         onPressed: () {
           if (_editing) {
-            setEditingUpdateState(false);
+            setEditingUpdateState(isEditing: false);
           } else {
             _finishPicking(_selectedValues);
           }
@@ -208,7 +209,7 @@ class _ManageableListPageState<T> extends State<ManageableListPage<T>> {
     );
 
     // Overflow add/edit items for modifying the list.
-    List<PopupMenuItem<_OverflowOption>> overflowOptions = [];
+    var overflowOptions = <PopupMenuItem<_OverflowOption>>[];
 
     if (_addable) {
       overflowOptions.add(PopupMenuItem<_OverflowOption>(
@@ -236,7 +237,7 @@ class _ManageableListPageState<T> extends State<ManageableListPage<T>> {
                 present(context, widget.itemManager.addPageBuilder());
                 break;
               case _OverflowOption.edit:
-                setEditingUpdateState(true);
+                setEditingUpdateState(isEditing: true);
                 break;
             }
           },
@@ -248,18 +249,18 @@ class _ManageableListPageState<T> extends State<ManageableListPage<T>> {
   }
 
   List<Widget> _buildSinglePickerActions() {
-    List<Widget> result = [];
+    var result = <Widget>[];
 
     if (_editing) {
       result.add(ActionButton.done(
         condensed: _addable,
-        onPressed: () => setEditingUpdateState(false),
+        onPressed: () => setEditingUpdateState(isEditing: false),
       ));
     } else if (_editable) {
       // Only include the edit button if the items can be modified.
       result.add(ActionButton.edit(
         condensed: _addable,
-        onPressed: () => setEditingUpdateState(true),
+        onPressed: () => setEditingUpdateState(isEditing: true),
       ));
     }
 
@@ -275,7 +276,7 @@ class _ManageableListPageState<T> extends State<ManageableListPage<T>> {
   }
 
   Widget _buildItem(BuildContext context, T itemValue) {
-    ManageableListPageItemModel item = widget.itemBuilder(context, itemValue);
+    var item = widget.itemBuilder(context, itemValue);
 
     if (!item.editable && !item.selectable) {
       // If this item can't be edited or selected, return it; we don't want
@@ -304,8 +305,8 @@ class _ManageableListPageState<T> extends State<ManageableListPage<T>> {
           _selectedValues.contains(itemValue) ? Icon(Icons.check) : Empty();
     }
 
-    bool canEdit = _editing && item.editable;
-    bool enabled = !_editing || canEdit;
+    var canEdit = _editing && item.editable;
+    var enabled = !_editing || canEdit;
 
     return ManageableListItem(
       child: item.child,
@@ -337,9 +338,9 @@ class _ManageableListPageState<T> extends State<ManageableListPage<T>> {
     );
   }
 
-  void setEditingUpdateState(bool editing) {
+  void setEditingUpdateState({bool isEditing}) {
     setState(() {
-      _editing = editing;
+      _editing = isEditing;
     });
   }
 

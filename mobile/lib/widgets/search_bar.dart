@@ -1,9 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:mobile/res/dimen.dart';
-import 'package:mobile/res/style.dart';
-import 'package:mobile/widgets/widget.dart';
 import 'package:quiver/strings.dart';
+
+import '../res/dimen.dart';
+import '../res/style.dart';
+import '../widgets/widget.dart';
 
 class SearchBar extends StatefulWidget {
   final String text;
@@ -157,7 +158,7 @@ class _SearchBarState extends State<SearchBar> {
   }
 
   void _updateControllerText() {
-    String text = widget.text ?? "";
+    var text = widget.text ?? "";
     _controller.value = _controller.value.copyWith(
       text: text,
       // Ensures cursor is at the end of the text. By default, setting

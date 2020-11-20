@@ -2,7 +2,8 @@ import 'dart:async';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:mobile/i18n/english_strings.dart';
+
+import '../i18n/english_strings.dart';
 
 class Strings {
   static const List<String> _supportedLanguages = ["en"];
@@ -25,7 +26,7 @@ class Strings {
   /// If a specific string for a language and country exists, use it, otherwise
   /// use the default.
   String _string(String key) {
-    String value = _values[_locale.languageCode][_locale.countryCode][key];
+    var value = _values[_locale.languageCode][_locale.countryCode][key];
     if (value == null) {
       return _values[_locale.languageCode]["default"][key];
     }

@@ -2,24 +2,25 @@ import 'dart:typed_data';
 
 import 'package:flutter/cupertino.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:mobile/custom_entity_manager.dart';
-import 'package:mobile/i18n/strings.dart';
-import 'package:mobile/model/gen/anglerslog.pb.dart';
-import 'package:mobile/model/gen/google/protobuf/timestamp.pb.dart';
-import 'package:mobile/utils/string_utils.dart';
 import 'package:quiver/strings.dart';
 import 'package:uuid/uuid.dart';
+
+import '../custom_entity_manager.dart';
+import '../i18n/strings.dart';
+import '../model/gen/anglerslog.pb.dart';
+import '../model/gen/google/protobuf/timestamp.pb.dart';
+import '../utils/string_utils.dart';
 
 /// Returns the number of occurrences of [customEntityId] in [entities].
 int entityValuesCount<T>(List<T> entities, Id customEntityId,
     List<CustomEntityValue> Function(T) getValues) {
   assert(entities.isEmpty || getValues != null);
 
-  int result = 0;
-  for (T entity in entities) {
-    List<CustomEntityValue> values = getValues(entity) ?? [];
+  var result = 0;
+  for (var entity in entities) {
+    var values = getValues(entity) ?? [];
     if (values.isNotEmpty) {
-      for (CustomEntityValue value in values) {
+      for (var value in values) {
         if (value.customEntityId == customEntityId) {
           result++;
         }
@@ -37,7 +38,7 @@ bool entityValuesMatchesFilter(List<CustomEntityValue> values, String filter,
 
   values = values ?? [];
 
-  for (CustomEntityValue value in values) {
+  for (var value in values) {
     if (customEntityManager.matchesFilter(value.customEntityId, filter) ||
         (isNotEmpty(value.value) &&
             value.value.toLowerCase().contains(filter.toLowerCase()))) {
@@ -55,7 +56,7 @@ List<CustomEntityValue> entityValuesFromMap(Map<Id, dynamic> keyValues) {
     return [];
   }
 
-  List<CustomEntityValue> result = [];
+  var result = <CustomEntityValue>[];
 
   for (var entry in keyValues.entries) {
     if (entry.value == null ||
@@ -80,7 +81,7 @@ dynamic valueForCustomEntityType(
     case CustomEntity_Type.TEXT:
       return value.value;
     case CustomEntity_Type.BOOL:
-      bool boolValue = parseBoolFromInt(value.value);
+      var boolValue = parseBoolFromInt(value.value);
       if (context == null) {
         return boolValue;
       } else {
@@ -96,7 +97,7 @@ Id randomId() => Id()..uuid = Uuid().v1();
 Id parseId(String idString) {
   assert(isNotEmpty(idString));
 
-  String uuid = Uuid().unparse(Uuid().parse(idString));
+  var uuid = Uuid().unparse(Uuid().parse(idString));
   if (uuid == Uuid.NAMESPACE_NIL) {
     throw ArgumentError("Input String is not a valid UUID");
   }
@@ -107,7 +108,7 @@ Id parseId(String idString) {
 Id safeParseId(String idString) {
   try {
     return parseId(idString);
-  } catch (e) {
+  } on Exception catch(_) {
     return null;
   }
 }

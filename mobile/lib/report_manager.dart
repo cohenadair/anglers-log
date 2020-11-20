@@ -1,8 +1,9 @@
-import 'package:mobile/app_manager.dart';
-import 'package:mobile/entity_manager.dart';
-import 'package:mobile/model/gen/anglerslog.pb.dart';
-import 'package:mobile/named_entity_manager.dart';
 import 'package:protobuf/protobuf.dart';
+
+import 'app_manager.dart';
+import 'entity_manager.dart';
+import 'model/gen/anglerslog.pb.dart';
+import 'named_entity_manager.dart';
 
 abstract class ReportManager<T extends GeneratedMessage>
     extends NamedEntityManager<T> {

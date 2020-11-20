@@ -1,17 +1,18 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:mobile/i18n/strings.dart';
-import 'package:mobile/log.dart';
-import 'package:mobile/res/dimen.dart';
-import 'package:mobile/utils/collection_utils.dart';
-import 'package:mobile/utils/date_time_utils.dart';
-import 'package:mobile/utils/page_utils.dart';
-import 'package:mobile/widgets/list_item.dart';
-import 'package:mobile/widgets/text.dart';
-import 'package:mobile/widgets/widget.dart';
 import 'package:quiver/iterables.dart';
 import 'package:quiver/strings.dart';
+
+import '../i18n/strings.dart';
+import '../log.dart';
+import '../res/dimen.dart';
+import '../utils/collection_utils.dart';
+import '../utils/date_time_utils.dart';
+import '../utils/page_utils.dart';
+import '../widgets/list_item.dart';
+import '../widgets/text.dart';
+import '../widgets/widget.dart';
 
 /// An [ExpandableListItem] that, when tapped, shows a condensed [Chart] widget.
 class ExpandableChart<T> extends StatelessWidget {
@@ -133,11 +134,11 @@ class Chart<T> extends StatefulWidget {
         assert(series.isNotEmpty),
         assert(chartPageFilters != null),
         assert(labelBuilder != null) {
-    List<Color> colors = List.of(Colors.primaries)
+    var colors = List.of(Colors.primaries)
       ..remove(Colors.brown)
       ..remove(Colors.blueGrey);
 
-    int seriesLen = series.first.length;
+    var seriesLen = series.first.length;
     for (Series series in series) {
       assert(series.length == seriesLen,
           "All data lengths in series must be equal");
@@ -224,22 +225,22 @@ class _ChartState<T> extends State<Chart<T>> {
   }
 
   Widget _buildChart() {
-    List<Widget> children = [];
+    var children = <Widget>[];
 
     // Get largest row value.
-    double maxValue = 0;
+    var maxValue = 0.0;
     for (Series series in _displayData) {
-      int max = series.maxValue;
+      var max = series.maxValue;
       if (max > maxValue) {
         maxValue = max.toDouble();
       }
     }
 
-    double maxWidth = MediaQuery.of(context).size.width;
+    var maxWidth = MediaQuery.of(context).size.width;
 
     // For every unique item in the series, create a child widget.
-    List<T> items = _displayData.first.data.keys.toList();
-    for (T item in items) {
+    var items = _displayData.first.data.keys.toList();
+    for (var item in items) {
       for (Series series in _displayData) {
         children.add(
           _buildChartRow(maxWidth, maxValue, item, series, series.data[item],

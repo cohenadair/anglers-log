@@ -6,7 +6,7 @@ import 'package:mobile/widgets/widget.dart';
 import '../mock_app_manager.dart';
 import '../test_utils.dart';
 
-main() {
+void main() {
   MockAppManager appManager;
 
   setUp(() {
@@ -16,7 +16,7 @@ main() {
   });
 
   group("DateTimePickerContainer", () {
-    testWidgets("With helper", (WidgetTester tester) async {
+    testWidgets("With helper", (tester) async {
       await tester.pumpWidget(Testable(
         (context) => DateTimePicker(
           datePicker: DatePicker(
@@ -36,7 +36,7 @@ main() {
       expect(find.byType(Empty), findsNothing);
     });
 
-    testWidgets("Without helper", (WidgetTester tester) async {
+    testWidgets("Without helper", (tester) async {
       await tester.pumpWidget(Testable(
         (context) => DateTimePicker(
           datePicker: DatePicker(
@@ -56,7 +56,7 @@ main() {
   });
 
   group("Date and time pickers", () {
-    testWidgets("Enabled", (WidgetTester tester) async {
+    testWidgets("Enabled", (tester) async {
       await tester.pumpWidget(Testable(
         (context) => DatePicker(
           context,
@@ -71,7 +71,7 @@ main() {
       expect(find.text("1"), findsOneWidget);
     });
 
-    testWidgets("Disabled", (WidgetTester tester) async {
+    testWidgets("Disabled", (tester) async {
       await tester.pumpWidget(Testable(
         (context) => DatePicker(
           context,
@@ -87,8 +87,8 @@ main() {
       expect(find.text("1"), findsNothing);
     });
 
-    testWidgets("DatePicker date picked", (WidgetTester tester) async {
-      bool changed = false;
+    testWidgets("DatePicker date picked", (tester) async {
+      var changed = false;
       await tester.pumpWidget(Testable(
         (context) => DatePicker(
           context,
@@ -118,8 +118,8 @@ main() {
       expect(find.text("Jan 26, 2020"), findsOneWidget);
     });
 
-    testWidgets("TimePicker time picked", (WidgetTester tester) async {
-      bool changed = false;
+    testWidgets("TimePicker time picked", (tester) async {
+      var changed = false;
       await tester.pumpWidget(Testable(
         (context) => TimePicker(
           context,
@@ -144,10 +144,10 @@ main() {
 
       // Click time based on center clock, since actual Text widgets aren't
       // used.
-      Offset center =
+      var center =
           tester.getCenter(find.byKey(ValueKey<String>('time-picker-dial')));
-      Offset hour6 = Offset(center.dx, center.dy + 50.0); // 6:00
-      Offset min48 = Offset(center.dx - 50.0, center.dy - 15); // 50 min
+      var hour6 = Offset(center.dx, center.dy + 50.0); // 6:00
+      var min48 = Offset(center.dx - 50.0, center.dy - 15); // 50 min
 
       await tester.tapAt(hour6);
       await tester.pumpAndSettle();

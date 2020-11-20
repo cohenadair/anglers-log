@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:mobile/i18n/strings.dart';
-import 'package:mobile/model/gen/anglerslog.pbenum.dart';
-import 'package:mobile/widgets/checkbox_input.dart';
-import 'package:mobile/widgets/input_controller.dart';
-import 'package:mobile/widgets/text_input.dart';
+
+import '../i18n/strings.dart';
+import '../model/gen/anglerslog.pbenum.dart';
+import '../widgets/checkbox_input.dart';
+import '../widgets/input_controller.dart';
+import '../widgets/text_input.dart';
 
 /// Returns a user-visible label for the given [InputType].
 String inputTypeLocalizedString(

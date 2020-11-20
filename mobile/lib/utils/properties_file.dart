@@ -1,10 +1,11 @@
-import 'package:mobile/log.dart';
 import 'package:quiver/strings.dart';
 
-class PropertiesFile {
-  final Log _log = Log("LocationMonitor");
+import '../log.dart';
 
-  Map<String, String> _properties = {};
+class PropertiesFile {
+  final Log _log = Log("PropertiesFile");
+
+  final Map<String, String> _properties = {};
 
   PropertiesFile(String propertiesString) {
     if (isEmpty(propertiesString)) {
@@ -13,7 +14,7 @@ class PropertiesFile {
 
     try {
       propertiesString.split("\n").forEach((line) {
-        List<String> pair = line.split("=");
+        var pair = line.split("=");
         if (pair.length != 2) {
           return;
         }

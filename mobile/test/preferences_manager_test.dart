@@ -45,10 +45,10 @@ void main() {
     expect(preferencesManager.baitCustomEntityIds.isEmpty, true);
     expect(preferencesManager.catchCustomEntityIds.isEmpty, true);
 
-    Id id0 = randomId();
-    Id id1 = randomId();
-    Id id2 = randomId();
-    Id id3 = randomId();
+    var id0 = randomId();
+    var id1 = randomId();
+    var id2 = randomId();
+    var id3 = randomId();
 
     when(dataManager.fetchAll("preference")).thenAnswer(
       (_) => Future.value(
@@ -76,10 +76,10 @@ void main() {
   test("Setting String list", () {
     when(dataManager.query(any, any)).thenAnswer((_) => Future.value([]));
 
-    Id id0 = randomId();
-    Id id1 = randomId();
-    Id id2 = randomId();
-    Id id3 = randomId();
+    var id0 = randomId();
+    var id1 = randomId();
+    var id2 = randomId();
+    var id3 = randomId();
 
     preferencesManager.baitCustomEntityIds = [id0, id1];
     expect(preferencesManager.baitCustomEntityIds, [id0, id1]);
@@ -133,8 +133,8 @@ void main() {
 
     when(appManager.dataManager).thenReturn(realDataManager);
 
-    Id id0 = randomId();
-    Id id1 = randomId();
+    var id0 = randomId();
+    var id1 = randomId();
     preferencesManager = PreferencesManager(appManager);
     preferencesManager.baitCustomEntityIds = [id0, id1];
     preferencesManager.catchCustomEntityIds = [id0];

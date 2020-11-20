@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
-import 'package:mobile/app_manager.dart';
-import 'package:mobile/log.dart';
-import 'package:mobile/utils/properties_file.dart';
 import 'package:provider/provider.dart';
+
+import 'app_manager.dart';
+import 'log.dart';
+import 'utils/properties_file.dart';
 
 /// A class for accessing data in configuration files.
 class PropertiesManager {

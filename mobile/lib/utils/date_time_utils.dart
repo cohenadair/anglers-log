@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:mobile/app_manager.dart';
-import 'package:mobile/i18n/strings.dart';
-import 'package:mobile/model/gen/google/protobuf/timestamp.pb.dart';
-import 'package:mobile/utils/string_utils.dart';
 import 'package:quiver/time.dart';
+
+import '../app_manager.dart';
+import '../i18n/strings.dart';
+import '../model/gen/google/protobuf/timestamp.pb.dart';
+import '../utils/string_utils.dart';
 
 const monthDayFormat = "MMM d";
 const monthDayYearFormat = "MMM d, yyyy";
@@ -98,7 +99,7 @@ class DateRange {
   num get months => durationMs / (Duration.millisecondsPerDay * _daysInMonth);
 
   bool contains(Timestamp timestamp) {
-    int ms = timestamp.toDateTime().millisecondsSinceEpoch;
+    var ms = timestamp.toDateTime().millisecondsSinceEpoch;
     return ms >= startMs && ms <= endMs;
   }
 }
@@ -109,7 +110,7 @@ class DateRange {
 class DisplayDateRange {
   static final allDates = DisplayDateRange._(
     id: "allDates",
-    getValue: (DateTime now) => DateRange(
+    getValue: (now) => DateRange(
       startDate: DateTime.fromMicrosecondsSinceEpoch(0),
       endDate: now,
     ),
@@ -118,7 +119,7 @@ class DisplayDateRange {
 
   static final today = DisplayDateRange._(
     id: "today",
-    getValue: (DateTime now) => DateRange(
+    getValue: (now) => DateRange(
       startDate: dateTimeToDayAccuracy(now),
       endDate: now,
     ),
@@ -127,7 +128,7 @@ class DisplayDateRange {
 
   static final yesterday = DisplayDateRange._(
     id: "yesterday",
-    getValue: (DateTime now) => DateRange(
+    getValue: (now) => DateRange(
       startDate: dateTimeToDayAccuracy(now).subtract(Duration(days: 1)),
       endDate: dateTimeToDayAccuracy(now),
     ),
@@ -136,7 +137,7 @@ class DisplayDateRange {
 
   static final thisWeek = DisplayDateRange._(
     id: "thisWeek",
-    getValue: (DateTime now) => DateRange(
+    getValue: (now) => DateRange(
       startDate: startOfWeek(now),
       endDate: now,
     ),
@@ -145,7 +146,7 @@ class DisplayDateRange {
 
   static final thisMonth = DisplayDateRange._(
     id: "thisMonth",
-    getValue: (DateTime now) => DateRange(
+    getValue: (now) => DateRange(
       startDate: startOfMonth(now),
       endDate: now,
     ),
@@ -154,7 +155,7 @@ class DisplayDateRange {
 
   static final thisYear = DisplayDateRange._(
     id: "thisYear",
-    getValue: (DateTime now) => DateRange(
+    getValue: (now) => DateRange(
       startDate: startOfYear(now),
       endDate: now,
     ),
@@ -163,9 +164,9 @@ class DisplayDateRange {
 
   static final lastWeek = DisplayDateRange._(
     id: "lastWeek",
-    getValue: (DateTime now) {
-      DateTime endOfLastWeek = startOfWeek(now);
-      DateTime startOfLastWeek = endOfLastWeek.subtract(
+    getValue: (now) {
+      var endOfLastWeek = startOfWeek(now);
+      var startOfLastWeek = endOfLastWeek.subtract(
         Duration(days: DateTime.daysPerWeek),
       );
       return DateRange(startDate: startOfLastWeek, endDate: endOfLastWeek);
@@ -175,10 +176,10 @@ class DisplayDateRange {
 
   static final lastMonth = DisplayDateRange._(
     id: "lastMonth",
-    getValue: (DateTime now) {
-      DateTime endOfLastMonth = startOfMonth(now);
-      int year = now.year;
-      int month = now.month - 1;
+    getValue: (now) {
+      var endOfLastMonth = startOfMonth(now);
+      var year = now.year;
+      var month = now.month - 1;
       if (month < DateTime.january) {
         month = DateTime.december;
         year -= 1;
@@ -193,7 +194,7 @@ class DisplayDateRange {
 
   static final lastYear = DisplayDateRange._(
     id: "lastYear",
-    getValue: (DateTime now) => DateRange(
+    getValue: (now) => DateRange(
       startDate: DateTime(now.year - 1),
       endDate: startOfYear(now),
     ),
@@ -202,7 +203,7 @@ class DisplayDateRange {
 
   static final last7Days = DisplayDateRange._(
     id: "last7Days",
-    getValue: (DateTime now) => DateRange(
+    getValue: (now) => DateRange(
       startDate: now.subtract(Duration(days: 7)),
       endDate: now,
     ),
@@ -211,7 +212,7 @@ class DisplayDateRange {
 
   static final last14Days = DisplayDateRange._(
     id: "last14Days",
-    getValue: (DateTime now) => DateRange(
+    getValue: (now) => DateRange(
       startDate: now.subtract(Duration(days: 14)),
       endDate: now,
     ),
@@ -220,7 +221,7 @@ class DisplayDateRange {
 
   static final last30Days = DisplayDateRange._(
     id: "last30Days",
-    getValue: (DateTime now) => DateRange(
+    getValue: (now) => DateRange(
       startDate: now.subtract(Duration(days: 30)),
       endDate: now,
     ),
@@ -229,7 +230,7 @@ class DisplayDateRange {
 
   static final last60Days = DisplayDateRange._(
     id: "last60Days",
-    getValue: (DateTime now) => DateRange(
+    getValue: (now) => DateRange(
       startDate: now.subtract(Duration(days: 60)),
       endDate: now,
     ),
@@ -238,7 +239,7 @@ class DisplayDateRange {
 
   static final last12Months = DisplayDateRange._(
     id: "last12Months",
-    getValue: (DateTime now) => DateRange(
+    getValue: (now) => DateRange(
       startDate: now.subtract(Duration(days: 365)),
       endDate: now,
     ),
@@ -247,7 +248,7 @@ class DisplayDateRange {
 
   static final custom = DisplayDateRange._(
     id: "custom",
-    getValue: (now) => DisplayDateRange.thisMonth.getValue(now),
+    getValue: DisplayDateRange.thisMonth.getValue,
     title: (context) => Strings.of(context).analysisDurationCustom,
   );
 
@@ -319,7 +320,7 @@ class DisplayDateRange {
       getValue(AppManager.of(context).timeManager.currentDateTime);
 
   @override
-  bool operator ==(other) {
+  bool operator ==(Object other) {
     return other is DisplayDateRange && other.id == id;
   }
 
@@ -354,16 +355,16 @@ bool isLater(TimeOfDay a, TimeOfDay b) {
 /// Returns `true` if the given [DateTime] comes after `now`, to minute
 /// accuracy.
 bool isInFutureWithMinuteAccuracy(DateTime dateTime, DateTime now) {
-  DateTime newDateTime = dateTimeToMinuteAccuracy(dateTime);
-  DateTime newNow = dateTimeToMinuteAccuracy(now);
+  var newDateTime = dateTimeToMinuteAccuracy(dateTime);
+  var newNow = dateTimeToMinuteAccuracy(now);
   return newDateTime.isAfter(newNow);
 }
 
 /// Returns `true` if the given [DateTime] comes after `now`, to day
 /// accuracy.
 bool isInFutureWithDayAccuracy(DateTime dateTime, DateTime now) {
-  DateTime newDateTime = dateTimeToDayAccuracy(dateTime);
-  DateTime newNow = dateTimeToDayAccuracy(now);
+  var newDateTime = dateTimeToDayAccuracy(dateTime);
+  var newNow = dateTimeToDayAccuracy(now);
   return newDateTime.isAfter(newNow);
 }
 
@@ -475,7 +476,7 @@ String formatTimestamp(BuildContext context, Timestamp timestamp) {
 /// The value returned is just a concatenation of different ways of representing
 /// a date and time.
 String timestampToSearchString(BuildContext context, Timestamp timestamp) {
-  DateTime dateTime = timestamp.toDateTime();
+  var dateTime = timestamp.toDateTime();
   return "${formatDateTime(context, dateTime)} "
       "${DateFormat(monthDayYearFormatFull).format(dateTime)}";
 }
@@ -485,9 +486,9 @@ String timestampToSearchString(BuildContext context, Timestamp timestamp) {
 /// Example:
 ///   Dec. 8, 2018 - Dec. 29, 2018
 String formatDateRange(DateRange dateRange) {
-  return DateFormat(monthDayYearFormat).format(dateRange.startDate) +
-      " - " +
-      DateFormat(monthDayYearFormat).format(dateRange.endDate);
+  return "${DateFormat(monthDayYearFormat).format(dateRange.startDate)} "
+      "-"
+      " ${DateFormat(monthDayYearFormat).format(dateRange.endDate)}";
 }
 
 /// Returns a formatted [DateTime] to be displayed to the user. Includes
@@ -500,7 +501,7 @@ String formatDateRange(DateRange dateRange) {
 ///   - Jan. 8
 ///   - Dec. 8, 2018
 String formatDateAsRecent(BuildContext context, DateTime dateTime) {
-  final DateTime now = AppManager.of(context).timeManager.currentDateTime;
+  final now = AppManager.of(context).timeManager.currentDateTime;
 
   if (isSameDate(dateTime, now)) {
     // Today.
@@ -555,14 +556,14 @@ String formatDuration({
   includesDays = includesDays && largestDurationUnit == DurationUnit.days;
   includesHours = includesHours && largestDurationUnit != DurationUnit.minutes;
 
-  DisplayDuration duration = DisplayDuration(
+  var duration = DisplayDuration(
     Duration(milliseconds: millisecondsDuration),
     includesDays: includesDays,
     includesHours: includesHours,
     includesMinutes: includesMinutes,
   );
 
-  String result = "";
+  var result = "";
 
   maybeAddSpace() {
     if (result.isNotEmpty) {
@@ -570,32 +571,32 @@ String formatDuration({
     }
   }
 
-  int numberIncluded = 0;
+  var numberIncluded = 0;
 
-  bool shouldAdd(bool include, int value) {
+  bool shouldAdd(int value, {bool include}) {
     return include &&
         (!condensed || value > 0) &&
         (!showHighestTwoOnly || numberIncluded < 2);
   }
 
-  if (shouldAdd(includesDays, duration.days)) {
+  if (shouldAdd(duration.days, include: includesDays)) {
     result += format(Strings.of(context).daysFormat, [duration.days]);
     numberIncluded++;
   }
 
-  if (shouldAdd(includesHours, duration.hours)) {
+  if (shouldAdd(duration.hours, include: includesHours)) {
     maybeAddSpace();
     result += format(Strings.of(context).hoursFormat, [duration.hours]);
     numberIncluded++;
   }
 
-  if (shouldAdd(includesMinutes, duration.minutes)) {
+  if (shouldAdd(duration.minutes, include: includesMinutes)) {
     maybeAddSpace();
     result += format(Strings.of(context).minutesFormat, [duration.minutes]);
     numberIncluded++;
   }
 
-  if (shouldAdd(includesSeconds, duration.seconds)) {
+  if (shouldAdd(duration.seconds, include: includesSeconds)) {
     maybeAddSpace();
     result += format(Strings.of(context).secondsFormat, [duration.seconds]);
   }

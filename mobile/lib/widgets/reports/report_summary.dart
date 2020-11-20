@@ -1,29 +1,30 @@
 import 'package:flutter/material.dart';
-import 'package:mobile/app_manager.dart';
-import 'package:mobile/bait_manager.dart';
-import 'package:mobile/catch_manager.dart';
-import 'package:mobile/entity_manager.dart';
-import 'package:mobile/fishing_spot_manager.dart';
-import 'package:mobile/i18n/strings.dart';
-import 'package:mobile/model/gen/anglerslog.pb.dart';
-import 'package:mobile/pages/bait_page.dart';
-import 'package:mobile/pages/catch_list_page.dart';
-import 'package:mobile/pages/fishing_spot_page.dart';
-import 'package:mobile/pages/species_list_page.dart';
-import 'package:mobile/res/dimen.dart';
-import 'package:mobile/species_manager.dart';
-import 'package:mobile/time_manager.dart';
-import 'package:mobile/utils/collection_utils.dart';
-import 'package:mobile/utils/date_time_utils.dart';
-import 'package:mobile/utils/page_utils.dart';
-import 'package:mobile/utils/protobuf_utils.dart';
-import 'package:mobile/utils/string_utils.dart';
-import 'package:mobile/widgets/list_item.dart';
-import 'package:mobile/widgets/list_picker_input.dart';
-import 'package:mobile/widgets/chart.dart';
-import 'package:mobile/widgets/text.dart';
-import 'package:mobile/widgets/widget.dart';
 import 'package:quiver/strings.dart';
+
+import '../../app_manager.dart';
+import '../../bait_manager.dart';
+import '../../catch_manager.dart';
+import '../../entity_manager.dart';
+import '../../fishing_spot_manager.dart';
+import '../../i18n/strings.dart';
+import '../../model/gen/anglerslog.pb.dart';
+import '../../pages/bait_page.dart';
+import '../../pages/catch_list_page.dart';
+import '../../pages/fishing_spot_page.dart';
+import '../../pages/species_list_page.dart';
+import '../../res/dimen.dart';
+import '../../species_manager.dart';
+import '../../time_manager.dart';
+import '../../utils/collection_utils.dart';
+import '../../utils/date_time_utils.dart';
+import '../../utils/page_utils.dart';
+import '../../utils/protobuf_utils.dart';
+import '../../utils/string_utils.dart';
+import '../../widgets/chart.dart';
+import '../../widgets/list_item.dart';
+import '../../widgets/list_picker_input.dart';
+import '../../widgets/text.dart';
+import '../../widgets/widget.dart';
 
 /// A widget that includes all "summary" sections for a report. This widget
 /// should always be placed within a scroll view, otherwise it may overflow
@@ -74,7 +75,7 @@ class _ReportSummaryState extends State<ReportSummary> {
 
   @override
   Widget build(BuildContext context) {
-    List<Widget> children = [];
+    var children = <Widget>[];
     if (_hasCatches) {
       children.addAll([
         HeadingDivider(Strings.of(context).reportSummaryCatchTitle),
@@ -125,7 +126,7 @@ class _ReportSummaryState extends State<ReportSummary> {
   }
 
   Widget _buildDescription() {
-    String description = widget.descriptionBuilder?.call(context);
+    var description = widget.descriptionBuilder?.call(context);
     if (isEmpty(description)) {
       return Empty();
     }
@@ -338,7 +339,7 @@ class _ReportSummaryState extends State<ReportSummary> {
     _models = widget.onUpdate();
     assert(_models != null && _models.isNotEmpty);
 
-    Map<Species, int> catchesPerSpecies = _models.first.catchesPerSpecies;
+    var catchesPerSpecies = _models.first.catchesPerSpecies;
     if (_currentSpecies == null && catchesPerSpecies.isNotEmpty) {
       if (_models.first.speciesIds.isEmpty) {
         _currentSpecies = catchesPerSpecies.keys.first;
@@ -407,8 +408,8 @@ class ReportSummaryModel {
   /// [Species] IDs.
   final Set<Id> speciesIds;
 
-  AppManager _appManager;
-  TimeManager _timeManager;
+  final AppManager _appManager;
+  final TimeManager _timeManager;
 
   DateRange _dateRange;
   int _msSinceLastCatch = 0;
@@ -417,8 +418,8 @@ class ReportSummaryModel {
   bool _containsNow = true;
 
   /// All [Catch] IDs within [displayDateRange].
-  Set<Id> _catchIds = {};
-  Map<Species, Set<Id>> _catchIdsPerSpecies = {};
+  final Set<Id> _catchIds = {};
+  final Map<Species, Set<Id>> _catchIdsPerSpecies = {};
   Map<Species, int> _catchesPerSpecies = {};
 
   /// Total number of catches per [FishingSpot].
@@ -471,11 +472,11 @@ class ReportSummaryModel {
         _appManager = AppManager.of(context),
         _timeManager = AppManager.of(context).timeManager,
         displayDateRange = displayDateRange ?? DisplayDateRange.allDates {
-    DateTime now = _timeManager.currentDateTime;
+    var now = _timeManager.currentDateTime;
     _dateRange = this.displayDateRange.getValue(now);
     _containsNow = _dateRange.endDate == now;
 
-    List<Catch> catches = _catchManager.catchesSortedByTimestamp(
+    var catches = _catchManager.catchesSortedByTimestamp(
       context,
       dateRange: _dateRange,
       baitIds: baitIds,
@@ -505,22 +506,22 @@ class ReportSummaryModel {
       });
     }
 
-    for (Catch cat in catches) {
-      Species species = _speciesManager.entity(cat.speciesId);
+    for (var cat in catches) {
+      var species = _speciesManager.entity(cat.speciesId);
       _catchIdsPerSpecies.putIfAbsent(species, () => {});
       _catchIdsPerSpecies[species].add(cat.id);
       _catchesPerSpecies.putIfAbsent(species, () => 0);
       _catchesPerSpecies[species]++;
       _catchIds.add(cat.id);
 
-      FishingSpot fishingSpot = _fishingSpotManager.entity(cat.fishingSpotId);
+      var fishingSpot = _fishingSpotManager.entity(cat.fishingSpotId);
       if (fishingSpot != null) {
         _catchesPerFishingSpot.putIfAbsent(fishingSpot, () => 0);
         _catchesPerFishingSpot[fishingSpot]++;
         _fishingSpotsPerSpecies.inc(species, fishingSpot);
       }
 
-      Bait bait = _baitManager.entity(cat.baitId);
+      var bait = _baitManager.entity(cat.baitId);
       if (bait != null) {
         _catchesPerBait.putIfAbsent(bait, () => 0);
         _catchesPerBait[bait]++;
@@ -559,19 +560,19 @@ class ReportSummaryModel {
     _removeZeros(_catchesPerFishingSpot, other._catchesPerFishingSpot);
     _removeZeros(_catchesPerBait, other._catchesPerBait);
 
-    for (Species key in _fishingSpotsPerSpecies.value.keys) {
+    for (var key in _fishingSpotsPerSpecies.value.keys) {
       _removeZeros(
           _fishingSpotsPerSpecies[key], other._fishingSpotsPerSpecies[key]);
     }
 
-    for (Species key in _baitsPerSpecies.value.keys) {
+    for (var key in _baitsPerSpecies.value.keys) {
       _removeZeros(_baitsPerSpecies[key], other._baitsPerSpecies[key]);
     }
   }
 
   void _removeZeros<T>(Map<T, int> map1, Map<T, int> map2) {
-    List<T> keys = map1.keys.toList();
-    for (T key in keys) {
+    var keys = map1.keys.toList();
+    for (var key in keys) {
       if (!map1.containsKey(key) || !map2.containsKey(key)) {
         continue;
       }
@@ -587,7 +588,7 @@ class ReportSummaryModel {
     bool includeSpecies = true,
     bool includeDateRange = true,
   }) {
-    Set<String> result = {};
+    var result = <String>{};
     if (includeDateRange) {
       result.add(displayDateRange.title(context));
     }
@@ -629,7 +630,7 @@ class _MapOfMappedInt<K1, K2> {
 
   _MapOfMappedInt<K1, K2> sorted([int Function(K2 lhs, K2 rhs) comparator]) {
     var newValue = _MapOfMappedInt<K1, K2>();
-    for (K1 key in value.keys) {
+    for (var key in value.keys) {
       newValue[key] = sortedMap(value[key], comparator);
     }
     return newValue;

@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:mobile/custom_entity_manager.dart';
-import 'package:mobile/model/gen/anglerslog.pb.dart';
-import 'package:mobile/res/dimen.dart';
-import 'package:mobile/utils/protobuf_utils.dart';
-import 'package:mobile/widgets/label_value.dart';
-import 'package:mobile/widgets/widget.dart';
+
+import '../custom_entity_manager.dart';
+import '../model/gen/anglerslog.pb.dart';
+import '../res/dimen.dart';
+import '../utils/protobuf_utils.dart';
+import '../widgets/label_value.dart';
+import '../widgets/widget.dart';
 
 /// A widget that displays a list of [LabelValue] widgets backed by
 /// [CustomEntityValue] objects.
@@ -19,7 +20,7 @@ class CustomEntityValues extends StatelessWidget {
       return Empty();
     }
 
-    CustomEntityManager entityManager = CustomEntityManager.of(context);
+    var entityManager = CustomEntityManager.of(context);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -31,7 +32,7 @@ class CustomEntityValues extends StatelessWidget {
 
   Widget _buildWidget(BuildContext context, CustomEntityManager entityManager,
       CustomEntityValue entityValue) {
-    CustomEntity entity = entityManager.entity(entityValue.customEntityId);
+    var entity = entityManager.entity(entityValue.customEntityId);
     if (entity == null) {
       return Empty();
     }

@@ -1,9 +1,10 @@
-import 'package:mobile/app_manager.dart';
-import 'package:mobile/entity_manager.dart';
-import 'package:mobile/model/gen/anglerslog.pb.dart';
-import 'package:mobile/utils/string_utils.dart';
 import 'package:protobuf/protobuf.dart';
 import 'package:quiver/strings.dart';
+
+import 'app_manager.dart';
+import 'entity_manager.dart';
+import 'model/gen/anglerslog.pb.dart';
+import 'utils/string_utils.dart';
 
 abstract class NamedEntityManager<T extends GeneratedMessage>
     extends EntityManager<T> {
@@ -12,8 +13,8 @@ abstract class NamedEntityManager<T extends GeneratedMessage>
   NamedEntityManager(AppManager app) : super(app);
 
   List<T> listSortedByName({String filter}) {
-    List<T> result = List.from(filteredList(filter));
-    result.sort((T lhs, T rhs) => compareIgnoreCase(name(lhs), name(rhs)));
+    var result = List<T>.from(filteredList(filter));
+    result.sort((lhs, rhs) => compareIgnoreCase(name(lhs), name(rhs)));
     return result;
   }
 
@@ -23,7 +24,7 @@ abstract class NamedEntityManager<T extends GeneratedMessage>
       return true;
     }
 
-    T entity = this.entity(id);
+    var entity = this.entity(id);
     if (entity == null) {
       return false;
     }

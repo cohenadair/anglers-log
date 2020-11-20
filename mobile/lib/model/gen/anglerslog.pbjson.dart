@@ -342,3 +342,4 @@ const ComparisonReport$json = const {
     },
   ],
 };
+// ignore_for_file: constant_identifier_names,lines_longer_than_80_chars,directives_ordering,unnecessary_const,prefer_mixin,implementation_imports

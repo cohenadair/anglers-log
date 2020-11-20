@@ -8,7 +8,7 @@ import 'package:mockito/mockito.dart';
 import '../mock_app_manager.dart';
 import '../test_utils.dart';
 
-main() {
+void main() {
   MockAppManager appManager;
 
   setUp(() {
@@ -19,7 +19,7 @@ main() {
     when(appManager.mockSpeciesManager.nameExists(any)).thenReturn(false);
   });
 
-  testWidgets("New title", (WidgetTester tester) async {
+  testWidgets("New title", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => SaveSpeciesPage(),
       appManager: appManager,
@@ -27,7 +27,7 @@ main() {
     expect(find.text("New Species"), findsOneWidget);
   });
 
-  testWidgets("Edit title", (WidgetTester tester) async {
+  testWidgets("Edit title", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => SaveSpeciesPage.edit(
         Species()
@@ -40,7 +40,7 @@ main() {
     expect(find.widgetWithText(TextField, "Steelhead"), findsOneWidget);
   });
 
-  testWidgets("SpeciesManager callback invoked", (WidgetTester tester) async {
+  testWidgets("SpeciesManager callback invoked", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => SaveSpeciesPage(),
       appManager: appManager,
@@ -51,8 +51,8 @@ main() {
     verify(appManager.mockSpeciesManager.addOrUpdate(any)).called(1);
   });
 
-  testWidgets("Editing species keeps same ID", (WidgetTester tester) async {
-    Species species = Species()
+  testWidgets("Editing species keeps same ID", (tester) async {
+    var species = Species()
       ..id = randomId()
       ..name = "Steelhead";
 
@@ -64,7 +64,7 @@ main() {
     await enterTextAndSettle(tester, find.byType(TextField), "Bass");
     await tapAndSettle(tester, find.text("SAVE"));
 
-    VerificationResult result =
+    var result =
         verify(appManager.mockSpeciesManager.addOrUpdate(captureAny));
     result.called(1);
     expect(result.captured.first.id, species.id);

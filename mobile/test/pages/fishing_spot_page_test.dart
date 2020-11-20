@@ -8,7 +8,7 @@ import 'package:mockito/mockito.dart';
 import '../mock_app_manager.dart';
 import '../test_utils.dart';
 
-main() {
+void main() {
   MockAppManager appManager;
 
   setUp(() {
@@ -24,7 +24,7 @@ main() {
   });
 
   testWidgets("Back button color updates on may type changes",
-      (WidgetTester tester) async {
+      (tester) async {
     await tester.pumpWidget(Testable(
       (_) => FishingSpotPage(randomId()),
       appManager: appManager,

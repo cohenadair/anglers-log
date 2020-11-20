@@ -3,21 +3,22 @@ import 'dart:typed_data';
 
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart' as GoogleMaps;
+import 'package:google_maps_flutter/google_maps_flutter.dart' as maps;
 import 'package:image_picker/image_picker.dart';
-import 'package:mobile/i18n/strings.dart';
-import 'package:mobile/res/dimen.dart';
-import 'package:mobile/utils/dialog_utils.dart';
-import 'package:mobile/utils/string_utils.dart';
-import 'package:mobile/widgets/button.dart';
-import 'package:mobile/widgets/no_results.dart';
-import 'package:mobile/widgets/text.dart';
-import 'package:mobile/widgets/widget.dart';
-import 'package:mobile/wrappers/file_picker_wrapper.dart';
-import 'package:mobile/wrappers/image_picker_wrapper.dart';
-import 'package:mobile/wrappers/photo_manager_wrapper.dart';
-import 'package:path/path.dart' as Path;
+import 'package:path/path.dart' as path;
 import 'package:photo_manager/photo_manager.dart';
+
+import '../i18n/strings.dart';
+import '../res/dimen.dart';
+import '../utils/dialog_utils.dart';
+import '../utils/string_utils.dart';
+import '../widgets/button.dart';
+import '../widgets/no_results.dart';
+import '../widgets/text.dart';
+import '../widgets/widget.dart';
+import '../wrappers/file_picker_wrapper.dart';
+import '../wrappers/image_picker_wrapper.dart';
+import '../wrappers/photo_manager_wrapper.dart';
 
 enum _ImagePickerSource { gallery, camera, browse }
 
@@ -35,7 +36,7 @@ class PickedImage {
   final Uint8List thumbData;
 
   /// The location the image was taken, or null if unknown.
-  final GoogleMaps.LatLng position;
+  final maps.LatLng position;
 
   /// The date and time the photo was taken, or null if unknown.
   final DateTime dateTime;
@@ -131,9 +132,9 @@ class _ImagePickerPageState extends State<ImagePickerPage> {
 
   /// Cache thumbnail futures so they're not recreated each time the widget
   /// tree is rebuilt.
-  Map<int, Future<Uint8List>> _thumbnailFutures = {};
+  final Map<int, Future<Uint8List>> _thumbnailFutures = {};
 
-  Set<int> _selectedIndexes = {};
+  final Set<int> _selectedIndexes = {};
   _ImagePickerSource _currentSource = _ImagePickerSource.gallery;
 
   /// Images that are initially selected. Elements of this array are removed
@@ -170,7 +171,7 @@ class _ImagePickerPageState extends State<ImagePickerPage> {
           // Lazy initialize _allAssetsFuture.
           if (_allAssetsFuture == null) {
             // Create a future that waits for all assets.
-            AssetPathEntity entity =
+            var entity =
                 assets.firstWhere((album) => album.isAll, orElse: () => null);
             _allAssetsFuture =
                 entity == null ? Future.value([]) : entity.assetList;
@@ -187,8 +188,8 @@ class _ImagePickerPageState extends State<ImagePickerPage> {
                 _assets.sort((lhs, rhs) =>
                     rhs.createDateTime.compareTo(lhs.createDateTime));
 
-                for (int i = 0; i < _assets.length; i++) {
-                  for (PickedImage image in _initialImages.reversed) {
+                for (var i = 0; i < _assets.length; i++) {
+                  for (var image in _initialImages.reversed) {
                     if (image.originalFileId != null &&
                         image.originalFileId == _assets[i].id) {
                       _selectedIndexes.add(i);
@@ -254,7 +255,7 @@ class _ImagePickerPageState extends State<ImagePickerPage> {
       return Empty();
     }
 
-    bool enabled = !widget.requiresPick ||
+    var enabled = !widget.requiresPick ||
         _selectedIndexes.isNotEmpty ||
         widget.initialImages.isNotEmpty;
 
@@ -262,7 +263,7 @@ class _ImagePickerPageState extends State<ImagePickerPage> {
       text: widget.doneButtonText ?? Strings.of(context).done,
       onPressed: enabled
           ? () async {
-              List<PickedImage> result = [];
+              var result = <PickedImage>[];
               for (var i in _selectedIndexes) {
                 result.add(await _pickedImageFromAsset(_assets[i]));
               }
@@ -386,7 +387,7 @@ class _ImagePickerPageState extends State<ImagePickerPage> {
   }
 
   void _openCamera() async {
-    File image = await _imagePicker.pickImage(ImageSource.camera);
+    var image = await _imagePicker.pickImage(ImageSource.camera);
     if (image != null) {
       _pop([PickedImage(originalFile: image)]);
     }
@@ -397,7 +398,7 @@ class _ImagePickerPageState extends State<ImagePickerPage> {
     if (widget.allowsMultipleSelection) {
       images = await _filePicker.getMultiFile(FileType.ANY);
     } else {
-      File image = await _filePicker.getFile(type: FileType.ANY);
+      var image = await _filePicker.getFile(type: FileType.ANY);
       if (image != null) {
         images = [image];
       }
@@ -412,7 +413,7 @@ class _ImagePickerPageState extends State<ImagePickerPage> {
     // file_picker doesn't support multiple file extensions, so for now, check
     // the extension of each selected file.
     // https://github.com/miguelpruivo/flutter_file_picker/issues/99
-    List<String> supportedFileExtensions = [
+    var supportedFileExtensions = <String>[
       ".jpg",
       ".jpeg",
       ".jpe",
@@ -427,18 +428,18 @@ class _ImagePickerPageState extends State<ImagePickerPage> {
       ".heif",
       ".heic",
     ];
-    List<String> invalidFiles = [];
-    for (int i = images.length - 1; i >= 0; i--) {
-      File image = images[i];
-      if (!supportedFileExtensions.contains(Path.extension(image.path))) {
-        invalidFiles.add(Path.basename(image.path));
+    var invalidFiles = <String>[];
+    for (var i = images.length - 1; i >= 0; i--) {
+      var image = images[i];
+      if (!supportedFileExtensions.contains(path.extension(image.path))) {
+        invalidFiles.add(path.basename(image.path));
         images.removeAt(i);
         // TODO: Record metrics for invalid file extensions; may be legit.
       }
     }
 
     if (images.isEmpty) {
-      String msg = Strings.of(context).imagePickerPageInvalidSelectionSingle;
+      var msg = Strings.of(context).imagePickerPageInvalidSelectionSingle;
       if (widget.allowsMultipleSelection) {
         msg = Strings.of(context).imagePickerPageInvalidSelectionPlural;
       }
@@ -461,18 +462,18 @@ class _ImagePickerPageState extends State<ImagePickerPage> {
     AssetEntity entity, {
     Uint8List thumbData,
   }) async {
-    double lat = entity.latitude;
-    double lng = entity.longitude;
-    GoogleMaps.LatLng position;
+    var lat = entity.latitude;
+    var lng = entity.longitude;
+    maps.LatLng position;
 
     if (_coordinatesAreValid(lat, lng)) {
-      position = GoogleMaps.LatLng(lat, lng);
+      position = maps.LatLng(lat, lng);
     } else {
       // Coordinates are invalid, attempt to retrieve from OS.
-      LatLng latLng = await entity.latlngAsync();
+      var latLng = await entity.latlngAsync();
       if (latLng != null &&
           _coordinatesAreValid(latLng.latitude, latLng.longitude)) {
-        position = GoogleMaps.LatLng(latLng.latitude, latLng.longitude);
+        position = maps.LatLng(latLng.latitude, latLng.longitude);
       }
     }
 

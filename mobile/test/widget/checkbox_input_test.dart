@@ -5,9 +5,9 @@ import 'package:mobile/widgets/text.dart';
 
 import '../test_utils.dart';
 
-main() {
-  testWidgets("Enabled", (WidgetTester tester) async {
-    bool checked = false;
+void main() {
+  testWidgets("Enabled", (tester) async {
+    var checked = false;
     await tester.pumpWidget(
       Testable(
         (_) => CheckboxInput(
@@ -26,7 +26,7 @@ main() {
     expect(findFirst<Checkbox>(tester).value, isFalse);
   });
 
-  testWidgets("Disabled", (WidgetTester tester) async {
+  testWidgets("Disabled", (tester) async {
     await tester.pumpWidget(
       Testable(
         (_) => CheckboxInput(

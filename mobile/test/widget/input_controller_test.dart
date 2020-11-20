@@ -11,7 +11,7 @@ import '../test_utils.dart';
 
 class MockNameValidator extends Mock implements NameValidator {}
 
-main() {
+void main() {
   group("TextInputController", () {
     test("Empty value returns null", () {
       var controller = TextInputController(
@@ -38,14 +38,14 @@ main() {
       expect(controller.value, "Test with whitespace");
     });
 
-    testWidgets("Null validator", (WidgetTester tester) async {
-      BuildContext context = await buildContext(tester);
+    testWidgets("Null validator", (tester) async {
+      var context = await buildContext(tester);
       var controller = TextInputController();
       expect(controller.valid(context), isTrue);
     });
 
-    testWidgets("Non-null validator", (WidgetTester tester) async {
-      BuildContext context = await buildContext(tester);
+    testWidgets("Non-null validator", (tester) async {
+      var context = await buildContext(tester);
       var validator = MockNameValidator();
       when(validator.run(context, "Test")).thenReturn((context) => "BAD");
       var controller = TextInputController(validator: MockNameValidator());

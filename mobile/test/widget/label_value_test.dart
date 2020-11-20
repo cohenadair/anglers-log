@@ -4,9 +4,9 @@ import 'package:mobile/widgets/label_value.dart';
 
 import '../test_utils.dart';
 
-main() {
+void main() {
   testWidgets("Neither label nor value can be null",
-      (WidgetTester tester) async {
+      (tester) async {
     await tester.pumpWidget(
       Testable(
         (_) => LabelValue(
@@ -58,7 +58,7 @@ main() {
     expect(find.byType(LabelValue), findsOneWidget);
   });
 
-  testWidgets("Long value renders column", (WidgetTester tester) async {
+  testWidgets("Long value renders column", (tester) async {
     await tester.pumpWidget(
       Testable(
         (_) => LabelValue(
@@ -71,7 +71,7 @@ main() {
     expect(find.byType(Row), findsNothing);
   });
 
-  testWidgets("Short column renders row", (WidgetTester tester) async {
+  testWidgets("Short column renders row", (tester) async {
     await tester.pumpWidget(
       Testable(
         (_) => LabelValue(

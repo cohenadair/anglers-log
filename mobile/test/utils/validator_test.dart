@@ -1,14 +1,13 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/utils/validator.dart';
 
 import '../test_utils.dart';
 
-main() {
+void main() {
   group("GenericValidator", () {
-    testWidgets("Runner is called", (WidgetTester tester) async {
-      BuildContext context = await buildContext(tester);
-      bool ran = false;
+    testWidgets("Runner is called", (tester) async {
+      var context = await buildContext(tester);
+      var ran = false;
       GenericValidator(
         (_, __) => (___) {
           ran = true;
@@ -20,8 +19,8 @@ main() {
   });
 
   group("NameValidator", () {
-    testWidgets("Input", (WidgetTester tester) async {
-      BuildContext context = await buildContext(tester);
+    testWidgets("Input", (tester) async {
+      var context = await buildContext(tester);
       expect(NameValidator().run(context, "Test"), isNull);
       expect(
         () => NameValidator(
@@ -39,8 +38,8 @@ main() {
       );
     });
 
-    testWidgets("null if old name == new name", (WidgetTester tester) async {
-      BuildContext context = await buildContext(tester);
+    testWidgets("null if old name == new name", (tester) async {
+      var context = await buildContext(tester);
       expect(
         NameValidator(
           nameExists: (_) => false,
@@ -51,8 +50,8 @@ main() {
       );
     });
 
-    testWidgets("Error if new name is empty/null", (WidgetTester tester) async {
-      BuildContext context = await buildContext(tester);
+    testWidgets("Error if new name is empty/null", (tester) async {
+      var context = await buildContext(tester);
       expect(
         NameValidator(
           nameExists: (_) => false,
@@ -69,8 +68,8 @@ main() {
       );
     });
 
-    testWidgets("Error if new name exists", (WidgetTester tester) async {
-      BuildContext context = await buildContext(tester);
+    testWidgets("Error if new name exists", (tester) async {
+      var context = await buildContext(tester);
       expect(
         NameValidator(
           nameExists: (_) => true,
@@ -80,8 +79,8 @@ main() {
       );
     });
 
-    testWidgets("null if valid", (WidgetTester tester) async {
-      BuildContext context = await buildContext(tester);
+    testWidgets("null if valid", (tester) async {
+      var context = await buildContext(tester);
       expect(
         NameValidator(
           nameExists: (_) => false,
@@ -94,14 +93,14 @@ main() {
   });
 
   group("DoubleValidator", () {
-    testWidgets("Error if parse fails", (WidgetTester tester) async {
-      BuildContext context = await buildContext(tester);
+    testWidgets("Error if parse fails", (tester) async {
+      var context = await buildContext(tester);
       expect(DoubleValidator().run(context, "Not a double")(context),
           "Invalid number input");
     });
 
-    testWidgets("null if valid", (WidgetTester tester) async {
-      BuildContext context = await buildContext(tester);
+    testWidgets("null if valid", (tester) async {
+      var context = await buildContext(tester);
       expect(DoubleValidator().run(context, ""), isNull);
       expect(DoubleValidator().run(context, null), isNull);
       expect(DoubleValidator().run(context, "50.2"), isNull);
@@ -109,25 +108,25 @@ main() {
   });
 
   group("EmailValidator", () {
-    testWidgets("Error if invalid format", (WidgetTester tester) async {
-      BuildContext context = await buildContext(tester);
+    testWidgets("Error if invalid format", (tester) async {
+      var context = await buildContext(tester);
       expect(EmailValidator().run(context, "not a valid email")(context),
           "Invalid email");
     });
 
-    testWidgets("null if valid email", (WidgetTester tester) async {
-      BuildContext context = await buildContext(tester);
+    testWidgets("null if valid email", (tester) async {
+      var context = await buildContext(tester);
       expect(EmailValidator().run(context, "test@test.com"), isNull);
     });
 
-    testWidgets("null if empty and not required", (WidgetTester tester) async {
-      BuildContext context = await buildContext(tester);
+    testWidgets("null if empty and not required", (tester) async {
+      var context = await buildContext(tester);
       expect(EmailValidator(required: false).run(context, ""), isNull);
       expect(EmailValidator(required: false).run(context, null), isNull);
     });
 
-    testWidgets("Error if empty and required", (WidgetTester tester) async {
-      BuildContext context = await buildContext(tester);
+    testWidgets("Error if empty and required", (tester) async {
+      var context = await buildContext(tester);
       expect(EmailValidator(required: true).run(context, "")(context),
           "Invalid email");
       expect(EmailValidator(required: true).run(context, null)(context),
@@ -136,14 +135,14 @@ main() {
   });
 
   group("EmptyValidator", () {
-    testWidgets("Error if empty", (WidgetTester tester) async {
-      BuildContext context = await buildContext(tester);
+    testWidgets("Error if empty", (tester) async {
+      var context = await buildContext(tester);
       expect(EmptyValidator().run(context, "")(context), "Required");
       expect(EmptyValidator().run(context, null)(context), "Required");
     });
 
-    testWidgets("null if not empty", (WidgetTester tester) async {
-      BuildContext context = await buildContext(tester);
+    testWidgets("null if not empty", (tester) async {
+      var context = await buildContext(tester);
       expect(EmptyValidator().run(context, "Not empty"), isNull);
     });
   });

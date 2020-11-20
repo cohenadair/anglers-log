@@ -9,7 +9,7 @@ import 'package:mockito/mockito.dart';
 import '../mock_app_manager.dart';
 import '../test_utils.dart';
 
-main() {
+void main() {
   MockAppManager appManager;
 
   setUp(() {
@@ -18,14 +18,14 @@ main() {
     );
   });
 
-  Future<ui.Image> image(WidgetTester tester, String name) async {
-    ui.Image image = await loadImage(tester, "test/resources/$name");
+  Future<ui.Image> image(tester, String name) async {
+    var image = await loadImage(tester, "test/resources/$name");
     when(appManager.mockImageManager.dartImage(any, name, any))
         .thenAnswer((_) => Future.value(image));
     return image;
   }
 
-  testWidgets("Initial page", (WidgetTester tester) async {
+  testWidgets("Initial page", (tester) async {
     await image(tester, "flutter_logo.png");
     await image(tester, "anglers_log_logo.png");
     await image(tester, "android_logo.png");
@@ -51,7 +51,7 @@ main() {
         .called(1);
   });
 
-  testWidgets("Swiping shows correct image", (WidgetTester tester) async {
+  testWidgets("Swiping shows correct image", (tester) async {
     await image(tester, "flutter_logo.png");
     await image(tester, "anglers_log_logo.png");
     await image(tester, "android_logo.png");

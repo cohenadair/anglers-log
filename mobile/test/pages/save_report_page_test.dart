@@ -15,10 +15,10 @@ import 'package:mockito/mockito.dart';
 import '../mock_app_manager.dart';
 import '../test_utils.dart';
 
-main() {
+void main() {
   MockAppManager appManager;
 
-  List<Bait> baitList = [
+  var baitList = <Bait>[
     Bait()
       ..id = randomId()
       ..name = "Rapala",
@@ -27,7 +27,7 @@ main() {
       ..name = "Spoon",
   ];
 
-  List<FishingSpot> fishingSpotList = [
+  var fishingSpotList = <FishingSpot>[
     FishingSpot()
       ..id = randomId()
       ..name = "A",
@@ -36,7 +36,7 @@ main() {
       ..name = "B",
   ];
 
-  List<Species> speciesList = [
+  var speciesList = <Species>[
     Species()
       ..id = randomId()
       ..name = "Steelhead",
@@ -86,9 +86,9 @@ main() {
   });
 
   Future<void> selectItems(
-      WidgetTester tester, String startText, List<String> items) async {
+      tester, String startText, List<String> items) async {
     await tapAndSettle(tester, find.text(startText));
-    for (String item in items) {
+    for (var item in items) {
       await tester.tap(find.descendant(
         of: find.widgetWithText(InkWell, item),
         matching: find.byType(Checkbox),
@@ -97,12 +97,12 @@ main() {
     await tapAndSettle(tester, find.text("DONE"));
   }
 
-  testWidgets("New title", (WidgetTester tester) async {
+  testWidgets("New title", (tester) async {
     await tester.pumpWidget(Testable((_) => SaveReportPage()));
     expect(find.text("New Report"), findsOneWidget);
   });
 
-  testWidgets("Edit title", (WidgetTester tester) async {
+  testWidgets("Edit title", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => SaveReportPage.edit(
         SummaryReport()
@@ -114,7 +114,7 @@ main() {
     expect(find.text("Edit Report"), findsOneWidget);
   });
 
-  testWidgets("Type defaults to summary", (WidgetTester tester) async {
+  testWidgets("Type defaults to summary", (tester) async {
     await tester.pumpWidget(Testable((_) => SaveReportPage()));
     expect(
       find.descendant(
@@ -125,13 +125,13 @@ main() {
     );
   });
 
-  testWidgets("Date range defaults to all", (WidgetTester tester) async {
+  testWidgets("Date range defaults to all", (tester) async {
     await tester.pumpWidget(Testable((_) => SaveReportPage()));
     expect(find.text("All dates"), findsOneWidget);
   });
 
   testWidgets("Save button state updates when name changes",
-      (WidgetTester tester) async {
+      (tester) async {
     await tester.pumpWidget(Testable(
       (_) => SaveReportPage(),
       appManager: appManager,
@@ -148,7 +148,7 @@ main() {
   });
 
   testWidgets("Selecting type updates date range pickers",
-      (WidgetTester tester) async {
+      (tester) async {
     await tester.pumpWidget(Testable(
       (_) => SaveReportPage(),
       appManager: appManager,
@@ -171,7 +171,7 @@ main() {
     expect(find.widgetWithText(DateRangePickerInput, "To"), findsNothing);
   });
 
-  testWidgets("Picking start date updates state", (WidgetTester tester) async {
+  testWidgets("Picking start date updates state", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => SaveReportPage(),
       appManager: appManager,
@@ -183,7 +183,7 @@ main() {
     expect(find.text("This week"), findsOneWidget);
   });
 
-  testWidgets("Picking end date updates state", (WidgetTester tester) async {
+  testWidgets("Picking end date updates state", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => SaveReportPage(),
       appManager: appManager,
@@ -196,7 +196,7 @@ main() {
     expect(find.text("Last week"), findsOneWidget);
   });
 
-  testWidgets("Species picker shows picker page", (WidgetTester tester) async {
+  testWidgets("Species picker shows picker page", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => SaveReportPage(),
       appManager: appManager,
@@ -206,7 +206,7 @@ main() {
     expect(find.byType(SpeciesListPage), findsOneWidget);
   });
 
-  testWidgets("Bait picker shows picker page", (WidgetTester tester) async {
+  testWidgets("Bait picker shows picker page", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => SaveReportPage(),
       appManager: appManager,
@@ -217,7 +217,7 @@ main() {
   });
 
   testWidgets("Fishing spot picker shows picker page",
-      (WidgetTester tester) async {
+      (tester) async {
     await tester.pumpWidget(Testable(
       (_) => SaveReportPage(),
       appManager: appManager,
@@ -229,7 +229,7 @@ main() {
 
   group("Comparison report", () {
     testWidgets("Add report with preset date ranges",
-        (WidgetTester tester) async {
+        (tester) async {
       await tester.pumpWidget(Testable(
         (_) => SaveReportPage(),
         appManager: appManager,
@@ -274,7 +274,7 @@ main() {
 
       await tapAndSettle(tester, find.text("SAVE"));
 
-      VerificationResult result = verify(
+      var result = verify(
           appManager.mockComparisonReportManager.addOrUpdate(captureAny));
       result.called(1);
 
@@ -289,7 +289,7 @@ main() {
     });
 
     testWidgets("Add report with custom date ranges",
-        (WidgetTester tester) async {
+        (tester) async {
       DateRange fromDateRange;
       DateRange toDateRange;
       await tester.pumpWidget(Testable(
@@ -322,7 +322,7 @@ main() {
 
       await tapAndSettle(tester, find.text("SAVE"));
 
-      VerificationResult result = verify(
+      var result = verify(
           appManager.mockComparisonReportManager.addOrUpdate(captureAny));
       result.called(1);
 
@@ -339,8 +339,8 @@ main() {
       expect(report.fishingSpotIds, isEmpty);
     });
 
-    testWidgets("Edit keeps old ID", (WidgetTester tester) async {
-      ComparisonReport report = ComparisonReport()
+    testWidgets("Edit keeps old ID", (tester) async {
+      var report = ComparisonReport()
         ..id = randomId()
         ..name = "Report Name"
         ..description = "Report description"
@@ -381,7 +381,7 @@ main() {
 
       await tapAndSettle(tester, find.text("SAVE"));
 
-      VerificationResult result = verify(
+      var result = verify(
           appManager.mockComparisonReportManager.addOrUpdate(captureAny));
       result.called(1);
 
@@ -391,7 +391,7 @@ main() {
 
   group("Summary report", () {
     testWidgets("Add report with preset date ranges",
-        (WidgetTester tester) async {
+        (tester) async {
       await tester.pumpWidget(Testable(
         (_) => SaveReportPage(),
         appManager: appManager,
@@ -421,7 +421,7 @@ main() {
 
       await tapAndSettle(tester, find.text("SAVE"));
 
-      VerificationResult result =
+      var result =
           verify(appManager.mockSummaryReportManager.addOrUpdate(captureAny));
       result.called(1);
 
@@ -435,7 +435,7 @@ main() {
     });
 
     testWidgets("Add report with custom date ranges",
-        (WidgetTester tester) async {
+        (tester) async {
       DateRange dateRange;
       await tester.pumpWidget(Testable(
         (context) {
@@ -459,7 +459,7 @@ main() {
 
       await tapAndSettle(tester, find.text("SAVE"));
 
-      VerificationResult result =
+      var result =
           verify(appManager.mockSummaryReportManager.addOrUpdate(captureAny));
       result.called(1);
 
@@ -473,8 +473,8 @@ main() {
       expect(report.fishingSpotIds, isEmpty);
     });
 
-    testWidgets("Edit keeps old ID", (WidgetTester tester) async {
-      SummaryReport report = SummaryReport()
+    testWidgets("Edit keeps old ID", (tester) async {
+      var report = SummaryReport()
         ..id = randomId()
         ..name = "Report Name"
         ..description = "Report description"
@@ -501,7 +501,7 @@ main() {
 
       await tapAndSettle(tester, find.text("SAVE"));
 
-      VerificationResult result =
+      var result =
           verify(appManager.mockSummaryReportManager.addOrUpdate(captureAny));
       result.called(1);
 

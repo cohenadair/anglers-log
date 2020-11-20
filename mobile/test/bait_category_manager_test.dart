@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/bait_category_manager.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
@@ -32,10 +31,10 @@ void main() {
   });
 
   test("Number of baits", () {
-    Id baitCategoryId0 = randomId();
-    Id baitCategoryId1 = randomId();
-    Id baitCategoryId2 = randomId();
-    Id baitCategoryId3 = randomId();
+    var baitCategoryId0 = randomId();
+    var baitCategoryId1 = randomId();
+    var baitCategoryId2 = randomId();
+    var baitCategoryId3 = randomId();
 
     when(baitManager.list()).thenReturn([
       Bait()
@@ -71,7 +70,7 @@ void main() {
   });
 
   group("deleteMessage", () {
-    testWidgets("Invalid input", (WidgetTester tester) async {
+    testWidgets("Invalid input", (tester) async {
       expect(
         () => baitCategoryManager.deleteMessage(
             null,
@@ -81,13 +80,13 @@ void main() {
         throwsAssertionError,
       );
 
-      BuildContext context = await buildContext(tester);
+      var context = await buildContext(tester);
       expect(() => baitCategoryManager.deleteMessage(context, null),
           throwsAssertionError);
     });
 
-    testWidgets("Singular", (WidgetTester tester) async {
-      BaitCategory category = BaitCategory()
+    testWidgets("Singular", (tester) async {
+      var category = BaitCategory()
         ..id = randomId()
         ..name = "Live";
 
@@ -98,7 +97,7 @@ void main() {
           ..baitCategoryId = category.id,
       ]);
 
-      BuildContext context = await buildContext(tester);
+      var context = await buildContext(tester);
       expect(
         baitCategoryManager.deleteMessage(context, category),
         "Live is associated with 1 bait; are you sure you want to delete it? "
@@ -106,13 +105,13 @@ void main() {
       );
     });
 
-    testWidgets("Plural zero", (WidgetTester tester) async {
-      BaitCategory category = BaitCategory()
+    testWidgets("Plural zero", (tester) async {
+      var category = BaitCategory()
         ..id = randomId()
         ..name = "Live";
       when(baitManager.list()).thenReturn([]);
 
-      BuildContext context = await buildContext(tester);
+      var context = await buildContext(tester);
       expect(
         baitCategoryManager.deleteMessage(context, category),
         "Live is associated with 0 baits; are you sure you want to delete it?"
@@ -120,8 +119,8 @@ void main() {
       );
     });
 
-    testWidgets("Plural not zero", (WidgetTester tester) async {
-      BaitCategory category = BaitCategory()
+    testWidgets("Plural not zero", (tester) async {
+      var category = BaitCategory()
         ..id = randomId()
         ..name = "Live";
       when(baitManager.list()).thenReturn([
@@ -135,7 +134,7 @@ void main() {
           ..baitCategoryId = category.id,
       ]);
 
-      BuildContext context = await buildContext(tester);
+      var context = await buildContext(tester);
       expect(
         baitCategoryManager.deleteMessage(context, category),
         "Live is associated with 2 baits; are you sure you want to delete it?"

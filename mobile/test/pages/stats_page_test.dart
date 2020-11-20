@@ -13,7 +13,7 @@ import 'package:mockito/mockito.dart';
 import '../mock_app_manager.dart';
 import '../test_utils.dart';
 
-main() {
+void main() {
   MockAppManager appManager;
 
   setUp(() {
@@ -81,7 +81,7 @@ main() {
     when(appManager.mockSpeciesManager.list()).thenReturn([]);
   });
 
-  testWidgets("Defaults to overview", (WidgetTester tester) async {
+  testWidgets("Defaults to overview", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => StatsPage(),
       appManager: appManager,
@@ -92,7 +92,7 @@ main() {
     expect(find.byType(ComparisonReportView), findsNothing);
   });
 
-  testWidgets("Selecting summary shows summary", (WidgetTester tester) async {
+  testWidgets("Selecting summary shows summary", (tester) async {
     when(appManager.mockComparisonReportManager.list()).thenReturn([]);
     when(appManager.mockSummaryReportManager.list()).thenReturn([
       SummaryReport()
@@ -114,7 +114,7 @@ main() {
   });
 
   testWidgets("Selecting comparison shows comparison",
-      (WidgetTester tester) async {
+      (tester) async {
     when(appManager.mockSummaryReportManager.list()).thenReturn([]);
     when(appManager.mockComparisonReportManager.list()).thenReturn([
       ComparisonReport()
@@ -136,14 +136,14 @@ main() {
   });
 
   testWidgets("If current report is deleted, falls back to overview",
-      (WidgetTester tester) async {
+      (tester) async {
     var summaryReportManager = SummaryReportManager(appManager);
     when(appManager.summaryReportManager).thenReturn(summaryReportManager);
 
     var comparisonReportManager = ComparisonReportManager(appManager);
     when(appManager.comparisonReportManager)
         .thenReturn(comparisonReportManager);
-    Id reportId = randomId();
+    var reportId = randomId();
     await comparisonReportManager.addOrUpdate(ComparisonReport()
       ..id = reportId
       ..name = "Comparison");
@@ -170,10 +170,10 @@ main() {
   });
 
   testWidgets("If non-current report is deleted, report stays the same",
-      (WidgetTester tester) async {
+      (tester) async {
     var summaryReportManager = SummaryReportManager(appManager);
     when(appManager.summaryReportManager).thenReturn(summaryReportManager);
-    Id summaryId = randomId();
+    var summaryId = randomId();
     await summaryReportManager.addOrUpdate(SummaryReport()
       ..id = summaryId
       ..name = "Summary");
@@ -181,7 +181,7 @@ main() {
     var comparisonReportManager = ComparisonReportManager(appManager);
     when(appManager.comparisonReportManager)
         .thenReturn(comparisonReportManager);
-    Id comparisonId = randomId();
+    var comparisonId = randomId();
     await comparisonReportManager.addOrUpdate(ComparisonReport()
       ..id = comparisonId
       ..name = "Comparison");

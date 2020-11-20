@@ -1,22 +1,23 @@
 import 'package:flutter/material.dart';
-import 'package:mobile/bait_category_manager.dart';
-import 'package:mobile/bait_manager.dart';
-import 'package:mobile/catch_manager.dart';
-import 'package:mobile/fishing_spot_manager.dart';
-import 'package:mobile/i18n/strings.dart';
-import 'package:mobile/model/gen/anglerslog.pb.dart';
-import 'package:mobile/pages/add_catch_journey.dart';
-import 'package:mobile/pages/catch_page.dart';
-import 'package:mobile/pages/manageable_list_page.dart';
-import 'package:mobile/pages/save_catch_page.dart';
-import 'package:mobile/res/dimen.dart';
-import 'package:mobile/species_manager.dart';
-import 'package:mobile/utils/date_time_utils.dart';
-import 'package:mobile/utils/string_utils.dart';
-import 'package:mobile/widgets/photo.dart';
-import 'package:mobile/widgets/text.dart';
-import 'package:mobile/widgets/widget.dart';
 import 'package:quiver/strings.dart';
+
+import '../bait_category_manager.dart';
+import '../bait_manager.dart';
+import '../catch_manager.dart';
+import '../fishing_spot_manager.dart';
+import '../i18n/strings.dart';
+import '../model/gen/anglerslog.pb.dart';
+import '../pages/add_catch_journey.dart';
+import '../pages/catch_page.dart';
+import '../pages/manageable_list_page.dart';
+import '../pages/save_catch_page.dart';
+import '../res/dimen.dart';
+import '../species_manager.dart';
+import '../utils/date_time_utils.dart';
+import '../utils/string_utils.dart';
+import '../widgets/photo.dart';
+import '../widgets/text.dart';
+import '../widgets/widget.dart';
 
 class CatchListPage extends StatelessWidget {
   /// If false, catches cannot be added. Defaults to true.
@@ -59,11 +60,11 @@ class CatchListPage extends StatelessWidget {
         assert(speciesIds != null);
 
   Widget build(BuildContext context) {
-    BaitCategoryManager baitCategoryManager = BaitCategoryManager.of(context);
-    BaitManager baitManager = BaitManager.of(context);
-    CatchManager catchManager = CatchManager.of(context);
-    FishingSpotManager fishingSpotManager = FishingSpotManager.of(context);
-    SpeciesManager speciesManager = SpeciesManager.of(context);
+    var baitCategoryManager = BaitCategoryManager.of(context);
+    var baitManager = BaitManager.of(context);
+    var catchManager = CatchManager.of(context);
+    var fishingSpotManager = FishingSpotManager.of(context);
+    var speciesManager = SpeciesManager.of(context);
 
     return ManageableListPage<Catch>(
       titleBuilder: (catches) => Text(
@@ -84,7 +85,7 @@ class CatchListPage extends StatelessWidget {
           fishingSpotManager,
           speciesManager,
         ],
-        loadItems: (String query) => catchManager.catchesSortedByTimestamp(
+        loadItems: (query) => catchManager.catchesSortedByTimestamp(
           context,
           filter: query,
           dateRange: dateRange,
@@ -104,19 +105,19 @@ class CatchListPage extends StatelessWidget {
   }
 
   ManageableListPageItemModel _buildListItem(BuildContext context, Catch cat) {
-    BaitManager baitManager = BaitManager.of(context);
-    FishingSpotManager fishingSpotManager = FishingSpotManager.of(context);
-    SpeciesManager speciesManager = SpeciesManager.of(context);
+    var baitManager = BaitManager.of(context);
+    var fishingSpotManager = FishingSpotManager.of(context);
+    var speciesManager = SpeciesManager.of(context);
 
     Widget subtitle2 = Empty();
 
-    FishingSpot fishingSpot = fishingSpotManager.entity(cat.fishingSpotId);
+    var fishingSpot = fishingSpotManager.entity(cat.fishingSpotId);
     if (fishingSpot != null && isNotEmpty(fishingSpot.name)) {
       // Use fishing spot name as subtitle if available.
       subtitle2 = SubtitleLabel(fishingSpot.name);
     } else {
       // Fallback on bait as a subtitle.
-      Bait bait = baitManager.entity(cat.baitId);
+      var bait = baitManager.entity(cat.baitId);
       if (bait != null) {
         subtitle2 = SubtitleLabel(baitManager.formatNameWithCategory(bait));
       }

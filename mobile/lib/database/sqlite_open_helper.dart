@@ -1,9 +1,10 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:mobile/log.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
+
+import '../log.dart';
 
 final Log _log = Log("SQLiteOpenHelper");
 
@@ -75,7 +76,7 @@ final int _version = 1;
 Future<String> get _databasePath async => join(await getDatabasesPath(), _name);
 
 Future<Database> openDb() async {
-  String path = await _databasePath;
+  var path = await _databasePath;
   _log.d(path);
   return openDatabase(
     path,
@@ -92,11 +93,13 @@ Future<Database> resetDb() async {
 }
 
 void _onCreateDatabase(Database db, int version) {
-  _schema.forEach((List<String> schema) => _executeSchema(db, schema));
+  for (var schema in _schema) {
+    _executeSchema(db, schema);
+  }
 }
 
 void _onUpgradeDatabase(Database db, int oldVersion, int newVersion) {
-  for (int version = oldVersion; version < newVersion; ++version) {
+  for (var version = oldVersion; version < newVersion; ++version) {
     if (version >= _schema.length) {
       throw ArgumentError("Invalid database version: $newVersion");
     }
@@ -106,5 +109,7 @@ void _onUpgradeDatabase(Database db, int oldVersion, int newVersion) {
 }
 
 void _executeSchema(Database db, List<String> schema) {
-  schema.forEach((String query) => db.execute(query));
+  for (var query in schema) {
+    db.execute(query);
+  }
 }

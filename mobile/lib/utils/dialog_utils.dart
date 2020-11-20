@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:mobile/i18n/strings.dart';
-import 'package:mobile/res/style.dart';
+
+import '../i18n/strings.dart';
+import '../res/style.dart';
 
 void showDeleteDialog({
   @required BuildContext context,
@@ -65,7 +66,7 @@ void showOkDialog({
 }) {
   showDialog(
     context: context,
-    builder: (BuildContext context) => AlertDialog(
+    builder: (context) => AlertDialog(
       title: title == null ? null : Text(title),
       titleTextStyle: styleTitleAlert,
       content: description == null ? null : description,
@@ -87,7 +88,7 @@ void _showDestructiveDialog({
 }) {
   showDialog(
     context: context,
-    builder: (BuildContext context) => AlertDialog(
+    builder: (context) => AlertDialog(
       title: title == null ? null : Text(title),
       titleTextStyle: styleTitleAlert,
       content: description == null ? null : description,

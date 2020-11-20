@@ -3,23 +3,24 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:mobile/fishing_spot_manager.dart';
-import 'package:mobile/i18n/strings.dart';
-import 'package:mobile/location_monitor.dart';
-import 'package:mobile/model/gen/anglerslog.pb.dart';
-import 'package:mobile/pages/search_page.dart';
-import 'package:mobile/res/dimen.dart';
-import 'package:mobile/utils/map_utils.dart';
-import 'package:mobile/utils/page_utils.dart';
-import 'package:mobile/utils/snackbar_utils.dart';
-import 'package:mobile/utils/string_utils.dart';
-import 'package:mobile/widgets/button.dart';
-import 'package:mobile/widgets/list_item.dart';
-import 'package:mobile/widgets/no_results.dart';
-import 'package:mobile/widgets/search_bar.dart';
-import 'package:mobile/widgets/text.dart';
-import 'package:mobile/widgets/widget.dart';
 import 'package:quiver/strings.dart';
+
+import '../fishing_spot_manager.dart';
+import '../i18n/strings.dart';
+import '../location_monitor.dart';
+import '../model/gen/anglerslog.pb.dart';
+import '../pages/search_page.dart';
+import '../res/dimen.dart';
+import '../utils/map_utils.dart';
+import '../utils/page_utils.dart';
+import '../utils/snackbar_utils.dart';
+import '../utils/string_utils.dart';
+import '../widgets/button.dart';
+import '../widgets/list_item.dart';
+import '../widgets/no_results.dart';
+import '../widgets/search_bar.dart';
+import '../widgets/text.dart';
+import '../widgets/widget.dart';
 
 class FishingSpotMapSearchBar {
   final String title;
@@ -105,7 +106,7 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
 
   // TODO: Remove this when Google Maps performance issue is fixed.
   // https://github.com/flutter/flutter/issues/28493
-  Future<bool> _mapFuture =
+  final Future<bool> _mapFuture =
       Future.delayed(Duration(milliseconds: 150), () => true);
 
   Timer _hideHelpTimer;
@@ -172,7 +173,8 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
       builder: (context, _) {
         // TODO: Move Google logo when better solution is available.
         // https://github.com/flutter/flutter/issues/39610
-        // TODO: Test onCameraIdle fix when merged. Event sometimes stops after interaction with map buttons.
+        // TODO: Test onCameraIdle fix when merged. Event sometimes stops after
+        //  interaction with map buttons.
         // https://github.com/flutter/flutter/issues/33988
         return GoogleMap(
           padding: widget.mapPadding ?? insetsZero,
@@ -182,7 +184,7 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
             target: widget.startLocation ?? LatLng(0.0, 0.0),
             zoom: widget.startLocation == null ? 0 : _zoomDefault,
           ),
-          onMapCreated: (GoogleMapController controller) {
+          onMapCreated: (controller) {
             if (!_mapController.isCompleted) {
               _mapController.complete(controller);
             }
@@ -230,7 +232,7 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
             suggestionsBuilder: (context) =>
                 _buildSearchPageList(_fishingSpotManager.listSortedByName()),
             resultsBuilder: (context, query) {
-              List<FishingSpot> fishingSpots =
+              var fishingSpots =
                   _fishingSpotManager.listSortedByName(filter: query);
 
               if (fishingSpots.isEmpty) {
@@ -248,8 +250,8 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
   Widget _buildSearchPageList(List<FishingSpot> fishingSpots) {
     return ListView.builder(
       itemCount: fishingSpots.length,
-      itemBuilder: (BuildContext context, int index) {
-        FishingSpot fishingSpot = fishingSpots[index];
+      itemBuilder: (context, index) {
+        var fishingSpot = fishingSpots[index];
 
         Widget title = Empty();
         if (isNotEmpty(fishingSpot.name)) {
@@ -267,7 +269,7 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
           onTap: () {
             widget.searchBar.onFishingSpotPicked?.call(fishingSpot);
             moveMap(_mapController, LatLng(fishingSpot.lat, fishingSpot.lng),
-                false);
+                animate: false);
             Navigator.pop(context);
           },
         );
@@ -283,10 +285,10 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
           isScrollControlled: true,
           useRootNavigator: true,
           context: context,
-          builder: (BuildContext context) {
+          builder: (context) {
             return _MapTypeBottomSheet(
               currentMapType: _mapType,
-              onMapTypeSelected: (MapType newMapType) {
+              onMapTypeSelected: (newMapType) {
                 if (newMapType != _mapType) {
                   setState(() {
                     _mapType = newMapType;
@@ -310,7 +312,7 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
       padding: insetsHorizontalDefault,
       icon: Icons.my_location,
       onPressed: () {
-        LatLng currentLocation = LocationMonitor.of(context).currentLocation;
+        var currentLocation = LocationMonitor.of(context).currentLocation;
         if (currentLocation == null) {
           showErrorSnackBar(
               context, Strings.of(context).mapPageErrorGettingLocation);

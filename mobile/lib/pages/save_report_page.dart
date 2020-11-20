@@ -1,33 +1,34 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:mobile/bait_manager.dart';
-import 'package:mobile/comparison_report_manager.dart';
-import 'package:mobile/fishing_spot_manager.dart';
-import 'package:mobile/log.dart';
-import 'package:mobile/model/gen/anglerslog.pb.dart';
-import 'package:mobile/model/gen/google/protobuf/timestamp.pb.dart';
-import 'package:mobile/report_manager.dart';
-import 'package:mobile/species_manager.dart';
-import 'package:mobile/summary_report_manager.dart';
-import 'package:mobile/i18n/strings.dart';
-import 'package:mobile/pages/bait_list_page.dart';
-import 'package:mobile/pages/fishing_spot_list_page.dart';
-import 'package:mobile/pages/form_page.dart';
-import 'package:mobile/pages/species_list_page.dart';
-import 'package:mobile/res/dimen.dart';
-import 'package:mobile/utils/date_time_utils.dart';
-import 'package:mobile/utils/page_utils.dart';
-import 'package:mobile/utils/protobuf_utils.dart';
-import 'package:mobile/utils/validator.dart';
-import 'package:mobile/widgets/date_range_picker_input.dart';
-import 'package:mobile/widgets/input_controller.dart';
-import 'package:mobile/widgets/input_data.dart';
-import 'package:mobile/widgets/multi_list_picker_input.dart';
-import 'package:mobile/widgets/radio_input.dart';
-import 'package:mobile/widgets/text_input.dart';
-import 'package:mobile/widgets/widget.dart';
 import 'package:quiver/strings.dart';
+
+import '../bait_manager.dart';
+import '../comparison_report_manager.dart';
+import '../fishing_spot_manager.dart';
+import '../i18n/strings.dart';
+import '../log.dart';
+import '../model/gen/anglerslog.pb.dart';
+import '../model/gen/google/protobuf/timestamp.pb.dart';
+import '../pages/bait_list_page.dart';
+import '../pages/fishing_spot_list_page.dart';
+import '../pages/form_page.dart';
+import '../pages/species_list_page.dart';
+import '../report_manager.dart';
+import '../res/dimen.dart';
+import '../species_manager.dart';
+import '../summary_report_manager.dart';
+import '../utils/date_time_utils.dart';
+import '../utils/page_utils.dart';
+import '../utils/protobuf_utils.dart';
+import '../utils/validator.dart';
+import '../widgets/date_range_picker_input.dart';
+import '../widgets/input_controller.dart';
+import '../widgets/input_data.dart';
+import '../widgets/multi_list_picker_input.dart';
+import '../widgets/radio_input.dart';
+import '../widgets/text_input.dart';
+import '../widgets/widget.dart';
 
 class SaveReportPage extends StatefulWidget {
   final dynamic oldReport;
@@ -407,10 +408,10 @@ class _SaveReportPageState extends State<SaveReportPage> {
   }
 
   SummaryReport get _createSummaryReport {
-    DisplayDateRange dateRange = _fromDateRangeController.value;
-    bool custom = dateRange == DisplayDateRange.custom;
+    var dateRange = _fromDateRangeController.value;
+    var custom = dateRange == DisplayDateRange.custom;
 
-    SummaryReport report = SummaryReport()
+    var report = SummaryReport()
       ..id = _oldReport?.id ?? randomId()
       ..name = _nameController.value
       ..displayDateRangeId = dateRange.id
@@ -433,12 +434,12 @@ class _SaveReportPageState extends State<SaveReportPage> {
   }
 
   ComparisonReport _createComparisonReport() {
-    DisplayDateRange fromDateRange = _fromDateRangeController.value;
-    DisplayDateRange toDateRange = _toDateRangeController.value;
-    bool customFrom = fromDateRange == DisplayDateRange.custom;
-    bool customTo = toDateRange == DisplayDateRange.custom;
+    var fromDateRange = _fromDateRangeController.value;
+    var toDateRange = _toDateRangeController.value;
+    var customFrom = fromDateRange == DisplayDateRange.custom;
+    var customTo = toDateRange == DisplayDateRange.custom;
 
-    ComparisonReport report = ComparisonReport()
+    var report = ComparisonReport()
       ..id = _oldReport?.id ?? randomId()
       ..name = _nameController.value
       ..fromDisplayDateRangeId = fromDateRange.id

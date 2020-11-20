@@ -1,22 +1,23 @@
 import 'package:flutter/material.dart';
-import 'package:mobile/bait_manager.dart';
-import 'package:mobile/catch_manager.dart';
-import 'package:mobile/custom_entity_manager.dart';
-import 'package:mobile/i18n/strings.dart';
-import 'package:mobile/model/gen/anglerslog.pb.dart';
-import 'package:mobile/pages/manageable_list_page.dart';
-import 'package:mobile/pages/save_custom_entity_page.dart';
-import 'package:mobile/utils/string_utils.dart';
-import 'package:mobile/widgets/text.dart';
-import 'package:mobile/widgets/widget.dart';
 import 'package:quiver/strings.dart';
+
+import '../bait_manager.dart';
+import '../catch_manager.dart';
+import '../custom_entity_manager.dart';
+import '../i18n/strings.dart';
+import '../model/gen/anglerslog.pb.dart';
+import '../pages/manageable_list_page.dart';
+import '../pages/save_custom_entity_page.dart';
+import '../utils/string_utils.dart';
+import '../widgets/text.dart';
+import '../widgets/widget.dart';
 
 class CustomEntityListPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    BaitManager baitManager = BaitManager.of(context);
-    CatchManager catchManager = CatchManager.of(context);
-    CustomEntityManager customEntityManager = CustomEntityManager.of(context);
+    var baitManager = BaitManager.of(context);
+    var catchManager = CatchManager.of(context);
+    var customEntityManager = CustomEntityManager.of(context);
 
     return ManageableListPage<CustomEntity>(
       titleBuilder: (entities) => Text(format(

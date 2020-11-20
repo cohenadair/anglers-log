@@ -56,13 +56,13 @@ void main() {
   });
 
   test("Test initialize", () async {
-    Id id0 = randomId();
-    Id id1 = randomId();
-    Id id2 = randomId();
+    var id0 = randomId();
+    var id1 = randomId();
+    var id2 = randomId();
 
-    Species species0 = Species()..id = id0;
-    Species species1 = Species()..id = id1;
-    Species species2 = Species()..id = id2;
+    var species0 = Species()..id = id0;
+    var species1 = Species()..id = id1;
+    var species2 = Species()..id = id2;
 
     when(dataManager.fetchAll("species")).thenAnswer(
       (_) => Future.value(
@@ -90,14 +90,14 @@ void main() {
     when(dataManager.insertOrUpdateEntity(any, any, any))
         .thenAnswer((_) => Future.value(true));
 
-    MockSpeciesListener listener = MockSpeciesListener();
+    var listener = MockSpeciesListener();
     when(listener.onAddOrUpdate).thenReturn(() {});
     when(listener.onDelete).thenReturn((_) {});
     entityManager.addListener(listener);
 
     // Add.
-    Id speciesId0 = randomId();
-    Id speciesId1 = randomId();
+    var speciesId0 = randomId();
+    var speciesId1 = randomId();
 
     expect(
       await entityManager.addOrUpdate(Species()
@@ -138,12 +138,12 @@ void main() {
     when(dataManager.deleteEntity(any, any))
         .thenAnswer((_) => Future.value(true));
 
-    MockSpeciesListener listener = MockSpeciesListener();
+    var listener = MockSpeciesListener();
     when(listener.onAddOrUpdate).thenReturn(() {});
     when(listener.onDelete).thenReturn((_) {});
     entityManager.addListener(listener);
 
-    Id speciesId0 = randomId();
+    var speciesId0 = randomId();
     await entityManager.addOrUpdate(Species()
       ..id = speciesId0
       ..name = "Bluegill");
@@ -206,9 +206,9 @@ void main() {
         .thenAnswer((_) => Future.value(true));
 
     // Add.
-    Id speciesId0 = randomId();
-    Id speciesId1 = randomId();
-    Id speciesId2 = randomId();
+    var speciesId0 = randomId();
+    var speciesId1 = randomId();
+    var speciesId2 = randomId();
 
     expect(
       await entityManager.addOrUpdate(Species()

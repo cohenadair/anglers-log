@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:mobile/res/dimen.dart';
-import 'package:mobile/widgets/button.dart';
-import 'package:mobile/widgets/checkbox_input.dart';
-import 'package:mobile/widgets/list_item.dart';
-import 'package:mobile/widgets/text.dart';
-import 'package:mobile/widgets/widget.dart';
 import 'package:quiver/strings.dart';
+
+import '../res/dimen.dart';
+import '../widgets/button.dart';
+import '../widgets/checkbox_input.dart';
+import '../widgets/list_item.dart';
+import '../widgets/text.dart';
+import '../widgets/widget.dart';
 
 /// A generic picker page for selecting a single or multiple items from a list.
 ///
@@ -114,7 +115,7 @@ class _PickerPageState<T> extends State<PickerPage<T>> {
   }
 
   Widget _buildListView(BuildContext context) {
-    List<Widget> children = [];
+    var children = <Widget>[];
     if (widget.listHeader != null) {
       children.add(Padding(
         padding: insetsDefault,
@@ -122,7 +123,7 @@ class _PickerPageState<T> extends State<PickerPage<T>> {
       ));
     }
 
-    List<PickerPageItem<T>> items = (widget.allItem == null
+    var items = (widget.allItem == null
         ? []
         : [widget.allItem])
       ..addAll(widget.itemBuilder());
@@ -213,7 +214,7 @@ class _PickerPageState<T> extends State<PickerPage<T>> {
 
   void _listItemTapped(PickerPageItem<T> item) async {
     setState(() {
-      _selectedValues = Set.of([item.value]);
+      _selectedValues = {item.value};
     });
     widget.onFinishedPicking(context, {item.value});
   }
@@ -221,7 +222,7 @@ class _PickerPageState<T> extends State<PickerPage<T>> {
   void _checkboxUpdated(T pickedItem) {
     if (widget.allItem != null && widget.allItem.value == pickedItem) {
       // If the "all" item was picked, deselect all other items.
-      _selectedValues = Set.of([widget.allItem.value]);
+      _selectedValues = {widget.allItem.value};
     } else {
       // Otherwise, toggle the picked item, and deselect the "all" item
       // if it exists.

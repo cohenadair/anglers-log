@@ -5,8 +5,8 @@ import 'package:mobile/widgets/multi_list_picker_input.dart';
 
 import '../test_utils.dart';
 
-main() {
-  testWidgets("No initial values", (WidgetTester tester) async {
+void main() {
+  testWidgets("No initial values", (tester) async {
     await tester.pumpWidget(
       Testable(
         (_) => MultiListPickerInput(
@@ -18,7 +18,7 @@ main() {
     expect(find.text("Empty"), findsOneWidget);
   });
 
-  testWidgets("Initial values", (WidgetTester tester) async {
+  testWidgets("Initial values", (tester) async {
     await tester.pumpWidget(
       Testable(
         (_) => MultiListPickerInput(
@@ -33,7 +33,7 @@ main() {
     expect(find.text("Value 2"), findsOneWidget);
   });
 
-  testWidgets("Custom padding", (WidgetTester tester) async {
+  testWidgets("Custom padding", (tester) async {
     await tester.pumpWidget(
       Testable(
         (_) => MultiListPickerInput(
@@ -46,7 +46,7 @@ main() {
     expect(findFirst<Padding>(tester).padding.horizontal, paddingDefault * 2);
   });
 
-  testWidgets("Default padding", (WidgetTester tester) async {
+  testWidgets("Default padding", (tester) async {
     await tester.pumpWidget(
       Testable(
         (_) => MultiListPickerInput(

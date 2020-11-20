@@ -1,12 +1,13 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:mobile/i18n/strings.dart';
-import 'package:mobile/pages/add_catch_journey.dart';
-import 'package:mobile/res/dimen.dart';
-import 'package:mobile/res/gen/custom_icons.dart';
-import 'package:mobile/utils/page_utils.dart';
-import 'package:mobile/widgets/button.dart';
+
+import '../i18n/strings.dart';
+import '../pages/add_catch_journey.dart';
+import '../res/dimen.dart';
+import '../res/gen/custom_icons.dart';
+import '../utils/page_utils.dart';
+import '../widgets/button.dart';
 
 class AddAnythingPage extends StatelessWidget {
   static const double _blurSigma = 6.0;

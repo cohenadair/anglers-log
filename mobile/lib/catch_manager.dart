@@ -1,20 +1,21 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:mobile/app_manager.dart';
-import 'package:mobile/bait_manager.dart';
-import 'package:mobile/custom_entity_manager.dart';
-import 'package:mobile/entity_manager.dart';
-import 'package:mobile/fishing_spot_manager.dart';
-import 'package:mobile/i18n/strings.dart';
-import 'package:mobile/image_manager.dart';
-import 'package:mobile/model/gen/anglerslog.pb.dart';
-import 'package:mobile/species_manager.dart';
-import 'package:mobile/utils/date_time_utils.dart';
-import 'package:mobile/utils/protobuf_utils.dart';
-import 'package:mobile/utils/string_utils.dart';
 import 'package:provider/provider.dart';
 import 'package:quiver/strings.dart';
+
+import 'app_manager.dart';
+import 'bait_manager.dart';
+import 'custom_entity_manager.dart';
+import 'entity_manager.dart';
+import 'fishing_spot_manager.dart';
+import 'i18n/strings.dart';
+import 'image_manager.dart';
+import 'model/gen/anglerslog.pb.dart';
+import 'species_manager.dart';
+import 'utils/date_time_utils.dart';
+import 'utils/protobuf_utils.dart';
+import 'utils/string_utils.dart';
 
 class CatchManager extends EntityManager<Catch> {
   static CatchManager of(BuildContext context) =>
@@ -44,7 +45,7 @@ class CatchManager extends EntityManager<Catch> {
 
   @override
   bool matchesFilter(Id id, String filter, [BuildContext context]) {
-    Catch cat = entity(id);
+    var cat = entity(id);
 
     if (cat == null ||
         isEmpty(filter) ||
@@ -81,7 +82,7 @@ class CatchManager extends EntityManager<Catch> {
     assert(fishingSpotIds != null);
     assert(speciesIds != null);
 
-    List<Catch> result = List.of(filteredCatches(
+    var result = List.of(filteredCatches(
       context,
       filter: filter,
       dateRange: dateRange,
@@ -119,7 +120,7 @@ class CatchManager extends EntityManager<Catch> {
     }
 
     return entities.values.where((cat) {
-      bool valid = true;
+      var valid = true;
       valid &= dateRange == null || dateRange.contains(cat.timestamp);
       valid &= catchIds.isEmpty || catchIds.contains(cat.id);
       valid &= baitIds.isEmpty || baitIds.contains(cat.baitId);
@@ -177,8 +178,8 @@ class CatchManager extends EntityManager<Catch> {
     assert(context != null);
     assert(cat != null);
 
-    Species species = _speciesManager.entity(cat.speciesId);
-    String timeString = formatTimestamp(context, cat.timestamp);
+    var species = _speciesManager.entity(cat.speciesId);
+    var timeString = formatTimestamp(context, cat.timestamp);
     String name;
     if (species == null) {
       name = "($timeString)";
@@ -197,20 +198,20 @@ class CatchManager extends EntityManager<Catch> {
   }
 
   void _onDeleteBait(Bait bait) async {
-    List<Catch>.from(list().where((cat) => bait.id == cat.baitId))
-        .forEach((cat) {
+    for (var cat
+        in List<Catch>.from(list().where((cat) => bait.id == cat.baitId))) {
       entities[cat.id].clearBaitId();
-    });
+    }
 
     replaceDatabaseWithCache();
     notifyOnAddOrUpdate();
   }
 
   void _onDeleteFishingSpot(FishingSpot fishingSpot) async {
-    List<Catch>.from(list().where((cat) => fishingSpot.id == cat.fishingSpotId))
-        .forEach((cat) {
+    for (var cat in List<Catch>.from(
+        list().where((cat) => fishingSpot.id == cat.fishingSpotId))) {
       entities[cat.id].clearFishingSpotId();
-    });
+    }
 
     replaceDatabaseWithCache();
     notifyOnAddOrUpdate();

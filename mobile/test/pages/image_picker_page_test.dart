@@ -11,7 +11,7 @@ import 'package:photo_manager/photo_manager.dart';
 import '../mock_app_manager.dart';
 import '../test_utils.dart';
 
-main() {
+void main() {
   MockAppManager appManager;
   MockAssetPathEntity allAlbum;
 
@@ -36,7 +36,7 @@ main() {
         .thenAnswer((_) => Future.value([allAlbum]));
   });
 
-  testWidgets("No device photos empty result", (WidgetTester tester) async {
+  testWidgets("No device photos empty result", (tester) async {
     when(appManager.mockPhotoManagerWrapper.getAssetPathList(any))
         .thenAnswer((_) => Future.value([]));
 
@@ -51,7 +51,7 @@ main() {
     expect(find.byType(NoResults), findsOneWidget);
   });
 
-  testWidgets("No device photos empty all album", (WidgetTester tester) async {
+  testWidgets("No device photos empty all album", (tester) async {
     when(allAlbum.assetList).thenAnswer((_) => Future.value([]));
     await tester.pumpWidget(Testable(
       (_) => ImagePickerPage(
@@ -64,7 +64,7 @@ main() {
     expect(find.byType(NoResults), findsOneWidget);
   });
 
-  testWidgets("Photos already selected", (WidgetTester tester) async {
+  testWidgets("Photos already selected", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => ImagePickerPage(
         onImagesPicked: (_, __) {},
@@ -81,8 +81,8 @@ main() {
   });
 
   testWidgets("Null result from camera does not invoke callback",
-      (WidgetTester tester) async {
-    bool called = false;
+      (tester) async {
+    var called = false;
     await tester.pumpWidget(Testable(
       (_) => ImagePickerPage(
         onImagesPicked: (_, __) => called = true,
@@ -98,9 +98,8 @@ main() {
     expect(called, isFalse);
   });
 
-  testWidgets("Result from camera invokes callback",
-      (WidgetTester tester) async {
-    bool called = false;
+  testWidgets("Result from camera invokes callback", (tester) async {
+    var called = false;
     await tester.pumpWidget(Testable(
       (_) => ImagePickerPage(
         onImagesPicked: (_, __) => called = true,
@@ -119,8 +118,8 @@ main() {
     expect(called, isTrue);
   });
 
-  testWidgets("Doc single picker nothing picked", (WidgetTester tester) async {
-    bool called = false;
+  testWidgets("Doc single picker nothing picked", (tester) async {
+    var called = false;
     await tester.pumpWidget(Testable(
       (_) => ImagePickerPage.single(
         onImagePicked: (_, __) => called = true,
@@ -140,8 +139,8 @@ main() {
     expect(find.text("Must select image files."), findsNothing);
   });
 
-  testWidgets("Doc multi picker nothing picked", (WidgetTester tester) async {
-    bool called = false;
+  testWidgets("Doc multi picker nothing picked", (tester) async {
+    var called = false;
     await tester.pumpWidget(Testable(
       (_) => ImagePickerPage(
         onImagesPicked: (_, __) => called = true,
@@ -172,7 +171,7 @@ main() {
   });
 
   testWidgets("Doc single picker unsupported format",
-      (WidgetTester tester) async {
+      (tester) async {
     await tester.pumpWidget(Testable(
       (_) => ImagePickerPage.single(
         onImagePicked: (_, __) {},
@@ -191,7 +190,7 @@ main() {
   });
 
   testWidgets("Doc multi picker unsupported format",
-      (WidgetTester tester) async {
+      (tester) async {
     await tester.pumpWidget(Testable(
       (_) => ImagePickerPage(
         onImagesPicked: (_, __) {},
@@ -213,9 +212,8 @@ main() {
     expect(find.text("Must select image files."), findsOneWidget);
   });
 
-  testWidgets("Doc multi picker valid picks invokes callback",
-      (WidgetTester tester) async {
-    bool called = false;
+  testWidgets("Doc multi picker valid picks invokes callback", (tester) async {
+    var called = false;
     await tester.pumpWidget(Testable(
       (_) => ImagePickerPage(
         onImagesPicked: (_, __) => called = true,
@@ -238,7 +236,7 @@ main() {
     expect(called, isTrue);
   });
 
-  testWidgets("No done button for single picker", (WidgetTester tester) async {
+  testWidgets("No done button for single picker", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => ImagePickerPage.single(
         onImagePicked: (_, __) {},
@@ -250,7 +248,7 @@ main() {
     expect(find.text("DONE"), findsNothing);
   });
 
-  testWidgets("Done button for multi picker", (WidgetTester tester) async {
+  testWidgets("Done button for multi picker", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => ImagePickerPage(
         onImagesPicked: (_, __) {},
@@ -263,7 +261,7 @@ main() {
   });
 
   testWidgets("Done button disabled when pick is required",
-      (WidgetTester tester) async {
+      (tester) async {
     await tester.pumpWidget(Testable(
       (_) => ImagePickerPage(
         onImagesPicked: (_, __) {},
@@ -277,7 +275,7 @@ main() {
   });
 
   testWidgets("Done button enabled when pick is not required",
-      (WidgetTester tester) async {
+      (tester) async {
     await tester.pumpWidget(Testable(
       (_) => ImagePickerPage(
         onImagesPicked: (_, __) {},
@@ -291,8 +289,8 @@ main() {
         findFirstWithText<ActionButton>(tester, "DONE").onPressed, isNotNull);
   });
 
-  testWidgets("Done button invokes callback", (WidgetTester tester) async {
-    bool called = false;
+  testWidgets("Done button invokes callback", (tester) async {
+    var called = false;
     await tester.pumpWidget(Testable(
       (_) => ImagePickerPage(
         onImagesPicked: (_, __) => called = true,
@@ -307,9 +305,8 @@ main() {
     expect(called, isTrue);
   });
 
-  testWidgets("Clear button clears selected for multi picker",
-      (WidgetTester tester) async {
-    bool called = false;
+  testWidgets("Clear button clears selected for multi picker", (tester) async {
+    var called = false;
     await tester.pumpWidget(Testable(
       (_) => ImagePickerPage(
         onImagesPicked: (_, __) => called = true,
@@ -331,8 +328,8 @@ main() {
   });
 
   testWidgets("Clear button invokes callback for single picker",
-      (WidgetTester tester) async {
-    bool called = false;
+      (tester) async {
+    var called = false;
     await tester.pumpWidget(Testable(
       (_) => ImagePickerPage.single(
         onImagePicked: (_, __) => called = true,
@@ -345,7 +342,7 @@ main() {
     expect(called, isTrue);
   });
 
-  testWidgets("X/Y label shows for multi picker", (WidgetTester tester) async {
+  testWidgets("X/Y label shows for multi picker", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => ImagePickerPage(
         onImagesPicked: (_, __) {},
@@ -363,7 +360,7 @@ main() {
   });
 
   testWidgets("Selecting/deselecting photo updates state for multi picker",
-      (WidgetTester tester) async {
+      (tester) async {
     await tester.pumpWidget(Testable(
       (_) => ImagePickerPage(
         onImagesPicked: (_, __) {},
@@ -380,8 +377,8 @@ main() {
   });
 
   testWidgets("Selecting photo invokes callback for single picker",
-      (WidgetTester tester) async {
-    bool called = false;
+      (tester) async {
+    var called = false;
     await tester.pumpWidget(Testable(
       (_) => ImagePickerPage.single(
         onImagePicked: (_, __) => called = true,
@@ -395,9 +392,9 @@ main() {
   });
 
   testWidgets("Do not pop picker if popsOnFinish is false",
-      (WidgetTester tester) async {
+      (tester) async {
     var navObserver = MockNavigatorObserver();
-    bool called = false;
+    var called = false;
     await tester.pumpWidget(Testable(
       (_) => ImagePickerPage(
         onImagesPicked: (_, __) => called = true,
@@ -414,9 +411,8 @@ main() {
     verifyNever(navObserver.didPop(any, any));
   });
 
-  testWidgets("Picked image with invalid coordinates",
-      (WidgetTester tester) async {
-    MockAssetEntity entity = createMockAssetEntity(
+  testWidgets("Picked image with invalid coordinates", (tester) async {
+    var entity = createMockAssetEntity(
       fileName: "android_logo.png",
       latLngAsync: null,
       latLngLegacy: null,
@@ -441,9 +437,8 @@ main() {
     verify(entity.latlngAsync()).called(1);
   });
 
-  testWidgets("Picked image with valid legacy coordinates",
-      (WidgetTester tester) async {
-    MockAssetEntity entity = createMockAssetEntity(
+  testWidgets("Picked image with valid legacy coordinates", (tester) async {
+    var entity = createMockAssetEntity(
       fileName: "android_logo.png",
       latLngAsync: null,
       latLngLegacy: LatLng()
@@ -470,9 +465,8 @@ main() {
     verifyNever(entity.latlngAsync());
   });
 
-  testWidgets("Picked image with valid OS coordinates",
-      (WidgetTester tester) async {
-    MockAssetEntity entity = createMockAssetEntity(
+  testWidgets("Picked image with valid OS coordinates", (tester) async {
+    var entity = createMockAssetEntity(
       fileName: "android_logo.png",
       latLngAsync: LatLng()
         ..latitude = 0.654321

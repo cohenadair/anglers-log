@@ -865,3 +865,4 @@ class ComparisonReport extends $pb.GeneratedMessage {
   @$pb.TagNumber(12)
   $core.List<Id> get speciesIds => $_getList(11);
 }
+// ignore_for_file: constant_identifier_names,lines_longer_than_80_chars,directives_ordering,unnecessary_const,prefer_mixin,implementation_imports

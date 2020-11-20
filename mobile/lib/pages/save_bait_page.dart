@@ -1,25 +1,26 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:mobile/bait_category_manager.dart';
-import 'package:mobile/bait_manager.dart';
-import 'package:mobile/entity_manager.dart';
-import 'package:mobile/i18n/strings.dart';
-import 'package:mobile/log.dart';
-import 'package:mobile/model/gen/anglerslog.pb.dart';
-import 'package:mobile/pages/bait_category_list_page.dart';
-import 'package:mobile/pages/editable_form_page.dart';
-import 'package:mobile/preferences_manager.dart';
-import 'package:mobile/res/dimen.dart';
-import 'package:mobile/utils/dialog_utils.dart';
-import 'package:mobile/utils/page_utils.dart';
-import 'package:mobile/utils/protobuf_utils.dart';
-import 'package:mobile/utils/validator.dart';
-import 'package:mobile/widgets/input_data.dart';
-import 'package:mobile/widgets/input_controller.dart';
-import 'package:mobile/widgets/list_picker_input.dart';
-import 'package:mobile/widgets/text_input.dart';
-import 'package:mobile/widgets/widget.dart';
+
+import '../bait_category_manager.dart';
+import '../bait_manager.dart';
+import '../entity_manager.dart';
+import '../i18n/strings.dart';
+import '../log.dart';
+import '../model/gen/anglerslog.pb.dart';
+import '../pages/bait_category_list_page.dart';
+import '../pages/editable_form_page.dart';
+import '../preferences_manager.dart';
+import '../res/dimen.dart';
+import '../utils/dialog_utils.dart';
+import '../utils/page_utils.dart';
+import '../utils/protobuf_utils.dart';
+import '../utils/validator.dart';
+import '../widgets/input_controller.dart';
+import '../widgets/input_data.dart';
+import '../widgets/list_picker_input.dart';
+import '../widgets/text_input.dart';
+import '../widgets/widget.dart';
 
 class SaveBaitPage extends StatefulWidget {
   final Bait oldBait;
@@ -150,7 +151,7 @@ class _SaveBaitPageState extends State<SaveBaitPage> {
   FutureOr<bool> _save(Map<Id, dynamic> customFieldValueMap) {
     _preferencesManager.baitCustomEntityIds = customFieldValueMap.keys.toList();
 
-    Bait newBait = Bait()
+    var newBait = Bait()
       ..id = _oldBait?.id ?? randomId()
       ..name = _nameController.value
       ..customEntityValues.addAll(entityValuesFromMap(customFieldValueMap));

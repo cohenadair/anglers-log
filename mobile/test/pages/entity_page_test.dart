@@ -12,11 +12,11 @@ import 'package:mockito/mockito.dart';
 import '../mock_app_manager.dart';
 import '../test_utils.dart';
 
-main() {
+void main() {
   MockAppManager appManager;
 
-  Future<ui.Image> image(WidgetTester tester, String name) async {
-    ui.Image image = await loadImage(tester, "test/resources/$name");
+  Future<ui.Image> image(tester, String name) async {
+    var image = await loadImage(tester, "test/resources/$name");
     when(appManager.mockImageManager.dartImage(any, name, any))
         .thenAnswer((_) => Future.value(image));
     return image;
@@ -30,12 +30,12 @@ main() {
   });
 
   group("Images", () {
-    testWidgets("No images", (WidgetTester tester) async {
+    testWidgets("No images", (tester) async {
       await tester.pumpWidget(Testable((_) => EntityPage(children: [])));
       expect(find.byType(PageView), findsNothing);
     });
 
-    testWidgets("Image scrolling", (WidgetTester tester) async {
+    testWidgets("Image scrolling", (tester) async {
       await image(tester, "flutter_logo.png");
       await image(tester, "anglers_log_logo.png");
       await image(tester, "android_logo.png");
@@ -63,7 +63,7 @@ main() {
 
       // Verify initial images state.
       expect(find.byType(PageView), findsOneWidget);
-      List<Widget> carouselDots = tester
+      var carouselDots = tester
           .widgetList(find.byWidgetPredicate((widget) =>
               widget is Container &&
               widget.decoration is BoxDecoration &&
@@ -104,7 +104,7 @@ main() {
     });
 
     testWidgets("Image carousel hidden for only 1 image",
-        (WidgetTester tester) async {
+        (tester) async {
       await image(tester, "flutter_logo.png");
       await tester.pumpWidget(Testable(
         (_) => EntityPage(
@@ -129,7 +129,7 @@ main() {
     });
   });
 
-  testWidgets("No custom entities hide separator", (WidgetTester tester) async {
+  testWidgets("No custom entities hide separator", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => EntityPage(
         children: [],
@@ -138,9 +138,8 @@ main() {
     expect(find.text("Custom Fields"), findsNothing);
   });
 
-  testWidgets("Custom entities are shown with separator",
-      (WidgetTester tester) async {
-    Id customEntityId = randomId();
+  testWidgets("Custom entities are shown with separator", (tester) async {
+    var customEntityId = randomId();
     when(appManager.mockCustomEntityManager.entity(customEntityId)).thenReturn(
       CustomEntity()
         ..id = randomId()
@@ -165,7 +164,7 @@ main() {
   });
 
   testWidgets("Static page does not show edit and delete buttons",
-      (WidgetTester tester) async {
+      (tester) async {
     await tester.pumpWidget(
       Testable(
         (_) => EntityPage(
@@ -180,7 +179,7 @@ main() {
   });
 
   testWidgets("Dynamic page shows edit and delete buttons",
-      (WidgetTester tester) async {
+      (tester) async {
     await tester.pumpWidget(Testable((_) => EntityPage(children: [])));
 
     expect(find.text("EDIT"), findsOneWidget);
@@ -188,7 +187,7 @@ main() {
   });
 
   testWidgets("Delete confirmation shown when deleteMessage != null",
-      (WidgetTester tester) async {
+      (tester) async {
     await tester.pumpWidget(
       Testable(
         (_) => EntityPage(
@@ -204,7 +203,7 @@ main() {
   });
 
   testWidgets("Delete confirmation not shown when deleteMessage == null",
-      (WidgetTester tester) async {
+      (tester) async {
     await tester.pumpWidget(
       Testable(
         (_) => EntityPage(
@@ -217,7 +216,7 @@ main() {
     expect(find.text("DELETE"), findsNothing);
   });
 
-  testWidgets("All children rendered", (WidgetTester tester) async {
+  testWidgets("All children rendered", (tester) async {
     await tester.pumpWidget(
       Testable(
         (_) => EntityPage(

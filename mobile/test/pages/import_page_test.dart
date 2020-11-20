@@ -12,10 +12,10 @@ import 'package:mockito/mockito.dart';
 import '../mock_app_manager.dart';
 import '../test_utils.dart';
 
-main() {
+void main() {
   MockAppManager appManager;
 
-  String tmpPath = "test/resources/tmp";
+  var tmpPath = "test/resources/tmp";
   Directory tmpDir;
 
   setUp(() {
@@ -64,13 +64,13 @@ main() {
     tmpDir.deleteSync(recursive: true);
   });
 
-  testWidgets("Loading state", (WidgetTester tester) async {
+  testWidgets("Loading state", (tester) async {
     // There's no way to verify a "loading" state due to Flutter's FakeAsync
     // test environment.
   });
 
   testWidgets("Null picked file resets state to none",
-      (WidgetTester tester) async {
+      (tester) async {
     when(appManager.mockFilePickerWrapper.getFile(
       type: anyNamed("type"),
       fileExtension: anyNamed("fileExtension"),
@@ -87,7 +87,7 @@ main() {
     expect(find.byIcon(Icons.error), findsNothing);
   });
 
-  testWidgets(" ", (WidgetTester tester) async {
+  testWidgets(" ", (tester) async {
     when(appManager.mockFilePickerWrapper.getFile(
       type: anyNamed("type"),
       fileExtension: anyNamed("fileExtension"),
@@ -104,7 +104,7 @@ main() {
   });
 
   testWidgets("Import error feedback button shows feedback page",
-      (WidgetTester tester) async {
+      (tester) async {
     when(appManager.mockFilePickerWrapper.getFile(
       type: anyNamed("type"),
       fileExtension: anyNamed("fileExtension"),
@@ -124,7 +124,7 @@ main() {
   });
 
   testWidgets("Successful import error shows success widget",
-      (WidgetTester tester) async {
+      (tester) async {
     when(appManager.mockFilePickerWrapper.getFile(
       type: anyNamed("type"),
       fileExtension: anyNamed("fileExtension"),

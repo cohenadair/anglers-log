@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:mobile/i18n/strings.dart';
-import 'package:mobile/model/gen/anglerslog.pb.dart';
-import 'package:mobile/res/dimen.dart';
-import 'package:mobile/utils/dialog_utils.dart';
-import 'package:mobile/widgets/app_bar_gradient.dart';
-import 'package:mobile/widgets/button.dart';
-import 'package:mobile/widgets/custom_entity_values.dart';
-import 'package:mobile/widgets/photo.dart';
-import 'package:mobile/widgets/widget.dart';
 import 'package:quiver/strings.dart';
+
+import '../i18n/strings.dart';
+import '../model/gen/anglerslog.pb.dart';
+import '../res/dimen.dart';
+import '../utils/dialog_utils.dart';
+import '../widgets/app_bar_gradient.dart';
+import '../widgets/button.dart';
+import '../widgets/custom_entity_values.dart';
+import '../widgets/photo.dart';
+import '../widgets/widget.dart';
 
 /// A page for displaying details of an [Entity]. This page includes a delete
 /// and edit button in the [AppBar], as well as an optional image carousel
@@ -67,7 +68,7 @@ class _EntityPageState extends State<EntityPage> {
 
   @override
   Widget build(BuildContext context) {
-    List<Widget> children = widget.children;
+    var children = widget.children;
     if (widget.customEntityValues.isNotEmpty) {
       children.addAll([
         Padding(
@@ -121,8 +122,8 @@ class _EntityPageState extends State<EntityPage> {
   }
 
   Widget _buildImages() {
-    List<Widget> carousel = [];
-    List<String> imageNames = widget.imageNames;
+    var carousel = <Widget>[];
+    var imageNames = widget.imageNames;
 
     if (imageNames.length > 1) {
       for (var i = 0; i < imageNames.length; i++) {
@@ -198,20 +199,20 @@ class _EntityPageState extends State<EntityPage> {
       return Empty();
     }
 
-    var onPressed = () {
-      showDeleteDialog(
-        context: context,
-        description: Text(widget.deleteMessage),
-        onDelete: () {
-          widget.onDelete?.call();
-          Navigator.pop(context);
-        },
-      );
-    };
-
     return IconButton(
       icon: Icon(Icons.delete),
-      onPressed: isEmpty(widget.deleteMessage) ? null : onPressed,
+      onPressed: isEmpty(widget.deleteMessage)
+          ? null
+          : () {
+              showDeleteDialog(
+                context: context,
+                description: Text(widget.deleteMessage),
+                onDelete: () {
+                  widget.onDelete?.call();
+                  Navigator.pop(context);
+                },
+              );
+            },
     );
   }
 }

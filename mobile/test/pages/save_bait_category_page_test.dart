@@ -8,7 +8,7 @@ import 'package:mockito/mockito.dart';
 import '../mock_app_manager.dart';
 import '../test_utils.dart';
 
-main() {
+void main() {
   MockAppManager appManager;
 
   setUp(() {
@@ -19,7 +19,7 @@ main() {
     when(appManager.mockBaitCategoryManager.nameExists(any)).thenReturn(false);
   });
 
-  testWidgets("Edit title", (WidgetTester tester) async {
+  testWidgets("Edit title", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => SaveBaitCategoryPage.edit(BaitCategory()),
       appManager: appManager,
@@ -27,7 +27,7 @@ main() {
     expect(find.text("Edit Bait Category"), findsOneWidget);
   });
 
-  testWidgets("New title", (WidgetTester tester) async {
+  testWidgets("New title", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => SaveBaitCategoryPage(),
       appManager: appManager,
@@ -35,7 +35,7 @@ main() {
     expect(find.text("New Bait Category"), findsOneWidget);
   });
 
-  testWidgets("Save new", (WidgetTester tester) async {
+  testWidgets("Save new", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => SaveBaitCategoryPage(),
       appManager: appManager,
@@ -44,7 +44,7 @@ main() {
     await enterTextAndSettle(tester, find.byType(TextField), "Lure");
     await tapAndSettle(tester, find.text("SAVE"));
 
-    VerificationResult result =
+    var result =
         verify(appManager.mockBaitCategoryManager.addOrUpdate(captureAny));
     result.called(1);
 
@@ -52,7 +52,7 @@ main() {
     expect(category.name, "Lure");
   });
 
-  testWidgets("Editing", (WidgetTester tester) async {
+  testWidgets("Editing", (tester) async {
     var baitCategory = BaitCategory()
       ..id = randomId()
       ..name = "Lure";
@@ -67,7 +67,7 @@ main() {
     await enterTextAndSettle(tester, find.byType(TextField), "Bead");
     await tapAndSettle(tester, find.text("SAVE"));
 
-    VerificationResult result =
+    var result =
         verify(appManager.mockBaitCategoryManager.addOrUpdate(captureAny));
     result.called(1);
 

@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:mobile/app_manager.dart';
-import 'package:mobile/bait_manager.dart';
-import 'package:mobile/i18n/strings.dart';
-import 'package:mobile/model/gen/anglerslog.pb.dart';
-import 'package:mobile/named_entity_manager.dart';
-import 'package:mobile/utils/string_utils.dart';
 import 'package:provider/provider.dart';
+
+import 'app_manager.dart';
+import 'bait_manager.dart';
+import 'i18n/strings.dart';
+import 'model/gen/anglerslog.pb.dart';
+import 'named_entity_manager.dart';
+import 'utils/string_utils.dart';
 
 class BaitCategoryManager extends NamedEntityManager<BaitCategory> {
   static BaitCategoryManager of(BuildContext context) =>
@@ -33,7 +34,7 @@ class BaitCategoryManager extends NamedEntityManager<BaitCategory> {
       return 0;
     }
 
-    int result = 0;
+    var result = 0;
     _baitManager.list().forEach(
         (bait) => result += baitCategoryId == bait.baitCategoryId ? 1 : 0);
 
@@ -44,8 +45,8 @@ class BaitCategoryManager extends NamedEntityManager<BaitCategory> {
     assert(context != null);
     assert(baitCategory != null);
 
-    int numOfBaits = numberOfBaits(baitCategory.id);
-    String string = numOfBaits == 1
+    var numOfBaits = numberOfBaits(baitCategory.id);
+    var string = numOfBaits == 1
         ? Strings.of(context).baitCategoryListPageDeleteMessageSingular
         : Strings.of(context).baitCategoryListPageDeleteMessage;
     return format(string, [baitCategory.name, numOfBaits]);

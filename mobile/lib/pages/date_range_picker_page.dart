@@ -1,12 +1,13 @@
 import 'dart:async';
 
-import 'package:date_range_picker/date_range_picker.dart' as DateRangePicker;
+import 'package:date_range_picker/date_range_picker.dart' as date_range_picker;
 import 'package:flutter/material.dart';
-import 'package:mobile/app_manager.dart';
-import 'package:mobile/i18n/strings.dart';
-import 'package:mobile/pages/picker_page.dart';
-import 'package:mobile/time_manager.dart';
-import 'package:mobile/utils/date_time_utils.dart';
+
+import '../app_manager.dart';
+import '../i18n/strings.dart';
+import '../pages/picker_page.dart';
+import '../time_manager.dart';
+import '../utils/date_time_utils.dart';
 
 /// A [ListPicker] wrapper widget for selecting a date range, such as the
 /// "Last 7 days" or "This week" from a list.
@@ -86,10 +87,10 @@ class _DateRangePickerPageState extends State<DateRangePickerPage> {
   }
 
   Future<void> _onTapCustom(BuildContext context) async {
-    DateTime now = _timeManager.currentDateTime;
-    DateRange customValue = _customDateRange.getValue(now);
+    var now = _timeManager.currentDateTime;
+    var customValue = _customDateRange.getValue(now);
 
-    List<DateTime> pickedRange = await DateRangePicker.showDatePicker(
+    var pickedRange = await date_range_picker.showDatePicker(
       context: context,
       initialFirstDate: customValue.startDate,
       initialLastDate: customValue.endDate,
@@ -108,7 +109,7 @@ class _DateRangePickerPageState extends State<DateRangePickerPage> {
       endDate = pickedRange.first.add(Duration(days: 1));
     }
 
-    DateRange dateRange = DateRange(
+    var dateRange = DateRange(
       startDate: pickedRange.first,
       endDate: endDate ?? pickedRange.last,
     );

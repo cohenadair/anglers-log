@@ -1,13 +1,14 @@
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
-import 'package:mobile/app_manager.dart';
-import 'package:mobile/data_manager.dart';
-import 'package:mobile/model/gen/anglerslog.pb.dart';
-import 'package:mobile/utils/listener_manager.dart';
-import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:protobuf/protobuf.dart';
 import 'package:quiver/strings.dart';
+
+import 'app_manager.dart';
+import 'data_manager.dart';
+import 'model/gen/anglerslog.pb.dart';
+import 'utils/listener_manager.dart';
+import 'utils/protobuf_utils.dart';
 
 class EntityListener<T> {
   void Function(T) onDelete;
@@ -52,16 +53,16 @@ abstract class EntityManager<T extends GeneratedMessage>
   /// Parses a Protobuf byte representation.
   T entityFromBytes(List<int> bytes);
 
-  EntityManager(AppManager app)
-      : appManager = app,
-        super() {
+  EntityManager(this.appManager) : super() {
     dataManager.addListener(DataListener(
       onReset: clear,
     ));
   }
 
   Future<void> initialize() async {
-    (await _fetchAll()).forEach((e) => entities[id(e)] = e);
+    for (var e in (await _fetchAll())) {
+      entities[id(e)] = e;
+    }
   }
 
   @protected
@@ -102,7 +103,7 @@ abstract class EntityManager<T extends GeneratedMessage>
     T entity, {
     bool notify = true,
   }) async {
-    Id id = this.id(entity);
+    var id = this.id(entity);
     if (await dataManager.insertOrUpdateEntity(
         id, _entityToMap(entity), tableName)) {
       entities[id] = entity;
@@ -116,7 +117,7 @@ abstract class EntityManager<T extends GeneratedMessage>
 
   Future<bool> delete(Id entityId) async {
     if (await dataManager.deleteEntity(entityId, tableName)) {
-      T deletedEntity = entity(entityId);
+      var deletedEntity = entity(entityId);
       if (entities.remove(entityId) != null) {
         notifyOnDelete(deletedEntity);
       }
@@ -144,7 +145,7 @@ abstract class EntityManager<T extends GeneratedMessage>
   @protected
   Future<void> replaceDatabaseWithCache() async {
     await dataManager.replaceRows(
-        tableName, list().map((e) => _entityToMap(e)).toList());
+        tableName, list().map(_entityToMap).toList());
   }
 
   @protected
@@ -202,21 +203,19 @@ class EntityListenerBuilder extends StatefulWidget {
 }
 
 class _EntityListenerBuilderState extends State<EntityListenerBuilder> {
-  List<EntityListener> _listeners = [];
+  final List<EntityListener> _listeners = [];
 
   @override
   void initState() {
     super.initState();
 
-    widget.managers.forEach(
-      (manager) => _listeners.add(
-        manager.addSimpleListener(
-          onDelete: widget.onDeleteEnabled ? (_) => _update() : null,
-          onAddOrUpdate: _update,
-          onClear: _update,
-        ),
-      ),
-    );
+    for (var manager in widget.managers) {
+      _listeners.add(manager.addSimpleListener(
+        onDelete: widget.onDeleteEnabled ? (_) => _update() : null,
+        onAddOrUpdate: _update,
+        onClear: _update,
+      ));
+    }
   }
 
   @override

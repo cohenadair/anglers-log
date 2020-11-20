@@ -1,17 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:mobile/comparison_report_manager.dart';
-import 'package:mobile/model/gen/anglerslog.pb.dart';
-import 'package:mobile/summary_report_manager.dart';
-import 'package:mobile/i18n/strings.dart';
-import 'package:mobile/log.dart';
-import 'package:mobile/pages/manageable_list_page.dart';
-import 'package:mobile/pages/save_report_page.dart';
-import 'package:mobile/model/overview_report.dart';
-import 'package:mobile/res/dimen.dart';
-import 'package:mobile/utils/string_utils.dart';
-import 'package:mobile/widgets/text.dart';
-import 'package:mobile/widgets/widget.dart';
 import 'package:quiver/strings.dart';
+
+import '../comparison_report_manager.dart';
+import '../i18n/strings.dart';
+import '../log.dart';
+import '../model/gen/anglerslog.pb.dart';
+import '../model/overview_report.dart';
+import '../pages/manageable_list_page.dart';
+import '../pages/save_report_page.dart';
+import '../res/dimen.dart';
+import '../summary_report_manager.dart';
+import '../utils/string_utils.dart';
+import '../widgets/text.dart';
+import '../widgets/widget.dart';
 
 class ReportListPage extends StatelessWidget {
   static const _log = Log("ReportListPage");
@@ -31,7 +32,7 @@ class ReportListPage extends StatelessWidget {
 
     return ManageableListPage<dynamic>(
       titleBuilder: (_) => Text(Strings.of(context).reportListPagePickerTitle),
-      itemBuilder: (context, item) => _buildItem(context, item),
+      itemBuilder: _buildItem,
       itemManager: ManageableListPageItemManager<dynamic>(
         listenerManagers: [
           summaryReportManager,
@@ -49,7 +50,7 @@ class ReportListPage extends StatelessWidget {
         editPageBuilder: (report) => SaveReportPage.edit(report),
       ),
       pickerSettings: ManageableListPagePickerSettings<dynamic>(
-        initialValues: Set.of([currentItem]),
+        initialValues: {currentItem},
         onPicked: (context, reports) => onPicked(context, reports.first),
       ),
     );
@@ -86,14 +87,15 @@ class ReportListPage extends StatelessWidget {
   }
 
   List<dynamic> _loadItems(BuildContext context) {
-    List<dynamic> result = [
+    var result = <dynamic>[
       OverviewReport(),
     ];
 
     var summaryReportManager = SummaryReportManager.of(context);
     var comparisonReportManager = ComparisonReportManager.of(context);
 
-    List<dynamic> customReports = List.of(summaryReportManager.list())
+    var customReports = <dynamic>[]
+      ..addAll(summaryReportManager.list())
       ..addAll(comparisonReportManager.list())
       // Sort alphabetically.
       ..sort((lhs, rhs) => compareIgnoreCase(lhs.name, rhs.name));

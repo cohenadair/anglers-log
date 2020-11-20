@@ -7,11 +7,11 @@ import 'package:mobile/widgets/widget.dart';
 
 import '../test_utils.dart';
 
-main() {
+void main() {
   group("Button", () {
-    testWidgets("No icon", (WidgetTester tester) async {
-      bool pressed = false;
-      Button button = Button(
+    testWidgets("No icon", (tester) async {
+      var pressed = false;
+      var button = Button(
         text: "Test",
         onPressed: () => pressed = true,
       );
@@ -25,8 +25,8 @@ main() {
       expect(pressed, isTrue);
     });
 
-    testWidgets("Icon", (WidgetTester tester) async {
-      Button button = Button(
+    testWidgets("Icon", (tester) async {
+      var button = Button(
         text: "Test",
         onPressed: () => {},
         icon: Icon(Icons.group),
@@ -38,7 +38,7 @@ main() {
   });
 
   group("ActionButton", () {
-    testWidgets("Constructors", (WidgetTester tester) async {
+    testWidgets("Constructors", (tester) async {
       await tester.pumpWidget(Testable((_) => ActionButton.done()));
       expect(find.text("DONE"), findsOneWidget);
 
@@ -61,13 +61,13 @@ main() {
       expect(find.text("TEST"), findsOneWidget);
     });
 
-    testWidgets("Text is always uppercase", (WidgetTester tester) async {
+    testWidgets("Text is always uppercase", (tester) async {
       await tester.pumpWidget(Testable((_) => ActionButton.done()));
       expect(find.text("DONE"), findsOneWidget);
       expect(find.text("Done"), findsNothing);
     });
 
-    testWidgets("Text color", (WidgetTester tester) async {
+    testWidgets("Text color", (tester) async {
       await tester.pumpWidget(
         Testable(
           (_) => ActionButton.done(
@@ -79,12 +79,12 @@ main() {
           Colors.red);
     });
 
-    testWidgets("Disabled", (WidgetTester tester) async {
+    testWidgets("Disabled", (tester) async {
       await tester.pumpWidget(Testable((_) => ActionButton.done()));
       expect(findFirst<EnabledOpacity>(tester).enabled, isFalse);
     });
 
-    testWidgets("Enabled", (WidgetTester tester) async {
+    testWidgets("Enabled", (tester) async {
       await tester.pumpWidget(
         Testable(
           (_) => ActionButton.done(
@@ -95,7 +95,7 @@ main() {
       expect(findFirst<EnabledOpacity>(tester).enabled, isTrue);
     });
 
-    testWidgets("Condensed", (WidgetTester tester) async {
+    testWidgets("Condensed", (tester) async {
       await tester.pumpWidget(
         Testable(
           (_) => ActionButton.done(
@@ -106,15 +106,15 @@ main() {
       expect(findFirst<RawMaterialButton>(tester).padding, insetsSmall);
     });
 
-    testWidgets("Not condensed", (WidgetTester tester) async {
+    testWidgets("Not condensed", (tester) async {
       await tester.pumpWidget(Testable((_) => ActionButton.done()));
       expect(findFirst<RawMaterialButton>(tester).padding, insetsDefault);
     });
   });
 
   group("ChipButton", () {
-    testWidgets("Enabled", (WidgetTester tester) async {
-      bool pressed = false;
+    testWidgets("Enabled", (tester) async {
+      var pressed = false;
       await tester.pumpWidget(
         Testable(
           (_) => ChipButton(
@@ -129,7 +129,7 @@ main() {
   });
 
   group("MinimumIconButton", () {
-    testWidgets("Color", (WidgetTester tester) async {
+    testWidgets("Color", (tester) async {
       await tester.pumpWidget(
         Testable(
           (_) => MinimumIconButton(
@@ -143,7 +143,7 @@ main() {
   });
 
   group("FloatingIconButton", () {
-    testWidgets("Not pushed color", (WidgetTester tester) async {
+    testWidgets("Not pushed color", (tester) async {
       await tester.pumpWidget(
         Testable(
           (_) => FloatingIconButton(
@@ -155,7 +155,7 @@ main() {
       expect(findFirst<RawMaterialButton>(tester).fillColor, Colors.white);
     });
 
-    testWidgets("Pushed color", (WidgetTester tester) async {
+    testWidgets("Pushed color", (tester) async {
       await tester.pumpWidget(
         Testable(
           (_) => FloatingIconButton(
@@ -168,7 +168,7 @@ main() {
       expect(findFirst<RawMaterialButton>(tester).fillColor, Colors.grey);
     });
 
-    testWidgets("Default padding", (WidgetTester tester) async {
+    testWidgets("Default padding", (tester) async {
       await tester.pumpWidget(
         Testable(
           (_) => FloatingIconButton(
@@ -180,7 +180,7 @@ main() {
       expect(findFirst<Padding>(tester).padding, insetsDefault);
     });
 
-    testWidgets("Custom padding", (WidgetTester tester) async {
+    testWidgets("Custom padding", (tester) async {
       await tester.pumpWidget(
         Testable(
           (_) => FloatingIconButton(
@@ -193,7 +193,7 @@ main() {
       expect(findFirst<Padding>(tester).padding, insetsSmall);
     });
 
-    testWidgets("With label", (WidgetTester tester) async {
+    testWidgets("With label", (tester) async {
       await tester.pumpWidget(
         Testable(
           (_) => FloatingIconButton(
@@ -206,7 +206,7 @@ main() {
       expect(find.text("Backpack"), findsOneWidget);
     });
 
-    testWidgets("Without label", (WidgetTester tester) async {
+    testWidgets("Without label", (tester) async {
       await tester.pumpWidget(
         Testable(
           (_) => FloatingIconButton(

@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:mobile/app_manager.dart';
-import 'package:mobile/model/gen/anglerslog.pb.dart';
-import 'package:mobile/named_entity_manager.dart';
 import 'package:provider/provider.dart';
+
+import 'app_manager.dart';
+import 'model/gen/anglerslog.pb.dart';
+import 'named_entity_manager.dart';
 
 class CustomEntityManager extends NamedEntityManager<CustomEntity> {
   static CustomEntityManager of(BuildContext context) =>

@@ -8,8 +8,8 @@ import 'package:mobile/widgets/widget.dart';
 
 import '../test_utils.dart';
 
-main() {
-  testWidgets("Default margins", (WidgetTester tester) async {
+void main() {
+  testWidgets("Default margins", (tester) async {
     await tester.pumpWidget(
       Testable(
         (_) => FloatingContainer(
@@ -20,7 +20,7 @@ main() {
     expect(findFirst<Container>(tester).margin, insetsDefault);
   });
 
-  testWidgets("Custom margins", (WidgetTester tester) async {
+  testWidgets("Custom margins", (tester) async {
     await tester.pumpWidget(
       Testable(
         (_) => FloatingContainer(
@@ -32,8 +32,8 @@ main() {
     expect(findFirst<Container>(tester).margin, EdgeInsets.all(37));
   });
 
-  testWidgets("Tap enabled", (WidgetTester tester) async {
-    bool tapped = false;
+  testWidgets("Tap enabled", (tester) async {
+    var tapped = false;
     await tester.pumpWidget(
       Testable(
         (_) => FloatingContainer(
@@ -50,7 +50,7 @@ main() {
     expect(findFirst<ListItem>(tester).contentPadding.right, paddingSmall);
   });
 
-  testWidgets("Tap disabled", (WidgetTester tester) async {
+  testWidgets("Tap disabled", (tester) async {
     await tester.pumpWidget(
       Testable(
         (_) => FloatingContainer(
@@ -62,7 +62,7 @@ main() {
     expect(findFirst<ListItem>(tester).contentPadding.right, paddingDefault);
   });
 
-  testWidgets("Empty title shows subtitle", (WidgetTester tester) async {
+  testWidgets("Empty title shows subtitle", (tester) async {
     await tester.pumpWidget(
       Testable(
         (_) => FloatingContainer(
@@ -74,7 +74,7 @@ main() {
     expect(find.text("Subtitle"), findsOneWidget);
   });
 
-  testWidgets("Title and subtitle", (WidgetTester tester) async {
+  testWidgets("Title and subtitle", (tester) async {
     await tester.pumpWidget(
       Testable(
         (_) => FloatingContainer(
@@ -90,12 +90,12 @@ main() {
   });
 
   testWidgets("Title/subtitle cannot both be empty",
-      (WidgetTester tester) async {
+      (tester) async {
     await tester.pumpWidget(Testable((_) => FloatingContainer()));
     expect(tester.takeException(), isAssertionError);
   });
 
-  testWidgets("Children are added", (WidgetTester tester) async {
+  testWidgets("Children are added", (tester) async {
     await tester.pumpWidget(
       Testable(
         (_) => FloatingContainer(

@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:mobile/res/dimen.dart';
-import 'package:mobile/widgets/list_item.dart';
-import 'package:mobile/widgets/text.dart';
 import 'package:quiver/strings.dart';
+
+import '../res/dimen.dart';
+import '../widgets/list_item.dart';
+import '../widgets/text.dart';
 
 class CheckboxInput extends StatelessWidget {
   final String label;

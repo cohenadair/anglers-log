@@ -3,9 +3,9 @@ import 'package:mobile/widgets/text_input.dart';
 
 import '../test_utils.dart';
 
-main() {
-  testWidgets("onChanged callback is invoked", (WidgetTester tester) async {
-    bool changed = false;
+void main() {
+  testWidgets("onChanged callback is invoked", (tester) async {
+    var changed = false;
     await tester.pumpWidget(
       Testable(
         (_) => TextInput.name(

@@ -4,9 +4,9 @@ import 'package:mobile/widgets/styled_bottom_sheet.dart';
 
 import '../test_utils.dart';
 
-main() {
-  testWidgets("onDismissed callback invoked", (WidgetTester tester) async {
-    bool invoked = false;
+void main() {
+  testWidgets("onDismissed callback invoked", (tester) async {
+    var invoked = false;
     await tester.pumpWidget(
       Testable(
         (_) => StyledBottomSheet(

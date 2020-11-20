@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:mobile/i18n/strings.dart';
-import 'package:mobile/pages/picker_page.dart';
-import 'package:mobile/res/dimen.dart';
-import 'package:mobile/widgets/radio_input.dart';
-import 'package:mobile/widgets/text.dart';
-import 'package:mobile/widgets/widget.dart';
 import 'package:quiver/strings.dart';
+
+import '../i18n/strings.dart';
+import '../pages/picker_page.dart';
+import '../res/dimen.dart';
+import '../widgets/radio_input.dart';
+import '../widgets/text.dart';
+import '../widgets/widget.dart';
 
 /// A generic picker widget for selecting items from a list. This should be used
 /// in place of a [RadioInput] when there are a lot of options. If multiple,
@@ -36,8 +37,8 @@ class ListPickerInput extends StatelessWidget {
             children: [
               PrimaryLabel(isEmpty(title) ? value : title),
               Expanded(
-                // If there's no title widget, the value widget will render at the
-                // start of the row.
+                // If there's no title widget, the value widget will render at
+                // the start of the row.
                 child: isEmpty(title)
                     ? Empty()
                     : SecondaryLabel(

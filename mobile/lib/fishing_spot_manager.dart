@@ -1,14 +1,15 @@
 import 'package:flutter/cupertino.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:mobile/app_manager.dart';
-import 'package:mobile/catch_manager.dart';
-import 'package:mobile/i18n/strings.dart';
-import 'package:mobile/model/gen/anglerslog.pb.dart';
-import 'package:mobile/named_entity_manager.dart';
-import 'package:mobile/utils/map_utils.dart';
-import 'package:mobile/utils/string_utils.dart';
 import 'package:provider/provider.dart';
 import 'package:quiver/strings.dart';
+
+import 'app_manager.dart';
+import 'catch_manager.dart';
+import 'i18n/strings.dart';
+import 'model/gen/anglerslog.pb.dart';
+import 'named_entity_manager.dart';
+import 'utils/map_utils.dart';
+import 'utils/string_utils.dart';
 
 class FishingSpotManager extends NamedEntityManager<FishingSpot> {
   static FishingSpotManager of(BuildContext context) =>
@@ -37,9 +38,9 @@ class FishingSpotManager extends NamedEntityManager<FishingSpot> {
       return null;
     }
 
-    Map<FishingSpot, double> eligibleFishingSpotsMap = {};
-    for (FishingSpot fishingSpot in entities.values) {
-      double distance =
+    var eligibleFishingSpotsMap = <FishingSpot, double>{};
+    for (var fishingSpot in entities.values) {
+      var distance =
           distanceBetween(LatLng(fishingSpot.lat, fishingSpot.lng), latLng);
       if (distance <= meters) {
         eligibleFishingSpotsMap[fishingSpot] = distance;
@@ -47,7 +48,7 @@ class FishingSpotManager extends NamedEntityManager<FishingSpot> {
     }
 
     FishingSpot result;
-    double minDistance = (meters + 1).toDouble();
+    var minDistance = (meters + 1).toDouble();
 
     eligibleFishingSpotsMap.forEach((fishingSpot, distance) {
       if (distance < minDistance) {
@@ -76,7 +77,7 @@ class FishingSpotManager extends NamedEntityManager<FishingSpot> {
       return 0;
     }
 
-    int result = 0;
+    var result = 0;
     _catchManager.list().forEach((cat) {
       result += fishingSpot.id == cat.fishingSpotId ? 1 : 0;
     });
@@ -87,8 +88,8 @@ class FishingSpotManager extends NamedEntityManager<FishingSpot> {
     assert(context != null);
     assert(fishingSpot != null);
 
-    int numOfCatches = numberOfCatches(fishingSpot);
-    String hasNameString = numOfCatches == 1
+    var numOfCatches = numberOfCatches(fishingSpot);
+    var hasNameString = numOfCatches == 1
         ? Strings.of(context).mapPageDeleteFishingSpotSingular
         : Strings.of(context).mapPageDeleteFishingSpot;
 

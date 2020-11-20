@@ -9,11 +9,11 @@ import 'package:mockito/mockito.dart';
 import '../mock_app_manager.dart';
 import '../test_utils.dart';
 
-main() {
+void main() {
   group("Initialization", () {
     testWidgets("Assertion if no title/description when not showing all",
-        (WidgetTester tester) async {
-      Series<Species> series = Series({
+        (tester) async {
+      var series = Series<Species>({
         Species()..name = "Bass": 5,
       }, DisplayDateRange.last7Days);
 
@@ -51,12 +51,12 @@ main() {
     });
 
     testWidgets("Assertion if not all series data has equal length",
-        (WidgetTester tester) async {
-      Series<Species> series1 = Series({
+        (tester) async {
+      var series1 = Series<Species>({
         Species()..name = "Bass": 5,
       }, DisplayDateRange.last7Days);
 
-      Series<Species> series2 = Series({
+      var series2 = Series<Species>({
         Species()..name = "Bass": 5,
         Species()..name = "Trout": 10,
       }, DisplayDateRange.last7Days);
@@ -77,8 +77,8 @@ main() {
 
   group("Legend", () {
     testWidgets("Single series does not show legend",
-        (WidgetTester tester) async {
-      Series<Species> series = Series({
+        (tester) async {
+      var series = Series<Species>({
         Species()..name = "Bass": 5,
         Species()..name = "Trout": 10,
       }, DisplayDateRange.last7Days);
@@ -97,13 +97,13 @@ main() {
       expect(find.text("Last 7 days"), findsNothing);
     });
 
-    testWidgets("Multiple series shows legend", (WidgetTester tester) async {
-      Series<Species> series1 = Series({
+    testWidgets("Multiple series shows legend", (tester) async {
+      var series1 = Series<Species>({
         Species()..name = "Bass": 5,
         Species()..name = "Trout": 10,
       }, DisplayDateRange.last7Days);
 
-      Series<Species> series2 = Series({
+      var series2 = Series<Species>({
         Species()..name = "Bass": 8,
         Species()..name = "Trout": 11,
       }, DisplayDateRange.lastMonth);
@@ -125,12 +125,12 @@ main() {
 
   group("Chart rows", () {
     testWidgets("Series max value 0 shows empty rows",
-        (WidgetTester tester) async {
-      Series<Species> series1 = Series({
+        (tester) async {
+      var series1 = Series<Species>({
         Species()..name = "Bass": 0,
       }, DisplayDateRange.last7Days);
 
-      Series<Species> series2 = Series({
+      var series2 = Series<Species>({
         Species()..name = "Bass": 0,
       }, DisplayDateRange.lastMonth);
 
@@ -147,18 +147,18 @@ main() {
       expect(find.byType(Empty), findsNWidgets(2));
     });
 
-    testWidgets("Row with non-null onTap action", (WidgetTester tester) async {
-      MockAppManager appManager = MockAppManager(
+    testWidgets("Row with non-null onTap action", (tester) async {
+      var appManager = MockAppManager(
         mockTimeManager: true,
       );
       when(appManager.mockTimeManager.currentDateTime)
           .thenReturn(DateTime.now());
 
-      Series<Species> series = Series({
+      var series = Series<Species>({
         Species()..name = "Bass": 10,
       }, DisplayDateRange.lastMonth);
 
-      bool tapped = false;
+      var tapped = false;
       await tester.pumpWidget(Testable(
         (_) => Chart(
           series: [series],
@@ -179,22 +179,22 @@ main() {
       expect(tapped, isTrue);
     });
 
-    testWidgets("Normal series data rows", (WidgetTester tester) async {
-      Series<Species> series1 = Series({
+    testWidgets("Normal series data rows", (tester) async {
+      var series1 = Series<Species>({
         Species()..name = "Bass": 10,
         Species()..name = "Catfish": 3,
         Species()..name = "Skipjack": 17,
         Species()..name = "Pike": 30,
       }, DisplayDateRange.lastYear);
 
-      Series<Species> series2 = Series({
+      var series2 = Series<Species>({
         Species()..name = "Bass": 12,
         Species()..name = "Catfish": 5,
         Species()..name = "Skipjack": 13,
         Species()..name = "Pike": 15,
       }, DisplayDateRange.thisYear);
 
-      Series<Species> series3 = Series({
+      var series3 = Series<Species>({
         Species()..name = "Bass": 0,
         Species()..name = "Catfish": 0,
         Species()..name = "Skipjack": 0,
@@ -239,15 +239,15 @@ main() {
   });
 
   group("View all row", () {
-    testWidgets("If condensed, row is rendered", (WidgetTester tester) async {
-      Series<Species> series1 = Series({
+    testWidgets("If condensed, row is rendered", (tester) async {
+      var series1 = Series<Species>({
         Species()..name = "Bass": 10,
         Species()..name = "Catfish": 3,
         Species()..name = "Skipjack": 17,
         Species()..name = "Pike": 30,
       }, DisplayDateRange.lastYear);
 
-      Series<Species> series2 = Series({
+      var series2 = Series<Species>({
         Species()..name = "Bass": 12,
         Species()..name = "Catfish": 5,
         Species()..name = "Skipjack": 13,
@@ -269,13 +269,13 @@ main() {
     });
 
     testWidgets("If condensed and all series length < min, row is not rendered",
-        (WidgetTester tester) async {
-      Series<Species> series1 = Series({
+        (tester) async {
+      var series1 = Series<Species>({
         Species()..name = "Bass": 10,
         Species()..name = "Catfish": 3,
       }, DisplayDateRange.lastYear);
 
-      Series<Species> series2 = Series({
+      var series2 = Series<Species>({
         Species()..name = "Bass": 12,
         Species()..name = "Catfish": 5,
       }, DisplayDateRange.thisYear);
@@ -294,16 +294,15 @@ main() {
       expect(find.text("View all"), findsNothing);
     });
 
-    testWidgets("If showing all, no show all row is rendered",
-        (WidgetTester tester) async {
-      Series<Species> series1 = Series({
+    testWidgets("If showing all, no show all row is rendered", (tester) async {
+      var series1 = Series<Species>({
         Species()..name = "Bass": 10,
         Species()..name = "Catfish": 3,
         Species()..name = "Skipjack": 17,
         Species()..name = "Pike": 30,
       }, DisplayDateRange.lastYear);
 
-      Series<Species> series2 = Series({
+      var series2 = Series<Species>({
         Species()..name = "Bass": 12,
         Species()..name = "Catfish": 5,
         Species()..name = "Skipjack": 13,
@@ -338,8 +337,8 @@ main() {
   });
 
   group("_ChartPage", () {
-    testWidgets("With filters", (WidgetTester tester) async {
-      Series<Species> series1 = Series({
+    testWidgets("With filters", (tester) async {
+      var series1 = Series<Species>({
         Species()..name = "Bass": 10,
         Species()..name = "Catfish": 3,
         Species()..name = "Skipjack": 17,
@@ -370,8 +369,8 @@ main() {
       expect(find.text("Filter 2"), findsOneWidget);
     });
 
-    testWidgets("Without filters", (WidgetTester tester) async {
-      Series<Species> series1 = Series({
+    testWidgets("Without filters", (tester) async {
+      var series1 = Series<Species>({
         Species()..name = "Bass": 10,
         Species()..name = "Catfish": 3,
         Species()..name = "Skipjack": 17,

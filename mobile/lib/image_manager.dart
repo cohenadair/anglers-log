@@ -4,18 +4,17 @@ import 'dart:ui' as ui;
 
 import 'package:crypto/crypto.dart';
 import 'package:flutter/material.dart';
-import 'package:mobile/app_manager.dart';
-import 'package:mobile/catch_manager.dart';
-import 'package:mobile/log.dart';
-import 'package:mobile/wrappers/image_compress_wrapper.dart';
-import 'package:mobile/wrappers/io_wrapper.dart';
-import 'package:mobile/wrappers/path_provider_wrapper.dart';
 import 'package:path/path.dart';
 import 'package:provider/provider.dart';
 import 'package:quiver/collection.dart';
 import 'package:quiver/strings.dart';
 
-import 'model/gen/anglerslog.pb.dart';
+import 'app_manager.dart';
+import 'catch_manager.dart';
+import 'log.dart';
+import 'wrappers/image_compress_wrapper.dart';
+import 'wrappers/io_wrapper.dart';
+import 'wrappers/path_provider_wrapper.dart';
 
 class ImageManager {
   static ImageManager of(BuildContext context) =>
@@ -50,10 +49,10 @@ class ImageManager {
   ImageManager(this._appManager);
 
   Future<void> initialize() async {
-    String imagesPath = await _pathProviderWrapper.appDocumentsPath;
+    var imagesPath = await _pathProviderWrapper.appDocumentsPath;
     _imagePath = "$imagesPath/$_dirNameImages";
 
-    String cachePath = await _pathProviderWrapper.temporaryPath;
+    var cachePath = await _pathProviderWrapper.temporaryPath;
     _cachePath = "$cachePath/$_dirNameThumbs";
 
     // Create directories if needed.
@@ -79,9 +78,9 @@ class ImageManager {
       return null;
     }
 
-    Uint8List thumb = await _thumbnail(context, fileName, size);
+    var thumb = await _thumbnail(context, fileName, size);
     if (thumb == null) {
-      File file = _imageFile(fileName);
+      var file = _imageFile(fileName);
       if (await file.exists()) {
         return await file.readAsBytes();
       }
@@ -104,11 +103,11 @@ class ImageManager {
       return [];
     }
 
-    List<Uint8List> result = [];
-    for (String fileName in imageNames) {
+    var result = <Uint8List>[];
+    for (var fileName in imageNames) {
       _addToCache(fileName);
 
-      Uint8List bytes = await image(
+      var bytes = await image(
         context,
         fileName: fileName,
         size: size,
@@ -148,7 +147,7 @@ class ImageManager {
       return [];
     }
 
-    List<String> result = [];
+    var result = <String>[];
 
     for (var file in files) {
       // This can happen if an entity is edited, but the images associated with
@@ -173,7 +172,7 @@ class ImageManager {
         jpgBytes = await file.readAsBytes();
       }
 
-      Digest digest = md5.convert(jpgBytes);
+      var digest = md5.convert(jpgBytes);
       var fileName = "${digest.toString()}.jpg";
       var newFile = _imageFile(fileName);
 
@@ -200,7 +199,7 @@ class ImageManager {
   /// Returns null if the image doesn't exist.
   Future<ui.Image> dartImage(
       BuildContext context, String fileName, double size) async {
-    Uint8List bytes = await image(
+    var bytes = await image(
       context,
       fileName: fileName,
       size: size,
@@ -215,12 +214,12 @@ class ImageManager {
 
   Future<Uint8List> _compress(
       BuildContext context, File source, int quality, double size) async {
-    List<int> intBytes = [];
+    var intBytes = <int>[];
 
     if (await source.exists()) {
       double pixels;
       if (size != null) {
-        double pixelRatio = MediaQuery.of(context).devicePixelRatio;
+        var pixelRatio = MediaQuery.of(context).devicePixelRatio;
         pixels = size == null ? null : pixelRatio * size;
       }
       intBytes = await _imageCompressWrapper.compress(
@@ -245,7 +244,7 @@ class ImageManager {
       return null;
     }
 
-    _CachedThumbnail cachedImage = _thumbnails[fileName];
+    var cachedImage = _thumbnails[fileName];
 
     // If image exists in memory cache, return it.
     if (cachedImage != null && cachedImage.thumbnail(size) != null) {
@@ -295,12 +294,12 @@ class ImageManager {
 
     // Log some useful memory impact data.
     if (_debug) {
-      int totalBytes = 0;
-      int totalImages = 0;
-      _thumbnails.values.forEach((cachedThumb) {
+      var totalBytes = 0;
+      var totalImages = 0;
+      for (var cachedThumb in _thumbnails.values) {
         totalBytes += cachedThumb.numberOfBytes;
         totalImages += cachedThumb.numberOfImages;
-      });
+      }
       _log.d("Cache size: images($totalImages), "
           "memory(${totalBytes / 1000 / 1000} MB)");
     }
@@ -312,9 +311,9 @@ class ImageManager {
   /// system.
   Future<void> _clearStaleImages() async {
     await _ioWrapper.directory(_imagePath).list().forEach((entity) {
-      String name = basename(entity.path);
-      bool found = false;
-      for (Catch cat in _catchManager.list()) {
+      var name = basename(entity.path);
+      var found = false;
+      for (var cat in _catchManager.list()) {
         // Image found, continue on to the next image.
         if (cat.imageNames.contains(name)) {
           found = true;

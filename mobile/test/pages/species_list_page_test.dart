@@ -10,11 +10,11 @@ import 'package:mockito/mockito.dart';
 import '../mock_app_manager.dart';
 import '../test_utils.dart';
 
-main() {
+void main() {
   MockAppManager appManager;
   SpeciesManager speciesManager;
 
-  List<Species> speciesList = [
+  var speciesList = [
     Species()
       ..id = randomId()
       ..name = "Steelhead",
@@ -51,14 +51,14 @@ main() {
     speciesManager = SpeciesManager(appManager);
     when(appManager.speciesManager).thenReturn(speciesManager);
 
-    for (Species species in speciesList) {
+    for (var species in speciesList) {
       await speciesManager.addOrUpdate(species);
     }
   });
 
   group("Normal list page", () {
     testWidgets("Title updates when species updated",
-        (WidgetTester tester) async {
+        (tester) async {
       await tester.pumpWidget(Testable(
         (_) => SpeciesListPage(),
         appManager: appManager,
@@ -71,7 +71,7 @@ main() {
     });
 
     testWidgets("List updates when species updated",
-        (WidgetTester tester) async {
+        (tester) async {
       await tester.pumpWidget(Testable(
         (_) => SpeciesListPage(),
         appManager: appManager,
@@ -88,7 +88,7 @@ main() {
     });
 
     testWidgets("Species deleted if not associated with a catch",
-        (WidgetTester tester) async {
+        (tester) async {
       await tester.pumpWidget(Testable(
         (_) => SpeciesListPage(),
         appManager: appManager,
@@ -104,7 +104,7 @@ main() {
     });
 
     testWidgets("Dialog when deleting species associated with 1 catch",
-        (WidgetTester tester) async {
+        (tester) async {
       when(appManager.mockCatchManager
               .existsWith(speciesId: anyNamed("speciesId")))
           .thenReturn(true);
@@ -124,13 +124,14 @@ main() {
 
       expect(
         find.text(
-            "Largemouth Bass is associated with 1 catch and cannot be deleted."),
+          "Largemouth Bass is associated with 1 catch and cannot be deleted.",
+        ),
         findsOneWidget,
       );
     });
 
     testWidgets("Dialog when deleting species associated with multiple catches",
-        (WidgetTester tester) async {
+        (tester) async {
       when(appManager.mockCatchManager
               .existsWith(speciesId: anyNamed("speciesId")))
           .thenReturn(true);
@@ -158,7 +159,7 @@ main() {
       );
     });
 
-    testWidgets("Edit screen shown", (WidgetTester tester) async {
+    testWidgets("Edit screen shown", (tester) async {
       await tester.pumpWidget(Testable(
         (_) => SpeciesListPage(),
         appManager: appManager,
@@ -169,7 +170,7 @@ main() {
       expect(find.text("Edit Species"), findsOneWidget);
     });
 
-    testWidgets("New species page shown", (WidgetTester tester) async {
+    testWidgets("New species page shown", (tester) async {
       await tester.pumpWidget(Testable(
         (_) => SpeciesListPage(),
         appManager: appManager,
@@ -181,7 +182,7 @@ main() {
   });
 
   group("Picker", () {
-    testWidgets("Title", (WidgetTester tester) async {
+    testWidgets("Title", (tester) async {
       await tester.pumpWidget(Testable(
         (_) => SpeciesListPage.picker(
           onPicked: (_, __) => false,
@@ -192,8 +193,8 @@ main() {
       expect(find.text("Select Species"), findsOneWidget);
     });
 
-    testWidgets("Picked callback invoked", (WidgetTester tester) async {
-      bool picked = false;
+    testWidgets("Picked callback invoked", (tester) async {
+      var picked = false;
       await tester.pumpWidget(Testable(
         (_) => SpeciesListPage.picker(
           onPicked: (_, __) {

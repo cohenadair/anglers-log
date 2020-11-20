@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:mobile/i18n/strings.dart';
 import 'package:quiver/strings.dart';
+
+import '../i18n/strings.dart';
 
 /// A trimmed, case-insensitive string comparison.
 bool equalsTrimmedIgnoreCase(String s1, String s2) =>
@@ -10,9 +11,9 @@ bool equalsTrimmedIgnoreCase(String s1, String s2) =>
 ///   - %s
 /// For each argument, toString() is called to replace %s.
 String format(String s, List<dynamic> args) {
-  int index = 0;
+  var index = 0;
   return s.replaceAllMapped(
-      RegExp(r'%s'), (Match match) => args[index++].toString());
+      RegExp(r'%s'), (match) => args[index++].toString());
 }
 
 String formatLatLng({
@@ -21,7 +22,7 @@ String formatLatLng({
   @required double lng,
   bool includeLabels = true,
 }) {
-  final int decimalPlaces = 6;
+  final decimalPlaces = 6;
 
   return format(
     includeLabels
@@ -35,7 +36,7 @@ String formatLatLng({
 }
 
 bool parseBoolFromInt(String str) {
-  int intBool = int.tryParse(str);
+  var intBool = int.tryParse(str);
   if (intBool == null) {
     return false;
   } else {

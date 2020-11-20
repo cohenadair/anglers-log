@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:mobile/model/gen/anglerslog.pb.dart';
-import 'package:mobile/summary_report_manager.dart';
-import 'package:mobile/utils/date_time_utils.dart';
-import 'package:mobile/widgets/reports/report_summary.dart';
-import 'package:mobile/widgets/widget.dart';
 import 'package:quiver/strings.dart';
+
+import '../../model/gen/anglerslog.pb.dart';
+import '../../summary_report_manager.dart';
+import '../../utils/date_time_utils.dart';
+import '../../widgets/reports/report_summary.dart';
+import '../../widgets/widget.dart';
 
 class SummaryReportView extends StatelessWidget {
   final Id reportId;
@@ -13,10 +14,10 @@ class SummaryReportView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    SummaryReportManager summaryReportManager =
+    var summaryReportManager =
         SummaryReportManager.of(context);
 
-    SummaryReport report = summaryReportManager.entity(reportId);
+    var report = summaryReportManager.entity(reportId);
     if (report == null) {
       return Empty();
     }

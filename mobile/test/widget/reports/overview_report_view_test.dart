@@ -5,7 +5,7 @@ import 'package:mockito/mockito.dart';
 import '../../mock_app_manager.dart';
 import '../../test_utils.dart';
 
-main() {
+void main() {
   MockAppManager appManager;
 
   setUp(() {
@@ -32,7 +32,7 @@ main() {
     when(appManager.mockBaitManager.list()).thenReturn([]);
   });
 
-  testWidgets("Picking date updates state", (WidgetTester tester) async {
+  testWidgets("Picking date updates state", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => OverviewReportView(),
       appManager: appManager,

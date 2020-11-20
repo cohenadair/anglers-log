@@ -2,8 +2,9 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
-import 'package:mobile/app_manager.dart';
 import 'package:provider/provider.dart';
+
+import '../app_manager.dart';
 
 class ImageCompressWrapper {
   static ImageCompressWrapper of(BuildContext context) =>

@@ -1,18 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:mobile/i18n/strings.dart';
-import 'package:mobile/pages/bait_category_list_page.dart';
-import 'package:mobile/pages/bait_list_page.dart';
-import 'package:mobile/pages/custom_entity_list_page.dart';
-import 'package:mobile/pages/feedback_page.dart';
-import 'package:mobile/pages/import_page.dart';
-import 'package:mobile/pages/photos_page.dart';
-import 'package:mobile/pages/settings_page.dart';
-import 'package:mobile/pages/species_list_page.dart';
-import 'package:mobile/pages/trip_list_page.dart';
-import 'package:mobile/res/gen/custom_icons.dart';
-import 'package:mobile/utils/page_utils.dart';
-import 'package:mobile/widgets/list_item.dart';
-import 'package:mobile/widgets/widget.dart';
+
+import '../i18n/strings.dart';
+import '../pages/bait_category_list_page.dart';
+import '../pages/bait_list_page.dart';
+import '../pages/custom_entity_list_page.dart';
+import '../pages/feedback_page.dart';
+import '../pages/import_page.dart';
+import '../pages/photos_page.dart';
+import '../pages/settings_page.dart';
+import '../pages/species_list_page.dart';
+import '../pages/trip_list_page.dart';
+import '../res/gen/custom_icons.dart';
+import '../utils/page_utils.dart';
+import '../widgets/list_item.dart';
+import '../widgets/widget.dart';
 
 class MorePage extends StatelessWidget {
   @override
@@ -25,7 +26,7 @@ class MorePage extends StatelessWidget {
         children: <Widget>[
           _buildPageItem(
             context,
-            icon: CustomIcons.bait_categories,
+            icon: CustomIcons.baitCategories,
             title: Strings.of(context).baitCategoryListPageMenuTitle,
             page: BaitCategoryListPage(),
           ),

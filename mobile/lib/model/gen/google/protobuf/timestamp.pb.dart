@@ -76,3 +76,4 @@ class Timestamp extends $pb.GeneratedMessage with $mixin.TimestampMixin {
     return result;
   }
 }
+// ignore_for_file: constant_identifier_names,lines_longer_than_80_chars,directives_ordering,unnecessary_const,prefer_mixin,implementation_imports

@@ -25,6 +25,6 @@ class CustomIcons {
       IconData(0xe800, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData catches =
       IconData(0xe801, fontFamily: _kFontFam, fontPackage: _kFontPkg);
-  static const IconData bait_categories =
+  static const IconData baitCategories =
       IconData(0xe802, fontFamily: _kFontFam, fontPackage: _kFontPkg);
 }

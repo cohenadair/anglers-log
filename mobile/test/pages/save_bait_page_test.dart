@@ -10,7 +10,7 @@ import 'package:mockito/mockito.dart';
 import '../mock_app_manager.dart';
 import '../test_utils.dart';
 
-main() {
+void main() {
   MockAppManager appManager;
 
   setUp(() {
@@ -25,7 +25,7 @@ main() {
     when(appManager.mockPreferencesManager.baitCustomEntityIds).thenReturn([]);
   });
 
-  testWidgets("Default values for new", (WidgetTester tester) async {
+  testWidgets("Default values for new", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => SaveBaitPage(),
       appManager: appManager,
@@ -34,7 +34,7 @@ main() {
     expect(findFirst<TextField>(tester).controller.text, isEmpty);
   });
 
-  testWidgets("Edit title", (WidgetTester tester) async {
+  testWidgets("Edit title", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => SaveBaitPage.edit(
         Bait()
@@ -46,7 +46,7 @@ main() {
     expect(find.text("Edit Bait"), findsOneWidget);
   });
 
-  testWidgets("New title", (WidgetTester tester) async {
+  testWidgets("New title", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => SaveBaitPage(),
       appManager: appManager,
@@ -55,7 +55,7 @@ main() {
   });
 
   testWidgets("Selecting bait category updates state",
-      (WidgetTester tester) async {
+      (tester) async {
     when(appManager.mockBaitCategoryManager
             .listSortedByName(filter: anyNamed("filter")))
         .thenReturn([
@@ -78,7 +78,7 @@ main() {
   });
 
   testWidgets("Updating name updates save button state",
-      (WidgetTester tester) async {
+      (tester) async {
     await tester.pumpWidget(Testable(
       (_) => SaveBaitPage(),
       appManager: appManager,
@@ -91,13 +91,13 @@ main() {
     expect(findFirst<ActionButton>(tester).onPressed, isNull);
   });
 
-  testWidgets("Editing", (WidgetTester tester) async {
-    Id categoryId = randomId();
+  testWidgets("Editing", (tester) async {
+    var categoryId = randomId();
     var baitCategory = BaitCategory()
       ..id = categoryId
       ..name = "Lure";
 
-    Id customEntityId = randomId();
+    var customEntityId = randomId();
     var bait = Bait()
       ..id = randomId()
       ..name = "Rapala"
@@ -135,7 +135,7 @@ main() {
         tester, find.widgetWithText(TextField, "Name"), "Plug");
     await tapAndSettle(tester, find.text("SAVE"));
 
-    VerificationResult result =
+    var result =
         verify(appManager.mockBaitManager.addOrUpdate(captureAny));
     result.called(1);
 
@@ -147,8 +147,8 @@ main() {
     expect(bait.customEntityValues.first.value, "Custom Value");
   });
 
-  testWidgets("Duplicate bait shows dialog", (WidgetTester tester) async {
-    Id categoryId = randomId();
+  testWidgets("Duplicate bait shows dialog", (tester) async {
+    var categoryId = randomId();
     var baitCategory = BaitCategory()
       ..id = categoryId
       ..name = "Lure";
@@ -178,7 +178,7 @@ main() {
     verifyNever(appManager.mockBaitManager.addOrUpdate(captureAny));
   });
 
-  testWidgets("New saving minimum", (WidgetTester tester) async {
+  testWidgets("New saving minimum", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => SaveBaitPage(),
       appManager: appManager,
@@ -187,7 +187,7 @@ main() {
     await enterTextAndSettle(tester, find.byType(TextField), "Plug");
     await tapAndSettle(tester, find.text("SAVE"));
 
-    VerificationResult result =
+    var result =
         verify(appManager.mockBaitManager.addOrUpdate(captureAny));
     result.called(1);
 

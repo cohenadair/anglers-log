@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:mobile/res/dimen.dart';
-import 'package:mobile/widgets/list_picker_input.dart';
-import 'package:mobile/widgets/text.dart';
-import 'package:mobile/widgets/widget.dart';
 import 'package:quiver/strings.dart';
+
+import '../res/dimen.dart';
+import '../widgets/list_picker_input.dart';
+import '../widgets/text.dart';
+import '../widgets/widget.dart';
 
 /// A generic picker widget for selecting multiple items from a list. For
 /// selecting only a single item, use [ListPickerInput].
@@ -26,15 +27,15 @@ class MultiListPickerInput extends StatelessWidget {
     @required this.onTap,
   })  : assert(emptyValue != null),
         assert(onTap != null),
-        this.values = values ?? const {};
+        values = values ?? const {};
 
   @override
   Widget build(BuildContext context) {
-    Set<String> items = {};
+    var items = <String>{};
     if (values.isEmpty) {
       items.add(emptyValue(context));
     } else {
-      for (String value in values) {
+      for (var value in values) {
         if (isEmpty(value)) {
           continue;
         }

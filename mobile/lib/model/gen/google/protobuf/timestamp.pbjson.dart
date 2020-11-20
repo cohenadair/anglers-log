@@ -12,3 +12,4 @@ const Timestamp$json = const {
     const {'1': 'nanos', '3': 2, '4': 1, '5': 5, '10': 'nanos'},
   ],
 };
+// ignore_for_file: constant_identifier_names,lines_longer_than_80_chars,directives_ordering,unnecessary_const,prefer_mixin,implementation_imports

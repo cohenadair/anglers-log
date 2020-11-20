@@ -72,8 +72,7 @@ DisplayDateRange stubDateRange(DateRange dateRange) {
   );
 }
 
-Future<BuildContext> buildContext(
-  WidgetTester tester, {
+Future<BuildContext> buildContext(WidgetTester tester, {
   bool use24Hour = false,
   AppManager appManager,
 }) async {
@@ -159,7 +158,7 @@ Future<ui.Image> loadImage(WidgetTester tester, String path) async {
   // runAsync is required here because instantiateImageCodec does real async
   // work and can't be used with pump().
   await tester.runAsync(() async {
-    Codec codec = await ui.instantiateImageCodec(File(path).readAsBytesSync());
+    var codec = await ui.instantiateImageCodec(File(path).readAsBytesSync());
     image = (await codec.getNextFrame()).image;
   });
   return image;

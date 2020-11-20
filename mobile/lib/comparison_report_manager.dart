@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:mobile/app_manager.dart';
-import 'package:mobile/model/gen/anglerslog.pb.dart';
-import 'package:mobile/report_manager.dart';
 import 'package:provider/provider.dart';
+
+import 'app_manager.dart';
+import 'model/gen/anglerslog.pb.dart';
+import 'report_manager.dart';
 
 class ComparisonReportManager extends ReportManager<ComparisonReport> {
   static ComparisonReportManager of(BuildContext context) =>
@@ -21,16 +22,25 @@ class ComparisonReportManager extends ReportManager<ComparisonReport> {
   String name(ComparisonReport report) => report.name;
 
   @override
-  void onDeleteBait(Bait bait) =>
-      entities.values.forEach((report) => report.baitIds.remove(bait.id));
+  void onDeleteBait(Bait bait) {
+    for (var report in entities.values) {
+      report.baitIds.remove(bait.id);
+    }
+  }
 
   @override
-  void onDeleteFishingSpot(FishingSpot fishingSpot) => entities.values
-      .forEach((report) => report.fishingSpotIds.remove(fishingSpot.id));
+  void onDeleteFishingSpot(FishingSpot fishingSpot) {
+    for (var report in entities.values) {
+      report.fishingSpotIds.remove(fishingSpot.id);
+    }
+  }
 
   @override
-  void onDeleteSpecies(Species species) =>
-      entities.values.forEach((report) => report.speciesIds.remove(species.id));
+  void onDeleteSpecies(Species species) {
+    for (var report in entities.values) {
+      report.speciesIds.remove(species.id);
+    }
+  }
 
   @override
   String get tableName => "comparison_report";

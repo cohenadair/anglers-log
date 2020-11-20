@@ -13,7 +13,7 @@ import 'package:mockito/mockito.dart';
 import '../mock_app_manager.dart';
 import '../test_utils.dart';
 
-main() {
+void main() {
   MockAppManager appManager;
 
   setUp(() {
@@ -35,7 +35,7 @@ main() {
 
   group("From journey", () {
     testWidgets("Images with date sets Catch date",
-        (WidgetTester tester) async {
+        (tester) async {
       await tester.pumpWidget(Testable(
         (_) => SaveCatchPage(
           images: [
@@ -60,7 +60,7 @@ main() {
     });
 
     testWidgets("Images without date sets default date",
-        (WidgetTester tester) async {
+        (tester) async {
       await tester.pumpWidget(Testable(
         (_) => SaveCatchPage(
           images: [
@@ -84,7 +84,7 @@ main() {
     });
 
     testWidgets("All journey fields set correctly",
-        (WidgetTester tester) async {
+        (tester) async {
       await tester.pumpWidget(Testable(
         (_) => SaveCatchPage(
           images: [
@@ -116,8 +116,8 @@ main() {
       expect(find.byType(Image), findsOneWidget);
     });
 
-    testWidgets("popOverride is invoked", (WidgetTester tester) async {
-      bool invoked = false;
+    testWidgets("popOverride is invoked", (tester) async {
+      var invoked = false;
       await tester.pumpWidget(Testable(
         (_) => SaveCatchPage(
           images: [
@@ -143,7 +143,7 @@ main() {
   });
 
   group("Editing", () {
-    testWidgets("All fields set correctly", (WidgetTester tester) async {
+    testWidgets("All fields set correctly", (tester) async {
       var customEntity = CustomEntity()
         ..id = randomId()
         ..name = "Color"
@@ -211,7 +211,7 @@ main() {
       expect(find.text("Minnow"), findsOneWidget);
     });
 
-    testWidgets("Minimum fields set correctly", (WidgetTester tester) async {
+    testWidgets("Minimum fields set correctly", (tester) async {
       var species = Species()
         ..id = randomId()
         ..name = "Steelhead";
@@ -238,7 +238,7 @@ main() {
       expect(find.byType(StaticFishingSpot), findsNothing);
     });
 
-    testWidgets("Saving", (WidgetTester tester) async {
+    testWidgets("Saving", (tester) async {
       var customEntity = CustomEntity()
         ..id = randomId()
         ..name = "Color"
@@ -305,7 +305,7 @@ main() {
       });
       await tapAndSettle(tester, find.text("SAVE"));
 
-      VerificationResult result = verify(
+      var result = verify(
         appManager.mockCatchManager.addOrUpdate(
           captureAny,
           fishingSpot: anyNamed("fishingSpot"),
@@ -318,7 +318,7 @@ main() {
   });
 
   group("New", () {
-    testWidgets("All fields default correctly", (WidgetTester tester) async {
+    testWidgets("All fields default correctly", (tester) async {
       await tester.pumpWidget(Testable(
         (_) => SaveCatchPage(
           species: Species()
@@ -342,9 +342,9 @@ main() {
       expect(find.byType(Image), findsNothing);
     });
 
-    testWidgets("Saving", (WidgetTester tester) async {
-      Id speciesId = randomId();
-      Id fishingSpotId = randomId();
+    testWidgets("Saving", (tester) async {
+      var speciesId = randomId();
+      var fishingSpotId = randomId();
       await tester.pumpWidget(Testable(
         (_) => SaveCatchPage(
           species: Species()
@@ -360,7 +360,7 @@ main() {
 
       await tapAndSettle(tester, find.text("SAVE"));
 
-      VerificationResult result = verify(
+      var result = verify(
         appManager.mockCatchManager.addOrUpdate(
           captureAny,
           fishingSpot: anyNamed("fishingSpot"),
@@ -381,7 +381,7 @@ main() {
     });
   });
 
-  testWidgets("New title", (WidgetTester tester) async {
+  testWidgets("New title", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => SaveCatchPage(
         species: Species()
@@ -398,7 +398,7 @@ main() {
     expect(find.text("New Catch"), findsOneWidget);
   });
 
-  testWidgets("Edit title", (WidgetTester tester) async {
+  testWidgets("Edit title", (tester) async {
     var cat = Catch()
       ..id = randomId()
       ..timestamp = Timestamp.fromDateTime(DateTime(2020, 1, 1, 15, 30))

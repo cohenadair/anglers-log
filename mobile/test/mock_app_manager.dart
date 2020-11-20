@@ -134,7 +134,7 @@ class MockAppManager extends Mock implements AppManager {
 
     if (mockBaitManager) {
       this.mockBaitManager = MockBaitManager();
-      when(this.baitManager).thenReturn(this.mockBaitManager);
+      when(baitManager).thenReturn(this.mockBaitManager);
     }
 
     if (mockDataManager) {
@@ -248,10 +248,10 @@ class MockAppManager extends Mock implements AppManager {
   }
 
   void stubCurrentTime(DateTime now) {
-    when(this.mockTimeManager.currentDateTime).thenReturn(now);
-    when(this.mockTimeManager.currentTime)
+    when(mockTimeManager.currentDateTime).thenReturn(now);
+    when(mockTimeManager.currentTime)
         .thenReturn(TimeOfDay.fromDateTime(now));
-    when(this.mockTimeManager.msSinceEpoch)
+    when(mockTimeManager.msSinceEpoch)
         .thenReturn(now.millisecondsSinceEpoch);
   }
 }

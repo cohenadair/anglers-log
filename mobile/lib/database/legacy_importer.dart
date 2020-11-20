@@ -4,21 +4,22 @@ import 'dart:typed_data';
 
 import 'package:archive/archive.dart';
 import 'package:intl/intl.dart';
-import 'package:mobile/app_manager.dart';
-import 'package:mobile/bait_category_manager.dart';
-import 'package:mobile/bait_manager.dart';
-import 'package:mobile/catch_manager.dart';
-import 'package:mobile/data_manager.dart';
-import 'package:mobile/fishing_spot_manager.dart';
-import 'package:mobile/log.dart';
-import 'package:mobile/model/gen/anglerslog.pb.dart';
-import 'package:mobile/model/gen/google/protobuf/timestamp.pb.dart';
-import 'package:mobile/species_manager.dart';
-import 'package:mobile/utils/protobuf_utils.dart';
-import 'package:mobile/utils/string_utils.dart';
-import 'package:mobile/wrappers/path_provider_wrapper.dart';
 import 'package:path/path.dart';
 import 'package:quiver/strings.dart';
+
+import '../app_manager.dart';
+import '../bait_category_manager.dart';
+import '../bait_manager.dart';
+import '../catch_manager.dart';
+import '../data_manager.dart';
+import '../fishing_spot_manager.dart';
+import '../log.dart';
+import '../model/gen/anglerslog.pb.dart';
+import '../model/gen/google/protobuf/timestamp.pb.dart';
+import '../species_manager.dart';
+import '../utils/protobuf_utils.dart';
+import '../utils/string_utils.dart';
+import '../wrappers/path_provider_wrapper.dart';
 
 enum LegacyImporterError {
   invalidZipFile,
@@ -60,9 +61,8 @@ class LegacyImporter {
 
   final AppManager _appManager;
   final File _zipFile;
-
+  final Map<String, File> _images = {};
   Map<String, dynamic> _json = {};
-  Map<String, File> _images = {};
 
   LegacyImporter(AppManager appManager, File zipFile)
       : _appManager = appManager,
@@ -87,11 +87,11 @@ class LegacyImporter {
     }
 
     await _dataManager.reset();
-    Directory tmpDir = Directory(await _pathProviderWrapper.temporaryPath);
+    var tmpDir = Directory(await _pathProviderWrapper.temporaryPath);
 
-    Archive archive = ZipDecoder().decodeBytes(_zipFile.readAsBytesSync());
+    var archive = ZipDecoder().decodeBytes(_zipFile.readAsBytesSync());
     for (var archiveFile in archive) {
-      Uint8List content = Uint8List.fromList(archiveFile.content);
+      var content = Uint8List.fromList(archiveFile.content);
 
       if (extension(archiveFile.name) == _fileExtensionJson) {
         _json = jsonDecode(Utf8Decoder().convert(content));
@@ -152,7 +152,7 @@ class LegacyImporter {
     await _importCatches(_json[_keyJournal][_keyEntries]);
 
     // Cleanup temporary images.
-    for (File tmpImg in _images.values) {
+    for (var tmpImg in _images.values) {
       tmpImg.deleteSync();
     }
 
@@ -165,14 +165,14 @@ class LegacyImporter {
     }
 
     for (var item in baits) {
-      Map<String, dynamic> map = item as Map<String, dynamic>;
-      Bait bait = Bait()
+      var map = item as Map<String, dynamic>;
+      var bait = Bait()
         ..id = randomId()
         ..name = map[_keyName];
 
       if (isNotEmpty(map[_keyBaitCategory])) {
         // See if JSON is using the name as the ID.
-        Id baitCategoryId =
+        var baitCategoryId =
             _baitCategoryManager.named(map[_keyBaitCategory])?.id;
 
         if (baitCategoryId == null) {
@@ -259,7 +259,7 @@ class LegacyImporter {
     }
 
     for (var item in entities) {
-      Map<String, dynamic> map = item as Map<String, dynamic>;
+      var map = item as Map<String, dynamic>;
       await addEntity(map[_keyName], _parseJsonId(map[_keyId]));
     }
   }
@@ -270,7 +270,7 @@ class LegacyImporter {
     }
 
     for (var item in catches) {
-      Map<String, dynamic> map = item as Map<String, dynamic>;
+      var map = item as Map<String, dynamic>;
 
       // iOS and Android backed up dates differently.
       String dateString = map[_keyDate];
@@ -280,25 +280,25 @@ class LegacyImporter {
       } else {
         dateFormat = "M-d-y_h-m_a";
       }
-      DateTime dateTime = DateFormat(dateFormat).parse(map[_keyDate]);
+      var dateTime = DateFormat(dateFormat).parse(map[_keyDate]);
 
-      Bait bait = _baitManager.named(map[_keyBaitUsed]);
+      var bait = _baitManager.named(map[_keyBaitUsed]);
       if (bait == null && isNotEmpty(map[_keyBaitUsed])) {
         _log.w("Bait (${map[_keyBaitUsed]}) not found");
       }
 
-      FishingSpot fishingSpot = _fishingSpotManager.named(format(
+      var fishingSpot = _fishingSpotManager.named(format(
           _nameFormatFishingSpot, [map[_keyLocation], map[_keyFishingSpot]]));
       if (fishingSpot == null && isNotEmpty(map[_keyFishingSpot])) {
         _log.w("Fishing spot (${map[_keyFishingSpot]}) not found");
       }
 
-      Species species = _speciesManager.named(map[_keyFishSpecies]);
+      var species = _speciesManager.named(map[_keyFishSpecies]);
       if (species == null && isNotEmpty(map[_keyFishSpecies])) {
         _log.w("Species (${map[_keyFishSpecies]}) not found");
       }
 
-      List<File> images = [];
+      var images = <File>[];
       List<dynamic> imagesJson = map[_keyImages];
       for (Map<String, dynamic> imageMap in imagesJson) {
         var fileName = basename(imageMap[_keyImagePath]);
@@ -309,7 +309,7 @@ class LegacyImporter {
         }
       }
 
-      Catch cat = Catch()
+      var cat = Catch()
         ..id = randomId()
         ..timestamp = Timestamp.fromDateTime(dateTime)
         ..speciesId = species.id;
@@ -338,7 +338,7 @@ class LegacyImporter {
       return randomId();
     }
 
-    Id result = safeParseId(jsonId);
+    var result = safeParseId(jsonId);
     if (result == null) {
       _log.w("Invalid UUID string: $jsonId");
       return randomId();

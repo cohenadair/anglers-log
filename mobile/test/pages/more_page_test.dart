@@ -6,7 +6,7 @@ import 'package:mockito/mockito.dart';
 import '../mock_app_manager.dart';
 import '../test_utils.dart';
 
-main() {
+void main() {
   MockAppManager appManager;
 
   setUp(() {
@@ -19,7 +19,7 @@ main() {
     )).thenReturn([]);
   });
 
-  testWidgets("Page is pushed", (WidgetTester tester) async {
+  testWidgets("Page is pushed", (tester) async {
     var observer = MockNavigatorObserver();
     await tester.pumpWidget(Testable(
       (_) => MorePage(),
@@ -31,14 +31,14 @@ main() {
 
     await tapAndSettle(tester, find.text("Bait Categories"));
 
-    VerificationResult result = verify(observer.didPush(captureAny, any));
+    var result = verify(observer.didPush(captureAny, any));
     result.called(1);
 
     MaterialPageRoute route = result.captured.first;
     expect(route.fullscreenDialog, isFalse);
   });
 
-  testWidgets("Page is presented", (WidgetTester tester) async {
+  testWidgets("Page is presented", (tester) async {
     var observer = MockNavigatorObserver();
     await tester.pumpWidget(Testable(
       (_) => MorePage(),
@@ -50,7 +50,7 @@ main() {
 
     await tapAndSettle(tester, find.text("Send Feedback"));
 
-    VerificationResult result = verify(observer.didPush(captureAny, any));
+    var result = verify(observer.didPush(captureAny, any));
     result.called(1);
 
     MaterialPageRoute route = result.captured.first;

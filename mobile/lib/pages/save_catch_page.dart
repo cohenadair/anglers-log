@@ -1,36 +1,36 @@
 import 'dart:async';
-import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
-import 'package:mobile/bait_category_manager.dart';
-import 'package:mobile/bait_manager.dart';
-import 'package:mobile/catch_manager.dart';
-import 'package:mobile/entity_manager.dart';
-import 'package:mobile/fishing_spot_manager.dart';
-import 'package:mobile/i18n/strings.dart';
-import 'package:mobile/image_manager.dart';
-import 'package:mobile/log.dart';
-import 'package:mobile/model/gen/anglerslog.pb.dart';
-import 'package:mobile/pages/bait_list_page.dart';
-import 'package:mobile/pages/editable_form_page.dart';
-import 'package:mobile/pages/fishing_spot_picker_page.dart';
-import 'package:mobile/pages/image_picker_page.dart';
-import 'package:mobile/pages/species_list_page.dart';
-import 'package:mobile/preferences_manager.dart';
-import 'package:mobile/res/dimen.dart';
-import 'package:mobile/species_manager.dart';
-import 'package:mobile/time_manager.dart';
-import 'package:mobile/utils/page_utils.dart';
-import 'package:mobile/utils/protobuf_utils.dart';
-import 'package:mobile/widgets/date_time_picker.dart';
-import 'package:mobile/widgets/input_data.dart';
-import 'package:mobile/widgets/input_controller.dart';
-import 'package:mobile/widgets/list_item.dart';
-import 'package:mobile/widgets/list_picker_input.dart';
-import 'package:mobile/widgets/image_input.dart';
-import 'package:mobile/widgets/static_fishing_spot.dart';
-import 'package:mobile/widgets/widget.dart';
-import 'package:photo_manager/photo_manager.dart' as Pm;
+import 'package:photo_manager/photo_manager.dart' as photo_manager;
+
+import '../bait_category_manager.dart';
+import '../bait_manager.dart';
+import '../catch_manager.dart';
+import '../entity_manager.dart';
+import '../fishing_spot_manager.dart';
+import '../i18n/strings.dart';
+import '../image_manager.dart';
+import '../log.dart';
+import '../model/gen/anglerslog.pb.dart';
+import '../pages/bait_list_page.dart';
+import '../pages/editable_form_page.dart';
+import '../pages/fishing_spot_picker_page.dart';
+import '../pages/image_picker_page.dart';
+import '../pages/species_list_page.dart';
+import '../preferences_manager.dart';
+import '../res/dimen.dart';
+import '../species_manager.dart';
+import '../time_manager.dart';
+import '../utils/page_utils.dart';
+import '../utils/protobuf_utils.dart';
+import '../widgets/date_time_picker.dart';
+import '../widgets/image_input.dart';
+import '../widgets/input_controller.dart';
+import '../widgets/input_data.dart';
+import '../widgets/list_item.dart';
+import '../widgets/list_picker_input.dart';
+import '../widgets/static_fishing_spot.dart';
+import '../widgets/widget.dart';
 
 class SaveCatchPage extends StatefulWidget {
   /// If set, invoked when it's time to pop the page from the navigation stack.
@@ -109,7 +109,7 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
     _fields[_idTimestamp] = InputData(
       id: _idTimestamp,
       controller: TimestampInputController(),
-      label: (BuildContext context) =>
+      label: (context) =>
           Strings.of(context).saveCatchPageDateTimeLabel,
       removable: false,
       showing: true,
@@ -118,7 +118,7 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
     _fields[_idSpecies] = InputData(
       id: _idSpecies,
       controller: InputController<Species>(),
-      label: (BuildContext context) =>
+      label: (context) =>
           Strings.of(context).saveCatchPageSpeciesLabel,
       removable: false,
       showing: true,
@@ -127,7 +127,7 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
     _fields[_idBait] = InputData(
       id: _idBait,
       controller: InputController<Bait>(),
-      label: (BuildContext context) =>
+      label: (context) =>
           Strings.of(context).saveCatchPageBaitLabel,
       showing: true,
     );
@@ -135,7 +135,7 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
     _fields[_idImages] = InputData(
       id: _idImages,
       controller: InputController<List<PickedImage>>(),
-      label: (BuildContext context) =>
+      label: (context) =>
           Strings.of(context).saveCatchPageImagesLabel,
       showing: true,
     );
@@ -143,7 +143,7 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
     _fields[_idFishingSpot] = InputData(
       id: _idFishingSpot,
       controller: InputController<FishingSpot>(),
-      label: (BuildContext context) =>
+      label: (context) =>
           Strings.of(context).saveCatchPageFishingSpotLabel,
       showing: true,
     );
@@ -158,7 +158,7 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
       _imagesFuture = _pickedImagesForOldCatch;
     } else {
       if (widget.images.isNotEmpty) {
-        PickedImage image = widget.images.first;
+        var image = widget.images.first;
         if (image.dateTime != null) {
           _timestampController.date = image.dateTime;
           _timestampController.time = TimeOfDay.fromDateTime(image.dateTime);
@@ -186,7 +186,7 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
       fields: _fields,
       customEntityIds: _preferencesManager.catchCustomEntityIds,
       customEntityValues: _customEntityValues,
-      onBuildField: (id) => _buildField(id),
+      onBuildField: _buildField,
       onSave: _save,
     );
   }
@@ -265,7 +265,7 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
   }
 
   Widget _buildFishingSpot() {
-    FishingSpot fishingSpot = _fishingSpotController.value;
+    var fishingSpot = _fishingSpotController.value;
 
     if (fishingSpot == null) {
       return ListItem(
@@ -313,7 +313,7 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
       future: _imagesFuture,
       builder: (context, images) {
         return ImageInput(
-          requestPhotoPermission: () => Pm.PhotoManager.requestPermission(),
+          requestPhotoPermission: photo_manager.PhotoManager.requestPermission,
           initialImages: _imagesController.value ?? [],
           onImagesPicked: (pickedImages) {
             setState(() {
@@ -331,7 +331,7 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
         customFieldValueMap.keys.toList();
 
     // imageNames is set in _catchManager.addOrUpdate
-    Catch cat = Catch()
+    var cat = Catch()
       ..id = _oldCatch?.id ?? randomId()
       ..timestamp = _timestampController.value
       ..speciesId = _speciesController.value.id
@@ -381,7 +381,7 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
       return Future.value([]);
     }
 
-    List<Uint8List> bytesList = await _imageManager.images(
+    var bytesList = await _imageManager.images(
       context,
       imageNames: _oldCatch.imageNames,
       size: galleryMaxThumbSize,

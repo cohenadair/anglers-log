@@ -20,36 +20,36 @@ void main() {
   MockFishingSpotManager fishingSpotManager;
   MockSpeciesManager speciesManager;
 
-  Id speciesId0 = randomId();
-  Id speciesId1 = randomId();
-  Id speciesId2 = randomId();
-  Id speciesId3 = randomId();
-  Id speciesId4 = randomId();
+  var speciesId0 = randomId();
+  var speciesId1 = randomId();
+  var speciesId2 = randomId();
+  var speciesId3 = randomId();
+  var speciesId4 = randomId();
 
-  Id fishingSpotId0 = randomId();
-  Id fishingSpotId1 = randomId();
-  Id fishingSpotId2 = randomId();
-  Id fishingSpotId3 = randomId();
-  Id fishingSpotId4 = randomId();
+  var fishingSpotId0 = randomId();
+  var fishingSpotId1 = randomId();
+  var fishingSpotId2 = randomId();
+  var fishingSpotId3 = randomId();
+  var fishingSpotId4 = randomId();
 
-  Id baitId0 = randomId();
-  Id baitId1 = randomId();
-  Id baitId2 = randomId();
-  Id baitId3 = randomId();
-  Id baitId4 = randomId();
+  var baitId0 = randomId();
+  var baitId1 = randomId();
+  var baitId2 = randomId();
+  var baitId3 = randomId();
+  var baitId4 = randomId();
 
-  Id catchId0 = randomId();
-  Id catchId1 = randomId();
-  Id catchId2 = randomId();
-  Id catchId3 = randomId();
-  Id catchId4 = randomId();
-  Id catchId5 = randomId();
-  Id catchId6 = randomId();
-  Id catchId7 = randomId();
-  Id catchId8 = randomId();
-  Id catchId9 = randomId();
+  var catchId0 = randomId();
+  var catchId1 = randomId();
+  var catchId2 = randomId();
+  var catchId3 = randomId();
+  var catchId4 = randomId();
+  var catchId5 = randomId();
+  var catchId6 = randomId();
+  var catchId7 = randomId();
+  var catchId8 = randomId();
+  var catchId9 = randomId();
 
-  Map<Id, Species> speciesMap = {
+  var speciesMap = <Id, Species>{
     speciesId0: Species()
       ..id = speciesId0
       ..name = "Bluegill",
@@ -67,7 +67,7 @@ void main() {
       ..name = "Steelhead",
   };
 
-  Map<Id, FishingSpot> fishingSpotMap = {
+  var fishingSpotMap = <Id, FishingSpot>{
     fishingSpotId0: FishingSpot()
       ..id = fishingSpotId0
       ..name = "E"
@@ -95,7 +95,7 @@ void main() {
       ..lng = 0.4,
   };
 
-  Map<Id, Bait> baitMap = {
+  var baitMap = <Id, Bait>{
     baitId0: Bait()
       ..id = baitId0
       ..name = "Worm",
@@ -113,7 +113,7 @@ void main() {
       ..name = "Grub",
   };
 
-  List<Catch> _catches = [
+  var _catches = <Catch>[
     Catch()
       ..id = catchId0
       ..timestamp = timestampFromMillis(10)
@@ -229,8 +229,8 @@ void main() {
   }
 
   group("ReportSummaryModel", () {
-    testWidgets("Gather data normal case", (WidgetTester tester) async {
-      BuildContext context = await buildContext(tester, appManager: appManager);
+    testWidgets("Gather data normal case", (tester) async {
+      var context = await buildContext(tester, appManager: appManager);
       _stubCatchesByTimestamp(context);
 
       // Normal use case.
@@ -402,8 +402,8 @@ void main() {
       expect(data.fishingSpotsPerSpecies(speciesMap[speciesId2]), {});
     });
 
-    testWidgets("Gather data including zeros", (WidgetTester tester) async {
-      BuildContext context = await buildContext(tester, appManager: appManager);
+    testWidgets("Gather data including zeros", (tester) async {
+      var context = await buildContext(tester, appManager: appManager);
       _stubCatchesByTimestamp(context);
 
       var data = ReportSummaryModel(
@@ -415,8 +415,8 @@ void main() {
       expect(data.catchesPerSpecies.length, 5);
     });
 
-    testWidgets("Gather data alphabetical order", (WidgetTester tester) async {
-      BuildContext context = await buildContext(tester, appManager: appManager);
+    testWidgets("Gather data alphabetical order", (tester) async {
+      var context = await buildContext(tester, appManager: appManager);
       _stubCatchesByTimestamp(context);
 
       var data = ReportSummaryModel(
@@ -491,8 +491,8 @@ void main() {
       ]);
     });
 
-    testWidgets("Gather data sequential order", (WidgetTester tester) async {
-      BuildContext context = await buildContext(tester, appManager: appManager);
+    testWidgets("Gather data sequential order", (tester) async {
+      var context = await buildContext(tester, appManager: appManager);
       _stubCatchesByTimestamp(context);
 
       var data = ReportSummaryModel(
@@ -566,7 +566,7 @@ void main() {
       ]);
     });
 
-    testWidgets("Filters", (WidgetTester tester) async {
+    testWidgets("Filters", (tester) async {
       when(baitManager.entity(any)).thenAnswer(
           (invocation) => baitMap[invocation.positionalArguments[0]]);
       when(fishingSpotManager.entity(any)).thenAnswer(
@@ -574,7 +574,7 @@ void main() {
       when(speciesManager.entity(any)).thenAnswer(
           (invocation) => speciesMap[invocation.positionalArguments[0]]);
 
-      BuildContext context = await buildContext(tester, appManager: appManager);
+      var context = await buildContext(tester, appManager: appManager);
       _stubCatchesByTimestamp(context);
 
       var data = ReportSummaryModel(
@@ -595,8 +595,8 @@ void main() {
           {"Worm", "Grub", "E", "B", "C"});
     });
 
-    testWidgets("Filters with null values", (WidgetTester tester) async {
-      BuildContext context = await buildContext(tester, appManager: appManager);
+    testWidgets("Filters with null values", (tester) async {
+      var context = await buildContext(tester, appManager: appManager);
       _stubCatchesByTimestamp(context);
 
       var data = ReportSummaryModel(
@@ -615,13 +615,13 @@ void main() {
 
       expect(data.filters(), {"All dates"});
       expect(data.filters(includeSpecies: false), {"All dates"});
-      expect(data.filters(includeDateRange: false), Set.of([]));
+      expect(data.filters(includeDateRange: false), <dynamic>{});
       expect(data.filters(includeSpecies: false, includeDateRange: false),
-          Set.of([]));
+          <String>{});
     });
 
-    testWidgets("removeZerosComparedTo", (WidgetTester tester) async {
-      BuildContext context = await buildContext(tester, appManager: appManager);
+    testWidgets("removeZerosComparedTo", (tester) async {
+      var context = await buildContext(tester, appManager: appManager);
       _stubCatchesByTimestamp(context);
 
       var data1 = ReportSummaryModel(
@@ -646,7 +646,7 @@ void main() {
   });
 
   group("Widget", () {
-    testWidgets("Invalid models", (WidgetTester tester) async {
+    testWidgets("Invalid models", (tester) async {
       await tester.pumpWidget(
         Testable(
           (_) => ReportSummary(
@@ -666,15 +666,15 @@ void main() {
       expect(tester.takeException(), isAssertionError);
     });
 
-    testWidgets("No initial species", (WidgetTester tester) async {
+    testWidgets("No initial species", (tester) async {
       // This case is handled by "Has 0 catches" test case.
     });
 
-    testWidgets("Valid initial species", (WidgetTester tester) async {
+    testWidgets("Valid initial species", (tester) async {
       // This case is handled by "Has > 0 catches" test case.
     });
 
-    testWidgets("Has > 0 catches", (WidgetTester tester) async {
+    testWidgets("Has > 0 catches", (tester) async {
       await tester.pumpWidget(Testable((context) {
         _stubCatchesByTimestamp(context);
         return SingleChildScrollView(
@@ -690,7 +690,7 @@ void main() {
       expect(find.text("No catches found"), findsNothing);
     });
 
-    testWidgets("Has 0 catches", (WidgetTester tester) async {
+    testWidgets("Has 0 catches", (tester) async {
       await tester.pumpWidget(Testable((context) {
         _stubCatchesByTimestamp(context, []);
         return ReportSummary(
@@ -704,7 +704,7 @@ void main() {
       expect(find.text("No catches found"), findsOneWidget);
     });
 
-    testWidgets("With header", (WidgetTester tester) async {
+    testWidgets("With header", (tester) async {
       await tester.pumpWidget(Testable((context) {
         _stubCatchesByTimestamp(context, []);
         return ReportSummary(
@@ -719,7 +719,7 @@ void main() {
       expect(find.text("Header"), findsOneWidget);
     });
 
-    testWidgets("Without header", (WidgetTester tester) async {
+    testWidgets("Without header", (tester) async {
       await tester.pumpWidget(Testable((context) {
         _stubCatchesByTimestamp(context, []);
         return ReportSummary(
@@ -734,7 +734,7 @@ void main() {
       expect(find.byType(Empty), findsOneWidget);
     });
 
-    testWidgets("With description", (WidgetTester tester) async {
+    testWidgets("With description", (tester) async {
       await tester.pumpWidget(Testable((context) {
         _stubCatchesByTimestamp(context, []);
         return ReportSummary(
@@ -749,7 +749,7 @@ void main() {
       expect(find.text("Description"), findsOneWidget);
     });
 
-    testWidgets("Without description", (WidgetTester tester) async {
+    testWidgets("Without description", (tester) async {
       await tester.pumpWidget(Testable((context) {
         _stubCatchesByTimestamp(context, []);
         return ReportSummary(
@@ -765,7 +765,7 @@ void main() {
     });
 
     testWidgets("Comparison filters don't includes date",
-        (WidgetTester tester) async {
+        (tester) async {
       await tester.pumpWidget(Testable((context) {
         _stubCatchesByTimestamp(context);
         return SingleChildScrollView(
@@ -857,7 +857,7 @@ void main() {
       );
     });
 
-    testWidgets("Summary filters show date", (WidgetTester tester) async {
+    testWidgets("Summary filters show date", (tester) async {
       await tester.pumpWidget(Testable((context) {
         _stubCatchesByTimestamp(context);
         return SingleChildScrollView(
@@ -939,7 +939,7 @@ void main() {
     });
 
     testWidgets("Catches per fishing spot/fishing spots per species hidden",
-        (WidgetTester tester) async {
+        (tester) async {
       await tester.pumpWidget(Testable((context) {
         _stubCatchesByTimestamp(context, [
           Catch()
@@ -967,7 +967,7 @@ void main() {
     });
 
     testWidgets("Catches per fishing spot/fishing spots per species showing",
-        (WidgetTester tester) async {
+        (tester) async {
       await tester.pumpWidget(Testable((context) {
         _stubCatchesByTimestamp(context, [
           Catch()
@@ -998,7 +998,7 @@ void main() {
     });
 
     testWidgets("Catches per bait/bait per species hidden",
-        (WidgetTester tester) async {
+        (tester) async {
       await tester.pumpWidget(Testable((context) {
         _stubCatchesByTimestamp(context, [
           Catch()
@@ -1026,7 +1026,7 @@ void main() {
     });
 
     testWidgets("Catches per bait charts/baits per species showing",
-        (WidgetTester tester) async {
+        (tester) async {
       await tester.pumpWidget(Testable((context) {
         _stubCatchesByTimestamp(context, [
           Catch()
@@ -1057,7 +1057,7 @@ void main() {
     });
 
     testWidgets("Time since last catch row is hidden when there are no catches",
-        (WidgetTester tester) async {
+        (tester) async {
       await tester.pumpWidget(Testable((context) {
         _stubCatchesByTimestamp(context, []);
         return SingleChildScrollView(
@@ -1075,7 +1075,7 @@ void main() {
     });
 
     testWidgets("Time since last catch row is hidden when comparing",
-        (WidgetTester tester) async {
+        (tester) async {
       await tester.pumpWidget(Testable((context) {
         _stubCatchesByTimestamp(context);
         return SingleChildScrollView(
@@ -1096,7 +1096,7 @@ void main() {
     });
 
     testWidgets("Since last catch hidden when current time is excluded",
-        (WidgetTester tester) async {
+        (tester) async {
       await tester.pumpWidget(Testable((context) {
         _stubCatchesByTimestamp(context);
         return SingleChildScrollView(
@@ -1114,7 +1114,7 @@ void main() {
       expect(find.text("Since last catch"), findsNothing);
     });
 
-    testWidgets("Since last catch showing", (WidgetTester tester) async {
+    testWidgets("Since last catch showing", (tester) async {
       await tester.pumpWidget(Testable((context) {
         _stubCatchesByTimestamp(context);
         return SingleChildScrollView(
@@ -1131,7 +1131,7 @@ void main() {
       expect(find.text("Since last catch"), findsOneWidget);
     });
 
-    testWidgets("Picking species updates state", (WidgetTester tester) async {
+    testWidgets("Picking species updates state", (tester) async {
       await tester.pumpWidget(Testable((context) {
         _stubCatchesByTimestamp(context);
         return SingleChildScrollView(
@@ -1154,7 +1154,7 @@ void main() {
     });
 
     testWidgets("View catches/catches per species row for each series",
-        (WidgetTester tester) async {
+        (tester) async {
       await tester.pumpWidget(Testable((context) {
         _stubCatchesByTimestamp(context);
         return SingleChildScrollView(
@@ -1179,7 +1179,7 @@ void main() {
       expect(find.widgetWithText(ListItem, "Last month"), findsNWidgets(2));
     });
 
-    testWidgets("View catches row when 0 catches", (WidgetTester tester) async {
+    testWidgets("View catches row when 0 catches", (tester) async {
       await tester.pumpWidget(Testable((context) {
         // Stub a model that has catches, and one that doesn't.
         _stubCatchesByTimestamp(context);

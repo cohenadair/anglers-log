@@ -5,10 +5,10 @@ import 'package:mockito/mockito.dart';
 
 import '../test_utils.dart';
 
-main() {
-  testWidgets("Close button pops page", (WidgetTester tester) async {
+void main() {
+  testWidgets("Close button pops page", (tester) async {
     var observer = MockNavigatorObserver();
-    bool popped = false;
+    var popped = false;
     when(observer.didPop(any, any)).thenAnswer((_) => popped = true);
 
     await tester.pumpWidget(Testable(
@@ -24,7 +24,7 @@ main() {
   });
 
   testWidgets("Clear button when text is not empty",
-      (WidgetTester tester) async {
+      (tester) async {
     await tester.pumpWidget(
       Testable(
         (_) => SearchPage(
@@ -38,7 +38,7 @@ main() {
     expect(find.text("CLEAR"), findsOneWidget);
   });
 
-  testWidgets("Close button clears text", (WidgetTester tester) async {
+  testWidgets("Close button clears text", (tester) async {
     await tester.pumpWidget(
       Testable(
         (_) => SearchPage(
@@ -53,7 +53,7 @@ main() {
     expect(find.text("Search text"), findsNothing);
   });
 
-  testWidgets("Input text updates state", (WidgetTester tester) async {
+  testWidgets("Input text updates state", (tester) async {
     await tester.pumpWidget(
       Testable(
         (_) => SearchPage(

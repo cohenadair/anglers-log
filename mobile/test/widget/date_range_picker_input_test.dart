@@ -4,9 +4,9 @@ import 'package:mobile/widgets/list_picker_input.dart';
 
 import '../test_utils.dart';
 
-main() {
-  testWidgets("onPicked is called", (WidgetTester tester) async {
-    bool picked = false;
+void main() {
+  testWidgets("onPicked is called", (tester) async {
+    var picked = false;
     await tester.pumpWidget(
       Testable(
         (_) => DateRangePickerInput(

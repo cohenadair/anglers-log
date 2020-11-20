@@ -37,6 +37,7 @@ dependencies:
   uuid: ^2.0.4                      # https://pub.dev/packages/uuid (verified)
 
 dev_dependencies:
+  effective_dart: ^1.0.0
   flutter_test:
     sdk: flutter
   mockito: 4.0.0

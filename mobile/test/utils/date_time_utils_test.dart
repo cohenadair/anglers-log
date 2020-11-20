@@ -28,7 +28,7 @@ void main() {
   });
 
   group("isInFutureWithMinuteAccuracy", () {
-    DateTime now = DateTime(2015, 5, 15, 12, 30, 45, 10000);
+    var now = DateTime(2015, 5, 15, 12, 30, 45, 10000);
 
     test("Value should be in the past", () {
       expect(
@@ -102,7 +102,7 @@ void main() {
   });
 
   group("isInFutureWithDayAccuracy", () {
-    DateTime now = DateTime(2015, 5, 15, 12, 30, 45, 10000);
+    var now = DateTime(2015, 5, 15, 12, 30, 45, 10000);
 
     test("Value should be in the past", () {
       expect(
@@ -181,7 +181,7 @@ void main() {
     expect(dayOfYear(DateTime(2020, 2, 15)), 46);
   });
 
-  testWidgets("formatTimeOfDay", (WidgetTester tester) async {
+  testWidgets("formatTimeOfDay", (tester) async {
     expect(
       formatTimeOfDay(
           await buildContext(tester), TimeOfDay(hour: 15, minute: 30)),
@@ -194,8 +194,8 @@ void main() {
     );
   });
 
-  testWidgets("timestampToSearchString", (WidgetTester tester) async {
-    MockAppManager appManager = MockAppManager(
+  testWidgets("timestampToSearchString", (tester) async {
+    var appManager = MockAppManager(
       mockTimeManager: true,
     );
     when(appManager.mockTimeManager.currentDateTime)
@@ -208,13 +208,13 @@ void main() {
     );
   });
 
-  testWidgets("formatDateAsRecent", (WidgetTester tester) async {
-    MockAppManager appManager = MockAppManager(
+  testWidgets("formatDateAsRecent", (tester) async {
+    var appManager = MockAppManager(
       mockTimeManager: true,
     );
     when(appManager.mockTimeManager.currentDateTime)
         .thenReturn(DateTime(2020, 9, 24));
-    BuildContext context = await buildContext(tester, appManager: appManager);
+    var context = await buildContext(tester, appManager: appManager);
 
     expect(formatDateAsRecent(context, DateTime(2020, 9, 24)), "Today");
     expect(formatDateAsRecent(context, DateTime(2020, 9, 23)), "Yesterday");
@@ -225,7 +225,7 @@ void main() {
 
   group("DateTime", () {
     test("Days calculated correctly", () {
-      DateRange range = DateRange(
+      var range = DateRange(
         startDate: DateTime(2019, 1, 1),
         endDate: DateTime(2019, 2, 1),
       );
@@ -255,7 +255,7 @@ void main() {
     });
 
     test("Weeks calculated correctly", () {
-      DateRange range = DateRange(
+      var range = DateRange(
         startDate: DateTime(2019, 1, 1),
         endDate: DateTime(2019, 2, 1),
       );
@@ -285,7 +285,7 @@ void main() {
     });
 
     test("Months calculated correctly", () {
-      DateRange range = DateRange(
+      var range = DateRange(
         startDate: DateTime(2019, 1, 1),
         endDate: DateTime(2019, 2, 1),
       );
@@ -321,7 +321,7 @@ void main() {
     @required DateTime expectedStart,
     DateTime expectedEnd,
   }) {
-    DateRange range = dateRange.getValue(now);
+    var range = dateRange.getValue(now);
     expect(range.startDate, equals(expectedStart));
     expect(range.endDate, equals(expectedEnd ?? now));
   }
@@ -639,8 +639,8 @@ void main() {
   });
 
   group("Format duration", () {
-    testWidgets("0 duration", (WidgetTester tester) async {
-      BuildContext context = await buildContext(tester);
+    testWidgets("0 duration", (tester) async {
+      var context = await buildContext(tester);
 
       expect(
         formatDuration(
@@ -660,15 +660,15 @@ void main() {
       );
     });
 
-    testWidgets("All units", (WidgetTester tester) async {
-      int ms = Duration(
+    testWidgets("All units", (tester) async {
+      var ms = Duration(
         days: 2,
         hours: 5,
         minutes: 45,
         seconds: 30,
       ).inMilliseconds;
 
-      BuildContext context = await buildContext(tester);
+      var context = await buildContext(tester);
 
       expect(
         formatDuration(
@@ -688,12 +688,12 @@ void main() {
       );
     });
 
-    testWidgets("Days only", (WidgetTester tester) async {
-      int ms = Duration(
+    testWidgets("Days only", (tester) async {
+      var ms = Duration(
         days: 2,
       ).inMilliseconds;
 
-      BuildContext context = await buildContext(tester);
+      var context = await buildContext(tester);
 
       expect(
         formatDuration(
@@ -713,12 +713,12 @@ void main() {
       );
     });
 
-    testWidgets("Hours only", (WidgetTester tester) async {
-      int ms = Duration(
+    testWidgets("Hours only", (tester) async {
+      var ms = Duration(
         hours: 10,
       ).inMilliseconds;
 
-      BuildContext context = await buildContext(tester);
+      var context = await buildContext(tester);
 
       expect(
         formatDuration(
@@ -738,12 +738,12 @@ void main() {
       );
     });
 
-    testWidgets("Minutes only", (WidgetTester tester) async {
-      int ms = Duration(
+    testWidgets("Minutes only", (tester) async {
+      var ms = Duration(
         minutes: 20,
       ).inMilliseconds;
 
-      BuildContext context = await buildContext(tester);
+      var context = await buildContext(tester);
 
       expect(
         formatDuration(
@@ -763,12 +763,12 @@ void main() {
       );
     });
 
-    testWidgets("Seconds only", (WidgetTester tester) async {
-      int ms = Duration(
+    testWidgets("Seconds only", (tester) async {
+      var ms = Duration(
         seconds: 50,
       ).inMilliseconds;
 
-      BuildContext context = await buildContext(tester);
+      var context = await buildContext(tester);
 
       expect(
         formatDuration(
@@ -788,15 +788,15 @@ void main() {
       );
     });
 
-    testWidgets("Excluding days", (WidgetTester tester) async {
-      int ms = Duration(
+    testWidgets("Excluding days", (tester) async {
+      var ms = Duration(
         days: 2,
         hours: 5,
         minutes: 45,
         seconds: 30,
       ).inMilliseconds;
 
-      BuildContext context = await buildContext(tester);
+      var context = await buildContext(tester);
 
       expect(
         formatDuration(
@@ -808,15 +808,15 @@ void main() {
       );
     });
 
-    testWidgets("Excluding hours", (WidgetTester tester) async {
-      int ms = Duration(
+    testWidgets("Excluding hours", (tester) async {
+      var ms = Duration(
         days: 2,
         hours: 5,
         minutes: 45,
         seconds: 30,
       ).inMilliseconds;
 
-      BuildContext context = await buildContext(tester);
+      var context = await buildContext(tester);
 
       expect(
         formatDuration(
@@ -829,15 +829,15 @@ void main() {
       );
     });
 
-    testWidgets("Excluding minutes", (WidgetTester tester) async {
-      int ms = Duration(
+    testWidgets("Excluding minutes", (tester) async {
+      var ms = Duration(
         days: 2,
         hours: 5,
         minutes: 45,
         seconds: 30,
       ).inMilliseconds;
 
-      BuildContext context = await buildContext(tester);
+      var context = await buildContext(tester);
 
       expect(
         formatDuration(
@@ -851,15 +851,15 @@ void main() {
       );
     });
 
-    testWidgets("Excluding all", (WidgetTester tester) async {
-      int ms = Duration(
+    testWidgets("Excluding all", (tester) async {
+      var ms = Duration(
         days: 2,
         hours: 5,
         minutes: 45,
         seconds: 30,
       ).inMilliseconds;
 
-      BuildContext context = await buildContext(tester);
+      var context = await buildContext(tester);
 
       expect(
         formatDuration(
@@ -874,15 +874,15 @@ void main() {
       );
     });
 
-    testWidgets("Show highest two only", (WidgetTester tester) async {
-      int ms = Duration(
+    testWidgets("Show highest two only", (tester) async {
+      var ms = Duration(
         days: 2,
         hours: 5,
         minutes: 45,
         seconds: 30,
       ).inMilliseconds;
 
-      BuildContext context = await buildContext(tester);
+      var context = await buildContext(tester);
 
       expect(
         formatDuration(
@@ -939,15 +939,15 @@ void main() {
       );
     });
 
-    testWidgets("With duration unit", (WidgetTester tester) async {
-      int ms = Duration(
+    testWidgets("With duration unit", (tester) async {
+      var ms = Duration(
         days: 2,
         hours: 5,
         minutes: 45,
         seconds: 30,
       ).inMilliseconds;
 
-      BuildContext context = await buildContext(tester);
+      var context = await buildContext(tester);
 
       expect(
         formatDuration(

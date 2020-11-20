@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:mobile/i18n/strings.dart';
-import 'package:mobile/utils/validator.dart';
-import 'package:mobile/widgets/input_controller.dart';
 import 'package:quiver/strings.dart';
+
+import '../i18n/strings.dart';
+import '../utils/validator.dart';
+import '../widgets/input_controller.dart';
 
 class TextInput extends StatefulWidget {
   static const int _inputLimitDefault = 40;
@@ -150,9 +151,7 @@ class _TextInputState extends State<TextInput> {
         keyboardType: widget.keyboardType,
         onChanged: (_) {
           widget.onChanged?.call();
-          setState(() {
-            _updateError();
-          });
+          setState(_updateError);
         },
         autofocus: widget.autofocus,
       ),

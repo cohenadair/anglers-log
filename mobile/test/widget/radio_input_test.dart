@@ -6,8 +6,8 @@ import 'package:mobile/widgets/text.dart';
 
 import '../test_utils.dart';
 
-main() {
-  testWidgets("Initial selected index is set", (WidgetTester tester) async {
+void main() {
+  testWidgets("Initial selected index is set", (tester) async {
     await tester.pumpWidget(
       Testable(
         (_) => RadioInput(
@@ -26,7 +26,7 @@ main() {
     );
   });
 
-  testWidgets("Initial selected index is not set", (WidgetTester tester) async {
+  testWidgets("Initial selected index is not set", (tester) async {
     await tester.pumpWidget(
       Testable(
         (_) => RadioInput(
@@ -39,7 +39,7 @@ main() {
     expect(find.byIcon(Icons.radio_button_unchecked), findsNWidgets(3));
   });
 
-  testWidgets("Title is set", (WidgetTester tester) async {
+  testWidgets("Title is set", (tester) async {
     await tester.pumpWidget(
       Testable(
         (_) => RadioInput(
@@ -53,7 +53,7 @@ main() {
     expect(find.byType(HeadingLabel), findsOneWidget);
   });
 
-  testWidgets("Title is not set", (WidgetTester tester) async {
+  testWidgets("Title is not set", (tester) async {
     await tester.pumpWidget(
       Testable(
         (_) => RadioInput(
@@ -66,8 +66,8 @@ main() {
     expect(find.byType(HeadingLabel), findsNothing);
   });
 
-  testWidgets("Change selection", (WidgetTester tester) async {
-    bool selected = false;
+  testWidgets("Change selection", (tester) async {
+    var selected = false;
     await tester.pumpWidget(
       Testable(
         (_) => RadioInput(

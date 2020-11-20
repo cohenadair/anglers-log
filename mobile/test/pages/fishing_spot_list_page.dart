@@ -8,7 +8,7 @@ import 'package:mockito/mockito.dart';
 import '../mock_app_manager.dart';
 import '../test_utils.dart';
 
-main() {
+void main() {
   MockAppManager appManager;
 
   setUp(() {
@@ -28,7 +28,7 @@ main() {
   });
 
   group("Picker", () {
-    testWidgets("Single title", (WidgetTester tester) async {
+    testWidgets("Single title", (tester) async {
       await tester.pumpWidget(Testable(
         (_) => FishingSpotListPage.picker(
           onPicked: (_, __) => true,
@@ -38,7 +38,7 @@ main() {
       expect(find.text("Select Fishing Spot"), findsOneWidget);
     });
 
-    testWidgets("Multi title", (WidgetTester tester) async {
+    testWidgets("Multi title", (tester) async {
       await tester.pumpWidget(Testable(
         (_) => FishingSpotListPage.picker(
           onPicked: (_, __) => true,
@@ -49,7 +49,7 @@ main() {
       expect(find.text("Select Fishing Spots"), findsOneWidget);
     });
 
-    testWidgets("Has checkboxes", (WidgetTester tester) async {
+    testWidgets("Has checkboxes", (tester) async {
       await tester.pumpWidget(Testable(
         (_) => FishingSpotListPage.picker(
           onPicked: (_, __) => true,
@@ -62,7 +62,7 @@ main() {
   });
 
   group("Normal list", () {
-    testWidgets("Title", (WidgetTester tester) async {
+    testWidgets("Title", (tester) async {
       await tester.pumpWidget(Testable(
         (_) => FishingSpotListPage(),
         appManager: appManager,
@@ -70,7 +70,7 @@ main() {
       expect(find.text("Fishing Spots (1)"), findsOneWidget);
     });
 
-    testWidgets("Does not have checkboxes", (WidgetTester tester) async {
+    testWidgets("Does not have checkboxes", (tester) async {
       await tester.pumpWidget(Testable(
         (_) => FishingSpotListPage(),
         appManager: appManager,

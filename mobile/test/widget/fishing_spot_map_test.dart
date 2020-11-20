@@ -11,12 +11,12 @@ import 'package:mobile/widgets/no_results.dart';
 import 'package:mobile/widgets/search_bar.dart';
 import 'package:mobile/widgets/widget.dart';
 import 'package:mockito/mockito.dart';
-import 'package:quiver/strings.dart' as Q;
+import 'package:quiver/strings.dart' as quiver;
 
 import '../mock_app_manager.dart';
 import '../test_utils.dart';
 
-main() {
+void main() {
   MockAppManager appManager;
 
   setUp(() {
@@ -27,7 +27,7 @@ main() {
   });
 
   void stubFishingSpots() {
-    List<FishingSpot> fishingSpots = [
+    var fishingSpots = <FishingSpot>[
       FishingSpot()
         ..name = "Fishing Spot 1"
         ..lat = 1.23456
@@ -51,10 +51,10 @@ main() {
         .thenAnswer((invocation) => fishingSpots
           ..removeWhere((spot) {
             String filter = invocation.namedArguments[Symbol("filter")];
-            if (Q.isEmpty(filter)) {
+            if (quiver.isEmpty(filter)) {
               return false;
             }
-            if (Q.isEmpty(spot.name)) {
+            if (quiver.isEmpty(spot.name)) {
               return !spot.lat.toString().contains(filter) &&
                   !spot.lng.toString().contains(filter);
             }
@@ -64,7 +64,7 @@ main() {
   }
 
   group("Search bar", () {
-    testWidgets("No search bar", (WidgetTester tester) async {
+    testWidgets("No search bar", (tester) async {
       await tester.pumpWidget(Testable(
         (_) => FishingSpotMap(
           mapController: Completer<GoogleMapController>(),
@@ -75,7 +75,7 @@ main() {
       expect(find.byType(SearchBar), findsNothing);
     });
 
-    testWidgets("Search bar exists", (WidgetTester tester) async {
+    testWidgets("Search bar exists", (tester) async {
       await tester.pumpWidget(Testable(
         (_) => FishingSpotMap(
           mapController: Completer<GoogleMapController>(),
@@ -88,7 +88,7 @@ main() {
     });
 
     testWidgets("Open fishing spot list with no fishing spots",
-        (WidgetTester tester) async {
+        (tester) async {
       when(appManager.mockFishingSpotManager.listSortedByName()).thenReturn([]);
 
       await tester.pumpWidget(Testable(
@@ -108,7 +108,7 @@ main() {
     });
 
     testWidgets("Spots rendered in list correctly",
-        (WidgetTester tester) async {
+        (tester) async {
       stubFishingSpots();
 
       await tester.pumpWidget(Testable(
@@ -129,10 +129,10 @@ main() {
     });
 
     testWidgets("Tap fishing spot invokes callback",
-        (WidgetTester tester) async {
+        (tester) async {
       stubFishingSpots();
 
-      bool picked = false;
+      var picked = false;
       await tester.pumpWidget(Testable(
         (_) => FishingSpotMap(
           mapController: Completer<GoogleMapController>(),
@@ -153,7 +153,7 @@ main() {
       expect(picked, isTrue);
     });
 
-    testWidgets("Filter list", (WidgetTester tester) async {
+    testWidgets("Filter list", (tester) async {
       stubFishingSpots();
 
       await tester.pumpWidget(Testable(
@@ -175,7 +175,7 @@ main() {
       expect(find.text("Fishing Spot 4"), findsNothing);
     });
 
-    testWidgets("Filter list no result", (WidgetTester tester) async {
+    testWidgets("Filter list no result", (tester) async {
       stubFishingSpots();
 
       await tester.pumpWidget(Testable(
@@ -196,7 +196,7 @@ main() {
   });
 
   group("Children", () {
-    testWidgets("Children are rendered", (WidgetTester tester) async {
+    testWidgets("Children are rendered", (tester) async {
       await tester.pumpWidget(Testable(
         (_) => FishingSpotMap(
           mapController: Completer<GoogleMapController>(),
@@ -217,7 +217,7 @@ main() {
   });
 
   group("Help tooltip", () {
-    testWidgets("No help", (WidgetTester tester) async {
+    testWidgets("No help", (tester) async {
       await tester.pumpWidget(Testable(
         (_) => FishingSpotMap(
           mapController: Completer<GoogleMapController>(),
@@ -229,7 +229,7 @@ main() {
       expect(find.byIcon(Icons.help), findsNothing);
     });
 
-    testWidgets("Help", (WidgetTester tester) async {
+    testWidgets("Help", (tester) async {
       await tester.pumpWidget(Testable(
         (_) => FishingSpotMap(
           mapController: Completer<GoogleMapController>(),
@@ -242,7 +242,7 @@ main() {
       expect(find.byIcon(Icons.help), findsOneWidget);
     });
 
-    testWidgets("Help is hidden after delay", (WidgetTester tester) async {
+    testWidgets("Help is hidden after delay", (tester) async {
       await tester.pumpWidget(Testable(
         (_) => FishingSpotMap(
           mapController: Completer<GoogleMapController>(),
@@ -254,7 +254,7 @@ main() {
       expect(findFirst<HelpTooltip>(tester).showing, isFalse);
     });
 
-    testWidgets("Tapping FAB shows widget", (WidgetTester tester) async {
+    testWidgets("Tapping FAB shows widget", (tester) async {
       await tester.pumpWidget(Testable(
         (_) => FishingSpotMap(
           mapController: Completer<GoogleMapController>(),
@@ -270,7 +270,7 @@ main() {
       expect(findFirst<HelpTooltip>(tester).showing, isTrue);
     });
 
-    testWidgets("Hides if map is dragged", (WidgetTester tester) async {
+    testWidgets("Hides if map is dragged", (tester) async {
       var controller = Completer<GoogleMapController>();
 
       await tester.pumpWidget(Testable(
@@ -294,8 +294,8 @@ main() {
   });
 
   group("Map interaction", () {
-    testWidgets("onCameraMoveStarted", (WidgetTester tester) async {
-      bool called = false;
+    testWidgets("onCameraMoveStarted", (tester) async {
+      var called = false;
       await tester.pumpWidget(Testable(
         (_) => FishingSpotMap(
           mapController: Completer<GoogleMapController>(),
@@ -309,8 +309,8 @@ main() {
       expect(called, isTrue);
     });
 
-    testWidgets("onCameraMove", (WidgetTester tester) async {
-      bool called = false;
+    testWidgets("onCameraMove", (tester) async {
+      var called = false;
       await tester.pumpWidget(Testable(
         (_) => FishingSpotMap(
           mapController: Completer<GoogleMapController>(),
@@ -328,14 +328,14 @@ main() {
   });
 
   group("Map type", () {
-    Visibility visibility(String text, WidgetTester tester) {
+    Visibility visibility(String text, tester) {
       return tester.firstWidget(find.descendant(
         of: find.widgetWithText(ListItem, text),
         matching: find.byType(Visibility),
       ));
     }
 
-    testWidgets("All map options + check mark", (WidgetTester tester) async {
+    testWidgets("All map options + check mark", (tester) async {
       await tester.pumpWidget(Testable(
         (_) => FishingSpotMap(
           mapController: Completer<GoogleMapController>(),
@@ -358,7 +358,7 @@ main() {
       expect(visibility("Terrain", tester).visible, isFalse);
     });
 
-    testWidgets("Changing the map type", (WidgetTester tester) async {
+    testWidgets("Changing the map type", (tester) async {
       MapType currentType;
       await tester.pumpWidget(Testable(
         (_) => FishingSpotMap(
@@ -379,7 +379,7 @@ main() {
   });
 
   group("My location button", () {
-    testWidgets("Hidden", (WidgetTester tester) async {
+    testWidgets("Hidden", (tester) async {
       await tester.pumpWidget(Testable(
         (_) => FishingSpotMap(
           mapController: Completer<GoogleMapController>(),
@@ -391,7 +391,7 @@ main() {
       expect(find.byIcon(Icons.my_location), findsNothing);
     });
 
-    testWidgets("Showing", (WidgetTester tester) async {
+    testWidgets("Showing", (tester) async {
       await tester.pumpWidget(Testable(
         (_) => FishingSpotMap(
           mapController: Completer<GoogleMapController>(),
@@ -402,9 +402,8 @@ main() {
       expect(find.byIcon(Icons.my_location), findsOneWidget);
     });
 
-    testWidgets("onPressed no location shows error",
-        (WidgetTester tester) async {
-      bool pressed = false;
+    testWidgets("onPressed no location shows error", (tester) async {
+      var pressed = false;
       await tester.pumpWidget(Testable(
         (_) => Scaffold(
           body: FishingSpotMap(
@@ -424,8 +423,8 @@ main() {
       expect(pressed, isFalse);
     });
 
-    testWidgets("onPressed invokes callback", (WidgetTester tester) async {
-      bool pressed = false;
+    testWidgets("onPressed invokes callback", (tester) async {
+      var pressed = false;
       await tester.pumpWidget(Testable(
         (_) => FishingSpotMap(
           mapController: Completer<GoogleMapController>(),

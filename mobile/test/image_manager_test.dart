@@ -1,7 +1,6 @@
 import 'dart:io';
 import 'dart:typed_data';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/image_manager.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
@@ -54,9 +53,9 @@ void main() {
   });
 
   testWidgets("Invalid fileName input to image method",
-      (WidgetTester tester) async {
+      (tester) async {
     await imageManager.initialize();
-    BuildContext context = await buildContext(tester);
+    var context = await buildContext(tester);
 
     // Empty/null.
     expect(await imageManager.image(context, fileName: null), isNull);
@@ -77,9 +76,9 @@ void main() {
   });
 
   testWidgets("Error getting thumbnail returns full image",
-      (WidgetTester tester) async {
+      (tester) async {
     await imageManager.initialize();
-    BuildContext context = await buildContext(tester);
+    var context = await buildContext(tester);
 
     File img = MockFile();
     when(img.exists()).thenAnswer((_) => Future.value(true));
@@ -88,7 +87,7 @@ void main() {
     when(appManager.mockIoWrapper.file(any)).thenReturn(img);
 
     // Empty/null.
-    Uint8List bytes = await imageManager.image(
+    var bytes = await imageManager.image(
       context,
       fileName: "image.jpg",
       size: null, // Will cause _thumbnail method to return null.
@@ -97,13 +96,13 @@ void main() {
     expect(bytes, equals(Uint8List.fromList([1, 2, 3])));
   });
 
-  testWidgets("Thumbnail cache", (WidgetTester tester) async {
+  testWidgets("Thumbnail cache", (tester) async {
     await imageManager.initialize();
 
     // Clear call counts.
     verify(appManager.mockIoWrapper.directory(any)).called(3);
 
-    BuildContext context = await buildContext(tester);
+    var context = await buildContext(tester);
 
     var img = MockFile();
     when(img.exists()).thenAnswer((_) => Future.value(true));
@@ -122,7 +121,7 @@ void main() {
         .thenReturn(thumb);
 
     // Cache does not include image; image should be compressed.
-    Uint8List bytes = await imageManager.image(
+    var bytes = await imageManager.image(
       context,
       fileName: "image.jpg",
       size: 50,
@@ -161,9 +160,9 @@ void main() {
     expect(bytes, equals(Uint8List.fromList([1, 2, 3])));
   });
 
-  testWidgets("Get images", (WidgetTester tester) async {
+  testWidgets("Get images", (tester) async {
     await imageManager.initialize();
-    BuildContext context = await buildContext(tester);
+    var context = await buildContext(tester);
 
     // Invalid input.
     expect(
@@ -198,7 +197,7 @@ void main() {
     when(appManager.mockIoWrapper.file("$_imagePath/images/image1.jpg"))
         .thenReturn(img1);
 
-    List<Uint8List> byteList = await imageManager
+    var byteList = await imageManager
         .images(context, imageNames: ["image0.jpg", "image1.jpg"]);
     expect(byteList, isNotNull);
     expect(byteList.length, 1);
@@ -247,7 +246,7 @@ void main() {
     when(appManager.mockImageCompressWrapper.compress("image1.jpg", any, any))
         .thenAnswer((_) => img1.readAsBytes());
 
-    List<MockFile> addedImages = [];
+    var addedImages = <MockFile>[];
     when(appManager.mockIoWrapper.file(any)).thenAnswer((invocation) {
       var newFile = MockFile();
       when(newFile.path).thenReturn(invocation.positionalArguments.first);
@@ -259,9 +258,9 @@ void main() {
 
     expect((await imageManager.save([img0, img1])).length, 2);
     expect(addedImages.length, 2);
-    addedImages.forEach((img) {
+    for (var img in addedImages) {
       verify(img.writeAsBytes(any, flush: true)).called(1);
-    });
+    }
     verify(appManager.mockImageCompressWrapper.compress(any, any, any))
         .called(2);
   });
@@ -276,7 +275,7 @@ void main() {
     try {
       expect(await imageManager.save([]), isEmpty);
       expect(await imageManager.save(null), isEmpty);
-    } catch (e) {
+    } on Exception catch(_) {
       fail("Invalid input should be handled gracefully");
     }
   });
@@ -293,30 +292,30 @@ void main() {
     when(img1.exists()).thenAnswer((_) => Future.value(true));
 
     await imageManager.initialize();
-    List<String> images = await imageManager.save([img1]);
+    var images = await imageManager.save([img1]);
     expect(images.length, 1);
     expect(images.first, "image.jpg");
     verifyNever(appManager.mockImageCompressWrapper.compress(any, any, any));
   });
 
   test("Clearing stale images", () async {
-    MockFile img1 = MockFile();
+    var img1 = MockFile();
     when(img1.path).thenReturn("$_imagePath/image1.jpg");
     when(img1.deleteSync()).thenAnswer((_) {});
 
-    MockFile img2 = MockFile();
+    var img2 = MockFile();
     when(img2.path).thenReturn("$_imagePath/image2.jpg");
     when(img2.deleteSync()).thenAnswer((_) {});
 
     when(directory.list()).thenAnswer((_) =>
         Stream.fromFutures([img1, img2].map((img) => Future.value(img))));
 
-    Catch catch1 = Catch()
+    var catch1 = Catch()
       ..id = randomId()
       ..timestamp = timestampFromMillis(5);
     catch1.imageNames.add("image1.jpg");
 
-    Catch catch2 = Catch()
+    var catch2 = Catch()
       ..id = randomId()
       ..timestamp = timestampFromMillis(5);
     catch2.imageNames.add("image2.jpg");
@@ -333,9 +332,9 @@ void main() {
   });
 
   group("dartImage", () {
-    testWidgets("Invalid image returns null", (WidgetTester tester) async {
+    testWidgets("Invalid image returns null", (tester) async {
       await imageManager.initialize();
-      BuildContext context = await buildContext(tester);
+      var context = await buildContext(tester);
       var image = await imageManager.dartImage(context, "", 50);
       expect(image, isNull);
     });

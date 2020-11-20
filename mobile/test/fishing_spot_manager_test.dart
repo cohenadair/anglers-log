@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:mobile/fishing_spot_manager.dart';
@@ -36,17 +35,17 @@ void main() {
 
   test("Fishing spot within radius", () async {
     // Null cases.
-    FishingSpot fishingSpot = fishingSpotManager.withinRadius(LatLng(0, 0), 20);
+    var fishingSpot = fishingSpotManager.withinRadius(LatLng(0, 0), 20);
     expect(fishingSpot, isNull);
 
     fishingSpot = fishingSpotManager.withinRadius(null);
     expect(fishingSpot, isNull);
 
-    Id fishingSpotId0 = randomId();
-    Id fishingSpotId1 = randomId();
-    Id fishingSpotId2 = randomId();
-    Id fishingSpotId3 = randomId();
-    Id fishingSpotId4 = randomId();
+    var fishingSpotId0 = randomId();
+    var fishingSpotId1 = randomId();
+    var fishingSpotId2 = randomId();
+    var fishingSpotId3 = randomId();
+    var fishingSpotId4 = randomId();
 
     // Single fishing spot in radius.
     var newSpot = FishingSpot()
@@ -114,11 +113,11 @@ void main() {
   });
 
   test("Number of catches", () {
-    Id speciesId0 = randomId();
+    var speciesId0 = randomId();
 
-    Id fishingSpotId0 = randomId();
-    Id fishingSpotId4 = randomId();
-    Id fishingSpotId3 = randomId();
+    var fishingSpotId0 = randomId();
+    var fishingSpotId4 = randomId();
+    var fishingSpotId3 = randomId();
 
     when(catchManager.list()).thenReturn([
       Catch()
@@ -175,7 +174,7 @@ void main() {
   });
 
   group("deleteMessage", () {
-    testWidgets("Input", (WidgetTester tester) async {
+    testWidgets("Input", (tester) async {
       expect(
         () => fishingSpotManager.deleteMessage(
             null,
@@ -185,13 +184,13 @@ void main() {
         throwsAssertionError,
       );
 
-      BuildContext context = await buildContext(tester);
+      var context = await buildContext(tester);
       expect(() => fishingSpotManager.deleteMessage(context, null),
           throwsAssertionError);
     });
 
-    testWidgets("Singular", (WidgetTester tester) async {
-      FishingSpot fishingSpot = FishingSpot()
+    testWidgets("Singular", (tester) async {
+      var fishingSpot = FishingSpot()
         ..id = randomId()
         ..name = "A";
 
@@ -203,7 +202,7 @@ void main() {
           ..fishingSpotId = fishingSpot.id,
       ]);
 
-      BuildContext context = await buildContext(tester);
+      var context = await buildContext(tester);
       expect(
         fishingSpotManager.deleteMessage(context, fishingSpot),
         "A is associated with 1 catch; are you sure you want to delete it?"
@@ -211,14 +210,14 @@ void main() {
       );
     });
 
-    testWidgets("Plural zero", (WidgetTester tester) async {
-      FishingSpot fishingSpot = FishingSpot()
+    testWidgets("Plural zero", (tester) async {
+      var fishingSpot = FishingSpot()
         ..id = randomId()
         ..name = "A";
 
       when(catchManager.list()).thenReturn([]);
 
-      BuildContext context = await buildContext(tester);
+      var context = await buildContext(tester);
       expect(
         fishingSpotManager.deleteMessage(context, fishingSpot),
         "A is associated with 0 catches; are you sure you want to delete it?"
@@ -226,8 +225,8 @@ void main() {
       );
     });
 
-    testWidgets("Plural none zero", (WidgetTester tester) async {
-      FishingSpot fishingSpot = FishingSpot()
+    testWidgets("Plural none zero", (tester) async {
+      var fishingSpot = FishingSpot()
         ..id = randomId()
         ..name = "A";
 
@@ -244,7 +243,7 @@ void main() {
           ..fishingSpotId = fishingSpot.id,
       ]);
 
-      BuildContext context = await buildContext(tester);
+      var context = await buildContext(tester);
       expect(
         fishingSpotManager.deleteMessage(context, fishingSpot),
         "A is associated with 2 catches; are you sure you want to delete it?"
@@ -252,8 +251,8 @@ void main() {
       );
     });
 
-    testWidgets("Without a name singular", (WidgetTester tester) async {
-      FishingSpot fishingSpot = FishingSpot()
+    testWidgets("Without a name singular", (tester) async {
+      var fishingSpot = FishingSpot()
         ..id = randomId()
         ..lat = 0.000006
         ..lng = 0.000007;
@@ -266,7 +265,7 @@ void main() {
           ..fishingSpotId = fishingSpot.id,
       ]);
 
-      BuildContext context = await buildContext(tester);
+      var context = await buildContext(tester);
       expect(
         fishingSpotManager.deleteMessage(context, fishingSpot),
         "This fishing spot is associated with 1 catch; are you sure you "
@@ -274,8 +273,8 @@ void main() {
       );
     });
 
-    testWidgets("Without a name plural", (WidgetTester tester) async {
-      FishingSpot fishingSpot = FishingSpot()
+    testWidgets("Without a name plural", (tester) async {
+      var fishingSpot = FishingSpot()
         ..id = randomId()
         ..lat = 0.000006
         ..lng = 0.000007;
@@ -293,7 +292,7 @@ void main() {
           ..fishingSpotId = fishingSpot.id,
       ]);
 
-      BuildContext context = await buildContext(tester);
+      var context = await buildContext(tester);
       expect(
         fishingSpotManager.deleteMessage(context, fishingSpot),
         "This fishing spot is associated with 2 catches; are you sure you "

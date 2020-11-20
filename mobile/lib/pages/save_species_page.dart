@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:mobile/i18n/strings.dart';
-import 'package:mobile/model/gen/anglerslog.pb.dart';
-import 'package:mobile/pages/save_name_page.dart';
-import 'package:mobile/species_manager.dart';
-import 'package:mobile/utils/protobuf_utils.dart';
-import 'package:mobile/utils/validator.dart';
+
+import '../i18n/strings.dart';
+import '../model/gen/anglerslog.pb.dart';
+import '../pages/save_name_page.dart';
+import '../species_manager.dart';
+import '../utils/protobuf_utils.dart';
+import '../utils/validator.dart';
 
 class SaveSpeciesPage extends StatelessWidget {
   final Species oldSpecies;
@@ -14,7 +15,7 @@ class SaveSpeciesPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    SpeciesManager speciesManager = SpeciesManager.of(context);
+    var speciesManager = SpeciesManager.of(context);
 
     return SaveNamePage(
       title: oldSpecies == null

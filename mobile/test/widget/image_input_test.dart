@@ -9,7 +9,7 @@ import 'package:mobile/widgets/widget.dart';
 import '../mock_app_manager.dart';
 import '../test_utils.dart';
 
-main() {
+void main() {
   MockAppManager appManager;
 
   setUp(() {
@@ -18,7 +18,7 @@ main() {
     );
   });
 
-  testWidgets("Enabled", (WidgetTester tester) async {
+  testWidgets("Enabled", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => ImageInput(
         onImagesPicked: (_) => {},
@@ -33,7 +33,7 @@ main() {
     expect(find.byType(ImagePickerPage), findsOneWidget);
   });
 
-  testWidgets("Disabled", (WidgetTester tester) async {
+  testWidgets("Disabled", (tester) async {
     await tester.pumpWidget(
       Testable(
         (_) => ImageInput(
@@ -50,7 +50,7 @@ main() {
     expect(find.byType(ImagePickerPage), findsNothing);
   });
 
-  testWidgets("Single selection", (WidgetTester tester) async {
+  testWidgets("Single selection", (tester) async {
     await tester.pumpWidget(
       Testable(
         (_) => ImageInput.single(
@@ -63,7 +63,7 @@ main() {
     expect(find.text("Photos"), findsNothing);
   });
 
-  testWidgets("Multiple selection", (WidgetTester tester) async {
+  testWidgets("Multiple selection", (tester) async {
     await tester.pumpWidget(
       Testable(
         (_) => ImageInput(
@@ -76,7 +76,7 @@ main() {
     expect(find.text("Photo"), findsNothing);
   });
 
-  testWidgets("No images", (WidgetTester tester) async {
+  testWidgets("No images", (tester) async {
     await tester.pumpWidget(
       Testable(
         (_) => ImageInput(
@@ -89,7 +89,7 @@ main() {
     expect(find.byType(Empty), findsOneWidget);
   });
 
-  testWidgets("At least one image, enabled", (WidgetTester tester) async {
+  testWidgets("At least one image, enabled", (tester) async {
     await tester.pumpWidget(
       Testable(
         (_) => ImageInput(
@@ -107,7 +107,7 @@ main() {
     expect(findFirst<ListView>(tester).physics, isNull);
   });
 
-  testWidgets("At least one image, disabled", (WidgetTester tester) async {
+  testWidgets("At least one image, disabled", (tester) async {
     await tester.pumpWidget(
       Testable(
         (_) => ImageInput(
@@ -126,7 +126,7 @@ main() {
     expect(findFirst<ListView>(tester).physics, isNotNull);
   });
 
-  testWidgets("Load from file", (WidgetTester tester) async {
+  testWidgets("Load from file", (tester) async {
     await tester.pumpWidget(
       Testable(
         (_) => ImageInput(
@@ -142,7 +142,7 @@ main() {
     expect(find.byType(Image), findsOneWidget);
   });
 
-  testWidgets("Load from memory", (WidgetTester tester) async {
+  testWidgets("Load from memory", (tester) async {
     await tester.pumpWidget(
       Testable(
         (_) => ImageInput(

@@ -2,26 +2,27 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:mobile/entity_manager.dart';
-import 'package:mobile/fishing_spot_manager.dart';
-import 'package:mobile/i18n/strings.dart';
-import 'package:mobile/location_monitor.dart';
-import 'package:mobile/log.dart';
-import 'package:mobile/model/gen/anglerslog.pb.dart';
-import 'package:mobile/pages/save_fishing_spot_page.dart';
-import 'package:mobile/res/dimen.dart';
-import 'package:mobile/res/style.dart';
-import 'package:mobile/utils/dialog_utils.dart';
-import 'package:mobile/utils/map_utils.dart';
-import 'package:mobile/utils/page_utils.dart';
-import 'package:mobile/utils/protobuf_utils.dart';
-import 'package:mobile/utils/string_utils.dart';
-import 'package:mobile/widgets/button.dart';
-import 'package:mobile/widgets/fishing_spot_map.dart';
-import 'package:mobile/widgets/styled_bottom_sheet.dart';
-import 'package:mobile/widgets/text.dart';
-import 'package:mobile/widgets/widget.dart';
 import 'package:quiver/strings.dart';
+
+import '../entity_manager.dart';
+import '../fishing_spot_manager.dart';
+import '../i18n/strings.dart';
+import '../location_monitor.dart';
+import '../log.dart';
+import '../model/gen/anglerslog.pb.dart';
+import '../pages/save_fishing_spot_page.dart';
+import '../res/dimen.dart';
+import '../res/style.dart';
+import '../utils/dialog_utils.dart';
+import '../utils/map_utils.dart';
+import '../utils/page_utils.dart';
+import '../utils/protobuf_utils.dart';
+import '../utils/string_utils.dart';
+import '../widgets/button.dart';
+import '../widgets/fishing_spot_map.dart';
+import '../widgets/styled_bottom_sheet.dart';
+import '../widgets/text.dart';
+import '../widgets/widget.dart';
 
 class MapPage extends StatefulWidget {
   @override
@@ -31,9 +32,9 @@ class MapPage extends StatefulWidget {
 class _MapPageState extends State<MapPage> {
   final Log _log = Log("MapPage");
 
-  Completer<GoogleMapController> _mapController = Completer();
+  final Completer<GoogleMapController> _mapController = Completer();
+  final Set<FishingSpotMarker> _fishingSpotMarkers = {};
 
-  Set<FishingSpotMarker> _fishingSpotMarkers = Set();
   FishingSpotMarker _activeMarker;
 
   FishingSpot _activeFishingSpot;
@@ -82,7 +83,7 @@ class _MapPageState extends State<MapPage> {
   }
 
   Widget _buildMap(BuildContext context) {
-    Set<Marker> markers = Set.of(_fishingSpotMarkers);
+    var markers = Set.of(_fishingSpotMarkers);
     if (_hasActiveMarker) {
       markers.add(_activeMarker);
     }
@@ -133,7 +134,7 @@ class _MapPageState extends State<MapPage> {
           setState(() {
             _setActiveMarker(_findMarker(fishingSpot.id));
             _activeFishingSpot = fishingSpot;
-            moveMap(_mapController, _activeFishingSpot.latLng, false);
+            moveMap(_mapController, _activeFishingSpot.latLng, animate: false);
           });
         },
       ),
@@ -146,9 +147,7 @@ class _MapPageState extends State<MapPage> {
         });
       },
       onCurrentLocationPressed: () => setState(() {
-        setState(() {
-          _clearActiveFishingSpot();
-        });
+        setState(_clearActiveFishingSpot);
       }),
     );
   }
@@ -163,8 +162,8 @@ class _MapPageState extends State<MapPage> {
       return Container();
     }
 
-    FishingSpot fishingSpot = _activeFishingSpot?.clone();
-    bool editing = true;
+    var fishingSpot = _activeFishingSpot?.clone();
+    var editing = true;
     if (fishingSpot == null && _hasActiveMarker) {
       // Dropped pin case.
       fishingSpot = FishingSpot()
@@ -179,9 +178,7 @@ class _MapPageState extends State<MapPage> {
       child: StyledBottomSheet(
         visible: fishingSpot != null && !_waitingForDismissal,
         onDismissed: () {
-          setState(() {
-            _clearActiveFishingSpot();
-          });
+          setState(_clearActiveFishingSpot);
         },
         child: _FishingSpotBottomSheet(
           fishingSpot: fishingSpot,
@@ -343,7 +340,7 @@ class _FishingSpotBottomSheet extends StatelessWidget {
   }
 
   Widget _buildChips(BuildContext context) {
-    FishingSpotManager fishingSpotManager = FishingSpotManager.of(context);
+    var fishingSpotManager = FishingSpotManager.of(context);
 
     return Container(
       height: _chipHeight,

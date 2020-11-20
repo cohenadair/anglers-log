@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:mobile/fishing_spot_manager.dart';
-import 'package:mobile/i18n/strings.dart';
-import 'package:mobile/location_monitor.dart';
-import 'package:mobile/log.dart';
-import 'package:mobile/model/gen/anglerslog.pb.dart';
-import 'package:mobile/pages/fishing_spot_picker_page.dart';
-import 'package:mobile/pages/image_picker_page.dart';
-import 'package:mobile/pages/save_catch_page.dart';
-import 'package:mobile/pages/species_list_page.dart';
-import 'package:mobile/utils/protobuf_utils.dart';
+
+import '../fishing_spot_manager.dart';
+import '../i18n/strings.dart';
+import '../location_monitor.dart';
+import '../log.dart';
+import '../model/gen/anglerslog.pb.dart';
+import '../pages/fishing_spot_picker_page.dart';
+import '../pages/image_picker_page.dart';
+import '../pages/save_catch_page.dart';
+import '../pages/species_list_page.dart';
+import '../utils/protobuf_utils.dart';
 
 /// Presents a workflow (journey) for adding a [Catch].
 class AddCatchJourney extends StatefulWidget {
@@ -52,12 +53,12 @@ class _AddCatchJourneyState extends State<AddCatchJourney> {
 
                 // If one of the attached images has location data, use it to
                 // fetch an existing fishing spot, or to create a new one.
-                for (PickedImage image in _images) {
+                for (var image in _images) {
                   if (image.position == null) {
                     continue;
                   }
 
-                  FishingSpot existingSpot = _fishingSpotManager.withinRadius(
+                  var existingSpot = _fishingSpotManager.withinRadius(
                       image.position, _existingFishingSpotMeters);
 
                   if (existingSpot == null) {

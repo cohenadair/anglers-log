@@ -3,7 +3,7 @@ import 'package:mobile/utils/search_timer.dart';
 
 void main() {
   test("Callback is called immediately with an empty query", () {
-    bool called = false;
+    var called = false;
     var timer = SearchTimer(() {
       called = true;
     });
@@ -22,7 +22,7 @@ void main() {
   });
 
   test("Callback is not called if timer is cancelled", () async {
-    bool called = false;
+    var called = false;
     var timer = SearchTimer(() {
       called = true;
     });

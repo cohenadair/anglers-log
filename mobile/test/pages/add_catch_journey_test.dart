@@ -14,7 +14,7 @@ import 'package:photo_manager/photo_manager.dart';
 import '../mock_app_manager.dart';
 import '../test_utils.dart';
 
-main() {
+void main() {
   MockAppManager appManager;
   MockAssetPathEntity allAlbum;
 
@@ -76,7 +76,7 @@ main() {
   });
 
   testWidgets("Picked image uses location data to fetch existing fishing spot",
-      (WidgetTester tester) async {
+      (tester) async {
     await tester.pumpWidget(Testable(
       (_) => AddCatchJourney(),
       appManager: appManager,
@@ -103,7 +103,7 @@ main() {
   });
 
   testWidgets("Picked image uses location data to create new fishing spot",
-      (WidgetTester tester) async {
+      (tester) async {
     await tester.pumpWidget(Testable(
       (_) => AddCatchJourney(),
       appManager: appManager,
@@ -123,7 +123,7 @@ main() {
   });
 
   testWidgets("Picked image without location data shows fishing spot picker",
-      (WidgetTester tester) async {
+      (tester) async {
     await tester.pumpWidget(Testable(
       (_) => AddCatchJourney(),
       appManager: appManager,
@@ -142,7 +142,7 @@ main() {
     // TODO: Can't test any further; GoogleMap doesn't yet support gestures.
   });
 
-  testWidgets("Saving catch pops entire journey", (WidgetTester tester) async {
+  testWidgets("Saving catch pops entire journey", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => AddCatchJourney(),
       appManager: appManager,

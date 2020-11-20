@@ -8,7 +8,7 @@ import 'package:mockito/mockito.dart';
 import '../mock_app_manager.dart';
 import '../test_utils.dart';
 
-main() {
+void main() {
   MockAppManager appManager;
 
   setUp(() {
@@ -22,7 +22,7 @@ main() {
       ..name = "Countdown Brown Trout");
   });
 
-  testWidgets("Null bait category renders empty", (WidgetTester tester) async {
+  testWidgets("Null bait category renders empty", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => BaitPage(randomId()),
       appManager: appManager,
@@ -30,7 +30,7 @@ main() {
     expect(find.byType(HeadingLabel), findsNothing);
   });
 
-  testWidgets("Non-null bait category", (WidgetTester tester) async {
+  testWidgets("Non-null bait category", (tester) async {
     when(appManager.mockBaitCategoryManager.entity(any)).thenReturn(
       BaitCategory()
         ..id = randomId()

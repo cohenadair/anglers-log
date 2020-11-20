@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:mobile/i18n/strings.dart';
-import 'package:mobile/res/dimen.dart';
-import 'package:mobile/widgets/text.dart';
+
+import '../i18n/strings.dart';
+import '../res/dimen.dart';
+import '../widgets/text.dart';
 
 class SettingsPage extends StatelessWidget {
   @override

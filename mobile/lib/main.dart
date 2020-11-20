@@ -1,11 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:mobile/app_manager.dart';
-import 'package:mobile/i18n/strings.dart';
-import 'package:mobile/pages/main_page.dart';
-import 'package:mobile/res/color.dart';
 import 'package:provider/provider.dart';
+
+import 'app_manager.dart';
+import 'i18n/strings.dart';
+import 'pages/main_page.dart';
+import 'res/color.dart';
 
 void main() {
   runApp(AnglersLog());
@@ -51,7 +52,7 @@ class _AnglersLogState extends State<AnglersLog> {
         ),
         home: FutureBuilder<bool>(
           future: _appInitializedFuture,
-          builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
+          builder: (context, snapshot) {
             if (snapshot.hasError || !snapshot.hasData) {
               return Scaffold(
                 backgroundColor: Theme.of(context).primaryColor,

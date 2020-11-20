@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:mobile/res/dimen.dart';
-import 'package:mobile/widgets/text.dart';
+
+import '../res/dimen.dart';
+import '../widgets/text.dart';
 
 class NoResults extends StatelessWidget {
   final String text;

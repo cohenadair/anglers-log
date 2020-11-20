@@ -3,27 +3,27 @@ import 'dart:io';
 import 'package:device_info/device_info.dart';
 import 'package:flutter/material.dart';
 import 'package:mailer/mailer.dart';
-import 'package:mailer/smtp_server.dart';
-import 'package:mobile/i18n/strings.dart';
-import 'package:mobile/log.dart';
-import 'package:mobile/model/gen/anglerslog.pb.dart';
-import 'package:mobile/pages/form_page.dart';
-import 'package:mobile/properties_manager.dart';
-import 'package:mobile/res/dimen.dart';
-import 'package:mobile/res/style.dart';
-import 'package:mobile/utils/protobuf_utils.dart';
-import 'package:mobile/utils/snackbar_utils.dart';
-import 'package:mobile/utils/string_utils.dart';
-import 'package:mobile/utils/validator.dart';
-import 'package:mobile/widgets/input_controller.dart';
-import 'package:mobile/widgets/input_data.dart';
-import 'package:mobile/widgets/radio_input.dart';
-import 'package:mobile/widgets/text_input.dart';
-import 'package:mobile/widgets/widget.dart';
-import 'package:mobile/wrappers/io_wrapper.dart';
-import 'package:mobile/wrappers/mail_sender_wrapper.dart';
-import 'package:mobile/wrappers/package_info_wrapper.dart';
 import 'package:quiver/strings.dart';
+
+import '../i18n/strings.dart';
+import '../log.dart';
+import '../model/gen/anglerslog.pb.dart';
+import '../pages/form_page.dart';
+import '../properties_manager.dart';
+import '../res/dimen.dart';
+import '../res/style.dart';
+import '../utils/protobuf_utils.dart';
+import '../utils/snackbar_utils.dart';
+import '../utils/string_utils.dart';
+import '../utils/validator.dart';
+import '../widgets/input_controller.dart';
+import '../widgets/input_data.dart';
+import '../widgets/radio_input.dart';
+import '../widgets/text_input.dart';
+import '../widgets/widget.dart';
+import '../wrappers/io_wrapper.dart';
+import '../wrappers/mail_sender_wrapper.dart';
+import '../wrappers/package_info_wrapper.dart';
 
 class FeedbackPage extends StatefulWidget {
   /// An optional page title.
@@ -169,27 +169,27 @@ class _FeedbackPageState extends State<FeedbackPage> {
 
         showPermanentSnackBar(context, Strings.of(context).feedbackPageSending);
 
-        String name = _nameController.value;
-        String email = _emailController.value;
-        String type = _feedbackTypeToString(_typeController.value);
-        String message = _messageController.value;
+        var name = _nameController.value;
+        var email = _emailController.value;
+        var type = _feedbackTypeToString(_typeController.value);
+        var message = _messageController.value;
 
-        String appVersion = (await _packageInfo.fromPlatform()).version;
+        var appVersion = (await _packageInfo.fromPlatform()).version;
         String osVersion;
         String deviceModel;
 
-        DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
+        var deviceInfo = DeviceInfoPlugin();
         if (Platform.isIOS) {
-          IosDeviceInfo info = await deviceInfo.iosInfo;
+          var info = await deviceInfo.iosInfo;
           osVersion = "${info.systemName} (${info.systemVersion})";
           deviceModel = info.utsname.machine;
         } else if (Platform.isAndroid) {
-          AndroidDeviceInfo info = await deviceInfo.androidInfo;
+          var info = await deviceInfo.androidInfo;
           osVersion = "Android (${info.version.sdkInt})";
           deviceModel = info.model;
         }
 
-        SmtpServer server = _mailSender.gmail(
+        var server = _mailSender.gmail(
             _propertiesManager.clientSenderEmail,
             _propertiesManager.clientSenderPassword);
 
@@ -198,7 +198,7 @@ class _FeedbackPageState extends State<FeedbackPage> {
           attachment = StringAttachment(widget.attachment);
         }
 
-        Message content = Message()
+        var content = Message()
           ..from = Address(
             _propertiesManager.clientSenderEmail,
             "Anglers' Log Client",

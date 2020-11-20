@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/bait_manager.dart';
 import 'package:mobile/catch_manager.dart';
@@ -75,21 +74,21 @@ void main() {
         .thenAnswer((_) => Future.value(true));
     when(dataManager.replaceRows(any, any)).thenAnswer((_) => Future.value());
 
-    MockCatchListener catchListener = MockCatchListener();
+    var catchListener = MockCatchListener();
     when(catchListener.onDelete).thenReturn((_) {});
     when(catchListener.onAddOrUpdate).thenReturn(() {});
     catchManager.addListener(catchListener);
 
     // Add a bait.
-    Id baitId0 = randomId();
-    Bait bait = Bait()
+    var baitId0 = randomId();
+    var bait = Bait()
       ..id = baitId0
       ..name = "Rapala";
     await baitManager.addOrUpdate(bait);
 
     // Add a couple catches that use the new bait.
-    Id catchId0 = randomId();
-    Id catchId1 = randomId();
+    var catchId0 = randomId();
+    var catchId1 = randomId();
     await catchManager.addOrUpdate(Catch()
       ..id = catchId0
       ..baitId = baitId0);
@@ -117,19 +116,19 @@ void main() {
         .thenAnswer((_) => Future.value(true));
     when(dataManager.replaceRows(any, any)).thenAnswer((_) => Future.value());
 
-    MockCatchListener catchListener = MockCatchListener();
+    var catchListener = MockCatchListener();
     when(catchListener.onDelete).thenReturn((_) {});
     when(catchListener.onAddOrUpdate).thenReturn(() {});
     catchManager.addListener(catchListener);
 
     // Add a fishing spot.
-    Id fishingSpotId0 = randomId();
-    FishingSpot fishingSpot = FishingSpot()..id = fishingSpotId0;
+    var fishingSpotId0 = randomId();
+    var fishingSpot = FishingSpot()..id = fishingSpotId0;
     await fishingSpotManager.addOrUpdate(fishingSpot);
 
     // Add a couple catches that use the new fishing spot.
-    Id catchId0 = randomId();
-    Id catchId1 = randomId();
+    var catchId0 = randomId();
+    var catchId1 = randomId();
     await catchManager.addOrUpdate(Catch()
       ..id = catchId0
       ..fishingSpotId = fishingSpotId0);
@@ -150,7 +149,7 @@ void main() {
   });
 
   testWidgets("Filtering by search query; non-ID reference properties",
-      (WidgetTester tester) async {
+      (tester) async {
     await catchManager.addOrUpdate(Catch()
       ..id = randomId()
       ..timestamp = Timestamp.fromDateTime(DateTime(2020, 1, 1)));
@@ -158,9 +157,9 @@ void main() {
       ..id = randomId()
       ..timestamp = Timestamp.fromDateTime(DateTime(2020, 4, 4)));
 
-    BuildContext context = await buildContext(tester, appManager: appManager);
+    var context = await buildContext(tester, appManager: appManager);
 
-    List<Catch> catches = catchManager.filteredCatches(context, filter: "");
+    var catches = catchManager.filteredCatches(context, filter: "");
     expect(catches.length, 2);
 
     catches = catchManager.filteredCatches(context, filter: "janua");
@@ -173,7 +172,7 @@ void main() {
     expect(catches.length, 1);
   });
 
-  testWidgets("Filtering by search query; bait", (WidgetTester tester) async {
+  testWidgets("Filtering by search query; bait", (tester) async {
     var baitManager = MockBaitManager();
     when(appManager.baitManager).thenReturn(baitManager);
     when(baitManager.matchesFilter(any, any)).thenReturn(true);
@@ -185,12 +184,12 @@ void main() {
       ..id = randomId()
       ..baitId = randomId());
 
-    BuildContext context = await buildContext(tester, appManager: appManager);
+    var context = await buildContext(tester, appManager: appManager);
     expect(catchManager.filteredCatches(context, filter: "Bait").length, 2);
   });
 
   testWidgets("Filtering by search query; fishing spot",
-      (WidgetTester tester) async {
+      (tester) async {
     var fishingSpotManager = MockFishingSpotManager();
     when(appManager.fishingSpotManager).thenReturn(fishingSpotManager);
     when(fishingSpotManager.matchesFilter(any, any)).thenReturn(true);
@@ -202,12 +201,12 @@ void main() {
       ..id = randomId()
       ..fishingSpotId = randomId());
 
-    BuildContext context = await buildContext(tester, appManager: appManager);
+    var context = await buildContext(tester, appManager: appManager);
     expect(catchManager.filteredCatches(context, filter: "Spot").length, 2);
   });
 
   testWidgets("Filtering by search query; species",
-      (WidgetTester tester) async {
+      (tester) async {
     var speciesManager = MockSpeciesManager();
     when(appManager.speciesManager).thenReturn(speciesManager);
     when(speciesManager.matchesFilter(any, any)).thenReturn(true);
@@ -219,17 +218,17 @@ void main() {
       ..id = randomId()
       ..speciesId = randomId());
 
-    BuildContext context = await buildContext(tester, appManager: appManager);
+    var context = await buildContext(tester, appManager: appManager);
     expect(catchManager.filteredCatches(context, filter: "Species").length, 2);
   });
 
-  testWidgets("Filtering by species", (WidgetTester tester) async {
+  testWidgets("Filtering by species", (tester) async {
     when(dataManager.insertOrUpdateEntity(any, any, any))
         .thenAnswer((_) => Future.value(true));
 
-    Id speciesId0 = randomId();
-    Id speciesId1 = randomId();
-    Id speciesId2 = randomId();
+    var speciesId0 = randomId();
+    var speciesId1 = randomId();
+    var speciesId2 = randomId();
 
     await catchManager.addOrUpdate(Catch()
       ..id = randomId()
@@ -248,8 +247,8 @@ void main() {
       ..timestamp = Timestamp.fromDateTime(DateTime(2020, 4, 4))
       ..speciesId = speciesId2);
 
-    BuildContext context = await buildContext(tester, appManager: appManager);
-    List<Catch> catches = catchManager.filteredCatches(
+    var context = await buildContext(tester, appManager: appManager);
+    var catches = catchManager.filteredCatches(
       context,
       speciesIds: {speciesId1},
     );
@@ -271,7 +270,7 @@ void main() {
     expect(catches.isEmpty, true);
   });
 
-  testWidgets("Filtering by date range", (WidgetTester tester) async {
+  testWidgets("Filtering by date range", (tester) async {
     when(dataManager.insertOrUpdateEntity(any, any, any))
         .thenAnswer((_) => Future.value(true));
 
@@ -285,8 +284,8 @@ void main() {
       ..id = randomId()
       ..timestamp = timestampFromMillis(20000));
 
-    BuildContext context = await buildContext(tester, appManager: appManager);
-    List<Catch> catches = catchManager.filteredCatches(
+    var context = await buildContext(tester, appManager: appManager);
+    var catches = catchManager.filteredCatches(
       context,
       dateRange: DateRange(
         startDate: DateTime.fromMillisecondsSinceEpoch(0),
@@ -308,14 +307,14 @@ void main() {
     expect(catches.isEmpty, true);
   });
 
-  testWidgets("Filtering by fishing spot", (WidgetTester tester) async {
+  testWidgets("Filtering by fishing spot", (tester) async {
     when(dataManager.insertOrUpdateEntity(any, any, any))
         .thenAnswer((_) => Future.value(true));
 
-    Id fishingSpotId0 = randomId();
-    Id fishingSpotId1 = randomId();
-    Id fishingSpotId2 = randomId();
-    Id fishingSpotId3 = randomId();
+    var fishingSpotId0 = randomId();
+    var fishingSpotId1 = randomId();
+    var fishingSpotId2 = randomId();
+    var fishingSpotId3 = randomId();
 
     await catchManager.addOrUpdate(Catch()
       ..id = randomId()
@@ -330,8 +329,8 @@ void main() {
       ..id = randomId()
       ..fishingSpotId = fishingSpotId3);
 
-    BuildContext context = await buildContext(tester, appManager: appManager);
-    List<Catch> catches = catchManager.filteredCatches(
+    var context = await buildContext(tester, appManager: appManager);
+    var catches = catchManager.filteredCatches(
       context,
       fishingSpotIds: {fishingSpotId0},
     );
@@ -353,14 +352,14 @@ void main() {
     expect(catches.isEmpty, true);
   });
 
-  testWidgets("Filtering by bait", (WidgetTester tester) async {
+  testWidgets("Filtering by bait", (tester) async {
     when(dataManager.insertOrUpdateEntity(any, any, any))
         .thenAnswer((_) => Future.value(true));
 
-    Id baitId0 = randomId();
-    Id baitId1 = randomId();
-    Id baitId2 = randomId();
-    Id baitId3 = randomId();
+    var baitId0 = randomId();
+    var baitId1 = randomId();
+    var baitId2 = randomId();
+    var baitId3 = randomId();
 
     await catchManager.addOrUpdate(Catch()
       ..id = randomId()
@@ -375,8 +374,8 @@ void main() {
       ..id = randomId()
       ..baitId = baitId3);
 
-    BuildContext context = await buildContext(tester, appManager: appManager);
-    List<Catch> catches = catchManager.filteredCatches(
+    var context = await buildContext(tester, appManager: appManager);
+    var catches = catchManager.filteredCatches(
       context,
       baitIds: {baitId0},
     );
@@ -398,22 +397,22 @@ void main() {
     expect(catches.isEmpty, true);
   });
 
-  testWidgets("Filtering by catch", (WidgetTester tester) async {
+  testWidgets("Filtering by catch", (tester) async {
     when(dataManager.insertOrUpdateEntity(any, any, any))
         .thenAnswer((_) => Future.value(true));
 
-    Id catchId0 = randomId();
-    Id catchId1 = randomId();
-    Id catchId2 = randomId();
-    Id catchId3 = randomId();
+    var catchId0 = randomId();
+    var catchId1 = randomId();
+    var catchId2 = randomId();
+    var catchId3 = randomId();
 
     await catchManager.addOrUpdate(Catch()..id = catchId0);
     await catchManager.addOrUpdate(Catch()..id = catchId1);
     await catchManager.addOrUpdate(Catch()..id = catchId2);
     await catchManager.addOrUpdate(Catch()..id = catchId3);
 
-    BuildContext context = await buildContext(tester, appManager: appManager);
-    List<Catch> catches = catchManager.filteredCatches(
+    var context = await buildContext(tester, appManager: appManager);
+    var catches = catchManager.filteredCatches(
       context,
       catchIds: {catchId2, catchId0},
     );
@@ -429,20 +428,20 @@ void main() {
     expect(catches.isEmpty, true);
   });
 
-  testWidgets("Filtering by multiple things", (WidgetTester tester) async {
+  testWidgets("Filtering by multiple things", (tester) async {
     when(dataManager.insertOrUpdateEntity(any, any, any))
         .thenAnswer((_) => Future.value(true));
 
-    Id catchId0 = randomId();
+    var catchId0 = randomId();
 
-    Id speciesId0 = randomId();
-    Id speciesId1 = randomId();
+    var speciesId0 = randomId();
+    var speciesId1 = randomId();
 
-    Id baitId0 = randomId();
-    Id baitId1 = randomId();
+    var baitId0 = randomId();
+    var baitId1 = randomId();
 
-    Id fishingSpotId0 = randomId();
-    Id fishingSpotId1 = randomId();
+    var fishingSpotId0 = randomId();
+    var fishingSpotId1 = randomId();
 
     await catchManager.addOrUpdate(Catch()
       ..id = catchId0
@@ -463,8 +462,8 @@ void main() {
       ..baitId = baitId0
       ..fishingSpotId = fishingSpotId1);
 
-    BuildContext context = await buildContext(tester, appManager: appManager);
-    List<Catch> catches = catchManager.filteredCatches(
+    var context = await buildContext(tester, appManager: appManager);
+    var catches = catchManager.filteredCatches(
       context,
       catchIds: {catchId0},
       speciesIds: {speciesId0},
@@ -485,18 +484,18 @@ void main() {
     expect(catches.isEmpty, true);
   });
 
-  testWidgets("imageNamesSortedByTimestamp", (WidgetTester tester) async {
-    Catch catch1 = Catch()
+  testWidgets("imageNamesSortedByTimestamp", (tester) async {
+    var catch1 = Catch()
       ..id = randomId()
       ..timestamp = timestampFromMillis(10000);
     catch1.imageNames.addAll(["img0", "img1"]);
 
-    Catch catch2 = Catch()
+    var catch2 = Catch()
       ..id = randomId()
       ..timestamp = timestampFromMillis(20000);
     catch2.imageNames.addAll(["img2", "img3"]);
 
-    Catch catch3 = Catch()
+    var catch3 = Catch()
       ..id = randomId()
       ..timestamp = timestampFromMillis(5000);
     catch3.imageNames.add("img4");
@@ -508,7 +507,7 @@ void main() {
     await catchManager.addOrUpdate(catch3,
         imageFiles: catch3.imageNames.map((e) => File(e)).toList());
 
-    BuildContext context = await buildContext(tester, appManager: appManager);
+    var context = await buildContext(tester, appManager: appManager);
     expect(catchManager.imageNamesSortedByTimestamp(context), [
       "img2",
       "img3",
@@ -519,23 +518,23 @@ void main() {
   });
 
   group("deleteMessage", () {
-    testWidgets("Input", (WidgetTester tester) async {
+    testWidgets("Input", (tester) async {
       expect(() => catchManager.deleteMessage(null, Catch()..id = randomId()),
           throwsAssertionError);
 
-      BuildContext context = await buildContext(tester, appManager: appManager);
+      var context = await buildContext(tester, appManager: appManager);
       expect(
           () => baitManager.deleteMessage(context, null), throwsAssertionError);
     });
 
-    testWidgets("No species", (WidgetTester tester) async {
-      Catch cat = Catch()
+    testWidgets("No species", (tester) async {
+      var cat = Catch()
         ..id = randomId()
         ..timestamp = Timestamp.fromDateTime(DateTime(2020, 9, 25));
 
       when(appManager.mockTimeManager.currentDateTime)
           .thenReturn(DateTime(2020, 9, 25));
-      BuildContext context = await buildContext(tester, appManager: appManager);
+      var context = await buildContext(tester, appManager: appManager);
       expect(
         catchManager.deleteMessage(context, cat),
         "Are you sure you want to delete catch (Today at 4:00 AM)? "
@@ -543,11 +542,11 @@ void main() {
       );
     });
 
-    testWidgets("With species", (WidgetTester tester) async {
-      Species species = Species()
+    testWidgets("With species", (tester) async {
+      var species = Species()
         ..id = randomId()
         ..name = "Steelhead";
-      Catch cat = Catch()
+      var cat = Catch()
         ..id = randomId()
         ..timestamp = Timestamp.fromDateTime(DateTime(2020, 9, 25))
         ..speciesId = species.id;
@@ -555,7 +554,7 @@ void main() {
       when(speciesManager.entity(any)).thenReturn(species);
       when(appManager.mockTimeManager.currentDateTime)
           .thenReturn(DateTime(2020, 9, 25));
-      BuildContext context = await buildContext(tester, appManager: appManager);
+      var context = await buildContext(tester, appManager: appManager);
       expect(
         catchManager.deleteMessage(context, cat),
         "Are you sure you want to delete catch Steelhead (Today at 4:00 AM)? "
