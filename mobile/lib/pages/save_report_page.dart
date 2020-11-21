@@ -240,7 +240,7 @@ class _SaveReportPageState extends State<SaveReportPage> {
 
   Widget _buildType() {
     return RadioInput(
-      padding: insetsVerticalWidgetSmall,
+      padding: insetsHorizontalDefaultVerticalSmall,
       initialSelectedIndex: _typeController.value.index,
       optionCount: _ReportType.values.length,
       optionBuilder: (context, index) {
