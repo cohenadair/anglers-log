@@ -77,11 +77,17 @@ class _ManageableListPageState<T> extends State<ManageableListPage<T>> {
   String _searchText;
 
   bool get _viewing => _viewingState == _ViewingState.viewing;
+
   bool get _pickingMulti => _viewingState == _ViewingState.pickingMulti;
+
   bool get _pickingSingle => _viewingState == _ViewingState.pickingSingle;
+
   bool get _hasSearch => widget.searchDelegate != null;
+
   bool get _hasDetailPage => widget.itemManager.detailPageBuilder != null;
+
   bool get _editable => widget.itemManager.editPageBuilder != null;
+
   bool get _addable => widget.itemManager.addPageBuilder != null;
 
   @override
@@ -324,7 +330,7 @@ class _ManageableListPageState<T> extends State<ManageableListPage<T>> {
               }
 
               if (canEdit) {
-                push(context, widget.itemManager.editPageBuilder(itemValue));
+                present(context, widget.itemManager.editPageBuilder(itemValue));
               } else if (_pickingSingle) {
                 _finishPicking({itemValue});
               } else if (widget.itemManager.detailPageBuilder != null) {

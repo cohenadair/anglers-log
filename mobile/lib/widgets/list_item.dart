@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 
+import '../i18n/strings.dart';
 import '../res/color.dart';
 import '../res/dimen.dart';
+import '../res/style.dart';
 import '../utils/dialog_utils.dart';
 import '../widgets/button.dart';
 import '../widgets/widget.dart';
@@ -108,7 +110,9 @@ class _ExpansionListItemState extends State<ExpansionListItem> {
 ///
 /// When editing:
 /// - A "Delete" icon is rendered as the leading [Widget].
-/// - A [RightChevronIcon] is rendered as the trailing [Widget].
+/// - A fake "Edit" button is rendered as the trailing [Widget]. The edit
+///   button isn't clickable. Instead, the entire row is clickable and when
+///   editing, tapping the row triggers the edit action.
 /// - When the "Delete" button is pressed, a delete confirmation dialog is
 ///   shown.
 class ManageableListItem extends StatefulWidget {
@@ -137,8 +141,8 @@ class ManageableListItem extends StatefulWidget {
   /// Invoked when the delete action is confirmed by the user.
   final VoidCallback onConfirmDelete;
 
-  /// When true, a "Delete" icon is rendered as the leading [Widget], and a
-  /// [RightChevronIcon] as the trailing.
+  /// When true, a "Delete" icon is rendered as the leading [Widget], and a fake
+  /// "Edit" button as the trailing [Widget].
   final bool editing;
 
   /// When true, renders the entire [Widget] as disabled, and is not clickable.
@@ -217,13 +221,7 @@ class _ManageableListItemState extends State<ManageableListItem>
               _buildDeleteIcon(),
               Expanded(
                 child: Padding(
-                  padding: EdgeInsets.only(
-                    left:
-                        widget.editing ? paddingDefaultDouble : paddingDefault,
-                    right: paddingDefault,
-                    top: paddingDefault,
-                    bottom: paddingDefault,
-                  ),
+                  padding: insetsDefault,
                   child: child,
                 ),
               ),
@@ -269,13 +267,20 @@ class _ManageableListItemState extends State<ManageableListItem>
   Widget _buildTrailing() {
     Key key = ValueKey(0);
     Widget trailing = Empty();
-    if (widget.trailing is RightChevronIcon) {
+    if (widget.trailing is ActionButton &&
+        (widget.trailing as ActionButton).text == Strings.of(context).edit) {
       // If trailing widget is of the same type as editing trailer, do not
       // reset and therefore, do not animate.
       trailing = widget.trailing;
     } else if (widget.editing) {
       key = ValueKey(1);
-      trailing = RightChevronIcon();
+      trailing = Text(
+        Strings.of(context).edit.toUpperCase(),
+        style: TextStyle(
+          color: Theme.of(context).primaryColor,
+          fontWeight: fontWeightBold,
+        ),
+      );
     } else if (widget.trailing != null) {
       key = ValueKey(2);
       trailing = widget.trailing;

@@ -3,7 +3,6 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/res/dimen.dart';
 import 'package:mobile/widgets/list_item.dart';
 import 'package:mobile/widgets/text.dart';
-import 'package:mobile/widgets/widget.dart';
 
 import '../test_utils.dart';
 
@@ -40,8 +39,7 @@ void main() {
   });
 
   group("ManageableListItem", () {
-    testWidgets("Editing shows edit/delete buttons",
-        (tester) async {
+    testWidgets("Editing shows edit/delete buttons", (tester) async {
       await tester.pumpWidget(
         Testable(
           (_) => ManageableListItem(
@@ -52,11 +50,10 @@ void main() {
         ),
       );
       expect(find.byIcon(Icons.delete), findsOneWidget);
-      expect(find.byType(RightChevronIcon), findsOneWidget);
+      expect(find.text("EDIT"), findsOneWidget);
     });
 
-    testWidgets("Custom text widget doesn't use default style",
-        (tester) async {
+    testWidgets("Custom text widget doesn't use default style", (tester) async {
       await tester.pumpWidget(
         Testable(
           (_) => ManageableListItem(
@@ -68,8 +65,7 @@ void main() {
       expect(find.byType(NoteLabel), findsOneWidget);
     });
 
-    testWidgets("Tapping delete button shows dialog",
-        (tester) async {
+    testWidgets("Tapping delete button shows dialog", (tester) async {
       await tester.pumpWidget(
         Testable(
           (_) => ManageableListItem(
@@ -154,26 +150,6 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(find.byIcon(Icons.style), findsOneWidget);
-    });
-
-    testWidgets("Extra padding after delete button when editing",
-        (tester) async {
-      await tester.pumpWidget(
-        Testable(
-          (_) => ManageableListItem(
-            child: Text("Child"),
-            onTapDeleteButton: () => false,
-            editing: true,
-          ),
-        ),
-      );
-      await tester.pumpAndSettle();
-      expect(
-          find.byWidgetPredicate((widget) =>
-              widget is Padding &&
-              widget.padding.horizontal ==
-                  paddingDefaultDouble + paddingDefault),
-          findsOneWidget);
     });
   });
 }
