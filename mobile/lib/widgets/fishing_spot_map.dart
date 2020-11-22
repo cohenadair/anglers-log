@@ -50,6 +50,7 @@ class FishingSpotMap extends StatefulWidget {
 
   final LatLng startLocation;
   final bool showMyLocationButton;
+  final bool showZoomExtentsButton;
 
   /// See [GoogleMap.onTap].
   final void Function(LatLng) onTap;
@@ -86,6 +87,7 @@ class FishingSpotMap extends StatefulWidget {
     this.searchBar,
     this.startLocation,
     this.showMyLocationButton = true,
+    this.showZoomExtentsButton = true,
     this.onTap,
     this.onIdle,
     this.onMove,
@@ -95,7 +97,8 @@ class FishingSpotMap extends StatefulWidget {
     this.help,
     this.markers,
     this.children = const [],
-  });
+  })  : assert(showMyLocationButton != null),
+        assert(showZoomExtentsButton != null);
 
   @override
   _FishingSpotMapState createState() => _FishingSpotMapState();
@@ -158,6 +161,7 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
                     : _buildSearchBar(),
                 _buildMapTypeButton(),
                 _buildCurrentLocationButton(),
+                _buildZoomExtentsButton(),
                 _buildHelpButton(),
                 _buildHelp(),
               ],
@@ -309,7 +313,11 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
     }
 
     return FloatingIconButton(
-      padding: insetsHorizontalDefault,
+      padding: EdgeInsets.only(
+        left: paddingDefault,
+        right: paddingDefault,
+        bottom: paddingDefault,
+      ),
       icon: Icons.my_location,
       onPressed: () {
         var currentLocation = LocationMonitor.of(context).currentLocation;
@@ -324,12 +332,42 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
     );
   }
 
+  Widget _buildZoomExtentsButton() {
+    if (!widget.showZoomExtentsButton) {
+      return Empty();
+    }
+
+    return FloatingIconButton(
+      padding: EdgeInsets.only(
+        left: paddingDefault,
+        right: paddingDefault,
+        bottom: paddingDefault,
+      ),
+      icon: Icons.zoom_out_map,
+      onPressed: () {
+        var bounds = mapBounds(widget.markers);
+        if (bounds == null) {
+          return;
+        }
+        setState(() {
+          _mapController.future.then((controller) => controller.animateCamera(
+              CameraUpdate.newLatLngBounds(bounds, paddingDefaultDouble)));
+        });
+      },
+    );
+  }
+
   Widget _buildHelpButton() {
     if (widget.help == null) {
       return Empty();
     }
 
     return FloatingIconButton(
+      padding: EdgeInsets.only(
+        left: paddingDefault,
+        right: paddingDefault,
+        bottom: paddingDefault,
+      ),
       icon: Icons.help,
       pushed: _showHelp,
       onPressed: () {

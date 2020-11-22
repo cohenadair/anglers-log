@@ -5,6 +5,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
 import 'package:mobile/pages/search_page.dart';
+import 'package:mobile/utils/map_utils.dart';
 import 'package:mobile/widgets/fishing_spot_map.dart';
 import 'package:mobile/widgets/list_item.dart';
 import 'package:mobile/widgets/no_results.dart';
@@ -15,6 +16,8 @@ import 'package:quiver/strings.dart' as quiver;
 
 import '../mock_app_manager.dart';
 import '../test_utils.dart';
+
+class MockCompleter<T> extends Mock implements Completer<T> {}
 
 void main() {
   MockAppManager appManager;
@@ -437,6 +440,84 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(pressed, isTrue);
+    });
+  });
+
+  group("Zoom extents button", () {
+    testWidgets("Hidden", (tester) async {
+      await tester.pumpWidget(Testable(
+        (_) => FishingSpotMap(
+          mapController: Completer<GoogleMapController>(),
+          showZoomExtentsButton: false,
+        ),
+        appManager: appManager,
+      ));
+      await tester.pumpAndSettle(Duration(milliseconds: 200));
+      expect(find.byIcon(Icons.zoom_out_map), findsNothing);
+    });
+
+    testWidgets("Showing", (tester) async {
+      await tester.pumpWidget(Testable(
+        (_) => FishingSpotMap(
+          mapController: Completer<GoogleMapController>(),
+        ),
+        appManager: appManager,
+      ));
+      await tester.pumpAndSettle(Duration(milliseconds: 200));
+      expect(find.byIcon(Icons.zoom_out_map), findsOneWidget);
+    });
+
+    testWidgets("onPressed invokes callback", (tester) async {
+      var completer = MockCompleter<GoogleMapController>();
+      when(completer.future).thenAnswer(
+          (_) => Future.value(GoogleMapController.init(0, null, null)));
+      await tester.pumpWidget(
+        Testable(
+          (_) => FishingSpotMap(
+            mapController: completer,
+            markers: {
+              FishingSpotMarker(
+                fishingSpot: FishingSpot()
+                  ..lat = 50
+                  ..lng = 1,
+              ),
+              FishingSpotMarker(
+                fishingSpot: FishingSpot()
+                  ..lat = -45
+                  ..lng = 150,
+              ),
+            },
+          ),
+          appManager: appManager,
+        ),
+      );
+      await tester.pumpAndSettle(Duration(milliseconds: 200));
+
+      await tester.tap(find.byIcon(Icons.zoom_out_map));
+      await tester.pumpAndSettle(Duration(milliseconds: 200));
+
+      verify(completer.future).called(1);
+    });
+
+    testWidgets("onPressed with no markers does not invoke callback",
+        (tester) async {
+      var completer = MockCompleter<GoogleMapController>();
+      when(completer.future).thenAnswer(
+          (_) => Future.value(GoogleMapController.init(0, null, null)));
+      await tester.pumpWidget(
+        Testable(
+          (_) => FishingSpotMap(
+            mapController: completer,
+          ),
+          appManager: appManager,
+        ),
+      );
+      await tester.pumpAndSettle(Duration(milliseconds: 200));
+
+      await tester.tap(find.byIcon(Icons.zoom_out_map));
+      await tester.pumpAndSettle(Duration(milliseconds: 200));
+
+      verifyNever(completer.future);
     });
   });
 }

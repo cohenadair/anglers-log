@@ -47,6 +47,7 @@ class _FishingSpotPageState extends State<FishingSpotPage> {
         mapPadding: _mapPadding,
         startLocation: latLng,
         showMyLocationButton: false,
+        showZoomExtentsButton: false,
         onMapTypeChanged: (mapType) {
           setState(() {
             _updateBackButtonColor(mapType);

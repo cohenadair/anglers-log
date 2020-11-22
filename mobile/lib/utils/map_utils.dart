@@ -18,8 +18,13 @@ void moveMap(Completer<GoogleMapController> controller, LatLng latLng,
   });
 }
 
-/// Returns an approximate distance between the given [LatLng] objects.
+/// Returns an approximate distance, in meters, between the given [LatLng]
+/// objects.
 double distanceBetween(LatLng latLng1, LatLng latLng2) {
+  if (latLng1 == null || latLng2 == null) {
+    return 0;
+  }
+
   // From https://sciencing.com/convert-distances-degrees-meters-7858322.html.
   var metersPerDegree = 111139;
 
@@ -29,6 +34,43 @@ double distanceBetween(LatLng latLng1, LatLng latLng2) {
   var lngDistance = lngDelta * metersPerDegree;
 
   return sqrt(pow(latDistance, 2) + pow(lngDistance, 2));
+}
+
+LatLngBounds mapBounds(Set<Marker> markers) {
+  if (markers == null || markers.isEmpty) {
+    return null;
+  }
+
+  var mostWestLat = markers.first.position.latitude;
+  var mostEastLat = markers.first.position.latitude;
+  var mostNorthLng = markers.first.position.longitude;
+  var mostSouthLng = markers.first.position.longitude;
+
+  for (var marker in markers) {
+    var lat = marker.position.latitude;
+    var lng = marker.position.longitude;
+
+    if (lat < mostWestLat) {
+      mostWestLat = lat;
+    }
+
+    if (lat > mostEastLat) {
+      mostEastLat = lat;
+    }
+
+    if (lng < mostSouthLng) {
+      mostSouthLng = lng;
+    }
+
+    if (lng > mostNorthLng) {
+      mostNorthLng = lng;
+    }
+  }
+
+  return LatLngBounds(
+    southwest: LatLng(mostWestLat, mostSouthLng),
+    northeast: LatLng(mostEastLat, mostNorthLng),
+  );
 }
 
 class FishingSpotMarker extends Marker {
