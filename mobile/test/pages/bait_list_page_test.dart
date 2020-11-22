@@ -56,14 +56,26 @@ void main() {
     when(appManager.mockBaitManager.filteredList(any)).thenReturn(baits);
   });
 
-  testWidgets("Picker title", (tester) async {
+  testWidgets("Single picker title", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => BaitListPage.picker(
         onPicked: (_, __) => false,
+        multiPicker: false,
       ),
       appManager: appManager,
     ));
     expect(find.text("Select Bait"), findsOneWidget);
+  });
+
+  testWidgets("Multi picker title", (tester) async {
+    await tester.pumpWidget(Testable(
+      (_) => BaitListPage.picker(
+        onPicked: (_, __) => false,
+        multiPicker: true,
+      ),
+      appManager: appManager,
+    ));
+    expect(find.text("Select Baits"), findsOneWidget);
   });
 
   testWidgets("Normal title", (tester) async {
@@ -122,8 +134,7 @@ void main() {
     expect((baitCategoryHeadings[0] as HeadingLabel).text, "Artificial");
     expect((baitCategoryHeadings[1] as HeadingLabel).text, "Live");
 
-    var baitLabels =
-        tester.widgetList(find.byType(PrimaryLabel)).toList();
+    var baitLabels = tester.widgetList(find.byType(PrimaryLabel)).toList();
     expect(baitLabels.length, 5);
     expect((baitLabels[0] as PrimaryLabel).text, "Countdown Rapala 7");
     expect((baitLabels[1] as PrimaryLabel).text, "Skunk Flatfish");

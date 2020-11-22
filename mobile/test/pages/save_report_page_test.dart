@@ -94,7 +94,7 @@ void main() {
         matching: find.byType(Checkbox),
       ));
     }
-    await tapAndSettle(tester, find.text("DONE"));
+    await tapAndSettle(tester, find.byType(BackButton));
   }
 
   testWidgets("New title", (tester) async {

@@ -291,7 +291,7 @@ void main() {
 
     await tapAndSettle(tester, find.byIcon(FormPage.moreMenuIcon));
     await tapAndSettle(tester, find.text("Manage Fields"));
-    await tapAndSettle(tester, find.text("DONE"));
+    await tapAndSettle(tester, find.byType(CloseButton));
 
     expect(selectedIds, isNotNull);
     expect(selectedIds, isNotEmpty);
@@ -323,7 +323,7 @@ void main() {
     await tapAndSettle(tester, find.byIcon(FormPage.moreMenuIcon));
     await tapAndSettle(tester, find.text("Manage Fields"));
     await tapAndSettle(tester, find.byType(PaddedCheckbox));
-    await tapAndSettle(tester, find.text("DONE"));
+    await tapAndSettle(tester, find.byType(CloseButton));
 
     // Note that FormPage isn't responsible for refreshing the state of the form
     // when new fields are picked. That falls on the widget using the FormPage.

@@ -96,21 +96,22 @@ class _PickerPageState<T> extends State<PickerPage<T>> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: widget.title,
-        actions: [
-          widget.multiSelect
-              ? ActionButton.done(
-                  condensed: widget.action != null,
-                  onPressed: () =>
-                      widget.onFinishedPicking(context, _selectedValues),
-                )
-              : Empty(),
-          widget.action == null ? Empty() : widget.action,
-        ],
+    return WillPopScope(
+      onWillPop: () {
+        if (widget.multiSelect) {
+          widget.onFinishedPicking(context, _selectedValues);
+        }
+        return Future.value(true);
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          title: widget.title,
+          actions: [
+            widget.action == null ? Empty() : widget.action,
+          ],
+        ),
+        body: _buildListView(context),
       ),
-      body: _buildListView(context),
     );
   }
 
@@ -123,9 +124,7 @@ class _PickerPageState<T> extends State<PickerPage<T>> {
       ));
     }
 
-    var items = (widget.allItem == null
-        ? []
-        : [widget.allItem])
+    var items = (widget.allItem == null ? [] : [widget.allItem])
       ..addAll(widget.itemBuilder());
 
     return ListView(

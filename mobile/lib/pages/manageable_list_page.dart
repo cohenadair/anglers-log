@@ -123,38 +123,46 @@ class _ManageableListPageState<T> extends State<ManageableListPage<T>> {
   }
 
   Widget _buildScaffold(List<T> items) {
-    return Scaffold(
-      body: CustomScrollView(
-        slivers: [
-          SliverAppBar(
-            forceElevated: true,
-            floating: true,
-            pinned: false,
-            snap: true,
-            title: widget.titleBuilder?.call(items),
-            actions: _buildActions(),
-            expandedHeight: _hasSearch ? _appBarExpandedHeight : 0.0,
-            flexibleSpace: _buildSearchBar(),
-            centerTitle: widget.forceCenterTitle,
-          ),
-          SliverSafeArea(
-            top: false,
-            sliver: SliverVisibility(
-              visible: items.isNotEmpty,
-              sliver: SliverList(
-                delegate: SliverChildBuilderDelegate(
-                  (context, i) => _buildItem(context, items[i]),
-                  childCount: items.length,
+    return WillPopScope(
+      onWillPop: () {
+        if (_pickingMulti) {
+          _finishPicking(_selectedValues);
+        }
+        return Future.value(true);
+      },
+      child: Scaffold(
+        body: CustomScrollView(
+          slivers: [
+            SliverAppBar(
+              forceElevated: true,
+              floating: true,
+              pinned: false,
+              snap: true,
+              title: widget.titleBuilder?.call(items),
+              actions: _buildActions(),
+              expandedHeight: _hasSearch ? _appBarExpandedHeight : 0.0,
+              flexibleSpace: _buildSearchBar(),
+              centerTitle: widget.forceCenterTitle,
+            ),
+            SliverSafeArea(
+              top: false,
+              sliver: SliverVisibility(
+                visible: items.isNotEmpty,
+                sliver: SliverList(
+                  delegate: SliverChildBuilderDelegate(
+                    (context, i) => _buildItem(context, items[i]),
+                    childCount: items.length,
+                  ),
+                ),
+                replacementSliver: SliverToBoxAdapter(
+                  child: widget.searchDelegate == null
+                      ? Empty()
+                      : NoResults(widget.searchDelegate.noResultsMessage),
                 ),
               ),
-              replacementSliver: SliverToBoxAdapter(
-                child: widget.searchDelegate == null
-                    ? Empty()
-                    : NoResults(widget.searchDelegate.noResultsMessage),
-              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -200,19 +208,15 @@ class _ManageableListPageState<T> extends State<ManageableListPage<T>> {
   List<Widget> _buildMultiPickerActions() {
     var result = <Widget>[];
 
-    // Done button, for finishing picking.
-    result.add(
-      ActionButton.done(
-        condensed: true,
-        onPressed: () {
-          if (_editing) {
-            setEditingUpdateState(isEditing: false);
-          } else {
-            _finishPicking(_selectedValues);
-          }
-        },
-      ),
-    );
+    // Done button, for finishing editing.
+    if (_editing) {
+      result.add(
+        ActionButton.done(
+          condensed: true,
+          onPressed: () => setEditingUpdateState(isEditing: false),
+        ),
+      );
+    }
 
     // Overflow add/edit items for modifying the list.
     var overflowOptions = <PopupMenuItem<_OverflowOption>>[];

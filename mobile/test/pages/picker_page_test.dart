@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/pages/picker_page.dart';
+import 'package:mobile/utils/page_utils.dart';
 import 'package:mobile/widgets/button.dart';
 import 'package:mobile/widgets/checkbox_input.dart';
 import 'package:mobile/widgets/list_item.dart';
@@ -15,8 +16,7 @@ void main() {
         matching: find.byType(PaddedCheckbox),
       ));
 
-  testWidgets("Initial values in multi-select are selected",
-      (tester) async {
+  testWidgets("Initial values in multi-select are selected", (tester) async {
     await tester.pumpWidget(
       Testable(
         (_) => PickerPage<String>(
@@ -36,8 +36,7 @@ void main() {
     expect(findCheckbox(tester, "Option C").checked, isTrue);
   });
 
-  testWidgets("Initial value in single-select is selected",
-      (tester) async {
+  testWidgets("Initial value in single-select is selected", (tester) async {
     await tester.pumpWidget(
       Testable(
         (_) => PickerPage<String>.single(
@@ -75,52 +74,60 @@ void main() {
     );
   });
 
-  testWidgets("Multi-select shows a done button", (tester) async {
-    await tester.pumpWidget(
-      Testable(
-        (_) => PickerPage<String>(
-          itemBuilder: () => [
-            PickerPageItem(title: "Option A", value: "Option A"),
-          ],
-          onFinishedPicking: (_, __) => {},
-        ),
-      ),
-    );
-
-    expect(find.widgetWithText(ActionButton, "DONE"), findsOneWidget);
-  });
-
-  testWidgets("Callback invoked when done button is pressed", (tester) async {
+  testWidgets("Multi-picker callback invoked when page is closed",
+      (tester) async {
     var called = false;
     await tester.pumpWidget(
       Testable(
-        (_) => PickerPage<String>(
-          itemBuilder: () => [
-            PickerPageItem(title: "Option A", value: "Option A"),
-          ],
-          onFinishedPicking: (_, __) => called = true,
+        (context) => Scaffold(
+          body: Button(
+            text: "Test",
+            onPressed: () => push(
+              context,
+              PickerPage<String>(
+                itemBuilder: () => [
+                  PickerPageItem(title: "Option A", value: "Option A"),
+                ],
+                multiSelect: true,
+                onFinishedPicking: (_, __) => called = true,
+              ),
+            ),
+          ),
         ),
       ),
     );
 
-    await tester.tap(find.text("DONE"));
+    await tapAndSettle(tester, find.byType(Button));
+    await tapAndSettle(tester, find.byType(BackButton));
     expect(called, isTrue);
   });
 
-  testWidgets("Single-select does not show a done button",
+  testWidgets("Single-picker callback not invoked when page is closed",
       (tester) async {
+    var called = false;
     await tester.pumpWidget(
       Testable(
-        (_) => PickerPage<String>.single(
-          itemBuilder: () => [
-            PickerPageItem(title: "Option A", value: "Option A"),
-          ],
-          onFinishedPicking: (_, __) => {},
+        (context) => Scaffold(
+          body: Button(
+            text: "Test",
+            onPressed: () => push(
+              context,
+              PickerPage<String>(
+                itemBuilder: () => [
+                  PickerPageItem(title: "Option A", value: "Option A"),
+                ],
+                multiSelect: false,
+                onFinishedPicking: (_, __) => called = true,
+              ),
+            ),
+          ),
         ),
       ),
     );
 
-    expect(find.widgetWithText(ActionButton, "DONE"), findsNothing);
+    await tapAndSettle(tester, find.byType(Button));
+    await tapAndSettle(tester, find.byType(BackButton));
+    expect(called, isFalse);
   });
 
   testWidgets("Action widget", (tester) async {

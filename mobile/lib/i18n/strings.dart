@@ -131,6 +131,8 @@ class Strings {
   String get baitListPageMenuLabel => _string("baitListPage_menuLabel");
   String get baitListPageTitle => _string("baitListPage_title");
   String get baitListPagePickerTitle => _string("baitListPage_pickerTitle");
+  String get baitListPagePickerTitleMulti =>
+      _string("baitListPage_pickerTitleMulti");
   String get baitListPageOtherCategory => _string("baitListPage_otherCategory");
   String get baitListPageSearchHint => _string("baitListPage_searchHint");
   String get baitListPageNoSearchResults =>

@@ -44,7 +44,9 @@ class _BaitListPageState extends State<BaitListPage> {
   Widget build(BuildContext context) {
     return ManageableListPage<dynamic>(
       titleBuilder: _picking
-          ? (_) => Text(Strings.of(context).baitListPagePickerTitle)
+          ? (_) => Text(widget.multiPicker
+              ? Strings.of(context).baitListPagePickerTitleMulti
+              : Strings.of(context).baitListPagePickerTitle)
           : (baits) => Text(format(Strings.of(context).baitListPageTitle,
               [baits.whereType<Bait>().length])),
       forceCenterTitle: !_picking,

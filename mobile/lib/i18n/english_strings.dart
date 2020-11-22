@@ -75,6 +75,7 @@ Map<String, Map<String, String>> get englishStrings => {
         "baitListPage_menuLabel": "Baits",
         "baitListPage_title": "Baits (%s)",
         "baitListPage_pickerTitle": "Select Bait",
+        "baitListPage_pickerTitleMulti": "Select Baits",
         "baitListPage_otherCategory": "No Category",
         "baitListPage_searchHint": "Search baits",
         "baitListPage_noSearchResults": "No baits found",

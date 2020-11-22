@@ -192,7 +192,7 @@ void main() {
         matching: find.byType(PaddedCheckbox),
       ),
     );
-    await tapAndSettle(tester, find.text("DONE"));
+    await tapAndSettle(tester, find.byType(CloseButton));
 
     expect(find.text(id1.toString()), findsOneWidget);
     expect(find.text(id2.toString()), findsNothing);
@@ -226,7 +226,7 @@ void main() {
         matching: find.byType(PaddedCheckbox),
       ),
     );
-    await tapAndSettle(tester, find.text("DONE"));
+    await tapAndSettle(tester, find.byType(CloseButton));
 
     expect(find.widgetWithText(TextField, "Custom Field 1"), findsOneWidget);
   });
