@@ -38,8 +38,7 @@ void main() {
         .thenReturn(entities);
   });
 
-  testWidgets("CustomEntity description rendered correctly",
-      (tester) async {
+  testWidgets("CustomEntity description rendered correctly", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => CustomEntityListPage(),
       appManager: appManager,

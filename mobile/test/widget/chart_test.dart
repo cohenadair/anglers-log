@@ -76,8 +76,7 @@ void main() {
   });
 
   group("Legend", () {
-    testWidgets("Single series does not show legend",
-        (tester) async {
+    testWidgets("Single series does not show legend", (tester) async {
       var series = Series<Species>({
         Species()..name = "Bass": 5,
         Species()..name = "Trout": 10,
@@ -124,8 +123,7 @@ void main() {
   });
 
   group("Chart rows", () {
-    testWidgets("Series max value 0 shows empty rows",
-        (tester) async {
+    testWidgets("Series max value 0 shows empty rows", (tester) async {
       var series1 = Series<Species>({
         Species()..name = "Bass": 0,
       }, DisplayDateRange.last7Days);

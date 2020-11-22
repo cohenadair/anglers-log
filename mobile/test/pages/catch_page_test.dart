@@ -43,8 +43,7 @@ void main() {
     expect(find.byType(ListItem), findsNothing);
   });
 
-  testWidgets("Bait without category doesn't show subtitle",
-      (tester) async {
+  testWidgets("Bait without category doesn't show subtitle", (tester) async {
     when(appManager.mockBaitManager.entity(any)).thenReturn(
       Bait()
         ..id = randomId()

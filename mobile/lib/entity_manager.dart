@@ -144,8 +144,7 @@ abstract class EntityManager<T extends GeneratedMessage>
   /// Replaces the database table contents with the manager's memory cache.
   @protected
   Future<void> replaceDatabaseWithCache() async {
-    await dataManager.replaceRows(
-        tableName, list().map(_entityToMap).toList());
+    await dataManager.replaceRows(tableName, list().map(_entityToMap).toList());
   }
 
   @protected

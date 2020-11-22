@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/res/gen/custom_icons.dart';
@@ -32,8 +31,7 @@ void main() {
     expect(find.byIcon(CustomIcons.catches), findsOneWidget);
   });
 
-  testWidgets("Invalid image no size shows empty placeholder",
-      (tester) async {
+  testWidgets("Invalid image no size shows empty placeholder", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => Photo(
         fileName: null,
@@ -113,8 +111,7 @@ void main() {
     );
   });
 
-  testWidgets("If no cache size, widget size is used",
-      (tester) async {
+  testWidgets("If no cache size, widget size is used", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => Photo(
         fileName: "flutter_logo.png",

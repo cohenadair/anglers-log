@@ -15,8 +15,7 @@ class ComparisonReportView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var comparisonReportManager =
-        ComparisonReportManager.of(context);
+    var comparisonReportManager = ComparisonReportManager.of(context);
 
     var report = comparisonReportManager.entity(reportId);
     if (report == null) {

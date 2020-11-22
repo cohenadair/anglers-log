@@ -35,7 +35,7 @@ void main() {
       return item.contains(searchQuery);
     });
     return species;
-  };
+  }
 
   Widget deleteWidget(BuildContext context, String item) =>
       Text("Delete item?");

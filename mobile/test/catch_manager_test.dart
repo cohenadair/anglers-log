@@ -188,8 +188,7 @@ void main() {
     expect(catchManager.filteredCatches(context, filter: "Bait").length, 2);
   });
 
-  testWidgets("Filtering by search query; fishing spot",
-      (tester) async {
+  testWidgets("Filtering by search query; fishing spot", (tester) async {
     var fishingSpotManager = MockFishingSpotManager();
     when(appManager.fishingSpotManager).thenReturn(fishingSpotManager);
     when(fishingSpotManager.matchesFilter(any, any)).thenReturn(true);
@@ -205,8 +204,7 @@ void main() {
     expect(catchManager.filteredCatches(context, filter: "Spot").length, 2);
   });
 
-  testWidgets("Filtering by search query; species",
-      (tester) async {
+  testWidgets("Filtering by search query; species", (tester) async {
     var speciesManager = MockSpeciesManager();
     when(appManager.speciesManager).thenReturn(speciesManager);
     when(speciesManager.matchesFilter(any, any)).thenReturn(true);

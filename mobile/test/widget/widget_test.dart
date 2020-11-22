@@ -77,8 +77,7 @@ void main() {
   });
 
   group("EmptyFutureBuilder", () {
-    testWidgets("Empty widget shown until finished",
-        (tester) async {
+    testWidgets("Empty widget shown until finished", (tester) async {
       await tester.pumpWidget(
         Testable(
           (_) => EmptyFutureBuilder<bool>(

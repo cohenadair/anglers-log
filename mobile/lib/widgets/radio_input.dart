@@ -56,8 +56,7 @@ class _RadioInputState extends State<RadioInput> {
                   ),
                   child: HeadingLabel(widget.title),
                 ),
-        ]..addAll(List<Widget>.generate(
-            widget.optionCount, _buildOption)),
+        ]..addAll(List<Widget>.generate(widget.optionCount, _buildOption)),
       ),
     );
   }

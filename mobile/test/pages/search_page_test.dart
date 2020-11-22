@@ -23,8 +23,7 @@ void main() {
     expect(popped, isTrue);
   });
 
-  testWidgets("Clear button when text is not empty",
-      (tester) async {
+  testWidgets("Clear button when text is not empty", (tester) async {
     await tester.pumpWidget(
       Testable(
         (_) => SearchPage(

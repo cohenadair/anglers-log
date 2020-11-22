@@ -34,8 +34,7 @@ void main() {
   });
 
   group("From journey", () {
-    testWidgets("Images with date sets Catch date",
-        (tester) async {
+    testWidgets("Images with date sets Catch date", (tester) async {
       await tester.pumpWidget(Testable(
         (_) => SaveCatchPage(
           images: [
@@ -59,8 +58,7 @@ void main() {
       expect(find.text("3:30 PM"), findsOneWidget);
     });
 
-    testWidgets("Images without date sets default date",
-        (tester) async {
+    testWidgets("Images without date sets default date", (tester) async {
       await tester.pumpWidget(Testable(
         (_) => SaveCatchPage(
           images: [
@@ -83,8 +81,7 @@ void main() {
       expect(find.text("10:30 AM"), findsOneWidget);
     });
 
-    testWidgets("All journey fields set correctly",
-        (tester) async {
+    testWidgets("All journey fields set correctly", (tester) async {
       await tester.pumpWidget(Testable(
         (_) => SaveCatchPage(
           images: [

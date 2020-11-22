@@ -189,8 +189,7 @@ class _FeedbackPageState extends State<FeedbackPage> {
           deviceModel = info.model;
         }
 
-        var server = _mailSender.gmail(
-            _propertiesManager.clientSenderEmail,
+        var server = _mailSender.gmail(_propertiesManager.clientSenderEmail,
             _propertiesManager.clientSenderPassword);
 
         Attachment attachment;

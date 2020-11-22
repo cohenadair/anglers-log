@@ -11,8 +11,7 @@ void main() {
     expect(tester.takeException(), isAssertionError);
   });
 
-  testWidgets("If title is empty, value is used as title",
-      (tester) async {
+  testWidgets("If title is empty, value is used as title", (tester) async {
     await tester.pumpWidget(
       Testable(
         (_) => ListPickerInput(
@@ -25,8 +24,7 @@ void main() {
     expect(find.byType(Empty), findsOneWidget);
   });
 
-  testWidgets("Empty value renders not selected message",
-      (tester) async {
+  testWidgets("Empty value renders not selected message", (tester) async {
     await tester.pumpWidget(
       Testable(
         (_) => ListPickerInput(

@@ -36,8 +36,7 @@ void main() {
     expect(find.text("Edit Field"), findsOneWidget);
   });
 
-  testWidgets("Save button state updates when name changes",
-      (tester) async {
+  testWidgets("Save button state updates when name changes", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => SaveCustomEntityPage(),
       appManager: appManager,

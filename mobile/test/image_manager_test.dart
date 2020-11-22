@@ -52,8 +52,7 @@ void main() {
     imageManager = ImageManager(appManager);
   });
 
-  testWidgets("Invalid fileName input to image method",
-      (tester) async {
+  testWidgets("Invalid fileName input to image method", (tester) async {
     await imageManager.initialize();
     var context = await buildContext(tester);
 
@@ -75,8 +74,7 @@ void main() {
     );
   });
 
-  testWidgets("Error getting thumbnail returns full image",
-      (tester) async {
+  testWidgets("Error getting thumbnail returns full image", (tester) async {
     await imageManager.initialize();
     var context = await buildContext(tester);
 
@@ -275,7 +273,7 @@ void main() {
     try {
       expect(await imageManager.save([]), isEmpty);
       expect(await imageManager.save(null), isEmpty);
-    } on Exception catch(_) {
+    } on Exception catch (_) {
       fail("Invalid input should be handled gracefully");
     }
   });

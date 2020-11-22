@@ -764,8 +764,7 @@ void main() {
       expect(find.byType(Empty), findsOneWidget);
     });
 
-    testWidgets("Comparison filters don't includes date",
-        (tester) async {
+    testWidgets("Comparison filters don't includes date", (tester) async {
       await tester.pumpWidget(Testable((context) {
         _stubCatchesByTimestamp(context);
         return SingleChildScrollView(
@@ -997,8 +996,7 @@ void main() {
       expect(findType<ExpandableChart<FishingSpot>>(tester).length, 2);
     });
 
-    testWidgets("Catches per bait/bait per species hidden",
-        (tester) async {
+    testWidgets("Catches per bait/bait per species hidden", (tester) async {
       await tester.pumpWidget(Testable((context) {
         _stubCatchesByTimestamp(context, [
           Catch()

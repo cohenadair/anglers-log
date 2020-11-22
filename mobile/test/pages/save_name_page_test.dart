@@ -69,8 +69,7 @@ void main() {
     expect(popped, isTrue);
   });
 
-  testWidgets("Non-null onSave pops page if returns true",
-      (tester) async {
+  testWidgets("Non-null onSave pops page if returns true", (tester) async {
     var observer = MockNavigatorObserver();
     var popped = false;
     when(observer.didPop(any, any)).thenAnswer((_) => popped = true);
@@ -107,8 +106,7 @@ void main() {
     expect(popped, isFalse);
   });
 
-  testWidgets("Invalid input disables save button",
-      (tester) async {
+  testWidgets("Invalid input disables save button", (tester) async {
     await tester.pumpWidget(
       Testable(
         (_) => SaveNamePage(

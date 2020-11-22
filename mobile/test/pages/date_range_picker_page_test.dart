@@ -38,8 +38,7 @@ void main() {
     expect(find.text("Jan 1, 2020 - Feb 1, 2020"), findsOneWidget);
   });
 
-  testWidgets("Selecting date range invokes callback",
-      (tester) async {
+  testWidgets("Selecting date range invokes callback", (tester) async {
     DisplayDateRange picked;
     await tester.pumpWidget(Testable(
       (_) => DateRangePickerPage(
@@ -53,8 +52,7 @@ void main() {
     expect(picked.id, DisplayDateRange.today.id);
   });
 
-  testWidgets("Tapping custom date range opens date picker",
-      (tester) async {
+  testWidgets("Tapping custom date range opens date picker", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => DateRangePickerPage(
         initialValue: DisplayDateRange.yesterday,
@@ -72,8 +70,7 @@ void main() {
     expect(find.text("CANCEL"), findsOneWidget);
   });
 
-  testWidgets("Cancelling date picker doesn't update state",
-      (tester) async {
+  testWidgets("Cancelling date picker doesn't update state", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => DateRangePickerPage(
         initialValue: DisplayDateRange.yesterday,

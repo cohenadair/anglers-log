@@ -25,8 +25,7 @@ void main() {
     when(appManager.mockCustomEntityManager.list()).thenReturn([]);
   });
 
-  testWidgets("Save button disabled when isInputValid = false",
-      (tester) async {
+  testWidgets("Save button disabled when isInputValid = false", (tester) async {
     await tester.pumpWidget(
       Testable(
         (_) => FormPage(
@@ -38,8 +37,7 @@ void main() {
     expect(findFirstWithText<ActionButton>(tester, "SAVE").onPressed, isNull);
   });
 
-  testWidgets("Save button enabled when isInputValid = true",
-      (tester) async {
+  testWidgets("Save button enabled when isInputValid = true", (tester) async {
     await tester.pumpWidget(
       Testable(
         (_) => FormPage(
@@ -78,8 +76,7 @@ void main() {
     expect(find.byIcon(FormPage.moreMenuIcon), findsOneWidget);
   });
 
-  testWidgets("Immutable form does not show overflow menu",
-      (tester) async {
+  testWidgets("Immutable form does not show overflow menu", (tester) async {
     await tester.pumpWidget(
       Testable(
         (_) => FormPage.immutable(
@@ -134,8 +131,7 @@ void main() {
     verify(navObserver.didPop(any, any)).called(1);
   });
 
-  testWidgets("onSave returns false does not pop page",
-      (tester) async {
+  testWidgets("onSave returns false does not pop page", (tester) async {
     var navObserver = MockNavigatorObserver();
     await tester.pumpWidget(Testable(
       (_) => FormPage.immutable(
@@ -472,8 +468,7 @@ void main() {
     );
   });
 
-  testWidgets("Selection page no custom fields shows note",
-      (tester) async {
+  testWidgets("Selection page no custom fields shows note", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => FormPage(
         fieldBuilder: (_) => {},

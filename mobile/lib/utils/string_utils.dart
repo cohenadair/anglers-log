@@ -12,8 +12,7 @@ bool equalsTrimmedIgnoreCase(String s1, String s2) =>
 /// For each argument, toString() is called to replace %s.
 String format(String s, List<dynamic> args) {
   var index = 0;
-  return s.replaceAllMapped(
-      RegExp(r'%s'), (match) => args[index++].toString());
+  return s.replaceAllMapped(RegExp(r'%s'), (match) => args[index++].toString());
 }
 
 String formatLatLng({

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:quiver/strings.dart';
 
 import '../res/dimen.dart';
-import '../widgets/button.dart';
 import '../widgets/checkbox_input.dart';
 import '../widgets/list_item.dart';
 import '../widgets/text.dart';

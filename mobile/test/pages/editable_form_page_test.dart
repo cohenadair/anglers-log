@@ -24,8 +24,7 @@ void main() {
     when(appManager.mockCustomEntityManager.list()).thenReturn([]);
   });
 
-  testWidgets("Note shows when there are no custom values",
-      (tester) async {
+  testWidgets("Note shows when there are no custom values", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => EditableFormPage(),
       appManager: appManager,
@@ -231,8 +230,7 @@ void main() {
     expect(find.widgetWithText(TextField, "Custom Field 1"), findsOneWidget);
   });
 
-  testWidgets("Callback invoked with correct values",
-      (tester) async {
+  testWidgets("Callback invoked with correct values", (tester) async {
     Map<Id, dynamic> onSaveMap;
     when(appManager.mockCustomEntityManager.entity(any)).thenReturn(
       CustomEntity()

@@ -249,9 +249,7 @@ class MockAppManager extends Mock implements AppManager {
 
   void stubCurrentTime(DateTime now) {
     when(mockTimeManager.currentDateTime).thenReturn(now);
-    when(mockTimeManager.currentTime)
-        .thenReturn(TimeOfDay.fromDateTime(now));
-    when(mockTimeManager.msSinceEpoch)
-        .thenReturn(now.millisecondsSinceEpoch);
+    when(mockTimeManager.currentTime).thenReturn(TimeOfDay.fromDateTime(now));
+    when(mockTimeManager.msSinceEpoch).thenReturn(now.millisecondsSinceEpoch);
   }
 }

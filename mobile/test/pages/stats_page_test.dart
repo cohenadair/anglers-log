@@ -113,8 +113,7 @@ void main() {
     expect(find.byType(ComparisonReportView), findsNothing);
   });
 
-  testWidgets("Selecting comparison shows comparison",
-      (tester) async {
+  testWidgets("Selecting comparison shows comparison", (tester) async {
     when(appManager.mockSummaryReportManager.list()).thenReturn([]);
     when(appManager.mockComparisonReportManager.list()).thenReturn([
       ComparisonReport()

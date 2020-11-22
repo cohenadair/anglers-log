@@ -57,8 +57,7 @@ void main() {
   });
 
   group("As button", () {
-    testWidgets("Default trailing widget for button",
-        (tester) async {
+    testWidgets("Default trailing widget for button", (tester) async {
       await tester.pumpWidget(
         Testable(
           (_) => SearchBar(
@@ -87,8 +86,7 @@ void main() {
   });
 
   group("As input", () {
-    testWidgets("Default trailing widget for input",
-        (tester) async {
+    testWidgets("Default trailing widget for input", (tester) async {
       await tester.pumpWidget(
         Testable(
           (_) => SearchBar(
@@ -100,9 +98,8 @@ void main() {
       expect(find.byType(Empty), findsNothing);
     });
 
-    testWidgets("Delegate onTextChanged is invoked",
-        (tester) async {
-          var invokedCount = 0;
+    testWidgets("Delegate onTextChanged is invoked", (tester) async {
+      var invokedCount = 0;
       await tester.pumpWidget(
         Testable(
           (_) => SearchBar(

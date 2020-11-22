@@ -79,9 +79,7 @@ class _MainPageState extends State<MainPage> {
         // between pages.
         body: IndexedStack(
           index: _currentBarItem,
-          children: _navItems
-              .map((data) => data.page ?? Empty())
-              .toList(),
+          children: _navItems.map((data) => data.page ?? Empty()).toList(),
         ),
         bottomNavigationBar: BottomNavigationBar(
           currentIndex: _currentBarItem,

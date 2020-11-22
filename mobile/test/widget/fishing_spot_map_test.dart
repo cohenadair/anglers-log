@@ -87,8 +87,7 @@ void main() {
       expect(find.byType(SearchBar), findsOneWidget);
     });
 
-    testWidgets("Open fishing spot list with no fishing spots",
-        (tester) async {
+    testWidgets("Open fishing spot list with no fishing spots", (tester) async {
       when(appManager.mockFishingSpotManager.listSortedByName()).thenReturn([]);
 
       await tester.pumpWidget(Testable(
@@ -107,8 +106,7 @@ void main() {
       expect(find.byType(ListItem), findsNothing);
     });
 
-    testWidgets("Spots rendered in list correctly",
-        (tester) async {
+    testWidgets("Spots rendered in list correctly", (tester) async {
       stubFishingSpots();
 
       await tester.pumpWidget(Testable(
@@ -128,8 +126,7 @@ void main() {
       expect(find.text("Fishing Spot 4"), findsOneWidget);
     });
 
-    testWidgets("Tap fishing spot invokes callback",
-        (tester) async {
+    testWidgets("Tap fishing spot invokes callback", (tester) async {
       stubFishingSpots();
 
       var picked = false;

@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sqflite/sqflite.dart';
@@ -152,8 +151,7 @@ class DataManager extends ListenerManager<DataListener> {
   Future<Map<String, dynamic>> fetchEntity(String tableName, String id) async {
     _log.w("fetch($tableName, $id) called");
 
-    var result =
-        await query("SELECT * FROM $tableName WHERE id = ?", [id]);
+    var result = await query("SELECT * FROM $tableName WHERE id = ?", [id]);
     if (result.isEmpty) {
       return null;
     }

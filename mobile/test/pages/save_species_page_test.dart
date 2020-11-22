@@ -64,8 +64,7 @@ void main() {
     await enterTextAndSettle(tester, find.byType(TextField), "Bass");
     await tapAndSettle(tester, find.text("SAVE"));
 
-    var result =
-        verify(appManager.mockSpeciesManager.addOrUpdate(captureAny));
+    var result = verify(appManager.mockSpeciesManager.addOrUpdate(captureAny));
     result.called(1);
     expect(result.captured.first.id, species.id);
     expect(result.captured.first.name, "Bass");

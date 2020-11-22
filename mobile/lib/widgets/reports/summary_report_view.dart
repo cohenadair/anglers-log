@@ -14,8 +14,7 @@ class SummaryReportView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var summaryReportManager =
-        SummaryReportManager.of(context);
+    var summaryReportManager = SummaryReportManager.of(context);
 
     var report = summaryReportManager.entity(reportId);
     if (report == null) {

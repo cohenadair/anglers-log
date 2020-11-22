@@ -85,8 +85,7 @@ void main() {
         .thenReturn(speciesList);
   });
 
-  Future<void> selectItems(
-      tester, String startText, List<String> items) async {
+  Future<void> selectItems(tester, String startText, List<String> items) async {
     await tapAndSettle(tester, find.text(startText));
     for (var item in items) {
       await tester.tap(find.descendant(
@@ -130,8 +129,7 @@ void main() {
     expect(find.text("All dates"), findsOneWidget);
   });
 
-  testWidgets("Save button state updates when name changes",
-      (tester) async {
+  testWidgets("Save button state updates when name changes", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => SaveReportPage(),
       appManager: appManager,
@@ -147,8 +145,7 @@ void main() {
         findFirstWithText<ActionButton>(tester, "SAVE").onPressed, isNotNull);
   });
 
-  testWidgets("Selecting type updates date range pickers",
-      (tester) async {
+  testWidgets("Selecting type updates date range pickers", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => SaveReportPage(),
       appManager: appManager,
@@ -216,8 +213,7 @@ void main() {
     expect(find.byType(BaitListPage), findsOneWidget);
   });
 
-  testWidgets("Fishing spot picker shows picker page",
-      (tester) async {
+  testWidgets("Fishing spot picker shows picker page", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => SaveReportPage(),
       appManager: appManager,
@@ -228,8 +224,7 @@ void main() {
   });
 
   group("Comparison report", () {
-    testWidgets("Add report with preset date ranges",
-        (tester) async {
+    testWidgets("Add report with preset date ranges", (tester) async {
       await tester.pumpWidget(Testable(
         (_) => SaveReportPage(),
         appManager: appManager,
@@ -288,8 +283,7 @@ void main() {
       expect(report.fishingSpotIds.length, 2);
     });
 
-    testWidgets("Add report with custom date ranges",
-        (tester) async {
+    testWidgets("Add report with custom date ranges", (tester) async {
       DateRange fromDateRange;
       DateRange toDateRange;
       await tester.pumpWidget(Testable(
@@ -390,8 +384,7 @@ void main() {
   });
 
   group("Summary report", () {
-    testWidgets("Add report with preset date ranges",
-        (tester) async {
+    testWidgets("Add report with preset date ranges", (tester) async {
       await tester.pumpWidget(Testable(
         (_) => SaveReportPage(),
         appManager: appManager,
@@ -434,8 +427,7 @@ void main() {
       expect(report.fishingSpotIds.length, 2);
     });
 
-    testWidgets("Add report with custom date ranges",
-        (tester) async {
+    testWidgets("Add report with custom date ranges", (tester) async {
       DateRange dateRange;
       await tester.pumpWidget(Testable(
         (context) {

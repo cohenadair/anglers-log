@@ -89,8 +89,7 @@ void main() {
     expect(find.text("Subtitle"), findsOneWidget);
   });
 
-  testWidgets("Title/subtitle cannot both be empty",
-      (tester) async {
+  testWidgets("Title/subtitle cannot both be empty", (tester) async {
     await tester.pumpWidget(Testable((_) => FloatingContainer()));
     expect(tester.takeException(), isAssertionError);
   });

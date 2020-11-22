@@ -5,8 +5,7 @@ import 'package:mobile/widgets/label_value.dart';
 import '../test_utils.dart';
 
 void main() {
-  testWidgets("Neither label nor value can be null",
-      (tester) async {
+  testWidgets("Neither label nor value can be null", (tester) async {
     await tester.pumpWidget(
       Testable(
         (_) => LabelValue(

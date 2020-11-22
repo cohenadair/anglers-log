@@ -79,8 +79,7 @@ void main() {
     expect(pickedReport.name, "Summary 1");
   });
 
-  testWidgets("Different item types are displayed correctly",
-      (tester) async {
+  testWidgets("Different item types are displayed correctly", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => ReportListPage.picker(
         onPicked: (_, __) => true,
@@ -159,8 +158,7 @@ void main() {
     expect((transition.listenable as Animation<double>).value, 0.0);
   });
 
-  testWidgets("Note shown when custom reports is empty",
-      (tester) async {
+  testWidgets("Note shown when custom reports is empty", (tester) async {
     when(appManager.mockComparisonReportManager.list()).thenReturn([]);
     when(appManager.mockSummaryReportManager.list()).thenReturn([]);
 
@@ -174,8 +172,7 @@ void main() {
     expect(find.byType(IconNoteLabel), findsOneWidget);
   });
 
-  testWidgets("Custom reports are sorted alphabetically",
-      (tester) async {
+  testWidgets("Custom reports are sorted alphabetically", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => ReportListPage.picker(
         onPicked: (_, __) => true,

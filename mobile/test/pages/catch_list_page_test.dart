@@ -62,8 +62,7 @@ void main() {
     expect(find.byIcon(Icons.add), findsOneWidget);
   });
 
-  testWidgets("Fishing spot with name used as subtitle",
-      (tester) async {
+  testWidgets("Fishing spot with name used as subtitle", (tester) async {
     when(appManager.mockFishingSpotManager.entity(any)).thenReturn(FishingSpot()
       ..id = randomId()
       ..name = "Baskets"
@@ -77,8 +76,7 @@ void main() {
     expect(find.text("Baskets"), findsOneWidget);
   });
 
-  testWidgets("Null fishing spot uses bait as subtitle",
-      (tester) async {
+  testWidgets("Null fishing spot uses bait as subtitle", (tester) async {
     when(appManager.mockBaitManager.entity(any)).thenReturn(Bait()
       ..id = randomId()
       ..name = "Roe Bag");
@@ -111,8 +109,7 @@ void main() {
     expect(find.text("Roe Bag"), findsOneWidget);
   });
 
-  testWidgets("No subtitle if bait and fishing spot are null",
-      (tester) async {
+  testWidgets("No subtitle if bait and fishing spot are null", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => CatchListPage(),
       appManager: appManager,

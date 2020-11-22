@@ -21,8 +21,7 @@ class PhotosPage extends StatelessWidget {
           catchManager,
         ],
         builder: (context) {
-          var fileNames =
-              catchManager.imageNamesSortedByTimestamp(context);
+          var fileNames = catchManager.imageNamesSortedByTimestamp(context);
           return Stack(
             children: [
               CustomScrollView(

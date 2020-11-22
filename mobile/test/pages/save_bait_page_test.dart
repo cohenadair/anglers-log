@@ -54,8 +54,7 @@ void main() {
     expect(find.text("New Bait"), findsOneWidget);
   });
 
-  testWidgets("Selecting bait category updates state",
-      (tester) async {
+  testWidgets("Selecting bait category updates state", (tester) async {
     when(appManager.mockBaitCategoryManager
             .listSortedByName(filter: anyNamed("filter")))
         .thenReturn([
@@ -77,8 +76,7 @@ void main() {
     expect(find.text("Lure"), findsOneWidget);
   });
 
-  testWidgets("Updating name updates save button state",
-      (tester) async {
+  testWidgets("Updating name updates save button state", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => SaveBaitPage(),
       appManager: appManager,
@@ -135,8 +133,7 @@ void main() {
         tester, find.widgetWithText(TextField, "Name"), "Plug");
     await tapAndSettle(tester, find.text("SAVE"));
 
-    var result =
-        verify(appManager.mockBaitManager.addOrUpdate(captureAny));
+    var result = verify(appManager.mockBaitManager.addOrUpdate(captureAny));
     result.called(1);
 
     Bait newBait = result.captured.first;
@@ -187,8 +184,7 @@ void main() {
     await enterTextAndSettle(tester, find.byType(TextField), "Plug");
     await tapAndSettle(tester, find.text("SAVE"));
 
-    var result =
-        verify(appManager.mockBaitManager.addOrUpdate(captureAny));
+    var result = verify(appManager.mockBaitManager.addOrUpdate(captureAny));
     result.called(1);
 
     Bait bait = result.captured.first;

@@ -57,8 +57,7 @@ void main() {
   });
 
   group("Normal list page", () {
-    testWidgets("Title updates when species updated",
-        (tester) async {
+    testWidgets("Title updates when species updated", (tester) async {
       await tester.pumpWidget(Testable(
         (_) => SpeciesListPage(),
         appManager: appManager,
@@ -70,8 +69,7 @@ void main() {
       expect(find.text("Species (4)"), findsOneWidget);
     });
 
-    testWidgets("List updates when species updated",
-        (tester) async {
+    testWidgets("List updates when species updated", (tester) async {
       await tester.pumpWidget(Testable(
         (_) => SpeciesListPage(),
         appManager: appManager,

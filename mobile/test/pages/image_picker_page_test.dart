@@ -170,8 +170,7 @@ void main() {
     expect(find.text("Must select image files."), findsNothing);
   });
 
-  testWidgets("Doc single picker unsupported format",
-      (tester) async {
+  testWidgets("Doc single picker unsupported format", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => ImagePickerPage.single(
         onImagePicked: (_, __) {},
@@ -189,8 +188,7 @@ void main() {
     expect(find.text("Must select an image file."), findsOneWidget);
   });
 
-  testWidgets("Doc multi picker unsupported format",
-      (tester) async {
+  testWidgets("Doc multi picker unsupported format", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => ImagePickerPage(
         onImagesPicked: (_, __) {},
@@ -260,8 +258,7 @@ void main() {
     expect(find.text("DONE"), findsOneWidget);
   });
 
-  testWidgets("Done button disabled when pick is required",
-      (tester) async {
+  testWidgets("Done button disabled when pick is required", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => ImagePickerPage(
         onImagesPicked: (_, __) {},
@@ -274,8 +271,7 @@ void main() {
     expect(findFirstWithText<ActionButton>(tester, "DONE").onPressed, isNull);
   });
 
-  testWidgets("Done button enabled when pick is not required",
-      (tester) async {
+  testWidgets("Done button enabled when pick is not required", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => ImagePickerPage(
         onImagesPicked: (_, __) {},
@@ -391,8 +387,7 @@ void main() {
     expect(called, isTrue);
   });
 
-  testWidgets("Do not pop picker if popsOnFinish is false",
-      (tester) async {
+  testWidgets("Do not pop picker if popsOnFinish is false", (tester) async {
     var navObserver = MockNavigatorObserver();
     var called = false;
     await tester.pumpWidget(Testable(

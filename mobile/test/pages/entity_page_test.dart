@@ -103,8 +103,7 @@ void main() {
           Colors.white.withOpacity(0.5));
     });
 
-    testWidgets("Image carousel hidden for only 1 image",
-        (tester) async {
+    testWidgets("Image carousel hidden for only 1 image", (tester) async {
       await image(tester, "flutter_logo.png");
       await tester.pumpWidget(Testable(
         (_) => EntityPage(
@@ -178,8 +177,7 @@ void main() {
     expect(find.byIcon(Icons.delete), findsNothing);
   });
 
-  testWidgets("Dynamic page shows edit and delete buttons",
-      (tester) async {
+  testWidgets("Dynamic page shows edit and delete buttons", (tester) async {
     await tester.pumpWidget(Testable((_) => EntityPage(children: [])));
 
     expect(find.text("EDIT"), findsOneWidget);

@@ -32,8 +32,7 @@ void main() {
 
   // TODO (1): GoogleMap is a native widget; gesture testing doesn't work yet.
 
-  testWidgets("Initial fishing spot shows bottom sheet",
-      (tester) async {
+  testWidgets("Initial fishing spot shows bottom sheet", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => FishingSpotPickerPage(
         onPicked: (_, __) {},
@@ -97,8 +96,7 @@ void main() {
     expect(find.byIcon(Icons.add), findsOneWidget);
   });
 
-  testWidgets("On map idle, pending fishing spot is added",
-      (tester) async {
+  testWidgets("On map idle, pending fishing spot is added", (tester) async {
     // TODO (1)
     // TODO: Verify marker color
   });
@@ -114,8 +112,7 @@ void main() {
     // TODO (1)
   });
 
-  testWidgets("Center widget color depends on map type",
-      (tester) async {
+  testWidgets("Center widget color depends on map type", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => FishingSpotPickerPage(
         onPicked: (_, __) {},
@@ -167,8 +164,7 @@ void main() {
     expect(findFirstWithText<ActionButton>(tester, "DONE").onPressed, isNull);
   });
 
-  testWidgets("Done button enabled if fishing spot selected",
-      (tester) async {
+  testWidgets("Done button enabled if fishing spot selected", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => FishingSpotPickerPage(
         onPicked: (_, __) {},
@@ -186,8 +182,7 @@ void main() {
         findFirstWithText<ActionButton>(tester, "DONE").onPressed, isNotNull);
   });
 
-  testWidgets("Selecting fishing spot from search updates map",
-      (tester) async {
+  testWidgets("Selecting fishing spot from search updates map", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => FishingSpotPickerPage(
         onPicked: (_, __) {},
@@ -220,8 +215,7 @@ void main() {
     expect(find.byType(FloatingContainer), findsNothing);
   });
 
-  testWidgets("Editing fishing spot updates bottom sheet",
-      (tester) async {
+  testWidgets("Editing fishing spot updates bottom sheet", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => FishingSpotPickerPage(
         onPicked: (_, __) {},

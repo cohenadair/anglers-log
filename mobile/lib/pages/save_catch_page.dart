@@ -109,8 +109,7 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
     _fields[_idTimestamp] = InputData(
       id: _idTimestamp,
       controller: TimestampInputController(),
-      label: (context) =>
-          Strings.of(context).saveCatchPageDateTimeLabel,
+      label: (context) => Strings.of(context).saveCatchPageDateTimeLabel,
       removable: false,
       showing: true,
     );
@@ -118,8 +117,7 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
     _fields[_idSpecies] = InputData(
       id: _idSpecies,
       controller: InputController<Species>(),
-      label: (context) =>
-          Strings.of(context).saveCatchPageSpeciesLabel,
+      label: (context) => Strings.of(context).saveCatchPageSpeciesLabel,
       removable: false,
       showing: true,
     );
@@ -127,24 +125,21 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
     _fields[_idBait] = InputData(
       id: _idBait,
       controller: InputController<Bait>(),
-      label: (context) =>
-          Strings.of(context).saveCatchPageBaitLabel,
+      label: (context) => Strings.of(context).saveCatchPageBaitLabel,
       showing: true,
     );
 
     _fields[_idImages] = InputData(
       id: _idImages,
       controller: InputController<List<PickedImage>>(),
-      label: (context) =>
-          Strings.of(context).saveCatchPageImagesLabel,
+      label: (context) => Strings.of(context).saveCatchPageImagesLabel,
       showing: true,
     );
 
     _fields[_idFishingSpot] = InputData(
       id: _idFishingSpot,
       controller: InputController<FishingSpot>(),
-      label: (context) =>
-          Strings.of(context).saveCatchPageFishingSpotLabel,
+      label: (context) => Strings.of(context).saveCatchPageFishingSpotLabel,
       showing: true,
     );
 

@@ -69,8 +69,7 @@ void main() {
     // test environment.
   });
 
-  testWidgets("Null picked file resets state to none",
-      (tester) async {
+  testWidgets("Null picked file resets state to none", (tester) async {
     when(appManager.mockFilePickerWrapper.getFile(
       type: anyNamed("type"),
       fileExtension: anyNamed("fileExtension"),
@@ -123,8 +122,7 @@ void main() {
     expect(find.byType(FeedbackPage), findsOneWidget);
   });
 
-  testWidgets("Successful import error shows success widget",
-      (tester) async {
+  testWidgets("Successful import error shows success widget", (tester) async {
     when(appManager.mockFilePickerWrapper.getFile(
       type: anyNamed("type"),
       fileExtension: anyNamed("fileExtension"),

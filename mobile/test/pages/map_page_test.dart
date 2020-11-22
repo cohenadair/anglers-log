@@ -152,13 +152,11 @@ void main() {
     expect(find.byType(StyledBottomSheet), findsNothing);
   });
 
-  testWidgets("Picking new spot from search moves map",
-      (tester) async {
+  testWidgets("Picking new spot from search moves map", (tester) async {
     // TODO (2): Verify camera movement
   });
 
-  testWidgets("Tapping map drops pin and moves map",
-      (tester) async {
+  testWidgets("Tapping map drops pin and moves map", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => MapPage(),
       appManager: appManager,
@@ -177,8 +175,7 @@ void main() {
     // TODO (2): Verify camera movement
   });
 
-  testWidgets("Updating fishing spot resets active spot",
-      (tester) async {
+  testWidgets("Updating fishing spot resets active spot", (tester) async {
     // Setup a real FishingSpotManager so update callbacks are called.
     var fishingSpotManager = FishingSpotManager(appManager);
     for (var fishingSpot in fishingSpots) {
@@ -206,8 +203,7 @@ void main() {
     expect(find.text("Updated Name"), findsNWidgets(2));
   });
 
-  testWidgets("Tapping my location clears active spot",
-      (tester) async {
+  testWidgets("Tapping my location clears active spot", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => MapPage(),
       appManager: appManager,

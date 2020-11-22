@@ -72,7 +72,8 @@ DisplayDateRange stubDateRange(DateRange dateRange) {
   );
 }
 
-Future<BuildContext> buildContext(WidgetTester tester, {
+Future<BuildContext> buildContext(
+  WidgetTester tester, {
   bool use24Hour = false,
   AppManager appManager,
 }) async {

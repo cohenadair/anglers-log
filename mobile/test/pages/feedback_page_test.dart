@@ -77,8 +77,7 @@ void main() {
     expect(find.text("This is a warning."), findsNothing);
   });
 
-  testWidgets("Send button state updates when email changes",
-      (tester) async {
+  testWidgets("Send button state updates when email changes", (tester) async {
     await tester.pumpWidget(Testable((_) => FeedbackPage()));
     expect(findFirstWithText<ActionButton>(tester, "SEND").onPressed, isNull);
 
@@ -99,8 +98,7 @@ void main() {
         findFirstWithText<ActionButton>(tester, "SEND").onPressed, isNotNull);
   });
 
-  testWidgets("For errors, type RadioInput is hidden",
-      (tester) async {
+  testWidgets("For errors, type RadioInput is hidden", (tester) async {
     await tester.pumpWidget(
       Testable(
         (_) => FeedbackPage(
@@ -111,8 +109,7 @@ void main() {
     expect(find.byType(RadioInput), findsNothing);
   });
 
-  testWidgets("For non-errors, type RadioInput is shown",
-      (tester) async {
+  testWidgets("For non-errors, type RadioInput is shown", (tester) async {
     await tester.pumpWidget(Testable((_) => FeedbackPage()));
     expect(find.byType(RadioInput), findsOneWidget);
   });
@@ -157,8 +154,7 @@ void main() {
     );
   });
 
-  testWidgets("Error Snackbar shows for sending error",
-      (tester) async {
+  testWidgets("Error Snackbar shows for sending error", (tester) async {
     var navObserver = MockNavigatorObserver();
     await tester.pumpWidget(Testable(
       (_) => FeedbackPage(

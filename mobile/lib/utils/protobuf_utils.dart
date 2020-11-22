@@ -108,7 +108,7 @@ Id parseId(String idString) {
 Id safeParseId(String idString) {
   try {
     return parseId(idString);
-  } on Exception catch(_) {
+  } on Exception catch (_) {
     return null;
   }
 }
