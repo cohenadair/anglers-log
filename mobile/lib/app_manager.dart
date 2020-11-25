@@ -24,6 +24,7 @@ import 'wrappers/mail_sender_wrapper.dart';
 import 'wrappers/package_info_wrapper.dart';
 import 'wrappers/path_provider_wrapper.dart';
 import 'wrappers/photo_manager_wrapper.dart';
+import 'wrappers/url_launcher_wrapper.dart';
 
 class AppManager {
   static AppManager of(BuildContext context) =>
@@ -55,6 +56,7 @@ class AppManager {
   PackageInfoWrapper _packageInfoWrapper;
   PathProviderWrapper _pathProviderWrapper;
   PhotoManagerWrapper _photoManagerWrapper;
+  UrlLauncherWrapper _urlLauncherWrapper;
 
   BaitCategoryManager get baitCategoryManager {
     if (_baitCategoryManager == null) {
@@ -215,5 +217,12 @@ class AppManager {
       _photoManagerWrapper = PhotoManagerWrapper();
     }
     return _photoManagerWrapper;
+  }
+
+  UrlLauncherWrapper get urlLauncherWrapper {
+    if (_urlLauncherWrapper == null) {
+      _urlLauncherWrapper = UrlLauncherWrapper();
+    }
+    return _urlLauncherWrapper;
   }
 }

@@ -47,6 +47,7 @@ void main() {
       mockDataManager: true,
       mockFishingSpotManager: true,
       mockLocationMonitor: true,
+      mockUrlLauncherWrapper: true,
     );
 
     when(appManager.mockDataManager.insertOrUpdateEntity(any, any, any))
@@ -329,5 +330,134 @@ void main() {
 //    expect(find.text("Delete"), findsNothing);
 //    expect(find.text("Add Catch"), findsNothing);
 //    expect(find.text("Directions"), findsOneWidget);
+  });
+
+  group("Directions", () {
+    testWidgets("No options shows snack bar", (tester) async {
+      when(appManager.mockUrlLauncherWrapper.canLaunch(any))
+          .thenAnswer((_) => Future.value(false));
+
+      await tester.pumpWidget(Testable(
+        (_) => MapPage(),
+        appManager: appManager,
+      ));
+      // Allow map to load.
+      await tester.pumpAndSettle(Duration(milliseconds: 250));
+
+      // Select fishing spot.
+      await tapAndSettle(tester, find.text("Search fishing spots"));
+      await tapAndSettle(tester, find.text("A"));
+
+      await tapAndSettle(tester, find.text("Directions"));
+      await tester.pumpAndSettle(Duration(milliseconds: 250));
+
+      expect(find.byType(SnackBar), findsOneWidget);
+    });
+
+    testWidgets("Default option", (tester) async {
+      when(appManager.mockUrlLauncherWrapper.canLaunch(any)).thenAnswer(
+          (invocation) => Future.value(invocation.positionalArguments.first
+              .contains("https://www.google.com")));
+      when(appManager.mockUrlLauncherWrapper.launch(any))
+          .thenAnswer((_) => Future.value(true));
+
+      await tester.pumpWidget(Testable(
+        (_) => MapPage(),
+        appManager: appManager,
+      ));
+      // Allow map to load.
+      await tester.pumpAndSettle(Duration(milliseconds: 250));
+
+      // Select fishing spot.
+      await tapAndSettle(tester, find.text("Search fishing spots"));
+      await tapAndSettle(tester, find.text("A"));
+
+      await tapAndSettle(tester, find.text("Directions"));
+      await tester.pumpAndSettle(Duration(milliseconds: 250));
+
+      verify(appManager.mockUrlLauncherWrapper.launch(any)).called(1);
+      expect(find.byType(SnackBar), findsNothing);
+    });
+
+    testWidgets("Single option", (tester) async {
+      when(appManager.mockUrlLauncherWrapper.canLaunch(any)).thenAnswer(
+          (invocation) => Future.value(
+              invocation.positionalArguments.first.contains("waze:")));
+      when(appManager.mockUrlLauncherWrapper.launch(any))
+          .thenAnswer((_) => Future.value(true));
+
+      await tester.pumpWidget(Testable(
+        (_) => MapPage(),
+        appManager: appManager,
+      ));
+      // Allow map to load.
+      await tester.pumpAndSettle(Duration(milliseconds: 250));
+
+      // Select fishing spot.
+      await tapAndSettle(tester, find.text("Search fishing spots"));
+      await tapAndSettle(tester, find.text("A"));
+
+      await tapAndSettle(tester, find.text("Directions"));
+      await tester.pumpAndSettle(Duration(milliseconds: 250));
+
+      verify(appManager.mockUrlLauncherWrapper
+              .launch(argThat(contains("waze"))))
+          .called(1);
+      expect(find.byType(SnackBar), findsNothing);
+    });
+
+    testWidgets("Multiple options", (tester) async {
+      when(appManager.mockUrlLauncherWrapper.canLaunch(any))
+          .thenAnswer((_) => Future.value(true));
+      when(appManager.mockUrlLauncherWrapper.launch(any))
+          .thenAnswer((_) => Future.value(true));
+
+      await tester.pumpWidget(Testable(
+        (_) => MapPage(),
+        appManager: appManager,
+      ));
+      // Allow map to load.
+      await tester.pumpAndSettle(Duration(milliseconds: 250));
+
+      // Select fishing spot.
+      await tapAndSettle(tester, find.text("Search fishing spots"));
+      await tapAndSettle(tester, find.text("A"));
+
+      await tapAndSettle(tester, find.text("Directions"));
+      // For fishing spot bottom sheet and picker.
+      expect(find.byType(SwipeChip), findsNWidgets(2));
+
+      await tapAndSettle(tester, find.text("Google Maps"));
+
+      verify(appManager.mockUrlLauncherWrapper
+              .launch(argThat(contains("google"))))
+          .called(1);
+      expect(find.byType(SnackBar), findsNothing);
+      expect(find.byType(SwipeChip), findsOneWidget);
+    });
+
+    testWidgets("Dismissing doesn't show snack bar", (tester) async {
+      when(appManager.mockUrlLauncherWrapper.canLaunch(any))
+          .thenAnswer((_) => Future.value(true));
+      when(appManager.mockUrlLauncherWrapper.launch(any))
+          .thenAnswer((_) => Future.value(true));
+
+      await tester.pumpWidget(Testable(
+        (_) => MapPage(),
+        appManager: appManager,
+      ));
+      // Allow map to load.
+      await tester.pumpAndSettle(Duration(milliseconds: 250));
+
+      // Select fishing spot.
+      await tapAndSettle(tester, find.text("Search fishing spots"));
+      await tapAndSettle(tester, find.text("A"));
+
+      await tapAndSettle(tester, find.text("Directions"));
+      await tester.fling(find.text("Google Maps"), Offset(0, 300), 800);
+      await tester.pumpAndSettle();
+
+      expect(find.byType(SnackBar), findsNothing);
+    });
   });
 }

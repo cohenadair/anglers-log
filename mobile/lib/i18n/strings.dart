@@ -233,6 +233,11 @@ class Strings {
   String get mapPageMapTypeHybrid => _string("mapPage_mapTypeHybrid");
   String get mapPageErrorGettingLocation =>
       _string("mapPage_errorGettingLocation");
+  String get mapPageAppleMaps => _string("mapPage_appleMaps");
+  String get mapPageGoogleMaps => _string("mapPage_googleMaps");
+  String get mapPageWaze => _string("mapPage_waze");
+  String get mapPageErrorOpeningDirections =>
+      _string("mapPage_errorOpeningDirections");
 
   String get saveFishingSpotPageNewTitle =>
       _string("saveFishingSpotPage_newTitle");

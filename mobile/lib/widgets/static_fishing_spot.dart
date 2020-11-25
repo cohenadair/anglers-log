@@ -98,6 +98,7 @@ class _StaticFishingSpotState extends State<StaticFishingSpot> {
                 scrollGesturesEnabled: false,
                 tiltGesturesEnabled: false,
                 zoomGesturesEnabled: false,
+                mapToolbarEnabled: false,
               ),
             ),
             FloatingContainer(

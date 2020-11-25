@@ -21,6 +21,7 @@ import '../widgets/no_results.dart';
 import '../widgets/search_bar.dart';
 import '../widgets/text.dart';
 import '../widgets/widget.dart';
+import 'bottom_sheet_picker.dart';
 
 class FishingSpotMapSearchBar {
   final String title;
@@ -195,6 +196,7 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
           },
           myLocationButtonEnabled: false,
           myLocationEnabled: true,
+          mapToolbarEnabled: false,
           // TODO: Try onLongPress again when Google Maps updated.
           // Long presses weren't being triggered first time.
           onTap: widget.onTap,
@@ -285,23 +287,25 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
     return FloatingIconButton(
       icon: Icons.layers,
       onPressed: () {
-        showModalBottomSheet(
-          isScrollControlled: true,
-          useRootNavigator: true,
-          context: context,
-          builder: (context) {
-            return _MapTypeBottomSheet(
-              currentMapType: _mapType,
-              onMapTypeSelected: (newMapType) {
-                if (newMapType != _mapType) {
-                  setState(() {
-                    _mapType = newMapType;
-                  });
-                  widget.onMapTypeChanged?.call(newMapType);
-                }
-              },
-            );
-          },
+        showBottomSheetPicker(
+          context,
+          (context) => BottomSheetPicker<MapType>(
+            currentValue: _mapType ?? MapType.normal,
+            items: {
+              Strings.of(context).mapPageMapTypeNormal: MapType.normal,
+              Strings.of(context).mapPageMapTypeSatellite: MapType.satellite,
+              Strings.of(context).mapPageMapTypeHybrid: MapType.hybrid,
+              Strings.of(context).mapPageMapTypeTerrain: MapType.terrain,
+            },
+            onPicked: (newMapType) {
+              if (newMapType != _mapType) {
+                setState(() {
+                  _mapType = newMapType;
+                });
+                widget.onMapTypeChanged?.call(newMapType);
+              }
+            },
+          ),
         );
       },
     );
@@ -387,54 +391,6 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
       margin: insetsHorizontalDefault,
       showing: _showHelp,
       child: widget.help,
-    );
-  }
-}
-
-class _MapTypeBottomSheet extends StatelessWidget {
-  final Function(MapType) onMapTypeSelected;
-  final MapType currentMapType;
-
-  _MapTypeBottomSheet({
-    this.onMapTypeSelected,
-    this.currentMapType = MapType.normal,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return SafeArea(
-      bottom: true,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
-          SwipeChip(),
-          _buildItem(context, Strings.of(context).mapPageMapTypeNormal,
-              MapType.normal),
-          _buildItem(context, Strings.of(context).mapPageMapTypeSatellite,
-              MapType.satellite),
-          _buildItem(context, Strings.of(context).mapPageMapTypeHybrid,
-              MapType.hybrid),
-          _buildItem(context, Strings.of(context).mapPageMapTypeTerrain,
-              MapType.terrain),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildItem(BuildContext context, String title, MapType mapType) {
-    return ListItem(
-      title: Label(title),
-      trailing: Visibility(
-        visible: currentMapType == mapType,
-        child: Icon(
-          Icons.check,
-          color: Colors.black,
-        ),
-      ),
-      onTap: () {
-        Navigator.pop(context);
-        onMapTypeSelected?.call(mapType);
-      },
     );
   }
 }

@@ -328,36 +328,6 @@ void main() {
   });
 
   group("Map type", () {
-    Visibility visibility(String text, tester) {
-      return tester.firstWidget(find.descendant(
-        of: find.widgetWithText(ListItem, text),
-        matching: find.byType(Visibility),
-      ));
-    }
-
-    testWidgets("All map options + check mark", (tester) async {
-      await tester.pumpWidget(Testable(
-        (_) => FishingSpotMap(
-          mapController: Completer<GoogleMapController>(),
-        ),
-        appManager: appManager,
-      ));
-      await tester.pumpAndSettle(Duration(milliseconds: 200));
-
-      await tester.tap(find.byIcon(Icons.layers));
-      await tester.pumpAndSettle();
-
-      // Verify options.
-      expect(find.text("Normal"), findsOneWidget);
-      expect(visibility("Normal", tester).visible, isTrue);
-      expect(find.text("Satellite"), findsOneWidget);
-      expect(visibility("Satellite", tester).visible, isFalse);
-      expect(find.text("Hybrid"), findsOneWidget);
-      expect(visibility("Hybrid", tester).visible, isFalse);
-      expect(find.text("Terrain"), findsOneWidget);
-      expect(visibility("Terrain", tester).visible, isFalse);
-    });
-
     testWidgets("Changing the map type", (tester) async {
       MapType currentType;
       await tester.pumpWidget(Testable(

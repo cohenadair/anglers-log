@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -17,12 +18,15 @@ import '../utils/dialog_utils.dart';
 import '../utils/map_utils.dart';
 import '../utils/page_utils.dart';
 import '../utils/protobuf_utils.dart';
+import '../utils/snackbar_utils.dart';
 import '../utils/string_utils.dart';
+import '../widgets/bottom_sheet_picker.dart';
 import '../widgets/button.dart';
 import '../widgets/fishing_spot_map.dart';
 import '../widgets/styled_bottom_sheet.dart';
 import '../widgets/text.dart';
 import '../widgets/widget.dart';
+import '../wrappers/url_launcher_wrapper.dart';
 
 class MapPage extends StatefulWidget {
   @override
@@ -277,6 +281,8 @@ class _MapPageState extends State<MapPage> {
 
 /// A widget that shows details of a selected fishing spot.
 class _FishingSpotBottomSheet extends StatelessWidget {
+  final Log _log = Log("_FishingSpotBottomSheet");
+
   final double _chipHeight = 45;
 
   /// Note that an [Id] is not used here because the [FishingSpot] being shown
@@ -402,11 +408,75 @@ class _FishingSpotBottomSheet extends StatelessWidget {
             child: ChipButton(
               label: Strings.of(context).directions,
               icon: Icons.directions,
-              onPressed: () {},
+              onPressed: () => _launchDirections(context),
             ),
           ),
         ],
       ),
     );
+  }
+
+  void _launchDirections(BuildContext context) async {
+    var navigationAppOptions = <String, String>{};
+    var urlLauncher = UrlLauncherWrapper.of(context);
+    var destination = "${fishingSpot.lat}%2C${fishingSpot.lng}";
+
+    // Openable on Android as standard URL. Do not include as an option on
+    // Android devices.
+    var appleMapsUrl = "https://maps.apple.com/?daddr=$destination";
+    if (Platform.isIOS && await urlLauncher.canLaunch(appleMapsUrl)) {
+      navigationAppOptions[Strings.of(context).mapPageAppleMaps] = appleMapsUrl;
+    }
+
+    var googleMapsUrl = Platform.isAndroid
+        ? "google.navigation:q=$destination"
+        : "comgooglemaps://?daddr=$destination";
+    if (await urlLauncher.canLaunch(googleMapsUrl)) {
+      navigationAppOptions[Strings.of(context).mapPageGoogleMaps] =
+          googleMapsUrl;
+    }
+
+    var wazeUrl = "waze://?ll=$destination&navigate=yes";
+    if (await urlLauncher.canLaunch(wazeUrl)) {
+      navigationAppOptions[Strings.of(context).mapPageWaze] = wazeUrl;
+    }
+
+    _log.d("Available navigation apps: ${navigationAppOptions.keys}");
+    var launched = false;
+
+    if (navigationAppOptions.isEmpty) {
+      // Default to Google Maps in a browser.
+      var defaultUrl = "https://www.google.com/maps/dir/?api=1&"
+          "dir_action=preview&"
+          "destination=$destination";
+      if (await urlLauncher.canLaunch(defaultUrl) &&
+          await urlLauncher.launch(defaultUrl)) {
+        launched = true;
+      }
+    } else if (navigationAppOptions.length == 1) {
+      // There's only one option, open it.
+      var url = navigationAppOptions.values.first;
+      if (await urlLauncher.canLaunch(url) && await urlLauncher.launch(url)) {
+        launched = true;
+      }
+    } else {
+      // There are multiple options, give the user a choice.
+      String url;
+      await showBottomSheetPicker(
+        context,
+        (context) => BottomSheetPicker<String>(
+          onPicked: (pickedUrl) => url = pickedUrl,
+          items: navigationAppOptions,
+        ),
+      ).then((_) async {
+        // If empty, bottom sheet was dismissed.
+        launched = isEmpty(url) || await urlLauncher.launch(url);
+      });
+    }
+
+    if (!launched) {
+      showErrorSnackBar(
+          context, Strings.of(context).mapPageErrorOpeningDirections);
+    }
   }
 }

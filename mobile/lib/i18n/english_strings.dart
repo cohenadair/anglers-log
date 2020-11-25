@@ -151,6 +151,11 @@ Map<String, Map<String, String>> get englishStrings => {
         "mapPage_mapTypeHybrid": "Hybrid",
         "mapPage_errorGettingLocation":
             "Unable to retrieve current location. Please try again later.",
+        "mapPage_errorOpeningDirections":
+            "There are no navigation apps available on this device.",
+        "mapPage_appleMaps": "Apple Maps",
+        "mapPage_googleMaps": "Google Maps",
+        "mapPage_waze": "Waze",
         "saveFishingSpotPage_newTitle": "New Fishing Spot",
         "saveFishingSpotPage_editTitle": "Edit Fishing Spot",
         "formPage_manageFieldText": "Manage Fields",
