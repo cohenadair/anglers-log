@@ -18,7 +18,7 @@ dependencies:
   archive: ^2.0.13                  # https://pub.dev/packages/archive
   crypto: ^2.1.4                    # Dart
   date_range_picker: ^1.0.6         # https://pub.dev/packages/date_range_picker
-  device_info: ^0.4.2+3             # Flutter
+  device_info: ^1.0.0               # Flutter
   file_picker: ^1.4.3+2             # https://pub.dev/packages/file_picker (verified)
   flutter_image_compress: ^0.6.8    # https://pub.dev/packages/flutter_image_compress
   geolocator: ^5.2.1                # https://pub.dev/packages/geolocator (verified)
@@ -26,14 +26,15 @@ dependencies:
   image_picker: ^0.6.3+1            # Flutter
   intl: ^0.16.0                     # Dart (version restricted by flutter_localizations)
   mailer: ^3.0.4                    # https://pub.dev/packages/mailer
-  package_info: ^0.4.0+13           # Flutter
+  package_info: ^0.4.3+2            # Flutter
   path: ^1.6.4                      # Dart
   path_provider: ^1.6.7             # Flutter
   photo_manager: ^0.5.0             # https://pub.dev/packages/photo_manager (verified)
   protobuf: ^1.0.1                  # Dart
-  provider: ^3.2.0                  # Version update requires migration
+  provider: ^3.2.0                  # https://pub.dev/packages/provider (verified) - Version update requires migration
   quiver: ^2.0.5                    # Google - Version restricted by flutter_test
   sqflite: ^1.2.0                   # Endorsed by Flutter
+  url_launcher: ^5.7.10             # Flutter
   uuid: ^2.0.4                      # https://pub.dev/packages/uuid (verified)
 
 dev_dependencies:
