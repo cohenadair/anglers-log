@@ -25,39 +25,40 @@ class AddAnythingPage extends StatelessWidget {
         backgroundColor:
             Theme.of(context).primaryColor.withOpacity(_backgroundOpacity),
         body: SafeArea(
-          top: true,
-          bottom: true,
           child: Stack(
             children: [
-              Align(
-                alignment: Alignment.bottomCenter,
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        FloatingIconButton(
-                          icon: CustomIcons.catches,
-                          label: Strings.of(context).addAnythingPageCatch,
-                          onPressed: () {
-                            Navigator.of(context).pop();
-                            present(context, AddCatchJourney());
-                          },
-                        ),
-                        FloatingIconButton(
-                          icon: Icons.public,
-                          label: Strings.of(context).addAnythingPageTrip,
-                          onPressed: () {},
-                        ),
-                      ],
-                    ),
-                    FloatingIconButton(
-                      icon: Icons.close,
-                      padding: insetsTiny,
-                      onPressed: () => Navigator.of(context).pop(),
-                    ),
-                  ],
+              Padding(
+                padding: insetsDefault,
+                child: Align(
+                  alignment: Alignment.bottomCenter,
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          FloatingIconButton(
+                            icon: CustomIcons.catches,
+                            label: Strings.of(context).addAnythingPageCatch,
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                              present(context, AddCatchJourney());
+                            },
+                          ),
+                          FloatingIconButton(
+                            icon: Icons.public,
+                            label: Strings.of(context).addAnythingPageTrip,
+                            onPressed: () {},
+                          ),
+                        ],
+                      ),
+                      FloatingIconButton(
+                        icon: Icons.close,
+                        padding: insetsTiny,
+                        onPressed: () => Navigator.of(context).pop(),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ],
