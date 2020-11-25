@@ -63,19 +63,22 @@ class ImageInput extends StatelessWidget {
               }
             : null,
         child: Padding(
-          padding: insetsDefault,
+          padding: insetsVerticalDefault,
           child: HorizontalSafeArea(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    PrimaryLabel(allowsMultipleSelection
-                        ? Strings.of(context).inputPhotosLabel
-                        : Strings.of(context).inputPhotoLabel),
-                    RightChevronIcon(),
-                  ],
+                Padding(
+                  padding: insetsHorizontalDefault,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      PrimaryLabel(allowsMultipleSelection
+                          ? Strings.of(context).inputPhotosLabel
+                          : Strings.of(context).inputPhotoLabel),
+                      RightChevronIcon(),
+                    ],
+                  ),
                 ),
                 _buildThumbnails(),
               ],
@@ -100,8 +103,15 @@ class ImageInput extends StatelessWidget {
         itemCount: currentImages.length,
         itemBuilder: (context, i) {
           var image = currentImages[i];
+          var leftPadding = i == 0 ? paddingDefault : 0.0;
+          var rightPadding =
+              i == currentImages.length - 1 ? paddingDefault : 0.0;
           return Container(
-            width: galleryMaxThumbSize,
+            padding: EdgeInsets.only(
+              left: leftPadding,
+              right: rightPadding,
+            ),
+            width: galleryMaxThumbSize + leftPadding + rightPadding,
             child: ClipRRect(
               child: image.thumbData == null
                   ? Image.file(image.originalFile, fit: BoxFit.cover)
