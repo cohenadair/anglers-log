@@ -20,6 +20,9 @@ class PreferencesManager {
   static const _keyBaitCustomEntityIds = "bait_custom_entity_ids";
   static const _keyCatchCustomEntityIds = "catch_custom_entity_ids";
 
+  static const _keyRateTimerStartedAt = "rate_timer_started_at";
+  static const _keyDidRateApp = "did_rate_app";
+
   final AppManager _appManager;
   final Map<String, dynamic> _preferences = {};
 
@@ -47,6 +50,15 @@ class PreferencesManager {
       _putIdList(_keyCatchCustomEntityIds, ids);
 
   List<Id> get catchCustomEntityIds => _idList(_keyCatchCustomEntityIds);
+
+  set rateTimerStartedAt(int timestamp) =>
+      _preferences[_keyRateTimerStartedAt] = timestamp;
+
+  int get rateTimerStartedAt => _preferences[_keyRateTimerStartedAt];
+
+  set didRateApp(bool rated) => _preferences[_keyDidRateApp] = rated;
+
+  bool get didRateApp => _preferences[_keyDidRateApp] ?? false;
 
   void _putStringList(String key, List<String> value) {
     if (value == null) {

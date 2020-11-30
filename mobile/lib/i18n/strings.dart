@@ -34,6 +34,10 @@ class Strings {
   }
 
   String get appName => _string("appName");
+  String get rateDialogTitle => _string("rateDialog_title");
+  String get rateDialogDescription => _string("rateDialog_description");
+  String get rateDialogRate => _string("rateDialog_rate");
+  String get rateDialogLater => _string("rateDialog_later");
 
   String get cancel => _string("cancel");
   String get done => _string("done");
@@ -212,6 +216,7 @@ class Strings {
   String get dateRangePickerPageTitle => _string("dateRangePickerPage_title");
 
   String get morePageTitle => _string("morePage_title");
+  String get morePageRateApp => _string("morePage_rateApp");
 
   String get settingsPageTitle => _string("settingsPage_title");
 

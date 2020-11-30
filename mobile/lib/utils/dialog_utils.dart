@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 
 import '../i18n/strings.dart';
+import '../preferences_manager.dart';
 import '../res/style.dart';
+import '../time_manager.dart';
+import 'store_utils.dart';
 
 void showDeleteDialog({
   @required BuildContext context,
@@ -72,6 +75,57 @@ void showOkDialog({
       content: description == null ? null : description,
       actions: <Widget>[
         _buildDialogButton(context: context, name: Strings.of(context).ok),
+      ],
+    ),
+  );
+}
+
+void showRateDialogIfNeeded(BuildContext context) {
+  var preferences = PreferencesManager.of(context);
+  var timeManager = TimeManager.of(context);
+
+  // Exit early if the user has already rated the app.
+  if (preferences.didRateApp) {
+    return;
+  }
+
+  // If the timer hasn't started yet, start it and exit early so the user isn't
+  // prompted to rate the app the first time it's opened.
+  if (preferences.rateTimerStartedAt == null) {
+    preferences.rateTimerStartedAt = timeManager.msSinceEpoch;
+    return;
+  }
+
+  // If enough time hasn't passed, exit early.
+  var rateAlertFrequency = Duration.millisecondsPerDay * (365 / 4);
+  if (timeManager.msSinceEpoch - preferences.rateTimerStartedAt <=
+      rateAlertFrequency) {
+    return;
+  }
+
+  showDialog(
+    context: context,
+    barrierDismissible: false,
+    builder: (context) => AlertDialog(
+      title: Text(Strings.of(context).rateDialogTitle),
+      titleTextStyle: styleTitleAlert,
+      content: Text(Strings.of(context).rateDialogDescription),
+      actions: <Widget>[
+        _buildDialogButton(
+          context: context,
+          name: Strings.of(context).rateDialogLater,
+          onTap: () =>
+              // Reset timer to prompt them again later.
+              preferences.rateTimerStartedAt = timeManager.msSinceEpoch,
+        ),
+        _buildDialogButton(
+          context: context,
+          name: Strings.of(context).rateDialogRate,
+          onTap: () {
+            preferences.didRateApp = true;
+            launchStore(context);
+          },
+        ),
       ],
     ),
   );

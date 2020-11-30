@@ -12,6 +12,7 @@ import '../pages/species_list_page.dart';
 import '../pages/trip_list_page.dart';
 import '../res/gen/custom_icons.dart';
 import '../utils/page_utils.dart';
+import '../utils/store_utils.dart';
 import '../widgets/list_item.dart';
 import '../widgets/widget.dart';
 
@@ -71,6 +72,12 @@ class MorePage extends StatelessWidget {
           MinDivider(),
           _buildPageItem(
             context,
+            icon: Icons.star,
+            title: Strings.of(context).morePageRateApp,
+            onTap: () => launchStore(context),
+          ),
+          _buildPageItem(
+            context,
             icon: Icons.feedback,
             title: Strings.of(context).feedbackPageTitle,
             page: FeedbackPage(),
@@ -91,14 +98,20 @@ class MorePage extends StatelessWidget {
     BuildContext context, {
     @required IconData icon,
     @required String title,
-    @required Widget page,
+    Widget page,
+    VoidCallback onTap,
     bool presentPage = false,
   }) {
     return ListItem(
       title: Text(title),
       leading: Icon(icon),
-      trailing: presentPage ? null : RightChevronIcon(),
+      trailing: presentPage || onTap != null ? null : RightChevronIcon(),
       onTap: () {
+        if (onTap != null) {
+          onTap();
+          return;
+        }
+
         if (presentPage) {
           present(context, page);
         } else {

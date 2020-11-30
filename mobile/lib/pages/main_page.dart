@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
 
+import '../catch_manager.dart';
+import '../entity_manager.dart';
 import '../i18n/strings.dart';
+import '../model/gen/anglerslog.pb.dart';
 import '../pages/add_anything_page.dart';
 import '../pages/catch_list_page.dart';
 import '../pages/map_page.dart';
 import '../pages/more_page.dart';
 import '../pages/stats_page.dart';
 import '../res/gen/custom_icons.dart';
+import '../utils/dialog_utils.dart';
 import '../utils/page_utils.dart';
 import '../widgets/widget.dart';
 
@@ -16,6 +20,10 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
+  // Need to stash a reference here so listeners can be removed when disposed.
+  CatchManager _catchManager;
+  EntityListener<Catch> _catchManagerListener;
+
   int _currentBarItem = 1; // Default to the "Catches" tab.
   List<_BarItemData> _navItems;
 
@@ -46,9 +54,7 @@ class _MainPageState extends State<MainPage> {
       _BarItemData(
         icon: Icons.add_box_rounded,
         titleBuilder: (context) => Strings.of(context).add,
-        onTapOverride: () {
-          fade(context, AddAnythingPage(), opaque: false);
-        },
+        onTapOverride: () => fade(context, AddAnythingPage(), opaque: false),
       ),
       _BarItemData(
         page: _NavigatorPage(
@@ -67,6 +73,18 @@ class _MainPageState extends State<MainPage> {
         titleBuilder: (context) => Strings.of(context).morePageTitle,
       ),
     ];
+
+    _catchManager = CatchManager.of(context);
+    _catchManagerListener = SimpleEntityListener<Catch>(
+      onAddOrUpdate: () => showRateDialogIfNeeded(context),
+    );
+    _catchManager.addListener(_catchManagerListener);
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _catchManager.removeListener(_catchManagerListener);
   }
 
   Widget build(BuildContext context) {

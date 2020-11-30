@@ -12,6 +12,7 @@ void main() {
   setUp(() {
     appManager = MockAppManager(
       mockBaitCategoryManager: true,
+      mockUrlLauncherWrapper: true,
     );
 
     when(appManager.mockBaitCategoryManager.listSortedByName(
@@ -55,5 +56,17 @@ void main() {
 
     MaterialPageRoute route = result.captured.first;
     expect(route.fullscreenDialog, isTrue);
+  });
+
+  testWidgets("Custom onTap", (tester) async {
+    await tester.pumpWidget(Testable(
+      (_) => MorePage(),
+      appManager: appManager,
+    ));
+
+    when(appManager.mockUrlLauncherWrapper.canLaunch(any))
+        .thenAnswer((_) => Future.value(true));
+    await tapAndSettle(tester, find.text("Rate Anglers' Log"));
+    verify(appManager.mockUrlLauncherWrapper.launch(any)).called(1);
   });
 }

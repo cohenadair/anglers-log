@@ -5,6 +5,11 @@ Map<String, Map<String, String>> get englishStrings => {
       "CA": {},
       "default": {
         "appName": "Anglers' Log",
+        "rateDialog_title": "Rate Anglers' Log",
+        "rateDialog_description":
+            "Please take a moment to write a review of Anglers' Log. All feedback is greatly appreciated!",
+        "rateDialog_rate": "Rate",
+        "rateDialog_later": "Later",
         "cancel": "Cancel",
         "done": "Done",
         "save": "Save",
@@ -129,6 +134,7 @@ Map<String, Map<String, String>> get englishStrings => {
             "Viewing number of catches per species per fishing spot.",
         "dateRangePickerPage_title": "Select Date Range",
         "morePage_title": "More",
+        "morePage_rateApp": "Rate Anglers' Log",
         "tripListPage_menuLabel": "Trips",
         "tripListPage_title": "Trips (%s)",
         "settingsPage_title": "Settings",

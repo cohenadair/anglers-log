@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mobile/catch_manager.dart';
+import 'package:mobile/model/gen/anglerslog.pb.dart';
+import 'package:mobile/model/gen/google/protobuf/timestamp.pb.dart';
 import 'package:mobile/pages/add_anything_page.dart';
 import 'package:mobile/pages/main_page.dart';
+import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mockito/mockito.dart';
 
 import '../mock_app_manager.dart';
@@ -16,8 +20,11 @@ void main() {
       mockBaitManager: true,
       mockCatchManager: true,
       mockComparisonReportManager: true,
+      mockDataManager: true,
       mockFishingSpotManager: true,
+      mockImageManager: true,
       mockLocationMonitor: true,
+      mockPreferencesManager: true,
       mockSpeciesManager: true,
       mockSummaryReportManager: true,
       mockTimeManager: true,
@@ -107,5 +114,39 @@ void main() {
 
     await tapAndSettle(tester, find.byIcon(Icons.more_horiz));
     expect(find.text("Bait Categories (0)"), findsNothing);
+  });
+
+  testWidgets("Rate dialog shown when catches updated", (tester) async {
+    var species = Species()
+      ..id = randomId()
+      ..name = "Bass";
+    when(appManager.mockSpeciesManager.entity(any)).thenReturn(species);
+
+    var catchManager = CatchManager(appManager);
+    when(appManager.catchManager).thenReturn(catchManager);
+
+    await tester.pumpWidget(Testable(
+      (_) => MainPage(),
+      appManager: appManager,
+    ));
+
+    var quarterDuration = Duration.millisecondsPerDay * (365 / 4);
+    when(appManager.mockTimeManager.msSinceEpoch)
+        .thenReturn((quarterDuration + 10).toInt());
+    when(appManager.mockPreferencesManager.didRateApp).thenReturn(false);
+    when(appManager.mockPreferencesManager.rateTimerStartedAt).thenReturn(0);
+    when(appManager.mockImageManager.save(any, compress: anyNamed("compress")))
+        .thenAnswer((_) => Future.value([]));
+    when(appManager.mockDataManager.insertOrUpdateEntity(any, any, any))
+        .thenAnswer((_) => Future.value(true));
+
+    catchManager.addOrUpdate(Catch()
+      ..id = randomId()
+      ..timestamp = Timestamp.fromDateTime(DateTime.now())
+      ..speciesId = species.id);
+
+    await tester.pumpAndSettle();
+
+    expect(find.byType(AlertDialog), findsOneWidget);
   });
 }
