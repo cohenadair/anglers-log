@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:mobile/pages/add_catch_journey.dart';
 import 'package:quiver/strings.dart';
 
 import '../entity_manager.dart';
@@ -399,7 +400,7 @@ class _FishingSpotBottomSheet extends StatelessWidget {
                   child: ChipButton(
                     label: Strings.of(context).mapPageAddCatch,
                     icon: Icons.add,
-                    onPressed: () {},
+                    onPressed: () => present(context, AddCatchJourney()),
                   ),
                 )
               : Empty(),
