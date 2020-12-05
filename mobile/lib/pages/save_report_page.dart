@@ -55,7 +55,7 @@ class _SaveReportPageState extends State<SaveReportPage> {
   final Key _keySummaryStart = ValueKey(0);
   final Key _keyComparisonStart = ValueKey(1);
 
-  final Map<Id, InputData> _fields = {};
+  final Map<Id, Field> _fields = {};
 
   BaitManager get _baitManager => BaitManager.of(context);
   ComparisonReportManager get _comparisonReportManager =>
@@ -89,7 +89,7 @@ class _SaveReportPageState extends State<SaveReportPage> {
   void initState() {
     super.initState();
 
-    _fields[_idName] = InputData(
+    _fields[_idName] = Field(
       id: _idName,
       controller: TextInputController(
         validator: NameValidator(
@@ -103,37 +103,37 @@ class _SaveReportPageState extends State<SaveReportPage> {
       ),
     );
 
-    _fields[_idDescription] = InputData(
+    _fields[_idDescription] = Field(
       id: _idDescription,
       controller: TextInputController(),
     );
 
-    _fields[_idType] = InputData(
+    _fields[_idType] = Field(
       id: _idType,
       controller: InputController<_ReportType>(),
     );
 
-    _fields[_idStartDateRange] = InputData(
+    _fields[_idStartDateRange] = Field(
       id: _idStartDateRange,
       controller: InputController<DisplayDateRange>(),
     );
 
-    _fields[_idEndDateRange] = InputData(
+    _fields[_idEndDateRange] = Field(
       id: _idStartDateRange,
       controller: InputController<DisplayDateRange>(),
     );
 
-    _fields[_idSpecies] = InputData(
+    _fields[_idSpecies] = Field(
       id: _idSpecies,
       controller: InputController<Set<Species>>(),
     );
 
-    _fields[_idBaits] = InputData(
+    _fields[_idBaits] = Field(
       id: _idBaits,
       controller: InputController<Set<Bait>>(),
     );
 
-    _fields[_idFishingSpots] = InputData(
+    _fields[_idFishingSpots] = Field(
       id: _idFishingSpots,
       controller: InputController<Set<FishingSpot>>(),
     );

@@ -370,3 +370,22 @@ class HorizontalSafeArea extends StatelessWidget {
     );
   }
 }
+
+class WatermarkLogo extends StatelessWidget {
+  static final _size = 150.0;
+
+  final IconData icon;
+
+  WatermarkLogo({
+    this.icon,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Icon(
+      icon,
+      size: _size,
+      color: Colors.black12,
+    );
+  }
+}

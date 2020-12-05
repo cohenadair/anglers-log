@@ -90,7 +90,7 @@ dynamic valueForCustomEntityType(
   }
 }
 
-Id randomId() => Id()..uuid = Uuid().v1();
+Id randomId() => Id()..uuid = Uuid().v4();
 
 /// Parses [idString] into an [Id] object. Throws an [AssertionError] if
 /// [idString] is null or empty, or if [idString] isn't a valid UUID.

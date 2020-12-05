@@ -4,6 +4,7 @@ import 'package:quiver/strings.dart';
 import '../res/dimen.dart';
 import '../widgets/list_item.dart';
 import '../widgets/text.dart';
+import 'widget.dart';
 
 class CheckboxInput extends StatelessWidget {
   final String label;
@@ -36,7 +37,7 @@ class PaddedCheckbox extends StatefulWidget {
   final bool checked;
   final bool enabled;
   final EdgeInsets padding;
-  final Function(bool) onChanged;
+  final void Function(bool) onChanged;
 
   PaddedCheckbox({
     this.checked = false,
@@ -69,21 +70,24 @@ class _PaddedCheckboxState extends State<PaddedCheckbox> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: widget.padding,
-      child: SizedBox(
-        width: checkboxSizeDefault,
-        height: checkboxSizeDefault,
-        child: Checkbox(
-          value: _checked,
-          onChanged: widget.enabled
-              ? (value) {
-                  setState(() {
-                    _checked = !_checked;
-                    widget.onChanged(_checked);
-                  });
-                }
-              : null,
+    return EnabledOpacity(
+      enabled: widget.enabled,
+      child: Padding(
+        padding: widget.padding,
+        child: SizedBox(
+          width: checkboxSizeDefault,
+          height: checkboxSizeDefault,
+          child: Checkbox(
+            value: _checked,
+            onChanged: widget.enabled
+                ? (value) {
+                    setState(() {
+                      _checked = !_checked;
+                      widget.onChanged?.call(_checked);
+                    });
+                  }
+                : null,
+          ),
         ),
       ),
     );

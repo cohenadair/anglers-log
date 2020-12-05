@@ -59,7 +59,7 @@ class _FeedbackPageState extends State<FeedbackPage> {
 
   final Log _log = Log("FeedbackPage");
 
-  final Map<Id, InputData> _fields = {};
+  final Map<Id, Field> _fields = {};
 
   IoWrapper get _io => IoWrapper.of(context);
   MailSenderWrapper get _mailSender => MailSenderWrapper.of(context);
@@ -78,29 +78,29 @@ class _FeedbackPageState extends State<FeedbackPage> {
   void initState() {
     super.initState();
 
-    _fields[_idWarning] = InputData(
+    _fields[_idWarning] = Field(
       id: _idWarning,
       controller: InputController(),
     );
 
-    _fields[_idName] = InputData(
+    _fields[_idName] = Field(
       id: _idName,
       controller: TextInputController(),
     );
 
-    _fields[_idEmail] = InputData(
+    _fields[_idEmail] = Field(
       id: _idEmail,
       controller: EmailInputController(),
     );
 
-    _fields[_idType] = InputData(
+    _fields[_idType] = Field(
       id: _idType,
       controller: InputController<_FeedbackType>(
         value: _FeedbackType.bug,
       ),
     );
 
-    _fields[_idMessage] = InputData(
+    _fields[_idMessage] = Field(
       id: _idMessage,
       controller: TextInputController(
         // Message field is only required if an error isn't being sent.

@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:quiver/strings.dart';
 
@@ -224,6 +225,33 @@ class FloatingIconButton extends StatelessWidget {
               : Empty(),
         ],
       ),
+    );
+  }
+}
+
+class SmallTextButton extends StatelessWidget {
+  static final _fontSize = 14.0;
+
+  final String text;
+  final VoidCallback onPressed;
+
+  SmallTextButton({
+    this.text,
+    this.onPressed,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return TextButton(
+      child: Text(
+        text,
+        style: TextStyle(
+          color: Theme.of(context).primaryColor,
+          fontSize: _fontSize,
+          fontWeight: FontWeight.normal,
+        ),
+      ),
+      onPressed: onPressed,
     );
   }
 }

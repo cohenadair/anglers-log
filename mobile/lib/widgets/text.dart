@@ -24,7 +24,7 @@ class Label extends StatelessWidget {
     this.text, {
     this.align,
     this.style,
-  }) : overflow = null;
+  }) : overflow = TextOverflow.visible;
 
   @override
   Widget build(BuildContext context) {
@@ -103,11 +103,13 @@ class IconNoteLabel extends StatelessWidget {
 class PrimaryLabel extends StatelessWidget {
   final String text;
   final TextAlign align;
+  final TextOverflow overflow;
   final bool enabled;
 
   PrimaryLabel(
     this.text, {
     this.align,
+    this.overflow,
     this.enabled = true,
   });
 
@@ -116,6 +118,7 @@ class PrimaryLabel extends StatelessWidget {
     return Label(
       text,
       align: align,
+      overflow: overflow,
       style: _style(context),
     );
   }
@@ -152,10 +155,12 @@ class SecondaryLabel extends StatelessWidget {
 
 class TitleLabel extends StatelessWidget {
   final String text;
+  final TextAlign align;
   final TextOverflow overflow;
 
   TitleLabel(
     this.text, {
+    this.align,
     this.overflow,
   });
 
@@ -172,6 +177,7 @@ class TitleLabel extends StatelessWidget {
       child: Label(
         text,
         style: styleTitle,
+        align: align,
         overflow: overflow,
       ),
     );

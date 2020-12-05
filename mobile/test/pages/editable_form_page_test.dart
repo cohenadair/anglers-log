@@ -82,16 +82,16 @@ void main() {
     await tester.pumpWidget(Testable(
       (_) => EditableFormPage(
         fields: {
-          id1: InputData(
+          id1: Field(
             id: id1,
             controller: TextInputController(),
-            label: (_) => "Input 1",
+            name: (_) => "Input 1",
             showing: false,
           ),
-          id2: InputData(
+          id2: Field(
             id: id2,
             controller: TextInputController(),
-            label: (_) => "Input 2",
+            name: (_) => "Input 2",
             showing: true,
           ),
         },
@@ -110,16 +110,16 @@ void main() {
     await tester.pumpWidget(Testable(
       (_) => EditableFormPage(
         fields: {
-          id1: InputData(
+          id1: Field(
             id: id1,
             controller: TextInputController(),
-            label: (_) => "Input 1",
+            name: (_) => "Input 1",
             showing: true,
           ),
-          id2: InputData(
+          id2: Field(
             id: id2,
             controller: TextInputController(),
-            label: (_) => "Input 2",
+            name: (_) => "Input 2",
             showing: true,
           ),
         },
@@ -148,16 +148,16 @@ void main() {
     await tester.pumpWidget(Testable(
       (_) => EditableFormPage(
         fields: {
-          id1: InputData(
+          id1: Field(
             id: id1,
             controller: TextInputController(),
-            label: (_) => "Input 1",
+            name: (_) => "Input 1",
             showing: false,
           ),
-          id2: InputData(
+          id2: Field(
             id: id2,
             controller: TextInputController(),
-            label: (_) => "Input 2",
+            name: (_) => "Input 2",
             showing: true,
           ),
         },

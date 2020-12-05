@@ -19,6 +19,7 @@ class PreferencesManager {
 
   static const _keyBaitCustomEntityIds = "bait_custom_entity_ids";
   static const _keyCatchCustomEntityIds = "catch_custom_entity_ids";
+  static const _keyCatchFieldIds = "catch_field_ids";
 
   static const _keyRateTimerStartedAt = "rate_timer_started_at";
   static const _keyDidRateApp = "did_rate_app";
@@ -50,6 +51,10 @@ class PreferencesManager {
       _putIdList(_keyCatchCustomEntityIds, ids);
 
   List<Id> get catchCustomEntityIds => _idList(_keyCatchCustomEntityIds);
+
+  set catchFieldIds(List<Id> ids) => _putIdList(_keyCatchFieldIds, ids);
+
+  List<Id> get catchFieldIds => _idList(_keyCatchFieldIds);
 
   set rateTimerStartedAt(int timestamp) =>
       _preferences[_keyRateTimerStartedAt] = timestamp;
