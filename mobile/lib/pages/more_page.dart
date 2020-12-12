@@ -85,14 +85,16 @@ class MorePage extends StatelessWidget {
               presentPage: true,
             ),
             MinDivider(),
-          ]..addAll(_buildRateAndFeedbackItems(context))..addAll([
-            _buildPageItem(
-              context,
-              icon: Icons.settings,
-              title: Strings.of(context).settingsPageTitle,
-              page: SettingsPage(),
-            ),
-          ]),
+          ]
+            ..addAll(_buildRateAndFeedbackItems(context))
+            ..addAll([
+              _buildPageItem(
+                context,
+                icon: Icons.settings,
+                title: Strings.of(context).settingsPageTitle,
+                page: SettingsPage(),
+              ),
+            ]),
         ),
       ),
     );

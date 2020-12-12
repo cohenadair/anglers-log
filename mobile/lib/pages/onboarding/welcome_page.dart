@@ -15,9 +15,9 @@ class WelcomePage extends StatelessWidget {
 
   WelcomePage({
     this.onStart,
-    this.onSkip
-  }) : assert(onStart != null),
-       assert(onSkip != null);
+    this.onSkip,
+  })  : assert(onStart != null),
+        assert(onSkip != null);
 
   @override
   Widget build(BuildContext context) {
