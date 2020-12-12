@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mobile/widgets/checkbox_input.dart';
 import 'package:mobile/widgets/list_item.dart';
 import 'package:mobile/widgets/text.dart';
 
@@ -149,6 +150,62 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(find.byIcon(Icons.style), findsOneWidget);
+    });
+  });
+
+  group("PickerListItem", () {
+    testWidgets("Non-null subtitle", (tester) async {
+      await tester.pumpWidget(
+        Testable(
+          (_) => PickerListItem(
+            title: "Test",
+            subtitle: "Subtitle",
+          ),
+        ),
+      );
+
+      expect(find.byType(SubtitleLabel), findsOneWidget);
+    });
+
+    testWidgets("Null subtitle", (tester) async {
+      await tester.pumpWidget(
+        Testable(
+          (_) => PickerListItem(
+            title: "Test",
+          ),
+        ),
+      );
+
+      expect(find.byType(SubtitleLabel), findsNothing);
+    });
+
+    testWidgets("Selected when multi", (tester) async {
+      await tester.pumpWidget(
+        Testable(
+          (_) => PickerListItem(
+            title: "Test",
+            isMulti: true,
+            isSelected: true,
+          ),
+        ),
+      );
+
+      expect(find.byType(PaddedCheckbox), findsOneWidget);
+      expect(find.byType(Icon), findsNothing);
+    });
+
+    testWidgets("Selected when single", (tester) async {
+      await tester.pumpWidget(
+        Testable(
+          (_) => PickerListItem(
+            title: "Test",
+            isSelected: true,
+          ),
+        ),
+      );
+
+      expect(find.byType(PaddedCheckbox), findsNothing);
+      expect(find.byType(Icon), findsOneWidget);
     });
   });
 }

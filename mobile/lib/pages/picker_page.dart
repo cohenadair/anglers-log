@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:quiver/strings.dart';
 
 import '../res/dimen.dart';
-import '../widgets/checkbox_input.dart';
 import '../widgets/list_item.dart';
 import '../widgets/text.dart';
 import '../widgets/widget.dart';
@@ -170,44 +169,29 @@ class _PickerPageState<T> extends State<PickerPage<T>> {
             }
           }
 
-          return EnabledOpacity(
-            enabled: item.enabled,
-            child: ListItem(
-              title: PrimaryLabel(item.title),
-              subtitle: isNotEmpty(item.subtitle)
-                  ? SubtitleLabel(item.subtitle)
-                  : null,
-              enabled: item.enabled,
-              onTap: onTap,
-              trailing: _buildListItemTrailing(item),
-            ),
+          bool isSelected;
+          if (widget.multiSelect) {
+            isSelected = _selectedValues.contains(item.value);
+          } else {
+            isSelected = widget.initialValues.isNotEmpty &&
+                widget.initialValues.first == item.value;
+          }
+
+          return PickerListItem(
+            title: item.title,
+            subtitle: item.subtitle,
+            isEnabled: item.enabled,
+            isMulti: widget.multiSelect,
+            isSelected: isSelected,
+            onTap: onTap,
+            onCheckboxChanged: (checked) {
+              setState(() {
+                _checkboxUpdated(item.value);
+              });
+            },
           );
         }).toList()),
     );
-  }
-
-  Widget _buildListItemTrailing(PickerPageItem<T> item) {
-    if (widget.multiSelect) {
-      // Checkboxes for multi-select pickers.
-      return PaddedCheckbox(
-        enabled: item.enabled,
-        checked: _selectedValues.contains(item.value),
-        onChanged: (value) {
-          setState(() {
-            _checkboxUpdated(item.value);
-          });
-        },
-      );
-    } else if (widget.initialValues.isNotEmpty &&
-        widget.initialValues.first == item.value) {
-      // A simple check mark icon for initial value for single item pickers.
-      return Icon(
-        Icons.check,
-        color: Theme.of(context).primaryColor,
-      );
-    }
-
-    return null;
   }
 
   void _listItemTapped(PickerPageItem<T> item) async {

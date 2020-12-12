@@ -4,7 +4,6 @@ import '../catch_manager.dart';
 import '../entity_manager.dart';
 import '../i18n/strings.dart';
 import '../model/gen/anglerslog.pb.dart';
-import '../pages/add_anything_page.dart';
 import '../pages/catch_list_page.dart';
 import '../pages/map_page.dart';
 import '../pages/more_page.dart';
@@ -13,6 +12,7 @@ import '../res/gen/custom_icons.dart';
 import '../utils/dialog_utils.dart';
 import '../utils/page_utils.dart';
 import '../widgets/widget.dart';
+import 'add_anything_page.dart';
 
 class MainPage extends StatefulWidget {
   @override
@@ -149,6 +149,8 @@ class _BarItemData {
         assert(titleBuilder != null),
         assert(icon != null);
 }
+
+// TODO: Popping multiple pages had bad animation - https://github.com/flutter/flutter/issues/59990#issuecomment-697328406
 
 /// A page with its own [Navigator]. Meant to be used in combination with a
 /// [BottomNavigationBar] to persist back stack state when switching between

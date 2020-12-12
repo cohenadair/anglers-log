@@ -18,7 +18,6 @@ class ImportPage extends StatefulWidget {
 }
 
 class _ImportPageState extends State<ImportPage> {
-  final double _cloudIconSize = 150.0;
   final double _feedbackIconSize = 40.0;
 
   _State _importState = _State.none;
@@ -41,17 +40,13 @@ class _ImportPageState extends State<ImportPage> {
         ),
       ),
       extendBodyBehindAppBar: true,
-      body: SafeArea(
-        top: false,
-        bottom: false,
+      body: HorizontalSafeArea(
         child: Padding(
           padding: insetsDefault,
           child: ListView(
             children: [
-              Icon(
-                Icons.cloud_download,
-                size: _cloudIconSize,
-                color: Colors.black12,
+              WatermarkLogo(
+                icon: Icons.cloud_download,
               ),
               Text(
                 Strings.of(context).importPageDescription,
@@ -59,14 +54,18 @@ class _ImportPageState extends State<ImportPage> {
                 textAlign: TextAlign.center,
               ),
               VerticalSpace(paddingWidget),
-              Button(
-                text: Strings.of(context).importPageChooseFile,
-                onPressed: _loading
-                    ? null
-                    : () {
-                        _updateImportState(_State.loading);
-                        _chooseFile();
-                      },
+              // Using align will minimize button width. Without it, button
+              // takes up entire width of parent.
+              Align(
+                child: Button(
+                  text: Strings.of(context).importPageChooseFile,
+                  onPressed: _loading
+                      ? null
+                      : () {
+                          _updateImportState(_State.loading);
+                          _chooseFile();
+                        },
+                ),
               ),
               VerticalSpace(paddingWidget),
               _buildFeedbackWidgets(),

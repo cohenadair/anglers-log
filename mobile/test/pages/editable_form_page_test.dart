@@ -82,16 +82,16 @@ void main() {
     await tester.pumpWidget(Testable(
       (_) => EditableFormPage(
         fields: {
-          id1: InputData(
+          id1: Field(
             id: id1,
             controller: TextInputController(),
-            label: (_) => "Input 1",
+            name: (_) => "Input 1",
             showing: false,
           ),
-          id2: InputData(
+          id2: Field(
             id: id2,
             controller: TextInputController(),
-            label: (_) => "Input 2",
+            name: (_) => "Input 2",
             showing: true,
           ),
         },
@@ -110,16 +110,16 @@ void main() {
     await tester.pumpWidget(Testable(
       (_) => EditableFormPage(
         fields: {
-          id1: InputData(
+          id1: Field(
             id: id1,
             controller: TextInputController(),
-            label: (_) => "Input 1",
+            name: (_) => "Input 1",
             showing: true,
           ),
-          id2: InputData(
+          id2: Field(
             id: id2,
             controller: TextInputController(),
-            label: (_) => "Input 2",
+            name: (_) => "Input 2",
             showing: true,
           ),
         },
@@ -148,16 +148,16 @@ void main() {
     await tester.pumpWidget(Testable(
       (_) => EditableFormPage(
         fields: {
-          id1: InputData(
+          id1: Field(
             id: id1,
             controller: TextInputController(),
-            label: (_) => "Input 1",
+            name: (_) => "Input 1",
             showing: false,
           ),
-          id2: InputData(
+          id2: Field(
             id: id2,
             controller: TextInputController(),
-            label: (_) => "Input 2",
+            name: (_) => "Input 2",
             showing: true,
           ),
         },
@@ -209,8 +209,11 @@ void main() {
     when(appManager.mockCustomEntityManager.entity(any))
         .thenReturn(customEntity);
 
+    var called = false;
     await tester.pumpWidget(Testable(
-      (_) => EditableFormPage(),
+      (_) => EditableFormPage(
+        onAddFields: (_) => called = true,
+      ),
       appManager: appManager,
     ));
 
@@ -227,6 +230,7 @@ void main() {
     );
     await tapAndSettle(tester, find.byType(CloseButton));
 
+    expect(called, isTrue);
     expect(find.widgetWithText(TextField, "Custom Field 1"), findsOneWidget);
   });
 

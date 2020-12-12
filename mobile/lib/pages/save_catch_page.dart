@@ -21,6 +21,7 @@ import '../preferences_manager.dart';
 import '../res/dimen.dart';
 import '../species_manager.dart';
 import '../time_manager.dart';
+import '../utils/catch_utils.dart';
 import '../utils/page_utils.dart';
 import '../utils/protobuf_utils.dart';
 import '../widgets/date_time_picker.dart';
@@ -42,9 +43,13 @@ class SaveCatchPage extends StatefulWidget {
 
   final Catch oldCatch;
 
+  /// See [EditableFormPage.popupMenuKey].
+  final GlobalKey<PopupMenuButtonState> popupMenuKey;
+
   /// A [Catch] cannot be created without first selecting a [Species] and
   /// [FishingSpot], normally from an [AddCatchJourney] widget.
   SaveCatchPage({
+    this.popupMenuKey,
     this.images = const [],
     @required this.species,
     @required this.fishingSpot,
@@ -56,6 +61,7 @@ class SaveCatchPage extends StatefulWidget {
 
   SaveCatchPage.edit(this.oldCatch)
       : assert(oldCatch != null),
+        popupMenuKey = null,
         popOverride = null,
         images = const [],
         species = null,
@@ -66,15 +72,15 @@ class SaveCatchPage extends StatefulWidget {
 }
 
 class _SaveCatchPageState extends State<SaveCatchPage> {
-  static final _idTimestamp = randomId();
-  static final _idImages = randomId();
-  static final _idSpecies = randomId();
-  static final _idFishingSpot = randomId();
-  static final _idBait = randomId();
+  static final _idTimestamp = catchFieldIdTimestamp();
+  static final _idImages = catchFieldIdImages();
+  static final _idSpecies = catchFieldIdSpecies();
+  static final _idFishingSpot = catchFieldIdFishingSpot();
+  static final _idBait = catchFieldIdBait();
 
   final Log _log = Log("SaveCatchPage");
 
-  final Map<Id, InputData> _fields = {};
+  final Map<Id, Field> _fields = {};
 
   Future<List<PickedImage>> _imagesFuture = Future.value([]);
   List<CustomEntityValue> _customEntityValues = [];
@@ -106,42 +112,14 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
   void initState() {
     super.initState();
 
-    _fields[_idTimestamp] = InputData(
-      id: _idTimestamp,
-      controller: TimestampInputController(),
-      label: (context) => Strings.of(context).saveCatchPageDateTimeLabel,
-      removable: false,
-      showing: true,
-    );
-
-    _fields[_idSpecies] = InputData(
-      id: _idSpecies,
-      controller: InputController<Species>(),
-      label: (context) => Strings.of(context).saveCatchPageSpeciesLabel,
-      removable: false,
-      showing: true,
-    );
-
-    _fields[_idBait] = InputData(
-      id: _idBait,
-      controller: InputController<Bait>(),
-      label: (context) => Strings.of(context).saveCatchPageBaitLabel,
-      showing: true,
-    );
-
-    _fields[_idImages] = InputData(
-      id: _idImages,
-      controller: InputController<List<PickedImage>>(),
-      label: (context) => Strings.of(context).saveCatchPageImagesLabel,
-      showing: true,
-    );
-
-    _fields[_idFishingSpot] = InputData(
-      id: _idFishingSpot,
-      controller: InputController<FishingSpot>(),
-      label: (context) => Strings.of(context).saveCatchPageFishingSpotLabel,
-      showing: true,
-    );
+    var showingFieldIds = _preferencesManager.catchFieldIds;
+    for (var field in allCatchFields()) {
+      _fields[field.id] = field;
+      // By default, show all fields.
+      _fields[field.id].showing = showingFieldIds == null ||
+          showingFieldIds.isEmpty ||
+          showingFieldIds.contains(field.id);
+    }
 
     if (_editing) {
       _timestampController.value = _oldCatch.timestamp;
@@ -173,6 +151,7 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
         _timestampController.time ?? _timeManager.currentTime;
 
     return EditableFormPage(
+      popupMenuKey: widget.popupMenuKey,
       title: Text(_editing
           ? Strings.of(context).saveCatchPageEditTitle
           : Strings.of(context).saveCatchPageNewTitle),
@@ -182,6 +161,7 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
       customEntityIds: _preferencesManager.catchCustomEntityIds,
       customEntityValues: _customEntityValues,
       onBuildField: _buildField,
+      onAddFields: (ids) => _preferencesManager.catchFieldIds = ids.toList(),
       onSave: _save,
     );
   }
@@ -212,13 +192,13 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
         datePicker: DatePicker(
           context,
           initialDate: _timestampController.date,
-          label: Strings.of(context).saveCatchPageDateLabel,
+          label: Strings.of(context).catchFieldDate,
           onChange: (newDate) => _timestampController.date = newDate,
         ),
         timePicker: TimePicker(
           context,
           initialTime: _timestampController.time,
-          label: Strings.of(context).saveCatchPageTimeLabel,
+          label: Strings.of(context).catchFieldTime,
           onChange: (newTime) => _timestampController.time = newTime,
         ),
       ),
@@ -238,7 +218,7 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
         }
 
         return ListPickerInput(
-          title: Strings.of(context).saveCatchPageBaitLabel,
+          title: Strings.of(context).catchFieldBaitLabel,
           value: value,
           onTap: () {
             push(
@@ -264,7 +244,7 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
 
     if (fishingSpot == null) {
       return ListItem(
-        title: Text(Strings.of(context).saveCatchPageFishingSpotLabel),
+        title: Text(Strings.of(context).catchFieldFishingSpot),
         trailing: RightChevronIcon(),
         onTap: _pushFishingSpotPicker,
       );
@@ -282,7 +262,7 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
       managers: [_speciesManager],
       builder: (context) {
         return ListPickerInput(
-          title: Strings.of(context).saveCatchPageSpeciesLabel,
+          title: Strings.of(context).catchFieldSpecies,
           value: _speciesController.value?.name,
           onTap: () {
             push(

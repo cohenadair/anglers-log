@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:quiver/strings.dart';
 
 import '../i18n/strings.dart';
 import '../res/color.dart';
@@ -7,6 +8,8 @@ import '../res/style.dart';
 import '../utils/dialog_utils.dart';
 import '../widgets/button.dart';
 import '../widgets/widget.dart';
+import 'checkbox_input.dart';
+import 'text.dart';
 
 /// A [ListTile] wrapper with app default properties.
 class ListItem extends StatelessWidget {
@@ -19,6 +22,7 @@ class ListItem extends StatelessWidget {
   final bool enabled;
 
   ListItem({
+    Key key,
     this.contentPadding,
     this.title,
     this.subtitle,
@@ -26,7 +30,7 @@ class ListItem extends StatelessWidget {
     this.trailing,
     this.onTap,
     this.enabled = true,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -43,6 +47,72 @@ class ListItem extends StatelessWidget {
         enabled: enabled,
       ),
     );
+  }
+}
+
+class PickerListItem extends StatelessWidget {
+  final String title;
+  final String subtitle;
+  final bool isEnabled;
+  final bool isSelected;
+
+  /// True renders a [PaddedCheckbox] as the trailing widget, false renders
+  /// a check mark [Icon] if [isSelected] is true, or [Empty] if false.
+  final bool isMulti;
+
+  /// See [ListItem.onTap].
+  final VoidCallback onTap;
+
+  /// Called when a checkbox state changes. A checkbox is only rendered if
+  /// [isMulti] is true.
+  ///
+  /// See [PaddedCheckbox.onChanged].
+  final void Function(bool) onCheckboxChanged;
+
+  PickerListItem({
+    @required this.title,
+    this.subtitle,
+    this.isEnabled = true,
+    this.isSelected = false,
+    this.isMulti = false,
+    this.onTap,
+    this.onCheckboxChanged,
+  })  : assert(isNotEmpty(title)),
+        assert(isEnabled != null),
+        assert(isSelected != null),
+        assert(isMulti != null);
+
+  @override
+  Widget build(BuildContext context) {
+    return EnabledOpacity(
+      enabled: isEnabled,
+      child: ListItem(
+        title: Text(title),
+        subtitle: isNotEmpty(subtitle) ? SubtitleLabel(subtitle) : null,
+        enabled: isEnabled,
+        onTap: onTap,
+        trailing: _buildListItemTrailing(context),
+      ),
+    );
+  }
+
+  Widget _buildListItemTrailing(BuildContext context) {
+    if (isMulti) {
+      // Checkboxes for multi-select pickers.
+      return PaddedCheckbox(
+        enabled: isEnabled,
+        checked: isSelected,
+        onChanged: onCheckboxChanged,
+      );
+    } else if (isSelected) {
+      // A simple check mark icon for initial value for single item pickers.
+      return Icon(
+        Icons.check,
+        color: Theme.of(context).primaryColor,
+      );
+    }
+
+    return null;
   }
 }
 

@@ -105,8 +105,13 @@ class FormPage extends StatefulWidget {
 
   final EdgeInsets padding;
 
+  /// A [GlobalKey] for accessing the [PopupMenuButton] of the form. Useful for
+  /// programmatically showing the popup menu.
+  final GlobalKey<PopupMenuButtonState> popupMenuKey;
+
   FormPage({
     Key key,
+    this.popupMenuKey,
     this.title,
     @required this.fieldBuilder,
     this.onSave,
@@ -170,6 +175,7 @@ class _FormPageState extends State<FormPage> {
           ),
           widget.editable
               ? PopupMenuButton<_OverflowOption>(
+                  key: widget.popupMenuKey,
                   icon: Icon(FormPage.moreMenuIcon),
                   itemBuilder: (context) => [
                     PopupMenuItem<_OverflowOption>(

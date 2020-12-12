@@ -44,7 +44,6 @@ dev_dependencies:
   mockito: 4.0.0
   test: ^1.5.1
 
-
 # For information on the generic Dart part of this file, see the
 # following page: https://www.dartlang.org/tools/pub/pubspec
 
@@ -58,6 +57,7 @@ flutter:
   assets:
     - assets/feedback_template
     - assets/sensitive.properties
+    - assets/logo.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.io/assets-and-images/#resolution-aware.

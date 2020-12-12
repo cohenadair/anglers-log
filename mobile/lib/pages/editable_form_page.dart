@@ -15,8 +15,8 @@ import '../widgets/widget.dart';
 class EditableFormPage extends StatefulWidget {
   final Widget title;
 
-  /// A unique ID to [InputData] map of all valid fields for the form.
-  final Map<Id, InputData> fields;
+  /// A unique ID to [Field] map of all valid fields for the form.
+  final Map<Id, Field> fields;
 
   /// A list of all [CustomEntity] objects associated with this form. These will
   /// each have their own input widget, and their initial values are determined
@@ -29,6 +29,9 @@ class EditableFormPage extends StatefulWidget {
   /// Called when an input field needs to be built. The ID of the input field
   /// is passed into the function.
   final Widget Function(Id) onBuildField;
+
+  /// See [FormPage.onAddFields].
+  final void Function(Set<Id> ids) onAddFields;
 
   /// Called when the "Save" button is pressed and form validation passes.
   /// A map of [CustomEntity] ID to value objects included in the form is passed
@@ -45,12 +48,17 @@ class EditableFormPage extends StatefulWidget {
 
   final EdgeInsets padding;
 
+  /// See [FormPage.popupMenuKey].
+  final GlobalKey<PopupMenuButtonState> popupMenuKey;
+
   EditableFormPage({
+    this.popupMenuKey,
     this.title,
     this.fields = const {},
     this.customEntityIds = const [],
     this.customEntityValues = const [],
     this.onBuildField,
+    this.onAddFields,
     this.onSave,
     this.padding = insetsHorizontalDefault,
     this.isInputValid = true,
@@ -67,12 +75,12 @@ class EditableFormPage extends StatefulWidget {
 
 class _EditableFormPageState extends State<EditableFormPage> {
   /// Options that are shown in the form, but not necessarily filled out.
-  final Map<Id, InputData> _fields = {};
+  final Map<Id, Field> _fields = {};
 
   CustomEntityManager get _customEntityManager =>
       CustomEntityManager.of(context);
 
-  Map<Id, InputData> get _allInputFields => widget.fields;
+  Map<Id, Field> get _allInputFields => widget.fields;
 
   @override
   void initState() {
@@ -80,12 +88,12 @@ class _EditableFormPageState extends State<EditableFormPage> {
     _fields.addAll(_allInputFields);
 
     // Add fake InputData for custom fields separator.
-    var fakeInput = InputData.fake();
+    var fakeInput = Field.fake();
     _fields[fakeInput.id] = fakeInput;
 
     // Add custom fields.
     for (var id in widget.customEntityIds) {
-      _fields[id] = InputData.fromCustomEntity(_customEntityManager.entity(id));
+      _fields[id] = Field.fromCustomEntity(_customEntityManager.entity(id));
     }
 
     // Set custom fields' initial values.
@@ -100,7 +108,7 @@ class _EditableFormPageState extends State<EditableFormPage> {
       // In these cases, add the related custom field so the user can edit all
       // values of the form.
       if (!_fields.containsKey(entity.id)) {
-        _fields[entity.id] = InputData.fromCustomEntity(entity);
+        _fields[entity.id] = Field.fromCustomEntity(entity);
       }
 
       _fields[entity.id].controller.value =
@@ -120,6 +128,7 @@ class _EditableFormPageState extends State<EditableFormPage> {
   @override
   Widget build(BuildContext context) {
     return FormPage(
+      popupMenuKey: widget.popupMenuKey,
       title: widget.title,
       runSpacing: widget.runSpacing,
       padding: widget.padding,
@@ -147,7 +156,7 @@ class _EditableFormPageState extends State<EditableFormPage> {
           .map(
             (id) => FormPageFieldOption(
               id: id,
-              userFacingName: _fields[id].label(context),
+              userFacingName: _fields[id].name(context),
               used: _fields[id].showing,
               removable: _fields[id].removable,
             ),
@@ -204,15 +213,17 @@ class _EditableFormPageState extends State<EditableFormPage> {
       if (customField != null) {
         _fields.putIfAbsent(
           id,
-          () => InputData(
+          () => Field(
             id: id,
             controller: inputTypeController(customField.type),
-            label: (_) => customField.name,
+            name: (_) => customField.name,
             showing: true,
           ),
         );
       }
     }
+
+    widget.onAddFields?.call(ids);
 
     setState(() {
       for (var field in _fields.values) {

@@ -62,6 +62,7 @@ class Strings {
   String get more => _string("more");
   String get customFields => _string("customFields");
   String get na => _string("na");
+  String get finish => _string("finish");
 
   String get fieldTypeNumber => _string("fieldType_number");
   String get fieldTypeBoolean => _string("fieldType_boolean");
@@ -94,15 +95,16 @@ class Strings {
 
   String get saveCatchPageNewTitle => _string("saveCatchPage_newTitle");
   String get saveCatchPageEditTitle => _string("saveCatchPage_editTitle");
-  String get saveCatchPageDateTimeLabel =>
-      _string("saveCatchPage_dateTimeLabel");
-  String get saveCatchPageDateLabel => _string("saveCatchPage_dateLabel");
-  String get saveCatchPageTimeLabel => _string("saveCatchPage_timeLabel");
-  String get saveCatchPageSpeciesLabel => _string("saveCatchPage_speciesLabel");
-  String get saveCatchPageImagesLabel => _string("saveCatchPage_imagesLabel");
-  String get saveCatchPageFishingSpotLabel =>
-      _string("saveCatchPage_fishingSpotLabel");
-  String get saveCatchPageBaitLabel => _string("saveCatchPage_baitLabel");
+
+  String get catchFieldDateTime => _string("catchField_dateTime");
+  String get catchFieldDate => _string("catchField_date");
+  String get catchFieldTime => _string("catchField_time");
+  String get catchFieldSpecies => _string("catchField_species");
+  String get catchFieldImages => _string("catchField_images");
+  String get catchFieldFishingSpot => _string("catchField_fishingSpot");
+  String get catchFieldFishingSpotDescription =>
+      _string("catchField_fishingSpotDescription");
+  String get catchFieldBaitLabel => _string("catchField_bait");
 
   String get saveCustomReportPageNewTitle =>
       _string("saveCustomReportPage_newTitle");
@@ -377,6 +379,26 @@ class Strings {
   String get secondsFormat => _string("secondsFormat");
   String get dateTimeFormat => _string("dateTimeFormat");
   String get dateDurationFormat => _string("dateDurationFormat");
+
+  String get onboardingJourneyWelcomeTitle =>
+      _string("onboardingJourney_welcomeTitle");
+  String get onboardingJourneyStartDescription =>
+      _string("onboardingJourney_startDescription");
+  String get onboardingJourneyStartButton =>
+      _string("onboardingJourney_startButton");
+  String get onboardingJourneySkip => _string("onboardingJourney_skip");
+  String get onboardingJourneyCatchFieldDescription =>
+      _string("onboardingJourney_catchFieldDescription");
+  String get onboardingJourneyManageFieldsTitle =>
+      _string("onboardingJourney_manageFieldsTitle");
+  String get onboardingJourneyManageFieldsDescription =>
+      _string("onboardingJourney_manageFieldsDescription");
+  String get onboardingJourneyManageFieldsSpecies =>
+      _string("onboardingJourney_manageFieldsSpecies");
+  String get onboardingJourneyHowToFeedbackTitle =>
+      _string("onboardingJourney_howToFeedbackTitle");
+  String get onboardingJourneyHowToFeedbackDescription =>
+      _string("onboardingJourney_howToFeedbackDescription");
 }
 
 class StringsDelegate extends LocalizationsDelegate<Strings> {

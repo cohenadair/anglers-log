@@ -6,7 +6,9 @@ import 'package:mobile/model/gen/anglerslog.pb.dart';
 import 'package:mobile/model/gen/google/protobuf/timestamp.pb.dart';
 import 'package:mobile/pages/image_picker_page.dart';
 import 'package:mobile/pages/save_catch_page.dart';
+import 'package:mobile/utils/catch_utils.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
+import 'package:mobile/widgets/image_input.dart';
 import 'package:mobile/widgets/static_fishing_spot.dart';
 import 'package:mockito/mockito.dart';
 
@@ -407,5 +409,32 @@ void main() {
     ));
 
     expect(find.text("Edit Catch"), findsOneWidget);
+  });
+
+  testWidgets("Only show fields saved in preferences", (tester) async {
+    when(appManager.mockPreferencesManager.catchFieldIds).thenReturn([
+      catchFieldIdTimestamp(),
+      catchFieldIdSpecies(),
+      catchFieldIdBait(),
+    ]);
+
+    await tester.pumpWidget(Testable(
+      (_) => SaveCatchPage(
+        species: Species()
+          ..id = randomId()
+          ..name = "Steelhead",
+        fishingSpot: FishingSpot()
+          ..id = randomId()
+          ..lat = 0.123456
+          ..lng = 1.12356,
+      ),
+      appManager: appManager,
+    ));
+
+    expect(find.text("Date"), findsOneWidget);
+    expect(find.text("Time"), findsOneWidget);
+    expect(find.text("Species"), findsOneWidget);
+    expect(find.byType(StaticFishingSpot), findsNothing);
+    expect(find.byType(ImageInput), findsNothing);
   });
 }

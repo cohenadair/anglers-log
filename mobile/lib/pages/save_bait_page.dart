@@ -38,7 +38,7 @@ class _SaveBaitPageState extends State<SaveBaitPage> {
 
   final Log _log = Log("SaveCatchPage");
 
-  final Map<Id, InputData> _fields = {};
+  final Map<Id, Field> _fields = {};
   List<CustomEntityValue> _customEntityValues = [];
 
   Bait get _oldBait => widget.oldBait;
@@ -58,17 +58,17 @@ class _SaveBaitPageState extends State<SaveBaitPage> {
   void initState() {
     super.initState();
 
-    _fields[_idBaitCategory] = InputData(
+    _fields[_idBaitCategory] = Field(
       id: _idBaitCategory,
-      label: (context) => Strings.of(context).saveBaitPageCategoryLabel,
+      name: (context) => Strings.of(context).saveBaitPageCategoryLabel,
       controller: InputController<BaitCategory>(),
       removable: true,
       showing: true,
     );
 
-    _fields[_idName] = InputData(
+    _fields[_idName] = Field(
       id: _idName,
-      label: (context) => Strings.of(context).inputNameLabel,
+      name: (context) => Strings.of(context).inputNameLabel,
       controller: TextInputController(
         validator: NameValidator(),
       ),
