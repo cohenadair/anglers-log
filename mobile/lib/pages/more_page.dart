@@ -17,85 +17,140 @@ import '../widgets/list_item.dart';
 import '../widgets/widget.dart';
 
 class MorePage extends StatelessWidget {
+  /// A [GlobalKey] for the feedback row. Used for scrolling to the feedback
+  /// row when onboarding users.
+  ///
+  /// When this value is non-null, the feedback row will be highlighted to
+  /// draw the user's attention.
+  final GlobalKey feedbackKey;
+
+  MorePage({
+    this.feedbackKey,
+  });
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text(Strings.of(context).morePageTitle),
       ),
-      body: ListView(
-        children: <Widget>[
-          _buildPageItem(
-            context,
-            icon: CustomIcons.baitCategories,
-            title: Strings.of(context).baitCategoryListPageMenuTitle,
-            page: BaitCategoryListPage(),
-          ),
-          _buildPageItem(
-            context,
-            icon: Icons.bug_report,
-            title: Strings.of(context).baitListPageMenuLabel,
-            page: BaitListPage(),
-          ),
-          _buildPageItem(
-            context,
-            icon: Icons.build,
-            title: Strings.of(context).customFields,
-            page: CustomEntityListPage(),
-          ),
-          _buildPageItem(
-            context,
-            icon: Icons.photo_library,
-            title: Strings.of(context).photosPageMenuLabel,
-            page: PhotosPage(),
-          ),
-          _buildPageItem(
-            context,
-            icon: CustomIcons.species,
-            title: Strings.of(context).speciesListPageMenuTitle,
-            page: SpeciesListPage(),
-          ),
-          _buildPageItem(
-            context,
-            icon: Icons.public,
-            title: Strings.of(context).tripListPageMenuLabel,
-            page: TripListPage(),
-          ),
-          MinDivider(),
-          _buildPageItem(
-            context,
-            icon: Icons.cloud_download,
-            title: Strings.of(context).importPageTitle,
-            page: ImportPage(),
-            presentPage: true,
-          ),
-          MinDivider(),
-          _buildPageItem(
-            context,
-            icon: Icons.star,
-            title: Strings.of(context).morePageRateApp,
-            onTap: () => launchStore(context),
-          ),
-          _buildPageItem(
-            context,
-            icon: Icons.feedback,
-            title: Strings.of(context).feedbackPageTitle,
-            page: FeedbackPage(),
-            presentPage: true,
-          ),
-          _buildPageItem(
-            context,
-            icon: Icons.settings,
-            title: Strings.of(context).settingsPageTitle,
-            page: SettingsPage(),
-          ),
-        ],
+      // Use SingleChildScrollView instead of ListView to make scrolling to
+      // feedback row easier during user onboarding.
+      body: SingleChildScrollView(
+        child: Column(
+          mainAxisSize: MainAxisSize.max,
+          children: [
+            _buildPageItem(
+              context,
+              icon: CustomIcons.baitCategories,
+              title: Strings.of(context).baitCategoryListPageMenuTitle,
+              page: BaitCategoryListPage(),
+            ),
+            _buildPageItem(
+              context,
+              icon: Icons.bug_report,
+              title: Strings.of(context).baitListPageMenuLabel,
+              page: BaitListPage(),
+            ),
+            _buildPageItem(
+              context,
+              icon: Icons.build,
+              title: Strings.of(context).customFields,
+              page: CustomEntityListPage(),
+            ),
+            _buildPageItem(
+              context,
+              icon: Icons.photo_library,
+              title: Strings.of(context).photosPageMenuLabel,
+              page: PhotosPage(),
+            ),
+            _buildPageItem(
+              context,
+              icon: CustomIcons.species,
+              title: Strings.of(context).speciesListPageMenuTitle,
+              page: SpeciesListPage(),
+            ),
+            _buildPageItem(
+              context,
+              icon: Icons.public,
+              title: Strings.of(context).tripListPageMenuLabel,
+              page: TripListPage(),
+            ),
+            MinDivider(),
+            _buildPageItem(
+              context,
+              icon: Icons.cloud_download,
+              title: Strings.of(context).importPageTitle,
+              page: ImportPage(),
+              presentPage: true,
+            ),
+            MinDivider(),
+          ]..addAll(_buildRateAndFeedbackItems(context))..addAll([
+            _buildPageItem(
+              context,
+              icon: Icons.settings,
+              title: Strings.of(context).settingsPageTitle,
+              page: SettingsPage(),
+            ),
+          ]),
+        ),
       ),
     );
   }
 
+  List<Widget> _buildRateAndFeedbackItems(BuildContext context) {
+    var rateItem = _buildPageItem(
+      context,
+      icon: Icons.star,
+      title: Strings.of(context).morePageRateApp,
+      onTap: () => launchStore(context),
+    );
+
+    var feedbackItem = _buildPageItem(
+      context,
+      key: feedbackKey,
+      icon: Icons.feedback,
+      title: Strings.of(context).feedbackPageTitle,
+      page: FeedbackPage(),
+      presentPage: true,
+    );
+
+    if (feedbackKey == null) {
+      return [rateItem, feedbackItem];
+    }
+
+    var borderSide = BorderSide(
+      width: 1.0,
+      color: Colors.green,
+    );
+
+    return [
+      Container(
+        decoration: BoxDecoration(
+          border: Border(
+            left: borderSide,
+            top: borderSide,
+            right: borderSide,
+          ),
+        ),
+        child: rateItem,
+      ),
+      Container(
+        decoration: BoxDecoration(
+          border: Border(
+            left: borderSide,
+            bottom: borderSide,
+            right: borderSide,
+          ),
+        ),
+        child: feedbackItem,
+      ),
+    ];
+  }
+
   Widget _buildPageItem(
     BuildContext context, {
+    Key key,
     @required IconData icon,
     @required String title,
     Widget page,
@@ -103,6 +158,7 @@ class MorePage extends StatelessWidget {
     bool presentPage = false,
   }) {
     return ListItem(
+      key: key,
       title: Text(title),
       leading: Icon(icon),
       trailing: presentPage || onTap != null ? null : RightChevronIcon(),

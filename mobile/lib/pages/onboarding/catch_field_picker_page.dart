@@ -6,15 +6,18 @@ import '../../preferences_manager.dart';
 import '../../res/dimen.dart';
 import '../../res/gen/custom_icons.dart';
 import '../../utils/catch_utils.dart';
-import '../../utils/page_utils.dart';
-import '../../widgets/checkbox_input.dart';
 import '../../widgets/list_item.dart';
 import '../../widgets/text.dart';
 import '../../widgets/widget.dart';
-import 'manage_fields_page.dart';
 import 'onboarding_page.dart';
 
 class CatchFieldPickerPage extends StatefulWidget {
+  final VoidCallback onNext;
+
+  CatchFieldPickerPage({
+    this.onNext,
+  });
+
   @override
   _CatchFieldPickerPageState createState() => _CatchFieldPickerPageState();
 }
@@ -38,7 +41,7 @@ class _CatchFieldPickerPageState extends State<CatchFieldPickerPage> {
   Widget build(BuildContext context) {
     return OnboardingPage(
       padding: insetsZero,
-      onPressedNextButton: _onPressedNext,
+      onPressedNextButton: widget.onNext == null ? null : _onPressedNext,
       children: <Widget>[
         SafeArea(child: Empty()),
         Padding(
@@ -65,9 +68,8 @@ class _CatchFieldPickerPageState extends State<CatchFieldPickerPage> {
     return allCatchFieldsSorted(context).map((field) {
       var isEnabled = field.removable;
 
-      var subtitle = field.description == null
-          ? null
-          : field.description.call(context);
+      var subtitle =
+          field.description == null ? null : field.description.call(context);
       if (subtitle == null && !isEnabled) {
         subtitle = Strings.of(context).inputGenericRequired;
       }
@@ -91,6 +93,6 @@ class _CatchFieldPickerPageState extends State<CatchFieldPickerPage> {
 
   void _onPressedNext() {
     _preferencesManager.catchFieldIds = _selectedFields;
-    push(context, ManageFieldsPage());
+    widget.onNext();
   }
 }

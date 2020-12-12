@@ -12,7 +12,7 @@ import '../res/gen/custom_icons.dart';
 import '../utils/dialog_utils.dart';
 import '../utils/page_utils.dart';
 import '../widgets/widget.dart';
-import 'onboarding/welcome_page.dart';
+import 'add_anything_page.dart';
 
 class MainPage extends StatefulWidget {
   @override
@@ -54,8 +54,7 @@ class _MainPageState extends State<MainPage> {
       _BarItemData(
         icon: Icons.add_box_rounded,
         titleBuilder: (context) => Strings.of(context).add,
-        // onTapOverride: () => fade(context, AddAnythingPage(), opaque: false),
-        onTapOverride: () => fade(context, WelcomePage()),
+        onTapOverride: () => fade(context, AddAnythingPage(), opaque: false),
       ),
       _BarItemData(
         page: _NavigatorPage(

@@ -48,7 +48,11 @@ class EditableFormPage extends StatefulWidget {
 
   final EdgeInsets padding;
 
+  /// See [FormPage.popupMenuKey].
+  final GlobalKey<PopupMenuButtonState> popupMenuKey;
+
   EditableFormPage({
+    this.popupMenuKey,
     this.title,
     this.fields = const {},
     this.customEntityIds = const [],
@@ -124,6 +128,7 @@ class _EditableFormPageState extends State<EditableFormPage> {
   @override
   Widget build(BuildContext context) {
     return FormPage(
+      popupMenuKey: widget.popupMenuKey,
       title: widget.title,
       runSpacing: widget.runSpacing,
       padding: widget.padding,

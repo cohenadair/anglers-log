@@ -389,6 +389,16 @@ class Strings {
   String get onboardingJourneySkip => _string("onboardingJourney_skip");
   String get onboardingJourneyCatchFieldDescription =>
       _string("onboardingJourney_catchFieldDescription");
+  String get onboardingJourneyManageFieldsTitle =>
+      _string("onboardingJourney_manageFieldsTitle");
+  String get onboardingJourneyManageFieldsDescription =>
+      _string("onboardingJourney_manageFieldsDescription");
+  String get onboardingJourneyManageFieldsSpecies =>
+      _string("onboardingJourney_manageFieldsSpecies");
+  String get onboardingJourneyHowToFeedbackTitle =>
+      _string("onboardingJourney_howToFeedbackTitle");
+  String get onboardingJourneyHowToFeedbackDescription =>
+      _string("onboardingJourney_howToFeedbackDescription");
 }
 
 class StringsDelegate extends LocalizationsDelegate<Strings> {

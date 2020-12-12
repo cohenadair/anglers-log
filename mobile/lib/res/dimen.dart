@@ -6,6 +6,7 @@ const paddingMedium = 12.0;
 const paddingSmall = 8.0;
 const paddingTiny = 4.0;
 const paddingWidget = paddingDefault;
+const paddingWidgetDouble = paddingDefaultDouble;
 const paddingWidgetSmall = paddingSmall;
 const paddingWidgetTiny = paddingTiny;
 

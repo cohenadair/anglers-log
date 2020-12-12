@@ -2,21 +2,34 @@ import 'package:flutter/material.dart';
 
 import '../../i18n/strings.dart';
 import '../../res/dimen.dart';
-import '../../utils/page_utils.dart';
 import '../../widgets/button.dart';
 import '../../widgets/text.dart';
 import '../../widgets/widget.dart';
-import 'catch_field_picker_page.dart';
 import 'onboarding_page.dart';
 
 class WelcomePage extends StatelessWidget {
+  static const _logoSize = 150.0;
+
+  final VoidCallback onStart;
+  final VoidCallback onSkip;
+
+  WelcomePage({
+    this.onStart,
+    this.onSkip
+  }) : assert(onStart != null),
+       assert(onSkip != null);
+
   @override
   Widget build(BuildContext context) {
     return OnboardingPage(
       children: <Widget>[
         VerticalSpace(paddingWidget),
-        WatermarkLogo(
-          icon: Icons.ac_unit,
+        ClipOval(
+          child: Image(
+            image: AssetImage("assets/logo.png"),
+            width: _logoSize,
+            height: _logoSize,
+          ),
         ),
         VerticalSpace(paddingWidget),
         TitleLabel(
@@ -34,14 +47,14 @@ class WelcomePage extends StatelessWidget {
         Align(
           child: Button(
             text: Strings.of(context).onboardingJourneyStartButton,
-            onPressed: () => push(context, CatchFieldPickerPage()),
+            onPressed: onStart,
           ),
         ),
         VerticalSpace(paddingWidgetSmall),
         Align(
           child: SmallTextButton(
             text: Strings.of(context).onboardingJourneySkip,
-            onPressed: () => Navigator.of(context).pop(),
+            onPressed: onSkip,
           ),
         ),
         VerticalSpace(paddingWidget),

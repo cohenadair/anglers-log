@@ -43,9 +43,13 @@ class SaveCatchPage extends StatefulWidget {
 
   final Catch oldCatch;
 
+  /// See [EditableFormPage.popupMenuKey].
+  final GlobalKey<PopupMenuButtonState> popupMenuKey;
+
   /// A [Catch] cannot be created without first selecting a [Species] and
   /// [FishingSpot], normally from an [AddCatchJourney] widget.
   SaveCatchPage({
+    this.popupMenuKey,
     this.images = const [],
     @required this.species,
     @required this.fishingSpot,
@@ -57,6 +61,7 @@ class SaveCatchPage extends StatefulWidget {
 
   SaveCatchPage.edit(this.oldCatch)
       : assert(oldCatch != null),
+        popupMenuKey = null,
         popOverride = null,
         images = const [],
         species = null,
@@ -146,6 +151,7 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
         _timestampController.time ?? _timeManager.currentTime;
 
     return EditableFormPage(
+      popupMenuKey: widget.popupMenuKey,
       title: Text(_editing
           ? Strings.of(context).saveCatchPageEditTitle
           : Strings.of(context).saveCatchPageNewTitle),

@@ -7,8 +7,7 @@ import '../widgets/input_type.dart';
 
 /// A simple structure for storing build information for a form's input fields.
 class Field {
-  static String Function(BuildContext) _customEntityName(
-          CustomEntity entity) =>
+  static String Function(BuildContext) _customEntityName(CustomEntity entity) =>
       (_) => entity.name;
 
   static String Function(BuildContext) _customEntityDescription(

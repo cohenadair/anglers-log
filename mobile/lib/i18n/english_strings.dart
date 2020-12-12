@@ -33,7 +33,7 @@ Map<String, Map<String, String>> get englishStrings => {
         "more": "More",
         "customFields": "Custom Fields",
         "na": "N/A",
-        "finish" : "Finish",
+        "finish": "Finish",
         "fieldType_number": "Number",
         "fieldType_boolean": "Checkbox",
         "fieldType_text": "Text",
@@ -63,7 +63,8 @@ Map<String, Map<String, String>> get englishStrings => {
         "catchField_species": "Species",
         "catchField_images": "Photos",
         "catchField_fishingSpot": "Fishing Spot",
-        "catchField_fishingSpotDescription": "Coordinates of where a catch was made.",
+        "catchField_fishingSpotDescription":
+            "Coordinates of where a catch was made.",
         "catchField_bait": "Bait",
         "saveCustomReportPage_newTitle": "New Report",
         "saveCustomReportPage_editTitle": "Edit Report",
@@ -265,9 +266,18 @@ Map<String, Map<String, String>> get englishStrings => {
         "dateTimeFormat": "%s at %s",
         "dateDurationFormat": "%s (%s)",
         "onboardingJourney_welcomeTitle": "Welcome to Anglers' Log!",
-        "onboardingJourney_startDescription": "Let's start by figuring out what kind of data you want to track.",
+        "onboardingJourney_startDescription":
+            "Let's start by figuring out what kind of data you want to track.",
         "onboardingJourney_startButton": "Get Started",
         "onboardingJourney_skip": "No thanks, I'll learn as I go.",
-        "onboardingJourney_catchFieldDescription": "When you log a catch, what do you want to know?",
+        "onboardingJourney_catchFieldDescription":
+            "When you log a catch, what do you want to know?",
+        "onboardingJourney_manageFieldsTitle": "Manage Fields",
+        "onboardingJourney_manageFieldsDescription":
+            "Manage default fields, or add custom fields at any time when adding or editing a catch.",
+        "onboardingJourney_manageFieldsSpecies": "Rainbow Trout",
+        "onboardingJourney_howToFeedbackTitle": "Send Feedback",
+        "onboardingJourney_howToFeedbackDescription":
+            "Report a problem, suggest a feature, or send us feedback anytime. We'd love to hear from you!",
       },
     };

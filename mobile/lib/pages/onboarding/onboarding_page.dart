@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:quiver/strings.dart';
 
 import '../../i18n/strings.dart';
 import '../../res/dimen.dart';

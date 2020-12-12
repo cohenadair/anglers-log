@@ -6,7 +6,10 @@ import 'package:provider/provider.dart';
 import 'app_manager.dart';
 import 'i18n/strings.dart';
 import 'pages/main_page.dart';
+import 'pages/onboarding/onboarding_journey.dart';
+import 'preferences_manager.dart';
 import 'res/color.dart';
+import 'widgets/widget.dart';
 
 void main() {
   runApp(AnglersLog());
@@ -18,8 +21,10 @@ class AnglersLog extends StatefulWidget {
 }
 
 class _AnglersLogState extends State<AnglersLog> {
-  final AppManager _app = AppManager();
+  final _app = AppManager();
   Future<bool> _appInitializedFuture;
+
+  PreferencesManager get _preferencesManager => _app.preferencesManager;
 
   @override
   void initState() {
@@ -58,7 +63,21 @@ class _AnglersLogState extends State<AnglersLog> {
                 backgroundColor: Theme.of(context).primaryColor,
               );
             }
-            return MainPage();
+
+            Widget firstPage;
+            if (_preferencesManager.didOnboard) {
+              firstPage = MainPage();
+            } else {
+              _preferencesManager.didOnboard = true;
+              firstPage = OnboardingJourney(
+                onFinished: () => setState(() {}),
+              );
+            }
+
+            return AnimatedSwitcher(
+              duration: defaultAnimationDuration,
+              child: firstPage,
+            );
           },
         ),
         debugShowCheckedModeBanner: false,

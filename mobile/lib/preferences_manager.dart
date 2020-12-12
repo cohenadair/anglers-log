@@ -23,6 +23,7 @@ class PreferencesManager {
 
   static const _keyRateTimerStartedAt = "rate_timer_started_at";
   static const _keyDidRateApp = "did_rate_app";
+  static const _keyDidOnboard = "did_onboard";
 
   final AppManager _appManager;
   final Map<String, dynamic> _preferences = {};
@@ -57,15 +58,19 @@ class PreferencesManager {
   List<Id> get catchFieldIds => _idList(_keyCatchFieldIds);
 
   set rateTimerStartedAt(int timestamp) =>
-      _preferences[_keyRateTimerStartedAt] = timestamp;
+      _put(_keyRateTimerStartedAt, timestamp);
 
   int get rateTimerStartedAt => _preferences[_keyRateTimerStartedAt];
 
-  set didRateApp(bool rated) => _preferences[_keyDidRateApp] = rated;
+  set didRateApp(bool rated) => _put(_keyDidRateApp, rated);
 
   bool get didRateApp => _preferences[_keyDidRateApp] ?? false;
 
-  void _putStringList(String key, List<String> value) {
+  set didOnboard(bool onboarded) => _put(_keyDidOnboard, onboarded);
+
+  bool get didOnboard => _preferences[_keyDidOnboard] ?? false;
+
+  void _put(String key, dynamic value) {
     if (value == null) {
       _dataManager.delete(_tableName, where: "$_keyId = ?", whereArgs: [key]);
       _preferences.remove(key);
@@ -89,8 +94,7 @@ class PreferencesManager {
   }
 
   void _putIdList(String key, List<Id> value) {
-    _putStringList(
-        key, value == null ? null : value.map((id) => id.toString()).toList());
+    _put(key, value == null ? null : value.map((id) => id.toString()).toList());
   }
 
   List<Id> _idList(String key) {

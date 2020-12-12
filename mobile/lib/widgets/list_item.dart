@@ -22,6 +22,7 @@ class ListItem extends StatelessWidget {
   final bool enabled;
 
   ListItem({
+    Key key,
     this.contentPadding,
     this.title,
     this.subtitle,
@@ -29,7 +30,7 @@ class ListItem extends StatelessWidget {
     this.trailing,
     this.onTap,
     this.enabled = true,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -87,9 +88,7 @@ class PickerListItem extends StatelessWidget {
       enabled: isEnabled,
       child: ListItem(
         title: Text(title),
-        subtitle: isNotEmpty(subtitle)
-            ? SubtitleLabel(subtitle)
-            : null,
+        subtitle: isNotEmpty(subtitle) ? SubtitleLabel(subtitle) : null,
         enabled: isEnabled,
         onTap: onTap,
         trailing: _buildListItemTrailing(context),

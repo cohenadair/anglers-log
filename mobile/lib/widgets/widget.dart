@@ -385,7 +385,7 @@ class WatermarkLogo extends StatelessWidget {
     return Icon(
       icon,
       size: _size,
-      color: Colors.black12,
+      color: Theme.of(context).primaryColor,
     );
   }
 }

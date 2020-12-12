@@ -3,7 +3,6 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:mobile/pages/add_catch_journey.dart';
 import 'package:quiver/strings.dart';
 
 import '../entity_manager.dart';
@@ -28,6 +27,7 @@ import '../widgets/styled_bottom_sheet.dart';
 import '../widgets/text.dart';
 import '../widgets/widget.dart';
 import '../wrappers/url_launcher_wrapper.dart';
+import 'add_catch_journey.dart';
 
 class MapPage extends StatefulWidget {
   @override
