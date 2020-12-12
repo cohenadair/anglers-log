@@ -193,7 +193,7 @@ class _Picker extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
-            type.getValue(),
+            Expanded(child: type.getValue()),
             EnabledOpacity(
               enabled: enabled,
               child: DropdownIcon(),

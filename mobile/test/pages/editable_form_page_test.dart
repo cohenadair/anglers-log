@@ -209,8 +209,11 @@ void main() {
     when(appManager.mockCustomEntityManager.entity(any))
         .thenReturn(customEntity);
 
+    var called = false;
     await tester.pumpWidget(Testable(
-      (_) => EditableFormPage(),
+      (_) => EditableFormPage(
+        onAddFields: (_) => called = true,
+      ),
       appManager: appManager,
     ));
 
@@ -227,6 +230,7 @@ void main() {
     );
     await tapAndSettle(tester, find.byType(CloseButton));
 
+    expect(called, isTrue);
     expect(find.widgetWithText(TextField, "Custom Field 1"), findsOneWidget);
   });
 

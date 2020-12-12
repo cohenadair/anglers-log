@@ -12,18 +12,22 @@ import 'res/color.dart';
 import 'widgets/widget.dart';
 
 void main() {
-  runApp(AnglersLog());
+  runApp(AnglersLog(AppManager()));
 }
 
 class AnglersLog extends StatefulWidget {
+  final AppManager appManager;
+
+  AnglersLog(this.appManager);
+
   @override
   _AnglersLogState createState() => _AnglersLogState();
 }
 
 class _AnglersLogState extends State<AnglersLog> {
-  final _app = AppManager();
   Future<bool> _appInitializedFuture;
 
+  AppManager get _app => widget.appManager;
   PreferencesManager get _preferencesManager => _app.preferencesManager;
 
   @override

@@ -69,4 +69,26 @@ void main() {
     await tapAndSettle(tester, find.text("Rate Anglers' Log"));
     verify(appManager.mockUrlLauncherWrapper.launch(any)).called(1);
   });
+
+  testWidgets("Rate and feedback are not highlighted", (tester) async {
+    await tester.pumpWidget(Testable(
+      (_) => MorePage(),
+      appManager: appManager,
+    ));
+
+    expect(find.widgetWithText(Container, "Rate Anglers' Log"), findsNothing);
+    expect(find.widgetWithText(Container, "Send Feedback"), findsNothing);
+  });
+
+  testWidgets("Rate and feedback are highlighted", (tester) async {
+    await tester.pumpWidget(Testable(
+      (_) => MorePage(
+        feedbackKey: GlobalKey(),
+      ),
+      appManager: appManager,
+    ));
+
+    expect(find.widgetWithText(Container, "Rate Anglers' Log"), findsOneWidget);
+    expect(find.widgetWithText(Container, "Send Feedback"), findsOneWidget);
+  });
 }

@@ -12,18 +12,18 @@ import '../save_catch_page.dart';
 import 'embedded_page.dart';
 import 'onboarding_page.dart';
 
-class ManageFieldsPage extends StatefulWidget {
+class HowToManageFieldsPage extends StatefulWidget {
   final VoidCallback onNext;
 
-  ManageFieldsPage({
+  HowToManageFieldsPage({
     this.onNext,
   });
 
   @override
-  _ManageFieldsPageState createState() => _ManageFieldsPageState();
+  _HowToManageFieldsPageState createState() => _HowToManageFieldsPageState();
 }
 
-class _ManageFieldsPageState extends State<ManageFieldsPage> {
+class _HowToManageFieldsPageState extends State<HowToManageFieldsPage> {
   static const _menuTimerDuration = Duration(seconds: 2);
 
   // Allows showing/hiding popup menu programmatically.

@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import '../../log.dart';
 import 'catch_field_picker_page.dart';
 import 'how_to_feedback_page.dart';
-import 'manage_fields_page.dart';
+import 'how_to_manage_fields_page.dart';
 import 'welcome_page.dart';
 
 class OnboardingJourney extends StatelessWidget {
@@ -42,7 +42,7 @@ class OnboardingJourney extends StatelessWidget {
           );
         } else if (name == _routeManageFields) {
           return MaterialPageRoute(
-            builder: (context) => ManageFieldsPage(
+            builder: (context) => HowToManageFieldsPage(
               onNext: () => Navigator.of(context).pushNamed(_routeFeedback),
             ),
           );

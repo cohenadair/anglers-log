@@ -12,11 +12,11 @@ class OnboardingPage extends StatelessWidget {
   final VoidCallback onPressedNextButton;
 
   OnboardingPage({
-    this.children,
+    this.children = const [],
     this.padding,
     this.nextButtonText,
     this.onPressedNextButton,
-  });
+  }) : assert(children != null);
 
   @override
   Widget build(BuildContext context) {
