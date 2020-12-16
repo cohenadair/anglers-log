@@ -32,6 +32,7 @@ import '../widgets/list_item.dart';
 import '../widgets/list_picker_input.dart';
 import '../widgets/static_fishing_spot.dart';
 import '../widgets/widget.dart';
+import 'manageable_list_page.dart';
 
 class SaveCatchPage extends StatefulWidget {
   /// If set, invoked when it's time to pop the page from the navigation stack.
@@ -87,23 +88,35 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
 
   BaitCategoryManager get _baitCategoryManager =>
       BaitCategoryManager.of(context);
+
   BaitManager get _baitManager => BaitManager.of(context);
+
   CatchManager get _catchManager => CatchManager.of(context);
+
   FishingSpotManager get _fishingSpotManager => FishingSpotManager.of(context);
+
   ImageManager get _imageManager => ImageManager.of(context);
+
   PreferencesManager get _preferencesManager => PreferencesManager.of(context);
+
   SpeciesManager get _speciesManager => SpeciesManager.of(context);
+
   TimeManager get _timeManager => TimeManager.of(context);
+
   Catch get _oldCatch => widget.oldCatch;
 
   TimestampInputController get _timestampController =>
       _fields[_idTimestamp].controller;
+
   InputController<Species> get _speciesController =>
       _fields[_idSpecies].controller;
+
   InputController<List<PickedImage>> get _imagesController =>
       _fields[_idImages].controller;
+
   InputController<FishingSpot> get _fishingSpotController =>
       _fields[_idFishingSpot].controller;
+
   InputController<Bait> get _baitController => _fields[_idBait].controller;
 
   bool get _editing => _oldCatch != null;
@@ -223,14 +236,15 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
           onTap: () {
             push(
               context,
-              BaitListPage.picker(
-                initialValues: {_baitController.value},
-                onPicked: (context, pickedBaits) {
-                  setState(() {
-                    _baitController.value = pickedBaits.first;
-                  });
-                  return true;
-                },
+              BaitListPage(
+                pickerSettings:
+                    ManageableListPagePickerSettings<dynamic>.single(
+                  onPicked: (context, bait) {
+                    setState(() => _baitController.value = bait);
+                    return true;
+                  },
+                  initialValue: _baitController.value,
+                ),
               ),
             );
           },
@@ -267,14 +281,16 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
           onTap: () {
             push(
               context,
-              SpeciesListPage.picker(
-                initialValues: {_speciesController.value},
-                onPicked: (context, pickedSpecies) {
-                  setState(() {
-                    _speciesController.value = pickedSpecies.first;
-                  });
-                  return true;
-                },
+              SpeciesListPage(
+                pickerSettings:
+                    ManageableListPagePickerSettings<Species>.single(
+                  onPicked: (context, species) {
+                    setState(() => _speciesController.value = species);
+                    return true;
+                  },
+                  initialValue: _speciesController.value,
+                  isRequired: true,
+                ),
               ),
             );
           },

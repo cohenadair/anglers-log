@@ -45,6 +45,7 @@ class Strings {
   String get edit => _string("edit");
   String get delete => _string("delete");
   String get none => _string("none");
+  String get all => _string("all");
   String get next => _string("next");
   String get ok => _string("ok");
   String get error => _string("error");

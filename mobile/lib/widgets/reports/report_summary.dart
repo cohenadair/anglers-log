@@ -11,6 +11,7 @@ import '../../model/gen/anglerslog.pb.dart';
 import '../../pages/bait_page.dart';
 import '../../pages/catch_list_page.dart';
 import '../../pages/fishing_spot_page.dart';
+import '../../pages/manageable_list_page.dart';
 import '../../pages/species_list_page.dart';
 import '../../res/dimen.dart';
 import '../../species_manager.dart';
@@ -231,14 +232,19 @@ class _ReportSummaryState extends State<ReportSummary> {
     return ListPickerInput(
       value: _currentSpecies.name,
       onTap: () {
-        push(context, SpeciesListPage.picker(
-          onPicked: (context, species) {
-            setState(() {
-              _currentSpecies = species.first;
-            });
-            return true;
-          },
-        ));
+        push(
+          context,
+          SpeciesListPage(
+            pickerSettings: ManageableListPagePickerSettings<Species>.single(
+              onPicked: (context, species) {
+                setState(() => _currentSpecies = species);
+                return true;
+              },
+              isRequired: true,
+              initialValue: _currentSpecies,
+            ),
+          ),
+        );
       },
     );
   }
@@ -438,22 +444,34 @@ class ReportSummaryModel {
   _MapOfMappedInt<Species, Bait> _baitsPerSpecies = _MapOfMappedInt();
 
   BaitManager get _baitManager => _appManager.baitManager;
+
   CatchManager get _catchManager => _appManager.catchManager;
+
   FishingSpotManager get _fishingSpotManager => _appManager.fishingSpotManager;
+
   SpeciesManager get _speciesManager => _appManager.speciesManager;
 
   DateRange get dateRange => _dateRange;
+
   bool get containsNow => _containsNow;
+
   int get msSinceLastCatch => _msSinceLastCatch;
+
   int get totalCatches => _catchIds.length;
+
   Set<Id> get allCatchIds => _catchIds;
+
   Map<Species, Set<Id>> get catchIdsPerSpecies => _catchIdsPerSpecies;
+
   Map<Species, int> get catchesPerSpecies => _catchesPerSpecies;
+
   Map<FishingSpot, int> get catchesPerFishingSpot => _catchesPerFishingSpot;
+
   Map<Bait, int> get catchesPerBait => _catchesPerBait;
 
   Map<Bait, int> baitsPerSpecies(Species species) =>
       _baitsPerSpecies[species] ?? {};
+
   Map<FishingSpot, int> fishingSpotsPerSpecies(Species species) =>
       _fishingSpotsPerSpecies[species] ?? {};
 
@@ -626,6 +644,7 @@ class _MapOfMappedInt<K1, K2> {
   }
 
   Map<K2, int> operator [](K1 key) => value[key];
+
   void operator []=(K1 key, Map<K2, int> newValue) => value[key] = newValue;
 
   _MapOfMappedInt<K1, K2> sorted([int Function(K2 lhs, K2 rhs) comparator]) {

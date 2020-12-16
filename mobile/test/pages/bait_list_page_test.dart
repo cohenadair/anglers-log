@@ -3,7 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
 import 'package:mobile/pages/bait_list_page.dart';
+import 'package:mobile/pages/manageable_list_page.dart';
+import 'package:mobile/utils/page_utils.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
+import 'package:mobile/widgets/button.dart';
+import 'package:mobile/widgets/checkbox_input.dart';
+import 'package:mobile/widgets/list_item.dart';
 import 'package:mobile/widgets/text.dart';
 import 'package:mockito/mockito.dart';
 
@@ -58,9 +63,10 @@ void main() {
 
   testWidgets("Single picker title", (tester) async {
     await tester.pumpWidget(Testable(
-      (_) => BaitListPage.picker(
-        onPicked: (_, __) => false,
-        multiPicker: false,
+      (_) => BaitListPage(
+        pickerSettings: ManageableListPagePickerSettings.single(
+          onPicked: (_, __) => false,
+        ),
       ),
       appManager: appManager,
     ));
@@ -69,9 +75,10 @@ void main() {
 
   testWidgets("Multi picker title", (tester) async {
     await tester.pumpWidget(Testable(
-      (_) => BaitListPage.picker(
-        onPicked: (_, __) => false,
-        multiPicker: true,
+      (_) => BaitListPage(
+        pickerSettings: ManageableListPagePickerSettings(
+          onPicked: (_, __) => false,
+        ),
       ),
       appManager: appManager,
     ));
@@ -105,21 +112,107 @@ void main() {
   });
 
   testWidgets("onPicked callback invoked", (tester) async {
-    Set<Bait> pickedBaits;
+    Bait pickedBait;
     await tester.pumpWidget(Testable(
-      (_) => BaitListPage.picker(
-        onPicked: (_, baits) {
-          pickedBaits = baits;
-          return false;
-        },
+      (_) => BaitListPage(
+        pickerSettings: ManageableListPagePickerSettings.single(
+          onPicked: (_, bait) {
+            pickedBait = bait;
+            return false;
+          },
+        ),
       ),
       appManager: appManager,
     ));
     await tapAndSettle(tester, find.text("Bullhead Minnow"));
 
+    expect(pickedBait, isNotNull);
+    expect(pickedBait, baits[0]);
+  });
+
+  testWidgets("All baits picked only includes Bait objects", (tester) async {
+    Set<Bait> pickedBaits;
+    await tester.pumpWidget(
+      Testable(
+        (context) => Scaffold(
+          body: Button(
+            text: "Test",
+            onPressed: () => push(
+              context,
+              BaitListPage(
+                pickerSettings: ManageableListPagePickerSettings(
+                  onPicked: (_, baits) {
+                    pickedBaits = baits;
+                    return false;
+                  },
+                ),
+              ),
+            ),
+          ),
+        ),
+        appManager: appManager,
+      ),
+    );
+
+    await tapAndSettle(tester, find.byType(Button));
+    await tapAndSettle(
+      tester,
+      find.descendant(
+        of: find.widgetWithText(ManageableListItem, "All"),
+        matching: find.byType(PaddedCheckbox),
+      ),
+    );
+    await tapAndSettle(tester, find.byType(BackButton));
+
     expect(pickedBaits, isNotNull);
-    expect(pickedBaits.length, 1);
-    expect(pickedBaits.first, baits[0]);
+    expect(pickedBaits.length, 5);
+  });
+
+  testWidgets("No baits picked doesn't crash", (tester) async {
+    Set<Bait> pickedBaits;
+    await tester.pumpWidget(
+      Testable(
+        (context) => Scaffold(
+          body: Button(
+            text: "Test",
+            onPressed: () => push(
+              context,
+              BaitListPage(
+                pickerSettings: ManageableListPagePickerSettings(
+                  onPicked: (_, baits) {
+                    pickedBaits = baits;
+                    return false;
+                  },
+                ),
+              ),
+            ),
+          ),
+        ),
+        appManager: appManager,
+      ),
+    );
+
+    await tapAndSettle(tester, find.byType(Button));
+    // Select all.
+    await tapAndSettle(
+      tester,
+      find.descendant(
+        of: find.widgetWithText(ManageableListItem, "All"),
+        matching: find.byType(PaddedCheckbox),
+      ),
+    );
+    // Deselect all.
+    await tapAndSettle(
+      tester,
+      find.descendant(
+        of: find.widgetWithText(ManageableListItem, "All"),
+        matching: find.byType(PaddedCheckbox),
+      ),
+    );
+    await tapAndSettle(tester, find.byType(BackButton));
+
+    expect(pickedBaits, isNotNull);
+    expect(pickedBaits.isEmpty, isTrue);
   });
 
   testWidgets("Different item types are rendered", (tester) async {

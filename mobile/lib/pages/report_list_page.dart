@@ -17,13 +17,13 @@ import '../widgets/widget.dart';
 class ReportListPage extends StatelessWidget {
   static const _log = Log("ReportListPage");
 
-  final dynamic currentItem;
-  final bool Function(BuildContext, dynamic) onPicked;
+  /// The generic type is dynamic here because different kinds of report
+  /// objects are rendered in the list.
+  final ManageableListPagePickerSettings<dynamic> pickerSettings;
 
-  ReportListPage.picker({
-    this.currentItem,
-    @required this.onPicked,
-  }) : assert(onPicked != null);
+  ReportListPage({
+    @required this.pickerSettings,
+  }) : assert(pickerSettings != null);
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +31,8 @@ class ReportListPage extends StatelessWidget {
     var comparisonReportManager = ComparisonReportManager.of(context);
 
     return ManageableListPage<dynamic>(
-      titleBuilder: (_) => Text(Strings.of(context).reportListPagePickerTitle),
+      pickerTitleBuilder: (_) =>
+          Text(Strings.of(context).reportListPagePickerTitle),
       itemBuilder: _buildItem,
       itemManager: ManageableListPageItemManager<dynamic>(
         listenerManagers: [
@@ -49,9 +50,8 @@ class ReportListPage extends StatelessWidget {
         addPageBuilder: () => SaveReportPage(),
         editPageBuilder: (report) => SaveReportPage.edit(report),
       ),
-      pickerSettings: ManageableListPagePickerSettings<dynamic>(
-        initialValues: {currentItem},
-        onPicked: (context, reports) => onPicked(context, reports.first),
+      pickerSettings: pickerSettings.copyWith(
+        isRequired: true,
       ),
     );
   }

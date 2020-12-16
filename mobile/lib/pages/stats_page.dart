@@ -12,6 +12,7 @@ import '../widgets/reports/comparison_report_view.dart';
 import '../widgets/reports/overview_report_view.dart';
 import '../widgets/reports/summary_report_view.dart';
 import '../widgets/widget.dart';
+import 'manageable_list_page.dart';
 
 class StatsPage extends StatefulWidget {
   @override
@@ -23,6 +24,7 @@ class _StatsPageState extends State<StatsPage> {
 
   ComparisonReportManager get _comparisonReportManager =>
       ComparisonReportManager.of(context);
+
   SummaryReportManager get _summaryReportManager =>
       SummaryReportManager.of(context);
 
@@ -50,16 +52,18 @@ class _StatsPageState extends State<StatsPage> {
       onTap: () {
         present(
           context,
-          ReportListPage.picker(
-            currentItem: _currentReport,
-            onPicked: (context, report) {
-              if (report != _currentReport) {
-                setState(() {
-                  _currentReport = report;
-                });
-              }
-              return true;
-            },
+          ReportListPage(
+            pickerSettings: ManageableListPagePickerSettings<dynamic>.single(
+              onPicked: (context, report) {
+                if (report != _currentReport) {
+                  setState(() {
+                    _currentReport = report;
+                  });
+                }
+                return true;
+              },
+              initialValue: _currentReport,
+            ),
           ),
         );
       },

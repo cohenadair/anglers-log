@@ -60,6 +60,13 @@ void main() {
     );
   }
 
+  Finder findCheckIcon(WidgetTester tester, String item) {
+    return find.descendant(
+      of: find.widgetWithText(ManageableListItem, item),
+      matching: find.byIcon(Icons.check),
+    );
+  }
+
   void verifyCheckbox(WidgetTester tester, String item, {bool checked}) {
     expect(
       (tester.firstWidget(findCheckbox(tester, item)) as PaddedCheckbox)
@@ -77,7 +84,7 @@ void main() {
             itemBuilder: defaultItemBuilder,
             pickerSettings: ManageableListPagePickerSettings<String>(
               initialValues: {"Smallmouth Bass", "Largemouth Bass"},
-              multi: true,
+              isMulti: true,
               onPicked: (context, items) => false,
             ),
           ),
@@ -90,6 +97,32 @@ void main() {
       verifyCheckbox(tester, "White Bass", checked: false);
     });
 
+    testWidgets("Multi-picker all initial values", (tester) async {
+      await tester.pumpWidget(
+        Testable(
+          (_) => ManageableListPage<String>(
+            itemManager: defaultItemManager,
+            itemBuilder: defaultItemBuilder,
+            pickerSettings: ManageableListPagePickerSettings<String>(
+              onPicked: (context, items) => false,
+              initialValues: {
+                "Smallmouth Bass",
+                "Largemouth Bass",
+                "Striped Bass",
+                "White Bass",
+              },
+            ),
+          ),
+        ),
+      );
+
+      verifyCheckbox(tester, "All", checked: true);
+      verifyCheckbox(tester, "Smallmouth Bass", checked: true);
+      verifyCheckbox(tester, "Largemouth Bass", checked: true);
+      verifyCheckbox(tester, "Striped Bass", checked: true);
+      verifyCheckbox(tester, "White Bass", checked: true);
+    });
+
     testWidgets("Single-picker initial value", (tester) async {
       await tester.pumpWidget(
         Testable(
@@ -98,7 +131,7 @@ void main() {
             itemBuilder: defaultItemBuilder,
             pickerSettings: ManageableListPagePickerSettings<String>(
               initialValues: {"Smallmouth Bass"},
-              multi: false,
+              isMulti: false,
               onPicked: (context, items) => false,
             ),
           ),
@@ -106,13 +139,24 @@ void main() {
       );
 
       expect(find.byType(PaddedCheckbox), findsNothing);
-      expect(
-        find.descendant(
-          of: find.widgetWithText(ManageableListItem, "Smallmouth Bass"),
-          matching: find.byIcon(Icons.check),
+      expect(findCheckIcon(tester, "Smallmouth Bass"), findsOneWidget);
+    });
+
+    testWidgets("Single-picker initial value none", (tester) async {
+      await tester.pumpWidget(
+        Testable(
+          (_) => ManageableListPage<String>(
+            itemManager: defaultItemManager,
+            itemBuilder: defaultItemBuilder,
+            pickerSettings: ManageableListPagePickerSettings<String>.single(
+              onPicked: (context, items) => false,
+            ),
+          ),
         ),
-        findsOneWidget,
       );
+
+      expect(find.byType(PaddedCheckbox), findsNothing);
+      expect(findCheckIcon(tester, "None"), findsOneWidget);
     });
 
     testWidgets("Multi-picker no overflow menu", (tester) async {
@@ -122,7 +166,7 @@ void main() {
             itemManager: defaultItemManager,
             itemBuilder: defaultItemBuilder,
             pickerSettings: ManageableListPagePickerSettings<String>(
-              multi: true,
+              isMulti: true,
               onPicked: (context, items) => false,
             ),
           ),
@@ -146,7 +190,7 @@ void main() {
             ),
             itemBuilder: defaultItemBuilder,
             pickerSettings: ManageableListPagePickerSettings<String>(
-              multi: true,
+              isMulti: true,
               onPicked: (context, items) => false,
             ),
           ),
@@ -173,7 +217,7 @@ void main() {
             ),
             itemBuilder: defaultItemBuilder,
             pickerSettings: ManageableListPagePickerSettings<String>(
-              multi: true,
+              isMulti: true,
               onPicked: (context, items) => false,
             ),
           ),
@@ -200,7 +244,7 @@ void main() {
             ),
             itemBuilder: defaultItemBuilder,
             pickerSettings: ManageableListPagePickerSettings<String>(
-              multi: true,
+              isMulti: true,
               onPicked: (context, items) => false,
             ),
           ),
@@ -228,7 +272,7 @@ void main() {
             ),
             itemBuilder: defaultItemBuilder,
             pickerSettings: ManageableListPagePickerSettings<String>(
-              multi: true,
+              isMulti: true,
               onPicked: (context, items) => false,
             ),
           ),
@@ -255,7 +299,7 @@ void main() {
             ),
             itemBuilder: defaultItemBuilder,
             pickerSettings: ManageableListPagePickerSettings<String>(
-              multi: true,
+              isMulti: true,
               onPicked: (context, items) => false,
             ),
           ),
@@ -281,7 +325,7 @@ void main() {
                   itemManager: defaultItemManager,
                   itemBuilder: defaultItemBuilder,
                   pickerSettings: ManageableListPagePickerSettings<String>(
-                    multi: true,
+                    isMulti: true,
                     onPicked: (context, pickedItems) {
                       items = pickedItems;
                       return false;
@@ -317,7 +361,7 @@ void main() {
                   itemManager: defaultItemManager,
                   itemBuilder: defaultItemBuilder,
                   pickerSettings: ManageableListPagePickerSettings<String>(
-                    multi: false,
+                    isMulti: false,
                     onPicked: (context, pickedItems) {
                       invoked = true;
                       return false;
@@ -348,7 +392,7 @@ void main() {
             ),
             itemBuilder: defaultItemBuilder,
             pickerSettings: ManageableListPagePickerSettings<String>(
-              multi: false,
+              isMulti: false,
               onPicked: (context, items) => false,
             ),
           ),
@@ -387,7 +431,7 @@ void main() {
             ),
             itemBuilder: defaultItemBuilder,
             pickerSettings: ManageableListPagePickerSettings<String>(
-              multi: false,
+              isMulti: false,
               onPicked: (context, items) => false,
             ),
           ),
@@ -411,7 +455,7 @@ void main() {
             ),
             itemBuilder: defaultItemBuilder,
             pickerSettings: ManageableListPagePickerSettings<String>(
-              multi: false,
+              isMulti: false,
               onPicked: (context, items) => false,
             ),
           ),
@@ -436,7 +480,7 @@ void main() {
             ),
             itemBuilder: defaultItemBuilder,
             pickerSettings: ManageableListPagePickerSettings<String>(
-              multi: false,
+              isMulti: false,
               onPicked: (context, items) => false,
             ),
           ),
@@ -455,7 +499,8 @@ void main() {
             itemManager: defaultItemManager,
             itemBuilder: defaultItemBuilder,
             pickerSettings: ManageableListPagePickerSettings<String>(
-              multi: true,
+              isMulti: true,
+              isRequired: true,
               onPicked: (context, items) => false,
             ),
           ),
@@ -477,7 +522,7 @@ void main() {
             ),
             itemBuilder: defaultItemBuilder,
             pickerSettings: ManageableListPagePickerSettings<String>(
-              multi: false,
+              isMulti: false,
               onPicked: (context, items) => false,
             ),
           ),
@@ -495,7 +540,7 @@ void main() {
             itemManager: defaultItemManager,
             itemBuilder: defaultItemBuilder,
             pickerSettings: ManageableListPagePickerSettings<String>(
-              multi: false,
+              isMulti: false,
               onPicked: (context, items) => false,
             ),
           ),
@@ -513,7 +558,7 @@ void main() {
             itemManager: defaultItemManager,
             itemBuilder: defaultItemBuilder,
             pickerSettings: ManageableListPagePickerSettings<String>(
-              multi: true,
+              isMulti: true,
               onPicked: (context, items) => false,
             ),
           ),
@@ -532,7 +577,7 @@ void main() {
             itemManager: defaultItemManager,
             itemBuilder: defaultItemBuilder,
             pickerSettings: ManageableListPagePickerSettings<String>(
-              multi: false,
+              isMulti: false,
               onPicked: (context, items) {
                 invoked = true;
                 return false;
@@ -544,6 +589,148 @@ void main() {
 
       await tapAndSettle(tester, find.text("Smallmouth Bass"));
       expect(invoked, isTrue);
+    });
+
+    testWidgets("Not required multi-picker shows clear option", (tester) async {
+      await tester.pumpWidget(
+        Testable(
+          (_) => ManageableListPage<String>(
+            itemManager: defaultItemManager,
+            itemBuilder: defaultItemBuilder,
+            pickerSettings: ManageableListPagePickerSettings<String>(
+              onPicked: (context, items) => false,
+            ),
+          ),
+        ),
+      );
+      expect(find.text("All"), findsOneWidget);
+      expect(find.byType(MinDivider), findsOneWidget);
+    });
+
+    testWidgets("Required multi-picker does not show clear option",
+        (tester) async {
+      await tester.pumpWidget(
+        Testable(
+          (_) => ManageableListPage<String>(
+            itemManager: defaultItemManager,
+            itemBuilder: defaultItemBuilder,
+            pickerSettings: ManageableListPagePickerSettings<String>(
+              onPicked: (context, items) => false,
+              isRequired: true,
+            ),
+          ),
+        ),
+      );
+      expect(find.text("All"), findsNothing);
+      expect(find.byType(MinDivider), findsNothing);
+    });
+
+    testWidgets("Multi-picker (de)selecting all toggles all checkboxes",
+        (tester) async {
+      await tester.pumpWidget(
+        Testable(
+          (_) => ManageableListPage<String>(
+            itemManager: defaultItemManager,
+            itemBuilder: defaultItemBuilder,
+            pickerSettings: ManageableListPagePickerSettings<String>(
+              onPicked: (context, items) => false,
+            ),
+          ),
+        ),
+      );
+
+      await tapAndSettle(tester, findCheckbox(tester, "All"));
+
+      verifyCheckbox(tester, "All", checked: true);
+      verifyCheckbox(tester, "Smallmouth Bass", checked: true);
+      verifyCheckbox(tester, "Largemouth Bass", checked: true);
+      verifyCheckbox(tester, "Striped Bass", checked: true);
+      verifyCheckbox(tester, "White Bass", checked: true);
+
+      await tapAndSettle(tester, findCheckbox(tester, "All"));
+
+      verifyCheckbox(tester, "All", checked: false);
+      verifyCheckbox(tester, "Smallmouth Bass", checked: false);
+      verifyCheckbox(tester, "Largemouth Bass", checked: false);
+      verifyCheckbox(tester, "Striped Bass", checked: false);
+      verifyCheckbox(tester, "White Bass", checked: false);
+    });
+
+    testWidgets("Not-required single-picker shows clear option",
+        (tester) async {
+      await tester.pumpWidget(
+        Testable(
+          (_) => ManageableListPage<String>(
+            itemManager: defaultItemManager,
+            itemBuilder: defaultItemBuilder,
+            pickerSettings: ManageableListPagePickerSettings<String>.single(
+              onPicked: (context, items) => false,
+            ),
+          ),
+        ),
+      );
+      expect(find.text("None"), findsOneWidget);
+      expect(find.byType(MinDivider), findsOneWidget);
+    });
+
+    testWidgets("Required single-picker hides clear option", (tester) async {
+      await tester.pumpWidget(
+        Testable(
+          (_) => ManageableListPage<String>(
+            itemManager: defaultItemManager,
+            itemBuilder: defaultItemBuilder,
+            pickerSettings: ManageableListPagePickerSettings<String>.single(
+              onPicked: (context, items) => false,
+              isRequired: true,
+            ),
+          ),
+        ),
+      );
+      expect(find.text("None"), findsNothing);
+      expect(find.byType(MinDivider), findsNothing);
+    });
+
+    testWidgets("Empty list shows nothing", (tester) async {
+      await tester.pumpWidget(
+        Testable(
+          (_) => ManageableListPage<String>(
+            itemManager: ManageableListPageItemManager<String>(
+              loadItems: (_) => [],
+              deleteItem: (_, __) {},
+              deleteWidget: (_, __) => Empty(),
+            ),
+            itemBuilder: (_, __) => null,
+            pickerSettings: ManageableListPagePickerSettings<String>(
+              onPicked: (context, items) => false,
+            ),
+          ),
+        ),
+      );
+      expect(find.text("All"), findsNothing);
+      expect(find.byType(MinDivider), findsNothing);
+    });
+
+    testWidgets("Multi-picker custom containsAll always false", (tester) async {
+      await tester.pumpWidget(
+        Testable(
+          (_) => ManageableListPage<String>(
+            itemManager: defaultItemManager,
+            itemBuilder: defaultItemBuilder,
+            pickerSettings: ManageableListPagePickerSettings<String>(
+              onPicked: (context, items) => false,
+              containsAll: (_) => false,
+            ),
+          ),
+        ),
+      );
+
+      await tapAndSettle(tester, findCheckbox(tester, "All"));
+
+      verifyCheckbox(tester, "All", checked: false);
+      verifyCheckbox(tester, "Smallmouth Bass", checked: true);
+      verifyCheckbox(tester, "Largemouth Bass", checked: true);
+      verifyCheckbox(tester, "Striped Bass", checked: true);
+      verifyCheckbox(tester, "White Bass", checked: true);
     });
   });
 
@@ -566,7 +753,7 @@ void main() {
         (_) => ManageableListPage<String>(
           itemManager: defaultItemManager,
           itemBuilder: defaultItemBuilder,
-          searchDelegate: ManageableListPageSearchDelegate(
+          searchDelegate: ListPageSearchDelegate(
             hint: "Search",
             noResultsMessage: "No results",
           ),
@@ -592,7 +779,7 @@ void main() {
         (_) => ManageableListPage<String>(
           itemManager: defaultItemManager,
           itemBuilder: defaultItemBuilder,
-          searchDelegate: ManageableListPageSearchDelegate(
+          searchDelegate: ListPageSearchDelegate(
             hint: "Search",
             noResultsMessage: "No results",
           ),

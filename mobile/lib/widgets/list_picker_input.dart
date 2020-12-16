@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:quiver/strings.dart';
 
 import '../i18n/strings.dart';
+import '../pages/manageable_list_page.dart';
 import '../pages/picker_page.dart';
 import '../res/dimen.dart';
 import '../widgets/radio_input.dart';
@@ -16,7 +17,8 @@ import '../widgets/widget.dart';
 /// row, otherwise [title] is rendered at the beginning and [value] is rendered
 /// in a different text style at the end of the row.
 ///
-/// A [ListPickerInput] is commonly used with [PickerPage].
+/// A [ListPickerInput] is commonly used with [PickerPage] or
+/// [ManageableListPage].
 class ListPickerInput extends StatelessWidget {
   final String title;
   final String value;

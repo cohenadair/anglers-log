@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
+import 'package:mobile/pages/manageable_list_page.dart';
 import 'package:mobile/pages/species_list_page.dart';
 import 'package:mobile/species_manager.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
@@ -182,8 +183,10 @@ void main() {
   group("Picker", () {
     testWidgets("Title", (tester) async {
       await tester.pumpWidget(Testable(
-        (_) => SpeciesListPage.picker(
-          onPicked: (_, __) => false,
+        (_) => SpeciesListPage(
+          pickerSettings: ManageableListPagePickerSettings(
+            onPicked: (_, __) => true,
+          ),
         ),
         appManager: appManager,
       ));
@@ -194,11 +197,13 @@ void main() {
     testWidgets("Picked callback invoked", (tester) async {
       var picked = false;
       await tester.pumpWidget(Testable(
-        (_) => SpeciesListPage.picker(
-          onPicked: (_, __) {
-            picked = true;
-            return false;
-          },
+        (_) => SpeciesListPage(
+          pickerSettings: ManageableListPagePickerSettings.single(
+            onPicked: (_, __) {
+              picked = true;
+              return false;
+            },
+          ),
         ),
         appManager: appManager,
       ));

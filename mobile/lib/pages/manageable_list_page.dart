@@ -15,6 +15,8 @@ import '../widgets/widget.dart';
 
 /// A page that is able to manage a list of a given type, [T]. The page includes
 /// an optional [SearchBar] and can be used a single or multi-item picker.
+///
+/// For a simpler picker, see [PickerPage].
 class ManageableListPage<T> extends StatefulWidget {
   /// See [ManageableListPageItemModel].
   final ManageableListPageItemModel Function(BuildContext, T) itemBuilder;
@@ -24,6 +26,11 @@ class ManageableListPage<T> extends StatefulWidget {
 
   /// See [SliverAppBar.title].
   final Widget Function(List<T>) titleBuilder;
+
+  /// Shown when [pickerSettings] is not null.
+  ///
+  /// See [SliverAppBar.title].
+  final Widget Function(List<T>) pickerTitleBuilder;
 
   /// If true, adds additional padding between search icon and search text so
   /// the search text is horizontally aligned with an item's main text.
@@ -38,21 +45,19 @@ class ManageableListPage<T> extends StatefulWidget {
   final bool forceCenterTitle;
 
   /// If non-null, the [ManageableListPage] acts like a picker.
-  ///
-  /// See [ManageableListPageSinglePickerSettings].
-  /// See [ManageableListPageMultiPickerSettings].
   final ManageableListPagePickerSettings<T> pickerSettings;
 
   /// If non-null, the [ManageableListPage] includes a [SearchBar] in the
   /// [AppBar].
   ///
-  /// See [ManageableListPageSearchDelegate].
-  final ManageableListPageSearchDelegate searchDelegate;
+  /// See [ListPageSearchDelegate].
+  final ListPageSearchDelegate searchDelegate;
 
   ManageableListPage({
     @required this.itemManager,
     @required this.itemBuilder,
     this.titleBuilder,
+    this.pickerTitleBuilder,
     this.itemsHaveThumbnail = false,
     this.forceCenterTitle = false,
     this.pickerSettings,
@@ -65,37 +70,40 @@ class ManageableListPage<T> extends StatefulWidget {
 }
 
 class _ManageableListPageState<T> extends State<ManageableListPage<T>> {
-  final double _appBarExpandedHeight = 100.0;
+  static const IconData _iconCheck = Icons.check;
+  static const _appBarExpandedHeight = 100.0;
 
   /// Additional padding required to line up search text with [ListItem] text.
-  final double _thumbSearchTextOffset = 24.0;
+  static const _thumbSearchTextOffset = 24.0;
 
   SearchTimer _searchTimer;
-  bool _editing = false;
+  bool _isEditing = false;
   Set<T> _selectedValues = {};
   _ViewingState _viewingState = _ViewingState.viewing;
   String _searchText;
 
-  bool get _viewing => _viewingState == _ViewingState.viewing;
+  bool get _isViewing => _viewingState == _ViewingState.viewing;
 
-  bool get _pickingMulti => _viewingState == _ViewingState.pickingMulti;
+  bool get _isPickingMulti => _viewingState == _ViewingState.pickingMulti;
 
-  bool get _pickingSingle => _viewingState == _ViewingState.pickingSingle;
+  bool get _isPickingSingle => _viewingState == _ViewingState.pickingSingle;
+
+  bool get _isPicking => _isPickingMulti || _isPickingSingle;
 
   bool get _hasSearch => widget.searchDelegate != null;
 
   bool get _hasDetailPage => widget.itemManager.detailPageBuilder != null;
 
-  bool get _editable => widget.itemManager.editPageBuilder != null;
+  bool get _isEditable => widget.itemManager.editPageBuilder != null;
 
-  bool get _addable => widget.itemManager.addPageBuilder != null;
+  bool get _isAddable => widget.itemManager.addPageBuilder != null;
 
   @override
   void initState() {
     super.initState();
 
     if (widget.pickerSettings != null) {
-      _viewingState = widget.pickerSettings.multi
+      _viewingState = widget.pickerSettings.isMulti
           ? _ViewingState.pickingMulti
           : _ViewingState.pickingSingle;
       _selectedValues = Set.of(widget.pickerSettings.initialValues);
@@ -123,9 +131,13 @@ class _ManageableListPageState<T> extends State<ManageableListPage<T>> {
   }
 
   Widget _buildScaffold(List<T> items) {
+    // If picking an option isn't required, show a "None" option.
+    var showClearOption = _isPicking && !widget.pickerSettings.isRequired;
+    var clearOptionOffset = showClearOption ? 2 : 0;
+
     return WillPopScope(
       onWillPop: () {
-        if (_pickingMulti) {
+        if (_isPickingMulti) {
           _finishPicking(_selectedValues);
         }
         return Future.value(true);
@@ -138,7 +150,9 @@ class _ManageableListPageState<T> extends State<ManageableListPage<T>> {
               floating: true,
               pinned: false,
               snap: true,
-              title: widget.titleBuilder?.call(items),
+              title: _isPicking
+                  ? widget.pickerTitleBuilder?.call(items) ?? Empty()
+                  : widget.titleBuilder?.call(items) ?? Empty(),
               actions: _buildActions(),
               expandedHeight: _hasSearch ? _appBarExpandedHeight : 0.0,
               flexibleSpace: _buildSearchBar(),
@@ -150,8 +164,18 @@ class _ManageableListPageState<T> extends State<ManageableListPage<T>> {
                 visible: items.isNotEmpty,
                 sliver: SliverList(
                   delegate: SliverChildBuilderDelegate(
-                    (context, i) => _buildItem(context, items[i]),
-                    childCount: items.length,
+                    (context, i) {
+                      if (showClearOption) {
+                        if (i == 0) {
+                          return _buildNoneItem(context, items);
+                        } else if (i == 1) {
+                          return MinDivider();
+                        }
+                      }
+                      return _buildItem(context, items[i - clearOptionOffset]);
+                    },
+                    // +2 for "None" and divider.
+                    childCount: items.length + clearOptionOffset,
                   ),
                 ),
                 replacementSliver: SliverToBoxAdapter(
@@ -198,7 +222,7 @@ class _ManageableListPageState<T> extends State<ManageableListPage<T>> {
   }
 
   List<Widget> _buildActions() {
-    if (_pickingMulti) {
+    if (_isPickingMulti) {
       return _buildMultiPickerActions();
     } else {
       return _buildSinglePickerActions();
@@ -209,7 +233,7 @@ class _ManageableListPageState<T> extends State<ManageableListPage<T>> {
     var result = <Widget>[];
 
     // Done button, for finishing editing.
-    if (_editing) {
+    if (_isEditing) {
       result.add(
         ActionButton.done(
           condensed: true,
@@ -221,18 +245,18 @@ class _ManageableListPageState<T> extends State<ManageableListPage<T>> {
     // Overflow add/edit items for modifying the list.
     var overflowOptions = <PopupMenuItem<_OverflowOption>>[];
 
-    if (_addable) {
+    if (_isAddable) {
       overflowOptions.add(PopupMenuItem<_OverflowOption>(
         value: _OverflowOption.add,
         child: Text(Strings.of(context).add),
       ));
     }
 
-    if (_editable) {
+    if (_isEditable) {
       overflowOptions.add(PopupMenuItem<_OverflowOption>(
         value: _OverflowOption.edit,
         child: Text(Strings.of(context).edit),
-        enabled: !_editing,
+        enabled: !_isEditing,
       ));
     }
 
@@ -261,21 +285,21 @@ class _ManageableListPageState<T> extends State<ManageableListPage<T>> {
   List<Widget> _buildSinglePickerActions() {
     var result = <Widget>[];
 
-    if (_editing) {
+    if (_isEditing) {
       result.add(ActionButton.done(
-        condensed: _addable,
+        condensed: _isAddable,
         onPressed: () => setEditingUpdateState(isEditing: false),
       ));
-    } else if (_editable) {
+    } else if (_isEditable) {
       // Only include the edit button if the items can be modified.
       result.add(ActionButton.edit(
-        condensed: _addable,
+        condensed: _isAddable,
         onPressed: () => setEditingUpdateState(isEditing: true),
       ));
     }
 
     // Only include the add button if new items can be added.
-    if (_addable) {
+    if (_isAddable) {
       result.add(IconButton(
         icon: Icon(Icons.add),
         onPressed: () => present(context, widget.itemManager.addPageBuilder()),
@@ -283,6 +307,39 @@ class _ManageableListPageState<T> extends State<ManageableListPage<T>> {
     }
 
     return result;
+  }
+
+  Widget _buildNoneItem(BuildContext context, List<T> items) {
+    String label;
+    Widget trailing;
+    VoidCallback onTap;
+    if (_isPickingSingle) {
+      label = Strings.of(context).none;
+      trailing = _selectedValues.isEmpty ? Icon(_iconCheck) : null;
+      onTap = () => _finishPicking({});
+    } else if (_isPickingMulti) {
+      label = Strings.of(context).all;
+      trailing = PaddedCheckbox(
+        checked: widget.pickerSettings.containsAll?.call(_selectedValues) ??
+            _selectedValues.containsAll(items),
+        onChanged: (checked) => setState(() {
+          if (checked) {
+            _selectedValues = items.toSet();
+          } else {
+            _selectedValues.clear();
+          }
+        }),
+      );
+      onTap = null;
+    }
+
+    return ManageableListItem(
+      editing: false,
+      child: Text(label),
+      onTapDeleteButton: () => false,
+      onTap: onTap,
+      trailing: trailing,
+    );
   }
 
   Widget _buildItem(BuildContext context, T itemValue) {
@@ -295,7 +352,7 @@ class _ManageableListPageState<T> extends State<ManageableListPage<T>> {
     }
 
     Widget trailing = RightChevronIcon();
-    if (_pickingMulti) {
+    if (_isPickingMulti) {
       trailing = PaddedCheckbox(
         checked: _selectedValues.contains(itemValue),
         onChanged: (checked) {
@@ -308,15 +365,16 @@ class _ManageableListPageState<T> extends State<ManageableListPage<T>> {
           });
         },
       );
-    } else if (_pickingSingle || widget.itemManager.detailPageBuilder == null) {
+    } else if (_isPickingSingle ||
+        widget.itemManager.detailPageBuilder == null) {
       // Don't show detail disclosure indicator if we're picking a single
       // value, or if there isn't any detail to show.
       trailing =
-          _selectedValues.contains(itemValue) ? Icon(Icons.check) : Empty();
+          _selectedValues.contains(itemValue) ? Icon(_iconCheck) : Empty();
     }
 
-    var canEdit = _editing && item.editable;
-    var enabled = !_editing || canEdit;
+    var canEdit = _isEditing && item.editable;
+    var enabled = !_isEditing || canEdit;
 
     return ManageableListItem(
       child: item.child,
@@ -325,17 +383,17 @@ class _ManageableListPageState<T> extends State<ManageableListPage<T>> {
       deleteMessageBuilder: (context) =>
           widget.itemManager.deleteWidget(context, itemValue),
       onConfirmDelete: () => widget.itemManager.deleteItem(context, itemValue),
-      onTap: !enabled || (_viewing && !_hasDetailPage && !canEdit)
+      onTap: !enabled || (_isViewing && !_hasDetailPage && !canEdit)
           ? null
           : () {
-              if (_pickingMulti && !canEdit) {
+              if (_isPickingMulti && !canEdit) {
                 // Taps are consumed by trailing checkbox in this case.
                 return;
               }
 
               if (canEdit) {
                 present(context, widget.itemManager.editPageBuilder(itemValue));
-              } else if (_pickingSingle) {
+              } else if (_isPickingSingle) {
                 _finishPicking({itemValue});
               } else if (widget.itemManager.detailPageBuilder != null) {
                 push(context, widget.itemManager.detailPageBuilder(itemValue));
@@ -350,7 +408,7 @@ class _ManageableListPageState<T> extends State<ManageableListPage<T>> {
 
   void setEditingUpdateState({bool isEditing}) {
     setState(() {
-      _editing = isEditing;
+      _isEditing = isEditing;
     });
   }
 
@@ -364,33 +422,78 @@ class _ManageableListPageState<T> extends State<ManageableListPage<T>> {
 enum _ViewingState { pickingSingle, pickingMulti, viewing }
 
 class ManageableListPagePickerSettings<T> {
-  final Set<T> initialValues;
-  final bool multi;
-
   /// Invoked when picking has finished. Returning true will pop the picker
-  /// from the current [Navigator]. [pickedItems] is guaranteed to have on
-  /// and only one item if [multi] is true, otherwise includes all items that
-  /// were picked.
+  /// from the current [Navigator]. [pickedItems] is guaranteed to have one
+  /// and only one item if [isMulti] is false, otherwise includes all items that
+  /// were picked. If [isRequired] is false, and "None" is selected,
+  /// [pickedItems] is an empty [Set].
   final bool Function(BuildContext context, Set<T> pickedItems) onPicked;
+
+  final Set<T> initialValues;
+  final bool isMulti;
+
+  /// When false (default), a "None" option is displayed at the top of the
+  /// picker for single pickers, allowing users to "clear" the active selection,
+  /// if there is one. If [isMulti] is true, a "Select all" or "Deselect all"
+  /// checkbox option is displayed.
+  final bool isRequired;
+
+  /// A function that returns true if the given [selectedItems] contains all
+  /// of the available options. If null, [Set.containsAll] is used. Note that
+  /// this should only be used when [T] is [dynamic].
+  ///
+  /// This property only applies when [isMulti] is true.
+  final bool Function(Set<T> selectedItems) containsAll;
 
   ManageableListPagePickerSettings({
     @required this.onPicked,
     Set<T> initialValues,
-    this.multi = false,
+    this.isMulti = true,
+    this.isRequired = false,
+    this.containsAll,
   })  : assert(onPicked != null),
         initialValues = initialValues ?? const {};
+
+  ManageableListPagePickerSettings.single({
+    bool Function(BuildContext, T) onPicked,
+    T initialValue,
+    bool isRequired = false,
+  }) : this(
+          onPicked: (context, items) =>
+              onPicked(context, items.isEmpty ? null : items.first),
+          initialValues: initialValue == null ? null : {initialValue},
+          isMulti: false,
+          isRequired: isRequired,
+          containsAll: null,
+        );
+
+  ManageableListPagePickerSettings copyWith({
+    bool Function(BuildContext, Set<T>) onPicked,
+    Set<T> initialValues,
+    bool isMulti,
+    bool isRequired,
+    bool Function(Set<T>) containsAll,
+  }) {
+    return ManageableListPagePickerSettings(
+      onPicked: onPicked ?? this.onPicked,
+      initialValues: initialValues ?? this.initialValues,
+      isMulti: isMulti ?? this.isMulti,
+      isRequired: isRequired ?? this.isRequired,
+      containsAll: containsAll ?? this.containsAll,
+    );
+  }
 }
 
 /// A convenience class for storing the properties of an option [SearchBar] in
 /// the [AppBar] of a [ManageableListPage].
-class ManageableListPageSearchDelegate {
+class ListPageSearchDelegate {
   /// The search hint text.
   final String hint;
 
   /// The message to show when searching returns 0 results.
   final String noResultsMessage;
 
-  ManageableListPageSearchDelegate({
+  ListPageSearchDelegate({
     @required this.hint,
     @required this.noResultsMessage,
   })  : assert(isNotEmpty(hint)),

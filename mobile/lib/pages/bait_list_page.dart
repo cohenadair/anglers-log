@@ -14,54 +14,56 @@ import '../widgets/text.dart';
 import '../widgets/widget.dart';
 
 class BaitListPage extends StatefulWidget {
-  final bool Function(BuildContext, Set<Bait>) onPicked;
-  final bool multiPicker;
-  final Set<Bait> initialValues;
+  /// Even though the generic type in this object is [dynamic],
+  /// [pickerSettings.onPicked] is guaranteed to pass only [Bait] objects.
+  ///
+  /// The generic type is dynamic here because not only Bait objects are shown
+  /// in the list; there are also BaitCategory objects.
+  final ManageableListPagePickerSettings<dynamic> pickerSettings;
 
-  BaitListPage()
-      : onPicked = null,
-        multiPicker = false,
-        initialValues = null;
-
-  BaitListPage.picker({
-    @required this.onPicked,
-    this.multiPicker = false,
-    this.initialValues = const {},
-  }) : assert(onPicked != null);
+  BaitListPage({
+    this.pickerSettings,
+  });
 
   @override
   _BaitListPageState createState() => _BaitListPageState();
 }
 
 class _BaitListPageState extends State<BaitListPage> {
+  List<Bait> _baits = [];
+
   BaitCategoryManager get _baitCategoryManager =>
       BaitCategoryManager.of(context);
+
   BaitManager get _baitManager => BaitManager.of(context);
 
-  bool get _picking => widget.onPicked != null;
+  bool get _picking => widget.pickerSettings != null;
 
   @override
   Widget build(BuildContext context) {
     return ManageableListPage<dynamic>(
-      titleBuilder: _picking
-          ? (_) => Text(widget.multiPicker
-              ? Strings.of(context).baitListPagePickerTitleMulti
-              : Strings.of(context).baitListPagePickerTitle)
-          : (baits) => Text(format(Strings.of(context).baitListPageTitle,
-              [baits.whereType<Bait>().length])),
+      titleBuilder: (baits) => Text(
+        format(Strings.of(context).baitListPageTitle,
+            [baits.whereType<Bait>().length]),
+      ),
+      pickerTitleBuilder: (_) => Text(widget.pickerSettings.isMulti
+          ? Strings.of(context).baitListPagePickerTitleMulti
+          : Strings.of(context).baitListPagePickerTitle),
       forceCenterTitle: !_picking,
-      searchDelegate: ManageableListPageSearchDelegate(
+      searchDelegate: ListPageSearchDelegate(
         hint: Strings.of(context).baitListPageSearchHint,
         noResultsMessage: Strings.of(context).baitListPageNoSearchResults,
       ),
       pickerSettings: _picking
-          ? ManageableListPagePickerSettings<dynamic>(
-              onPicked: (context, items) => widget.onPicked(
-                context,
-                items.map((e) => (e as Bait)).toSet(),
-              ),
-              multi: widget.multiPicker,
-              initialValues: widget.initialValues,
+          ? widget.pickerSettings.copyWith(
+              onPicked: (context, items) {
+                items.removeWhere((e) => !(e is Bait));
+                return widget.pickerSettings.onPicked(
+                  context,
+                  items.map((e) => (e as Bait)).toSet(),
+                );
+              },
+              containsAll: (selectedItems) => selectedItems.containsAll(_baits),
             )
           : null,
       itemBuilder: (context, item) {
@@ -106,7 +108,7 @@ class _BaitListPageState extends State<BaitListPage> {
     var result = <dynamic>[];
 
     var categories = List.from(_baitCategoryManager.listSortedByName());
-    var baits = _baitManager.filteredList(query);
+    _baits = _baitManager.filteredList(query);
 
     // Add a category for baits that don't have a category. This is purposely
     // added to the end of the sorted list.
@@ -117,7 +119,7 @@ class _BaitListPageState extends State<BaitListPage> {
 
     // First, organize baits in to category collections.
     var map = <Id, List<Bait>>{};
-    for (var bait in baits) {
+    for (var bait in _baits) {
       var id = bait.hasBaitCategoryId() ? bait.baitCategoryId : noCategory.id;
       map.putIfAbsent(id, () => []);
       map[id].add(bait);

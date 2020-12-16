@@ -33,7 +33,7 @@ class CustomEntityListPage extends StatelessWidget {
           ],
         ),
       ),
-      searchDelegate: ManageableListPageSearchDelegate(
+      searchDelegate: ListPageSearchDelegate(
         hint: Strings.of(context).customEntityListPageSearchHint,
         noResultsMessage:
             Strings.of(context).customEntityListPageNoSearchResults,

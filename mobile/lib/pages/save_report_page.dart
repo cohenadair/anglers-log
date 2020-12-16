@@ -29,11 +29,13 @@ import '../widgets/multi_list_picker_input.dart';
 import '../widgets/radio_input.dart';
 import '../widgets/text_input.dart';
 import '../widgets/widget.dart';
+import 'manageable_list_page.dart';
 
 class SaveReportPage extends StatefulWidget {
   final dynamic oldReport;
 
   SaveReportPage() : oldReport = null;
+
   SaveReportPage.edit(this.oldReport) : assert(oldReport != null);
 
   @override
@@ -58,31 +60,44 @@ class _SaveReportPageState extends State<SaveReportPage> {
   final Map<Id, Field> _fields = {};
 
   BaitManager get _baitManager => BaitManager.of(context);
+
   ComparisonReportManager get _comparisonReportManager =>
       ComparisonReportManager.of(context);
+
   FishingSpotManager get _fishingSpotManager => FishingSpotManager.of(context);
+
   SpeciesManager get _speciesManager => SpeciesManager.of(context);
+
   SummaryReportManager get _summaryReportManager =>
       SummaryReportManager.of(context);
 
   TextInputController get _nameController => _fields[_idName].controller;
+
   TextInputController get _descriptionController =>
       _fields[_idDescription].controller;
+
   InputController<_ReportType> get _typeController =>
       _fields[_idType].controller;
+
   InputController<DisplayDateRange> get _fromDateRangeController =>
       _fields[_idStartDateRange].controller;
+
   InputController<DisplayDateRange> get _toDateRangeController =>
       _fields[_idEndDateRange].controller;
+
   InputController<Set<Species>> get _speciesController =>
       _fields[_idSpecies].controller;
+
   InputController<Set<Bait>> get _baitsController =>
       _fields[_idBaits].controller;
+
   InputController<Set<FishingSpot>> get _fishingSpotsController =>
       _fields[_idFishingSpots].controller;
 
   dynamic get _oldReport => widget.oldReport;
+
   bool get _editing => _oldReport != null;
+
   bool get _summary => _typeController.value == _ReportType.summary;
 
   @override
@@ -299,21 +314,26 @@ class _SaveReportPageState extends State<SaveReportPage> {
   Widget _buildSpeciesPicker() {
     return MultiListPickerInput(
       padding: insetsHorizontalDefaultVerticalWidget,
-      values: _speciesController.value?.map((species) => species.name)?.toSet(),
+      values: _speciesController.value.map((species) => species.name).toSet(),
       emptyValue: (context) =>
           Strings.of(context).saveCustomReportPageAllSpecies,
       onTap: () {
+        var allSpecies = _speciesManager.list().toSet();
         push(
           context,
-          SpeciesListPage.picker(
-            multiPicker: true,
-            initialValues: _speciesController.value,
-            onPicked: (context, pickedSpecies) {
-              setState(() {
-                _speciesController.value = pickedSpecies;
-              });
-              return true;
-            },
+          // Treat an empty controller value as "include all", so we're not
+          // including 100s of objects in a protobuf collection.
+          SpeciesListPage(
+            pickerSettings: ManageableListPagePickerSettings<Species>(
+              onPicked: (context, species) {
+                setState(() => _speciesController.value =
+                    species.containsAll(allSpecies) ? {} : species);
+                return true;
+              },
+              initialValues: _speciesController.value.isEmpty
+                  ? allSpecies
+                  : _speciesController.value,
+            ),
           ),
         );
       },
@@ -326,17 +346,22 @@ class _SaveReportPageState extends State<SaveReportPage> {
       values: _baitsController.value?.map((bait) => bait.name)?.toSet(),
       emptyValue: (context) => Strings.of(context).saveCustomReportPageAllBaits,
       onTap: () {
+        var allBaits = _baitManager.list().toSet();
         push(
           context,
-          BaitListPage.picker(
-            multiPicker: true,
-            initialValues: _baitsController.value,
-            onPicked: (context, pickedBaits) {
-              setState(() {
-                _baitsController.value = pickedBaits;
-              });
-              return true;
-            },
+          // Treat an empty controller value as "include all", so we're not
+          // including 100s of objects in a protobuf collection.
+          BaitListPage(
+            pickerSettings: ManageableListPagePickerSettings<dynamic>(
+              onPicked: (context, baits) {
+                setState(() => _baitsController.value =
+                    baits.containsAll(allBaits) ? {} : baits);
+                return true;
+              },
+              initialValues: _baitsController.value.isEmpty
+                  ? allBaits
+                  : _baitsController.value,
+            ),
           ),
         );
       },
@@ -352,17 +377,24 @@ class _SaveReportPageState extends State<SaveReportPage> {
       emptyValue: (context) =>
           Strings.of(context).saveCustomReportPageAllFishingSpots,
       onTap: () {
+        var allFishingSpots = _fishingSpotManager.list().toSet();
         push(
           context,
-          FishingSpotListPage.picker(
-            multiPicker: true,
-            initialValues: _fishingSpotsController.value,
-            onPicked: (context, pickedFishingSpots) {
-              setState(() {
-                _fishingSpotsController.value = pickedFishingSpots;
-              });
-              return true;
-            },
+          // Treat an empty controller value as "include all", so we're not
+          // including 100s of objects in a protobuf collection.
+          FishingSpotListPage(
+            pickerSettings: ManageableListPagePickerSettings<FishingSpot>(
+              onPicked: (context, fishingSpots) {
+                setState(() => _fishingSpotsController.value =
+                    fishingSpots.containsAll(allFishingSpots)
+                        ? {}
+                        : fishingSpots);
+                return true;
+              },
+              initialValues: _fishingSpotsController.value.isEmpty
+                  ? allFishingSpots
+                  : _fishingSpotsController.value,
+            ),
           ),
         );
       },

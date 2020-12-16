@@ -1,6 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
 import 'package:mobile/pages/fishing_spot_list_page.dart';
+import 'package:mobile/pages/manageable_list_page.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mobile/widgets/checkbox_input.dart';
 import 'package:mockito/mockito.dart';
@@ -30,8 +31,10 @@ void main() {
   group("Picker", () {
     testWidgets("Single title", (tester) async {
       await tester.pumpWidget(Testable(
-        (_) => FishingSpotListPage.picker(
-          onPicked: (_, __) => true,
+        (_) => FishingSpotListPage(
+          pickerSettings: ManageableListPagePickerSettings.single(
+            onPicked: (_, __) => true,
+          ),
         ),
         appManager: appManager,
       ));
@@ -40,9 +43,10 @@ void main() {
 
     testWidgets("Multi title", (tester) async {
       await tester.pumpWidget(Testable(
-        (_) => FishingSpotListPage.picker(
-          onPicked: (_, __) => true,
-          multiPicker: true,
+        (_) => FishingSpotListPage(
+          pickerSettings: ManageableListPagePickerSettings(
+            onPicked: (_, __) => true,
+          ),
         ),
         appManager: appManager,
       ));
@@ -51,9 +55,10 @@ void main() {
 
     testWidgets("Has checkboxes", (tester) async {
       await tester.pumpWidget(Testable(
-        (_) => FishingSpotListPage.picker(
-          onPicked: (_, __) => true,
-          multiPicker: true,
+        (_) => FishingSpotListPage(
+          pickerSettings: ManageableListPagePickerSettings(
+            onPicked: (_, __) => true,
+          ),
         ),
         appManager: appManager,
       ));

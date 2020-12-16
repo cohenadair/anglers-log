@@ -9,7 +9,9 @@ import 'package:mobile/pages/species_list_page.dart';
 import 'package:mobile/utils/date_time_utils.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mobile/widgets/button.dart';
+import 'package:mobile/widgets/checkbox_input.dart';
 import 'package:mobile/widgets/date_range_picker_input.dart';
+import 'package:mobile/widgets/list_item.dart';
 import 'package:mockito/mockito.dart';
 
 import '../mock_app_manager.dart';
@@ -223,6 +225,66 @@ void main() {
     expect(find.byType(FishingSpotListPage), findsOneWidget);
   });
 
+  testWidgets("Picking all species shows single chip", (tester) async {
+    await tester.pumpWidget(Testable(
+      (_) => SaveReportPage(),
+      appManager: appManager,
+    ));
+
+    await tapAndSettle(tester, find.text("All species"));
+    expect(
+      (tester.widget(find.descendant(
+        of: find.widgetWithText(ManageableListItem, "All"),
+        matching: find.byType(PaddedCheckbox),
+      )) as PaddedCheckbox)
+          .checked,
+      isTrue,
+    );
+
+    await tapAndSettle(tester, find.byType(BackButton));
+    expect(find.text("All species"), findsOneWidget);
+  });
+
+  testWidgets("Picking all baits shows single chip", (tester) async {
+    await tester.pumpWidget(Testable(
+      (_) => SaveReportPage(),
+      appManager: appManager,
+    ));
+
+    await tapAndSettle(tester, find.text("All baits"));
+    expect(
+      (tester.widget(find.descendant(
+        of: find.widgetWithText(ManageableListItem, "All"),
+        matching: find.byType(PaddedCheckbox),
+      )) as PaddedCheckbox)
+          .checked,
+      isTrue,
+    );
+
+    await tapAndSettle(tester, find.byType(BackButton));
+    expect(find.text("All baits"), findsOneWidget);
+  });
+
+  testWidgets("Picking all fishing spots shows single chip", (tester) async {
+    await tester.pumpWidget(Testable(
+      (_) => SaveReportPage(),
+      appManager: appManager,
+    ));
+
+    await tapAndSettle(tester, find.text("All fishing spots"));
+    expect(
+      (tester.widget(find.descendant(
+        of: find.widgetWithText(ManageableListItem, "All"),
+        matching: find.byType(PaddedCheckbox),
+      )) as PaddedCheckbox)
+          .checked,
+      isTrue,
+    );
+
+    await tapAndSettle(tester, find.byType(BackButton));
+    expect(find.text("All fishing spots"), findsOneWidget);
+  });
+
   group("Comparison report", () {
     testWidgets("Add report with preset date ranges", (tester) async {
       await tester.pumpWidget(Testable(
@@ -242,9 +304,9 @@ void main() {
       await tapAndSettle(tester, find.text("Last month"));
       await tapAndSettle(tester, find.text("To"));
       await tapAndSettle(tester, find.text("This month"));
-      await selectItems(tester, "All species", ["Steelhead", "Catfish"]);
-      await selectItems(tester, "All fishing spots", ["A", "B"]);
-      await selectItems(tester, "All baits", ["Spoon", "Rapala"]);
+      await selectItems(tester, "All species", ["All", "Catfish"]);
+      await selectItems(tester, "All fishing spots", ["All", "B"]);
+      await selectItems(tester, "All baits", ["All", "Spoon"]);
 
       expect(
         find.descendant(
@@ -260,12 +322,9 @@ void main() {
         ),
         findsOneWidget,
       );
-      expect(find.text("Steelhead"), findsOneWidget);
       expect(find.text("Catfish"), findsOneWidget);
-      expect(find.text("A"), findsOneWidget);
       expect(find.text("B"), findsOneWidget);
       expect(find.text("Spoon"), findsOneWidget);
-      expect(find.text("Rapala"), findsOneWidget);
 
       await tapAndSettle(tester, find.text("SAVE"));
 
@@ -278,9 +337,9 @@ void main() {
       expect(report.description, "A brief description.");
       expect(report.fromDisplayDateRangeId, DisplayDateRange.lastMonth.id);
       expect(report.toDisplayDateRangeId, DisplayDateRange.thisMonth.id);
-      expect(report.baitIds.length, 2);
-      expect(report.speciesIds.length, 2);
-      expect(report.fishingSpotIds.length, 2);
+      expect(report.baitIds.length, 1);
+      expect(report.speciesIds.length, 1);
+      expect(report.fishingSpotIds.length, 1);
     });
 
     testWidgets("Add report with custom date ranges", (tester) async {
@@ -331,6 +390,43 @@ void main() {
       expect(report.baitIds, isEmpty);
       expect(report.speciesIds, isEmpty);
       expect(report.fishingSpotIds, isEmpty);
+    });
+
+    testWidgets("Add report with all entities selected sets empty collections",
+        (tester) async {
+      await tester.pumpWidget(Testable(
+        (_) => SaveReportPage(),
+        appManager: appManager,
+      ));
+
+      await enterTextAndSettle(
+          tester, find.widgetWithText(TextField, "Name"), "Report Name");
+      await tapAndSettle(tester, find.widgetWithText(InkWell, "Comparison"));
+      await tapAndSettle(tester, find.text("Compare"));
+      await tapAndSettle(tester, find.text("Last month"));
+      await tapAndSettle(tester, find.text("To"));
+      await tapAndSettle(tester, find.text("This month"));
+
+      // Toggle none/all for good measure.
+      await selectItems(tester, "All species", ["All", "All"]);
+      await selectItems(tester, "All fishing spots", ["All", "All"]);
+      await selectItems(tester, "All baits", ["All", "All"]);
+
+      expect(find.text("All species"), findsOneWidget);
+      expect(find.text("All baits"), findsOneWidget);
+      expect(find.text("All fishing spots"), findsOneWidget);
+
+      await tapAndSettle(tester, find.text("SAVE"));
+
+      var result = verify(
+          appManager.mockComparisonReportManager.addOrUpdate(captureAny));
+      result.called(1);
+
+      ComparisonReport report = result.captured.first;
+      expect(report.name, "Report Name");
+      expect(report.baitIds, isEmpty);
+      expect(report.speciesIds, isEmpty);
+      expect(report.baitIds, isEmpty);
     });
 
     testWidgets("Edit keeps old ID", (tester) async {
@@ -400,17 +496,14 @@ void main() {
       await tapAndSettle(tester, find.widgetWithText(InkWell, "Summary"));
       await tapAndSettle(tester, find.text("All dates"));
       await tapAndSettle(tester, find.text("Last month"));
-      await selectItems(tester, "All species", ["Steelhead", "Catfish"]);
-      await selectItems(tester, "All fishing spots", ["A", "B"]);
-      await selectItems(tester, "All baits", ["Spoon", "Rapala"]);
+      await selectItems(tester, "All species", ["All", "Catfish"]);
+      await selectItems(tester, "All fishing spots", ["All", "B"]);
+      await selectItems(tester, "All baits", ["All", "Spoon"]);
 
       expect(find.text("Last month"), findsOneWidget);
-      expect(find.text("Steelhead"), findsOneWidget);
       expect(find.text("Catfish"), findsOneWidget);
-      expect(find.text("A"), findsOneWidget);
       expect(find.text("B"), findsOneWidget);
       expect(find.text("Spoon"), findsOneWidget);
-      expect(find.text("Rapala"), findsOneWidget);
 
       await tapAndSettle(tester, find.text("SAVE"));
 
@@ -422,9 +515,9 @@ void main() {
       expect(report.name, "Report Name");
       expect(report.description, "A brief description.");
       expect(report.displayDateRangeId, DisplayDateRange.lastMonth.id);
-      expect(report.baitIds.length, 2);
-      expect(report.speciesIds.length, 2);
-      expect(report.fishingSpotIds.length, 2);
+      expect(report.baitIds.length, 1);
+      expect(report.speciesIds.length, 1);
+      expect(report.fishingSpotIds.length, 1);
     });
 
     testWidgets("Add report with custom date ranges", (tester) async {
@@ -463,6 +556,41 @@ void main() {
       expect(report.baitIds, isEmpty);
       expect(report.speciesIds, isEmpty);
       expect(report.fishingSpotIds, isEmpty);
+    });
+
+    testWidgets("Add report with all entities selected sets empty collections",
+        (tester) async {
+      await tester.pumpWidget(Testable(
+        (_) => SaveReportPage(),
+        appManager: appManager,
+      ));
+
+      await enterTextAndSettle(
+          tester, find.widgetWithText(TextField, "Name"), "Report Name");
+      await tapAndSettle(tester, find.widgetWithText(InkWell, "Summary"));
+      await tapAndSettle(tester, find.text("All dates"));
+      await tapAndSettle(tester, find.text("Last month"));
+
+      // Toggle none/all for good measure.
+      await selectItems(tester, "All species", ["All", "All"]);
+      await selectItems(tester, "All fishing spots", ["All", "All"]);
+      await selectItems(tester, "All baits", ["All", "All"]);
+
+      expect(find.text("All species"), findsOneWidget);
+      expect(find.text("All baits"), findsOneWidget);
+      expect(find.text("All fishing spots"), findsOneWidget);
+
+      await tapAndSettle(tester, find.text("SAVE"));
+
+      var result =
+          verify(appManager.mockSummaryReportManager.addOrUpdate(captureAny));
+      result.called(1);
+
+      SummaryReport report = result.captured.first;
+      expect(report.name, "Report Name");
+      expect(report.baitIds, isEmpty);
+      expect(report.speciesIds, isEmpty);
+      expect(report.baitIds, isEmpty);
     });
 
     testWidgets("Edit keeps old ID", (tester) async {

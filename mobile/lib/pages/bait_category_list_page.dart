@@ -9,46 +9,32 @@ import '../utils/string_utils.dart';
 import '../widgets/text.dart';
 
 class BaitCategoryListPage extends StatelessWidget {
-  final bool Function(BuildContext, BaitCategory) onPicked;
-  final BaitCategory initialValue;
+  final ManageableListPagePickerSettings<BaitCategory> pickerSettings;
 
-  BaitCategoryListPage()
-      : onPicked = null,
-        initialValue = null;
-
-  BaitCategoryListPage.picker({
-    @required this.onPicked,
-    this.initialValue,
-  }) : assert(onPicked != null);
-
-  bool get _picking => onPicked != null;
+  BaitCategoryListPage({
+    this.pickerSettings,
+  });
 
   @override
   Widget build(BuildContext context) {
     var baitCategoryManager = BaitCategoryManager.of(context);
 
     return ManageableListPage<BaitCategory>(
-      titleBuilder: _picking
-          ? (_) => Text(Strings.of(context).baitCategoryListPagePickerTitle)
-          : (categories) => Text(
-                format(Strings.of(context).baitCategoryListPageTitle,
-                    [categories.length]),
-              ),
+      titleBuilder: (categories) => Text(
+        format(
+            Strings.of(context).baitCategoryListPageTitle, [categories.length]),
+      ),
+      pickerTitleBuilder: (_) =>
+          Text(Strings.of(context).baitCategoryListPagePickerTitle),
       itemBuilder: (context, category) => ManageableListPageItemModel(
         child: PrimaryLabel(category.name),
       ),
-      searchDelegate: ManageableListPageSearchDelegate(
+      searchDelegate: ListPageSearchDelegate(
         hint: Strings.of(context).baitCategoryListPageSearchHint,
         noResultsMessage:
             Strings.of(context).baitCategoryListPageNoSearchResults,
       ),
-      pickerSettings: _picking
-          ? ManageableListPagePickerSettings<BaitCategory>(
-              initialValues: {initialValue},
-              onPicked: (context, categories) =>
-                  onPicked(context, categories?.first),
-            )
-          : null,
+      pickerSettings: pickerSettings,
       itemManager: ManageableListPageItemManager<BaitCategory>(
         listenerManagers: [baitCategoryManager],
         loadItems: (query) =>

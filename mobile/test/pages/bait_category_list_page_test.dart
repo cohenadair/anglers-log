@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
 import 'package:mobile/pages/bait_category_list_page.dart';
+import 'package:mobile/pages/manageable_list_page.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mockito/mockito.dart';
 
@@ -32,8 +33,10 @@ void main() {
 
   testWidgets("Picker title", (tester) async {
     await tester.pumpWidget(Testable(
-      (_) => BaitCategoryListPage.picker(
-        onPicked: (_, __) => false,
+      (_) => BaitCategoryListPage(
+        pickerSettings: ManageableListPagePickerSettings(
+          onPicked: (_, __) => false,
+        ),
       ),
       appManager: appManager,
     ));
@@ -68,11 +71,13 @@ void main() {
   testWidgets("onPicked callback invoked", (tester) async {
     BaitCategory pickedCategory;
     await tester.pumpWidget(Testable(
-      (_) => BaitCategoryListPage.picker(
-        onPicked: (_, category) {
-          pickedCategory = category;
-          return false;
-        },
+      (_) => BaitCategoryListPage(
+        pickerSettings: ManageableListPagePickerSettings.single(
+          onPicked: (_, category) {
+            pickedCategory = category;
+            return false;
+          },
+        ),
       ),
       appManager: appManager,
     ));

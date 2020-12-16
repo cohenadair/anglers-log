@@ -10,31 +10,20 @@ import '../utils/string_utils.dart';
 import '../widgets/text.dart';
 
 class FishingSpotListPage extends StatelessWidget {
-  final bool Function(BuildContext, Set<FishingSpot>) onPicked;
-  final bool multiPicker;
-  final Set<FishingSpot> initialValues;
+  final ManageableListPagePickerSettings<FishingSpot> pickerSettings;
 
-  FishingSpotListPage()
-      : onPicked = null,
-        multiPicker = false,
-        initialValues = null;
-
-  FishingSpotListPage.picker({
-    @required this.onPicked,
-    this.multiPicker = false,
-    this.initialValues,
-  }) : assert(onPicked != null);
-
-  bool get _picking => onPicked != null;
+  FishingSpotListPage({
+    this.pickerSettings,
+  });
 
   @override
   Widget build(BuildContext context) {
     var fishingSpotManager = FishingSpotManager.of(context);
 
     String title;
-    if (_picking && multiPicker) {
+    if (pickerSettings?.isMulti ?? false) {
       title = Strings.of(context).fishingSpotListPageMultiPickerTitle;
-    } else if (_picking && !multiPicker) {
+    } else if (!(pickerSettings?.isMulti ?? false)) {
       title = Strings.of(context).fishingSpotListPageSinglePickerTitle;
     }
 
@@ -49,7 +38,7 @@ class FishingSpotListPage extends StatelessWidget {
                 ),
               );
             },
-      forceCenterTitle: !_picking,
+      forceCenterTitle: pickerSettings == null,
       itemBuilder: (context, fishingSpot) => ManageableListPageItemModel(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -63,18 +52,12 @@ class FishingSpotListPage extends StatelessWidget {
           ],
         ),
       ),
-      searchDelegate: ManageableListPageSearchDelegate(
+      searchDelegate: ListPageSearchDelegate(
         hint: Strings.of(context).fishingSpotListPageSearchHint,
         noResultsMessage:
             Strings.of(context).fishingSpotListPageNoSearchResults,
       ),
-      pickerSettings: _picking
-          ? ManageableListPagePickerSettings<FishingSpot>(
-              onPicked: onPicked,
-              multi: multiPicker,
-              initialValues: initialValues,
-            )
-          : null,
+      pickerSettings: pickerSettings,
       itemManager: ManageableListPageItemManager<FishingSpot>(
         listenerManagers: [fishingSpotManager],
         loadItems: (query) =>

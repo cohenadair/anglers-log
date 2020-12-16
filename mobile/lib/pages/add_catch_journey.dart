@@ -10,6 +10,7 @@ import '../pages/image_picker_page.dart';
 import '../pages/save_catch_page.dart';
 import '../pages/species_list_page.dart';
 import '../utils/protobuf_utils.dart';
+import 'manageable_list_page.dart';
 
 /// Presents a workflow (journey) for adding a [Catch].
 class AddCatchJourney extends StatefulWidget {
@@ -30,6 +31,7 @@ class _AddCatchJourneyState extends State<AddCatchJourney> {
   final _log = Log("AddCatchJourney");
 
   FishingSpotManager get _fishingSpotManager => FishingSpotManager.of(context);
+
   LocationMonitor get _locationMonitor => LocationMonitor.of(context);
 
   List<PickedImage> _images = [];
@@ -87,20 +89,23 @@ class _AddCatchJourneyState extends State<AddCatchJourney> {
           );
         } else if (name == _pickSpeciesRoute) {
           return MaterialPageRoute(
-            builder: (context) => SpeciesListPage.picker(
-              onPicked: (context, species) {
-                _species = species.first;
+            builder: (context) => SpeciesListPage(
+              pickerSettings: ManageableListPagePickerSettings<Species>.single(
+                onPicked: (context, species) {
+                  _species = species;
 
-                // If a fishing spot already exists, skip the fishing spot
-                // picker page.
-                if (_fishingSpot == null) {
-                  Navigator.of(context).pushNamed(_pickFishingSpotRoute);
-                } else {
-                  Navigator.of(context).pushNamed(_saveCatchRoute);
-                }
+                  // If a fishing spot already exists, skip the fishing spot
+                  // picker page.
+                  if (_fishingSpot == null) {
+                    Navigator.of(context).pushNamed(_pickFishingSpotRoute);
+                  } else {
+                    Navigator.of(context).pushNamed(_saveCatchRoute);
+                  }
 
-                return false;
-              },
+                  return false;
+                },
+                isRequired: true,
+              ),
             ),
           );
         } else if (name == _pickFishingSpotRoute) {

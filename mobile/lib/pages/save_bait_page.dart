@@ -21,11 +21,13 @@ import '../widgets/input_data.dart';
 import '../widgets/list_picker_input.dart';
 import '../widgets/text_input.dart';
 import '../widgets/widget.dart';
+import 'manageable_list_page.dart';
 
 class SaveBaitPage extends StatefulWidget {
   final Bait oldBait;
 
   SaveBaitPage() : oldBait = null;
+
   SaveBaitPage.edit(this.oldBait);
 
   @override
@@ -42,15 +44,19 @@ class _SaveBaitPageState extends State<SaveBaitPage> {
   List<CustomEntityValue> _customEntityValues = [];
 
   Bait get _oldBait => widget.oldBait;
+
   bool get _editing => _oldBait != null;
 
   BaitCategoryManager get _baitCategoryManager =>
       BaitCategoryManager.of(context);
+
   BaitManager get _baitManager => BaitManager.of(context);
+
   PreferencesManager get _preferencesManager => PreferencesManager.of(context);
 
   InputController<BaitCategory> get _baitCategoryController =>
       _fields[_idBaitCategory].controller;
+
   TextInputController get _nameController =>
       _fields[_idName].controller as TextInputController;
 
@@ -119,14 +125,15 @@ class _SaveBaitPageState extends State<SaveBaitPage> {
           onTap: () {
             push(
               context,
-              BaitCategoryListPage.picker(
-                initialValue: _baitCategoryController.value,
-                onPicked: (context, pickedCategoryId) {
-                  setState(() {
-                    _baitCategoryController.value = pickedCategoryId;
-                  });
-                  return true;
-                },
+              BaitCategoryListPage(
+                pickerSettings:
+                    ManageableListPagePickerSettings<BaitCategory>.single(
+                  onPicked: (context, category) {
+                    setState(() => _baitCategoryController.value = category);
+                    return true;
+                  },
+                  initialValue: _baitCategoryController.value,
+                ),
               ),
             );
           },

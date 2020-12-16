@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
+import 'package:mobile/pages/manageable_list_page.dart';
 import 'package:mobile/pages/report_list_page.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mobile/widgets/list_item.dart';
@@ -43,9 +44,11 @@ void main() {
 
   testWidgets("Current item is selected", (tester) async {
     await tester.pumpWidget(Testable(
-      (_) => ReportListPage.picker(
-        currentItem: comparisons.first,
-        onPicked: (_, __) => true,
+      (_) => ReportListPage(
+        pickerSettings: ManageableListPagePickerSettings.single(
+          onPicked: (_, __) => true,
+          initialValue: comparisons.first,
+        ),
       ),
       appManager: appManager,
     ));
@@ -62,12 +65,14 @@ void main() {
   testWidgets("Callback is invoked", (tester) async {
     dynamic pickedReport;
     await tester.pumpWidget(Testable(
-      (_) => ReportListPage.picker(
-        currentItem: comparisons.first,
-        onPicked: (_, report) {
-          pickedReport = report;
-          return true;
-        },
+      (_) => ReportListPage(
+        pickerSettings: ManageableListPagePickerSettings.single(
+          onPicked: (_, report) {
+            pickedReport = report;
+            return true;
+          },
+          initialValue: comparisons.first,
+        ),
       ),
       appManager: appManager,
     ));
@@ -81,8 +86,10 @@ void main() {
 
   testWidgets("Different item types are displayed correctly", (tester) async {
     await tester.pumpWidget(Testable(
-      (_) => ReportListPage.picker(
-        onPicked: (_, __) => true,
+      (_) => ReportListPage(
+        pickerSettings: ManageableListPagePickerSettings.single(
+          onPicked: (_, __) => true,
+        ),
       ),
       appManager: appManager,
     ));
@@ -97,8 +104,10 @@ void main() {
 
   testWidgets("Delete SummaryReport", (tester) async {
     await tester.pumpWidget(Testable(
-      (_) => ReportListPage.picker(
-        onPicked: (_, __) => true,
+      (_) => ReportListPage(
+        pickerSettings: ManageableListPagePickerSettings.single(
+          onPicked: (_, __) => true,
+        ),
       ),
       appManager: appManager,
     ));
@@ -119,8 +128,10 @@ void main() {
 
   testWidgets("Delete ComparisonReport", (tester) async {
     await tester.pumpWidget(Testable(
-      (_) => ReportListPage.picker(
-        onPicked: (_, __) => true,
+      (_) => ReportListPage(
+        pickerSettings: ManageableListPagePickerSettings.single(
+          onPicked: (_, __) => true,
+        ),
       ),
       appManager: appManager,
     ));
@@ -141,8 +152,10 @@ void main() {
 
   testWidgets("Overview report cannot be deleted", (tester) async {
     await tester.pumpWidget(Testable(
-      (_) => ReportListPage.picker(
-        onPicked: (_, __) => true,
+      (_) => ReportListPage(
+        pickerSettings: ManageableListPagePickerSettings.single(
+          onPicked: (_, __) => true,
+        ),
       ),
       appManager: appManager,
     ));
@@ -163,8 +176,10 @@ void main() {
     when(appManager.mockSummaryReportManager.list()).thenReturn([]);
 
     await tester.pumpWidget(Testable(
-      (_) => ReportListPage.picker(
-        onPicked: (_, __) => true,
+      (_) => ReportListPage(
+        pickerSettings: ManageableListPagePickerSettings.single(
+          onPicked: (_, __) => true,
+        ),
       ),
       appManager: appManager,
     ));
@@ -174,8 +189,11 @@ void main() {
 
   testWidgets("Custom reports are sorted alphabetically", (tester) async {
     await tester.pumpWidget(Testable(
-      (_) => ReportListPage.picker(
-        onPicked: (_, __) => true,
+      (_) => ReportListPage(
+        pickerSettings: ManageableListPagePickerSettings.single(
+          onPicked: (_, __) => true,
+          isRequired: true,
+        ),
       ),
       appManager: appManager,
     ));

@@ -1,15 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:quiver/strings.dart';
 
+import '../model/gen/anglerslog.pb.dart';
 import '../res/dimen.dart';
 import '../widgets/list_item.dart';
 import '../widgets/text.dart';
 import '../widgets/widget.dart';
+import 'manageable_list_page.dart';
 
 /// A generic picker page for selecting a single or multiple items from a list.
 ///
 /// Note that a [Set] is used to determine which items are selected, and as
 /// such, `T` must override `==`.
+///
+/// Note that this should only be used for static lists, not for picking from a
+/// list of manageable entities, such as a list of [Bait] objects. In those
+/// cases, a [ManageableListPage] should used with appropriate picker settings.
 class PickerPage<T> extends StatefulWidget {
   /// See [AppBar.title].
   final Widget title;
@@ -28,9 +34,9 @@ class PickerPage<T> extends StatefulWidget {
   /// nothing else can be selected at the same time. If another item is
   /// selected while this item is selected, this item is deselected.
   ///
-  /// This is meant to be used as a "pick everything" option. For example,
-  /// in a filter picker that allows selection of all of something, this
-  /// value could be "Include All".
+  /// This is meant to be used as a "pick everything" or "pick nothing" option.
+  /// For example, in a filter picker that allows selection of all of something,
+  /// this value could be "Include All".
   final PickerPageItem<T> allItem;
 
   /// All items that can be selected. Dividers can be added between items by

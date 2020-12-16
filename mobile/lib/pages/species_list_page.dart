@@ -10,47 +10,32 @@ import '../utils/string_utils.dart';
 import '../widgets/text.dart';
 
 class SpeciesListPage extends StatelessWidget {
-  final bool Function(BuildContext, Set<Species>) onPicked;
-  final bool multiPicker;
-  final Set<Species> initialValues;
+  final ManageableListPagePickerSettings<Species> pickerSettings;
 
-  SpeciesListPage()
-      : onPicked = null,
-        multiPicker = false,
-        initialValues = null;
-
-  SpeciesListPage.picker({
-    @required this.onPicked,
-    this.multiPicker = false,
-    this.initialValues,
-  }) : assert(onPicked != null);
-
-  bool get _picking => onPicked != null;
+  SpeciesListPage({
+    this.pickerSettings,
+  });
 
   @override
   Widget build(BuildContext context) {
     var speciesManager = SpeciesManager.of(context);
 
     return ManageableListPage<Species>(
-      titleBuilder: _picking
-          ? (_) => Text(Strings.of(context).speciesListPagePickerTitle)
-          : (species) => Text(format(Strings.of(context).speciesListPageTitle,
-              [speciesManager.entityCount])),
-      forceCenterTitle: !_picking,
+      titleBuilder: (species) => Text(
+        format(Strings.of(context).speciesListPageTitle,
+            [speciesManager.entityCount]),
+      ),
+      pickerTitleBuilder: (_) =>
+          Text(Strings.of(context).speciesListPagePickerTitle),
+      forceCenterTitle: pickerSettings == null,
       itemBuilder: (context, species) => ManageableListPageItemModel(
         child: PrimaryLabel(species.name),
       ),
-      searchDelegate: ManageableListPageSearchDelegate(
+      searchDelegate: ListPageSearchDelegate(
         hint: Strings.of(context).speciesListPageSearchHint,
         noResultsMessage: Strings.of(context).speciesListPageNoSearchResults,
       ),
-      pickerSettings: _picking
-          ? ManageableListPagePickerSettings<Species>(
-              onPicked: onPicked,
-              multi: multiPicker,
-              initialValues: initialValues,
-            )
-          : null,
+      pickerSettings: pickerSettings,
       itemManager: ManageableListPageItemManager<Species>(
         listenerManagers: [speciesManager],
         loadItems: (query) => speciesManager.listSortedByName(filter: query),
