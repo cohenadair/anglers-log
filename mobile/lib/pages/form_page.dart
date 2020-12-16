@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:quiver/core.dart';
+import 'package:quiver/strings.dart';
 
 import '../custom_entity_manager.dart';
 import '../entity_manager.dart';
@@ -16,52 +17,13 @@ import '../widgets/widget.dart';
 
 /// A function responsible for building all input widgets.
 ///
-/// @return The returned map key [Id] corresponds to the identifier in the
+/// The returned map key [Id] corresponds to the identifier in the
 /// underlying model object, such as "angler" or "bait_id". The returned
 /// map value [Widget] is the widget that is displayed.
 ///
 /// Note that the returned map key is used in keeping track of [InputFields]
 /// that are selected for deletion.
 typedef FieldBuilder = Map<Id, Widget> Function(BuildContext);
-
-enum _OverflowOption {
-  manageFields,
-}
-
-/// A small data structure that stores information on fields that can be added
-/// to the form by a user.
-@immutable
-class FormPageFieldOption {
-  /// The unique ID of the field. Used for identification purposes.
-  final Id id;
-
-  /// The name of the field, as seen and selected by the user.
-  final String userFacingName;
-
-  /// Whether or not the option is already part of the form.
-  final bool used;
-
-  /// Whether or not the field can be removed from the form. Defaults to `true`.
-  final bool removable;
-
-  FormPageFieldOption({
-    this.id,
-    this.userFacingName,
-    this.used = false,
-    this.removable = true,
-  });
-
-  @override
-  bool operator ==(Object other) =>
-      other is FormPageFieldOption &&
-      id == other.id &&
-      userFacingName == other.userFacingName &&
-      used == other.used &&
-      removable == other.removable;
-
-  @override
-  int get hashCode => hash4(id, userFacingName, used, removable);
-}
 
 /// A customizable user input page that supports user-manageable input fields.
 /// If desired, users can add and remove input fields.
@@ -241,6 +203,52 @@ class _FormPageState extends State<FormPage> {
   }
 }
 
+/// A small data structure that stores information on fields that can be added
+/// to the form by a user.
+// TODO: Probably can be refactored to use Field class.
+@immutable
+class FormPageFieldOption {
+  /// The unique ID of the field. Used for identification purposes.
+  final Id id;
+
+  /// A required name of the field, as seen and selected by the user.
+  final String name;
+
+  /// An optional description of the field, as seen by the user.
+  final String description;
+
+  /// Whether or not the option is already part of the form.
+  final bool used;
+
+  /// Whether or not the field can be removed from the form. Defaults to `true`.
+  final bool removable;
+
+  FormPageFieldOption({
+    @required this.id,
+    @required this.name,
+    this.description,
+    this.used = false,
+    this.removable = true,
+  })  : assert(id != null),
+        assert(isNotEmpty(name));
+
+  @override
+  bool operator ==(Object other) =>
+      other is FormPageFieldOption &&
+      id == other.id &&
+      name == other.name &&
+      description == other.description &&
+      used == other.used &&
+      removable == other.removable;
+
+  @override
+  int get hashCode => hash4(id, name, used, removable);
+}
+
+enum _OverflowOption {
+  manageFields,
+}
+
 class _SelectionPage extends StatefulWidget {
   final List<FormPageFieldOption> options;
   final Function(Set<Id>) onSelectItems;
@@ -308,10 +316,11 @@ class _SelectionPageState extends State<_SelectionPage> {
     // Add included field options.
     result.addAll(
       normalFields.map(
-        (o) => PickerPageItem<FormPageFieldOption>(
-          title: o.userFacingName,
-          value: o,
-          enabled: o.removable,
+        (item) => PickerPageItem<FormPageFieldOption>(
+          title: item.name,
+          subtitle: item.description,
+          value: item,
+          enabled: item.removable,
         ),
       ),
     );
@@ -329,13 +338,14 @@ class _SelectionPageState extends State<_SelectionPage> {
       if (option == null) {
         customFields.add(FormPageFieldOption(
           id: entity.id,
-          userFacingName: entity.name,
+          name: entity.name,
+          description: entity.description,
         ));
       }
     }
 
     // Ensure alphabetical order.
-    customFields.sort((a, b) => a.userFacingName.compareTo(b.userFacingName));
+    customFields.sort((a, b) => a.name.compareTo(b.name));
 
     // If there are no custom fields, show a note on how to add them.
     if (customFields.isEmpty) {
@@ -348,7 +358,8 @@ class _SelectionPageState extends State<_SelectionPage> {
     result.addAll(
       customFields.map(
         (field) => PickerPageItem<FormPageFieldOption>(
-          title: field.userFacingName,
+          title: field.name,
+          subtitle: field.description,
           value: field,
         ),
       ),

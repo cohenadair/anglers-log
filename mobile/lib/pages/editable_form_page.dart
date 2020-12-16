@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:quiver/strings.dart';
 
 import '../custom_entity_manager.dart';
 import '../i18n/strings.dart';
@@ -154,12 +155,20 @@ class _EditableFormPageState extends State<EditableFormPage> {
       addFieldOptions: _fields.keys
           .where((id) => !_fields[id].fake)
           .map(
-            (id) => FormPageFieldOption(
-              id: id,
-              userFacingName: _fields[id].name(context),
-              used: _fields[id].showing,
-              removable: _fields[id].removable,
-            ),
+            (id) {
+              var description = _fields[id].description?.call(context);
+              if (isEmpty(description) && !_fields[id].removable) {
+                description = Strings.of(context).inputGenericRequired;
+              }
+
+              return FormPageFieldOption(
+                id: id,
+                name: _fields[id].name(context),
+                description: description,
+                used: _fields[id].showing,
+                removable: _fields[id].removable,
+              );
+            },
           )
           .toList(),
       onAddFields: _addInputWidgets,

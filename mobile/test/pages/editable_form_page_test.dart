@@ -268,4 +268,73 @@ void main() {
     expect(onSaveMap.values.first is String, isTrue);
     expect(onSaveMap.values.first, "Test 2");
   });
+
+  testWidgets("Field descriptions are rendered", (tester) async {
+    var custom1 = CustomEntity()
+      ..id = randomId()
+      ..name = "Custom Field 1"
+      ..description = "A test description."
+      ..type = CustomEntity_Type.TEXT;
+    var custom2 = CustomEntity()
+      ..id = randomId()
+      ..name = "Custom Field 2"
+      ..type = CustomEntity_Type.TEXT;
+
+    when(appManager.mockCustomEntityManager.entity(custom1.id))
+        .thenReturn(custom1);
+    when(appManager.mockCustomEntityManager.entity(custom2.id))
+        .thenReturn(custom2);
+
+    var id1 = randomId();
+    var id2 = randomId();
+    var id3 = randomId();
+
+    await tester.pumpWidget(Testable(
+      (_) => EditableFormPage(
+        fields: {
+          // Shows "Required" subtitle.
+          id1: Field(
+            id: id1,
+            controller: TextInputController(),
+            name: (_) => "Input 1",
+            removable: false,
+          ),
+          // Shows "Input 2 description" subtitle.
+          id2: Field(
+            id: id2,
+            controller: TextInputController(),
+            name: (_) => "Input 2",
+            description: (_) => "Input 2 description.",
+            removable: true,
+          ),
+          // Shows no subtitle.
+          id3: Field(
+            id: id3,
+            controller: TextInputController(),
+            name: (_) => "Input 3",
+          ),
+        },
+        onBuildField: (id) => Text(id.toString()),
+        customEntityValues: [
+          CustomEntityValue()
+            ..customEntityId = custom1.id
+            ..value = "Test 1",
+          CustomEntityValue()
+            ..customEntityId = custom2.id
+            ..value = "Test 2",
+        ],
+      ),
+      appManager: appManager,
+    ));
+
+    // Open field picker.
+    await tapAndSettle(
+        tester, find.widgetWithIcon(IconButton, Icons.more_vert));
+    await tapAndSettle(tester, find.text("Manage Fields"));
+
+    expect(find.byType(SubtitleLabel), findsNWidgets(3));
+    expect(find.text("Required"), findsOneWidget);
+    expect(find.text("Input 2 description."), findsOneWidget);
+    expect(find.text("A test description."), findsOneWidget);
+  });
 }

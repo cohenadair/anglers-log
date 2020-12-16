@@ -213,21 +213,21 @@ void main() {
         addFieldOptions: [
           FormPageFieldOption(
             id: nameId,
-            userFacingName: "Name",
+            name: "Name",
             used: true,
           ),
           FormPageFieldOption(
             id: nameId,
-            userFacingName: "Description",
+            name: "Description",
           ),
           FormPageFieldOption(
             id: nameId,
-            userFacingName: "Age",
+            name: "Age",
             used: true,
           ),
           FormPageFieldOption(
             id: nameId,
-            userFacingName: "Enabled",
+            name: "Enabled",
             removable: false,
           ),
         ],
@@ -275,7 +275,7 @@ void main() {
         addFieldOptions: [
           FormPageFieldOption(
             id: nameId,
-            userFacingName: "Name",
+            name: "Name",
             used: true,
           ),
         ],
@@ -306,7 +306,7 @@ void main() {
         addFieldOptions: [
           FormPageFieldOption(
             id: nameId,
-            userFacingName: "Name",
+            name: "Name",
             used: true,
           ),
         ],
@@ -364,7 +364,7 @@ void main() {
         addFieldOptions: [
           FormPageFieldOption(
             id: customEntityId,
-            userFacingName: customEntity.name,
+            name: customEntity.name,
           ),
         ],
       ),
@@ -395,7 +395,7 @@ void main() {
         addFieldOptions: [
           FormPageFieldOption(
             id: customEntityId,
-            userFacingName: customEntity.name,
+            name: customEntity.name,
           ),
         ],
       ),
@@ -438,11 +438,11 @@ void main() {
         addFieldOptions: [
           FormPageFieldOption(
             id: customEntityId1,
-            userFacingName: customEntity1.name,
+            name: customEntity1.name,
           ),
           FormPageFieldOption(
             id: customEntityId2,
-            userFacingName: customEntity2.name,
+            name: customEntity2.name,
           ),
         ],
       ),
