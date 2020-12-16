@@ -29,7 +29,7 @@ class CustomEntityListPage extends StatelessWidget {
             PrimaryLabel(entity.name),
             isEmpty(entity.description)
                 ? Empty()
-                : SecondaryLabel(entity.description),
+                : SubtitleLabel(entity.description),
           ],
         ),
       ),
