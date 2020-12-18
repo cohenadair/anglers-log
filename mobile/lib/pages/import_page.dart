@@ -11,6 +11,7 @@ import '../utils/page_utils.dart';
 import '../widgets/button.dart';
 import '../widgets/widget.dart';
 import '../wrappers/file_picker_wrapper.dart';
+import 'scroll_page.dart';
 
 class ImportPage extends StatefulWidget {
   @override
@@ -27,11 +28,12 @@ class _ImportPageState extends State<ImportPage> {
   bool get _loading => _importState == _State.loading;
 
   AppManager get _appManager => AppManager.of(context);
+
   FilePickerWrapper get _filePickerWrapper => _appManager.filePickerWrapper;
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return ScrollPage(
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0.0,
@@ -40,39 +42,34 @@ class _ImportPageState extends State<ImportPage> {
         ),
       ),
       extendBodyBehindAppBar: true,
-      body: HorizontalSafeArea(
-        child: Padding(
-          padding: insetsDefault,
-          child: ListView(
-            children: [
-              WatermarkLogo(
-                icon: Icons.cloud_download,
-              ),
-              Text(
-                Strings.of(context).importPageDescription,
-                style: Theme.of(context).textTheme.subtitle1,
-                textAlign: TextAlign.center,
-              ),
-              VerticalSpace(paddingWidget),
-              // Using align will minimize button width. Without it, button
-              // takes up entire width of parent.
-              Align(
-                child: Button(
-                  text: Strings.of(context).importPageChooseFile,
-                  onPressed: _loading
-                      ? null
-                      : () {
-                          _updateImportState(_State.loading);
-                          _chooseFile();
-                        },
-                ),
-              ),
-              VerticalSpace(paddingWidget),
-              _buildFeedbackWidgets(),
-            ],
+      padding: insetsDefault,
+      children: [
+        Align(
+          child: WatermarkLogo(
+            icon: Icons.cloud_download,
           ),
         ),
-      ),
+        VerticalSpace(paddingWidget),
+        Text(
+          Strings.of(context).importPageDescription,
+          style: Theme.of(context).textTheme.subtitle1,
+          textAlign: TextAlign.center,
+        ),
+        VerticalSpace(paddingWidget),
+        Align(
+          child: Button(
+            text: Strings.of(context).importPageChooseFile,
+            onPressed: _loading
+                ? null
+                : () {
+                    _updateImportState(_State.loading);
+                    _chooseFile();
+                  },
+          ),
+        ),
+        VerticalSpace(paddingWidget),
+        _buildFeedbackWidgets(),
+      ],
     );
   }
 

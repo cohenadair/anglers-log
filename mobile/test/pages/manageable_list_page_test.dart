@@ -10,6 +10,7 @@ import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mobile/widgets/button.dart';
 import 'package:mobile/widgets/checkbox_input.dart';
 import 'package:mobile/widgets/list_item.dart';
+import 'package:mobile/widgets/no_results.dart';
 import 'package:mobile/widgets/search_bar.dart';
 import 'package:mobile/widgets/widget.dart';
 import 'package:mockito/mockito.dart';
@@ -753,9 +754,8 @@ void main() {
         (_) => ManageableListPage<String>(
           itemManager: defaultItemManager,
           itemBuilder: defaultItemBuilder,
-          searchDelegate: ListPageSearchDelegate(
+          searchDelegate: ManageableListPageSearchDelegate(
             hint: "Search",
-            noResultsMessage: "No results",
           ),
         ),
       ),
@@ -779,9 +779,8 @@ void main() {
         (_) => ManageableListPage<String>(
           itemManager: defaultItemManager,
           itemBuilder: defaultItemBuilder,
-          searchDelegate: ListPageSearchDelegate(
+          searchDelegate: ManageableListPageSearchDelegate(
             hint: "Search",
-            noResultsMessage: "No results",
           ),
         ),
       ),
@@ -793,7 +792,7 @@ void main() {
     // Wait for SearchTimer.
     await tester.pumpAndSettle(Duration(milliseconds: 750));
 
-    expect(find.text("No results"), findsOneWidget);
+    expect(find.byType(NoResults), findsOneWidget);
     expect(find.text("Smallmouth Bass"), findsNothing);
     expect(find.text("Largemouth Bass"), findsNothing);
     expect(find.text("Striped Bass"), findsNothing);

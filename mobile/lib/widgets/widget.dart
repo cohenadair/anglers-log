@@ -375,17 +375,25 @@ class WatermarkLogo extends StatelessWidget {
   static final _size = 150.0;
 
   final IconData icon;
+  final Color color;
 
   WatermarkLogo({
-    this.icon,
-  });
+    @required this.icon,
+    this.color,
+  }) : assert(icon != null);
 
   @override
   Widget build(BuildContext context) {
-    return Icon(
-      icon,
-      size: _size,
-      color: Theme.of(context).primaryColor,
+    return ClipOval(
+      child: Container(
+        padding: insetsDefaultDouble,
+        color: Colors.grey.shade200,
+        child: Icon(
+          icon,
+          size: _size,
+          color: color ?? Colors.grey.shade400,
+        ),
+      ),
     );
   }
 }

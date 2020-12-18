@@ -52,10 +52,8 @@ class FishingSpotListPage extends StatelessWidget {
           ],
         ),
       ),
-      searchDelegate: ListPageSearchDelegate(
+      searchDelegate: ManageableListPageSearchDelegate(
         hint: Strings.of(context).fishingSpotListPageSearchHint,
-        noResultsMessage:
-            Strings.of(context).fishingSpotListPageNoSearchResults,
       ),
       pickerSettings: pickerSettings,
       itemManager: ManageableListPageItemManager<FishingSpot>(

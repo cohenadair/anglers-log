@@ -29,10 +29,8 @@ class BaitCategoryListPage extends StatelessWidget {
       itemBuilder: (context, category) => ManageableListPageItemModel(
         child: PrimaryLabel(category.name),
       ),
-      searchDelegate: ListPageSearchDelegate(
+      searchDelegate: ManageableListPageSearchDelegate(
         hint: Strings.of(context).baitCategoryListPageSearchHint,
-        noResultsMessage:
-            Strings.of(context).baitCategoryListPageNoSearchResults,
       ),
       pickerSettings: pickerSettings,
       itemManager: ManageableListPageItemManager<BaitCategory>(

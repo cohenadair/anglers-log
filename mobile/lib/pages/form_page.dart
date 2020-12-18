@@ -14,6 +14,7 @@ import '../res/dimen.dart';
 import '../utils/page_utils.dart';
 import '../widgets/button.dart';
 import '../widgets/widget.dart';
+import 'scroll_page.dart';
 
 /// A function responsible for building all input widgets.
 ///
@@ -158,28 +159,18 @@ class _FormPageState extends State<FormPage> {
         padding: widget.padding,
         child: Form(
           key: _key,
-          child: SingleChildScrollView(
+          child: ScrollPage(
             padding: insetsBottomDefault,
-            child: SafeArea(
-              left: false,
-              right: false,
-              child: _buildForm(),
-            ),
+            enableHorizontalSafeArea: false,
+            children: [
+              Wrap(
+                runSpacing: widget.runSpacing ?? paddingSmall,
+                children: widget.fieldBuilder(context).values.toList(),
+              ),
+            ],
           ),
         ),
       ),
-    );
-  }
-
-  Widget _buildForm() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.end,
-      children: <Widget>[
-        Wrap(
-          runSpacing: widget.runSpacing ?? paddingSmall,
-          children: widget.fieldBuilder(context).values.toList(),
-        ),
-      ],
     );
   }
 

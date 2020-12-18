@@ -31,9 +31,8 @@ class SpeciesListPage extends StatelessWidget {
       itemBuilder: (context, species) => ManageableListPageItemModel(
         child: PrimaryLabel(species.name),
       ),
-      searchDelegate: ListPageSearchDelegate(
+      searchDelegate: ManageableListPageSearchDelegate(
         hint: Strings.of(context).speciesListPageSearchHint,
-        noResultsMessage: Strings.of(context).speciesListPageNoSearchResults,
       ),
       pickerSettings: pickerSettings,
       itemManager: ManageableListPageItemManager<Species>(

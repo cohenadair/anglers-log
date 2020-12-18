@@ -48,6 +48,7 @@ class _CatchFieldPickerPageState extends State<CatchFieldPickerPage> {
           padding: insetsHorizontalDefault,
           child: WatermarkLogo(
             icon: CustomIcons.catches,
+            color: Theme.of(context).primaryColor,
           ),
         ),
         VerticalSpace(paddingWidget),

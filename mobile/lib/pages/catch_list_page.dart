@@ -71,9 +71,8 @@ class CatchListPage extends StatelessWidget {
         format(Strings.of(context).catchListPageTitle, [catches.length]),
       ),
       forceCenterTitle: true,
-      searchDelegate: ListPageSearchDelegate(
+      searchDelegate: ManageableListPageSearchDelegate(
         hint: Strings.of(context).catchListPageSearchHint,
-        noResultsMessage: Strings.of(context).catchListPageNoSearchResults,
       ),
       itemBuilder: _buildListItem,
       itemsHaveThumbnail: true,

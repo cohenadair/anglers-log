@@ -152,25 +152,22 @@ class _EditableFormPageState extends State<EditableFormPage> {
 
         return widget.onSave(customFieldValues);
       },
-      addFieldOptions: _fields.keys
-          .where((id) => !_fields[id].fake)
-          .map(
-            (id) {
-              var description = _fields[id].description?.call(context);
-              if (isEmpty(description) && !_fields[id].removable) {
-                description = Strings.of(context).inputGenericRequired;
-              }
+      addFieldOptions: _fields.keys.where((id) => !_fields[id].fake).map(
+        (id) {
+          var description = _fields[id].description?.call(context);
+          if (isEmpty(description) && !_fields[id].removable) {
+            description = Strings.of(context).inputGenericRequired;
+          }
 
-              return FormPageFieldOption(
-                id: id,
-                name: _fields[id].name(context),
-                description: description,
-                used: _fields[id].showing,
-                removable: _fields[id].removable,
-              );
-            },
-          )
-          .toList(),
+          return FormPageFieldOption(
+            id: id,
+            name: _fields[id].name(context),
+            description: description,
+            used: _fields[id].showing,
+            removable: _fields[id].removable,
+          );
+        },
+      ).toList(),
       onAddFields: _addInputWidgets,
       isInputValid: widget.isInputValid,
     );

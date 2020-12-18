@@ -184,6 +184,28 @@ class TitleLabel extends StatelessWidget {
   }
 }
 
+class AlertTitleLabel extends StatelessWidget {
+  final String text;
+  final TextAlign align;
+  final TextOverflow overflow;
+
+  AlertTitleLabel(
+    this.text, {
+    this.align,
+    this.overflow,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Label(
+      text,
+      style: styleTitleAlert,
+      align: align,
+      overflow: overflow,
+    );
+  }
+}
+
 class SubtitleLabel extends StatelessWidget {
   final String text;
 

@@ -15,6 +15,7 @@ import '../utils/page_utils.dart';
 import '../utils/store_utils.dart';
 import '../widgets/list_item.dart';
 import '../widgets/widget.dart';
+import 'scroll_page.dart';
 
 class MorePage extends StatelessWidget {
   /// A [GlobalKey] for the feedback row. Used for scrolling to the feedback
@@ -30,73 +31,66 @@ class MorePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return ScrollPage(
       appBar: AppBar(
         title: Text(Strings.of(context).morePageTitle),
       ),
-      // Use SingleChildScrollView instead of ListView to make scrolling to
-      // feedback row easier during user onboarding.
-      body: SingleChildScrollView(
-        child: Column(
-          mainAxisSize: MainAxisSize.max,
-          children: [
-            _buildPageItem(
-              context,
-              icon: CustomIcons.baitCategories,
-              title: Strings.of(context).baitCategoryListPageMenuTitle,
-              page: BaitCategoryListPage(),
-            ),
-            _buildPageItem(
-              context,
-              icon: Icons.bug_report,
-              title: Strings.of(context).baitListPageMenuLabel,
-              page: BaitListPage(),
-            ),
-            _buildPageItem(
-              context,
-              icon: Icons.build,
-              title: Strings.of(context).customFields,
-              page: CustomEntityListPage(),
-            ),
-            _buildPageItem(
-              context,
-              icon: Icons.photo_library,
-              title: Strings.of(context).photosPageMenuLabel,
-              page: PhotosPage(),
-            ),
-            _buildPageItem(
-              context,
-              icon: CustomIcons.species,
-              title: Strings.of(context).speciesListPageMenuTitle,
-              page: SpeciesListPage(),
-            ),
-            _buildPageItem(
-              context,
-              icon: Icons.public,
-              title: Strings.of(context).tripListPageMenuLabel,
-              page: TripListPage(),
-            ),
-            MinDivider(),
-            _buildPageItem(
-              context,
-              icon: Icons.cloud_download,
-              title: Strings.of(context).importPageTitle,
-              page: ImportPage(),
-              presentPage: true,
-            ),
-            MinDivider(),
-          ]
-            ..addAll(_buildRateAndFeedbackItems(context))
-            ..addAll([
-              _buildPageItem(
-                context,
-                icon: Icons.settings,
-                title: Strings.of(context).settingsPageTitle,
-                page: SettingsPage(),
-              ),
-            ]),
+      children: [
+        _buildPageItem(
+          context,
+          icon: CustomIcons.baitCategories,
+          title: Strings.of(context).baitCategoryListPageMenuTitle,
+          page: BaitCategoryListPage(),
         ),
-      ),
+        _buildPageItem(
+          context,
+          icon: Icons.bug_report,
+          title: Strings.of(context).baitListPageMenuLabel,
+          page: BaitListPage(),
+        ),
+        _buildPageItem(
+          context,
+          icon: Icons.build,
+          title: Strings.of(context).customFields,
+          page: CustomEntityListPage(),
+        ),
+        _buildPageItem(
+          context,
+          icon: Icons.photo_library,
+          title: Strings.of(context).photosPageMenuLabel,
+          page: PhotosPage(),
+        ),
+        _buildPageItem(
+          context,
+          icon: CustomIcons.species,
+          title: Strings.of(context).speciesListPageMenuTitle,
+          page: SpeciesListPage(),
+        ),
+        _buildPageItem(
+          context,
+          icon: Icons.public,
+          title: Strings.of(context).tripListPageMenuLabel,
+          page: TripListPage(),
+        ),
+        MinDivider(),
+        _buildPageItem(
+          context,
+          icon: Icons.cloud_download,
+          title: Strings.of(context).importPageTitle,
+          page: ImportPage(),
+          presentPage: true,
+        ),
+        MinDivider(),
+      ]
+        ..addAll(_buildRateAndFeedbackItems(context))
+        ..addAll([
+          _buildPageItem(
+            context,
+            icon: Icons.settings,
+            title: Strings.of(context).settingsPageTitle,
+            page: SettingsPage(),
+          ),
+        ]),
     );
   }
 

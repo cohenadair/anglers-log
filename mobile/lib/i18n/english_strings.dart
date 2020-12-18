@@ -53,7 +53,6 @@ Map<String, Map<String, String>> get englishStrings => {
         "catchListPage_menuLabel": "Catches",
         "catchListPage_title": "Catches (%s)",
         "catchListPage_searchHint": "Search catches",
-        "catchListPage_noSearchResults": "No catches found",
         "catchPage_deleteMessage":
             "Are you sure you want to delete catch %s? This cannot be undone.",
         "saveCatchPage_newTitle": "New Catch",
@@ -87,7 +86,6 @@ Map<String, Map<String, String>> get englishStrings => {
         "baitListPage_pickerTitleMulti": "Select Baits",
         "baitListPage_otherCategory": "No Category",
         "baitListPage_searchHint": "Search baits",
-        "baitListPage_noSearchResults": "No baits found",
         "baitListPage_deleteMessage":
             "%s is associated with %s catches; are you sure you want to delete it? This cannot be undone.",
         "baitListPage_deleteMessageSingular":
@@ -108,7 +106,6 @@ Map<String, Map<String, String>> get englishStrings => {
         "baitCategoryListPage_deleteMessageSingular":
             "%s is associated with %s bait; are you sure you want to delete it? This cannot be undone.",
         "baitCategoryListPage_searchHint": "Search bait categories",
-        "baitCategoryListPage_noSearchResults": "No bait categories found",
         "statsPage_menuTitle": "Stats",
         "statsPage_title": "Stats",
         "statsPage_reportOverview": "Overview",
@@ -153,7 +150,6 @@ Map<String, Map<String, String>> get englishStrings => {
             "This fishing spot is associated with %s catch; are you sure you want to delete it? This cannot be undone.",
         "mapPage_addCatch": "Add Catch",
         "mapPage_searchHint": "Search fishing spots",
-        "mapPage_noSearchResults": "No fishing spots found",
         "mapPage_droppedPin": "Dropped Pin",
         "mapPage_mapTypeNormal": "Normal",
         "mapPage_mapTypeSatellite": "Satellite",
@@ -183,8 +179,9 @@ Map<String, Map<String, String>> get englishStrings => {
         "customEntityListPage_delete":
             "The custom field %s will no longer be associated with catches (%s) or baits (%s), are you sure you want to delete it? This cannot be undone.",
         "customEntityListPage_searchHint": "Search fields",
-        "customEntityListPage_noSearchResults": "No custom fields found",
-        "imagePickerPage_noPhotosFound": "No photos found",
+        "imagePickerPage_noPhotosFoundTitle": "No photos found",
+        "imagePickerPage_noPhotosFound":
+            "Try changing the photo source from the dropdown above.",
         "imagePickerPage_openCameraLabel": "Open Camera",
         "imagePickerPage_cameraLabel": "Camera",
         "imagePickerPage_galleryLabel": "Gallery",
@@ -211,7 +208,6 @@ Map<String, Map<String, String>> get englishStrings => {
         "speciesListPage_catchDeleteErrorPlural":
             "%s is associated with %s catches and cannot be deleted.",
         "speciesListPage_searchHint": "Search species",
-        "speciesListPage_noSearchResults": "No species found",
         "fishingSpotPickerPage_title": "Select Fishing Spot",
         "fishingSpotPickerPage_hint":
             "Drag the map to use exact coordinates, or select an existing fishing spot.",
@@ -219,7 +215,6 @@ Map<String, Map<String, String>> get englishStrings => {
         "fishingSpotListPage_multiPickerTitle": "Select Fishing Spots",
         "fishingSpotListPage_singlePickerTitle": "Select Fishing Spot",
         "fishingSpotListPage_searchHint": "Search fishing spots",
-        "fishingSpotListPage_noSearchResults": "No fishing spots found",
         "feedbackPage_title": "Send Feedback",
         "feedbackPage_send": "Send",
         "feedbackPage_message": "Message",
@@ -280,5 +275,8 @@ Map<String, Map<String, String>> get englishStrings => {
         "onboardingJourney_howToFeedbackTitle": "Send Feedback",
         "onboardingJourney_howToFeedbackDescription":
             "Report a problem, suggest a feature, or send us feedback anytime. We'd love to hear from you!",
+        "noResults_title": "No results found",
+        "noResults_description":
+            "Please adjust your search filter to find what you're looking for.",
       },
     };

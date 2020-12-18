@@ -242,7 +242,7 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
                   _fishingSpotManager.listSortedByName(filter: query);
 
               if (fishingSpots.isEmpty) {
-                return NoResults(Strings.of(context).mapPageNoSearchResults);
+                return NoResults();
               }
 
               return _buildSearchPageList(fishingSpots);

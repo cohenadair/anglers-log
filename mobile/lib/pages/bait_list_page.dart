@@ -50,9 +50,8 @@ class _BaitListPageState extends State<BaitListPage> {
           ? Strings.of(context).baitListPagePickerTitleMulti
           : Strings.of(context).baitListPagePickerTitle),
       forceCenterTitle: !_picking,
-      searchDelegate: ListPageSearchDelegate(
+      searchDelegate: ManageableListPageSearchDelegate(
         hint: Strings.of(context).baitListPageSearchHint,
-        noResultsMessage: Strings.of(context).baitListPageNoSearchResults,
       ),
       pickerSettings: _picking
           ? widget.pickerSettings.copyWith(

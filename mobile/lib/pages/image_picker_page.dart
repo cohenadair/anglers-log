@@ -142,7 +142,9 @@ class _ImagePickerPageState extends State<ImagePickerPage> {
   List<PickedImage> _initialImages;
 
   FilePickerWrapper get _filePicker => FilePickerWrapper.of(context);
+
   ImagePickerWrapper get _imagePicker => ImagePickerWrapper.of(context);
+
   PhotoManagerWrapper get _photoManager => PhotoManagerWrapper.of(context);
 
   @override
@@ -200,9 +202,7 @@ class _ImagePickerPageState extends State<ImagePickerPage> {
                 }
               }
 
-              return _assets.isEmpty
-                  ? NoResults(Strings.of(context).imagePickerPageNoPhotosFound)
-                  : _buildImageGrid();
+              return _assets.isEmpty ? _buildNoResults() : _buildImageGrid();
             },
           );
         },
@@ -383,6 +383,14 @@ class _ImagePickerPageState extends State<ImagePickerPage> {
           ),
         ),
       ),
+    );
+  }
+
+  Widget _buildNoResults() {
+    return NoResults(
+      icon: Icons.image_search,
+      title: Strings.of(context).imagePickerPageNoPhotosFoundTitle,
+      description: Strings.of(context).imagePickerPageNoPhotosFound,
     );
   }
 

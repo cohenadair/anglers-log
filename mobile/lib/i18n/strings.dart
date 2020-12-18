@@ -89,8 +89,6 @@ class Strings {
   String get catchListPageMenuLabel => _string("catchListPage_menuLabel");
   String get catchListPageTitle => _string("catchListPage_title");
   String get catchListPageSearchHint => _string("catchListPage_searchHint");
-  String get catchListPageNoSearchResults =>
-      _string("catchListPage_noSearchResults");
 
   String get catchPageDeleteMessage => _string("catchPage_deleteMessage");
 
@@ -142,8 +140,6 @@ class Strings {
       _string("baitListPage_pickerTitleMulti");
   String get baitListPageOtherCategory => _string("baitListPage_otherCategory");
   String get baitListPageSearchHint => _string("baitListPage_searchHint");
-  String get baitListPageNoSearchResults =>
-      _string("baitListPage_noSearchResults");
   String get baitListPageDeleteMessage => _string("baitListPage_deleteMessage");
   String get baitListPageDeleteMessageSingular =>
       _string("baitListPage_deleteMessageSingular");
@@ -179,8 +175,6 @@ class Strings {
       _string("baitCategoryListPage_deleteMessageSingular");
   String get baitCategoryListPageSearchHint =>
       _string("baitCategoryListPage_searchHint");
-  String get baitCategoryListPageNoSearchResults =>
-      _string("baitCategoryListPage_noSearchResults");
 
   String get statsPageMenuTitle => _string("statsPage_menuTitle");
   String get statsPageTitle => _string("statsPage_title");
@@ -233,7 +227,6 @@ class Strings {
       _string("mapPage_deleteFishingSpotNoNameSingular");
   String get mapPageAddCatch => _string("mapPage_addCatch");
   String get mapPageSearchHint => _string("mapPage_searchHint");
-  String get mapPageNoSearchResults => _string("mapPage_noSearchResults");
   String get mapPageDroppedPin => _string("mapPage_droppedPin");
   String get mapPageMapTypeNormal => _string("mapPage_mapTypeNormal");
   String get mapPageMapTypeSatellite => _string("mapPage_mapTypeSatellite");
@@ -263,6 +256,8 @@ class Strings {
       _string("formPage_addCustomFieldNote");
   String get formPageManageFieldsNote => _string("formPage_manageFieldsNote");
 
+  String get imagePickerPageNoPhotosFoundTitle =>
+      _string("imagePickerPage_noPhotosFoundTitle");
   String get imagePickerPageNoPhotosFound =>
       _string("imagePickerPage_noPhotosFound");
   String get imagePickerPageOpenCameraLabel =>
@@ -296,8 +291,6 @@ class Strings {
   String get speciesListPageCatchDeleteErrorPlural =>
       _string("speciesListPage_catchDeleteErrorPlural");
   String get speciesListPageSearchHint => _string("speciesListPage_searchHint");
-  String get speciesListPageNoSearchResults =>
-      _string("speciesListPage_noSearchResults");
 
   String get fishingSpotPickerPageTitle =>
       _string("fishingSpotPickerPage_title");
@@ -310,16 +303,12 @@ class Strings {
       _string("fishingSpotListPage_singlePickerTitle");
   String get fishingSpotListPageSearchHint =>
       _string("fishingSpotListPage_searchHint");
-  String get fishingSpotListPageNoSearchResults =>
-      _string("fishingSpotListPage_noSearchResults");
 
   String get customEntityListPageTitle => _string("customEntityListPage_title");
   String get customEntityListPageDelete =>
       _string("customEntityListPage_delete");
   String get customEntityListPageSearchHint =>
       _string("customEntityListPage_searchHint");
-  String get customEntityListPageNoSearchResults =>
-      _string("customEntityListPage_noSearchResults");
 
   String get saveCustomEntityPageNewTitle =>
       _string("saveCustomEntityPage_newTitle");
@@ -400,6 +389,9 @@ class Strings {
       _string("onboardingJourney_howToFeedbackTitle");
   String get onboardingJourneyHowToFeedbackDescription =>
       _string("onboardingJourney_howToFeedbackDescription");
+
+  String get noResultsTitle => _string("noResults_title");
+  String get noResultsDescription => _string("noResults_description");
 }
 
 class StringsDelegate extends LocalizationsDelegate<Strings> {

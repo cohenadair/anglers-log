@@ -50,8 +50,8 @@ class ManageableListPage<T> extends StatefulWidget {
   /// If non-null, the [ManageableListPage] includes a [SearchBar] in the
   /// [AppBar].
   ///
-  /// See [ListPageSearchDelegate].
-  final ListPageSearchDelegate searchDelegate;
+  /// See [ManageableListPageSearchDelegate].
+  final ManageableListPageSearchDelegate searchDelegate;
 
   ManageableListPage({
     @required this.itemManager,
@@ -178,10 +178,16 @@ class _ManageableListPageState<T> extends State<ManageableListPage<T>> {
                     childCount: items.length + clearOptionOffset,
                   ),
                 ),
-                replacementSliver: SliverToBoxAdapter(
+                replacementSliver: SliverFillRemaining(
+                  fillOverscroll: true,
+                  hasScrollBody: false,
                   child: widget.searchDelegate == null
                       ? Empty()
-                      : NoResults(widget.searchDelegate.noResultsMessage),
+                      : Center(
+                          child: NoResults(
+                            scrollable: false,
+                          ),
+                        ),
                 ),
               ),
             ),
@@ -486,18 +492,13 @@ class ManageableListPagePickerSettings<T> {
 
 /// A convenience class for storing the properties of an option [SearchBar] in
 /// the [AppBar] of a [ManageableListPage].
-class ListPageSearchDelegate {
+class ManageableListPageSearchDelegate {
   /// The search hint text.
   final String hint;
 
-  /// The message to show when searching returns 0 results.
-  final String noResultsMessage;
-
-  ListPageSearchDelegate({
+  ManageableListPageSearchDelegate({
     @required this.hint,
-    @required this.noResultsMessage,
-  })  : assert(isNotEmpty(hint)),
-        assert(isNotEmpty(noResultsMessage));
+  }) : assert(isNotEmpty(hint));
 }
 
 /// A convenient class for storing properties for a single item in a
