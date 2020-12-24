@@ -1,14 +1,15 @@
 import 'dart:async';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
-import 'package:mobile/pages/search_page.dart';
+import 'package:mobile/pages/fishing_spot_list_page.dart';
 import 'package:mobile/utils/map_utils.dart';
 import 'package:mobile/widgets/fishing_spot_map.dart';
 import 'package:mobile/widgets/list_item.dart';
-import 'package:mobile/widgets/no_results.dart';
+import 'package:mobile/widgets/empty_list_placeholder.dart';
 import 'package:mobile/widgets/search_bar.dart';
 import 'package:mobile/widgets/widget.dart';
 import 'package:mockito/mockito.dart';
@@ -104,8 +105,7 @@ void main() {
       await tester.tap(find.byType(SearchBar));
       await tester.pumpAndSettle();
 
-      // For now, an empty ListView is shown.
-      expect(find.byType(ListView), findsOneWidget);
+      expect(find.byType(EmptyListPlaceholder), findsOneWidget);
       expect(find.byType(ListItem), findsNothing);
     });
 
@@ -149,7 +149,7 @@ void main() {
       await tester.pumpAndSettle();
 
       // Verify search page closes and the picked callback was invoked.
-      expect(find.byType(SearchPage), findsNothing);
+      expect(find.byType(FishingSpotListPage), findsNothing);
       expect(picked, isTrue);
     });
 
@@ -166,7 +166,7 @@ void main() {
       await tester.pumpAndSettle(Duration(milliseconds: 200));
       await tester.tap(find.byType(SearchBar));
       await tester.pumpAndSettle();
-      await tester.enterText(find.byType(TextField), "2");
+      await tester.enterText(find.byType(CupertinoTextField), "2");
       await tester.pumpAndSettle(Duration(milliseconds: 550));
 
       expect(find.text("Fishing Spot 1"), findsNothing);
@@ -188,10 +188,10 @@ void main() {
       await tester.pumpAndSettle(Duration(milliseconds: 200));
       await tester.tap(find.byType(SearchBar));
       await tester.pumpAndSettle();
-      await tester.enterText(find.byType(TextField), "Test");
+      await tester.enterText(find.byType(CupertinoTextField), "Test");
       await tester.pumpAndSettle(Duration(milliseconds: 550));
 
-      expect(find.byType(NoResults), findsOneWidget);
+      expect(find.byType(EmptyListPlaceholder), findsOneWidget);
     });
   });
 

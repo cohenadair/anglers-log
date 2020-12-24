@@ -25,6 +25,8 @@ class PreferencesManager {
   static const _keyDidRateApp = "did_rate_app";
   static const _keyDidOnboard = "did_onboard";
 
+  static const _keySelectedReportId = "selected_report_id)";
+
   final AppManager _appManager;
   final Map<String, dynamic> _preferences = {};
 
@@ -69,6 +71,10 @@ class PreferencesManager {
   set didOnboard(bool onboarded) => _put(_keyDidOnboard, onboarded);
 
   bool get didOnboard => _preferences[_keyDidOnboard] ?? false;
+
+  set selectedReportId(Id id) => _put(_keySelectedReportId, id);
+
+  Id get selectedReportId => _preferences[_keySelectedReportId] ?? false;
 
   void _put(String key, dynamic value) {
     if (value == null) {

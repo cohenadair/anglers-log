@@ -10,7 +10,7 @@ import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mobile/widgets/button.dart';
 import 'package:mobile/widgets/checkbox_input.dart';
 import 'package:mobile/widgets/list_item.dart';
-import 'package:mobile/widgets/no_results.dart';
+import 'package:mobile/widgets/empty_list_placeholder.dart';
 import 'package:mobile/widgets/search_bar.dart';
 import 'package:mobile/widgets/widget.dart';
 import 'package:mockito/mockito.dart';
@@ -792,7 +792,7 @@ void main() {
     // Wait for SearchTimer.
     await tester.pumpAndSettle(Duration(milliseconds: 750));
 
-    expect(find.byType(NoResults), findsOneWidget);
+    expect(find.byType(EmptyListPlaceholder), findsOneWidget);
     expect(find.text("Smallmouth Bass"), findsNothing);
     expect(find.text("Largemouth Bass"), findsNothing);
     expect(find.text("Striped Bass"), findsNothing);

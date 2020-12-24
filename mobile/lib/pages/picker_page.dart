@@ -155,7 +155,7 @@ class _PickerPageState<T> extends State<PickerPage<T>> {
                 padding: insetsHorizontalDefault,
                 child: item.noteIcon == null
                     ? NoteLabel(item.title)
-                    : IconNoteLabel(
+                    : IconLabel(
                         text: item.title,
                         icon: Icon(
                           item.noteIcon,

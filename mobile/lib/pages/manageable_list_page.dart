@@ -8,8 +8,8 @@ import '../utils/page_utils.dart';
 import '../utils/search_timer.dart';
 import '../widgets/button.dart';
 import '../widgets/checkbox_input.dart';
+import '../widgets/empty_list_placeholder.dart';
 import '../widgets/list_item.dart';
-import '../widgets/no_results.dart';
 import '../widgets/search_bar.dart';
 import '../widgets/widget.dart';
 
@@ -71,6 +71,8 @@ class ManageableListPage<T> extends StatefulWidget {
 
 class _ManageableListPageState<T> extends State<ManageableListPage<T>> {
   static const IconData _iconCheck = Icons.check;
+  static const IconData _iconAdd = Icons.add;
+
   static const _appBarExpandedHeight = 100.0;
 
   /// Additional padding required to line up search text with [ListItem] text.
@@ -131,9 +133,31 @@ class _ManageableListPageState<T> extends State<ManageableListPage<T>> {
   }
 
   Widget _buildScaffold(List<T> items) {
+    // Disable editing if there are no items in the list.
+    if (items.isEmpty) {
+      _isEditing = false;
+    }
+
     // If picking an option isn't required, show a "None" option.
     var showClearOption = _isPicking && !widget.pickerSettings.isRequired;
     var clearOptionOffset = showClearOption ? 2 : 0;
+
+    Widget emptyWidget = Empty();
+    if (widget.itemManager.emptyItemsSettings != null &&
+        (widget.searchDelegate == null ||
+            (isEmpty(_searchText) && items.isEmpty))) {
+      emptyWidget = EmptyListPlaceholder.static(
+        title: widget.itemManager.emptyItemsSettings.title,
+        description: widget.itemManager.emptyItemsSettings.description,
+        descriptionIcon: _isAddable ? _iconAdd : null,
+        icon: widget.itemManager.emptyItemsSettings.icon,
+      );
+    } else if (isNotEmpty(_searchText)) {
+      emptyWidget = EmptyListPlaceholder.noSearchResults(
+        context,
+        scrollable: false,
+      );
+    }
 
     return WillPopScope(
       onWillPop: () {
@@ -143,6 +167,7 @@ class _ManageableListPageState<T> extends State<ManageableListPage<T>> {
         return Future.value(true);
       },
       child: Scaffold(
+        extendBodyBehindAppBar: true,
         body: CustomScrollView(
           slivers: [
             SliverAppBar(
@@ -153,7 +178,7 @@ class _ManageableListPageState<T> extends State<ManageableListPage<T>> {
               title: _isPicking
                   ? widget.pickerTitleBuilder?.call(items) ?? Empty()
                   : widget.titleBuilder?.call(items) ?? Empty(),
-              actions: _buildActions(),
+              actions: _buildActions(items),
               expandedHeight: _hasSearch ? _appBarExpandedHeight : 0.0,
               flexibleSpace: _buildSearchBar(),
               centerTitle: widget.forceCenterTitle,
@@ -181,13 +206,9 @@ class _ManageableListPageState<T> extends State<ManageableListPage<T>> {
                 replacementSliver: SliverFillRemaining(
                   fillOverscroll: true,
                   hasScrollBody: false,
-                  child: widget.searchDelegate == null
-                      ? Empty()
-                      : Center(
-                          child: NoResults(
-                            scrollable: false,
-                          ),
-                        ),
+                  child: Center(
+                    child: emptyWidget,
+                  ),
                 ),
               ),
             ),
@@ -227,87 +248,28 @@ class _ManageableListPageState<T> extends State<ManageableListPage<T>> {
     );
   }
 
-  List<Widget> _buildActions() {
-    if (_isPickingMulti) {
-      return _buildMultiPickerActions();
-    } else {
-      return _buildSinglePickerActions();
-    }
-  }
-
-  List<Widget> _buildMultiPickerActions() {
+  List<Widget> _buildActions(List<T> items) {
     var result = <Widget>[];
 
-    // Done button, for finishing editing.
-    if (_isEditing) {
-      result.add(
-        ActionButton.done(
-          condensed: true,
-          onPressed: () => setEditingUpdateState(isEditing: false),
-        ),
-      );
-    }
-
-    // Overflow add/edit items for modifying the list.
-    var overflowOptions = <PopupMenuItem<_OverflowOption>>[];
-
-    if (_isAddable) {
-      overflowOptions.add(PopupMenuItem<_OverflowOption>(
-        value: _OverflowOption.add,
-        child: Text(Strings.of(context).add),
-      ));
-    }
-
-    if (_isEditable) {
-      overflowOptions.add(PopupMenuItem<_OverflowOption>(
-        value: _OverflowOption.edit,
-        child: Text(Strings.of(context).edit),
-        enabled: !_isEditing,
-      ));
-    }
-
-    if (overflowOptions.isNotEmpty) {
-      result.add(
-        PopupMenuButton<_OverflowOption>(
-          icon: Icon(Icons.more_vert),
-          itemBuilder: (_) => overflowOptions,
-          onSelected: (option) {
-            switch (option) {
-              case _OverflowOption.add:
-                present(context, widget.itemManager.addPageBuilder());
-                break;
-              case _OverflowOption.edit:
-                setEditingUpdateState(isEditing: true);
-                break;
-            }
-          },
-        ),
-      );
-    }
-
-    return result;
-  }
-
-  List<Widget> _buildSinglePickerActions() {
-    var result = <Widget>[];
-
-    if (_isEditing) {
-      result.add(ActionButton.done(
-        condensed: _isAddable,
-        onPressed: () => setEditingUpdateState(isEditing: false),
-      ));
-    } else if (_isEditable) {
-      // Only include the edit button if the items can be modified.
-      result.add(ActionButton.edit(
-        condensed: _isAddable,
-        onPressed: () => setEditingUpdateState(isEditing: true),
-      ));
+    if (items.isNotEmpty) {
+      if (_isEditing) {
+        result.add(ActionButton.done(
+          condensed: _isAddable,
+          onPressed: () => _setEditingUpdateState(isEditing: false),
+        ));
+      } else if (_isEditable) {
+        // Only include the edit button if the items can be modified.
+        result.add(ActionButton.edit(
+          condensed: _isAddable,
+          onPressed: () => _setEditingUpdateState(isEditing: true),
+        ));
+      }
     }
 
     // Only include the add button if new items can be added.
     if (_isAddable) {
       result.add(IconButton(
-        icon: Icon(Icons.add),
+        icon: Icon(_iconAdd),
         onPressed: () => present(context, widget.itemManager.addPageBuilder()),
       ));
     }
@@ -360,10 +322,10 @@ class _ManageableListPageState<T> extends State<ManageableListPage<T>> {
     Widget trailing = RightChevronIcon();
     if (_isPickingMulti) {
       trailing = PaddedCheckbox(
-        checked: _selectedValues.contains(itemValue),
+        checked: _isItemSelected(itemValue),
         onChanged: (checked) {
           setState(() {
-            if (_selectedValues.contains(itemValue)) {
+            if (_isItemSelected(itemValue)) {
               _selectedValues.remove(itemValue);
             } else {
               _selectedValues.add(itemValue);
@@ -375,8 +337,7 @@ class _ManageableListPageState<T> extends State<ManageableListPage<T>> {
         widget.itemManager.detailPageBuilder == null) {
       // Don't show detail disclosure indicator if we're picking a single
       // value, or if there isn't any detail to show.
-      trailing =
-          _selectedValues.contains(itemValue) ? Icon(_iconCheck) : Empty();
+      trailing = _isItemSelected(itemValue) ? Icon(_iconCheck) : Empty();
     }
 
     var canEdit = _isEditing && item.editable;
@@ -412,7 +373,7 @@ class _ManageableListPageState<T> extends State<ManageableListPage<T>> {
     );
   }
 
-  void setEditingUpdateState({bool isEditing}) {
+  void _setEditingUpdateState({bool isEditing}) {
     setState(() {
       _isEditing = isEditing;
     });
@@ -422,6 +383,26 @@ class _ManageableListPageState<T> extends State<ManageableListPage<T>> {
     if (widget.pickerSettings.onPicked(context, pickedValues)) {
       Navigator.of(context).pop();
     }
+  }
+
+  bool _isItemSelected(T item) {
+    // Most, if not all, uses of ManageableListPage use model objects with an
+    // "id" property. Google Protocol Buffers don't have inheritance, though,
+    // so we can't use a parent or abstract class in place of T. Instead, we
+    // explicitly try to access the "id" property and if an error is thrown,
+    // fallback on Set.contains().
+    try {
+      for (var value in _selectedValues) {
+        if ((value as dynamic).id == (item as dynamic).id) {
+          return true;
+        }
+      }
+      // ignore: avoid_catching_errors
+    } on Error catch (_) {
+      return _selectedValues.contains(item);
+    }
+
+    return false;
   }
 }
 
@@ -522,6 +503,20 @@ class ManageableListPageItemModel {
   }) : assert(child != null);
 }
 
+class ManageableListPageEmptyListSettings {
+  final String title;
+  final String description;
+  final IconData icon;
+
+  ManageableListPageEmptyListSettings({
+    @required this.title,
+    @required this.description,
+    @required this.icon,
+  })  : assert(isNotEmpty(title)),
+        assert(isNotEmpty(description)),
+        assert(icon != null);
+}
+
 /// A convenience class to handle the adding, deleting, and editing of an item
 /// in a [ManageableListPage].
 ///
@@ -531,6 +526,9 @@ class ManageableListPageItemManager<T> {
   /// almost the most up to date from the database. The passed in [String] is
   /// the text in the [SearchBar].
   final List<T> Function(String) loadItems;
+
+  /// Settings used to populate a widget when [loadItems] returns an empty list.
+  final ManageableListPageEmptyListSettings emptyItemsSettings;
 
   /// The [Widget] to display is a delete confirmation dialog. This should be
   /// some kind of [Text] widget.
@@ -568,6 +566,7 @@ class ManageableListPageItemManager<T> {
     @required this.loadItems,
     @required this.deleteWidget,
     @required this.deleteItem,
+    this.emptyItemsSettings,
     this.addPageBuilder,
     this.listenerManagers,
     this.editPageBuilder,
@@ -578,5 +577,3 @@ class ManageableListPageItemManager<T> {
         assert(deleteItem != null),
         assert(listenerManagers == null || listenerManagers.isNotEmpty);
 }
-
-enum _OverflowOption { add, edit }

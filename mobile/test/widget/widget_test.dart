@@ -56,7 +56,7 @@ void main() {
           ),
         ),
       );
-      expect(find.byType(IconNoteLabel), findsOneWidget);
+      expect(find.byType(IconLabel), findsOneWidget);
       expect(find.byType(Empty), findsNothing);
     });
 
@@ -71,7 +71,7 @@ void main() {
           ),
         ),
       );
-      expect(find.byType(IconNoteLabel), findsNothing);
+      expect(find.byType(IconLabel), findsNothing);
       expect(find.byType(Empty), findsOneWidget);
     });
   });

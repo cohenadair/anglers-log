@@ -115,10 +115,13 @@ abstract class EntityManager<T extends GeneratedMessage>
     return false;
   }
 
-  Future<bool> delete(Id entityId) async {
+  Future<bool> delete(
+    Id entityId, {
+    bool notify = true,
+  }) async {
     if (await dataManager.deleteEntity(entityId, tableName)) {
       var deletedEntity = entity(entityId);
-      if (entities.remove(entityId) != null) {
+      if (entities.remove(entityId) != null && notify) {
         notifyOnDelete(deletedEntity);
       }
       return true;

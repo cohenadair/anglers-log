@@ -9,7 +9,7 @@ void main() {
     testWidgets("Bad input", (tester) async {
       await tester.pumpWidget(
         Testable(
-          (_) => IconNoteLabel(
+          (_) => IconLabel(
             text: "Test",
             icon: Icon(Icons.group),
           ),
@@ -21,13 +21,13 @@ void main() {
     testWidgets("Valid input", (tester) async {
       await tester.pumpWidget(
         Testable(
-          (_) => IconNoteLabel(
+          (_) => IconLabel(
             text: "Test %s",
             icon: Icon(Icons.group),
           ),
         ),
       );
-      expect(find.byType(IconNoteLabel), findsOneWidget);
+      expect(find.byType(IconLabel), findsOneWidget);
     });
   });
 

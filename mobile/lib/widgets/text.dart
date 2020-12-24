@@ -55,27 +55,41 @@ class HeadingLabel extends StatelessWidget {
 
 class NoteLabel extends StatelessWidget {
   final String text;
+  final TextAlign align;
+  final TextOverflow overflow;
 
-  NoteLabel(this.text);
+  NoteLabel(
+    this.text, {
+    this.align,
+    this.overflow,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Label(
       text,
+      align: align,
+      overflow: overflow,
       style: styleNote(context),
     );
   }
 }
 
-/// A note widget that inserts an [Icon] into a [String]. The given [String]
+/// A text widget that inserts an [Icon] into a [String]. The given [String]
 /// can only have a single "%s" substitution.
-class IconNoteLabel extends StatelessWidget {
+class IconLabel extends StatelessWidget {
   final String text;
+  final TextStyle textStyle;
+  final TextAlign align;
+  final TextOverflow overflow;
   final Icon icon;
 
-  IconNoteLabel({
+  IconLabel({
     @required this.text,
     @required this.icon,
+    this.align,
+    this.overflow,
+    this.textStyle,
   })  : assert(isNotEmpty(text)),
         assert(icon != null),
         assert(text.split("%s").length == 2);
@@ -83,16 +97,25 @@ class IconNoteLabel extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var strings = text.split("%s");
+    var style = textStyle ?? styleNote(context);
 
     return RichText(
+      overflow: overflow ?? TextOverflow.clip,
+      textAlign: align ?? TextAlign.start,
       text: TextSpan(
         children: [
-          TextSpan(text: strings.first, style: styleNote(context)),
+          TextSpan(
+            text: strings.first,
+            style: style,
+          ),
           WidgetSpan(
             child: icon,
             alignment: PlaceholderAlignment.middle,
           ),
-          TextSpan(text: strings.last, style: styleNote(context)),
+          TextSpan(
+            text: strings.last,
+            style: style,
+          ),
         ],
       ),
     );
@@ -119,18 +142,8 @@ class PrimaryLabel extends StatelessWidget {
       text,
       align: align,
       overflow: overflow,
-      style: _style(context),
+      style: stylePrimary(context, enabled: enabled),
     );
-  }
-
-  TextStyle _style(BuildContext context) {
-    var style = Theme.of(context).textTheme.subtitle1;
-    if (!enabled) {
-      style = style.copyWith(
-        color: Theme.of(context).disabledColor,
-      );
-    }
-    return style;
   }
 }
 

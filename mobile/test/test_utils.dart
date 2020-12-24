@@ -133,10 +133,18 @@ T findSiblingOfText<T>(WidgetTester tester, Type parentType, String text) =>
 
 /// Different from [Finder.byType] in that it works for widgets with generic
 /// arguments.
-List<T> findType<T>(WidgetTester tester) => tester
-    .widgetList(find.byWidgetPredicate((widget) => widget is T))
-    .map((e) => e as T)
-    .toList();
+List<T> findType<T>(
+  WidgetTester tester, {
+  bool skipOffstage = true,
+}) {
+  return tester
+      .widgetList(find.byWidgetPredicate(
+        (widget) => widget is T,
+        skipOffstage: skipOffstage,
+      ))
+      .map((e) => e as T)
+      .toList();
+}
 
 Future<void> tapAndSettle(WidgetTester tester, Finder finder,
     [int durationMillis]) async {

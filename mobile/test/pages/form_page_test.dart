@@ -405,7 +405,7 @@ void main() {
     await tapAndSettle(tester, find.byIcon(FormPage.moreMenuIcon));
     await tapAndSettle(tester, find.text("Manage Fields"));
 
-    expect(find.byType(IconNoteLabel), findsNothing);
+    expect(find.byType(IconLabel), findsNothing);
     expect(find.text("Name"), findsOneWidget);
   });
 
@@ -480,6 +480,6 @@ void main() {
     await tapAndSettle(tester, find.byIcon(FormPage.moreMenuIcon));
     await tapAndSettle(tester, find.text("Manage Fields"));
 
-    expect(find.byType(IconNoteLabel), findsOneWidget);
+    expect(find.byType(IconLabel), findsOneWidget);
   });
 }

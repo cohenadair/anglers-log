@@ -4,6 +4,7 @@ import '../i18n/strings.dart';
 import '../model/gen/anglerslog.pb.dart';
 import '../pages/manageable_list_page.dart';
 import '../pages/save_species_page.dart';
+import '../res/gen/custom_icons.dart';
 import '../species_manager.dart';
 import '../utils/dialog_utils.dart';
 import '../utils/string_utils.dart';
@@ -38,6 +39,11 @@ class SpeciesListPage extends StatelessWidget {
       itemManager: ManageableListPageItemManager<Species>(
         listenerManagers: [speciesManager],
         loadItems: (query) => speciesManager.listSortedByName(filter: query),
+        emptyItemsSettings: ManageableListPageEmptyListSettings(
+          icon: CustomIcons.species,
+          title: Strings.of(context).speciesListPageEmptyListTitle,
+          description: Strings.of(context).speciesListPageEmptyListDescription,
+        ),
         deleteWidget: (context, species) => Text(format(
             Strings.of(context).speciesListPageConfirmDelete, [species.name])),
         deleteItem: (context, species) => speciesManager.delete(species.id),

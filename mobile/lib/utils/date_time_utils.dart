@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:quiver/strings.dart';
 import 'package:quiver/time.dart';
 
 import '../app_manager.dart';
@@ -278,7 +279,7 @@ class DisplayDateRange {
   ]) {
     assert(id != custom.id || (startTimestamp != null && endTimestamp != null));
 
-    if (id == custom.id) {
+    if (isEmpty(id) || id == custom.id) {
       return DisplayDateRange.newCustomFromDateRange(DateRange.fromTimestamps(
         start: startTimestamp,
         end: endTimestamp,

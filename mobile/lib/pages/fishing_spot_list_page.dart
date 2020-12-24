@@ -8,6 +8,7 @@ import '../pages/manageable_list_page.dart';
 import '../pages/save_fishing_spot_page.dart';
 import '../utils/string_utils.dart';
 import '../widgets/text.dart';
+import '../widgets/widget.dart';
 
 class FishingSpotListPage extends StatelessWidget {
   final ManageableListPagePickerSettings<FishingSpot> pickerSettings;
@@ -20,38 +21,48 @@ class FishingSpotListPage extends StatelessWidget {
   Widget build(BuildContext context) {
     var fishingSpotManager = FishingSpotManager.of(context);
 
-    String title;
-    if (pickerSettings?.isMulti ?? false) {
-      title = Strings.of(context).fishingSpotListPageMultiPickerTitle;
-    } else if (!(pickerSettings?.isMulti ?? false)) {
-      title = Strings.of(context).fishingSpotListPageSinglePickerTitle;
-    }
-
     return ManageableListPage<FishingSpot>(
-      titleBuilder: isNotEmpty(title)
-          ? (_) => Text(title)
-          : (fishingSpots) {
-              return Text(
-                format(
-                  Strings.of(context).fishingSpotListPageTitle,
-                  [fishingSpots.length],
-                ),
-              );
-            },
-      forceCenterTitle: pickerSettings == null,
-      itemBuilder: (context, fishingSpot) => ManageableListPageItemModel(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            PrimaryLabel(fishingSpot.name),
-            SubtitleLabel(formatLatLng(
-              context: context,
-              lat: fishingSpot.lat,
-              lng: fishingSpot.lng,
-            )),
-          ],
+      titleBuilder: (fishingSpots) => Text(
+        format(
+          Strings.of(context).fishingSpotListPageTitle,
+          [fishingSpots.length],
         ),
       ),
+      pickerTitleBuilder: (fishingSpots) {
+        if (pickerSettings == null) {
+          return Empty();
+        }
+
+        var title = "";
+        if (pickerSettings.isMulti) {
+          title = Strings.of(context).fishingSpotListPageMultiPickerTitle;
+        } else {
+          title = Strings.of(context).fishingSpotListPageSinglePickerTitle;
+        }
+
+        return Text(title);
+      },
+      forceCenterTitle: pickerSettings == null,
+      itemBuilder: (context, fishingSpot) {
+        var latLngString = formatLatLng(
+          context: context,
+          lat: fishingSpot.lat,
+          lng: fishingSpot.lng,
+        );
+        return ManageableListPageItemModel(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              PrimaryLabel(isNotEmpty(fishingSpot.name)
+                  ? fishingSpot.name
+                  : latLngString),
+              isNotEmpty(fishingSpot.name)
+                  ? SubtitleLabel(latLngString)
+                  : Empty(),
+            ],
+          ),
+        );
+      },
       searchDelegate: ManageableListPageSearchDelegate(
         hint: Strings.of(context).fishingSpotListPageSearchHint,
       ),
@@ -60,6 +71,12 @@ class FishingSpotListPage extends StatelessWidget {
         listenerManagers: [fishingSpotManager],
         loadItems: (query) =>
             fishingSpotManager.listSortedByName(filter: query),
+        emptyItemsSettings: ManageableListPageEmptyListSettings(
+          icon: Icons.place,
+          title: Strings.of(context).fishingSpotListPageEmptyListTitle,
+          description:
+              Strings.of(context).fishingSpotListPageEmptyListDescription,
+        ),
         deleteWidget: (context, fishingSpot) =>
             Text(fishingSpotManager.deleteMessage(context, fishingSpot)),
         deleteItem: (context, fishingSpot) =>

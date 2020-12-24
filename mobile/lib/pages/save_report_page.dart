@@ -412,12 +412,13 @@ class _SaveReportPageState extends State<SaveReportPage> {
         break;
     }
 
-    // Remove old report, in case an edit changed the type of report.
+    // Remove old report, in case an edit changed the type of report. A change
+    // in type requires using a different manager.
     if (_editing) {
       if (_oldReport is SummaryReport) {
-        _summaryReportManager.delete(_oldReport.id);
+        _summaryReportManager.delete(_oldReport.id, notify: false);
       } else if (_oldReport is ComparisonReport) {
-        _comparisonReportManager.delete(_oldReport.id);
+        _comparisonReportManager.delete(_oldReport.id, notify: false);
       } else {
         _log.w("Unknown report type $_oldReport");
       }
@@ -466,8 +467,9 @@ class _SaveReportPageState extends State<SaveReportPage> {
   }
 
   ComparisonReport _createComparisonReport() {
-    var fromDateRange = _fromDateRangeController.value;
-    var toDateRange = _toDateRangeController.value;
+    var fromDateRange =
+        _fromDateRangeController.value ?? DisplayDateRange.allDates;
+    var toDateRange = _toDateRangeController.value ?? DisplayDateRange.allDates;
     var customFrom = fromDateRange == DisplayDateRange.custom;
     var customTo = toDateRange == DisplayDateRange.custom;
 
