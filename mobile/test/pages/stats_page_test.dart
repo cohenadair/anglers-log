@@ -551,7 +551,7 @@ void main() {
           "Worm",
           "E",
           "C",
-          "Bluegill",
+          "Pike",
         },
       );
 
@@ -566,7 +566,7 @@ void main() {
           "Worm",
           "E",
           "C",
-          "Bluegill",
+          "Pike",
         },
       );
     });
@@ -638,7 +638,7 @@ void main() {
         {
           "Worm",
           "E",
-          "Bluegill",
+          "Pike",
           "All dates",
         },
       );
@@ -653,7 +653,7 @@ void main() {
         {
           "Worm",
           "E",
-          "Bluegill",
+          "Pike",
           "All dates",
         },
       );

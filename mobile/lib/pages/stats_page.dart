@@ -463,14 +463,20 @@ class _StatsPageState extends State<StatsPage> {
       _log.w("Invalid report type: ${_currentReport.runtimeType}");
     }
 
-    var catchesPerSpecies = _models.first.catchesPerSpecies;
-    if (_currentSpecies == null && catchesPerSpecies.isNotEmpty) {
-      if (_models.first.speciesIds.isEmpty) {
-        _currentSpecies = catchesPerSpecies.keys.first;
-      } else {
-        _currentSpecies = catchesPerSpecies.keys.firstWhere(
-            (species) => species.id == _models.first.speciesIds.first);
+    if (_currentSpecies == null) {
+      // By default, show the species with the most catches.
+      Id maxId;
+      var maxValue = 0;
+      for (var model in _models) {
+        for (var entry in model.catchesPerSpecies.entries) {
+          if (entry.value >= maxValue) {
+            maxId = entry.key.id;
+            maxValue = entry.value;
+          }
+        }
       }
+
+      _currentSpecies = _speciesManager.entity(maxId);
     }
   }
 
@@ -490,6 +496,7 @@ class _StatsPageState extends State<StatsPage> {
       report.displayDateRangeId,
       report.startTimestamp,
       report.endTimestamp,
+      sortOrder: ReportSortOrder.largestToSmallest,
     );
   }
 
@@ -527,11 +534,12 @@ class _StatsPageState extends State<StatsPage> {
     Timestamp startTimestamp,
     Timestamp endTimestamp, {
     bool includeZeros = false,
+    ReportSortOrder sortOrder = ReportSortOrder.alphabetical,
   }) {
     return Report(
       context: context,
       includeZeros: includeZeros,
-      sortOrder: ReportSortOrder.alphabetical,
+      sortOrder: sortOrder,
       displayDateRange:
           DisplayDateRange.of(displayDateRangeId, startTimestamp, endTimestamp),
       baitIds: report.baitIds.toSet(),
