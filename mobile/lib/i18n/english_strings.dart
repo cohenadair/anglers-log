@@ -126,7 +126,7 @@ Map<String, Map<String, String>> get englishStrings => {
         "reportView_noCatchesDescription":
             "No catches found in the selected date range.",
         "reportView_noCatchesCustomReportDescription":
-            " No catches found in the selected report's date range.",
+            "No catches found in the selected report's date range.",
         "reportSummary_viewCatches": "View catches (%s)",
         "reportSummary_catchTitle": "Catch Summary",
         "reportSummary_perSpecies": "Per species",
