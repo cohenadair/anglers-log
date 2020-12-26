@@ -40,6 +40,12 @@ class CustomEntityListPage extends StatelessWidget {
         listenerManagers: [customEntityManager],
         loadItems: (query) =>
             customEntityManager.listSortedByName(filter: query),
+        emptyItemsSettings: ManageableListPageEmptyListSettings(
+          icon: Icons.build,
+          title: Strings.of(context).customEntityListPageEmptyListTitle,
+          description:
+              Strings.of(context).customEntityListPageEmptyListDescription,
+        ),
         deleteWidget: (context, entity) => Text(
           format(
             Strings.of(context).customEntityListPageDelete,

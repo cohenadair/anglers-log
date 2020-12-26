@@ -193,6 +193,7 @@ class _SaveReportPageState extends State<SaveReportPage> {
     } else {
       _typeController.value = _ReportType.summary;
       _fromDateRangeController.value = DisplayDateRange.allDates;
+      _toDateRangeController.value = DisplayDateRange.allDates;
       _baitsController.value = {};
       _fishingSpotsController.value = {};
       _speciesController.value = {};
@@ -412,12 +413,16 @@ class _SaveReportPageState extends State<SaveReportPage> {
         break;
     }
 
-    // Remove old report, in case an edit changed the type of report.
+    // Remove old report, in case an edit changed the type of report. A change
+    // in type requires using a different manager.
+    //
+    // Do not notify of these updates -- listeners are notified of changes when
+    // the new report is added.
     if (_editing) {
       if (_oldReport is SummaryReport) {
-        _summaryReportManager.delete(_oldReport.id);
+        _summaryReportManager.delete(_oldReport.id, notify: false);
       } else if (_oldReport is ComparisonReport) {
-        _comparisonReportManager.delete(_oldReport.id);
+        _comparisonReportManager.delete(_oldReport.id, notify: false);
       } else {
         _log.w("Unknown report type $_oldReport");
       }

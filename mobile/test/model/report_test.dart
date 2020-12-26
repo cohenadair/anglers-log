@@ -3,15 +3,11 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
 import 'package:mobile/utils/date_time_utils.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
-import 'package:mobile/widgets/chart.dart';
-import 'package:mobile/widgets/list_item.dart';
-import 'package:mobile/widgets/list_picker_input.dart';
-import 'package:mobile/widgets/reports/report_summary.dart';
-import 'package:mobile/widgets/widget.dart';
+import 'package:mobile/model/report.dart';
 import 'package:mockito/mockito.dart';
 
-import '../../mock_app_manager.dart';
-import '../../test_utils.dart';
+import '../mock_app_manager.dart';
+import '../test_utils.dart';
 
 void main() {
   MockAppManager appManager;
@@ -234,7 +230,7 @@ void main() {
       _stubCatchesByTimestamp(context);
 
       // Normal use case.
-      var data = ReportSummaryModel(
+      var data = Report(
         context: context,
         displayDateRange: DisplayDateRange.allDates,
       );
@@ -406,7 +402,7 @@ void main() {
       var context = await buildContext(tester, appManager: appManager);
       _stubCatchesByTimestamp(context);
 
-      var data = ReportSummaryModel(
+      var data = Report(
         context: context,
         displayDateRange: DisplayDateRange.allDates,
         includeZeros: true,
@@ -419,10 +415,10 @@ void main() {
       var context = await buildContext(tester, appManager: appManager);
       _stubCatchesByTimestamp(context);
 
-      var data = ReportSummaryModel(
+      var data = Report(
         context: context,
         displayDateRange: DisplayDateRange.allDates,
-        sortOrder: ReportSummaryModelSortOrder.alphabetical,
+        sortOrder: ReportSortOrder.alphabetical,
       );
 
       expect(data.catchesPerSpecies.keys.toList(), [
@@ -495,7 +491,7 @@ void main() {
       var context = await buildContext(tester, appManager: appManager);
       _stubCatchesByTimestamp(context);
 
-      var data = ReportSummaryModel(
+      var data = Report(
         context: context,
         displayDateRange: DisplayDateRange.allDates,
       );
@@ -577,7 +573,7 @@ void main() {
       var context = await buildContext(tester, appManager: appManager);
       _stubCatchesByTimestamp(context);
 
-      var data = ReportSummaryModel(
+      var data = Report(
         context: context,
         displayDateRange: DisplayDateRange.allDates,
         baitIds: {baitId0, baitId4},
@@ -599,7 +595,7 @@ void main() {
       var context = await buildContext(tester, appManager: appManager);
       _stubCatchesByTimestamp(context);
 
-      var data = ReportSummaryModel(
+      var data = Report(
         context: context,
         displayDateRange: DisplayDateRange.allDates,
         baitIds: {baitId0, baitId4},
@@ -624,14 +620,14 @@ void main() {
       var context = await buildContext(tester, appManager: appManager);
       _stubCatchesByTimestamp(context);
 
-      var data1 = ReportSummaryModel(
+      var data1 = Report(
         context: context,
         displayDateRange: DisplayDateRange.allDates,
         includeZeros: true,
       );
       expect(data1.catchesPerSpecies.length, 5);
 
-      var data2 = ReportSummaryModel(
+      var data2 = Report(
         context: context,
         displayDateRange: DisplayDateRange.allDates,
         includeZeros: true,
@@ -642,565 +638,6 @@ void main() {
       data1.removeZerosComparedTo(data2);
       expect(data1.catchesPerSpecies.length, 4);
       expect(data2.catchesPerSpecies.length, 4);
-    });
-  });
-
-  group("Widget", () {
-    testWidgets("Invalid models", (tester) async {
-      await tester.pumpWidget(
-        Testable(
-          (_) => ReportSummary(
-            onUpdate: () => [],
-          ),
-        ),
-      );
-      expect(tester.takeException(), isAssertionError);
-
-      await tester.pumpWidget(
-        Testable(
-          (_) => ReportSummary(
-            onUpdate: () => null,
-          ),
-        ),
-      );
-      expect(tester.takeException(), isAssertionError);
-    });
-
-    testWidgets("No initial species", (tester) async {
-      // This case is handled by "Has 0 catches" test case.
-    });
-
-    testWidgets("Valid initial species", (tester) async {
-      // This case is handled by "Has > 0 catches" test case.
-    });
-
-    testWidgets("Has > 0 catches", (tester) async {
-      await tester.pumpWidget(Testable((context) {
-        _stubCatchesByTimestamp(context);
-        return SingleChildScrollView(
-          child: ReportSummary(
-            onUpdate: () => [
-              ReportSummaryModel(
-                context: context,
-              ),
-            ],
-          ),
-        );
-      }, appManager: appManager));
-      expect(find.text("No catches found"), findsNothing);
-    });
-
-    testWidgets("Has 0 catches", (tester) async {
-      await tester.pumpWidget(Testable((context) {
-        _stubCatchesByTimestamp(context, []);
-        return ReportSummary(
-          onUpdate: () => [
-            ReportSummaryModel(
-              context: context,
-            ),
-          ],
-        );
-      }, appManager: appManager));
-      expect(find.text("No catches found"), findsOneWidget);
-    });
-
-    testWidgets("With header", (tester) async {
-      await tester.pumpWidget(Testable((context) {
-        _stubCatchesByTimestamp(context, []);
-        return ReportSummary(
-          headerBuilder: (_) => Text("Header"),
-          onUpdate: () => [
-            ReportSummaryModel(
-              context: context,
-            ),
-          ],
-        );
-      }, appManager: appManager));
-      expect(find.text("Header"), findsOneWidget);
-    });
-
-    testWidgets("Without header", (tester) async {
-      await tester.pumpWidget(Testable((context) {
-        _stubCatchesByTimestamp(context, []);
-        return ReportSummary(
-          descriptionBuilder: (_) => "Description",
-          onUpdate: () => [
-            ReportSummaryModel(
-              context: context,
-            ),
-          ],
-        );
-      }, appManager: appManager));
-      expect(find.byType(Empty), findsOneWidget);
-    });
-
-    testWidgets("With description", (tester) async {
-      await tester.pumpWidget(Testable((context) {
-        _stubCatchesByTimestamp(context, []);
-        return ReportSummary(
-          descriptionBuilder: (_) => "Description",
-          onUpdate: () => [
-            ReportSummaryModel(
-              context: context,
-            ),
-          ],
-        );
-      }, appManager: appManager));
-      expect(find.text("Description"), findsOneWidget);
-    });
-
-    testWidgets("Without description", (tester) async {
-      await tester.pumpWidget(Testable((context) {
-        _stubCatchesByTimestamp(context, []);
-        return ReportSummary(
-          headerBuilder: (_) => Text("Header"),
-          onUpdate: () => [
-            ReportSummaryModel(
-              context: context,
-            ),
-          ],
-        );
-      }, appManager: appManager));
-      expect(find.byType(Empty), findsOneWidget);
-    });
-
-    testWidgets("Comparison filters don't includes date", (tester) async {
-      await tester.pumpWidget(Testable((context) {
-        _stubCatchesByTimestamp(context);
-        return SingleChildScrollView(
-          child: ReportSummary(
-            onUpdate: () => [
-              ReportSummaryModel(
-                context: context,
-                displayDateRange: DisplayDateRange.allDates,
-                baitIds: {baitId0},
-                fishingSpotIds: {fishingSpotId0},
-                speciesIds: {speciesId0},
-              ),
-              ReportSummaryModel(
-                context: context,
-                displayDateRange: DisplayDateRange.last7Days,
-                baitIds: {baitId0},
-                fishingSpotIds: {fishingSpotId1},
-                speciesIds: {speciesId1},
-              ),
-            ],
-          ),
-        );
-      }, appManager: appManager));
-
-      expect(
-        findFirstWithText<ExpandableChart<Species>>(tester, "Per species")
-            .filters,
-        {
-          "Worm",
-          "E",
-          "C",
-          "Bluegill",
-          "Pike",
-        },
-      );
-
-      expect(
-        findFirstWithText<ExpandableChart<FishingSpot>>(
-                tester, "Per fishing spot")
-            .filters,
-        {
-          "Worm",
-          "E",
-          "C",
-          "Bluegill",
-          "Pike",
-        },
-      );
-
-      expect(
-        findFirstWithText<ExpandableChart<Bait>>(tester, "Per bait").filters,
-        {
-          "Worm",
-          "E",
-          "C",
-          "Bluegill",
-          "Pike",
-        },
-      );
-
-      expect(
-        findType<ExpandableChart<Bait>>(tester)
-            .where((widget) =>
-                widget.viewAllDescription ==
-                "Viewing number of catches per species per bait.")
-            .first
-            .filters,
-        {
-          "Worm",
-          "E",
-          "C",
-          "Bluegill",
-        },
-      );
-
-      expect(
-        findType<ExpandableChart<FishingSpot>>(tester)
-            .where((widget) =>
-                widget.viewAllDescription ==
-                "Viewing number of catches per species per fishing spot.")
-            .first
-            .filters,
-        {
-          "Worm",
-          "E",
-          "C",
-          "Bluegill",
-        },
-      );
-    });
-
-    testWidgets("Summary filters show date", (tester) async {
-      await tester.pumpWidget(Testable((context) {
-        _stubCatchesByTimestamp(context);
-        return SingleChildScrollView(
-          child: ReportSummary(
-            onUpdate: () => [
-              ReportSummaryModel(
-                context: context,
-                baitIds: {baitId0},
-                fishingSpotIds: {fishingSpotId0},
-                speciesIds: {speciesId0},
-              ),
-            ],
-          ),
-        );
-      }, appManager: appManager));
-
-      expect(
-        findFirstWithText<ExpandableChart<Species>>(tester, "Per species")
-            .filters,
-        {
-          "Worm",
-          "E",
-          "Bluegill",
-          "All dates",
-        },
-      );
-
-      expect(
-        findFirstWithText<ExpandableChart<FishingSpot>>(
-                tester, "Per fishing spot")
-            .filters,
-        {
-          "Worm",
-          "E",
-          "Bluegill",
-          "All dates",
-        },
-      );
-
-      expect(
-        findFirstWithText<ExpandableChart<Bait>>(tester, "Per bait").filters,
-        {
-          "Worm",
-          "E",
-          "Bluegill",
-          "All dates",
-        },
-      );
-
-      expect(
-        findType<ExpandableChart<Bait>>(tester)
-            .where((widget) =>
-                widget.viewAllDescription ==
-                "Viewing number of catches per species per bait.")
-            .first
-            .filters,
-        {
-          "Worm",
-          "E",
-          "Bluegill",
-          "All dates",
-        },
-      );
-
-      expect(
-        findType<ExpandableChart<FishingSpot>>(tester)
-            .where((widget) =>
-                widget.viewAllDescription ==
-                "Viewing number of catches per species per fishing spot.")
-            .first
-            .filters,
-        {
-          "Worm",
-          "E",
-          "Bluegill",
-          "All dates",
-        },
-      );
-    });
-
-    testWidgets("Catches per fishing spot/fishing spots per species hidden",
-        (tester) async {
-      await tester.pumpWidget(Testable((context) {
-        _stubCatchesByTimestamp(context, [
-          Catch()
-            ..id = randomId()
-            ..speciesId = speciesId0,
-          Catch()
-            ..id = randomId()
-            ..speciesId = speciesId0,
-          Catch()
-            ..id = randomId()
-            ..speciesId = speciesId0,
-        ]);
-        return SingleChildScrollView(
-          child: ReportSummary(
-            onUpdate: () => [
-              ReportSummaryModel(
-                context: context,
-              ),
-            ],
-          ),
-        );
-      }, appManager: appManager));
-
-      expect(findType<ExpandableChart<FishingSpot>>(tester), isEmpty);
-    });
-
-    testWidgets("Catches per fishing spot/fishing spots per species showing",
-        (tester) async {
-      await tester.pumpWidget(Testable((context) {
-        _stubCatchesByTimestamp(context, [
-          Catch()
-            ..id = randomId()
-            ..speciesId = speciesId0
-            ..fishingSpotId = fishingSpotId0,
-          Catch()
-            ..id = randomId()
-            ..speciesId = speciesId0
-            ..fishingSpotId = fishingSpotId0,
-          Catch()
-            ..id = randomId()
-            ..speciesId = speciesId0
-            ..fishingSpotId = fishingSpotId0,
-        ]);
-        return SingleChildScrollView(
-          child: ReportSummary(
-            onUpdate: () => [
-              ReportSummaryModel(
-                context: context,
-              ),
-            ],
-          ),
-        );
-      }, appManager: appManager));
-
-      expect(findType<ExpandableChart<FishingSpot>>(tester).length, 2);
-    });
-
-    testWidgets("Catches per bait/bait per species hidden", (tester) async {
-      await tester.pumpWidget(Testable((context) {
-        _stubCatchesByTimestamp(context, [
-          Catch()
-            ..id = randomId()
-            ..speciesId = speciesId0,
-          Catch()
-            ..id = randomId()
-            ..speciesId = speciesId0,
-          Catch()
-            ..id = randomId()
-            ..speciesId = speciesId0,
-        ]);
-        return SingleChildScrollView(
-          child: ReportSummary(
-            onUpdate: () => [
-              ReportSummaryModel(
-                context: context,
-              ),
-            ],
-          ),
-        );
-      }, appManager: appManager));
-
-      expect(findType<ExpandableChart<Bait>>(tester), isEmpty);
-    });
-
-    testWidgets("Catches per bait charts/baits per species showing",
-        (tester) async {
-      await tester.pumpWidget(Testable((context) {
-        _stubCatchesByTimestamp(context, [
-          Catch()
-            ..id = randomId()
-            ..speciesId = speciesId0
-            ..baitId = baitId0,
-          Catch()
-            ..id = randomId()
-            ..speciesId = speciesId0
-            ..baitId = baitId0,
-          Catch()
-            ..id = randomId()
-            ..speciesId = speciesId0
-            ..baitId = baitId0,
-        ]);
-        return SingleChildScrollView(
-          child: ReportSummary(
-            onUpdate: () => [
-              ReportSummaryModel(
-                context: context,
-              ),
-            ],
-          ),
-        );
-      }, appManager: appManager));
-
-      expect(findType<ExpandableChart<Bait>>(tester).length, 2);
-    });
-
-    testWidgets("Time since last catch row is hidden when there are no catches",
-        (tester) async {
-      await tester.pumpWidget(Testable((context) {
-        _stubCatchesByTimestamp(context, []);
-        return SingleChildScrollView(
-          child: ReportSummary(
-            onUpdate: () => [
-              ReportSummaryModel(
-                context: context,
-              ),
-            ],
-          ),
-        );
-      }, appManager: appManager));
-
-      expect(find.text("Since last catch"), findsNothing);
-    });
-
-    testWidgets("Time since last catch row is hidden when comparing",
-        (tester) async {
-      await tester.pumpWidget(Testable((context) {
-        _stubCatchesByTimestamp(context);
-        return SingleChildScrollView(
-          child: ReportSummary(
-            onUpdate: () => [
-              ReportSummaryModel(
-                context: context,
-              ),
-              ReportSummaryModel(
-                context: context,
-              ),
-            ],
-          ),
-        );
-      }, appManager: appManager));
-
-      expect(find.text("Since last catch"), findsNothing);
-    });
-
-    testWidgets("Since last catch hidden when current time is excluded",
-        (tester) async {
-      await tester.pumpWidget(Testable((context) {
-        _stubCatchesByTimestamp(context);
-        return SingleChildScrollView(
-          child: ReportSummary(
-            onUpdate: () => [
-              ReportSummaryModel(
-                context: context,
-                displayDateRange: DisplayDateRange.lastYear,
-              ),
-            ],
-          ),
-        );
-      }, appManager: appManager));
-
-      expect(find.text("Since last catch"), findsNothing);
-    });
-
-    testWidgets("Since last catch showing", (tester) async {
-      await tester.pumpWidget(Testable((context) {
-        _stubCatchesByTimestamp(context);
-        return SingleChildScrollView(
-          child: ReportSummary(
-            onUpdate: () => [
-              ReportSummaryModel(
-                context: context,
-              ),
-            ],
-          ),
-        );
-      }, appManager: appManager));
-
-      expect(find.text("Since last catch"), findsOneWidget);
-    });
-
-    testWidgets("Picking species updates state", (tester) async {
-      await tester.pumpWidget(Testable((context) {
-        _stubCatchesByTimestamp(context);
-        return SingleChildScrollView(
-          child: ReportSummary(
-            onUpdate: () => [
-              ReportSummaryModel(
-                context: context,
-              ),
-            ],
-          ),
-        );
-      }, appManager: appManager));
-
-      await tester.tap(find.text("Pike"));
-      await tester.pumpAndSettle();
-      await tester.tap(find.text("Bluegill"));
-      await tester.pumpAndSettle();
-
-      expect(find.widgetWithText(ListPickerInput, "Bluegill"), findsOneWidget);
-    });
-
-    testWidgets("View catches/catches per species row for each series",
-        (tester) async {
-      await tester.pumpWidget(Testable((context) {
-        _stubCatchesByTimestamp(context);
-        return SingleChildScrollView(
-          child: ReportSummary(
-            onUpdate: () => [
-              ReportSummaryModel(
-                context: context,
-                displayDateRange: DisplayDateRange.last7Days,
-              ),
-              ReportSummaryModel(
-                context: context,
-                displayDateRange: DisplayDateRange.lastMonth,
-              ),
-            ],
-          ),
-        );
-      }, appManager: appManager));
-
-      // One row for viewing all catches and one row for viewing all catches
-      // for the selected species.
-      expect(find.widgetWithText(ListItem, "Last 7 days"), findsNWidgets(2));
-      expect(find.widgetWithText(ListItem, "Last month"), findsNWidgets(2));
-    });
-
-    testWidgets("View catches row when 0 catches", (tester) async {
-      await tester.pumpWidget(Testable((context) {
-        // Stub a model that has catches, and one that doesn't.
-        _stubCatchesByTimestamp(context);
-        var model1 = ReportSummaryModel(
-          context: context,
-          includeZeros: true,
-        );
-
-        _stubCatchesByTimestamp(context, []);
-        var model2 = ReportSummaryModel(
-          context: context,
-          includeZeros: true,
-        );
-
-        return SingleChildScrollView(
-          child: ReportSummary(
-            onUpdate: () => [model1, model2],
-          ),
-        );
-      }, appManager: appManager));
-
-      expect(
-          find.widgetWithText(ListItem, "Number of catches"), findsNWidgets(2));
     });
   });
 }

@@ -157,6 +157,25 @@ void main() {
     verifyNever(listener.onDelete);
   });
 
+  test("Test delete with notify=false", () async {
+    when(dataManager.deleteEntity(any, any))
+        .thenAnswer((_) => Future.value(true));
+
+    var listener = MockSpeciesListener();
+    when(listener.onAddOrUpdate).thenReturn(() {});
+    when(listener.onDelete).thenReturn((_) {});
+    entityManager.addListener(listener);
+
+    var speciesId0 = randomId();
+    await entityManager.addOrUpdate(Species()
+      ..id = speciesId0
+      ..name = "Bluegill");
+
+    expect(await entityManager.delete(speciesId0, notify: false), true);
+    expect(entityManager.entityCount, 0);
+    verifyNever(listener.onDelete);
+  });
+
   test("Data is cleared and listeners notified when database is reset",
       () async {
     // Setup real DataManager to initiate callback.

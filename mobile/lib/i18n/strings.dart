@@ -89,6 +89,10 @@ class Strings {
   String get catchListPageMenuLabel => _string("catchListPage_menuLabel");
   String get catchListPageTitle => _string("catchListPage_title");
   String get catchListPageSearchHint => _string("catchListPage_searchHint");
+  String get catchListPageEmptyListTitle =>
+      _string("catchListPage_emptyListTitle");
+  String get catchListPageEmptyListDescription =>
+      _string("catchListPage_emptyListDescription");
 
   String get catchPageDeleteMessage => _string("catchPage_deleteMessage");
 
@@ -132,6 +136,9 @@ class Strings {
 
   String get photosPageMenuLabel => _string("photosPage_menuLabel");
   String get photosPageTitle => _string("photosPage_title");
+  String get photosPageEmptyTitle => _string("photosPage_emptyTitle");
+  String get photosPageEmptyDescription =>
+      _string("photosPage_emptyDescription");
 
   String get baitListPageMenuLabel => _string("baitListPage_menuLabel");
   String get baitListPageTitle => _string("baitListPage_title");
@@ -143,6 +150,10 @@ class Strings {
   String get baitListPageDeleteMessage => _string("baitListPage_deleteMessage");
   String get baitListPageDeleteMessageSingular =>
       _string("baitListPage_deleteMessageSingular");
+  String get baitListPageEmptyListTitle =>
+      _string("baitListPage_emptyListTitle");
+  String get baitListPageEmptyListDescription =>
+      _string("baitListPage_emptyListDescription");
 
   String get reportListPagePickerTitle => _string("reportListPage_pickerTitle");
   String get reportListPageConfirmDelete =>
@@ -175,6 +186,10 @@ class Strings {
       _string("baitCategoryListPage_deleteMessageSingular");
   String get baitCategoryListPageSearchHint =>
       _string("baitCategoryListPage_searchHint");
+  String get baitCategoryListPageEmptyListTitle =>
+      _string("baitCategoryListPage_emptyListTitle");
+  String get baitCategoryListPageEmptyListDescription =>
+      _string("baitCategoryListPage_emptyListDescription");
 
   String get statsPageMenuTitle => _string("statsPage_menuTitle");
   String get statsPageTitle => _string("statsPage_title");
@@ -182,6 +197,10 @@ class Strings {
   String get statsPageNewReport => _string("statsPage_newReport");
 
   String get reportViewNoCatches => _string("reportView_noCatches");
+  String get reportViewNoCatchesDescription =>
+      _string("reportView_noCatchesDescription");
+  String get reportViewNoCatchesCustomReportDescription =>
+      _string("reportView_noCatchesCustomReportDescription");
 
   String get reportSummaryViewCatches => _string("reportSummary_viewCatches");
   String get reportSummaryCatchTitle => _string("reportSummary_catchTitle");
@@ -291,6 +310,10 @@ class Strings {
   String get speciesListPageCatchDeleteErrorPlural =>
       _string("speciesListPage_catchDeleteErrorPlural");
   String get speciesListPageSearchHint => _string("speciesListPage_searchHint");
+  String get speciesListPageEmptyListTitle =>
+      _string("speciesListPage_emptyListTitle");
+  String get speciesListPageEmptyListDescription =>
+      _string("speciesListPage_emptyListDescription");
 
   String get fishingSpotPickerPageTitle =>
       _string("fishingSpotPickerPage_title");
@@ -303,12 +326,20 @@ class Strings {
       _string("fishingSpotListPage_singlePickerTitle");
   String get fishingSpotListPageSearchHint =>
       _string("fishingSpotListPage_searchHint");
+  String get fishingSpotListPageEmptyListTitle =>
+      _string("fishingSpotListPage_emptyListTitle");
+  String get fishingSpotListPageEmptyListDescription =>
+      _string("fishingSpotListPage_emptyListDescription");
 
   String get customEntityListPageTitle => _string("customEntityListPage_title");
   String get customEntityListPageDelete =>
       _string("customEntityListPage_delete");
   String get customEntityListPageSearchHint =>
       _string("customEntityListPage_searchHint");
+  String get customEntityListPageEmptyListTitle =>
+      _string("customEntityListPage_emptyListTitle");
+  String get customEntityListPageEmptyListDescription =>
+      _string("customEntityListPage_emptyListDescription");
 
   String get saveCustomEntityPageNewTitle =>
       _string("saveCustomEntityPage_newTitle");
@@ -390,8 +421,10 @@ class Strings {
   String get onboardingJourneyHowToFeedbackDescription =>
       _string("onboardingJourney_howToFeedbackDescription");
 
-  String get noResultsTitle => _string("noResults_title");
-  String get noResultsDescription => _string("noResults_description");
+  String get emptyListPlaceholderNoResultsTitle =>
+      _string("emptyListPlaceholder_noResultsTitle");
+  String get emptyListPlaceholderNoResultsDescription =>
+      _string("emptyListPlaceholder_noResultsDescription");
 }
 
 class StringsDelegate extends LocalizationsDelegate<Strings> {

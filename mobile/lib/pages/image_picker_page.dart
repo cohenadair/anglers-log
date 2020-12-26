@@ -13,7 +13,7 @@ import '../res/dimen.dart';
 import '../utils/dialog_utils.dart';
 import '../utils/string_utils.dart';
 import '../widgets/button.dart';
-import '../widgets/no_results.dart';
+import '../widgets/empty_list_placeholder.dart';
 import '../widgets/text.dart';
 import '../widgets/widget.dart';
 import '../wrappers/file_picker_wrapper.dart';
@@ -387,7 +387,7 @@ class _ImagePickerPageState extends State<ImagePickerPage> {
   }
 
   Widget _buildNoResults() {
-    return NoResults(
+    return EmptyListPlaceholder(
       icon: Icons.image_search,
       title: Strings.of(context).imagePickerPageNoPhotosFoundTitle,
       description: Strings.of(context).imagePickerPageNoPhotosFound,

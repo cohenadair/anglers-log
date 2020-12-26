@@ -29,7 +29,7 @@ void main() {
       (_) => EditableFormPage(),
       appManager: appManager,
     ));
-    expect(find.byType(IconNoteLabel), findsOneWidget);
+    expect(find.byType(IconLabel), findsOneWidget);
   });
 
   testWidgets("Custom fields without values", (tester) async {
@@ -48,7 +48,7 @@ void main() {
       ),
       appManager: appManager,
     ));
-    expect(find.byType(IconNoteLabel), findsNothing);
+    expect(find.byType(IconLabel), findsNothing);
     expect(find.widgetWithText(TextField, "Custom Field 1"), findsOneWidget);
   });
 
@@ -71,7 +71,7 @@ void main() {
       appManager: appManager,
     ));
 
-    expect(find.byType(IconNoteLabel), findsNothing);
+    expect(find.byType(IconLabel), findsNothing);
     expect(find.widgetWithText(TextField, "Custom Field 1"), findsOneWidget);
     expect(find.widgetWithText(TextField, "Test"), findsOneWidget);
   });
@@ -257,7 +257,7 @@ void main() {
       appManager: appManager,
     ));
 
-    expect(find.byType(IconNoteLabel), findsNothing);
+    expect(find.byType(IconLabel), findsNothing);
     expect(find.widgetWithText(TextField, "Custom Field 1"), findsOneWidget);
 
     await enterTextAndSettle(

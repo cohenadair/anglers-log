@@ -55,6 +55,16 @@ TextStyle styleNote(BuildContext context) =>
           fontStyle: FontStyle.italic,
         );
 
+TextStyle stylePrimary(BuildContext context, {bool enabled}) {
+  var style = Theme.of(context).textTheme.subtitle1;
+  if (!enabled) {
+    style = style.copyWith(
+      color: Theme.of(context).disabledColor,
+    );
+  }
+  return style;
+}
+
 const List<BoxShadow> boxShadowDefault = [
   BoxShadow(
     color: Colors.grey,

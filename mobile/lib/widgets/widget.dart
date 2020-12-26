@@ -30,15 +30,19 @@ class MinDivider extends StatelessWidget {
 
 class HeadingDivider extends StatelessWidget {
   final String text;
+  final bool showDivider;
 
-  HeadingDivider(this.text);
+  HeadingDivider(
+    this.text, {
+    this.showDivider = true,
+  }) : assert(showDivider != null);
 
   @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        MinDivider(),
+        showDivider ? MinDivider() : Empty(),
         Padding(
           padding: EdgeInsets.only(
             top: paddingWidget,
@@ -58,7 +62,7 @@ class HeadingDivider extends StatelessWidget {
   }
 }
 
-/// A [HeadingDivider] widget with an optional [IconNoteLabel].
+/// A [HeadingDivider] widget with an optional [IconLabel].
 class HeadingNoteDivider extends StatelessWidget {
   final bool hideNote;
   final String title;
@@ -99,7 +103,7 @@ class HeadingNoteDivider extends StatelessWidget {
                     child: SafeArea(
                       top: false,
                       bottom: false,
-                      child: IconNoteLabel(
+                      child: IconLabel(
                         text: note,
                         icon: Icon(
                           noteIcon,

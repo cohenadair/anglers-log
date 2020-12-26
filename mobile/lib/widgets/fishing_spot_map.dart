@@ -3,23 +3,18 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:quiver/strings.dart';
 
-import '../fishing_spot_manager.dart';
 import '../i18n/strings.dart';
 import '../location_monitor.dart';
 import '../model/gen/anglerslog.pb.dart';
-import '../pages/search_page.dart';
+import '../pages/fishing_spot_list_page.dart';
+import '../pages/manageable_list_page.dart';
 import '../res/dimen.dart';
 import '../utils/map_utils.dart';
 import '../utils/page_utils.dart';
 import '../utils/snackbar_utils.dart';
-import '../utils/string_utils.dart';
 import '../widgets/button.dart';
-import '../widgets/list_item.dart';
-import '../widgets/no_results.dart';
 import '../widgets/search_bar.dart';
-import '../widgets/text.dart';
 import '../widgets/widget.dart';
 import 'bottom_sheet_picker.dart';
 
@@ -117,8 +112,7 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
 
   MapType _mapType = MapType.normal;
   bool _showHelp = true;
-
-  FishingSpotManager get _fishingSpotManager => FishingSpotManager.of(context);
+  FishingSpot _pickedFishingSpot;
 
   Completer<GoogleMapController> _mapController;
 
@@ -233,53 +227,24 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
       delegate: ButtonSearchBarDelegate(() {
         present(
           context,
-          SearchPage(
-            hint: Strings.of(context).mapPageSearchHint,
-            suggestionsBuilder: (context) =>
-                _buildSearchPageList(_fishingSpotManager.listSortedByName()),
-            resultsBuilder: (context, query) {
-              var fishingSpots =
-                  _fishingSpotManager.listSortedByName(filter: query);
-
-              if (fishingSpots.isEmpty) {
-                return NoResults();
-              }
-
-              return _buildSearchPageList(fishingSpots);
-            },
+          FishingSpotListPage(
+            pickerSettings:
+                ManageableListPagePickerSettings<FishingSpot>.single(
+              onPicked: (context, fishingSpot) {
+                widget.searchBar.onFishingSpotPicked?.call(fishingSpot);
+                _pickedFishingSpot = fishingSpot;
+                moveMap(
+                  _mapController,
+                  LatLng(fishingSpot.lat, fishingSpot.lng),
+                  animate: false,
+                );
+                return true;
+              },
+              initialValue: _pickedFishingSpot,
+            ),
           ),
         );
       }),
-    );
-  }
-
-  Widget _buildSearchPageList(List<FishingSpot> fishingSpots) {
-    return ListView.builder(
-      itemCount: fishingSpots.length,
-      itemBuilder: (context, index) {
-        var fishingSpot = fishingSpots[index];
-
-        Widget title = Empty();
-        if (isNotEmpty(fishingSpot.name)) {
-          title = Label(fishingSpot.name);
-        } else {
-          title = Label(formatLatLng(
-            context: context,
-            lat: fishingSpot.lat,
-            lng: fishingSpot.lng,
-          ));
-        }
-
-        return ListItem(
-          title: title,
-          onTap: () {
-            widget.searchBar.onFishingSpotPicked?.call(fishingSpot);
-            moveMap(_mapController, LatLng(fishingSpot.lat, fishingSpot.lng),
-                animate: false);
-            Navigator.pop(context);
-          },
-        );
-      },
     );
   }
 

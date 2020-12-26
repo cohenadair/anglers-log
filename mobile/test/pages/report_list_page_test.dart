@@ -184,7 +184,7 @@ void main() {
       appManager: appManager,
     ));
 
-    expect(find.byType(IconNoteLabel), findsOneWidget);
+    expect(find.byType(IconLabel), findsOneWidget);
   });
 
   testWidgets("Custom reports are sorted alphabetically", (tester) async {

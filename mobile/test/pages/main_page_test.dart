@@ -46,7 +46,13 @@ void main() {
       baitIds: anyNamed("baitIds"),
     )).thenReturn([]);
 
+    when(appManager.mockComparisonReportManager.entityExists(any))
+        .thenReturn(false);
+
     when(appManager.mockFishingSpotManager.list()).thenReturn([]);
+
+    when(appManager.mockSummaryReportManager.entityExists(any))
+        .thenReturn(false);
 
     when(appManager.mockTimeManager.currentDateTime).thenReturn(DateTime.now());
   });

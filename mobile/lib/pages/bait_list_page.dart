@@ -93,6 +93,11 @@ class _BaitListPageState extends State<BaitListPage> {
           _baitManager,
         ],
         loadItems: _buildItems,
+        emptyItemsSettings: ManageableListPageEmptyListSettings(
+          icon: Icons.bug_report,
+          title: Strings.of(context).baitListPageEmptyListTitle,
+          description: Strings.of(context).baitListPageEmptyListDescription,
+        ),
         deleteWidget: (context, bait) =>
             Text(_baitManager.deleteMessage(context, bait)),
         deleteItem: (context, bait) => _baitManager.delete(bait),

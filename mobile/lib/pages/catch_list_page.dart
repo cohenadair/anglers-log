@@ -12,6 +12,7 @@ import '../pages/catch_page.dart';
 import '../pages/manageable_list_page.dart';
 import '../pages/save_catch_page.dart';
 import '../res/dimen.dart';
+import '../res/gen/custom_icons.dart';
 import '../species_manager.dart';
 import '../utils/date_time_utils.dart';
 import '../utils/string_utils.dart';
@@ -92,6 +93,11 @@ class CatchListPage extends StatelessWidget {
           speciesIds: speciesIds,
           fishingSpotIds: fishingSpotIds,
           baitIds: baitIds,
+        ),
+        emptyItemsSettings: ManageableListPageEmptyListSettings(
+          icon: CustomIcons.catches,
+          title: Strings.of(context).catchListPageEmptyListTitle,
+          description: Strings.of(context).catchListPageEmptyListDescription,
         ),
         deleteWidget: (context, cat) =>
             Text(catchManager.deleteMessage(context, cat)),

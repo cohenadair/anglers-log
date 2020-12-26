@@ -2,11 +2,14 @@ import 'package:flutter/material.dart';
 
 import '../catch_manager.dart';
 import '../entity_manager.dart';
+import '../i18n/strings.dart';
 import '../pages/photo_gallery_page.dart';
 import '../res/dimen.dart';
 import '../utils/page_utils.dart';
 import '../widgets/app_bar_gradient.dart';
+import '../widgets/empty_list_placeholder.dart';
 import '../widgets/photo.dart';
+import '../widgets/widget.dart';
 
 class PhotosPage extends StatelessWidget {
   static const _aspectRatioThumb = 1.0;
@@ -26,29 +29,48 @@ class PhotosPage extends StatelessWidget {
             children: [
               CustomScrollView(
                 slivers: [
-                  SliverGrid(
-                    gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-                      maxCrossAxisExtent: galleryMaxThumbSize,
-                      crossAxisSpacing: gallerySpacing,
-                      mainAxisSpacing: gallerySpacing,
-                      childAspectRatio: _aspectRatioThumb,
+                  SliverVisibility(
+                    visible: fileNames.isNotEmpty,
+                    sliver: SliverGrid(
+                      gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+                        maxCrossAxisExtent: galleryMaxThumbSize,
+                        crossAxisSpacing: gallerySpacing,
+                        mainAxisSpacing: gallerySpacing,
+                        childAspectRatio: _aspectRatioThumb,
+                      ),
+                      delegate: SliverChildBuilderDelegate(
+                        (context, i) => _buildThumbnail(context, fileNames, i),
+                        childCount: fileNames.length,
+                      ),
                     ),
-                    delegate: SliverChildBuilderDelegate(
-                      (context, i) => _buildThumbnail(context, fileNames, i),
-                      childCount: fileNames.length,
+                    replacementSliver: SliverFillRemaining(
+                      hasScrollBody: false,
+                      child: Center(
+                        child: EmptyListPlaceholder.static(
+                          icon: Icons.photo_library,
+                          title: Strings.of(context).photosPageEmptyTitle,
+                          description:
+                              Strings.of(context).photosPageEmptyDescription,
+                          descriptionIcon: Icons.add_box_rounded,
+                        ),
+                      ),
                     ),
                   ),
                 ],
               ),
-              IgnorePointer(
-                child: AppBarGradient(),
-              ),
+              fileNames.isNotEmpty
+                  ? IgnorePointer(
+                      child: AppBarGradient(),
+                    )
+                  : Empty(),
               SafeArea(
-                top: true,
                 child: Align(
                   alignment: Alignment.topLeft,
-                  child: BackButton(
-                    color: Colors.black,
+                  child: Padding(
+                    padding: insetsSmall,
+                    child: BackButton(
+                      color: Colors.black,
+                    ),
                   ),
                 ),
               ),

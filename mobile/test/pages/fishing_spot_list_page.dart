@@ -4,6 +4,7 @@ import 'package:mobile/pages/fishing_spot_list_page.dart';
 import 'package:mobile/pages/manageable_list_page.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mobile/widgets/checkbox_input.dart';
+import 'package:mobile/widgets/text.dart';
 import 'package:mockito/mockito.dart';
 
 import '../mock_app_manager.dart';
@@ -25,6 +26,10 @@ void main() {
         ..name = "Test Fishing Spot"
         ..lat = 1.234567
         ..lng = 7.654321,
+      FishingSpot()
+        ..id = randomId()
+        ..lat = 1.234568
+        ..lng = 7.654322,
     ]);
   });
 
@@ -81,6 +86,24 @@ void main() {
         appManager: appManager,
       ));
       expect(find.byType(PaddedCheckbox), findsNothing);
+    });
+
+    testWidgets("Spot with no name shows coordinates as title", (tester) async {
+      await tester.pumpWidget(Testable(
+        (_) => FishingSpotListPage(),
+        appManager: appManager,
+      ));
+      expect(find.widgetWithText(PrimaryLabel, "Lat: 1.234568, Lng: 7.654322"),
+          findsOneWidget);
+    });
+
+    testWidgets("Spot with name shows coordinates as subtitle", (tester) async {
+      await tester.pumpWidget(Testable(
+        (_) => FishingSpotListPage(),
+        appManager: appManager,
+      ));
+      expect(find.widgetWithText(SubtitleLabel, "Lat: 1.234567, Lng: 7.654321"),
+          findsOneWidget);
     });
   });
 }

@@ -6,6 +6,25 @@ import 'package:mobile/widgets/widget.dart';
 import '../test_utils.dart';
 
 void main() {
+  group("HeadingDivider", () {
+    testWidgets("Divider shown", (tester) async {
+      await tester.pumpWidget(Testable((_) => HeadingDivider("Test")));
+      expect(find.byType(MinDivider), findsOneWidget);
+    });
+
+    testWidgets("Divider hidden", (tester) async {
+      await tester.pumpWidget(
+        Testable(
+          (_) => HeadingDivider(
+            "Test",
+            showDivider: false,
+          ),
+        ),
+      );
+      expect(find.byType(MinDivider), findsNothing);
+    });
+  });
+
   group("HeadingNoteDivider", () {
     testWidgets("Input", (tester) async {
       await tester.pumpWidget(
@@ -56,7 +75,7 @@ void main() {
           ),
         ),
       );
-      expect(find.byType(IconNoteLabel), findsOneWidget);
+      expect(find.byType(IconLabel), findsOneWidget);
       expect(find.byType(Empty), findsNothing);
     });
 
@@ -71,7 +90,7 @@ void main() {
           ),
         ),
       );
-      expect(find.byType(IconNoteLabel), findsNothing);
+      expect(find.byType(IconLabel), findsNothing);
       expect(find.byType(Empty), findsOneWidget);
     });
   });

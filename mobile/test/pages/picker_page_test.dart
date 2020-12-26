@@ -243,7 +243,7 @@ void main() {
       ),
     );
 
-    expect(find.byType(IconNoteLabel), findsOneWidget);
+    expect(find.byType(IconLabel), findsOneWidget);
   });
 
   testWidgets("Enabled single-select item pops page and invokes callback",
