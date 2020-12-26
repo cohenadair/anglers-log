@@ -71,22 +71,10 @@ void main() {
             "id": "catch_field_ids",
             "value": jsonEncode([id2.toString(), id3.toString()])
           },
-          {
-            "id": "rate_timer_started_at",
-            "value": jsonEncode(10000)
-          },
-          {
-            "id": "did_rate_app",
-            "value": jsonEncode(true)
-          },
-          {
-            "id": "did_onboard",
-            "value": jsonEncode(true)
-          },
-          {
-            "id": "selected_report_id",
-            "value": jsonEncode(id4.toString())
-          },
+          {"id": "rate_timer_started_at", "value": jsonEncode(10000)},
+          {"id": "did_rate_app", "value": jsonEncode(true)},
+          {"id": "did_onboard", "value": jsonEncode(true)},
+          {"id": "selected_report_id", "value": jsonEncode(id4.toString())},
         ],
       ),
     );
