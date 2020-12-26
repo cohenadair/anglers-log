@@ -25,7 +25,7 @@ class PreferencesManager {
   static const _keyDidRateApp = "did_rate_app";
   static const _keyDidOnboard = "did_onboard";
 
-  static const _keySelectedReportId = "selected_report_id)";
+  static const _keySelectedReportId = "selected_report_id";
 
   final AppManager _appManager;
   final Map<String, dynamic> _preferences = {};
@@ -72,9 +72,9 @@ class PreferencesManager {
 
   bool get didOnboard => _preferences[_keyDidOnboard] ?? false;
 
-  set selectedReportId(Id id) => _put(_keySelectedReportId, id);
+  set selectedReportId(Id id) => _putId(_keySelectedReportId, id);
 
-  Id get selectedReportId => _preferences[_keySelectedReportId] ?? false;
+  Id get selectedReportId => _id(_keySelectedReportId);
 
   void _put(String key, dynamic value) {
     if (value == null) {
@@ -97,6 +97,15 @@ class PreferencesManager {
     return (_preferences[key] as List<dynamic>)
         .map((e) => e as String)
         .toList();
+  }
+
+  void _putId(String key, Id value) => _put(key, value.toString());
+
+  Id _id(String key) {
+    if (!_preferences.containsKey(key)) {
+      return null;
+    }
+    return safeParseId(_preferences[key]);
   }
 
   void _putIdList(String key, List<Id> value) {

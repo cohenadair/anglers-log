@@ -477,6 +477,21 @@ void main() {
 
       expect(result.captured.first.id, report.id);
     });
+
+    testWidgets("New report without changing date ranges", (tester) async {
+      await tester.pumpWidget(Testable(
+        (_) => SaveReportPage(),
+        appManager: appManager,
+      ));
+
+      await enterTextAndSettle(
+          tester, find.widgetWithText(TextField, "Name"), "Test");
+      await tapAndSettle(tester, find.widgetWithText(InkWell, "Comparison"));
+
+      // The test here is that the app doesn't crash. If the test passes, the
+      // app doesn't crash.
+      await tapAndSettle(tester, find.text("SAVE"));
+    });
   });
 
   group("Summary report", () {

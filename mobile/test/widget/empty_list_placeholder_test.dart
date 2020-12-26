@@ -2,12 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/res/dimen.dart';
 import 'package:mobile/widgets/empty_list_placeholder.dart';
+import 'package:mobile/widgets/text.dart';
 import 'package:mobile/widgets/widget.dart';
 
 import '../test_utils.dart';
 
 void main() {
-  testWidgets("Default input", (tester) async {
+  testWidgets("No search results", (tester) async {
     await tester.pumpWidget(Testable(EmptyListPlaceholder.noSearchResults));
 
     expect(find.text("No results found"), findsOneWidget);
@@ -41,7 +42,7 @@ void main() {
   testWidgets("Custom input scrollable", (tester) async {
     await tester.pumpWidget(
       Testable(
-        (_) => EmptyListPlaceholder(
+            (_) => EmptyListPlaceholder(
           title: "Test title",
           description: "Test description",
           icon: Icons.group,
@@ -55,5 +56,19 @@ void main() {
     expect(find.text("Test description"), findsOneWidget);
     expect(findFirst<WatermarkLogo>(tester).icon, Icons.group);
     expect(find.byType(SingleChildScrollView), findsOneWidget);
+  });
+
+  testWidgets("No description", (tester) async {
+    await tester.pumpWidget(
+      Testable(
+        (_) => EmptyListPlaceholder(
+          title: "Test title",
+          icon: Icons.group,
+        ),
+      ),
+    );
+
+    expect(find.byType(PrimaryLabel), findsNothing);
+    expect(find.byType(IconLabel), findsNothing);
   });
 }

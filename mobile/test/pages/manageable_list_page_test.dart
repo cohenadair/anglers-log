@@ -4,6 +4,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
 import 'package:mobile/pages/manageable_list_page.dart';
 import 'package:mobile/pages/save_name_page.dart';
+import 'package:mobile/pages/species_list_page.dart';
 import 'package:mobile/species_manager.dart';
 import 'package:mobile/utils/page_utils.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
@@ -12,6 +13,7 @@ import 'package:mobile/widgets/checkbox_input.dart';
 import 'package:mobile/widgets/list_item.dart';
 import 'package:mobile/widgets/empty_list_placeholder.dart';
 import 'package:mobile/widgets/search_bar.dart';
+import 'package:mobile/widgets/text_input.dart';
 import 'package:mobile/widgets/widget.dart';
 import 'package:mockito/mockito.dart';
 import 'package:quiver/strings.dart' as quiver;
@@ -20,7 +22,7 @@ import '../mock_app_manager.dart';
 import '../test_utils.dart';
 
 void main() {
-  var items = [
+  var items = <String>[
     "Smallmouth Bass",
     "Largemouth Bass",
     "Striped Bass",
@@ -158,159 +160,6 @@ void main() {
 
       expect(find.byType(PaddedCheckbox), findsNothing);
       expect(findCheckIcon(tester, "None"), findsOneWidget);
-    });
-
-    testWidgets("Multi-picker no overflow menu", (tester) async {
-      await tester.pumpWidget(
-        Testable(
-          (_) => ManageableListPage<String>(
-            itemManager: defaultItemManager,
-            itemBuilder: defaultItemBuilder,
-            pickerSettings: ManageableListPagePickerSettings<String>(
-              isMulti: true,
-              onPicked: (context, items) => false,
-            ),
-          ),
-        ),
-      );
-
-      expect(find.byIcon(Icons.more_vert), findsNothing);
-    });
-
-    testWidgets("Multi-picker overflow menu editable and addable",
-        (tester) async {
-      await tester.pumpWidget(
-        Testable(
-          (_) => ManageableListPage<String>(
-            itemManager: ManageableListPageItemManager<String>(
-              loadItems: loadItems,
-              deleteWidget: deleteWidget,
-              deleteItem: deleteItem,
-              addPageBuilder: () => Empty(),
-              editPageBuilder: (_) => Empty(),
-            ),
-            itemBuilder: defaultItemBuilder,
-            pickerSettings: ManageableListPagePickerSettings<String>(
-              isMulti: true,
-              onPicked: (context, items) => false,
-            ),
-          ),
-        ),
-      );
-
-      expect(find.byIcon(Icons.more_vert), findsOneWidget);
-
-      await tapAndSettle(tester, find.byIcon(Icons.more_vert));
-
-      expect(findFirstWithText<PopupMenuItem>(tester, "Add").enabled, isTrue);
-      expect(findFirstWithText<PopupMenuItem>(tester, "Edit").enabled, isTrue);
-    });
-
-    testWidgets("Multi-picker overflow menu not editable", (tester) async {
-      await tester.pumpWidget(
-        Testable(
-          (_) => ManageableListPage<String>(
-            itemManager: ManageableListPageItemManager<String>(
-              loadItems: loadItems,
-              deleteWidget: deleteWidget,
-              deleteItem: deleteItem,
-              addPageBuilder: () => Empty(),
-            ),
-            itemBuilder: defaultItemBuilder,
-            pickerSettings: ManageableListPagePickerSettings<String>(
-              isMulti: true,
-              onPicked: (context, items) => false,
-            ),
-          ),
-        ),
-      );
-
-      expect(find.byIcon(Icons.more_vert), findsOneWidget);
-
-      await tapAndSettle(tester, find.byIcon(Icons.more_vert));
-
-      expect(findFirstWithText<PopupMenuItem>(tester, "Add").enabled, isTrue);
-      expect(find.widgetWithText(PopupMenuItem, "Edit"), findsNothing);
-    });
-
-    testWidgets("Multi-picker overflow menu not addable", (tester) async {
-      await tester.pumpWidget(
-        Testable(
-          (_) => ManageableListPage<String>(
-            itemManager: ManageableListPageItemManager<String>(
-              loadItems: loadItems,
-              deleteWidget: deleteWidget,
-              deleteItem: deleteItem,
-              editPageBuilder: (_) => Empty(),
-            ),
-            itemBuilder: defaultItemBuilder,
-            pickerSettings: ManageableListPagePickerSettings<String>(
-              isMulti: true,
-              onPicked: (context, items) => false,
-            ),
-          ),
-        ),
-      );
-
-      expect(find.byIcon(Icons.more_vert), findsOneWidget);
-
-      await tapAndSettle(tester, find.byIcon(Icons.more_vert));
-
-      expect(findFirstWithText<PopupMenuItem>(tester, "Edit").enabled, isTrue);
-      expect(find.widgetWithText(PopupMenuItem, "Add"), findsNothing);
-    });
-
-    testWidgets("Multi-picker overflow edit disabled when editing",
-        (tester) async {
-      await tester.pumpWidget(
-        Testable(
-          (_) => ManageableListPage<String>(
-            itemManager: ManageableListPageItemManager<String>(
-              loadItems: loadItems,
-              deleteWidget: deleteWidget,
-              deleteItem: deleteItem,
-              editPageBuilder: (_) => Empty(),
-            ),
-            itemBuilder: defaultItemBuilder,
-            pickerSettings: ManageableListPagePickerSettings<String>(
-              isMulti: true,
-              onPicked: (context, items) => false,
-            ),
-          ),
-        ),
-      );
-
-      await tapAndSettle(tester, find.byIcon(Icons.more_vert));
-      await tapAndSettle(tester, find.text("Edit"));
-      await tapAndSettle(tester, find.byIcon(Icons.more_vert));
-
-      expect(findFirstWithText<PopupMenuItem>(tester, "Edit").enabled, isFalse);
-    });
-
-    testWidgets("Multi-picker overflow menu add pressed", (tester) async {
-      await tester.pumpWidget(
-        Testable(
-          (_) => ManageableListPage<String>(
-            itemManager: ManageableListPageItemManager<String>(
-              loadItems: loadItems,
-              deleteWidget: deleteWidget,
-              deleteItem: deleteItem,
-              addPageBuilder: () => SaveNamePage(title: Text("New Name")),
-              editPageBuilder: (_) => Empty(),
-            ),
-            itemBuilder: defaultItemBuilder,
-            pickerSettings: ManageableListPagePickerSettings<String>(
-              isMulti: true,
-              onPicked: (context, items) => false,
-            ),
-          ),
-        ),
-      );
-
-      await tapAndSettle(tester, find.byIcon(Icons.more_vert));
-      await tapAndSettle(tester, find.text("Add"));
-
-      expect(find.byType(SaveNamePage), findsOneWidget);
     });
 
     testWidgets("Multi-picker callback invoked on close page", (tester) async {
@@ -733,6 +582,55 @@ void main() {
       verifyCheckbox(tester, "Striped Bass", checked: true);
       verifyCheckbox(tester, "White Bass", checked: true);
     });
+
+    testWidgets("Editing item persists picked selection", (tester) async {
+      // Use a real use of ManageableListPage for this test because an
+      // EntityManagerListener is needed.
+      var appManager = MockAppManager(
+        mockCatchManager: true,
+        mockDataManager: true,
+      );
+      when(appManager.mockCatchManager.list()).thenReturn([]);
+      when(appManager.mockCatchManager
+              .existsWith(speciesId: anyNamed("speciesId")))
+          .thenReturn(false);
+      when(appManager.mockDataManager.insertOrUpdateEntity(any, any, any))
+          .thenAnswer((_) => Future.value(true));
+      when(appManager.mockDataManager.deleteEntity(any, any))
+          .thenAnswer((_) => Future.value(true));
+
+      // Add initial species.
+      var species = Species()
+        ..id = randomId()
+        ..name = "Bass";
+      var speciesManager = SpeciesManager(appManager);
+      speciesManager.addOrUpdate(species);
+      when(appManager.speciesManager).thenReturn(speciesManager);
+
+      await tester.pumpWidget(
+        Testable(
+          (_) => SpeciesListPage(
+            pickerSettings: ManageableListPagePickerSettings<Species>.single(
+              initialValue: species,
+            ),
+          ),
+          appManager: appManager,
+        ),
+      );
+
+      // Verify initial selection.
+      expect(find.byIcon(Icons.check), findsOneWidget);
+
+      // Update species.
+      await tapAndSettle(tester, find.text("EDIT"));
+      await tapAndSettle(tester, find.text("EDIT"));
+      await enterTextAndSettle(tester, find.byType(TextField), "Bass 2");
+      await tapAndSettle(tester, find.text("SAVE"));
+      await tapAndSettle(tester, find.text("DONE"));
+
+      expect(find.text("Bass 2"), findsOneWidget);
+      expect(find.byIcon(Icons.check), findsOneWidget);
+    });
   });
 
   testWidgets("No search bar", (tester) async {
@@ -1081,5 +979,167 @@ void main() {
     );
 
     expect(find.byType(RightChevronIcon), findsNWidgets(items.length));
+  });
+
+  testWidgets("End ending if all items are deleted", (tester) async {
+    // Use a real use of ManageableListPage for this test because an
+    // EntityManagerListener is needed.
+    var appManager = MockAppManager(
+      mockCatchManager: true,
+      mockDataManager: true,
+    );
+    when(appManager.mockCatchManager.list()).thenReturn([]);
+    when(appManager.mockCatchManager
+            .existsWith(speciesId: anyNamed("speciesId")))
+        .thenReturn(false);
+    when(appManager.mockDataManager.insertOrUpdateEntity(any, any, any))
+        .thenAnswer((_) => Future.value(true));
+    when(appManager.mockDataManager.deleteEntity(any, any))
+        .thenAnswer((_) => Future.value(true));
+
+    // Add initial species.
+    var speciesManager = SpeciesManager(appManager);
+    speciesManager.addOrUpdate(Species()
+      ..id = randomId()
+      ..name = "Bass");
+    when(appManager.speciesManager).thenReturn(speciesManager);
+
+    await tester.pumpWidget(
+      Testable(
+        (_) => SpeciesListPage(),
+        appManager: appManager,
+      ),
+    );
+
+    // Start editing and delete item.
+    await tapAndSettle(tester, find.text("EDIT"));
+    await tapAndSettle(tester, find.byIcon(Icons.delete));
+    await tapAndSettle(tester, find.text("DELETE"));
+    expect(find.text("Bass"), findsNothing);
+    expect(find.text("DONE"), findsNothing);
+    expect(find.text("EDIT"), findsNothing);
+
+    // Add item back.
+    await tapAndSettle(
+      tester,
+      find.descendant(
+        of: find.byType(AppBar),
+        matching: find.byIcon(Icons.add),
+      ),
+    );
+    await enterTextAndSettle(tester, find.byType(TextInput), "Bass");
+    await tapAndSettle(tester, find.text("SAVE"));
+
+    // Verify we're not longer editing.
+    expect(find.text("Bass"), findsOneWidget);
+    expect(find.widgetWithText(ListItem, "EDIT"), findsNothing);
+  });
+
+  testWidgets(
+      // ignore: lines_longer_than_80_chars
+      "Empty list placeholder shown when emptyItemsSettings != null and searchDelegate == null",
+      (tester) async {
+    items = [];
+    await tester.pumpWidget(
+      Testable(
+        (_) => ManageableListPage<String>(
+          itemManager: ManageableListPageItemManager<String>(
+            loadItems: loadItems,
+            deleteWidget: deleteWidget,
+            deleteItem: deleteItem,
+            detailPageBuilder: (_) => Empty(),
+            emptyItemsSettings: ManageableListPageEmptyListSettings(
+              title: "Test",
+              description: "Description",
+              icon: Icons.update,
+            ),
+          ),
+          itemBuilder: defaultItemBuilder,
+          searchDelegate: null,
+        ),
+      ),
+    );
+
+    expect(find.text("Test"), findsOneWidget);
+    expect(find.text("Description"), findsOneWidget);
+    expect(find.byIcon(Icons.update), findsOneWidget);
+  });
+
+  testWidgets(
+      "Empty list placeholder shown when no search text and list is empty",
+      (tester) async {
+    items = [];
+    await tester.pumpWidget(
+      Testable(
+        (_) => ManageableListPage<String>(
+          itemManager: ManageableListPageItemManager<String>(
+            loadItems: loadItems,
+            deleteWidget: deleteWidget,
+            deleteItem: deleteItem,
+            detailPageBuilder: (_) => Empty(),
+            emptyItemsSettings: ManageableListPageEmptyListSettings(
+              title: "Test",
+              description: "Description",
+              icon: Icons.update,
+            ),
+          ),
+          itemBuilder: defaultItemBuilder,
+          searchDelegate: ManageableListPageSearchDelegate(
+            hint: "Test hint",
+          ),
+        ),
+      ),
+    );
+
+    expect(find.text("Test"), findsOneWidget);
+    expect(find.text("Description"), findsOneWidget);
+    expect(find.byIcon(Icons.update), findsOneWidget);
+  });
+
+  testWidgets("No search results watermark shown", (tester) async {
+    await tester.pumpWidget(
+      Testable(
+        (_) => ManageableListPage<String>(
+          itemManager: ManageableListPageItemManager<String>(
+            loadItems: loadItems,
+            deleteWidget: deleteWidget,
+            deleteItem: deleteItem,
+            detailPageBuilder: (_) => Empty(),
+            emptyItemsSettings: ManageableListPageEmptyListSettings(
+              title: "Test",
+              description: "Description",
+              icon: Icons.update,
+            ),
+          ),
+          itemBuilder: defaultItemBuilder,
+          searchDelegate: ManageableListPageSearchDelegate(
+            hint: "Test hint",
+          ),
+        ),
+      ),
+    );
+
+    await enterTextAndSettle(tester, find.byType(CupertinoTextField), "Test");
+    await tester.pumpAndSettle(Duration(milliseconds: 500));
+    expect(find.byIcon(Icons.search_off), findsOneWidget);
+  });
+
+  testWidgets("Edit button hidden for empty list", (tester) async {
+    items = [];
+    await tester.pumpWidget(
+      Testable(
+        (_) => ManageableListPage<String>(
+          itemManager: ManageableListPageItemManager<String>(
+            loadItems: loadItems,
+            deleteWidget: deleteWidget,
+            deleteItem: deleteItem,
+            detailPageBuilder: (_) => Empty(),
+            editPageBuilder: (_) => Empty(),
+          ),
+          itemBuilder: defaultItemBuilder,
+        ),
+      ),
+    );
+    expect(find.text("EDIT"), findsNothing);
   });
 }

@@ -193,6 +193,7 @@ class _SaveReportPageState extends State<SaveReportPage> {
     } else {
       _typeController.value = _ReportType.summary;
       _fromDateRangeController.value = DisplayDateRange.allDates;
+      _toDateRangeController.value = DisplayDateRange.allDates;
       _baitsController.value = {};
       _fishingSpotsController.value = {};
       _speciesController.value = {};
@@ -414,6 +415,9 @@ class _SaveReportPageState extends State<SaveReportPage> {
 
     // Remove old report, in case an edit changed the type of report. A change
     // in type requires using a different manager.
+    //
+    // Do not notify of these updates -- listeners are notified of changes when
+    // the new report is added.
     if (_editing) {
       if (_oldReport is SummaryReport) {
         _summaryReportManager.delete(_oldReport.id, notify: false);
@@ -467,9 +471,8 @@ class _SaveReportPageState extends State<SaveReportPage> {
   }
 
   ComparisonReport _createComparisonReport() {
-    var fromDateRange =
-        _fromDateRangeController.value ?? DisplayDateRange.allDates;
-    var toDateRange = _toDateRangeController.value ?? DisplayDateRange.allDates;
+    var fromDateRange = _fromDateRangeController.value;
+    var toDateRange = _toDateRangeController.value;
     var customFrom = fromDateRange == DisplayDateRange.custom;
     var customTo = toDateRange == DisplayDateRange.custom;
 

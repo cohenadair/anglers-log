@@ -44,11 +44,17 @@ void main() {
     await preferencesManager.initialize();
     expect(preferencesManager.baitCustomEntityIds.isEmpty, true);
     expect(preferencesManager.catchCustomEntityIds.isEmpty, true);
+    expect(preferencesManager.catchFieldIds.isEmpty, true);
+    expect(preferencesManager.rateTimerStartedAt, isNull);
+    expect(preferencesManager.didRateApp, isFalse);
+    expect(preferencesManager.didOnboard, isFalse);
+    expect(preferencesManager.selectedReportId, isNull);
 
     var id0 = randomId();
     var id1 = randomId();
     var id2 = randomId();
     var id3 = randomId();
+    var id4 = randomId();
 
     when(dataManager.fetchAll("preference")).thenAnswer(
       (_) => Future.value(
@@ -61,12 +67,37 @@ void main() {
             "id": "catch_custom_entity_ids",
             "value": jsonEncode([id2.toString(), id3.toString()])
           },
+          {
+            "id": "catch_field_ids",
+            "value": jsonEncode([id2.toString(), id3.toString()])
+          },
+          {
+            "id": "rate_timer_started_at",
+            "value": jsonEncode(10000)
+          },
+          {
+            "id": "did_rate_app",
+            "value": jsonEncode(true)
+          },
+          {
+            "id": "did_onboard",
+            "value": jsonEncode(true)
+          },
+          {
+            "id": "selected_report_id",
+            "value": jsonEncode(id4.toString())
+          },
         ],
       ),
     );
     await preferencesManager.initialize();
     expect(preferencesManager.baitCustomEntityIds, [id0, id1]);
     expect(preferencesManager.catchCustomEntityIds, [id2, id3]);
+    expect(preferencesManager.catchFieldIds, [id2, id3]);
+    expect(preferencesManager.rateTimerStartedAt, 10000);
+    expect(preferencesManager.didRateApp, true);
+    expect(preferencesManager.didOnboard, true);
+    expect(preferencesManager.selectedReportId, id4);
   });
 
   test("String no values returns empty String list", () {
@@ -143,5 +174,11 @@ void main() {
     await realDataManager.reset();
     expect(preferencesManager.baitCustomEntityIds.isEmpty, true);
     expect(preferencesManager.catchCustomEntityIds.isEmpty, true);
+  });
+
+  test("Setting/getting Id object", () {
+    var id = randomId();
+    preferencesManager.selectedReportId = id;
+    expect(preferencesManager.selectedReportId, id);
   });
 }
