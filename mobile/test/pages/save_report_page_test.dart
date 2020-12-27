@@ -478,6 +478,26 @@ void main() {
       expect(result.captured.first.id, report.id);
     });
 
+    /// https://github.com/cohenadair/anglers-log/issues/463
+    testWidgets("Editing with empty entity sets shows 'all' chip",
+        (tester) async {
+      var report = ComparisonReport()
+        ..id = randomId()
+        ..name = "Report Name"
+        ..description = "Report description"
+        ..fromDisplayDateRangeId = DisplayDateRange.yesterday.id
+        ..toDisplayDateRangeId = DisplayDateRange.today.id;
+
+      await tester.pumpWidget(Testable(
+        (_) => SaveReportPage.edit(report),
+        appManager: appManager,
+      ));
+
+      expect(find.text("All species"), findsOneWidget);
+      expect(find.text("All fishing spots"), findsOneWidget);
+      expect(find.text("All baits"), findsOneWidget);
+    });
+
     testWidgets("New report without changing date ranges", (tester) async {
       await tester.pumpWidget(Testable(
         (_) => SaveReportPage(),
@@ -641,6 +661,25 @@ void main() {
       result.called(1);
 
       expect(result.captured.first.id, report.id);
+    });
+
+    /// https://github.com/cohenadair/anglers-log/issues/463
+    testWidgets("Editing with empty entity sets shows 'all' chip",
+        (tester) async {
+      var report = SummaryReport()
+        ..id = randomId()
+        ..name = "Report Name"
+        ..description = "Report description"
+        ..displayDateRangeId = DisplayDateRange.yesterday.id;
+
+      await tester.pumpWidget(Testable(
+        (_) => SaveReportPage.edit(report),
+        appManager: appManager,
+      ));
+
+      expect(find.text("All species"), findsOneWidget);
+      expect(find.text("All fishing spots"), findsOneWidget);
+      expect(find.text("All baits"), findsOneWidget);
     });
   });
 }

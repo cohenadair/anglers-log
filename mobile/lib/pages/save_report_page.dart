@@ -164,11 +164,11 @@ class _SaveReportPageState extends State<SaveReportPage> {
           report.startTimestamp,
           report.endTimestamp,
         );
-        _baitsController.value = _baitManager.list(report.baitIds).toSet();
-        _fishingSpotsController.value =
-            _fishingSpotManager.list(report.fishingSpotIds).toSet();
-        _speciesController.value =
-            _speciesManager.list(report.speciesIds).toSet();
+        _initEntitySets(
+          baitIds: report.baitIds,
+          fishingSpotIds: report.fishingSpotIds,
+          speciesIds: report.speciesIds,
+        );
       } else if (_oldReport is ComparisonReport) {
         var report = _oldReport as ComparisonReport;
         _nameController.value = report.name;
@@ -184,20 +184,38 @@ class _SaveReportPageState extends State<SaveReportPage> {
           report.toStartTimestamp,
           report.toEndTimestamp,
         );
-        _baitsController.value = _baitManager.list(report.baitIds).toSet();
-        _fishingSpotsController.value =
-            _fishingSpotManager.list(report.fishingSpotIds).toSet();
-        _speciesController.value =
-            _speciesManager.list(report.speciesIds).toSet();
+        _initEntitySets(
+          baitIds: report.baitIds,
+          fishingSpotIds: report.fishingSpotIds,
+          speciesIds: report.speciesIds,
+        );
       }
     } else {
       _typeController.value = _ReportType.summary;
       _fromDateRangeController.value = DisplayDateRange.allDates;
       _toDateRangeController.value = DisplayDateRange.allDates;
-      _baitsController.value = {};
-      _fishingSpotsController.value = {};
-      _speciesController.value = {};
+      _initEntitySets();
     }
+  }
+
+  void _initEntitySets({
+    List<Id> baitIds = const [],
+    List<Id> fishingSpotIds = const [],
+    List<Id> speciesIds = const [],
+  }) {
+    assert(baitIds != null);
+    assert(fishingSpotIds != null);
+    assert(speciesIds != null);
+
+    // "Empty" lists will include all entities in reports, so don't actually
+    // include every entity in the report object.
+    _baitsController.value =
+        baitIds.isEmpty ? {} : _baitManager.list(baitIds).toSet();
+    _fishingSpotsController.value = fishingSpotIds.isEmpty
+        ? {}
+        : _fishingSpotManager.list(fishingSpotIds).toSet();
+    _speciesController.value =
+        speciesIds.isEmpty ? {} : _speciesManager.list(speciesIds).toSet();
   }
 
   @override
