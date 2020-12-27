@@ -346,10 +346,13 @@ void main() {
 
     // Open picker and verify no spot is selected.
     await tapAndSettle(tester, find.text("Search fishing spots"));
-    expect(find.descendant(
-      of: find.widgetWithText(ManageableListItem, "None"),
-      matching: find.byIcon(Icons.check),
-    ), findsOneWidget);
+    expect(
+      find.descendant(
+        of: find.widgetWithText(ManageableListItem, "None"),
+        matching: find.byIcon(Icons.check),
+      ),
+      findsOneWidget,
+    );
 
     // Pick a spot, and verify it was selected.
     await tapAndSettle(tester, find.text("A"));
@@ -359,10 +362,34 @@ void main() {
     await tapAndSettle(tester, find.byIcon(Icons.clear));
     await tapAndSettle(tester, find.text("Search fishing spots"));
     expect(find.byIcon(Icons.check), findsOneWidget);
-    expect(find.descendant(
-      of: find.widgetWithText(ManageableListItem, "None"),
-      matching: find.byIcon(Icons.check),
-    ), findsOneWidget);
+    expect(
+      find.descendant(
+        of: find.widgetWithText(ManageableListItem, "None"),
+        matching: find.byIcon(Icons.check),
+      ),
+      findsOneWidget,
+    );
+  });
+
+  testWidgets("Selecting 'None' fishing spot clears active fishing spot",
+      (tester) async {
+    await tester.pumpWidget(Testable(
+      (_) => MapPage(),
+      appManager: appManager,
+    ));
+    // Allow map to load.
+    await tester.pumpAndSettle(Duration(milliseconds: 250));
+
+    // Pick a spot, and verify it was selected.
+    await tapAndSettle(tester, find.text("Search fishing spots"));
+    await tapAndSettle(tester, find.text("A"));
+    expect(find.widgetWithText(SearchBar, "A"), findsOneWidget);
+
+    // Select "None", and verify selection is cleared.
+    await tapAndSettle(tester, find.byType(SearchBar));
+    await tapAndSettle(tester, find.text("None"));
+    expect(
+        find.widgetWithText(SearchBar, "Search fishing spots"), findsOneWidget);
   });
 
   group("Directions", () {

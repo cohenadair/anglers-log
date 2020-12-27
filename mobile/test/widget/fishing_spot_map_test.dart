@@ -153,6 +153,26 @@ void main() {
       expect(picked, isTrue);
     });
 
+    /// https://github.com/cohenadair/anglers-log/issues/464
+    testWidgets("Selecting 'None' doesn't crash the app", (tester) async {
+      stubFishingSpots();
+
+      var picked = false;
+      await tester.pumpWidget(Testable(
+        (_) => FishingSpotMap(
+          mapController: Completer<GoogleMapController>(),
+          searchBar: FishingSpotMapSearchBar(),
+        ),
+        appManager: appManager,
+      ));
+      await tester.pumpAndSettle(Duration(milliseconds: 200));
+      await tapAndSettle(tester, find.byType(SearchBar));
+      await tapAndSettle(tester, find.text("None"));
+
+      // Verify search page closes.
+      expect(find.byType(FishingSpotListPage), findsNothing);
+    });
+
     testWidgets("Filter list", (tester) async {
       stubFishingSpots();
 

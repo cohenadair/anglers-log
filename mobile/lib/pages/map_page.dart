@@ -133,14 +133,15 @@ class _MapPageState extends State<MapPage> {
         ),
         selectedFishingSpot: _activeFishingSpot,
         onFishingSpotPicked: (fishingSpot) {
-          if (fishingSpot == null) {
-            return;
-          }
-
           setState(() {
-            _setActiveMarker(_findMarker(fishingSpot.id));
-            _activeFishingSpot = fishingSpot;
-            moveMap(_mapController, _activeFishingSpot.latLng, animate: false);
+            if (fishingSpot == null) {
+              _clearActiveFishingSpot();
+            } else {
+              _setActiveMarker(_findMarker(fishingSpot.id));
+              _activeFishingSpot = fishingSpot;
+              moveMap(_mapController, _activeFishingSpot.latLng,
+                  animate: false);
+            }
           });
         },
       ),

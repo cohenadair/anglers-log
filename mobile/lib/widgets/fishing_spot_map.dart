@@ -233,11 +233,13 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
                 ManageableListPagePickerSettings<FishingSpot>.single(
               onPicked: (context, fishingSpot) {
                 widget.searchBar.onFishingSpotPicked?.call(fishingSpot);
-                moveMap(
-                  _mapController,
-                  LatLng(fishingSpot.lat, fishingSpot.lng),
-                  animate: false,
-                );
+                if (fishingSpot != null) {
+                  moveMap(
+                    _mapController,
+                    LatLng(fishingSpot.lat, fishingSpot.lng),
+                    animate: false,
+                  );
+                }
                 return true;
               },
               initialValue: widget.searchBar.selectedFishingSpot,
