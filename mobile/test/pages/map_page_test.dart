@@ -6,6 +6,8 @@ import 'package:mobile/model/gen/anglerslog.pb.dart';
 import 'package:mobile/pages/map_page.dart';
 import 'package:mobile/pages/save_fishing_spot_page.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
+import 'package:mobile/widgets/list_item.dart';
+import 'package:mobile/widgets/search_bar.dart';
 import 'package:mobile/widgets/styled_bottom_sheet.dart';
 import 'package:mobile/widgets/widget.dart';
 import 'package:mockito/mockito.dart';
@@ -330,6 +332,37 @@ void main() {
 //    expect(find.text("Delete"), findsNothing);
 //    expect(find.text("Add Catch"), findsNothing);
 //    expect(find.text("Directions"), findsOneWidget);
+  });
+
+  /// https://github.com/cohenadair/anglers-log/issues/465
+  testWidgets("Clearing selected fishing spot clears picker selection",
+      (tester) async {
+    await tester.pumpWidget(Testable(
+      (_) => MapPage(),
+      appManager: appManager,
+    ));
+    // Allow map to load.
+    await tester.pumpAndSettle(Duration(milliseconds: 250));
+
+    // Open picker and verify no spot is selected.
+    await tapAndSettle(tester, find.text("Search fishing spots"));
+    expect(find.descendant(
+      of: find.widgetWithText(ManageableListItem, "None"),
+      matching: find.byIcon(Icons.check),
+    ), findsOneWidget);
+
+    // Pick a spot, and verify it was selected.
+    await tapAndSettle(tester, find.text("A"));
+    expect(find.widgetWithText(SearchBar, "A"), findsOneWidget);
+
+    // Deselect the spot and verify no selection in picker.
+    await tapAndSettle(tester, find.byIcon(Icons.clear));
+    await tapAndSettle(tester, find.text("Search fishing spots"));
+    expect(find.byIcon(Icons.check), findsOneWidget);
+    expect(find.descendant(
+      of: find.widgetWithText(ManageableListItem, "None"),
+      matching: find.byIcon(Icons.check),
+    ), findsOneWidget);
   });
 
   group("Directions", () {

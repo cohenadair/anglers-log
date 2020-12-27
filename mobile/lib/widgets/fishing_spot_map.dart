@@ -22,12 +22,14 @@ class FishingSpotMapSearchBar {
   final String title;
   final Widget leading;
   final Widget trailing;
+  final FishingSpot selectedFishingSpot;
   final void Function(FishingSpot) onFishingSpotPicked;
 
   FishingSpotMapSearchBar({
     this.title,
     this.leading,
     this.trailing,
+    this.selectedFishingSpot,
     this.onFishingSpotPicked,
   });
 }
@@ -112,7 +114,6 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
 
   MapType _mapType = MapType.normal;
   bool _showHelp = true;
-  FishingSpot _pickedFishingSpot;
 
   Completer<GoogleMapController> _mapController;
 
@@ -232,7 +233,6 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
                 ManageableListPagePickerSettings<FishingSpot>.single(
               onPicked: (context, fishingSpot) {
                 widget.searchBar.onFishingSpotPicked?.call(fishingSpot);
-                _pickedFishingSpot = fishingSpot;
                 moveMap(
                   _mapController,
                   LatLng(fishingSpot.lat, fishingSpot.lng),
@@ -240,7 +240,7 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
                 );
                 return true;
               },
-              initialValue: _pickedFishingSpot,
+              initialValue: widget.searchBar.selectedFishingSpot,
             ),
           ),
         );

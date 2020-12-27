@@ -131,6 +131,7 @@ class _MapPageState extends State<MapPage> {
             },
           ),
         ),
+        selectedFishingSpot: _activeFishingSpot,
         onFishingSpotPicked: (fishingSpot) {
           if (fishingSpot == null) {
             return;
@@ -144,7 +145,6 @@ class _MapPageState extends State<MapPage> {
         },
       ),
       onTap: (latLng) {
-        print("Tapped map");
         setState(() {
           _setActiveMarker(_createDroppedPinMarker(latLng));
           _activeFishingSpot = null;
