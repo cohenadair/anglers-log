@@ -9,6 +9,8 @@ import '../pages/fishing_spot_picker_page.dart';
 import '../pages/image_picker_page.dart';
 import '../pages/save_catch_page.dart';
 import '../pages/species_list_page.dart';
+import '../preferences_manager.dart';
+import '../utils/catch_utils.dart';
 import '../utils/protobuf_utils.dart';
 import 'manageable_list_page.dart';
 
@@ -34,9 +36,14 @@ class _AddCatchJourneyState extends State<AddCatchJourney> {
 
   LocationMonitor get _locationMonitor => LocationMonitor.of(context);
 
+  PreferencesManager get _preferencesManager => PreferencesManager.of(context);
+
   List<PickedImage> _images = [];
   Species _species;
   FishingSpot _fishingSpot;
+
+  bool get _isTrackingFishingSpots =>
+      _preferencesManager.catchFieldIds.contains(catchFieldIdFishingSpot());
 
   @override
   Widget build(BuildContext context) {
@@ -55,25 +62,30 @@ class _AddCatchJourneyState extends State<AddCatchJourney> {
 
                 // If one of the attached images has location data, use it to
                 // fetch an existing fishing spot, or to create a new one.
-                for (var image in _images) {
-                  if (image.position == null) {
-                    continue;
+                //
+                // Only do this if the user is interested in tracking fishing
+                // spots.
+                if (_isTrackingFishingSpots) {
+                  for (var image in _images) {
+                    if (image.position == null) {
+                      continue;
+                    }
+
+                    var existingSpot = _fishingSpotManager.withinRadius(
+                        image.position, _existingFishingSpotMeters);
+
+                    if (existingSpot == null) {
+                      _fishingSpot = FishingSpot()
+                        ..id = randomId()
+                        ..lat = image.position.latitude
+                        ..lng = image.position.longitude;
+                      _fishingSpotManager.addOrUpdate(_fishingSpot);
+                    } else {
+                      _fishingSpot = existingSpot;
+                    }
+
+                    break;
                   }
-
-                  var existingSpot = _fishingSpotManager.withinRadius(
-                      image.position, _existingFishingSpotMeters);
-
-                  if (existingSpot == null) {
-                    _fishingSpot = FishingSpot()
-                      ..id = randomId()
-                      ..lat = image.position.latitude
-                      ..lng = image.position.longitude;
-                    _fishingSpotManager.addOrUpdate(_fishingSpot);
-                  } else {
-                    _fishingSpot = existingSpot;
-                  }
-
-                  break;
                 }
 
                 Navigator.of(context).pushNamed(_pickSpeciesRoute);
@@ -97,10 +109,10 @@ class _AddCatchJourneyState extends State<AddCatchJourney> {
 
                   // If a fishing spot already exists, skip the fishing spot
                   // picker page.
-                  if (_fishingSpot == null) {
-                    Navigator.of(context).pushNamed(_pickFishingSpotRoute);
-                  } else {
+                  if (_fishingSpot != null || !_isTrackingFishingSpots) {
                     Navigator.of(context).pushNamed(_saveCatchRoute);
+                  } else {
+                    Navigator.of(context).pushNamed(_pickFishingSpotRoute);
                   }
 
                   return false;
@@ -129,7 +141,7 @@ class _AddCatchJourneyState extends State<AddCatchJourney> {
             builder: (context) => SaveCatchPage(
               images: _images,
               speciesId: _species.id,
-              fishingSpotId: _fishingSpot.id,
+              fishingSpotId: _fishingSpot?.id,
               popOverride: () =>
                   Navigator.of(context, rootNavigator: true).pop(),
             ),

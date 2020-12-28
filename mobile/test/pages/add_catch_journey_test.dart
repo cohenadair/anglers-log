@@ -6,6 +6,7 @@ import 'package:mobile/pages/fishing_spot_picker_page.dart';
 import 'package:mobile/pages/image_picker_page.dart';
 import 'package:mobile/pages/save_catch_page.dart';
 import 'package:mobile/pages/species_list_page.dart';
+import 'package:mobile/utils/catch_utils.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mobile/widgets/button.dart';
 import 'package:mockito/mockito.dart';
@@ -30,6 +31,7 @@ void main() {
       mockPhotoManagerWrapper: true,
       mockPreferencesManager: true,
       mockSpeciesManager: true,
+      mockTimeManager: true,
     );
 
     when(appManager.mockDataManager.insertOrUpdateEntity(any, any, any))
@@ -68,6 +70,9 @@ void main() {
         .thenAnswer((_) => Future.value([allAlbum]));
 
     when(appManager.mockPreferencesManager.catchCustomEntityIds).thenReturn([]);
+    when(appManager.mockPreferencesManager.catchFieldIds).thenReturn([
+      catchFieldIdFishingSpot(),
+    ]);
 
     when(appManager.mockSpeciesManager
             .listSortedByName(filter: anyNamed("filter")))
@@ -171,5 +176,25 @@ void main() {
     expect(find.byType(FishingSpotPickerPage), findsNothing);
     expect(find.byType(SpeciesListPage), findsNothing);
     expect(find.byType(ImagePickerPage), findsNothing);
+  });
+
+  testWidgets("Fishing spot is skipped when not tracking fishing spots",
+      (tester) async {
+    when(appManager.mockPreferencesManager.catchFieldIds).thenReturn([
+      catchFieldIdTimestamp(),
+      catchFieldIdSpecies(),
+    ]);
+
+    await tester.pumpWidget(Testable(
+      (_) => AddCatchJourney(),
+      appManager: appManager,
+    ));
+    await tester.pumpAndSettle(Duration(milliseconds: 50));
+
+    await tapAndSettle(tester, find.text("NEXT"));
+    await tapAndSettle(tester, find.text("Steelhead"));
+
+    expect(findFirst<SaveCatchPage>(tester).fishingSpotId, isNull);
+    expect(find.text("Fishing Spot"), findsNothing);
   });
 }
