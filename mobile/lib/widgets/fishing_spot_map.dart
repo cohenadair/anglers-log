@@ -104,6 +104,7 @@ class FishingSpotMap extends StatefulWidget {
 
 class _FishingSpotMapState extends State<FishingSpotMap> {
   static const _zoomDefault = 15.0;
+  static const _helpTimerDuration = Duration(milliseconds: 2000);
 
   // TODO: Remove this when Google Maps performance issue is fixed.
   // https://github.com/flutter/flutter/issues/28493
@@ -125,7 +126,7 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
 
     // No need to setup a timer if there is no help widget to show.
     if (widget.help != null) {
-      _hideHelpTimer = Timer(Duration(milliseconds: 2000), () {
+      _hideHelpTimer = Timer(_helpTimerDuration, () {
         setState(() {
           _showHelp = false;
         });
