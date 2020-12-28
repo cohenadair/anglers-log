@@ -306,6 +306,22 @@ void main() {
     expect(picked, isTrue);
   });
 
+  testWidgets("onPicked invoked when 'None' is picked", (tester) async {
+    var picked = false;
+    await tester.pumpWidget(Testable(
+      (_) => FishingSpotPickerPage(
+        onPicked: (_, __) => picked = true,
+        fishingSpotId: fishingSpot.id,
+      ),
+      appManager: appManager,
+    ));
+    await tester.pumpAndSettle(Duration(milliseconds: 250));
+    await tapAndSettle(tester, find.byType(SearchBar));
+    await tapAndSettle(tester, find.text("None"));
+
+    expect(picked, isTrue);
+  });
+
   testWidgets("Renders current map position when fishing spot not selected",
       (tester) async {
     when(appManager.mockLocationMonitor.currentLocation)

@@ -236,7 +236,10 @@ class _FishingSpotPickerPageState extends State<FishingSpotPickerPage>
                 ),
               ),
         onFishingSpotPicked: (fishingSpot) {
-          if (fishingSpot.id != _currentFishingSpotId) {
+          if (fishingSpot == null) {
+            // "None" was picked.
+            widget.onPicked?.call(context, null);
+          } else if (fishingSpot.id != _currentFishingSpotId) {
             _selectFishingSpot(fishingSpot);
           }
         },
