@@ -32,8 +32,8 @@ class FishingSpotManager extends NamedEntityManager<FishingSpot> {
   String get tableName => "fishing_spot";
 
   /// Returns the closest [FishingSpot] within [meters] of [latLng], or null if
-  /// one does not exist.
-  FishingSpot withinRadius(LatLng latLng, [int meters = 0]) {
+  /// one does not exist. [meters] defaults to 30.
+  FishingSpot withinRadius(LatLng latLng, [int meters = 30]) {
     if (latLng == null) {
       return null;
     }

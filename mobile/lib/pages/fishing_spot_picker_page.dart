@@ -107,15 +107,14 @@ class _FishingSpotPickerPageState extends State<FishingSpotPickerPage>
     // is set to _currentFishingSpot
     // Show fishing spot widgets if the picker is shown with a fishing spot
     // selected.
-    var fishingSpot = _fishingSpotManager.entity(widget.fishingSpotId);
+    var fishingSpot = _fishingSpotManager.entity(widget.fishingSpotId) ??
+        _fishingSpotManager.withinRadius(_startPosition);
     if (fishingSpot != null) {
       _fishingSpotAnimController.value = _fishingSpotAnimController.upperBound;
       _pendingMarkerOffset = _pendingMarkerSize;
       _currentFishingSpotId = fishingSpot.id;
       _isFishingSpotPending = false;
       _startPosition = fishingSpot.latLng;
-    } else if (_startPosition != null) {
-      _isFishingSpotPending = true;
     }
 
     _currentPosition = _startPosition;

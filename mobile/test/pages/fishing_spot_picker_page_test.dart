@@ -100,6 +100,7 @@ void main() {
   testWidgets("On map idle, pending fishing spot is added", (tester) async {
     // TODO (1)
     // TODO: Verify marker color
+    // This includes when the picker is built without an initial fishing spot.
   });
 
   testWidgets("On map move started by drag, current spot is cleared",
@@ -322,10 +323,15 @@ void main() {
     expect(picked, isTrue);
   });
 
-  testWidgets("Renders current map position when fishing spot not selected",
+  testWidgets("When no spot selected, selects closest within default distance",
       (tester) async {
     when(appManager.mockLocationMonitor.currentLocation)
         .thenReturn(LatLng(1.0, 2.0));
+    when(appManager.mockFishingSpotManager.withinRadius(any))
+        .thenReturn(FishingSpot()
+          ..id = randomId()
+          ..lat = 1.0
+          ..lng = 2.0);
 
     await tester.pumpWidget(Testable(
       (_) => FishingSpotPickerPage(
@@ -335,6 +341,7 @@ void main() {
     ));
     await tester.pumpAndSettle(Duration(milliseconds: 250));
 
+    verify(appManager.mockFishingSpotManager.withinRadius(any)).called(1);
     expect(find.text("Lat: 1.000000, Lng: 2.000000"), findsOneWidget);
   });
 
