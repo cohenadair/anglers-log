@@ -125,7 +125,7 @@ class _AddCatchJourneyState extends State<AddCatchJourney> {
           return MaterialPageRoute(
             builder: (context) => SaveCatchPage(
               images: _images,
-              species: _species,
+              speciesId: _species.id,
               fishingSpot: _fishingSpot,
               popOverride: () =>
                   Navigator.of(context, rootNavigator: true).pop(),

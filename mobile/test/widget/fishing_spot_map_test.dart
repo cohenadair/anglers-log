@@ -157,7 +157,6 @@ void main() {
     testWidgets("Selecting 'None' doesn't crash the app", (tester) async {
       stubFishingSpots();
 
-      var picked = false;
       await tester.pumpWidget(Testable(
         (_) => FishingSpotMap(
           mapController: Completer<GoogleMapController>(),

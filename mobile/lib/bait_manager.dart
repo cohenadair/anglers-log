@@ -94,7 +94,8 @@ class BaitManager extends NamedEntityManager<Bait> {
         list(), customEntityId, (bait) => bait.customEntityValues);
   }
 
-  String formatNameWithCategory(Bait bait) {
+  String formatNameWithCategory(Id baitId) {
+    var bait = entity(baitId);
     if (bait == null) {
       return null;
     }

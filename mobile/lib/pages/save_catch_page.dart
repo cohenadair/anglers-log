@@ -39,7 +39,7 @@ class SaveCatchPage extends StatefulWidget {
   final VoidCallback popOverride;
 
   final List<PickedImage> images;
-  final Species species;
+  final Id speciesId;
   final FishingSpot fishingSpot;
 
   final Catch oldCatch;
@@ -47,17 +47,13 @@ class SaveCatchPage extends StatefulWidget {
   /// See [EditableFormPage.popupMenuKey].
   final GlobalKey<PopupMenuButtonState> popupMenuKey;
 
-  /// A [Catch] cannot be created without first selecting a [Species] and
-  /// [FishingSpot], normally from an [AddCatchJourney] widget.
   SaveCatchPage({
     this.popupMenuKey,
     this.images = const [],
-    @required this.species,
-    @required this.fishingSpot,
+    this.speciesId,
+    this.fishingSpot,
     this.popOverride,
   })  : assert(images != null),
-        assert(species != null),
-        assert(fishingSpot != null),
         oldCatch = null;
 
   SaveCatchPage.edit(this.oldCatch)
@@ -65,7 +61,7 @@ class SaveCatchPage extends StatefulWidget {
         popupMenuKey = null,
         popOverride = null,
         images = const [],
-        species = null,
+        speciesId = null,
         fishingSpot = null;
 
   @override
@@ -108,8 +104,7 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
   TimestampInputController get _timestampController =>
       _fields[_idTimestamp].controller;
 
-  InputController<Species> get _speciesController =>
-      _fields[_idSpecies].controller;
+  InputController<Id> get _speciesController => _fields[_idSpecies].controller;
 
   InputController<List<PickedImage>> get _imagesController =>
       _fields[_idImages].controller;
@@ -117,7 +112,7 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
   InputController<FishingSpot> get _fishingSpotController =>
       _fields[_idFishingSpot].controller;
 
-  InputController<Bait> get _baitController => _fields[_idBait].controller;
+  InputController<Id> get _baitController => _fields[_idBait].controller;
 
   bool get _editing => _oldCatch != null;
 
@@ -136,8 +131,8 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
 
     if (_editing) {
       _timestampController.value = _oldCatch.timestamp;
-      _speciesController.value = _speciesManager.entity(_oldCatch.speciesId);
-      _baitController.value = _baitManager.entity(_oldCatch.baitId);
+      _speciesController.value = _oldCatch.speciesId;
+      _baitController.value = _oldCatch.baitId;
       _fishingSpotController.value =
           _fishingSpotManager.entity(_oldCatch.fishingSpotId);
       _customEntityValues = _oldCatch.customEntityValues;
@@ -150,7 +145,7 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
           _timestampController.time = TimeOfDay.fromDateTime(image.dateTime);
         }
       }
-      _speciesController.value = widget.species;
+      _speciesController.value = widget.speciesId;
       _imagesController.value = widget.images;
       _fishingSpotController.value = widget.fishingSpot;
     }
@@ -240,10 +235,10 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
                 pickerSettings:
                     ManageableListPagePickerSettings<dynamic>.single(
                   onPicked: (context, bait) {
-                    setState(() => _baitController.value = bait);
+                    setState(() => _baitController.value = bait?.id);
                     return true;
                   },
-                  initialValue: _baitController.value,
+                  initialValue: _baitManager.entity(_baitController.value),
                 ),
               ),
             );
@@ -273,11 +268,14 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
 
   Widget _buildSpecies() {
     return EntityListenerBuilder(
-      managers: [_speciesManager],
+      managers: [
+        _speciesManager,
+      ],
       builder: (context) {
+        var species = _speciesManager.entity(_speciesController.value);
         return ListPickerInput(
           title: Strings.of(context).catchFieldSpecies,
-          value: _speciesController.value?.name,
+          value: species?.name,
           onTap: () {
             push(
               context,
@@ -285,10 +283,10 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
                 pickerSettings:
                     ManageableListPagePickerSettings<Species>.single(
                   onPicked: (context, species) {
-                    setState(() => _speciesController.value = species);
+                    setState(() => _speciesController.value = species?.id);
                     return true;
                   },
-                  initialValue: _speciesController.value,
+                  initialValue: species,
                   isRequired: true,
                 ),
               ),
@@ -325,12 +323,12 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
     var cat = Catch()
       ..id = _oldCatch?.id ?? randomId()
       ..timestamp = _timestampController.value
-      ..speciesId = _speciesController.value.id
+      ..speciesId = _speciesController.value
       ..fishingSpotId = _fishingSpotController.value.id
       ..customEntityValues.addAll(entityValuesFromMap(customFieldValueMap));
 
     if (_baitController.value != null) {
-      cat.baitId = _baitController.value.id;
+      cat.baitId = _baitController.value;
     }
 
     _catchManager.addOrUpdate(

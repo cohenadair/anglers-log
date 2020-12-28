@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mobile/bait_category_manager.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
 import 'package:mobile/pages/bait_category_list_page.dart';
 import 'package:mobile/pages/save_bait_page.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mobile/widgets/button.dart';
+import 'package:mobile/widgets/text_input.dart';
 import 'package:mockito/mockito.dart';
 
 import '../mock_app_manager.dart';
@@ -18,10 +20,13 @@ void main() {
       mockBaitCategoryManager: true,
       mockBaitManager: true,
       mockCustomEntityManager: true,
+      mockDataManager: true,
       mockPreferencesManager: true,
     );
 
     when(appManager.mockBaitManager.duplicate(any)).thenReturn(false);
+    when(appManager.mockDataManager.insertOrUpdateEntity(any, any, any))
+        .thenAnswer((_) => Future.value(true));
     when(appManager.mockPreferencesManager.baitCustomEntityIds).thenReturn([]);
   });
 
@@ -55,13 +60,15 @@ void main() {
   });
 
   testWidgets("Selecting bait category updates state", (tester) async {
+    var baitCategory = BaitCategory()
+      ..id = randomId()
+      ..name = "Lure";
+
     when(appManager.mockBaitCategoryManager
             .listSortedByName(filter: anyNamed("filter")))
-        .thenReturn([
-      BaitCategory()
-        ..id = randomId()
-        ..name = "Lure",
-    ]);
+        .thenReturn([baitCategory]);
+    when(appManager.mockBaitCategoryManager.entity(baitCategory.id))
+        .thenReturn(baitCategory);
 
     await tester.pumpWidget(Testable(
       (_) => SaveBaitPage(),
@@ -191,5 +198,40 @@ void main() {
     expect(bait.name, "Plug");
     expect(bait.hasBaitCategoryId(), isFalse);
     expect(bait.customEntityValues.isEmpty, isTrue);
+  });
+
+  /// https://github.com/cohenadair/anglers-log/issues/462
+  testWidgets("Updates to selected bait category updates state",
+      (tester) async {
+    var baitCategory = BaitCategory()
+      ..id = randomId()
+      ..name = "Live";
+
+    // Use real BaitManager to test listener notifications.
+    var baitCategoryManager = BaitCategoryManager(appManager);
+    baitCategoryManager.addOrUpdate(baitCategory);
+    when(appManager.baitCategoryManager).thenReturn(baitCategoryManager);
+
+    await tester.pumpWidget(
+      Testable(
+        (_) => SaveBaitPage.edit(Bait()
+          ..id = randomId()
+          ..baitCategoryId = baitCategory.id),
+        appManager: appManager,
+      ),
+    );
+
+    expect(find.text("Live"), findsOneWidget);
+
+    // Edit the selected category.
+    await tapAndSettle(tester, find.text("Live"));
+    await tapAndSettle(tester, find.text("EDIT"));
+    await tapAndSettle(tester, find.text("Live"));
+    await enterTextAndSettle(tester, find.byType(TextInput), "Live 2");
+    await tapAndSettle(tester, find.text("SAVE"));
+    await tapAndSettle(tester, find.byType(BackButtonIcon));
+
+    // Verify new category name is shown.
+    expect(find.text("Live 2"), findsOneWidget);
   });
 }

@@ -3,9 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 
 import '../../i18n/strings.dart';
-import '../../model/gen/anglerslog.pb.dart';
 import '../../res/dimen.dart';
-import '../../utils/protobuf_utils.dart';
 import '../../widgets/text.dart';
 import '../../widgets/widget.dart';
 import '../save_catch_page.dart';
@@ -66,14 +64,6 @@ class _HowToManageFieldsPageState extends State<HowToManageFieldsPage> {
         EmbeddedPage(
           childBuilder: (context) => SaveCatchPage(
             popupMenuKey: _popupMenuKey,
-            species: Species()
-              ..id = randomId()
-              ..name = Strings.of(context).onboardingJourneyManageFieldsSpecies,
-            fishingSpot: FishingSpot()
-              ..id = randomId()
-              // Coordinates don't matter here; they aren't shown.
-              ..lat = 0.000000
-              ..lng = 0.000000,
           ),
         ),
         VerticalSpace(paddingWidgetDouble),

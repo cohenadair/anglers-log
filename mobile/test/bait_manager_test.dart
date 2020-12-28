@@ -132,14 +132,23 @@ void main() {
       ..id = baitCategoryId0
       ..name = "Test Category");
 
+    var bait = Bait()
+      ..id = randomId()
+      ..name = "Test"
+      ..baitCategoryId = baitCategoryId0;
+    await baitManager.addOrUpdate(bait);
+
     expect(baitManager.formatNameWithCategory(null), null);
     expect(
-      baitManager.formatNameWithCategory(Bait()
-        ..name = "Test"
-        ..baitCategoryId = baitCategoryId0),
+      baitManager.formatNameWithCategory(bait.id),
       "Test Category - Test",
     );
-    expect(baitManager.formatNameWithCategory(Bait()..name = "Test"), "Test");
+
+    bait = Bait()
+      ..id = randomId()
+      ..name = "Test";
+    await baitManager.addOrUpdate(bait);
+    expect(baitManager.formatNameWithCategory(bait.id), "Test");
   });
 
   test("Filtering", () async {

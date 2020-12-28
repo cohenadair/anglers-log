@@ -34,12 +34,12 @@ List<Field> allCatchFields() {
       id: catchFieldIdSpecies(),
       removable: false,
       name: (context) => Strings.of(context).catchFieldSpecies,
-      controller: InputController<Species>(),
+      controller: InputController<Id>(),
     ),
     Field(
       id: catchFieldIdBait(),
       name: (context) => Strings.of(context).catchFieldBaitLabel,
-      controller: InputController<Bait>(),
+      controller: InputController<Id>(),
     ),
     Field(
       id: catchFieldIdImages(),

@@ -34,7 +34,8 @@ void main() {
     )).thenReturn([
       Catch()
         ..id = randomId()
-        ..timestamp = Timestamp.fromDateTime(DateTime(2020, 1, 1)),
+        ..timestamp = Timestamp.fromDateTime(DateTime(2020, 1, 1))
+        ..baitId = randomId(),
     ]);
 
     when(appManager.mockSpeciesManager.entity(any)).thenReturn(Species()

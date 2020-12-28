@@ -122,9 +122,9 @@ class CatchListPage extends StatelessWidget {
       subtitle2 = SubtitleLabel(fishingSpot.name);
     } else {
       // Fallback on bait as a subtitle.
-      var bait = baitManager.entity(cat.baitId);
-      if (bait != null) {
-        subtitle2 = SubtitleLabel(baitManager.formatNameWithCategory(bait));
+      var formattedName = baitManager.formatNameWithCategory(cat.baitId);
+      if (isNotEmpty(formattedName)) {
+        subtitle2 = SubtitleLabel(formattedName);
       }
     }
 

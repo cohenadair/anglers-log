@@ -54,7 +54,7 @@ class _SaveBaitPageState extends State<SaveBaitPage> {
 
   PreferencesManager get _preferencesManager => PreferencesManager.of(context);
 
-  InputController<BaitCategory> get _baitCategoryController =>
+  InputController<Id> get _baitCategoryController =>
       _fields[_idBaitCategory].controller;
 
   TextInputController get _nameController =>
@@ -67,7 +67,7 @@ class _SaveBaitPageState extends State<SaveBaitPage> {
     _fields[_idBaitCategory] = Field(
       id: _idBaitCategory,
       name: (context) => Strings.of(context).saveBaitPageCategoryLabel,
-      controller: InputController<BaitCategory>(),
+      controller: InputController<Id>(),
       removable: true,
       showing: true,
     );
@@ -83,8 +83,7 @@ class _SaveBaitPageState extends State<SaveBaitPage> {
     );
 
     if (_editing) {
-      _baitCategoryController.value =
-          _baitCategoryManager.entity(_oldBait.baitCategoryId);
+      _baitCategoryController.value = _oldBait.baitCategoryId;
       _nameController.value = _oldBait.name;
       _customEntityValues = _oldBait.customEntityValues;
     }
@@ -119,9 +118,11 @@ class _SaveBaitPageState extends State<SaveBaitPage> {
     return EntityListenerBuilder(
       managers: [_baitCategoryManager],
       builder: (context) {
+        var baitCategory =
+            _baitCategoryManager.entity(_baitCategoryController.value);
         return ListPickerInput(
           title: Strings.of(context).saveBaitPageCategoryLabel,
-          value: _baitCategoryController.value?.name,
+          value: baitCategory?.name,
           onTap: () {
             push(
               context,
@@ -129,10 +130,11 @@ class _SaveBaitPageState extends State<SaveBaitPage> {
                 pickerSettings:
                     ManageableListPagePickerSettings<BaitCategory>.single(
                   onPicked: (context, category) {
-                    setState(() => _baitCategoryController.value = category);
+                    setState(
+                        () => _baitCategoryController.value = category?.id);
                     return true;
                   },
-                  initialValue: _baitCategoryController.value,
+                  initialValue: baitCategory,
                 ),
               ),
             );
@@ -164,7 +166,7 @@ class _SaveBaitPageState extends State<SaveBaitPage> {
       ..customEntityValues.addAll(entityValuesFromMap(customFieldValueMap));
 
     if (_baitCategoryController.value != null) {
-      newBait.baitCategoryId = _baitCategoryController.value.id;
+      newBait.baitCategoryId = _baitCategoryController.value;
     }
 
     if (_baitManager.duplicate(newBait)) {
