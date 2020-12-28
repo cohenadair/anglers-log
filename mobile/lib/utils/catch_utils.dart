@@ -51,7 +51,7 @@ List<Field> allCatchFields() {
       name: (context) => Strings.of(context).catchFieldFishingSpot,
       description: (context) =>
           Strings.of(context).catchFieldFishingSpotDescription,
-      controller: InputController<FishingSpot>(),
+      controller: InputController<Id>(),
     ),
   ];
 }

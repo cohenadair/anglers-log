@@ -146,17 +146,10 @@ class CatchManager extends EntityManager<Catch> {
   @override
   Future<bool> addOrUpdate(
     Catch cat, {
-    FishingSpot fishingSpot,
     List<File> imageFiles,
     bool compressImages = true,
     bool notify = true,
   }) async {
-    // Update dependencies first, so when listeners are notified, all data is
-    // available.
-    if (fishingSpot != null) {
-      await _fishingSpotManager.addOrUpdate(fishingSpot);
-    }
-
     cat.imageNames.clear();
     cat.imageNames
         .addAll(await _imageManager.save(imageFiles, compress: compressImages));

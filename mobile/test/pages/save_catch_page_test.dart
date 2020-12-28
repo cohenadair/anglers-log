@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/bait_manager.dart';
+import 'package:mobile/fishing_spot_manager.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
 import 'package:mobile/model/gen/google/protobuf/timestamp.pb.dart';
 import 'package:mobile/pages/image_picker_page.dart';
@@ -31,6 +32,7 @@ void main() {
       mockDataManager: true,
       mockFishingSpotManager: true,
       mockImageManager: true,
+      mockLocationMonitor: true,
       mockPreferencesManager: true,
       mockSpeciesManager: true,
       mockTimeManager: true,
@@ -57,11 +59,6 @@ void main() {
               dateTime: DateTime(2020, 1, 1, 15, 30),
             ),
           ],
-          speciesId: randomId(),
-          fishingSpot: FishingSpot()
-            ..id = randomId()
-            ..lat = 0.123456
-            ..lng = 1.12356,
         ),
         appManager: appManager,
       ));
@@ -78,11 +75,6 @@ void main() {
               originalFile: File("test/resources/flutter_logo.png"),
             ),
           ],
-          speciesId: randomId(),
-          fishingSpot: FishingSpot()
-            ..id = randomId()
-            ..lat = 0.123456
-            ..lng = 1.12356,
         ),
         appManager: appManager,
       ));
@@ -98,6 +90,12 @@ void main() {
       when(appManager.mockSpeciesManager.entity(species.id))
           .thenReturn(species);
 
+      var fishingSpot = FishingSpot()
+        ..id = randomId()
+        ..name = "Spot A";
+      when(appManager.mockFishingSpotManager.entity(fishingSpot.id))
+          .thenReturn(fishingSpot);
+
       await tester.pumpWidget(Testable(
         (_) => SaveCatchPage(
           images: [
@@ -107,9 +105,7 @@ void main() {
             ),
           ],
           speciesId: species.id,
-          fishingSpot: FishingSpot()
-            ..id = randomId()
-            ..name = "Spot A",
+          fishingSpotId: fishingSpot.id,
         ),
         appManager: appManager,
       ));
@@ -138,9 +134,7 @@ void main() {
             ),
           ],
           speciesId: randomId(),
-          fishingSpot: FishingSpot()
-            ..id = randomId()
-            ..name = "Spot A",
+          fishingSpotId: randomId(),
           popOverride: () => invoked = true,
         ),
         appManager: appManager,
@@ -305,7 +299,6 @@ void main() {
 
       when(appManager.mockCatchManager.addOrUpdate(
         captureAny,
-        fishingSpot: anyNamed("fishingSpot"),
         imageFiles: anyNamed("imageFiles"),
       )).thenAnswer((invocation) {
         // Assume image is saved correctly.
@@ -317,7 +310,6 @@ void main() {
       var result = verify(
         appManager.mockCatchManager.addOrUpdate(
           captureAny,
-          fishingSpot: anyNamed("fishingSpot"),
           imageFiles: anyNamed("imageFiles"),
         ),
       );
@@ -334,13 +326,16 @@ void main() {
       when(appManager.mockSpeciesManager.entity(species.id))
           .thenReturn(species);
 
+      var fishingSpot = FishingSpot()
+        ..id = randomId()
+        ..name = "Spot A";
+      when(appManager.mockFishingSpotManager.entity(fishingSpot.id))
+          .thenReturn(fishingSpot);
+
       await tester.pumpWidget(Testable(
         (_) => SaveCatchPage(
           speciesId: species.id,
-          fishingSpot: FishingSpot()
-            ..id = randomId()
-            ..lat = 0.123456
-            ..lng = 1.12356,
+          fishingSpotId: fishingSpot.id,
         ),
         appManager: appManager,
       ));
@@ -361,10 +356,7 @@ void main() {
       await tester.pumpWidget(Testable(
         (_) => SaveCatchPage(
           speciesId: speciesId,
-          fishingSpot: FishingSpot()
-            ..id = fishingSpotId
-            ..lat = 0.123456
-            ..lng = 1.12356,
+          fishingSpotId: fishingSpotId,
         ),
         appManager: appManager,
       ));
@@ -374,7 +366,6 @@ void main() {
       var result = verify(
         appManager.mockCatchManager.addOrUpdate(
           captureAny,
-          fishingSpot: anyNamed("fishingSpot"),
           imageFiles: anyNamed("imageFiles"),
         ),
       );
@@ -394,13 +385,7 @@ void main() {
 
   testWidgets("New title", (tester) async {
     await tester.pumpWidget(Testable(
-      (_) => SaveCatchPage(
-        speciesId: randomId(),
-        fishingSpot: FishingSpot()
-          ..id = randomId()
-          ..lat = 0.123456
-          ..lng = 1.12356,
-      ),
+      (_) => SaveCatchPage(),
       appManager: appManager,
     ));
 
@@ -427,14 +412,20 @@ void main() {
       catchFieldIdSpecies(),
       catchFieldIdBait(),
     ]);
+    var species = Species()
+      ..id = randomId()
+      ..name = "Steelhead";
+    when(appManager.mockSpeciesManager.entity(species.id)).thenReturn(species);
+    var fishingSpot = FishingSpot()
+      ..id = randomId()
+      ..name = "Spot A";
+    when(appManager.mockFishingSpotManager.entity(fishingSpot.id))
+        .thenReturn(fishingSpot);
 
     await tester.pumpWidget(Testable(
       (_) => SaveCatchPage(
-        speciesId: randomId(),
-        fishingSpot: FishingSpot()
-          ..id = randomId()
-          ..lat = 0.123456
-          ..lng = 1.12356,
+        speciesId: species.id,
+        fishingSpotId: fishingSpot.id,
       ),
       appManager: appManager,
     ));
@@ -451,10 +442,6 @@ void main() {
     var species = Species()
       ..id = randomId()
       ..name = "Bass";
-    var fishingSpot = FishingSpot()
-      ..id = randomId()
-      ..lat = 0.000001
-      ..lng = 0.000002;
 
     // Use real SpeciesManager to test listener notifications.
     var speciesManager = SpeciesManager(appManager);
@@ -465,7 +452,6 @@ void main() {
       Testable(
         (_) => SaveCatchPage(
           speciesId: species.id,
-          fishingSpot: fishingSpot,
         ),
         appManager: appManager,
       ),
@@ -518,5 +504,38 @@ void main() {
 
     // Verify new species name is shown.
     expect(find.text("Minnow 2"), findsOneWidget);
+  });
+
+  /// https://github.com/cohenadair/anglers-log/issues/467
+  testWidgets("Updates to selected fishing spot updates state", (tester) async {
+    var fishingSpot = FishingSpot()
+      ..id = randomId()
+      ..name = "A";
+
+    // Use real FishingSpotManager to test listener notifications.
+    var fishingSpotManager = FishingSpotManager(appManager);
+    fishingSpotManager.addOrUpdate(fishingSpot);
+    when(appManager.fishingSpotManager).thenReturn(fishingSpotManager);
+
+    await tester.pumpWidget(
+      Testable(
+        (_) => SaveCatchPage.edit(Catch()
+          ..id = randomId()
+          ..fishingSpotId = fishingSpot.id),
+        appManager: appManager,
+      ),
+    );
+
+    expect(find.text("A"), findsOneWidget);
+
+    // Edit the selected species.
+    await tapAndSettle(tester, find.text("A"));
+    await tapAndSettle(tester, find.text("EDIT"));
+    await enterTextAndSettle(tester, find.byType(TextInput), "B");
+    await tapAndSettle(tester, find.text("SAVE"));
+    await tapAndSettle(tester, find.byType(BackButtonIcon));
+
+    // Verify new species name is shown.
+    expect(find.text("B"), findsOneWidget);
   });
 }

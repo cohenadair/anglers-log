@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
 import 'package:mobile/pages/save_fishing_spot_page.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
@@ -14,13 +15,15 @@ void main() {
   setUp(() {
     appManager = MockAppManager(
       mockFishingSpotManager: true,
+      mockLocationMonitor: true,
     );
   });
 
   testWidgets("New title", (tester) async {
     await tester.pumpWidget(Testable(
-      (_) =>
-          SaveFishingSpotPage(oldFishingSpot: FishingSpot()..id = randomId()),
+      (_) => SaveFishingSpotPage(
+        latLng: LatLng(1.000000, 2.000000),
+      ),
       appManager: appManager,
     ));
     expect(find.text("New Fishing Spot"), findsOneWidget);
@@ -28,10 +31,7 @@ void main() {
 
   testWidgets("Edit title", (tester) async {
     await tester.pumpWidget(Testable(
-      (_) => SaveFishingSpotPage(
-        oldFishingSpot: FishingSpot()..id = randomId(),
-        editing: true,
-      ),
+      (_) => SaveFishingSpotPage.edit(FishingSpot()..id = randomId()),
       appManager: appManager,
     ));
     expect(find.text("Edit Fishing Spot"), findsOneWidget);
@@ -40,10 +40,7 @@ void main() {
   testWidgets("New fishing spot", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => SaveFishingSpotPage(
-        oldFishingSpot: FishingSpot()
-          ..id = randomId()
-          ..lat = 1.123456
-          ..lng = 2.123456,
+        latLng: LatLng(1.000000, 2.000000),
       ),
       appManager: appManager,
     ));
@@ -58,17 +55,14 @@ void main() {
 
     FishingSpot spot = result.captured.first;
     expect(spot.name, "Spot A");
-    expect(spot.lat, 1.123456);
-    expect(spot.lng, 2.123456);
+    expect(spot.lat, 1.000000);
+    expect(spot.lng, 2.000000);
   });
 
-  testWidgets("New fishing spot without a name", (tester) async {
+  testWidgets("Save fishing spot without a name", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => SaveFishingSpotPage(
-        oldFishingSpot: FishingSpot()
-          ..id = randomId()
-          ..lat = 1.123456
-          ..lng = 2.123456,
+        latLng: LatLng(1.000000, 2.000000),
       ),
       appManager: appManager,
     ));
@@ -81,23 +75,7 @@ void main() {
 
     FishingSpot spot = result.captured.first;
     expect(spot.hasName(), isFalse);
-    expect(spot.lat, 1.123456);
-    expect(spot.lng, 2.123456);
-  });
-
-  testWidgets("Custom onSave callback is invoked", (tester) async {
-    var called = false;
-    await tester.pumpWidget(Testable(
-      (_) => SaveFishingSpotPage(
-        oldFishingSpot: FishingSpot()..id = randomId(),
-        onSave: (_) => called = true,
-      ),
-      appManager: appManager,
-    ));
-
-    await tapAndSettle(tester, find.text("SAVE"));
-
-    verifyNever(appManager.mockFishingSpotManager.addOrUpdate(any));
-    expect(called, isTrue);
+    expect(spot.lat, 1.000000);
+    expect(spot.lng, 2.000000);
   });
 }

@@ -24,6 +24,7 @@ void main() {
       mockBaitManager: true,
       mockCatchManager: true,
       mockCustomEntityManager: true,
+      mockDataManager: true,
       mockFishingSpotManager: true,
       mockLocationMonitor: true,
       mockPhotoManagerWrapper: true,
@@ -31,6 +32,8 @@ void main() {
       mockSpeciesManager: true,
     );
 
+    when(appManager.mockDataManager.insertOrUpdateEntity(any, any, any))
+        .thenAnswer((_) => Future.value(true));
     when(appManager.mockFishingSpotManager.listSortedByName()).thenReturn([]);
 
     allAlbum = MockAssetPathEntity();
@@ -83,12 +86,15 @@ void main() {
     ));
     await tester.pumpAndSettle(Duration(milliseconds: 50));
 
+    var fishingSpot = FishingSpot()
+      ..id = randomId()
+      ..name = "Spot 1"
+      ..lat = 9.876543
+      ..lng = 3.456789;
     when(appManager.mockFishingSpotManager.withinRadius(any, any))
-        .thenReturn(FishingSpot()
-          ..id = randomId()
-          ..name = "Spot 1"
-          ..lat = 9.876543
-          ..lng = 3.456789);
+        .thenReturn(fishingSpot);
+    when(appManager.mockFishingSpotManager.entity(fishingSpot.id))
+        .thenReturn(fishingSpot);
     await tapAndSettle(tester, find.byType(Image).first);
     await tapAndSettle(tester, find.text("NEXT"));
 
@@ -114,6 +120,13 @@ void main() {
     await tapAndSettle(tester, find.text("NEXT"));
 
     verify(appManager.mockFishingSpotManager.withinRadius(any, any)).called(1);
+
+    var result =
+        verify(appManager.mockFishingSpotManager.addOrUpdate(captureAny));
+    result.called(1);
+    var fishingSpot = result.captured.first as FishingSpot;
+    when(appManager.mockFishingSpotManager.entity(fishingSpot.id))
+        .thenReturn(fishingSpot);
 
     await tapAndSettle(tester, find.text("Steelhead"));
 

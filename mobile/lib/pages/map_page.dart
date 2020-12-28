@@ -365,13 +365,15 @@ class _FishingSpotBottomSheet extends StatelessWidget {
                   editing ? Strings.of(context).edit : Strings.of(context).save,
               icon: editing ? Icons.edit : Icons.save,
               onPressed: () {
-                present(
-                  context,
-                  SaveFishingSpotPage(
-                    oldFishingSpot: fishingSpot,
-                    editing: editing,
-                  ),
-                );
+                if (editing) {
+                  present(context, SaveFishingSpotPage.edit(fishingSpot));
+                } else {
+                  present(
+                      context,
+                      SaveFishingSpotPage(
+                        latLng: fishingSpot.latLng,
+                      ));
+                }
               },
             ),
           ),

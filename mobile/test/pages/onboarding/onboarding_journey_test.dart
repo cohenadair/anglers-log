@@ -17,6 +17,7 @@ void main() {
       mockBaitManager: true,
       mockBaitCategoryManager: true,
       mockCustomEntityManager: true,
+      mockFishingSpotManager: true,
       mockPreferencesManager: true,
       mockSpeciesManager: true,
       mockTimeManager: true,

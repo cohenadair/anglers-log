@@ -68,6 +68,7 @@ class _AddCatchJourneyState extends State<AddCatchJourney> {
                       ..id = randomId()
                       ..lat = image.position.latitude
                       ..lng = image.position.longitude;
+                    _fishingSpotManager.addOrUpdate(_fishingSpot);
                   } else {
                     _fishingSpot = existingSpot;
                   }
@@ -111,14 +112,16 @@ class _AddCatchJourneyState extends State<AddCatchJourney> {
         } else if (name == _pickFishingSpotRoute) {
           return MaterialPageRoute(
             builder: (context) => FishingSpotPickerPage(
-              fishingSpot: _fishingSpotManager.withinRadius(
-                  _locationMonitor.currentLocation, _existingFishingSpotMeters),
+              fishingSpotId: _fishingSpotManager
+                  .withinRadius(_locationMonitor.currentLocation,
+                      _existingFishingSpotMeters)
+                  ?.id,
               onPicked: (context, fishingSpot) {
                 _fishingSpot =
                     _fishingSpotManager.withLatLng(fishingSpot) ?? fishingSpot;
                 Navigator.of(context).pushNamed(_saveCatchRoute);
               },
-              doneButtonText: Strings.of(context).next,
+              actionButtonText: Strings.of(context).next,
             ),
           );
         } else if (name == _saveCatchRoute) {
@@ -126,7 +129,7 @@ class _AddCatchJourneyState extends State<AddCatchJourney> {
             builder: (context) => SaveCatchPage(
               images: _images,
               speciesId: _species.id,
-              fishingSpot: _fishingSpot,
+              fishingSpotId: _fishingSpot.id,
               popOverride: () =>
                   Navigator.of(context, rootNavigator: true).pop(),
             ),
