@@ -538,4 +538,23 @@ void main() {
     // Verify new species name is shown.
     expect(find.text("B"), findsOneWidget);
   });
+
+  testWidgets("Save catch without a fishing spot", (tester) async {
+    await tester.pumpWidget(
+      Testable(
+        (_) => SaveCatchPage(
+          speciesId: randomId(),
+        ),
+        appManager: appManager,
+      ),
+    );
+    await tapAndSettle(tester, find.text("SAVE"));
+
+    var result = verify(appManager.mockCatchManager
+        .addOrUpdate(captureAny, imageFiles: anyNamed("imageFiles")));
+    result.called(1);
+
+    var cat = result.captured.first as Catch;
+    expect(cat.hasFishingSpotId(), isFalse);
+  });
 }

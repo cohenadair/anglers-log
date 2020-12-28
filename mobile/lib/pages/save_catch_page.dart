@@ -331,8 +331,11 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
       ..id = _oldCatch?.id ?? randomId()
       ..timestamp = _timestampController.value
       ..speciesId = _speciesController.value
-      ..fishingSpotId = _fishingSpotController.value
       ..customEntityValues.addAll(entityValuesFromMap(customFieldValueMap));
+
+    if (_fishingSpotController.value != null) {
+      cat.fishingSpotId = _fishingSpotController.value;
+    }
 
     if (_baitController.value != null) {
       cat.baitId = _baitController.value;
@@ -358,9 +361,10 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
       FishingSpotPickerPage(
         fishingSpotId: _fishingSpotController.value,
         onPicked: (context, pickedFishingSpot) {
-          if (pickedFishingSpot.id != _fishingSpotController.value) {
+          if (pickedFishingSpot == null ||
+              pickedFishingSpot.id != _fishingSpotController.value) {
             setState(() {
-              _fishingSpotController.value = pickedFishingSpot.id;
+              _fishingSpotController.value = pickedFishingSpot?.id;
             });
           }
           Navigator.pop(context);
