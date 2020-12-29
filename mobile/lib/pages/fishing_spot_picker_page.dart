@@ -46,6 +46,10 @@ class _FishingSpotPickerPageState extends State<FishingSpotPickerPage>
   static final _pendingMarkerSize = 40.0;
   static final _pendingMarkerAnimOffset = _pendingMarkerSize * 3;
 
+  /// If a spot is picked and there already exists a spot within this radius,
+  /// the existing spot is automatically selected.
+  static final _duplicateSpotRadiusMeters = 5;
+
   final _pendingMarkerSlideInDelay = Duration(milliseconds: 1000);
 
   final Completer<GoogleMapController> _mapController = Completer();
@@ -190,11 +194,19 @@ class _FishingSpotPickerPageState extends State<FishingSpotPickerPage>
               return;
             }
 
-            setState(() {
-              _isFishingSpotPending = true;
-              _pendingMarkerOffset = _pendingMarkerSize;
-              _fishingSpotAnimController.forward();
-            });
+            // The map was moved to a spot extremely close to an existing
+            // fishing spot. Select it instead of creating a new one.
+            var existingSpot = _fishingSpotManager.withinRadius(
+                _currentPosition, _duplicateSpotRadiusMeters);
+            if (existingSpot == null) {
+              setState(() {
+                _isFishingSpotPending = true;
+                _pendingMarkerOffset = _pendingMarkerSize;
+                _fishingSpotAnimController.forward();
+              });
+            } else {
+              _selectFishingSpot(existingSpot);
+            }
           });
         });
       },

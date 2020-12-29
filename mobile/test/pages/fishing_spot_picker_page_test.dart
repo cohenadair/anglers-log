@@ -101,6 +101,7 @@ void main() {
     // TODO (1)
     // TODO: Verify marker color
     // This includes when the picker is built without an initial fishing spot.
+    // This should test everything in the onIdle callback.
   });
 
   testWidgets("On map move started by drag, current spot is cleared",

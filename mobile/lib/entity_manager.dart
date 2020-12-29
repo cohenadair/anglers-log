@@ -97,7 +97,7 @@ abstract class EntityManager<T extends GeneratedMessage>
 
   bool entityExists(Id id) => entity(id) != null;
 
-  /// Adds or updates the given [Entity]. If [notify] is false (default true),
+  /// Adds or updates the given entity. If [notify] is false (default true),
   /// listeners are not notified.
   Future<bool> addOrUpdate(
     T entity, {

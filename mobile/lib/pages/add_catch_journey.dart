@@ -67,8 +67,8 @@ class _AddCatchJourneyState extends State<AddCatchJourney> {
                       continue;
                     }
 
-                    var existingSpot = _fishingSpotManager.withinRadius(
-                        image.position);
+                    var existingSpot =
+                        _fishingSpotManager.withinRadius(image.position);
 
                     if (existingSpot == null) {
                       _fishingSpot = FishingSpot()
@@ -121,7 +121,8 @@ class _AddCatchJourneyState extends State<AddCatchJourney> {
           return MaterialPageRoute(
             builder: (context) => FishingSpotPickerPage(
               fishingSpotId: _fishingSpotManager
-                  .withinRadius(_locationMonitor.currentLocation)?.id,
+                  .withinRadius(_locationMonitor.currentLocation)
+                  ?.id,
               onPicked: (context, fishingSpot) {
                 _fishingSpot =
                     _fishingSpotManager.withLatLng(fishingSpot) ?? fishingSpot;
