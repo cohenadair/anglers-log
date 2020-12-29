@@ -39,6 +39,44 @@ void main() {
     expect(findFirst<TextField>(tester).controller.text, isEmpty);
   });
 
+  testWidgets("Hide bait category", (tester) async {
+    when(appManager.mockPreferencesManager.baitFieldIds).thenReturn([
+      Id()..uuid = "017ae032-477b-4fe4-9be0-ea0a05a576f9", // Name ID
+    ]);
+
+    await tester.pumpWidget(Testable(
+      (_) => SaveBaitPage(),
+      appManager: appManager,
+    ));
+
+    expect(find.text("Bait Category"), findsNothing);
+    expect(find.text("Name"), findsOneWidget);
+  });
+
+  testWidgets("Shows bait category when empty IDs", (tester) async {
+    when(appManager.mockPreferencesManager.baitFieldIds).thenReturn([]);
+
+    await tester.pumpWidget(Testable(
+      (_) => SaveBaitPage(),
+      appManager: appManager,
+    ));
+
+    expect(find.text("Bait Category"), findsOneWidget);
+    expect(find.text("Name"), findsOneWidget);
+  });
+
+  testWidgets("Shows bait category when IDs is null", (tester) async {
+    when(appManager.mockPreferencesManager.baitFieldIds).thenReturn(null);
+
+    await tester.pumpWidget(Testable(
+      (_) => SaveBaitPage(),
+      appManager: appManager,
+    ));
+
+    expect(find.text("Bait Category"), findsOneWidget);
+    expect(find.text("Name"), findsOneWidget);
+  });
+
   testWidgets("Edit title", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => SaveBaitPage.edit(

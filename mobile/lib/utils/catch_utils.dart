@@ -6,8 +6,8 @@ import '../pages/image_picker_page.dart';
 import '../widgets/input_controller.dart';
 import '../widgets/input_data.dart';
 
-/// Unique IDs for each catch field. These are stored in the database and
-/// should not be changed.
+// Unique IDs for each catch field. These are stored in the database and
+// should not be changed.
 Id catchFieldIdTimestamp() =>
     Id()..uuid = "dbe382be-b219-4703-af11-a8ce16a191b7";
 

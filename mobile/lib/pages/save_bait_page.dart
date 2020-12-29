@@ -35,8 +35,11 @@ class SaveBaitPage extends StatefulWidget {
 }
 
 class _SaveBaitPageState extends State<SaveBaitPage> {
-  static final _idBaitCategory = randomId();
-  static final _idName = randomId();
+  // Unique IDs for each bait field. These are stored in the database and
+  // should not be changed.
+  static final _idBaitCategory = Id()
+    ..uuid = "832e8f16-3fb6-4530-b8d7-7840734cf465";
+  static final _idName = Id()..uuid = "017ae032-477b-4fe4-9be0-ea0a05a576f9";
 
   final Log _log = Log("SaveCatchPage");
 
@@ -64,14 +67,20 @@ class _SaveBaitPageState extends State<SaveBaitPage> {
   void initState() {
     super.initState();
 
+    var baitFieldIds = _preferencesManager.baitFieldIds;
+
     _fields[_idBaitCategory] = Field(
       id: _idBaitCategory,
       name: (context) => Strings.of(context).saveBaitPageCategoryLabel,
       controller: InputController<Id>(),
       removable: true,
-      showing: true,
+      // Only include bait category field if not disabled by the user.
+      showing: baitFieldIds == null ||
+          baitFieldIds.isEmpty ||
+          baitFieldIds.contains(_idBaitCategory),
     );
 
+    // Name field is required; always include it.
     _fields[_idName] = Field(
       id: _idName,
       name: (context) => Strings.of(context).inputNameLabel,
@@ -110,6 +119,7 @@ class _SaveBaitPageState extends State<SaveBaitPage> {
         }
       },
       onSave: _save,
+      onAddFields: (ids) => _preferencesManager.baitFieldIds = ids.toList(),
       isInputValid: _nameController.valid(context),
     );
   }

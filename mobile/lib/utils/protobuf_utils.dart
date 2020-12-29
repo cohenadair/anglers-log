@@ -99,7 +99,7 @@ Id parseId(String idString) {
 
   var uuid = Uuid().unparse(Uuid().parse(idString));
   if (uuid == Uuid.NAMESPACE_NIL) {
-    throw ArgumentError("Input String is not a valid UUID");
+    throw ArgumentError("Input String is not a valid UUID: $idString");
   }
 
   return Id()..uuid = uuid;

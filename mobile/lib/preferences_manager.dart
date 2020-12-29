@@ -19,6 +19,7 @@ class PreferencesManager {
 
   static const _keyBaitCustomEntityIds = "bait_custom_entity_ids";
   static const _keyCatchCustomEntityIds = "catch_custom_entity_ids";
+  static const _keyBaitFieldIds = "bait_field_ids";
   static const _keyCatchFieldIds = "catch_field_ids";
 
   static const _keyRateTimerStartedAt = "rate_timer_started_at";
@@ -54,6 +55,10 @@ class PreferencesManager {
       _putIdList(_keyCatchCustomEntityIds, ids);
 
   List<Id> get catchCustomEntityIds => _idList(_keyCatchCustomEntityIds);
+
+  set baitFieldIds(List<Id> ids) => _putIdList(_keyBaitFieldIds, ids);
+
+  List<Id> get baitFieldIds => _idList(_keyBaitFieldIds);
 
   set catchFieldIds(List<Id> ids) => _putIdList(_keyCatchFieldIds, ids);
 
@@ -99,7 +104,7 @@ class PreferencesManager {
         .toList();
   }
 
-  void _putId(String key, Id value) => _put(key, value.toString());
+  void _putId(String key, Id value) => _put(key, value?.toString());
 
   Id _id(String key) {
     if (!_preferences.containsKey(key)) {
@@ -124,5 +129,11 @@ class PreferencesManager {
   void _onDatabaseReset() {
     baitCustomEntityIds = null;
     catchCustomEntityIds = null;
+    baitFieldIds = null;
+    catchFieldIds = null;
+    rateTimerStartedAt = null;
+    didRateApp = false;
+    didOnboard = false;
+    selectedReportId = null;
   }
 }
