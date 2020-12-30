@@ -3,6 +3,8 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/pages/image_picker_page.dart';
+import 'package:mobile/res/dimen.dart';
+import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mobile/widgets/button.dart';
 import 'package:mobile/widgets/empty_list_placeholder.dart';
 import 'package:mockito/mockito.dart';
@@ -15,6 +17,8 @@ void main() {
   MockAppManager appManager;
   MockAssetPathEntity allAlbum;
 
+  List<MockAssetEntity> mockAssets;
+
   setUp(() {
     appManager = MockAppManager(
       mockFilePickerWrapper: true,
@@ -22,23 +26,23 @@ void main() {
       mockPhotoManagerWrapper: true,
     );
 
+    mockAssets = [
+      createMockAssetEntity(fileName: "android_logo.png"),
+      createMockAssetEntity(fileName: "anglers_log_logo.png"),
+      createMockAssetEntity(fileName: "apple_logo.png"),
+      createMockAssetEntity(fileName: "flutter_logo.png"),
+    ];
     allAlbum = MockAssetPathEntity();
-    when(allAlbum.isAll).thenReturn(true);
-    when(allAlbum.assetList).thenAnswer(
-      (_) => Future.value([
-        createMockAssetEntity(fileName: "android_logo.png"),
-        createMockAssetEntity(fileName: "anglers_log_logo.png"),
-        createMockAssetEntity(fileName: "apple_logo.png"),
-        createMockAssetEntity(fileName: "flutter_logo.png"),
-      ]),
-    );
-    when(appManager.mockPhotoManagerWrapper.getAssetPathList(any))
-        .thenAnswer((_) => Future.value([allAlbum]));
+    when(allAlbum.assetCount).thenReturn(mockAssets.length);
+    when(allAlbum.getAssetListPaged(any, any))
+        .thenAnswer((_) => Future.value(mockAssets));
+    when(appManager.mockPhotoManagerWrapper.getAllAssetPathEntity(any))
+        .thenAnswer((_) => Future.value(allAlbum));
   });
 
   testWidgets("No device photos empty result", (tester) async {
-    when(appManager.mockPhotoManagerWrapper.getAssetPathList(any))
-        .thenAnswer((_) => Future.value([]));
+    when(appManager.mockPhotoManagerWrapper.getAllAssetPathEntity(any))
+        .thenAnswer((_) => Future.value(null));
 
     await tester.pumpWidget(Testable(
       (_) => ImagePickerPage(
@@ -51,8 +55,22 @@ void main() {
     expect(find.byType(EmptyListPlaceholder), findsOneWidget);
   });
 
-  testWidgets("No device photos empty all album", (tester) async {
-    when(allAlbum.assetList).thenAnswer((_) => Future.value([]));
+  testWidgets("Empty all album shows placeholder", (tester) async {
+    when(allAlbum.assetCount).thenReturn(0);
+    await tester.pumpWidget(Testable(
+      (_) => ImagePickerPage(
+        onImagesPicked: (_, __) {},
+      ),
+      appManager: appManager,
+    ));
+    await tester.pumpAndSettle(Duration(milliseconds: 50));
+
+    expect(find.byType(EmptyListPlaceholder), findsOneWidget);
+  });
+
+  testWidgets("Null all album shows placeholder", (tester) async {
+    when(appManager.mockPhotoManagerWrapper.getAllAssetPathEntity(any))
+        .thenAnswer((_) => Future.value(null));
     await tester.pumpWidget(Testable(
       (_) => ImagePickerPage(
         onImagesPicked: (_, __) {},
@@ -412,11 +430,8 @@ void main() {
       latLngAsync: null,
       latLngLegacy: null,
     );
-    when(allAlbum.assetList).thenAnswer(
-      (_) => Future.value([
-        entity,
-      ]),
-    );
+    when(allAlbum.getAssetListPaged(any, any))
+        .thenAnswer((_) => Future.value([entity]));
 
     PickedImage result;
     await tester.pumpWidget(Testable(
@@ -440,11 +455,8 @@ void main() {
         ..latitude = 0.654321
         ..longitude = 0.123456,
     );
-    when(allAlbum.assetList).thenAnswer(
-      (_) => Future.value([
-        entity,
-      ]),
-    );
+    when(allAlbum.getAssetListPaged(any, any))
+        .thenAnswer((_) => Future.value([entity]));
 
     PickedImage result;
     await tester.pumpWidget(Testable(
@@ -468,11 +480,8 @@ void main() {
         ..longitude = 0.123456,
       latLngLegacy: null,
     );
-    when(allAlbum.assetList).thenAnswer(
-      (_) => Future.value([
-        entity,
-      ]),
-    );
+    when(allAlbum.getAssetListPaged(any, any))
+        .thenAnswer((_) => Future.value([entity]));
 
     PickedImage result;
     await tester.pumpWidget(Testable(
@@ -486,5 +495,124 @@ void main() {
     await tapAndSettle(tester, find.byType(Image).first);
     expect(result.position, isNotNull);
     verify(entity.latlngAsync()).called(1);
+  });
+
+  testWidgets("Placeholder grid shown when waiting for gallery future",
+      (tester) async {
+    // Stub getting the "all" asset, such that the app will show a placeholder
+    // when the future finishes.
+    when(appManager.mockPhotoManagerWrapper.getAllAssetPathEntity(any))
+        .thenAnswer((_) => Future.value(null));
+
+    await tester.pumpWidget(Testable(
+      (_) => ImagePickerPage(
+        onImagesPicked: (_, __) {},
+      ),
+      appManager: appManager,
+    ));
+
+    // Placeholder grid.
+    expect(find.byType(GridView), findsOneWidget);
+
+    // Pump and settle, to complete the future.
+    await tester.pumpAndSettle(Duration(milliseconds: 50));
+    expect(find.byType(EmptyListPlaceholder), findsOneWidget);
+  });
+
+  testWidgets("Placeholder grid shown when waiting for assets future",
+      (tester) async {
+    await tester.pumpWidget(Testable(
+      (_) => ImagePickerPage(
+        onImagesPicked: (_, __) {},
+      ),
+      appManager: appManager,
+    ));
+
+    // No images are rendered, but a placeholder grid is.
+    expect(find.byType(Image), findsNothing);
+    expect(find.byType(GridView), findsOneWidget);
+
+    // Pump and settle, to complete the future.
+    await tester.pumpAndSettle(Duration(milliseconds: 50));
+    expect(find.byType(Image), findsNWidgets(4));
+    expect(find.byType(GridView), findsOneWidget);
+  });
+
+  testWidgets("Pagination", (tester) async {
+    // Stub many more assets than can be shown at once.
+    when(allAlbum.assetCount).thenReturn(mockAssets.length * 100);
+
+    var w = galleryMaxThumbSize * 4;
+    var h = galleryMaxThumbSize * 8;
+
+    await tester.pumpWidget(Testable(
+      (_) => ImagePickerPage(
+        onImagesPicked: (_, __) {},
+      ),
+      appManager: appManager,
+      mediaQueryData: MediaQueryData(
+        size: Size(w, h),
+      ),
+    ));
+    await tester.pumpAndSettle(Duration(milliseconds: 50));
+
+    // Verify initial load.
+    verify(allAlbum.getAssetListPaged(0, any)).called(1);
+
+    // Stub new images.
+    mockAssets = [
+      createMockAssetEntity(
+        id: randomId().toString(),
+        fileName: "android_logo.png",
+      ),
+      createMockAssetEntity(
+        id: randomId().toString(),
+        fileName: "anglers_log_logo.png",
+      ),
+      createMockAssetEntity(
+        id: randomId().toString(),
+        fileName: "apple_logo.png",
+      ),
+      createMockAssetEntity(
+        id: randomId().toString(),
+        fileName: "flutter_logo.png",
+      ),
+    ];
+
+    // Scroll enough to load a new page.
+    var gesture = await tester.startGesture(Offset(0, 300));
+    await gesture.moveBy(Offset(0, -300));
+    await tester.pumpAndSettle(Duration(milliseconds: 50));
+
+    // Verify another page load.
+    verify(allAlbum.getAssetListPaged(1, any)).called(1);
+
+    // Stub new images.
+    mockAssets = [
+      createMockAssetEntity(
+        id: randomId().toString(),
+        fileName: "android_logo.png",
+      ),
+      createMockAssetEntity(
+        id: randomId().toString(),
+        fileName: "anglers_log_logo.png",
+      ),
+      createMockAssetEntity(
+        id: randomId().toString(),
+        fileName: "apple_logo.png",
+      ),
+      createMockAssetEntity(
+        id: randomId().toString(),
+        fileName: "flutter_logo.png",
+      ),
+    ];
+
+    // Repeat.
+    gesture = await tester.startGesture(Offset(0, 300));
+    await gesture.moveBy(Offset(0, -300));
+    await tester.pumpAndSettle(Duration(milliseconds: 50));
+
+    // Verify another page load.
+    verify(allAlbum.getAssetListPaged(2, any)).called(1);
   });
 }

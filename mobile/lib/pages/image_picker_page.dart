@@ -1,4 +1,6 @@
+import 'dart:collection';
 import 'dart:io';
+import 'dart:math';
 import 'dart:typed_data';
 
 import 'package:file_picker/file_picker.dart';
@@ -10,6 +12,7 @@ import 'package:photo_manager/photo_manager.dart';
 
 import '../i18n/strings.dart';
 import '../res/dimen.dart';
+import '../res/gen/custom_icons.dart';
 import '../utils/dialog_utils.dart';
 import '../utils/string_utils.dart';
 import '../widgets/button.dart';
@@ -118,17 +121,31 @@ class ImagePickerPage extends StatefulWidget {
 class _ImagePickerPageState extends State<ImagePickerPage> {
   static const double _pickedImageOpacity = 0.6;
   static const double _normalImageOpacity = 1.0;
-
   static const double _selectedPadding = 2.0;
 
-  /// A future that gets a list of all albums in the user's gallery.
-  Future<List<AssetPathEntity>> _albumListFuture;
+  /// A new page (in image grid pagination) is loaded when the grid's scroll
+  /// position reaches its max - thumbnail size * _loadNextPageFactor.
+  static const int _loadNextPageFactor = 3;
 
-  /// A future that gets a list of all available assets.
-  Future<List<AssetEntity>> _allAssetsFuture;
+  /// A future that gets an [AssetPathEntity] containing all of a users photos.
+  Future<AssetPathEntity> _galleryFuture;
 
-  /// A list of all assets available from the user's gallery.
-  List<AssetEntity> _assets;
+  /// The data retrieved from [_galleryFuture].
+  AssetPathEntity _galleryAsset;
+
+  /// A future that gets a list of assets.
+  Future<List<AssetEntity>> _assetsFuture;
+
+  /// A list of all loaded assets. Retrieved from [_assetsFuture]. Note that a
+  /// [LinkedHashSet] is used here for two reasons:
+  ///   1. So duplicate assets aren't added on subsequent builds, and
+  ///   2. Because indexes are used to track "selected" images.
+  final LinkedHashSet<AssetEntity> _assets = LinkedHashSet<AssetEntity>();
+
+  /// The current page of the image grid pagination.
+  int _currentPage = 0;
+
+  bool _isLoadingPage = false;
 
   /// Cache thumbnail futures so they're not recreated each time the widget
   /// tree is rebuilt.
@@ -152,7 +169,7 @@ class _ImagePickerPageState extends State<ImagePickerPage> {
     super.initState();
 
     _initialImages = List.of(widget.initialImages);
-    _albumListFuture = _photoManager.getAssetPathList(RequestType.image);
+    _galleryFuture = _photoManager.getAllAssetPathEntity(RequestType.image);
   }
 
   @override
@@ -165,44 +182,56 @@ class _ImagePickerPageState extends State<ImagePickerPage> {
         ],
         leading: widget.appBarLeading,
       ),
-      // First, get a list of all the available albums.
-      body: EmptyFutureBuilder<List<AssetPathEntity>>(
-        future: _albumListFuture,
-        builder: (context, assets) {
-          // Second, get a list of all assets in the "all" album.
-          // Lazy initialize _allAssetsFuture.
-          if (_allAssetsFuture == null) {
-            // Create a future that waits for all assets.
-            var entity =
-                assets.firstWhere((album) => album.isAll, orElse: () => null);
-            _allAssetsFuture =
-                entity == null ? Future.value([]) : entity.assetList;
+      body: FutureBuilder<AssetPathEntity>(
+        future: _galleryFuture,
+        builder: (context, snapshot) {
+          if (snapshot.connectionState != ConnectionState.done) {
+            return _buildPlaceholderGrid();
           }
 
-          // Third, wait to get assets from each album.
-          return EmptyFutureBuilder<List<AssetEntity>>(
-            future: _allAssetsFuture,
-            builder: (context, assets) {
-              // Lazy initialize _assets.
-              if (_assets == null) {
-                _assets = assets ?? [];
-                // Sort by most recent first.
-                _assets.sort((lhs, rhs) =>
-                    rhs.createDateTime.compareTo(lhs.createDateTime));
+          _galleryAsset = snapshot.data;
 
-                for (var i = 0; i < _assets.length; i++) {
-                  for (var image in _initialImages.reversed) {
-                    if (image.originalFileId != null &&
-                        image.originalFileId == _assets[i].id) {
-                      _selectedIndexes.add(i);
-                      _initialImages.remove(image);
-                      break;
-                    }
+          // If there's no "all", or no assets, don't bother trying to fetch
+          // them.
+          if (_galleryAsset == null || _galleryAsset.assetCount <= 0) {
+            return _buildNoResults();
+          }
+
+          // Get a list of all assets. Lazy initialize so a new future isn't
+          // created each build.
+          if (_assetsFuture == null) {
+            _loadNextPage();
+          }
+
+          // Get assets.
+          return FutureBuilder<List<AssetEntity>>(
+            future: _assetsFuture,
+            builder: (context, snapshot) {
+              if (!snapshot.hasData) {
+                return _buildPlaceholderGrid();
+              }
+
+              var oldLength = _assets.length;
+              _assets.addAll(snapshot.data);
+
+              // If we're loading a new page, wait for the assets size to
+              // change before resetting the flag.
+              if (_isLoadingPage) {
+                _isLoadingPage = oldLength == _assets.length;
+              }
+
+              for (var i = 0; i < _assets.length; i++) {
+                for (var image in _initialImages.reversed) {
+                  if (image.originalFileId != null &&
+                      image.originalFileId == _assets.elementAt(i).id) {
+                    _selectedIndexes.add(i);
+                    _initialImages.remove(image);
+                    break;
                   }
                 }
               }
 
-              return _assets.isEmpty ? _buildNoResults() : _buildImageGrid();
+              return _buildImageGrid();
             },
           );
         },
@@ -265,7 +294,7 @@ class _ImagePickerPageState extends State<ImagePickerPage> {
           ? () async {
               var result = <PickedImage>[];
               for (var i in _selectedIndexes) {
-                result.add(await _pickedImageFromAsset(_assets[i]));
+                result.add(await _pickedImageFromAsset(_assets.elementAt(i)));
               }
 
               _pop(result);
@@ -274,52 +303,27 @@ class _ImagePickerPageState extends State<ImagePickerPage> {
     );
   }
 
-  Widget _buildImageGrid() {
+  Widget _buildGrid({
+    @required int itemCount,
+    @required Function(BuildContext, int) itemBuilder,
+  }) {
     return Column(
       children: <Widget>[
         Expanded(
-          child: GridView.builder(
-            gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-              maxCrossAxisExtent: galleryMaxThumbSize,
-              crossAxisSpacing: gallerySpacing,
-              mainAxisSpacing: gallerySpacing,
+          child: MediaQuery.removePadding(
+            context: context,
+            // Remove default safe area padding added to GridView.
+            removeBottom: true,
+            removeTop: true,
+            child: GridView.builder(
+              gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+                maxCrossAxisExtent: galleryMaxThumbSize,
+                crossAxisSpacing: gallerySpacing,
+                mainAxisSpacing: gallerySpacing,
+              ),
+              itemCount: itemCount,
+              itemBuilder: itemBuilder,
             ),
-            itemCount: _assets.length,
-            itemBuilder: (context, i) {
-              var future = _thumbnailFutures[i];
-              if (future == null) {
-                future = _assets[i].thumbData;
-                _thumbnailFutures[i] = future;
-              }
-
-              var selected = _selectedIndexes.contains(i);
-
-              return Stack(
-                fit: StackFit.expand,
-                children: <Widget>[
-                  FutureBuilder<Uint8List>(
-                    future: future,
-                    builder: (context, snapshot) {
-                      if (snapshot.hasData) {
-                        return _buildThumbnail(snapshot.data, i, selected);
-                      } else {
-                        return Empty();
-                      }
-                    },
-                  ),
-                  Visibility(
-                    visible: selected,
-                    child: Padding(
-                      padding: const EdgeInsets.all(_selectedPadding),
-                      child: Align(
-                        alignment: Alignment.topRight,
-                        child: Icon(Icons.check_circle),
-                      ),
-                    ),
-                  ),
-                ],
-              );
-            },
           ),
         ),
         Container(
@@ -334,7 +338,10 @@ class _ImagePickerPageState extends State<ImagePickerPage> {
                         child: PrimaryLabel(
                           format(
                             Strings.of(context).imagePickerPageSelectedLabel,
-                            [_selectedIndexes.length, _assets.length],
+                            [
+                              _selectedIndexes.length,
+                              _galleryAsset?.assetCount ?? 0
+                            ],
                           ),
                         ),
                       )
@@ -358,6 +365,90 @@ class _ImagePickerPageState extends State<ImagePickerPage> {
     );
   }
 
+  Widget _buildPlaceholderGrid() {
+    return _buildGrid(
+      itemCount: _approxThumbsOnScreen(),
+      itemBuilder: (context, i) => _buildImagePlaceholder(),
+    );
+  }
+
+  Widget _buildImageGrid() {
+    return NotificationListener<ScrollNotification>(
+      onNotification: (notification) {
+        if (_isLoadingPage) {
+          return false;
+        }
+
+        // Load the next page when we're
+        // galleryMaxThumbSize * _loadNextPageFactor from the bottom of the
+        // scrollable area.
+        var metrics = notification.metrics;
+        if (metrics.pixels >=
+            metrics.maxScrollExtent -
+                galleryMaxThumbSize * _loadNextPageFactor) {
+          _isLoadingPage = true;
+          setState(_loadNextPage);
+        }
+
+        return false;
+      },
+      child: _buildGrid(
+        itemCount: _assets.length,
+        itemBuilder: (context, i) {
+          var future = _thumbnailFutures[i];
+          if (future == null) {
+            future = _assets.elementAt(i).thumbData;
+            _thumbnailFutures[i] = future;
+          }
+
+          var selected = _selectedIndexes.contains(i);
+
+          return FutureBuilder<Uint8List>(
+            future: future,
+            builder: (context, snapshot) {
+              Widget child;
+
+              if (snapshot.hasData) {
+                child = Stack(
+                  fit: StackFit.expand,
+                  children: <Widget>[
+                    _buildThumbnail(snapshot.data, i, selected),
+                    _buildSelectedCover(selected),
+                  ],
+                );
+              } else {
+                child = _buildImagePlaceholder();
+              }
+
+              return AnimatedSwitcher(
+                duration: defaultAnimationDuration,
+                child: child,
+              );
+            },
+          );
+        },
+      ),
+    );
+  }
+
+  Widget _buildImagePlaceholder() {
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        return Container(
+          constraints: BoxConstraints.expand(), // Fill parent.
+          decoration: BoxDecoration(
+            color: Theme.of(context).primaryColor,
+          ),
+          child: Icon(
+            CustomIcons.catches,
+            color: Colors.white,
+            size: min<double>(constraints.maxWidth, constraints.maxHeight) / 2,
+          ),
+        );
+      },
+    );
+  }
+
   Widget _buildThumbnail(Uint8List data, int index, bool selected) {
     return GestureDetector(
       onTap: () async {
@@ -370,17 +461,30 @@ class _ImagePickerPageState extends State<ImagePickerPage> {
             }
           });
         } else {
-          _pop([await _pickedImageFromAsset(_assets[index], thumbData: data)]);
+          _pop([
+            await _pickedImageFromAsset(_assets.elementAt(index),
+                thumbData: data)
+          ]);
         }
       },
-      child: Container(
-        color: Colors.black87,
-        child: Opacity(
-          opacity: selected ? _pickedImageOpacity : _normalImageOpacity,
-          child: Image.memory(
-            data,
-            fit: BoxFit.cover,
-          ),
+      child: Opacity(
+        opacity: selected ? _pickedImageOpacity : _normalImageOpacity,
+        child: Image.memory(
+          data,
+          fit: BoxFit.cover,
+        ),
+      ),
+    );
+  }
+
+  Widget _buildSelectedCover(bool selected) {
+    return Visibility(
+      visible: selected,
+      child: Padding(
+        padding: const EdgeInsets.all(_selectedPadding),
+        child: Align(
+          alignment: Alignment.topRight,
+          child: Icon(Icons.check_circle),
         ),
       ),
     );
@@ -496,5 +600,20 @@ class _ImagePickerPageState extends State<ImagePickerPage> {
 
   bool _coordinatesAreValid(double lat, double lng) {
     return lat != null && lng != null && lat != 0 && lng != 0;
+  }
+
+  /// Returns an estimate of the number of thumbnails that are rendered on the
+  /// screen at one time. This is used for creating "placeholder" grids without
+  /// rendering too many image placeholders.
+  int _approxThumbsOnScreen() {
+    var size = MediaQuery.of(context).size;
+    return ((size.width / galleryMaxThumbSize).ceil() *
+            (size.height / galleryMaxThumbSize).ceil())
+        .toInt();
+  }
+
+  void _loadNextPage() {
+    _assetsFuture = _galleryAsset.getAssetListPaged(
+        _currentPage++, _approxThumbsOnScreen() * 2);
   }
 }

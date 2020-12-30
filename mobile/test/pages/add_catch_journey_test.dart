@@ -38,36 +38,36 @@ void main() {
         .thenAnswer((_) => Future.value(true));
     when(appManager.mockFishingSpotManager.listSortedByName()).thenReturn([]);
 
+    var mockAssets = [
+      createMockAssetEntity(
+        fileName: "android_logo.png",
+        latLngLegacy: LatLng()
+          ..latitude = 1.234567
+          ..longitude = 7.654321,
+        latLngAsync: LatLng()
+          ..latitude = 1.234567
+          ..longitude = 7.654321,
+        dateTime: DateTime(2020, 4, 1),
+      ),
+      createMockAssetEntity(
+        fileName: "anglers_log_logo.png",
+        dateTime: DateTime(2020, 3, 1),
+      ),
+      createMockAssetEntity(
+        fileName: "apple_logo.png",
+        dateTime: DateTime(2020, 2, 1),
+      ),
+      createMockAssetEntity(
+        fileName: "flutter_logo.png",
+        dateTime: DateTime(2020, 1, 1),
+      ),
+    ];
     allAlbum = MockAssetPathEntity();
-    when(allAlbum.isAll).thenReturn(true);
-    when(allAlbum.assetList).thenAnswer(
-      (_) => Future.value([
-        createMockAssetEntity(
-          fileName: "android_logo.png",
-          latLngLegacy: LatLng()
-            ..latitude = 1.234567
-            ..longitude = 7.654321,
-          latLngAsync: LatLng()
-            ..latitude = 1.234567
-            ..longitude = 7.654321,
-          dateTime: DateTime(2020, 4, 1),
-        ),
-        createMockAssetEntity(
-          fileName: "anglers_log_logo.png",
-          dateTime: DateTime(2020, 3, 1),
-        ),
-        createMockAssetEntity(
-          fileName: "apple_logo.png",
-          dateTime: DateTime(2020, 2, 1),
-        ),
-        createMockAssetEntity(
-          fileName: "flutter_logo.png",
-          dateTime: DateTime(2020, 1, 1),
-        ),
-      ]),
-    );
-    when(appManager.mockPhotoManagerWrapper.getAssetPathList(any))
-        .thenAnswer((_) => Future.value([allAlbum]));
+    when(allAlbum.assetCount).thenReturn(mockAssets.length);
+    when(allAlbum.getAssetListPaged(any, any))
+        .thenAnswer((_) => Future.value(mockAssets));
+    when(appManager.mockPhotoManagerWrapper.getAllAssetPathEntity(any))
+        .thenAnswer((_) => Future.value(allAlbum));
 
     when(appManager.mockPreferencesManager.catchCustomEntityIds).thenReturn([]);
     when(appManager.mockPreferencesManager.catchFieldIds).thenReturn([

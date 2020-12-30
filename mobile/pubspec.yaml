@@ -29,7 +29,9 @@ dependencies:
   package_info: ^0.4.3+2            # Flutter
   path: ^1.6.4                      # Dart
   path_provider: ^1.6.7             # Flutter
-  photo_manager: ^0.5.0             # https://pub.dev/packages/photo_manager (verified)
+
+  # TODO: Update when 0.6.0 is released.
+  photo_manager: ^0.6.0-dev.8       # https://pub.dev/packages/photo_manager (verified) - Dev version required for fetching ordered assets
   protobuf: ^1.0.1                  # Dart
   provider: ^3.2.0                  # https://pub.dev/packages/provider (verified) - Version update requires migration
   quiver: ^2.0.5                    # Google - Version restricted by flutter_test

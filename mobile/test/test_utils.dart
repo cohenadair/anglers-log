@@ -94,12 +94,13 @@ Future<BuildContext> buildContext(
 
 MockAssetEntity createMockAssetEntity({
   @required String fileName,
+  String id,
   DateTime dateTime,
   LatLng latLngAsync,
   LatLng latLngLegacy,
 }) {
   var entity = MockAssetEntity();
-  when(entity.id).thenReturn(fileName);
+  when(entity.id).thenReturn(id ?? fileName);
   when(entity.createDateTime).thenReturn(dateTime ?? DateTime.now());
   when(entity.thumbData).thenAnswer(
       (_) => Future.value(File("test/resources/$fileName").readAsBytesSync()));
