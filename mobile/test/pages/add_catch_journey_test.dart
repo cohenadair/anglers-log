@@ -70,9 +70,7 @@ void main() {
         .thenAnswer((_) => Future.value(allAlbum));
 
     when(appManager.mockPreferencesManager.catchCustomEntityIds).thenReturn([]);
-    when(appManager.mockPreferencesManager.catchFieldIds).thenReturn([
-      catchFieldIdFishingSpot(),
-    ]);
+    when(appManager.mockPreferencesManager.catchFieldIds).thenReturn([]);
 
     when(appManager.mockSpeciesManager
             .listSortedByName(filter: anyNamed("filter")))
@@ -191,10 +189,69 @@ void main() {
     ));
     await tester.pumpAndSettle(Duration(milliseconds: 50));
 
-    await tapAndSettle(tester, find.text("NEXT"));
     await tapAndSettle(tester, find.text("Steelhead"));
 
     expect(findFirst<SaveCatchPage>(tester).fishingSpotId, isNull);
     expect(find.text("Fishing Spot"), findsNothing);
+  });
+
+  testWidgets("Fishing spot is not skipped when preferences is empty",
+      (tester) async {
+    when(appManager.mockPreferencesManager.catchFieldIds).thenReturn([]);
+
+    await tester.pumpWidget(Testable(
+      (_) => AddCatchJourney(),
+      appManager: appManager,
+    ));
+    await tester.pumpAndSettle(Duration(milliseconds: 50));
+
+    await tapAndSettle(tester, find.text("NEXT"));
+    await tapAndSettle(tester, find.text("Steelhead"));
+
+    expect(find.byType(FishingSpotPickerPage), findsOneWidget);
+  });
+
+  testWidgets("Image picker is skipped when not tracking images",
+      (tester) async {
+    when(appManager.mockPreferencesManager.catchFieldIds).thenReturn([
+      catchFieldIdTimestamp(),
+      catchFieldIdSpecies(),
+    ]);
+
+    await tester.pumpWidget(Testable(
+      (_) => AddCatchJourney(),
+      appManager: appManager,
+    ));
+    await tester.pumpAndSettle(Duration(milliseconds: 50));
+
+    expect(find.byType(ImagePickerPage), findsNothing);
+    expect(find.byType(SpeciesListPage), findsOneWidget);
+
+    // Ensure a close button is still shown.
+    // 1 for closing the journey, 1 for clearing the search bar.
+    expect(find.byIcon(Icons.close), findsNWidgets(2));
+  });
+
+  testWidgets("Image picker is not skipped when preferences is empty",
+      (tester) async {
+    when(appManager.mockPreferencesManager.catchFieldIds).thenReturn([]);
+
+    await tester.pumpWidget(Testable(
+      (_) => AddCatchJourney(),
+      appManager: appManager,
+    ));
+    await tester.pumpAndSettle(Duration(milliseconds: 50));
+
+    expect(find.byType(ImagePickerPage), findsOneWidget);
+    expect(find.byType(SpeciesListPage), findsNothing);
+
+    await tapAndSettle(tester, find.text("NEXT"));
+    expect(find.byType(SpeciesListPage), findsOneWidget);
+
+    // Ensure a back button (not close button) is still shown.
+    expect(find.byType(BackButton), findsOneWidget);
+
+    // 1 for clearing the search bar.
+    expect(find.byIcon(Icons.close), findsNWidgets(1));
   });
 }

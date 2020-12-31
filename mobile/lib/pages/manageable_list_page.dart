@@ -32,6 +32,9 @@ class ManageableListPage<T> extends StatefulWidget {
   /// See [SliverAppBar.title].
   final Widget Function(List<T>) pickerTitleBuilder;
 
+  /// A custom widget to show as the leading widget in a [SliverAppBar].
+  final Widget appBarLeading;
+
   /// If true, adds additional padding between search icon and search text so
   /// the search text is horizontally aligned with an item's main text.
   /// Defaults to false. If an item has a thumbnail, the [Photo.listThumbnail]
@@ -58,6 +61,7 @@ class ManageableListPage<T> extends StatefulWidget {
     @required this.itemBuilder,
     this.titleBuilder,
     this.pickerTitleBuilder,
+    this.appBarLeading,
     this.itemsHaveThumbnail = false,
     this.forceCenterTitle = false,
     this.pickerSettings,
@@ -182,6 +186,7 @@ class _ManageableListPageState<T> extends State<ManageableListPage<T>> {
               expandedHeight: _hasSearch ? _appBarExpandedHeight : 0.0,
               flexibleSpace: _buildSearchBar(),
               centerTitle: widget.forceCenterTitle,
+              leading: widget.appBarLeading,
             ),
             SliverSafeArea(
               top: false,

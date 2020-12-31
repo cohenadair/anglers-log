@@ -13,8 +13,12 @@ import '../widgets/text.dart';
 class SpeciesListPage extends StatelessWidget {
   final ManageableListPagePickerSettings<Species> pickerSettings;
 
+  /// See [ManageableListPage.appBarLeading].
+  final Widget appBarLeading;
+
   SpeciesListPage({
     this.pickerSettings,
+    this.appBarLeading,
   });
 
   @override
@@ -28,6 +32,7 @@ class SpeciesListPage extends StatelessWidget {
       ),
       pickerTitleBuilder: (_) =>
           Text(Strings.of(context).speciesListPagePickerTitle),
+      appBarLeading: appBarLeading,
       forceCenterTitle: pickerSettings == null,
       itemBuilder: (context, species) => ManageableListPageItemModel(
         child: PrimaryLabel(species.name),

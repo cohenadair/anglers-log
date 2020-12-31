@@ -38,12 +38,15 @@ class _AddCatchJourneyState extends State<AddCatchJourney> {
   Species _species;
   FishingSpot _fishingSpot;
 
-  bool get _isTrackingFishingSpots =>
-      _preferencesManager.catchFieldIds.contains(catchFieldIdFishingSpot());
-
   @override
   Widget build(BuildContext context) {
+    var initialRoute = _rootRoute;
+    if (!_isTrackingImages()) {
+      initialRoute = _pickSpeciesRoute;
+    }
+
     return Navigator(
+      initialRoute: initialRoute,
       onGenerateRoute: (routeSettings) {
         var name = routeSettings.name;
         if (name == _rootRoute) {
@@ -61,7 +64,7 @@ class _AddCatchJourneyState extends State<AddCatchJourney> {
                 //
                 // Only do this if the user is interested in tracking fishing
                 // spots.
-                if (_isTrackingFishingSpots) {
+                if (_isTrackingFishingSpots()) {
                   for (var image in _images) {
                     if (image.position == null) {
                       continue;
@@ -86,14 +89,7 @@ class _AddCatchJourneyState extends State<AddCatchJourney> {
 
                 Navigator.of(context).pushNamed(_pickSpeciesRoute);
               },
-              // Custom close button is required here because a nested
-              // Navigator is used and this route is the initial route, which
-              // has nowhere to go back to.
-              appBarLeading: IconButton(
-                icon: Icon(Icons.close),
-                onPressed: () =>
-                    Navigator.of(context, rootNavigator: true).pop(),
-              ),
+              appBarLeading: _buildCloseButton(),
             ),
           );
         } else if (name == _pickSpeciesRoute) {
@@ -105,7 +101,7 @@ class _AddCatchJourneyState extends State<AddCatchJourney> {
 
                   // If a fishing spot already exists, skip the fishing spot
                   // picker page.
-                  if (_fishingSpot != null || !_isTrackingFishingSpots) {
+                  if (_fishingSpot != null || !_isTrackingFishingSpots()) {
                     Navigator.of(context).pushNamed(_saveCatchRoute);
                   } else {
                     Navigator.of(context).pushNamed(_pickFishingSpotRoute);
@@ -115,6 +111,9 @@ class _AddCatchJourneyState extends State<AddCatchJourney> {
                 },
                 isRequired: true,
               ),
+              appBarLeading: initialRoute == _pickSpeciesRoute
+                  ? _buildCloseButton()
+                  : null,
             ),
           );
         } else if (name == _pickFishingSpotRoute) {
@@ -148,5 +147,28 @@ class _AddCatchJourneyState extends State<AddCatchJourney> {
         return null;
       },
     );
+  }
+
+  Widget _buildCloseButton() {
+    // Custom close button is required here because a nested
+    // Navigator is used and this route is the initial route, which
+    // has nowhere to go back to.
+    return IconButton(
+      icon: Icon(Icons.close),
+      onPressed: () =>
+          Navigator.of(context, rootNavigator: true).pop(),
+    );
+  }
+
+  bool _isTrackingImages() {
+    var catchFieldIds = _preferencesManager.catchFieldIds;
+    return catchFieldIds.isEmpty ||
+        catchFieldIds.contains(catchFieldIdImages());
+  }
+
+  bool _isTrackingFishingSpots() {
+    var catchFieldIds = _preferencesManager.catchFieldIds;
+    return catchFieldIds.isEmpty ||
+        catchFieldIds.contains(catchFieldIdFishingSpot());
   }
 }
