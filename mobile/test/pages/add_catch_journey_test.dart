@@ -28,6 +28,7 @@ void main() {
       mockDataManager: true,
       mockFishingSpotManager: true,
       mockLocationMonitor: true,
+      mockPermissionHandlerWrapper: true,
       mockPhotoManagerWrapper: true,
       mockPreferencesManager: true,
       mockSpeciesManager: true,
@@ -66,6 +67,8 @@ void main() {
     when(allAlbum.assetCount).thenReturn(mockAssets.length);
     when(allAlbum.getAssetListPaged(any, any))
         .thenAnswer((_) => Future.value(mockAssets));
+    when(appManager.mockPermissionHandlerWrapper.requestPhotos())
+        .thenAnswer((_) => Future.value(true));
     when(appManager.mockPhotoManagerWrapper.getAllAssetPathEntity(any))
         .thenAnswer((_) => Future.value(allAlbum));
 

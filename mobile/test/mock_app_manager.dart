@@ -22,6 +22,7 @@ import 'package:mobile/wrappers/io_wrapper.dart';
 import 'package:mobile/wrappers/mail_sender_wrapper.dart';
 import 'package:mobile/wrappers/package_info_wrapper.dart';
 import 'package:mobile/wrappers/path_provider_wrapper.dart';
+import 'package:mobile/wrappers/permission_handler_wrapper.dart';
 import 'package:mobile/wrappers/photo_manager_wrapper.dart';
 import 'package:mobile/wrappers/url_launcher_wrapper.dart';
 import 'package:mockito/mockito.dart';
@@ -74,6 +75,9 @@ class MockPackageInfoWrapper extends Mock implements PackageInfoWrapper {}
 
 class MockPathProviderWrapper extends Mock implements PathProviderWrapper {}
 
+class MockPermissionHandlerWrapper extends Mock
+    implements PermissionHandlerWrapper {}
+
 class MockPhotoManagerWrapper extends Mock implements PhotoManagerWrapper {}
 
 class MockUrlLauncherWrapper extends Mock implements UrlLauncherWrapper {}
@@ -102,6 +106,7 @@ class MockAppManager extends Mock implements AppManager {
   MockMailSenderWrapper mockMailSenderWrapper;
   MockPackageInfoWrapper mockPackageInfoWrapper;
   MockPathProviderWrapper mockPathProviderWrapper;
+  MockPermissionHandlerWrapper mockPermissionHandlerWrapper;
   MockPhotoManagerWrapper mockPhotoManagerWrapper;
   MockUrlLauncherWrapper mockUrlLauncherWrapper;
 
@@ -129,6 +134,7 @@ class MockAppManager extends Mock implements AppManager {
     bool mockMailSenderWrapper = false,
     bool mockPackageInfoWrapper = false,
     bool mockPathProviderWrapper = false,
+    bool mockPermissionHandlerWrapper = false,
     bool mockPhotoManagerWrapper = false,
     bool mockUrlLauncherWrapper = false,
   }) {
@@ -244,6 +250,12 @@ class MockAppManager extends Mock implements AppManager {
     if (mockPathProviderWrapper) {
       this.mockPathProviderWrapper = MockPathProviderWrapper();
       when(pathProviderWrapper).thenReturn(this.mockPathProviderWrapper);
+    }
+
+    if (mockPermissionHandlerWrapper) {
+      this.mockPermissionHandlerWrapper = MockPermissionHandlerWrapper();
+      when(permissionHandlerWrapper)
+          .thenReturn(this.mockPermissionHandlerWrapper);
     }
 
     if (mockPhotoManagerWrapper) {

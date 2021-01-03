@@ -5,6 +5,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/pages/image_picker_page.dart';
 import 'package:mobile/widgets/image_input.dart';
 import 'package:mobile/widgets/widget.dart';
+import 'package:mockito/mockito.dart';
 
 import '../mock_app_manager.dart';
 import '../test_utils.dart';
@@ -15,14 +16,17 @@ void main() {
   setUp(() {
     appManager = MockAppManager(
       mockPhotoManagerWrapper: true,
+      mockPermissionHandlerWrapper: true,
     );
+
+    when(appManager.mockPermissionHandlerWrapper.requestPhotos())
+        .thenAnswer((_) => Future.value(true));
   });
 
   testWidgets("Enabled", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => ImageInput(
         onImagesPicked: (_) => {},
-        requestPhotoPermission: () => Future.value(true),
       ),
       appManager: appManager,
     ));
@@ -38,7 +42,6 @@ void main() {
       Testable(
         (_) => ImageInput(
           onImagesPicked: (_) => {},
-          requestPhotoPermission: () => Future.value(true),
           enabled: false,
         ),
       ),
@@ -68,7 +71,6 @@ void main() {
       Testable(
         (_) => ImageInput(
           onImagesPicked: (_) => {},
-          requestPhotoPermission: () => Future.value(true),
         ),
       ),
     );
@@ -81,7 +83,6 @@ void main() {
       Testable(
         (_) => ImageInput(
           onImagesPicked: (_) => {},
-          requestPhotoPermission: () => Future.value(true),
         ),
       ),
     );
@@ -94,7 +95,6 @@ void main() {
       Testable(
         (_) => ImageInput(
           onImagesPicked: (_) => {},
-          requestPhotoPermission: () => Future.value(true),
           initialImages: [
             PickedImage(originalFile: File("test/resources/flutter_logo.png")),
             PickedImage(originalFile: File("test/resources/flutter_logo.png")),
@@ -112,7 +112,6 @@ void main() {
       Testable(
         (_) => ImageInput(
           onImagesPicked: (_) => {},
-          requestPhotoPermission: () => Future.value(true),
           initialImages: [
             PickedImage(originalFile: File("test/resources/flutter_logo.png")),
             PickedImage(originalFile: File("test/resources/flutter_logo.png")),
@@ -131,7 +130,6 @@ void main() {
       Testable(
         (_) => ImageInput(
           onImagesPicked: (_) => {},
-          requestPhotoPermission: () => Future.value(true),
           initialImages: [
             PickedImage(originalFile: File("test/resources/flutter_logo.png")),
           ],
@@ -147,7 +145,6 @@ void main() {
       Testable(
         (_) => ImageInput(
           onImagesPicked: (_) => {},
-          requestPhotoPermission: () => Future.value(true),
           initialImages: [
             PickedImage(
               thumbData:

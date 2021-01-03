@@ -21,6 +21,7 @@ import '../widgets/text.dart';
 import '../widgets/widget.dart';
 import '../wrappers/file_picker_wrapper.dart';
 import '../wrappers/image_picker_wrapper.dart';
+import '../wrappers/permission_handler_wrapper.dart';
 import '../wrappers/photo_manager_wrapper.dart';
 
 enum _ImagePickerSource { gallery, camera, browse }
@@ -158,9 +159,14 @@ class _ImagePickerPageState extends State<ImagePickerPage> {
   /// as that element is loaded into the picker.
   List<PickedImage> _initialImages;
 
+  Future<bool> _isPermissionGrantedFuture;
+
   FilePickerWrapper get _filePicker => FilePickerWrapper.of(context);
 
   ImagePickerWrapper get _imagePicker => ImagePickerWrapper.of(context);
+
+  PermissionHandlerWrapper get _permissionHandlerWrapper =>
+      PermissionHandlerWrapper.of(context);
 
   PhotoManagerWrapper get _photoManager => PhotoManagerWrapper.of(context);
 
@@ -169,7 +175,7 @@ class _ImagePickerPageState extends State<ImagePickerPage> {
     super.initState();
 
     _initialImages = List.of(widget.initialImages);
-    _galleryFuture = _photoManager.getAllAssetPathEntity(RequestType.image);
+    _isPermissionGrantedFuture = _permissionHandlerWrapper.requestPhotos();
   }
 
   @override
@@ -182,56 +188,75 @@ class _ImagePickerPageState extends State<ImagePickerPage> {
         ],
         leading: widget.appBarLeading,
       ),
-      body: FutureBuilder<AssetPathEntity>(
-        future: _galleryFuture,
+      body: FutureBuilder<bool>(
+        future: _isPermissionGrantedFuture,
         builder: (context, snapshot) {
-          if (snapshot.connectionState != ConnectionState.done) {
+          if (!snapshot.hasData) {
             return _buildPlaceholderGrid();
           }
 
-          _galleryAsset = snapshot.data;
-
-          // If there's no "all", or no assets, don't bother trying to fetch
-          // them.
-          if (_galleryAsset == null || _galleryAsset.assetCount <= 0) {
-            return _buildNoResults();
+          // User didn't grant photos permission.
+          if (!snapshot.data) {
+            return _buildNoPermission();
           }
 
-          // Get a list of all assets. Lazy initialize so a new future isn't
-          // created each build.
-          if (_assetsFuture == null) {
-            _loadNextPage();
+          if (_galleryFuture == null) {
+            _galleryFuture =
+                _photoManager.getAllAssetPathEntity(RequestType.image);
           }
 
-          // Get assets.
-          return FutureBuilder<List<AssetEntity>>(
-            future: _assetsFuture,
+          return FutureBuilder<AssetPathEntity>(
+            future: _galleryFuture,
             builder: (context, snapshot) {
-              if (!snapshot.hasData) {
+              if (snapshot.connectionState != ConnectionState.done) {
                 return _buildPlaceholderGrid();
               }
 
-              var oldLength = _assets.length;
-              _assets.addAll(snapshot.data);
+              _galleryAsset = snapshot.data;
 
-              // If we're loading a new page, wait for the assets size to
-              // change before resetting the flag.
-              if (_isLoadingPage) {
-                _isLoadingPage = oldLength == _assets.length;
+              // If there's no "all", or no assets, don't bother trying to fetch
+              // them.
+              if (_galleryAsset == null || _galleryAsset.assetCount <= 0) {
+                return _buildNoResults();
               }
 
-              for (var i = 0; i < _assets.length; i++) {
-                for (var image in _initialImages.reversed) {
-                  if (image.originalFileId != null &&
-                      image.originalFileId == _assets.elementAt(i).id) {
-                    _selectedIndexes.add(i);
-                    _initialImages.remove(image);
-                    break;
+              // Get a list of all assets. Lazy initialize so a new future isn't
+              // created each build.
+              if (_assetsFuture == null) {
+                _loadNextPage();
+              }
+
+              // Get assets.
+              return FutureBuilder<List<AssetEntity>>(
+                future: _assetsFuture,
+                builder: (context, snapshot) {
+                  if (!snapshot.hasData) {
+                    return _buildPlaceholderGrid();
                   }
-                }
-              }
 
-              return _buildImageGrid();
+                  var oldLength = _assets.length;
+                  _assets.addAll(snapshot.data);
+
+                  // If we're loading a new page, wait for the assets size to
+                  // change before resetting the flag.
+                  if (_isLoadingPage) {
+                    _isLoadingPage = oldLength == _assets.length;
+                  }
+
+                  for (var i = 0; i < _assets.length; i++) {
+                    for (var image in _initialImages.reversed) {
+                      if (image.originalFileId != null &&
+                          image.originalFileId == _assets.elementAt(i).id) {
+                        _selectedIndexes.add(i);
+                        _initialImages.remove(image);
+                        break;
+                      }
+                    }
+                  }
+
+                  return _buildImageGrid();
+                },
+              );
             },
           );
         },
@@ -495,6 +520,31 @@ class _ImagePickerPageState extends State<ImagePickerPage> {
       icon: Icons.image_search,
       title: Strings.of(context).imagePickerPageNoPhotosFoundTitle,
       description: Strings.of(context).imagePickerPageNoPhotosFound,
+    );
+  }
+
+  Widget _buildNoPermission() {
+    return Center(
+      child: SingleChildScrollView(
+        child: SafeArea(
+          child: Column(
+            children: [
+              EmptyListPlaceholder(
+                icon: Icons.image_not_supported,
+                title: Strings.of(context).imagePickerPageNoPermissionTitle,
+                description:
+                    Strings.of(context).imagePickerPageNoPermissionMessage,
+                scrollable: false,
+              ),
+              VerticalSpace(paddingWidget),
+              Button(
+                text: Strings.of(context).imagePickerPageOpenSettings,
+                onPressed: () => _permissionHandlerWrapper.openSettings(),
+              ),
+            ],
+          ),
+        ),
+      ),
     );
   }
 

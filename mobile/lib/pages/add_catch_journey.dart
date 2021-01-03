@@ -155,8 +155,7 @@ class _AddCatchJourneyState extends State<AddCatchJourney> {
     // has nowhere to go back to.
     return IconButton(
       icon: Icon(Icons.close),
-      onPressed: () =>
-          Navigator.of(context, rootNavigator: true).pop(),
+      onPressed: () => Navigator.of(context, rootNavigator: true).pop(),
     );
   }
 

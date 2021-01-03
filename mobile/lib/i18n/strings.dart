@@ -293,6 +293,12 @@ class Strings {
       _string("imagePickerPage_invalidSelectionSingle");
   String get imagePickerPageInvalidSelectionPlural =>
       _string("imagePickerPage_invalidSelectionPlural");
+  String get imagePickerPageNoPermissionTitle =>
+      _string("imagePickerPage_noPermissionTitle");
+  String get imagePickerPageNoPermissionMessage =>
+      _string("imagePickerPage_noPermissionMessage");
+  String get imagePickerPageOpenSettings =>
+      _string("imagePickerPage_openSettings");
 
   String get saveSpeciesPageNewTitle => _string("saveSpeciesPage_newTitle");
   String get saveSpeciesPageEditTitle => _string("saveSpeciesPage_editTitle");

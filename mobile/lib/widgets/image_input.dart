@@ -14,17 +14,14 @@ class ImageInput extends StatelessWidget {
   final bool allowsMultipleSelection;
   final List<PickedImage> currentImages;
   final void Function(List<PickedImage>) onImagesPicked;
-  final Future<bool> Function() requestPhotoPermission;
 
   ImageInput({
     @required this.onImagesPicked,
-    @required this.requestPhotoPermission,
     this.enabled = true,
     this.allowsMultipleSelection = true,
     List<PickedImage> initialImages = const [],
   })  : assert(onImagesPicked != null),
         assert(initialImages != null),
-        assert(requestPhotoPermission != null),
         currentImages = initialImages;
 
   ImageInput.single({
@@ -33,7 +30,6 @@ class ImageInput extends StatelessWidget {
     PickedImage currentImage,
     @required Function(PickedImage) onImagePicked,
   }) : this(
-          requestPhotoPermission: requestPhotoPermission,
           enabled: enabled ?? true,
           allowsMultipleSelection: false,
           initialImages: currentImage == null ? [] : [currentImage],
@@ -47,11 +43,7 @@ class ImageInput extends StatelessWidget {
       enabled: enabled,
       child: InkWell(
         onTap: enabled
-            ? () async {
-                if (!(await requestPhotoPermission())) {
-                  return;
-                }
-
+            ? () {
                 push(
                   context,
                   ImagePickerPage(

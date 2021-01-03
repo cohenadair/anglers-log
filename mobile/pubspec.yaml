@@ -29,6 +29,7 @@ dependencies:
   package_info: ^0.4.3+2            # Flutter
   path: ^1.6.4                      # Dart
   path_provider: ^1.6.7             # Flutter
+  permission_handler: ^5.0.1+1      # https://pub.dev/packages/permission_handler (verified)
 
   # TODO: Update when 0.6.0 is released.
   photo_manager: ^0.6.0-dev.8       # https://pub.dev/packages/photo_manager (verified) - Dev version required for fetching ordered assets

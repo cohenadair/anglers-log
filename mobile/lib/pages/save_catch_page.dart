@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:photo_manager/photo_manager.dart' as photo_manager;
 
 import '../bait_category_manager.dart';
 import '../bait_manager.dart';
@@ -309,7 +308,6 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
       future: _imagesFuture,
       builder: (context, images) {
         return ImageInput(
-          requestPhotoPermission: photo_manager.PhotoManager.requestPermission,
           initialImages: _imagesController.value ?? [],
           onImagesPicked: (pickedImages) {
             setState(() {

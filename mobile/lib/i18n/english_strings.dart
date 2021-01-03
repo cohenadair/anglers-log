@@ -208,6 +208,10 @@ Map<String, Map<String, String>> get englishStrings => {
         "imagePickerPage_selectedLabel": "%s / %s Selected",
         "imagePickerPage_invalidSelectionSingle": "Must select an image file.",
         "imagePickerPage_invalidSelectionPlural": "Must select image files.",
+        "imagePickerPage_noPermissionTitle": "Permission required",
+        "imagePickerPage_noPermissionMessage":
+            "To add photos, you must grant Anglers' Log permission to access your photo library. To do so, open your device settings.\n\nAlternatively, you can change the photos source from the dropdown menu above.",
+        "imagePickerPage_openSettings": "Open Settings",
         "reportListPage_pickerTitle": "Select Report",
         "reportListPage_confirmDelete":
             "Are you sure you want to delete report %s? This cannot be undone.",

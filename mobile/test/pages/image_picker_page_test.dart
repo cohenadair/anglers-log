@@ -24,6 +24,7 @@ void main() {
       mockFilePickerWrapper: true,
       mockImagePickerWrapper: true,
       mockPhotoManagerWrapper: true,
+      mockPermissionHandlerWrapper: true,
     );
 
     mockAssets = [
@@ -38,6 +39,8 @@ void main() {
         .thenAnswer((_) => Future.value(mockAssets));
     when(appManager.mockPhotoManagerWrapper.getAllAssetPathEntity(any))
         .thenAnswer((_) => Future.value(allAlbum));
+    when(appManager.mockPermissionHandlerWrapper.requestPhotos())
+        .thenAnswer((_) => Future.value(true));
   });
 
   testWidgets("No device photos empty result", (tester) async {
@@ -497,6 +500,22 @@ void main() {
     verify(entity.latlngAsync()).called(1);
   });
 
+  testWidgets("Placeholder grid shown when waiting for permission future",
+      (tester) async {
+    when(appManager.mockPermissionHandlerWrapper.requestPhotos())
+        .thenAnswer((_) => Future.value(null));
+
+    await tester.pumpWidget(Testable(
+      (_) => ImagePickerPage(
+        onImagesPicked: (_, __) {},
+      ),
+      appManager: appManager,
+    ));
+
+    // Placeholder grid.
+    expect(find.byType(GridView), findsOneWidget);
+  });
+
   testWidgets("Placeholder grid shown when waiting for gallery future",
       (tester) async {
     // Stub getting the "all" asset, such that the app will show a placeholder
@@ -536,6 +555,21 @@ void main() {
     await tester.pumpAndSettle(Duration(milliseconds: 50));
     expect(find.byType(Image), findsNWidgets(4));
     expect(find.byType(GridView), findsOneWidget);
+  });
+
+  testWidgets("No permission placeholder shown", (tester) async {
+    when(appManager.mockPermissionHandlerWrapper.requestPhotos())
+        .thenAnswer((_) => Future.value(false));
+
+    await tester.pumpWidget(Testable(
+      (_) => ImagePickerPage(
+        onImagesPicked: (_, __) {},
+      ),
+      appManager: appManager,
+    ));
+    await tester.pumpAndSettle(Duration(milliseconds: 50));
+
+    expect(find.text("OPEN SETTINGS"), findsOneWidget);
   });
 
   testWidgets("Pagination", (tester) async {

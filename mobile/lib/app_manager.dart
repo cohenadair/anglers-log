@@ -23,6 +23,7 @@ import 'wrappers/io_wrapper.dart';
 import 'wrappers/mail_sender_wrapper.dart';
 import 'wrappers/package_info_wrapper.dart';
 import 'wrappers/path_provider_wrapper.dart';
+import 'wrappers/permission_handler_wrapper.dart';
 import 'wrappers/photo_manager_wrapper.dart';
 import 'wrappers/url_launcher_wrapper.dart';
 
@@ -55,6 +56,7 @@ class AppManager {
   MailSenderWrapper _mailSenderWrapper;
   PackageInfoWrapper _packageInfoWrapper;
   PathProviderWrapper _pathProviderWrapper;
+  PermissionHandlerWrapper _permissionHandlerWrapper;
   PhotoManagerWrapper _photoManagerWrapper;
   UrlLauncherWrapper _urlLauncherWrapper;
 
@@ -210,6 +212,13 @@ class AppManager {
       _pathProviderWrapper = PathProviderWrapper();
     }
     return _pathProviderWrapper;
+  }
+
+  PermissionHandlerWrapper get permissionHandlerWrapper {
+    if (_permissionHandlerWrapper == null) {
+      _permissionHandlerWrapper = PermissionHandlerWrapper();
+    }
+    return _permissionHandlerWrapper;
   }
 
   PhotoManagerWrapper get photoManagerWrapper {
