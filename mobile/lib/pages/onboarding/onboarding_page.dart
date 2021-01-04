@@ -9,14 +9,17 @@ class OnboardingPage extends StatelessWidget {
   final List<Widget> children;
   final EdgeInsets padding;
   final String nextButtonText;
+  final bool nextButtonEnabled;
   final VoidCallback onPressedNextButton;
 
   OnboardingPage({
     this.children = const [],
     this.padding,
     this.nextButtonText,
+    this.nextButtonEnabled = true,
     this.onPressedNextButton,
-  }) : assert(children != null);
+  }) : assert(children != null),
+       assert(nextButtonEnabled != null);
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +33,7 @@ class OnboardingPage extends StatelessWidget {
               ),
               ActionButton(
                 text: nextButtonText ?? Strings.of(context).next,
-                onPressed: onPressedNextButton,
+                onPressed: nextButtonEnabled ? onPressedNextButton : null,
                 textColor: Theme.of(context).primaryColor,
               ),
             ],

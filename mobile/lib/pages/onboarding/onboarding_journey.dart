@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:mobile/pages/onboarding/location_permission_page.dart';
 
 import '../../log.dart';
 import 'catch_field_picker_page.dart';
@@ -11,6 +12,7 @@ class OnboardingJourney extends StatelessWidget {
   final String _routeWelcome = "/";
   final String _routeCatchFields = "catch_fields";
   final String _routeManageFields = "manage_fields";
+  final String _routeLocationPermission = "location_permission";
   final String _routeFeedback = "feedback";
 
   final _log = Log("OnboardingJourney");
@@ -43,6 +45,13 @@ class OnboardingJourney extends StatelessWidget {
         } else if (name == _routeManageFields) {
           return MaterialPageRoute(
             builder: (context) => HowToManageFieldsPage(
+              onNext: () =>
+                  Navigator.of(context).pushNamed(_routeLocationPermission),
+            ),
+          );
+        } else if (name == _routeLocationPermission) {
+          return MaterialPageRoute(
+            builder: (context) => LocationPermissionPage(
               onNext: () => Navigator.of(context).pushNamed(_routeFeedback),
             ),
           );

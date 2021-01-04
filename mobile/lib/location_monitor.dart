@@ -15,9 +15,14 @@ class LocationMonitor {
 
   final Geolocator _geolocator = Geolocator();
 
-  Position _lastKnownPosition = Position();
+  Position _lastKnownPosition;
+  bool _initialized = false;
 
   Future<void> initialize() async {
+    if (_initialized) {
+      return;
+    }
+
     _lastKnownPosition = await _geolocator.getLastKnownPosition();
     var stream = _geolocator.getPositionStream(
       LocationOptions(
@@ -30,6 +35,8 @@ class LocationMonitor {
         _log.d("Received location update $currentLocation");
       }
     });
+
+    _initialized = true;
   }
 
   LatLng get currentLocation => _lastKnownPosition == null

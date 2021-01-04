@@ -7,9 +7,18 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import '../model/gen/anglerslog.pb.dart';
 
 void moveMap(Completer<GoogleMapController> controller, LatLng latLng,
-    {bool animate = true}) {
+    {bool animate = true, double zoom}) {
   controller.future.then((controller) {
-    var update = CameraUpdate.newLatLng(latLng);
+    CameraUpdate update;
+    if (zoom == null) {
+      update = CameraUpdate.newLatLng(latLng);
+    } else {
+      update = CameraUpdate.newCameraPosition(CameraPosition(
+        target: latLng,
+        zoom: zoom,
+      ));
+    }
+
     if (animate) {
       controller.animateCamera(update);
     } else {

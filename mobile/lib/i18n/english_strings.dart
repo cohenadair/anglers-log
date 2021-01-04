@@ -244,6 +244,9 @@ Map<String, Map<String, String>> get englishStrings => {
         "fishingSpotListPage_emptyListTitle": "No fishing spots",
         "fishingSpotListPage_emptyListDescription":
             "To add a fishing spot, tap on the map and save the dropped pin.",
+        "fishingSpotMap_locationPermissionTitle": "Location Access",
+        "fishingSpotMap_locationPermissionDescription": "To show your current location, you must grant Anglers' Log access to read your device's location. To do so, open your device settings.",
+        "fishingSpotMap_locationPermissionOpenSettings": "Open Settings",
         "feedbackPage_title": "Send Feedback",
         "feedbackPage_send": "Send",
         "feedbackPage_message": "Message",
@@ -301,6 +304,9 @@ Map<String, Map<String, String>> get englishStrings => {
         "onboardingJourney_manageFieldsDescription":
             "Manage default fields, or add custom fields at any time when adding or editing a catch.",
         "onboardingJourney_manageFieldsSpecies": "Rainbow Trout",
+        "onboardingJourney_locationAccessTitle": "Location Access",
+        "onboardingJourney_locationAccessDescription": "To show your location on maps throughout Anglers' Log, device location access is required.",
+        "onboardingJourney_locationAccessButton": "Set Permission",
         "onboardingJourney_howToFeedbackTitle": "Send Feedback",
         "onboardingJourney_howToFeedbackDescription":
             "Report a problem, suggest a feature, or send us feedback anytime. We'd love to hear from you!",

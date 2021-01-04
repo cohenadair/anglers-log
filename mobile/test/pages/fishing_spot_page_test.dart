@@ -14,6 +14,7 @@ void main() {
   setUp(() {
     appManager = MockAppManager(
       mockFishingSpotManager: true,
+      mockLocationMonitor: true,
     );
 
     when(appManager.mockFishingSpotManager.entity(any)).thenReturn(FishingSpot()

@@ -10,12 +10,14 @@ import '../model/gen/anglerslog.pb.dart';
 import '../pages/fishing_spot_list_page.dart';
 import '../pages/manageable_list_page.dart';
 import '../res/dimen.dart';
+import '../utils/dialog_utils.dart';
 import '../utils/map_utils.dart';
 import '../utils/page_utils.dart';
 import '../utils/snackbar_utils.dart';
 import '../widgets/button.dart';
 import '../widgets/search_bar.dart';
 import '../widgets/widget.dart';
+import '../wrappers/permission_handler_wrapper.dart';
 import 'bottom_sheet_picker.dart';
 
 class FishingSpotMapSearchBar {
@@ -115,14 +117,21 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
 
   MapType _mapType = MapType.normal;
   bool _showHelp = true;
+  bool _myLocationEnabled;
 
   Completer<GoogleMapController> _mapController;
+
+  LocationMonitor get _locationMonitor => LocationMonitor.of(context);
+
+  PermissionHandlerWrapper get _permissionHandlerWrapper =>
+      PermissionHandlerWrapper.of(context);
 
   @override
   void initState() {
     super.initState();
 
     _mapController = widget.mapController ?? Completer();
+    _myLocationEnabled = _locationMonitor.currentLocation != null;
 
     // No need to setup a timer if there is no help widget to show.
     if (widget.help != null) {
@@ -191,7 +200,7 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
             }
           },
           myLocationButtonEnabled: false,
-          myLocationEnabled: true,
+          myLocationEnabled: _myLocationEnabled,
           mapToolbarEnabled: false,
           // TODO: Try onLongPress again when Google Maps updated.
           // Long presses weren't being triggered first time.
@@ -291,14 +300,34 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
         bottom: paddingDefault,
       ),
       icon: Icons.my_location,
-      onPressed: () {
-        var currentLocation = LocationMonitor.of(context).currentLocation;
+      onPressed: () async {
+        if (!(await _permissionHandlerWrapper.requestLocation())) {
+          // If the user declines permission, let them know permission is
+          // required to show their location on the map.
+          showCancelDialog(
+            context,
+            title: Strings.of(context).fishingSpotMapLocationPermissionTitle,
+            description:
+                Strings.of(context).fishingSpotMapLocationPermissionDescription,
+            actionText: Strings.of(context)
+                .fishingSpotMapLocationPermissionOpenSettings,
+            onTapAction: _permissionHandlerWrapper.openSettings,
+          );
+          return;
+        } else {
+          await _locationMonitor.initialize();
+        }
+
+        var currentLocation = _locationMonitor.currentLocation;
         if (currentLocation == null) {
           showErrorSnackBar(
               context, Strings.of(context).mapPageErrorGettingLocation);
         } else {
-          moveMap(_mapController, currentLocation);
+          moveMap(_mapController, currentLocation, zoom: _zoomDefault);
           widget.onCurrentLocationPressed?.call();
+          setState(() {
+            _myLocationEnabled = true;
+          });
         }
       },
     );

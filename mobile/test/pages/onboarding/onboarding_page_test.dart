@@ -37,4 +37,17 @@ void main() {
     expect(find.text("NEXT"), findsNothing);
     expect(find.text("FINISHED"), findsOneWidget);
   });
+
+  testWidgets("Next button is disabled", (tester) async {
+    await tester.pumpWidget(
+      Testable(
+        (_) => OnboardingPage(
+          onPressedNextButton: () {},
+          nextButtonEnabled: false,
+        ),
+      ),
+    );
+    expect(find.byType(IconButton), findsOneWidget);
+    expect(findFirstWithText<ActionButton>(tester, "NEXT").onPressed, isNull);
+  });
 }

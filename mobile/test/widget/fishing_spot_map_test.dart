@@ -27,7 +27,11 @@ void main() {
     appManager = MockAppManager(
       mockFishingSpotManager: true,
       mockLocationMonitor: true,
+      mockPermissionHandlerWrapper: true,
     );
+
+    when(appManager.mockPermissionHandlerWrapper.requestLocation())
+        .thenAnswer((_) => Future.value(true));
   });
 
   void stubFishingSpots() {
@@ -429,6 +433,25 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(pressed, isTrue);
+    });
+
+    testWidgets("onPressed shows permission dialog when denied",
+        (tester) async {
+      when(appManager.mockPermissionHandlerWrapper.requestLocation())
+          .thenAnswer((_) => Future.value(false));
+
+      await tester.pumpWidget(Testable(
+        (_) => FishingSpotMap(
+          mapController: Completer<GoogleMapController>(),
+        ),
+        appManager: appManager,
+      ));
+      await tester.pumpAndSettle(Duration(milliseconds: 200));
+
+      await tester.tap(find.byIcon(Icons.my_location));
+      await tester.pumpAndSettle();
+
+      expect(find.text("OPEN SETTINGS"), findsOneWidget);
     });
   });
 

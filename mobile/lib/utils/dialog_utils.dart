@@ -80,6 +80,34 @@ void showOkDialog({
   );
 }
 
+void showCancelDialog(
+  BuildContext context, {
+  String title,
+  String description,
+  String actionText,
+  VoidCallback onTapAction,
+}) {
+  showDialog(
+    context: context,
+    builder: (context) => AlertDialog(
+      title: Text(title),
+      titleTextStyle: styleTitleAlert,
+      content: Text(description),
+      actions: <Widget>[
+        _buildDialogButton(
+          context: context,
+          name: Strings.of(context).cancel,
+        ),
+        _buildDialogButton(
+          context: context,
+          name: actionText,
+          onTap: onTapAction,
+        ),
+      ],
+    ),
+  );
+}
+
 void showRateDialogIfNeeded(BuildContext context) {
   var preferences = PreferencesManager.of(context);
   var timeManager = TimeManager.of(context);

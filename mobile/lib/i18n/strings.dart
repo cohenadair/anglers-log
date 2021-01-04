@@ -337,6 +337,13 @@ class Strings {
   String get fishingSpotListPageEmptyListDescription =>
       _string("fishingSpotListPage_emptyListDescription");
 
+  String get fishingSpotMapLocationPermissionTitle =>
+      _string("fishingSpotMap_locationPermissionTitle");
+  String get fishingSpotMapLocationPermissionDescription =>
+      _string("fishingSpotMap_locationPermissionDescription");
+  String get fishingSpotMapLocationPermissionOpenSettings =>
+      _string("fishingSpotMap_locationPermissionOpenSettings");
+
   String get customEntityListPageTitle => _string("customEntityListPage_title");
   String get customEntityListPageDelete =>
       _string("customEntityListPage_delete");
@@ -422,6 +429,12 @@ class Strings {
       _string("onboardingJourney_manageFieldsDescription");
   String get onboardingJourneyManageFieldsSpecies =>
       _string("onboardingJourney_manageFieldsSpecies");
+  String get onboardingJourneyLocationAccessTitle =>
+      _string("onboardingJourney_locationAccessTitle");
+  String get onboardingJourneyLocationAccessDescription =>
+      _string("onboardingJourney_locationAccessDescription");
+  String get onboardingJourneyLocationAccessButton =>
+      _string("onboardingJourney_locationAccessButton");
   String get onboardingJourneyHowToFeedbackTitle =>
       _string("onboardingJourney_howToFeedbackTitle");
   String get onboardingJourneyHowToFeedbackDescription =>

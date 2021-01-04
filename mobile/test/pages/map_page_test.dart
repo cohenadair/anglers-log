@@ -49,6 +49,7 @@ void main() {
       mockDataManager: true,
       mockFishingSpotManager: true,
       mockLocationMonitor: true,
+      mockPermissionHandlerWrapper: true,
       mockUrlLauncherWrapper: true,
     );
 
@@ -63,6 +64,9 @@ void main() {
 
     when(appManager.mockLocationMonitor.currentLocation)
         .thenReturn(LatLng(0.0, 0.0));
+
+    when(appManager.mockPermissionHandlerWrapper.requestLocation())
+        .thenAnswer((_) => Future.value(true));
   });
 
   // TODO: GoogleMap is a native widget, so gesture testing doesn't work yet.

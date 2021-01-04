@@ -101,7 +101,6 @@ class _AnglersLogState extends State<AnglersLog> {
 
   Future<bool> _initialize() async {
     await _app.dataManager.initialize();
-    await _app.locationMonitor.initialize();
     await _app.propertiesManager.initialize();
 
     // Managers that depend on the ones above.
