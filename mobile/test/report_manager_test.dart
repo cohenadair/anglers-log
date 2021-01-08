@@ -34,22 +34,16 @@ class TestCustomReportManager extends ReportManager<SummaryReport> {
   String name(SummaryReport entity) => "Summary Report";
 
   @override
-  void onDeleteBait(Bait bait) {
-    // Do nothing.
-  }
-
-  @override
-  void onDeleteFishingSpot(FishingSpot fishingSpot) {
-    // Do nothing.
-  }
-
-  @override
-  void onDeleteSpecies(Species species) {
-    // Do nothing.
-  }
-
-  @override
   String get tableName => "summary_report";
+
+  @override
+  bool removeBait(SummaryReport report, Bait bait) => true;
+
+  @override
+  bool removeFishingSpot(SummaryReport report, FishingSpot fishingSpot) => true;
+
+  @override
+  bool removeSpecies(SummaryReport report, Species species) => true;
 }
 
 void main() {
@@ -77,7 +71,7 @@ void main() {
         .thenAnswer((_) => Future.value(true));
 
     reportListener = MockCustomReportListener();
-    when(reportListener.onAddOrUpdate).thenReturn(() {});
+    when(reportListener.onAdd).thenReturn((_) {});
 
     // Setup real objects.
     speciesManager = SpeciesManager(appManager);
@@ -94,6 +88,10 @@ void main() {
   });
 
   test("On species deleted, reports updated and listeners notified", () async {
+    var updatedReports = <SummaryReport>[];
+    when(reportListener.onUpdate)
+        .thenReturn((reports) => updatedReports = reports);
+
     // Can't delete because catch exists.
     when(appManager.mockCatchManager.existsWith(
       speciesId: anyNamed("speciesId"),
@@ -103,19 +101,32 @@ void main() {
       ..id = randomId()
       ..name = "Bass";
     await speciesManager.delete(species.id);
-    verifyNever(reportListener.onAddOrUpdate);
+    verifyNever(reportListener.onUpdate);
 
     // Successful delete.
     when(appManager.mockCatchManager.existsWith(
       speciesId: anyNamed("speciesId"),
     )).thenReturn(false);
 
+    var report = SummaryReport()
+      ..id = randomId()
+      ..speciesIds.add(species.id);
+    reportManager.addOrUpdate(report);
+
     await speciesManager.addOrUpdate(species);
     await speciesManager.delete(species.id);
-    verify(reportListener.onAddOrUpdate).called(1);
+
+    verify(reportListener.onAdd).called(1);
+
+    expect(updatedReports.length, 1);
+    expect(updatedReports.first.id, report.id);
   });
 
   test("On baits deleted, reports updated and listeners notified", () async {
+    var updatedReports = <SummaryReport>[];
+    when(reportListener.onUpdate)
+        .thenReturn((reports) => updatedReports = reports);
+
     // Nothing to delete.
     when(appManager.mockDataManager.deleteEntity(any, any))
         .thenAnswer((_) => Future.value(false));
@@ -124,19 +135,32 @@ void main() {
       ..id = randomId()
       ..name = "Lure";
     await baitManager.delete(bait.id);
-    verifyNever(reportListener.onAddOrUpdate);
+    verifyNever(reportListener.onUpdate);
 
     // Successful delete.
     when(appManager.mockDataManager.deleteEntity(any, any))
         .thenAnswer((_) => Future.value(true));
 
+    var report = SummaryReport()
+      ..id = randomId()
+      ..baitIds.add(bait.id);
+    reportManager.addOrUpdate(report);
+
     await baitManager.addOrUpdate(bait);
     await baitManager.delete(bait.id);
-    verify(reportListener.onAddOrUpdate).called(1);
+
+    verify(reportListener.onAdd).called(1);
+
+    expect(updatedReports.length, 1);
+    expect(updatedReports.first.id, report.id);
   });
 
   test("On fishing spots deleted, reports updated and listeners notified",
       () async {
+    var updatedReports = <SummaryReport>[];
+    when(reportListener.onUpdate)
+        .thenReturn((reports) => updatedReports = reports);
+
     // Nothing to delete.
     when(appManager.mockDataManager.deleteEntity(any, any))
         .thenAnswer((_) => Future.value(false));
@@ -146,14 +170,23 @@ void main() {
       ..lat = 0.03
       ..lng = 0.05;
     await fishingSpotManager.delete(fishingSpot.id);
-    verifyNever(reportListener.onAddOrUpdate);
+    verifyNever(reportListener.onUpdate);
 
     // Successful delete.
     when(appManager.mockDataManager.deleteEntity(any, any))
         .thenAnswer((_) => Future.value(true));
 
+    var report = SummaryReport()
+      ..id = randomId()
+      ..fishingSpotIds.add(fishingSpot.id);
+    reportManager.addOrUpdate(report);
+
     await fishingSpotManager.addOrUpdate(fishingSpot);
     await fishingSpotManager.delete(fishingSpot.id);
-    verify(reportListener.onAddOrUpdate).called(1);
+
+    verify(reportListener.onAdd).called(1);
+
+    expect(updatedReports.length, 1);
+    expect(updatedReports.first.id, report.id);
   });
 }

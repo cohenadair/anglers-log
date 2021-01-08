@@ -22,26 +22,17 @@ class ComparisonReportManager extends ReportManager<ComparisonReport> {
   String name(ComparisonReport report) => report.name;
 
   @override
-  void onDeleteBait(Bait bait) {
-    for (var report in entities.values) {
-      report.baitIds.remove(bait.id);
-    }
-  }
-
-  @override
-  void onDeleteFishingSpot(FishingSpot fishingSpot) {
-    for (var report in entities.values) {
-      report.fishingSpotIds.remove(fishingSpot.id);
-    }
-  }
-
-  @override
-  void onDeleteSpecies(Species species) {
-    for (var report in entities.values) {
-      report.speciesIds.remove(species.id);
-    }
-  }
-
-  @override
   String get tableName => "comparison_report";
+
+  @override
+  bool removeBait(ComparisonReport report, Bait bait) =>
+      report.baitIds.remove(bait.id);
+
+  @override
+  bool removeFishingSpot(ComparisonReport report, FishingSpot fishingSpot) =>
+      report.fishingSpotIds.remove(fishingSpot.id);
+
+  @override
+  bool removeSpecies(ComparisonReport report, Species species) =>
+      report.speciesIds.remove(species.id);
 }

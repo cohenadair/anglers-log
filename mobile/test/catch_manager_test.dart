@@ -75,8 +75,12 @@ void main() {
     when(dataManager.replaceRows(any, any)).thenAnswer((_) => Future.value());
 
     var catchListener = MockCatchListener();
+    when(catchListener.onAdd).thenReturn((_) {});
     when(catchListener.onDelete).thenReturn((_) {});
-    when(catchListener.onAddOrUpdate).thenReturn(() {});
+
+    var updatedCatches = <Catch>[];
+    when(catchListener.onUpdate)
+        .thenReturn((catches) => updatedCatches = catches);
     catchManager.addListener(catchListener);
 
     // Add a bait.
@@ -95,7 +99,7 @@ void main() {
     await catchManager.addOrUpdate(Catch()
       ..id = catchId1
       ..baitId = baitId0);
-    verify(catchListener.onAddOrUpdate).called(2);
+    verify(catchListener.onAdd).called(2);
     expect(catchManager.entity(catchId0).baitId, baitId0);
     expect(catchManager.entity(catchId1).baitId, baitId0);
 
@@ -103,9 +107,10 @@ void main() {
     await baitManager.delete(baitId0);
 
     // Verify listeners are notified and memory cache updated.
-    verify(catchListener.onAddOrUpdate).called(1);
+    verify(catchListener.onUpdate).called(1);
     expect(catchManager.entity(catchId0).hasBaitId(), false);
     expect(catchManager.entity(catchId1).hasBaitId(), false);
+    expect(updatedCatches.length, 2);
   });
 
   test("When a fishing spot is deleted, existing catches are updated",
@@ -117,8 +122,12 @@ void main() {
     when(dataManager.replaceRows(any, any)).thenAnswer((_) => Future.value());
 
     var catchListener = MockCatchListener();
+    when(catchListener.onAdd).thenReturn((_) {});
     when(catchListener.onDelete).thenReturn((_) {});
-    when(catchListener.onAddOrUpdate).thenReturn(() {});
+
+    var updatedCatches = <Catch>[];
+    when(catchListener.onUpdate)
+        .thenReturn((catches) => updatedCatches = catches);
     catchManager.addListener(catchListener);
 
     // Add a fishing spot.
@@ -135,7 +144,7 @@ void main() {
     await catchManager.addOrUpdate(Catch()
       ..id = catchId1
       ..fishingSpotId = fishingSpotId0);
-    verify(catchListener.onAddOrUpdate).called(2);
+    verify(catchListener.onAdd).called(2);
     expect(catchManager.entity(catchId0).fishingSpotId, fishingSpotId0);
     expect(catchManager.entity(catchId1).fishingSpotId, fishingSpotId0);
 
@@ -143,9 +152,10 @@ void main() {
     await fishingSpotManager.delete(fishingSpotId0);
 
     // Verify listeners are notified and memory cache updated.
-    verify(catchListener.onAddOrUpdate).called(1);
+    verify(catchListener.onUpdate).called(1);
     expect(catchManager.entity(catchId0).hasFishingSpotId(), false);
     expect(catchManager.entity(catchId1).hasFishingSpotId(), false);
+    expect(updatedCatches.length, 2);
   });
 
   testWidgets("Filtering by search query; non-ID reference properties",

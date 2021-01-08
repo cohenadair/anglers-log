@@ -91,8 +91,9 @@ void main() {
         .thenAnswer((_) => Future.value(true));
 
     var listener = MockSpeciesListener();
-    when(listener.onAddOrUpdate).thenReturn(() {});
+    when(listener.onAdd).thenReturn((_) {});
     when(listener.onDelete).thenReturn((_) {});
+    when(listener.onUpdate).thenReturn((_) {});
     entityManager.addListener(listener);
 
     // Add.
@@ -107,7 +108,7 @@ void main() {
     );
     expect(entityManager.entityCount, 1);
     expect(entityManager.entity(speciesId0).name, "Bluegill");
-    verify(listener.onAddOrUpdate).called(1);
+    verify(listener.onAdd).called(1);
 
     // Update.
     expect(
@@ -118,7 +119,7 @@ void main() {
     );
     expect(entityManager.entityCount, 1);
     expect(entityManager.entity(speciesId0).name, "Bass");
-    verify(listener.onAddOrUpdate).called(1);
+    verify(listener.onUpdate).called(1);
 
     // No notify.
     expect(
@@ -131,7 +132,8 @@ void main() {
     );
     expect(entityManager.entityCount, 2);
     expect(entityManager.entity(speciesId1).name, "Catfish");
-    verifyNever(listener.onAddOrUpdate);
+    verifyNever(listener.onAdd);
+    verifyNever(listener.onUpdate);
   });
 
   test("Test delete", () async {
@@ -139,8 +141,9 @@ void main() {
         .thenAnswer((_) => Future.value(true));
 
     var listener = MockSpeciesListener();
-    when(listener.onAddOrUpdate).thenReturn(() {});
+    when(listener.onAdd).thenReturn((_) {});
     when(listener.onDelete).thenReturn((_) {});
+    when(listener.onUpdate).thenReturn((_) {});
     entityManager.addListener(listener);
 
     var speciesId0 = randomId();
@@ -162,8 +165,9 @@ void main() {
         .thenAnswer((_) => Future.value(true));
 
     var listener = MockSpeciesListener();
-    when(listener.onAddOrUpdate).thenReturn(() {});
+    when(listener.onAdd).thenReturn((_) {});
     when(listener.onDelete).thenReturn((_) {});
+    when(listener.onUpdate).thenReturn((_) {});
     entityManager.addListener(listener);
 
     var speciesId0 = randomId();

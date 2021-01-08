@@ -190,23 +190,27 @@ class CatchManager extends EntityManager<Catch> {
         list(), customEntityId, (cat) => cat.customEntityValues);
   }
 
-  void _onDeleteBait(Bait bait) async {
+  void _onDeleteBait(Bait bait) {
+    var updatedCatches = <Catch>[];
     for (var cat
         in List<Catch>.from(list().where((cat) => bait.id == cat.baitId))) {
       entities[cat.id].clearBaitId();
+      updatedCatches.add(cat);
     }
 
     replaceDatabaseWithCache();
-    notifyOnAddOrUpdate();
+    notifyOnUpdate(updatedCatches);
   }
 
-  void _onDeleteFishingSpot(FishingSpot fishingSpot) async {
+  void _onDeleteFishingSpot(FishingSpot fishingSpot) {
+    var updatedCatches = <Catch>[];
     for (var cat in List<Catch>.from(
         list().where((cat) => fishingSpot.id == cat.fishingSpotId))) {
       entities[cat.id].clearFishingSpotId();
+      updatedCatches.add(cat);
     }
 
     replaceDatabaseWithCache();
-    notifyOnAddOrUpdate();
+    notifyOnUpdate(updatedCatches);
   }
 }
