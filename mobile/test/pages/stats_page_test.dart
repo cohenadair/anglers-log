@@ -187,8 +187,9 @@ void main() {
     );
 
     when(appManager.mockBaitManager.addSimpleListener(
+      onAdd: anyNamed("onAdd"),
       onDelete: anyNamed("onDelete"),
-      onAddOrUpdate: anyNamed("onAddOrUpdate"),
+      onUpdate: anyNamed("onUpdate"),
       onClear: anyNamed("onClear"),
     )).thenReturn(SimpleEntityListener<Bait>());
     when(appManager.mockBaitManager.list()).thenReturn(baitMap.values.toList());
@@ -204,14 +205,16 @@ void main() {
     )).thenReturn([]);
     when(appManager.mockCatchManager.list()).thenReturn(_catches);
     when(appManager.mockCatchManager.addSimpleListener(
+      onAdd: anyNamed("onAdd"),
       onDelete: anyNamed("onDelete"),
-      onAddOrUpdate: anyNamed("onAddOrUpdate"),
+      onUpdate: anyNamed("onUpdate"),
       onClear: anyNamed("onClear"),
     )).thenReturn(SimpleEntityListener<Catch>());
 
     when(appManager.mockComparisonReportManager.addSimpleListener(
+      onAdd: anyNamed("onAdd"),
       onDelete: anyNamed("onDelete"),
-      onAddOrUpdate: anyNamed("onAddOrUpdate"),
+      onUpdate: anyNamed("onUpdate"),
       onClear: anyNamed("onClear"),
     )).thenReturn(SimpleEntityListener<ComparisonReport>());
     when(appManager.mockComparisonReportManager.list()).thenReturn([]);
@@ -222,8 +225,9 @@ void main() {
         .thenAnswer((_) => Future.value(true));
 
     when(appManager.mockFishingSpotManager.addSimpleListener(
+      onAdd: anyNamed("onAdd"),
       onDelete: anyNamed("onDelete"),
-      onAddOrUpdate: anyNamed("onAddOrUpdate"),
+      onUpdate: anyNamed("onUpdate"),
       onClear: anyNamed("onClear"),
     )).thenReturn(SimpleEntityListener<FishingSpot>());
     when(appManager.mockFishingSpotManager.list())
@@ -232,14 +236,16 @@ void main() {
         (invocation) => fishingSpotMap[invocation.positionalArguments[0]]);
 
     when(appManager.mockSummaryReportManager.addSimpleListener(
+      onAdd: anyNamed("onAdd"),
       onDelete: anyNamed("onDelete"),
-      onAddOrUpdate: anyNamed("onAddOrUpdate"),
+      onUpdate: anyNamed("onUpdate"),
       onClear: anyNamed("onClear"),
     )).thenReturn(SimpleEntityListener<SummaryReport>());
 
     when(appManager.mockSpeciesManager.addSimpleListener(
+      onAdd: anyNamed("onAdd"),
       onDelete: anyNamed("onDelete"),
-      onAddOrUpdate: anyNamed("onAddOrUpdate"),
+      onUpdate: anyNamed("onUpdate"),
       onClear: anyNamed("onClear"),
     )).thenReturn(SimpleEntityListener<Species>());
     when(appManager.mockSpeciesManager.list())

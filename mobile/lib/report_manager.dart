@@ -7,9 +7,9 @@ import 'named_entity_manager.dart';
 
 abstract class ReportManager<T extends GeneratedMessage>
     extends NamedEntityManager<T> {
-  void onDeleteBait(Bait bait);
-  void onDeleteFishingSpot(FishingSpot fishingSpot);
-  void onDeleteSpecies(Species species);
+  bool removeBait(T report, Bait id);
+  bool removeFishingSpot(T report, FishingSpot id);
+  bool removeSpecies(T report, Species id);
 
   ReportManager(AppManager app) : super(app) {
     app.baitManager.addListener(SimpleEntityListener(
@@ -24,20 +24,25 @@ abstract class ReportManager<T extends GeneratedMessage>
   }
 
   void _onDeleteBait(Bait bait) async {
-    onDeleteBait(bait);
-    replaceDatabaseWithCache();
-    notifyOnAddOrUpdate();
+    _onEntityDeleted((report) => removeBait(report, bait));
   }
 
   void _onDeleteFishingSpot(FishingSpot fishingSpot) async {
-    onDeleteFishingSpot(fishingSpot);
-    replaceDatabaseWithCache();
-    notifyOnAddOrUpdate();
+    _onEntityDeleted((report) => removeFishingSpot(report, fishingSpot));
   }
 
   void _onDeleteSpecies(Species species) async {
-    onDeleteSpecies(species);
+    _onEntityDeleted((report) => removeSpecies(report, species));
+  }
+
+  void _onEntityDeleted(bool Function(T report) remove) {
+    var updatedReports = <T>[];
+    for (var report in entities.values) {
+      if (remove(report)) {
+        updatedReports.add(report);
+      }
+    }
+    notifyOnUpdate(updatedReports);
     replaceDatabaseWithCache();
-    notifyOnAddOrUpdate();
   }
 }

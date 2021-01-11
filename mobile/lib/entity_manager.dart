@@ -11,25 +11,35 @@ import 'utils/listener_manager.dart';
 import 'utils/protobuf_utils.dart';
 
 class EntityListener<T> {
+  /// Invoked with the instance of T that was added.
+  void Function(T) onAdd;
+
+  /// Invoked with the instance of T that was deleted.
   void Function(T) onDelete;
-  VoidCallback onAddOrUpdate;
+
+  /// Invoked with all instances of T that were updated.
+  void Function(List<T>) onUpdate;
+
   VoidCallback onClear;
 
   EntityListener({
+    this.onAdd,
     this.onDelete,
-    this.onAddOrUpdate,
+    this.onUpdate,
     this.onClear,
   });
 }
 
 class SimpleEntityListener<T> extends EntityListener<T> {
   SimpleEntityListener({
+    void Function(T entity) onAdd,
     void Function(T entity) onDelete,
-    VoidCallback onAddOrUpdate,
+    void Function(List<T> entity) onUpdate,
     VoidCallback onClear,
   }) : super(
+          onAdd: onAdd ?? (_) {},
           onDelete: onDelete ?? (_) {},
-          onAddOrUpdate: onAddOrUpdate ?? () {},
+          onUpdate: onUpdate ?? (_) {},
           onClear: onClear ?? () {},
         );
 }
@@ -106,9 +116,14 @@ abstract class EntityManager<T extends GeneratedMessage>
     var id = this.id(entity);
     if (await dataManager.insertOrUpdateEntity(
         id, _entityToMap(entity), tableName)) {
+      var updated = entities.containsKey(id);
       entities[id] = entity;
       if (notify) {
-        notifyOnAddOrUpdate();
+        if (updated) {
+          notifyOnUpdate([entity]);
+        } else {
+          notifyOnAdd(entity);
+        }
       }
       return true;
     }
@@ -151,8 +166,8 @@ abstract class EntityManager<T extends GeneratedMessage>
   }
 
   @protected
-  void notifyOnAddOrUpdate() {
-    notify((listener) => listener.onAddOrUpdate());
+  void notifyOnAdd(T entity) {
+    notify((listener) => listener.onAdd(entity));
   }
 
   @protected
@@ -161,18 +176,25 @@ abstract class EntityManager<T extends GeneratedMessage>
   }
 
   @protected
+  void notifyOnUpdate(List<T> entities) {
+    notify((listener) => listener.onUpdate(entities));
+  }
+
+  @protected
   void notifyOnClear() {
     notify((listener) => listener.onClear());
   }
 
   SimpleEntityListener addSimpleListener({
+    void Function(T entity) onAdd,
     void Function(T entity) onDelete,
-    VoidCallback onAddOrUpdate,
+    void Function(List<T> entity) onUpdate,
     VoidCallback onClear,
   }) {
     var listener = SimpleEntityListener<T>(
+      onAdd: onAdd,
       onDelete: onDelete,
-      onAddOrUpdate: onAddOrUpdate,
+      onUpdate: onUpdate,
       onClear: onClear,
     );
     addListener(listener);
@@ -184,19 +206,37 @@ class EntityListenerBuilder extends StatefulWidget {
   final List<EntityManager> managers;
   final Widget Function(BuildContext) builder;
 
-  /// Invoked _before_ the call to [setState].
-  final VoidCallback onUpdate;
+  /// Called when an item is added to an [EntityManager] in [managers].
+  final void Function(dynamic) onAdd;
+
+  /// Called when an item is deleted from an [EntityManager] in [managers].
+  final void Function(dynamic) onDelete;
+
+  /// Called when an item in an [EntityManager] in [managers] is updated.
+  final void Function(List<dynamic>) onUpdate;
+
+  /// Called when an [EntityManager] in [managers] data is cleared.
+  final VoidCallback onClear;
+
+  /// Invoked on add, delete, or update, in addition to [onAdd], [onDelete],
+  /// [onUpdate], and [onClear]. Invoked _before_ the call to [setState].
+  final VoidCallback onAnyChange;
 
   /// If false, the widget is not rebuilt when data is deleted. This is useful
   /// when we need to pop an item from a [Navigator] when data is deleted
-  /// without updating UI. Makes more a smoother transition.
+  /// without updating UI. Setting this flag to false in cases like that makes
+  /// for more a smoother transition. Defaults to true.
   final bool onDeleteEnabled;
 
   EntityListenerBuilder({
     @required this.managers,
     @required this.builder,
-    this.onUpdate,
+    this.onAdd,
+    this.onDelete,
     this.onDeleteEnabled = true,
+    this.onUpdate,
+    this.onClear,
+    this.onAnyChange,
   })  : assert(managers != null && managers.isNotEmpty),
         assert(builder != null);
 
@@ -213,9 +253,24 @@ class _EntityListenerBuilderState extends State<EntityListenerBuilder> {
 
     for (var manager in widget.managers) {
       _listeners.add(manager.addSimpleListener(
-        onDelete: widget.onDeleteEnabled ? (_) => _update() : null,
-        onAddOrUpdate: _update,
-        onClear: _update,
+        onAdd: (entity) {
+          widget.onAdd?.call(entity);
+          _onAnyChange();
+        },
+        onDelete: widget.onDeleteEnabled
+            ? (entity) {
+                widget.onDelete?.call(entity);
+                _onAnyChange();
+              }
+            : null,
+        onUpdate: (entities) {
+          widget.onUpdate?.call(entities);
+          _onAnyChange();
+        },
+        onClear: () {
+          widget.onClear?.call();
+          _onAnyChange();
+        },
       ));
     }
   }
@@ -232,10 +287,10 @@ class _EntityListenerBuilderState extends State<EntityListenerBuilder> {
   @override
   Widget build(BuildContext context) => widget.builder(context);
 
-  void _update() {
-    // Called outside of setState because it's likely the onUpdate callback
-    // calls setState for the parent widget.
-    widget.onUpdate?.call();
+  void _onAnyChange() {
+    // Callbacks are called outside of setState below because it's likely the
+    // callbacks already call setState for the parent widget.
+    widget.onAnyChange?.call();
     setState(() {});
   }
 }
