@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 
 import 'app_manager.dart';
 import 'log.dart';
+import 'wrappers/permission_handler_wrapper.dart';
 
 class LocationMonitor {
   static LocationMonitor of(BuildContext context) =>
@@ -13,13 +14,19 @@ class LocationMonitor {
   final Log _log = Log("LocationMonitor");
   final distanceFilterMeters = 20;
 
+  final AppManager appManager;
   final Geolocator _geolocator = Geolocator();
 
   Position _lastKnownPosition;
   bool _initialized = false;
 
+  PermissionHandlerWrapper get _permissionHandler =>
+      appManager.permissionHandlerWrapper;
+
+  LocationMonitor(this.appManager);
+
   Future<void> initialize() async {
-    if (_initialized) {
+    if (_initialized || !(await _permissionHandler.isLocationGranted)) {
       return;
     }
 

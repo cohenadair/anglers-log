@@ -13,6 +13,8 @@ class PermissionHandlerWrapper {
   Future<bool> requestLocation() async =>
       (await Permission.location.request()).isGranted;
 
+  Future<bool> get isLocationGranted async => Permission.location.isGranted;
+
   /// Prompts the use for photos permission if needed. Returns true if the app
   /// has permission to access photos; false otherwise.
   Future<bool> requestPhotos() async =>

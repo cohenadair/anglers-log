@@ -118,7 +118,7 @@ class AppManager {
 
   LocationMonitor get locationMonitor {
     if (_locationMonitor == null) {
-      _locationMonitor = LocationMonitor();
+      _locationMonitor = LocationMonitor(this);
     }
     return _locationMonitor;
   }
