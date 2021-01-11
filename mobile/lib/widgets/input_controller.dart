@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:quiver/strings.dart';
 
+import '../model/gen/anglerslog.pb.dart';
 import '../model/gen/google/protobuf/timestamp.pb.dart';
 import '../utils/date_time_utils.dart';
 import '../utils/protobuf_utils.dart';
@@ -15,7 +16,10 @@ class InputController<T> {
   /// The current error message for the [InputController], if there is one.
   String error;
 
-  InputController({this.value});
+  InputController({this.value}) {
+    assert(!(T == Id) || this is IdInputController,
+        "Use IdInputController instead of InputController<Id>");
+  }
 
   void dispose() {
     clear();
@@ -23,6 +27,23 @@ class InputController<T> {
 
   void clear() {
     value = null;
+  }
+}
+
+class IdInputController extends InputController<Id> {
+  @override
+  set value(Id newValue) {
+    // An ID with an empty uuid is invalid. This can happen by accessing a
+    // Google Protobuf Id property that isn't set (i.e. the protobufObj.has*()
+    // method returns false).
+    //
+    // For convenience, and to avoid accidental errors, anytime we see an
+    // invalid ID, we'll set the value to null.
+    if (newValue != null && isEmpty(newValue.uuid)) {
+      super.value = null;
+    } else {
+      super.value = newValue;
+    }
   }
 }
 

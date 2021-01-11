@@ -252,29 +252,24 @@ class _EntityListenerBuilderState extends State<EntityListenerBuilder> {
     super.initState();
 
     for (var manager in widget.managers) {
-      // Callbacks are called outside of setState below because it's likely the
-      // callbacks already call setState for the parent widget.
-
       _listeners.add(manager.addSimpleListener(
         onAdd: (entity) {
           widget.onAdd?.call(entity);
-          widget.onAnyChange?.call();
-          setState(() {});
+          _onAnyChange();
         },
-        onDelete: widget.onDeleteEnabled ? (entity) {
-          widget.onDelete?.call(entity);
-          widget.onAnyChange?.call();
-          setState(() {});
-        } : null,
+        onDelete: widget.onDeleteEnabled
+            ? (entity) {
+                widget.onDelete?.call(entity);
+                _onAnyChange();
+              }
+            : null,
         onUpdate: (entities) {
           widget.onUpdate?.call(entities);
-          widget.onAnyChange?.call();
-          setState(() {});
+          _onAnyChange();
         },
         onClear: () {
           widget.onClear?.call();
-          widget.onAnyChange?.call();
-          setState(() {});
+          _onAnyChange();
         },
       ));
     }
@@ -291,4 +286,11 @@ class _EntityListenerBuilderState extends State<EntityListenerBuilder> {
 
   @override
   Widget build(BuildContext context) => widget.builder(context);
+
+  void _onAnyChange() {
+    // Callbacks are called outside of setState below because it's likely the
+    // callbacks already call setState for the parent widget.
+    widget.onAnyChange?.call();
+    setState(() {});
+  }
 }

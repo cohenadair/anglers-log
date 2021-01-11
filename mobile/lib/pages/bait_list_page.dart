@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../bait_category_manager.dart';
 import '../bait_manager.dart';
 import '../i18n/strings.dart';
+import '../log.dart';
 import '../model/gen/anglerslog.pb.dart';
 import '../pages/bait_page.dart';
 import '../pages/manageable_list_page.dart';
@@ -30,6 +31,8 @@ class BaitListPage extends StatefulWidget {
 }
 
 class _BaitListPageState extends State<BaitListPage> {
+  static const _log = Log("BaitListPage");
+
   List<Bait> _baits = [];
 
   BaitCategoryManager get _baitCategoryManager =>
@@ -100,7 +103,13 @@ class _BaitListPageState extends State<BaitListPage> {
         ),
         deleteWidget: (context, bait) =>
             Text(_baitManager.deleteMessage(context, bait)),
-        deleteItem: (context, bait) => _baitManager.delete(bait),
+        deleteItem: (context, bait) {
+          if (bait is Bait) {
+            _baitManager.delete(bait.id);
+          } else {
+            _log.e("Calling deleteItem callback on non-bait object.");
+          }
+        },
         addPageBuilder: () => SaveBaitPage(),
         detailPageBuilder: (bait) => BaitPage(bait.id),
         editPageBuilder: (bait) => SaveBaitPage.edit(bait),

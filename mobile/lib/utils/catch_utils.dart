@@ -34,12 +34,12 @@ List<Field> allCatchFields() {
       id: catchFieldIdSpecies(),
       removable: false,
       name: (context) => Strings.of(context).catchFieldSpecies,
-      controller: InputController<Id>(),
+      controller: IdInputController(),
     ),
     Field(
       id: catchFieldIdBait(),
       name: (context) => Strings.of(context).catchFieldBaitLabel,
-      controller: InputController<Id>(),
+      controller: IdInputController(),
     ),
     Field(
       id: catchFieldIdImages(),
@@ -51,7 +51,7 @@ List<Field> allCatchFields() {
       name: (context) => Strings.of(context).catchFieldFishingSpot,
       description: (context) =>
           Strings.of(context).catchFieldFishingSpotDescription,
-      controller: InputController<Id>(),
+      controller: IdInputController(),
     ),
   ];
 }

@@ -66,8 +66,8 @@ void main() {
               return !spot.lat.toString().contains(filter) &&
                   !spot.lng.toString().contains(filter);
             }
-            return !spot.name.contains(
-                invocation.namedArguments[Symbol("filter")] as String);
+
+            return !spot.name.contains(filter);
           }));
   }
 

@@ -72,7 +72,7 @@ class _SaveBaitPageState extends State<SaveBaitPage> {
     _fields[_idBaitCategory] = Field(
       id: _idBaitCategory,
       name: (context) => Strings.of(context).saveBaitPageCategoryLabel,
-      controller: InputController<Id>(),
+      controller: IdInputController(),
       removable: true,
       // Only include bait category field if not disabled by the user.
       showing: baitFieldIds == null ||

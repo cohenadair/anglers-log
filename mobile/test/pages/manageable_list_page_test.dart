@@ -22,12 +22,39 @@ import '../mock_app_manager.dart';
 import '../test_utils.dart';
 
 void main() {
-  var items = <String>[
-    "Smallmouth Bass",
-    "Largemouth Bass",
-    "Striped Bass",
-    "White Bass",
-  ];
+  MockAppManager appManager;
+
+  // Use real ManageableListItem instance when listeners are required.
+  SpeciesManager speciesManager;
+
+  List<String> items;
+
+  setUp(() {
+    items = <String>[
+      "Smallmouth Bass",
+      "Largemouth Bass",
+      "Striped Bass",
+      "White Bass",
+    ];
+
+    // Use a real use of ManageableListPage for this test because an
+    // EntityManagerListener is needed.
+    appManager = MockAppManager(
+      mockCatchManager: true,
+      mockDataManager: true,
+    );
+    when(appManager.mockCatchManager.list()).thenReturn([]);
+    when(appManager.mockCatchManager
+            .existsWith(speciesId: anyNamed("speciesId")))
+        .thenReturn(false);
+    when(appManager.mockDataManager.insertOrUpdateEntity(any, any, any))
+        .thenAnswer((_) => Future.value(true));
+    when(appManager.mockDataManager.deleteEntity(any, any))
+        .thenAnswer((_) => Future.value(true));
+
+    speciesManager = SpeciesManager(appManager);
+    when(appManager.speciesManager).thenReturn(speciesManager);
+  });
 
   List<String> loadItems(searchQuery) {
     var species = List.of(items);
@@ -584,28 +611,11 @@ void main() {
     });
 
     testWidgets("Editing item persists picked selection", (tester) async {
-      // Use a real use of ManageableListPage for this test because an
-      // EntityManagerListener is needed.
-      var appManager = MockAppManager(
-        mockCatchManager: true,
-        mockDataManager: true,
-      );
-      when(appManager.mockCatchManager.list()).thenReturn([]);
-      when(appManager.mockCatchManager
-              .existsWith(speciesId: anyNamed("speciesId")))
-          .thenReturn(false);
-      when(appManager.mockDataManager.insertOrUpdateEntity(any, any, any))
-          .thenAnswer((_) => Future.value(true));
-      when(appManager.mockDataManager.deleteEntity(any, any))
-          .thenAnswer((_) => Future.value(true));
-
       // Add initial species.
       var species = Species()
         ..id = randomId()
         ..name = "Bass";
-      var speciesManager = SpeciesManager(appManager);
       speciesManager.addOrUpdate(species);
-      when(appManager.speciesManager).thenReturn(speciesManager);
 
       await tester.pumpWidget(
         Testable(
@@ -982,27 +992,10 @@ void main() {
   });
 
   testWidgets("End ending if all items are deleted", (tester) async {
-    // Use a real use of ManageableListPage for this test because an
-    // EntityManagerListener is needed.
-    var appManager = MockAppManager(
-      mockCatchManager: true,
-      mockDataManager: true,
-    );
-    when(appManager.mockCatchManager.list()).thenReturn([]);
-    when(appManager.mockCatchManager
-            .existsWith(speciesId: anyNamed("speciesId")))
-        .thenReturn(false);
-    when(appManager.mockDataManager.insertOrUpdateEntity(any, any, any))
-        .thenAnswer((_) => Future.value(true));
-    when(appManager.mockDataManager.deleteEntity(any, any))
-        .thenAnswer((_) => Future.value(true));
-
     // Add initial species.
-    var speciesManager = SpeciesManager(appManager);
     speciesManager.addOrUpdate(Species()
       ..id = randomId()
       ..name = "Bass");
-    when(appManager.speciesManager).thenReturn(speciesManager);
 
     await tester.pumpWidget(
       Testable(
@@ -1141,5 +1134,126 @@ void main() {
       ),
     );
     expect(find.text("EDIT"), findsNothing);
+  });
+
+  testWidgets(
+      "Managing items in the list correctly updates animated list model",
+      (tester) async {
+    await tester.pumpWidget(
+      Testable(
+        (_) => SpeciesListPage(),
+        appManager: appManager,
+      ),
+    );
+
+    expect(find.byType(EmptyListPlaceholder), findsOneWidget);
+
+    // Add an item to the list.
+    await tapAndSettle(tester, find.widgetWithIcon(IconButton, Icons.add));
+    await enterTextAndSettle(tester, find.byType(TextInput), "Rainbow Trout");
+    await tapAndSettle(tester, find.text("SAVE"), 250);
+
+    // Verify item is added.
+    expect(find.byType(EmptyListPlaceholder), findsNothing);
+    expect(find.text("Rainbow Trout"), findsOneWidget);
+
+    // Remove the only item in the list.
+    await tapAndSettle(tester, find.text("EDIT"));
+    await tapAndSettle(tester, find.byIcon(Icons.delete));
+    await tapAndSettle(tester, find.text("DELETE"));
+
+    // Verify item is removed.
+    expect(find.byType(EmptyListPlaceholder), findsOneWidget);
+    expect(find.text("Rainbow Trout"), findsNothing);
+
+    // Add a couple items.
+    await speciesManager.addOrUpdate(Species()
+      ..id = randomId()
+      ..name = "Rainbow Trout");
+    await speciesManager.addOrUpdate(Species()
+      ..id = randomId()
+      ..name = "Largemouth Bass");
+    await tester.pumpAndSettle();
+
+    expect(find.text("Largemouth Bass"), findsOneWidget);
+    expect(find.text("Rainbow Trout"), findsOneWidget);
+
+    // Insert into the start of the list.
+    await tapAndSettle(tester, find.widgetWithIcon(IconButton, Icons.add));
+    await enterTextAndSettle(tester, find.byType(TextInput), "Bass");
+    await tapAndSettle(tester, find.text("SAVE"), 250);
+
+    expect(
+      find.descendant(
+        of: find.byType(ManageableListItem).first,
+        matching: find.text("Bass"),
+      ),
+      findsOneWidget,
+    );
+
+    // Insert into the end of the list.
+    await tapAndSettle(tester, find.widgetWithIcon(IconButton, Icons.add));
+    await enterTextAndSettle(tester, find.byType(TextInput), "Silver Bass");
+    await tapAndSettle(tester, find.text("SAVE"), 250);
+
+    expect(
+      find.descendant(
+        of: find.byType(ManageableListItem).last,
+        matching: find.text("Silver Bass"),
+      ),
+      findsOneWidget,
+    );
+  });
+
+  testWidgets("On non-T item changed doesn't modify list", (tester) async {
+    var loadCount = 0;
+
+    // Build a ManageableListPage that listens to a non-T manager.
+    await tester.pumpWidget(
+      Testable(
+        (_) => ManageableListPage<String>(
+          itemManager: ManageableListPageItemManager<String>(
+            listenerManagers: [
+              speciesManager,
+            ],
+            loadItems: (query) {
+              loadCount++;
+              return loadItems(query);
+            },
+            deleteWidget: deleteWidget,
+            deleteItem: deleteItem,
+            detailPageBuilder: (_) => Empty(),
+            editPageBuilder: (_) => Empty(),
+          ),
+          itemBuilder: defaultItemBuilder,
+        ),
+        appManager: appManager,
+      ),
+    );
+
+    expect(loadCount, 1);
+    expect(find.byType(ManageableListItem), findsNWidgets(4));
+    loadCount = 0;
+
+    var species = Species()
+      ..id = randomId()
+      ..name = "Test";
+
+    // Trigger add.
+    await speciesManager.addOrUpdate(species);
+    expect(loadCount, 1);
+    expect(find.byType(ManageableListItem), findsNWidgets(4));
+    loadCount = 0;
+
+    // Trigger delete.
+    await speciesManager.delete(species.id);
+    expect(loadCount, 0); // None for onDelete callback.
+    expect(find.byType(ManageableListItem), findsNWidgets(4));
+    loadCount = 0;
+
+    // Trigger update.
+    await speciesManager.addOrUpdate(species..name = "Test 2");
+    expect(loadCount, 1);
+    expect(find.byType(ManageableListItem), findsNWidgets(4));
   });
 }

@@ -18,8 +18,8 @@ class OnboardingPage extends StatelessWidget {
     this.nextButtonText,
     this.nextButtonEnabled = true,
     this.onPressedNextButton,
-  }) : assert(children != null),
-       assert(nextButtonEnabled != null);
+  })  : assert(children != null),
+        assert(nextButtonEnabled != null);
 
   @override
   Widget build(BuildContext context) {

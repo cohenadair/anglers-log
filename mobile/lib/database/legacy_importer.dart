@@ -327,8 +327,6 @@ class LegacyImporter {
         imageFiles: images,
         // Images were already compressed by legacy Anglers' Log versions.
         compressImages: false,
-        // Suppress listener updates until the last catch is added.
-        notify: item == catches.last,
       );
     }
   }
