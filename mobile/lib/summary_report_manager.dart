@@ -22,26 +22,17 @@ class SummaryReportManager extends ReportManager<SummaryReport> {
   String name(SummaryReport report) => report.name;
 
   @override
-  void onDeleteBait(Bait bait) {
-    for (var report in entities.values) {
-      report.baitIds.remove(bait.id);
-    }
-  }
-
-  @override
-  void onDeleteFishingSpot(FishingSpot fishingSpot) {
-    for (var report in entities.values) {
-      report.fishingSpotIds.remove(fishingSpot.id);
-    }
-  }
-
-  @override
-  void onDeleteSpecies(Species species) {
-    for (var report in entities.values) {
-      report.speciesIds.remove(species.id);
-    }
-  }
-
-  @override
   String get tableName => "summary_report";
+
+  @override
+  bool removeBait(SummaryReport report, Bait bait) =>
+      report.baitIds.remove(bait.id);
+
+  @override
+  bool removeFishingSpot(SummaryReport report, FishingSpot fishingSpot) =>
+      report.fishingSpotIds.remove(fishingSpot.id);
+
+  @override
+  bool removeSpecies(SummaryReport report, Species species) =>
+      report.speciesIds.remove(species.id);
 }

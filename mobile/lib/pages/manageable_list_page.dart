@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:quiver/strings.dart';
 
@@ -82,6 +84,10 @@ class _ManageableListPageState<T> extends State<ManageableListPage<T>> {
   /// Additional padding required to line up search text with [ListItem] text.
   static const _thumbSearchTextOffset = 24.0;
 
+  GlobalKey<SliverAnimatedListState> _animatedListKey =
+      GlobalKey<SliverAnimatedListState>();
+  _AnimatedListModel<T> _animatedList;
+
   SearchTimer _searchTimer;
   bool _isEditing = false;
   Set<T> _selectedValues = {};
@@ -115,7 +121,7 @@ class _ManageableListPageState<T> extends State<ManageableListPage<T>> {
       _selectedValues = Set.of(widget.pickerSettings.initialValues);
     }
 
-    _searchTimer = SearchTimer(() => setState(() {}));
+    _searchTimer = SearchTimer(() => setState(_syncAnimatedList));
   }
 
   @override
@@ -126,30 +132,36 @@ class _ManageableListPageState<T> extends State<ManageableListPage<T>> {
 
   Widget build(BuildContext context) {
     if (widget.itemManager?.listenerManagers == null) {
-      return _buildScaffold(widget.itemManager.loadItems(_searchText));
+      return _buildScaffold(context);
     }
 
     return EntityListenerBuilder(
       managers: widget.itemManager.listenerManagers,
-      builder: (context) =>
-          _buildScaffold(widget.itemManager.loadItems(_searchText)),
+      builder: _buildScaffold,
+      onAdd: _onEntityAdded,
+      onDelete: _onEntityDeleted,
+      onUpdate: _onEntitiesUpdated,
     );
   }
 
-  Widget _buildScaffold(List<T> items) {
+  Widget _buildScaffold(BuildContext context) {
+    _initAnimatedListIfNeeded();
+
     // Disable editing if there are no items in the list.
-    if (items.isEmpty) {
+    if (_animatedList.isEmpty) {
       _isEditing = false;
     }
 
     // If picking an option isn't required, show a "None" option.
     var showClearOption = _isPicking && !widget.pickerSettings.isRequired;
+
+    // +2 for "None" and divider.
     var clearOptionOffset = showClearOption ? 2 : 0;
 
     Widget emptyWidget = Empty();
     if (widget.itemManager.emptyItemsSettings != null &&
         (widget.searchDelegate == null ||
-            (isEmpty(_searchText) && items.isEmpty))) {
+            (isEmpty(_searchText) && _animatedList.isEmpty))) {
       emptyWidget = EmptyListPlaceholder.static(
         title: widget.itemManager.emptyItemsSettings.title,
         description: widget.itemManager.emptyItemsSettings.description,
@@ -180,9 +192,10 @@ class _ManageableListPageState<T> extends State<ManageableListPage<T>> {
               pinned: false,
               snap: true,
               title: _isPicking
-                  ? widget.pickerTitleBuilder?.call(items) ?? Empty()
-                  : widget.titleBuilder?.call(items) ?? Empty(),
-              actions: _buildActions(items),
+                  ? widget.pickerTitleBuilder?.call(_animatedList.items) ??
+                      Empty()
+                  : widget.titleBuilder?.call(_animatedList.items) ?? Empty(),
+              actions: _buildActions(_animatedList.items),
               expandedHeight: _hasSearch ? _appBarExpandedHeight : 0.0,
               flexibleSpace: _buildSearchBar(),
               centerTitle: widget.forceCenterTitle,
@@ -190,23 +203,23 @@ class _ManageableListPageState<T> extends State<ManageableListPage<T>> {
             ),
             SliverSafeArea(
               top: false,
+              // TODO: Use a sliver animated switcher when available - https://github.com/flutter/flutter/issues/64069
               sliver: SliverVisibility(
-                visible: items.isNotEmpty,
-                sliver: SliverList(
-                  delegate: SliverChildBuilderDelegate(
-                    (context, i) {
-                      if (showClearOption) {
-                        if (i == 0) {
-                          return _buildNoneItem(context, items);
-                        } else if (i == 1) {
-                          return MinDivider();
-                        }
+                visible: _animatedList.isNotEmpty,
+                sliver: SliverAnimatedList(
+                  key: _animatedListKey,
+                  initialItemCount: _animatedList.length + clearOptionOffset,
+                  itemBuilder: (context, i, animation) {
+                    if (showClearOption) {
+                      if (i == 0) {
+                        return _buildNoneItem(context, _animatedList.items);
+                      } else if (i == 1) {
+                        return MinDivider();
                       }
-                      return _buildItem(context, items[i - clearOptionOffset]);
-                    },
-                    // +2 for "None" and divider.
-                    childCount: items.length + clearOptionOffset,
-                  ),
+                    }
+                    return _buildItem(context,
+                        _animatedList[i - clearOptionOffset], animation);
+                  },
                 ),
                 replacementSliver: SliverFillRemaining(
                   fillOverscroll: true,
@@ -315,7 +328,8 @@ class _ManageableListPageState<T> extends State<ManageableListPage<T>> {
     );
   }
 
-  Widget _buildItem(BuildContext context, T itemValue) {
+  Widget _buildItem(
+      BuildContext context, T itemValue, Animation<double> animation) {
     var item = widget.itemBuilder(context, itemValue);
 
     if (!item.editable && !item.selectable) {
@@ -348,7 +362,7 @@ class _ManageableListPageState<T> extends State<ManageableListPage<T>> {
     var canEdit = _isEditing && item.editable;
     var enabled = !_isEditing || canEdit;
 
-    return ManageableListItem(
+    var listItem = ManageableListItem(
       child: item.child,
       editing: canEdit,
       enabled: enabled,
@@ -375,6 +389,12 @@ class _ManageableListPageState<T> extends State<ManageableListPage<T>> {
           ? null
           : () => widget.itemManager.onTapDeleteButton(itemValue),
       trailing: trailing,
+    );
+
+    return SizeTransition(
+      axis: Axis.vertical,
+      sizeFactor: animation,
+      child: listItem,
     );
   }
 
@@ -409,10 +429,55 @@ class _ManageableListPageState<T> extends State<ManageableListPage<T>> {
 
     return false;
   }
+
+  /// Sync's the animated list model with the database list.
+  void _syncAnimatedList() {
+    // Resetting the list's key will force it to rebuild it's state with the
+    // new list of items.
+    _animatedListKey = GlobalKey<SliverAnimatedListState>();
+    _animatedList.resetItems(
+        _animatedListKey, widget.itemManager.loadItems(_searchText));
+  }
+
+  void _initAnimatedListIfNeeded() {
+    if (_animatedList != null) {
+      return;
+    }
+
+    _animatedList = _AnimatedListModel(
+      listKey: _animatedListKey,
+      initialItems: widget.itemManager.loadItems(_searchText),
+      removedItemBuilder: _buildItem,
+    );
+  }
+
+  void _onEntityAdded(dynamic entity) {
+    // Get an updated item list. This includes the new item added.
+    var items = widget.itemManager.loadItems(_searchText);
+
+    // Don't animate any entity additions if it isn't an entity associated
+    // with this ManageableListPage.
+    if (!(entity is T)) {
+      return;
+    }
+
+    _animatedList.insert(
+        min(_animatedList.length, items.indexOf(entity)), entity);
+  }
+
+  void _onEntityDeleted(dynamic entity) {
+    if (entity is T) {
+      _animatedList.removeAt(_animatedList.indexOf(entity));
+    }
+  }
+
+  void _onEntitiesUpdated(List<dynamic> entities) {
+    _syncAnimatedList();
+  }
 }
 
-enum _ViewingState { pickingSingle, pickingMulti, viewing }
-
+/// A convenience class for storing the properties related to when a
+/// [ManageableListPage] is being used to pick items from a list.
 class ManageableListPagePickerSettings<T> {
   /// Invoked when picking has finished. Returning true will pop the picker
   /// from the current [Navigator]. [pickedItems] is guaranteed to have one
@@ -476,7 +541,7 @@ class ManageableListPagePickerSettings<T> {
   }
 }
 
-/// A convenience class for storing the properties of an option [SearchBar] in
+/// A convenience class for storing the properties of an optional [SearchBar] in
 /// the [AppBar] of a [ManageableListPage].
 class ManageableListPageSearchDelegate {
   /// The search hint text.
@@ -508,6 +573,8 @@ class ManageableListPageItemModel {
   }) : assert(child != null);
 }
 
+/// A convenient class for storing properties for related to a widget to show
+/// when a [ManageableListPage] has an empty model list.
 class ManageableListPageEmptyListSettings {
   final String title;
   final String description;
@@ -522,10 +589,11 @@ class ManageableListPageEmptyListSettings {
         assert(icon != null);
 }
 
-/// A convenience class to handle the adding, deleting, and editing of an item
-/// in a [ManageableListPage].
+/// A convenience class for storing properties related to adding, deleting, and
+/// editing of items in a [ManageableListPage].
 ///
-/// [T] is the type of object being managed.
+/// [T] is the type of object being managed, and must be the same type used
+/// when instantiating [ManageableListPage].
 class ManageableListPageItemManager<T> {
   /// Invoked when the widget tree needs to be rebuilt. Required so data is
   /// almost the most up to date from the database. The passed in [String] is
@@ -581,4 +649,73 @@ class ManageableListPageItemManager<T> {
         assert(deleteWidget != null),
         assert(deleteItem != null),
         assert(listenerManagers == null || listenerManagers.isNotEmpty);
+}
+
+enum _ViewingState {
+  pickingSingle,
+  pickingMulti,
+  viewing,
+}
+
+/// Keeps a Dart [List] in sync with an [AnimatedList].
+///
+/// The [insert] and [removeAt] methods apply to both the internal list and
+/// the animated list that belongs to [listKey].
+///
+/// Derived from https://api.flutter.dev/flutter/widgets/SliverAnimatedList-class.html
+/// sample project.
+class _AnimatedListModel<T> {
+  GlobalKey<SliverAnimatedListState> listKey;
+  final Widget Function(BuildContext, T, Animation<double>) removedItemBuilder;
+  final List<T> _items;
+
+  _AnimatedListModel({
+    @required this.listKey,
+    @required this.removedItemBuilder,
+    List<T> initialItems,
+  })  : assert(listKey != null),
+        assert(removedItemBuilder != null),
+        _items = List.of(initialItems) ?? [];
+
+  SliverAnimatedListState get _animatedList => listKey.currentState;
+
+  List<T> get items => _items;
+
+  int get length => _items.length;
+
+  bool get isEmpty => _items.isEmpty;
+
+  bool get isNotEmpty => _items.isNotEmpty;
+
+  void insert(int index, T item) {
+    _items.insert(index, item);
+
+    // Note that _animatedList could be null here if there are no items in the
+    // list. In this case, we want to update the underlying data model, but
+    // do not animate the insertion.
+    _animatedList?.insertItem(index, duration: defaultAnimationDuration);
+  }
+
+  T removeAt(int index) {
+    var removedItem = _items.removeAt(index);
+    if (removedItem != null) {
+      _animatedList.removeItem(
+        index,
+        (context, animation) =>
+            removedItemBuilder(context, removedItem, animation),
+        duration: defaultAnimationDuration,
+      );
+    }
+    return removedItem;
+  }
+
+  int indexOf(T item) => _items.indexOf(item);
+
+  T operator [](int index) => _items[index];
+
+  void resetItems(GlobalKey<SliverAnimatedListState> newKey, List<T> newItems) {
+    listKey = newKey;
+    _items.clear();
+    _items.addAll(List.of(newItems));
+  }
 }

@@ -51,8 +51,11 @@ void main() {
     when(dataManager.replaceRows(any, any)).thenAnswer((_) => Future.value());
 
     var baitListener = MockBaitListener();
+    when(baitListener.onAdd).thenReturn((_) {});
     when(baitListener.onDelete).thenReturn((_) {});
-    when(baitListener.onAddOrUpdate).thenReturn(() {});
+
+    var updatedBaits = <Bait>[];
+    when(baitListener.onUpdate).thenReturn((baits) => updatedBaits = baits);
     baitManager.addListener(baitListener);
 
     // Add a BaitCategory.
@@ -73,7 +76,7 @@ void main() {
       ..id = baitId1
       ..name = "Test Bait 2"
       ..baitCategoryId = baitCategoryId0);
-    verify(baitListener.onAddOrUpdate).called(2);
+    verify(baitListener.onAdd).called(2);
     expect(baitManager.entity(baitId0).baitCategoryId, baitCategoryId0);
     expect(baitManager.entity(baitId1).baitCategoryId, baitCategoryId0);
 
@@ -81,9 +84,10 @@ void main() {
     await baitCategoryManager.delete(category.id);
 
     // Verify listeners are notified and memory cache updated.
-    verify(baitListener.onAddOrUpdate).called(1);
+    verify(baitListener.onUpdate).called(1);
     expect(baitManager.entity(baitId0).hasBaitCategoryId(), false);
     expect(baitManager.entity(baitId1).hasBaitCategoryId(), false);
+    expect(updatedBaits.length, 2);
   });
 
   test("Number of catches", () {

@@ -104,7 +104,7 @@ class _StatsPageState extends State<StatsPage> {
           _speciesManager,
           _summaryReportManager,
         ],
-        onUpdate: () => _updateCurrentReport(_currentReport.id),
+        onAnyChange: () => _updateCurrentReport(_currentReport.id),
         builder: (context) {
           return CustomScrollView(
             slivers: [
@@ -477,6 +477,9 @@ class _StatsPageState extends State<StatsPage> {
       }
 
       _currentSpecies = _speciesManager.entity(maxId);
+    } else {
+      // Get updated species from the database.
+      _currentSpecies = _speciesManager.entity(_currentSpecies.id);
     }
   }
 

@@ -128,13 +128,15 @@ class BaitManager extends NamedEntityManager<Bait> {
     return format(string, [baitName, numOfCatches]);
   }
 
-  void _onDeleteBaitCategory(BaitCategory baitCategory) async {
+  void _onDeleteBaitCategory(BaitCategory baitCategory) {
+    var updatedBaits = <Bait>[];
     for (var bait in List<Bait>.from(
         list().where((bait) => baitCategory.id == bait.baitCategoryId))) {
       entities[bait.id].clearBaitCategoryId();
+      updatedBaits.add(bait);
     }
 
     replaceDatabaseWithCache();
-    notifyOnAddOrUpdate();
+    notifyOnUpdate(updatedBaits);
   }
 }

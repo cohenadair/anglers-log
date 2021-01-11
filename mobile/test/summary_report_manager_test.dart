@@ -29,71 +29,41 @@ void main() {
     summaryReportManager = SummaryReportManager(appManager);
   });
 
-  test("onDeleteBait", () async {
+  test("removeBait", () async {
     var baitToRemove = Bait()..id = randomId();
 
     var report = SummaryReport()..id = randomId();
     report.baitIds.add(baitToRemove.id);
 
-    await summaryReportManager.addOrUpdate(report);
+    summaryReportManager.removeBait(report, baitToRemove);
     expect(
-      summaryReportManager.entity(report.id).baitIds.contains(baitToRemove.id),
-      isTrue,
-    );
-
-    summaryReportManager.onDeleteBait(baitToRemove);
-    expect(
-      summaryReportManager.entity(report.id).baitIds.contains(baitToRemove.id),
+      report.baitIds.contains(baitToRemove.id),
       isFalse,
     );
   });
 
-  test("onDeleteFishingSpot", () async {
+  test("removeFishingSpot", () async {
     var fishingSpotToRemove = FishingSpot()..id = randomId();
 
     var report = SummaryReport()..id = randomId();
     report.fishingSpotIds.add(fishingSpotToRemove.id);
 
-    await summaryReportManager.addOrUpdate(report);
+    summaryReportManager.removeFishingSpot(report, fishingSpotToRemove);
     expect(
-      summaryReportManager
-          .entity(report.id)
-          .fishingSpotIds
-          .contains(fishingSpotToRemove.id),
-      isTrue,
-    );
-
-    summaryReportManager.onDeleteFishingSpot(fishingSpotToRemove);
-    expect(
-      summaryReportManager
-          .entity(report.id)
-          .fishingSpotIds
-          .contains(fishingSpotToRemove.id),
+      report.fishingSpotIds.contains(fishingSpotToRemove.id),
       isFalse,
     );
   });
 
-  test("onDeleteSpecies", () async {
+  test("removeSpecies", () async {
     var speciesToRemove = Species()..id = randomId();
 
     var report = SummaryReport()..id = randomId();
     report.speciesIds.add(speciesToRemove.id);
 
-    await summaryReportManager.addOrUpdate(report);
+    summaryReportManager.removeSpecies(report, speciesToRemove);
     expect(
-      summaryReportManager
-          .entity(report.id)
-          .speciesIds
-          .contains(speciesToRemove.id),
-      isTrue,
-    );
-
-    summaryReportManager.onDeleteSpecies(speciesToRemove);
-    expect(
-      summaryReportManager
-          .entity(report.id)
-          .speciesIds
-          .contains(speciesToRemove.id),
+      report.speciesIds.contains(speciesToRemove.id),
       isFalse,
     );
   });

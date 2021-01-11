@@ -67,7 +67,7 @@ class _MapPageState extends State<MapPage> {
     return Scaffold(
       body: EntityListenerBuilder(
         managers: [_fishingSpotManager],
-        onUpdate: () {
+        onAnyChange: () {
           _updateMarkers();
 
           // Reset the active marker and fishing spot, if there was one.
