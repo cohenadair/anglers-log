@@ -17,6 +17,25 @@
 		97C146FC1CF9000F007C117D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FA1CF9000F007C117D /* Main.storyboard */; };
 		97C146FE1CF9000F007C117D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FD1CF9000F007C117D /* Assets.xcassets */; };
 		97C147011CF9000F007C117D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FF1CF9000F007C117D /* LaunchScreen.storyboard */; };
+		ACC8765825AD3EFC0027466A /* MigrationChannel.m in Sources */ = {isa = PBXBuildFile; fileRef = ACC8765725AD3EFC0027466A /* MigrationChannel.m */; };
+		ACC8768725AD3F160027466A /* CMAEntry.m in Sources */ = {isa = PBXBuildFile; fileRef = ACC8766025AD3F160027466A /* CMAEntry.m */; };
+		ACC8768825AD3F160027466A /* CMAStorageManager.m in Sources */ = {isa = PBXBuildFile; fileRef = ACC8766125AD3F160027466A /* CMAStorageManager.m */; };
+		ACC8768925AD3F160027466A /* CMAWeatherData.m in Sources */ = {isa = PBXBuildFile; fileRef = ACC8766225AD3F160027466A /* CMAWeatherData.m */; };
+		ACC8768A25AD3F160027466A /* CMAJournal.m in Sources */ = {isa = PBXBuildFile; fileRef = ACC8766325AD3F160027466A /* CMAJournal.m */; };
+		ACC8768B25AD3F160027466A /* CMAImage.m in Sources */ = {isa = PBXBuildFile; fileRef = ACC8766525AD3F160027466A /* CMAImage.m */; };
+		ACC8768C25AD3F160027466A /* CMAJSONWriter.m in Sources */ = {isa = PBXBuildFile; fileRef = ACC8766C25AD3F160027466A /* CMAJSONWriter.m */; };
+		ACC8769125AD3F160027466A /* CMAUserDefineObject.m in Sources */ = {isa = PBXBuildFile; fileRef = ACC8767425AD3F160027466A /* CMAUserDefineObject.m */; };
+		ACC8769225AD3F160027466A /* CMAWaterClarity.m in Sources */ = {isa = PBXBuildFile; fileRef = ACC8767525AD3F160027466A /* CMAWaterClarity.m */; };
+		ACC8769325AD3F160027466A /* CMABait.m in Sources */ = {isa = PBXBuildFile; fileRef = ACC8767625AD3F160027466A /* CMABait.m */; };
+		ACC8769425AD3F160027466A /* CMAFishingMethod.m in Sources */ = {isa = PBXBuildFile; fileRef = ACC8767725AD3F160027466A /* CMAFishingMethod.m */; };
+		ACC8769525AD3F160027466A /* CMASpecies.m in Sources */ = {isa = PBXBuildFile; fileRef = ACC8767825AD3F160027466A /* CMASpecies.m */; };
+		ACC8769625AD3F160027466A /* CMAUserDefine.m in Sources */ = {isa = PBXBuildFile; fileRef = ACC8767C25AD3F160027466A /* CMAUserDefine.m */; };
+		ACC8769725AD3F160027466A /* CMALocation.m in Sources */ = {isa = PBXBuildFile; fileRef = ACC8768325AD3F160027466A /* CMALocation.m */; };
+		ACC8769825AD3F160027466A /* CMAFishingSpot.m in Sources */ = {isa = PBXBuildFile; fileRef = ACC8768425AD3F160027466A /* CMAFishingSpot.m */; };
+		ACC8769B25AD3F940027466A /* CMAUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = ACC8769925AD3F940027466A /* CMAUtilities.m */; };
+		ACC8769E25AD3FE70027466A /* CMAConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = ACC8769C25AD3FE60027466A /* CMAConstants.m */; };
+		ACC876A125AD427A0027466A /* NSString+CMA.m in Sources */ = {isa = PBXBuildFile; fileRef = ACC8769F25AD427A0027466A /* NSString+CMA.m */; };
+		ACC876E325ADE7820027466A /* TheAnglersLog.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = ACC876D925ADE7810027466A /* TheAnglersLog.xcdatamodeld */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -54,6 +73,52 @@
 		97C147001CF9000F007C117D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		97C147021CF9000F007C117D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		9AB4A6C094D69D7B60728DEF /* Pods-Runner.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.release.xcconfig"; path = "Pods/Target Support Files/Pods-Runner/Pods-Runner.release.xcconfig"; sourceTree = "<group>"; };
+		ACC8765625AD3EFC0027466A /* MigrationChannel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MigrationChannel.h; sourceTree = "<group>"; };
+		ACC8765725AD3EFC0027466A /* MigrationChannel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MigrationChannel.m; sourceTree = "<group>"; };
+		ACC8765F25AD3F160027466A /* CMAImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CMAImage.h; sourceTree = "<group>"; };
+		ACC8766025AD3F160027466A /* CMAEntry.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CMAEntry.m; sourceTree = "<group>"; };
+		ACC8766125AD3F160027466A /* CMAStorageManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CMAStorageManager.m; sourceTree = "<group>"; };
+		ACC8766225AD3F160027466A /* CMAWeatherData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CMAWeatherData.m; sourceTree = "<group>"; };
+		ACC8766325AD3F160027466A /* CMAJournal.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CMAJournal.m; sourceTree = "<group>"; };
+		ACC8766425AD3F160027466A /* CMAEntry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CMAEntry.h; sourceTree = "<group>"; };
+		ACC8766525AD3F160027466A /* CMAImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CMAImage.m; sourceTree = "<group>"; };
+		ACC8766625AD3F160027466A /* CMAWeatherData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CMAWeatherData.h; sourceTree = "<group>"; };
+		ACC8766725AD3F160027466A /* CMAStorageManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CMAStorageManager.h; sourceTree = "<group>"; };
+		ACC8766825AD3F160027466A /* CMAJournal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CMAJournal.h; sourceTree = "<group>"; };
+		ACC8766C25AD3F160027466A /* CMAJSONWriter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CMAJSONWriter.m; sourceTree = "<group>"; };
+		ACC8767025AD3F160027466A /* CMAJSONWriter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CMAJSONWriter.h; sourceTree = "<group>"; };
+		ACC8767425AD3F160027466A /* CMAUserDefineObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CMAUserDefineObject.m; sourceTree = "<group>"; };
+		ACC8767525AD3F160027466A /* CMAWaterClarity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CMAWaterClarity.m; sourceTree = "<group>"; };
+		ACC8767625AD3F160027466A /* CMABait.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CMABait.m; sourceTree = "<group>"; };
+		ACC8767725AD3F160027466A /* CMAFishingMethod.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CMAFishingMethod.m; sourceTree = "<group>"; };
+		ACC8767825AD3F160027466A /* CMASpecies.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CMASpecies.m; sourceTree = "<group>"; };
+		ACC8767925AD3F160027466A /* CMAUserDefineProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CMAUserDefineProtocol.h; sourceTree = "<group>"; };
+		ACC8767A25AD3F160027466A /* CMAFishingSpot.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CMAFishingSpot.h; sourceTree = "<group>"; };
+		ACC8767B25AD3F160027466A /* CMALocation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CMALocation.h; sourceTree = "<group>"; };
+		ACC8767C25AD3F160027466A /* CMAUserDefine.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CMAUserDefine.m; sourceTree = "<group>"; };
+		ACC8767D25AD3F160027466A /* CMAWaterClarity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CMAWaterClarity.h; sourceTree = "<group>"; };
+		ACC8767E25AD3F160027466A /* CMAUserDefineObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CMAUserDefineObject.h; sourceTree = "<group>"; };
+		ACC8767F25AD3F160027466A /* CMASpecies.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CMASpecies.h; sourceTree = "<group>"; };
+		ACC8768025AD3F160027466A /* CMAFishingMethod.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CMAFishingMethod.h; sourceTree = "<group>"; };
+		ACC8768125AD3F160027466A /* CMABait.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CMABait.h; sourceTree = "<group>"; };
+		ACC8768225AD3F160027466A /* CMAUserDefine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CMAUserDefine.h; sourceTree = "<group>"; };
+		ACC8768325AD3F160027466A /* CMALocation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CMALocation.m; sourceTree = "<group>"; };
+		ACC8768425AD3F160027466A /* CMAFishingSpot.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CMAFishingSpot.m; sourceTree = "<group>"; };
+		ACC8769925AD3F940027466A /* CMAUtilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CMAUtilities.m; sourceTree = "<group>"; };
+		ACC8769A25AD3F940027466A /* CMAUtilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CMAUtilities.h; sourceTree = "<group>"; };
+		ACC8769C25AD3FE60027466A /* CMAConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CMAConstants.m; sourceTree = "<group>"; };
+		ACC8769D25AD3FE70027466A /* CMAConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CMAConstants.h; sourceTree = "<group>"; };
+		ACC8769F25AD427A0027466A /* NSString+CMA.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+CMA.m"; sourceTree = "<group>"; };
+		ACC876A025AD427A0027466A /* NSString+CMA.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+CMA.h"; sourceTree = "<group>"; };
+		ACC876DA25ADE7810027466A /* TheAnglersLog 9.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "TheAnglersLog 9.xcdatamodel"; sourceTree = "<group>"; };
+		ACC876DB25ADE7810027466A /* TheAnglersLog 5.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "TheAnglersLog 5.xcdatamodel"; sourceTree = "<group>"; };
+		ACC876DC25ADE7810027466A /* TheAnglersLog 6.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "TheAnglersLog 6.xcdatamodel"; sourceTree = "<group>"; };
+		ACC876DD25ADE7810027466A /* TheAnglersLog 3.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "TheAnglersLog 3.xcdatamodel"; sourceTree = "<group>"; };
+		ACC876DE25ADE7810027466A /* TheAnglersLog 4.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "TheAnglersLog 4.xcdatamodel"; sourceTree = "<group>"; };
+		ACC876DF25ADE7810027466A /* TheAnglersLog 8.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "TheAnglersLog 8.xcdatamodel"; sourceTree = "<group>"; };
+		ACC876E025ADE7810027466A /* TheAnglersLog 2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "TheAnglersLog 2.xcdatamodel"; sourceTree = "<group>"; };
+		ACC876E125ADE7810027466A /* TheAnglersLog 7.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "TheAnglersLog 7.xcdatamodel"; sourceTree = "<group>"; };
+		ACC876E225ADE7810027466A /* TheAnglersLog.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = TheAnglersLog.xcdatamodel; sourceTree = "<group>"; };
 		E0D1967F096A465933E1E84E /* Pods-Runner.debug-dev.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.debug-dev.xcconfig"; path = "Pods/Target Support Files/Pods-Runner/Pods-Runner.debug-dev.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -105,12 +170,15 @@
 				7AFFD8ED1D35381100E5BB4D /* AppDelegate.h */,
 				7AFFD8EE1D35381100E5BB4D /* AppDelegate.m */,
 				97C146FD1CF9000F007C117D /* Assets.xcassets */,
+				ACC8765525AD3EFC0027466A /* Channels */,
 				1498D2321E8E86230040F4C2 /* GeneratedPluginRegistrant.h */,
 				1498D2331E8E89220040F4C2 /* GeneratedPluginRegistrant.m */,
 				97C147021CF9000F007C117D /* Info.plist */,
 				97C146FF1CF9000F007C117D /* LaunchScreen.storyboard */,
+				ACC8765925AD3F160027466A /* Legacy */,
 				97C146FA1CF9000F007C117D /* Main.storyboard */,
 				97C146F11CF9000F007C117D /* Supporting Files */,
+				ACC876D925ADE7810027466A /* TheAnglersLog.xcdatamodeld */,
 			);
 			path = Runner;
 			sourceTree = "<group>";
@@ -135,6 +203,73 @@
 				08DE748AF0F9759F3D481223 /* Pods-Runner.profile-dev.xcconfig */,
 			);
 			name = Pods;
+			sourceTree = "<group>";
+		};
+		ACC8765525AD3EFC0027466A /* Channels */ = {
+			isa = PBXGroup;
+			children = (
+				ACC8765625AD3EFC0027466A /* MigrationChannel.h */,
+				ACC8765725AD3EFC0027466A /* MigrationChannel.m */,
+			);
+			path = Channels;
+			sourceTree = "<group>";
+		};
+		ACC8765925AD3F160027466A /* Legacy */ = {
+			isa = PBXGroup;
+			children = (
+				ACC8766925AD3F160027466A /* Backup */,
+				ACC8769D25AD3FE70027466A /* CMAConstants.h */,
+				ACC8769C25AD3FE60027466A /* CMAConstants.m */,
+				ACC8766425AD3F160027466A /* CMAEntry.h */,
+				ACC8766025AD3F160027466A /* CMAEntry.m */,
+				ACC8765F25AD3F160027466A /* CMAImage.h */,
+				ACC8766525AD3F160027466A /* CMAImage.m */,
+				ACC8766825AD3F160027466A /* CMAJournal.h */,
+				ACC8766325AD3F160027466A /* CMAJournal.m */,
+				ACC8766725AD3F160027466A /* CMAStorageManager.h */,
+				ACC8766125AD3F160027466A /* CMAStorageManager.m */,
+				ACC8769A25AD3F940027466A /* CMAUtilities.h */,
+				ACC8769925AD3F940027466A /* CMAUtilities.m */,
+				ACC8766625AD3F160027466A /* CMAWeatherData.h */,
+				ACC8766225AD3F160027466A /* CMAWeatherData.m */,
+				ACC876A025AD427A0027466A /* NSString+CMA.h */,
+				ACC8769F25AD427A0027466A /* NSString+CMA.m */,
+				ACC8767325AD3F160027466A /* UserDefines */,
+			);
+			path = Legacy;
+			sourceTree = "<group>";
+		};
+		ACC8766925AD3F160027466A /* Backup */ = {
+			isa = PBXGroup;
+			children = (
+				ACC8767025AD3F160027466A /* CMAJSONWriter.h */,
+				ACC8766C25AD3F160027466A /* CMAJSONWriter.m */,
+			);
+			path = Backup;
+			sourceTree = "<group>";
+		};
+		ACC8767325AD3F160027466A /* UserDefines */ = {
+			isa = PBXGroup;
+			children = (
+				ACC8768125AD3F160027466A /* CMABait.h */,
+				ACC8767625AD3F160027466A /* CMABait.m */,
+				ACC8768025AD3F160027466A /* CMAFishingMethod.h */,
+				ACC8767725AD3F160027466A /* CMAFishingMethod.m */,
+				ACC8767A25AD3F160027466A /* CMAFishingSpot.h */,
+				ACC8768425AD3F160027466A /* CMAFishingSpot.m */,
+				ACC8767B25AD3F160027466A /* CMALocation.h */,
+				ACC8768325AD3F160027466A /* CMALocation.m */,
+				ACC8767F25AD3F160027466A /* CMASpecies.h */,
+				ACC8767825AD3F160027466A /* CMASpecies.m */,
+				ACC8768225AD3F160027466A /* CMAUserDefine.h */,
+				ACC8767C25AD3F160027466A /* CMAUserDefine.m */,
+				ACC8767E25AD3F160027466A /* CMAUserDefineObject.h */,
+				ACC8767425AD3F160027466A /* CMAUserDefineObject.m */,
+				ACC8767925AD3F160027466A /* CMAUserDefineProtocol.h */,
+				ACC8767D25AD3F160027466A /* CMAWaterClarity.h */,
+				ACC8767525AD3F160027466A /* CMAWaterClarity.m */,
+			);
+			path = UserDefines;
 			sourceTree = "<group>";
 		};
 		D7F560778CFAF4806A13AC1F /* Frameworks */ = {
@@ -313,9 +448,28 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				ACC8765825AD3EFC0027466A /* MigrationChannel.m in Sources */,
+				ACC8769225AD3F160027466A /* CMAWaterClarity.m in Sources */,
+				ACC8769125AD3F160027466A /* CMAUserDefineObject.m in Sources */,
 				978B8F6F1D3862AE00F588F7 /* AppDelegate.m in Sources */,
+				ACC8769325AD3F160027466A /* CMABait.m in Sources */,
+				ACC8769825AD3F160027466A /* CMAFishingSpot.m in Sources */,
+				ACC8769725AD3F160027466A /* CMALocation.m in Sources */,
+				ACC876E325ADE7820027466A /* TheAnglersLog.xcdatamodeld in Sources */,
+				ACC8768B25AD3F160027466A /* CMAImage.m in Sources */,
 				97C146F31CF9000F007C117D /* main.m in Sources */,
+				ACC8769625AD3F160027466A /* CMAUserDefine.m in Sources */,
+				ACC876A125AD427A0027466A /* NSString+CMA.m in Sources */,
+				ACC8768C25AD3F160027466A /* CMAJSONWriter.m in Sources */,
+				ACC8769B25AD3F940027466A /* CMAUtilities.m in Sources */,
+				ACC8769E25AD3FE70027466A /* CMAConstants.m in Sources */,
+				ACC8768A25AD3F160027466A /* CMAJournal.m in Sources */,
 				1498D2341E8E89220040F4C2 /* GeneratedPluginRegistrant.m in Sources */,
+				ACC8768925AD3F160027466A /* CMAWeatherData.m in Sources */,
+				ACC8769525AD3F160027466A /* CMASpecies.m in Sources */,
+				ACC8768725AD3F160027466A /* CMAEntry.m in Sources */,
+				ACC8768825AD3F160027466A /* CMAStorageManager.m in Sources */,
+				ACC8769425AD3F160027466A /* CMAFishingMethod.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -445,9 +599,9 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 9740EEB21CF90195004384FC /* Debug.xcconfig */;
 			buildSettings = {
-				ARCHS = arm64;
+				ARCHS = "$(ARCHS_STANDARD)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2.0.0;
 				DEVELOPMENT_TEAM = RQ74DU9PML;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -461,7 +615,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/Flutter",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.cohenadair.anglerslog;
+				PRODUCT_BUNDLE_IDENTIFIER = CMA.TheAnglersLog;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
@@ -471,9 +625,9 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 7AFA3C8E1D35360C0083082E /* Release.xcconfig */;
 			buildSettings = {
-				ARCHS = arm64;
+				ARCHS = "$(ARCHS_STANDARD)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2.0.0;
 				DEVELOPMENT_TEAM = RQ74DU9PML;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -487,7 +641,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/Flutter",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.cohenadair.anglerslog;
+				PRODUCT_BUNDLE_IDENTIFIER = CMA.TheAnglersLog;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
@@ -551,9 +705,9 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 9740EEB21CF90195004384FC /* Debug.xcconfig */;
 			buildSettings = {
-				ARCHS = arm64;
+				ARCHS = "$(ARCHS_STANDARD)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2.0.0;
 				DEVELOPMENT_TEAM = RQ74DU9PML;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -567,7 +721,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/Flutter",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.cohenadair.anglerslog;
+				PRODUCT_BUNDLE_IDENTIFIER = CMA.TheAnglersLog;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
@@ -631,9 +785,9 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 9740EEB21CF90195004384FC /* Debug.xcconfig */;
 			buildSettings = {
-				ARCHS = arm64;
+				ARCHS = "$(ARCHS_STANDARD)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2.0.0;
 				DEVELOPMENT_TEAM = RQ74DU9PML;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -647,7 +801,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/Flutter",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.cohenadair.anglerslog;
+				PRODUCT_BUNDLE_IDENTIFIER = CMA.TheAnglersLog;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
@@ -705,9 +859,9 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 7AFA3C8E1D35360C0083082E /* Release.xcconfig */;
 			buildSettings = {
-				ARCHS = arm64;
+				ARCHS = "$(ARCHS_STANDARD)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2.0.0;
 				DEVELOPMENT_TEAM = RQ74DU9PML;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -721,7 +875,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/Flutter",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.cohenadair.anglerslog;
+				PRODUCT_BUNDLE_IDENTIFIER = CMA.TheAnglersLog;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
@@ -779,9 +933,9 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 7AFA3C8E1D35360C0083082E /* Release.xcconfig */;
 			buildSettings = {
-				ARCHS = arm64;
+				ARCHS = "$(ARCHS_STANDARD)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2.0.0;
 				DEVELOPMENT_TEAM = RQ74DU9PML;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -795,7 +949,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/Flutter",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.cohenadair.anglerslog;
+				PRODUCT_BUNDLE_IDENTIFIER = CMA.TheAnglersLog;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
@@ -852,9 +1006,9 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 7AFA3C8E1D35360C0083082E /* Release.xcconfig */;
 			buildSettings = {
-				ARCHS = arm64;
+				ARCHS = "$(ARCHS_STANDARD)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2.0.0;
 				DEVELOPMENT_TEAM = RQ74DU9PML;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -868,7 +1022,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/Flutter",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.cohenadair.anglerslog;
+				PRODUCT_BUNDLE_IDENTIFIER = CMA.TheAnglersLog;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
@@ -906,6 +1060,27 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		ACC876D925ADE7810027466A /* TheAnglersLog.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				ACC876DA25ADE7810027466A /* TheAnglersLog 9.xcdatamodel */,
+				ACC876DB25ADE7810027466A /* TheAnglersLog 5.xcdatamodel */,
+				ACC876DC25ADE7810027466A /* TheAnglersLog 6.xcdatamodel */,
+				ACC876DD25ADE7810027466A /* TheAnglersLog 3.xcdatamodel */,
+				ACC876DE25ADE7810027466A /* TheAnglersLog 4.xcdatamodel */,
+				ACC876DF25ADE7810027466A /* TheAnglersLog 8.xcdatamodel */,
+				ACC876E025ADE7810027466A /* TheAnglersLog 2.xcdatamodel */,
+				ACC876E125ADE7810027466A /* TheAnglersLog 7.xcdatamodel */,
+				ACC876E225ADE7810027466A /* TheAnglersLog.xcdatamodel */,
+			);
+			currentVersion = ACC876DA25ADE7810027466A /* TheAnglersLog 9.xcdatamodel */;
+			path = TheAnglersLog.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = 97C146E61CF9000F007C117D /* Project object */;
 }

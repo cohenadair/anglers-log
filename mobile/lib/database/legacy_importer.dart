@@ -29,6 +29,9 @@ enum LegacyImporterError {
 
 /// Imports data from pre-Anglers' Log 2.0 backups.
 class LegacyImporter {
+  static const _legacyImagesPath = "Images";
+  static const _legacyDatabasePath = "TheAnglersLog";
+
   static const _fileExtensionJson = ".json";
 
   static const _keyBaitCategories = "baitCategories";
@@ -62,18 +65,32 @@ class LegacyImporter {
   final AppManager _appManager;
   final File _zipFile;
   final Map<String, File> _images = {};
+  final bool _isMigration;
   Map<String, dynamic> _json = {};
 
   LegacyImporter(AppManager appManager, File zipFile)
       : _appManager = appManager,
-        _zipFile = zipFile;
+        _zipFile = zipFile,
+        _isMigration = false;
+
+  LegacyImporter.migrate(AppManager appManager, Map<String, dynamic> json)
+      : assert(json != null),
+        _appManager = appManager,
+        _zipFile = null,
+        _isMigration = true,
+        _json = json;
 
   BaitCategoryManager get _baitCategoryManager =>
       _appManager.baitCategoryManager;
+
   BaitManager get _baitManager => _appManager.baitManager;
+
   CatchManager get _catchManager => _appManager.catchManager;
+
   DataManager get _dataManager => _appManager.dataManager;
+
   FishingSpotManager get _fishingSpotManager => _appManager.fishingSpotManager;
+
   SpeciesManager get _speciesManager => _appManager.speciesManager;
 
   PathProviderWrapper get _pathProviderWrapper =>
@@ -81,7 +98,26 @@ class LegacyImporter {
 
   String get jsonString => jsonEncode(_json);
 
-  Future<void> start() async {
+  Future<void> start() => _isMigration ? _startMigration() : _startArchive();
+
+  Future<void> _startMigration() async {
+    var docDir = await _pathProviderWrapper.appDocumentsPath;
+
+    // Copy all image references into memory.
+    var imagesDir = Directory("$docDir/$_legacyImagesPath");
+    for (var image in imagesDir.listSync()) {
+      var name = basename(image.path);
+      _images[name] = File("${imagesDir.path}/$name");
+    }
+
+    await _import();
+
+    // Cleanup old files.
+    await imagesDir.deleteSync();
+    await Directory("$docDir/$_legacyDatabasePath").deleteSync(recursive: true);
+  }
+
+  Future<void> _startArchive() async {
     if (_zipFile == null) {
       return Future.error(LegacyImporterError.invalidZipFile);
     }
@@ -103,14 +139,14 @@ class LegacyImporter {
       }
     }
 
-    if (_json[_keyJournal] == null) {
-      return Future.error(LegacyImporterError.missingJournal);
-    } else {
-      return _import();
-    }
+    return _import();
   }
 
   Future<void> _import() async {
+    if (_json[_keyJournal] == null) {
+      return Future.error(LegacyImporterError.missingJournal);
+    }
+
     var userDefines = _json[_keyJournal][_keyUserDefines];
     if (userDefines == null || !(userDefines is List)) {
       return Future.error(LegacyImporterError.missingUserDefines);
@@ -151,7 +187,7 @@ class LegacyImporter {
     // entities.
     await _importCatches(_json[_keyJournal][_keyEntries]);
 
-    // Cleanup temporary images.
+    // Cleanup old images.
     for (var tmpImg in _images.values) {
       tmpImg.deleteSync();
     }
@@ -305,7 +341,7 @@ class LegacyImporter {
         if (_images.containsKey(fileName)) {
           images.add(_images[fileName]);
         } else {
-          _log.w("Image $fileName not found in archive");
+          _log.w("Image $fileName not found in legacy data");
         }
       }
 

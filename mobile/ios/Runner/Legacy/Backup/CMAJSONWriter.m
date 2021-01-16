@@ -13,25 +13,25 @@
 
 #pragma mark - Class Methods
 
-+ (void)journalToJSON:(CMAJournal *)aJournal atFilePath:(NSString *)aFilePath {
++ (NSString *)journalToJSON:(CMAJournal *)aJournal {
     CFAbsoluteTime start = CFAbsoluteTimeGetCurrent();
     
-    CMAJSONWriter *writer = [[self alloc] initWithFilePath:aFilePath];
+    CMAJSONWriter *writer = [CMAJSONWriter new];
     
     [writer writeOpen];
     [aJournal accept:writer];
     [writer writeCloseWithComma:NO];
     
-    [writer.outFile closeFile];
-    
     NSLog(@"Wrote JSON in %f seconds.", CFAbsoluteTimeGetCurrent() - start);
+    
+    return writer.outString;
 }
 
 #pragma mark - Initializing
 
-- (id)initWithFilePath:(NSString *)aFilePath {
+- (id)init {
     if (self = [super init]) {
-        _outFile = [self getFileForWritingAtPath:aFilePath];
+        _outString = [NSMutableString new];
         _currentTab = 0;
     }
     
@@ -70,7 +70,7 @@
         [tabs appendString:@"\t"];
     
     aString = [tabs stringByAppendingString:aString];
-    [self.outFile writeData:[aString dataUsingEncoding:NSUTF8StringEncoding]];
+    [self.outString appendString:aString];
 }
 
 // "aKey": "aString"
@@ -168,12 +168,12 @@
 
 // does not add tabs; does not add new line; only writes a comma
 - (void)writeComma {
-    [self.outFile writeData:[@"," dataUsingEncoding:NSUTF8StringEncoding]];
+    [self.outString appendString:@","];
 }
 
 // does not add tabs
 - (void)writeNewLine {
-    [self.outFile writeData:[@"\n" dataUsingEncoding:NSUTF8StringEncoding]];
+    [self.outString appendString:@"\n"];
 }
 
 - (void)tabIn {

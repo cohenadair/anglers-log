@@ -141,6 +141,7 @@ class _ManageableListPageState<T> extends State<ManageableListPage<T>> {
       onAdd: _onEntityAdded,
       onDelete: _onEntityDeleted,
       onUpdate: _onEntitiesUpdated,
+      onClear: _onEntitiesCleared,
     );
   }
 
@@ -472,6 +473,10 @@ class _ManageableListPageState<T> extends State<ManageableListPage<T>> {
   }
 
   void _onEntitiesUpdated(List<dynamic> entities) {
+    _syncAnimatedList();
+  }
+
+  void _onEntitiesCleared() {
     _syncAnimatedList();
   }
 }

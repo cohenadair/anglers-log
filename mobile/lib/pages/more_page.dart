@@ -76,7 +76,7 @@ class MorePage extends StatelessWidget {
         _buildPageItem(
           context,
           icon: Icons.cloud_download,
-          title: Strings.of(context).importPageTitle,
+          title: Strings.of(context).importPageMoreTitle,
           page: ImportPage(),
           presentPage: true,
         ),

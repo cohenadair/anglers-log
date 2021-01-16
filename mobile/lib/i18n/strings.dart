@@ -373,9 +373,9 @@ class Strings {
       _string("feedbackPage_connectionError");
   String get feedbackPageSending => _string("feedbackPage_sending");
 
+  String get importPageMoreTitle => _string("importPage_moreTitle");
   String get importPageTitle => _string("importPage_title");
   String get importPageDescription => _string("importPage_description");
-  String get importPageChooseFile => _string("importPage_chooseFile");
   String get importPageImportingImages => _string("importPage_importingImages");
   String get importPageImportingData => _string("importPage_importingData");
   String get importPageSuccess => _string("importPage_success");
@@ -384,6 +384,17 @@ class Strings {
   String get importPageErrorWarningMessage =>
       _string("importPage_errorWarningMessage");
   String get importPageErrorTitle => _string("importPage_errorTitle");
+
+  String get dataImporterChooseFile => _string("dataImporter_chooseFile");
+  String get dataImporterStart => _string("dataImporter_start");
+
+  String get migrationPageTitle => _string("migrationPage_title");
+  String get migrationPageDescription => _string("migrationPage_description");
+  String get migrationPageError => _string("migrationPage_error");
+  String get migrationPageLoading => _string("migrationPage_loading");
+  String get migrationPageSuccess => _string("migrationPage_success");
+  String get migrationPageFeedbackTitle =>
+      _string("migrationPage_feedbackTitle");
 
   String get anglerNameLabel => _string("angler_nameLabel");
 

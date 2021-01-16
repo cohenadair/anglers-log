@@ -8,7 +8,7 @@ import '../log.dart';
 
 final Log _log = Log("SQLiteOpenHelper");
 
-final String _name = "anglerslog.db";
+final String _name = "2.0/anglerslog.db";
 
 final List<String> _schema0 = [
   """

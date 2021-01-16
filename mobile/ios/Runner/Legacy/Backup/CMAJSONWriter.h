@@ -12,13 +12,11 @@
 
 @interface CMAJSONWriter : NSObject
 
-@property (strong, nonatomic)NSFileHandle *outFile;
+@property (strong, nonatomic)NSMutableString *outString;
 @property (nonatomic)NSInteger currentTab;
 @property (nonatomic)BOOL addComma; // used for some user defines (i.e. check if fishing method is last in an entry)
 
-+ (void)journalToJSON:(CMAJournal *)aJournal atFilePath:(NSString *)aFilePath;
-
-- (id)initWithFilePath:(NSString *)aFilePath;
++ (NSString *)journalToJSON:(CMAJournal *)aJournal;
 
 // visiting
 - (void)visitJournal:(CMAJournal *)aJournal;

@@ -131,9 +131,10 @@ class PreferencesManager {
     catchCustomEntityIds = null;
     baitFieldIds = null;
     catchFieldIds = null;
-    rateTimerStartedAt = null;
-    didRateApp = false;
-    didOnboard = false;
     selectedReportId = null;
+
+    // Don't want to reset all properties. Some should persist across resets.
+    // For example, we don't want to show user onboarding again if they import
+    // data from an archive.
   }
 }
