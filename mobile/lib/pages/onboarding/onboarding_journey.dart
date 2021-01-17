@@ -54,7 +54,9 @@ class _OnboardingJourneyState extends State<OnboardingJourney> {
       future: _legacyJsonFuture,
       builder: (context, snapshot) {
         Widget child;
-        if (snapshot.hasData) {
+        // Check connectionState here instead of hasData because legacyJson
+        // will return null if there is no legacy data to import.
+        if (snapshot.connectionState == ConnectionState.done) {
           child = _buildNavigator(snapshot.data);
         } else {
           child = LandingPage();
@@ -73,8 +75,8 @@ class _OnboardingJourneyState extends State<OnboardingJourney> {
       onGenerateRoute: (routeSettings) {
         var name = routeSettings.name;
         if (name == _routeRoot) {
-          if (legacyJsonResult.hasLegacyData) {
-            return _buildMigrationPageRoute(legacyJsonResult.json);
+          if (legacyJsonResult != null) {
+            return _buildMigrationPageRoute(legacyJsonResult);
           } else {
             return _buildWelcomePageRoute(routeSettings);
           }
@@ -126,10 +128,10 @@ class _OnboardingJourneyState extends State<OnboardingJourney> {
     );
   }
 
-  Route<dynamic> _buildMigrationPageRoute(Map<String, dynamic> json) {
+  Route<dynamic> _buildMigrationPageRoute(LegacyJsonResult legacyJsonResult) {
     return MaterialPageRoute(
       builder: (context) => MigrationPage(
-        importer: LegacyImporter.migrate(_appManager, json),
+        importer: LegacyImporter.migrate(_appManager, legacyJsonResult),
         onNext: () => Navigator.of(context).pushNamed(_routeWelcome),
       ),
     );

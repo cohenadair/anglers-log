@@ -60,7 +60,7 @@ class _DataImporterState extends State<DataImporter> {
 
   _RenderState _renderState = _RenderState.none;
   LegacyImporterError _importError;
-  String _importErrorJson;
+  String _importErrorDescription;
 
   AppManager get _appManager => AppManager.of(context);
 
@@ -160,7 +160,7 @@ class _DataImporterState extends State<DataImporter> {
               title: widget.feedbackPageTitle,
               error: _importError.toString(),
               warningMessage: Strings.of(context).importPageErrorWarningMessage,
-              attachment: _importErrorJson,
+              attachment: _importErrorDescription,
             ),
           ),
         ));
@@ -199,9 +199,9 @@ class _DataImporterState extends State<DataImporter> {
     importer.start().then((_) {
       widget.onFinish?.call(true);
       _updateImportState(_RenderState.success);
-    }).catchError((error) {
+    }).catchError((error, stacktrace) {
       _importError = error;
-      _importErrorJson = importer.jsonString;
+      _importErrorDescription = stacktrace;
       _updateImportState(_RenderState.error);
       widget.onFinish?.call(false);
     }, test: (error) => error is LegacyImporterError);

@@ -11,6 +11,7 @@ import '../app_manager.dart';
 import '../bait_category_manager.dart';
 import '../bait_manager.dart';
 import '../catch_manager.dart';
+import '../channels/migration_channel.dart';
 import '../data_manager.dart';
 import '../fishing_spot_manager.dart';
 import '../log.dart';
@@ -29,9 +30,6 @@ enum LegacyImporterError {
 
 /// Imports data from pre-Anglers' Log 2.0 backups.
 class LegacyImporter {
-  static const _legacyImagesPath = "Images";
-  static const _legacyDatabasePath = "TheAnglersLog";
-
   static const _fileExtensionJson = ".json";
 
   static const _keyBaitCategories = "baitCategories";
@@ -65,20 +63,19 @@ class LegacyImporter {
   final AppManager _appManager;
   final File _zipFile;
   final Map<String, File> _images = {};
-  final bool _isMigration;
+  final LegacyJsonResult _legacyJsonResult;
   Map<String, dynamic> _json = {};
 
   LegacyImporter(AppManager appManager, File zipFile)
       : _appManager = appManager,
         _zipFile = zipFile,
-        _isMigration = false;
+        _legacyJsonResult = null;
 
-  LegacyImporter.migrate(AppManager appManager, Map<String, dynamic> json)
-      : assert(json != null),
+  LegacyImporter.migrate(AppManager appManager, LegacyJsonResult result)
+      : assert(result != null),
         _appManager = appManager,
         _zipFile = null,
-        _isMigration = true,
-        _json = json;
+        _legacyJsonResult = result;
 
   BaitCategoryManager get _baitCategoryManager =>
       _appManager.baitCategoryManager;
@@ -96,15 +93,23 @@ class LegacyImporter {
   PathProviderWrapper get _pathProviderWrapper =>
       _appManager.pathProviderWrapper;
 
-  String get jsonString => jsonEncode(_json);
+  String get _jsonString => jsonEncode(_json);
 
-  Future<void> start() => _isMigration ? _startMigration() : _startArchive();
+  Future<void> start() =>
+      _legacyJsonResult == null ? _startArchive() : _startMigration();
 
   Future<void> _startMigration() async {
-    var docDir = await _pathProviderWrapper.appDocumentsPath;
+    // If there was an error in the platform channel, end the future
+    // immediately.
+    if (_legacyJsonResult.errorCode != null) {
+      return Future.error(_legacyJsonResult.errorCode,
+          StackTrace.fromString(_legacyJsonResult.errorDescription));
+    }
+
+    _json = _legacyJsonResult.json;
 
     // Copy all image references into memory.
-    var imagesDir = Directory("$docDir/$_legacyImagesPath");
+    var imagesDir = Directory(_legacyJsonResult.imagesPath);
     for (var image in imagesDir.listSync()) {
       var name = basename(image.path);
       _images[name] = File("${imagesDir.path}/$name");
@@ -114,7 +119,7 @@ class LegacyImporter {
 
     // Cleanup old files.
     await imagesDir.deleteSync();
-    await Directory("$docDir/$_legacyDatabasePath").deleteSync(recursive: true);
+    await Directory(_legacyJsonResult.databasePath).deleteSync(recursive: true);
   }
 
   Future<void> _startArchive() async {
@@ -144,12 +149,14 @@ class LegacyImporter {
 
   Future<void> _import() async {
     if (_json[_keyJournal] == null) {
-      return Future.error(LegacyImporterError.missingJournal);
+      return Future.error(LegacyImporterError.missingJournal,
+          StackTrace.fromString(_jsonString));
     }
 
     var userDefines = _json[_keyJournal][_keyUserDefines];
     if (userDefines == null || !(userDefines is List)) {
-      return Future.error(LegacyImporterError.missingUserDefines);
+      return Future.error(LegacyImporterError.missingUserDefines,
+          StackTrace.fromString(_jsonString));
     }
 
     List<dynamic> baitCategories;

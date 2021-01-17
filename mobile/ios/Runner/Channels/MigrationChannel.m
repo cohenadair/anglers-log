@@ -16,8 +16,6 @@
 #define CHANNEL_NAME @"com.cohenadair.anglerslog/migration"
 #define EXPORT_NAME @"legacyJson"
 
-#define ERROR_TEST @"bad_image_file"
-
 @implementation MigrationChannel
 
 + (void)create:(AppDelegate *)appDelegate {

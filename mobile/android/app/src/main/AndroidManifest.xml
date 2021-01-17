@@ -13,7 +13,7 @@
         android:label="Anglers' Log"
         android:icon="@mipmap/ic_launcher">
         <activity
-            android:name="io.flutter.embedding.android.FlutterActivity"
+            android:name="com.cohenadair.mobile.MainActivity"
             android:theme="@style/LaunchTheme"
             android:launchMode="singleTop"
             android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale|layoutDirection|fontScale|screenLayout|density"

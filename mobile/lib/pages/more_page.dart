@@ -34,6 +34,7 @@ class MorePage extends StatelessWidget {
     return ScrollPage(
       appBar: AppBar(
         title: Text(Strings.of(context).morePageTitle),
+        centerTitle: true,
       ),
       children: [
         _buildPageItem(

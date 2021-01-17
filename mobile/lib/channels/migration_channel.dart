@@ -7,33 +7,76 @@ import '../wrappers/services_wrapper.dart';
 
 const _channelName = "com.cohenadair.anglerslog/migration";
 
-class LegacyJsonResult {
-  /// If [error] is empty, [json] is non-null.
-  final Map<String, dynamic> json;
-
-  /// If not empty, [json] is null.
-  final String error;
-
-  LegacyJsonResult(this.json, this.error);
-
-  /// If one of [json] or [error] is not null, we have legacy data to migrate.
-  bool get hasLegacyData => json != null || isNotEmpty(error);
-
-  @override
-  String toString() => "{json=$json, error=$error}";
+enum LegacyJsonErrorCode {
+  invalidJson,
+  platformException,
 }
 
-/// Returns a JSON map of legacy data.
+class LegacyJsonResult {
+  /// The path to the old database file. Non-null if [error] is empty.
+  final String databasePath;
+
+  /// The path to the old images directory. Non-null if [error] is empty.
+  final String imagesPath;
+
+  /// The legacy JSON. Non-null if [error] is empty.
+  final Map<String, dynamic> json;
+
+  final LegacyJsonErrorCode errorCode;
+  final String errorDescription;
+
+  LegacyJsonResult({
+    this.databasePath,
+    this.imagesPath,
+    this.json,
+    this.errorCode,
+    this.errorDescription,
+  });
+
+  /// If there's an old database file, there's data to migrate.
+  bool get hasLegacyData => isNotEmpty(databasePath);
+
+  @override
+  String toString() => "{"
+      "databasePath=$databasePath, "
+      "imagesPath:$imagesPath, "
+      "json=$json, "
+      "errorCode=$errorCode, "
+      "errorDescription=$errorDescription"
+  "}";
+}
+
 Future<LegacyJsonResult> legacyJson(ServicesWrapper servicesWrapper) async {
   var name = "legacyJson";
 
-  String result;
   try {
-    result =
-        await servicesWrapper.methodChannel(_channelName).invokeMethod(name);
-  } on PlatformException catch (e) {
-    return LegacyJsonResult(null, e.message);
-  }
+    var result = await servicesWrapper
+        .methodChannel(_channelName)
+        .invokeMethod(name);
 
-  return LegacyJsonResult(result == null ? null : jsonDecode(result), null);
+    if (result == null) {
+      return null;
+    } else {
+      Map<String, dynamic> json;
+      LegacyJsonErrorCode errorCode;
+      try {
+        json = jsonDecode(result["json"]);
+      } on FormatException {
+        errorCode = LegacyJsonErrorCode.invalidJson;
+      }
+
+      return LegacyJsonResult(
+        databasePath: result["db"],
+        imagesPath: result["img"],
+        json: json,
+        errorCode: errorCode,
+        errorDescription: result["json"],
+      );
+    }
+  } on PlatformException catch (e) {
+    return LegacyJsonResult(
+      errorCode: LegacyJsonErrorCode.platformException,
+      errorDescription: e.message,
+    );
+  }
 }
