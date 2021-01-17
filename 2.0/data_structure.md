@@ -214,6 +214,10 @@ DOC: <gear-id>
     line : string
     lineNumberRating : string
     lineColour : string
+    leaderLength : string
+    leaderNumberRating : string
+    hookModel : string
+    hookSize : string
 ```
 
 ## Development
