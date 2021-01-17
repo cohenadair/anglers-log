@@ -43,16 +43,15 @@ class LegacyJsonResult {
       "json=$json, "
       "errorCode=$errorCode, "
       "errorDescription=$errorDescription"
-  "}";
+      "}";
 }
 
 Future<LegacyJsonResult> legacyJson(ServicesWrapper servicesWrapper) async {
   var name = "legacyJson";
 
   try {
-    var result = await servicesWrapper
-        .methodChannel(_channelName)
-        .invokeMethod(name);
+    var result =
+        await servicesWrapper.methodChannel(_channelName).invokeMethod(name);
 
     if (result == null) {
       return null;
