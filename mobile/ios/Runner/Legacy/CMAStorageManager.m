@@ -247,7 +247,7 @@
     }
 }
 
-- (BOOL)loadJournal {
+- (NSString *)loadJournal {
     NSFetchRequest *fetchRequest = [NSFetchRequest new];
     [fetchRequest setEntity:[self entityNamed:CDE_JOURNAL]];
     NSError *e;
@@ -257,9 +257,9 @@
     
     if ([results count] > 0) {
         self.sharedJournal = [results objectAtIndex:0];
-        return true;
+        return [self coreDataLocalURL].path;
     } else {
-        return false;
+        return nil;
     }
 }
 

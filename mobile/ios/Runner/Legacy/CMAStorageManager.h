@@ -32,7 +32,7 @@
 - (void)cleanImages;
 - (NSURL *)coreDataLocalURL;
 - (void)saveJournal;
-- (BOOL)loadJournal;
+- (NSString *)loadJournal;
 - (void)deleteManagedObject:(NSManagedObject *)aManagedObject saveContext:(BOOL)aBool;
 - (void)deleteAllObjectsForEntityName:(NSString *)anEntityName;
 

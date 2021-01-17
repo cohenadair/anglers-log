@@ -66,7 +66,9 @@ public class MigrationChannel {
             }
         }
 
-        Logbook.getDatabase().close();
+        if (Logbook.getDatabase() != null) {
+            Logbook.getDatabase().close();
+        }
         activity.runOnUiThread(() -> result.success(json));
     }
 }

@@ -110,9 +110,11 @@ class LegacyImporter {
 
     // Copy all image references into memory.
     var imagesDir = Directory(_legacyJsonResult.imagesPath);
-    for (var image in imagesDir.listSync()) {
-      var name = basename(image.path);
-      _images[name] = File("${imagesDir.path}/$name");
+    if (imagesDir != null) {
+      for (var image in imagesDir.listSync()) {
+        var name = basename(image.path);
+        _images[name] = File("${imagesDir.path}/$name");
+      }
     }
 
     await _import();

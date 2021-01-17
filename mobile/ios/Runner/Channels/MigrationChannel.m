@@ -28,7 +28,9 @@
 
     [channel setMethodCallHandler:^(FlutterMethodCall *call, FlutterResult result) {
         if ([EXPORT_NAME isEqualToString:call.method]) {
-            [MigrationChannel legacyJson:result];
+            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+                [MigrationChannel legacyJson:result];
+            });
         } else {
             result(FlutterMethodNotImplemented);
         }
@@ -36,23 +38,32 @@
 }
 
 + (void)legacyJson:(FlutterResult)result {
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        @try {
-            NSString *json;
-            // Returns false if there is no data to load (i.e. it's a fresh install).
-            if ([[CMAStorageManager sharedManager] loadJournal]) {
-                CMAJournal *journal = [CMAStorageManager sharedManager].sharedJournal;
-                json = [CMAJSONWriter journalToJSON:journal];
-            }
-            dispatch_async(dispatch_get_main_queue(), ^(void) {
-                result(json);
-            });
-        } @catch (NSException *e) {
-            dispatch_async(dispatch_get_main_queue(), ^(void) {
-                result([FlutterError errorWithCode:@"E" message:e.debugDescription details:nil]);
-            });
+    @try {
+        NSDictionary<NSString *, id> *json;
+        NSString *oldDbPath = [CMAStorageManager.sharedManager loadJournal];
+        
+        if (oldDbPath == nil) {
+            json = nil;
+        } else {
+            NSString *oldImagesPath =
+                    [CMAStorageManager.sharedManager documentsSubDirectory:@"Images"].path;
+            
+            CMAJournal *journal = [CMAStorageManager sharedManager].sharedJournal;
+            json = @{
+                @"db": oldDbPath,
+                @"img": oldImagesPath,
+                @"json": [CMAJSONWriter journalToJSON:journal],
+            };
         }
-    });
+        
+        dispatch_async(dispatch_get_main_queue(), ^(void) {
+            result(json);
+        });
+    } @catch (NSException *e) {
+        dispatch_async(dispatch_get_main_queue(), ^(void) {
+            result([FlutterError errorWithCode:@"E" message:e.debugDescription details:nil]);
+        });
+    }
 }
 
 @end
