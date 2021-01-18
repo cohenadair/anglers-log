@@ -6,7 +6,6 @@ import com.cohenadair.mobile.legacy.Logbook;
 import com.cohenadair.mobile.legacy.user_defines.Catch;
 
 import java.util.Date;
-import java.util.UUID;
 
 import static com.cohenadair.mobile.legacy.database.LogbookSchema.CatchTable;
 
@@ -39,7 +38,7 @@ public class CatchCursor extends UserDefineCursor {
         Catch aCatch = new Catch(getObject(), true);
         aCatch.setDate(new Date(date));
         aCatch.setIsFavorite(isFavorite == 1);
-        aCatch.setSpecies(Logbook.getSpecies(UUID.fromString(speciesId)));
+        aCatch.setSpecies(Logbook.getSpecies(speciesId));
         aCatch.setCatchResult(Catch.CatchResult.fromInt(catchResult));
         aCatch.setQuantity(quantity);
         aCatch.setLength(length);
@@ -48,13 +47,13 @@ public class CatchCursor extends UserDefineCursor {
         aCatch.setWaterTemperature(waterTemperature);
 
         if (baitId != null)
-            aCatch.setBait(Logbook.getBait(UUID.fromString(baitId)));
+            aCatch.setBait(Logbook.getBait(baitId));
 
         if (fishingSpotId != null)
-            aCatch.setFishingSpot(Logbook.getFishingSpot(UUID.fromString(fishingSpotId)));
+            aCatch.setFishingSpot(Logbook.getFishingSpot(fishingSpotId));
 
         if (waterClarityId != null)
-            aCatch.setWaterClarity(Logbook.getWaterClarity(UUID.fromString(waterClarityId)));
+            aCatch.setWaterClarity(Logbook.getWaterClarity(waterClarityId));
 
         if (notes != null)
             aCatch.setNotes(notes);

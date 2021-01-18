@@ -1,7 +1,5 @@
 package com.cohenadair.mobile.legacy.backup;
 
-import android.content.Context;
-
 import androidx.annotation.NonNull;
 
 import com.cohenadair.mobile.legacy.Logbook;
@@ -21,7 +19,6 @@ import java.util.Locale;
  * @author Cohen Adair
  */
 public class JsonExporter {
-
     /**
      * An interface to be used on different {@link UserDefineObject} subclasses.
      */
@@ -59,12 +56,7 @@ public class JsonExporter {
      * @see #getUserDefineJsonArray(ArrayList, OnGetJsonObject)
      */
     public static JSONArray getIdJsonArray(ArrayList<UserDefineObject> arr) throws JSONException {
-        return getUserDefineJsonArray(arr, new OnGetJsonObject() {
-            @Override
-            public String get(UserDefineObject obj) throws JSONException {
-                return obj.getIdAsString();
-            }
-        });
+        return getUserDefineJsonArray(arr, UserDefineObject::getIdAsString);
     }
 
     /**
@@ -72,12 +64,7 @@ public class JsonExporter {
      * @see #getUserDefineJsonArray(ArrayList, OnGetJsonObject)
      */
     public static JSONArray getNameJsonArray(ArrayList<UserDefineObject> arr) throws JSONException {
-        return getUserDefineJsonArray(arr, new OnGetJsonObject() {
-            @Override
-            public String get(UserDefineObject obj) throws JSONException {
-                return obj.getName();
-            }
-        });
+        return getUserDefineJsonArray(arr, UserDefineObject::getName);
     }
 
     /**
@@ -87,12 +74,7 @@ public class JsonExporter {
      * @see #getUserDefineJsonArray(ArrayList, OnGetJsonObject)
      */
     public static JSONArray getJsonArray(ArrayList<UserDefineObject> arr) throws JSONException {
-        return getUserDefineJsonArray(arr, new OnGetJsonObject() {
-            @Override
-            public Object get(UserDefineObject obj) throws JSONException {
-                return obj.toJson();
-            }
-        });
+        return getUserDefineJsonArray(arr, UserDefineObject::toJson);
     }
 
     /**

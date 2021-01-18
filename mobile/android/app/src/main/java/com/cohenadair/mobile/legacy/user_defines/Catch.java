@@ -2,8 +2,6 @@ package com.cohenadair.mobile.legacy.user_defines;
 
 import android.content.ContentValues;
 import android.content.Context;
-import android.content.Intent;
-import android.util.Log;
 
 import com.cohenadair.mobile.legacy.Utils;
 import com.cohenadair.mobile.legacy.database.QueryHelper;
@@ -13,15 +11,12 @@ import com.cohenadair.mobile.legacy.backup.Json;
 import com.cohenadair.mobile.legacy.backup.JsonExporter;
 import com.cohenadair.mobile.legacy.HasDateInterface;
 import com.cohenadair.mobile.legacy.UsedUserDefineObject;
-import com.cohenadair.mobile.legacy.UserDefineArrays;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.UUID;
 
 import static com.cohenadair.mobile.legacy.database.LogbookSchema.CatchPhotoTable;
 import static com.cohenadair.mobile.legacy.database.LogbookSchema.CatchTable;
@@ -33,9 +28,6 @@ import static com.cohenadair.mobile.legacy.database.LogbookSchema.WeatherTable;
  * @author Cohen Adair
  */
 public class Catch extends PhotoUserDefineObject implements HasDateInterface {
-
-    private static final String TAG = "Catch";
-
     private Date mDate;
     private Species mSpecies;
     private boolean mIsFavorite;
@@ -79,10 +71,6 @@ public class Catch extends PhotoUserDefineObject implements HasDateInterface {
             }
 
             return null;
-        }
-
-        public String getString(Context context) {
-            return "";
         }
     }
 
@@ -240,50 +228,17 @@ public class Catch extends PhotoUserDefineObject implements HasDateInterface {
     public void setNotes(String notes) {
         mNotes = Utils.stringOrNull(notes);
     }
-
-    @Override
-    public void setIsSelected(boolean isSelected) {
-        super.setIsSelected(isSelected);
-        Logbook.editCatch(getId(), this);
-    }
     //endregion
 
     //region Fishing Method Manipulation
     public ArrayList<UserDefineObject> getFishingMethods() {
-        return mUsedFishingMethods.getObjects(new QueryHelper.UsedQueryCallbacks() {
-            @Override
-            public UserDefineObject getFromLogbook(UUID id) {
-                return Logbook.getFishingMethod(id);
-            }
-        });
-    }
-
-    public void setFishingMethods(ArrayList<UserDefineObject> fishingMethods) {
-        mUsedFishingMethods.setObjects(fishingMethods);
-    }
-
-    private int getFishingMethodCount() {
-        return getFishingMethods().size();
-    }
-
-    public boolean hasFishingMethods() {
-        return getFishingMethodCount() > 0;
+        return mUsedFishingMethods.getObjects(Logbook::getFishingMethod);
     }
     //endregion
 
     //region Weather Manipulation
     public Weather getWeather() {
         return QueryHelper.queryWeather(getId());
-    }
-
-    public boolean setWeather(Weather weather) {
-        // if the weather is being reset to null, try to delete any existing weather data
-        if (weather == null) {
-            removeWeather();
-            return false;
-        }
-
-        return QueryHelper.replaceQuery(WeatherTable.NAME, weather.getContentValues(getId()));
     }
 
     public boolean removeWeather() {
@@ -300,56 +255,8 @@ public class Catch extends PhotoUserDefineObject implements HasDateInterface {
         return (mSpecies != null) ? mSpecies.getName() : "";
     }
 
-    public String getBaitAsString() {
-        return (mBait != null) ? mBait.getDisplayName() : "";
-    }
-
-    public String getDateAsString(Context context) {
-        return Utils.getLongDisplayDate(mDate, context);
-    }
-
-    public String getTimeAsString(Context context) {
-        return Utils.getDisplayTime(mDate, context);
-    }
-
-    public String getFishingSpotAsString() {
-        return (mFishingSpot != null) ? mFishingSpot.getDisplayName() : "";
-    }
-
     public String getWaterClarityAsString() {
         return (mWaterClarity != null) ? mWaterClarity.getName() : "";
-    }
-
-    public String getQuantityAsString() {
-        return (mQuantity != -1) ? Integer.toString(mQuantity) : "";
-    }
-
-    public String getLengthAsString() {
-        return (mLength != -1) ? Utils.userStringFromFloat(mLength) : "";
-    }
-
-    public String getWeightAsString() {
-        return (mWeight != -1) ? Utils.userStringFromFloat(mWeight) : "";
-    }
-
-    public String getWaterDepthAsString() {
-        return (mWaterDepth != -1) ? Utils.userStringFromFloat(mWaterDepth) : "";
-    }
-
-    public String getWaterTemperatureAsString() {
-        return (mWaterTemperature != -1) ? Integer.toString(mWaterTemperature) : "";
-    }
-
-    public String getNotesAsString() {
-        return Utils.emptyStringOrString(mNotes);
-    }
-
-    public String getFishingMethodsAsString() {
-        return UserDefineArrays.namesAsString(getFishingMethods());
-    }
-
-    public String getCatchResultAsString(Context context) {
-        return (mCatchResult != null) ? mCatchResult.getString(context) : "";
     }
 
     String getDateJsonString() {
@@ -420,31 +327,5 @@ public class Catch extends PhotoUserDefineObject implements HasDateInterface {
         json.put(Json.WEATHER_DATA, (weather == null) ? new JSONObject() : weather.toJson(this));
 
         return json;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public String toKeywordsString(Context context) {
-        return "";
-    }
-
-    /**
-     * {@inheritDoc}
-     *
-     * Used in deleting catches. This method will remove any external ties to the database. For
-     * example, removing images and weather data from the database.
-     */
-    @Override
-    public void removeDatabaseProperties() {
-        super.removeDatabaseProperties();
-
-        ArrayList<String> photos = getPhotos();
-        for (String s : photos)
-            removePhoto(s);
-
-        removeWeather();
-        mUsedFishingMethods.deleteObjects();
     }
 }

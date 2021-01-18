@@ -2,7 +2,6 @@ package com.cohenadair.mobile.legacy.database.cursors;
 
 import android.database.Cursor;
 
-import com.cohenadair.mobile.legacy.database.LogbookSchema;
 import com.cohenadair.mobile.legacy.database.LogbookSchema.FishingSpotTable;
 import com.cohenadair.mobile.legacy.user_defines.FishingSpot;
 

@@ -2,39 +2,22 @@ package com.cohenadair.mobile.legacy.user_defines;
 
 import android.content.ContentValues;
 
-import com.cohenadair.mobile.legacy.HasCatchesInterface;
-import com.cohenadair.mobile.legacy.database.QueryHelper;
-import com.cohenadair.mobile.legacy.database.cursors.CatchCursor;
-import com.cohenadair.mobile.legacy.database.cursors.UserDefineCursor;
-import com.cohenadair.mobile.legacy.Logbook;
 import com.cohenadair.mobile.legacy.backup.Json;
 import com.cohenadair.mobile.legacy.Utils;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
 import java.util.UUID;
 
 import static com.cohenadair.mobile.legacy.database.LogbookSchema.BaitPhotoTable;
 import static com.cohenadair.mobile.legacy.database.LogbookSchema.BaitTable;
-import static com.cohenadair.mobile.legacy.database.LogbookSchema.CatchTable;
 
 /**
  * The Bait class represents a single bait used for fishing.
  * @author Cohen Adair
  */
-public class Bait extends PhotoUserDefineObject implements HasCatchesInterface {
-
-    private static final String TAG = "Bait";
-
-    /**
-     * Correspond to resources array in arrays.xml.
-     */
-    public static final int TYPE_ARTIFICIAL = 0;
-    public static final int TYPE_LIVE = 1;
-    public static final int TYPE_REAL = 2;
-
+public class Bait extends PhotoUserDefineObject {
     private BaitCategory mCategory;
     private String mColor;
     private String mSize;
@@ -42,15 +25,6 @@ public class Bait extends PhotoUserDefineObject implements HasCatchesInterface {
     private int mType = 0;
 
     //region Constructors
-    public Bait() {
-        this(null, null);
-    }
-
-    public Bait(String name, BaitCategory category) {
-        super(name, BaitPhotoTable.NAME);
-        mCategory = category;
-    }
-
     public Bait(Bait bait, boolean keepId) {
         super(bait, keepId);
         mCategory = new BaitCategory(bait.getCategory(), true);
@@ -58,11 +32,6 @@ public class Bait extends PhotoUserDefineObject implements HasCatchesInterface {
         mSize = bait.getSize();
         mDescription = bait.getDescription();
         mType = bait.getType();
-    }
-
-    public Bait(UserDefineObject obj) {
-        super(obj);
-        setPhotoTable(BaitPhotoTable.NAME);
     }
 
     public Bait(UserDefineObject obj, boolean keepId) {
@@ -111,41 +80,12 @@ public class Bait extends PhotoUserDefineObject implements HasCatchesInterface {
     public void setType(int type) {
         mType = type;
     }
-
-    @Override
-    public void setIsSelected(boolean isSelected) {
-        super.setIsSelected(isSelected);
-        Logbook.editBait(getId(), this);
-    }
     //endregion
-
-    //region Catch Manipulation
-    public ArrayList<UserDefineObject> getCatches() {
-        UserDefineCursor cursor = QueryHelper.queryUserDefines(CatchTable.NAME, CatchTable.Columns.BAIT_ID + " = ?", new String[] { getIdAsString() });
-
-        return QueryHelper.queryUserDefines(cursor, new QueryHelper.UserDefineQueryInterface() {
-            @Override
-            public UserDefineObject getObject(UserDefineCursor cursor) {
-                return new CatchCursor(cursor).getCatch();
-            }
-        });
-    }
-    //endregion
-
-    public String getCategoryName() {
-        if (mCategory != null)
-            return mCategory.getName();
-        return null;
-    }
 
     public UUID getCategoryId() {
         if (mCategory != null)
             return mCategory.getId();
         return null;
-    }
-
-    public String getBaitCategoryAsString() {
-        return Utils.emptyStringOrString(getCategoryName());
     }
 
     public String getColorAsString() {
@@ -186,10 +126,5 @@ public class Bait extends PhotoUserDefineObject implements HasCatchesInterface {
         json.put(Json.BAIT_TYPE, getType());
 
         return json;
-    }
-
-    @Override
-    public int getFishCaughtCount() {
-        return 0;
     }
 }

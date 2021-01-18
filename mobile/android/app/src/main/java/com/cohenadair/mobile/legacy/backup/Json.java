@@ -5,9 +5,6 @@ package com.cohenadair.mobile.legacy.backup;
  * @author Cohen Adair
  */
 public class Json {
-    private static final String TAG = "Json";
-
-    public static final String DATE_FORMAT = "MM-dd-yyyy_K-mm_a";
     public static final String DATE_FORMAT_MS = "MM-dd-yyyy_K-mm_a_ss.SSS";
 
     public static final String JOURNAL = "journal";
@@ -16,7 +13,6 @@ public class Json {
     public static final String USER_DEFINES = "userDefines";
     public static final String ENTRIES = "entries";
     public static final String TRIPS = "trips";
-    public static final String MEASUREMENT_SYSTEM = "measurementSystem";
 
     public static final String START_DATE = "startDate";
     public static final String END_DATE = "endDate";
@@ -28,7 +24,6 @@ public class Json {
     public static final String FISH_SPECIES = "fishSpecies";
     public static final String FISH_LENGTH = "fishLength";
     public static final String FISH_WEIGHT = "fishWeight";
-    public static final String FISH_OUNCES = "fishOunces";
     public static final String FISH_QUANTITY = "fishQuantity";
     public static final String FISH_RESULT = "fishResult";
     public static final String BAIT_USED = "baitUsed";
@@ -44,8 +39,6 @@ public class Json {
     public static final String ENTRY_DATE = "entryDate";
     public static final String BAIT_NAME = "baitName";
 
-    public static final String NAME_CATCHES = "Catches";
-    public static final String NAME_TRIPS = "Trips";
     public static final String NAME_FISHING_METHODS = "Fishing Methods";
     public static final String NAME_LOCATIONS = "Locations";
     public static final String NAME_SPECIES = "Species";
@@ -69,7 +62,6 @@ public class Json {
     public static final String COLOR = "color";
     public static final String IMAGE = "image";
     public static final String IMAGE_PATH = "imagePath";
-    public static final String OTHER = "Other";
 
     public static final String FISHING_SPOTS = "fishingSpots";
     public static final String COORDINATES = "coordinates";

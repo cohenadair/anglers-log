@@ -5,7 +5,6 @@ package com.cohenadair.mobile.legacy.database;
  * @author Cohen Adair
  */
 public class LogbookSchema {
-
     /**
      * An actual table isn't create here; this is used to get ContentValues from objects; however,
      * a column in each <UserDefine>Table will be created for these columns.

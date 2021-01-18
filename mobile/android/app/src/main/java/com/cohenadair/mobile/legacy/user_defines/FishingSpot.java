@@ -1,41 +1,21 @@
 package com.cohenadair.mobile.legacy.user_defines;
 
-import android.annotation.SuppressLint;
-import android.content.ContentValues;
-import android.content.Context;
-
-import com.cohenadair.mobile.legacy.database.QueryHelper;
-import com.cohenadair.mobile.legacy.database.cursors.CatchCursor;
-import com.cohenadair.mobile.legacy.database.cursors.UserDefineCursor;
 import com.cohenadair.mobile.legacy.Logbook;
 import com.cohenadair.mobile.legacy.backup.Json;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
 import java.util.UUID;
-
-import static com.cohenadair.mobile.legacy.database.LogbookSchema.CatchTable;
-import static com.cohenadair.mobile.legacy.database.LogbookSchema.FishingSpotTable;
 
 /**
  * The FishingSpot object stores information on a single fishing spot (not an entire location);
  * @author Cohen Adair
  */
 public class FishingSpot extends UserDefineObject {
-
     private double mLatitude = 0.0;
     private double mLongitude = 0.0;
     private UUID mLocationId;
-
-    public FishingSpot() {
-        this("");
-    }
-
-    public FishingSpot(String name) {
-        super(name);
-    }
 
     public FishingSpot(FishingSpot fishingSpot, boolean keepId) {
         super(fishingSpot, keepId);
@@ -44,21 +24,8 @@ public class FishingSpot extends UserDefineObject {
         mLocationId = fishingSpot.getLocationId();
     }
 
-    public FishingSpot(UserDefineObject obj) {
-        super(obj);
-    }
-
     public FishingSpot(UserDefineObject obj, boolean keepId) {
         super(obj, keepId);
-    }
-
-    public FishingSpot(JSONObject jsonObject) throws JSONException {
-        super(jsonObject);
-
-        // read in coordinates
-        JSONObject coordinatesJson = jsonObject.getJSONObject(Json.COORDINATES);
-        mLatitude = Double.parseDouble(coordinatesJson.getString(Json.LATITUDE));
-        mLongitude = Double.parseDouble(coordinatesJson.getString(Json.LONGITUDE));
     }
 
     //region Getters & Setters
@@ -88,7 +55,7 @@ public class FishingSpot extends UserDefineObject {
     //endregion
 
     public Location getLocation() {
-        return Logbook.getLocation(mLocationId);
+        return Logbook.getLocation(mLocationId.toString());
     }
 
     public String getLocationName() {
@@ -98,55 +65,6 @@ public class FishingSpot extends UserDefineObject {
     @Override
     public String getDisplayName() {
         return getLocationName() + " - " + getName();
-    }
-
-    /**
-     * Gets a string representation of the FishingSpot's coordinates. The result of this method
-     * includes "Latitude" and "Longitude" labels.
-     *
-     * @param lat "Latitude" string.
-     * @param lng "Longitude" string.
-     * @return A String of the FishingSpot's coordinates.
-     */
-    public String getCoordinatesAsString(String lat, String lng) {
-        return String.format(lat + ": %.6f, " + lng + ": %.6f", mLatitude, mLongitude);
-    }
-
-    /**
-     * Gets a string representation of the FishingSpot's coordinates. The result of this method
-     * <b>does not</b> include "Latitude" and "Longitude" labels.
-     * @see #getCoordinatesAsString(String, String)
-     */
-    @SuppressLint("DefaultLocale")
-    public String getCoordinatesAsString() {
-        return String.format("%.6f, %.6f", mLatitude, mLongitude);
-    }
-
-    /**
-     * @return An {@link ArrayList} of {@link Catch} objects associated with this
-     * {@link FishingSpot}.
-     */
-    public ArrayList<UserDefineObject> getCatches() {
-        return QueryHelper.queryUserDefines(QueryHelper.queryCatches(CatchTable.Columns.FISHING_SPOT_ID + " = ?", new String[] { getIdAsString() }), new QueryHelper.UserDefineQueryInterface() {
-            @Override
-            public UserDefineObject getObject(UserDefineCursor cursor) {
-                return new CatchCursor(cursor).getCatch();
-            }
-        });
-    }
-
-    public int getNumberOfCatches() {
-        return QueryHelper.queryFishingSpotCatchCount(this);
-    }
-
-    ContentValues getContentValues(UUID locationId) {
-        ContentValues values = super.getContentValues();
-
-        values.put(FishingSpotTable.Columns.LOCATION_ID, locationId.toString());
-        values.put(FishingSpotTable.Columns.LATITUDE, mLatitude);
-        values.put(FishingSpotTable.Columns.LONGITUDE, mLongitude);
-
-        return values;
     }
 
     /**
@@ -165,19 +83,5 @@ public class FishingSpot extends UserDefineObject {
         json.put(Json.LOCATION, getLocationName());
 
         return json;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public String toKeywordsString(Context context) {
-        StringBuilder builder = new StringBuilder(super.toKeywordsString(context));
-
-        appendToBuilder(builder, (float)mLatitude);
-        appendToBuilder(builder, (float)mLongitude);
-        appendToBuilder(builder, getLocationName());
-
-        return builder.toString();
     }
 }

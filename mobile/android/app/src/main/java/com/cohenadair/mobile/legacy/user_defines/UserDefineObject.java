@@ -1,15 +1,11 @@
 package com.cohenadair.mobile.legacy.user_defines;
 
 import android.content.ContentValues;
-import android.content.Context;
-import android.content.Intent;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
 
-import com.cohenadair.mobile.legacy.Logbook;
 import com.cohenadair.mobile.legacy.backup.Json;
-import com.cohenadair.mobile.legacy.Utils;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -23,7 +19,6 @@ import static com.cohenadair.mobile.legacy.database.LogbookSchema.UserDefineTabl
  * @author Cohen Adair
  */
 public class UserDefineObject {
-
     private static final String TAG = "UserDefineObject";
 
     private UUID mId;
@@ -97,22 +92,10 @@ public class UserDefineObject {
         return mShouldDelete;
     }
 
-    public void setShouldDelete(boolean shouldDelete) {
-        mShouldDelete = shouldDelete;
-    }
-
     public boolean getIsSelected() {
         return mIsSelected;
     }
-
-    public void setIsSelected(boolean isSelected) {
-        mIsSelected = isSelected;
-    }
     //endregion
-
-    public void removeDatabaseProperties() {
-        // if needed, should be overridden by subclasses
-    }
 
     public final String getNameAsString() {
         return (mName == null) ? "" : mName;
@@ -129,10 +112,6 @@ public class UserDefineObject {
 
     public String toString() {
         return (mName == null) ? super.toString() : getDisplayName();
-    }
-
-    public boolean isNameNull() {
-        return mName == null || mName.equals("");
     }
 
     /**
@@ -166,45 +145,5 @@ public class UserDefineObject {
         json.put(Json.ID, getIdAsString());
 
         return json;
-    }
-
-    /**
-     * Converts the current object into a String of keywords that can be used for searching.
-     * Subclasses should override this class.
-     *
-     * @return A String representing different keywords for the current object.
-     */
-    public String toKeywordsString(Context context) {
-        return appendToBuilder(new StringBuilder(), mName).toString();
-    }
-
-    /**
-     * Adds a String value to the given {@link StringBuilder}.
-     */
-    protected StringBuilder appendToBuilder(StringBuilder builder, String value) {
-        if (Utils.stringOrNull(value) == null)
-            return builder;
-
-        builder.append(value);
-        builder.append(" ");
-
-        return builder;
-    }
-
-    /**
-     * Adds a float value to the given {@link StringBuilder}.
-     */
-    protected StringBuilder appendToBuilder(StringBuilder builder, float value) {
-        if (value < 0)
-            return builder;
-
-        return appendToBuilder(builder, Float.toString(value));
-    }
-
-    /**
-     * Adds a int value to the given {@link StringBuilder}.
-     */
-    protected StringBuilder appendToBuilder(StringBuilder builder, int value) {
-        return appendToBuilder(builder, (float)value);
     }
 }
