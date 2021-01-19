@@ -96,14 +96,10 @@ class _DataImporterState extends State<DataImporter> {
 
   Widget _buildStartButton() {
     VoidCallback onPressed;
-    if (_renderState != _RenderState.loading) {
-      onPressed = () {
-        if (widget.importer == null) {
-          _chooseFile();
-        } else {
-          _startImport(widget.importer);
-        }
-      };
+    if (_renderState != _RenderState.loading && widget.importer == null) {
+      onPressed = _chooseFile;
+    } else if (_renderState == _RenderState.none && widget.importer != null) {
+      onPressed = () => _startImport(widget.importer);
     }
 
     return Align(
