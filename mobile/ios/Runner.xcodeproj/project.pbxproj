@@ -34,7 +34,6 @@
 		ACC8769825AD3F160027466A /* CMAFishingSpot.m in Sources */ = {isa = PBXBuildFile; fileRef = ACC8768425AD3F160027466A /* CMAFishingSpot.m */; };
 		ACC8769B25AD3F940027466A /* CMAUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = ACC8769925AD3F940027466A /* CMAUtilities.m */; };
 		ACC8769E25AD3FE70027466A /* CMAConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = ACC8769C25AD3FE60027466A /* CMAConstants.m */; };
-		ACC876A125AD427A0027466A /* NSString+CMA.m in Sources */ = {isa = PBXBuildFile; fileRef = ACC8769F25AD427A0027466A /* NSString+CMA.m */; };
 		ACC876E325ADE7820027466A /* TheAnglersLog.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = ACC876D925ADE7810027466A /* TheAnglersLog.xcdatamodeld */; };
 /* End PBXBuildFile section */
 
@@ -108,8 +107,6 @@
 		ACC8769A25AD3F940027466A /* CMAUtilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CMAUtilities.h; sourceTree = "<group>"; };
 		ACC8769C25AD3FE60027466A /* CMAConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CMAConstants.m; sourceTree = "<group>"; };
 		ACC8769D25AD3FE70027466A /* CMAConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CMAConstants.h; sourceTree = "<group>"; };
-		ACC8769F25AD427A0027466A /* NSString+CMA.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+CMA.m"; sourceTree = "<group>"; };
-		ACC876A025AD427A0027466A /* NSString+CMA.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+CMA.h"; sourceTree = "<group>"; };
 		ACC876DA25ADE7810027466A /* TheAnglersLog 9.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "TheAnglersLog 9.xcdatamodel"; sourceTree = "<group>"; };
 		ACC876DB25ADE7810027466A /* TheAnglersLog 5.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "TheAnglersLog 5.xcdatamodel"; sourceTree = "<group>"; };
 		ACC876DC25ADE7810027466A /* TheAnglersLog 6.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "TheAnglersLog 6.xcdatamodel"; sourceTree = "<group>"; };
@@ -232,8 +229,6 @@
 				ACC8769925AD3F940027466A /* CMAUtilities.m */,
 				ACC8766625AD3F160027466A /* CMAWeatherData.h */,
 				ACC8766225AD3F160027466A /* CMAWeatherData.m */,
-				ACC876A025AD427A0027466A /* NSString+CMA.h */,
-				ACC8769F25AD427A0027466A /* NSString+CMA.m */,
 				ACC8767325AD3F160027466A /* UserDefines */,
 			);
 			path = Legacy;
@@ -459,7 +454,6 @@
 				ACC8768B25AD3F160027466A /* CMAImage.m in Sources */,
 				97C146F31CF9000F007C117D /* main.m in Sources */,
 				ACC8769625AD3F160027466A /* CMAUserDefine.m in Sources */,
-				ACC876A125AD427A0027466A /* NSString+CMA.m in Sources */,
 				ACC8768C25AD3F160027466A /* CMAJSONWriter.m in Sources */,
 				ACC8769B25AD3F940027466A /* CMAUtilities.m in Sources */,
 				ACC8769E25AD3FE70027466A /* CMAConstants.m in Sources */,

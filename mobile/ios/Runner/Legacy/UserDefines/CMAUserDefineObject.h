@@ -16,8 +16,4 @@
 @property (strong, nonatomic)NSMutableSet *entries;
 @property (strong, nonatomic)CMAUserDefine *userDefine;
 
-- (void)addEntry:(CMAEntry *)anEntry;
-
-- (BOOL)containsSearchText:(NSString *)searchText;
-
 @end

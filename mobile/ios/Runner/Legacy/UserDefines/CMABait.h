@@ -22,22 +22,4 @@
 @property (strong, nonatomic)NSString *color;
 @property (nonatomic)CMABaitType baitType;
 
-// initialization
-- (CMABait *)initWithName:(NSString *)aName andUserDefine:(CMAUserDefine *)aUserDefine;
-- (void)handleModelUpdate;
-- (void)initProperties;
-
-// editing
-- (void)edit:(CMABait *)aNewBait;
-- (void)incFishCaught:(NSInteger)incBy;
-- (void)decFishCaught:(NSInteger)decBy;
-
-// accessing
-- (NSString *)typeAsString;
-- (NSString *)fishCaughtAsString;
-- (NSString *)colorAsString;
-
-// searching
-- (BOOL)containsSearchText:(NSString *)searchText;
-
 @end

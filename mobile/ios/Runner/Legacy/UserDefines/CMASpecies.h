@@ -16,16 +16,4 @@
 @property (strong, nonatomic)NSNumber *weightCaught;
 @property (strong, nonatomic)NSNumber *ouncesCaught;
 
-// initialization
-- (CMASpecies *)initWithName:(NSString *)aName andUserDefine:(CMAUserDefine *)aUserDefine;
-
-// editing
-- (void)edit:(CMASpecies *)aNewSpecies;
-- (void)incNumberCaught:(NSInteger)incBy;
-- (void)decNumberCaught:(NSInteger)decBy;
-- (void)incWeightCaught:(NSInteger)incBy;
-- (void)decWeightCaught:(NSInteger)decBy;
-- (void)incOuncesCaught:(NSInteger)incBy;
-- (void)decOuncesCaught:(NSInteger)decBy;
-
 @end

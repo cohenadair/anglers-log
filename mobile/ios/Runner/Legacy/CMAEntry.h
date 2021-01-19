@@ -15,12 +15,11 @@
 #import "CMAWeatherData.h"
 #import "CMAImage.h"
 #import "CMAFishingMethod.h"
+#import "CMAFishingSpot.h"
 
 @class CMAJournal;
 
 @interface CMAEntry : NSManagedObject
-
-@property (nonatomic)BOOL __observersWereAdded;
 
 // date and time
 @property (strong, nonatomic)NSDate *date;
@@ -56,32 +55,8 @@
 // journal
 @property (strong, nonatomic)CMAJournal *journal;
 
-// initializing
-- (id)initWithDate:(NSDate *)aDate;
-- (void)handleModelUpdate;
-- (void)initProperties;
-
 // accessing
-- (NSInteger)imageCount;
-- (BOOL)hasImageNamed:(NSString *)aFileName;
-- (NSInteger)fishingMethodCount;
-- (NSString *)dateAsString;
-/// Deprecated. Use [CMAEntry accurateDateAsFileNameString]. Needed for compatibility.
 - (NSString *)dateAsFileNameString;
-/// The new version that includes milliseconds.
-- (NSString *)accurateDateAsFileNameString;
-- (NSString *)locationAsString;
-- (NSString *)fishingMethodsAsString;
-- (NSString *)weightAsStringWithMeasurementSystem:(CMAMeasuringSystemType)aMeasurementSystem shorthand:(BOOL)useShorthand;
-- (NSString *)lengthAsStringWithMeasurementSystem:(CMAMeasuringSystemType)aMeasurementSystem shorthand:(BOOL)useShorthand;
-- (NSString *)fishResultAsString;
-- (NSString *)shareString;
-
-// editing
-- (void)edit:(CMAEntry *)aNewEntry;
-- (void)addImage:(CMAImage *)anImage;
-- (void)removeImage:(CMAImage *)anImage;
-- (void)addFishingMethod:(CMAFishingMethod *)aFishingMethod;
 
 // visiting
 - (void)accept:(id)aVisitor;

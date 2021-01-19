@@ -7,14 +7,18 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "CMAImage.h"
 #import "CMAJournal.h"
 #import "CMAFishingMethod.h"
+#import "CMAFishingSpot.h"
+#import "CMASpecies.h"
+#import "CMAWaterClarity.h"
+#import "CMAWeatherData.h"
 
 @interface CMAJSONWriter : NSObject
 
 @property (strong, nonatomic)NSMutableString *outString;
 @property (nonatomic)NSInteger currentTab;
-@property (nonatomic)BOOL addComma; // used for some user defines (i.e. check if fishing method is last in an entry)
 
 + (NSString *)journalToJSON:(CMAJournal *)aJournal;
 

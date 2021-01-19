@@ -12,10 +12,4 @@
 
 @interface CMAWaterClarity : CMAUserDefineObject <CMAUserDefineProtocol>
 
-// initialization
-- (CMAWaterClarity *)initWithName:(NSString *)aName andUserDefine:(CMAUserDefine *)aUserDefine;
-
-// editing
-- (void)edit:(CMAWaterClarity *)aNewWaterClarity;
-
 @end

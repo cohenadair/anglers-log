@@ -11,21 +11,6 @@
 
 @implementation CMAFishingMethod
 
-#pragma mark - Initialization
-
-- (CMAFishingMethod *)initWithName:(NSString *)aName andUserDefine:(CMAUserDefine *)aUserDefine {
-    self.name = aName;
-    self.userDefine = aUserDefine;
-    
-    return self;
-}
-
-#pragma mark - Editing
-
-- (void)edit:(CMAFishingMethod *)aNewFishingMethod {
-    [self setName:[aNewFishingMethod.name capitalizedString]];
-}
-
 #pragma mark - Visiting
 
 - (void)accept:(id)aVisitor {

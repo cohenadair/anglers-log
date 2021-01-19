@@ -11,7 +11,6 @@
 @protocol CMAUserDefineProtocol <NSObject>
 
 @required
-- (void)edit:(id)aNewObject;
 - (void)accept:(id)aVisitor;
 
 @end

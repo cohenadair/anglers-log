@@ -11,26 +11,6 @@
 
 @implementation CMAWaterClarity
 
-#pragma mark - Initialization
-
-- (CMAWaterClarity *)initWithName:(NSString *)aName andUserDefine:(CMAUserDefine *)aUserDefine; {
-    self.name = aName;
-    self.entries = [NSMutableSet set];
-    self.userDefine = aUserDefine;
-    
-    return self;
-}
-
-#pragma mark - Editing
-
-- (void)edit:(CMAWaterClarity *)aNewWaterClarity {
-    [self setName:[aNewWaterClarity.name capitalizedString]];
-}
-
-- (void)addEntry:(CMAEntry *)anEntry {
-    [self.entries addObject:anEntry];
-}
-
 #pragma mark - Visiting
 
 - (void)accept:(id)aVisitor {

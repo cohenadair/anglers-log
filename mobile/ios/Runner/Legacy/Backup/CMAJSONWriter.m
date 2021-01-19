@@ -6,6 +6,7 @@
 //  Copyright (c) 2015 Cohen Adair. All rights reserved.
 //
 
+#import "CMAEntry.h"
 #import "CMAJSONWriter.h"
 #import "CMAStorageManager.h"
 

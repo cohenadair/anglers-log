@@ -14,10 +14,4 @@
 
 @interface CMAFishingMethod : CMAUserDefineObject <CMAUserDefineProtocol>
 
-// initialization
-- (CMAFishingMethod *)initWithName:(NSString *)aName andUserDefine:(CMAUserDefine *)aUserDefine;
-
-// editing
-- (void)edit:(CMAFishingMethod *)aNewFishingMethod;
-
 @end

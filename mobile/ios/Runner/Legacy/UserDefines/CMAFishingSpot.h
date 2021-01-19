@@ -19,18 +19,7 @@
 @property (strong, nonatomic)CLLocation *location;
 @property (strong, nonatomic)NSNumber *fishCaught;
 
-// initialization
-- (CMAFishingSpot *)initWithName:(NSString *)aName;
-- (CMAFishingSpot *)initWithFishingSpot:(CMAFishingSpot *)aSpot;
-
-// editing
-- (void)setCoordinates:(CLLocationCoordinate2D)coordinates;
-- (void)edit:(CMAFishingSpot *)aNewFishingSpot;
-- (void)incFishCaught:(NSInteger)incBy;
-- (void)decFishCaught:(NSInteger)decBy;
-
 // accessing
 - (CLLocationCoordinate2D)coordinate;
-- (NSString *)locationAsString;
 
 @end
