@@ -10,12 +10,6 @@ import 'package:mockito/mockito.dart';
 import 'mock_app_manager.dart';
 import 'test_utils.dart';
 
-class MockDirectory extends Mock implements Directory {}
-
-class MockFile extends Mock implements File {}
-
-class MockFileSystemEntity extends Mock implements FileSystemEntity {}
-
 const _imagePath = "test/tmp_image";
 const _cachePath = "test/tmp_cache";
 

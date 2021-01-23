@@ -4,6 +4,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/bait_category_manager.dart';
 import 'package:mobile/bait_manager.dart';
 import 'package:mobile/catch_manager.dart';
+import 'package:mobile/channels/migration_channel.dart';
 import 'package:mobile/database/legacy_importer.dart';
 import 'package:mobile/fishing_spot_manager.dart';
 import 'package:mobile/species_manager.dart';
@@ -19,19 +20,22 @@ void main() {
   MockDataManager dataManager;
   MockImageManager imageManager;
 
+  MockIoWrapper ioWrapper;
+
   BaitCategoryManager baitCategoryManager;
   BaitManager baitManager;
   CatchManager catchManager;
   FishingSpotManager fishingSpotManager;
   SpeciesManager speciesManager;
 
-  var tmpPath = "test/resources/tmp";
+  var tmpPath = "test/resources/legacy_importer/tmp";
   Directory tmpDir;
 
   setUp(() {
     appManager = MockAppManager(
       mockDataManager: true,
       mockImageManager: true,
+      mockIoWrapper: true,
       mockPathProviderWrapper: true,
     );
 
@@ -45,6 +49,8 @@ void main() {
     when(imageManager.save(any, compress: anyNamed("compress")))
         .thenAnswer((_) => Future.value([]));
     when(appManager.imageManager).thenReturn(imageManager);
+
+    ioWrapper = appManager.mockIoWrapper;
 
     when(appManager.mockPathProviderWrapper.temporaryPath)
         .thenAnswer((_) => Future.value(tmpPath));
@@ -66,7 +72,7 @@ void main() {
 
     // Create a temporary directory for images.
     tmpDir = Directory(tmpPath);
-    tmpDir.createSync();
+    tmpDir.createSync(recursive: true);
   });
 
   tearDown(() {
@@ -338,5 +344,71 @@ void main() {
     expect(catches, isNotNull);
     expect(catches.length, 2);
     expect(importedImages.length, 3);
+  });
+
+  group("Migration", () {
+    test("Error from platform channel", () async {
+      var importer = LegacyImporter.migrate(
+          appManager,
+          LegacyJsonResult(
+            errorCode: LegacyJsonErrorCode.missingData,
+          ));
+      await importer.start().catchError(expectAsync1((error) {
+        expect(error, equals(LegacyJsonErrorCode.missingData));
+      }));
+    });
+
+    test("Error in migration doesn't delete old data", () async {
+      var img0 = MockFileSystemEntity();
+      when(img0.path).thenReturn("img0.png");
+
+      var img1 = MockFileSystemEntity();
+      when(img1.path).thenReturn("img1.png");
+
+      var imagesDir = MockDirectory();
+      when(imagesDir.listSync()).thenReturn([img0, img1]);
+      when(ioWrapper.directory("test/images")).thenReturn(imagesDir);
+
+      var databaseDir = MockDirectory();
+      when(ioWrapper.directory("test/database")).thenReturn(databaseDir);
+
+      var importer = LegacyImporter.migrate(
+          appManager,
+          LegacyJsonResult(
+            databasePath: "test/database",
+            imagesPath: "test/images",
+            json: {},
+          ));
+      await importer.start().catchError(expectAsync1((error) {
+        expect(error, equals(LegacyImporterError.missingJournal));
+        verify(ioWrapper.file(any)).called(2);
+        verifyNever(imagesDir.deleteSync());
+        verifyNever(databaseDir.deleteSync(recursive: true));
+      }));
+    });
+
+    test("Successful migration deletes old data", () async {
+      var imagesDir = MockDirectory();
+      when(imagesDir.listSync()).thenReturn([]);
+      when(ioWrapper.directory("test/images")).thenReturn(imagesDir);
+
+      var databaseDir = MockDirectory();
+      when(ioWrapper.directory("test/database")).thenReturn(databaseDir);
+
+      var importer = LegacyImporter.migrate(
+          appManager,
+          LegacyJsonResult(
+            databasePath: "test/database",
+            imagesPath: "test/images",
+            json: {
+              "journal": {
+                "userDefines": [],
+              },
+            },
+          ));
+      await importer.start();
+      verify(imagesDir.deleteSync()).called(1);
+      verify(databaseDir.deleteSync(recursive: true)).called(1);
+    });
   });
 }

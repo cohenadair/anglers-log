@@ -24,6 +24,7 @@ import 'package:mobile/wrappers/package_info_wrapper.dart';
 import 'package:mobile/wrappers/path_provider_wrapper.dart';
 import 'package:mobile/wrappers/permission_handler_wrapper.dart';
 import 'package:mobile/wrappers/photo_manager_wrapper.dart';
+import 'package:mobile/wrappers/services_wrapper.dart';
 import 'package:mobile/wrappers/url_launcher_wrapper.dart';
 import 'package:mockito/mockito.dart';
 import 'package:sqflite/sqflite.dart';
@@ -80,6 +81,8 @@ class MockPermissionHandlerWrapper extends Mock
 
 class MockPhotoManagerWrapper extends Mock implements PhotoManagerWrapper {}
 
+class MockServicesWrapper extends Mock implements ServicesWrapper {}
+
 class MockUrlLauncherWrapper extends Mock implements UrlLauncherWrapper {}
 
 class MockAppManager extends Mock implements AppManager {
@@ -108,6 +111,7 @@ class MockAppManager extends Mock implements AppManager {
   MockPathProviderWrapper mockPathProviderWrapper;
   MockPermissionHandlerWrapper mockPermissionHandlerWrapper;
   MockPhotoManagerWrapper mockPhotoManagerWrapper;
+  MockServicesWrapper mockServicesWrapper;
   MockUrlLauncherWrapper mockUrlLauncherWrapper;
 
   MockAppManager({
@@ -136,6 +140,7 @@ class MockAppManager extends Mock implements AppManager {
     bool mockPathProviderWrapper = false,
     bool mockPermissionHandlerWrapper = false,
     bool mockPhotoManagerWrapper = false,
+    bool mockServicesWrapper = false,
     bool mockUrlLauncherWrapper = false,
   }) {
     if (mockBaitCategoryManager) {
@@ -261,6 +266,11 @@ class MockAppManager extends Mock implements AppManager {
     if (mockPhotoManagerWrapper) {
       this.mockPhotoManagerWrapper = MockPhotoManagerWrapper();
       when(photoManagerWrapper).thenReturn(this.mockPhotoManagerWrapper);
+    }
+
+    if (mockServicesWrapper) {
+      this.mockServicesWrapper = MockServicesWrapper();
+      when(servicesWrapper).thenReturn(this.mockServicesWrapper);
     }
 
     if (mockUrlLauncherWrapper) {

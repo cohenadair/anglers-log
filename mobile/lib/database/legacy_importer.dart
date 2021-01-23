@@ -20,6 +20,7 @@ import '../model/gen/google/protobuf/timestamp.pb.dart';
 import '../species_manager.dart';
 import '../utils/protobuf_utils.dart';
 import '../utils/string_utils.dart';
+import '../wrappers/io_wrapper.dart';
 import '../wrappers/path_provider_wrapper.dart';
 
 enum LegacyImporterError {
@@ -66,6 +67,8 @@ class LegacyImporter {
   final LegacyJsonResult _legacyJsonResult;
   Map<String, dynamic> _json = {};
 
+  IoWrapper get _ioWrapper => _appManager.ioWrapper;
+
   LegacyImporter(AppManager appManager, File zipFile)
       : _appManager = appManager,
         _zipFile = zipFile,
@@ -109,11 +112,11 @@ class LegacyImporter {
     _json = _legacyJsonResult.json;
 
     // Copy all image references into memory.
-    var imagesDir = Directory(_legacyJsonResult.imagesPath);
+    var imagesDir = _ioWrapper.directory(_legacyJsonResult.imagesPath);
     if (imagesDir != null) {
       for (var image in imagesDir.listSync()) {
         var name = basename(image.path);
-        _images[name] = File("${imagesDir.path}/$name");
+        _images[name] = _ioWrapper.file("${imagesDir.path}/$name");
       }
     }
 
@@ -121,7 +124,9 @@ class LegacyImporter {
 
     // Cleanup old files.
     await imagesDir.deleteSync();
-    await Directory(_legacyJsonResult.databasePath).deleteSync(recursive: true);
+    await _ioWrapper
+        .directory(_legacyJsonResult.databasePath)
+        .deleteSync(recursive: true);
   }
 
   Future<void> _startArchive() async {

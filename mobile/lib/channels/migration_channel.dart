@@ -10,6 +10,7 @@ const _channelName = "com.cohenadair.anglerslog/migration";
 enum LegacyJsonErrorCode {
   invalidJson,
   platformException,
+  missingData,
 }
 
 class LegacyJsonResult {
@@ -58,10 +59,17 @@ Future<LegacyJsonResult> legacyJson(ServicesWrapper servicesWrapper) async {
     } else {
       Map<String, dynamic> json;
       LegacyJsonErrorCode errorCode;
-      try {
-        json = jsonDecode(result["json"]);
-      } on FormatException {
-        errorCode = LegacyJsonErrorCode.invalidJson;
+
+      if (isEmpty(result["db"]) ||
+          isEmpty(result["img"]) ||
+          result["json"] == null) {
+        errorCode = LegacyJsonErrorCode.missingData;
+      } else {
+        try {
+          json = jsonDecode(result["json"]);
+        } on FormatException {
+          errorCode = LegacyJsonErrorCode.invalidJson;
+        }
       }
 
       return LegacyJsonResult(

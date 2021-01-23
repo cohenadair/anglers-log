@@ -197,7 +197,7 @@ class _DataImporterState extends State<DataImporter> {
       _updateImportState(_RenderState.success);
     }).catchError((error, stacktrace) {
       _importError = error;
-      _importErrorDescription = stacktrace;
+      _importErrorDescription = stacktrace.toString();
       _updateImportState(_RenderState.error);
       widget.onFinish?.call(false);
     }, test: (error) => error is LegacyImporterError);

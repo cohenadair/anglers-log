@@ -133,4 +133,49 @@ void main() {
       expect(find.byType(Chip), findsNWidgets(4));
     });
   });
+
+  group("Loading", () {
+    testWidgets("Centered includes a centered column", (tester) async {
+      await tester.pumpWidget(
+        Testable(
+          (_) => Loading(
+            isCentered: true,
+            label: "Test...",
+          ),
+        ),
+      );
+
+      expect(find.byType(Column), findsOneWidget);
+      expect(findFirst<Column>(tester).mainAxisAlignment,
+          MainAxisAlignment.center);
+    });
+
+    testWidgets("Label not centered includes start aligned column",
+        (tester) async {
+      await tester.pumpWidget(
+        Testable(
+          (_) => Loading(
+            isCentered: false,
+            label: "Test...",
+          ),
+        ),
+      );
+
+      expect(find.byType(Column), findsOneWidget);
+      expect(
+          findFirst<Column>(tester).mainAxisAlignment, MainAxisAlignment.start);
+    });
+
+    testWidgets("Not centered; no label just shows indicator", (tester) async {
+      await tester.pumpWidget(
+        Testable(
+          (_) => Loading(
+            isCentered: false,
+          ),
+        ),
+      );
+
+      expect(find.byType(Column), findsNothing);
+    });
+  });
 }
