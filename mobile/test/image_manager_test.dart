@@ -10,12 +10,6 @@ import 'package:mockito/mockito.dart';
 import 'mock_app_manager.dart';
 import 'test_utils.dart';
 
-class MockDirectory extends Mock implements Directory {}
-
-class MockFile extends Mock implements File {}
-
-class MockFileSystemEntity extends Mock implements FileSystemEntity {}
-
 const _imagePath = "test/tmp_image";
 const _cachePath = "test/tmp_cache";
 
@@ -107,7 +101,7 @@ void main() {
     when(img.writeAsBytes(any)).thenAnswer((_) => Future.value(img));
     when(img.readAsBytes())
         .thenAnswer((_) => Future.value(Uint8List.fromList([1, 2, 3])));
-    when(appManager.mockIoWrapper.file("$_imagePath/images/image.jpg"))
+    when(appManager.mockIoWrapper.file("$_imagePath/2.0/images/image.jpg"))
         .thenReturn(img);
 
     var thumb = MockFile();
@@ -115,7 +109,7 @@ void main() {
     when(thumb.writeAsBytes(any)).thenAnswer((_) => Future.value(thumb));
     when(thumb.readAsBytes())
         .thenAnswer((_) => Future.value(Uint8List.fromList([1, 2, 3])));
-    when(appManager.mockIoWrapper.file("$_cachePath/thumbs/50/image.jpg"))
+    when(appManager.mockIoWrapper.file("$_cachePath/2.0/thumbs/50/image.jpg"))
         .thenReturn(thumb);
 
     // Cache does not include image; image should be compressed.
@@ -151,7 +145,7 @@ void main() {
       fileName: "image.jpg",
       size: 50,
     );
-    verify(appManager.mockIoWrapper.file("$_cachePath/thumbs/50/image.jpg"))
+    verify(appManager.mockIoWrapper.file("$_cachePath/2.0/thumbs/50/image.jpg"))
         .called(1);
     verifyNever(appManager.mockImageCompressWrapper.compress(any, any, any));
     expect(bytes, isNotNull);
@@ -185,14 +179,14 @@ void main() {
     when(img0.exists()).thenAnswer((_) => Future.value(true));
     when(img0.readAsBytes())
         .thenAnswer((_) => Future.value(Uint8List.fromList([1, 2, 3])));
-    when(appManager.mockIoWrapper.file("$_imagePath/images/image0.jpg"))
+    when(appManager.mockIoWrapper.file("$_imagePath/2.0/images/image0.jpg"))
         .thenReturn(img0);
 
     File img1 = MockFile();
     when(img1.exists()).thenAnswer((_) => Future.value(false));
     when(img1.readAsBytes())
         .thenAnswer((_) => Future.value(Uint8List.fromList([3, 2, 1])));
-    when(appManager.mockIoWrapper.file("$_imagePath/images/image1.jpg"))
+    when(appManager.mockIoWrapper.file("$_imagePath/2.0/images/image1.jpg"))
         .thenReturn(img1);
 
     var byteList = await imageManager
@@ -281,12 +275,12 @@ void main() {
   test("Saving an image that exists at the same path uses the existing image",
       () async {
     var img0 = MockFile();
-    when(img0.path).thenReturn("$_imagePath/images/image.jpg");
+    when(img0.path).thenReturn("$_imagePath/2.0/images/image.jpg");
     when(img0.exists()).thenAnswer((_) => Future.value(true));
     when(appManager.mockIoWrapper.file(any)).thenReturn(img0);
 
     var img1 = MockFile();
-    when(img1.path).thenReturn("$_imagePath/images/image.jpg");
+    when(img1.path).thenReturn("$_imagePath/2.0/images/image.jpg");
     when(img1.exists()).thenAnswer((_) => Future.value(true));
 
     await imageManager.initialize();

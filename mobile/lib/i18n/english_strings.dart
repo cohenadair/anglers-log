@@ -259,10 +259,10 @@ Map<String, Map<String, String>> get englishStrings => {
         "feedbackPage_connectionError":
             "No internet connection. Please check your connection and try again.",
         "feedbackPage_sending": "Sending feedback...",
-        "importPage_title": "Import",
+        "importPage_moreTitle": "Import",
+        "importPage_title": "Import Data",
         "importPage_description":
             "Importing data you previously exported using Anglers' Log will overwrite your existing log and may take several minutes.",
-        "importPage_chooseFile": "Choose File",
         "importPage_importingImages": "Copying images...",
         "importPage_importingData": "Copying fishing data...",
         "importPage_success": "Successfully imported data!",
@@ -272,6 +272,16 @@ Map<String, Map<String, String>> get englishStrings => {
         "importPage_errorWarningMessage":
             "Pressing send will send Anglers' Log all your fishing data (excluding photos). Your data will not be shared outside the Anglers' Log organization.",
         "importPage_errorTitle": "Import Error",
+        "dataImporter_chooseFile": "Choose File",
+        "dataImporter_start": "Start",
+        "migrationPage_title": "Data Migration",
+        "migrationPage_description":
+            "This is your first time opening Anglers' Log since updating to 2.0. Click the button below to start the data migration process.",
+        "migrationPage_error":
+            "There was an unexpected error while migrating your data to Anglers' Log 2.0. Please send us the error report and we will investigate as soon as possible. Note that none of your old data has been lost.",
+        "migrationPage_loading": "Migrating data to Anglers' Log 2.0...",
+        "migrationPage_success": "Successfully migrated data!",
+        "migrationPage_feedbackTitle": "Migration Error",
         "angler_nameLabel": "Angler",
         "analysisDuration_allDates": "All dates",
         "analysisDuration_today": "Today",

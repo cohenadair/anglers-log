@@ -25,6 +25,7 @@ import 'wrappers/package_info_wrapper.dart';
 import 'wrappers/path_provider_wrapper.dart';
 import 'wrappers/permission_handler_wrapper.dart';
 import 'wrappers/photo_manager_wrapper.dart';
+import 'wrappers/services_wrapper.dart';
 import 'wrappers/url_launcher_wrapper.dart';
 
 class AppManager {
@@ -58,6 +59,7 @@ class AppManager {
   PathProviderWrapper _pathProviderWrapper;
   PermissionHandlerWrapper _permissionHandlerWrapper;
   PhotoManagerWrapper _photoManagerWrapper;
+  ServicesWrapper _servicesWrapper;
   UrlLauncherWrapper _urlLauncherWrapper;
 
   BaitCategoryManager get baitCategoryManager {
@@ -226,6 +228,13 @@ class AppManager {
       _photoManagerWrapper = PhotoManagerWrapper();
     }
     return _photoManagerWrapper;
+  }
+
+  ServicesWrapper get servicesWrapper {
+    if (_servicesWrapper == null) {
+      _servicesWrapper = ServicesWrapper();
+    }
+    return _servicesWrapper;
   }
 
   UrlLauncherWrapper get urlLauncherWrapper {

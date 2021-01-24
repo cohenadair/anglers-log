@@ -120,30 +120,45 @@ class HeadingNoteDivider extends StatelessWidget {
 }
 
 class Loading extends StatelessWidget {
-  static Widget centered({EdgeInsets padding}) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: <Widget>[
-        Loading(padding: padding ?? insetsDefault),
-      ],
-    );
-  }
+  static const _size = 20.0;
+  static const _strokeWidth = 2.0;
 
-  final EdgeInsets _padding;
+  final EdgeInsets padding;
+  final String label;
+  final bool isCentered;
 
-  Loading({EdgeInsets padding = insetsZero}) : _padding = padding;
+  Loading({
+    this.padding = insetsZero,
+    this.label,
+    this.isCentered = true,
+  })  : assert(padding != null),
+        assert(isCentered != null);
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: _padding,
-      child: SizedBox.fromSize(
-        size: Size(20, 20),
-        child: CircularProgressIndicator(
-          strokeWidth: 2,
-        ),
+    var indicator = SizedBox.fromSize(
+      size: Size(_size, _size),
+      child: CircularProgressIndicator(
+        strokeWidth: _strokeWidth,
       ),
     );
+
+    if (isCentered || isNotEmpty(label)) {
+      return Padding(
+        padding: padding,
+        child: Column(
+          mainAxisAlignment:
+              isCentered ? MainAxisAlignment.center : MainAxisAlignment.start,
+          children: [
+            indicator,
+            VerticalSpace(paddingWidget),
+            isEmpty(label) ? Empty() : Text(label),
+          ],
+        ),
+      );
+    } else {
+      return indicator;
+    }
   }
 }
 

@@ -1,22 +1,21 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:mobile/pages/onboarding/location_permission_page.dart';
 
+import '../../app_manager.dart';
+import '../../channels/migration_channel.dart';
+import '../../database/legacy_importer.dart';
 import '../../log.dart';
+import '../../widgets/widget.dart';
+import '../../wrappers/services_wrapper.dart';
+import '../landing_page.dart';
 import 'catch_field_picker_page.dart';
 import 'how_to_feedback_page.dart';
 import 'how_to_manage_fields_page.dart';
+import 'location_permission_page.dart';
+import 'migration_page.dart';
 import 'welcome_page.dart';
 
-class OnboardingJourney extends StatelessWidget {
-  final String _routeWelcome = "/";
-  final String _routeCatchFields = "catch_fields";
-  final String _routeManageFields = "manage_fields";
-  final String _routeLocationPermission = "location_permission";
-  final String _routeFeedback = "feedback";
-
-  final _log = Log("OnboardingJourney");
-
+class OnboardingJourney extends StatefulWidget {
   final VoidCallback onFinished;
 
   OnboardingJourney({
@@ -24,18 +23,65 @@ class OnboardingJourney extends StatelessWidget {
   }) : assert(onFinished != null);
 
   @override
+  _OnboardingJourneyState createState() => _OnboardingJourneyState();
+}
+
+class _OnboardingJourneyState extends State<OnboardingJourney> {
+  static const _routeRoot = "/";
+  static const _routeWelcome = "welcome";
+  static const _routeCatchFields = "catch_fields";
+  static const _routeManageFields = "manage_fields";
+  static const _routeLocationPermission = "location_permission";
+  static const _routeFeedback = "feedback";
+
+  final _log = Log("OnboardingJourney");
+
+  Future<LegacyJsonResult> _legacyJsonFuture;
+
+  AppManager get _appManager => AppManager.of(context);
+
+  ServicesWrapper get _servicesWrapper => ServicesWrapper.of(context);
+
+  @override
+  void initState() {
+    super.initState();
+    _legacyJsonFuture = legacyJson(_servicesWrapper);
+  }
+
+  @override
   Widget build(BuildContext context) {
+    return FutureBuilder<LegacyJsonResult>(
+      future: _legacyJsonFuture,
+      builder: (context, snapshot) {
+        Widget child;
+        // Check connectionState here instead of hasData because legacyJson
+        // will return null if there is no legacy data to import.
+        if (snapshot.connectionState == ConnectionState.done) {
+          child = _buildNavigator(snapshot.data);
+        } else {
+          child = LandingPage();
+        }
+
+        return AnimatedSwitcher(
+          duration: defaultAnimationDuration,
+          child: child,
+        );
+      },
+    );
+  }
+
+  Widget _buildNavigator(LegacyJsonResult legacyJsonResult) {
     return Navigator(
       onGenerateRoute: (routeSettings) {
         var name = routeSettings.name;
-        if (name == _routeWelcome) {
-          return MaterialPageRoute(
-            settings: routeSettings,
-            builder: (context) => WelcomePage(
-              onStart: () => Navigator.of(context).pushNamed(_routeCatchFields),
-              onSkip: onFinished,
-            ),
-          );
+        if (name == _routeRoot) {
+          if (legacyJsonResult != null) {
+            return _buildMigrationPageRoute(legacyJsonResult);
+          } else {
+            return _buildWelcomePageRoute(routeSettings);
+          }
+        } else if (name == _routeWelcome) {
+          return _buildWelcomePageRoute(routeSettings);
         } else if (name == _routeCatchFields) {
           return MaterialPageRoute(
             builder: (context) => CatchFieldPickerPage(
@@ -58,7 +104,7 @@ class OnboardingJourney extends StatelessWidget {
         } else if (name == _routeFeedback) {
           return MaterialPageRoute(
             builder: (context) => HowToFeedbackPage(
-              onNext: onFinished,
+              onNext: widget.onFinished,
             ),
           );
         } else {
@@ -67,6 +113,27 @@ class OnboardingJourney extends StatelessWidget {
 
         return null;
       },
+    );
+  }
+
+  Route<dynamic> _buildWelcomePageRoute(RouteSettings routeSettings) {
+    return MaterialPageRoute(
+      settings: routeSettings,
+      builder: (context) {
+        return WelcomePage(
+          onStart: () => Navigator.of(context).pushNamed(_routeCatchFields),
+          onSkip: widget.onFinished,
+        );
+      },
+    );
+  }
+
+  Route<dynamic> _buildMigrationPageRoute(LegacyJsonResult legacyJsonResult) {
+    return MaterialPageRoute(
+      builder: (context) => MigrationPage(
+        importer: LegacyImporter.migrate(_appManager, legacyJsonResult),
+        onNext: () => Navigator.of(context).pushNamed(_routeWelcome),
+      ),
     );
   }
 }

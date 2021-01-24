@@ -34,6 +34,7 @@ class MorePage extends StatelessWidget {
     return ScrollPage(
       appBar: AppBar(
         title: Text(Strings.of(context).morePageTitle),
+        centerTitle: true,
       ),
       children: [
         _buildPageItem(
@@ -76,7 +77,7 @@ class MorePage extends StatelessWidget {
         _buildPageItem(
           context,
           icon: Icons.cloud_download,
-          title: Strings.of(context).importPageTitle,
+          title: Strings.of(context).importPageMoreTitle,
           page: ImportPage(),
           presentPage: true,
         ),

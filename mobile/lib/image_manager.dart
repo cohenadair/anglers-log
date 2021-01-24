@@ -20,8 +20,8 @@ class ImageManager {
   static ImageManager of(BuildContext context) =>
       Provider.of<AppManager>(context, listen: false).imageManager;
 
-  static final _dirNameImages = "images";
-  static final _dirNameThumbs = "thumbs";
+  static final _dirNameImages = "2.0/images";
+  static final _dirNameThumbs = "2.0/thumbs";
 
   static const _debug = false;
   static const _log = Log("ImageManager");

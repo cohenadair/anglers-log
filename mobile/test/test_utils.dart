@@ -4,9 +4,11 @@ import 'dart:ui' as ui;
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/app_manager.dart';
+import 'package:mobile/database/legacy_importer.dart';
 import 'package:mobile/i18n/strings.dart';
 import 'package:mobile/res/color.dart';
 import 'package:mobile/utils/date_time_utils.dart';
@@ -18,6 +20,16 @@ import 'package:provider/provider.dart';
 class MockAssetEntity extends Mock implements AssetEntity {}
 
 class MockAssetPathEntity extends Mock implements AssetPathEntity {}
+
+class MockDirectory extends Mock implements Directory {}
+
+class MockFile extends Mock implements File {}
+
+class MockFileSystemEntity extends Mock implements FileSystemEntity {}
+
+class MockLegacyImporter extends Mock implements LegacyImporter {}
+
+class MockMethodChannel extends Mock implements MethodChannel {}
 
 class MockNavigatorObserver extends Mock implements NavigatorObserver {}
 

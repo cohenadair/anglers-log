@@ -1,3 +1,36 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_test/flutter_test.dart';
+import 'package:mobile/pages/scroll_page.dart';
+
+import '../test_utils.dart';
+
 void main() {
-  // Nothing to test.
+  testWidgets("Centered content", (tester) async {
+    await tester.pumpWidget(
+      Testable(
+        (_) => ScrollPage(
+          centerContent: true,
+          children: [
+            Text("Test"),
+          ],
+        ),
+      ),
+    );
+
+    expect(find.byType(Center), findsOneWidget);
+  });
+
+  testWidgets("Not centered content", (tester) async {
+    await tester.pumpWidget(
+      Testable(
+        (_) => ScrollPage(
+          children: [
+            Text("Test"),
+          ],
+        ),
+      ),
+    );
+
+    expect(find.byType(Center), findsNothing);
+  });
 }

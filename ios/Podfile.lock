@@ -24,7 +24,7 @@ DEPENDENCIES:
   - XYPieChart
 
 SPEC REPOS:
-  https://github.com/cocoapods/specs.git:
+  https://github.com/CocoaPods/Specs.git:
     - AFNetworking
     - Crashlytics
     - Fabric
@@ -35,13 +35,13 @@ SPEC REPOS:
 
 SPEC CHECKSUMS:
   AFNetworking: cf8e418e16f0c9c7e5c3150d019a3c679d015018
-  Crashlytics: 130ab943f8c78cda7a814b434f270b2e2c8a3cba
-  Fabric: caf7580c725e64db144f610ac65cd60956911dc7
-  Instabug: 51b8f0502289c3ec3e2e66672a988d3fe6ab563a
+  Crashlytics: 2580a9a091e265da4a7a89d2c442aa1c0ea4712c
+  Fabric: 30e7baf1bb775e776e2e5975a630c173022d7611
+  Instabug: 4a57ac779cc5ecd55674eb876d72cb5d1b65bcb8
   OpenWeatherMapAPI: 53613bba3dffc948f852a66a25f512f7a16643e7
   SSZipArchive: 5525196ee195b473dcc4a0d4d2cba98bfa3eb1c1
   XYPieChart: 0efd8069d26c25d20ab74c01b5ad455f1fc48153
 
 PODFILE CHECKSUM: 0a44dd759856b0f236c4d9240a6f79a12782cdf5
 
-COCOAPODS: 1.6.1
+COCOAPODS: 1.10.0

@@ -177,9 +177,9 @@ void main() {
     expect(preferencesManager.catchCustomEntityIds.isEmpty, true);
     expect(preferencesManager.baitFieldIds.isEmpty, true);
     expect(preferencesManager.catchFieldIds.isEmpty, true);
-    expect(preferencesManager.rateTimerStartedAt, isNull);
-    expect(preferencesManager.didRateApp, isFalse);
-    expect(preferencesManager.didOnboard, isFalse);
+    expect(preferencesManager.rateTimerStartedAt, isNotNull);
+    expect(preferencesManager.didRateApp, isTrue);
+    expect(preferencesManager.didOnboard, isTrue);
     expect(preferencesManager.selectedReportId, isNull);
   });
 

@@ -11,6 +11,7 @@ import '../app_manager.dart';
 import '../bait_category_manager.dart';
 import '../bait_manager.dart';
 import '../catch_manager.dart';
+import '../channels/migration_channel.dart';
 import '../data_manager.dart';
 import '../fishing_spot_manager.dart';
 import '../log.dart';
@@ -19,6 +20,7 @@ import '../model/gen/google/protobuf/timestamp.pb.dart';
 import '../species_manager.dart';
 import '../utils/protobuf_utils.dart';
 import '../utils/string_utils.dart';
+import '../wrappers/io_wrapper.dart';
 import '../wrappers/path_provider_wrapper.dart';
 
 enum LegacyImporterError {
@@ -62,26 +64,72 @@ class LegacyImporter {
   final AppManager _appManager;
   final File _zipFile;
   final Map<String, File> _images = {};
+  final LegacyJsonResult _legacyJsonResult;
   Map<String, dynamic> _json = {};
+
+  IoWrapper get _ioWrapper => _appManager.ioWrapper;
 
   LegacyImporter(AppManager appManager, File zipFile)
       : _appManager = appManager,
-        _zipFile = zipFile;
+        _zipFile = zipFile,
+        _legacyJsonResult = null;
+
+  LegacyImporter.migrate(AppManager appManager, LegacyJsonResult result)
+      : assert(result != null),
+        _appManager = appManager,
+        _zipFile = null,
+        _legacyJsonResult = result;
 
   BaitCategoryManager get _baitCategoryManager =>
       _appManager.baitCategoryManager;
+
   BaitManager get _baitManager => _appManager.baitManager;
+
   CatchManager get _catchManager => _appManager.catchManager;
+
   DataManager get _dataManager => _appManager.dataManager;
+
   FishingSpotManager get _fishingSpotManager => _appManager.fishingSpotManager;
+
   SpeciesManager get _speciesManager => _appManager.speciesManager;
 
   PathProviderWrapper get _pathProviderWrapper =>
       _appManager.pathProviderWrapper;
 
-  String get jsonString => jsonEncode(_json);
+  String get _jsonString => jsonEncode(_json);
 
-  Future<void> start() async {
+  Future<void> start() =>
+      _legacyJsonResult == null ? _startArchive() : _startMigration();
+
+  Future<void> _startMigration() async {
+    // If there was an error in the platform channel, end the future
+    // immediately.
+    if (_legacyJsonResult.errorCode != null) {
+      return Future.error(_legacyJsonResult.errorCode,
+          StackTrace.fromString(_legacyJsonResult.errorDescription));
+    }
+
+    _json = _legacyJsonResult.json;
+
+    // Copy all image references into memory.
+    var imagesDir = _ioWrapper.directory(_legacyJsonResult.imagesPath);
+    if (imagesDir != null) {
+      for (var image in imagesDir.listSync()) {
+        var name = basename(image.path);
+        _images[name] = _ioWrapper.file("${imagesDir.path}/$name");
+      }
+    }
+
+    await _import();
+
+    // Cleanup old files.
+    await imagesDir.deleteSync();
+    await _ioWrapper
+        .directory(_legacyJsonResult.databasePath)
+        .deleteSync(recursive: true);
+  }
+
+  Future<void> _startArchive() async {
     if (_zipFile == null) {
       return Future.error(LegacyImporterError.invalidZipFile);
     }
@@ -103,17 +151,19 @@ class LegacyImporter {
       }
     }
 
-    if (_json[_keyJournal] == null) {
-      return Future.error(LegacyImporterError.missingJournal);
-    } else {
-      return _import();
-    }
+    return _import();
   }
 
   Future<void> _import() async {
+    if (_json[_keyJournal] == null) {
+      return Future.error(LegacyImporterError.missingJournal,
+          StackTrace.fromString(_jsonString));
+    }
+
     var userDefines = _json[_keyJournal][_keyUserDefines];
     if (userDefines == null || !(userDefines is List)) {
-      return Future.error(LegacyImporterError.missingUserDefines);
+      return Future.error(LegacyImporterError.missingUserDefines,
+          StackTrace.fromString(_jsonString));
     }
 
     List<dynamic> baitCategories;
@@ -151,7 +201,7 @@ class LegacyImporter {
     // entities.
     await _importCatches(_json[_keyJournal][_keyEntries]);
 
-    // Cleanup temporary images.
+    // Cleanup old images.
     for (var tmpImg in _images.values) {
       tmpImg.deleteSync();
     }
@@ -305,7 +355,7 @@ class LegacyImporter {
         if (_images.containsKey(fileName)) {
           images.add(_images[fileName]);
         } else {
-          _log.w("Image $fileName not found in archive");
+          _log.w("Image $fileName not found in legacy data");
         }
       }
 

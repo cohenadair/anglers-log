@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 
 import 'app_manager.dart';
 import 'i18n/strings.dart';
+import 'pages/landing_page.dart';
 import 'pages/main_page.dart';
 import 'pages/onboarding/onboarding_journey.dart';
 import 'preferences_manager.dart';
@@ -63,18 +64,17 @@ class _AnglersLogState extends State<AnglersLog> {
           future: _appInitializedFuture,
           builder: (context, snapshot) {
             if (snapshot.hasError || !snapshot.hasData) {
-              return Scaffold(
-                backgroundColor: Theme.of(context).primaryColor,
-              );
+              return LandingPage();
             }
 
             Widget firstPage;
             if (_preferencesManager.didOnboard) {
               firstPage = MainPage();
             } else {
-              _preferencesManager.didOnboard = true;
               firstPage = OnboardingJourney(
-                onFinished: () => setState(() {}),
+                onFinished: () => setState(() {
+                  _preferencesManager.didOnboard = true;
+                }),
               );
             }
 
