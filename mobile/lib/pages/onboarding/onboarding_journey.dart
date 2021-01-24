@@ -122,7 +122,6 @@ class _OnboardingJourneyState extends State<OnboardingJourney> {
       builder: (context) {
         return WelcomePage(
           onStart: () => Navigator.of(context).pushNamed(_routeCatchFields),
-          onSkip: widget.onFinished,
         );
       },
     );

@@ -11,17 +11,15 @@ class WelcomePage extends StatelessWidget {
   static const _logoSize = 150.0;
 
   final VoidCallback onStart;
-  final VoidCallback onSkip;
 
   WelcomePage({
     this.onStart,
-    this.onSkip,
-  })  : assert(onStart != null),
-        assert(onSkip != null);
+  }) : assert(onStart != null);
 
   @override
   Widget build(BuildContext context) {
     return OnboardingPage(
+      padding: insetsDefault,
       children: <Widget>[
         VerticalSpace(paddingWidget),
         ClipOval(
@@ -48,13 +46,6 @@ class WelcomePage extends StatelessWidget {
           child: Button(
             text: Strings.of(context).onboardingJourneyStartButton,
             onPressed: onStart,
-          ),
-        ),
-        VerticalSpace(paddingWidgetSmall),
-        Align(
-          child: SmallTextButton(
-            text: Strings.of(context).onboardingJourneySkip,
-            onPressed: onSkip,
           ),
         ),
         VerticalSpace(paddingWidget),

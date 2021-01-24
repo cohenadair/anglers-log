@@ -304,9 +304,9 @@ Map<String, Map<String, String>> get englishStrings => {
         "secondsFormat": "%ss",
         "dateTimeFormat": "%s at %s",
         "dateDurationFormat": "%s (%s)",
-        "onboardingJourney_welcomeTitle": "Welcome to Anglers' Log!",
+        "onboardingJourney_welcomeTitle": "Welcome",
         "onboardingJourney_startDescription":
-            "Let's start by figuring out what kind of data you want to track.",
+            "Welcome to Anglers' Log! Let's start by figuring out what kind of data you want to track.",
         "onboardingJourney_startButton": "Get Started",
         "onboardingJourney_skip": "No thanks, I'll learn as I go.",
         "onboardingJourney_catchFieldDescription":
