@@ -8,3 +8,5 @@ Error: %s
 Name: %s
 Email: %s
 Message: %s
+
+Attachment: %s

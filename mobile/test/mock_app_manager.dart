@@ -16,10 +16,10 @@ import 'package:mobile/species_manager.dart';
 import 'package:mobile/time_manager.dart';
 import 'package:mobile/trip_manager.dart';
 import 'package:mobile/wrappers/file_picker_wrapper.dart';
+import 'package:mobile/wrappers/http_wrapper.dart';
 import 'package:mobile/wrappers/image_compress_wrapper.dart';
 import 'package:mobile/wrappers/image_picker_wrapper.dart';
 import 'package:mobile/wrappers/io_wrapper.dart';
-import 'package:mobile/wrappers/mail_sender_wrapper.dart';
 import 'package:mobile/wrappers/package_info_wrapper.dart';
 import 'package:mobile/wrappers/path_provider_wrapper.dart';
 import 'package:mobile/wrappers/permission_handler_wrapper.dart';
@@ -64,13 +64,13 @@ class MockTripManager extends Mock implements TripManager {}
 
 class MockFilePickerWrapper extends Mock implements FilePickerWrapper {}
 
+class MockHttpWrapper extends Mock implements HttpWrapper {}
+
 class MockImageCompressWrapper extends Mock implements ImageCompressWrapper {}
 
 class MockImagePickerWrapper extends Mock implements ImagePickerWrapper {}
 
 class MockIoWrapper extends Mock implements IoWrapper {}
-
-class MockMailSenderWrapper extends Mock implements MailSenderWrapper {}
 
 class MockPackageInfoWrapper extends Mock implements PackageInfoWrapper {}
 
@@ -103,10 +103,10 @@ class MockAppManager extends Mock implements AppManager {
   MockTripManager mockTripManager;
 
   MockFilePickerWrapper mockFilePickerWrapper;
+  MockHttpWrapper mockHttpWrapper;
   MockImageCompressWrapper mockImageCompressWrapper;
   MockImagePickerWrapper mockImagePickerWrapper;
   MockIoWrapper mockIoWrapper;
-  MockMailSenderWrapper mockMailSenderWrapper;
   MockPackageInfoWrapper mockPackageInfoWrapper;
   MockPathProviderWrapper mockPathProviderWrapper;
   MockPermissionHandlerWrapper mockPermissionHandlerWrapper;
@@ -132,10 +132,10 @@ class MockAppManager extends Mock implements AppManager {
     bool mockTimeManager = false,
     bool mockTripManager = false,
     bool mockFilePickerWrapper = false,
+    bool mockHttpWrapper = false,
     bool mockImageCompressWrapper = false,
     bool mockImagePickerWrapper = false,
     bool mockIoWrapper = false,
-    bool mockMailSenderWrapper = false,
     bool mockPackageInfoWrapper = false,
     bool mockPathProviderWrapper = false,
     bool mockPermissionHandlerWrapper = false,
@@ -227,6 +227,11 @@ class MockAppManager extends Mock implements AppManager {
       when(filePickerWrapper).thenReturn(this.mockFilePickerWrapper);
     }
 
+    if (mockHttpWrapper) {
+      this.mockHttpWrapper = MockHttpWrapper();
+      when(httpWrapper).thenReturn(this.mockHttpWrapper);
+    }
+
     if (mockImageCompressWrapper) {
       this.mockImageCompressWrapper = MockImageCompressWrapper();
       when(imageCompressWrapper).thenReturn(this.mockImageCompressWrapper);
@@ -240,11 +245,6 @@ class MockAppManager extends Mock implements AppManager {
     if (mockIoWrapper) {
       this.mockIoWrapper = MockIoWrapper();
       when(ioWrapper).thenReturn(this.mockIoWrapper);
-    }
-
-    if (mockMailSenderWrapper) {
-      this.mockMailSenderWrapper = MockMailSenderWrapper();
-      when(mailSenderWrapper).thenReturn(this.mockMailSenderWrapper);
     }
 
     if (mockPackageInfoWrapper) {

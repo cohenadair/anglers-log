@@ -11,9 +11,9 @@ class PropertiesManager {
   static PropertiesManager of(BuildContext context) =>
       Provider.of<AppManager>(context, listen: false).propertiesManager;
 
-  final String _clientSenderEmailKey = "clientsender.email";
-  final String _clientSenderPasswordKey = "clientsender.password";
-  final String _supportEmailKey = "support.email";
+  final String _keyClientSenderEmail = "clientsender.email";
+  final String _keySupportEmail = "support.email";
+  final String _keySendGridApiKey = "sendgrid.apikey";
 
   final Log _log = Log("PropertiesManager");
 
@@ -35,12 +35,11 @@ class PropertiesManager {
   }
 
   String get clientSenderEmail =>
-      _properties.stringForKey(_clientSenderEmailKey);
+      _properties.stringForKey(_keyClientSenderEmail);
 
-  String get clientSenderPassword =>
-      _properties.stringForKey(_clientSenderPasswordKey);
+  String get supportEmail => _properties.stringForKey(_keySupportEmail);
 
-  String get supportEmail => _properties.stringForKey(_supportEmailKey);
+  String get sendGridApiKey => _properties.stringForKey(_keySendGridApiKey);
 
   String get feedbackTemplate => _feedbackTemplate;
 }

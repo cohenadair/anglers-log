@@ -1,8 +1,8 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:device_info/device_info.dart';
 import 'package:flutter/material.dart';
-import 'package:mailer/mailer.dart';
 import 'package:quiver/strings.dart';
 
 import '../i18n/strings.dart';
@@ -21,8 +21,8 @@ import '../widgets/input_data.dart';
 import '../widgets/radio_input.dart';
 import '../widgets/text_input.dart';
 import '../widgets/widget.dart';
+import '../wrappers/http_wrapper.dart';
 import '../wrappers/io_wrapper.dart';
-import '../wrappers/mail_sender_wrapper.dart';
 import '../wrappers/package_info_wrapper.dart';
 
 class FeedbackPage extends StatefulWidget {
@@ -51,6 +51,9 @@ class FeedbackPage extends StatefulWidget {
 }
 
 class _FeedbackPageState extends State<FeedbackPage> {
+  static const _urlSendGrid = "https://api.sendgrid.com/v3/mail/send";
+  static const _responseAccepted = 202;
+
   static final _idWarning = randomId();
   static final _idName = randomId();
   static final _idEmail = randomId();
@@ -61,15 +64,21 @@ class _FeedbackPageState extends State<FeedbackPage> {
 
   final Map<Id, Field> _fields = {};
 
+  HttpWrapper get _http => HttpWrapper.of(context);
+
   IoWrapper get _io => IoWrapper.of(context);
-  MailSenderWrapper get _mailSender => MailSenderWrapper.of(context);
+
   PackageInfoWrapper get _packageInfo => PackageInfoWrapper.of(context);
+
   PropertiesManager get _propertiesManager => PropertiesManager.of(context);
 
   TextInputController get _nameController => _fields[_idName].controller;
+
   TextInputController get _emailController => _fields[_idEmail].controller;
+
   InputController<_FeedbackType> get _typeController =>
       _fields[_idType].controller;
+
   TextInputController get _messageController => _fields[_idMessage].controller;
 
   bool get _error => isNotEmpty(widget.error);
@@ -158,83 +167,7 @@ class _FeedbackPageState extends State<FeedbackPage> {
           onChanged: () => setState(() {}),
         ),
       },
-      onSave: (context) async {
-        if (!await _io.isConnected()) {
-          showErrorSnackBar(
-            context,
-            Strings.of(context).feedbackPageConnectionError,
-          );
-          return false;
-        }
-
-        showPermanentSnackBar(context, Strings.of(context).feedbackPageSending);
-
-        var name = _nameController.value;
-        var email = _emailController.value;
-        var type = _feedbackTypeToString(_typeController.value);
-        var message = _messageController.value;
-
-        var appVersion = (await _packageInfo.fromPlatform()).version;
-        String osVersion;
-        String deviceModel;
-
-        var deviceInfo = DeviceInfoPlugin();
-        if (Platform.isIOS) {
-          var info = await deviceInfo.iosInfo;
-          osVersion = "${info.systemName} (${info.systemVersion})";
-          deviceModel = info.utsname.machine;
-        } else if (Platform.isAndroid) {
-          var info = await deviceInfo.androidInfo;
-          osVersion = "Android (${info.version.sdkInt})";
-          deviceModel = info.model;
-        }
-
-        var server = _mailSender.gmail(_propertiesManager.clientSenderEmail,
-            _propertiesManager.clientSenderPassword);
-
-        Attachment attachment;
-        if (widget.attachment != null) {
-          attachment = StringAttachment(widget.attachment);
-        }
-
-        var content = Message()
-          ..from = Address(
-            _propertiesManager.clientSenderEmail,
-            "Anglers' Log Client",
-          )
-          ..recipients.add(_propertiesManager.supportEmail)
-          ..attachments = attachment == null ? null : [attachment]
-          ..subject = "Feedback from Anglers' Log"
-          ..text = format(_propertiesManager.feedbackTemplate, [
-            appVersion,
-            isNotEmpty(osVersion) ? osVersion : "Unknown",
-            isNotEmpty(deviceModel) ? deviceModel : "Unknown",
-            type,
-            _error ? widget.error : "N/A",
-            isNotEmpty(name) ? name : "Unknown",
-            isNotEmpty(email) ? email : "Unknown",
-            isNotEmpty(message) ? message : "N/A",
-          ]);
-
-        try {
-          await _mailSender.send(content, server);
-        } on MailerException catch (e) {
-          for (var p in e.problems) {
-            _log.e("Error sending feedback: ${p.code}: ${p.msg}");
-          }
-
-          // Hide "sending" SnackBar and show error.
-          Scaffold.of(context).hideCurrentSnackBar();
-          showErrorSnackBar(
-            context,
-            Strings.of(context).feedbackPageErrorSending,
-          );
-
-          return false;
-        }
-
-        return true;
-      },
+      onSave: _send,
     );
   }
 
@@ -249,6 +182,99 @@ class _FeedbackPageState extends State<FeedbackPage> {
     }
     return null;
   }
+
+  Future<bool> _send(BuildContext context) async {
+    if (!await _io.isConnected()) {
+      showErrorSnackBar(
+        context,
+        Strings.of(context).feedbackPageConnectionError,
+      );
+      return false;
+    }
+
+    showPermanentSnackBar(context, Strings.of(context).feedbackPageSending);
+
+    var name = _nameController.value;
+    var email = _emailController.value;
+    var type = _feedbackTypeToString(_typeController.value);
+    var message = _messageController.value;
+
+    var appVersion = (await _packageInfo.fromPlatform()).version;
+    String osVersion;
+    String deviceModel;
+
+    var deviceInfo = DeviceInfoPlugin();
+    if (Platform.isIOS) {
+      var info = await deviceInfo.iosInfo;
+      osVersion = "${info.systemName} (${info.systemVersion})";
+      deviceModel = info.utsname.machine;
+    } else if (Platform.isAndroid) {
+      var info = await deviceInfo.androidInfo;
+      osVersion = "Android (${info.version.sdkInt})";
+      deviceModel = info.model;
+    }
+
+    // API data, per https://sendgrid.com/docs/api-reference/.
+    var body = <String, dynamic>{
+      "personalizations": [
+        {
+          "to": [
+            {
+              "email": _propertiesManager.supportEmail,
+            },
+          ],
+        }
+      ],
+      "from": {
+        "name": "Anglers' Log App",
+        "email": _propertiesManager.clientSenderEmail,
+      },
+      "subject": "User Feedback - $type",
+      "content": [
+        {
+          "type": "text/plain",
+          "value": format(_propertiesManager.feedbackTemplate, [
+            appVersion,
+            isNotEmpty(osVersion) ? osVersion : "Unknown",
+            isNotEmpty(deviceModel) ? deviceModel : "Unknown",
+            type,
+            _error ? widget.error : "N/A",
+            isNotEmpty(name) ? name : "Unknown",
+            isNotEmpty(email) ? email : "Unknown",
+            isNotEmpty(message) ? message : "N/A",
+
+            isNotEmpty(widget.attachment) ? widget.attachment : "N/A",
+          ]),
+        }
+      ],
+    };
+
+    var response = await _http.post(
+      _urlSendGrid,
+      auth: "Bearer ${_propertiesManager.sendGridApiKey}",
+      body: body,
+    );
+
+    if (response.statusCode != _responseAccepted) {
+      _log.e("Error sending feedback: ${response.statusCode}");
+
+      // Hide "sending" SnackBar and show error.
+      Scaffold.of(context).hideCurrentSnackBar();
+      showErrorSnackBar(
+        context,
+        Strings.of(context).feedbackPageErrorSending,
+      );
+
+      return false;
+    }
+    ;
+
+    return true;
+  }
 }
 
-enum _FeedbackType { suggestion, feedback, bug }
+enum _FeedbackType {
+  suggestion,
+  feedback,
+  bug,
+}

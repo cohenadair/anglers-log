@@ -17,10 +17,10 @@ import 'summary_report_manager.dart';
 import 'time_manager.dart';
 import 'trip_manager.dart';
 import 'wrappers/file_picker_wrapper.dart';
+import 'wrappers/http_wrapper.dart';
 import 'wrappers/image_compress_wrapper.dart';
 import 'wrappers/image_picker_wrapper.dart';
 import 'wrappers/io_wrapper.dart';
-import 'wrappers/mail_sender_wrapper.dart';
 import 'wrappers/package_info_wrapper.dart';
 import 'wrappers/path_provider_wrapper.dart';
 import 'wrappers/permission_handler_wrapper.dart';
@@ -51,10 +51,10 @@ class AppManager {
 
   // External dependency wrappers.
   FilePickerWrapper _filePickerWrapper;
+  HttpWrapper _httpWrapper;
   ImageCompressWrapper _imageCompressWrapper;
   ImagePickerWrapper _imagePickerWrapper;
   IoWrapper _ioWrapper;
-  MailSenderWrapper _mailSenderWrapper;
   PackageInfoWrapper _packageInfoWrapper;
   PathProviderWrapper _pathProviderWrapper;
   PermissionHandlerWrapper _permissionHandlerWrapper;
@@ -181,6 +181,13 @@ class AppManager {
     return _filePickerWrapper;
   }
 
+  HttpWrapper get httpWrapper {
+    if (_httpWrapper == null) {
+      _httpWrapper = HttpWrapper();
+    }
+    return _httpWrapper;
+  }
+
   ImageCompressWrapper get imageCompressWrapper {
     if (_imageCompressWrapper == null) {
       _imageCompressWrapper = ImageCompressWrapper();
@@ -193,13 +200,6 @@ class AppManager {
       _imagePickerWrapper = ImagePickerWrapper();
     }
     return _imagePickerWrapper;
-  }
-
-  MailSenderWrapper get mailSenderWrapper {
-    if (_mailSenderWrapper == null) {
-      _mailSenderWrapper = MailSenderWrapper();
-    }
-    return _mailSenderWrapper;
   }
 
   PackageInfoWrapper get packageInfoWrapper {

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mailer/mailer.dart';
+import 'package:http/http.dart';
 import 'package:mobile/pages/feedback_page.dart';
 import 'package:mobile/widgets/button.dart';
 import 'package:mobile/widgets/radio_input.dart';
@@ -16,8 +16,8 @@ void main() {
 
   setUp(() {
     appManager = MockAppManager(
+      mockHttpWrapper: true,
       mockIoWrapper: true,
-      mockMailSenderWrapper: true,
       mockPackageInfoWrapper: true,
       mockPathProviderWrapper: true,
       mockPropertiesManager: true,
@@ -25,7 +25,6 @@ void main() {
 
     when(appManager.mockIoWrapper.isConnected())
         .thenAnswer((_) => Future.value(true));
-    when(appManager.mockMailSenderWrapper.gmail(any, any)).thenReturn(null);
     when(appManager.mockPackageInfoWrapper.fromPlatform())
         .thenAnswer((_) => Future.value(PackageInfo(version: "1.0")));
     when(appManager.mockPropertiesManager.feedbackTemplate)
@@ -163,8 +162,11 @@ void main() {
       appManager: appManager,
       navigatorObserver: navObserver,
     ));
-    when(appManager.mockMailSenderWrapper.send(any, any))
-        .thenAnswer((_) => throw SmtpClientAuthenticationException("Error"));
+    when(appManager.mockHttpWrapper.post(
+      any,
+      auth: anyNamed("auth"),
+      body: anyNamed("body"),
+    )).thenAnswer((_) => Future.value(Response("", 400)));
 
     await tapAndSettle(tester, find.text("SEND"));
     expect(
@@ -183,9 +185,11 @@ void main() {
       appManager: appManager,
       navigatorObserver: navObserver,
     ));
-    var now = DateTime.now();
-    when(appManager.mockMailSenderWrapper.send(any, any))
-        .thenAnswer((_) => Future.value(SendReport(Message(), now, now, now)));
+    when(appManager.mockHttpWrapper.post(
+      any,
+      auth: anyNamed("auth"),
+      body: anyNamed("body"),
+    )).thenAnswer((_) => Future.value(Response("", 202)));
 
     await tapAndSettle(tester, find.text("SEND"));
     verify(navObserver.didPop(any, any)).called(1);
