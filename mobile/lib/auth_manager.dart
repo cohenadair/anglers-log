@@ -4,6 +4,9 @@ import 'package:provider/provider.dart';
 import 'package:quiver/strings.dart';
 
 import 'app_manager.dart';
+import 'log.dart';
+import 'pages/landing_page.dart';
+import 'widgets/widget.dart';
 import 'wrappers/io_wrapper.dart';
 
 enum AuthError {
@@ -26,6 +29,8 @@ class AuthManager {
   static AuthManager of(BuildContext context) =>
       Provider.of<AppManager>(context, listen: false).authManager;
 
+  final Log _log = Log("AuthManager");
+
   final AppManager _appManager;
   final FirebaseAuth _firebaseAuth;
 
@@ -35,28 +40,38 @@ class AuthManager {
 
   String get userId => _userId;
 
-  AuthManager(this._appManager, this._firebaseAuth) {
-    _firebaseAuth.authStateChanges().listen((user) {
-      if (user != null) {
-        _userId = user.uid;
-      }
-    });
+  AuthManager(this._appManager, this._firebaseAuth);
+
+  Future<void> initialize() {
+    _firebaseAuth.authStateChanges().listen((user) => _userId = user?.uid);
+    return Future.value();
   }
 
   /// Returns a widget that listens for authentications changes.
   Widget listenerWidget({
-    @required Widget loading,
     @required Widget authenticate,
     @required Widget finished,
   }) {
     return StreamBuilder<User>(
       stream: _firebaseAuth.authStateChanges(),
       builder: (context, snapshot) {
-        if (snapshot.connectionState != ConnectionState.done) {
-          return snapshot.hasData ? finished : authenticate;
+        Widget child;
+        if (isNotEmpty(userId)) {
+          // Already signed in.
+          child = finished;
+        } else if (!snapshot.hasData
+            && snapshot.connectionState == ConnectionState.active) {
+          // Not signed in.
+          child = authenticate;
         } else {
-          return loading;
+          // Waiting for data.
+          child = LandingPage();
         }
+
+        return AnimatedSwitcher(
+          duration: defaultAnimationDuration,
+          child: child,
+        );
       },
     );
   }
@@ -66,17 +81,21 @@ class AuthManager {
   }
 
   Future<AuthError> login(String email, String password) async {
-    return _loginOrSignUp(() => _firebaseAuth.signInWithEmailAndPassword(
-          email: email,
-          password: password,
-        ));
+    return _loginOrSignUp(
+      () => _firebaseAuth.signInWithEmailAndPassword(
+        email: email,
+        password: password,
+      ),
+    );
   }
 
   Future<AuthError> signUp(String email, String password) async {
-    return _loginOrSignUp(() => _firebaseAuth.createUserWithEmailAndPassword(
-          email: email,
-          password: password,
-        ));
+    return _loginOrSignUp(
+      () => _firebaseAuth.createUserWithEmailAndPassword(
+        email: email,
+        password: password,
+      ),
+    );
   }
 
   Future<AuthError> _loginOrSignUp(
@@ -90,6 +109,7 @@ class AuthManager {
           ? null
           : AuthError.invalidUserId;
     } on FirebaseAuthException catch (error) {
+      print(error);
       return _firebaseExceptionToAuthError(error.code);
     }
   }
@@ -118,6 +138,7 @@ class AuthManager {
         return AuthError.weakPassword;
     }
 
+    _log.d("Unknown Firebase exception: $firebaseCode");
     return AuthError.unknownFirebaseException;
   }
 }

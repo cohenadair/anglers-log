@@ -41,6 +41,7 @@ class _CatchFieldPickerPageState extends State<CatchFieldPickerPage> {
   Widget build(BuildContext context) {
     return OnboardingPage(
       padding: insetsZero,
+      showBackButton: false,
       onPressedNextButton: widget.onNext == null ? null : _onPressedNext,
       children: <Widget>[
         SafeArea(child: Empty()),

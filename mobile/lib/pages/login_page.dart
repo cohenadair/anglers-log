@@ -20,6 +20,8 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  static const _logoSize = 150.0;
+
   final _formKey = GlobalKey<FormState>();
   final _emailController = EmailInputController(required: true);
   final _passwordController = PasswordInputController();
@@ -43,27 +45,36 @@ class _LoginPageState extends State<LoginPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
-              TitleLabel(_mode.title(context)),
-              VerticalSpace(paddingDefault),
+              ClipOval(
+                child: Image(
+                  image: AssetImage("assets/logo.png"),
+                  width: _logoSize,
+                  height: _logoSize,
+                ),
+              ),
+              VerticalSpace(paddingWidget),
+              TitleLabel(Strings.of(context).appName),
+              VerticalSpace(paddingWidget),
               TextInput.email(
                 context,
                 controller: _emailController,
                 onChanged: _clearError,
               ),
+              VerticalSpace(paddingWidgetTiny),
               TextInput.password(
                 context,
                 controller: _passwordController,
                 onChanged: _clearError,
               ),
               _buildErrorRow(),
-              VerticalSpace(paddingDefault),
+              VerticalSpace(paddingWidget),
               Button(
                 text: _mode.buttonText(context),
                 onPressed: _isInputValid() ? _handleLoginOrSignUp : null,
               ),
-              VerticalSpace(paddingDefault),
+              VerticalSpace(paddingWidget),
               _buildInfoRow(),
-              VerticalSpace(paddingDefault),
+              VerticalSpace(paddingWidget),
               AnimatedVisibility(
                 child: Loading(isCentered: false),
                 visible: _isLoading,

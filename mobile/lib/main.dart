@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 
 import 'app_manager.dart';
 import 'auth_manager.dart';
+import 'channels/migration_channel.dart';
 import 'i18n/strings.dart';
 import 'pages/landing_page.dart';
 import 'pages/login_page.dart';
@@ -14,6 +15,7 @@ import 'pages/onboarding/onboarding_journey.dart';
 import 'preferences_manager.dart';
 import 'res/color.dart';
 import 'widgets/widget.dart';
+import 'wrappers/services_wrapper.dart';
 
 void main() {
   runApp(AnglersLog(AppManager()));
@@ -30,10 +32,12 @@ class AnglersLog extends StatefulWidget {
 
 class _AnglersLogState extends State<AnglersLog> {
   Future<bool> _appInitializedFuture;
+  LegacyJsonResult _legacyJsonResult;
 
   AppManager get _app => widget.appManager;
   AuthManager get _authManager => _app.authManager;
   PreferencesManager get _preferencesManager => _app.preferencesManager;
+  ServicesWrapper get _services => _app.servicesWrapper;
 
   @override
   void initState() {
@@ -76,16 +80,14 @@ class _AnglersLogState extends State<AnglersLog> {
               firstPage = MainPage();
             } else {
               firstPage = OnboardingJourney(
+                legacyJsonResult: _legacyJsonResult,
                 onFinished: () => setState(() {
                   _preferencesManager.didOnboard = true;
                 }),
               );
             }
 
-            // TODO: When transitioning from LoginPage to OnboardingJourney,
-            // a LandingPage is shown briefly.
             return _authManager.listenerWidget(
-              loading: LandingPage(),
               authenticate: LoginPage(),
               finished: AnimatedSwitcher(
                 duration: defaultAnimationDuration,
@@ -112,6 +114,7 @@ class _AnglersLogState extends State<AnglersLog> {
   Future<bool> _initialize() async {
     await Firebase.initializeApp();
 
+    await _app.authManager.initialize();
     await _app.dataManager.initialize();
     await _app.locationMonitor.initialize();
     await _app.propertiesManager.initialize();
@@ -127,6 +130,13 @@ class _AnglersLogState extends State<AnglersLog> {
     await _app.preferencesManager.initialize();
     await _app.speciesManager.initialize();
     await _app.summaryReportManager.initialize();
+
+    // If the user hasn't yet onboarded, see if there is any legacy data to
+    // migrate. We do this here to allow for a smoother transition between the
+    // login page and onboarding journey.
+    if (!_preferencesManager.didOnboard) {
+      _legacyJsonResult = await legacyJson(_services);
+    }
 
     return true;
   }
