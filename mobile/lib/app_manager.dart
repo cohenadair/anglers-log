@@ -1,6 +1,8 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import 'auth_manager.dart';
 import 'bait_category_manager.dart';
 import 'bait_manager.dart';
 import 'catch_manager.dart';
@@ -17,6 +19,7 @@ import 'summary_report_manager.dart';
 import 'time_manager.dart';
 import 'trip_manager.dart';
 import 'wrappers/file_picker_wrapper.dart';
+import 'wrappers/firebase_wrapper.dart';
 import 'wrappers/http_wrapper.dart';
 import 'wrappers/image_compress_wrapper.dart';
 import 'wrappers/image_picker_wrapper.dart';
@@ -33,6 +36,7 @@ class AppManager {
       Provider.of<AppManager>(context, listen: false);
 
   // Internal dependencies.
+  AuthManager _authManager;
   BaitCategoryManager _baitCategoryManager;
   BaitManager _baitManager;
   DataManager _dataManager;
@@ -51,6 +55,7 @@ class AppManager {
 
   // External dependency wrappers.
   FilePickerWrapper _filePickerWrapper;
+  FirebaseWrapper _firebaseWrapper;
   HttpWrapper _httpWrapper;
   ImageCompressWrapper _imageCompressWrapper;
   ImagePickerWrapper _imagePickerWrapper;
@@ -61,6 +66,13 @@ class AppManager {
   PhotoManagerWrapper _photoManagerWrapper;
   ServicesWrapper _servicesWrapper;
   UrlLauncherWrapper _urlLauncherWrapper;
+
+  AuthManager get authManager {
+    if (_authManager == null) {
+      _authManager = AuthManager(this, FirebaseAuth.instance);
+    }
+    return _authManager;
+  }
 
   BaitCategoryManager get baitCategoryManager {
     if (_baitCategoryManager == null) {
@@ -179,6 +191,13 @@ class AppManager {
       _filePickerWrapper = FilePickerWrapper();
     }
     return _filePickerWrapper;
+  }
+
+  FirebaseWrapper get firebaseWrapper {
+    if (_firebaseWrapper == null) {
+      _firebaseWrapper = FirebaseWrapper();
+    }
+    return _firebaseWrapper;
   }
 
   HttpWrapper get httpWrapper {

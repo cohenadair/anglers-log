@@ -157,7 +157,10 @@ class Loading extends StatelessWidget {
         ),
       );
     } else {
-      return indicator;
+      return Padding(
+        padding: padding,
+        child: indicator,
+      );
     }
   }
 }

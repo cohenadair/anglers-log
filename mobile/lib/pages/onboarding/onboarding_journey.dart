@@ -5,20 +5,18 @@ import '../../app_manager.dart';
 import '../../channels/migration_channel.dart';
 import '../../database/legacy_importer.dart';
 import '../../log.dart';
-import '../../widgets/widget.dart';
-import '../../wrappers/services_wrapper.dart';
-import '../landing_page.dart';
 import 'catch_field_picker_page.dart';
 import 'how_to_feedback_page.dart';
 import 'how_to_manage_fields_page.dart';
 import 'location_permission_page.dart';
 import 'migration_page.dart';
-import 'welcome_page.dart';
 
 class OnboardingJourney extends StatefulWidget {
+  final LegacyJsonResult legacyJsonResult;
   final VoidCallback onFinished;
 
   OnboardingJourney({
+    this.legacyJsonResult,
     this.onFinished,
   }) : assert(onFinished != null);
 
@@ -28,7 +26,6 @@ class OnboardingJourney extends StatefulWidget {
 
 class _OnboardingJourneyState extends State<OnboardingJourney> {
   static const _routeRoot = "/";
-  static const _routeWelcome = "welcome";
   static const _routeCatchFields = "catch_fields";
   static const _routeManageFields = "manage_fields";
   static const _routeLocationPermission = "location_permission";
@@ -36,58 +33,21 @@ class _OnboardingJourneyState extends State<OnboardingJourney> {
 
   final _log = Log("OnboardingJourney");
 
-  Future<LegacyJsonResult> _legacyJsonFuture;
-
   AppManager get _appManager => AppManager.of(context);
-
-  ServicesWrapper get _servicesWrapper => ServicesWrapper.of(context);
-
-  @override
-  void initState() {
-    super.initState();
-    _legacyJsonFuture = legacyJson(_servicesWrapper);
-  }
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<LegacyJsonResult>(
-      future: _legacyJsonFuture,
-      builder: (context, snapshot) {
-        Widget child;
-        // Check connectionState here instead of hasData because legacyJson
-        // will return null if there is no legacy data to import.
-        if (snapshot.connectionState == ConnectionState.done) {
-          child = _buildNavigator(snapshot.data);
-        } else {
-          child = LandingPage();
-        }
-
-        return AnimatedSwitcher(
-          duration: defaultAnimationDuration,
-          child: child,
-        );
-      },
-    );
-  }
-
-  Widget _buildNavigator(LegacyJsonResult legacyJsonResult) {
     return Navigator(
       onGenerateRoute: (routeSettings) {
         var name = routeSettings.name;
         if (name == _routeRoot) {
-          if (legacyJsonResult != null) {
-            return _buildMigrationPageRoute(legacyJsonResult);
+          if (widget.legacyJsonResult != null) {
+            return _buildMigrationPageRoute(widget.legacyJsonResult);
           } else {
-            return _buildWelcomePageRoute(routeSettings);
+            return _buildCatchFieldsRoute();
           }
-        } else if (name == _routeWelcome) {
-          return _buildWelcomePageRoute(routeSettings);
         } else if (name == _routeCatchFields) {
-          return MaterialPageRoute(
-            builder: (context) => CatchFieldPickerPage(
-              onNext: () => Navigator.of(context).pushNamed(_routeManageFields),
-            ),
-          );
+          return _buildCatchFieldsRoute();
         } else if (name == _routeManageFields) {
           return MaterialPageRoute(
             builder: (context) => HowToManageFieldsPage(
@@ -116,22 +76,19 @@ class _OnboardingJourneyState extends State<OnboardingJourney> {
     );
   }
 
-  Route<dynamic> _buildWelcomePageRoute(RouteSettings routeSettings) {
-    return MaterialPageRoute(
-      settings: routeSettings,
-      builder: (context) {
-        return WelcomePage(
-          onStart: () => Navigator.of(context).pushNamed(_routeCatchFields),
-        );
-      },
-    );
-  }
-
   Route<dynamic> _buildMigrationPageRoute(LegacyJsonResult legacyJsonResult) {
     return MaterialPageRoute(
       builder: (context) => MigrationPage(
         importer: LegacyImporter.migrate(_appManager, legacyJsonResult),
-        onNext: () => Navigator.of(context).pushNamed(_routeWelcome),
+        onNext: () => Navigator.of(context).pushNamed(_routeCatchFields),
+      ),
+    );
+  }
+
+  Route<dynamic> _buildCatchFieldsRoute() {
+    return MaterialPageRoute(
+      builder: (context) => CatchFieldPickerPage(
+        onNext: () => Navigator.of(context).pushNamed(_routeManageFields),
       ),
     );
   }

@@ -107,6 +107,15 @@ class EmailInputController extends TextInputController {
         );
 }
 
+class PasswordInputController extends TextInputController {
+  PasswordInputController({
+    TextEditingController editingController,
+  }) : super(
+          editingController: editingController ?? TextEditingController(),
+          validator: PasswordValidator(),
+        );
+}
+
 /// A [TimestampInputController] value, [Timestamp], is always in UTC. However,
 /// the [date] and [time] properties are in the local timezone.
 class TimestampInputController extends InputController<Timestamp> {

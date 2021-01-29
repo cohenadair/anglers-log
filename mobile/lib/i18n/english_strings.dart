@@ -47,7 +47,10 @@ Map<String, Map<String, String>> get englishStrings => {
         "input_photosLabel": "Photos",
         "input_notSelected": "Not Selected",
         "input_emailLabel": "Email",
-        "input_invalidEmail": "Invalid email",
+        "input_invalidEmail": "Invalid email format",
+        "input_passwordLabel": "Password",
+        "input_passwordInvalidLength":
+            "Password length must be greater than 6 characters",
         "addAnythingPage_catch": "Catch",
         "addAnythingPage_trip": "Trip",
         "catchListPage_menuLabel": "Catches",
@@ -155,6 +158,8 @@ Map<String, Map<String, String>> get englishStrings => {
         "tripListPage_menuLabel": "Trips",
         "tripListPage_title": "Trips (%s)",
         "settingsPage_title": "Settings",
+        "settingsPage_logout": "Logout",
+        "settingsPage_logoutConfirmMessage": "Are you sure you want to logout?",
         "mapPage_menuLabel": "Map",
         "mapPage_deleteFishingSpot":
             "%s is associated with %s catches; are you sure you want to delete it? This cannot be undone.",
@@ -325,5 +330,28 @@ Map<String, Map<String, String>> get englishStrings => {
         "emptyListPlaceholder_noResultsTitle": "No results found",
         "emptyListPlaceholder_noResultsDescription":
             "Please adjust your search filter to find what you're looking for.",
+        "loginPage_loginTitle": "Login",
+        "loginPage_loginButtonText": "Login",
+        "loginPage_loginQuestionText": "Don't have an account?",
+        "loginPage_loginActionText": "Sign up.",
+        "loginPage_signUpTitle": "Sign up",
+        "loginPage_signUpButtonText": "Sign up",
+        "loginPage_signUpQuestionText": "Already have an account?",
+        "loginPage_signUpActionText": "Login.",
+        "loginPage_errorUnknown": "Unknown error. Please try again later.",
+        "loginPage_errorUnknownServer":
+            "Unknown server error. Please try again later.",
+        "loginPage_errorNoConnection":
+            "Please connect to the internet and try again.",
+        "loginPage_errorInvalidEmail":
+            "The email address you entered is invalid.",
+        "loginPage_errorUserDisabled":
+            "The user associated with this email has been disabled.",
+        "loginPage_errorUserNotFound":
+            "An account with this email does not exist.",
+        "loginPage_errorWrongPassword":
+            "The password you entered is incorrect.",
+        "loginPage_errorEmailInUse":
+            "An account with this email already exists.",
       },
     };

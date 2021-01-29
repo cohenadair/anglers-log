@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'dart:io';
 
 import 'package:device_info/device_info.dart';
@@ -242,7 +241,6 @@ class _FeedbackPageState extends State<FeedbackPage> {
             isNotEmpty(name) ? name : "Unknown",
             isNotEmpty(email) ? email : "Unknown",
             isNotEmpty(message) ? message : "N/A",
-
             isNotEmpty(widget.attachment) ? widget.attachment : "N/A",
           ]),
         }

@@ -111,7 +111,7 @@ void main() {
     testWidgets("Error if invalid format", (tester) async {
       var context = await buildContext(tester);
       expect(EmailValidator().run(context, "not a valid email")(context),
-          "Invalid email");
+          "Invalid email format");
     });
 
     testWidgets("null if valid email", (tester) async {
@@ -127,10 +127,10 @@ void main() {
 
     testWidgets("Error if empty and required", (tester) async {
       var context = await buildContext(tester);
-      expect(EmailValidator(required: true).run(context, "")(context),
-          "Invalid email");
+      expect(
+          EmailValidator(required: true).run(context, "")(context), "Required");
       expect(EmailValidator(required: true).run(context, null)(context),
-          "Invalid email");
+          "Required");
     });
   });
 
@@ -144,6 +144,24 @@ void main() {
     testWidgets("null if not empty", (tester) async {
       var context = await buildContext(tester);
       expect(EmptyValidator().run(context, "Not empty"), isNull);
+    });
+  });
+
+  group("PasswordValidator", () {
+    testWidgets("Error if empty", (tester) async {
+      var context = await buildContext(tester);
+      expect(PasswordValidator().run(context, ""), isNotNull);
+      expect(PasswordValidator().run(context, null), isNotNull);
+    });
+
+    testWidgets("Error if too short", (tester) async {
+      var context = await buildContext(tester);
+      expect(PasswordValidator().run(context, "12345"), isNotNull);
+    });
+
+    testWidgets("Valid password", (tester) async {
+      var context = await buildContext(tester);
+      expect(PasswordValidator().run(context, "123456"), isNull);
     });
   });
 }

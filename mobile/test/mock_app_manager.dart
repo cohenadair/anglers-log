@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/app_manager.dart';
+import 'package:mobile/auth_manager.dart';
 import 'package:mobile/bait_category_manager.dart';
 import 'package:mobile/bait_manager.dart';
 import 'package:mobile/catch_manager.dart';
@@ -16,6 +17,7 @@ import 'package:mobile/species_manager.dart';
 import 'package:mobile/time_manager.dart';
 import 'package:mobile/trip_manager.dart';
 import 'package:mobile/wrappers/file_picker_wrapper.dart';
+import 'package:mobile/wrappers/firebase_wrapper.dart';
 import 'package:mobile/wrappers/http_wrapper.dart';
 import 'package:mobile/wrappers/image_compress_wrapper.dart';
 import 'package:mobile/wrappers/image_picker_wrapper.dart';
@@ -28,6 +30,8 @@ import 'package:mobile/wrappers/services_wrapper.dart';
 import 'package:mobile/wrappers/url_launcher_wrapper.dart';
 import 'package:mockito/mockito.dart';
 import 'package:sqflite/sqflite.dart';
+
+class MockAuthManager extends Mock implements AuthManager {}
 
 class MockBaitCategoryManager extends Mock implements BaitCategoryManager {}
 
@@ -64,6 +68,8 @@ class MockTripManager extends Mock implements TripManager {}
 
 class MockFilePickerWrapper extends Mock implements FilePickerWrapper {}
 
+class MockFirebaseWrapper extends Mock implements FirebaseWrapper {}
+
 class MockHttpWrapper extends Mock implements HttpWrapper {}
 
 class MockImageCompressWrapper extends Mock implements ImageCompressWrapper {}
@@ -86,6 +92,7 @@ class MockServicesWrapper extends Mock implements ServicesWrapper {}
 class MockUrlLauncherWrapper extends Mock implements UrlLauncherWrapper {}
 
 class MockAppManager extends Mock implements AppManager {
+  MockAuthManager mockAuthManager;
   MockBaitCategoryManager mockBaitCategoryManager;
   MockBaitManager mockBaitManager;
   MockDataManager mockDataManager;
@@ -103,6 +110,7 @@ class MockAppManager extends Mock implements AppManager {
   MockTripManager mockTripManager;
 
   MockFilePickerWrapper mockFilePickerWrapper;
+  MockFirebaseWrapper mockFirebaseWrapper;
   MockHttpWrapper mockHttpWrapper;
   MockImageCompressWrapper mockImageCompressWrapper;
   MockImagePickerWrapper mockImagePickerWrapper;
@@ -115,6 +123,7 @@ class MockAppManager extends Mock implements AppManager {
   MockUrlLauncherWrapper mockUrlLauncherWrapper;
 
   MockAppManager({
+    bool mockAuthManager = false,
     bool mockBaitCategoryManager = false,
     bool mockBaitManager = false,
     bool mockDataManager = false,
@@ -132,6 +141,7 @@ class MockAppManager extends Mock implements AppManager {
     bool mockTimeManager = false,
     bool mockTripManager = false,
     bool mockFilePickerWrapper = false,
+    bool mockFirebaseWrapper = false,
     bool mockHttpWrapper = false,
     bool mockImageCompressWrapper = false,
     bool mockImagePickerWrapper = false,
@@ -143,6 +153,11 @@ class MockAppManager extends Mock implements AppManager {
     bool mockServicesWrapper = false,
     bool mockUrlLauncherWrapper = false,
   }) {
+    if (mockAuthManager) {
+      this.mockAuthManager = MockAuthManager();
+      when(authManager).thenReturn(this.mockAuthManager);
+    }
+
     if (mockBaitCategoryManager) {
       this.mockBaitCategoryManager = MockBaitCategoryManager();
       when(baitCategoryManager).thenReturn(this.mockBaitCategoryManager);
@@ -225,6 +240,11 @@ class MockAppManager extends Mock implements AppManager {
     if (mockFilePickerWrapper) {
       this.mockFilePickerWrapper = MockFilePickerWrapper();
       when(filePickerWrapper).thenReturn(this.mockFilePickerWrapper);
+    }
+
+    if (mockFirebaseWrapper) {
+      this.mockFirebaseWrapper = MockFirebaseWrapper();
+      when(firebaseWrapper).thenReturn(this.mockFirebaseWrapper);
     }
 
     if (mockHttpWrapper) {
