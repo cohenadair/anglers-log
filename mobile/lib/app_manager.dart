@@ -19,6 +19,7 @@ import 'summary_report_manager.dart';
 import 'time_manager.dart';
 import 'trip_manager.dart';
 import 'wrappers/file_picker_wrapper.dart';
+import 'wrappers/firebase_wrapper.dart';
 import 'wrappers/http_wrapper.dart';
 import 'wrappers/image_compress_wrapper.dart';
 import 'wrappers/image_picker_wrapper.dart';
@@ -54,6 +55,7 @@ class AppManager {
 
   // External dependency wrappers.
   FilePickerWrapper _filePickerWrapper;
+  FirebaseWrapper _firebaseWrapper;
   HttpWrapper _httpWrapper;
   ImageCompressWrapper _imageCompressWrapper;
   ImagePickerWrapper _imagePickerWrapper;
@@ -189,6 +191,13 @@ class AppManager {
       _filePickerWrapper = FilePickerWrapper();
     }
     return _filePickerWrapper;
+  }
+
+  FirebaseWrapper get firebaseWrapper {
+    if (_firebaseWrapper == null) {
+      _firebaseWrapper = FirebaseWrapper();
+    }
+    return _firebaseWrapper;
   }
 
   HttpWrapper get httpWrapper {

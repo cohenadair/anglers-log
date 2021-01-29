@@ -1,8 +1,9 @@
-import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
+import 'package:quiver/strings.dart';
 
 import 'app_manager.dart';
 import 'auth_manager.dart';
@@ -87,13 +88,7 @@ class _AnglersLogState extends State<AnglersLog> {
               );
             }
 
-            return _authManager.listenerWidget(
-              authenticate: LoginPage(),
-              finished: AnimatedSwitcher(
-                duration: defaultAnimationDuration,
-                child: firstPage,
-              ),
-            );
+            return authChangesListener(firstPage);
           },
         ),
         debugShowCheckedModeBanner: false,
@@ -111,8 +106,21 @@ class _AnglersLogState extends State<AnglersLog> {
     );
   }
 
+  /// Returns a widget that listens for authentications changes.
+  Widget authChangesListener(Widget authenticated) {
+    return StreamBuilder<User>(
+      stream: _authManager.authStateChanges,
+      builder: (context, snapshot) {
+        return AnimatedSwitcher(
+          duration: defaultAnimationDuration,
+          child: isNotEmpty(_authManager.userId) ? authenticated : LoginPage(),
+        );
+      },
+    );
+  }
+
   Future<bool> _initialize() async {
-    await Firebase.initializeApp();
+    await _app.firebaseWrapper.initializeApp();
 
     await _app.authManager.initialize();
     await _app.dataManager.initialize();

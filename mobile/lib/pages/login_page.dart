@@ -2,7 +2,6 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:quiver/strings.dart';
 
-import '../app_manager.dart';
 import '../auth_manager.dart';
 import '../i18n/strings.dart';
 import '../res/dimen.dart';
@@ -30,7 +29,7 @@ class _LoginPageState extends State<LoginPage> {
   String _errorText;
   bool _isLoading = false;
 
-  AppManager get _appManager => AppManager.of(context);
+  AuthManager get _authManager => AuthManager.of(context);
 
   bool get _isLoggingIn => _mode == _Mode._loggingIn;
 
@@ -141,14 +140,14 @@ class _LoginPageState extends State<LoginPage> {
 
   void _login() {
     _setIsLoading(true);
-    _appManager.authManager
+    _authManager
         .login(_emailController.value, _passwordController.value)
         .then(_onLoginOrSignUp);
   }
 
   void _signUp() {
     _setIsLoading(true);
-    _appManager.authManager
+    _authManager
         .signUp(_emailController.value, _passwordController.value)
         .then(_onLoginOrSignUp);
   }

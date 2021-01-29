@@ -3,6 +3,7 @@ import 'dart:io';
 import 'dart:ui' as ui;
 import 'dart:ui';
 
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -143,6 +144,25 @@ T findSiblingOfText<T>(WidgetTester tester, Type parentType, String text) =>
       of: find.widgetWithText(parentType, text),
       matching: find.byType(T),
     )) as T;
+
+Finder findRichText(String text) {
+  return find.byWidgetPredicate(
+      (widget) => widget is RichText && widget.text.toPlainText() == text);
+}
+
+bool tapRichTextContaining(
+    WidgetTester tester, String fullText, String clickText) {
+  return !tester
+      .firstWidget<RichText>(findRichText(fullText))
+      .text
+      .visitChildren((span) {
+    if (span is TextSpan && span.text == clickText) {
+      (span.recognizer as TapGestureRecognizer).onTap();
+      return false;
+    }
+    return true;
+  });
+}
 
 /// Different from [Finder.byType] in that it works for widgets with generic
 /// arguments.

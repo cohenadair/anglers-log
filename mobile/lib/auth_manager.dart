@@ -5,8 +5,6 @@ import 'package:quiver/strings.dart';
 
 import 'app_manager.dart';
 import 'log.dart';
-import 'pages/landing_page.dart';
-import 'widgets/widget.dart';
 import 'wrappers/io_wrapper.dart';
 
 enum AuthError {
@@ -39,41 +37,13 @@ class AuthManager {
   IoWrapper get _io => _appManager.ioWrapper;
 
   String get userId => _userId;
+  Stream<User> get authStateChanges => _firebaseAuth.authStateChanges();
 
   AuthManager(this._appManager, this._firebaseAuth);
 
   Future<void> initialize() {
     _firebaseAuth.authStateChanges().listen((user) => _userId = user?.uid);
     return Future.value();
-  }
-
-  /// Returns a widget that listens for authentications changes.
-  Widget listenerWidget({
-    @required Widget authenticate,
-    @required Widget finished,
-  }) {
-    return StreamBuilder<User>(
-      stream: _firebaseAuth.authStateChanges(),
-      builder: (context, snapshot) {
-        Widget child;
-        if (isNotEmpty(userId)) {
-          // Already signed in.
-          child = finished;
-        } else if (!snapshot.hasData
-            && snapshot.connectionState == ConnectionState.active) {
-          // Not signed in.
-          child = authenticate;
-        } else {
-          // Waiting for data.
-          child = LandingPage();
-        }
-
-        return AnimatedSwitcher(
-          duration: defaultAnimationDuration,
-          child: child,
-        );
-      },
-    );
   }
 
   Future<void> logout() async {
@@ -109,7 +79,6 @@ class AuthManager {
           ? null
           : AuthError.invalidUserId;
     } on FirebaseAuthException catch (error) {
-      print(error);
       return _firebaseExceptionToAuthError(error.code);
     }
   }

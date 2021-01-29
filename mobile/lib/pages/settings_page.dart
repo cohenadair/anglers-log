@@ -22,16 +22,18 @@ class SettingsPage extends StatelessWidget {
     );
   }
 
-  Widget _buildLogout(BuildContext context) => ListItem(
-        title: Label(
-          Strings.of(context).settingsPageLogout,
-          style: styleError,
-        ),
-        onTap: () => showConfirmYesDialog(
-          context: context,
-          description:
-              Label(Strings.of(context).settingsPageLogoutConfirmMessage),
-          onConfirm: () async => AuthManager.of(context).logout(),
-        ),
-      );
+  Widget _buildLogout(BuildContext context) {
+    return ListItem(
+      title: Label(
+        Strings.of(context).settingsPageLogout,
+        style: styleError,
+      ),
+      onTap: () => showConfirmYesDialog(
+        context: context,
+        description:
+            Label(Strings.of(context).settingsPageLogoutConfirmMessage),
+        onConfirm: () async => AuthManager.of(context).logout(),
+      ),
+    );
+  }
 }
