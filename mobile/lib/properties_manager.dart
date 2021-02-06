@@ -15,7 +15,7 @@ class PropertiesManager {
   final String _keySupportEmail = "support.email";
   final String _keySendGridApiKey = "sendgrid.apikey";
 
-  final Log _log = Log("PropertiesManager");
+  final _log = Log("PropertiesManager");
 
   final String _path = "assets/sensitive.properties";
   final String _feedbackTemplatePath = "assets/feedback_template";

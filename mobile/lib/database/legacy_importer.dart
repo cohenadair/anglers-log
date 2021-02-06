@@ -59,7 +59,7 @@ class LegacyImporter {
   /// location name, the second argument is the fishing spot name.
   static final _nameFormatFishingSpot = "%s - %s";
 
-  final Log _log = Log("LegacyImporter");
+  final _log = Log("LegacyImporter");
 
   final AppManager _appManager;
   final File _zipFile;

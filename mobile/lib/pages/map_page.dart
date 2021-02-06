@@ -35,7 +35,7 @@ class MapPage extends StatefulWidget {
 }
 
 class _MapPageState extends State<MapPage> {
-  final Log _log = Log("MapPage");
+  final _log = Log("MapPage");
 
   final Completer<GoogleMapController> _mapController = Completer();
   final Set<FishingSpotMarker> _fishingSpotMarkers = {};
@@ -283,7 +283,7 @@ class _MapPageState extends State<MapPage> {
 
 /// A widget that shows details of a selected fishing spot.
 class _FishingSpotBottomSheet extends StatelessWidget {
-  final Log _log = Log("_FishingSpotBottomSheet");
+  final _log = Log("_FishingSpotBottomSheet");
 
   final double _chipHeight = 45;
 

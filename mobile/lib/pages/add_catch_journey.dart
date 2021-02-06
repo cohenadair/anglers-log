@@ -9,7 +9,7 @@ import '../pages/fishing_spot_picker_page.dart';
 import '../pages/image_picker_page.dart';
 import '../pages/save_catch_page.dart';
 import '../pages/species_list_page.dart';
-import '../preferences_manager.dart';
+import '../user_preference_manager.dart';
 import '../utils/catch_utils.dart';
 import '../utils/protobuf_utils.dart';
 import 'manageable_list_page.dart';
@@ -32,7 +32,8 @@ class _AddCatchJourneyState extends State<AddCatchJourney> {
 
   LocationMonitor get _locationMonitor => LocationMonitor.of(context);
 
-  PreferencesManager get _preferencesManager => PreferencesManager.of(context);
+  UserPreferenceManager get _userPreferencesManager =>
+      UserPreferenceManager.of(context);
 
   List<PickedImage> _images = [];
   Species _species;
@@ -160,13 +161,13 @@ class _AddCatchJourneyState extends State<AddCatchJourney> {
   }
 
   bool _isTrackingImages() {
-    var catchFieldIds = _preferencesManager.catchFieldIds;
+    var catchFieldIds = _userPreferencesManager.catchFieldIds;
     return catchFieldIds.isEmpty ||
         catchFieldIds.contains(catchFieldIdImages());
   }
 
   bool _isTrackingFishingSpots() {
-    var catchFieldIds = _preferencesManager.catchFieldIds;
+    var catchFieldIds = _userPreferencesManager.catchFieldIds;
     return catchFieldIds.isEmpty ||
         catchFieldIds.contains(catchFieldIdFishingSpot());
   }

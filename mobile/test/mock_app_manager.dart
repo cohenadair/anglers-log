@@ -6,12 +6,13 @@ import 'package:mobile/bait_manager.dart';
 import 'package:mobile/catch_manager.dart';
 import 'package:mobile/comparison_report_manager.dart';
 import 'package:mobile/custom_entity_manager.dart';
+import 'package:mobile/subscription_manager.dart';
 import 'package:mobile/summary_report_manager.dart';
 import 'package:mobile/data_manager.dart';
 import 'package:mobile/fishing_spot_manager.dart';
 import 'package:mobile/image_manager.dart';
 import 'package:mobile/location_monitor.dart';
-import 'package:mobile/preferences_manager.dart';
+import 'package:mobile/user_preference_manager.dart';
 import 'package:mobile/properties_manager.dart';
 import 'package:mobile/species_manager.dart';
 import 'package:mobile/time_manager.dart';
@@ -54,11 +55,13 @@ class MockImageManager extends Mock implements ImageManager {}
 
 class MockLocationMonitor extends Mock implements LocationMonitor {}
 
-class MockPreferencesManager extends Mock implements PreferencesManager {}
+class MockPreferencesManager extends Mock implements UserPreferenceManager {}
 
 class MockPropertiesManager extends Mock implements PropertiesManager {}
 
 class MockSpeciesManager extends Mock implements SpeciesManager {}
+
+class MockSubscriptionManager extends Mock implements SubscriptionManager {}
 
 class MockSummaryReportManager extends Mock implements SummaryReportManager {}
 
@@ -105,6 +108,7 @@ class MockAppManager extends Mock implements AppManager {
   MockPreferencesManager mockPreferencesManager;
   MockPropertiesManager mockPropertiesManager;
   MockSpeciesManager mockSpeciesManager;
+  MockSubscriptionManager mockSubscriptionManager;
   MockSummaryReportManager mockSummaryReportManager;
   MockTimeManager mockTimeManager;
   MockTripManager mockTripManager;
@@ -137,6 +141,7 @@ class MockAppManager extends Mock implements AppManager {
     bool mockPreferencesManager = false,
     bool mockPropertiesManager = false,
     bool mockSpeciesManager = false,
+    bool mockSubscriptionManager = false,
     bool mockSummaryReportManager = false,
     bool mockTimeManager = false,
     bool mockTripManager = false,
@@ -206,7 +211,7 @@ class MockAppManager extends Mock implements AppManager {
 
     if (mockPreferencesManager) {
       this.mockPreferencesManager = MockPreferencesManager();
-      when(preferencesManager).thenReturn(this.mockPreferencesManager);
+      when(userPreferenceManager).thenReturn(this.mockPreferencesManager);
     }
 
     if (mockPropertiesManager) {
@@ -217,6 +222,11 @@ class MockAppManager extends Mock implements AppManager {
     if (mockSpeciesManager) {
       this.mockSpeciesManager = MockSpeciesManager();
       when(speciesManager).thenReturn(this.mockSpeciesManager);
+    }
+
+    if (mockSubscriptionManager) {
+      this.mockSubscriptionManager = MockSubscriptionManager();
+      when(subscriptionManager).thenReturn(this.mockSubscriptionManager);
     }
 
     if (mockSummaryReportManager) {

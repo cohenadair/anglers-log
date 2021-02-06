@@ -1,0 +1,130 @@
+import 'dart:async';
+import 'dart:convert';
+
+import 'package:flutter/material.dart';
+import 'package:quiver/strings.dart';
+
+import 'app_manager.dart';
+import 'data_source_facilitator.dart';
+import 'log.dart';
+import 'model/gen/anglerslog.pb.dart';
+import 'utils/protobuf_utils.dart';
+import 'wrappers/firestore_wrapper.dart';
+
+/// An abstract class for managing a collection of preferences. This class has
+/// the capability to sync with Cloud Firestore, if the subclass is setup to
+/// do so.
+abstract class PreferenceManager extends DataSourceFacilitator {
+  static const _keyId = "id";
+  static const _keyValue = "value";
+
+  @protected
+  String get tableName;
+
+  @protected
+  String get firestoreDocPath;
+
+  @protected
+  final Map<String, dynamic> preferences = {};
+
+  Log _log;
+
+  PreferenceManager(AppManager appManager) : super(appManager) {
+    _log = Log("PreferenceManager($runtimeType)");
+  }
+
+  @protected
+  FirestoreWrapper get firestore => appManager.firestoreWrapper;
+
+  @override
+  Future<void> initializeLocalData() async {
+    for (var row in (await dataManager.fetchAll(tableName))) {
+      preferences[row[_keyId]] = jsonDecode(row[_keyValue]);
+    }
+  }
+
+  @override
+  void clearLocalData() {
+    for (var key in List.of(preferences.keys)) {
+      putLocal(key, null);
+    }
+  }
+
+  @protected
+  void put(String key, dynamic value) {
+    if (preferences[key] == value) {
+      return;
+    }
+
+    _log.d("Setting key=$key, value=$value");
+
+    if (subscriptionManager.isPro && enableFirestore) {
+      _putFirebase(key, value);
+    } else {
+      putLocal(key, value);
+    }
+  }
+
+  @protected
+  void putLocal(String key, dynamic value) {
+    if (value == null) {
+      dataManager.delete(tableName, where: "$_keyId = ?", whereArgs: [key]);
+      preferences.remove(key);
+    } else {
+      dataManager.insertOrReplace(tableName, {
+        _keyId: key,
+        _keyValue: jsonEncode(value),
+      });
+      preferences[key] = value;
+    }
+  }
+
+  Future<void> _putFirebase(String key, dynamic value) async {
+    assert(isNotEmpty(firestoreDocPath), "firestoreDocPath must not be empty");
+
+    var map = {
+      key: value,
+    };
+    var doc = firestore.doc(firestoreDocPath);
+
+    if ((await doc.get()).exists) {
+      await doc.update(map);
+    } else {
+      await doc.set(map);
+    }
+
+    // Firestore was updated, now update local cache.
+    putLocal(key, value);
+  }
+
+  @protected
+  List<String> stringList(String key) {
+    if (!preferences.containsKey(key)) {
+      return [];
+    }
+
+    return (preferences[key] as List<dynamic>).map((e) => e as String).toList();
+  }
+
+  @protected
+  void putId(String key, Id value) => put(key, value?.uuid?.toString());
+
+  @protected
+  Id id(String key) {
+    if (!preferences.containsKey(key)) {
+      return null;
+    }
+    return safeParseId(preferences[key]);
+  }
+
+  @protected
+  void putIdList(String key, List<Id> value) {
+    put(key,
+        value == null ? null : value.map((id) => id.uuid.toString()).toList());
+  }
+
+  @protected
+  List<Id> idList(String key) {
+    return stringList(key).map(parseId).toList();
+  }
+}

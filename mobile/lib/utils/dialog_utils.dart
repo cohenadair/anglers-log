@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
 import '../i18n/strings.dart';
-import '../preferences_manager.dart';
 import '../res/style.dart';
 import '../time_manager.dart';
+import '../user_preference_manager.dart';
 import 'store_utils.dart';
 
 void showDeleteDialog({
@@ -109,7 +109,7 @@ void showCancelDialog(
 }
 
 void showRateDialogIfNeeded(BuildContext context) {
-  var preferences = PreferencesManager.of(context);
+  var preferences = UserPreferenceManager.of(context);
   var timeManager = TimeManager.of(context);
 
   // Exit early if the user has already rated the app.

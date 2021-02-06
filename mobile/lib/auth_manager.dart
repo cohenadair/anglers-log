@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -5,6 +7,7 @@ import 'package:quiver/strings.dart';
 
 import 'app_manager.dart';
 import 'log.dart';
+import 'wrappers/firebase_auth_wrapper.dart';
 import 'wrappers/io_wrapper.dart';
 
 enum AuthError {
@@ -23,31 +26,64 @@ enum AuthError {
   weakPassword,
 }
 
+enum AuthState {
+  unknown,
+  loggedIn,
+  loggedOut,
+
+  // Doing initialization work on login.
+  initializing,
+}
+
 class AuthManager {
   static AuthManager of(BuildContext context) =>
       Provider.of<AppManager>(context, listen: false).authManager;
 
-  final Log _log = Log("AuthManager");
+  static const _collectionUser = "user";
 
+  final _log = Log("AuthManager");
   final AppManager _appManager;
-  final FirebaseAuth _firebaseAuth;
+  final _controller = StreamController<void>.broadcast();
 
   String _userId;
+  AuthState _state = AuthState.unknown;
+
+  AuthManager(this._appManager);
+
+  FirebaseAuthWrapper get _firebaseAuth => _appManager.firebaseAuthWrapper;
 
   IoWrapper get _io => _appManager.ioWrapper;
 
-  String get userId => _userId;
-  Stream<User> get authStateChanges => _firebaseAuth.authStateChanges();
+  /// A [Stream] that fires events when [state] updates. Listeners should
+  /// access the [state] property directly, as it will always have a valid
+  /// value, unlike the [AsyncSnapshot] passed to the listener function.
+  Stream<void> get stream => _controller.stream;
 
-  AuthManager(this._appManager, this._firebaseAuth);
+  AuthState get state => _state;
+
+  String get userId => _userId;
+
+  String get firestoreDocPath => "$_collectionUser/$_userId";
 
   Future<void> initialize() {
-    _firebaseAuth.authStateChanges().listen((user) => _userId = user?.uid);
+    _firebaseAuth.authStateChanges().listen((user) async {
+      _userId = user?.uid;
+
+      if (isNotEmpty(_userId)) {
+        // Update state first so managers have the latest state while
+        // initializing.
+        _setState(AuthState.initializing);
+        _initializeManagers();
+      } else {
+        _setState(AuthState.loggedOut);
+      }
+    });
+
     return Future.value();
   }
 
-  Future<void> logout() async {
-    return await _firebaseAuth.signOut();
+  Future<void> logout() {
+    return _firebaseAuth.signOut();
   }
 
   Future<AuthError> login(String email, String password) async {
@@ -109,5 +145,25 @@ class AuthManager {
 
     _log.d("Unknown Firebase exception: $firebaseCode");
     return AuthError.unknownFirebaseException;
+  }
+
+  Future<void> _initializeManagers() async {
+    await _appManager.baitCategoryManager.initialize();
+    await _appManager.baitManager.initialize();
+    await _appManager.catchManager.initialize();
+    await _appManager.comparisonReportManager.initialize();
+    await _appManager.customEntityManager.initialize();
+    await _appManager.fishingSpotManager.initialize();
+    await _appManager.imageManager.initialize();
+    await _appManager.speciesManager.initialize();
+    await _appManager.summaryReportManager.initialize();
+    await _appManager.userPreferenceManager.initialize();
+
+    _setState(AuthState.loggedIn);
+  }
+
+  void _setState(AuthState state) {
+    _state = state;
+    _controller.add(null);
   }
 }

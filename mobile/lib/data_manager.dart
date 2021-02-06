@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sqflite/sqflite.dart';
@@ -6,23 +8,18 @@ import 'app_manager.dart';
 import 'database/sqlite_open_helper.dart';
 import 'log.dart';
 import 'model/gen/anglerslog.pb.dart';
-import 'utils/listener_manager.dart';
 import 'utils/protobuf_utils.dart';
 
-class DataListener {
-  /// Invoked when the database has been completely reset.
-  VoidCallback onReset;
-
-  DataListener({
-    this.onReset,
-  });
+enum DataManagerEvent {
+  reset,
 }
 
-class DataManager extends ListenerManager<DataListener> {
+class DataManager {
   static DataManager of(BuildContext context) =>
       Provider.of<AppManager>(context, listen: false).dataManager;
 
-  final Log _log = Log("DataManager");
+  final _log = Log("DataManager");
+  final _controller = StreamController<DataManagerEvent>.broadcast();
 
   Database _database;
   Future<Database> Function() _openDatabase;
@@ -38,9 +35,7 @@ class DataManager extends ListenerManager<DataListener> {
     _database = database ?? (await _openDatabase());
   }
 
-  void _notifyOnReset() {
-    notify((listener) => listener.onReset());
-  }
+  Stream<DataManagerEvent> get stream => _controller.stream;
 
   /// Completely resets the database by deleting the SQLite file and recreating
   /// it from scratch. All [EntityManager] subclasses are synced with the
@@ -48,7 +43,7 @@ class DataManager extends ListenerManager<DataListener> {
   Future<void> reset() async {
     await _database.close();
     _database = await _resetDatabase();
-    _notifyOnReset();
+    _controller.add(DataManagerEvent.reset);
   }
 
   /// Commits a batch of SQL statements. See [Batch].

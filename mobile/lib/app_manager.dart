@@ -1,7 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:mobile/wrappers/firebase_auth_wrapper.dart';
 import 'package:provider/provider.dart';
 
+import 'app_preference_manager.dart';
 import 'auth_manager.dart';
 import 'bait_category_manager.dart';
 import 'bait_manager.dart';
@@ -12,14 +14,16 @@ import 'data_manager.dart';
 import 'fishing_spot_manager.dart';
 import 'image_manager.dart';
 import 'location_monitor.dart';
-import 'preferences_manager.dart';
 import 'properties_manager.dart';
 import 'species_manager.dart';
+import 'subscription_manager.dart';
 import 'summary_report_manager.dart';
 import 'time_manager.dart';
 import 'trip_manager.dart';
+import 'user_preference_manager.dart';
 import 'wrappers/file_picker_wrapper.dart';
 import 'wrappers/firebase_wrapper.dart';
+import 'wrappers/firestore_wrapper.dart';
 import 'wrappers/http_wrapper.dart';
 import 'wrappers/image_compress_wrapper.dart';
 import 'wrappers/image_picker_wrapper.dart';
@@ -36,6 +40,7 @@ class AppManager {
       Provider.of<AppManager>(context, listen: false);
 
   // Internal dependencies.
+  AppPreferenceManager _appPreferenceManager;
   AuthManager _authManager;
   BaitCategoryManager _baitCategoryManager;
   BaitManager _baitManager;
@@ -43,19 +48,22 @@ class AppManager {
   CatchManager _catchManager;
   ComparisonReportManager _comparisonReportManager;
   CustomEntityManager _customEntityManager;
-  SummaryReportManager _summaryReportManager;
   FishingSpotManager _fishingSpotManager;
   ImageManager _imageManager;
   LocationMonitor _locationMonitor;
-  PreferencesManager _preferencesManager;
   PropertiesManager _propertiesManager;
   SpeciesManager _speciesManager;
+  SubscriptionManager _subscriptionManager;
+  SummaryReportManager _summaryReportManager;
   TimeManager _timeManager;
   TripManager _tripManager;
+  UserPreferenceManager _userPreferenceManager;
 
   // External dependency wrappers.
   FilePickerWrapper _filePickerWrapper;
+  FirebaseAuthWrapper _firebaseAuthWrapper;
   FirebaseWrapper _firebaseWrapper;
+  FirestoreWrapper _firestoreWrapper;
   HttpWrapper _httpWrapper;
   ImageCompressWrapper _imageCompressWrapper;
   ImagePickerWrapper _imagePickerWrapper;
@@ -67,9 +75,16 @@ class AppManager {
   ServicesWrapper _servicesWrapper;
   UrlLauncherWrapper _urlLauncherWrapper;
 
+  AppPreferenceManager get appPreferenceManager {
+    if (_appPreferenceManager == null) {
+      _appPreferenceManager = AppPreferenceManager(this);
+    }
+    return _appPreferenceManager;
+  }
+
   AuthManager get authManager {
     if (_authManager == null) {
-      _authManager = AuthManager(this, FirebaseAuth.instance);
+      _authManager = AuthManager(this);
     }
     return _authManager;
   }
@@ -137,13 +152,6 @@ class AppManager {
     return _locationMonitor;
   }
 
-  PreferencesManager get preferencesManager {
-    if (_preferencesManager == null) {
-      _preferencesManager = PreferencesManager(this);
-    }
-    return _preferencesManager;
-  }
-
   PropertiesManager get propertiesManager {
     if (_propertiesManager == null) {
       _propertiesManager = PropertiesManager();
@@ -156,6 +164,13 @@ class AppManager {
       _speciesManager = SpeciesManager(this);
     }
     return _speciesManager;
+  }
+
+  SubscriptionManager get subscriptionManager {
+    if (_subscriptionManager == null) {
+      _subscriptionManager = SubscriptionManager();
+    }
+    return _subscriptionManager;
   }
 
   SummaryReportManager get summaryReportManager {
@@ -179,6 +194,13 @@ class AppManager {
     return _tripManager;
   }
 
+  UserPreferenceManager get userPreferenceManager {
+    if (_userPreferenceManager == null) {
+      _userPreferenceManager = UserPreferenceManager(this);
+    }
+    return _userPreferenceManager;
+  }
+
   IoWrapper get ioWrapper {
     if (_ioWrapper == null) {
       _ioWrapper = IoWrapper();
@@ -193,11 +215,25 @@ class AppManager {
     return _filePickerWrapper;
   }
 
+  FirebaseAuthWrapper get firebaseAuthWrapper {
+    if (_firebaseAuthWrapper == null) {
+      _firebaseAuthWrapper = FirebaseAuthWrapper();
+    }
+    return _firebaseAuthWrapper;
+  }
+
   FirebaseWrapper get firebaseWrapper {
     if (_firebaseWrapper == null) {
       _firebaseWrapper = FirebaseWrapper();
     }
     return _firebaseWrapper;
+  }
+
+  FirestoreWrapper get firestoreWrapper {
+    if (_firestoreWrapper == null) {
+      _firestoreWrapper = FirestoreWrapper();
+    }
+    return _firestoreWrapper;
   }
 
   HttpWrapper get httpWrapper {

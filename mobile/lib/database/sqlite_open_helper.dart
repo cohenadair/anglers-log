@@ -6,7 +6,7 @@ import 'package:sqflite/sqflite.dart';
 
 import '../log.dart';
 
-final Log _log = Log("SQLiteOpenHelper");
+final _log = Log("SQLiteOpenHelper");
 
 final String _name = "2.0/anglerslog.db";
 
@@ -48,7 +48,13 @@ final List<String> _schema0 = [
   );
   """,
   """
-  CREATE TABLE preference (
+  CREATE TABLE user_preference (
+    id TEXT PRIMARY KEY,
+    value TEXT NOT NULL
+  );
+  """,
+  """
+  CREATE TABLE app_preference (
     id TEXT PRIMARY KEY,
     value TEXT NOT NULL
   );

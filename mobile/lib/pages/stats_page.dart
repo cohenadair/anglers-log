@@ -13,11 +13,11 @@ import '../model/gen/google/protobuf/timestamp.pb.dart';
 import '../model/overview_report.dart';
 import '../model/report.dart';
 import '../pages/report_list_page.dart';
-import '../preferences_manager.dart';
 import '../res/dimen.dart';
 import '../res/gen/custom_icons.dart';
 import '../species_manager.dart';
 import '../summary_report_manager.dart';
+import '../user_preference_manager.dart';
 import '../utils/date_time_utils.dart';
 import '../utils/page_utils.dart';
 import '../utils/string_utils.dart';
@@ -63,12 +63,13 @@ class _StatsPageState extends State<StatsPage> {
 
   FishingSpotManager get _fishingSpotManager => FishingSpotManager.of(context);
 
-  PreferencesManager get _preferencesManager => PreferencesManager.of(context);
-
   SpeciesManager get _speciesManager => SpeciesManager.of(context);
 
   SummaryReportManager get _summaryReportManager =>
       SummaryReportManager.of(context);
+
+  UserPreferenceManager get _userPreferencesManager =>
+      UserPreferenceManager.of(context);
 
   bool get _isComparing => _models.length > 1;
 
@@ -89,7 +90,7 @@ class _StatsPageState extends State<StatsPage> {
   @override
   void initState() {
     super.initState();
-    _updateCurrentReport(_preferencesManager.selectedReportId);
+    _updateCurrentReport(_userPreferencesManager.selectedReportId);
   }
 
   @override
@@ -450,7 +451,7 @@ class _StatsPageState extends State<StatsPage> {
           _comparisonReportManager.entity(newReportId);
     }
 
-    _preferencesManager.selectedReportId = _currentReport.id;
+    _userPreferencesManager.selectedReportId = _currentReport.id;
     _models.clear();
 
     if (_currentReport is OverviewReport) {

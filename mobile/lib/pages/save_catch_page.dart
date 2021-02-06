@@ -16,7 +16,7 @@ import '../pages/editable_form_page.dart';
 import '../pages/fishing_spot_picker_page.dart';
 import '../pages/image_picker_page.dart';
 import '../pages/species_list_page.dart';
-import '../preferences_manager.dart';
+import '../user_preference_manager.dart';
 import '../res/dimen.dart';
 import '../species_manager.dart';
 import '../time_manager.dart';
@@ -74,7 +74,7 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
   static final _idFishingSpot = catchFieldIdFishingSpot();
   static final _idBait = catchFieldIdBait();
 
-  final Log _log = Log("SaveCatchPage");
+  final _log = Log("SaveCatchPage");
 
   final Map<Id, Field> _fields = {};
 
@@ -92,7 +92,8 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
 
   ImageManager get _imageManager => ImageManager.of(context);
 
-  PreferencesManager get _preferencesManager => PreferencesManager.of(context);
+  UserPreferenceManager get _userPreferencesManager =>
+      UserPreferenceManager.of(context);
 
   SpeciesManager get _speciesManager => SpeciesManager.of(context);
 
@@ -119,7 +120,7 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
   void initState() {
     super.initState();
 
-    var showingFieldIds = _preferencesManager.catchFieldIds;
+    var showingFieldIds = _userPreferencesManager.catchFieldIds;
     for (var field in allCatchFields()) {
       _fields[field.id] = field;
       // By default, show all fields.
@@ -164,10 +165,11 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
       runSpacing: 0,
       padding: insetsZero,
       fields: _fields,
-      customEntityIds: _preferencesManager.catchCustomEntityIds,
+      customEntityIds: _userPreferencesManager.catchCustomEntityIds,
       customEntityValues: _customEntityValues,
       onBuildField: _buildField,
-      onAddFields: (ids) => _preferencesManager.catchFieldIds = ids.toList(),
+      onAddFields: (ids) =>
+          _userPreferencesManager.catchFieldIds = ids.toList(),
       onSave: _save,
     );
   }
@@ -321,7 +323,7 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
   }
 
   FutureOr<bool> _save(Map<Id, dynamic> customFieldValueMap) {
-    _preferencesManager.catchCustomEntityIds =
+    _userPreferencesManager.catchCustomEntityIds =
         customFieldValueMap.keys.toList();
 
     // imageNames is set in _catchManager.addOrUpdate

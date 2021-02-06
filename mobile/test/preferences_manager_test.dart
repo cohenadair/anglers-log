@@ -5,7 +5,7 @@ import 'package:mobile/custom_entity_manager.dart';
 import 'package:mobile/data_manager.dart';
 import 'package:mobile/entity_manager.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
-import 'package:mobile/preferences_manager.dart';
+import 'package:mobile/user_preference_manager.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mockito/mockito.dart';
 import 'package:sqflite/sqlite_api.dart';
@@ -20,7 +20,7 @@ void main() {
   MockAppManager appManager;
   MockCustomEntityManager entityManager;
   MockDataManager dataManager;
-  PreferencesManager preferencesManager;
+  UserPreferenceManager preferencesManager;
 
   setUp(() async {
     appManager = MockAppManager();
@@ -35,7 +35,7 @@ void main() {
     when(dataManager.deleteEntity(any, any))
         .thenAnswer((_) => Future.value(true));
 
-    preferencesManager = PreferencesManager(appManager);
+    preferencesManager = UserPreferenceManager(appManager);
   });
 
   test("Test initialize", () async {
@@ -127,7 +127,7 @@ void main() {
 
     when(appManager.customEntityManager).thenReturn(realEntityManager);
 
-    preferencesManager = PreferencesManager(appManager);
+    preferencesManager = UserPreferenceManager(appManager);
     preferencesManager.baitCustomEntityIds = [deleteEntity.id, randomId()];
     preferencesManager.catchCustomEntityIds = [deleteEntity.id];
 
@@ -161,7 +161,7 @@ void main() {
 
     var id0 = randomId();
     var id1 = randomId();
-    preferencesManager = PreferencesManager(appManager);
+    preferencesManager = UserPreferenceManager(appManager);
     preferencesManager.baitCustomEntityIds = [id0, id1];
     preferencesManager.catchCustomEntityIds = [id0];
     preferencesManager.baitFieldIds = [id1, id0];

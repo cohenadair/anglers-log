@@ -16,6 +16,7 @@ dependencies:
     sdk: flutter
 
   archive: ^2.0.13                  # https://pub.dev/packages/archive
+  cloud_firestore: ^0.16.0          # Google
   crypto: ^2.1.4                    # Dart
   date_range_picker: ^1.0.6         # https://pub.dev/packages/date_range_picker
   device_info: ^1.0.0               # Flutter

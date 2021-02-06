@@ -10,7 +10,7 @@ import '../log.dart';
 import '../model/gen/anglerslog.pb.dart';
 import '../pages/bait_category_list_page.dart';
 import '../pages/editable_form_page.dart';
-import '../preferences_manager.dart';
+import '../user_preference_manager.dart';
 import '../res/dimen.dart';
 import '../utils/dialog_utils.dart';
 import '../utils/page_utils.dart';
@@ -41,7 +41,7 @@ class _SaveBaitPageState extends State<SaveBaitPage> {
     ..uuid = "832e8f16-3fb6-4530-b8d7-7840734cf465";
   static final _idName = Id()..uuid = "017ae032-477b-4fe4-9be0-ea0a05a576f9";
 
-  final Log _log = Log("SaveCatchPage");
+  final _log = Log("SaveCatchPage");
 
   final Map<Id, Field> _fields = {};
   List<CustomEntityValue> _customEntityValues = [];
@@ -55,7 +55,8 @@ class _SaveBaitPageState extends State<SaveBaitPage> {
 
   BaitManager get _baitManager => BaitManager.of(context);
 
-  PreferencesManager get _preferencesManager => PreferencesManager.of(context);
+  UserPreferenceManager get _userPreferencesManager =>
+      UserPreferenceManager.of(context);
 
   InputController<Id> get _baitCategoryController =>
       _fields[_idBaitCategory].controller;
@@ -67,7 +68,7 @@ class _SaveBaitPageState extends State<SaveBaitPage> {
   void initState() {
     super.initState();
 
-    var baitFieldIds = _preferencesManager.baitFieldIds;
+    var baitFieldIds = _userPreferencesManager.baitFieldIds;
 
     _fields[_idBaitCategory] = Field(
       id: _idBaitCategory,
@@ -106,7 +107,7 @@ class _SaveBaitPageState extends State<SaveBaitPage> {
           : Text(Strings.of(context).saveBaitPageNewTitle),
       padding: insetsZero,
       fields: _fields,
-      customEntityIds: _preferencesManager.baitCustomEntityIds,
+      customEntityIds: _userPreferencesManager.baitCustomEntityIds,
       customEntityValues: _customEntityValues,
       onBuildField: (id) {
         if (id == _idName) {
@@ -119,7 +120,7 @@ class _SaveBaitPageState extends State<SaveBaitPage> {
         }
       },
       onSave: _save,
-      onAddFields: (ids) => _preferencesManager.baitFieldIds = ids.toList(),
+      onAddFields: (ids) => _userPreferencesManager.baitFieldIds = ids.toList(),
       isInputValid: _nameController.valid(context),
     );
   }
@@ -168,7 +169,8 @@ class _SaveBaitPageState extends State<SaveBaitPage> {
   }
 
   FutureOr<bool> _save(Map<Id, dynamic> customFieldValueMap) {
-    _preferencesManager.baitCustomEntityIds = customFieldValueMap.keys.toList();
+    _userPreferencesManager.baitCustomEntityIds =
+        customFieldValueMap.keys.toList();
 
     var newBait = Bait()
       ..id = _oldBait?.id ?? randomId()

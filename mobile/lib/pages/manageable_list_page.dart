@@ -140,8 +140,7 @@ class _ManageableListPageState<T> extends State<ManageableListPage<T>> {
       builder: _buildScaffold,
       onAdd: _onEntityAdded,
       onDelete: _onEntityDeleted,
-      onUpdate: _onEntitiesUpdated,
-      onClear: _onEntitiesCleared,
+      onUpdate: _onEntityUpdated,
     );
   }
 
@@ -453,17 +452,23 @@ class _ManageableListPageState<T> extends State<ManageableListPage<T>> {
   }
 
   void _onEntityAdded(dynamic entity) {
-    // Get an updated item list. This includes the new item added.
-    var items = widget.itemManager.loadItems(_searchText);
-
     // Don't animate any entity additions if it isn't an entity associated
     // with this ManageableListPage.
     if (!(entity is T)) {
       return;
     }
 
-    _animatedList.insert(
-        min(_animatedList.length, items.indexOf(entity)), entity);
+    // Get an updated item list. This includes the new item added.
+    var items = widget.itemManager.loadItems(_searchText);
+
+    // If the index is < 0, it means entity isn't in the underlying data. This
+    // can happen when multiple entity types are shown in the same list, such
+    // as a list of baits that also shows bait categories.
+    var index = items.indexOf(entity);
+    if (index >= 0) {
+      _animatedList.insert(
+          min(_animatedList.length, items.indexOf(entity)), entity);
+    }
   }
 
   void _onEntityDeleted(dynamic entity) {
@@ -472,11 +477,7 @@ class _ManageableListPageState<T> extends State<ManageableListPage<T>> {
     }
   }
 
-  void _onEntitiesUpdated(List<dynamic> entities) {
-    _syncAnimatedList();
-  }
-
-  void _onEntitiesCleared() {
+  void _onEntityUpdated(dynamic entity) {
     _syncAnimatedList();
   }
 }
@@ -702,6 +703,14 @@ class _AnimatedListModel<T> {
   }
 
   T removeAt(int index) {
+    // Don't attempt to remove an item if it isn't in the underlying data model.
+    // This can happen in specialized situations, such as when a bait category
+    // isn't shown in a bait list because there are no baits associated with
+    // that category.
+    if (index < 0 || index >= _items.length) {
+      return null;
+    }
+
     var removedItem = _items.removeAt(index);
     if (removedItem != null) {
       _animatedList.removeItem(

@@ -36,8 +36,7 @@ void main() {
     );
 
     when(appManager.mockAuthManager.userId).thenReturn(Uuid().v4());
-    when(appManager.mockAuthManager.authStateChanges)
-        .thenAnswer((_) => Stream.empty());
+    when(appManager.mockAuthManager.stream).thenAnswer((_) => Stream.empty());
 
     when(appManager.mockPreferencesManager.didOnboard).thenReturn(true);
 

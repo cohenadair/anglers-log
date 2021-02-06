@@ -114,8 +114,6 @@
         NSLog(@"Error in persistentStoreCoordinator: %@, %@", error, [error userInfo]);
     }
     
-    NSLog(@"%@", [store URL]);
-    
     return _persistentStoreCoordinator;
 }
 
