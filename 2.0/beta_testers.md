@@ -9,6 +9,7 @@ Anglers' Log 2.0 Beta Testers
 * Steve Book - stevebook66@gmail.com
 * Mark Zulinski - zulinskis@gmail.com
 * Dov - dovfeder@optonline.net
+* Eric Moshier - eric@solidrockmasonry.com
 
 ### Donators
 * Dov - dovfeder@optonline.net
