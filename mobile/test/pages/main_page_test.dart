@@ -16,6 +16,7 @@ void main() {
 
   setUp(() {
     appManager = MockAppManager(
+      mockAuthManager: true,
       mockBaitCategoryManager: true,
       mockBaitManager: true,
       mockCatchManager: true,
@@ -26,9 +27,12 @@ void main() {
       mockLocationMonitor: true,
       mockPreferencesManager: true,
       mockSpeciesManager: true,
+      mockSubscriptionManager: true,
       mockSummaryReportManager: true,
       mockTimeManager: true,
     );
+
+    when(appManager.mockAuthManager.stream).thenAnswer((_) => MockStream());
 
     when(appManager.mockBaitCategoryManager.listSortedByName(
       filter: anyNamed("filter"),
@@ -49,7 +53,11 @@ void main() {
     when(appManager.mockComparisonReportManager.entityExists(any))
         .thenReturn(false);
 
+    when(appManager.mockDataManager.stream).thenAnswer((_) => MockStream());
+
     when(appManager.mockFishingSpotManager.list()).thenReturn([]);
+
+    when(appManager.mockSubscriptionManager.isPro).thenReturn(false);
 
     when(appManager.mockSummaryReportManager.entityExists(any))
         .thenReturn(false);

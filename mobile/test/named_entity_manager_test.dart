@@ -1,11 +1,13 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/app_manager.dart';
+import 'package:mobile/data_manager.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
 import 'package:mobile/named_entity_manager.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mockito/mockito.dart';
 
 import 'mock_app_manager.dart';
+import 'test_utils.dart';
 
 class TestNamedEntityManager extends NamedEntityManager<Species> {
   TestNamedEntityManager(AppManager app) : super(app);
@@ -30,12 +32,23 @@ void main() {
 
   setUp(() async {
     appManager = MockAppManager(
-      mockDataManager: true,
-    );
+        mockAuthManager: true,
+        mockDataManager: true,
+        mockSubscriptionManager: true);
+
+    var authStream = MockStream<void>();
+    when(authStream.listen(any)).thenReturn(null);
+    when(appManager.mockAuthManager.stream).thenAnswer((_) => authStream);
+
     dataManager = appManager.mockDataManager;
     when(appManager.dataManager).thenReturn(dataManager);
     when(dataManager.insertOrUpdateEntity(any, any, any))
         .thenAnswer((_) => Future.value(true));
+    var dataStream = MockStream<DataManagerEvent>();
+    when(dataStream.listen(any)).thenReturn(null);
+    when(dataManager.stream).thenAnswer((_) => dataStream);
+
+    when(appManager.mockSubscriptionManager.isPro).thenReturn(false);
 
     entityManager = TestNamedEntityManager(appManager);
   });

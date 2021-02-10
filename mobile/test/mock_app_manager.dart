@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/app_manager.dart';
+import 'package:mobile/app_preference_manager.dart';
 import 'package:mobile/auth_manager.dart';
 import 'package:mobile/bait_category_manager.dart';
 import 'package:mobile/bait_manager.dart';
@@ -18,7 +19,9 @@ import 'package:mobile/species_manager.dart';
 import 'package:mobile/time_manager.dart';
 import 'package:mobile/trip_manager.dart';
 import 'package:mobile/wrappers/file_picker_wrapper.dart';
+import 'package:mobile/wrappers/firebase_auth_wrapper.dart';
 import 'package:mobile/wrappers/firebase_wrapper.dart';
+import 'package:mobile/wrappers/firestore_wrapper.dart';
 import 'package:mobile/wrappers/http_wrapper.dart';
 import 'package:mobile/wrappers/image_compress_wrapper.dart';
 import 'package:mobile/wrappers/image_picker_wrapper.dart';
@@ -31,6 +34,8 @@ import 'package:mobile/wrappers/services_wrapper.dart';
 import 'package:mobile/wrappers/url_launcher_wrapper.dart';
 import 'package:mockito/mockito.dart';
 import 'package:sqflite/sqflite.dart';
+
+class MockAppPreferenceManager extends Mock implements AppPreferenceManager {}
 
 class MockAuthManager extends Mock implements AuthManager {}
 
@@ -69,9 +74,15 @@ class MockTimeManager extends Mock implements TimeManager {}
 
 class MockTripManager extends Mock implements TripManager {}
 
+class MockUserPreferenceManager extends Mock implements UserPreferenceManager {}
+
 class MockFilePickerWrapper extends Mock implements FilePickerWrapper {}
 
+class MockFirebaseAuthWrapper extends Mock implements FirebaseAuthWrapper {}
+
 class MockFirebaseWrapper extends Mock implements FirebaseWrapper {}
+
+class MockFirestoreWrapper extends Mock implements FirestoreWrapper {}
 
 class MockHttpWrapper extends Mock implements HttpWrapper {}
 
@@ -95,6 +106,7 @@ class MockServicesWrapper extends Mock implements ServicesWrapper {}
 class MockUrlLauncherWrapper extends Mock implements UrlLauncherWrapper {}
 
 class MockAppManager extends Mock implements AppManager {
+  MockAppPreferenceManager mockAppPreferenceManager;
   MockAuthManager mockAuthManager;
   MockBaitCategoryManager mockBaitCategoryManager;
   MockBaitManager mockBaitManager;
@@ -112,9 +124,12 @@ class MockAppManager extends Mock implements AppManager {
   MockSummaryReportManager mockSummaryReportManager;
   MockTimeManager mockTimeManager;
   MockTripManager mockTripManager;
+  MockUserPreferenceManager mockUserPreferenceManager;
 
   MockFilePickerWrapper mockFilePickerWrapper;
+  MockFirebaseAuthWrapper mockFirebaseAuthWrapper;
   MockFirebaseWrapper mockFirebaseWrapper;
+  MockFirestoreWrapper mockFirestoreWrapper;
   MockHttpWrapper mockHttpWrapper;
   MockImageCompressWrapper mockImageCompressWrapper;
   MockImagePickerWrapper mockImagePickerWrapper;
@@ -127,6 +142,7 @@ class MockAppManager extends Mock implements AppManager {
   MockUrlLauncherWrapper mockUrlLauncherWrapper;
 
   MockAppManager({
+    bool mockAppPreferenceManager = false,
     bool mockAuthManager = false,
     bool mockBaitCategoryManager = false,
     bool mockBaitManager = false,
@@ -145,8 +161,11 @@ class MockAppManager extends Mock implements AppManager {
     bool mockSummaryReportManager = false,
     bool mockTimeManager = false,
     bool mockTripManager = false,
+    bool mockUserPreferenceManager = false,
     bool mockFilePickerWrapper = false,
+    bool mockFirebaseAuthWrapper = false,
     bool mockFirebaseWrapper = false,
+    bool mockFirestoreWrapper = false,
     bool mockHttpWrapper = false,
     bool mockImageCompressWrapper = false,
     bool mockImagePickerWrapper = false,
@@ -158,6 +177,11 @@ class MockAppManager extends Mock implements AppManager {
     bool mockServicesWrapper = false,
     bool mockUrlLauncherWrapper = false,
   }) {
+    if (mockAppPreferenceManager) {
+      this.mockAppPreferenceManager = MockAppPreferenceManager();
+      when(appPreferenceManager).thenReturn(this.mockAppPreferenceManager);
+    }
+
     if (mockAuthManager) {
       this.mockAuthManager = MockAuthManager();
       when(authManager).thenReturn(this.mockAuthManager);
@@ -247,14 +271,29 @@ class MockAppManager extends Mock implements AppManager {
       when(tripManager).thenReturn(this.mockTripManager);
     }
 
+    if (mockUserPreferenceManager) {
+      this.mockUserPreferenceManager = MockUserPreferenceManager();
+      when(userPreferenceManager).thenReturn(this.mockUserPreferenceManager);
+    }
+
     if (mockFilePickerWrapper) {
       this.mockFilePickerWrapper = MockFilePickerWrapper();
       when(filePickerWrapper).thenReturn(this.mockFilePickerWrapper);
     }
 
+    if (mockFirebaseAuthWrapper) {
+      this.mockFirebaseAuthWrapper = MockFirebaseAuthWrapper();
+      when(firebaseAuthWrapper).thenReturn(this.mockFirebaseAuthWrapper);
+    }
+
     if (mockFirebaseWrapper) {
       this.mockFirebaseWrapper = MockFirebaseWrapper();
       when(firebaseWrapper).thenReturn(this.mockFirebaseWrapper);
+    }
+
+    if (mockFirestoreWrapper) {
+      this.mockFirestoreWrapper = MockFirestoreWrapper();
+      when(firestoreWrapper).thenReturn(this.mockFirestoreWrapper);
     }
 
     if (mockHttpWrapper) {

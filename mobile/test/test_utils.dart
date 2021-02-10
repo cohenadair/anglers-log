@@ -3,6 +3,7 @@ import 'dart:io';
 import 'dart:ui' as ui;
 import 'dart:ui';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -22,7 +23,15 @@ class MockAssetEntity extends Mock implements AssetEntity {}
 
 class MockAssetPathEntity extends Mock implements AssetPathEntity {}
 
+class MockCollectionReference extends Mock implements CollectionReference {}
+
 class MockDirectory extends Mock implements Directory {}
+
+class MockDocumentChange extends Mock implements DocumentChange {}
+
+class MockDocumentReference extends Mock implements DocumentReference {}
+
+class MockDocumentSnapshot extends Mock implements DocumentSnapshot {}
 
 class MockFile extends Mock implements File {}
 
@@ -30,9 +39,15 @@ class MockFileSystemEntity extends Mock implements FileSystemEntity {}
 
 class MockLegacyImporter extends Mock implements LegacyImporter {}
 
+class MockNavigatorObserver extends Mock implements NavigatorObserver {}
+
 class MockMethodChannel extends Mock implements MethodChannel {}
 
-class MockNavigatorObserver extends Mock implements NavigatorObserver {}
+class MockQuerySnapshot extends Mock implements QuerySnapshot {}
+
+class MockStream<T> extends Mock implements Stream<T> {}
+
+class MockStreamSubscription<T> extends Mock implements StreamSubscription<T> {}
 
 /// A widget that wraps a child in default localizations.
 class Testable extends StatelessWidget {

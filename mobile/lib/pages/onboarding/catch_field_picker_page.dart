@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 
 import '../../i18n/strings.dart';
 import '../../model/gen/anglerslog.pb.dart';
-import '../../user_preference_manager.dart';
 import '../../res/dimen.dart';
 import '../../res/gen/custom_icons.dart';
+import '../../user_preference_manager.dart';
 import '../../utils/catch_utils.dart';
 import '../../widgets/list_item.dart';
 import '../../widgets/text.dart';

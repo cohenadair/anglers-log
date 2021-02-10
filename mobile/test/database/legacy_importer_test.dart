@@ -5,6 +5,7 @@ import 'package:mobile/bait_category_manager.dart';
 import 'package:mobile/bait_manager.dart';
 import 'package:mobile/catch_manager.dart';
 import 'package:mobile/channels/migration_channel.dart';
+import 'package:mobile/data_manager.dart';
 import 'package:mobile/database/legacy_importer.dart';
 import 'package:mobile/fishing_spot_manager.dart';
 import 'package:mobile/species_manager.dart';
@@ -33,22 +34,33 @@ void main() {
 
   setUp(() {
     appManager = MockAppManager(
+      mockAuthManager: true,
       mockDataManager: true,
+      mockSubscriptionManager: true,
       mockImageManager: true,
       mockIoWrapper: true,
       mockPathProviderWrapper: true,
     );
 
+    var stream = MockStream<DataManagerEvent>();
+    when(stream.listen(any)).thenReturn(null);
+    when(appManager.mockAuthManager.stream).thenAnswer((_) => stream);
+
     dataManager = appManager.mockDataManager;
     when(dataManager.insertOrUpdateEntity(any, any, any))
         .thenAnswer((_) => Future.value(true));
     when(appManager.dataManager).thenReturn(dataManager);
+    stream = MockStream<DataManagerEvent>();
+    when(stream.listen(any)).thenReturn(null);
+    when(dataManager.stream).thenAnswer((_) => stream);
 
     imageManager = appManager.mockImageManager;
     when(imageManager.save(any)).thenAnswer((_) => Future.value());
     when(imageManager.save(any, compress: anyNamed("compress")))
         .thenAnswer((_) => Future.value([]));
     when(appManager.imageManager).thenReturn(imageManager);
+
+    when(appManager.mockSubscriptionManager.isPro).thenReturn(false);
 
     ioWrapper = appManager.mockIoWrapper;
 

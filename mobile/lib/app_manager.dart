@@ -1,6 +1,4 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:mobile/wrappers/firebase_auth_wrapper.dart';
 import 'package:provider/provider.dart';
 
 import 'app_preference_manager.dart';
@@ -22,6 +20,7 @@ import 'time_manager.dart';
 import 'trip_manager.dart';
 import 'user_preference_manager.dart';
 import 'wrappers/file_picker_wrapper.dart';
+import 'wrappers/firebase_auth_wrapper.dart';
 import 'wrappers/firebase_wrapper.dart';
 import 'wrappers/firestore_wrapper.dart';
 import 'wrappers/http_wrapper.dart';

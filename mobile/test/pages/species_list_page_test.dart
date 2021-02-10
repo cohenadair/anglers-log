@@ -35,19 +35,26 @@ void main() {
 
   setUp(() async {
     appManager = MockAppManager(
+      mockAuthManager: true,
       mockCatchManager: true,
       mockDataManager: true,
+      mockSubscriptionManager: true,
     );
+
+    when(appManager.mockAuthManager.stream).thenAnswer((_) => MockStream());
 
     when(appManager.mockCatchManager
             .existsWith(speciesId: anyNamed("speciesId")))
         .thenReturn(false);
     when(appManager.mockCatchManager.list()).thenReturn([]);
 
+    when(appManager.mockDataManager.stream).thenAnswer((_) => MockStream());
     when(appManager.mockDataManager.deleteEntity(any, any))
         .thenAnswer((_) => Future.value(true));
     when(appManager.mockDataManager.insertOrUpdateEntity(any, any, any))
         .thenAnswer((_) => Future.value(true));
+
+    when(appManager.mockSubscriptionManager.isPro).thenReturn(false);
 
     speciesManager = SpeciesManager(appManager);
     when(appManager.speciesManager).thenReturn(speciesManager);

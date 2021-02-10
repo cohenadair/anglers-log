@@ -1,6 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/bait_category_manager.dart';
 import 'package:mobile/bait_manager.dart';
+import 'package:mobile/data_manager.dart';
 import 'package:mobile/entity_manager.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
@@ -22,10 +23,16 @@ void main() {
 
   setUp(() {
     appManager = MockAppManager(
+      mockAuthManager: true,
       mockCatchManager: true,
       mockCustomEntityManager: true,
       mockDataManager: true,
+      mockSubscriptionManager: true,
     );
+
+    var authStream = MockStream<void>();
+    when(authStream.listen(any)).thenReturn(null);
+    when(appManager.mockAuthManager.stream).thenAnswer((_) => authStream);
 
     catchManager = appManager.mockCatchManager;
     when(appManager.catchManager).thenReturn(catchManager);
@@ -38,9 +45,14 @@ void main() {
     when(appManager.dataManager).thenReturn(dataManager);
     when(dataManager.insertOrUpdateEntity(any, any, any))
         .thenAnswer((_) => Future.value(true));
+    var dataStream = MockStream<DataManagerEvent>();
+    when(dataStream.listen(any)).thenReturn(null);
+    when(dataManager.stream).thenAnswer((_) => dataStream);
 
     baitCategoryManager = BaitCategoryManager(appManager);
     when(appManager.baitCategoryManager).thenReturn(baitCategoryManager);
+
+    when(appManager.mockSubscriptionManager.isPro).thenReturn(false);
 
     baitManager = BaitManager(appManager);
   });
@@ -55,7 +67,7 @@ void main() {
     when(baitListener.onDelete).thenReturn((_) {});
 
     var updatedBaits = <Bait>[];
-    when(baitListener.onUpdate).thenReturn((baits) => updatedBaits = baits);
+    when(baitListener.onUpdate).thenReturn((bait) => updatedBaits.add(bait));
     baitManager.addListener(baitListener);
 
     // Add a BaitCategory.
@@ -83,8 +95,11 @@ void main() {
     // Delete the bait category.
     await baitCategoryManager.delete(category.id);
 
+    // Wait for addOrUpdate calls to finish.
+    await Future.delayed(Duration(milliseconds: 50));
+
     // Verify listeners are notified and memory cache updated.
-    verify(baitListener.onUpdate).called(1);
+    verify(baitListener.onUpdate).called(2);
     expect(baitManager.entity(baitId0).hasBaitCategoryId(), false);
     expect(baitManager.entity(baitId1).hasBaitCategoryId(), false);
     expect(updatedBaits.length, 2);

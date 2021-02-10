@@ -1,5 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/bait_category_manager.dart';
+import 'package:mobile/data_manager.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mockito/mockito.dart';
@@ -16,16 +17,24 @@ void main() {
 
   setUp(() {
     appManager = MockAppManager(
+      mockAuthManager: true,
       mockBaitManager: true,
       mockDataManager: true,
     );
+
+    var authStream = MockStream<void>();
+    when(authStream.listen(any)).thenReturn(null);
+    when(appManager.mockAuthManager.stream).thenAnswer((_) => authStream);
 
     baitManager = appManager.mockBaitManager;
     when(appManager.baitManager).thenReturn(baitManager);
 
     dataManager = appManager.mockDataManager;
     when(appManager.dataManager).thenReturn(dataManager);
-    when(dataManager.addListener(any)).thenAnswer((_) {});
+
+    var dataStream = MockStream<DataManagerEvent>();
+    when(dataStream.listen(any)).thenReturn(null);
+    when(dataManager.stream).thenAnswer((_) => dataStream);
 
     baitCategoryManager = BaitCategoryManager(appManager);
   });

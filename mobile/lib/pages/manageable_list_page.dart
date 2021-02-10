@@ -452,14 +452,17 @@ class _ManageableListPageState<T> extends State<ManageableListPage<T>> {
   }
 
   void _onEntityAdded(dynamic entity) {
+    // Get an updated item list. This includes the new item added, and any
+    // updates to dependency objects of T. Note that we should always do this
+    // when something is added so the underlying data model is always up to
+    // date.
+    var items = widget.itemManager.loadItems(_searchText);
+
     // Don't animate any entity additions if it isn't an entity associated
     // with this ManageableListPage.
     if (!(entity is T)) {
       return;
     }
-
-    // Get an updated item list. This includes the new item added.
-    var items = widget.itemManager.loadItems(_searchText);
 
     // If the index is < 0, it means entity isn't in the underlying data. This
     // can happen when multiple entity types are shown in the same list, such

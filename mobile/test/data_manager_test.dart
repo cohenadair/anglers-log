@@ -1,11 +1,11 @@
+import 'dart:async';
+
 import 'package:mobile/data_manager.dart';
 import 'package:mockito/mockito.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:test/test.dart';
 
 class MockDatabase extends Mock implements Database {}
-
-class MockDataListener extends Mock implements DataListener {}
 
 void main() {
   MockDatabase database;
@@ -23,10 +23,9 @@ void main() {
 
   test("Listeners are notified when database is reset", () async {
     when(database.close()).thenAnswer((_) => Future.value());
-    var listener = MockDataListener();
-    when(listener.onReset).thenReturn(() {});
-    dataManager.addListener(listener);
+
+    dataManager.stream
+        .listen(expectAsync1((event) => expect(event, DataManagerEvent.reset)));
     await dataManager.reset();
-    verify(listener.onReset).called(1);
   });
 }

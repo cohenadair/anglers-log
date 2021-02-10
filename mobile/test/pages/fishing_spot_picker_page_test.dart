@@ -26,17 +26,25 @@ void main() {
 
   setUp(() {
     appManager = MockAppManager(
+      mockAuthManager: true,
       mockDataManager: true,
       mockFishingSpotManager: true,
       mockLocationMonitor: true,
+      mockSubscriptionManager: true,
     );
 
+    when(appManager.mockAuthManager.stream).thenAnswer((_) => MockStream());
+
+    when(appManager.mockDataManager.stream).thenAnswer((_) => MockStream());
     when(appManager.mockDataManager.insertOrUpdateEntity(any, any, any))
         .thenAnswer((_) => Future.value(true));
+
     when(appManager.mockFishingSpotManager.listSortedByName())
         .thenReturn([fishingSpot]);
     when(appManager.mockFishingSpotManager.entity(fishingSpot.id))
         .thenReturn(fishingSpot);
+
+    when(appManager.mockSubscriptionManager.isPro).thenReturn(false);
   });
 
   // TODO (1): GoogleMap is a native widget; gesture testing doesn't work yet.

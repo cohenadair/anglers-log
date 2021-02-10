@@ -1,10 +1,12 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mobile/data_manager.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
 import 'package:mobile/species_manager.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mockito/mockito.dart';
 
 import 'mock_app_manager.dart';
+import 'test_utils.dart';
 
 void main() {
   MockAppManager appManager;
@@ -15,16 +17,26 @@ void main() {
 
   setUp(() {
     appManager = MockAppManager(
+      mockAuthManager: true,
       mockCatchManager: true,
       mockDataManager: true,
+      mockSubscriptionManager: true,
     );
+
+    var authStream = MockStream<void>();
+    when(authStream.listen(any)).thenReturn(null);
+    when(appManager.mockAuthManager.stream).thenAnswer((_) => authStream);
 
     catchManager = appManager.mockCatchManager;
     when(appManager.catchManager).thenReturn(catchManager);
 
     dataManager = appManager.mockDataManager;
     when(appManager.dataManager).thenReturn(dataManager);
-    when(dataManager.addListener(any)).thenAnswer((_) {});
+    var dataStream = MockStream<DataManagerEvent>();
+    when(dataStream.listen(any)).thenReturn(null);
+    when(appManager.mockDataManager.stream).thenAnswer((_) => dataStream);
+
+    when(appManager.mockSubscriptionManager.isPro).thenReturn(false);
 
     speciesManager = SpeciesManager(appManager);
   });

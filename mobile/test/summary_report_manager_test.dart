@@ -1,10 +1,12 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mobile/data_manager.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
 import 'package:mobile/summary_report_manager.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mockito/mockito.dart';
 
 import 'mock_app_manager.dart';
+import 'test_utils.dart';
 
 void main() {
   MockAppManager appManager;
@@ -13,18 +15,29 @@ void main() {
 
   setUp(() {
     appManager = MockAppManager(
+      mockAuthManager: true,
       mockDataManager: true,
       mockBaitManager: true,
       mockFishingSpotManager: true,
       mockSpeciesManager: true,
+      mockSubscriptionManager: true,
     );
+
+    var authStream = MockStream<void>();
+    when(authStream.listen(any)).thenReturn(null);
+    when(appManager.mockAuthManager.stream).thenAnswer((_) => authStream);
 
     when(appManager.mockDataManager.insertOrUpdateEntity(any, any, any))
         .thenAnswer((_) => Future.value(true));
+    var dataStream = MockStream<DataManagerEvent>();
+    when(dataStream.listen(any)).thenReturn(null);
+    when(appManager.mockDataManager.stream).thenAnswer((_) => dataStream);
 
     when(appManager.mockBaitManager.addListener(any)).thenAnswer((_) {});
     when(appManager.mockFishingSpotManager.addListener(any)).thenAnswer((_) {});
     when(appManager.mockSpeciesManager.addListener(any)).thenAnswer((_) {});
+
+    when(appManager.mockSubscriptionManager.isPro).thenReturn(false);
 
     summaryReportManager = SummaryReportManager(appManager);
   });

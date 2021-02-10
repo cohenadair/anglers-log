@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:quiver/strings.dart';
 
@@ -50,16 +51,37 @@ abstract class PreferenceManager extends DataSourceFacilitator {
     }
   }
 
+  @override
+  StreamSubscription initializeFirestore(Completer completer) {
+    return firestore.doc(firestoreDocPath).snapshots().listen((snapshot) {
+      var data = snapshot.data();
+      if (data != null) {
+        // Completely replace local data with the Firestore document.
+        clearLocalData();
+        for (var entry in data.entries) {
+          putLocal(entry.key, entry.value);
+        }
+      }
+
+      if (!completer.isCompleted) {
+        completer.complete();
+      }
+    });
+  }
+
   @protected
-  void put(String key, dynamic value) {
+  Future<void> put(String key, dynamic value) async {
+    // Note that == for List objects does not do a deep comparison. A separate
+    // put method for List types should be implemented. For example,
+    // putStringList and putIdList.
     if (preferences[key] == value) {
       return;
     }
 
     _log.d("Setting key=$key, value=$value");
 
-    if (subscriptionManager.isPro && enableFirestore) {
-      _putFirebase(key, value);
+    if (shouldUseFirestore) {
+      await _putFirebase(key, value);
     } else {
       putLocal(key, value);
     }
@@ -92,9 +114,15 @@ abstract class PreferenceManager extends DataSourceFacilitator {
     } else {
       await doc.set(map);
     }
+  }
 
-    // Firestore was updated, now update local cache.
-    putLocal(key, value);
+  @protected
+  void putStringList(String key, List<String> value) {
+    if (listEquals(preferences[key], value)) {
+      return;
+    }
+
+    put(key, value);
   }
 
   @protected
@@ -119,6 +147,10 @@ abstract class PreferenceManager extends DataSourceFacilitator {
 
   @protected
   void putIdList(String key, List<Id> value) {
+    if (listEquals(idList(key), value)) {
+      return;
+    }
+
     put(key,
         value == null ? null : value.map((id) => id.uuid.toString()).toList());
   }

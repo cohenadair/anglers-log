@@ -17,17 +17,26 @@ void main() {
 
   setUp(() {
     appManager = MockAppManager(
+      mockAuthManager: true,
       mockBaitCategoryManager: true,
       mockBaitManager: true,
       mockCustomEntityManager: true,
       mockDataManager: true,
       mockPreferencesManager: true,
+      mockSubscriptionManager: true,
     );
 
+    when(appManager.mockAuthManager.stream).thenAnswer((_) => MockStream());
+
     when(appManager.mockBaitManager.duplicate(any)).thenReturn(false);
+
+    when(appManager.mockDataManager.stream).thenAnswer((_) => MockStream());
     when(appManager.mockDataManager.insertOrUpdateEntity(any, any, any))
         .thenAnswer((_) => Future.value(true));
+
     when(appManager.mockPreferencesManager.baitCustomEntityIds).thenReturn([]);
+
+    when(appManager.mockSubscriptionManager.isPro).thenReturn(false);
   });
 
   testWidgets("Default values for new", (tester) async {

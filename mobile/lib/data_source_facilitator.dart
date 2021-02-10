@@ -37,6 +37,9 @@ abstract class DataSourceFacilitator {
   /// [StreamSubscription], usually from a Firestore document or collection.
   /// The implementation of this method must call [completer.complete] to
   /// signify that the data is fully initialized.
+  ///
+  /// The Firestore listener created in this method should set local cache for
+  /// the underlying data model.
   @protected
   StreamSubscription<dynamic> initializeFirestore(Completer completer);
 
@@ -59,15 +62,15 @@ abstract class DataSourceFacilitator {
   DataSourceFacilitator(this.appManager) {
     _log = Log("DataSourceFacilitator($runtimeType)");
 
-    dataManager.stream.listen((event) {
-      if (event == DataManagerEvent.reset) {
-        onLocalDatabaseDeleted();
-      }
-    });
-
     authManager.stream.listen((_) {
       if (authManager.state == AuthState.loggedOut) {
         _cancelFirestoreListener();
+      }
+    });
+
+    dataManager.stream.listen((event) {
+      if (event == DataManagerEvent.reset) {
+        onLocalDatabaseDeleted();
       }
     });
   }
@@ -85,6 +88,9 @@ abstract class DataSourceFacilitator {
   @protected
   SubscriptionManager get subscriptionManager => appManager.subscriptionManager;
 
+  @protected
+  bool get shouldUseFirestore => subscriptionManager.isPro && enableFirestore;
+
   Future<void> initialize() {
     if (appPreferenceManager.lastLoggedInUserId != authManager.userId) {
       _log.d("User changed, clearing local data");
@@ -94,7 +100,7 @@ abstract class DataSourceFacilitator {
     _log.d("Initializing "
         "user=${subscriptionManager.isPro ? "pro" : "free"}; "
         "firestore=$enableFirestore");
-    if (subscriptionManager.isPro && enableFirestore) {
+    if (shouldUseFirestore) {
       return _initializeFirestore();
     } else {
       return initializeLocalData();

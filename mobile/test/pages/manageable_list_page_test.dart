@@ -40,17 +40,26 @@ void main() {
     // Use a real use of ManageableListPage for this test because an
     // EntityManagerListener is needed.
     appManager = MockAppManager(
+      mockAuthManager: true,
       mockCatchManager: true,
       mockDataManager: true,
+      mockSubscriptionManager: true,
     );
+
+    when(appManager.mockAuthManager.stream).thenAnswer((_) => MockStream());
+
     when(appManager.mockCatchManager.list()).thenReturn([]);
     when(appManager.mockCatchManager
             .existsWith(speciesId: anyNamed("speciesId")))
         .thenReturn(false);
+
+    when(appManager.mockDataManager.stream).thenAnswer((_) => MockStream());
     when(appManager.mockDataManager.insertOrUpdateEntity(any, any, any))
         .thenAnswer((_) => Future.value(true));
     when(appManager.mockDataManager.deleteEntity(any, any))
         .thenAnswer((_) => Future.value(true));
+
+    when(appManager.mockSubscriptionManager.isPro).thenReturn(false);
 
     speciesManager = SpeciesManager(appManager);
     when(appManager.speciesManager).thenReturn(speciesManager);
@@ -708,9 +717,6 @@ void main() {
   });
 
   testWidgets("Changes to listener updates state", (tester) async {
-    var appManager = MockAppManager(
-      mockDataManager: true,
-    );
     when(appManager.mockDataManager.insertOrUpdateEntity(any, any, any))
         .thenAnswer((_) => Future.value(true));
 

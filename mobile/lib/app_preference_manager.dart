@@ -1,14 +1,14 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:mobile/auth_manager.dart';
 import 'package:provider/provider.dart';
 
 import 'app_manager.dart';
+import 'auth_manager.dart';
 import 'preference_manager.dart';
 
 /// Preferences at the app level, such as the last user ID to be signed in.
-/// Preferences manages by this class are not backed up to Firebase, regardless
+/// Preferences managed by this class are not backed up to Firebase, regardless
 /// of the current user's subscription status.
 class AppPreferenceManager extends PreferenceManager {
   static AppPreferenceManager of(BuildContext context) =>

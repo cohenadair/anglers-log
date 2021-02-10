@@ -25,6 +25,7 @@ void main() {
 
   setUp(() {
     appManager = MockAppManager(
+      mockAuthManager: true,
       mockBaitCategoryManager: true,
       mockBaitManager: true,
       mockCatchManager: true,
@@ -35,16 +36,22 @@ void main() {
       mockLocationMonitor: true,
       mockPreferencesManager: true,
       mockSpeciesManager: true,
+      mockSubscriptionManager: true,
       mockTimeManager: true,
     );
 
+    when(appManager.mockAuthManager.stream).thenAnswer((_) => MockStream());
+
     when(appManager.mockBaitCategoryManager.listSortedByName()).thenReturn([]);
 
+    when(appManager.mockDataManager.stream).thenAnswer((_) => MockStream());
     when(appManager.mockDataManager.insertOrUpdateEntity(any, any, any))
         .thenAnswer((_) => Future.value(true));
 
     when(appManager.mockPreferencesManager.baitCustomEntityIds).thenReturn([]);
     when(appManager.mockPreferencesManager.catchCustomEntityIds).thenReturn([]);
+
+    when(appManager.mockSubscriptionManager.isPro).thenReturn(false);
 
     appManager.stubCurrentTime(DateTime(2020, 2, 1, 10, 30));
   });

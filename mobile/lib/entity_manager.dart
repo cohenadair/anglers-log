@@ -91,16 +91,16 @@ abstract class EntityManager<T extends GeneratedMessage>
   @override
   StreamSubscription<dynamic> initializeFirestore(Completer completer) {
     return firestore.collection(_collectionPath).snapshots().listen((snapshot) {
-      for (var change in snapshot.docChanges) {
-        var bytes = List<int>.from(change.doc.data()[_columnBytes]);
-        if (bytes == null) {
-          _log.d("Firestore bytes are null: ${change.doc.data()}");
-          continue;
-        }
+      if (snapshot == null) {
+        return;
+      }
 
-        var entity = entityFromBytes(bytes);
+      for (var change in snapshot.docChanges) {
+        var bytes = change.doc.data()[_columnBytes] ?? [];
+        var entity =
+            bytes.isNotEmpty ? entityFromBytes(List<int>.from(bytes)) : null;
         if (entity == null) {
-          _log.d("Couldn't parse bytes: $bytes");
+          _log.d("Couldn't parse bytes: ${change.doc.data()}");
           continue;
         }
 
@@ -158,11 +158,11 @@ abstract class EntityManager<T extends GeneratedMessage>
     T entity, {
     bool notify = true,
   }) async {
-    if (subscriptionManager.isPro) {
-      _log.d("Setting Firestore");
+    if (shouldUseFirestore) {
+      _log.d("addOrUpdate Firestore");
       return _addOrUpdateFirestore(entity);
     } else {
-      _log.d("Setting locally");
+      _log.d("addOrUpdate locally");
       return _addOrUpdateLocal(entity, notify: notify);
     }
   }
@@ -211,7 +211,7 @@ abstract class EntityManager<T extends GeneratedMessage>
     Id entityId, {
     bool notify = true,
   }) async {
-    if (subscriptionManager.isPro) {
+    if (shouldUseFirestore) {
       _deleteFirestore(entityId, notify: notify);
     } else {
       _deleteLocal(entityId, notify: notify);

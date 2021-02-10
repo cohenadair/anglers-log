@@ -46,13 +46,18 @@ void main() {
 
   setUp(() {
     appManager = MockAppManager(
+      mockAuthManager: true,
       mockDataManager: true,
       mockFishingSpotManager: true,
       mockLocationMonitor: true,
+      mockSubscriptionManager: true,
       mockPermissionHandlerWrapper: true,
       mockUrlLauncherWrapper: true,
     );
 
+    when(appManager.mockAuthManager.stream).thenAnswer((_) => MockStream());
+
+    when(appManager.mockDataManager.stream).thenAnswer((_) => MockStream());
     when(appManager.mockDataManager.insertOrUpdateEntity(any, any, any))
         .thenAnswer((_) => Future.value(true));
     when(appManager.mockDataManager.deleteEntity(any, any))
@@ -64,6 +69,8 @@ void main() {
 
     when(appManager.mockLocationMonitor.currentLocation)
         .thenReturn(LatLng(0.0, 0.0));
+
+    when(appManager.mockSubscriptionManager.isPro).thenReturn(false);
 
     when(appManager.mockPermissionHandlerWrapper.requestLocation())
         .thenAnswer((_) => Future.value(true));

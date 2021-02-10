@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -40,24 +38,6 @@ class UserPreferenceManager extends PreferenceManager {
 
   @override
   bool get enableFirestore => true;
-
-  @override
-  StreamSubscription initializeFirestore(Completer completer) {
-    return firestore.doc(firestoreDocPath).snapshots().listen((snapshot) {
-      var data = snapshot.data();
-      if (data != null) {
-        // Completely replace local data with the Firestore document.
-        clearLocalData();
-        for (var entry in data.entries) {
-          putLocal(entry.key, entry.value);
-        }
-      }
-
-      if (!completer.isCompleted) {
-        completer.complete();
-      }
-    });
-  }
 
   @override
   void onLocalDatabaseDeleted() {
