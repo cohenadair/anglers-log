@@ -1,7 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/bait_category_manager.dart';
 import 'package:mobile/bait_manager.dart';
-import 'package:mobile/data_manager.dart';
+import 'package:mobile/local_database_manager.dart';
 import 'package:mobile/entity_manager.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
@@ -16,7 +16,7 @@ void main() {
   MockAppManager appManager;
   MockCatchManager catchManager;
   MockCustomEntityManager customEntityManager;
-  MockDataManager dataManager;
+  MockLocalDatabaseManager dataManager;
 
   BaitManager baitManager;
   BaitCategoryManager baitCategoryManager;
@@ -26,7 +26,7 @@ void main() {
       mockAuthManager: true,
       mockCatchManager: true,
       mockCustomEntityManager: true,
-      mockDataManager: true,
+      mockLocalDatabaseManager: true,
       mockSubscriptionManager: true,
     );
 
@@ -41,11 +41,11 @@ void main() {
     when(appManager.customEntityManager).thenReturn(customEntityManager);
     when(customEntityManager.matchesFilter(any, any)).thenReturn(true);
 
-    dataManager = appManager.mockDataManager;
-    when(appManager.dataManager).thenReturn(dataManager);
+    dataManager = appManager.mockLocalDatabaseManager;
+    when(appManager.localDatabaseManager).thenReturn(dataManager);
     when(dataManager.insertOrUpdateEntity(any, any, any))
         .thenAnswer((_) => Future.value(true));
-    var dataStream = MockStream<DataManagerEvent>();
+    var dataStream = MockStream<LocalDatabaseEvent>();
     when(dataStream.listen(any)).thenReturn(null);
     when(dataManager.stream).thenAnswer((_) => dataStream);
 

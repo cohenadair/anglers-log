@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/custom_entity_manager.dart';
-import 'package:mobile/data_manager.dart';
+import 'package:mobile/local_database_manager.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
 import 'package:mobile/user_preference_manager.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
@@ -18,20 +18,21 @@ void main() {
     appManager = MockAppManager(
       mockAuthManager: true,
       mockCustomEntityManager: true,
-      mockDataManager: true,
+      mockLocalDatabaseManager: true,
       mockSubscriptionManager: true,
     );
 
-    var stream = MockStream<DataManagerEvent>();
+    var stream = MockStream<LocalDatabaseEvent>();
     when(stream.listen(any)).thenReturn(null);
     when(appManager.mockAuthManager.stream).thenAnswer((_) => stream);
 
-    stream = MockStream<DataManagerEvent>();
+    stream = MockStream<LocalDatabaseEvent>();
     when(stream.listen(any)).thenReturn(null);
-    when(appManager.mockDataManager.stream).thenAnswer((_) => stream);
-    when(appManager.mockDataManager.insertOrUpdateEntity(any, any, any))
+    when(appManager.mockLocalDatabaseManager.stream).thenAnswer((_) => stream);
+    when(appManager.mockLocalDatabaseManager
+            .insertOrUpdateEntity(any, any, any))
         .thenAnswer((_) => Future.value(true));
-    when(appManager.mockDataManager.deleteEntity(any, any))
+    when(appManager.mockLocalDatabaseManager.deleteEntity(any, any))
         .thenAnswer((_) => Future.value(true));
 
     when(appManager.mockSubscriptionManager.isPro).thenReturn(false);
@@ -76,14 +77,14 @@ void main() {
       whereArgs: anyNamed("whereArgs"),
     )).thenAnswer((_) => Future.value(1));
 
-    var realDataManager = DataManager();
+    var realDataManager = LocalDatabaseManager();
     await realDataManager.initialize(
       database: database,
       openDatabase: () => Future.value(database),
       resetDatabase: () => Future.value(database),
     );
 
-    when(appManager.dataManager).thenReturn(realDataManager);
+    when(appManager.localDatabaseManager).thenReturn(realDataManager);
 
     var id0 = randomId();
     var id1 = randomId();
@@ -98,7 +99,7 @@ void main() {
     preferenceManager.selectedReportId = id0;
 
     // Reset database.
-    expectLater(realDataManager.stream, emits(DataManagerEvent.reset));
+    expectLater(realDataManager.stream, emits(LocalDatabaseEvent.reset));
     await realDataManager.reset();
 
     // Use a delayed future to wait for the stream listener to finish.

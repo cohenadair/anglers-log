@@ -30,7 +30,7 @@ void main() {
       mockBaitManager: true,
       mockCatchManager: true,
       mockCustomEntityManager: true,
-      mockDataManager: true,
+      mockLocalDatabaseManager: true,
       mockFishingSpotManager: true,
       mockImageManager: true,
       mockLocationMonitor: true,
@@ -44,8 +44,10 @@ void main() {
 
     when(appManager.mockBaitCategoryManager.listSortedByName()).thenReturn([]);
 
-    when(appManager.mockDataManager.stream).thenAnswer((_) => MockStream());
-    when(appManager.mockDataManager.insertOrUpdateEntity(any, any, any))
+    when(appManager.mockLocalDatabaseManager.stream)
+        .thenAnswer((_) => MockStream());
+    when(appManager.mockLocalDatabaseManager
+            .insertOrUpdateEntity(any, any, any))
         .thenAnswer((_) => Future.value(true));
 
     when(appManager.mockPreferencesManager.baitCustomEntityIds).thenReturn([]);

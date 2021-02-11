@@ -3,7 +3,7 @@ import 'dart:convert';
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/app_manager.dart';
-import 'package:mobile/data_manager.dart';
+import 'package:mobile/local_database_manager.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
 import 'package:mobile/preference_manager.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
@@ -62,19 +62,19 @@ void main() {
     appManager = MockAppManager(
       mockAppPreferenceManager: true,
       mockAuthManager: true,
-      mockDataManager: true,
+      mockLocalDatabaseManager: true,
       mockSubscriptionManager: true,
       mockFirestoreWrapper: true,
     );
 
-    var stream = MockStream<DataManagerEvent>();
+    var stream = MockStream<LocalDatabaseEvent>();
     when(stream.listen(any)).thenReturn(null);
     when(appManager.mockAuthManager.stream).thenAnswer((_) => stream);
 
-    stream = MockStream<DataManagerEvent>();
+    stream = MockStream<LocalDatabaseEvent>();
     when(stream.listen(any)).thenReturn(null);
-    when(appManager.mockDataManager.stream).thenAnswer((_) => stream);
-    when(appManager.mockDataManager.insertOrReplace(any, any))
+    when(appManager.mockLocalDatabaseManager.stream).thenAnswer((_) => stream);
+    when(appManager.mockLocalDatabaseManager.insertOrReplace(any, any))
         .thenAnswer((_) => Future.value());
 
     when(appManager.mockSubscriptionManager.isPro).thenReturn(false);
@@ -87,7 +87,8 @@ void main() {
         .thenReturn(null);
     when(appManager.mockAuthManager.userId).thenReturn("ID");
 
-    when(appManager.mockDataManager.fetchAll(preferenceManager.tableName))
+    when(appManager.mockLocalDatabaseManager
+            .fetchAll(preferenceManager.tableName))
         .thenAnswer((_) => Future.value([]));
     await preferenceManager.initialize();
     expect(preferenceManager.prefs, isEmpty);
@@ -96,7 +97,8 @@ void main() {
     var id1 = randomId();
 
     // Test with all supported data types.
-    when(appManager.mockDataManager.fetchAll(preferenceManager.tableName))
+    when(appManager.mockLocalDatabaseManager
+            .fetchAll(preferenceManager.tableName))
         .thenAnswer(
       (_) => Future.value(
         [

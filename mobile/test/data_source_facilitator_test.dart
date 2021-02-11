@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/app_manager.dart';
 import 'package:mobile/auth_manager.dart';
-import 'package:mobile/data_manager.dart';
+import 'package:mobile/local_database_manager.dart';
 import 'package:mobile/data_source_facilitator.dart';
 import 'package:mockito/mockito.dart';
 
@@ -53,12 +53,13 @@ void main() {
     appManager = MockAppManager(
       mockAppPreferenceManager: true,
       mockAuthManager: true,
-      mockDataManager: true,
+      mockLocalDatabaseManager: true,
       mockSubscriptionManager: true,
     );
 
     when(appManager.mockAuthManager.stream).thenAnswer((_) => MockStream());
-    when(appManager.mockDataManager.stream).thenAnswer((_) => MockStream());
+    when(appManager.mockLocalDatabaseManager.stream)
+        .thenAnswer((_) => MockStream());
 
     facilitator = TestDataSourceFacilitator(appManager);
   });
@@ -84,12 +85,12 @@ void main() {
   });
 
   test("onLocalDatabaseDeleted invoked when database is reset", () async {
-    var controller = StreamController<DataManagerEvent>();
-    when(appManager.mockDataManager.stream)
+    var controller = StreamController<LocalDatabaseEvent>();
+    when(appManager.mockLocalDatabaseManager.stream)
         .thenAnswer((_) => controller.stream);
 
     facilitator = TestDataSourceFacilitator(appManager);
-    controller.add(DataManagerEvent.reset);
+    controller.add(LocalDatabaseEvent.reset);
     await Future.delayed(Duration(milliseconds: 50));
     expect(facilitator.onLocalDatabaseDeletedCount, 1);
   });

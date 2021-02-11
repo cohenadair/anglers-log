@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mobile/data_manager.dart';
+import 'package:mobile/local_database_manager.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
 import 'package:mobile/species_manager.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
@@ -11,7 +11,7 @@ import 'test_utils.dart';
 void main() {
   MockAppManager appManager;
   MockCatchManager catchManager;
-  MockDataManager dataManager;
+  MockLocalDatabaseManager dataManager;
 
   SpeciesManager speciesManager;
 
@@ -19,7 +19,7 @@ void main() {
     appManager = MockAppManager(
       mockAuthManager: true,
       mockCatchManager: true,
-      mockDataManager: true,
+      mockLocalDatabaseManager: true,
       mockSubscriptionManager: true,
     );
 
@@ -30,11 +30,12 @@ void main() {
     catchManager = appManager.mockCatchManager;
     when(appManager.catchManager).thenReturn(catchManager);
 
-    dataManager = appManager.mockDataManager;
-    when(appManager.dataManager).thenReturn(dataManager);
-    var dataStream = MockStream<DataManagerEvent>();
+    dataManager = appManager.mockLocalDatabaseManager;
+    when(appManager.localDatabaseManager).thenReturn(dataManager);
+    var dataStream = MockStream<LocalDatabaseEvent>();
     when(dataStream.listen(any)).thenReturn(null);
-    when(appManager.mockDataManager.stream).thenAnswer((_) => dataStream);
+    when(appManager.mockLocalDatabaseManager.stream)
+        .thenAnswer((_) => dataStream);
 
     when(appManager.mockSubscriptionManager.isPro).thenReturn(false);
 

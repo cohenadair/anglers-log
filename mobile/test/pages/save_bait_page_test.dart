@@ -21,7 +21,7 @@ void main() {
       mockBaitCategoryManager: true,
       mockBaitManager: true,
       mockCustomEntityManager: true,
-      mockDataManager: true,
+      mockLocalDatabaseManager: true,
       mockPreferencesManager: true,
       mockSubscriptionManager: true,
     );
@@ -30,8 +30,10 @@ void main() {
 
     when(appManager.mockBaitManager.duplicate(any)).thenReturn(false);
 
-    when(appManager.mockDataManager.stream).thenAnswer((_) => MockStream());
-    when(appManager.mockDataManager.insertOrUpdateEntity(any, any, any))
+    when(appManager.mockLocalDatabaseManager.stream)
+        .thenAnswer((_) => MockStream());
+    when(appManager.mockLocalDatabaseManager
+            .insertOrUpdateEntity(any, any, any))
         .thenAnswer((_) => Future.value(true));
 
     when(appManager.mockPreferencesManager.baitCustomEntityIds).thenReturn([]);

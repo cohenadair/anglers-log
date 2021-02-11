@@ -25,7 +25,7 @@ void main() {
       mockBaitCategoryManager: true,
       mockBaitManager: true,
       mockCatchManager: true,
-      mockDataManager: true,
+      mockLocalDatabaseManager: true,
       mockFishingSpotManager: true,
       mockSpeciesManager: true,
       mockFilePickerWrapper: true,
@@ -43,7 +43,8 @@ void main() {
       notify: anyNamed("notify"),
     )).thenAnswer((_) => Future.value(true));
 
-    when(appManager.mockDataManager.reset()).thenAnswer((_) => Future.value());
+    when(appManager.mockLocalDatabaseManager.reset())
+        .thenAnswer((_) => Future.value());
 
     when(appManager.mockFishingSpotManager.addOrUpdate(any))
         .thenAnswer((_) => Future.value(true));
@@ -102,7 +103,7 @@ void main() {
     )).thenAnswer((_) =>
         Future.value(File("test/resources/backups/legacy_ios_entities.zip")));
 
-    when(appManager.mockDataManager.reset())
+    when(appManager.mockLocalDatabaseManager.reset())
         .thenAnswer((_) => Future.delayed(Duration(milliseconds: 100)));
 
     await tester.pumpWidget(Testable(

@@ -8,9 +8,9 @@ import 'bait_manager.dart';
 import 'catch_manager.dart';
 import 'comparison_report_manager.dart';
 import 'custom_entity_manager.dart';
-import 'data_manager.dart';
 import 'fishing_spot_manager.dart';
 import 'image_manager.dart';
+import 'local_database_manager.dart';
 import 'location_monitor.dart';
 import 'properties_manager.dart';
 import 'species_manager.dart';
@@ -43,12 +43,12 @@ class AppManager {
   AuthManager _authManager;
   BaitCategoryManager _baitCategoryManager;
   BaitManager _baitManager;
-  DataManager _dataManager;
   CatchManager _catchManager;
   ComparisonReportManager _comparisonReportManager;
   CustomEntityManager _customEntityManager;
   FishingSpotManager _fishingSpotManager;
   ImageManager _imageManager;
+  LocalDatabaseManager _localDatabaseManager;
   LocationMonitor _locationMonitor;
   PropertiesManager _propertiesManager;
   SpeciesManager _speciesManager;
@@ -102,13 +102,6 @@ class AppManager {
     return _baitManager;
   }
 
-  DataManager get dataManager {
-    if (_dataManager == null) {
-      _dataManager = DataManager();
-    }
-    return _dataManager;
-  }
-
   CatchManager get catchManager {
     if (_catchManager == null) {
       _catchManager = CatchManager(this);
@@ -142,6 +135,13 @@ class AppManager {
       _imageManager = ImageManager(this);
     }
     return _imageManager;
+  }
+
+  LocalDatabaseManager get localDatabaseManager {
+    if (_localDatabaseManager == null) {
+      _localDatabaseManager = LocalDatabaseManager();
+    }
+    return _localDatabaseManager;
   }
 
   LocationMonitor get locationMonitor {

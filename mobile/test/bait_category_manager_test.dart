@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/bait_category_manager.dart';
-import 'package:mobile/data_manager.dart';
+import 'package:mobile/local_database_manager.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mockito/mockito.dart';
@@ -11,7 +11,7 @@ import 'test_utils.dart';
 void main() {
   MockAppManager appManager;
   MockBaitManager baitManager;
-  MockDataManager dataManager;
+  MockLocalDatabaseManager dataManager;
 
   BaitCategoryManager baitCategoryManager;
 
@@ -19,7 +19,7 @@ void main() {
     appManager = MockAppManager(
       mockAuthManager: true,
       mockBaitManager: true,
-      mockDataManager: true,
+      mockLocalDatabaseManager: true,
     );
 
     var authStream = MockStream<void>();
@@ -29,10 +29,10 @@ void main() {
     baitManager = appManager.mockBaitManager;
     when(appManager.baitManager).thenReturn(baitManager);
 
-    dataManager = appManager.mockDataManager;
-    when(appManager.dataManager).thenReturn(dataManager);
+    dataManager = appManager.mockLocalDatabaseManager;
+    when(appManager.localDatabaseManager).thenReturn(dataManager);
 
-    var dataStream = MockStream<DataManagerEvent>();
+    var dataStream = MockStream<LocalDatabaseEvent>();
     when(dataStream.listen(any)).thenReturn(null);
     when(dataManager.stream).thenAnswer((_) => dataStream);
 

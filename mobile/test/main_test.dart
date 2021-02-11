@@ -25,7 +25,7 @@ void main() {
       mockCatchManager: true,
       mockComparisonReportManager: true,
       mockCustomEntityManager: true,
-      mockDataManager: true,
+      mockLocalDatabaseManager: true,
       mockFishingSpotManager: true,
       mockImageManager: true,
       mockLocationMonitor: true,

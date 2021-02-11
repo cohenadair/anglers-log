@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/bait_manager.dart';
 import 'package:mobile/catch_manager.dart';
-import 'package:mobile/data_manager.dart';
+import 'package:mobile/local_database_manager.dart';
 import 'package:mobile/entity_manager.dart';
 import 'package:mobile/fishing_spot_manager.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
@@ -20,7 +20,7 @@ class MockCatchListener extends Mock implements EntityListener<Catch> {}
 void main() {
   MockAppManager appManager;
   MockBaitCategoryManager baitCategoryManager;
-  MockDataManager dataManager;
+  MockLocalDatabaseManager dataManager;
   MockImageManager imageManager;
   MockSpeciesManager speciesManager;
   BaitManager baitManager;
@@ -31,7 +31,7 @@ void main() {
     appManager = MockAppManager(
       mockAuthManager: true,
       mockBaitCategoryManager: true,
-      mockDataManager: true,
+      mockLocalDatabaseManager: true,
       mockImageManager: true,
       mockSpeciesManager: true,
       mockSubscriptionManager: true,
@@ -46,11 +46,11 @@ void main() {
     when(appManager.baitCategoryManager).thenReturn(baitCategoryManager);
     when(baitCategoryManager.addListener(any)).thenAnswer((_) {});
 
-    dataManager = appManager.mockDataManager;
-    when(appManager.dataManager).thenReturn(dataManager);
+    dataManager = appManager.mockLocalDatabaseManager;
+    when(appManager.localDatabaseManager).thenReturn(dataManager);
     when(dataManager.insertOrUpdateEntity(any, any, any))
         .thenAnswer((_) => Future.value(true));
-    var dataStream = MockStream<DataManagerEvent>();
+    var dataStream = MockStream<LocalDatabaseEvent>();
     when(dataStream.listen(any)).thenReturn(null);
     when(dataManager.stream).thenAnswer((_) => dataStream);
 

@@ -189,7 +189,7 @@ abstract class EntityManager<T extends GeneratedMessage>
       _columnBytes: entity.writeToBuffer(),
     };
 
-    if (await dataManager.insertOrUpdateEntity(id, map, tableName)) {
+    if (await localDatabaseManager.insertOrUpdateEntity(id, map, tableName)) {
       var updated = entities.containsKey(id);
       entities[id] = entity;
       if (notify) {
@@ -241,7 +241,7 @@ abstract class EntityManager<T extends GeneratedMessage>
     bool notify = true,
   }) async {
     if (entityExists(entityId) &&
-        await dataManager.deleteEntity(entityId, tableName)) {
+        await localDatabaseManager.deleteEntity(entityId, tableName)) {
       _log.d("Deleted locally");
       var deletedEntity = entity(entityId);
       if (entities.remove(entityId) != null && notify) {
@@ -251,7 +251,7 @@ abstract class EntityManager<T extends GeneratedMessage>
   }
 
   Future<List<T>> _fetchAll() async {
-    return (await dataManager.fetchAll(tableName))
+    return (await localDatabaseManager.fetchAll(tableName))
         .map(
           (map) => entityFromBytes((map[_columnBytes] as Uint8List).toList()),
         )

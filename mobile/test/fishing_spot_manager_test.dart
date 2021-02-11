@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:mobile/data_manager.dart';
+import 'package:mobile/local_database_manager.dart';
 import 'package:mobile/fishing_spot_manager.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
@@ -12,14 +12,14 @@ import 'test_utils.dart';
 void main() {
   MockAppManager appManager;
   MockCatchManager catchManager;
-  MockDataManager dataManager;
+  MockLocalDatabaseManager dataManager;
   FishingSpotManager fishingSpotManager;
 
   setUp(() async {
     appManager = MockAppManager(
       mockAuthManager: true,
       mockCatchManager: true,
-      mockDataManager: true,
+      mockLocalDatabaseManager: true,
       mockSubscriptionManager: true,
     );
 
@@ -30,13 +30,13 @@ void main() {
     catchManager = appManager.mockCatchManager;
     when(appManager.catchManager).thenReturn(catchManager);
 
-    dataManager = appManager.mockDataManager;
-    when(appManager.dataManager).thenReturn(dataManager);
+    dataManager = appManager.mockLocalDatabaseManager;
+    when(appManager.localDatabaseManager).thenReturn(dataManager);
     when(dataManager.insertOrUpdateEntity(any, any, any))
         .thenAnswer((_) => Future.value(true));
     when(dataManager.deleteEntity(any, any))
         .thenAnswer((_) => Future.value(true));
-    var dataStream = MockStream<DataManagerEvent>();
+    var dataStream = MockStream<LocalDatabaseEvent>();
     when(dataStream.listen(any)).thenReturn(null);
     when(dataManager.stream).thenAnswer((_) => dataStream);
 

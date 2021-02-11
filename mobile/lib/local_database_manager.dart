@@ -10,16 +10,16 @@ import 'log.dart';
 import 'model/gen/anglerslog.pb.dart';
 import 'utils/protobuf_utils.dart';
 
-enum DataManagerEvent {
+enum LocalDatabaseEvent {
   reset,
 }
 
-class DataManager {
-  static DataManager of(BuildContext context) =>
-      Provider.of<AppManager>(context, listen: false).dataManager;
+class LocalDatabaseManager {
+  static LocalDatabaseManager of(BuildContext context) =>
+      Provider.of<AppManager>(context, listen: false).localDatabaseManager;
 
   final _log = Log("DataManager");
-  final _controller = StreamController<DataManagerEvent>.broadcast();
+  final _controller = StreamController<LocalDatabaseEvent>.broadcast();
 
   Database _database;
   Future<Database> Function() _openDatabase;
@@ -35,7 +35,7 @@ class DataManager {
     _database = database ?? (await _openDatabase());
   }
 
-  Stream<DataManagerEvent> get stream => _controller.stream;
+  Stream<LocalDatabaseEvent> get stream => _controller.stream;
 
   /// Completely resets the database by deleting the SQLite file and recreating
   /// it from scratch. All [EntityManager] subclasses are synced with the
@@ -43,7 +43,7 @@ class DataManager {
   Future<void> reset() async {
     await _database.close();
     _database = await _resetDatabase();
-    _controller.add(DataManagerEvent.reset);
+    _controller.add(LocalDatabaseEvent.reset);
   }
 
   /// Commits a batch of SQL statements. See [Batch].

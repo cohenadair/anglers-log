@@ -179,7 +179,7 @@ void main() {
       mockBaitManager: true,
       mockCatchManager: true,
       mockComparisonReportManager: true,
-      mockDataManager: true,
+      mockLocalDatabaseManager: true,
       mockFishingSpotManager: true,
       mockPreferencesManager: true,
       mockSummaryReportManager: true,
@@ -220,10 +220,12 @@ void main() {
     )).thenReturn(SimpleEntityListener<ComparisonReport>());
     when(appManager.mockComparisonReportManager.list()).thenReturn([]);
 
-    when(appManager.mockDataManager.stream).thenAnswer((_) => MockStream());
-    when(appManager.mockDataManager.deleteEntity(any, any))
+    when(appManager.mockLocalDatabaseManager.stream)
+        .thenAnswer((_) => MockStream());
+    when(appManager.mockLocalDatabaseManager.deleteEntity(any, any))
         .thenAnswer((_) => Future.value(true));
-    when(appManager.mockDataManager.insertOrUpdateEntity(any, any, any))
+    when(appManager.mockLocalDatabaseManager
+            .insertOrUpdateEntity(any, any, any))
         .thenAnswer((_) => Future.value(true));
 
     when(appManager.mockFishingSpotManager.addSimpleListener(

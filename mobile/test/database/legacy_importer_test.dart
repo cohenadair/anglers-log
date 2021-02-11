@@ -5,7 +5,7 @@ import 'package:mobile/bait_category_manager.dart';
 import 'package:mobile/bait_manager.dart';
 import 'package:mobile/catch_manager.dart';
 import 'package:mobile/channels/migration_channel.dart';
-import 'package:mobile/data_manager.dart';
+import 'package:mobile/local_database_manager.dart';
 import 'package:mobile/database/legacy_importer.dart';
 import 'package:mobile/fishing_spot_manager.dart';
 import 'package:mobile/species_manager.dart';
@@ -18,7 +18,7 @@ import '../test_utils.dart';
 
 void main() {
   MockAppManager appManager;
-  MockDataManager dataManager;
+  MockLocalDatabaseManager dataManager;
   MockImageManager imageManager;
 
   MockIoWrapper ioWrapper;
@@ -35,22 +35,22 @@ void main() {
   setUp(() {
     appManager = MockAppManager(
       mockAuthManager: true,
-      mockDataManager: true,
+      mockLocalDatabaseManager: true,
       mockSubscriptionManager: true,
       mockImageManager: true,
       mockIoWrapper: true,
       mockPathProviderWrapper: true,
     );
 
-    var stream = MockStream<DataManagerEvent>();
+    var stream = MockStream<LocalDatabaseEvent>();
     when(stream.listen(any)).thenReturn(null);
     when(appManager.mockAuthManager.stream).thenAnswer((_) => stream);
 
-    dataManager = appManager.mockDataManager;
+    dataManager = appManager.mockLocalDatabaseManager;
     when(dataManager.insertOrUpdateEntity(any, any, any))
         .thenAnswer((_) => Future.value(true));
-    when(appManager.dataManager).thenReturn(dataManager);
-    stream = MockStream<DataManagerEvent>();
+    when(appManager.localDatabaseManager).thenReturn(dataManager);
+    stream = MockStream<LocalDatabaseEvent>();
     when(stream.listen(any)).thenReturn(null);
     when(dataManager.stream).thenAnswer((_) => stream);
 

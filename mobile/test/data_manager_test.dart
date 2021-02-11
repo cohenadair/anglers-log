@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:mobile/data_manager.dart';
+import 'package:mobile/local_database_manager.dart';
 import 'package:mockito/mockito.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:test/test.dart';
@@ -9,11 +9,11 @@ class MockDatabase extends Mock implements Database {}
 
 void main() {
   MockDatabase database;
-  DataManager dataManager;
+  LocalDatabaseManager dataManager;
 
   setUp(() async {
     database = MockDatabase();
-    dataManager = DataManager();
+    dataManager = LocalDatabaseManager();
     await dataManager.initialize(
       database: database,
       openDatabase: () => Future.value(database),
@@ -24,8 +24,8 @@ void main() {
   test("Listeners are notified when database is reset", () async {
     when(database.close()).thenAnswer((_) => Future.value());
 
-    dataManager.stream
-        .listen(expectAsync1((event) => expect(event, DataManagerEvent.reset)));
+    dataManager.stream.listen(
+        expectAsync1((event) => expect(event, LocalDatabaseEvent.reset)));
     await dataManager.reset();
   });
 }

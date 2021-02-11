@@ -12,8 +12,8 @@ import '../bait_category_manager.dart';
 import '../bait_manager.dart';
 import '../catch_manager.dart';
 import '../channels/migration_channel.dart';
-import '../data_manager.dart';
 import '../fishing_spot_manager.dart';
+import '../local_database_manager.dart';
 import '../log.dart';
 import '../model/gen/anglerslog.pb.dart';
 import '../model/gen/google/protobuf/timestamp.pb.dart';
@@ -87,7 +87,7 @@ class LegacyImporter {
 
   CatchManager get _catchManager => _appManager.catchManager;
 
-  DataManager get _dataManager => _appManager.dataManager;
+  LocalDatabaseManager get _dataManager => _appManager.localDatabaseManager;
 
   FishingSpotManager get _fishingSpotManager => _appManager.fishingSpotManager;
 

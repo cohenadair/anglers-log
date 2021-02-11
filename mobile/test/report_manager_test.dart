@@ -1,7 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/app_manager.dart';
 import 'package:mobile/bait_manager.dart';
-import 'package:mobile/data_manager.dart';
+import 'package:mobile/local_database_manager.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
 import 'package:mobile/report_manager.dart';
 import 'package:mobile/entity_manager.dart';
@@ -64,7 +64,7 @@ void main() {
       mockAuthManager: true,
       mockBaitCategoryManager: true,
       mockCatchManager: true,
-      mockDataManager: true,
+      mockLocalDatabaseManager: true,
       mockCustomEntityValueManager: true,
       mockSubscriptionManager: true,
     );
@@ -73,12 +73,14 @@ void main() {
     when(authStream.listen(any)).thenReturn(null);
     when(appManager.mockAuthManager.stream).thenAnswer((_) => authStream);
 
-    var dataStream = MockStream<DataManagerEvent>();
+    var dataStream = MockStream<LocalDatabaseEvent>();
     when(dataStream.listen(any)).thenReturn(null);
-    when(appManager.mockDataManager.stream).thenAnswer((_) => dataStream);
-    when(appManager.mockDataManager.insertOrUpdateEntity(any, any, any))
+    when(appManager.mockLocalDatabaseManager.stream)
+        .thenAnswer((_) => dataStream);
+    when(appManager.mockLocalDatabaseManager
+            .insertOrUpdateEntity(any, any, any))
         .thenAnswer((_) => Future.value(true));
-    when(appManager.mockDataManager.deleteEntity(any, any))
+    when(appManager.mockLocalDatabaseManager.deleteEntity(any, any))
         .thenAnswer((_) => Future.value(true));
 
     reportListener = MockCustomReportListener();
@@ -144,7 +146,7 @@ void main() {
         .thenReturn((report) => updatedReports.add(report));
 
     // Nothing to delete.
-    when(appManager.mockDataManager.deleteEntity(any, any))
+    when(appManager.mockLocalDatabaseManager.deleteEntity(any, any))
         .thenAnswer((_) => Future.value(false));
 
     var bait = Bait()
@@ -154,7 +156,7 @@ void main() {
     verifyNever(reportListener.onUpdate);
 
     // Successful delete.
-    when(appManager.mockDataManager.deleteEntity(any, any))
+    when(appManager.mockLocalDatabaseManager.deleteEntity(any, any))
         .thenAnswer((_) => Future.value(true));
 
     var report = SummaryReport()
@@ -181,7 +183,7 @@ void main() {
         .thenReturn((report) => updatedReports.add(report));
 
     // Nothing to delete.
-    when(appManager.mockDataManager.deleteEntity(any, any))
+    when(appManager.mockLocalDatabaseManager.deleteEntity(any, any))
         .thenAnswer((_) => Future.value(false));
 
     var fishingSpot = FishingSpot()
@@ -192,7 +194,7 @@ void main() {
     verifyNever(reportListener.onUpdate);
 
     // Successful delete.
-    when(appManager.mockDataManager.deleteEntity(any, any))
+    when(appManager.mockLocalDatabaseManager.deleteEntity(any, any))
         .thenAnswer((_) => Future.value(true));
 
     var report = SummaryReport()

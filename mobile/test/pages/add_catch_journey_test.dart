@@ -25,7 +25,7 @@ void main() {
       mockBaitManager: true,
       mockCatchManager: true,
       mockCustomEntityManager: true,
-      mockDataManager: true,
+      mockLocalDatabaseManager: true,
       mockFishingSpotManager: true,
       mockLocationMonitor: true,
       mockPermissionHandlerWrapper: true,
@@ -35,7 +35,8 @@ void main() {
       mockTimeManager: true,
     );
 
-    when(appManager.mockDataManager.insertOrUpdateEntity(any, any, any))
+    when(appManager.mockLocalDatabaseManager
+            .insertOrUpdateEntity(any, any, any))
         .thenAnswer((_) => Future.value(true));
     when(appManager.mockFishingSpotManager.listSortedByName()).thenReturn([]);
 

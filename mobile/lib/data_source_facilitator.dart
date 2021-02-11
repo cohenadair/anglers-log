@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'app_manager.dart';
 import 'app_preference_manager.dart';
 import 'auth_manager.dart';
-import 'data_manager.dart';
+import 'local_database_manager.dart';
 import 'log.dart';
 import 'subscription_manager.dart';
 
@@ -68,8 +68,8 @@ abstract class DataSourceFacilitator {
       }
     });
 
-    dataManager.stream.listen((event) {
-      if (event == DataManagerEvent.reset) {
+    localDatabaseManager.stream.listen((event) {
+      if (event == LocalDatabaseEvent.reset) {
         onLocalDatabaseDeleted();
       }
     });
@@ -83,7 +83,8 @@ abstract class DataSourceFacilitator {
   AuthManager get authManager => appManager.authManager;
 
   @protected
-  DataManager get dataManager => appManager.dataManager;
+  LocalDatabaseManager get localDatabaseManager =>
+      appManager.localDatabaseManager;
 
   @protected
   SubscriptionManager get subscriptionManager => appManager.subscriptionManager;

@@ -21,7 +21,7 @@ void main() {
       mockBaitManager: true,
       mockCatchManager: true,
       mockComparisonReportManager: true,
-      mockDataManager: true,
+      mockLocalDatabaseManager: true,
       mockFishingSpotManager: true,
       mockImageManager: true,
       mockLocationMonitor: true,
@@ -53,7 +53,8 @@ void main() {
     when(appManager.mockComparisonReportManager.entityExists(any))
         .thenReturn(false);
 
-    when(appManager.mockDataManager.stream).thenAnswer((_) => MockStream());
+    when(appManager.mockLocalDatabaseManager.stream)
+        .thenAnswer((_) => MockStream());
 
     when(appManager.mockFishingSpotManager.list()).thenReturn([]);
 
@@ -151,7 +152,8 @@ void main() {
     when(appManager.mockPreferencesManager.rateTimerStartedAt).thenReturn(0);
     when(appManager.mockImageManager.save(any, compress: anyNamed("compress")))
         .thenAnswer((_) => Future.value([]));
-    when(appManager.mockDataManager.insertOrUpdateEntity(any, any, any))
+    when(appManager.mockLocalDatabaseManager
+            .insertOrUpdateEntity(any, any, any))
         .thenAnswer((_) => Future.value(true));
 
     catchManager.addOrUpdate(Catch()

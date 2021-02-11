@@ -42,7 +42,7 @@ void main() {
     appManager = MockAppManager(
       mockAuthManager: true,
       mockCatchManager: true,
-      mockDataManager: true,
+      mockLocalDatabaseManager: true,
       mockSubscriptionManager: true,
     );
 
@@ -53,10 +53,12 @@ void main() {
             .existsWith(speciesId: anyNamed("speciesId")))
         .thenReturn(false);
 
-    when(appManager.mockDataManager.stream).thenAnswer((_) => MockStream());
-    when(appManager.mockDataManager.insertOrUpdateEntity(any, any, any))
+    when(appManager.mockLocalDatabaseManager.stream)
+        .thenAnswer((_) => MockStream());
+    when(appManager.mockLocalDatabaseManager
+            .insertOrUpdateEntity(any, any, any))
         .thenAnswer((_) => Future.value(true));
-    when(appManager.mockDataManager.deleteEntity(any, any))
+    when(appManager.mockLocalDatabaseManager.deleteEntity(any, any))
         .thenAnswer((_) => Future.value(true));
 
     when(appManager.mockSubscriptionManager.isPro).thenReturn(false);
@@ -717,7 +719,8 @@ void main() {
   });
 
   testWidgets("Changes to listener updates state", (tester) async {
-    when(appManager.mockDataManager.insertOrUpdateEntity(any, any, any))
+    when(appManager.mockLocalDatabaseManager
+            .insertOrUpdateEntity(any, any, any))
         .thenAnswer((_) => Future.value(true));
 
     var speciesManager = SpeciesManager(appManager);

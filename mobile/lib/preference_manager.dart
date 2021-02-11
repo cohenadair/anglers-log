@@ -39,7 +39,7 @@ abstract class PreferenceManager extends DataSourceFacilitator {
 
   @override
   Future<void> initializeLocalData() async {
-    for (var row in (await dataManager.fetchAll(tableName))) {
+    for (var row in (await localDatabaseManager.fetchAll(tableName))) {
       preferences[row[_keyId]] = jsonDecode(row[_keyValue]);
     }
   }
@@ -90,10 +90,11 @@ abstract class PreferenceManager extends DataSourceFacilitator {
   @protected
   void putLocal(String key, dynamic value) {
     if (value == null) {
-      dataManager.delete(tableName, where: "$_keyId = ?", whereArgs: [key]);
+      localDatabaseManager
+          .delete(tableName, where: "$_keyId = ?", whereArgs: [key]);
       preferences.remove(key);
     } else {
-      dataManager.insertOrReplace(tableName, {
+      localDatabaseManager.insertOrReplace(tableName, {
         _keyId: key,
         _keyValue: jsonEncode(value),
       });

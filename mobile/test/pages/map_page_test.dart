@@ -47,7 +47,7 @@ void main() {
   setUp(() {
     appManager = MockAppManager(
       mockAuthManager: true,
-      mockDataManager: true,
+      mockLocalDatabaseManager: true,
       mockFishingSpotManager: true,
       mockLocationMonitor: true,
       mockSubscriptionManager: true,
@@ -57,10 +57,12 @@ void main() {
 
     when(appManager.mockAuthManager.stream).thenAnswer((_) => MockStream());
 
-    when(appManager.mockDataManager.stream).thenAnswer((_) => MockStream());
-    when(appManager.mockDataManager.insertOrUpdateEntity(any, any, any))
+    when(appManager.mockLocalDatabaseManager.stream)
+        .thenAnswer((_) => MockStream());
+    when(appManager.mockLocalDatabaseManager
+            .insertOrUpdateEntity(any, any, any))
         .thenAnswer((_) => Future.value(true));
-    when(appManager.mockDataManager.deleteEntity(any, any))
+    when(appManager.mockLocalDatabaseManager.deleteEntity(any, any))
         .thenAnswer((_) => Future.value(true));
 
     when(appManager.mockFishingSpotManager.list()).thenReturn(fishingSpots);

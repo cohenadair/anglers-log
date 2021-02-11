@@ -9,7 +9,7 @@ import 'package:mobile/comparison_report_manager.dart';
 import 'package:mobile/custom_entity_manager.dart';
 import 'package:mobile/subscription_manager.dart';
 import 'package:mobile/summary_report_manager.dart';
-import 'package:mobile/data_manager.dart';
+import 'package:mobile/local_database_manager.dart';
 import 'package:mobile/fishing_spot_manager.dart';
 import 'package:mobile/image_manager.dart';
 import 'package:mobile/location_monitor.dart';
@@ -45,8 +45,6 @@ class MockBaitManager extends Mock implements BaitManager {}
 
 class MockDatabase extends Mock implements Database {}
 
-class MockDataManager extends Mock implements DataManager {}
-
 class MockCatchManager extends Mock implements CatchManager {}
 
 class MockComparisonReportManager extends Mock
@@ -57,6 +55,8 @@ class MockCustomEntityManager extends Mock implements CustomEntityManager {}
 class MockFishingSpotManager extends Mock implements FishingSpotManager {}
 
 class MockImageManager extends Mock implements ImageManager {}
+
+class MockLocalDatabaseManager extends Mock implements LocalDatabaseManager {}
 
 class MockLocationMonitor extends Mock implements LocationMonitor {}
 
@@ -110,12 +110,12 @@ class MockAppManager extends Mock implements AppManager {
   MockAuthManager mockAuthManager;
   MockBaitCategoryManager mockBaitCategoryManager;
   MockBaitManager mockBaitManager;
-  MockDataManager mockDataManager;
   MockCatchManager mockCatchManager;
   MockComparisonReportManager mockComparisonReportManager;
   MockCustomEntityManager mockCustomEntityManager;
   MockFishingSpotManager mockFishingSpotManager;
   MockImageManager mockImageManager;
+  MockLocalDatabaseManager mockLocalDatabaseManager;
   MockLocationMonitor mockLocationMonitor;
   MockPreferencesManager mockPreferencesManager;
   MockPropertiesManager mockPropertiesManager;
@@ -146,13 +146,13 @@ class MockAppManager extends Mock implements AppManager {
     bool mockAuthManager = false,
     bool mockBaitCategoryManager = false,
     bool mockBaitManager = false,
-    bool mockDataManager = false,
     bool mockCatchManager = false,
     bool mockComparisonReportManager = false,
     bool mockCustomEntityManager = false,
     bool mockCustomEntityValueManager = false,
     bool mockFishingSpotManager = false,
     bool mockImageManager = false,
+    bool mockLocalDatabaseManager = false,
     bool mockLocationMonitor = false,
     bool mockPreferencesManager = false,
     bool mockPropertiesManager = false,
@@ -197,11 +197,6 @@ class MockAppManager extends Mock implements AppManager {
       when(baitManager).thenReturn(this.mockBaitManager);
     }
 
-    if (mockDataManager) {
-      this.mockDataManager = MockDataManager();
-      when(dataManager).thenReturn(this.mockDataManager);
-    }
-
     if (mockCatchManager) {
       this.mockCatchManager = MockCatchManager();
       when(catchManager).thenReturn(this.mockCatchManager);
@@ -226,6 +221,11 @@ class MockAppManager extends Mock implements AppManager {
     if (mockImageManager) {
       this.mockImageManager = MockImageManager();
       when(imageManager).thenReturn(this.mockImageManager);
+    }
+
+    if (mockLocalDatabaseManager) {
+      this.mockLocalDatabaseManager = MockLocalDatabaseManager();
+      when(localDatabaseManager).thenReturn(this.mockLocalDatabaseManager);
     }
 
     if (mockLocationMonitor) {
