@@ -1,6 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:mobile/local_database_manager.dart';
 import 'package:mobile/fishing_spot_manager.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
@@ -36,9 +35,6 @@ void main() {
         .thenAnswer((_) => Future.value(true));
     when(dataManager.deleteEntity(any, any))
         .thenAnswer((_) => Future.value(true));
-    var dataStream = MockStream<LocalDatabaseEvent>();
-    when(dataStream.listen(any)).thenReturn(null);
-    when(dataManager.stream).thenAnswer((_) => dataStream);
 
     when(appManager.mockSubscriptionManager.isPro).thenReturn(false);
 

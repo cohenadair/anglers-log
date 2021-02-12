@@ -1,11 +1,11 @@
 import 'dart:io';
 
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mobile/auth_manager.dart';
 import 'package:mobile/bait_category_manager.dart';
 import 'package:mobile/bait_manager.dart';
 import 'package:mobile/catch_manager.dart';
 import 'package:mobile/channels/migration_channel.dart';
-import 'package:mobile/local_database_manager.dart';
 import 'package:mobile/database/legacy_importer.dart';
 import 'package:mobile/fishing_spot_manager.dart';
 import 'package:mobile/species_manager.dart';
@@ -42,7 +42,7 @@ void main() {
       mockPathProviderWrapper: true,
     );
 
-    var stream = MockStream<LocalDatabaseEvent>();
+    var stream = MockStream<AuthState>();
     when(stream.listen(any)).thenReturn(null);
     when(appManager.mockAuthManager.stream).thenAnswer((_) => stream);
 
@@ -50,9 +50,6 @@ void main() {
     when(dataManager.insertOrUpdateEntity(any, any, any))
         .thenAnswer((_) => Future.value(true));
     when(appManager.localDatabaseManager).thenReturn(dataManager);
-    stream = MockStream<LocalDatabaseEvent>();
-    when(stream.listen(any)).thenReturn(null);
-    when(dataManager.stream).thenAnswer((_) => stream);
 
     imageManager = appManager.mockImageManager;
     when(imageManager.save(any)).thenAnswer((_) => Future.value());

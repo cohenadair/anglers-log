@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mobile/auth_manager.dart';
 import 'package:mobile/custom_entity_manager.dart';
-import 'package:mobile/local_database_manager.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
 import 'package:mobile/user_preference_manager.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
@@ -22,13 +22,10 @@ void main() {
       mockSubscriptionManager: true,
     );
 
-    var stream = MockStream<LocalDatabaseEvent>();
+    var stream = MockStream<AuthState>();
     when(stream.listen(any)).thenReturn(null);
     when(appManager.mockAuthManager.stream).thenAnswer((_) => stream);
 
-    stream = MockStream<LocalDatabaseEvent>();
-    when(stream.listen(any)).thenReturn(null);
-    when(appManager.mockLocalDatabaseManager.stream).thenAnswer((_) => stream);
     when(appManager.mockLocalDatabaseManager
             .insertOrUpdateEntity(any, any, any))
         .thenAnswer((_) => Future.value(true));
@@ -61,57 +58,5 @@ void main() {
     await realEntityManager.delete(deleteEntity.id);
     expect(preferenceManager.baitCustomEntityIds.length, 1);
     expect(preferenceManager.catchCustomEntityIds.isEmpty, true);
-  });
-
-  test("Preferences are cleared when database is reset", () async {
-    var database = MockDatabase();
-    when(database.close()).thenAnswer((_) => Future.value());
-    when(database.insert(
-      any,
-      any,
-      conflictAlgorithm: anyNamed("conflictAlgorithm"),
-    )).thenAnswer((_) => Future.value(1));
-    when(database.delete(
-      any,
-      where: anyNamed("where"),
-      whereArgs: anyNamed("whereArgs"),
-    )).thenAnswer((_) => Future.value(1));
-
-    var realDataManager = LocalDatabaseManager();
-    await realDataManager.initialize(
-      database: database,
-      openDatabase: () => Future.value(database),
-      resetDatabase: () => Future.value(database),
-    );
-
-    when(appManager.localDatabaseManager).thenReturn(realDataManager);
-
-    var id0 = randomId();
-    var id1 = randomId();
-    preferenceManager = UserPreferenceManager(appManager);
-    preferenceManager.baitCustomEntityIds = [id0, id1];
-    preferenceManager.catchCustomEntityIds = [id0];
-    preferenceManager.baitFieldIds = [id1, id0];
-    preferenceManager.catchFieldIds = [id1];
-    preferenceManager.rateTimerStartedAt = 10000;
-    preferenceManager.didRateApp = true;
-    preferenceManager.didOnboard = true;
-    preferenceManager.selectedReportId = id0;
-
-    // Reset database.
-    expectLater(realDataManager.stream, emits(LocalDatabaseEvent.reset));
-    await realDataManager.reset();
-
-    // Use a delayed future to wait for the stream listener to finish.
-    await Future.delayed(Duration(milliseconds: 100));
-
-    expect(preferenceManager.baitCustomEntityIds, isEmpty);
-    expect(preferenceManager.catchCustomEntityIds, isEmpty);
-    expect(preferenceManager.baitFieldIds, isEmpty);
-    expect(preferenceManager.catchFieldIds, isEmpty);
-    expect(preferenceManager.rateTimerStartedAt, isNotNull);
-    expect(preferenceManager.didRateApp, isTrue);
-    expect(preferenceManager.didOnboard, isTrue);
-    expect(preferenceManager.selectedReportId, isNull);
   });
 }

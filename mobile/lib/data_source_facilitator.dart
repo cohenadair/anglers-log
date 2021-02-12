@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'app_manager.dart';
 import 'app_preference_manager.dart';
 import 'auth_manager.dart';
-import 'local_database_manager.dart';
 import 'log.dart';
 import 'subscription_manager.dart';
 
@@ -43,20 +42,10 @@ abstract class DataSourceFacilitator {
   @protected
   StreamSubscription<dynamic> initializeFirestore(Completer completer);
 
-  /// Invoked when the local database is completely reset. Care should be taken
-  /// here to determine whether or not Firestore data should be deleted. Note
-  /// that deleting Firestore data cannot be undone.
-  ///
-  /// Most likely, this method should be for clearing memory cache.
-  @protected
-  void onLocalDatabaseDeleted();
-
   @protected
   final AppManager appManager;
 
-  @protected
-  StreamSubscription<dynamic> firestoreListener;
-
+  StreamSubscription<dynamic> _firestoreListener;
   Log _log;
 
   DataSourceFacilitator(this.appManager) {
@@ -67,12 +56,6 @@ abstract class DataSourceFacilitator {
         _cancelFirestoreListener();
       }
     });
-
-    localDatabaseManager.stream.listen((event) {
-      if (event == LocalDatabaseEvent.reset) {
-        onLocalDatabaseDeleted();
-      }
-    });
   }
 
   @protected
@@ -81,10 +64,6 @@ abstract class DataSourceFacilitator {
 
   @protected
   AuthManager get authManager => appManager.authManager;
-
-  @protected
-  LocalDatabaseManager get localDatabaseManager =>
-      appManager.localDatabaseManager;
 
   @protected
   SubscriptionManager get subscriptionManager => appManager.subscriptionManager;
@@ -111,15 +90,15 @@ abstract class DataSourceFacilitator {
   Future<void> _initializeFirestore() async {
     await _cancelFirestoreListener();
     var completer = Completer();
-    firestoreListener = initializeFirestore(completer);
+    _firestoreListener = initializeFirestore(completer);
     return completer.future;
   }
 
   void _cancelFirestoreListener() async {
-    if (firestoreListener != null) {
+    if (_firestoreListener != null) {
       _log.d("Cancelling Firestore listener");
-      await firestoreListener.cancel();
-      firestoreListener = null;
+      await _firestoreListener.cancel();
+      _firestoreListener = null;
     }
   }
 }

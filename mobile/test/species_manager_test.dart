@@ -1,5 +1,4 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mobile/local_database_manager.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
 import 'package:mobile/species_manager.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
@@ -32,10 +31,6 @@ void main() {
 
     dataManager = appManager.mockLocalDatabaseManager;
     when(appManager.localDatabaseManager).thenReturn(dataManager);
-    var dataStream = MockStream<LocalDatabaseEvent>();
-    when(dataStream.listen(any)).thenReturn(null);
-    when(appManager.mockLocalDatabaseManager.stream)
-        .thenAnswer((_) => dataStream);
 
     when(appManager.mockSubscriptionManager.isPro).thenReturn(false);
 

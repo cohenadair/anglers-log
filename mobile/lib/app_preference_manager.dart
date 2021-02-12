@@ -36,11 +36,6 @@ class AppPreferenceManager extends PreferenceManager {
   @override
   StreamSubscription initializeFirestore(Completer completer) => null;
 
-  @override
-  void onLocalDatabaseDeleted() {
-    lastLoggedInUserId = null;
-  }
-
   set lastLoggedInUserId(String id) => put(_keyLastLoggedInUserId, id);
 
   String get lastLoggedInUserId => preferences[_keyLastLoggedInUserId];

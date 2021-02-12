@@ -8,6 +8,7 @@ import 'package:quiver/strings.dart';
 
 import 'app_manager.dart';
 import 'data_source_facilitator.dart';
+import 'local_database_manager.dart';
 import 'log.dart';
 import 'model/gen/anglerslog.pb.dart';
 import 'utils/protobuf_utils.dart';
@@ -66,6 +67,10 @@ abstract class EntityManager<T extends GeneratedMessage>
   final _log = Log("EntityManager<$T>");
   final Set<EntityListener<T>> _listeners = {};
 
+  /// Stores [Id]s for which notify actions should be skipped. Used to bridge
+  /// the gap between updates and Firestore listeners.
+  final List<Id> _firebaseSkipNotifyIds = [];
+
   @protected
   final Map<Id, T> entities = {};
 
@@ -105,16 +110,21 @@ abstract class EntityManager<T extends GeneratedMessage>
         }
 
         // Data has been processed by Firestore, update it locally.
+        var id = this.id(entity);
+        var notify = !_firebaseSkipNotifyIds.contains(id);
+
         if (change.type == DocumentChangeType.added ||
             change.type == DocumentChangeType.modified) {
-          _log.d("Doc change: ${change.type}");
-          _addOrUpdateLocal(entity);
+          _log.d("Doc change: ${change.type}; notify=$notify");
+          _addOrUpdateLocal(entity, notify: notify);
         } else if (change.type == DocumentChangeType.removed) {
-          _log.d("Doc change: delete");
-          _deleteLocal(id(entity));
+          _log.d("Doc change: delete; notify=$notify");
+          _deleteLocal(id, notify: notify);
         } else {
           _log.w("Unknown Firestore document change type: $change");
         }
+
+        _firebaseSkipNotifyIds.remove(id);
       }
 
       if (!completer.isCompleted) {
@@ -123,14 +133,11 @@ abstract class EntityManager<T extends GeneratedMessage>
     });
   }
 
-  @override
-  void onLocalDatabaseDeleted() {
-    for (var entity in entities.values) {
-      delete(id(entity), notify: false);
-    }
-  }
-
   FirestoreWrapper get firestore => appManager.firestoreWrapper;
+
+  @protected
+  LocalDatabaseManager get localDatabaseManager =>
+      appManager.localDatabaseManager;
 
   String get _collectionPath => "${authManager.firestoreDocPath}/$tableName";
 
@@ -160,20 +167,27 @@ abstract class EntityManager<T extends GeneratedMessage>
   }) async {
     if (shouldUseFirestore) {
       _log.d("addOrUpdate Firestore");
-      return _addOrUpdateFirestore(entity);
+      return _addOrUpdateFirestore(entity, notify: notify);
     } else {
       _log.d("addOrUpdate locally");
       return _addOrUpdateLocal(entity, notify: notify);
     }
   }
 
-  Future<bool> _addOrUpdateFirestore(T entity) async {
-    await firestore
-        .collection(_collectionPath)
-        .doc(id(entity).uuid.toString())
-        .set({
+  Future<bool> _addOrUpdateFirestore(
+    T entity, {
+    bool notify = true,
+  }) async {
+    var id = this.id(entity);
+
+    if (!notify) {
+      _firebaseSkipNotifyIds.add(id);
+    }
+
+    await firestore.collection(_collectionPath).doc(id.uuid.toString()).set({
       _columnBytes: entity.writeToBuffer(),
     });
+
     return true;
   }
 
@@ -212,9 +226,9 @@ abstract class EntityManager<T extends GeneratedMessage>
     bool notify = true,
   }) async {
     if (shouldUseFirestore) {
-      _deleteFirestore(entityId, notify: notify);
+      await _deleteFirestore(entityId, notify: notify);
     } else {
-      _deleteLocal(entityId, notify: notify);
+      await _deleteLocal(entityId, notify: notify);
     }
     return true;
   }
@@ -223,17 +237,14 @@ abstract class EntityManager<T extends GeneratedMessage>
     Id entityId, {
     bool notify = true,
   }) async {
-    // Temporarily pause listener if we don't want to notify listeners.
     if (!notify) {
-      firestoreListener.pause();
+      _firebaseSkipNotifyIds.add(entityId);
     }
 
     await firestore
         .collection(_collectionPath)
         .doc(entityId.uuid.toString())
         .delete();
-
-    firestoreListener.resume();
   }
 
   Future<void> _deleteLocal(

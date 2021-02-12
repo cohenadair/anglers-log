@@ -1,6 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/comparison_report_manager.dart';
-import 'package:mobile/local_database_manager.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mockito/mockito.dart';
@@ -30,10 +29,6 @@ void main() {
     when(appManager.mockLocalDatabaseManager
             .insertOrUpdateEntity(any, any, any))
         .thenAnswer((_) => Future.value(true));
-    var dataStream = MockStream<LocalDatabaseEvent>();
-    when(dataStream.listen(any)).thenReturn(null);
-    when(appManager.mockLocalDatabaseManager.stream)
-        .thenAnswer((_) => dataStream);
 
     when(appManager.mockBaitManager.addListener(any)).thenAnswer((_) {});
     when(appManager.mockFishingSpotManager.addListener(any)).thenAnswer((_) {});

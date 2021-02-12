@@ -3,7 +3,7 @@ import 'dart:convert';
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/app_manager.dart';
-import 'package:mobile/local_database_manager.dart';
+import 'package:mobile/auth_manager.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
 import 'package:mobile/preference_manager.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
@@ -22,11 +22,6 @@ class TestPreferenceManager extends PreferenceManager {
 
   @override
   String get firestoreDocPath => "test/path";
-
-  @override
-  void onLocalDatabaseDeleted() {
-    // Do nothing.
-  }
 
   @override
   String get tableName => "test_preference";
@@ -67,13 +62,10 @@ void main() {
       mockFirestoreWrapper: true,
     );
 
-    var stream = MockStream<LocalDatabaseEvent>();
+    var stream = MockStream<AuthState>();
     when(stream.listen(any)).thenReturn(null);
     when(appManager.mockAuthManager.stream).thenAnswer((_) => stream);
 
-    stream = MockStream<LocalDatabaseEvent>();
-    when(stream.listen(any)).thenReturn(null);
-    when(appManager.mockLocalDatabaseManager.stream).thenAnswer((_) => stream);
     when(appManager.mockLocalDatabaseManager.insertOrReplace(any, any))
         .thenAnswer((_) => Future.value());
 

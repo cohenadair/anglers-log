@@ -1,6 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/app_manager.dart';
-import 'package:mobile/local_database_manager.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
 import 'package:mobile/named_entity_manager.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
@@ -44,9 +43,6 @@ void main() {
     when(appManager.localDatabaseManager).thenReturn(dataManager);
     when(dataManager.insertOrUpdateEntity(any, any, any))
         .thenAnswer((_) => Future.value(true));
-    var dataStream = MockStream<LocalDatabaseEvent>();
-    when(dataStream.listen(any)).thenReturn(null);
-    when(dataManager.stream).thenAnswer((_) => dataStream);
 
     when(appManager.mockSubscriptionManager.isPro).thenReturn(false);
 

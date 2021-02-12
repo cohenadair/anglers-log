@@ -1,7 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/app_manager.dart';
 import 'package:mobile/bait_manager.dart';
-import 'package:mobile/local_database_manager.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
 import 'package:mobile/report_manager.dart';
 import 'package:mobile/entity_manager.dart';
@@ -73,10 +72,6 @@ void main() {
     when(authStream.listen(any)).thenReturn(null);
     when(appManager.mockAuthManager.stream).thenAnswer((_) => authStream);
 
-    var dataStream = MockStream<LocalDatabaseEvent>();
-    when(dataStream.listen(any)).thenReturn(null);
-    when(appManager.mockLocalDatabaseManager.stream)
-        .thenAnswer((_) => dataStream);
     when(appManager.mockLocalDatabaseManager
             .insertOrUpdateEntity(any, any, any))
         .thenAnswer((_) => Future.value(true));

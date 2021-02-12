@@ -220,8 +220,6 @@ void main() {
     )).thenReturn(SimpleEntityListener<ComparisonReport>());
     when(appManager.mockComparisonReportManager.list()).thenReturn([]);
 
-    when(appManager.mockLocalDatabaseManager.stream)
-        .thenAnswer((_) => MockStream());
     when(appManager.mockLocalDatabaseManager.deleteEntity(any, any))
         .thenAnswer((_) => Future.value(true));
     when(appManager.mockLocalDatabaseManager

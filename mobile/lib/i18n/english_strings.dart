@@ -267,7 +267,7 @@ Map<String, Map<String, String>> get englishStrings => {
         "importPage_moreTitle": "Import",
         "importPage_title": "Import Data",
         "importPage_description":
-            "Importing data you previously exported using Anglers' Log will overwrite your existing log and may take several minutes.",
+            "Importing data you previously exported using Anglers' Log will added to your existing log data and may take several minutes.",
         "importPage_importingImages": "Copying images...",
         "importPage_importingData": "Copying fishing data...",
         "importPage_success": "Successfully imported data!",

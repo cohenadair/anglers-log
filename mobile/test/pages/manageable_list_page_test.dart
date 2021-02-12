@@ -53,8 +53,6 @@ void main() {
             .existsWith(speciesId: anyNamed("speciesId")))
         .thenReturn(false);
 
-    when(appManager.mockLocalDatabaseManager.stream)
-        .thenAnswer((_) => MockStream());
     when(appManager.mockLocalDatabaseManager
             .insertOrUpdateEntity(any, any, any))
         .thenAnswer((_) => Future.value(true));

@@ -43,9 +43,6 @@ void main() {
       notify: anyNamed("notify"),
     )).thenAnswer((_) => Future.value(true));
 
-    when(appManager.mockLocalDatabaseManager.reset())
-        .thenAnswer((_) => Future.value());
-
     when(appManager.mockFishingSpotManager.addOrUpdate(any))
         .thenAnswer((_) => Future.value(true));
 
@@ -103,8 +100,8 @@ void main() {
     )).thenAnswer((_) =>
         Future.value(File("test/resources/backups/legacy_ios_entities.zip")));
 
-    when(appManager.mockLocalDatabaseManager.reset())
-        .thenAnswer((_) => Future.delayed(Duration(milliseconds: 100)));
+    when(appManager.mockPathProviderWrapper.temporaryPath).thenAnswer(
+        (_) => Future.delayed(Duration(milliseconds: 100), () => tmpPath));
 
     await tester.pumpWidget(Testable(
       (_) => defaultImporter(),

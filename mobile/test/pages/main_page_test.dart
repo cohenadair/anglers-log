@@ -53,9 +53,6 @@ void main() {
     when(appManager.mockComparisonReportManager.entityExists(any))
         .thenReturn(false);
 
-    when(appManager.mockLocalDatabaseManager.stream)
-        .thenAnswer((_) => MockStream());
-
     when(appManager.mockFishingSpotManager.list()).thenReturn([]);
 
     when(appManager.mockSubscriptionManager.isPro).thenReturn(false);

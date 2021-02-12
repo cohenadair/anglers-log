@@ -57,8 +57,6 @@ void main() {
 
     when(appManager.mockAuthManager.stream).thenAnswer((_) => MockStream());
 
-    when(appManager.mockLocalDatabaseManager.stream)
-        .thenAnswer((_) => MockStream());
     when(appManager.mockLocalDatabaseManager
             .insertOrUpdateEntity(any, any, any))
         .thenAnswer((_) => Future.value(true));

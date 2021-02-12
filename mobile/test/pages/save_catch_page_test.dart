@@ -44,8 +44,6 @@ void main() {
 
     when(appManager.mockBaitCategoryManager.listSortedByName()).thenReturn([]);
 
-    when(appManager.mockLocalDatabaseManager.stream)
-        .thenAnswer((_) => MockStream());
     when(appManager.mockLocalDatabaseManager
             .insertOrUpdateEntity(any, any, any))
         .thenAnswer((_) => Future.value(true));

@@ -30,8 +30,6 @@ void main() {
 
     when(appManager.mockBaitManager.duplicate(any)).thenReturn(false);
 
-    when(appManager.mockLocalDatabaseManager.stream)
-        .thenAnswer((_) => MockStream());
     when(appManager.mockLocalDatabaseManager
             .insertOrUpdateEntity(any, any, any))
         .thenAnswer((_) => Future.value(true));

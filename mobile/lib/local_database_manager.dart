@@ -10,40 +10,21 @@ import 'log.dart';
 import 'model/gen/anglerslog.pb.dart';
 import 'utils/protobuf_utils.dart';
 
-enum LocalDatabaseEvent {
-  reset,
-}
-
 class LocalDatabaseManager {
   static LocalDatabaseManager of(BuildContext context) =>
       Provider.of<AppManager>(context, listen: false).localDatabaseManager;
 
   final _log = Log("DataManager");
-  final _controller = StreamController<LocalDatabaseEvent>.broadcast();
 
   Database _database;
   Future<Database> Function() _openDatabase;
-  Future<Database> Function() _resetDatabase;
 
   Future<void> initialize({
     Database database,
     Future<Database> Function() openDatabase,
-    Future<Database> Function() resetDatabase,
   }) async {
     _openDatabase = openDatabase ?? openDb;
-    _resetDatabase = resetDatabase ?? resetDb;
     _database = database ?? (await _openDatabase());
-  }
-
-  Stream<LocalDatabaseEvent> get stream => _controller.stream;
-
-  /// Completely resets the database by deleting the SQLite file and recreating
-  /// it from scratch. All [EntityManager] subclasses are synced with the
-  /// database after it has been recreated.
-  Future<void> reset() async {
-    await _database.close();
-    _database = await _resetDatabase();
-    _controller.add(LocalDatabaseEvent.reset);
   }
 
   /// Commits a batch of SQL statements. See [Batch].
@@ -134,7 +115,8 @@ class LocalDatabaseManager {
     if (await delete(tableName, where: "id = ?", whereArgs: [id])) {
       return true;
     } else {
-      _log.e("Failed to delete $tableName($id) from database");
+      _log.e("Failed to delete $tableName(${entityId.uuid.toString()})"
+          " from database");
     }
     return false;
   }

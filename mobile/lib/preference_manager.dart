@@ -7,6 +7,7 @@ import 'package:quiver/strings.dart';
 
 import 'app_manager.dart';
 import 'data_source_facilitator.dart';
+import 'local_database_manager.dart';
 import 'log.dart';
 import 'model/gen/anglerslog.pb.dart';
 import 'utils/protobuf_utils.dart';
@@ -36,6 +37,9 @@ abstract class PreferenceManager extends DataSourceFacilitator {
 
   @protected
   FirestoreWrapper get firestore => appManager.firestoreWrapper;
+
+  LocalDatabaseManager get localDatabaseManager =>
+      appManager.localDatabaseManager;
 
   @override
   Future<void> initializeLocalData() async {

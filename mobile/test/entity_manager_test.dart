@@ -3,7 +3,6 @@ import 'dart:typed_data';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/app_manager.dart';
-import 'package:mobile/local_database_manager.dart';
 import 'package:mobile/entity_manager.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
@@ -59,10 +58,6 @@ void main() {
     when(stream.listen(any)).thenReturn(null);
     when(appManager.mockAuthManager.stream).thenAnswer((_) => stream);
 
-    var dataStream = MockStream<LocalDatabaseEvent>();
-    when(stream.listen(any)).thenReturn(null);
-    when(appManager.mockLocalDatabaseManager.stream)
-        .thenAnswer((_) => dataStream);
     when(appManager.mockLocalDatabaseManager
             .insertOrUpdateEntity(any, any, any))
         .thenAnswer((realInvocation) => Future.value(true));
@@ -223,54 +218,6 @@ void main() {
         .insertOrUpdateEntity(any, any, any));
     verify(appManager.mockLocalDatabaseManager.deleteEntity(any, any))
         .called(1);
-  });
-
-  test("When local database is deleted, local data is deleted", () async {
-    entityManager.firestoreEnabled = false;
-    await entityManager.addOrUpdate(Species()
-      ..id = randomId()
-      ..name = "Steelhead");
-    await entityManager.addOrUpdate(Species()
-      ..id = randomId()
-      ..name = "Catfish");
-    expect(entityManager.entityCount, 2);
-
-    entityManager.onLocalDatabaseDeleted();
-    await Future.delayed(Duration(milliseconds: 50));
-    verify(appManager.mockLocalDatabaseManager.deleteEntity(any, any))
-        .called(2);
-  });
-
-  test("When local database is deleted, Firestore data is deleted", () async {
-    var stream = MockStream<MockQuerySnapshot>();
-    when(stream.listen(any)).thenReturn(MockStreamSubscription());
-
-    var collection = MockCollectionReference();
-    when(collection.snapshots()).thenAnswer((_) => stream);
-    when(collection.doc(any)).thenReturn(MockDocumentReference());
-    when(appManager.mockFirestoreWrapper.collection(any))
-        .thenReturn(collection);
-
-    when(appManager.mockSubscriptionManager.isPro).thenReturn(true);
-    entityManager.initialize();
-    await Future.value(Duration(milliseconds: 50));
-    verify(appManager.mockFirestoreWrapper.collection(any)).called(1);
-
-    entityManager.firestoreEnabled = false;
-    when(appManager.mockSubscriptionManager.isPro).thenReturn(false);
-    await entityManager.addOrUpdate(Species()
-      ..id = randomId()
-      ..name = "Steelhead");
-    await entityManager.addOrUpdate(Species()
-      ..id = randomId()
-      ..name = "Catfish");
-    expect(entityManager.entityCount, 2);
-
-    when(appManager.mockSubscriptionManager.isPro).thenReturn(true);
-    entityManager.firestoreEnabled = true;
-    entityManager.onLocalDatabaseDeleted();
-    await Future.delayed(Duration(milliseconds: 50));
-    verify(appManager.mockFirestoreWrapper.collection(any)).called(2);
   });
 
   test("Test add or update local", () async {

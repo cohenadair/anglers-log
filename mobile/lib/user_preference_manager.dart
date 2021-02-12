@@ -39,24 +39,6 @@ class UserPreferenceManager extends PreferenceManager {
   @override
   bool get enableFirestore => true;
 
-  @override
-  void onLocalDatabaseDeleted() {
-    baitCustomEntityIds = null;
-    catchCustomEntityIds = null;
-    baitFieldIds = null;
-    catchFieldIds = null;
-    selectedReportId = null;
-
-    // Don't want to reset all properties. Some should persist across resets.
-    // For example, we don't want to show user onboarding again if they import
-    // data from an archive.
-    //
-    // Setting these to themselves will add them to the new database.
-    rateTimerStartedAt = rateTimerStartedAt;
-    didRateApp = didRateApp;
-    didOnboard = didOnboard;
-  }
-
   set baitCustomEntityIds(List<Id> ids) =>
       putIdList(_keyBaitCustomEntityIds, ids);
 

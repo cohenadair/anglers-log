@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/app_manager.dart';
 import 'package:mobile/auth_manager.dart';
-import 'package:mobile/local_database_manager.dart';
 import 'package:mobile/data_source_facilitator.dart';
 import 'package:mockito/mockito.dart';
 
@@ -17,6 +16,8 @@ class TestDataSourceFacilitator extends DataSourceFacilitator {
   int initializeLocalDataCount = 0;
   int onLocalDatabaseDeletedCount = 0;
 
+  MockStreamSubscription listener = MockStreamSubscription();
+
   TestDataSourceFacilitator(AppManager appManager) : super(appManager);
 
   @override
@@ -29,7 +30,7 @@ class TestDataSourceFacilitator extends DataSourceFacilitator {
   StreamSubscription initializeFirestore(Completer completer) {
     initializeFirestoreCount++;
     completer.complete();
-    return MockStreamSubscription();
+    return listener;
   }
 
   @override
@@ -37,11 +38,6 @@ class TestDataSourceFacilitator extends DataSourceFacilitator {
     initializeLocalDataCount++;
     return null;
   }
-
-  @override
-  void onLocalDatabaseDeleted() => onLocalDatabaseDeletedCount++;
-
-  StreamSubscription get listener => firestoreListener;
 }
 
 void main() {
@@ -58,8 +54,6 @@ void main() {
     );
 
     when(appManager.mockAuthManager.stream).thenAnswer((_) => MockStream());
-    when(appManager.mockLocalDatabaseManager.stream)
-        .thenAnswer((_) => MockStream());
 
     facilitator = TestDataSourceFacilitator(appManager);
   });
@@ -81,18 +75,7 @@ void main() {
 
     controller.add(null);
     await Future.delayed(Duration(milliseconds: 50));
-    expect(facilitator.listener, isNull);
-  });
-
-  test("onLocalDatabaseDeleted invoked when database is reset", () async {
-    var controller = StreamController<LocalDatabaseEvent>();
-    when(appManager.mockLocalDatabaseManager.stream)
-        .thenAnswer((_) => controller.stream);
-
-    facilitator = TestDataSourceFacilitator(appManager);
-    controller.add(LocalDatabaseEvent.reset);
-    await Future.delayed(Duration(milliseconds: 50));
-    expect(facilitator.onLocalDatabaseDeletedCount, 1);
+    verify(facilitator.listener.cancel()).called(1);
   });
 
   test("Local data is cleared when logged in user changes", () async {

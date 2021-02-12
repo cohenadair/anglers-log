@@ -3,11 +3,9 @@ import 'dart:async';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/app_preference_manager.dart';
 import 'package:mobile/auth_manager.dart';
-import 'package:mobile/local_database_manager.dart';
 import 'package:mockito/mockito.dart';
 
 import 'mock_app_manager.dart';
-import 'test_utils.dart';
 
 void main() {
   MockAppManager appManager;
@@ -20,10 +18,6 @@ void main() {
       mockAuthManager: true,
       mockSubscriptionManager: true,
     );
-
-    var stream = MockStream<LocalDatabaseEvent>();
-    when(stream.listen(any)).thenReturn(null);
-    when(appManager.mockLocalDatabaseManager.stream).thenAnswer((_) => stream);
 
     when(appManager.mockSubscriptionManager.isPro).thenReturn(false);
   });

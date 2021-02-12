@@ -13,7 +13,6 @@ import '../bait_manager.dart';
 import '../catch_manager.dart';
 import '../channels/migration_channel.dart';
 import '../fishing_spot_manager.dart';
-import '../local_database_manager.dart';
 import '../log.dart';
 import '../model/gen/anglerslog.pb.dart';
 import '../model/gen/google/protobuf/timestamp.pb.dart';
@@ -87,8 +86,6 @@ class LegacyImporter {
 
   CatchManager get _catchManager => _appManager.catchManager;
 
-  LocalDatabaseManager get _dataManager => _appManager.localDatabaseManager;
-
   FishingSpotManager get _fishingSpotManager => _appManager.fishingSpotManager;
 
   SpeciesManager get _speciesManager => _appManager.speciesManager;
@@ -134,7 +131,6 @@ class LegacyImporter {
       return Future.error(LegacyImporterError.invalidZipFile);
     }
 
-    await _dataManager.reset();
     var tmpDir = Directory(await _pathProviderWrapper.temporaryPath);
 
     var archive = ZipDecoder().decodeBytes(_zipFile.readAsBytesSync());
