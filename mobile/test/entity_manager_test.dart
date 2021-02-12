@@ -117,7 +117,7 @@ void main() {
       ..name = "Catfish");
     expect(entityManager.entityCount, 2);
 
-    entityManager.clearLocalData();
+    await entityManager.clearLocalData();
     verify(appManager.mockLocalDatabaseManager.deleteEntity(any, any))
         .called(2);
     verifyNever(appManager.mockFirestoreWrapper.collection(any));
