@@ -19,7 +19,7 @@ class MockCatchListener extends Mock implements EntityListener<Catch> {}
 void main() {
   MockAppManager appManager;
   MockBaitCategoryManager baitCategoryManager;
-  MockDataManager dataManager;
+  MockLocalDatabaseManager dataManager;
   MockImageManager imageManager;
   MockSpeciesManager speciesManager;
   BaitManager baitManager;
@@ -28,19 +28,25 @@ void main() {
 
   setUp(() {
     appManager = MockAppManager(
+      mockAuthManager: true,
       mockBaitCategoryManager: true,
-      mockDataManager: true,
+      mockLocalDatabaseManager: true,
       mockImageManager: true,
       mockSpeciesManager: true,
+      mockSubscriptionManager: true,
       mockTimeManager: true,
     );
+
+    var authStream = MockStream<void>();
+    when(authStream.listen(any)).thenReturn(null);
+    when(appManager.mockAuthManager.stream).thenAnswer((_) => authStream);
 
     baitCategoryManager = appManager.mockBaitCategoryManager;
     when(appManager.baitCategoryManager).thenReturn(baitCategoryManager);
     when(baitCategoryManager.addListener(any)).thenAnswer((_) {});
 
-    dataManager = appManager.mockDataManager;
-    when(appManager.dataManager).thenReturn(dataManager);
+    dataManager = appManager.mockLocalDatabaseManager;
+    when(appManager.localDatabaseManager).thenReturn(dataManager);
     when(dataManager.insertOrUpdateEntity(any, any, any))
         .thenAnswer((_) => Future.value(true));
 
@@ -64,6 +70,8 @@ void main() {
     when(appManager.speciesManager).thenReturn(speciesManager);
     when(speciesManager.matchesFilter(any, any)).thenReturn(false);
 
+    when(appManager.mockSubscriptionManager.isPro).thenReturn(false);
+
     catchManager = CatchManager(appManager);
   });
 
@@ -79,8 +87,7 @@ void main() {
     when(catchListener.onDelete).thenReturn((_) {});
 
     var updatedCatches = <Catch>[];
-    when(catchListener.onUpdate)
-        .thenReturn((catches) => updatedCatches = catches);
+    when(catchListener.onUpdate).thenReturn((cat) => updatedCatches.add(cat));
     catchManager.addListener(catchListener);
 
     // Add a bait.
@@ -106,8 +113,11 @@ void main() {
     // Delete the new bait.
     await baitManager.delete(baitId0);
 
+    // Wait for addOrUpdate calls to finish.
+    await Future.delayed(Duration(milliseconds: 50));
+
     // Verify listeners are notified and memory cache updated.
-    verify(catchListener.onUpdate).called(1);
+    verify(catchListener.onUpdate).called(2);
     expect(catchManager.entity(catchId0).hasBaitId(), false);
     expect(catchManager.entity(catchId1).hasBaitId(), false);
     expect(updatedCatches.length, 2);
@@ -126,8 +136,7 @@ void main() {
     when(catchListener.onDelete).thenReturn((_) {});
 
     var updatedCatches = <Catch>[];
-    when(catchListener.onUpdate)
-        .thenReturn((catches) => updatedCatches = catches);
+    when(catchListener.onUpdate).thenReturn((cat) => updatedCatches.add(cat));
     catchManager.addListener(catchListener);
 
     // Add a fishing spot.
@@ -151,8 +160,11 @@ void main() {
     // Delete the new fishing spot.
     await fishingSpotManager.delete(fishingSpotId0);
 
+    // Wait for addOrUpdate calls to finish.
+    await Future.delayed(Duration(milliseconds: 50));
+
     // Verify listeners are notified and memory cache updated.
-    verify(catchListener.onUpdate).called(1);
+    verify(catchListener.onUpdate).called(2);
     expect(catchManager.entity(catchId0).hasFishingSpotId(), false);
     expect(catchManager.entity(catchId1).hasFishingSpotId(), false);
     expect(updatedCatches.length, 2);

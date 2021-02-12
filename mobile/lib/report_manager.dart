@@ -36,13 +36,10 @@ abstract class ReportManager<T extends GeneratedMessage>
   }
 
   void _onEntityDeleted(bool Function(T report) remove) {
-    var updatedReports = <T>[];
     for (var report in entities.values) {
       if (remove(report)) {
-        updatedReports.add(report);
+        addOrUpdate(report);
       }
     }
-    notifyOnUpdate(updatedReports);
-    replaceDatabaseWithCache();
   }
 }

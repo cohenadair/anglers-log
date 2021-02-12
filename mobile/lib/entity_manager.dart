@@ -1,14 +1,18 @@
+import 'dart:async';
 import 'dart:typed_data';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:protobuf/protobuf.dart';
 import 'package:quiver/strings.dart';
 
 import 'app_manager.dart';
-import 'data_manager.dart';
+import 'data_source_facilitator.dart';
+import 'local_database_manager.dart';
+import 'log.dart';
 import 'model/gen/anglerslog.pb.dart';
-import 'utils/listener_manager.dart';
 import 'utils/protobuf_utils.dart';
+import 'wrappers/firestore_wrapper.dart';
 
 class EntityListener<T> {
   /// Invoked with the instance of T that was added.
@@ -17,16 +21,13 @@ class EntityListener<T> {
   /// Invoked with the instance of T that was deleted.
   void Function(T) onDelete;
 
-  /// Invoked with all instances of T that were updated.
-  void Function(List<T>) onUpdate;
-
-  VoidCallback onClear;
+  /// Invoked with the instance of T that were updated.
+  void Function(T) onUpdate;
 
   EntityListener({
     this.onAdd,
     this.onDelete,
     this.onUpdate,
-    this.onClear,
   });
 }
 
@@ -34,49 +35,112 @@ class SimpleEntityListener<T> extends EntityListener<T> {
   SimpleEntityListener({
     void Function(T entity) onAdd,
     void Function(T entity) onDelete,
-    void Function(List<T> entity) onUpdate,
-    VoidCallback onClear,
+    void Function(T entity) onUpdate,
   }) : super(
           onAdd: onAdd ?? (_) {},
           onDelete: onDelete ?? (_) {},
           onUpdate: onUpdate ?? (_) {},
-          onClear: onClear ?? () {},
         );
 }
 
 /// An abstract class for managing a collection of [Entity] objects.
+///
+/// There are two paths for data management. One for Pro users, and one for
+/// Free users. Pro users' data is funnelled through Cloud Firestore before
+/// updating the local data and notifying listeners. Free users' data, on the
+/// other hand, goes directly to local storage.
 abstract class EntityManager<T extends GeneratedMessage>
-    extends ListenerManager<EntityListener<T>> {
+    extends DataSourceFacilitator {
   static const _columnId = "id";
   static const _columnBytes = "bytes";
 
-  @protected
-  final AppManager appManager;
+  /// SQLite table and Cloud Firestore collection name for T.
+  String get tableName;
+
+  Id id(T entity);
+
+  bool matchesFilter(Id id, String filter);
+
+  /// Parses a Protobuf byte representation of T.
+  T entityFromBytes(List<int> bytes);
+
+  final _log = Log("EntityManager<$T>");
+  final Set<EntityListener<T>> _listeners = {};
+
+  /// Stores [Id]s for which notify actions should be skipped. Used to bridge
+  /// the gap between updates and Firestore listeners.
+  final List<Id> _firebaseSkipNotifyIds = [];
 
   @protected
   final Map<Id, T> entities = {};
 
-  String get tableName;
-  Id id(T entity);
-  bool matchesFilter(Id id, String filter);
+  EntityManager(AppManager appManager) : super(appManager);
 
-  /// Parses a Protobuf byte representation.
-  T entityFromBytes(List<int> bytes);
+  @override
+  bool get enableFirestore => true;
 
-  EntityManager(this.appManager) : super() {
-    dataManager.addListener(DataListener(
-      onReset: clear,
-    ));
-  }
-
-  Future<void> initialize() async {
+  @override
+  Future<void> initializeLocalData() async {
     for (var e in (await _fetchAll())) {
       entities[id(e)] = e;
     }
   }
 
+  @override
+  Future<void> clearLocalData() async {
+    var entitiesCopy = List<T>.of(entities.values);
+    for (var entity in entitiesCopy) {
+      await _deleteLocal(id(entity), notify: false);
+    }
+  }
+
+  @override
+  StreamSubscription<dynamic> initializeFirestore(Completer completer) {
+    return firestore.collection(_collectionPath).snapshots().listen((snapshot) {
+      if (snapshot == null) {
+        return;
+      }
+
+      for (var change in snapshot.docChanges) {
+        var bytes = change.doc.data()[_columnBytes] ?? [];
+        var entity =
+            bytes.isNotEmpty ? entityFromBytes(List<int>.from(bytes)) : null;
+        if (entity == null) {
+          _log.d("Couldn't parse bytes: ${change.doc.data()}");
+          continue;
+        }
+
+        // Data has been processed by Firestore, update it locally.
+        var id = this.id(entity);
+        var notify = !_firebaseSkipNotifyIds.contains(id);
+
+        if (change.type == DocumentChangeType.added ||
+            change.type == DocumentChangeType.modified) {
+          _log.d("Doc change: ${change.type}; notify=$notify");
+          _addOrUpdateLocal(entity, notify: notify);
+        } else if (change.type == DocumentChangeType.removed) {
+          _log.d("Doc change: delete; notify=$notify");
+          _deleteLocal(id, notify: notify);
+        } else {
+          _log.w("Unknown Firestore document change type: $change");
+        }
+
+        _firebaseSkipNotifyIds.remove(id);
+      }
+
+      if (!completer.isCompleted) {
+        completer.complete();
+      }
+    });
+  }
+
+  FirestoreWrapper get firestore => appManager.firestoreWrapper;
+
   @protected
-  DataManager get dataManager => appManager.dataManager;
+  LocalDatabaseManager get localDatabaseManager =>
+      appManager.localDatabaseManager;
+
+  String get _collectionPath => "${authManager.firestoreDocPath}/$tableName";
 
   List<T> list([List<Id> ids]) {
     if (ids == null || ids.isEmpty) {
@@ -92,110 +156,160 @@ abstract class EntityManager<T extends GeneratedMessage>
     return list().where((e) => matchesFilter(id(e), filter)).toList();
   }
 
-  /// Clears the [Entity] memory collection. This method assumes the database
-  /// has already been cleared.
-  @protected
-  Future<void> clear() async {
-    entities.clear();
-    await initialize();
-    notifyOnClear();
-  }
-
   int get entityCount => entities.length;
 
   T entity(Id id) => entities[id];
 
   bool entityExists(Id id) => entity(id) != null;
 
-  /// Adds or updates the given entity. If [notify] is false (default true),
-  /// listeners are not notified.
   Future<bool> addOrUpdate(
     T entity, {
     bool notify = true,
   }) async {
+    if (shouldUseFirestore) {
+      _log.d("addOrUpdate Firestore");
+      return _addOrUpdateFirestore(entity, notify: notify);
+    } else {
+      _log.d("addOrUpdate locally");
+      return _addOrUpdateLocal(entity, notify: notify);
+    }
+  }
+
+  Future<bool> _addOrUpdateFirestore(
+    T entity, {
+    bool notify = true,
+  }) async {
     var id = this.id(entity);
-    if (await dataManager.insertOrUpdateEntity(
-        id, _entityToMap(entity), tableName)) {
+
+    if (!notify) {
+      _firebaseSkipNotifyIds.add(id);
+    }
+
+    await firestore.collection(_collectionPath).doc(id.uuid.toString()).set({
+      _columnBytes: entity.writeToBuffer(),
+    });
+
+    return true;
+  }
+
+  /// Adds or updates the given entity. If [notify] is false (default true),
+  /// listeners are not notified.
+  Future<bool> _addOrUpdateLocal(
+    T entity, {
+    bool notify = true,
+  }) async {
+    var id = this.id(entity);
+    var map = {
+      _columnId: id.uint8List,
+      _columnBytes: entity.writeToBuffer(),
+    };
+
+    if (await localDatabaseManager.insertOrUpdateEntity(id, map, tableName)) {
       var updated = entities.containsKey(id);
       entities[id] = entity;
       if (notify) {
         if (updated) {
-          notifyOnUpdate([entity]);
+          notifyOnUpdate(entity);
         } else {
           notifyOnAdd(entity);
         }
       }
       return true;
     }
+
     return false;
   }
 
+  /// Deletes entity with [ID], if one exists. If [notify] is false (default
+  /// true), listeners are not notified.
   Future<bool> delete(
     Id entityId, {
     bool notify = true,
   }) async {
-    if (await dataManager.deleteEntity(entityId, tableName)) {
+    if (shouldUseFirestore) {
+      await _deleteFirestore(entityId, notify: notify);
+    } else {
+      await _deleteLocal(entityId, notify: notify);
+    }
+    return true;
+  }
+
+  Future<void> _deleteFirestore(
+    Id entityId, {
+    bool notify = true,
+  }) async {
+    if (!notify) {
+      _firebaseSkipNotifyIds.add(entityId);
+    }
+
+    await firestore
+        .collection(_collectionPath)
+        .doc(entityId.uuid.toString())
+        .delete();
+  }
+
+  Future<void> _deleteLocal(
+    Id entityId, {
+    bool notify = true,
+  }) async {
+    if (entityExists(entityId) &&
+        await localDatabaseManager.deleteEntity(entityId, tableName)) {
+      _log.d("Deleted locally");
       var deletedEntity = entity(entityId);
       if (entities.remove(entityId) != null && notify) {
         notifyOnDelete(deletedEntity);
       }
-      return true;
     }
-    return false;
   }
 
   Future<List<T>> _fetchAll() async {
-    return (await dataManager.fetchAll(tableName))
+    return (await localDatabaseManager.fetchAll(tableName))
         .map(
           (map) => entityFromBytes((map[_columnBytes] as Uint8List).toList()),
         )
         .toList();
   }
 
-  Map<String, dynamic> _entityToMap(T entity) {
-    return {
-      _columnId: id(entity).uint8List,
-      _columnBytes: entity.writeToBuffer(),
-    };
+  void addListener(EntityListener<T> listener) {
+    _listeners.add(listener);
   }
 
-  /// Replaces the database table contents with the manager's memory cache.
-  @protected
-  Future<void> replaceDatabaseWithCache() async {
-    await dataManager.replaceRows(tableName, list().map(_entityToMap).toList());
+  void removeListener(EntityListener<T> listener) {
+    if (_listeners.remove(listener) == null) {
+      _log.w("Attempt to remove listener that isn't in stored in manager");
+    }
+  }
+
+  void _notify(void Function(EntityListener<T>) notify) {
+    for (var listener in _listeners) {
+      notify(listener);
+    }
   }
 
   @protected
   void notifyOnAdd(T entity) {
-    notify((listener) => listener.onAdd(entity));
+    _notify((listener) => listener.onAdd(entity));
   }
 
   @protected
   void notifyOnDelete(T entity) {
-    notify((listener) => listener.onDelete(entity));
+    _notify((listener) => listener.onDelete(entity));
   }
 
   @protected
-  void notifyOnUpdate(List<T> entities) {
-    notify((listener) => listener.onUpdate(entities));
-  }
-
-  @protected
-  void notifyOnClear() {
-    notify((listener) => listener.onClear());
+  void notifyOnUpdate(T entity) {
+    _notify((listener) => listener.onUpdate(entity));
   }
 
   SimpleEntityListener addSimpleListener({
     void Function(T entity) onAdd,
     void Function(T entity) onDelete,
-    void Function(List<T> entity) onUpdate,
-    VoidCallback onClear,
+    void Function(T entity) onUpdate,
   }) {
     var listener = SimpleEntityListener<T>(
       onAdd: onAdd,
       onDelete: onDelete,
       onUpdate: onUpdate,
-      onClear: onClear,
     );
     addListener(listener);
     return listener;
@@ -212,20 +326,17 @@ class EntityListenerBuilder extends StatefulWidget {
   /// Called when an item is deleted from an [EntityManager] in [managers].
   final void Function(dynamic) onDelete;
 
-  /// Called when an item in an [EntityManager] in [managers] is updated.
-  final void Function(List<dynamic>) onUpdate;
-
-  /// Called when an [EntityManager] in [managers] data is cleared.
-  final VoidCallback onClear;
+  /// Called when an item is updated by an [EntityManager] in [managers].
+  final void Function(dynamic) onUpdate;
 
   /// Invoked on add, delete, or update, in addition to [onAdd], [onDelete],
-  /// [onUpdate], and [onClear]. Invoked _before_ the call to [setState].
+  /// [onUpdate]. Invoked _before_ the call to [setState].
   final VoidCallback onAnyChange;
 
   /// If false, the widget is not rebuilt when data is deleted. This is useful
   /// when we need to pop an item from a [Navigator] when data is deleted
   /// without updating UI. Setting this flag to false in cases like that makes
-  /// for more a smoother transition. Defaults to true.
+  /// for a smoother transition. Defaults to true.
   final bool onDeleteEnabled;
 
   EntityListenerBuilder({
@@ -235,7 +346,6 @@ class EntityListenerBuilder extends StatefulWidget {
     this.onDelete,
     this.onDeleteEnabled = true,
     this.onUpdate,
-    this.onClear,
     this.onAnyChange,
   })  : assert(managers != null && managers.isNotEmpty),
         assert(builder != null);
@@ -263,12 +373,8 @@ class _EntityListenerBuilderState extends State<EntityListenerBuilder> {
                 _onAnyChange();
               }
             : null,
-        onUpdate: (entities) {
-          widget.onUpdate?.call(entities);
-          _onAnyChange();
-        },
-        onClear: () {
-          widget.onClear?.call();
+        onUpdate: (entity) {
+          widget.onUpdate?.call(entity);
           _onAnyChange();
         },
       ));

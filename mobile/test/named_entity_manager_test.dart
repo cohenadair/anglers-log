@@ -6,6 +6,7 @@ import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mockito/mockito.dart';
 
 import 'mock_app_manager.dart';
+import 'test_utils.dart';
 
 class TestNamedEntityManager extends NamedEntityManager<Species> {
   TestNamedEntityManager(AppManager app) : super(app);
@@ -25,17 +26,25 @@ class TestNamedEntityManager extends NamedEntityManager<Species> {
 
 void main() {
   MockAppManager appManager;
-  MockDataManager dataManager;
+  MockLocalDatabaseManager dataManager;
   TestNamedEntityManager entityManager;
 
   setUp(() async {
     appManager = MockAppManager(
-      mockDataManager: true,
-    );
-    dataManager = appManager.mockDataManager;
-    when(appManager.dataManager).thenReturn(dataManager);
+        mockAuthManager: true,
+        mockLocalDatabaseManager: true,
+        mockSubscriptionManager: true);
+
+    var authStream = MockStream<void>();
+    when(authStream.listen(any)).thenReturn(null);
+    when(appManager.mockAuthManager.stream).thenAnswer((_) => authStream);
+
+    dataManager = appManager.mockLocalDatabaseManager;
+    when(appManager.localDatabaseManager).thenReturn(dataManager);
     when(dataManager.insertOrUpdateEntity(any, any, any))
         .thenAnswer((_) => Future.value(true));
+
+    when(appManager.mockSubscriptionManager.isPro).thenReturn(false);
 
     entityManager = TestNamedEntityManager(appManager);
   });

@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 
 import '../../i18n/strings.dart';
 import '../../model/gen/anglerslog.pb.dart';
-import '../../preferences_manager.dart';
 import '../../res/dimen.dart';
 import '../../res/gen/custom_icons.dart';
+import '../../user_preference_manager.dart';
 import '../../utils/catch_utils.dart';
 import '../../widgets/list_item.dart';
 import '../../widgets/text.dart';
@@ -25,7 +25,8 @@ class CatchFieldPickerPage extends StatefulWidget {
 class _CatchFieldPickerPageState extends State<CatchFieldPickerPage> {
   List<Id> _selectedFields;
 
-  PreferencesManager get _preferencesManager => PreferencesManager.of(context);
+  UserPreferenceManager get _userPreferencesManager =>
+      UserPreferenceManager.of(context);
 
   @override
   void initState() {
@@ -94,7 +95,7 @@ class _CatchFieldPickerPageState extends State<CatchFieldPickerPage> {
   }
 
   void _onPressedNext() {
-    _preferencesManager.catchFieldIds = _selectedFields;
+    _userPreferencesManager.catchFieldIds = _selectedFields;
     widget.onNext();
   }
 }

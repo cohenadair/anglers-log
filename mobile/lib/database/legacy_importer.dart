@@ -12,7 +12,6 @@ import '../bait_category_manager.dart';
 import '../bait_manager.dart';
 import '../catch_manager.dart';
 import '../channels/migration_channel.dart';
-import '../data_manager.dart';
 import '../fishing_spot_manager.dart';
 import '../log.dart';
 import '../model/gen/anglerslog.pb.dart';
@@ -59,7 +58,7 @@ class LegacyImporter {
   /// location name, the second argument is the fishing spot name.
   static final _nameFormatFishingSpot = "%s - %s";
 
-  final Log _log = Log("LegacyImporter");
+  final _log = Log("LegacyImporter");
 
   final AppManager _appManager;
   final File _zipFile;
@@ -86,8 +85,6 @@ class LegacyImporter {
   BaitManager get _baitManager => _appManager.baitManager;
 
   CatchManager get _catchManager => _appManager.catchManager;
-
-  DataManager get _dataManager => _appManager.dataManager;
 
   FishingSpotManager get _fishingSpotManager => _appManager.fishingSpotManager;
 
@@ -134,7 +131,6 @@ class LegacyImporter {
       return Future.error(LegacyImporterError.invalidZipFile);
     }
 
-    await _dataManager.reset();
     var tmpDir = Directory(await _pathProviderWrapper.temporaryPath);
 
     var archive = ZipDecoder().decodeBytes(_zipFile.readAsBytesSync());

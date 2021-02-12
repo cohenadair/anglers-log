@@ -40,7 +40,7 @@ class _SaveCustomEntityPageState extends State<SaveCustomEntityPage> {
   static final _idDescription = randomId();
   static final _idType = randomId();
 
-  final Log _log = Log("SaveCustomEntityPage");
+  final _log = Log("SaveCustomEntityPage");
 
   Map<Id, InputController> _inputOptions;
 

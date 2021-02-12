@@ -175,23 +175,26 @@ void main() {
 
   setUp(() {
     appManager = MockAppManager(
+      mockAuthManager: true,
       mockBaitManager: true,
       mockCatchManager: true,
       mockComparisonReportManager: true,
-      mockDataManager: true,
+      mockLocalDatabaseManager: true,
       mockFishingSpotManager: true,
       mockPreferencesManager: true,
       mockSummaryReportManager: true,
       mockSpeciesManager: true,
+      mockSubscriptionManager: true,
       mockTimeManager: true,
     );
 
+    when(appManager.mockAuthManager.stream).thenAnswer((_) => MockStream());
+
     when(appManager.mockBaitManager.addSimpleListener(
-      onAdd: anyNamed("onAdd"),
-      onDelete: anyNamed("onDelete"),
-      onUpdate: anyNamed("onUpdate"),
-      onClear: anyNamed("onClear"),
-    )).thenReturn(SimpleEntityListener<Bait>());
+            onAdd: anyNamed("onAdd"),
+            onDelete: anyNamed("onDelete"),
+            onUpdate: anyNamed("onUpdate")))
+        .thenReturn(SimpleEntityListener<Bait>());
     when(appManager.mockBaitManager.list()).thenReturn(baitMap.values.toList());
     when(appManager.mockBaitManager.entity(any))
         .thenAnswer((invocation) => baitMap[invocation.positionalArguments[0]]);
@@ -208,27 +211,25 @@ void main() {
       onAdd: anyNamed("onAdd"),
       onDelete: anyNamed("onDelete"),
       onUpdate: anyNamed("onUpdate"),
-      onClear: anyNamed("onClear"),
     )).thenReturn(SimpleEntityListener<Catch>());
 
     when(appManager.mockComparisonReportManager.addSimpleListener(
       onAdd: anyNamed("onAdd"),
       onDelete: anyNamed("onDelete"),
       onUpdate: anyNamed("onUpdate"),
-      onClear: anyNamed("onClear"),
     )).thenReturn(SimpleEntityListener<ComparisonReport>());
     when(appManager.mockComparisonReportManager.list()).thenReturn([]);
 
-    when(appManager.mockDataManager.deleteEntity(any, any))
+    when(appManager.mockLocalDatabaseManager.deleteEntity(any, any))
         .thenAnswer((_) => Future.value(true));
-    when(appManager.mockDataManager.insertOrUpdateEntity(any, any, any))
+    when(appManager.mockLocalDatabaseManager
+            .insertOrUpdateEntity(any, any, any))
         .thenAnswer((_) => Future.value(true));
 
     when(appManager.mockFishingSpotManager.addSimpleListener(
       onAdd: anyNamed("onAdd"),
       onDelete: anyNamed("onDelete"),
       onUpdate: anyNamed("onUpdate"),
-      onClear: anyNamed("onClear"),
     )).thenReturn(SimpleEntityListener<FishingSpot>());
     when(appManager.mockFishingSpotManager.list())
         .thenReturn(fishingSpotMap.values.toList());
@@ -239,14 +240,12 @@ void main() {
       onAdd: anyNamed("onAdd"),
       onDelete: anyNamed("onDelete"),
       onUpdate: anyNamed("onUpdate"),
-      onClear: anyNamed("onClear"),
     )).thenReturn(SimpleEntityListener<SummaryReport>());
 
     when(appManager.mockSpeciesManager.addSimpleListener(
       onAdd: anyNamed("onAdd"),
       onDelete: anyNamed("onDelete"),
       onUpdate: anyNamed("onUpdate"),
-      onClear: anyNamed("onClear"),
     )).thenReturn(SimpleEntityListener<Species>());
     when(appManager.mockSpeciesManager.list())
         .thenReturn(speciesMap.values.toList());
@@ -255,6 +254,8 @@ void main() {
         .thenReturn(speciesMap.values.toList());
     when(appManager.mockSpeciesManager.entity(any)).thenAnswer(
         (invocation) => speciesMap[invocation.positionalArguments[0]]);
+
+    when(appManager.mockSubscriptionManager.isPro).thenReturn(false);
 
     when(appManager.mockTimeManager.currentDateTime)
         .thenReturn(DateTime.fromMillisecondsSinceEpoch(105000));

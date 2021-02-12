@@ -16,19 +16,23 @@ void main() {
 
   setUp(() {
     appManager = MockAppManager(
+      mockAuthManager: true,
       mockBaitCategoryManager: true,
       mockBaitManager: true,
       mockCatchManager: true,
       mockComparisonReportManager: true,
-      mockDataManager: true,
+      mockLocalDatabaseManager: true,
       mockFishingSpotManager: true,
       mockImageManager: true,
       mockLocationMonitor: true,
       mockPreferencesManager: true,
       mockSpeciesManager: true,
+      mockSubscriptionManager: true,
       mockSummaryReportManager: true,
       mockTimeManager: true,
     );
+
+    when(appManager.mockAuthManager.stream).thenAnswer((_) => MockStream());
 
     when(appManager.mockBaitCategoryManager.listSortedByName(
       filter: anyNamed("filter"),
@@ -50,6 +54,8 @@ void main() {
         .thenReturn(false);
 
     when(appManager.mockFishingSpotManager.list()).thenReturn([]);
+
+    when(appManager.mockSubscriptionManager.isPro).thenReturn(false);
 
     when(appManager.mockSummaryReportManager.entityExists(any))
         .thenReturn(false);
@@ -143,7 +149,8 @@ void main() {
     when(appManager.mockPreferencesManager.rateTimerStartedAt).thenReturn(0);
     when(appManager.mockImageManager.save(any, compress: anyNamed("compress")))
         .thenAnswer((_) => Future.value([]));
-    when(appManager.mockDataManager.insertOrUpdateEntity(any, any, any))
+    when(appManager.mockLocalDatabaseManager
+            .insertOrUpdateEntity(any, any, any))
         .thenAnswer((_) => Future.value(true));
 
     catchManager.addOrUpdate(Catch()

@@ -59,7 +59,7 @@ class _FeedbackPageState extends State<FeedbackPage> {
   static final _idType = randomId();
   static final _idMessage = randomId();
 
-  final Log _log = Log("FeedbackPage");
+  final _log = Log("FeedbackPage");
 
   final Map<Id, Field> _fields = {};
 

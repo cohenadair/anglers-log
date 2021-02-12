@@ -15,17 +15,23 @@ void main() {
   MockAppManager appManager;
   MockCatchManager catchManager;
   MockCustomEntityManager customEntityManager;
-  MockDataManager dataManager;
+  MockLocalDatabaseManager dataManager;
 
   BaitManager baitManager;
   BaitCategoryManager baitCategoryManager;
 
   setUp(() {
     appManager = MockAppManager(
+      mockAuthManager: true,
       mockCatchManager: true,
       mockCustomEntityManager: true,
-      mockDataManager: true,
+      mockLocalDatabaseManager: true,
+      mockSubscriptionManager: true,
     );
+
+    var authStream = MockStream<void>();
+    when(authStream.listen(any)).thenReturn(null);
+    when(appManager.mockAuthManager.stream).thenAnswer((_) => authStream);
 
     catchManager = appManager.mockCatchManager;
     when(appManager.catchManager).thenReturn(catchManager);
@@ -34,13 +40,15 @@ void main() {
     when(appManager.customEntityManager).thenReturn(customEntityManager);
     when(customEntityManager.matchesFilter(any, any)).thenReturn(true);
 
-    dataManager = appManager.mockDataManager;
-    when(appManager.dataManager).thenReturn(dataManager);
+    dataManager = appManager.mockLocalDatabaseManager;
+    when(appManager.localDatabaseManager).thenReturn(dataManager);
     when(dataManager.insertOrUpdateEntity(any, any, any))
         .thenAnswer((_) => Future.value(true));
 
     baitCategoryManager = BaitCategoryManager(appManager);
     when(appManager.baitCategoryManager).thenReturn(baitCategoryManager);
+
+    when(appManager.mockSubscriptionManager.isPro).thenReturn(false);
 
     baitManager = BaitManager(appManager);
   });
@@ -55,7 +63,7 @@ void main() {
     when(baitListener.onDelete).thenReturn((_) {});
 
     var updatedBaits = <Bait>[];
-    when(baitListener.onUpdate).thenReturn((baits) => updatedBaits = baits);
+    when(baitListener.onUpdate).thenReturn((bait) => updatedBaits.add(bait));
     baitManager.addListener(baitListener);
 
     // Add a BaitCategory.
@@ -83,8 +91,11 @@ void main() {
     // Delete the bait category.
     await baitCategoryManager.delete(category.id);
 
+    // Wait for addOrUpdate calls to finish.
+    await Future.delayed(Duration(milliseconds: 50));
+
     // Verify listeners are notified and memory cache updated.
-    verify(baitListener.onUpdate).called(1);
+    verify(baitListener.onUpdate).called(2);
     expect(baitManager.entity(baitId0).hasBaitCategoryId(), false);
     expect(baitManager.entity(baitId1).hasBaitCategoryId(), false);
     expect(updatedBaits.length, 2);

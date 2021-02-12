@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mobile/auth_manager.dart';
 import 'package:mobile/bait_category_manager.dart';
 import 'package:mobile/bait_manager.dart';
 import 'package:mobile/catch_manager.dart';
@@ -17,7 +18,7 @@ import '../test_utils.dart';
 
 void main() {
   MockAppManager appManager;
-  MockDataManager dataManager;
+  MockLocalDatabaseManager dataManager;
   MockImageManager imageManager;
 
   MockIoWrapper ioWrapper;
@@ -33,22 +34,30 @@ void main() {
 
   setUp(() {
     appManager = MockAppManager(
-      mockDataManager: true,
+      mockAuthManager: true,
+      mockLocalDatabaseManager: true,
+      mockSubscriptionManager: true,
       mockImageManager: true,
       mockIoWrapper: true,
       mockPathProviderWrapper: true,
     );
 
-    dataManager = appManager.mockDataManager;
+    var stream = MockStream<AuthState>();
+    when(stream.listen(any)).thenReturn(null);
+    when(appManager.mockAuthManager.stream).thenAnswer((_) => stream);
+
+    dataManager = appManager.mockLocalDatabaseManager;
     when(dataManager.insertOrUpdateEntity(any, any, any))
         .thenAnswer((_) => Future.value(true));
-    when(appManager.dataManager).thenReturn(dataManager);
+    when(appManager.localDatabaseManager).thenReturn(dataManager);
 
     imageManager = appManager.mockImageManager;
     when(imageManager.save(any)).thenAnswer((_) => Future.value());
     when(imageManager.save(any, compress: anyNamed("compress")))
         .thenAnswer((_) => Future.value([]));
     when(appManager.imageManager).thenReturn(imageManager);
+
+    when(appManager.mockSubscriptionManager.isPro).thenReturn(false);
 
     ioWrapper = appManager.mockIoWrapper;
 

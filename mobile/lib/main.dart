@@ -1,9 +1,7 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
-import 'package:quiver/strings.dart';
 
 import 'app_manager.dart';
 import 'auth_manager.dart';
@@ -13,8 +11,8 @@ import 'pages/landing_page.dart';
 import 'pages/login_page.dart';
 import 'pages/main_page.dart';
 import 'pages/onboarding/onboarding_journey.dart';
-import 'preferences_manager.dart';
 import 'res/color.dart';
+import 'user_preference_manager.dart';
 import 'widgets/widget.dart';
 import 'wrappers/services_wrapper.dart';
 
@@ -35,10 +33,14 @@ class _AnglersLogState extends State<AnglersLog> {
   Future<bool> _appInitializedFuture;
   LegacyJsonResult _legacyJsonResult;
 
+  /// Used for showing the correct transition widget when logging in.
+  var _wasLoggedOut = false;
+
   AppManager get _app => widget.appManager;
   AuthManager get _authManager => _app.authManager;
-  PreferencesManager get _preferencesManager => _app.preferencesManager;
   ServicesWrapper get _services => _app.servicesWrapper;
+  UserPreferenceManager get _userPreferencesManager =>
+      _app.userPreferenceManager;
 
   @override
   void initState() {
@@ -75,20 +77,7 @@ class _AnglersLogState extends State<AnglersLog> {
             if (snapshot.hasError || !snapshot.hasData) {
               return LandingPage();
             }
-
-            Widget firstPage;
-            if (_preferencesManager.didOnboard) {
-              firstPage = MainPage();
-            } else {
-              firstPage = OnboardingJourney(
-                legacyJsonResult: _legacyJsonResult,
-                onFinished: () => setState(() {
-                  _preferencesManager.didOnboard = true;
-                }),
-              );
-            }
-
-            return authChangesListener(firstPage);
+            return _authStreamBuilder();
           },
         ),
         debugShowCheckedModeBanner: false,
@@ -106,43 +95,63 @@ class _AnglersLogState extends State<AnglersLog> {
     );
   }
 
-  /// Returns a widget that listens for authentications changes.
-  Widget authChangesListener(Widget authenticated) {
-    return StreamBuilder<User>(
-      stream: _authManager.authStateChanges,
-      builder: (context, snapshot) {
+  /// Returns a widget that listens for authentication changes.
+  Widget _authStreamBuilder() {
+    return StreamBuilder<void>(
+      stream: _authManager.stream,
+      builder: (context, _) {
+        Widget child;
+        switch (_authManager.state) {
+          case AuthState.unknown:
+            child = LandingPage();
+            break;
+          case AuthState.loggedIn:
+            if (_userPreferencesManager.didOnboard) {
+              child = MainPage();
+            } else {
+              child = OnboardingJourney(
+                legacyJsonResult: _legacyJsonResult,
+                onFinished: () => setState(() {
+                  _userPreferencesManager.didOnboard = true;
+                }),
+              );
+            }
+            break;
+          case AuthState.loggedOut:
+            _wasLoggedOut = true;
+            child = LoginPage();
+            break;
+          case AuthState.initializing:
+            if (_wasLoggedOut) {
+              child = LoginPage();
+            } else {
+              child = LandingPage();
+            }
+            break;
+        }
+
         return AnimatedSwitcher(
           duration: defaultAnimationDuration,
-          child: isNotEmpty(_authManager.userId) ? authenticated : LoginPage(),
+          child: child,
         );
       },
     );
   }
 
   Future<bool> _initialize() async {
+    // Initialize managers that don't depend on authentication status.
     await _app.firebaseWrapper.initializeApp();
-
-    await _app.authManager.initialize();
-    await _app.dataManager.initialize();
+    await _app.localDatabaseManager.initialize();
     await _app.locationMonitor.initialize();
     await _app.propertiesManager.initialize();
 
-    // Managers that depend on the ones above.
-    await _app.baitCategoryManager.initialize();
-    await _app.baitManager.initialize();
-    await _app.catchManager.initialize();
-    await _app.comparisonReportManager.initialize();
-    await _app.customEntityManager.initialize();
-    await _app.fishingSpotManager.initialize();
-    await _app.imageManager.initialize();
-    await _app.preferencesManager.initialize();
-    await _app.speciesManager.initialize();
-    await _app.summaryReportManager.initialize();
+    await _app.appPreferenceManager.initialize();
+    await _app.authManager.initialize();
 
     // If the user hasn't yet onboarded, see if there is any legacy data to
     // migrate. We do this here to allow for a smoother transition between the
     // login page and onboarding journey.
-    if (!_preferencesManager.didOnboard) {
+    if (!_userPreferencesManager.didOnboard) {
       _legacyJsonResult = await legacyJson(_services);
     }
 

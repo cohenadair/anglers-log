@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sqflite/sqflite.dart';
@@ -6,49 +8,23 @@ import 'app_manager.dart';
 import 'database/sqlite_open_helper.dart';
 import 'log.dart';
 import 'model/gen/anglerslog.pb.dart';
-import 'utils/listener_manager.dart';
 import 'utils/protobuf_utils.dart';
 
-class DataListener {
-  /// Invoked when the database has been completely reset.
-  VoidCallback onReset;
+class LocalDatabaseManager {
+  static LocalDatabaseManager of(BuildContext context) =>
+      Provider.of<AppManager>(context, listen: false).localDatabaseManager;
 
-  DataListener({
-    this.onReset,
-  });
-}
-
-class DataManager extends ListenerManager<DataListener> {
-  static DataManager of(BuildContext context) =>
-      Provider.of<AppManager>(context, listen: false).dataManager;
-
-  final Log _log = Log("DataManager");
+  final _log = Log("DataManager");
 
   Database _database;
   Future<Database> Function() _openDatabase;
-  Future<Database> Function() _resetDatabase;
 
   Future<void> initialize({
     Database database,
     Future<Database> Function() openDatabase,
-    Future<Database> Function() resetDatabase,
   }) async {
     _openDatabase = openDatabase ?? openDb;
-    _resetDatabase = resetDatabase ?? resetDb;
     _database = database ?? (await _openDatabase());
-  }
-
-  void _notifyOnReset() {
-    notify((listener) => listener.onReset());
-  }
-
-  /// Completely resets the database by deleting the SQLite file and recreating
-  /// it from scratch. All [EntityManager] subclasses are synced with the
-  /// database after it has been recreated.
-  Future<void> reset() async {
-    await _database.close();
-    _database = await _resetDatabase();
-    _notifyOnReset();
   }
 
   /// Commits a batch of SQL statements. See [Batch].
@@ -139,7 +115,8 @@ class DataManager extends ListenerManager<DataListener> {
     if (await delete(tableName, where: "id = ?", whereArgs: [id])) {
       return true;
     } else {
-      _log.e("Failed to delete $tableName($id) from database");
+      _log.e("Failed to delete $tableName(${entityId.uuid.toString()})"
+          " from database");
     }
     return false;
   }

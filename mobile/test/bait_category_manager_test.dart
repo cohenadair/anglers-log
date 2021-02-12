@@ -10,22 +10,26 @@ import 'test_utils.dart';
 void main() {
   MockAppManager appManager;
   MockBaitManager baitManager;
-  MockDataManager dataManager;
+  MockLocalDatabaseManager dataManager;
 
   BaitCategoryManager baitCategoryManager;
 
   setUp(() {
     appManager = MockAppManager(
+      mockAuthManager: true,
       mockBaitManager: true,
-      mockDataManager: true,
+      mockLocalDatabaseManager: true,
     );
+
+    var authStream = MockStream<void>();
+    when(authStream.listen(any)).thenReturn(null);
+    when(appManager.mockAuthManager.stream).thenAnswer((_) => authStream);
 
     baitManager = appManager.mockBaitManager;
     when(appManager.baitManager).thenReturn(baitManager);
 
-    dataManager = appManager.mockDataManager;
-    when(appManager.dataManager).thenReturn(dataManager);
-    when(dataManager.addListener(any)).thenAnswer((_) {});
+    dataManager = appManager.mockLocalDatabaseManager;
+    when(appManager.localDatabaseManager).thenReturn(dataManager);
 
     baitCategoryManager = BaitCategoryManager(appManager);
   });

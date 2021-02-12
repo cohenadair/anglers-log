@@ -1,8 +1,8 @@
 import 'dart:typed_data';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/app_manager.dart';
-import 'package:mobile/data_manager.dart';
 import 'package:mobile/entity_manager.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
@@ -10,6 +10,7 @@ import 'package:mockito/mockito.dart';
 import 'package:sqflite/sqlite_api.dart';
 
 import 'mock_app_manager.dart';
+import 'test_utils.dart';
 
 class MockBatch extends Mock implements Batch {}
 
@@ -20,7 +21,12 @@ class MockEntityListener extends Mock implements EntityListener<Species> {}
 class MockSpeciesListener extends Mock implements EntityListener<Species> {}
 
 class TestEntityManager extends EntityManager<Species> {
+  bool firestoreEnabled = true;
+
   TestEntityManager(AppManager app) : super(app);
+
+  @override
+  bool get enableFirestore => firestoreEnabled;
 
   @override
   Species entityFromBytes(List<int> bytes) => Species.fromBuffer(bytes);
@@ -37,25 +43,33 @@ class TestEntityManager extends EntityManager<Species> {
 
 void main() {
   MockAppManager appManager;
-  MockDataManager dataManager;
   TestEntityManager entityManager;
 
   setUp(() async {
     appManager = MockAppManager(
-      mockDataManager: true,
+      mockAppPreferenceManager: true,
+      mockAuthManager: true,
+      mockLocalDatabaseManager: true,
+      mockSubscriptionManager: true,
+      mockFirestoreWrapper: true,
     );
 
-    dataManager = appManager.mockDataManager;
-    when(appManager.dataManager).thenReturn(dataManager);
-    when(dataManager.insertOrUpdateEntity(any, any, any))
+    var stream = MockStream<void>();
+    when(stream.listen(any)).thenReturn(null);
+    when(appManager.mockAuthManager.stream).thenAnswer((_) => stream);
+
+    when(appManager.mockLocalDatabaseManager
+            .insertOrUpdateEntity(any, any, any))
+        .thenAnswer((realInvocation) => Future.value(true));
+    when(appManager.mockLocalDatabaseManager.deleteEntity(any, any))
         .thenAnswer((_) => Future.value(true));
-    when(dataManager.deleteEntity(any, any))
-        .thenAnswer((_) => Future.value(true));
+
+    when(appManager.mockSubscriptionManager.isPro).thenReturn(false);
 
     entityManager = TestEntityManager(appManager);
   });
 
-  test("Test initialize", () async {
+  test("Test initialize local data", () async {
     var id0 = randomId();
     var id1 = randomId();
     var id2 = randomId();
@@ -64,7 +78,7 @@ void main() {
     var species1 = Species()..id = id1;
     var species2 = Species()..id = id2;
 
-    when(dataManager.fetchAll("species")).thenAnswer(
+    when(appManager.mockLocalDatabaseManager.fetchAll("species")).thenAnswer(
       (_) => Future.value(
         [
           {
@@ -86,9 +100,131 @@ void main() {
     expect(entityManager.entityCount, 3);
   });
 
-  test("Test add or update", () async {
-    when(dataManager.insertOrUpdateEntity(any, any, any))
+  test("Test clear local data", () async {
+    when(appManager.mockLocalDatabaseManager
+            .insertOrUpdateEntity(any, any, any))
         .thenAnswer((_) => Future.value(true));
+
+    // Add.
+    var speciesId0 = randomId();
+    var speciesId1 = randomId();
+
+    await entityManager.addOrUpdate(Species()
+      ..id = speciesId0
+      ..name = "Bluegill");
+    await entityManager.addOrUpdate(Species()
+      ..id = speciesId1
+      ..name = "Catfish");
+    expect(entityManager.entityCount, 2);
+
+    await entityManager.clearLocalData();
+    verify(appManager.mockLocalDatabaseManager.deleteEntity(any, any))
+        .called(2);
+    verifyNever(appManager.mockFirestoreWrapper.collection(any));
+  });
+
+  test("Test initialize Firestore", () async {
+    when(appManager.mockSubscriptionManager.isPro).thenReturn(true);
+
+    var snapshot = MockQuerySnapshot();
+    when(snapshot.docChanges).thenReturn([]);
+
+    // Mimic Firebase's behaviour by invoking listener immediately.
+    var stream = MockStream<MockQuerySnapshot>();
+    when(stream.listen(any)).thenAnswer(
+        (invocation) => invocation.positionalArguments.first(snapshot));
+
+    var collection = MockCollectionReference();
+    when(collection.snapshots()).thenAnswer((_) => stream);
+
+    when(appManager.mockFirestoreWrapper.collection(any))
+        .thenReturn(collection);
+
+    // Setup Firestore listener.
+    await entityManager.initialize();
+    verify(snapshot.docChanges).called(1);
+
+    // In this test, we assume Firestore listeners work as expected, and we
+    // capture the listener function passed to snapshots().listen and invoke it
+    // manually.
+    var result = verify(stream.listen(captureAny));
+    result.called(1);
+
+    var listener = result.captured.first;
+
+    // No changes.
+    listener(null);
+    verifyNever(snapshot.docChanges);
+
+    listener(snapshot);
+    verify(snapshot.docChanges).called(1);
+
+    // Bytes can't be parsed.
+    var docSnapshot = MockDocumentSnapshot();
+    when(docSnapshot.data()).thenReturn({});
+    var docChange = MockDocumentChange();
+    when(docChange.doc).thenReturn(docSnapshot);
+    when(snapshot.docChanges).thenReturn([
+      docChange,
+    ]);
+    listener(snapshot);
+    verifyNever(docChange.type);
+
+    when(docSnapshot.data()).thenReturn({
+      "bytes": [],
+    });
+    listener(snapshot);
+    verifyNever(docChange.type);
+
+    when(docSnapshot.data()).thenReturn({
+      "bytes": null,
+    });
+    listener(snapshot);
+    verifyNever(docChange.type);
+
+    // Document added.
+    var species = Species()
+      ..id = randomId()
+      ..name = "Steelhead";
+    when(docSnapshot.data()).thenReturn({
+      "bytes": species.writeToBuffer(),
+    });
+    when(docChange.type).thenReturn(DocumentChangeType.added);
+    listener(snapshot);
+    verify(docChange.type).called(2);
+    verify(appManager.mockLocalDatabaseManager
+            .insertOrUpdateEntity(any, any, any))
+        .called(1);
+
+    // Document updated.
+    when(docChange.type).thenReturn(DocumentChangeType.modified);
+    listener(snapshot);
+    verify(docChange.type).called(3);
+    verify(appManager.mockLocalDatabaseManager
+            .insertOrUpdateEntity(any, any, any))
+        .called(1);
+
+    // Document deleted.
+    entityManager.firestoreEnabled = false;
+    await entityManager.addOrUpdate(species);
+    verify(appManager.mockLocalDatabaseManager
+            .insertOrUpdateEntity(any, any, any))
+        .called(1);
+
+    when(docChange.type).thenReturn(DocumentChangeType.removed);
+    listener(snapshot);
+    verify(docChange.type).called(3);
+    verifyNever(appManager.mockLocalDatabaseManager
+        .insertOrUpdateEntity(any, any, any));
+    verify(appManager.mockLocalDatabaseManager.deleteEntity(any, any))
+        .called(1);
+  });
+
+  test("Test add or update local", () async {
+    when(appManager.mockLocalDatabaseManager
+            .insertOrUpdateEntity(any, any, any))
+        .thenAnswer((_) => Future.value(true));
+    when(appManager.mockSubscriptionManager.isPro).thenReturn(false);
 
     var listener = MockSpeciesListener();
     when(listener.onAdd).thenReturn((_) {});
@@ -136,9 +272,41 @@ void main() {
     verifyNever(listener.onUpdate);
   });
 
-  test("Test delete", () async {
-    when(dataManager.deleteEntity(any, any))
+  test("Add or update Firestore", () async {
+    var collection = MockCollectionReference();
+    var doc = MockDocumentReference();
+    when(collection.doc(any)).thenReturn(doc);
+    when(appManager.mockFirestoreWrapper.collection(any))
+        .thenReturn(collection);
+    when(appManager.mockSubscriptionManager.isPro).thenReturn(true);
+
+    await entityManager.addOrUpdate(Species()
+      ..id = randomId()
+      ..name = "Steelhead");
+    await entityManager.addOrUpdate(Species()
+      ..id = randomId()
+      ..name = "Catfish");
+
+    verify(appManager.mockFirestoreWrapper.collection(any)).called(2);
+  });
+
+  test("Delete from Firestore", () async {
+    when(appManager.mockSubscriptionManager.isPro).thenReturn(false);
+
+    await entityManager.addOrUpdate(Species()
+      ..id = randomId()
+      ..name = "Steelhead");
+    await entityManager.addOrUpdate(Species()
+      ..id = randomId()
+      ..name = "Catfish");
+
+    expect(entityManager.entityCount, 2);
+  });
+
+  test("Delete locally", () async {
+    when(appManager.mockLocalDatabaseManager.deleteEntity(any, any))
         .thenAnswer((_) => Future.value(true));
+    when(appManager.mockSubscriptionManager.isPro).thenReturn(false);
 
     var listener = MockSpeciesListener();
     when(listener.onAdd).thenReturn((_) {});
@@ -154,14 +322,18 @@ void main() {
     expect(await entityManager.delete(speciesId0), true);
     expect(entityManager.entityCount, 0);
     verify(listener.onDelete).called(1);
+    verify(appManager.mockLocalDatabaseManager.deleteEntity(any, any))
+        .called(1);
 
-    // If there's nothing to delete, the listener shouldn't be called.
+    // If there's nothing to delete, the database shouldn't be queried and the
+    // listener shouldn't be called.
     expect(await entityManager.delete(speciesId0), true);
+    verifyNever(appManager.mockLocalDatabaseManager.deleteEntity(any, any));
     verifyNever(listener.onDelete);
   });
 
-  test("Test delete with notify=false", () async {
-    when(dataManager.deleteEntity(any, any))
+  test("Test delete locally with notify=false", () async {
+    when(appManager.mockLocalDatabaseManager.deleteEntity(any, any))
         .thenAnswer((_) => Future.value(true));
 
     var listener = MockSpeciesListener();
@@ -177,55 +349,14 @@ void main() {
 
     expect(await entityManager.delete(speciesId0, notify: false), true);
     expect(entityManager.entityCount, 0);
+    verify(appManager.mockLocalDatabaseManager.deleteEntity(any, any))
+        .called(1);
     verifyNever(listener.onDelete);
   });
 
-  test("Data is cleared and listeners notified when database is reset",
-      () async {
-    // Setup real DataManager to initiate callback.
-    var batch = MockBatch();
-    when(batch.commit()).thenAnswer((_) => Future.value([]));
-    when(batch.delete(
-      any,
-      where: anyNamed("where"),
-      whereArgs: anyNamed("whereArgs"),
-    )).thenAnswer((_) {});
-    when(batch.insert(any, any)).thenAnswer((_) {});
-
-    var database = MockDatabase();
-    when(database.rawQuery(any, any)).thenAnswer((_) => Future.value([]));
-    when(database.insert(any, any)).thenAnswer((_) => Future.value(1));
-
-    var realDataManager = DataManager();
-    await realDataManager.initialize(
-      database: database,
-      openDatabase: () => Future.value(database),
-      resetDatabase: () => Future.value(database),
-    );
-
-    when(appManager.dataManager).thenReturn(realDataManager);
-    entityManager = TestEntityManager(appManager);
-
-    // Add some entities.
-    await entityManager.addOrUpdate(Species()
-      ..id = randomId()
-      ..name = "Test");
-    expect(entityManager.entityCount, 1);
-
-    // Setup listener.
-    var listener = MockEntityListener();
-    when(listener.onClear).thenReturn(() {});
-    entityManager.addListener(listener);
-
-    // Clear data.
-    await realDataManager.reset();
-    expect(entityManager.entityCount, 0);
-    await untilCalled(listener.onClear);
-    verify(listener.onClear).called(1);
-  });
-
   test("Entity list by ID", () async {
-    when(dataManager.insertOrUpdateEntity(any, any, any))
+    when(appManager.mockLocalDatabaseManager
+            .insertOrUpdateEntity(any, any, any))
         .thenAnswer((_) => Future.value(true));
 
     // Add.
@@ -256,20 +387,23 @@ void main() {
     expect(entityManager.list([speciesId0, speciesId2]).length, 2);
   });
 
-  group("filteredList", () {
-    test("Empty filter always returns all entities", () async {
-      await entityManager.addOrUpdate(Species()
-        ..id = randomId()
-        ..name = "Bluegill");
-      await entityManager.addOrUpdate(Species()
-        ..id = randomId()
-        ..name = "Catfish");
-      await entityManager.addOrUpdate(Species()
-        ..id = randomId()
-        ..name = "Bass");
+  test("Empty filter always returns all entities", () async {
+    await entityManager.addOrUpdate(Species()
+      ..id = randomId()
+      ..name = "Bluegill");
+    await entityManager.addOrUpdate(Species()
+      ..id = randomId()
+      ..name = "Catfish");
+    await entityManager.addOrUpdate(Species()
+      ..id = randomId()
+      ..name = "Bass");
 
-      expect(entityManager.filteredList(null).length, 3);
-      expect(entityManager.filteredList("").length, 3);
-    });
+    expect(entityManager.filteredList(null).length, 3);
+    expect(entityManager.filteredList("").length, 3);
+  });
+
+  test("Only items matching filter are returned", () async {
+    // Nothing to test. matchesFilter is an abstract method and should be
+    // tested in subclass tests.
   });
 }

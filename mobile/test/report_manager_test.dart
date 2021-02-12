@@ -11,6 +11,7 @@ import 'package:mockito/mockito.dart';
 import 'package:sqflite/sqflite.dart';
 
 import 'mock_app_manager.dart';
+import 'test_utils.dart';
 
 class MockBatch extends Mock implements Batch {}
 
@@ -59,19 +60,28 @@ void main() {
   setUp(() {
     // Setup mocks.
     appManager = MockAppManager(
+      mockAuthManager: true,
       mockBaitCategoryManager: true,
       mockCatchManager: true,
-      mockDataManager: true,
+      mockLocalDatabaseManager: true,
       mockCustomEntityValueManager: true,
+      mockSubscriptionManager: true,
     );
-    when(appManager.mockDataManager.addListener(any)).thenAnswer((_) {});
-    when(appManager.mockDataManager.insertOrUpdateEntity(any, any, any))
+
+    var authStream = MockStream<void>();
+    when(authStream.listen(any)).thenReturn(null);
+    when(appManager.mockAuthManager.stream).thenAnswer((_) => authStream);
+
+    when(appManager.mockLocalDatabaseManager
+            .insertOrUpdateEntity(any, any, any))
         .thenAnswer((_) => Future.value(true));
-    when(appManager.mockDataManager.deleteEntity(any, any))
+    when(appManager.mockLocalDatabaseManager.deleteEntity(any, any))
         .thenAnswer((_) => Future.value(true));
 
     reportListener = MockCustomReportListener();
     when(reportListener.onAdd).thenReturn((_) {});
+
+    when(appManager.mockSubscriptionManager.isPro).thenReturn(false);
 
     // Setup real objects.
     speciesManager = SpeciesManager(appManager);
@@ -90,7 +100,7 @@ void main() {
   test("On species deleted, reports updated and listeners notified", () async {
     var updatedReports = <SummaryReport>[];
     when(reportListener.onUpdate)
-        .thenReturn((reports) => updatedReports = reports);
+        .thenReturn((report) => updatedReports.add(report));
 
     // Can't delete because catch exists.
     when(appManager.mockCatchManager.existsWith(
@@ -118,6 +128,9 @@ void main() {
 
     verify(reportListener.onAdd).called(1);
 
+    // Wait for addOrUpdate calls to finish.
+    await Future.delayed(Duration(milliseconds: 50));
+
     expect(updatedReports.length, 1);
     expect(updatedReports.first.id, report.id);
   });
@@ -125,10 +138,10 @@ void main() {
   test("On baits deleted, reports updated and listeners notified", () async {
     var updatedReports = <SummaryReport>[];
     when(reportListener.onUpdate)
-        .thenReturn((reports) => updatedReports = reports);
+        .thenReturn((report) => updatedReports.add(report));
 
     // Nothing to delete.
-    when(appManager.mockDataManager.deleteEntity(any, any))
+    when(appManager.mockLocalDatabaseManager.deleteEntity(any, any))
         .thenAnswer((_) => Future.value(false));
 
     var bait = Bait()
@@ -138,7 +151,7 @@ void main() {
     verifyNever(reportListener.onUpdate);
 
     // Successful delete.
-    when(appManager.mockDataManager.deleteEntity(any, any))
+    when(appManager.mockLocalDatabaseManager.deleteEntity(any, any))
         .thenAnswer((_) => Future.value(true));
 
     var report = SummaryReport()
@@ -151,6 +164,9 @@ void main() {
 
     verify(reportListener.onAdd).called(1);
 
+    // Wait for addOrUpdate calls to finish.
+    await Future.delayed(Duration(milliseconds: 50));
+
     expect(updatedReports.length, 1);
     expect(updatedReports.first.id, report.id);
   });
@@ -159,10 +175,10 @@ void main() {
       () async {
     var updatedReports = <SummaryReport>[];
     when(reportListener.onUpdate)
-        .thenReturn((reports) => updatedReports = reports);
+        .thenReturn((report) => updatedReports.add(report));
 
     // Nothing to delete.
-    when(appManager.mockDataManager.deleteEntity(any, any))
+    when(appManager.mockLocalDatabaseManager.deleteEntity(any, any))
         .thenAnswer((_) => Future.value(false));
 
     var fishingSpot = FishingSpot()
@@ -173,7 +189,7 @@ void main() {
     verifyNever(reportListener.onUpdate);
 
     // Successful delete.
-    when(appManager.mockDataManager.deleteEntity(any, any))
+    when(appManager.mockLocalDatabaseManager.deleteEntity(any, any))
         .thenAnswer((_) => Future.value(true));
 
     var report = SummaryReport()
@@ -185,6 +201,9 @@ void main() {
     await fishingSpotManager.delete(fishingSpot.id);
 
     verify(reportListener.onAdd).called(1);
+
+    // Wait for addOrUpdate calls to finish.
+    await Future.delayed(Duration(milliseconds: 50));
 
     expect(updatedReports.length, 1);
     expect(updatedReports.first.id, report.id);

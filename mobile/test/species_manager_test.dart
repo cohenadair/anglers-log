@@ -5,26 +5,34 @@ import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mockito/mockito.dart';
 
 import 'mock_app_manager.dart';
+import 'test_utils.dart';
 
 void main() {
   MockAppManager appManager;
   MockCatchManager catchManager;
-  MockDataManager dataManager;
+  MockLocalDatabaseManager dataManager;
 
   SpeciesManager speciesManager;
 
   setUp(() {
     appManager = MockAppManager(
+      mockAuthManager: true,
       mockCatchManager: true,
-      mockDataManager: true,
+      mockLocalDatabaseManager: true,
+      mockSubscriptionManager: true,
     );
+
+    var authStream = MockStream<void>();
+    when(authStream.listen(any)).thenReturn(null);
+    when(appManager.mockAuthManager.stream).thenAnswer((_) => authStream);
 
     catchManager = appManager.mockCatchManager;
     when(appManager.catchManager).thenReturn(catchManager);
 
-    dataManager = appManager.mockDataManager;
-    when(appManager.dataManager).thenReturn(dataManager);
-    when(dataManager.addListener(any)).thenAnswer((_) {});
+    dataManager = appManager.mockLocalDatabaseManager;
+    when(appManager.localDatabaseManager).thenReturn(dataManager);
+
+    when(appManager.mockSubscriptionManager.isPro).thenReturn(false);
 
     speciesManager = SpeciesManager(appManager);
   });
