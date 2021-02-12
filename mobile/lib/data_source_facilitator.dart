@@ -30,7 +30,7 @@ abstract class DataSourceFacilitator {
 
   /// Clears the local data. This is called when a different user logs in.
   @protected
-  void clearLocalData();
+  Future<void> clearLocalData();
 
   /// This method, when [enableFirestore] is true, must return a
   /// [StreamSubscription], usually from a Firestore document or collection.
@@ -71,10 +71,10 @@ abstract class DataSourceFacilitator {
   @protected
   bool get shouldUseFirestore => subscriptionManager.isPro && enableFirestore;
 
-  Future<void> initialize() {
+  Future<void> initialize() async {
     if (appPreferenceManager.lastLoggedInUserId != authManager.userId) {
       _log.d("User changed, clearing local data");
-      clearLocalData();
+      await clearLocalData();
     }
 
     _log.d("Initializing "

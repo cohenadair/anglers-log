@@ -87,9 +87,10 @@ abstract class EntityManager<T extends GeneratedMessage>
   }
 
   @override
-  void clearLocalData() {
-    for (var entity in entities.values) {
-      _deleteLocal(id(entity), notify: false);
+  Future<void> clearLocalData() async {
+    var entitiesCopy = List<T>.of(entities.values);
+    for (var entity in entitiesCopy) {
+      await _deleteLocal(id(entity), notify: false);
     }
   }
 

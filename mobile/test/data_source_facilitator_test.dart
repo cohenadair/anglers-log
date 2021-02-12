@@ -21,7 +21,10 @@ class TestDataSourceFacilitator extends DataSourceFacilitator {
   TestDataSourceFacilitator(AppManager appManager) : super(appManager);
 
   @override
-  void clearLocalData() => clearLocalDataCount++;
+  Future<void> clearLocalData() {
+    clearLocalDataCount++;
+    return null;
+  }
 
   @override
   bool get enableFirestore => firestoreEnabled;

@@ -49,7 +49,7 @@ abstract class PreferenceManager extends DataSourceFacilitator {
   }
 
   @override
-  void clearLocalData() {
+  Future<void> clearLocalData() {
     for (var key in List.of(preferences.keys)) {
       putLocal(key, null);
     }

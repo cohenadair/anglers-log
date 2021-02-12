@@ -148,6 +148,9 @@ class AuthManager {
   }
 
   Future<void> _initializeManagers() async {
+    // First initialize managers that are dependents of other managers.
+    await _appManager.speciesManager.initialize();
+
     await _appManager.baitCategoryManager.initialize();
     await _appManager.baitManager.initialize();
     await _appManager.catchManager.initialize();
@@ -155,7 +158,6 @@ class AuthManager {
     await _appManager.customEntityManager.initialize();
     await _appManager.fishingSpotManager.initialize();
     await _appManager.imageManager.initialize();
-    await _appManager.speciesManager.initialize();
     await _appManager.summaryReportManager.initialize();
     await _appManager.userPreferenceManager.initialize();
 
