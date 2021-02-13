@@ -4,6 +4,7 @@ import 'dart:ui' as ui;
 import 'dart:ui';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -39,11 +40,13 @@ class MockFileSystemEntity extends Mock implements FileSystemEntity {}
 
 class MockLegacyImporter extends Mock implements LegacyImporter {}
 
-class MockNavigatorObserver extends Mock implements NavigatorObserver {}
-
 class MockMethodChannel extends Mock implements MethodChannel {}
 
+class MockNavigatorObserver extends Mock implements NavigatorObserver {}
+
 class MockQuerySnapshot extends Mock implements QuerySnapshot {}
+
+class MockReference extends Mock implements Reference {}
 
 class MockStream<T> extends Mock implements Stream<T> {}
 

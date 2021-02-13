@@ -20,6 +20,7 @@ import 'package:mobile/time_manager.dart';
 import 'package:mobile/trip_manager.dart';
 import 'package:mobile/wrappers/file_picker_wrapper.dart';
 import 'package:mobile/wrappers/firebase_auth_wrapper.dart';
+import 'package:mobile/wrappers/firebase_storage_wrapper.dart';
 import 'package:mobile/wrappers/firebase_wrapper.dart';
 import 'package:mobile/wrappers/firestore_wrapper.dart';
 import 'package:mobile/wrappers/http_wrapper.dart';
@@ -80,6 +81,9 @@ class MockFilePickerWrapper extends Mock implements FilePickerWrapper {}
 
 class MockFirebaseAuthWrapper extends Mock implements FirebaseAuthWrapper {}
 
+class MockFirebaseStorageWrapper extends Mock
+    implements FirebaseStorageWrapper {}
+
 class MockFirebaseWrapper extends Mock implements FirebaseWrapper {}
 
 class MockFirestoreWrapper extends Mock implements FirestoreWrapper {}
@@ -128,6 +132,7 @@ class MockAppManager extends Mock implements AppManager {
 
   MockFilePickerWrapper mockFilePickerWrapper;
   MockFirebaseAuthWrapper mockFirebaseAuthWrapper;
+  MockFirebaseStorageWrapper mockFirebaseStorageWrapper;
   MockFirebaseWrapper mockFirebaseWrapper;
   MockFirestoreWrapper mockFirestoreWrapper;
   MockHttpWrapper mockHttpWrapper;
@@ -164,6 +169,7 @@ class MockAppManager extends Mock implements AppManager {
     bool mockUserPreferenceManager = false,
     bool mockFilePickerWrapper = false,
     bool mockFirebaseAuthWrapper = false,
+    bool mockFirebaseStorageWrapper = false,
     bool mockFirebaseWrapper = false,
     bool mockFirestoreWrapper = false,
     bool mockHttpWrapper = false,
@@ -284,6 +290,11 @@ class MockAppManager extends Mock implements AppManager {
     if (mockFirebaseAuthWrapper) {
       this.mockFirebaseAuthWrapper = MockFirebaseAuthWrapper();
       when(firebaseAuthWrapper).thenReturn(this.mockFirebaseAuthWrapper);
+    }
+
+    if (mockFirebaseStorageWrapper) {
+      this.mockFirebaseStorageWrapper = MockFirebaseStorageWrapper();
+      when(firebaseStorageWrapper).thenReturn(this.mockFirebaseStorageWrapper);
     }
 
     if (mockFirebaseWrapper) {

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mobile/wrappers/firebase_storage_wrapper.dart';
 import 'package:provider/provider.dart';
 
 import 'app_preference_manager.dart';
@@ -61,6 +62,7 @@ class AppManager {
   // External dependency wrappers.
   FilePickerWrapper _filePickerWrapper;
   FirebaseAuthWrapper _firebaseAuthWrapper;
+  FirebaseStorageWrapper _firebaseStorageWrapper;
   FirebaseWrapper _firebaseWrapper;
   FirestoreWrapper _firestoreWrapper;
   HttpWrapper _httpWrapper;
@@ -219,6 +221,13 @@ class AppManager {
       _firebaseAuthWrapper = FirebaseAuthWrapper();
     }
     return _firebaseAuthWrapper;
+  }
+
+  FirebaseStorageWrapper get firebaseStorageWrapper {
+    if (_firebaseStorageWrapper == null) {
+      _firebaseStorageWrapper = FirebaseStorageWrapper();
+    }
+    return _firebaseStorageWrapper;
   }
 
   FirebaseWrapper get firebaseWrapper {

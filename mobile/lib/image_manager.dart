@@ -2,6 +2,7 @@ import 'dart:io';
 import 'dart:typed_data';
 import 'dart:ui' as ui;
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:crypto/crypto.dart';
 import 'package:flutter/material.dart';
 import 'package:path/path.dart';
@@ -10,8 +11,11 @@ import 'package:quiver/collection.dart';
 import 'package:quiver/strings.dart';
 
 import 'app_manager.dart';
+import 'auth_manager.dart';
 import 'catch_manager.dart';
 import 'log.dart';
+import 'subscription_manager.dart';
+import 'wrappers/firebase_storage_wrapper.dart';
 import 'wrappers/image_compress_wrapper.dart';
 import 'wrappers/io_wrapper.dart';
 import 'wrappers/path_provider_wrapper.dart';
@@ -39,10 +43,21 @@ class ImageManager {
   String _imagePath;
   String _cachePath;
 
+  AuthManager get _authManager => _appManager.authManager;
+
   CatchManager get _catchManager => _appManager.catchManager;
+
+  SubscriptionManager get _subscriptionManager =>
+      _appManager.subscriptionManager;
+
+  FirebaseStorageWrapper get _firebaseStorageWrapper =>
+      _appManager.firebaseStorageWrapper;
+
   ImageCompressWrapper get _imageCompressWrapper =>
       _appManager.imageCompressWrapper;
+
   IoWrapper get _ioWrapper => _appManager.ioWrapper;
+
   PathProviderWrapper get _pathProviderWrapper =>
       _appManager.pathProviderWrapper;
 
@@ -66,6 +81,9 @@ class ImageManager {
   File _imageFile(String imageName) =>
       _ioWrapper.file("$_imagePath/$imageName");
 
+  String _firebaseStoragePath(String fileName) =>
+      "${_authManager.userId}/$fileName";
+
   /// Returns encoded image data with the given [fileName] at the given [size].
   /// If an image of [size] does not exist in the cache, the full image is
   /// returned.
@@ -78,14 +96,36 @@ class ImageManager {
       return null;
     }
 
-    var thumb = await _thumbnail(context, fileName, size);
-    if (thumb == null) {
-      var file = _imageFile(fileName);
-      if (await file.exists()) {
-        return await file.readAsBytes();
+    var file = _imageFile(fileName);
+
+    // Download the image if it doesn't exist.
+    if (!(await file.exists()) && _subscriptionManager.isPro) {
+      try {
+        _log.d("Local file not found, downloading...");
+
+        await _firebaseStorageWrapper
+            .ref(_firebaseStoragePath(fileName))
+            .writeToFile(file);
+
+        _log.d("Download complete");
+      } on FirebaseException catch (e) {
+        _log.e("Error downloading image: $e");
       }
     }
-    return thumb;
+
+    // Return the correct thumbnail if it exists.
+    var thumb = await _thumbnail(context, fileName, size);
+    if (thumb != null) {
+      return thumb;
+    }
+
+    // Fallback on full image if thumbnail couldn't be created.
+    if (await file.exists()) {
+      return await file.readAsBytes();
+    }
+
+    // No image is available.
+    return null;
   }
 
   /// Returns a list of encoded images for the given [names] of the given
@@ -128,13 +168,39 @@ class ImageManager {
     _thumbnails.putIfAbsent(fileName, () => _CachedThumbnail(fileName));
   }
 
+  Future<void> _upload(File image) async {
+    if (!_subscriptionManager.isPro) {
+      _log.d("User isn't pro, skipping image upload");
+      return;
+    }
+
+    var imageName = basename(image?.path);
+
+    if (image == null || !image.existsSync()) {
+      _log.d("Can't upload file that doesn't exist: $imageName");
+      return;
+    }
+
+    try {
+      _log.d("Uploading image $imageName...");
+
+      await _firebaseStorageWrapper
+          .ref(_firebaseStoragePath(imageName))
+          .putFile(image);
+
+      _log.d("Upload complete");
+    } on FirebaseException catch (e) {
+      _log.e("Error uploading image: $e");
+    }
+  }
+
   /// Returns a list of file names that were saved to disk.
   ///
   /// Compresses the given image files, converts them to JPG format, and saves
   /// them to the app's sandbox if the file doesn't already exit.
   ///
   /// This method will update the database such that the given entity ID will
-  /// only be associated with the given image files. Any previous association
+  /// only be associated with the given image files. Any previous associations
   /// will be overridden.
   ///
   /// Files are named by the image's MD5 hash value to ensure uniqueness, and so
@@ -190,6 +256,7 @@ class ImageManager {
 
       result.add(fileName);
       _addToCache(fileName);
+      _upload(newFile);
     }
 
     return result;
@@ -269,6 +336,13 @@ class ImageManager {
       }
 
       try {
+        var imageFile = _imageFile(fileName);
+
+        if (!(await imageFile.exists())) {
+          _log.d("Can't create thumbnail from file that doesn't exist");
+          return null;
+        }
+
         await thumbnail.writeAsBytes(
           await _compress(context, _imageFile(fileName),
               _thumbnailCompressionQuality, size),
@@ -310,9 +384,11 @@ class ImageManager {
   /// Deletes images that are no longer used from memory cache and file
   /// system.
   Future<void> _clearStaleImages() async {
-    await _ioWrapper.directory(_imagePath).list().forEach((entity) {
-      var name = basename(entity.path);
+    var images = await _ioWrapper.directory(_imagePath).list().toList();
+    for (var image in images) {
+      var name = basename(image.path);
       var found = false;
+
       for (var cat in _catchManager.list()) {
         // Image found, continue on to the next image.
         if (cat.imageNames.contains(name)) {
@@ -321,13 +397,41 @@ class ImageManager {
         }
       }
 
-      // Image isn't found, delete it.
-      if (!found) {
-        entity.deleteSync();
-        _thumbnails.remove(name);
-        _log.d("Deleted stale image $name");
+      if (found) {
+        continue;
       }
-    });
+
+      _log.d("Deleted stale image $name");
+      image.deleteSync();
+
+      // Delete any thumbnails.
+      var thumbs =
+          await _ioWrapper.directory(_cachePath).list(recursive: true).toList();
+      for (var thumb in thumbs) {
+        if (thumb is Directory) {
+          continue;
+        }
+
+        var cacheName = basename(thumb.path);
+        if (cacheName == name) {
+          _log.d("Deleted stale thumbnail $cacheName");
+          _thumbnails.remove(name);
+          thumb.deleteSync();
+        }
+      }
+
+      // Delete from Firebase Storage.
+      if (_subscriptionManager.isPro) {
+        try {
+          await _firebaseStorageWrapper
+              .ref(_firebaseStoragePath(name))
+              .delete();
+        } on Exception catch (_) {
+          // The file couldn't be deleted from Firebase. This is normal and
+          // will happen when cleaning up image files from a previous user.
+        }
+      }
+    }
   }
 }
 

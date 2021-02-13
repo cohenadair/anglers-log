@@ -23,6 +23,7 @@ dependencies:
   file_picker: ^1.4.3+2             # https://pub.dev/packages/file_picker (verified)
   firebase_auth: ^0.20.0+1          # Google
   firebase_core: ^0.7.0             # Google
+  firebase_storage: ^7.0.0          # Google
   flutter_image_compress: ^0.6.8    # https://pub.dev/packages/flutter_image_compress
   geolocator: ^5.2.1                # https://pub.dev/packages/geolocator (verified)
   google_maps_flutter: ^0.5.25+3    # Flutter

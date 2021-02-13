@@ -21,7 +21,10 @@ void main() {
 
   setUp(() async {
     appManager = MockAppManager(
+      mockAuthManager: true,
       mockCatchManager: true,
+      mockSubscriptionManager: true,
+      mockFirebaseStorageWrapper: true,
       mockIoWrapper: true,
       mockImageCompressWrapper: true,
       mockPathProviderWrapper: true,
@@ -30,7 +33,10 @@ void main() {
     when(appManager.mockCatchManager.list()).thenReturn([]);
 
     directory = MockDirectory();
-    when(directory.list()).thenAnswer((_) => Stream.empty());
+    when(directory.list(recursive: anyNamed("recursive")))
+        .thenAnswer((_) => Stream.empty());
+
+    when(appManager.mockSubscriptionManager.isPro).thenReturn(false);
 
     when(appManager.mockImageCompressWrapper.compress(any, any, any))
         .thenAnswer((_) => Future.value(Uint8List.fromList([10, 11, 12])));
@@ -152,6 +158,30 @@ void main() {
     expect(bytes, equals(Uint8List.fromList([1, 2, 3])));
   });
 
+  testWidgets("Thumbnail can't be created when file doesn't exist",
+      (tester) async {
+    await imageManager.initialize();
+    var context = await buildContext(tester);
+
+    var file = MockFile();
+    when(file.exists()).thenAnswer((_) => Future.value(false));
+    when(appManager.mockIoWrapper.file("$_imagePath/2.0/images/image.jpg"))
+        .thenReturn(file);
+
+    var thumb = MockFile();
+    when(thumb.exists()).thenAnswer((_) => Future.value(false));
+    when(appManager.mockIoWrapper.file("$_cachePath/2.0/thumbs/50/image.jpg"))
+        .thenReturn(thumb);
+
+    await imageManager.image(
+      context,
+      fileName: "image.jpg",
+      size: 50,
+    );
+
+    verifyNever(thumb.writeAsBytes(any));
+  });
+
   testWidgets("Get images", (tester) async {
     await imageManager.initialize();
     var context = await buildContext(tester);
@@ -214,6 +244,36 @@ void main() {
     expect(byteList.isEmpty, true);
   });
 
+  testWidgets("Get image downloads file if it doesn't already exist",
+      (tester) async {
+    await imageManager.initialize();
+    var context = await buildContext(tester);
+
+    var file = MockFile();
+    when(appManager.mockIoWrapper.file(any)).thenReturn(file);
+
+    // File exists.
+    when(file.exists()).thenAnswer((_) => Future.value(true));
+    expect(await imageManager.image(context, fileName: "test.jpg"), isNull);
+    verifyNever(appManager.mockFirebaseStorageWrapper.ref(any));
+    verifyNever(appManager.mockSubscriptionManager.isPro);
+
+    // File doesn't exist, but user isn't pro.
+    when(appManager.mockSubscriptionManager.isPro).thenReturn(false);
+    when(file.exists()).thenAnswer((_) => Future.value(false));
+    expect(await imageManager.image(context, fileName: "test.jpg"), isNull);
+    verifyNever(appManager.mockFirebaseStorageWrapper.ref(any));
+    verify(appManager.mockSubscriptionManager.isPro).called(1);
+
+    // File doesn't exist, and user is pro.
+    when(appManager.mockFirebaseStorageWrapper.ref(any))
+        .thenReturn(MockReference());
+    when(appManager.mockSubscriptionManager.isPro).thenReturn(true);
+    when(file.exists()).thenAnswer((_) => Future.value(false));
+    expect(await imageManager.image(context, fileName: "test.jpg"), isNull);
+    verify(appManager.mockFirebaseStorageWrapper.ref(any)).called(1);
+  });
+
   test("Normal saving images", () async {
     await imageManager.initialize();
 
@@ -255,6 +315,37 @@ void main() {
     }
     verify(appManager.mockImageCompressWrapper.compress(any, any, any))
         .called(2);
+  });
+
+  test("Uploading images", () async {
+    await imageManager.initialize();
+
+    var file = MockFile();
+    when(file.exists()).thenAnswer((_) => Future.value(true));
+    when(file.path).thenReturn("test/path/to/img/test.jpg");
+    when(file.readAsBytes())
+        .thenAnswer((_) => Future.value(Uint8List.fromList([3, 2, 1])));
+    when(appManager.mockIoWrapper.file(any)).thenReturn(file);
+
+    // Not pro.
+    await imageManager.save([file], compress: false);
+    verify(appManager.mockSubscriptionManager.isPro).called(1);
+    verifyNever(file.existsSync());
+
+    // Upload file doesn't exist.
+    when(appManager.mockSubscriptionManager.isPro).thenReturn(true);
+    when(file.existsSync()).thenReturn(false);
+    await imageManager.save([file], compress: false);
+    verify(file.existsSync()).called(1);
+    verifyNever(appManager.mockFirebaseStorageWrapper.ref(any));
+
+    // Upload sent to Firebase.
+    var ref = MockReference();
+    when(appManager.mockSubscriptionManager.isPro).thenReturn(true);
+    when(appManager.mockFirebaseStorageWrapper.ref(any)).thenReturn(ref);
+    when(file.existsSync()).thenReturn(true);
+    await imageManager.save([file], compress: false);
+    verify(ref.putFile(any)).called(1);
   });
 
   test("Null image files are skipped when saving", () async {
@@ -299,8 +390,29 @@ void main() {
     when(img2.path).thenReturn("$_imagePath/image2.jpg");
     when(img2.deleteSync()).thenAnswer((_) {});
 
-    when(directory.list()).thenAnswer((_) =>
+    var imgDir = MockDirectory();
+    when(imgDir.list()).thenAnswer((_) =>
         Stream.fromFutures([img1, img2].map((img) => Future.value(img))));
+    when(appManager.mockIoWrapper.directory("$_imagePath/2.0/images"))
+        .thenReturn(imgDir);
+
+    var thumb1 = MockFile();
+    when(thumb1.path).thenReturn("$_cachePath/50/image1.jpg");
+    when(thumb1.deleteSync()).thenAnswer((_) {});
+
+    var thumb2 = MockFile();
+    when(thumb2.path).thenReturn("$_cachePath/50/image2.jpg");
+    when(thumb2.deleteSync()).thenAnswer((_) {});
+
+    // Directories should not be deleted.
+    var dir = MockDirectory();
+    when(dir.path).thenReturn("$_cachePath");
+
+    var thumbDir = MockDirectory();
+    when(thumbDir.list(recursive: true)).thenAnswer((_) => Stream.fromFutures(
+        [thumb1, thumb2, dir].map((img) => Future.value(img))));
+    when(appManager.mockIoWrapper.directory("$_cachePath/2.0/thumbs"))
+        .thenReturn(thumbDir);
 
     var catch1 = Catch()
       ..id = randomId()
@@ -320,7 +432,37 @@ void main() {
     catch2.imageNames.clear();
     await imageManager.initialize();
     verifyNever(img1.deleteSync());
+    verifyNever(thumb1.deleteSync());
+    verifyNever(dir.deleteSync());
     verify(img2.deleteSync()).called(1);
+    verify(thumb2.deleteSync()).called(1);
+    verifyNever(appManager.mockFirebaseStorageWrapper.ref(any));
+    verify(appManager.mockSubscriptionManager.isPro).called(1);
+
+    // Reset catches.
+    catch1 = Catch()
+      ..id = randomId()
+      ..timestamp = timestampFromMillis(5);
+    catch1.imageNames.add("image1.jpg");
+
+    catch2 = Catch()
+      ..id = randomId()
+      ..timestamp = timestampFromMillis(5);
+    catch2.imageNames.add("image2.jpg");
+
+    when(appManager.mockCatchManager.list()).thenReturn([catch1, catch2]);
+    when(appManager.mockSubscriptionManager.isPro).thenReturn(true);
+    when(appManager.mockFirebaseStorageWrapper.ref(any))
+        .thenReturn(MockReference());
+    catch1.imageNames.clear();
+    await imageManager.initialize();
+    verifyNever(img2.deleteSync());
+    verifyNever(thumb2.deleteSync());
+    verifyNever(dir.deleteSync());
+    verify(img1.deleteSync()).called(1);
+    verify(thumb1.deleteSync()).called(1);
+    verify(appManager.mockFirebaseStorageWrapper.ref(any)).called(1);
+    verify(appManager.mockSubscriptionManager.isPro).called(1);
   });
 
   group("dartImage", () {
