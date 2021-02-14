@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:fixnum/fixnum.dart';
 import 'package:flutter/material.dart';
 import 'package:quiver/strings.dart';
 
@@ -9,7 +10,6 @@ import '../fishing_spot_manager.dart';
 import '../i18n/strings.dart';
 import '../log.dart';
 import '../model/gen/anglerslog.pb.dart';
-import '../model/gen/google/protobuf/timestamp.pb.dart';
 import '../pages/bait_list_page.dart';
 import '../pages/fishing_spot_list_page.dart';
 import '../pages/form_page.dart';
@@ -161,8 +161,8 @@ class _SaveReportPageState extends State<SaveReportPage> {
         _typeController.value = _ReportType.summary;
         _fromDateRangeController.value = DisplayDateRange.of(
           report.displayDateRangeId,
-          report.startTimestamp,
-          report.endTimestamp,
+          report.startTimestamp.toInt(),
+          report.endTimestamp.toInt(),
         );
         _initEntitySets(
           baitIds: report.baitIds,
@@ -176,13 +176,13 @@ class _SaveReportPageState extends State<SaveReportPage> {
         _typeController.value = _ReportType.comparison;
         _fromDateRangeController.value = DisplayDateRange.of(
           report.fromDisplayDateRangeId,
-          report.fromStartTimestamp,
-          report.fromEndTimestamp,
+          report.fromStartTimestamp.toInt(),
+          report.fromEndTimestamp.toInt(),
         );
         _toDateRangeController.value = DisplayDateRange.of(
           report.toDisplayDateRangeId,
-          report.toStartTimestamp,
-          report.toEndTimestamp,
+          report.toStartTimestamp.toInt(),
+          report.toEndTimestamp.toInt(),
         );
         _initEntitySets(
           baitIds: report.baitIds,
@@ -479,10 +479,8 @@ class _SaveReportPageState extends State<SaveReportPage> {
     }
 
     if (custom) {
-      report.startTimestamp =
-          Timestamp.fromDateTime(dateRange.value(context).startDate);
-      report.endTimestamp =
-          Timestamp.fromDateTime(dateRange.value(context).endDate);
+      report.startTimestamp = Int64(dateRange.value(context).startMs);
+      report.endTimestamp = Int64(dateRange.value(context).endMs);
     }
 
     return report;
@@ -508,17 +506,13 @@ class _SaveReportPageState extends State<SaveReportPage> {
     }
 
     if (customFrom) {
-      report.fromStartTimestamp =
-          Timestamp.fromDateTime(fromDateRange.value(context).startDate);
-      report.fromEndTimestamp =
-          Timestamp.fromDateTime(fromDateRange.value(context).endDate);
+      report.fromStartTimestamp = Int64(fromDateRange.value(context).startMs);
+      report.fromEndTimestamp = Int64(fromDateRange.value(context).endMs);
     }
 
     if (customTo) {
-      report.toStartTimestamp =
-          Timestamp.fromDateTime(toDateRange.value(context).startDate);
-      report.toEndTimestamp =
-          Timestamp.fromDateTime(toDateRange.value(context).endDate);
+      report.toStartTimestamp = Int64(toDateRange.value(context).startMs);
+      report.toEndTimestamp = Int64(toDateRange.value(context).endMs);
     }
 
     return report;

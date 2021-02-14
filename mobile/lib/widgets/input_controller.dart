@@ -2,9 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:quiver/strings.dart';
 
 import '../model/gen/anglerslog.pb.dart';
-import '../model/gen/google/protobuf/timestamp.pb.dart';
 import '../utils/date_time_utils.dart';
-import '../utils/protobuf_utils.dart';
 import '../utils/validator.dart';
 
 /// A class for storing a value of an input widget, such as a text field or
@@ -116,9 +114,9 @@ class PasswordInputController extends TextInputController {
         );
 }
 
-/// A [TimestampInputController] value, [Timestamp], is always in UTC. However,
-/// the [date] and [time] properties are in the local timezone.
-class TimestampInputController extends InputController<Timestamp> {
+/// A [TimestampInputController] value is always in milliseconds since Epoch
+/// local time.
+class TimestampInputController extends InputController<int> {
   /// The date component of the controller.
   DateTime date;
 
@@ -131,18 +129,18 @@ class TimestampInputController extends InputController<Timestamp> {
   });
 
   @override
-  Timestamp get value => date != null && time != null
-      ? Timestamp.fromDateTime(combine(date, time))
+  int get value => date != null && time != null
+      ? combine(date, time).millisecondsSinceEpoch
       : null;
 
   @override
-  set value(Timestamp timestamp) {
+  set value(int timestamp) {
     if (timestamp == null) {
       date = null;
       time = null;
       return;
     }
-    date = timestamp.localDateTime;
+    date = DateTime.fromMillisecondsSinceEpoch(timestamp);
     time = TimeOfDay.fromDateTime(date);
   }
 

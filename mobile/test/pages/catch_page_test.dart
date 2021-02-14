@@ -1,6 +1,6 @@
+import 'package:fixnum/fixnum.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
-import 'package:mobile/model/gen/google/protobuf/timestamp.pb.dart';
 import 'package:mobile/pages/catch_page.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mobile/widgets/list_item.dart';
@@ -26,7 +26,7 @@ void main() {
 
     when(appManager.mockCatchManager.entity(any)).thenReturn(Catch()
       ..id = randomId()
-      ..timestamp = Timestamp.fromDateTime(DateTime(2020, 1, 1, 15, 30))
+      ..timestamp = Int64(DateTime(2020, 1, 1, 15, 30).millisecondsSinceEpoch)
       ..speciesId = randomId());
     when(appManager.mockSpeciesManager.entity(any)).thenReturn(Species()
       ..id = randomId()

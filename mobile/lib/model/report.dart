@@ -9,7 +9,6 @@ import '../species_manager.dart';
 import '../time_manager.dart';
 import '../utils/collection_utils.dart';
 import '../utils/date_time_utils.dart';
-import '../utils/protobuf_utils.dart';
 import 'gen/anglerslog.pb.dart';
 
 enum ReportSortOrder {
@@ -129,7 +128,7 @@ class Report {
 
     _msSinceLastCatch = catches.isEmpty
         ? 0
-        : _timeManager.msSinceEpoch - catches.first.timestamp.ms;
+        : _timeManager.msSinceEpoch - catches.first.timestamp.toInt();
 
     // Fill all collections with zero quantities if necessary.
     if (includeZeros) {

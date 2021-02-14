@@ -1,8 +1,6 @@
 syntax = "proto3";
 package anglerslog;
 
-import "google/protobuf/timestamp.proto";
-
 // A unique ID. An Id is a wrapper for UUID string representation of protobuf bytes type that can
 // be used as keys in a map. The Dart type for protobuf bytes is a List<int>, and [List==] does
 // not do a deep comparison of its elements. An [Id] message wrapper here is purely for semantics
@@ -43,7 +41,7 @@ message BaitCategory {
 
 message Catch {
   Id id = 1;
-  google.protobuf.Timestamp timestamp = 2;
+  uint64 timestamp = 2;
   Id bait_id = 3;
   Id fishing_spot_id = 4;
   Id species_id = 5;
@@ -68,8 +66,8 @@ message SummaryReport {
   string name = 2;
   string description = 3;
   string display_date_range_id = 4;
-  google.protobuf.Timestamp start_timestamp = 5;
-  google.protobuf.Timestamp end_timestamp = 6;
+  uint64 start_timestamp = 5;
+  uint64 end_timestamp = 6;
   repeated Id bait_ids = 7;
   repeated Id fishing_spot_ids = 8;
   repeated Id species_ids = 9;
@@ -81,10 +79,10 @@ message ComparisonReport {
   string description = 3;
   string from_display_date_range_id = 4;
   string to_display_date_range_id = 5;
-  google.protobuf.Timestamp from_start_timestamp = 6;
-  google.protobuf.Timestamp to_start_timestamp = 7;
-  google.protobuf.Timestamp from_end_timestamp = 8;
-  google.protobuf.Timestamp to_end_timestamp = 9;
+  uint64 from_start_timestamp = 6;
+  uint64 to_start_timestamp = 7;
+  uint64 from_end_timestamp = 8;
+  uint64 to_end_timestamp = 9;
   repeated Id bait_ids = 10;
   repeated Id fishing_spot_ids = 11;
   repeated Id species_ids = 12;

@@ -1,3 +1,4 @@
+import 'package:fixnum/fixnum.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:mobile/fishing_spot_manager.dart';
@@ -130,27 +131,27 @@ void main() {
     when(catchManager.list()).thenReturn([
       Catch()
         ..id = randomId()
-        ..timestamp = timestampFromMillis(0)
+        ..timestamp = Int64(0)
         ..speciesId = speciesId0
         ..fishingSpotId = fishingSpotId0,
       Catch()
         ..id = randomId()
-        ..timestamp = timestampFromMillis(0)
+        ..timestamp = Int64(0)
         ..speciesId = speciesId0
         ..fishingSpotId = fishingSpotId4,
       Catch()
         ..id = randomId()
-        ..timestamp = timestampFromMillis(0)
+        ..timestamp = Int64(0)
         ..speciesId = speciesId0
         ..fishingSpotId = fishingSpotId3,
       Catch()
         ..id = randomId()
-        ..timestamp = timestampFromMillis(0)
+        ..timestamp = Int64(0)
         ..speciesId = speciesId0
         ..fishingSpotId = fishingSpotId0,
       Catch()
         ..id = randomId()
-        ..timestamp = timestampFromMillis(0)
+        ..timestamp = Int64(0)
         ..speciesId = speciesId0,
     ]);
 
@@ -205,7 +206,7 @@ void main() {
       when(catchManager.list()).thenReturn([
         Catch()
           ..id = randomId()
-          ..timestamp = timestampFromMillis(0)
+          ..timestamp = Int64(0)
           ..speciesId = randomId()
           ..fishingSpotId = fishingSpot.id,
       ]);
@@ -241,12 +242,12 @@ void main() {
       when(catchManager.list()).thenReturn([
         Catch()
           ..id = randomId()
-          ..timestamp = timestampFromMillis(0)
+          ..timestamp = Int64(0)
           ..speciesId = randomId()
           ..fishingSpotId = fishingSpot.id,
         Catch()
           ..id = randomId()
-          ..timestamp = timestampFromMillis(5)
+          ..timestamp = Int64(5)
           ..speciesId = randomId()
           ..fishingSpotId = fishingSpot.id,
       ]);
@@ -268,7 +269,7 @@ void main() {
       when(catchManager.list()).thenReturn([
         Catch()
           ..id = randomId()
-          ..timestamp = timestampFromMillis(0)
+          ..timestamp = Int64(0)
           ..speciesId = randomId()
           ..fishingSpotId = fishingSpot.id,
       ]);
@@ -290,12 +291,12 @@ void main() {
       when(catchManager.list()).thenReturn([
         Catch()
           ..id = randomId()
-          ..timestamp = timestampFromMillis(0)
+          ..timestamp = Int64(0)
           ..speciesId = randomId()
           ..fishingSpotId = fishingSpot.id,
         Catch()
           ..id = randomId()
-          ..timestamp = timestampFromMillis(5)
+          ..timestamp = Int64(5)
           ..speciesId = randomId()
           ..fishingSpotId = fishingSpot.id,
       ]);

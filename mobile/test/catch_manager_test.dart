@@ -1,12 +1,12 @@
 import 'dart:io';
 
+import 'package:fixnum/fixnum.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/bait_manager.dart';
 import 'package:mobile/catch_manager.dart';
 import 'package:mobile/entity_manager.dart';
 import 'package:mobile/fishing_spot_manager.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
-import 'package:mobile/model/gen/google/protobuf/timestamp.pb.dart';
 import 'package:mobile/utils/date_time_utils.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mockito/mockito.dart';
@@ -174,10 +174,10 @@ void main() {
       (tester) async {
     await catchManager.addOrUpdate(Catch()
       ..id = randomId()
-      ..timestamp = Timestamp.fromDateTime(DateTime(2020, 1, 1)));
+      ..timestamp = Int64(DateTime(2020, 1, 1).millisecondsSinceEpoch));
     await catchManager.addOrUpdate(Catch()
       ..id = randomId()
-      ..timestamp = Timestamp.fromDateTime(DateTime(2020, 4, 4)));
+      ..timestamp = Int64(DateTime(2020, 4, 4).millisecondsSinceEpoch));
 
     var context = await buildContext(tester, appManager: appManager);
 
@@ -252,19 +252,19 @@ void main() {
 
     await catchManager.addOrUpdate(Catch()
       ..id = randomId()
-      ..timestamp = Timestamp.fromDateTime(DateTime(2020, 1, 1))
+      ..timestamp = Int64(DateTime(2020, 1, 1).millisecondsSinceEpoch)
       ..speciesId = speciesId0);
     await catchManager.addOrUpdate(Catch()
       ..id = randomId()
-      ..timestamp = Timestamp.fromDateTime(DateTime(2020, 2, 2))
+      ..timestamp = Int64(DateTime(2020, 2, 2).millisecondsSinceEpoch)
       ..speciesId = speciesId1);
     await catchManager.addOrUpdate(Catch()
       ..id = randomId()
-      ..timestamp = Timestamp.fromDateTime(DateTime(2020, 2, 2))
+      ..timestamp = Int64(DateTime(2020, 2, 2).millisecondsSinceEpoch)
       ..speciesId = speciesId1);
     await catchManager.addOrUpdate(Catch()
       ..id = randomId()
-      ..timestamp = Timestamp.fromDateTime(DateTime(2020, 4, 4))
+      ..timestamp = Int64(DateTime(2020, 4, 4).millisecondsSinceEpoch)
       ..speciesId = speciesId2);
 
     var context = await buildContext(tester, appManager: appManager);
@@ -296,13 +296,13 @@ void main() {
 
     await catchManager.addOrUpdate(Catch()
       ..id = randomId()
-      ..timestamp = timestampFromMillis(5000));
+      ..timestamp = Int64(5000));
     await catchManager.addOrUpdate(Catch()
       ..id = randomId()
-      ..timestamp = timestampFromMillis(10000));
+      ..timestamp = Int64(10000));
     await catchManager.addOrUpdate(Catch()
       ..id = randomId()
-      ..timestamp = timestampFromMillis(20000));
+      ..timestamp = Int64(20000));
 
     var context = await buildContext(tester, appManager: appManager);
     var catches = catchManager.filteredCatches(
@@ -465,19 +465,19 @@ void main() {
 
     await catchManager.addOrUpdate(Catch()
       ..id = catchId0
-      ..timestamp = timestampFromMillis(5000)
+      ..timestamp = Int64(5000)
       ..speciesId = speciesId0
       ..baitId = baitId0
       ..fishingSpotId = fishingSpotId0);
     await catchManager.addOrUpdate(Catch()
       ..id = randomId()
-      ..timestamp = timestampFromMillis(10000)
+      ..timestamp = Int64(10000)
       ..speciesId = speciesId1
       ..baitId = baitId1
       ..fishingSpotId = fishingSpotId1);
     await catchManager.addOrUpdate(Catch()
       ..id = randomId()
-      ..timestamp = timestampFromMillis(20000)
+      ..timestamp = Int64(20000)
       ..speciesId = speciesId1
       ..baitId = baitId0
       ..fishingSpotId = fishingSpotId1);
@@ -507,17 +507,17 @@ void main() {
   testWidgets("imageNamesSortedByTimestamp", (tester) async {
     var catch1 = Catch()
       ..id = randomId()
-      ..timestamp = timestampFromMillis(10000);
+      ..timestamp = Int64(10000);
     catch1.imageNames.addAll(["img0", "img1"]);
 
     var catch2 = Catch()
       ..id = randomId()
-      ..timestamp = timestampFromMillis(20000);
+      ..timestamp = Int64(20000);
     catch2.imageNames.addAll(["img2", "img3"]);
 
     var catch3 = Catch()
       ..id = randomId()
-      ..timestamp = timestampFromMillis(5000);
+      ..timestamp = Int64(5000);
     catch3.imageNames.add("img4");
 
     await catchManager.addOrUpdate(catch1,
@@ -550,14 +550,14 @@ void main() {
     testWidgets("No species", (tester) async {
       var cat = Catch()
         ..id = randomId()
-        ..timestamp = Timestamp.fromDateTime(DateTime(2020, 9, 25));
+        ..timestamp = Int64(DateTime(2020, 9, 25).millisecondsSinceEpoch);
 
       when(appManager.mockTimeManager.currentDateTime)
           .thenReturn(DateTime(2020, 9, 25));
       var context = await buildContext(tester, appManager: appManager);
       expect(
         catchManager.deleteMessage(context, cat),
-        "Are you sure you want to delete catch (Today at 4:00 AM)? "
+        "Are you sure you want to delete catch (Today at 12:00 AM)? "
         "This cannot be undone.",
       );
     });
@@ -568,7 +568,7 @@ void main() {
         ..name = "Steelhead";
       var cat = Catch()
         ..id = randomId()
-        ..timestamp = Timestamp.fromDateTime(DateTime(2020, 9, 25))
+        ..timestamp = Int64(DateTime(2020, 9, 25).millisecondsSinceEpoch)
         ..speciesId = species.id;
 
       when(speciesManager.entity(any)).thenReturn(species);
@@ -577,7 +577,7 @@ void main() {
       var context = await buildContext(tester, appManager: appManager);
       expect(
         catchManager.deleteMessage(context, cat),
-        "Are you sure you want to delete catch Steelhead (Today at 4:00 AM)? "
+        "Are you sure you want to delete catch Steelhead (Today at 12:00 AM)? "
         "This cannot be undone.",
       );
     });

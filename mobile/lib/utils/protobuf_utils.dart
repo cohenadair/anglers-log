@@ -8,7 +8,6 @@ import 'package:uuid/uuid.dart';
 import '../custom_entity_manager.dart';
 import '../i18n/strings.dart';
 import '../model/gen/anglerslog.pb.dart';
-import '../model/gen/google/protobuf/timestamp.pb.dart';
 import '../utils/string_utils.dart';
 
 /// Returns the number of occurrences of [customEntityId] in [entities].
@@ -113,9 +112,6 @@ Id safeParseId(String idString) {
   }
 }
 
-Timestamp timestampFromMillis(int millisSinceEpoch) => Timestamp.fromDateTime(
-    DateTime.fromMillisecondsSinceEpoch(millisSinceEpoch));
-
 extension Ids on Id {
   List<int> get bytes => Uuid().parse(uuid);
   Uint8List get uint8List => Uint8List.fromList(bytes);
@@ -123,10 +119,4 @@ extension Ids on Id {
 
 extension FishingSpots on FishingSpot {
   LatLng get latLng => LatLng(lat, lng);
-}
-
-extension Timestamps on Timestamp {
-  int compareTo(Timestamp other) => toDateTime().compareTo(other.toDateTime());
-  int get ms => toDateTime().millisecondsSinceEpoch;
-  DateTime get localDateTime => DateTime.fromMillisecondsSinceEpoch(ms);
 }

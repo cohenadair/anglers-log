@@ -1,8 +1,8 @@
+import 'package:fixnum/fixnum.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/catch_manager.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
-import 'package:mobile/model/gen/google/protobuf/timestamp.pb.dart';
 import 'package:mobile/pages/add_anything_page.dart';
 import 'package:mobile/pages/main_page.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
@@ -155,7 +155,7 @@ void main() {
 
     catchManager.addOrUpdate(Catch()
       ..id = randomId()
-      ..timestamp = Timestamp.fromDateTime(DateTime.now())
+      ..timestamp = Int64(DateTime.now().millisecondsSinceEpoch)
       ..speciesId = species.id);
 
     await tester.pumpAndSettle();

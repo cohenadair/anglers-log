@@ -140,7 +140,7 @@ class CatchListPage extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 PrimaryLabel(speciesManager.entity(cat.speciesId).name),
-                SubtitleLabel(formatTimestamp(context, cat.timestamp)),
+                SubtitleLabel(formatTimestamp(context, cat.timestamp.toInt())),
                 subtitle2,
               ],
             ),

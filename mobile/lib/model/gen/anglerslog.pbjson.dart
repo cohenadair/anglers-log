@@ -118,14 +118,7 @@ const Catch$json = const {
       '6': '.anglerslog.Id',
       '10': 'id'
     },
-    const {
-      '1': 'timestamp',
-      '3': 2,
-      '4': 1,
-      '5': 11,
-      '6': '.google.protobuf.Timestamp',
-      '10': 'timestamp'
-    },
+    const {'1': 'timestamp', '3': 2, '4': 1, '5': 4, '10': 'timestamp'},
     const {
       '1': 'bait_id',
       '3': 3,
@@ -218,18 +211,10 @@ const SummaryReport$json = const {
       '1': 'start_timestamp',
       '3': 5,
       '4': 1,
-      '5': 11,
-      '6': '.google.protobuf.Timestamp',
+      '5': 4,
       '10': 'startTimestamp'
     },
-    const {
-      '1': 'end_timestamp',
-      '3': 6,
-      '4': 1,
-      '5': 11,
-      '6': '.google.protobuf.Timestamp',
-      '10': 'endTimestamp'
-    },
+    const {'1': 'end_timestamp', '3': 6, '4': 1, '5': 4, '10': 'endTimestamp'},
     const {
       '1': 'bait_ids',
       '3': 7,
@@ -288,32 +273,28 @@ const ComparisonReport$json = const {
       '1': 'from_start_timestamp',
       '3': 6,
       '4': 1,
-      '5': 11,
-      '6': '.google.protobuf.Timestamp',
+      '5': 4,
       '10': 'fromStartTimestamp'
     },
     const {
       '1': 'to_start_timestamp',
       '3': 7,
       '4': 1,
-      '5': 11,
-      '6': '.google.protobuf.Timestamp',
+      '5': 4,
       '10': 'toStartTimestamp'
     },
     const {
       '1': 'from_end_timestamp',
       '3': 8,
       '4': 1,
-      '5': 11,
-      '6': '.google.protobuf.Timestamp',
+      '5': 4,
       '10': 'fromEndTimestamp'
     },
     const {
       '1': 'to_end_timestamp',
       '3': 9,
       '4': 1,
-      '5': 11,
-      '6': '.google.protobuf.Timestamp',
+      '5': 4,
       '10': 'toEndTimestamp'
     },
     const {
@@ -342,4 +323,5 @@ const ComparisonReport$json = const {
     },
   ],
 };
+
 // ignore_for_file: constant_identifier_names,lines_longer_than_80_chars,directives_ordering,unnecessary_const,prefer_mixin,implementation_imports

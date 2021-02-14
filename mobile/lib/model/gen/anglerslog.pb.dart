@@ -7,9 +7,8 @@
 
 import 'dart:core' as $core;
 
+import 'package:fixnum/fixnum.dart';
 import 'package:protobuf/protobuf.dart' as $pb;
-
-import 'google/protobuf/timestamp.pb.dart' as $0;
 
 import 'anglerslog.pbenum.dart';
 
@@ -331,7 +330,7 @@ class Catch extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo('Catch',
       package: const $pb.PackageName('anglerslog'), createEmptyInstance: create)
     ..aOM<Id>(1, 'id', subBuilder: Id.create)
-    ..aOM<$0.Timestamp>(2, 'timestamp', subBuilder: $0.Timestamp.create)
+    ..a<Int64>(2, 'timestamp', $pb.PbFieldType.OU6, defaultOrMaker: Int64.ZERO)
     ..aOM<Id>(3, 'baitId', subBuilder: Id.create)
     ..aOM<Id>(4, 'fishingSpotId', subBuilder: Id.create)
     ..aOM<Id>(5, 'speciesId', subBuilder: Id.create)
@@ -376,18 +375,16 @@ class Catch extends $pb.GeneratedMessage {
   Id ensureId() => $_ensure(0);
 
   @$pb.TagNumber(2)
-  $0.Timestamp get timestamp => $_getN(1);
+  Int64 get timestamp => $_getI64(1);
   @$pb.TagNumber(2)
-  set timestamp($0.Timestamp v) {
-    setField(2, v);
+  set timestamp(Int64 v) {
+    $_setInt64(1, v);
   }
 
   @$pb.TagNumber(2)
   $core.bool hasTimestamp() => $_has(1);
   @$pb.TagNumber(2)
   void clearTimestamp() => clearField(2);
-  @$pb.TagNumber(2)
-  $0.Timestamp ensureTimestamp() => $_ensure(1);
 
   @$pb.TagNumber(3)
   Id get baitId => $_getN(2);
@@ -581,8 +578,10 @@ class SummaryReport extends $pb.GeneratedMessage {
     ..aOS(2, 'name')
     ..aOS(3, 'description')
     ..aOS(4, 'displayDateRangeId')
-    ..aOM<$0.Timestamp>(5, 'startTimestamp', subBuilder: $0.Timestamp.create)
-    ..aOM<$0.Timestamp>(6, 'endTimestamp', subBuilder: $0.Timestamp.create)
+    ..a<Int64>(5, 'startTimestamp', $pb.PbFieldType.OU6,
+        defaultOrMaker: Int64.ZERO)
+    ..a<Int64>(6, 'endTimestamp', $pb.PbFieldType.OU6,
+        defaultOrMaker: Int64.ZERO)
     ..pc<Id>(7, 'baitIds', $pb.PbFieldType.PM, subBuilder: Id.create)
     ..pc<Id>(8, 'fishingSpotIds', $pb.PbFieldType.PM, subBuilder: Id.create)
     ..pc<Id>(9, 'speciesIds', $pb.PbFieldType.PM, subBuilder: Id.create)
@@ -661,32 +660,28 @@ class SummaryReport extends $pb.GeneratedMessage {
   void clearDisplayDateRangeId() => clearField(4);
 
   @$pb.TagNumber(5)
-  $0.Timestamp get startTimestamp => $_getN(4);
+  Int64 get startTimestamp => $_getI64(4);
   @$pb.TagNumber(5)
-  set startTimestamp($0.Timestamp v) {
-    setField(5, v);
+  set startTimestamp(Int64 v) {
+    $_setInt64(4, v);
   }
 
   @$pb.TagNumber(5)
   $core.bool hasStartTimestamp() => $_has(4);
   @$pb.TagNumber(5)
   void clearStartTimestamp() => clearField(5);
-  @$pb.TagNumber(5)
-  $0.Timestamp ensureStartTimestamp() => $_ensure(4);
 
   @$pb.TagNumber(6)
-  $0.Timestamp get endTimestamp => $_getN(5);
+  Int64 get endTimestamp => $_getI64(5);
   @$pb.TagNumber(6)
-  set endTimestamp($0.Timestamp v) {
-    setField(6, v);
+  set endTimestamp(Int64 v) {
+    $_setInt64(5, v);
   }
 
   @$pb.TagNumber(6)
   $core.bool hasEndTimestamp() => $_has(5);
   @$pb.TagNumber(6)
   void clearEndTimestamp() => clearField(6);
-  @$pb.TagNumber(6)
-  $0.Timestamp ensureEndTimestamp() => $_ensure(5);
 
   @$pb.TagNumber(7)
   $core.List<Id> get baitIds => $_getList(6);
@@ -706,11 +701,14 @@ class ComparisonReport extends $pb.GeneratedMessage {
     ..aOS(3, 'description')
     ..aOS(4, 'fromDisplayDateRangeId')
     ..aOS(5, 'toDisplayDateRangeId')
-    ..aOM<$0.Timestamp>(6, 'fromStartTimestamp',
-        subBuilder: $0.Timestamp.create)
-    ..aOM<$0.Timestamp>(7, 'toStartTimestamp', subBuilder: $0.Timestamp.create)
-    ..aOM<$0.Timestamp>(8, 'fromEndTimestamp', subBuilder: $0.Timestamp.create)
-    ..aOM<$0.Timestamp>(9, 'toEndTimestamp', subBuilder: $0.Timestamp.create)
+    ..a<Int64>(6, 'fromStartTimestamp', $pb.PbFieldType.OU6,
+        defaultOrMaker: Int64.ZERO)
+    ..a<Int64>(7, 'toStartTimestamp', $pb.PbFieldType.OU6,
+        defaultOrMaker: Int64.ZERO)
+    ..a<Int64>(8, 'fromEndTimestamp', $pb.PbFieldType.OU6,
+        defaultOrMaker: Int64.ZERO)
+    ..a<Int64>(9, 'toEndTimestamp', $pb.PbFieldType.OU6,
+        defaultOrMaker: Int64.ZERO)
     ..pc<Id>(10, 'baitIds', $pb.PbFieldType.PM, subBuilder: Id.create)
     ..pc<Id>(11, 'fishingSpotIds', $pb.PbFieldType.PM, subBuilder: Id.create)
     ..pc<Id>(12, 'speciesIds', $pb.PbFieldType.PM, subBuilder: Id.create)
@@ -801,60 +799,52 @@ class ComparisonReport extends $pb.GeneratedMessage {
   void clearToDisplayDateRangeId() => clearField(5);
 
   @$pb.TagNumber(6)
-  $0.Timestamp get fromStartTimestamp => $_getN(5);
+  Int64 get fromStartTimestamp => $_getI64(5);
   @$pb.TagNumber(6)
-  set fromStartTimestamp($0.Timestamp v) {
-    setField(6, v);
+  set fromStartTimestamp(Int64 v) {
+    $_setInt64(5, v);
   }
 
   @$pb.TagNumber(6)
   $core.bool hasFromStartTimestamp() => $_has(5);
   @$pb.TagNumber(6)
   void clearFromStartTimestamp() => clearField(6);
-  @$pb.TagNumber(6)
-  $0.Timestamp ensureFromStartTimestamp() => $_ensure(5);
 
   @$pb.TagNumber(7)
-  $0.Timestamp get toStartTimestamp => $_getN(6);
+  Int64 get toStartTimestamp => $_getI64(6);
   @$pb.TagNumber(7)
-  set toStartTimestamp($0.Timestamp v) {
-    setField(7, v);
+  set toStartTimestamp(Int64 v) {
+    $_setInt64(6, v);
   }
 
   @$pb.TagNumber(7)
   $core.bool hasToStartTimestamp() => $_has(6);
   @$pb.TagNumber(7)
   void clearToStartTimestamp() => clearField(7);
-  @$pb.TagNumber(7)
-  $0.Timestamp ensureToStartTimestamp() => $_ensure(6);
 
   @$pb.TagNumber(8)
-  $0.Timestamp get fromEndTimestamp => $_getN(7);
+  Int64 get fromEndTimestamp => $_getI64(7);
   @$pb.TagNumber(8)
-  set fromEndTimestamp($0.Timestamp v) {
-    setField(8, v);
+  set fromEndTimestamp(Int64 v) {
+    $_setInt64(7, v);
   }
 
   @$pb.TagNumber(8)
   $core.bool hasFromEndTimestamp() => $_has(7);
   @$pb.TagNumber(8)
   void clearFromEndTimestamp() => clearField(8);
-  @$pb.TagNumber(8)
-  $0.Timestamp ensureFromEndTimestamp() => $_ensure(7);
 
   @$pb.TagNumber(9)
-  $0.Timestamp get toEndTimestamp => $_getN(8);
+  Int64 get toEndTimestamp => $_getI64(8);
   @$pb.TagNumber(9)
-  set toEndTimestamp($0.Timestamp v) {
-    setField(9, v);
+  set toEndTimestamp(Int64 v) {
+    $_setInt64(8, v);
   }
 
   @$pb.TagNumber(9)
   $core.bool hasToEndTimestamp() => $_has(8);
   @$pb.TagNumber(9)
   void clearToEndTimestamp() => clearField(9);
-  @$pb.TagNumber(9)
-  $0.Timestamp ensureToEndTimestamp() => $_ensure(8);
 
   @$pb.TagNumber(10)
   $core.List<Id> get baitIds => $_getList(9);
@@ -865,4 +855,5 @@ class ComparisonReport extends $pb.GeneratedMessage {
   @$pb.TagNumber(12)
   $core.List<Id> get speciesIds => $_getList(11);
 }
+
 // ignore_for_file: constant_identifier_names,lines_longer_than_80_chars,directives_ordering,unnecessary_const,prefer_mixin,implementation_imports

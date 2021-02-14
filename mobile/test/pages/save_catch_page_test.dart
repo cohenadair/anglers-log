@@ -1,12 +1,12 @@
 import 'dart:io';
 
+import 'package:fixnum/fixnum.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/bait_manager.dart';
 import 'package:mobile/fishing_spot_manager.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
-import 'package:mobile/model/gen/google/protobuf/timestamp.pb.dart';
 import 'package:mobile/pages/image_picker_page.dart';
 import 'package:mobile/pages/save_catch_page.dart';
 import 'package:mobile/species_manager.dart';
@@ -183,7 +183,7 @@ void main() {
 
       var cat = Catch()
         ..id = randomId()
-        ..timestamp = Timestamp.fromDateTime(DateTime(2020, 1, 1, 15, 30))
+        ..timestamp = Int64(DateTime(2020, 1, 1, 15, 30).millisecondsSinceEpoch)
         ..baitId = bait.id
         ..fishingSpotId = fishingSpot.id
         ..speciesId = species.id
@@ -229,7 +229,7 @@ void main() {
 
       var cat = Catch()
         ..id = randomId()
-        ..timestamp = Timestamp.fromDateTime(DateTime(2020, 1, 1, 15, 30))
+        ..timestamp = Int64(DateTime(2020, 1, 1, 15, 30).millisecondsSinceEpoch)
         ..speciesId = species.id;
 
       await tester.pumpWidget(Testable(
@@ -278,7 +278,7 @@ void main() {
 
       var cat = Catch()
         ..id = randomId()
-        ..timestamp = Timestamp.fromDateTime(DateTime(2020, 1, 1, 15, 30))
+        ..timestamp = Int64(DateTime(2020, 1, 1, 15, 30).millisecondsSinceEpoch)
         ..baitId = bait.id
         ..fishingSpotId = fishingSpot.id
         ..speciesId = species.id
@@ -380,8 +380,8 @@ void main() {
 
       Catch cat = result.captured.first;
       expect(cat, isNotNull);
-      expect(
-          cat.timestamp, Timestamp.fromDateTime(DateTime(2020, 2, 1, 10, 30)));
+      expect(cat.timestamp.toInt(),
+          DateTime(2020, 2, 1, 10, 30).millisecondsSinceEpoch);
       expect(cat.speciesId, speciesId);
       expect(cat.fishingSpotId, fishingSpotId);
       expect(cat.hasBaitId(), false);
@@ -402,7 +402,7 @@ void main() {
   testWidgets("Edit title", (tester) async {
     var cat = Catch()
       ..id = randomId()
-      ..timestamp = Timestamp.fromDateTime(DateTime(2020, 1, 1, 15, 30))
+      ..timestamp = Int64(DateTime(2020, 1, 1, 15, 30).millisecondsSinceEpoch)
       ..speciesId = randomId();
 
     await tester.pumpWidget(Testable(

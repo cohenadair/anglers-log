@@ -3,6 +3,7 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:archive/archive.dart';
+import 'package:fixnum/fixnum.dart';
 import 'package:intl/intl.dart';
 import 'package:path/path.dart';
 import 'package:quiver/strings.dart';
@@ -15,7 +16,6 @@ import '../channels/migration_channel.dart';
 import '../fishing_spot_manager.dart';
 import '../log.dart';
 import '../model/gen/anglerslog.pb.dart';
-import '../model/gen/google/protobuf/timestamp.pb.dart';
 import '../species_manager.dart';
 import '../utils/protobuf_utils.dart';
 import '../utils/string_utils.dart';
@@ -357,7 +357,7 @@ class LegacyImporter {
 
       var cat = Catch()
         ..id = randomId()
-        ..timestamp = Timestamp.fromDateTime(dateTime)
+        ..timestamp = Int64(dateTime.millisecondsSinceEpoch)
         ..speciesId = species.id;
 
       if (bait != null) {

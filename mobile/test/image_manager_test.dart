@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'dart:typed_data';
 
+import 'package:fixnum/fixnum.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/image_manager.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
@@ -416,12 +417,12 @@ void main() {
 
     var catch1 = Catch()
       ..id = randomId()
-      ..timestamp = timestampFromMillis(5);
+      ..timestamp = Int64(5);
     catch1.imageNames.add("image1.jpg");
 
     var catch2 = Catch()
       ..id = randomId()
-      ..timestamp = timestampFromMillis(5);
+      ..timestamp = Int64(5);
     catch2.imageNames.add("image2.jpg");
 
     when(appManager.mockCatchManager.list()).thenReturn([catch1, catch2]);
@@ -442,12 +443,12 @@ void main() {
     // Reset catches.
     catch1 = Catch()
       ..id = randomId()
-      ..timestamp = timestampFromMillis(5);
+      ..timestamp = Int64(5);
     catch1.imageNames.add("image1.jpg");
 
     catch2 = Catch()
       ..id = randomId()
-      ..timestamp = timestampFromMillis(5);
+      ..timestamp = Int64(5);
     catch2.imageNames.add("image2.jpg");
 
     when(appManager.mockCatchManager.list()).thenReturn([catch1, catch2]);

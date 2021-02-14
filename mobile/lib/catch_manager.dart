@@ -53,7 +53,7 @@ class CatchManager extends EntityManager<Catch> {
         _fishingSpotManager.matchesFilter(cat.fishingSpotId, filter) ||
         _baitManager.matchesFilter(cat.baitId, filter) ||
         context == null ||
-        timestampToSearchString(context, cat.timestamp)
+        timestampToSearchString(context, cat.timestamp.toInt())
             .toLowerCase()
             .contains(filter.toLowerCase()) ||
         entityValuesMatchesFilter(
@@ -121,7 +121,7 @@ class CatchManager extends EntityManager<Catch> {
 
     return entities.values.where((cat) {
       var valid = true;
-      valid &= dateRange == null || dateRange.contains(cat.timestamp);
+      valid &= dateRange == null || dateRange.contains(cat.timestamp.toInt());
       valid &= catchIds.isEmpty || catchIds.contains(cat.id);
       valid &= baitIds.isEmpty || baitIds.contains(cat.baitId);
       valid &=
@@ -172,7 +172,7 @@ class CatchManager extends EntityManager<Catch> {
     assert(cat != null);
 
     var species = _speciesManager.entity(cat.speciesId);
-    var timeString = formatTimestamp(context, cat.timestamp);
+    var timeString = formatTimestamp(context, cat.timestamp.toInt());
     String name;
     if (species == null) {
       name = "($timeString)";

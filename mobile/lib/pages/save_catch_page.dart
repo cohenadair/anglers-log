@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:fixnum/fixnum.dart';
 import 'package:flutter/material.dart';
 
 import '../bait_category_manager.dart';
@@ -130,7 +131,7 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
     }
 
     if (_editing) {
-      _timestampController.value = _oldCatch.timestamp;
+      _timestampController.value = _oldCatch.timestamp.toInt();
       _speciesController.value = _oldCatch.speciesId;
       _baitController.value = _oldCatch.baitId;
       _fishingSpotController.value = _oldCatch.fishingSpotId;
@@ -329,7 +330,7 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
     // imageNames is set in _catchManager.addOrUpdate
     var cat = Catch()
       ..id = _oldCatch?.id ?? randomId()
-      ..timestamp = _timestampController.value
+      ..timestamp = Int64(_timestampController.value)
       ..speciesId = _speciesController.value
       ..customEntityValues.addAll(entityValuesFromMap(customFieldValueMap));
 

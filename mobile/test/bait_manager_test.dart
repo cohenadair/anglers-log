@@ -1,3 +1,4 @@
+import 'package:fixnum/fixnum.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/bait_category_manager.dart';
 import 'package:mobile/bait_manager.dart';
@@ -111,27 +112,27 @@ void main() {
     when(catchManager.list()).thenReturn([
       Catch()
         ..id = randomId()
-        ..timestamp = timestampFromMillis(0)
+        ..timestamp = Int64(0)
         ..speciesId = speciesId0
         ..baitId = baitId0,
       Catch()
         ..id = randomId()
-        ..timestamp = timestampFromMillis(0)
+        ..timestamp = Int64(0)
         ..speciesId = speciesId0
         ..baitId = baitId1,
       Catch()
         ..id = randomId()
-        ..timestamp = timestampFromMillis(0)
+        ..timestamp = Int64(0)
         ..speciesId = speciesId0
         ..baitId = baitId2,
       Catch()
         ..id = randomId()
-        ..timestamp = timestampFromMillis(0)
+        ..timestamp = Int64(0)
         ..speciesId = speciesId0
         ..baitId = baitId0,
       Catch()
         ..id = randomId()
-        ..timestamp = timestampFromMillis(0)
+        ..timestamp = Int64(0)
         ..speciesId = speciesId0,
     ]);
 
@@ -334,7 +335,7 @@ void main() {
       when(catchManager.list()).thenReturn([
         Catch()
           ..id = randomId()
-          ..timestamp = timestampFromMillis(0)
+          ..timestamp = Int64(0)
           ..speciesId = randomId()
           ..baitId = bait.id,
       ]);
@@ -370,12 +371,12 @@ void main() {
       when(catchManager.list()).thenReturn([
         Catch()
           ..id = randomId()
-          ..timestamp = timestampFromMillis(0)
+          ..timestamp = Int64(0)
           ..speciesId = randomId()
           ..baitId = bait.id,
         Catch()
           ..id = randomId()
-          ..timestamp = timestampFromMillis(5)
+          ..timestamp = Int64(5)
           ..speciesId = randomId()
           ..baitId = bait.id,
       ]);
@@ -401,7 +402,7 @@ void main() {
       when(catchManager.list()).thenReturn([
         Catch()
           ..id = randomId()
-          ..timestamp = timestampFromMillis(5)
+          ..timestamp = Int64(5)
           ..speciesId = randomId()
           ..baitId = bait.id,
       ]);

@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
-import 'package:mobile/model/gen/google/protobuf/timestamp.pb.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mobile/utils/validator.dart';
 import 'package:mobile/widgets/input_controller.dart';
@@ -89,13 +88,13 @@ void main() {
         date: DateTime(2020, 1, 15),
         time: TimeOfDay(hour: 15, minute: 30),
       );
-      expect(controller.value.ms,
+      expect(controller.value,
           DateTime(2020, 1, 15, 15, 30).millisecondsSinceEpoch);
     });
 
     test("Set to non-null", () {
       var controller = TimestampInputController();
-      var timestamp = Timestamp.fromDateTime(DateTime(2020, 1, 15, 15, 30));
+      var timestamp = DateTime(2020, 1, 15, 15, 30).millisecondsSinceEpoch;
       controller.value = timestamp;
       expect(controller.value, timestamp);
     });

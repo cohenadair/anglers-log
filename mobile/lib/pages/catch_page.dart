@@ -79,7 +79,7 @@ class _CatchPageState extends State<CatchPage> {
                     left: paddingDefault,
                   ),
                   child: SubtitleLabel(
-                    formatTimestamp(context, _catch.timestamp),
+                    formatTimestamp(context, _catch.timestamp.toInt()),
                   ),
                 ),
               ],

@@ -382,11 +382,11 @@ void main() {
       ComparisonReport report = result.captured.first;
       expect(report.name, "Report Name");
       expect(report.fromDisplayDateRangeId, DisplayDateRange.custom.id);
-      expect(report.fromStartTimestamp.ms, fromDateRange.startMs);
-      expect(report.fromEndTimestamp.ms, fromDateRange.endMs);
+      expect(report.fromStartTimestamp.toInt(), fromDateRange.startMs);
+      expect(report.fromEndTimestamp.toInt(), fromDateRange.endMs);
       expect(report.toDisplayDateRangeId, DisplayDateRange.custom.id);
-      expect(report.toStartTimestamp.ms, toDateRange.startMs);
-      expect(report.toEndTimestamp.ms, toDateRange.endMs);
+      expect(report.toStartTimestamp.toInt(), toDateRange.startMs);
+      expect(report.toEndTimestamp.toInt(), toDateRange.endMs);
       expect(report.baitIds, isEmpty);
       expect(report.speciesIds, isEmpty);
       expect(report.fishingSpotIds, isEmpty);
@@ -586,8 +586,8 @@ void main() {
       SummaryReport report = result.captured.first;
       expect(report.name, "Report Name");
       expect(report.displayDateRangeId, DisplayDateRange.custom.id);
-      expect(report.startTimestamp.ms, dateRange.startMs);
-      expect(report.endTimestamp.ms, dateRange.endMs);
+      expect(report.startTimestamp.toInt(), dateRange.startMs);
+      expect(report.endTimestamp.toInt(), dateRange.endMs);
       expect(report.baitIds, isEmpty);
       expect(report.speciesIds, isEmpty);
       expect(report.fishingSpotIds, isEmpty);

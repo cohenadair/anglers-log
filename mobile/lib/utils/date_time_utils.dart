@@ -5,7 +5,6 @@ import 'package:quiver/time.dart';
 
 import '../app_manager.dart';
 import '../i18n/strings.dart';
-import '../model/gen/google/protobuf/timestamp.pb.dart';
 import '../utils/string_utils.dart';
 
 const monthDayFormat = "MMM d";
@@ -70,11 +69,11 @@ class DateRange {
             startDate.isAtSameMomentAs(endDate) || startDate.isBefore(endDate));
 
   DateRange.fromTimestamps({
-    Timestamp start,
-    Timestamp end,
+    int start,
+    int end,
   }) : this(
-          startDate: start.toDateTime(),
-          endDate: end.toDateTime(),
+          startDate: DateTime.fromMillisecondsSinceEpoch(start),
+          endDate: DateTime.fromMillisecondsSinceEpoch(end),
         );
 
   int get startMs => startDate.millisecondsSinceEpoch;
@@ -99,9 +98,8 @@ class DateRange {
   /// days.
   num get months => durationMs / (Duration.millisecondsPerDay * _daysInMonth);
 
-  bool contains(Timestamp timestamp) {
-    var ms = timestamp.toDateTime().millisecondsSinceEpoch;
-    return ms >= startMs && ms <= endMs;
+  bool contains(int timestamp) {
+    return timestamp >= startMs && timestamp <= endMs;
   }
 }
 
@@ -274,8 +272,8 @@ class DisplayDateRange {
   /// Returns the [DisplayDateRange] for the given ID, or `null` if none exists.
   static DisplayDateRange of(
     String id, [
-    Timestamp startTimestamp,
-    Timestamp endTimestamp,
+    int startTimestamp,
+    int endTimestamp,
   ]) {
     assert(id != custom.id || (startTimestamp != null && endTimestamp != null));
 
@@ -466,8 +464,9 @@ String formatDateTime(BuildContext context, DateTime dateTime) {
   ]);
 }
 
-String formatTimestamp(BuildContext context, Timestamp timestamp) {
-  return formatDateTime(context, timestamp.toDateTime());
+String formatTimestamp(BuildContext context, int timestamp) {
+  return formatDateTime(
+      context, DateTime.fromMillisecondsSinceEpoch(timestamp));
 }
 
 /// Returns a [Timestamp] as a searchable [String]. This value should not be
@@ -476,8 +475,8 @@ String formatTimestamp(BuildContext context, Timestamp timestamp) {
 ///
 /// The value returned is just a concatenation of different ways of representing
 /// a date and time.
-String timestampToSearchString(BuildContext context, Timestamp timestamp) {
-  var dateTime = timestamp.toDateTime();
+String timestampToSearchString(BuildContext context, int timestamp) {
+  var dateTime = DateTime.fromMillisecondsSinceEpoch(timestamp);
   return "${formatDateTime(context, dateTime)} "
       "${DateFormat(monthDayYearFormatFull).format(dateTime)}";
 }

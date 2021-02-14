@@ -9,7 +9,6 @@ import 'package:mobile/channels/migration_channel.dart';
 import 'package:mobile/database/legacy_importer.dart';
 import 'package:mobile/fishing_spot_manager.dart';
 import 'package:mobile/species_manager.dart';
-import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mockito/mockito.dart';
 import 'package:path/path.dart' as path;
 
@@ -193,7 +192,7 @@ void main() {
     expect(catches, isNotNull);
     expect(catches.length, 4);
 
-    expect(catches[0].timestamp.ms,
+    expect(catches[0].timestamp.toInt(),
         DateTime(2019, 8, 13, 0, 44).millisecondsSinceEpoch);
     expect(catches[0].hasFishingSpotId(), true);
     expect(speciesManager.entity(catches[0].speciesId).name, "Carp - Common");
@@ -203,11 +202,11 @@ void main() {
     expect(fishingSpotManager.entity(catches[0].fishingSpotId).name,
         "Tennessee River - Sequoyah Hills Park");
 
-    expect(catches[1].timestamp.ms,
+    expect(catches[1].timestamp.toInt(),
         DateTime(2019, 8, 12, 12, 44).millisecondsSinceEpoch);
-    expect(catches[2].timestamp.ms,
+    expect(catches[2].timestamp.toInt(),
         DateTime(2019, 8, 11, 8, 44).millisecondsSinceEpoch);
-    expect(catches[3].timestamp.ms,
+    expect(catches[3].timestamp.toInt(),
         DateTime(2019, 8, 10, 20, 44).millisecondsSinceEpoch);
   });
 
@@ -273,7 +272,7 @@ void main() {
     expect(catches, isNotNull);
     expect(catches.length, 1);
 
-    expect(catches.first.timestamp.ms,
+    expect(catches.first.timestamp.toInt(),
         DateTime(2017, 10, 11, 17, 19, 19, 420).millisecondsSinceEpoch);
     expect(catches.first.hasFishingSpotId(), true);
     expect(speciesManager.entity(catches[0].speciesId).name, "Trout - Rainbow");

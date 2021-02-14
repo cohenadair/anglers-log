@@ -1,7 +1,7 @@
+import 'package:fixnum/fixnum.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
-import 'package:mobile/model/gen/google/protobuf/timestamp.pb.dart';
 import 'package:mobile/pages/catch_list_page.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mobile/widgets/text.dart';
@@ -34,7 +34,7 @@ void main() {
     )).thenReturn([
       Catch()
         ..id = randomId()
-        ..timestamp = Timestamp.fromDateTime(DateTime(2020, 1, 1))
+        ..timestamp = Int64(DateTime(2020, 1, 1).millisecondsSinceEpoch)
         ..baitId = randomId(),
     ]);
 

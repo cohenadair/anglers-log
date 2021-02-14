@@ -1,3 +1,4 @@
+import 'package:fixnum/fixnum.dart';
 import 'package:flutter/material.dart';
 import 'package:quiver/strings.dart';
 
@@ -9,7 +10,6 @@ import '../fishing_spot_manager.dart';
 import '../i18n/strings.dart';
 import '../log.dart';
 import '../model/gen/anglerslog.pb.dart';
-import '../model/gen/google/protobuf/timestamp.pb.dart';
 import '../model/overview_report.dart';
 import '../model/report.dart';
 import '../pages/report_list_page.dart';
@@ -535,8 +535,8 @@ class _StatsPageState extends State<StatsPage> {
     BuildContext context,
     dynamic report,
     String displayDateRangeId,
-    Timestamp startTimestamp,
-    Timestamp endTimestamp, {
+    Int64 startTimestamp,
+    Int64 endTimestamp, {
     bool includeZeros = false,
     ReportSortOrder sortOrder = ReportSortOrder.alphabetical,
   }) {
@@ -544,8 +544,8 @@ class _StatsPageState extends State<StatsPage> {
       context: context,
       includeZeros: includeZeros,
       sortOrder: sortOrder,
-      displayDateRange:
-          DisplayDateRange.of(displayDateRangeId, startTimestamp, endTimestamp),
+      displayDateRange: DisplayDateRange.of(
+          displayDateRangeId, startTimestamp.toInt(), endTimestamp.toInt()),
       baitIds: report.baitIds.toSet(),
       fishingSpotIds: report.fishingSpotIds.toSet(),
       speciesIds: report.speciesIds.toSet(),

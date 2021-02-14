@@ -1,3 +1,4 @@
+import 'package:fixnum/fixnum.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
@@ -112,61 +113,61 @@ void main() {
   var _catches = <Catch>[
     Catch()
       ..id = catchId0
-      ..timestamp = timestampFromMillis(10)
+      ..timestamp = Int64(10)
       ..speciesId = speciesId3
       ..fishingSpotId = fishingSpotId1
       ..baitId = baitId0,
     Catch()
       ..id = catchId1
-      ..timestamp = timestampFromMillis(5000)
+      ..timestamp = Int64(5000)
       ..speciesId = speciesId4
       ..fishingSpotId = fishingSpotId3
       ..baitId = baitId4,
     Catch()
       ..id = catchId2
-      ..timestamp = timestampFromMillis(100)
+      ..timestamp = Int64(100)
       ..speciesId = speciesId0
       ..fishingSpotId = fishingSpotId4
       ..baitId = baitId0,
     Catch()
       ..id = catchId3
-      ..timestamp = timestampFromMillis(900)
+      ..timestamp = Int64(900)
       ..speciesId = speciesId1
       ..fishingSpotId = fishingSpotId0
       ..baitId = baitId1,
     Catch()
       ..id = catchId4
-      ..timestamp = timestampFromMillis(78000)
+      ..timestamp = Int64(78000)
       ..speciesId = speciesId4
       ..fishingSpotId = fishingSpotId1
       ..baitId = baitId0,
     Catch()
       ..id = catchId5
-      ..timestamp = timestampFromMillis(100000)
+      ..timestamp = Int64(100000)
       ..speciesId = speciesId3
       ..fishingSpotId = fishingSpotId1
       ..baitId = baitId2,
     Catch()
       ..id = catchId6
-      ..timestamp = timestampFromMillis(800)
+      ..timestamp = Int64(800)
       ..speciesId = speciesId1
       ..fishingSpotId = fishingSpotId2
       ..baitId = baitId1,
     Catch()
       ..id = catchId7
-      ..timestamp = timestampFromMillis(70)
+      ..timestamp = Int64(70)
       ..speciesId = speciesId1
       ..fishingSpotId = fishingSpotId1
       ..baitId = baitId0,
     Catch()
       ..id = catchId8
-      ..timestamp = timestampFromMillis(15)
+      ..timestamp = Int64(15)
       ..speciesId = speciesId1
       ..fishingSpotId = fishingSpotId1
       ..baitId = baitId1,
     Catch()
       ..id = catchId9
-      ..timestamp = timestampFromMillis(6000)
+      ..timestamp = Int64(6000)
       ..speciesId = speciesId4
       ..fishingSpotId = fishingSpotId1
       ..baitId = baitId0,

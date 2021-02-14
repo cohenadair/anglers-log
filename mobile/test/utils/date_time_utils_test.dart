@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mobile/model/gen/google/protobuf/timestamp.pb.dart';
 import 'package:mobile/utils/date_time_utils.dart';
 import 'package:mockito/mockito.dart';
 
@@ -203,8 +202,8 @@ void main() {
     expect(
       timestampToSearchString(
           await buildContext(tester, appManager: appManager),
-          Timestamp.fromDateTime(DateTime(2020, 9, 24))),
-      "Today at 4:00 AM September 24, 2020",
+          DateTime(2020, 9, 24).millisecondsSinceEpoch),
+      "Today at 12:00 AM September 24, 2020",
     );
   });
 
