@@ -231,4 +231,29 @@ void main() {
       expect(id.uuid, isNotEmpty);
     });
   });
+
+  group("FishingSpots", () {
+    testWidgets("Spot with name", (tester) async {
+      expect(
+        (FishingSpot()
+              ..id = randomId()
+              ..name = "Test Name"
+              ..lat = 0.0
+              ..lng = 0.0)
+            .displayName(await buildContext(tester)),
+        "Test Name",
+      );
+    });
+
+    testWidgets("Spot without name", (tester) async {
+      expect(
+        (FishingSpot()
+              ..id = randomId()
+              ..lat = 0.0
+              ..lng = 0.0)
+            .displayName(await buildContext(tester)),
+        "Lat: 0.000000, Lng: 0.000000",
+      );
+    });
+  });
 }

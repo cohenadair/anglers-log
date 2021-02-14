@@ -119,4 +119,21 @@ extension Ids on Id {
 
 extension FishingSpots on FishingSpot {
   LatLng get latLng => LatLng(lat, lng);
+
+  /// Returns [name] if it is not empty, otherwise returns the
+  /// spot's coordinates as a string in the format provided by [formatLatLng].
+  String displayName(
+    BuildContext context, {
+    bool includeLatLngLabels = true,
+  }) {
+    if (isNotEmpty(name)) {
+      return name;
+    }
+    return formatLatLng(
+      context: context,
+      lat: lat,
+      lng: lng,
+      includeLabels: includeLatLngLabels,
+    );
+  }
 }

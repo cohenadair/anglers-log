@@ -96,16 +96,10 @@ class _MapPageState extends State<MapPage> {
     String name;
     if (_hasActiveFishingSpot) {
       // Showing active fishing spot.
-      if (isNotEmpty(_activeFishingSpot.name)) {
-        name = _activeFishingSpot.name;
-      } else {
-        name = formatLatLng(
-          context: context,
-          lat: _activeFishingSpot.lat,
-          lng: _activeFishingSpot.lng,
-          includeLabels: false,
-        );
-      }
+      name = _activeFishingSpot.displayName(
+        context,
+        includeLatLngLabels: false,
+      );
     } else if (_hasActiveMarker) {
       // A pin was dropped.
       name = Strings.of(context).mapPageDroppedPin;
@@ -302,49 +296,55 @@ class _FishingSpotBottomSheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var latLng = formatLatLng(
+        context: context, lat: fishingSpot.lat, lng: fishingSpot.lng);
+
+    var nameStr = latLng;
+    if (isNotEmpty(fishingSpot.name)) {
+      // Fishing spot exists, and has a name.
+      nameStr = fishingSpot.name;
+    } else if (!editing) {
+      // A new pin was dropped.
+      nameStr = Strings.of(context).mapPageDroppedPin;
+    }
+
+    var name = Padding(
+      padding: insetsHorizontalDefault,
+      child: Label(
+        nameStr,
+        style: styleHeading,
+      ),
+    );
+
+    Widget coordinates = Empty();
+    if (nameStr != latLng) {
+      coordinates = Padding(
+        padding: EdgeInsets.only(
+          left: paddingDefault,
+          right: paddingDefault,
+          top: paddingWidgetTiny,
+        ),
+        child: Label(
+          latLng,
+          style: styleSecondary,
+        ),
+      );
+    }
+
     return SafeArea(
       top: false,
       bottom: false,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
-          _buildName(context),
-          Padding(
-            padding: insetsHorizontalDefault,
-            child: Label(
-              formatLatLng(
-                context: context,
-                lat: fishingSpot.lat,
-                lng: fishingSpot.lng,
-              ),
-              style: styleSecondary,
-            ),
-          ),
+          VerticalSpace(paddingWidgetTiny),
+          name,
+          coordinates,
+          VerticalSpace(paddingWidgetSmall),
           _buildChips(context),
         ],
       ),
     );
-  }
-
-  Widget _buildName(BuildContext context) {
-    String name;
-    if (isNotEmpty(fishingSpot.name)) {
-      // Fishing spot exists, and has a name.
-      name = fishingSpot.name;
-    } else if (!editing) {
-      // A new pin was dropped.
-      name = Strings.of(context).mapPageDroppedPin;
-    }
-
-    return isEmpty(name)
-        ? Empty()
-        : Padding(
-            padding: insetsHorizontalDefault,
-            child: Label(
-              name,
-              style: styleHeading,
-            ),
-          );
   }
 
   Widget _buildChips(BuildContext context) {

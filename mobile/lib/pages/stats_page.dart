@@ -20,6 +20,7 @@ import '../summary_report_manager.dart';
 import '../user_preference_manager.dart';
 import '../utils/date_time_utils.dart';
 import '../utils/page_utils.dart';
+import '../utils/protobuf_utils.dart';
 import '../utils/string_utils.dart';
 import '../widgets/chart.dart';
 import '../widgets/date_range_picker_input.dart';
@@ -268,7 +269,7 @@ class _StatsPageState extends State<StatsPage> {
       viewAllDescription:
           Strings.of(context).reportSummaryCatchesPerFishingSpotDescription,
       filters: _filters(includeDateRange: !_isComparing),
-      labelBuilder: (fishingSpot) => fishingSpot.name,
+      labelBuilder: (fishingSpot) => fishingSpot.displayName(context),
       series: _models
           .map((model) => Series<FishingSpot>(
               model.catchesPerFishingSpot, model.displayDateRange))
@@ -383,7 +384,7 @@ class _StatsPageState extends State<StatsPage> {
         includeSpecies: false,
         includeDateRange: !_isComparing,
       )..add(_currentSpecies.name),
-      labelBuilder: (fishingSpot) => fishingSpot.name,
+      labelBuilder: (fishingSpot) => fishingSpot.displayName(context),
       series: _models
           .map((model) => Series<FishingSpot>(
               model.fishingSpotsPerSpecies(_currentSpecies),
