@@ -243,14 +243,24 @@ class _ManageableListItemState extends State<ManageableListItem>
   void initState() {
     super.initState();
 
+    var animStart = 0.0;
+    var animEnd = 1.0;
+
     _editAnimController = AnimationController(
       duration: defaultAnimationDuration,
       vsync: this,
     );
     _deleteIconSizeAnim = Tween<double>(
-      begin: 0.0,
-      end: 1.0,
+      begin: animStart,
+      end: animEnd,
     ).animate(_editAnimController);
+
+    // Move the animation controller to the end if the state is already editing.
+    // This fixes any "duplicate" animations if the widget is initially built
+    // with editing == true. Fixes #489.
+    if (widget.editing) {
+      _editAnimController.forward(from: animEnd);
+    }
   }
 
   @override
