@@ -1254,7 +1254,7 @@ void main() {
 
     // Trigger delete.
     await speciesManager.delete(species.id);
-    expect(loadCount, 0); // None for onDelete callback.
+    expect(loadCount, 1);
     expect(find.byType(ManageableListItem), findsNWidgets(4));
     loadCount = 0;
 
@@ -1262,5 +1262,69 @@ void main() {
     await speciesManager.addOrUpdate(species..name = "Test 2");
     expect(loadCount, 1);
     expect(find.byType(ManageableListItem), findsNWidgets(4));
+  });
+
+  testWidgets("Test item reconciliation", (tester) async {
+    var loadEmpty = true;
+
+    await tester.pumpWidget(
+      Testable(
+        (_) => ManageableListPage<dynamic>(
+          itemManager: ManageableListPageItemManager<dynamic>(
+            listenerManagers: [
+              speciesManager,
+            ],
+            loadItems: (query) {
+              if (loadEmpty) {
+                // Delete multiple items to trigger item reconciliation.
+                return [];
+              } else {
+                // Add multiple items to trigger item reconciliation.
+                return [
+                  BaitCategory()..id = randomId()..name = "Bass",
+                  Species()..id = randomId()..name = "Smallmouth",
+                ];
+              }
+            },
+            deleteWidget: (_, __) => Empty(),
+            deleteItem: (_, __) {},
+            detailPageBuilder: (_) => Empty(),
+            editPageBuilder: (_) => Empty(),
+            emptyItemsSettings: ManageableListPageEmptyListSettings(
+              title: "Empty",
+              description: "The list is empty",
+              icon: Icons.cancel,
+            ),
+          ),
+          itemBuilder: (context, item) => ManageableListPageItemModel(
+            child: Text(item.name),
+          ),
+        ),
+        appManager: appManager,
+      ),
+    );
+
+    // Verify no items are in the list.
+    expect(find.byType(WatermarkLogo), findsOneWidget);
+
+    var species = Species()
+      ..id = randomId()
+      ..name = "Test";
+
+    // Trigger add, and wait for list animations to finish.
+    loadEmpty = false;
+    await speciesManager.addOrUpdate(species);
+    await tester.pumpAndSettle();
+    expect(find.text("Bass"), findsOneWidget);
+    expect(find.text("Smallmouth"), findsOneWidget);
+    expect(find.byType(WatermarkLogo), findsNothing);
+
+    // Trigger delete, and wait for list animations to finish.
+    loadEmpty = true;
+    await speciesManager.delete(species.id);
+    await tester.pumpAndSettle();
+    expect(find.text("Bass"), findsNothing);
+    expect(find.text("Smallmouth"), findsNothing);
+    expect(find.byType(WatermarkLogo), findsOneWidget);
   });
 }

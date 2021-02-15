@@ -5,6 +5,7 @@ import 'package:quiver/strings.dart';
 
 import '../entity_manager.dart';
 import '../i18n/strings.dart';
+import '../log.dart';
 import '../res/dimen.dart';
 import '../utils/page_utils.dart';
 import '../utils/search_timer.dart';
@@ -19,6 +20,9 @@ import '../widgets/widget.dart';
 /// an optional [SearchBar] and can be used a single or multi-item picker.
 ///
 /// For a simpler picker, see [PickerPage].
+///
+/// Note that [T] should override == for the most efficient list reconciliation,
+/// but it is not a requirement.
 class ManageableListPage<T> extends StatefulWidget {
   /// See [ManageableListPageItemModel].
   final ManageableListPageItemModel Function(BuildContext, T) itemBuilder;
@@ -83,6 +87,8 @@ class _ManageableListPageState<T> extends State<ManageableListPage<T>> {
 
   /// Additional padding required to line up search text with [ListItem] text.
   static const _thumbSearchTextOffset = 24.0;
+
+  final _log = Log("ManageableListPage");
 
   GlobalKey<SliverAnimatedListState> _animatedListKey =
       GlobalKey<SliverAnimatedListState>();
@@ -452,31 +458,50 @@ class _ManageableListPageState<T> extends State<ManageableListPage<T>> {
   }
 
   void _onEntityAdded(dynamic entity) {
-    // Get an updated item list. This includes the new item added, and any
-    // updates to dependency objects of T. Note that we should always do this
-    // when something is added so the underlying data model is always up to
-    // date.
-    var items = widget.itemManager.loadItems(_searchText);
+    _onEntityAddedOrDeleted((newItems) {
+      // Don't animate any entity additions if it isn't an entity associated
+      // with this ManageableListPage.
+      if (!(entity is T)) {
+        return;
+      }
 
-    // Don't animate any entity additions if it isn't an entity associated
-    // with this ManageableListPage.
-    if (!(entity is T)) {
-      return;
-    }
-
-    // If the index is < 0, it means entity isn't in the underlying data. This
-    // can happen when multiple entity types are shown in the same list, such
-    // as a list of baits that also shows bait categories.
-    var index = items.indexOf(entity);
-    if (index >= 0) {
-      _animatedList.insert(
-          min(_animatedList.length, items.indexOf(entity)), entity);
-    }
+      // If the index is < 0, it means entity isn't in the underlying data. This
+      // can happen when multiple entity types are shown in the same list, such
+      // as a list of baits that also shows bait categories, but categories that
+      // aren't associated with any baits are hidden.
+      var index = newItems.indexOf(entity);
+      if (index >= 0) {
+        _animatedList.insert(
+            min(_animatedList.length, newItems.indexOf(entity)), entity);
+      }
+    });
   }
 
   void _onEntityDeleted(dynamic entity) {
-    if (entity is T) {
-      _animatedList.removeAt(_animatedList.indexOf(entity));
+    _onEntityAddedOrDeleted((newItems) {
+      // If there are no more items in the list, don't animate anything; the
+      // "empty" widget will be animated into view.
+      if (entity is T && newItems.isNotEmpty) {
+        _animatedList.removeAt(_animatedList.indexOf(entity));
+      }
+    });
+  }
+
+  void _onEntityAddedOrDeleted(void Function(List<T> newItems) animate) {
+    // Get an updated item list. This includes the item added or deleted, and
+    // any updates to dependency objects of T. Note that this should always be
+    // done when something is added or removed so the animated list model is
+    // always up to date.
+    var newItems = widget.itemManager.loadItems(_searchText);
+
+    animate(newItems);
+
+    // The database and animated list are out of sync, fix it. This can happen
+    // in dynamic type lists, like a bait list, when the last bait for a bait
+    // category is removed or an entity that isn't type T is added (#492).
+    if (newItems.length != _animatedList.length) {
+      _log.d("List lengths aren't equal, reconciling...");
+      _animatedList.reconcileItems(newItems);
     }
   }
 
@@ -734,5 +759,20 @@ class _AnimatedListModel<T> {
     listKey = newKey;
     _items.clear();
     _items.addAll(List.of(newItems));
+  }
+
+  /// Adds and removes all necessary items so that [_items] is in sync with
+  /// [newItems]. Useful for inserting or removing multiple items.
+  void reconcileItems(List<T> newItems) {
+    var itemsToAdd = List.of(newItems)..removeWhere(_items.contains);
+    var itemsToDelete = List.of(_items)..removeWhere(newItems.contains);
+
+    for (var item in itemsToAdd) {
+      insert(newItems.indexOf(item), item);
+    }
+
+    for (var item in itemsToDelete) {
+      removeAt(_items.indexOf(item));
+    }
   }
 }
