@@ -116,6 +116,12 @@ class _ManageableListPageState<T> extends State<ManageableListPage<T>> {
 
   bool get _isAddable => widget.itemManager.addPageBuilder != null;
 
+  /// If picking an option isn't required, show a "None" option.
+  bool get _showClearOption =>
+      _isPicking &&
+      !widget.pickerSettings.isRequired &&
+      _animatedList.isNotEmpty;
+
   @override
   void initState() {
     super.initState();
@@ -157,12 +163,6 @@ class _ManageableListPageState<T> extends State<ManageableListPage<T>> {
     if (_animatedList.isEmpty) {
       _isEditing = false;
     }
-
-    // If picking an option isn't required, show a "None" option.
-    var showClearOption = _isPicking && !widget.pickerSettings.isRequired;
-
-    // +2 for "None" and divider.
-    var clearOptionOffset = showClearOption ? 2 : 0;
 
     Widget emptyWidget = Empty();
     if (widget.itemManager.emptyItemsSettings != null &&
@@ -207,32 +207,33 @@ class _ManageableListPageState<T> extends State<ManageableListPage<T>> {
               centerTitle: widget.forceCenterTitle,
               leading: widget.appBarLeading,
             ),
-            SliverSafeArea(
-              top: false,
-              // TODO: Use a sliver animated switcher when available - https://github.com/flutter/flutter/issues/64069
-              sliver: SliverVisibility(
-                visible: _animatedList.isNotEmpty,
-                sliver: SliverAnimatedList(
-                  key: _animatedListKey,
-                  initialItemCount: _animatedList.length + clearOptionOffset,
-                  itemBuilder: (context, i, animation) {
-                    if (showClearOption) {
-                      if (i == 0) {
-                        return _buildNoneItem(context, _animatedList.items);
-                      } else if (i == 1) {
-                        return MinDivider();
-                      }
-                    }
-                    return _buildItem(context,
-                        _animatedList[i - clearOptionOffset], animation);
-                  },
-                ),
-                replacementSliver: SliverFillRemaining(
-                  fillOverscroll: true,
-                  hasScrollBody: false,
-                  child: Center(
-                    child: emptyWidget,
+            SliverVisibility(
+              visible: _showClearOption,
+              sliver: SliverList(
+                delegate: SliverChildListDelegate([
+                  Column(
+                    children: [
+                      _buildNoneItem(context, _animatedList.items),
+                      MinDivider(),
+                    ],
                   ),
+                ]),
+              ),
+            ),
+            // TODO: Use animated switcher - https://github.com/flutter/flutter/issues/64069
+            SliverVisibility(
+              visible: _animatedList.isNotEmpty,
+              sliver: SliverAnimatedList(
+                key: _animatedListKey,
+                initialItemCount: _animatedList.length,
+                itemBuilder: (context, i, animation) =>
+                    _buildItem(context, _animatedList[i], animation),
+              ),
+              replacementSliver: SliverFillRemaining(
+                fillOverscroll: true,
+                hasScrollBody: false,
+                child: Center(
+                  child: emptyWidget,
                 ),
               ),
             ),
@@ -302,11 +303,10 @@ class _ManageableListPageState<T> extends State<ManageableListPage<T>> {
   }
 
   Widget _buildNoneItem(BuildContext context, List<T> items) {
-    String label;
+    var label = Strings.of(context).none;
     Widget trailing;
     VoidCallback onTap;
     if (_isPickingSingle) {
-      label = Strings.of(context).none;
       trailing = _selectedValues.isEmpty ? Icon(_iconCheck) : null;
       onTap = () => _finishPicking({});
     } else if (_isPickingMulti) {
@@ -471,8 +471,7 @@ class _ManageableListPageState<T> extends State<ManageableListPage<T>> {
       // aren't associated with any baits are hidden.
       var index = newItems.indexOf(entity);
       if (index >= 0) {
-        _animatedList.insert(
-            min(_animatedList.length, newItems.indexOf(entity)), entity);
+        _animatedList.insert(min(_animatedList.length, index), entity);
       }
     });
   }
