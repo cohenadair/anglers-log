@@ -88,7 +88,7 @@ class _ManageableListPageState<T> extends State<ManageableListPage<T>> {
   /// Additional padding required to line up search text with [ListItem] text.
   static const _thumbSearchTextOffset = 24.0;
 
-  final _log = Log("ManageableListPage");
+  final _log = Log("ManageableListPage<$T>");
 
   GlobalKey<SliverAnimatedListState> _animatedListKey =
       GlobalKey<SliverAnimatedListState>();
@@ -479,9 +479,7 @@ class _ManageableListPageState<T> extends State<ManageableListPage<T>> {
 
   void _onEntityDeleted(dynamic entity) {
     _onEntityAddedOrDeleted((newItems) {
-      // If there are no more items in the list, don't animate anything; the
-      // "empty" widget will be animated into view.
-      if (entity is T && newItems.isNotEmpty) {
+      if (entity is T) {
         _animatedList.removeAt(_animatedList.indexOf(entity));
       }
     });
@@ -494,14 +492,14 @@ class _ManageableListPageState<T> extends State<ManageableListPage<T>> {
     // always up to date.
     var newItems = widget.itemManager.loadItems(_searchText);
 
-    animate(newItems);
-
-    // The database and animated list are out of sync, fix it. This can happen
-    // in dynamic type lists, like a bait list, when the last bait for a bait
-    // category is removed or an entity that isn't type T is added (#492).
-    if (newItems.length != _animatedList.length) {
-      _log.d("List lengths aren't equal, reconciling...");
+    if ((newItems.length - _animatedList.length).abs() > 1) {
+      // There was more than 1 item added/deleted. This can happen in dynamic
+      // type lists, like a bait list, when the last bait for a bait category
+      // is removed or an entity that isn't type T is added (#492).
+      _log.d("Multiple changes were made, reconciling items...");
       _animatedList.reconcileItems(newItems);
+    } else {
+      animate(newItems);
     }
   }
 
@@ -764,15 +762,20 @@ class _AnimatedListModel<T> {
   /// Adds and removes all necessary items so that [_items] is in sync with
   /// [newItems]. Useful for inserting or removing multiple items.
   void reconcileItems(List<T> newItems) {
-    var itemsToAdd = List.of(newItems)..removeWhere(_items.contains);
-    var itemsToDelete = List.of(_items)..removeWhere(newItems.contains);
-
-    for (var item in itemsToAdd) {
-      insert(newItems.indexOf(item), item);
+    // First, remove all existing items that aren't in the new item list.
+    for (var i = _items.length - 1; i >= 0; i--) {
+      if (!newItems.contains(_items[i])) {
+        removeAt(i);
+      }
     }
 
-    for (var item in itemsToDelete) {
-      removeAt(_items.indexOf(item));
+    // At this point, _items is equal to newItems, minus any new items. Removing
+    // items first allows for new items to be added in the correct indices of
+    // _items.
+    for (var i = 0; i < newItems.length; i++) {
+      if (!_items.contains(newItems[i])) {
+        insert(i, newItems[i]);
+      }
     }
   }
 }

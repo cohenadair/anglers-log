@@ -1265,7 +1265,7 @@ void main() {
   });
 
   testWidgets("Test item reconciliation", (tester) async {
-    var loadEmpty = true;
+    var items = [];
 
     await tester.pumpWidget(
       Testable(
@@ -1274,18 +1274,7 @@ void main() {
             listenerManagers: [
               speciesManager,
             ],
-            loadItems: (query) {
-              if (loadEmpty) {
-                // Delete multiple items to trigger item reconciliation.
-                return [];
-              } else {
-                // Add multiple items to trigger item reconciliation.
-                return [
-                  BaitCategory()..id = randomId()..name = "Bass",
-                  Species()..id = randomId()..name = "Smallmouth",
-                ];
-              }
-            },
+            loadItems: (query) => items,
             deleteWidget: (_, __) => Empty(),
             deleteItem: (_, __) {},
             detailPageBuilder: (_) => Empty(),
@@ -1312,15 +1301,65 @@ void main() {
       ..name = "Test";
 
     // Trigger add, and wait for list animations to finish.
-    loadEmpty = false;
+    // Add multiple items to trigger item reconciliation.
+    items = [
+      BaitCategory()
+        ..id = randomId()
+        ..name = "Bass",
+      Species()
+        ..id = randomId()
+        ..name = "Smallmouth",
+      BaitCategory()
+        ..id = randomId()
+        ..name = "Trout",
+      Species()
+        ..id = randomId()
+        ..name = "Rainbow",
+    ];
     await speciesManager.addOrUpdate(species);
     await tester.pumpAndSettle();
     expect(find.text("Bass"), findsOneWidget);
     expect(find.text("Smallmouth"), findsOneWidget);
+    expect(find.text("Trout"), findsOneWidget);
+    expect(find.text("Rainbow"), findsOneWidget);
     expect(find.byType(WatermarkLogo), findsNothing);
 
+    // Add items between existing items and verify they're inserted in the
+    // correct order.
+    items = [
+      BaitCategory()
+        ..id = randomId()
+        ..name = "Bass",
+      Species()
+        ..id = randomId()
+        ..name = "Smallmouth",
+      BaitCategory()
+        ..id = randomId()
+        ..name = "Catfish",
+      Species()
+        ..id = randomId()
+        ..name = "Flathead",
+      BaitCategory()
+        ..id = randomId()
+        ..name = "Trout",
+      Species()
+        ..id = randomId()
+        ..name = "Rainbow",
+    ];
+    await speciesManager.addOrUpdate(species);
+    await tester.pumpAndSettle();
+    var widgets = List.of(
+        tester.widgetList<ManageableListItem>(find.byType(ManageableListItem)));
+    expect(widgets.length, 6);
+    expect(((widgets[0]).child as Text).data, "Bass");
+    expect(((widgets[1]).child as Text).data, "Smallmouth");
+    expect(((widgets[2]).child as Text).data, "Catfish");
+    expect(((widgets[3]).child as Text).data, "Flathead");
+    expect(((widgets[4]).child as Text).data, "Trout");
+    expect(((widgets[5]).child as Text).data, "Rainbow");
+
     // Trigger delete, and wait for list animations to finish.
-    loadEmpty = true;
+    items = [];
     await speciesManager.delete(species.id);
     await tester.pumpAndSettle();
     expect(find.text("Bass"), findsNothing);
