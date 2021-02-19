@@ -78,4 +78,18 @@ void main() {
     expect(spot.lat, 1.000000);
     expect(spot.lng, 2.000000);
   });
+
+  testWidgets("onSave is invoked", (tester) async {
+    var invoked = false;
+    await tester.pumpWidget(Testable(
+      (_) => SaveFishingSpotPage(
+        latLng: LatLng(1.000000, 2.000000),
+        onSave: (_) => invoked = true,
+      ),
+      appManager: appManager,
+    ));
+
+    await tapAndSettle(tester, find.text("SAVE"));
+    expect(invoked, isTrue);
+  });
 }

@@ -26,6 +26,11 @@ class FishingSpotPickerPage extends StatefulWidget {
   final void Function(BuildContext, FishingSpot) onPicked;
   final Id fishingSpotId;
 
+  /// The start position of the map if [fishingSpotId] is null, or if a
+  /// fishing spot with [fishingSpotId] doesn't exist. If [fishingSpotId] and
+  /// [startPos] are both null, the device's current location is used.
+  final LatLng startPos;
+
   /// The text to signal that picking is finished. When tapped, [onPicked] is
   /// invoked. If null or empty, [onPicked] is invoked when this
   /// [FishingSpotPickerPage] is popped from the navigation stack.
@@ -34,6 +39,7 @@ class FishingSpotPickerPage extends StatefulWidget {
   FishingSpotPickerPage({
     @required this.onPicked,
     this.fishingSpotId,
+    this.startPos,
     this.actionButtonText,
   }) : assert(onPicked != null);
 
@@ -105,7 +111,8 @@ class _FishingSpotPickerPageState extends State<FishingSpotPickerPage>
       end: Offset.zero,
     ).animate(_fishingSpotAnimController);
 
-    _startPosition = LocationMonitor.of(context).currentLocation;
+    _startPosition =
+        widget.startPos ?? LocationMonitor.of(context).currentLocation;
 
     // TODO #390: Initial 2 map drag attempts do not work when _startPosition
     // is set to _currentFishingSpot
@@ -278,6 +285,7 @@ class _FishingSpotPickerPageState extends State<FishingSpotPickerPage>
               context,
               SaveFishingSpotPage(
                 latLng: _currentPosition,
+                onSave: _selectFishingSpot,
               ),
             );
           } else {

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart' as google;
 import 'package:mobile/model/gen/anglerslog.pb.dart';
 import 'package:mobile/pages/add_catch_journey.dart';
 import 'package:mobile/pages/fishing_spot_picker_page.dart';
@@ -9,6 +10,7 @@ import 'package:mobile/pages/species_list_page.dart';
 import 'package:mobile/utils/catch_utils.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mobile/widgets/button.dart';
+import 'package:mobile/widgets/fishing_spot_map.dart';
 import 'package:mockito/mockito.dart';
 import 'package:photo_manager/photo_manager.dart';
 
@@ -102,6 +104,8 @@ void main() {
         .thenReturn(fishingSpot);
     when(appManager.mockFishingSpotManager.entity(fishingSpot.id))
         .thenReturn(fishingSpot);
+    when(appManager.mockFishingSpotManager.entityExists(fishingSpot.id))
+        .thenReturn(true);
     await tapAndSettle(tester, find.byType(Image).first);
     await tapAndSettle(tester, find.text("NEXT"));
 
@@ -117,33 +121,45 @@ void main() {
 
   testWidgets("Picked image uses location data to create new fishing spot",
       (tester) async {
+    when(appManager.mockFishingSpotManager.entityExists(any)).thenReturn(false);
+
     await tester.pumpWidget(Testable(
       (_) => AddCatchJourney(),
       appManager: appManager,
     ));
     await tester.pumpAndSettle(Duration(milliseconds: 50));
 
+    // Select first photo.
     await tapAndSettle(tester, find.byType(Image).first);
     await tapAndSettle(tester, find.text("NEXT"));
 
-    verify(appManager.mockFishingSpotManager.withinRadius(any, any)).called(1);
+    // Select species.
+    await tapAndSettle(tester, find.text("Steelhead"));
+    expect(find.byType(FishingSpotPickerPage), findsOneWidget);
+
+    // Manually trigger map's onIdle since Google Maps doesn't trigger it in
+    // unit tests.
+    findFirst<google.GoogleMap>(tester).onMapCreated(MockGoogleMapController());
+    findFirst<FishingSpotMap>(tester).onIdle();
+
+    // Wait for "pending" fishing spot animation so NEXT button is enabled.
+    await tester.pump(Duration(milliseconds: 1000));
+
+    expect(
+        findFirstWithText<ActionButton>(tester, "NEXT").onPressed, isNotNull);
+    await tapAndSettle(tester, find.text("NEXT"));
 
     var result =
         verify(appManager.mockFishingSpotManager.addOrUpdate(captureAny));
     result.called(1);
     var fishingSpot = result.captured.first as FishingSpot;
-    when(appManager.mockFishingSpotManager.entity(fishingSpot.id))
-        .thenReturn(fishingSpot);
-
-    await tapAndSettle(tester, find.text("Steelhead"));
-
-    expect(find.byType(FishingSpotPickerPage), findsNothing);
-    expect(find.byType(SaveCatchPage), findsOneWidget);
-    expect(find.text("Lat: 1.234567, Lng: 7.654321"), findsOneWidget);
+    expect(findFirst<SaveCatchPage>(tester).fishingSpotId, fishingSpot.id);
   });
 
   testWidgets("Picked image without location data shows fishing spot picker",
       (tester) async {
+    when(appManager.mockFishingSpotManager.entityExists(any)).thenReturn(false);
+
     await tester.pumpWidget(Testable(
       (_) => AddCatchJourney(),
       appManager: appManager,
@@ -163,6 +179,8 @@ void main() {
   });
 
   testWidgets("Saving catch pops entire journey", (tester) async {
+    when(appManager.mockFishingSpotManager.entityExists(any)).thenReturn(true);
+
     await tester.pumpWidget(Testable(
       (_) => AddCatchJourney(),
       appManager: appManager,
@@ -182,6 +200,8 @@ void main() {
 
   testWidgets("Fishing spot is skipped when not tracking fishing spots",
       (tester) async {
+    when(appManager.mockFishingSpotManager.entityExists(any)).thenReturn(false);
+
     when(appManager.mockPreferencesManager.catchFieldIds).thenReturn([
       catchFieldIdTimestamp(),
       catchFieldIdSpecies(),
@@ -199,9 +219,26 @@ void main() {
     expect(find.text("Fishing Spot"), findsNothing);
   });
 
+  testWidgets("Fishing spot is skipped when spot from photo already exists",
+      (tester) async {
+    when(appManager.mockFishingSpotManager.entityExists(any)).thenReturn(true);
+
+    await tester.pumpWidget(Testable(
+      (_) => AddCatchJourney(),
+      appManager: appManager,
+    ));
+    await tester.pumpAndSettle(Duration(milliseconds: 50));
+
+    await tapAndSettle(tester, find.text("NEXT"));
+    await tapAndSettle(tester, find.text("Steelhead"));
+
+    expect(find.byType(SaveCatchPage), findsOneWidget);
+  });
+
   testWidgets("Fishing spot is not skipped when preferences is empty",
       (tester) async {
     when(appManager.mockPreferencesManager.catchFieldIds).thenReturn([]);
+    when(appManager.mockFishingSpotManager.entityExists(any)).thenReturn(false);
 
     await tester.pumpWidget(Testable(
       (_) => AddCatchJourney(),

@@ -10,6 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart' as google;
 import 'package:mobile/app_manager.dart';
 import 'package:mobile/database/legacy_importer.dart';
 import 'package:mobile/i18n/strings.dart';
@@ -37,6 +38,9 @@ class MockDocumentSnapshot extends Mock implements DocumentSnapshot {}
 class MockFile extends Mock implements File {}
 
 class MockFileSystemEntity extends Mock implements FileSystemEntity {}
+
+class MockGoogleMapController extends Mock
+    implements google.GoogleMapController {}
 
 class MockLegacyImporter extends Mock implements LegacyImporter {}
 

@@ -7,6 +7,7 @@ import 'package:mobile/pages/fishing_spot_picker_page.dart';
 import 'package:mobile/pages/save_fishing_spot_page.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mobile/widgets/button.dart';
+import 'package:mobile/widgets/fishing_spot_map.dart';
 import 'package:mobile/widgets/floating_container.dart';
 import 'package:mobile/widgets/list_item.dart';
 import 'package:mobile/widgets/search_bar.dart';
@@ -241,6 +242,27 @@ void main() {
       ),
       findsOneWidget,
     );
+  });
+
+  testWidgets("Opening picker with custom start position", (tester) async {
+    await tester.pumpWidget(Testable(
+      (_) => FishingSpotPickerPage(
+        startPos: LatLng(1.234567, 8.765432),
+        onPicked: (_, __) {},
+      ),
+      appManager: appManager,
+    ));
+    await tester.pumpAndSettle(Duration(milliseconds: 250));
+
+    // Manually trigger map's onIdle since Google Maps doesn't trigger it in
+    // unit tests.
+    findFirst<GoogleMap>(tester).onMapCreated(MockGoogleMapController());
+    findFirst<FishingSpotMap>(tester).onIdle();
+
+    // Wait for "pending" fishing spot animation.
+    await tester.pump(Duration(milliseconds: 1000));
+
+    expect(find.text("Lat: 1.234567, Lng: 8.765432"), findsOneWidget);
   });
 
   testWidgets("Editing fishing spot updates bottom sheet", (tester) async {

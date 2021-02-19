@@ -17,12 +17,19 @@ class SaveFishingSpotPage extends StatefulWidget {
   /// a map widget, such as [FishingSpotPickerPage].
   final LatLng latLng;
 
+  /// Called asynchronously after [FishingSpot] has been committed to the
+  /// database.
+  final void Function(FishingSpot) onSave;
+
   SaveFishingSpotPage({
     @required this.latLng,
+    this.onSave,
   })  : assert(latLng != null),
         oldFishingSpot = null;
 
-  SaveFishingSpotPage.edit(this.oldFishingSpot) : latLng = null;
+  SaveFishingSpotPage.edit(this.oldFishingSpot)
+      : latLng = null,
+        onSave = null;
 
   @override
   _SaveFishingSpotPageState createState() => _SaveFishingSpotPageState();
@@ -63,6 +70,8 @@ class _SaveFishingSpotPageState extends State<SaveFishingSpotPage> {
         }
 
         _fishingSpotManager.addOrUpdate(newFishingSpot);
+        widget.onSave?.call(newFishingSpot);
+
         return true;
       },
       fieldBuilder: (context) {

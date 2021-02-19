@@ -369,10 +369,11 @@ class _FishingSpotBottomSheet extends StatelessWidget {
                   present(context, SaveFishingSpotPage.edit(fishingSpot));
                 } else {
                   present(
-                      context,
-                      SaveFishingSpotPage(
-                        latLng: fishingSpot.latLng,
-                      ));
+                    context,
+                    SaveFishingSpotPage(
+                      latLng: fishingSpot.latLng,
+                    ),
+                  );
                 }
               },
             ),

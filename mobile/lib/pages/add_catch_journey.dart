@@ -79,7 +79,6 @@ class _AddCatchJourneyState extends State<AddCatchJourney> {
                         ..id = randomId()
                         ..lat = image.position.latitude
                         ..lng = image.position.longitude;
-                      _fishingSpotManager.addOrUpdate(_fishingSpot);
                     } else {
                       _fishingSpot = existingSpot;
                     }
@@ -100,9 +99,10 @@ class _AddCatchJourneyState extends State<AddCatchJourney> {
                 onPicked: (context, species) {
                   _species = species;
 
-                  // If a fishing spot already exists, skip the fishing spot
-                  // picker page.
-                  if (_fishingSpot != null || !_isTrackingFishingSpots()) {
+                  // If the fishing spot already exists in the database, skip
+                  // the fishing spot picker page.
+                  if (_fishingSpotManager.entityExists(_fishingSpot?.id) ||
+                      !_isTrackingFishingSpots()) {
                     Navigator.of(context).pushNamed(_saveCatchRoute);
                   } else {
                     Navigator.of(context).pushNamed(_pickFishingSpotRoute);
@@ -120,12 +120,13 @@ class _AddCatchJourneyState extends State<AddCatchJourney> {
         } else if (name == _pickFishingSpotRoute) {
           return MaterialPageRoute(
             builder: (context) => FishingSpotPickerPage(
-              fishingSpotId: _fishingSpotManager
-                  .withinRadius(_locationMonitor.currentLocation)
-                  ?.id,
+              startPos: _fishingSpot?.latLng,
+              fishingSpotId: _fishingSpot?.id ??
+                  _fishingSpotManager
+                      .withinRadius(_locationMonitor.currentLocation)
+                      ?.id,
               onPicked: (context, fishingSpot) {
-                _fishingSpot =
-                    _fishingSpotManager.withLatLng(fishingSpot) ?? fishingSpot;
+                _fishingSpot = fishingSpot;
                 Navigator.of(context).pushNamed(_saveCatchRoute);
               },
               actionButtonText: Strings.of(context).next,

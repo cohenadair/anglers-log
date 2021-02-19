@@ -184,7 +184,7 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
         // TODO: Move Google logo when better solution is available.
         // https://github.com/flutter/flutter/issues/39610
         // TODO: Test onCameraIdle fix when merged. Event sometimes stops after
-        //  interaction with map buttons.
+        // interaction with map buttons.
         // https://github.com/flutter/flutter/issues/33988
         return GoogleMap(
           padding: widget.mapPadding ?? insetsZero,
