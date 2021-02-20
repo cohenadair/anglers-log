@@ -219,7 +219,7 @@ void main() {
     expect(find.text("Fishing Spot"), findsNothing);
   });
 
-  testWidgets("Fishing spot is skipped when spot from photo already exists",
+  testWidgets("Fishing spot is skipped when spot already exists",
       (tester) async {
     when(appManager.mockFishingSpotManager.entityExists(any)).thenReturn(true);
 
@@ -233,6 +233,29 @@ void main() {
     await tapAndSettle(tester, find.text("Steelhead"));
 
     expect(find.byType(SaveCatchPage), findsOneWidget);
+  });
+
+  testWidgets("Photo location is skipped when fishing spot is pre-picked",
+      (tester) async {
+    when(appManager.mockFishingSpotManager.entityExists(any)).thenReturn(true);
+    when(appManager.mockFishingSpotManager.entity(any)).thenReturn(FishingSpot()
+      ..id = randomId()
+      ..name = "Test");
+
+    await tester.pumpWidget(Testable(
+      (_) => AddCatchJourney(
+        fishingSpot: appManager.mockFishingSpotManager.entity(randomId()),
+      ),
+      appManager: appManager,
+    ));
+    await tester.pumpAndSettle(Duration(milliseconds: 50));
+
+    await tapAndSettle(tester, find.byType(Image).first);
+    await tapAndSettle(tester, find.text("NEXT"));
+    await tapAndSettle(tester, find.text("Steelhead"));
+
+    expect(find.byType(SaveCatchPage), findsOneWidget);
+    verifyNever(appManager.mockFishingSpotManager.withinRadius(any));
   });
 
   testWidgets("Fishing spot is not skipped when preferences is empty",

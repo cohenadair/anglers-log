@@ -16,6 +16,11 @@ import 'manageable_list_page.dart';
 
 /// Presents a workflow (journey) for adding a [Catch].
 class AddCatchJourney extends StatefulWidget {
+  /// An ID of a [FishingSpot] to be used for the catch added.
+  final FishingSpot fishingSpot;
+
+  AddCatchJourney({this.fishingSpot});
+
   @override
   _AddCatchJourneyState createState() => _AddCatchJourneyState();
 }
@@ -38,6 +43,14 @@ class _AddCatchJourneyState extends State<AddCatchJourney> {
   List<PickedImage> _images = [];
   Species _species;
   FishingSpot _fishingSpot;
+
+  bool get _isFishingSpotPrePicked => widget.fishingSpot != null;
+
+  @override
+  void initState() {
+    super.initState();
+    _fishingSpot = widget.fishingSpot;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -65,7 +78,7 @@ class _AddCatchJourneyState extends State<AddCatchJourney> {
                 //
                 // Only do this if the user is interested in tracking fishing
                 // spots.
-                if (_isTrackingFishingSpots()) {
+                if (_isTrackingFishingSpots() && !_isFishingSpotPrePicked) {
                   for (var image in _images) {
                     if (image.position == null) {
                       continue;

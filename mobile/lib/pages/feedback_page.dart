@@ -280,7 +280,7 @@ class _FeedbackPageState extends State<FeedbackPage> {
       });
 
       return false;
-    };
+    }
 
     return true;
   }

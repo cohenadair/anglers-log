@@ -404,7 +404,12 @@ class _FishingSpotBottomSheet extends StatelessWidget {
                   child: ChipButton(
                     label: Strings.of(context).mapPageAddCatch,
                     icon: Icons.add,
-                    onPressed: () => present(context, AddCatchJourney()),
+                    onPressed: () => present(
+                      context,
+                      AddCatchJourney(
+                        fishingSpot: fishingSpot,
+                      ),
+                    ),
                   ),
                 )
               : Empty(),
