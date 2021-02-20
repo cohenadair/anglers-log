@@ -46,7 +46,7 @@ class _LoginPageState extends State<LoginPage> {
             children: <Widget>[
               ClipOval(
                 child: Image(
-                  image: AssetImage("assets/logo.png"),
+                  image: AssetImage("assets/fish.png"),
                   width: _logoSize,
                   height: _logoSize,
                 ),

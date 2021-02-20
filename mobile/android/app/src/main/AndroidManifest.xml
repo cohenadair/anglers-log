@@ -11,7 +11,7 @@
 
     <application
         android:label="Anglers' Log"
-        android:icon="@mipmap/ic_launcher">
+        android:icon="@mipmap/launcher_icon">
         <activity
             android:name="com.cohenadair.mobile.MainActivity"
             android:theme="@style/LaunchTheme"
