@@ -63,6 +63,8 @@ class AuthManager {
 
   String get userId => _userId;
 
+  String get userEmail => _firebaseAuth.currentUser?.email;
+
   String get firestoreDocPath => "$_collectionUser/$_userId";
 
   Future<void> initialize() {

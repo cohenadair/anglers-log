@@ -4,6 +4,7 @@ import 'package:device_info/device_info.dart';
 import 'package:flutter/material.dart';
 import 'package:quiver/strings.dart';
 
+import '../auth_manager.dart';
 import '../i18n/strings.dart';
 import '../log.dart';
 import '../model/gen/anglerslog.pb.dart';
@@ -63,6 +64,10 @@ class _FeedbackPageState extends State<FeedbackPage> {
 
   final Map<Id, Field> _fields = {};
 
+  var _isSending = false;
+
+  AuthManager get _authManager => AuthManager.of(context);
+
   HttpWrapper get _http => HttpWrapper.of(context);
 
   IoWrapper get _io => IoWrapper.of(context);
@@ -115,14 +120,17 @@ class _FeedbackPageState extends State<FeedbackPage> {
         validator: _error ? null : EmptyValidator(),
       ),
     );
+
+    _emailController.value = _authManager.userEmail;
   }
 
   @override
   Widget build(BuildContext context) {
     return FormPage.immutable(
       title: Text(widget.title ?? Strings.of(context).feedbackPageTitle),
-      isInputValid:
-          _emailController.valid(context) && _messageController.valid(context),
+      isInputValid: _emailController.valid(context) &&
+          _messageController.valid(context) &&
+          !_isSending,
       saveButtonText: Strings.of(context).feedbackPageSend,
       fieldBuilder: (context) => {
         _idWarning: _error && isNotEmpty(widget.warningMessage)
@@ -190,6 +198,10 @@ class _FeedbackPageState extends State<FeedbackPage> {
       );
       return false;
     }
+
+    setState(() {
+      _isSending = true;
+    });
 
     showPermanentSnackBar(context, Strings.of(context).feedbackPageSending);
 
@@ -263,9 +275,12 @@ class _FeedbackPageState extends State<FeedbackPage> {
         Strings.of(context).feedbackPageErrorSending,
       );
 
+      setState(() {
+        _isSending = false;
+      });
+
       return false;
-    }
-    ;
+    };
 
     return true;
   }

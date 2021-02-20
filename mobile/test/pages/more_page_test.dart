@@ -11,6 +11,7 @@ void main() {
 
   setUp(() {
     appManager = MockAppManager(
+      mockAuthManager: true,
       mockBaitCategoryManager: true,
       mockUrlLauncherWrapper: true,
     );

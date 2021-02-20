@@ -8,6 +8,8 @@ class FirebaseAuthWrapper {
   static FirebaseAuthWrapper of(BuildContext context) =>
       Provider.of<AppManager>(context, listen: false).firebaseAuthWrapper;
 
+  User get currentUser => FirebaseAuth.instance.currentUser;
+
   Stream<User> authStateChanges() => FirebaseAuth.instance.authStateChanges();
 
   Future<void> signOut() => FirebaseAuth.instance.signOut();

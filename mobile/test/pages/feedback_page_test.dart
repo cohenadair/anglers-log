@@ -16,6 +16,7 @@ void main() {
 
   setUp(() {
     appManager = MockAppManager(
+      mockAuthManager: true,
       mockHttpWrapper: true,
       mockIoWrapper: true,
       mockPackageInfoWrapper: true,
@@ -32,7 +33,10 @@ void main() {
   });
 
   testWidgets("Message required for non-errors", (tester) async {
-    await tester.pumpWidget(Testable((_) => FeedbackPage()));
+    await tester.pumpWidget(Testable(
+      (_) => FeedbackPage(),
+      appManager: appManager,
+    ));
     expect(findFirstWithText<ActionButton>(tester, "SEND").onPressed, isNull);
     expect(find.text("Required"), findsOneWidget);
   });
@@ -43,13 +47,17 @@ void main() {
         (_) => FeedbackPage(
           title: "Title",
         ),
+        appManager: appManager,
       ),
     );
     expect(find.text("Title"), findsOneWidget);
   });
 
   testWidgets("Default title", (tester) async {
-    await tester.pumpWidget(Testable((_) => FeedbackPage()));
+    await tester.pumpWidget(Testable(
+      (_) => FeedbackPage(),
+      appManager: appManager,
+    ));
     expect(find.text("Send Feedback"), findsOneWidget);
   });
 
@@ -60,6 +68,7 @@ void main() {
           warningMessage: "This is a warning.",
           error: "Error",
         ),
+        appManager: appManager,
       ),
     );
     expect(find.text("This is a warning."), findsOneWidget);
@@ -71,13 +80,17 @@ void main() {
         (_) => FeedbackPage(
           warningMessage: "This is a warning.",
         ),
+        appManager: appManager,
       ),
     );
     expect(find.text("This is a warning."), findsNothing);
   });
 
   testWidgets("Send button state updates when email changes", (tester) async {
-    await tester.pumpWidget(Testable((_) => FeedbackPage()));
+    await tester.pumpWidget(Testable(
+      (_) => FeedbackPage(),
+      appManager: appManager,
+    ));
     expect(findFirstWithText<ActionButton>(tester, "SEND").onPressed, isNull);
 
     await enterTextAndSettle(
@@ -103,18 +116,25 @@ void main() {
         (_) => FeedbackPage(
           error: "Error",
         ),
+        appManager: appManager,
       ),
     );
     expect(find.byType(RadioInput), findsNothing);
   });
 
   testWidgets("For non-errors, type RadioInput is shown", (tester) async {
-    await tester.pumpWidget(Testable((_) => FeedbackPage()));
+    await tester.pumpWidget(Testable(
+      (_) => FeedbackPage(),
+      appManager: appManager,
+    ));
     expect(find.byType(RadioInput), findsOneWidget);
   });
 
   testWidgets("Selecting type updates state", (tester) async {
-    await tester.pumpWidget(Testable((_) => FeedbackPage()));
+    await tester.pumpWidget(Testable(
+      (_) => FeedbackPage(),
+      appManager: appManager,
+    ));
     expect(findSiblingOfText<Icon>(tester, InkWell, "Bug").icon,
         Icons.radio_button_checked);
 
@@ -174,6 +194,8 @@ void main() {
             SnackBar, "Error sending feedback. Please try again later."),
         findsOneWidget);
     verifyNever(navObserver.didPop(any, any));
+    expect(
+        findFirstWithText<ActionButton>(tester, "SEND").onPressed, isNotNull);
   });
 
   testWidgets("Successful send closes page", (tester) async {
@@ -191,7 +213,23 @@ void main() {
       body: anyNamed("body"),
     )).thenAnswer((_) => Future.value(Response("", 202)));
 
-    await tapAndSettle(tester, find.text("SEND"));
+    await tester.tap(find.text("SEND"));
+    await tester.pump();
+
+    expect(findFirstWithText<ActionButton>(tester, "SEND").onPressed, isNull);
+
+    await tester.pumpAndSettle();
     verify(navObserver.didPop(any, any)).called(1);
+  });
+
+  testWidgets("Email is filled when present", (tester) async {
+    when(appManager.mockAuthManager.userEmail).thenReturn("test@test.com");
+
+    await tester.pumpWidget(Testable(
+      (_) => FeedbackPage(),
+      appManager: appManager,
+    ));
+
+    expect(find.widgetWithText(TextInput, "test@test.com"), findsOneWidget);
   });
 }
