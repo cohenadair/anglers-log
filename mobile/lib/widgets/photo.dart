@@ -98,7 +98,7 @@ class _PhotoState extends State<Photo> {
                   ),
                   child: Icon(
                     CustomIcons.catches,
-                    size: min<double>(w, h) / 2,
+                    size: min<double>(w, h) / 1.5,
                     color: Colors.white,
                   ),
                 )

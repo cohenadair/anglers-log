@@ -35,6 +35,8 @@ Map<String, Map<String, String>> get englishStrings => {
         "customFields": "Custom Fields",
         "na": "N/A",
         "finish": "Finish",
+        "by": "by",
+        "devName": "Cohen Adair",
         "fieldType_number": "Number",
         "fieldType_boolean": "Checkbox",
         "fieldType_text": "Text",

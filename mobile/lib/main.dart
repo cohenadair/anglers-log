@@ -11,7 +11,6 @@ import 'pages/landing_page.dart';
 import 'pages/login_page.dart';
 import 'pages/main_page.dart';
 import 'pages/onboarding/onboarding_journey.dart';
-import 'res/color.dart';
 import 'user_preference_manager.dart';
 import 'widgets/widget.dart';
 import 'wrappers/services_wrapper.dart';
@@ -57,17 +56,12 @@ class _AnglersLogState extends State<AnglersLog> {
       child: MaterialApp(
         onGenerateTitle: (context) => Strings.of(context).appName,
         theme: ThemeData(
-          primarySwatch: colorAppTheme,
-          accentColor: colorAppTheme,
+          primarySwatch: Colors.lightBlue,
           buttonTheme: ButtonThemeData(
-            disabledColor: colorAppTheme.shade500,
+            disabledColor: Colors.lightBlue.shade500,
           ),
           iconTheme: IconThemeData(
-            color: colorAppTheme,
-          ),
-          cupertinoOverrideTheme: CupertinoThemeData(
-            // Gives TextField cursors a black tint in search bars.
-            primaryColor: Colors.black,
+            color: Colors.lightBlue,
           ),
           errorColor: Colors.red,
         ),

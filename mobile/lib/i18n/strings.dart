@@ -64,6 +64,8 @@ class Strings {
   String get customFields => _string("customFields");
   String get na => _string("na");
   String get finish => _string("finish");
+  String get by => _string("by");
+  String get devName => _string("devName");
 
   String get fieldTypeNumber => _string("fieldType_number");
   String get fieldTypeBoolean => _string("fieldType_boolean");

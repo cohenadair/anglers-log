@@ -1,5 +1,6 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:mobile/res/gen/custom_icons.dart';
 import 'package:quiver/strings.dart';
 
 import '../auth_manager.dart';
@@ -19,7 +20,7 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  static const _logoSize = 150.0;
+  static const _logoSize = 200.0;
 
   final _formKey = GlobalKey<FormState>();
   final _emailController = EmailInputController(required: true);
@@ -45,10 +46,9 @@ class _LoginPageState extends State<LoginPage> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
               ClipOval(
-                child: Image(
-                  image: AssetImage("assets/fish.png"),
-                  width: _logoSize,
-                  height: _logoSize,
+                child: Icon(
+                  CustomIcons.catches,
+                  size: _logoSize,
                 ),
               ),
               VerticalSpace(paddingWidget),

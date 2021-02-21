@@ -14,7 +14,6 @@ import 'package:google_maps_flutter/google_maps_flutter.dart' as google;
 import 'package:mobile/app_manager.dart';
 import 'package:mobile/database/legacy_importer.dart';
 import 'package:mobile/i18n/strings.dart';
-import 'package:mobile/res/color.dart';
 import 'package:mobile/utils/date_time_utils.dart';
 import 'package:mobile/widgets/widget.dart';
 import 'package:mockito/mockito.dart';
@@ -76,7 +75,7 @@ class Testable extends StatelessWidget {
       value: appManager,
       child: MaterialApp(
         theme: ThemeData(
-          primarySwatch: colorAppTheme,
+          primarySwatch: Colors.lightBlue,
         ),
         localizationsDelegates: [
           StringsDelegate(),

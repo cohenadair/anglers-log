@@ -55,7 +55,7 @@ TextStyle styleNote(BuildContext context) =>
           fontStyle: FontStyle.italic,
         );
 
-TextStyle stylePrimary(BuildContext context, {bool enabled}) {
+TextStyle stylePrimary(BuildContext context, {bool enabled = true}) {
   var style = Theme.of(context).textTheme.subtitle1;
   if (!enabled) {
     style = style.copyWith(
