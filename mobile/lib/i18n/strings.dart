@@ -474,6 +474,10 @@ class Strings {
   String get loginPageSignUpQuestionText =>
       _string("loginPage_signUpQuestionText");
   String get loginPageSignUpActionText => _string("loginPage_signUpActionText");
+  String get loginPagePasswordResetQuestion =>
+      _string("loginPage_passwordResetQuestion");
+  String get loginPagePasswordResetAction =>
+      _string("loginPage_passwordResetAction");
   String get loginPageErrorUnknown => _string("loginPage_errorUnknown");
   String get loginPageErrorUnknownServer =>
       _string("loginPage_errorUnknownServer");
@@ -488,6 +492,8 @@ class Strings {
   String get loginPageErrorWrongPassword =>
       _string("loginPage_errorWrongPassword");
   String get loginPageErrorEmailInUse => _string("loginPage_errorEmailInUse");
+  String get loginPageResetPasswordMessage =>
+      _string("loginPage_resetPasswordMessage");
 }
 
 class StringsDelegate extends LocalizationsDelegate<Strings> {

@@ -1,12 +1,13 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:mobile/res/gen/custom_icons.dart';
-import 'package:quiver/strings.dart';
 
 import '../auth_manager.dart';
 import '../i18n/strings.dart';
 import '../res/dimen.dart';
+import '../res/gen/custom_icons.dart';
 import '../res/style.dart';
+import '../utils/dialog_utils.dart';
+import '../utils/string_utils.dart';
 import '../widgets/button.dart';
 import '../widgets/input_controller.dart';
 import '../widgets/text.dart';
@@ -27,7 +28,7 @@ class _LoginPageState extends State<LoginPage> {
   final _passwordController = PasswordInputController();
 
   _Mode _mode = _Mode._loggingIn;
-  String _errorText;
+  AuthError _error;
   bool _isLoading = false;
 
   AuthManager get _authManager => AuthManager.of(context);
@@ -58,18 +59,20 @@ class _LoginPageState extends State<LoginPage> {
                 context,
                 controller: _emailController,
                 onChanged: _clearError,
+                textInputAction: TextInputAction.next,
               ),
               VerticalSpace(paddingWidgetTiny),
               TextInput.password(
                 context,
                 controller: _passwordController,
                 onChanged: _clearError,
+                onSubmitted: _handleLoginOrSignUp(),
               ),
               _buildErrorRow(),
               VerticalSpace(paddingWidget),
               Button(
                 text: _mode.buttonText(context),
-                onPressed: _isInputValid() ? _handleLoginOrSignUp : null,
+                onPressed: _handleLoginOrSignUp(),
               ),
               VerticalSpace(paddingWidget),
               _buildInfoRow(),
@@ -86,14 +89,14 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   Widget _buildErrorRow() {
-    if (isEmpty(_errorText)) {
+    if (_error == null) {
       return Empty();
     }
 
     return Padding(
       padding: insetsTopDefault,
       child: Label.multiline(
-        _errorText,
+        _authErrorToUserString(_error),
         style: styleError,
         align: TextAlign.center,
       ),
@@ -101,19 +104,37 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   Widget _buildInfoRow() {
+    var question = _mode.questionText(context);
+    var action = _mode.actionText(context);
+    var onActionTapped = _toggleMode;
+
+    if (_error == AuthError.wrongPassword) {
+      question = Strings.of(context).loginPagePasswordResetQuestion;
+      action = Strings.of(context).loginPagePasswordResetAction;
+      onActionTapped = () {
+        _authManager.sendResetPasswordEmail(_emailController.value);
+        showOkDialog(
+          context: context,
+          description: Text(format(
+              Strings.of(context).loginPageResetPasswordMessage,
+              [_emailController.value])),
+        );
+      };
+    }
+
     return RichText(
       text: TextSpan(children: [
         TextSpan(
-          text: _mode.questionText(context),
+          text: question,
           style: TextStyle(
             color: Colors.black,
           ),
         ),
         TextSpan(text: " "),
         TextSpan(
-          text: _mode.actionText(context),
+          text: action,
           style: styleHyperlink,
-          recognizer: TapGestureRecognizer()..onTap = _toggleMode,
+          recognizer: TapGestureRecognizer()..onTap = onActionTapped,
         )
       ]),
     );
@@ -134,7 +155,7 @@ class _LoginPageState extends State<LoginPage> {
         _formKey.currentState.reset();
       }
 
-      _errorText = null;
+      _error = null;
     });
   }
 
@@ -159,22 +180,26 @@ class _LoginPageState extends State<LoginPage> {
 
     setState(() {
       _isLoading = false;
-      _errorText = _authErrorToUserString(error);
+      _error = error;
     });
   }
 
-  void _handleLoginOrSignUp() {
+  VoidCallback _handleLoginOrSignUp() {
+    if (!_isInputValid()) {
+      return null;
+    }
+
     if (_isLoggingIn) {
-      _login();
+      return _login;
     } else {
-      _signUp();
+      return _signUp;
     }
   }
 
   bool _isInputValid() =>
       _emailController.valid(context) && _passwordController.valid(context);
 
-  void _clearError() => setState(() => _errorText = null);
+  void _clearError() => setState(() => _error = null);
 
   String _authErrorToUserString(AuthError error) {
     switch (error) {

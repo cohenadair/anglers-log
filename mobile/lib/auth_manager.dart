@@ -106,6 +106,9 @@ class AuthManager {
     );
   }
 
+  Future<void> sendResetPasswordEmail(String email) =>
+      _firebaseAuth.sendPasswordResetEmail(email);
+
   Future<AuthError> _loginOrSignUp(
       Future<UserCredential> Function() authFunction) async {
     if (!(await _io.isConnected())) {

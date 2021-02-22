@@ -85,6 +85,37 @@ void main() {
     expect(find.byType(Label), findsNWidgets(2));
   });
 
+  testWidgets("Reset password works as expected", (tester) async {
+    when(appManager.mockAuthManager.login(any, any)).thenAnswer((_) =>
+        Future.delayed(
+            Duration(milliseconds: 50), () => AuthError.wrongPassword));
+
+    await tester.pumpWidget(Testable(
+      (_) => LoginPage(),
+      appManager: appManager,
+    ));
+
+    await tester.enterText(
+        find.widgetWithText(TextInput, "Email"), "test@test.com");
+    await tester.enterText(
+        find.widgetWithText(TextInput, "Password"), "123456");
+    await tester.pump();
+
+    expect(findFirstWithText<Button>(tester, "LOGIN").onPressed, isNotNull);
+    await tester.tap(find.text("LOGIN"));
+    await tester.pump(Duration(milliseconds: 100));
+
+    expect(
+      tapRichTextContaining(
+          tester, "Forgot your password? Reset it.", "Reset it."),
+      isTrue,
+    );
+    await tester.pump();
+
+    expect(find.text("OK"), findsOneWidget);
+    verify(appManager.mockAuthManager.sendResetPasswordEmail(any)).called(1);
+  });
+
   testWidgets("Switching modes", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => LoginPage(),

@@ -15,6 +15,7 @@ class TextInput extends StatefulWidget {
   final String initialValue;
   final String label;
   final TextCapitalization capitalization;
+  final TextInputAction textInputAction;
 
   /// The controller for the [TextInput]. The [TextInput] will update the
   /// controller's [validate] property automatically.
@@ -32,10 +33,15 @@ class TextInput extends StatefulWidget {
   /// widget.
   final VoidCallback onChanged;
 
+  /// Invoked when the "return" button is pressed on the keyboard when this
+  /// [TextInput] is in focus.
+  final VoidCallback onSubmitted;
+
   TextInput({
     this.initialValue,
     this.label,
     this.capitalization = TextCapitalization.none,
+    this.textInputAction,
     this.controller,
     this.enabled = true,
     this.autofocus = false,
@@ -44,6 +50,7 @@ class TextInput extends StatefulWidget {
     this.maxLines,
     this.keyboardType,
     this.onChanged,
+    this.onSubmitted,
   });
 
   TextInput.name(
@@ -108,6 +115,7 @@ class TextInput extends StatefulWidget {
     bool enabled,
     bool autofocus = false,
     VoidCallback onChanged,
+    TextInputAction textInputAction,
   }) : this(
           initialValue: initialValue,
           label: Strings.of(context).inputEmailLabel,
@@ -117,12 +125,14 @@ class TextInput extends StatefulWidget {
           enabled: enabled,
           autofocus: autofocus,
           onChanged: onChanged,
+          textInputAction: textInputAction,
         );
 
   TextInput.password(
     BuildContext context, {
     PasswordInputController controller,
     VoidCallback onChanged,
+    VoidCallback onSubmitted,
   }) : this(
           label: Strings.of(context).inputPasswordLabel,
           capitalization: TextCapitalization.none,
@@ -131,6 +141,7 @@ class TextInput extends StatefulWidget {
           maxLines: 1,
           controller: controller,
           onChanged: onChanged,
+          onSubmitted: onSubmitted,
         );
 
   @override
@@ -161,6 +172,7 @@ class _TextInputState extends State<TextInput> {
           errorText: widget.controller?.error,
         ),
         textCapitalization: widget.capitalization,
+        textInputAction: widget.textInputAction,
         enabled: widget.enabled,
         maxLength: widget.maxLength,
         maxLines: widget.maxLines,
@@ -169,6 +181,7 @@ class _TextInputState extends State<TextInput> {
           widget.onChanged?.call();
           setState(_updateError);
         },
+        onFieldSubmitted: (_) => widget.onSubmitted?.call(),
         autofocus: widget.autofocus,
         obscureText: widget.obscureText,
       ),

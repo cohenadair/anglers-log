@@ -340,6 +340,8 @@ Map<String, Map<String, String>> get englishStrings => {
         "loginPage_signUpButtonText": "Sign up",
         "loginPage_signUpQuestionText": "Already have an account?",
         "loginPage_signUpActionText": "Login.",
+        "loginPage_passwordResetQuestion": "Forgot your password?",
+        "loginPage_passwordResetAction": "Reset it.",
         "loginPage_errorUnknown": "Unknown error. Please try again later.",
         "loginPage_errorUnknownServer":
             "Unknown server error. Please try again later.",
@@ -355,5 +357,7 @@ Map<String, Map<String, String>> get englishStrings => {
             "The password you entered is incorrect.",
         "loginPage_errorEmailInUse":
             "An account with this email already exists.",
+        "loginPage_resetPasswordMessage":
+            "Instructions on how to reset your password have been sent to %s",
       },
     };
