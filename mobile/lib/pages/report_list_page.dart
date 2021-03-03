@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:mobile/pages/pro_page.dart';
+import 'package:mobile/subscription_manager.dart';
 import 'package:quiver/strings.dart';
 
 import '../comparison_report_manager.dart';
@@ -27,6 +29,7 @@ class ReportListPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var subscriptionManager = SubscriptionManager.of(context);
     var summaryReportManager = SummaryReportManager.of(context);
     var comparisonReportManager = ComparisonReportManager.of(context);
 
@@ -47,7 +50,8 @@ class ReportListPage extends StatelessWidget {
           ),
         ),
         deleteItem: _deleteItem,
-        addPageBuilder: () => SaveReportPage(),
+        addPageBuilder: () =>
+            subscriptionManager.isPro ? SaveReportPage() : ProPage(),
         editPageBuilder: (report) => SaveReportPage.edit(report),
       ),
       pickerSettings: pickerSettings.copyWith(

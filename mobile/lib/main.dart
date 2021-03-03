@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:provider/provider.dart';
 
 import 'app_manager.dart';
@@ -16,6 +17,7 @@ import 'widgets/widget.dart';
 import 'wrappers/services_wrapper.dart';
 
 void main() {
+  InAppPurchaseConnection.enablePendingPurchases();
   runApp(AnglersLog(AppManager()));
 }
 
@@ -138,6 +140,7 @@ class _AnglersLogState extends State<AnglersLog> {
     await _app.localDatabaseManager.initialize();
     await _app.locationMonitor.initialize();
     await _app.propertiesManager.initialize();
+    await _app.subscriptionManager.initialize();
 
     await _app.appPreferenceManager.initialize();
     await _app.authManager.initialize();

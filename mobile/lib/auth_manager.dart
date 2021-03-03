@@ -7,6 +7,7 @@ import 'package:quiver/strings.dart';
 
 import 'app_manager.dart';
 import 'log.dart';
+import 'utils/void_stream_controller.dart';
 import 'wrappers/firebase_auth_wrapper.dart';
 import 'wrappers/io_wrapper.dart';
 
@@ -42,8 +43,9 @@ class AuthManager {
   static const _collectionUser = "user";
 
   final _log = Log("AuthManager");
+  final _controller = VoidStreamController();
+
   final AppManager _appManager;
-  final _controller = StreamController<void>.broadcast();
 
   String _userId;
   AuthState _state = AuthState.unknown;
@@ -173,6 +175,6 @@ class AuthManager {
 
   void _setState(AuthState state) {
     _state = state;
-    _controller.add(null);
+    _controller.notify();
   }
 }

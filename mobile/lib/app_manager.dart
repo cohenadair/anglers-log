@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:mobile/wrappers/firebase_storage_wrapper.dart';
 import 'package:provider/provider.dart';
 
 import 'app_preference_manager.dart';
@@ -22,11 +21,13 @@ import 'trip_manager.dart';
 import 'user_preference_manager.dart';
 import 'wrappers/file_picker_wrapper.dart';
 import 'wrappers/firebase_auth_wrapper.dart';
+import 'wrappers/firebase_storage_wrapper.dart';
 import 'wrappers/firebase_wrapper.dart';
 import 'wrappers/firestore_wrapper.dart';
 import 'wrappers/http_wrapper.dart';
 import 'wrappers/image_compress_wrapper.dart';
 import 'wrappers/image_picker_wrapper.dart';
+import 'wrappers/in_app_purchase_wrapper.dart';
 import 'wrappers/io_wrapper.dart';
 import 'wrappers/package_info_wrapper.dart';
 import 'wrappers/path_provider_wrapper.dart';
@@ -68,6 +69,7 @@ class AppManager {
   HttpWrapper _httpWrapper;
   ImageCompressWrapper _imageCompressWrapper;
   ImagePickerWrapper _imagePickerWrapper;
+  InAppPurchaseWrapper _inAppPurchaseWrapper;
   IoWrapper _ioWrapper;
   PackageInfoWrapper _packageInfoWrapper;
   PathProviderWrapper _pathProviderWrapper;
@@ -169,7 +171,7 @@ class AppManager {
 
   SubscriptionManager get subscriptionManager {
     if (_subscriptionManager == null) {
-      _subscriptionManager = SubscriptionManager();
+      _subscriptionManager = SubscriptionManager(this);
     }
     return _subscriptionManager;
   }
@@ -200,13 +202,6 @@ class AppManager {
       _userPreferenceManager = UserPreferenceManager(this);
     }
     return _userPreferenceManager;
-  }
-
-  IoWrapper get ioWrapper {
-    if (_ioWrapper == null) {
-      _ioWrapper = IoWrapper();
-    }
-    return _ioWrapper;
   }
 
   FilePickerWrapper get filePickerWrapper {
@@ -263,6 +258,20 @@ class AppManager {
       _imagePickerWrapper = ImagePickerWrapper();
     }
     return _imagePickerWrapper;
+  }
+
+  InAppPurchaseWrapper get inAppPurchaseWrapper {
+    if (_inAppPurchaseWrapper == null) {
+      _inAppPurchaseWrapper = InAppPurchaseWrapper();
+    }
+    return _inAppPurchaseWrapper;
+  }
+
+  IoWrapper get ioWrapper {
+    if (_ioWrapper == null) {
+      _ioWrapper = IoWrapper();
+    }
+    return _ioWrapper;
   }
 
   PackageInfoWrapper get packageInfoWrapper {

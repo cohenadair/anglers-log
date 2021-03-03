@@ -14,9 +14,14 @@ const TextStyle styleHeadingSmall = TextStyle(
   fontWeight: fontWeightBold,
 );
 
-const TextStyle styleTitle = TextStyle(
+const TextStyle styleTitle1 = TextStyle(
   fontSize: 36,
   fontWeight: fontWeightBold,
+);
+
+const TextStyle styleTitle2 = TextStyle(
+  fontSize: 24,
+  color: Colors.black,
 );
 
 const TextStyle styleTitleAlert = TextStyle(
@@ -50,13 +55,24 @@ const TextStyle styleLight = TextStyle(
   color: Colors.white,
 );
 
+TextStyle styleSubtext = TextStyle(
+  fontSize: 11.0,
+  fontStyle: FontStyle.italic,
+);
+
 TextStyle styleNote(BuildContext context) =>
     Theme.of(context).textTheme.subtitle1.copyWith(
           fontStyle: FontStyle.italic,
         );
 
-TextStyle stylePrimary(BuildContext context, {bool enabled = true}) {
-  var style = Theme.of(context).textTheme.subtitle1;
+TextStyle stylePrimary(
+  BuildContext context, {
+  bool enabled = true,
+  FontWeight fontWeight,
+}) {
+  var style = Theme.of(context).textTheme.subtitle1.copyWith(
+    fontWeight: fontWeight,
+  );
   if (!enabled) {
     style = style.copyWith(
       color: Theme.of(context).disabledColor,

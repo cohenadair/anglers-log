@@ -32,6 +32,7 @@ void main() {
       mockPropertiesManager: true,
       mockPreferencesManager: true,
       mockSpeciesManager: true,
+      mockSubscriptionManager: true,
       mockSummaryReportManager: true,
       mockTimeManager: true,
       mockFirebaseWrapper: true,

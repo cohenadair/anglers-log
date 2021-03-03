@@ -18,6 +18,7 @@
 		97C146FE1CF9000F007C117D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FD1CF9000F007C117D /* Assets.xcassets */; };
 		97C147011CF9000F007C117D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FF1CF9000F007C117D /* LaunchScreen.storyboard */; };
 		AC29C2E825C05A7F000377EE /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = AC29C2E725C05A7F000377EE /* GoogleService-Info.plist */; };
+		AC97AD9625EB036A00726A46 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AC97AD9525EB036A00726A46 /* StoreKit.framework */; };
 		ACC8765825AD3EFC0027466A /* MigrationChannel.m in Sources */ = {isa = PBXBuildFile; fileRef = ACC8765725AD3EFC0027466A /* MigrationChannel.m */; };
 		ACC8768725AD3F160027466A /* CMAEntry.m in Sources */ = {isa = PBXBuildFile; fileRef = ACC8766025AD3F160027466A /* CMAEntry.m */; };
 		ACC8768825AD3F160027466A /* CMAStorageManager.m in Sources */ = {isa = PBXBuildFile; fileRef = ACC8766125AD3F160027466A /* CMAStorageManager.m */; };
@@ -76,6 +77,7 @@
 		AC29C29825C0504F000377EE /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		AC29C29A25C0508F000377EE /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		AC29C2E725C05A7F000377EE /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		AC97AD9525EB036A00726A46 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		ACC8765625AD3EFC0027466A /* MigrationChannel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MigrationChannel.h; sourceTree = "<group>"; };
 		ACC8765725AD3EFC0027466A /* MigrationChannel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MigrationChannel.m; sourceTree = "<group>"; };
 		ACC8765F25AD3F160027466A /* CMAImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CMAImage.h; sourceTree = "<group>"; };
@@ -129,6 +131,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				439A1850DAB822CCD46B845F /* libPods-Runner.a in Frameworks */,
+				AC97AD9625EB036A00726A46 /* StoreKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -301,6 +304,7 @@
 		D7F560778CFAF4806A13AC1F /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				AC97AD9525EB036A00726A46 /* StoreKit.framework */,
 				481F6A50F5D941C4B0DDD6EF /* libPods-Runner.a */,
 			);
 			name = Frameworks;

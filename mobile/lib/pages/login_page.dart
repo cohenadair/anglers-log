@@ -46,11 +46,9 @@ class _LoginPageState extends State<LoginPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
-              ClipOval(
-                child: Icon(
-                  CustomIcons.catches,
-                  size: _logoSize,
-                ),
+              Icon(
+                CustomIcons.catches,
+                size: _logoSize,
               ),
               VerticalSpace(paddingWidget),
               TitleLabel(Strings.of(context).appName),

@@ -53,6 +53,7 @@ abstract class PreferenceManager extends DataSourceFacilitator {
     for (var key in List.of(preferences.keys)) {
       putLocal(key, null);
     }
+    return null;
   }
 
   @override

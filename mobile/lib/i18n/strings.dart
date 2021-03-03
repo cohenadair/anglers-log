@@ -238,6 +238,7 @@ class Strings {
 
   String get morePageTitle => _string("morePage_title");
   String get morePageRateApp => _string("morePage_rateApp");
+  String get morePagePro => _string("morePage_pro");
 
   String get settingsPageTitle => _string("settingsPage_title");
   String get settingsPageLogout => _string("settingsPage_logout");
@@ -494,6 +495,21 @@ class Strings {
   String get loginPageErrorEmailInUse => _string("loginPage_errorEmailInUse");
   String get loginPageResetPasswordMessage =>
       _string("loginPage_resetPasswordMessage");
+  String get proPageUpgradeTitle => _string("proPage_upgradeTitle");
+  String get proPageProTitle => _string("proPage_proTitle");
+  String get proPageBackup => _string("proPage_backup");
+  String get proPageSync => _string("proPage_sync");
+  String get proPageCustomReports => _string("proPage_customReports");
+  String get proPageCustomFields => _string("proPage_customFields");
+  String get proPageYearlyTitle => _string("proPage_yearlyTitle");
+  String get proPageYearlyTrial => _string("proPage_yearlyTrial");
+  String get proPageYearlySubtext => _string("proPage_yearlySubtext");
+  String get proPageMonthlyTitle => _string("proPage_monthlyTitle");
+  String get proPageMonthlyTrial => _string("proPage_monthlyTrial");
+  String get proPageMonthlySubtext => _string("proPage_monthlySubtext");
+  String get proPageCancelTextGoogle => _string("proPage_cancelTextGoogle");
+  String get proPageCancelTextApple => _string("proPage_cancelTextApple");
+  String get proPageFetchError => _string("proPage_fetchError");
 }
 
 class StringsDelegate extends LocalizationsDelegate<Strings> {

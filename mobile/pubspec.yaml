@@ -29,6 +29,9 @@ dependencies:
   google_maps_flutter: ^0.5.25+3    # Flutter
   http: ^0.12.2                     # Dart
   image_picker: ^0.6.3+1            # Flutter
+
+  # TODO: In beta. Check back later for full release.
+  in_app_purchase: ^0.3.5+1         # Flutter
   intl: ^0.16.0                     # Dart (version restricted by flutter_localizations)
   package_info: ^0.4.3+2            # Flutter
   path: ^1.6.4                      # Dart

@@ -127,14 +127,23 @@ class PrimaryLabel extends StatelessWidget {
   final String text;
   final TextAlign align;
   final TextOverflow overflow;
+  final FontWeight fontWeight;
   final bool enabled;
 
   PrimaryLabel(
     this.text, {
     this.align,
     this.overflow,
+    this.fontWeight,
     this.enabled = true,
   });
+
+  PrimaryLabel.multiline(
+    this.text, {
+    this.align,
+    this.fontWeight,
+    this.enabled = true,
+  }) : overflow = TextOverflow.visible;
 
   @override
   Widget build(BuildContext context) {
@@ -142,7 +151,11 @@ class PrimaryLabel extends StatelessWidget {
       text,
       align: align,
       overflow: overflow,
-      style: stylePrimary(context, enabled: enabled),
+      style: stylePrimary(
+        context,
+        enabled: enabled,
+        fontWeight: fontWeight,
+      ),
     );
   }
 }
@@ -189,7 +202,7 @@ class TitleLabel extends StatelessWidget {
       ),
       child: Label(
         text,
-        style: styleTitle,
+        style: styleTitle1,
         align: align,
         overflow: overflow,
       ),
