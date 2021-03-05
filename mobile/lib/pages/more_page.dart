@@ -83,6 +83,7 @@ class MorePage extends StatelessWidget {
           presentPage: true,
         ),
         MinDivider(),
+        // TODO: Move to Settings
         _buildPageItem(
           context,
           icon: Icons.stars,

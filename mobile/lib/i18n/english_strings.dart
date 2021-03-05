@@ -90,7 +90,7 @@ Map<String, Map<String, String>> get englishStrings => {
         "photosPage_title": "Photos (%s)",
         "photosPage_emptyTitle": "No photos",
         "photosPage_emptyDescription":
-            "All photos added to catches will be displayed here. To add a catch, tap the %s icon.",
+            "All photos attached to catches will be displayed here. To add a catch, tap the %s icon.",
         "baitListPage_menuLabel": "Baits",
         "baitListPage_title": "Baits (%s)",
         "baitListPage_pickerTitle": "Select Bait",
@@ -372,6 +372,11 @@ Map<String, Map<String, String>> get englishStrings => {
         "proPage_monthlyTitle": "%s/month",
         "proPage_monthlyTrial": "+%s days free",
         "proPage_monthlySubtext": "Billed monthly",
-        "proPage_fetchError": "Unable to fetch subscription options. Please ensure your device is connected to the internet and try again later.",
+        "proPage_fetchError": "Unable to fetch subscription options. Please ensure your device is connected to the internet and try again.",
+        "proPage_upgradeSuccess": "Congratulations, you are an Anglers' Log Pro user!",
+        "proPage_restoreQuestion": "Purchased Pro on another device?",
+        "proPage_restoreAction": "Restore.",
+        "proPage_restoreNoServer": "There was an error communicating with the App Store. Please ensure your device is connected to the internet and try again.",
+        "proPage_restoreNoneFound": "There were no previous purchases found. Please ensure you are signed in to the same Apple ID with which you made the original purchase.",
       },
     };

@@ -26,7 +26,7 @@ import 'package:mobile/wrappers/firestore_wrapper.dart';
 import 'package:mobile/wrappers/http_wrapper.dart';
 import 'package:mobile/wrappers/image_compress_wrapper.dart';
 import 'package:mobile/wrappers/image_picker_wrapper.dart';
-import 'package:mobile/wrappers/in_app_purchase_wrapper.dart';
+import 'package:mobile/wrappers/purchases_wrapper.dart';
 import 'package:mobile/wrappers/io_wrapper.dart';
 import 'package:mobile/wrappers/package_info_wrapper.dart';
 import 'package:mobile/wrappers/path_provider_wrapper.dart';
@@ -95,8 +95,6 @@ class MockImageCompressWrapper extends Mock implements ImageCompressWrapper {}
 
 class MockImagePickerWrapper extends Mock implements ImagePickerWrapper {}
 
-class MockInAppPurchaseWrapper extends Mock implements InAppPurchaseWrapper {}
-
 class MockIoWrapper extends Mock implements IoWrapper {}
 
 class MockPackageInfoWrapper extends Mock implements PackageInfoWrapper {}
@@ -107,6 +105,8 @@ class MockPermissionHandlerWrapper extends Mock
     implements PermissionHandlerWrapper {}
 
 class MockPhotoManagerWrapper extends Mock implements PhotoManagerWrapper {}
+
+class MockPurchasesWrapper extends Mock implements PurchasesWrapper {}
 
 class MockServicesWrapper extends Mock implements ServicesWrapper {}
 
@@ -141,12 +141,12 @@ class MockAppManager extends Mock implements AppManager {
   MockHttpWrapper mockHttpWrapper;
   MockImageCompressWrapper mockImageCompressWrapper;
   MockImagePickerWrapper mockImagePickerWrapper;
-  MockInAppPurchaseWrapper mockInAppPurchaseWrapper;
   MockIoWrapper mockIoWrapper;
   MockPackageInfoWrapper mockPackageInfoWrapper;
   MockPathProviderWrapper mockPathProviderWrapper;
   MockPermissionHandlerWrapper mockPermissionHandlerWrapper;
   MockPhotoManagerWrapper mockPhotoManagerWrapper;
+  MockPurchasesWrapper mockPurchasesWrapper;
   MockServicesWrapper mockServicesWrapper;
   MockUrlLauncherWrapper mockUrlLauncherWrapper;
 
@@ -179,12 +179,12 @@ class MockAppManager extends Mock implements AppManager {
     bool mockHttpWrapper = false,
     bool mockImageCompressWrapper = false,
     bool mockImagePickerWrapper = false,
-    bool mockInAppPurchaseWrapper = false,
     bool mockIoWrapper = false,
     bool mockPackageInfoWrapper = false,
     bool mockPathProviderWrapper = false,
     bool mockPermissionHandlerWrapper = false,
     bool mockPhotoManagerWrapper = false,
+    bool mockPurchasesWrapper = false,
     bool mockServicesWrapper = false,
     bool mockUrlLauncherWrapper = false,
   }) {
@@ -327,11 +327,6 @@ class MockAppManager extends Mock implements AppManager {
       when(imagePickerWrapper).thenReturn(this.mockImagePickerWrapper);
     }
 
-    if (mockInAppPurchaseWrapper) {
-      this.mockInAppPurchaseWrapper = MockInAppPurchaseWrapper();
-      when(inAppPurchaseWrapper).thenReturn(this.mockInAppPurchaseWrapper);
-    }
-
     if (mockIoWrapper) {
       this.mockIoWrapper = MockIoWrapper();
       when(ioWrapper).thenReturn(this.mockIoWrapper);
@@ -356,6 +351,11 @@ class MockAppManager extends Mock implements AppManager {
     if (mockPhotoManagerWrapper) {
       this.mockPhotoManagerWrapper = MockPhotoManagerWrapper();
       when(photoManagerWrapper).thenReturn(this.mockPhotoManagerWrapper);
+    }
+
+    if (mockPurchasesWrapper) {
+      this.mockPurchasesWrapper = MockPurchasesWrapper();
+      when(purchasesWrapper).thenReturn(this.mockPurchasesWrapper);
     }
 
     if (mockServicesWrapper) {

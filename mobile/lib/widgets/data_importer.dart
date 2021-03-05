@@ -7,12 +7,12 @@ import '../i18n/strings.dart';
 import '../pages/feedback_page.dart';
 import '../pages/scroll_page.dart';
 import '../res/dimen.dart';
-import '../res/style.dart';
 import '../utils/page_utils.dart';
 import '../wrappers/file_picker_wrapper.dart';
 import 'button.dart';
 import 'text.dart';
 import 'widget.dart';
+import 'work_result.dart';
 
 /// A widget that manages importing legacy data. This widget should be embedded
 /// in a [ScrollPage].
@@ -56,8 +56,6 @@ class DataImporter extends StatefulWidget {
 }
 
 class _DataImporterState extends State<DataImporter> {
-  final double _feedbackIconSize = 40.0;
-
   _RenderState _renderState = _RenderState.none;
   LegacyImporterError _importError;
   String _importErrorDescription;
@@ -124,29 +122,10 @@ class _DataImporterState extends State<DataImporter> {
         ));
         break;
       case _RenderState.success:
-        children.add(Icon(
-          Icons.check_circle,
-          color: styleSuccess.color,
-          size: _feedbackIconSize,
-        ));
-        children.add(VerticalSpace(paddingWidgetSmall));
-        children.add(Text(
-          widget.successText,
-          style: styleSuccess,
-        ));
+        children.add(WorkResult.success(widget.successText));
         break;
       case _RenderState.error:
-        children.add(Icon(
-          Icons.error,
-          color: styleError.color,
-          size: _feedbackIconSize,
-        ));
-        children.add(VerticalSpace(paddingWidgetSmall));
-        children.add(Text(
-          widget.errorText,
-          style: styleError,
-          textAlign: TextAlign.center,
-        ));
+        children.add(WorkResult.error(widget.errorText));
         children.add(VerticalSpace(paddingWidget));
         children.add(Button(
           text: Strings.of(context).importPageSendReport,

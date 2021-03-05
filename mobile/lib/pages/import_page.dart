@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:mobile/widgets/widget.dart';
 
 import '../i18n/strings.dart';
 import '../res/dimen.dart';
 import '../widgets/data_importer.dart';
+import '../widgets/widget.dart';
 import 'scroll_page.dart';
 
 class ImportPage extends StatelessWidget {

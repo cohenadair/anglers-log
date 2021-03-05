@@ -88,8 +88,44 @@ void main() {
     expect(find.text("Custom"), findsOneWidget);
   });
 
-  testWidgets("Start/end date are the same, set range of 1 day",
-      (tester) async {
+  testWidgets("A day is added to end date", (tester) async {
+    BuildContext context;
+    DisplayDateRange picked;
+    await tester.pumpWidget(Testable(
+      (buildContext) {
+        context = buildContext;
+        return DateRangePickerPage(
+          initialValue: DisplayDateRange.yesterday,
+          onDateRangePicked: (pickedDateRange) => picked = pickedDateRange,
+        );
+      },
+      appManager: appManager,
+    ));
+
+    // Scroll so custom date range is shown.
+    await tester.drag(find.text("Last year"), Offset(0, -400));
+    await tester.pumpAndSettle();
+    await tapAndSettle(tester, find.text("Custom"));
+    await enterTextAndSettle(
+        tester, find.widgetWithText(TextField, "Start Date"), "12/01/2019");
+    await enterTextAndSettle(
+        tester, find.widgetWithText(TextField, "End Date"), "12/01/2019");
+    await tapAndSettle(tester, find.text("OK"));
+
+    var expected = DateRange(
+      startDate: DateTime(2019, 12, 1),
+      endDate: DateTime(2019, 12, 2),
+    );
+    expect(picked.value(context).startDate, expected.startDate);
+    expect(picked.value(context).endDate, expected.endDate);
+    expect(find.text("OK"), findsNothing);
+    expect(find.text("CANCEL"), findsNothing);
+
+    // Ensure the page wasn't popped from the stack.
+    expect(find.byType(DateRangePickerPage), findsOneWidget);
+  });
+
+  testWidgets("End date is clamped to the current time", (tester) async {
     BuildContext context;
     DisplayDateRange picked;
     await tester.pumpWidget(Testable(
@@ -111,7 +147,7 @@ void main() {
 
     var expected = DateRange(
       startDate: DateTime(2020, 1, 1),
-      endDate: DateTime(2020, 1, 2),
+      endDate: DateTime(2020, 1, 1),
     );
     expect(picked.value(context).startDate, expected.startDate);
     expect(picked.value(context).endDate, expected.endDate);

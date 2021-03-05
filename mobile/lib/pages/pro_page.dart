@@ -5,9 +5,13 @@ import '../res/dimen.dart';
 import '../res/gen/custom_icons.dart';
 import '../res/style.dart';
 import '../subscription_manager.dart';
+import '../utils/dialog_utils.dart';
 import '../utils/string_utils.dart';
+import '../widgets/question_answer_link.dart';
 import '../widgets/text.dart';
 import '../widgets/widget.dart';
+import '../widgets/work_result.dart';
+import '../wrappers/io_wrapper.dart';
 import 'scroll_page.dart';
 
 class ProPage extends StatefulWidget {
@@ -22,13 +26,15 @@ class _ProPageState extends State<ProPage> {
 
   Future<Subscriptions> _subscriptionsFuture;
 
+  IoWrapper get _ioWrapper => IoWrapper.of(context);
+
   SubscriptionManager get _subscriptionManager =>
       SubscriptionManager.of(context);
 
   @override
   void initState() {
     super.initState();
-    _subscriptionsFuture = _subscriptionManager.subscriptionOptions();
+    _subscriptionsFuture = _subscriptionManager.subscriptions();
   }
 
   @override
@@ -63,7 +69,7 @@ class _ProPageState extends State<ProPage> {
         VerticalSpace(paddingWidget),
         _buildFeatureRow(Strings.of(context).proPageCustomFields),
         VerticalSpace(paddingWidgetDouble),
-        _buildSubscriptionButtons(),
+        _buildSubscriptionState(),
       ],
     );
   }
@@ -82,56 +88,72 @@ class _ProPageState extends State<ProPage> {
     );
   }
 
-  Widget _buildSubscriptionButtons() {
+  Widget _buildSubscriptionState() {
+    if (_subscriptionManager.isPro) {
+      return WorkResult.success(Strings.of(context).proPageUpgradeSuccess);
+    }
+
     return FutureBuilder<Subscriptions>(
       future: _subscriptionsFuture,
       builder: (context, snapshot) {
-        Widget child;
-
-        if (snapshot.connectionState != ConnectionState.done) {
-          child = Loading();
-        } else {
-          var subs = snapshot.data;
-          if (subs == null) {
-            child = _buildError(Strings.of(context).proPageFetchError);
-          } else {
-            child = Container(
-              constraints: BoxConstraints(maxWidth: _maxButtonsContainerWidth),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  _buildSubscriptionButton(
-                    title: format(Strings.of(context).proPageYearlyTitle,
-                        [subs.yearly.price]),
-                    subtitle: format(Strings.of(context).proPageYearlyTrial,
-                        [subs.yearly.trialLengthDays]),
-                    subSubtitle: Strings.of(context).proPageYearlySubtext,
-                    onPressed: () {
-                      // TODO
-                    },
-                  ),
-                  HorizontalSpace(paddingDefault),
-                  _buildSubscriptionButton(
-                    title: format(Strings.of(context).proPageMonthlyTitle,
-                        [subs.monthly.price]),
-                    subtitle: format(Strings.of(context).proPageMonthlyTrial,
-                        [subs.monthly.trialLengthDays]),
-                    subSubtitle: Strings.of(context).proPageMonthlySubtext,
-                    onPressed: () {
-                      // TODO
-                    },
-                  ),
-                ],
-              ),
-            );
-          }
-        }
-
         return AnimatedSwitcher(
           duration: defaultAnimationDuration,
-          child: child,
+          child: snapshot.connectionState != ConnectionState.done
+              ? Loading()
+              : _buildSubscriptionOptions(snapshot.data),
         );
       },
+    );
+  }
+
+  Widget _buildSubscriptionOptions(Subscriptions subscriptions) {
+    if (subscriptions == null) {
+      return WorkResult.error(Strings.of(context).proPageFetchError);
+    }
+
+    Widget restore = Empty();
+    // if (_ioWrapper.isIOS) {
+      restore = Padding(
+        padding: insetsTopWidget,
+        child: QuestionAnswerLink(
+          question: Strings.of(context).proPageRestoreQuestion,
+          actionText: Strings.of(context).proPageRestoreAction,
+          action: _restoreSubscription,
+        ),
+      );
+    // }
+
+    return Column(
+      children: [
+        Container(
+          constraints: BoxConstraints(maxWidth: _maxButtonsContainerWidth),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              _buildSubscriptionButton(
+                title: format(Strings.of(context).proPageYearlyTitle,
+                    [subscriptions.yearly.price]),
+                subtitle: format(Strings.of(context).proPageYearlyTrial,
+                    [subscriptions.yearly.trialLengthDays]),
+                subSubtitle: Strings.of(context).proPageYearlySubtext,
+                onPressed: () => _subscriptionManager
+                    .purchaseSubscription(subscriptions.yearly),
+              ),
+              HorizontalSpace(paddingDefault),
+              _buildSubscriptionButton(
+                title: format(Strings.of(context).proPageMonthlyTitle,
+                    [subscriptions.monthly.price]),
+                subtitle: format(Strings.of(context).proPageMonthlyTrial,
+                    [subscriptions.monthly.trialLengthDays]),
+                subSubtitle: Strings.of(context).proPageMonthlySubtext,
+                onPressed: () => _subscriptionManager
+                    .purchaseSubscription(subscriptions.monthly),
+              ),
+            ],
+          ),
+        ),
+        restore,
+      ],
     );
   }
 
@@ -165,11 +187,22 @@ class _ProPageState extends State<ProPage> {
     );
   }
 
-  Widget _buildError(String msg) {
-    return Label.multiline(
-      msg,
-      style: styleError,
-      align: TextAlign.center,
-    );
+  void _restoreSubscription() async {
+    var result = await _subscriptionManager.fetchPastPurchases();
+    switch (result) {
+      case FetchPastPurchasesResult.error:
+      case FetchPastPurchasesResult.noneFound:
+        showOkDialog(
+          context: context,
+          title: Strings.of(context).error,
+          description: Text(result == FetchPastPurchasesResult.error
+              ? Strings.of(context).proPageRestoreNoServer
+              : Strings.of(context).proPageRestoreNoneFound),
+        );
+        break;
+      case FetchPastPurchasesResult.success:
+        // Nothing to do.
+        break;
+    }
   }
 }

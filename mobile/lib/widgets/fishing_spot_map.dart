@@ -95,10 +95,12 @@ class FishingSpotMap extends StatefulWidget {
     this.onCurrentLocationPressed,
     this.onMapTypeChanged,
     this.help,
-    this.markers,
+    this.markers = const {},
     this.children = const [],
   })  : assert(showMyLocationButton != null),
-        assert(showZoomExtentsButton != null);
+        assert(showZoomExtentsButton != null),
+        assert(markers != null),
+        assert(children != null);
 
   @override
   _FishingSpotMapState createState() => _FishingSpotMapState();

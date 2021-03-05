@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:provider/provider.dart';
 
 import 'app_manager.dart';
@@ -17,7 +16,6 @@ import 'widgets/widget.dart';
 import 'wrappers/services_wrapper.dart';
 
 void main() {
-  InAppPurchaseConnection.enablePendingPurchases();
   runApp(AnglersLog(AppManager()));
 }
 

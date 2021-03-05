@@ -510,6 +510,11 @@ class Strings {
   String get proPageCancelTextGoogle => _string("proPage_cancelTextGoogle");
   String get proPageCancelTextApple => _string("proPage_cancelTextApple");
   String get proPageFetchError => _string("proPage_fetchError");
+  String get proPageUpgradeSuccess => _string("proPage_upgradeSuccess");
+  String get proPageRestoreQuestion => _string("proPage_restoreQuestion");
+  String get proPageRestoreAction => _string("proPage_restoreAction");
+  String get proPageRestoreNoServer => _string("proPage_restoreNoServer");
+  String get proPageRestoreNoneFound => _string("proPage_restoreNoneFound");
 }
 
 class StringsDelegate extends LocalizationsDelegate<Strings> {

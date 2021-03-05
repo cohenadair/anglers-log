@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:mobile/i18n/strings.dart';
-import 'package:mobile/res/dimen.dart';
-import 'package:mobile/res/gen/custom_icons.dart';
-import 'package:mobile/res/style.dart';
-import 'package:mobile/widgets/text.dart';
+
+import '../i18n/strings.dart';
+import '../res/dimen.dart';
+import '../res/gen/custom_icons.dart';
+import '../res/style.dart';
+import '../widgets/text.dart';
 
 /// The page shown while initialization futures are completing.
 class LandingPage extends StatelessWidget {

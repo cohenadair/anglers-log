@@ -19,6 +19,7 @@ class UserPreferenceManager extends PreferenceManager {
   static const _keyRateTimerStartedAt = "rate_timer_started_at";
   static const _keyDidRateApp = "did_rate_app";
   static const _keyDidOnboard = "did_onboard";
+  static const _keyIsPro = "is_pro";
 
   static const _keySelectedReportId = "selected_report_id";
 
@@ -69,6 +70,10 @@ class UserPreferenceManager extends PreferenceManager {
   set didOnboard(bool onboarded) => put(_keyDidOnboard, onboarded);
 
   bool get didOnboard => preferences[_keyDidOnboard] ?? false;
+
+  set isPro(bool isPro) => put(_keyIsPro, isPro);
+
+  bool get isPro => preferences[_keyIsPro] ?? false;
 
   set selectedReportId(Id id) => putId(_keySelectedReportId, id);
 

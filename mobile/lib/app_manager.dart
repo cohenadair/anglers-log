@@ -27,7 +27,7 @@ import 'wrappers/firestore_wrapper.dart';
 import 'wrappers/http_wrapper.dart';
 import 'wrappers/image_compress_wrapper.dart';
 import 'wrappers/image_picker_wrapper.dart';
-import 'wrappers/in_app_purchase_wrapper.dart';
+import 'wrappers/purchases_wrapper.dart';
 import 'wrappers/io_wrapper.dart';
 import 'wrappers/package_info_wrapper.dart';
 import 'wrappers/path_provider_wrapper.dart';
@@ -69,12 +69,12 @@ class AppManager {
   HttpWrapper _httpWrapper;
   ImageCompressWrapper _imageCompressWrapper;
   ImagePickerWrapper _imagePickerWrapper;
-  InAppPurchaseWrapper _inAppPurchaseWrapper;
   IoWrapper _ioWrapper;
   PackageInfoWrapper _packageInfoWrapper;
   PathProviderWrapper _pathProviderWrapper;
   PermissionHandlerWrapper _permissionHandlerWrapper;
   PhotoManagerWrapper _photoManagerWrapper;
+  PurchasesWrapper _purchasesWrapper;
   ServicesWrapper _servicesWrapper;
   UrlLauncherWrapper _urlLauncherWrapper;
 
@@ -260,13 +260,6 @@ class AppManager {
     return _imagePickerWrapper;
   }
 
-  InAppPurchaseWrapper get inAppPurchaseWrapper {
-    if (_inAppPurchaseWrapper == null) {
-      _inAppPurchaseWrapper = InAppPurchaseWrapper();
-    }
-    return _inAppPurchaseWrapper;
-  }
-
   IoWrapper get ioWrapper {
     if (_ioWrapper == null) {
       _ioWrapper = IoWrapper();
@@ -300,6 +293,13 @@ class AppManager {
       _photoManagerWrapper = PhotoManagerWrapper();
     }
     return _photoManagerWrapper;
+  }
+
+  PurchasesWrapper get purchasesWrapper {
+    if (_purchasesWrapper == null) {
+      _purchasesWrapper = PurchasesWrapper();
+    }
+    return _purchasesWrapper;
   }
 
   ServicesWrapper get servicesWrapper {

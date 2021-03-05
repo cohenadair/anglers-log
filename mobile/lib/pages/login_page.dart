@@ -1,4 +1,3 @@
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
 import '../auth_manager.dart';
@@ -10,6 +9,7 @@ import '../utils/dialog_utils.dart';
 import '../utils/string_utils.dart';
 import '../widgets/button.dart';
 import '../widgets/input_controller.dart';
+import '../widgets/question_answer_link.dart';
 import '../widgets/text.dart';
 import '../widgets/text_input.dart';
 import '../widgets/widget.dart';
@@ -120,21 +120,10 @@ class _LoginPageState extends State<LoginPage> {
       };
     }
 
-    return RichText(
-      text: TextSpan(children: [
-        TextSpan(
-          text: question,
-          style: TextStyle(
-            color: Colors.black,
-          ),
-        ),
-        TextSpan(text: " "),
-        TextSpan(
-          text: action,
-          style: styleHyperlink,
-          recognizer: TapGestureRecognizer()..onTap = onActionTapped,
-        )
-      ]),
+    return QuestionAnswerLink(
+      question: question,
+      actionText: action,
+      action: onActionTapped,
     );
   }
 

@@ -48,7 +48,7 @@ class AuthManager {
   final AppManager _appManager;
 
   String _userId;
-  AuthState _state = AuthState.unknown;
+  var _state = AuthState.unknown;
 
   AuthManager(this._appManager);
 
