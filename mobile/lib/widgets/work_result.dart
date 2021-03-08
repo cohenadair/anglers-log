@@ -34,7 +34,8 @@ class WorkResult extends StatelessWidget {
         VerticalSpace(paddingWidgetSmall),
         Text(
           description,
-          style: styleSuccess,
+          style: _style,
+          textAlign: TextAlign.center,
         ),
       ],
     );

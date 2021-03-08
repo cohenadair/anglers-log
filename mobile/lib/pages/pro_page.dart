@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:quiver/strings.dart';
 
 import '../i18n/strings.dart';
 import '../res/dimen.dart';
@@ -25,6 +26,7 @@ class _ProPageState extends State<ProPage> {
   static const _maxButtonsContainerWidth = 300.0;
 
   Future<Subscriptions> _subscriptionsFuture;
+  var _isPendingTransaction = false;
 
   IoWrapper get _ioWrapper => IoWrapper.of(context);
 
@@ -89,20 +91,29 @@ class _ProPageState extends State<ProPage> {
   }
 
   Widget _buildSubscriptionState() {
-    if (_subscriptionManager.isPro) {
-      return WorkResult.success(Strings.of(context).proPageUpgradeSuccess);
+    Widget child;
+
+    if (_isPendingTransaction) {
+      child = Loading();
+    } else if (_subscriptionManager.isPro) {
+      child = WorkResult.success(Strings.of(context).proPageUpgradeSuccess);
+    } else {
+      child = FutureBuilder<Subscriptions>(
+        future: _subscriptionsFuture,
+        builder: (context, snapshot) {
+          return AnimatedSwitcher(
+            duration: defaultAnimationDuration,
+            child: snapshot.connectionState != ConnectionState.done
+                ? Loading()
+                : _buildSubscriptionOptions(snapshot.data),
+          );
+        },
+      );
     }
 
-    return FutureBuilder<Subscriptions>(
-      future: _subscriptionsFuture,
-      builder: (context, snapshot) {
-        return AnimatedSwitcher(
-          duration: defaultAnimationDuration,
-          child: snapshot.connectionState != ConnectionState.done
-              ? Loading()
-              : _buildSubscriptionOptions(snapshot.data),
-        );
-      },
+    return AnimatedSwitcher(
+      duration: defaultAnimationDuration,
+      child: child,
     );
   }
 
@@ -110,18 +121,6 @@ class _ProPageState extends State<ProPage> {
     if (subscriptions == null) {
       return WorkResult.error(Strings.of(context).proPageFetchError);
     }
-
-    Widget restore = Empty();
-    // if (_ioWrapper.isIOS) {
-      restore = Padding(
-        padding: insetsTopWidget,
-        child: QuestionAnswerLink(
-          question: Strings.of(context).proPageRestoreQuestion,
-          actionText: Strings.of(context).proPageRestoreAction,
-          action: _restoreSubscription,
-        ),
-      );
-    // }
 
     return Column(
       children: [
@@ -131,78 +130,112 @@ class _ProPageState extends State<ProPage> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               _buildSubscriptionButton(
-                title: format(Strings.of(context).proPageYearlyTitle,
-                    [subscriptions.yearly.price]),
-                subtitle: format(Strings.of(context).proPageYearlyTrial,
-                    [subscriptions.yearly.trialLengthDays]),
-                subSubtitle: Strings.of(context).proPageYearlySubtext,
-                onPressed: () => _subscriptionManager
-                    .purchaseSubscription(subscriptions.yearly),
+                sub: subscriptions.yearly,
+                priceText: Strings.of(context).proPageYearlyTitle,
+                trialText: Strings.of(context).proPageYearlyTrial,
+                billingFrequencyText: Strings.of(context).proPageYearlySubtext,
               ),
               HorizontalSpace(paddingDefault),
               _buildSubscriptionButton(
-                title: format(Strings.of(context).proPageMonthlyTitle,
-                    [subscriptions.monthly.price]),
-                subtitle: format(Strings.of(context).proPageMonthlyTrial,
-                    [subscriptions.monthly.trialLengthDays]),
-                subSubtitle: Strings.of(context).proPageMonthlySubtext,
-                onPressed: () => _subscriptionManager
-                    .purchaseSubscription(subscriptions.monthly),
+                sub: subscriptions.monthly,
+                priceText: Strings.of(context).proPageMonthlyTitle,
+                trialText: Strings.of(context).proPageMonthlyTrial,
+                billingFrequencyText: Strings.of(context).proPageMonthlySubtext,
               ),
             ],
           ),
         ),
-        restore,
+        Padding(
+          padding: insetsTopWidget,
+          child: QuestionAnswerLink(
+            question: Strings.of(context).proPageRestoreQuestion,
+            actionText: Strings.of(context).proPageRestoreAction,
+            action: _restoreSubscription,
+          ),
+        ),
       ],
     );
   }
 
   Widget _buildSubscriptionButton({
-    String title,
-    String subtitle,
-    String subSubtitle,
-    VoidCallback onPressed,
+    @required Subscription sub,
+    @required String priceText,
+    @required String trialText,
+    @required String billingFrequencyText,
   }) {
+    assert(sub != null);
+    assert(isNotEmpty(priceText));
+    assert(isNotEmpty(trialText));
+    assert(isNotEmpty(billingFrequencyText));
+
     return Expanded(
-      child: RaisedButton(
-        padding: insetsHorizontalDefaultVerticalSmall,
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            PrimaryLabel(
-              title,
-              fontWeight: fontWeightBold,
-            ),
-            VerticalSpace(paddingTiny),
-            Label(subtitle),
-            VerticalSpace(paddingTiny),
-            Label(
-              subSubtitle,
-              style: styleSubtext,
-            ),
-          ],
+      child: ElevatedButton(
+        child: Padding(
+          padding: insetsVerticalWidgetSmall,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              PrimaryLabel(
+                format(priceText, [sub.price]),
+                fontWeight: fontWeightBold,
+              ),
+              VerticalSpace(paddingTiny),
+              Label(format(trialText, [sub.trialLengthDays])),
+              VerticalSpace(paddingTiny),
+              Label(
+                billingFrequencyText,
+                style: styleSubtext,
+              ),
+            ],
+          ),
         ),
-        onPressed: onPressed,
+        onPressed: () => _purchaseSubscription(sub),
       ),
     );
   }
 
-  void _restoreSubscription() async {
-    var result = await _subscriptionManager.fetchPastPurchases();
-    switch (result) {
-      case FetchPastPurchasesResult.error:
-      case FetchPastPurchasesResult.noneFound:
-        showOkDialog(
+  void _restoreSubscription() {
+    _setIsPendingTransaction(true);
+
+    _subscriptionManager.restoreSubscription().then((result) {
+      _setIsPendingTransaction(false);
+
+      String dialogMessage;
+      switch (result) {
+        case RestoreSubscriptionResult.noSubscriptionsFound:
+          dialogMessage = _ioWrapper.isAndroid
+              ? Strings.of(context).proPageRestoreNoneFoundGooglePlay
+              : Strings.of(context).proPageRestoreNoneFoundAppStore;
+          break;
+        case RestoreSubscriptionResult.error:
+          dialogMessage = Strings.of(context).proPageRestoreError;
+          break;
+        case RestoreSubscriptionResult.success:
+          // Nothing to do.
+          break;
+      }
+
+      // Something went wrong, tell the user to make sure they're signed in to
+      // the correct storefront account.
+      if (isNotEmpty(dialogMessage)) {
+        showErrorDialog(
           context: context,
-          title: Strings.of(context).error,
-          description: Text(result == FetchPastPurchasesResult.error
-              ? Strings.of(context).proPageRestoreNoServer
-              : Strings.of(context).proPageRestoreNoneFound),
+          description: Text(dialogMessage),
         );
-        break;
-      case FetchPastPurchasesResult.success:
-        // Nothing to do.
-        break;
-    }
+      }
+    });
+  }
+
+  void _purchaseSubscription(Subscription sub) {
+    _setIsPendingTransaction(true);
+    _subscriptionManager
+        .purchaseSubscription(sub)
+        .then((_) => _setIsPendingTransaction(false));
+  }
+
+  void _setIsPendingTransaction(bool pending) {
+    setState(() {
+      _isPendingTransaction = pending;
+    });
   }
 }

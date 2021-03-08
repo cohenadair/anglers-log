@@ -71,8 +71,8 @@ TextStyle stylePrimary(
   FontWeight fontWeight,
 }) {
   var style = Theme.of(context).textTheme.subtitle1.copyWith(
-    fontWeight: fontWeight,
-  );
+        fontWeight: fontWeight,
+      );
   if (!enabled) {
     style = style.copyWith(
       color: Theme.of(context).disabledColor,

@@ -2,37 +2,41 @@ import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
+import 'package:purchases_flutter/purchases_flutter.dart';
 
 import 'app_manager.dart';
+import 'auth_manager.dart';
 import 'log.dart';
-import 'user_preference_manager.dart';
+import 'properties_manager.dart';
 import 'utils/void_stream_controller.dart';
 import 'wrappers/purchases_wrapper.dart';
-import 'wrappers/io_wrapper.dart';
 
 enum SubscriptionState {
-  /// Subscription is being processed by the platform's storefront. This state
-  /// is only temporary for a short period after a purchase is made.
-  pending,
   pro,
   free,
 }
 
-enum FetchPastPurchasesResult {
+enum RestoreSubscriptionResult {
+  noSubscriptionsFound,
   error,
-  noneFound,
   success,
 }
 
+/// Manages a user's subscription state. A middleman between the app and the
+/// RevenueCat SDK.
+///
+/// Sandbox testing notes:
+/// - iOS subscriptions will auto-review five times before becoming inactive.
+///   There's nothing to do here but wait. For wait times, see
+///   https://help.apple.com/app-store-connect/#/dev7e89e149d.
 class SubscriptionManager {
   static SubscriptionManager of(BuildContext context) =>
       Provider.of<AppManager>(context, listen: false).subscriptionManager;
 
-  static const _idYearlyApple = "pro_yearly";
-  static const _idMonthlyApple = "pro_monthly";
-  static const _idYearlyGoogle = "yearly_pro";
-  static const _idMonthlyGoogle = "monthly_pro";
+  static const _debugPurchases = false;
+  static const _idProEntitlement = "pro";
 
   static const _trialDaysYearly = 14;
   static const _trialDaysMonthly = 7;
@@ -46,168 +50,111 @@ class SubscriptionManager {
 
   SubscriptionManager(this._appManager);
 
-  PurchasesWrapper get _iapWrapper => _appManager.purchasesWrapper;
+  AuthManager get _authManager => _appManager.authManager;
 
-  IoWrapper get _ioWrapper => _appManager.ioWrapper;
+  PropertiesManager get _propertiesManager => _appManager.propertiesManager;
 
-  UserPreferenceManager get _userPreferenceManager =>
-      _appManager.userPreferenceManager;
+  PurchasesWrapper get _purchasesWrapper => _appManager.purchasesWrapper;
+
+  bool get isFree => _state == SubscriptionState.free;
 
   bool get isPro => _state == SubscriptionState.pro;
-  // bool get isPro => true;
 
   /// A [Stream] that fires events when [state] updates. Listeners should
   /// access the [state] property directly, as it will always have a valid
   /// value, unlike the [AsyncSnapshot] passed to the listener function.
-  Stream<SubscriptionState> get stream => _controller.stream;
+  Stream<void> get stream => _controller.stream;
 
   Future<void> initialize() async {
-    // Fetch the latest purchase data so we're always up to date. Note that we
-    // cannot do this here on iOS because Apple requires previous purchases to
-    // be restored via a "Restore" button, rather than automatically in the
-    // background.
-    if (_ioWrapper.isAndroid) {
-      await fetchPastPurchases();
-    }
+    // Setup RevenueCat.
+    await _purchasesWrapper.setup(_propertiesManager.revenueCatApiKey);
+    _purchasesWrapper.setDebugEnabled(_debugPurchases);
 
-    // Listen for purchase updates.
-    // TODO
-    // _iapWrapper.purchaseUpdatedStream.listen(_processPurchaseDetails);
+    // Allows the same Apple ID/Google account to be used to restore purchases
+    // on multiple Anglers' Log accounts, since IAPs are tied to storefront IDs.
+    _purchasesWrapper.setAllowSharingStoreAccount(true);
+
+    // Setup purchase state listener.
+    _purchasesWrapper
+        .addPurchaserInfoUpdateListener(_setStateFromPurchaserInfo);
+
+    _authManager.stream.listen((_) {
+      if (_authManager.state == AuthState.loggedIn) {
+        _purchasesWrapper.identify(_authManager.userId);
+      } else {
+        _purchasesWrapper.reset();
+      }
+    });
   }
 
-  Future<bool> purchaseSubscription(Subscription sub) {
-    // From here, the purchase is handled by the App Store and Google Play.
-    // Updates are delivered to purchaseUpdatedStream.
-    // TODO
-    // return _iapWrapper.buyNonConsumable(
-    //   purchaseParam: PurchaseParam(
-    //     productDetails: sub.details,
-    //   ),
-    // );
-    return Future.value(false);
+  Future<void> purchaseSubscription(Subscription sub) async {
+    // Note that this method doesn't return an error or result object because
+    // purchase errors are shown by the underlying storefront UI.
+    try {
+      _setStateFromPurchaserInfo(
+          await _purchasesWrapper.purchasePackage(sub.package));
+    } on PlatformException catch (e) {
+      if (PurchasesErrorHelper.getErrorCode(e) !=
+          PurchasesErrorCode.purchaseCancelledError) {
+        _log.e("Purchase error: ${e.message}");
+      }
+    }
+  }
+
+  Future<RestoreSubscriptionResult> restoreSubscription() async {
+    try {
+      _setStateFromPurchaserInfo(await _purchasesWrapper.restoreTransactions());
+      return isFree
+          ? RestoreSubscriptionResult.noSubscriptionsFound
+          : RestoreSubscriptionResult.success;
+    } on PlatformException catch (e) {
+      _log.e("Purchase restore error: ${e.message}");
+      return RestoreSubscriptionResult.error;
+    }
   }
 
   Future<Subscriptions> subscriptions() async {
-    // TODO
-    // if (!(await _iapWrapper.isAvailable())) {
-    //   _log.e("Store is unavailable");
-    //   return null;
-    // }
+    var offerings = await _purchasesWrapper.getOfferings();
 
-    // var response = await _iapWrapper.queryProductDetails(_ioWrapper.isAndroid
-    //     ? {_idMonthlyGoogle, _idYearlyGoogle}
-    //     : {_idMonthlyApple, _idYearlyApple});
-    //
-    // if (response.notFoundIDs.isNotEmpty) {
-    //   _log.e("Product IDs not found: ${response.notFoundIDs}");
-    //   return null;
-    // }
-    //
-    // Subscription monthly;
-    // Subscription yearly;
-    //
-    // for (var product in response.productDetails) {
-    //   switch (product.id) {
-    //     case _idYearlyApple:
-    //       yearly = Subscription(_trialDaysYearly, product);
-    //       break;
-    //     case _idMonthlyApple:
-    //       monthly = Subscription(_trialDaysMonthly, product);
-    //       break;
-    //     case _idYearlyGoogle:
-    //       yearly = Subscription(_trialDaysYearly, product);
-    //       break;
-    //     case _idMonthlyGoogle:
-    //       monthly = Subscription(_trialDaysMonthly, product);
-    //       break;
-    //     default:
-    //       _log.e("Invalid product ID: ${product.id}");
-    //   }
-    // }
-    //
-    // if (monthly == null || yearly == null) {
-    //   _log.e("Failed to get all subscriptions");
-    //   return null;
-    // }
-    //
-    // return Subscriptions(monthly, yearly);
-    return null;
-  }
+    if (offerings.current == null) {
+      _log.e("Current offering is null");
+      return null;
+    }
 
-  // TODO
-  // void _processPurchaseDetails(List<PurchaseDetails> purchases) async {
-  //   if (purchases.isEmpty) {
-  //     _log.d("No purchases found");
-  //   }
-  //
-  //   for (var purchase in purchases) {
-  //     _log.d("PurchaseDetails{id=${purchase.productID}; "
-  //         "status=${purchase.status}; "
-  //         "error=${purchase.error?.code}}");
-  //
-  //     switch (purchase.status) {
-  //       case PurchaseStatus.pending:
-  //         _setState(SubscriptionState.pending);
-  //         break;
-  //       case PurchaseStatus.purchased:
-  //         _setState(SubscriptionState.pro);
-  //         break;
-  //       case PurchaseStatus.error:
-  //         // Happens if the user cancels or if there was a payment problem.
-  //         // Payment issues are shown to the user via system UI.
-  //         _setState(SubscriptionState.free);
-  //         break;
-  //     }
-  //
-  //     // Required by both stores.
-  //     if (purchase.pendingCompletePurchase) {
-  //       await _iapWrapper.completePurchase(purchase);
-  //     }
-  //   }
-  // }
+    if (offerings.current.availablePackages.isEmpty) {
+      _log.e("Current offering has no available packages");
+      return null;
+    }
 
-  /// Fetches past purchases for the current device. Note that on iOS this may
-  /// prompt users to enter their App Store credentials and therefore, should
-  /// only be called after user interaction, such as tapping a "Restore" button.
-  Future<FetchPastPurchasesResult> fetchPastPurchases() async {
-    // TODO
-    // var response = await _iapWrapper.queryPastPurchases();
-    //
-    // if (response.error == null) {
-    //   if (response.pastPurchases.isEmpty) {
-    //     return FetchPastPurchasesResult.noneFound;
-    //   } else {
-    //     _processPurchaseDetails(response.pastPurchases);
-    //     return FetchPastPurchasesResult.success;
-    //   }
-    // }
-
-    // Something went wrong, set the state to what is already in preferences for
-    // now.
-    // TODO
-    // _log.d("Error fetching past purchases: ${response.error.message}");
-    _setState(_userPreferenceManager.isPro
-        ? SubscriptionState.pro
-        : SubscriptionState.free);
-
-    return FetchPastPurchasesResult.error;
+    return Subscriptions(
+      Subscription(offerings.current.monthly, _trialDaysMonthly),
+      Subscription(offerings.current.annual, _trialDaysYearly),
+    );
   }
 
   void _setState(SubscriptionState state) {
-    _log.d("Update state: $state");
+    if (_state == state) {
+      return;
+    }
+    _log.d("Updated state: $state");
     _state = state;
-    _userPreferenceManager.isPro = isPro;
     _controller.notify();
+  }
+
+  void _setStateFromPurchaserInfo(PurchaserInfo purchaserInfo) {
+    _setState(purchaserInfo.entitlements.all[_idProEntitlement].isActive
+        ? SubscriptionState.pro
+        : SubscriptionState.free);
   }
 }
 
 class Subscription {
+  final Package package;
   final int trialLengthDays;
 
-  Subscription(this.trialLengthDays);
+  Subscription(this.package, this.trialLengthDays);
 
-  // TODO
-  String get price => "\$2.99";
+  String get price => package.product.priceString;
 }
 
 /// A convenience class that stores subscription options. A single class like

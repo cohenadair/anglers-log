@@ -421,11 +421,12 @@ class WatermarkLogo extends StatelessWidget {
 }
 
 class TransparentAppBar extends AppBar {
-  TransparentAppBar(BuildContext context) : super(
-    backgroundColor: Colors.transparent,
-    elevation: 0.0,
-    leading: CloseButton(
-      color: Theme.of(context).primaryColor,
-    ),
-  );
+  TransparentAppBar(BuildContext context)
+      : super(
+          backgroundColor: Colors.transparent,
+          elevation: 0.0,
+          leading: CloseButton(
+            color: Theme.of(context).primaryColor,
+          ),
+        );
 }

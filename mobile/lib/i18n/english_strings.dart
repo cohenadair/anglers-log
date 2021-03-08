@@ -364,19 +364,25 @@ Map<String, Map<String, String>> get englishStrings => {
         "proPage_proTitle": "Pro",
         "proPage_backup": "Automatically backup all your data to the cloud",
         "proPage_sync": "Sync data across all your devices",
-        "proPage_customReports": "Custom reports and filters",
-        "proPage_customFields": "Add custom fields to catches and baits",
+        "proPage_customReports": "Create custom reports and filters",
+        "proPage_customFields": "Create custom input fields",
         "proPage_yearlyTitle": "%s/year",
         "proPage_yearlyTrial": "+%s days free",
         "proPage_yearlySubtext": "Billed annually",
         "proPage_monthlyTitle": "%s/month",
         "proPage_monthlyTrial": "+%s days free",
         "proPage_monthlySubtext": "Billed monthly",
-        "proPage_fetchError": "Unable to fetch subscription options. Please ensure your device is connected to the internet and try again.",
-        "proPage_upgradeSuccess": "Congratulations, you are an Anglers' Log Pro user!",
+        "proPage_fetchError":
+            "Unable to fetch subscription options. Please ensure your device is connected to the internet and try again.",
+        "proPage_upgradeSuccess":
+            "Congratulations, you are an Anglers' Log Pro user!",
         "proPage_restoreQuestion": "Purchased Pro on another device?",
         "proPage_restoreAction": "Restore.",
-        "proPage_restoreNoServer": "There was an error communicating with the App Store. Please ensure your device is connected to the internet and try again.",
-        "proPage_restoreNoneFound": "There were no previous purchases found. Please ensure you are signed in to the same Apple ID with which you made the original purchase.",
+        "proPage_restoreNoneFoundAppStore":
+            "There were no previous purchases found. Please ensure you are signed in to the same Apple ID with which you made the original purchase.",
+        "proPage_restoreNoneFoundGooglePlay":
+            "There were no previous purchases found. Please ensure you are signed in to the same Google account with which you made the original purchase.",
+        "proPage_restoreError":
+            "Unexpected error occurred. Please ensure your device is connected to the internet and try again.",
       },
     };

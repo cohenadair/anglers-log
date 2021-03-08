@@ -507,14 +507,15 @@ class Strings {
   String get proPageMonthlyTitle => _string("proPage_monthlyTitle");
   String get proPageMonthlyTrial => _string("proPage_monthlyTrial");
   String get proPageMonthlySubtext => _string("proPage_monthlySubtext");
-  String get proPageCancelTextGoogle => _string("proPage_cancelTextGoogle");
-  String get proPageCancelTextApple => _string("proPage_cancelTextApple");
   String get proPageFetchError => _string("proPage_fetchError");
   String get proPageUpgradeSuccess => _string("proPage_upgradeSuccess");
   String get proPageRestoreQuestion => _string("proPage_restoreQuestion");
   String get proPageRestoreAction => _string("proPage_restoreAction");
-  String get proPageRestoreNoServer => _string("proPage_restoreNoServer");
-  String get proPageRestoreNoneFound => _string("proPage_restoreNoneFound");
+  String get proPageRestoreNoneFoundAppStore =>
+      _string("proPage_restoreNoneFoundAppStore");
+  String get proPageRestoreNoneFoundGooglePlay =>
+      _string("proPage_restoreNoneFoundGooglePlay");
+  String get proPageRestoreError => _string("proPage_restoreError");
 }
 
 class StringsDelegate extends LocalizationsDelegate<Strings> {
