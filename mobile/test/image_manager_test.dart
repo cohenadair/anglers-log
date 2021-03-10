@@ -37,6 +37,8 @@ void main() {
     when(directory.list(recursive: anyNamed("recursive")))
         .thenAnswer((_) => Stream.empty());
 
+    when(appManager.mockSubscriptionManager.stream)
+        .thenAnswer((_) => MockStream<void>());
     when(appManager.mockSubscriptionManager.isPro).thenReturn(false);
 
     when(appManager.mockImageCompressWrapper.compress(any, any, any))
@@ -260,6 +262,8 @@ void main() {
     verifyNever(appManager.mockSubscriptionManager.isPro);
 
     // File doesn't exist, but user isn't pro.
+    when(appManager.mockSubscriptionManager.stream)
+        .thenAnswer((_) => MockStream<void>());
     when(appManager.mockSubscriptionManager.isPro).thenReturn(false);
     when(file.exists()).thenAnswer((_) => Future.value(false));
     expect(await imageManager.image(context, fileName: "test.jpg"), isNull);

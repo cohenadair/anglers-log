@@ -15,7 +15,6 @@ import '../utils/page_utils.dart';
 import '../utils/store_utils.dart';
 import '../widgets/list_item.dart';
 import '../widgets/widget.dart';
-import 'pro_page.dart';
 import 'scroll_page.dart';
 
 class MorePage extends StatelessWidget {

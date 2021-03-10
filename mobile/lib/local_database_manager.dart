@@ -1,8 +1,10 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sqflite/sqflite.dart';
+import 'package:sqflite/utils/utils.dart';
 
 import 'app_manager.dart';
 import 'database/sqlite_open_helper.dart';
@@ -54,26 +56,6 @@ class LocalDatabaseManager {
         0;
   }
 
-  /// Returns `true` if the row from the given table with the given ID was
-  /// updated.
-  Future<bool> _updateId(
-      String tableName, Id id, Map<String, dynamic> values) async {
-    return await _database.update(
-          tableName,
-          values,
-          where: "id = ?",
-          whereArgs: [id.uint8List],
-        ) >
-        0;
-  }
-
-  /// Returns true if the given ID exists in the given table; false otherwise.
-  Future<bool> _idExists(String tableName, Id id) async {
-    var count = Sqflite.firstIntValue(await _database.rawQuery(
-        "SELECT COUNT(*) FROM $tableName WHERE id = ?", [id.uint8List]));
-    return count != null && count > 0;
-  }
-
   /// Allows a raw query to be sent to the database.
   Future<List<Map<String, dynamic>>> query(String sql, [List<dynamic> args]) {
     return _database.rawQuery(sql, args);
@@ -87,32 +69,16 @@ class LocalDatabaseManager {
     return await _database.rawUpdate(query, args) > 0;
   }
 
-  /// Inserts a new [Entity] into the given [tableName] or updates the existing
-  /// [Entity] if one with the same ID already exists.
-  Future<bool> insertOrUpdateEntity(
-      Id entityId, Map<String, dynamic> map, String tableName) async {
-    if (await _idExists(tableName, entityId)) {
-      // Update if entity with ID already exists.
-      if (await _updateId(tableName, entityId, map)) {
-        return true;
-      } else {
-        _log.e("Failed to update $tableName($entityId");
-      }
-    } else {
-      // Otherwise, create new entity.
-      if (await insert(tableName, map)) {
-        return true;
-      } else {
-        _log.e("Failed to insert $tableName($entityId)");
-      }
-    }
-    return false;
-  }
-
   /// Deletes a given [Entity] from the given [tableName].
   Future<bool> deleteEntity(Id entityId, String tableName) async {
+    // For details on the hex requirement, see
+    // https://github.com/tekartik/sqflite/issues/608.
     var id = entityId.uint8List;
-    if (await delete(tableName, where: "id = ?", whereArgs: [id])) {
+    if (await delete(
+      tableName,
+      where: Platform.isAndroid ? "hex(id) = ?" : "id = ?",
+      whereArgs: [Platform.isAndroid ? hex(id) : id],
+    )) {
       return true;
     } else {
       _log.e("Failed to delete $tableName(${entityId.uuid.toString()})"
@@ -123,17 +89,6 @@ class LocalDatabaseManager {
 
   Future<List<Map<String, dynamic>>> fetchAll(String tableName) async {
     return await query("SELECT * FROM $tableName");
-  }
-
-  Future<Map<String, dynamic>> fetchEntity(String tableName, String id) async {
-    _log.w("fetch($tableName, $id) called");
-
-    var result = await query("SELECT * FROM $tableName WHERE id = ?", [id]);
-    if (result.isEmpty) {
-      return null;
-    }
-
-    return result.first;
   }
 
   /// Completely replaces the contents of [tableName] with [newRows].

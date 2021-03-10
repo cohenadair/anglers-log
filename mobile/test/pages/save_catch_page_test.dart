@@ -44,13 +44,14 @@ void main() {
 
     when(appManager.mockBaitCategoryManager.listSortedByName()).thenReturn([]);
 
-    when(appManager.mockLocalDatabaseManager
-            .insertOrUpdateEntity(any, any, any))
+    when(appManager.mockLocalDatabaseManager.insertOrReplace(any, any))
         .thenAnswer((_) => Future.value(true));
 
     when(appManager.mockPreferencesManager.baitCustomEntityIds).thenReturn([]);
     when(appManager.mockPreferencesManager.catchCustomEntityIds).thenReturn([]);
 
+    when(appManager.mockSubscriptionManager.stream)
+        .thenAnswer((_) => MockStream<void>());
     when(appManager.mockSubscriptionManager.isPro).thenReturn(false);
 
     appManager.stubCurrentTime(DateTime(2020, 2, 1, 10, 30));

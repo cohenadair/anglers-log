@@ -26,14 +26,15 @@ void main() {
     when(authStream.listen(any)).thenReturn(null);
     when(appManager.mockAuthManager.stream).thenAnswer((_) => authStream);
 
-    when(appManager.mockLocalDatabaseManager
-            .insertOrUpdateEntity(any, any, any))
+    when(appManager.mockLocalDatabaseManager.insertOrReplace(any, any))
         .thenAnswer((_) => Future.value(true));
 
     when(appManager.mockBaitManager.addListener(any)).thenAnswer((_) {});
     when(appManager.mockFishingSpotManager.addListener(any)).thenAnswer((_) {});
     when(appManager.mockSpeciesManager.addListener(any)).thenAnswer((_) {});
 
+    when(appManager.mockSubscriptionManager.stream)
+        .thenAnswer((_) => MockStream<void>());
     when(appManager.mockSubscriptionManager.isPro).thenReturn(false);
 
     comparisonReportManager = ComparisonReportManager(appManager);

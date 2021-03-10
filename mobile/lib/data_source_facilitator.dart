@@ -42,6 +42,11 @@ abstract class DataSourceFacilitator {
   @protected
   StreamSubscription<dynamic> initializeFirestore(Completer completer);
 
+  /// Called when a user purchases or restores a pro subscription. This method
+  /// is invoked _after_ [initializeFirestore] has finished.
+  @protected
+  void onUpgradeToPro();
+
   @protected
   final AppManager appManager;
 
@@ -54,6 +59,16 @@ abstract class DataSourceFacilitator {
     authManager.stream.listen((_) {
       if (authManager.state == AuthState.loggedOut) {
         _cancelFirestoreListener();
+      }
+    });
+
+    subscriptionManager.stream.listen((_) async {
+      if (subscriptionManager.isPro &&
+          shouldUseFirestore &&
+          _firestoreListener == null) {
+        _log.d("User upgraded to pro, reconciling data...");
+        await _initializeFirestore();
+        onUpgradeToPro();
       }
     });
   }

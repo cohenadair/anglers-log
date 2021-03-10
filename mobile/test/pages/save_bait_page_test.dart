@@ -30,12 +30,13 @@ void main() {
 
     when(appManager.mockBaitManager.duplicate(any)).thenReturn(false);
 
-    when(appManager.mockLocalDatabaseManager
-            .insertOrUpdateEntity(any, any, any))
+    when(appManager.mockLocalDatabaseManager.insertOrReplace(any, any))
         .thenAnswer((_) => Future.value(true));
 
     when(appManager.mockPreferencesManager.baitCustomEntityIds).thenReturn([]);
 
+    when(appManager.mockSubscriptionManager.stream)
+        .thenAnswer((_) => MockStream<void>());
     when(appManager.mockSubscriptionManager.isPro).thenReturn(false);
   });
 

@@ -47,7 +47,7 @@ void main() {
 
     dataManager = appManager.mockLocalDatabaseManager;
     when(appManager.localDatabaseManager).thenReturn(dataManager);
-    when(dataManager.insertOrUpdateEntity(any, any, any))
+    when(dataManager.insertOrReplace(any, any))
         .thenAnswer((_) => Future.value(true));
 
     imageManager = appManager.mockImageManager;
@@ -60,6 +60,10 @@ void main() {
               []),
     );
 
+    when(appManager.mockSubscriptionManager.stream)
+        .thenAnswer((_) => MockStream<void>());
+    when(appManager.mockSubscriptionManager.isPro).thenReturn(false);
+
     fishingSpotManager = FishingSpotManager(appManager);
     when(appManager.fishingSpotManager).thenReturn(fishingSpotManager);
 
@@ -70,13 +74,11 @@ void main() {
     when(appManager.speciesManager).thenReturn(speciesManager);
     when(speciesManager.matchesFilter(any, any)).thenReturn(false);
 
-    when(appManager.mockSubscriptionManager.isPro).thenReturn(false);
-
     catchManager = CatchManager(appManager);
   });
 
   test("When a bait is deleted, existing catches are updated", () async {
-    when(dataManager.insertOrUpdateEntity(any, any, any))
+    when(dataManager.insertOrReplace(any, any))
         .thenAnswer((_) => Future.value(true));
     when(dataManager.deleteEntity(any, any))
         .thenAnswer((_) => Future.value(true));
@@ -125,7 +127,7 @@ void main() {
 
   test("When a fishing spot is deleted, existing catches are updated",
       () async {
-    when(dataManager.insertOrUpdateEntity(any, any, any))
+    when(dataManager.insertOrReplace(any, any))
         .thenAnswer((_) => Future.value(true));
     when(dataManager.deleteEntity(any, any))
         .thenAnswer((_) => Future.value(true));
@@ -243,7 +245,7 @@ void main() {
   });
 
   testWidgets("Filtering by species", (tester) async {
-    when(dataManager.insertOrUpdateEntity(any, any, any))
+    when(dataManager.insertOrReplace(any, any))
         .thenAnswer((_) => Future.value(true));
 
     var speciesId0 = randomId();
@@ -291,7 +293,7 @@ void main() {
   });
 
   testWidgets("Filtering by date range", (tester) async {
-    when(dataManager.insertOrUpdateEntity(any, any, any))
+    when(dataManager.insertOrReplace(any, any))
         .thenAnswer((_) => Future.value(true));
 
     await catchManager.addOrUpdate(Catch()
@@ -328,7 +330,7 @@ void main() {
   });
 
   testWidgets("Filtering by fishing spot", (tester) async {
-    when(dataManager.insertOrUpdateEntity(any, any, any))
+    when(dataManager.insertOrReplace(any, any))
         .thenAnswer((_) => Future.value(true));
 
     var fishingSpotId0 = randomId();
@@ -373,7 +375,7 @@ void main() {
   });
 
   testWidgets("Filtering by bait", (tester) async {
-    when(dataManager.insertOrUpdateEntity(any, any, any))
+    when(dataManager.insertOrReplace(any, any))
         .thenAnswer((_) => Future.value(true));
 
     var baitId0 = randomId();
@@ -418,7 +420,7 @@ void main() {
   });
 
   testWidgets("Filtering by catch", (tester) async {
-    when(dataManager.insertOrUpdateEntity(any, any, any))
+    when(dataManager.insertOrReplace(any, any))
         .thenAnswer((_) => Future.value(true));
 
     var catchId0 = randomId();
@@ -449,7 +451,7 @@ void main() {
   });
 
   testWidgets("Filtering by multiple things", (tester) async {
-    when(dataManager.insertOrUpdateEntity(any, any, any))
+    when(dataManager.insertOrReplace(any, any))
         .thenAnswer((_) => Future.value(true));
 
     var catchId0 = randomId();

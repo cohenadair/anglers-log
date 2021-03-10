@@ -41,6 +41,11 @@ class TestDataSourceFacilitator extends DataSourceFacilitator {
     initializeLocalDataCount++;
     return null;
   }
+
+  @override
+  void onUpgradeToPro() {
+    // TODO: implement onUpgradeToPro
+  }
 }
 
 void main() {
@@ -57,6 +62,8 @@ void main() {
     );
 
     when(appManager.mockAuthManager.stream).thenAnswer((_) => MockStream());
+    when(appManager.mockSubscriptionManager.stream)
+        .thenAnswer((_) => MockStream());
 
     facilitator = TestDataSourceFacilitator(appManager);
   });
@@ -85,6 +92,8 @@ void main() {
     when(appManager.mockAppPreferenceManager.lastLoggedInUserId)
         .thenReturn(null);
     when(appManager.mockAuthManager.userId).thenReturn("USER_ID");
+    when(appManager.mockSubscriptionManager.stream)
+        .thenAnswer((_) => MockStream<void>());
     when(appManager.mockSubscriptionManager.isPro).thenReturn(false);
 
     await facilitator.initialize();
@@ -108,6 +117,8 @@ void main() {
     when(appManager.mockAppPreferenceManager.lastLoggedInUserId)
         .thenReturn(null);
     when(appManager.mockAuthManager.userId).thenReturn(null);
+    when(appManager.mockSubscriptionManager.stream)
+        .thenAnswer((_) => MockStream<void>());
     when(appManager.mockSubscriptionManager.isPro).thenReturn(false);
 
     facilitator.firestoreEnabled = false;

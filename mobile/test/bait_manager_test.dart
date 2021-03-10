@@ -43,13 +43,15 @@ void main() {
 
     dataManager = appManager.mockLocalDatabaseManager;
     when(appManager.localDatabaseManager).thenReturn(dataManager);
-    when(dataManager.insertOrUpdateEntity(any, any, any))
+    when(dataManager.insertOrReplace(any, any))
         .thenAnswer((_) => Future.value(true));
+
+    when(appManager.mockSubscriptionManager.stream)
+        .thenAnswer((_) => MockStream<void>());
+    when(appManager.mockSubscriptionManager.isPro).thenReturn(false);
 
     baitCategoryManager = BaitCategoryManager(appManager);
     when(appManager.baitCategoryManager).thenReturn(baitCategoryManager);
-
-    when(appManager.mockSubscriptionManager.isPro).thenReturn(false);
 
     baitManager = BaitManager(appManager);
   });
