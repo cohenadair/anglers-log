@@ -26,12 +26,13 @@ void main() {
     when(stream.listen(any)).thenReturn(null);
     when(appManager.mockAuthManager.stream).thenAnswer((_) => stream);
 
-    when(appManager.mockLocalDatabaseManager
-            .insertOrUpdateEntity(any, any, any))
+    when(appManager.mockLocalDatabaseManager.insertOrReplace(any, any))
         .thenAnswer((_) => Future.value(true));
     when(appManager.mockLocalDatabaseManager.deleteEntity(any, any))
         .thenAnswer((_) => Future.value(true));
 
+    when(appManager.mockSubscriptionManager.stream)
+        .thenAnswer((_) => MockStream<void>());
     when(appManager.mockSubscriptionManager.isPro).thenReturn(false);
 
     preferenceManager = UserPreferenceManager(appManager);

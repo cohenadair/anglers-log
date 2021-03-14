@@ -57,8 +57,7 @@ void main() {
 
     when(appManager.mockAuthManager.stream).thenAnswer((_) => MockStream());
 
-    when(appManager.mockLocalDatabaseManager
-            .insertOrUpdateEntity(any, any, any))
+    when(appManager.mockLocalDatabaseManager.insertOrReplace(any, any))
         .thenAnswer((_) => Future.value(true));
     when(appManager.mockLocalDatabaseManager.deleteEntity(any, any))
         .thenAnswer((_) => Future.value(true));
@@ -70,6 +69,8 @@ void main() {
     when(appManager.mockLocationMonitor.currentLocation)
         .thenReturn(LatLng(0.0, 0.0));
 
+    when(appManager.mockSubscriptionManager.stream)
+        .thenAnswer((_) => MockStream<void>());
     when(appManager.mockSubscriptionManager.isPro).thenReturn(false);
 
     when(appManager.mockPermissionHandlerWrapper.requestLocation())

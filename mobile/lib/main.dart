@@ -138,6 +138,7 @@ class _AnglersLogState extends State<AnglersLog> {
     await _app.localDatabaseManager.initialize();
     await _app.locationMonitor.initialize();
     await _app.propertiesManager.initialize();
+    await _app.subscriptionManager.initialize();
 
     await _app.appPreferenceManager.initialize();
     await _app.authManager.initialize();

@@ -33,6 +33,8 @@ void main() {
     dataManager = appManager.mockLocalDatabaseManager;
     when(appManager.localDatabaseManager).thenReturn(dataManager);
 
+    when(appManager.mockSubscriptionManager.stream)
+        .thenAnswer((_) => MockStream<void>());
     when(appManager.mockSubscriptionManager.isPro).thenReturn(false);
 
     speciesManager = SpeciesManager(appManager);

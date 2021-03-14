@@ -24,6 +24,7 @@ class MockAssetEntity extends Mock implements AssetEntity {}
 
 class MockAssetPathEntity extends Mock implements AssetPathEntity {}
 
+// ignore: must_be_immutable
 class MockCollectionReference extends Mock implements CollectionReference {}
 
 class MockDirectory extends Mock implements Directory {}
@@ -37,6 +38,8 @@ class MockDocumentSnapshot extends Mock implements DocumentSnapshot {}
 class MockFile extends Mock implements File {}
 
 class MockFileSystemEntity extends Mock implements FileSystemEntity {}
+
+class MockFullMetadata extends Mock implements FullMetadata {}
 
 class MockGoogleMapController extends Mock
     implements google.GoogleMapController {}

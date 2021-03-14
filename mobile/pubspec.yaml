@@ -9,6 +9,13 @@ description: Track, analyze, and share your catches in the sport of fishing.
 # Read more about versioning at semver.org.
 version: 2.0.0+200
 
+environment:
+  sdk: '>=2.10.0 <3.0.0'
+
+# TODO: Remove when https://github.com/Baseflow/flutter-permission-handler/issues/464 is fixed.
+dependency_overrides:
+  plugin_platform_interface: '>=2.0.0'
+
 dependencies:
   flutter:
     sdk: flutter
@@ -16,32 +23,30 @@ dependencies:
     sdk: flutter
 
   archive: ^2.0.13                  # https://pub.dev/packages/archive
-  cloud_firestore: ^0.16.0          # Google
-  crypto: ^2.1.4                    # Dart
-  date_range_picker: ^1.0.6         # https://pub.dev/packages/date_range_picker
-  device_info: ^1.0.0               # Flutter
+  cloud_firestore: ^1.0.0           # https://pub.dev/packages/cloud_firestore (Google)
+  crypto: ^2.1.4                    # https://pub.dev/packages/crypto (Dart)
+  device_info: ^2.0.0               # https://pub.dev/packages/device_info (Flutter)
   file_picker: ^1.4.3+2             # https://pub.dev/packages/file_picker (verified)
-  firebase_auth: ^0.20.0+1          # Google
-  firebase_core: ^0.7.0             # Google
-  firebase_storage: ^7.0.0          # Google
+  firebase_auth: ^1.0.0             # https://pub.dev/packages/firebase_auth (Google)
+  firebase_core: ^1.0.0             # https://pub.dev/packages/firebase_core (Google)
+  firebase_storage: ^8.0.0          # https://pub.dev/packages/firebase_storage (Google)
   flutter_image_compress: ^0.6.8    # https://pub.dev/packages/flutter_image_compress
   geolocator: ^5.2.1                # https://pub.dev/packages/geolocator (verified)
-  google_maps_flutter: ^0.5.25+3    # Flutter
-  http: ^0.12.2                     # Dart
-  image_picker: ^0.6.3+1            # Flutter
-  intl: ^0.16.0                     # Dart (version restricted by flutter_localizations)
-  package_info: ^0.4.3+2            # Flutter
-  path: ^1.6.4                      # Dart
-  path_provider: ^1.6.7             # Flutter
-  permission_handler: ^5.0.1+1      # https://pub.dev/packages/permission_handler (verified)
-
-  # TODO: Update when 0.6.0 is released.
-  photo_manager: ^0.6.0-dev.8       # https://pub.dev/packages/photo_manager (verified) - Dev version required for fetching ordered assets
-  protobuf: ^1.0.1                  # Dart
-  provider: ^3.2.0                  # https://pub.dev/packages/provider (verified) - Version update requires migration
-  quiver: ^2.0.5                    # Google - Version restricted by flutter_test
-  sqflite: ^1.2.0                   # Endorsed by Flutter
-  url_launcher: ^5.7.10             # Flutter
+  google_maps_flutter: ^2.0.1       # https://pub.dev/packages/google_maps_flutter (Flutter)
+  http: ^0.13.0                     # https://pub.dev/packages/http (Dart)
+  image_picker: ^0.7.2              # https://pub.dev/packages/image_picker (Flutter)
+  intl: ^0.17.0                     # https://pub.dev/packages/intl (Dart)
+  package_info: ^2.0.0              # https://pub.dev/packages/package_info (Flutter)
+  path: ^1.8.0                      # https://pub.dev/packages/path (Dart)
+  path_provider: ^2.0.1             # https://pub.dev/packages/path_provider (Flutter)
+  permission_handler: ^5.1.0+2      # https://pub.dev/packages/permission_handler (verified)
+  photo_manager: ^0.6.0             # https://pub.dev/packages/photo_manager (verified)
+  protobuf: ^2.0.0                  # https://pub.dev/packages/protobuf (Dart)
+  provider: ^5.0.0                  # https://pub.dev/packages/provider (verified)
+  purchases_flutter: ^3.0.0         # https://pub.dev/packages/purchases_flutter (verified)
+  quiver: ^3.0.0                    # https://pub.dev/packages/quiver (Google)
+  sqflite: ^1.2.0                   # https://pub.dev/packages/sqflite (verified)
+  url_launcher: ^6.0.2              # https://pub.dev/packages/url_launcher (Flutter)
   uuid: ^2.0.4                      # https://pub.dev/packages/uuid (verified)
 
 dev_dependencies:
@@ -50,7 +55,7 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   mockito: 4.0.0
-  test: ^1.5.1
+  test: ^1.16.5
 
 flutter_icons:
   android: "launcher_icon"

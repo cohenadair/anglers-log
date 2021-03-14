@@ -46,6 +46,11 @@ class TestPreferenceManager extends PreferenceManager {
   Id get testId => id("test_id");
 
   set testId(Id value) => putId("test_id", value);
+
+  @override
+  void onUpgradeToPro() {
+    // TODO: implement onUpgradeToPro
+  }
 }
 
 void main() {
@@ -69,6 +74,8 @@ void main() {
     when(appManager.mockLocalDatabaseManager.insertOrReplace(any, any))
         .thenAnswer((_) => Future.value());
 
+    when(appManager.mockSubscriptionManager.stream)
+        .thenAnswer((_) => MockStream<void>());
     when(appManager.mockSubscriptionManager.isPro).thenReturn(false);
 
     preferenceManager = TestPreferenceManager(appManager);

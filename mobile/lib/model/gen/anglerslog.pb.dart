@@ -3,11 +3,11 @@
 //  source: anglerslog.proto
 //
 // @dart = 2.3
-// ignore_for_file: camel_case_types,non_constant_identifier_names,library_prefixes,unused_import,unused_shown_name,return_of_invalid_type
+// ignore_for_file: annotate_overrides,camel_case_types,unnecessary_const,non_constant_identifier_names,library_prefixes,unused_import,unused_shown_name,return_of_invalid_type,unnecessary_this,prefer_final_fields
 
 import 'dart:core' as $core;
 
-import 'package:fixnum/fixnum.dart';
+import 'package:fixnum/fixnum.dart' as $fixnum;
 import 'package:protobuf/protobuf.dart' as $pb;
 
 import 'anglerslog.pbenum.dart';
@@ -15,9 +15,20 @@ import 'anglerslog.pbenum.dart';
 export 'anglerslog.pbenum.dart';
 
 class Id extends $pb.GeneratedMessage {
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo('Id',
-      package: const $pb.PackageName('anglerslog'), createEmptyInstance: create)
-    ..aOS(1, 'uuid')
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      const $core.bool.fromEnvironment('protobuf.omit_message_names')
+          ? ''
+          : 'Id',
+      package: const $pb.PackageName(
+          const $core.bool.fromEnvironment('protobuf.omit_message_names')
+              ? ''
+              : 'anglerslog'),
+      createEmptyInstance: create)
+    ..aOS(
+        1,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'uuid')
     ..hasRequiredFields = false;
 
   Id._() : super();
@@ -28,9 +39,15 @@ class Id extends $pb.GeneratedMessage {
   factory Id.fromJson($core.String i,
           [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromJson(i, r);
+  @$core.Deprecated('Using this can add significant overhead to your binary. '
+      'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+      'Will be removed in next major version')
   Id clone() => Id()..mergeFromMessage(this);
-  Id copyWith(void Function(Id) updates) =>
-      super.copyWith((message) => updates(message as Id));
+  @$core.Deprecated('Using this can add significant overhead to your binary. '
+      'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+      'Will be removed in next major version')
+  Id copyWith(void Function(Id) updates) => super.copyWith(
+      (message) => updates(message as Id)); // ignore: deprecated_member_use
   $pb.BuilderInfo get info_ => _i;
   @$core.pragma('dart2js:noInline')
   static Id create() => Id._();
@@ -55,12 +72,24 @@ class Id extends $pb.GeneratedMessage {
 }
 
 class CustomEntity extends $pb.GeneratedMessage {
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo('CustomEntity',
-      package: const $pb.PackageName('anglerslog'), createEmptyInstance: create)
-    ..aOM<Id>(1, 'id', subBuilder: Id.create)
-    ..aOS(2, 'name')
-    ..aOS(3, 'description')
-    ..e<CustomEntity_Type>(4, 'type', $pb.PbFieldType.OE,
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'CustomEntity',
+      package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names')
+          ? ''
+          : 'anglerslog'),
+      createEmptyInstance: create)
+    ..aOM<Id>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'id',
+        subBuilder: Id.create)
+    ..aOS(
+        2,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'name')
+    ..aOS(
+        3,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'description')
+    ..e<CustomEntity_Type>(4, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'type', $pb.PbFieldType.OE,
         defaultOrMaker: CustomEntity_Type.BOOL,
         valueOf: CustomEntity_Type.valueOf,
         enumValues: CustomEntity_Type.values)
@@ -74,9 +103,16 @@ class CustomEntity extends $pb.GeneratedMessage {
   factory CustomEntity.fromJson($core.String i,
           [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromJson(i, r);
+  @$core.Deprecated('Using this can add significant overhead to your binary. '
+      'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+      'Will be removed in next major version')
   CustomEntity clone() => CustomEntity()..mergeFromMessage(this);
+  @$core.Deprecated('Using this can add significant overhead to your binary. '
+      'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+      'Will be removed in next major version')
   CustomEntity copyWith(void Function(CustomEntity) updates) =>
-      super.copyWith((message) => updates(message as CustomEntity));
+      super.copyWith((message) =>
+          updates(message as CustomEntity)); // ignore: deprecated_member_use
   $pb.BuilderInfo get info_ => _i;
   @$core.pragma('dart2js:noInline')
   static CustomEntity create() => CustomEntity._();
@@ -140,10 +176,26 @@ class CustomEntity extends $pb.GeneratedMessage {
 }
 
 class CustomEntityValue extends $pb.GeneratedMessage {
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo('CustomEntityValue',
-      package: const $pb.PackageName('anglerslog'), createEmptyInstance: create)
-    ..aOM<Id>(1, 'customEntityId', subBuilder: Id.create)
-    ..aOS(2, 'value')
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      const $core.bool.fromEnvironment('protobuf.omit_message_names')
+          ? ''
+          : 'CustomEntityValue',
+      package: const $pb.PackageName(
+          const $core.bool.fromEnvironment('protobuf.omit_message_names')
+              ? ''
+              : 'anglerslog'),
+      createEmptyInstance: create)
+    ..aOM<Id>(
+        1,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'customEntityId',
+        subBuilder: Id.create)
+    ..aOS(
+        2,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'value')
     ..hasRequiredFields = false;
 
   CustomEntityValue._() : super();
@@ -154,9 +206,16 @@ class CustomEntityValue extends $pb.GeneratedMessage {
   factory CustomEntityValue.fromJson($core.String i,
           [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromJson(i, r);
+  @$core.Deprecated('Using this can add significant overhead to your binary. '
+      'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+      'Will be removed in next major version')
   CustomEntityValue clone() => CustomEntityValue()..mergeFromMessage(this);
+  @$core.Deprecated('Using this can add significant overhead to your binary. '
+      'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+      'Will be removed in next major version')
   CustomEntityValue copyWith(void Function(CustomEntityValue) updates) =>
-      super.copyWith((message) => updates(message as CustomEntityValue));
+      super.copyWith((message) => updates(
+          message as CustomEntityValue)); // ignore: deprecated_member_use
   $pb.BuilderInfo get info_ => _i;
   @$core.pragma('dart2js:noInline')
   static CustomEntityValue create() => CustomEntityValue._();
@@ -196,12 +255,25 @@ class CustomEntityValue extends $pb.GeneratedMessage {
 }
 
 class Bait extends $pb.GeneratedMessage {
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo('Bait',
-      package: const $pb.PackageName('anglerslog'), createEmptyInstance: create)
-    ..aOM<Id>(1, 'id', subBuilder: Id.create)
-    ..aOS(2, 'name')
-    ..aOM<Id>(3, 'baitCategoryId', subBuilder: Id.create)
-    ..pc<CustomEntityValue>(4, 'customEntityValues', $pb.PbFieldType.PM,
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'Bait',
+      package: const $pb.PackageName(
+          const $core.bool.fromEnvironment('protobuf.omit_message_names')
+              ? ''
+              : 'anglerslog'),
+      createEmptyInstance: create)
+    ..aOM<Id>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'id',
+        subBuilder: Id.create)
+    ..aOS(
+        2,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'name')
+    ..aOM<Id>(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'baitCategoryId',
+        subBuilder: Id.create)
+    ..pc<CustomEntityValue>(
+        4,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'customEntityValues',
+        $pb.PbFieldType.PM,
         subBuilder: CustomEntityValue.create)
     ..hasRequiredFields = false;
 
@@ -213,9 +285,15 @@ class Bait extends $pb.GeneratedMessage {
   factory Bait.fromJson($core.String i,
           [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromJson(i, r);
+  @$core.Deprecated('Using this can add significant overhead to your binary. '
+      'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+      'Will be removed in next major version')
   Bait clone() => Bait()..mergeFromMessage(this);
-  Bait copyWith(void Function(Bait) updates) =>
-      super.copyWith((message) => updates(message as Bait));
+  @$core.Deprecated('Using this can add significant overhead to your binary. '
+      'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+      'Will be removed in next major version')
+  Bait copyWith(void Function(Bait) updates) => super.copyWith(
+      (message) => updates(message as Bait)); // ignore: deprecated_member_use
   $pb.BuilderInfo get info_ => _i;
   @$core.pragma('dart2js:noInline')
   static Bait create() => Bait._();
@@ -271,10 +349,26 @@ class Bait extends $pb.GeneratedMessage {
 }
 
 class BaitCategory extends $pb.GeneratedMessage {
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo('BaitCategory',
-      package: const $pb.PackageName('anglerslog'), createEmptyInstance: create)
-    ..aOM<Id>(1, 'id', subBuilder: Id.create)
-    ..aOS(2, 'name')
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      const $core.bool.fromEnvironment('protobuf.omit_message_names')
+          ? ''
+          : 'BaitCategory',
+      package: const $pb.PackageName(
+          const $core.bool.fromEnvironment('protobuf.omit_message_names')
+              ? ''
+              : 'anglerslog'),
+      createEmptyInstance: create)
+    ..aOM<Id>(
+        1,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'id',
+        subBuilder: Id.create)
+    ..aOS(
+        2,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'name')
     ..hasRequiredFields = false;
 
   BaitCategory._() : super();
@@ -285,9 +379,16 @@ class BaitCategory extends $pb.GeneratedMessage {
   factory BaitCategory.fromJson($core.String i,
           [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromJson(i, r);
+  @$core.Deprecated('Using this can add significant overhead to your binary. '
+      'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+      'Will be removed in next major version')
   BaitCategory clone() => BaitCategory()..mergeFromMessage(this);
+  @$core.Deprecated('Using this can add significant overhead to your binary. '
+      'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+      'Will be removed in next major version')
   BaitCategory copyWith(void Function(BaitCategory) updates) =>
-      super.copyWith((message) => updates(message as BaitCategory));
+      super.copyWith((message) =>
+          updates(message as BaitCategory)); // ignore: deprecated_member_use
   $pb.BuilderInfo get info_ => _i;
   @$core.pragma('dart2js:noInline')
   static BaitCategory create() => BaitCategory._();
@@ -327,16 +428,29 @@ class BaitCategory extends $pb.GeneratedMessage {
 }
 
 class Catch extends $pb.GeneratedMessage {
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo('Catch',
-      package: const $pb.PackageName('anglerslog'), createEmptyInstance: create)
-    ..aOM<Id>(1, 'id', subBuilder: Id.create)
-    ..a<Int64>(2, 'timestamp', $pb.PbFieldType.OU6, defaultOrMaker: Int64.ZERO)
-    ..aOM<Id>(3, 'baitId', subBuilder: Id.create)
-    ..aOM<Id>(4, 'fishingSpotId', subBuilder: Id.create)
-    ..aOM<Id>(5, 'speciesId', subBuilder: Id.create)
-    ..pPS(6, 'imageNames')
-    ..pc<CustomEntityValue>(7, 'customEntityValues', $pb.PbFieldType.PM,
-        subBuilder: CustomEntityValue.create)
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      const $core.bool.fromEnvironment('protobuf.omit_message_names')
+          ? ''
+          : 'Catch',
+      package: const $pb.PackageName(
+          const $core.bool.fromEnvironment('protobuf.omit_message_names')
+              ? ''
+              : 'anglerslog'),
+      createEmptyInstance: create)
+    ..aOM<Id>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'id',
+        subBuilder: Id.create)
+    ..a<$fixnum.Int64>(
+        2,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'timestamp',
+        $pb.PbFieldType.OU6,
+        defaultOrMaker: $fixnum.Int64.ZERO)
+    ..aOM<Id>(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'baitId', subBuilder: Id.create)
+    ..aOM<Id>(4, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'fishingSpotId', subBuilder: Id.create)
+    ..aOM<Id>(5, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'speciesId', subBuilder: Id.create)
+    ..pPS(6, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'imageNames')
+    ..pc<CustomEntityValue>(7, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'customEntityValues', $pb.PbFieldType.PM, subBuilder: CustomEntityValue.create)
     ..hasRequiredFields = false;
 
   Catch._() : super();
@@ -347,9 +461,15 @@ class Catch extends $pb.GeneratedMessage {
   factory Catch.fromJson($core.String i,
           [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromJson(i, r);
+  @$core.Deprecated('Using this can add significant overhead to your binary. '
+      'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+      'Will be removed in next major version')
   Catch clone() => Catch()..mergeFromMessage(this);
-  Catch copyWith(void Function(Catch) updates) =>
-      super.copyWith((message) => updates(message as Catch));
+  @$core.Deprecated('Using this can add significant overhead to your binary. '
+      'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+      'Will be removed in next major version')
+  Catch copyWith(void Function(Catch) updates) => super.copyWith(
+      (message) => updates(message as Catch)); // ignore: deprecated_member_use
   $pb.BuilderInfo get info_ => _i;
   @$core.pragma('dart2js:noInline')
   static Catch create() => Catch._();
@@ -375,9 +495,9 @@ class Catch extends $pb.GeneratedMessage {
   Id ensureId() => $_ensure(0);
 
   @$pb.TagNumber(2)
-  Int64 get timestamp => $_getI64(1);
+  $fixnum.Int64 get timestamp => $_getI64(1);
   @$pb.TagNumber(2)
-  set timestamp(Int64 v) {
+  set timestamp($fixnum.Int64 v) {
     $_setInt64(1, v);
   }
 
@@ -436,12 +556,26 @@ class Catch extends $pb.GeneratedMessage {
 }
 
 class FishingSpot extends $pb.GeneratedMessage {
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo('FishingSpot',
-      package: const $pb.PackageName('anglerslog'), createEmptyInstance: create)
-    ..aOM<Id>(1, 'id', subBuilder: Id.create)
-    ..aOS(2, 'name')
-    ..a<$core.double>(3, 'lat', $pb.PbFieldType.OD)
-    ..a<$core.double>(4, 'lng', $pb.PbFieldType.OD)
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      const $core.bool.fromEnvironment('protobuf.omit_message_names')
+          ? ''
+          : 'FishingSpot',
+      package: const $pb.PackageName(
+          const $core.bool.fromEnvironment('protobuf.omit_message_names')
+              ? ''
+              : 'anglerslog'),
+      createEmptyInstance: create)
+    ..aOM<Id>(
+        1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'id',
+        subBuilder: Id.create)
+    ..aOS(
+        2,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'name')
+    ..a<$core.double>(
+        3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'lat', $pb.PbFieldType.OD)
+    ..a<$core.double>(4, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'lng', $pb.PbFieldType.OD)
     ..hasRequiredFields = false;
 
   FishingSpot._() : super();
@@ -452,9 +586,16 @@ class FishingSpot extends $pb.GeneratedMessage {
   factory FishingSpot.fromJson($core.String i,
           [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromJson(i, r);
+  @$core.Deprecated('Using this can add significant overhead to your binary. '
+      'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+      'Will be removed in next major version')
   FishingSpot clone() => FishingSpot()..mergeFromMessage(this);
+  @$core.Deprecated('Using this can add significant overhead to your binary. '
+      'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+      'Will be removed in next major version')
   FishingSpot copyWith(void Function(FishingSpot) updates) =>
-      super.copyWith((message) => updates(message as FishingSpot));
+      super.copyWith((message) =>
+          updates(message as FishingSpot)); // ignore: deprecated_member_use
   $pb.BuilderInfo get info_ => _i;
   @$core.pragma('dart2js:noInline')
   static FishingSpot create() => FishingSpot._();
@@ -517,10 +658,26 @@ class FishingSpot extends $pb.GeneratedMessage {
 }
 
 class Species extends $pb.GeneratedMessage {
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo('Species',
-      package: const $pb.PackageName('anglerslog'), createEmptyInstance: create)
-    ..aOM<Id>(1, 'id', subBuilder: Id.create)
-    ..aOS(2, 'name')
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      const $core.bool.fromEnvironment('protobuf.omit_message_names')
+          ? ''
+          : 'Species',
+      package: const $pb.PackageName(
+          const $core.bool.fromEnvironment('protobuf.omit_message_names')
+              ? ''
+              : 'anglerslog'),
+      createEmptyInstance: create)
+    ..aOM<Id>(
+        1,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'id',
+        subBuilder: Id.create)
+    ..aOS(
+        2,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'name')
     ..hasRequiredFields = false;
 
   Species._() : super();
@@ -531,9 +688,16 @@ class Species extends $pb.GeneratedMessage {
   factory Species.fromJson($core.String i,
           [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromJson(i, r);
+  @$core.Deprecated('Using this can add significant overhead to your binary. '
+      'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+      'Will be removed in next major version')
   Species clone() => Species()..mergeFromMessage(this);
+  @$core.Deprecated('Using this can add significant overhead to your binary. '
+      'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+      'Will be removed in next major version')
   Species copyWith(void Function(Species) updates) =>
-      super.copyWith((message) => updates(message as Species));
+      super.copyWith((message) =>
+          updates(message as Species)); // ignore: deprecated_member_use
   $pb.BuilderInfo get info_ => _i;
   @$core.pragma('dart2js:noInline')
   static Species create() => Species._();
@@ -572,19 +736,30 @@ class Species extends $pb.GeneratedMessage {
 }
 
 class SummaryReport extends $pb.GeneratedMessage {
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo('SummaryReport',
-      package: const $pb.PackageName('anglerslog'), createEmptyInstance: create)
-    ..aOM<Id>(1, 'id', subBuilder: Id.create)
-    ..aOS(2, 'name')
-    ..aOS(3, 'description')
-    ..aOS(4, 'displayDateRangeId')
-    ..a<Int64>(5, 'startTimestamp', $pb.PbFieldType.OU6,
-        defaultOrMaker: Int64.ZERO)
-    ..a<Int64>(6, 'endTimestamp', $pb.PbFieldType.OU6,
-        defaultOrMaker: Int64.ZERO)
-    ..pc<Id>(7, 'baitIds', $pb.PbFieldType.PM, subBuilder: Id.create)
-    ..pc<Id>(8, 'fishingSpotIds', $pb.PbFieldType.PM, subBuilder: Id.create)
-    ..pc<Id>(9, 'speciesIds', $pb.PbFieldType.PM, subBuilder: Id.create)
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      const $core.bool.fromEnvironment('protobuf.omit_message_names')
+          ? ''
+          : 'SummaryReport',
+      package: const $pb.PackageName(
+          const $core.bool.fromEnvironment('protobuf.omit_message_names')
+              ? ''
+              : 'anglerslog'),
+      createEmptyInstance: create)
+    ..aOM<Id>(1,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'id',
+        subBuilder: Id.create)
+    ..aOS(
+        2,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'name')
+    ..aOS(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'description')
+    ..aOS(4, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'displayDateRangeId')
+    ..a<$fixnum.Int64>(5, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'startTimestamp', $pb.PbFieldType.OU6, defaultOrMaker: $fixnum.Int64.ZERO)
+    ..a<$fixnum.Int64>(6, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'endTimestamp', $pb.PbFieldType.OU6, defaultOrMaker: $fixnum.Int64.ZERO)
+    ..pc<Id>(7, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'baitIds', $pb.PbFieldType.PM, subBuilder: Id.create)
+    ..pc<Id>(8, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'fishingSpotIds', $pb.PbFieldType.PM, subBuilder: Id.create)
+    ..pc<Id>(9, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'speciesIds', $pb.PbFieldType.PM, subBuilder: Id.create)
     ..hasRequiredFields = false;
 
   SummaryReport._() : super();
@@ -595,9 +770,16 @@ class SummaryReport extends $pb.GeneratedMessage {
   factory SummaryReport.fromJson($core.String i,
           [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromJson(i, r);
+  @$core.Deprecated('Using this can add significant overhead to your binary. '
+      'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+      'Will be removed in next major version')
   SummaryReport clone() => SummaryReport()..mergeFromMessage(this);
+  @$core.Deprecated('Using this can add significant overhead to your binary. '
+      'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+      'Will be removed in next major version')
   SummaryReport copyWith(void Function(SummaryReport) updates) =>
-      super.copyWith((message) => updates(message as SummaryReport));
+      super.copyWith((message) =>
+          updates(message as SummaryReport)); // ignore: deprecated_member_use
   $pb.BuilderInfo get info_ => _i;
   @$core.pragma('dart2js:noInline')
   static SummaryReport create() => SummaryReport._();
@@ -660,9 +842,9 @@ class SummaryReport extends $pb.GeneratedMessage {
   void clearDisplayDateRangeId() => clearField(4);
 
   @$pb.TagNumber(5)
-  Int64 get startTimestamp => $_getI64(4);
+  $fixnum.Int64 get startTimestamp => $_getI64(4);
   @$pb.TagNumber(5)
-  set startTimestamp(Int64 v) {
+  set startTimestamp($fixnum.Int64 v) {
     $_setInt64(4, v);
   }
 
@@ -672,9 +854,9 @@ class SummaryReport extends $pb.GeneratedMessage {
   void clearStartTimestamp() => clearField(5);
 
   @$pb.TagNumber(6)
-  Int64 get endTimestamp => $_getI64(5);
+  $fixnum.Int64 get endTimestamp => $_getI64(5);
   @$pb.TagNumber(6)
-  set endTimestamp(Int64 v) {
+  set endTimestamp($fixnum.Int64 v) {
     $_setInt64(5, v);
   }
 
@@ -694,24 +876,33 @@ class SummaryReport extends $pb.GeneratedMessage {
 }
 
 class ComparisonReport extends $pb.GeneratedMessage {
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo('ComparisonReport',
-      package: const $pb.PackageName('anglerslog'), createEmptyInstance: create)
-    ..aOM<Id>(1, 'id', subBuilder: Id.create)
-    ..aOS(2, 'name')
-    ..aOS(3, 'description')
-    ..aOS(4, 'fromDisplayDateRangeId')
-    ..aOS(5, 'toDisplayDateRangeId')
-    ..a<Int64>(6, 'fromStartTimestamp', $pb.PbFieldType.OU6,
-        defaultOrMaker: Int64.ZERO)
-    ..a<Int64>(7, 'toStartTimestamp', $pb.PbFieldType.OU6,
-        defaultOrMaker: Int64.ZERO)
-    ..a<Int64>(8, 'fromEndTimestamp', $pb.PbFieldType.OU6,
-        defaultOrMaker: Int64.ZERO)
-    ..a<Int64>(9, 'toEndTimestamp', $pb.PbFieldType.OU6,
-        defaultOrMaker: Int64.ZERO)
-    ..pc<Id>(10, 'baitIds', $pb.PbFieldType.PM, subBuilder: Id.create)
-    ..pc<Id>(11, 'fishingSpotIds', $pb.PbFieldType.PM, subBuilder: Id.create)
-    ..pc<Id>(12, 'speciesIds', $pb.PbFieldType.PM, subBuilder: Id.create)
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      const $core.bool.fromEnvironment('protobuf.omit_message_names')
+          ? ''
+          : 'ComparisonReport',
+      package: const $pb.PackageName(
+          const $core.bool.fromEnvironment('protobuf.omit_message_names')
+              ? ''
+              : 'anglerslog'),
+      createEmptyInstance: create)
+    ..aOM<Id>(1,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'id',
+        subBuilder: Id.create)
+    ..aOS(
+        2,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'name')
+    ..aOS(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'description')
+    ..aOS(4, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'fromDisplayDateRangeId')
+    ..aOS(5, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'toDisplayDateRangeId')
+    ..a<$fixnum.Int64>(6, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'fromStartTimestamp', $pb.PbFieldType.OU6, defaultOrMaker: $fixnum.Int64.ZERO)
+    ..a<$fixnum.Int64>(7, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'toStartTimestamp', $pb.PbFieldType.OU6, defaultOrMaker: $fixnum.Int64.ZERO)
+    ..a<$fixnum.Int64>(8, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'fromEndTimestamp', $pb.PbFieldType.OU6, defaultOrMaker: $fixnum.Int64.ZERO)
+    ..a<$fixnum.Int64>(9, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'toEndTimestamp', $pb.PbFieldType.OU6, defaultOrMaker: $fixnum.Int64.ZERO)
+    ..pc<Id>(10, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'baitIds', $pb.PbFieldType.PM, subBuilder: Id.create)
+    ..pc<Id>(11, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'fishingSpotIds', $pb.PbFieldType.PM, subBuilder: Id.create)
+    ..pc<Id>(12, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'speciesIds', $pb.PbFieldType.PM, subBuilder: Id.create)
     ..hasRequiredFields = false;
 
   ComparisonReport._() : super();
@@ -722,9 +913,16 @@ class ComparisonReport extends $pb.GeneratedMessage {
   factory ComparisonReport.fromJson($core.String i,
           [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromJson(i, r);
+  @$core.Deprecated('Using this can add significant overhead to your binary. '
+      'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+      'Will be removed in next major version')
   ComparisonReport clone() => ComparisonReport()..mergeFromMessage(this);
+  @$core.Deprecated('Using this can add significant overhead to your binary. '
+      'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+      'Will be removed in next major version')
   ComparisonReport copyWith(void Function(ComparisonReport) updates) =>
-      super.copyWith((message) => updates(message as ComparisonReport));
+      super.copyWith((message) => updates(
+          message as ComparisonReport)); // ignore: deprecated_member_use
   $pb.BuilderInfo get info_ => _i;
   @$core.pragma('dart2js:noInline')
   static ComparisonReport create() => ComparisonReport._();
@@ -799,9 +997,9 @@ class ComparisonReport extends $pb.GeneratedMessage {
   void clearToDisplayDateRangeId() => clearField(5);
 
   @$pb.TagNumber(6)
-  Int64 get fromStartTimestamp => $_getI64(5);
+  $fixnum.Int64 get fromStartTimestamp => $_getI64(5);
   @$pb.TagNumber(6)
-  set fromStartTimestamp(Int64 v) {
+  set fromStartTimestamp($fixnum.Int64 v) {
     $_setInt64(5, v);
   }
 
@@ -811,9 +1009,9 @@ class ComparisonReport extends $pb.GeneratedMessage {
   void clearFromStartTimestamp() => clearField(6);
 
   @$pb.TagNumber(7)
-  Int64 get toStartTimestamp => $_getI64(6);
+  $fixnum.Int64 get toStartTimestamp => $_getI64(6);
   @$pb.TagNumber(7)
-  set toStartTimestamp(Int64 v) {
+  set toStartTimestamp($fixnum.Int64 v) {
     $_setInt64(6, v);
   }
 
@@ -823,9 +1021,9 @@ class ComparisonReport extends $pb.GeneratedMessage {
   void clearToStartTimestamp() => clearField(7);
 
   @$pb.TagNumber(8)
-  Int64 get fromEndTimestamp => $_getI64(7);
+  $fixnum.Int64 get fromEndTimestamp => $_getI64(7);
   @$pb.TagNumber(8)
-  set fromEndTimestamp(Int64 v) {
+  set fromEndTimestamp($fixnum.Int64 v) {
     $_setInt64(7, v);
   }
 
@@ -835,9 +1033,9 @@ class ComparisonReport extends $pb.GeneratedMessage {
   void clearFromEndTimestamp() => clearField(8);
 
   @$pb.TagNumber(9)
-  Int64 get toEndTimestamp => $_getI64(8);
+  $fixnum.Int64 get toEndTimestamp => $_getI64(8);
   @$pb.TagNumber(9)
-  set toEndTimestamp(Int64 v) {
+  set toEndTimestamp($fixnum.Int64 v) {
     $_setInt64(8, v);
   }
 

@@ -6,6 +6,7 @@ import 'package:mobile/auth_manager.dart';
 import 'package:mockito/mockito.dart';
 
 import 'mock_app_manager.dart';
+import 'test_utils.dart';
 
 void main() {
   MockAppManager appManager;
@@ -19,6 +20,8 @@ void main() {
       mockSubscriptionManager: true,
     );
 
+    when(appManager.mockSubscriptionManager.stream)
+        .thenAnswer((_) => MockStream<void>());
     when(appManager.mockSubscriptionManager.isPro).thenReturn(false);
   });
 

@@ -19,17 +19,19 @@ void main() {
       mockAuthManager: true,
       mockBaitManager: true,
       mockLocalDatabaseManager: true,
+      mockSubscriptionManager: true,
     );
 
-    var authStream = MockStream<void>();
-    when(authStream.listen(any)).thenReturn(null);
-    when(appManager.mockAuthManager.stream).thenAnswer((_) => authStream);
+    when(appManager.mockAuthManager.stream).thenAnswer((_) => MockStream());
 
     baitManager = appManager.mockBaitManager;
     when(appManager.baitManager).thenReturn(baitManager);
 
     dataManager = appManager.mockLocalDatabaseManager;
     when(appManager.localDatabaseManager).thenReturn(dataManager);
+
+    when(appManager.mockSubscriptionManager.stream)
+        .thenAnswer((_) => MockStream());
 
     baitCategoryManager = BaitCategoryManager(appManager);
   });

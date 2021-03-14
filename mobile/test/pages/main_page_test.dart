@@ -55,6 +55,8 @@ void main() {
 
     when(appManager.mockFishingSpotManager.list()).thenReturn([]);
 
+    when(appManager.mockSubscriptionManager.stream)
+        .thenAnswer((_) => MockStream<void>());
     when(appManager.mockSubscriptionManager.isPro).thenReturn(false);
 
     when(appManager.mockSummaryReportManager.entityExists(any))
@@ -149,8 +151,7 @@ void main() {
     when(appManager.mockPreferencesManager.rateTimerStartedAt).thenReturn(0);
     when(appManager.mockImageManager.save(any, compress: anyNamed("compress")))
         .thenAnswer((_) => Future.value([]));
-    when(appManager.mockLocalDatabaseManager
-            .insertOrUpdateEntity(any, any, any))
+    when(appManager.mockLocalDatabaseManager.insertOrReplace(any, any))
         .thenAnswer((_) => Future.value(true));
 
     catchManager.addOrUpdate(Catch()

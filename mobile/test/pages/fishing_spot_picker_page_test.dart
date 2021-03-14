@@ -36,8 +36,7 @@ void main() {
 
     when(appManager.mockAuthManager.stream).thenAnswer((_) => MockStream());
 
-    when(appManager.mockLocalDatabaseManager
-            .insertOrUpdateEntity(any, any, any))
+    when(appManager.mockLocalDatabaseManager.insertOrReplace(any, any))
         .thenAnswer((_) => Future.value(true));
 
     when(appManager.mockFishingSpotManager.listSortedByName())
@@ -45,6 +44,8 @@ void main() {
     when(appManager.mockFishingSpotManager.entity(fishingSpot.id))
         .thenReturn(fishingSpot);
 
+    when(appManager.mockSubscriptionManager.stream)
+        .thenAnswer((_) => MockStream<void>());
     when(appManager.mockSubscriptionManager.isPro).thenReturn(false);
   });
 

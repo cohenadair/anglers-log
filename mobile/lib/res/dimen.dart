@@ -74,6 +74,7 @@ const insetsTopSmall = EdgeInsets.only(top: paddingSmall);
 const insetsTopWidget = EdgeInsets.only(top: paddingWidget);
 const insetsTopWidgetSmall = EdgeInsets.only(top: paddingWidgetSmall);
 
+const insetsBottomDefaultDouble = EdgeInsets.only(bottom: paddingDefaultDouble);
 const insetsBottomDefault = EdgeInsets.only(bottom: paddingDefault);
 const insetsBottomSmall = EdgeInsets.only(bottom: paddingSmall);
 const insetsBottomWidget = EdgeInsets.only(bottom: paddingWidget);

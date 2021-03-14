@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:mobile/pages/image_picker_page.dart';
 import 'package:mobile/res/dimen.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
@@ -115,7 +116,7 @@ void main() {
     await tapAndSettle(tester, find.text("Gallery"));
     await tapAndSettle(tester, find.text("Camera").last);
 
-    verify(appManager.mockImagePickerWrapper.pickImage(any)).called(1);
+    verify(appManager.mockImagePickerWrapper.getImage(any)).called(1);
     expect(called, isFalse);
   });
 
@@ -129,13 +130,13 @@ void main() {
     ));
     await tester.pumpAndSettle(Duration(milliseconds: 50));
 
-    when(appManager.mockImagePickerWrapper.pickImage(any))
-        .thenAnswer((_) => Future.value(File("")));
+    when(appManager.mockImagePickerWrapper.getImage(any))
+        .thenAnswer((_) => Future.value(PickedFile("")));
 
     await tapAndSettle(tester, find.text("Gallery"));
     await tapAndSettle(tester, find.text("Camera").last);
 
-    verify(appManager.mockImagePickerWrapper.pickImage(any)).called(1);
+    verify(appManager.mockImagePickerWrapper.getImage(any)).called(1);
     expect(called, isTrue);
   });
 

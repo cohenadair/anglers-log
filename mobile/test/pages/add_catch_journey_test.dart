@@ -37,8 +37,7 @@ void main() {
       mockTimeManager: true,
     );
 
-    when(appManager.mockLocalDatabaseManager
-            .insertOrUpdateEntity(any, any, any))
+    when(appManager.mockLocalDatabaseManager.insertOrReplace(any, any))
         .thenAnswer((_) => Future.value(true));
     when(appManager.mockFishingSpotManager.listSortedByName()).thenReturn([]);
 

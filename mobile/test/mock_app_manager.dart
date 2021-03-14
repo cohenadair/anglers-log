@@ -26,6 +26,7 @@ import 'package:mobile/wrappers/firestore_wrapper.dart';
 import 'package:mobile/wrappers/http_wrapper.dart';
 import 'package:mobile/wrappers/image_compress_wrapper.dart';
 import 'package:mobile/wrappers/image_picker_wrapper.dart';
+import 'package:mobile/wrappers/purchases_wrapper.dart';
 import 'package:mobile/wrappers/io_wrapper.dart';
 import 'package:mobile/wrappers/package_info_wrapper.dart';
 import 'package:mobile/wrappers/path_provider_wrapper.dart';
@@ -105,6 +106,8 @@ class MockPermissionHandlerWrapper extends Mock
 
 class MockPhotoManagerWrapper extends Mock implements PhotoManagerWrapper {}
 
+class MockPurchasesWrapper extends Mock implements PurchasesWrapper {}
+
 class MockServicesWrapper extends Mock implements ServicesWrapper {}
 
 class MockUrlLauncherWrapper extends Mock implements UrlLauncherWrapper {}
@@ -143,6 +146,7 @@ class MockAppManager extends Mock implements AppManager {
   MockPathProviderWrapper mockPathProviderWrapper;
   MockPermissionHandlerWrapper mockPermissionHandlerWrapper;
   MockPhotoManagerWrapper mockPhotoManagerWrapper;
+  MockPurchasesWrapper mockPurchasesWrapper;
   MockServicesWrapper mockServicesWrapper;
   MockUrlLauncherWrapper mockUrlLauncherWrapper;
 
@@ -180,6 +184,7 @@ class MockAppManager extends Mock implements AppManager {
     bool mockPathProviderWrapper = false,
     bool mockPermissionHandlerWrapper = false,
     bool mockPhotoManagerWrapper = false,
+    bool mockPurchasesWrapper = false,
     bool mockServicesWrapper = false,
     bool mockUrlLauncherWrapper = false,
   }) {
@@ -346,6 +351,11 @@ class MockAppManager extends Mock implements AppManager {
     if (mockPhotoManagerWrapper) {
       this.mockPhotoManagerWrapper = MockPhotoManagerWrapper();
       when(photoManagerWrapper).thenReturn(this.mockPhotoManagerWrapper);
+    }
+
+    if (mockPurchasesWrapper) {
+      this.mockPurchasesWrapper = MockPurchasesWrapper();
+      when(purchasesWrapper).thenReturn(this.mockPurchasesWrapper);
     }
 
     if (mockServicesWrapper) {

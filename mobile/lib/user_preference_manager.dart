@@ -39,6 +39,12 @@ class UserPreferenceManager extends PreferenceManager {
   @override
   bool get enableFirestore => true;
 
+  @override
+  void onUpgradeToPro() {
+    // Nothing to do. User preferences are always stored on the cloud,
+    // regardless of subscription status.
+  }
+
   set baitCustomEntityIds(List<Id> ids) =>
       putIdList(_keyBaitCustomEntityIds, ids);
 

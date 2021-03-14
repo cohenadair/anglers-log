@@ -46,7 +46,7 @@ void main() {
     when(appManager.mockAuthManager.stream).thenAnswer((_) => stream);
 
     dataManager = appManager.mockLocalDatabaseManager;
-    when(dataManager.insertOrUpdateEntity(any, any, any))
+    when(dataManager.insertOrReplace(any, any))
         .thenAnswer((_) => Future.value(true));
     when(appManager.localDatabaseManager).thenReturn(dataManager);
 
@@ -56,6 +56,8 @@ void main() {
         .thenAnswer((_) => Future.value([]));
     when(appManager.imageManager).thenReturn(imageManager);
 
+    when(appManager.mockSubscriptionManager.stream)
+        .thenAnswer((_) => MockStream<void>());
     when(appManager.mockSubscriptionManager.isPro).thenReturn(false);
 
     ioWrapper = appManager.mockIoWrapper;

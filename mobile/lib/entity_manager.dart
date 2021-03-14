@@ -134,6 +134,15 @@ abstract class EntityManager<T extends GeneratedMessage>
     });
   }
 
+  @override
+  void onUpgradeToPro() {
+    // Since initializeFirestore has already been called, all data has been
+    // downloaded. All that's left to do is upload all local entities.
+    //
+    // No need to notify; these entities are already in the local database.
+    list().forEach((entity) => _addOrUpdateFirestore(entity, notify: false));
+  }
+
   FirestoreWrapper get firestore => appManager.firestoreWrapper;
 
   @protected
@@ -204,7 +213,7 @@ abstract class EntityManager<T extends GeneratedMessage>
       _columnBytes: entity.writeToBuffer(),
     };
 
-    if (await localDatabaseManager.insertOrUpdateEntity(id, map, tableName)) {
+    if (await localDatabaseManager.insertOrReplace(tableName, map)) {
       var updated = entities.containsKey(id);
       entities[id] = entity;
       if (notify) {

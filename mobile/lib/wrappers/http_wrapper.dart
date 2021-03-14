@@ -16,7 +16,7 @@ class HttpWrapper {
     Map<String, dynamic> body,
   }) {
     return http.post(
-      url,
+      Uri.parse(url),
       headers: <String, String>{
         "Content-Type": "application/json; charset=UTF-8",
         "Authorization": auth,

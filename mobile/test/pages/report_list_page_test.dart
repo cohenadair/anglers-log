@@ -2,8 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
 import 'package:mobile/pages/manageable_list_page.dart';
+import 'package:mobile/pages/pro_page.dart';
 import 'package:mobile/pages/report_list_page.dart';
+import 'package:mobile/pages/save_report_page.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
+import 'package:mobile/widgets/button.dart';
 import 'package:mobile/widgets/list_item.dart';
 import 'package:mobile/widgets/text.dart';
 import 'package:mockito/mockito.dart';
@@ -35,6 +38,7 @@ void main() {
   setUp(() {
     appManager = MockAppManager(
       mockComparisonReportManager: true,
+      mockSubscriptionManager: true,
       mockSummaryReportManager: true,
     );
 
@@ -222,5 +226,30 @@ void main() {
       (textWidgets.at(4).evaluate().single.widget as Text).data,
       "Summary 2",
     );
+  });
+
+  testWidgets("ProPage is shown when user is not pro", (tester) async {
+    when(appManager.mockSubscriptionManager.isPro).thenReturn(false);
+    when(appManager.mockSubscriptionManager.subscriptions())
+        .thenAnswer((_) => Future.value(null));
+
+    await tester.pumpWidget(Testable(
+      (_) => ReportListPage(
+        pickerSettings: ManageableListPagePickerSettings.single(
+          onPicked: (_, __) => true,
+          isRequired: true,
+        ),
+      ),
+      appManager: appManager,
+    ));
+
+    await tapAndSettle(tester, find.byIcon(Icons.add));
+    expect(find.byType(ProPage), findsOneWidget);
+
+    await tapAndSettle(tester, find.byType(CloseButton));
+
+    when(appManager.mockSubscriptionManager.isPro).thenReturn(true);
+    await tapAndSettle(tester, find.byIcon(Icons.add));
+    expect(find.byType(SaveReportPage), findsOneWidget);
   });
 }

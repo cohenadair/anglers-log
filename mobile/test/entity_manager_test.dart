@@ -58,12 +58,13 @@ void main() {
     when(stream.listen(any)).thenReturn(null);
     when(appManager.mockAuthManager.stream).thenAnswer((_) => stream);
 
-    when(appManager.mockLocalDatabaseManager
-            .insertOrUpdateEntity(any, any, any))
+    when(appManager.mockLocalDatabaseManager.insertOrReplace(any, any))
         .thenAnswer((realInvocation) => Future.value(true));
     when(appManager.mockLocalDatabaseManager.deleteEntity(any, any))
         .thenAnswer((_) => Future.value(true));
 
+    when(appManager.mockSubscriptionManager.stream)
+        .thenAnswer((_) => MockStream<void>());
     when(appManager.mockSubscriptionManager.isPro).thenReturn(false);
 
     entityManager = TestEntityManager(appManager);
@@ -101,8 +102,7 @@ void main() {
   });
 
   test("Test clear local data", () async {
-    when(appManager.mockLocalDatabaseManager
-            .insertOrUpdateEntity(any, any, any))
+    when(appManager.mockLocalDatabaseManager.insertOrReplace(any, any))
         .thenAnswer((_) => Future.value(true));
 
     // Add.
@@ -192,38 +192,35 @@ void main() {
     when(docChange.type).thenReturn(DocumentChangeType.added);
     listener(snapshot);
     verify(docChange.type).called(2);
-    verify(appManager.mockLocalDatabaseManager
-            .insertOrUpdateEntity(any, any, any))
+    verify(appManager.mockLocalDatabaseManager.insertOrReplace(any, any))
         .called(1);
 
     // Document updated.
     when(docChange.type).thenReturn(DocumentChangeType.modified);
     listener(snapshot);
     verify(docChange.type).called(3);
-    verify(appManager.mockLocalDatabaseManager
-            .insertOrUpdateEntity(any, any, any))
+    verify(appManager.mockLocalDatabaseManager.insertOrReplace(any, any))
         .called(1);
 
     // Document deleted.
     entityManager.firestoreEnabled = false;
     await entityManager.addOrUpdate(species);
-    verify(appManager.mockLocalDatabaseManager
-            .insertOrUpdateEntity(any, any, any))
+    verify(appManager.mockLocalDatabaseManager.insertOrReplace(any, any))
         .called(1);
 
     when(docChange.type).thenReturn(DocumentChangeType.removed);
     listener(snapshot);
     verify(docChange.type).called(3);
-    verifyNever(appManager.mockLocalDatabaseManager
-        .insertOrUpdateEntity(any, any, any));
+    verifyNever(appManager.mockLocalDatabaseManager.insertOrReplace(any, any));
     verify(appManager.mockLocalDatabaseManager.deleteEntity(any, any))
         .called(1);
   });
 
   test("Test add or update local", () async {
-    when(appManager.mockLocalDatabaseManager
-            .insertOrUpdateEntity(any, any, any))
+    when(appManager.mockLocalDatabaseManager.insertOrReplace(any, any))
         .thenAnswer((_) => Future.value(true));
+    when(appManager.mockSubscriptionManager.stream)
+        .thenAnswer((_) => MockStream<void>());
     when(appManager.mockSubscriptionManager.isPro).thenReturn(false);
 
     var listener = MockSpeciesListener();
@@ -291,6 +288,8 @@ void main() {
   });
 
   test("Delete from Firestore", () async {
+    when(appManager.mockSubscriptionManager.stream)
+        .thenAnswer((_) => MockStream<void>());
     when(appManager.mockSubscriptionManager.isPro).thenReturn(false);
 
     await entityManager.addOrUpdate(Species()
@@ -306,6 +305,8 @@ void main() {
   test("Delete locally", () async {
     when(appManager.mockLocalDatabaseManager.deleteEntity(any, any))
         .thenAnswer((_) => Future.value(true));
+    when(appManager.mockSubscriptionManager.stream)
+        .thenAnswer((_) => MockStream<void>());
     when(appManager.mockSubscriptionManager.isPro).thenReturn(false);
 
     var listener = MockSpeciesListener();
@@ -355,8 +356,7 @@ void main() {
   });
 
   test("Entity list by ID", () async {
-    when(appManager.mockLocalDatabaseManager
-            .insertOrUpdateEntity(any, any, any))
+    when(appManager.mockLocalDatabaseManager.insertOrReplace(any, any))
         .thenAnswer((_) => Future.value(true));
 
     // Add.

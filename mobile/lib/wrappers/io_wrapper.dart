@@ -16,4 +16,7 @@ class IoWrapper {
     // A quick DNS lookup will tell us if there's a current internet connection.
     return (await InternetAddress.lookup("example.com")).isNotEmpty;
   }
+
+  bool get isAndroid => Platform.isAndroid;
+  bool get isIOS => Platform.isIOS;
 }

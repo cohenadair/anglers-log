@@ -61,7 +61,9 @@ class ImageManager {
   PathProviderWrapper get _pathProviderWrapper =>
       _appManager.pathProviderWrapper;
 
-  ImageManager(this._appManager);
+  ImageManager(this._appManager) {
+    _subscriptionManager.stream.listen((_) => _onSubscriptionStreamUpdate());
+  }
 
   Future<void> initialize() async {
     var imagesPath = await _pathProviderWrapper.appDocumentsPath;
@@ -432,6 +434,32 @@ class ImageManager {
         }
       }
     }
+  }
+
+  /// Uploads to Firebase any local images that don't exist in Firebase.
+  void _onSubscriptionStreamUpdate() {
+    if (_subscriptionManager.isFree) {
+      return;
+    }
+
+    _log.d("User is pro, checking for images that need to be uploaded...");
+
+    _ioWrapper.directory(_imagePath).list().forEach((file) async {
+      var fileName = basename(file.path);
+
+      // Firebase storage doesn't have an "exists" method, so getMetadata is
+      // used, which will throw an exception if the file doesn't exist.
+      try {
+        await _firebaseStorageWrapper
+            .ref(_firebaseStoragePath(fileName))
+            .getMetadata();
+      } on FirebaseException catch (_) {
+        // Note that although this exception is caught, the Android stacktrace
+        // is still printed to the console. The logs can be safely ignored.
+        _log.d("File doesn't exist in the cloud: $fileName");
+        _upload(file);
+      }
+    });
   }
 }
 

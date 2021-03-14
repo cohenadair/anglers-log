@@ -97,7 +97,6 @@ class EmptyListPlaceholder extends StatelessWidget {
         children: <Widget>[
           WatermarkLogo(
             icon: icon,
-            color: Colors.grey.shade400,
           ),
           Padding(
             padding: insetsVerticalDefault,

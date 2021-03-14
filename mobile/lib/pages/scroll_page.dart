@@ -5,9 +5,15 @@ import '../widgets/widget.dart';
 class ScrollPage extends StatelessWidget {
   final AppBar appBar;
   final List<Widget> children;
+
+  /// See [Scaffold.persistentFooterButtons].
   final List<Widget> footer;
+
   final EdgeInsets padding;
+
+  /// See [Scaffold.extendBodyBehindAppBar].
   final bool extendBodyBehindAppBar;
+
   final bool enableHorizontalSafeArea;
   final bool centerContent;
 

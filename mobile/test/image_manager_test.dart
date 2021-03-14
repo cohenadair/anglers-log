@@ -1,6 +1,8 @@
+import 'dart:async';
 import 'dart:io';
 import 'dart:typed_data';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fixnum/fixnum.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/image_manager.dart';
@@ -37,6 +39,8 @@ void main() {
     when(directory.list(recursive: anyNamed("recursive")))
         .thenAnswer((_) => Stream.empty());
 
+    when(appManager.mockSubscriptionManager.stream)
+        .thenAnswer((_) => MockStream<void>());
     when(appManager.mockSubscriptionManager.isPro).thenReturn(false);
 
     when(appManager.mockImageCompressWrapper.compress(any, any, any))
@@ -260,6 +264,8 @@ void main() {
     verifyNever(appManager.mockSubscriptionManager.isPro);
 
     // File doesn't exist, but user isn't pro.
+    when(appManager.mockSubscriptionManager.stream)
+        .thenAnswer((_) => MockStream<void>());
     when(appManager.mockSubscriptionManager.isPro).thenReturn(false);
     when(file.exists()).thenAnswer((_) => Future.value(false));
     expect(await imageManager.image(context, fileName: "test.jpg"), isNull);
@@ -476,6 +482,107 @@ void main() {
 
     test("Converting valid image gives non-null result", () async {
       // Nothing to do here. Assume instantiateImageCodec works as it should.
+    });
+  });
+
+  group("On subscription stream updates", () {
+    test("Free user is a no-op", () {
+      var controller = StreamController.broadcast();
+      when(appManager.mockSubscriptionManager.stream)
+          .thenAnswer((_) => controller.stream);
+      when(appManager.mockSubscriptionManager.isFree).thenReturn(true);
+
+      imageManager = ImageManager(appManager);
+      controller.add(null);
+      verifyNever(appManager.mockIoWrapper.directory(any));
+    });
+
+    test("No images is a no-op", () async {
+      var controller = StreamController.broadcast();
+      when(appManager.mockSubscriptionManager.stream)
+          .thenAnswer((_) => controller.stream);
+      when(appManager.mockSubscriptionManager.isFree).thenReturn(false);
+
+      var directory = MockDirectory();
+      when(directory.list()).thenAnswer((_) => MockStream());
+      when(appManager.mockIoWrapper.directory(any)).thenReturn(directory);
+
+      imageManager = ImageManager(appManager);
+      controller.add(null);
+
+      // Wait for callback to finish.
+      await Future.delayed(Duration(milliseconds: 50));
+      verify(appManager.mockIoWrapper.directory(any)).called(1);
+      verifyNever(appManager.mockFirebaseStorageWrapper.ref(any));
+    });
+
+    test("Images already exist in the cloud", () async {
+      var subController = StreamController.broadcast();
+      when(appManager.mockSubscriptionManager.stream)
+          .thenAnswer((_) => subController.stream);
+      when(appManager.mockSubscriptionManager.isFree).thenReturn(false);
+
+      // Add a couple files to directory stream.
+      var dirController = StreamController<FileSystemEntity>();
+      var file1 = MockFile();
+      when(file1.path).thenReturn("test/path1.png");
+      var file2 = MockFile();
+      when(file2.path).thenReturn("test/path2.png");
+      dirController.add(file1);
+      dirController.add(file2);
+
+      var directory = MockDirectory();
+      when(directory.list()).thenAnswer((_) => dirController.stream);
+      when(appManager.mockIoWrapper.directory(any)).thenReturn(directory);
+
+      var reference = MockReference();
+      when(reference.getMetadata())
+          .thenAnswer((_) => Future.value(MockFullMetadata()));
+      when(appManager.mockFirebaseStorageWrapper.ref(any))
+          .thenAnswer((_) => reference);
+
+      imageManager = ImageManager(appManager);
+      subController.add(null);
+
+      // Wait for callback to finish.
+      await Future.delayed(Duration(milliseconds: 50));
+      verify(appManager.mockIoWrapper.directory(any)).called(1);
+      verify(appManager.mockFirebaseStorageWrapper.ref(any)).called(2);
+      verifyNever(appManager.mockSubscriptionManager.isPro);
+    });
+
+    test("Images are uploaded", () async {
+      var subController = StreamController.broadcast();
+      when(appManager.mockSubscriptionManager.stream)
+          .thenAnswer((_) => subController.stream);
+      when(appManager.mockSubscriptionManager.isFree).thenReturn(false);
+
+      // Add a couple files to directory stream.
+      var dirController = StreamController<FileSystemEntity>();
+      var file1 = MockFile();
+      when(file1.path).thenReturn("test/path1.png");
+      var file2 = MockFile();
+      when(file2.path).thenReturn("test/path2.png");
+      dirController.add(file1);
+      dirController.add(file2);
+
+      var directory = MockDirectory();
+      when(directory.list()).thenAnswer((_) => dirController.stream);
+      when(appManager.mockIoWrapper.directory(any)).thenReturn(directory);
+
+      var reference = MockReference();
+      when(reference.getMetadata()).thenThrow(FirebaseException(plugin: ""));
+      when(appManager.mockFirebaseStorageWrapper.ref(any))
+          .thenAnswer((_) => reference);
+
+      imageManager = ImageManager(appManager);
+      subController.add(null);
+
+      // Wait for callback to finish.
+      await Future.delayed(Duration(milliseconds: 50));
+      verify(appManager.mockIoWrapper.directory(any)).called(1);
+      verify(appManager.mockFirebaseStorageWrapper.ref(any)).called(2);
+      verify(appManager.mockSubscriptionManager.isPro).called(2);
     });
   });
 }

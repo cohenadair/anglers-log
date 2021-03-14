@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:date_range_picker/date_range_picker.dart' as date_range_picker;
 import 'package:flutter/material.dart';
 
 import '../app_manager.dart';
@@ -90,28 +89,35 @@ class _DateRangePickerPageState extends State<DateRangePickerPage> {
     var now = _timeManager.currentDateTime;
     var customValue = _customDateRange.getValue(now);
 
-    var pickedRange = await date_range_picker.showDatePicker(
+    var pickedRange = await showDateRangePicker(
       context: context,
-      initialFirstDate: customValue.startDate,
-      initialLastDate: customValue.endDate,
+      initialDateRange: DateTimeRange(
+        start: customValue.startDate,
+        end: customValue.endDate,
+      ),
       firstDate: DateTime.fromMillisecondsSinceEpoch(0),
       lastDate: now,
+      currentDate: now,
+      confirmText: Strings.of(context).ok.toUpperCase(),
+      cancelText: Strings.of(context).cancel.toUpperCase(),
+      initialEntryMode: DatePickerEntryMode.input,
     );
 
     if (pickedRange == null) {
       return;
     }
 
-    DateTime endDate;
-    if (pickedRange.first == pickedRange.last) {
-      // If only the start date was picked, or the start and end time are equal,
-      // set the end date to a range of 1 day.
-      endDate = pickedRange.first.add(Duration(days: 1));
+    // Always add a day to the end date, so the end date is included. The
+    // date range picker cuts the end date off at the beginning of the day. If
+    // adding a day puts the end time in the future, clamp it to at "now".
+    var endDate = pickedRange.end.add(Duration(days: 1));
+    if (endDate.isAfter(now)) {
+      endDate = now;
     }
 
     var dateRange = DateRange(
-      startDate: pickedRange.first,
-      endDate: endDate ?? pickedRange.last,
+      startDate: pickedRange.start,
+      endDate: endDate,
     );
 
     widget.onDateRangePicked(
