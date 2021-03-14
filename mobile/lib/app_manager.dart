@@ -143,7 +143,7 @@ class AppManager {
 
   LocalDatabaseManager get localDatabaseManager {
     if (_localDatabaseManager == null) {
-      _localDatabaseManager = LocalDatabaseManager();
+      _localDatabaseManager = LocalDatabaseManager(this);
     }
     return _localDatabaseManager;
   }

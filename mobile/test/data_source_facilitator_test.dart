@@ -15,6 +15,7 @@ class TestDataSourceFacilitator extends DataSourceFacilitator {
   int initializeFirestoreCount = 0;
   int initializeLocalDataCount = 0;
   int onLocalDatabaseDeletedCount = 0;
+  int onUpgradeToProCount = 0;
 
   MockStreamSubscription listener = MockStreamSubscription();
 
@@ -44,7 +45,7 @@ class TestDataSourceFacilitator extends DataSourceFacilitator {
 
   @override
   void onUpgradeToPro() {
-    // TODO: implement onUpgradeToPro
+    onUpgradeToProCount++;
   }
 }
 
@@ -125,5 +126,35 @@ void main() {
     await facilitator.initialize();
     expect(facilitator.initializeFirestoreCount, 0);
     expect(facilitator.initializeLocalDataCount, 1);
+  });
+
+  test("When a user upgrades to pro, onUpgradeToPro is invoked", () async {
+    var controller = StreamController.broadcast();
+    when(appManager.mockSubscriptionManager.stream)
+        .thenAnswer((_) => controller.stream);
+
+    facilitator = TestDataSourceFacilitator(appManager);
+
+    // Verify onUpgradeToPro isn't invoked when conditions aren't met.
+    when(appManager.mockSubscriptionManager.isPro).thenReturn(false);
+    controller.add(null);
+    expect(facilitator.onUpgradeToProCount, 0);
+
+    when(appManager.mockSubscriptionManager.isPro).thenReturn(true);
+    controller.add(null);
+    expect(facilitator.onUpgradeToProCount, 0);
+
+    // Verify onUpgradeToPro is invoked.
+    facilitator.firestoreEnabled = true;
+    controller.add(null);
+
+    // Need to wait for Firebase initialization Future to finish.
+    await Future.delayed(Duration(milliseconds: 50));
+    expect(facilitator.onUpgradeToProCount, 1);
+
+    // Verify onUpgradeToPro is not invoked again if another event is fired.
+    controller.add(null);
+    await Future.delayed(Duration(milliseconds: 50));
+    expect(facilitator.onUpgradeToProCount, 1);
   });
 }

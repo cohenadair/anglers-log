@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -11,15 +10,21 @@ import 'database/sqlite_open_helper.dart';
 import 'log.dart';
 import 'model/gen/anglerslog.pb.dart';
 import 'utils/protobuf_utils.dart';
+import 'wrappers/io_wrapper.dart';
 
 class LocalDatabaseManager {
   static LocalDatabaseManager of(BuildContext context) =>
       Provider.of<AppManager>(context, listen: false).localDatabaseManager;
 
   final _log = Log("DataManager");
+  final AppManager _appManager;
 
   Database _database;
   Future<Database> Function() _openDatabase;
+
+  LocalDatabaseManager(this._appManager);
+
+  IoWrapper get _ioWrapper => _appManager.ioWrapper;
 
   Future<void> initialize({
     Database database,
@@ -76,8 +81,8 @@ class LocalDatabaseManager {
     var id = entityId.uint8List;
     if (await delete(
       tableName,
-      where: Platform.isAndroid ? "hex(id) = ?" : "id = ?",
-      whereArgs: [Platform.isAndroid ? hex(id) : id],
+      where: _ioWrapper.isAndroid ? "hex(id) = ?" : "id = ?",
+      whereArgs: [_ioWrapper.isAndroid ? hex(id) : id],
     )) {
       return true;
     } else {

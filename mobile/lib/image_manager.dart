@@ -444,7 +444,7 @@ class ImageManager {
 
     _log.d("User is pro, checking for images that need to be uploaded...");
 
-    Directory(_imagePath).list().forEach((file) async {
+    _ioWrapper.directory(_imagePath).list().forEach((file) async {
       var fileName = basename(file.path);
 
       // Firebase storage doesn't have an "exists" method, so getMetadata is

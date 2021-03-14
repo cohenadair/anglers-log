@@ -63,9 +63,7 @@ abstract class DataSourceFacilitator {
     });
 
     subscriptionManager.stream.listen((_) async {
-      if (subscriptionManager.isPro &&
-          shouldUseFirestore &&
-          _firestoreListener == null) {
+      if (shouldUseFirestore && _firestoreListener == null) {
         _log.d("User upgraded to pro, reconciling data...");
         await _initializeFirestore();
         onUpgradeToPro();
