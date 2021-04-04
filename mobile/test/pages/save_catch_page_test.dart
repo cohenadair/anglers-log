@@ -17,42 +17,37 @@ import 'package:mobile/widgets/static_fishing_spot.dart';
 import 'package:mobile/widgets/text_input.dart';
 import 'package:mockito/mockito.dart';
 
-import '../mock_app_manager.dart';
+import '../mocks/stubbed_app_manager.dart';
 import '../test_utils.dart';
 
 void main() {
-  MockAppManager appManager;
+  late StubbedAppManager appManager;
 
   setUp(() {
-    appManager = MockAppManager(
-      mockAuthManager: true,
-      mockBaitCategoryManager: true,
-      mockBaitManager: true,
-      mockCatchManager: true,
-      mockCustomEntityManager: true,
-      mockLocalDatabaseManager: true,
-      mockFishingSpotManager: true,
-      mockImageManager: true,
-      mockLocationMonitor: true,
-      mockPreferencesManager: true,
-      mockSpeciesManager: true,
-      mockSubscriptionManager: true,
-      mockTimeManager: true,
-    );
+    appManager = StubbedAppManager();
 
-    when(appManager.mockAuthManager.stream).thenAnswer((_) => MockStream());
+    when(appManager.authManager.stream).thenAnswer((_) => Stream.empty());
 
-    when(appManager.mockBaitCategoryManager.listSortedByName()).thenReturn([]);
+    when(appManager.baitCategoryManager.listSortedByName()).thenReturn([]);
 
-    when(appManager.mockLocalDatabaseManager.insertOrReplace(any, any))
+    when(appManager.catchManager.addOrUpdate(
+      any,
+      imageFiles: anyNamed("imageFiles"),
+    )).thenAnswer((_) => Future.value(false));
+
+    when(appManager.localDatabaseManager.insertOrReplace(any, any))
         .thenAnswer((_) => Future.value(true));
 
-    when(appManager.mockPreferencesManager.baitCustomEntityIds).thenReturn([]);
-    when(appManager.mockPreferencesManager.catchCustomEntityIds).thenReturn([]);
+    when(appManager.locationMonitor.currentLocation).thenReturn(null);
 
-    when(appManager.mockSubscriptionManager.stream)
-        .thenAnswer((_) => MockStream<void>());
-    when(appManager.mockSubscriptionManager.isPro).thenReturn(false);
+    when(appManager.userPreferenceManager.baitCustomEntityIds).thenReturn([]);
+    when(appManager.userPreferenceManager.baitFieldIds).thenReturn([]);
+    when(appManager.userPreferenceManager.catchCustomEntityIds).thenReturn([]);
+    when(appManager.userPreferenceManager.catchFieldIds).thenReturn([]);
+
+    when(appManager.subscriptionManager.stream)
+        .thenAnswer((_) => Stream.empty());
+    when(appManager.subscriptionManager.isPro).thenReturn(false);
 
     appManager.stubCurrentTime(DateTime(2020, 2, 1, 10, 30));
   });
@@ -61,6 +56,7 @@ void main() {
     testWidgets("Images with date sets Catch date", (tester) async {
       await tester.pumpWidget(Testable(
         (_) => SaveCatchPage(
+          speciesId: randomId(),
           images: [
             PickedImage(
               originalFile: File("test/resources/flutter_logo.png"),
@@ -78,6 +74,7 @@ void main() {
     testWidgets("Images without date sets default date", (tester) async {
       await tester.pumpWidget(Testable(
         (_) => SaveCatchPage(
+          speciesId: randomId(),
           images: [
             PickedImage(
               originalFile: File("test/resources/flutter_logo.png"),
@@ -95,13 +92,12 @@ void main() {
       var species = Species()
         ..id = randomId()
         ..name = "Steelhead";
-      when(appManager.mockSpeciesManager.entity(species.id))
-          .thenReturn(species);
+      when(appManager.speciesManager.entity(species.id)).thenReturn(species);
 
       var fishingSpot = FishingSpot()
         ..id = randomId()
         ..name = "Spot A";
-      when(appManager.mockFishingSpotManager.entity(fishingSpot.id))
+      when(appManager.fishingSpotManager.entity(fishingSpot.id))
           .thenReturn(fishingSpot);
 
       await tester.pumpWidget(Testable(
@@ -159,28 +155,27 @@ void main() {
         ..id = randomId()
         ..name = "Color"
         ..type = CustomEntity_Type.TEXT;
-      when(appManager.mockCustomEntityManager.entity(customEntity.id))
+      when(appManager.customEntityManager.entity(customEntity.id))
           .thenReturn(customEntity);
-      when(appManager.mockPreferencesManager.catchCustomEntityIds)
+      when(appManager.userPreferenceManager.catchCustomEntityIds)
           .thenReturn([customEntity.id]);
 
       var bait = Bait()
         ..id = randomId()
         ..name = "Rapala";
-      when(appManager.mockBaitManager.entity(any)).thenReturn(bait);
-      when(appManager.mockBaitManager.formatNameWithCategory(any))
+      when(appManager.baitManager.entity(any)).thenReturn(bait);
+      when(appManager.baitManager.formatNameWithCategory(any))
           .thenReturn("Rapala");
 
       var fishingSpot = FishingSpot()
         ..id = randomId()
         ..name = "Spot A";
-      when(appManager.mockFishingSpotManager.entity(any))
-          .thenReturn(fishingSpot);
+      when(appManager.fishingSpotManager.entity(any)).thenReturn(fishingSpot);
 
       var species = Species()
         ..id = randomId()
         ..name = "Steelhead";
-      when(appManager.mockSpeciesManager.entity(any)).thenReturn(species);
+      when(appManager.speciesManager.entity(any)).thenReturn(species);
 
       var cat = Catch()
         ..id = randomId()
@@ -193,7 +188,7 @@ void main() {
           ..value = "Minnow")
         ..imageNames.add("flutter_logo.png");
 
-      when(appManager.mockImageManager.images(
+      when(appManager.imageManager.images(
         any,
         imageNames: anyNamed("imageNames"),
         size: anyNamed("size"),
@@ -226,7 +221,7 @@ void main() {
       var species = Species()
         ..id = randomId()
         ..name = "Steelhead";
-      when(appManager.mockSpeciesManager.entity(any)).thenReturn(species);
+      when(appManager.speciesManager.entity(any)).thenReturn(species);
 
       var cat = Catch()
         ..id = randomId()
@@ -254,28 +249,27 @@ void main() {
         ..id = randomId()
         ..name = "Color"
         ..type = CustomEntity_Type.TEXT;
-      when(appManager.mockCustomEntityManager.entity(customEntity.id))
+      when(appManager.customEntityManager.entity(customEntity.id))
           .thenReturn(customEntity);
-      when(appManager.mockPreferencesManager.catchCustomEntityIds)
+      when(appManager.userPreferenceManager.catchCustomEntityIds)
           .thenReturn([customEntity.id]);
 
       var bait = Bait()
         ..id = randomId()
         ..name = "Rapala";
-      when(appManager.mockBaitManager.entity(any)).thenReturn(bait);
-      when(appManager.mockBaitManager.formatNameWithCategory(any))
+      when(appManager.baitManager.entity(any)).thenReturn(bait);
+      when(appManager.baitManager.formatNameWithCategory(any))
           .thenReturn("Rapala");
 
       var fishingSpot = FishingSpot()
         ..id = randomId()
         ..name = "Spot A";
-      when(appManager.mockFishingSpotManager.entity(any))
-          .thenReturn(fishingSpot);
+      when(appManager.fishingSpotManager.entity(any)).thenReturn(fishingSpot);
 
       var species = Species()
         ..id = randomId()
         ..name = "Steelhead";
-      when(appManager.mockSpeciesManager.entity(any)).thenReturn(species);
+      when(appManager.speciesManager.entity(any)).thenReturn(species);
 
       var cat = Catch()
         ..id = randomId()
@@ -288,7 +282,7 @@ void main() {
           ..value = "Minnow")
         ..imageNames.add("flutter_logo.png");
 
-      when(appManager.mockImageManager.images(
+      when(appManager.imageManager.images(
         any,
         imageNames: anyNamed("imageNames"),
         size: anyNamed("size"),
@@ -305,7 +299,7 @@ void main() {
       // Add small delay so images future can finish.
       await tester.pumpAndSettle(Duration(milliseconds: 100));
 
-      when(appManager.mockCatchManager.addOrUpdate(
+      when(appManager.catchManager.addOrUpdate(
         captureAny,
         imageFiles: anyNamed("imageFiles"),
       )).thenAnswer((invocation) {
@@ -316,7 +310,7 @@ void main() {
       await tapAndSettle(tester, find.text("SAVE"));
 
       var result = verify(
-        appManager.mockCatchManager.addOrUpdate(
+        appManager.catchManager.addOrUpdate(
           captureAny,
           imageFiles: anyNamed("imageFiles"),
         ),
@@ -331,13 +325,12 @@ void main() {
       var species = Species()
         ..id = randomId()
         ..name = "Steelhead";
-      when(appManager.mockSpeciesManager.entity(species.id))
-          .thenReturn(species);
+      when(appManager.speciesManager.entity(species.id)).thenReturn(species);
 
       var fishingSpot = FishingSpot()
         ..id = randomId()
         ..name = "Spot A";
-      when(appManager.mockFishingSpotManager.entity(fishingSpot.id))
+      when(appManager.fishingSpotManager.entity(fishingSpot.id))
           .thenReturn(fishingSpot);
 
       await tester.pumpWidget(Testable(
@@ -372,7 +365,7 @@ void main() {
       await tapAndSettle(tester, find.text("SAVE"));
 
       var result = verify(
-        appManager.mockCatchManager.addOrUpdate(
+        appManager.catchManager.addOrUpdate(
           captureAny,
           imageFiles: anyNamed("imageFiles"),
         ),
@@ -393,7 +386,9 @@ void main() {
 
   testWidgets("New title", (tester) async {
     await tester.pumpWidget(Testable(
-      (_) => SaveCatchPage(),
+      (_) => SaveCatchPage(
+        speciesId: randomId(),
+      ),
       appManager: appManager,
     ));
 
@@ -415,7 +410,7 @@ void main() {
   });
 
   testWidgets("Only show fields saved in preferences", (tester) async {
-    when(appManager.mockPreferencesManager.catchFieldIds).thenReturn([
+    when(appManager.userPreferenceManager.catchFieldIds).thenReturn([
       catchFieldIdTimestamp(),
       catchFieldIdSpecies(),
       catchFieldIdBait(),
@@ -423,11 +418,11 @@ void main() {
     var species = Species()
       ..id = randomId()
       ..name = "Steelhead";
-    when(appManager.mockSpeciesManager.entity(species.id)).thenReturn(species);
+    when(appManager.speciesManager.entity(species.id)).thenReturn(species);
     var fishingSpot = FishingSpot()
       ..id = randomId()
       ..name = "Spot A";
-    when(appManager.mockFishingSpotManager.entity(fishingSpot.id))
+    when(appManager.fishingSpotManager.entity(fishingSpot.id))
         .thenReturn(fishingSpot);
 
     await tester.pumpWidget(Testable(
@@ -452,9 +447,9 @@ void main() {
       ..name = "Bass";
 
     // Use real SpeciesManager to test listener notifications.
-    var speciesManager = SpeciesManager(appManager);
+    var speciesManager = SpeciesManager(appManager.app);
     speciesManager.addOrUpdate(species);
-    when(appManager.speciesManager).thenReturn(speciesManager);
+    when(appManager.app.speciesManager).thenReturn(speciesManager);
 
     await tester.pumpWidget(
       Testable(
@@ -486,9 +481,9 @@ void main() {
       ..name = "Minnow";
 
     // Use real BaitManager to test listener notifications.
-    var baitManager = BaitManager(appManager);
+    var baitManager = BaitManager(appManager.app);
     baitManager.addOrUpdate(bait);
-    when(appManager.baitManager).thenReturn(baitManager);
+    when(appManager.app.baitManager).thenReturn(baitManager);
 
     await tester.pumpWidget(
       Testable(
@@ -521,9 +516,9 @@ void main() {
       ..name = "A";
 
     // Use real FishingSpotManager to test listener notifications.
-    var fishingSpotManager = FishingSpotManager(appManager);
+    var fishingSpotManager = FishingSpotManager(appManager.app);
     fishingSpotManager.addOrUpdate(fishingSpot);
-    when(appManager.fishingSpotManager).thenReturn(fishingSpotManager);
+    when(appManager.app.fishingSpotManager).thenReturn(fishingSpotManager);
 
     await tester.pumpWidget(
       Testable(
@@ -558,7 +553,7 @@ void main() {
     );
     await tapAndSettle(tester, find.text("SAVE"));
 
-    var result = verify(appManager.mockCatchManager
+    var result = verify(appManager.catchManager
         .addOrUpdate(captureAny, imageFiles: anyNamed("imageFiles")));
     result.called(1);
 

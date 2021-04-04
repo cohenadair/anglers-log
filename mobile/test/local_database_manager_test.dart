@@ -6,21 +6,20 @@ import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mockito/mockito.dart';
 import 'package:sqflite/utils/utils.dart';
 
-import 'mock_app_manager.dart';
+import 'mocks/mocks.mocks.dart';
+import 'mocks/stubbed_app_manager.dart';
 
 void main() {
-  MockAppManager appManager;
-  MockDatabase database;
+  late StubbedAppManager appManager;
+  late MockDatabaseExecutor database;
 
-  LocalDatabaseManager databaseManager;
+  late LocalDatabaseManager databaseManager;
 
   setUp(() async {
-    appManager = MockAppManager(
-      mockIoWrapper: true,
-    );
-    database = MockDatabase();
+    appManager = StubbedAppManager();
+    database = MockDatabaseExecutor();
 
-    databaseManager = LocalDatabaseManager(appManager);
+    databaseManager = LocalDatabaseManager(appManager.app);
     await databaseManager.initialize(
       database: database,
       openDatabase: () => Future.value(database),
@@ -34,7 +33,7 @@ void main() {
       whereArgs: anyNamed("whereArgs"),
     )).thenAnswer((_) => Future.value(0));
 
-    when(appManager.mockIoWrapper.isAndroid).thenReturn(true);
+    when(appManager.ioWrapper.isAndroid).thenReturn(true);
 
     var id = randomId();
     await databaseManager.deleteEntity(id, "test");
@@ -47,7 +46,7 @@ void main() {
     result.called(1);
 
     String where = result.captured[0];
-    String whereArgs = result.captured[1].first;
+    String? whereArgs = result.captured[1].first;
     expect(where.contains("hex"), isTrue);
     expect(whereArgs, hex(id.uint8List));
   });
@@ -59,7 +58,7 @@ void main() {
       whereArgs: anyNamed("whereArgs"),
     )).thenAnswer((_) => Future.value(0));
 
-    when(appManager.mockIoWrapper.isAndroid).thenReturn(false);
+    when(appManager.ioWrapper.isAndroid).thenReturn(false);
 
     var id = randomId();
     await databaseManager.deleteEntity(id, "test");
@@ -72,7 +71,7 @@ void main() {
     result.called(1);
 
     String where = result.captured[0];
-    Uint8List whereArgs = result.captured[1].first;
+    Uint8List? whereArgs = result.captured[1].first;
     expect(where.contains("hex"), isFalse);
     expect(whereArgs, id.uint8List);
   });

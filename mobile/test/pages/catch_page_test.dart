@@ -8,34 +8,28 @@ import 'package:mobile/widgets/static_fishing_spot.dart';
 import 'package:mobile/widgets/text.dart';
 import 'package:mockito/mockito.dart';
 
-import '../mock_app_manager.dart';
+import '../mocks/stubbed_app_manager.dart';
 import '../test_utils.dart';
 
 void main() {
-  MockAppManager appManager;
+  late StubbedAppManager appManager;
 
   setUp(() {
-    appManager = MockAppManager(
-      mockBaitManager: true,
-      mockBaitCategoryManager: true,
-      mockCatchManager: true,
-      mockFishingSpotManager: true,
-      mockSpeciesManager: true,
-      mockTimeManager: true,
-    );
+    appManager = StubbedAppManager();
 
-    when(appManager.mockCatchManager.entity(any)).thenReturn(Catch()
+    when(appManager.catchManager.deleteMessage(any, any)).thenReturn("Delete");
+    when(appManager.catchManager.entity(any)).thenReturn(Catch()
       ..id = randomId()
       ..timestamp = Int64(DateTime(2020, 1, 1, 15, 30).millisecondsSinceEpoch)
       ..speciesId = randomId());
-    when(appManager.mockSpeciesManager.entity(any)).thenReturn(Species()
+    when(appManager.speciesManager.entity(any)).thenReturn(Species()
       ..id = randomId()
       ..name = "Steelhead");
   });
 
   testWidgets("No bait renders empty", (tester) async {
     await tester.pumpWidget(Testable(
-      (_) => CatchPage(randomId()),
+      (_) => CatchPage(Catch()),
       appManager: appManager,
     ));
     // Wait for map timer to finish.
@@ -44,13 +38,13 @@ void main() {
   });
 
   testWidgets("Bait without category doesn't show subtitle", (tester) async {
-    when(appManager.mockBaitManager.entity(any)).thenReturn(
+    when(appManager.baitManager.entity(any)).thenReturn(
       Bait()
         ..id = randomId()
         ..name = "Worm",
     );
     await tester.pumpWidget(Testable(
-      (_) => CatchPage(randomId()),
+      (_) => CatchPage(Catch()),
       appManager: appManager,
     ));
     // Wait for map timer to finish.
@@ -61,16 +55,16 @@ void main() {
   });
 
   testWidgets("Bait with category shows subtitle", (tester) async {
-    when(appManager.mockBaitManager.entity(any)).thenReturn(Bait()
+    when(appManager.baitManager.entity(any)).thenReturn(Bait()
       ..id = randomId()
       ..name = "Worm");
-    when(appManager.mockBaitCategoryManager.entity(any)).thenReturn(
+    when(appManager.baitCategoryManager.entity(any)).thenReturn(
       BaitCategory()
         ..id = randomId()
         ..name = "Live Bait",
     );
     await tester.pumpWidget(Testable(
-      (_) => CatchPage(randomId()),
+      (_) => CatchPage(Catch()),
       appManager: appManager,
     ));
     // Wait for map timer to finish.
@@ -82,7 +76,7 @@ void main() {
 
   testWidgets("No fishing spot renders empty", (tester) async {
     await tester.pumpWidget(Testable(
-      (_) => CatchPage(randomId()),
+      (_) => CatchPage(Catch()),
       appManager: appManager,
     ));
     // Wait for map timer to finish.
@@ -92,7 +86,7 @@ void main() {
   });
 
   testWidgets("Fishing spot renders", (tester) async {
-    when(appManager.mockFishingSpotManager.entity(any)).thenReturn(
+    when(appManager.fishingSpotManager.entity(any)).thenReturn(
       FishingSpot()
         ..id = randomId()
         ..name = "Baskets"
@@ -100,7 +94,7 @@ void main() {
         ..lng = 7.654321,
     );
     await tester.pumpWidget(Testable(
-      (_) => CatchPage(randomId()),
+      (_) => CatchPage(Catch()),
       appManager: appManager,
     ));
     // Wait for map timer to finish.

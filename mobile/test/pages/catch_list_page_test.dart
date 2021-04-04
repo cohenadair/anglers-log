@@ -7,23 +7,18 @@ import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mobile/widgets/text.dart';
 import 'package:mockito/mockito.dart';
 
-import '../mock_app_manager.dart';
+import '../mocks/stubbed_app_manager.dart';
 import '../test_utils.dart';
 
 void main() {
-  MockAppManager appManager;
+  late StubbedAppManager appManager;
 
   setUp(() {
-    appManager = MockAppManager(
-      mockBaitCategoryManager: true,
-      mockBaitManager: true,
-      mockCatchManager: true,
-      mockFishingSpotManager: true,
-      mockSpeciesManager: true,
-      mockTimeManager: true,
-    );
+    appManager = StubbedAppManager();
 
-    when(appManager.mockCatchManager.catchesSortedByTimestamp(
+    when(appManager.baitManager.formatNameWithCategory(any)).thenReturn(null);
+
+    when(appManager.catchManager.catchesSortedByTimestamp(
       any,
       filter: anyNamed("filter"),
       dateRange: anyNamed("dateRange"),
@@ -38,7 +33,7 @@ void main() {
         ..baitId = randomId(),
     ]);
 
-    when(appManager.mockSpeciesManager.entity(any)).thenReturn(Species()
+    when(appManager.speciesManager.entity(any)).thenReturn(Species()
       ..id = randomId()
       ..name = "Steelhead");
   });
@@ -64,7 +59,7 @@ void main() {
   });
 
   testWidgets("Fishing spot with name used as subtitle", (tester) async {
-    when(appManager.mockFishingSpotManager.entity(any)).thenReturn(FishingSpot()
+    when(appManager.fishingSpotManager.entity(any)).thenReturn(FishingSpot()
       ..id = randomId()
       ..name = "Baskets"
       ..lat = 1.234567
@@ -78,10 +73,10 @@ void main() {
   });
 
   testWidgets("Null fishing spot uses bait as subtitle", (tester) async {
-    when(appManager.mockBaitManager.entity(any)).thenReturn(Bait()
+    when(appManager.baitManager.entity(any)).thenReturn(Bait()
       ..id = randomId()
       ..name = "Roe Bag");
-    when(appManager.mockBaitManager.formatNameWithCategory(any))
+    when(appManager.baitManager.formatNameWithCategory(any))
         .thenReturn("Roe Bag");
     await tester.pumpWidget(Testable(
       (_) => CatchListPage(),
@@ -93,14 +88,14 @@ void main() {
 
   testWidgets("Fishing spot without name uses bait as subtitle",
       (tester) async {
-    when(appManager.mockFishingSpotManager.entity(any)).thenReturn(FishingSpot()
+    when(appManager.fishingSpotManager.entity(any)).thenReturn(FishingSpot()
       ..id = randomId()
       ..lat = 1.234567
       ..lng = 7.654321);
-    when(appManager.mockBaitManager.entity(any)).thenReturn(Bait()
+    when(appManager.baitManager.entity(any)).thenReturn(Bait()
       ..id = randomId()
       ..name = "Roe Bag");
-    when(appManager.mockBaitManager.formatNameWithCategory(any))
+    when(appManager.baitManager.formatNameWithCategory(any))
         .thenReturn("Roe Bag");
     await tester.pumpWidget(Testable(
       (_) => CatchListPage(),

@@ -63,10 +63,10 @@ class UserPreferenceManager extends PreferenceManager {
 
   List<Id> get catchFieldIds => idList(_keyCatchFieldIds);
 
-  set rateTimerStartedAt(int timestamp) =>
+  set rateTimerStartedAt(int? timestamp) =>
       put(_keyRateTimerStartedAt, timestamp);
 
-  int get rateTimerStartedAt => preferences[_keyRateTimerStartedAt];
+  int? get rateTimerStartedAt => preferences[_keyRateTimerStartedAt];
 
   set didRateApp(bool rated) => put(_keyDidRateApp, rated);
 
@@ -76,9 +76,9 @@ class UserPreferenceManager extends PreferenceManager {
 
   bool get didOnboard => preferences[_keyDidOnboard] ?? false;
 
-  set selectedReportId(Id id) => putId(_keySelectedReportId, id);
+  set selectedReportId(Id? id) => putId(_keySelectedReportId, id);
 
-  Id get selectedReportId => id(_keySelectedReportId);
+  Id? get selectedReportId => id(_keySelectedReportId);
 
   void _onDeleteCustomEntity(CustomEntity entity) {
     baitCustomEntityIds = baitCustomEntityIds..remove(entity.id);

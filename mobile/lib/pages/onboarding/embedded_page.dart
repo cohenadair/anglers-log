@@ -19,9 +19,8 @@ class EmbeddedPage extends StatelessWidget {
 
   EmbeddedPage({
     this.showBackButton = true,
-    this.childBuilder,
-  })  : assert(showBackButton != null),
-        assert(childBuilder != null);
+    required this.childBuilder,
+  });
 
   @override
   Widget build(BuildContext context) {

@@ -27,7 +27,7 @@ class EmptyListPlaceholder extends StatelessWidget {
 
   /// If set, a [IconLabel] is used, and [descriptionIcon] is inserted into
   /// [description].
-  final IconData descriptionIcon;
+  final IconData? descriptionIcon;
 
   final IconData icon;
   final EdgeInsets padding;
@@ -37,20 +37,19 @@ class EmptyListPlaceholder extends StatelessWidget {
   final bool scrollable;
 
   EmptyListPlaceholder({
-    this.title,
-    this.description,
+    required this.title,
+    required this.description,
     this.descriptionIcon,
-    this.icon,
+    required this.icon,
     this.padding = insetsDefault,
     this.scrollable = true,
-  })  : assert(padding != null),
-        assert(scrollable != null);
+  });
 
   EmptyListPlaceholder.static({
-    String title,
-    String description,
-    IconData descriptionIcon,
-    IconData icon,
+    required String title,
+    required String description,
+    IconData? descriptionIcon,
+    required IconData icon,
     EdgeInsets padding = insetsDefault,
   }) : this(
           title: title,

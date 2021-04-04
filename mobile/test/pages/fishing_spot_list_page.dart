@@ -7,18 +7,16 @@ import 'package:mobile/widgets/checkbox_input.dart';
 import 'package:mobile/widgets/text.dart';
 import 'package:mockito/mockito.dart';
 
-import '../mock_app_manager.dart';
+import '../mocks/stubbed_app_manager.dart';
 import '../test_utils.dart';
 
 void main() {
-  MockAppManager appManager;
+  late StubbedAppManager appManager;
 
   setUp(() {
-    appManager = MockAppManager(
-      mockFishingSpotManager: true,
-    );
+    appManager = StubbedAppManager();
 
-    when(appManager.mockFishingSpotManager
+    when(appManager.fishingSpotManager
             .listSortedByName(filter: anyNamed("filter")))
         .thenReturn([
       FishingSpot()
@@ -67,7 +65,7 @@ void main() {
         ),
         appManager: appManager,
       ));
-      expect(find.byType(PaddedCheckbox), findsOneWidget);
+      expect(find.byType(PaddedCheckbox), findsNWidgets(3));
     });
   });
 
@@ -77,7 +75,7 @@ void main() {
         (_) => FishingSpotListPage(),
         appManager: appManager,
       ));
-      expect(find.text("Fishing Spots (1)"), findsOneWidget);
+      expect(find.text("Fishing Spots (2)"), findsOneWidget);
     });
 
     testWidgets("Does not have checkboxes", (tester) async {

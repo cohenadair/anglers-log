@@ -8,5 +8,5 @@ class FirebaseStorageWrapper {
   static FirebaseStorageWrapper of(BuildContext context) =>
       Provider.of<AppManager>(context, listen: false).firebaseStorageWrapper;
 
-  Reference ref([String path]) => FirebaseStorage.instance.ref(path);
+  Reference ref([String? path]) => FirebaseStorage.instance.ref(path);
 }

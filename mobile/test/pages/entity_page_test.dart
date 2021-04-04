@@ -9,29 +9,31 @@ import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mobile/widgets/photo.dart';
 import 'package:mockito/mockito.dart';
 
-import '../mock_app_manager.dart';
+import '../mocks/stubbed_app_manager.dart';
 import '../test_utils.dart';
 
 void main() {
-  MockAppManager appManager;
+  late StubbedAppManager appManager;
 
-  Future<ui.Image> image(tester, String name) async {
+  Future<ui.Image?> image(tester, String name) async {
     var image = await loadImage(tester, "test/resources/$name");
-    when(appManager.mockImageManager.dartImage(any, name, any))
+    when(appManager.imageManager.dartImage(any, name, any))
         .thenAnswer((_) => Future.value(image));
     return image;
   }
 
   setUp(() {
-    appManager = MockAppManager(
-      mockImageManager: true,
-      mockCustomEntityManager: true,
-    );
+    appManager = StubbedAppManager();
   });
 
   group("Images", () {
     testWidgets("No images", (tester) async {
-      await tester.pumpWidget(Testable((_) => EntityPage(children: [])));
+      await tester.pumpWidget(Testable(
+        (_) => EntityPage(
+          children: [],
+          static: true,
+        ),
+      ));
       expect(find.byType(PageView), findsNothing);
     });
 
@@ -41,7 +43,7 @@ void main() {
       await image(tester, "android_logo.png");
       await image(tester, "apple_logo.png");
 
-      BuildContext context;
+      late BuildContext context;
       await tester.pumpWidget(Testable(
         (buildContext) {
           context = buildContext;
@@ -53,6 +55,7 @@ void main() {
               "apple_logo.png"
             ],
             children: [],
+            static: true,
           );
         },
         appManager: appManager,
@@ -111,6 +114,7 @@ void main() {
             "flutter_logo.png",
           ],
           children: [],
+          static: true,
         ),
         appManager: appManager,
         mediaQueryData: MediaQueryData(
@@ -132,6 +136,7 @@ void main() {
     await tester.pumpWidget(Testable(
       (_) => EntityPage(
         children: [],
+        static: true,
       ),
     ));
     expect(find.text("Custom Fields"), findsNothing);
@@ -139,7 +144,7 @@ void main() {
 
   testWidgets("Custom entities are shown with separator", (tester) async {
     var customEntityId = randomId();
-    when(appManager.mockCustomEntityManager.entity(customEntityId)).thenReturn(
+    when(appManager.customEntityManager.entity(customEntityId)).thenReturn(
       CustomEntity()
         ..id = randomId()
         ..name = "Test Name"
@@ -153,6 +158,7 @@ void main() {
             ..customEntityId = customEntityId
             ..value = "Test Value",
         ],
+        static: true,
       ),
       appManager: appManager,
     ));
@@ -178,7 +184,14 @@ void main() {
   });
 
   testWidgets("Dynamic page shows edit and delete buttons", (tester) async {
-    await tester.pumpWidget(Testable((_) => EntityPage(children: [])));
+    await tester.pumpWidget(Testable(
+      (_) => EntityPage(
+        children: [],
+        onEdit: () {},
+        onDelete: () {},
+        deleteMessage: "Test",
+      ),
+    ));
 
     expect(find.text("EDIT"), findsOneWidget);
     expect(find.byIcon(Icons.delete), findsOneWidget);
@@ -191,6 +204,8 @@ void main() {
         (_) => EntityPage(
           children: [],
           deleteMessage: "This is a delete message.",
+          onDelete: () {},
+          onEdit: () {},
         ),
       ),
     );
@@ -198,20 +213,6 @@ void main() {
     await tapAndSettle(tester, find.byIcon(Icons.delete));
     expect(find.text("This is a delete message."), findsOneWidget);
     expect(find.text("DELETE"), findsOneWidget);
-  });
-
-  testWidgets("Delete confirmation not shown when deleteMessage == null",
-      (tester) async {
-    await tester.pumpWidget(
-      Testable(
-        (_) => EntityPage(
-          children: [],
-        ),
-      ),
-    );
-
-    await tapAndSettle(tester, find.byIcon(Icons.delete));
-    expect(find.text("DELETE"), findsNothing);
   });
 
   testWidgets("All children rendered", (tester) async {
@@ -222,6 +223,7 @@ void main() {
             Text("Child 1"),
             Text("Child 2"),
           ],
+          static: true,
         ),
       ),
     );

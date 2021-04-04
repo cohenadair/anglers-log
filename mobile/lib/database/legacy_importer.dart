@@ -61,21 +61,20 @@ class LegacyImporter {
   final _log = Log("LegacyImporter");
 
   final AppManager _appManager;
-  final File _zipFile;
+  final File? _zipFile;
   final Map<String, File> _images = {};
-  final LegacyJsonResult _legacyJsonResult;
+  final LegacyJsonResult? _legacyJsonResult;
   Map<String, dynamic> _json = {};
 
   IoWrapper get _ioWrapper => _appManager.ioWrapper;
 
-  LegacyImporter(AppManager appManager, File zipFile)
+  LegacyImporter(AppManager appManager, File? zipFile)
       : _appManager = appManager,
         _zipFile = zipFile,
         _legacyJsonResult = null;
 
   LegacyImporter.migrate(AppManager appManager, LegacyJsonResult result)
-      : assert(result != null),
-        _appManager = appManager,
+      : _appManager = appManager,
         _zipFile = null,
         _legacyJsonResult = result;
 
@@ -101,28 +100,28 @@ class LegacyImporter {
   Future<void> _startMigration() async {
     // If there was an error in the platform channel, end the future
     // immediately.
-    if (_legacyJsonResult.errorCode != null) {
-      return Future.error(_legacyJsonResult.errorCode,
-          StackTrace.fromString(_legacyJsonResult.errorDescription));
+    if (_legacyJsonResult!.errorCode != null) {
+      return Future.error(
+          _legacyJsonResult!.errorCode!,
+          StackTrace.fromString(
+              _legacyJsonResult!.errorDescription ?? "Unknown"));
     }
 
-    _json = _legacyJsonResult.json;
+    _json = _legacyJsonResult!.json ?? {};
 
     // Copy all image references into memory.
-    var imagesDir = _ioWrapper.directory(_legacyJsonResult.imagesPath);
-    if (imagesDir != null) {
-      for (var image in imagesDir.listSync()) {
-        var name = basename(image.path);
-        _images[name] = _ioWrapper.file("${imagesDir.path}/$name");
-      }
+    var imagesDir = _ioWrapper.directory(_legacyJsonResult!.imagesPath!);
+    for (var image in imagesDir.listSync()) {
+      var name = basename(image.path);
+      _images[name] = _ioWrapper.file("${imagesDir.path}/$name");
     }
 
     await _import();
 
     // Cleanup old files.
-    await imagesDir.deleteSync();
-    await _ioWrapper
-        .directory(_legacyJsonResult.databasePath)
+    imagesDir.deleteSync();
+    _ioWrapper
+        .directory(_legacyJsonResult!.databasePath!)
         .deleteSync(recursive: true);
   }
 
@@ -133,12 +132,12 @@ class LegacyImporter {
 
     var tmpDir = Directory(await _pathProviderWrapper.temporaryPath);
 
-    var archive = ZipDecoder().decodeBytes(_zipFile.readAsBytesSync());
+    var archive = ZipDecoder().decodeBytes(_zipFile!.readAsBytesSync());
     for (var archiveFile in archive) {
       var content = Uint8List.fromList(archiveFile.content);
 
       if (extension(archiveFile.name) == _fileExtensionJson) {
-        _json = jsonDecode(Utf8Decoder().convert(content));
+        _json = jsonDecode(Utf8Decoder().convert(content)) ?? {};
       } else {
         // Copy all images to a temporary directory.
         var tmpFile = File("${tmpDir.path}/${archiveFile.name}")
@@ -156,18 +155,23 @@ class LegacyImporter {
           StackTrace.fromString(_jsonString));
     }
 
-    var userDefines = _json[_keyJournal][_keyUserDefines];
-    if (userDefines == null || !(userDefines is List)) {
+    var userDefinesJson = _json[_keyJournal][_keyUserDefines];
+    if (userDefinesJson == null || !(userDefinesJson is List)) {
       return Future.error(LegacyImporterError.missingUserDefines,
           StackTrace.fromString(_jsonString));
     }
 
-    List<dynamic> baitCategories;
-    List<dynamic> baits;
-    List<dynamic> locations;
-    List<dynamic> species;
+    List<dynamic>? baitCategories;
+    List<dynamic>? baits;
+    List<dynamic>? locations;
+    List<dynamic>? species;
 
-    for (Map<String, dynamic> map in userDefines) {
+    for (var map in userDefinesJson) {
+      if (!(map is Map<String, dynamic>)) {
+        _log.w("Corrupt user define (should be json map): $map");
+        continue;
+      }
+
       switch (map[_keyName]) {
         case "Baits":
           baits = map[_keyBaits];
@@ -205,7 +209,7 @@ class LegacyImporter {
     return Future.value();
   }
 
-  Future<void> _importBaits(List<dynamic> baits) async {
+  Future<void> _importBaits(List<dynamic>? baits) async {
     if (baits == null || baits.isEmpty) {
       return;
     }
@@ -219,7 +223,7 @@ class LegacyImporter {
       if (isNotEmpty(map[_keyBaitCategory])) {
         // See if JSON is using the name as the ID.
         var baitCategoryId =
-            _baitCategoryManager.named(map[_keyBaitCategory])?.id;
+            _baitCategoryManager.named(map[_keyBaitCategory]!)?.id;
 
         if (baitCategoryId == null) {
           baitCategoryId = _baitCategoryManager
@@ -236,16 +240,16 @@ class LegacyImporter {
     }
   }
 
-  Future<void> _importBaitCategories(List<dynamic> categories) async {
+  Future<void> _importBaitCategories(List<dynamic>? categories) async {
     await _importNamedEntity(
       categories,
       (name, id) async => await _baitCategoryManager.addOrUpdate(BaitCategory()
-        ..id = id ?? randomId()
+        ..id = id
         ..name = name),
     );
   }
 
-  Future<void> _importLocations(List<dynamic> locations) async {
+  Future<void> _importLocations(List<dynamic>? locations) async {
     if (locations == null || locations.isEmpty) {
       return;
     }
@@ -265,40 +269,49 @@ class LegacyImporter {
             fishingSpotMap[_keyCoordinates] as Map<String, dynamic>;
 
         // iOS backed up coordinates as strings, while Android was doubles.
-        double lat;
-        double lng;
+        double? lat;
+        double? lng;
         if (coordinatesMap[_keyLongitude] is double) {
           lng = coordinatesMap[_keyLongitude];
         } else {
-          lng = double.parse(coordinatesMap[_keyLongitude]);
+          lng = double.tryParse(coordinatesMap[_keyLongitude]);
         }
         if (coordinatesMap[_keyLatitude] is double) {
           lat = coordinatesMap[_keyLatitude];
         } else {
-          lat = double.parse(coordinatesMap[_keyLatitude]);
+          lat = double.tryParse(coordinatesMap[_keyLatitude]);
         }
 
-        await _fishingSpotManager.addOrUpdate(
-          FishingSpot()
-            ..id = randomId()
-            ..name = isNotEmpty(fishingSpotName) ? fishingSpotName : null
-            ..lat = lat
-            ..lng = lng,
-        );
+        if (lat == null || lng == null) {
+          _log.w("Invalid coordinates: ${coordinatesMap[_keyLongitude]}, "
+              "${coordinatesMap[_keyLatitude]}");
+          continue;
+        }
+
+        var newFishingSpot = FishingSpot()
+          ..id = randomId()
+          ..lat = lat
+          ..lng = lng;
+
+        if (isNotEmpty(fishingSpotName)) {
+          newFishingSpot.name = fishingSpotName;
+        }
+
+        await _fishingSpotManager.addOrUpdate(newFishingSpot);
       }
     }
   }
 
-  Future<void> _importSpecies(List<dynamic> species) async {
+  Future<void> _importSpecies(List<dynamic>? species) async {
     await _importNamedEntity(
       species,
       (name, id) async => await _speciesManager.addOrUpdate(Species()
-        ..id = id ?? randomId()
+        ..id = id
         ..name = name),
     );
   }
 
-  Future<void> _importNamedEntity(List<dynamic> entities,
+  Future<void> _importNamedEntity(List<dynamic>? entities,
       Future<bool> Function(String name, Id id) addEntity) async {
     if (entities == null || entities.isEmpty) {
       return;
@@ -306,11 +319,14 @@ class LegacyImporter {
 
     for (var item in entities) {
       var map = item as Map<String, dynamic>;
-      await addEntity(map[_keyName], _parseJsonId(map[_keyId]));
+      var name = map[_keyName];
+      if (isNotEmpty(name)) {
+        await addEntity(map[_keyName]!, _parseJsonId(map[_keyId]));
+      }
     }
   }
 
-  Future<void> _importCatches(List<dynamic> catches) async {
+  Future<void> _importCatches(List<dynamic>? catches) async {
     if (catches == null || catches.isEmpty) {
       return;
     }
@@ -345,11 +361,15 @@ class LegacyImporter {
       }
 
       var images = <File>[];
-      List<dynamic> imagesJson = map[_keyImages];
-      for (Map<String, dynamic> imageMap in imagesJson) {
+      for (var imageMap in map[_keyImages]) {
+        if (!(imageMap is Map<String, dynamic>)) {
+          _log.w("Corrupt image data (should be json map): $map");
+          continue;
+        }
+
         var fileName = basename(imageMap[_keyImagePath]);
         if (_images.containsKey(fileName)) {
-          images.add(_images[fileName]);
+          images.add(_images[fileName]!);
         } else {
           _log.w("Image $fileName not found in legacy data");
         }
@@ -357,8 +377,7 @@ class LegacyImporter {
 
       var cat = Catch()
         ..id = randomId()
-        ..timestamp = Int64(dateTime.millisecondsSinceEpoch)
-        ..speciesId = species.id;
+        ..timestamp = Int64(dateTime.millisecondsSinceEpoch);
 
       if (bait != null) {
         cat.baitId = bait.id;
@@ -366,6 +385,10 @@ class LegacyImporter {
 
       if (fishingSpot != null) {
         cat.fishingSpotId = fishingSpot.id;
+      }
+
+      if (species != null) {
+        cat.speciesId = species.id;
       }
 
       await _catchManager.addOrUpdate(
@@ -377,12 +400,12 @@ class LegacyImporter {
     }
   }
 
-  Id _parseJsonId(String jsonId) {
+  Id _parseJsonId(String? jsonId) {
     if (isEmpty(jsonId)) {
       return randomId();
     }
 
-    var result = safeParseId(jsonId);
+    var result = safeParseId(jsonId!);
     if (result == null) {
       _log.w("Invalid UUID string: $jsonId");
       return randomId();

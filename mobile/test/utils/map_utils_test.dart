@@ -44,7 +44,7 @@ void main() {
             ..lat = 89
             ..lng = -75,
         ),
-      });
+      })!;
       expect(bounds.southwest, LatLng(-45.0, -75.0));
       expect(bounds.northeast, LatLng(89, 150));
     });

@@ -6,23 +6,22 @@ import 'package:mobile/pages/save_custom_entity_page.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mobile/widgets/button.dart';
 import 'package:mobile/widgets/checkbox_input.dart';
+import 'package:mobile/widgets/input_controller.dart';
 import 'package:mobile/widgets/list_item.dart';
 import 'package:mobile/widgets/text.dart';
 import 'package:mobile/widgets/text_input.dart';
 import 'package:mockito/mockito.dart';
 
-import '../mock_app_manager.dart';
+import '../mocks/stubbed_app_manager.dart';
 import '../test_utils.dart';
 
 void main() {
-  MockAppManager appManager;
+  late StubbedAppManager appManager;
 
   setUp(() {
-    appManager = MockAppManager(
-      mockCustomEntityManager: true,
-    );
+    appManager = StubbedAppManager();
 
-    when(appManager.mockCustomEntityManager.list()).thenReturn([]);
+    when(appManager.customEntityManager.list()).thenReturn([]);
   });
 
   testWidgets("Save button disabled when isInputValid = false", (tester) async {
@@ -93,10 +92,17 @@ void main() {
       Testable(
         (_) => FormPage.immutable(
           fieldBuilder: (context) => {
-            randomId(): TextInput.name(context),
-            randomId(): TextInput.description(context),
+            randomId(): TextInput.name(
+              context,
+              controller: TextInputController(),
+            ),
+            randomId(): TextInput.description(
+              context,
+              controller: TextInputController(),
+            ),
             randomId(): TextInput.number(
               context,
+              controller: NumberInputController(),
               label: "Age",
             ),
             randomId(): CheckboxInput(
@@ -116,49 +122,43 @@ void main() {
     expect(find.byType(PaddedCheckbox), findsOneWidget);
   });
 
-  testWidgets("Null onSave does pops page", (tester) async {
-    var navObserver = MockNavigatorObserver();
+  testWidgets("Null onSave pops page", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => FormPage.immutable(
         fieldBuilder: (_) => {},
         isInputValid: true,
         onSave: null,
       ),
-      navigatorObserver: navObserver,
     ));
 
     await tapAndSettle(tester, find.text("SAVE"));
-    verify(navObserver.didPop(any, any)).called(1);
+    expect(find.text("SAVE"), findsNothing);
   });
 
   testWidgets("onSave returns false does not pop page", (tester) async {
-    var navObserver = MockNavigatorObserver();
     await tester.pumpWidget(Testable(
       (_) => FormPage.immutable(
         fieldBuilder: (_) => {},
         isInputValid: true,
         onSave: (_) => false,
       ),
-      navigatorObserver: navObserver,
     ));
 
     await tapAndSettle(tester, find.text("SAVE"));
-    verifyNever(navObserver.didPop(any, any));
+    expect(find.text("SAVE"), findsOneWidget);
   });
 
   testWidgets("onSave returns true pops page", (tester) async {
-    var navObserver = MockNavigatorObserver();
     await tester.pumpWidget(Testable(
       (_) => FormPage.immutable(
         fieldBuilder: (_) => {},
         isInputValid: true,
         onSave: (_) => true,
       ),
-      navigatorObserver: navObserver,
     ));
 
     await tapAndSettle(tester, find.text("SAVE"));
-    verify(navObserver.didPop(any, any)).called(1);
+    expect(find.text("SAVE"), findsNothing);
   });
 
   testWidgets("Form state validation failing does not invoke onSave",
@@ -200,10 +200,17 @@ void main() {
     await tester.pumpWidget(Testable(
       (_) => FormPage(
         fieldBuilder: (context) => {
-          nameId: TextInput.name(context),
-          descriptionId: TextInput.description(context),
+          nameId: TextInput.name(
+            context,
+            controller: TextInputController(),
+          ),
+          descriptionId: TextInput.description(
+            context,
+            controller: TextInputController(),
+          ),
           ageId: TextInput.number(
             context,
+            controller: NumberInputController(),
             label: "Age",
           ),
           enabledId: CheckboxInput(
@@ -266,11 +273,14 @@ void main() {
 
   testWidgets("Selection page invokes onAddFields", (tester) async {
     var nameId = randomId();
-    Set<Id> selectedIds;
+    Set<Id>? selectedIds;
     await tester.pumpWidget(Testable(
       (_) => FormPage(
         fieldBuilder: (context) => {
-          nameId: TextInput.name(context),
+          nameId: TextInput.name(
+            context,
+            controller: TextInputController(),
+          ),
         },
         addFieldOptions: [
           FormPageFieldOption(
@@ -291,17 +301,20 @@ void main() {
 
     expect(selectedIds, isNotNull);
     expect(selectedIds, isNotEmpty);
-    expect(selectedIds.length, 1);
-    expect(selectedIds.first, nameId);
+    expect(selectedIds!.length, 1);
+    expect(selectedIds!.first, nameId);
   });
 
   testWidgets("Toggling fields removes them from callback", (tester) async {
     var nameId = randomId();
-    Set<Id> selectedIds;
+    Set<Id>? selectedIds;
     await tester.pumpWidget(Testable(
       (_) => FormPage(
         fieldBuilder: (context) => {
-          nameId: TextInput.name(context),
+          nameId: TextInput.name(
+            context,
+            controller: TextInputController(),
+          ),
         },
         addFieldOptions: [
           FormPageFieldOption(
@@ -352,13 +365,16 @@ void main() {
       ..id = customEntityId
       ..name = "Name"
       ..type = CustomEntity_Type.TEXT;
-    when(appManager.mockCustomEntityManager.list()).thenReturn([customEntity]);
-    when(appManager.mockCustomEntityManager.entity(customEntityId))
+    when(appManager.customEntityManager.list()).thenReturn([customEntity]);
+    when(appManager.customEntityManager.entity(customEntityId))
         .thenReturn(customEntity);
     await tester.pumpWidget(Testable(
       (_) => FormPage(
         fieldBuilder: (context) => {
-          customEntityId: TextInput.name(context),
+          customEntityId: TextInput.name(
+            context,
+            controller: TextInputController(),
+          ),
         },
         isInputValid: true,
         addFieldOptions: [
@@ -385,8 +401,8 @@ void main() {
       ..id = customEntityId
       ..name = "Name"
       ..type = CustomEntity_Type.TEXT;
-    when(appManager.mockCustomEntityManager.list()).thenReturn([customEntity]);
-    when(appManager.mockCustomEntityManager.entity(customEntityId))
+    when(appManager.customEntityManager.list()).thenReturn([customEntity]);
+    when(appManager.customEntityManager.entity(customEntityId))
         .thenReturn(customEntity);
     await tester.pumpWidget(Testable(
       (_) => FormPage(
@@ -422,13 +438,13 @@ void main() {
       ..name = "Address"
       ..type = CustomEntity_Type.TEXT;
 
-    when(appManager.mockCustomEntityManager.list()).thenReturn([
+    when(appManager.customEntityManager.list()).thenReturn([
       customEntity1,
       customEntity2,
     ]);
-    when(appManager.mockCustomEntityManager.entity(customEntityId1))
+    when(appManager.customEntityManager.entity(customEntityId1))
         .thenReturn(customEntity1);
-    when(appManager.mockCustomEntityManager.entity(customEntityId2))
+    when(appManager.customEntityManager.entity(customEntityId2))
         .thenReturn(customEntity2);
 
     await tester.pumpWidget(Testable(

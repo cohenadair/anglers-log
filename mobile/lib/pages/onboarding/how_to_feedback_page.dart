@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 
 import '../../i18n/strings.dart';
+import '../../log.dart';
 import '../../res/dimen.dart';
 import '../../widgets/text.dart';
 import '../../widgets/widget.dart';
@@ -11,7 +12,7 @@ import 'embedded_page.dart';
 import 'onboarding_page.dart';
 
 class HowToFeedbackPage extends StatefulWidget {
-  final VoidCallback onNext;
+  final VoidCallback? onNext;
 
   HowToFeedbackPage({
     this.onNext,
@@ -26,9 +27,10 @@ class _HowToFeedbackPageState extends State<HowToFeedbackPage> {
   static const _scrollToTopAfter = Duration(seconds: 2, milliseconds: 500);
   static const _scrollToFeedbackAfter = Duration(seconds: 1);
 
+  final _log = Log("HowToFeedbackPage");
   final _feedbackKey = GlobalKey();
 
-  Timer _scrollTimer;
+  late Timer _scrollTimer;
   bool _isFeedbackShowing = false;
 
   @override
@@ -81,7 +83,7 @@ class _HowToFeedbackPageState extends State<HowToFeedbackPage> {
       return;
     }
     Scrollable.ensureVisible(
-      _feedbackKey.currentContext,
+      _feedbackKey.currentContext!,
       duration: _scrollAnimDuration,
     );
     _isFeedbackShowing = true;
@@ -92,8 +94,15 @@ class _HowToFeedbackPageState extends State<HowToFeedbackPage> {
     if (!_isFeedbackShowing) {
       return;
     }
-    Scrollable.of(_feedbackKey.currentContext).widget.controller.jumpTo(0.0);
-    _isFeedbackShowing = false;
-    _scrollTimer = Timer(_scrollToFeedbackAfter, _scrollToFeedback);
+
+    var controller =
+        Scrollable.of(_feedbackKey.currentContext!)?.widget.controller;
+    if (controller != null) {
+      controller.jumpTo(0.0);
+      _isFeedbackShowing = false;
+      _scrollTimer = Timer(_scrollToFeedbackAfter, _scrollToFeedback);
+    } else {
+      _log.w("Scrollable controller doesn't exist");
+    }
   }
 }

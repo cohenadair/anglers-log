@@ -20,7 +20,7 @@ class BaitListPage extends StatefulWidget {
   ///
   /// The generic type is dynamic here because not only Bait objects are shown
   /// in the list; there are also BaitCategory objects.
-  final ManageableListPagePickerSettings<dynamic> pickerSettings;
+  final ManageableListPagePickerSettings<dynamic>? pickerSettings;
 
   BaitListPage({
     this.pickerSettings,
@@ -49,7 +49,7 @@ class _BaitListPageState extends State<BaitListPage> {
         format(Strings.of(context).baitListPageTitle,
             [baits.whereType<Bait>().length]),
       ),
-      pickerTitleBuilder: (_) => Text(widget.pickerSettings.isMulti
+      pickerTitleBuilder: (_) => Text(widget.pickerSettings!.isMulti
           ? Strings.of(context).baitListPagePickerTitleMulti
           : Strings.of(context).baitListPagePickerTitle),
       forceCenterTitle: !_picking,
@@ -57,10 +57,10 @@ class _BaitListPageState extends State<BaitListPage> {
         hint: Strings.of(context).baitListPageSearchHint,
       ),
       pickerSettings: _picking
-          ? widget.pickerSettings.copyWith(
+          ? widget.pickerSettings!.copyWith(
               onPicked: (context, items) {
                 items.removeWhere((e) => !(e is Bait));
-                return widget.pickerSettings.onPicked(
+                return widget.pickerSettings!.onPicked(
                   context,
                   items.map((e) => (e as Bait)).toSet(),
                 );
@@ -83,10 +83,11 @@ class _BaitListPageState extends State<BaitListPage> {
             child: PrimaryLabel(item.name),
           );
         } else {
+          assert(item is Widget);
           return ManageableListPageItemModel(
             editable: false,
             selectable: false,
-            child: item,
+            child: item as Widget,
           );
         }
       },
@@ -111,13 +112,13 @@ class _BaitListPageState extends State<BaitListPage> {
           }
         },
         addPageBuilder: () => SaveBaitPage(),
-        detailPageBuilder: (bait) => BaitPage(bait.id),
+        detailPageBuilder: (bait) => BaitPage(bait as Bait),
         editPageBuilder: (bait) => SaveBaitPage.edit(bait),
       ),
     );
   }
 
-  List<dynamic> _buildItems(String query) {
+  List<dynamic> _buildItems(String? query) {
     var result = <dynamic>[];
 
     var categories = List.from(_baitCategoryManager.listSortedByName());
@@ -135,7 +136,7 @@ class _BaitListPageState extends State<BaitListPage> {
     for (var bait in _baits) {
       var id = bait.hasBaitCategoryId() ? bait.baitCategoryId : noCategory.id;
       map.putIfAbsent(id, () => []);
-      map[id].add(bait);
+      map[id]!.add(bait);
     }
 
     // Next, iterate categories and create list items.
@@ -143,7 +144,7 @@ class _BaitListPageState extends State<BaitListPage> {
       BaitCategory category = categories[i];
 
       // Skip categories that don't have any baits.
-      if (!map.containsKey(category.id) || map[category.id].isEmpty) {
+      if (!map.containsKey(category.id) || map[category.id]!.isEmpty) {
         continue;
       }
 
@@ -153,8 +154,8 @@ class _BaitListPageState extends State<BaitListPage> {
       }
 
       result.add(category);
-      map[category.id].sort((lhs, rhs) => lhs.name.compareTo(rhs.name));
-      result.addAll(map[category.id]);
+      map[category.id]!.sort((lhs, rhs) => lhs.name.compareTo(rhs.name));
+      result.addAll(map[category.id]!);
     }
 
     return result;

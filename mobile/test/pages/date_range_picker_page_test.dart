@@ -4,18 +4,16 @@ import 'package:mobile/pages/date_range_picker_page.dart';
 import 'package:mobile/utils/date_time_utils.dart';
 import 'package:mockito/mockito.dart';
 
-import '../mock_app_manager.dart';
+import '../mocks/stubbed_app_manager.dart';
 import '../test_utils.dart';
 
 void main() {
-  MockAppManager appManager;
+  late StubbedAppManager appManager;
 
   setUp(() {
-    appManager = MockAppManager(
-      mockTimeManager: true,
-    );
+    appManager = StubbedAppManager();
 
-    when(appManager.mockTimeManager.currentDateTime)
+    when(appManager.timeManager.currentDateTime)
         .thenReturn(DateTime(2020, 1, 1));
   });
 
@@ -39,7 +37,7 @@ void main() {
   });
 
   testWidgets("Selecting date range invokes callback", (tester) async {
-    DisplayDateRange picked;
+    late DisplayDateRange picked;
     await tester.pumpWidget(Testable(
       (_) => DateRangePickerPage(
         initialValue: DisplayDateRange.yesterday,
@@ -89,8 +87,8 @@ void main() {
   });
 
   testWidgets("A day is added to end date", (tester) async {
-    BuildContext context;
-    DisplayDateRange picked;
+    late BuildContext context;
+    late DisplayDateRange picked;
     await tester.pumpWidget(Testable(
       (buildContext) {
         context = buildContext;
@@ -126,8 +124,8 @@ void main() {
   });
 
   testWidgets("End date is clamped to the current time", (tester) async {
-    BuildContext context;
-    DisplayDateRange picked;
+    late BuildContext context;
+    late DisplayDateRange picked;
     await tester.pumpWidget(Testable(
       (buildContext) {
         context = buildContext;

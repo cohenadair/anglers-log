@@ -11,7 +11,7 @@ import '../widgets/text.dart';
 import '../widgets/widget.dart';
 
 class FishingSpotListPage extends StatelessWidget {
-  final ManageableListPagePickerSettings<FishingSpot> pickerSettings;
+  final ManageableListPagePickerSettings<FishingSpot>? pickerSettings;
 
   FishingSpotListPage({
     this.pickerSettings,
@@ -34,7 +34,7 @@ class FishingSpotListPage extends StatelessWidget {
         }
 
         var title = "";
-        if (pickerSettings.isMulti) {
+        if (pickerSettings!.isMulti) {
           title = Strings.of(context).fishingSpotListPageMultiPickerTitle;
         } else {
           title = Strings.of(context).fishingSpotListPageSinglePickerTitle;

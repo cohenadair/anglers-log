@@ -4,60 +4,45 @@ import 'package:mobile/auth_manager.dart';
 import 'package:mockito/mockito.dart';
 import 'package:uuid/uuid.dart';
 
-import 'mock_app_manager.dart';
+import 'mocks/mocks.mocks.dart';
+import 'mocks/stubbed_app_manager.dart';
 import 'test_utils.dart';
 
-class MockFirebaseAuth extends Mock implements FirebaseAuth {}
-
-class MockUser extends Mock implements User {}
-
-class MockUserCredential extends Mock implements UserCredential {}
-
 void main() {
-  MockAppManager appManager;
+  late StubbedAppManager appManager;
 
-  AuthManager authManager;
+  late AuthManager authManager;
 
   setUp(() {
-    appManager = MockAppManager(
-      mockBaitCategoryManager: true,
-      mockBaitManager: true,
-      mockCatchManager: true,
-      mockComparisonReportManager: true,
-      mockCustomEntityManager: true,
-      mockFishingSpotManager: true,
-      mockImageManager: true,
-      mockSpeciesManager: true,
-      mockSummaryReportManager: true,
-      mockUserPreferenceManager: true,
-      mockFirebaseAuthWrapper: true,
-      mockIoWrapper: true,
-    );
+    appManager = StubbedAppManager();
 
-    authManager = AuthManager(appManager);
+    authManager = AuthManager(appManager.app);
   });
 
   test("No connection error returned when there is no internet", () async {
-    when(appManager.mockIoWrapper.isConnected())
+    when(appManager.ioWrapper.isConnected())
         .thenAnswer((_) => Future.value(false));
     expect(await authManager.login("", ""), AuthError.noConnection);
   });
 
   test("Invalid user error when Firebase auth method returns invalid user",
       () async {
-    when(appManager.mockIoWrapper.isConnected())
+    when(appManager.ioWrapper.isConnected())
         .thenAnswer((_) => Future.value(true));
-    when(appManager.mockFirebaseAuthWrapper.signInWithEmailAndPassword(
+
+    var userCredential = MockUserCredential();
+    when(userCredential.user).thenReturn(null);
+    when(appManager.firebaseAuthWrapper.signInWithEmailAndPassword(
             email: anyNamed("email"), password: anyNamed("password")))
-        .thenAnswer((realInvocation) => Future.value(null));
+        .thenAnswer((realInvocation) => Future.value(userCredential));
 
     expect(await authManager.login("", ""), AuthError.invalidUserId);
   });
 
   test("AuthError error when Firebase auth method throws exception", () async {
-    when(appManager.mockIoWrapper.isConnected())
+    when(appManager.ioWrapper.isConnected())
         .thenAnswer((_) => Future.value(true));
-    when(appManager.mockFirebaseAuthWrapper.signInWithEmailAndPassword(
+    when(appManager.firebaseAuthWrapper.signInWithEmailAndPassword(
             email: anyNamed("email"), password: anyNamed("password")))
         .thenThrow(FirebaseAuthException(message: "", code: ""));
 
@@ -65,14 +50,14 @@ void main() {
   });
 
   test("Successful Firebase auth", () async {
-    when(appManager.mockIoWrapper.isConnected())
+    when(appManager.ioWrapper.isConnected())
         .thenAnswer((_) => Future.value(true));
 
     var user = MockUser();
     when(user.uid).thenReturn(Uuid().v4().toString());
     var userCredential = MockUserCredential();
     when(userCredential.user).thenReturn(user);
-    when(appManager.mockFirebaseAuthWrapper.signInWithEmailAndPassword(
+    when(appManager.firebaseAuthWrapper.signInWithEmailAndPassword(
             email: anyNamed("email"), password: anyNamed("password")))
         .thenAnswer((_) => Future.value(userCredential));
 
@@ -80,8 +65,8 @@ void main() {
   });
 
   test("FirebaseAuth callback logged out", () async {
-    var stream = MockStream<User>();
-    when(appManager.mockFirebaseAuthWrapper.authStateChanges())
+    var stream = createMockStreamWithSubscription<User>();
+    when(appManager.firebaseAuthWrapper.authStateChanges())
         .thenAnswer((_) => stream);
 
     await authManager.initialize();
@@ -102,8 +87,8 @@ void main() {
   });
 
   test("FirebaseAuth callback logged in", () async {
-    var stream = MockStream<User>();
-    when(appManager.mockFirebaseAuthWrapper.authStateChanges())
+    var stream = createMockStreamWithSubscription<User>();
+    when(appManager.firebaseAuthWrapper.authStateChanges())
         .thenAnswer((_) => stream);
 
     await authManager.initialize();

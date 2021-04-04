@@ -37,6 +37,7 @@ Map<String, Map<String, String>> get englishStrings => {
         "finish": "Finish",
         "by": "by",
         "devName": "Cohen Adair",
+        "unknownSpecies": "Unknown Species",
         "fieldType_number": "Number",
         "fieldType_boolean": "Checkbox",
         "fieldType_text": "Text",

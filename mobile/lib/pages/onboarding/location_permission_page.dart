@@ -11,7 +11,7 @@ import '../../wrappers/permission_handler_wrapper.dart';
 import 'onboarding_page.dart';
 
 class LocationPermissionPage extends StatelessWidget {
-  final VoidCallback onNext;
+  final VoidCallback? onNext;
 
   LocationPermissionPage({
     this.onNext,

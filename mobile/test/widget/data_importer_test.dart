@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/database/legacy_importer.dart';
@@ -11,49 +12,49 @@ import 'package:mobile/widgets/data_importer.dart';
 import 'package:mobile/widgets/widget.dart';
 import 'package:mockito/mockito.dart';
 
-import '../mock_app_manager.dart';
+import '../mocks/mocks.mocks.dart';
+import '../mocks/stubbed_app_manager.dart';
 import '../test_utils.dart';
 
 void main() {
-  MockAppManager appManager;
+  late StubbedAppManager appManager;
 
   var tmpPath = "test/resources/data_importer/tmp";
-  Directory tmpDir;
+  late Directory tmpDir;
 
   setUp(() {
-    appManager = MockAppManager(
-      mockAuthManager: true,
-      mockBaitCategoryManager: true,
-      mockBaitManager: true,
-      mockCatchManager: true,
-      mockLocalDatabaseManager: true,
-      mockFishingSpotManager: true,
-      mockSpeciesManager: true,
-      mockFilePickerWrapper: true,
-      mockPathProviderWrapper: true,
-    );
+    appManager = StubbedAppManager();
 
-    when(appManager.mockBaitCategoryManager.addOrUpdate(any))
+    when(appManager.baitCategoryManager.addOrUpdate(any))
         .thenAnswer((_) => Future.value(true));
-    when(appManager.mockBaitManager.addOrUpdate(any))
+
+    when(appManager.baitManager.addOrUpdate(any))
         .thenAnswer((_) => Future.value(true));
-    when(appManager.mockCatchManager.addOrUpdate(
+    when(appManager.baitManager.named(any)).thenReturn(null);
+
+    when(appManager.catchManager.addOrUpdate(
       any,
       imageFiles: anyNamed("imageFiles"),
       compressImages: anyNamed("compressImages"),
       notify: anyNamed("notify"),
     )).thenAnswer((_) => Future.value(true));
 
-    when(appManager.mockFishingSpotManager.addOrUpdate(any))
+    when(appManager.fishingSpotManager.addOrUpdate(any))
         .thenAnswer((_) => Future.value(true));
+    when(appManager.fishingSpotManager.named(any)).thenReturn(null);
 
-    when(appManager.mockSpeciesManager.addOrUpdate(any))
+    when(appManager.filePickerWrapper.pickFiles(
+      type: anyNamed("type"),
+      allowedExtensions: anyNamed("allowedExtensions"),
+    )).thenAnswer((_) => Future.value(null));
+
+    when(appManager.speciesManager.addOrUpdate(any))
         .thenAnswer((_) => Future.value(true));
-    when(appManager.mockSpeciesManager.named(any)).thenReturn(Species()
+    when(appManager.speciesManager.named(any)).thenReturn(Species()
       ..id = randomId()
       ..name = "Bass");
 
-    when(appManager.mockPathProviderWrapper.temporaryPath)
+    when(appManager.pathProviderWrapper.temporaryPath)
         .thenAnswer((_) => Future.value(tmpPath));
 
     // Create a temporary directory for images.
@@ -66,8 +67,8 @@ void main() {
   });
 
   DataImporter defaultImporter({
-    LegacyImporter importer,
-    void Function(bool) onFinish,
+    LegacyImporter? importer,
+    void Function(bool)? onFinish,
   }) =>
       DataImporter(
         importer: importer,
@@ -88,20 +89,25 @@ void main() {
     ));
     await tapAndSettle(tester, find.text("CHOOSE FILE"));
 
-    verify(appManager.mockFilePickerWrapper.getFile(
+    verify(appManager.filePickerWrapper.pickFiles(
       type: anyNamed("type"),
-      fileExtension: anyNamed("fileExtension"),
+      allowedExtensions: anyNamed("allowedExtensions"),
     )).called(1);
   });
 
   testWidgets("Start button disabled while loading", (tester) async {
-    when(appManager.mockFilePickerWrapper.getFile(
+    when(appManager.filePickerWrapper.pickFiles(
       type: anyNamed("type"),
-      fileExtension: anyNamed("fileExtension"),
-    )).thenAnswer((_) =>
-        Future.value(File("test/resources/backups/legacy_ios_entities.zip")));
+      allowedExtensions: anyNamed("allowedExtensions"),
+    )).thenAnswer(
+      (_) => Future.value(
+        FilePickerResult([
+          PlatformFile(path: "test/resources/backups/legacy_ios_entities.zip")
+        ]),
+      ),
+    );
 
-    when(appManager.mockPathProviderWrapper.temporaryPath).thenAnswer(
+    when(appManager.pathProviderWrapper.temporaryPath).thenAnswer(
         (_) => Future.delayed(Duration(milliseconds: 100), () => tmpPath));
 
     await tester.pumpWidget(Testable(
@@ -129,9 +135,9 @@ void main() {
     ));
     await tapAndSettle(tester, find.text("START"));
 
-    verifyNever(appManager.mockFilePickerWrapper.getFile(
+    verifyNever(appManager.filePickerWrapper.pickFiles(
       type: anyNamed("type"),
-      fileExtension: anyNamed("fileExtension"),
+      allowedExtensions: anyNamed("allowedExtensions"),
     ));
     verify(importer.start()).called(1);
   });
@@ -150,9 +156,9 @@ void main() {
   });
 
   testWidgets("Null picked file resets state to none", (tester) async {
-    when(appManager.mockFilePickerWrapper.getFile(
+    when(appManager.filePickerWrapper.pickFiles(
       type: anyNamed("type"),
-      fileExtension: anyNamed("fileExtension"),
+      allowedExtensions: anyNamed("allowedExtensions"),
     )).thenAnswer((_) => Future.value(null));
 
     await tester.pumpWidget(Testable(
@@ -167,11 +173,15 @@ void main() {
   });
 
   testWidgets("Invalid chosen data shows error", (tester) async {
-    when(appManager.mockFilePickerWrapper.getFile(
+    when(appManager.filePickerWrapper.pickFiles(
       type: anyNamed("type"),
-      fileExtension: anyNamed("fileExtension"),
+      allowedExtensions: anyNamed("allowedExtensions"),
     )).thenAnswer(
-        (_) => Future.value(File("test/resources/backups/no_journal.zip")));
+      (_) => Future.value(
+        FilePickerResult(
+            [PlatformFile(path: "test/resources/backups/no_journal.zip")]),
+      ),
+    );
 
     await tester.pumpWidget(Testable(
       (_) => defaultImporter(),
@@ -183,11 +193,15 @@ void main() {
   });
 
   testWidgets("Feedback button shows feedback page", (tester) async {
-    when(appManager.mockFilePickerWrapper.getFile(
+    when(appManager.filePickerWrapper.pickFiles(
       type: anyNamed("type"),
-      fileExtension: anyNamed("fileExtension"),
+      allowedExtensions: anyNamed("allowedExtensions"),
     )).thenAnswer(
-        (_) => Future.value(File("test/resources/backups/no_journal.zip")));
+      (_) => Future.value(
+        FilePickerResult(
+            [PlatformFile(path: "test/resources/backups/no_journal.zip")]),
+      ),
+    );
 
     await tester.pumpWidget(Testable(
       (_) => defaultImporter(),
@@ -201,11 +215,16 @@ void main() {
   });
 
   testWidgets("Successful import shows success widget", (tester) async {
-    when(appManager.mockFilePickerWrapper.getFile(
+    when(appManager.filePickerWrapper.pickFiles(
       type: anyNamed("type"),
-      fileExtension: anyNamed("fileExtension"),
-    )).thenAnswer((_) =>
-        Future.value(File("test/resources/backups/legacy_ios_entities.zip")));
+      allowedExtensions: anyNamed("allowedExtensions"),
+    )).thenAnswer(
+      (_) => Future.value(
+        FilePickerResult([
+          PlatformFile(path: "test/resources/backups/legacy_ios_entities.zip")
+        ]),
+      ),
+    );
 
     await tester.pumpWidget(Testable(
       (_) => defaultImporter(),

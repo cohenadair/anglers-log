@@ -1,13 +1,12 @@
 import 'dart:async';
 import 'dart:math';
 
-import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 import '../model/gen/anglerslog.pb.dart';
 
 void moveMap(Completer<GoogleMapController> controller, LatLng latLng,
-    {bool animate = true, double zoom}) {
+    {bool animate = true, double? zoom}) {
   controller.future.then((controller) {
     CameraUpdate update;
     if (zoom == null) {
@@ -29,7 +28,7 @@ void moveMap(Completer<GoogleMapController> controller, LatLng latLng,
 
 /// Returns an approximate distance, in meters, between the given [LatLng]
 /// objects.
-double distanceBetween(LatLng latLng1, LatLng latLng2) {
+double distanceBetween(LatLng? latLng1, LatLng? latLng2) {
   if (latLng1 == null || latLng2 == null) {
     return 0;
   }
@@ -45,7 +44,7 @@ double distanceBetween(LatLng latLng1, LatLng latLng2) {
   return sqrt(pow(latDistance, 2) + pow(lngDistance, 2));
 }
 
-LatLngBounds mapBounds(Set<Marker> markers) {
+LatLngBounds? mapBounds(Set<Marker>? markers) {
   if (markers == null || markers.isEmpty) {
     return null;
   }
@@ -89,15 +88,15 @@ class FishingSpotMarker extends Marker {
 
   final Id id;
   final FishingSpot fishingSpot;
-  final void Function(FishingSpot) onTapFishingSpot;
+  final void Function(FishingSpot)? onTapFishingSpot;
   final bool active;
   final double zIndex;
 
   FishingSpotMarker({
-    @required this.fishingSpot,
+    required this.fishingSpot,
     this.onTapFishingSpot,
     this.active = false,
-    this.zIndex,
+    this.zIndex = 0.0,
   })  : id = fishingSpot.id,
         super(
           markerId: MarkerId(fishingSpot.id.uuid),
@@ -111,7 +110,7 @@ class FishingSpotMarker extends Marker {
 
   FishingSpotMarker duplicate({
     bool active = false,
-    double zIndex,
+    double? zIndex,
   }) {
     return FishingSpotMarker(
       fishingSpot: fishingSpot,

@@ -1,8 +1,10 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:collection/collection.dart' show IterableExtension;
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:protobuf/protobuf.dart';
 import 'package:quiver/strings.dart';
 
 import '../entity_manager.dart';
@@ -40,9 +42,9 @@ class _MapPageState extends State<MapPage> {
   final Completer<GoogleMapController> _mapController = Completer();
   final Set<FishingSpotMarker> _fishingSpotMarkers = {};
 
-  FishingSpotMarker _activeMarker;
+  FishingSpotMarker? _activeMarker;
 
-  FishingSpot _activeFishingSpot;
+  FishingSpot? _activeFishingSpot;
 
   // Used to display old data during dismiss animations and during async
   // database calls.
@@ -73,13 +75,13 @@ class _MapPageState extends State<MapPage> {
           // Reset the active marker and fishing spot, if there was one.
           if (_activeMarker != null) {
             _activeFishingSpot =
-                _fishingSpotManager.withLatLng(_activeMarker.fishingSpot);
+                _fishingSpotManager.withLatLng(_activeMarker!.fishingSpot);
 
-            Marker newMarker = _fishingSpotMarkers.firstWhere(
-              (m) => m.position == _activeMarker.position,
-              orElse: () => null,
+            var newMarker = _fishingSpotMarkers.firstWhereOrNull(
+              (m) => m.position == _activeMarker!.position,
             );
-            _activeMarker = _copyMarker(newMarker, true);
+
+            _setActiveMarker(newMarker);
           }
         },
         builder: _buildMap,
@@ -90,13 +92,13 @@ class _MapPageState extends State<MapPage> {
   Widget _buildMap(BuildContext context) {
     var markers = Set.of(_fishingSpotMarkers);
     if (_hasActiveMarker) {
-      markers.add(_activeMarker);
+      markers.add(_activeMarker!);
     }
 
-    String name;
+    String? name;
     if (_hasActiveFishingSpot) {
       // Showing active fishing spot.
-      name = _activeFishingSpot.displayName(
+      name = _activeFishingSpot!.displayName(
         context,
         includeLatLngLabels: false,
       );
@@ -131,10 +133,15 @@ class _MapPageState extends State<MapPage> {
             if (fishingSpot == null) {
               _clearActiveFishingSpot();
             } else {
-              _setActiveMarker(_findMarker(fishingSpot.id));
-              _activeFishingSpot = fishingSpot;
-              moveMap(_mapController, _activeFishingSpot.latLng,
-                  animate: false);
+              var marker = _findMarker(fishingSpot.id);
+              if (marker != null) {
+                _setActiveMarker(marker);
+                _activeFishingSpot = fishingSpot;
+                moveMap(_mapController, _activeFishingSpot!.latLng,
+                    animate: false);
+              } else {
+                _log.e("Couldn't find marker for picked fishing spot");
+              }
             }
           });
         },
@@ -162,55 +169,54 @@ class _MapPageState extends State<MapPage> {
       return Container();
     }
 
-    var fishingSpot = _activeFishingSpot?.clone();
+    var fishingSpot = _activeFishingSpot?.deepCopy();
     var editing = true;
     if (fishingSpot == null && _hasActiveMarker) {
       // Dropped pin case.
       fishingSpot = FishingSpot()
         ..id = randomId()
-        ..lat = _activeMarker.position.latitude
-        ..lng = _activeMarker.position.longitude;
+        ..lat = _activeMarker!.position.latitude
+        ..lng = _activeMarker!.position.longitude;
       editing = false;
+    }
+
+    Widget child = Empty();
+    if (fishingSpot != null) {
+      child = _FishingSpotBottomSheet(
+        fishingSpot: fishingSpot,
+        editing: editing,
+        onDelete: () {
+          setState(() {
+            _waitingForDismissal = true;
+          });
+        },
+      );
     }
 
     return Align(
       alignment: Alignment.bottomCenter,
       child: StyledBottomSheet(
         visible: fishingSpot != null && !_waitingForDismissal,
-        onDismissed: () {
-          setState(_clearActiveFishingSpot);
-        },
-        child: _FishingSpotBottomSheet(
-          fishingSpot: fishingSpot,
-          editing: editing,
-          onDelete: () {
-            setState(() {
-              _waitingForDismissal = true;
-            });
-          },
-        ),
+        onDismissed: () => setState(_clearActiveFishingSpot),
+        child: child,
       ),
     );
   }
 
-  Marker _createFishingSpotMarker(FishingSpot fishingSpot) {
-    if (fishingSpot == null) {
-      return null;
-    }
+  FishingSpotMarker _createFishingSpotMarker(FishingSpot fishingSpot) {
     return FishingSpotMarker(
       fishingSpot: fishingSpot,
       active: false,
       onTapFishingSpot: (fishingSpot) {
         setState(() {
-          _setActiveMarker(_fishingSpotMarkers
-              .firstWhere((marker) => marker.id == fishingSpot.id));
-          _activeFishingSpot = _fishingSpotManager.entity(_activeMarker.id);
+          _setActiveMarker(_findMarker(fishingSpot.id)!);
+          _activeFishingSpot = _fishingSpotManager.entity(_activeMarker!.id);
         });
       },
     );
   }
 
-  Marker _createDroppedPinMarker(LatLng latLng) {
+  FishingSpotMarker _createDroppedPinMarker(LatLng latLng) {
     // All dropped pins become active, and shouldn't be clickable.
     return FishingSpotMarker(
       fishingSpot: FishingSpot()
@@ -221,7 +227,7 @@ class _MapPageState extends State<MapPage> {
     );
   }
 
-  void _setActiveMarker(FishingSpotMarker newActiveMarker) {
+  void _setActiveMarker(FishingSpotMarker? newActiveMarker) {
     // A marker's icon property is readonly, so we rebuild the current active
     // marker to give it a default icon, then remove and add it to the
     // fishing spot markers.
@@ -230,7 +236,7 @@ class _MapPageState extends State<MapPage> {
     // spot. A dropped pin is removed from the map when updating the active
     // marker.
     if (_hasActiveMarker) {
-      FishingSpotMarker activeMarker = _findMarker(_activeMarker.id);
+      var activeMarker = _findMarker(_activeMarker!.id);
       if (activeMarker != null) {
         if (_fishingSpotMarkers.remove(activeMarker)) {
           _fishingSpotMarkers.add(_copyMarker(activeMarker, false));
@@ -240,25 +246,24 @@ class _MapPageState extends State<MapPage> {
       }
     }
 
-    // Active marker should always appear on top.
-    _activeMarker = _copyMarker(newActiveMarker, true, 1000);
+    if (newActiveMarker == null) {
+      _activeMarker = null;
+    } else {
+      // Active marker should always appear on top.
+      _activeMarker = _copyMarker(newActiveMarker, true, 1000);
+    }
   }
 
   FishingSpotMarker _copyMarker(FishingSpotMarker marker, bool active,
-      [double zIndex]) {
-    if (marker == null) {
-      return null;
-    }
-
+      [double? zIndex]) {
     return marker.duplicate(
       active: active,
       zIndex: zIndex,
     );
   }
 
-  Marker _findMarker(Id id) {
-    return _fishingSpotMarkers.firstWhere((marker) => marker.id == id,
-        orElse: () => null);
+  FishingSpotMarker? _findMarker(Id id) {
+    return _fishingSpotMarkers.firstWhereOrNull((marker) => marker.id == id);
   }
 
   void _updateMarkers() {
@@ -289,10 +294,10 @@ class _FishingSpotBottomSheet extends StatelessWidget {
   final VoidCallback onDelete;
 
   _FishingSpotBottomSheet({
-    @required this.fishingSpot,
+    required this.fishingSpot,
     this.editing = false,
-    this.onDelete,
-  }) : assert(fishingSpot != null);
+    required this.onDelete,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -390,7 +395,7 @@ class _FishingSpotBottomSheet extends StatelessWidget {
                         description: Text(fishingSpotManager.deleteMessage(
                             context, fishingSpot)),
                         onDelete: () {
-                          onDelete?.call();
+                          onDelete();
                           fishingSpotManager.delete(fishingSpot.id);
                         },
                       );
@@ -471,7 +476,7 @@ class _FishingSpotBottomSheet extends StatelessWidget {
       }
     } else {
       // There are multiple options, give the user a choice.
-      String url;
+      String? url;
       await showBottomSheetPicker(
         context,
         (context) => BottomSheetPicker<String>(
@@ -480,7 +485,7 @@ class _FishingSpotBottomSheet extends StatelessWidget {
         ),
       ).then((_) async {
         // If empty, bottom sheet was dismissed.
-        launched = isEmpty(url) || await urlLauncher.launch(url);
+        launched = isEmpty(url) || await urlLauncher.launch(url!);
       });
     }
 

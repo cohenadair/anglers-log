@@ -11,30 +11,34 @@ class Button extends StatelessWidget {
   final String text;
 
   /// Set to `null` to disable the button.
-  final VoidCallback onPressed;
-  final Icon icon;
-  final Color color;
+  final VoidCallback? onPressed;
+  final Icon? icon;
+  final Color? color;
 
   Button({
-    @required this.text,
-    @required this.onPressed,
+    required this.text,
+    required this.onPressed,
     this.icon,
     this.color,
-  }) : assert(text != null);
+  });
 
   @override
   Widget build(BuildContext context) {
     return icon == null
-        ? RaisedButton(
+        ? ElevatedButton(
             child: _textWidget,
             onPressed: onPressed,
-            color: color,
+            style: ElevatedButton.styleFrom(
+              primary: color,
+            ),
           )
-        : RaisedButton.icon(
+        : ElevatedButton.icon(
             onPressed: onPressed,
-            icon: icon,
+            icon: icon!,
             label: _textWidget,
-            color: color,
+            style: ElevatedButton.styleFrom(
+              primary: color,
+            ),
           );
   }
 
@@ -45,19 +49,19 @@ class Button extends StatelessWidget {
 /// button is to be rendered to the left of an [IconButton], such as an overflow
 /// menu button, set [condensed] to true to remove extra padding.
 ///
-/// This button can also be used as a [FlatButton] replacement.
+/// This button can also be used as a [TextButton] replacement.
 class ActionButton extends StatelessWidget {
   final double defaultSize = 40;
 
-  final String text;
-  final VoidCallback onPressed;
+  final String? text;
+  final VoidCallback? onPressed;
   final bool condensed;
-  final Color textColor;
+  final Color? textColor;
 
-  final String _stringId;
+  final String? _stringId;
 
   ActionButton({
-    @required this.text,
+    required this.text,
     this.onPressed,
     this.condensed = false,
     this.textColor,
@@ -82,7 +86,7 @@ class ActionButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Widget textWidget = Text(
-      (text == null ? Strings.of(context).fromId(_stringId) : text)
+      (isNotEmpty(_stringId) ? Strings.of(context).fromId(_stringId!) : text)!
           .toUpperCase(),
       style: textColor == null ? null : TextStyle(color: textColor),
     );
@@ -110,11 +114,11 @@ class ChipButton extends StatelessWidget {
   final double fontSize = 13.0;
 
   final String label;
-  final IconData icon;
-  final VoidCallback onPressed;
+  final IconData? icon;
+  final VoidCallback? onPressed;
 
   ChipButton({
-    @required this.label,
+    required this.label,
     this.icon,
     this.onPressed,
   }) : assert(isNotEmpty(label));
@@ -137,7 +141,7 @@ class ChipButton extends StatelessWidget {
       ),
       backgroundColor: Theme.of(context).accentColor,
       pressElevation: 1,
-      onPressed: onPressed == null ? () {} : onPressed,
+      onPressed: onPressed == null ? () {} : onPressed!,
     );
   }
 }
@@ -148,14 +152,14 @@ class MinimumIconButton extends StatelessWidget {
   final double size = 24.0;
 
   final IconData icon;
-  final VoidCallback onTap;
-  final Color color;
+  final VoidCallback? onTap;
+  final Color? color;
 
   MinimumIconButton({
-    @required this.icon,
+    required this.icon,
     this.color,
     this.onTap,
-  }) : assert(icon != null);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -177,9 +181,9 @@ class MinimumIconButton extends StatelessWidget {
 class FloatingIconButton extends StatelessWidget {
   static const double _fabSize = 40.0;
 
-  final EdgeInsets padding;
+  final EdgeInsets? padding;
   final IconData icon;
-  final String label;
+  final String? label;
   final VoidCallback onPressed;
 
   /// When true, renders the button with a different background color, to
@@ -188,8 +192,8 @@ class FloatingIconButton extends StatelessWidget {
 
   FloatingIconButton({
     this.padding,
-    @required this.icon,
-    @required this.onPressed,
+    required this.icon,
+    required this.onPressed,
     this.label,
     this.pushed = false,
   });
@@ -211,14 +215,14 @@ class FloatingIconButton extends StatelessWidget {
               ),
               shape: CircleBorder(),
               fillColor: pushed ? Colors.grey : Colors.white,
-              onPressed: onPressed ?? () => Navigator.of(context).pop(),
+              onPressed: onPressed,
             ),
           ),
           isNotEmpty(label)
               ? Padding(
                   padding: insetsTopSmall,
                   child: Text(
-                    label,
+                    label!,
                     style: styleHeadingSmall,
                   ),
                 )
@@ -233,10 +237,10 @@ class SmallTextButton extends StatelessWidget {
   static final _fontSize = 14.0;
 
   final String text;
-  final VoidCallback onPressed;
+  final VoidCallback? onPressed;
 
   SmallTextButton({
-    this.text,
+    required this.text,
     this.onPressed,
   });
 

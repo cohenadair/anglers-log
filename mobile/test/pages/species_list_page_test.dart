@@ -8,12 +8,12 @@ import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mobile/widgets/list_item.dart';
 import 'package:mockito/mockito.dart';
 
-import '../mock_app_manager.dart';
+import '../mocks/stubbed_app_manager.dart';
 import '../test_utils.dart';
 
 void main() {
-  MockAppManager appManager;
-  SpeciesManager speciesManager;
+  late StubbedAppManager appManager;
+  late SpeciesManager speciesManager;
 
   var speciesList = [
     Species()
@@ -34,31 +34,25 @@ void main() {
   ];
 
   setUp(() async {
-    appManager = MockAppManager(
-      mockAuthManager: true,
-      mockCatchManager: true,
-      mockLocalDatabaseManager: true,
-      mockSubscriptionManager: true,
-    );
+    appManager = StubbedAppManager();
 
-    when(appManager.mockAuthManager.stream).thenAnswer((_) => MockStream());
+    when(appManager.authManager.stream).thenAnswer((_) => Stream.empty());
 
-    when(appManager.mockCatchManager
-            .existsWith(speciesId: anyNamed("speciesId")))
+    when(appManager.catchManager.existsWith(speciesId: anyNamed("speciesId")))
         .thenReturn(false);
-    when(appManager.mockCatchManager.list()).thenReturn([]);
+    when(appManager.catchManager.list()).thenReturn([]);
 
-    when(appManager.mockLocalDatabaseManager.deleteEntity(any, any))
+    when(appManager.localDatabaseManager.deleteEntity(any, any))
         .thenAnswer((_) => Future.value(true));
-    when(appManager.mockLocalDatabaseManager.insertOrReplace(any, any))
+    when(appManager.localDatabaseManager.insertOrReplace(any, any))
         .thenAnswer((_) => Future.value(true));
 
-    when(appManager.mockSubscriptionManager.stream)
-        .thenAnswer((_) => MockStream<void>());
-    when(appManager.mockSubscriptionManager.isPro).thenReturn(false);
+    when(appManager.subscriptionManager.stream)
+        .thenAnswer((_) => Stream.empty());
+    when(appManager.subscriptionManager.isPro).thenReturn(false);
 
-    speciesManager = SpeciesManager(appManager);
-    when(appManager.speciesManager).thenReturn(speciesManager);
+    speciesManager = SpeciesManager(appManager.app);
+    when(appManager.app.speciesManager).thenReturn(speciesManager);
 
     for (var species in speciesList) {
       await speciesManager.addOrUpdate(species);
@@ -112,10 +106,9 @@ void main() {
 
     testWidgets("Dialog when deleting species associated with 1 catch",
         (tester) async {
-      when(appManager.mockCatchManager
-              .existsWith(speciesId: anyNamed("speciesId")))
+      when(appManager.catchManager.existsWith(speciesId: anyNamed("speciesId")))
           .thenReturn(true);
-      when(appManager.mockCatchManager.list()).thenReturn([
+      when(appManager.catchManager.list()).thenReturn([
         Catch()
           ..id = randomId()
           ..speciesId = speciesList[2].id,
@@ -139,10 +132,9 @@ void main() {
 
     testWidgets("Dialog when deleting species associated with multiple catches",
         (tester) async {
-      when(appManager.mockCatchManager
-              .existsWith(speciesId: anyNamed("speciesId")))
+      when(appManager.catchManager.existsWith(speciesId: anyNamed("speciesId")))
           .thenReturn(true);
-      when(appManager.mockCatchManager.list()).thenReturn([
+      when(appManager.catchManager.list()).thenReturn([
         Catch()
           ..id = randomId()
           ..speciesId = speciesList[2].id,

@@ -4,16 +4,14 @@ import 'package:mobile/utils/store_utils.dart';
 import 'package:mobile/widgets/button.dart';
 import 'package:mockito/mockito.dart';
 
-import '../mock_app_manager.dart';
+import '../mocks/stubbed_app_manager.dart';
 import '../test_utils.dart';
 
 void main() {
-  MockAppManager appManager;
+  late StubbedAppManager appManager;
 
   setUp(() {
-    appManager = MockAppManager(
-      mockUrlLauncherWrapper: true,
-    );
+    appManager = StubbedAppManager();
   });
 
   testWidgets("Error shown if can't open URL", (tester) async {
@@ -31,7 +29,9 @@ void main() {
       ),
     );
 
-    when(appManager.mockUrlLauncherWrapper.canLaunch(any))
+    when(appManager.urlLauncherWrapper.canLaunch(any))
+        .thenAnswer((_) => Future.value(false));
+    when(appManager.urlLauncherWrapper.launch(any))
         .thenAnswer((_) => Future.value(false));
 
     await tapAndSettle(tester, find.byType(Button));
@@ -53,11 +53,13 @@ void main() {
       ),
     );
 
-    when(appManager.mockUrlLauncherWrapper.canLaunch(any))
+    when(appManager.urlLauncherWrapper.canLaunch(any))
+        .thenAnswer((_) => Future.value(true));
+    when(appManager.urlLauncherWrapper.launch(any))
         .thenAnswer((_) => Future.value(true));
 
     await tapAndSettle(tester, find.byType(Button));
     expect(find.byType(SnackBar), findsNothing);
-    verify(appManager.mockUrlLauncherWrapper.launch(any)).called(1);
+    verify(appManager.urlLauncherWrapper.launch(any)).called(1);
   });
 }

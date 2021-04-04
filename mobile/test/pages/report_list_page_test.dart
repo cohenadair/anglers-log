@@ -6,16 +6,15 @@ import 'package:mobile/pages/pro_page.dart';
 import 'package:mobile/pages/report_list_page.dart';
 import 'package:mobile/pages/save_report_page.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
-import 'package:mobile/widgets/button.dart';
 import 'package:mobile/widgets/list_item.dart';
 import 'package:mobile/widgets/text.dart';
 import 'package:mockito/mockito.dart';
 
-import '../mock_app_manager.dart';
+import '../mocks/stubbed_app_manager.dart';
 import '../test_utils.dart';
 
 void main() {
-  MockAppManager appManager;
+  late StubbedAppManager appManager;
 
   var summaries = <SummaryReport>[
     SummaryReport()
@@ -36,14 +35,10 @@ void main() {
   ];
 
   setUp(() {
-    appManager = MockAppManager(
-      mockComparisonReportManager: true,
-      mockSubscriptionManager: true,
-      mockSummaryReportManager: true,
-    );
+    appManager = StubbedAppManager();
 
-    when(appManager.mockComparisonReportManager.list()).thenReturn(comparisons);
-    when(appManager.mockSummaryReportManager.list()).thenReturn(summaries);
+    when(appManager.comparisonReportManager.list()).thenReturn(comparisons);
+    when(appManager.summaryReportManager.list()).thenReturn(summaries);
   });
 
   testWidgets("Current item is selected", (tester) async {
@@ -107,6 +102,9 @@ void main() {
   });
 
   testWidgets("Delete SummaryReport", (tester) async {
+    when(appManager.summaryReportManager.delete(any))
+        .thenAnswer((_) => Future.value(true));
+
     await tester.pumpWidget(Testable(
       (_) => ReportListPage(
         pickerSettings: ManageableListPagePickerSettings.single(
@@ -126,11 +124,14 @@ void main() {
     );
     await tapAndSettle(tester, find.text("DELETE"));
 
-    verify(appManager.mockSummaryReportManager.delete(summaries.first.id))
+    verify(appManager.summaryReportManager.delete(summaries.first.id))
         .called(1);
   });
 
   testWidgets("Delete ComparisonReport", (tester) async {
+    when(appManager.comparisonReportManager.delete(any))
+        .thenAnswer((_) => Future.value(true));
+
     await tester.pumpWidget(Testable(
       (_) => ReportListPage(
         pickerSettings: ManageableListPagePickerSettings.single(
@@ -150,7 +151,7 @@ void main() {
     );
     await tapAndSettle(tester, find.text("DELETE"));
 
-    verify(appManager.mockComparisonReportManager.delete(comparisons.first.id))
+    verify(appManager.comparisonReportManager.delete(comparisons.first.id))
         .called(1);
   });
 
@@ -176,8 +177,8 @@ void main() {
   });
 
   testWidgets("Note shown when custom reports is empty", (tester) async {
-    when(appManager.mockComparisonReportManager.list()).thenReturn([]);
-    when(appManager.mockSummaryReportManager.list()).thenReturn([]);
+    when(appManager.comparisonReportManager.list()).thenReturn([]);
+    when(appManager.summaryReportManager.list()).thenReturn([]);
 
     await tester.pumpWidget(Testable(
       (_) => ReportListPage(
@@ -229,8 +230,8 @@ void main() {
   });
 
   testWidgets("ProPage is shown when user is not pro", (tester) async {
-    when(appManager.mockSubscriptionManager.isPro).thenReturn(false);
-    when(appManager.mockSubscriptionManager.subscriptions())
+    when(appManager.subscriptionManager.isPro).thenReturn(false);
+    when(appManager.subscriptionManager.subscriptions())
         .thenAnswer((_) => Future.value(null));
 
     await tester.pumpWidget(Testable(
@@ -248,7 +249,7 @@ void main() {
 
     await tapAndSettle(tester, find.byType(CloseButton));
 
-    when(appManager.mockSubscriptionManager.isPro).thenReturn(true);
+    when(appManager.subscriptionManager.isPro).thenReturn(true);
     await tapAndSettle(tester, find.byIcon(Icons.add));
     expect(find.byType(SaveReportPage), findsOneWidget);
   });

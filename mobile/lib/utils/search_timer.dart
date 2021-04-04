@@ -11,23 +11,23 @@ class SearchTimer {
   /// underlying [Timer] runs out.
   VoidCallback onFinished;
 
-  Timer _timer;
+  Timer? _timer;
 
   SearchTimer(this.onFinished);
 
   /// Resets the [SearchTimer]. Returns true
-  void reset(String query) {
-    if (_timer != null && _timer.isActive) {
-      _timer.cancel();
+  void reset(String? query) {
+    if (_timer != null && _timer!.isActive) {
+      _timer!.cancel();
     }
 
     if (isEmpty(query)) {
       // When text is cleared, invoke callback immediately.
-      onFinished?.call();
+      onFinished.call();
     } else {
       // Only use a timer if the user is typing.
       _timer = Timer(_inputDelayDuration, () {
-        onFinished?.call();
+        onFinished.call();
       });
     }
   }

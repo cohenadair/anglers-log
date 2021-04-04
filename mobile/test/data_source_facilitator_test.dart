@@ -6,8 +6,8 @@ import 'package:mobile/auth_manager.dart';
 import 'package:mobile/data_source_facilitator.dart';
 import 'package:mockito/mockito.dart';
 
-import 'mock_app_manager.dart';
-import 'test_utils.dart';
+import 'mocks/mocks.mocks.dart';
+import 'mocks/stubbed_app_manager.dart';
 
 class TestDataSourceFacilitator extends DataSourceFacilitator {
   bool firestoreEnabled = false;
@@ -22,9 +22,8 @@ class TestDataSourceFacilitator extends DataSourceFacilitator {
   TestDataSourceFacilitator(AppManager appManager) : super(appManager);
 
   @override
-  Future<void> clearLocalData() {
+  Future<void> clearLocalData() async {
     clearLocalDataCount++;
-    return null;
   }
 
   @override
@@ -38,9 +37,8 @@ class TestDataSourceFacilitator extends DataSourceFacilitator {
   }
 
   @override
-  Future<void> initializeLocalData() {
+  Future<void> initializeLocalData() async {
     initializeLocalDataCount++;
-    return null;
   }
 
   @override
@@ -50,35 +48,29 @@ class TestDataSourceFacilitator extends DataSourceFacilitator {
 }
 
 void main() {
-  MockAppManager appManager;
+  late StubbedAppManager appManager;
 
-  TestDataSourceFacilitator facilitator;
+  late TestDataSourceFacilitator facilitator;
 
   setUp(() {
-    appManager = MockAppManager(
-      mockAppPreferenceManager: true,
-      mockAuthManager: true,
-      mockLocalDatabaseManager: true,
-      mockSubscriptionManager: true,
-    );
+    appManager = StubbedAppManager();
 
-    when(appManager.mockAuthManager.stream).thenAnswer((_) => MockStream());
-    when(appManager.mockSubscriptionManager.stream)
-        .thenAnswer((_) => MockStream());
+    when(appManager.authManager.stream).thenAnswer((_) => Stream.empty());
 
-    facilitator = TestDataSourceFacilitator(appManager);
+    when(appManager.subscriptionManager.stream)
+        .thenAnswer((_) => Stream.empty());
+
+    facilitator = TestDataSourceFacilitator(appManager.app);
   });
 
   test("Firestore listener is cancelled on logout", () async {
     var controller = StreamController<void>();
-    when(appManager.mockAuthManager.stream)
-        .thenAnswer((_) => controller.stream);
-    when(appManager.mockAppPreferenceManager.lastLoggedInUserId)
-        .thenReturn(null);
-    when(appManager.mockSubscriptionManager.isPro).thenReturn(true);
-    when(appManager.mockAuthManager.state).thenReturn(AuthState.loggedOut);
+    when(appManager.authManager.stream).thenAnswer((_) => controller.stream);
+    when(appManager.appPreferenceManager.lastLoggedInUserId).thenReturn(null);
+    when(appManager.subscriptionManager.isPro).thenReturn(true);
+    when(appManager.authManager.state).thenReturn(AuthState.loggedOut);
 
-    facilitator = TestDataSourceFacilitator(appManager);
+    facilitator = TestDataSourceFacilitator(appManager.app);
     facilitator.firestoreEnabled = true;
     await facilitator.initialize();
     expect(facilitator.listener, isNotNull);
@@ -90,12 +82,11 @@ void main() {
   });
 
   test("Local data is cleared when logged in user changes", () async {
-    when(appManager.mockAppPreferenceManager.lastLoggedInUserId)
-        .thenReturn(null);
-    when(appManager.mockAuthManager.userId).thenReturn("USER_ID");
-    when(appManager.mockSubscriptionManager.stream)
-        .thenAnswer((_) => MockStream<void>());
-    when(appManager.mockSubscriptionManager.isPro).thenReturn(false);
+    when(appManager.appPreferenceManager.lastLoggedInUserId).thenReturn(null);
+    when(appManager.authManager.userId).thenReturn("USER_ID");
+    when(appManager.subscriptionManager.stream)
+        .thenAnswer((_) => Stream.empty());
+    when(appManager.subscriptionManager.isPro).thenReturn(false);
 
     await facilitator.initialize();
     await Future.delayed(Duration(milliseconds: 50));
@@ -103,10 +94,9 @@ void main() {
   });
 
   test("Firestore is initialized when pro and subclass enabled", () async {
-    when(appManager.mockAppPreferenceManager.lastLoggedInUserId)
-        .thenReturn(null);
-    when(appManager.mockAuthManager.userId).thenReturn(null);
-    when(appManager.mockSubscriptionManager.isPro).thenReturn(true);
+    when(appManager.appPreferenceManager.lastLoggedInUserId).thenReturn(null);
+    when(appManager.authManager.userId).thenReturn(null);
+    when(appManager.subscriptionManager.isPro).thenReturn(true);
 
     facilitator.firestoreEnabled = true;
     await facilitator.initialize();
@@ -115,12 +105,11 @@ void main() {
   });
 
   test("Local data initialization only", () async {
-    when(appManager.mockAppPreferenceManager.lastLoggedInUserId)
-        .thenReturn(null);
-    when(appManager.mockAuthManager.userId).thenReturn(null);
-    when(appManager.mockSubscriptionManager.stream)
-        .thenAnswer((_) => MockStream<void>());
-    when(appManager.mockSubscriptionManager.isPro).thenReturn(false);
+    when(appManager.appPreferenceManager.lastLoggedInUserId).thenReturn(null);
+    when(appManager.authManager.userId).thenReturn(null);
+    when(appManager.subscriptionManager.stream)
+        .thenAnswer((_) => Stream.empty());
+    when(appManager.subscriptionManager.isPro).thenReturn(false);
 
     facilitator.firestoreEnabled = false;
     await facilitator.initialize();
@@ -130,17 +119,17 @@ void main() {
 
   test("When a user upgrades to pro, onUpgradeToPro is invoked", () async {
     var controller = StreamController.broadcast();
-    when(appManager.mockSubscriptionManager.stream)
+    when(appManager.subscriptionManager.stream)
         .thenAnswer((_) => controller.stream);
 
-    facilitator = TestDataSourceFacilitator(appManager);
+    facilitator = TestDataSourceFacilitator(appManager.app);
 
     // Verify onUpgradeToPro isn't invoked when conditions aren't met.
-    when(appManager.mockSubscriptionManager.isPro).thenReturn(false);
+    when(appManager.subscriptionManager.isPro).thenReturn(false);
     controller.add(null);
     expect(facilitator.onUpgradeToProCount, 0);
 
-    when(appManager.mockSubscriptionManager.isPro).thenReturn(true);
+    when(appManager.subscriptionManager.isPro).thenReturn(true);
     controller.add(null);
     expect(facilitator.onUpgradeToProCount, 0);
 

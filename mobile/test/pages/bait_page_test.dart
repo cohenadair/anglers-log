@@ -5,39 +5,37 @@ import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mobile/widgets/text.dart';
 import 'package:mockito/mockito.dart';
 
-import '../mock_app_manager.dart';
+import '../mocks/stubbed_app_manager.dart';
 import '../test_utils.dart';
 
 void main() {
-  MockAppManager appManager;
+  late StubbedAppManager appManager;
 
   setUp(() {
-    appManager = MockAppManager(
-      mockBaitCategoryManager: true,
-      mockBaitManager: true,
-    );
+    appManager = StubbedAppManager();
 
-    when(appManager.mockBaitManager.entity(any)).thenReturn(Bait()
+    when(appManager.baitManager.deleteMessage(any, any)).thenReturn("Delete");
+    when(appManager.baitManager.entity(any)).thenReturn(Bait()
       ..id = randomId()
       ..name = "Countdown Brown Trout");
   });
 
   testWidgets("Null bait category renders empty", (tester) async {
     await tester.pumpWidget(Testable(
-      (_) => BaitPage(randomId()),
+      (_) => BaitPage(Bait()),
       appManager: appManager,
     ));
     expect(find.byType(HeadingLabel), findsNothing);
   });
 
   testWidgets("Non-null bait category", (tester) async {
-    when(appManager.mockBaitCategoryManager.entity(any)).thenReturn(
+    when(appManager.baitCategoryManager.entity(any)).thenReturn(
       BaitCategory()
         ..id = randomId()
         ..name = "Rapala",
     );
     await tester.pumpWidget(Testable(
-      (_) => BaitPage(randomId()),
+      (_) => BaitPage(Bait()),
       appManager: appManager,
     ));
 

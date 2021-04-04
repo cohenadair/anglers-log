@@ -4,18 +4,14 @@ import 'package:mobile/utils/dialog_utils.dart';
 import 'package:mobile/widgets/button.dart';
 import 'package:mockito/mockito.dart';
 
-import '../mock_app_manager.dart';
+import '../mocks/stubbed_app_manager.dart';
 import '../test_utils.dart';
 
 void main() {
-  MockAppManager appManager;
+  late StubbedAppManager appManager;
 
   setUp(() {
-    appManager = MockAppManager(
-      mockPreferencesManager: true,
-      mockTimeManager: true,
-      mockUrlLauncherWrapper: true,
-    );
+    appManager = StubbedAppManager();
   });
 
   group("Rate dialog", () {
@@ -30,14 +26,16 @@ void main() {
         ),
       );
 
-      when(appManager.mockPreferencesManager.didRateApp).thenReturn(false);
-      when(appManager.mockPreferencesManager.rateTimerStartedAt)
+      when(appManager.userPreferenceManager.didRateApp).thenReturn(false);
+      when(appManager.userPreferenceManager.rateTimerStartedAt)
           .thenReturn(null);
-      when(appManager.mockTimeManager.msSinceEpoch).thenReturn(10);
+      when(appManager.userPreferenceManager.rateTimerStartedAt = any)
+          .thenAnswer((_) {});
+      when(appManager.timeManager.msSinceEpoch).thenReturn(10);
 
       await tapAndSettle(tester, find.byType(Button));
 
-      verify(appManager.mockPreferencesManager.rateTimerStartedAt = 10);
+      verify(appManager.userPreferenceManager.rateTimerStartedAt = 10);
       expect(find.byType(AlertDialog), findsNothing);
     });
 
@@ -52,14 +50,14 @@ void main() {
         ),
       );
 
-      when(appManager.mockPreferencesManager.didRateApp).thenReturn(false);
-      when(appManager.mockPreferencesManager.rateTimerStartedAt).thenReturn(10);
-      when(appManager.mockTimeManager.msSinceEpoch)
+      when(appManager.userPreferenceManager.didRateApp).thenReturn(false);
+      when(appManager.userPreferenceManager.rateTimerStartedAt).thenReturn(10);
+      when(appManager.timeManager.msSinceEpoch)
           .thenReturn((Duration.millisecondsPerDay * (365 / 4) + 10).toInt());
 
       await tapAndSettle(tester, find.byType(Button));
 
-      verify(appManager.mockPreferencesManager.rateTimerStartedAt).called(2);
+      verify(appManager.userPreferenceManager.rateTimerStartedAt).called(2);
       expect(find.byType(AlertDialog), findsNothing);
     });
 
@@ -74,9 +72,9 @@ void main() {
         ),
       );
 
-      when(appManager.mockPreferencesManager.didRateApp).thenReturn(false);
-      when(appManager.mockPreferencesManager.rateTimerStartedAt).thenReturn(10);
-      when(appManager.mockTimeManager.msSinceEpoch)
+      when(appManager.userPreferenceManager.didRateApp).thenReturn(false);
+      when(appManager.userPreferenceManager.rateTimerStartedAt).thenReturn(10);
+      when(appManager.timeManager.msSinceEpoch)
           .thenReturn((Duration.millisecondsPerDay * (365 / 4) + 20).toInt());
 
       await tapAndSettle(tester, find.byType(Button));
@@ -95,26 +93,28 @@ void main() {
         ),
       );
 
-      when(appManager.mockPreferencesManager.didRateApp).thenReturn(false);
-      when(appManager.mockPreferencesManager.rateTimerStartedAt).thenReturn(10);
-      when(appManager.mockTimeManager.msSinceEpoch)
+      when(appManager.userPreferenceManager.didRateApp).thenReturn(false);
+      when(appManager.userPreferenceManager.rateTimerStartedAt).thenReturn(10);
+      when(appManager.timeManager.msSinceEpoch)
           .thenReturn((Duration.millisecondsPerDay * (365 / 4) + 20).toInt());
 
       await tapAndSettle(tester, find.byType(Button));
 
-      verify(appManager.mockPreferencesManager.rateTimerStartedAt).called(2);
+      verify(appManager.userPreferenceManager.rateTimerStartedAt).called(2);
       expect(find.byType(AlertDialog), findsOneWidget);
 
-      when(appManager.mockUrlLauncherWrapper.canLaunch(any))
+      when(appManager.urlLauncherWrapper.canLaunch(any))
+          .thenAnswer((_) => Future.value(true));
+      when(appManager.urlLauncherWrapper.launch(any))
           .thenAnswer((_) => Future.value(true));
       await tapAndSettle(tester, find.text("RATE"));
 
-      verify(appManager.mockPreferencesManager.didRateApp = true);
+      verify(appManager.userPreferenceManager.didRateApp = true);
 
-      when(appManager.mockPreferencesManager.didRateApp).thenReturn(true);
+      when(appManager.userPreferenceManager.didRateApp).thenReturn(true);
       await tapAndSettle(tester, find.byType(Button));
 
-      verifyNever(appManager.mockPreferencesManager.rateTimerStartedAt);
+      verifyNever(appManager.userPreferenceManager.rateTimerStartedAt);
       expect(find.byType(AlertDialog), findsNothing);
     });
 
@@ -130,18 +130,20 @@ void main() {
       );
 
       var now = (Duration.millisecondsPerDay * (365 / 4) + 20).toInt();
-      when(appManager.mockPreferencesManager.didRateApp).thenReturn(false);
-      when(appManager.mockPreferencesManager.rateTimerStartedAt).thenReturn(10);
-      when(appManager.mockTimeManager.msSinceEpoch).thenReturn(now);
+      when(appManager.userPreferenceManager.didRateApp).thenReturn(false);
+      when(appManager.userPreferenceManager.rateTimerStartedAt).thenReturn(10);
+      when(appManager.userPreferenceManager.rateTimerStartedAt = any)
+          .thenAnswer((_) {});
+      when(appManager.timeManager.msSinceEpoch).thenReturn(now);
 
       await tapAndSettle(tester, find.byType(Button));
 
-      verify(appManager.mockPreferencesManager.rateTimerStartedAt).called(2);
+      verify(appManager.userPreferenceManager.rateTimerStartedAt).called(2);
       expect(find.byType(AlertDialog), findsOneWidget);
 
       await tapAndSettle(tester, find.text("LATER"));
 
-      verify(appManager.mockPreferencesManager.rateTimerStartedAt = now);
+      verify(appManager.userPreferenceManager.rateTimerStartedAt = now);
     });
   });
 }

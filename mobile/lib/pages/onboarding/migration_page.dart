@@ -8,12 +8,12 @@ import 'onboarding_page.dart';
 
 class MigrationPage extends StatefulWidget {
   final LegacyImporter importer;
-  final VoidCallback onNext;
+  final VoidCallback? onNext;
 
   MigrationPage({
-    @required this.importer,
+    required this.importer,
     this.onNext,
-  }) : assert(importer != null);
+  });
 
   @override
   _MigrationPageState createState() => _MigrationPageState();

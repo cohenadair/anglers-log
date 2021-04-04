@@ -10,18 +10,15 @@ import 'package:mobile/widgets/list_item.dart';
 import 'package:mobile/widgets/text.dart';
 import 'package:mockito/mockito.dart';
 
-import '../mock_app_manager.dart';
+import '../mocks/stubbed_app_manager.dart';
 import '../test_utils.dart';
 
 void main() {
-  MockAppManager appManager;
+  late StubbedAppManager appManager;
 
   setUp(() {
-    appManager = MockAppManager(
-      mockCustomEntityManager: true,
-    );
-
-    when(appManager.mockCustomEntityManager.list()).thenReturn([]);
+    appManager = StubbedAppManager();
+    when(appManager.customEntityManager.list()).thenReturn([]);
   });
 
   testWidgets("Note shows when there are no custom values", (tester) async {
@@ -37,8 +34,7 @@ void main() {
       ..id = randomId()
       ..name = "Custom Field 1"
       ..type = CustomEntity_Type.TEXT;
-    when(appManager.mockCustomEntityManager.entity(any))
-        .thenReturn(customEntity);
+    when(appManager.customEntityManager.entity(any)).thenReturn(customEntity);
 
     await tester.pumpWidget(Testable(
       (_) => EditableFormPage(
@@ -54,7 +50,7 @@ void main() {
 
   testWidgets("CustomEntityValue that doesn't exist in fields is still added",
       (tester) async {
-    when(appManager.mockCustomEntityManager.entity(any)).thenReturn(
+    when(appManager.customEntityManager.entity(any)).thenReturn(
       CustomEntity()
         ..id = randomId()
         ..name = "Custom Field 1"
@@ -203,11 +199,10 @@ void main() {
       ..id = randomId()
       ..name = "Custom Field 1"
       ..type = CustomEntity_Type.TEXT;
-    when(appManager.mockCustomEntityManager.list()).thenReturn([
+    when(appManager.customEntityManager.list()).thenReturn([
       customEntity,
     ]);
-    when(appManager.mockCustomEntityManager.entity(any))
-        .thenReturn(customEntity);
+    when(appManager.customEntityManager.entity(any)).thenReturn(customEntity);
 
     var called = false;
     await tester.pumpWidget(Testable(
@@ -235,8 +230,8 @@ void main() {
   });
 
   testWidgets("Callback invoked with correct values", (tester) async {
-    Map<Id, dynamic> onSaveMap;
-    when(appManager.mockCustomEntityManager.entity(any)).thenReturn(
+    Map<Id, dynamic>? onSaveMap;
+    when(appManager.customEntityManager.entity(any)).thenReturn(
       CustomEntity()
         ..id = randomId()
         ..name = "Custom Field 1"
@@ -265,8 +260,8 @@ void main() {
     await tapAndSettle(tester, find.text("SAVE"));
 
     expect(onSaveMap, isNotNull);
-    expect(onSaveMap.values.first is String, isTrue);
-    expect(onSaveMap.values.first, "Test 2");
+    expect(onSaveMap!.values.first is String, isTrue);
+    expect(onSaveMap!.values.first, "Test 2");
   });
 
   testWidgets("Field descriptions are rendered", (tester) async {
@@ -280,10 +275,8 @@ void main() {
       ..name = "Custom Field 2"
       ..type = CustomEntity_Type.TEXT;
 
-    when(appManager.mockCustomEntityManager.entity(custom1.id))
-        .thenReturn(custom1);
-    when(appManager.mockCustomEntityManager.entity(custom2.id))
-        .thenReturn(custom2);
+    when(appManager.customEntityManager.entity(custom1.id)).thenReturn(custom1);
+    when(appManager.customEntityManager.entity(custom2.id)).thenReturn(custom2);
 
     var id1 = randomId();
     var id2 = randomId();

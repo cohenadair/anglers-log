@@ -10,21 +10,22 @@ const _channelName = "com.cohenadair.anglerslog/migration";
 enum LegacyJsonErrorCode {
   invalidJson,
   platformException,
+  missingPluginException,
   missingData,
 }
 
 class LegacyJsonResult {
   /// The path to the old database file. Non-null if [error] is empty.
-  final String databasePath;
+  final String? databasePath;
 
   /// The path to the old images directory. Non-null if [error] is empty.
-  final String imagesPath;
+  final String? imagesPath;
 
   /// The legacy JSON. Non-null if [error] is empty.
-  final Map<String, dynamic> json;
+  final Map<String, dynamic>? json;
 
-  final LegacyJsonErrorCode errorCode;
-  final String errorDescription;
+  final LegacyJsonErrorCode? errorCode;
+  final String? errorDescription;
 
   LegacyJsonResult({
     this.databasePath,
@@ -47,7 +48,7 @@ class LegacyJsonResult {
       "}";
 }
 
-Future<LegacyJsonResult> legacyJson(ServicesWrapper servicesWrapper) async {
+Future<LegacyJsonResult?> legacyJson(ServicesWrapper servicesWrapper) async {
   var name = "legacyJson";
 
   try {
@@ -57,8 +58,8 @@ Future<LegacyJsonResult> legacyJson(ServicesWrapper servicesWrapper) async {
     if (result == null) {
       return null;
     } else {
-      Map<String, dynamic> json;
-      LegacyJsonErrorCode errorCode;
+      Map<String, dynamic>? json;
+      LegacyJsonErrorCode? errorCode;
 
       if (isEmpty(result["db"]) ||
           isEmpty(result["img"]) ||
@@ -83,6 +84,11 @@ Future<LegacyJsonResult> legacyJson(ServicesWrapper servicesWrapper) async {
   } on PlatformException catch (e) {
     return LegacyJsonResult(
       errorCode: LegacyJsonErrorCode.platformException,
+      errorDescription: e.message,
+    );
+  } on MissingPluginException catch (e) {
+    return LegacyJsonResult(
+      errorCode: LegacyJsonErrorCode.missingPluginException,
       errorDescription: e.message,
     );
   }

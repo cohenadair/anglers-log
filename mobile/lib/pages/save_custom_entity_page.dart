@@ -19,17 +19,17 @@ import 'form_page.dart';
 /// A input page for users to create custom fields to be used elsewhere in the
 /// app. This form is immutable.
 class SaveCustomEntityPage extends StatefulWidget {
-  final CustomEntity oldEntity;
-  final void Function(CustomEntity) onSave;
+  final CustomEntity? oldEntity;
+  final void Function(CustomEntity)? onSave;
 
   SaveCustomEntityPage({
     this.onSave,
   }) : oldEntity = null;
 
   SaveCustomEntityPage.edit(
-    this.oldEntity, {
+    CustomEntity this.oldEntity, {
     this.onSave,
-  }) : assert(oldEntity != null);
+  });
 
   @override
   _SaveCustomEntityPageState createState() => _SaveCustomEntityPageState();
@@ -42,46 +42,46 @@ class _SaveCustomEntityPageState extends State<SaveCustomEntityPage> {
 
   final _log = Log("SaveCustomEntityPage");
 
-  Map<Id, InputController> _inputOptions;
+  final Map<Id, InputController> _inputOptions = {};
 
   CustomEntityManager get _customEntityManager =>
       CustomEntityManager.of(context);
 
   TextInputController get _nameController =>
-      _inputOptions[_idName] as TextInputController;
+      _inputOptions[_idName]! as TextInputController;
 
   TextInputController get _descriptionController =>
-      _inputOptions[_idDescription] as TextInputController;
+      _inputOptions[_idDescription]! as TextInputController;
 
   InputController<CustomEntity_Type> get _dataTypeController =>
-      _inputOptions[_idType] as InputController<CustomEntity_Type>;
+      _inputOptions[_idType]! as InputController<CustomEntity_Type>;
 
-  CustomEntity get _oldEntity => widget.oldEntity;
+  CustomEntity? get _oldEntity => widget.oldEntity;
   bool get _editing => _oldEntity != null;
 
   @override
   void initState() {
     super.initState();
 
-    _inputOptions = {
-      _idName: TextInputController(
-        validator: NameValidator(
-          nameExistsMessage: (context) =>
-              Strings.of(context).saveCustomEntityPageNameExists,
-          nameExists: _customEntityManager.nameExists,
-          oldName: _oldEntity?.name,
-        ),
+    _inputOptions[_idName] = TextInputController(
+      validator: NameValidator(
+        nameExistsMessage: (context) =>
+            Strings.of(context).saveCustomEntityPageNameExists,
+        nameExists: _customEntityManager.nameExists,
+        oldName: _oldEntity?.name,
       ),
-      _idDescription: TextInputController(),
-      _idType: InputController<CustomEntity_Type>(
-        value: CustomEntity_Type.NUMBER,
-      ),
-    };
+    );
+
+    _inputOptions[_idDescription] = TextInputController();
+
+    _inputOptions[_idType] = InputController<CustomEntity_Type>(
+      value: CustomEntity_Type.NUMBER,
+    );
 
     if (_editing) {
-      _nameController.value = _oldEntity.name;
-      _descriptionController.value = _oldEntity.description;
-      _dataTypeController.value = _oldEntity.type;
+      _nameController.value = _oldEntity!.name;
+      _descriptionController.value = _oldEntity!.description;
+      _dataTypeController.value = _oldEntity!.type;
     }
   }
 
@@ -91,12 +91,8 @@ class _SaveCustomEntityPageState extends State<SaveCustomEntityPage> {
       title: _editing
           ? Text(Strings.of(context).saveCustomEntityPageEditTitle)
           : Text(Strings.of(context).saveCustomEntityPageNewTitle),
-      fieldBuilder: (context) {
-        return Map.fromIterable(
-          _inputOptions.keys,
-          key: (item) => item,
-          value: (item) => _inputField(context, item),
-        );
+      fieldBuilder: (context) => <Id, Widget>{
+        for (var id in _inputOptions.keys) id: _inputField(context, id)
       },
       onSave: _save,
       isInputValid: _nameController.valid(context),
@@ -120,7 +116,7 @@ class _SaveCustomEntityPageState extends State<SaveCustomEntityPage> {
     } else if (id == _idType) {
       return RadioInput(
         initialSelectedIndex:
-            CustomEntity_Type.values.indexOf(_dataTypeController.value),
+            CustomEntity_Type.values.indexOf(_dataTypeController.value!),
         optionCount: CustomEntity_Type.values.length,
         optionBuilder: (context, i) =>
             inputTypeLocalizedString(context, CustomEntity_Type.values[i]),
@@ -137,11 +133,11 @@ class _SaveCustomEntityPageState extends State<SaveCustomEntityPage> {
   FutureOr<bool> _save(BuildContext _) {
     var customEntity = CustomEntity()
       ..id = _oldEntity?.id ?? randomId()
-      ..name = _nameController.value
-      ..type = _dataTypeController.value;
+      ..name = _nameController.value!
+      ..type = _dataTypeController.value!;
 
     if (isNotEmpty(_descriptionController.value)) {
-      customEntity.description = _descriptionController.value;
+      customEntity.description = _descriptionController.value!;
     }
 
     _customEntityManager.addOrUpdate(customEntity);

@@ -6,7 +6,8 @@ import '../widgets/checkbox_input.dart';
 import '../widgets/input_controller.dart';
 import '../widgets/text_input.dart';
 
-/// Returns a user-visible label for the given [InputType].
+/// Returns a user-visible label for the given [InputType]. Throws an
+/// [ArgumentError] if [fieldType] is invalid.
 String inputTypeLocalizedString(
     BuildContext context, CustomEntity_Type fieldType) {
   switch (fieldType) {
@@ -18,12 +19,12 @@ String inputTypeLocalizedString(
       return Strings.of(context).fieldTypeText;
   }
 
-  // To remove static warning.
-  return null;
+  throw ArgumentError(
+      "fieldType $fieldType not handled in inputTypeLocalizedString");
 }
 
 /// Returns the default object used for value tracking for the given
-/// [InputType].
+/// [InputType]. Throws an [ArgumentError] if [fieldType] is invalid.
 InputController inputTypeController(CustomEntity_Type fieldType) {
   switch (fieldType) {
     case CustomEntity_Type.NUMBER:
@@ -34,47 +35,49 @@ InputController inputTypeController(CustomEntity_Type fieldType) {
       return TextInputController();
   }
 
-  // To remove static warning.
-  return null;
+  throw ArgumentError(
+      "fieldType $fieldType not handled in inputTypeController");
 }
 
-/// Returns a widget based on the given [InputType].
-/// @param controller The object that controls the value of the [CustomField].
-///        Could be a [TextEditingController], or a primitive data type.
+/// Returns a widget based on the given [InputType]. Throws an [ArgumentError]
+/// if [type] is invalid.
 Widget inputTypeWidget(
   BuildContext context, {
-  CustomEntity_Type type,
-  String label,
-  InputController controller,
-  Function(bool) onCheckboxChanged,
+  required CustomEntity_Type type,
+  required String label,
+  InputController? controller,
+  Function(bool)? onCheckboxChanged,
   bool enabled = true,
 }) {
   switch (type) {
     case CustomEntity_Type.NUMBER:
+      assert(controller == null || controller is NumberInputController);
       return TextInput.number(
         context,
         label: label,
         initialValue: null,
-        controller: controller,
+        controller: controller as NumberInputController?,
         enabled: enabled,
       );
     case CustomEntity_Type.BOOL:
       return CheckboxInput(
         label: label,
-        value: controller.value is bool ? controller.value : false,
+        value: controller != null && controller.value is bool
+            ? controller.value! as bool
+            : false,
         onChanged: onCheckboxChanged,
         enabled: enabled,
       );
     case CustomEntity_Type.TEXT:
+      assert(controller == null || controller is TextInputController);
       return TextInput(
         capitalization: TextCapitalization.sentences,
         label: label,
         initialValue: null,
-        controller: controller,
+        controller: controller as TextInputController?,
         enabled: enabled,
       );
   }
 
-  // To remove static warning.
-  return null;
+  throw ArgumentError("type $type not handled in inputTypeWidget");
 }

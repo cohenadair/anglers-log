@@ -4,36 +4,27 @@ import 'package:mobile/model/gen/anglerslog.pb.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mockito/mockito.dart';
 
-import 'mock_app_manager.dart';
+import 'mocks/mocks.mocks.dart';
+import 'mocks/stubbed_app_manager.dart';
 import 'test_utils.dart';
 
 void main() {
-  MockAppManager appManager;
-  MockBaitManager baitManager;
-  MockLocalDatabaseManager dataManager;
+  late StubbedAppManager appManager;
+  late MockBaitManager baitManager;
 
-  BaitCategoryManager baitCategoryManager;
+  late BaitCategoryManager baitCategoryManager;
 
   setUp(() {
-    appManager = MockAppManager(
-      mockAuthManager: true,
-      mockBaitManager: true,
-      mockLocalDatabaseManager: true,
-      mockSubscriptionManager: true,
-    );
+    appManager = StubbedAppManager();
 
-    when(appManager.mockAuthManager.stream).thenAnswer((_) => MockStream());
+    when(appManager.authManager.stream).thenAnswer((_) => Stream.empty());
 
-    baitManager = appManager.mockBaitManager;
-    when(appManager.baitManager).thenReturn(baitManager);
+    baitManager = appManager.baitManager;
 
-    dataManager = appManager.mockLocalDatabaseManager;
-    when(appManager.localDatabaseManager).thenReturn(dataManager);
+    when(appManager.subscriptionManager.stream)
+        .thenAnswer((_) => Stream.empty());
 
-    when(appManager.mockSubscriptionManager.stream)
-        .thenAnswer((_) => MockStream());
-
-    baitCategoryManager = BaitCategoryManager(appManager);
+    baitCategoryManager = BaitCategoryManager(appManager.app);
   });
 
   test("Number of baits", () {
@@ -76,21 +67,6 @@ void main() {
   });
 
   group("deleteMessage", () {
-    testWidgets("Invalid input", (tester) async {
-      expect(
-        () => baitCategoryManager.deleteMessage(
-            null,
-            BaitCategory()
-              ..id = randomId()
-              ..name = "Live"),
-        throwsAssertionError,
-      );
-
-      var context = await buildContext(tester);
-      expect(() => baitCategoryManager.deleteMessage(context, null),
-          throwsAssertionError);
-    });
-
     testWidgets("Singular", (tester) async {
       var category = BaitCategory()
         ..id = randomId()

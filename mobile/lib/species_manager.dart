@@ -40,9 +40,6 @@ class SpeciesManager extends NamedEntityManager<Species> {
   }
 
   int numberOfCatches(Id speciesId) {
-    if (speciesId == null) {
-      return 0;
-    }
     var result = 0;
     _catchManager.list().forEach((cat) {
       if (speciesId == cat.speciesId) {

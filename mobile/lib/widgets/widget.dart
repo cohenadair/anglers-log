@@ -15,7 +15,7 @@ class Empty extends StatelessWidget {
 }
 
 class MinDivider extends StatelessWidget {
-  final Color color;
+  final Color? color;
 
   MinDivider({this.color});
 
@@ -35,7 +35,7 @@ class HeadingDivider extends StatelessWidget {
   HeadingDivider(
     this.text, {
     this.showDivider = true,
-  }) : assert(showDivider != null);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -66,15 +66,15 @@ class HeadingDivider extends StatelessWidget {
 class HeadingNoteDivider extends StatelessWidget {
   final bool hideNote;
   final String title;
-  final String note;
-  final IconData noteIcon;
-  final EdgeInsets padding;
+  final String? note;
+  final IconData? noteIcon;
+  final EdgeInsets? padding;
 
   HeadingNoteDivider({
     this.hideNote = true,
-    @required this.title,
-    @required this.note,
-    @required this.noteIcon,
+    required this.title,
+    required this.note,
+    required this.noteIcon,
     this.padding,
   })  : assert(isNotEmpty(title)),
         assert(hideNote || (isNotEmpty(note) && noteIcon != null));
@@ -104,7 +104,7 @@ class HeadingNoteDivider extends StatelessWidget {
                       top: false,
                       bottom: false,
                       child: IconLabel(
-                        text: note,
+                        text: note!,
                         icon: Icon(
                           noteIcon,
                           color: Colors.black,
@@ -124,15 +124,14 @@ class Loading extends StatelessWidget {
   static const _strokeWidth = 2.0;
 
   final EdgeInsets padding;
-  final String label;
+  final String? label;
   final bool isCentered;
 
   Loading({
     this.padding = insetsZero,
     this.label,
     this.isCentered = true,
-  })  : assert(padding != null),
-        assert(isCentered != null);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -152,7 +151,7 @@ class Loading extends StatelessWidget {
           children: [
             indicator,
             VerticalSpace(paddingWidget),
-            isEmpty(label) ? Empty() : Text(label),
+            isEmpty(label) ? Empty() : Text(label!),
           ],
         ),
       );
@@ -191,15 +190,15 @@ class SwipeChip extends StatelessWidget {
 class EnabledOpacity extends StatelessWidget {
   static const double _disabledOpacity = 0.5;
 
-  final Key key;
+  final Key? key;
   final bool enabled;
   final Widget child;
 
   EnabledOpacity({
-    @required this.child,
+    required this.child,
     this.key,
     this.enabled = true,
-  }) : assert(child != null);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -233,15 +232,15 @@ class DropdownIcon extends StatelessWidget {
 
 /// A help popup that fades in and out of view.
 class HelpTooltip extends StatelessWidget {
-  final Widget child;
+  final Widget? child;
   final bool showing;
   final EdgeInsets margin;
 
   HelpTooltip({
-    @required this.child,
+    required this.child,
     this.showing = false,
     this.margin = insetsDefault,
-  }) : assert(child != null);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -269,7 +268,7 @@ class AnimatedVisibility extends StatelessWidget {
 
   AnimatedVisibility({
     this.visible = true,
-    @required this.child,
+    required this.child,
   });
 
   @override
@@ -286,11 +285,11 @@ class AnimatedVisibility extends StatelessWidget {
 /// [Future] doesn't have any data.
 class EmptyFutureBuilder<T> extends StatelessWidget {
   final Future<T> future;
-  final Widget Function(BuildContext, T) builder;
+  final Widget Function(BuildContext, T?) builder;
 
   EmptyFutureBuilder({
-    @required this.future,
-    @required this.builder,
+    required this.future,
+    required this.builder,
   });
 
   @override
@@ -330,11 +329,10 @@ class AppBarDropdownItem<T> extends DropdownMenuItem<T> {
   final T value;
 
   AppBarDropdownItem({
-    @required BuildContext context,
-    @required this.text,
-    @required this.value,
-  })  : assert(isNotEmpty(text)),
-        assert(value != null),
+    required BuildContext context,
+    required this.text,
+    required this.value,
+  })   : assert(isNotEmpty(text)),
         super(
           child: Text(
             text,
@@ -380,7 +378,7 @@ class HorizontalSafeArea extends StatelessWidget {
   final Widget child;
 
   HorizontalSafeArea({
-    this.child,
+    required this.child,
   });
 
   @override
@@ -397,12 +395,12 @@ class WatermarkLogo extends StatelessWidget {
   static final _size = 150.0;
 
   final IconData icon;
-  final Color color;
+  final Color? color;
 
   WatermarkLogo({
-    @required this.icon,
+    required this.icon,
     this.color,
-  }) : assert(icon != null);
+  });
 
   @override
   Widget build(BuildContext context) {

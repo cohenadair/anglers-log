@@ -5,8 +5,8 @@ import 'package:mobile/named_entity_manager.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mockito/mockito.dart';
 
-import 'mock_app_manager.dart';
-import 'test_utils.dart';
+import 'mocks/mocks.mocks.dart';
+import 'mocks/stubbed_app_manager.dart';
 
 class TestNamedEntityManager extends NamedEntityManager<Species> {
   TestNamedEntityManager(AppManager app) : super(app);
@@ -25,30 +25,24 @@ class TestNamedEntityManager extends NamedEntityManager<Species> {
 }
 
 void main() {
-  MockAppManager appManager;
-  MockLocalDatabaseManager dataManager;
-  TestNamedEntityManager entityManager;
+  late StubbedAppManager appManager;
+  late MockLocalDatabaseManager dataManager;
+  late TestNamedEntityManager entityManager;
 
   setUp(() async {
-    appManager = MockAppManager(
-        mockAuthManager: true,
-        mockLocalDatabaseManager: true,
-        mockSubscriptionManager: true);
+    appManager = StubbedAppManager();
 
-    var authStream = MockStream<void>();
-    when(authStream.listen(any)).thenReturn(null);
-    when(appManager.mockAuthManager.stream).thenAnswer((_) => authStream);
+    when(appManager.authManager.stream).thenAnswer((_) => Stream.empty());
 
-    dataManager = appManager.mockLocalDatabaseManager;
-    when(appManager.localDatabaseManager).thenReturn(dataManager);
+    dataManager = appManager.localDatabaseManager;
     when(dataManager.insertOrReplace(any, any))
         .thenAnswer((_) => Future.value(true));
 
-    when(appManager.mockSubscriptionManager.stream)
-        .thenAnswer((_) => MockStream<void>());
-    when(appManager.mockSubscriptionManager.isPro).thenReturn(false);
+    when(appManager.subscriptionManager.stream)
+        .thenAnswer((_) => Stream.empty());
+    when(appManager.subscriptionManager.isPro).thenReturn(false);
 
-    entityManager = TestNamedEntityManager(appManager);
+    entityManager = TestNamedEntityManager(appManager.app);
   });
 
   test("Entity named and name exists", () async {
@@ -62,7 +56,6 @@ void main() {
       ..id = randomId()
       ..name = "Catfish");
 
-    expect(entityManager.nameExists(null), false);
     expect(entityManager.nameExists(""), false);
     expect(entityManager.nameExists("bass"), true);
     expect(entityManager.nameExists("  Catfish"), true);

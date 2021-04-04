@@ -47,7 +47,7 @@ class AuthManager {
 
   final AppManager _appManager;
 
-  String _userId;
+  String? _userId;
   var _state = AuthState.unknown;
 
   AuthManager(this._appManager);
@@ -63,9 +63,9 @@ class AuthManager {
 
   AuthState get state => _state;
 
-  String get userId => _userId;
+  String? get userId => _userId;
 
-  String get userEmail => _firebaseAuth.currentUser?.email;
+  String? get userEmail => _firebaseAuth.currentUser?.email;
 
   String get firestoreDocPath => "$_collectionUser/$_userId";
 
@@ -82,7 +82,6 @@ class AuthManager {
         _setState(AuthState.loggedOut);
       }
     });
-
     return Future.value();
   }
 
@@ -90,7 +89,7 @@ class AuthManager {
     return _firebaseAuth.signOut();
   }
 
-  Future<AuthError> login(String email, String password) async {
+  Future<AuthError?> login(String email, String password) async {
     return _loginOrSignUp(
       () => _firebaseAuth.signInWithEmailAndPassword(
         email: email,
@@ -99,7 +98,7 @@ class AuthManager {
     );
   }
 
-  Future<AuthError> signUp(String email, String password) async {
+  Future<AuthError?> signUp(String email, String password) async {
     return _loginOrSignUp(
       () => _firebaseAuth.createUserWithEmailAndPassword(
         email: email,
@@ -111,7 +110,7 @@ class AuthManager {
   Future<void> sendResetPasswordEmail(String email) =>
       _firebaseAuth.sendPasswordResetEmail(email);
 
-  Future<AuthError> _loginOrSignUp(
+  Future<AuthError?> _loginOrSignUp(
       Future<UserCredential> Function() authFunction) async {
     if (!(await _io.isConnected())) {
       return AuthError.noConnection;
@@ -127,7 +126,7 @@ class AuthManager {
   }
 
   bool _isUserValid(UserCredential credential) {
-    return !isEmpty(credential?.user?.uid);
+    return !isEmpty(credential.user?.uid);
   }
 
   AuthError _firebaseExceptionToAuthError(String firebaseCode) {

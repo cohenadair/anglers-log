@@ -4,11 +4,11 @@ import 'package:mobile/pages/custom_entity_list_page.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mockito/mockito.dart';
 
-import '../mock_app_manager.dart';
+import '../mocks/stubbed_app_manager.dart';
 import '../test_utils.dart';
 
 void main() {
-  MockAppManager appManager;
+  late StubbedAppManager appManager;
 
   var entities = <CustomEntity>[
     CustomEntity()
@@ -27,13 +27,9 @@ void main() {
   ];
 
   setUp(() {
-    appManager = MockAppManager(
-      mockBaitManager: true,
-      mockCatchManager: true,
-      mockCustomEntityManager: true,
-    );
+    appManager = StubbedAppManager();
 
-    when(appManager.mockCustomEntityManager
+    when(appManager.customEntityManager
             .listSortedByName(filter: anyNamed("filter")))
         .thenReturn(entities);
   });

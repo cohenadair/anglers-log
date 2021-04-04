@@ -40,8 +40,8 @@ class ImageManager {
 
   final AppManager _appManager;
 
-  String _imagePath;
-  String _cachePath;
+  late String _imagePath;
+  late String _cachePath;
 
   AuthManager get _authManager => _appManager.authManager;
 
@@ -89,10 +89,10 @@ class ImageManager {
   /// Returns encoded image data with the given [fileName] at the given [size].
   /// If an image of [size] does not exist in the cache, the full image is
   /// returned.
-  Future<Uint8List> image(
+  Future<Uint8List?> image(
     BuildContext context, {
-    @required String fileName,
-    double size,
+    required String fileName,
+    double? size,
   }) async {
     if (isEmpty(fileName)) {
       return null;
@@ -138,10 +138,10 @@ class ImageManager {
   /// is returned.
   Future<List<Uint8List>> images(
     BuildContext context, {
-    @required List<String> imageNames,
-    double size,
+    required List<String> imageNames,
+    double? size,
   }) async {
-    if (imageNames == null || imageNames.isEmpty) {
+    if (imageNames.isEmpty) {
       return [];
     }
 
@@ -170,15 +170,15 @@ class ImageManager {
     _thumbnails.putIfAbsent(fileName, () => _CachedThumbnail(fileName));
   }
 
-  Future<void> _upload(File image) async {
+  Future<void> _upload(FileSystemEntity image) async {
     if (!_subscriptionManager.isPro) {
       _log.d("User isn't pro, skipping image upload");
       return;
     }
 
-    var imageName = basename(image?.path);
+    var imageName = basename(image.path);
 
-    if (image == null || !image.existsSync()) {
+    if (!image.existsSync()) {
       _log.d("Can't upload file that doesn't exist: $imageName");
       return;
     }
@@ -188,7 +188,7 @@ class ImageManager {
 
       await _firebaseStorageWrapper
           .ref(_firebaseStoragePath(imageName))
-          .putFile(image);
+          .putFile(image as File);
 
       _log.d("Upload complete");
     } on FirebaseException catch (e) {
@@ -211,20 +211,13 @@ class ImageManager {
     List<File> files, {
     bool compress = true,
   }) async {
-    if (files == null || files.isEmpty) {
+    if (files.isEmpty) {
       return [];
     }
 
     var result = <String>[];
 
     for (var file in files) {
-      // This can happen if an entity is edited, but the images associated with
-      // that entity didn't change. In these cases, there are no "files" to
-      // copy.
-      if (file == null) {
-        continue;
-      }
-
       // If the file already exists in the app's sandbox, don't copy it again.
       if (file.path.contains(_imagePath) && await file.exists()) {
         _log.d("File exists, nothing to do");
@@ -266,8 +259,8 @@ class ImageManager {
 
   /// Returns a Dart [ui.Image] object with the given [fileName] and [size].
   /// Returns null if the image doesn't exist.
-  Future<ui.Image> dartImage(
-      BuildContext context, String fileName, double size) async {
+  Future<ui.Image?> dartImage(
+      BuildContext context, String fileName, double? size) async {
     var bytes = await image(
       context,
       fileName: fileName,
@@ -282,17 +275,19 @@ class ImageManager {
   }
 
   Future<Uint8List> _compress(
-      BuildContext context, File source, int quality, double size) async {
+      BuildContext? context, File source, int quality, double? size) async {
     var intBytes = <int>[];
 
     if (await source.exists()) {
-      double pixels;
+      double? pixels;
       if (size != null) {
-        var pixelRatio = MediaQuery.of(context).devicePixelRatio;
-        pixels = size == null ? null : pixelRatio * size;
+        pixels = MediaQuery.of(context!).devicePixelRatio * size;
       }
-      intBytes = await _imageCompressWrapper.compress(
+      var bytes = await _imageCompressWrapper.compress(
           source.path, quality, pixels?.round());
+      if (bytes != null) {
+        intBytes = bytes;
+      }
     } else {
       _log.e("Attempting to compress file that doesn't exist: "
           "${source.path}");
@@ -307,12 +302,13 @@ class ImageManager {
   /// If the image doesn't exist in the memory or file system cache,
   /// [_delegate.compress] is invoked and the result is saved to the file system
   /// and added to the memory cache.
-  Future<Uint8List> _thumbnail(
-      BuildContext context, String fileName, double size) async {
-    if (isEmpty(fileName) || size == null) {
+  Future<Uint8List?> _thumbnail(
+      BuildContext context, String name, double? size) async {
+    if (isEmpty(name) || size == null) {
       return null;
     }
 
+    var fileName = name;
     var cachedImage = _thumbnails[fileName];
 
     // If image exists in memory cache, return it.
@@ -446,6 +442,7 @@ class ImageManager {
 
     _ioWrapper.directory(_imagePath).list().forEach((file) async {
       var fileName = basename(file.path);
+      print(1);
 
       // Firebase storage doesn't have an "exists" method, so getMetadata is
       // used, which will throw an exception if the file doesn't exist.
@@ -474,10 +471,10 @@ class _CachedThumbnail {
     _thumbnails[size] = bytes;
   }
 
-  Uint8List thumbnail(double size) => _thumbnails[size];
+  Uint8List? thumbnail(double size) => _thumbnails[size];
 
-  int get numberOfBytes => _thumbnails.values.fold<int>(
-      0, (previousValue, bytes) => previousValue += bytes?.length ?? 0);
+  int get numberOfBytes => _thumbnails.values
+      .fold<int>(0, (previousValue, bytes) => previousValue += bytes.length);
 
   int get numberOfImages => _thumbnails.length;
 }

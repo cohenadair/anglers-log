@@ -31,15 +31,15 @@ class ManageableListPage<T> extends StatefulWidget {
   final ManageableListPageItemManager<T> itemManager;
 
   /// See [SliverAppBar.title].
-  final Widget Function(List<T>) titleBuilder;
+  final Widget Function(List<T>)? titleBuilder;
 
   /// Shown when [pickerSettings] is not null.
   ///
   /// See [SliverAppBar.title].
-  final Widget Function(List<T>) pickerTitleBuilder;
+  final Widget Function(List<T>)? pickerTitleBuilder;
 
   /// A custom widget to show as the leading widget in a [SliverAppBar].
-  final Widget appBarLeading;
+  final Widget? appBarLeading;
 
   /// If true, adds additional padding between search icon and search text so
   /// the search text is horizontally aligned with an item's main text.
@@ -54,17 +54,17 @@ class ManageableListPage<T> extends StatefulWidget {
   final bool forceCenterTitle;
 
   /// If non-null, the [ManageableListPage] acts like a picker.
-  final ManageableListPagePickerSettings<T> pickerSettings;
+  final ManageableListPagePickerSettings<T>? pickerSettings;
 
   /// If non-null, the [ManageableListPage] includes a [SearchBar] in the
   /// [AppBar].
   ///
   /// See [ManageableListPageSearchDelegate].
-  final ManageableListPageSearchDelegate searchDelegate;
+  final ManageableListPageSearchDelegate? searchDelegate;
 
   ManageableListPage({
-    @required this.itemManager,
-    @required this.itemBuilder,
+    required this.itemManager,
+    required this.itemBuilder,
     this.titleBuilder,
     this.pickerTitleBuilder,
     this.appBarLeading,
@@ -72,8 +72,7 @@ class ManageableListPage<T> extends StatefulWidget {
     this.forceCenterTitle = false,
     this.pickerSettings,
     this.searchDelegate,
-  })  : assert(itemBuilder != null),
-        assert(itemManager != null);
+  });
 
   @override
   _ManageableListPageState<T> createState() => _ManageableListPageState<T>();
@@ -92,13 +91,13 @@ class _ManageableListPageState<T> extends State<ManageableListPage<T>> {
 
   GlobalKey<SliverAnimatedListState> _animatedListKey =
       GlobalKey<SliverAnimatedListState>();
-  _AnimatedListModel<T> _animatedList;
+  late _AnimatedListModel<T> _animatedList;
 
-  SearchTimer _searchTimer;
+  late SearchTimer _searchTimer;
   bool _isEditing = false;
   Set<T> _selectedValues = {};
   _ViewingState _viewingState = _ViewingState.viewing;
-  String _searchText;
+  String? _searchText;
 
   bool get _isViewing => _viewingState == _ViewingState.viewing;
 
@@ -119,7 +118,7 @@ class _ManageableListPageState<T> extends State<ManageableListPage<T>> {
   /// If picking an option isn't required, show a "None" option.
   bool get _showClearOption =>
       _isPicking &&
-      !widget.pickerSettings.isRequired &&
+      !widget.pickerSettings!.isRequired &&
       _animatedList.isNotEmpty;
 
   @override
@@ -127,10 +126,10 @@ class _ManageableListPageState<T> extends State<ManageableListPage<T>> {
     super.initState();
 
     if (widget.pickerSettings != null) {
-      _viewingState = widget.pickerSettings.isMulti
+      _viewingState = widget.pickerSettings!.isMulti
           ? _ViewingState.pickingMulti
           : _ViewingState.pickingSingle;
-      _selectedValues = Set.of(widget.pickerSettings.initialValues);
+      _selectedValues = Set.of(widget.pickerSettings!.initialValues);
     }
 
     _searchTimer = SearchTimer(() => setState(_syncAnimatedList));
@@ -143,7 +142,7 @@ class _ManageableListPageState<T> extends State<ManageableListPage<T>> {
   }
 
   Widget build(BuildContext context) {
-    if (widget.itemManager?.listenerManagers == null) {
+    if (widget.itemManager.listenerManagers.isEmpty) {
       return _buildScaffold(context);
     }
 
@@ -169,10 +168,10 @@ class _ManageableListPageState<T> extends State<ManageableListPage<T>> {
         (widget.searchDelegate == null ||
             (isEmpty(_searchText) && _animatedList.isEmpty))) {
       emptyWidget = EmptyListPlaceholder.static(
-        title: widget.itemManager.emptyItemsSettings.title,
-        description: widget.itemManager.emptyItemsSettings.description,
+        title: widget.itemManager.emptyItemsSettings!.title,
+        description: widget.itemManager.emptyItemsSettings!.description,
         descriptionIcon: _isAddable ? _iconAdd : null,
-        icon: widget.itemManager.emptyItemsSettings.icon,
+        icon: widget.itemManager.emptyItemsSettings!.icon,
       );
     } else if (isNotEmpty(_searchText)) {
       emptyWidget = EmptyListPlaceholder.noSearchResults(
@@ -243,7 +242,7 @@ class _ManageableListPageState<T> extends State<ManageableListPage<T>> {
     );
   }
 
-  Widget _buildSearchBar() {
+  Widget? _buildSearchBar() {
     if (!_hasSearch) {
       return null;
     }
@@ -259,7 +258,7 @@ class _ManageableListPageState<T> extends State<ManageableListPage<T>> {
           alignment: Alignment.bottomCenter,
           child: SearchBar(
             text: _searchText,
-            hint: widget.searchDelegate.hint,
+            hint: widget.searchDelegate!.hint,
             leadingPadding:
                 widget.itemsHaveThumbnail ? _thumbSearchTextOffset : null,
             elevated: false,
@@ -280,13 +279,13 @@ class _ManageableListPageState<T> extends State<ManageableListPage<T>> {
       if (_isEditing) {
         result.add(ActionButton.done(
           condensed: _isAddable,
-          onPressed: () => _setEditingUpdateState(isEditing: false),
+          onPressed: () => _setEditingUpdateState(false),
         ));
       } else if (_isEditable) {
         // Only include the edit button if the items can be modified.
         result.add(ActionButton.edit(
           condensed: _isAddable,
-          onPressed: () => _setEditingUpdateState(isEditing: true),
+          onPressed: () => _setEditingUpdateState(true),
         ));
       }
     }
@@ -295,7 +294,7 @@ class _ManageableListPageState<T> extends State<ManageableListPage<T>> {
     if (_isAddable) {
       result.add(IconButton(
         icon: Icon(_iconAdd),
-        onPressed: () => present(context, widget.itemManager.addPageBuilder()),
+        onPressed: () => present(context, widget.itemManager.addPageBuilder!()),
       ));
     }
 
@@ -304,15 +303,15 @@ class _ManageableListPageState<T> extends State<ManageableListPage<T>> {
 
   Widget _buildNoneItem(BuildContext context, List<T> items) {
     var label = Strings.of(context).none;
-    Widget trailing;
-    VoidCallback onTap;
+    Widget? trailing;
+    VoidCallback? onTap;
     if (_isPickingSingle) {
       trailing = _selectedValues.isEmpty ? Icon(_iconCheck) : null;
       onTap = () => _finishPicking({});
     } else if (_isPickingMulti) {
       label = Strings.of(context).all;
       trailing = PaddedCheckbox(
-        checked: widget.pickerSettings.containsAll?.call(_selectedValues) ??
+        checked: widget.pickerSettings!.containsAll?.call(_selectedValues) ??
             _selectedValues.containsAll(items),
         onChanged: (checked) => setState(() {
           if (checked) {
@@ -384,16 +383,17 @@ class _ManageableListPageState<T> extends State<ManageableListPage<T>> {
               }
 
               if (canEdit) {
-                present(context, widget.itemManager.editPageBuilder(itemValue));
+                present(
+                    context, widget.itemManager.editPageBuilder!(itemValue));
               } else if (_isPickingSingle) {
                 _finishPicking({itemValue});
               } else if (widget.itemManager.detailPageBuilder != null) {
-                push(context, widget.itemManager.detailPageBuilder(itemValue));
+                push(context, widget.itemManager.detailPageBuilder!(itemValue));
               }
             },
       onTapDeleteButton: widget.itemManager.onTapDeleteButton == null
           ? null
-          : () => widget.itemManager.onTapDeleteButton(itemValue),
+          : () => widget.itemManager.onTapDeleteButton!(itemValue),
       trailing: trailing,
     );
 
@@ -404,14 +404,14 @@ class _ManageableListPageState<T> extends State<ManageableListPage<T>> {
     );
   }
 
-  void _setEditingUpdateState({bool isEditing}) {
+  void _setEditingUpdateState(bool isEditing) {
     setState(() {
       _isEditing = isEditing;
     });
   }
 
   void _finishPicking(Set<T> pickedValues) {
-    if (widget.pickerSettings.onPicked(context, pickedValues)) {
+    if (widget.pickerSettings!.onPicked(context, pickedValues)) {
       Navigator.of(context).pop();
     }
   }
@@ -446,10 +446,7 @@ class _ManageableListPageState<T> extends State<ManageableListPage<T>> {
   }
 
   void _initAnimatedListIfNeeded() {
-    if (_animatedList != null) {
-      return;
-    }
-
+    _animatedListKey = GlobalKey<SliverAnimatedListState>();
     _animatedList = _AnimatedListModel(
       listKey: _animatedListKey,
       initialItems: widget.itemManager.loadItems(_searchText),
@@ -507,6 +504,10 @@ class _ManageableListPageState<T> extends State<ManageableListPage<T>> {
   }
 }
 
+typedef OnPickedCallback<T> = bool Function(
+    BuildContext context, Set<T> pickedItems);
+typedef PickerContainsAllCallback<T> = bool Function(Set<T> selectedItems);
+
 /// A convenience class for storing the properties related to when a
 /// [ManageableListPage] is being used to pick items from a list.
 class ManageableListPagePickerSettings<T> {
@@ -515,7 +516,7 @@ class ManageableListPagePickerSettings<T> {
   /// and only one item if [isMulti] is false, otherwise includes all items that
   /// were picked. If [isRequired] is false, and "None" is selected,
   /// [pickedItems] is an empty [Set].
-  final bool Function(BuildContext context, Set<T> pickedItems) onPicked;
+  final OnPickedCallback<T> onPicked;
 
   final Set<T> initialValues;
   final bool isMulti;
@@ -531,43 +532,44 @@ class ManageableListPagePickerSettings<T> {
   /// this should only be used when [T] is [dynamic].
   ///
   /// This property only applies when [isMulti] is true.
-  final bool Function(Set<T> selectedItems) containsAll;
+  final PickerContainsAllCallback<T>? containsAll;
 
   ManageableListPagePickerSettings({
-    @required this.onPicked,
-    Set<T> initialValues,
+    required this.onPicked,
+    this.initialValues = const {},
     this.isMulti = true,
     this.isRequired = false,
     this.containsAll,
-  })  : assert(onPicked != null),
-        initialValues = initialValues ?? const {};
+  });
 
   ManageableListPagePickerSettings.single({
-    bool Function(BuildContext, T) onPicked,
-    T initialValue,
+    required bool Function(BuildContext, T?) onPicked,
+    T? initialValue,
     bool isRequired = false,
   }) : this(
           onPicked: (context, items) =>
               onPicked(context, items.isEmpty ? null : items.first),
-          initialValues: initialValue == null ? null : {initialValue},
+          initialValues: initialValue == null ? const {} : {initialValue},
           isMulti: false,
           isRequired: isRequired,
           containsAll: null,
         );
 
   ManageableListPagePickerSettings copyWith({
-    bool Function(BuildContext, Set<T>) onPicked,
-    Set<T> initialValues,
-    bool isMulti,
-    bool isRequired,
-    bool Function(Set<T>) containsAll,
+    OnPickedCallback<T>? onPicked,
+    Set<T>? initialValues,
+    bool? isMulti,
+    bool? isRequired,
+    PickerContainsAllCallback<T>? containsAll,
   }) {
     return ManageableListPagePickerSettings(
-      onPicked: onPicked ?? this.onPicked,
+      onPicked: onPicked as bool Function(BuildContext, Set<dynamic>)? ??
+          this.onPicked as bool Function(BuildContext, Set<dynamic>),
       initialValues: initialValues ?? this.initialValues,
       isMulti: isMulti ?? this.isMulti,
       isRequired: isRequired ?? this.isRequired,
-      containsAll: containsAll ?? this.containsAll,
+      containsAll: containsAll as bool Function(Set<dynamic>)? ??
+          this.containsAll as bool Function(Set<dynamic>)?,
     );
   }
 }
@@ -579,8 +581,8 @@ class ManageableListPageSearchDelegate {
   final String hint;
 
   ManageableListPageSearchDelegate({
-    @required this.hint,
-  }) : assert(isNotEmpty(hint));
+    required this.hint,
+  });
 }
 
 /// A convenient class for storing properties for a single item in a
@@ -598,10 +600,10 @@ class ManageableListPageItemModel {
   final Widget child;
 
   ManageableListPageItemModel({
-    @required this.child,
+    required this.child,
     this.editable = true,
     this.selectable = true,
-  }) : assert(child != null);
+  });
 }
 
 /// A convenient class for storing properties for related to a widget to show
@@ -612,12 +614,10 @@ class ManageableListPageEmptyListSettings {
   final IconData icon;
 
   ManageableListPageEmptyListSettings({
-    @required this.title,
-    @required this.description,
-    @required this.icon,
-  })  : assert(isNotEmpty(title)),
-        assert(isNotEmpty(description)),
-        assert(icon != null);
+    required this.title,
+    required this.description,
+    required this.icon,
+  });
 }
 
 /// A convenience class for storing properties related to adding, deleting, and
@@ -629,10 +629,10 @@ class ManageableListPageItemManager<T> {
   /// Invoked when the widget tree needs to be rebuilt. Required so data is
   /// almost the most up to date from the database. The passed in [String] is
   /// the text in the [SearchBar].
-  final List<T> Function(String) loadItems;
+  final List<T> Function(String?) loadItems;
 
   /// Settings used to populate a widget when [loadItems] returns an empty list.
-  final ManageableListPageEmptyListSettings emptyItemsSettings;
+  final ManageableListPageEmptyListSettings? emptyItemsSettings;
 
   /// The [Widget] to display is a delete confirmation dialog. This should be
   /// some kind of [Text] widget.
@@ -643,11 +643,11 @@ class ManageableListPageItemManager<T> {
   final void Function(BuildContext, T) deleteItem;
 
   /// See [ManageableListItem.onTapDeleteButton].
-  final bool Function(T) onTapDeleteButton;
+  final bool Function(T)? onTapDeleteButton;
 
   /// Invoked when the "Add" button is pressed. The [Widget] returned by this
   /// function is presented in the current navigator.
-  final Widget Function() addPageBuilder;
+  final Widget Function()? addPageBuilder;
 
   /// If non-null, will rebuild the [ManageableListPage] when one
   /// of the [EntityManager] objects is notified of updates. In most cases,
@@ -657,29 +657,26 @@ class ManageableListPageItemManager<T> {
   /// If non-null, is invoked when an item is tapped while not in "editing"
   /// mode. The [Widget] returned by this function is pushed to the current
   /// navigator, and should be a page that shows details of [T].
-  final Widget Function(T) detailPageBuilder;
+  final Widget Function(T)? detailPageBuilder;
 
   /// If non-null, is invoked when an item is tapped while in "editing" mode.
   /// The [Widget] returned by this function is pushed to the current navigator,
   /// and should be a page that allows editing of [T].
   ///
   /// If null, editing is disabled for the [ManageableListPage].
-  final Widget Function(T) editPageBuilder;
+  final Widget Function(T)? editPageBuilder;
 
   ManageableListPageItemManager({
-    @required this.loadItems,
-    @required this.deleteWidget,
-    @required this.deleteItem,
+    required this.loadItems,
+    required this.deleteWidget,
+    required this.deleteItem,
     this.emptyItemsSettings,
     this.addPageBuilder,
-    this.listenerManagers,
+    this.listenerManagers = const [],
     this.editPageBuilder,
     this.detailPageBuilder,
     this.onTapDeleteButton,
-  })  : assert(loadItems != null),
-        assert(deleteWidget != null),
-        assert(deleteItem != null),
-        assert(listenerManagers == null || listenerManagers.isNotEmpty);
+  });
 }
 
 enum _ViewingState {
@@ -701,14 +698,15 @@ class _AnimatedListModel<T> {
   final List<T> _items;
 
   _AnimatedListModel({
-    @required this.listKey,
-    @required this.removedItemBuilder,
-    List<T> initialItems,
-  })  : assert(listKey != null),
-        assert(removedItemBuilder != null),
-        _items = List.of(initialItems) ?? [];
+    required this.listKey,
+    required this.removedItemBuilder,
+    List<T>? initialItems,
+  }) : _items = initialItems == null ? [] : List.of(initialItems);
 
-  SliverAnimatedListState get _animatedList => listKey.currentState;
+  // Note that this will return null if there are no items in the list.
+  SliverAnimatedListState? get _animatedList {
+    return listKey.currentState;
+  }
 
   List<T> get items => _items;
 
@@ -720,14 +718,10 @@ class _AnimatedListModel<T> {
 
   void insert(int index, T item) {
     _items.insert(index, item);
-
-    // Note that _animatedList could be null here if there are no items in the
-    // list. In this case, we want to update the underlying data model, but
-    // do not animate the insertion.
     _animatedList?.insertItem(index, duration: defaultAnimationDuration);
   }
 
-  T removeAt(int index) {
+  T? removeAt(int index) {
     // Don't attempt to remove an item if it isn't in the underlying data model.
     // This can happen in specialized situations, such as when a bait category
     // isn't shown in a bait list because there are no baits associated with
@@ -737,14 +731,12 @@ class _AnimatedListModel<T> {
     }
 
     var removedItem = _items.removeAt(index);
-    if (removedItem != null) {
-      _animatedList.removeItem(
-        index,
-        (context, animation) =>
-            removedItemBuilder(context, removedItem, animation),
-        duration: defaultAnimationDuration,
-      );
-    }
+    _animatedList?.removeItem(
+      index,
+      (context, animation) =>
+          removedItemBuilder(context, removedItem, animation),
+      duration: defaultAnimationDuration,
+    );
     return removedItem;
   }
 

@@ -12,13 +12,13 @@ import 'location_permission_page.dart';
 import 'migration_page.dart';
 
 class OnboardingJourney extends StatefulWidget {
-  final LegacyJsonResult legacyJsonResult;
+  final LegacyJsonResult? legacyJsonResult;
   final VoidCallback onFinished;
 
   OnboardingJourney({
     this.legacyJsonResult,
-    this.onFinished,
-  }) : assert(onFinished != null);
+    required this.onFinished,
+  });
 
   @override
   _OnboardingJourneyState createState() => _OnboardingJourneyState();
@@ -42,7 +42,7 @@ class _OnboardingJourneyState extends State<OnboardingJourney> {
         var name = routeSettings.name;
         if (name == _routeRoot) {
           if (widget.legacyJsonResult != null) {
-            return _buildMigrationPageRoute(widget.legacyJsonResult);
+            return _buildMigrationPageRoute(widget.legacyJsonResult!);
           } else {
             return _buildCatchFieldsRoute();
           }

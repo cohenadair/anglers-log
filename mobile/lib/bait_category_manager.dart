@@ -29,7 +29,7 @@ class BaitCategoryManager extends NamedEntityManager<BaitCategory> {
   @override
   String get tableName => "bait_category";
 
-  int numberOfBaits(Id baitCategoryId) {
+  int numberOfBaits(Id? baitCategoryId) {
     if (baitCategoryId == null) {
       return 0;
     }
@@ -42,9 +42,6 @@ class BaitCategoryManager extends NamedEntityManager<BaitCategory> {
   }
 
   String deleteMessage(BuildContext context, BaitCategory baitCategory) {
-    assert(context != null);
-    assert(baitCategory != null);
-
     var numOfBaits = numberOfBaits(baitCategory.id);
     var string = numOfBaits == 1
         ? Strings.of(context).baitCategoryListPageDeleteMessageSingular

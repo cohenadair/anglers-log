@@ -10,24 +10,24 @@ import 'package:mobile/utils/page_utils.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mobile/widgets/button.dart';
 import 'package:mobile/widgets/checkbox_input.dart';
-import 'package:mobile/widgets/list_item.dart';
 import 'package:mobile/widgets/empty_list_placeholder.dart';
+import 'package:mobile/widgets/list_item.dart';
 import 'package:mobile/widgets/search_bar.dart';
 import 'package:mobile/widgets/text_input.dart';
 import 'package:mobile/widgets/widget.dart';
 import 'package:mockito/mockito.dart';
 import 'package:quiver/strings.dart' as quiver;
 
-import '../mock_app_manager.dart';
+import '../mocks/stubbed_app_manager.dart';
 import '../test_utils.dart';
 
 void main() {
-  MockAppManager appManager;
+  late StubbedAppManager appManager;
 
   // Use real ManageableListItem instance when listeners are required.
-  SpeciesManager speciesManager;
+  late SpeciesManager speciesManager;
 
-  List<String> items;
+  late List<String> items;
 
   setUp(() {
     items = <String>[
@@ -39,31 +39,25 @@ void main() {
 
     // Use a real use of ManageableListPage for this test because an
     // EntityManagerListener is needed.
-    appManager = MockAppManager(
-      mockAuthManager: true,
-      mockCatchManager: true,
-      mockLocalDatabaseManager: true,
-      mockSubscriptionManager: true,
-    );
+    appManager = StubbedAppManager();
 
-    when(appManager.mockAuthManager.stream).thenAnswer((_) => MockStream());
+    when(appManager.authManager.stream).thenAnswer((_) => Stream.empty());
 
-    when(appManager.mockCatchManager.list()).thenReturn([]);
-    when(appManager.mockCatchManager
-            .existsWith(speciesId: anyNamed("speciesId")))
+    when(appManager.catchManager.list()).thenReturn([]);
+    when(appManager.catchManager.existsWith(speciesId: anyNamed("speciesId")))
         .thenReturn(false);
 
-    when(appManager.mockLocalDatabaseManager.insertOrReplace(any, any))
+    when(appManager.localDatabaseManager.insertOrReplace(any, any))
         .thenAnswer((_) => Future.value(true));
-    when(appManager.mockLocalDatabaseManager.deleteEntity(any, any))
+    when(appManager.localDatabaseManager.deleteEntity(any, any))
         .thenAnswer((_) => Future.value(true));
 
-    when(appManager.mockSubscriptionManager.stream)
-        .thenAnswer((_) => MockStream<void>());
-    when(appManager.mockSubscriptionManager.isPro).thenReturn(false);
+    when(appManager.subscriptionManager.stream)
+        .thenAnswer((_) => Stream.empty());
+    when(appManager.subscriptionManager.isPro).thenReturn(false);
 
-    speciesManager = SpeciesManager(appManager);
-    when(appManager.speciesManager).thenReturn(speciesManager);
+    speciesManager = SpeciesManager(appManager.app);
+    when(appManager.app.speciesManager).thenReturn(speciesManager);
   });
 
   List<String> loadItems(searchQuery) {
@@ -107,7 +101,7 @@ void main() {
     );
   }
 
-  void verifyCheckbox(WidgetTester tester, String item, {bool checked}) {
+  void verifyCheckbox(WidgetTester tester, String item, {bool? checked}) {
     expect(
       (tester.firstWidget(findCheckbox(tester, item)) as PaddedCheckbox)
           .checked,
@@ -200,7 +194,7 @@ void main() {
     });
 
     testWidgets("Multi-picker callback invoked on close page", (tester) async {
-      Set<String> items;
+      Set<String>? items;
       await tester.pumpWidget(
         Testable(
           (context) => Scaffold(
@@ -231,7 +225,7 @@ void main() {
       await tapAndSettle(tester, find.byType(BackButton));
 
       expect(items, isNotNull);
-      expect(items.length, 2);
+      expect(items!.length, 2);
     });
 
     testWidgets("Single-picker callback not invoked on close page",
@@ -586,7 +580,7 @@ void main() {
               deleteItem: (_, __) {},
               deleteWidget: (_, __) => Empty(),
             ),
-            itemBuilder: (_, __) => null,
+            itemBuilder: (_, __) => ManageableListPageItemModel(child: Empty()),
             pickerSettings: ManageableListPagePickerSettings<String>(
               onPicked: (context, items) => false,
             ),
@@ -631,6 +625,7 @@ void main() {
         Testable(
           (_) => SpeciesListPage(
             pickerSettings: ManageableListPagePickerSettings<Species>.single(
+              onPicked: (_, __) => true,
               initialValue: species,
             ),
           ),
@@ -718,10 +713,10 @@ void main() {
   });
 
   testWidgets("Changes to listener updates state", (tester) async {
-    when(appManager.mockLocalDatabaseManager.insertOrReplace(any, any))
+    when(appManager.localDatabaseManager.insertOrReplace(any, any))
         .thenAnswer((_) => Future.value(true));
 
-    var speciesManager = SpeciesManager(appManager);
+    var speciesManager = SpeciesManager(appManager.app);
 
     await tester.pumpWidget(
       Testable(
@@ -795,8 +790,6 @@ void main() {
   });
 
   testWidgets("Tapping disabled row is a no-op", (tester) async {
-    var navigatorObserver = MockNavigatorObserver();
-
     await tester.pumpWidget(Testable(
       (_) => ManageableListPage<String>(
         itemManager: ManageableListPageItemManager<String>(
@@ -820,21 +813,17 @@ void main() {
           );
         },
       ),
-      navigatorObserver: navigatorObserver,
     ));
-    // Verify initial navigator push when loading widget.
-    verify(navigatorObserver.didPush(any, any)).called(1);
 
     await tapAndSettle(tester, find.text("EDIT"));
     await tapAndSettle(tester, find.text("Smallmouth Bass"));
 
-    verifyNever(navigatorObserver.didPush(any, any));
+    // Three edit buttons (each enabled row).
+    expect(find.text("EDIT"), findsNWidgets(3));
   });
 
   testWidgets("Tapping enabled, no detail, and non-editable is a no-op",
       (tester) async {
-    var navigatorObserver = MockNavigatorObserver();
-
     await tester.pumpWidget(Testable(
       (_) => ManageableListPage<String>(
         itemManager: ManageableListPageItemManager<String>(
@@ -857,18 +846,14 @@ void main() {
           );
         },
       ),
-      navigatorObserver: navigatorObserver,
     ));
-    // Verify initial navigator push when loading widget.
-    verify(navigatorObserver.didPush(any, any)).called(1);
 
     await tapAndSettle(tester, find.text("Smallmouth Bass"));
-
-    verifyNever(navigatorObserver.didPush(any, any));
+    expect(find.text("EDIT"), findsOneWidget);
   });
 
   testWidgets("Tapping delete button invokes callback", (tester) async {
-    String deletedItem;
+    String? deletedItem;
     await tester.pumpWidget(
       Testable(
         (_) => ManageableListPage<String>(
@@ -897,7 +882,7 @@ void main() {
   });
 
   testWidgets("Custom delete button action", (tester) async {
-    String deletedItem;
+    String? deletedItem;
     await tester.pumpWidget(
       Testable(
         (_) => ManageableListPage<String>(

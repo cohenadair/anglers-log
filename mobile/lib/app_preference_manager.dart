@@ -28,20 +28,20 @@ class AppPreferenceManager extends PreferenceManager {
   String get tableName => "app_preference";
 
   @override
-  String get firestoreDocPath => null;
+  String? get firestoreDocPath => null;
 
   @override
   bool get enableFirestore => false;
 
   @override
-  StreamSubscription initializeFirestore(Completer completer) => null;
+  StreamSubscription? initializeFirestore(Completer completer) => null;
 
   @override
   void onUpgradeToPro() {
     // Nothing to do. App preferences are never stored in the cloud.
   }
 
-  set lastLoggedInUserId(String id) => put(_keyLastLoggedInUserId, id);
+  set lastLoggedInUserId(String? id) => put(_keyLastLoggedInUserId, id);
 
-  String get lastLoggedInUserId => preferences[_keyLastLoggedInUserId];
+  String? get lastLoggedInUserId => preferences[_keyLastLoggedInUserId];
 }

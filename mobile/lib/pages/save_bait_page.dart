@@ -24,7 +24,7 @@ import '../widgets/widget.dart';
 import 'manageable_list_page.dart';
 
 class SaveBaitPage extends StatefulWidget {
-  final Bait oldBait;
+  final Bait? oldBait;
 
   SaveBaitPage() : oldBait = null;
 
@@ -41,12 +41,12 @@ class _SaveBaitPageState extends State<SaveBaitPage> {
     ..uuid = "832e8f16-3fb6-4530-b8d7-7840734cf465";
   static final _idName = Id()..uuid = "017ae032-477b-4fe4-9be0-ea0a05a576f9";
 
-  final _log = Log("SaveCatchPage");
+  final _log = Log("SaveBaitPage");
 
   final Map<Id, Field> _fields = {};
   List<CustomEntityValue> _customEntityValues = [];
 
-  Bait get _oldBait => widget.oldBait;
+  Bait? get _oldBait => widget.oldBait;
 
   bool get _editing => _oldBait != null;
 
@@ -59,10 +59,10 @@ class _SaveBaitPageState extends State<SaveBaitPage> {
       UserPreferenceManager.of(context);
 
   InputController<Id> get _baitCategoryController =>
-      _fields[_idBaitCategory].controller;
+      _fields[_idBaitCategory]!.controller as InputController<Id>;
 
   TextInputController get _nameController =>
-      _fields[_idName].controller as TextInputController;
+      _fields[_idName]!.controller as TextInputController;
 
   @override
   void initState() {
@@ -76,26 +76,24 @@ class _SaveBaitPageState extends State<SaveBaitPage> {
       controller: IdInputController(),
       removable: true,
       // Only include bait category field if not disabled by the user.
-      showing: baitFieldIds == null ||
-          baitFieldIds.isEmpty ||
-          baitFieldIds.contains(_idBaitCategory),
+      showing: baitFieldIds.isEmpty || baitFieldIds.contains(_idBaitCategory),
     );
 
-    // Name field is required; always include it.
     _fields[_idName] = Field(
       id: _idName,
       name: (context) => Strings.of(context).inputNameLabel,
       controller: TextInputController(
         validator: NameValidator(),
       ),
+      // Name field is required; always include it.
       removable: false,
       showing: true,
     );
 
     if (_editing) {
-      _baitCategoryController.value = _oldBait.baitCategoryId;
-      _nameController.value = _oldBait.name;
-      _customEntityValues = _oldBait.customEntityValues;
+      _baitCategoryController.value = _oldBait!.baitCategoryId;
+      _nameController.value = _oldBait!.name;
+      _customEntityValues = _oldBait!.customEntityValues;
     }
   }
 
@@ -174,11 +172,11 @@ class _SaveBaitPageState extends State<SaveBaitPage> {
 
     var newBait = Bait()
       ..id = _oldBait?.id ?? randomId()
-      ..name = _nameController.value
+      ..name = _nameController.value!
       ..customEntityValues.addAll(entityValuesFromMap(customFieldValueMap));
 
     if (_baitCategoryController.value != null) {
-      newBait.baitCategoryId = _baitCategoryController.value;
+      newBait.baitCategoryId = _baitCategoryController.value!;
     }
 
     if (_baitManager.duplicate(newBait)) {

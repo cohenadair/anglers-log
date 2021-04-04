@@ -3,18 +3,20 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/channels/migration_channel.dart';
 import 'package:mockito/mockito.dart';
 
-import '../mock_app_manager.dart';
-import '../test_utils.dart';
+import '../mocks/mocks.mocks.dart';
 
 void main() {
-  MockServicesWrapper servicesWrapper;
-  MockMethodChannel methodChannel;
+  late MockServicesWrapper servicesWrapper;
+  late MockMethodChannel methodChannel;
 
   setUp(() {
     servicesWrapper = MockServicesWrapper();
 
     methodChannel = MockMethodChannel();
     when(servicesWrapper.methodChannel(any)).thenReturn(methodChannel);
+
+    var wrapper = MockServicesWrapper();
+    when(wrapper.methodChannel(any)).thenReturn(methodChannel);
   });
 
   test("No legacy data to migrate returns null", () async {
@@ -28,7 +30,8 @@ void main() {
           "json": "{}",
         }));
     var result = await legacyJson(servicesWrapper);
-    expect(result.errorCode, LegacyJsonErrorCode.missingData);
+    expect(result, isNotNull);
+    expect(result!.errorCode, LegacyJsonErrorCode.missingData);
   });
 
   test("Channel result missing images path", () async {
@@ -37,7 +40,8 @@ void main() {
           "json": "{}",
         }));
     var result = await legacyJson(servicesWrapper);
-    expect(result.errorCode, LegacyJsonErrorCode.missingData);
+    expect(result, isNotNull);
+    expect(result!.errorCode, LegacyJsonErrorCode.missingData);
   });
 
   test("Channel result missing json", () async {
@@ -46,7 +50,8 @@ void main() {
           "db": "path/to/database",
         }));
     var result = await legacyJson(servicesWrapper);
-    expect(result.errorCode, LegacyJsonErrorCode.missingData);
+    expect(result, isNotNull);
+    expect(result!.errorCode, LegacyJsonErrorCode.missingData);
   });
 
   test("Invalid JSON", () async {
@@ -56,14 +61,16 @@ void main() {
           "json": "bad JSON string",
         }));
     var result = await legacyJson(servicesWrapper);
-    expect(result.errorCode, LegacyJsonErrorCode.invalidJson);
+    expect(result, isNotNull);
+    expect(result!.errorCode, LegacyJsonErrorCode.invalidJson);
   });
 
   test("Platform exception", () async {
     when(methodChannel.invokeMethod(any))
-        .thenAnswer((_) => throw PlatformException(code: "Test"));
+        .thenAnswer(((_) => throw PlatformException(code: "Test")));
     var result = await legacyJson(servicesWrapper);
-    expect(result.errorCode, LegacyJsonErrorCode.platformException);
+    expect(result, isNotNull);
+    expect(result!.errorCode, LegacyJsonErrorCode.platformException);
   });
 
   test("Successful case", () async {
@@ -73,7 +80,8 @@ void main() {
           "json": "{}",
         }));
     var result = await legacyJson(servicesWrapper);
-    expect(result.errorCode, isNull);
+    expect(result, isNotNull);
+    expect(result!.errorCode, isNull);
     expect(result.imagesPath, "path/to/images");
     expect(result.databasePath, "path/to/database");
     expect(result.json, isNotNull);

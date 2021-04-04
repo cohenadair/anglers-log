@@ -7,13 +7,13 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart' as maps;
 import 'package:image_picker/image_picker.dart';
-import 'package:path/path.dart' as path;
 import 'package:photo_manager/photo_manager.dart';
+import 'package:quiver/strings.dart';
 
 import '../i18n/strings.dart';
+import '../log.dart';
 import '../res/dimen.dart';
 import '../res/gen/custom_icons.dart';
-import '../utils/dialog_utils.dart';
 import '../utils/string_utils.dart';
 import '../widgets/button.dart';
 import '../widgets/empty_list_placeholder.dart';
@@ -29,21 +29,21 @@ enum _ImagePickerSource { gallery, camera, browse }
 class PickedImage {
   /// The original image file. This may be null if the [PickedImage] represents
   /// only a thumbnail image.
-  final File originalFile;
+  final File? originalFile;
 
-  /// The [AssetEntity.id] for the picked image. This can be `null` if the
+  /// The [AssetEntity.id] for the picked image. This can be null if the
   /// image was taken with the camera, or picked from a cloud source.
-  final String originalFileId;
+  final String? originalFileId;
 
-  /// May be `null`. For example, if a photo was taken with the camera, or
+  /// May be null. For example, if a photo was taken with the camera, or
   /// selected from a cloud source.
-  final Uint8List thumbData;
+  final Uint8List? thumbData;
 
   /// The location the image was taken, or null if unknown.
-  final maps.LatLng position;
+  final maps.LatLng? position;
 
   /// The date and time the photo was taken, or null if unknown.
-  final DateTime dateTime;
+  final DateTime? dateTime;
 
   PickedImage({
     this.originalFile,
@@ -83,32 +83,32 @@ class ImagePickerPage extends StatefulWidget {
   /// A list of images to be selected when the page opens.
   final List<PickedImage> initialImages;
 
-  /// Text for the "Done" button. If `null`, uses "Done".
-  final String doneButtonText;
+  /// Optional custom text for the "Done" button.
+  final String? doneButtonText;
 
-  /// If `true`, pops the navigation stack when images are picked. Defaults to
+  /// If true, pops the navigation stack when images are picked. Defaults to
   /// true.
   final bool popsOnFinish;
 
-  /// If `true`, an image must be picked for the "Done" button to be enabled.
+  /// If true, an image must be picked for the "Done" button to be enabled.
   /// Defaults to true.
   final bool requiresPick;
 
   /// A [Widget] to override the default [AppBar] leading behaviour.
-  final Widget appBarLeading;
+  final Widget? appBarLeading;
 
   ImagePickerPage({
-    @required this.onImagesPicked,
+    required this.onImagesPicked,
     this.allowsMultipleSelection = true,
     this.initialImages = const [],
     this.doneButtonText,
     this.popsOnFinish = true,
     this.requiresPick = true,
     this.appBarLeading,
-  }) : assert(onImagesPicked != null);
+  });
 
   ImagePickerPage.single({
-    @required Function(BuildContext, PickedImage) onImagePicked,
+    required Function(BuildContext, PickedImage?) onImagePicked,
   }) : this(
           onImagesPicked: (context, files) =>
               onImagePicked(context, files.isEmpty ? null : files.first),
@@ -128,14 +128,16 @@ class _ImagePickerPageState extends State<ImagePickerPage> {
   /// position reaches its max - thumbnail size * _loadNextPageFactor.
   static const int _loadNextPageFactor = 3;
 
+  final _log = Log("ImagePickerPage");
+
   /// A future that gets an [AssetPathEntity] containing all of a users photos.
-  Future<AssetPathEntity> _galleryFuture;
+  Future<AssetPathEntity?>? _galleryFuture;
 
   /// The data retrieved from [_galleryFuture].
-  AssetPathEntity _galleryAsset;
+  AssetPathEntity? _galleryAsset;
 
   /// A future that gets a list of assets.
-  Future<List<AssetEntity>> _assetsFuture;
+  Future<List<AssetEntity>>? _assetsFuture;
 
   /// A list of all loaded assets. Retrieved from [_assetsFuture]. Note that a
   /// [LinkedHashSet] is used here for two reasons:
@@ -150,16 +152,16 @@ class _ImagePickerPageState extends State<ImagePickerPage> {
 
   /// Cache thumbnail futures so they're not recreated each time the widget
   /// tree is rebuilt.
-  final Map<int, Future<Uint8List>> _thumbnailFutures = {};
+  final Map<int, Future<Uint8List?>> _thumbnailFutures = {};
 
   final Set<int> _selectedIndexes = {};
   _ImagePickerSource _currentSource = _ImagePickerSource.gallery;
 
   /// Images that are initially selected. Elements of this array are removed
   /// as that element is loaded into the picker.
-  List<PickedImage> _initialImages;
+  late List<PickedImage> _initialImages;
 
-  Future<bool> _isPermissionGrantedFuture;
+  late Future<bool> _isPermissionGrantedFuture;
 
   FilePickerWrapper get _filePicker => FilePickerWrapper.of(context);
 
@@ -196,7 +198,7 @@ class _ImagePickerPageState extends State<ImagePickerPage> {
           }
 
           // User didn't grant photos permission.
-          if (!snapshot.data) {
+          if (!snapshot.data!) {
             return _buildNoPermission();
           }
 
@@ -205,7 +207,7 @@ class _ImagePickerPageState extends State<ImagePickerPage> {
                 _photoManager.getAllAssetPathEntity(RequestType.image);
           }
 
-          return FutureBuilder<AssetPathEntity>(
+          return FutureBuilder<AssetPathEntity?>(
             future: _galleryFuture,
             builder: (context, snapshot) {
               if (snapshot.connectionState != ConnectionState.done) {
@@ -216,7 +218,7 @@ class _ImagePickerPageState extends State<ImagePickerPage> {
 
               // If there's no "all", or no assets, don't bother trying to fetch
               // them.
-              if (_galleryAsset == null || _galleryAsset.assetCount <= 0) {
+              if (_galleryAsset == null || _galleryAsset!.assetCount <= 0) {
                 return _buildNoResults();
               }
 
@@ -235,7 +237,7 @@ class _ImagePickerPageState extends State<ImagePickerPage> {
                   }
 
                   var oldLength = _assets.length;
-                  _assets.addAll(snapshot.data);
+                  _assets.addAll(snapshot.data!);
 
                   // If we're loading a new page, wait for the assets size to
                   // change before resetting the flag.
@@ -287,6 +289,10 @@ class _ImagePickerPageState extends State<ImagePickerPage> {
         ),
       ],
       onChanged: (value) {
+        if (value == null) {
+          return;
+        }
+
         setState(() {
           switch (value) {
             case _ImagePickerSource.gallery:
@@ -329,8 +335,8 @@ class _ImagePickerPageState extends State<ImagePickerPage> {
   }
 
   Widget _buildGrid({
-    @required int itemCount,
-    @required Function(BuildContext, int) itemBuilder,
+    required int itemCount,
+    required Widget Function(BuildContext, int) itemBuilder,
   }) {
     return Column(
       children: <Widget>[
@@ -428,7 +434,7 @@ class _ImagePickerPageState extends State<ImagePickerPage> {
 
           var selected = _selectedIndexes.contains(i);
 
-          return FutureBuilder<Uint8List>(
+          return FutureBuilder<Uint8List?>(
             future: future,
             builder: (context, snapshot) {
               Widget child;
@@ -437,7 +443,7 @@ class _ImagePickerPageState extends State<ImagePickerPage> {
                 child = Stack(
                   fit: StackFit.expand,
                   children: <Widget>[
-                    _buildThumbnail(snapshot.data, i, selected),
+                    _buildThumbnail(snapshot.data!, i, selected),
                     _buildSelectedCover(selected),
                   ],
                 );
@@ -556,60 +562,27 @@ class _ImagePickerPageState extends State<ImagePickerPage> {
   }
 
   void _openFilePicker() async {
-    List<File> images;
-    if (widget.allowsMultipleSelection) {
-      images = await _filePicker.getMultiFile(FileType.ANY);
-    } else {
-      var image = await _filePicker.getFile(type: FileType.ANY);
-      if (image != null) {
-        images = [image];
-      }
-    }
+    var pickerResult = await _filePicker.pickFiles(
+      type: FileType.image,
+      allowMultiple: widget.allowsMultipleSelection,
+    );
 
-    // No images were selected.
-    if (images == null || images.isEmpty) {
+    // User cancelled picker.
+    if (pickerResult == null) {
       return;
     }
 
-    // TODO: Don't allow selection of non-image files.
-    // file_picker doesn't support multiple file extensions, so for now, check
-    // the extension of each selected file.
-    // https://github.com/miguelpruivo/flutter_file_picker/issues/99
-    var supportedFileExtensions = <String>[
-      ".jpg",
-      ".jpeg",
-      ".jpe",
-      ".jif",
-      ".jfif",
-      ".jfi",
-      ".png",
-      ".gif",
-      ".webp",
-      ".tiff",
-      ".tif",
-      ".heif",
-      ".heic",
-    ];
-    var invalidFiles = <String>[];
-    for (var i = images.length - 1; i >= 0; i--) {
-      var image = images[i];
-      if (!supportedFileExtensions.contains(path.extension(image.path))) {
-        invalidFiles.add(path.basename(image.path));
-        images.removeAt(i);
-        // TODO: Record metrics for invalid file extensions; may be legit.
-      }
+    var images = pickerResult.files
+        .where((f) => isNotEmpty(f.path))
+        .map((f) => File(f.path!))
+        .toList();
+
+    // No images were selected.
+    if (images.isEmpty) {
+      return;
     }
 
-    if (images.isEmpty) {
-      var msg = Strings.of(context).imagePickerPageInvalidSelectionSingle;
-      if (widget.allowsMultipleSelection) {
-        msg = Strings.of(context).imagePickerPageInvalidSelectionPlural;
-      }
-      showErrorDialog(context: context, description: Text(msg));
-    } else {
-      // TODO #391: Extract EXIF data from image.
-      _pop(images.map((image) => PickedImage(originalFile: image)).toList());
-    }
+    _pop(images.map((image) => PickedImage(originalFile: image)).toList());
   }
 
   void _pop(List<PickedImage> results) {
@@ -622,20 +595,19 @@ class _ImagePickerPageState extends State<ImagePickerPage> {
 
   Future<PickedImage> _pickedImageFromAsset(
     AssetEntity entity, {
-    Uint8List thumbData,
+    Uint8List? thumbData,
   }) async {
     var lat = entity.latitude;
     var lng = entity.longitude;
-    maps.LatLng position;
+    maps.LatLng? position;
 
     if (_coordinatesAreValid(lat, lng)) {
       position = maps.LatLng(lat, lng);
     } else {
       // Coordinates are invalid, attempt to retrieve from OS.
       var latLng = await entity.latlngAsync();
-      if (latLng != null &&
-          _coordinatesAreValid(latLng.latitude, latLng.longitude)) {
-        position = maps.LatLng(latLng.latitude, latLng.longitude);
+      if (_coordinatesAreValid(latLng.latitude, latLng.longitude)) {
+        position = maps.LatLng(latLng.latitude!, latLng.longitude!);
       }
     }
 
@@ -648,7 +620,7 @@ class _ImagePickerPageState extends State<ImagePickerPage> {
     );
   }
 
-  bool _coordinatesAreValid(double lat, double lng) {
+  bool _coordinatesAreValid(double? lat, double? lng) {
     return lat != null && lng != null && lat != 0 && lng != 0;
   }
 
@@ -663,7 +635,12 @@ class _ImagePickerPageState extends State<ImagePickerPage> {
   }
 
   void _loadNextPage() {
-    _assetsFuture = _galleryAsset.getAssetListPaged(
-        _currentPage++, _approxThumbsOnScreen() * 2);
+    if (_galleryAsset == null) {
+      _log.w("Can't load next page with null _galleryAsset");
+      return;
+    }
+
+    _assetsFuture = _galleryAsset!
+        .getAssetListPaged(_currentPage++, _approxThumbsOnScreen() * 2);
   }
 }

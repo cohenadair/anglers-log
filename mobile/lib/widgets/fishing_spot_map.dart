@@ -21,11 +21,11 @@ import '../wrappers/permission_handler_wrapper.dart';
 import 'bottom_sheet_picker.dart';
 
 class FishingSpotMapSearchBar {
-  final String title;
-  final Widget leading;
-  final Widget trailing;
-  final FishingSpot selectedFishingSpot;
-  final void Function(FishingSpot) onFishingSpotPicked;
+  final String? title;
+  final Widget? leading;
+  final Widget? trailing;
+  final FishingSpot? selectedFishingSpot;
+  final void Function(FishingSpot?)? onFishingSpotPicked;
 
   FishingSpotMapSearchBar({
     this.title,
@@ -40,39 +40,39 @@ class FishingSpotMapSearchBar {
 class FishingSpotMap extends StatefulWidget {
   /// Properties for the map's search bar. If `null`, no search bar will be
   /// shown.
-  final FishingSpotMapSearchBar searchBar;
+  final FishingSpotMapSearchBar? searchBar;
 
-  final Completer<GoogleMapController> mapController;
+  final Completer<GoogleMapController>? mapController;
 
   /// Adds padding to the [GoogleMap] widget. This allows you to move the
   /// Google logo that is required to be visible as per Google Maps TOS.
-  final EdgeInsets mapPadding;
+  final EdgeInsets? mapPadding;
 
-  final LatLng startLocation;
+  final LatLng? startLocation;
   final bool showMyLocationButton;
   final bool showZoomExtentsButton;
 
   /// See [GoogleMap.onTap].
-  final void Function(LatLng) onTap;
+  final void Function(LatLng)? onTap;
 
   /// See [GoogleMap.onCameraIdle].
-  final VoidCallback onIdle;
+  final VoidCallback? onIdle;
 
   /// See [GoogleMap.onCameraMove].
-  final void Function(LatLng) onMove;
+  final void Function(LatLng)? onMove;
 
   /// See [GoogleMap.onCameraMoveStarted].
-  final VoidCallback onMoveStarted;
+  final VoidCallback? onMoveStarted;
 
   /// Invoked when the "current location" button is pressed.
-  final VoidCallback onCurrentLocationPressed;
+  final VoidCallback? onCurrentLocationPressed;
 
   /// Invoked when the map type changes.
-  final void Function(MapType) onMapTypeChanged;
+  final void Function(MapType)? onMapTypeChanged;
 
   /// If non-null, a "help" floating action button is rendered on the map, and
   /// a [HelpTooltip] with this widget as its child is toggled when tapped.
-  final Widget help;
+  final Widget? help;
 
   /// Widgets placed in the map's stack, between the actual map, and the search
   /// bar and floating action buttons. This is used as an easy way to show
@@ -97,10 +97,7 @@ class FishingSpotMap extends StatefulWidget {
     this.help,
     this.markers = const {},
     this.children = const [],
-  })  : assert(showMyLocationButton != null),
-        assert(showZoomExtentsButton != null),
-        assert(markers != null),
-        assert(children != null);
+  });
 
   @override
   _FishingSpotMapState createState() => _FishingSpotMapState();
@@ -115,13 +112,13 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
   final Future<bool> _mapFuture =
       Future.delayed(Duration(milliseconds: 150), () => true);
 
-  Timer _hideHelpTimer;
+  Timer? _hideHelpTimer;
 
   MapType _mapType = MapType.normal;
   bool _showHelp = true;
-  bool _myLocationEnabled;
+  bool _myLocationEnabled = true;
 
-  Completer<GoogleMapController> _mapController;
+  late Completer<GoogleMapController> _mapController;
 
   LocationMonitor get _locationMonitor => LocationMonitor.of(context);
 
@@ -162,11 +159,7 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
                 // Row to extend column across page.
-                widget.searchBar == null
-                    ? Row(
-                        children: [Empty()],
-                      )
-                    : _buildSearchBar(),
+                _buildSearchBar(),
                 _buildMapTypeButton(),
                 _buildCurrentLocationButton(),
                 _buildZoomExtentsButton(),
@@ -210,7 +203,7 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
           onCameraIdle: widget.onIdle,
           onCameraMove: widget.onMove == null
               ? null
-              : (position) => widget.onMove(position.target),
+              : (position) => widget.onMove!(position.target),
           onCameraMoveStarted: () {
             widget.onMoveStarted?.call();
             if (widget.help != null) {
@@ -225,10 +218,17 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
   }
 
   Widget _buildSearchBar() {
+    if (widget.searchBar == null) {
+      // Row so it extends across the page.
+      return Row(children: [Empty()]);
+    }
+
+    var searchBar = widget.searchBar!;
+
     return SearchBar(
-      leading: widget.searchBar.leading,
-      trailing: widget.searchBar.trailing,
-      text: widget.searchBar.title,
+      leading: searchBar.leading,
+      trailing: searchBar.trailing,
+      text: searchBar.title,
       hint: Strings.of(context).mapPageSearchHint,
       margin: EdgeInsets.only(
         // iOS "safe area" includes some padding, so keep the additional padding
@@ -244,7 +244,7 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
             pickerSettings:
                 ManageableListPagePickerSettings<FishingSpot>.single(
               onPicked: (context, fishingSpot) {
-                widget.searchBar.onFishingSpotPicked?.call(fishingSpot);
+                searchBar.onFishingSpotPicked?.call(fishingSpot);
                 if (fishingSpot != null) {
                   moveMap(
                     _mapController,
@@ -254,7 +254,7 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
                 }
                 return true;
               },
-              initialValue: widget.searchBar.selectedFishingSpot,
+              initialValue: searchBar.selectedFishingSpot,
             ),
           ),
         );
@@ -269,7 +269,7 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
         showBottomSheetPicker(
           context,
           (context) => BottomSheetPicker<MapType>(
-            currentValue: _mapType ?? MapType.normal,
+            currentValue: _mapType,
             items: {
               Strings.of(context).mapPageMapTypeNormal: MapType.normal,
               Strings.of(context).mapPageMapTypeSatellite: MapType.satellite,
@@ -278,10 +278,11 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
             },
             onPicked: (newMapType) {
               if (newMapType != _mapType) {
+                var type = newMapType ?? MapType.normal;
                 setState(() {
-                  _mapType = newMapType;
+                  _mapType = type;
                 });
-                widget.onMapTypeChanged?.call(newMapType);
+                widget.onMapTypeChanged?.call(type);
               }
             },
           ),

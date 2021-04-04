@@ -8,6 +8,6 @@ class ImagePickerWrapper {
   static ImagePickerWrapper of(BuildContext context) =>
       Provider.of<AppManager>(context, listen: false).imagePickerWrapper;
 
-  Future<PickedFile> getImage(ImageSource source) =>
+  Future<PickedFile?> getImage(ImageSource source) =>
       ImagePicker().getImage(source: source);
 }

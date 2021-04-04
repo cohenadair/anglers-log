@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:quiver/strings.dart';
 
 import '../model/gen/anglerslog.pb.dart';
 import '../res/dimen.dart';
@@ -18,14 +17,14 @@ import 'manageable_list_page.dart';
 /// cases, a [ManageableListPage] should used with appropriate picker settings.
 class PickerPage<T> extends StatefulWidget {
   /// See [AppBar.title].
-  final Widget title;
+  final Widget? title;
 
   /// An action widget that is rendered on the right side of the [AppBar].
-  final Widget action;
+  final Widget? action;
 
   /// A [Widget] to show at the top of the underlying [ListView]. This [Widget]
   /// will scroll with the [ListView].
-  final Widget listHeader;
+  final Widget? listHeader;
 
   /// A [Set] of initially selected items.
   final Set<T> initialValues;
@@ -37,7 +36,7 @@ class PickerPage<T> extends StatefulWidget {
   /// This is meant to be used as a "pick everything" or "pick nothing" option.
   /// For example, in a filter picker that allows selection of all of something,
   /// this value could be "Include All".
-  final PickerPageItem<T> allItem;
+  final PickerPageItem<T>? allItem;
 
   /// All items that can be selected. Dividers can be added between items by
   /// using [PickerPageItem.divider]. Headings can be added between items by
@@ -56,24 +55,23 @@ class PickerPage<T> extends StatefulWidget {
   final bool multiSelect;
 
   PickerPage({
-    @required this.itemBuilder,
-    @required this.onFinishedPicking,
-    Set<T> initialValues,
+    required this.itemBuilder,
+    required this.onFinishedPicking,
+    this.initialValues = const {},
     this.multiSelect = true,
     this.title,
     this.listHeader,
     this.allItem,
     this.action,
-  })  : assert(itemBuilder != null),
-        initialValues = initialValues ?? const {};
+  }) : assert(allItem == null || allItem.value != null);
 
   PickerPage.single({
-    @required List<PickerPageItem<T>> Function() itemBuilder,
-    @required void Function(BuildContext, T) onFinishedPicking,
-    T initialValue,
-    Widget title,
-    Widget listHeader,
-    PickerPageItem<T> allItem,
+    required List<PickerPageItem<T>> Function() itemBuilder,
+    required void Function(BuildContext, T) onFinishedPicking,
+    T? initialValue,
+    Widget? title,
+    Widget? listHeader,
+    PickerPageItem<T>? allItem,
   }) : this(
           itemBuilder: itemBuilder,
           onFinishedPicking: (context, items) =>
@@ -86,11 +84,11 @@ class PickerPage<T> extends StatefulWidget {
         );
 
   @override
-  _PickerPageState<T> createState() => _PickerPageState();
+  _PickerPageState<T> createState() => _PickerPageState<T>();
 }
 
 class _PickerPageState<T> extends State<PickerPage<T>> {
-  Set<T> _selectedValues;
+  late Set<T> _selectedValues;
 
   @override
   void initState() {
@@ -111,7 +109,7 @@ class _PickerPageState<T> extends State<PickerPage<T>> {
         appBar: AppBar(
           title: widget.title,
           actions: [
-            widget.action == null ? Empty() : widget.action,
+            widget.action == null ? Empty() : widget.action!,
           ],
         ),
         body: _buildListView(context),
@@ -128,7 +126,9 @@ class _PickerPageState<T> extends State<PickerPage<T>> {
       ));
     }
 
-    var items = (widget.allItem == null ? [] : [widget.allItem])
+    var items = (widget.allItem == null
+        ? <PickerPageItem<T>>[]
+        : [widget.allItem!])
       ..addAll(widget.itemBuilder());
 
     return ListView(
@@ -143,7 +143,7 @@ class _PickerPageState<T> extends State<PickerPage<T>> {
               padding: EdgeInsets.only(
                 bottom: paddingWidget,
               ),
-              child: HeadingDivider(item.title),
+              child: HeadingDivider(item.title!),
             );
           }
 
@@ -154,9 +154,9 @@ class _PickerPageState<T> extends State<PickerPage<T>> {
               child: Padding(
                 padding: insetsHorizontalDefault,
                 child: item.noteIcon == null
-                    ? NoteLabel(item.title)
+                    ? NoteLabel(item.title!)
                     : IconLabel(
-                        text: item.title,
+                        text: item.title!,
                         icon: Icon(
                           item.noteIcon,
                           color: Colors.black,
@@ -166,7 +166,7 @@ class _PickerPageState<T> extends State<PickerPage<T>> {
             );
           }
 
-          VoidCallback onTap;
+          VoidCallback? onTap;
           if (item.enabled) {
             if (item.onTap != null) {
               onTap = item.onTap;
@@ -184,7 +184,7 @@ class _PickerPageState<T> extends State<PickerPage<T>> {
           }
 
           return PickerListItem(
-            title: item.title,
+            title: item.title!,
             subtitle: item.subtitle,
             isEnabled: item.enabled,
             isMulti: widget.multiSelect,
@@ -201,16 +201,21 @@ class _PickerPageState<T> extends State<PickerPage<T>> {
   }
 
   void _listItemTapped(PickerPageItem<T> item) async {
+    var selected = {
+      item.value,
+    };
     setState(() {
-      _selectedValues = {item.value};
+      _selectedValues = selected;
     });
-    widget.onFinishedPicking(context, {item.value});
+    widget.onFinishedPicking(context, selected);
   }
 
   void _checkboxUpdated(T pickedItem) {
-    if (widget.allItem != null && widget.allItem.value == pickedItem) {
+    if (widget.allItem != null && widget.allItem!.value == pickedItem) {
       // If the "all" item was picked, deselect all other items.
-      _selectedValues = {widget.allItem.value};
+      _selectedValues = {
+        widget.allItem!.value,
+      };
     } else {
       // Otherwise, toggle the picked item, and deselect the "all" item
       // if it exists.
@@ -221,7 +226,7 @@ class _PickerPageState<T> extends State<PickerPage<T>> {
       }
 
       if (widget.allItem != null) {
-        _selectedValues.remove(widget.allItem.value);
+        _selectedValues.remove(widget.allItem!.value);
       }
     }
   }
@@ -229,8 +234,8 @@ class _PickerPageState<T> extends State<PickerPage<T>> {
 
 /// A class for storing the properties of a single item in a [PickerPage].
 class PickerPageItem<T> {
-  final String title;
-  final String subtitle;
+  final String? title;
+  final String? subtitle;
   final bool enabled;
 
   /// True if the (single item) picker should be popped off the navigation stack
@@ -239,35 +244,34 @@ class PickerPageItem<T> {
 
   /// A custom on tapped event for the [PickerPageItem]. If this value is
   /// non-null, [popsOnPicked] is ignored.
-  final VoidCallback onTap;
+  final VoidCallback? onTap;
 
-  final T value;
-  final IconData noteIcon;
+  final IconData? noteIcon;
 
+  final T? _value;
   final bool _divider;
   final bool _heading;
   final bool _note;
 
   PickerPageItem.divider()
-      : value = null,
-        title = null,
+      : title = null,
         subtitle = null,
         enabled = false,
         popsOnPicked = false,
         onTap = null,
         noteIcon = null,
+        _value = null,
         _divider = true,
         _heading = false,
         _note = false;
 
-  PickerPageItem.heading(this.title)
-      : assert(isNotEmpty(title)),
-        value = null,
-        subtitle = null,
+  PickerPageItem.heading(String this.title)
+      : subtitle = null,
         enabled = false,
         popsOnPicked = false,
         onTap = null,
         noteIcon = null,
+        _value = null,
         _divider = false,
         _heading = true,
         _note = false;
@@ -275,30 +279,35 @@ class PickerPageItem<T> {
   /// When used, a [NoteLabel] widget is rendered. This is normally used after
   /// to give an explanation as to why there are no items to show beneath a
   /// [PickerPageItem.heading].
-  PickerPageItem.note(
-    this.title, {
+  PickerPageItem.note({
+    required this.title,
     this.noteIcon,
-  })  : assert(isNotEmpty(title)),
-        value = null,
-        subtitle = null,
+  })  : subtitle = null,
         enabled = false,
         popsOnPicked = false,
         onTap = null,
+        _value = null,
         _divider = false,
         _heading = false,
         _note = true;
 
   PickerPageItem({
-    @required this.title,
+    required this.title,
     this.subtitle,
-    @required this.value,
+    required T value,
     this.enabled = true,
     this.popsOnPicked = true,
     this.onTap,
-  })  : assert(value != null),
-        assert(title != null),
-        noteIcon = null,
+  })  : noteIcon = null,
+        _value = value,
         _divider = false,
         _heading = false,
         _note = false;
+
+  bool get hasValue => _value != null;
+
+  T get value {
+    assert(_value != null);
+    return _value!;
+  }
 }

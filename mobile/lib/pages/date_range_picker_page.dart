@@ -15,10 +15,9 @@ class DateRangePickerPage extends StatefulWidget {
   final void Function(DisplayDateRange) onDateRangePicked;
 
   DateRangePickerPage({
-    @required this.initialValue,
-    @required this.onDateRangePicked,
-  })  : assert(initialValue != null),
-        assert(onDateRangePicked != null);
+    required this.initialValue,
+    required this.onDateRangePicked,
+  });
 
   @override
   _DateRangePickerPageState createState() => _DateRangePickerPageState();

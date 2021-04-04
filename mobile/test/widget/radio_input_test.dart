@@ -26,19 +26,6 @@ void main() {
     );
   });
 
-  testWidgets("Initial selected index is not set", (tester) async {
-    await tester.pumpWidget(
-      Testable(
-        (_) => RadioInput(
-          optionCount: 3,
-          optionBuilder: (context, i) => "Option $i",
-          onSelect: (_) {},
-        ),
-      ),
-    );
-    expect(find.byIcon(Icons.radio_button_unchecked), findsNWidgets(3));
-  });
-
   testWidgets("Title is set", (tester) async {
     await tester.pumpWidget(
       Testable(

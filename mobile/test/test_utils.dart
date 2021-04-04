@@ -3,16 +3,11 @@ import 'dart:io';
 import 'dart:ui' as ui;
 import 'dart:ui';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart' as google;
 import 'package:mobile/app_manager.dart';
-import 'package:mobile/database/legacy_importer.dart';
 import 'package:mobile/i18n/strings.dart';
 import 'package:mobile/utils/date_time_utils.dart';
 import 'package:mobile/widgets/widget.dart';
@@ -20,57 +15,21 @@ import 'package:mockito/mockito.dart';
 import 'package:photo_manager/photo_manager.dart';
 import 'package:provider/provider.dart';
 
-class MockAssetEntity extends Mock implements AssetEntity {}
-
-class MockAssetPathEntity extends Mock implements AssetPathEntity {}
-
-// ignore: must_be_immutable
-class MockCollectionReference extends Mock implements CollectionReference {}
-
-class MockDirectory extends Mock implements Directory {}
-
-class MockDocumentChange extends Mock implements DocumentChange {}
-
-class MockDocumentReference extends Mock implements DocumentReference {}
-
-class MockDocumentSnapshot extends Mock implements DocumentSnapshot {}
-
-class MockFile extends Mock implements File {}
-
-class MockFileSystemEntity extends Mock implements FileSystemEntity {}
-
-class MockFullMetadata extends Mock implements FullMetadata {}
-
-class MockGoogleMapController extends Mock
-    implements google.GoogleMapController {}
-
-class MockLegacyImporter extends Mock implements LegacyImporter {}
-
-class MockMethodChannel extends Mock implements MethodChannel {}
-
-class MockNavigatorObserver extends Mock implements NavigatorObserver {}
-
-class MockQuerySnapshot extends Mock implements QuerySnapshot {}
-
-class MockReference extends Mock implements Reference {}
-
-class MockStream<T> extends Mock implements Stream<T> {}
-
-class MockStreamSubscription<T> extends Mock implements StreamSubscription<T> {}
+import 'mocks/mocks.dart';
+import 'mocks/mocks.mocks.dart';
+import 'mocks/stubbed_app_manager.dart';
 
 /// A widget that wraps a child in default localizations.
 class Testable extends StatelessWidget {
   final Function(BuildContext) builder;
   final MediaQueryData mediaQueryData;
-  final NavigatorObserver navigatorObserver;
   final AppManager appManager;
 
   Testable(
     this.builder, {
     this.mediaQueryData = const MediaQueryData(),
-    this.navigatorObserver,
-    this.appManager,
-  }) : assert(builder != null);
+    StubbedAppManager? appManager,
+  }) : appManager = appManager?.app ?? StubbedAppManager().app;
 
   @override
   Widget build(BuildContext context) {
@@ -87,13 +46,11 @@ class Testable extends StatelessWidget {
           GlobalWidgetsLocalizations.delegate,
         ],
         locale: Locale("en", "CA"),
-        navigatorObservers:
-            navigatorObserver == null ? [] : [navigatorObserver],
         home: MediaQuery(
           data: mediaQueryData,
           child: Material(
             child: Builder(
-              builder: builder,
+              builder: builder as Widget Function(BuildContext),
             ),
           ),
         ),
@@ -112,9 +69,9 @@ DisplayDateRange stubDateRange(DateRange dateRange) {
 Future<BuildContext> buildContext(
   WidgetTester tester, {
   bool use24Hour = false,
-  AppManager appManager,
+  StubbedAppManager? appManager,
 }) async {
-  BuildContext context;
+  BuildContext? context;
   await tester.pumpWidget(Testable(
     (buildContext) {
       context = buildContext;
@@ -126,25 +83,30 @@ Future<BuildContext> buildContext(
     ),
     appManager: appManager,
   ));
-  return context;
+  return context!;
 }
 
 MockAssetEntity createMockAssetEntity({
-  @required String fileName,
-  String id,
-  DateTime dateTime,
-  LatLng latLngAsync,
-  LatLng latLngLegacy,
+  required String fileName,
+  String? id,
+  DateTime? dateTime,
+  LatLng? latLngAsync,
+  LatLng? latLngLegacy,
 }) {
-  var entity = MockAssetEntity();
-  when(entity.id).thenReturn(id ?? fileName);
-  when(entity.createDateTime).thenReturn(dateTime ?? DateTime.now());
-  when(entity.thumbData).thenAnswer(
-      (_) => Future.value(File("test/resources/$fileName").readAsBytesSync()));
-  when(entity.latlngAsync()).thenAnswer((_) => Future.value(latLngAsync));
-  when(entity.latitude).thenReturn(latLngLegacy?.latitude);
-  when(entity.longitude).thenReturn(latLngLegacy?.longitude);
-  return entity;
+  return MockAssetEntity(
+    fileName: fileName,
+    id: id ?? fileName,
+    dateTime: dateTime,
+    latLngAsync: latLngAsync,
+    latLngLegacy: latLngLegacy,
+  );
+}
+
+MockStream<T> createMockStreamWithSubscription<T>() {
+  var stream = MockStream<T>();
+  var streamSubscription = MockStreamSubscription<T>();
+  when(stream.listen(any)).thenReturn(streamSubscription);
+  return stream;
 }
 
 T findFirst<T>(WidgetTester tester) => tester.firstWidget(find.byType(T)) as T;
@@ -181,7 +143,7 @@ bool tapRichTextContaining(
       .text
       .visitChildren((span) {
     if (span is TextSpan && span.text == clickText) {
-      (span.recognizer as TapGestureRecognizer).onTap();
+      (span.recognizer as TapGestureRecognizer).onTap!();
       return false;
     }
     return true;
@@ -204,7 +166,7 @@ List<T> findType<T>(
 }
 
 Future<void> tapAndSettle(WidgetTester tester, Finder finder,
-    [int durationMillis]) async {
+    [int? durationMillis]) async {
   await tester.tap(finder);
   if (durationMillis == null) {
     await tester.pumpAndSettle();
@@ -219,8 +181,8 @@ Future<void> enterTextAndSettle(
   await tester.pumpAndSettle();
 }
 
-Future<ui.Image> loadImage(WidgetTester tester, String path) async {
-  ui.Image image;
+Future<ui.Image?> loadImage(WidgetTester tester, String path) async {
+  ui.Image? image;
   // runAsync is required here because instantiateImageCodec does real async
   // work and can't be used with pump().
   await tester.runAsync(() async {

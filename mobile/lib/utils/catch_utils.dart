@@ -59,6 +59,6 @@ List<Field> allCatchFields() {
 /// Returns all catch fields sorted alphabetically.
 List<Field> allCatchFieldsSorted(BuildContext context) {
   var fields = allCatchFields();
-  fields.sort((lhs, rhs) => lhs.name(context).compareTo(rhs.name(context)));
+  fields.sort((lhs, rhs) => lhs.name!(context).compareTo(rhs.name!(context)));
   return fields;
 }

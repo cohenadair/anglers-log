@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart' show IterableExtension;
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:quiver/strings.dart';
@@ -64,13 +65,13 @@ class DateRange {
   final DateTime startDate;
   final DateTime endDate;
 
-  DateRange({this.startDate, this.endDate})
+  DateRange({required this.startDate, required this.endDate})
       : assert(
             startDate.isAtSameMomentAs(endDate) || startDate.isBefore(endDate));
 
   DateRange.fromTimestamps({
-    int start,
-    int end,
+    required int start,
+    required int end,
   }) : this(
           startDate: DateTime.fromMillisecondsSinceEpoch(start),
           endDate: DateTime.fromMillisecondsSinceEpoch(end),
@@ -270,20 +271,20 @@ class DisplayDateRange {
   ];
 
   /// Returns the [DisplayDateRange] for the given ID, or `null` if none exists.
-  static DisplayDateRange of(
+  static DisplayDateRange? of(
     String id, [
-    int startTimestamp,
-    int endTimestamp,
+    int? startTimestamp,
+    int? endTimestamp,
   ]) {
     assert(id != custom.id || (startTimestamp != null && endTimestamp != null));
 
     if (isEmpty(id) || id == custom.id) {
       return DisplayDateRange.newCustomFromDateRange(DateRange.fromTimestamps(
-        start: startTimestamp,
-        end: endTimestamp,
+        start: startTimestamp!,
+        end: endTimestamp!,
       ));
     } else {
-      return all.firstWhere((range) => range.id == id, orElse: () => null);
+      return all.firstWhereOrNull((range) => range.id == id);
     }
   }
 
@@ -292,16 +293,16 @@ class DisplayDateRange {
   final String Function(BuildContext context) title;
 
   DisplayDateRange._({
-    this.id,
-    this.getValue,
-    this.title,
+    required this.id,
+    required this.getValue,
+    required this.title,
   });
 
   /// Used to create a [DisplayDateRange] with custom start and end dates, but
   /// with the same ID as [DisplayDateRange.custom].
   DisplayDateRange.newCustom({
-    DateRange Function(DateTime now) getValue,
-    String Function(BuildContext context) getTitle,
+    required DateRange Function(DateTime now) getValue,
+    required String Function(BuildContext context) getTitle,
   }) : this._(
           id: custom.id,
           getValue: getValue,
@@ -526,8 +527,8 @@ String formatDateAsRecent(BuildContext context, DateTime dateTime) {
 /// Example:
 ///   - 0d 5h 30m 0s
 String formatDuration({
-  BuildContext context,
-  int millisecondsDuration,
+  required BuildContext context,
+  required int millisecondsDuration,
   bool includesDays = true,
   bool includesHours = true,
   bool includesMinutes = true,
@@ -573,7 +574,7 @@ String formatDuration({
 
   var numberIncluded = 0;
 
-  bool shouldAdd(int value, {bool include}) {
+  bool shouldAdd(int value, {required bool include}) {
     return include &&
         (!condensed || value > 0) &&
         (!showHighestTwoOnly || numberIncluded < 2);

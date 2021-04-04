@@ -9,35 +9,30 @@ import 'package:mobile/widgets/button.dart';
 import 'package:mobile/widgets/text_input.dart';
 import 'package:mockito/mockito.dart';
 
-import '../mock_app_manager.dart';
+import '../mocks/stubbed_app_manager.dart';
 import '../test_utils.dart';
 
 void main() {
-  MockAppManager appManager;
+  late StubbedAppManager appManager;
 
   setUp(() {
-    appManager = MockAppManager(
-      mockAuthManager: true,
-      mockBaitCategoryManager: true,
-      mockBaitManager: true,
-      mockCustomEntityManager: true,
-      mockLocalDatabaseManager: true,
-      mockPreferencesManager: true,
-      mockSubscriptionManager: true,
-    );
+    appManager = StubbedAppManager();
 
-    when(appManager.mockAuthManager.stream).thenAnswer((_) => MockStream());
+    when(appManager.authManager.stream).thenAnswer((_) => Stream.empty());
 
-    when(appManager.mockBaitManager.duplicate(any)).thenReturn(false);
+    when(appManager.baitManager.addOrUpdate(any))
+        .thenAnswer((_) => Future.value(false));
+    when(appManager.baitManager.duplicate(any)).thenReturn(false);
 
-    when(appManager.mockLocalDatabaseManager.insertOrReplace(any, any))
+    when(appManager.localDatabaseManager.insertOrReplace(any, any))
         .thenAnswer((_) => Future.value(true));
 
-    when(appManager.mockPreferencesManager.baitCustomEntityIds).thenReturn([]);
+    when(appManager.userPreferenceManager.baitCustomEntityIds).thenReturn([]);
+    when(appManager.userPreferenceManager.baitFieldIds).thenReturn([]);
 
-    when(appManager.mockSubscriptionManager.stream)
-        .thenAnswer((_) => MockStream<void>());
-    when(appManager.mockSubscriptionManager.isPro).thenReturn(false);
+    when(appManager.subscriptionManager.stream)
+        .thenAnswer((_) => Stream.empty());
+    when(appManager.subscriptionManager.isPro).thenReturn(false);
   });
 
   testWidgets("Default values for new", (tester) async {
@@ -46,11 +41,11 @@ void main() {
       appManager: appManager,
     ));
     expect(find.text("Not Selected"), findsOneWidget);
-    expect(findFirst<TextField>(tester).controller.text, isEmpty);
+    expect(findFirst<TextField>(tester).controller!.text, isEmpty);
   });
 
   testWidgets("Hide bait category", (tester) async {
-    when(appManager.mockPreferencesManager.baitFieldIds).thenReturn([
+    when(appManager.userPreferenceManager.baitFieldIds).thenReturn([
       Id()..uuid = "017ae032-477b-4fe4-9be0-ea0a05a576f9", // Name ID
     ]);
 
@@ -64,19 +59,7 @@ void main() {
   });
 
   testWidgets("Shows bait category when empty IDs", (tester) async {
-    when(appManager.mockPreferencesManager.baitFieldIds).thenReturn([]);
-
-    await tester.pumpWidget(Testable(
-      (_) => SaveBaitPage(),
-      appManager: appManager,
-    ));
-
-    expect(find.text("Bait Category"), findsOneWidget);
-    expect(find.text("Name"), findsOneWidget);
-  });
-
-  testWidgets("Shows bait category when IDs is null", (tester) async {
-    when(appManager.mockPreferencesManager.baitFieldIds).thenReturn(null);
+    when(appManager.userPreferenceManager.baitFieldIds).thenReturn([]);
 
     await tester.pumpWidget(Testable(
       (_) => SaveBaitPage(),
@@ -112,10 +95,10 @@ void main() {
       ..id = randomId()
       ..name = "Lure";
 
-    when(appManager.mockBaitCategoryManager
+    when(appManager.baitCategoryManager
             .listSortedByName(filter: anyNamed("filter")))
         .thenReturn([baitCategory]);
-    when(appManager.mockBaitCategoryManager.entity(baitCategory.id))
+    when(appManager.baitCategoryManager.entity(baitCategory.id))
         .thenReturn(baitCategory);
 
     await tester.pumpWidget(Testable(
@@ -161,15 +144,14 @@ void main() {
           ..value = "Custom Value",
       ]);
 
-    when(appManager.mockBaitCategoryManager.entity(any))
-        .thenReturn(baitCategory);
-    when(appManager.mockBaitManager.duplicate(any)).thenReturn(false);
-    when(appManager.mockCustomEntityManager.entity(customEntityId))
+    when(appManager.baitCategoryManager.entity(any)).thenReturn(baitCategory);
+    when(appManager.baitManager.duplicate(any)).thenReturn(false);
+    when(appManager.customEntityManager.entity(customEntityId))
         .thenReturn(CustomEntity()
           ..id = customEntityId
           ..type = CustomEntity_Type.TEXT
           ..name = "Custom Entity");
-    when(appManager.mockPreferencesManager.baitCustomEntityIds).thenReturn([
+    when(appManager.userPreferenceManager.baitCustomEntityIds).thenReturn([
       customEntityId,
     ]);
 
@@ -188,7 +170,7 @@ void main() {
         tester, find.widgetWithText(TextField, "Name"), "Plug");
     await tapAndSettle(tester, find.text("SAVE"));
 
-    var result = verify(appManager.mockBaitManager.addOrUpdate(captureAny));
+    var result = verify(appManager.baitManager.addOrUpdate(captureAny));
     result.called(1);
 
     Bait newBait = result.captured.first;
@@ -210,9 +192,8 @@ void main() {
       ..name = "Rapala"
       ..baitCategoryId = categoryId;
 
-    when(appManager.mockBaitCategoryManager.entity(any))
-        .thenReturn(baitCategory);
-    when(appManager.mockBaitManager.duplicate(any)).thenReturn(true);
+    when(appManager.baitCategoryManager.entity(any)).thenReturn(baitCategory);
+    when(appManager.baitManager.duplicate(any)).thenReturn(true);
 
     await tester.pumpWidget(Testable(
       (_) => SaveBaitPage.edit(bait),
@@ -227,7 +208,7 @@ void main() {
     await tapAndSettle(tester, find.text("SAVE"));
 
     expect(find.text("Error"), findsOneWidget);
-    verifyNever(appManager.mockBaitManager.addOrUpdate(captureAny));
+    verifyNever(appManager.baitManager.addOrUpdate(captureAny));
   });
 
   testWidgets("New saving minimum", (tester) async {
@@ -239,7 +220,7 @@ void main() {
     await enterTextAndSettle(tester, find.byType(TextField), "Plug");
     await tapAndSettle(tester, find.text("SAVE"));
 
-    var result = verify(appManager.mockBaitManager.addOrUpdate(captureAny));
+    var result = verify(appManager.baitManager.addOrUpdate(captureAny));
     result.called(1);
 
     Bait bait = result.captured.first;
@@ -256,9 +237,9 @@ void main() {
       ..name = "Live";
 
     // Use real BaitManager to test listener notifications.
-    var baitCategoryManager = BaitCategoryManager(appManager);
+    var baitCategoryManager = BaitCategoryManager(appManager.app);
     baitCategoryManager.addOrUpdate(baitCategory);
-    when(appManager.baitCategoryManager).thenReturn(baitCategoryManager);
+    when(appManager.app.baitCategoryManager).thenReturn(baitCategoryManager);
 
     await tester.pumpWidget(
       Testable(

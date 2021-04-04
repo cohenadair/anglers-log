@@ -7,22 +7,22 @@ import '../res/style.dart';
 import '../widgets/widget.dart';
 
 class SearchBar extends StatefulWidget {
-  final String text;
-  final String hint;
-  final EdgeInsets margin;
+  final String? text;
+  final String? hint;
+  final EdgeInsets? margin;
 
   /// A widget to show before the search text. Usually an [Icon].
   /// Defaults to [Icons.search].
-  final Widget leading;
+  final Widget? leading;
 
   /// The padding between the leading widget and search text. This is useful
   /// for horizontally aligning text with widgets in a list, for example.
   /// Defaults to [paddingDefault].
-  final double leadingPadding;
+  final double? leadingPadding;
 
   /// A widget to show after the text. Usually an [IconButton]. When
   /// input is allowed, defaults to a close button to clear the text.
-  final Widget trailing;
+  final Widget? trailing;
 
   /// When true, a shadow is rendered beneath the [SearchBar]. Defaults to true.
   final bool elevated;
@@ -37,8 +37,8 @@ class SearchBar extends StatefulWidget {
     this.leadingPadding,
     this.trailing,
     this.elevated = true,
-    @required this.delegate,
-  }) : assert(delegate != null);
+    required this.delegate,
+  });
 
   @override
   _SearchBarState createState() => _SearchBarState();
@@ -50,7 +50,7 @@ class _SearchBarState extends State<SearchBar> {
   final TextEditingController _controller = TextEditingController();
   final FocusNode _focusNode = FocusNode();
 
-  VoidCallback _onFocusChanged;
+  late VoidCallback _onFocusChanged;
 
   bool get _isInput => widget.delegate.searchBarType == SearchBarType.input;
   bool get focused => _focusNode.hasFocus;
@@ -82,22 +82,18 @@ class _SearchBarState extends State<SearchBar> {
 
   @override
   Widget build(BuildContext context) {
-    Widget leading;
-    if (widget.leading != null) {
-      leading = widget.leading;
-    } else {
-      leading = Padding(
-        padding: EdgeInsets.only(
-          left: paddingDefault,
-          right: widget.leadingPadding ?? paddingDefault,
-        ),
-        child: Icon(Icons.search, color: Colors.black),
-      );
-    }
+    var leading = widget.leading ??
+        Padding(
+          padding: EdgeInsets.only(
+            left: paddingDefault,
+            right: widget.leadingPadding ?? paddingDefault,
+          ),
+          child: Icon(Icons.search, color: Colors.black),
+        );
 
-    Widget trailing;
+    Widget trailing = Empty();
     if (widget.trailing != null) {
-      trailing = widget.trailing;
+      trailing = widget.trailing!;
     } else if (_isInput) {
       trailing = AnimatedVisibility(
         visible: focused || isNotEmpty(_controller.text),
@@ -114,8 +110,6 @@ class _SearchBarState extends State<SearchBar> {
           },
         ),
       );
-    } else {
-      trailing = Empty();
     }
 
     return SafeArea(
@@ -140,7 +134,7 @@ class _SearchBarState extends State<SearchBar> {
                     placeholder: widget.hint,
                     placeholderStyle: Theme.of(context)
                         .textTheme
-                        .subtitle1
+                        .subtitle1!
                         .copyWith(color: Theme.of(context).disabledColor),
                     enabled: _isInput,
                     controller: _controller,
@@ -177,7 +171,7 @@ abstract class SearchBarDelegate {
   /// text input is disabled.
   ///
   /// Return a non-null value to use the Flutter [showSearch] function.
-  VoidCallback onTap();
+  VoidCallback? onTap();
 
   /// Called when the text input changes, or the input is cleared. This only
   /// applies when [searchBarType] is equal to [SearchBarType.input].
@@ -211,10 +205,10 @@ class InputSearchBarDelegate extends SearchBarDelegate {
   InputSearchBarDelegate(this.onChanged);
 
   @override
-  VoidCallback onTap() => null;
+  VoidCallback? onTap() => null;
 
   @override
-  void onTextChanged(String text) => onChanged?.call(text);
+  void onTextChanged(String text) => onChanged.call(text);
 
   @override
   SearchBarType get searchBarType => SearchBarType.input;

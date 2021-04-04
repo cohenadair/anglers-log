@@ -7,30 +7,27 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
 import 'package:mobile/pages/fishing_spot_list_page.dart';
 import 'package:mobile/utils/map_utils.dart';
+import 'package:mobile/widgets/empty_list_placeholder.dart';
 import 'package:mobile/widgets/fishing_spot_map.dart';
 import 'package:mobile/widgets/list_item.dart';
-import 'package:mobile/widgets/empty_list_placeholder.dart';
 import 'package:mobile/widgets/search_bar.dart';
 import 'package:mobile/widgets/widget.dart';
 import 'package:mockito/mockito.dart';
 import 'package:quiver/strings.dart' as quiver;
 
-import '../mock_app_manager.dart';
+import '../mocks/mocks.dart';
+import '../mocks/stubbed_app_manager.dart';
 import '../test_utils.dart';
 
-class MockCompleter<T> extends Mock implements Completer<T> {}
-
 void main() {
-  MockAppManager appManager;
+  late StubbedAppManager appManager;
 
   setUp(() {
-    appManager = MockAppManager(
-      mockFishingSpotManager: true,
-      mockLocationMonitor: true,
-      mockPermissionHandlerWrapper: true,
-    );
+    appManager = StubbedAppManager();
 
-    when(appManager.mockPermissionHandlerWrapper.requestLocation())
+    when(appManager.locationMonitor.currentLocation).thenReturn(null);
+
+    when(appManager.permissionHandlerWrapper.requestLocation())
         .thenAnswer((_) => Future.value(true));
   });
 
@@ -52,22 +49,22 @@ void main() {
         ..lat = 4.23456
         ..lng = 9.54321,
     ];
-    when(appManager.mockFishingSpotManager.listSortedByName())
+    when(appManager.fishingSpotManager.listSortedByName())
         .thenReturn(fishingSpots);
-    when(appManager.mockFishingSpotManager
+    when(appManager.fishingSpotManager
             .listSortedByName(filter: anyNamed("filter")))
         .thenAnswer((invocation) => fishingSpots
           ..removeWhere((spot) {
-            String filter = invocation.namedArguments[Symbol("filter")];
+            String? filter = invocation.namedArguments[Symbol("filter")];
             if (quiver.isEmpty(filter)) {
               return false;
             }
             if (quiver.isEmpty(spot.name)) {
-              return !spot.lat.toString().contains(filter) &&
+              return !spot.lat.toString().contains(filter!) &&
                   !spot.lng.toString().contains(filter);
             }
 
-            return !spot.name.contains(filter);
+            return !spot.name.contains(filter!);
           }));
   }
 
@@ -96,7 +93,7 @@ void main() {
     });
 
     testWidgets("Open fishing spot list with no fishing spots", (tester) async {
-      when(appManager.mockFishingSpotManager.listSortedByName()).thenReturn([]);
+      when(appManager.fishingSpotManager.listSortedByName()).thenReturn([]);
 
       await tester.pumpWidget(Testable(
         (_) => FishingSpotMap(
@@ -310,7 +307,7 @@ void main() {
       await tester.pumpAndSettle();
       expect(findFirst<HelpTooltip>(tester).showing, isTrue);
 
-      findFirst<GoogleMap>(tester).onCameraMoveStarted();
+      findFirst<GoogleMap>(tester).onCameraMoveStarted!();
       await tester.pumpAndSettle();
       expect(findFirst<HelpTooltip>(tester).showing, isFalse);
     });
@@ -328,7 +325,7 @@ void main() {
       ));
       await tester.pumpAndSettle(Duration(milliseconds: 200));
 
-      findFirst<GoogleMap>(tester).onCameraMoveStarted();
+      findFirst<GoogleMap>(tester).onCameraMoveStarted!();
       expect(called, isTrue);
     });
 
@@ -343,7 +340,7 @@ void main() {
       ));
       await tester.pumpAndSettle(Duration(milliseconds: 200));
 
-      findFirst<GoogleMap>(tester).onCameraMove(CameraPosition(
+      findFirst<GoogleMap>(tester).onCameraMove!(CameraPosition(
         target: LatLng(1, 1),
       ));
       expect(called, isTrue);
@@ -352,7 +349,7 @@ void main() {
 
   group("Map type", () {
     testWidgets("Changing the map type", (tester) async {
-      MapType currentType;
+      MapType? currentType;
       await tester.pumpWidget(Testable(
         (_) => FishingSpotMap(
           mapController: Completer<GoogleMapController>(),
@@ -408,7 +405,7 @@ void main() {
       ));
       await tester.pumpAndSettle(Duration(milliseconds: 200));
 
-      when(appManager.mockLocationMonitor.currentLocation).thenReturn(null);
+      when(appManager.locationMonitor.currentLocation).thenReturn(null);
       await tester.tap(find.byIcon(Icons.my_location));
       await tester.pumpAndSettle();
 
@@ -427,8 +424,7 @@ void main() {
       ));
       await tester.pumpAndSettle(Duration(milliseconds: 200));
 
-      when(appManager.mockLocationMonitor.currentLocation)
-          .thenReturn(LatLng(1, 1));
+      when(appManager.locationMonitor.currentLocation).thenReturn(LatLng(1, 1));
       await tester.tap(find.byIcon(Icons.my_location));
       await tester.pumpAndSettle();
 
@@ -437,7 +433,7 @@ void main() {
 
     testWidgets("onPressed shows permission dialog when denied",
         (tester) async {
-      when(appManager.mockPermissionHandlerWrapper.requestLocation())
+      when(appManager.permissionHandlerWrapper.requestLocation())
           .thenAnswer((_) => Future.value(false));
 
       await tester.pumpWidget(Testable(
@@ -480,9 +476,9 @@ void main() {
     });
 
     testWidgets("onPressed invokes callback", (tester) async {
-      var completer = MockCompleter<GoogleMapController>();
-      when(completer.future).thenAnswer(
-          (_) => Future.value(GoogleMapController.init(0, null, null)));
+      var completer = Completer<MockGoogleMapController>();
+      var controller = MockGoogleMapController();
+      when(controller.animateCamera(any)).thenAnswer((_) => Future.value());
       await tester.pumpWidget(
         Testable(
           (_) => FishingSpotMap(
@@ -503,19 +499,20 @@ void main() {
           appManager: appManager,
         ),
       );
+      completer.complete(controller);
       await tester.pumpAndSettle(Duration(milliseconds: 200));
 
       await tester.tap(find.byIcon(Icons.zoom_out_map));
       await tester.pumpAndSettle(Duration(milliseconds: 200));
 
-      verify(completer.future).called(1);
+      verify(controller.animateCamera(any)).called(1);
     });
 
     testWidgets("onPressed with no markers does not invoke callback",
         (tester) async {
-      var completer = MockCompleter<GoogleMapController>();
-      when(completer.future).thenAnswer(
-          (_) => Future.value(GoogleMapController.init(0, null, null)));
+      var completer = Completer<MockGoogleMapController>();
+      var controller = MockGoogleMapController();
+      when(controller.animateCamera(any)).thenAnswer((_) => Future.value());
       await tester.pumpWidget(
         Testable(
           (_) => FishingSpotMap(
@@ -524,12 +521,13 @@ void main() {
           appManager: appManager,
         ),
       );
+      completer.complete(controller);
       await tester.pumpAndSettle(Duration(milliseconds: 200));
 
       await tester.tap(find.byIcon(Icons.zoom_out_map));
       await tester.pumpAndSettle(Duration(milliseconds: 200));
 
-      verifyNever(completer.future);
+      verifyNever(controller.animateCamera(any));
     });
   });
 }

@@ -13,19 +13,19 @@ class SaveNamePage extends StatefulWidget {
   /// See [AppBar.title].
   final Widget title;
 
-  final String oldName;
+  final String? oldName;
 
   /// Invoked when the "Save" button is pressed. The value entered is passed to
   /// this callback.
   ///
   /// See [FormPage.onSave].
-  final bool Function(String) onSave;
+  final bool Function(String?)? onSave;
 
   /// Invoked when the name input changes.
-  final NameValidator validator;
+  final NameValidator? validator;
 
   SaveNamePage({
-    @required this.title,
+    required this.title,
     this.oldName,
     this.onSave,
     this.validator,
@@ -38,7 +38,7 @@ class SaveNamePage extends StatefulWidget {
 class _SaveNamePageState extends State<SaveNamePage> {
   static final _idName = randomId();
 
-  TextInputController _controller;
+  late final TextInputController _controller;
 
   @override
   void initState() {
@@ -62,14 +62,15 @@ class _SaveNamePageState extends State<SaveNamePage> {
     return FormPage.immutable(
       title: widget.title,
       onSave: (_) {
-        if (widget.oldName != null &&
-            equalsTrimmedIgnoreCase(widget.oldName, _controller.value)) {
+        if (isNotEmpty(widget.oldName) &&
+            isNotEmpty(_controller.value) &&
+            equalsTrimmedIgnoreCase(widget.oldName!, _controller.value!)) {
           // If the name didn't change, act as though "back" or "cancel" was
           // pressed.
           return true;
         }
 
-        if (widget.onSave == null || widget.onSave(_controller.value)) {
+        if (widget.onSave == null || widget.onSave!(_controller.value)) {
           return true;
         }
 

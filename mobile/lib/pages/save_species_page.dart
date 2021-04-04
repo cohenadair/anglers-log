@@ -8,10 +8,11 @@ import '../utils/protobuf_utils.dart';
 import '../utils/validator.dart';
 
 class SaveSpeciesPage extends StatelessWidget {
-  final Species oldSpecies;
+  final Species? oldSpecies;
 
   SaveSpeciesPage() : oldSpecies = null;
-  SaveSpeciesPage.edit(this.oldSpecies);
+
+  SaveSpeciesPage.edit(Species this.oldSpecies);
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +26,7 @@ class SaveSpeciesPage extends StatelessWidget {
       onSave: (newName) {
         var newSpecies = Species()
           ..id = oldSpecies?.id ?? randomId()
-          ..name = newName;
+          ..name = newName!;
 
         speciesManager.addOrUpdate(newSpecies);
         return true;

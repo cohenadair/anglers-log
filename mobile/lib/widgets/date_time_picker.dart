@@ -11,14 +11,13 @@ import '../widgets/widget.dart';
 class DateTimePicker extends StatelessWidget {
   final DatePicker datePicker;
   final TimePicker timePicker;
-  final Widget helper;
+  final Widget? helper;
 
   DateTimePicker({
-    @required this.datePicker,
-    @required this.timePicker,
+    required this.datePicker,
+    required this.timePicker,
     this.helper,
-  })  : assert(datePicker != null),
-        assert(timePicker != null);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -70,10 +69,10 @@ class DateTimePicker extends StatelessWidget {
 class DatePicker extends FormField<DateTime> {
   DatePicker(
     BuildContext context, {
-    @required String label,
-    DateTime initialDate,
-    void Function(DateTime) onChange,
-    String Function(DateTime) validator,
+    required String label,
+    DateTime? initialDate,
+    void Function(DateTime)? onChange,
+    FormFieldValidator<DateTime>? validator,
     bool enabled = true,
   })  : assert(isNotEmpty(label)),
         super(
@@ -87,14 +86,14 @@ class DatePicker extends FormField<DateTime> {
               type: _PickerType(
                 getValue: () {
                   return DateLabel(
-                    state.value,
+                    state.value!,
                     enabled: enabled,
                   );
                 },
                 openPicker: () {
                   showDatePicker(
                     context: state.context,
-                    initialDate: state.value,
+                    initialDate: state.value!,
                     // Weird requirement of showDatePicker, but essentially
                     // let the user pick any date.
                     firstDate: DateTime(1900),
@@ -116,10 +115,10 @@ class DatePicker extends FormField<DateTime> {
 class TimePicker extends FormField<TimeOfDay> {
   TimePicker(
     BuildContext context, {
-    @required String label,
-    TimeOfDay initialTime,
-    Function(TimeOfDay) onChange,
-    String Function(TimeOfDay) validator,
+    required String label,
+    TimeOfDay? initialTime,
+    Function(TimeOfDay)? onChange,
+    FormFieldValidator<TimeOfDay>? validator,
     bool enabled = true,
   })  : assert(isNotEmpty(label)),
         super(
@@ -133,14 +132,14 @@ class TimePicker extends FormField<TimeOfDay> {
               type: _PickerType(
                 getValue: () {
                   return TimeLabel(
-                    state.value,
+                    state.value!,
                     enabled: enabled,
                   );
                 },
                 openPicker: () {
                   showTimePicker(
                     context: state.context,
-                    initialTime: state.value,
+                    initialTime: state.value!,
                   ).then((time) {
                     if (time == null) {
                       return;
@@ -160,24 +159,23 @@ class _PickerType {
   final VoidCallback openPicker;
 
   _PickerType({
-    @required this.getValue,
-    @required this.openPicker,
+    required this.getValue,
+    required this.openPicker,
   });
 }
 
 class _Picker extends StatelessWidget {
   final _PickerType type;
   final String label;
-  final String errorText;
+  final String? errorText;
   final bool enabled;
 
   _Picker({
-    @required this.type,
-    @required this.label,
+    required this.type,
+    required this.label,
     this.errorText,
     this.enabled = true,
-  })  : assert(type != null),
-        assert(isNotEmpty(label));
+  }) : assert(isNotEmpty(label));
 
   @override
   Widget build(BuildContext context) {

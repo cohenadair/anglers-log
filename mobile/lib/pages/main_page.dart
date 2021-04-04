@@ -21,14 +21,16 @@ class MainPage extends StatefulWidget {
 
 class _MainPageState extends State<MainPage> {
   // Need to stash a reference here so listeners can be removed when disposed.
-  CatchManager _catchManager;
-  EntityListener<Catch> _catchManagerListener;
+  late CatchManager _catchManager;
+  late EntityListener<Catch> _catchManagerListener;
 
   int _currentBarItem = 1; // Default to the "Catches" tab.
-  List<_BarItemData> _navItems;
+  late List<_BarItemData> _navItems;
 
-  NavigatorState get _currentNavState =>
-      _navItems[_currentBarItem].page.navigatorKey.currentState;
+  NavigatorState get _currentNavState {
+    assert(_navItems[_currentBarItem].page?.navigatorKey.currentState != null);
+    return _navItems[_currentBarItem].page!.navigatorKey.currentState!;
+  }
 
   @override
   void initState() {
@@ -112,7 +114,7 @@ class _MainPageState extends State<MainPage> {
               .toList(),
           onTap: (index) {
             if (_navItems[index].onTapOverride != null) {
-              _navItems[index].onTapOverride();
+              _navItems[index].onTapOverride!();
               return;
             }
 
@@ -132,22 +134,20 @@ class _MainPageState extends State<MainPage> {
 }
 
 class _BarItemData {
-  final _NavigatorPage page;
+  final _NavigatorPage? page;
   final String Function(BuildContext) titleBuilder;
   final IconData icon;
 
   /// If set, overrides the default behaviour of showing the associated
   /// [Widget].
-  final VoidCallback onTapOverride;
+  final VoidCallback? onTapOverride;
 
   _BarItemData({
     this.page,
-    @required this.titleBuilder,
-    @required this.icon,
+    required this.titleBuilder,
+    required this.icon,
     this.onTapOverride,
-  })  : assert(page != null || onTapOverride != null),
-        assert(titleBuilder != null),
-        assert(icon != null);
+  }) : assert(page != null || onTapOverride != null);
 }
 
 // TODO: Popping multiple pages had bad animation - https://github.com/flutter/flutter/issues/59990#issuecomment-697328406
@@ -160,8 +160,8 @@ class _NavigatorPage extends StatelessWidget {
   final Widget Function(BuildContext) builder;
 
   _NavigatorPage({
-    this.navigatorKey,
-    @required this.builder,
+    required this.navigatorKey,
+    required this.builder,
   });
 
   @override

@@ -6,21 +6,19 @@ import 'package:mobile/pages/photo_gallery_page.dart';
 import 'package:mobile/widgets/photo.dart';
 import 'package:mockito/mockito.dart';
 
-import '../mock_app_manager.dart';
+import '../mocks/stubbed_app_manager.dart';
 import '../test_utils.dart';
 
 void main() {
-  MockAppManager appManager;
+  late StubbedAppManager appManager;
 
   setUp(() {
-    appManager = MockAppManager(
-      mockImageManager: true,
-    );
+    appManager = StubbedAppManager();
   });
 
-  Future<ui.Image> image(tester, String name) async {
+  Future<ui.Image?> image(tester, String name) async {
     var image = await loadImage(tester, "test/resources/$name");
-    when(appManager.mockImageManager.dartImage(any, name, any))
+    when(appManager.imageManager.dartImage(any, name, any))
         .thenAnswer((_) => Future.value(image));
     return image;
   }
@@ -47,7 +45,7 @@ void main() {
     await tester.pumpAndSettle(Duration(milliseconds: 250));
 
     expect(find.byType(Photo), findsOneWidget);
-    verify(appManager.mockImageManager.dartImage(any, "apple_logo.png", any))
+    verify(appManager.imageManager.dartImage(any, "apple_logo.png", any))
         .called(1);
   });
 
@@ -72,22 +70,21 @@ void main() {
     // Let image future settle.
     await tester.pumpAndSettle(Duration(milliseconds: 250));
 
-    verify(appManager.mockImageManager.dartImage(any, "flutter_logo.png", any))
+    verify(appManager.imageManager.dartImage(any, "flutter_logo.png", any))
         .called(1);
 
     // Swipe left.
     await tester.fling(find.byType(Photo), Offset(-300, 0), 800);
     await tester.pumpAndSettle(Duration(milliseconds: 250));
 
-    verify(appManager.mockImageManager
-            .dartImage(any, "anglers_log_logo.png", any))
+    verify(appManager.imageManager.dartImage(any, "anglers_log_logo.png", any))
         .called(1);
 
     // Swipe back.
     await tester.fling(find.byType(Photo), Offset(300, 0), 800);
     await tester.pumpAndSettle(Duration(milliseconds: 250));
 
-    verify(appManager.mockImageManager.dartImage(any, "flutter_logo.png", any))
+    verify(appManager.imageManager.dartImage(any, "flutter_logo.png", any))
         .called(1);
   });
 }

@@ -6,17 +6,17 @@ import 'package:mobile/pages/save_fishing_spot_page.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mockito/mockito.dart';
 
-import '../mock_app_manager.dart';
+import '../mocks/stubbed_app_manager.dart';
 import '../test_utils.dart';
 
 void main() {
-  MockAppManager appManager;
+  late StubbedAppManager appManager;
 
   setUp(() {
-    appManager = MockAppManager(
-      mockFishingSpotManager: true,
-      mockLocationMonitor: true,
-    );
+    appManager = StubbedAppManager();
+
+    when(appManager.fishingSpotManager.addOrUpdate(any))
+        .thenAnswer((_) => Future.value(false));
   });
 
   testWidgets("New title", (tester) async {
@@ -49,8 +49,7 @@ void main() {
         tester, find.widgetWithText(TextField, "Name"), "Spot A");
     await tapAndSettle(tester, find.text("SAVE"));
 
-    var result =
-        verify(appManager.mockFishingSpotManager.addOrUpdate(captureAny));
+    var result = verify(appManager.fishingSpotManager.addOrUpdate(captureAny));
     result.called(1);
 
     FishingSpot spot = result.captured.first;
@@ -69,8 +68,7 @@ void main() {
 
     await tapAndSettle(tester, find.text("SAVE"));
 
-    var result =
-        verify(appManager.mockFishingSpotManager.addOrUpdate(captureAny));
+    var result = verify(appManager.fishingSpotManager.addOrUpdate(captureAny));
     result.called(1);
 
     FishingSpot spot = result.captured.first;

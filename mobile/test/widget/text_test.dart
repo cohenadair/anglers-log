@@ -42,7 +42,7 @@ void main() {
         ),
       );
       var enabledColor =
-          (tester.firstWidget(find.text("Test")) as Text).style.color;
+          (tester.firstWidget(find.text("Test")) as Text).style!.color;
 
       await tester.pumpWidget(
         Testable(
@@ -53,7 +53,7 @@ void main() {
         ),
       );
       var disabledColor =
-          (tester.firstWidget(find.text("Test 2")) as Text).style.color;
+          (tester.firstWidget(find.text("Test 2")) as Text).style!.color;
 
       expect(enabledColor != disabledColor, isTrue);
     });
@@ -70,7 +70,7 @@ void main() {
         ),
       );
       var enabledColor =
-          (tester.firstWidget(find.text("Test")) as Text).style.color;
+          (tester.firstWidget(find.text("Test")) as Text).style!.color;
 
       await tester.pumpWidget(
         Testable(
@@ -81,7 +81,7 @@ void main() {
         ),
       );
       var disabledColor =
-          (tester.firstWidget(find.text("Test 2")) as Text).style.color;
+          (tester.firstWidget(find.text("Test 2")) as Text).style!.color;
 
       expect(enabledColor != disabledColor, isTrue);
     });

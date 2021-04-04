@@ -9,31 +9,28 @@ import 'package:mobile/pages/onboarding/onboarding_journey.dart';
 import 'package:mobile/widgets/button.dart';
 import 'package:mockito/mockito.dart';
 
-import '../../mock_app_manager.dart';
+import '../../mocks/mocks.mocks.dart';
+import '../../mocks/stubbed_app_manager.dart';
 import '../../test_utils.dart';
 
 void main() {
-  MockAppManager appManager;
+  late StubbedAppManager appManager;
 
   setUp(() {
-    appManager = MockAppManager(
-      mockBaitManager: true,
-      mockBaitCategoryManager: true,
-      mockCustomEntityManager: true,
-      mockFishingSpotManager: true,
-      mockLocationMonitor: true,
-      mockPreferencesManager: true,
-      mockSpeciesManager: true,
-      mockTimeManager: true,
-      mockIoWrapper: true,
-      mockPermissionHandlerWrapper: true,
-    );
+    appManager = StubbedAppManager();
 
-    when(appManager.mockLocationMonitor.initialize())
+    when(appManager.locationMonitor.initialize())
         .thenAnswer((_) => Future.value(null));
-    when(appManager.mockPreferencesManager.catchCustomEntityIds).thenReturn([]);
-    when(appManager.mockPermissionHandlerWrapper.requestLocation())
+    when(appManager.userPreferenceManager.catchCustomEntityIds).thenReturn([]);
+    when(appManager.userPreferenceManager.catchFieldIds).thenReturn([]);
+    when(appManager.permissionHandlerWrapper.requestLocation())
         .thenAnswer((_) => Future.value(true));
+
+    var dir = MockDirectory();
+    when(dir.listSync()).thenReturn([]);
+    when(dir.deleteSync()).thenAnswer((_) {});
+    when(dir.deleteSync(recursive: false)).thenAnswer((_) {});
+    when(appManager.ioWrapper.directory(any)).thenReturn(dir);
   });
 
   testWidgets("Navigation", (tester) async {

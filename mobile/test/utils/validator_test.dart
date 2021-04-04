@@ -56,14 +56,14 @@ void main() {
         NameValidator(
           nameExists: (_) => false,
           nameExistsMessage: (_) => "Message",
-        ).run(context, "")(context),
+        ).run(context, "")!(context),
         "Required",
       );
       expect(
         NameValidator(
           nameExists: (_) => false,
           nameExistsMessage: (_) => "Message",
-        ).run(context, null)(context),
+        ).run(context, null)!(context),
         "Required",
       );
     });
@@ -74,7 +74,7 @@ void main() {
         NameValidator(
           nameExists: (_) => true,
           nameExistsMessage: (_) => "Exists",
-        ).run(context, "Test")(context),
+        ).run(context, "Test")!(context),
         "Exists",
       );
     });
@@ -95,7 +95,7 @@ void main() {
   group("DoubleValidator", () {
     testWidgets("Error if parse fails", (tester) async {
       var context = await buildContext(tester);
-      expect(DoubleValidator().run(context, "Not a double")(context),
+      expect(DoubleValidator().run(context, "Not a double")!(context),
           "Invalid number input");
     });
 
@@ -110,7 +110,7 @@ void main() {
   group("EmailValidator", () {
     testWidgets("Error if invalid format", (tester) async {
       var context = await buildContext(tester);
-      expect(EmailValidator().run(context, "not a valid email")(context),
+      expect(EmailValidator().run(context, "not a valid email")!(context),
           "Invalid email format");
     });
 
@@ -127,9 +127,9 @@ void main() {
 
     testWidgets("Error if empty and required", (tester) async {
       var context = await buildContext(tester);
-      expect(
-          EmailValidator(required: true).run(context, "")(context), "Required");
-      expect(EmailValidator(required: true).run(context, null)(context),
+      expect(EmailValidator(required: true).run(context, "")!(context),
+          "Required");
+      expect(EmailValidator(required: true).run(context, null)!(context),
           "Required");
     });
   });
@@ -137,8 +137,8 @@ void main() {
   group("EmptyValidator", () {
     testWidgets("Error if empty", (tester) async {
       var context = await buildContext(tester);
-      expect(EmptyValidator().run(context, "")(context), "Required");
-      expect(EmptyValidator().run(context, null)(context), "Required");
+      expect(EmptyValidator().run(context, "")!(context), "Required");
+      expect(EmptyValidator().run(context, null)!(context), "Required");
     });
 
     testWidgets("null if not empty", (tester) async {

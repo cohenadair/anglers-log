@@ -5,6 +5,7 @@ import '../bait_manager.dart';
 import '../catch_manager.dart';
 import '../entity_manager.dart';
 import '../fishing_spot_manager.dart';
+import '../i18n/strings.dart';
 import '../model/gen/anglerslog.pb.dart';
 import '../pages/bait_page.dart';
 import '../pages/entity_page.dart';
@@ -19,9 +20,9 @@ import '../widgets/text.dart';
 import '../widgets/widget.dart';
 
 class CatchPage extends StatefulWidget {
-  final Id catchId;
+  final Catch cat;
 
-  CatchPage(this.catchId) : assert(catchId != null);
+  CatchPage(this.cat);
 
   @override
   _CatchPageState createState() => _CatchPageState();
@@ -35,17 +36,21 @@ class _CatchPageState extends State<CatchPage> {
   FishingSpotManager get _fishingSpotManager => FishingSpotManager.of(context);
   SpeciesManager get _speciesManager => SpeciesManager.of(context);
 
-  Catch get _catch => _catchManager.entity(widget.catchId);
-
   // TODO: Remove this when Google Maps performance issue is fixed.
   // https://github.com/flutter/flutter/issues/28493
   final Future<bool> _fishingSpotFuture =
       Future.delayed(Duration(milliseconds: 150), () => true);
 
+  late Catch _catch;
+
+  @override
+  void initState() {
+    super.initState();
+    _catch = widget.cat;
+  }
+
   @override
   Widget build(BuildContext context) {
-    assert(_catch != null);
-
     return EntityListenerBuilder(
       managers: [
         _baitCategoryManager,
@@ -54,44 +59,50 @@ class _CatchPageState extends State<CatchPage> {
         _fishingSpotManager,
         _speciesManager,
       ],
-      // When deleted, we pop immediately. Don't reload; catch will be null.
       onDeleteEnabled: false,
-      builder: (context) => EntityPage(
-        customEntityValues: _catch.customEntityValues,
-        padding: insetsZero,
-        onEdit: () => present(context, SaveCatchPage.edit(_catch)),
-        onDelete: () => _catchManager.delete(_catch.id),
-        deleteMessage: _catchManager.deleteMessage(context, _catch),
-        imageNames: _catch.imageNames,
-        children: <Widget>[
-          Container(
-            padding: EdgeInsets.only(
-              top: paddingDefault,
-              right: paddingDefault,
-              bottom: paddingSmall,
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                TitleLabel(_speciesManager.entity(_catch.speciesId).name),
-                Padding(
-                  padding: const EdgeInsets.only(
-                    left: paddingDefault,
+      builder: (context) {
+        // Always fetch the latest catch when the widget tree is (re)built.
+        // Fallback on the current catch (if the current was deleted).
+        _catch = _catchManager.entity(widget.cat.id) ?? _catch;
+
+        return EntityPage(
+          customEntityValues: _catch.customEntityValues,
+          padding: insetsZero,
+          onEdit: () => present(context, SaveCatchPage.edit(_catch)),
+          onDelete: () => _catchManager.delete(_catch.id),
+          deleteMessage: _catchManager.deleteMessage(context, _catch),
+          imageNames: _catch.imageNames,
+          children: <Widget>[
+            Container(
+              padding: EdgeInsets.only(
+                top: paddingDefault,
+                right: paddingDefault,
+                bottom: paddingSmall,
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  TitleLabel(_speciesManager.entity(_catch.speciesId)?.name ??
+                      Strings.of(context).unknownSpecies),
+                  Padding(
+                    padding: const EdgeInsets.only(
+                      left: paddingDefault,
+                    ),
+                    child: SubtitleLabel(
+                      formatTimestamp(context, _catch.timestamp.toInt()),
+                    ),
                   ),
-                  child: SubtitleLabel(
-                    formatTimestamp(context, _catch.timestamp.toInt()),
-                  ),
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
-          _buildBait(),
-          EmptyFutureBuilder<bool>(
-            future: _fishingSpotFuture,
-            builder: (context, _) => _buildFishingSpot(),
-          ),
-        ],
-      ),
+            _buildBait(),
+            EmptyFutureBuilder<bool>(
+              future: _fishingSpotFuture,
+              builder: (context, _) => _buildFishingSpot(),
+            ),
+          ],
+        );
+      },
     );
   }
 
@@ -101,7 +112,7 @@ class _CatchPageState extends State<CatchPage> {
       return Empty();
     }
 
-    Widget subtitle;
+    Widget? subtitle;
     var baitCategory = _baitCategoryManager.entity(bait.baitCategoryId);
     if (baitCategory != null) {
       subtitle = SubtitleLabel(baitCategory.name);
@@ -114,7 +125,7 @@ class _CatchPageState extends State<CatchPage> {
       onTap: () => push(
         context,
         BaitPage(
-          bait.id,
+          bait,
           static: true,
         ),
       ),

@@ -25,7 +25,7 @@ class _ProPageState extends State<ProPage> {
   static const _checkSize = 30.0;
   static const _maxButtonsContainerWidth = 300.0;
 
-  Future<Subscriptions> _subscriptionsFuture;
+  late Future<Subscriptions?> _subscriptionsFuture;
   var _isPendingTransaction = false;
 
   IoWrapper get _ioWrapper => IoWrapper.of(context);
@@ -98,7 +98,7 @@ class _ProPageState extends State<ProPage> {
     } else if (_subscriptionManager.isPro) {
       child = WorkResult.success(Strings.of(context).proPageUpgradeSuccess);
     } else {
-      child = FutureBuilder<Subscriptions>(
+      child = FutureBuilder<Subscriptions?>(
         future: _subscriptionsFuture,
         builder: (context, snapshot) {
           return AnimatedSwitcher(
@@ -117,7 +117,7 @@ class _ProPageState extends State<ProPage> {
     );
   }
 
-  Widget _buildSubscriptionOptions(Subscriptions subscriptions) {
+  Widget _buildSubscriptionOptions(Subscriptions? subscriptions) {
     if (subscriptions == null) {
       return WorkResult.error(Strings.of(context).proPageFetchError);
     }
@@ -158,12 +158,11 @@ class _ProPageState extends State<ProPage> {
   }
 
   Widget _buildSubscriptionButton({
-    @required Subscription sub,
-    @required String priceText,
-    @required String trialText,
-    @required String billingFrequencyText,
+    required Subscription sub,
+    required String priceText,
+    required String trialText,
+    required String billingFrequencyText,
   }) {
-    assert(sub != null);
     assert(isNotEmpty(priceText));
     assert(isNotEmpty(trialText));
     assert(isNotEmpty(billingFrequencyText));
@@ -200,7 +199,7 @@ class _ProPageState extends State<ProPage> {
     _subscriptionManager.restoreSubscription().then((result) {
       _setIsPendingTransaction(false);
 
-      String dialogMessage;
+      String? dialogMessage;
       switch (result) {
         case RestoreSubscriptionResult.noSubscriptionsFound:
           dialogMessage = _ioWrapper.isAndroid
@@ -220,7 +219,7 @@ class _ProPageState extends State<ProPage> {
       if (isNotEmpty(dialogMessage)) {
         showErrorDialog(
           context: context,
-          description: Text(dialogMessage),
+          description: Text(dialogMessage!),
         );
       }
     });

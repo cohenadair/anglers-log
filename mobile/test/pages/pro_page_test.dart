@@ -4,29 +4,22 @@ import 'package:mobile/pages/pro_page.dart';
 import 'package:mobile/subscription_manager.dart';
 import 'package:mobile/widgets/widget.dart';
 import 'package:mockito/mockito.dart';
-import 'package:purchases_flutter/purchases_flutter.dart';
 
-import '../mock_app_manager.dart';
+import '../mocks/mocks.mocks.dart';
+import '../mocks/stubbed_app_manager.dart';
 import '../test_utils.dart';
 
-class MockPackage extends Mock implements Package {}
-
-class MockProduct extends Mock implements Product {}
-
 void main() {
-  MockAppManager appManager;
-  MockPackage monthlyPackage;
-  MockPackage yearlyPackage;
+  late StubbedAppManager appManager;
+  late MockPackage monthlyPackage;
+  late MockPackage yearlyPackage;
 
   setUp(() {
-    appManager = MockAppManager(
-      mockIoWrapper: true,
-      mockSubscriptionManager: true,
-    );
+    appManager = StubbedAppManager();
 
-    when(appManager.mockSubscriptionManager.stream)
-        .thenAnswer((_) => MockStream<void>());
-    when(appManager.mockSubscriptionManager.isPro).thenReturn(false);
+    when(appManager.subscriptionManager.stream)
+        .thenAnswer((_) => Stream.empty());
+    when(appManager.subscriptionManager.isPro).thenReturn(false);
 
     var monthlyProduct = MockProduct();
     when(monthlyProduct.priceString).thenReturn("\$2.99");
@@ -38,14 +31,14 @@ void main() {
     yearlyPackage = MockPackage();
     when(yearlyPackage.product).thenReturn(yearlyProduct);
 
-    when(appManager.mockSubscriptionManager.subscriptions()).thenAnswer((_) =>
+    when(appManager.subscriptionManager.subscriptions()).thenAnswer((_) =>
         Future.value(Subscriptions(
             Subscription(monthlyPackage, 7), Subscription(yearlyPackage, 14))));
   });
 
   testWidgets("Loading widget shows while fetching subscriptions, then options",
       (tester) async {
-    when(appManager.mockSubscriptionManager.subscriptions()).thenAnswer(
+    when(appManager.subscriptionManager.subscriptions()).thenAnswer(
       (_) => Future.delayed(
         Duration(milliseconds: 50),
         () => Subscriptions(
@@ -72,7 +65,7 @@ void main() {
 
   testWidgets("Loading widget shows while a purchase is pending, then success",
       (tester) async {
-    when(appManager.mockSubscriptionManager.subscriptions()).thenAnswer(
+    when(appManager.subscriptionManager.subscriptions()).thenAnswer(
       (_) => Future.value(
         Subscriptions(
           Subscription(monthlyPackage, 7),
@@ -80,7 +73,7 @@ void main() {
         ),
       ),
     );
-    when(appManager.mockSubscriptionManager.purchaseSubscription(any))
+    when(appManager.subscriptionManager.purchaseSubscription(any))
         .thenAnswer((_) => Future.delayed(Duration(milliseconds: 50), () {}));
 
     await tester.pumpWidget(Testable(
@@ -96,7 +89,7 @@ void main() {
     expect(findFirst<AnimatedSwitcher>(tester).child is Loading, isTrue);
 
     // Wait for purchase to finish.
-    when(appManager.mockSubscriptionManager.isPro).thenReturn(true);
+    when(appManager.subscriptionManager.isPro).thenReturn(true);
     await tester.pumpAndSettle(Duration(milliseconds: 50));
 
     expect(find.text("Congratulations, you are an Anglers' Log Pro user!"),
@@ -105,7 +98,7 @@ void main() {
 
   testWidgets("Subscription options are not shown if user is already pro",
       (tester) async {
-    when(appManager.mockSubscriptionManager.isPro).thenReturn(true);
+    when(appManager.subscriptionManager.isPro).thenReturn(true);
 
     await tester.pumpWidget(Testable(
       (_) => ProPage(),
@@ -117,7 +110,7 @@ void main() {
   });
 
   testWidgets("Error shown if error fetching subscriptions", (tester) async {
-    when(appManager.mockSubscriptionManager.subscriptions())
+    when(appManager.subscriptionManager.subscriptions())
         .thenAnswer((_) => Future.value(null));
 
     await tester.pumpWidget(Testable(
@@ -136,7 +129,7 @@ void main() {
 
   testWidgets("Loading widget shows while a restore is pending, then success",
       (tester) async {
-    when(appManager.mockSubscriptionManager.subscriptions()).thenAnswer(
+    when(appManager.subscriptionManager.subscriptions()).thenAnswer(
       (_) => Future.value(
         Subscriptions(
           Subscription(monthlyPackage, 7),
@@ -144,8 +137,8 @@ void main() {
         ),
       ),
     );
-    when(appManager.mockSubscriptionManager.restoreSubscription()).thenAnswer(
-        (_) => Future.delayed(Duration(milliseconds: 50),
+    when(appManager.subscriptionManager.restoreSubscription()).thenAnswer((_) =>
+        Future.delayed(Duration(milliseconds: 50),
             () => RestoreSubscriptionResult.success));
 
     await tester.pumpWidget(Testable(
@@ -165,7 +158,7 @@ void main() {
     expect(findFirst<AnimatedSwitcher>(tester).child is Loading, isTrue);
 
     // Wait for purchase to finish.
-    when(appManager.mockSubscriptionManager.isPro).thenReturn(true);
+    when(appManager.subscriptionManager.isPro).thenReturn(true);
     await tester.pumpAndSettle(Duration(milliseconds: 50));
 
     expect(find.text("Congratulations, you are an Anglers' Log Pro user!"),
@@ -173,8 +166,8 @@ void main() {
   });
 
   testWidgets("No purchases found when restoring on iOS", (tester) async {
-    when(appManager.mockIoWrapper.isAndroid).thenReturn(false);
-    when(appManager.mockSubscriptionManager.subscriptions()).thenAnswer(
+    when(appManager.ioWrapper.isAndroid).thenReturn(false);
+    when(appManager.subscriptionManager.subscriptions()).thenAnswer(
       (_) => Future.value(
         Subscriptions(
           Subscription(monthlyPackage, 7),
@@ -182,8 +175,8 @@ void main() {
         ),
       ),
     );
-    when(appManager.mockSubscriptionManager.restoreSubscription()).thenAnswer(
-        (_) => Future.delayed(Duration(milliseconds: 50),
+    when(appManager.subscriptionManager.restoreSubscription()).thenAnswer((_) =>
+        Future.delayed(Duration(milliseconds: 50),
             () => RestoreSubscriptionResult.noSubscriptionsFound));
 
     await tester.pumpWidget(Testable(
@@ -203,7 +196,7 @@ void main() {
     expect(findFirst<AnimatedSwitcher>(tester).child is Loading, isTrue);
 
     // Wait for purchase to finish.
-    when(appManager.mockSubscriptionManager.isPro).thenReturn(false);
+    when(appManager.subscriptionManager.isPro).thenReturn(false);
     await tester.pumpAndSettle(Duration(milliseconds: 50));
 
     expect(
@@ -215,8 +208,8 @@ void main() {
   });
 
   testWidgets("No purchases found when restoring on Android", (tester) async {
-    when(appManager.mockIoWrapper.isAndroid).thenReturn(true);
-    when(appManager.mockSubscriptionManager.subscriptions()).thenAnswer(
+    when(appManager.ioWrapper.isAndroid).thenReturn(true);
+    when(appManager.subscriptionManager.subscriptions()).thenAnswer(
       (_) => Future.value(
         Subscriptions(
           Subscription(monthlyPackage, 7),
@@ -224,8 +217,8 @@ void main() {
         ),
       ),
     );
-    when(appManager.mockSubscriptionManager.restoreSubscription()).thenAnswer(
-        (_) => Future.delayed(Duration(milliseconds: 50),
+    when(appManager.subscriptionManager.restoreSubscription()).thenAnswer((_) =>
+        Future.delayed(Duration(milliseconds: 50),
             () => RestoreSubscriptionResult.noSubscriptionsFound));
 
     await tester.pumpWidget(Testable(
@@ -245,7 +238,7 @@ void main() {
     expect(findFirst<AnimatedSwitcher>(tester).child is Loading, isTrue);
 
     // Wait for purchase to finish.
-    when(appManager.mockSubscriptionManager.isPro).thenReturn(false);
+    when(appManager.subscriptionManager.isPro).thenReturn(false);
     await tester.pumpAndSettle(Duration(milliseconds: 50));
 
     expect(
@@ -257,8 +250,8 @@ void main() {
   });
 
   testWidgets("Generic error when restoring", (tester) async {
-    when(appManager.mockIoWrapper.isAndroid).thenReturn(true);
-    when(appManager.mockSubscriptionManager.subscriptions()).thenAnswer(
+    when(appManager.ioWrapper.isAndroid).thenReturn(true);
+    when(appManager.subscriptionManager.subscriptions()).thenAnswer(
       (_) => Future.value(
         Subscriptions(
           Subscription(monthlyPackage, 7),
@@ -266,8 +259,8 @@ void main() {
         ),
       ),
     );
-    when(appManager.mockSubscriptionManager.restoreSubscription()).thenAnswer(
-        (_) => Future.delayed(
+    when(appManager.subscriptionManager.restoreSubscription()).thenAnswer((_) =>
+        Future.delayed(
             Duration(milliseconds: 50), () => RestoreSubscriptionResult.error));
 
     await tester.pumpWidget(Testable(
@@ -287,7 +280,7 @@ void main() {
     expect(findFirst<AnimatedSwitcher>(tester).child is Loading, isTrue);
 
     // Wait for purchase to finish.
-    when(appManager.mockSubscriptionManager.isPro).thenReturn(false);
+    when(appManager.subscriptionManager.isPro).thenReturn(false);
     await tester.pumpAndSettle(Duration(milliseconds: 50));
 
     expect(

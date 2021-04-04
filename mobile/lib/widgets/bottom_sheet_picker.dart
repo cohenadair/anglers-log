@@ -15,15 +15,15 @@ Future<void> showBottomSheetPicker(
 }
 
 class BottomSheetPicker<T> extends StatelessWidget {
-  final void Function(T) onPicked;
-  final T currentValue;
+  final void Function(T?)? onPicked;
+  final T? currentValue;
   final Map<String, T> items;
 
   BottomSheetPicker({
     this.items = const {},
     this.onPicked,
     this.currentValue,
-  }) : assert(items != null);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +39,7 @@ class BottomSheetPicker<T> extends StatelessWidget {
     );
   }
 
-  Widget _buildItem(BuildContext context, String title, T value) {
+  Widget _buildItem(BuildContext context, String title, T? value) {
     return ListItem(
       title: Label(title),
       trailing: Visibility(

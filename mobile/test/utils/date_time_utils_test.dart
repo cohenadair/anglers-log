@@ -3,7 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/utils/date_time_utils.dart';
 import 'package:mockito/mockito.dart';
 
-import '../mock_app_manager.dart';
+import '../mocks/stubbed_app_manager.dart';
 import '../test_utils.dart';
 
 void main() {
@@ -194,10 +194,8 @@ void main() {
   });
 
   testWidgets("timestampToSearchString", (tester) async {
-    var appManager = MockAppManager(
-      mockTimeManager: true,
-    );
-    when(appManager.mockTimeManager.currentDateTime)
+    var appManager = StubbedAppManager();
+    when(appManager.timeManager.currentDateTime)
         .thenReturn(DateTime(2020, 9, 24));
     expect(
       timestampToSearchString(
@@ -208,10 +206,8 @@ void main() {
   });
 
   testWidgets("formatDateAsRecent", (tester) async {
-    var appManager = MockAppManager(
-      mockTimeManager: true,
-    );
-    when(appManager.mockTimeManager.currentDateTime)
+    var appManager = StubbedAppManager();
+    when(appManager.timeManager.currentDateTime)
         .thenReturn(DateTime(2020, 9, 24));
     var context = await buildContext(tester, appManager: appManager);
 
@@ -315,10 +311,10 @@ void main() {
   });
 
   assertStatsDateRange({
-    @required DisplayDateRange dateRange,
-    @required DateTime now,
-    @required DateTime expectedStart,
-    DateTime expectedEnd,
+    required DisplayDateRange dateRange,
+    required DateTime now,
+    required DateTime expectedStart,
+    DateTime? expectedEnd,
   }) {
     var range = dateRange.getValue(now);
     expect(range.startDate, equals(expectedStart));

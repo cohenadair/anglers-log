@@ -14,42 +14,38 @@ import 'package:mobile/widgets/fishing_spot_map.dart';
 import 'package:mockito/mockito.dart';
 import 'package:photo_manager/photo_manager.dart';
 
-import '../mock_app_manager.dart';
+import '../mocks/mocks.dart';
+import '../mocks/mocks.mocks.dart';
+import '../mocks/stubbed_app_manager.dart';
 import '../test_utils.dart';
 
 void main() {
-  MockAppManager appManager;
-  MockAssetPathEntity allAlbum;
+  late StubbedAppManager appManager;
+  late MockAssetPathEntity allAlbum;
 
   setUp(() {
-    appManager = MockAppManager(
-      mockBaitCategoryManager: true,
-      mockBaitManager: true,
-      mockCatchManager: true,
-      mockCustomEntityManager: true,
-      mockLocalDatabaseManager: true,
-      mockFishingSpotManager: true,
-      mockLocationMonitor: true,
-      mockPermissionHandlerWrapper: true,
-      mockPhotoManagerWrapper: true,
-      mockPreferencesManager: true,
-      mockSpeciesManager: true,
-      mockTimeManager: true,
-    );
+    appManager = StubbedAppManager();
 
-    when(appManager.mockLocalDatabaseManager.insertOrReplace(any, any))
+    when(appManager.catchManager
+            .addOrUpdate(any, imageFiles: anyNamed("imageFiles")))
+        .thenAnswer((_) => Future.value(false));
+
+    when(appManager.fishingSpotManager.list()).thenReturn([]);
+    when(appManager.fishingSpotManager.listSortedByName()).thenReturn([]);
+    when(appManager.fishingSpotManager.withinRadius(any, any)).thenReturn(null);
+    when(appManager.fishingSpotManager.addOrUpdate(any))
+        .thenAnswer((_) => Future.value(false));
+
+    when(appManager.localDatabaseManager.insertOrReplace(any, any))
         .thenAnswer((_) => Future.value(true));
-    when(appManager.mockFishingSpotManager.listSortedByName()).thenReturn([]);
+
+    when(appManager.locationMonitor.currentLocation).thenReturn(null);
 
     var mockAssets = [
       createMockAssetEntity(
         fileName: "android_logo.png",
-        latLngLegacy: LatLng()
-          ..latitude = 1.234567
-          ..longitude = 7.654321,
-        latLngAsync: LatLng()
-          ..latitude = 1.234567
-          ..longitude = 7.654321,
+        latLngLegacy: LatLng(latitude: 1.234567, longitude: 7.654321),
+        latLngAsync: LatLng(latitude: 1.234567, longitude: 7.654321),
         dateTime: DateTime(2020, 4, 1),
       ),
       createMockAssetEntity(
@@ -69,16 +65,15 @@ void main() {
     when(allAlbum.assetCount).thenReturn(mockAssets.length);
     when(allAlbum.getAssetListPaged(any, any))
         .thenAnswer((_) => Future.value(mockAssets));
-    when(appManager.mockPermissionHandlerWrapper.requestPhotos())
+    when(appManager.permissionHandlerWrapper.requestPhotos())
         .thenAnswer((_) => Future.value(true));
-    when(appManager.mockPhotoManagerWrapper.getAllAssetPathEntity(any))
+    when(appManager.photoManagerWrapper.getAllAssetPathEntity(any))
         .thenAnswer((_) => Future.value(allAlbum));
 
-    when(appManager.mockPreferencesManager.catchCustomEntityIds).thenReturn([]);
-    when(appManager.mockPreferencesManager.catchFieldIds).thenReturn([]);
+    when(appManager.userPreferenceManager.catchCustomEntityIds).thenReturn([]);
+    when(appManager.userPreferenceManager.catchFieldIds).thenReturn([]);
 
-    when(appManager.mockSpeciesManager
-            .listSortedByName(filter: anyNamed("filter")))
+    when(appManager.speciesManager.listSortedByName(filter: anyNamed("filter")))
         .thenReturn([
       Species()
         ..id = randomId()
@@ -99,16 +94,16 @@ void main() {
       ..name = "Spot 1"
       ..lat = 9.876543
       ..lng = 3.456789;
-    when(appManager.mockFishingSpotManager.withinRadius(any, any))
+    when(appManager.fishingSpotManager.withinRadius(any, any))
         .thenReturn(fishingSpot);
-    when(appManager.mockFishingSpotManager.entity(fishingSpot.id))
+    when(appManager.fishingSpotManager.entity(fishingSpot.id))
         .thenReturn(fishingSpot);
-    when(appManager.mockFishingSpotManager.entityExists(fishingSpot.id))
+    when(appManager.fishingSpotManager.entityExists(fishingSpot.id))
         .thenReturn(true);
     await tapAndSettle(tester, find.byType(Image).first);
     await tapAndSettle(tester, find.text("NEXT"));
 
-    verify(appManager.mockFishingSpotManager.withinRadius(any, any)).called(1);
+    verify(appManager.fishingSpotManager.withinRadius(any, any)).called(1);
 
     await tapAndSettle(tester, find.text("Steelhead"));
 
@@ -120,7 +115,7 @@ void main() {
 
   testWidgets("Picked image uses location data to create new fishing spot",
       (tester) async {
-    when(appManager.mockFishingSpotManager.entityExists(any)).thenReturn(false);
+    when(appManager.fishingSpotManager.entityExists(any)).thenReturn(false);
 
     await tester.pumpWidget(Testable(
       (_) => AddCatchJourney(),
@@ -138,8 +133,9 @@ void main() {
 
     // Manually trigger map's onIdle since Google Maps doesn't trigger it in
     // unit tests.
-    findFirst<google.GoogleMap>(tester).onMapCreated(MockGoogleMapController());
-    findFirst<FishingSpotMap>(tester).onIdle();
+    findFirst<google.GoogleMap>(tester)
+        .onMapCreated!(MockGoogleMapController());
+    findFirst<FishingSpotMap>(tester).onIdle!();
 
     // Wait for "pending" fishing spot animation so NEXT button is enabled.
     await tester.pump(Duration(milliseconds: 1000));
@@ -148,8 +144,7 @@ void main() {
         findFirstWithText<ActionButton>(tester, "NEXT").onPressed, isNotNull);
     await tapAndSettle(tester, find.text("NEXT"));
 
-    var result =
-        verify(appManager.mockFishingSpotManager.addOrUpdate(captureAny));
+    var result = verify(appManager.fishingSpotManager.addOrUpdate(captureAny));
     result.called(1);
     var fishingSpot = result.captured.first as FishingSpot;
     expect(findFirst<SaveCatchPage>(tester).fishingSpotId, fishingSpot.id);
@@ -157,7 +152,7 @@ void main() {
 
   testWidgets("Picked image without location data shows fishing spot picker",
       (tester) async {
-    when(appManager.mockFishingSpotManager.entityExists(any)).thenReturn(false);
+    when(appManager.fishingSpotManager.entityExists(any)).thenReturn(false);
 
     await tester.pumpWidget(Testable(
       (_) => AddCatchJourney(),
@@ -168,7 +163,7 @@ void main() {
     await tapAndSettle(tester, find.byType(Image).at(1));
     await tapAndSettle(tester, find.text("NEXT"));
 
-    verifyNever(appManager.mockFishingSpotManager.withinRadius(any, any));
+    verifyNever(appManager.fishingSpotManager.withinRadius(any, any));
 
     await tapAndSettle(tester, find.text("Steelhead"));
     expect(find.byType(FishingSpotPickerPage), findsOneWidget);
@@ -178,7 +173,7 @@ void main() {
   });
 
   testWidgets("Saving catch pops entire journey", (tester) async {
-    when(appManager.mockFishingSpotManager.entityExists(any)).thenReturn(true);
+    when(appManager.fishingSpotManager.entityExists(any)).thenReturn(true);
 
     await tester.pumpWidget(Testable(
       (_) => AddCatchJourney(),
@@ -199,9 +194,9 @@ void main() {
 
   testWidgets("Fishing spot is skipped when not tracking fishing spots",
       (tester) async {
-    when(appManager.mockFishingSpotManager.entityExists(any)).thenReturn(false);
+    when(appManager.fishingSpotManager.entityExists(any)).thenReturn(false);
 
-    when(appManager.mockPreferencesManager.catchFieldIds).thenReturn([
+    when(appManager.userPreferenceManager.catchFieldIds).thenReturn([
       catchFieldIdTimestamp(),
       catchFieldIdSpecies(),
     ]);
@@ -220,7 +215,7 @@ void main() {
 
   testWidgets("Fishing spot is skipped when spot already exists",
       (tester) async {
-    when(appManager.mockFishingSpotManager.entityExists(any)).thenReturn(true);
+    when(appManager.fishingSpotManager.entityExists(any)).thenReturn(true);
 
     await tester.pumpWidget(Testable(
       (_) => AddCatchJourney(),
@@ -236,14 +231,14 @@ void main() {
 
   testWidgets("Photo location is skipped when fishing spot is pre-picked",
       (tester) async {
-    when(appManager.mockFishingSpotManager.entityExists(any)).thenReturn(true);
-    when(appManager.mockFishingSpotManager.entity(any)).thenReturn(FishingSpot()
+    when(appManager.fishingSpotManager.entityExists(any)).thenReturn(true);
+    when(appManager.fishingSpotManager.entity(any)).thenReturn(FishingSpot()
       ..id = randomId()
       ..name = "Test");
 
     await tester.pumpWidget(Testable(
       (_) => AddCatchJourney(
-        fishingSpot: appManager.mockFishingSpotManager.entity(randomId()),
+        fishingSpot: appManager.fishingSpotManager.entity(randomId()),
       ),
       appManager: appManager,
     ));
@@ -254,13 +249,13 @@ void main() {
     await tapAndSettle(tester, find.text("Steelhead"));
 
     expect(find.byType(SaveCatchPage), findsOneWidget);
-    verifyNever(appManager.mockFishingSpotManager.withinRadius(any));
+    verifyNever(appManager.fishingSpotManager.withinRadius(any));
   });
 
   testWidgets("Fishing spot is not skipped when preferences is empty",
       (tester) async {
-    when(appManager.mockPreferencesManager.catchFieldIds).thenReturn([]);
-    when(appManager.mockFishingSpotManager.entityExists(any)).thenReturn(false);
+    when(appManager.userPreferenceManager.catchFieldIds).thenReturn([]);
+    when(appManager.fishingSpotManager.entityExists(any)).thenReturn(false);
 
     await tester.pumpWidget(Testable(
       (_) => AddCatchJourney(),
@@ -276,7 +271,7 @@ void main() {
 
   testWidgets("Image picker is skipped when not tracking images",
       (tester) async {
-    when(appManager.mockPreferencesManager.catchFieldIds).thenReturn([
+    when(appManager.userPreferenceManager.catchFieldIds).thenReturn([
       catchFieldIdTimestamp(),
       catchFieldIdSpecies(),
     ]);
@@ -297,7 +292,7 @@ void main() {
 
   testWidgets("Image picker is not skipped when preferences is empty",
       (tester) async {
-    when(appManager.mockPreferencesManager.catchFieldIds).thenReturn([]);
+    when(appManager.userPreferenceManager.catchFieldIds).thenReturn([]);
 
     await tester.pumpWidget(Testable(
       (_) => AddCatchJourney(),

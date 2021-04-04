@@ -17,9 +17,9 @@ import '../widgets/widget.dart';
 class EntityPage extends StatefulWidget {
   final List<Widget> children;
   final List<String> imageNames;
-  final String deleteMessage;
-  final VoidCallback onEdit;
-  final VoidCallback onDelete;
+  final String? deleteMessage;
+  final VoidCallback? onEdit;
+  final VoidCallback? onDelete;
   final EdgeInsets padding;
 
   /// When true, the underlying [Entity] cannot be modified.
@@ -28,16 +28,16 @@ class EntityPage extends StatefulWidget {
   final List<CustomEntityValue> customEntityValues;
 
   EntityPage({
-    @required this.children,
+    required this.children,
     this.customEntityValues = const [],
-    this.imageNames,
+    this.imageNames = const [],
     this.deleteMessage,
     this.onEdit,
     this.onDelete,
     this.padding = insetsDefault,
     this.static = false,
-  })  : assert(children != null),
-        assert(customEntityValues != null);
+  })  : assert(static || (isNotEmpty(deleteMessage) && onEdit != null)),
+        assert(static || onDelete != null);
 
   @override
   _EntityPageState createState() => _EntityPageState();
@@ -50,10 +50,9 @@ class _EntityPageState extends State<EntityPage> {
   final double _carouselOpacity = 0.5;
 
   int _imageIndex = 0;
-  PageController _imageController;
+  late PageController _imageController;
 
-  bool get _hasImages =>
-      widget.imageNames != null && widget.imageNames.isNotEmpty;
+  bool get _hasImages => widget.imageNames.isNotEmpty;
 
   double get _imageHeight =>
       MediaQuery.of(context).size.height / _imageHeightFactor;
@@ -201,18 +200,14 @@ class _EntityPageState extends State<EntityPage> {
 
     return IconButton(
       icon: Icon(Icons.delete),
-      onPressed: isEmpty(widget.deleteMessage)
-          ? null
-          : () {
-              showDeleteDialog(
-                context: context,
-                description: Text(widget.deleteMessage),
-                onDelete: () {
-                  widget.onDelete?.call();
-                  Navigator.pop(context);
-                },
-              );
-            },
+      onPressed: () => showDeleteDialog(
+        context: context,
+        description: Text(widget.deleteMessage!),
+        onDelete: () {
+          widget.onDelete?.call();
+          Navigator.pop(context);
+        },
+      ),
     );
   }
 }

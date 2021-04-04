@@ -8,39 +8,24 @@ import 'package:mobile/pages/main_page.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mockito/mockito.dart';
 
-import '../mock_app_manager.dart';
+import '../mocks/stubbed_app_manager.dart';
 import '../test_utils.dart';
 
 void main() {
-  MockAppManager appManager;
+  late StubbedAppManager appManager;
 
   setUp(() {
-    appManager = MockAppManager(
-      mockAuthManager: true,
-      mockBaitCategoryManager: true,
-      mockBaitManager: true,
-      mockCatchManager: true,
-      mockComparisonReportManager: true,
-      mockLocalDatabaseManager: true,
-      mockFishingSpotManager: true,
-      mockImageManager: true,
-      mockLocationMonitor: true,
-      mockPreferencesManager: true,
-      mockSpeciesManager: true,
-      mockSubscriptionManager: true,
-      mockSummaryReportManager: true,
-      mockTimeManager: true,
-    );
+    appManager = StubbedAppManager();
 
-    when(appManager.mockAuthManager.stream).thenAnswer((_) => MockStream());
+    when(appManager.authManager.stream).thenAnswer((_) => Stream.empty());
 
-    when(appManager.mockBaitCategoryManager.listSortedByName(
+    when(appManager.baitCategoryManager.listSortedByName(
       filter: anyNamed("filter"),
     )).thenReturn([]);
 
-    when(appManager.mockCatchManager.imageNamesSortedByTimestamp(any))
+    when(appManager.catchManager.imageNamesSortedByTimestamp(any))
         .thenReturn([]);
-    when(appManager.mockCatchManager.catchesSortedByTimestamp(
+    when(appManager.catchManager.catchesSortedByTimestamp(
       any,
       filter: anyNamed("filter"),
       dateRange: anyNamed("dateRange"),
@@ -50,19 +35,24 @@ void main() {
       baitIds: anyNamed("baitIds"),
     )).thenReturn([]);
 
-    when(appManager.mockComparisonReportManager.entityExists(any))
+    when(appManager.comparisonReportManager.entityExists(any))
         .thenReturn(false);
 
-    when(appManager.mockFishingSpotManager.list()).thenReturn([]);
+    when(appManager.fishingSpotManager.list()).thenReturn([]);
 
-    when(appManager.mockSubscriptionManager.stream)
-        .thenAnswer((_) => MockStream<void>());
-    when(appManager.mockSubscriptionManager.isPro).thenReturn(false);
+    when(appManager.locationMonitor.currentLocation).thenReturn(null);
 
-    when(appManager.mockSummaryReportManager.entityExists(any))
-        .thenReturn(false);
+    when(appManager.subscriptionManager.stream)
+        .thenAnswer((_) => Stream.empty());
+    when(appManager.subscriptionManager.isPro).thenReturn(false);
 
-    when(appManager.mockTimeManager.currentDateTime).thenReturn(DateTime.now());
+    when(appManager.summaryReportManager.entityExists(any)).thenReturn(false);
+
+    when(appManager.timeManager.currentDateTime).thenReturn(DateTime.now());
+
+    when(appManager.userPreferenceManager.selectedReportId).thenReturn(null);
+    when(appManager.userPreferenceManager.selectedReportId = any)
+        .thenAnswer((_) {});
   });
 
   testWidgets("Tapping nav item opens page", (tester) async {
@@ -131,13 +121,15 @@ void main() {
   });
 
   testWidgets("Rate dialog shown when catches updated", (tester) async {
+    when(appManager.baitManager.formatNameWithCategory(any)).thenReturn("");
+
     var species = Species()
       ..id = randomId()
       ..name = "Bass";
-    when(appManager.mockSpeciesManager.entity(any)).thenReturn(species);
+    when(appManager.speciesManager.entity(any)).thenReturn(species);
 
-    var catchManager = CatchManager(appManager);
-    when(appManager.catchManager).thenReturn(catchManager);
+    var catchManager = CatchManager(appManager.app);
+    when(appManager.app.catchManager).thenReturn(catchManager);
 
     await tester.pumpWidget(Testable(
       (_) => MainPage(),
@@ -145,13 +137,13 @@ void main() {
     ));
 
     var quarterDuration = Duration.millisecondsPerDay * (365 / 4);
-    when(appManager.mockTimeManager.msSinceEpoch)
+    when(appManager.timeManager.msSinceEpoch)
         .thenReturn((quarterDuration + 10).toInt());
-    when(appManager.mockPreferencesManager.didRateApp).thenReturn(false);
-    when(appManager.mockPreferencesManager.rateTimerStartedAt).thenReturn(0);
-    when(appManager.mockImageManager.save(any, compress: anyNamed("compress")))
+    when(appManager.userPreferenceManager.didRateApp).thenReturn(false);
+    when(appManager.userPreferenceManager.rateTimerStartedAt).thenReturn(0);
+    when(appManager.imageManager.save(any, compress: anyNamed("compress")))
         .thenAnswer((_) => Future.value([]));
-    when(appManager.mockLocalDatabaseManager.insertOrReplace(any, any))
+    when(appManager.localDatabaseManager.insertOrReplace(any, any))
         .thenAnswer((_) => Future.value(true));
 
     catchManager.addOrUpdate(Catch()

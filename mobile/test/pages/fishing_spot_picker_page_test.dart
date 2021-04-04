@@ -13,11 +13,12 @@ import 'package:mobile/widgets/list_item.dart';
 import 'package:mobile/widgets/search_bar.dart';
 import 'package:mockito/mockito.dart';
 
-import '../mock_app_manager.dart';
+import '../mocks/mocks.dart';
+import '../mocks/stubbed_app_manager.dart';
 import '../test_utils.dart';
 
 void main() {
-  MockAppManager appManager;
+  late StubbedAppManager appManager;
 
   var fishingSpot = FishingSpot()
     ..id = randomId()
@@ -26,27 +27,28 @@ void main() {
     ..lng = 7.654321;
 
   setUp(() {
-    appManager = MockAppManager(
-      mockAuthManager: true,
-      mockLocalDatabaseManager: true,
-      mockFishingSpotManager: true,
-      mockLocationMonitor: true,
-      mockSubscriptionManager: true,
-    );
+    appManager = StubbedAppManager();
 
-    when(appManager.mockAuthManager.stream).thenAnswer((_) => MockStream());
+    when(appManager.authManager.stream).thenAnswer((_) => Stream.empty());
 
-    when(appManager.mockLocalDatabaseManager.insertOrReplace(any, any))
+    when(appManager.fishingSpotManager.list()).thenReturn([fishingSpot]);
+    when(appManager.fishingSpotManager.listSortedByName())
+        .thenReturn([fishingSpot]);
+    when(appManager.fishingSpotManager.entity(fishingSpot.id))
+        .thenReturn(fishingSpot);
+    when(appManager.fishingSpotManager.withinRadius(any, any)).thenReturn(null);
+    when(appManager.fishingSpotManager.addOrUpdate(any))
+        .thenAnswer((_) => Future.value(false));
+
+    when(appManager.localDatabaseManager.insertOrReplace(any, any))
         .thenAnswer((_) => Future.value(true));
 
-    when(appManager.mockFishingSpotManager.listSortedByName())
-        .thenReturn([fishingSpot]);
-    when(appManager.mockFishingSpotManager.entity(fishingSpot.id))
-        .thenReturn(fishingSpot);
+    when(appManager.locationMonitor.currentLocation)
+        .thenReturn(LatLng(0.0, 0.0));
 
-    when(appManager.mockSubscriptionManager.stream)
-        .thenAnswer((_) => MockStream<void>());
-    when(appManager.mockSubscriptionManager.isPro).thenReturn(false);
+    when(appManager.subscriptionManager.stream)
+        .thenAnswer((_) => Stream.empty());
+    when(appManager.subscriptionManager.isPro).thenReturn(false);
   });
 
   // TODO (1): GoogleMap is a native widget; gesture testing doesn't work yet.
@@ -257,8 +259,8 @@ void main() {
 
     // Manually trigger map's onIdle since Google Maps doesn't trigger it in
     // unit tests.
-    findFirst<GoogleMap>(tester).onMapCreated(MockGoogleMapController());
-    findFirst<FishingSpotMap>(tester).onIdle();
+    findFirst<GoogleMap>(tester).onMapCreated!(MockGoogleMapController());
+    findFirst<FishingSpotMap>(tester).onIdle!();
 
     // Wait for "pending" fishing spot animation.
     await tester.pump(Duration(milliseconds: 1000));
@@ -268,9 +270,9 @@ void main() {
 
   testWidgets("Editing fishing spot updates bottom sheet", (tester) async {
     // Use real FishingSpotManager so updates are done correctly.
-    var fishingSpotManager = FishingSpotManager(appManager);
+    var fishingSpotManager = FishingSpotManager(appManager.app);
     fishingSpotManager.addOrUpdate(fishingSpot);
-    when(appManager.fishingSpotManager).thenReturn(fishingSpotManager);
+    when(appManager.app.fishingSpotManager).thenReturn(fishingSpotManager);
 
     await tester.pumpWidget(Testable(
       (_) => FishingSpotPickerPage(
@@ -357,9 +359,9 @@ void main() {
 
   testWidgets("When no spot selected, selects closest within default distance",
       (tester) async {
-    when(appManager.mockLocationMonitor.currentLocation)
+    when(appManager.locationMonitor.currentLocation)
         .thenReturn(LatLng(1.0, 2.0));
-    when(appManager.mockFishingSpotManager.withinRadius(any))
+    when(appManager.fishingSpotManager.withinRadius(any))
         .thenReturn(FishingSpot()
           ..id = randomId()
           ..lat = 1.0
@@ -373,13 +375,13 @@ void main() {
     ));
     await tester.pumpAndSettle(Duration(milliseconds: 250));
 
-    verify(appManager.mockFishingSpotManager.withinRadius(any)).called(1);
+    verify(appManager.fishingSpotManager.withinRadius(any)).called(1);
     expect(find.text("Lat: 1.000000, Lng: 2.000000"), findsOneWidget);
   });
 
   testWidgets("New fishing spot is added to database", (tester) async {
-    when(appManager.mockFishingSpotManager.entity(any)).thenReturn(null);
-    when(appManager.mockLocationMonitor.currentLocation)
+    when(appManager.fishingSpotManager.entity(any)).thenReturn(null);
+    when(appManager.locationMonitor.currentLocation)
         .thenReturn(LatLng(1.0, 2.0));
 
     await tester.pumpWidget(Testable(
@@ -392,8 +394,7 @@ void main() {
 
     await tapAndSettle(tester, find.byType(BackButton));
 
-    var result =
-        verify(appManager.mockFishingSpotManager.addOrUpdate(captureAny));
+    var result = verify(appManager.fishingSpotManager.addOrUpdate(captureAny));
     result.called(1);
 
     var fishingSpot = result.captured.first as FishingSpot;
@@ -403,7 +404,7 @@ void main() {
 
   testWidgets("Picking existing fishing spot doesn't make database call",
       (tester) async {
-    when(appManager.mockFishingSpotManager.entity(any)).thenReturn(fishingSpot);
+    when(appManager.fishingSpotManager.entity(any)).thenReturn(fishingSpot);
 
     var picked = false;
     await tester.pumpWidget(Testable(
@@ -416,7 +417,7 @@ void main() {
 
     await tapAndSettle(tester, find.byType(BackButton));
 
-    verifyNever(appManager.mockFishingSpotManager.addOrUpdate(any));
+    verifyNever(appManager.fishingSpotManager.addOrUpdate(any));
     expect(picked, isTrue);
   });
 
@@ -431,9 +432,10 @@ void main() {
     ));
     await tester.pumpAndSettle(Duration(milliseconds: 250));
 
-    await tapAndSettle(tester, find.byType(BackButton));
+    await tapAndSettle(tester, find.byType(SearchBar));
+    await tapAndSettle(tester, find.text("None"));
 
-    verifyNever(appManager.mockFishingSpotManager.addOrUpdate(any));
+    verifyNever(appManager.fishingSpotManager.addOrUpdate(any));
     expect(picked, isTrue);
   });
 }

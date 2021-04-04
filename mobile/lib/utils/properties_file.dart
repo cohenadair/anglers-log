@@ -7,13 +7,13 @@ class PropertiesFile {
 
   final Map<String, String> _properties = {};
 
-  PropertiesFile(String propertiesString) {
+  PropertiesFile(String? propertiesString) {
     if (isEmpty(propertiesString)) {
       return;
     }
 
     try {
-      propertiesString.split("\n").forEach((line) {
+      propertiesString!.split("\n").forEach((line) {
         var pair = line.split("=");
         if (pair.length != 2) {
           return;
@@ -27,5 +27,8 @@ class PropertiesFile {
     }
   }
 
-  String stringForKey(String key) => _properties[key];
+  String stringForKey(String key) {
+    assert(_properties.containsKey(key));
+    return _properties[key]!;
+  }
 }

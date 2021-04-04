@@ -8,17 +8,16 @@ class PhotoGalleryPage extends StatefulWidget {
   final String initialFileName;
 
   PhotoGalleryPage({
-    @required this.fileNames,
-    @required this.initialFileName,
-  })  : assert(fileNames != null && fileNames.isNotEmpty),
-        assert(initialFileName != null);
+    required this.fileNames,
+    required this.initialFileName,
+  }) : assert(fileNames.isNotEmpty);
 
   @override
   _PhotoGalleryPageState createState() => _PhotoGalleryPageState();
 }
 
 class _PhotoGalleryPageState extends State<PhotoGalleryPage> {
-  PageController _controller;
+  late PageController _controller;
 
   @override
   void initState() {

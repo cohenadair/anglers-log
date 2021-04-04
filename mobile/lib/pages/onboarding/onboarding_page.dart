@@ -9,10 +9,10 @@ import '../scroll_page.dart';
 class OnboardingPage extends StatelessWidget {
   final List<Widget> children;
   final EdgeInsets padding;
-  final String nextButtonText;
+  final String? nextButtonText;
   final bool nextButtonEnabled;
   final bool showBackButton;
-  final VoidCallback onPressedNextButton;
+  final VoidCallback? onPressedNextButton;
 
   OnboardingPage({
     this.children = const [],
@@ -21,9 +21,7 @@ class OnboardingPage extends StatelessWidget {
     this.nextButtonEnabled = true,
     this.showBackButton = true,
     this.onPressedNextButton,
-  })  : assert(children != null),
-        assert(nextButtonEnabled != null),
-        assert(showBackButton != null);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +37,7 @@ class OnboardingPage extends StatelessWidget {
     );
   }
 
-  List<Widget> _buildFooter(BuildContext context) {
+  List<Widget>? _buildFooter(BuildContext context) {
     if (onPressedNextButton == null) {
       return null;
     }

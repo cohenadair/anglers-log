@@ -9,10 +9,10 @@ import '../utils/validator.dart';
 /// check box.
 class InputController<T> {
   /// The value of the controller, such as [bool] or [String].
-  T value;
+  T? value;
 
   /// The current error message for the [InputController], if there is one.
-  String error;
+  String? error;
 
   InputController({this.value}) {
     assert(!(T == Id) || this is IdInputController,
@@ -30,7 +30,7 @@ class InputController<T> {
 
 class IdInputController extends InputController<Id> {
   @override
-  set value(Id newValue) {
+  set value(Id? newValue) {
     // An ID with an empty uuid is invalid. This can happen by accessing a
     // Google Protobuf Id property that isn't set (i.e. the protobufObj.has*()
     // method returns false).
@@ -47,16 +47,16 @@ class IdInputController extends InputController<Id> {
 
 class TextInputController extends InputController<String> {
   final TextEditingController editingController;
-  final Validator validator;
+  final Validator? validator;
 
   TextInputController({
-    TextEditingController editingController,
+    TextEditingController? editingController,
     this.validator,
   })  : editingController = editingController ?? TextEditingController(),
         super();
 
   @override
-  String get value {
+  String? get value {
     var text = editingController.text.trim();
     if (isEmpty(text)) {
       return null;
@@ -65,8 +65,8 @@ class TextInputController extends InputController<String> {
   }
 
   @override
-  set value(String value) =>
-      editingController.text = isEmpty(value) ? value : value.trim();
+  set value(String? value) =>
+      editingController.text = isEmpty(value) ? "" : value!.trim();
 
   @override
   void dispose() {
@@ -88,7 +88,7 @@ class TextInputController extends InputController<String> {
 
 class NumberInputController extends TextInputController {
   NumberInputController({
-    TextEditingController editingController,
+    TextEditingController? editingController,
   }) : super(
           editingController: editingController ?? TextEditingController(),
           validator: DoubleValidator(),
@@ -97,7 +97,7 @@ class NumberInputController extends TextInputController {
 
 class EmailInputController extends TextInputController {
   EmailInputController({
-    TextEditingController editingController,
+    TextEditingController? editingController,
     bool required = false,
   }) : super(
           editingController: editingController ?? TextEditingController(),
@@ -107,7 +107,7 @@ class EmailInputController extends TextInputController {
 
 class PasswordInputController extends TextInputController {
   PasswordInputController({
-    TextEditingController editingController,
+    TextEditingController? editingController,
   }) : super(
           editingController: editingController ?? TextEditingController(),
           validator: PasswordValidator(),
@@ -118,10 +118,10 @@ class PasswordInputController extends TextInputController {
 /// local time.
 class TimestampInputController extends InputController<int> {
   /// The date component of the controller.
-  DateTime date;
+  DateTime? date;
 
   /// The time component of the controller.
-  TimeOfDay time;
+  TimeOfDay? time;
 
   TimestampInputController({
     this.date,
@@ -129,19 +129,19 @@ class TimestampInputController extends InputController<int> {
   });
 
   @override
-  int get value => date != null && time != null
-      ? combine(date, time).millisecondsSinceEpoch
+  int? get value => date != null && time != null
+      ? combine(date!, time!).millisecondsSinceEpoch
       : null;
 
   @override
-  set value(int timestamp) {
+  set value(int? timestamp) {
     if (timestamp == null) {
       date = null;
       time = null;
       return;
     }
     date = DateTime.fromMillisecondsSinceEpoch(timestamp);
-    time = TimeOfDay.fromDateTime(date);
+    time = TimeOfDay.fromDateTime(date!);
   }
 
   @override

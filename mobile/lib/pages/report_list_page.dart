@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:mobile/pages/pro_page.dart';
-import 'package:mobile/subscription_manager.dart';
 import 'package:quiver/strings.dart';
 
 import '../comparison_report_manager.dart';
@@ -11,10 +9,12 @@ import '../model/overview_report.dart';
 import '../pages/manageable_list_page.dart';
 import '../pages/save_report_page.dart';
 import '../res/dimen.dart';
+import '../subscription_manager.dart';
 import '../summary_report_manager.dart';
 import '../utils/string_utils.dart';
 import '../widgets/text.dart';
 import '../widgets/widget.dart';
+import 'pro_page.dart';
 
 class ReportListPage extends StatelessWidget {
   static const _log = Log("ReportListPage");
@@ -24,8 +24,8 @@ class ReportListPage extends StatelessWidget {
   final ManageableListPagePickerSettings<dynamic> pickerSettings;
 
   ReportListPage({
-    @required this.pickerSettings,
-  }) : assert(pickerSettings != null);
+    required this.pickerSettings,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -63,7 +63,7 @@ class ReportListPage extends StatelessWidget {
   ManageableListPageItemModel _buildItem(BuildContext context, dynamic item) {
     if (item is SummaryReport || item is ComparisonReport) {
       return ManageableListPageItemModel(
-        child: PrimaryLabel(item.name),
+        child: PrimaryLabel(item.name as String),
         editable: true,
       );
     } else if (item is OverviewReport) {
@@ -72,8 +72,9 @@ class ReportListPage extends StatelessWidget {
         editable: false,
       );
     } else {
+      assert(item is Widget);
       return ManageableListPageItemModel(
-        child: item,
+        child: item as Widget,
         editable: false,
         selectable: false,
       );

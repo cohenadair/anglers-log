@@ -19,16 +19,16 @@ class LocalDatabaseManager {
   final _log = Log("DataManager");
   final AppManager _appManager;
 
-  Database _database;
-  Future<Database> Function() _openDatabase;
+  late DatabaseExecutor _database;
+  late Future<DatabaseExecutor> Function() _openDatabase;
 
   LocalDatabaseManager(this._appManager);
 
   IoWrapper get _ioWrapper => _appManager.ioWrapper;
 
   Future<void> initialize({
-    Database database,
-    Future<Database> Function() openDatabase,
+    DatabaseExecutor? database,
+    Future<DatabaseExecutor> Function()? openDatabase,
   }) async {
     _openDatabase = openDatabase ?? openDb;
     _database = database ?? (await _openDatabase());
@@ -56,21 +56,23 @@ class LocalDatabaseManager {
 
   /// Returns `true` if at least one row was removed.
   Future<bool> delete(String table,
-      {String where, List<dynamic> whereArgs}) async {
+      {String? where, List<dynamic>? whereArgs}) async {
     return await _database.delete(table, where: where, whereArgs: whereArgs) >
         0;
   }
 
   /// Allows a raw query to be sent to the database.
-  Future<List<Map<String, dynamic>>> query(String sql, [List<dynamic> args]) {
+  Future<List<Map<String, dynamic>>> query(String sql, [List<dynamic>? args]) {
     return _database.rawQuery(sql, args);
   }
 
-  Future<bool> rawExists(String query, [List<dynamic> args]) async {
-    return Sqflite.firstIntValue(await _database.rawQuery(query, args)) > 0;
+  Future<bool> rawExists(String query, [List<dynamic>? args]) async {
+    return Sqflite.firstIntValue(await _database.rawQuery(query, args))
+            as FutureOr<bool>? ??
+        0 > 0;
   }
 
-  Future<bool> rawUpdate(String query, [List<dynamic> args]) async {
+  Future<bool> rawUpdate(String query, [List<dynamic>? args]) async {
     return await _database.rawUpdate(query, args) > 0;
   }
 

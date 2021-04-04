@@ -8,11 +8,11 @@ import '../utils/protobuf_utils.dart';
 import '../utils/validator.dart';
 
 class SaveBaitCategoryPage extends StatelessWidget {
-  final BaitCategory oldBaitCategory;
+  final BaitCategory? oldBaitCategory;
 
   SaveBaitCategoryPage() : oldBaitCategory = null;
-  SaveBaitCategoryPage.edit(this.oldBaitCategory)
-      : assert(oldBaitCategory != null);
+
+  SaveBaitCategoryPage.edit(this.oldBaitCategory);
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +26,7 @@ class SaveBaitCategoryPage extends StatelessWidget {
       onSave: (newName) {
         baitCategoryManager.addOrUpdate(BaitCategory()
           ..id = oldBaitCategory?.id ?? randomId()
-          ..name = newName);
+          ..name = newName!);
         return true;
       },
       validator: NameValidator(

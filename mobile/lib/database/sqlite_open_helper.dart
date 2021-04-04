@@ -79,7 +79,8 @@ final List<List<String>> _schema = [
 
 final int _version = 1;
 
-Future<String> get _databasePath async => join(await getDatabasesPath(), _name);
+Future<String> get _databasePath async =>
+    join(await (getDatabasesPath() as FutureOr<String>), _name);
 
 Future<Database> openDb() async {
   var path = await _databasePath;

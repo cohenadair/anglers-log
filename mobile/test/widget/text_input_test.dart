@@ -1,4 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mobile/widgets/input_controller.dart';
 import 'package:mobile/widgets/text_input.dart';
 
 import '../test_utils.dart';
@@ -10,6 +11,7 @@ void main() {
       Testable(
         (_) => TextInput.name(
           _,
+          controller: TextInputController(),
           onChanged: () => changed = true,
         ),
       ),

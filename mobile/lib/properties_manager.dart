@@ -3,7 +3,6 @@ import 'package:flutter/services.dart' show rootBundle;
 import 'package:provider/provider.dart';
 
 import 'app_manager.dart';
-import 'log.dart';
 import 'utils/properties_file.dart';
 
 /// A class for accessing data in configuration files.
@@ -16,23 +15,15 @@ class PropertiesManager {
   final String _keySendGridApiKey = "sendgrid.apikey";
   final String _keyRevenueCatApiKey = "revenuecat.apiKey";
 
-  final _log = Log("PropertiesManager");
-
   final String _path = "assets/sensitive.properties";
   final String _feedbackTemplatePath = "assets/feedback_template";
 
-  PropertiesFile _properties;
-  String _feedbackTemplate;
+  late PropertiesFile _properties;
+  late String _feedbackTemplate;
 
   Future<void> initialize() async {
     _properties = PropertiesFile(await rootBundle.loadString(_path));
-
-    try {
-      _feedbackTemplate = await rootBundle.loadString(_feedbackTemplatePath);
-    } on Exception catch (e) {
-      _log.e("Error loading feedback tempate file: $e");
-      return;
-    }
+    _feedbackTemplate = await rootBundle.loadString(_feedbackTemplatePath);
   }
 
   String get clientSenderEmail =>

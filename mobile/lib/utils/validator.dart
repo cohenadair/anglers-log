@@ -4,22 +4,22 @@ import 'package:quiver/strings.dart';
 import '../i18n/strings.dart';
 import '../utils/string_utils.dart';
 
-/// A function called to validate input. A function is used so pass a
+/// A function called to validate input. A function is used to pass a
 /// [BuildContext] instance for using localized strings.
-typedef ValidationCallback = String Function(BuildContext context);
+typedef ValidationCallback = String? Function(BuildContext context);
 
 // ignore: one_member_abstracts
 abstract class Validator {
-  ValidationCallback run(BuildContext context, String newValue);
+  ValidationCallback? run(BuildContext context, String? newValue);
 }
 
 /// A generic validator used for inline validator creation.
 class GenericValidator implements Validator {
-  final ValidationCallback Function(BuildContext, String) runner;
+  final ValidationCallback Function(BuildContext, String?) runner;
 
-  GenericValidator(this.runner) : assert(runner != null);
+  GenericValidator(this.runner);
 
-  ValidationCallback run(BuildContext context, String newValue) {
+  ValidationCallback run(BuildContext context, String? newValue) {
     return runner(context, newValue);
   }
 }
@@ -30,10 +30,10 @@ class GenericValidator implements Validator {
 ///   - Whether the name exists via [nameExists].
 class NameValidator implements Validator {
   /// If non-null, input equal to [oldName] is considered valid.
-  final String oldName;
+  final String? oldName;
 
-  final String Function(BuildContext) nameExistsMessage;
-  final bool Function(String) nameExists;
+  final String Function(BuildContext)? nameExistsMessage;
+  final bool Function(String)? nameExists;
 
   NameValidator({
     this.nameExistsMessage,
@@ -43,12 +43,12 @@ class NameValidator implements Validator {
             (nameExists == null && nameExistsMessage == null));
 
   @override
-  ValidationCallback run(BuildContext context, String newName) {
-    if (!isEmpty(oldName) && equalsTrimmedIgnoreCase(oldName, newName)) {
+  ValidationCallback? run(BuildContext context, String? newName) {
+    if (!isEmpty(oldName) && equalsTrimmedIgnoreCase(oldName!, newName!)) {
       return null;
     } else if (isEmpty(newName)) {
       return (context) => Strings.of(context).inputGenericRequired;
-    } else if (nameExists != null && nameExists(newName)) {
+    } else if (nameExists != null && nameExists!(newName!)) {
       return nameExistsMessage;
     } else {
       return null;
@@ -58,8 +58,8 @@ class NameValidator implements Validator {
 
 class DoubleValidator implements Validator {
   @override
-  ValidationCallback run(BuildContext context, String newValue) {
-    if (isNotEmpty(newValue) && double.tryParse(newValue) == null) {
+  ValidationCallback? run(BuildContext context, String? newValue) {
+    if (isNotEmpty(newValue) && double.tryParse(newValue!) == null) {
       return (context) => Strings.of(context).inputInvalidNumber;
     }
     return null;
@@ -74,7 +74,7 @@ class EmailValidator implements Validator {
   });
 
   @override
-  ValidationCallback run(BuildContext context, String newValue) {
+  ValidationCallback? run(BuildContext context, String? newValue) {
     if (!required && isEmpty(newValue)) {
       return null;
     }
@@ -97,12 +97,12 @@ class PasswordValidator implements Validator {
   static const _minPasswordLength = 6;
 
   @override
-  ValidationCallback run(BuildContext context, String newValue) {
+  ValidationCallback? run(BuildContext context, String? newValue) {
     if (isEmpty(newValue)) {
       return (context) => Strings.of(context).inputGenericRequired;
     }
 
-    if (newValue.length < _minPasswordLength) {
+    if (newValue!.length < _minPasswordLength) {
       return (context) => Strings.of(context).inputPasswordInvalidLength;
     }
 
@@ -113,7 +113,7 @@ class PasswordValidator implements Validator {
 /// A validator that ensures input is not empty.
 class EmptyValidator implements Validator {
   @override
-  ValidationCallback run(BuildContext context, String newValue) {
+  ValidationCallback? run(BuildContext context, String? newValue) {
     if (isNotEmpty(newValue)) {
       return null;
     }

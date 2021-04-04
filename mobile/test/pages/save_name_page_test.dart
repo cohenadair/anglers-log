@@ -3,7 +3,6 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/pages/save_name_page.dart';
 import 'package:mobile/utils/validator.dart';
 import 'package:mobile/widgets/button.dart';
-import 'package:mockito/mockito.dart';
 
 import '../test_utils.dart';
 
@@ -31,7 +30,7 @@ void main() {
         ),
       ),
     );
-    expect(findFirst<TextField>(tester).controller.text, isEmpty);
+    expect(findFirst<TextField>(tester).controller!.text, isEmpty);
     expect(findFirstWithText<ActionButton>(tester, "SAVE").onPressed, isNull);
   });
 
@@ -53,57 +52,42 @@ void main() {
   });
 
   testWidgets("Null onSave pops page", (tester) async {
-    var observer = MockNavigatorObserver();
-    var popped = false;
-    when(observer.didPop(any, any)).thenAnswer((_) => popped = true);
-
     await tester.pumpWidget(Testable(
       (_) => SaveNamePage(
         title: Text("Title"),
       ),
-      navigatorObserver: observer,
     ));
 
     await enterTextAndSettle(tester, find.byType(TextField), "Name");
     await tapAndSettle(tester, find.text("SAVE"));
-    expect(popped, isTrue);
+    expect(find.byType(SaveNamePage), findsNothing);
   });
 
   testWidgets("Non-null onSave pops page if returns true", (tester) async {
-    var observer = MockNavigatorObserver();
-    var popped = false;
-    when(observer.didPop(any, any)).thenAnswer((_) => popped = true);
-
     await tester.pumpWidget(Testable(
       (_) => SaveNamePage(
         title: Text("Title"),
         onSave: (_) => true,
       ),
-      navigatorObserver: observer,
     ));
 
     await enterTextAndSettle(tester, find.byType(TextField), "Name");
     await tapAndSettle(tester, find.text("SAVE"));
-    expect(popped, isTrue);
+    expect(find.byType(SaveNamePage), findsNothing);
   });
 
   testWidgets("Non-null onSave does not pop page if returns false",
       (tester) async {
-    var observer = MockNavigatorObserver();
-    var popped = false;
-    when(observer.didPop(any, any)).thenAnswer((_) => popped = true);
-
     await tester.pumpWidget(Testable(
       (_) => SaveNamePage(
         title: Text("Title"),
         onSave: (_) => false,
       ),
-      navigatorObserver: observer,
     ));
 
     await enterTextAndSettle(tester, find.byType(TextField), "Name");
     await tapAndSettle(tester, find.text("SAVE"));
-    expect(popped, isFalse);
+    expect(find.byType(SaveNamePage), findsOneWidget);
   });
 
   testWidgets("Invalid input disables save button", (tester) async {

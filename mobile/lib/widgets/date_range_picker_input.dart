@@ -6,28 +6,27 @@ import '../utils/page_utils.dart';
 import '../widgets/list_picker_input.dart';
 
 class DateRangePickerInput extends StatefulWidget {
-  final Key key;
+  final Key? key;
 
   /// See [ListPickerInput.title].
-  final String title;
+  final String? title;
 
-  final DisplayDateRange initialDateRange;
+  final DisplayDateRange? initialDateRange;
   final void Function(DisplayDateRange) onPicked;
 
   DateRangePickerInput({
     this.key,
     this.title,
     this.initialDateRange,
-    @required this.onPicked,
-  })  : assert(onPicked != null),
-        super(key: key);
+    required this.onPicked,
+  }) : super(key: key);
 
   @override
   _DateRangePickerInputState createState() => _DateRangePickerInputState();
 }
 
 class _DateRangePickerInputState extends State<DateRangePickerInput> {
-  DisplayDateRange _currentDateRange;
+  late DisplayDateRange _currentDateRange;
 
   @override
   void initState() {

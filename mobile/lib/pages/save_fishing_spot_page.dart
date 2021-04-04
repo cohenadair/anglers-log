@@ -11,21 +11,20 @@ import '../widgets/input_controller.dart';
 import '../widgets/text_input.dart';
 
 class SaveFishingSpotPage extends StatefulWidget {
-  final FishingSpot oldFishingSpot;
+  final FishingSpot? oldFishingSpot;
 
   /// The coordinates of a new fishing spot being added, usually picked from
   /// a map widget, such as [FishingSpotPickerPage].
-  final LatLng latLng;
+  final LatLng? latLng;
 
   /// Called asynchronously after [FishingSpot] has been committed to the
   /// database.
-  final void Function(FishingSpot) onSave;
+  final void Function(FishingSpot)? onSave;
 
   SaveFishingSpotPage({
-    @required this.latLng,
+    required this.latLng,
     this.onSave,
-  })  : assert(latLng != null),
-        oldFishingSpot = null;
+  }) : oldFishingSpot = null;
 
   SaveFishingSpotPage.edit(this.oldFishingSpot)
       : latLng = null,
@@ -42,7 +41,7 @@ class _SaveFishingSpotPageState extends State<SaveFishingSpotPage> {
 
   FishingSpotManager get _fishingSpotManager => FishingSpotManager.of(context);
 
-  FishingSpot get _oldFishingSpot => widget.oldFishingSpot;
+  FishingSpot? get _oldFishingSpot => widget.oldFishingSpot;
 
   @override
   void initState() {
@@ -62,11 +61,11 @@ class _SaveFishingSpotPageState extends State<SaveFishingSpotPage> {
       onSave: (_) {
         var newFishingSpot = FishingSpot()
           ..id = _oldFishingSpot?.id ?? randomId()
-          ..lat = _oldFishingSpot?.lat ?? widget.latLng.latitude
-          ..lng = _oldFishingSpot?.lng ?? widget.latLng.longitude;
+          ..lat = _oldFishingSpot?.lat ?? widget.latLng!.latitude
+          ..lng = _oldFishingSpot?.lng ?? widget.latLng!.longitude;
 
         if (isNotEmpty(_nameController.value)) {
-          newFishingSpot.name = _nameController.value;
+          newFishingSpot.name = _nameController.value!;
         }
 
         _fishingSpotManager.addOrUpdate(newFishingSpot);

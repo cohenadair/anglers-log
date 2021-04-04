@@ -7,16 +7,14 @@ import 'package:mobile/widgets/text_input.dart';
 import 'package:mobile/widgets/widget.dart';
 import 'package:mockito/mockito.dart';
 
-import '../mock_app_manager.dart';
+import '../mocks/stubbed_app_manager.dart';
 import '../test_utils.dart';
 
 void main() {
-  MockAppManager appManager;
+  late StubbedAppManager appManager;
 
   setUp(() {
-    appManager = MockAppManager(
-      mockAuthManager: true,
-    );
+    appManager = StubbedAppManager();
   });
 
   testWidgets("Button disabled when input is invalid", (tester) async {
@@ -49,7 +47,7 @@ void main() {
 
     expect(findFirst<AnimatedVisibility>(tester).visible, isFalse);
 
-    when(appManager.mockAuthManager.login(any, any)).thenAnswer(
+    when(appManager.authManager.login(any, any)).thenAnswer(
         (_) => Future.delayed(Duration(milliseconds: 50), () => null));
 
     await tester.tap(find.text("LOGIN"));
@@ -73,7 +71,7 @@ void main() {
         find.widgetWithText(TextInput, "Password"), "123456");
     await tester.pump();
 
-    when(appManager.mockAuthManager.login(any, any)).thenAnswer((_) =>
+    when(appManager.authManager.login(any, any)).thenAnswer((_) =>
         Future.delayed(
             Duration(milliseconds: 50), () => AuthError.noConnection));
 
@@ -86,7 +84,9 @@ void main() {
   });
 
   testWidgets("Reset password works as expected", (tester) async {
-    when(appManager.mockAuthManager.login(any, any)).thenAnswer((_) =>
+    when(appManager.authManager.sendResetPasswordEmail(any))
+        .thenAnswer((_) => Future.value(null));
+    when(appManager.authManager.login(any, any)).thenAnswer((_) =>
         Future.delayed(
             Duration(milliseconds: 50), () => AuthError.wrongPassword));
 
@@ -113,7 +113,7 @@ void main() {
     await tester.pump();
 
     expect(find.text("OK"), findsOneWidget);
-    verify(appManager.mockAuthManager.sendResetPasswordEmail(any)).called(1);
+    verify(appManager.authManager.sendResetPasswordEmail(any)).called(1);
   });
 
   testWidgets("Switching modes", (tester) async {
@@ -166,7 +166,7 @@ void main() {
 
     expect(findFirst<AnimatedVisibility>(tester).visible, isFalse);
 
-    when(appManager.mockAuthManager.login(any, any)).thenAnswer(
+    when(appManager.authManager.login(any, any)).thenAnswer(
         (_) => Future.delayed(Duration(milliseconds: 50), () => null));
 
     await tester.tap(find.text("LOGIN"));
@@ -194,7 +194,7 @@ void main() {
 
     expect(findFirst<AnimatedVisibility>(tester).visible, isFalse);
 
-    when(appManager.mockAuthManager.signUp(any, any)).thenAnswer(
+    when(appManager.authManager.signUp(any, any)).thenAnswer(
         (_) => Future.delayed(Duration(milliseconds: 50), () => null));
 
     await tester.tap(find.text("SIGN UP"));

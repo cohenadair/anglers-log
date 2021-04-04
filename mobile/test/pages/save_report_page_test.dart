@@ -14,11 +14,11 @@ import 'package:mobile/widgets/date_range_picker_input.dart';
 import 'package:mobile/widgets/list_item.dart';
 import 'package:mockito/mockito.dart';
 
-import '../mock_app_manager.dart';
+import '../mocks/stubbed_app_manager.dart';
 import '../test_utils.dart';
 
 void main() {
-  MockAppManager appManager;
+  late StubbedAppManager appManager;
 
   var baitList = <Bait>[
     Bait()
@@ -48,42 +48,42 @@ void main() {
   ];
 
   setUp(() {
-    appManager = MockAppManager(
-      mockBaitCategoryManager: true,
-      mockBaitManager: true,
-      mockComparisonReportManager: true,
-      mockFishingSpotManager: true,
-      mockSpeciesManager: true,
-      mockSummaryReportManager: true,
-      mockTimeManager: true,
-    );
+    appManager = StubbedAppManager();
 
-    when(appManager.mockBaitCategoryManager.listSortedByName()).thenReturn([]);
+    when(appManager.baitCategoryManager.listSortedByName()).thenReturn([]);
 
-    when(appManager.mockBaitManager.list(any)).thenReturn(baitList);
-    when(appManager.mockBaitManager
-            .listSortedByName(filter: anyNamed("filter")))
+    when(appManager.baitManager.list(any)).thenReturn(baitList);
+    when(appManager.baitManager.listSortedByName(filter: anyNamed("filter")))
         .thenReturn(baitList);
-    when(appManager.mockBaitManager.filteredList(any)).thenReturn(baitList);
+    when(appManager.baitManager.filteredList(any)).thenReturn(baitList);
 
     // Sunday, September 13, 2020 12:26:40 PM GMT
-    when(appManager.mockTimeManager.currentDateTime)
+    when(appManager.timeManager.currentDateTime)
         .thenReturn(DateTime.fromMillisecondsSinceEpoch(1600000000000));
 
-    when(appManager.mockComparisonReportManager.nameExists(any))
-        .thenReturn(false);
+    when(appManager.comparisonReportManager.addOrUpdate(any))
+        .thenAnswer((_) => Future.value(false));
+    when(appManager.comparisonReportManager.delete(
+      any,
+      notify: anyNamed("notify"),
+    )).thenAnswer((_) => Future.value(false));
+    when(appManager.comparisonReportManager.nameExists(any)).thenReturn(false);
 
-    when(appManager.mockSummaryReportManager.nameExists(any)).thenReturn(false);
+    when(appManager.summaryReportManager.addOrUpdate(any))
+        .thenAnswer((_) => Future.value(false));
+    when(appManager.summaryReportManager.delete(
+      any,
+      notify: anyNamed("notify"),
+    )).thenAnswer((_) => Future.value(false));
+    when(appManager.summaryReportManager.nameExists(any)).thenReturn(false);
 
-    when(appManager.mockFishingSpotManager.list(any))
-        .thenReturn(fishingSpotList);
-    when(appManager.mockFishingSpotManager
+    when(appManager.fishingSpotManager.list(any)).thenReturn(fishingSpotList);
+    when(appManager.fishingSpotManager
             .listSortedByName(filter: anyNamed("filter")))
         .thenReturn(fishingSpotList);
 
-    when(appManager.mockSpeciesManager.list(any)).thenReturn(speciesList);
-    when(appManager.mockSpeciesManager
-            .listSortedByName(filter: anyNamed("filter")))
+    when(appManager.speciesManager.list(any)).thenReturn(speciesList);
+    when(appManager.speciesManager.listSortedByName(filter: anyNamed("filter")))
         .thenReturn(speciesList);
   });
 
@@ -328,8 +328,8 @@ void main() {
 
       await tapAndSettle(tester, find.text("SAVE"));
 
-      var result = verify(
-          appManager.mockComparisonReportManager.addOrUpdate(captureAny));
+      var result =
+          verify(appManager.comparisonReportManager.addOrUpdate(captureAny));
       result.called(1);
 
       ComparisonReport report = result.captured.first;
@@ -343,8 +343,8 @@ void main() {
     });
 
     testWidgets("Add report with custom date ranges", (tester) async {
-      DateRange fromDateRange;
-      DateRange toDateRange;
+      late DateRange fromDateRange;
+      late DateRange toDateRange;
       await tester.pumpWidget(Testable(
         (context) {
           // Custom DisplayDateRange default to "this month".
@@ -375,8 +375,8 @@ void main() {
 
       await tapAndSettle(tester, find.text("SAVE"));
 
-      var result = verify(
-          appManager.mockComparisonReportManager.addOrUpdate(captureAny));
+      var result =
+          verify(appManager.comparisonReportManager.addOrUpdate(captureAny));
       result.called(1);
 
       ComparisonReport report = result.captured.first;
@@ -418,8 +418,8 @@ void main() {
 
       await tapAndSettle(tester, find.text("SAVE"));
 
-      var result = verify(
-          appManager.mockComparisonReportManager.addOrUpdate(captureAny));
+      var result =
+          verify(appManager.comparisonReportManager.addOrUpdate(captureAny));
       result.called(1);
 
       ComparisonReport report = result.captured.first;
@@ -471,8 +471,8 @@ void main() {
 
       await tapAndSettle(tester, find.text("SAVE"));
 
-      var result = verify(
-          appManager.mockComparisonReportManager.addOrUpdate(captureAny));
+      var result =
+          verify(appManager.comparisonReportManager.addOrUpdate(captureAny));
       result.called(1);
 
       expect(result.captured.first.id, report.id);
@@ -543,7 +543,7 @@ void main() {
       await tapAndSettle(tester, find.text("SAVE"));
 
       var result =
-          verify(appManager.mockSummaryReportManager.addOrUpdate(captureAny));
+          verify(appManager.summaryReportManager.addOrUpdate(captureAny));
       result.called(1);
 
       SummaryReport report = result.captured.first;
@@ -556,7 +556,7 @@ void main() {
     });
 
     testWidgets("Add report with custom date ranges", (tester) async {
-      DateRange dateRange;
+      late DateRange dateRange;
       await tester.pumpWidget(Testable(
         (context) {
           // Custom DisplayDateRange default to "this month".
@@ -580,7 +580,7 @@ void main() {
       await tapAndSettle(tester, find.text("SAVE"));
 
       var result =
-          verify(appManager.mockSummaryReportManager.addOrUpdate(captureAny));
+          verify(appManager.summaryReportManager.addOrUpdate(captureAny));
       result.called(1);
 
       SummaryReport report = result.captured.first;
@@ -618,7 +618,7 @@ void main() {
       await tapAndSettle(tester, find.text("SAVE"));
 
       var result =
-          verify(appManager.mockSummaryReportManager.addOrUpdate(captureAny));
+          verify(appManager.summaryReportManager.addOrUpdate(captureAny));
       result.called(1);
 
       SummaryReport report = result.captured.first;
@@ -657,7 +657,7 @@ void main() {
       await tapAndSettle(tester, find.text("SAVE"));
 
       var result =
-          verify(appManager.mockSummaryReportManager.addOrUpdate(captureAny));
+          verify(appManager.summaryReportManager.addOrUpdate(captureAny));
       result.called(1);
 
       expect(result.captured.first.id, report.id);

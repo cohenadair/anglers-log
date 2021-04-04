@@ -12,11 +12,11 @@ import 'package:mobile/widgets/list_item.dart';
 import 'package:mobile/widgets/list_picker_input.dart';
 import 'package:mockito/mockito.dart';
 
-import '../mock_app_manager.dart';
+import '../mocks/stubbed_app_manager.dart';
 import '../test_utils.dart';
 
 void main() {
-  MockAppManager appManager;
+  late StubbedAppManager appManager;
 
   var speciesId0 = randomId();
   var speciesId1 = randomId();
@@ -175,98 +175,89 @@ void main() {
   ];
 
   setUp(() {
-    appManager = MockAppManager(
-      mockAuthManager: true,
-      mockBaitManager: true,
-      mockCatchManager: true,
-      mockComparisonReportManager: true,
-      mockLocalDatabaseManager: true,
-      mockFishingSpotManager: true,
-      mockPreferencesManager: true,
-      mockSummaryReportManager: true,
-      mockSpeciesManager: true,
-      mockSubscriptionManager: true,
-      mockTimeManager: true,
-    );
+    appManager = StubbedAppManager();
 
-    when(appManager.mockAuthManager.stream).thenAnswer((_) => MockStream());
+    when(appManager.authManager.stream).thenAnswer((_) => Stream.empty());
 
-    when(appManager.mockBaitManager.addSimpleListener(
+    when(appManager.baitManager.addSimpleListener(
             onAdd: anyNamed("onAdd"),
             onDelete: anyNamed("onDelete"),
             onUpdate: anyNamed("onUpdate")))
         .thenReturn(SimpleEntityListener<Bait>());
-    when(appManager.mockBaitManager.list()).thenReturn(baitMap.values.toList());
-    when(appManager.mockBaitManager.entity(any))
+    when(appManager.baitManager.list()).thenReturn(baitMap.values.toList());
+    when(appManager.baitManager.entity(any))
         .thenAnswer((invocation) => baitMap[invocation.positionalArguments[0]]);
 
-    when(appManager.mockCatchManager.catchesSortedByTimestamp(
+    when(appManager.catchManager.catchesSortedByTimestamp(
       any,
       dateRange: anyNamed("dateRange"),
       baitIds: anyNamed("baitIds"),
       fishingSpotIds: anyNamed("fishingSpotIds"),
       speciesIds: anyNamed("speciesIds"),
     )).thenReturn([]);
-    when(appManager.mockCatchManager.list()).thenReturn(_catches);
-    when(appManager.mockCatchManager.addSimpleListener(
+    when(appManager.catchManager.list()).thenReturn(_catches);
+    when(appManager.catchManager.addSimpleListener(
       onAdd: anyNamed("onAdd"),
       onDelete: anyNamed("onDelete"),
       onUpdate: anyNamed("onUpdate"),
     )).thenReturn(SimpleEntityListener<Catch>());
 
-    when(appManager.mockComparisonReportManager.addSimpleListener(
+    when(appManager.comparisonReportManager.addSimpleListener(
       onAdd: anyNamed("onAdd"),
       onDelete: anyNamed("onDelete"),
       onUpdate: anyNamed("onUpdate"),
     )).thenReturn(SimpleEntityListener<ComparisonReport>());
-    when(appManager.mockComparisonReportManager.list()).thenReturn([]);
+    when(appManager.comparisonReportManager.list()).thenReturn([]);
 
-    when(appManager.mockLocalDatabaseManager.deleteEntity(any, any))
+    when(appManager.localDatabaseManager.deleteEntity(any, any))
         .thenAnswer((_) => Future.value(true));
-    when(appManager.mockLocalDatabaseManager.insertOrReplace(any, any))
+    when(appManager.localDatabaseManager.insertOrReplace(any, any))
         .thenAnswer((_) => Future.value(true));
 
-    when(appManager.mockFishingSpotManager.addSimpleListener(
+    when(appManager.fishingSpotManager.addSimpleListener(
       onAdd: anyNamed("onAdd"),
       onDelete: anyNamed("onDelete"),
       onUpdate: anyNamed("onUpdate"),
     )).thenReturn(SimpleEntityListener<FishingSpot>());
-    when(appManager.mockFishingSpotManager.list())
+    when(appManager.fishingSpotManager.list())
         .thenReturn(fishingSpotMap.values.toList());
-    when(appManager.mockFishingSpotManager.entity(any)).thenAnswer(
+    when(appManager.fishingSpotManager.entity(any)).thenAnswer(
         (invocation) => fishingSpotMap[invocation.positionalArguments[0]]);
 
-    when(appManager.mockSummaryReportManager.addSimpleListener(
+    when(appManager.summaryReportManager.addSimpleListener(
       onAdd: anyNamed("onAdd"),
       onDelete: anyNamed("onDelete"),
       onUpdate: anyNamed("onUpdate"),
     )).thenReturn(SimpleEntityListener<SummaryReport>());
 
-    when(appManager.mockSpeciesManager.addSimpleListener(
+    when(appManager.speciesManager.addSimpleListener(
       onAdd: anyNamed("onAdd"),
       onDelete: anyNamed("onDelete"),
       onUpdate: anyNamed("onUpdate"),
     )).thenReturn(SimpleEntityListener<Species>());
-    when(appManager.mockSpeciesManager.list())
+    when(appManager.speciesManager.list())
         .thenReturn(speciesMap.values.toList());
-    when(appManager.mockSpeciesManager
-            .listSortedByName(filter: anyNamed("filter")))
+    when(appManager.speciesManager.listSortedByName(filter: anyNamed("filter")))
         .thenReturn(speciesMap.values.toList());
-    when(appManager.mockSpeciesManager.entity(any)).thenAnswer(
+    when(appManager.speciesManager.entity(any)).thenAnswer(
         (invocation) => speciesMap[invocation.positionalArguments[0]]);
 
-    when(appManager.mockSubscriptionManager.stream)
-        .thenAnswer((_) => MockStream<void>());
-    when(appManager.mockSubscriptionManager.isPro).thenReturn(false);
+    when(appManager.subscriptionManager.stream)
+        .thenAnswer((_) => Stream.empty());
+    when(appManager.subscriptionManager.isPro).thenReturn(false);
 
-    when(appManager.mockTimeManager.currentDateTime)
+    when(appManager.timeManager.currentDateTime)
         .thenReturn(DateTime.fromMillisecondsSinceEpoch(105000));
-    when(appManager.mockTimeManager.msSinceEpoch).thenReturn(
+    when(appManager.timeManager.msSinceEpoch).thenReturn(
         DateTime.fromMillisecondsSinceEpoch(105000).millisecondsSinceEpoch);
+
+    when(appManager.userPreferenceManager.selectedReportId).thenReturn(null);
+    when(appManager.userPreferenceManager.selectedReportId = any)
+        .thenAnswer((_) {});
   });
 
-  void _stubCatchesByTimestamp([List<Catch> catches]) {
-    when(appManager.mockCatchManager.catchesSortedByTimestamp(
+  void _stubCatchesByTimestamp([List<Catch>? catches]) {
+    when(appManager.catchManager.catchesSortedByTimestamp(
       any,
       dateRange: anyNamed("dateRange"),
       baitIds: anyNamed("baitIds"),
@@ -292,14 +283,13 @@ void main() {
       ..id = randomId()
       ..name = "Summary"
       ..description = "A description";
-    when(appManager.mockComparisonReportManager.list()).thenReturn([]);
-    when(appManager.mockComparisonReportManager.entityExists(any))
+    when(appManager.comparisonReportManager.list()).thenReturn([]);
+    when(appManager.comparisonReportManager.entityExists(any))
         .thenReturn(false);
-    when(appManager.mockSummaryReportManager.list()).thenReturn([report]);
-    when(appManager.mockSummaryReportManager.entityExists(report.id))
+    when(appManager.summaryReportManager.list()).thenReturn([report]);
+    when(appManager.summaryReportManager.entityExists(report.id))
         .thenReturn(true);
-    when(appManager.mockSummaryReportManager.entity(report.id))
-        .thenReturn(report);
+    when(appManager.summaryReportManager.entity(report.id)).thenReturn(report);
 
     await tester.pumpWidget(Testable(
       (_) => StatsPage(),
@@ -319,13 +309,12 @@ void main() {
       ..id = randomId()
       ..name = "Comparison"
       ..description = "A description";
-    when(appManager.mockSummaryReportManager.entityExists(any))
-        .thenReturn(false);
-    when(appManager.mockSummaryReportManager.list()).thenReturn([]);
-    when(appManager.mockComparisonReportManager.list()).thenReturn([report]);
-    when(appManager.mockComparisonReportManager.entityExists(report.id))
+    when(appManager.summaryReportManager.entityExists(any)).thenReturn(false);
+    when(appManager.summaryReportManager.list()).thenReturn([]);
+    when(appManager.comparisonReportManager.list()).thenReturn([report]);
+    when(appManager.comparisonReportManager.entityExists(report.id))
         .thenReturn(true);
-    when(appManager.mockComparisonReportManager.entity(report.id))
+    when(appManager.comparisonReportManager.entity(report.id))
         .thenReturn(report);
 
     await tester.pumpWidget(Testable(
@@ -343,11 +332,11 @@ void main() {
 
   testWidgets("If current report is deleted, falls back to overview",
       (tester) async {
-    var summaryReportManager = SummaryReportManager(appManager);
-    when(appManager.summaryReportManager).thenReturn(summaryReportManager);
+    var summaryReportManager = SummaryReportManager(appManager.app);
+    when(appManager.app.summaryReportManager).thenReturn(summaryReportManager);
 
-    var comparisonReportManager = ComparisonReportManager(appManager);
-    when(appManager.comparisonReportManager)
+    var comparisonReportManager = ComparisonReportManager(appManager.app);
+    when(appManager.app.comparisonReportManager)
         .thenReturn(comparisonReportManager);
     var reportId = randomId();
     await comparisonReportManager.addOrUpdate(ComparisonReport()
@@ -374,11 +363,11 @@ void main() {
   });
 
   testWidgets("If current report is updated, state is updated", (tester) async {
-    var summaryReportManager = SummaryReportManager(appManager);
-    when(appManager.summaryReportManager).thenReturn(summaryReportManager);
+    var summaryReportManager = SummaryReportManager(appManager.app);
+    when(appManager.app.summaryReportManager).thenReturn(summaryReportManager);
 
-    var comparisonReportManager = ComparisonReportManager(appManager);
-    when(appManager.comparisonReportManager)
+    var comparisonReportManager = ComparisonReportManager(appManager.app);
+    when(appManager.app.comparisonReportManager)
         .thenReturn(comparisonReportManager);
     var reportId = randomId();
     await comparisonReportManager.addOrUpdate(ComparisonReport()
@@ -414,15 +403,15 @@ void main() {
 
   testWidgets("If non-current report is deleted, report stays the same",
       (tester) async {
-    var summaryReportManager = SummaryReportManager(appManager);
-    when(appManager.summaryReportManager).thenReturn(summaryReportManager);
+    var summaryReportManager = SummaryReportManager(appManager.app);
+    when(appManager.app.summaryReportManager).thenReturn(summaryReportManager);
     var summaryId = randomId();
     await summaryReportManager.addOrUpdate(SummaryReport()
       ..id = summaryId
       ..name = "Summary");
 
-    var comparisonReportManager = ComparisonReportManager(appManager);
-    when(appManager.comparisonReportManager)
+    var comparisonReportManager = ComparisonReportManager(appManager.app);
+    when(appManager.app.comparisonReportManager)
         .thenReturn(comparisonReportManager);
     var comparisonId = randomId();
     await comparisonReportManager.addOrUpdate(ComparisonReport()
@@ -460,12 +449,12 @@ void main() {
         ..id = randomId()
         ..name = "Summary Report"
         ..displayDateRangeId = DisplayDateRange.allDates.id;
-      when(appManager.mockPreferencesManager.selectedReportId)
+      when(appManager.userPreferenceManager.selectedReportId)
           .thenReturn(report.id);
-      when(appManager.mockSummaryReportManager.entity(any)).thenReturn(report);
-      when(appManager.mockSummaryReportManager.entityExists(report.id))
+      when(appManager.summaryReportManager.entity(any)).thenReturn(report);
+      when(appManager.summaryReportManager.entityExists(report.id))
           .thenReturn(true);
-      when(appManager.mockComparisonReportManager.entityExists(any))
+      when(appManager.comparisonReportManager.entityExists(any))
           .thenReturn(false);
       _stubCatchesByTimestamp();
 
@@ -496,13 +485,11 @@ void main() {
         ..baitIds.add(baitId0)
         ..fishingSpotIds.addAll({fishingSpotId0, fishingSpotId1})
         ..speciesIds.addAll({speciesId0, speciesId1});
-      when(appManager.mockPreferencesManager.selectedReportId)
+      when(appManager.userPreferenceManager.selectedReportId)
           .thenReturn(report.id);
-      when(appManager.mockComparisonReportManager.entity(any))
-          .thenReturn(report);
-      when(appManager.mockSummaryReportManager.entityExists(any))
-          .thenReturn(false);
-      when(appManager.mockComparisonReportManager.entityExists(any))
+      when(appManager.comparisonReportManager.entity(any)).thenReturn(report);
+      when(appManager.summaryReportManager.entityExists(any)).thenReturn(false);
+      when(appManager.comparisonReportManager.entityExists(any))
           .thenReturn(true);
       _stubCatchesByTimestamp();
 
@@ -588,12 +575,11 @@ void main() {
         ..baitIds.add(baitId0)
         ..fishingSpotIds.add(fishingSpotId0)
         ..speciesIds.add(speciesId0);
-      when(appManager.mockPreferencesManager.selectedReportId)
+      when(appManager.userPreferenceManager.selectedReportId)
           .thenReturn(report.id);
-      when(appManager.mockSummaryReportManager.entity(any)).thenReturn(report);
-      when(appManager.mockSummaryReportManager.entityExists(any))
-          .thenReturn(true);
-      when(appManager.mockComparisonReportManager.entityExists(any))
+      when(appManager.summaryReportManager.entity(any)).thenReturn(report);
+      when(appManager.summaryReportManager.entityExists(any)).thenReturn(true);
+      when(appManager.comparisonReportManager.entityExists(any))
           .thenReturn(false);
       _stubCatchesByTimestamp();
 
@@ -790,13 +776,11 @@ void main() {
         ..name = "Comparison Report"
         ..fromDisplayDateRangeId = DisplayDateRange.allDates.id
         ..toDisplayDateRangeId = DisplayDateRange.last7Days.id;
-      when(appManager.mockPreferencesManager.selectedReportId)
+      when(appManager.userPreferenceManager.selectedReportId)
           .thenReturn(report.id);
-      when(appManager.mockComparisonReportManager.entity(any))
-          .thenReturn(report);
-      when(appManager.mockSummaryReportManager.entityExists(any))
-          .thenReturn(false);
-      when(appManager.mockComparisonReportManager.entityExists(any))
+      when(appManager.comparisonReportManager.entity(any)).thenReturn(report);
+      when(appManager.summaryReportManager.entityExists(any)).thenReturn(false);
+      when(appManager.comparisonReportManager.entityExists(any))
           .thenReturn(true);
       _stubCatchesByTimestamp();
 
@@ -816,12 +800,11 @@ void main() {
         ..id = randomId()
         ..name = "Summary Report"
         ..displayDateRangeId = DisplayDateRange.lastYear.id;
-      when(appManager.mockPreferencesManager.selectedReportId)
+      when(appManager.userPreferenceManager.selectedReportId)
           .thenReturn(report.id);
-      when(appManager.mockSummaryReportManager.entity(any)).thenReturn(report);
-      when(appManager.mockSummaryReportManager.entityExists(any))
-          .thenReturn(true);
-      when(appManager.mockComparisonReportManager.entityExists(any))
+      when(appManager.summaryReportManager.entity(any)).thenReturn(report);
+      when(appManager.summaryReportManager.entityExists(any)).thenReturn(true);
+      when(appManager.comparisonReportManager.entityExists(any))
           .thenReturn(false);
       _stubCatchesByTimestamp();
 
@@ -840,12 +823,11 @@ void main() {
         ..id = randomId()
         ..name = "Summary Report"
         ..displayDateRangeId = DisplayDateRange.allDates.id;
-      when(appManager.mockPreferencesManager.selectedReportId)
+      when(appManager.userPreferenceManager.selectedReportId)
           .thenReturn(report.id);
-      when(appManager.mockSummaryReportManager.entity(any)).thenReturn(report);
-      when(appManager.mockSummaryReportManager.entityExists(any))
-          .thenReturn(true);
-      when(appManager.mockComparisonReportManager.entityExists(any))
+      when(appManager.summaryReportManager.entity(any)).thenReturn(report);
+      when(appManager.summaryReportManager.entityExists(any)).thenReturn(true);
+      when(appManager.comparisonReportManager.entityExists(any))
           .thenReturn(false);
       _stubCatchesByTimestamp();
 
@@ -884,13 +866,11 @@ void main() {
         ..name = "Comparison Report"
         ..fromDisplayDateRangeId = DisplayDateRange.last7Days.id
         ..toDisplayDateRangeId = DisplayDateRange.lastMonth.id;
-      when(appManager.mockPreferencesManager.selectedReportId)
+      when(appManager.userPreferenceManager.selectedReportId)
           .thenReturn(report.id);
-      when(appManager.mockComparisonReportManager.entity(any))
-          .thenReturn(report);
-      when(appManager.mockSummaryReportManager.entityExists(any))
-          .thenReturn(false);
-      when(appManager.mockComparisonReportManager.entityExists(any))
+      when(appManager.comparisonReportManager.entity(any)).thenReturn(report);
+      when(appManager.summaryReportManager.entityExists(any)).thenReturn(false);
+      when(appManager.comparisonReportManager.entityExists(any))
           .thenReturn(true);
       _stubCatchesByTimestamp();
 
@@ -916,16 +896,15 @@ void main() {
         ..toStartTimestamp = Int64(4)
         ..fromEndTimestamp = Int64(5)
         ..toEndTimestamp = Int64(500);
-      when(appManager.mockPreferencesManager.selectedReportId)
+      when(appManager.userPreferenceManager.selectedReportId)
           .thenReturn(report.id);
-      when(appManager.mockComparisonReportManager.entity(report.id))
+      when(appManager.comparisonReportManager.entity(report.id))
           .thenReturn(report);
-      when(appManager.mockSummaryReportManager.entityExists(any))
-          .thenReturn(false);
-      when(appManager.mockComparisonReportManager.entityExists(any))
+      when(appManager.summaryReportManager.entityExists(any)).thenReturn(false);
+      when(appManager.comparisonReportManager.entityExists(any))
           .thenReturn(true);
 
-      when(appManager.mockCatchManager.catchesSortedByTimestamp(
+      when(appManager.catchManager.catchesSortedByTimestamp(
         any,
         dateRange: anyNamed("dateRange"),
         baitIds: anyNamed("baitIds"),

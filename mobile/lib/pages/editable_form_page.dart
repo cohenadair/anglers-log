@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:collection/collection.dart' show IterableExtension;
 import 'package:flutter/material.dart';
 import 'package:quiver/strings.dart';
 
@@ -14,7 +15,7 @@ import '../widgets/input_type.dart';
 import '../widgets/widget.dart';
 
 class EditableFormPage extends StatefulWidget {
-  final Widget title;
+  final Widget? title;
 
   /// A unique ID to [Field] map of all valid fields for the form.
   final Map<Id, Field> fields;
@@ -29,28 +30,28 @@ class EditableFormPage extends StatefulWidget {
 
   /// Called when an input field needs to be built. The ID of the input field
   /// is passed into the function.
-  final Widget Function(Id) onBuildField;
+  final Widget Function(Id)? onBuildField;
 
   /// See [FormPage.onAddFields].
-  final void Function(Set<Id> ids) onAddFields;
+  final void Function(Set<Id> ids)? onAddFields;
 
   /// Called when the "Save" button is pressed and form validation passes.
   /// A map of [CustomEntity] ID to value objects included in the form is passed
   /// into the callback.
   ///
   /// See [FormPage.onSave].
-  final FutureOr<bool> Function(Map<Id, dynamic>) onSave;
+  final FutureOr<bool> Function(Map<Id, dynamic>)? onSave;
 
   /// See [FormPage.isInputValid].
   final bool isInputValid;
 
   /// See [FormPage.runSpacing].
-  final double runSpacing;
+  final double? runSpacing;
 
   final EdgeInsets padding;
 
   /// See [FormPage.popupMenuKey].
-  final GlobalKey<PopupMenuButtonState> popupMenuKey;
+  final GlobalKey<PopupMenuButtonState>? popupMenuKey;
 
   EditableFormPage({
     this.popupMenuKey,
@@ -64,11 +65,7 @@ class EditableFormPage extends StatefulWidget {
     this.padding = insetsHorizontalDefault,
     this.isInputValid = true,
     this.runSpacing,
-  })  : assert(fields != null),
-        assert(customEntityIds != null),
-        assert(customEntityValues != null),
-        assert(isInputValid != null),
-        assert(padding != null);
+  });
 
   @override
   _EditableFormPageState createState() => _EditableFormPageState();
@@ -94,7 +91,10 @@ class _EditableFormPageState extends State<EditableFormPage> {
 
     // Add custom fields.
     for (var id in widget.customEntityIds) {
-      _fields[id] = Field.fromCustomEntity(_customEntityManager.entity(id));
+      var customEntity = _customEntityManager.entity(id);
+      if (customEntity != null) {
+        _fields[id] = Field.fromCustomEntity(customEntity);
+      }
     }
 
     // Set custom fields' initial values.
@@ -112,7 +112,7 @@ class _EditableFormPageState extends State<EditableFormPage> {
         _fields[entity.id] = Field.fromCustomEntity(entity);
       }
 
-      _fields[entity.id].controller.value =
+      _fields[entity.id]!.controller.value =
           valueForCustomEntityType(entity.type, value);
     }
   }
@@ -133,52 +133,57 @@ class _EditableFormPageState extends State<EditableFormPage> {
       title: widget.title,
       runSpacing: widget.runSpacing,
       padding: widget.padding,
-      fieldBuilder: (context) {
-        return Map.fromIterable(
-          _fields.keys,
-          key: (item) => item,
-          value: (item) => _inputWidget(item),
-        );
-      },
+      fieldBuilder: (context) =>
+          <Id, Widget>{for (var id in _fields.keys) id: _inputWidget(id)},
       onSave: (_) {
         var customFieldValues = <Id, dynamic>{};
         for (var id in _fields.keys) {
+          var field = _fields[id]!;
           if (_customEntityManager.entity(id) != null &&
-              _fields[id].showing &&
-              !_fields[id].fake) {
-            customFieldValues[id] = _fields[id].controller.value;
+              field.showing &&
+              !field.fake) {
+            customFieldValues[id] = field.controller.value;
           }
         }
 
-        return widget.onSave(customFieldValues);
+        if (widget.onSave == null) {
+          return false;
+        } else {
+          return widget.onSave!.call(customFieldValues);
+        }
       },
-      addFieldOptions: _fields.keys.where((id) => !_fields[id].fake).map(
-        (id) {
-          var description = _fields[id].description?.call(context);
-          if (isEmpty(description) && !_fields[id].removable) {
-            description = Strings.of(context).inputGenericRequired;
-          }
+      addFieldOptions: _fields.keys.where((id) => !_fields[id]!.fake).map((id) {
+        var field = _fields[id]!;
 
-          return FormPageFieldOption(
-            id: id,
-            name: _fields[id].name(context),
-            description: description,
-            used: _fields[id].showing,
-            removable: _fields[id].removable,
-          );
-        },
-      ).toList(),
+        assert(field.name != null);
+        var fieldName = field.name!(context);
+
+        var description = field.description?.call(context);
+        if (isEmpty(description) && !field.removable) {
+          description = Strings.of(context).inputGenericRequired;
+        }
+
+        return FormPageFieldOption(
+          id: id,
+          name: fieldName,
+          description: description,
+          used: field.showing,
+          removable: field.removable,
+        );
+      }).toList(),
       onAddFields: _addInputWidgets,
       isInputValid: widget.isInputValid,
     );
   }
 
   Widget _inputWidget(Id id) {
+    assert(_fields.containsKey(id));
+    var field = _fields[id]!;
+
     // For now, always show "fake" fields.
-    if (_fields[id].fake) {
-      var hasCustomFields = _fields.keys.firstWhere(
-              (id) => _customEntityManager.entity(id) != null,
-              orElse: () => null) !=
+    if (field.fake) {
+      var hasCustomFields = _fields.keys.firstWhereOrNull(
+              (id) => _customEntityManager.entity(id) != null) !=
           null;
 
       return HeadingNoteDivider(
@@ -190,7 +195,7 @@ class _EditableFormPageState extends State<EditableFormPage> {
       );
     }
 
-    if (!_fields[id].showing) {
+    if (!field.showing) {
       return Empty();
     }
 
@@ -202,14 +207,13 @@ class _EditableFormPageState extends State<EditableFormPage> {
           context,
           type: customField.type,
           label: customField.name,
-          controller: _fields[id].controller,
-          onCheckboxChanged: (newValue) =>
-              _fields[id].controller.value = newValue,
+          controller: field.controller,
+          onCheckboxChanged: (newValue) => field.controller.value = newValue,
         ),
       );
     }
 
-    return widget.onBuildField?.call(id);
+    return widget.onBuildField?.call(id) ?? Empty();
   }
 
   void _addInputWidgets(Set<Id> ids) {

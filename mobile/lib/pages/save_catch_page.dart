@@ -36,29 +36,27 @@ import 'manageable_list_page.dart';
 
 class SaveCatchPage extends StatefulWidget {
   /// If set, invoked when it's time to pop the page from the navigation stack.
-  final VoidCallback popOverride;
+  final VoidCallback? popOverride;
 
   final List<PickedImage> images;
-  final Id speciesId;
-  final Id fishingSpotId;
+  final Id? speciesId;
+  final Id? fishingSpotId;
 
-  final Catch oldCatch;
+  final Catch? oldCatch;
 
   /// See [EditableFormPage.popupMenuKey].
-  final GlobalKey<PopupMenuButtonState> popupMenuKey;
+  final GlobalKey<PopupMenuButtonState>? popupMenuKey;
 
   SaveCatchPage({
+    required this.speciesId,
     this.popupMenuKey,
     this.images = const [],
-    this.speciesId,
     this.fishingSpotId,
     this.popOverride,
-  })  : assert(images != null),
-        oldCatch = null;
+  }) : oldCatch = null;
 
   SaveCatchPage.edit(this.oldCatch)
-      : assert(oldCatch != null),
-        popupMenuKey = null,
+      : popupMenuKey = null,
         popOverride = null,
         images = const [],
         speciesId = null,
@@ -100,20 +98,22 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
 
   TimeManager get _timeManager => TimeManager.of(context);
 
-  Catch get _oldCatch => widget.oldCatch;
+  Catch? get _oldCatch => widget.oldCatch;
 
   TimestampInputController get _timestampController =>
-      _fields[_idTimestamp].controller;
+      _fields[_idTimestamp]!.controller as TimestampInputController;
 
-  InputController<Id> get _speciesController => _fields[_idSpecies].controller;
+  InputController<Id> get _speciesController =>
+      _fields[_idSpecies]!.controller as InputController<Id>;
 
   InputController<List<PickedImage>> get _imagesController =>
-      _fields[_idImages].controller;
+      _fields[_idImages]!.controller as InputController<List<PickedImage>>;
 
   InputController<Id> get _fishingSpotController =>
-      _fields[_idFishingSpot].controller;
+      _fields[_idFishingSpot]!.controller as InputController<Id>;
 
-  InputController<Id> get _baitController => _fields[_idBait].controller;
+  InputController<Id> get _baitController =>
+      _fields[_idBait]!.controller as InputController<Id>;
 
   bool get _editing => _oldCatch != null;
 
@@ -125,24 +125,23 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
     for (var field in allCatchFields()) {
       _fields[field.id] = field;
       // By default, show all fields.
-      _fields[field.id].showing = showingFieldIds == null ||
-          showingFieldIds.isEmpty ||
-          showingFieldIds.contains(field.id);
+      _fields[field.id]!.showing =
+          showingFieldIds.isEmpty || showingFieldIds.contains(field.id);
     }
 
     if (_editing) {
-      _timestampController.value = _oldCatch.timestamp.toInt();
-      _speciesController.value = _oldCatch.speciesId;
-      _baitController.value = _oldCatch.baitId;
-      _fishingSpotController.value = _oldCatch.fishingSpotId;
-      _customEntityValues = _oldCatch.customEntityValues;
+      _timestampController.value = _oldCatch!.timestamp.toInt();
+      _speciesController.value = _oldCatch!.speciesId;
+      _baitController.value = _oldCatch!.baitId;
+      _fishingSpotController.value = _oldCatch!.fishingSpotId;
+      _customEntityValues = _oldCatch!.customEntityValues;
       _imagesFuture = _pickedImagesForOldCatch;
     } else {
       if (widget.images.isNotEmpty) {
         var image = widget.images.first;
         if (image.dateTime != null) {
           _timestampController.date = image.dateTime;
-          _timestampController.time = TimeOfDay.fromDateTime(image.dateTime);
+          _timestampController.time = TimeOfDay.fromDateTime(image.dateTime!);
         }
       }
       _speciesController.value = widget.speciesId;
@@ -221,7 +220,7 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
         _baitManager,
       ],
       builder: (context) {
-        String value;
+        String? value;
         if (_baitController.value != null) {
           value = _baitManager.formatNameWithCategory(_baitController.value);
         }
@@ -330,26 +329,29 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
     // imageNames is set in _catchManager.addOrUpdate
     var cat = Catch()
       ..id = _oldCatch?.id ?? randomId()
-      ..timestamp = Int64(_timestampController.value)
-      ..speciesId = _speciesController.value
+      ..timestamp = Int64(_timestampController.value!)
+      ..speciesId = _speciesController.value!
       ..customEntityValues.addAll(entityValuesFromMap(customFieldValueMap));
 
     if (_fishingSpotController.value != null) {
-      cat.fishingSpotId = _fishingSpotController.value;
+      cat.fishingSpotId = _fishingSpotController.value!;
     }
 
     if (_baitController.value != null) {
-      cat.baitId = _baitController.value;
+      cat.baitId = _baitController.value!;
     }
 
     _catchManager.addOrUpdate(
       cat,
-      imageFiles:
-          _imagesController.value?.map((img) => img.originalFile)?.toList(),
+      imageFiles: _imagesController.value
+              ?.where((img) => img.originalFile != null)
+              .map((img) => img.originalFile!)
+              .toList() ??
+          [],
     );
 
     if (widget.popOverride != null) {
-      widget.popOverride();
+      widget.popOverride!();
       return false;
     }
 
@@ -377,18 +379,18 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
   /// Converts [oldCatch] images into a list of [PickedImage] objects to be
   /// managed by the [ImageInput].
   Future<List<PickedImage>> get _pickedImagesForOldCatch async {
-    if (!_editing || _oldCatch.imageNames.isEmpty) {
+    if (!_editing || _oldCatch!.imageNames.isEmpty) {
       return Future.value([]);
     }
 
     var bytesList = await _imageManager.images(
       context,
-      imageNames: _oldCatch.imageNames,
+      imageNames: _oldCatch!.imageNames,
       size: galleryMaxThumbSize,
     );
 
     _imagesController.value =
         bytesList.map((bytes) => PickedImage(thumbData: bytes)).toList();
-    return _imagesController.value;
+    return _imagesController.value!;
   }
 }

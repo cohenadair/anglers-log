@@ -13,11 +13,9 @@ import '../utils/string_utils.dart';
 /// Returns the number of occurrences of [customEntityId] in [entities].
 int entityValuesCount<T>(List<T> entities, Id customEntityId,
     List<CustomEntityValue> Function(T) getValues) {
-  assert(entities.isEmpty || getValues != null);
-
   var result = 0;
   for (var entity in entities) {
-    var values = getValues(entity) ?? [];
+    var values = getValues(entity);
     if (values.isNotEmpty) {
       for (var value in values) {
         if (value.customEntityId == customEntityId) {
@@ -29,18 +27,16 @@ int entityValuesCount<T>(List<T> entities, Id customEntityId,
   return result;
 }
 
-bool entityValuesMatchesFilter(List<CustomEntityValue> values, String filter,
+bool entityValuesMatchesFilter(List<CustomEntityValue> values, String? filter,
     CustomEntityManager customEntityManager) {
-  if (isEmpty(filter) && (values == null || values.isEmpty)) {
+  if (isEmpty(filter)) {
     return true;
   }
-
-  values = values ?? [];
 
   for (var value in values) {
     if (customEntityManager.matchesFilter(value.customEntityId, filter) ||
         (isNotEmpty(value.value) &&
-            value.value.toLowerCase().contains(filter.toLowerCase()))) {
+            value.value.toLowerCase().contains(filter!.toLowerCase()))) {
       return true;
     }
   }
@@ -50,7 +46,7 @@ bool entityValuesMatchesFilter(List<CustomEntityValue> values, String filter,
 
 /// Converts the given [keyValues] map into a list of [CustomEntityValue]
 /// objects.
-List<CustomEntityValue> entityValuesFromMap(Map<Id, dynamic> keyValues) {
+List<CustomEntityValue> entityValuesFromMap(Map<Id, dynamic>? keyValues) {
   if (keyValues == null) {
     return [];
   }
@@ -73,7 +69,7 @@ List<CustomEntityValue> entityValuesFromMap(Map<Id, dynamic> keyValues) {
 
 dynamic valueForCustomEntityType(
     CustomEntity_Type type, CustomEntityValue value,
-    [BuildContext context]) {
+    [BuildContext? context]) {
   switch (type) {
     case CustomEntity_Type.NUMBER:
     // Fallthrough.
@@ -96,7 +92,7 @@ Id randomId() => Id()..uuid = Uuid().v4();
 Id parseId(String idString) {
   assert(isNotEmpty(idString));
 
-  var uuid = Uuid().unparse(Uuid().parse(idString));
+  var uuid = Uuid.unparse(Uuid.parse(idString));
   if (uuid == Uuid.NAMESPACE_NIL) {
     throw ArgumentError("Input String is not a valid UUID: $idString");
   }
@@ -104,7 +100,7 @@ Id parseId(String idString) {
   return Id()..uuid = uuid;
 }
 
-Id safeParseId(String idString) {
+Id? safeParseId(String idString) {
   try {
     return parseId(idString);
   } on Exception catch (_) {
@@ -113,7 +109,7 @@ Id safeParseId(String idString) {
 }
 
 extension Ids on Id {
-  List<int> get bytes => Uuid().parse(uuid);
+  List<int> get bytes => Uuid.parse(uuid);
   Uint8List get uint8List => Uint8List.fromList(bytes);
 }
 

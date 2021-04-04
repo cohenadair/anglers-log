@@ -7,20 +7,20 @@ import 'package:mobile/widgets/image_input.dart';
 import 'package:mobile/widgets/widget.dart';
 import 'package:mockito/mockito.dart';
 
-import '../mock_app_manager.dart';
+import '../mocks/stubbed_app_manager.dart';
 import '../test_utils.dart';
 
 void main() {
-  MockAppManager appManager;
+  late StubbedAppManager appManager;
 
   setUp(() {
-    appManager = MockAppManager(
-      mockPhotoManagerWrapper: true,
-      mockPermissionHandlerWrapper: true,
-    );
+    appManager = StubbedAppManager();
 
-    when(appManager.mockPermissionHandlerWrapper.requestPhotos())
+    when(appManager.permissionHandlerWrapper.requestPhotos())
         .thenAnswer((_) => Future.value(true));
+
+    when(appManager.photoManagerWrapper.getAllAssetPathEntity(any))
+        .thenAnswer((_) => Future.value(null));
   });
 
   testWidgets("Enabled", (tester) async {

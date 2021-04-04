@@ -20,19 +20,19 @@ class Photo extends StatefulWidget {
   static final double _listItemSize = 48;
 
   /// The unique file name of the image.
-  final String fileName;
+  final String? fileName;
 
-  final double width;
-  final double height;
+  final double? width;
+  final double? height;
 
   /// If null, is set to the larger of [width] and [height].
-  final double cacheSize;
+  final double? cacheSize;
 
   /// If true, [Photo] will be rendered in a circle. Default is false.
   final bool circular;
 
   Photo({
-    @required this.fileName,
+    required this.fileName,
     this.width,
     this.height,
     this.cacheSize,
@@ -40,7 +40,7 @@ class Photo extends StatefulWidget {
   }) : assert((width != null && height != null) ||
             (width == null && height == null));
 
-  Photo.listThumbnail(String fileName)
+  Photo.listThumbnail(String? fileName)
       : this(
           fileName: fileName,
           width: _listItemSize,
@@ -53,7 +53,7 @@ class Photo extends StatefulWidget {
 }
 
 class _PhotoState extends State<Photo> {
-  Future<ui.Image> _imageFuture;
+  late Future<ui.Image?> _imageFuture;
 
   ImageManager get _imageManager => ImageManager.of(context);
 
@@ -75,7 +75,7 @@ class _PhotoState extends State<Photo> {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<ui.Image>(
+    return FutureBuilder<ui.Image?>(
       future: _imageFuture,
       builder: (context, snapshot) {
         var image = snapshot.data;
@@ -98,7 +98,7 @@ class _PhotoState extends State<Photo> {
                   ),
                   child: Icon(
                     CustomIcons.catches,
-                    size: min<double>(w, h) / 1.5,
+                    size: min<double>(w!, h!) / 1.5,
                     color: Colors.white,
                   ),
                 )
@@ -125,18 +125,18 @@ class _PhotoState extends State<Photo> {
     );
   }
 
-  Future<ui.Image> _decodeImage() async {
+  Future<ui.Image?> _decodeImage() async {
     if (isEmpty(widget.fileName)) {
       return null;
     }
 
     var size = widget.cacheSize;
     if (size == null) {
-      size = widget.width == null
+      size = widget.width == null || widget.height == null
           ? null
-          : max<double>(widget.width, widget.height);
+          : max<double>(widget.width!, widget.height!);
     }
 
-    return await _imageManager.dartImage(context, widget.fileName, size);
+    return await _imageManager.dartImage(context, widget.fileName!, size);
   }
 }

@@ -16,9 +16,9 @@ String format(String s, List<dynamic> args) {
 }
 
 String formatLatLng({
-  @required BuildContext context,
-  @required double lat,
-  @required double lng,
+  required BuildContext context,
+  required double lat,
+  required double lng,
   bool includeLabels = true,
 }) {
   final decimalPlaces = 6;

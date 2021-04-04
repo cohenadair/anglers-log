@@ -6,22 +6,14 @@ import 'package:mobile/widgets/label_value.dart';
 import 'package:mobile/widgets/widget.dart';
 import 'package:mockito/mockito.dart';
 
-import '../mock_app_manager.dart';
+import '../mocks/stubbed_app_manager.dart';
 import '../test_utils.dart';
 
 void main() {
-  MockAppManager appManager;
+  late StubbedAppManager appManager;
 
   setUp(() {
-    appManager = MockAppManager(
-      mockCustomEntityManager: true,
-    );
-  });
-
-  testWidgets("Null input", (tester) async {
-    await tester.pumpWidget(
-        Testable((_) => CustomEntityValues(null), appManager: appManager));
-    expect(find.byType(Empty), findsOneWidget);
+    appManager = StubbedAppManager();
   });
 
   testWidgets("Empty input", (tester) async {
@@ -37,7 +29,7 @@ void main() {
       ]),
       appManager: appManager,
     ));
-    when(appManager.mockCustomEntityManager.entity(any)).thenReturn(null);
+    when(appManager.customEntityManager.entity(any)).thenReturn(null);
     expect(find.byType(Empty), findsOneWidget);
   });
 
@@ -46,17 +38,17 @@ void main() {
     var id2 = randomId();
     var id3 = randomId();
 
-    when(appManager.mockCustomEntityManager.entity(id1)).thenReturn(
+    when(appManager.customEntityManager.entity(id1)).thenReturn(
       CustomEntity()
         ..name = "Entity 1"
         ..type = CustomEntity_Type.TEXT,
     );
-    when(appManager.mockCustomEntityManager.entity(id2)).thenReturn(
+    when(appManager.customEntityManager.entity(id2)).thenReturn(
       CustomEntity()
         ..name = "Entity 2"
         ..type = CustomEntity_Type.BOOL,
     );
-    when(appManager.mockCustomEntityManager.entity(id3)).thenReturn(
+    when(appManager.customEntityManager.entity(id3)).thenReturn(
       CustomEntity()
         ..name = "Entity 3"
         ..type = CustomEntity_Type.NUMBER,

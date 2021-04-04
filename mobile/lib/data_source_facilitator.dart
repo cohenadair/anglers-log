@@ -40,7 +40,7 @@ abstract class DataSourceFacilitator {
   /// The Firestore listener created in this method should set local cache for
   /// the underlying data model.
   @protected
-  StreamSubscription<dynamic> initializeFirestore(Completer completer);
+  StreamSubscription<dynamic>? initializeFirestore(Completer completer);
 
   /// Called when a user purchases or restores a pro subscription. This method
   /// is invoked _after_ [initializeFirestore] has finished.
@@ -50,8 +50,8 @@ abstract class DataSourceFacilitator {
   @protected
   final AppManager appManager;
 
-  StreamSubscription<dynamic> _firestoreListener;
-  Log _log;
+  StreamSubscription<dynamic>? _firestoreListener;
+  late Log _log;
 
   DataSourceFacilitator(this.appManager) {
     _log = Log("DataSourceFacilitator($runtimeType)");
@@ -107,10 +107,10 @@ abstract class DataSourceFacilitator {
     return completer.future;
   }
 
-  void _cancelFirestoreListener() async {
+  Future<void> _cancelFirestoreListener() async {
     if (_firestoreListener != null) {
       _log.d("Cancelling Firestore listener");
-      await _firestoreListener.cancel();
+      await _firestoreListener!.cancel();
       _firestoreListener = null;
     }
   }

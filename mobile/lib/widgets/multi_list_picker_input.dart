@@ -15,19 +15,17 @@ import '../widgets/widget.dart';
 class MultiListPickerInput extends StatelessWidget {
   final Set<String> values;
   final VoidCallback onTap;
-  final EdgeInsets padding;
+  final EdgeInsets? padding;
 
   /// The text that is displayed when no items are selected.
   final String Function(BuildContext) emptyValue;
 
   MultiListPickerInput({
-    Set<String> values,
+    required this.values,
     this.padding,
-    @required this.emptyValue,
-    @required this.onTap,
-  })  : assert(emptyValue != null),
-        assert(onTap != null),
-        values = values ?? const {};
+    required this.emptyValue,
+    required this.onTap,
+  });
 
   @override
   Widget build(BuildContext context) {

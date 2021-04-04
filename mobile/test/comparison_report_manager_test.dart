@@ -4,40 +4,30 @@ import 'package:mobile/model/gen/anglerslog.pb.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mockito/mockito.dart';
 
-import 'mock_app_manager.dart';
-import 'test_utils.dart';
+import 'mocks/stubbed_app_manager.dart';
 
 void main() {
-  MockAppManager appManager;
+  late StubbedAppManager appManager;
 
-  ComparisonReportManager comparisonReportManager;
+  late ComparisonReportManager comparisonReportManager;
 
   setUp(() {
-    appManager = MockAppManager(
-      mockAuthManager: true,
-      mockLocalDatabaseManager: true,
-      mockBaitManager: true,
-      mockFishingSpotManager: true,
-      mockSpeciesManager: true,
-      mockSubscriptionManager: true,
-    );
+    appManager = StubbedAppManager();
 
-    var authStream = MockStream<void>();
-    when(authStream.listen(any)).thenReturn(null);
-    when(appManager.mockAuthManager.stream).thenAnswer((_) => authStream);
+    when(appManager.authManager.stream).thenAnswer((_) => Stream.empty());
 
-    when(appManager.mockLocalDatabaseManager.insertOrReplace(any, any))
+    when(appManager.localDatabaseManager.insertOrReplace(any, any))
         .thenAnswer((_) => Future.value(true));
 
-    when(appManager.mockBaitManager.addListener(any)).thenAnswer((_) {});
-    when(appManager.mockFishingSpotManager.addListener(any)).thenAnswer((_) {});
-    when(appManager.mockSpeciesManager.addListener(any)).thenAnswer((_) {});
+    when(appManager.baitManager.addListener(any)).thenAnswer((_) {});
+    when(appManager.fishingSpotManager.addListener(any)).thenAnswer((_) {});
+    when(appManager.speciesManager.addListener(any)).thenAnswer((_) {});
 
-    when(appManager.mockSubscriptionManager.stream)
-        .thenAnswer((_) => MockStream<void>());
-    when(appManager.mockSubscriptionManager.isPro).thenReturn(false);
+    when(appManager.subscriptionManager.stream)
+        .thenAnswer((_) => Stream.empty());
+    when(appManager.subscriptionManager.isPro).thenReturn(false);
 
-    comparisonReportManager = ComparisonReportManager(appManager);
+    comparisonReportManager = ComparisonReportManager(appManager.app);
   });
 
   test("removeBait", () async {

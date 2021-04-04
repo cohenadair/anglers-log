@@ -6,42 +6,34 @@ import 'package:mobile/model/gen/anglerslog.pb.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mockito/mockito.dart';
 
-import 'mock_app_manager.dart';
+import 'mocks/mocks.mocks.dart';
+import 'mocks/stubbed_app_manager.dart';
 import 'test_utils.dart';
 
 void main() {
-  MockAppManager appManager;
-  MockCatchManager catchManager;
-  MockLocalDatabaseManager dataManager;
-  FishingSpotManager fishingSpotManager;
+  late StubbedAppManager appManager;
+  late MockCatchManager catchManager;
+  late MockLocalDatabaseManager dataManager;
+  late FishingSpotManager fishingSpotManager;
 
   setUp(() async {
-    appManager = MockAppManager(
-      mockAuthManager: true,
-      mockCatchManager: true,
-      mockLocalDatabaseManager: true,
-      mockSubscriptionManager: true,
-    );
+    appManager = StubbedAppManager();
 
-    var authStream = MockStream<void>();
-    when(authStream.listen(any)).thenReturn(null);
-    when(appManager.mockAuthManager.stream).thenAnswer((_) => authStream);
+    when(appManager.authManager.stream).thenAnswer((_) => Stream.empty());
 
-    catchManager = appManager.mockCatchManager;
-    when(appManager.catchManager).thenReturn(catchManager);
+    catchManager = appManager.catchManager;
 
-    dataManager = appManager.mockLocalDatabaseManager;
-    when(appManager.localDatabaseManager).thenReturn(dataManager);
+    dataManager = appManager.localDatabaseManager;
     when(dataManager.insertOrReplace(any, any))
         .thenAnswer((_) => Future.value(true));
     when(dataManager.deleteEntity(any, any))
         .thenAnswer((_) => Future.value(true));
 
-    when(appManager.mockSubscriptionManager.stream)
-        .thenAnswer((_) => MockStream<void>());
-    when(appManager.mockSubscriptionManager.isPro).thenReturn(false);
+    when(appManager.subscriptionManager.stream)
+        .thenAnswer((_) => Stream.empty());
+    when(appManager.subscriptionManager.isPro).thenReturn(false);
 
-    fishingSpotManager = FishingSpotManager(appManager);
+    fishingSpotManager = FishingSpotManager(appManager.app);
   });
 
   test("Fishing spot within radius", () async {
@@ -97,7 +89,7 @@ void main() {
     fishingSpot =
         fishingSpotManager.withinRadius(LatLng(35.955340, -84.240295), 20);
     expect(fishingSpot, isNotNull);
-    expect(fishingSpot.lat, 35.955335);
+    expect(fishingSpot!.lat, 35.955335);
     expect(fishingSpot.lng, -84.240300);
   });
 
@@ -185,21 +177,6 @@ void main() {
   });
 
   group("deleteMessage", () {
-    testWidgets("Input", (tester) async {
-      expect(
-        () => fishingSpotManager.deleteMessage(
-            null,
-            FishingSpot()
-              ..id = randomId()
-              ..name = "A"),
-        throwsAssertionError,
-      );
-
-      var context = await buildContext(tester);
-      expect(() => fishingSpotManager.deleteMessage(context, null),
-          throwsAssertionError);
-    });
-
     testWidgets("Singular", (tester) async {
       var fishingSpot = FishingSpot()
         ..id = randomId()

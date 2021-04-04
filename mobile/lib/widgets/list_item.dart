@@ -13,16 +13,16 @@ import 'text.dart';
 
 /// A [ListTile] wrapper with app default properties.
 class ListItem extends StatelessWidget {
-  final EdgeInsets contentPadding;
-  final Widget title;
-  final Widget subtitle;
-  final Widget leading;
-  final Widget trailing;
-  final VoidCallback onTap;
+  final EdgeInsets? contentPadding;
+  final Widget? title;
+  final Widget? subtitle;
+  final Widget? leading;
+  final Widget? trailing;
+  final VoidCallback? onTap;
   final bool enabled;
 
   ListItem({
-    Key key,
+    Key? key,
     this.contentPadding,
     this.title,
     this.subtitle,
@@ -52,7 +52,7 @@ class ListItem extends StatelessWidget {
 
 class PickerListItem extends StatelessWidget {
   final String title;
-  final String subtitle;
+  final String? subtitle;
   final bool isEnabled;
   final bool isSelected;
 
@@ -61,26 +61,23 @@ class PickerListItem extends StatelessWidget {
   final bool isMulti;
 
   /// See [ListItem.onTap].
-  final VoidCallback onTap;
+  final VoidCallback? onTap;
 
   /// Called when a checkbox state changes. A checkbox is only rendered if
   /// [isMulti] is true.
   ///
   /// See [PaddedCheckbox.onChanged].
-  final void Function(bool) onCheckboxChanged;
+  final void Function(bool)? onCheckboxChanged;
 
   PickerListItem({
-    @required this.title,
+    required this.title,
     this.subtitle,
     this.isEnabled = true,
     this.isSelected = false,
     this.isMulti = false,
     this.onTap,
     this.onCheckboxChanged,
-  })  : assert(isNotEmpty(title)),
-        assert(isEnabled != null),
-        assert(isSelected != null),
-        assert(isMulti != null);
+  }) : assert(isNotEmpty(title));
 
   @override
   Widget build(BuildContext context) {
@@ -88,7 +85,7 @@ class PickerListItem extends StatelessWidget {
       enabled: isEnabled,
       child: ListItem(
         title: Text(title),
-        subtitle: isNotEmpty(subtitle) ? SubtitleLabel(subtitle) : null,
+        subtitle: isNotEmpty(subtitle) ? SubtitleLabel(subtitle!) : null,
         enabled: isEnabled,
         onTap: onTap,
         trailing: _buildListItemTrailing(context),
@@ -96,7 +93,7 @@ class PickerListItem extends StatelessWidget {
     );
   }
 
-  Widget _buildListItemTrailing(BuildContext context) {
+  Widget? _buildListItemTrailing(BuildContext context) {
     if (isMulti) {
       // Checkboxes for multi-select pickers.
       return PaddedCheckbox(
@@ -119,16 +116,15 @@ class PickerListItem extends StatelessWidget {
 class ExpansionListItem extends StatefulWidget {
   final Widget title;
   final List<Widget> children;
-  final Function(bool) onExpansionChanged;
+  final Function(bool)? onExpansionChanged;
   final bool toBottomSafeArea;
 
   ExpansionListItem({
-    @required this.title,
-    this.children,
+    required this.title,
+    this.children = const [],
     this.onExpansionChanged,
     this.toBottomSafeArea = false,
-  })  : assert(toBottomSafeArea != null),
-        assert(title != null);
+  });
 
   @override
   _ExpansionListItemState createState() => _ExpansionListItemState();
@@ -189,10 +185,10 @@ class ManageableListItem extends StatefulWidget {
   final Widget child;
 
   /// The trailing [Widget] to show when not editing.
-  final Widget trailing;
+  final Widget? trailing;
 
   /// Invoked when the item is tapped.
-  final VoidCallback onTap;
+  final VoidCallback? onTap;
 
   /// Called when the delete button is pressed. Useful for pre-database
   /// validation, such as when trying to delete an [Entity] required by another
@@ -203,13 +199,13 @@ class ManageableListItem extends StatefulWidget {
   ///
   /// If non-null and true is returned, the default delete confirmation dialog
   /// is not shown.
-  final bool Function() onTapDeleteButton;
+  final bool Function()? onTapDeleteButton;
 
   /// Return the message that is shown in the delete confirmation dialog.
-  final Widget Function(BuildContext) deleteMessageBuilder;
+  final Widget Function(BuildContext)? deleteMessageBuilder;
 
   /// Invoked when the delete action is confirmed by the user.
-  final VoidCallback onConfirmDelete;
+  final VoidCallback? onConfirmDelete;
 
   /// When true, a "Delete" icon is rendered as the leading [Widget], and a fake
   /// "Edit" button as the trailing [Widget].
@@ -219,7 +215,7 @@ class ManageableListItem extends StatefulWidget {
   final bool enabled;
 
   ManageableListItem({
-    @required this.child,
+    required this.child,
     this.deleteMessageBuilder,
     this.onConfirmDelete,
     this.onTap,
@@ -236,8 +232,8 @@ class ManageableListItem extends StatefulWidget {
 
 class _ManageableListItemState extends State<ManageableListItem>
     with SingleTickerProviderStateMixin {
-  AnimationController _editAnimController;
-  Animation<double> _deleteIconSizeAnim;
+  late AnimationController _editAnimController;
+  late Animation<double> _deleteIconSizeAnim;
 
   @override
   void initState() {
@@ -282,7 +278,7 @@ class _ManageableListItemState extends State<ManageableListItem>
       // If the child is just a plain Text widget, style it the same as a
       // system ListTile.
       child = DefaultTextStyle(
-        style: Theme.of(context).textTheme.subtitle1,
+        style: Theme.of(context).textTheme.subtitle1!,
         child: child,
       );
     }
@@ -326,7 +322,7 @@ class _ManageableListItemState extends State<ManageableListItem>
             if (widget.onTapDeleteButton == null) {
               _showDeleteConfirmation();
             } else {
-              if (!widget.onTapDeleteButton()) {
+              if (!widget.onTapDeleteButton!()) {
                 _showDeleteConfirmation();
               }
             }
@@ -339,7 +335,7 @@ class _ManageableListItemState extends State<ManageableListItem>
   void _showDeleteConfirmation() {
     showDeleteDialog(
       context: context,
-      description: widget.deleteMessageBuilder(context),
+      description: widget.deleteMessageBuilder!(context),
       onDelete: widget.onConfirmDelete,
     );
   }
@@ -351,7 +347,7 @@ class _ManageableListItemState extends State<ManageableListItem>
         (widget.trailing as ActionButton).text == Strings.of(context).edit) {
       // If trailing widget is of the same type as editing trailer, do not
       // reset and therefore, do not animate.
-      trailing = widget.trailing;
+      trailing = widget.trailing!;
     } else if (widget.editing) {
       key = ValueKey(1);
       trailing = Text(
@@ -363,7 +359,7 @@ class _ManageableListItemState extends State<ManageableListItem>
       );
     } else if (widget.trailing != null) {
       key = ValueKey(2);
-      trailing = widget.trailing;
+      trailing = widget.trailing!;
     }
 
     return AnimatedSwitcher(

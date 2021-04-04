@@ -6,11 +6,11 @@ import 'package:mobile/pages/manageable_list_page.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mockito/mockito.dart';
 
-import '../mock_app_manager.dart';
+import '../mocks/stubbed_app_manager.dart';
 import '../test_utils.dart';
 
 void main() {
-  MockAppManager appManager;
+  late StubbedAppManager appManager;
 
   var baitCategories = [
     BaitCategory()
@@ -22,11 +22,9 @@ void main() {
   ];
 
   setUp(() {
-    appManager = MockAppManager(
-      mockBaitCategoryManager: true,
-    );
+    appManager = StubbedAppManager();
 
-    when(appManager.mockBaitCategoryManager.listSortedByName(
+    when(appManager.baitCategoryManager.listSortedByName(
       filter: anyNamed("filter"),
     )).thenReturn(baitCategories);
   });
@@ -58,7 +56,7 @@ void main() {
     ));
     expect(find.text("Bait Categories (2)"), findsOneWidget);
 
-    when(appManager.mockBaitCategoryManager.listSortedByName(
+    when(appManager.baitCategoryManager.listSortedByName(
       filter: anyNamed("filter"),
     )).thenReturn([baitCategories[0]]);
 
@@ -69,7 +67,7 @@ void main() {
   });
 
   testWidgets("onPicked callback invoked", (tester) async {
-    BaitCategory pickedCategory;
+    BaitCategory? pickedCategory;
     await tester.pumpWidget(Testable(
       (_) => BaitCategoryListPage(
         pickerSettings: ManageableListPagePickerSettings.single(

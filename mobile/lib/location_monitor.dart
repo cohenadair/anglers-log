@@ -15,9 +15,8 @@ class LocationMonitor {
   final distanceFilterMeters = 20;
 
   final AppManager appManager;
-  final Geolocator _geolocator = Geolocator();
 
-  Position _lastKnownPosition;
+  Position? _lastKnownPosition;
   bool _initialized = false;
 
   PermissionHandlerWrapper get _permissionHandler =>
@@ -30,23 +29,19 @@ class LocationMonitor {
       return;
     }
 
-    _lastKnownPosition = await _geolocator.getLastKnownPosition();
-    var stream = _geolocator.getPositionStream(
-      LocationOptions(
-        distanceFilter: distanceFilterMeters,
-      ),
+    _lastKnownPosition = await Geolocator.getLastKnownPosition();
+    var stream = Geolocator.getPositionStream(
+      distanceFilter: distanceFilterMeters,
     );
     stream.listen((position) {
-      if (position != null) {
-        _lastKnownPosition = position;
-        _log.d("Received location update $currentLocation");
-      }
+      _lastKnownPosition = position;
+      _log.d("Received location update $currentLocation");
     });
 
     _initialized = true;
   }
 
-  LatLng get currentLocation => _lastKnownPosition == null
+  LatLng? get currentLocation => _lastKnownPosition == null
       ? null
-      : LatLng(_lastKnownPosition.latitude, _lastKnownPosition.longitude);
+      : LatLng(_lastKnownPosition!.latitude, _lastKnownPosition!.longitude);
 }

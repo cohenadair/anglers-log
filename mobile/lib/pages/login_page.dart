@@ -28,12 +28,17 @@ class _LoginPageState extends State<LoginPage> {
   final _passwordController = PasswordInputController();
 
   _Mode _mode = _Mode._loggingIn;
-  AuthError _error;
+  AuthError? _error;
   bool _isLoading = false;
 
   AuthManager get _authManager => AuthManager.of(context);
 
   bool get _isLoggingIn => _mode == _Mode._loggingIn;
+
+  FormState get _formState {
+    assert(_formKey.currentState != null);
+    return _formKey.currentState!;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -94,7 +99,7 @@ class _LoginPageState extends State<LoginPage> {
     return Padding(
       padding: insetsTopDefault,
       child: Label.multiline(
-        _authErrorToUserString(_error),
+        _authErrorToUserString(_error!),
         style: styleError,
         align: TextAlign.center,
       ),
@@ -110,7 +115,7 @@ class _LoginPageState extends State<LoginPage> {
       question = Strings.of(context).loginPagePasswordResetQuestion;
       action = Strings.of(context).loginPagePasswordResetAction;
       onActionTapped = () {
-        _authManager.sendResetPasswordEmail(_emailController.value);
+        _authManager.sendResetPasswordEmail(_emailController.value!);
         showOkDialog(
           context: context,
           description: Text(format(
@@ -139,7 +144,7 @@ class _LoginPageState extends State<LoginPage> {
         _mode = _Mode._signingUp;
       } else {
         _mode = _Mode._loggingIn;
-        _formKey.currentState.reset();
+        _formState.reset();
       }
 
       _error = null;
@@ -149,18 +154,18 @@ class _LoginPageState extends State<LoginPage> {
   void _login() {
     _setIsLoading(true);
     _authManager
-        .login(_emailController.value, _passwordController.value)
+        .login(_emailController.value!, _passwordController.value!)
         .then(_onLoginOrSignUp);
   }
 
   void _signUp() {
     _setIsLoading(true);
     _authManager
-        .signUp(_emailController.value, _passwordController.value)
+        .signUp(_emailController.value!, _passwordController.value!)
         .then(_onLoginOrSignUp);
   }
 
-  void _onLoginOrSignUp(AuthError error) {
+  void _onLoginOrSignUp(AuthError? error) {
     if (error == null) {
       return;
     }
@@ -171,7 +176,7 @@ class _LoginPageState extends State<LoginPage> {
     });
   }
 
-  VoidCallback _handleLoginOrSignUp() {
+  VoidCallback? _handleLoginOrSignUp() {
     if (!_isInputValid()) {
       return null;
     }
@@ -238,9 +243,9 @@ class _Mode {
   final String Function(BuildContext) actionText;
 
   _Mode({
-    @required this.title,
-    @required this.buttonText,
-    @required this.questionText,
-    @required this.actionText,
+    required this.title,
+    required this.buttonText,
+    required this.questionText,
+    required this.actionText,
   });
 }

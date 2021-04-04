@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:quiver/strings.dart';
 
 import '../i18n/strings.dart';
 import '../res/style.dart';
@@ -7,10 +8,10 @@ import '../user_preference_manager.dart';
 import 'store_utils.dart';
 
 void showDeleteDialog({
-  @required BuildContext context,
-  String title,
-  Widget description,
-  VoidCallback onDelete,
+  required BuildContext context,
+  String? title,
+  Widget? description,
+  VoidCallback? onDelete,
 }) {
   _showDestructiveDialog(
     context: context,
@@ -22,9 +23,9 @@ void showDeleteDialog({
 }
 
 void showConfirmYesDialog({
-  @required BuildContext context,
-  Widget description,
-  VoidCallback onConfirm,
+  required BuildContext context,
+  Widget? description,
+  VoidCallback? onConfirm,
 }) {
   _showDestructiveDialog(
     context: context,
@@ -36,10 +37,10 @@ void showConfirmYesDialog({
 }
 
 void showWarningDialog({
-  @required BuildContext context,
-  String title,
-  Widget description,
-  VoidCallback onContinue,
+  required BuildContext context,
+  String? title,
+  Widget? description,
+  VoidCallback? onContinue,
 }) {
   _showDestructiveDialog(
     context: context,
@@ -52,8 +53,8 @@ void showWarningDialog({
 }
 
 void showErrorDialog({
-  @required BuildContext context,
-  Widget description,
+  required BuildContext context,
+  Widget? description,
 }) {
   showOkDialog(
     context: context,
@@ -63,16 +64,16 @@ void showErrorDialog({
 }
 
 void showOkDialog({
-  @required BuildContext context,
-  String title,
-  Widget description,
+  required BuildContext context,
+  String? title,
+  Widget? description,
 }) {
   showDialog(
     context: context,
     builder: (context) => AlertDialog(
-      title: title == null ? null : Text(title),
+      title: isEmpty(title) ? null : Text(title!),
       titleTextStyle: styleTitleAlert,
-      content: description == null ? null : description,
+      content: description,
       actions: <Widget>[
         _buildDialogButton(context: context, name: Strings.of(context).ok),
       ],
@@ -82,17 +83,19 @@ void showOkDialog({
 
 void showCancelDialog(
   BuildContext context, {
-  String title,
-  String description,
-  String actionText,
-  VoidCallback onTapAction,
+  String? title,
+  String? description,
+  required String actionText,
+  VoidCallback? onTapAction,
 }) {
+  assert(isNotEmpty(actionText));
+
   showDialog(
     context: context,
     builder: (context) => AlertDialog(
-      title: Text(title),
+      title: isEmpty(title) ? null : Text(title!),
       titleTextStyle: styleTitleAlert,
-      content: Text(description),
+      content: isEmpty(description) ? null : Text(description!),
       actions: <Widget>[
         _buildDialogButton(
           context: context,
@@ -126,7 +129,7 @@ void showRateDialogIfNeeded(BuildContext context) {
 
   // If enough time hasn't passed, exit early.
   var rateAlertFrequency = Duration.millisecondsPerDay * (365 / 4);
-  if (timeManager.msSinceEpoch - preferences.rateTimerStartedAt <=
+  if (timeManager.msSinceEpoch - preferences.rateTimerStartedAt! <=
       rateAlertFrequency) {
     return;
   }
@@ -160,12 +163,12 @@ void showRateDialogIfNeeded(BuildContext context) {
 }
 
 void _showDestructiveDialog({
-  @required BuildContext context,
-  String title,
-  Widget description,
-  String cancelText,
-  String destroyText,
-  VoidCallback onTapDestroy,
+  required BuildContext context,
+  String? title,
+  Widget? description,
+  String? cancelText,
+  required String destroyText,
+  VoidCallback? onTapDestroy,
   bool warning = false,
 }) {
   showDialog(
@@ -191,16 +194,18 @@ void _showDestructiveDialog({
 }
 
 Widget _buildDialogButton({
-  @required BuildContext context,
-  @required String name,
-  Color textColor,
-  VoidCallback onTap,
+  required BuildContext context,
+  required String name,
+  Color? textColor,
+  VoidCallback? onTap,
   bool popOnTap = true,
   bool enabled = true,
 }) {
-  return FlatButton(
+  return TextButton(
     child: Text(name.toUpperCase()),
-    textColor: textColor,
+    style: TextButton.styleFrom(
+      primary: textColor,
+    ),
     onPressed: enabled
         ? () {
             onTap?.call();

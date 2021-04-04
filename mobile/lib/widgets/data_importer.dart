@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 
@@ -21,7 +23,7 @@ class DataImporter extends StatefulWidget {
   /// off importing. If null, a "choose file" button is rendered that allows
   /// users to choose an archive file to import. Once the file is chosen,
   /// importing begins.
-  final LegacyImporter importer;
+  final LegacyImporter? importer;
 
   final IconData watermarkIcon;
   final String titleText;
@@ -31,25 +33,19 @@ class DataImporter extends StatefulWidget {
   final String successText;
   final String feedbackPageTitle;
 
-  final void Function(bool success) onFinish;
+  final void Function(bool success)? onFinish;
 
   DataImporter({
     this.importer,
-    @required this.watermarkIcon,
-    @required this.titleText,
-    @required this.descriptionText,
-    @required this.loadingText,
-    @required this.errorText,
-    @required this.successText,
-    @required this.feedbackPageTitle,
+    required this.watermarkIcon,
+    required this.titleText,
+    required this.descriptionText,
+    required this.loadingText,
+    required this.errorText,
+    required this.successText,
+    required this.feedbackPageTitle,
     this.onFinish,
-  })  : assert(watermarkIcon != null),
-        assert(titleText != null),
-        assert(descriptionText != null),
-        assert(loadingText != null),
-        assert(errorText != null),
-        assert(successText != null),
-        assert(feedbackPageTitle != null);
+  });
 
   @override
   _DataImporterState createState() => _DataImporterState();
@@ -57,8 +53,8 @@ class DataImporter extends StatefulWidget {
 
 class _DataImporterState extends State<DataImporter> {
   _RenderState _renderState = _RenderState.none;
-  LegacyImporterError _importError;
-  String _importErrorDescription;
+  LegacyImporterError? _importError;
+  String? _importErrorDescription;
 
   AppManager get _appManager => AppManager.of(context);
 
@@ -93,11 +89,11 @@ class _DataImporterState extends State<DataImporter> {
   }
 
   Widget _buildStartButton() {
-    VoidCallback onPressed;
+    VoidCallback? onPressed;
     if (_renderState != _RenderState.loading && widget.importer == null) {
       onPressed = _chooseFile;
     } else if (_renderState == _RenderState.none && widget.importer != null) {
-      onPressed = () => _startImport(widget.importer);
+      onPressed = () => _startImport(widget.importer!);
     }
 
     return Align(
@@ -155,17 +151,18 @@ class _DataImporterState extends State<DataImporter> {
   }
 
   void _chooseFile() async {
-    var zipFile = await _filePickerWrapper.getFile(
-      type: FileType.CUSTOM,
-      fileExtension: "zip",
+    var pickerResult = await _filePickerWrapper.pickFiles(
+      type: FileType.custom,
+      allowedExtensions: ["zip"],
     );
 
-    if (zipFile == null) {
+    if (pickerResult == null) {
       _updateImportState(_RenderState.none);
       return;
     }
 
-    _startImport(LegacyImporter(_appManager, zipFile));
+    _startImport(
+        LegacyImporter(_appManager, File(pickerResult.files.single.path!)));
   }
 
   void _startImport(LegacyImporter importer) {

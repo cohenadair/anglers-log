@@ -23,11 +23,10 @@ class StyledBottomSheet extends StatefulWidget {
   final bool visible;
 
   StyledBottomSheet({
-    @required this.child,
-    @required this.onDismissed,
+    required this.child,
+    required this.onDismissed,
     this.visible = true,
-  })  : assert(child != null),
-        assert(onDismissed != null);
+  });
 
   @override
   _StyledBottomSheetState createState() => _StyledBottomSheetState();
@@ -38,10 +37,10 @@ class _StyledBottomSheetState extends State<StyledBottomSheet>
   final _keyBottomSheet = "key_bottom_sheet";
   final _slideInDurationMs = 150;
 
-  AnimationController _controller;
-  Animation<Offset> _offset;
+  late AnimationController _controller;
+  late Animation<Offset> _offset;
 
-  void Function(AnimationStatus) _animationStatusListener;
+  late void Function(AnimationStatus) _animationStatusListener;
 
   @override
   void initState() {

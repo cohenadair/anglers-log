@@ -6,71 +6,57 @@ import 'package:mobile/auth_manager.dart';
 import 'package:mobile/subscription_manager.dart';
 import 'package:mobile/utils/void_stream_controller.dart';
 import 'package:mockito/mockito.dart';
-import 'package:purchases_flutter/entitlement_info_wrapper.dart';
-import 'package:purchases_flutter/entitlement_infos_wrapper.dart';
-import 'package:purchases_flutter/object_wrappers.dart';
-import 'package:purchases_flutter/purchaser_info_wrapper.dart';
 
-import 'mock_app_manager.dart';
-import 'test_utils.dart';
-
-class MockEntitlementInfo extends Mock implements EntitlementInfo {}
-
-class MockEntitlementInfos extends Mock implements EntitlementInfos {}
-
-class MockOffering extends Mock implements Offering {}
-
-class MockOfferings extends Mock implements Offerings {}
-
-class MockPackage extends Mock implements Package {}
-
-class MockPurchaserInfo extends Mock implements PurchaserInfo {}
+import 'mocks/mocks.mocks.dart';
+import 'mocks/stubbed_app_manager.dart';
 
 void main() {
-  MockAppManager appManager;
+  late StubbedAppManager appManager;
 
-  SubscriptionManager subscriptionManager;
+  late SubscriptionManager subscriptionManager;
 
   setUp(() {
-    appManager = MockAppManager(
-      mockAuthManager: true,
-      mockPropertiesManager: true,
-      mockPurchasesWrapper: true,
-    );
+    appManager = StubbedAppManager();
 
-    when(appManager.mockAuthManager.stream).thenAnswer((_) => MockStream());
+    when(appManager.authManager.userId).thenReturn("");
+    when(appManager.authManager.stream).thenAnswer((_) => Stream.empty());
 
-    subscriptionManager = SubscriptionManager(appManager);
+    when(appManager.propertiesManager.revenueCatApiKey).thenReturn("");
+
+    when(appManager.purchasesWrapper.identify(any))
+        .thenAnswer((_) => Future.value(MockPurchaserInfo()));
+    when(appManager.purchasesWrapper.reset())
+        .thenAnswer((_) => Future.value(MockPurchaserInfo()));
+
+    subscriptionManager = SubscriptionManager(appManager.app);
   });
 
   test("RevenueCat user identified on login", () async {
     var controller = VoidStreamController();
-    when(appManager.mockAuthManager.stream)
-        .thenAnswer((_) => controller.stream);
-    when(appManager.mockAuthManager.state).thenReturn(AuthState.loggedIn);
+    when(appManager.authManager.stream).thenAnswer((_) => controller.stream);
+    when(appManager.authManager.state).thenReturn(AuthState.loggedIn);
 
     await subscriptionManager.initialize();
 
     controller.notify();
     await Future.delayed(Duration(milliseconds: 50));
 
-    verify(appManager.mockPurchasesWrapper.identify(any)).called(1);
-    verifyNever(appManager.mockPurchasesWrapper.reset());
+    verify(appManager.purchasesWrapper.identify(any)).called(1);
+    verifyNever(appManager.purchasesWrapper.reset());
   });
 
   test("RevenueCat user reset on logout", () async {
     var controller = VoidStreamController();
-    when(appManager.mockAuthManager.stream)
-        .thenAnswer((_) => controller.stream);
-    when(appManager.mockAuthManager.state).thenReturn(AuthState.loggedOut);
+    when(appManager.authManager.stream).thenAnswer((_) => controller.stream);
+    when(appManager.authManager.state).thenReturn(AuthState.loggedOut);
 
     await subscriptionManager.initialize();
 
     controller.notify();
     await Future.delayed(Duration(milliseconds: 50));
 
-    verifyNever(appManager.mockPurchasesWrapper.identify(any));
-    verify(appManager.mockPurchasesWrapper.reset()).called(1);
+    verifyNever(appManager.purchasesWrapper.identify(any));
+    verify(appManager.purchasesWrapper.reset()).called(1);
   });
 
   test("Successful restore error sets state to pro", () async {
@@ -85,7 +71,7 @@ void main() {
     var purchaserInfo = MockPurchaserInfo();
     when(purchaserInfo.entitlements).thenReturn(entitlementInfos);
 
-    when(appManager.mockPurchasesWrapper.restoreTransactions())
+    when(appManager.purchasesWrapper.restoreTransactions())
         .thenAnswer((_) => Future.value(purchaserInfo));
 
     var restoreResult = await subscriptionManager.restoreSubscription();
@@ -94,7 +80,7 @@ void main() {
   });
 
   test("Restore error sets state to free", () async {
-    when(appManager.mockPurchasesWrapper.restoreTransactions())
+    when(appManager.purchasesWrapper.restoreTransactions())
         .thenThrow(PlatformException(code: "0"));
 
     var restoreResult = await subscriptionManager.restoreSubscription();
@@ -114,7 +100,7 @@ void main() {
     var purchaserInfo = MockPurchaserInfo();
     when(purchaserInfo.entitlements).thenReturn(entitlementInfos);
 
-    when(appManager.mockPurchasesWrapper.restoreTransactions())
+    when(appManager.purchasesWrapper.restoreTransactions())
         .thenAnswer((_) => Future.value(purchaserInfo));
 
     var restoreResult = await subscriptionManager.restoreSubscription();
@@ -123,33 +109,40 @@ void main() {
   });
 
   test("No current RevenueCat offering returns null", () async {
-    when(appManager.mockPurchasesWrapper.getOfferings()).thenAnswer((_) =>
-        Future.value(MockOfferings()));
+    var offerings = MockOfferings();
+    when(offerings.current).thenReturn(null);
+
+    when(appManager.purchasesWrapper.getOfferings())
+        .thenAnswer((_) => Future.value(offerings));
     expect(await subscriptionManager.subscriptions(), isNull);
   });
 
   test("No available RevenueCat packages returns null", () async {
     var offering = MockOffering();
+    when(offering.monthly).thenReturn(MockPackage());
+    when(offering.annual).thenReturn(MockPackage());
     when(offering.availablePackages).thenReturn([]);
 
     var offerings = MockOfferings();
     when(offerings.current).thenReturn(offering);
 
-    when(appManager.mockPurchasesWrapper.getOfferings()).thenAnswer((_) =>
-        Future.value(offerings));
+    when(appManager.purchasesWrapper.getOfferings())
+        .thenAnswer((_) => Future.value(offerings));
 
     expect(await subscriptionManager.subscriptions(), isNull);
   });
 
   test("Fetch subscriptions returns Subscriptions object", () async {
     var offering = MockOffering();
+    when(offering.monthly).thenReturn(MockPackage());
+    when(offering.annual).thenReturn(MockPackage());
     when(offering.availablePackages).thenReturn([MockPackage()]);
 
     var offerings = MockOfferings();
     when(offerings.current).thenReturn(offering);
 
-    when(appManager.mockPurchasesWrapper.getOfferings()).thenAnswer((_) =>
-        Future.value(offerings));
+    when(appManager.purchasesWrapper.getOfferings())
+        .thenAnswer((_) => Future.value(offerings));
 
     expect(await subscriptionManager.subscriptions(), isNotNull);
   });
@@ -166,7 +159,7 @@ void main() {
     var purchaserInfo = MockPurchaserInfo();
     when(purchaserInfo.entitlements).thenReturn(entitlementInfos);
 
-    when(appManager.mockPurchasesWrapper.restoreTransactions())
+    when(appManager.purchasesWrapper.restoreTransactions())
         .thenAnswer((_) => Future.value(purchaserInfo));
 
     var called = false;

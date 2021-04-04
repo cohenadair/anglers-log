@@ -5,28 +5,27 @@ import 'package:mobile/pages/fishing_spot_page.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mockito/mockito.dart';
 
-import '../mock_app_manager.dart';
+import '../mocks/stubbed_app_manager.dart';
 import '../test_utils.dart';
 
 void main() {
-  MockAppManager appManager;
+  late StubbedAppManager appManager;
 
   setUp(() {
-    appManager = MockAppManager(
-      mockFishingSpotManager: true,
-      mockLocationMonitor: true,
-    );
+    appManager = StubbedAppManager();
 
-    when(appManager.mockFishingSpotManager.entity(any)).thenReturn(FishingSpot()
+    when(appManager.fishingSpotManager.entity(any)).thenReturn(FishingSpot()
       ..id = randomId()
       ..name = "Test Fishing Spot"
       ..lat = 1.234567
       ..lng = 7.654321);
+
+    when(appManager.locationMonitor.currentLocation).thenReturn(null);
   });
 
   testWidgets("Back button color updates on may type changes", (tester) async {
     await tester.pumpWidget(Testable(
-      (_) => FishingSpotPage(randomId()),
+      (_) => FishingSpotPage(FishingSpot()),
       appManager: appManager,
     ));
     await tester.pumpAndSettle(Duration(milliseconds: 250));

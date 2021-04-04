@@ -12,7 +12,7 @@ import '../../widgets/widget.dart';
 import 'onboarding_page.dart';
 
 class CatchFieldPickerPage extends StatefulWidget {
-  final VoidCallback onNext;
+  final VoidCallback? onNext;
 
   CatchFieldPickerPage({
     this.onNext,
@@ -23,7 +23,7 @@ class CatchFieldPickerPage extends StatefulWidget {
 }
 
 class _CatchFieldPickerPageState extends State<CatchFieldPickerPage> {
-  List<Id> _selectedFields;
+  late List<Id> _selectedFields;
 
   UserPreferenceManager get _userPreferencesManager =>
       UserPreferenceManager.of(context);
@@ -70,14 +70,13 @@ class _CatchFieldPickerPageState extends State<CatchFieldPickerPage> {
     return allCatchFieldsSorted(context).map((field) {
       var isEnabled = field.removable;
 
-      var subtitle =
-          field.description == null ? null : field.description.call(context);
+      var subtitle = field.description?.call(context);
       if (subtitle == null && !isEnabled) {
         subtitle = Strings.of(context).inputGenericRequired;
       }
 
       return PickerListItem(
-        title: field.name(context),
+        title: field.name!(context),
         subtitle: subtitle,
         isEnabled: isEnabled,
         isMulti: true,
@@ -95,6 +94,6 @@ class _CatchFieldPickerPageState extends State<CatchFieldPickerPage> {
 
   void _onPressedNext() {
     _userPreferencesManager.catchFieldIds = _selectedFields;
-    widget.onNext();
+    widget.onNext?.call();
   }
 }

@@ -14,7 +14,6 @@ import '../pages/bait_list_page.dart';
 import '../pages/fishing_spot_list_page.dart';
 import '../pages/form_page.dart';
 import '../pages/species_list_page.dart';
-import '../report_manager.dart';
 import '../res/dimen.dart';
 import '../species_manager.dart';
 import '../summary_report_manager.dart';
@@ -71,28 +70,30 @@ class _SaveReportPageState extends State<SaveReportPage> {
   SummaryReportManager get _summaryReportManager =>
       SummaryReportManager.of(context);
 
-  TextInputController get _nameController => _fields[_idName].controller;
+  TextInputController get _nameController =>
+      _fields[_idName]!.controller as TextInputController;
 
   TextInputController get _descriptionController =>
-      _fields[_idDescription].controller;
+      _fields[_idDescription]!.controller as TextInputController;
 
   InputController<_ReportType> get _typeController =>
-      _fields[_idType].controller;
+      _fields[_idType]!.controller as InputController<_ReportType>;
 
   InputController<DisplayDateRange> get _fromDateRangeController =>
-      _fields[_idStartDateRange].controller;
+      _fields[_idStartDateRange]!.controller
+          as InputController<DisplayDateRange>;
 
   InputController<DisplayDateRange> get _toDateRangeController =>
-      _fields[_idEndDateRange].controller;
+      _fields[_idEndDateRange]!.controller as InputController<DisplayDateRange>;
 
   InputController<Set<Species>> get _speciesController =>
-      _fields[_idSpecies].controller;
+      _fields[_idSpecies]!.controller as InputController<Set<Species>>;
 
   InputController<Set<Bait>> get _baitsController =>
-      _fields[_idBaits].controller;
+      _fields[_idBaits]!.controller as InputController<Set<Bait>>;
 
   InputController<Set<FishingSpot>> get _fishingSpotsController =>
-      _fields[_idFishingSpots].controller;
+      _fields[_idFishingSpots]!.controller as InputController<Set<FishingSpot>>;
 
   dynamic get _oldReport => widget.oldReport;
 
@@ -203,10 +204,6 @@ class _SaveReportPageState extends State<SaveReportPage> {
     List<Id> fishingSpotIds = const [],
     List<Id> speciesIds = const [],
   }) {
-    assert(baitIds != null);
-    assert(fishingSpotIds != null);
-    assert(speciesIds != null);
-
     // "Empty" lists will include all entities in reports, so don't actually
     // include every entity in the report object.
     _baitsController.value =
@@ -275,7 +272,7 @@ class _SaveReportPageState extends State<SaveReportPage> {
   Widget _buildType() {
     return RadioInput(
       padding: insetsHorizontalDefaultVerticalSmall,
-      initialSelectedIndex: _typeController.value.index,
+      initialSelectedIndex: _typeController.value!.index,
       optionCount: _ReportType.values.length,
       optionBuilder: (context, index) {
         var type = _ReportType.values[index];
@@ -285,8 +282,6 @@ class _SaveReportPageState extends State<SaveReportPage> {
           case _ReportType.summary:
             return Strings.of(context).saveCustomReportPageSummary;
         }
-        // Shouldn't ever happen.
-        return null;
       },
       onSelect: (index) => setState(() {
         _typeController.value = _ReportType.values[index];
@@ -304,7 +299,7 @@ class _SaveReportPageState extends State<SaveReportPage> {
     );
   }
 
-  Widget _startDateRangePicker(Key key, String title) {
+  Widget _startDateRangePicker(Key key, String? title) {
     return DateRangePickerInput(
       key: key,
       title: title,
@@ -333,7 +328,9 @@ class _SaveReportPageState extends State<SaveReportPage> {
   Widget _buildSpeciesPicker() {
     return MultiListPickerInput(
       padding: insetsHorizontalDefaultVerticalWidget,
-      values: _speciesController.value.map((species) => species.name).toSet(),
+      values:
+          _speciesController.value?.map((species) => species.name).toSet() ??
+              {},
       emptyValue: (context) =>
           Strings.of(context).saveCustomReportPageAllSpecies,
       onTap: () {
@@ -349,9 +346,9 @@ class _SaveReportPageState extends State<SaveReportPage> {
                     species.containsAll(allSpecies) ? {} : species);
                 return true;
               },
-              initialValues: _speciesController.value.isEmpty
+              initialValues: _speciesController.value!.isEmpty
                   ? allSpecies
-                  : _speciesController.value,
+                  : _speciesController.value!,
             ),
           ),
         );
@@ -362,7 +359,7 @@ class _SaveReportPageState extends State<SaveReportPage> {
   Widget _buildBaitsPicker() {
     return MultiListPickerInput(
       padding: insetsHorizontalDefaultVerticalWidget,
-      values: _baitsController.value?.map((bait) => bait.name)?.toSet(),
+      values: _baitsController.value?.map((bait) => bait.name).toSet() ?? {},
       emptyValue: (context) => Strings.of(context).saveCustomReportPageAllBaits,
       onTap: () {
         var allBaits = _baitManager.list().toSet();
@@ -372,14 +369,15 @@ class _SaveReportPageState extends State<SaveReportPage> {
           // including 100s of objects in a protobuf collection.
           BaitListPage(
             pickerSettings: ManageableListPagePickerSettings<dynamic>(
-              onPicked: (context, baits) {
+              onPicked: (context, items) {
+                var baits = items as Set<Bait>;
                 setState(() => _baitsController.value =
                     baits.containsAll(allBaits) ? {} : baits);
                 return true;
               },
-              initialValues: _baitsController.value.isEmpty
+              initialValues: _baitsController.value!.isEmpty
                   ? allBaits
-                  : _baitsController.value,
+                  : _baitsController.value!,
             ),
           ),
         );
@@ -391,8 +389,9 @@ class _SaveReportPageState extends State<SaveReportPage> {
     return MultiListPickerInput(
       padding: insetsHorizontalDefaultVerticalWidget,
       values: _fishingSpotsController.value
-          ?.map((fishingSpot) => fishingSpot.name)
-          ?.toSet(),
+              ?.map((fishingSpot) => fishingSpot.name)
+              .toSet() ??
+          {},
       emptyValue: (context) =>
           Strings.of(context).saveCustomReportPageAllFishingSpots,
       onTap: () {
@@ -410,9 +409,9 @@ class _SaveReportPageState extends State<SaveReportPage> {
                         : fishingSpots);
                 return true;
               },
-              initialValues: _fishingSpotsController.value.isEmpty
+              initialValues: _fishingSpotsController.value!.isEmpty
                   ? allFishingSpots
-                  : _fishingSpotsController.value,
+                  : _fishingSpotsController.value!,
             ),
           ),
         );
@@ -422,9 +421,9 @@ class _SaveReportPageState extends State<SaveReportPage> {
 
   FutureOr<bool> _save(BuildContext context) {
     dynamic report;
-    switch (_typeController.value) {
+    switch (_typeController.value!) {
       case _ReportType.summary:
-        report = _createSummaryReport;
+        report = _createSummaryReport();
         break;
       case _ReportType.comparison:
         report = _createComparisonReport();
@@ -438,44 +437,48 @@ class _SaveReportPageState extends State<SaveReportPage> {
     // the new report is added.
     if (_editing) {
       if (_oldReport is SummaryReport) {
-        _summaryReportManager.delete(_oldReport.id, notify: false);
+        _summaryReportManager.delete((_oldReport as SummaryReport).id,
+            notify: false);
       } else if (_oldReport is ComparisonReport) {
-        _comparisonReportManager.delete(_oldReport.id, notify: false);
+        _comparisonReportManager.delete((_oldReport as ComparisonReport).id,
+            notify: false);
       } else {
-        _log.w("Unknown report type $_oldReport");
+        _log.e("Unhandled old report type: $report");
       }
     }
 
-    _customReportManager.addOrUpdate(report);
+    _addOrUpdate(report);
     return true;
   }
 
-  ReportManager get _customReportManager {
-    switch (_typeController.value) {
-      case _ReportType.summary:
-        return _summaryReportManager;
-      case _ReportType.comparison:
-        return _comparisonReportManager;
+  void _addOrUpdate(dynamic report) {
+    if (report == null) {
+      return;
     }
 
-    // Can't happen. Silence compiler warning.
-    return null;
+    if (report is SummaryReport) {
+      _summaryReportManager.addOrUpdate(report);
+    } else if (report is ComparisonReport) {
+      _comparisonReportManager.addOrUpdate(report);
+    } else {
+      _log.e("Unhandled report type: $report");
+    }
   }
 
-  SummaryReport get _createSummaryReport {
-    var dateRange = _fromDateRangeController.value;
+  SummaryReport _createSummaryReport() {
+    var dateRange = _fromDateRangeController.value!;
     var custom = dateRange == DisplayDateRange.custom;
 
     var report = SummaryReport()
       ..id = _oldReport?.id ?? randomId()
-      ..name = _nameController.value
+      ..name = _nameController.value!
       ..displayDateRangeId = dateRange.id
-      ..baitIds.addAll(_baitsController.value.map((e) => e.id))
-      ..fishingSpotIds.addAll(_fishingSpotsController.value.map((e) => e.id))
-      ..speciesIds.addAll(_speciesController.value.map((e) => e.id));
+      ..baitIds.addAll(_baitsController.value!.map((e) => e.id))
+      ..fishingSpotIds.addAll(_fishingSpotsController.value!.map((e) => e.id))
+      ..speciesIds.addAll(_speciesController.value!.map((e) => e.id));
 
     if (isNotEmpty(_descriptionController.value)) {
-      report.description = _descriptionController.value;
+      report.description = _descriptionController.value!;
     }
 
     if (custom) {
@@ -487,22 +490,22 @@ class _SaveReportPageState extends State<SaveReportPage> {
   }
 
   ComparisonReport _createComparisonReport() {
-    var fromDateRange = _fromDateRangeController.value;
-    var toDateRange = _toDateRangeController.value;
+    var fromDateRange = _fromDateRangeController.value!;
+    var toDateRange = _toDateRangeController.value!;
     var customFrom = fromDateRange == DisplayDateRange.custom;
     var customTo = toDateRange == DisplayDateRange.custom;
 
     var report = ComparisonReport()
       ..id = _oldReport?.id ?? randomId()
-      ..name = _nameController.value
+      ..name = _nameController.value!
       ..fromDisplayDateRangeId = fromDateRange.id
       ..toDisplayDateRangeId = toDateRange.id
-      ..baitIds.addAll(_baitsController.value.map((e) => e.id))
-      ..fishingSpotIds.addAll(_fishingSpotsController.value.map((e) => e.id))
-      ..speciesIds.addAll(_speciesController.value.map((e) => e.id));
+      ..baitIds.addAll(_baitsController.value!.map((e) => e.id))
+      ..fishingSpotIds.addAll(_fishingSpotsController.value!.map((e) => e.id))
+      ..speciesIds.addAll(_speciesController.value!.map((e) => e.id));
 
     if (isNotEmpty(_descriptionController.value)) {
-      report.description = _descriptionController.value;
+      report.description = _descriptionController.value!;
     }
 
     if (customFrom) {

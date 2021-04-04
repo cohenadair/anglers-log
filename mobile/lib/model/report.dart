@@ -41,7 +41,7 @@ class Report {
   final AppManager _appManager;
   final TimeManager _timeManager;
 
-  DateRange _dateRange;
+  late DateRange _dateRange;
   int _msSinceLastCatch = 0;
 
   /// True if the date range of the report includes "now"; false otherwise.
@@ -57,7 +57,7 @@ class Report {
 
   /// Total number of catches made per fishing spot for each species within
   /// [displayDateRange].
-  _MapOfMappedInt<Species, FishingSpot> _fishingSpotsPerSpecies =
+  _MapOfMappedInt<Species?, FishingSpot> _fishingSpotsPerSpecies =
       _MapOfMappedInt();
 
   /// Total number of catches per [Bait].
@@ -65,7 +65,7 @@ class Report {
 
   /// Total number of catches made per bait for each species within
   /// [displayDateRange].
-  _MapOfMappedInt<Species, Bait> _baitsPerSpecies = _MapOfMappedInt();
+  _MapOfMappedInt<Species?, Bait> _baitsPerSpecies = _MapOfMappedInt();
 
   BaitManager get _baitManager => _appManager.baitManager;
 
@@ -93,25 +93,21 @@ class Report {
 
   Map<Bait, int> get catchesPerBait => _catchesPerBait;
 
-  Map<Bait, int> baitsPerSpecies(Species species) =>
+  Map<Bait, int> baitsPerSpecies(Species? species) =>
       _baitsPerSpecies[species] ?? {};
 
-  Map<FishingSpot, int> fishingSpotsPerSpecies(Species species) =>
+  Map<FishingSpot, int> fishingSpotsPerSpecies(Species? species) =>
       _fishingSpotsPerSpecies[species] ?? {};
 
   Report({
-    @required this.context,
+    required this.context,
     this.includeZeros = false,
     this.sortOrder = ReportSortOrder.largestToSmallest,
     this.baitIds = const {},
     this.fishingSpotIds = const {},
     this.speciesIds = const {},
-    DisplayDateRange displayDateRange,
-  })  : assert(context != null),
-        assert(baitIds != null),
-        assert(fishingSpotIds != null),
-        assert(speciesIds != null),
-        _appManager = AppManager.of(context),
+    DisplayDateRange? displayDateRange,
+  })  : _appManager = AppManager.of(context),
         _timeManager = AppManager.of(context).timeManager,
         displayDateRange = displayDateRange ?? DisplayDateRange.allDates {
     var now = _timeManager.currentDateTime;
@@ -149,24 +145,28 @@ class Report {
     }
 
     for (var cat in catches) {
-      var species = _speciesManager.entity(cat.speciesId);
-      _catchIdsPerSpecies.putIfAbsent(species, () => {});
-      _catchIdsPerSpecies[species].add(cat.id);
-      _catchesPerSpecies.putIfAbsent(species, () => 0);
-      _catchesPerSpecies[species]++;
       _catchIds.add(cat.id);
+
+      var species = _speciesManager.entity(cat.speciesId);
+      if (species != null) {
+        _catchIdsPerSpecies.putIfAbsent(species, () => {});
+        _catchIdsPerSpecies[species]!.add(cat.id);
+        _catchesPerSpecies.putIfAbsent(species, () => 0);
+        _catchesPerSpecies[species] = _catchesPerSpecies[species]! + 1;
+      }
 
       var fishingSpot = _fishingSpotManager.entity(cat.fishingSpotId);
       if (fishingSpot != null) {
         _catchesPerFishingSpot.putIfAbsent(fishingSpot, () => 0);
-        _catchesPerFishingSpot[fishingSpot]++;
+        _catchesPerFishingSpot[fishingSpot] =
+            _catchesPerFishingSpot[fishingSpot]! + 1;
         _fishingSpotsPerSpecies.inc(species, fishingSpot);
       }
 
       var bait = _baitManager.entity(cat.baitId);
       if (bait != null) {
         _catchesPerBait.putIfAbsent(bait, () => 0);
-        _catchesPerBait[bait]++;
+        _catchesPerBait[bait] = _catchesPerBait[bait]! + 1;
         _baitsPerSpecies.inc(species, bait);
       }
     }
@@ -212,7 +212,11 @@ class Report {
     }
   }
 
-  void _removeZeros<T>(Map<T, int> map1, Map<T, int> map2) {
+  void _removeZeros<T>(Map<T, int>? map1, Map<T, int>? map2) {
+    if (map1 == null || map2 == null) {
+      return;
+    }
+
     var keys = map1.keys.toList();
     for (var key in keys) {
       if (!map1.containsKey(key) || !map2.containsKey(key)) {
@@ -237,19 +241,25 @@ class Report {
 
     if (includeSpecies) {
       result.addAll(
-        speciesIds.map((id) => _speciesManager.entity(id)?.name).toSet()
-          ..removeWhere((e) => e == null),
+        speciesIds
+            .where((id) => _speciesManager.entity(id) != null)
+            .map((id) => _speciesManager.entity(id)!.name)
+            .toSet(),
       );
     }
 
     result.addAll(
-      baitIds.map((id) => _baitManager.entity(id)?.name).toSet()
-        ..removeWhere((e) => e == null),
+      baitIds
+          .where((id) => _baitManager.entity(id) != null)
+          .map((id) => _baitManager.entity(id)!.name)
+          .toSet(),
     );
 
     result.addAll(
-      fishingSpotIds.map((id) => _fishingSpotManager.entity(id)?.name).toSet()
-        ..removeWhere((e) => e == null),
+      fishingSpotIds
+          .where((id) => _fishingSpotManager.entity(id) != null)
+          .map((id) => _fishingSpotManager.entity(id)!.name)
+          .toSet(),
     );
 
     return result;
@@ -261,20 +271,20 @@ class Report {
 class _MapOfMappedInt<K1, K2> {
   final Map<K1, Map<K2, int>> value = {};
 
-  void inc(K1 key, K2 valueKey, [int incBy]) {
+  void inc(K1 key, K2 valueKey, [int? incBy]) {
     value.putIfAbsent(key, () => {});
-    value[key].putIfAbsent(valueKey, () => 0);
-    value[key][valueKey] += incBy ?? 1;
+    value[key]!.putIfAbsent(valueKey, () => 0);
+    value[key]![valueKey] = value[key]![valueKey]! + (incBy ?? 1);
   }
 
-  Map<K2, int> operator [](K1 key) => value[key];
+  Map<K2, int>? operator [](K1 key) => value[key];
 
   void operator []=(K1 key, Map<K2, int> newValue) => value[key] = newValue;
 
-  _MapOfMappedInt<K1, K2> sorted([int Function(K2 lhs, K2 rhs) comparator]) {
+  _MapOfMappedInt<K1, K2> sorted([int Function(K2 lhs, K2 rhs)? comparator]) {
     var newValue = _MapOfMappedInt<K1, K2>();
     for (var key in value.keys) {
-      newValue[key] = sortedMap(value[key], comparator);
+      newValue[key] = sortedMap(value[key]!, comparator);
     }
     return newValue;
   }

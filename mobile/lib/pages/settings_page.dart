@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:mobile/utils/page_utils.dart';
-import 'package:mobile/widgets/widget.dart';
 
 import '../auth_manager.dart';
 import '../i18n/strings.dart';
 import '../log.dart';
 import '../res/style.dart';
 import '../utils/dialog_utils.dart';
+import '../utils/page_utils.dart';
 import '../widgets/list_item.dart';
 import '../widgets/text.dart';
+import '../widgets/widget.dart';
 import 'pro_page.dart';
 
 class SettingsPage extends StatelessWidget {

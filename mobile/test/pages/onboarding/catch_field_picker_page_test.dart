@@ -4,16 +4,14 @@ import 'package:mobile/widgets/checkbox_input.dart';
 import 'package:mobile/widgets/list_item.dart';
 import 'package:mockito/mockito.dart';
 
-import '../../mock_app_manager.dart';
+import '../../mocks/stubbed_app_manager.dart';
 import '../../test_utils.dart';
 
 void main() {
-  MockAppManager appManager;
+  late StubbedAppManager appManager;
 
   setUp(() {
-    appManager = MockAppManager(
-      mockPreferencesManager: true,
-    );
+    appManager = StubbedAppManager();
   });
 
   testWidgets("Null onNext doesn't crash", (tester) async {
@@ -42,7 +40,7 @@ void main() {
     await tapAndSettle(tester, find.text("NEXT"));
 
     expect(called, isTrue);
-    verify(appManager.mockPreferencesManager.catchFieldIds = any).called(1);
+    verify(appManager.userPreferenceManager.catchFieldIds = any).called(1);
   });
 
   testWidgets("Selecting items updates state", (tester) async {
@@ -65,7 +63,7 @@ void main() {
     await tapAndSettle(tester, find.text("NEXT"));
 
     var result =
-        verify(appManager.mockPreferencesManager.catchFieldIds = captureAny);
+        verify(appManager.userPreferenceManager.catchFieldIds = captureAny);
     // 2 required + 1 selected
     expect((result.captured.first as List).length, 3);
   });

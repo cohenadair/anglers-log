@@ -6,18 +6,18 @@ import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mobile/widgets/button.dart';
 import 'package:mockito/mockito.dart';
 
-import '../mock_app_manager.dart';
+import '../mocks/stubbed_app_manager.dart';
 import '../test_utils.dart';
 
 void main() {
-  MockAppManager appManager;
+  late StubbedAppManager appManager;
 
   setUp(() {
-    appManager = MockAppManager(
-      mockCustomEntityManager: true,
-    );
+    appManager = StubbedAppManager();
 
-    when(appManager.mockCustomEntityManager.nameExists(any)).thenReturn(false);
+    when(appManager.customEntityManager.addOrUpdate(any))
+        .thenAnswer((_) => Future.value(false));
+    when(appManager.customEntityManager.nameExists(any)).thenReturn(false);
   });
 
   testWidgets("New title", (tester) async {
@@ -88,8 +88,7 @@ void main() {
     await tapAndSettle(tester, find.text("Checkbox"));
     await tapAndSettle(tester, find.text("SAVE"));
 
-    var result =
-        verify(appManager.mockCustomEntityManager.addOrUpdate(captureAny));
+    var result = verify(appManager.customEntityManager.addOrUpdate(captureAny));
     result.called(1);
 
     CustomEntity newEntity = result.captured.first;
@@ -109,8 +108,7 @@ void main() {
         tester, find.widgetWithText(TextField, "Name"), "A Name");
     await tapAndSettle(tester, find.text("SAVE"));
 
-    var result =
-        verify(appManager.mockCustomEntityManager.addOrUpdate(captureAny));
+    var result = verify(appManager.customEntityManager.addOrUpdate(captureAny));
     result.called(1);
 
     CustomEntity newEntity = result.captured.first;

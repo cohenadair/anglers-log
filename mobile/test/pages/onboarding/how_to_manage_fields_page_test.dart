@@ -2,24 +2,18 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/pages/onboarding/how_to_manage_fields_page.dart';
 import 'package:mockito/mockito.dart';
 
-import '../../mock_app_manager.dart';
+import '../../mocks/stubbed_app_manager.dart';
 import '../../test_utils.dart';
 
 void main() {
-  MockAppManager appManager;
+  late StubbedAppManager appManager;
 
   setUp(() {
-    appManager = MockAppManager(
-      mockBaitManager: true,
-      mockBaitCategoryManager: true,
-      mockCustomEntityManager: true,
-      mockFishingSpotManager: true,
-      mockPreferencesManager: true,
-      mockSpeciesManager: true,
-      mockTimeManager: true,
-    );
+    appManager = StubbedAppManager();
 
-    when(appManager.mockPreferencesManager.catchCustomEntityIds).thenReturn([]);
+    when(appManager.customEntityManager.entity(any)).thenReturn(null);
+    when(appManager.userPreferenceManager.catchCustomEntityIds).thenReturn([]);
+    when(appManager.userPreferenceManager.catchFieldIds).thenReturn([]);
   });
 
   testWidgets("Menu hiding/showing", (tester) async {

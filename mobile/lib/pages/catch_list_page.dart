@@ -25,7 +25,7 @@ class CatchListPage extends StatelessWidget {
   final bool enableAdding;
 
   /// If not-null, shows only the catches within [dateRange].
-  final DateRange dateRange;
+  final DateRange? dateRange;
 
   /// If set, shows only the catches whose ID is included in [catchIds].
   final Set<Id> catchIds;
@@ -54,11 +54,7 @@ class CatchListPage extends StatelessWidget {
     this.baitIds = const {},
     this.fishingSpotIds = const {},
     this.speciesIds = const {},
-  })  : assert(enableAdding != null),
-        assert(catchIds != null),
-        assert(baitIds != null),
-        assert(fishingSpotIds != null),
-        assert(speciesIds != null);
+  });
 
   Widget build(BuildContext context) {
     var baitCategoryManager = BaitCategoryManager.of(context);
@@ -103,7 +99,7 @@ class CatchListPage extends StatelessWidget {
             Text(catchManager.deleteMessage(context, cat)),
         deleteItem: (context, cat) => catchManager.delete(cat.id),
         addPageBuilder: enableAdding ? () => AddCatchJourney() : null,
-        detailPageBuilder: (cat) => CatchPage(cat.id),
+        detailPageBuilder: (cat) => CatchPage(cat),
         editPageBuilder: (cat) => SaveCatchPage.edit(cat),
       ),
     );
@@ -124,7 +120,7 @@ class CatchListPage extends StatelessWidget {
       // Fallback on bait as a subtitle.
       var formattedName = baitManager.formatNameWithCategory(cat.baitId);
       if (isNotEmpty(formattedName)) {
-        subtitle2 = SubtitleLabel(formattedName);
+        subtitle2 = SubtitleLabel(formattedName!);
       }
     }
 
@@ -139,7 +135,8 @@ class CatchListPage extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                PrimaryLabel(speciesManager.entity(cat.speciesId).name),
+                PrimaryLabel(speciesManager.entity(cat.speciesId)?.name ??
+                    Strings.of(context).unknownSpecies),
                 SubtitleLabel(formatTimestamp(context, cat.timestamp.toInt())),
                 subtitle2,
               ],

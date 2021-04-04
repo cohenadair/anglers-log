@@ -10,22 +10,22 @@ class ImageCompressWrapper {
   static ImageCompressWrapper of(BuildContext context) =>
       Provider.of<AppManager>(context, listen: false).imageCompressWrapper;
 
-  Future<Uint8List> compress(String path, int quality, int size) async {
+  Future<Uint8List?> compress(String path, int quality, int? size) async {
     // TODO: Compression freezes UI until finished.
     // https://github.com/OpenFlutter/flutter_image_compress/issues/131
     if (size == null) {
       // Note that passing null minWidth/minHeight will not use the
       // default values in compressWithFile, so we have to explicitly
       // exclude minWidth/minHeight when we don't have a size.
-      return Uint8List.fromList(
-          await FlutterImageCompress.compressWithFile(path, quality: quality));
+      return await FlutterImageCompress.compressWithFile(path,
+          quality: quality);
     }
 
-    return Uint8List.fromList(await FlutterImageCompress.compressWithFile(
+    return await FlutterImageCompress.compressWithFile(
       path,
       quality: quality,
       minWidth: size.round(),
       minHeight: size.round(),
-    ));
+    );
   }
 }

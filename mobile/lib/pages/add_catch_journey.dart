@@ -17,7 +17,7 @@ import 'manageable_list_page.dart';
 /// Presents a workflow (journey) for adding a [Catch].
 class AddCatchJourney extends StatefulWidget {
   /// An ID of a [FishingSpot] to be used for the catch added.
-  final FishingSpot fishingSpot;
+  final FishingSpot? fishingSpot;
 
   AddCatchJourney({this.fishingSpot});
 
@@ -41,8 +41,8 @@ class _AddCatchJourneyState extends State<AddCatchJourney> {
       UserPreferenceManager.of(context);
 
   List<PickedImage> _images = [];
-  Species _species;
-  FishingSpot _fishingSpot;
+  Species? _species;
+  FishingSpot? _fishingSpot;
 
   bool get _isFishingSpotPrePicked => widget.fishingSpot != null;
 
@@ -90,8 +90,8 @@ class _AddCatchJourneyState extends State<AddCatchJourney> {
                     if (existingSpot == null) {
                       _fishingSpot = FishingSpot()
                         ..id = randomId()
-                        ..lat = image.position.latitude
-                        ..lng = image.position.longitude;
+                        ..lat = image.position!.latitude
+                        ..lng = image.position!.longitude;
                     } else {
                       _fishingSpot = existingSpot;
                     }
@@ -149,7 +149,7 @@ class _AddCatchJourneyState extends State<AddCatchJourney> {
           return MaterialPageRoute(
             builder: (context) => SaveCatchPage(
               images: _images,
-              speciesId: _species.id,
+              speciesId: _species!.id,
               fishingSpotId: _fishingSpot?.id,
               popOverride: () =>
                   Navigator.of(context, rootNavigator: true).pop(),

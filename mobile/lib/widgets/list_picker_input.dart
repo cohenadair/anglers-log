@@ -20,9 +20,9 @@ import '../widgets/widget.dart';
 /// A [ListPickerInput] is commonly used with [PickerPage] or
 /// [ManageableListPage].
 class ListPickerInput extends StatelessWidget {
-  final String title;
-  final String value;
-  final VoidCallback onTap;
+  final String? title;
+  final String? value;
+  final VoidCallback? onTap;
 
   ListPickerInput({
     this.title,
@@ -37,7 +37,7 @@ class ListPickerInput extends StatelessWidget {
         child: HorizontalSafeArea(
           child: Row(
             children: [
-              PrimaryLabel(isEmpty(title) ? value : title),
+              PrimaryLabel(isEmpty(title) ? value! : title!),
               Expanded(
                 // If there's no title widget, the value widget will render at
                 // the start of the row.
@@ -46,7 +46,7 @@ class ListPickerInput extends StatelessWidget {
                     : SecondaryLabel(
                         isEmpty(value)
                             ? Strings.of(context).inputNotSelected
-                            : value,
+                            : value!,
                         align: TextAlign.right,
                       ),
               ),

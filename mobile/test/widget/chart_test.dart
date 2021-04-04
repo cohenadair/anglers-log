@@ -6,7 +6,7 @@ import 'package:mobile/widgets/chart.dart';
 import 'package:mobile/widgets/widget.dart';
 import 'package:mockito/mockito.dart';
 
-import '../mock_app_manager.dart';
+import '../mocks/stubbed_app_manager.dart';
 import '../test_utils.dart';
 
 void main() {
@@ -21,7 +21,7 @@ void main() {
         Testable(
           (_) => Chart(
             series: [series],
-            labelBuilder: null,
+            labelBuilder: (_) => null,
           ),
         ),
       );
@@ -31,7 +31,7 @@ void main() {
         Testable(
           (_) => Chart(
             series: [series],
-            labelBuilder: null,
+            labelBuilder: (_) => null,
             viewAllTitle: "Title",
           ),
         ),
@@ -42,7 +42,7 @@ void main() {
         Testable(
           (_) => Chart(
             series: [series],
-            labelBuilder: null,
+            labelBuilder: (_) => null,
             chartPageDescription: "A description.",
           ),
         ),
@@ -65,7 +65,7 @@ void main() {
         Testable(
           (_) => Chart(
             series: [series1, series2],
-            labelBuilder: (_) => "",
+            labelBuilder: (dynamic _) => "",
             viewAllTitle: "Title",
             chartPageDescription: "A description.",
           ),
@@ -86,7 +86,7 @@ void main() {
         Testable(
           (_) => Chart(
             series: [series],
-            labelBuilder: (_) => "",
+            labelBuilder: (dynamic _) => "",
             viewAllTitle: "Title",
             chartPageDescription: "A description.",
           ),
@@ -111,7 +111,7 @@ void main() {
         Testable(
           (_) => Chart(
             series: [series1, series2],
-            labelBuilder: (_) => "",
+            labelBuilder: (dynamic _) => "",
             viewAllTitle: "Title",
             chartPageDescription: "A description.",
           ),
@@ -136,7 +136,7 @@ void main() {
         Testable(
           (_) => Chart(
             series: [series1, series2],
-            labelBuilder: (_) => "",
+            labelBuilder: (dynamic _) => "",
             viewAllTitle: "Title",
             chartPageDescription: "A description.",
           ),
@@ -146,11 +146,8 @@ void main() {
     });
 
     testWidgets("Row with non-null onTap action", (tester) async {
-      var appManager = MockAppManager(
-        mockTimeManager: true,
-      );
-      when(appManager.mockTimeManager.currentDateTime)
-          .thenReturn(DateTime.now());
+      var appManager = StubbedAppManager();
+      when(appManager.timeManager.currentDateTime).thenReturn(DateTime.now());
 
       var series = Series<Species>({
         Species()..name = "Bass": 10,
@@ -160,10 +157,10 @@ void main() {
       await tester.pumpWidget(Testable(
         (_) => Chart(
           series: [series],
-          labelBuilder: (species) => species.name,
+          labelBuilder: (dynamic species) => species.name,
           viewAllTitle: "Title",
           chartPageDescription: "A description.",
-          onTapRow: (_, __) => tapped = true,
+          onTapRow: (dynamic _, __) => tapped = true,
         ),
         mediaQueryData: MediaQueryData(
           // Chart row widths are based on screen size. Need to give a screen
@@ -203,7 +200,7 @@ void main() {
         Testable(
           (_) => Chart(
             series: [series1, series2, series3],
-            labelBuilder: (species) => species.name,
+            labelBuilder: (dynamic species) => species.name,
             viewAllTitle: "View all",
             chartPageDescription: "A description.",
           ),
@@ -256,7 +253,7 @@ void main() {
         Testable(
           (_) => Chart(
             series: [series1, series2],
-            labelBuilder: (species) => species.name,
+            labelBuilder: (dynamic species) => species.name,
             viewAllTitle: "View all",
             chartPageDescription: "A description.",
           ),
@@ -282,7 +279,7 @@ void main() {
         Testable(
           (_) => Chart(
             series: [series1, series2],
-            labelBuilder: (species) => species.name,
+            labelBuilder: (dynamic species) => species.name,
             viewAllTitle: "View all",
             chartPageDescription: "A description.",
           ),
@@ -311,7 +308,7 @@ void main() {
         Testable(
           (_) => Chart(
             series: [series1, series2],
-            labelBuilder: (species) => species.name,
+            labelBuilder: (dynamic species) => species.name,
             chartPageDescription: "A description.",
             showAll: true,
           ),
@@ -323,7 +320,7 @@ void main() {
         Testable(
           (_) => Chart(
             series: [series1, series2],
-            labelBuilder: (species) => species.name,
+            labelBuilder: (dynamic species) => species.name,
             viewAllTitle: "View all",
             chartPageDescription: "A description.",
             showAll: true,
@@ -346,7 +343,7 @@ void main() {
       await tester.pumpWidget(Testable(
         (_) => Chart(
           series: [series1],
-          labelBuilder: (species) => species.name,
+          labelBuilder: (dynamic species) => species.name,
           viewAllTitle: "View all",
           chartPageDescription: "A description.",
           chartPageFilters: {"Filter 1", "Filter 2"},
@@ -356,7 +353,6 @@ void main() {
           // size to tap.
           size: Size(500, 500),
         ),
-        navigatorObserver: MockNavigatorObserver(),
       ));
 
       expect(find.text("View all"), findsOneWidget);
@@ -378,7 +374,7 @@ void main() {
       await tester.pumpWidget(Testable(
         (_) => Chart(
           series: [series1],
-          labelBuilder: (species) => species.name,
+          labelBuilder: (dynamic species) => species.name,
           viewAllTitle: "View all",
           chartPageDescription: "A description.",
         ),
@@ -387,7 +383,6 @@ void main() {
           // size to tap.
           size: Size(500, 500),
         ),
-        navigatorObserver: MockNavigatorObserver(),
       ));
 
       expect(find.text("View all"), findsOneWidget);

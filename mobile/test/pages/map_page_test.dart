@@ -11,12 +11,13 @@ import 'package:mobile/widgets/search_bar.dart';
 import 'package:mobile/widgets/styled_bottom_sheet.dart';
 import 'package:mobile/widgets/widget.dart';
 import 'package:mockito/mockito.dart';
+import 'package:protobuf/protobuf.dart';
 
-import '../mock_app_manager.dart';
+import '../mocks/stubbed_app_manager.dart';
 import '../test_utils.dart';
 
 void main() {
-  MockAppManager appManager;
+  late StubbedAppManager appManager;
 
   var fishingSpots = [
     FishingSpot()
@@ -45,35 +46,27 @@ void main() {
   ];
 
   setUp(() {
-    appManager = MockAppManager(
-      mockAuthManager: true,
-      mockLocalDatabaseManager: true,
-      mockFishingSpotManager: true,
-      mockLocationMonitor: true,
-      mockSubscriptionManager: true,
-      mockPermissionHandlerWrapper: true,
-      mockUrlLauncherWrapper: true,
-    );
+    appManager = StubbedAppManager();
 
-    when(appManager.mockAuthManager.stream).thenAnswer((_) => MockStream());
+    when(appManager.authManager.stream).thenAnswer((_) => Stream.empty());
 
-    when(appManager.mockLocalDatabaseManager.insertOrReplace(any, any))
+    when(appManager.localDatabaseManager.insertOrReplace(any, any))
         .thenAnswer((_) => Future.value(true));
-    when(appManager.mockLocalDatabaseManager.deleteEntity(any, any))
+    when(appManager.localDatabaseManager.deleteEntity(any, any))
         .thenAnswer((_) => Future.value(true));
 
-    when(appManager.mockFishingSpotManager.list()).thenReturn(fishingSpots);
-    when(appManager.mockFishingSpotManager.listSortedByName())
+    when(appManager.fishingSpotManager.list()).thenReturn(fishingSpots);
+    when(appManager.fishingSpotManager.listSortedByName())
         .thenReturn(fishingSpots);
 
-    when(appManager.mockLocationMonitor.currentLocation)
+    when(appManager.locationMonitor.currentLocation)
         .thenReturn(LatLng(0.0, 0.0));
 
-    when(appManager.mockSubscriptionManager.stream)
-        .thenAnswer((_) => MockStream<void>());
-    when(appManager.mockSubscriptionManager.isPro).thenReturn(false);
+    when(appManager.subscriptionManager.stream)
+        .thenAnswer((_) => Stream.empty());
+    when(appManager.subscriptionManager.isPro).thenReturn(false);
 
-    when(appManager.mockPermissionHandlerWrapper.requestLocation())
+    when(appManager.permissionHandlerWrapper.requestLocation())
         .thenAnswer((_) => Future.value(true));
   });
 
@@ -192,11 +185,11 @@ void main() {
 
   testWidgets("Updating fishing spot resets active spot", (tester) async {
     // Setup a real FishingSpotManager so update callbacks are called.
-    var fishingSpotManager = FishingSpotManager(appManager);
+    var fishingSpotManager = FishingSpotManager(appManager.app);
     for (var fishingSpot in fishingSpots) {
       fishingSpotManager.addOrUpdate(fishingSpot, notify: false);
     }
-    when(appManager.fishingSpotManager).thenReturn(fishingSpotManager);
+    when(appManager.app.fishingSpotManager).thenReturn(fishingSpotManager);
 
     await tester.pumpWidget(Testable(
       (_) => MapPage(),
@@ -210,7 +203,8 @@ void main() {
     await tapAndSettle(tester, find.text("A"));
 
     // Update selected fishing spot.
-    fishingSpotManager.addOrUpdate(fishingSpots.first.copyWith((updates) {
+    fishingSpotManager.addOrUpdate(
+        (fishingSpots.first.freeze() as FishingSpot).rebuild((updates) {
       updates.name = "Updated Name";
     }));
     await tester.pumpAndSettle(Duration(milliseconds: 250));
@@ -264,11 +258,11 @@ void main() {
 
   testWidgets("Deleting spot clears active spot", (tester) async {
     // Setup a real FishingSpotManager so update callbacks are called.
-    var fishingSpotManager = FishingSpotManager(appManager);
+    var fishingSpotManager = FishingSpotManager(appManager.app);
     for (var fishingSpot in fishingSpots) {
       fishingSpotManager.addOrUpdate(fishingSpot, notify: false);
     }
-    when(appManager.fishingSpotManager).thenReturn(fishingSpotManager);
+    when(appManager.app.fishingSpotManager).thenReturn(fishingSpotManager);
 
     await tester.pumpWidget(Testable(
       (_) => MapPage(),
@@ -406,7 +400,7 @@ void main() {
 
   group("Directions", () {
     testWidgets("No options shows snack bar", (tester) async {
-      when(appManager.mockUrlLauncherWrapper.canLaunch(any))
+      when(appManager.urlLauncherWrapper.canLaunch(any))
           .thenAnswer((_) => Future.value(false));
 
       await tester.pumpWidget(Testable(
@@ -427,10 +421,10 @@ void main() {
     });
 
     testWidgets("Default option", (tester) async {
-      when(appManager.mockUrlLauncherWrapper.canLaunch(any)).thenAnswer(
+      when(appManager.urlLauncherWrapper.canLaunch(any)).thenAnswer(
           (invocation) => Future.value(invocation.positionalArguments.first
               .contains("https://www.google.com")));
-      when(appManager.mockUrlLauncherWrapper.launch(any))
+      when(appManager.urlLauncherWrapper.launch(any))
           .thenAnswer((_) => Future.value(true));
 
       await tester.pumpWidget(Testable(
@@ -447,15 +441,15 @@ void main() {
       await tapAndSettle(tester, find.text("Directions"));
       await tester.pumpAndSettle(Duration(milliseconds: 250));
 
-      verify(appManager.mockUrlLauncherWrapper.launch(any)).called(1);
+      verify(appManager.urlLauncherWrapper.launch(any)).called(1);
       expect(find.byType(SnackBar), findsNothing);
     });
 
     testWidgets("Single option", (tester) async {
-      when(appManager.mockUrlLauncherWrapper.canLaunch(any)).thenAnswer(
+      when(appManager.urlLauncherWrapper.canLaunch(any)).thenAnswer(
           (invocation) => Future.value(
               invocation.positionalArguments.first.contains("waze:")));
-      when(appManager.mockUrlLauncherWrapper.launch(any))
+      when(appManager.urlLauncherWrapper.launch(any))
           .thenAnswer((_) => Future.value(true));
 
       await tester.pumpWidget(Testable(
@@ -472,16 +466,15 @@ void main() {
       await tapAndSettle(tester, find.text("Directions"));
       await tester.pumpAndSettle(Duration(milliseconds: 250));
 
-      verify(appManager.mockUrlLauncherWrapper
-              .launch(argThat(contains("waze"))))
+      verify(appManager.urlLauncherWrapper.launch(argThat(contains("waze"))))
           .called(1);
       expect(find.byType(SnackBar), findsNothing);
     });
 
     testWidgets("Multiple options", (tester) async {
-      when(appManager.mockUrlLauncherWrapper.canLaunch(any))
+      when(appManager.urlLauncherWrapper.canLaunch(any))
           .thenAnswer((_) => Future.value(true));
-      when(appManager.mockUrlLauncherWrapper.launch(any))
+      when(appManager.urlLauncherWrapper.launch(any))
           .thenAnswer((_) => Future.value(true));
 
       await tester.pumpWidget(Testable(
@@ -501,17 +494,16 @@ void main() {
 
       await tapAndSettle(tester, find.text("Google Maps"));
 
-      verify(appManager.mockUrlLauncherWrapper
-              .launch(argThat(contains("google"))))
+      verify(appManager.urlLauncherWrapper.launch(argThat(contains("google"))))
           .called(1);
       expect(find.byType(SnackBar), findsNothing);
       expect(find.byType(SwipeChip), findsOneWidget);
     });
 
     testWidgets("Dismissing doesn't show snack bar", (tester) async {
-      when(appManager.mockUrlLauncherWrapper.canLaunch(any))
+      when(appManager.urlLauncherWrapper.canLaunch(any))
           .thenAnswer((_) => Future.value(true));
-      when(appManager.mockUrlLauncherWrapper.launch(any))
+      when(appManager.urlLauncherWrapper.launch(any))
           .thenAnswer((_) => Future.value(true));
 
       await tester.pumpWidget(Testable(

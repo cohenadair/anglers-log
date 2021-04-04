@@ -10,7 +10,7 @@ import 'package:mobile/widgets/text.dart';
 import '../test_utils.dart';
 
 void main() {
-  PaddedCheckbox findCheckbox(tester, String option) =>
+  PaddedCheckbox? findCheckbox(tester, String option) =>
       tester.widget<PaddedCheckbox>(find.descendant(
         of: find.widgetWithText(ListItem, option),
         matching: find.byType(PaddedCheckbox),
@@ -31,9 +31,9 @@ void main() {
       ),
     );
 
-    expect(findCheckbox(tester, "Option A").checked, isTrue);
-    expect(findCheckbox(tester, "Option B").checked, isFalse);
-    expect(findCheckbox(tester, "Option C").checked, isTrue);
+    expect(findCheckbox(tester, "Option A")!.checked, isTrue);
+    expect(findCheckbox(tester, "Option B")!.checked, isFalse);
+    expect(findCheckbox(tester, "Option C")!.checked, isTrue);
   });
 
   testWidgets("Initial value in single-select is selected", (tester) async {
@@ -218,7 +218,7 @@ void main() {
         (_) => PickerPage<String>(
           itemBuilder: () => [
             PickerPageItem(title: "Option A", value: "Option A"),
-            PickerPageItem.note("A note"),
+            PickerPageItem.note(title: "A note"),
             PickerPageItem(title: "Option B", value: "Option B"),
           ],
           onFinishedPicking: (_, __) => {},
@@ -235,7 +235,10 @@ void main() {
         (_) => PickerPage<String>(
           itemBuilder: () => [
             PickerPageItem(title: "Option A", value: "Option A"),
-            PickerPageItem.note("A note with icon %s", noteIcon: Icons.note),
+            PickerPageItem.note(
+              title: "A note with icon %s",
+              noteIcon: Icons.note,
+            ),
             PickerPageItem(title: "Option B", value: "Option B"),
           ],
           onFinishedPicking: (_, __) => {},
@@ -248,7 +251,7 @@ void main() {
 
   testWidgets("Enabled single-select item pops page and invokes callback",
       (tester) async {
-    String pickedValue;
+    String? pickedValue;
     await tester.pumpWidget(
       Testable(
         (_) => PickerPage<String>.single(
@@ -360,10 +363,10 @@ void main() {
       ),
     );
 
-    expect(findCheckbox(tester, "All").checked, isTrue);
-    expect(findCheckbox(tester, "Option A").checked, isFalse);
-    expect(findCheckbox(tester, "Option B").checked, isFalse);
-    expect(findCheckbox(tester, "Option C").checked, isFalse);
+    expect(findCheckbox(tester, "All")!.checked, isTrue);
+    expect(findCheckbox(tester, "Option A")!.checked, isFalse);
+    expect(findCheckbox(tester, "Option B")!.checked, isFalse);
+    expect(findCheckbox(tester, "Option C")!.checked, isFalse);
   });
 
   testWidgets("Selection deselects All item", (tester) async {
@@ -390,9 +393,9 @@ void main() {
       ),
     );
 
-    expect(findCheckbox(tester, "All").checked, isFalse);
-    expect(findCheckbox(tester, "Option A").checked, isTrue);
-    expect(findCheckbox(tester, "Option B").checked, isFalse);
-    expect(findCheckbox(tester, "Option C").checked, isFalse);
+    expect(findCheckbox(tester, "All")!.checked, isFalse);
+    expect(findCheckbox(tester, "Option A")!.checked, isTrue);
+    expect(findCheckbox(tester, "Option B")!.checked, isFalse);
+    expect(findCheckbox(tester, "Option C")!.checked, isFalse);
   });
 }

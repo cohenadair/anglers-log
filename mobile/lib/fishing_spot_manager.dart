@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart' show IterableExtension;
 import 'package:flutter/cupertino.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
@@ -33,7 +34,7 @@ class FishingSpotManager extends NamedEntityManager<FishingSpot> {
 
   /// Returns the closest [FishingSpot] within [meters] of [latLng], or null if
   /// one does not exist. [meters] defaults to 30.
-  FishingSpot withinRadius(LatLng latLng, [int meters = 30]) {
+  FishingSpot? withinRadius(LatLng? latLng, [int meters = 30]) {
     if (latLng == null) {
       return null;
     }
@@ -47,7 +48,7 @@ class FishingSpotManager extends NamedEntityManager<FishingSpot> {
       }
     }
 
-    FishingSpot result;
+    FishingSpot? result;
     var minDistance = (meters + 1).toDouble();
 
     eligibleFishingSpotsMap.forEach((fishingSpot, distance) {
@@ -62,17 +63,16 @@ class FishingSpotManager extends NamedEntityManager<FishingSpot> {
 
   /// Returns a [FishingSpot] with the same coordinates as the given
   /// [FishingSpot], or null if one doesn't exist.
-  FishingSpot withLatLng(FishingSpot rhs) {
+  FishingSpot? withLatLng(FishingSpot? rhs) {
     if (rhs == null) {
       return null;
     }
-    return entities.values.firstWhere(
-        (fishingSpot) =>
-            fishingSpot.lat == rhs.lat && fishingSpot.lng == rhs.lng,
-        orElse: () => null);
+
+    return entities.values.firstWhereOrNull((fishingSpot) =>
+        fishingSpot.lat == rhs.lat && fishingSpot.lng == rhs.lng);
   }
 
-  int numberOfCatches(FishingSpot fishingSpot) {
+  int numberOfCatches(FishingSpot? fishingSpot) {
     if (fishingSpot == null) {
       return 0;
     }
@@ -85,9 +85,6 @@ class FishingSpotManager extends NamedEntityManager<FishingSpot> {
   }
 
   String deleteMessage(BuildContext context, FishingSpot fishingSpot) {
-    assert(context != null);
-    assert(fishingSpot != null);
-
     var numOfCatches = numberOfCatches(fishingSpot);
     var hasNameString = numOfCatches == 1
         ? Strings.of(context).mapPageDeleteFishingSpotSingular

@@ -6,7 +6,7 @@ import 'package:mobile/widgets/list_item.dart';
 import '../test_utils.dart';
 
 void main() {
-  Visibility visibility(String text, tester) {
+  Visibility? visibility(String text, tester) {
     return tester.firstWidget(find.descendant(
       of: find.widgetWithText(ListItem, text),
       matching: find.byType(Visibility),
@@ -27,9 +27,9 @@ void main() {
       ),
     );
 
-    expect(visibility("Option 1", tester).visible, isTrue);
-    expect(visibility("Option 2", tester).visible, isFalse);
-    expect(visibility("Option 3", tester).visible, isFalse);
+    expect(visibility("Option 1", tester)!.visible, isTrue);
+    expect(visibility("Option 2", tester)!.visible, isFalse);
+    expect(visibility("Option 3", tester)!.visible, isFalse);
   });
 
   testWidgets("No current item does not have icon", (tester) async {
@@ -45,13 +45,13 @@ void main() {
       ),
     );
 
-    expect(visibility("Option 1", tester).visible, isFalse);
-    expect(visibility("Option 2", tester).visible, isFalse);
-    expect(visibility("Option 3", tester).visible, isFalse);
+    expect(visibility("Option 1", tester)!.visible, isFalse);
+    expect(visibility("Option 2", tester)!.visible, isFalse);
+    expect(visibility("Option 3", tester)!.visible, isFalse);
   });
 
   testWidgets("onPicked callback invoked and dismissed", (tester) async {
-    String pickedValue;
+    String? pickedValue;
     await tester.pumpWidget(
       Testable(
         (_) => BottomSheetPicker<String>(

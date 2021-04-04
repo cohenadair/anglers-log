@@ -10,10 +10,10 @@ class CheckboxInput extends StatelessWidget {
   final String label;
   final bool value;
   final bool enabled;
-  final Function(bool) onChanged;
+  final Function(bool)? onChanged;
 
   CheckboxInput({
-    @required this.label,
+    required this.label,
     this.value = false,
     this.enabled = true,
     this.onChanged,
@@ -37,7 +37,7 @@ class PaddedCheckbox extends StatefulWidget {
   final bool checked;
   final bool enabled;
   final EdgeInsets padding;
-  final void Function(bool) onChanged;
+  final void Function(bool)? onChanged;
 
   PaddedCheckbox({
     this.checked = false,
@@ -51,7 +51,7 @@ class PaddedCheckbox extends StatefulWidget {
 }
 
 class _PaddedCheckboxState extends State<PaddedCheckbox> {
-  bool _checked;
+  late bool _checked;
 
   @override
   void initState() {

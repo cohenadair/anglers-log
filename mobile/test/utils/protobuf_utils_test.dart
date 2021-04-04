@@ -4,15 +4,14 @@ import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mockito/mockito.dart';
 import 'package:uuid/uuid.dart';
 
-import '../mock_app_manager.dart';
+import '../mocks/mocks.mocks.dart';
 import '../test_utils.dart';
 
 void main() {
   group("Id", () {
     test("Invalid input", () {
       expect(() => parseId(""), throwsAssertionError);
-      expect(() => parseId(null), throwsAssertionError);
-      expect(() => parseId("zzz"), throwsArgumentError);
+      expect(() => parseId("zzz"), throwsFormatException);
       expect(() => parseId("b860cddd-dc47-48a2-8d02-c8112a2ed5eb"), isNotNull);
       expect(randomId(), isNotNull);
     });
@@ -38,24 +37,8 @@ void main() {
   });
 
   group("entityValuesCount", () {
-    test("Input", () {
-      expect(
-        () => entityValuesCount<Catch>(
-            [Catch()..id = randomId()], randomId(), null),
-        throwsAssertionError,
-      );
-    });
-
     test("Empty entities", () {
-      expect(entityValuesCount<Catch>([], randomId(), null), 0);
-    });
-
-    test("Null getValues", () {
-      expect(
-        entityValuesCount<Catch>(
-            [Catch()..id = randomId()], randomId(), (_) => null),
-        0,
-      );
+      expect(entityValuesCount<Catch>([], randomId(), (_) => []), 0);
     });
 
     test("Empty getValues", () {
@@ -109,18 +92,13 @@ void main() {
     when(customEntityManager.matchesFilter(any, any)).thenReturn(false);
 
     test("Empty or null filter", () {
-      expect(entityValuesMatchesFilter(null, null, null), isTrue);
-      expect(entityValuesMatchesFilter([], "", null), isTrue);
-      expect(entityValuesMatchesFilter(null, "", null), isTrue);
-      expect(
-        entityValuesMatchesFilter(
-            [CustomEntityValue()], "", customEntityManager),
-        isFalse,
-      );
+      expect(entityValuesMatchesFilter([], "", customEntityManager), isTrue);
+      expect(entityValuesMatchesFilter([], null, customEntityManager), isTrue);
     });
 
     test("Empty values", () {
-      expect(entityValuesMatchesFilter([], "Filter", null), isFalse);
+      expect(entityValuesMatchesFilter([], "Filter", customEntityManager),
+          isFalse);
     });
 
     test("Null values", () {
@@ -217,12 +195,11 @@ void main() {
 
   group("parseId", () {
     test("Input", () {
-      expect(() => parseId(null), throwsAssertionError);
       expect(() => parseId(""), throwsAssertionError);
     });
 
     test("Bad UUID string", () {
-      expect(() => parseId("XYZ"), throwsArgumentError);
+      expect(() => parseId("XYZ"), throwsFormatException);
     });
 
     test("Good UUID string", () {

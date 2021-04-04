@@ -15,14 +15,13 @@ import '../widgets/floating_container.dart';
 /// below the map marker.
 class StaticFishingSpot extends StatefulWidget {
   final FishingSpot fishingSpot;
-  final EdgeInsets padding;
-  final VoidCallback onTap;
+  final EdgeInsets? padding;
+  final VoidCallback? onTap;
 
   StaticFishingSpot(
     this.fishingSpot, {
     this.padding,
     this.onTap,
-    Completer<GoogleMapController> mapController,
   });
 
   @override

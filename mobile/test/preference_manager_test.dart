@@ -3,14 +3,14 @@ import 'dart:convert';
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/app_manager.dart';
-import 'package:mobile/auth_manager.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
 import 'package:mobile/preference_manager.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mockito/mockito.dart';
 
-import 'mock_app_manager.dart';
-import 'test_utils.dart';
+import 'mocks/mocks.dart';
+import 'mocks/mocks.mocks.dart';
+import 'mocks/stubbed_app_manager.dart';
 
 class TestPreferenceManager extends PreferenceManager {
   bool firestoreEnabled = false;
@@ -30,22 +30,22 @@ class TestPreferenceManager extends PreferenceManager {
 
   void clearLocal() => clearLocalData();
 
-  int get testInt => preferences["test_int"];
+  int? get testInt => preferences["test_int"];
 
-  set testInt(int value) => put("test_int", value);
+  set testInt(int? value) => put("test_int", value);
 
   List<String> get testStringList => stringList("test_string_list");
 
-  set testStringList(List<String> value) =>
+  set testStringList(List<String>? value) =>
       putStringList("test_string_list", value);
 
   List<Id> get testIdList => idList("test_id_list");
 
-  set testIdList(List<Id> value) => putIdList("test_id_list", value);
+  set testIdList(List<Id>? value) => putIdList("test_id_list", value);
 
-  Id get testId => id("test_id");
+  Id? get testId => id("test_id");
 
-  set testId(Id value) => putId("test_id", value);
+  set testId(Id? value) => putId("test_id", value);
 
   @override
   void onUpgradeToPro() {
@@ -54,40 +54,37 @@ class TestPreferenceManager extends PreferenceManager {
 }
 
 void main() {
-  MockAppManager appManager;
+  late StubbedAppManager appManager;
 
-  TestPreferenceManager preferenceManager;
+  late TestPreferenceManager preferenceManager;
 
   setUp(() async {
-    appManager = MockAppManager(
-      mockAppPreferenceManager: true,
-      mockAuthManager: true,
-      mockLocalDatabaseManager: true,
-      mockSubscriptionManager: true,
-      mockFirestoreWrapper: true,
-    );
+    appManager = StubbedAppManager();
 
-    var stream = MockStream<AuthState>();
-    when(stream.listen(any)).thenReturn(null);
-    when(appManager.mockAuthManager.stream).thenAnswer((_) => stream);
+    when(appManager.appPreferenceManager.lastLoggedInUserId).thenReturn("");
 
-    when(appManager.mockLocalDatabaseManager.insertOrReplace(any, any))
-        .thenAnswer((_) => Future.value());
+    when(appManager.authManager.stream).thenAnswer((_) => Stream.empty());
 
-    when(appManager.mockSubscriptionManager.stream)
-        .thenAnswer((_) => MockStream<void>());
-    when(appManager.mockSubscriptionManager.isPro).thenReturn(false);
+    when(appManager.localDatabaseManager.insertOrReplace(any, any))
+        .thenAnswer((_) => Future.value(true));
+    when(appManager.localDatabaseManager.delete(
+      any,
+      where: anyNamed("where"),
+      whereArgs: anyNamed("whereArgs"),
+    )).thenAnswer((_) => Future.value(true));
 
-    preferenceManager = TestPreferenceManager(appManager);
+    when(appManager.subscriptionManager.stream)
+        .thenAnswer((_) => Stream.empty());
+    when(appManager.subscriptionManager.isPro).thenReturn(false);
+
+    preferenceManager = TestPreferenceManager(appManager.app);
   });
 
   test("Test initialize local data", () async {
-    when(appManager.mockAppPreferenceManager.lastLoggedInUserId)
-        .thenReturn(null);
-    when(appManager.mockAuthManager.userId).thenReturn("ID");
+    when(appManager.appPreferenceManager.lastLoggedInUserId).thenReturn(null);
+    when(appManager.authManager.userId).thenReturn("ID");
 
-    when(appManager.mockLocalDatabaseManager
-            .fetchAll(preferenceManager.tableName))
+    when(appManager.localDatabaseManager.fetchAll(preferenceManager.tableName))
         .thenAnswer((_) => Future.value([]));
     await preferenceManager.initialize();
     expect(preferenceManager.prefs, isEmpty);
@@ -96,8 +93,7 @@ void main() {
     var id1 = randomId();
 
     // Test with all supported data types.
-    when(appManager.mockLocalDatabaseManager
-            .fetchAll(preferenceManager.tableName))
+    when(appManager.localDatabaseManager.fetchAll(preferenceManager.tableName))
         .thenAnswer(
       (_) => Future.value(
         [
@@ -123,19 +119,22 @@ void main() {
   });
 
   test("Initialize Firestore data", () async {
-    when(appManager.mockSubscriptionManager.isPro).thenReturn(true);
+    when(appManager.subscriptionManager.isPro).thenReturn(true);
 
     var snapshot = MockDocumentSnapshot();
     when(snapshot.exists).thenReturn(false);
+    when(snapshot.data()).thenReturn({});
 
     var doc = MockDocumentReference();
     when(doc.get()).thenAnswer((_) => Future.value(snapshot));
-    when(appManager.mockFirestoreWrapper.doc(any)).thenReturn(doc);
+    when(appManager.firestoreWrapper.doc(any)).thenReturn(doc);
 
     var stream = MockStream<MockDocumentSnapshot>();
     // Mimic Firebase's behaviour by invoking listener immediately.
-    when(stream.listen(any)).thenAnswer(
-        (invocation) => invocation.positionalArguments.first(snapshot));
+    when(stream.listen(any)).thenAnswer((invocation) {
+      invocation.positionalArguments.first(snapshot);
+      return MockStreamSubscription<MockDocumentSnapshot>();
+    });
     when(doc.snapshots()).thenAnswer((_) => stream);
 
     preferenceManager.firestoreEnabled = true;
@@ -185,10 +184,10 @@ void main() {
 
   test("Setting property to the same value is a no-op", () {
     preferenceManager.testInt = 10;
-    verify(appManager.mockSubscriptionManager.isPro).called(1);
+    verify(appManager.subscriptionManager.isPro).called(1);
 
     preferenceManager.testInt = 10;
-    verifyNever(appManager.mockSubscriptionManager.isPro);
+    verifyNever(appManager.subscriptionManager.isPro);
   });
 
   test("Setting property to null removes it from data map", () {
@@ -200,17 +199,17 @@ void main() {
   });
 
   test("Firestore document is added if it doesn't exist", () async {
-    when(appManager.mockSubscriptionManager.isPro).thenReturn(true);
+    when(appManager.subscriptionManager.isPro).thenReturn(true);
 
     var snapshot = MockDocumentSnapshot();
     when(snapshot.exists).thenReturn(false);
     var doc = MockDocumentReference();
     when(doc.get()).thenAnswer((_) => Future.value(snapshot));
-    when(appManager.mockFirestoreWrapper.doc(any)).thenReturn(doc);
+    when(appManager.firestoreWrapper.doc(any)).thenReturn(doc);
 
     preferenceManager.firestoreEnabled = true;
     preferenceManager.testInt = 10;
-    verify(appManager.mockFirestoreWrapper.doc("test/path")).called(1);
+    verify(appManager.firestoreWrapper.doc("test/path")).called(1);
 
     await untilCalled(doc.set(any));
     verify(doc.set(any)).called(1);
@@ -218,17 +217,17 @@ void main() {
   });
 
   test("Firestore document is updated if it exists", () async {
-    when(appManager.mockSubscriptionManager.isPro).thenReturn(true);
+    when(appManager.subscriptionManager.isPro).thenReturn(true);
 
     var snapshot = MockDocumentSnapshot();
     when(snapshot.exists).thenReturn(true);
     var doc = MockDocumentReference();
     when(doc.get()).thenAnswer((_) => Future.value(snapshot));
-    when(appManager.mockFirestoreWrapper.doc(any)).thenReturn(doc);
+    when(appManager.firestoreWrapper.doc(any)).thenReturn(doc);
 
     preferenceManager.firestoreEnabled = true;
     preferenceManager.testInt = 10;
-    verify(appManager.mockFirestoreWrapper.doc("test/path")).called(1);
+    verify(appManager.firestoreWrapper.doc("test/path")).called(1);
 
     await untilCalled(doc.update(any));
     verify(doc.update(any)).called(1);
@@ -239,11 +238,11 @@ void main() {
     expect(preferenceManager.testStringList, isEmpty);
     preferenceManager.testStringList = ["0", "1"];
     expect(preferenceManager.testStringList, ["0", "1"]);
-    verify(appManager.mockSubscriptionManager.isPro).called(1);
+    verify(appManager.subscriptionManager.isPro).called(1);
 
     // Setting to the same value is a no-op.
     preferenceManager.testStringList = ["0", "1"];
-    verifyNever(appManager.mockSubscriptionManager.isPro);
+    verifyNever(appManager.subscriptionManager.isPro);
 
     // Reset to null.
     preferenceManager.testStringList = null;
@@ -270,11 +269,11 @@ void main() {
     var id1 = randomId();
     preferenceManager.testIdList = [id0, id1];
     expect(preferenceManager.testIdList, [id0, id1]);
-    verify(appManager.mockSubscriptionManager.isPro).called(1);
+    verify(appManager.subscriptionManager.isPro).called(1);
 
     // Setting to the same value is a no-op.
     preferenceManager.testIdList = [id0, id1];
-    verifyNever(appManager.mockSubscriptionManager.isPro);
+    verifyNever(appManager.subscriptionManager.isPro);
 
     // Reset to null.
     preferenceManager.testIdList = null;

@@ -1,22 +1,15 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/app_manager.dart';
 import 'package:mobile/bait_manager.dart';
+import 'package:mobile/fishing_spot_manager.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
 import 'package:mobile/report_manager.dart';
-import 'package:mobile/entity_manager.dart';
-import 'package:mobile/fishing_spot_manager.dart';
 import 'package:mobile/species_manager.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mockito/mockito.dart';
-import 'package:sqflite/sqflite.dart';
 
-import 'mock_app_manager.dart';
-import 'test_utils.dart';
-
-class MockBatch extends Mock implements Batch {}
-
-class MockCustomReportListener extends Mock
-    implements EntityListener<SummaryReport> {}
+import 'mocks/mocks.mocks.dart';
+import 'mocks/stubbed_app_manager.dart';
 
 class TestCustomReportManager extends ReportManager<SummaryReport> {
   final _id = randomId();
@@ -48,53 +41,44 @@ class TestCustomReportManager extends ReportManager<SummaryReport> {
 }
 
 void main() {
-  MockAppManager appManager;
+  late StubbedAppManager appManager;
 
-  SpeciesManager speciesManager;
-  BaitManager baitManager;
-  FishingSpotManager fishingSpotManager;
+  late SpeciesManager speciesManager;
+  late BaitManager baitManager;
+  late FishingSpotManager fishingSpotManager;
 
-  TestCustomReportManager reportManager;
-  MockCustomReportListener reportListener;
+  late TestCustomReportManager reportManager;
+  late MockEntityListener<SummaryReport> reportListener;
 
   setUp(() {
     // Setup mocks.
-    appManager = MockAppManager(
-      mockAuthManager: true,
-      mockBaitCategoryManager: true,
-      mockCatchManager: true,
-      mockLocalDatabaseManager: true,
-      mockCustomEntityValueManager: true,
-      mockSubscriptionManager: true,
-    );
+    appManager = StubbedAppManager();
 
-    var authStream = MockStream<void>();
-    when(authStream.listen(any)).thenReturn(null);
-    when(appManager.mockAuthManager.stream).thenAnswer((_) => authStream);
+    when(appManager.authManager.stream).thenAnswer((_) => Stream.empty());
 
-    when(appManager.mockLocalDatabaseManager.insertOrReplace(any, any))
+    when(appManager.localDatabaseManager.insertOrReplace(any, any))
         .thenAnswer((_) => Future.value(true));
-    when(appManager.mockLocalDatabaseManager.deleteEntity(any, any))
+    when(appManager.localDatabaseManager.deleteEntity(any, any))
         .thenAnswer((_) => Future.value(true));
 
-    reportListener = MockCustomReportListener();
+    reportListener = MockEntityListener<SummaryReport>();
     when(reportListener.onAdd).thenReturn((_) {});
 
-    when(appManager.mockSubscriptionManager.stream)
-        .thenAnswer((_) => MockStream<void>());
-    when(appManager.mockSubscriptionManager.isPro).thenReturn(false);
+    when(appManager.subscriptionManager.stream)
+        .thenAnswer((_) => Stream.empty());
+    when(appManager.subscriptionManager.isPro).thenReturn(false);
 
     // Setup real objects.
-    speciesManager = SpeciesManager(appManager);
-    when(appManager.speciesManager).thenReturn(speciesManager);
+    speciesManager = SpeciesManager(appManager.app);
+    when(appManager.app.speciesManager).thenReturn(speciesManager);
 
-    baitManager = BaitManager(appManager);
-    when(appManager.baitManager).thenReturn(baitManager);
+    baitManager = BaitManager(appManager.app);
+    when(appManager.app.baitManager).thenReturn(baitManager);
 
-    fishingSpotManager = FishingSpotManager(appManager);
-    when(appManager.fishingSpotManager).thenReturn(fishingSpotManager);
+    fishingSpotManager = FishingSpotManager(appManager.app);
+    when(appManager.app.fishingSpotManager).thenReturn(fishingSpotManager);
 
-    reportManager = TestCustomReportManager(appManager);
+    reportManager = TestCustomReportManager(appManager.app);
     reportManager.addListener(reportListener);
   });
 
@@ -104,7 +88,7 @@ void main() {
         .thenReturn((report) => updatedReports.add(report));
 
     // Can't delete because catch exists.
-    when(appManager.mockCatchManager.existsWith(
+    when(appManager.catchManager.existsWith(
       speciesId: anyNamed("speciesId"),
     )).thenReturn(true);
 
@@ -115,7 +99,7 @@ void main() {
     verifyNever(reportListener.onUpdate);
 
     // Successful delete.
-    when(appManager.mockCatchManager.existsWith(
+    when(appManager.catchManager.existsWith(
       speciesId: anyNamed("speciesId"),
     )).thenReturn(false);
 
@@ -142,7 +126,7 @@ void main() {
         .thenReturn((report) => updatedReports.add(report));
 
     // Nothing to delete.
-    when(appManager.mockLocalDatabaseManager.deleteEntity(any, any))
+    when(appManager.localDatabaseManager.deleteEntity(any, any))
         .thenAnswer((_) => Future.value(false));
 
     var bait = Bait()
@@ -152,7 +136,7 @@ void main() {
     verifyNever(reportListener.onUpdate);
 
     // Successful delete.
-    when(appManager.mockLocalDatabaseManager.deleteEntity(any, any))
+    when(appManager.localDatabaseManager.deleteEntity(any, any))
         .thenAnswer((_) => Future.value(true));
 
     var report = SummaryReport()
@@ -179,7 +163,7 @@ void main() {
         .thenReturn((report) => updatedReports.add(report));
 
     // Nothing to delete.
-    when(appManager.mockLocalDatabaseManager.deleteEntity(any, any))
+    when(appManager.localDatabaseManager.deleteEntity(any, any))
         .thenAnswer((_) => Future.value(false));
 
     var fishingSpot = FishingSpot()
@@ -190,7 +174,7 @@ void main() {
     verifyNever(reportListener.onUpdate);
 
     // Successful delete.
-    when(appManager.mockLocalDatabaseManager.deleteEntity(any, any))
+    when(appManager.localDatabaseManager.deleteEntity(any, any))
         .thenAnswer((_) => Future.value(true));
 
     var report = SummaryReport()

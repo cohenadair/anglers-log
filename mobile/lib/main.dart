@@ -29,8 +29,8 @@ class AnglersLog extends StatefulWidget {
 }
 
 class _AnglersLogState extends State<AnglersLog> {
-  Future<bool> _appInitializedFuture;
-  LegacyJsonResult _legacyJsonResult;
+  late Future<bool> _appInitializedFuture;
+  LegacyJsonResult? _legacyJsonResult;
 
   /// Used for showing the correct transition widget when logging in.
   var _wasLoggedOut = false;
@@ -94,7 +94,7 @@ class _AnglersLogState extends State<AnglersLog> {
     return StreamBuilder<void>(
       stream: _authManager.stream,
       builder: (context, _) {
-        Widget child;
+        Widget? child;
         switch (_authManager.state) {
           case AuthState.unknown:
             child = LandingPage();

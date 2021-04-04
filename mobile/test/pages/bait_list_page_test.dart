@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mobile/entity_manager.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
 import 'package:mobile/pages/bait_list_page.dart';
 import 'package:mobile/pages/manageable_list_page.dart';
@@ -12,11 +13,11 @@ import 'package:mobile/widgets/list_item.dart';
 import 'package:mobile/widgets/text.dart';
 import 'package:mockito/mockito.dart';
 
-import '../mock_app_manager.dart';
+import '../mocks/stubbed_app_manager.dart';
 import '../test_utils.dart';
 
 void main() {
-  MockAppManager appManager;
+  late StubbedAppManager appManager;
 
   var baitCategories = [
     BaitCategory()
@@ -51,14 +52,22 @@ void main() {
   ];
 
   setUp(() {
-    appManager = MockAppManager(
-      mockBaitCategoryManager: true,
-      mockBaitManager: true,
-    );
+    appManager = StubbedAppManager();
 
-    when(appManager.mockBaitCategoryManager.listSortedByName())
+    when(appManager.baitCategoryManager.listSortedByName())
         .thenReturn(baitCategories);
-    when(appManager.mockBaitManager.filteredList(any)).thenReturn(baits);
+    when(appManager.baitCategoryManager.addSimpleListener(
+      onAdd: anyNamed("onAdd"),
+      onUpdate: anyNamed("onUpdate"),
+      onDelete: anyNamed("onDelete"),
+    )).thenReturn(SimpleEntityListener());
+
+    when(appManager.baitManager.filteredList(any)).thenReturn(baits);
+    when(appManager.baitManager.addSimpleListener(
+      onAdd: anyNamed("onAdd"),
+      onUpdate: anyNamed("onUpdate"),
+      onDelete: anyNamed("onDelete"),
+    )).thenReturn(SimpleEntityListener());
   });
 
   testWidgets("Single picker title", (tester) async {
@@ -100,7 +109,7 @@ void main() {
     ));
     expect(find.text("Baits (5)"), findsOneWidget);
 
-    when(appManager.mockBaitManager.filteredList(any)).thenReturn([
+    when(appManager.baitManager.filteredList(any)).thenReturn([
       baits[1],
       baits[2],
     ]);
@@ -112,7 +121,7 @@ void main() {
   });
 
   testWidgets("onPicked callback invoked", (tester) async {
-    Bait pickedBait;
+    Bait? pickedBait;
     await tester.pumpWidget(Testable(
       (_) => BaitListPage(
         pickerSettings: ManageableListPagePickerSettings.single(
@@ -131,7 +140,7 @@ void main() {
   });
 
   testWidgets("All baits picked only includes Bait objects", (tester) async {
-    Set<Bait> pickedBaits;
+    Set<Bait>? pickedBaits;
     await tester.pumpWidget(
       Testable(
         (context) => Scaffold(
@@ -142,7 +151,7 @@ void main() {
               BaitListPage(
                 pickerSettings: ManageableListPagePickerSettings(
                   onPicked: (_, baits) {
-                    pickedBaits = baits;
+                    pickedBaits = baits as Set<Bait>?;
                     return false;
                   },
                 ),
@@ -165,11 +174,11 @@ void main() {
     await tapAndSettle(tester, find.byType(BackButton));
 
     expect(pickedBaits, isNotNull);
-    expect(pickedBaits.length, 5);
+    expect(pickedBaits!.length, 5);
   });
 
   testWidgets("No baits picked doesn't crash", (tester) async {
-    Set<Bait> pickedBaits;
+    Set<Bait>? pickedBaits;
     await tester.pumpWidget(
       Testable(
         (context) => Scaffold(
@@ -180,7 +189,7 @@ void main() {
               BaitListPage(
                 pickerSettings: ManageableListPagePickerSettings(
                   onPicked: (_, baits) {
-                    pickedBaits = baits;
+                    pickedBaits = baits as Set<Bait>?;
                     return false;
                   },
                 ),
@@ -212,7 +221,7 @@ void main() {
     await tapAndSettle(tester, find.byType(BackButton));
 
     expect(pickedBaits, isNotNull);
-    expect(pickedBaits.isEmpty, isTrue);
+    expect(pickedBaits!.isEmpty, isTrue);
   });
 
   testWidgets("Different item types are rendered", (tester) async {

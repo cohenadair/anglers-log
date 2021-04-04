@@ -5,18 +5,18 @@ import 'package:mobile/pages/save_bait_category_page.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mockito/mockito.dart';
 
-import '../mock_app_manager.dart';
+import '../mocks/stubbed_app_manager.dart';
 import '../test_utils.dart';
 
 void main() {
-  MockAppManager appManager;
+  late StubbedAppManager appManager;
 
   setUp(() {
-    appManager = MockAppManager(
-      mockBaitCategoryManager: true,
-    );
+    appManager = StubbedAppManager();
 
-    when(appManager.mockBaitCategoryManager.nameExists(any)).thenReturn(false);
+    when(appManager.baitCategoryManager.addOrUpdate(any))
+        .thenAnswer((_) => Future.value(true));
+    when(appManager.baitCategoryManager.nameExists(any)).thenReturn(false);
   });
 
   testWidgets("Edit title", (tester) async {
@@ -44,8 +44,7 @@ void main() {
     await enterTextAndSettle(tester, find.byType(TextField), "Lure");
     await tapAndSettle(tester, find.text("SAVE"));
 
-    var result =
-        verify(appManager.mockBaitCategoryManager.addOrUpdate(captureAny));
+    var result = verify(appManager.baitCategoryManager.addOrUpdate(captureAny));
     result.called(1);
 
     BaitCategory category = result.captured.first;
@@ -67,8 +66,7 @@ void main() {
     await enterTextAndSettle(tester, find.byType(TextField), "Bead");
     await tapAndSettle(tester, find.text("SAVE"));
 
-    var result =
-        verify(appManager.mockBaitCategoryManager.addOrUpdate(captureAny));
+    var result = verify(appManager.baitCategoryManager.addOrUpdate(captureAny));
     result.called(1);
 
     BaitCategory newBaitCategory = result.captured.first;

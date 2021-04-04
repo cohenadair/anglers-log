@@ -101,7 +101,7 @@ void main() {
         Testable(
           (_) => EmptyFutureBuilder<bool>(
             future: Future.delayed(Duration(milliseconds: 100), () => true),
-            builder: (context, value) => Text(value ? "True" : "False"),
+            builder: (context, value) => Text(value! ? "True" : "False"),
           ),
         ),
       );

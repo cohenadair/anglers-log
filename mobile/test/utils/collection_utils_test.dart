@@ -40,7 +40,8 @@ void main() {
     };
 
     expect(
-      sortedMap<String>(map, (lhs, rhs) => map[lhs].compareTo(map[rhs])).values,
+      sortedMap<String>(map, (lhs, rhs) => map[lhs]!.compareTo(map[rhs]!))
+          .values,
       {
         "1": 100,
         "8": 109,
@@ -91,6 +92,5 @@ void main() {
     expect(valueOf<TestEnum>(TestEnum.values, 0), TestEnum.a);
     expect(
         valueOf<TestEnum>(TestEnum.values, TestEnum.values.length + 1), isNull);
-    expect(valueOf<TestEnum>(TestEnum.values, null), isNull);
   });
 }

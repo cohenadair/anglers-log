@@ -16,7 +16,7 @@ class CustomEntityValues extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (values == null || values.isEmpty) {
+    if (values.isEmpty) {
       return Empty();
     }
 

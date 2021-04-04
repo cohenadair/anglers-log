@@ -42,7 +42,7 @@ class BaitManager extends NamedEntityManager<Bait> {
   String get tableName => "bait";
 
   @override
-  bool matchesFilter(Id id, String filter) {
+  bool matchesFilter(Id id, String? filter) {
     var bait = entity(id);
     if (bait == null) {
       return false;
@@ -61,18 +61,17 @@ class BaitManager extends NamedEntityManager<Bait> {
   /// Returns true if the given [Bait] is a duplicate of an existing bait. A
   /// duplicate is defined as all equal properties, except [Bait.id].
   bool duplicate(Bait rhs) {
-    return list().firstWhere(
-            (lhs) =>
-                lhs.baitCategoryId == rhs.baitCategoryId &&
-                equalsTrimmedIgnoreCase(lhs.name, rhs.name) &&
-                listEquals(lhs.customEntityValues, rhs.customEntityValues) &&
-                lhs.id != rhs.id,
-            orElse: () => null) !=
-        null;
+    return list()
+        .where((lhs) =>
+            lhs.baitCategoryId == rhs.baitCategoryId &&
+            equalsTrimmedIgnoreCase(lhs.name, rhs.name) &&
+            listEquals(lhs.customEntityValues, rhs.customEntityValues) &&
+            lhs.id != rhs.id)
+        .isNotEmpty;
   }
 
   /// Returns the number of [Catch] objects associated with the given [Bait].
-  int numberOfCatches(Bait bait) {
+  int numberOfCatches(Bait? bait) {
     if (bait == null) {
       return 0;
     }
@@ -94,7 +93,7 @@ class BaitManager extends NamedEntityManager<Bait> {
         list(), customEntityId, (bait) => bait.customEntityValues);
   }
 
-  String formatNameWithCategory(Id baitId) {
+  String? formatNameWithCategory(Id? baitId) {
     var bait = entity(baitId);
     if (bait == null) {
       return null;
@@ -109,9 +108,6 @@ class BaitManager extends NamedEntityManager<Bait> {
   }
 
   String deleteMessage(BuildContext context, Bait bait) {
-    assert(context != null);
-    assert(bait != null);
-
     var numOfCatches = numberOfCatches(bait);
     var string = numOfCatches == 1
         ? Strings.of(context).baitListPageDeleteMessageSingular

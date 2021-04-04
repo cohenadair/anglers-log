@@ -4,77 +4,61 @@ import 'package:fixnum/fixnum.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/bait_manager.dart';
 import 'package:mobile/catch_manager.dart';
-import 'package:mobile/entity_manager.dart';
 import 'package:mobile/fishing_spot_manager.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
 import 'package:mobile/utils/date_time_utils.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mockito/mockito.dart';
 
-import 'mock_app_manager.dart';
+import 'mocks/mocks.mocks.dart';
+import 'mocks/stubbed_app_manager.dart';
 import 'test_utils.dart';
 
-class MockCatchListener extends Mock implements EntityListener<Catch> {}
-
 void main() {
-  MockAppManager appManager;
-  MockBaitCategoryManager baitCategoryManager;
-  MockLocalDatabaseManager dataManager;
-  MockImageManager imageManager;
-  MockSpeciesManager speciesManager;
-  BaitManager baitManager;
-  CatchManager catchManager;
-  FishingSpotManager fishingSpotManager;
+  late StubbedAppManager appManager;
+  late MockBaitCategoryManager baitCategoryManager;
+  late MockLocalDatabaseManager dataManager;
+  late MockImageManager imageManager;
+  late MockSpeciesManager speciesManager;
+  late BaitManager baitManager;
+  late CatchManager catchManager;
+  late FishingSpotManager fishingSpotManager;
 
   setUp(() {
-    appManager = MockAppManager(
-      mockAuthManager: true,
-      mockBaitCategoryManager: true,
-      mockLocalDatabaseManager: true,
-      mockImageManager: true,
-      mockSpeciesManager: true,
-      mockSubscriptionManager: true,
-      mockTimeManager: true,
-    );
+    appManager = StubbedAppManager();
 
-    var authStream = MockStream<void>();
-    when(authStream.listen(any)).thenReturn(null);
-    when(appManager.mockAuthManager.stream).thenAnswer((_) => authStream);
+    when(appManager.authManager.stream).thenAnswer((_) => Stream.empty());
 
-    baitCategoryManager = appManager.mockBaitCategoryManager;
-    when(appManager.baitCategoryManager).thenReturn(baitCategoryManager);
+    baitCategoryManager = appManager.baitCategoryManager;
     when(baitCategoryManager.addListener(any)).thenAnswer((_) {});
 
-    dataManager = appManager.mockLocalDatabaseManager;
-    when(appManager.localDatabaseManager).thenReturn(dataManager);
+    dataManager = appManager.localDatabaseManager;
     when(dataManager.insertOrReplace(any, any))
         .thenAnswer((_) => Future.value(true));
 
-    imageManager = appManager.mockImageManager;
-    when(appManager.imageManager).thenReturn(imageManager);
+    imageManager = appManager.imageManager;
     when(imageManager.save(any, compress: anyNamed("compress"))).thenAnswer(
       (invocation) => Future.value(
-          (invocation.positionalArguments.first as List<File>)
+          (invocation.positionalArguments.first as List<File>?)
                   ?.map((f) => f.path)
-                  ?.toList() ??
+                  .toList() ??
               []),
     );
 
-    when(appManager.mockSubscriptionManager.stream)
-        .thenAnswer((_) => MockStream<void>());
-    when(appManager.mockSubscriptionManager.isPro).thenReturn(false);
+    when(appManager.subscriptionManager.stream)
+        .thenAnswer((_) => Stream.empty());
+    when(appManager.subscriptionManager.isPro).thenReturn(false);
 
-    fishingSpotManager = FishingSpotManager(appManager);
-    when(appManager.fishingSpotManager).thenReturn(fishingSpotManager);
+    fishingSpotManager = FishingSpotManager(appManager.app);
+    when(appManager.app.fishingSpotManager).thenReturn(fishingSpotManager);
 
-    baitManager = BaitManager(appManager);
-    when(appManager.baitManager).thenReturn(baitManager);
+    baitManager = BaitManager(appManager.app);
+    when(appManager.app.baitManager).thenReturn(baitManager);
 
-    speciesManager = appManager.mockSpeciesManager;
-    when(appManager.speciesManager).thenReturn(speciesManager);
+    speciesManager = appManager.speciesManager;
     when(speciesManager.matchesFilter(any, any)).thenReturn(false);
 
-    catchManager = CatchManager(appManager);
+    catchManager = CatchManager(appManager.app);
   });
 
   test("When a bait is deleted, existing catches are updated", () async {
@@ -84,7 +68,7 @@ void main() {
         .thenAnswer((_) => Future.value(true));
     when(dataManager.replaceRows(any, any)).thenAnswer((_) => Future.value());
 
-    var catchListener = MockCatchListener();
+    var catchListener = MockEntityListener<Catch>();
     when(catchListener.onAdd).thenReturn((_) {});
     when(catchListener.onDelete).thenReturn((_) {});
 
@@ -109,8 +93,8 @@ void main() {
       ..id = catchId1
       ..baitId = baitId0);
     verify(catchListener.onAdd).called(2);
-    expect(catchManager.entity(catchId0).baitId, baitId0);
-    expect(catchManager.entity(catchId1).baitId, baitId0);
+    expect(catchManager.entity(catchId0)!.baitId, baitId0);
+    expect(catchManager.entity(catchId1)!.baitId, baitId0);
 
     // Delete the new bait.
     await baitManager.delete(baitId0);
@@ -120,8 +104,8 @@ void main() {
 
     // Verify listeners are notified and memory cache updated.
     verify(catchListener.onUpdate).called(2);
-    expect(catchManager.entity(catchId0).hasBaitId(), false);
-    expect(catchManager.entity(catchId1).hasBaitId(), false);
+    expect(catchManager.entity(catchId0)!.hasBaitId(), false);
+    expect(catchManager.entity(catchId1)!.hasBaitId(), false);
     expect(updatedCatches.length, 2);
   });
 
@@ -133,7 +117,7 @@ void main() {
         .thenAnswer((_) => Future.value(true));
     when(dataManager.replaceRows(any, any)).thenAnswer((_) => Future.value());
 
-    var catchListener = MockCatchListener();
+    var catchListener = MockEntityListener<Catch>();
     when(catchListener.onAdd).thenReturn((_) {});
     when(catchListener.onDelete).thenReturn((_) {});
 
@@ -156,8 +140,8 @@ void main() {
       ..id = catchId1
       ..fishingSpotId = fishingSpotId0);
     verify(catchListener.onAdd).called(2);
-    expect(catchManager.entity(catchId0).fishingSpotId, fishingSpotId0);
-    expect(catchManager.entity(catchId1).fishingSpotId, fishingSpotId0);
+    expect(catchManager.entity(catchId0)!.fishingSpotId, fishingSpotId0);
+    expect(catchManager.entity(catchId1)!.fishingSpotId, fishingSpotId0);
 
     // Delete the new fishing spot.
     await fishingSpotManager.delete(fishingSpotId0);
@@ -167,8 +151,8 @@ void main() {
 
     // Verify listeners are notified and memory cache updated.
     verify(catchListener.onUpdate).called(2);
-    expect(catchManager.entity(catchId0).hasFishingSpotId(), false);
-    expect(catchManager.entity(catchId1).hasFishingSpotId(), false);
+    expect(catchManager.entity(catchId0)!.hasFishingSpotId(), false);
+    expect(catchManager.entity(catchId1)!.hasFishingSpotId(), false);
     expect(updatedCatches.length, 2);
   });
 
@@ -198,7 +182,7 @@ void main() {
 
   testWidgets("Filtering by search query; bait", (tester) async {
     var baitManager = MockBaitManager();
-    when(appManager.baitManager).thenReturn(baitManager);
+    when(appManager.app.baitManager).thenReturn(baitManager);
     when(baitManager.matchesFilter(any, any)).thenReturn(true);
 
     await catchManager.addOrUpdate(Catch()
@@ -214,7 +198,7 @@ void main() {
 
   testWidgets("Filtering by search query; fishing spot", (tester) async {
     var fishingSpotManager = MockFishingSpotManager();
-    when(appManager.fishingSpotManager).thenReturn(fishingSpotManager);
+    when(appManager.app.fishingSpotManager).thenReturn(fishingSpotManager);
     when(fishingSpotManager.matchesFilter(any, any)).thenReturn(true);
 
     await catchManager.addOrUpdate(Catch()
@@ -230,7 +214,7 @@ void main() {
 
   testWidgets("Filtering by search query; species", (tester) async {
     var speciesManager = MockSpeciesManager();
-    when(appManager.speciesManager).thenReturn(speciesManager);
+    when(appManager.app.speciesManager).thenReturn(speciesManager);
     when(speciesManager.matchesFilter(any, any)).thenReturn(true);
 
     await catchManager.addOrUpdate(Catch()
@@ -540,21 +524,12 @@ void main() {
   });
 
   group("deleteMessage", () {
-    testWidgets("Input", (tester) async {
-      expect(() => catchManager.deleteMessage(null, Catch()..id = randomId()),
-          throwsAssertionError);
-
-      var context = await buildContext(tester, appManager: appManager);
-      expect(
-          () => baitManager.deleteMessage(context, null), throwsAssertionError);
-    });
-
     testWidgets("No species", (tester) async {
       var cat = Catch()
         ..id = randomId()
         ..timestamp = Int64(DateTime(2020, 9, 25).millisecondsSinceEpoch);
 
-      when(appManager.mockTimeManager.currentDateTime)
+      when(appManager.timeManager.currentDateTime)
           .thenReturn(DateTime(2020, 9, 25));
       var context = await buildContext(tester, appManager: appManager);
       expect(
@@ -574,7 +549,7 @@ void main() {
         ..speciesId = species.id;
 
       when(speciesManager.entity(any)).thenReturn(species);
-      when(appManager.mockTimeManager.currentDateTime)
+      when(appManager.timeManager.currentDateTime)
           .thenReturn(DateTime(2020, 9, 25));
       var context = await buildContext(tester, appManager: appManager);
       expect(

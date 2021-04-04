@@ -44,7 +44,7 @@ class CatchManager extends EntityManager<Catch> {
   Id id(Catch cat) => cat.id;
 
   @override
-  bool matchesFilter(Id id, String filter, [BuildContext context]) {
+  bool matchesFilter(Id id, String? filter, [BuildContext? context]) {
     var cat = entity(id);
 
     if (cat == null ||
@@ -55,7 +55,7 @@ class CatchManager extends EntityManager<Catch> {
         context == null ||
         timestampToSearchString(context, cat.timestamp.toInt())
             .toLowerCase()
-            .contains(filter.toLowerCase()) ||
+            .contains(filter!.toLowerCase()) ||
         entityValuesMatchesFilter(
             cat.customEntityValues, filter, _customEntityManager)) {
       return true;
@@ -70,18 +70,13 @@ class CatchManager extends EntityManager<Catch> {
   /// Returns all catches, sorted from newest to oldest.
   List<Catch> catchesSortedByTimestamp(
     BuildContext context, {
-    String filter,
-    DateRange dateRange,
+    String? filter,
+    DateRange? dateRange,
     Set<Id> catchIds = const {},
     Set<Id> baitIds = const {},
     Set<Id> fishingSpotIds = const {},
     Set<Id> speciesIds = const {},
   }) {
-    assert(catchIds != null);
-    assert(baitIds != null);
-    assert(fishingSpotIds != null);
-    assert(speciesIds != null);
-
     var result = List.of(filteredCatches(
       context,
       filter: filter,
@@ -98,18 +93,13 @@ class CatchManager extends EntityManager<Catch> {
 
   List<Catch> filteredCatches(
     BuildContext context, {
-    String filter,
-    DateRange dateRange,
+    String? filter,
+    DateRange? dateRange,
     Set<Id> catchIds = const {},
     Set<Id> baitIds = const {},
     Set<Id> fishingSpotIds = const {},
     Set<Id> speciesIds = const {},
   }) {
-    assert(catchIds != null);
-    assert(baitIds != null);
-    assert(fishingSpotIds != null);
-    assert(speciesIds != null);
-
     if (isEmpty(filter) &&
         dateRange == null &&
         catchIds.isEmpty &&
@@ -146,7 +136,7 @@ class CatchManager extends EntityManager<Catch> {
   @override
   Future<bool> addOrUpdate(
     Catch cat, {
-    List<File> imageFiles,
+    List<File> imageFiles = const [],
     bool compressImages = true,
     bool notify = true,
   }) async {
@@ -159,18 +149,14 @@ class CatchManager extends EntityManager<Catch> {
 
   /// Returns true if a [Catch] with the given properties exists.
   bool existsWith({
-    Id speciesId,
+    Id? speciesId,
   }) {
-    return list().firstWhere(
-            (cat) => cat.hasSpeciesId() && cat.speciesId == speciesId,
-            orElse: () => null) !=
-        null;
+    return list()
+        .where((cat) => cat.hasSpeciesId() && cat.speciesId == speciesId)
+        .isNotEmpty;
   }
 
   String deleteMessage(BuildContext context, Catch cat) {
-    assert(context != null);
-    assert(cat != null);
-
     var species = _speciesManager.entity(cat.speciesId);
     var timeString = formatTimestamp(context, cat.timestamp.toInt());
     String name;

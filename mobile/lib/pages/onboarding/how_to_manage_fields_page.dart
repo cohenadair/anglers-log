@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 
 import '../../i18n/strings.dart';
 import '../../res/dimen.dart';
+import '../../utils/protobuf_utils.dart';
 import '../../widgets/text.dart';
 import '../../widgets/widget.dart';
 import '../save_catch_page.dart';
@@ -11,7 +12,7 @@ import 'embedded_page.dart';
 import 'onboarding_page.dart';
 
 class HowToManageFieldsPage extends StatefulWidget {
-  final VoidCallback onNext;
+  final VoidCallback? onNext;
 
   HowToManageFieldsPage({
     this.onNext,
@@ -27,7 +28,7 @@ class _HowToManageFieldsPageState extends State<HowToManageFieldsPage> {
   // Allows showing/hiding popup menu programmatically.
   final _popupMenuKey = GlobalKey<PopupMenuButtonState>();
 
-  Timer _menuTimer;
+  late Timer _menuTimer;
   bool _isMenuShowing = false;
 
   @override
@@ -35,9 +36,9 @@ class _HowToManageFieldsPageState extends State<HowToManageFieldsPage> {
     super.initState();
     _menuTimer = Timer.periodic(_menuTimerDuration, (_) {
       if (_isMenuShowing) {
-        Navigator.of(_popupMenuKey.currentContext).pop();
+        Navigator.of(_popupMenuKey.currentContext!).pop();
       } else {
-        _popupMenuKey.currentState.showButtonMenu();
+        _popupMenuKey.currentState!.showButtonMenu();
       }
       _isMenuShowing = !_isMenuShowing;
     });
@@ -63,6 +64,7 @@ class _HowToManageFieldsPageState extends State<HowToManageFieldsPage> {
         VerticalSpace(paddingWidgetDouble),
         EmbeddedPage(
           childBuilder: (context) => SaveCatchPage(
+            speciesId: randomId(),
             popupMenuKey: _popupMenuKey,
           ),
         ),

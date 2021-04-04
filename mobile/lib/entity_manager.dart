@@ -16,13 +16,13 @@ import 'wrappers/firestore_wrapper.dart';
 
 class EntityListener<T> {
   /// Invoked with the instance of T that was added.
-  void Function(T) onAdd;
+  void Function(T)? onAdd;
 
   /// Invoked with the instance of T that was deleted.
-  void Function(T) onDelete;
+  void Function(T)? onDelete;
 
   /// Invoked with the instance of T that were updated.
-  void Function(T) onUpdate;
+  void Function(T)? onUpdate;
 
   EntityListener({
     this.onAdd,
@@ -33,9 +33,9 @@ class EntityListener<T> {
 
 class SimpleEntityListener<T> extends EntityListener<T> {
   SimpleEntityListener({
-    void Function(T entity) onAdd,
-    void Function(T entity) onDelete,
-    void Function(T entity) onUpdate,
+    void Function(T entity)? onAdd,
+    void Function(T entity)? onDelete,
+    void Function(T entity)? onUpdate,
   }) : super(
           onAdd: onAdd ?? (_) {},
           onDelete: onDelete ?? (_) {},
@@ -59,7 +59,7 @@ abstract class EntityManager<T extends GeneratedMessage>
 
   Id id(T entity);
 
-  bool matchesFilter(Id id, String filter);
+  bool matchesFilter(Id id, String? filter);
 
   /// Parses a Protobuf byte representation of T.
   T entityFromBytes(List<int> bytes);
@@ -97,12 +97,8 @@ abstract class EntityManager<T extends GeneratedMessage>
   @override
   StreamSubscription<dynamic> initializeFirestore(Completer completer) {
     return firestore.collection(_collectionPath).snapshots().listen((snapshot) {
-      if (snapshot == null) {
-        return;
-      }
-
       for (var change in snapshot.docChanges) {
-        var bytes = change.doc.data()[_columnBytes] ?? [];
+        var bytes = change.doc.data()![_columnBytes] ?? [];
         var entity =
             bytes.isNotEmpty ? entityFromBytes(List<int>.from(bytes)) : null;
         if (entity == null) {
@@ -151,14 +147,14 @@ abstract class EntityManager<T extends GeneratedMessage>
 
   String get _collectionPath => "${authManager.firestoreDocPath}/$tableName";
 
-  List<T> list([List<Id> ids]) {
+  List<T> list([List<Id>? ids]) {
     if (ids == null || ids.isEmpty) {
       return List.unmodifiable(entities.values);
     }
     return entities.values.where((e) => ids.contains(id(e))).toList();
   }
 
-  List<T> filteredList(String filter) {
+  List<T> filteredList(String? filter) {
     if (isEmpty(filter)) {
       return list();
     }
@@ -167,9 +163,9 @@ abstract class EntityManager<T extends GeneratedMessage>
 
   int get entityCount => entities.length;
 
-  T entity(Id id) => entities[id];
+  T? entity(Id? id) => entities[id];
 
-  bool entityExists(Id id) => entity(id) != null;
+  bool entityExists(Id? id) => entity(id) != null;
 
   Future<bool> addOrUpdate(
     T entity, {
@@ -264,8 +260,8 @@ abstract class EntityManager<T extends GeneratedMessage>
     if (entityExists(entityId) &&
         await localDatabaseManager.deleteEntity(entityId, tableName)) {
       _log.d("Deleted locally");
-      var deletedEntity = entity(entityId);
-      if (entities.remove(entityId) != null && notify) {
+      var deletedEntity = entities.remove(entityId);
+      if (deletedEntity != null && notify) {
         notifyOnDelete(deletedEntity);
       }
     }
@@ -284,7 +280,7 @@ abstract class EntityManager<T extends GeneratedMessage>
   }
 
   void removeListener(EntityListener<T> listener) {
-    if (_listeners.remove(listener) == null) {
+    if (!_listeners.remove(listener)) {
       _log.w("Attempt to remove listener that isn't in stored in manager");
     }
   }
@@ -297,23 +293,23 @@ abstract class EntityManager<T extends GeneratedMessage>
 
   @protected
   void notifyOnAdd(T entity) {
-    _notify((listener) => listener.onAdd(entity));
+    _notify((listener) => listener.onAdd?.call(entity));
   }
 
   @protected
   void notifyOnDelete(T entity) {
-    _notify((listener) => listener.onDelete(entity));
+    _notify((listener) => listener.onDelete?.call(entity));
   }
 
   @protected
   void notifyOnUpdate(T entity) {
-    _notify((listener) => listener.onUpdate(entity));
+    _notify((listener) => listener.onUpdate?.call(entity));
   }
 
-  SimpleEntityListener addSimpleListener({
-    void Function(T entity) onAdd,
-    void Function(T entity) onDelete,
-    void Function(T entity) onUpdate,
+  SimpleEntityListener<T> addSimpleListener({
+    void Function(T entity)? onAdd,
+    void Function(T entity)? onDelete,
+    void Function(T entity)? onUpdate,
   }) {
     var listener = SimpleEntityListener<T>(
       onAdd: onAdd,
@@ -326,21 +322,21 @@ abstract class EntityManager<T extends GeneratedMessage>
 }
 
 class EntityListenerBuilder extends StatefulWidget {
-  final List<EntityManager> managers;
+  final List<EntityManager<GeneratedMessage>> managers;
   final Widget Function(BuildContext) builder;
 
   /// Called when an item is added to an [EntityManager] in [managers].
-  final void Function(dynamic) onAdd;
+  final void Function(dynamic)? onAdd;
 
   /// Called when an item is deleted from an [EntityManager] in [managers].
-  final void Function(dynamic) onDelete;
+  final void Function(dynamic)? onDelete;
 
   /// Called when an item is updated by an [EntityManager] in [managers].
-  final void Function(dynamic) onUpdate;
+  final void Function(dynamic)? onUpdate;
 
   /// Invoked on add, delete, or update, in addition to [onAdd], [onDelete],
   /// [onUpdate]. Invoked _before_ the call to [setState].
-  final VoidCallback onAnyChange;
+  final VoidCallback? onAnyChange;
 
   /// If false, the widget is not rebuilt when data is deleted. This is useful
   /// when we need to pop an item from a [Navigator] when data is deleted
@@ -349,22 +345,21 @@ class EntityListenerBuilder extends StatefulWidget {
   final bool onDeleteEnabled;
 
   EntityListenerBuilder({
-    @required this.managers,
-    @required this.builder,
+    required this.managers,
+    required this.builder,
     this.onAdd,
     this.onDelete,
     this.onDeleteEnabled = true,
     this.onUpdate,
     this.onAnyChange,
-  })  : assert(managers != null && managers.isNotEmpty),
-        assert(builder != null);
+  });
 
   @override
   _EntityListenerBuilderState createState() => _EntityListenerBuilderState();
 }
 
 class _EntityListenerBuilderState extends State<EntityListenerBuilder> {
-  final List<EntityListener> _listeners = [];
+  final List<EntityListener<GeneratedMessage>> _listeners = [];
 
   @override
   void initState() {

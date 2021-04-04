@@ -75,7 +75,7 @@ void main() {
           ),
         ),
       );
-      expect((tester.firstWidget(find.text("DONE")) as Text).style.color,
+      expect((tester.firstWidget(find.text("DONE")) as Text).style!.color,
           Colors.red);
     });
 

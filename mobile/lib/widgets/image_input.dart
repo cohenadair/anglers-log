@@ -16,21 +16,19 @@ class ImageInput extends StatelessWidget {
   final void Function(List<PickedImage>) onImagesPicked;
 
   ImageInput({
-    @required this.onImagesPicked,
+    required this.onImagesPicked,
     this.enabled = true,
     this.allowsMultipleSelection = true,
     List<PickedImage> initialImages = const [],
-  })  : assert(onImagesPicked != null),
-        assert(initialImages != null),
-        currentImages = initialImages;
+  }) : currentImages = initialImages;
 
   ImageInput.single({
-    @required Future<bool> Function() requestPhotoPermission,
-    bool enabled,
-    PickedImage currentImage,
-    @required Function(PickedImage) onImagePicked,
+    required Future<bool> Function() requestPhotoPermission,
+    bool enabled = true,
+    PickedImage? currentImage,
+    required Function(PickedImage?) onImagePicked,
   }) : this(
-          enabled: enabled ?? true,
+          enabled: enabled,
           allowsMultipleSelection: false,
           initialImages: currentImage == null ? [] : [currentImage],
           onImagesPicked: (images) =>
@@ -106,8 +104,8 @@ class ImageInput extends StatelessWidget {
             width: galleryMaxThumbSize + leftPadding + rightPadding,
             child: ClipRRect(
               child: image.thumbData == null
-                  ? Image.file(image.originalFile, fit: BoxFit.cover)
-                  : Image.memory(image.thumbData, fit: BoxFit.cover),
+                  ? Image.file(image.originalFile!, fit: BoxFit.cover)
+                  : Image.memory(image.thumbData!, fit: BoxFit.cover),
               borderRadius: BorderRadius.all(
                 Radius.circular(floatingCornerRadius),
               ),

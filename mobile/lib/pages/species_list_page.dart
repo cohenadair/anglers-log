@@ -11,10 +11,10 @@ import '../utils/string_utils.dart';
 import '../widgets/text.dart';
 
 class SpeciesListPage extends StatelessWidget {
-  final ManageableListPagePickerSettings<Species> pickerSettings;
+  final ManageableListPagePickerSettings<Species>? pickerSettings;
 
   /// See [ManageableListPage.appBarLeading].
-  final Widget appBarLeading;
+  final Widget? appBarLeading;
 
   SpeciesListPage({
     this.pickerSettings,

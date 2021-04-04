@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart' show IterableExtension;
 import 'package:protobuf/protobuf.dart';
 import 'package:quiver/strings.dart';
 
@@ -12,15 +13,15 @@ abstract class NamedEntityManager<T extends GeneratedMessage>
 
   NamedEntityManager(AppManager app) : super(app);
 
-  List<T> listSortedByName({String filter}) {
+  List<T> listSortedByName({String? filter}) {
     var result = List<T>.from(filteredList(filter));
     result.sort((lhs, rhs) => compareIgnoreCase(name(lhs), name(rhs)));
     return result;
   }
 
   @override
-  bool matchesFilter(Id id, String filter) {
-    if (id == null || isEmpty(filter)) {
+  bool matchesFilter(Id id, String? filter) {
+    if (isEmpty(filter)) {
       return true;
     }
 
@@ -29,19 +30,18 @@ abstract class NamedEntityManager<T extends GeneratedMessage>
       return false;
     }
 
-    return name(entity).toLowerCase().contains(filter.toLowerCase());
+    return name(entity).toLowerCase().contains(filter!.toLowerCase());
   }
 
   bool nameExists(String name) {
     return named(name) != null;
   }
 
-  T named(String name) {
+  T? named(String? name) {
     if (isEmpty(name)) {
       return null;
     }
-    return entities.values.firstWhere(
-        (e) => equalsTrimmedIgnoreCase(name, this.name(e)),
-        orElse: () => null);
+    return entities.values
+        .firstWhereOrNull((e) => equalsTrimmedIgnoreCase(name!, this.name(e)));
   }
 }

@@ -1,41 +1,32 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mobile/auth_manager.dart';
 import 'package:mobile/custom_entity_manager.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
 import 'package:mobile/user_preference_manager.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mockito/mockito.dart';
 
-import 'mock_app_manager.dart';
-import 'test_utils.dart';
+import 'mocks/stubbed_app_manager.dart';
 
 void main() {
-  MockAppManager appManager;
+  late StubbedAppManager appManager;
 
-  UserPreferenceManager preferenceManager;
+  late UserPreferenceManager preferenceManager;
 
   setUp(() async {
-    appManager = MockAppManager(
-      mockAuthManager: true,
-      mockCustomEntityManager: true,
-      mockLocalDatabaseManager: true,
-      mockSubscriptionManager: true,
-    );
+    appManager = StubbedAppManager();
 
-    var stream = MockStream<AuthState>();
-    when(stream.listen(any)).thenReturn(null);
-    when(appManager.mockAuthManager.stream).thenAnswer((_) => stream);
+    when(appManager.authManager.stream).thenAnswer((_) => Stream.empty());
 
-    when(appManager.mockLocalDatabaseManager.insertOrReplace(any, any))
+    when(appManager.localDatabaseManager.insertOrReplace(any, any))
         .thenAnswer((_) => Future.value(true));
-    when(appManager.mockLocalDatabaseManager.deleteEntity(any, any))
+    when(appManager.localDatabaseManager.deleteEntity(any, any))
         .thenAnswer((_) => Future.value(true));
 
-    when(appManager.mockSubscriptionManager.stream)
-        .thenAnswer((_) => MockStream<void>());
-    when(appManager.mockSubscriptionManager.isPro).thenReturn(false);
+    when(appManager.subscriptionManager.stream)
+        .thenAnswer((_) => Stream.empty());
+    when(appManager.subscriptionManager.isPro).thenReturn(false);
 
-    preferenceManager = UserPreferenceManager(appManager);
+    preferenceManager = UserPreferenceManager(appManager.app);
   });
 
   test(
@@ -45,13 +36,13 @@ void main() {
       ..id = randomId()
       ..name = "Size"
       ..type = CustomEntity_Type.NUMBER;
-    var realEntityManager = CustomEntityManager(appManager);
+    var realEntityManager = CustomEntityManager(appManager.app);
     await realEntityManager.addOrUpdate(deleteEntity);
     expect(realEntityManager.entityCount, 1);
 
-    when(appManager.customEntityManager).thenReturn(realEntityManager);
+    when(appManager.app.customEntityManager).thenReturn(realEntityManager);
 
-    preferenceManager = UserPreferenceManager(appManager);
+    preferenceManager = UserPreferenceManager(appManager.app);
     preferenceManager.baitCustomEntityIds = [deleteEntity.id, randomId()];
     preferenceManager.catchCustomEntityIds = [deleteEntity.id];
 

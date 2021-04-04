@@ -8,27 +8,28 @@ import 'package:mobile/widgets/text_input.dart';
 import 'package:mockito/mockito.dart';
 import 'package:package_info/package_info.dart';
 
-import '../mock_app_manager.dart';
+import '../mocks/stubbed_app_manager.dart';
 import '../test_utils.dart';
 
 void main() {
-  MockAppManager appManager;
+  late StubbedAppManager appManager;
 
   setUp(() {
-    appManager = MockAppManager(
-      mockAuthManager: true,
-      mockHttpWrapper: true,
-      mockIoWrapper: true,
-      mockPackageInfoWrapper: true,
-      mockPathProviderWrapper: true,
-      mockPropertiesManager: true,
-    );
+    appManager = StubbedAppManager();
 
-    when(appManager.mockIoWrapper.isConnected())
+    when(appManager.ioWrapper.isConnected())
         .thenAnswer((_) => Future.value(true));
-    when(appManager.mockPackageInfoWrapper.fromPlatform())
-        .thenAnswer((_) => Future.value(PackageInfo(version: "1.0")));
-    when(appManager.mockPropertiesManager.feedbackTemplate)
+    when(appManager.packageInfoWrapper.fromPlatform()).thenAnswer(
+      (_) => Future.value(
+        PackageInfo(
+          appName: "",
+          buildNumber: "",
+          packageName: "",
+          version: "1.0",
+        ),
+      ),
+    );
+    when(appManager.propertiesManager.feedbackTemplate)
         .thenReturn("%s%s%s%s%s%s%s%s");
   });
 
@@ -160,7 +161,7 @@ void main() {
       ),
       appManager: appManager,
     ));
-    when(appManager.mockIoWrapper.isConnected())
+    when(appManager.ioWrapper.isConnected())
         .thenAnswer((_) => Future.value(false));
 
     await tapAndSettle(tester, find.text("SEND"));
@@ -174,15 +175,18 @@ void main() {
   });
 
   testWidgets("Error Snackbar shows for sending error", (tester) async {
-    var navObserver = MockNavigatorObserver();
     await tester.pumpWidget(Testable(
       (_) => FeedbackPage(
         error: "Error",
       ),
       appManager: appManager,
-      navigatorObserver: navObserver,
     ));
-    when(appManager.mockHttpWrapper.post(
+    when(appManager.propertiesManager.supportEmail).thenReturn("test@test.com");
+    when(appManager.propertiesManager.clientSenderEmail)
+        .thenReturn("sender@test.com");
+    when(appManager.propertiesManager.sendGridApiKey)
+        .thenReturn("random-api-key");
+    when(appManager.httpWrapper.post(
       any,
       auth: anyNamed("auth"),
       body: anyNamed("body"),
@@ -193,21 +197,23 @@ void main() {
         find.widgetWithText(
             SnackBar, "Error sending feedback. Please try again later."),
         findsOneWidget);
-    verifyNever(navObserver.didPop(any, any));
     expect(
         findFirstWithText<ActionButton>(tester, "SEND").onPressed, isNotNull);
   });
 
   testWidgets("Successful send closes page", (tester) async {
-    var navObserver = MockNavigatorObserver();
     await tester.pumpWidget(Testable(
       (_) => FeedbackPage(
         error: "Error",
       ),
       appManager: appManager,
-      navigatorObserver: navObserver,
     ));
-    when(appManager.mockHttpWrapper.post(
+    when(appManager.propertiesManager.supportEmail).thenReturn("test@test.com");
+    when(appManager.propertiesManager.clientSenderEmail)
+        .thenReturn("sender@test.com");
+    when(appManager.propertiesManager.sendGridApiKey)
+        .thenReturn("random-api-key");
+    when(appManager.httpWrapper.post(
       any,
       auth: anyNamed("auth"),
       body: anyNamed("body"),
@@ -219,11 +225,11 @@ void main() {
     expect(findFirstWithText<ActionButton>(tester, "SEND").onPressed, isNull);
 
     await tester.pumpAndSettle();
-    verify(navObserver.didPop(any, any)).called(1);
+    expect(find.text("SEND"), findsNothing);
   });
 
   testWidgets("Email is filled when present", (tester) async {
-    when(appManager.mockAuthManager.userEmail).thenReturn("test@test.com");
+    when(appManager.authManager.userEmail).thenReturn("test@test.com");
 
     await tester.pumpWidget(Testable(
       (_) => FeedbackPage(),

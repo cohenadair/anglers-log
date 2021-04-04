@@ -3,6 +3,7 @@ import 'package:mobile/pages/onboarding/migration_page.dart';
 import 'package:mobile/widgets/button.dart';
 import 'package:mockito/mockito.dart';
 
+import '../../mocks/mocks.mocks.dart';
 import '../../test_utils.dart';
 
 void main() {

@@ -9,9 +9,9 @@ import '../utils/date_time_utils.dart';
 /// A default text Widget that should be used in place of [Text].
 class Label extends StatelessWidget {
   final String text;
-  final TextAlign align;
-  final TextOverflow overflow;
-  final TextStyle style;
+  final TextAlign? align;
+  final TextOverflow? overflow;
+  final TextStyle? style;
 
   Label(
     this.text, {
@@ -46,7 +46,7 @@ class HeadingLabel extends StatelessWidget {
   Widget build(BuildContext context) {
     return Label(
       text,
-      style: Theme.of(context).textTheme.bodyText1.copyWith(
+      style: Theme.of(context).textTheme.bodyText1!.copyWith(
             color: Theme.of(context).primaryColor,
           ),
     );
@@ -55,8 +55,8 @@ class HeadingLabel extends StatelessWidget {
 
 class NoteLabel extends StatelessWidget {
   final String text;
-  final TextAlign align;
-  final TextOverflow overflow;
+  final TextAlign? align;
+  final TextOverflow? overflow;
 
   NoteLabel(
     this.text, {
@@ -79,19 +79,18 @@ class NoteLabel extends StatelessWidget {
 /// can only have a single "%s" substitution.
 class IconLabel extends StatelessWidget {
   final String text;
-  final TextStyle textStyle;
-  final TextAlign align;
-  final TextOverflow overflow;
+  final TextStyle? textStyle;
+  final TextAlign? align;
+  final TextOverflow? overflow;
   final Icon icon;
 
   IconLabel({
-    @required this.text,
-    @required this.icon,
+    required this.text,
+    required this.icon,
     this.align,
     this.overflow,
     this.textStyle,
   })  : assert(isNotEmpty(text)),
-        assert(icon != null),
         assert(text.split("%s").length == 2);
 
   @override
@@ -125,9 +124,9 @@ class IconLabel extends StatelessWidget {
 /// Text that matches the primary label in a [ListTile].
 class PrimaryLabel extends StatelessWidget {
   final String text;
-  final TextAlign align;
-  final TextOverflow overflow;
-  final FontWeight fontWeight;
+  final TextAlign? align;
+  final TextOverflow? overflow;
+  final FontWeight? fontWeight;
   final bool enabled;
 
   PrimaryLabel(
@@ -162,7 +161,7 @@ class PrimaryLabel extends StatelessWidget {
 
 class SecondaryLabel extends StatelessWidget {
   final String text;
-  final TextAlign align;
+  final TextAlign? align;
 
   SecondaryLabel(
     this.text, {
@@ -181,8 +180,8 @@ class SecondaryLabel extends StatelessWidget {
 
 class TitleLabel extends StatelessWidget {
   final String text;
-  final TextAlign align;
-  final TextOverflow overflow;
+  final TextAlign? align;
+  final TextOverflow? overflow;
 
   TitleLabel(
     this.text, {
@@ -212,8 +211,8 @@ class TitleLabel extends StatelessWidget {
 
 class AlertTitleLabel extends StatelessWidget {
   final String text;
-  final TextAlign align;
-  final TextOverflow overflow;
+  final TextAlign? align;
+  final TextOverflow? overflow;
 
   AlertTitleLabel(
     this.text, {
@@ -241,7 +240,7 @@ class SubtitleLabel extends StatelessWidget {
   Widget build(BuildContext context) {
     return Label(
       text,
-      style: Theme.of(context).textTheme.subtitle2.copyWith(
+      style: Theme.of(context).textTheme.subtitle2!.copyWith(
             color: Colors.grey,
             fontWeight: FontWeight.normal,
           ),

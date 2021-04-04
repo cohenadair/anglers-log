@@ -1,5 +1,4 @@
-import 'dart:io';
-
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:image_picker/image_picker.dart';
@@ -11,22 +10,19 @@ import 'package:mobile/widgets/empty_list_placeholder.dart';
 import 'package:mockito/mockito.dart';
 import 'package:photo_manager/photo_manager.dart';
 
-import '../mock_app_manager.dart';
+import '../mocks/mocks.dart';
+import '../mocks/mocks.mocks.dart';
+import '../mocks/stubbed_app_manager.dart';
 import '../test_utils.dart';
 
 void main() {
-  MockAppManager appManager;
-  MockAssetPathEntity allAlbum;
+  late StubbedAppManager appManager;
+  late MockAssetPathEntity allAlbum;
 
-  List<MockAssetEntity> mockAssets;
+  late List<MockAssetEntity> mockAssets;
 
   setUp(() {
-    appManager = MockAppManager(
-      mockFilePickerWrapper: true,
-      mockImagePickerWrapper: true,
-      mockPhotoManagerWrapper: true,
-      mockPermissionHandlerWrapper: true,
-    );
+    appManager = StubbedAppManager();
 
     mockAssets = [
       createMockAssetEntity(fileName: "android_logo.png"),
@@ -38,14 +34,16 @@ void main() {
     when(allAlbum.assetCount).thenReturn(mockAssets.length);
     when(allAlbum.getAssetListPaged(any, any))
         .thenAnswer((_) => Future.value(mockAssets));
-    when(appManager.mockPhotoManagerWrapper.getAllAssetPathEntity(any))
+    when(appManager.imagePickerWrapper.getImage(any))
+        .thenAnswer((_) => Future.value(null));
+    when(appManager.photoManagerWrapper.getAllAssetPathEntity(any))
         .thenAnswer((_) => Future.value(allAlbum));
-    when(appManager.mockPermissionHandlerWrapper.requestPhotos())
+    when(appManager.permissionHandlerWrapper.requestPhotos())
         .thenAnswer((_) => Future.value(true));
   });
 
   testWidgets("No device photos empty result", (tester) async {
-    when(appManager.mockPhotoManagerWrapper.getAllAssetPathEntity(any))
+    when(appManager.photoManagerWrapper.getAllAssetPathEntity(any))
         .thenAnswer((_) => Future.value(null));
 
     await tester.pumpWidget(Testable(
@@ -73,7 +71,7 @@ void main() {
   });
 
   testWidgets("Null all album shows placeholder", (tester) async {
-    when(appManager.mockPhotoManagerWrapper.getAllAssetPathEntity(any))
+    when(appManager.photoManagerWrapper.getAllAssetPathEntity(any))
         .thenAnswer((_) => Future.value(null));
     await tester.pumpWidget(Testable(
       (_) => ImagePickerPage(
@@ -116,7 +114,7 @@ void main() {
     await tapAndSettle(tester, find.text("Gallery"));
     await tapAndSettle(tester, find.text("Camera").last);
 
-    verify(appManager.mockImagePickerWrapper.getImage(any)).called(1);
+    verify(appManager.imagePickerWrapper.getImage(any)).called(1);
     expect(called, isFalse);
   });
 
@@ -130,13 +128,13 @@ void main() {
     ));
     await tester.pumpAndSettle(Duration(milliseconds: 50));
 
-    when(appManager.mockImagePickerWrapper.getImage(any))
+    when(appManager.imagePickerWrapper.getImage(any))
         .thenAnswer((_) => Future.value(PickedFile("")));
 
     await tapAndSettle(tester, find.text("Gallery"));
     await tapAndSettle(tester, find.text("Camera").last);
 
-    verify(appManager.mockImagePickerWrapper.getImage(any)).called(1);
+    verify(appManager.imagePickerWrapper.getImage(any)).called(1);
     expect(called, isTrue);
   });
 
@@ -150,8 +148,10 @@ void main() {
     ));
     await tester.pumpAndSettle(Duration(milliseconds: 50));
 
-    when(appManager.mockFilePickerWrapper.getFile(type: anyNamed("type")))
-        .thenAnswer((_) => Future.value(null));
+    when(appManager.filePickerWrapper.pickFiles(
+      type: anyNamed("type"),
+      allowMultiple: anyNamed("allowMultiple"),
+    )).thenAnswer((_) => Future.value(null));
 
     await tapAndSettle(tester, find.text("Gallery"));
     await tapAndSettle(tester, find.text("Browse").last);
@@ -171,8 +171,10 @@ void main() {
     ));
     await tester.pumpAndSettle(Duration(milliseconds: 50));
 
-    when(appManager.mockFilePickerWrapper.getMultiFile(any))
-        .thenAnswer((_) => Future.value(null));
+    when(appManager.filePickerWrapper.pickFiles(
+      type: anyNamed("type"),
+      allowMultiple: anyNamed("allowMultiple"),
+    )).thenAnswer((_) => Future.value(null));
 
     await tapAndSettle(tester, find.text("Gallery"));
     await tapAndSettle(tester, find.text("Browse").last);
@@ -181,8 +183,10 @@ void main() {
     expect(find.text("Must select an image file."), findsNothing);
     expect(find.text("Must select image files."), findsNothing);
 
-    when(appManager.mockFilePickerWrapper.getMultiFile(any))
-        .thenAnswer((_) => Future.value([]));
+    when(appManager.filePickerWrapper.pickFiles(
+      type: anyNamed("type"),
+      allowMultiple: anyNamed("allowMultiple"),
+    )).thenAnswer((_) => Future.value(FilePickerResult([])));
 
     await tapAndSettle(tester, find.text("Gallery"));
     await tapAndSettle(tester, find.text("Browse").last);
@@ -190,46 +194,6 @@ void main() {
     expect(called, isFalse);
     expect(find.text("Must select an image file."), findsNothing);
     expect(find.text("Must select image files."), findsNothing);
-  });
-
-  testWidgets("Doc single picker unsupported format", (tester) async {
-    await tester.pumpWidget(Testable(
-      (_) => ImagePickerPage.single(
-        onImagePicked: (_, __) {},
-      ),
-      appManager: appManager,
-    ));
-    await tester.pumpAndSettle(Duration(milliseconds: 50));
-
-    when(appManager.mockFilePickerWrapper.getFile(type: anyNamed("type")))
-        .thenAnswer((_) => Future.value(File("file.invalid")));
-
-    await tapAndSettle(tester, find.text("Gallery"));
-    await tapAndSettle(tester, find.text("Browse").last);
-
-    expect(find.text("Must select an image file."), findsOneWidget);
-  });
-
-  testWidgets("Doc multi picker unsupported format", (tester) async {
-    await tester.pumpWidget(Testable(
-      (_) => ImagePickerPage(
-        onImagesPicked: (_, __) {},
-      ),
-      appManager: appManager,
-    ));
-    await tester.pumpAndSettle(Duration(milliseconds: 50));
-
-    when(appManager.mockFilePickerWrapper.getMultiFile(any)).thenAnswer(
-      (_) => Future.value([
-        File("test.invalid"),
-        File("test2.invalid"),
-      ]),
-    );
-
-    await tapAndSettle(tester, find.text("Gallery"));
-    await tapAndSettle(tester, find.text("Browse").last);
-
-    expect(find.text("Must select image files."), findsOneWidget);
   });
 
   testWidgets("Doc multi picker valid picks invokes callback", (tester) async {
@@ -242,11 +206,16 @@ void main() {
     ));
     await tester.pumpAndSettle(Duration(milliseconds: 50));
 
-    when(appManager.mockFilePickerWrapper.getMultiFile(any)).thenAnswer(
-      (_) => Future.value([
-        File("test.jpg"),
-        File("test2.png"),
-      ]),
+    when(appManager.filePickerWrapper.pickFiles(
+      type: anyNamed("type"),
+      allowMultiple: anyNamed("allowMultiple"),
+    )).thenAnswer(
+      (_) => Future.value(
+        FilePickerResult([
+          PlatformFile(path: "test.jpg"),
+          PlatformFile(path: "test2.png"),
+        ]),
+      ),
     );
 
     await tapAndSettle(tester, find.text("Gallery"));
@@ -410,7 +379,6 @@ void main() {
   });
 
   testWidgets("Do not pop picker if popsOnFinish is false", (tester) async {
-    var navObserver = MockNavigatorObserver();
     var called = false;
     await tester.pumpWidget(Testable(
       (_) => ImagePickerPage(
@@ -418,14 +386,13 @@ void main() {
         popsOnFinish: false,
       ),
       appManager: appManager,
-      navigatorObserver: navObserver,
     ));
     await tester.pumpAndSettle(Duration(milliseconds: 50));
 
     await tapAndSettle(tester, find.byType(Image).first);
     await tapAndSettle(tester, find.text("DONE"));
     expect(called, isTrue);
-    verifyNever(navObserver.didPop(any, any));
+    expect(find.text("DONE"), findsOneWidget);
   });
 
   testWidgets("Picked image with invalid coordinates", (tester) async {
@@ -437,7 +404,7 @@ void main() {
     when(allAlbum.getAssetListPaged(any, any))
         .thenAnswer((_) => Future.value([entity]));
 
-    PickedImage result;
+    PickedImage? result;
     await tester.pumpWidget(Testable(
       (_) => ImagePickerPage.single(
         onImagePicked: (_, image) => result = image,
@@ -447,22 +414,20 @@ void main() {
     await tester.pumpAndSettle(Duration(milliseconds: 50));
 
     await tapAndSettle(tester, find.byType(Image).first);
-    expect(result.position, isNull);
-    verify(entity.latlngAsync()).called(1);
+    expect(result!.position, isNull);
+    expect(entity.latLngAsyncCalls, 1);
   });
 
   testWidgets("Picked image with valid legacy coordinates", (tester) async {
     var entity = createMockAssetEntity(
       fileName: "android_logo.png",
       latLngAsync: null,
-      latLngLegacy: LatLng()
-        ..latitude = 0.654321
-        ..longitude = 0.123456,
+      latLngLegacy: LatLng(latitude: 0.654321, longitude: 0.123456),
     );
     when(allAlbum.getAssetListPaged(any, any))
         .thenAnswer((_) => Future.value([entity]));
 
-    PickedImage result;
+    PickedImage? result;
     await tester.pumpWidget(Testable(
       (_) => ImagePickerPage.single(
         onImagePicked: (_, image) => result = image,
@@ -472,22 +437,20 @@ void main() {
     await tester.pumpAndSettle(Duration(milliseconds: 50));
 
     await tapAndSettle(tester, find.byType(Image).first);
-    expect(result.position, isNotNull);
-    verifyNever(entity.latlngAsync());
+    expect(result!.position, isNotNull);
+    expect(entity.latLngAsyncCalls, 0);
   });
 
   testWidgets("Picked image with valid OS coordinates", (tester) async {
     var entity = createMockAssetEntity(
       fileName: "android_logo.png",
-      latLngAsync: LatLng()
-        ..latitude = 0.654321
-        ..longitude = 0.123456,
+      latLngAsync: LatLng(latitude: 0.654321, longitude: 0.123456),
       latLngLegacy: null,
     );
     when(allAlbum.getAssetListPaged(any, any))
         .thenAnswer((_) => Future.value([entity]));
 
-    PickedImage result;
+    PickedImage? result;
     await tester.pumpWidget(Testable(
       (_) => ImagePickerPage.single(
         onImagePicked: (_, image) => result = image,
@@ -497,14 +460,14 @@ void main() {
     await tester.pumpAndSettle(Duration(milliseconds: 50));
 
     await tapAndSettle(tester, find.byType(Image).first);
-    expect(result.position, isNotNull);
-    verify(entity.latlngAsync()).called(1);
+    expect(result!.position, isNotNull);
+    expect(entity.latLngAsyncCalls, 1);
   });
 
   testWidgets("Placeholder grid shown when waiting for permission future",
       (tester) async {
-    when(appManager.mockPermissionHandlerWrapper.requestPhotos())
-        .thenAnswer((_) => Future.value(null));
+    when(appManager.permissionHandlerWrapper.requestPhotos())
+        .thenAnswer((_) => Future.value(false));
 
     await tester.pumpWidget(Testable(
       (_) => ImagePickerPage(
@@ -521,7 +484,7 @@ void main() {
       (tester) async {
     // Stub getting the "all" asset, such that the app will show a placeholder
     // when the future finishes.
-    when(appManager.mockPhotoManagerWrapper.getAllAssetPathEntity(any))
+    when(appManager.photoManagerWrapper.getAllAssetPathEntity(any))
         .thenAnswer((_) => Future.value(null));
 
     await tester.pumpWidget(Testable(
@@ -559,7 +522,7 @@ void main() {
   });
 
   testWidgets("No permission placeholder shown", (tester) async {
-    when(appManager.mockPermissionHandlerWrapper.requestPhotos())
+    when(appManager.permissionHandlerWrapper.requestPhotos())
         .thenAnswer((_) => Future.value(false));
 
     await tester.pumpWidget(Testable(

@@ -5,39 +5,27 @@ import 'package:mobile/species_manager.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mockito/mockito.dart';
 
-import 'mock_app_manager.dart';
-import 'test_utils.dart';
+import 'mocks/mocks.mocks.dart';
+import 'mocks/stubbed_app_manager.dart';
 
 void main() {
-  MockAppManager appManager;
-  MockCatchManager catchManager;
-  MockLocalDatabaseManager dataManager;
+  late StubbedAppManager appManager;
+  late MockCatchManager catchManager;
 
-  SpeciesManager speciesManager;
+  late SpeciesManager speciesManager;
 
   setUp(() {
-    appManager = MockAppManager(
-      mockAuthManager: true,
-      mockCatchManager: true,
-      mockLocalDatabaseManager: true,
-      mockSubscriptionManager: true,
-    );
+    appManager = StubbedAppManager();
 
-    var authStream = MockStream<void>();
-    when(authStream.listen(any)).thenReturn(null);
-    when(appManager.mockAuthManager.stream).thenAnswer((_) => authStream);
+    when(appManager.authManager.stream).thenAnswer((_) => Stream.empty());
 
-    catchManager = appManager.mockCatchManager;
-    when(appManager.catchManager).thenReturn(catchManager);
+    catchManager = appManager.catchManager;
 
-    dataManager = appManager.mockLocalDatabaseManager;
-    when(appManager.localDatabaseManager).thenReturn(dataManager);
+    when(appManager.subscriptionManager.stream)
+        .thenAnswer((_) => Stream.empty());
+    when(appManager.subscriptionManager.isPro).thenReturn(false);
 
-    when(appManager.mockSubscriptionManager.stream)
-        .thenAnswer((_) => MockStream<void>());
-    when(appManager.mockSubscriptionManager.isPro).thenReturn(false);
-
-    speciesManager = SpeciesManager(appManager);
+    speciesManager = SpeciesManager(appManager.app);
   });
 
   test("Number of catches", () {
@@ -68,7 +56,6 @@ void main() {
         ..speciesId = speciesId0,
     ]);
 
-    expect(speciesManager.numberOfCatches(null), 0);
     expect(speciesManager.numberOfCatches(speciesId0), 3);
     expect(speciesManager.numberOfCatches(speciesId3), 1);
     expect(speciesManager.numberOfCatches(speciesId4), 1);

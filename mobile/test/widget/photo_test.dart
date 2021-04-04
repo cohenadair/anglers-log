@@ -5,16 +5,14 @@ import 'package:mobile/widgets/photo.dart';
 import 'package:mobile/widgets/widget.dart';
 import 'package:mockito/mockito.dart';
 
-import '../mock_app_manager.dart';
+import '../mocks/stubbed_app_manager.dart';
 import '../test_utils.dart';
 
 void main() {
-  MockAppManager appManager;
+  late StubbedAppManager appManager;
 
   setUp(() {
-    appManager = MockAppManager(
-      mockImageManager: true,
-    );
+    appManager = StubbedAppManager();
   });
 
   testWidgets("Invalid image shows placeholder", (tester) async {
@@ -79,7 +77,7 @@ void main() {
 
   testWidgets("No cache size uses default", (tester) async {
     var image = await loadImage(tester, "test/resources/flutter_logo.png");
-    when(appManager.mockImageManager.dartImage(any, any, any))
+    when(appManager.imageManager.dartImage(any, any, any))
         .thenAnswer((_) => Future.value(image));
 
     await tester.pumpWidget(Testable(
@@ -104,7 +102,7 @@ void main() {
     await tester.pump(Duration(milliseconds: 250));
 
     expect(
-      verify(appManager.mockImageManager.dartImage(any, any, captureAny))
+      verify(appManager.imageManager.dartImage(any, any, captureAny))
           .captured
           .single,
       50,
@@ -123,7 +121,7 @@ void main() {
     await tester.pump(Duration(milliseconds: 250));
 
     expect(
-      verify(appManager.mockImageManager.dartImage(any, any, captureAny))
+      verify(appManager.imageManager.dartImage(any, any, captureAny))
           .captured
           .single,
       50,

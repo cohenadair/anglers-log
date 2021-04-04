@@ -23,25 +23,25 @@ import '../widgets/floating_container.dart';
 import '../widgets/widget.dart';
 
 class FishingSpotPickerPage extends StatefulWidget {
-  final void Function(BuildContext, FishingSpot) onPicked;
-  final Id fishingSpotId;
+  final void Function(BuildContext, FishingSpot?) onPicked;
+  final Id? fishingSpotId;
 
   /// The start position of the map if [fishingSpotId] is null, or if a
   /// fishing spot with [fishingSpotId] doesn't exist. If [fishingSpotId] and
   /// [startPos] are both null, the device's current location is used.
-  final LatLng startPos;
+  final LatLng? startPos;
 
   /// The text to signal that picking is finished. When tapped, [onPicked] is
   /// invoked. If null or empty, [onPicked] is invoked when this
   /// [FishingSpotPickerPage] is popped from the navigation stack.
-  final String actionButtonText;
+  final String? actionButtonText;
 
   FishingSpotPickerPage({
-    @required this.onPicked,
+    required this.onPicked,
     this.fishingSpotId,
     this.startPos,
     this.actionButtonText,
-  }) : assert(onPicked != null);
+  });
 
   @override
   _FishingSpotPickerPageState createState() => _FishingSpotPickerPageState();
@@ -60,21 +60,21 @@ class _FishingSpotPickerPageState extends State<FishingSpotPickerPage>
 
   final Completer<GoogleMapController> _mapController = Completer();
 
-  AnimationController _fishingSpotAnimController;
-  Animation<Offset> _fishingSpotAnimOffset;
+  late AnimationController _fishingSpotAnimController;
+  late Animation<Offset> _fishingSpotAnimOffset;
   double _pendingMarkerOffset = _pendingMarkerAnimOffset;
 
   final Map<FishingSpot, Marker> _fishingSpotMarkerMap = {};
 
   /// The selected fishing spot ID.
-  Id _currentFishingSpotId;
+  Id? _currentFishingSpotId;
 
   /// True if a "pending" fishing spot is showing on the map.
   bool _isFishingSpotPending = false;
 
   /// Updated as the map moves.
-  LatLng _currentPosition;
-  LatLng _startPosition;
+  late LatLng _currentPosition;
+  LatLng? _startPosition;
 
   /// The color of the centered icon that represents the "bulls eye" of the map.
   /// Color will change based on [MapType].
@@ -128,7 +128,9 @@ class _FishingSpotPickerPageState extends State<FishingSpotPickerPage>
       _startPosition = fishingSpot.latLng;
     }
 
-    _currentPosition = _startPosition;
+    if (_startPosition != null) {
+      _currentPosition = _startPosition!;
+    }
   }
 
   @override
@@ -217,9 +219,7 @@ class _FishingSpotPickerPageState extends State<FishingSpotPickerPage>
           });
         });
       },
-      onMove: (latLng) {
-        _currentPosition = latLng;
-      },
+      onMove: (latLng) => _currentPosition = latLng,
       onMoveStarted: () {
         setState(() {
           if (!_didSelectFishingSpot) {
@@ -256,7 +256,7 @@ class _FishingSpotPickerPageState extends State<FishingSpotPickerPage>
         onFishingSpotPicked: (fishingSpot) {
           if (fishingSpot == null) {
             // "None" was picked.
-            widget.onPicked?.call(context, null);
+            widget.onPicked(context, null);
           } else if (fishingSpot.id != _currentFishingSpotId) {
             _selectFishingSpot(fishingSpot);
           }
@@ -360,7 +360,7 @@ class _FishingSpotPickerPageState extends State<FishingSpotPickerPage>
 
   void _updateMarkers() {
     var fishingSpots = _fishingSpotManager.list();
-    if (fishingSpots == null || fishingSpots.isEmpty) {
+    if (fishingSpots.isEmpty) {
       fishingSpots = List.from(_fishingSpotMarkerMap.keys);
     }
 
@@ -381,7 +381,7 @@ class _FishingSpotPickerPageState extends State<FishingSpotPickerPage>
 
     // A new fishing spot was picked, but not saved via "EDIT" bottom sheet
     // action; add the picked spot here.
-    if (pickedSpot == null && _currentPosition != null) {
+    if (pickedSpot == null) {
       pickedSpot = FishingSpot()
         ..id = randomId()
         ..lat = _currentPosition.latitude

@@ -12,8 +12,8 @@ class HttpWrapper {
 
   Future<http.Response> post(
     String url, {
-    String auth,
-    Map<String, dynamic> body,
+    required String auth,
+    required Map<String, dynamic> body,
   }) {
     return http.post(
       Uri.parse(url),

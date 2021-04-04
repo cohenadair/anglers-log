@@ -2,7 +2,7 @@
 //  Generated code. Do not modify.
 //  source: anglerslog.proto
 //
-// @dart = 2.3
+// @dart = 2.12
 // ignore_for_file: annotate_overrides,camel_case_types,unnecessary_const,non_constant_identifier_names,library_prefixes,unused_import,unused_shown_name,return_of_invalid_type,unnecessary_this,prefer_final_fields
 
 import 'dart:core' as $core;
@@ -32,7 +32,15 @@ class Id extends $pb.GeneratedMessage {
     ..hasRequiredFields = false;
 
   Id._() : super();
-  factory Id() => create();
+  factory Id({
+    $core.String? uuid,
+  }) {
+    final _result = create();
+    if (uuid != null) {
+      _result.uuid = uuid;
+    }
+    return _result;
+  }
   factory Id.fromBuffer($core.List<$core.int> i,
           [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromBuffer(i, r);
@@ -46,8 +54,9 @@ class Id extends $pb.GeneratedMessage {
   @$core.Deprecated('Using this can add significant overhead to your binary. '
       'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
       'Will be removed in next major version')
-  Id copyWith(void Function(Id) updates) => super.copyWith(
-      (message) => updates(message as Id)); // ignore: deprecated_member_use
+  Id copyWith(void Function(Id) updates) =>
+      super.copyWith((message) => updates(message as Id))
+          as Id; // ignore: deprecated_member_use
   $pb.BuilderInfo get info_ => _i;
   @$core.pragma('dart2js:noInline')
   static Id create() => Id._();
@@ -56,7 +65,7 @@ class Id extends $pb.GeneratedMessage {
   @$core.pragma('dart2js:noInline')
   static Id getDefault() =>
       _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<Id>(create);
-  static Id _defaultInstance;
+  static Id? _defaultInstance;
 
   @$pb.TagNumber(1)
   $core.String get uuid => $_getSZ(0);
@@ -96,7 +105,27 @@ class CustomEntity extends $pb.GeneratedMessage {
     ..hasRequiredFields = false;
 
   CustomEntity._() : super();
-  factory CustomEntity() => create();
+  factory CustomEntity({
+    Id? id,
+    $core.String? name,
+    $core.String? description,
+    CustomEntity_Type? type,
+  }) {
+    final _result = create();
+    if (id != null) {
+      _result.id = id;
+    }
+    if (name != null) {
+      _result.name = name;
+    }
+    if (description != null) {
+      _result.description = description;
+    }
+    if (type != null) {
+      _result.type = type;
+    }
+    return _result;
+  }
   factory CustomEntity.fromBuffer($core.List<$core.int> i,
           [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromBuffer(i, r);
@@ -111,8 +140,8 @@ class CustomEntity extends $pb.GeneratedMessage {
       'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
       'Will be removed in next major version')
   CustomEntity copyWith(void Function(CustomEntity) updates) =>
-      super.copyWith((message) =>
-          updates(message as CustomEntity)); // ignore: deprecated_member_use
+      super.copyWith((message) => updates(message as CustomEntity))
+          as CustomEntity; // ignore: deprecated_member_use
   $pb.BuilderInfo get info_ => _i;
   @$core.pragma('dart2js:noInline')
   static CustomEntity create() => CustomEntity._();
@@ -122,7 +151,7 @@ class CustomEntity extends $pb.GeneratedMessage {
   @$core.pragma('dart2js:noInline')
   static CustomEntity getDefault() => _defaultInstance ??=
       $pb.GeneratedMessage.$_defaultFor<CustomEntity>(create);
-  static CustomEntity _defaultInstance;
+  static CustomEntity? _defaultInstance;
 
   @$pb.TagNumber(1)
   Id get id => $_getN(0);
@@ -199,7 +228,19 @@ class CustomEntityValue extends $pb.GeneratedMessage {
     ..hasRequiredFields = false;
 
   CustomEntityValue._() : super();
-  factory CustomEntityValue() => create();
+  factory CustomEntityValue({
+    Id? customEntityId,
+    $core.String? value,
+  }) {
+    final _result = create();
+    if (customEntityId != null) {
+      _result.customEntityId = customEntityId;
+    }
+    if (value != null) {
+      _result.value = value;
+    }
+    return _result;
+  }
   factory CustomEntityValue.fromBuffer($core.List<$core.int> i,
           [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromBuffer(i, r);
@@ -214,8 +255,8 @@ class CustomEntityValue extends $pb.GeneratedMessage {
       'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
       'Will be removed in next major version')
   CustomEntityValue copyWith(void Function(CustomEntityValue) updates) =>
-      super.copyWith((message) => updates(
-          message as CustomEntityValue)); // ignore: deprecated_member_use
+      super.copyWith((message) => updates(message as CustomEntityValue))
+          as CustomEntityValue; // ignore: deprecated_member_use
   $pb.BuilderInfo get info_ => _i;
   @$core.pragma('dart2js:noInline')
   static CustomEntityValue create() => CustomEntityValue._();
@@ -225,7 +266,7 @@ class CustomEntityValue extends $pb.GeneratedMessage {
   @$core.pragma('dart2js:noInline')
   static CustomEntityValue getDefault() => _defaultInstance ??=
       $pb.GeneratedMessage.$_defaultFor<CustomEntityValue>(create);
-  static CustomEntityValue _defaultInstance;
+  static CustomEntityValue? _defaultInstance;
 
   @$pb.TagNumber(1)
   Id get customEntityId => $_getN(0);
@@ -278,7 +319,27 @@ class Bait extends $pb.GeneratedMessage {
     ..hasRequiredFields = false;
 
   Bait._() : super();
-  factory Bait() => create();
+  factory Bait({
+    Id? id,
+    $core.String? name,
+    Id? baitCategoryId,
+    $core.Iterable<CustomEntityValue>? customEntityValues,
+  }) {
+    final _result = create();
+    if (id != null) {
+      _result.id = id;
+    }
+    if (name != null) {
+      _result.name = name;
+    }
+    if (baitCategoryId != null) {
+      _result.baitCategoryId = baitCategoryId;
+    }
+    if (customEntityValues != null) {
+      _result.customEntityValues.addAll(customEntityValues);
+    }
+    return _result;
+  }
   factory Bait.fromBuffer($core.List<$core.int> i,
           [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromBuffer(i, r);
@@ -292,8 +353,9 @@ class Bait extends $pb.GeneratedMessage {
   @$core.Deprecated('Using this can add significant overhead to your binary. '
       'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
       'Will be removed in next major version')
-  Bait copyWith(void Function(Bait) updates) => super.copyWith(
-      (message) => updates(message as Bait)); // ignore: deprecated_member_use
+  Bait copyWith(void Function(Bait) updates) =>
+      super.copyWith((message) => updates(message as Bait))
+          as Bait; // ignore: deprecated_member_use
   $pb.BuilderInfo get info_ => _i;
   @$core.pragma('dart2js:noInline')
   static Bait create() => Bait._();
@@ -302,7 +364,7 @@ class Bait extends $pb.GeneratedMessage {
   @$core.pragma('dart2js:noInline')
   static Bait getDefault() =>
       _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<Bait>(create);
-  static Bait _defaultInstance;
+  static Bait? _defaultInstance;
 
   @$pb.TagNumber(1)
   Id get id => $_getN(0);
@@ -372,7 +434,19 @@ class BaitCategory extends $pb.GeneratedMessage {
     ..hasRequiredFields = false;
 
   BaitCategory._() : super();
-  factory BaitCategory() => create();
+  factory BaitCategory({
+    Id? id,
+    $core.String? name,
+  }) {
+    final _result = create();
+    if (id != null) {
+      _result.id = id;
+    }
+    if (name != null) {
+      _result.name = name;
+    }
+    return _result;
+  }
   factory BaitCategory.fromBuffer($core.List<$core.int> i,
           [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromBuffer(i, r);
@@ -387,8 +461,8 @@ class BaitCategory extends $pb.GeneratedMessage {
       'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
       'Will be removed in next major version')
   BaitCategory copyWith(void Function(BaitCategory) updates) =>
-      super.copyWith((message) =>
-          updates(message as BaitCategory)); // ignore: deprecated_member_use
+      super.copyWith((message) => updates(message as BaitCategory))
+          as BaitCategory; // ignore: deprecated_member_use
   $pb.BuilderInfo get info_ => _i;
   @$core.pragma('dart2js:noInline')
   static BaitCategory create() => BaitCategory._();
@@ -398,7 +472,7 @@ class BaitCategory extends $pb.GeneratedMessage {
   @$core.pragma('dart2js:noInline')
   static BaitCategory getDefault() => _defaultInstance ??=
       $pb.GeneratedMessage.$_defaultFor<BaitCategory>(create);
-  static BaitCategory _defaultInstance;
+  static BaitCategory? _defaultInstance;
 
   @$pb.TagNumber(1)
   Id get id => $_getN(0);
@@ -454,7 +528,39 @@ class Catch extends $pb.GeneratedMessage {
     ..hasRequiredFields = false;
 
   Catch._() : super();
-  factory Catch() => create();
+  factory Catch({
+    Id? id,
+    $fixnum.Int64? timestamp,
+    Id? baitId,
+    Id? fishingSpotId,
+    Id? speciesId,
+    $core.Iterable<$core.String>? imageNames,
+    $core.Iterable<CustomEntityValue>? customEntityValues,
+  }) {
+    final _result = create();
+    if (id != null) {
+      _result.id = id;
+    }
+    if (timestamp != null) {
+      _result.timestamp = timestamp;
+    }
+    if (baitId != null) {
+      _result.baitId = baitId;
+    }
+    if (fishingSpotId != null) {
+      _result.fishingSpotId = fishingSpotId;
+    }
+    if (speciesId != null) {
+      _result.speciesId = speciesId;
+    }
+    if (imageNames != null) {
+      _result.imageNames.addAll(imageNames);
+    }
+    if (customEntityValues != null) {
+      _result.customEntityValues.addAll(customEntityValues);
+    }
+    return _result;
+  }
   factory Catch.fromBuffer($core.List<$core.int> i,
           [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromBuffer(i, r);
@@ -468,8 +574,9 @@ class Catch extends $pb.GeneratedMessage {
   @$core.Deprecated('Using this can add significant overhead to your binary. '
       'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
       'Will be removed in next major version')
-  Catch copyWith(void Function(Catch) updates) => super.copyWith(
-      (message) => updates(message as Catch)); // ignore: deprecated_member_use
+  Catch copyWith(void Function(Catch) updates) =>
+      super.copyWith((message) => updates(message as Catch))
+          as Catch; // ignore: deprecated_member_use
   $pb.BuilderInfo get info_ => _i;
   @$core.pragma('dart2js:noInline')
   static Catch create() => Catch._();
@@ -478,7 +585,7 @@ class Catch extends $pb.GeneratedMessage {
   @$core.pragma('dart2js:noInline')
   static Catch getDefault() =>
       _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<Catch>(create);
-  static Catch _defaultInstance;
+  static Catch? _defaultInstance;
 
   @$pb.TagNumber(1)
   Id get id => $_getN(0);
@@ -579,7 +686,27 @@ class FishingSpot extends $pb.GeneratedMessage {
     ..hasRequiredFields = false;
 
   FishingSpot._() : super();
-  factory FishingSpot() => create();
+  factory FishingSpot({
+    Id? id,
+    $core.String? name,
+    $core.double? lat,
+    $core.double? lng,
+  }) {
+    final _result = create();
+    if (id != null) {
+      _result.id = id;
+    }
+    if (name != null) {
+      _result.name = name;
+    }
+    if (lat != null) {
+      _result.lat = lat;
+    }
+    if (lng != null) {
+      _result.lng = lng;
+    }
+    return _result;
+  }
   factory FishingSpot.fromBuffer($core.List<$core.int> i,
           [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromBuffer(i, r);
@@ -594,8 +721,8 @@ class FishingSpot extends $pb.GeneratedMessage {
       'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
       'Will be removed in next major version')
   FishingSpot copyWith(void Function(FishingSpot) updates) =>
-      super.copyWith((message) =>
-          updates(message as FishingSpot)); // ignore: deprecated_member_use
+      super.copyWith((message) => updates(message as FishingSpot))
+          as FishingSpot; // ignore: deprecated_member_use
   $pb.BuilderInfo get info_ => _i;
   @$core.pragma('dart2js:noInline')
   static FishingSpot create() => FishingSpot._();
@@ -604,7 +731,7 @@ class FishingSpot extends $pb.GeneratedMessage {
   @$core.pragma('dart2js:noInline')
   static FishingSpot getDefault() => _defaultInstance ??=
       $pb.GeneratedMessage.$_defaultFor<FishingSpot>(create);
-  static FishingSpot _defaultInstance;
+  static FishingSpot? _defaultInstance;
 
   @$pb.TagNumber(1)
   Id get id => $_getN(0);
@@ -681,7 +808,19 @@ class Species extends $pb.GeneratedMessage {
     ..hasRequiredFields = false;
 
   Species._() : super();
-  factory Species() => create();
+  factory Species({
+    Id? id,
+    $core.String? name,
+  }) {
+    final _result = create();
+    if (id != null) {
+      _result.id = id;
+    }
+    if (name != null) {
+      _result.name = name;
+    }
+    return _result;
+  }
   factory Species.fromBuffer($core.List<$core.int> i,
           [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromBuffer(i, r);
@@ -696,8 +835,8 @@ class Species extends $pb.GeneratedMessage {
       'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
       'Will be removed in next major version')
   Species copyWith(void Function(Species) updates) =>
-      super.copyWith((message) =>
-          updates(message as Species)); // ignore: deprecated_member_use
+      super.copyWith((message) => updates(message as Species))
+          as Species; // ignore: deprecated_member_use
   $pb.BuilderInfo get info_ => _i;
   @$core.pragma('dart2js:noInline')
   static Species create() => Species._();
@@ -706,7 +845,7 @@ class Species extends $pb.GeneratedMessage {
   @$core.pragma('dart2js:noInline')
   static Species getDefault() =>
       _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<Species>(create);
-  static Species _defaultInstance;
+  static Species? _defaultInstance;
 
   @$pb.TagNumber(1)
   Id get id => $_getN(0);
@@ -763,7 +902,47 @@ class SummaryReport extends $pb.GeneratedMessage {
     ..hasRequiredFields = false;
 
   SummaryReport._() : super();
-  factory SummaryReport() => create();
+  factory SummaryReport({
+    Id? id,
+    $core.String? name,
+    $core.String? description,
+    $core.String? displayDateRangeId,
+    $fixnum.Int64? startTimestamp,
+    $fixnum.Int64? endTimestamp,
+    $core.Iterable<Id>? baitIds,
+    $core.Iterable<Id>? fishingSpotIds,
+    $core.Iterable<Id>? speciesIds,
+  }) {
+    final _result = create();
+    if (id != null) {
+      _result.id = id;
+    }
+    if (name != null) {
+      _result.name = name;
+    }
+    if (description != null) {
+      _result.description = description;
+    }
+    if (displayDateRangeId != null) {
+      _result.displayDateRangeId = displayDateRangeId;
+    }
+    if (startTimestamp != null) {
+      _result.startTimestamp = startTimestamp;
+    }
+    if (endTimestamp != null) {
+      _result.endTimestamp = endTimestamp;
+    }
+    if (baitIds != null) {
+      _result.baitIds.addAll(baitIds);
+    }
+    if (fishingSpotIds != null) {
+      _result.fishingSpotIds.addAll(fishingSpotIds);
+    }
+    if (speciesIds != null) {
+      _result.speciesIds.addAll(speciesIds);
+    }
+    return _result;
+  }
   factory SummaryReport.fromBuffer($core.List<$core.int> i,
           [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromBuffer(i, r);
@@ -778,8 +957,8 @@ class SummaryReport extends $pb.GeneratedMessage {
       'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
       'Will be removed in next major version')
   SummaryReport copyWith(void Function(SummaryReport) updates) =>
-      super.copyWith((message) =>
-          updates(message as SummaryReport)); // ignore: deprecated_member_use
+      super.copyWith((message) => updates(message as SummaryReport))
+          as SummaryReport; // ignore: deprecated_member_use
   $pb.BuilderInfo get info_ => _i;
   @$core.pragma('dart2js:noInline')
   static SummaryReport create() => SummaryReport._();
@@ -789,7 +968,7 @@ class SummaryReport extends $pb.GeneratedMessage {
   @$core.pragma('dart2js:noInline')
   static SummaryReport getDefault() => _defaultInstance ??=
       $pb.GeneratedMessage.$_defaultFor<SummaryReport>(create);
-  static SummaryReport _defaultInstance;
+  static SummaryReport? _defaultInstance;
 
   @$pb.TagNumber(1)
   Id get id => $_getN(0);
@@ -906,7 +1085,59 @@ class ComparisonReport extends $pb.GeneratedMessage {
     ..hasRequiredFields = false;
 
   ComparisonReport._() : super();
-  factory ComparisonReport() => create();
+  factory ComparisonReport({
+    Id? id,
+    $core.String? name,
+    $core.String? description,
+    $core.String? fromDisplayDateRangeId,
+    $core.String? toDisplayDateRangeId,
+    $fixnum.Int64? fromStartTimestamp,
+    $fixnum.Int64? toStartTimestamp,
+    $fixnum.Int64? fromEndTimestamp,
+    $fixnum.Int64? toEndTimestamp,
+    $core.Iterable<Id>? baitIds,
+    $core.Iterable<Id>? fishingSpotIds,
+    $core.Iterable<Id>? speciesIds,
+  }) {
+    final _result = create();
+    if (id != null) {
+      _result.id = id;
+    }
+    if (name != null) {
+      _result.name = name;
+    }
+    if (description != null) {
+      _result.description = description;
+    }
+    if (fromDisplayDateRangeId != null) {
+      _result.fromDisplayDateRangeId = fromDisplayDateRangeId;
+    }
+    if (toDisplayDateRangeId != null) {
+      _result.toDisplayDateRangeId = toDisplayDateRangeId;
+    }
+    if (fromStartTimestamp != null) {
+      _result.fromStartTimestamp = fromStartTimestamp;
+    }
+    if (toStartTimestamp != null) {
+      _result.toStartTimestamp = toStartTimestamp;
+    }
+    if (fromEndTimestamp != null) {
+      _result.fromEndTimestamp = fromEndTimestamp;
+    }
+    if (toEndTimestamp != null) {
+      _result.toEndTimestamp = toEndTimestamp;
+    }
+    if (baitIds != null) {
+      _result.baitIds.addAll(baitIds);
+    }
+    if (fishingSpotIds != null) {
+      _result.fishingSpotIds.addAll(fishingSpotIds);
+    }
+    if (speciesIds != null) {
+      _result.speciesIds.addAll(speciesIds);
+    }
+    return _result;
+  }
   factory ComparisonReport.fromBuffer($core.List<$core.int> i,
           [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromBuffer(i, r);
@@ -921,8 +1152,8 @@ class ComparisonReport extends $pb.GeneratedMessage {
       'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
       'Will be removed in next major version')
   ComparisonReport copyWith(void Function(ComparisonReport) updates) =>
-      super.copyWith((message) => updates(
-          message as ComparisonReport)); // ignore: deprecated_member_use
+      super.copyWith((message) => updates(message as ComparisonReport))
+          as ComparisonReport; // ignore: deprecated_member_use
   $pb.BuilderInfo get info_ => _i;
   @$core.pragma('dart2js:noInline')
   static ComparisonReport create() => ComparisonReport._();
@@ -932,7 +1163,7 @@ class ComparisonReport extends $pb.GeneratedMessage {
   @$core.pragma('dart2js:noInline')
   static ComparisonReport getDefault() => _defaultInstance ??=
       $pb.GeneratedMessage.$_defaultFor<ComparisonReport>(create);
-  static ComparisonReport _defaultInstance;
+  static ComparisonReport? _defaultInstance;
 
   @$pb.TagNumber(1)
   Id get id => $_getN(0);
@@ -1054,4 +1285,4 @@ class ComparisonReport extends $pb.GeneratedMessage {
   $core.List<Id> get speciesIds => $_getList(11);
 }
 
-// ignore_for_file: constant_identifier_names,lines_longer_than_80_chars,directives_ordering,unnecessary_const,prefer_mixin,implementation_imports
+// ignore_for_file: constant_identifier_names,lines_longer_than_80_chars,directives_ordering,prefer_mixin,implementation_imports

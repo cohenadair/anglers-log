@@ -7,9 +7,8 @@ import 'package:mobile/utils/validator.dart';
 import 'package:mobile/widgets/input_controller.dart';
 import 'package:mockito/mockito.dart';
 
+import '../mocks/mocks.mocks.dart';
 import '../test_utils.dart';
-
-class MockNameValidator extends Mock implements NameValidator {}
 
 void main() {
   test("Use IdInputController instead of InputController<Id>", () {
@@ -70,8 +69,8 @@ void main() {
     testWidgets("Non-null validator", (tester) async {
       var context = await buildContext(tester);
       var validator = MockNameValidator();
-      when(validator.run(context, "Test")).thenReturn((context) => "BAD");
-      var controller = TextInputController(validator: MockNameValidator());
+      when(validator.run(context, any)).thenReturn((context) => null);
+      var controller = TextInputController(validator: validator);
       expect(controller.valid(context), isTrue);
     });
   });

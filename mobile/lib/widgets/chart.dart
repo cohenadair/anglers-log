@@ -17,26 +17,24 @@ import '../widgets/widget.dart';
 /// An [ExpandableListItem] that, when tapped, shows a condensed [Chart] widget.
 class ExpandableChart<T> extends StatelessWidget {
   final String title;
-  final String viewAllTitle;
-  final String viewAllDescription;
+  final String? viewAllTitle;
+  final String? viewAllDescription;
   final Set<String> filters;
   final List<Series<T>> series;
-  final Widget Function(T, DateRange) rowDetailsPage;
+  final Widget Function(T, DateRange)? rowDetailsPage;
 
   /// See [Chart.labelBuilder].
   final String Function(T) labelBuilder;
 
   ExpandableChart({
-    this.title,
+    required this.title,
     this.viewAllTitle,
     this.viewAllDescription,
     this.filters = const {},
     this.series = const [],
     this.rowDetailsPage,
-    @required this.labelBuilder,
-  })  : assert(series != null),
-        assert(filters != null),
-        assert(labelBuilder != null);
+    required this.labelBuilder,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -52,8 +50,10 @@ class ExpandableChart<T> extends StatelessWidget {
           viewAllTitle: viewAllTitle,
           chartPageDescription: viewAllDescription,
           chartPageFilters: filters,
-          onTapRow: (entity, dateRange) =>
-              push(context, rowDetailsPage(entity, dateRange)),
+          onTapRow: rowDetailsPage == null
+              ? null
+              : (entity, dateRange) =>
+                  push(context, rowDetailsPage!(entity, dateRange)),
           labelBuilder: labelBuilder,
         ),
       ],
@@ -67,14 +67,13 @@ class Series<T> {
   /// Used as a title in the legend.
   final DisplayDateRange displayDateRange;
 
-  Color _color;
+  Color? _color;
 
-  Series(this.data, this.displayDateRange)
-      : assert(data != null && data.isNotEmpty),
-        assert(displayDateRange != null);
+  Series(this.data, this.displayDateRange) : assert(data.isNotEmpty);
 
   int get length => data.length;
-  int get maxValue => max(data.values);
+
+  int get maxValue => max(data.values) ?? 0;
 
   Series<T> limitToFirst(int count) {
     return Series<T>(
@@ -94,11 +93,11 @@ class Chart<T> extends StatefulWidget {
 
   /// The title for the "view all" [ListItem] shown when there are more chart
   /// rows to see.
-  final String viewAllTitle;
+  final String? viewAllTitle;
 
   /// A description to render on the full page chart shown when the "view all"
   /// row is tapped. This property is ignored when [showAll] is true.
-  final String chartPageDescription;
+  final String? chartPageDescription;
 
   /// A list of filters that have already been applied to [data]. Values in this
   /// set are rendered at the top of a full page chart view.
@@ -110,13 +109,13 @@ class Chart<T> extends StatefulWidget {
   final bool showAll;
 
   /// A builder for the label widget on each row of the chart.
-  final String Function(T) labelBuilder;
+  final String? Function(T) labelBuilder;
 
-  final void Function(T, DateRange) onTapRow;
+  final void Function(T, DateRange)? onTapRow;
 
   Chart({
-    @required this.series,
-    @required this.labelBuilder,
+    required this.series,
+    required this.labelBuilder,
     this.padding = insetsZero,
     this.viewAllTitle,
     this.chartPageDescription,
@@ -129,11 +128,7 @@ class Chart<T> extends StatefulWidget {
                     isNotEmpty(viewAllTitle) &&
                     isNotEmpty(chartPageDescription)),
             "showAll is false; viewAllTitle is required"),
-        assert(series != null),
-        assert(padding != null),
-        assert(series.isNotEmpty),
-        assert(chartPageFilters != null),
-        assert(labelBuilder != null) {
+        assert(series.isNotEmpty) {
     var colors = List.of(Colors.primaries)
       ..remove(Colors.brown)
       ..remove(Colors.blueGrey);
@@ -241,7 +236,7 @@ class _ChartState<T> extends State<Chart<T>> {
     // For every unique item in the series, create a child widget.
     var items = _displayData.first.data.keys.toList();
     for (var item in items) {
-      for (Series series in _displayData) {
+      for (var series in _displayData) {
         children.add(
           _buildChartRow(maxWidth, maxValue, item, series, series.data[item],
               series._color ?? Theme.of(context).primaryColor),
@@ -267,7 +262,7 @@ class _ChartState<T> extends State<Chart<T>> {
   }
 
   Widget _buildChartRow(double maxWidth, double maxValue, T item,
-      Series<T> series, int value, Color color) {
+      Series<T> series, int? value, Color color) {
     if (maxValue <= 0) {
       _log.w("Can't create a chart row with maxValue = 0");
       return Empty();
@@ -280,7 +275,7 @@ class _ChartState<T> extends State<Chart<T>> {
     return InkWell(
       onTap: widget.onTapRow == null
           ? null
-          : () => widget.onTapRow
+          : () => widget.onTapRow!
               .call(item, series.displayDateRange.value(context)),
       child: Stack(
         alignment: Alignment.centerLeft,
@@ -313,14 +308,17 @@ class _ChartState<T> extends State<Chart<T>> {
       return VerticalSpace(paddingWidgetSmall);
     }
 
+    assert(isNotEmpty(widget.chartPageDescription),
+        "Must provide a page description");
+
     return ListItem(
-      title: Text(widget.viewAllTitle),
+      title: Text(widget.viewAllTitle!),
       trailing: RightChevronIcon(),
       onTap: () => push(
         context,
         _ChartPage<T>(
           series: widget.series,
-          description: widget.chartPageDescription,
+          description: widget.chartPageDescription!,
           filters: widget.chartPageFilters,
           labelBuilder: widget.labelBuilder,
           onTapRow: widget.onTapRow,
@@ -354,19 +352,16 @@ class _ChartPage<T> extends StatelessWidget {
   final List<Series<T>> series;
   final String description;
   final Set<String> filters;
-  final String Function(T) labelBuilder;
-  final void Function(T, DateRange) onTapRow;
+  final String? Function(T) labelBuilder;
+  final void Function(T, DateRange)? onTapRow;
 
   _ChartPage({
-    @required this.series,
-    @required this.description,
-    @required this.labelBuilder,
+    required this.series,
+    required this.description,
+    required this.labelBuilder,
     this.filters = const {},
     this.onTapRow,
-  })  : assert(series != null),
-        assert(isNotEmpty(description)),
-        assert(filters != null),
-        assert(labelBuilder != null);
+  }) : assert(isNotEmpty(description));
 
   @override
   Widget build(BuildContext context) {

@@ -12,15 +12,15 @@ import '../widgets/text.dart';
 import '../widgets/widget.dart';
 
 class BaitPage extends StatefulWidget {
-  final Id baitId;
+  final Bait bait;
 
   /// See [EntityPage.static].
   final bool static;
 
   BaitPage(
-    this.baitId, {
+    this.bait, {
     this.static = false,
-  }) : assert(baitId != null);
+  });
 
   @override
   _BaitPageState createState() => _BaitPageState();
@@ -31,43 +31,46 @@ class _BaitPageState extends State<BaitPage> {
       BaitCategoryManager.of(context);
   BaitManager get _baitManager => BaitManager.of(context);
 
-  Bait _bait;
+  late Bait _bait;
 
   @override
   void initState() {
     super.initState();
-    _bait = _baitManager.entity(widget.baitId);
+    _bait = widget.bait;
   }
 
   @override
   Widget build(BuildContext context) {
-    assert(_bait != null);
-
     return EntityListenerBuilder(
       managers: [
         _baitCategoryManager,
         _baitManager,
       ],
-      // When deleted, we pop immediately. Don't reload; bait will be null.
       onDeleteEnabled: false,
-      builder: (context) => EntityPage(
-        customEntityValues: _bait.customEntityValues,
-        padding: EdgeInsets.only(
-          top: paddingDefault,
-          bottom: paddingDefault,
-        ),
-        static: widget.static,
-        onEdit: () => present(context, SaveBaitPage.edit(_bait)),
-        onDelete: () => _baitManager.delete(_bait.id),
-        deleteMessage: _baitManager.deleteMessage(context, _bait),
-        children: [
-          _buildBaitCategory(),
-          TitleLabel(
-            _bait.name,
-            overflow: TextOverflow.visible,
+      builder: (context) {
+        // Always fetch the latest bait when the widget tree is (re)built.
+        // Fallback on the current bait (if the current was deleted).
+        _bait = _baitManager.entity(widget.bait.id) ?? _bait;
+
+        return EntityPage(
+          customEntityValues: _bait.customEntityValues,
+          padding: EdgeInsets.only(
+            top: paddingDefault,
+            bottom: paddingDefault,
           ),
-        ],
-      ),
+          static: widget.static,
+          onEdit: () => present(context, SaveBaitPage.edit(_bait)),
+          onDelete: () => _baitManager.delete(_bait.id),
+          deleteMessage: _baitManager.deleteMessage(context, _bait),
+          children: [
+            _buildBaitCategory(),
+            TitleLabel(
+              _bait.name,
+              overflow: TextOverflow.visible,
+            ),
+          ],
+        );
+      },
     );
   }
 

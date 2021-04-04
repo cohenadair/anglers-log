@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
-import '../fishing_spot_manager.dart';
 import '../model/gen/anglerslog.pb.dart';
 import '../res/dimen.dart';
 import '../utils/string_utils.dart';
@@ -9,9 +8,9 @@ import '../widgets/fishing_spot_map.dart';
 import '../widgets/floating_container.dart';
 
 class FishingSpotPage extends StatefulWidget {
-  final Id fishingSpotId;
+  final FishingSpot fishingSpot;
 
-  FishingSpotPage(this.fishingSpotId) : assert(fishingSpotId != null);
+  FishingSpotPage(this.fishingSpot);
 
   @override
   _FishingSpotPageState createState() => _FishingSpotPageState();
@@ -35,9 +34,7 @@ class _FishingSpotPageState extends State<FishingSpotPage> {
 
   @override
   Widget build(BuildContext context) {
-    var fishingSpot =
-        FishingSpotManager.of(context).entity(widget.fishingSpotId);
-    assert(fishingSpot != null);
+    var fishingSpot = widget.fishingSpot;
 
     var latLng = LatLng(fishingSpot.lat, fishingSpot.lng);
 

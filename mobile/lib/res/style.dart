@@ -61,16 +61,16 @@ TextStyle styleSubtext = TextStyle(
 );
 
 TextStyle styleNote(BuildContext context) =>
-    Theme.of(context).textTheme.subtitle1.copyWith(
+    Theme.of(context).textTheme.subtitle1!.copyWith(
           fontStyle: FontStyle.italic,
         );
 
 TextStyle stylePrimary(
   BuildContext context, {
   bool enabled = true,
-  FontWeight fontWeight,
+  FontWeight? fontWeight,
 }) {
-  var style = Theme.of(context).textTheme.subtitle1.copyWith(
+  var style = Theme.of(context).textTheme.subtitle1!.copyWith(
         fontWeight: fontWeight,
       );
   if (!enabled) {

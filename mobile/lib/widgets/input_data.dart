@@ -20,9 +20,9 @@ class Field {
   /// input in the list of available inputs in an [EditableFormPage]. If the
   /// [Field] does not belong to an [EditableFormPage], this value can be
   /// null.
-  final String Function(BuildContext) name;
+  final String Function(BuildContext)? name;
 
-  final String Function(BuildContext) description;
+  final String Function(BuildContext)? description;
 
   /// Whether the input can be removed from the associated form. Defaults to
   /// `true`.
@@ -40,19 +40,16 @@ class Field {
   InputController controller;
 
   Field({
-    @required this.id,
-    @required this.controller,
+    required this.id,
+    required this.controller,
     this.name,
     this.description,
     this.showing = true,
     this.removable = true,
-  })  : assert(id != null),
-        assert(controller != null),
-        fake = false;
+  }) : fake = false;
 
   Field.fromCustomEntity(CustomEntity entity)
-      : assert(entity != null),
-        id = entity.id,
+      : id = entity.id,
         controller = inputTypeController(entity.type),
         name = _customEntityName(entity),
         description = _customEntityDescription(entity),

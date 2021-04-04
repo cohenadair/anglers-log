@@ -3,11 +3,11 @@ import '../res/dimen.dart';
 import '../widgets/widget.dart';
 
 class ScrollPage extends StatelessWidget {
-  final AppBar appBar;
+  final AppBar? appBar;
   final List<Widget> children;
 
   /// See [Scaffold.persistentFooterButtons].
-  final List<Widget> footer;
+  final List<Widget>? footer;
 
   final EdgeInsets padding;
 
@@ -25,11 +25,7 @@ class ScrollPage extends StatelessWidget {
     this.extendBodyBehindAppBar = true,
     this.enableHorizontalSafeArea = true,
     this.centerContent = false,
-  })  : assert(children != null),
-        assert(padding != null),
-        assert(extendBodyBehindAppBar != null),
-        assert(enableHorizontalSafeArea != null),
-        assert(centerContent != null);
+  });
 
   @override
   Widget build(BuildContext context) {

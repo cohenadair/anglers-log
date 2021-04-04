@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart' show IterableExtension;
 import 'package:fixnum/fixnum.dart';
 import 'package:flutter/material.dart';
 import 'package:quiver/strings.dart';
@@ -52,8 +53,9 @@ class _StatsPageState extends State<StatsPage> {
   /// The currently selected report from the app bar dropdown menu.
   dynamic _currentReport;
 
+  // TODO: Figure something out so this isn't nullable.
   /// The currently selected species in the species summary.
-  Species _currentSpecies;
+  Species? _currentSpecies;
 
   BaitManager get _baitManager => BaitManager.of(context);
 
@@ -176,7 +178,7 @@ class _StatsPageState extends State<StatsPage> {
         isNotEmpty(_currentReport.description)) {
       child = Padding(
         padding: insetsDefault,
-        child: Label.multiline(_currentReport.description),
+        child: Label.multiline(_currentReport.description!),
       );
     }
 
@@ -328,7 +330,7 @@ class _StatsPageState extends State<StatsPage> {
 
   Widget _buildSpeciesPicker() {
     return ListPickerInput(
-      value: _currentSpecies.name,
+      value: _currentSpecies!.name,
       onTap: () {
         push(
           context,
@@ -360,13 +362,13 @@ class _StatsPageState extends State<StatsPage> {
       filters: _filters(
         includeSpecies: false,
         includeDateRange: !_isComparing,
-      )..add(_currentSpecies.name),
+      )..add(_currentSpecies!.name),
       labelBuilder: (bait) => bait.name,
       series: _models
           .map((model) => Series<Bait>(
               model.baitsPerSpecies(_currentSpecies), model.displayDateRange))
           .toList(),
-      rowDetailsPage: (bait, _) => BaitPage(bait.id, static: true),
+      rowDetailsPage: (bait, _) => BaitPage(bait, static: true),
     );
   }
 
@@ -383,14 +385,14 @@ class _StatsPageState extends State<StatsPage> {
       filters: _filters(
         includeSpecies: false,
         includeDateRange: !_isComparing,
-      )..add(_currentSpecies.name),
+      )..add(_currentSpecies!.name),
       labelBuilder: (fishingSpot) => fishingSpot.displayName(context),
       series: _models
           .map((model) => Series<FishingSpot>(
               model.fishingSpotsPerSpecies(_currentSpecies),
               model.displayDateRange))
           .toList(),
-      rowDetailsPage: (fishingSpot, _) => FishingSpotPage(fishingSpot.id),
+      rowDetailsPage: (fishingSpot, _) => FishingSpotPage(fishingSpot),
     );
   }
 
@@ -405,17 +407,21 @@ class _StatsPageState extends State<StatsPage> {
 
   Widget _buildViewCatchesPerSpecies() {
     return Column(
-      children: _models
-          .map((model) => _buildViewCatchesRow(
-              model.catchIdsPerSpecies[_currentSpecies],
-              model.displayDateRange))
-          .toList(),
+      children: _models.map((model) {
+        var catchIds = <Id>{};
+        if (_currentSpecies != null &&
+            model.catchIdsPerSpecies[_currentSpecies!] != null) {
+          catchIds = model.catchIdsPerSpecies[_currentSpecies!]!;
+        }
+        return _buildViewCatchesRow(
+          catchIds,
+          model.displayDateRange,
+        );
+      }).toList(),
     );
   }
 
   Widget _buildViewCatchesRow(Set<Id> catchIds, DisplayDateRange dateRange) {
-    catchIds = catchIds ?? {};
-
     if (catchIds.isEmpty) {
       return ListItem(
         title: Text(Strings.of(context).reportSummaryNumberOfCatches),
@@ -439,7 +445,7 @@ class _StatsPageState extends State<StatsPage> {
     );
   }
 
-  void _updateCurrentReport(Id newReportId) {
+  void _updateCurrentReport(Id? newReportId) {
     // If the current report no longer exists, show an overview.
     if (newReportId == null ||
         (!_summaryReportManager.entityExists(newReportId) &&
@@ -467,7 +473,7 @@ class _StatsPageState extends State<StatsPage> {
 
     if (_currentSpecies == null) {
       // By default, show the species with the most catches.
-      Id maxId;
+      Id? maxId;
       var maxValue = 0;
       for (var model in _models) {
         for (var entry in model.catchesPerSpecies.entries) {
@@ -478,10 +484,12 @@ class _StatsPageState extends State<StatsPage> {
         }
       }
 
-      _currentSpecies = _speciesManager.entity(maxId);
+      if (maxId != null) {
+        _currentSpecies = _speciesManager.entity(maxId);
+      }
     } else {
       // Get updated species from the database.
-      _currentSpecies = _speciesManager.entity(_currentSpecies.id);
+      _currentSpecies = _speciesManager.entity(_currentSpecies!.id);
     }
   }
 
@@ -493,7 +501,7 @@ class _StatsPageState extends State<StatsPage> {
   }
 
   Report _createSummaryModel() {
-    var report = _summaryReportManager.entity(_currentReport.id);
+    var report = _summaryReportManager.entity(_currentReport.id)!;
 
     return _createCustomReportModel(
       context,
@@ -506,7 +514,7 @@ class _StatsPageState extends State<StatsPage> {
   }
 
   List<Report> _createComparisonModels() {
-    var report = _comparisonReportManager.entity(_currentReport.id);
+    var report = _comparisonReportManager.entity(_currentReport.id)!;
 
     var fromModel = _createCustomReportModel(
       context,
@@ -569,8 +577,6 @@ class _StatsPageState extends State<StatsPage> {
   }
 
   bool _meets(bool Function(Report model) condition) {
-    return _models.firstWhere((model) => condition(model),
-            orElse: () => null) !=
-        null;
+    return _models.firstWhereOrNull((model) => condition(model)) != null;
   }
 }

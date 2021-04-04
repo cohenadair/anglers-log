@@ -23,7 +23,7 @@ class MorePage extends StatelessWidget {
   ///
   /// When this value is non-null, the feedback row will be highlighted to
   /// draw the user's attention.
-  final GlobalKey feedbackKey;
+  final GlobalKey? feedbackKey;
 
   MorePage({
     this.feedbackKey,
@@ -147,13 +147,15 @@ class MorePage extends StatelessWidget {
 
   Widget _buildPageItem(
     BuildContext context, {
-    Key key,
-    @required IconData icon,
-    @required String title,
-    Widget page,
-    VoidCallback onTap,
+    Key? key,
+    required IconData icon,
+    required String title,
+    Widget? page,
+    VoidCallback? onTap,
     bool presentPage = false,
   }) {
+    assert(page != null || onTap != null);
+
     return ListItem(
       key: key,
       title: Text(title),
@@ -166,9 +168,9 @@ class MorePage extends StatelessWidget {
         }
 
         if (presentPage) {
-          present(context, page);
+          present(context, page!);
         } else {
-          push(context, page);
+          push(context, page!);
         }
       },
     );

@@ -16,11 +16,11 @@ class LabelValue extends StatelessWidget {
 
   final String label;
   final String value;
-  final EdgeInsets padding;
+  final EdgeInsets? padding;
 
   LabelValue({
-    @required this.label,
-    @required this.value,
+    required this.label,
+    required this.value,
     this.padding,
   })  : assert(isNotEmpty(label)),
         assert(isNotEmpty(value));

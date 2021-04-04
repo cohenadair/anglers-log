@@ -24,12 +24,12 @@ abstract class PreferenceManager extends DataSourceFacilitator {
   String get tableName;
 
   @protected
-  String get firestoreDocPath;
+  String? get firestoreDocPath;
 
   @protected
   final Map<String, dynamic> preferences = {};
 
-  Log _log;
+  late Log _log;
 
   PreferenceManager(AppManager appManager) : super(appManager) {
     _log = Log("PreferenceManager($runtimeType)");
@@ -44,21 +44,22 @@ abstract class PreferenceManager extends DataSourceFacilitator {
   @override
   Future<void> initializeLocalData() async {
     for (var row in (await localDatabaseManager.fetchAll(tableName))) {
-      preferences[row[_keyId]] = jsonDecode(row[_keyValue]);
+      preferences[row[_keyId]!] = jsonDecode(row[_keyValue]);
     }
   }
 
   @override
-  Future<void> clearLocalData() {
+  Future<void> clearLocalData() async {
     for (var key in List.of(preferences.keys)) {
       putLocal(key, null);
     }
-    return null;
   }
 
   @override
-  StreamSubscription initializeFirestore(Completer completer) {
-    return firestore.doc(firestoreDocPath).snapshots().listen((snapshot) {
+  StreamSubscription? initializeFirestore(Completer completer) {
+    assert(isNotEmpty(firestoreDocPath));
+
+    return firestore.doc(firestoreDocPath!).snapshots().listen((snapshot) {
       var data = snapshot.data();
       if (data != null) {
         // Completely replace local data with the Firestore document.
@@ -108,12 +109,12 @@ abstract class PreferenceManager extends DataSourceFacilitator {
   }
 
   Future<void> _putFirebase(String key, dynamic value) async {
-    assert(isNotEmpty(firestoreDocPath), "firestoreDocPath must not be empty");
+    assert(isNotEmpty(firestoreDocPath));
 
     var map = {
       key: value,
     };
-    var doc = firestore.doc(firestoreDocPath);
+    var doc = firestore.doc(firestoreDocPath!);
 
     if ((await doc.get()).exists) {
       await doc.update(map);
@@ -123,7 +124,7 @@ abstract class PreferenceManager extends DataSourceFacilitator {
   }
 
   @protected
-  void putStringList(String key, List<String> value) {
+  void putStringList(String key, List<String>? value) {
     if (listEquals(preferences[key], value)) {
       return;
     }
@@ -141,10 +142,10 @@ abstract class PreferenceManager extends DataSourceFacilitator {
   }
 
   @protected
-  void putId(String key, Id value) => put(key, value?.uuid?.toString());
+  void putId(String key, Id? value) => put(key, value?.uuid.toString());
 
   @protected
-  Id id(String key) {
+  Id? id(String key) {
     if (!preferences.containsKey(key)) {
       return null;
     }
@@ -152,7 +153,7 @@ abstract class PreferenceManager extends DataSourceFacilitator {
   }
 
   @protected
-  void putIdList(String key, List<Id> value) {
+  void putIdList(String key, List<Id>? value) {
     if (listEquals(idList(key), value)) {
       return;
     }

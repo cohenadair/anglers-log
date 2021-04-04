@@ -12,37 +12,37 @@ class TextInput extends StatefulWidget {
   static const int _inputLimitDescription = 140;
   static const int _inputLimitEmail = 64;
 
-  final String initialValue;
-  final String label;
+  final String? initialValue;
+  final String? label;
   final TextCapitalization capitalization;
-  final TextInputAction textInputAction;
+  final TextInputAction? textInputAction;
 
   /// The controller for the [TextInput]. The [TextInput] will update the
   /// controller's [validate] property automatically.
-  final TextInputController controller;
+  final TextInputController? controller;
 
   final bool enabled;
   final bool autofocus;
   final bool obscureText;
-  final int maxLength;
-  final int maxLines;
-  final TextInputType keyboardType;
+  final int? maxLength;
+  final int? maxLines;
+  final TextInputType? keyboardType;
 
   /// Invoked when the [TextInput] text changes, _after_ [Validator.run] is
   /// invoked. Implement this property to update the state of the parent
   /// widget.
-  final VoidCallback onChanged;
+  final VoidCallback? onChanged;
 
   /// Invoked when the "return" button is pressed on the keyboard when this
   /// [TextInput] is in focus.
-  final VoidCallback onSubmitted;
+  final VoidCallback? onSubmitted;
 
   TextInput({
     this.initialValue,
     this.label,
     this.capitalization = TextCapitalization.none,
     this.textInputAction,
-    this.controller,
+    required this.controller,
     this.enabled = true,
     this.autofocus = false,
     this.obscureText = false,
@@ -55,12 +55,12 @@ class TextInput extends StatefulWidget {
 
   TextInput.name(
     BuildContext context, {
-    String label,
-    String initialValue,
-    TextInputController controller,
-    bool enabled,
+    String? label,
+    String? initialValue,
+    required TextInputController controller,
+    bool enabled = true,
     bool autofocus = false,
-    VoidCallback onChanged,
+    VoidCallback? onChanged,
   }) : this(
           initialValue: initialValue,
           label: isEmpty(label) ? Strings.of(context).inputNameLabel : label,
@@ -74,9 +74,9 @@ class TextInput extends StatefulWidget {
 
   TextInput.description(
     BuildContext context, {
-    String initialValue,
-    TextInputController controller,
-    bool enabled,
+    String? initialValue,
+    required TextInputController controller,
+    bool enabled = true,
     bool autofocus = false,
   }) : this(
           initialValue: initialValue,
@@ -90,11 +90,11 @@ class TextInput extends StatefulWidget {
 
   TextInput.number(
     BuildContext context, {
-    double initialValue,
-    String label,
-    String requiredText,
-    NumberInputController controller,
-    bool enabled,
+    double? initialValue,
+    String? label,
+    String? requiredText,
+    required NumberInputController? controller,
+    bool enabled = true,
     bool autofocus = false,
     bool required = false,
   }) : this(
@@ -110,12 +110,12 @@ class TextInput extends StatefulWidget {
 
   TextInput.email(
     BuildContext context, {
-    String initialValue,
-    EmailInputController controller,
-    bool enabled,
+    String? initialValue,
+    required EmailInputController controller,
+    bool enabled = true,
     bool autofocus = false,
-    VoidCallback onChanged,
-    TextInputAction textInputAction,
+    VoidCallback? onChanged,
+    TextInputAction? textInputAction,
   }) : this(
           initialValue: initialValue,
           label: Strings.of(context).inputEmailLabel,
@@ -130,9 +130,9 @@ class TextInput extends StatefulWidget {
 
   TextInput.password(
     BuildContext context, {
-    PasswordInputController controller,
-    VoidCallback onChanged,
-    VoidCallback onSubmitted,
+    required PasswordInputController controller,
+    VoidCallback? onChanged,
+    VoidCallback? onSubmitted,
   }) : this(
           label: Strings.of(context).inputPasswordLabel,
           capitalization: TextCapitalization.none,
@@ -149,8 +149,8 @@ class TextInput extends StatefulWidget {
 }
 
 class _TextInputState extends State<TextInput> {
-  ValidationCallback get _validationCallback =>
-      widget.controller?.validator?.run(context, widget.controller.value);
+  ValidationCallback? get _validationCallback =>
+      widget.controller?.validator?.run(context, widget.controller!.value);
 
   @override
   void didChangeDependencies() {

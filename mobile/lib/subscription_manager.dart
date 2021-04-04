@@ -80,7 +80,7 @@ class SubscriptionManager {
 
     _authManager.stream.listen((_) {
       if (_authManager.state == AuthState.loggedIn) {
-        _purchasesWrapper.identify(_authManager.userId);
+        _purchasesWrapper.identify(_authManager.userId!);
       } else {
         _purchasesWrapper.reset();
       }
@@ -113,7 +113,7 @@ class SubscriptionManager {
     }
   }
 
-  Future<Subscriptions> subscriptions() async {
+  Future<Subscriptions?> subscriptions() async {
     var offerings = await _purchasesWrapper.getOfferings();
 
     if (offerings.current == null) {
@@ -121,14 +121,14 @@ class SubscriptionManager {
       return null;
     }
 
-    if (offerings.current.availablePackages.isEmpty) {
+    if (offerings.current!.availablePackages.isEmpty) {
       _log.e("Current offering has no available packages");
       return null;
     }
 
     return Subscriptions(
-      Subscription(offerings.current.monthly, _trialDaysMonthly),
-      Subscription(offerings.current.annual, _trialDaysYearly),
+      Subscription(offerings.current!.monthly!, _trialDaysMonthly),
+      Subscription(offerings.current!.annual!, _trialDaysYearly),
     );
   }
 
@@ -142,7 +142,7 @@ class SubscriptionManager {
   }
 
   void _setStateFromPurchaserInfo(PurchaserInfo purchaserInfo) {
-    _setState(purchaserInfo.entitlements.all[_idProEntitlement].isActive
+    _setState(purchaserInfo.entitlements.all[_idProEntitlement]!.isActive
         ? SubscriptionState.pro
         : SubscriptionState.free);
   }

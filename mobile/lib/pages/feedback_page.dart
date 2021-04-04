@@ -27,17 +27,17 @@ import '../wrappers/package_info_wrapper.dart';
 
 class FeedbackPage extends StatefulWidget {
   /// An optional page title.
-  final String title;
+  final String? title;
 
   /// An error string to be sent with the feedback message, if applicable.
-  final String error;
+  final String? error;
 
   /// A warning message to display to the user, such as when they're about to
   /// send their fishing data.
-  final String warningMessage;
+  final String? warningMessage;
 
   /// If set, will be sent with the feedback message as an attachment.
-  final String attachment;
+  final String? attachment;
 
   FeedbackPage({
     this.title,
@@ -76,16 +76,24 @@ class _FeedbackPageState extends State<FeedbackPage> {
 
   PropertiesManager get _propertiesManager => PropertiesManager.of(context);
 
-  TextInputController get _nameController => _fields[_idName].controller;
+  TextInputController get _nameController =>
+      _fields[_idName]!.controller as TextInputController;
 
-  TextInputController get _emailController => _fields[_idEmail].controller;
+  EmailInputController get _emailController =>
+      _fields[_idEmail]!.controller as EmailInputController;
 
   InputController<_FeedbackType> get _typeController =>
-      _fields[_idType].controller;
+      _fields[_idType]!.controller as InputController<_FeedbackType>;
 
-  TextInputController get _messageController => _fields[_idMessage].controller;
+  TextInputController get _messageController =>
+      _fields[_idMessage]!.controller as TextInputController;
 
   bool get _error => isNotEmpty(widget.error);
+
+  _FeedbackType get _typeValue {
+    assert(_typeController.value != null);
+    return _typeController.value!;
+  }
 
   @override
   void initState() {
@@ -137,7 +145,7 @@ class _FeedbackPageState extends State<FeedbackPage> {
             ? Padding(
                 padding: insetsTopDefault,
                 child: Text(
-                  widget.warningMessage,
+                  widget.warningMessage!,
                   style: styleWarning,
                 ),
               )
@@ -156,8 +164,7 @@ class _FeedbackPageState extends State<FeedbackPage> {
         _idType: _error
             ? Empty()
             : RadioInput(
-                initialSelectedIndex:
-                    _FeedbackType.values.indexOf(_typeController.value),
+                initialSelectedIndex: _FeedbackType.values.indexOf(_typeValue),
                 optionCount: _FeedbackType.values.length,
                 optionBuilder: (context, i) =>
                     _feedbackTypeToString(_FeedbackType.values[i]),
@@ -187,7 +194,6 @@ class _FeedbackPageState extends State<FeedbackPage> {
       case _FeedbackType.suggestion:
         return Strings.of(context).feedbackPageSuggestionType;
     }
-    return null;
   }
 
   Future<bool> _send(BuildContext context) async {
@@ -203,16 +209,14 @@ class _FeedbackPageState extends State<FeedbackPage> {
       _isSending = true;
     });
 
-    showPermanentSnackBar(context, Strings.of(context).feedbackPageSending);
-
     var name = _nameController.value;
     var email = _emailController.value;
-    var type = _feedbackTypeToString(_typeController.value);
+    var type = _feedbackTypeToString(_typeValue);
     var message = _messageController.value;
 
     var appVersion = (await _packageInfo.fromPlatform()).version;
-    String osVersion;
-    String deviceModel;
+    String? osVersion;
+    String? deviceModel;
 
     var deviceInfo = DeviceInfoPlugin();
     if (Platform.isIOS) {
@@ -268,8 +272,6 @@ class _FeedbackPageState extends State<FeedbackPage> {
     if (response.statusCode != _responseAccepted) {
       _log.e("Error sending feedback: ${response.statusCode}");
 
-      // Hide "sending" SnackBar and show error.
-      Scaffold.of(context).hideCurrentSnackBar();
       showErrorSnackBar(
         context,
         Strings.of(context).feedbackPageErrorSending,

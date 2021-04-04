@@ -10,7 +10,7 @@ import '../utils/string_utils.dart';
 import '../widgets/text.dart';
 
 class BaitCategoryListPage extends StatelessWidget {
-  final ManageableListPagePickerSettings<BaitCategory> pickerSettings;
+  final ManageableListPagePickerSettings<BaitCategory>? pickerSettings;
 
   BaitCategoryListPage({
     this.pickerSettings,
