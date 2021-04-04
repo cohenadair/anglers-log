@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'dart:ui' as ui;
 
 import 'package:flutter/cupertino.dart';
@@ -6,6 +7,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
 import 'package:mobile/pages/entity_page.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
+import 'package:mobile/widgets/button.dart';
 import 'package:mobile/widgets/photo.dart';
 import 'package:mockito/mockito.dart';
 
@@ -24,6 +26,8 @@ void main() {
 
   setUp(() {
     appManager = StubbedAppManager();
+
+    when(appManager.ioWrapper.isAndroid).thenReturn(false);
   });
 
   group("Images", () {
@@ -183,6 +187,32 @@ void main() {
     expect(find.byIcon(Icons.delete), findsNothing);
   });
 
+  testWidgets("Static page does not show edit and delete buttons (with images)",
+      (tester) async {
+    when(appManager.imageManager.image(
+      any,
+      fileName: anyNamed("fileName"),
+      size: anyNamed("size"),
+    )).thenAnswer((_) => File("test/resources/apple_logo.png").readAsBytes());
+
+    await tester.pumpWidget(
+      Testable(
+        (_) => EntityPage(
+          children: [],
+          static: true,
+          imageNames: [
+            "apple_logo.png",
+          ],
+        ),
+        appManager: appManager,
+      ),
+    );
+
+    expect(find.text("EDIT"), findsNothing);
+    expect(find.byIcon(Icons.delete), findsNothing);
+    expect(find.byType(BackButtonIcon), findsOneWidget);
+  });
+
   testWidgets("Dynamic page shows edit and delete buttons", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => EntityPage(
@@ -195,6 +225,34 @@ void main() {
 
     expect(find.text("EDIT"), findsOneWidget);
     expect(find.byIcon(Icons.delete), findsOneWidget);
+  });
+
+  testWidgets("Dynamic page shows action buttons (with images)",
+      (tester) async {
+    when(appManager.imageManager.image(
+      any,
+      fileName: anyNamed("fileName"),
+      size: anyNamed("size"),
+    )).thenAnswer((_) => File("test/resources/apple_logo.png").readAsBytes());
+
+    await tester.pumpWidget(
+      Testable(
+        (_) => EntityPage(
+          children: [],
+          imageNames: [
+            "apple_logo.png",
+          ],
+          onEdit: () {},
+          onDelete: () {},
+          deleteMessage: "Test",
+        ),
+        appManager: appManager,
+      ),
+    );
+
+    expect(find.text("EDIT"), findsOneWidget);
+    expect(find.byIcon(Icons.delete), findsOneWidget);
+    expect(find.byType(BackButtonIcon), findsOneWidget);
   });
 
   testWidgets("Delete confirmation shown when deleteMessage != null",

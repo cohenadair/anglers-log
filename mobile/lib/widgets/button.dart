@@ -51,11 +51,12 @@ class Button extends StatelessWidget {
 ///
 /// This button can also be used as a [TextButton] replacement.
 class ActionButton extends StatelessWidget {
-  final double defaultSize = 40;
+  final double _floatingLetterSpacing = -0.5;
 
   final String? text;
   final VoidCallback? onPressed;
   final bool condensed;
+  final bool floating;
   final Color? textColor;
 
   final String? _stringId;
@@ -64,36 +65,68 @@ class ActionButton extends StatelessWidget {
     required this.text,
     this.onPressed,
     this.condensed = false,
+    this.floating = false,
     this.textColor,
   }) : _stringId = null;
 
-  ActionButton.done({this.onPressed, this.condensed = false, this.textColor})
-      : _stringId = "done",
+  ActionButton.done({
+    this.onPressed,
+    this.condensed = false,
+    this.textColor,
+    this.floating = false,
+  })  : _stringId = "done",
         text = null;
 
-  ActionButton.save({this.onPressed, this.condensed = false, this.textColor})
-      : _stringId = "save",
+  ActionButton.save({
+    this.onPressed,
+    this.condensed = false,
+    this.textColor,
+    this.floating = false,
+  })  : _stringId = "save",
         text = null;
 
-  ActionButton.cancel({this.onPressed, this.condensed = false, this.textColor})
-      : _stringId = "cancel",
+  ActionButton.cancel({
+    this.onPressed,
+    this.condensed = false,
+    this.textColor,
+    this.floating = false,
+  })  : _stringId = "cancel",
         text = null;
 
-  ActionButton.edit({this.onPressed, this.condensed = false, this.textColor})
-      : _stringId = "edit",
+  ActionButton.edit({
+    this.onPressed,
+    this.condensed = false,
+    this.textColor,
+    this.floating = false,
+  })  : _stringId = "edit",
         text = null;
 
   @override
   Widget build(BuildContext context) {
+    var textValue =
+        (isNotEmpty(_stringId) ? Strings.of(context).fromId(_stringId!) : text)!
+            .toUpperCase();
+
     Widget textWidget = Text(
-      (isNotEmpty(_stringId) ? Strings.of(context).fromId(_stringId!) : text)!
-          .toUpperCase(),
+      textValue,
       style: textColor == null ? null : TextStyle(color: textColor),
     );
 
-    return EnabledOpacity(
-      enabled: onPressed != null,
-      child: RawMaterialButton(
+    Widget child;
+    if (floating) {
+      child = FloatingActionButton(
+        child: Text(
+          textValue,
+          style: TextStyle(
+            letterSpacing: _floatingLetterSpacing,
+          ),
+        ),
+        backgroundColor: Colors.white,
+        onPressed: onPressed,
+        mini: true,
+      );
+    } else {
+      child = RawMaterialButton(
         constraints: BoxConstraints(),
         padding: EdgeInsets.all(condensed ? paddingSmall : paddingDefault),
         onPressed: onPressed,
@@ -103,7 +136,12 @@ class ActionButton extends StatelessWidget {
           fontWeight: FontWeight.w500,
           color: Colors.black,
         ),
-      ),
+      );
+    }
+
+    return EnabledOpacity(
+      enabled: onPressed != null,
+      child: child,
     );
   }
 }

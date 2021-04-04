@@ -110,6 +110,30 @@ void main() {
       await tester.pumpWidget(Testable((_) => ActionButton.done()));
       expect(findFirst<RawMaterialButton>(tester).padding, insetsDefault);
     });
+
+    testWidgets("Floating", (tester) async {
+      await tester.pumpWidget(
+        Testable(
+          (_) => ActionButton.done(
+            floating: true,
+          ),
+        ),
+      );
+      expect(findFirst<EnabledOpacity>(tester).child is FloatingActionButton,
+          isTrue);
+    });
+
+    testWidgets("Not floating", (tester) async {
+      await tester.pumpWidget(
+        Testable(
+          (_) => ActionButton.done(
+            floating: false,
+          ),
+        ),
+      );
+      expect(
+          findFirst<EnabledOpacity>(tester).child is RawMaterialButton, isTrue);
+    });
   });
 
   group("ChipButton", () {

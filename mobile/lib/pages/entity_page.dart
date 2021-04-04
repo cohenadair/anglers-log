@@ -5,11 +5,11 @@ import '../i18n/strings.dart';
 import '../model/gen/anglerslog.pb.dart';
 import '../res/dimen.dart';
 import '../utils/dialog_utils.dart';
-import '../widgets/app_bar_gradient.dart';
 import '../widgets/button.dart';
 import '../widgets/custom_entity_values.dart';
 import '../widgets/photo.dart';
 import '../widgets/widget.dart';
+import '../wrappers/io_wrapper.dart';
 
 /// A page for displaying details of an [Entity]. This page includes a delete
 /// and edit button in the [AppBar], as well as an optional image carousel
@@ -45,12 +45,13 @@ class EntityPage extends StatefulWidget {
 
 class _EntityPageState extends State<EntityPage> {
   final double _imageHeightFactor = 3;
-  final double _expandedOpacityHeightFactor = 2.5;
   final double _carouselDotSize = 8.0;
   final double _carouselOpacity = 0.5;
 
   int _imageIndex = 0;
   late PageController _imageController;
+
+  IoWrapper get _ioWrapper => IoWrapper.of(context);
 
   bool get _hasImages => widget.imageNames.isNotEmpty;
 
@@ -89,9 +90,10 @@ class _EntityPageState extends State<EntityPage> {
       body: CustomScrollView(
         slivers: [
           SliverAppBar(
+            leading: _hasImages ? Empty() : null,
             actions: [
-              _buildEditButton(),
-              _buildDeleteButton(),
+              _hasImages ? Empty() : _buildEditButton(false),
+              _hasImages ? Empty() : _buildDeleteButton(false),
             ],
             flexibleSpace: FlexibleSpaceBar(
               background: _hasImages ? _buildImages() : null,
@@ -165,9 +167,6 @@ class _EntityPageState extends State<EntityPage> {
             _imageIndex = newPage;
           }),
         ),
-        AppBarGradient(
-          height: _imageHeight / _expandedOpacityHeightFactor,
-        ),
         Align(
           alignment: Alignment.bottomCenter,
           child: Padding(
@@ -178,36 +177,87 @@ class _EntityPageState extends State<EntityPage> {
             ),
           ),
         ),
+        Align(
+          alignment: Alignment.topCenter,
+          child: SafeArea(
+            child: Padding(
+              padding: insetsHorizontalDefault,
+              child: Row(
+                children: [
+                  _buildBackButton(),
+                  // Push the rest of the buttons to the right.
+                  Expanded(
+                    child: Empty(),
+                  ),
+                  _buildEditButton(true),
+                  _buildDeleteButton(true),
+                ],
+              ),
+            ),
+          ),
+        ),
       ],
     );
   }
 
-  Widget _buildEditButton() {
+  Widget _buildBackButton() {
+    Widget icon;
+
+    if (_ioWrapper.isAndroid) {
+      icon = BackButtonIcon();
+    } else {
+      // The iOS back button icon is not centered, so add some padding.
+      icon = Padding(
+        padding: insetsLeftWidgetSmall,
+        child: BackButtonIcon(),
+      );
+    }
+
+    return FloatingActionButton(
+      child: icon,
+      backgroundColor: Colors.white,
+      mini: true,
+      onPressed: () => Navigator.of(context).pop(),
+    );
+  }
+
+  Widget _buildEditButton(bool floating) {
     if (widget.static) {
       return Empty();
     }
 
     return ActionButton.edit(
-      condensed: true,
       onPressed: widget.onEdit,
+      floating: floating,
     );
   }
 
-  Widget _buildDeleteButton() {
+  Widget _buildDeleteButton(bool floating) {
     if (widget.static) {
       return Empty();
     }
 
-    return IconButton(
-      icon: Icon(Icons.delete),
-      onPressed: () => showDeleteDialog(
-        context: context,
-        description: Text(widget.deleteMessage!),
-        onDelete: () {
-          widget.onDelete?.call();
-          Navigator.pop(context);
-        },
-      ),
-    );
+    void onPressed() => showDeleteDialog(
+          context: context,
+          description: Text(widget.deleteMessage!),
+          onDelete: () {
+            widget.onDelete?.call();
+            Navigator.pop(context);
+          },
+        );
+
+    if (floating) {
+      return FloatingActionButton(
+        child: Icon(Icons.delete),
+        backgroundColor: Colors.white,
+        mini: true,
+        onPressed: onPressed,
+      );
+    } else {
+      return IconButton(
+        icon: Icon(Icons.delete),
+        onPressed: onPressed,
+      );
+    }
   }
 }
