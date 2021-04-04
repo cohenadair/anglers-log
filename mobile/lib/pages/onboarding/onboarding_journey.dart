@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:mobile/wrappers/permission_handler_wrapper.dart';
 
 import '../../app_manager.dart';
 import '../../channels/migration_channel.dart';
@@ -35,6 +36,9 @@ class _OnboardingJourneyState extends State<OnboardingJourney> {
 
   AppManager get _appManager => AppManager.of(context);
 
+  PermissionHandlerWrapper get _permissionHandlerWrapper =>
+      PermissionHandlerWrapper.of(context);
+
   @override
   Widget build(BuildContext context) {
     return Navigator(
@@ -51,8 +55,10 @@ class _OnboardingJourneyState extends State<OnboardingJourney> {
         } else if (name == _routeManageFields) {
           return MaterialPageRoute(
             builder: (context) => HowToManageFieldsPage(
-              onNext: () =>
-                  Navigator.of(context).pushNamed(_routeLocationPermission),
+              onNext: () async => Navigator.of(context).pushNamed(
+                  (await _permissionHandlerWrapper.isLocationGranted)
+                      ? _routeFeedback
+                      : _routeLocationPermission),
             ),
           );
         } else if (name == _routeLocationPermission) {

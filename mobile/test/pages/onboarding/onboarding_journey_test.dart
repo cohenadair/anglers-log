@@ -33,7 +33,45 @@ void main() {
     when(appManager.ioWrapper.directory(any)).thenReturn(dir);
   });
 
+  testWidgets("Navigation skips permission page", (tester) async {
+    when(appManager.permissionHandlerWrapper.isLocationGranted)
+        .thenAnswer((_) => Future.value(true));
+
+    var finished = false;
+    await tester.pumpWidget(
+      Testable(
+        (_) => OnboardingJourney(
+          onFinished: () => finished = true,
+          legacyJsonResult: LegacyJsonResult(
+            imagesPath: "path/to/images",
+            databasePath: "path/to/database",
+            json: {},
+          ),
+        ),
+        appManager: appManager,
+      ),
+    );
+
+    expect(find.byType(MigrationPage), findsOneWidget);
+    await tapAndSettle(tester, find.text("START"));
+    await tapAndSettle(tester, find.text("NEXT"));
+
+    expect(find.byType(CatchFieldPickerPage), findsOneWidget);
+    await tapAndSettle(tester, find.text("NEXT"));
+
+    expect(find.byType(HowToManageFieldsPage), findsOneWidget);
+    await tapAndSettle(tester, find.text("NEXT"));
+
+    expect(find.byType(HowToFeedbackPage), findsOneWidget);
+    await tapAndSettle(tester, find.text("FINISH"));
+
+    expect(finished, isTrue);
+  });
+
   testWidgets("Navigation", (tester) async {
+    when(appManager.permissionHandlerWrapper.isLocationGranted)
+        .thenAnswer((_) => Future.value(false));
+
     var finished = false;
     await tester.pumpWidget(
       Testable(

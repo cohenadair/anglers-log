@@ -98,6 +98,8 @@ void main() {
     when(appManager.userPreferenceManager.catchCustomEntityIds).thenReturn([]);
     when(appManager.userPreferenceManager.didOnboard).thenReturn(false);
     when(appManager.authManager.state).thenReturn(AuthState.loggedIn);
+    when(appManager.permissionHandlerWrapper.isLocationGranted)
+        .thenAnswer((_) => Future.value(false));
     when(appManager.permissionHandlerWrapper.requestLocation())
         .thenAnswer((_) => Future.value(false));
     when(appManager.fishingSpotManager.list()).thenReturn([]);
