@@ -5,6 +5,7 @@ import 'package:mobile/pages/feedback_page.dart';
 import 'package:mobile/widgets/button.dart';
 import 'package:mobile/widgets/radio_input.dart';
 import 'package:mobile/widgets/text_input.dart';
+import 'package:mobile/widgets/widget.dart';
 import 'package:mockito/mockito.dart';
 import 'package:package_info/package_info.dart';
 
@@ -195,7 +196,9 @@ void main() {
     await tapAndSettle(tester, find.text("SEND"));
     expect(
         find.widgetWithText(
-            SnackBar, "Error sending feedback. Please try again later."),
+            SnackBar,
+            "Error sending feedback. Please try "
+            "again later, or email support@anglerslog.ca directly."),
         findsOneWidget);
     expect(
         findFirstWithText<ActionButton>(tester, "SEND").onPressed, isNotNull);
@@ -217,12 +220,14 @@ void main() {
       any,
       auth: anyNamed("auth"),
       body: anyNamed("body"),
-    )).thenAnswer((_) => Future.value(Response("", 202)));
+    )).thenAnswer((_) =>
+        Future.delayed(Duration(milliseconds: 165), () => Response("", 202)));
 
     await tester.tap(find.text("SEND"));
     await tester.pump();
 
-    expect(findFirstWithText<ActionButton>(tester, "SEND").onPressed, isNull);
+    expect(find.text("SEND"), findsNothing);
+    expect(find.byType(Loading), findsOneWidget);
 
     await tester.pumpAndSettle();
     expect(find.text("SEND"), findsNothing);

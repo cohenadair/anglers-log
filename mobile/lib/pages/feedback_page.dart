@@ -137,9 +137,9 @@ class _FeedbackPageState extends State<FeedbackPage> {
     return FormPage.immutable(
       title: Text(widget.title ?? Strings.of(context).feedbackPageTitle),
       isInputValid: _emailController.valid(context) &&
-          _messageController.valid(context) &&
-          !_isSending,
+          _messageController.valid(context),
       saveButtonText: Strings.of(context).feedbackPageSend,
+      showLoadingOverSave: _isSending,
       fieldBuilder: (context) => {
         _idWarning: _error && isNotEmpty(widget.warningMessage)
             ? Padding(

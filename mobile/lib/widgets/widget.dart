@@ -126,11 +126,13 @@ class Loading extends StatelessWidget {
   final EdgeInsets padding;
   final String? label;
   final bool isCentered;
+  final Color? color;
 
   Loading({
     this.padding = insetsZero,
     this.label,
     this.isCentered = true,
+    this.color,
   });
 
   @override
@@ -139,6 +141,7 @@ class Loading extends StatelessWidget {
       size: Size(_size, _size),
       child: CircularProgressIndicator(
         strokeWidth: _strokeWidth,
+        backgroundColor: color,
       ),
     );
 

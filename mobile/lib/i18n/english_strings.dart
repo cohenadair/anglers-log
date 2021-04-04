@@ -264,7 +264,7 @@ Map<String, Map<String, String>> get englishStrings => {
         "feedbackPage_suggestionType": "Suggestion",
         "feedbackPage_feedbackType": "Feedback",
         "feedbackPage_errorSending":
-            "Error sending feedback. Please try again later.",
+            "Error sending feedback. Please try again later, or email support@anglerslog.ca directly.",
         "feedbackPage_connectionError":
             "No internet connection. Please check your connection and try again.",
         "feedbackPage_sending": "Sending feedback...",

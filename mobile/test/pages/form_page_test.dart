@@ -10,6 +10,7 @@ import 'package:mobile/widgets/input_controller.dart';
 import 'package:mobile/widgets/list_item.dart';
 import 'package:mobile/widgets/text.dart';
 import 'package:mobile/widgets/text_input.dart';
+import 'package:mobile/widgets/widget.dart';
 import 'package:mockito/mockito.dart';
 
 import '../mocks/stubbed_app_manager.dart';
@@ -61,6 +62,20 @@ void main() {
     );
     expect(find.text("SAVE"), findsNothing);
     expect(find.text("DONE"), findsOneWidget);
+  });
+
+  testWidgets("Show loading widget instead of save button", (tester) async {
+    await tester.pumpWidget(
+      Testable(
+        (_) => FormPage(
+          fieldBuilder: (_) => {},
+          isInputValid: true,
+          showLoadingOverSave: true,
+        ),
+      ),
+    );
+    expect(find.text("SAVE"), findsNothing);
+    expect(find.byType(Loading), findsOneWidget);
   });
 
   testWidgets("Editable form shows overflow menu", (tester) async {

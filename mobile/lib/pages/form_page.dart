@@ -66,6 +66,9 @@ class FormPage extends StatefulWidget {
   /// The text for the "save" button. Defaults to "Save".
   final String? saveButtonText;
 
+  /// When true, shows a [Loading] widget instead of the "Save" button.
+  final bool showLoadingOverSave;
+
   final EdgeInsets padding;
 
   /// A [GlobalKey] for accessing the [PopupMenuButton] of the form. Useful for
@@ -84,6 +87,7 @@ class FormPage extends StatefulWidget {
     this.padding = insetsHorizontalDefault,
     this.runSpacing,
     this.saveButtonText,
+    this.showLoadingOverSave = false,
     required this.isInputValid,
   }) : super(key: key);
 
@@ -96,6 +100,7 @@ class FormPage extends StatefulWidget {
     double? runSpacing,
     required bool isInputValid,
     String? saveButtonText,
+    bool showLoadingOverSave = false,
   }) : this(
           key: key,
           title: title,
@@ -108,6 +113,7 @@ class FormPage extends StatefulWidget {
           runSpacing: runSpacing,
           isInputValid: isInputValid,
           saveButtonText: saveButtonText,
+          showLoadingOverSave: showLoadingOverSave,
         );
 
   @override
@@ -129,12 +135,29 @@ class _FormPageState extends State<FormPage> {
         title: widget.title,
         actions: [
           Builder(
-            builder: (context) => ActionButton(
-              text: widget.saveButtonText ?? Strings.of(context).save,
-              onPressed:
-                  widget.isInputValid ? () => _onPressedSave(context) : null,
-              condensed: widget.editable,
-            ),
+            builder: (context) {
+              // An AnimatedSwitcher is not used here because the different
+              // alignments of the Loading widget and ActionButton cause the
+              // animation to appear "jarring" where as a complete replace of
+              // the widget looks nicer.
+              if (widget.showLoadingOverSave) {
+                return Loading(
+                  padding: EdgeInsets.only(
+                    right: paddingDefault,
+                    top: paddingDefault,
+                  ),
+                  isCentered: true,
+                  color: Colors.black,
+                );
+              }
+
+              return ActionButton(
+                text: widget.saveButtonText ?? Strings.of(context).save,
+                onPressed:
+                    widget.isInputValid ? () => _onPressedSave(context) : null,
+                condensed: widget.editable,
+              );
+            },
           ),
           widget.editable
               ? PopupMenuButton<_OverflowOption>(
