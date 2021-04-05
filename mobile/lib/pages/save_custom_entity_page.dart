@@ -105,6 +105,7 @@ class _SaveCustomEntityPageState extends State<SaveCustomEntityPage> {
         context,
         controller: _nameController,
         autofocus: true,
+        textInputAction: TextInputAction.next,
         // Trigger "Save" button state refresh.
         onChanged: () => setState(() {}),
       );

@@ -37,6 +37,9 @@ class TextInput extends StatefulWidget {
   /// [TextInput] is in focus.
   final VoidCallback? onSubmitted;
 
+  /// See [TextField.focusNode].
+  final FocusNode? focusNode;
+
   TextInput({
     this.initialValue,
     this.label,
@@ -45,6 +48,7 @@ class TextInput extends StatefulWidget {
     required this.controller,
     this.enabled = true,
     this.autofocus = false,
+    this.focusNode,
     this.obscureText = false,
     this.maxLength = _inputLimitDefault,
     this.maxLines,
@@ -61,15 +65,18 @@ class TextInput extends StatefulWidget {
     bool enabled = true,
     bool autofocus = false,
     VoidCallback? onChanged,
+    TextInputAction? textInputAction,
   }) : this(
           initialValue: initialValue,
           label: isEmpty(label) ? Strings.of(context).inputNameLabel : label,
           capitalization: TextCapitalization.words,
           controller: controller,
           maxLength: _inputLimitName,
+          maxLines: 1,
           enabled: enabled,
           autofocus: autofocus,
           onChanged: onChanged,
+          textInputAction: textInputAction,
         );
 
   TextInput.description(
@@ -86,6 +93,9 @@ class TextInput extends StatefulWidget {
           maxLength: _inputLimitDescription,
           enabled: enabled,
           autofocus: autofocus,
+          // Use done here to blank lines can't be entered. Also an easy way
+          // to remove the keyboard on iOS.
+          textInputAction: TextInputAction.done,
         );
 
   TextInput.number(
@@ -97,6 +107,7 @@ class TextInput extends StatefulWidget {
     bool enabled = true,
     bool autofocus = false,
     bool required = false,
+    TextInputAction? textInputAction,
   }) : this(
           initialValue: initialValue == null ? null : initialValue.toString(),
           label: label,
@@ -106,6 +117,8 @@ class TextInput extends StatefulWidget {
           enabled: enabled,
           autofocus: autofocus,
           maxLength: _inputLimitNumber,
+          maxLines: 1,
+          textInputAction: textInputAction,
         );
 
   TextInput.email(
@@ -116,16 +129,19 @@ class TextInput extends StatefulWidget {
     bool autofocus = false,
     VoidCallback? onChanged,
     TextInputAction? textInputAction,
+    VoidCallback? onSubmitted,
   }) : this(
           initialValue: initialValue,
           label: Strings.of(context).inputEmailLabel,
           capitalization: TextCapitalization.none,
           controller: controller,
           maxLength: _inputLimitEmail,
+          maxLines: 1,
           enabled: enabled,
           autofocus: autofocus,
           onChanged: onChanged,
           textInputAction: textInputAction,
+          onSubmitted: onSubmitted,
         );
 
   TextInput.password(
@@ -184,6 +200,7 @@ class _TextInputState extends State<TextInput> {
         onFieldSubmitted: (_) => widget.onSubmitted?.call(),
         autofocus: widget.autofocus,
         obscureText: widget.obscureText,
+        focusNode: widget.focusNode,
       ),
     );
   }

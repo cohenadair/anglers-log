@@ -63,6 +63,7 @@ class _FeedbackPageState extends State<FeedbackPage> {
   final _log = Log("FeedbackPage");
 
   final Map<Id, Field> _fields = {};
+  final FocusNode _messageNode = FocusNode();
 
   var _isSending = false;
 
@@ -154,10 +155,13 @@ class _FeedbackPageState extends State<FeedbackPage> {
           context,
           controller: _nameController,
           autofocus: true,
+          textInputAction: TextInputAction.next,
         ),
         _idEmail: TextInput.email(
           context,
           controller: _emailController,
+          textInputAction: TextInputAction.next,
+          onSubmitted: () => FocusScope.of(context).requestFocus(_messageNode),
           // To update "Send" button state.
           onChanged: () => setState(() {}),
         ),
@@ -177,6 +181,7 @@ class _FeedbackPageState extends State<FeedbackPage> {
           controller: _messageController,
           capitalization: TextCapitalization.sentences,
           maxLength: null,
+          focusNode: _messageNode,
           // To update "Send" button state.
           onChanged: () => setState(() {}),
         ),
