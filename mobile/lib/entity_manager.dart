@@ -87,11 +87,8 @@ abstract class EntityManager<T extends GeneratedMessage>
   }
 
   @override
-  Future<void> clearLocalData() async {
-    var entitiesCopy = List<T>.of(entities.values);
-    for (var entity in entitiesCopy) {
-      await _deleteLocal(id(entity), notify: false);
-    }
+  void clearMemory() {
+    entities.clear();
   }
 
   @override
@@ -260,10 +257,17 @@ abstract class EntityManager<T extends GeneratedMessage>
     if (entityExists(entityId) &&
         await localDatabaseManager.deleteEntity(entityId, tableName)) {
       _log.d("Deleted locally");
-      var deletedEntity = entities.remove(entityId);
-      if (deletedEntity != null && notify) {
-        notifyOnDelete(deletedEntity);
-      }
+      _deleteMemory(entityId, notify: notify);
+    }
+  }
+
+  void _deleteMemory(
+    Id entityId, {
+    bool notify = true,
+  }) {
+    var deletedEntity = entities.remove(entityId);
+    if (deletedEntity != null && notify) {
+      notifyOnDelete(deletedEntity);
     }
   }
 

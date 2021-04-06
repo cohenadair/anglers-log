@@ -40,7 +40,7 @@ void main() {
   setUp(() async {
     appManager = StubbedAppManager();
 
-    when(appManager.appPreferenceManager.lastLoggedInUserId).thenReturn("");
+    when(appManager.appPreferenceManager.lastLoggedInEmail).thenReturn("");
 
     when(appManager.authManager.firestoreDocPath).thenReturn("");
     when(appManager.authManager.stream).thenAnswer((_) => Stream.empty());
@@ -104,7 +104,7 @@ void main() {
       ..name = "Catfish");
     expect(entityManager.entityCount, 2);
 
-    await entityManager.clearLocalData();
+    entityManager.clearMemory();
     verify(appManager.localDatabaseManager.deleteEntity(any, any)).called(2);
     verifyNever(appManager.firestoreWrapper.collection(any));
   });

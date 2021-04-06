@@ -22,7 +22,7 @@ class TestDataSourceFacilitator extends DataSourceFacilitator {
   TestDataSourceFacilitator(AppManager appManager) : super(appManager);
 
   @override
-  Future<void> clearLocalData() async {
+  void clearMemory() {
     clearLocalDataCount++;
   }
 
@@ -66,7 +66,7 @@ void main() {
   test("Firestore listener is cancelled on logout", () async {
     var controller = StreamController<void>();
     when(appManager.authManager.stream).thenAnswer((_) => controller.stream);
-    when(appManager.appPreferenceManager.lastLoggedInUserId).thenReturn(null);
+    when(appManager.appPreferenceManager.lastLoggedInEmail).thenReturn(null);
     when(appManager.subscriptionManager.isPro).thenReturn(true);
     when(appManager.authManager.state).thenReturn(AuthState.loggedOut);
 
@@ -82,7 +82,7 @@ void main() {
   });
 
   test("Local data is cleared when logged in user changes", () async {
-    when(appManager.appPreferenceManager.lastLoggedInUserId).thenReturn(null);
+    when(appManager.appPreferenceManager.lastLoggedInEmail).thenReturn(null);
     when(appManager.authManager.userId).thenReturn("USER_ID");
     when(appManager.subscriptionManager.stream)
         .thenAnswer((_) => Stream.empty());
@@ -94,7 +94,7 @@ void main() {
   });
 
   test("Firestore is initialized when pro and subclass enabled", () async {
-    when(appManager.appPreferenceManager.lastLoggedInUserId).thenReturn(null);
+    when(appManager.appPreferenceManager.lastLoggedInEmail).thenReturn(null);
     when(appManager.authManager.userId).thenReturn(null);
     when(appManager.subscriptionManager.isPro).thenReturn(true);
 
@@ -105,7 +105,7 @@ void main() {
   });
 
   test("Local data initialization only", () async {
-    when(appManager.appPreferenceManager.lastLoggedInUserId).thenReturn(null);
+    when(appManager.appPreferenceManager.lastLoggedInEmail).thenReturn(null);
     when(appManager.authManager.userId).thenReturn(null);
     when(appManager.subscriptionManager.stream)
         .thenAnswer((_) => Stream.empty());

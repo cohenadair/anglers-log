@@ -22,7 +22,6 @@ void main() {
     databaseManager = LocalDatabaseManager(appManager.app);
     await databaseManager.initialize(
       database: database,
-      openDatabase: () => Future.value(database),
     );
   });
 

@@ -8,7 +8,7 @@ import '../log.dart';
 
 final _log = Log("SQLiteOpenHelper");
 
-final String _name = "2.0/anglerslog.db";
+final String _name = "anglerslog.db";
 
 final List<String> _schema0 = [
   """
@@ -79,24 +79,24 @@ final List<List<String>> _schema = [
 
 final int _version = 1;
 
-Future<String> get _databasePath async =>
-    join(await (getDatabasesPath() as FutureOr<String>), _name);
+Future<String> _databasePath(String userId) async =>
+    join(await (getDatabasesPath() as FutureOr<String>), "2.0", userId, _name);
 
-Future<Database> openDb() async {
-  var path = await _databasePath;
-  _log.d(path);
+Future<Database> openDb(String userId) async {
+  var path = await _databasePath(userId);
+
+  if (await File(path).exists()) {
+    _log.d("Database exists: $path");
+  } else {
+    _log.d("Database does not exist: $path");
+  }
+
   return openDatabase(
     path,
     version: _version,
     onCreate: _onCreateDatabase,
     onUpgrade: _onUpgradeDatabase,
   );
-}
-
-/// Deletes and recreates the database from scratch.
-Future<Database> resetDb() async {
-  File(await _databasePath).deleteSync();
-  return openDb();
 }
 
 void _onCreateDatabase(Database db, int version) {

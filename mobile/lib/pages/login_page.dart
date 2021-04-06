@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../app_preference_manager.dart';
 import '../auth_manager.dart';
 import '../i18n/strings.dart';
 import '../res/dimen.dart';
@@ -31,6 +32,9 @@ class _LoginPageState extends State<LoginPage> {
   AuthError? _error;
   bool _isLoading = false;
 
+  AppPreferenceManager get _appPreferenceManager =>
+      AppPreferenceManager.of(context);
+
   AuthManager get _authManager => AuthManager.of(context);
 
   bool get _isLoggingIn => _mode == _Mode._loggingIn;
@@ -38,6 +42,12 @@ class _LoginPageState extends State<LoginPage> {
   FormState get _formState {
     assert(_formKey.currentState != null);
     return _formKey.currentState!;
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _emailController.value = _appPreferenceManager.lastLoggedInEmail;
   }
 
   @override
