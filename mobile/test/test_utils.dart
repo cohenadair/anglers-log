@@ -24,10 +24,12 @@ class Testable extends StatelessWidget {
   final Function(BuildContext) builder;
   final MediaQueryData mediaQueryData;
   final AppManager appManager;
+  final TargetPlatform? platform;
 
   Testable(
     this.builder, {
     this.mediaQueryData = const MediaQueryData(),
+    this.platform,
     StubbedAppManager? appManager,
   }) : appManager = appManager?.app ?? StubbedAppManager().app;
 
@@ -38,6 +40,7 @@ class Testable extends StatelessWidget {
       child: MaterialApp(
         theme: ThemeData(
           primarySwatch: Colors.lightBlue,
+          platform: platform,
         ),
         localizationsDelegates: [
           StringsDelegate(),

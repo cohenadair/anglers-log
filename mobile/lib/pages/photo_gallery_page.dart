@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../widgets/button.dart';
 import '../widgets/photo.dart';
 
 /// A page that displays a collection of images in a full screen pager.
@@ -37,22 +38,20 @@ class _PhotoGalleryPageState extends State<PhotoGalleryPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       extendBodyBehindAppBar: true,
-      appBar: AppBar(
-        elevation: 0.0,
-        backgroundColor: Colors.transparent,
-        leading: CloseButton(
-          color: Colors.white,
-        ),
-      ),
-      body: PageView.builder(
-        controller: _controller,
-        itemCount: widget.fileNames.length,
-        itemBuilder: (context, i) => Container(
-          color: Colors.black,
-          child: Center(
-            child: Photo(fileName: widget.fileNames[i]),
+      body: Stack(
+        children: [
+          PageView.builder(
+            controller: _controller,
+            itemCount: widget.fileNames.length,
+            itemBuilder: (context, i) => Container(
+              color: Colors.black,
+              child: Center(
+                child: Photo(fileName: widget.fileNames[i]),
+              ),
+            ),
           ),
-        ),
+          SafeArea(child: FloatingButton.close()),
+        ],
       ),
     );
   }

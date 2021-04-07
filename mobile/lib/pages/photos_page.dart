@@ -6,10 +6,9 @@ import '../i18n/strings.dart';
 import '../pages/photo_gallery_page.dart';
 import '../res/dimen.dart';
 import '../utils/page_utils.dart';
-import '../widgets/app_bar_gradient.dart';
+import '../widgets/button.dart';
 import '../widgets/empty_list_placeholder.dart';
 import '../widgets/photo.dart';
-import '../widgets/widget.dart';
 
 class PhotosPage extends StatelessWidget {
   static const _aspectRatioThumb = 1.0;
@@ -58,20 +57,10 @@ class PhotosPage extends StatelessWidget {
                   ),
                 ],
               ),
-              fileNames.isNotEmpty
-                  ? IgnorePointer(
-                      child: AppBarGradient(),
-                    )
-                  : Empty(),
               SafeArea(
                 child: Align(
                   alignment: Alignment.topLeft,
-                  child: Padding(
-                    padding: insetsSmall,
-                    child: BackButton(
-                      color: Colors.black,
-                    ),
-                  ),
+                  child: FloatingButton.back(),
                 ),
               ),
             ],

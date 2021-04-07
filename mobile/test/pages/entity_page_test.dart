@@ -7,6 +7,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
 import 'package:mobile/pages/entity_page.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
+import 'package:mobile/widgets/button.dart';
 import 'package:mobile/widgets/photo.dart';
 import 'package:mockito/mockito.dart';
 
@@ -73,7 +74,8 @@ void main() {
           .widgetList(find.byWidgetPredicate((widget) =>
               widget is Container &&
               widget.decoration is BoxDecoration &&
-              (widget.decoration as BoxDecoration).shape == BoxShape.circle))
+              (widget.decoration as BoxDecoration).shape == BoxShape.circle &&
+              (widget.decoration as BoxDecoration).color != Colors.white))
           .toList();
       expect(carouselDots.length, 4);
       expect(((carouselDots[0] as Container).decoration as BoxDecoration).color,
@@ -97,7 +99,8 @@ void main() {
           .widgetList(find.byWidgetPredicate((widget) =>
               widget is Container &&
               widget.decoration is BoxDecoration &&
-              (widget.decoration as BoxDecoration).shape == BoxShape.circle))
+              (widget.decoration as BoxDecoration).shape == BoxShape.circle &&
+              (widget.decoration as BoxDecoration).color != Colors.white))
           .toList();
       expect(((carouselDots[0] as Container).decoration as BoxDecoration).color,
           Colors.white.withOpacity(0.5));
@@ -129,7 +132,8 @@ void main() {
         find.byWidgetPredicate((widget) =>
             widget is Container &&
             widget.decoration is BoxDecoration &&
-            (widget.decoration as BoxDecoration).shape == BoxShape.circle),
+            (widget.decoration as BoxDecoration).shape == BoxShape.circle &&
+            (widget.decoration as BoxDecoration).color != Colors.white),
         findsNothing,
       );
     });
@@ -207,9 +211,9 @@ void main() {
       ),
     );
 
-    expect(find.text("EDIT"), findsNothing);
+    expect(find.byIcon(Icons.edit), findsNothing);
     expect(find.byIcon(Icons.delete), findsNothing);
-    expect(find.byType(BackButtonIcon), findsOneWidget);
+    expect(find.byType(FloatingButton), findsOneWidget);
   });
 
   testWidgets("Dynamic page shows edit and delete buttons", (tester) async {
@@ -246,12 +250,13 @@ void main() {
           deleteMessage: "Test",
         ),
         appManager: appManager,
+        platform: TargetPlatform.android,
       ),
     );
 
-    expect(find.text("EDIT"), findsOneWidget);
+    expect(find.byIcon(Icons.edit), findsOneWidget);
     expect(find.byIcon(Icons.delete), findsOneWidget);
-    expect(find.byType(BackButtonIcon), findsOneWidget);
+    expect(find.byIcon(Icons.arrow_back), findsOneWidget);
   });
 
   testWidgets("Delete confirmation shown when deleteMessage != null",

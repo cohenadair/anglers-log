@@ -37,7 +37,7 @@ class AddAnythingPage extends StatelessWidget {
                       Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          FloatingIconButton(
+                          FloatingButton.icon(
                             icon: CustomIcons.catches,
                             label: Strings.of(context).addAnythingPageCatch,
                             onPressed: () {
@@ -45,14 +45,14 @@ class AddAnythingPage extends StatelessWidget {
                               present(context, AddCatchJourney());
                             },
                           ),
-                          FloatingIconButton(
+                          FloatingButton.icon(
                             icon: Icons.public,
                             label: Strings.of(context).addAnythingPageTrip,
                             onPressed: () {},
                           ),
                         ],
                       ),
-                      FloatingIconButton(
+                      FloatingButton.icon(
                         icon: Icons.close,
                         padding: insetsTiny,
                         onPressed: () => Navigator.of(context).pop(),

@@ -54,15 +54,6 @@ void main() {
     expect(find.byType(PhotoGalleryPage), findsOneWidget);
   });
 
-  testWidgets("If there are images, gradient app bar is shown", (tester) async {
-    await tester.pumpWidget(Testable(
-      (_) => PhotosPage(),
-      appManager: appManager,
-    ));
-
-    expect(find.byType(AppBarGradient), findsOneWidget);
-  });
-
   testWidgets("If there are no images, gradient app bar isn't shown",
       (tester) async {
     when(appManager.catchManager.imageNamesSortedByTimestamp(any))

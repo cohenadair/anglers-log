@@ -51,12 +51,9 @@ class Button extends StatelessWidget {
 ///
 /// This button can also be used as a [TextButton] replacement.
 class ActionButton extends StatelessWidget {
-  final double _floatingLetterSpacing = -0.5;
-
   final String? text;
   final VoidCallback? onPressed;
   final bool condensed;
-  final bool floating;
   final Color? textColor;
 
   final String? _stringId;
@@ -65,7 +62,6 @@ class ActionButton extends StatelessWidget {
     required this.text,
     this.onPressed,
     this.condensed = false,
-    this.floating = false,
     this.textColor,
   }) : _stringId = null;
 
@@ -73,7 +69,6 @@ class ActionButton extends StatelessWidget {
     this.onPressed,
     this.condensed = false,
     this.textColor,
-    this.floating = false,
   })  : _stringId = "done",
         text = null;
 
@@ -81,7 +76,6 @@ class ActionButton extends StatelessWidget {
     this.onPressed,
     this.condensed = false,
     this.textColor,
-    this.floating = false,
   })  : _stringId = "save",
         text = null;
 
@@ -89,7 +83,6 @@ class ActionButton extends StatelessWidget {
     this.onPressed,
     this.condensed = false,
     this.textColor,
-    this.floating = false,
   })  : _stringId = "cancel",
         text = null;
 
@@ -97,7 +90,6 @@ class ActionButton extends StatelessWidget {
     this.onPressed,
     this.condensed = false,
     this.textColor,
-    this.floating = false,
   })  : _stringId = "edit",
         text = null;
 
@@ -112,32 +104,17 @@ class ActionButton extends StatelessWidget {
       style: textColor == null ? null : TextStyle(color: textColor),
     );
 
-    Widget child;
-    if (floating) {
-      child = FloatingActionButton(
-        child: Text(
-          textValue,
-          style: TextStyle(
-            letterSpacing: _floatingLetterSpacing,
-          ),
-        ),
-        backgroundColor: Colors.white,
-        onPressed: onPressed,
-        mini: true,
-      );
-    } else {
-      child = RawMaterialButton(
-        constraints: BoxConstraints(),
-        padding: EdgeInsets.all(condensed ? paddingSmall : paddingDefault),
-        onPressed: onPressed,
-        child: textWidget,
-        shape: CircleBorder(side: BorderSide(color: Colors.transparent)),
-        textStyle: TextStyle(
-          fontWeight: FontWeight.w500,
-          color: Colors.black,
-        ),
-      );
-    }
+    Widget child = RawMaterialButton(
+      constraints: BoxConstraints(),
+      padding: EdgeInsets.all(condensed ? paddingSmall : paddingDefault),
+      onPressed: onPressed,
+      child: textWidget,
+      shape: CircleBorder(side: BorderSide(color: Colors.transparent)),
+      textStyle: TextStyle(
+        fontWeight: FontWeight.w500,
+        color: Colors.black,
+      ),
+    );
 
     return EnabledOpacity(
       enabled: onPressed != null,
@@ -216,28 +193,76 @@ class MinimumIconButton extends StatelessWidget {
   }
 }
 
-class FloatingIconButton extends StatelessWidget {
+/// A button that appears to be floating on the screen. This is meant to look
+/// similar to a [FloatingActionButton]; however, FABs serve a very specific
+/// purpose in Material Design, and comes with some overhead to fulfil those
+/// purposes. [FloatingButton] is a more lightweight solution that can be used
+/// anywhere.
+class FloatingButton extends StatelessWidget {
   static const double _fabSize = 40.0;
 
   final EdgeInsets? padding;
-  final IconData icon;
+  final IconData? icon;
   final String? label;
-  final VoidCallback onPressed;
+  final VoidCallback? onPressed;
 
   /// When true, renders the button with a different background color, to
   /// imply the button has been "toggled".
   final bool pushed;
 
-  FloatingIconButton({
+  final bool _isBackButton;
+  final bool _isCloseButton;
+
+  FloatingButton.icon({
     this.padding,
     required this.icon,
-    required this.onPressed,
+    this.onPressed,
     this.label,
     this.pushed = false,
-  });
+  })  : _isBackButton = false,
+        _isCloseButton = false;
+
+  FloatingButton.back({
+    this.padding,
+  })  : _isBackButton = true,
+        _isCloseButton = false,
+        onPressed = null,
+        label = null,
+        pushed = false,
+        icon = null;
+
+  FloatingButton.close({
+    this.padding,
+  })  : _isBackButton = false,
+        _isCloseButton = true,
+        onPressed = null,
+        label = null,
+        pushed = false,
+        icon = null;
 
   @override
   Widget build(BuildContext context) {
+    Widget circleChild;
+    if (_isBackButton) {
+      if (Theme.of(context).platform == TargetPlatform.android) {
+        circleChild = Icon(Icons.arrow_back);
+      } else {
+        // The iOS back button icon is not centered, so add some padding.
+        circleChild = Padding(
+          padding: insetsLeftWidgetSmall,
+          child: Icon(
+            Icons.arrow_back_ios,
+            color: Colors.black,
+          ),
+        );
+      }
+    } else {
+      circleChild = Icon(
+        _isCloseButton ? Icons.close : icon,
+        color: Colors.black,
+      );
+    }
+
     return Padding(
       padding: padding ?? insetsDefault,
       child: Column(
@@ -247,13 +272,12 @@ class FloatingIconButton extends StatelessWidget {
             width: _fabSize,
             height: _fabSize,
             child: RawMaterialButton(
-              child: Icon(
-                icon,
-                color: Colors.black,
-              ),
+              child: circleChild,
               shape: CircleBorder(),
               fillColor: pushed ? Colors.grey : Colors.white,
-              onPressed: onPressed,
+              onPressed: _isBackButton || _isCloseButton
+                  ? () => Navigator.of(context).pop()
+                  : onPressed,
             ),
           ),
           isNotEmpty(label)

@@ -9,7 +9,6 @@ import '../widgets/button.dart';
 import '../widgets/custom_entity_values.dart';
 import '../widgets/photo.dart';
 import '../widgets/widget.dart';
-import '../wrappers/io_wrapper.dart';
 
 /// A page for displaying details of an [Entity]. This page includes a delete
 /// and edit button in the [AppBar], as well as an optional image carousel
@@ -50,8 +49,6 @@ class _EntityPageState extends State<EntityPage> {
 
   int _imageIndex = 0;
   late PageController _imageController;
-
-  IoWrapper get _ioWrapper => IoWrapper.of(context);
 
   bool get _hasImages => widget.imageNames.isNotEmpty;
 
@@ -184,7 +181,9 @@ class _EntityPageState extends State<EntityPage> {
               padding: insetsHorizontalDefault,
               child: Row(
                 children: [
-                  _buildBackButton(),
+                  FloatingButton.back(
+                    padding: insetsZero,
+                  ),
                   // Push the rest of the buttons to the right.
                   Expanded(
                     child: Empty(),
@@ -200,36 +199,22 @@ class _EntityPageState extends State<EntityPage> {
     );
   }
 
-  Widget _buildBackButton() {
-    Widget icon;
-
-    if (_ioWrapper.isAndroid) {
-      icon = BackButtonIcon();
-    } else {
-      // The iOS back button icon is not centered, so add some padding.
-      icon = Padding(
-        padding: insetsLeftWidgetSmall,
-        child: BackButtonIcon(),
-      );
-    }
-
-    return FloatingActionButton(
-      child: icon,
-      backgroundColor: Colors.white,
-      mini: true,
-      onPressed: () => Navigator.of(context).pop(),
-    );
-  }
-
   Widget _buildEditButton(bool floating) {
     if (widget.static) {
       return Empty();
     }
 
-    return ActionButton.edit(
-      onPressed: widget.onEdit,
-      floating: floating,
-    );
+    if (floating) {
+      return FloatingButton.icon(
+        padding: insetsHorizontalWidget,
+        onPressed: widget.onEdit,
+        icon: Icons.edit,
+      );
+    } else {
+      return ActionButton.edit(
+        onPressed: widget.onEdit,
+      );
+    }
   }
 
   Widget _buildDeleteButton(bool floating) {
@@ -237,20 +222,21 @@ class _EntityPageState extends State<EntityPage> {
       return Empty();
     }
 
-    void onPressed() => showDeleteDialog(
-          context: context,
-          description: Text(widget.deleteMessage!),
-          onDelete: () {
-            widget.onDelete?.call();
-            Navigator.pop(context);
-          },
-        );
+    void onPressed() {
+      showDeleteDialog(
+        context: context,
+        description: Text(widget.deleteMessage!),
+        onDelete: () {
+          widget.onDelete?.call();
+          Navigator.pop(context);
+        },
+      );
+    }
 
     if (floating) {
-      return FloatingActionButton(
-        child: Icon(Icons.delete),
-        backgroundColor: Colors.white,
-        mini: true,
+      return FloatingButton.icon(
+        padding: insetsZero,
+        icon: Icons.delete,
         onPressed: onPressed,
       );
     } else {

@@ -263,7 +263,7 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
   }
 
   Widget _buildMapTypeButton() {
-    return FloatingIconButton(
+    return FloatingButton.icon(
       icon: Icons.layers,
       onPressed: () {
         showBottomSheetPicker(
@@ -296,7 +296,7 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
       return Empty();
     }
 
-    return FloatingIconButton(
+    return FloatingButton.icon(
       padding: EdgeInsets.only(
         left: paddingDefault,
         right: paddingDefault,
@@ -341,7 +341,7 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
       return Empty();
     }
 
-    return FloatingIconButton(
+    return FloatingButton.icon(
       padding: EdgeInsets.only(
         left: paddingDefault,
         right: paddingDefault,
@@ -366,7 +366,7 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
       return Empty();
     }
 
-    return FloatingIconButton(
+    return FloatingButton.icon(
       padding: EdgeInsets.only(
         left: paddingDefault,
         right: paddingDefault,

@@ -110,30 +110,6 @@ void main() {
       await tester.pumpWidget(Testable((_) => ActionButton.done()));
       expect(findFirst<RawMaterialButton>(tester).padding, insetsDefault);
     });
-
-    testWidgets("Floating", (tester) async {
-      await tester.pumpWidget(
-        Testable(
-          (_) => ActionButton.done(
-            floating: true,
-          ),
-        ),
-      );
-      expect(findFirst<EnabledOpacity>(tester).child is FloatingActionButton,
-          isTrue);
-    });
-
-    testWidgets("Not floating", (tester) async {
-      await tester.pumpWidget(
-        Testable(
-          (_) => ActionButton.done(
-            floating: false,
-          ),
-        ),
-      );
-      expect(
-          findFirst<EnabledOpacity>(tester).child is RawMaterialButton, isTrue);
-    });
   });
 
   group("ChipButton", () {
@@ -166,11 +142,11 @@ void main() {
     });
   });
 
-  group("FloatingIconButton", () {
+  group("FloatingButton", () {
     testWidgets("Not pushed color", (tester) async {
       await tester.pumpWidget(
         Testable(
-          (_) => FloatingIconButton(
+          (_) => FloatingButton.icon(
             icon: Icons.backpack,
             onPressed: () {},
           ),
@@ -182,7 +158,7 @@ void main() {
     testWidgets("Pushed color", (tester) async {
       await tester.pumpWidget(
         Testable(
-          (_) => FloatingIconButton(
+          (_) => FloatingButton.icon(
             icon: Icons.backpack,
             onPressed: () {},
             pushed: true,
@@ -195,7 +171,7 @@ void main() {
     testWidgets("Default padding", (tester) async {
       await tester.pumpWidget(
         Testable(
-          (_) => FloatingIconButton(
+          (_) => FloatingButton.icon(
             icon: Icons.backpack,
             onPressed: () {},
           ),
@@ -207,7 +183,7 @@ void main() {
     testWidgets("Custom padding", (tester) async {
       await tester.pumpWidget(
         Testable(
-          (_) => FloatingIconButton(
+          (_) => FloatingButton.icon(
             icon: Icons.backpack,
             onPressed: () {},
             padding: insetsSmall,
@@ -220,7 +196,7 @@ void main() {
     testWidgets("With label", (tester) async {
       await tester.pumpWidget(
         Testable(
-          (_) => FloatingIconButton(
+          (_) => FloatingButton.icon(
             icon: Icons.backpack,
             onPressed: () {},
             label: "Backpack",
@@ -233,13 +209,56 @@ void main() {
     testWidgets("Without label", (tester) async {
       await tester.pumpWidget(
         Testable(
-          (_) => FloatingIconButton(
+          (_) => FloatingButton.icon(
             icon: Icons.backpack,
             onPressed: () {},
           ),
         ),
       );
       expect(find.byType(Text), findsNothing);
+    });
+
+    testWidgets("Android back button", (tester) async {
+      await tester.pumpWidget(
+        Testable(
+          (_) => FloatingButton.back(),
+          platform: TargetPlatform.android,
+        ),
+      );
+      expect(find.byIcon(Icons.arrow_back), findsOneWidget);
+      expect(
+        findFirstWithIcon<RawMaterialButton>(tester, Icons.arrow_back)
+            .onPressed,
+        isNotNull,
+      );
+    });
+
+    testWidgets("iOS back button", (tester) async {
+      await tester.pumpWidget(
+        Testable(
+          (_) => FloatingButton.back(),
+          platform: TargetPlatform.iOS,
+        ),
+      );
+      expect(find.byIcon(Icons.arrow_back_ios), findsOneWidget);
+      expect(
+        findFirstWithIcon<RawMaterialButton>(tester, Icons.arrow_back_ios)
+            .onPressed,
+        isNotNull,
+      );
+    });
+
+    testWidgets("Close button", (tester) async {
+      await tester.pumpWidget(
+        Testable(
+          (_) => FloatingButton.close(),
+        ),
+      );
+      expect(find.byIcon(Icons.close), findsOneWidget);
+      expect(
+        findFirstWithIcon<RawMaterialButton>(tester, Icons.close).onPressed,
+        isNotNull,
+      );
     });
   });
 }
