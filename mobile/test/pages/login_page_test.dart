@@ -204,4 +204,16 @@ void main() {
 
     expect(findFirst<AnimatedVisibility>(tester).visible, isTrue);
   });
+
+  testWidgets("Email is populated with last logged in email", (tester) async {
+    when(appManager.appPreferenceManager.lastLoggedInEmail)
+        .thenReturn("test@test.com");
+
+    await tester.pumpWidget(Testable(
+      (_) => LoginPage(),
+      appManager: appManager,
+    ));
+
+    expect(find.text("test@test.com"), findsOneWidget);
+  });
 }

@@ -45,7 +45,7 @@ void main() {
     expect(preferenceManager.lastLoggedInEmail, "test@test.com");
   });
 
-  test("lastLoggedInUserEmail is deleted when set to null", () async {
+  test("lastLoggedInUserEmail is deleted when set to null/empty", () async {
     preferenceManager = AppPreferenceManager(appManager.app);
 
     preferenceManager.lastLoggedInEmail = "test@test.com";

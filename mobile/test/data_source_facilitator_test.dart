@@ -81,6 +81,22 @@ void main() {
     verify(facilitator.listener.cancel()).called(1);
   });
 
+  test("Memory is cleared on logout", () async {
+    var controller = StreamController<void>();
+    when(appManager.authManager.stream).thenAnswer((_) => controller.stream);
+    when(appManager.appPreferenceManager.lastLoggedInEmail).thenReturn(null);
+    when(appManager.subscriptionManager.isPro).thenReturn(false);
+    when(appManager.authManager.state).thenReturn(AuthState.loggedOut);
+
+    facilitator = TestDataSourceFacilitator(appManager.app);
+    await facilitator.initialize();
+    expect(facilitator.initializeLocalDataCount, 1);
+
+    controller.add(null);
+    await Future.delayed(Duration(milliseconds: 50));
+    expect(facilitator.clearLocalDataCount, 1);
+  });
+
   test("Firestore is initialized when pro and subclass enabled", () async {
     when(appManager.appPreferenceManager.lastLoggedInEmail).thenReturn(null);
     when(appManager.authManager.userId).thenReturn(null);
