@@ -81,18 +81,6 @@ void main() {
     verify(facilitator.listener.cancel()).called(1);
   });
 
-  test("Local data is cleared when logged in user changes", () async {
-    when(appManager.appPreferenceManager.lastLoggedInEmail).thenReturn(null);
-    when(appManager.authManager.userId).thenReturn("USER_ID");
-    when(appManager.subscriptionManager.stream)
-        .thenAnswer((_) => Stream.empty());
-    when(appManager.subscriptionManager.isPro).thenReturn(false);
-
-    await facilitator.initialize();
-    await Future.delayed(Duration(milliseconds: 50));
-    expect(facilitator.clearLocalDataCount, 1);
-  });
-
   test("Firestore is initialized when pro and subclass enabled", () async {
     when(appManager.appPreferenceManager.lastLoggedInEmail).thenReturn(null);
     when(appManager.authManager.userId).thenReturn(null);

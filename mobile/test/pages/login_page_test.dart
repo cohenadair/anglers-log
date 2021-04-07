@@ -15,6 +15,8 @@ void main() {
 
   setUp(() {
     appManager = StubbedAppManager();
+
+    when(appManager.appPreferenceManager.lastLoggedInEmail).thenReturn(null);
   });
 
   testWidgets("Button disabled when input is invalid", (tester) async {

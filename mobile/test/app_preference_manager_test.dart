@@ -28,9 +28,10 @@ void main() {
   test("lastLoggedInUserEmail is set on login", () async {
     var controller = StreamController<void>.broadcast();
     when(appManager.authManager.stream).thenAnswer((_) => controller.stream);
-    when(appManager.authManager.userId).thenReturn("test@test.com");
+    when(appManager.authManager.userEmail).thenReturn("test@test.com");
 
     preferenceManager = AppPreferenceManager(appManager.app);
+    await preferenceManager.initialize();
 
     when(appManager.authManager.state).thenReturn(AuthState.loggedIn);
     controller.add(null);

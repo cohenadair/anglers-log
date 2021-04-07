@@ -105,8 +105,9 @@ void main() {
     expect(entityManager.entityCount, 2);
 
     entityManager.clearMemory();
-    verify(appManager.localDatabaseManager.deleteEntity(any, any)).called(2);
+    verifyNever(appManager.localDatabaseManager.deleteEntity(any, any));
     verifyNever(appManager.firestoreWrapper.collection(any));
+    expect(entityManager.entityCount, 0);
   });
 
   test("Test initialize Firestore", () async {
