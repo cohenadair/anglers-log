@@ -153,7 +153,17 @@ class AuthManager {
     return AuthError.unknownFirebaseException;
   }
 
+  // Note that we need to initialize managers in sequence, as opposed to being
+  // initialized in an AuthManagerListener callback. This is because there is
+  // no guarantee of order execution in a Stream listener, and we need
+  // guaranteed order when initializing local data. CatchManager, for example,
+  // expects that SpeciesManager is already initialized with all its Species
+  // objects.
   Future<void> _initializeManagers() async {
+    // Need to initialize the local database before anything else, since all
+    // entity managers depend on the local database.
+    await _appManager.localDatabaseManager.initialize();
+
     // First initialize managers that are dependents of other managers.
     await _appManager.speciesManager.initialize();
 

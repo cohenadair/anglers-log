@@ -1,6 +1,7 @@
 import 'dart:typed_data';
 
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mobile/auth_manager.dart';
 import 'package:mobile/local_database_manager.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mockito/mockito.dart';
@@ -19,10 +20,12 @@ void main() {
     appManager = StubbedAppManager();
     database = MockDatabaseExecutor();
 
+    when(appManager.authManager.state).thenReturn(AuthState.initializing);
+    when(appManager.authManager.userId).thenReturn("ID");
+
     databaseManager = LocalDatabaseManager(appManager.app);
     await databaseManager.initialize(
       database: database,
-      openDatabase: () => Future.value(database),
     );
   });
 

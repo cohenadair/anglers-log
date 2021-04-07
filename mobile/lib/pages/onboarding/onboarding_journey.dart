@@ -1,11 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:mobile/wrappers/permission_handler_wrapper.dart';
 
 import '../../app_manager.dart';
 import '../../channels/migration_channel.dart';
 import '../../database/legacy_importer.dart';
 import '../../log.dart';
+import '../../wrappers/permission_handler_wrapper.dart';
 import 'catch_field_picker_page.dart';
 import 'how_to_feedback_page.dart';
 import 'how_to_manage_fields_page.dart';

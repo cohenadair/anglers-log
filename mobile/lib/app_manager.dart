@@ -34,6 +34,7 @@ import 'wrappers/permission_handler_wrapper.dart';
 import 'wrappers/photo_manager_wrapper.dart';
 import 'wrappers/purchases_wrapper.dart';
 import 'wrappers/services_wrapper.dart';
+import 'wrappers/shared_preferences_wrapper.dart';
 import 'wrappers/url_launcher_wrapper.dart';
 
 class AppManager {
@@ -76,6 +77,7 @@ class AppManager {
   PhotoManagerWrapper? _photoManagerWrapper;
   PurchasesWrapper? _purchasesWrapper;
   ServicesWrapper? _servicesWrapper;
+  SharedPreferencesWrapper? _sharedPreferencesWrapper;
   UrlLauncherWrapper? _urlLauncherWrapper;
 
   AppPreferenceManager get appPreferenceManager {
@@ -307,6 +309,13 @@ class AppManager {
       _servicesWrapper = ServicesWrapper();
     }
     return _servicesWrapper!;
+  }
+
+  SharedPreferencesWrapper get sharedPreferencesWrapper {
+    if (_sharedPreferencesWrapper == null) {
+      _sharedPreferencesWrapper = SharedPreferencesWrapper();
+    }
+    return _sharedPreferencesWrapper!;
   }
 
   UrlLauncherWrapper get urlLauncherWrapper {

@@ -49,10 +49,8 @@ abstract class PreferenceManager extends DataSourceFacilitator {
   }
 
   @override
-  Future<void> clearLocalData() async {
-    for (var key in List.of(preferences.keys)) {
-      putLocal(key, null);
-    }
+  void clearMemory() {
+    preferences.clear();
   }
 
   @override
@@ -62,8 +60,12 @@ abstract class PreferenceManager extends DataSourceFacilitator {
     return firestore.doc(firestoreDocPath!).snapshots().listen((snapshot) {
       var data = snapshot.data();
       if (data != null) {
-        // Completely replace local data with the Firestore document.
-        clearLocalData();
+        // Completely replace local data with the Firestore document. For
+        // preferences, Firestore is always the source of truth.
+        for (var key in List.of(preferences.keys)) {
+          putLocal(key, null);
+        }
+
         for (var entry in data.entries) {
           putLocal(entry.key, entry.value);
         }

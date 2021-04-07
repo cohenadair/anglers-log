@@ -15,6 +15,8 @@ void main() {
 
   setUp(() {
     appManager = StubbedAppManager();
+
+    when(appManager.appPreferenceManager.lastLoggedInEmail).thenReturn(null);
   });
 
   testWidgets("Button disabled when input is invalid", (tester) async {
@@ -201,5 +203,17 @@ void main() {
     await tester.pump(Duration(milliseconds: 100));
 
     expect(findFirst<AnimatedVisibility>(tester).visible, isTrue);
+  });
+
+  testWidgets("Email is populated with last logged in email", (tester) async {
+    when(appManager.appPreferenceManager.lastLoggedInEmail)
+        .thenReturn("test@test.com");
+
+    await tester.pumpWidget(Testable(
+      (_) => LoginPage(),
+      appManager: appManager,
+    ));
+
+    expect(find.text("test@test.com"), findsOneWidget);
   });
 }

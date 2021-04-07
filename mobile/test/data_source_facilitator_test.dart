@@ -22,7 +22,7 @@ class TestDataSourceFacilitator extends DataSourceFacilitator {
   TestDataSourceFacilitator(AppManager appManager) : super(appManager);
 
   @override
-  Future<void> clearLocalData() async {
+  void clearMemory() {
     clearLocalDataCount++;
   }
 
@@ -66,7 +66,7 @@ void main() {
   test("Firestore listener is cancelled on logout", () async {
     var controller = StreamController<void>();
     when(appManager.authManager.stream).thenAnswer((_) => controller.stream);
-    when(appManager.appPreferenceManager.lastLoggedInUserId).thenReturn(null);
+    when(appManager.appPreferenceManager.lastLoggedInEmail).thenReturn(null);
     when(appManager.subscriptionManager.isPro).thenReturn(true);
     when(appManager.authManager.state).thenReturn(AuthState.loggedOut);
 
@@ -81,20 +81,24 @@ void main() {
     verify(facilitator.listener.cancel()).called(1);
   });
 
-  test("Local data is cleared when logged in user changes", () async {
-    when(appManager.appPreferenceManager.lastLoggedInUserId).thenReturn(null);
-    when(appManager.authManager.userId).thenReturn("USER_ID");
-    when(appManager.subscriptionManager.stream)
-        .thenAnswer((_) => Stream.empty());
+  test("Memory is cleared on logout", () async {
+    var controller = StreamController<void>();
+    when(appManager.authManager.stream).thenAnswer((_) => controller.stream);
+    when(appManager.appPreferenceManager.lastLoggedInEmail).thenReturn(null);
     when(appManager.subscriptionManager.isPro).thenReturn(false);
+    when(appManager.authManager.state).thenReturn(AuthState.loggedOut);
 
+    facilitator = TestDataSourceFacilitator(appManager.app);
     await facilitator.initialize();
+    expect(facilitator.initializeLocalDataCount, 1);
+
+    controller.add(null);
     await Future.delayed(Duration(milliseconds: 50));
     expect(facilitator.clearLocalDataCount, 1);
   });
 
   test("Firestore is initialized when pro and subclass enabled", () async {
-    when(appManager.appPreferenceManager.lastLoggedInUserId).thenReturn(null);
+    when(appManager.appPreferenceManager.lastLoggedInEmail).thenReturn(null);
     when(appManager.authManager.userId).thenReturn(null);
     when(appManager.subscriptionManager.isPro).thenReturn(true);
 
@@ -105,7 +109,7 @@ void main() {
   });
 
   test("Local data initialization only", () async {
-    when(appManager.appPreferenceManager.lastLoggedInUserId).thenReturn(null);
+    when(appManager.appPreferenceManager.lastLoggedInEmail).thenReturn(null);
     when(appManager.authManager.userId).thenReturn(null);
     when(appManager.subscriptionManager.stream)
         .thenAnswer((_) => Stream.empty());

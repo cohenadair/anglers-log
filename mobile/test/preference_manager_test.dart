@@ -28,7 +28,7 @@ class TestPreferenceManager extends PreferenceManager {
 
   Map<String, dynamic> get prefs => preferences;
 
-  void clearLocal() => clearLocalData();
+  void clearLocal() => clearMemory();
 
   int? get testInt => preferences["test_int"];
 
@@ -61,7 +61,7 @@ void main() {
   setUp(() async {
     appManager = StubbedAppManager();
 
-    when(appManager.appPreferenceManager.lastLoggedInUserId).thenReturn("");
+    when(appManager.appPreferenceManager.lastLoggedInEmail).thenReturn("");
 
     when(appManager.authManager.stream).thenAnswer((_) => Stream.empty());
 
@@ -81,7 +81,7 @@ void main() {
   });
 
   test("Test initialize local data", () async {
-    when(appManager.appPreferenceManager.lastLoggedInUserId).thenReturn(null);
+    when(appManager.appPreferenceManager.lastLoggedInEmail).thenReturn(null);
     when(appManager.authManager.userId).thenReturn("ID");
 
     when(appManager.localDatabaseManager.fetchAll(preferenceManager.tableName))

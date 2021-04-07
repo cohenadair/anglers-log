@@ -20,6 +20,8 @@ void main() {
   setUp(() {
     appManager = StubbedAppManager();
 
+    when(appManager.appPreferenceManager.lastLoggedInEmail).thenReturn(null);
+
     when(appManager.authManager.initialize())
         .thenAnswer((_) => Future.value(null));
     when(appManager.authManager.userId).thenReturn(Uuid().v4());

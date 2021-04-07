@@ -1,47 +1,47 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:quiver/strings.dart';
 
 import 'app_manager.dart';
 import 'auth_manager.dart';
-import 'preference_manager.dart';
+import 'wrappers/shared_preferences_wrapper.dart';
 
 /// Preferences at the app level, such as the last user ID to be signed in.
 /// Preferences managed by this class are not backed up to Firebase, regardless
 /// of the current user's subscription status.
-class AppPreferenceManager extends PreferenceManager {
+class AppPreferenceManager {
   static AppPreferenceManager of(BuildContext context) =>
       Provider.of<AppManager>(context, listen: false).appPreferenceManager;
 
-  static const _keyLastLoggedInUserId = "last_logged_in_user_id";
+  static const _keyLastLoggedInEmail = "last_logged_in_email";
 
-  AppPreferenceManager(AppManager appManager) : super(appManager) {
-    authManager.stream.listen((_) {
-      if (authManager.state == AuthState.loggedIn) {
-        lastLoggedInUserId = authManager.userId;
+  final AppManager _appManager;
+  final Map<String, dynamic> _preferences = {};
+
+  AuthManager get _authManager => _appManager.authManager;
+
+  SharedPreferencesWrapper get _sharedPreferences =>
+      _appManager.sharedPreferencesWrapper;
+
+  AppPreferenceManager(this._appManager);
+
+  Future<void> initialize() async {
+    _authManager.stream.listen((_) {
+      if (_authManager.state == AuthState.loggedIn) {
+        lastLoggedInEmail = _authManager.userEmail;
       }
     });
   }
 
-  @override
-  String get tableName => "app_preference";
-
-  @override
-  String? get firestoreDocPath => null;
-
-  @override
-  bool get enableFirestore => false;
-
-  @override
-  StreamSubscription? initializeFirestore(Completer completer) => null;
-
-  @override
-  void onUpgradeToPro() {
-    // Nothing to do. App preferences are never stored in the cloud.
+  set lastLoggedInEmail(String? email) {
+    if (isEmpty(email)) {
+      _sharedPreferences.remove(_keyLastLoggedInEmail);
+      _preferences.remove(_keyLastLoggedInEmail);
+    } else {
+      _sharedPreferences.setString(_keyLastLoggedInEmail, email!);
+      _preferences[_keyLastLoggedInEmail] = email;
+    }
   }
 
-  set lastLoggedInUserId(String? id) => put(_keyLastLoggedInUserId, id);
-
-  String? get lastLoggedInUserId => preferences[_keyLastLoggedInUserId];
+  String? get lastLoggedInEmail => _preferences[_keyLastLoggedInEmail];
 }

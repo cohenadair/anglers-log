@@ -134,13 +134,12 @@ class _AnglersLogState extends State<AnglersLog> {
 
   Future<bool> _initialize() async {
     // Initialize managers that don't depend on authentication status.
+    await _app.appPreferenceManager.initialize();
     await _app.firebaseWrapper.initializeApp();
-    await _app.localDatabaseManager.initialize();
     await _app.locationMonitor.initialize();
     await _app.propertiesManager.initialize();
     await _app.subscriptionManager.initialize();
 
-    await _app.appPreferenceManager.initialize();
     await _app.authManager.initialize();
 
     // If the user hasn't yet onboarded, see if there is any legacy data to
