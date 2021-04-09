@@ -402,20 +402,24 @@ void main() {
       when(databaseDir.deleteSync(recursive: true)).thenAnswer((_) {});
       when(ioWrapper.directory("test/database")).thenReturn(databaseDir);
 
+      var called = false;
       var importer = LegacyImporter.migrate(
-          appManager.app,
-          LegacyJsonResult(
-            databasePath: "test/database",
-            imagesPath: "test/images",
-            json: {
-              "journal": {
-                "userDefines": [],
-              },
+        appManager.app,
+        LegacyJsonResult(
+          databasePath: "test/database",
+          imagesPath: "test/images",
+          json: {
+            "journal": {
+              "userDefines": [],
             },
-          ));
+          },
+        ),
+        () => called = true,
+      );
       await importer.start();
       verify(imagesDir.deleteSync()).called(1);
       verify(databaseDir.deleteSync(recursive: true)).called(1);
+      expect(called, isTrue);
     });
   });
 }

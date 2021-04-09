@@ -14,10 +14,12 @@ import 'migration_page.dart';
 
 class OnboardingJourney extends StatefulWidget {
   final LegacyJsonResult? legacyJsonResult;
+  final VoidCallback? onFinishedMigration;
   final VoidCallback onFinished;
 
   OnboardingJourney({
     this.legacyJsonResult,
+    this.onFinishedMigration,
     required this.onFinished,
   });
 
@@ -85,7 +87,8 @@ class _OnboardingJourneyState extends State<OnboardingJourney> {
   Route<dynamic> _buildMigrationPageRoute(LegacyJsonResult legacyJsonResult) {
     return MaterialPageRoute(
       builder: (context) => MigrationPage(
-        importer: LegacyImporter.migrate(_appManager, legacyJsonResult),
+        importer: LegacyImporter.migrate(
+            _appManager, legacyJsonResult, widget.onFinishedMigration),
         onNext: () => Navigator.of(context).pushNamed(_routeCatchFields),
       ),
     );

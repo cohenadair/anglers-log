@@ -105,6 +105,10 @@ class _AnglersLogState extends State<AnglersLog> {
             } else {
               child = OnboardingJourney(
                 legacyJsonResult: _legacyJsonResult,
+                // Clear legacy result when migration has completed. This
+                // prevents the migration page from showing when switching
+                // users (see issue #502).
+                onFinishedMigration: () => _legacyJsonResult = null,
                 onFinished: () => setState(() {
                   _userPreferencesManager.didOnboard = true;
                 }),

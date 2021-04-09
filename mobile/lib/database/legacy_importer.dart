@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
+import 'dart:ui';
 
 import 'package:archive/archive.dart';
 import 'package:fixnum/fixnum.dart';
@@ -64,6 +65,7 @@ class LegacyImporter {
   final File? _zipFile;
   final Map<String, File> _images = {};
   final LegacyJsonResult? _legacyJsonResult;
+  final VoidCallback? _onFinish;
   Map<String, dynamic> _json = {};
 
   IoWrapper get _ioWrapper => _appManager.ioWrapper;
@@ -71,10 +73,14 @@ class LegacyImporter {
   LegacyImporter(AppManager appManager, File? zipFile)
       : _appManager = appManager,
         _zipFile = zipFile,
-        _legacyJsonResult = null;
+        _legacyJsonResult = null,
+        _onFinish = null;
 
-  LegacyImporter.migrate(AppManager appManager, LegacyJsonResult result)
-      : _appManager = appManager,
+  LegacyImporter.migrate(
+    AppManager appManager,
+    LegacyJsonResult result, [
+    this._onFinish,
+  ])  : _appManager = appManager,
         _zipFile = null,
         _legacyJsonResult = result;
 
@@ -94,8 +100,14 @@ class LegacyImporter {
 
   String get _jsonString => jsonEncode(_json);
 
-  Future<void> start() =>
-      _legacyJsonResult == null ? _startArchive() : _startMigration();
+  Future<void> start() async {
+    if (_legacyJsonResult == null) {
+      await _startArchive();
+    } else {
+      await _startMigration();
+    }
+    _onFinish?.call();
+  }
 
   Future<void> _startMigration() async {
     // If there was an error in the platform channel, end the future
