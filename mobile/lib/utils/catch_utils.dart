@@ -8,6 +8,8 @@ import '../widgets/input_data.dart';
 
 // Unique IDs for each catch field. These are stored in the database and
 // should not be changed.
+Id catchFieldIdAngler() => Id()..uuid = "d1568a03-c34f-4840-b032-b0b3077847d3";
+
 Id catchFieldIdTimestamp() =>
     Id()..uuid = "dbe382be-b219-4703-af11-a8ce16a191b7";
 
@@ -51,6 +53,11 @@ List<Field> allCatchFields() {
       name: (context) => Strings.of(context).catchFieldFishingSpot,
       description: (context) =>
           Strings.of(context).catchFieldFishingSpotDescription,
+      controller: IdInputController(),
+    ),
+    Field(
+      id: catchFieldIdAngler(),
+      name: (context) => Strings.of(context).catchFieldAnglerLabel,
       controller: IdInputController(),
     ),
   ];

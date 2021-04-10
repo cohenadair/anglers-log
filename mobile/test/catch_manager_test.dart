@@ -27,6 +27,8 @@ void main() {
   setUp(() {
     appManager = StubbedAppManager();
 
+    when(appManager.anglerManager.matchesFilter(any, any)).thenReturn(false);
+
     when(appManager.authManager.stream).thenAnswer((_) => Stream.empty());
 
     baitCategoryManager = appManager.baitCategoryManager;
@@ -226,6 +228,68 @@ void main() {
 
     var context = await buildContext(tester, appManager: appManager);
     expect(catchManager.filteredCatches(context, filter: "Species").length, 2);
+  });
+
+  testWidgets("Filtering by search query; angler", (tester) async {
+    when(appManager.anglerManager.matchesFilter(any, any)).thenReturn(true);
+
+    await catchManager.addOrUpdate(Catch()
+      ..id = randomId()
+      ..anglerId = randomId());
+    await catchManager.addOrUpdate(Catch()
+      ..id = randomId()
+      ..anglerId = randomId());
+
+    var context = await buildContext(tester, appManager: appManager);
+    expect(catchManager.filteredCatches(context, filter: "Angler").length, 2);
+  });
+
+  testWidgets("Filtering by angler", (tester) async {
+    when(dataManager.insertOrReplace(any, any))
+        .thenAnswer((_) => Future.value(true));
+
+    var anglerId0 = randomId();
+    var anglerId1 = randomId();
+    var anglerId2 = randomId();
+
+    await catchManager.addOrUpdate(Catch()
+      ..id = randomId()
+      ..timestamp = Int64(DateTime(2020, 1, 1).millisecondsSinceEpoch)
+      ..anglerId = anglerId0);
+    await catchManager.addOrUpdate(Catch()
+      ..id = randomId()
+      ..timestamp = Int64(DateTime(2020, 2, 2).millisecondsSinceEpoch)
+      ..anglerId = anglerId1);
+    await catchManager.addOrUpdate(Catch()
+      ..id = randomId()
+      ..timestamp = Int64(DateTime(2020, 2, 2).millisecondsSinceEpoch)
+      ..anglerId = anglerId1);
+    await catchManager.addOrUpdate(Catch()
+      ..id = randomId()
+      ..timestamp = Int64(DateTime(2020, 4, 4).millisecondsSinceEpoch)
+      ..anglerId = anglerId2);
+
+    var context = await buildContext(tester, appManager: appManager);
+    var catches = catchManager.filteredCatches(
+      context,
+      anglerIds: {anglerId1},
+    );
+    expect(catches.length, 2);
+
+    catches = catchManager.filteredCatches(
+      context,
+      anglerIds: {anglerId1, anglerId2},
+    );
+    expect(catches.length, 3);
+
+    catches = catchManager.filteredCatches(context);
+    expect(catches.length, 4);
+
+    catches = catchManager.filteredCatches(
+      context,
+      anglerIds: {randomId()},
+    );
+    expect(catches.isEmpty, true);
   });
 
   testWidgets("Filtering by species", (tester) async {

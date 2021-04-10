@@ -9,6 +9,7 @@ import 'package:intl/intl.dart';
 import 'package:path/path.dart';
 import 'package:quiver/strings.dart';
 
+import '../angler_manager.dart';
 import '../app_manager.dart';
 import '../bait_category_manager.dart';
 import '../bait_manager.dart';
@@ -33,6 +34,7 @@ enum LegacyImporterError {
 class LegacyImporter {
   static const _fileExtensionJson = ".json";
 
+  static const _keyAnglers = "anglers";
   static const _keyBaitCategories = "baitCategories";
   static const _keyBaitCategory = "baitCategory";
   static const _keyBaits = "baits";
@@ -83,6 +85,8 @@ class LegacyImporter {
   ])  : _appManager = appManager,
         _zipFile = null,
         _legacyJsonResult = result;
+
+  AnglerManager get _anglerManager => _appManager.anglerManager;
 
   BaitCategoryManager get _baitCategoryManager =>
       _appManager.baitCategoryManager;
@@ -173,6 +177,7 @@ class LegacyImporter {
           StackTrace.fromString(_jsonString));
     }
 
+    List<dynamic>? anglers;
     List<dynamic>? baitCategories;
     List<dynamic>? baits;
     List<dynamic>? locations;
@@ -185,6 +190,9 @@ class LegacyImporter {
       }
 
       switch (map[_keyName]) {
+        case "Anglers":
+          anglers = map[_keyAnglers];
+          break;
         case "Baits":
           baits = map[_keyBaits];
           break;
@@ -204,6 +212,7 @@ class LegacyImporter {
     }
 
     // Categories need to be imported before baits.
+    await _importAnglers(anglers);
     await _importBaitCategories(baitCategories);
     await _importBaits(baits);
     await _importLocations(locations);
@@ -250,6 +259,15 @@ class LegacyImporter {
 
       await _baitManager.addOrUpdate(bait);
     }
+  }
+
+  Future<void> _importAnglers(List<dynamic>? anglers) async {
+    await _importNamedEntity(
+      anglers,
+      (name, id) async => await _anglerManager.addOrUpdate(Angler()
+        ..id = id
+        ..name = name),
+    );
   }
 
   Future<void> _importBaitCategories(List<dynamic>? categories) async {

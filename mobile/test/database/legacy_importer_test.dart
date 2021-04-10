@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mobile/angler_manager.dart';
 import 'package:mobile/bait_category_manager.dart';
 import 'package:mobile/bait_manager.dart';
 import 'package:mobile/catch_manager.dart';
@@ -23,6 +24,7 @@ void main() {
 
   late MockIoWrapper ioWrapper;
 
+  late AnglerManager anglerManager;
   late BaitCategoryManager baitCategoryManager;
   late BaitManager baitManager;
   late CatchManager catchManager;
@@ -54,6 +56,9 @@ void main() {
 
     when(appManager.pathProviderWrapper.temporaryPath)
         .thenAnswer((_) => Future.value(tmpPath));
+
+    anglerManager = AnglerManager(appManager.app);
+    when(appManager.app.anglerManager).thenReturn(anglerManager);
 
     baitCategoryManager = BaitCategoryManager(appManager.app);
     when(appManager.app.baitCategoryManager).thenReturn(baitCategoryManager);
@@ -155,6 +160,7 @@ void main() {
 
     await LegacyImporter(appManager.app, file).start();
 
+    expect(anglerManager.entityCount, 4);
     expect(baitCategoryManager.entityCount, 3);
     expect(baitManager.entityCount, 72);
     expect(catchManager.entityCount, 133);
@@ -324,6 +330,17 @@ void main() {
     expect(categories.length, 1);
     expect(categories.first.id.uuid, "b860cddd-dc47-48a2-8d02-c8112a2ed5eb");
     expect(categories.first.name, "Other");
+  });
+
+  test("Import Android anglers", () async {
+    var file = File("test/resources/backups/legacy_android_entities.zip");
+    await LegacyImporter(appManager.app, file).start();
+
+    var categories = anglerManager.list();
+    expect(categories, isNotNull);
+    expect(categories.length, 4);
+    expect(categories.first.id.uuid, "a0bf8683-675d-4759-8da8-34f81545ad69");
+    expect(categories.first.name, "Cohen");
   });
 
   testWidgets("Import Android images", (tester) async {

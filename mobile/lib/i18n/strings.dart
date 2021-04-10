@@ -189,6 +189,8 @@ class Strings {
 
   String get catchFieldBaitLabel => _string("catchField_bait");
 
+  String get catchFieldAnglerLabel => _string("catchField_angler");
+
   String get saveCustomReportPageNewTitle =>
       _string("saveCustomReportPage_newTitle");
 
@@ -212,6 +214,9 @@ class Strings {
 
   String get saveCustomReportPageEndDateRangeLabel =>
       _string("saveCustomReportPage_endDateRangeLabel");
+
+  String get saveCustomReportPageAllAnglers =>
+      _string("saveCustomReportPage_allAnglers");
 
   String get saveCustomReportPageSpecies =>
       _string("saveCustomReportPage_species");
@@ -308,6 +313,33 @@ class Strings {
 
   String get baitCategoryListPageEmptyListDescription =>
       _string("baitCategoryListPage_emptyListDescription");
+
+  String get saveAnglerPageNewTitle => _string("saveAnglerPage_newTitle");
+
+  String get saveAnglerPageEditTitle => _string("saveAnglerPage_editTitle");
+
+  String get saveAnglerPageExistsMessage =>
+      _string("saveAnglerPage_existsMessage");
+
+  String get anglerListPageMenuTitle => _string("anglerListPage_menuTitle");
+
+  String get anglerListPageTitle => _string("anglerListPage_title");
+
+  String get anglerListPagePickerTitle => _string("anglerListPage_pickerTitle");
+
+  String get anglerListPageDeleteMessage =>
+      _string("anglerListPage_deleteMessage");
+
+  String get anglerListPageDeleteMessageSingular =>
+      _string("anglerListPage_deleteMessageSingular");
+
+  String get anglerListPageSearchHint => _string("anglerListPage_searchHint");
+
+  String get anglerListPageEmptyListTitle =>
+      _string("anglerListPage_emptyListTitle");
+
+  String get anglerListPageEmptyListDescription =>
+      _string("anglerListPage_emptyListDescription");
 
   String get statsPageMenuTitle => _string("statsPage_menuTitle");
 

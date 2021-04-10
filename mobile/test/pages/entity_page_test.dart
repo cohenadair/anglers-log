@@ -8,6 +8,7 @@ import 'package:mobile/model/gen/anglerslog.pb.dart';
 import 'package:mobile/pages/entity_page.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mobile/widgets/button.dart';
+import 'package:mobile/widgets/list_item.dart';
 import 'package:mobile/widgets/photo.dart';
 import 'package:mockito/mockito.dart';
 
@@ -292,5 +293,60 @@ void main() {
 
     expect(find.text("Child 1"), findsOneWidget);
     expect(find.text("Child 2"), findsOneWidget);
+  });
+
+  testWidgets("Scrolling shows new action buttons", (tester) async {
+    await image(tester, "flutter_logo.png");
+
+    await tester.pumpWidget(
+      Testable(
+        (_) => EntityPage(
+          onEdit: () {},
+          onDelete: () {},
+          deleteMessage: "Delete",
+          imageNames: [
+            "flutter_logo.png",
+          ],
+          children: [
+            ListItem(title: Text("Child")),
+            ListItem(title: Text("Child")),
+            ListItem(title: Text("Child")),
+            ListItem(title: Text("Child")),
+            ListItem(title: Text("Child")),
+            ListItem(title: Text("Child")),
+            ListItem(title: Text("Child")),
+            ListItem(title: Text("Child")),
+            ListItem(title: Text("Child")),
+            ListItem(title: Text("Last")),
+          ],
+        ),
+        mediaQueryData: MediaQueryData(
+          size: Size(300, 500),
+        ),
+      ),
+    );
+
+    // Verify buttons are floating.
+    expect(find.byType(Photo), findsOneWidget);
+    expect(find.byType(FloatingButton), findsNWidgets(3));
+    expect(find.byIcon(Icons.edit), findsOneWidget);
+    tester
+        .widgetList<FloatingButton>(find.byType(FloatingButton))
+        .forEach((button) {
+      expect(button.transparentBackground, isFalse);
+    });
+
+    // Scroll enough for the buttons to change.
+    await tester.scrollUntilVisible(find.text("Last"), 100,
+        scrollable: find.byType(Scrollable).first);
+    await tester.pumpAndSettle();
+
+    expect(find.byType(FloatingButton), findsNWidgets(3));
+    expect(find.text("EDIT"), findsOneWidget);
+    tester
+        .widgetList<FloatingButton>(find.byType(FloatingButton))
+        .forEach((button) {
+      expect(button.transparentBackground, isTrue);
+    });
   });
 }

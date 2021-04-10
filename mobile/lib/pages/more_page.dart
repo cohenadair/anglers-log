@@ -15,6 +15,7 @@ import '../utils/page_utils.dart';
 import '../utils/store_utils.dart';
 import '../widgets/list_item.dart';
 import '../widgets/widget.dart';
+import 'angler_list_page.dart';
 import 'scroll_page.dart';
 
 class MorePage extends StatelessWidget {
@@ -37,6 +38,12 @@ class MorePage extends StatelessWidget {
         centerTitle: true,
       ),
       children: [
+        _buildPageItem(
+          context,
+          icon: Icons.person,
+          title: Strings.of(context).anglerListPageMenuTitle,
+          page: AnglerListPage(),
+        ),
         _buildPageItem(
           context,
           icon: CustomIcons.baitCategories,

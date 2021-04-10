@@ -271,6 +271,21 @@ abstract class EntityManager<T extends GeneratedMessage>
     }
   }
 
+  @protected
+  int numberOf<T extends GeneratedMessage>(
+      Id? id, List<T> items, Id Function(T) propertyId) {
+    if (id == null) {
+      return 0;
+    }
+
+    var result = 0;
+    for (var entity in items) {
+      result += id == propertyId(entity) ? 1 : 0;
+    }
+
+    return result;
+  }
+
   Future<List<T>> _fetchAll() async {
     return (await localDatabaseManager.fetchAll(tableName))
         .map(

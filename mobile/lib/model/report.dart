@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:quiver/strings.dart';
 
+import '../angler_manager.dart';
 import '../app_manager.dart';
 import '../bait_manager.dart';
 import '../catch_manager.dart';
@@ -25,6 +26,10 @@ class Report {
 
   /// When true, calculated collections include 0 quantities. Defaults to false.
   final bool includeZeros;
+
+  /// When set, data is only included in this model if associated with these
+  /// [Angler] IDs.
+  final Set<Id> anglerIds;
 
   /// When set, data is only included in this model if associated with these
   /// [Bait] IDs.
@@ -67,6 +72,8 @@ class Report {
   /// [displayDateRange].
   _MapOfMappedInt<Species?, Bait> _baitsPerSpecies = _MapOfMappedInt();
 
+  AnglerManager get _anglerManager => _appManager.anglerManager;
+
   BaitManager get _baitManager => _appManager.baitManager;
 
   CatchManager get _catchManager => _appManager.catchManager;
@@ -103,6 +110,7 @@ class Report {
     required this.context,
     this.includeZeros = false,
     this.sortOrder = ReportSortOrder.largestToSmallest,
+    this.anglerIds = const {},
     this.baitIds = const {},
     this.fishingSpotIds = const {},
     this.speciesIds = const {},
@@ -117,6 +125,7 @@ class Report {
     var catches = _catchManager.catchesSortedByTimestamp(
       context,
       dateRange: _dateRange,
+      anglerIds: anglerIds,
       baitIds: baitIds,
       fishingSpotIds: fishingSpotIds,
       speciesIds: speciesIds,
@@ -259,6 +268,13 @@ class Report {
       fishingSpotIds
           .where((id) => _fishingSpotManager.entity(id) != null)
           .map((id) => _fishingSpotManager.entity(id)!.name)
+          .toSet(),
+    );
+
+    result.addAll(
+      anglerIds
+          .where((id) => _anglerManager.entity(id) != null)
+          .map((id) => _anglerManager.entity(id)!.name)
           .toSet(),
     );
 

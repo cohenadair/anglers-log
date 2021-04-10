@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart' as google;
 import 'package:image_picker/image_picker.dart';
+import 'package:mobile/angler_manager.dart';
 import 'package:mobile/app_manager.dart';
 import 'package:mobile/app_preference_manager.dart';
 import 'package:mobile/auth_manager.dart';
@@ -59,6 +60,7 @@ import 'mocks.mocks.dart';
 
 // TODO: Remove generation - https://github.com/dart-lang/mockito/issues/347
 
+@GenerateMocks([AnglerManager])
 @GenerateMocks([AppManager])
 @GenerateMocks([AppPreferenceManager])
 @GenerateMocks([BaitCategoryManager])

@@ -7,6 +7,7 @@ import 'package:mobile/entity_manager.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mockito/mockito.dart';
+import 'package:protobuf/protobuf.dart';
 
 import 'mocks/mocks.dart';
 import 'mocks/mocks.mocks.dart';
@@ -31,6 +32,11 @@ class TestEntityManager extends EntityManager<Species> {
 
   @override
   String get tableName => "species";
+
+  @override
+  int numberOf<T extends GeneratedMessage>(
+          Id? id, List<T> items, Id Function(T) propertyId) =>
+      super.numberOf<T>(id, items, propertyId);
 }
 
 void main() {
@@ -383,5 +389,52 @@ void main() {
   test("Only items matching filter are returned", () async {
     // Nothing to test. matchesFilter is an abstract method and should be
     // tested in subclass tests.
+  });
+
+  test("numberOf returns 0 if input ID is null", () async {
+    expect(entityManager.numberOf<Bait>(null, [], (bait) => bait.id), 0);
+  });
+
+  test("numberOf returns correct result", () async {
+    var anglerId0 = randomId();
+    var anglerId1 = randomId();
+    var anglerId2 = randomId();
+    var anglerId3 = randomId();
+
+    var catches = <Catch>[
+      Catch()
+        ..id = randomId()
+        ..anglerId = anglerId0,
+      Catch()
+        ..id = randomId()
+        ..anglerId = anglerId1,
+      Catch()
+        ..id = randomId()
+        ..anglerId = anglerId2,
+      Catch()
+        ..id = randomId()
+        ..anglerId = anglerId0,
+      Catch()
+        ..id = randomId()
+        ..anglerId = anglerId3,
+      Catch()..id = randomId()
+    ];
+
+    expect(
+        entityManager.numberOf<Catch>(
+            anglerId0, catches, (cat) => cat.anglerId),
+        2);
+    expect(
+        entityManager.numberOf<Catch>(
+            anglerId1, catches, (cat) => cat.anglerId),
+        1);
+    expect(
+        entityManager.numberOf<Catch>(
+            anglerId2, catches, (cat) => cat.anglerId),
+        1);
+    expect(
+        entityManager.numberOf<Catch>(
+            anglerId3, catches, (cat) => cat.anglerId),
+        1);
   });
 }

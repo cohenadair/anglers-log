@@ -73,11 +73,21 @@ final List<String> _schema0 = [
   """,
 ];
 
-final List<List<String>> _schema = [
-  _schema0,
+final List<String> _schema1 = [
+  """
+  CREATE TABLE angler (
+    id BLOB PRIMARY KEY,
+    bytes BLOB NOT NULL
+  );
+  """,
 ];
 
-final int _version = 1;
+final List<List<String>> _schema = [
+  _schema0,
+  _schema1,
+];
+
+final int _version = 2;
 
 Future<String> _databasePath(String userId) async =>
     join(await (getDatabasesPath() as FutureOr<String>), "2.0", userId, _name);

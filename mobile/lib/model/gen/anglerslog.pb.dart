@@ -525,6 +525,7 @@ class Catch extends $pb.GeneratedMessage {
     ..aOM<Id>(5, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'speciesId', subBuilder: Id.create)
     ..pPS(6, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'imageNames')
     ..pc<CustomEntityValue>(7, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'customEntityValues', $pb.PbFieldType.PM, subBuilder: CustomEntityValue.create)
+    ..aOM<Id>(8, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'anglerId', subBuilder: Id.create)
     ..hasRequiredFields = false;
 
   Catch._() : super();
@@ -536,6 +537,7 @@ class Catch extends $pb.GeneratedMessage {
     Id? speciesId,
     $core.Iterable<$core.String>? imageNames,
     $core.Iterable<CustomEntityValue>? customEntityValues,
+    Id? anglerId,
   }) {
     final _result = create();
     if (id != null) {
@@ -558,6 +560,9 @@ class Catch extends $pb.GeneratedMessage {
     }
     if (customEntityValues != null) {
       _result.customEntityValues.addAll(customEntityValues);
+    }
+    if (anglerId != null) {
+      _result.anglerId = anglerId;
     }
     return _result;
   }
@@ -660,6 +665,20 @@ class Catch extends $pb.GeneratedMessage {
 
   @$pb.TagNumber(7)
   $core.List<CustomEntityValue> get customEntityValues => $_getList(6);
+
+  @$pb.TagNumber(8)
+  Id get anglerId => $_getN(7);
+  @$pb.TagNumber(8)
+  set anglerId(Id v) {
+    setField(8, v);
+  }
+
+  @$pb.TagNumber(8)
+  $core.bool hasAnglerId() => $_has(7);
+  @$pb.TagNumber(8)
+  void clearAnglerId() => clearField(8);
+  @$pb.TagNumber(8)
+  Id ensureAnglerId() => $_ensure(7);
 }
 
 class FishingSpot extends $pb.GeneratedMessage {
@@ -899,6 +918,7 @@ class SummaryReport extends $pb.GeneratedMessage {
     ..pc<Id>(7, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'baitIds', $pb.PbFieldType.PM, subBuilder: Id.create)
     ..pc<Id>(8, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'fishingSpotIds', $pb.PbFieldType.PM, subBuilder: Id.create)
     ..pc<Id>(9, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'speciesIds', $pb.PbFieldType.PM, subBuilder: Id.create)
+    ..pc<Id>(10, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'anglerIds', $pb.PbFieldType.PM, subBuilder: Id.create)
     ..hasRequiredFields = false;
 
   SummaryReport._() : super();
@@ -912,6 +932,7 @@ class SummaryReport extends $pb.GeneratedMessage {
     $core.Iterable<Id>? baitIds,
     $core.Iterable<Id>? fishingSpotIds,
     $core.Iterable<Id>? speciesIds,
+    $core.Iterable<Id>? anglerIds,
   }) {
     final _result = create();
     if (id != null) {
@@ -940,6 +961,9 @@ class SummaryReport extends $pb.GeneratedMessage {
     }
     if (speciesIds != null) {
       _result.speciesIds.addAll(speciesIds);
+    }
+    if (anglerIds != null) {
+      _result.anglerIds.addAll(anglerIds);
     }
     return _result;
   }
@@ -1052,6 +1076,9 @@ class SummaryReport extends $pb.GeneratedMessage {
 
   @$pb.TagNumber(9)
   $core.List<Id> get speciesIds => $_getList(8);
+
+  @$pb.TagNumber(10)
+  $core.List<Id> get anglerIds => $_getList(9);
 }
 
 class ComparisonReport extends $pb.GeneratedMessage {
@@ -1082,6 +1109,7 @@ class ComparisonReport extends $pb.GeneratedMessage {
     ..pc<Id>(10, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'baitIds', $pb.PbFieldType.PM, subBuilder: Id.create)
     ..pc<Id>(11, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'fishingSpotIds', $pb.PbFieldType.PM, subBuilder: Id.create)
     ..pc<Id>(12, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'speciesIds', $pb.PbFieldType.PM, subBuilder: Id.create)
+    ..pc<Id>(13, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'anglerIds', $pb.PbFieldType.PM, subBuilder: Id.create)
     ..hasRequiredFields = false;
 
   ComparisonReport._() : super();
@@ -1098,6 +1126,7 @@ class ComparisonReport extends $pb.GeneratedMessage {
     $core.Iterable<Id>? baitIds,
     $core.Iterable<Id>? fishingSpotIds,
     $core.Iterable<Id>? speciesIds,
+    $core.Iterable<Id>? anglerIds,
   }) {
     final _result = create();
     if (id != null) {
@@ -1135,6 +1164,9 @@ class ComparisonReport extends $pb.GeneratedMessage {
     }
     if (speciesIds != null) {
       _result.speciesIds.addAll(speciesIds);
+    }
+    if (anglerIds != null) {
+      _result.anglerIds.addAll(anglerIds);
     }
     return _result;
   }
@@ -1283,6 +1315,99 @@ class ComparisonReport extends $pb.GeneratedMessage {
 
   @$pb.TagNumber(12)
   $core.List<Id> get speciesIds => $_getList(11);
+
+  @$pb.TagNumber(13)
+  $core.List<Id> get anglerIds => $_getList(12);
+}
+
+class Angler extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      const $core.bool.fromEnvironment('protobuf.omit_message_names')
+          ? ''
+          : 'Angler',
+      package: const $pb.PackageName(
+          const $core.bool.fromEnvironment('protobuf.omit_message_names')
+              ? ''
+              : 'anglerslog'),
+      createEmptyInstance: create)
+    ..aOM<Id>(
+        1,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'id',
+        subBuilder: Id.create)
+    ..aOS(
+        2,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'name')
+    ..hasRequiredFields = false;
+
+  Angler._() : super();
+  factory Angler({
+    Id? id,
+    $core.String? name,
+  }) {
+    final _result = create();
+    if (id != null) {
+      _result.id = id;
+    }
+    if (name != null) {
+      _result.name = name;
+    }
+    return _result;
+  }
+  factory Angler.fromBuffer($core.List<$core.int> i,
+          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(i, r);
+  factory Angler.fromJson($core.String i,
+          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(i, r);
+  @$core.Deprecated('Using this can add significant overhead to your binary. '
+      'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+      'Will be removed in next major version')
+  Angler clone() => Angler()..mergeFromMessage(this);
+  @$core.Deprecated('Using this can add significant overhead to your binary. '
+      'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+      'Will be removed in next major version')
+  Angler copyWith(void Function(Angler) updates) =>
+      super.copyWith((message) => updates(message as Angler))
+          as Angler; // ignore: deprecated_member_use
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static Angler create() => Angler._();
+  Angler createEmptyInstance() => create();
+  static $pb.PbList<Angler> createRepeated() => $pb.PbList<Angler>();
+  @$core.pragma('dart2js:noInline')
+  static Angler getDefault() =>
+      _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<Angler>(create);
+  static Angler? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  Id get id => $_getN(0);
+  @$pb.TagNumber(1)
+  set id(Id v) {
+    setField(1, v);
+  }
+
+  @$pb.TagNumber(1)
+  $core.bool hasId() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearId() => clearField(1);
+  @$pb.TagNumber(1)
+  Id ensureId() => $_ensure(0);
+
+  @$pb.TagNumber(2)
+  $core.String get name => $_getSZ(1);
+  @$pb.TagNumber(2)
+  set name($core.String v) {
+    $_setString(1, v);
+  }
+
+  @$pb.TagNumber(2)
+  $core.bool hasName() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearName() => clearField(2);
 }
 
 // ignore_for_file: constant_identifier_names,lines_longer_than_80_chars,directives_ordering,prefer_mixin,implementation_imports

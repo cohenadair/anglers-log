@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import 'angler_manager.dart';
 import 'app_preference_manager.dart';
 import 'auth_manager.dart';
 import 'bait_category_manager.dart';
@@ -42,6 +43,7 @@ class AppManager {
       Provider.of<AppManager>(context, listen: false);
 
   // Internal dependencies.
+  AnglerManager? _anglerManager;
   AppPreferenceManager? _appPreferenceManager;
   AuthManager? _authManager;
   BaitCategoryManager? _baitCategoryManager;
@@ -79,6 +81,13 @@ class AppManager {
   ServicesWrapper? _servicesWrapper;
   SharedPreferencesWrapper? _sharedPreferencesWrapper;
   UrlLauncherWrapper? _urlLauncherWrapper;
+
+  AnglerManager get anglerManager {
+    if (_anglerManager == null) {
+      _anglerManager = AnglerManager(this);
+    }
+    return _anglerManager!;
+  }
 
   AppPreferenceManager get appPreferenceManager {
     if (_appPreferenceManager == null) {

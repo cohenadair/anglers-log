@@ -1,4 +1,5 @@
 import 'package:fixnum/fixnum.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
 import 'package:mobile/pages/catch_page.dart';
@@ -101,5 +102,30 @@ void main() {
     await tester.pumpAndSettle(Duration(milliseconds: 250));
 
     expect(find.byType(StaticFishingSpot), findsOneWidget);
+  });
+
+  testWidgets("No angler renders empty", (tester) async {
+    await tester.pumpWidget(Testable(
+      (_) => CatchPage(Catch()),
+      appManager: appManager,
+    ));
+    // Wait for map timer to finish.
+    await tester.pumpAndSettle(Duration(milliseconds: 250));
+
+    expect(find.byIcon(Icons.person), findsNothing);
+  });
+
+  testWidgets("Angler renders", (tester) async {
+    when(appManager.anglerManager.entity(any)).thenReturn(Angler()
+      ..id = randomId()
+      ..name = "Cohen");
+    await tester.pumpWidget(Testable(
+      (_) => CatchPage(Catch()),
+      appManager: appManager,
+    ));
+    // Wait for map timer to finish.
+    await tester.pumpAndSettle(Duration(milliseconds: 250));
+
+    expect(find.byIcon(Icons.person), findsOneWidget);
   });
 }

@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:fixnum/fixnum.dart';
 import 'package:flutter/material.dart';
 
+import '../angler_manager.dart';
 import '../bait_category_manager.dart';
 import '../bait_manager.dart';
 import '../catch_manager.dart';
@@ -32,6 +33,7 @@ import '../widgets/list_item.dart';
 import '../widgets/list_picker_input.dart';
 import '../widgets/static_fishing_spot.dart';
 import '../widgets/widget.dart';
+import 'angler_list_page.dart';
 import 'manageable_list_page.dart';
 
 class SaveCatchPage extends StatefulWidget {
@@ -72,6 +74,7 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
   static final _idSpecies = catchFieldIdSpecies();
   static final _idFishingSpot = catchFieldIdFishingSpot();
   static final _idBait = catchFieldIdBait();
+  static final _idAngler = catchFieldIdAngler();
 
   final _log = Log("SaveCatchPage");
 
@@ -79,6 +82,8 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
 
   Future<List<PickedImage>> _imagesFuture = Future.value([]);
   List<CustomEntityValue> _customEntityValues = [];
+
+  AnglerManager get _anglerManager => AnglerManager.of(context);
 
   BaitCategoryManager get _baitCategoryManager =>
       BaitCategoryManager.of(context);
@@ -115,6 +120,9 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
   InputController<Id> get _baitController =>
       _fields[_idBait]!.controller as InputController<Id>;
 
+  InputController<Id> get _anglerController =>
+      _fields[_idAngler]!.controller as InputController<Id>;
+
   bool get _editing => _oldCatch != null;
 
   @override
@@ -134,6 +142,7 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
       _speciesController.value = _oldCatch!.speciesId;
       _baitController.value = _oldCatch!.baitId;
       _fishingSpotController.value = _oldCatch!.fishingSpotId;
+      _anglerController.value = _oldCatch!.anglerId;
       _customEntityValues = _oldCatch!.customEntityValues;
       _imagesFuture = _pickedImagesForOldCatch;
     } else {
@@ -185,6 +194,8 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
       return _buildFishingSpot();
     } else if (id == _idBait) {
       return _buildBait();
+    } else if (id == _idAngler) {
+      return _buildAngler();
     } else {
       _log.e("Unknown input key: $id");
       return Empty();
@@ -239,6 +250,35 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
                     return true;
                   },
                   initialValue: _baitManager.entity(_baitController.value),
+                ),
+              ),
+            );
+          },
+        );
+      },
+    );
+  }
+
+  Widget _buildAngler() {
+    return EntityListenerBuilder(
+      managers: [
+        _anglerManager,
+      ],
+      builder: (context) {
+        var angler = _anglerManager.entity(_anglerController.value);
+        return ListPickerInput(
+          title: Strings.of(context).catchFieldAnglerLabel,
+          value: angler?.name,
+          onTap: () {
+            push(
+              context,
+              AnglerListPage(
+                pickerSettings: ManageableListPagePickerSettings<Angler>.single(
+                  onPicked: (context, angler) {
+                    setState(() => _anglerController.value = angler?.id);
+                    return true;
+                  },
+                  initialValue: angler,
                 ),
               ),
             );
@@ -339,6 +379,10 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
 
     if (_baitController.value != null) {
       cat.baitId = _baitController.value!;
+    }
+
+    if (_anglerController.value != null) {
+      cat.anglerId = _anglerController.value!;
     }
 
     _catchManager.addOrUpdate(

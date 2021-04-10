@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:quiver/strings.dart';
 
+import 'angler_manager.dart';
 import 'app_manager.dart';
 import 'bait_manager.dart';
 import 'custom_entity_manager.dart';
@@ -21,6 +22,7 @@ class CatchManager extends EntityManager<Catch> {
   static CatchManager of(BuildContext context) =>
       Provider.of<AppManager>(context, listen: false).catchManager;
 
+  AnglerManager get _anglerManager => appManager.anglerManager;
   BaitManager get _baitManager => appManager.baitManager;
   CustomEntityManager get _customEntityManager =>
       appManager.customEntityManager;
@@ -52,6 +54,7 @@ class CatchManager extends EntityManager<Catch> {
         _speciesManager.matchesFilter(cat.speciesId, filter) ||
         _fishingSpotManager.matchesFilter(cat.fishingSpotId, filter) ||
         _baitManager.matchesFilter(cat.baitId, filter) ||
+        _anglerManager.matchesFilter(cat.anglerId, filter) ||
         context == null ||
         timestampToSearchString(context, cat.timestamp.toInt())
             .toLowerCase()
@@ -73,6 +76,7 @@ class CatchManager extends EntityManager<Catch> {
     String? filter,
     DateRange? dateRange,
     Set<Id> catchIds = const {},
+    Set<Id> anglerIds = const {},
     Set<Id> baitIds = const {},
     Set<Id> fishingSpotIds = const {},
     Set<Id> speciesIds = const {},
@@ -82,6 +86,7 @@ class CatchManager extends EntityManager<Catch> {
       filter: filter,
       dateRange: dateRange,
       catchIds: catchIds,
+      anglerIds: anglerIds,
       fishingSpotIds: fishingSpotIds,
       baitIds: baitIds,
       speciesIds: speciesIds,
@@ -96,6 +101,7 @@ class CatchManager extends EntityManager<Catch> {
     String? filter,
     DateRange? dateRange,
     Set<Id> catchIds = const {},
+    Set<Id> anglerIds = const {},
     Set<Id> baitIds = const {},
     Set<Id> fishingSpotIds = const {},
     Set<Id> speciesIds = const {},
@@ -103,6 +109,7 @@ class CatchManager extends EntityManager<Catch> {
     if (isEmpty(filter) &&
         dateRange == null &&
         catchIds.isEmpty &&
+        anglerIds.isEmpty &&
         baitIds.isEmpty &&
         fishingSpotIds.isEmpty &&
         speciesIds.isEmpty) {
@@ -113,6 +120,7 @@ class CatchManager extends EntityManager<Catch> {
       var valid = true;
       valid &= dateRange == null || dateRange.contains(cat.timestamp.toInt());
       valid &= catchIds.isEmpty || catchIds.contains(cat.id);
+      valid &= anglerIds.isEmpty || anglerIds.contains(cat.anglerId);
       valid &= baitIds.isEmpty || baitIds.contains(cat.baitId);
       valid &=
           fishingSpotIds.isEmpty || fishingSpotIds.contains(cat.fishingSpotId);

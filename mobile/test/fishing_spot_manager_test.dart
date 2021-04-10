@@ -150,30 +150,9 @@ void main() {
     ]);
 
     expect(fishingSpotManager.numberOfCatches(null), 0);
-    expect(
-      fishingSpotManager.numberOfCatches(FishingSpot()
-        ..name = "Spot 1"
-        ..id = fishingSpotId0
-        ..lat = 0
-        ..lng = 0),
-      2,
-    );
-    expect(
-      fishingSpotManager.numberOfCatches(FishingSpot()
-        ..name = "Spot 1"
-        ..id = fishingSpotId3
-        ..lat = 0
-        ..lng = 0),
-      1,
-    );
-    expect(
-      fishingSpotManager.numberOfCatches(FishingSpot()
-        ..name = "Spot 1"
-        ..id = fishingSpotId4
-        ..lat = 0
-        ..lng = 0),
-      1,
-    );
+    expect(fishingSpotManager.numberOfCatches(fishingSpotId0), 2);
+    expect(fishingSpotManager.numberOfCatches(fishingSpotId3), 1);
+    expect(fishingSpotManager.numberOfCatches(fishingSpotId4), 1);
   });
 
   group("deleteMessage", () {

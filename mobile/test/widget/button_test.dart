@@ -260,5 +260,30 @@ void main() {
         isNotNull,
       );
     });
+
+    testWidgets("Text", (tester) async {
+      await tester.pumpWidget(
+        Testable(
+          (_) => FloatingButton(
+            text: "Test",
+          ),
+        ),
+      );
+      expect(find.byType(Icon), findsNothing);
+      expect(find.text("TEST"), findsOneWidget);
+    });
+
+    testWidgets("Transparent background", (tester) async {
+      await tester.pumpWidget(
+        Testable(
+          (_) => FloatingButton(
+            icon: Icons.delete,
+            transparentBackground: true,
+          ),
+        ),
+      );
+      expect(findFirst<Container>(tester).decoration, isNull);
+      expect(findFirst<RawMaterialButton>(tester).fillColor, isNull);
+    });
   });
 }

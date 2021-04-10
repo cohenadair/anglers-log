@@ -555,6 +555,7 @@ class _StatsPageState extends State<StatsPage> {
       sortOrder: sortOrder,
       displayDateRange: DisplayDateRange.of(
           displayDateRangeId, startTimestamp.toInt(), endTimestamp.toInt()),
+      anglerIds: report.anglerIds.toSet(),
       baitIds: report.baitIds.toSet(),
       fishingSpotIds: report.fishingSpotIds.toSet(),
       speciesIds: report.speciesIds.toSet(),

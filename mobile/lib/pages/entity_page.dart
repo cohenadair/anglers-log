@@ -47,7 +47,11 @@ class _EntityPageState extends State<EntityPage> {
   final double _carouselDotSize = 8.0;
   final double _carouselOpacity = 0.5;
 
-  int _imageIndex = 0;
+  final _scrollController = ScrollController();
+  late VoidCallback _scrollListener;
+
+  var _imageIndex = 0;
+  var _isImageShowing = false;
   late PageController _imageController;
 
   bool get _hasImages => widget.imageNames.isNotEmpty;
@@ -58,14 +62,25 @@ class _EntityPageState extends State<EntityPage> {
   @override
   void initState() {
     super.initState();
+
     _imageController = PageController(
       initialPage: _imageIndex,
     );
+
+    _isImageShowing = _hasImages;
+    _scrollListener = _onScrollUpdated;
+    _scrollController.addListener(_scrollListener);
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _scrollController.removeListener(_scrollListener);
   }
 
   @override
   Widget build(BuildContext context) {
-    var children = widget.children;
+    var children = List<Widget>.of(widget.children);
     if (widget.customEntityValues.isNotEmpty) {
       children.addAll([
         Padding(
@@ -85,12 +100,13 @@ class _EntityPageState extends State<EntityPage> {
 
     return Scaffold(
       body: CustomScrollView(
+        controller: _scrollController,
         slivers: [
           SliverAppBar(
-            leading: _hasImages ? Empty() : null,
+            leading: _buildBackButton(),
             actions: [
-              _hasImages ? Empty() : _buildEditButton(false),
-              _hasImages ? Empty() : _buildDeleteButton(false),
+              _buildEditButton(),
+              _buildDeleteButton(),
             ],
             flexibleSpace: FlexibleSpaceBar(
               background: _hasImages ? _buildImages() : null,
@@ -174,76 +190,95 @@ class _EntityPageState extends State<EntityPage> {
             ),
           ),
         ),
-        Align(
-          alignment: Alignment.topCenter,
-          child: SafeArea(
-            child: Padding(
-              padding: insetsHorizontalDefault,
-              child: Row(
-                children: [
-                  FloatingButton.back(
-                    padding: insetsZero,
-                  ),
-                  // Push the rest of the buttons to the right.
-                  Expanded(
-                    child: Empty(),
-                  ),
-                  _buildEditButton(true),
-                  _buildDeleteButton(true),
-                ],
-              ),
-            ),
-          ),
-        ),
       ],
     );
   }
 
-  Widget _buildEditButton(bool floating) {
-    if (widget.static) {
-      return Empty();
-    }
-
-    if (floating) {
-      return FloatingButton.icon(
-        padding: insetsHorizontalWidget,
-        onPressed: widget.onEdit,
-        icon: Icons.edit,
-      );
-    } else {
-      return ActionButton.edit(
-        onPressed: widget.onEdit,
-      );
-    }
+  Widget _buildBackButton() {
+    return AnimatedSwitcher(
+      duration: defaultAnimationDuration,
+      child: FloatingButton.back(
+        key: ValueKey<bool>(_isImageShowing),
+        padding: insetsTopWidgetSmall,
+        transparentBackground: !_isImageShowing,
+      ),
+    );
   }
 
-  Widget _buildDeleteButton(bool floating) {
+  Widget _buildEditButton() {
     if (widget.static) {
       return Empty();
     }
 
-    void onPressed() {
-      showDeleteDialog(
-        context: context,
-        description: Text(widget.deleteMessage!),
-        onDelete: () {
-          widget.onDelete?.call();
-          Navigator.pop(context);
-        },
-      );
+    return AnimatedSwitcher(
+      duration: defaultAnimationDuration,
+      child: FloatingButton(
+        key: ValueKey<bool>(_isImageShowing),
+        icon: _isImageShowing ? Icons.edit : null,
+        text: _isImageShowing ? null : Strings.of(context).edit,
+        padding: EdgeInsets.only(
+          left: paddingWidget,
+          right: paddingWidget,
+          top: paddingWidgetSmall,
+        ),
+        transparentBackground: !_isImageShowing,
+        onPressed: widget.onEdit,
+      ),
+    );
+  }
+
+  Widget _buildDeleteButton() {
+    if (widget.static) {
+      return Empty();
     }
 
-    if (floating) {
-      return FloatingButton.icon(
-        padding: insetsZero,
+    return AnimatedSwitcher(
+      duration: defaultAnimationDuration,
+      child: FloatingButton.icon(
+        key: ValueKey<bool>(_isImageShowing),
         icon: Icons.delete,
-        onPressed: onPressed,
-      );
-    } else {
-      return IconButton(
-        icon: Icon(Icons.delete),
-        onPressed: onPressed,
-      );
+        padding: EdgeInsets.only(
+          right: paddingWidget,
+          top: paddingWidgetSmall,
+        ),
+        transparentBackground: !_isImageShowing,
+        onPressed: () {
+          showDeleteDialog(
+            context: context,
+            description: Text(widget.deleteMessage!),
+            onDelete: () {
+              widget.onDelete?.call();
+              Navigator.pop(context);
+            },
+          );
+        },
+      ),
+    );
+  }
+
+  bool _calculateIsImageShowing() {
+    if (!_hasImages) {
+      return false;
     }
+
+    // Images are showing if the page has scrolled enough to show a normal
+    // AppBar instead of the entity's photos.
+    var compressedAppBarHeight =
+        MediaQuery.of(context).padding.top + kToolbarHeight;
+    return _scrollController.offset < _imageHeight - compressedAppBarHeight;
+  }
+
+  void _onScrollUpdated() {
+    if (!_hasImages) {
+      return;
+    }
+
+    // Only rebuild if the image becomes visible or hidden.
+    var newIsImageShowing = _calculateIsImageShowing();
+    if (newIsImageShowing == _isImageShowing) {
+      return;
+    }
+
+    setState(() => _isImageShowing = newIsImageShowing);
   }
 }

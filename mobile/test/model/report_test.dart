@@ -13,10 +13,17 @@ import '../test_utils.dart';
 
 void main() {
   late StubbedAppManager appManager;
+  late MockAnglerManager anglerManager;
   late MockBaitManager baitManager;
   late MockCatchManager catchManager;
   late MockFishingSpotManager fishingSpotManager;
   late MockSpeciesManager speciesManager;
+
+  var anglerId0 = randomId();
+  var anglerId1 = randomId();
+  var anglerId2 = randomId();
+  var anglerId3 = randomId();
+  var anglerId4 = randomId();
 
   var speciesId0 = randomId();
   var speciesId1 = randomId();
@@ -46,6 +53,24 @@ void main() {
   var catchId7 = randomId();
   var catchId8 = randomId();
   var catchId9 = randomId();
+
+  var anglersMap = <Id, Angler>{
+    anglerId0: Angler()
+      ..id = anglerId0
+      ..name = "Cohen",
+    anglerId1: Angler()
+      ..id = anglerId1
+      ..name = "Eli",
+    anglerId2: Angler()
+      ..id = anglerId2
+      ..name = "Ethan",
+    anglerId3: Angler()
+      ..id = anglerId3
+      ..name = "Tim",
+    anglerId4: Angler()
+      ..id = anglerId4
+      ..name = "Someone",
+  };
 
   var speciesMap = <Id, Species>{
     speciesId0: Species()
@@ -177,6 +202,11 @@ void main() {
   setUp(() {
     appManager = StubbedAppManager();
 
+    anglerManager = appManager.anglerManager;
+    when(anglerManager.list()).thenReturn(anglersMap.values.toList());
+    when(anglerManager.entity(any)).thenAnswer(
+        (invocation) => anglersMap[invocation.positionalArguments[0]]);
+
     baitManager = appManager.baitManager;
     when(baitManager.list()).thenReturn(baitMap.values.toList());
     when(baitManager.entity(any))
@@ -207,6 +237,7 @@ void main() {
     when(catchManager.catchesSortedByTimestamp(
       context,
       dateRange: anyNamed("dateRange"),
+      anglerIds: anyNamed("anglerIds"),
       baitIds: anyNamed("baitIds"),
       fishingSpotIds: anyNamed("fishingSpotIds"),
       speciesIds: anyNamed("speciesIds"),
@@ -562,32 +593,60 @@ void main() {
     });
 
     testWidgets("Filters", (tester) async {
-      when(baitManager.entity(any)).thenAnswer(
-          (invocation) => baitMap[invocation.positionalArguments[0]]);
-      when(fishingSpotManager.entity(any)).thenAnswer(
-          (invocation) => fishingSpotMap[invocation.positionalArguments[0]]);
-      when(speciesManager.entity(any)).thenAnswer(
-          (invocation) => speciesMap[invocation.positionalArguments[0]]);
-
       var context = await buildContext(tester, appManager: appManager);
       _stubCatchesByTimestamp(context);
 
       var data = Report(
         context: context,
         displayDateRange: DisplayDateRange.allDates,
+        anglerIds: {anglerId2, anglerId3},
         baitIds: {baitId0, baitId4},
         fishingSpotIds: {fishingSpotId0, fishingSpotId2, fishingSpotId1},
         speciesIds: {speciesId4, speciesId2},
       );
 
-      expect(data.filters(),
-          {"All dates", "Worm", "Grub", "E", "B", "C", "Steelhead", "Catfish"});
-      expect(data.filters(includeSpecies: false),
-          {"All dates", "Worm", "Grub", "E", "B", "C"});
-      expect(data.filters(includeDateRange: false),
-          {"Worm", "Grub", "E", "B", "C", "Steelhead", "Catfish"});
-      expect(data.filters(includeSpecies: false, includeDateRange: false),
-          {"Worm", "Grub", "E", "B", "C"});
+      expect(data.filters(), {
+        "All dates",
+        "Worm",
+        "Grub",
+        "E",
+        "B",
+        "C",
+        "Steelhead",
+        "Catfish",
+        "Ethan",
+        "Tim",
+      });
+      expect(data.filters(includeSpecies: false), {
+        "All dates",
+        "Worm",
+        "Grub",
+        "E",
+        "B",
+        "C",
+        "Ethan",
+        "Tim",
+      });
+      expect(data.filters(includeDateRange: false), {
+        "Worm",
+        "Grub",
+        "E",
+        "B",
+        "C",
+        "Steelhead",
+        "Catfish",
+        "Ethan",
+        "Tim"
+      });
+      expect(data.filters(includeSpecies: false, includeDateRange: false), {
+        "Worm",
+        "Grub",
+        "E",
+        "B",
+        "C",
+        "Ethan",
+        "Tim",
+      });
     });
 
     testWidgets("Filters with null values", (tester) async {
@@ -604,6 +663,7 @@ void main() {
 
       // By not stubbing EntityManager.entity() methods, no filters should be
       // entity names.
+      when(anglerManager.entity(any)).thenReturn(null);
       when(baitManager.entity(any)).thenReturn(null);
       when(fishingSpotManager.entity(any)).thenReturn(null);
       when(speciesManager.entity(any)).thenReturn(null);

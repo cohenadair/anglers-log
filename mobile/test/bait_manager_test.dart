@@ -126,9 +126,9 @@ void main() {
     ]);
 
     expect(baitManager.numberOfCatches(null), 0);
-    expect(baitManager.numberOfCatches(Bait()..id = baitId0), 2);
-    expect(baitManager.numberOfCatches(Bait()..id = baitId1), 1);
-    expect(baitManager.numberOfCatches(Bait()..id = baitId2), 1);
+    expect(baitManager.numberOfCatches(baitId0), 2);
+    expect(baitManager.numberOfCatches(baitId1), 1);
+    expect(baitManager.numberOfCatches(baitId2), 1);
   });
 
   test("Format bait name", () async {

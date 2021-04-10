@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
+import 'package:mobile/pages/angler_list_page.dart';
 import 'package:mobile/pages/bait_list_page.dart';
 import 'package:mobile/pages/fishing_spot_list_page.dart';
 import 'package:mobile/pages/picker_page.dart';
@@ -19,6 +20,15 @@ import '../test_utils.dart';
 
 void main() {
   late StubbedAppManager appManager;
+
+  var anglerList = <Angler>[
+    Angler()
+      ..id = randomId()
+      ..name = "Cohen",
+    Angler()
+      ..id = randomId()
+      ..name = "Someone",
+  ];
 
   var baitList = <Bait>[
     Bait()
@@ -49,6 +59,10 @@ void main() {
 
   setUp(() {
     appManager = StubbedAppManager();
+
+    when(appManager.anglerManager.list(any)).thenReturn(anglerList);
+    when(appManager.anglerManager.listSortedByName(filter: anyNamed("filter")))
+        .thenReturn(anglerList);
 
     when(appManager.baitCategoryManager.listSortedByName()).thenReturn([]);
 
@@ -221,8 +235,19 @@ void main() {
       appManager: appManager,
     ));
 
+    await tester.ensureVisible(find.text("All fishing spots"));
     await tapAndSettle(tester, find.text("All fishing spots"));
     expect(find.byType(FishingSpotListPage), findsOneWidget);
+  });
+
+  testWidgets("Angler picker shows picker page", (tester) async {
+    await tester.pumpWidget(Testable(
+      (_) => SaveReportPage(),
+      appManager: appManager,
+    ));
+
+    await tapAndSettle(tester, find.text("All anglers"));
+    expect(find.byType(AnglerListPage), findsOneWidget);
   });
 
   testWidgets("Picking all species shows single chip", (tester) async {
@@ -271,6 +296,7 @@ void main() {
       appManager: appManager,
     ));
 
+    await tester.ensureVisible(find.text("All fishing spots"));
     await tapAndSettle(tester, find.text("All fishing spots"));
     expect(
       (tester.widget(find.descendant(
@@ -283,6 +309,26 @@ void main() {
 
     await tapAndSettle(tester, find.byType(BackButton));
     expect(find.text("All fishing spots"), findsOneWidget);
+  });
+
+  testWidgets("Picking all anglers shows single chip", (tester) async {
+    await tester.pumpWidget(Testable(
+      (_) => SaveReportPage(),
+      appManager: appManager,
+    ));
+
+    await tapAndSettle(tester, find.text("All anglers"));
+    expect(
+      (tester.widget(find.descendant(
+        of: find.widgetWithText(ManageableListItem, "All"),
+        matching: find.byType(PaddedCheckbox),
+      )) as PaddedCheckbox)
+          .checked,
+      isTrue,
+    );
+
+    await tapAndSettle(tester, find.byType(BackButton));
+    expect(find.text("All anglers"), findsOneWidget);
   });
 
   group("Comparison report", () {
@@ -304,9 +350,11 @@ void main() {
       await tapAndSettle(tester, find.text("Last month"));
       await tapAndSettle(tester, find.text("To"));
       await tapAndSettle(tester, find.text("This month"));
+      await selectItems(tester, "All anglers", ["All", "Cohen"]);
       await selectItems(tester, "All species", ["All", "Catfish"]);
-      await selectItems(tester, "All fishing spots", ["All", "B"]);
       await selectItems(tester, "All baits", ["All", "Spoon"]);
+      await tester.ensureVisible(find.text("All fishing spots"));
+      await selectItems(tester, "All fishing spots", ["All", "B"]);
 
       expect(
         find.descendant(
@@ -337,6 +385,7 @@ void main() {
       expect(report.description, "A brief description.");
       expect(report.fromDisplayDateRangeId, DisplayDateRange.lastMonth.id);
       expect(report.toDisplayDateRangeId, DisplayDateRange.thisMonth.id);
+      expect(report.anglerIds.length, 1);
       expect(report.baitIds.length, 1);
       expect(report.speciesIds.length, 1);
       expect(report.fishingSpotIds.length, 1);
@@ -387,6 +436,7 @@ void main() {
       expect(report.toDisplayDateRangeId, DisplayDateRange.custom.id);
       expect(report.toStartTimestamp.toInt(), toDateRange.startMs);
       expect(report.toEndTimestamp.toInt(), toDateRange.endMs);
+      expect(report.anglerIds, isEmpty);
       expect(report.baitIds, isEmpty);
       expect(report.speciesIds, isEmpty);
       expect(report.fishingSpotIds, isEmpty);
@@ -408,10 +458,14 @@ void main() {
       await tapAndSettle(tester, find.text("This month"));
 
       // Toggle none/all for good measure.
+      await selectItems(tester, "All anglers", ["All", "All"]);
       await selectItems(tester, "All species", ["All", "All"]);
-      await selectItems(tester, "All fishing spots", ["All", "All"]);
       await selectItems(tester, "All baits", ["All", "All"]);
 
+      await tester.ensureVisible(find.text("All fishing spots"));
+      await selectItems(tester, "All fishing spots", ["All", "All"]);
+
+      expect(find.text("All anglers"), findsOneWidget);
       expect(find.text("All species"), findsOneWidget);
       expect(find.text("All baits"), findsOneWidget);
       expect(find.text("All fishing spots"), findsOneWidget);
@@ -424,9 +478,10 @@ void main() {
 
       ComparisonReport report = result.captured.first;
       expect(report.name, "Report Name");
+      expect(report.anglerIds, isEmpty);
       expect(report.baitIds, isEmpty);
       expect(report.speciesIds, isEmpty);
-      expect(report.baitIds, isEmpty);
+      expect(report.fishingSpotIds, isEmpty);
     });
 
     testWidgets("Edit keeps old ID", (tester) async {
@@ -436,6 +491,7 @@ void main() {
         ..description = "Report description"
         ..fromDisplayDateRangeId = DisplayDateRange.yesterday.id
         ..toDisplayDateRangeId = DisplayDateRange.today.id;
+      report.anglerIds.addAll(anglerList.map((e) => e.id));
       report.baitIds.addAll(baitList.map((e) => e.id));
       report.fishingSpotIds.addAll(fishingSpotList.map((e) => e.id));
       report.speciesIds.addAll(speciesList.map((e) => e.id));
@@ -462,6 +518,8 @@ void main() {
         ),
         findsOneWidget,
       );
+      expect(find.text("Cohen"), findsOneWidget);
+      expect(find.text("Someone"), findsOneWidget);
       expect(find.text("Rapala"), findsOneWidget);
       expect(find.text("Spoon"), findsOneWidget);
       expect(find.text("A"), findsOneWidget);
@@ -493,6 +551,7 @@ void main() {
         appManager: appManager,
       ));
 
+      expect(find.text("All anglers"), findsOneWidget);
       expect(find.text("All species"), findsOneWidget);
       expect(find.text("All fishing spots"), findsOneWidget);
       expect(find.text("All baits"), findsOneWidget);
@@ -531,14 +590,18 @@ void main() {
       await tapAndSettle(tester, find.widgetWithText(InkWell, "Summary"));
       await tapAndSettle(tester, find.text("All dates"));
       await tapAndSettle(tester, find.text("Last month"));
+      await selectItems(tester, "All anglers", ["All", "Cohen"]);
       await selectItems(tester, "All species", ["All", "Catfish"]);
-      await selectItems(tester, "All fishing spots", ["All", "B"]);
       await selectItems(tester, "All baits", ["All", "Spoon"]);
 
+      await tester.ensureVisible(find.text("All fishing spots"));
+      await selectItems(tester, "All fishing spots", ["All", "B"]);
+
       expect(find.text("Last month"), findsOneWidget);
+      expect(find.text("Cohen"), findsOneWidget);
       expect(find.text("Catfish"), findsOneWidget);
-      expect(find.text("B"), findsOneWidget);
       expect(find.text("Spoon"), findsOneWidget);
+      expect(find.text("B"), findsOneWidget);
 
       await tapAndSettle(tester, find.text("SAVE"));
 
@@ -550,6 +613,7 @@ void main() {
       expect(report.name, "Report Name");
       expect(report.description, "A brief description.");
       expect(report.displayDateRangeId, DisplayDateRange.lastMonth.id);
+      expect(report.anglerIds.length, 1);
       expect(report.baitIds.length, 1);
       expect(report.speciesIds.length, 1);
       expect(report.fishingSpotIds.length, 1);
@@ -588,6 +652,7 @@ void main() {
       expect(report.displayDateRangeId, DisplayDateRange.custom.id);
       expect(report.startTimestamp.toInt(), dateRange.startMs);
       expect(report.endTimestamp.toInt(), dateRange.endMs);
+      expect(report.anglerIds, isEmpty);
       expect(report.baitIds, isEmpty);
       expect(report.speciesIds, isEmpty);
       expect(report.fishingSpotIds, isEmpty);
@@ -607,10 +672,14 @@ void main() {
       await tapAndSettle(tester, find.text("Last month"));
 
       // Toggle none/all for good measure.
+      await selectItems(tester, "All anglers", ["All", "All"]);
       await selectItems(tester, "All species", ["All", "All"]);
-      await selectItems(tester, "All fishing spots", ["All", "All"]);
       await selectItems(tester, "All baits", ["All", "All"]);
 
+      await tester.ensureVisible(find.text("All fishing spots"));
+      await selectItems(tester, "All fishing spots", ["All", "All"]);
+
+      expect(find.text("All anglers"), findsOneWidget);
       expect(find.text("All species"), findsOneWidget);
       expect(find.text("All baits"), findsOneWidget);
       expect(find.text("All fishing spots"), findsOneWidget);
@@ -623,6 +692,7 @@ void main() {
 
       SummaryReport report = result.captured.first;
       expect(report.name, "Report Name");
+      expect(report.anglerIds, isEmpty);
       expect(report.baitIds, isEmpty);
       expect(report.speciesIds, isEmpty);
       expect(report.baitIds, isEmpty);
@@ -634,6 +704,7 @@ void main() {
         ..name = "Report Name"
         ..description = "Report description"
         ..displayDateRangeId = DisplayDateRange.yesterday.id;
+      report.anglerIds.addAll(anglerList.map((e) => e.id));
       report.baitIds.addAll(baitList.map((e) => e.id));
       report.fishingSpotIds.addAll(fishingSpotList.map((e) => e.id));
       report.speciesIds.addAll(speciesList.map((e) => e.id));
@@ -647,6 +718,8 @@ void main() {
       expect(find.text("Report Name"), findsOneWidget);
       expect(find.text("Report description"), findsOneWidget);
       expect(find.text("Yesterday"), findsOneWidget);
+      expect(find.text("Cohen"), findsOneWidget);
+      expect(find.text("Someone"), findsOneWidget);
       expect(find.text("Rapala"), findsOneWidget);
       expect(find.text("Spoon"), findsOneWidget);
       expect(find.text("A"), findsOneWidget);
@@ -677,6 +750,7 @@ void main() {
         appManager: appManager,
       ));
 
+      expect(find.text("All anglers"), findsOneWidget);
       expect(find.text("All species"), findsOneWidget);
       expect(find.text("All fishing spots"), findsOneWidget);
       expect(find.text("All baits"), findsOneWidget);

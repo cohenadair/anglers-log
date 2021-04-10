@@ -167,6 +167,7 @@ class AuthManager {
     // First initialize managers that are dependents of other managers.
     await _appManager.speciesManager.initialize();
 
+    await _appManager.anglerManager.initialize();
     await _appManager.baitCategoryManager.initialize();
     await _appManager.baitManager.initialize();
     await _appManager.catchManager.initialize();

@@ -71,20 +71,8 @@ class BaitManager extends NamedEntityManager<Bait> {
   }
 
   /// Returns the number of [Catch] objects associated with the given [Bait].
-  int numberOfCatches(Bait? bait) {
-    if (bait == null) {
-      return 0;
-    }
-
-    var result = 0;
-    _catchManager.list().forEach((cat) {
-      if (cat.baitId == bait.id) {
-        result++;
-      }
-    });
-
-    return result;
-  }
+  int numberOfCatches(Id? baitId) =>
+      numberOf<Catch>(baitId, _catchManager.list(), (cat) => cat.baitId);
 
   /// Returns the total number of [CustomEntityValue] objects associated with
   /// [Bait] objects and [customEntityId].
@@ -108,7 +96,7 @@ class BaitManager extends NamedEntityManager<Bait> {
   }
 
   String deleteMessage(BuildContext context, Bait bait) {
-    var numOfCatches = numberOfCatches(bait);
+    var numOfCatches = numberOfCatches(bait.id);
     var string = numOfCatches == 1
         ? Strings.of(context).baitListPageDeleteMessageSingular
         : Strings.of(context).baitListPageDeleteMessage;

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mobile/angler_manager.dart';
 
 import '../bait_category_manager.dart';
 import '../bait_manager.dart';
@@ -29,6 +30,7 @@ class CatchPage extends StatefulWidget {
 }
 
 class _CatchPageState extends State<CatchPage> {
+  AnglerManager get _anglerManager => AnglerManager.of(context);
   BaitManager get _baitManager => BaitManager.of(context);
   BaitCategoryManager get _baitCategoryManager =>
       BaitCategoryManager.of(context);
@@ -53,6 +55,7 @@ class _CatchPageState extends State<CatchPage> {
   Widget build(BuildContext context) {
     return EntityListenerBuilder(
       managers: [
+        _anglerManager,
         _baitCategoryManager,
         _baitManager,
         _catchManager,
@@ -100,6 +103,7 @@ class _CatchPageState extends State<CatchPage> {
               future: _fishingSpotFuture,
               builder: (context, _) => _buildFishingSpot(),
             ),
+            _buildAngler(),
           ],
         );
       },
@@ -141,6 +145,18 @@ class _CatchPageState extends State<CatchPage> {
     return StaticFishingSpot(
       fishingSpot,
       padding: insetsHorizontalDefaultVerticalSmall,
+    );
+  }
+
+  Widget _buildAngler() {
+    var angler = _anglerManager.entity(_catch.anglerId);
+    if (angler == null) {
+      return Empty();
+    }
+
+    return ListItem(
+      leading: Icon(Icons.person),
+      title: Text(angler.name),
     );
   }
 }

@@ -201,10 +201,29 @@ class MinimumIconButton extends StatelessWidget {
 class FloatingButton extends StatelessWidget {
   static const double _fabSize = 40.0;
 
+  final Key? key;
   final EdgeInsets? padding;
+
+  /// The icon shown inside the "floating" part of the button. If null, [text]
+  /// must not be empty.
   final IconData? icon;
+
+  /// The text shown inside the "floating" part of the button. If null, [icon]
+  /// must not be null.
+  final String? text;
+
+  /// A label shown below the "floating" part of the button.
   final String? label;
+
   final VoidCallback? onPressed;
+
+  /// If true, the "floating" part of the button will be transparent. This is
+  /// useful for animating between two [FloatingButton] when the widget
+  /// beneath changes color.
+  ///
+  /// If [text] is not empty, and [transparentBackground] is true, consider
+  /// using an [ActionButton] instead.
+  final bool transparentBackground;
 
   /// When true, renders the button with a different background color, to
   /// imply the button has been "toggled".
@@ -213,32 +232,55 @@ class FloatingButton extends StatelessWidget {
   final bool _isBackButton;
   final bool _isCloseButton;
 
+  FloatingButton({
+    this.key,
+    this.padding,
+    this.icon,
+    this.text,
+    this.onPressed,
+    this.label,
+    this.pushed = false,
+    this.transparentBackground = false,
+  })  : assert((icon == null && isNotEmpty(text)) ||
+            (icon != null && isEmpty(text))),
+        _isBackButton = false,
+        _isCloseButton = false;
+
   FloatingButton.icon({
+    this.key,
     this.padding,
     required this.icon,
     this.onPressed,
     this.label,
     this.pushed = false,
+    this.transparentBackground = false,
   })  : _isBackButton = false,
-        _isCloseButton = false;
+        _isCloseButton = false,
+        text = null;
 
   FloatingButton.back({
+    this.key,
     this.padding,
+    this.transparentBackground = false,
   })  : _isBackButton = true,
         _isCloseButton = false,
         onPressed = null,
         label = null,
         pushed = false,
-        icon = null;
+        icon = null,
+        text = null;
 
   FloatingButton.close({
+    this.key,
     this.padding,
+    this.transparentBackground = false,
   })  : _isBackButton = false,
         _isCloseButton = true,
         onPressed = null,
         label = null,
         pushed = false,
-        icon = null;
+        icon = null,
+        text = null;
 
   @override
   Widget build(BuildContext context) {
@@ -256,6 +298,8 @@ class FloatingButton extends StatelessWidget {
           ),
         );
       }
+    } else if (isNotEmpty(text)) {
+      circleChild = Text(text!.toUpperCase());
     } else {
       circleChild = Icon(
         _isCloseButton ? Icons.close : icon,
@@ -264,17 +308,21 @@ class FloatingButton extends StatelessWidget {
     }
 
     return Padding(
+      key: key,
       padding: padding ?? insetsDefault,
       child: Column(
         children: [
           Container(
-            decoration: FloatingBoxDecoration.circle(),
+            decoration:
+                transparentBackground ? null : FloatingBoxDecoration.circle(),
             width: _fabSize,
             height: _fabSize,
             child: RawMaterialButton(
               child: circleChild,
               shape: CircleBorder(),
-              fillColor: pushed ? Colors.grey : Colors.white,
+              fillColor: transparentBackground
+                  ? null
+                  : (pushed ? Colors.grey : Colors.white),
               onPressed: _isBackButton || _isCloseButton
                   ? () => Navigator.of(context).pop()
                   : onPressed,

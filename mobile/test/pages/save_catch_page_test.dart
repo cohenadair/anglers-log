@@ -4,6 +4,7 @@ import 'package:fixnum/fixnum.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mobile/angler_manager.dart';
 import 'package:mobile/bait_manager.dart';
 import 'package:mobile/fishing_spot_manager.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
@@ -120,7 +121,10 @@ void main() {
       expect(find.text("Jan 1, 2020"), findsOneWidget);
       expect(find.text("3:30 PM"), findsOneWidget);
       expect(find.text("Bait"), findsOneWidget);
-      expect(find.text("Not Selected"), findsOneWidget);
+
+      // Bait and angler.
+      expect(find.text("Not Selected"), findsNWidgets(2));
+
       expect(find.byType(StaticFishingSpot), findsOneWidget);
       expect(find.text("Species"), findsOneWidget);
       expect(find.text("Steelhead"), findsOneWidget);
@@ -177,12 +181,18 @@ void main() {
         ..name = "Steelhead";
       when(appManager.speciesManager.entity(any)).thenReturn(species);
 
+      var angler = Angler()
+        ..id = randomId()
+        ..name = "Cohen";
+      when(appManager.anglerManager.entity(any)).thenReturn(angler);
+
       var cat = Catch()
         ..id = randomId()
         ..timestamp = Int64(DateTime(2020, 1, 1, 15, 30).millisecondsSinceEpoch)
         ..baitId = bait.id
         ..fishingSpotId = fishingSpot.id
         ..speciesId = species.id
+        ..anglerId = angler.id
         ..customEntityValues.add(CustomEntityValue()
           ..customEntityId = customEntity.id
           ..value = "Minnow")
@@ -212,6 +222,8 @@ void main() {
       expect(find.byType(StaticFishingSpot), findsOneWidget);
       expect(find.text("Species"), findsOneWidget);
       expect(find.text("Steelhead"), findsOneWidget);
+      expect(find.text("Angler"), findsOneWidget);
+      expect(find.text("Cohen"), findsOneWidget);
       expect(find.byType(Image), findsOneWidget);
       expect(find.text("Color"), findsOneWidget);
       expect(find.text("Minnow"), findsOneWidget);
@@ -238,7 +250,10 @@ void main() {
       expect(find.text("Species"), findsOneWidget);
       expect(find.text("Steelhead"), findsOneWidget);
       expect(find.text("Bait"), findsOneWidget);
-      expect(find.text("Not Selected"), findsOneWidget);
+
+      // Bait and angler.
+      expect(find.text("Not Selected"), findsNWidgets(2));
+
       expect(find.text("Fishing Spot"), findsOneWidget);
       expect(find.byType(Image), findsNothing);
       expect(find.byType(StaticFishingSpot), findsNothing);
@@ -346,12 +361,15 @@ void main() {
       expect(find.text("Species"), findsOneWidget);
       expect(find.text("Steelhead"), findsOneWidget);
       expect(find.text("Bait"), findsOneWidget);
-      expect(find.text("Not Selected"), findsOneWidget);
+
+      // Bait and angler.
+      expect(find.text("Not Selected"), findsNWidgets(2));
+
       expect(find.byType(StaticFishingSpot), findsOneWidget);
       expect(find.byType(Image), findsNothing);
     });
 
-    testWidgets("Saving", (tester) async {
+    testWidgets("Saving when selecting no optional fields", (tester) async {
       var speciesId = randomId();
       var fishingSpotId = randomId();
       await tester.pumpWidget(Testable(
@@ -378,9 +396,66 @@ void main() {
           DateTime(2020, 2, 1, 10, 30).millisecondsSinceEpoch);
       expect(cat.speciesId, speciesId);
       expect(cat.fishingSpotId, fishingSpotId);
-      expect(cat.hasBaitId(), false);
+      expect(cat.hasBaitId(), isFalse);
+      expect(cat.hasAnglerId(), isFalse);
       expect(cat.imageNames, isEmpty);
       expect(cat.customEntityValues, isEmpty);
+    });
+
+    testWidgets("Saving after selecting all optional fields", (tester) async {
+      when(appManager.anglerManager
+              .listSortedByName(filter: anyNamed("filter")))
+          .thenReturn([
+        Angler()
+          ..id = randomId()
+          ..name = "Cohen",
+      ]);
+      when(appManager.baitManager.filteredList(any)).thenReturn([
+        Bait()
+          ..id = randomId()
+          ..name = "Rapala",
+      ]);
+      when(appManager.baitManager.formatNameWithCategory(any))
+          .thenReturn("Rapala");
+
+      var speciesId = randomId();
+      var fishingSpotId = randomId();
+      await tester.pumpWidget(Testable(
+        (_) => SaveCatchPage(
+          speciesId: speciesId,
+          fishingSpotId: fishingSpotId,
+        ),
+        appManager: appManager,
+      ));
+
+      // Select bait.
+      await tapAndSettle(tester, find.text("Bait"));
+      await tapAndSettle(tester, find.text("Rapala"));
+
+      // Select angler.
+      await tapAndSettle(tester, find.text("Angler"));
+      await tapAndSettle(tester, find.text("Cohen"));
+
+      await tapAndSettle(tester, find.text("SAVE"));
+
+      var result = verify(
+        appManager.catchManager.addOrUpdate(
+          captureAny,
+          imageFiles: anyNamed("imageFiles"),
+        ),
+      );
+      result.called(1);
+
+      Catch cat = result.captured.first;
+      expect(cat, isNotNull);
+      expect(cat.timestamp.toInt(),
+          DateTime(2020, 2, 1, 10, 30).millisecondsSinceEpoch);
+      expect(cat.speciesId, speciesId);
+      expect(cat.fishingSpotId, fishingSpotId);
+      expect(cat.imageNames, isEmpty);
+      expect(cat.customEntityValues, isEmpty);
+      expect(cat.hasBaitId(), isTrue);
+      expect(cat.hasAnglerId(), isTrue);
     });
   });
 
@@ -497,7 +572,7 @@ void main() {
 
     expect(find.text("Minnow"), findsOneWidget);
 
-    // Edit the selected species.
+    // Edit the selected bait.
     await tapAndSettle(tester, find.text("Minnow"));
     await tapAndSettle(tester, find.text("EDIT"));
     await tapAndSettle(tester, find.text("Minnow"));
@@ -505,7 +580,7 @@ void main() {
     await tapAndSettle(tester, find.text("SAVE"));
     await tapAndSettle(tester, find.byType(BackButtonIcon));
 
-    // Verify new species name is shown.
+    // Verify new name is shown.
     expect(find.text("Minnow 2"), findsOneWidget);
   });
 
@@ -531,15 +606,49 @@ void main() {
 
     expect(find.text("A"), findsOneWidget);
 
-    // Edit the selected species.
+    // Edit the selected fishing spot.
     await tapAndSettle(tester, find.text("A"));
     await tapAndSettle(tester, find.text("EDIT"));
     await enterTextAndSettle(tester, find.byType(TextInput), "B");
     await tapAndSettle(tester, find.text("SAVE"));
     await tapAndSettle(tester, find.byType(BackButtonIcon));
 
-    // Verify new species name is shown.
+    // Verify new name is shown.
     expect(find.text("B"), findsOneWidget);
+  });
+
+  /// https://github.com/cohenadair/anglers-log/issues/467
+  testWidgets("Updates to selected angler updates state", (tester) async {
+    var angler = Angler()
+      ..id = randomId()
+      ..name = "Cohen";
+
+    // Use real AnglerManager to test listener notifications.
+    var anglerManager = AnglerManager(appManager.app);
+    anglerManager.addOrUpdate(angler);
+    when(appManager.app.anglerManager).thenReturn(anglerManager);
+
+    await tester.pumpWidget(
+      Testable(
+        (_) => SaveCatchPage.edit(Catch()
+          ..id = randomId()
+          ..anglerId = angler.id),
+        appManager: appManager,
+      ),
+    );
+
+    expect(find.text("Cohen"), findsOneWidget);
+
+    // Edit the selected angler.
+    await tapAndSettle(tester, find.text("Cohen"));
+    await tapAndSettle(tester, find.text("EDIT"));
+    await tapAndSettle(tester, find.text("Cohen"));
+    await enterTextAndSettle(tester, find.byType(TextInput), "Someone");
+    await tapAndSettle(tester, find.text("SAVE"));
+    await tapAndSettle(tester, find.byType(BackButtonIcon));
+
+    // Verify new name is shown.
+    expect(find.text("Someone"), findsOneWidget);
   });
 
   testWidgets("Save catch without a fishing spot", (tester) async {

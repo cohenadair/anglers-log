@@ -75,6 +75,7 @@ Map<String, Map<String, String>> get englishStrings => {
         "catchField_fishingSpotDescription":
             "Coordinates of where a catch was made.",
         "catchField_bait": "Bait",
+        "catchField_angler": "Angler",
         "saveCustomReportPage_newTitle": "New Report",
         "saveCustomReportPage_editTitle": "Edit Report",
         "saveCustomReportPage_nameExists": "Report name already exists",
@@ -83,6 +84,7 @@ Map<String, Map<String, String>> get englishStrings => {
         "saveCustomReportPage_summary": "Summary",
         "saveCustomReportPage_startDateRangeLabel": "Compare",
         "saveCustomReportPage_endDateRangeLabel": "To",
+        "saveCustomReportPage_allAnglers": "All anglers",
         "saveCustomReportPage_species": "Species",
         "saveCustomReportPage_allSpecies": "All species",
         "saveCustomReportPage_allBaits": "All baits",
@@ -124,6 +126,20 @@ Map<String, Map<String, String>> get englishStrings => {
         "baitCategoryListPage_emptyListTitle": "No bait categories",
         "baitCategoryListPage_emptyListDescription":
             "You haven't yet added any bait categories. Tap the %s button to begin.",
+        "saveAnglerPage_newTitle": "New Angler",
+        "saveAnglerPage_editTitle": "Edit Angler",
+        "saveAnglerPage_existsMessage": "Angler already exists",
+        "anglerListPage_menuTitle": "Anglers",
+        "anglerListPage_title": "Anglers (%s)",
+        "anglerListPage_pickerTitle": "Select Angler",
+        "anglerListPage_deleteMessage":
+            "%s is associated with %s catches; are you sure you want to delete them? This cannot be undone.",
+        "anglerListPage_deleteMessageSingular":
+            "%s is associated with %s catch; are you sure you want to delete them? This cannot be undone.",
+        "anglerListPage_searchHint": "Search anglers",
+        "anglerListPage_emptyListTitle": "No anglers",
+        "anglerListPage_emptyListDescription":
+            "You haven't yet added any anglers. Tap the %s button to begin.",
         "statsPage_menuTitle": "Stats",
         "statsPage_title": "Stats",
         "statsPage_reportOverview": "Overview",

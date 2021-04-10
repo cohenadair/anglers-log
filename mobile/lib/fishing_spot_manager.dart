@@ -72,20 +72,11 @@ class FishingSpotManager extends NamedEntityManager<FishingSpot> {
         fishingSpot.lat == rhs.lat && fishingSpot.lng == rhs.lng);
   }
 
-  int numberOfCatches(FishingSpot? fishingSpot) {
-    if (fishingSpot == null) {
-      return 0;
-    }
-
-    var result = 0;
-    _catchManager.list().forEach((cat) {
-      result += fishingSpot.id == cat.fishingSpotId ? 1 : 0;
-    });
-    return result;
-  }
+  int numberOfCatches(Id? fishingSpotId) => numberOf<Catch>(
+      fishingSpotId, _catchManager.list(), (cat) => cat.fishingSpotId);
 
   String deleteMessage(BuildContext context, FishingSpot fishingSpot) {
-    var numOfCatches = numberOfCatches(fishingSpot);
+    var numOfCatches = numberOfCatches(fishingSpot.id);
     var hasNameString = numOfCatches == 1
         ? Strings.of(context).mapPageDeleteFishingSpotSingular
         : Strings.of(context).mapPageDeleteFishingSpot;

@@ -8,6 +8,7 @@ import 'mocks.mocks.dart';
 class StubbedAppManager {
   MockAppManager app = MockAppManager();
 
+  MockAnglerManager anglerManager = MockAnglerManager();
   MockAppPreferenceManager appPreferenceManager = MockAppPreferenceManager();
   MockAuthManager authManager = MockAuthManager();
   MockBaitCategoryManager baitCategoryManager = MockBaitCategoryManager();
@@ -50,6 +51,7 @@ class StubbedAppManager {
   MockUrlLauncherWrapper urlLauncherWrapper = MockUrlLauncherWrapper();
 
   StubbedAppManager() {
+    when(app.anglerManager).thenReturn(anglerManager);
     when(app.appPreferenceManager).thenReturn(appPreferenceManager);
     when(app.authManager).thenReturn(authManager);
     when(app.baitCategoryManager).thenReturn(baitCategoryManager);
@@ -91,6 +93,13 @@ class StubbedAppManager {
 
     // Setup default listener stubs on EntityListener classes, since
     // addSimpleListener is called often in tests, but rarely actually used.
+    when(anglerManager.addSimpleListener(
+      onAdd: anyNamed("onAdd"),
+      onUpdate: anyNamed("onUpdate"),
+      onDelete: anyNamed("onDelete"),
+    )).thenReturn(SimpleEntityListener());
+    when(anglerManager.entity(any)).thenReturn(null);
+
     when(baitCategoryManager.addSimpleListener(
       onAdd: anyNamed("onAdd"),
       onUpdate: anyNamed("onUpdate"),
