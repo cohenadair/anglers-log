@@ -206,29 +206,26 @@ void main() {
     when(appManager.ioWrapper.file("$_imagePath/2.0/images/image1.jpg"))
         .thenReturn(img1);
 
-    var byteList = await imageManager
+    var images = await imageManager
         .images(context, imageNames: ["image0.jpg", "image1.jpg"]);
-    expect(byteList, isNotNull);
-    expect(byteList.length, 1);
+    expect(images.length, 1);
 
     // All thumbnails exist (normal case).
     when(img1.exists()).thenAnswer((_) => Future.value(true));
     when(img0.readAsBytes())
         .thenAnswer((_) => Future.value(Uint8List.fromList([3, 2, 1])));
 
-    byteList = await imageManager
+    images = await imageManager
         .images(context, imageNames: ["image0.jpg", "image1.jpg"]);
-    expect(byteList, isNotNull);
-    expect(byteList.length, 2);
+    expect(images.length, 2);
 
     // No thumbnails exist.
     when(img0.exists()).thenAnswer((_) => Future.value(false));
     when(img1.exists()).thenAnswer((_) => Future.value(false));
 
-    byteList = await imageManager
+    images = await imageManager
         .images(context, imageNames: ["image0.jpg", "image1.jpg"]);
-    expect(byteList, isNotNull);
-    expect(byteList.isEmpty, true);
+    expect(images.isEmpty, isTrue);
   });
 
   testWidgets("Get image downloads file if it doesn't already exist",

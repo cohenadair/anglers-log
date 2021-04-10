@@ -14,9 +14,11 @@ import 'package:mobile/species_manager.dart';
 import 'package:mobile/utils/catch_utils.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mobile/widgets/image_input.dart';
+import 'package:mobile/widgets/photo.dart';
 import 'package:mobile/widgets/static_fishing_spot.dart';
 import 'package:mobile/widgets/text_input.dart';
 import 'package:mockito/mockito.dart';
+import 'package:path/path.dart';
 
 import '../mocks/stubbed_app_manager.dart';
 import '../test_utils.dart';
@@ -202,10 +204,10 @@ void main() {
         any,
         imageNames: anyNamed("imageNames"),
         size: anyNamed("size"),
-      )).thenAnswer(
-        (_) => Future.value(
-            [File("test/resources/flutter_logo.png").readAsBytesSync()]),
-      );
+      )).thenAnswer((_) {
+        var file = File("test/resources/flutter_logo.png");
+        return Future.value({file: file.readAsBytesSync()});
+      });
 
       await tester.pumpWidget(Testable(
         (_) => SaveCatchPage.edit(cat),
@@ -301,10 +303,10 @@ void main() {
         any,
         imageNames: anyNamed("imageNames"),
         size: anyNamed("size"),
-      )).thenAnswer(
-        (_) => Future.value(
-            [File("test/resources/flutter_logo.png").readAsBytesSync()]),
-      );
+      )).thenAnswer((_) {
+        var file = File("test/resources/flutter_logo.png");
+        return Future.value({file: file.readAsBytesSync()});
+      });
 
       await tester.pumpWidget(Testable(
         (_) => SaveCatchPage.edit(cat),
@@ -332,6 +334,48 @@ void main() {
       );
       result.called(1);
       expect(result.captured.first, cat);
+    });
+
+    /// https://github.com/cohenadair/anglers-log/issues/517
+    testWidgets("Image is kept while editing", (tester) async {
+      when(appManager.imageManager.images(
+        any,
+        imageNames: anyNamed("imageNames"),
+        size: anyNamed("size"),
+      )).thenAnswer((_) {
+        var file = File("test/resources/flutter_logo.png");
+        return Future.value({file: file.readAsBytesSync()});
+      });
+
+      var species = Species()
+        ..id = randomId()
+        ..name = "Steelhead";
+      when(appManager.speciesManager.entity(any)).thenReturn(species);
+
+      var cat = Catch()
+        ..id = randomId()
+        ..timestamp = Int64(DateTime(2020, 1, 1, 15, 30).millisecondsSinceEpoch)
+        ..speciesId = species.id
+        ..imageNames.add("flutter_logo.png");
+
+      await tester.pumpWidget(Testable(
+        (_) => SaveCatchPage.edit(cat),
+        appManager: appManager,
+      ));
+
+      // Wait for image future to finish.
+      await tester.pumpAndSettle(Duration(milliseconds: 50));
+      expect(find.byType(Image), findsOneWidget);
+
+      await tapAndSettle(tester, find.text("SAVE"));
+
+      var result = verify(appManager.catchManager
+          .addOrUpdate(any, imageFiles: captureAnyNamed("imageFiles")));
+      result.called(1);
+
+      // Verify the old image is still passed into the addOrUpdate method.
+      expect(result.captured.first.length, 1);
+      expect(basename(result.captured.first.first.path), "flutter_logo.png");
     });
   });
 

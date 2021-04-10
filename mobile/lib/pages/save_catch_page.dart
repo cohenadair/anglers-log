@@ -427,14 +427,19 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
       return Future.value([]);
     }
 
-    var bytesList = await _imageManager.images(
+    var imageMap = await _imageManager.images(
       context,
       imageNames: _oldCatch!.imageNames,
       size: galleryMaxThumbSize,
     );
 
-    _imagesController.value =
-        bytesList.map((bytes) => PickedImage(thumbData: bytes)).toList();
-    return _imagesController.value!;
+    var result = <PickedImage>[];
+    imageMap.forEach((file, bytes) => result.add(PickedImage(
+          originalFile: file,
+          thumbData: bytes,
+        )));
+
+    _imagesController.value = result;
+    return result;
   }
 }

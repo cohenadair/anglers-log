@@ -1703,13 +1703,13 @@ class MockImageManager extends _i1.Mock implements _i18.ImageManager {
               returnValue: Future.value(_FakeUint8List()))
           as _i9.Future<_i42.Uint8List?>);
   @override
-  _i9.Future<List<_i42.Uint8List>> images(_i66.BuildContext? context,
+  _i9.Future<Map<_i50.File, _i42.Uint8List>> images(_i66.BuildContext? context,
           {List<String>? imageNames, double? size}) =>
       (super.noSuchMethod(
               Invocation.method(
                   #images, [context], {#imageNames: imageNames, #size: size}),
-              returnValue: Future.value(<_i42.Uint8List>[]))
-          as _i9.Future<List<_i42.Uint8List>>);
+              returnValue: Future.value(<_i50.File, _i42.Uint8List>{}))
+          as _i9.Future<Map<_i50.File, _i42.Uint8List>>);
   @override
   _i9.Future<List<String>> save(List<_i50.File>? files,
           {bool? compress = true}) =>

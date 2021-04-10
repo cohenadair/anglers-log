@@ -130,22 +130,22 @@ class ImageManager {
     return null;
   }
 
-  /// Returns a list of encoded images for the given [names] of the given
+  /// Returns a map of file-to-encoded images for the given [names] of the given
   /// [size]. This method will attempt to get the image from thumbnail cache
   /// before falling back on the full image.
   ///
-  /// If there are no images associated with the given [names], an empty list
+  /// If there are no images associated with the given [names], an empty map
   /// is returned.
-  Future<List<Uint8List>> images(
+  Future<Map<File, Uint8List>> images(
     BuildContext context, {
     required List<String> imageNames,
     double? size,
   }) async {
     if (imageNames.isEmpty) {
-      return [];
+      return {};
     }
 
-    var result = <Uint8List>[];
+    var result = <File, Uint8List>{};
     for (var fileName in imageNames) {
       _addToCache(fileName);
 
@@ -156,7 +156,7 @@ class ImageManager {
       );
 
       if (bytes != null) {
-        result.add(bytes);
+        result[_imageFile(fileName)] = bytes;
       } else {
         _log.e("Image $fileName doesn't exist in cache, and couldn't be "
             "created");
