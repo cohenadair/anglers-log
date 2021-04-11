@@ -178,6 +178,7 @@ class _SaveReportPageState extends State<SaveReportPage> {
           report.startTimestamp.toInt(),
           report.endTimestamp.toInt(),
         );
+        _toDateRangeController.value = DisplayDateRange.allDates;
         _initEntitySets(
           anglerIds: report.anglerIds,
           baitIds: report.baitIds,
@@ -482,16 +483,11 @@ class _SaveReportPageState extends State<SaveReportPage> {
 
     // Remove old report, in case an edit changed the type of report. A change
     // in type requires using a different manager.
-    //
-    // Do not notify of these updates -- listeners are notified of changes when
-    // the new report is added.
     if (_editing) {
       if (_oldReport is SummaryReport) {
-        _summaryReportManager.delete((_oldReport as SummaryReport).id,
-            notify: false);
+        _summaryReportManager.delete((_oldReport as SummaryReport).id);
       } else if (_oldReport is ComparisonReport) {
-        _comparisonReportManager.delete((_oldReport as ComparisonReport).id,
-            notify: false);
+        _comparisonReportManager.delete((_oldReport as ComparisonReport).id);
       } else {
         _log.e("Unhandled old report type: $report");
       }
