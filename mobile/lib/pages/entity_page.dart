@@ -79,6 +79,12 @@ class _EntityPageState extends State<EntityPage> {
   }
 
   @override
+  void didUpdateWidget(EntityPage oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    _isImageShowing = _hasImages;
+  }
+
+  @override
   Widget build(BuildContext context) {
     var children = List<Widget>.of(widget.children);
     if (widget.customEntityValues.isNotEmpty) {
