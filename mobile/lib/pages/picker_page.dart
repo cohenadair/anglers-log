@@ -135,7 +135,7 @@ class _PickerPageState<T> extends State<PickerPage<T>> {
       children: children
         ..addAll(items.map((item) {
           if (item._divider) {
-            return Divider();
+            return MinDivider();
           }
 
           if (item._heading) {
