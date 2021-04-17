@@ -138,6 +138,7 @@ class Report {
       anglerIds: anglerIds,
       baitIds: baitIds,
       fishingSpotIds: fishingSpotIds,
+      methodIds: methodIds,
       speciesIds: speciesIds,
     );
 

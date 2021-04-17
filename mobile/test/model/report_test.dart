@@ -280,6 +280,7 @@ void main() {
       anglerIds: anyNamed("anglerIds"),
       baitIds: anyNamed("baitIds"),
       fishingSpotIds: anyNamed("fishingSpotIds"),
+      methodIds: anyNamed("methodIds"),
       speciesIds: anyNamed("speciesIds"),
     )).thenReturn(
       (catches ?? _catches)
