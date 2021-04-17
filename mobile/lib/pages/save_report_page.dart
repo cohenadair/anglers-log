@@ -458,6 +458,8 @@ class _SaveReportPageState extends State<SaveReportPage> {
           pickerPage = listPage!(
             ManageableListPagePickerSettings<T>(
               onPicked: (context, entities) {
+                // Treat an empty controller value as "include all", so we're
+                // not including 100s of objects in a protobuf collection.
                 setState(() => controller.value =
                     entities.containsAll(allEntities) ? {} : entities);
                 return true;
@@ -470,8 +472,6 @@ class _SaveReportPageState extends State<SaveReportPage> {
 
         push(
           context,
-          // Treat an empty controller value as "include all", so we're not
-          // including 100s of objects in a protobuf collection.
           pickerPage,
         );
       },
