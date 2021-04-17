@@ -12,6 +12,7 @@ import '../fishing_spot_manager.dart';
 import '../i18n/strings.dart';
 import '../image_manager.dart';
 import '../log.dart';
+import '../method_manager.dart';
 import '../model/gen/anglerslog.pb.dart';
 import '../pages/bait_list_page.dart';
 import '../pages/editable_form_page.dart';
@@ -31,10 +32,12 @@ import '../widgets/input_controller.dart';
 import '../widgets/input_data.dart';
 import '../widgets/list_item.dart';
 import '../widgets/list_picker_input.dart';
+import '../widgets/multi_list_picker_input.dart';
 import '../widgets/static_fishing_spot.dart';
 import '../widgets/widget.dart';
 import 'angler_list_page.dart';
 import 'manageable_list_page.dart';
+import 'method_list_page.dart';
 
 class SaveCatchPage extends StatefulWidget {
   /// If set, invoked when it's time to pop the page from the navigation stack.
@@ -75,6 +78,7 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
   static final _idFishingSpot = catchFieldIdFishingSpot();
   static final _idBait = catchFieldIdBait();
   static final _idAngler = catchFieldIdAngler();
+  static final _idFishingMethods = catchFieldIdFishingMethods();
 
   final _log = Log("SaveCatchPage");
 
@@ -95,6 +99,8 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
   FishingSpotManager get _fishingSpotManager => FishingSpotManager.of(context);
 
   ImageManager get _imageManager => ImageManager.of(context);
+
+  MethodManager get _methodManager => MethodManager.of(context);
 
   UserPreferenceManager get _userPreferencesManager =>
       UserPreferenceManager.of(context);
@@ -123,7 +129,13 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
   InputController<Id> get _anglerController =>
       _fields[_idAngler]!.controller as InputController<Id>;
 
+  InputController<Set<Id>> get _methodsController =>
+      _fields[_idFishingMethods]!.controller as InputController<Set<Id>>;
+
   bool get _editing => _oldCatch != null;
+
+  bool get _hasFishingMethods =>
+      _methodsController.value != null && _methodsController.value!.isNotEmpty;
 
   @override
   void initState() {
@@ -143,6 +155,7 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
       _baitController.value = _oldCatch!.baitId;
       _fishingSpotController.value = _oldCatch!.fishingSpotId;
       _anglerController.value = _oldCatch!.anglerId;
+      _methodsController.value = _oldCatch!.methodIds.toSet();
       _customEntityValues = _oldCatch!.customEntityValues;
       _imagesFuture = _pickedImagesForOldCatch;
     } else {
@@ -156,6 +169,7 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
       _speciesController.value = widget.speciesId;
       _imagesController.value = widget.images;
       _fishingSpotController.value = widget.fishingSpotId;
+      _methodsController.value = {};
     }
   }
 
@@ -196,6 +210,8 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
       return _buildBait();
     } else if (id == _idAngler) {
       return _buildAngler();
+    } else if (id == _idFishingMethods) {
+      return _buildMethods();
     } else {
       _log.e("Unknown input key: $id");
       return Empty();
@@ -279,6 +295,42 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
                     return true;
                   },
                   initialValue: angler,
+                ),
+              ),
+            );
+          },
+        );
+      },
+    );
+  }
+
+  Widget _buildMethods() {
+    return EntityListenerBuilder(
+      managers: [
+        _methodManager,
+      ],
+      builder: (context) {
+        var values = _hasFishingMethods
+            ? _methodManager.list(_methodsController.value!.toList())
+            : <Method>[];
+
+        return MultiListPickerInput(
+          padding: insetsHorizontalDefaultVerticalWidget,
+          values: values.map((method) => method.name).toSet(),
+          emptyValue: (context) => Strings.of(context).catchFieldNoMethods,
+          onTap: () {
+            push(
+              context,
+              MethodListPage(
+                pickerSettings: ManageableListPagePickerSettings<Method>(
+                  onPicked: (context, methods) {
+                    setState(() {
+                      _methodsController.value =
+                          methods.map((m) => m.id).toSet();
+                    });
+                    return true;
+                  },
+                  initialValues: values.toSet(),
                 ),
               ),
             );
@@ -383,6 +435,13 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
 
     if (_anglerController.value != null) {
       cat.anglerId = _anglerController.value!;
+    }
+
+    if (_methodsController.value != null &&
+        _methodsController.value!.isNotEmpty) {
+      cat.methodIds.addAll(_methodsController.value!);
+    } else {
+      cat.methodIds.clear();
     }
 
     _catchManager.addOrUpdate(

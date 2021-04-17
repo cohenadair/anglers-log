@@ -39,6 +39,6 @@ class SpeciesManager extends NamedEntityManager<Species> {
     return super.delete(id, notify: notify);
   }
 
-  int numberOfCatches(Id? speciesId) =>
-      numberOf<Catch>(speciesId, _catchManager.list(), (cat) => cat.speciesId);
+  int numberOfCatches(Id? speciesId) => numberOf<Catch>(
+      speciesId, _catchManager.list(), (cat) => cat.speciesId == speciesId);
 }

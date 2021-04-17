@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mobile/pages/method_list_page.dart';
 
 import '../i18n/strings.dart';
 import '../pages/bait_category_list_page.dart';
@@ -61,6 +62,12 @@ class MorePage extends StatelessWidget {
           icon: Icons.build,
           title: Strings.of(context).customFields,
           page: CustomEntityListPage(),
+        ),
+        _buildPageItem(
+          context,
+          icon: Icons.list,
+          title: Strings.of(context).methodListPageMenuTitle,
+          page: MethodListPage(),
         ),
         _buildPageItem(
           context,

@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:mobile/angler_manager.dart';
 
+import '../angler_manager.dart';
 import '../bait_category_manager.dart';
 import '../bait_manager.dart';
 import '../catch_manager.dart';
 import '../entity_manager.dart';
 import '../fishing_spot_manager.dart';
 import '../i18n/strings.dart';
+import '../method_manager.dart';
 import '../model/gen/anglerslog.pb.dart';
 import '../pages/bait_page.dart';
 import '../pages/entity_page.dart';
@@ -36,6 +37,7 @@ class _CatchPageState extends State<CatchPage> {
       BaitCategoryManager.of(context);
   CatchManager get _catchManager => CatchManager.of(context);
   FishingSpotManager get _fishingSpotManager => FishingSpotManager.of(context);
+  MethodManager get _methodManager => MethodManager.of(context);
   SpeciesManager get _speciesManager => SpeciesManager.of(context);
 
   // TODO: Remove this when Google Maps performance issue is fixed.
@@ -60,6 +62,7 @@ class _CatchPageState extends State<CatchPage> {
         _baitManager,
         _catchManager,
         _fishingSpotManager,
+        _methodManager,
         _speciesManager,
       ],
       onDeleteEnabled: false,
@@ -98,6 +101,7 @@ class _CatchPageState extends State<CatchPage> {
                 ],
               ),
             ),
+            _buildMethods(),
             _buildBait(),
             EmptyFutureBuilder<bool>(
               future: _fishingSpotFuture,
@@ -157,6 +161,17 @@ class _CatchPageState extends State<CatchPage> {
     return ListItem(
       leading: Icon(Icons.person),
       title: Text(angler.name),
+    );
+  }
+
+  Widget _buildMethods() {
+    if (_catch.methodIds.isEmpty) {
+      return Empty();
+    }
+
+    return ListItem(
+      title: ChipWrap(
+          _methodManager.list(_catch.methodIds).map((m) => m.name).toSet()),
     );
   }
 }

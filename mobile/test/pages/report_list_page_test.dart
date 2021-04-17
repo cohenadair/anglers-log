@@ -37,6 +37,7 @@ void main() {
   setUp(() {
     appManager = StubbedAppManager();
 
+    when(appManager.baitManager.list()).thenReturn([]);
     when(appManager.comparisonReportManager.list()).thenReturn(comparisons);
     when(appManager.summaryReportManager.list()).thenReturn(summaries);
   });

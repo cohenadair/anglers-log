@@ -21,6 +21,7 @@ class StubbedAppManager {
   MockImageManager imageManager = MockImageManager();
   MockLocalDatabaseManager localDatabaseManager = MockLocalDatabaseManager();
   MockLocationMonitor locationMonitor = MockLocationMonitor();
+  MockMethodManager methodManager = MockMethodManager();
   MockPropertiesManager propertiesManager = MockPropertiesManager();
   MockSpeciesManager speciesManager = MockSpeciesManager();
   MockSubscriptionManager subscriptionManager = MockSubscriptionManager();
@@ -63,6 +64,7 @@ class StubbedAppManager {
     when(app.imageManager).thenReturn(imageManager);
     when(app.localDatabaseManager).thenReturn(localDatabaseManager);
     when(app.locationMonitor).thenReturn(locationMonitor);
+    when(app.methodManager).thenReturn(methodManager);
     when(app.propertiesManager).thenReturn(propertiesManager);
     when(app.speciesManager).thenReturn(speciesManager);
     when(app.subscriptionManager).thenReturn(subscriptionManager);
@@ -141,6 +143,13 @@ class StubbedAppManager {
       onDelete: anyNamed("onDelete"),
     )).thenReturn(SimpleEntityListener());
     when(fishingSpotManager.entity(any)).thenReturn(null);
+
+    when(methodManager.addSimpleListener(
+      onAdd: anyNamed("onAdd"),
+      onUpdate: anyNamed("onUpdate"),
+      onDelete: anyNamed("onDelete"),
+    )).thenReturn(SimpleEntityListener());
+    when(methodManager.entity(any)).thenReturn(null);
 
     when(speciesManager.addSimpleListener(
       onAdd: anyNamed("onAdd"),

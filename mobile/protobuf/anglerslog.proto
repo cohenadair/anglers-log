@@ -48,6 +48,7 @@ message Catch {
   repeated string image_names = 6;
   repeated CustomEntityValue custom_entity_values = 7;
   Id angler_id = 8;
+  repeated Id method_ids = 9;
 }
 
 message FishingSpot {
@@ -73,6 +74,7 @@ message SummaryReport {
   repeated Id fishing_spot_ids = 8;
   repeated Id species_ids = 9;
   repeated Id angler_ids = 10;
+  repeated Id method_ids = 11;
 }
 
 message ComparisonReport {
@@ -89,9 +91,15 @@ message ComparisonReport {
   repeated Id fishing_spot_ids = 11;
   repeated Id species_ids = 12;
   repeated Id angler_ids = 13;
+  repeated Id method_ids = 14;
 }
 
 message Angler {
+  Id id = 1;
+  string name = 2;
+}
+
+message Method {
   Id id = 1;
   string name = 2;
 }

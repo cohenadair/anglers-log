@@ -48,6 +48,10 @@ void main() {
       allowedExtensions: anyNamed("allowedExtensions"),
     )).thenAnswer((_) => Future.value(null));
 
+    when(appManager.methodManager.named(any)).thenReturn(null);
+    when(appManager.methodManager.addOrUpdate(any))
+        .thenAnswer((_) => Future.value(true));
+
     when(appManager.speciesManager.addOrUpdate(any))
         .thenAnswer((_) => Future.value(true));
     when(appManager.speciesManager.named(any)).thenReturn(Species()

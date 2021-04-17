@@ -1,0 +1,307 @@
+{
+  "journal": {
+    "name": "Logbook",
+    "trips": [],
+    "entries": [
+      {
+        "name": "bdb29af4-4666-4de1-a1c3-1b0e27df55db",
+        "id": "bdb29af4-4666-4de1-a1c3-1b0e27df55db",
+        "images": [
+          {
+            "imagePath": "Images\/10-11-2017_5-20_PM_11.000-0.jpg",
+            "entryDate": "10-11-2017_5-19_PM_19.420",
+            "baitName": ""
+          }
+        ],
+        "date": "10-11-2017_5-19_PM_19.420",
+        "isFavorite": false,
+        "fishSpecies": "Trout - Rainbow",
+        "fishResult": 0,
+        "fishQuantity": -1,
+        "fishLength": 22,
+        "fishWeight": -1,
+        "waterDepth": -1,
+        "waterTemperature": -1,
+        "waterClarity": "",
+        "baitUsed": "Rapala F-7 - Brown Trout",
+        "baitCategory": "b860cddd-dc47-48a2-8d02-c8112a2ed5eb",
+        "location": "Bow River",
+        "fishingSpot": "Sewer Run",
+        "notes": "",
+        "fishingMethodNames": [
+          "Casting",
+          "Lure",
+          "Wade"
+        ],
+        "journal": "Logbook",
+        "weatherData": {}
+      }
+    ],
+    "userDefines": [
+      {
+        "name": "Bait Categories",
+        "journal": "Logbook",
+        "baitCategories": [
+          {
+            "name": "Other",
+            "id": "b860cddd-dc47-48a2-8d02-c8112a2ed5eb"
+          }
+        ],
+        "baits": [],
+        "fishingMethods": [],
+        "locations": [],
+        "species": [],
+        "waterClarities": [],
+        "anglers": []
+      },
+      {
+        "name": "Baits",
+        "journal": "Logbook",
+        "baitCategories": [],
+        "baits": [
+          {
+            "name": "Rapala F-7 - Brown Trout",
+            "id": "e5817472-a461-4043-a462-a69935886292",
+            "image": {
+              "imagePath": "Images\/Bait_12-23-2017_8-42_PM_22.547-0.jpg",
+              "entryDate": "",
+              "baitName": "Rapala F-7 - Brown Trout"
+            },
+            "baitCategory": "b860cddd-dc47-48a2-8d02-c8112a2ed5eb",
+            "color": "Brown Trout",
+            "size": "F-7",
+            "baitDescription": "Depth 3-5'.",
+            "baitType": 0
+          },
+          {
+            "name": "Z-Man",
+            "id": "e5817472-a461-4043-a462-a69935886292",
+            "image": {
+              "imagePath": "Images\/Bait_12-23-2017_8-42_PM_22.547-0.jpg",
+              "entryDate": "",
+              "baitName": "Z-Man"
+            },
+            "baitCategory": "",
+            "color": "Brown Trout",
+            "size": "F-7",
+            "baitDescription": "Depth 3-5'.",
+            "baitType": 0
+          }
+        ],
+        "fishingMethods": [],
+        "locations": [],
+        "species": [],
+        "waterClarities": [],
+        "anglers": []
+      },
+      {
+        "name": "Fishing Methods",
+        "journal": "Logbook",
+        "baitCategories": [],
+        "baits": [],
+        "fishingMethods": [
+          {
+            "name": "Baitcaster",
+            "id": "6d071b7d-c575-4142-a48a-e984a71e86b8"
+          },
+          {
+            "name": "Boat",
+            "id": "93948e27-e4dd-4282-aee0-f5037a7141ff"
+          },
+          {
+            "name": "Bottom",
+            "id": "e00c0d4e-9666-4eb4-8b38-2bb543d4d258"
+          },
+          {
+            "name": "Casting",
+            "id": "76a11e4d-360d-4c5b-be3b-2ca4e6c6ec62"
+          },
+          {
+            "name": "Crank",
+            "id": "a368ae48-e215-4615-85b6-4cac20a9fa41"
+          },
+          {
+            "name": "Dipsy Diver",
+            "id": "4e87483a-0552-4fa9-b5d3-7b4dfb02093f"
+          },
+          {
+            "name": "Drifting",
+            "id": "ac487f8a-1f86-4aae-bcc3-57d7709d0515"
+          },
+          {
+            "name": "Flasher",
+            "id": "96f6c2b9-8220-43f2-a34a-7ac2fd063d5f"
+          },
+          {
+            "name": "Fly",
+            "id": "4b401a6a-6df7-4bea-800f-8ce6d264688e"
+          },
+          {
+            "name": "Ice",
+            "id": "3404bee3-2f6a-4094-81eb-1a68cf0a96ac"
+          },
+          {
+            "name": "Jig",
+            "id": "70183572-69e7-4c32-b3f2-304f67770c1f"
+          },
+          {
+            "name": "Lure",
+            "id": "87aca017-3aa9-447c-8235-3737497eb180"
+          },
+          {
+            "name": "Nyphing",
+            "id": "3663ab16-eb14-45da-9bad-1e880c451d42"
+          },
+          {
+            "name": "Rod",
+            "id": "15bd2389-624e-4ece-928e-3df20be794eb"
+          },
+          {
+            "name": "Shore",
+            "id": "3550bb92-c936-48a3-a598-d4c67e6c8cea"
+          },
+          {
+            "name": "Still",
+            "id": "ce911c52-f6c0-498d-9758-a688cc66e0d9"
+          },
+          {
+            "name": "Tip Up",
+            "id": "f8d11ea6-fca1-4be9-bbaf-c2ca9eeed5f5"
+          },
+          {
+            "name": "Trolling",
+            "id": "1609e010-e65f-4ded-9e30-5c2bda07c8de"
+          },
+          {
+            "name": "Wade",
+            "id": "e3e523c7-f988-4615-9a8a-646c1d8c029d"
+          }
+        ],
+        "locations": [],
+        "species": [],
+        "waterClarities": [],
+        "anglers": []
+      },
+      {
+        "name": "Locations",
+        "journal": "Logbook",
+        "baitCategories": [],
+        "baits": [],
+        "fishingMethods": [],
+        "locations": [
+          {
+            "name": "Bow River",
+            "id": "89ca5a07-0071-4ac1-83f5-e0eff8fdee4c",
+            "fishingSpots": [
+              {
+                "name": "Sewer Run",
+                "id": "acc72761-30fc-407b-91bf-32048ea08845",
+                "coordinates": {
+                  "latitude": 50.943077,
+                  "longitude": -114.013481
+                },
+                "location": "Bow River"
+              }
+            ]
+          }
+        ],
+        "species": [],
+        "waterClarities": [],
+        "anglers": []
+      },
+      {
+        "name": "Species",
+        "journal": "Logbook",
+        "baitCategories": [],
+        "baits": [],
+        "fishingMethods": [],
+        "locations": [],
+        "species": [
+          {
+            "name": "Trout - Rainbow",
+            "id": "a48a418f-5fe2-45c1-91a6-a9864d44e5bf"
+          }
+        ],
+        "waterClarities": [],
+        "anglers": []
+      },
+      {
+        "name": "Water Clarities",
+        "journal": "Logbook",
+        "baitCategories": [],
+        "baits": [],
+        "fishingMethods": [],
+        "locations": [],
+        "species": [],
+        "waterClarities": [
+          {
+            "name": "3 Feet",
+            "id": "39fa30a5-79f8-4d8f-869f-54a917448634"
+          },
+          {
+            "name": "Chocolate Milk",
+            "id": "f8ec561a-5778-4b2a-9af1-80f7bc59528b"
+          },
+          {
+            "name": "Clear",
+            "id": "7cd5315b-f07e-48c6-bac1-fc35c31f95e0"
+          },
+          {
+            "name": "Cloudy",
+            "id": "5b4e5ddc-cddb-4ec4-9c10-11c687a9db7f"
+          },
+          {
+            "name": "Crystal",
+            "id": "0bd78571-6b2b-47eb-955d-ac8715de554f"
+          },
+          {
+            "name": "Crystal Clear",
+            "id": "f86afd0e-3a0e-4d7c-9951-c8dc5cd151bb"
+          },
+          {
+            "name": "Dirty",
+            "id": "4e4fadf2-3250-4442-95f3-0ed42f5f21be"
+          },
+          {
+            "name": "Muddy",
+            "id": "ca948ef0-146f-4c8e-8b7c-0d69f0544844"
+          },
+          {
+            "name": "Tea Stained",
+            "id": "35716f20-fff8-4453-af7b-7a77f21f8be9"
+          }
+        ],
+        "anglers": []
+      },
+      {
+        "name": "Anglers",
+        "journal": "Logbook",
+        "baitCategories": [],
+        "baits": [],
+        "fishingMethods": [],
+        "locations": [],
+        "species": [],
+        "waterClarities": [],
+        "anglers": [
+          {
+            "name": "Cohen",
+            "id": "a0bf8683-675d-4759-8da8-34f81545ad69"
+          },
+          {
+            "name": "Eli",
+            "id": "2ddabb28-fa56-497f-9d57-f98987f787cb"
+          },
+          {
+            "name": "Ethan",
+            "id": "cb8389fb-7f68-4d25-ae20-a685a6ab171d"
+          },
+          {
+            "name": "Tim",
+            "id": "fffeae8e-e8d3-47c0-9fe9-f94ce2bf8811"
+          }
+        ]
+      }
+    ],
+    "measurementSystem": 0
+  }
+}

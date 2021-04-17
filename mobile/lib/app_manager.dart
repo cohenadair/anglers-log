@@ -13,6 +13,7 @@ import 'fishing_spot_manager.dart';
 import 'image_manager.dart';
 import 'local_database_manager.dart';
 import 'location_monitor.dart';
+import 'method_manager.dart';
 import 'properties_manager.dart';
 import 'species_manager.dart';
 import 'subscription_manager.dart';
@@ -55,6 +56,7 @@ class AppManager {
   ImageManager? _imageManager;
   LocalDatabaseManager? _localDatabaseManager;
   LocationMonitor? _locationMonitor;
+  MethodManager? _methodManager;
   PropertiesManager? _propertiesManager;
   SpeciesManager? _speciesManager;
   SubscriptionManager? _subscriptionManager;
@@ -164,6 +166,13 @@ class AppManager {
       _locationMonitor = LocationMonitor(this);
     }
     return _locationMonitor!;
+  }
+
+  MethodManager get methodManager {
+    if (_methodManager == null) {
+      _methodManager = MethodManager(this);
+    }
+    return _methodManager!;
   }
 
   PropertiesManager get propertiesManager {

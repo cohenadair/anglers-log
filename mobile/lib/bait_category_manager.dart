@@ -29,8 +29,8 @@ class BaitCategoryManager extends NamedEntityManager<BaitCategory> {
   @override
   String get tableName => "bait_category";
 
-  int numberOfBaits(Id? baitCategoryId) => numberOf<Bait>(
-      baitCategoryId, _baitManager.list(), (bait) => bait.baitCategoryId);
+  int numberOfBaits(Id? baitCategoryId) => numberOf<Bait>(baitCategoryId,
+      _baitManager.list(), (bait) => bait.baitCategoryId == baitCategoryId);
 
   String deleteMessage(BuildContext context, BaitCategory baitCategory) {
     var numOfBaits = numberOfBaits(baitCategory.id);

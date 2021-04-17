@@ -15,6 +15,7 @@ import 'mocks/stubbed_app_manager.dart';
 
 class TestEntityManager extends EntityManager<Species> {
   bool firestoreEnabled = true;
+  bool matchesFilterResult = true;
 
   TestEntityManager(AppManager app) : super(app);
 
@@ -28,15 +29,15 @@ class TestEntityManager extends EntityManager<Species> {
   Id id(Species species) => species.id;
 
   @override
-  bool matchesFilter(Id id, String? filter) => true;
+  bool matchesFilter(Id id, String? filter) => matchesFilterResult;
 
   @override
   String get tableName => "species";
 
   @override
   int numberOf<T extends GeneratedMessage>(
-          Id? id, List<T> items, Id Function(T) propertyId) =>
-      super.numberOf<T>(id, items, propertyId);
+          Id? id, List<T> items, bool Function(T) matches) =>
+      super.numberOf<T>(id, items, matches);
 }
 
 void main() {
@@ -391,8 +392,36 @@ void main() {
     // tested in subclass tests.
   });
 
+  test("idsMatchFilter empty parameters", () async {
+    expect(entityManager.idsMatchFilter([], null), isFalse);
+    expect(entityManager.idsMatchFilter([], "Nothing"), isFalse);
+  });
+
+  test("idsMatchFilter normal use", () async {
+    var id0 = randomId();
+    var id1 = randomId();
+    var id2 = randomId();
+
+    await entityManager.addOrUpdate(Species()
+      ..id = id0
+      ..name = "Bluegill");
+    await entityManager.addOrUpdate(Species()
+      ..id = id1
+      ..name = "Catfish");
+    await entityManager.addOrUpdate(Species()
+      ..id = id2
+      ..name = "Bass");
+
+    expect(entityManager.idsMatchFilter([id2], "Blue"), isTrue);
+    expect(entityManager.idsMatchFilter([id0, id2], "fish"), isTrue);
+
+    entityManager.matchesFilterResult = false;
+    expect(entityManager.idsMatchFilter([id0, id2], "No match"), isFalse);
+    expect(entityManager.idsMatchFilter([randomId()], "N/A"), isFalse);
+  });
+
   test("numberOf returns 0 if input ID is null", () async {
-    expect(entityManager.numberOf<Bait>(null, [], (bait) => bait.id), 0);
+    expect(entityManager.numberOf<Bait>(null, [], (_) => false), 0);
   });
 
   test("numberOf returns correct result", () async {
@@ -422,19 +451,19 @@ void main() {
 
     expect(
         entityManager.numberOf<Catch>(
-            anglerId0, catches, (cat) => cat.anglerId),
+            anglerId0, catches, (cat) => cat.anglerId == anglerId0),
         2);
     expect(
         entityManager.numberOf<Catch>(
-            anglerId1, catches, (cat) => cat.anglerId),
+            anglerId1, catches, (cat) => cat.anglerId == anglerId1),
         1);
     expect(
         entityManager.numberOf<Catch>(
-            anglerId2, catches, (cat) => cat.anglerId),
+            anglerId2, catches, (cat) => cat.anglerId == anglerId2),
         1);
     expect(
         entityManager.numberOf<Catch>(
-            anglerId3, catches, (cat) => cat.anglerId),
+            anglerId3, catches, (cat) => cat.anglerId == anglerId3),
         1);
   });
 }

@@ -526,6 +526,7 @@ class Catch extends $pb.GeneratedMessage {
     ..pPS(6, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'imageNames')
     ..pc<CustomEntityValue>(7, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'customEntityValues', $pb.PbFieldType.PM, subBuilder: CustomEntityValue.create)
     ..aOM<Id>(8, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'anglerId', subBuilder: Id.create)
+    ..pc<Id>(9, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'methodIds', $pb.PbFieldType.PM, subBuilder: Id.create)
     ..hasRequiredFields = false;
 
   Catch._() : super();
@@ -538,6 +539,7 @@ class Catch extends $pb.GeneratedMessage {
     $core.Iterable<$core.String>? imageNames,
     $core.Iterable<CustomEntityValue>? customEntityValues,
     Id? anglerId,
+    $core.Iterable<Id>? methodIds,
   }) {
     final _result = create();
     if (id != null) {
@@ -563,6 +565,9 @@ class Catch extends $pb.GeneratedMessage {
     }
     if (anglerId != null) {
       _result.anglerId = anglerId;
+    }
+    if (methodIds != null) {
+      _result.methodIds.addAll(methodIds);
     }
     return _result;
   }
@@ -679,6 +684,9 @@ class Catch extends $pb.GeneratedMessage {
   void clearAnglerId() => clearField(8);
   @$pb.TagNumber(8)
   Id ensureAnglerId() => $_ensure(7);
+
+  @$pb.TagNumber(9)
+  $core.List<Id> get methodIds => $_getList(8);
 }
 
 class FishingSpot extends $pb.GeneratedMessage {
@@ -919,6 +927,7 @@ class SummaryReport extends $pb.GeneratedMessage {
     ..pc<Id>(8, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'fishingSpotIds', $pb.PbFieldType.PM, subBuilder: Id.create)
     ..pc<Id>(9, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'speciesIds', $pb.PbFieldType.PM, subBuilder: Id.create)
     ..pc<Id>(10, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'anglerIds', $pb.PbFieldType.PM, subBuilder: Id.create)
+    ..pc<Id>(11, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'methodIds', $pb.PbFieldType.PM, subBuilder: Id.create)
     ..hasRequiredFields = false;
 
   SummaryReport._() : super();
@@ -933,6 +942,7 @@ class SummaryReport extends $pb.GeneratedMessage {
     $core.Iterable<Id>? fishingSpotIds,
     $core.Iterable<Id>? speciesIds,
     $core.Iterable<Id>? anglerIds,
+    $core.Iterable<Id>? methodIds,
   }) {
     final _result = create();
     if (id != null) {
@@ -964,6 +974,9 @@ class SummaryReport extends $pb.GeneratedMessage {
     }
     if (anglerIds != null) {
       _result.anglerIds.addAll(anglerIds);
+    }
+    if (methodIds != null) {
+      _result.methodIds.addAll(methodIds);
     }
     return _result;
   }
@@ -1079,6 +1092,9 @@ class SummaryReport extends $pb.GeneratedMessage {
 
   @$pb.TagNumber(10)
   $core.List<Id> get anglerIds => $_getList(9);
+
+  @$pb.TagNumber(11)
+  $core.List<Id> get methodIds => $_getList(10);
 }
 
 class ComparisonReport extends $pb.GeneratedMessage {
@@ -1110,6 +1126,7 @@ class ComparisonReport extends $pb.GeneratedMessage {
     ..pc<Id>(11, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'fishingSpotIds', $pb.PbFieldType.PM, subBuilder: Id.create)
     ..pc<Id>(12, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'speciesIds', $pb.PbFieldType.PM, subBuilder: Id.create)
     ..pc<Id>(13, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'anglerIds', $pb.PbFieldType.PM, subBuilder: Id.create)
+    ..pc<Id>(14, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'methodIds', $pb.PbFieldType.PM, subBuilder: Id.create)
     ..hasRequiredFields = false;
 
   ComparisonReport._() : super();
@@ -1127,6 +1144,7 @@ class ComparisonReport extends $pb.GeneratedMessage {
     $core.Iterable<Id>? fishingSpotIds,
     $core.Iterable<Id>? speciesIds,
     $core.Iterable<Id>? anglerIds,
+    $core.Iterable<Id>? methodIds,
   }) {
     final _result = create();
     if (id != null) {
@@ -1167,6 +1185,9 @@ class ComparisonReport extends $pb.GeneratedMessage {
     }
     if (anglerIds != null) {
       _result.anglerIds.addAll(anglerIds);
+    }
+    if (methodIds != null) {
+      _result.methodIds.addAll(methodIds);
     }
     return _result;
   }
@@ -1318,6 +1339,9 @@ class ComparisonReport extends $pb.GeneratedMessage {
 
   @$pb.TagNumber(13)
   $core.List<Id> get anglerIds => $_getList(12);
+
+  @$pb.TagNumber(14)
+  $core.List<Id> get methodIds => $_getList(13);
 }
 
 class Angler extends $pb.GeneratedMessage {
@@ -1382,6 +1406,96 @@ class Angler extends $pb.GeneratedMessage {
   static Angler getDefault() =>
       _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<Angler>(create);
   static Angler? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  Id get id => $_getN(0);
+  @$pb.TagNumber(1)
+  set id(Id v) {
+    setField(1, v);
+  }
+
+  @$pb.TagNumber(1)
+  $core.bool hasId() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearId() => clearField(1);
+  @$pb.TagNumber(1)
+  Id ensureId() => $_ensure(0);
+
+  @$pb.TagNumber(2)
+  $core.String get name => $_getSZ(1);
+  @$pb.TagNumber(2)
+  set name($core.String v) {
+    $_setString(1, v);
+  }
+
+  @$pb.TagNumber(2)
+  $core.bool hasName() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearName() => clearField(2);
+}
+
+class Method extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      const $core.bool.fromEnvironment('protobuf.omit_message_names')
+          ? ''
+          : 'Method',
+      package: const $pb.PackageName(
+          const $core.bool.fromEnvironment('protobuf.omit_message_names')
+              ? ''
+              : 'anglerslog'),
+      createEmptyInstance: create)
+    ..aOM<Id>(
+        1,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'id',
+        subBuilder: Id.create)
+    ..aOS(
+        2,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'name')
+    ..hasRequiredFields = false;
+
+  Method._() : super();
+  factory Method({
+    Id? id,
+    $core.String? name,
+  }) {
+    final _result = create();
+    if (id != null) {
+      _result.id = id;
+    }
+    if (name != null) {
+      _result.name = name;
+    }
+    return _result;
+  }
+  factory Method.fromBuffer($core.List<$core.int> i,
+          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(i, r);
+  factory Method.fromJson($core.String i,
+          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(i, r);
+  @$core.Deprecated('Using this can add significant overhead to your binary. '
+      'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+      'Will be removed in next major version')
+  Method clone() => Method()..mergeFromMessage(this);
+  @$core.Deprecated('Using this can add significant overhead to your binary. '
+      'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+      'Will be removed in next major version')
+  Method copyWith(void Function(Method) updates) =>
+      super.copyWith((message) => updates(message as Method))
+          as Method; // ignore: deprecated_member_use
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static Method create() => Method._();
+  Method createEmptyInstance() => create();
+  static $pb.PbList<Method> createRepeated() => $pb.PbList<Method>();
+  @$core.pragma('dart2js:noInline')
+  static Method getDefault() =>
+      _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<Method>(create);
+  static Method? _defaultInstance;
 
   @$pb.TagNumber(1)
   Id get id => $_getN(0);

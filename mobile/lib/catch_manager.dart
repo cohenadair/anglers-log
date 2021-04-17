@@ -12,6 +12,7 @@ import 'entity_manager.dart';
 import 'fishing_spot_manager.dart';
 import 'i18n/strings.dart';
 import 'image_manager.dart';
+import 'method_manager.dart';
 import 'model/gen/anglerslog.pb.dart';
 import 'species_manager.dart';
 import 'utils/date_time_utils.dart';
@@ -28,6 +29,7 @@ class CatchManager extends EntityManager<Catch> {
       appManager.customEntityManager;
   FishingSpotManager get _fishingSpotManager => appManager.fishingSpotManager;
   ImageManager get _imageManager => appManager.imageManager;
+  MethodManager get _methodManager => appManager.methodManager;
   SpeciesManager get _speciesManager => appManager.speciesManager;
 
   CatchManager(AppManager app) : super(app) {
@@ -55,6 +57,7 @@ class CatchManager extends EntityManager<Catch> {
         _fishingSpotManager.matchesFilter(cat.fishingSpotId, filter) ||
         _baitManager.matchesFilter(cat.baitId, filter) ||
         _anglerManager.matchesFilter(cat.anglerId, filter) ||
+        _methodManager.idsMatchFilter(cat.methodIds, filter) ||
         context == null ||
         timestampToSearchString(context, cat.timestamp.toInt())
             .toLowerCase()
@@ -75,20 +78,22 @@ class CatchManager extends EntityManager<Catch> {
     BuildContext context, {
     String? filter,
     DateRange? dateRange,
-    Set<Id> catchIds = const {},
     Set<Id> anglerIds = const {},
     Set<Id> baitIds = const {},
+    Set<Id> catchIds = const {},
     Set<Id> fishingSpotIds = const {},
+    Set<Id> methodIds = const {},
     Set<Id> speciesIds = const {},
   }) {
     var result = List.of(filteredCatches(
       context,
       filter: filter,
       dateRange: dateRange,
-      catchIds: catchIds,
       anglerIds: anglerIds,
-      fishingSpotIds: fishingSpotIds,
       baitIds: baitIds,
+      catchIds: catchIds,
+      fishingSpotIds: fishingSpotIds,
+      methodIds: methodIds,
       speciesIds: speciesIds,
     ));
 
@@ -100,18 +105,20 @@ class CatchManager extends EntityManager<Catch> {
     BuildContext context, {
     String? filter,
     DateRange? dateRange,
-    Set<Id> catchIds = const {},
     Set<Id> anglerIds = const {},
     Set<Id> baitIds = const {},
+    Set<Id> catchIds = const {},
     Set<Id> fishingSpotIds = const {},
+    Set<Id> methodIds = const {},
     Set<Id> speciesIds = const {},
   }) {
     if (isEmpty(filter) &&
         dateRange == null &&
-        catchIds.isEmpty &&
         anglerIds.isEmpty &&
         baitIds.isEmpty &&
+        catchIds.isEmpty &&
         fishingSpotIds.isEmpty &&
+        methodIds.isEmpty &&
         speciesIds.isEmpty) {
       return entities.values.toList();
     }
@@ -119,11 +126,13 @@ class CatchManager extends EntityManager<Catch> {
     return entities.values.where((cat) {
       var valid = true;
       valid &= dateRange == null || dateRange.contains(cat.timestamp.toInt());
-      valid &= catchIds.isEmpty || catchIds.contains(cat.id);
       valid &= anglerIds.isEmpty || anglerIds.contains(cat.anglerId);
       valid &= baitIds.isEmpty || baitIds.contains(cat.baitId);
+      valid &= catchIds.isEmpty || catchIds.contains(cat.id);
       valid &=
           fishingSpotIds.isEmpty || fishingSpotIds.contains(cat.fishingSpotId);
+      valid &= methodIds.isEmpty ||
+          methodIds.intersection(cat.methodIds.toSet()).isNotEmpty;
       valid &= speciesIds.isEmpty || speciesIds.contains(cat.speciesId);
       if (!valid) {
         return false;

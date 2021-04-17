@@ -186,12 +186,20 @@ const Catch$json = const {
       '6': '.anglerslog.Id',
       '10': 'anglerId'
     },
+    const {
+      '1': 'method_ids',
+      '3': 9,
+      '4': 3,
+      '5': 11,
+      '6': '.anglerslog.Id',
+      '10': 'methodIds'
+    },
   ],
 };
 
 /// Descriptor for `Catch`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List catchDescriptor = $convert.base64Decode(
-    'CgVDYXRjaBIeCgJpZBgBIAEoCzIOLmFuZ2xlcnNsb2cuSWRSAmlkEhwKCXRpbWVzdGFtcBgCIAEoBFIJdGltZXN0YW1wEicKB2JhaXRfaWQYAyABKAsyDi5hbmdsZXJzbG9nLklkUgZiYWl0SWQSNgoPZmlzaGluZ19zcG90X2lkGAQgASgLMg4uYW5nbGVyc2xvZy5JZFINZmlzaGluZ1Nwb3RJZBItCgpzcGVjaWVzX2lkGAUgASgLMg4uYW5nbGVyc2xvZy5JZFIJc3BlY2llc0lkEh8KC2ltYWdlX25hbWVzGAYgAygJUgppbWFnZU5hbWVzEk8KFGN1c3RvbV9lbnRpdHlfdmFsdWVzGAcgAygLMh0uYW5nbGVyc2xvZy5DdXN0b21FbnRpdHlWYWx1ZVISY3VzdG9tRW50aXR5VmFsdWVzEisKCWFuZ2xlcl9pZBgIIAEoCzIOLmFuZ2xlcnNsb2cuSWRSCGFuZ2xlcklk');
+    'CgVDYXRjaBIeCgJpZBgBIAEoCzIOLmFuZ2xlcnNsb2cuSWRSAmlkEhwKCXRpbWVzdGFtcBgCIAEoBFIJdGltZXN0YW1wEicKB2JhaXRfaWQYAyABKAsyDi5hbmdsZXJzbG9nLklkUgZiYWl0SWQSNgoPZmlzaGluZ19zcG90X2lkGAQgASgLMg4uYW5nbGVyc2xvZy5JZFINZmlzaGluZ1Nwb3RJZBItCgpzcGVjaWVzX2lkGAUgASgLMg4uYW5nbGVyc2xvZy5JZFIJc3BlY2llc0lkEh8KC2ltYWdlX25hbWVzGAYgAygJUgppbWFnZU5hbWVzEk8KFGN1c3RvbV9lbnRpdHlfdmFsdWVzGAcgAygLMh0uYW5nbGVyc2xvZy5DdXN0b21FbnRpdHlWYWx1ZVISY3VzdG9tRW50aXR5VmFsdWVzEisKCWFuZ2xlcl9pZBgIIAEoCzIOLmFuZ2xlcnNsb2cuSWRSCGFuZ2xlcklkEi0KCm1ldGhvZF9pZHMYCSADKAsyDi5hbmdsZXJzbG9nLklkUgltZXRob2RJZHM=');
 @$core.Deprecated('Use fishingSpotDescriptor instead')
 const FishingSpot$json = const {
   '1': 'FishingSpot',
@@ -293,12 +301,20 @@ const SummaryReport$json = const {
       '6': '.anglerslog.Id',
       '10': 'anglerIds'
     },
+    const {
+      '1': 'method_ids',
+      '3': 11,
+      '4': 3,
+      '5': 11,
+      '6': '.anglerslog.Id',
+      '10': 'methodIds'
+    },
   ],
 };
 
 /// Descriptor for `SummaryReport`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List summaryReportDescriptor = $convert.base64Decode(
-    'Cg1TdW1tYXJ5UmVwb3J0Eh4KAmlkGAEgASgLMg4uYW5nbGVyc2xvZy5JZFICaWQSEgoEbmFtZRgCIAEoCVIEbmFtZRIgCgtkZXNjcmlwdGlvbhgDIAEoCVILZGVzY3JpcHRpb24SMQoVZGlzcGxheV9kYXRlX3JhbmdlX2lkGAQgASgJUhJkaXNwbGF5RGF0ZVJhbmdlSWQSJwoPc3RhcnRfdGltZXN0YW1wGAUgASgEUg5zdGFydFRpbWVzdGFtcBIjCg1lbmRfdGltZXN0YW1wGAYgASgEUgxlbmRUaW1lc3RhbXASKQoIYmFpdF9pZHMYByADKAsyDi5hbmdsZXJzbG9nLklkUgdiYWl0SWRzEjgKEGZpc2hpbmdfc3BvdF9pZHMYCCADKAsyDi5hbmdsZXJzbG9nLklkUg5maXNoaW5nU3BvdElkcxIvCgtzcGVjaWVzX2lkcxgJIAMoCzIOLmFuZ2xlcnNsb2cuSWRSCnNwZWNpZXNJZHMSLQoKYW5nbGVyX2lkcxgKIAMoCzIOLmFuZ2xlcnNsb2cuSWRSCWFuZ2xlcklkcw==');
+    'Cg1TdW1tYXJ5UmVwb3J0Eh4KAmlkGAEgASgLMg4uYW5nbGVyc2xvZy5JZFICaWQSEgoEbmFtZRgCIAEoCVIEbmFtZRIgCgtkZXNjcmlwdGlvbhgDIAEoCVILZGVzY3JpcHRpb24SMQoVZGlzcGxheV9kYXRlX3JhbmdlX2lkGAQgASgJUhJkaXNwbGF5RGF0ZVJhbmdlSWQSJwoPc3RhcnRfdGltZXN0YW1wGAUgASgEUg5zdGFydFRpbWVzdGFtcBIjCg1lbmRfdGltZXN0YW1wGAYgASgEUgxlbmRUaW1lc3RhbXASKQoIYmFpdF9pZHMYByADKAsyDi5hbmdsZXJzbG9nLklkUgdiYWl0SWRzEjgKEGZpc2hpbmdfc3BvdF9pZHMYCCADKAsyDi5hbmdsZXJzbG9nLklkUg5maXNoaW5nU3BvdElkcxIvCgtzcGVjaWVzX2lkcxgJIAMoCzIOLmFuZ2xlcnNsb2cuSWRSCnNwZWNpZXNJZHMSLQoKYW5nbGVyX2lkcxgKIAMoCzIOLmFuZ2xlcnNsb2cuSWRSCWFuZ2xlcklkcxItCgptZXRob2RfaWRzGAsgAygLMg4uYW5nbGVyc2xvZy5JZFIJbWV0aG9kSWRz');
 @$core.Deprecated('Use comparisonReportDescriptor instead')
 const ComparisonReport$json = const {
   '1': 'ComparisonReport',
@@ -387,12 +403,20 @@ const ComparisonReport$json = const {
       '6': '.anglerslog.Id',
       '10': 'anglerIds'
     },
+    const {
+      '1': 'method_ids',
+      '3': 14,
+      '4': 3,
+      '5': 11,
+      '6': '.anglerslog.Id',
+      '10': 'methodIds'
+    },
   ],
 };
 
 /// Descriptor for `ComparisonReport`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List comparisonReportDescriptor = $convert.base64Decode(
-    'ChBDb21wYXJpc29uUmVwb3J0Eh4KAmlkGAEgASgLMg4uYW5nbGVyc2xvZy5JZFICaWQSEgoEbmFtZRgCIAEoCVIEbmFtZRIgCgtkZXNjcmlwdGlvbhgDIAEoCVILZGVzY3JpcHRpb24SOgoaZnJvbV9kaXNwbGF5X2RhdGVfcmFuZ2VfaWQYBCABKAlSFmZyb21EaXNwbGF5RGF0ZVJhbmdlSWQSNgoYdG9fZGlzcGxheV9kYXRlX3JhbmdlX2lkGAUgASgJUhR0b0Rpc3BsYXlEYXRlUmFuZ2VJZBIwChRmcm9tX3N0YXJ0X3RpbWVzdGFtcBgGIAEoBFISZnJvbVN0YXJ0VGltZXN0YW1wEiwKEnRvX3N0YXJ0X3RpbWVzdGFtcBgHIAEoBFIQdG9TdGFydFRpbWVzdGFtcBIsChJmcm9tX2VuZF90aW1lc3RhbXAYCCABKARSEGZyb21FbmRUaW1lc3RhbXASKAoQdG9fZW5kX3RpbWVzdGFtcBgJIAEoBFIOdG9FbmRUaW1lc3RhbXASKQoIYmFpdF9pZHMYCiADKAsyDi5hbmdsZXJzbG9nLklkUgdiYWl0SWRzEjgKEGZpc2hpbmdfc3BvdF9pZHMYCyADKAsyDi5hbmdsZXJzbG9nLklkUg5maXNoaW5nU3BvdElkcxIvCgtzcGVjaWVzX2lkcxgMIAMoCzIOLmFuZ2xlcnNsb2cuSWRSCnNwZWNpZXNJZHMSLQoKYW5nbGVyX2lkcxgNIAMoCzIOLmFuZ2xlcnNsb2cuSWRSCWFuZ2xlcklkcw==');
+    'ChBDb21wYXJpc29uUmVwb3J0Eh4KAmlkGAEgASgLMg4uYW5nbGVyc2xvZy5JZFICaWQSEgoEbmFtZRgCIAEoCVIEbmFtZRIgCgtkZXNjcmlwdGlvbhgDIAEoCVILZGVzY3JpcHRpb24SOgoaZnJvbV9kaXNwbGF5X2RhdGVfcmFuZ2VfaWQYBCABKAlSFmZyb21EaXNwbGF5RGF0ZVJhbmdlSWQSNgoYdG9fZGlzcGxheV9kYXRlX3JhbmdlX2lkGAUgASgJUhR0b0Rpc3BsYXlEYXRlUmFuZ2VJZBIwChRmcm9tX3N0YXJ0X3RpbWVzdGFtcBgGIAEoBFISZnJvbVN0YXJ0VGltZXN0YW1wEiwKEnRvX3N0YXJ0X3RpbWVzdGFtcBgHIAEoBFIQdG9TdGFydFRpbWVzdGFtcBIsChJmcm9tX2VuZF90aW1lc3RhbXAYCCABKARSEGZyb21FbmRUaW1lc3RhbXASKAoQdG9fZW5kX3RpbWVzdGFtcBgJIAEoBFIOdG9FbmRUaW1lc3RhbXASKQoIYmFpdF9pZHMYCiADKAsyDi5hbmdsZXJzbG9nLklkUgdiYWl0SWRzEjgKEGZpc2hpbmdfc3BvdF9pZHMYCyADKAsyDi5hbmdsZXJzbG9nLklkUg5maXNoaW5nU3BvdElkcxIvCgtzcGVjaWVzX2lkcxgMIAMoCzIOLmFuZ2xlcnNsb2cuSWRSCnNwZWNpZXNJZHMSLQoKYW5nbGVyX2lkcxgNIAMoCzIOLmFuZ2xlcnNsb2cuSWRSCWFuZ2xlcklkcxItCgptZXRob2RfaWRzGA4gAygLMg4uYW5nbGVyc2xvZy5JZFIJbWV0aG9kSWRz');
 @$core.Deprecated('Use anglerDescriptor instead')
 const Angler$json = const {
   '1': 'Angler',
@@ -412,4 +436,23 @@ const Angler$json = const {
 /// Descriptor for `Angler`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List anglerDescriptor = $convert.base64Decode(
     'CgZBbmdsZXISHgoCaWQYASABKAsyDi5hbmdsZXJzbG9nLklkUgJpZBISCgRuYW1lGAIgASgJUgRuYW1l');
+@$core.Deprecated('Use methodDescriptor instead')
+const Method$json = const {
+  '1': 'Method',
+  '2': const [
+    const {
+      '1': 'id',
+      '3': 1,
+      '4': 1,
+      '5': 11,
+      '6': '.anglerslog.Id',
+      '10': 'id'
+    },
+    const {'1': 'name', '3': 2, '4': 1, '5': 9, '10': 'name'},
+  ],
+};
+
+/// Descriptor for `Method`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List methodDescriptor = $convert.base64Decode(
+    'CgZNZXRob2QSHgoCaWQYASABKAsyDi5hbmdsZXJzbG9nLklkUgJpZBISCgRuYW1lGAIgASgJUgRuYW1l');
 // ignore_for_file: constant_identifier_names,lines_longer_than_80_chars,directives_ordering,prefer_mixin,implementation_imports

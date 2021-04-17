@@ -158,6 +158,20 @@ abstract class EntityManager<T extends GeneratedMessage>
     return list().where((e) => matchesFilter(id(e), filter)).toList();
   }
 
+  /// Returns true of any entity in [ids] matches [filter]. Returns false if
+  /// either [ids] or [filter] is empty or null.
+  bool idsMatchFilter(List<Id> ids, String? filter) {
+    if (ids.isEmpty || isEmpty(filter)) {
+      return false;
+    }
+    for (var id in ids) {
+      if (matchesFilter(id, filter)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
   int get entityCount => entities.length;
 
   T? entity(Id? id) => entities[id];
@@ -273,14 +287,14 @@ abstract class EntityManager<T extends GeneratedMessage>
 
   @protected
   int numberOf<T extends GeneratedMessage>(
-      Id? id, List<T> items, Id Function(T) propertyId) {
+      Id? id, List<T> items, bool Function(T) matches) {
     if (id == null) {
       return 0;
     }
 
     var result = 0;
     for (var entity in items) {
-      result += id == propertyId(entity) ? 1 : 0;
+      result += matches(entity) ? 1 : 0;
     }
 
     return result;

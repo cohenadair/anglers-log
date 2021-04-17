@@ -28,8 +28,8 @@ class AnglerManager extends NamedEntityManager<Angler> {
   @override
   String get tableName => "angler";
 
-  int numberOfCatches(Id? anglerId) =>
-      numberOf<Catch>(anglerId, _catchManager.list(), (cat) => cat.anglerId);
+  int numberOfCatches(Id? anglerId) => numberOf<Catch>(
+      anglerId, _catchManager.list(), (cat) => cat.anglerId == anglerId);
 
   String deleteMessage(BuildContext context, Angler angler) {
     var numOfCatches = numberOfCatches(angler.id);

@@ -76,6 +76,9 @@ Map<String, Map<String, String>> get englishStrings => {
             "Coordinates of where a catch was made.",
         "catchField_bait": "Bait",
         "catchField_angler": "Angler",
+        "catchField_methods": "Fishing Methods",
+        "catchField_methodsDescription": "The way in which a catch was made.",
+        "catchField_noMethods": "No fishing methods",
         "saveCustomReportPage_newTitle": "New Report",
         "saveCustomReportPage_editTitle": "Edit Report",
         "saveCustomReportPage_nameExists": "Report name already exists",
@@ -89,6 +92,7 @@ Map<String, Map<String, String>> get englishStrings => {
         "saveCustomReportPage_allSpecies": "All species",
         "saveCustomReportPage_allBaits": "All baits",
         "saveCustomReportPage_allFishingSpots": "All fishing spots",
+        "saveCustomReportPage_allMethods": "All fishing methods",
         "photosPage_menuLabel": "Photos",
         "photosPage_title": "Photos (%s)",
         "photosPage_emptyTitle": "No photos",
@@ -140,6 +144,20 @@ Map<String, Map<String, String>> get englishStrings => {
         "anglerListPage_emptyListTitle": "No anglers",
         "anglerListPage_emptyListDescription":
             "You haven't yet added any anglers. Tap the %s button to begin.",
+        "saveMethodPage_newTitle": "New Fishing Method",
+        "saveMethodPage_editTitle": "Edit Fishing Method",
+        "saveMethodPage_existsMessage": "Fishing method already exists",
+        "methodListPage_menuTitle": "Fishing Methods",
+        "methodListPage_title": "Fishing Methods (%s)",
+        "methodListPage_pickerTitle": "Select Fishing Methods",
+        "methodListPage_deleteMessage":
+            "%s is associated with %s catches; are you sure you want to delete it? This cannot be undone.",
+        "methodListPage_deleteMessageSingular":
+            "%s is associated with %s catch; are you sure you want to delete it? This cannot be undone.",
+        "methodListPage_searchHint": "Search fishing methods",
+        "methodListPage_emptyListTitle": "No fishing methods",
+        "methodListPage_emptyListDescription":
+            "You haven't yet added any fishing methods. Tap the %s button to begin.",
         "statsPage_menuTitle": "Stats",
         "statsPage_title": "Stats",
         "statsPage_reportOverview": "Overview",

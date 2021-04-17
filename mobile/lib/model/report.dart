@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:protobuf/protobuf.dart';
 import 'package:quiver/strings.dart';
 
 import '../angler_manager.dart';
@@ -6,6 +7,8 @@ import '../app_manager.dart';
 import '../bait_manager.dart';
 import '../catch_manager.dart';
 import '../fishing_spot_manager.dart';
+import '../method_manager.dart';
+import '../named_entity_manager.dart';
 import '../species_manager.dart';
 import '../time_manager.dart';
 import '../utils/collection_utils.dart';
@@ -38,6 +41,10 @@ class Report {
   /// When set, data is only included in this model if associated with these
   /// [FishingSpot] IDs.
   final Set<Id> fishingSpotIds;
+
+  /// When set, data is only included in this model if associated with these
+  /// [Method] IDs.
+  final Set<Id> methodIds;
 
   /// When set, data is only included in this model if associated with these
   /// [Species] IDs.
@@ -80,6 +87,8 @@ class Report {
 
   FishingSpotManager get _fishingSpotManager => _appManager.fishingSpotManager;
 
+  MethodManager get _methodManager => _appManager.methodManager;
+
   SpeciesManager get _speciesManager => _appManager.speciesManager;
 
   DateRange get dateRange => _dateRange;
@@ -113,6 +122,7 @@ class Report {
     this.anglerIds = const {},
     this.baitIds = const {},
     this.fishingSpotIds = const {},
+    this.methodIds = const {},
     this.speciesIds = const {},
     DisplayDateRange? displayDateRange,
   })  : _appManager = AppManager.of(context),
@@ -249,37 +259,26 @@ class Report {
     }
 
     if (includeSpecies) {
-      result.addAll(
-        speciesIds
-            .where((id) => _speciesManager.entity(id) != null)
-            .map((id) => _speciesManager.entity(id)!.name)
-            .toSet(),
-      );
+      _addFilters<Species>(_speciesManager, speciesIds, result);
     }
 
-    result.addAll(
-      baitIds
-          .where((id) => _baitManager.entity(id) != null)
-          .map((id) => _baitManager.entity(id)!.name)
-          .toSet(),
-    );
-
-    result.addAll(
-      fishingSpotIds
-          .where((id) => _fishingSpotManager.entity(id) != null)
-          .map((id) => _fishingSpotManager.entity(id)!.name)
-          .toSet(),
-    );
-
-    result.addAll(
-      anglerIds
-          .where((id) => _anglerManager.entity(id) != null)
-          .map((id) => _anglerManager.entity(id)!.name)
-          .toSet(),
-    );
+    _addFilters<Bait>(_baitManager, baitIds, result);
+    _addFilters<FishingSpot>(_fishingSpotManager, fishingSpotIds, result);
+    _addFilters<Angler>(_anglerManager, anglerIds, result);
+    _addFilters<Method>(_methodManager, methodIds, result);
 
     return result;
   }
+}
+
+void _addFilters<T extends GeneratedMessage>(
+    NamedEntityManager<T> manager, Set<Id> ids, Set<String> result) {
+  result.addAll(
+    ids
+        .where((id) => manager.entity(id) != null)
+        .map((id) => manager.name(manager.entity(id)!))
+        .toSet(),
+  );
 }
 
 /// A utility class for keeping track of a map of mapped numbers, such as the

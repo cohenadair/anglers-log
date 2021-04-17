@@ -174,6 +174,7 @@ class AuthManager {
     await _appManager.comparisonReportManager.initialize();
     await _appManager.customEntityManager.initialize();
     await _appManager.fishingSpotManager.initialize();
+    await _appManager.methodManager.initialize();
     await _appManager.summaryReportManager.initialize();
     await _appManager.userPreferenceManager.initialize();
 

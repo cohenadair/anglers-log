@@ -71,8 +71,8 @@ class BaitManager extends NamedEntityManager<Bait> {
   }
 
   /// Returns the number of [Catch] objects associated with the given [Bait].
-  int numberOfCatches(Id? baitId) =>
-      numberOf<Catch>(baitId, _catchManager.list(), (cat) => cat.baitId);
+  int numberOfCatches(Id? baitId) => numberOf<Catch>(
+      baitId, _catchManager.list(), (cat) => cat.baitId == baitId);
 
   /// Returns the total number of [CustomEntityValue] objects associated with
   /// [Bait] objects and [customEntityId].

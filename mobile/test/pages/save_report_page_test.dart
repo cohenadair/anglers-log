@@ -4,6 +4,7 @@ import 'package:mobile/model/gen/anglerslog.pb.dart';
 import 'package:mobile/pages/angler_list_page.dart';
 import 'package:mobile/pages/bait_list_page.dart';
 import 'package:mobile/pages/fishing_spot_list_page.dart';
+import 'package:mobile/pages/method_list_page.dart';
 import 'package:mobile/pages/picker_page.dart';
 import 'package:mobile/pages/save_report_page.dart';
 import 'package:mobile/pages/species_list_page.dart';
@@ -48,6 +49,15 @@ void main() {
       ..name = "B",
   ];
 
+  var methodList = <Method>[
+    Method()
+      ..id = randomId()
+      ..name = "Casting",
+    Method()
+      ..id = randomId()
+      ..name = "Kayak",
+  ];
+
   var speciesList = <Species>[
     Species()
       ..id = randomId()
@@ -60,12 +70,18 @@ void main() {
   setUp(() {
     appManager = StubbedAppManager();
 
+    when(appManager.anglerManager.name(any))
+        .thenAnswer((invocation) => invocation.positionalArguments.first.name);
     when(appManager.anglerManager.list(any)).thenReturn(anglerList);
     when(appManager.anglerManager.listSortedByName(filter: anyNamed("filter")))
         .thenReturn(anglerList);
 
+    when(appManager.baitCategoryManager.name(any))
+        .thenAnswer((invocation) => invocation.positionalArguments.first.name);
     when(appManager.baitCategoryManager.listSortedByName()).thenReturn([]);
 
+    when(appManager.baitManager.name(any))
+        .thenAnswer((invocation) => invocation.positionalArguments.first.name);
     when(appManager.baitManager.list(any)).thenReturn(baitList);
     when(appManager.baitManager.listSortedByName(filter: anyNamed("filter")))
         .thenReturn(baitList);
@@ -91,11 +107,21 @@ void main() {
     )).thenAnswer((_) => Future.value(false));
     when(appManager.summaryReportManager.nameExists(any)).thenReturn(false);
 
+    when(appManager.fishingSpotManager.name(any))
+        .thenAnswer((invocation) => invocation.positionalArguments.first.name);
     when(appManager.fishingSpotManager.list(any)).thenReturn(fishingSpotList);
     when(appManager.fishingSpotManager
             .listSortedByName(filter: anyNamed("filter")))
         .thenReturn(fishingSpotList);
 
+    when(appManager.methodManager.name(any))
+        .thenAnswer((invocation) => invocation.positionalArguments.first.name);
+    when(appManager.methodManager.list(any)).thenReturn(methodList);
+    when(appManager.methodManager.listSortedByName(filter: anyNamed("filter")))
+        .thenReturn(methodList);
+
+    when(appManager.speciesManager.name(any))
+        .thenAnswer((invocation) => invocation.positionalArguments.first.name);
     when(appManager.speciesManager.list(any)).thenReturn(speciesList);
     when(appManager.speciesManager.listSortedByName(filter: anyNamed("filter")))
         .thenReturn(speciesList);
@@ -113,7 +139,10 @@ void main() {
   }
 
   testWidgets("New title", (tester) async {
-    await tester.pumpWidget(Testable((_) => SaveReportPage()));
+    await tester.pumpWidget(Testable(
+      (_) => SaveReportPage(),
+      appManager: appManager,
+    ));
     expect(find.text("New Report"), findsOneWidget);
   });
 
@@ -130,7 +159,10 @@ void main() {
   });
 
   testWidgets("Type defaults to summary", (tester) async {
-    await tester.pumpWidget(Testable((_) => SaveReportPage()));
+    await tester.pumpWidget(Testable(
+      (_) => SaveReportPage(),
+      appManager: appManager,
+    ));
     expect(
       find.descendant(
         of: find.widgetWithText(Row, "Summary"),
@@ -141,7 +173,10 @@ void main() {
   });
 
   testWidgets("Date range defaults to all", (tester) async {
-    await tester.pumpWidget(Testable((_) => SaveReportPage()));
+    await tester.pumpWidget(Testable(
+      (_) => SaveReportPage(),
+      appManager: appManager,
+    ));
     expect(find.text("All dates"), findsOneWidget);
   });
 
@@ -250,6 +285,17 @@ void main() {
     expect(find.byType(AnglerListPage), findsOneWidget);
   });
 
+  testWidgets("Methods picker shows picker page", (tester) async {
+    await tester.pumpWidget(Testable(
+      (_) => SaveReportPage(),
+      appManager: appManager,
+    ));
+
+    await tester.ensureVisible(find.text("All fishing methods"));
+    await tapAndSettle(tester, find.text("All fishing methods"));
+    expect(find.byType(MethodListPage), findsOneWidget);
+  });
+
   testWidgets("Picking all species shows single chip", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => SaveReportPage(),
@@ -331,6 +377,27 @@ void main() {
     expect(find.text("All anglers"), findsOneWidget);
   });
 
+  testWidgets("Picking all fishing methods shows single chip", (tester) async {
+    await tester.pumpWidget(Testable(
+      (_) => SaveReportPage(),
+      appManager: appManager,
+    ));
+
+    await tester.ensureVisible(find.text("All fishing spots"));
+    await tapAndSettle(tester, find.text("All fishing spots"));
+    expect(
+      (tester.widget(find.descendant(
+        of: find.widgetWithText(ManageableListItem, "All"),
+        matching: find.byType(PaddedCheckbox),
+      )) as PaddedCheckbox)
+          .checked,
+      isTrue,
+    );
+
+    await tapAndSettle(tester, find.byType(BackButton));
+    expect(find.text("All fishing spots"), findsOneWidget);
+  });
+
   group("Comparison report", () {
     testWidgets("Add report with preset date ranges", (tester) async {
       await tester.pumpWidget(Testable(
@@ -355,6 +422,8 @@ void main() {
       await selectItems(tester, "All baits", ["All", "Spoon"]);
       await tester.ensureVisible(find.text("All fishing spots"));
       await selectItems(tester, "All fishing spots", ["All", "B"]);
+      await tester.ensureVisible(find.text("All fishing methods"));
+      await selectItems(tester, "All fishing methods", ["All", "Casting"]);
 
       expect(
         find.descendant(
@@ -373,6 +442,8 @@ void main() {
       expect(find.text("Catfish"), findsOneWidget);
       expect(find.text("B"), findsOneWidget);
       expect(find.text("Spoon"), findsOneWidget);
+      expect(find.text("Cohen"), findsOneWidget);
+      expect(find.text("Casting"), findsOneWidget);
 
       await tapAndSettle(tester, find.text("SAVE"));
 
@@ -389,6 +460,7 @@ void main() {
       expect(report.baitIds.length, 1);
       expect(report.speciesIds.length, 1);
       expect(report.fishingSpotIds.length, 1);
+      expect(report.methodIds.length, 1);
     });
 
     testWidgets("Add report with custom date ranges", (tester) async {
@@ -440,6 +512,7 @@ void main() {
       expect(report.baitIds, isEmpty);
       expect(report.speciesIds, isEmpty);
       expect(report.fishingSpotIds, isEmpty);
+      expect(report.methodIds, isEmpty);
     });
 
     testWidgets("Add report with all entities selected sets empty collections",
@@ -465,10 +538,14 @@ void main() {
       await tester.ensureVisible(find.text("All fishing spots"));
       await selectItems(tester, "All fishing spots", ["All", "All"]);
 
+      await tester.ensureVisible(find.text("All fishing methods"));
+      await selectItems(tester, "All fishing methods", ["All", "All"]);
+
       expect(find.text("All anglers"), findsOneWidget);
       expect(find.text("All species"), findsOneWidget);
       expect(find.text("All baits"), findsOneWidget);
       expect(find.text("All fishing spots"), findsOneWidget);
+      expect(find.text("All fishing methods"), findsOneWidget);
 
       await tapAndSettle(tester, find.text("SAVE"));
 
@@ -482,6 +559,7 @@ void main() {
       expect(report.baitIds, isEmpty);
       expect(report.speciesIds, isEmpty);
       expect(report.fishingSpotIds, isEmpty);
+      expect(report.methodIds, isEmpty);
     });
 
     testWidgets("Edit keeps old ID", (tester) async {
@@ -494,6 +572,7 @@ void main() {
       report.anglerIds.addAll(anglerList.map((e) => e.id));
       report.baitIds.addAll(baitList.map((e) => e.id));
       report.fishingSpotIds.addAll(fishingSpotList.map((e) => e.id));
+      report.methodIds.addAll(methodList.map((e) => e.id));
       report.speciesIds.addAll(speciesList.map((e) => e.id));
 
       await tester.pumpWidget(Testable(
@@ -526,6 +605,8 @@ void main() {
       expect(find.text("B"), findsOneWidget);
       expect(find.text("Steelhead"), findsOneWidget);
       expect(find.text("Catfish"), findsOneWidget);
+      expect(find.text("Casting"), findsOneWidget);
+      expect(find.text("Kayak"), findsOneWidget);
 
       await tapAndSettle(tester, find.text("SAVE"));
 
@@ -555,6 +636,7 @@ void main() {
       expect(find.text("All species"), findsOneWidget);
       expect(find.text("All fishing spots"), findsOneWidget);
       expect(find.text("All baits"), findsOneWidget);
+      expect(find.text("All fishing methods"), findsOneWidget);
     });
 
     testWidgets("New report without changing date ranges", (tester) async {
@@ -597,11 +679,15 @@ void main() {
       await tester.ensureVisible(find.text("All fishing spots"));
       await selectItems(tester, "All fishing spots", ["All", "B"]);
 
+      await tester.ensureVisible(find.text("All fishing methods"));
+      await selectItems(tester, "All fishing methods", ["All", "Casting"]);
+
       expect(find.text("Last month"), findsOneWidget);
       expect(find.text("Cohen"), findsOneWidget);
       expect(find.text("Catfish"), findsOneWidget);
       expect(find.text("Spoon"), findsOneWidget);
       expect(find.text("B"), findsOneWidget);
+      expect(find.text("Casting"), findsOneWidget);
 
       await tapAndSettle(tester, find.text("SAVE"));
 
@@ -617,6 +703,7 @@ void main() {
       expect(report.baitIds.length, 1);
       expect(report.speciesIds.length, 1);
       expect(report.fishingSpotIds.length, 1);
+      expect(report.methodIds.length, 1);
     });
 
     testWidgets("Add report with custom date ranges", (tester) async {
@@ -656,6 +743,7 @@ void main() {
       expect(report.baitIds, isEmpty);
       expect(report.speciesIds, isEmpty);
       expect(report.fishingSpotIds, isEmpty);
+      expect(report.methodIds, isEmpty);
     });
 
     testWidgets("Add report with all entities selected sets empty collections",
@@ -679,10 +767,14 @@ void main() {
       await tester.ensureVisible(find.text("All fishing spots"));
       await selectItems(tester, "All fishing spots", ["All", "All"]);
 
+      await tester.ensureVisible(find.text("All fishing methods"));
+      await selectItems(tester, "All fishing methods", ["All", "All"]);
+
       expect(find.text("All anglers"), findsOneWidget);
       expect(find.text("All species"), findsOneWidget);
       expect(find.text("All baits"), findsOneWidget);
       expect(find.text("All fishing spots"), findsOneWidget);
+      expect(find.text("All fishing methods"), findsOneWidget);
 
       await tapAndSettle(tester, find.text("SAVE"));
 
@@ -695,7 +787,8 @@ void main() {
       expect(report.anglerIds, isEmpty);
       expect(report.baitIds, isEmpty);
       expect(report.speciesIds, isEmpty);
-      expect(report.baitIds, isEmpty);
+      expect(report.fishingSpotIds, isEmpty);
+      expect(report.methodIds, isEmpty);
     });
 
     testWidgets("Edit keeps old ID", (tester) async {
@@ -707,6 +800,7 @@ void main() {
       report.anglerIds.addAll(anglerList.map((e) => e.id));
       report.baitIds.addAll(baitList.map((e) => e.id));
       report.fishingSpotIds.addAll(fishingSpotList.map((e) => e.id));
+      report.methodIds.addAll(methodList.map((e) => e.id));
       report.speciesIds.addAll(speciesList.map((e) => e.id));
 
       await tester.pumpWidget(Testable(
@@ -726,6 +820,8 @@ void main() {
       expect(find.text("B"), findsOneWidget);
       expect(find.text("Steelhead"), findsOneWidget);
       expect(find.text("Catfish"), findsOneWidget);
+      expect(find.text("Casting"), findsOneWidget);
+      expect(find.text("Kayak"), findsOneWidget);
 
       await tapAndSettle(tester, find.text("SAVE"));
 
@@ -754,6 +850,7 @@ void main() {
       expect(find.text("All species"), findsOneWidget);
       expect(find.text("All fishing spots"), findsOneWidget);
       expect(find.text("All baits"), findsOneWidget);
+      expect(find.text("All fishing methods"), findsOneWidget);
     });
   });
 }

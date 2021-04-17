@@ -10,6 +10,8 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/app_manager.dart';
 import 'package:mobile/i18n/strings.dart';
 import 'package:mobile/utils/date_time_utils.dart';
+import 'package:mobile/widgets/checkbox_input.dart';
+import 'package:mobile/widgets/list_item.dart';
 import 'package:mobile/widgets/widget.dart';
 import 'package:mockito/mockito.dart';
 import 'package:photo_manager/photo_manager.dart';
@@ -137,6 +139,13 @@ T findSiblingOfText<T>(WidgetTester tester, Type parentType, String text) =>
 Finder findRichText(String text) {
   return find.byWidgetPredicate(
       (widget) => widget is RichText && widget.text.toPlainText() == text);
+}
+
+Finder findListItemCheckbox(WidgetTester tester, String item) {
+  return find.descendant(
+    of: find.widgetWithText(ManageableListItem, item),
+    matching: find.byType(PaddedCheckbox),
+  );
 }
 
 bool tapRichTextContaining(

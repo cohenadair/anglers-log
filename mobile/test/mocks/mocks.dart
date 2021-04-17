@@ -20,6 +20,7 @@ import 'package:mobile/comparison_report_manager.dart';
 import 'package:mobile/custom_entity_manager.dart';
 import 'package:mobile/database/legacy_importer.dart';
 import 'package:mobile/entity_manager.dart';
+import 'package:mobile/method_manager.dart';
 import 'package:mobile/preference_manager.dart';
 import 'package:mobile/subscription_manager.dart';
 import 'package:mobile/summary_report_manager.dart';
@@ -72,6 +73,7 @@ import 'mocks.mocks.dart';
 @GenerateMocks([ImageManager])
 @GenerateMocks([LocalDatabaseManager])
 @GenerateMocks([LocationMonitor])
+@GenerateMocks([MethodManager])
 @GenerateMocks([PreferenceManager])
 @GenerateMocks([PropertiesManager])
 @GenerateMocks([SpeciesManager])

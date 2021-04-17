@@ -442,7 +442,6 @@ class ImageManager {
 
     _ioWrapper.directory(_imagePath).list().forEach((file) async {
       var fileName = basename(file.path);
-      print(1);
 
       // Firebase storage doesn't have an "exists" method, so getMetadata is
       // used, which will throw an exception if the file doesn't exist.

@@ -191,6 +191,13 @@ class Strings {
 
   String get catchFieldAnglerLabel => _string("catchField_angler");
 
+  String get catchFieldMethodsLabel => _string("catchField_methods");
+
+  String get catchFieldMethodsDescription =>
+      _string("catchField_methodsDescription");
+
+  String get catchFieldNoMethods => _string("catchField_noMethods");
+
   String get saveCustomReportPageNewTitle =>
       _string("saveCustomReportPage_newTitle");
 
@@ -229,6 +236,9 @@ class Strings {
 
   String get saveCustomReportPageAllFishingSpots =>
       _string("saveCustomReportPage_allFishingSpots");
+
+  String get saveCustomReportPageAllMethods =>
+      _string("saveCustomReportPage_allMethods");
 
   String get photosPageMenuLabel => _string("photosPage_menuLabel");
 
@@ -340,6 +350,33 @@ class Strings {
 
   String get anglerListPageEmptyListDescription =>
       _string("anglerListPage_emptyListDescription");
+
+  String get saveMethodPageNewTitle => _string("saveMethodPage_newTitle");
+
+  String get saveMethodPageEditTitle => _string("saveMethodPage_editTitle");
+
+  String get saveMethodPageExistsMessage =>
+      _string("saveMethodPage_existsMessage");
+
+  String get methodListPageMenuTitle => _string("methodListPage_menuTitle");
+
+  String get methodListPageTitle => _string("methodListPage_title");
+
+  String get methodListPagePickerTitle => _string("methodListPage_pickerTitle");
+
+  String get methodListPageDeleteMessage =>
+      _string("methodListPage_deleteMessage");
+
+  String get methodListPageDeleteMessageSingular =>
+      _string("methodListPage_deleteMessageSingular");
+
+  String get methodListPageSearchHint => _string("methodListPage_searchHint");
+
+  String get methodListPageEmptyListTitle =>
+      _string("methodListPage_emptyListTitle");
+
+  String get methodListPageEmptyListDescription =>
+      _string("methodListPage_emptyListDescription");
 
   String get statsPageMenuTitle => _string("statsPage_menuTitle");
 

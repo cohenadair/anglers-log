@@ -87,13 +87,6 @@ void main() {
         child: Text(item),
       );
 
-  Finder findCheckbox(WidgetTester tester, String item) {
-    return find.descendant(
-      of: find.widgetWithText(ManageableListItem, item),
-      matching: find.byType(PaddedCheckbox),
-    );
-  }
-
   Finder findCheckIcon(WidgetTester tester, String item) {
     return find.descendant(
       of: find.widgetWithText(ManageableListItem, item),
@@ -103,7 +96,7 @@ void main() {
 
   void verifyCheckbox(WidgetTester tester, String item, {bool? checked}) {
     expect(
-      (tester.firstWidget(findCheckbox(tester, item)) as PaddedCheckbox)
+      (tester.firstWidget(findListItemCheckbox(tester, item)) as PaddedCheckbox)
           .checked,
       checked,
     );
@@ -220,8 +213,9 @@ void main() {
       );
 
       await tapAndSettle(tester, find.byType(Button));
-      await tapAndSettle(tester, findCheckbox(tester, "Smallmouth Bass"));
-      await tapAndSettle(tester, findCheckbox(tester, "White Bass"));
+      await tapAndSettle(
+          tester, findListItemCheckbox(tester, "Smallmouth Bass"));
+      await tapAndSettle(tester, findListItemCheckbox(tester, "White Bass"));
       await tapAndSettle(tester, find.byType(BackButton));
 
       expect(items, isNotNull);
@@ -520,7 +514,7 @@ void main() {
         ),
       );
 
-      await tapAndSettle(tester, findCheckbox(tester, "All"));
+      await tapAndSettle(tester, findListItemCheckbox(tester, "All"));
 
       verifyCheckbox(tester, "All", checked: true);
       verifyCheckbox(tester, "Smallmouth Bass", checked: true);
@@ -528,7 +522,7 @@ void main() {
       verifyCheckbox(tester, "Striped Bass", checked: true);
       verifyCheckbox(tester, "White Bass", checked: true);
 
-      await tapAndSettle(tester, findCheckbox(tester, "All"));
+      await tapAndSettle(tester, findListItemCheckbox(tester, "All"));
 
       verifyCheckbox(tester, "All", checked: false);
       verifyCheckbox(tester, "Smallmouth Bass", checked: false);
@@ -605,7 +599,7 @@ void main() {
         ),
       );
 
-      await tapAndSettle(tester, findCheckbox(tester, "All"));
+      await tapAndSettle(tester, findListItemCheckbox(tester, "All"));
 
       verifyCheckbox(tester, "All", checked: false);
       verifyCheckbox(tester, "Smallmouth Bass", checked: true);

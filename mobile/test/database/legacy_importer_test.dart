@@ -8,6 +8,7 @@ import 'package:mobile/catch_manager.dart';
 import 'package:mobile/channels/migration_channel.dart';
 import 'package:mobile/database/legacy_importer.dart';
 import 'package:mobile/fishing_spot_manager.dart';
+import 'package:mobile/method_manager.dart';
 import 'package:mobile/species_manager.dart';
 import 'package:mockito/mockito.dart';
 import 'package:path/path.dart' as path;
@@ -29,6 +30,7 @@ void main() {
   late BaitManager baitManager;
   late CatchManager catchManager;
   late FishingSpotManager fishingSpotManager;
+  late MethodManager methodManager;
   late SpeciesManager speciesManager;
 
   var tmpPath = "test/resources/legacy_importer/tmp";
@@ -72,6 +74,9 @@ void main() {
     catchManager = CatchManager(appManager.app);
     when(appManager.app.catchManager).thenReturn(catchManager);
 
+    methodManager = MethodManager(appManager.app);
+    when(appManager.app.methodManager).thenReturn(methodManager);
+
     speciesManager = SpeciesManager(appManager.app);
     when(appManager.app.speciesManager).thenReturn(speciesManager);
 
@@ -86,6 +91,11 @@ void main() {
 
   void verifyIds() {
     // Legacy iOS files don't use UUIDs, so verify IDs are present and valid.
+    for (var angler in anglerManager.list()) {
+      expect(angler.id, isNotNull);
+      expect(angler.id.uuid, isNotEmpty);
+    }
+
     for (var baitCategory in baitCategoryManager.list()) {
       expect(baitCategory.id, isNotNull);
       expect(baitCategory.id.uuid, isNotEmpty);
@@ -104,6 +114,11 @@ void main() {
     for (var fishingSpot in fishingSpotManager.list()) {
       expect(fishingSpot.id, isNotNull);
       expect(fishingSpot.id.uuid, isNotEmpty);
+    }
+
+    for (var method in methodManager.list()) {
+      expect(method.id, isNotNull);
+      expect(method.id.uuid, isNotEmpty);
     }
 
     for (var species in speciesManager.list()) {
@@ -150,6 +165,7 @@ void main() {
     expect(baitManager.entityCount, 87);
     expect(catchManager.entityCount, 167);
     expect(fishingSpotManager.entityCount, 94);
+    expect(methodManager.entityCount, 22);
     expect(speciesManager.entityCount, 28);
 
     verifyIds();
@@ -165,6 +181,7 @@ void main() {
     expect(baitManager.entityCount, 72);
     expect(catchManager.entityCount, 133);
     expect(fishingSpotManager.entityCount, 75);
+    expect(methodManager.entityCount, 19);
     expect(speciesManager.entityCount, 26);
 
     verifyIds();
@@ -199,6 +216,9 @@ void main() {
     expect(catches[0].hasFishingSpotId(), true);
     expect(fishingSpotManager.entity(catches[0].fishingSpotId)!.name,
         "Tennessee River - Sequoyah Hills Park");
+    expect(catches[0].methodIds.length, 2);
+    expect(methodManager.entity(catches[0].methodIds[0])!.name, "Still");
+    expect(methodManager.entity(catches[0].methodIds[1])!.name, "Bottom");
 
     expect(catches[1].timestamp.toInt(),
         DateTime(2019, 8, 12, 12, 44).millisecondsSinceEpoch);
@@ -206,6 +226,10 @@ void main() {
         DateTime(2019, 8, 11, 8, 44).millisecondsSinceEpoch);
     expect(catches[3].timestamp.toInt(),
         DateTime(2019, 8, 10, 20, 44).millisecondsSinceEpoch);
+
+    // Three methods exist within catches, but only two actually exist. Verify
+    // nothing bad happens when a method is found that doesn't exist.
+    expect(methodManager.entityCount, 2);
   });
 
   test("Import iOS locations", () async {
@@ -239,6 +263,17 @@ void main() {
     expect(species, isNotNull);
     expect(species.length, 1);
     expect(species.first.name, "Carp - Common");
+  });
+
+  test("Import iOS fishing methods", () async {
+    var file = File("test/resources/backups/legacy_ios_entities.zip");
+    await LegacyImporter(appManager.app, file).start();
+
+    var methods = methodManager.list();
+    expect(methods, isNotNull);
+    expect(methods.length, 2);
+    expect(methods.first.name, "Still");
+    expect(methods.last.name, "Bottom");
   });
 
   testWidgets("Import iOS images", (tester) async {
@@ -281,6 +316,10 @@ void main() {
     expect(catches.first.hasFishingSpotId(), true);
     expect(fishingSpotManager.entity(catches[0].fishingSpotId)!.name,
         "Bow River - Sewer Run");
+    expect(catches[0].methodIds.length, 3);
+    expect(methodManager.entity(catches[0].methodIds[0])!.name, "Casting");
+    expect(methodManager.entity(catches[0].methodIds[1])!.name, "Lure");
+    expect(methodManager.entity(catches[0].methodIds[2])!.name, "Wade");
   });
 
   test("Import Android locations", () async {
@@ -341,6 +380,17 @@ void main() {
     expect(categories.length, 4);
     expect(categories.first.id.uuid, "a0bf8683-675d-4759-8da8-34f81545ad69");
     expect(categories.first.name, "Cohen");
+  });
+
+  test("Import Android fishing methods", () async {
+    var file = File("test/resources/backups/legacy_android_entities.zip");
+    await LegacyImporter(appManager.app, file).start();
+
+    var methods = methodManager.list();
+    expect(methods, isNotNull);
+    expect(methods.length, 19);
+    expect(methods.first.id.uuid, "6d071b7d-c575-4142-a48a-e984a71e86b8");
+    expect(methods.first.name, "Baitcaster");
   });
 
   testWidgets("Import Android images", (tester) async {

@@ -1,7 +1,6 @@
 import 'package:fixnum/fixnum.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/comparison_report_manager.dart';
-import 'package:mobile/entity_manager.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
 import 'package:mobile/pages/stats_page.dart';
 import 'package:mobile/summary_report_manager.dart';
@@ -179,11 +178,8 @@ void main() {
 
     when(appManager.authManager.stream).thenAnswer((_) => Stream.empty());
 
-    when(appManager.baitManager.addSimpleListener(
-            onAdd: anyNamed("onAdd"),
-            onDelete: anyNamed("onDelete"),
-            onUpdate: anyNamed("onUpdate")))
-        .thenReturn(SimpleEntityListener<Bait>());
+    when(appManager.baitManager.name(any))
+        .thenAnswer((invocation) => invocation.positionalArguments.first.name);
     when(appManager.baitManager.list()).thenReturn(baitMap.values.toList());
     when(appManager.baitManager.entity(any))
         .thenAnswer((invocation) => baitMap[invocation.positionalArguments[0]]);
@@ -196,17 +192,7 @@ void main() {
       speciesIds: anyNamed("speciesIds"),
     )).thenReturn([]);
     when(appManager.catchManager.list()).thenReturn(_catches);
-    when(appManager.catchManager.addSimpleListener(
-      onAdd: anyNamed("onAdd"),
-      onDelete: anyNamed("onDelete"),
-      onUpdate: anyNamed("onUpdate"),
-    )).thenReturn(SimpleEntityListener<Catch>());
 
-    when(appManager.comparisonReportManager.addSimpleListener(
-      onAdd: anyNamed("onAdd"),
-      onDelete: anyNamed("onDelete"),
-      onUpdate: anyNamed("onUpdate"),
-    )).thenReturn(SimpleEntityListener<ComparisonReport>());
     when(appManager.comparisonReportManager.list()).thenReturn([]);
 
     when(appManager.localDatabaseManager.deleteEntity(any, any))
@@ -214,27 +200,15 @@ void main() {
     when(appManager.localDatabaseManager.insertOrReplace(any, any))
         .thenAnswer((_) => Future.value(true));
 
-    when(appManager.fishingSpotManager.addSimpleListener(
-      onAdd: anyNamed("onAdd"),
-      onDelete: anyNamed("onDelete"),
-      onUpdate: anyNamed("onUpdate"),
-    )).thenReturn(SimpleEntityListener<FishingSpot>());
+    when(appManager.fishingSpotManager.name(any))
+        .thenAnswer((invocation) => invocation.positionalArguments.first.name);
     when(appManager.fishingSpotManager.list())
         .thenReturn(fishingSpotMap.values.toList());
     when(appManager.fishingSpotManager.entity(any)).thenAnswer(
         (invocation) => fishingSpotMap[invocation.positionalArguments[0]]);
 
-    when(appManager.summaryReportManager.addSimpleListener(
-      onAdd: anyNamed("onAdd"),
-      onDelete: anyNamed("onDelete"),
-      onUpdate: anyNamed("onUpdate"),
-    )).thenReturn(SimpleEntityListener<SummaryReport>());
-
-    when(appManager.speciesManager.addSimpleListener(
-      onAdd: anyNamed("onAdd"),
-      onDelete: anyNamed("onDelete"),
-      onUpdate: anyNamed("onUpdate"),
-    )).thenReturn(SimpleEntityListener<Species>());
+    when(appManager.speciesManager.name(any))
+        .thenAnswer((invocation) => invocation.positionalArguments.first.name);
     when(appManager.speciesManager.list())
         .thenReturn(speciesMap.values.toList());
     when(appManager.speciesManager.listSortedByName(filter: anyNamed("filter")))

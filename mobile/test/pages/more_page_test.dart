@@ -37,6 +37,7 @@ void main() {
       appManager: appManager,
     ));
 
+    await tester.ensureVisible(find.text("Send Feedback"));
     await tapAndSettle(tester, find.text("Send Feedback"));
 
     expect(find.byType(FeedbackPage), findsOneWidget);

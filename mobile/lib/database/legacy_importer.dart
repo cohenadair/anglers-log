@@ -17,6 +17,7 @@ import '../catch_manager.dart';
 import '../channels/migration_channel.dart';
 import '../fishing_spot_manager.dart';
 import '../log.dart';
+import '../method_manager.dart';
 import '../model/gen/anglerslog.pb.dart';
 import '../species_manager.dart';
 import '../utils/protobuf_utils.dart';
@@ -44,6 +45,8 @@ class LegacyImporter {
   static const _keyEntries = "entries";
   static const _keyFishingSpot = "fishingSpot";
   static const _keyFishingSpots = "fishingSpots";
+  static const _keyMethods = "fishingMethods";
+  static const _keyMethodNames = "fishingMethodNames";
   static const _keyFishSpecies = "fishSpecies";
   static const _keyId = "id";
   static const _keyImagePath = "imagePath";
@@ -96,6 +99,8 @@ class LegacyImporter {
   CatchManager get _catchManager => _appManager.catchManager;
 
   FishingSpotManager get _fishingSpotManager => _appManager.fishingSpotManager;
+
+  MethodManager get _methodManager => _appManager.methodManager;
 
   SpeciesManager get _speciesManager => _appManager.speciesManager;
 
@@ -181,6 +186,7 @@ class LegacyImporter {
     List<dynamic>? baitCategories;
     List<dynamic>? baits;
     List<dynamic>? locations;
+    List<dynamic>? methods;
     List<dynamic>? species;
 
     for (var map in userDefinesJson) {
@@ -202,6 +208,9 @@ class LegacyImporter {
         case "Locations":
           locations = map[_keyLocations];
           break;
+        case "Fishing Methods":
+          methods = map[_keyMethods];
+          break;
         case "Species":
           species = map[_keySpecies];
           break;
@@ -216,6 +225,7 @@ class LegacyImporter {
     await _importBaitCategories(baitCategories);
     await _importBaits(baits);
     await _importLocations(locations);
+    await _importMethods(methods);
     await _importSpecies(species);
 
     // Catches are always imported last since they reference most other
@@ -332,6 +342,15 @@ class LegacyImporter {
     }
   }
 
+  Future<void> _importMethods(List<dynamic>? methods) async {
+    await _importNamedEntity(
+      methods,
+      (name, id) async => await _methodManager.addOrUpdate(Method()
+        ..id = id
+        ..name = name),
+    );
+  }
+
   Future<void> _importSpecies(List<dynamic>? species) async {
     await _importNamedEntity(
       species,
@@ -385,6 +404,17 @@ class LegacyImporter {
         _log.w("Fishing spot (${map[_keyFishingSpot]}) not found");
       }
 
+      var methods = <Method>[];
+      var methodNames = map[_keyMethodNames];
+      for (var methodName in methodNames) {
+        var method = _methodManager.named(methodName);
+        if (method == null) {
+          _log.w("Method ($methodName) not found");
+        } else {
+          methods.add(method);
+        }
+      }
+
       var species = _speciesManager.named(map[_keyFishSpecies]);
       if (species == null && isNotEmpty(map[_keyFishSpecies])) {
         _log.w("Species (${map[_keyFishSpecies]}) not found");
@@ -415,6 +445,10 @@ class LegacyImporter {
 
       if (fishingSpot != null) {
         cat.fishingSpotId = fishingSpot.id;
+      }
+
+      if (methods.isNotEmpty) {
+        cat.methodIds.addAll(methods.map((m) => m.id));
       }
 
       if (species != null) {

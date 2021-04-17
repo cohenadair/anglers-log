@@ -72,8 +72,8 @@ class FishingSpotManager extends NamedEntityManager<FishingSpot> {
         fishingSpot.lat == rhs.lat && fishingSpot.lng == rhs.lng);
   }
 
-  int numberOfCatches(Id? fishingSpotId) => numberOf<Catch>(
-      fishingSpotId, _catchManager.list(), (cat) => cat.fishingSpotId);
+  int numberOfCatches(Id? fishingSpotId) => numberOf<Catch>(fishingSpotId,
+      _catchManager.list(), (cat) => cat.fishingSpotId == fishingSpotId);
 
   String deleteMessage(BuildContext context, FishingSpot fishingSpot) {
     var numOfCatches = numberOfCatches(fishingSpot.id);

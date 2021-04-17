@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:fixnum/fixnum.dart';
 import 'package:flutter/material.dart';
+import 'package:protobuf/protobuf.dart';
 import 'package:quiver/strings.dart';
 
 import '../angler_manager.dart';
@@ -10,7 +11,9 @@ import '../comparison_report_manager.dart';
 import '../fishing_spot_manager.dart';
 import '../i18n/strings.dart';
 import '../log.dart';
+import '../method_manager.dart';
 import '../model/gen/anglerslog.pb.dart';
+import '../named_entity_manager.dart';
 import '../pages/bait_list_page.dart';
 import '../pages/fishing_spot_list_page.dart';
 import '../pages/form_page.dart';
@@ -31,6 +34,7 @@ import '../widgets/text_input.dart';
 import '../widgets/widget.dart';
 import 'angler_list_page.dart';
 import 'manageable_list_page.dart';
+import 'method_list_page.dart';
 
 class SaveReportPage extends StatefulWidget {
   final dynamic oldReport;
@@ -53,6 +57,7 @@ class _SaveReportPageState extends State<SaveReportPage> {
   static final _idSpecies = randomId();
   static final _idBaits = randomId();
   static final _idFishingSpots = randomId();
+  static final _idMethods = randomId();
 
   static const _log = Log("SaveReportPage");
 
@@ -69,6 +74,8 @@ class _SaveReportPageState extends State<SaveReportPage> {
       ComparisonReportManager.of(context);
 
   FishingSpotManager get _fishingSpotManager => FishingSpotManager.of(context);
+
+  MethodManager get _methodManager => MethodManager.of(context);
 
   SpeciesManager get _speciesManager => SpeciesManager.of(context);
 
@@ -102,6 +109,9 @@ class _SaveReportPageState extends State<SaveReportPage> {
 
   InputController<Set<FishingSpot>> get _fishingSpotsController =>
       _fields[_idFishingSpots]!.controller as InputController<Set<FishingSpot>>;
+
+  InputController<Set<Method>> get _methodsController =>
+      _fields[_idMethods]!.controller as InputController<Set<Method>>;
 
   dynamic get _oldReport => widget.oldReport;
 
@@ -167,6 +177,11 @@ class _SaveReportPageState extends State<SaveReportPage> {
       controller: InputController<Set<FishingSpot>>(),
     );
 
+    _fields[_idMethods] = Field(
+      id: _idMethods,
+      controller: InputController<Set<Method>>(),
+    );
+
     if (_editing) {
       if (_oldReport is SummaryReport) {
         var report = _oldReport as SummaryReport;
@@ -183,6 +198,7 @@ class _SaveReportPageState extends State<SaveReportPage> {
           anglerIds: report.anglerIds,
           baitIds: report.baitIds,
           fishingSpotIds: report.fishingSpotIds,
+          methodIds: report.methodIds,
           speciesIds: report.speciesIds,
         );
       } else if (_oldReport is ComparisonReport) {
@@ -204,6 +220,7 @@ class _SaveReportPageState extends State<SaveReportPage> {
           anglerIds: report.anglerIds,
           baitIds: report.baitIds,
           fishingSpotIds: report.fishingSpotIds,
+          methodIds: report.methodIds,
           speciesIds: report.speciesIds,
         );
       }
@@ -219,6 +236,7 @@ class _SaveReportPageState extends State<SaveReportPage> {
     List<Id> anglerIds = const [],
     List<Id> baitIds = const [],
     List<Id> fishingSpotIds = const [],
+    List<Id> methodIds = const [],
     List<Id> speciesIds = const [],
   }) {
     // "Empty" lists will include all entities in reports, so don't actually
@@ -230,6 +248,8 @@ class _SaveReportPageState extends State<SaveReportPage> {
     _fishingSpotsController.value = fishingSpotIds.isEmpty
         ? {}
         : _fishingSpotManager.list(fishingSpotIds).toSet();
+    _methodsController.value =
+        methodIds.isEmpty ? {} : _methodManager.list(methodIds).toSet();
     _speciesController.value =
         speciesIds.isEmpty ? {} : _speciesManager.list(speciesIds).toSet();
   }
@@ -253,6 +273,7 @@ class _SaveReportPageState extends State<SaveReportPage> {
         _idSpecies: _buildSpeciesPicker(),
         _idBaits: _buildBaitsPicker(),
         _idFishingSpots: _buildFishingSpotsPicker(),
+        _idMethods: _buildMethodsPicker(),
       },
       onSave: _save,
     );
@@ -347,124 +368,111 @@ class _SaveReportPageState extends State<SaveReportPage> {
   }
 
   Widget _buildAnglersPicker() {
-    return MultiListPickerInput(
-      padding: insetsHorizontalDefaultVerticalWidget,
-      values:
-          _anglersController.value?.map((angler) => angler.name).toSet() ?? {},
-      emptyValue: (context) =>
-          Strings.of(context).saveCustomReportPageAllAnglers,
-      onTap: () {
-        var allAnglers = _anglerManager.list().toSet();
-        push(
-          context,
-          // Treat an empty controller value as "include all", so we're not
-          // including 100s of objects in a protobuf collection.
-          AnglerListPage(
-            pickerSettings: ManageableListPagePickerSettings<Angler>(
-              onPicked: (context, anglers) {
-                setState(() => _anglersController.value =
-                    anglers.containsAll(allAnglers) ? {} : anglers);
-                return true;
-              },
-              initialValues: _anglersController.value!.isEmpty
-                  ? allAnglers
-                  : _anglersController.value!,
-            ),
-          ),
-        );
-      },
+    return _buildEntityPicker<Angler>(
+      manager: _anglerManager,
+      controller: _anglersController,
+      emptyValue: Strings.of(context).saveCustomReportPageAllAnglers,
+      listPage: (pickerSettings) => AnglerListPage(
+        pickerSettings: pickerSettings,
+      ),
     );
   }
 
   Widget _buildSpeciesPicker() {
-    return MultiListPickerInput(
-      padding: insetsHorizontalDefaultVerticalWidget,
-      values:
-          _speciesController.value?.map((species) => species.name).toSet() ??
-              {},
-      emptyValue: (context) =>
-          Strings.of(context).saveCustomReportPageAllSpecies,
-      onTap: () {
-        var allSpecies = _speciesManager.list().toSet();
-        push(
-          context,
-          // Treat an empty controller value as "include all", so we're not
-          // including 100s of objects in a protobuf collection.
-          SpeciesListPage(
-            pickerSettings: ManageableListPagePickerSettings<Species>(
-              onPicked: (context, species) {
-                setState(() => _speciesController.value =
-                    species.containsAll(allSpecies) ? {} : species);
-                return true;
-              },
-              initialValues: _speciesController.value!.isEmpty
-                  ? allSpecies
-                  : _speciesController.value!,
-            ),
-          ),
-        );
-      },
+    return _buildEntityPicker<Species>(
+      manager: _speciesManager,
+      controller: _speciesController,
+      emptyValue: Strings.of(context).saveCustomReportPageAllSpecies,
+      listPage: (pickerSettings) => SpeciesListPage(
+        pickerSettings: pickerSettings,
+      ),
     );
   }
 
   Widget _buildBaitsPicker() {
-    return MultiListPickerInput(
-      padding: insetsHorizontalDefaultVerticalWidget,
-      values: _baitsController.value?.map((bait) => bait.name).toSet() ?? {},
-      emptyValue: (context) => Strings.of(context).saveCustomReportPageAllBaits,
-      onTap: () {
-        var allBaits = _baitManager.list().toSet();
-        push(
-          context,
-          // Treat an empty controller value as "include all", so we're not
-          // including 100s of objects in a protobuf collection.
-          BaitListPage(
-            pickerSettings: ManageableListPagePickerSettings<dynamic>(
-              onPicked: (context, items) {
-                var baits = items as Set<Bait>;
-                setState(() => _baitsController.value =
-                    baits.containsAll(allBaits) ? {} : baits);
-                return true;
-              },
-              initialValues: _baitsController.value!.isEmpty
-                  ? allBaits
-                  : _baitsController.value!,
-            ),
-          ),
+    var allBaits = _baitManager.list().toSet();
+    return _buildEntityPicker<Bait>(
+      manager: _baitManager,
+      controller: _baitsController,
+      emptyValue: Strings.of(context).saveCustomReportPageAllBaits,
+      dynamicListPage: BaitListPage(
+        pickerSettings: ManageableListPagePickerSettings<dynamic>(
+          onPicked: (context, items) {
+            var baits = items as Set<Bait>;
+            setState(() => _baitsController.value =
+                baits.containsAll(allBaits) ? {} : baits);
+            return true;
+          },
+          initialValues: _baitsController.value!.isEmpty
+              ? allBaits
+              : _baitsController.value!,
+        ),
+      ),
+    );
+  }
+
+  Widget _buildFishingSpotsPicker() {
+    return _buildEntityPicker<FishingSpot>(
+      manager: _fishingSpotManager,
+      controller: _fishingSpotsController,
+      emptyValue: Strings.of(context).saveCustomReportPageAllFishingSpots,
+      listPage: (pickerSettings) => FishingSpotListPage(
+        pickerSettings: pickerSettings,
+      ),
+    );
+  }
+
+  Widget _buildMethodsPicker() {
+    return _buildEntityPicker<Method>(
+      manager: _methodManager,
+      controller: _methodsController,
+      emptyValue: Strings.of(context).saveCustomReportPageAllMethods,
+      listPage: (pickerSettings) {
+        return MethodListPage(
+          pickerSettings: pickerSettings,
         );
       },
     );
   }
 
-  Widget _buildFishingSpotsPicker() {
+  Widget _buildEntityPicker<T extends GeneratedMessage>({
+    required NamedEntityManager<T> manager,
+    required InputController<Set<T>> controller,
+    required String emptyValue,
+    Widget Function(ManageableListPagePickerSettings<T>)? listPage,
+    // Used for when a picker page can have multiple entities displayed, such
+    // as a BaitListPage, which shows bait categories as well as baits. In
+    // these cases a definitive type T does not work.
+    Widget? dynamicListPage,
+  }) {
+    assert(listPage != null || dynamicListPage != null);
+
     return MultiListPickerInput(
       padding: insetsHorizontalDefaultVerticalWidget,
-      values: _fishingSpotsController.value
-              ?.map((fishingSpot) => fishingSpot.name)
-              .toSet() ??
-          {},
-      emptyValue: (context) =>
-          Strings.of(context).saveCustomReportPageAllFishingSpots,
+      values: controller.value?.map((e) => manager.name(e)).toSet() ?? {},
+      emptyValue: (context) => emptyValue,
       onTap: () {
-        var allFishingSpots = _fishingSpotManager.list().toSet();
+        var pickerPage = dynamicListPage;
+        if (pickerPage == null) {
+          var allEntities = manager.list().toSet();
+          pickerPage = listPage!(
+            ManageableListPagePickerSettings<T>(
+              onPicked: (context, entities) {
+                setState(() => controller.value =
+                    entities.containsAll(allEntities) ? {} : entities);
+                return true;
+              },
+              initialValues:
+                  controller.value!.isEmpty ? allEntities : controller.value!,
+            ),
+          );
+        }
+
         push(
           context,
           // Treat an empty controller value as "include all", so we're not
           // including 100s of objects in a protobuf collection.
-          FishingSpotListPage(
-            pickerSettings: ManageableListPagePickerSettings<FishingSpot>(
-              onPicked: (context, fishingSpots) {
-                setState(() => _fishingSpotsController.value =
-                    fishingSpots.containsAll(allFishingSpots)
-                        ? {}
-                        : fishingSpots);
-                return true;
-              },
-              initialValues: _fishingSpotsController.value!.isEmpty
-                  ? allFishingSpots
-                  : _fishingSpotsController.value!,
-            ),
-          ),
+          pickerPage,
         );
       },
     );
@@ -522,6 +530,7 @@ class _SaveReportPageState extends State<SaveReportPage> {
       ..anglerIds.addAll(_anglersController.value!.map((e) => e.id))
       ..baitIds.addAll(_baitsController.value!.map((e) => e.id))
       ..fishingSpotIds.addAll(_fishingSpotsController.value!.map((e) => e.id))
+      ..methodIds.addAll(_methodsController.value!.map((e) => e.id))
       ..speciesIds.addAll(_speciesController.value!.map((e) => e.id));
 
     if (isNotEmpty(_descriptionController.value)) {
@@ -550,6 +559,7 @@ class _SaveReportPageState extends State<SaveReportPage> {
       ..anglerIds.addAll(_anglersController.value!.map((e) => e.id))
       ..baitIds.addAll(_baitsController.value!.map((e) => e.id))
       ..fishingSpotIds.addAll(_fishingSpotsController.value!.map((e) => e.id))
+      ..methodIds.addAll(_methodsController.value!.map((e) => e.id))
       ..speciesIds.addAll(_speciesController.value!.map((e) => e.id));
 
     if (isNotEmpty(_descriptionController.value)) {

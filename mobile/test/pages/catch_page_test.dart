@@ -7,6 +7,7 @@ import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mobile/widgets/list_item.dart';
 import 'package:mobile/widgets/static_fishing_spot.dart';
 import 'package:mobile/widgets/text.dart';
+import 'package:mobile/widgets/widget.dart';
 import 'package:mockito/mockito.dart';
 
 import '../mocks/stubbed_app_manager.dart';
@@ -127,5 +128,42 @@ void main() {
     await tester.pumpAndSettle(Duration(milliseconds: 250));
 
     expect(find.byIcon(Icons.person), findsOneWidget);
+  });
+
+  testWidgets("No methods renders empty", (tester) async {
+    await tester.pumpWidget(Testable(
+      (_) => CatchPage(Catch()),
+      appManager: appManager,
+    ));
+    // Wait for map timer to finish.
+    await tester.pumpAndSettle(Duration(milliseconds: 250));
+
+    expect(find.byType(ChipWrap), findsNothing);
+  });
+
+  testWidgets("Fishing methods render", (tester) async {
+    when(appManager.catchManager.entity(any)).thenReturn(Catch()
+      ..id = randomId()
+      ..timestamp = Int64(DateTime(2020, 1, 1, 15, 30).millisecondsSinceEpoch)
+      ..speciesId = randomId()
+      ..methodIds.add(randomId()));
+    when(appManager.methodManager.list(any)).thenReturn([
+      Method()
+        ..id = randomId()
+        ..name = "Casting",
+      Method()
+        ..id = randomId()
+        ..name = "Kayak",
+    ]);
+    await tester.pumpWidget(Testable(
+      (_) => CatchPage(Catch()..methodIds.add(randomId())),
+      appManager: appManager,
+    ));
+    // Wait for map timer to finish.
+    await tester.pumpAndSettle(Duration(milliseconds: 250));
+
+    expect(find.byType(ChipWrap), findsOneWidget);
+    expect(find.text("Casting"), findsOneWidget);
+    expect(find.text("Kayak"), findsOneWidget);
   });
 }

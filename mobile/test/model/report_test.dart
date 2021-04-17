@@ -17,6 +17,7 @@ void main() {
   late MockBaitManager baitManager;
   late MockCatchManager catchManager;
   late MockFishingSpotManager fishingSpotManager;
+  late MockMethodManager methodManager;
   late MockSpeciesManager speciesManager;
 
   var anglerId0 = randomId();
@@ -36,6 +37,12 @@ void main() {
   var fishingSpotId2 = randomId();
   var fishingSpotId3 = randomId();
   var fishingSpotId4 = randomId();
+
+  var methodId0 = randomId();
+  var methodId1 = randomId();
+  var methodId2 = randomId();
+  var methodId3 = randomId();
+  var methodId4 = randomId();
 
   var baitId0 = randomId();
   var baitId1 = randomId();
@@ -116,6 +123,24 @@ void main() {
       ..name = "A"
       ..lat = 0.0
       ..lng = 0.4,
+  };
+
+  var methodMap = <Id, Method>{
+    methodId0: Method()
+      ..id = methodId0
+      ..name = "Casting",
+    methodId1: Method()
+      ..id = methodId1
+      ..name = "Shore",
+    methodId2: Method()
+      ..id = methodId2
+      ..name = "Kayak",
+    methodId3: Method()
+      ..id = methodId3
+      ..name = "Drift",
+    methodId4: Method()
+      ..id = methodId4
+      ..name = "Ice",
   };
 
   var baitMap = <Id, Bait>{
@@ -203,11 +228,15 @@ void main() {
     appManager = StubbedAppManager();
 
     anglerManager = appManager.anglerManager;
+    when(anglerManager.name(any))
+        .thenAnswer((invocation) => invocation.positionalArguments.first.name);
     when(anglerManager.list()).thenReturn(anglersMap.values.toList());
     when(anglerManager.entity(any)).thenAnswer(
         (invocation) => anglersMap[invocation.positionalArguments[0]]);
 
     baitManager = appManager.baitManager;
+    when(baitManager.name(any))
+        .thenAnswer((invocation) => invocation.positionalArguments.first.name);
     when(baitManager.list()).thenReturn(baitMap.values.toList());
     when(baitManager.entity(any))
         .thenAnswer((invocation) => baitMap[invocation.positionalArguments[0]]);
@@ -221,11 +250,22 @@ void main() {
         DateTime.fromMillisecondsSinceEpoch(105000).millisecondsSinceEpoch);
 
     fishingSpotManager = appManager.fishingSpotManager;
+    when(fishingSpotManager.name(any))
+        .thenAnswer((invocation) => invocation.positionalArguments.first.name);
     when(fishingSpotManager.list()).thenReturn(fishingSpotMap.values.toList());
     when(fishingSpotManager.entity(any)).thenAnswer(
         (invocation) => fishingSpotMap[invocation.positionalArguments[0]]);
 
+    methodManager = appManager.methodManager;
+    when(methodManager.name(any))
+        .thenAnswer((invocation) => invocation.positionalArguments.first.name);
+    when(methodManager.list()).thenReturn(methodMap.values.toList());
+    when(methodManager.entity(any)).thenAnswer(
+        (invocation) => methodMap[invocation.positionalArguments[0]]);
+
     speciesManager = appManager.speciesManager;
+    when(speciesManager.name(any))
+        .thenAnswer((invocation) => invocation.positionalArguments.first.name);
     when(speciesManager.list()).thenReturn(speciesMap.values.toList());
     when(speciesManager.listSortedByName(filter: anyNamed("filter")))
         .thenReturn(speciesMap.values.toList());
@@ -602,6 +642,7 @@ void main() {
         anglerIds: {anglerId2, anglerId3},
         baitIds: {baitId0, baitId4},
         fishingSpotIds: {fishingSpotId0, fishingSpotId2, fishingSpotId1},
+        methodIds: {methodId4},
         speciesIds: {speciesId4, speciesId2},
       );
 
@@ -616,6 +657,7 @@ void main() {
         "Catfish",
         "Ethan",
         "Tim",
+        "Ice",
       });
       expect(data.filters(includeSpecies: false), {
         "All dates",
@@ -626,6 +668,7 @@ void main() {
         "C",
         "Ethan",
         "Tim",
+        "Ice",
       });
       expect(data.filters(includeDateRange: false), {
         "Worm",
@@ -636,7 +679,8 @@ void main() {
         "Steelhead",
         "Catfish",
         "Ethan",
-        "Tim"
+        "Tim",
+        "Ice",
       });
       expect(data.filters(includeSpecies: false, includeDateRange: false), {
         "Worm",
@@ -646,6 +690,7 @@ void main() {
         "C",
         "Ethan",
         "Tim",
+        "Ice",
       });
     });
 

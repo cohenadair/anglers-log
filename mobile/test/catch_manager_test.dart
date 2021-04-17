@@ -20,6 +20,7 @@ void main() {
   late MockLocalDatabaseManager dataManager;
   late MockImageManager imageManager;
   late MockSpeciesManager speciesManager;
+
   late BaitManager baitManager;
   late CatchManager catchManager;
   late FishingSpotManager fishingSpotManager;
@@ -59,6 +60,8 @@ void main() {
 
     speciesManager = appManager.speciesManager;
     when(speciesManager.matchesFilter(any, any)).thenReturn(false);
+
+    when(appManager.methodManager.idsMatchFilter(any, any)).thenReturn(false);
 
     catchManager = CatchManager(appManager.app);
   });
@@ -242,6 +245,20 @@ void main() {
 
     var context = await buildContext(tester, appManager: appManager);
     expect(catchManager.filteredCatches(context, filter: "Angler").length, 2);
+  });
+
+  testWidgets("Filtering by search query; method", (tester) async {
+    when(appManager.methodManager.idsMatchFilter(any, any)).thenReturn(true);
+
+    await catchManager.addOrUpdate(Catch()
+      ..id = randomId()
+      ..methodIds.add(randomId()));
+    await catchManager.addOrUpdate(Catch()
+      ..id = randomId()
+      ..methodIds.add(randomId()));
+
+    var context = await buildContext(tester, appManager: appManager);
+    expect(catchManager.filteredCatches(context, filter: "Method").length, 2);
   });
 
   testWidgets("Filtering by angler", (tester) async {
@@ -494,6 +511,54 @@ void main() {
     catches = catchManager.filteredCatches(
       context,
       catchIds: {randomId()},
+    );
+    expect(catches.isEmpty, true);
+  });
+
+  testWidgets("Filtering by fishing methods", (tester) async {
+    when(dataManager.insertOrReplace(any, any))
+        .thenAnswer((_) => Future.value(true));
+
+    var methodId0 = randomId();
+    var methodId1 = randomId();
+    var methodId2 = randomId();
+
+    await catchManager.addOrUpdate(Catch()
+      ..id = randomId()
+      ..timestamp = Int64(DateTime(2020, 1, 1).millisecondsSinceEpoch)
+      ..methodIds.add(methodId0));
+    await catchManager.addOrUpdate(Catch()
+      ..id = randomId()
+      ..timestamp = Int64(DateTime(2020, 2, 2).millisecondsSinceEpoch)
+      ..methodIds.add(methodId1));
+    await catchManager.addOrUpdate(Catch()
+      ..id = randomId()
+      ..timestamp = Int64(DateTime(2020, 2, 2).millisecondsSinceEpoch)
+      ..methodIds.add(methodId1));
+    await catchManager.addOrUpdate(Catch()
+      ..id = randomId()
+      ..timestamp = Int64(DateTime(2020, 4, 4).millisecondsSinceEpoch)
+      ..methodIds.add(methodId2));
+
+    var context = await buildContext(tester, appManager: appManager);
+    var catches = catchManager.filteredCatches(
+      context,
+      methodIds: {methodId1},
+    );
+    expect(catches.length, 2);
+
+    catches = catchManager.filteredCatches(
+      context,
+      methodIds: {methodId1, methodId2},
+    );
+    expect(catches.length, 3);
+
+    catches = catchManager.filteredCatches(context);
+    expect(catches.length, 4);
+
+    catches = catchManager.filteredCatches(
+      context,
+      methodIds: {randomId()},
     );
     expect(catches.isEmpty, true);
   });
