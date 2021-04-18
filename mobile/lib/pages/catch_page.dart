@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mobile/utils/protobuf_utils.dart';
 
 import '../angler_manager.dart';
 import '../bait_category_manager.dart';
@@ -95,7 +96,10 @@ class _CatchPageState extends State<CatchPage> {
                       left: paddingDefault,
                     ),
                     child: SubtitleLabel(
-                      formatTimestamp(context, _catch.timestamp.toInt()),
+                      formatTimestamp(context, _catch.timestamp.toInt()) +
+                          (_catch.hasPeriod()
+                              ? " (${nameForPeriod(context, _catch.period)})"
+                              : ""),
                     ),
                   ),
                 ],

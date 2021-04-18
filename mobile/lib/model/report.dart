@@ -13,6 +13,7 @@ import '../species_manager.dart';
 import '../time_manager.dart';
 import '../utils/collection_utils.dart';
 import '../utils/date_time_utils.dart';
+import '../utils/protobuf_utils.dart';
 import 'gen/anglerslog.pb.dart';
 
 enum ReportSortOrder {
@@ -49,6 +50,10 @@ class Report {
   /// When set, data is only included in this model if associated with these
   /// [Species] IDs.
   final Set<Id> speciesIds;
+
+  /// When set, data is only included in this model if associated with these
+  /// [Period] objects.
+  final Set<Period> periods;
 
   final AppManager _appManager;
   final TimeManager _timeManager;
@@ -124,6 +129,7 @@ class Report {
     this.fishingSpotIds = const {},
     this.methodIds = const {},
     this.speciesIds = const {},
+    this.periods = const {},
     DisplayDateRange? displayDateRange,
   })  : _appManager = AppManager.of(context),
         _timeManager = AppManager.of(context).timeManager,
@@ -140,6 +146,7 @@ class Report {
       fishingSpotIds: fishingSpotIds,
       methodIds: methodIds,
       speciesIds: speciesIds,
+      periods: periods,
     );
 
     _msSinceLastCatch = catches.isEmpty
@@ -268,6 +275,8 @@ class Report {
     _addFilters<Angler>(_anglerManager, anglerIds, result);
     _addFilters<Method>(_methodManager, methodIds, result);
 
+    result.addAll(periods.map((p) => nameForPeriod(context, p)));
+
     return result;
   }
 }
@@ -277,8 +286,7 @@ void _addFilters<T extends GeneratedMessage>(
   result.addAll(
     ids
         .where((id) => manager.entity(id) != null)
-        .map((id) => manager.name(manager.entity(id)!))
-        .toSet(),
+        .map((id) => manager.name(manager.entity(id)!)),
   );
 }
 

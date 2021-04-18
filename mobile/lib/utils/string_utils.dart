@@ -7,6 +7,9 @@ import '../i18n/strings.dart';
 bool equalsTrimmedIgnoreCase(String? s1, String? s2) =>
     equalsIgnoreCase(s1?.trim(), s2?.trim());
 
+bool containsTrimmedLowerCase(String fullString, String filter) =>
+    fullString.toLowerCase().trim().contains(filter.toLowerCase().trim());
+
 /// Supported formats:
 ///   - %s
 /// For each argument, toString() is called to replace %s.

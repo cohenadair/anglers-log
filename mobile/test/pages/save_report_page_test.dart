@@ -128,6 +128,7 @@ void main() {
   });
 
   Future<void> selectItems(tester, String startText, List<String> items) async {
+    await tester.ensureVisible(find.text(startText));
     await tapAndSettle(tester, find.text(startText));
     for (var item in items) {
       await tester.tap(find.descendant(
@@ -260,6 +261,7 @@ void main() {
       appManager: appManager,
     ));
 
+    await tester.ensureVisible(find.text("All baits"));
     await tapAndSettle(tester, find.text("All baits"));
     expect(find.byType(BaitListPage), findsOneWidget);
   });
@@ -322,6 +324,7 @@ void main() {
       appManager: appManager,
     ));
 
+    await tester.ensureVisible(find.text("All baits"));
     await tapAndSettle(tester, find.text("All baits"));
     expect(
       (tester.widget(find.descendant(

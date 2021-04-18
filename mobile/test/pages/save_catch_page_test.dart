@@ -124,8 +124,8 @@ void main() {
       expect(find.text("3:30 PM"), findsOneWidget);
       expect(find.text("Bait"), findsOneWidget);
 
-      // Bait and angler.
-      expect(find.text("Not Selected"), findsNWidgets(2));
+      // Bait, angler, and time of day.
+      expect(find.text("Not Selected"), findsNWidgets(3));
 
       expect(find.byType(StaticFishingSpot), findsOneWidget);
       expect(find.text("Species"), findsOneWidget);
@@ -264,8 +264,8 @@ void main() {
       expect(find.text("Steelhead"), findsOneWidget);
       expect(find.text("Bait"), findsOneWidget);
 
-      // Bait and angler.
-      expect(find.text("Not Selected"), findsNWidgets(2));
+      // Bait, angler, and time of day.
+      expect(find.text("Not Selected"), findsNWidgets(3));
 
       // Fishing methods.
       expect(find.text("No fishing methods"), findsOneWidget);
@@ -435,8 +435,8 @@ void main() {
       expect(find.text("Steelhead"), findsOneWidget);
       expect(find.text("Bait"), findsOneWidget);
 
-      // Bait and angler.
-      expect(find.text("Not Selected"), findsNWidgets(2));
+      // Bait, angler, and time of day.
+      expect(find.text("Not Selected"), findsNWidgets(3));
 
       // Fishing methods.
       expect(find.text("No fishing methods"), findsOneWidget);

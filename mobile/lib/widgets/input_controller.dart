@@ -36,7 +36,7 @@ class InputController<T> {
 /// cannot be null. Instead of null, an empty [Set] is used.
 class SetInputController<T> extends InputController<Set<T>> {
   @override
-  Set<T> get value => super.value!;
+  Set<T> get value => super.value ?? {};
 
   @override
   set value(Set<T>? newValue) => super.value = newValue ?? {};
@@ -46,7 +46,7 @@ class SetInputController<T> extends InputController<Set<T>> {
 /// controller cannot be null. Instead of null, an empty [List] is used.
 class ListInputController<T> extends InputController<List<T>> {
   @override
-  List<T> get value => super.value!;
+  List<T> get value => super.value ?? [];
 
   @override
   set value(List<T>? newValue) => super.value = newValue ?? [];

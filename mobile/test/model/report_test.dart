@@ -282,6 +282,7 @@ void main() {
       fishingSpotIds: anyNamed("fishingSpotIds"),
       methodIds: anyNamed("methodIds"),
       speciesIds: anyNamed("speciesIds"),
+      periods: anyNamed("periods"),
     )).thenReturn(
       (catches ?? _catches)
         ..sort((lhs, rhs) => rhs.timestamp.compareTo(lhs.timestamp)),
