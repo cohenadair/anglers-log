@@ -111,6 +111,8 @@ class Strings {
 
   String get by => _string("by");
 
+  String get unknown => _string("unknown");
+
   String get devName => _string("devName");
 
   String get unknownSpecies => _string("unknownSpecies");
@@ -177,6 +179,11 @@ class Strings {
   String get catchFieldDate => _string("catchField_date");
 
   String get catchFieldTime => _string("catchField_time");
+
+  String get catchFieldPeriod => _string("catchField_period");
+
+  String get catchFieldPeriodDescription =>
+      _string("catchField_periodDescription");
 
   String get catchFieldSpecies => _string("catchField_species");
 
@@ -873,6 +880,16 @@ class Strings {
       _string("proPage_restoreNoneFoundGooglePlay");
 
   String get proPageRestoreError => _string("proPage_restoreError");
+
+  String get periodDawn => _string("period_dawn");
+  String get periodMorning => _string("period_morning");
+  String get periodMidday => _string("period_midday");
+  String get periodAfternoon => _string("period_afternoon");
+  String get periodDusk => _string("period_dusk");
+  String get periodNight => _string("period_night");
+  String get periodPickerTitle => _string("period_pickerTitle");
+  String get periodPickerMultiTitle => _string("period_pickerMultiTitle");
+  String get periodPickerAll => _string("period_pickerAll");
 }
 
 class StringsDelegate extends LocalizationsDelegate<Strings> {

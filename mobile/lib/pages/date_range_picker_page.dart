@@ -46,7 +46,6 @@ class _DateRangePickerPageState extends State<DateRangePickerPage> {
           widget.onDateRangePicked(dateRange),
       allItem: _buildItem(context, DisplayDateRange.allDates),
       itemBuilder: () => [
-        PickerPageItem.divider(),
         _buildItem(context, DisplayDateRange.today),
         _buildItem(context, DisplayDateRange.yesterday),
         PickerPageItem.divider(),

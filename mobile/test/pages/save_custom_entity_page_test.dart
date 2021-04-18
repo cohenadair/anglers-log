@@ -65,7 +65,7 @@ void main() {
       ..id = randomId()
       ..name = "Water Depth"
       ..description = "How deep the water is."
-      ..type = CustomEntity_Type.NUMBER;
+      ..type = CustomEntity_Type.number;
 
     await tester.pumpWidget(Testable(
       (_) => SaveCustomEntityPage.edit(entity),
@@ -94,7 +94,7 @@ void main() {
     CustomEntity newEntity = result.captured.first;
     expect(newEntity.id, entity.id);
     expect(newEntity.name, "Water Depth");
-    expect(newEntity.type, CustomEntity_Type.BOOL);
+    expect(newEntity.type, CustomEntity_Type.boolean);
     expect(newEntity.description, "A description.");
   });
 
@@ -113,7 +113,7 @@ void main() {
 
     CustomEntity newEntity = result.captured.first;
     expect(newEntity.name, "A Name");
-    expect(newEntity.type, CustomEntity_Type.NUMBER);
+    expect(newEntity.type, CustomEntity_Type.number);
     expect(newEntity.hasDescription(), isFalse);
   });
 }

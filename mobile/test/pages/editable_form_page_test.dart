@@ -33,7 +33,7 @@ void main() {
     var customEntity = CustomEntity()
       ..id = randomId()
       ..name = "Custom Field 1"
-      ..type = CustomEntity_Type.TEXT;
+      ..type = CustomEntity_Type.text;
     when(appManager.customEntityManager.entity(any)).thenReturn(customEntity);
 
     await tester.pumpWidget(Testable(
@@ -54,7 +54,7 @@ void main() {
       CustomEntity()
         ..id = randomId()
         ..name = "Custom Field 1"
-        ..type = CustomEntity_Type.TEXT,
+        ..type = CustomEntity_Type.text,
     );
     await tester.pumpWidget(Testable(
       (_) => EditableFormPage(
@@ -198,7 +198,7 @@ void main() {
     var customEntity = CustomEntity()
       ..id = randomId()
       ..name = "Custom Field 1"
-      ..type = CustomEntity_Type.TEXT;
+      ..type = CustomEntity_Type.text;
     when(appManager.customEntityManager.list()).thenReturn([
       customEntity,
     ]);
@@ -235,7 +235,7 @@ void main() {
       CustomEntity()
         ..id = randomId()
         ..name = "Custom Field 1"
-        ..type = CustomEntity_Type.TEXT,
+        ..type = CustomEntity_Type.text,
     );
     await tester.pumpWidget(Testable(
       (_) => EditableFormPage(
@@ -269,11 +269,11 @@ void main() {
       ..id = randomId()
       ..name = "Custom Field 1"
       ..description = "A test description."
-      ..type = CustomEntity_Type.TEXT;
+      ..type = CustomEntity_Type.text;
     var custom2 = CustomEntity()
       ..id = randomId()
       ..name = "Custom Field 2"
-      ..type = CustomEntity_Type.TEXT;
+      ..type = CustomEntity_Type.text;
 
     when(appManager.customEntityManager.entity(custom1.id)).thenReturn(custom1);
     when(appManager.customEntityManager.entity(custom2.id)).thenReturn(custom2);

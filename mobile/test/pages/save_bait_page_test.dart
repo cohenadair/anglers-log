@@ -149,7 +149,7 @@ void main() {
     when(appManager.customEntityManager.entity(customEntityId))
         .thenReturn(CustomEntity()
           ..id = customEntityId
-          ..type = CustomEntity_Type.TEXT
+          ..type = CustomEntity_Type.text
           ..name = "Custom Entity");
     when(appManager.userPreferenceManager.baitCustomEntityIds).thenReturn([
       customEntityId,

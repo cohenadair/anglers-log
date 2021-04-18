@@ -160,7 +160,7 @@ void main() {
       var customEntity = CustomEntity()
         ..id = randomId()
         ..name = "Color"
-        ..type = CustomEntity_Type.TEXT;
+        ..type = CustomEntity_Type.text;
       when(appManager.customEntityManager.entity(customEntity.id))
           .thenReturn(customEntity);
       when(appManager.userPreferenceManager.catchCustomEntityIds)
@@ -279,7 +279,7 @@ void main() {
       var customEntity = CustomEntity()
         ..id = randomId()
         ..name = "Color"
-        ..type = CustomEntity_Type.TEXT;
+        ..type = CustomEntity_Type.text;
       when(appManager.customEntityManager.entity(customEntity.id))
           .thenReturn(customEntity);
       when(appManager.userPreferenceManager.catchCustomEntityIds)

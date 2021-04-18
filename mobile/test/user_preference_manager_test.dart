@@ -35,7 +35,7 @@ void main() {
     var deleteEntity = CustomEntity()
       ..id = randomId()
       ..name = "Size"
-      ..type = CustomEntity_Type.NUMBER;
+      ..type = CustomEntity_Type.number;
     var realEntityManager = CustomEntityManager(appManager.app);
     await realEntityManager.addOrUpdate(deleteEntity);
     expect(realEntityManager.entityCount, 1);

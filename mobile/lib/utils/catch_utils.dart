@@ -10,20 +10,22 @@ import '../widgets/input_data.dart';
 // should not be changed.
 Id catchFieldIdAngler() => Id()..uuid = "d1568a03-c34f-4840-b032-b0b3077847d3";
 
-Id catchFieldIdTimestamp() =>
-    Id()..uuid = "dbe382be-b219-4703-af11-a8ce16a191b7";
+Id catchFieldIdBait() => Id()..uuid = "916e26ae-9448-4cef-b518-cfe4b4c1e5e8";
 
-Id catchFieldIdImages() => Id()..uuid = "cb268ed0-59e2-469e-9279-a74e15ff42e8";
-
-Id catchFieldIdFishingMethods() =>
-    Id()..uuid = "b494335f-a9fb-4c1b-b4ec-40658645ef12";
-
-Id catchFieldIdSpecies() => Id()..uuid = "7c4a5178-4e3b-4b97-ac69-b4a5439c4d94";
+Id catchFieldIdPeriod() => Id()..uuid = "5ad83f1a-cc8f-48c4-a5bb-5394abd2e1f8";
 
 Id catchFieldIdFishingSpot() =>
     Id()..uuid = "2e4e6124-6fc8-4a60-b8f3-b42debd97a99";
 
-Id catchFieldIdBait() => Id()..uuid = "916e26ae-9448-4cef-b518-cfe4b4c1e5e8";
+Id catchFieldIdImages() => Id()..uuid = "cb268ed0-59e2-469e-9279-a74e15ff42e8";
+
+Id catchFieldIdMethods() =>
+    Id()..uuid = "b494335f-a9fb-4c1b-b4ec-40658645ef12";
+
+Id catchFieldIdSpecies() => Id()..uuid = "7c4a5178-4e3b-4b97-ac69-b4a5439c4d94";
+
+Id catchFieldIdTimestamp() =>
+    Id()..uuid = "dbe382be-b219-4703-af11-a8ce16a191b7";
 
 /// Returns all catch fields, sorted by how they are rendered on a
 /// [SaveCatchPage].
@@ -34,6 +36,12 @@ List<Field> allCatchFields() {
       removable: false,
       name: (context) => Strings.of(context).catchFieldDateTime,
       controller: TimestampInputController(),
+    ),
+    Field(
+      id: catchFieldIdPeriod(),
+      name: (context) => Strings.of(context).catchFieldPeriod,
+      description: (context) => Strings.of(context).catchFieldPeriodDescription,
+      controller: InputController<Period>(),
     ),
     Field(
       id: catchFieldIdSpecies(),
@@ -49,7 +57,7 @@ List<Field> allCatchFields() {
     Field(
       id: catchFieldIdImages(),
       name: (context) => Strings.of(context).catchFieldImages,
-      controller: InputController<List<PickedImage>>(),
+      controller: ListInputController<PickedImage>(),
     ),
     Field(
       id: catchFieldIdFishingSpot(),
@@ -64,11 +72,11 @@ List<Field> allCatchFields() {
       controller: IdInputController(),
     ),
     Field(
-      id: catchFieldIdFishingMethods(),
+      id: catchFieldIdMethods(),
       name: (context) => Strings.of(context).catchFieldMethodsLabel,
       description: (context) =>
           Strings.of(context).catchFieldMethodsDescription,
-      controller: InputController<Set<Id>>(),
+      controller: SetInputController<Id>(),
     ),
   ];
 }

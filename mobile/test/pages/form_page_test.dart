@@ -379,7 +379,7 @@ void main() {
     var customEntity = CustomEntity()
       ..id = customEntityId
       ..name = "Name"
-      ..type = CustomEntity_Type.TEXT;
+      ..type = CustomEntity_Type.text;
     when(appManager.customEntityManager.list()).thenReturn([customEntity]);
     when(appManager.customEntityManager.entity(customEntityId))
         .thenReturn(customEntity);
@@ -415,7 +415,7 @@ void main() {
     var customEntity = CustomEntity()
       ..id = customEntityId
       ..name = "Name"
-      ..type = CustomEntity_Type.TEXT;
+      ..type = CustomEntity_Type.text;
     when(appManager.customEntityManager.list()).thenReturn([customEntity]);
     when(appManager.customEntityManager.entity(customEntityId))
         .thenReturn(customEntity);
@@ -447,11 +447,11 @@ void main() {
     var customEntity1 = CustomEntity()
       ..id = customEntityId1
       ..name = "Name"
-      ..type = CustomEntity_Type.TEXT;
+      ..type = CustomEntity_Type.text;
     var customEntity2 = CustomEntity()
       ..id = customEntityId2
       ..name = "Address"
-      ..type = CustomEntity_Type.TEXT;
+      ..type = CustomEntity_Type.text;
 
     when(appManager.customEntityManager.list()).thenReturn([
       customEntity1,

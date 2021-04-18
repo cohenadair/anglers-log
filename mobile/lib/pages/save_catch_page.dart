@@ -38,6 +38,7 @@ import '../widgets/widget.dart';
 import 'angler_list_page.dart';
 import 'manageable_list_page.dart';
 import 'method_list_page.dart';
+import 'picker_page.dart';
 
 class SaveCatchPage extends StatefulWidget {
   /// If set, invoked when it's time to pop the page from the navigation stack.
@@ -72,13 +73,14 @@ class SaveCatchPage extends StatefulWidget {
 }
 
 class _SaveCatchPageState extends State<SaveCatchPage> {
-  static final _idTimestamp = catchFieldIdTimestamp();
-  static final _idImages = catchFieldIdImages();
-  static final _idSpecies = catchFieldIdSpecies();
-  static final _idFishingSpot = catchFieldIdFishingSpot();
-  static final _idBait = catchFieldIdBait();
   static final _idAngler = catchFieldIdAngler();
-  static final _idFishingMethods = catchFieldIdFishingMethods();
+  static final _idBait = catchFieldIdBait();
+  static final _idFishingSpot = catchFieldIdFishingSpot();
+  static final _idImages = catchFieldIdImages();
+  static final _idMethods = catchFieldIdMethods();
+  static final _idPeriod = catchFieldIdPeriod();
+  static final _idSpecies = catchFieldIdSpecies();
+  static final _idTimestamp = catchFieldIdTimestamp();
 
   final _log = Log("SaveCatchPage");
 
@@ -114,11 +116,14 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
   TimestampInputController get _timestampController =>
       _fields[_idTimestamp]!.controller as TimestampInputController;
 
+  InputController<Period> get _periodController =>
+      _fields[_idPeriod]!.controller as InputController<Period>;
+
   InputController<Id> get _speciesController =>
       _fields[_idSpecies]!.controller as InputController<Id>;
 
-  InputController<List<PickedImage>> get _imagesController =>
-      _fields[_idImages]!.controller as InputController<List<PickedImage>>;
+  ListInputController<PickedImage> get _imagesController =>
+      _fields[_idImages]!.controller as ListInputController<PickedImage>;
 
   InputController<Id> get _fishingSpotController =>
       _fields[_idFishingSpot]!.controller as InputController<Id>;
@@ -129,13 +134,10 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
   InputController<Id> get _anglerController =>
       _fields[_idAngler]!.controller as InputController<Id>;
 
-  InputController<Set<Id>> get _methodsController =>
-      _fields[_idFishingMethods]!.controller as InputController<Set<Id>>;
+  SetInputController<Id> get _methodsController =>
+      _fields[_idMethods]!.controller as SetInputController<Id>;
 
   bool get _editing => _oldCatch != null;
-
-  bool get _hasFishingMethods =>
-      _methodsController.value != null && _methodsController.value!.isNotEmpty;
 
   @override
   void initState() {
@@ -151,6 +153,8 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
 
     if (_editing) {
       _timestampController.value = _oldCatch!.timestamp.toInt();
+      _periodController.value =
+          _oldCatch!.hasPeriod() ? _oldCatch!.period : null;
       _speciesController.value = _oldCatch!.speciesId;
       _baitController.value = _oldCatch!.baitId;
       _fishingSpotController.value = _oldCatch!.fishingSpotId;
@@ -210,8 +214,10 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
       return _buildBait();
     } else if (id == _idAngler) {
       return _buildAngler();
-    } else if (id == _idFishingMethods) {
+    } else if (id == _idMethods) {
       return _buildMethods();
+    } else if (id == _idPeriod) {
+      return _buildPeriod();
     } else {
       _log.e("Unknown input key: $id");
       return Empty();
@@ -310,8 +316,8 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
         _methodManager,
       ],
       builder: (context) {
-        var values = _hasFishingMethods
-            ? _methodManager.list(_methodsController.value!.toList())
+        var values = _methodsController.value.isNotEmpty
+            ? _methodManager.list(_methodsController.value.toList())
             : <Method>[];
 
         return MultiListPickerInput(
@@ -335,6 +341,37 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
               ),
             );
           },
+        );
+      },
+    );
+  }
+
+  Widget _buildPeriod() {
+    return ListPickerInput(
+      title: Strings.of(context).catchFieldPeriod,
+      value: _periodController.value == null
+          ? null
+          : nameForPeriod(context, _periodController.value!),
+      onTap: () {
+        push(
+          context,
+          PickerPage<Period>.single(
+            title: Text(Strings.of(context).periodPickerTitle),
+            initialValue: _periodController.value ?? Period.none,
+            itemBuilder: () => pickerItemsForPeriod(context),
+            allItem: PickerPageItem<Period>(
+              title: Strings.of(context).none,
+              value: Period.none,
+              onTap: () {
+                setState(() => _periodController.value = null);
+                Navigator.of(context).pop();
+              },
+            ),
+            onFinishedPicking: (context, period) {
+              setState(() => _periodController.value = period);
+              Navigator.of(context).pop();
+            },
+          ),
         );
       },
     );
@@ -402,7 +439,7 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
       future: _imagesFuture,
       builder: (context, images) {
         return ImageInput(
-          initialImages: _imagesController.value ?? [],
+          initialImages: _imagesController.value,
           onImagesPicked: (pickedImages) {
             setState(() {
               _imagesController.value = pickedImages;
@@ -437,20 +474,22 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
       cat.anglerId = _anglerController.value!;
     }
 
-    if (_methodsController.value != null &&
-        _methodsController.value!.isNotEmpty) {
-      cat.methodIds.addAll(_methodsController.value!);
+    if (_methodsController.value.isNotEmpty) {
+      cat.methodIds.addAll(_methodsController.value);
     } else {
       cat.methodIds.clear();
+    }
+
+    if (_periodController.value != null) {
+      cat.period = _periodController.value!;
     }
 
     _catchManager.addOrUpdate(
       cat,
       imageFiles: _imagesController.value
-              ?.where((img) => img.originalFile != null)
-              .map((img) => img.originalFile!)
-              .toList() ??
-          [],
+          .where((img) => img.originalFile != null)
+          .map((img) => img.originalFile!)
+          .toList(),
     );
 
     if (widget.popOverride != null) {

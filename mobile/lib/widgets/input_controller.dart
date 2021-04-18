@@ -17,6 +17,10 @@ class InputController<T> {
   InputController({this.value}) {
     assert(!(T == Id) || this is IdInputController,
         "Use IdInputController instead of InputController<Id>");
+    assert(!(T.toString().contains("Set")) || this is SetInputController,
+        "Use SetInputController<T> instead of InputController<Set<T>>");
+    assert(!(T.toString().contains("List")) || this is ListInputController,
+        "Use ListInputController<T> instead of InputController<List<T>>");
   }
 
   void dispose() {
@@ -26,6 +30,26 @@ class InputController<T> {
   void clear() {
     value = null;
   }
+}
+
+/// An [InputController] subclass for a [Set], where the value of the controller
+/// cannot be null. Instead of null, an empty [Set] is used.
+class SetInputController<T> extends InputController<Set<T>> {
+  @override
+  Set<T> get value => super.value!;
+
+  @override
+  set value(Set<T>? newValue) => super.value = newValue ?? {};
+}
+
+/// An [InputController] subclass for a [List], where the value of the
+/// controller cannot be null. Instead of null, an empty [List] is used.
+class ListInputController<T> extends InputController<List<T>> {
+  @override
+  List<T> get value => super.value!;
+
+  @override
+  set value(List<T>? newValue) => super.value = newValue ?? [];
 }
 
 class IdInputController extends InputController<Id> {
