@@ -29,6 +29,32 @@ void main() {
       ..name = "Steelhead");
   });
 
+  testWidgets("No period renders empty", (tester) async {
+    await tester.pumpWidget(Testable(
+      (_) => CatchPage(Catch()),
+      appManager: appManager,
+    ));
+    // Wait for map timer to finish.
+    await tester.pumpAndSettle(Duration(milliseconds: 250));
+    expect(find.text("Jan 1, 2020 at 3:30 PM"), findsOneWidget);
+  });
+
+  testWidgets("Period renders with timestamp", (tester) async {
+    when(appManager.catchManager.entity(any)).thenReturn(Catch()
+      ..id = randomId()
+      ..timestamp = Int64(DateTime(2020, 1, 1, 15, 30).millisecondsSinceEpoch)
+      ..speciesId = randomId()
+      ..period = Period.afternoon);
+
+    await tester.pumpWidget(Testable(
+      (_) => CatchPage(Catch()),
+      appManager: appManager,
+    ));
+    // Wait for map timer to finish.
+    await tester.pumpAndSettle(Duration(milliseconds: 250));
+    expect(find.text("Jan 1, 2020 at 3:30 PM (Afternoon)"), findsOneWidget);
+  });
+
   testWidgets("No bait renders empty", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => CatchPage(Catch()),

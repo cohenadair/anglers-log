@@ -124,8 +124,8 @@ void main() {
       expect(find.text("3:30 PM"), findsOneWidget);
       expect(find.text("Bait"), findsOneWidget);
 
-      // Bait and angler.
-      expect(find.text("Not Selected"), findsNWidgets(2));
+      // Bait, angler, and time of day.
+      expect(find.text("Not Selected"), findsNWidgets(3));
 
       expect(find.byType(StaticFishingSpot), findsOneWidget);
       expect(find.text("Species"), findsOneWidget);
@@ -160,7 +160,7 @@ void main() {
       var customEntity = CustomEntity()
         ..id = randomId()
         ..name = "Color"
-        ..type = CustomEntity_Type.TEXT;
+        ..type = CustomEntity_Type.text;
       when(appManager.customEntityManager.entity(customEntity.id))
           .thenReturn(customEntity);
       when(appManager.userPreferenceManager.catchCustomEntityIds)
@@ -207,7 +207,8 @@ void main() {
         ..customEntityValues.add(CustomEntityValue()
           ..customEntityId = customEntity.id
           ..value = "Minnow")
-        ..imageNames.add("flutter_logo.png");
+        ..imageNames.add("flutter_logo.png")
+        ..period = Period.dawn;
 
       when(appManager.imageManager.images(
         any,
@@ -228,6 +229,7 @@ void main() {
 
       expect(find.text("Jan 1, 2020"), findsOneWidget);
       expect(find.text("3:30 PM"), findsOneWidget);
+      expect(find.text("Dawn"), findsOneWidget);
       expect(find.text("Casting"), findsOneWidget);
       expect(find.text("Kayak"), findsOneWidget);
       expect(find.text("Bait"), findsOneWidget);
@@ -264,8 +266,8 @@ void main() {
       expect(find.text("Steelhead"), findsOneWidget);
       expect(find.text("Bait"), findsOneWidget);
 
-      // Bait and angler.
-      expect(find.text("Not Selected"), findsNWidgets(2));
+      // Bait, angler, and time of day.
+      expect(find.text("Not Selected"), findsNWidgets(3));
 
       // Fishing methods.
       expect(find.text("No fishing methods"), findsOneWidget);
@@ -279,7 +281,7 @@ void main() {
       var customEntity = CustomEntity()
         ..id = randomId()
         ..name = "Color"
-        ..type = CustomEntity_Type.TEXT;
+        ..type = CustomEntity_Type.text;
       when(appManager.customEntityManager.entity(customEntity.id))
           .thenReturn(customEntity);
       when(appManager.userPreferenceManager.catchCustomEntityIds)
@@ -326,7 +328,8 @@ void main() {
         ..customEntityValues.add(CustomEntityValue()
           ..customEntityId = customEntity.id
           ..value = "Minnow")
-        ..imageNames.add("flutter_logo.png");
+        ..imageNames.add("flutter_logo.png")
+        ..period = Period.afternoon;
 
       when(appManager.imageManager.images(
         any,
@@ -435,8 +438,8 @@ void main() {
       expect(find.text("Steelhead"), findsOneWidget);
       expect(find.text("Bait"), findsOneWidget);
 
-      // Bait and angler.
-      expect(find.text("Not Selected"), findsNWidgets(2));
+      // Bait, angler, and time of day.
+      expect(find.text("Not Selected"), findsNWidgets(3));
 
       // Fishing methods.
       expect(find.text("No fishing methods"), findsOneWidget);
@@ -477,6 +480,7 @@ void main() {
       expect(cat.methodIds, isEmpty);
       expect(cat.imageNames, isEmpty);
       expect(cat.customEntityValues, isEmpty);
+      expect(cat.hasPeriod(), isFalse);
     });
 
     testWidgets("Saving after selecting all optional fields", (tester) async {
@@ -519,6 +523,10 @@ void main() {
         appManager: appManager,
       ));
 
+      // Select period.
+      await tapAndSettle(tester, find.text("Time Of Day"));
+      await tapAndSettle(tester, find.text("Afternoon"));
+
       // Select bait.
       await tapAndSettle(tester, find.text("Bait"));
       await tapAndSettle(tester, find.text("Rapala"));
@@ -554,6 +562,7 @@ void main() {
       expect(cat.hasBaitId(), isTrue);
       expect(cat.hasAnglerId(), isTrue);
       expect(cat.methodIds.length, 2);
+      expect(cat.hasPeriod(), isTrue);
     });
   });
 

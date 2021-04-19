@@ -1,6 +1,17 @@
 syntax = "proto3";
 package anglerslog;
 
+enum Period {
+  all = 0;
+  none = 1;
+  dawn = 2;
+  morning = 3;
+  midday = 4;
+  afternoon = 5;
+  dusk = 6;
+  night = 7;
+}
+
 // A unique ID. An Id is a wrapper for UUID string representation of protobuf bytes type that can
 // be used as keys in a map. The Dart type for protobuf bytes is a List<int>, and [List==] does
 // not do a deep comparison of its elements. An [Id] message wrapper here is purely for semantics
@@ -11,9 +22,9 @@ message Id {
 
 message CustomEntity {
   enum Type {
-    BOOL = 0;
-    NUMBER = 1;
-    TEXT = 2;
+    boolean = 0;
+    number = 1;
+    text = 2;
   }
 
   Id id = 1;
@@ -49,6 +60,7 @@ message Catch {
   repeated CustomEntityValue custom_entity_values = 7;
   Id angler_id = 8;
   repeated Id method_ids = 9;
+  Period period = 10;
 }
 
 message FishingSpot {
@@ -75,6 +87,7 @@ message SummaryReport {
   repeated Id species_ids = 9;
   repeated Id angler_ids = 10;
   repeated Id method_ids = 11;
+  repeated Period periods = 12;
 }
 
 message ComparisonReport {
@@ -92,6 +105,7 @@ message ComparisonReport {
   repeated Id species_ids = 12;
   repeated Id angler_ids = 13;
   repeated Id method_ids = 14;
+  repeated Period periods = 15;
 }
 
 message Angler {

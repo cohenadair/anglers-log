@@ -11,11 +11,11 @@ import '../widgets/text_input.dart';
 String inputTypeLocalizedString(
     BuildContext context, CustomEntity_Type fieldType) {
   switch (fieldType) {
-    case CustomEntity_Type.NUMBER:
+    case CustomEntity_Type.number:
       return Strings.of(context).fieldTypeNumber;
-    case CustomEntity_Type.BOOL:
+    case CustomEntity_Type.boolean:
       return Strings.of(context).fieldTypeBoolean;
-    case CustomEntity_Type.TEXT:
+    case CustomEntity_Type.text:
       return Strings.of(context).fieldTypeText;
   }
 
@@ -27,11 +27,11 @@ String inputTypeLocalizedString(
 /// [InputType]. Throws an [ArgumentError] if [fieldType] is invalid.
 InputController inputTypeController(CustomEntity_Type fieldType) {
   switch (fieldType) {
-    case CustomEntity_Type.NUMBER:
+    case CustomEntity_Type.number:
       return NumberInputController();
-    case CustomEntity_Type.BOOL:
+    case CustomEntity_Type.boolean:
       return InputController<bool>();
-    case CustomEntity_Type.TEXT:
+    case CustomEntity_Type.text:
       return TextInputController();
   }
 
@@ -50,7 +50,7 @@ Widget inputTypeWidget(
   bool enabled = true,
 }) {
   switch (type) {
-    case CustomEntity_Type.NUMBER:
+    case CustomEntity_Type.number:
       assert(controller == null || controller is NumberInputController);
       return TextInput.number(
         context,
@@ -59,7 +59,7 @@ Widget inputTypeWidget(
         controller: controller as NumberInputController?,
         enabled: enabled,
       );
-    case CustomEntity_Type.BOOL:
+    case CustomEntity_Type.boolean:
       return CheckboxInput(
         label: label,
         value: controller != null && controller.value is bool
@@ -68,7 +68,7 @@ Widget inputTypeWidget(
         onChanged: onCheckboxChanged,
         enabled: enabled,
       );
-    case CustomEntity_Type.TEXT:
+    case CustomEntity_Type.text:
       assert(controller == null || controller is TextInputController);
       return TextInput(
         capitalization: TextCapitalization.sentences,

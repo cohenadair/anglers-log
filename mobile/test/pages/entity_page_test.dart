@@ -156,7 +156,7 @@ void main() {
       CustomEntity()
         ..id = randomId()
         ..name = "Test Name"
-        ..type = CustomEntity_Type.TEXT,
+        ..type = CustomEntity_Type.text,
     );
     await tester.pumpWidget(Testable(
       (_) => EntityPage(

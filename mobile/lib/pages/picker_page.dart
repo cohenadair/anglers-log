@@ -128,14 +128,14 @@ class _PickerPageState<T> extends State<PickerPage<T>> {
 
     var items = (widget.allItem == null
         ? <PickerPageItem<T>>[]
-        : [widget.allItem!])
+        : [widget.allItem!, PickerPageItem<T>.divider()])
       ..addAll(widget.itemBuilder());
 
     return ListView(
       children: children
         ..addAll(items.map((item) {
           if (item._divider) {
-            return Divider();
+            return MinDivider();
           }
 
           if (item._heading) {
@@ -192,7 +192,7 @@ class _PickerPageState<T> extends State<PickerPage<T>> {
             onTap: onTap,
             onCheckboxChanged: (checked) {
               setState(() {
-                _checkboxUpdated(item.value);
+                _checkboxUpdated(item.value, items);
               });
             },
           );
@@ -210,12 +210,17 @@ class _PickerPageState<T> extends State<PickerPage<T>> {
     widget.onFinishedPicking(context, selected);
   }
 
-  void _checkboxUpdated(T pickedItem) {
+  void _checkboxUpdated(T pickedItem, List<PickerPageItem<T>> items) {
     if (widget.allItem != null && widget.allItem!.value == pickedItem) {
-      // If the "all" item was picked, deselect all other items.
-      _selectedValues = {
-        widget.allItem!.value,
-      };
+      // If the "all" item was picked, select or deselect all items.
+      if (_selectedValues.contains(pickedItem)) {
+        _selectedValues.clear();
+      } else {
+        _selectedValues = items
+            .where((item) => item.hasValue)
+            .map((item) => item.value)
+            .toSet();
+      }
     } else {
       // Otherwise, toggle the picked item, and deselect the "all" item
       // if it exists.

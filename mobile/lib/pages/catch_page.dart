@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mobile/utils/protobuf_utils.dart';
 
 import '../angler_manager.dart';
 import '../bait_category_manager.dart';
@@ -71,6 +72,10 @@ class _CatchPageState extends State<CatchPage> {
         // Fallback on the current catch (if the current was deleted).
         _catch = _catchManager.entity(widget.cat.id) ?? _catch;
 
+        print(formatTimestamp(context, _catch.timestamp.toInt()) +
+            (_catch.hasPeriod()
+                ? " (${nameForPeriod(context, _catch.period)})"
+                : ""));
         return EntityPage(
           customEntityValues: _catch.customEntityValues,
           padding: insetsZero,
@@ -95,7 +100,10 @@ class _CatchPageState extends State<CatchPage> {
                       left: paddingDefault,
                     ),
                     child: SubtitleLabel(
-                      formatTimestamp(context, _catch.timestamp.toInt()),
+                      formatTimestamp(context, _catch.timestamp.toInt()) +
+                          (_catch.hasPeriod()
+                              ? " (${nameForPeriod(context, _catch.period)})"
+                              : ""),
                     ),
                   ),
                 ],

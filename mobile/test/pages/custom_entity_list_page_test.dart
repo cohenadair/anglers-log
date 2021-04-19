@@ -14,16 +14,16 @@ void main() {
     CustomEntity()
       ..id = randomId()
       ..name = "Water Depth"
-      ..type = CustomEntity_Type.NUMBER
+      ..type = CustomEntity_Type.number
       ..description = "How deep the water is, in feet.",
     CustomEntity()
       ..id = randomId()
       ..name = "Note"
-      ..type = CustomEntity_Type.TEXT,
+      ..type = CustomEntity_Type.text,
     CustomEntity()
       ..id = randomId()
       ..name = "Released"
-      ..type = CustomEntity_Type.BOOL,
+      ..type = CustomEntity_Type.boolean,
   ];
 
   setUp(() {

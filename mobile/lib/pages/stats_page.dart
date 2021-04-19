@@ -560,6 +560,7 @@ class _StatsPageState extends State<StatsPage> {
       fishingSpotIds: report.fishingSpotIds.toSet(),
       methodIds: report.methodIds.toSet(),
       speciesIds: report.speciesIds.toSet(),
+      periods: report.periods.toSet(),
     );
   }
 
