@@ -35,6 +35,7 @@ import '../widgets/widget.dart';
 import 'angler_list_page.dart';
 import 'manageable_list_page.dart';
 import 'method_list_page.dart';
+import 'picker_page.dart';
 
 class SaveReportPage extends StatefulWidget {
   final dynamic oldReport;
@@ -58,6 +59,7 @@ class _SaveReportPageState extends State<SaveReportPage> {
   static final _idBaits = randomId();
   static final _idFishingSpots = randomId();
   static final _idMethods = randomId();
+  static final _idPeriods = randomId();
 
   static const _log = Log("SaveReportPage");
 
@@ -98,20 +100,23 @@ class _SaveReportPageState extends State<SaveReportPage> {
   InputController<DisplayDateRange> get _toDateRangeController =>
       _fields[_idEndDateRange]!.controller as InputController<DisplayDateRange>;
 
-  InputController<Set<Angler>> get _anglersController =>
-      _fields[_idAnglers]!.controller as InputController<Set<Angler>>;
+  SetInputController<Angler> get _anglersController =>
+      _fields[_idAnglers]!.controller as SetInputController<Angler>;
 
-  InputController<Set<Species>> get _speciesController =>
-      _fields[_idSpecies]!.controller as InputController<Set<Species>>;
+  SetInputController<Species> get _speciesController =>
+      _fields[_idSpecies]!.controller as SetInputController<Species>;
 
-  InputController<Set<Bait>> get _baitsController =>
-      _fields[_idBaits]!.controller as InputController<Set<Bait>>;
+  SetInputController<Bait> get _baitsController =>
+      _fields[_idBaits]!.controller as SetInputController<Bait>;
 
-  InputController<Set<FishingSpot>> get _fishingSpotsController =>
-      _fields[_idFishingSpots]!.controller as InputController<Set<FishingSpot>>;
+  SetInputController<FishingSpot> get _fishingSpotsController =>
+      _fields[_idFishingSpots]!.controller as SetInputController<FishingSpot>;
 
-  InputController<Set<Method>> get _methodsController =>
-      _fields[_idMethods]!.controller as InputController<Set<Method>>;
+  SetInputController<Method> get _methodsController =>
+      _fields[_idMethods]!.controller as SetInputController<Method>;
+
+  SetInputController<Period> get _periodsController =>
+      _fields[_idPeriods]!.controller as SetInputController<Period>;
 
   dynamic get _oldReport => widget.oldReport;
 
@@ -157,29 +162,34 @@ class _SaveReportPageState extends State<SaveReportPage> {
       controller: InputController<DisplayDateRange>(),
     );
 
+    _fields[_idPeriods] = Field(
+      id: _idPeriods,
+      controller: SetInputController<Period>(),
+    );
+
     _fields[_idAnglers] = Field(
       id: _idAnglers,
-      controller: InputController<Set<Angler>>(),
+      controller: SetInputController<Angler>(),
     );
 
     _fields[_idSpecies] = Field(
       id: _idSpecies,
-      controller: InputController<Set<Species>>(),
+      controller: SetInputController<Species>(),
     );
 
     _fields[_idBaits] = Field(
       id: _idBaits,
-      controller: InputController<Set<Bait>>(),
+      controller: SetInputController<Bait>(),
     );
 
     _fields[_idFishingSpots] = Field(
       id: _idFishingSpots,
-      controller: InputController<Set<FishingSpot>>(),
+      controller: SetInputController<FishingSpot>(),
     );
 
     _fields[_idMethods] = Field(
       id: _idMethods,
-      controller: InputController<Set<Method>>(),
+      controller: SetInputController<Method>(),
     );
 
     if (_editing) {
@@ -194,6 +204,7 @@ class _SaveReportPageState extends State<SaveReportPage> {
           report.endTimestamp.toInt(),
         );
         _toDateRangeController.value = DisplayDateRange.allDates;
+        _periodsController.value = report.periods.toSet();
         _initEntitySets(
           anglerIds: report.anglerIds,
           baitIds: report.baitIds,
@@ -216,6 +227,7 @@ class _SaveReportPageState extends State<SaveReportPage> {
           report.toStartTimestamp.toInt(),
           report.toEndTimestamp.toInt(),
         );
+        _periodsController.value = report.periods.toSet();
         _initEntitySets(
           anglerIds: report.anglerIds,
           baitIds: report.baitIds,
@@ -228,6 +240,7 @@ class _SaveReportPageState extends State<SaveReportPage> {
       _typeController.value = _ReportType.summary;
       _fromDateRangeController.value = DisplayDateRange.allDates;
       _toDateRangeController.value = DisplayDateRange.allDates;
+      _periodsController.value = {};
       _initEntitySets();
     }
   }
@@ -269,6 +282,7 @@ class _SaveReportPageState extends State<SaveReportPage> {
         _idType: _buildType(),
         _idStartDateRange: _buildStartDateRange(),
         _idEndDateRange: _buildEndDateRange(),
+        _idPeriods: _buildPeriodsPicker(),
         _idAnglers: _buildAnglersPicker(),
         _idSpecies: _buildSpeciesPicker(),
         _idBaits: _buildBaitsPicker(),
@@ -367,6 +381,39 @@ class _SaveReportPageState extends State<SaveReportPage> {
     );
   }
 
+  Widget _buildPeriodsPicker() {
+    return MultiListPickerInput(
+      padding: insetsHorizontalDefaultVerticalWidget,
+      values: _periodsController.value
+          .map((p) => nameForPeriod(context, p))
+          .toSet(),
+      emptyValue: (context) => Strings.of(context).periodPickerAll,
+      onTap: () {
+        var allPeriods = selectablePeriods();
+        push(
+          context,
+          PickerPage<Period>(
+            title: Text(Strings.of(context).periodPickerMultiTitle),
+            initialValues: _periodsController.value.isEmpty
+                ? ({Period.all}..addAll(allPeriods))
+                : _periodsController.value,
+            allItem: PickerPageItem<Period>(
+              title: Strings.of(context).all,
+              value: Period.all,
+            ),
+            itemBuilder: () => pickerItemsForPeriod(context),
+            onFinishedPicking: (context, periods) {
+              // Treat an empty controller value as "include all", so we're
+              // not including many objects in a protobuf collection.
+              setState(() => _periodsController.value =
+                  periods.containsAll(allPeriods) ? {} : periods);
+            },
+          ),
+        );
+      },
+    );
+  }
+
   Widget _buildAnglersPicker() {
     return _buildEntityPicker<Angler>(
       manager: _anglerManager,
@@ -403,9 +450,9 @@ class _SaveReportPageState extends State<SaveReportPage> {
                 baits.containsAll(allBaits) ? {} : baits);
             return true;
           },
-          initialValues: _baitsController.value!.isEmpty
+          initialValues: _baitsController.value.isEmpty
               ? allBaits
-              : _baitsController.value!,
+              : _baitsController.value,
         ),
       ),
     );
@@ -437,7 +484,7 @@ class _SaveReportPageState extends State<SaveReportPage> {
 
   Widget _buildEntityPicker<T extends GeneratedMessage>({
     required NamedEntityManager<T> manager,
-    required InputController<Set<T>> controller,
+    required SetInputController<T> controller,
     required String emptyValue,
     Widget Function(ManageableListPagePickerSettings<T>)? listPage,
     // Used for when a picker page can have multiple entities displayed, such
@@ -449,7 +496,7 @@ class _SaveReportPageState extends State<SaveReportPage> {
 
     return MultiListPickerInput(
       padding: insetsHorizontalDefaultVerticalWidget,
-      values: controller.value?.map((e) => manager.name(e)).toSet() ?? {},
+      values: controller.value.map((e) => manager.name(e)).toSet(),
       emptyValue: (context) => emptyValue,
       onTap: () {
         var pickerPage = dynamicListPage;
@@ -465,7 +512,7 @@ class _SaveReportPageState extends State<SaveReportPage> {
                 return true;
               },
               initialValues:
-                  controller.value!.isEmpty ? allEntities : controller.value!,
+                  controller.value.isEmpty ? allEntities : controller.value,
             ),
           );
         }
@@ -527,11 +574,12 @@ class _SaveReportPageState extends State<SaveReportPage> {
       ..id = _oldReport?.id ?? randomId()
       ..name = _nameController.value!
       ..displayDateRangeId = dateRange.id
-      ..anglerIds.addAll(_anglersController.value!.map((e) => e.id))
-      ..baitIds.addAll(_baitsController.value!.map((e) => e.id))
-      ..fishingSpotIds.addAll(_fishingSpotsController.value!.map((e) => e.id))
-      ..methodIds.addAll(_methodsController.value!.map((e) => e.id))
-      ..speciesIds.addAll(_speciesController.value!.map((e) => e.id));
+      ..periods.addAll(_periodsController.value)
+      ..anglerIds.addAll(_anglersController.value.map((e) => e.id))
+      ..baitIds.addAll(_baitsController.value.map((e) => e.id))
+      ..fishingSpotIds.addAll(_fishingSpotsController.value.map((e) => e.id))
+      ..methodIds.addAll(_methodsController.value.map((e) => e.id))
+      ..speciesIds.addAll(_speciesController.value.map((e) => e.id));
 
     if (isNotEmpty(_descriptionController.value)) {
       report.description = _descriptionController.value!;
@@ -556,11 +604,12 @@ class _SaveReportPageState extends State<SaveReportPage> {
       ..name = _nameController.value!
       ..fromDisplayDateRangeId = fromDateRange.id
       ..toDisplayDateRangeId = toDateRange.id
-      ..anglerIds.addAll(_anglersController.value!.map((e) => e.id))
-      ..baitIds.addAll(_baitsController.value!.map((e) => e.id))
-      ..fishingSpotIds.addAll(_fishingSpotsController.value!.map((e) => e.id))
-      ..methodIds.addAll(_methodsController.value!.map((e) => e.id))
-      ..speciesIds.addAll(_speciesController.value!.map((e) => e.id));
+      ..periods.addAll(_periodsController.value)
+      ..anglerIds.addAll(_anglersController.value.map((e) => e.id))
+      ..baitIds.addAll(_baitsController.value.map((e) => e.id))
+      ..fishingSpotIds.addAll(_fishingSpotsController.value.map((e) => e.id))
+      ..methodIds.addAll(_methodsController.value.map((e) => e.id))
+      ..speciesIds.addAll(_speciesController.value.map((e) => e.id));
 
     if (isNotEmpty(_descriptionController.value)) {
       report.description = _descriptionController.value!;

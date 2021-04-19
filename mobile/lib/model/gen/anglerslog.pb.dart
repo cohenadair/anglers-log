@@ -99,7 +99,7 @@ class CustomEntity extends $pb.GeneratedMessage {
             ? ''
             : 'description')
     ..e<CustomEntity_Type>(4, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'type', $pb.PbFieldType.OE,
-        defaultOrMaker: CustomEntity_Type.BOOL,
+        defaultOrMaker: CustomEntity_Type.boolean,
         valueOf: CustomEntity_Type.valueOf,
         enumValues: CustomEntity_Type.values)
     ..hasRequiredFields = false;
@@ -511,13 +511,12 @@ class Catch extends $pb.GeneratedMessage {
               ? ''
               : 'anglerslog'),
       createEmptyInstance: create)
-    ..aOM<Id>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'id',
+    ..aOM<Id>(
+        1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'id',
         subBuilder: Id.create)
     ..a<$fixnum.Int64>(
         2,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'timestamp',
+        const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'timestamp',
         $pb.PbFieldType.OU6,
         defaultOrMaker: $fixnum.Int64.ZERO)
     ..aOM<Id>(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'baitId', subBuilder: Id.create)
@@ -527,6 +526,7 @@ class Catch extends $pb.GeneratedMessage {
     ..pc<CustomEntityValue>(7, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'customEntityValues', $pb.PbFieldType.PM, subBuilder: CustomEntityValue.create)
     ..aOM<Id>(8, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'anglerId', subBuilder: Id.create)
     ..pc<Id>(9, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'methodIds', $pb.PbFieldType.PM, subBuilder: Id.create)
+    ..e<Period>(10, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'period', $pb.PbFieldType.OE, defaultOrMaker: Period.all, valueOf: Period.valueOf, enumValues: Period.values)
     ..hasRequiredFields = false;
 
   Catch._() : super();
@@ -540,6 +540,7 @@ class Catch extends $pb.GeneratedMessage {
     $core.Iterable<CustomEntityValue>? customEntityValues,
     Id? anglerId,
     $core.Iterable<Id>? methodIds,
+    Period? period,
   }) {
     final _result = create();
     if (id != null) {
@@ -568,6 +569,9 @@ class Catch extends $pb.GeneratedMessage {
     }
     if (methodIds != null) {
       _result.methodIds.addAll(methodIds);
+    }
+    if (period != null) {
+      _result.period = period;
     }
     return _result;
   }
@@ -687,6 +691,18 @@ class Catch extends $pb.GeneratedMessage {
 
   @$pb.TagNumber(9)
   $core.List<Id> get methodIds => $_getList(8);
+
+  @$pb.TagNumber(10)
+  Period get period => $_getN(9);
+  @$pb.TagNumber(10)
+  set period(Period v) {
+    setField(10, v);
+  }
+
+  @$pb.TagNumber(10)
+  $core.bool hasPeriod() => $_has(9);
+  @$pb.TagNumber(10)
+  void clearPeriod() => clearField(10);
 }
 
 class FishingSpot extends $pb.GeneratedMessage {
@@ -928,6 +944,7 @@ class SummaryReport extends $pb.GeneratedMessage {
     ..pc<Id>(9, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'speciesIds', $pb.PbFieldType.PM, subBuilder: Id.create)
     ..pc<Id>(10, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'anglerIds', $pb.PbFieldType.PM, subBuilder: Id.create)
     ..pc<Id>(11, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'methodIds', $pb.PbFieldType.PM, subBuilder: Id.create)
+    ..pc<Period>(12, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'periods', $pb.PbFieldType.PE, valueOf: Period.valueOf, enumValues: Period.values)
     ..hasRequiredFields = false;
 
   SummaryReport._() : super();
@@ -943,6 +960,7 @@ class SummaryReport extends $pb.GeneratedMessage {
     $core.Iterable<Id>? speciesIds,
     $core.Iterable<Id>? anglerIds,
     $core.Iterable<Id>? methodIds,
+    $core.Iterable<Period>? periods,
   }) {
     final _result = create();
     if (id != null) {
@@ -977,6 +995,9 @@ class SummaryReport extends $pb.GeneratedMessage {
     }
     if (methodIds != null) {
       _result.methodIds.addAll(methodIds);
+    }
+    if (periods != null) {
+      _result.periods.addAll(periods);
     }
     return _result;
   }
@@ -1095,6 +1116,9 @@ class SummaryReport extends $pb.GeneratedMessage {
 
   @$pb.TagNumber(11)
   $core.List<Id> get methodIds => $_getList(10);
+
+  @$pb.TagNumber(12)
+  $core.List<Period> get periods => $_getList(11);
 }
 
 class ComparisonReport extends $pb.GeneratedMessage {
@@ -1127,6 +1151,7 @@ class ComparisonReport extends $pb.GeneratedMessage {
     ..pc<Id>(12, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'speciesIds', $pb.PbFieldType.PM, subBuilder: Id.create)
     ..pc<Id>(13, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'anglerIds', $pb.PbFieldType.PM, subBuilder: Id.create)
     ..pc<Id>(14, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'methodIds', $pb.PbFieldType.PM, subBuilder: Id.create)
+    ..pc<Period>(15, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'periods', $pb.PbFieldType.PE, valueOf: Period.valueOf, enumValues: Period.values)
     ..hasRequiredFields = false;
 
   ComparisonReport._() : super();
@@ -1145,6 +1170,7 @@ class ComparisonReport extends $pb.GeneratedMessage {
     $core.Iterable<Id>? speciesIds,
     $core.Iterable<Id>? anglerIds,
     $core.Iterable<Id>? methodIds,
+    $core.Iterable<Period>? periods,
   }) {
     final _result = create();
     if (id != null) {
@@ -1188,6 +1214,9 @@ class ComparisonReport extends $pb.GeneratedMessage {
     }
     if (methodIds != null) {
       _result.methodIds.addAll(methodIds);
+    }
+    if (periods != null) {
+      _result.periods.addAll(periods);
     }
     return _result;
   }
@@ -1342,6 +1371,9 @@ class ComparisonReport extends $pb.GeneratedMessage {
 
   @$pb.TagNumber(14)
   $core.List<Id> get methodIds => $_getList(13);
+
+  @$pb.TagNumber(15)
+  $core.List<Period> get periods => $_getList(14);
 }
 
 class Angler extends $pb.GeneratedMessage {

@@ -158,7 +158,7 @@ void main() {
     test("Number", () {
       expect(
         valueForCustomEntityType(
-            CustomEntity_Type.NUMBER, CustomEntityValue()..value = "50"),
+            CustomEntity_Type.number, CustomEntityValue()..value = "50"),
         "50",
       );
     });
@@ -166,7 +166,7 @@ void main() {
     test("Text", () {
       expect(
         valueForCustomEntityType(
-            CustomEntity_Type.TEXT, CustomEntityValue()..value = "50"),
+            CustomEntity_Type.text, CustomEntityValue()..value = "50"),
         "50",
       );
     });
@@ -174,19 +174,19 @@ void main() {
     test("Bool without context", () {
       expect(
         valueForCustomEntityType(
-            CustomEntity_Type.BOOL, CustomEntityValue()..value = "1"),
+            CustomEntity_Type.boolean, CustomEntityValue()..value = "1"),
         isTrue,
       );
     });
 
     testWidgets("Bool with context", (tester) async {
       expect(
-        valueForCustomEntityType(CustomEntity_Type.BOOL,
+        valueForCustomEntityType(CustomEntity_Type.boolean,
             CustomEntityValue()..value = "1", await buildContext(tester)),
         "Yes",
       );
       expect(
-        valueForCustomEntityType(CustomEntity_Type.BOOL,
+        valueForCustomEntityType(CustomEntity_Type.boolean,
             CustomEntityValue()..value = "0", await buildContext(tester)),
         "No",
       );

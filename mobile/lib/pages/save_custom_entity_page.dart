@@ -75,7 +75,7 @@ class _SaveCustomEntityPageState extends State<SaveCustomEntityPage> {
     _inputOptions[_idDescription] = TextInputController();
 
     _inputOptions[_idType] = InputController<CustomEntity_Type>(
-      value: CustomEntity_Type.NUMBER,
+      value: CustomEntity_Type.number,
     );
 
     if (_editing) {

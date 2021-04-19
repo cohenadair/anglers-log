@@ -261,6 +261,22 @@ void main() {
     expect(catchManager.filteredCatches(context, filter: "Method").length, 2);
   });
 
+  testWidgets("Filtering by search query; period", (tester) async {
+    await catchManager.addOrUpdate(Catch()
+      ..id = randomId()
+      ..period = Period.dawn);
+    await catchManager.addOrUpdate(Catch()
+      ..id = randomId()
+      ..period = Period.afternoon);
+    await catchManager.addOrUpdate(Catch()..id = randomId());
+
+    var context = await buildContext(tester, appManager: appManager);
+    expect(catchManager.filteredCatches(context, filter: "NOON").length, 1);
+    expect(catchManager.filteredCatches(context, filter: "dawn").length, 1);
+    expect(
+        catchManager.filteredCatches(context, filter: "dusk").isEmpty, isTrue);
+  });
+
   testWidgets("Filtering by angler", (tester) async {
     when(dataManager.insertOrReplace(any, any))
         .thenAnswer((_) => Future.value(true));
@@ -559,6 +575,50 @@ void main() {
     catches = catchManager.filteredCatches(
       context,
       methodIds: {randomId()},
+    );
+    expect(catches.isEmpty, true);
+  });
+
+  testWidgets("Filtering by period", (tester) async {
+    when(dataManager.insertOrReplace(any, any))
+        .thenAnswer((_) => Future.value(true));
+
+    await catchManager.addOrUpdate(Catch()
+      ..id = randomId()
+      ..timestamp = Int64(DateTime(2020, 1, 1).millisecondsSinceEpoch)
+      ..period = Period.dawn);
+    await catchManager.addOrUpdate(Catch()
+      ..id = randomId()
+      ..timestamp = Int64(DateTime(2020, 2, 2).millisecondsSinceEpoch)
+      ..period = Period.afternoon);
+    await catchManager.addOrUpdate(Catch()
+      ..id = randomId()
+      ..timestamp = Int64(DateTime(2020, 2, 2).millisecondsSinceEpoch)
+      ..period = Period.dawn);
+    await catchManager.addOrUpdate(Catch()
+      ..id = randomId()
+      ..timestamp = Int64(DateTime(2020, 4, 4).millisecondsSinceEpoch)
+      ..period = Period.dusk);
+
+    var context = await buildContext(tester, appManager: appManager);
+    var catches = catchManager.filteredCatches(
+      context,
+      periods: {Period.dusk},
+    );
+    expect(catches.length, 1);
+
+    catches = catchManager.filteredCatches(
+      context,
+      periods: {Period.dusk, Period.afternoon},
+    );
+    expect(catches.length, 2);
+
+    catches = catchManager.filteredCatches(context);
+    expect(catches.length, 4);
+
+    catches = catchManager.filteredCatches(
+      context,
+      periods: {Period.morning},
     );
     expect(catches.isEmpty, true);
   });

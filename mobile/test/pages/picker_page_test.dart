@@ -339,7 +339,7 @@ void main() {
     expect(find.byType(SubtitleLabel), findsNothing);
   });
 
-  testWidgets("All item deselects other items", (tester) async {
+  testWidgets("All item selects/deselects other items", (tester) async {
     await tester.pumpWidget(
       Testable(
         (_) => PickerPage<String>(
@@ -364,6 +364,18 @@ void main() {
     );
 
     expect(findCheckbox(tester, "All")!.checked, isTrue);
+    expect(findCheckbox(tester, "Option A")!.checked, isTrue);
+    expect(findCheckbox(tester, "Option B")!.checked, isTrue);
+    expect(findCheckbox(tester, "Option C")!.checked, isTrue);
+
+    await tapAndSettle(
+      tester,
+      find.descendant(
+        of: find.widgetWithText(ListItem, "All"),
+        matching: find.byType(PaddedCheckbox),
+      ),
+    );
+    expect(findCheckbox(tester, "All")!.checked, isFalse);
     expect(findCheckbox(tester, "Option A")!.checked, isFalse);
     expect(findCheckbox(tester, "Option B")!.checked, isFalse);
     expect(findCheckbox(tester, "Option C")!.checked, isFalse);

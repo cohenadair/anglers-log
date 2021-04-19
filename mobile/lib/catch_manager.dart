@@ -59,6 +59,9 @@ class CatchManager extends EntityManager<Catch> {
         _anglerManager.matchesFilter(cat.anglerId, filter) ||
         _methodManager.idsMatchFilter(cat.methodIds, filter) ||
         context == null ||
+        (cat.hasPeriod() &&
+            containsTrimmedLowerCase(
+                nameForPeriod(context, cat.period), filter!)) ||
         timestampToSearchString(context, cat.timestamp.toInt())
             .toLowerCase()
             .contains(filter!.toLowerCase()) ||
@@ -84,6 +87,7 @@ class CatchManager extends EntityManager<Catch> {
     Set<Id> fishingSpotIds = const {},
     Set<Id> methodIds = const {},
     Set<Id> speciesIds = const {},
+    Set<Period> periods = const {},
   }) {
     var result = List.of(filteredCatches(
       context,
@@ -95,6 +99,7 @@ class CatchManager extends EntityManager<Catch> {
       fishingSpotIds: fishingSpotIds,
       methodIds: methodIds,
       speciesIds: speciesIds,
+      periods: periods,
     ));
 
     result.sort((lhs, rhs) => rhs.timestamp.compareTo(lhs.timestamp));
@@ -111,6 +116,7 @@ class CatchManager extends EntityManager<Catch> {
     Set<Id> fishingSpotIds = const {},
     Set<Id> methodIds = const {},
     Set<Id> speciesIds = const {},
+    Set<Period> periods = const {},
   }) {
     if (isEmpty(filter) &&
         dateRange == null &&
@@ -119,7 +125,8 @@ class CatchManager extends EntityManager<Catch> {
         catchIds.isEmpty &&
         fishingSpotIds.isEmpty &&
         methodIds.isEmpty &&
-        speciesIds.isEmpty) {
+        speciesIds.isEmpty &&
+        periods.isEmpty) {
       return entities.values.toList();
     }
 
@@ -134,6 +141,8 @@ class CatchManager extends EntityManager<Catch> {
       valid &= methodIds.isEmpty ||
           methodIds.intersection(cat.methodIds.toSet()).isNotEmpty;
       valid &= speciesIds.isEmpty || speciesIds.contains(cat.speciesId);
+      valid &=
+          periods.isEmpty || !cat.hasPeriod() || periods.contains(cat.period);
       if (!valid) {
         return false;
       }

@@ -41,17 +41,17 @@ void main() {
     when(appManager.customEntityManager.entity(id1)).thenReturn(
       CustomEntity()
         ..name = "Entity 1"
-        ..type = CustomEntity_Type.TEXT,
+        ..type = CustomEntity_Type.text,
     );
     when(appManager.customEntityManager.entity(id2)).thenReturn(
       CustomEntity()
         ..name = "Entity 2"
-        ..type = CustomEntity_Type.BOOL,
+        ..type = CustomEntity_Type.boolean,
     );
     when(appManager.customEntityManager.entity(id3)).thenReturn(
       CustomEntity()
         ..name = "Entity 3"
-        ..type = CustomEntity_Type.NUMBER,
+        ..type = CustomEntity_Type.number,
     );
 
     await tester.pumpWidget(Testable(

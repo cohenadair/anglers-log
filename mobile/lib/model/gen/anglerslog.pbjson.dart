@@ -9,6 +9,24 @@ import 'dart:core' as $core;
 import 'dart:convert' as $convert;
 import 'dart:typed_data' as $typed_data;
 
+@$core.Deprecated('Use periodDescriptor instead')
+const Period$json = const {
+  '1': 'Period',
+  '2': const [
+    const {'1': 'all', '2': 0},
+    const {'1': 'none', '2': 1},
+    const {'1': 'dawn', '2': 2},
+    const {'1': 'morning', '2': 3},
+    const {'1': 'midday', '2': 4},
+    const {'1': 'afternoon', '2': 5},
+    const {'1': 'dusk', '2': 6},
+    const {'1': 'night', '2': 7},
+  ],
+};
+
+/// Descriptor for `Period`. Decode as a `google.protobuf.EnumDescriptorProto`.
+final $typed_data.Uint8List periodDescriptor = $convert.base64Decode(
+    'CgZQZXJpb2QSBwoDYWxsEAASCAoEbm9uZRABEggKBGRhd24QAhILCgdtb3JuaW5nEAMSCgoGbWlkZGF5EAQSDQoJYWZ0ZXJub29uEAUSCAoEZHVzaxAGEgkKBW5pZ2h0EAc=');
 @$core.Deprecated('Use idDescriptor instead')
 const Id$json = const {
   '1': 'Id',
@@ -50,15 +68,15 @@ const CustomEntity$json = const {
 const CustomEntity_Type$json = const {
   '1': 'Type',
   '2': const [
-    const {'1': 'BOOL', '2': 0},
-    const {'1': 'NUMBER', '2': 1},
-    const {'1': 'TEXT', '2': 2},
+    const {'1': 'boolean', '2': 0},
+    const {'1': 'number', '2': 1},
+    const {'1': 'text', '2': 2},
   ],
 };
 
 /// Descriptor for `CustomEntity`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List customEntityDescriptor = $convert.base64Decode(
-    'CgxDdXN0b21FbnRpdHkSHgoCaWQYASABKAsyDi5hbmdsZXJzbG9nLklkUgJpZBISCgRuYW1lGAIgASgJUgRuYW1lEiAKC2Rlc2NyaXB0aW9uGAMgASgJUgtkZXNjcmlwdGlvbhIxCgR0eXBlGAQgASgOMh0uYW5nbGVyc2xvZy5DdXN0b21FbnRpdHkuVHlwZVIEdHlwZSImCgRUeXBlEggKBEJPT0wQABIKCgZOVU1CRVIQARIICgRURVhUEAI=');
+    'CgxDdXN0b21FbnRpdHkSHgoCaWQYASABKAsyDi5hbmdsZXJzbG9nLklkUgJpZBISCgRuYW1lGAIgASgJUgRuYW1lEiAKC2Rlc2NyaXB0aW9uGAMgASgJUgtkZXNjcmlwdGlvbhIxCgR0eXBlGAQgASgOMh0uYW5nbGVyc2xvZy5DdXN0b21FbnRpdHkuVHlwZVIEdHlwZSIpCgRUeXBlEgsKB2Jvb2xlYW4QABIKCgZudW1iZXIQARIICgR0ZXh0EAI=');
 @$core.Deprecated('Use customEntityValueDescriptor instead')
 const CustomEntityValue$json = const {
   '1': 'CustomEntityValue',
@@ -194,12 +212,20 @@ const Catch$json = const {
       '6': '.anglerslog.Id',
       '10': 'methodIds'
     },
+    const {
+      '1': 'period',
+      '3': 10,
+      '4': 1,
+      '5': 14,
+      '6': '.anglerslog.Period',
+      '10': 'period'
+    },
   ],
 };
 
 /// Descriptor for `Catch`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List catchDescriptor = $convert.base64Decode(
-    'CgVDYXRjaBIeCgJpZBgBIAEoCzIOLmFuZ2xlcnNsb2cuSWRSAmlkEhwKCXRpbWVzdGFtcBgCIAEoBFIJdGltZXN0YW1wEicKB2JhaXRfaWQYAyABKAsyDi5hbmdsZXJzbG9nLklkUgZiYWl0SWQSNgoPZmlzaGluZ19zcG90X2lkGAQgASgLMg4uYW5nbGVyc2xvZy5JZFINZmlzaGluZ1Nwb3RJZBItCgpzcGVjaWVzX2lkGAUgASgLMg4uYW5nbGVyc2xvZy5JZFIJc3BlY2llc0lkEh8KC2ltYWdlX25hbWVzGAYgAygJUgppbWFnZU5hbWVzEk8KFGN1c3RvbV9lbnRpdHlfdmFsdWVzGAcgAygLMh0uYW5nbGVyc2xvZy5DdXN0b21FbnRpdHlWYWx1ZVISY3VzdG9tRW50aXR5VmFsdWVzEisKCWFuZ2xlcl9pZBgIIAEoCzIOLmFuZ2xlcnNsb2cuSWRSCGFuZ2xlcklkEi0KCm1ldGhvZF9pZHMYCSADKAsyDi5hbmdsZXJzbG9nLklkUgltZXRob2RJZHM=');
+    'CgVDYXRjaBIeCgJpZBgBIAEoCzIOLmFuZ2xlcnNsb2cuSWRSAmlkEhwKCXRpbWVzdGFtcBgCIAEoBFIJdGltZXN0YW1wEicKB2JhaXRfaWQYAyABKAsyDi5hbmdsZXJzbG9nLklkUgZiYWl0SWQSNgoPZmlzaGluZ19zcG90X2lkGAQgASgLMg4uYW5nbGVyc2xvZy5JZFINZmlzaGluZ1Nwb3RJZBItCgpzcGVjaWVzX2lkGAUgASgLMg4uYW5nbGVyc2xvZy5JZFIJc3BlY2llc0lkEh8KC2ltYWdlX25hbWVzGAYgAygJUgppbWFnZU5hbWVzEk8KFGN1c3RvbV9lbnRpdHlfdmFsdWVzGAcgAygLMh0uYW5nbGVyc2xvZy5DdXN0b21FbnRpdHlWYWx1ZVISY3VzdG9tRW50aXR5VmFsdWVzEisKCWFuZ2xlcl9pZBgIIAEoCzIOLmFuZ2xlcnNsb2cuSWRSCGFuZ2xlcklkEi0KCm1ldGhvZF9pZHMYCSADKAsyDi5hbmdsZXJzbG9nLklkUgltZXRob2RJZHMSKgoGcGVyaW9kGAogASgOMhIuYW5nbGVyc2xvZy5QZXJpb2RSBnBlcmlvZA==');
 @$core.Deprecated('Use fishingSpotDescriptor instead')
 const FishingSpot$json = const {
   '1': 'FishingSpot',
@@ -309,12 +335,20 @@ const SummaryReport$json = const {
       '6': '.anglerslog.Id',
       '10': 'methodIds'
     },
+    const {
+      '1': 'periods',
+      '3': 12,
+      '4': 3,
+      '5': 14,
+      '6': '.anglerslog.Period',
+      '10': 'periods'
+    },
   ],
 };
 
 /// Descriptor for `SummaryReport`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List summaryReportDescriptor = $convert.base64Decode(
-    'Cg1TdW1tYXJ5UmVwb3J0Eh4KAmlkGAEgASgLMg4uYW5nbGVyc2xvZy5JZFICaWQSEgoEbmFtZRgCIAEoCVIEbmFtZRIgCgtkZXNjcmlwdGlvbhgDIAEoCVILZGVzY3JpcHRpb24SMQoVZGlzcGxheV9kYXRlX3JhbmdlX2lkGAQgASgJUhJkaXNwbGF5RGF0ZVJhbmdlSWQSJwoPc3RhcnRfdGltZXN0YW1wGAUgASgEUg5zdGFydFRpbWVzdGFtcBIjCg1lbmRfdGltZXN0YW1wGAYgASgEUgxlbmRUaW1lc3RhbXASKQoIYmFpdF9pZHMYByADKAsyDi5hbmdsZXJzbG9nLklkUgdiYWl0SWRzEjgKEGZpc2hpbmdfc3BvdF9pZHMYCCADKAsyDi5hbmdsZXJzbG9nLklkUg5maXNoaW5nU3BvdElkcxIvCgtzcGVjaWVzX2lkcxgJIAMoCzIOLmFuZ2xlcnNsb2cuSWRSCnNwZWNpZXNJZHMSLQoKYW5nbGVyX2lkcxgKIAMoCzIOLmFuZ2xlcnNsb2cuSWRSCWFuZ2xlcklkcxItCgptZXRob2RfaWRzGAsgAygLMg4uYW5nbGVyc2xvZy5JZFIJbWV0aG9kSWRz');
+    'Cg1TdW1tYXJ5UmVwb3J0Eh4KAmlkGAEgASgLMg4uYW5nbGVyc2xvZy5JZFICaWQSEgoEbmFtZRgCIAEoCVIEbmFtZRIgCgtkZXNjcmlwdGlvbhgDIAEoCVILZGVzY3JpcHRpb24SMQoVZGlzcGxheV9kYXRlX3JhbmdlX2lkGAQgASgJUhJkaXNwbGF5RGF0ZVJhbmdlSWQSJwoPc3RhcnRfdGltZXN0YW1wGAUgASgEUg5zdGFydFRpbWVzdGFtcBIjCg1lbmRfdGltZXN0YW1wGAYgASgEUgxlbmRUaW1lc3RhbXASKQoIYmFpdF9pZHMYByADKAsyDi5hbmdsZXJzbG9nLklkUgdiYWl0SWRzEjgKEGZpc2hpbmdfc3BvdF9pZHMYCCADKAsyDi5hbmdsZXJzbG9nLklkUg5maXNoaW5nU3BvdElkcxIvCgtzcGVjaWVzX2lkcxgJIAMoCzIOLmFuZ2xlcnNsb2cuSWRSCnNwZWNpZXNJZHMSLQoKYW5nbGVyX2lkcxgKIAMoCzIOLmFuZ2xlcnNsb2cuSWRSCWFuZ2xlcklkcxItCgptZXRob2RfaWRzGAsgAygLMg4uYW5nbGVyc2xvZy5JZFIJbWV0aG9kSWRzEiwKB3BlcmlvZHMYDCADKA4yEi5hbmdsZXJzbG9nLlBlcmlvZFIHcGVyaW9kcw==');
 @$core.Deprecated('Use comparisonReportDescriptor instead')
 const ComparisonReport$json = const {
   '1': 'ComparisonReport',
@@ -411,12 +445,20 @@ const ComparisonReport$json = const {
       '6': '.anglerslog.Id',
       '10': 'methodIds'
     },
+    const {
+      '1': 'periods',
+      '3': 15,
+      '4': 3,
+      '5': 14,
+      '6': '.anglerslog.Period',
+      '10': 'periods'
+    },
   ],
 };
 
 /// Descriptor for `ComparisonReport`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List comparisonReportDescriptor = $convert.base64Decode(
-    'ChBDb21wYXJpc29uUmVwb3J0Eh4KAmlkGAEgASgLMg4uYW5nbGVyc2xvZy5JZFICaWQSEgoEbmFtZRgCIAEoCVIEbmFtZRIgCgtkZXNjcmlwdGlvbhgDIAEoCVILZGVzY3JpcHRpb24SOgoaZnJvbV9kaXNwbGF5X2RhdGVfcmFuZ2VfaWQYBCABKAlSFmZyb21EaXNwbGF5RGF0ZVJhbmdlSWQSNgoYdG9fZGlzcGxheV9kYXRlX3JhbmdlX2lkGAUgASgJUhR0b0Rpc3BsYXlEYXRlUmFuZ2VJZBIwChRmcm9tX3N0YXJ0X3RpbWVzdGFtcBgGIAEoBFISZnJvbVN0YXJ0VGltZXN0YW1wEiwKEnRvX3N0YXJ0X3RpbWVzdGFtcBgHIAEoBFIQdG9TdGFydFRpbWVzdGFtcBIsChJmcm9tX2VuZF90aW1lc3RhbXAYCCABKARSEGZyb21FbmRUaW1lc3RhbXASKAoQdG9fZW5kX3RpbWVzdGFtcBgJIAEoBFIOdG9FbmRUaW1lc3RhbXASKQoIYmFpdF9pZHMYCiADKAsyDi5hbmdsZXJzbG9nLklkUgdiYWl0SWRzEjgKEGZpc2hpbmdfc3BvdF9pZHMYCyADKAsyDi5hbmdsZXJzbG9nLklkUg5maXNoaW5nU3BvdElkcxIvCgtzcGVjaWVzX2lkcxgMIAMoCzIOLmFuZ2xlcnNsb2cuSWRSCnNwZWNpZXNJZHMSLQoKYW5nbGVyX2lkcxgNIAMoCzIOLmFuZ2xlcnNsb2cuSWRSCWFuZ2xlcklkcxItCgptZXRob2RfaWRzGA4gAygLMg4uYW5nbGVyc2xvZy5JZFIJbWV0aG9kSWRz');
+    'ChBDb21wYXJpc29uUmVwb3J0Eh4KAmlkGAEgASgLMg4uYW5nbGVyc2xvZy5JZFICaWQSEgoEbmFtZRgCIAEoCVIEbmFtZRIgCgtkZXNjcmlwdGlvbhgDIAEoCVILZGVzY3JpcHRpb24SOgoaZnJvbV9kaXNwbGF5X2RhdGVfcmFuZ2VfaWQYBCABKAlSFmZyb21EaXNwbGF5RGF0ZVJhbmdlSWQSNgoYdG9fZGlzcGxheV9kYXRlX3JhbmdlX2lkGAUgASgJUhR0b0Rpc3BsYXlEYXRlUmFuZ2VJZBIwChRmcm9tX3N0YXJ0X3RpbWVzdGFtcBgGIAEoBFISZnJvbVN0YXJ0VGltZXN0YW1wEiwKEnRvX3N0YXJ0X3RpbWVzdGFtcBgHIAEoBFIQdG9TdGFydFRpbWVzdGFtcBIsChJmcm9tX2VuZF90aW1lc3RhbXAYCCABKARSEGZyb21FbmRUaW1lc3RhbXASKAoQdG9fZW5kX3RpbWVzdGFtcBgJIAEoBFIOdG9FbmRUaW1lc3RhbXASKQoIYmFpdF9pZHMYCiADKAsyDi5hbmdsZXJzbG9nLklkUgdiYWl0SWRzEjgKEGZpc2hpbmdfc3BvdF9pZHMYCyADKAsyDi5hbmdsZXJzbG9nLklkUg5maXNoaW5nU3BvdElkcxIvCgtzcGVjaWVzX2lkcxgMIAMoCzIOLmFuZ2xlcnNsb2cuSWRSCnNwZWNpZXNJZHMSLQoKYW5nbGVyX2lkcxgNIAMoCzIOLmFuZ2xlcnNsb2cuSWRSCWFuZ2xlcklkcxItCgptZXRob2RfaWRzGA4gAygLMg4uYW5nbGVyc2xvZy5JZFIJbWV0aG9kSWRzEiwKB3BlcmlvZHMYDyADKA4yEi5hbmdsZXJzbG9nLlBlcmlvZFIHcGVyaW9kcw==');
 @$core.Deprecated('Use anglerDescriptor instead')
 const Angler$json = const {
   '1': 'Angler',
