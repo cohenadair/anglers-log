@@ -88,14 +88,22 @@ dynamic valueForCustomEntityType(
 
 String nameForPeriod(BuildContext context, Period period) {
   switch (period) {
-    case Period.all: return Strings.of(context).all;
-    case Period.none: return Strings.of(context).none;
-    case Period.dawn: return Strings.of(context).periodDawn;
-    case Period.morning: return Strings.of(context).periodMorning;
-    case Period.midday: return Strings.of(context).periodMidday;
-    case Period.afternoon: return Strings.of(context).periodAfternoon;
-    case Period.dusk: return Strings.of(context).periodDusk;
-    case Period.night: return Strings.of(context).periodNight;
+    case Period.all:
+      return Strings.of(context).all;
+    case Period.none:
+      return Strings.of(context).none;
+    case Period.dawn:
+      return Strings.of(context).periodDawn;
+    case Period.morning:
+      return Strings.of(context).periodMorning;
+    case Period.midday:
+      return Strings.of(context).periodMidday;
+    case Period.afternoon:
+      return Strings.of(context).periodAfternoon;
+    case Period.dusk:
+      return Strings.of(context).periodDusk;
+    case Period.night:
+      return Strings.of(context).periodNight;
   }
   throw ArgumentError("Invalid input: $period");
 }

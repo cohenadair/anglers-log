@@ -19,8 +19,7 @@ Id catchFieldIdFishingSpot() =>
 
 Id catchFieldIdImages() => Id()..uuid = "cb268ed0-59e2-469e-9279-a74e15ff42e8";
 
-Id catchFieldIdMethods() =>
-    Id()..uuid = "b494335f-a9fb-4c1b-b4ec-40658645ef12";
+Id catchFieldIdMethods() => Id()..uuid = "b494335f-a9fb-4c1b-b4ec-40658645ef12";
 
 Id catchFieldIdSpecies() => Id()..uuid = "7c4a5178-4e3b-4b97-ac69-b4a5439c4d94";
 
