@@ -289,461 +289,466 @@ void main() {
     );
   }
 
-  group("ReportSummaryModel", () {
-    testWidgets("Gather data normal case", (tester) async {
-      var context = await buildContext(tester, appManager: appManager);
-      _stubCatchesByTimestamp(context);
+  testWidgets("Gather data normal case", (tester) async {
+    var context = await buildContext(tester, appManager: appManager);
+    _stubCatchesByTimestamp(context);
 
-      // Normal use case.
-      var data = Report(
-        context: context,
-        displayDateRange: DisplayDateRange.allDates,
-      );
+    // Normal use case.
+    var data = Report(
+      context: context,
+      displayDateRange: DisplayDateRange.allDates,
+    );
 
-      expect(data.containsNow, true);
-      expect(data.msSinceLastCatch, 5000);
-      expect(data.totalCatches, 10);
-      expect(data.catchesPerSpecies.length, 4);
-      expect(data.allCatchIds, _catches.map((c) => c.id).toSet());
-      expect(data.catchIdsPerSpecies[speciesMap[speciesId3]!],
-          {catchId0, catchId5});
-      expect(data.catchIdsPerSpecies[speciesMap[speciesId4]!],
-          {catchId9, catchId4, catchId1});
-      expect(data.catchIdsPerSpecies[speciesMap[speciesId1]!],
-          {catchId8, catchId7, catchId6, catchId3});
-      expect(data.catchIdsPerSpecies[speciesMap[speciesId0]!], {catchId2});
-      expect(data.catchIdsPerSpecies[speciesMap[speciesId2]!], null);
-      expect(data.catchesPerSpecies[speciesMap[speciesId3]!], 2);
-      expect(data.catchesPerSpecies[speciesMap[speciesId4]!], 3);
-      expect(data.catchesPerSpecies[speciesMap[speciesId1]!], 4);
-      expect(data.catchesPerSpecies[speciesMap[speciesId0]!], 1);
-      expect(data.catchesPerSpecies[speciesMap[speciesId2]!], null);
+    expect(data.containsNow, true);
+    expect(data.msSinceLastCatch, 5000);
+    expect(data.totalCatches, 10);
+    expect(data.catchesPerSpecies.length, 4);
+    expect(data.allCatchIds, _catches.map((c) => c.id).toSet());
+    expect(
+        data.catchIdsPerSpecies[speciesMap[speciesId3]!], {catchId0, catchId5});
+    expect(data.catchIdsPerSpecies[speciesMap[speciesId4]!],
+        {catchId9, catchId4, catchId1});
+    expect(data.catchIdsPerSpecies[speciesMap[speciesId1]!],
+        {catchId8, catchId7, catchId6, catchId3});
+    expect(data.catchIdsPerSpecies[speciesMap[speciesId0]!], {catchId2});
+    expect(data.catchIdsPerSpecies[speciesMap[speciesId2]!], null);
+    expect(data.catchesPerSpecies[speciesMap[speciesId3]!], 2);
+    expect(data.catchesPerSpecies[speciesMap[speciesId4]!], 3);
+    expect(data.catchesPerSpecies[speciesMap[speciesId1]!], 4);
+    expect(data.catchesPerSpecies[speciesMap[speciesId0]!], 1);
+    expect(data.catchesPerSpecies[speciesMap[speciesId2]!], null);
 
-      expect(data.catchesPerFishingSpot.length, 5);
-      expect(data.catchesPerFishingSpot[fishingSpotMap[fishingSpotId4]!], 1);
-      expect(data.catchesPerFishingSpot[fishingSpotMap[fishingSpotId2]!], 1);
-      expect(data.catchesPerFishingSpot[fishingSpotMap[fishingSpotId1]!], 6);
-      expect(data.catchesPerFishingSpot[fishingSpotMap[fishingSpotId3]!], 1);
-      expect(data.catchesPerFishingSpot[fishingSpotMap[fishingSpotId0]!], 1);
+    expect(data.catchesPerFishingSpot.length, 5);
+    expect(data.catchesPerFishingSpot[fishingSpotMap[fishingSpotId4]!], 1);
+    expect(data.catchesPerFishingSpot[fishingSpotMap[fishingSpotId2]!], 1);
+    expect(data.catchesPerFishingSpot[fishingSpotMap[fishingSpotId1]!], 6);
+    expect(data.catchesPerFishingSpot[fishingSpotMap[fishingSpotId3]!], 1);
+    expect(data.catchesPerFishingSpot[fishingSpotMap[fishingSpotId0]!], 1);
 
-      expect(data.catchesPerBait.length, 4);
-      expect(data.catchesPerBait[baitMap[baitId0]!], 5);
-      expect(data.catchesPerBait[baitMap[baitId1]!], 3);
-      expect(data.catchesPerBait[baitMap[baitId2]!], 1);
-      expect(data.catchesPerBait[baitMap[baitId3]!], null);
-      expect(data.catchesPerBait[baitMap[baitId4]!], 1);
+    expect(data.catchesPerBait.length, 4);
+    expect(data.catchesPerBait[baitMap[baitId0]!], 5);
+    expect(data.catchesPerBait[baitMap[baitId1]!], 3);
+    expect(data.catchesPerBait[baitMap[baitId2]!], 1);
+    expect(data.catchesPerBait[baitMap[baitId3]!], null);
+    expect(data.catchesPerBait[baitMap[baitId4]!], 1);
 
-      expect(
-          data.baitsPerSpecies(speciesMap[speciesId1]!)[baitMap[baitId1]!], 3);
-      expect(
-          data.baitsPerSpecies(speciesMap[speciesId1]!)[baitMap[baitId0]!], 1);
-      expect(data.baitsPerSpecies(speciesMap[speciesId1]!)[baitMap[baitId4]!],
-          null);
-      expect(data.baitsPerSpecies(speciesMap[speciesId1]!)[baitMap[baitId2]!],
-          null);
-      expect(data.baitsPerSpecies(speciesMap[speciesId4]!)[baitMap[baitId1]!],
-          null);
-      expect(
-          data.baitsPerSpecies(speciesMap[speciesId4]!)[baitMap[baitId0]!], 2);
-      expect(
-          data.baitsPerSpecies(speciesMap[speciesId4]!)[baitMap[baitId4]!], 1);
-      expect(data.baitsPerSpecies(speciesMap[speciesId4]!)[baitMap[baitId2]!],
-          null);
-      expect(data.baitsPerSpecies(speciesMap[speciesId3]!)[baitMap[baitId1]!],
-          null);
-      expect(
-          data.baitsPerSpecies(speciesMap[speciesId3]!)[baitMap[baitId0]!], 1);
-      expect(data.baitsPerSpecies(speciesMap[speciesId3]!)[baitMap[baitId4]!],
-          null);
-      expect(
-          data.baitsPerSpecies(speciesMap[speciesId3]!)[baitMap[baitId2]!], 1);
-      expect(data.baitsPerSpecies(speciesMap[speciesId0]!)[baitMap[baitId1]!],
-          null);
-      expect(
-          data.baitsPerSpecies(speciesMap[speciesId0]!)[baitMap[baitId0]!], 1);
-      expect(data.baitsPerSpecies(speciesMap[speciesId0]!)[baitMap[baitId4]!],
-          null);
-      expect(data.baitsPerSpecies(speciesMap[speciesId0]!)[baitMap[baitId2]!],
-          null);
-      expect(data.baitsPerSpecies(speciesMap[speciesId2]!), {});
+    expect(data.baitsPerSpecies(speciesMap[speciesId1]!)[baitMap[baitId1]!], 3);
+    expect(data.baitsPerSpecies(speciesMap[speciesId1]!)[baitMap[baitId0]!], 1);
+    expect(
+        data.baitsPerSpecies(speciesMap[speciesId1]!)[baitMap[baitId4]!], null);
+    expect(
+        data.baitsPerSpecies(speciesMap[speciesId1]!)[baitMap[baitId2]!], null);
+    expect(
+        data.baitsPerSpecies(speciesMap[speciesId4]!)[baitMap[baitId1]!], null);
+    expect(data.baitsPerSpecies(speciesMap[speciesId4]!)[baitMap[baitId0]!], 2);
+    expect(data.baitsPerSpecies(speciesMap[speciesId4]!)[baitMap[baitId4]!], 1);
+    expect(
+        data.baitsPerSpecies(speciesMap[speciesId4]!)[baitMap[baitId2]!], null);
+    expect(
+        data.baitsPerSpecies(speciesMap[speciesId3]!)[baitMap[baitId1]!], null);
+    expect(data.baitsPerSpecies(speciesMap[speciesId3]!)[baitMap[baitId0]!], 1);
+    expect(
+        data.baitsPerSpecies(speciesMap[speciesId3]!)[baitMap[baitId4]!], null);
+    expect(data.baitsPerSpecies(speciesMap[speciesId3]!)[baitMap[baitId2]!], 1);
+    expect(
+        data.baitsPerSpecies(speciesMap[speciesId0]!)[baitMap[baitId1]!], null);
+    expect(data.baitsPerSpecies(speciesMap[speciesId0]!)[baitMap[baitId0]!], 1);
+    expect(
+        data.baitsPerSpecies(speciesMap[speciesId0]!)[baitMap[baitId4]!], null);
+    expect(
+        data.baitsPerSpecies(speciesMap[speciesId0]!)[baitMap[baitId2]!], null);
+    expect(data.baitsPerSpecies(speciesMap[speciesId2]!), {});
 
-      expect(
-        data.fishingSpotsPerSpecies(
-            speciesMap[speciesId1]!)[fishingSpotMap[fishingSpotId4]!],
-        null,
-      );
-      expect(
-        data.fishingSpotsPerSpecies(
-            speciesMap[speciesId1]!)[fishingSpotMap[fishingSpotId2]!],
-        1,
-      );
-      expect(
-        data.fishingSpotsPerSpecies(
-            speciesMap[speciesId1]!)[fishingSpotMap[fishingSpotId1]!],
-        2,
-      );
-      expect(
-        data.fishingSpotsPerSpecies(
-            speciesMap[speciesId1]!)[fishingSpotMap[fishingSpotId3]!],
-        null,
-      );
-      expect(
-        data.fishingSpotsPerSpecies(
-            speciesMap[speciesId1]!)[fishingSpotMap[fishingSpotId0]!],
-        1,
-      );
-      expect(
-        data.fishingSpotsPerSpecies(
-            speciesMap[speciesId4]!)[fishingSpotMap[fishingSpotId4]!],
-        null,
-      );
-      expect(
-        data.fishingSpotsPerSpecies(
-            speciesMap[speciesId4]!)[fishingSpotMap[fishingSpotId2]!],
-        null,
-      );
-      expect(
-        data.fishingSpotsPerSpecies(
-            speciesMap[speciesId4]!)[fishingSpotMap[fishingSpotId1]!],
-        2,
-      );
-      expect(
-        data.fishingSpotsPerSpecies(
-            speciesMap[speciesId4]!)[fishingSpotMap[fishingSpotId3]!],
-        1,
-      );
-      expect(
-        data.fishingSpotsPerSpecies(
-            speciesMap[speciesId4]!)[fishingSpotMap[fishingSpotId0]!],
-        null,
-      );
-      expect(
-        data.fishingSpotsPerSpecies(
-            speciesMap[speciesId3]!)[fishingSpotMap[fishingSpotId4]!],
-        null,
-      );
-      expect(
-        data.fishingSpotsPerSpecies(
-            speciesMap[speciesId3]!)[fishingSpotMap[fishingSpotId2]!],
-        null,
-      );
-      expect(
-        data.fishingSpotsPerSpecies(
-            speciesMap[speciesId3]!)[fishingSpotMap[fishingSpotId1]!],
-        2,
-      );
-      expect(
-        data.fishingSpotsPerSpecies(
-            speciesMap[speciesId3]!)[fishingSpotMap[fishingSpotId3]!],
-        null,
-      );
-      expect(
-        data.fishingSpotsPerSpecies(
-            speciesMap[speciesId3]!)[fishingSpotMap[fishingSpotId0]!],
-        null,
-      );
-      expect(
-        data.fishingSpotsPerSpecies(
-            speciesMap[speciesId0]!)[fishingSpotMap[fishingSpotId4]!],
-        1,
-      );
-      expect(
-        data.fishingSpotsPerSpecies(
-            speciesMap[speciesId0]!)[fishingSpotMap[fishingSpotId2]!],
-        null,
-      );
-      expect(
-        data.fishingSpotsPerSpecies(
-            speciesMap[speciesId0]!)[fishingSpotMap[fishingSpotId1]!],
-        null,
-      );
-      expect(
-        data.fishingSpotsPerSpecies(
-            speciesMap[speciesId0]!)[fishingSpotMap[fishingSpotId3]!],
-        null,
-      );
-      expect(
-        data.fishingSpotsPerSpecies(
-            speciesMap[speciesId0]!)[fishingSpotMap[fishingSpotId0]!],
-        null,
-      );
-      expect(data.fishingSpotsPerSpecies(speciesMap[speciesId2]!), {});
-    });
+    expect(
+      data.fishingSpotsPerSpecies(
+          speciesMap[speciesId1]!)[fishingSpotMap[fishingSpotId4]!],
+      null,
+    );
+    expect(
+      data.fishingSpotsPerSpecies(
+          speciesMap[speciesId1]!)[fishingSpotMap[fishingSpotId2]!],
+      1,
+    );
+    expect(
+      data.fishingSpotsPerSpecies(
+          speciesMap[speciesId1]!)[fishingSpotMap[fishingSpotId1]!],
+      2,
+    );
+    expect(
+      data.fishingSpotsPerSpecies(
+          speciesMap[speciesId1]!)[fishingSpotMap[fishingSpotId3]!],
+      null,
+    );
+    expect(
+      data.fishingSpotsPerSpecies(
+          speciesMap[speciesId1]!)[fishingSpotMap[fishingSpotId0]!],
+      1,
+    );
+    expect(
+      data.fishingSpotsPerSpecies(
+          speciesMap[speciesId4]!)[fishingSpotMap[fishingSpotId4]!],
+      null,
+    );
+    expect(
+      data.fishingSpotsPerSpecies(
+          speciesMap[speciesId4]!)[fishingSpotMap[fishingSpotId2]!],
+      null,
+    );
+    expect(
+      data.fishingSpotsPerSpecies(
+          speciesMap[speciesId4]!)[fishingSpotMap[fishingSpotId1]!],
+      2,
+    );
+    expect(
+      data.fishingSpotsPerSpecies(
+          speciesMap[speciesId4]!)[fishingSpotMap[fishingSpotId3]!],
+      1,
+    );
+    expect(
+      data.fishingSpotsPerSpecies(
+          speciesMap[speciesId4]!)[fishingSpotMap[fishingSpotId0]!],
+      null,
+    );
+    expect(
+      data.fishingSpotsPerSpecies(
+          speciesMap[speciesId3]!)[fishingSpotMap[fishingSpotId4]!],
+      null,
+    );
+    expect(
+      data.fishingSpotsPerSpecies(
+          speciesMap[speciesId3]!)[fishingSpotMap[fishingSpotId2]!],
+      null,
+    );
+    expect(
+      data.fishingSpotsPerSpecies(
+          speciesMap[speciesId3]!)[fishingSpotMap[fishingSpotId1]!],
+      2,
+    );
+    expect(
+      data.fishingSpotsPerSpecies(
+          speciesMap[speciesId3]!)[fishingSpotMap[fishingSpotId3]!],
+      null,
+    );
+    expect(
+      data.fishingSpotsPerSpecies(
+          speciesMap[speciesId3]!)[fishingSpotMap[fishingSpotId0]!],
+      null,
+    );
+    expect(
+      data.fishingSpotsPerSpecies(
+          speciesMap[speciesId0]!)[fishingSpotMap[fishingSpotId4]!],
+      1,
+    );
+    expect(
+      data.fishingSpotsPerSpecies(
+          speciesMap[speciesId0]!)[fishingSpotMap[fishingSpotId2]!],
+      null,
+    );
+    expect(
+      data.fishingSpotsPerSpecies(
+          speciesMap[speciesId0]!)[fishingSpotMap[fishingSpotId1]!],
+      null,
+    );
+    expect(
+      data.fishingSpotsPerSpecies(
+          speciesMap[speciesId0]!)[fishingSpotMap[fishingSpotId3]!],
+      null,
+    );
+    expect(
+      data.fishingSpotsPerSpecies(
+          speciesMap[speciesId0]!)[fishingSpotMap[fishingSpotId0]!],
+      null,
+    );
+    expect(data.fishingSpotsPerSpecies(speciesMap[speciesId2]!), {});
+  });
 
-    testWidgets("Gather data including zeros", (tester) async {
-      var context = await buildContext(tester, appManager: appManager);
-      _stubCatchesByTimestamp(context);
+  testWidgets("Gather data including zeros", (tester) async {
+    var context = await buildContext(tester, appManager: appManager);
+    _stubCatchesByTimestamp(context);
 
-      var data = Report(
-        context: context,
-        displayDateRange: DisplayDateRange.allDates,
-        includeZeros: true,
-      );
+    var data = Report(
+      context: context,
+      displayDateRange: DisplayDateRange.allDates,
+      includeZeros: true,
+    );
 
-      expect(data.catchesPerSpecies.length, 5);
-    });
+    expect(data.catchesPerSpecies.length, 5);
+  });
 
-    testWidgets("Gather data alphabetical order", (tester) async {
-      var context = await buildContext(tester, appManager: appManager);
-      _stubCatchesByTimestamp(context);
+  testWidgets("Gather data alphabetical order", (tester) async {
+    var context = await buildContext(tester, appManager: appManager);
+    _stubCatchesByTimestamp(context);
 
-      var data = Report(
-        context: context,
-        displayDateRange: DisplayDateRange.allDates,
-        sortOrder: ReportSortOrder.alphabetical,
-      );
+    var data = Report(
+      context: context,
+      displayDateRange: DisplayDateRange.allDates,
+      sortOrder: ReportSortOrder.alphabetical,
+    );
 
-      expect(data.catchesPerSpecies.keys.toList(), [
-        speciesMap[speciesId3]!,
-        speciesMap[speciesId0]!,
-        speciesMap[speciesId1]!,
-        speciesMap[speciesId4]!,
-      ]);
-      expect(data.catchesPerFishingSpot.keys.toList(), [
+    expect(data.catchesPerSpecies.keys.toList(), [
+      speciesMap[speciesId3]!,
+      speciesMap[speciesId0]!,
+      speciesMap[speciesId1]!,
+      speciesMap[speciesId4]!,
+    ]);
+    expect(data.catchesPerFishingSpot.keys.toList(), [
+      fishingSpotMap[fishingSpotId4]!,
+      fishingSpotMap[fishingSpotId2]!,
+      fishingSpotMap[fishingSpotId1]!,
+      fishingSpotMap[fishingSpotId3]!,
+      fishingSpotMap[fishingSpotId0]!,
+    ]);
+    expect(data.catchesPerBait.keys.toList(), [
+      baitMap[baitId1]!,
+      baitMap[baitId4]!,
+      baitMap[baitId2]!,
+      baitMap[baitId0]!,
+    ]);
+    expect(
+      data.fishingSpotsPerSpecies(speciesMap[speciesId3]!).keys.toList(),
+      [
+        fishingSpotMap[fishingSpotId1]!,
+      ],
+    );
+    expect(
+      data.fishingSpotsPerSpecies(speciesMap[speciesId0]!).keys.toList(),
+      [
         fishingSpotMap[fishingSpotId4]!,
-        fishingSpotMap[fishingSpotId2]!,
+      ],
+    );
+    expect(
+        data.fishingSpotsPerSpecies(speciesMap[speciesId2]!).keys.toList(), []);
+    expect(
+      data.fishingSpotsPerSpecies(speciesMap[speciesId4]!).keys.toList(),
+      [
         fishingSpotMap[fishingSpotId1]!,
         fishingSpotMap[fishingSpotId3]!,
+      ],
+    );
+    expect(
+      data.fishingSpotsPerSpecies(speciesMap[speciesId1]!).keys.toList(),
+      [
+        fishingSpotMap[fishingSpotId2]!,
+        fishingSpotMap[fishingSpotId1]!,
         fishingSpotMap[fishingSpotId0]!,
-      ]);
-      expect(data.catchesPerBait.keys.toList(), [
-        baitMap[baitId1]!,
-        baitMap[baitId4]!,
-        baitMap[baitId2]!,
-        baitMap[baitId0]!,
-      ]);
-      expect(
-        data.fishingSpotsPerSpecies(speciesMap[speciesId3]!).keys.toList(),
-        [
-          fishingSpotMap[fishingSpotId1]!,
-        ],
-      );
-      expect(
-        data.fishingSpotsPerSpecies(speciesMap[speciesId0]!).keys.toList(),
-        [
-          fishingSpotMap[fishingSpotId4]!,
-        ],
-      );
-      expect(data.fishingSpotsPerSpecies(speciesMap[speciesId2]!).keys.toList(),
-          []);
-      expect(
-        data.fishingSpotsPerSpecies(speciesMap[speciesId4]!).keys.toList(),
-        [
-          fishingSpotMap[fishingSpotId1]!,
-          fishingSpotMap[fishingSpotId3]!,
-        ],
-      );
-      expect(
-        data.fishingSpotsPerSpecies(speciesMap[speciesId1]!).keys.toList(),
-        [
-          fishingSpotMap[fishingSpotId2]!,
-          fishingSpotMap[fishingSpotId1]!,
-          fishingSpotMap[fishingSpotId0]!,
-        ],
-      );
-      expect(data.baitsPerSpecies(speciesMap[speciesId3]!).keys.toList(), [
-        baitMap[baitId2]!,
-        baitMap[baitId0]!,
-      ]);
-      expect(data.baitsPerSpecies(speciesMap[speciesId0]!).keys.toList(), [
-        baitMap[baitId0]!,
-      ]);
-      expect(data.baitsPerSpecies(speciesMap[speciesId2]!).keys.toList(), []);
-      expect(data.baitsPerSpecies(speciesMap[speciesId4]!).keys.toList(), [
-        baitMap[baitId4]!,
-        baitMap[baitId0]!,
-      ]);
-      expect(data.baitsPerSpecies(speciesMap[speciesId1]!).keys.toList(), [
-        baitMap[baitId1]!,
-        baitMap[baitId0]!,
-      ]);
-    });
+      ],
+    );
+    expect(data.baitsPerSpecies(speciesMap[speciesId3]!).keys.toList(), [
+      baitMap[baitId2]!,
+      baitMap[baitId0]!,
+    ]);
+    expect(data.baitsPerSpecies(speciesMap[speciesId0]!).keys.toList(), [
+      baitMap[baitId0]!,
+    ]);
+    expect(data.baitsPerSpecies(speciesMap[speciesId2]!).keys.toList(), []);
+    expect(data.baitsPerSpecies(speciesMap[speciesId4]!).keys.toList(), [
+      baitMap[baitId4]!,
+      baitMap[baitId0]!,
+    ]);
+    expect(data.baitsPerSpecies(speciesMap[speciesId1]!).keys.toList(), [
+      baitMap[baitId1]!,
+      baitMap[baitId0]!,
+    ]);
+  });
 
-    testWidgets("Gather data sequential order", (tester) async {
-      var context = await buildContext(tester, appManager: appManager);
-      _stubCatchesByTimestamp(context);
+  testWidgets("Gather data sequential order", (tester) async {
+    var context = await buildContext(tester, appManager: appManager);
+    _stubCatchesByTimestamp(context);
 
-      var data = Report(
-        context: context,
-        displayDateRange: DisplayDateRange.allDates,
-      );
+    var data = Report(
+      context: context,
+      displayDateRange: DisplayDateRange.allDates,
+    );
 
-      expect(data.catchesPerSpecies.keys.toList(), [
-        speciesMap[speciesId1]!,
-        speciesMap[speciesId4]!,
-        speciesMap[speciesId3]!,
-        speciesMap[speciesId0]!,
-      ]);
-      expect(data.catchesPerFishingSpot.keys.toList(), [
+    expect(data.catchesPerSpecies.keys.toList(), [
+      speciesMap[speciesId1]!,
+      speciesMap[speciesId4]!,
+      speciesMap[speciesId3]!,
+      speciesMap[speciesId0]!,
+    ]);
+    expect(data.catchesPerFishingSpot.keys.toList(), [
+      fishingSpotMap[fishingSpotId1]!,
+      fishingSpotMap[fishingSpotId3]!,
+      fishingSpotMap[fishingSpotId0]!,
+      fishingSpotMap[fishingSpotId2]!,
+      fishingSpotMap[fishingSpotId4]!,
+    ]);
+    expect(data.catchesPerBait.keys.toList(), [
+      baitMap[baitId0]!,
+      baitMap[baitId1]!,
+      baitMap[baitId2]!,
+      baitMap[baitId4]!,
+    ]);
+    expect(
+      data.fishingSpotsPerSpecies(speciesMap[speciesId3]!).keys.toList(),
+      [
+        fishingSpotMap[fishingSpotId1]!,
+      ],
+    );
+    expect(
+      data.fishingSpotsPerSpecies(speciesMap[speciesId0]!).keys.toList(),
+      [
+        fishingSpotMap[fishingSpotId4]!,
+      ],
+    );
+    expect(
+        data.fishingSpotsPerSpecies(speciesMap[speciesId2]!).keys.toList(), []);
+    expect(
+      data.fishingSpotsPerSpecies(speciesMap[speciesId4]!).keys.toList(),
+      [
         fishingSpotMap[fishingSpotId1]!,
         fishingSpotMap[fishingSpotId3]!,
+      ],
+    );
+    expect(
+      data.fishingSpotsPerSpecies(speciesMap[speciesId1]!).keys.toList(),
+      [
+        fishingSpotMap[fishingSpotId1]!,
         fishingSpotMap[fishingSpotId0]!,
         fishingSpotMap[fishingSpotId2]!,
-        fishingSpotMap[fishingSpotId4]!,
-      ]);
-      expect(data.catchesPerBait.keys.toList(), [
-        baitMap[baitId0]!,
-        baitMap[baitId1]!,
-        baitMap[baitId2]!,
-        baitMap[baitId4]!,
-      ]);
-      expect(
-        data.fishingSpotsPerSpecies(speciesMap[speciesId3]!).keys.toList(),
-        [
-          fishingSpotMap[fishingSpotId1]!,
-        ],
-      );
-      expect(
-        data.fishingSpotsPerSpecies(speciesMap[speciesId0]!).keys.toList(),
-        [
-          fishingSpotMap[fishingSpotId4]!,
-        ],
-      );
-      expect(data.fishingSpotsPerSpecies(speciesMap[speciesId2]!).keys.toList(),
-          []);
-      expect(
-        data.fishingSpotsPerSpecies(speciesMap[speciesId4]!).keys.toList(),
-        [
-          fishingSpotMap[fishingSpotId1]!,
-          fishingSpotMap[fishingSpotId3]!,
-        ],
-      );
-      expect(
-        data.fishingSpotsPerSpecies(speciesMap[speciesId1]!).keys.toList(),
-        [
-          fishingSpotMap[fishingSpotId1]!,
-          fishingSpotMap[fishingSpotId0]!,
-          fishingSpotMap[fishingSpotId2]!,
-        ],
-      );
-      expect(data.baitsPerSpecies(speciesMap[speciesId3]!).keys.toList(), [
-        baitMap[baitId2]!,
-        baitMap[baitId0]!,
-      ]);
-      expect(data.baitsPerSpecies(speciesMap[speciesId0]!).keys.toList(), [
-        baitMap[baitId0]!,
-      ]);
-      expect(data.baitsPerSpecies(speciesMap[speciesId2]!).keys.toList(), []);
-      expect(data.baitsPerSpecies(speciesMap[speciesId4]!).keys.toList(), [
-        baitMap[baitId0]!,
-        baitMap[baitId4]!,
-      ]);
-      expect(data.baitsPerSpecies(speciesMap[speciesId1]!).keys.toList(), [
-        baitMap[baitId1]!,
-        baitMap[baitId0]!,
-      ]);
+      ],
+    );
+    expect(data.baitsPerSpecies(speciesMap[speciesId3]!).keys.toList(), [
+      baitMap[baitId2]!,
+      baitMap[baitId0]!,
+    ]);
+    expect(data.baitsPerSpecies(speciesMap[speciesId0]!).keys.toList(), [
+      baitMap[baitId0]!,
+    ]);
+    expect(data.baitsPerSpecies(speciesMap[speciesId2]!).keys.toList(), []);
+    expect(data.baitsPerSpecies(speciesMap[speciesId4]!).keys.toList(), [
+      baitMap[baitId0]!,
+      baitMap[baitId4]!,
+    ]);
+    expect(data.baitsPerSpecies(speciesMap[speciesId1]!).keys.toList(), [
+      baitMap[baitId1]!,
+      baitMap[baitId0]!,
+    ]);
+  });
+
+  testWidgets("Filters", (tester) async {
+    var context = await buildContext(tester, appManager: appManager);
+    _stubCatchesByTimestamp(context);
+
+    var data = Report(
+      context: context,
+      displayDateRange: DisplayDateRange.allDates,
+      anglerIds: {anglerId2, anglerId3},
+      baitIds: {baitId0, baitId4},
+      fishingSpotIds: {fishingSpotId0, fishingSpotId2, fishingSpotId1},
+      methodIds: {methodId4},
+      speciesIds: {speciesId4, speciesId2},
+      periods: {Period.dawn, Period.night, Period.dusk},
+    );
+
+    expect(data.filters(), {
+      "All dates",
+      "Worm",
+      "Grub",
+      "E",
+      "B",
+      "C",
+      "Steelhead",
+      "Catfish",
+      "Ethan",
+      "Tim",
+      "Ice",
+      "Dawn",
+      "Night",
+      "Dusk",
     });
-
-    testWidgets("Filters", (tester) async {
-      var context = await buildContext(tester, appManager: appManager);
-      _stubCatchesByTimestamp(context);
-
-      var data = Report(
-        context: context,
-        displayDateRange: DisplayDateRange.allDates,
-        anglerIds: {anglerId2, anglerId3},
-        baitIds: {baitId0, baitId4},
-        fishingSpotIds: {fishingSpotId0, fishingSpotId2, fishingSpotId1},
-        methodIds: {methodId4},
-        speciesIds: {speciesId4, speciesId2},
-      );
-
-      expect(data.filters(), {
-        "All dates",
-        "Worm",
-        "Grub",
-        "E",
-        "B",
-        "C",
-        "Steelhead",
-        "Catfish",
-        "Ethan",
-        "Tim",
-        "Ice",
-      });
-      expect(data.filters(includeSpecies: false), {
-        "All dates",
-        "Worm",
-        "Grub",
-        "E",
-        "B",
-        "C",
-        "Ethan",
-        "Tim",
-        "Ice",
-      });
-      expect(data.filters(includeDateRange: false), {
-        "Worm",
-        "Grub",
-        "E",
-        "B",
-        "C",
-        "Steelhead",
-        "Catfish",
-        "Ethan",
-        "Tim",
-        "Ice",
-      });
-      expect(data.filters(includeSpecies: false, includeDateRange: false), {
-        "Worm",
-        "Grub",
-        "E",
-        "B",
-        "C",
-        "Ethan",
-        "Tim",
-        "Ice",
-      });
+    expect(data.filters(includeSpecies: false), {
+      "All dates",
+      "Worm",
+      "Grub",
+      "E",
+      "B",
+      "C",
+      "Ethan",
+      "Tim",
+      "Ice",
+      "Dawn",
+      "Night",
+      "Dusk",
     });
-
-    testWidgets("Filters with null values", (tester) async {
-      var context = await buildContext(tester, appManager: appManager);
-      _stubCatchesByTimestamp(context);
-
-      var data = Report(
-        context: context,
-        displayDateRange: DisplayDateRange.allDates,
-        baitIds: {baitId0, baitId4},
-        fishingSpotIds: {fishingSpotId0, fishingSpotId2, fishingSpotId1},
-        speciesIds: {speciesId4, speciesId2},
-      );
-
-      // By not stubbing EntityManager.entity() methods, no filters should be
-      // entity names.
-      when(anglerManager.entity(any)).thenReturn(null);
-      when(baitManager.entity(any)).thenReturn(null);
-      when(fishingSpotManager.entity(any)).thenReturn(null);
-      when(speciesManager.entity(any)).thenReturn(null);
-
-      expect(data.filters(), {"All dates"});
-      expect(data.filters(includeSpecies: false), {"All dates"});
-      expect(data.filters(includeDateRange: false), <dynamic>{});
-      expect(data.filters(includeSpecies: false, includeDateRange: false),
-          <String>{});
+    expect(data.filters(includeDateRange: false), {
+      "Worm",
+      "Grub",
+      "E",
+      "B",
+      "C",
+      "Steelhead",
+      "Catfish",
+      "Ethan",
+      "Tim",
+      "Ice",
+      "Dawn",
+      "Night",
+      "Dusk",
     });
-
-    testWidgets("removeZerosComparedTo", (tester) async {
-      var context = await buildContext(tester, appManager: appManager);
-      _stubCatchesByTimestamp(context);
-
-      var data1 = Report(
-        context: context,
-        displayDateRange: DisplayDateRange.allDates,
-        includeZeros: true,
-      );
-      expect(data1.catchesPerSpecies.length, 5);
-
-      var data2 = Report(
-        context: context,
-        displayDateRange: DisplayDateRange.allDates,
-        includeZeros: true,
-      );
-      expect(data2.catchesPerSpecies.length, 5);
-
-      // Both data sets will be missing catfish.
-      data1.removeZerosComparedTo(data2);
-      expect(data1.catchesPerSpecies.length, 4);
-      expect(data2.catchesPerSpecies.length, 4);
+    expect(data.filters(includeSpecies: false, includeDateRange: false), {
+      "Worm",
+      "Grub",
+      "E",
+      "B",
+      "C",
+      "Ethan",
+      "Tim",
+      "Ice",
+      "Dawn",
+      "Night",
+      "Dusk",
     });
+  });
+
+  testWidgets("Filters with null values", (tester) async {
+    var context = await buildContext(tester, appManager: appManager);
+    _stubCatchesByTimestamp(context);
+
+    var data = Report(
+      context: context,
+      displayDateRange: DisplayDateRange.allDates,
+      baitIds: {baitId0, baitId4},
+      fishingSpotIds: {fishingSpotId0, fishingSpotId2, fishingSpotId1},
+      speciesIds: {speciesId4, speciesId2},
+      periods: {},
+    );
+
+    // By not stubbing EntityManager.entity() methods, no filters should be
+    // entity names.
+    when(anglerManager.entity(any)).thenReturn(null);
+    when(baitManager.entity(any)).thenReturn(null);
+    when(fishingSpotManager.entity(any)).thenReturn(null);
+    when(speciesManager.entity(any)).thenReturn(null);
+
+    expect(data.filters(), {"All dates"});
+    expect(data.filters(includeSpecies: false), {"All dates"});
+    expect(data.filters(includeDateRange: false), <dynamic>{});
+    expect(data.filters(includeSpecies: false, includeDateRange: false),
+        <String>{});
+  });
+
+  testWidgets("removeZerosComparedTo", (tester) async {
+    var context = await buildContext(tester, appManager: appManager);
+    _stubCatchesByTimestamp(context);
+
+    var data1 = Report(
+      context: context,
+      displayDateRange: DisplayDateRange.allDates,
+      includeZeros: true,
+    );
+    expect(data1.catchesPerSpecies.length, 5);
+
+    var data2 = Report(
+      context: context,
+      displayDateRange: DisplayDateRange.allDates,
+      includeZeros: true,
+    );
+    expect(data2.catchesPerSpecies.length, 5);
+
+    // Both data sets will be missing catfish.
+    data1.removeZerosComparedTo(data2);
+    expect(data1.catchesPerSpecies.length, 4);
+    expect(data2.catchesPerSpecies.length, 4);
   });
 }

@@ -13,5 +13,6 @@ void main() {
     expect(fields[4].id, catchFieldIdFishingSpot());
     expect(fields[5].id, catchFieldIdImages());
     expect(fields[6].id, catchFieldIdSpecies());
+    expect(fields[7].id, catchFieldIdPeriod());
   });
 }

@@ -13,6 +13,8 @@ import '../test_utils.dart';
 void main() {
   test("Use IdInputController instead of InputController<Id>", () {
     expect(() => InputController<Id>(), throwsAssertionError);
+    expect(() => InputController<Set<Id>>(), throwsAssertionError);
+    expect(() => InputController<List<Id>>(), throwsAssertionError);
   });
 
   group("IdInputController", () {
@@ -31,6 +33,30 @@ void main() {
       var id = randomId();
       controller.value = id;
       expect(controller.value, id);
+    });
+  });
+
+  group("SetInputController", () {
+    test("Getter returns empty Set", () {
+      expect(SetInputController<Id>().value.isEmpty, isTrue);
+    });
+
+    test("Setting null sets empty Set", () {
+      var controller = SetInputController<Id>();
+      controller.value = null;
+      expect(SetInputController<Id>().value.isEmpty, isTrue);
+    });
+  });
+
+  group("ListInputController", () {
+    test("Getter returns empty List", () {
+      expect(ListInputController<Id>().value.isEmpty, isTrue);
+    });
+
+    test("Setting null sets empty List", () {
+      var controller = ListInputController<Id>();
+      controller.value = null;
+      expect(ListInputController<Id>().value.isEmpty, isTrue);
     });
   });
 
