@@ -244,7 +244,7 @@ class _EntityPageState extends State<EntityPage> {
         key: ValueKey<bool>(_isImageShowing),
         icon: Icons.delete,
         padding: EdgeInsets.only(
-          right: paddingWidget,
+          right: paddingWidgetSmall,
           top: paddingWidgetSmall,
         ),
         transparentBackground: !_isImageShowing,
