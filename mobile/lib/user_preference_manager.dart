@@ -19,6 +19,7 @@ class UserPreferenceManager extends PreferenceManager {
   static const _keyRateTimerStartedAt = "rate_timer_started_at";
   static const _keyDidRateApp = "did_rate_app";
   static const _keyDidOnboard = "did_onboard";
+  static const _keyIsPro = "is_pro";
 
   static const _keySelectedReportId = "selected_report_id";
 
@@ -79,6 +80,10 @@ class UserPreferenceManager extends PreferenceManager {
   set selectedReportId(Id? id) => putId(_keySelectedReportId, id);
 
   Id? get selectedReportId => id(_keySelectedReportId);
+
+  /// Returns true if the user has been configured as pro. This will override
+  /// any in-app purchase setting and can only be set in the Firebase console.
+  bool get isPro => preferences[_keyIsPro] ?? false;
 
   void _onDeleteCustomEntity(CustomEntity entity) {
     baitCustomEntityIds = baitCustomEntityIds..remove(entity.id);

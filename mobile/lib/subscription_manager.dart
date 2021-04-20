@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:mobile/user_preference_manager.dart';
 import 'package:provider/provider.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
 
@@ -56,9 +57,14 @@ class SubscriptionManager {
 
   PurchasesWrapper get _purchasesWrapper => _appManager.purchasesWrapper;
 
-  bool get isFree => _state == SubscriptionState.free;
+  UserPreferenceManager get _userPreferenceManager =>
+      _appManager.userPreferenceManager;
 
-  bool get isPro => _state == SubscriptionState.pro;
+  bool get isFree =>
+      !_userPreferenceManager.isPro && _state == SubscriptionState.free;
+
+  bool get isPro =>
+      _userPreferenceManager.isPro || _state == SubscriptionState.pro;
 
   /// A [Stream] that fires events when [state] updates. Listeners should
   /// access the [state] property directly, as it will always have a valid

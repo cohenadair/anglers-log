@@ -164,6 +164,10 @@ class AuthManager {
     // entity managers depend on the local database.
     await _appManager.localDatabaseManager.initialize();
 
+    // UserPreferenceManager includes "pro" override and needs to be initialized
+    // before managers that upload data to Firebase.
+    await _appManager.userPreferenceManager.initialize();
+
     // First initialize managers that are dependents of other managers.
     await _appManager.speciesManager.initialize();
 
@@ -176,7 +180,6 @@ class AuthManager {
     await _appManager.fishingSpotManager.initialize();
     await _appManager.methodManager.initialize();
     await _appManager.summaryReportManager.initialize();
-    await _appManager.userPreferenceManager.initialize();
 
     // Ensure everything is initialized before managing any image state.
     await _appManager.imageManager.initialize();
