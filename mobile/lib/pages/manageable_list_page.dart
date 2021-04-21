@@ -133,6 +133,13 @@ class _ManageableListPageState<T> extends State<ManageableListPage<T>> {
     }
 
     _searchTimer = SearchTimer(() => setState(_syncAnimatedList));
+
+    _animatedListKey = GlobalKey<SliverAnimatedListState>();
+    _animatedList = _AnimatedListModel(
+      listKey: _animatedListKey,
+      initialItems: widget.itemManager.loadItems(_searchText),
+      removedItemBuilder: _buildItem,
+    );
   }
 
   @override
@@ -156,8 +163,6 @@ class _ManageableListPageState<T> extends State<ManageableListPage<T>> {
   }
 
   Widget _buildScaffold(BuildContext context) {
-    _initAnimatedListIfNeeded();
-
     // Disable editing if there are no items in the list.
     if (_animatedList.isEmpty) {
       _isEditing = false;
@@ -443,15 +448,6 @@ class _ManageableListPageState<T> extends State<ManageableListPage<T>> {
     _animatedListKey = GlobalKey<SliverAnimatedListState>();
     _animatedList.resetItems(
         _animatedListKey, widget.itemManager.loadItems(_searchText));
-  }
-
-  void _initAnimatedListIfNeeded() {
-    _animatedListKey = GlobalKey<SliverAnimatedListState>();
-    _animatedList = _AnimatedListModel(
-      listKey: _animatedListKey,
-      initialItems: widget.itemManager.loadItems(_searchText),
-      removedItemBuilder: _buildItem,
-    );
   }
 
   void _onEntityAdded(dynamic entity) {
