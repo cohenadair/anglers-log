@@ -29,13 +29,13 @@ void main() {
       when(appManager.userPreferenceManager.didRateApp).thenReturn(false);
       when(appManager.userPreferenceManager.rateTimerStartedAt)
           .thenReturn(null);
-      when(appManager.userPreferenceManager.rateTimerStartedAt = any)
-          .thenAnswer((_) {});
+      when(appManager.userPreferenceManager.setRateTimerStartedAt(any))
+          .thenAnswer((_) => Future.value());
       when(appManager.timeManager.msSinceEpoch).thenReturn(10);
 
       await tapAndSettle(tester, find.byType(Button));
 
-      verify(appManager.userPreferenceManager.rateTimerStartedAt = 10);
+      verify(appManager.userPreferenceManager.setRateTimerStartedAt(10));
       expect(find.byType(AlertDialog), findsNothing);
     });
 
@@ -109,7 +109,7 @@ void main() {
           .thenAnswer((_) => Future.value(true));
       await tapAndSettle(tester, find.text("RATE"));
 
-      verify(appManager.userPreferenceManager.didRateApp = true);
+      verify(appManager.userPreferenceManager.setDidRateApp(true));
 
       when(appManager.userPreferenceManager.didRateApp).thenReturn(true);
       await tapAndSettle(tester, find.byType(Button));
@@ -132,8 +132,8 @@ void main() {
       var now = (Duration.millisecondsPerDay * (365 / 4) + 20).toInt();
       when(appManager.userPreferenceManager.didRateApp).thenReturn(false);
       when(appManager.userPreferenceManager.rateTimerStartedAt).thenReturn(10);
-      when(appManager.userPreferenceManager.rateTimerStartedAt = any)
-          .thenAnswer((_) {});
+      when(appManager.userPreferenceManager.setRateTimerStartedAt(any))
+          .thenAnswer((_) => Future.value());
       when(appManager.timeManager.msSinceEpoch).thenReturn(now);
 
       await tapAndSettle(tester, find.byType(Button));
@@ -143,7 +143,7 @@ void main() {
 
       await tapAndSettle(tester, find.text("LATER"));
 
-      verify(appManager.userPreferenceManager.rateTimerStartedAt = now);
+      verify(appManager.userPreferenceManager.setRateTimerStartedAt(now));
     });
   });
 }

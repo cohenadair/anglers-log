@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'dart:io';
-import 'dart:ui' as ui;
+import 'dart:typed_data';
 import 'dart:ui';
 
 import 'package:flutter/gestures.dart';
@@ -141,11 +141,25 @@ Finder findRichText(String text) {
       (widget) => widget is RichText && widget.text.toPlainText() == text);
 }
 
-Finder findListItemCheckbox(WidgetTester tester, String item) {
+Finder findManageableListItemCheckbox(WidgetTester tester, String item) {
   return find.descendant(
     of: find.widgetWithText(ManageableListItem, item),
     matching: find.byType(PaddedCheckbox),
   );
+}
+
+Finder findListItemCheckbox(WidgetTester tester, String item) {
+  return find.descendant(
+    of: find.widgetWithText(ListItem, item),
+    matching: find.byType(PaddedCheckbox),
+  );
+}
+
+PaddedCheckbox? findCheckbox(WidgetTester tester, String option) {
+  return tester.widget<PaddedCheckbox>(find.descendant(
+    of: find.widgetWithText(ListItem, option),
+    matching: find.byType(PaddedCheckbox),
+  ));
 }
 
 bool tapRichTextContaining(
@@ -193,13 +207,19 @@ Future<void> enterTextAndSettle(
   await tester.pumpAndSettle();
 }
 
-Future<ui.Image?> loadImage(WidgetTester tester, String path) async {
-  ui.Image? image;
-  // runAsync is required here because instantiateImageCodec does real async
+Future<Uint8List?> stubImage(
+    StubbedAppManager appManager, WidgetTester tester, String name,
+    {bool anyName = false}) async {
+  Uint8List? image;
+  // runAsync is required here because readAsBytes does real async
   // work and can't be used with pump().
   await tester.runAsync(() async {
-    var codec = await ui.instantiateImageCodec(File(path).readAsBytesSync());
-    image = (await codec.getNextFrame()).image;
+    image = await File("test/resources/$name").readAsBytes();
   });
+  when(appManager.imageManager.image(
+    any,
+    fileName: anyName ? anyNamed("fileName") : name,
+    size: anyNamed("size"),
+  )).thenAnswer((_) => Future.value(image));
   return image;
 }

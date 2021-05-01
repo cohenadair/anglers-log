@@ -96,7 +96,8 @@ void main() {
 
   void verifyCheckbox(WidgetTester tester, String item, {bool? checked}) {
     expect(
-      (tester.firstWidget(findListItemCheckbox(tester, item)) as PaddedCheckbox)
+      (tester.firstWidget(findManageableListItemCheckbox(tester, item))
+              as PaddedCheckbox)
           .checked,
       checked,
     );
@@ -214,8 +215,9 @@ void main() {
 
       await tapAndSettle(tester, find.byType(Button));
       await tapAndSettle(
-          tester, findListItemCheckbox(tester, "Smallmouth Bass"));
-      await tapAndSettle(tester, findListItemCheckbox(tester, "White Bass"));
+          tester, findManageableListItemCheckbox(tester, "Smallmouth Bass"));
+      await tapAndSettle(
+          tester, findManageableListItemCheckbox(tester, "White Bass"));
       await tapAndSettle(tester, find.byType(BackButton));
 
       expect(items, isNotNull);
@@ -279,7 +281,7 @@ void main() {
       expect(find.byIcon(Icons.add), findsOneWidget);
 
       // Start editing.
-      await tapAndSettle(tester, find.text("EDIT"));
+      await tapAndSettle(tester, find.widgetWithText(ActionButton, "EDIT"));
 
       expect(find.widgetWithText(ActionButton, "EDIT"), findsNothing);
       expect(find.widgetWithText(ActionButton, "DONE"), findsOneWidget);
@@ -514,7 +516,7 @@ void main() {
         ),
       );
 
-      await tapAndSettle(tester, findListItemCheckbox(tester, "All"));
+      await tapAndSettle(tester, findManageableListItemCheckbox(tester, "All"));
 
       verifyCheckbox(tester, "All", checked: true);
       verifyCheckbox(tester, "Smallmouth Bass", checked: true);
@@ -522,7 +524,7 @@ void main() {
       verifyCheckbox(tester, "Striped Bass", checked: true);
       verifyCheckbox(tester, "White Bass", checked: true);
 
-      await tapAndSettle(tester, findListItemCheckbox(tester, "All"));
+      await tapAndSettle(tester, findManageableListItemCheckbox(tester, "All"));
 
       verifyCheckbox(tester, "All", checked: false);
       verifyCheckbox(tester, "Smallmouth Bass", checked: false);
@@ -599,7 +601,7 @@ void main() {
         ),
       );
 
-      await tapAndSettle(tester, findListItemCheckbox(tester, "All"));
+      await tapAndSettle(tester, findManageableListItemCheckbox(tester, "All"));
 
       verifyCheckbox(tester, "All", checked: false);
       verifyCheckbox(tester, "Smallmouth Bass", checked: true);
@@ -631,8 +633,8 @@ void main() {
       expect(find.byIcon(Icons.check), findsOneWidget);
 
       // Update species.
-      await tapAndSettle(tester, find.text("EDIT"));
-      await tapAndSettle(tester, find.text("EDIT"));
+      await tapAndSettle(tester, find.widgetWithText(ActionButton, "EDIT"));
+      await tapAndSettle(tester, find.text("Bass"));
       await enterTextAndSettle(tester, find.byType(TextField), "Bass 2");
       await tapAndSettle(tester, find.text("SAVE"));
       await tapAndSettle(tester, find.text("DONE"));
@@ -809,11 +811,40 @@ void main() {
       ),
     ));
 
-    await tapAndSettle(tester, find.text("EDIT"));
+    await tapAndSettle(tester, find.widgetWithText(ActionButton, "EDIT"));
     await tapAndSettle(tester, find.text("Smallmouth Bass"));
 
-    // Three edit buttons (each enabled row).
-    expect(find.text("EDIT"), findsNWidgets(3));
+    var crossFade = tester.firstWidget<AnimatedCrossFade>(
+      find.descendant(
+        of: find.widgetWithText(ManageableListItem, "Smallmouth Bass"),
+        matching: find.byType(AnimatedCrossFade),
+      ),
+    );
+    expect(crossFade.crossFadeState, CrossFadeState.showSecond);
+
+    crossFade = tester.firstWidget<AnimatedCrossFade>(
+      find.descendant(
+        of: find.widgetWithText(ManageableListItem, "Largemouth Bass"),
+        matching: find.byType(AnimatedCrossFade),
+      ),
+    );
+    expect(crossFade.crossFadeState, CrossFadeState.showFirst);
+
+    crossFade = tester.firstWidget<AnimatedCrossFade>(
+      find.descendant(
+        of: find.widgetWithText(ManageableListItem, "Striped Bass"),
+        matching: find.byType(AnimatedCrossFade),
+      ),
+    );
+    expect(crossFade.crossFadeState, CrossFadeState.showFirst);
+
+    crossFade = tester.firstWidget<AnimatedCrossFade>(
+      find.descendant(
+        of: find.widgetWithText(ManageableListItem, "White Bass"),
+        matching: find.byType(AnimatedCrossFade),
+      ),
+    );
+    expect(crossFade.crossFadeState, CrossFadeState.showFirst);
   });
 
   testWidgets("Tapping enabled, no detail, and non-editable is a no-op",
@@ -842,8 +873,7 @@ void main() {
       ),
     ));
 
-    await tapAndSettle(tester, find.text("Smallmouth Bass"));
-    expect(find.text("EDIT"), findsOneWidget);
+    expect(find.text("Smallmouth Bass"), findsOneWidget);
   });
 
   testWidgets("Tapping delete button invokes callback", (tester) async {
@@ -862,7 +892,7 @@ void main() {
       ),
     );
 
-    await tapAndSettle(tester, find.text("EDIT"));
+    await tapAndSettle(tester, find.widgetWithText(ActionButton, "EDIT"));
     await tapAndSettle(
         tester,
         find.descendant(
@@ -895,7 +925,7 @@ void main() {
       ),
     );
 
-    await tapAndSettle(tester, find.text("EDIT"));
+    await tapAndSettle(tester, find.widgetWithText(ActionButton, "EDIT"));
     await tapAndSettle(
       tester,
       find.descendant(
@@ -927,7 +957,7 @@ void main() {
       ),
     );
 
-    await tapAndSettle(tester, find.text("EDIT"));
+    await tapAndSettle(tester, find.widgetWithText(ActionButton, "EDIT"));
     await tapAndSettle(tester, find.text("Smallmouth Bass"));
 
     expect(invoked, true);
@@ -991,7 +1021,7 @@ void main() {
     );
 
     // Start editing and delete item.
-    await tapAndSettle(tester, find.text("EDIT"));
+    await tapAndSettle(tester, find.widgetWithText(ActionButton, "EDIT"));
     await tapAndSettle(tester, find.byIcon(Icons.delete));
     await tapAndSettle(tester, find.text("DELETE"));
     expect(find.text("Bass"), findsNothing);
@@ -1144,7 +1174,7 @@ void main() {
     expect(find.text("Rainbow Trout"), findsOneWidget);
 
     // Remove the only item in the list.
-    await tapAndSettle(tester, find.text("EDIT"));
+    await tapAndSettle(tester, find.widgetWithText(ActionButton, "EDIT"));
     await tapAndSettle(tester, find.byIcon(Icons.delete));
     await tapAndSettle(tester, find.text("DELETE"));
 
@@ -1336,6 +1366,12 @@ void main() {
     expect(((widgets[3]).child as Text).data, "Flathead");
     expect(((widgets[4]).child as Text).data, "Trout");
     expect(((widgets[5]).child as Text).data, "Rainbow");
+
+    // Update an item and verify the change is shown in the list.
+    items[0]..name = "Bass (Edited)";
+    await speciesManager.addOrUpdate(species);
+    await tester.pumpAndSettle();
+    expect(find.text("Bass (Edited)"), findsOneWidget);
 
     // Trigger delete, and wait for list animations to finish.
     items = [];

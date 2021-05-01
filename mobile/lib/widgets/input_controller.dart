@@ -21,6 +21,8 @@ class InputController<T> {
         "Use SetInputController<T> instead of InputController<Set<T>>");
     assert(!(T.toString().contains("List")) || this is ListInputController,
         "Use ListInputController<T> instead of InputController<List<T>>");
+    assert(!(T == bool) || this is BoolInputController,
+        "Use BoolInputController instead of InputController<Bool>");
   }
 
   void dispose() {
@@ -50,6 +52,16 @@ class ListInputController<T> extends InputController<List<T>> {
 
   @override
   set value(List<T>? newValue) => super.value = newValue ?? [];
+}
+
+/// An [InputController] subclass for a [bool], where the value of the
+/// controller cannot be null. Instead of null, false is used.
+class BoolInputController extends InputController<bool> {
+  @override
+  bool get value => super.value ?? false;
+
+  @override
+  set value(bool? newValue) => super.value = newValue ?? false;
 }
 
 class IdInputController extends InputController<Id> {

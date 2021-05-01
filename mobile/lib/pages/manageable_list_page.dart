@@ -8,6 +8,7 @@ import '../i18n/strings.dart';
 import '../log.dart';
 import '../res/dimen.dart';
 import '../utils/page_utils.dart';
+import '../utils/protobuf_utils.dart';
 import '../utils/search_timer.dart';
 import '../widgets/button.dart';
 import '../widgets/checkbox_input.dart';
@@ -348,7 +349,7 @@ class _ManageableListPageState<T> extends State<ManageableListPage<T>> {
       return item.child;
     }
 
-    Widget trailing = RightChevronIcon();
+    Widget? trailing = RightChevronIcon();
     if (_isPickingMulti) {
       trailing = PaddedCheckbox(
         checked: _isItemSelected(itemValue),
@@ -366,7 +367,7 @@ class _ManageableListPageState<T> extends State<ManageableListPage<T>> {
         widget.itemManager.detailPageBuilder == null) {
       // Don't show detail disclosure indicator if we're picking a single
       // value, or if there isn't any detail to show.
-      trailing = _isItemSelected(itemValue) ? Icon(_iconCheck) : Empty();
+      trailing = _isItemSelected(itemValue) ? Icon(_iconCheck) : null;
     }
 
     var canEdit = _isEditing && item.editable;
@@ -422,32 +423,14 @@ class _ManageableListPageState<T> extends State<ManageableListPage<T>> {
   }
 
   bool _isItemSelected(T item) {
-    // Most, if not all, uses of ManageableListPage use model objects with an
-    // "id" property. Google Protocol Buffers don't have inheritance, though,
-    // so we can't use a parent or abstract class in place of T. Instead, we
-    // explicitly try to access the "id" property and if an error is thrown,
-    // fallback on Set.contains().
-    try {
-      for (var value in _selectedValues) {
-        if ((value as dynamic).id == (item as dynamic).id) {
-          return true;
-        }
-      }
-      // ignore: avoid_catching_errors
-    } on Error catch (_) {
-      return _selectedValues.contains(item);
-    }
-
-    return false;
+    return containsEntityIdOrOther(_selectedValues, item);
   }
 
   /// Sync's the animated list model with the database list.
   void _syncAnimatedList() {
     // Resetting the list's key will force it to rebuild it's state with the
     // new list of items.
-    _animatedListKey = GlobalKey<SliverAnimatedListState>();
-    _animatedList.resetItems(
-        _animatedListKey, widget.itemManager.loadItems(_searchText));
+    _animatedList.resetItems(widget.itemManager.loadItems(_searchText));
   }
 
   void _onEntityAdded(dynamic entity) {
@@ -489,7 +472,7 @@ class _ManageableListPageState<T> extends State<ManageableListPage<T>> {
       // type lists, like a bait list, when the last bait for a bait category
       // is removed or an entity that isn't type T is added (#492).
       _log.d("Multiple changes were made, reconciling items...");
-      _animatedList.reconcileItems(newItems);
+      _animatedList.resetItems(newItems);
     } else {
       animate(newItems);
     }
@@ -740,18 +723,12 @@ class _AnimatedListModel<T> {
 
   T operator [](int index) => _items[index];
 
-  void resetItems(GlobalKey<SliverAnimatedListState> newKey, List<T> newItems) {
-    listKey = newKey;
-    _items.clear();
-    _items.addAll(List.of(newItems));
-  }
-
   /// Adds and removes all necessary items so that [_items] is in sync with
   /// [newItems]. Useful for inserting or removing multiple items.
-  void reconcileItems(List<T> newItems) {
+  void resetItems(List<T> newItems) {
     // First, remove all existing items that aren't in the new item list.
     for (var i = _items.length - 1; i >= 0; i--) {
-      if (!newItems.contains(_items[i])) {
+      if (!containsEntityIdOrOther(newItems, _items[i])) {
         removeAt(i);
       }
     }
@@ -760,8 +737,17 @@ class _AnimatedListModel<T> {
     // items first allows for new items to be added in the correct indices of
     // _items.
     for (var i = 0; i < newItems.length; i++) {
-      if (!_items.contains(newItems[i])) {
+      if (!containsEntityIdOrOther(_items, newItems[i])) {
         insert(i, newItems[i]);
+      }
+    }
+
+    // Lastly, update the value of any items that weren't added or removed so
+    // the list shows the most up to date data.
+    for (var i = 0; i < _items.length; i++) {
+      var indexInNewItems = indexOfEntityIdOrOther(newItems, _items[i]);
+      if (indexInNewItems >= 0) {
+        _items[i] = newItems[indexInNewItems];
       }
     }
   }

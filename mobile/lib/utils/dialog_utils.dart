@@ -123,7 +123,7 @@ void showRateDialogIfNeeded(BuildContext context) {
   // If the timer hasn't started yet, start it and exit early so the user isn't
   // prompted to rate the app the first time it's opened.
   if (preferences.rateTimerStartedAt == null) {
-    preferences.rateTimerStartedAt = timeManager.msSinceEpoch;
+    preferences.setRateTimerStartedAt(timeManager.msSinceEpoch);
     return;
   }
 
@@ -147,13 +147,13 @@ void showRateDialogIfNeeded(BuildContext context) {
           name: Strings.of(context).rateDialogLater,
           onTap: () =>
               // Reset timer to prompt them again later.
-              preferences.rateTimerStartedAt = timeManager.msSinceEpoch,
+              preferences.setRateTimerStartedAt(timeManager.msSinceEpoch),
         ),
         _buildDialogButton(
           context: context,
           name: Strings.of(context).rateDialogRate,
           onTap: () {
-            preferences.didRateApp = true;
+            preferences.setDidRateApp(true);
             launchStore(context);
           },
         ),

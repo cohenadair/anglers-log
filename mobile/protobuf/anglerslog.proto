@@ -61,6 +61,7 @@ message Catch {
   Id angler_id = 8;
   repeated Id method_ids = 9;
   Period period = 10;
+  bool is_favorite = 11;
 }
 
 message FishingSpot {
@@ -88,6 +89,7 @@ message SummaryReport {
   repeated Id angler_ids = 10;
   repeated Id method_ids = 11;
   repeated Period periods = 12;
+  bool is_favorites_only = 13;
 }
 
 message ComparisonReport {
@@ -106,6 +108,7 @@ message ComparisonReport {
   repeated Id angler_ids = 13;
   repeated Id method_ids = 14;
   repeated Period periods = 15;
+  bool is_favorites_only = 16;
 }
 
 message Angler {

@@ -226,8 +226,8 @@ void main() {
         DateTime.fromMillisecondsSinceEpoch(105000).millisecondsSinceEpoch);
 
     when(appManager.userPreferenceManager.selectedReportId).thenReturn(null);
-    when(appManager.userPreferenceManager.selectedReportId = any)
-        .thenAnswer((_) {});
+    when(appManager.userPreferenceManager.setSelectedReportId(any))
+        .thenAnswer((_) => Future.value());
   });
 
   void _stubCatchesByTimestamp([List<Catch>? catches]) {

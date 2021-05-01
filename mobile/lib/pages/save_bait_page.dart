@@ -118,7 +118,8 @@ class _SaveBaitPageState extends State<SaveBaitPage> {
         }
       },
       onSave: _save,
-      onAddFields: (ids) => _userPreferencesManager.baitFieldIds = ids.toList(),
+      onAddFields: (ids) =>
+          _userPreferencesManager.setBaitFieldIds(ids.toList()),
       isInputValid: _nameController.valid(context),
     );
   }
@@ -167,8 +168,8 @@ class _SaveBaitPageState extends State<SaveBaitPage> {
   }
 
   FutureOr<bool> _save(Map<Id, dynamic> customFieldValueMap) {
-    _userPreferencesManager.baitCustomEntityIds =
-        customFieldValueMap.keys.toList();
+    _userPreferencesManager
+        .setBaitCustomEntityIds(customFieldValueMap.keys.toList());
 
     var newBait = Bait()
       ..id = _oldBait?.id ?? randomId()

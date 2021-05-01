@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'dart:ui' as ui;
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -17,13 +16,6 @@ import '../test_utils.dart';
 
 void main() {
   late StubbedAppManager appManager;
-
-  Future<ui.Image?> image(tester, String name) async {
-    var image = await loadImage(tester, "test/resources/$name");
-    when(appManager.imageManager.dartImage(any, name, any))
-        .thenAnswer((_) => Future.value(image));
-    return image;
-  }
 
   setUp(() {
     appManager = StubbedAppManager();
@@ -43,10 +35,10 @@ void main() {
     });
 
     testWidgets("Image scrolling", (tester) async {
-      await image(tester, "flutter_logo.png");
-      await image(tester, "anglers_log_logo.png");
-      await image(tester, "android_logo.png");
-      await image(tester, "apple_logo.png");
+      await stubImage(appManager, tester, "flutter_logo.png");
+      await stubImage(appManager, tester, "anglers_log_logo.png");
+      await stubImage(appManager, tester, "android_logo.png");
+      await stubImage(appManager, tester, "apple_logo.png");
 
       late BuildContext context;
       await tester.pumpWidget(Testable(
@@ -114,7 +106,7 @@ void main() {
     });
 
     testWidgets("Image carousel hidden for only 1 image", (tester) async {
-      await image(tester, "flutter_logo.png");
+      await stubImage(appManager, tester, "flutter_logo.png");
       await tester.pumpWidget(Testable(
         (_) => EntityPage(
           imageNames: [
@@ -296,7 +288,7 @@ void main() {
   });
 
   testWidgets("Scrolling shows new action buttons", (tester) async {
-    await image(tester, "flutter_logo.png");
+    await stubImage(appManager, tester, "flutter_logo.png");
 
     await tester.pumpWidget(
       Testable(

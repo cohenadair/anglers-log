@@ -527,6 +527,7 @@ class Catch extends $pb.GeneratedMessage {
     ..aOM<Id>(8, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'anglerId', subBuilder: Id.create)
     ..pc<Id>(9, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'methodIds', $pb.PbFieldType.PM, subBuilder: Id.create)
     ..e<Period>(10, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'period', $pb.PbFieldType.OE, defaultOrMaker: Period.all, valueOf: Period.valueOf, enumValues: Period.values)
+    ..aOB(11, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'isFavorite')
     ..hasRequiredFields = false;
 
   Catch._() : super();
@@ -541,6 +542,7 @@ class Catch extends $pb.GeneratedMessage {
     Id? anglerId,
     $core.Iterable<Id>? methodIds,
     Period? period,
+    $core.bool? isFavorite,
   }) {
     final _result = create();
     if (id != null) {
@@ -572,6 +574,9 @@ class Catch extends $pb.GeneratedMessage {
     }
     if (period != null) {
       _result.period = period;
+    }
+    if (isFavorite != null) {
+      _result.isFavorite = isFavorite;
     }
     return _result;
   }
@@ -703,6 +708,18 @@ class Catch extends $pb.GeneratedMessage {
   $core.bool hasPeriod() => $_has(9);
   @$pb.TagNumber(10)
   void clearPeriod() => clearField(10);
+
+  @$pb.TagNumber(11)
+  $core.bool get isFavorite => $_getBF(10);
+  @$pb.TagNumber(11)
+  set isFavorite($core.bool v) {
+    $_setBool(10, v);
+  }
+
+  @$pb.TagNumber(11)
+  $core.bool hasIsFavorite() => $_has(10);
+  @$pb.TagNumber(11)
+  void clearIsFavorite() => clearField(11);
 }
 
 class FishingSpot extends $pb.GeneratedMessage {
@@ -945,6 +962,7 @@ class SummaryReport extends $pb.GeneratedMessage {
     ..pc<Id>(10, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'anglerIds', $pb.PbFieldType.PM, subBuilder: Id.create)
     ..pc<Id>(11, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'methodIds', $pb.PbFieldType.PM, subBuilder: Id.create)
     ..pc<Period>(12, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'periods', $pb.PbFieldType.PE, valueOf: Period.valueOf, enumValues: Period.values)
+    ..aOB(13, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'isFavoritesOnly')
     ..hasRequiredFields = false;
 
   SummaryReport._() : super();
@@ -961,6 +979,7 @@ class SummaryReport extends $pb.GeneratedMessage {
     $core.Iterable<Id>? anglerIds,
     $core.Iterable<Id>? methodIds,
     $core.Iterable<Period>? periods,
+    $core.bool? isFavoritesOnly,
   }) {
     final _result = create();
     if (id != null) {
@@ -998,6 +1017,9 @@ class SummaryReport extends $pb.GeneratedMessage {
     }
     if (periods != null) {
       _result.periods.addAll(periods);
+    }
+    if (isFavoritesOnly != null) {
+      _result.isFavoritesOnly = isFavoritesOnly;
     }
     return _result;
   }
@@ -1119,6 +1141,18 @@ class SummaryReport extends $pb.GeneratedMessage {
 
   @$pb.TagNumber(12)
   $core.List<Period> get periods => $_getList(11);
+
+  @$pb.TagNumber(13)
+  $core.bool get isFavoritesOnly => $_getBF(12);
+  @$pb.TagNumber(13)
+  set isFavoritesOnly($core.bool v) {
+    $_setBool(12, v);
+  }
+
+  @$pb.TagNumber(13)
+  $core.bool hasIsFavoritesOnly() => $_has(12);
+  @$pb.TagNumber(13)
+  void clearIsFavoritesOnly() => clearField(13);
 }
 
 class ComparisonReport extends $pb.GeneratedMessage {
@@ -1152,6 +1186,7 @@ class ComparisonReport extends $pb.GeneratedMessage {
     ..pc<Id>(13, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'anglerIds', $pb.PbFieldType.PM, subBuilder: Id.create)
     ..pc<Id>(14, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'methodIds', $pb.PbFieldType.PM, subBuilder: Id.create)
     ..pc<Period>(15, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'periods', $pb.PbFieldType.PE, valueOf: Period.valueOf, enumValues: Period.values)
+    ..aOB(16, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'isFavoritesOnly')
     ..hasRequiredFields = false;
 
   ComparisonReport._() : super();
@@ -1171,6 +1206,7 @@ class ComparisonReport extends $pb.GeneratedMessage {
     $core.Iterable<Id>? anglerIds,
     $core.Iterable<Id>? methodIds,
     $core.Iterable<Period>? periods,
+    $core.bool? isFavoritesOnly,
   }) {
     final _result = create();
     if (id != null) {
@@ -1217,6 +1253,9 @@ class ComparisonReport extends $pb.GeneratedMessage {
     }
     if (periods != null) {
       _result.periods.addAll(periods);
+    }
+    if (isFavoritesOnly != null) {
+      _result.isFavoritesOnly = isFavoritesOnly;
     }
     return _result;
   }
@@ -1374,6 +1413,18 @@ class ComparisonReport extends $pb.GeneratedMessage {
 
   @$pb.TagNumber(15)
   $core.List<Period> get periods => $_getList(14);
+
+  @$pb.TagNumber(16)
+  $core.bool get isFavoritesOnly => $_getBF(15);
+  @$pb.TagNumber(16)
+  set isFavoritesOnly($core.bool v) {
+    $_setBool(15, v);
+  }
+
+  @$pb.TagNumber(16)
+  $core.bool hasIsFavoritesOnly() => $_has(15);
+  @$pb.TagNumber(16)
+  void clearIsFavoritesOnly() => clearField(16);
 }
 
 class Angler extends $pb.GeneratedMessage {

@@ -28,6 +28,8 @@ void main() {
     when(appManager.purchasesWrapper.reset())
         .thenAnswer((_) => Future.value(MockPurchaserInfo()));
 
+    when(appManager.userPreferenceManager.isPro).thenReturn(false);
+
     subscriptionManager = SubscriptionManager(appManager.app);
   });
 

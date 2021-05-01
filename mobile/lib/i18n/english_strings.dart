@@ -1,8 +1,16 @@
 // ignore_for_file: lines_longer_than_80_chars
 
 Map<String, Map<String, String>> get englishStrings => {
-      "US": {},
-      "CA": {},
+      "US": {
+        "catchField_favorite": "Favorite",
+        "catchField_favoriteDescription": "A favorite catch.",
+        "saveReportPage_favorites": "Favorites Only",
+      },
+      "CA": {
+        "catchField_favorite": "Favourite",
+        "catchField_favoriteDescription": "A favourite catch.",
+        "saveReportPage_favorites": "Favourites",
+      },
       "default": {
         "appName": "Anglers' Log",
         "rateDialog_title": "Rate Anglers' Log",

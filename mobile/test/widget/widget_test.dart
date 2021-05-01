@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mobile/model/gen/anglerslog.pb.dart';
+import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mobile/widgets/text.dart';
 import 'package:mobile/widgets/widget.dart';
 
@@ -176,6 +178,64 @@ void main() {
       );
 
       expect(find.byType(Column), findsNothing);
+    });
+  });
+
+  group("CatchFavoriteStar", () {
+    testWidgets("Empty if Catch isFavorite isn't set", (tester) async {
+      await tester.pumpWidget(
+        Testable(
+          (_) => CatchFavoriteStar(
+            Catch()..id = randomId(),
+          ),
+        ),
+      );
+
+      expect(find.byIcon(Icons.star), findsNothing);
+    });
+
+    testWidgets("Empty if Catch isFavorite is false", (tester) async {
+      await tester.pumpWidget(
+        Testable(
+          (_) => CatchFavoriteStar(
+            Catch()
+              ..id = randomId()
+              ..isFavorite = false,
+          ),
+        ),
+      );
+
+      expect(find.byIcon(Icons.star), findsNothing);
+    });
+
+    testWidgets("Star icon if Catch isFavorite is true", (tester) async {
+      await tester.pumpWidget(
+        Testable(
+          (_) => CatchFavoriteStar(
+            Catch()
+              ..id = randomId()
+              ..isFavorite = true,
+          ),
+        ),
+      );
+
+      expect(find.byIcon(Icons.star), findsOneWidget);
+    });
+
+    testWidgets("Large star icon if Catch isFavorite is true", (tester) async {
+      await tester.pumpWidget(
+        Testable(
+          (_) => CatchFavoriteStar(
+            Catch()
+              ..id = randomId()
+              ..isFavorite = true,
+            large: true,
+          ),
+        ),
+      );
+
+      expect(find.byIcon(Icons.star), findsOneWidget);
+      expect(findFirst<Icon>(tester).size, 40.0);
     });
   });
 }

@@ -93,7 +93,7 @@ class _CatchFieldPickerPageState extends State<CatchFieldPickerPage> {
   }
 
   void _onPressedNext() {
-    _userPreferencesManager.catchFieldIds = _selectedFields;
+    _userPreferencesManager.setCatchFieldIds(_selectedFields);
     widget.onNext?.call();
   }
 }

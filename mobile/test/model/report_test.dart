@@ -167,7 +167,8 @@ void main() {
       ..timestamp = Int64(10)
       ..speciesId = speciesId3
       ..fishingSpotId = fishingSpotId1
-      ..baitId = baitId0,
+      ..baitId = baitId0
+      ..isFavorite = true,
     Catch()
       ..id = catchId1
       ..timestamp = Int64(5000)
@@ -179,7 +180,8 @@ void main() {
       ..timestamp = Int64(100)
       ..speciesId = speciesId0
       ..fishingSpotId = fishingSpotId4
-      ..baitId = baitId0,
+      ..baitId = baitId0
+      ..isFavorite = true,
     Catch()
       ..id = catchId3
       ..timestamp = Int64(900)
@@ -209,7 +211,8 @@ void main() {
       ..timestamp = Int64(70)
       ..speciesId = speciesId1
       ..fishingSpotId = fishingSpotId1
-      ..baitId = baitId0,
+      ..baitId = baitId0
+      ..isFavorite = true,
     Catch()
       ..id = catchId8
       ..timestamp = Int64(15)
@@ -277,6 +280,7 @@ void main() {
     when(catchManager.catchesSortedByTimestamp(
       context,
       dateRange: anyNamed("dateRange"),
+      isFavoritesOnly: anyNamed("isFavoritesOnly"),
       anglerIds: anyNamed("anglerIds"),
       baitIds: anyNamed("baitIds"),
       fishingSpotIds: anyNamed("fishingSpotIds"),
@@ -633,6 +637,7 @@ void main() {
     var data = Report(
       context: context,
       displayDateRange: DisplayDateRange.allDates,
+      isFavoritesOnly: true,
       anglerIds: {anglerId2, anglerId3},
       baitIds: {baitId0, baitId4},
       fishingSpotIds: {fishingSpotId0, fishingSpotId2, fishingSpotId1},
@@ -656,6 +661,7 @@ void main() {
       "Dawn",
       "Night",
       "Dusk",
+      "Favorites Only",
     });
     expect(data.filters(includeSpecies: false), {
       "All dates",
@@ -670,6 +676,7 @@ void main() {
       "Dawn",
       "Night",
       "Dusk",
+      "Favorites Only",
     });
     expect(data.filters(includeDateRange: false), {
       "Worm",
@@ -685,6 +692,7 @@ void main() {
       "Dawn",
       "Night",
       "Dusk",
+      "Favorites Only",
     });
     expect(data.filters(includeSpecies: false, includeDateRange: false), {
       "Worm",
@@ -698,6 +706,7 @@ void main() {
       "Dawn",
       "Night",
       "Dusk",
+      "Favorites Only",
     });
   });
 
@@ -708,6 +717,7 @@ void main() {
     var data = Report(
       context: context,
       displayDateRange: DisplayDateRange.allDates,
+      isFavoritesOnly: false,
       baitIds: {baitId0, baitId4},
       fishingSpotIds: {fishingSpotId0, fishingSpotId2, fishingSpotId1},
       speciesIds: {speciesId4, speciesId2},

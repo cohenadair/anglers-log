@@ -1,6 +1,5 @@
 import 'dart:io';
 import 'dart:typed_data';
-import 'dart:ui' as ui;
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:crypto/crypto.dart';
@@ -255,23 +254,6 @@ class ImageManager {
     }
 
     return result;
-  }
-
-  /// Returns a Dart [ui.Image] object with the given [fileName] and [size].
-  /// Returns null if the image doesn't exist.
-  Future<ui.Image?> dartImage(
-      BuildContext context, String fileName, double? size) async {
-    var bytes = await image(
-      context,
-      fileName: fileName,
-      size: size,
-    );
-
-    if (bytes == null || bytes.isEmpty) {
-      return null;
-    }
-
-    return (await (await ui.instantiateImageCodec(bytes)).getNextFrame()).image;
   }
 
   Future<Uint8List> _compress(

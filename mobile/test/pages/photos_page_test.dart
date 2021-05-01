@@ -40,9 +40,7 @@ void main() {
   });
 
   testWidgets("Tapping thumbnail opens image", (tester) async {
-    var image = await loadImage(tester, "test/resources/flutter_logo.png");
-    when(appManager.imageManager.dartImage(any, any, any))
-        .thenAnswer((_) => Future.value(image));
+    await stubImage(appManager, tester, "flutter_logo.png", anyName: true);
 
     await tester.pumpWidget(Testable(
       (_) => PhotosPage(),

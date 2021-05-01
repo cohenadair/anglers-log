@@ -181,7 +181,7 @@ class _ExpansionListItemState extends State<ExpansionListItem> {
 ///   editing, tapping the row triggers the edit action.
 /// - When the "Delete" button is pressed, a delete confirmation dialog is
 ///   shown.
-class ManageableListItem extends StatefulWidget {
+class ManageableListItem extends StatelessWidget {
   final Widget child;
 
   /// The trailing [Widget] to show when not editing.
@@ -226,54 +226,8 @@ class ManageableListItem extends StatefulWidget {
   }) : assert(onTapDeleteButton != null ||
             (deleteMessageBuilder != null && onConfirmDelete != null));
 
-  @override
-  _ManageableListItemState createState() => _ManageableListItemState();
-}
-
-class _ManageableListItemState extends State<ManageableListItem>
-    with SingleTickerProviderStateMixin {
-  late AnimationController _editAnimController;
-  late Animation<double> _deleteIconSizeAnim;
-
-  @override
-  void initState() {
-    super.initState();
-
-    var animStart = 0.0;
-    var animEnd = 1.0;
-
-    _editAnimController = AnimationController(
-      duration: defaultAnimationDuration,
-      vsync: this,
-    );
-    _deleteIconSizeAnim = Tween<double>(
-      begin: animStart,
-      end: animEnd,
-    ).animate(_editAnimController);
-
-    // Move the animation controller to the end if the state is already editing.
-    // This fixes any "duplicate" animations if the widget is initially built
-    // with editing == true. Fixes #489.
-    if (widget.editing) {
-      _editAnimController.forward(from: animEnd);
-    }
-  }
-
-  @override
-  void dispose() {
-    _editAnimController.dispose();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    if (widget.editing) {
-      _editAnimController.forward();
-    } else {
-      _editAnimController.reverse();
-    }
-
-    var child = widget.child;
+    var child = this.child;
     if (child is Text) {
       // If the child is just a plain Text widget, style it the same as a
       // system ListTile.
@@ -287,21 +241,21 @@ class _ManageableListItemState extends State<ManageableListItem>
       top: false,
       bottom: false,
       child: EnabledOpacity(
-        enabled: widget.enabled,
+        enabled: enabled,
         child: InkWell(
-          onTap: widget.onTap,
+          onTap: onTap,
           child: Row(
             mainAxisSize: MainAxisSize.max,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
-              _buildDeleteIcon(),
+              _buildDeleteIcon(context),
               Expanded(
                 child: Padding(
                   padding: insetsDefault,
                   child: child,
                 ),
               ),
-              _buildTrailing(),
+              _buildTrailing(context),
             ],
           ),
         ),
@@ -309,74 +263,122 @@ class _ManageableListItemState extends State<ManageableListItem>
     );
   }
 
-  Widget _buildDeleteIcon() {
-    return SizeTransition(
-      axis: Axis.horizontal,
-      sizeFactor: _deleteIconSizeAnim,
-      child: Padding(
+  Widget _buildDeleteIcon(BuildContext context) {
+    return _RowEndsCrossFade(
+      state: editing ? CrossFadeState.showFirst : CrossFadeState.showSecond,
+      firstChild: Padding(
         padding: insetsLeftDefault,
         child: MinimumIconButton(
           icon: Icons.delete,
           color: Colors.red,
           onTap: () {
-            if (widget.onTapDeleteButton == null) {
-              _showDeleteConfirmation();
+            if (onTapDeleteButton == null) {
+              _showDeleteConfirmation(context);
             } else {
-              if (!widget.onTapDeleteButton!()) {
-                _showDeleteConfirmation();
+              if (!onTapDeleteButton!()) {
+                _showDeleteConfirmation(context);
               }
             }
           },
         ),
       ),
+      secondChild: Empty(),
     );
   }
 
-  void _showDeleteConfirmation() {
+  void _showDeleteConfirmation(BuildContext context) {
     showDeleteDialog(
       context: context,
-      description: widget.deleteMessageBuilder!(context),
-      onDelete: widget.onConfirmDelete,
+      description: deleteMessageBuilder!(context),
+      onDelete: onConfirmDelete,
     );
   }
 
-  Widget _buildTrailing() {
-    Key key = ValueKey(0);
-    Widget trailing = Empty();
-    if (widget.trailing is ActionButton &&
-        (widget.trailing as ActionButton).text == Strings.of(context).edit) {
-      // If trailing widget is of the same type as editing trailer, do not
-      // reset and therefore, do not animate.
-      trailing = widget.trailing!;
-    } else if (widget.editing) {
-      key = ValueKey(1);
-      trailing = Text(
-        Strings.of(context).edit.toUpperCase(),
-        style: TextStyle(
-          color: Theme.of(context).primaryColor,
-          fontWeight: fontWeightBold,
-        ),
-      );
-    } else if (widget.trailing != null) {
-      key = ValueKey(2);
-      trailing = widget.trailing!;
-    }
-
-    return AnimatedSwitcher(
-      duration: defaultAnimationDuration,
-      child: Padding(
-        // Key is required here for animation (since widget type might not
-        // change).
-        key: key,
+  Widget _buildTrailing(BuildContext context) {
+    Widget trailingWidget;
+    if (trailing == null || trailing is Empty) {
+      // We don't want to show additional padding if there's no trailing
+      // widget, or the trailing widget is already empty.
+      trailingWidget = Empty();
+    } else {
+      trailingWidget = Padding(
         padding: insetsRightDefault,
         child: trailing,
+      );
+    }
+
+    return _RowEndsCrossFade(
+      state: editing ? CrossFadeState.showFirst : CrossFadeState.showSecond,
+      firstChild: Padding(
+        padding: insetsRightDefault,
+        child: Text(
+          Strings.of(context).edit.toUpperCase(),
+          style: TextStyle(
+            color: Theme.of(context).primaryColor,
+            fontWeight: fontWeightBold,
+          ),
+          overflow: TextOverflow.visible,
+          maxLines: 1,
+        ),
       ),
-      transitionBuilder: (widget, animation) => SlideTransition(
-        child: widget,
-        position: Tween<Offset>(
-          begin: Offset(2.0, 0.0),
-          end: Offset.zero,
-        ).animate(animation),
+      secondChild: trailingWidget,
+    );
+  }
+}
+
+class _RowEndsCrossFade extends StatelessWidget {
+  // Using a fixed height for child widgets allows for a smoother transition
+  // where the height of the animation doesn't change.
+  static const _maxTrailingHeight = 30.0;
+
+  final CrossFadeState state;
+  final Widget firstChild;
+  final Widget secondChild;
+
+  _RowEndsCrossFade({
+    required this.state,
+    required this.firstChild,
+    required this.secondChild,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedCrossFade(
+      crossFadeState: state,
+      duration: defaultAnimationDuration,
+      firstChild: _buildChildContainer(firstChild),
+      secondChild: _buildChildContainer(secondChild),
+      // A custom layout builder is used here to remove "jarring" result when
+      // using AnimatedCrossFade with fixed size children. More details:
+      // https://github.com/flutter/flutter/issues/10243#issuecomment-535287136
+      layoutBuilder: (topChild, topChildKey, bottomChild, bottomChildKey) {
+        return Stack(
+          clipBehavior: Clip.none,
+          // Align the non-positioned child to center.
+          alignment: Alignment.center,
+          children: <Widget>[
+            Positioned(
+              key: bottomChildKey,
+              // Instead of forcing the positioned child to a width
+              // with left / right, just stick it to the top.
+              top: 0,
+              child: bottomChild,
+            ),
+            Positioned(
+              key: topChildKey,
+              child: topChild,
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Widget _buildChildContainer(Widget child) {
+    return Container(
+      height: _maxTrailingHeight,
+      child: Center(
+        child: child,
       ),
     );
   }

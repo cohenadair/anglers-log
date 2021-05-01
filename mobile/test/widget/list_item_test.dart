@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mobile/res/dimen.dart';
 import 'package:mobile/widgets/checkbox_input.dart';
 import 'package:mobile/widgets/list_item.dart';
 import 'package:mobile/widgets/text.dart';
@@ -133,7 +134,12 @@ void main() {
       );
       await tester.pumpAndSettle();
 
-      expect(find.byIcon(Icons.style), findsNothing);
+      var box = tester.renderObject(find.ancestor(
+          of: find.byIcon(Icons.style),
+          matching: find.byType(AnimatedCrossFade))) as RenderBox;
+
+      // Width of "Child" text + padding.
+      expect(box.size.width, 72);
     });
 
     testWidgets("Custom trailing widget shows when not editing",
@@ -149,7 +155,12 @@ void main() {
       );
       await tester.pumpAndSettle();
 
-      expect(find.byIcon(Icons.style), findsOneWidget);
+      var box = tester.renderObject(find.ancestor(
+          of: find.byIcon(Icons.style),
+          matching: find.byType(AnimatedCrossFade))) as RenderBox;
+
+      // Width of icon + padding.
+      expect(box.size.width, 24 + paddingDefault);
     });
   });
 

@@ -110,7 +110,7 @@ class _AnglersLogState extends State<AnglersLog> {
                 // users (see issue #502).
                 onFinishedMigration: () => _legacyJsonResult = null,
                 onFinished: () => setState(() {
-                  _userPreferencesManager.didOnboard = true;
+                  _userPreferencesManager.setDidOnboard(true);
                 }),
               );
             }

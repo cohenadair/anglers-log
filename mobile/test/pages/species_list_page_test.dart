@@ -5,6 +5,7 @@ import 'package:mobile/pages/manageable_list_page.dart';
 import 'package:mobile/pages/species_list_page.dart';
 import 'package:mobile/species_manager.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
+import 'package:mobile/widgets/button.dart';
 import 'package:mobile/widgets/list_item.dart';
 import 'package:mockito/mockito.dart';
 
@@ -97,7 +98,7 @@ void main() {
 
       expect(
           find.byType(ManageableListItem), findsNWidgets(speciesList.length));
-      await tapAndSettle(tester, find.text("EDIT"));
+      await tapAndSettle(tester, find.widgetWithText(ActionButton, "EDIT"));
       await tapAndSettle(tester, find.byIcon(Icons.delete).first);
       await tapAndSettle(tester, find.text("DELETE"), 250);
       expect(find.byType(ManageableListItem),
@@ -119,7 +120,7 @@ void main() {
         appManager: appManager,
       ));
 
-      await tapAndSettle(tester, find.text("EDIT"));
+      await tapAndSettle(tester, find.widgetWithText(ActionButton, "EDIT"));
       await tapAndSettle(tester, find.byIcon(Icons.delete).first);
 
       expect(
@@ -148,7 +149,7 @@ void main() {
         appManager: appManager,
       ));
 
-      await tapAndSettle(tester, find.text("EDIT"));
+      await tapAndSettle(tester, find.widgetWithText(ActionButton, "EDIT"));
       await tapAndSettle(tester, find.byIcon(Icons.delete).first);
 
       expect(
@@ -164,7 +165,7 @@ void main() {
         appManager: appManager,
       ));
 
-      await tapAndSettle(tester, find.text("EDIT"));
+      await tapAndSettle(tester, find.widgetWithText(ActionButton, "EDIT"));
       await tapAndSettle(tester, find.byType(ManageableListItem).first);
       expect(find.text("Edit Species"), findsOneWidget);
     });

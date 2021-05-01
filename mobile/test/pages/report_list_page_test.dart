@@ -6,6 +6,7 @@ import 'package:mobile/pages/pro_page.dart';
 import 'package:mobile/pages/report_list_page.dart';
 import 'package:mobile/pages/save_report_page.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
+import 'package:mobile/widgets/button.dart';
 import 'package:mobile/widgets/list_item.dart';
 import 'package:mobile/widgets/text.dart';
 import 'package:mockito/mockito.dart';
@@ -115,7 +116,7 @@ void main() {
       appManager: appManager,
     ));
 
-    await tapAndSettle(tester, find.text("EDIT"));
+    await tapAndSettle(tester, find.widgetWithText(ActionButton, "EDIT"));
     await tapAndSettle(
       tester,
       find.descendant(
@@ -142,7 +143,7 @@ void main() {
       appManager: appManager,
     ));
 
-    await tapAndSettle(tester, find.text("EDIT"));
+    await tapAndSettle(tester, find.widgetWithText(ActionButton, "EDIT"));
     await tapAndSettle(
       tester,
       find.descendant(
@@ -166,15 +167,17 @@ void main() {
       appManager: appManager,
     ));
 
-    await tapAndSettle(tester, find.text("EDIT"));
+    await tapAndSettle(tester, find.widgetWithText(ActionButton, "EDIT"));
 
-    var transition = tester.firstWidget<SizeTransition>(
+    var crossFade = tester.firstWidget<AnimatedCrossFade>(
       find.descendant(
         of: find.widgetWithText(ManageableListItem, "Overview"),
-        matching: find.byType(SizeTransition),
+        matching: find.byType(AnimatedCrossFade),
       ),
     );
-    expect((transition.listenable as Animation<double>).value, 0.0);
+
+    // The Empty widget is shown.
+    expect(crossFade.crossFadeState, CrossFadeState.showSecond);
   });
 
   testWidgets("Note shown when custom reports is empty", (tester) async {
@@ -213,19 +216,19 @@ void main() {
       "Overview",
     );
     expect(
-      (textWidgets.at(1).evaluate().single.widget as Text).data,
+      (textWidgets.at(2).evaluate().single.widget as Text).data,
       "Comparison 1",
     );
     expect(
-      (textWidgets.at(2).evaluate().single.widget as Text).data,
+      (textWidgets.at(4).evaluate().single.widget as Text).data,
       "Comparison 2",
     );
     expect(
-      (textWidgets.at(3).evaluate().single.widget as Text).data,
+      (textWidgets.at(6).evaluate().single.widget as Text).data,
       "Summary 1",
     );
     expect(
-      (textWidgets.at(4).evaluate().single.widget as Text).data,
+      (textWidgets.at(8).evaluate().single.widget as Text).data,
       "Summary 2",
     );
   });

@@ -144,7 +144,7 @@ abstract class PreferenceManager extends DataSourceFacilitator {
   }
 
   @protected
-  void putId(String key, Id? value) => put(key, value?.uuid.toString());
+  Future<void> putId(String key, Id? value) => put(key, value?.uuid.toString());
 
   @protected
   Id? id(String key) {
@@ -155,12 +155,12 @@ abstract class PreferenceManager extends DataSourceFacilitator {
   }
 
   @protected
-  void putIdList(String key, List<Id>? value) {
+  Future<void> putIdList(String key, List<Id>? value) {
     if (listEquals(idList(key), value)) {
-      return;
+      return Future.value();
     }
 
-    put(key,
+    return put(key,
         value == null ? null : value.map((id) => id.uuid.toString()).toList());
   }
 

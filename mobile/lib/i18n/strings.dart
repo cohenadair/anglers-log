@@ -180,6 +180,11 @@ class Strings {
 
   String get catchFieldTime => _string("catchField_time");
 
+  String get catchFieldFavorite => _string("catchField_favorite");
+
+  String get catchFieldFavoriteDescription =>
+      _string("catchField_favoriteDescription");
+
   String get catchFieldPeriod => _string("catchField_period");
 
   String get catchFieldPeriodDescription =>
@@ -246,6 +251,8 @@ class Strings {
 
   String get saveCustomReportPageAllMethods =>
       _string("saveCustomReportPage_allMethods");
+
+  String get saveReportPageFavorites => _string("saveReportPage_favorites");
 
   String get photosPageMenuLabel => _string("photosPage_menuLabel");
 

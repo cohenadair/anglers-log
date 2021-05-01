@@ -254,7 +254,7 @@ void main() {
 
     // Edit the selected category.
     await tapAndSettle(tester, find.text("Live"));
-    await tapAndSettle(tester, find.text("EDIT"));
+    await tapAndSettle(tester, find.widgetWithText(ActionButton, "EDIT"));
     await tapAndSettle(tester, find.text("Live"));
     await enterTextAndSettle(tester, find.byType(TextInput), "Live 2");
     await tapAndSettle(tester, find.text("SAVE"));

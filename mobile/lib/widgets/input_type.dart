@@ -30,7 +30,7 @@ InputController inputTypeController(CustomEntity_Type fieldType) {
     case CustomEntity_Type.number:
       return NumberInputController();
     case CustomEntity_Type.boolean:
-      return InputController<bool>();
+      return BoolInputController();
     case CustomEntity_Type.text:
       return TextInputController();
   }

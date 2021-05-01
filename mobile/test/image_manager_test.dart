@@ -471,18 +471,6 @@ void main() {
     verify(appManager.subscriptionManager.isPro).called(1);
   });
 
-  group("dartImage", () {
-    testWidgets("Invalid image returns null", (tester) async {
-      var context = await buildContext(tester);
-      var image = await imageManager.dartImage(context, "", 50);
-      expect(image, isNull);
-    });
-
-    test("Converting valid image gives non-null result", () async {
-      // Nothing to do here. Assume instantiateImageCodec works as it should.
-    });
-  });
-
   group("On subscription stream updates", () {
     test("Free user is a no-op", () {
       var controller = StreamController.broadcast();

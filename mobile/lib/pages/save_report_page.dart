@@ -25,6 +25,7 @@ import '../utils/date_time_utils.dart';
 import '../utils/page_utils.dart';
 import '../utils/protobuf_utils.dart';
 import '../utils/validator.dart';
+import '../widgets/checkbox_input.dart';
 import '../widgets/date_range_picker_input.dart';
 import '../widgets/input_controller.dart';
 import '../widgets/input_data.dart';
@@ -60,6 +61,7 @@ class _SaveReportPageState extends State<SaveReportPage> {
   static final _idFishingSpots = randomId();
   static final _idMethods = randomId();
   static final _idPeriods = randomId();
+  static final _idFavoritesOnly = randomId();
 
   static const _log = Log("SaveReportPage");
 
@@ -118,6 +120,9 @@ class _SaveReportPageState extends State<SaveReportPage> {
   SetInputController<Period> get _periodsController =>
       _fields[_idPeriods]!.controller as SetInputController<Period>;
 
+  BoolInputController get _favoritesOnlyController =>
+      _fields[_idFavoritesOnly]!.controller as BoolInputController;
+
   dynamic get _oldReport => widget.oldReport;
 
   bool get _editing => _oldReport != null;
@@ -162,6 +167,11 @@ class _SaveReportPageState extends State<SaveReportPage> {
       controller: InputController<DisplayDateRange>(),
     );
 
+    _fields[_idFavoritesOnly] = Field(
+      id: _idFavoritesOnly,
+      controller: BoolInputController(),
+    );
+
     _fields[_idPeriods] = Field(
       id: _idPeriods,
       controller: SetInputController<Period>(),
@@ -204,6 +214,7 @@ class _SaveReportPageState extends State<SaveReportPage> {
           report.endTimestamp.toInt(),
         );
         _toDateRangeController.value = DisplayDateRange.allDates;
+        _favoritesOnlyController.value = report.isFavoritesOnly;
         _periodsController.value = report.periods.toSet();
         _initEntitySets(
           anglerIds: report.anglerIds,
@@ -227,6 +238,7 @@ class _SaveReportPageState extends State<SaveReportPage> {
           report.toStartTimestamp.toInt(),
           report.toEndTimestamp.toInt(),
         );
+        _favoritesOnlyController.value = report.isFavoritesOnly;
         _periodsController.value = report.periods.toSet();
         _initEntitySets(
           anglerIds: report.anglerIds,
@@ -282,6 +294,7 @@ class _SaveReportPageState extends State<SaveReportPage> {
         _idType: _buildType(),
         _idStartDateRange: _buildStartDateRange(),
         _idEndDateRange: _buildEndDateRange(),
+        _idFavoritesOnly: _buildFavoritesOnly(),
         _idPeriods: _buildPeriodsPicker(),
         _idAnglers: _buildAnglersPicker(),
         _idSpecies: _buildSpeciesPicker(),
@@ -363,6 +376,17 @@ class _SaveReportPageState extends State<SaveReportPage> {
       onPicked: (dateRange) => setState(() {
         _fromDateRangeController.value = dateRange;
       }),
+    );
+  }
+
+  Widget _buildFavoritesOnly() {
+    return Padding(
+      padding: insetsHorizontalDefault,
+      child: CheckboxInput(
+        label: Strings.of(context).saveReportPageFavorites,
+        value: _favoritesOnlyController.value,
+        onChanged: (checked) => _favoritesOnlyController.value = checked,
+      ),
     );
   }
 
@@ -585,6 +609,10 @@ class _SaveReportPageState extends State<SaveReportPage> {
       report.description = _descriptionController.value!;
     }
 
+    if (_favoritesOnlyController.value) {
+      report.isFavoritesOnly = true;
+    }
+
     if (custom) {
       report.startTimestamp = Int64(dateRange.value(context).startMs);
       report.endTimestamp = Int64(dateRange.value(context).endMs);
@@ -613,6 +641,10 @@ class _SaveReportPageState extends State<SaveReportPage> {
 
     if (isNotEmpty(_descriptionController.value)) {
       report.description = _descriptionController.value!;
+    }
+
+    if (_favoritesOnlyController.value) {
+      report.isFavoritesOnly = true;
     }
 
     if (customFrom) {

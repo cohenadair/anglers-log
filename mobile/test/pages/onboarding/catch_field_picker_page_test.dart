@@ -40,7 +40,7 @@ void main() {
     await tapAndSettle(tester, find.text("NEXT"));
 
     expect(called, isTrue);
-    verify(appManager.userPreferenceManager.catchFieldIds = any).called(1);
+    verify(appManager.userPreferenceManager.setCatchFieldIds(any)).called(1);
   });
 
   testWidgets("Selecting items updates state", (tester) async {
@@ -63,7 +63,7 @@ void main() {
     await tapAndSettle(tester, find.text("NEXT"));
 
     var result =
-        verify(appManager.userPreferenceManager.catchFieldIds = captureAny);
+        verify(appManager.userPreferenceManager.setCatchFieldIds(captureAny));
     // 2 required + 1 selected
     expect((result.captured.first as List).length, 3);
   });

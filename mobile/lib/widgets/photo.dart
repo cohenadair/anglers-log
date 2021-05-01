@@ -1,5 +1,5 @@
 import 'dart:math';
-import 'dart:ui' as ui;
+import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:quiver/strings.dart';
@@ -53,7 +53,7 @@ class Photo extends StatefulWidget {
 }
 
 class _PhotoState extends State<Photo> {
-  late Future<ui.Image?> _imageFuture;
+  late Future<Uint8List?> _imageFuture;
 
   ImageManager get _imageManager => ImageManager.of(context);
 
@@ -75,7 +75,7 @@ class _PhotoState extends State<Photo> {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<ui.Image?>(
+    return FutureBuilder<Uint8List?>(
       future: _imageFuture,
       builder: (context, snapshot) {
         var image = snapshot.data;
@@ -104,16 +104,20 @@ class _PhotoState extends State<Photo> {
                 )
               : Empty();
         } else {
-          // Use RawImage instead of Image to avoid the overhead of Flutter's
-          // image caching.
-          child = RawImage(
+          child = Image.memory(
+            image,
             width: w,
             height: h,
-            image: image,
             fit: BoxFit.cover,
           );
         }
 
+        // Note that an AnimatedSwitcher isn't used here for a couple reasons:
+        //   1. Loading from cache is quicker than the animation, and
+        //   2. AnimatedSwitcher uses a Stack, which requires some extra work
+        //      with images.
+        // So no animation is used to keep things simple since an animation is
+        // hardly noticeable anyway.
         if (widget.circular) {
           return ClipOval(
             child: child,
@@ -125,7 +129,7 @@ class _PhotoState extends State<Photo> {
     );
   }
 
-  Future<ui.Image?> _decodeImage() async {
+  Future<Uint8List?> _decodeImage() async {
     if (isEmpty(widget.fileName)) {
       return null;
     }
@@ -137,6 +141,7 @@ class _PhotoState extends State<Photo> {
           : max<double>(widget.width!, widget.height!);
     }
 
-    return await _imageManager.dartImage(context, widget.fileName!, size);
+    return await _imageManager.image(context,
+        fileName: widget.fileName!, size: size);
   }
 }

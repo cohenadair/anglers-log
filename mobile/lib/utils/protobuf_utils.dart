@@ -2,6 +2,7 @@ import 'dart:typed_data';
 
 import 'package:flutter/cupertino.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:protobuf/protobuf.dart';
 import 'package:quiver/strings.dart';
 import 'package:uuid/uuid.dart';
 
@@ -149,6 +150,49 @@ Id? safeParseId(String idString) {
   } on Exception catch (_) {
     return null;
   }
+}
+
+/// Returns true if [item] exists in [items], where if [item] is of type
+/// [GeneratedMessage], only the [id] property is checked. For more details
+/// see [indexOfEntityIdOrOther].
+bool containsEntityIdOrOther(Iterable iterable, dynamic item) {
+  return indexOfEntityIdOrOther(iterable.toList(), item) >= 0;
+}
+
+/// Returns the index of [item] in [items], or -1 if it doesn't exist.
+///
+/// All protobuf entity objects include an [id] property. Protobuf doesn't have
+/// inheritance, though, so we can't use a parent or abstract class with an [id]
+/// property. Instead, we explicitly access the [id] property of [item]. If
+/// [item] doesn't have an [id] property, [List.indexOf] is returned.
+///
+/// Note that all protobuf objects override [==] such that deep comparisons
+/// work. This method is different in that it only compares objects' [id]
+/// property. It is useful for matching items whose fields may have changed,
+/// such as being edited by the user.
+///
+/// This method will throw an exception if [item] is of type [GeneratedMessage],
+/// but does not have an [id] property.
+int indexOfEntityIdOrOther(List<dynamic> list, dynamic item) {
+  if (!(item is GeneratedMessage)) {
+    return list.indexOf(item);
+  }
+
+  for (var i = 0; i < list.length; i++) {
+    // For non-GeneratedMessage objects in list, use ==.
+    if (!(list[i] is GeneratedMessage)) {
+      if (list[i] == item) {
+        return i;
+      }
+      continue;
+    }
+
+    if (list[i].id == (item as dynamic).id) {
+      return i;
+    }
+  }
+
+  return -1;
 }
 
 extension Ids on Id {

@@ -76,9 +76,7 @@ void main() {
   });
 
   testWidgets("No cache size uses default", (tester) async {
-    var image = await loadImage(tester, "test/resources/flutter_logo.png");
-    when(appManager.imageManager.dartImage(any, any, any))
-        .thenAnswer((_) => Future.value(image));
+    await stubImage(appManager, tester, "flutter_logo.png");
 
     await tester.pumpWidget(Testable(
       (_) => Photo(
@@ -102,9 +100,11 @@ void main() {
     await tester.pump(Duration(milliseconds: 250));
 
     expect(
-      verify(appManager.imageManager.dartImage(any, any, captureAny))
-          .captured
-          .single,
+      verify(appManager.imageManager.image(
+        any,
+        fileName: anyNamed("fileName"),
+        size: captureAnyNamed("size"),
+      )).captured.single,
       50,
     );
   });
@@ -121,9 +121,11 @@ void main() {
     await tester.pump(Duration(milliseconds: 250));
 
     expect(
-      verify(appManager.imageManager.dartImage(any, any, captureAny))
-          .captured
-          .single,
+      verify(appManager.imageManager.image(
+        any,
+        fileName: anyNamed("fileName"),
+        size: captureAnyNamed("size"),
+      )).captured.single,
       50,
     );
   });

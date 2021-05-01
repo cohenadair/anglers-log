@@ -193,6 +193,24 @@ void main() {
     });
   });
 
+  group("Collections entity ID or object", () {
+    test("Non-GeneratedMessage item calls List.indexOf", () {
+      expect(indexOfEntityIdOrOther(["String", 12, 15.4], 12), 1);
+      expect(containsEntityIdOrOther(["String", 12, 15.4], 12), isTrue);
+    });
+
+    test("Non-GeneratedMessage list items with GeneratedMessage item", () {
+      expect(indexOfEntityIdOrOther(["String", 12, Catch()], Catch()), 2);
+      expect(containsEntityIdOrOther(["String", 12, 15.4], Catch()), isFalse);
+    });
+
+    test("ID is found", () {
+      var cat = Catch()..id = randomId();
+      expect(indexOfEntityIdOrOther([cat, 12, Catch()], cat), 0);
+      expect(containsEntityIdOrOther(["String", 12, cat], cat), isTrue);
+    });
+  });
+
   group("parseId", () {
     test("Input", () {
       expect(() => parseId(""), throwsAssertionError);

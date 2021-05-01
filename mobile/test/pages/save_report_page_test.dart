@@ -494,6 +494,7 @@ void main() {
       expect(report.fishingSpotIds.length, 1);
       expect(report.methodIds.length, 1);
       expect(report.periods.length, 1);
+      expect(report.hasIsFavoritesOnly(), isFalse);
     });
 
     testWidgets("Add report with custom date ranges", (tester) async {
@@ -547,6 +548,7 @@ void main() {
       expect(report.fishingSpotIds, isEmpty);
       expect(report.methodIds, isEmpty);
       expect(report.periods, isEmpty);
+      expect(report.hasIsFavoritesOnly(), isFalse);
     });
 
     testWidgets("Add report with all entities selected sets empty collections",
@@ -601,13 +603,14 @@ void main() {
       expect(report.periods, isEmpty);
     });
 
-    testWidgets("Edit keeps old ID", (tester) async {
+    testWidgets("Edit keeps old properties", (tester) async {
       var report = ComparisonReport()
         ..id = randomId()
         ..name = "Report Name"
         ..description = "Report description"
         ..fromDisplayDateRangeId = DisplayDateRange.yesterday.id
-        ..toDisplayDateRangeId = DisplayDateRange.today.id;
+        ..toDisplayDateRangeId = DisplayDateRange.today.id
+        ..isFavoritesOnly = true;
       report.anglerIds.addAll(anglerList.map((e) => e.id));
       report.baitIds.addAll(baitList.map((e) => e.id));
       report.fishingSpotIds.addAll(fishingSpotList.map((e) => e.id));
@@ -656,7 +659,7 @@ void main() {
           verify(appManager.comparisonReportManager.addOrUpdate(captureAny));
       result.called(1);
 
-      expect(result.captured.first.id, report.id);
+      expect(result.captured.first, report);
     });
 
     /// https://github.com/cohenadair/anglers-log/issues/463
@@ -695,6 +698,27 @@ void main() {
       // The test here is that the app doesn't crash. If the test passes, the
       // app doesn't crash.
       await tapAndSettle(tester, find.text("SAVE"));
+    });
+
+    testWidgets("Checking favorites only sets property", (tester) async {
+      await tester.pumpWidget(Testable(
+        (_) => SaveReportPage(),
+        appManager: appManager,
+      ));
+
+      await enterTextAndSettle(
+          tester, find.widgetWithText(TextField, "Name"), "Test");
+      await tapAndSettle(tester, find.widgetWithText(InkWell, "Comparison"));
+      await tapAndSettle(
+          tester, findListItemCheckbox(tester, "Favorites Only"));
+
+      await tapAndSettle(tester, find.text("SAVE"));
+
+      var result =
+          verify(appManager.comparisonReportManager.addOrUpdate(captureAny));
+      result.called(1);
+
+      expect(result.captured.first.isFavoritesOnly, isTrue);
     });
   });
 
@@ -752,6 +776,7 @@ void main() {
       expect(report.fishingSpotIds.length, 1);
       expect(report.methodIds.length, 1);
       expect(report.periods.length, 1);
+      expect(report.hasIsFavoritesOnly(), isFalse);
     });
 
     testWidgets("Add report with custom date ranges", (tester) async {
@@ -793,6 +818,7 @@ void main() {
       expect(report.fishingSpotIds, isEmpty);
       expect(report.methodIds, isEmpty);
       expect(report.periods, isEmpty);
+      expect(report.hasIsFavoritesOnly(), isFalse);
     });
 
     testWidgets("Add report with all entities selected sets empty collections",
@@ -843,14 +869,16 @@ void main() {
       expect(report.fishingSpotIds, isEmpty);
       expect(report.methodIds, isEmpty);
       expect(report.periods, isEmpty);
+      expect(report.hasIsFavoritesOnly(), isFalse);
     });
 
-    testWidgets("Edit keeps old ID", (tester) async {
+    testWidgets("Edit keeps old properties", (tester) async {
       var report = SummaryReport()
         ..id = randomId()
         ..name = "Report Name"
         ..description = "Report description"
-        ..displayDateRangeId = DisplayDateRange.yesterday.id;
+        ..displayDateRangeId = DisplayDateRange.yesterday.id
+        ..isFavoritesOnly = true;
       report.anglerIds.addAll(anglerList.map((e) => e.id));
       report.baitIds.addAll(baitList.map((e) => e.id));
       report.fishingSpotIds.addAll(fishingSpotList.map((e) => e.id));
@@ -884,7 +912,7 @@ void main() {
           verify(appManager.summaryReportManager.addOrUpdate(captureAny));
       result.called(1);
 
-      expect(result.captured.first.id, report.id);
+      expect(result.captured.first, report);
     });
 
     /// https://github.com/cohenadair/anglers-log/issues/463
@@ -907,6 +935,27 @@ void main() {
       expect(find.text("All baits"), findsOneWidget);
       expect(find.text("All fishing methods"), findsOneWidget);
       expect(find.text("All times of day"), findsOneWidget);
+    });
+
+    testWidgets("Checking favorites only sets property", (tester) async {
+      await tester.pumpWidget(Testable(
+        (_) => SaveReportPage(),
+        appManager: appManager,
+      ));
+
+      await enterTextAndSettle(
+          tester, find.widgetWithText(TextField, "Name"), "Test");
+      await tapAndSettle(tester, find.widgetWithText(InkWell, "Summary"));
+      await tapAndSettle(
+          tester, findListItemCheckbox(tester, "Favorites Only"));
+
+      await tapAndSettle(tester, find.text("SAVE"));
+
+      var result =
+          verify(appManager.summaryReportManager.addOrUpdate(captureAny));
+      result.called(1);
+
+      expect(result.captured.first.isFavoritesOnly, isTrue);
     });
   });
 }

@@ -76,13 +76,15 @@ class PhotosPage extends StatelessWidget {
     int index,
   ) {
     return GestureDetector(
-      onTap: () => fade(
-        context,
-        PhotoGalleryPage(
-          fileNames: allFileNames,
-          initialFileName: allFileNames[index],
-        ),
-      ),
+      onTap: () {
+        fade(
+          context,
+          PhotoGalleryPage(
+            fileNames: allFileNames,
+            initialFileName: allFileNames[index],
+          ),
+        );
+      },
       child: Photo(
         fileName: allFileNames[index],
         cacheSize: galleryMaxThumbSize,

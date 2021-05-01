@@ -24,12 +24,18 @@ class CatchManager extends EntityManager<Catch> {
       Provider.of<AppManager>(context, listen: false).catchManager;
 
   AnglerManager get _anglerManager => appManager.anglerManager;
+
   BaitManager get _baitManager => appManager.baitManager;
+
   CustomEntityManager get _customEntityManager =>
       appManager.customEntityManager;
+
   FishingSpotManager get _fishingSpotManager => appManager.fishingSpotManager;
+
   ImageManager get _imageManager => appManager.imageManager;
+
   MethodManager get _methodManager => appManager.methodManager;
+
   SpeciesManager get _speciesManager => appManager.speciesManager;
 
   CatchManager(AppManager app) : super(app) {
@@ -62,6 +68,9 @@ class CatchManager extends EntityManager<Catch> {
         (cat.hasPeriod() &&
             containsTrimmedLowerCase(
                 nameForPeriod(context, cat.period), filter!)) ||
+        (cat.hasIsFavorite() &&
+            containsTrimmedLowerCase(
+                Strings.of(context).catchFieldFavorite, filter!)) ||
         timestampToSearchString(context, cat.timestamp.toInt())
             .toLowerCase()
             .contains(filter!.toLowerCase()) ||
@@ -81,6 +90,7 @@ class CatchManager extends EntityManager<Catch> {
     BuildContext context, {
     String? filter,
     DateRange? dateRange,
+    bool isFavoritesOnly = false,
     Set<Id> anglerIds = const {},
     Set<Id> baitIds = const {},
     Set<Id> catchIds = const {},
@@ -93,6 +103,7 @@ class CatchManager extends EntityManager<Catch> {
       context,
       filter: filter,
       dateRange: dateRange,
+      isFavoritesOnly: isFavoritesOnly,
       anglerIds: anglerIds,
       baitIds: baitIds,
       catchIds: catchIds,
@@ -110,6 +121,7 @@ class CatchManager extends EntityManager<Catch> {
     BuildContext context, {
     String? filter,
     DateRange? dateRange,
+    bool isFavoritesOnly = false,
     Set<Id> anglerIds = const {},
     Set<Id> baitIds = const {},
     Set<Id> catchIds = const {},
@@ -120,6 +132,7 @@ class CatchManager extends EntityManager<Catch> {
   }) {
     if (isEmpty(filter) &&
         dateRange == null &&
+        !isFavoritesOnly &&
         anglerIds.isEmpty &&
         baitIds.isEmpty &&
         catchIds.isEmpty &&
@@ -143,6 +156,7 @@ class CatchManager extends EntityManager<Catch> {
       valid &= speciesIds.isEmpty || speciesIds.contains(cat.speciesId);
       valid &=
           periods.isEmpty || !cat.hasPeriod() || periods.contains(cat.period);
+      valid &= !isFavoritesOnly || cat.isFavorite;
       if (!valid) {
         return false;
       }

@@ -72,10 +72,6 @@ class _CatchPageState extends State<CatchPage> {
         // Fallback on the current catch (if the current was deleted).
         _catch = _catchManager.entity(widget.cat.id) ?? _catch;
 
-        print(formatTimestamp(context, _catch.timestamp.toInt()) +
-            (_catch.hasPeriod()
-                ? " (${nameForPeriod(context, _catch.period)})"
-                : ""));
         return EntityPage(
           customEntityValues: _catch.customEntityValues,
           padding: insetsZero,
@@ -90,24 +86,7 @@ class _CatchPageState extends State<CatchPage> {
                 right: paddingDefault,
                 bottom: paddingSmall,
               ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  TitleLabel(_speciesManager.entity(_catch.speciesId)?.name ??
-                      Strings.of(context).unknownSpecies),
-                  Padding(
-                    padding: const EdgeInsets.only(
-                      left: paddingDefault,
-                    ),
-                    child: SubtitleLabel(
-                      formatTimestamp(context, _catch.timestamp.toInt()) +
-                          (_catch.hasPeriod()
-                              ? " (${nameForPeriod(context, _catch.period)})"
-                              : ""),
-                    ),
-                  ),
-                ],
-              ),
+              child: _buildHeader(),
             ),
             _buildMethods(),
             _buildBait(),
@@ -119,6 +98,38 @@ class _CatchPageState extends State<CatchPage> {
           ],
         );
       },
+    );
+  }
+
+  Widget _buildHeader() {
+    return Row(
+      children: [
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              TitleLabel(
+                _speciesManager.entity(_catch.speciesId)?.name ??
+                    Strings.of(context).unknownSpecies,
+                overflow: TextOverflow.visible,
+              ),
+              Padding(
+                padding: insetsLeftDefault,
+                child: SubtitleLabel(
+                  formatTimestamp(context, _catch.timestamp.toInt()) +
+                      (_catch.hasPeriod()
+                          ? " (${nameForPeriod(context, _catch.period)})"
+                          : ""),
+                ),
+              ),
+            ],
+          ),
+        ),
+        CatchFavoriteStar(
+          _catch,
+          large: true,
+        ),
+      ],
     );
   }
 

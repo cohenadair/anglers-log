@@ -1,5 +1,3 @@
-import 'dart:ui' as ui;
-
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/pages/photo_gallery_page.dart';
@@ -16,18 +14,11 @@ void main() {
     appManager = StubbedAppManager();
   });
 
-  Future<ui.Image?> image(tester, String name) async {
-    var image = await loadImage(tester, "test/resources/$name");
-    when(appManager.imageManager.dartImage(any, name, any))
-        .thenAnswer((_) => Future.value(image));
-    return image;
-  }
-
   testWidgets("Initial page", (tester) async {
-    await image(tester, "flutter_logo.png");
-    await image(tester, "anglers_log_logo.png");
-    await image(tester, "android_logo.png");
-    await image(tester, "apple_logo.png");
+    await stubImage(appManager, tester, "flutter_logo.png");
+    await stubImage(appManager, tester, "anglers_log_logo.png");
+    await stubImage(appManager, tester, "android_logo.png");
+    await stubImage(appManager, tester, "apple_logo.png");
 
     await tester.pumpWidget(Testable(
       (_) => PhotoGalleryPage(
@@ -45,15 +36,18 @@ void main() {
     await tester.pumpAndSettle(Duration(milliseconds: 250));
 
     expect(find.byType(Photo), findsOneWidget);
-    verify(appManager.imageManager.dartImage(any, "apple_logo.png", any))
-        .called(1);
+    verify(appManager.imageManager.image(
+      any,
+      fileName: "apple_logo.png",
+      size: anyNamed("size"),
+    )).called(1);
   });
 
   testWidgets("Swiping shows correct image", (tester) async {
-    await image(tester, "flutter_logo.png");
-    await image(tester, "anglers_log_logo.png");
-    await image(tester, "android_logo.png");
-    await image(tester, "apple_logo.png");
+    await stubImage(appManager, tester, "flutter_logo.png");
+    await stubImage(appManager, tester, "anglers_log_logo.png");
+    await stubImage(appManager, tester, "android_logo.png");
+    await stubImage(appManager, tester, "apple_logo.png");
 
     await tester.pumpWidget(Testable(
       (_) => PhotoGalleryPage(
@@ -70,21 +64,30 @@ void main() {
     // Let image future settle.
     await tester.pumpAndSettle(Duration(milliseconds: 250));
 
-    verify(appManager.imageManager.dartImage(any, "flutter_logo.png", any))
-        .called(1);
+    verify(appManager.imageManager.image(
+      any,
+      fileName: "flutter_logo.png",
+      size: anyNamed("size"),
+    )).called(1);
 
     // Swipe left.
     await tester.fling(find.byType(Photo), Offset(-300, 0), 800);
     await tester.pumpAndSettle(Duration(milliseconds: 250));
 
-    verify(appManager.imageManager.dartImage(any, "anglers_log_logo.png", any))
-        .called(1);
+    verify(appManager.imageManager.image(
+      any,
+      fileName: "anglers_log_logo.png",
+      size: anyNamed("size"),
+    )).called(1);
 
     // Swipe back.
     await tester.fling(find.byType(Photo), Offset(300, 0), 800);
     await tester.pumpAndSettle(Duration(milliseconds: 250));
 
-    verify(appManager.imageManager.dartImage(any, "flutter_logo.png", any))
-        .called(1);
+    verify(appManager.imageManager.image(
+      any,
+      fileName: "flutter_logo.png",
+      size: anyNamed("size"),
+    )).called(1);
   });
 }

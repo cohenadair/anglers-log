@@ -10,7 +10,7 @@ class CheckboxInput extends StatelessWidget {
   final String label;
   final bool value;
   final bool enabled;
-  final Function(bool)? onChanged;
+  final void Function(bool)? onChanged;
 
   CheckboxInput({
     required this.label,

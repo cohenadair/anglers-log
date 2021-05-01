@@ -7,6 +7,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
 import 'package:mobile/pages/fishing_spot_list_page.dart';
 import 'package:mobile/utils/map_utils.dart';
+import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mobile/widgets/empty_list_placeholder.dart';
 import 'package:mobile/widgets/fishing_spot_map.dart';
 import 'package:mobile/widgets/list_item.dart';
@@ -34,17 +35,21 @@ void main() {
   void stubFishingSpots() {
     var fishingSpots = <FishingSpot>[
       FishingSpot()
+        ..id = randomId()
         ..name = "Fishing Spot 1"
         ..lat = 1.23456
         ..lng = 6.54321,
       FishingSpot()
+        ..id = randomId()
         ..name = "Fishing Spot 2"
         ..lat = 2.23456
         ..lng = 7.54321,
       FishingSpot()
+        ..id = randomId()
         ..lat = 3.23456
         ..lng = 8.54321,
       FishingSpot()
+        ..id = randomId()
         ..name = "Fishing Spot 4"
         ..lat = 4.23456
         ..lng = 9.54321,

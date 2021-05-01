@@ -32,8 +32,8 @@ void main() {
     when(appManager.userPreferenceManager.didOnboard).thenReturn(true);
     when(appManager.userPreferenceManager.catchFieldIds).thenReturn([]);
     when(appManager.userPreferenceManager.selectedReportId).thenReturn(null);
-    when(appManager.userPreferenceManager.selectedReportId = any)
-        .thenAnswer((_) {});
+    when(appManager.userPreferenceManager.setSelectedReportId(any))
+        .thenAnswer((_) => Future.value());
 
     var channel = MockMethodChannel();
     when(channel.invokeMethod(any)).thenAnswer((_) => Future.value(null));
@@ -122,14 +122,14 @@ void main() {
 
     expect(find.byType(OnboardingJourney), findsOneWidget);
     expect(find.byType(MainPage), findsNothing);
-    verifyNever(appManager.userPreferenceManager.didOnboard = true);
+    verifyNever(appManager.userPreferenceManager.setDidOnboard(true));
 
     await tapAndSettle(tester, find.text("NEXT"));
     await tapAndSettle(tester, find.text("NEXT"));
     await tapAndSettle(tester, find.text("SET PERMISSION"));
     await tapAndSettle(tester, find.text("FINISH"));
 
-    verify(appManager.userPreferenceManager.didOnboard = true).called(1);
+    verify(appManager.userPreferenceManager.setDidOnboard(true)).called(1);
   });
 
   testWidgets("Main page shown after login", (tester) async {

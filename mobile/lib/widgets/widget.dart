@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mobile/model/gen/anglerslog.pb.dart';
 import 'package:quiver/strings.dart';
 
 import '../res/color.dart';
@@ -430,4 +431,31 @@ class TransparentAppBar extends AppBar {
             color: Theme.of(context).primaryColor,
           ),
         );
+}
+
+class CatchFavoriteStar extends StatelessWidget {
+  static const _largeSize = 40.0;
+
+  final Catch cat;
+  final bool large;
+
+  CatchFavoriteStar(
+    this.cat, {
+    this.large = false,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    if (!cat.hasIsFavorite() || !cat.isFavorite) {
+      return Empty();
+    }
+
+    return Padding(
+      padding: insetsLeftWidget,
+      child: Icon(
+        Icons.star,
+        size: large ? _largeSize : null,
+      ),
+    );
+  }
 }

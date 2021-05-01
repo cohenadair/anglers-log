@@ -10,12 +10,6 @@ import 'package:mobile/widgets/text.dart';
 import '../test_utils.dart';
 
 void main() {
-  PaddedCheckbox? findCheckbox(tester, String option) =>
-      tester.widget<PaddedCheckbox>(find.descendant(
-        of: find.widgetWithText(ListItem, option),
-        matching: find.byType(PaddedCheckbox),
-      ));
-
   testWidgets("Initial values in multi-select are selected", (tester) async {
     await tester.pumpWidget(
       Testable(

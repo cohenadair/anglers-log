@@ -142,6 +142,7 @@ class CatchListPage extends StatelessWidget {
               ],
             ),
           ),
+          CatchFavoriteStar(cat),
         ],
       ),
     );

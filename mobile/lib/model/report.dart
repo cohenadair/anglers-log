@@ -7,6 +7,7 @@ import '../app_manager.dart';
 import '../bait_manager.dart';
 import '../catch_manager.dart';
 import '../fishing_spot_manager.dart';
+import '../i18n/strings.dart';
 import '../method_manager.dart';
 import '../named_entity_manager.dart';
 import '../species_manager.dart';
@@ -59,6 +60,7 @@ class Report {
   final TimeManager _timeManager;
 
   late DateRange _dateRange;
+  bool _isFavoritesOnly = false;
   int _msSinceLastCatch = 0;
 
   /// True if the date range of the report includes "now"; false otherwise.
@@ -131,16 +133,19 @@ class Report {
     this.speciesIds = const {},
     this.periods = const {},
     DisplayDateRange? displayDateRange,
+    bool isFavoritesOnly = false,
   })  : _appManager = AppManager.of(context),
         _timeManager = AppManager.of(context).timeManager,
         displayDateRange = displayDateRange ?? DisplayDateRange.allDates {
     var now = _timeManager.currentDateTime;
     _dateRange = this.displayDateRange.getValue(now);
     _containsNow = _dateRange.endDate == now;
+    _isFavoritesOnly = isFavoritesOnly;
 
     var catches = _catchManager.catchesSortedByTimestamp(
       context,
       dateRange: _dateRange,
+      isFavoritesOnly: _isFavoritesOnly,
       anglerIds: anglerIds,
       baitIds: baitIds,
       fishingSpotIds: fishingSpotIds,
@@ -268,6 +273,10 @@ class Report {
 
     if (includeSpecies) {
       _addFilters<Species>(_speciesManager, speciesIds, result);
+    }
+
+    if (_isFavoritesOnly) {
+      result.add(Strings.of(context).saveReportPageFavorites);
     }
 
     _addFilters<Bait>(_baitManager, baitIds, result);

@@ -9,10 +9,11 @@ void main() {
     expect(fields[0].id, catchFieldIdAngler());
     expect(fields[1].id, catchFieldIdBait());
     expect(fields[2].id, catchFieldIdTimestamp());
-    expect(fields[3].id, catchFieldIdMethods());
-    expect(fields[4].id, catchFieldIdFishingSpot());
-    expect(fields[5].id, catchFieldIdImages());
-    expect(fields[6].id, catchFieldIdSpecies());
-    expect(fields[7].id, catchFieldIdPeriod());
+    expect(fields[3].id, catchFieldIdFavorite());
+    expect(fields[4].id, catchFieldIdMethods());
+    expect(fields[5].id, catchFieldIdFishingSpot());
+    expect(fields[6].id, catchFieldIdImages());
+    expect(fields[7].id, catchFieldIdSpecies());
+    expect(fields[8].id, catchFieldIdPeriod());
   });
 }

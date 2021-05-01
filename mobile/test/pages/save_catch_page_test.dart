@@ -14,6 +14,7 @@ import 'package:mobile/pages/save_catch_page.dart';
 import 'package:mobile/species_manager.dart';
 import 'package:mobile/utils/catch_utils.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
+import 'package:mobile/widgets/button.dart';
 import 'package:mobile/widgets/image_input.dart';
 import 'package:mobile/widgets/static_fishing_spot.dart';
 import 'package:mobile/widgets/text_input.dart';
@@ -208,7 +209,8 @@ void main() {
           ..customEntityId = customEntity.id
           ..value = "Minnow")
         ..imageNames.add("flutter_logo.png")
-        ..period = Period.dawn;
+        ..period = Period.dawn
+        ..isFavorite = true;
 
       when(appManager.imageManager.images(
         any,
@@ -242,6 +244,7 @@ void main() {
       expect(find.byType(Image), findsOneWidget);
       expect(find.text("Color"), findsOneWidget);
       expect(find.text("Minnow"), findsOneWidget);
+      expect(findCheckbox(tester, "Favorite")!.checked, isTrue);
     });
 
     testWidgets("Minimum fields set correctly", (tester) async {
@@ -275,6 +278,7 @@ void main() {
       expect(find.text("Fishing Spot"), findsOneWidget);
       expect(find.byType(Image), findsNothing);
       expect(find.byType(StaticFishingSpot), findsNothing);
+      expect(findCheckbox(tester, "Favorite")!.checked, isFalse);
     });
 
     testWidgets("Saving", (tester) async {
@@ -329,7 +333,8 @@ void main() {
           ..customEntityId = customEntity.id
           ..value = "Minnow")
         ..imageNames.add("flutter_logo.png")
-        ..period = Period.afternoon;
+        ..period = Period.afternoon
+        ..isFavorite = true;
 
       when(appManager.imageManager.images(
         any,
@@ -446,6 +451,7 @@ void main() {
 
       expect(find.byType(StaticFishingSpot), findsOneWidget);
       expect(find.byType(Image), findsNothing);
+      expect(findCheckbox(tester, "Favorite")!.checked, isFalse);
     });
 
     testWidgets("Saving when selecting no optional fields", (tester) async {
@@ -481,6 +487,7 @@ void main() {
       expect(cat.imageNames, isEmpty);
       expect(cat.customEntityValues, isEmpty);
       expect(cat.hasPeriod(), isFalse);
+      expect(cat.hasIsFavorite(), isFalse);
     });
 
     testWidgets("Saving after selecting all optional fields", (tester) async {
@@ -537,9 +544,14 @@ void main() {
 
       // Select fishing methods.
       await tapAndSettle(tester, find.text("No fishing methods"));
-      await tapAndSettle(tester, findListItemCheckbox(tester, "Casting"));
-      await tapAndSettle(tester, findListItemCheckbox(tester, "Kayak"));
+      await tapAndSettle(
+          tester, findManageableListItemCheckbox(tester, "Casting"));
+      await tapAndSettle(
+          tester, findManageableListItemCheckbox(tester, "Kayak"));
       await tapAndSettle(tester, find.byType(BackButton));
+
+      // Favorite.
+      await tapAndSettle(tester, findListItemCheckbox(tester, "Favorite"));
 
       await tapAndSettle(tester, find.text("SAVE"));
 
@@ -563,6 +575,7 @@ void main() {
       expect(cat.hasAnglerId(), isTrue);
       expect(cat.methodIds.length, 2);
       expect(cat.hasPeriod(), isTrue);
+      expect(cat.isFavorite, isTrue);
     });
   });
 
@@ -646,7 +659,7 @@ void main() {
 
     // Edit the selected species.
     await tapAndSettle(tester, find.text("Bass"));
-    await tapAndSettle(tester, find.text("EDIT"));
+    await tapAndSettle(tester, find.widgetWithText(ActionButton, "EDIT"));
     await tapAndSettle(tester, find.text("Bass"));
     await enterTextAndSettle(tester, find.byType(TextInput), "Bass 2");
     await tapAndSettle(tester, find.text("SAVE"));
@@ -681,7 +694,7 @@ void main() {
 
     // Edit the selected bait.
     await tapAndSettle(tester, find.text("Minnow"));
-    await tapAndSettle(tester, find.text("EDIT"));
+    await tapAndSettle(tester, find.widgetWithText(ActionButton, "EDIT"));
     await tapAndSettle(tester, find.text("Minnow"));
     await enterTextAndSettle(tester, find.byType(TextInput), "Minnow 2");
     await tapAndSettle(tester, find.text("SAVE"));
@@ -715,7 +728,7 @@ void main() {
 
     // Edit the selected fishing spot.
     await tapAndSettle(tester, find.text("A"));
-    await tapAndSettle(tester, find.text("EDIT"));
+    await tapAndSettle(tester, find.widgetWithText(ActionButton, "EDIT"));
     await enterTextAndSettle(tester, find.byType(TextInput), "B");
     await tapAndSettle(tester, find.text("SAVE"));
     await tapAndSettle(tester, find.byType(BackButtonIcon));
@@ -748,7 +761,7 @@ void main() {
 
     // Edit the selected angler.
     await tapAndSettle(tester, find.text("Cohen"));
-    await tapAndSettle(tester, find.text("EDIT"));
+    await tapAndSettle(tester, find.widgetWithText(ActionButton, "EDIT"));
     await tapAndSettle(tester, find.text("Cohen"));
     await enterTextAndSettle(tester, find.byType(TextInput), "Someone");
     await tapAndSettle(tester, find.text("SAVE"));
@@ -783,7 +796,7 @@ void main() {
 
     // Edit the selected angler.
     await tapAndSettle(tester, find.text("Casting"));
-    await tapAndSettle(tester, find.text("EDIT"));
+    await tapAndSettle(tester, find.widgetWithText(ActionButton, "EDIT"));
     await tapAndSettle(tester, find.text("Casting"));
     await enterTextAndSettle(tester, find.byType(TextInput), "Casting 2");
     await tapAndSettle(tester, find.text("SAVE"));

@@ -458,7 +458,7 @@ class _StatsPageState extends State<StatsPage> {
           _comparisonReportManager.entity(newReportId);
     }
 
-    _userPreferencesManager.selectedReportId = _currentReport.id;
+    _userPreferencesManager.setSelectedReportId(_currentReport.id);
     _models.clear();
 
     if (_currentReport is OverviewReport) {
@@ -555,6 +555,7 @@ class _StatsPageState extends State<StatsPage> {
       sortOrder: sortOrder,
       displayDateRange: DisplayDateRange.of(
           displayDateRangeId, startTimestamp.toInt(), endTimestamp.toInt()),
+      isFavoritesOnly: report.isFavoritesOnly,
       anglerIds: report.anglerIds.toSet(),
       baitIds: report.baitIds.toSet(),
       fishingSpotIds: report.fishingSpotIds.toSet(),

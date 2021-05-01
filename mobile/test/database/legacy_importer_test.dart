@@ -393,6 +393,24 @@ void main() {
     expect(methods.first.name, "Baitcaster");
   });
 
+  testWidgets("Import Android catches", (tester) async {
+    var file = File("test/resources/backups/legacy_android_real.zip");
+    await LegacyImporter(appManager.app, file).start();
+
+    expect(
+      catchManager
+          .filteredCatches(await buildContext(tester), isFavoritesOnly: true)
+          .length,
+      3,
+    );
+
+    var hasIsFavioriteCount = 0;
+    for (var cat in catchManager.list()) {
+      hasIsFavioriteCount += cat.hasIsFavorite() ? 1 : 0;
+    }
+    expect(hasIsFavioriteCount, 3);
+  });
+
   testWidgets("Import Android images", (tester) async {
     var zip = File("test/resources/backups/legacy_android_photos.zip");
 

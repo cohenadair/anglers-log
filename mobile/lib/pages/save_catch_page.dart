@@ -26,6 +26,7 @@ import '../user_preference_manager.dart';
 import '../utils/catch_utils.dart';
 import '../utils/page_utils.dart';
 import '../utils/protobuf_utils.dart';
+import '../widgets/checkbox_input.dart';
 import '../widgets/date_time_picker.dart';
 import '../widgets/image_input.dart';
 import '../widgets/input_controller.dart';
@@ -75,6 +76,7 @@ class SaveCatchPage extends StatefulWidget {
 class _SaveCatchPageState extends State<SaveCatchPage> {
   static final _idAngler = catchFieldIdAngler();
   static final _idBait = catchFieldIdBait();
+  static final _idFavorite = catchFieldIdFavorite();
   static final _idFishingSpot = catchFieldIdFishingSpot();
   static final _idImages = catchFieldIdImages();
   static final _idMethods = catchFieldIdMethods();
@@ -134,6 +136,9 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
   InputController<Id> get _anglerController =>
       _fields[_idAngler]!.controller as InputController<Id>;
 
+  BoolInputController get _favoriteController =>
+      _fields[_idFavorite]!.controller as BoolInputController;
+
   SetInputController<Id> get _methodsController =>
       _fields[_idMethods]!.controller as SetInputController<Id>;
 
@@ -159,6 +164,7 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
       _baitController.value = _oldCatch!.baitId;
       _fishingSpotController.value = _oldCatch!.fishingSpotId;
       _anglerController.value = _oldCatch!.anglerId;
+      _favoriteController.value = _oldCatch!.isFavorite;
       _methodsController.value = _oldCatch!.methodIds.toSet();
       _customEntityValues = _oldCatch!.customEntityValues;
       _imagesFuture = _pickedImagesForOldCatch;
@@ -196,7 +202,7 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
       customEntityValues: _customEntityValues,
       onBuildField: _buildField,
       onAddFields: (ids) =>
-          _userPreferencesManager.catchFieldIds = ids.toList(),
+          _userPreferencesManager.setCatchFieldIds(ids.toList()),
       onSave: _save,
     );
   }
@@ -218,6 +224,8 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
       return _buildMethods();
     } else if (id == _idPeriod) {
       return _buildPeriod();
+    } else if (id == _idFavorite) {
+      return _buildFavorite();
     } else {
       _log.e("Unknown input key: $id");
       return Empty();
@@ -377,6 +385,17 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
     );
   }
 
+  Widget _buildFavorite() {
+    return Padding(
+      padding: insetsHorizontalDefault,
+      child: CheckboxInput(
+        label: Strings.of(context).catchFieldFavorite,
+        value: _favoriteController.value,
+        onChanged: (checked) => _favoriteController.value = checked,
+      ),
+    );
+  }
+
   Widget _buildFishingSpot() {
     return EntityListenerBuilder(
       managers: [
@@ -452,8 +471,8 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
   }
 
   FutureOr<bool> _save(Map<Id, dynamic> customFieldValueMap) {
-    _userPreferencesManager.catchCustomEntityIds =
-        customFieldValueMap.keys.toList();
+    _userPreferencesManager
+        .setCatchCustomEntityIds(customFieldValueMap.keys.toList());
 
     // imageNames is set in _catchManager.addOrUpdate
     var cat = Catch()
@@ -482,6 +501,10 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
 
     if (_periodController.value != null) {
       cat.period = _periodController.value!;
+    }
+
+    if (_favoriteController.value) {
+      cat.isFavorite = true;
     }
 
     _catchManager.addOrUpdate(

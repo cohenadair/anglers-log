@@ -41,43 +41,50 @@ class UserPreferenceManager extends PreferenceManager {
   bool get enableFirestore => true;
 
   @override
+  bool get shouldUseFirestore => true;
+
+  @override
   void onUpgradeToPro() {
     // Nothing to do. User preferences are always stored on the cloud,
     // regardless of subscription status.
   }
 
-  set baitCustomEntityIds(List<Id> ids) =>
+  Future<void> setBaitCustomEntityIds(List<Id> ids) =>
       putIdList(_keyBaitCustomEntityIds, ids);
 
   List<Id> get baitCustomEntityIds => idList(_keyBaitCustomEntityIds);
 
-  set catchCustomEntityIds(List<Id> ids) =>
+  Future<void> setCatchCustomEntityIds(List<Id> ids) =>
       putIdList(_keyCatchCustomEntityIds, ids);
 
   List<Id> get catchCustomEntityIds => idList(_keyCatchCustomEntityIds);
 
-  set baitFieldIds(List<Id> ids) => putIdList(_keyBaitFieldIds, ids);
+  Future<void> setBaitFieldIds(List<Id> ids) =>
+      putIdList(_keyBaitFieldIds, ids);
 
   List<Id> get baitFieldIds => idList(_keyBaitFieldIds);
 
-  set catchFieldIds(List<Id> ids) => putIdList(_keyCatchFieldIds, ids);
+  Future<void> setCatchFieldIds(List<Id> ids) =>
+      putIdList(_keyCatchFieldIds, ids);
 
   List<Id> get catchFieldIds => idList(_keyCatchFieldIds);
 
-  set rateTimerStartedAt(int? timestamp) =>
+  Future<void> setRateTimerStartedAt(int? timestamp) =>
       put(_keyRateTimerStartedAt, timestamp);
 
   int? get rateTimerStartedAt => preferences[_keyRateTimerStartedAt];
 
-  set didRateApp(bool rated) => put(_keyDidRateApp, rated);
+  // ignore: avoid_positional_boolean_parameters
+  Future<void> setDidRateApp(bool rated) => put(_keyDidRateApp, rated);
 
   bool get didRateApp => preferences[_keyDidRateApp] ?? false;
 
-  set didOnboard(bool onboarded) => put(_keyDidOnboard, onboarded);
+  // ignore: avoid_positional_boolean_parameters
+  Future<void> setDidOnboard(bool onboarded) => put(_keyDidOnboard, onboarded);
 
   bool get didOnboard => preferences[_keyDidOnboard] ?? false;
 
-  set selectedReportId(Id? id) => putId(_keySelectedReportId, id);
+  Future<void> setSelectedReportId(Id? id) => putId(_keySelectedReportId, id);
 
   Id? get selectedReportId => id(_keySelectedReportId);
 
@@ -85,8 +92,8 @@ class UserPreferenceManager extends PreferenceManager {
   /// any in-app purchase setting and can only be set in the Firebase console.
   bool get isPro => preferences[_keyIsPro] ?? false;
 
-  void _onDeleteCustomEntity(CustomEntity entity) {
-    baitCustomEntityIds = baitCustomEntityIds..remove(entity.id);
-    catchCustomEntityIds = catchCustomEntityIds..remove(entity.id);
+  Future<void> _onDeleteCustomEntity(CustomEntity entity) async {
+    await setBaitCustomEntityIds(baitCustomEntityIds..remove(entity.id));
+    await setCatchCustomEntityIds(catchCustomEntityIds..remove(entity.id));
   }
 }

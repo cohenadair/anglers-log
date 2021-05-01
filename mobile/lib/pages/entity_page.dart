@@ -142,6 +142,7 @@ class _EntityPageState extends State<EntityPage> {
   }
 
   Widget _buildImages() {
+    // TODO: Consider using Scrollbar instead of a carousel.
     var carousel = <Widget>[];
     var imageNames = widget.imageNames;
 
