@@ -1,24 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:quiver/strings.dart';
 
-import '../comparison_report_manager.dart';
+import '../report_manager.dart';
 import '../i18n/strings.dart';
-import '../log.dart';
 import '../model/gen/anglerslog.pb.dart';
 import '../model/overview_report.dart';
 import '../pages/manageable_list_page.dart';
 import '../pages/save_report_page.dart';
 import '../res/dimen.dart';
 import '../subscription_manager.dart';
-import '../summary_report_manager.dart';
 import '../utils/string_utils.dart';
 import '../widgets/text.dart';
 import '../widgets/widget.dart';
 import 'pro_page.dart';
 
 class ReportListPage extends StatelessWidget {
-  static const _log = Log("ReportListPage");
-
   /// The generic type is dynamic here because different kinds of report
   /// objects are rendered in the list.
   final ManageableListPagePickerSettings<dynamic> pickerSettings;
@@ -30,8 +26,7 @@ class ReportListPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var subscriptionManager = SubscriptionManager.of(context);
-    var summaryReportManager = SummaryReportManager.of(context);
-    var comparisonReportManager = ComparisonReportManager.of(context);
+    var reportManager = ReportManager.of(context);
 
     return ManageableListPage<dynamic>(
       pickerTitleBuilder: (_) =>
@@ -39,8 +34,7 @@ class ReportListPage extends StatelessWidget {
       itemBuilder: _buildItem,
       itemManager: ManageableListPageItemManager<dynamic>(
         listenerManagers: [
-          summaryReportManager,
-          comparisonReportManager,
+          reportManager,
         ],
         loadItems: (_) => _loadItems(context),
         deleteWidget: (context, report) => Text(
@@ -49,7 +43,7 @@ class ReportListPage extends StatelessWidget {
             [report.name],
           ),
         ),
-        deleteItem: _deleteItem,
+        deleteItem: (_, item) => reportManager.delete(item.id),
         addPageBuilder: () =>
             subscriptionManager.isPro ? SaveReportPage() : ProPage(),
         editPageBuilder: (report) => SaveReportPage.edit(report),
@@ -61,9 +55,9 @@ class ReportListPage extends StatelessWidget {
   }
 
   ManageableListPageItemModel _buildItem(BuildContext context, dynamic item) {
-    if (item is SummaryReport || item is ComparisonReport) {
+    if (item is Report) {
       return ManageableListPageItemModel(
-        child: PrimaryLabel(item.name as String),
+        child: PrimaryLabel(item.name),
         editable: true,
       );
     } else if (item is OverviewReport) {
@@ -81,39 +75,25 @@ class ReportListPage extends StatelessWidget {
     }
   }
 
-  void _deleteItem(BuildContext context, dynamic item) {
-    if (item is SummaryReport) {
-      SummaryReportManager.of(context).delete(item.id);
-    } else if (item is ComparisonReport) {
-      ComparisonReportManager.of(context).delete(item.id);
-    } else {
-      _log.w("Can't delete item: $item");
-    }
-  }
-
   List<dynamic> _loadItems(BuildContext context) {
     var result = <dynamic>[
       OverviewReport(),
     ];
 
-    var summaryReportManager = SummaryReportManager.of(context);
-    var comparisonReportManager = ComparisonReportManager.of(context);
-
-    var customReports = <dynamic>[]
-      ..addAll(summaryReportManager.list())
-      ..addAll(comparisonReportManager.list())
+    var reports = <dynamic>[]
+      ..addAll(ReportManager.of(context).list())
       // Sort alphabetically.
       ..sort((lhs, rhs) => compareIgnoreCase(lhs.name, rhs.name));
 
     // Separate pre-defined reports from custom reports.
     result.add(HeadingNoteDivider(
-      hideNote: customReports.isNotEmpty,
-      title: Strings.of(context).reportListPageCustomReportTitle,
-      note: Strings.of(context).reportListPageCustomReportAddNote,
+      hideNote: reports.isNotEmpty,
+      title: Strings.of(context).reportListPageReportTitle,
+      note: Strings.of(context).reportListPageReportAddNote,
       noteIcon: Icons.add,
       padding: insetsBottomWidgetSmall,
     ));
 
-    return result..addAll(customReports);
+    return result..addAll(reports);
   }
 }

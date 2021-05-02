@@ -5,7 +5,7 @@ import 'package:quiver/strings.dart';
 
 import '../bait_manager.dart';
 import '../catch_manager.dart';
-import '../comparison_report_manager.dart';
+import '../report_manager.dart';
 import '../entity_manager.dart';
 import '../fishing_spot_manager.dart';
 import '../i18n/strings.dart';
@@ -17,7 +17,6 @@ import '../pages/report_list_page.dart';
 import '../res/dimen.dart';
 import '../res/gen/custom_icons.dart';
 import '../species_manager.dart';
-import '../summary_report_manager.dart';
 import '../user_preference_manager.dart';
 import '../utils/date_time_utils.dart';
 import '../utils/page_utils.dart';
@@ -44,7 +43,7 @@ class StatsPage extends StatefulWidget {
 class _StatsPageState extends State<StatsPage> {
   static const _log = Log("StatsPage");
 
-  final List<Report> _models = [];
+  final List<CalculatedReport> _models = [];
 
   /// The currently selected date range for viewing an [OverviewReport].
   var _currentOverviewDateRange =
@@ -61,15 +60,11 @@ class _StatsPageState extends State<StatsPage> {
 
   CatchManager get _catchManager => CatchManager.of(context);
 
-  ComparisonReportManager get _comparisonReportManager =>
-      ComparisonReportManager.of(context);
+  ReportManager get _reportManager => ReportManager.of(context);
 
   FishingSpotManager get _fishingSpotManager => FishingSpotManager.of(context);
 
   SpeciesManager get _speciesManager => SpeciesManager.of(context);
-
-  SummaryReportManager get _summaryReportManager =>
-      SummaryReportManager.of(context);
 
   UserPreferenceManager get _userPreferencesManager =>
       UserPreferenceManager.of(context);
@@ -104,9 +99,8 @@ class _StatsPageState extends State<StatsPage> {
           _catchManager,
           _baitManager,
           _fishingSpotManager,
-          _comparisonReportManager,
+          _reportManager,
           _speciesManager,
-          _summaryReportManager,
         ],
         onAnyChange: () => _updateCurrentReport(_currentReport.id),
         builder: (context) {
@@ -173,8 +167,7 @@ class _StatsPageState extends State<StatsPage> {
           _updateCurrentReport(_currentReport.id);
         }),
       );
-    } else if ((_currentReport is SummaryReport ||
-            _currentReport is ComparisonReport) &&
+    } else if (_currentReport is Report &&
         isNotEmpty(_currentReport.description)) {
       child = Padding(
         padding: insetsDefault,
@@ -230,8 +223,7 @@ class _StatsPageState extends State<StatsPage> {
             title: Strings.of(context).reportViewNoCatches,
             description: _currentReport is OverviewReport
                 ? Strings.of(context).reportViewNoCatchesDescription
-                : Strings.of(context)
-                    .reportViewNoCatchesCustomReportDescription,
+                : Strings.of(context).reportViewNoCatchesReportDescription,
           ),
         ),
       ),
@@ -447,15 +439,12 @@ class _StatsPageState extends State<StatsPage> {
 
   void _updateCurrentReport(Id? newReportId) {
     // If the current report no longer exists, show an overview.
-    if (newReportId == null ||
-        (!_summaryReportManager.entityExists(newReportId) &&
-            !_comparisonReportManager.entityExists(newReportId))) {
+    if (!_reportManager.entityExists(newReportId)) {
       _currentReport = OverviewReport();
     } else {
       // Always retrieve the latest report from the database. If the report was
       // edited, we'll need the latest data.
-      _currentReport = _summaryReportManager.entity(newReportId) ??
-          _comparisonReportManager.entity(newReportId);
+      _currentReport = _reportManager.entity(newReportId);
     }
 
     _userPreferencesManager.setSelectedReportId(_currentReport.id);
@@ -463,10 +452,10 @@ class _StatsPageState extends State<StatsPage> {
 
     if (_currentReport is OverviewReport) {
       _models.add(_createOverviewModel());
-    } else if (_currentReport is SummaryReport) {
-      _models.add(_createSummaryModel());
-    } else if (_currentReport is ComparisonReport) {
-      _models.addAll(_createComparisonModels());
+    } else if (_currentReport is Report) {
+      _models.addAll(_currentReport.type == Report_Type.comparison
+          ? _createComparisonModels()
+          : _createSummaryModel());
     } else {
       _log.w("Invalid report type: ${_currentReport.runtimeType}");
     }
@@ -493,30 +482,32 @@ class _StatsPageState extends State<StatsPage> {
     }
   }
 
-  Report _createOverviewModel() {
-    return Report(
+  CalculatedReport _createOverviewModel() {
+    return CalculatedReport(
       context: context,
       displayDateRange: _currentOverviewDateRange,
     );
   }
 
-  Report _createSummaryModel() {
-    var report = _summaryReportManager.entity(_currentReport.id)!;
+  List<CalculatedReport> _createSummaryModel() {
+    var report = _reportManager.entity(_currentReport.id)!;
 
-    return _createCustomReportModel(
-      context,
-      report,
-      report.displayDateRangeId,
-      report.startTimestamp,
-      report.endTimestamp,
-      sortOrder: ReportSortOrder.largestToSmallest,
-    );
+    return [
+      _createReportModel(
+        context,
+        report,
+        report.fromDisplayDateRangeId,
+        report.fromStartTimestamp,
+        report.fromEndTimestamp,
+        sortOrder: CalculatedReportSortOrder.largestToSmallest,
+      )
+    ];
   }
 
-  List<Report> _createComparisonModels() {
-    var report = _comparisonReportManager.entity(_currentReport.id)!;
+  List<CalculatedReport> _createComparisonModels() {
+    var report = _reportManager.entity(_currentReport.id)!;
 
-    var fromModel = _createCustomReportModel(
+    var fromModel = _createReportModel(
       context,
       report,
       report.fromDisplayDateRangeId,
@@ -524,7 +515,7 @@ class _StatsPageState extends State<StatsPage> {
       report.fromEndTimestamp,
       includeZeros: true,
     );
-    var toModel = _createCustomReportModel(
+    var toModel = _createReportModel(
       context,
       report,
       report.toDisplayDateRangeId,
@@ -540,16 +531,17 @@ class _StatsPageState extends State<StatsPage> {
     ];
   }
 
-  Report _createCustomReportModel(
+  CalculatedReport _createReportModel(
     BuildContext context,
     dynamic report,
     String displayDateRangeId,
     Int64 startTimestamp,
     Int64 endTimestamp, {
     bool includeZeros = false,
-    ReportSortOrder sortOrder = ReportSortOrder.alphabetical,
+    CalculatedReportSortOrder sortOrder =
+        CalculatedReportSortOrder.alphabetical,
   }) {
-    return Report(
+    return CalculatedReport(
       context: context,
       includeZeros: includeZeros,
       sortOrder: sortOrder,
@@ -580,7 +572,7 @@ class _StatsPageState extends State<StatsPage> {
     });
   }
 
-  bool _meets(bool Function(Report model) condition) {
+  bool _meets(bool Function(CalculatedReport model) condition) {
     return _models.firstWhereOrNull((model) => condition(model)) != null;
   }
 }

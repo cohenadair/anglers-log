@@ -67,7 +67,7 @@ class _ProPageState extends State<ProPage> {
         VerticalSpace(paddingWidget),
         _buildFeatureRow(Strings.of(context).proPageSync),
         VerticalSpace(paddingWidget),
-        _buildFeatureRow(Strings.of(context).proPageCustomReports),
+        _buildFeatureRow(Strings.of(context).proPageReports),
         VerticalSpace(paddingWidget),
         _buildFeatureRow(Strings.of(context).proPageCustomFields),
         VerticalSpace(paddingWidgetDouble),

@@ -99,4 +99,28 @@ class CustomEntity_Type extends $pb.ProtobufEnum {
   const CustomEntity_Type._($core.int v, $core.String n) : super(v, n);
 }
 
+class Report_Type extends $pb.ProtobufEnum {
+  static const Report_Type summary = Report_Type._(
+      0,
+      const $core.bool.fromEnvironment('protobuf.omit_enum_names')
+          ? ''
+          : 'summary');
+  static const Report_Type comparison = Report_Type._(
+      1,
+      const $core.bool.fromEnvironment('protobuf.omit_enum_names')
+          ? ''
+          : 'comparison');
+
+  static const $core.List<Report_Type> values = <Report_Type>[
+    summary,
+    comparison,
+  ];
+
+  static final $core.Map<$core.int, Report_Type> _byValue =
+      $pb.ProtobufEnum.initByValue(values);
+  static Report_Type? valueOf($core.int value) => _byValue[value];
+
+  const Report_Type._($core.int v, $core.String n) : super(v, n);
+}
+
 // ignore_for_file: constant_identifier_names,lines_longer_than_80_chars,directives_ordering,prefer_mixin,implementation_imports

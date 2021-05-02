@@ -298,7 +298,7 @@ void main() {
     _stubCatchesByTimestamp(context);
 
     // Normal use case.
-    var data = Report(
+    var data = CalculatedReport(
       context: context,
       displayDateRange: DisplayDateRange.allDates,
     );
@@ -470,7 +470,7 @@ void main() {
     var context = await buildContext(tester, appManager: appManager);
     _stubCatchesByTimestamp(context);
 
-    var data = Report(
+    var data = CalculatedReport(
       context: context,
       displayDateRange: DisplayDateRange.allDates,
       includeZeros: true,
@@ -483,10 +483,10 @@ void main() {
     var context = await buildContext(tester, appManager: appManager);
     _stubCatchesByTimestamp(context);
 
-    var data = Report(
+    var data = CalculatedReport(
       context: context,
       displayDateRange: DisplayDateRange.allDates,
-      sortOrder: ReportSortOrder.alphabetical,
+      sortOrder: CalculatedReportSortOrder.alphabetical,
     );
 
     expect(data.catchesPerSpecies.keys.toList(), [
@@ -559,7 +559,7 @@ void main() {
     var context = await buildContext(tester, appManager: appManager);
     _stubCatchesByTimestamp(context);
 
-    var data = Report(
+    var data = CalculatedReport(
       context: context,
       displayDateRange: DisplayDateRange.allDates,
     );
@@ -634,7 +634,7 @@ void main() {
     var context = await buildContext(tester, appManager: appManager);
     _stubCatchesByTimestamp(context);
 
-    var data = Report(
+    var data = CalculatedReport(
       context: context,
       displayDateRange: DisplayDateRange.allDates,
       isFavoritesOnly: true,
@@ -714,7 +714,7 @@ void main() {
     var context = await buildContext(tester, appManager: appManager);
     _stubCatchesByTimestamp(context);
 
-    var data = Report(
+    var data = CalculatedReport(
       context: context,
       displayDateRange: DisplayDateRange.allDates,
       isFavoritesOnly: false,
@@ -742,14 +742,14 @@ void main() {
     var context = await buildContext(tester, appManager: appManager);
     _stubCatchesByTimestamp(context);
 
-    var data1 = Report(
+    var data1 = CalculatedReport(
       context: context,
       displayDateRange: DisplayDateRange.allDates,
       includeZeros: true,
     );
     expect(data1.catchesPerSpecies.length, 5);
 
-    var data2 = Report(
+    var data2 = CalculatedReport(
       context: context,
       displayDateRange: DisplayDateRange.allDates,
       includeZeros: true,

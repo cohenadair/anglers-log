@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:mobile/model/gen/anglerslog.pb.dart';
 import 'package:quiver/strings.dart';
 
+import '../model/gen/anglerslog.pb.dart';
 import '../res/color.dart';
 import '../res/dimen.dart';
 import '../widgets/text.dart';

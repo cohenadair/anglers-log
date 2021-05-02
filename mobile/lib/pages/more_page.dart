@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:mobile/pages/method_list_page.dart';
 
 import '../i18n/strings.dart';
 import '../pages/bait_category_list_page.dart';
@@ -17,6 +16,7 @@ import '../utils/store_utils.dart';
 import '../widgets/list_item.dart';
 import '../widgets/widget.dart';
 import 'angler_list_page.dart';
+import 'method_list_page.dart';
 import 'scroll_page.dart';
 
 class MorePage extends StatelessWidget {

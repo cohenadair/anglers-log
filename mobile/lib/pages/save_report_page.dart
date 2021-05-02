@@ -7,10 +7,8 @@ import 'package:quiver/strings.dart';
 
 import '../angler_manager.dart';
 import '../bait_manager.dart';
-import '../comparison_report_manager.dart';
 import '../fishing_spot_manager.dart';
 import '../i18n/strings.dart';
-import '../log.dart';
 import '../method_manager.dart';
 import '../model/gen/anglerslog.pb.dart';
 import '../named_entity_manager.dart';
@@ -18,9 +16,9 @@ import '../pages/bait_list_page.dart';
 import '../pages/fishing_spot_list_page.dart';
 import '../pages/form_page.dart';
 import '../pages/species_list_page.dart';
+import '../report_manager.dart';
 import '../res/dimen.dart';
 import '../species_manager.dart';
-import '../summary_report_manager.dart';
 import '../utils/date_time_utils.dart';
 import '../utils/page_utils.dart';
 import '../utils/protobuf_utils.dart';
@@ -39,7 +37,7 @@ import 'method_list_page.dart';
 import 'picker_page.dart';
 
 class SaveReportPage extends StatefulWidget {
-  final dynamic oldReport;
+  final Report? oldReport;
 
   SaveReportPage() : oldReport = null;
 
@@ -63,8 +61,6 @@ class _SaveReportPageState extends State<SaveReportPage> {
   static final _idPeriods = randomId();
   static final _idFavoritesOnly = randomId();
 
-  static const _log = Log("SaveReportPage");
-
   final Key _keySummaryStart = ValueKey(0);
   final Key _keyComparisonStart = ValueKey(1);
 
@@ -74,8 +70,7 @@ class _SaveReportPageState extends State<SaveReportPage> {
 
   BaitManager get _baitManager => BaitManager.of(context);
 
-  ComparisonReportManager get _comparisonReportManager =>
-      ComparisonReportManager.of(context);
+  ReportManager get _reportManager => ReportManager.of(context);
 
   FishingSpotManager get _fishingSpotManager => FishingSpotManager.of(context);
 
@@ -83,17 +78,14 @@ class _SaveReportPageState extends State<SaveReportPage> {
 
   SpeciesManager get _speciesManager => SpeciesManager.of(context);
 
-  SummaryReportManager get _summaryReportManager =>
-      SummaryReportManager.of(context);
-
   TextInputController get _nameController =>
       _fields[_idName]!.controller as TextInputController;
 
   TextInputController get _descriptionController =>
       _fields[_idDescription]!.controller as TextInputController;
 
-  InputController<_ReportType> get _typeController =>
-      _fields[_idType]!.controller as InputController<_ReportType>;
+  InputController<Report_Type> get _typeController =>
+      _fields[_idType]!.controller as InputController<Report_Type>;
 
   InputController<DisplayDateRange> get _fromDateRangeController =>
       _fields[_idStartDateRange]!.controller
@@ -123,11 +115,13 @@ class _SaveReportPageState extends State<SaveReportPage> {
   BoolInputController get _favoritesOnlyController =>
       _fields[_idFavoritesOnly]!.controller as BoolInputController;
 
-  dynamic get _oldReport => widget.oldReport;
+  Report? get _oldReport => widget.oldReport;
 
-  bool get _editing => _oldReport != null;
+  bool get _isEditing => _oldReport != null;
 
-  bool get _summary => _typeController.value == _ReportType.summary;
+  bool get _isComparison => _typeController.value == Report_Type.comparison;
+
+  bool get _isSummary => _typeController.value == Report_Type.summary;
 
   @override
   void initState() {
@@ -138,10 +132,8 @@ class _SaveReportPageState extends State<SaveReportPage> {
       controller: TextInputController(
         validator: NameValidator(
           nameExistsMessage: (context) =>
-              Strings.of(context).saveCustomReportPageNameExists,
-          nameExists: (newName) =>
-              _comparisonReportManager.nameExists(newName) ||
-              _summaryReportManager.nameExists(newName),
+              Strings.of(context).saveReportPageNameExists,
+          nameExists: (newName) => _reportManager.nameExists(newName),
           oldName: _oldReport?.name,
         ),
       ),
@@ -154,7 +146,7 @@ class _SaveReportPageState extends State<SaveReportPage> {
 
     _fields[_idType] = Field(
       id: _idType,
-      controller: InputController<_ReportType>(),
+      controller: InputController<Report_Type>(),
     );
 
     _fields[_idStartDateRange] = Field(
@@ -202,56 +194,37 @@ class _SaveReportPageState extends State<SaveReportPage> {
       controller: SetInputController<Method>(),
     );
 
-    if (_editing) {
-      if (_oldReport is SummaryReport) {
-        var report = _oldReport as SummaryReport;
-        _nameController.value = report.name;
-        _descriptionController.value = report.description;
-        _typeController.value = _ReportType.summary;
-        _fromDateRangeController.value = DisplayDateRange.of(
-          report.displayDateRangeId,
-          report.startTimestamp.toInt(),
-          report.endTimestamp.toInt(),
-        );
-        _toDateRangeController.value = DisplayDateRange.allDates;
-        _favoritesOnlyController.value = report.isFavoritesOnly;
-        _periodsController.value = report.periods.toSet();
-        _initEntitySets(
-          anglerIds: report.anglerIds,
-          baitIds: report.baitIds,
-          fishingSpotIds: report.fishingSpotIds,
-          methodIds: report.methodIds,
-          speciesIds: report.speciesIds,
-        );
-      } else if (_oldReport is ComparisonReport) {
-        var report = _oldReport as ComparisonReport;
-        _nameController.value = report.name;
-        _descriptionController.value = report.description;
-        _typeController.value = _ReportType.comparison;
-        _fromDateRangeController.value = DisplayDateRange.of(
-          report.fromDisplayDateRangeId,
-          report.fromStartTimestamp.toInt(),
-          report.fromEndTimestamp.toInt(),
-        );
+    if (_isEditing) {
+      _nameController.value = _oldReport!.name;
+      _descriptionController.value = _oldReport!.description;
+      _typeController.value = _oldReport!.type;
+      _fromDateRangeController.value = DisplayDateRange.of(
+        _oldReport!.fromDisplayDateRangeId,
+        _oldReport!.fromStartTimestamp.toInt(),
+        _oldReport!.fromEndTimestamp.toInt(),
+      );
+      if (_isComparison) {
         _toDateRangeController.value = DisplayDateRange.of(
-          report.toDisplayDateRangeId,
-          report.toStartTimestamp.toInt(),
-          report.toEndTimestamp.toInt(),
-        );
-        _favoritesOnlyController.value = report.isFavoritesOnly;
-        _periodsController.value = report.periods.toSet();
-        _initEntitySets(
-          anglerIds: report.anglerIds,
-          baitIds: report.baitIds,
-          fishingSpotIds: report.fishingSpotIds,
-          methodIds: report.methodIds,
-          speciesIds: report.speciesIds,
+          _oldReport!.toDisplayDateRangeId,
+          _oldReport!.toStartTimestamp.toInt(),
+          _oldReport!.toEndTimestamp.toInt(),
         );
       }
+      _favoritesOnlyController.value = _oldReport!.isFavoritesOnly;
+      _periodsController.value = _oldReport!.periods.toSet();
+      _initEntitySets(
+        anglerIds: _oldReport!.anglerIds,
+        baitIds: _oldReport!.baitIds,
+        fishingSpotIds: _oldReport!.fishingSpotIds,
+        methodIds: _oldReport!.methodIds,
+        speciesIds: _oldReport!.speciesIds,
+      );
     } else {
-      _typeController.value = _ReportType.summary;
+      _typeController.value = Report_Type.summary;
       _fromDateRangeController.value = DisplayDateRange.allDates;
-      _toDateRangeController.value = DisplayDateRange.allDates;
+      if (_isComparison) {
+        _toDateRangeController.value = DisplayDateRange.allDates;
+      }
       _periodsController.value = {};
       _initEntitySets();
     }
@@ -284,9 +257,9 @@ class _SaveReportPageState extends State<SaveReportPage> {
     return FormPage.immutable(
       runSpacing: 0,
       padding: insetsZero,
-      title: Text(_editing
-          ? Strings.of(context).saveCustomReportPageEditTitle
-          : Strings.of(context).saveCustomReportPageNewTitle),
+      title: Text(_isEditing
+          ? Strings.of(context).saveReportPageEditTitle
+          : Strings.of(context).saveReportPageNewTitle),
       isInputValid: _nameController.valid(context),
       fieldBuilder: (context) => {
         _idName: _buildName(),
@@ -341,30 +314,31 @@ class _SaveReportPageState extends State<SaveReportPage> {
   Widget _buildType() {
     return RadioInput(
       padding: insetsHorizontalDefaultVerticalSmall,
-      initialSelectedIndex: _typeController.value!.index,
-      optionCount: _ReportType.values.length,
+      initialSelectedIndex: _typeController.value!.value,
+      optionCount: Report_Type.values.length,
       optionBuilder: (context, index) {
-        var type = _ReportType.values[index];
+        var type = Report_Type.values[index];
         switch (type) {
-          case _ReportType.comparison:
-            return Strings.of(context).saveCustomReportPageComparison;
-          case _ReportType.summary:
-            return Strings.of(context).saveCustomReportPageSummary;
+          case Report_Type.comparison:
+            return Strings.of(context).saveReportPageComparison;
+          case Report_Type.summary:
+          // Fallthrough.
+          default:
+            return Strings.of(context).saveReportPageSummary;
         }
       },
-      onSelect: (index) => setState(() {
-        _typeController.value = _ReportType.values[index];
-      }),
+      onSelect: (index) =>
+          setState(() => _typeController.value = Report_Type.values[index]),
     );
   }
 
   Widget _buildStartDateRange() {
     return AnimatedSwitcher(
       duration: defaultAnimationDuration,
-      child: _summary
+      child: _isSummary
           ? _startDateRangePicker(_keySummaryStart, null)
           : _startDateRangePicker(_keyComparisonStart,
-              Strings.of(context).saveCustomReportPageStartDateRangeLabel),
+              Strings.of(context).saveReportPageStartDateRangeLabel),
     );
   }
 
@@ -393,10 +367,10 @@ class _SaveReportPageState extends State<SaveReportPage> {
   Widget _buildEndDateRange() {
     return AnimatedSwitcher(
       duration: defaultAnimationDuration,
-      child: _summary
+      child: _isSummary
           ? Empty()
           : DateRangePickerInput(
-              title: Strings.of(context).saveCustomReportPageEndDateRangeLabel,
+              title: Strings.of(context).saveReportPageEndDateRangeLabel,
               initialDateRange: _toDateRangeController.value,
               onPicked: (dateRange) => setState(() {
                 _toDateRangeController.value = dateRange;
@@ -442,7 +416,7 @@ class _SaveReportPageState extends State<SaveReportPage> {
     return _buildEntityPicker<Angler>(
       manager: _anglerManager,
       controller: _anglersController,
-      emptyValue: Strings.of(context).saveCustomReportPageAllAnglers,
+      emptyValue: Strings.of(context).saveReportPageAllAnglers,
       listPage: (pickerSettings) => AnglerListPage(
         pickerSettings: pickerSettings,
       ),
@@ -453,7 +427,7 @@ class _SaveReportPageState extends State<SaveReportPage> {
     return _buildEntityPicker<Species>(
       manager: _speciesManager,
       controller: _speciesController,
-      emptyValue: Strings.of(context).saveCustomReportPageAllSpecies,
+      emptyValue: Strings.of(context).saveReportPageAllSpecies,
       listPage: (pickerSettings) => SpeciesListPage(
         pickerSettings: pickerSettings,
       ),
@@ -465,7 +439,7 @@ class _SaveReportPageState extends State<SaveReportPage> {
     return _buildEntityPicker<Bait>(
       manager: _baitManager,
       controller: _baitsController,
-      emptyValue: Strings.of(context).saveCustomReportPageAllBaits,
+      emptyValue: Strings.of(context).saveReportPageAllBaits,
       dynamicListPage: BaitListPage(
         pickerSettings: ManageableListPagePickerSettings<dynamic>(
           onPicked: (context, items) {
@@ -486,7 +460,7 @@ class _SaveReportPageState extends State<SaveReportPage> {
     return _buildEntityPicker<FishingSpot>(
       manager: _fishingSpotManager,
       controller: _fishingSpotsController,
-      emptyValue: Strings.of(context).saveCustomReportPageAllFishingSpots,
+      emptyValue: Strings.of(context).saveReportPageAllFishingSpots,
       listPage: (pickerSettings) => FishingSpotListPage(
         pickerSettings: pickerSettings,
       ),
@@ -497,7 +471,7 @@ class _SaveReportPageState extends State<SaveReportPage> {
     return _buildEntityPicker<Method>(
       manager: _methodManager,
       controller: _methodsController,
-      emptyValue: Strings.of(context).saveCustomReportPageAllMethods,
+      emptyValue: Strings.of(context).saveReportPageAllMethods,
       listPage: (pickerSettings) {
         return MethodListPage(
           pickerSettings: pickerSettings,
@@ -550,60 +524,21 @@ class _SaveReportPageState extends State<SaveReportPage> {
   }
 
   FutureOr<bool> _save(BuildContext context) {
-    dynamic report;
-    switch (_typeController.value!) {
-      case _ReportType.summary:
-        report = _createSummaryReport();
-        break;
-      case _ReportType.comparison:
-        report = _createComparisonReport();
-        break;
-    }
-
-    // Remove old report, in case an edit changed the type of report. A change
-    // in type requires using a different manager.
-    if (_editing) {
-      if (_oldReport is SummaryReport) {
-        _summaryReportManager.delete((_oldReport as SummaryReport).id);
-      } else if (_oldReport is ComparisonReport) {
-        _comparisonReportManager.delete((_oldReport as ComparisonReport).id);
-      } else {
-        _log.e("Unhandled old report type: $report");
-      }
-    }
-
-    _addOrUpdate(report);
-    return true;
-  }
-
-  void _addOrUpdate(dynamic report) {
-    if (report == null) {
-      return;
-    }
-
-    if (report is SummaryReport) {
-      _summaryReportManager.addOrUpdate(report);
-    } else if (report is ComparisonReport) {
-      _comparisonReportManager.addOrUpdate(report);
-    } else {
-      _log.e("Unhandled report type: $report");
-    }
-  }
-
-  SummaryReport _createSummaryReport() {
-    var dateRange = _fromDateRangeController.value!;
-    var custom = dateRange == DisplayDateRange.custom;
-
-    var report = SummaryReport()
+    var report = Report()
       ..id = _oldReport?.id ?? randomId()
       ..name = _nameController.value!
-      ..displayDateRangeId = dateRange.id
+      ..type = _typeController.value!
+      ..fromDisplayDateRangeId = _fromDateRangeController.value!.id
       ..periods.addAll(_periodsController.value)
       ..anglerIds.addAll(_anglersController.value.map((e) => e.id))
       ..baitIds.addAll(_baitsController.value.map((e) => e.id))
       ..fishingSpotIds.addAll(_fishingSpotsController.value.map((e) => e.id))
       ..methodIds.addAll(_methodsController.value.map((e) => e.id))
       ..speciesIds.addAll(_speciesController.value.map((e) => e.id));
+
+    if (_toDateRangeController.value != null) {
+      report.toDisplayDateRangeId = _toDateRangeController.value!.id;
+    }
 
     if (isNotEmpty(_descriptionController.value)) {
       report.description = _descriptionController.value!;
@@ -613,52 +548,19 @@ class _SaveReportPageState extends State<SaveReportPage> {
       report.isFavoritesOnly = true;
     }
 
-    if (custom) {
-      report.startTimestamp = Int64(dateRange.value(context).startMs);
-      report.endTimestamp = Int64(dateRange.value(context).endMs);
-    }
-
-    return report;
-  }
-
-  ComparisonReport _createComparisonReport() {
     var fromDateRange = _fromDateRangeController.value!;
-    var toDateRange = _toDateRangeController.value!;
-    var customFrom = fromDateRange == DisplayDateRange.custom;
-    var customTo = toDateRange == DisplayDateRange.custom;
-
-    var report = ComparisonReport()
-      ..id = _oldReport?.id ?? randomId()
-      ..name = _nameController.value!
-      ..fromDisplayDateRangeId = fromDateRange.id
-      ..toDisplayDateRangeId = toDateRange.id
-      ..periods.addAll(_periodsController.value)
-      ..anglerIds.addAll(_anglersController.value.map((e) => e.id))
-      ..baitIds.addAll(_baitsController.value.map((e) => e.id))
-      ..fishingSpotIds.addAll(_fishingSpotsController.value.map((e) => e.id))
-      ..methodIds.addAll(_methodsController.value.map((e) => e.id))
-      ..speciesIds.addAll(_speciesController.value.map((e) => e.id));
-
-    if (isNotEmpty(_descriptionController.value)) {
-      report.description = _descriptionController.value!;
-    }
-
-    if (_favoritesOnlyController.value) {
-      report.isFavoritesOnly = true;
-    }
-
-    if (customFrom) {
+    if (fromDateRange == DisplayDateRange.custom) {
       report.fromStartTimestamp = Int64(fromDateRange.value(context).startMs);
       report.fromEndTimestamp = Int64(fromDateRange.value(context).endMs);
     }
 
-    if (customTo) {
+    var toDateRange = _toDateRangeController.value;
+    if (toDateRange != null && toDateRange == DisplayDateRange.custom) {
       report.toStartTimestamp = Int64(toDateRange.value(context).startMs);
       report.toEndTimestamp = Int64(toDateRange.value(context).endMs);
     }
 
-    return report;
+    _reportManager.addOrUpdate(report);
+    return true;
   }
 }
-
-enum _ReportType { summary, comparison }

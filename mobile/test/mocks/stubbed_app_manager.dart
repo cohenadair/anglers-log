@@ -14,8 +14,6 @@ class StubbedAppManager {
   MockBaitCategoryManager baitCategoryManager = MockBaitCategoryManager();
   MockBaitManager baitManager = MockBaitManager();
   MockCatchManager catchManager = MockCatchManager();
-  MockComparisonReportManager comparisonReportManager =
-      MockComparisonReportManager();
   MockCustomEntityManager customEntityManager = MockCustomEntityManager();
   MockFishingSpotManager fishingSpotManager = MockFishingSpotManager();
   MockImageManager imageManager = MockImageManager();
@@ -23,9 +21,9 @@ class StubbedAppManager {
   MockLocationMonitor locationMonitor = MockLocationMonitor();
   MockMethodManager methodManager = MockMethodManager();
   MockPropertiesManager propertiesManager = MockPropertiesManager();
+  MockReportManager reportManager = MockReportManager();
   MockSpeciesManager speciesManager = MockSpeciesManager();
   MockSubscriptionManager subscriptionManager = MockSubscriptionManager();
-  MockSummaryReportManager summaryReportManager = MockSummaryReportManager();
   MockTimeManager timeManager = MockTimeManager();
   MockTripManager tripManager = MockTripManager();
   MockUserPreferenceManager userPreferenceManager = MockUserPreferenceManager();
@@ -58,7 +56,6 @@ class StubbedAppManager {
     when(app.baitCategoryManager).thenReturn(baitCategoryManager);
     when(app.baitManager).thenReturn(baitManager);
     when(app.catchManager).thenReturn(catchManager);
-    when(app.comparisonReportManager).thenReturn(comparisonReportManager);
     when(app.customEntityManager).thenReturn(customEntityManager);
     when(app.fishingSpotManager).thenReturn(fishingSpotManager);
     when(app.imageManager).thenReturn(imageManager);
@@ -66,9 +63,9 @@ class StubbedAppManager {
     when(app.locationMonitor).thenReturn(locationMonitor);
     when(app.methodManager).thenReturn(methodManager);
     when(app.propertiesManager).thenReturn(propertiesManager);
+    when(app.reportManager).thenReturn(reportManager);
     when(app.speciesManager).thenReturn(speciesManager);
     when(app.subscriptionManager).thenReturn(subscriptionManager);
-    when(app.summaryReportManager).thenReturn(summaryReportManager);
     when(app.timeManager).thenReturn(timeManager);
     when(app.tripManager).thenReturn(tripManager);
     when(app.userPreferenceManager).thenReturn(userPreferenceManager);
@@ -123,13 +120,6 @@ class StubbedAppManager {
     )).thenReturn(SimpleEntityListener());
     when(catchManager.entity(any)).thenReturn(null);
 
-    when(comparisonReportManager.addSimpleListener(
-      onAdd: anyNamed("onAdd"),
-      onUpdate: anyNamed("onUpdate"),
-      onDelete: anyNamed("onDelete"),
-    )).thenReturn(SimpleEntityListener());
-    when(comparisonReportManager.entity(any)).thenReturn(null);
-
     when(customEntityManager.addSimpleListener(
       onAdd: anyNamed("onAdd"),
       onUpdate: anyNamed("onUpdate"),
@@ -151,19 +141,19 @@ class StubbedAppManager {
     )).thenReturn(SimpleEntityListener());
     when(methodManager.entity(any)).thenReturn(null);
 
+    when(reportManager.addSimpleListener(
+      onAdd: anyNamed("onAdd"),
+      onUpdate: anyNamed("onUpdate"),
+      onDelete: anyNamed("onDelete"),
+    )).thenReturn(SimpleEntityListener());
+    when(reportManager.entity(any)).thenReturn(null);
+
     when(speciesManager.addSimpleListener(
       onAdd: anyNamed("onAdd"),
       onUpdate: anyNamed("onUpdate"),
       onDelete: anyNamed("onDelete"),
     )).thenReturn(SimpleEntityListener());
     when(speciesManager.entity(any)).thenReturn(null);
-
-    when(summaryReportManager.addSimpleListener(
-      onAdd: anyNamed("onAdd"),
-      onUpdate: anyNamed("onUpdate"),
-      onDelete: anyNamed("onDelete"),
-    )).thenReturn(SimpleEntityListener());
-    when(summaryReportManager.entity(any)).thenReturn(null);
   }
 
   void stubCurrentTime(DateTime now) {

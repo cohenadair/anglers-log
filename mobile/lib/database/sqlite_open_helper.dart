@@ -60,13 +60,7 @@ final List<String> _schema0 = [
   );
   """,
   """
-  CREATE TABLE summary_report (
-    id BLOB PRIMARY KEY,
-    bytes BLOB NOT NULL
-  );
-  """,
-  """
-  CREATE TABLE comparison_report (
+  CREATE TABLE custom_report (
     id BLOB PRIMARY KEY,
     bytes BLOB NOT NULL
   );

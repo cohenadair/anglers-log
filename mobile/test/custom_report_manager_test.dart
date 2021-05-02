@@ -1,9 +1,8 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mobile/app_manager.dart';
 import 'package:mobile/bait_manager.dart';
+import 'package:mobile/report_manager.dart';
 import 'package:mobile/fishing_spot_manager.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
-import 'package:mobile/report_manager.dart';
 import 'package:mobile/species_manager.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mockito/mockito.dart';
@@ -11,47 +10,17 @@ import 'package:mockito/mockito.dart';
 import 'mocks/mocks.mocks.dart';
 import 'mocks/stubbed_app_manager.dart';
 
-class TestCustomReportManager extends ReportManager<SummaryReport> {
-  final _id = randomId();
-
-  TestCustomReportManager(AppManager app) : super(app);
-
-  @override
-  SummaryReport entityFromBytes(List<int> bytes) => SummaryReport()
-    ..id = _id
-    ..name = "Summary Report";
-
-  @override
-  Id id(SummaryReport entity) => _id;
-
-  @override
-  String name(SummaryReport entity) => "Summary Report";
-
-  @override
-  String get tableName => "summary_report";
-
-  @override
-  bool removeBait(SummaryReport report, Bait bait) => true;
-
-  @override
-  bool removeFishingSpot(SummaryReport report, FishingSpot fishingSpot) => true;
-
-  @override
-  bool removeSpecies(SummaryReport report, Species species) => true;
-}
-
 void main() {
   late StubbedAppManager appManager;
 
+  late MockEntityListener<Report> reportListener;
+
+  late ReportManager reportManager;
   late SpeciesManager speciesManager;
   late BaitManager baitManager;
   late FishingSpotManager fishingSpotManager;
 
-  late TestCustomReportManager reportManager;
-  late MockEntityListener<SummaryReport> reportListener;
-
   setUp(() {
-    // Setup mocks.
     appManager = StubbedAppManager();
 
     when(appManager.authManager.stream).thenAnswer((_) => Stream.empty());
@@ -61,8 +30,9 @@ void main() {
     when(appManager.localDatabaseManager.deleteEntity(any, any))
         .thenAnswer((_) => Future.value(true));
 
-    reportListener = MockEntityListener<SummaryReport>();
-    when(reportListener.onAdd).thenReturn((_) {});
+    when(appManager.baitManager.addListener(any)).thenAnswer((_) {});
+    when(appManager.fishingSpotManager.addListener(any)).thenAnswer((_) {});
+    when(appManager.speciesManager.addListener(any)).thenAnswer((_) {});
 
     when(appManager.subscriptionManager.stream)
         .thenAnswer((_) => Stream.empty());
@@ -78,12 +48,15 @@ void main() {
     fishingSpotManager = FishingSpotManager(appManager.app);
     when(appManager.app.fishingSpotManager).thenReturn(fishingSpotManager);
 
-    reportManager = TestCustomReportManager(appManager.app);
+    reportListener = MockEntityListener<Report>();
+    when(reportListener.onAdd).thenReturn((_) {});
+
+    reportManager = ReportManager(appManager.app);
     reportManager.addListener(reportListener);
   });
 
   test("On species deleted, reports updated and listeners notified", () async {
-    var updatedReports = <SummaryReport>[];
+    var updatedReports = <Report>[];
     when(reportListener.onUpdate)
         .thenReturn((report) => updatedReports.add(report));
 
@@ -103,7 +76,7 @@ void main() {
       speciesId: anyNamed("speciesId"),
     )).thenReturn(false);
 
-    var report = SummaryReport()
+    var report = Report()
       ..id = randomId()
       ..speciesIds.add(species.id);
     reportManager.addOrUpdate(report);
@@ -121,7 +94,7 @@ void main() {
   });
 
   test("On baits deleted, reports updated and listeners notified", () async {
-    var updatedReports = <SummaryReport>[];
+    var updatedReports = <Report>[];
     when(reportListener.onUpdate)
         .thenReturn((report) => updatedReports.add(report));
 
@@ -139,7 +112,7 @@ void main() {
     when(appManager.localDatabaseManager.deleteEntity(any, any))
         .thenAnswer((_) => Future.value(true));
 
-    var report = SummaryReport()
+    var report = Report()
       ..id = randomId()
       ..baitIds.add(bait.id);
     reportManager.addOrUpdate(report);
@@ -158,7 +131,7 @@ void main() {
 
   test("On fishing spots deleted, reports updated and listeners notified",
       () async {
-    var updatedReports = <SummaryReport>[];
+    var updatedReports = <Report>[];
     when(reportListener.onUpdate)
         .thenReturn((report) => updatedReports.add(report));
 
@@ -177,7 +150,7 @@ void main() {
     when(appManager.localDatabaseManager.deleteEntity(any, any))
         .thenAnswer((_) => Future.value(true));
 
-    var report = SummaryReport()
+    var report = Report()
       ..id = randomId()
       ..fishingSpotIds.add(fishingSpot.id);
     reportManager.addOrUpdate(report);
@@ -192,5 +165,44 @@ void main() {
 
     expect(updatedReports.length, 1);
     expect(updatedReports.first.id, report.id);
+  });
+
+  test("removeBait", () async {
+    var baitToRemove = Bait()..id = randomId();
+
+    var report = Report()..id = randomId();
+    report.baitIds.add(baitToRemove.id);
+
+    reportManager.removeBait(report, baitToRemove);
+    expect(
+      report.baitIds.contains(baitToRemove.id),
+      isFalse,
+    );
+  });
+
+  test("removeFishingSpot", () async {
+    var fishingSpotToRemove = FishingSpot()..id = randomId();
+
+    var report = Report()..id = randomId();
+    report.fishingSpotIds.add(fishingSpotToRemove.id);
+
+    reportManager.removeFishingSpot(report, fishingSpotToRemove);
+    expect(
+      report.fishingSpotIds.contains(fishingSpotToRemove.id),
+      isFalse,
+    );
+  });
+
+  test("removeSpecies", () async {
+    var speciesToRemove = Species()..id = randomId();
+
+    var report = Report()..id = randomId();
+    report.speciesIds.add(speciesToRemove.id);
+
+    reportManager.removeSpecies(report, speciesToRemove);
+    expect(
+      report.speciesIds.contains(speciesToRemove.id),
+      isFalse,
+    );
   });
 }

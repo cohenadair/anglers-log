@@ -76,39 +76,29 @@ message Species {
   string name = 2;
 }
 
-message SummaryReport {
-  Id id = 1;
-  string name = 2;
-  string description = 3;
-  string display_date_range_id = 4;
-  uint64 start_timestamp = 5;
-  uint64 end_timestamp = 6;
-  repeated Id bait_ids = 7;
-  repeated Id fishing_spot_ids = 8;
-  repeated Id species_ids = 9;
-  repeated Id angler_ids = 10;
-  repeated Id method_ids = 11;
-  repeated Period periods = 12;
-  bool is_favorites_only = 13;
-}
+message Report {
+  enum Type {
+    summary = 0;
+    comparison = 1;
+  }
 
-message ComparisonReport {
   Id id = 1;
   string name = 2;
   string description = 3;
-  string from_display_date_range_id = 4;
-  string to_display_date_range_id = 5;
-  uint64 from_start_timestamp = 6;
-  uint64 to_start_timestamp = 7;
-  uint64 from_end_timestamp = 8;
-  uint64 to_end_timestamp = 9;
-  repeated Id bait_ids = 10;
-  repeated Id fishing_spot_ids = 11;
-  repeated Id species_ids = 12;
-  repeated Id angler_ids = 13;
-  repeated Id method_ids = 14;
-  repeated Period periods = 15;
-  bool is_favorites_only = 16;
+  Type type = 4;
+  string from_display_date_range_id = 5;
+  string to_display_date_range_id = 6;
+  uint64 from_start_timestamp = 7;
+  uint64 to_start_timestamp = 8;
+  uint64 from_end_timestamp = 9;
+  uint64 to_end_timestamp = 10;
+  repeated Id bait_ids = 11;
+  repeated Id fishing_spot_ids = 12;
+  repeated Id species_ids = 13;
+  repeated Id angler_ids = 14;
+  repeated Id method_ids = 15;
+  repeated Period periods = 16;
+  bool is_favorites_only = 17;
 }
 
 message Angler {

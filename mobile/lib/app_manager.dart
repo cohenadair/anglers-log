@@ -7,7 +7,6 @@ import 'auth_manager.dart';
 import 'bait_category_manager.dart';
 import 'bait_manager.dart';
 import 'catch_manager.dart';
-import 'comparison_report_manager.dart';
 import 'custom_entity_manager.dart';
 import 'fishing_spot_manager.dart';
 import 'image_manager.dart';
@@ -15,9 +14,9 @@ import 'local_database_manager.dart';
 import 'location_monitor.dart';
 import 'method_manager.dart';
 import 'properties_manager.dart';
+import 'report_manager.dart';
 import 'species_manager.dart';
 import 'subscription_manager.dart';
-import 'summary_report_manager.dart';
 import 'time_manager.dart';
 import 'trip_manager.dart';
 import 'user_preference_manager.dart';
@@ -50,7 +49,6 @@ class AppManager {
   BaitCategoryManager? _baitCategoryManager;
   BaitManager? _baitManager;
   CatchManager? _catchManager;
-  ComparisonReportManager? _comparisonReportManager;
   CustomEntityManager? _customEntityManager;
   FishingSpotManager? _fishingSpotManager;
   ImageManager? _imageManager;
@@ -58,9 +56,9 @@ class AppManager {
   LocationMonitor? _locationMonitor;
   MethodManager? _methodManager;
   PropertiesManager? _propertiesManager;
+  ReportManager? _reportManager;
   SpeciesManager? _speciesManager;
   SubscriptionManager? _subscriptionManager;
-  SummaryReportManager? _summaryReportManager;
   TimeManager? _timeManager;
   TripManager? _tripManager;
   UserPreferenceManager? _userPreferenceManager;
@@ -126,13 +124,6 @@ class AppManager {
     return _catchManager!;
   }
 
-  ComparisonReportManager get comparisonReportManager {
-    if (_comparisonReportManager == null) {
-      _comparisonReportManager = ComparisonReportManager(this);
-    }
-    return _comparisonReportManager!;
-  }
-
   CustomEntityManager get customEntityManager {
     if (_customEntityManager == null) {
       _customEntityManager = CustomEntityManager(this);
@@ -182,6 +173,13 @@ class AppManager {
     return _propertiesManager!;
   }
 
+  ReportManager get reportManager {
+    if (_reportManager == null) {
+      _reportManager = ReportManager(this);
+    }
+    return _reportManager!;
+  }
+
   SpeciesManager get speciesManager {
     if (_speciesManager == null) {
       _speciesManager = SpeciesManager(this);
@@ -194,13 +192,6 @@ class AppManager {
       _subscriptionManager = SubscriptionManager(this);
     }
     return _subscriptionManager!;
-  }
-
-  SummaryReportManager get summaryReportManager {
-    if (_summaryReportManager == null) {
-      _summaryReportManager = SummaryReportManager(this);
-    }
-    return _summaryReportManager!;
   }
 
   TimeManager get timeManager {

@@ -1,9 +1,8 @@
 import 'package:fixnum/fixnum.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mobile/comparison_report_manager.dart';
+import 'package:mobile/report_manager.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
 import 'package:mobile/pages/stats_page.dart';
-import 'package:mobile/summary_report_manager.dart';
 import 'package:mobile/utils/date_time_utils.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mobile/widgets/chart.dart';
@@ -193,7 +192,8 @@ void main() {
     )).thenReturn([]);
     when(appManager.catchManager.list()).thenReturn(_catches);
 
-    when(appManager.comparisonReportManager.list()).thenReturn([]);
+    when(appManager.reportManager.list()).thenReturn([]);
+    when(appManager.reportManager.entityExists(any)).thenReturn(false);
 
     when(appManager.localDatabaseManager.deleteEntity(any, any))
         .thenAnswer((_) => Future.value(true));
@@ -253,17 +253,14 @@ void main() {
   });
 
   testWidgets("Selecting summary shows summary", (tester) async {
-    var report = SummaryReport()
+    var report = Report()
       ..id = randomId()
       ..name = "Summary"
-      ..description = "A description";
-    when(appManager.comparisonReportManager.list()).thenReturn([]);
-    when(appManager.comparisonReportManager.entityExists(any))
-        .thenReturn(false);
-    when(appManager.summaryReportManager.list()).thenReturn([report]);
-    when(appManager.summaryReportManager.entityExists(report.id))
-        .thenReturn(true);
-    when(appManager.summaryReportManager.entity(report.id)).thenReturn(report);
+      ..description = "A description"
+      ..type = Report_Type.summary;
+    when(appManager.reportManager.list()).thenReturn([report]);
+    when(appManager.reportManager.entityExists(report.id)).thenReturn(true);
+    when(appManager.reportManager.entity(report.id)).thenReturn(report);
 
     await tester.pumpWidget(Testable(
       (_) => StatsPage(),
@@ -279,17 +276,14 @@ void main() {
   });
 
   testWidgets("Selecting comparison shows comparison", (tester) async {
-    var report = ComparisonReport()
+    var report = Report()
       ..id = randomId()
       ..name = "Comparison"
-      ..description = "A description";
-    when(appManager.summaryReportManager.entityExists(any)).thenReturn(false);
-    when(appManager.summaryReportManager.list()).thenReturn([]);
-    when(appManager.comparisonReportManager.list()).thenReturn([report]);
-    when(appManager.comparisonReportManager.entityExists(report.id))
-        .thenReturn(true);
-    when(appManager.comparisonReportManager.entity(report.id))
-        .thenReturn(report);
+      ..description = "A description"
+      ..type = Report_Type.comparison;
+    when(appManager.reportManager.list()).thenReturn([report]);
+    when(appManager.reportManager.entityExists(report.id)).thenReturn(true);
+    when(appManager.reportManager.entity(report.id)).thenReturn(report);
 
     await tester.pumpWidget(Testable(
       (_) => StatsPage(),
@@ -306,16 +300,13 @@ void main() {
 
   testWidgets("If current report is deleted, falls back to overview",
       (tester) async {
-    var summaryReportManager = SummaryReportManager(appManager.app);
-    when(appManager.app.summaryReportManager).thenReturn(summaryReportManager);
-
-    var comparisonReportManager = ComparisonReportManager(appManager.app);
-    when(appManager.app.comparisonReportManager)
-        .thenReturn(comparisonReportManager);
+    var comparisonReportManager = ReportManager(appManager.app);
+    when(appManager.app.reportManager).thenReturn(comparisonReportManager);
     var reportId = randomId();
-    await comparisonReportManager.addOrUpdate(ComparisonReport()
+    await comparisonReportManager.addOrUpdate(Report()
       ..id = reportId
-      ..name = "Comparison");
+      ..name = "Comparison"
+      ..type = Report_Type.comparison);
 
     await tester.pumpWidget(Testable(
       (_) => StatsPage(),
@@ -337,17 +328,14 @@ void main() {
   });
 
   testWidgets("If current report is updated, state is updated", (tester) async {
-    var summaryReportManager = SummaryReportManager(appManager.app);
-    when(appManager.app.summaryReportManager).thenReturn(summaryReportManager);
-
-    var comparisonReportManager = ComparisonReportManager(appManager.app);
-    when(appManager.app.comparisonReportManager)
-        .thenReturn(comparisonReportManager);
+    var comparisonReportManager = ReportManager(appManager.app);
+    when(appManager.app.reportManager).thenReturn(comparisonReportManager);
     var reportId = randomId();
-    await comparisonReportManager.addOrUpdate(ComparisonReport()
+    await comparisonReportManager.addOrUpdate(Report()
       ..id = reportId
       ..name = "Comparison"
-      ..description = "Test description.");
+      ..description = "Test description."
+      ..type = Report_Type.comparison);
 
     await tester.pumpWidget(Testable(
       (_) => StatsPage(),
@@ -361,10 +349,11 @@ void main() {
     expect(find.text("Test description."), findsOneWidget);
 
     // Simulate editing the report.
-    await comparisonReportManager.addOrUpdate(ComparisonReport()
+    await comparisonReportManager.addOrUpdate(Report()
       ..id = reportId
       ..name = "Comparison 2"
-      ..description = "Test description 2.");
+      ..description = "Test description 2."
+      ..type = Report_Type.comparison);
 
     // Wait for listeners to be invoked.
     await tester.pumpAndSettle(Duration(milliseconds: 250));
@@ -377,20 +366,18 @@ void main() {
 
   testWidgets("If non-current report is deleted, report stays the same",
       (tester) async {
-    var summaryReportManager = SummaryReportManager(appManager.app);
-    when(appManager.app.summaryReportManager).thenReturn(summaryReportManager);
-    var summaryId = randomId();
-    await summaryReportManager.addOrUpdate(SummaryReport()
-      ..id = summaryId
-      ..name = "Summary");
-
-    var comparisonReportManager = ComparisonReportManager(appManager.app);
-    when(appManager.app.comparisonReportManager)
-        .thenReturn(comparisonReportManager);
+    var reportManager = ReportManager(appManager.app);
+    when(appManager.app.reportManager).thenReturn(reportManager);
     var comparisonId = randomId();
-    await comparisonReportManager.addOrUpdate(ComparisonReport()
+    await reportManager.addOrUpdate(Report()
       ..id = comparisonId
-      ..name = "Comparison");
+      ..name = "Comparison"
+      ..type = Report_Type.comparison);
+    var summaryId = randomId();
+    await reportManager.addOrUpdate(Report()
+      ..id = summaryId
+      ..name = "Summary"
+      ..type = Report_Type.summary);
 
     await tester.pumpWidget(Testable(
       (_) => StatsPage(),
@@ -402,7 +389,7 @@ void main() {
     await tapAndSettle(tester, find.text("Comparison"));
 
     // Simulate deleting a report that isn't selected.
-    await summaryReportManager.delete(summaryId);
+    await reportManager.delete(summaryId);
 
     // Wait for listeners to be invoked.
     await tester.pumpAndSettle(Duration(milliseconds: 250));
@@ -419,17 +406,15 @@ void main() {
     });
 
     testWidgets("Has > 0 catches", (tester) async {
-      var report = SummaryReport()
+      var report = Report()
         ..id = randomId()
         ..name = "Summary Report"
-        ..displayDateRangeId = DisplayDateRange.allDates.id;
+        ..type = Report_Type.summary
+        ..fromDisplayDateRangeId = DisplayDateRange.allDates.id;
       when(appManager.userPreferenceManager.selectedReportId)
           .thenReturn(report.id);
-      when(appManager.summaryReportManager.entity(any)).thenReturn(report);
-      when(appManager.summaryReportManager.entityExists(report.id))
-          .thenReturn(true);
-      when(appManager.comparisonReportManager.entityExists(any))
-          .thenReturn(false);
+      when(appManager.reportManager.entity(any)).thenReturn(report);
+      when(appManager.reportManager.entityExists(report.id)).thenReturn(true);
       _stubCatchesByTimestamp();
 
       await tester.pumpWidget(
@@ -451,9 +436,10 @@ void main() {
     });
 
     testWidgets("Comparison filters don't include date", (tester) async {
-      var report = ComparisonReport()
+      var report = Report()
         ..id = randomId()
         ..name = "Comparison Report"
+        ..type = Report_Type.comparison
         ..fromDisplayDateRangeId = DisplayDateRange.last7Days.id
         ..toDisplayDateRangeId = DisplayDateRange.allDates.id
         ..baitIds.add(baitId0)
@@ -461,10 +447,8 @@ void main() {
         ..speciesIds.addAll({speciesId0, speciesId1});
       when(appManager.userPreferenceManager.selectedReportId)
           .thenReturn(report.id);
-      when(appManager.comparisonReportManager.entity(any)).thenReturn(report);
-      when(appManager.summaryReportManager.entityExists(any)).thenReturn(false);
-      when(appManager.comparisonReportManager.entityExists(any))
-          .thenReturn(true);
+      when(appManager.reportManager.entity(any)).thenReturn(report);
+      when(appManager.reportManager.entityExists(any)).thenReturn(true);
       _stubCatchesByTimestamp();
 
       await tester.pumpWidget(
@@ -542,19 +526,18 @@ void main() {
     });
 
     testWidgets("Summary filters show date", (tester) async {
-      var report = SummaryReport()
+      var report = Report()
         ..id = randomId()
         ..name = "Summary Report"
-        ..displayDateRangeId = DisplayDateRange.allDates.id
+        ..type = Report_Type.summary
+        ..fromDisplayDateRangeId = DisplayDateRange.allDates.id
         ..baitIds.add(baitId0)
         ..fishingSpotIds.add(fishingSpotId0)
         ..speciesIds.add(speciesId0);
       when(appManager.userPreferenceManager.selectedReportId)
           .thenReturn(report.id);
-      when(appManager.summaryReportManager.entity(any)).thenReturn(report);
-      when(appManager.summaryReportManager.entityExists(any)).thenReturn(true);
-      when(appManager.comparisonReportManager.entityExists(any))
-          .thenReturn(false);
+      when(appManager.reportManager.entity(any)).thenReturn(report);
+      when(appManager.reportManager.entityExists(any)).thenReturn(true);
       _stubCatchesByTimestamp();
 
       await tester.pumpWidget(
@@ -745,17 +728,16 @@ void main() {
 
     testWidgets("Time since last catch row is hidden when comparing",
         (tester) async {
-      var report = ComparisonReport()
+      var report = Report()
         ..id = randomId()
         ..name = "Comparison Report"
+        ..type = Report_Type.comparison
         ..fromDisplayDateRangeId = DisplayDateRange.allDates.id
         ..toDisplayDateRangeId = DisplayDateRange.last7Days.id;
       when(appManager.userPreferenceManager.selectedReportId)
           .thenReturn(report.id);
-      when(appManager.comparisonReportManager.entity(any)).thenReturn(report);
-      when(appManager.summaryReportManager.entityExists(any)).thenReturn(false);
-      when(appManager.comparisonReportManager.entityExists(any))
-          .thenReturn(true);
+      when(appManager.reportManager.entity(any)).thenReturn(report);
+      when(appManager.reportManager.entityExists(any)).thenReturn(true);
       _stubCatchesByTimestamp();
 
       await tester.pumpWidget(
@@ -770,16 +752,15 @@ void main() {
 
     testWidgets("Since last catch hidden when current time is excluded",
         (tester) async {
-      var report = SummaryReport()
+      var report = Report()
         ..id = randomId()
         ..name = "Summary Report"
-        ..displayDateRangeId = DisplayDateRange.lastYear.id;
+        ..type = Report_Type.summary
+        ..fromDisplayDateRangeId = DisplayDateRange.lastYear.id;
       when(appManager.userPreferenceManager.selectedReportId)
           .thenReturn(report.id);
-      when(appManager.summaryReportManager.entity(any)).thenReturn(report);
-      when(appManager.summaryReportManager.entityExists(any)).thenReturn(true);
-      when(appManager.comparisonReportManager.entityExists(any))
-          .thenReturn(false);
+      when(appManager.reportManager.entity(any)).thenReturn(report);
+      when(appManager.reportManager.entityExists(any)).thenReturn(true);
       _stubCatchesByTimestamp();
 
       await tester.pumpWidget(
@@ -793,16 +774,15 @@ void main() {
     });
 
     testWidgets("Since last catch showing", (tester) async {
-      var report = SummaryReport()
+      var report = Report()
         ..id = randomId()
         ..name = "Summary Report"
-        ..displayDateRangeId = DisplayDateRange.allDates.id;
+        ..type = Report_Type.summary
+        ..fromDisplayDateRangeId = DisplayDateRange.allDates.id;
       when(appManager.userPreferenceManager.selectedReportId)
           .thenReturn(report.id);
-      when(appManager.summaryReportManager.entity(any)).thenReturn(report);
-      when(appManager.summaryReportManager.entityExists(any)).thenReturn(true);
-      when(appManager.comparisonReportManager.entityExists(any))
-          .thenReturn(false);
+      when(appManager.reportManager.entity(any)).thenReturn(report);
+      when(appManager.reportManager.entityExists(any)).thenReturn(true);
       _stubCatchesByTimestamp();
 
       await tester.pumpWidget(
@@ -835,17 +815,16 @@ void main() {
 
     testWidgets("View catches/catches per species row for each series",
         (tester) async {
-      var report = ComparisonReport()
+      var report = Report()
         ..id = randomId()
         ..name = "Comparison Report"
+        ..type = Report_Type.comparison
         ..fromDisplayDateRangeId = DisplayDateRange.last7Days.id
         ..toDisplayDateRangeId = DisplayDateRange.lastMonth.id;
       when(appManager.userPreferenceManager.selectedReportId)
           .thenReturn(report.id);
-      when(appManager.comparisonReportManager.entity(any)).thenReturn(report);
-      when(appManager.summaryReportManager.entityExists(any)).thenReturn(false);
-      when(appManager.comparisonReportManager.entityExists(any))
-          .thenReturn(true);
+      when(appManager.reportManager.entity(any)).thenReturn(report);
+      when(appManager.reportManager.entityExists(any)).thenReturn(true);
       _stubCatchesByTimestamp();
 
       await tester.pumpWidget(
@@ -863,20 +842,18 @@ void main() {
 
     testWidgets("View catches row when 0 catches", (tester) async {
       // Stub a model that has catches, and one that doesn't.
-      var report = ComparisonReport()
+      var report = Report()
         ..id = randomId()
         ..name = "Comparison Report"
+        ..type = Report_Type.comparison
         ..fromStartTimestamp = Int64(0)
         ..toStartTimestamp = Int64(4)
         ..fromEndTimestamp = Int64(5)
         ..toEndTimestamp = Int64(500);
       when(appManager.userPreferenceManager.selectedReportId)
           .thenReturn(report.id);
-      when(appManager.comparisonReportManager.entity(report.id))
-          .thenReturn(report);
-      when(appManager.summaryReportManager.entityExists(any)).thenReturn(false);
-      when(appManager.comparisonReportManager.entityExists(any))
-          .thenReturn(true);
+      when(appManager.reportManager.entity(report.id)).thenReturn(report);
+      when(appManager.reportManager.entityExists(any)).thenReturn(true);
 
       when(appManager.catchManager.catchesSortedByTimestamp(
         any,

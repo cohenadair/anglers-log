@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:mobile/utils/protobuf_utils.dart';
 
 import '../angler_manager.dart';
 import '../bait_category_manager.dart';
@@ -17,6 +16,7 @@ import '../res/dimen.dart';
 import '../species_manager.dart';
 import '../utils/date_time_utils.dart';
 import '../utils/page_utils.dart';
+import '../utils/protobuf_utils.dart';
 import '../widgets/list_item.dart';
 import '../widgets/static_fishing_spot.dart';
 import '../widgets/text.dart';

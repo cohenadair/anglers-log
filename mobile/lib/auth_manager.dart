@@ -175,11 +175,10 @@ class AuthManager {
     await _appManager.baitCategoryManager.initialize();
     await _appManager.baitManager.initialize();
     await _appManager.catchManager.initialize();
-    await _appManager.comparisonReportManager.initialize();
     await _appManager.customEntityManager.initialize();
+    await _appManager.reportManager.initialize();
     await _appManager.fishingSpotManager.initialize();
     await _appManager.methodManager.initialize();
-    await _appManager.summaryReportManager.initialize();
 
     // Ensure everything is initialized before managing any image state.
     await _appManager.imageManager.initialize();

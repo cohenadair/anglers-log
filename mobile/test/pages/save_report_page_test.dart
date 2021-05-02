@@ -91,21 +91,13 @@ void main() {
     when(appManager.timeManager.currentDateTime)
         .thenReturn(DateTime.fromMillisecondsSinceEpoch(1600000000000));
 
-    when(appManager.comparisonReportManager.addOrUpdate(any))
+    when(appManager.reportManager.addOrUpdate(any))
         .thenAnswer((_) => Future.value(false));
-    when(appManager.comparisonReportManager.delete(
+    when(appManager.reportManager.delete(
       any,
       notify: anyNamed("notify"),
     )).thenAnswer((_) => Future.value(false));
-    when(appManager.comparisonReportManager.nameExists(any)).thenReturn(false);
-
-    when(appManager.summaryReportManager.addOrUpdate(any))
-        .thenAnswer((_) => Future.value(false));
-    when(appManager.summaryReportManager.delete(
-      any,
-      notify: anyNamed("notify"),
-    )).thenAnswer((_) => Future.value(false));
-    when(appManager.summaryReportManager.nameExists(any)).thenReturn(false);
+    when(appManager.reportManager.nameExists(any)).thenReturn(false);
 
     when(appManager.fishingSpotManager.name(any))
         .thenAnswer((invocation) => invocation.positionalArguments.first.name);
@@ -150,9 +142,10 @@ void main() {
   testWidgets("Edit title", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => SaveReportPage.edit(
-        SummaryReport()
+        Report()
           ..id = randomId()
-          ..name = "Summary",
+          ..name = "Summary"
+          ..type = Report_Type.summary,
       ),
       appManager: appManager,
     ));
@@ -427,535 +420,324 @@ void main() {
     expect(find.text("All times of day"), findsOneWidget);
   });
 
-  group("Comparison report", () {
-    testWidgets("Add report with preset date ranges", (tester) async {
-      await tester.pumpWidget(Testable(
-        (_) => SaveReportPage(),
-        appManager: appManager,
-      ));
+  testWidgets("Add report with all fields modified", (tester) async {
+    await tester.pumpWidget(Testable(
+      (_) => SaveReportPage(),
+      appManager: appManager,
+    ));
 
-      await enterTextAndSettle(
-          tester, find.widgetWithText(TextField, "Name"), "Report Name");
-      await enterTextAndSettle(
-        tester,
-        find.widgetWithText(TextField, "Description"),
-        "A brief description.",
-      );
-      await tapAndSettle(tester, find.widgetWithText(InkWell, "Comparison"));
-      await tapAndSettle(tester, find.text("Compare"));
-      await tapAndSettle(tester, find.text("Last month"));
-      await tapAndSettle(tester, find.text("To"));
-      await tapAndSettle(tester, find.text("This month"));
-      await selectItems(tester, "All anglers", ["All", "Cohen"]);
-      await selectItems(tester, "All species", ["All", "Catfish"]);
-      await selectItems(tester, "All baits", ["All", "Spoon"]);
-      await tester.ensureVisible(find.text("All fishing spots"));
-      await selectItems(tester, "All fishing spots", ["All", "B"]);
-      await tester.ensureVisible(find.text("All fishing methods"));
-      await selectItems(tester, "All fishing methods", ["All", "Casting"]);
-      await tester.ensureVisible(find.text("All times of day"));
-      await selectItems(tester, "All times of day", ["All", "Afternoon"]);
+    await enterTextAndSettle(
+        tester, find.widgetWithText(TextField, "Name"), "Report Name");
+    await enterTextAndSettle(
+      tester,
+      find.widgetWithText(TextField, "Description"),
+      "A brief description.",
+    );
+    await tapAndSettle(tester, find.widgetWithText(InkWell, "Comparison"));
+    await tapAndSettle(tester, find.text("Compare"));
+    await tapAndSettle(tester, find.text("Last month"));
+    await tapAndSettle(tester, find.text("To"));
+    await tapAndSettle(tester, find.text("This month"));
+    await selectItems(tester, "All anglers", ["All", "Cohen"]);
+    await selectItems(tester, "All species", ["All", "Catfish"]);
+    await selectItems(tester, "All baits", ["All", "Spoon"]);
+    await tester.ensureVisible(find.text("All fishing spots"));
+    await selectItems(tester, "All fishing spots", ["All", "B"]);
+    await tester.ensureVisible(find.text("All fishing methods"));
+    await selectItems(tester, "All fishing methods", ["All", "Casting"]);
+    await tester.ensureVisible(find.text("All times of day"));
+    await selectItems(tester, "All times of day", ["All", "Afternoon"]);
 
-      expect(
-        find.descendant(
-          of: find.widgetWithText(InkWell, "Compare"),
-          matching: find.text("Last month"),
-        ),
-        findsOneWidget,
-      );
-      expect(
-        find.descendant(
-          of: find.widgetWithText(InkWell, "To"),
-          matching: find.text("This month"),
-        ),
-        findsOneWidget,
-      );
-      expect(find.text("Catfish"), findsOneWidget);
-      expect(find.text("B"), findsOneWidget);
-      expect(find.text("Spoon"), findsOneWidget);
-      expect(find.text("Cohen"), findsOneWidget);
-      expect(find.text("Casting"), findsOneWidget);
-      expect(find.text("Afternoon"), findsOneWidget);
+    expect(
+      find.descendant(
+        of: find.widgetWithText(InkWell, "Compare"),
+        matching: find.text("Last month"),
+      ),
+      findsOneWidget,
+    );
+    expect(
+      find.descendant(
+        of: find.widgetWithText(InkWell, "To"),
+        matching: find.text("This month"),
+      ),
+      findsOneWidget,
+    );
+    expect(find.text("Catfish"), findsOneWidget);
+    expect(find.text("B"), findsOneWidget);
+    expect(find.text("Spoon"), findsOneWidget);
+    expect(find.text("Cohen"), findsOneWidget);
+    expect(find.text("Casting"), findsOneWidget);
+    expect(find.text("Afternoon"), findsOneWidget);
 
-      await tapAndSettle(tester, find.text("SAVE"));
+    await tapAndSettle(tester, find.text("SAVE"));
 
-      var result =
-          verify(appManager.comparisonReportManager.addOrUpdate(captureAny));
-      result.called(1);
+    var result = verify(appManager.reportManager.addOrUpdate(captureAny));
+    result.called(1);
 
-      ComparisonReport report = result.captured.first;
-      expect(report.name, "Report Name");
-      expect(report.description, "A brief description.");
-      expect(report.fromDisplayDateRangeId, DisplayDateRange.lastMonth.id);
-      expect(report.toDisplayDateRangeId, DisplayDateRange.thisMonth.id);
-      expect(report.anglerIds.length, 1);
-      expect(report.baitIds.length, 1);
-      expect(report.speciesIds.length, 1);
-      expect(report.fishingSpotIds.length, 1);
-      expect(report.methodIds.length, 1);
-      expect(report.periods.length, 1);
-      expect(report.hasIsFavoritesOnly(), isFalse);
-    });
-
-    testWidgets("Add report with custom date ranges", (tester) async {
-      late DateRange fromDateRange;
-      late DateRange toDateRange;
-      await tester.pumpWidget(Testable(
-        (context) {
-          // Custom DisplayDateRange default to "this month".
-          fromDateRange = DisplayDateRange.thisMonth.value(context);
-          toDateRange = DisplayDateRange.thisMonth.value(context);
-          return SaveReportPage();
-        },
-        appManager: appManager,
-      ));
-
-      await enterTextAndSettle(
-          tester, find.widgetWithText(TextField, "Name"), "Report Name");
-      await tapAndSettle(tester, find.widgetWithText(InkWell, "Comparison"));
-
-      await tapAndSettle(tester, find.text("Compare"));
-      // Scroll so "Custom" is visible.
-      await tester.drag(find.text("Last year"), Offset(0, -400));
-      await tester.pumpAndSettle();
-      await tapAndSettle(tester, find.text("Custom"));
-      await tapAndSettle(tester, find.text("OK"));
-
-      await tapAndSettle(tester, find.text("To"));
-      // Scroll so "Custom" is visible.
-      await tester.drag(find.text("Last year"), Offset(0, -400));
-      await tester.pumpAndSettle();
-      await tapAndSettle(tester, find.text("Custom"));
-      await tapAndSettle(tester, find.text("OK"));
-
-      await tapAndSettle(tester, find.text("SAVE"));
-
-      var result =
-          verify(appManager.comparisonReportManager.addOrUpdate(captureAny));
-      result.called(1);
-
-      ComparisonReport report = result.captured.first;
-      expect(report.name, "Report Name");
-      expect(report.fromDisplayDateRangeId, DisplayDateRange.custom.id);
-      expect(report.fromStartTimestamp.toInt(), fromDateRange.startMs);
-      expect(report.fromEndTimestamp.toInt(), fromDateRange.endMs);
-      expect(report.toDisplayDateRangeId, DisplayDateRange.custom.id);
-      expect(report.toStartTimestamp.toInt(), toDateRange.startMs);
-      expect(report.toEndTimestamp.toInt(), toDateRange.endMs);
-      expect(report.anglerIds, isEmpty);
-      expect(report.baitIds, isEmpty);
-      expect(report.speciesIds, isEmpty);
-      expect(report.fishingSpotIds, isEmpty);
-      expect(report.methodIds, isEmpty);
-      expect(report.periods, isEmpty);
-      expect(report.hasIsFavoritesOnly(), isFalse);
-    });
-
-    testWidgets("Add report with all entities selected sets empty collections",
-        (tester) async {
-      await tester.pumpWidget(Testable(
-        (_) => SaveReportPage(),
-        appManager: appManager,
-      ));
-
-      await enterTextAndSettle(
-          tester, find.widgetWithText(TextField, "Name"), "Report Name");
-      await tapAndSettle(tester, find.widgetWithText(InkWell, "Comparison"));
-      await tapAndSettle(tester, find.text("Compare"));
-      await tapAndSettle(tester, find.text("Last month"));
-      await tapAndSettle(tester, find.text("To"));
-      await tapAndSettle(tester, find.text("This month"));
-
-      // Toggle none/all for good measure.
-      await selectItems(tester, "All anglers", ["All", "All"]);
-      await selectItems(tester, "All species", ["All", "All"]);
-      await selectItems(tester, "All baits", ["All", "All"]);
-
-      await tester.ensureVisible(find.text("All fishing spots"));
-      await selectItems(tester, "All fishing spots", ["All", "All"]);
-
-      await tester.ensureVisible(find.text("All fishing methods"));
-      await selectItems(tester, "All fishing methods", ["All", "All"]);
-
-      await tester.ensureVisible(find.text("All times of day"));
-      await selectItems(tester, "All times of day", ["All", "All"]);
-
-      expect(find.text("All anglers"), findsOneWidget);
-      expect(find.text("All species"), findsOneWidget);
-      expect(find.text("All baits"), findsOneWidget);
-      expect(find.text("All fishing spots"), findsOneWidget);
-      expect(find.text("All fishing methods"), findsOneWidget);
-      expect(find.text("All times of day"), findsOneWidget);
-
-      await tapAndSettle(tester, find.text("SAVE"));
-
-      var result =
-          verify(appManager.comparisonReportManager.addOrUpdate(captureAny));
-      result.called(1);
-
-      ComparisonReport report = result.captured.first;
-      expect(report.name, "Report Name");
-      expect(report.anglerIds, isEmpty);
-      expect(report.baitIds, isEmpty);
-      expect(report.speciesIds, isEmpty);
-      expect(report.fishingSpotIds, isEmpty);
-      expect(report.methodIds, isEmpty);
-      expect(report.periods, isEmpty);
-    });
-
-    testWidgets("Edit keeps old properties", (tester) async {
-      var report = ComparisonReport()
-        ..id = randomId()
-        ..name = "Report Name"
-        ..description = "Report description"
-        ..fromDisplayDateRangeId = DisplayDateRange.yesterday.id
-        ..toDisplayDateRangeId = DisplayDateRange.today.id
-        ..isFavoritesOnly = true;
-      report.anglerIds.addAll(anglerList.map((e) => e.id));
-      report.baitIds.addAll(baitList.map((e) => e.id));
-      report.fishingSpotIds.addAll(fishingSpotList.map((e) => e.id));
-      report.methodIds.addAll(methodList.map((e) => e.id));
-      report.speciesIds.addAll(speciesList.map((e) => e.id));
-      report.periods.addAll([Period.dawn, Period.afternoon]);
-
-      await tester.pumpWidget(Testable(
-        (_) => SaveReportPage.edit(report),
-        appManager: appManager,
-      ));
-
-      // Verify all fields are set correctly.
-      expect(find.text("Report Name"), findsOneWidget);
-      expect(find.text("Report description"), findsOneWidget);
-      expect(
-        find.descendant(
-          of: find.widgetWithText(InkWell, "Compare"),
-          matching: find.text("Yesterday"),
-        ),
-        findsOneWidget,
-      );
-      expect(
-        find.descendant(
-          of: find.widgetWithText(InkWell, "To"),
-          matching: find.text("Today"),
-        ),
-        findsOneWidget,
-      );
-      expect(find.text("Cohen"), findsOneWidget);
-      expect(find.text("Someone"), findsOneWidget);
-      expect(find.text("Rapala"), findsOneWidget);
-      expect(find.text("Spoon"), findsOneWidget);
-      expect(find.text("A"), findsOneWidget);
-      expect(find.text("B"), findsOneWidget);
-      expect(find.text("Steelhead"), findsOneWidget);
-      expect(find.text("Catfish"), findsOneWidget);
-      expect(find.text("Casting"), findsOneWidget);
-      expect(find.text("Kayak"), findsOneWidget);
-      expect(find.text("Dawn"), findsOneWidget);
-      expect(find.text("Afternoon"), findsOneWidget);
-
-      await tapAndSettle(tester, find.text("SAVE"));
-
-      var result =
-          verify(appManager.comparisonReportManager.addOrUpdate(captureAny));
-      result.called(1);
-
-      expect(result.captured.first, report);
-    });
-
-    /// https://github.com/cohenadair/anglers-log/issues/463
-    testWidgets("Editing with empty entity sets shows 'all' chip",
-        (tester) async {
-      var report = ComparisonReport()
-        ..id = randomId()
-        ..name = "Report Name"
-        ..description = "Report description"
-        ..fromDisplayDateRangeId = DisplayDateRange.yesterday.id
-        ..toDisplayDateRangeId = DisplayDateRange.today.id;
-
-      await tester.pumpWidget(Testable(
-        (_) => SaveReportPage.edit(report),
-        appManager: appManager,
-      ));
-
-      expect(find.text("All anglers"), findsOneWidget);
-      expect(find.text("All species"), findsOneWidget);
-      expect(find.text("All fishing spots"), findsOneWidget);
-      expect(find.text("All baits"), findsOneWidget);
-      expect(find.text("All fishing methods"), findsOneWidget);
-      expect(find.text("All times of day"), findsOneWidget);
-    });
-
-    testWidgets("New report without changing date ranges", (tester) async {
-      await tester.pumpWidget(Testable(
-        (_) => SaveReportPage(),
-        appManager: appManager,
-      ));
-
-      await enterTextAndSettle(
-          tester, find.widgetWithText(TextField, "Name"), "Test");
-      await tapAndSettle(tester, find.widgetWithText(InkWell, "Comparison"));
-
-      // The test here is that the app doesn't crash. If the test passes, the
-      // app doesn't crash.
-      await tapAndSettle(tester, find.text("SAVE"));
-    });
-
-    testWidgets("Checking favorites only sets property", (tester) async {
-      await tester.pumpWidget(Testable(
-        (_) => SaveReportPage(),
-        appManager: appManager,
-      ));
-
-      await enterTextAndSettle(
-          tester, find.widgetWithText(TextField, "Name"), "Test");
-      await tapAndSettle(tester, find.widgetWithText(InkWell, "Comparison"));
-      await tapAndSettle(
-          tester, findListItemCheckbox(tester, "Favorites Only"));
-
-      await tapAndSettle(tester, find.text("SAVE"));
-
-      var result =
-          verify(appManager.comparisonReportManager.addOrUpdate(captureAny));
-      result.called(1);
-
-      expect(result.captured.first.isFavoritesOnly, isTrue);
-    });
+    Report report = result.captured.first;
+    expect(report.name, "Report Name");
+    expect(report.description, "A brief description.");
+    expect(report.fromDisplayDateRangeId, DisplayDateRange.lastMonth.id);
+    expect(report.toDisplayDateRangeId, DisplayDateRange.thisMonth.id);
+    expect(report.anglerIds.length, 1);
+    expect(report.baitIds.length, 1);
+    expect(report.speciesIds.length, 1);
+    expect(report.fishingSpotIds.length, 1);
+    expect(report.methodIds.length, 1);
+    expect(report.periods.length, 1);
+    expect(report.hasIsFavoritesOnly(), isFalse);
+    expect(report.type, Report_Type.comparison);
   });
 
-  group("Summary report", () {
-    testWidgets("Add report with preset date ranges", (tester) async {
-      await tester.pumpWidget(Testable(
-        (_) => SaveReportPage(),
-        appManager: appManager,
-      ));
+  testWidgets("Add summary report with preset date range", (tester) async {
+    await tester.pumpWidget(Testable(
+      (_) => SaveReportPage(),
+      appManager: appManager,
+    ));
 
-      await enterTextAndSettle(
-          tester, find.widgetWithText(TextField, "Name"), "Report Name");
-      await enterTextAndSettle(
-        tester,
-        find.widgetWithText(TextField, "Description"),
-        "A brief description.",
-      );
-      await tapAndSettle(tester, find.widgetWithText(InkWell, "Summary"));
-      await tapAndSettle(tester, find.text("All dates"));
-      await tapAndSettle(tester, find.text("Last month"));
-      await selectItems(tester, "All anglers", ["All", "Cohen"]);
-      await selectItems(tester, "All species", ["All", "Catfish"]);
-      await selectItems(tester, "All baits", ["All", "Spoon"]);
+    await enterTextAndSettle(
+        tester, find.widgetWithText(TextField, "Name"), "Report Name");
+    await tapAndSettle(tester, find.widgetWithText(InkWell, "Summary"));
+    await tapAndSettle(tester, find.text("All dates"));
+    await tapAndSettle(tester, find.text("Last month"));
 
-      await tester.ensureVisible(find.text("All fishing spots"));
-      await selectItems(tester, "All fishing spots", ["All", "B"]);
+    await tapAndSettle(tester, find.text("SAVE"));
 
-      await tester.ensureVisible(find.text("All fishing methods"));
-      await selectItems(tester, "All fishing methods", ["All", "Casting"]);
+    var result = verify(appManager.reportManager.addOrUpdate(captureAny));
+    result.called(1);
 
-      await tester.ensureVisible(find.text("All times of day"));
-      await selectItems(tester, "All times of day", ["All", "Afternoon"]);
+    Report report = result.captured.first;
+    expect(report.name, "Report Name");
+    expect(report.fromDisplayDateRangeId, DisplayDateRange.lastMonth.id);
+    expect(report.hasToDisplayDateRangeId(), isFalse);
+    expect(report.anglerIds.isEmpty, isTrue);
+    expect(report.baitIds.isEmpty, isTrue);
+    expect(report.speciesIds.isEmpty, isTrue);
+    expect(report.fishingSpotIds.isEmpty, isTrue);
+    expect(report.methodIds.isEmpty, isTrue);
+    expect(report.periods.isEmpty, isTrue);
+    expect(report.hasIsFavoritesOnly(), isFalse);
+    expect(report.type, Report_Type.summary);
+  });
 
-      expect(find.text("Last month"), findsOneWidget);
-      expect(find.text("Cohen"), findsOneWidget);
-      expect(find.text("Catfish"), findsOneWidget);
-      expect(find.text("Spoon"), findsOneWidget);
-      expect(find.text("B"), findsOneWidget);
-      expect(find.text("Casting"), findsOneWidget);
-      expect(find.text("Afternoon"), findsOneWidget);
+  testWidgets("Add report with custom date ranges", (tester) async {
+    late DateRange fromDateRange;
+    late DateRange toDateRange;
+    await tester.pumpWidget(Testable(
+      (context) {
+        // Custom DisplayDateRange default to "this month".
+        fromDateRange = DisplayDateRange.thisMonth.value(context);
+        toDateRange = DisplayDateRange.thisMonth.value(context);
+        return SaveReportPage();
+      },
+      appManager: appManager,
+    ));
 
-      await tapAndSettle(tester, find.text("SAVE"));
+    await enterTextAndSettle(
+        tester, find.widgetWithText(TextField, "Name"), "Report Name");
+    await tapAndSettle(tester, find.widgetWithText(InkWell, "Comparison"));
 
-      var result =
-          verify(appManager.summaryReportManager.addOrUpdate(captureAny));
-      result.called(1);
+    await tapAndSettle(tester, find.text("Compare"));
+    // Scroll so "Custom" is visible.
+    await tester.drag(find.text("Last year"), Offset(0, -400));
+    await tester.pumpAndSettle();
+    await tapAndSettle(tester, find.text("Custom"));
+    await tapAndSettle(tester, find.text("OK"));
 
-      SummaryReport report = result.captured.first;
-      expect(report.name, "Report Name");
-      expect(report.description, "A brief description.");
-      expect(report.displayDateRangeId, DisplayDateRange.lastMonth.id);
-      expect(report.anglerIds.length, 1);
-      expect(report.baitIds.length, 1);
-      expect(report.speciesIds.length, 1);
-      expect(report.fishingSpotIds.length, 1);
-      expect(report.methodIds.length, 1);
-      expect(report.periods.length, 1);
-      expect(report.hasIsFavoritesOnly(), isFalse);
-    });
+    await tapAndSettle(tester, find.text("To"));
+    // Scroll so "Custom" is visible.
+    await tester.drag(find.text("Last year"), Offset(0, -400));
+    await tester.pumpAndSettle();
+    await tapAndSettle(tester, find.text("Custom"));
+    await tapAndSettle(tester, find.text("OK"));
 
-    testWidgets("Add report with custom date ranges", (tester) async {
-      late DateRange dateRange;
-      await tester.pumpWidget(Testable(
-        (context) {
-          // Custom DisplayDateRange default to "this month".
-          dateRange = DisplayDateRange.thisMonth.value(context);
-          return SaveReportPage();
-        },
-        appManager: appManager,
-      ));
+    await tapAndSettle(tester, find.text("SAVE"));
 
-      await enterTextAndSettle(
-          tester, find.widgetWithText(TextField, "Name"), "Report Name");
-      await tapAndSettle(tester, find.widgetWithText(InkWell, "Summary"));
+    var result = verify(appManager.reportManager.addOrUpdate(captureAny));
+    result.called(1);
 
-      await tapAndSettle(tester, find.text("All dates"));
-      // Scroll so "Custom" is visible.
-      await tester.drag(find.text("Last year"), Offset(0, -400));
-      await tester.pumpAndSettle();
-      await tapAndSettle(tester, find.text("Custom"));
-      await tapAndSettle(tester, find.text("OK"));
+    Report report = result.captured.first;
+    expect(report.name, "Report Name");
+    expect(report.fromDisplayDateRangeId, DisplayDateRange.custom.id);
+    expect(report.fromStartTimestamp.toInt(), fromDateRange.startMs);
+    expect(report.fromEndTimestamp.toInt(), fromDateRange.endMs);
+    expect(report.toDisplayDateRangeId, DisplayDateRange.custom.id);
+    expect(report.toStartTimestamp.toInt(), toDateRange.startMs);
+    expect(report.toEndTimestamp.toInt(), toDateRange.endMs);
+    expect(report.anglerIds, isEmpty);
+    expect(report.baitIds, isEmpty);
+    expect(report.speciesIds, isEmpty);
+    expect(report.fishingSpotIds, isEmpty);
+    expect(report.methodIds, isEmpty);
+    expect(report.periods, isEmpty);
+    expect(report.hasIsFavoritesOnly(), isFalse);
+    expect(report.type, Report_Type.comparison);
+  });
 
-      await tapAndSettle(tester, find.text("SAVE"));
+  testWidgets("Add report with all entities selected sets empty collections",
+      (tester) async {
+    await tester.pumpWidget(Testable(
+      (_) => SaveReportPage(),
+      appManager: appManager,
+    ));
 
-      var result =
-          verify(appManager.summaryReportManager.addOrUpdate(captureAny));
-      result.called(1);
+    await enterTextAndSettle(
+        tester, find.widgetWithText(TextField, "Name"), "Report Name");
+    await tapAndSettle(tester, find.widgetWithText(InkWell, "Comparison"));
+    await tapAndSettle(tester, find.text("Compare"));
+    await tapAndSettle(tester, find.text("Last month"));
+    await tapAndSettle(tester, find.text("To"));
+    await tapAndSettle(tester, find.text("This month"));
 
-      SummaryReport report = result.captured.first;
-      expect(report.name, "Report Name");
-      expect(report.displayDateRangeId, DisplayDateRange.custom.id);
-      expect(report.startTimestamp.toInt(), dateRange.startMs);
-      expect(report.endTimestamp.toInt(), dateRange.endMs);
-      expect(report.anglerIds, isEmpty);
-      expect(report.baitIds, isEmpty);
-      expect(report.speciesIds, isEmpty);
-      expect(report.fishingSpotIds, isEmpty);
-      expect(report.methodIds, isEmpty);
-      expect(report.periods, isEmpty);
-      expect(report.hasIsFavoritesOnly(), isFalse);
-    });
+    // Toggle none/all for good measure.
+    await selectItems(tester, "All anglers", ["All", "All"]);
+    await selectItems(tester, "All species", ["All", "All"]);
+    await selectItems(tester, "All baits", ["All", "All"]);
 
-    testWidgets("Add report with all entities selected sets empty collections",
-        (tester) async {
-      await tester.pumpWidget(Testable(
-        (_) => SaveReportPage(),
-        appManager: appManager,
-      ));
+    await tester.ensureVisible(find.text("All fishing spots"));
+    await selectItems(tester, "All fishing spots", ["All", "All"]);
 
-      await enterTextAndSettle(
-          tester, find.widgetWithText(TextField, "Name"), "Report Name");
-      await tapAndSettle(tester, find.widgetWithText(InkWell, "Summary"));
-      await tapAndSettle(tester, find.text("All dates"));
-      await tapAndSettle(tester, find.text("Last month"));
+    await tester.ensureVisible(find.text("All fishing methods"));
+    await selectItems(tester, "All fishing methods", ["All", "All"]);
 
-      // Toggle none/all for good measure.
-      await selectItems(tester, "All anglers", ["All", "All"]);
-      await selectItems(tester, "All species", ["All", "All"]);
-      await selectItems(tester, "All baits", ["All", "All"]);
+    await tester.ensureVisible(find.text("All times of day"));
+    await selectItems(tester, "All times of day", ["All", "All"]);
 
-      await tester.ensureVisible(find.text("All fishing spots"));
-      await selectItems(tester, "All fishing spots", ["All", "All"]);
+    expect(find.text("All anglers"), findsOneWidget);
+    expect(find.text("All species"), findsOneWidget);
+    expect(find.text("All baits"), findsOneWidget);
+    expect(find.text("All fishing spots"), findsOneWidget);
+    expect(find.text("All fishing methods"), findsOneWidget);
+    expect(find.text("All times of day"), findsOneWidget);
 
-      await tester.ensureVisible(find.text("All fishing methods"));
-      await selectItems(tester, "All fishing methods", ["All", "All"]);
+    await tapAndSettle(tester, find.text("SAVE"));
 
-      await tester.ensureVisible(find.text("All times of day"));
-      await selectItems(tester, "All times of day", ["All", "All"]);
+    var result = verify(appManager.reportManager.addOrUpdate(captureAny));
+    result.called(1);
 
-      expect(find.text("All anglers"), findsOneWidget);
-      expect(find.text("All species"), findsOneWidget);
-      expect(find.text("All baits"), findsOneWidget);
-      expect(find.text("All fishing spots"), findsOneWidget);
-      expect(find.text("All fishing methods"), findsOneWidget);
-      expect(find.text("All times of day"), findsOneWidget);
+    Report report = result.captured.first;
+    expect(report.name, "Report Name");
+    expect(report.anglerIds, isEmpty);
+    expect(report.baitIds, isEmpty);
+    expect(report.speciesIds, isEmpty);
+    expect(report.fishingSpotIds, isEmpty);
+    expect(report.methodIds, isEmpty);
+    expect(report.periods, isEmpty);
+  });
 
-      await tapAndSettle(tester, find.text("SAVE"));
+  testWidgets("Edit keeps old properties", (tester) async {
+    var report = Report()
+      ..id = randomId()
+      ..name = "Report Name"
+      ..description = "Report description"
+      ..fromDisplayDateRangeId = DisplayDateRange.yesterday.id
+      ..toDisplayDateRangeId = DisplayDateRange.today.id
+      ..isFavoritesOnly = true
+      ..type = Report_Type.comparison;
+    report.anglerIds.addAll(anglerList.map((e) => e.id));
+    report.baitIds.addAll(baitList.map((e) => e.id));
+    report.fishingSpotIds.addAll(fishingSpotList.map((e) => e.id));
+    report.methodIds.addAll(methodList.map((e) => e.id));
+    report.speciesIds.addAll(speciesList.map((e) => e.id));
+    report.periods.addAll([Period.dawn, Period.afternoon]);
 
-      var result =
-          verify(appManager.summaryReportManager.addOrUpdate(captureAny));
-      result.called(1);
+    await tester.pumpWidget(Testable(
+      (_) => SaveReportPage.edit(report),
+      appManager: appManager,
+    ));
 
-      SummaryReport report = result.captured.first;
-      expect(report.name, "Report Name");
-      expect(report.anglerIds, isEmpty);
-      expect(report.baitIds, isEmpty);
-      expect(report.speciesIds, isEmpty);
-      expect(report.fishingSpotIds, isEmpty);
-      expect(report.methodIds, isEmpty);
-      expect(report.periods, isEmpty);
-      expect(report.hasIsFavoritesOnly(), isFalse);
-    });
+    // Verify all fields are set correctly.
+    expect(find.text("Report Name"), findsOneWidget);
+    expect(find.text("Report description"), findsOneWidget);
+    expect(
+      find.descendant(
+        of: find.widgetWithText(InkWell, "Compare"),
+        matching: find.text("Yesterday"),
+      ),
+      findsOneWidget,
+    );
+    expect(
+      find.descendant(
+        of: find.widgetWithText(InkWell, "To"),
+        matching: find.text("Today"),
+      ),
+      findsOneWidget,
+    );
+    expect(find.text("Cohen"), findsOneWidget);
+    expect(find.text("Someone"), findsOneWidget);
+    expect(find.text("Rapala"), findsOneWidget);
+    expect(find.text("Spoon"), findsOneWidget);
+    expect(find.text("A"), findsOneWidget);
+    expect(find.text("B"), findsOneWidget);
+    expect(find.text("Steelhead"), findsOneWidget);
+    expect(find.text("Catfish"), findsOneWidget);
+    expect(find.text("Casting"), findsOneWidget);
+    expect(find.text("Kayak"), findsOneWidget);
+    expect(find.text("Dawn"), findsOneWidget);
+    expect(find.text("Afternoon"), findsOneWidget);
 
-    testWidgets("Edit keeps old properties", (tester) async {
-      var report = SummaryReport()
-        ..id = randomId()
-        ..name = "Report Name"
-        ..description = "Report description"
-        ..displayDateRangeId = DisplayDateRange.yesterday.id
-        ..isFavoritesOnly = true;
-      report.anglerIds.addAll(anglerList.map((e) => e.id));
-      report.baitIds.addAll(baitList.map((e) => e.id));
-      report.fishingSpotIds.addAll(fishingSpotList.map((e) => e.id));
-      report.methodIds.addAll(methodList.map((e) => e.id));
-      report.speciesIds.addAll(speciesList.map((e) => e.id));
-      report.periods.addAll([Period.dawn, Period.afternoon]);
+    await tapAndSettle(tester, find.text("SAVE"));
 
-      await tester.pumpWidget(Testable(
-        (_) => SaveReportPage.edit(report),
-        appManager: appManager,
-      ));
+    var result = verify(appManager.reportManager.addOrUpdate(captureAny));
+    result.called(1);
 
-      // Verify all fields are set correctly.
-      expect(find.text("Report Name"), findsOneWidget);
-      expect(find.text("Report description"), findsOneWidget);
-      expect(find.text("Yesterday"), findsOneWidget);
-      expect(find.text("Cohen"), findsOneWidget);
-      expect(find.text("Someone"), findsOneWidget);
-      expect(find.text("Rapala"), findsOneWidget);
-      expect(find.text("Spoon"), findsOneWidget);
-      expect(find.text("A"), findsOneWidget);
-      expect(find.text("B"), findsOneWidget);
-      expect(find.text("Steelhead"), findsOneWidget);
-      expect(find.text("Catfish"), findsOneWidget);
-      expect(find.text("Casting"), findsOneWidget);
-      expect(find.text("Kayak"), findsOneWidget);
+    expect(result.captured.first, report);
+  });
 
-      await tapAndSettle(tester, find.text("SAVE"));
+  /// https://github.com/cohenadair/anglers-log/issues/463
+  testWidgets("Editing with empty entity sets shows 'all' chip",
+      (tester) async {
+    var report = Report()
+      ..id = randomId()
+      ..name = "Report Name"
+      ..description = "Report description"
+      ..fromDisplayDateRangeId = DisplayDateRange.yesterday.id
+      ..toDisplayDateRangeId = DisplayDateRange.today.id;
 
-      var result =
-          verify(appManager.summaryReportManager.addOrUpdate(captureAny));
-      result.called(1);
+    await tester.pumpWidget(Testable(
+      (_) => SaveReportPage.edit(report),
+      appManager: appManager,
+    ));
 
-      expect(result.captured.first, report);
-    });
+    expect(find.text("All anglers"), findsOneWidget);
+    expect(find.text("All species"), findsOneWidget);
+    expect(find.text("All fishing spots"), findsOneWidget);
+    expect(find.text("All baits"), findsOneWidget);
+    expect(find.text("All fishing methods"), findsOneWidget);
+    expect(find.text("All times of day"), findsOneWidget);
+  });
 
-    /// https://github.com/cohenadair/anglers-log/issues/463
-    testWidgets("Editing with empty entity sets shows 'all' chip",
-        (tester) async {
-      var report = SummaryReport()
-        ..id = randomId()
-        ..name = "Report Name"
-        ..description = "Report description"
-        ..displayDateRangeId = DisplayDateRange.yesterday.id;
+  testWidgets("New report without changing date ranges", (tester) async {
+    await tester.pumpWidget(Testable(
+      (_) => SaveReportPage(),
+      appManager: appManager,
+    ));
 
-      await tester.pumpWidget(Testable(
-        (_) => SaveReportPage.edit(report),
-        appManager: appManager,
-      ));
+    await enterTextAndSettle(
+        tester, find.widgetWithText(TextField, "Name"), "Test");
+    await tapAndSettle(tester, find.widgetWithText(InkWell, "Comparison"));
 
-      expect(find.text("All anglers"), findsOneWidget);
-      expect(find.text("All species"), findsOneWidget);
-      expect(find.text("All fishing spots"), findsOneWidget);
-      expect(find.text("All baits"), findsOneWidget);
-      expect(find.text("All fishing methods"), findsOneWidget);
-      expect(find.text("All times of day"), findsOneWidget);
-    });
+    // The test here is that the app doesn't crash. If the test passes, the
+    // app doesn't crash.
+    await tapAndSettle(tester, find.text("SAVE"));
+  });
 
-    testWidgets("Checking favorites only sets property", (tester) async {
-      await tester.pumpWidget(Testable(
-        (_) => SaveReportPage(),
-        appManager: appManager,
-      ));
+  testWidgets("Checking favorites only sets property", (tester) async {
+    await tester.pumpWidget(Testable(
+      (_) => SaveReportPage(),
+      appManager: appManager,
+    ));
 
-      await enterTextAndSettle(
-          tester, find.widgetWithText(TextField, "Name"), "Test");
-      await tapAndSettle(tester, find.widgetWithText(InkWell, "Summary"));
-      await tapAndSettle(
-          tester, findListItemCheckbox(tester, "Favorites Only"));
+    await enterTextAndSettle(
+        tester, find.widgetWithText(TextField, "Name"), "Test");
+    await tapAndSettle(tester, find.widgetWithText(InkWell, "Comparison"));
+    await tapAndSettle(tester, findListItemCheckbox(tester, "Favorites Only"));
 
-      await tapAndSettle(tester, find.text("SAVE"));
+    await tapAndSettle(tester, find.text("SAVE"));
 
-      var result =
-          verify(appManager.summaryReportManager.addOrUpdate(captureAny));
-      result.called(1);
+    var result = verify(appManager.reportManager.addOrUpdate(captureAny));
+    result.called(1);
 
-      expect(result.captured.first.isFavoritesOnly, isTrue);
-    });
+    expect(result.captured.first.isFavoritesOnly, isTrue);
   });
 }

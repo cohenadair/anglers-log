@@ -267,9 +267,9 @@ const Species$json = const {
 /// Descriptor for `Species`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List speciesDescriptor = $convert.base64Decode(
     'CgdTcGVjaWVzEh4KAmlkGAEgASgLMg4uYW5nbGVyc2xvZy5JZFICaWQSEgoEbmFtZRgCIAEoCVIEbmFtZQ==');
-@$core.Deprecated('Use summaryReportDescriptor instead')
-const SummaryReport$json = const {
-  '1': 'SummaryReport',
+@$core.Deprecated('Use reportDescriptor instead')
+const Report$json = const {
+  '1': 'Report',
   '2': const [
     const {
       '1': 'id',
@@ -282,140 +282,58 @@ const SummaryReport$json = const {
     const {'1': 'name', '3': 2, '4': 1, '5': 9, '10': 'name'},
     const {'1': 'description', '3': 3, '4': 1, '5': 9, '10': 'description'},
     const {
-      '1': 'display_date_range_id',
+      '1': 'type',
       '3': 4,
       '4': 1,
-      '5': 9,
-      '10': 'displayDateRangeId'
-    },
-    const {
-      '1': 'start_timestamp',
-      '3': 5,
-      '4': 1,
-      '5': 4,
-      '10': 'startTimestamp'
-    },
-    const {'1': 'end_timestamp', '3': 6, '4': 1, '5': 4, '10': 'endTimestamp'},
-    const {
-      '1': 'bait_ids',
-      '3': 7,
-      '4': 3,
-      '5': 11,
-      '6': '.anglerslog.Id',
-      '10': 'baitIds'
-    },
-    const {
-      '1': 'fishing_spot_ids',
-      '3': 8,
-      '4': 3,
-      '5': 11,
-      '6': '.anglerslog.Id',
-      '10': 'fishingSpotIds'
-    },
-    const {
-      '1': 'species_ids',
-      '3': 9,
-      '4': 3,
-      '5': 11,
-      '6': '.anglerslog.Id',
-      '10': 'speciesIds'
-    },
-    const {
-      '1': 'angler_ids',
-      '3': 10,
-      '4': 3,
-      '5': 11,
-      '6': '.anglerslog.Id',
-      '10': 'anglerIds'
-    },
-    const {
-      '1': 'method_ids',
-      '3': 11,
-      '4': 3,
-      '5': 11,
-      '6': '.anglerslog.Id',
-      '10': 'methodIds'
-    },
-    const {
-      '1': 'periods',
-      '3': 12,
-      '4': 3,
       '5': 14,
-      '6': '.anglerslog.Period',
-      '10': 'periods'
+      '6': '.anglerslog.Report.Type',
+      '10': 'type'
     },
-    const {
-      '1': 'is_favorites_only',
-      '3': 13,
-      '4': 1,
-      '5': 8,
-      '10': 'isFavoritesOnly'
-    },
-  ],
-};
-
-/// Descriptor for `SummaryReport`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List summaryReportDescriptor = $convert.base64Decode(
-    'Cg1TdW1tYXJ5UmVwb3J0Eh4KAmlkGAEgASgLMg4uYW5nbGVyc2xvZy5JZFICaWQSEgoEbmFtZRgCIAEoCVIEbmFtZRIgCgtkZXNjcmlwdGlvbhgDIAEoCVILZGVzY3JpcHRpb24SMQoVZGlzcGxheV9kYXRlX3JhbmdlX2lkGAQgASgJUhJkaXNwbGF5RGF0ZVJhbmdlSWQSJwoPc3RhcnRfdGltZXN0YW1wGAUgASgEUg5zdGFydFRpbWVzdGFtcBIjCg1lbmRfdGltZXN0YW1wGAYgASgEUgxlbmRUaW1lc3RhbXASKQoIYmFpdF9pZHMYByADKAsyDi5hbmdsZXJzbG9nLklkUgdiYWl0SWRzEjgKEGZpc2hpbmdfc3BvdF9pZHMYCCADKAsyDi5hbmdsZXJzbG9nLklkUg5maXNoaW5nU3BvdElkcxIvCgtzcGVjaWVzX2lkcxgJIAMoCzIOLmFuZ2xlcnNsb2cuSWRSCnNwZWNpZXNJZHMSLQoKYW5nbGVyX2lkcxgKIAMoCzIOLmFuZ2xlcnNsb2cuSWRSCWFuZ2xlcklkcxItCgptZXRob2RfaWRzGAsgAygLMg4uYW5nbGVyc2xvZy5JZFIJbWV0aG9kSWRzEiwKB3BlcmlvZHMYDCADKA4yEi5hbmdsZXJzbG9nLlBlcmlvZFIHcGVyaW9kcxIqChFpc19mYXZvcml0ZXNfb25seRgNIAEoCFIPaXNGYXZvcml0ZXNPbmx5');
-@$core.Deprecated('Use comparisonReportDescriptor instead')
-const ComparisonReport$json = const {
-  '1': 'ComparisonReport',
-  '2': const [
-    const {
-      '1': 'id',
-      '3': 1,
-      '4': 1,
-      '5': 11,
-      '6': '.anglerslog.Id',
-      '10': 'id'
-    },
-    const {'1': 'name', '3': 2, '4': 1, '5': 9, '10': 'name'},
-    const {'1': 'description', '3': 3, '4': 1, '5': 9, '10': 'description'},
     const {
       '1': 'from_display_date_range_id',
-      '3': 4,
+      '3': 5,
       '4': 1,
       '5': 9,
       '10': 'fromDisplayDateRangeId'
     },
     const {
       '1': 'to_display_date_range_id',
-      '3': 5,
+      '3': 6,
       '4': 1,
       '5': 9,
       '10': 'toDisplayDateRangeId'
     },
     const {
       '1': 'from_start_timestamp',
-      '3': 6,
+      '3': 7,
       '4': 1,
       '5': 4,
       '10': 'fromStartTimestamp'
     },
     const {
       '1': 'to_start_timestamp',
-      '3': 7,
+      '3': 8,
       '4': 1,
       '5': 4,
       '10': 'toStartTimestamp'
     },
     const {
       '1': 'from_end_timestamp',
-      '3': 8,
+      '3': 9,
       '4': 1,
       '5': 4,
       '10': 'fromEndTimestamp'
     },
     const {
       '1': 'to_end_timestamp',
-      '3': 9,
+      '3': 10,
       '4': 1,
       '5': 4,
       '10': 'toEndTimestamp'
     },
     const {
       '1': 'bait_ids',
-      '3': 10,
+      '3': 11,
       '4': 3,
       '5': 11,
       '6': '.anglerslog.Id',
@@ -423,7 +341,7 @@ const ComparisonReport$json = const {
     },
     const {
       '1': 'fishing_spot_ids',
-      '3': 11,
+      '3': 12,
       '4': 3,
       '5': 11,
       '6': '.anglerslog.Id',
@@ -431,7 +349,7 @@ const ComparisonReport$json = const {
     },
     const {
       '1': 'species_ids',
-      '3': 12,
+      '3': 13,
       '4': 3,
       '5': 11,
       '6': '.anglerslog.Id',
@@ -439,7 +357,7 @@ const ComparisonReport$json = const {
     },
     const {
       '1': 'angler_ids',
-      '3': 13,
+      '3': 14,
       '4': 3,
       '5': 11,
       '6': '.anglerslog.Id',
@@ -447,7 +365,7 @@ const ComparisonReport$json = const {
     },
     const {
       '1': 'method_ids',
-      '3': 14,
+      '3': 15,
       '4': 3,
       '5': 11,
       '6': '.anglerslog.Id',
@@ -455,7 +373,7 @@ const ComparisonReport$json = const {
     },
     const {
       '1': 'periods',
-      '3': 15,
+      '3': 16,
       '4': 3,
       '5': 14,
       '6': '.anglerslog.Period',
@@ -463,17 +381,27 @@ const ComparisonReport$json = const {
     },
     const {
       '1': 'is_favorites_only',
-      '3': 16,
+      '3': 17,
       '4': 1,
       '5': 8,
       '10': 'isFavoritesOnly'
     },
   ],
+  '4': const [Report_Type$json],
 };
 
-/// Descriptor for `ComparisonReport`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List comparisonReportDescriptor = $convert.base64Decode(
-    'ChBDb21wYXJpc29uUmVwb3J0Eh4KAmlkGAEgASgLMg4uYW5nbGVyc2xvZy5JZFICaWQSEgoEbmFtZRgCIAEoCVIEbmFtZRIgCgtkZXNjcmlwdGlvbhgDIAEoCVILZGVzY3JpcHRpb24SOgoaZnJvbV9kaXNwbGF5X2RhdGVfcmFuZ2VfaWQYBCABKAlSFmZyb21EaXNwbGF5RGF0ZVJhbmdlSWQSNgoYdG9fZGlzcGxheV9kYXRlX3JhbmdlX2lkGAUgASgJUhR0b0Rpc3BsYXlEYXRlUmFuZ2VJZBIwChRmcm9tX3N0YXJ0X3RpbWVzdGFtcBgGIAEoBFISZnJvbVN0YXJ0VGltZXN0YW1wEiwKEnRvX3N0YXJ0X3RpbWVzdGFtcBgHIAEoBFIQdG9TdGFydFRpbWVzdGFtcBIsChJmcm9tX2VuZF90aW1lc3RhbXAYCCABKARSEGZyb21FbmRUaW1lc3RhbXASKAoQdG9fZW5kX3RpbWVzdGFtcBgJIAEoBFIOdG9FbmRUaW1lc3RhbXASKQoIYmFpdF9pZHMYCiADKAsyDi5hbmdsZXJzbG9nLklkUgdiYWl0SWRzEjgKEGZpc2hpbmdfc3BvdF9pZHMYCyADKAsyDi5hbmdsZXJzbG9nLklkUg5maXNoaW5nU3BvdElkcxIvCgtzcGVjaWVzX2lkcxgMIAMoCzIOLmFuZ2xlcnNsb2cuSWRSCnNwZWNpZXNJZHMSLQoKYW5nbGVyX2lkcxgNIAMoCzIOLmFuZ2xlcnNsb2cuSWRSCWFuZ2xlcklkcxItCgptZXRob2RfaWRzGA4gAygLMg4uYW5nbGVyc2xvZy5JZFIJbWV0aG9kSWRzEiwKB3BlcmlvZHMYDyADKA4yEi5hbmdsZXJzbG9nLlBlcmlvZFIHcGVyaW9kcxIqChFpc19mYXZvcml0ZXNfb25seRgQIAEoCFIPaXNGYXZvcml0ZXNPbmx5');
+@$core.Deprecated('Use reportDescriptor instead')
+const Report_Type$json = const {
+  '1': 'Type',
+  '2': const [
+    const {'1': 'summary', '2': 0},
+    const {'1': 'comparison', '2': 1},
+  ],
+};
+
+/// Descriptor for `Report`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List reportDescriptor = $convert.base64Decode(
+    'CgZSZXBvcnQSHgoCaWQYASABKAsyDi5hbmdsZXJzbG9nLklkUgJpZBISCgRuYW1lGAIgASgJUgRuYW1lEiAKC2Rlc2NyaXB0aW9uGAMgASgJUgtkZXNjcmlwdGlvbhIrCgR0eXBlGAQgASgOMhcuYW5nbGVyc2xvZy5SZXBvcnQuVHlwZVIEdHlwZRI6Chpmcm9tX2Rpc3BsYXlfZGF0ZV9yYW5nZV9pZBgFIAEoCVIWZnJvbURpc3BsYXlEYXRlUmFuZ2VJZBI2Chh0b19kaXNwbGF5X2RhdGVfcmFuZ2VfaWQYBiABKAlSFHRvRGlzcGxheURhdGVSYW5nZUlkEjAKFGZyb21fc3RhcnRfdGltZXN0YW1wGAcgASgEUhJmcm9tU3RhcnRUaW1lc3RhbXASLAoSdG9fc3RhcnRfdGltZXN0YW1wGAggASgEUhB0b1N0YXJ0VGltZXN0YW1wEiwKEmZyb21fZW5kX3RpbWVzdGFtcBgJIAEoBFIQZnJvbUVuZFRpbWVzdGFtcBIoChB0b19lbmRfdGltZXN0YW1wGAogASgEUg50b0VuZFRpbWVzdGFtcBIpCghiYWl0X2lkcxgLIAMoCzIOLmFuZ2xlcnNsb2cuSWRSB2JhaXRJZHMSOAoQZmlzaGluZ19zcG90X2lkcxgMIAMoCzIOLmFuZ2xlcnNsb2cuSWRSDmZpc2hpbmdTcG90SWRzEi8KC3NwZWNpZXNfaWRzGA0gAygLMg4uYW5nbGVyc2xvZy5JZFIKc3BlY2llc0lkcxItCgphbmdsZXJfaWRzGA4gAygLMg4uYW5nbGVyc2xvZy5JZFIJYW5nbGVySWRzEi0KCm1ldGhvZF9pZHMYDyADKAsyDi5hbmdsZXJzbG9nLklkUgltZXRob2RJZHMSLAoHcGVyaW9kcxgQIAMoDjISLmFuZ2xlcnNsb2cuUGVyaW9kUgdwZXJpb2RzEioKEWlzX2Zhdm9yaXRlc19vbmx5GBEgASgIUg9pc0Zhdm9yaXRlc09ubHkiIwoEVHlwZRILCgdzdW1tYXJ5EAASDgoKY29tcGFyaXNvbhAB');
 @$core.Deprecated('Use anglerDescriptor instead')
 const Angler$json = const {
   '1': 'Angler',

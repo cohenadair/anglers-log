@@ -17,30 +17,45 @@ import '../test_utils.dart';
 void main() {
   late StubbedAppManager appManager;
 
-  var summaries = <SummaryReport>[
-    SummaryReport()
+  var summaries = <Report>[
+    Report()
       ..id = randomId()
-      ..name = "Summary 1",
-    SummaryReport()
+      ..name = "Summary 1"
+      ..type = Report_Type.summary,
+    Report()
       ..id = randomId()
-      ..name = "Summary 2",
+      ..name = "Summary 2"
+      ..type = Report_Type.summary,
   ];
 
-  var comparisons = <ComparisonReport>[
-    ComparisonReport()
+  var comparisons = <Report>[
+    Report()
       ..id = randomId()
-      ..name = "Comparison 1",
-    ComparisonReport()
+      ..name = "Comparison 1"
+      ..type = Report_Type.comparison,
+    Report()
       ..id = randomId()
-      ..name = "Comparison 2",
+      ..name = "Comparison 2"
+      ..type = Report_Type.comparison,
   ];
 
   setUp(() {
     appManager = StubbedAppManager();
 
+    when(appManager.authManager.stream).thenAnswer((_) => Stream.empty());
+
+    when(appManager.localDatabaseManager.insertOrReplace(any, any))
+        .thenAnswer((_) => Future.value(true));
+    when(appManager.localDatabaseManager.deleteEntity(any, any))
+        .thenAnswer((_) => Future.value(true));
+
+    when(appManager.subscriptionManager.stream)
+        .thenAnswer((_) => Stream.empty());
+    when(appManager.subscriptionManager.isPro).thenReturn(false);
+
     when(appManager.baitManager.list()).thenReturn([]);
-    when(appManager.comparisonReportManager.list()).thenReturn(comparisons);
-    when(appManager.summaryReportManager.list()).thenReturn(summaries);
+    when(appManager.reportManager.list())
+        .thenReturn([]..addAll(comparisons)..addAll(summaries));
   });
 
   testWidgets("Current item is selected", (tester) async {
@@ -81,7 +96,7 @@ void main() {
     await tapAndSettle(tester, find.text("Summary 1"));
 
     expect(pickedReport, isNotNull);
-    expect(pickedReport is SummaryReport, isTrue);
+    expect(pickedReport.type, Report_Type.summary);
     expect(pickedReport.name, "Summary 1");
   });
 
@@ -103,35 +118,8 @@ void main() {
     expect(find.text("Summary 2"), findsOneWidget);
   });
 
-  testWidgets("Delete SummaryReport", (tester) async {
-    when(appManager.summaryReportManager.delete(any))
-        .thenAnswer((_) => Future.value(true));
-
-    await tester.pumpWidget(Testable(
-      (_) => ReportListPage(
-        pickerSettings: ManageableListPagePickerSettings.single(
-          onPicked: (_, __) => true,
-        ),
-      ),
-      appManager: appManager,
-    ));
-
-    await tapAndSettle(tester, find.widgetWithText(ActionButton, "EDIT"));
-    await tapAndSettle(
-      tester,
-      find.descendant(
-        of: find.widgetWithText(ManageableListItem, "Summary 1"),
-        matching: find.byIcon(Icons.delete),
-      ),
-    );
-    await tapAndSettle(tester, find.text("DELETE"));
-
-    verify(appManager.summaryReportManager.delete(summaries.first.id))
-        .called(1);
-  });
-
-  testWidgets("Delete ComparisonReport", (tester) async {
-    when(appManager.comparisonReportManager.delete(any))
+  testWidgets("Delete reports", (tester) async {
+    when(appManager.reportManager.delete(any))
         .thenAnswer((_) => Future.value(true));
 
     await tester.pumpWidget(Testable(
@@ -153,8 +141,7 @@ void main() {
     );
     await tapAndSettle(tester, find.text("DELETE"));
 
-    verify(appManager.comparisonReportManager.delete(comparisons.first.id))
-        .called(1);
+    verify(appManager.reportManager.delete(comparisons.first.id)).called(1);
   });
 
   testWidgets("Overview report cannot be deleted", (tester) async {
@@ -181,8 +168,7 @@ void main() {
   });
 
   testWidgets("Note shown when custom reports is empty", (tester) async {
-    when(appManager.comparisonReportManager.list()).thenReturn([]);
-    when(appManager.summaryReportManager.list()).thenReturn([]);
+    when(appManager.reportManager.list()).thenReturn([]);
 
     await tester.pumpWidget(Testable(
       (_) => ReportListPage(

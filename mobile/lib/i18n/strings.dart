@@ -210,47 +210,36 @@ class Strings {
 
   String get catchFieldNoMethods => _string("catchField_noMethods");
 
-  String get saveCustomReportPageNewTitle =>
-      _string("saveCustomReportPage_newTitle");
+  String get saveReportPageNewTitle => _string("saveReportPage_newTitle");
 
-  String get saveCustomReportPageEditTitle =>
-      _string("saveCustomReportPage_editTitle");
+  String get saveReportPageEditTitle => _string("saveReportPage_editTitle");
 
-  String get saveCustomReportPageNameExists =>
-      _string("saveCustomReportPage_nameExists");
+  String get saveReportPageNameExists => _string("saveReportPage_nameExists");
 
-  String get saveCustomReportTypeTitle =>
-      _string("saveCustomReportPage_typeTitle");
+  String get saveReportTypeTitle => _string("saveReportPage_typeTitle");
 
-  String get saveCustomReportPageComparison =>
-      _string("saveCustomReportPage_comparison");
+  String get saveReportPageComparison => _string("saveReportPage_comparison");
 
-  String get saveCustomReportPageSummary =>
-      _string("saveCustomReportPage_summary");
+  String get saveReportPageSummary => _string("saveReportPage_summary");
 
-  String get saveCustomReportPageStartDateRangeLabel =>
-      _string("saveCustomReportPage_startDateRangeLabel");
+  String get saveReportPageStartDateRangeLabel =>
+      _string("saveReportPage_startDateRangeLabel");
 
-  String get saveCustomReportPageEndDateRangeLabel =>
-      _string("saveCustomReportPage_endDateRangeLabel");
+  String get saveReportPageEndDateRangeLabel =>
+      _string("saveReportPage_endDateRangeLabel");
 
-  String get saveCustomReportPageAllAnglers =>
-      _string("saveCustomReportPage_allAnglers");
+  String get saveReportPageAllAnglers => _string("saveReportPage_allAnglers");
 
-  String get saveCustomReportPageSpecies =>
-      _string("saveCustomReportPage_species");
+  String get saveReportPageSpecies => _string("saveReportPage_species");
 
-  String get saveCustomReportPageAllSpecies =>
-      _string("saveCustomReportPage_allSpecies");
+  String get saveReportPageAllSpecies => _string("saveReportPage_allSpecies");
 
-  String get saveCustomReportPageAllBaits =>
-      _string("saveCustomReportPage_allBaits");
+  String get saveReportPageAllBaits => _string("saveReportPage_allBaits");
 
-  String get saveCustomReportPageAllFishingSpots =>
-      _string("saveCustomReportPage_allFishingSpots");
+  String get saveReportPageAllFishingSpots =>
+      _string("saveReportPage_allFishingSpots");
 
-  String get saveCustomReportPageAllMethods =>
-      _string("saveCustomReportPage_allMethods");
+  String get saveReportPageAllMethods => _string("saveReportPage_allMethods");
 
   String get saveReportPageFavorites => _string("saveReportPage_favorites");
 
@@ -292,11 +281,10 @@ class Strings {
   String get reportListPageConfirmDelete =>
       _string("reportListPage_confirmDelete");
 
-  String get reportListPageCustomReportTitle =>
-      _string("reportListPage_customReportTitle");
+  String get reportListPageReportTitle => _string("reportListPage_reportTitle");
 
-  String get reportListPageCustomReportAddNote =>
-      _string("reportListPage_customReportAddNote");
+  String get reportListPageReportAddNote =>
+      _string("reportListPage_reportAddNote");
 
   String get saveBaitPageNewTitle => _string("saveBaitPage_newTitle");
 
@@ -405,8 +393,8 @@ class Strings {
   String get reportViewNoCatchesDescription =>
       _string("reportView_noCatchesDescription");
 
-  String get reportViewNoCatchesCustomReportDescription =>
-      _string("reportView_noCatchesCustomReportDescription");
+  String get reportViewNoCatchesReportDescription =>
+      _string("reportView_noCatchesReportDescription");
 
   String get reportSummaryViewCatches => _string("reportSummary_viewCatches");
 
@@ -856,7 +844,7 @@ class Strings {
 
   String get proPageSync => _string("proPage_sync");
 
-  String get proPageCustomReports => _string("proPage_customReports");
+  String get proPageReports => _string("proPage_reports");
 
   String get proPageCustomFields => _string("proPage_customFields");
 

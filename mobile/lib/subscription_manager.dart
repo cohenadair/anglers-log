@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:mobile/user_preference_manager.dart';
 import 'package:provider/provider.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
 
@@ -11,6 +10,7 @@ import 'app_manager.dart';
 import 'auth_manager.dart';
 import 'log.dart';
 import 'properties_manager.dart';
+import 'user_preference_manager.dart';
 import 'utils/void_stream_controller.dart';
 import 'wrappers/purchases_wrapper.dart';
 

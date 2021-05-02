@@ -27,6 +27,8 @@ void main() {
     when(appManager.authManager.userId).thenReturn(Uuid().v4());
     when(appManager.authManager.stream).thenAnswer((_) => Stream.empty());
 
+    when(appManager.reportManager.entityExists(any)).thenReturn(false);
+
     when(appManager.locationMonitor.currentLocation).thenReturn(null);
 
     when(appManager.userPreferenceManager.didOnboard).thenReturn(true);

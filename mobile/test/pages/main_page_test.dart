@@ -35,8 +35,7 @@ void main() {
       baitIds: anyNamed("baitIds"),
     )).thenReturn([]);
 
-    when(appManager.comparisonReportManager.entityExists(any))
-        .thenReturn(false);
+    when(appManager.reportManager.entityExists(any)).thenReturn(false);
 
     when(appManager.fishingSpotManager.list()).thenReturn([]);
 
@@ -45,8 +44,6 @@ void main() {
     when(appManager.subscriptionManager.stream)
         .thenAnswer((_) => Stream.empty());
     when(appManager.subscriptionManager.isPro).thenReturn(false);
-
-    when(appManager.summaryReportManager.entityExists(any)).thenReturn(false);
 
     when(appManager.timeManager.currentDateTime).thenReturn(DateTime.now());
 

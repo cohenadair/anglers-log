@@ -428,8 +428,6 @@ class _ManageableListPageState<T> extends State<ManageableListPage<T>> {
 
   /// Sync's the animated list model with the database list.
   void _syncAnimatedList() {
-    // Resetting the list's key will force it to rebuild it's state with the
-    // new list of items.
     _animatedList.resetItems(widget.itemManager.loadItems(_searchText));
   }
 
@@ -710,6 +708,7 @@ class _AnimatedListModel<T> {
     }
 
     var removedItem = _items.removeAt(index);
+
     _animatedList?.removeItem(
       index,
       (context, animation) =>

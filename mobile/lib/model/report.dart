@@ -17,17 +17,17 @@ import '../utils/date_time_utils.dart';
 import '../utils/protobuf_utils.dart';
 import 'gen/anglerslog.pb.dart';
 
-enum ReportSortOrder {
+enum CalculatedReportSortOrder {
   alphabetical,
   largestToSmallest,
 }
 
 /// A class that, when instantiated, gathers all the data required to display
 /// a report.
-class Report {
+class CalculatedReport {
   final BuildContext context;
   final DisplayDateRange displayDateRange;
-  final ReportSortOrder sortOrder;
+  final CalculatedReportSortOrder sortOrder;
 
   /// When true, calculated collections include 0 quantities. Defaults to false.
   final bool includeZeros;
@@ -122,10 +122,10 @@ class Report {
   Map<FishingSpot, int> fishingSpotsPerSpecies(Species? species) =>
       _fishingSpotsPerSpecies[species] ?? {};
 
-  Report({
+  CalculatedReport({
     required this.context,
     this.includeZeros = false,
-    this.sortOrder = ReportSortOrder.largestToSmallest,
+    this.sortOrder = CalculatedReportSortOrder.largestToSmallest,
     this.anglerIds = const {},
     this.baitIds = const {},
     this.fishingSpotIds = const {},
@@ -205,7 +205,7 @@ class Report {
 
     // Sort all maps.
     switch (sortOrder) {
-      case ReportSortOrder.alphabetical:
+      case CalculatedReportSortOrder.alphabetical:
         _catchesPerSpecies = sortedMap<Species>(_catchesPerSpecies,
             (lhs, rhs) => compareIgnoreCase(lhs.name, rhs.name));
         _catchesPerFishingSpot = sortedMap<FishingSpot>(_catchesPerFishingSpot,
@@ -217,7 +217,7 @@ class Report {
         _baitsPerSpecies = _baitsPerSpecies
             .sorted((lhs, rhs) => compareIgnoreCase(lhs.name, rhs.name));
         break;
-      case ReportSortOrder.largestToSmallest:
+      case CalculatedReportSortOrder.largestToSmallest:
         _catchesPerSpecies = sortedMap<Species>(_catchesPerSpecies);
         _catchesPerFishingSpot = sortedMap<FishingSpot>(_catchesPerFishingSpot);
         _catchesPerBait = sortedMap<Bait>(_catchesPerBait);
@@ -229,7 +229,7 @@ class Report {
 
   /// Removes data if this model and [other] both have 0 values for a given
   /// data point. Data is removed from both this and [other].
-  void removeZerosComparedTo(Report other) {
+  void removeZerosComparedTo(CalculatedReport other) {
     _removeZeros(_catchesPerSpecies, other._catchesPerSpecies);
     _removeZeros(_catchesPerFishingSpot, other._catchesPerFishingSpot);
     _removeZeros(_catchesPerBait, other._catchesPerBait);

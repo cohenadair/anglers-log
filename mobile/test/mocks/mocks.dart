@@ -16,14 +16,13 @@ import 'package:mobile/auth_manager.dart';
 import 'package:mobile/bait_category_manager.dart';
 import 'package:mobile/bait_manager.dart';
 import 'package:mobile/catch_manager.dart';
-import 'package:mobile/comparison_report_manager.dart';
+import 'package:mobile/report_manager.dart';
 import 'package:mobile/custom_entity_manager.dart';
 import 'package:mobile/database/legacy_importer.dart';
 import 'package:mobile/entity_manager.dart';
 import 'package:mobile/method_manager.dart';
 import 'package:mobile/preference_manager.dart';
 import 'package:mobile/subscription_manager.dart';
-import 'package:mobile/summary_report_manager.dart';
 import 'package:mobile/local_database_manager.dart';
 import 'package:mobile/fishing_spot_manager.dart';
 import 'package:mobile/image_manager.dart';
@@ -67,8 +66,8 @@ import 'mocks.mocks.dart';
 @GenerateMocks([BaitCategoryManager])
 @GenerateMocks([BaitManager])
 @GenerateMocks([CatchManager])
-@GenerateMocks([ComparisonReportManager])
 @GenerateMocks([CustomEntityManager])
+@GenerateMocks([ReportManager])
 @GenerateMocks([FishingSpotManager])
 @GenerateMocks([ImageManager])
 @GenerateMocks([LocalDatabaseManager])
@@ -78,7 +77,6 @@ import 'mocks.mocks.dart';
 @GenerateMocks([PropertiesManager])
 @GenerateMocks([SpeciesManager])
 @GenerateMocks([SubscriptionManager])
-@GenerateMocks([SummaryReportManager])
 @GenerateMocks([TimeManager])
 @GenerateMocks([TripManager])
 @GenerateMocks([UserPreferenceManager])
