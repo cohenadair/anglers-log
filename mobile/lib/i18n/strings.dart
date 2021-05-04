@@ -170,6 +170,10 @@ class Strings {
 
   String get catchPageDeleteMessage => _string("catchPage_deleteMessage");
 
+  String get catchPageReleased => _string("catchPage_released");
+
+  String get catchPageKept => _string("catchPage_kept");
+
   String get saveCatchPageNewTitle => _string("saveCatchPage_newTitle");
 
   String get saveCatchPageEditTitle => _string("saveCatchPage_editTitle");
@@ -180,7 +184,18 @@ class Strings {
 
   String get catchFieldTime => _string("catchField_time");
 
+  String get catchFieldCatchAndRelease => _string("catchField_catchAndRelease");
+
+  String get catchFieldCatchAndReleaseDescription =>
+      _string("catchField_catchAndReleaseDescription");
+
+  String get catchFieldCatchAndReleaseSearchString =>
+      _string("catchField_catchAndReleaseSearchString");
+
   String get catchFieldFavorite => _string("catchField_favorite");
+
+  String get catchFieldFavoriteSearchString =>
+      _string("catchField_favoriteSearchString");
 
   String get catchFieldFavoriteDescription =>
       _string("catchField_favoriteDescription");
@@ -240,6 +255,9 @@ class Strings {
       _string("saveReportPage_allFishingSpots");
 
   String get saveReportPageAllMethods => _string("saveReportPage_allMethods");
+
+  String get saveReportPageCatchAndRelease =>
+      _string("saveReportPage_catchAndRelease");
 
   String get saveReportPageFavorites => _string("saveReportPage_favorites");
 

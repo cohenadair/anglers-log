@@ -76,6 +76,7 @@ class SaveCatchPage extends StatefulWidget {
 class _SaveCatchPageState extends State<SaveCatchPage> {
   static final _idAngler = catchFieldIdAngler();
   static final _idBait = catchFieldIdBait();
+  static final _idCatchAndRelease = catchFieldIdCatchAndRelease();
   static final _idFavorite = catchFieldIdFavorite();
   static final _idFishingSpot = catchFieldIdFishingSpot();
   static final _idImages = catchFieldIdImages();
@@ -136,6 +137,9 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
   InputController<Id> get _anglerController =>
       _fields[_idAngler]!.controller as InputController<Id>;
 
+  BoolInputController get _catchAndReleaseController =>
+      _fields[_idCatchAndRelease]!.controller as BoolInputController;
+
   BoolInputController get _favoriteController =>
       _fields[_idFavorite]!.controller as BoolInputController;
 
@@ -164,6 +168,7 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
       _baitController.value = _oldCatch!.baitId;
       _fishingSpotController.value = _oldCatch!.fishingSpotId;
       _anglerController.value = _oldCatch!.anglerId;
+      _catchAndReleaseController.value = _oldCatch!.wasCatchAndRelease;
       _favoriteController.value = _oldCatch!.isFavorite;
       _methodsController.value = _oldCatch!.methodIds.toSet();
       _customEntityValues = _oldCatch!.customEntityValues;
@@ -226,6 +231,8 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
       return _buildPeriod();
     } else if (id == _idFavorite) {
       return _buildFavorite();
+    } else if (id == _idCatchAndRelease) {
+      return _buildCatchAndRelease();
     } else {
       _log.e("Unknown input key: $id");
       return Empty();
@@ -396,6 +403,17 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
     );
   }
 
+  Widget _buildCatchAndRelease() {
+    return Padding(
+      padding: insetsHorizontalDefault,
+      child: CheckboxInput(
+        label: Strings.of(context).catchFieldCatchAndRelease,
+        value: _catchAndReleaseController.value,
+        onChanged: (checked) => _catchAndReleaseController.value = checked,
+      ),
+    );
+  }
+
   Widget _buildFishingSpot() {
     return EntityListenerBuilder(
       managers: [
@@ -501,6 +519,13 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
 
     if (_periodController.value != null) {
       cat.period = _periodController.value!;
+    }
+
+    // If the user cares about (i.e. the field is showing) catch and release
+    // data, always set it.
+    if (_fields[_idCatchAndRelease] != null &&
+        _fields[_idCatchAndRelease]!.showing) {
+      cat.wasCatchAndRelease = _catchAndReleaseController.value;
     }
 
     if (_favoriteController.value) {

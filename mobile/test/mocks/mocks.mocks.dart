@@ -1062,6 +1062,7 @@ class MockCatchManager extends _i1.Mock implements _i14.CatchManager {
   List<_i8.Catch> catchesSortedByTimestamp(_i65.BuildContext? context,
           {String? filter,
           _i67.DateRange? dateRange,
+          bool? isCatchAndReleaseOnly = false,
           bool? isFavoritesOnly = false,
           Set<_i8.Id>? anglerIds = const {},
           Set<_i8.Id>? baitIds = const {},
@@ -1076,6 +1077,7 @@ class MockCatchManager extends _i1.Mock implements _i14.CatchManager {
           ], {
             #filter: filter,
             #dateRange: dateRange,
+            #isCatchAndReleaseOnly: isCatchAndReleaseOnly,
             #isFavoritesOnly: isFavoritesOnly,
             #anglerIds: anglerIds,
             #baitIds: baitIds,
@@ -1090,6 +1092,7 @@ class MockCatchManager extends _i1.Mock implements _i14.CatchManager {
   List<_i8.Catch> filteredCatches(_i65.BuildContext? context,
           {String? filter,
           _i67.DateRange? dateRange,
+          bool? isCatchAndReleaseOnly = false,
           bool? isFavoritesOnly = false,
           Set<_i8.Id>? anglerIds = const {},
           Set<_i8.Id>? baitIds = const {},
@@ -1104,6 +1107,7 @@ class MockCatchManager extends _i1.Mock implements _i14.CatchManager {
           ], {
             #filter: filter,
             #dateRange: dateRange,
+            #isCatchAndReleaseOnly: isCatchAndReleaseOnly,
             #isFavoritesOnly: isFavoritesOnly,
             #anglerIds: anglerIds,
             #baitIds: baitIds,

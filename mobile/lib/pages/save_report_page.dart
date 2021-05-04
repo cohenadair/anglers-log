@@ -60,6 +60,7 @@ class _SaveReportPageState extends State<SaveReportPage> {
   static final _idMethods = randomId();
   static final _idPeriods = randomId();
   static final _idFavoritesOnly = randomId();
+  static final _idCatchAndReleaseOnly = randomId();
 
   final Key _keySummaryStart = ValueKey(0);
   final Key _keyComparisonStart = ValueKey(1);
@@ -115,6 +116,9 @@ class _SaveReportPageState extends State<SaveReportPage> {
   BoolInputController get _favoritesOnlyController =>
       _fields[_idFavoritesOnly]!.controller as BoolInputController;
 
+  BoolInputController get _catchAndReleaseOnlyController =>
+      _fields[_idCatchAndReleaseOnly]!.controller as BoolInputController;
+
   Report? get _oldReport => widget.oldReport;
 
   bool get _isEditing => _oldReport != null;
@@ -157,6 +161,11 @@ class _SaveReportPageState extends State<SaveReportPage> {
     _fields[_idEndDateRange] = Field(
       id: _idStartDateRange,
       controller: InputController<DisplayDateRange>(),
+    );
+
+    _fields[_idCatchAndReleaseOnly] = Field(
+      id: _idCatchAndReleaseOnly,
+      controller: BoolInputController(),
     );
 
     _fields[_idFavoritesOnly] = Field(
@@ -210,6 +219,7 @@ class _SaveReportPageState extends State<SaveReportPage> {
           _oldReport!.toEndTimestamp.toInt(),
         );
       }
+      _catchAndReleaseOnlyController.value = _oldReport!.isCatchAndReleaseOnly;
       _favoritesOnlyController.value = _oldReport!.isFavoritesOnly;
       _periodsController.value = _oldReport!.periods.toSet();
       _initEntitySets(
@@ -267,6 +277,7 @@ class _SaveReportPageState extends State<SaveReportPage> {
         _idType: _buildType(),
         _idStartDateRange: _buildStartDateRange(),
         _idEndDateRange: _buildEndDateRange(),
+        _idCatchAndReleaseOnly: _buildCatchAndReleaseOnly(),
         _idFavoritesOnly: _buildFavoritesOnly(),
         _idPeriods: _buildPeriodsPicker(),
         _idAnglers: _buildAnglersPicker(),
@@ -350,6 +361,17 @@ class _SaveReportPageState extends State<SaveReportPage> {
       onPicked: (dateRange) => setState(() {
         _fromDateRangeController.value = dateRange;
       }),
+    );
+  }
+
+  Widget _buildCatchAndReleaseOnly() {
+    return Padding(
+      padding: insetsHorizontalDefault,
+      child: CheckboxInput(
+        label: Strings.of(context).saveReportPageCatchAndRelease,
+        value: _catchAndReleaseOnlyController.value,
+        onChanged: (checked) => _catchAndReleaseOnlyController.value = checked,
+      ),
     );
   }
 
@@ -542,6 +564,10 @@ class _SaveReportPageState extends State<SaveReportPage> {
 
     if (isNotEmpty(_descriptionController.value)) {
       report.description = _descriptionController.value!;
+    }
+
+    if (_catchAndReleaseOnlyController.value) {
+      report.isCatchAndReleaseOnly = true;
     }
 
     if (_favoritesOnlyController.value) {

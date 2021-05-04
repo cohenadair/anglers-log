@@ -5,15 +5,15 @@ import 'package:quiver/strings.dart';
 
 import '../bait_manager.dart';
 import '../catch_manager.dart';
-import '../report_manager.dart';
 import '../entity_manager.dart';
 import '../fishing_spot_manager.dart';
 import '../i18n/strings.dart';
 import '../log.dart';
+import '../model/calculated_report.dart';
 import '../model/gen/anglerslog.pb.dart';
 import '../model/overview_report.dart';
-import '../model/report.dart';
 import '../pages/report_list_page.dart';
+import '../report_manager.dart';
 import '../res/dimen.dart';
 import '../res/gen/custom_icons.dart';
 import '../species_manager.dart';
@@ -547,6 +547,7 @@ class _StatsPageState extends State<StatsPage> {
       sortOrder: sortOrder,
       displayDateRange: DisplayDateRange.of(
           displayDateRangeId, startTimestamp.toInt(), endTimestamp.toInt()),
+      isCatchAndReleaseOnly: report.isCatchAndReleaseOnly,
       isFavoritesOnly: report.isFavoritesOnly,
       anglerIds: report.anglerIds.toSet(),
       baitIds: report.baitIds.toSet(),

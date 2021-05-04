@@ -528,6 +528,7 @@ class Catch extends $pb.GeneratedMessage {
     ..pc<Id>(9, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'methodIds', $pb.PbFieldType.PM, subBuilder: Id.create)
     ..e<Period>(10, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'period', $pb.PbFieldType.OE, defaultOrMaker: Period.all, valueOf: Period.valueOf, enumValues: Period.values)
     ..aOB(11, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'isFavorite')
+    ..aOB(12, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'wasCatchAndRelease')
     ..hasRequiredFields = false;
 
   Catch._() : super();
@@ -543,6 +544,7 @@ class Catch extends $pb.GeneratedMessage {
     $core.Iterable<Id>? methodIds,
     Period? period,
     $core.bool? isFavorite,
+    $core.bool? wasCatchAndRelease,
   }) {
     final _result = create();
     if (id != null) {
@@ -577,6 +579,9 @@ class Catch extends $pb.GeneratedMessage {
     }
     if (isFavorite != null) {
       _result.isFavorite = isFavorite;
+    }
+    if (wasCatchAndRelease != null) {
+      _result.wasCatchAndRelease = wasCatchAndRelease;
     }
     return _result;
   }
@@ -720,6 +725,18 @@ class Catch extends $pb.GeneratedMessage {
   $core.bool hasIsFavorite() => $_has(10);
   @$pb.TagNumber(11)
   void clearIsFavorite() => clearField(11);
+
+  @$pb.TagNumber(12)
+  $core.bool get wasCatchAndRelease => $_getBF(11);
+  @$pb.TagNumber(12)
+  set wasCatchAndRelease($core.bool v) {
+    $_setBool(11, v);
+  }
+
+  @$pb.TagNumber(12)
+  $core.bool hasWasCatchAndRelease() => $_has(11);
+  @$pb.TagNumber(12)
+  void clearWasCatchAndRelease() => clearField(12);
 }
 
 class FishingSpot extends $pb.GeneratedMessage {
@@ -969,6 +986,7 @@ class Report extends $pb.GeneratedMessage {
     ..pc<Id>(15, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'methodIds', $pb.PbFieldType.PM, subBuilder: Id.create)
     ..pc<Period>(16, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'periods', $pb.PbFieldType.PE, valueOf: Period.valueOf, enumValues: Period.values)
     ..aOB(17, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'isFavoritesOnly')
+    ..aOB(18, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'isCatchAndReleaseOnly')
     ..hasRequiredFields = false;
 
   Report._() : super();
@@ -990,6 +1008,7 @@ class Report extends $pb.GeneratedMessage {
     $core.Iterable<Id>? methodIds,
     $core.Iterable<Period>? periods,
     $core.bool? isFavoritesOnly,
+    $core.bool? isCatchAndReleaseOnly,
   }) {
     final _result = create();
     if (id != null) {
@@ -1042,6 +1061,9 @@ class Report extends $pb.GeneratedMessage {
     }
     if (isFavoritesOnly != null) {
       _result.isFavoritesOnly = isFavoritesOnly;
+    }
+    if (isCatchAndReleaseOnly != null) {
+      _result.isCatchAndReleaseOnly = isCatchAndReleaseOnly;
     }
     return _result;
   }
@@ -1222,6 +1244,18 @@ class Report extends $pb.GeneratedMessage {
   $core.bool hasIsFavoritesOnly() => $_has(16);
   @$pb.TagNumber(17)
   void clearIsFavoritesOnly() => clearField(17);
+
+  @$pb.TagNumber(18)
+  $core.bool get isCatchAndReleaseOnly => $_getBF(17);
+  @$pb.TagNumber(18)
+  set isCatchAndReleaseOnly($core.bool v) {
+    $_setBool(17, v);
+  }
+
+  @$pb.TagNumber(18)
+  $core.bool hasIsCatchAndReleaseOnly() => $_has(17);
+  @$pb.TagNumber(18)
+  void clearIsCatchAndReleaseOnly() => clearField(18);
 }
 
 class Angler extends $pb.GeneratedMessage {

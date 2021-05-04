@@ -45,6 +45,7 @@ class LegacyImporter {
   static const _keyEntries = "entries";
   static const _keyFishingSpot = "fishingSpot";
   static const _keyFishingSpots = "fishingSpots";
+  static const _keyFishResult = "fishResult";
   static const _keyFishSpecies = "fishSpecies";
   static const _keyIsFavorite = "isFavorite";
   static const _keyMethods = "fishingMethods";
@@ -459,6 +460,11 @@ class LegacyImporter {
       bool? isFavorite = map[_keyIsFavorite];
       if (isFavorite != null && isFavorite) {
         cat.isFavorite = true;
+      }
+
+      int? result = map[_keyFishResult];
+      if (result != null && result == 0) {
+        cat.wasCatchAndRelease = true;
       }
 
       await _catchManager.addOrUpdate(

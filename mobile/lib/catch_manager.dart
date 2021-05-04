@@ -70,7 +70,11 @@ class CatchManager extends EntityManager<Catch> {
                 nameForPeriod(context, cat.period), filter!)) ||
         (cat.hasIsFavorite() &&
             containsTrimmedLowerCase(
-                Strings.of(context).catchFieldFavorite, filter!)) ||
+                Strings.of(context).catchFieldFavoriteSearchString, filter!)) ||
+        (cat.hasWasCatchAndRelease() &&
+            containsTrimmedLowerCase(
+                Strings.of(context).catchFieldCatchAndReleaseSearchString,
+                filter!)) ||
         timestampToSearchString(context, cat.timestamp.toInt())
             .toLowerCase()
             .contains(filter!.toLowerCase()) ||
@@ -90,6 +94,7 @@ class CatchManager extends EntityManager<Catch> {
     BuildContext context, {
     String? filter,
     DateRange? dateRange,
+    bool isCatchAndReleaseOnly = false,
     bool isFavoritesOnly = false,
     Set<Id> anglerIds = const {},
     Set<Id> baitIds = const {},
@@ -103,6 +108,7 @@ class CatchManager extends EntityManager<Catch> {
       context,
       filter: filter,
       dateRange: dateRange,
+      isCatchAndReleaseOnly: isCatchAndReleaseOnly,
       isFavoritesOnly: isFavoritesOnly,
       anglerIds: anglerIds,
       baitIds: baitIds,
@@ -121,6 +127,7 @@ class CatchManager extends EntityManager<Catch> {
     BuildContext context, {
     String? filter,
     DateRange? dateRange,
+    bool isCatchAndReleaseOnly = false,
     bool isFavoritesOnly = false,
     Set<Id> anglerIds = const {},
     Set<Id> baitIds = const {},
@@ -132,6 +139,7 @@ class CatchManager extends EntityManager<Catch> {
   }) {
     if (isEmpty(filter) &&
         dateRange == null &&
+        !isCatchAndReleaseOnly &&
         !isFavoritesOnly &&
         anglerIds.isEmpty &&
         baitIds.isEmpty &&
@@ -157,6 +165,7 @@ class CatchManager extends EntityManager<Catch> {
       valid &=
           periods.isEmpty || !cat.hasPeriod() || periods.contains(cat.period);
       valid &= !isFavoritesOnly || cat.isFavorite;
+      valid &= !isCatchAndReleaseOnly || cat.wasCatchAndRelease;
       if (!valid) {
         return false;
       }

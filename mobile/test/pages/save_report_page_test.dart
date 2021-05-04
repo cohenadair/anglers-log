@@ -244,6 +244,7 @@ void main() {
       appManager: appManager,
     ));
 
+    await tester.ensureVisible(find.text("All species"));
     await tapAndSettle(tester, find.text("All species"));
     expect(find.byType(SpeciesListPage), findsOneWidget);
   });
@@ -308,6 +309,7 @@ void main() {
       appManager: appManager,
     ));
 
+    await tester.ensureVisible(find.text("All species"));
     await tapAndSettle(tester, find.text("All species"));
     expect(
       (tester.widget(find.descendant(
@@ -739,5 +741,25 @@ void main() {
     result.called(1);
 
     expect(result.captured.first.isFavoritesOnly, isTrue);
+  });
+
+  testWidgets("Checking catch and release only sets property", (tester) async {
+    await tester.pumpWidget(Testable(
+      (_) => SaveReportPage(),
+      appManager: appManager,
+    ));
+
+    await enterTextAndSettle(
+        tester, find.widgetWithText(TextField, "Name"), "Test");
+    await tapAndSettle(tester, find.widgetWithText(InkWell, "Comparison"));
+    await tapAndSettle(
+        tester, findListItemCheckbox(tester, "Catch and Release Only"));
+
+    await tapAndSettle(tester, find.text("SAVE"));
+
+    var result = verify(appManager.reportManager.addOrUpdate(captureAny));
+    result.called(1);
+
+    expect(result.captured.first.isCatchAndReleaseOnly, isTrue);
   });
 }

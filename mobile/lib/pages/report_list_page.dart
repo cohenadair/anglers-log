@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:quiver/strings.dart';
 
-import '../report_manager.dart';
 import '../i18n/strings.dart';
 import '../model/gen/anglerslog.pb.dart';
 import '../model/overview_report.dart';
 import '../pages/manageable_list_page.dart';
 import '../pages/save_report_page.dart';
+import '../report_manager.dart';
 import '../res/dimen.dart';
 import '../subscription_manager.dart';
 import '../utils/string_utils.dart';

@@ -29,6 +29,9 @@ Id catchFieldIdTimestamp() =>
 Id catchFieldIdFavorite() =>
     Id()..uuid = "a12f6861-475f-475a-af29-c4fc6fe0a0bc";
 
+Id catchFieldIdCatchAndRelease() =>
+    Id()..uuid = "075fc6d5-b9b4-4377-b87d-a706287e1ffc";
+
 /// Returns all catch fields, sorted by how they are rendered on a
 /// [SaveCatchPage].
 List<Field> allCatchFields() {
@@ -72,6 +75,13 @@ List<Field> allCatchFields() {
       id: catchFieldIdAngler(),
       name: (context) => Strings.of(context).catchFieldAnglerLabel,
       controller: IdInputController(),
+    ),
+    Field(
+      id: catchFieldIdCatchAndRelease(),
+      name: (context) => Strings.of(context).catchFieldCatchAndRelease,
+      description: (context) =>
+          Strings.of(context).catchFieldCatchAndReleaseDescription,
+      controller: BoolInputController(),
     ),
     Field(
       id: catchFieldIdFavorite(),

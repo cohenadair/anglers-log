@@ -209,25 +209,30 @@ void main() {
 
     expect(catches[0].timestamp.toInt(),
         DateTime(2019, 8, 13, 0, 44).millisecondsSinceEpoch);
-    expect(catches[0].hasFishingSpotId(), true);
+    expect(catches[0].hasFishingSpotId(), isTrue);
     expect(speciesManager.entity(catches[0].speciesId)!.name, "Carp - Common");
-    expect(catches[0].hasBaitId(), true);
+    expect(catches[0].hasBaitId(), isTrue);
     expect(baitManager.entity(catches[0].baitId)!.name, "Corn");
-    expect(catches[0].hasFishingSpotId(), true);
+    expect(catches[0].hasFishingSpotId(), isTrue);
     expect(fishingSpotManager.entity(catches[0].fishingSpotId)!.name,
         "Tennessee River - Sequoyah Hills Park");
     expect(catches[0].methodIds.length, 2);
+    expect(catches[0].wasCatchAndRelease, isTrue);
+    expect(catches[0].hasIsFavorite(), isFalse);
     expect(methodManager.entity(catches[0].methodIds[0])!.name, "Still");
     expect(methodManager.entity(catches[0].methodIds[1])!.name, "Bottom");
 
     expect(catches[1].timestamp.toInt(),
         DateTime(2019, 8, 12, 12, 44).millisecondsSinceEpoch);
+    expect(catches[1].hasWasCatchAndRelease(), isFalse);
     expect(catches[2].timestamp.toInt(),
         DateTime(2019, 8, 11, 8, 44).millisecondsSinceEpoch);
+    expect(catches[2].hasWasCatchAndRelease(), isFalse);
     expect(catches[3].timestamp.toInt(),
         DateTime(2019, 8, 10, 20, 44).millisecondsSinceEpoch);
+    expect(catches[3].wasCatchAndRelease, isTrue);
 
-    // Three methods exist within catches, but only two actually exist. Verify
+    // Three methods are set on catches, but only two actually exist. Verify
     // nothing bad happens when a method is found that doesn't exist.
     expect(methodManager.entityCount, 2);
   });
@@ -307,16 +312,18 @@ void main() {
 
     expect(catches.first.timestamp.toInt(),
         DateTime(2017, 10, 11, 17, 19, 19, 420).millisecondsSinceEpoch);
-    expect(catches.first.hasFishingSpotId(), true);
+    expect(catches.first.hasFishingSpotId(), isTrue);
     expect(
         speciesManager.entity(catches[0].speciesId)!.name, "Trout - Rainbow");
-    expect(catches.first.hasBaitId(), true);
+    expect(catches.first.hasBaitId(), isTrue);
     expect(baitManager.entity(catches[0].baitId)!.name,
         "Rapala F-7 - Brown Trout");
-    expect(catches.first.hasFishingSpotId(), true);
+    expect(catches.first.hasFishingSpotId(), isTrue);
     expect(fishingSpotManager.entity(catches[0].fishingSpotId)!.name,
         "Bow River - Sewer Run");
     expect(catches[0].methodIds.length, 3);
+    expect(catches.first.hasWasCatchAndRelease(), isFalse);
+    expect(catches.first.hasIsFavorite(), isFalse);
     expect(methodManager.entity(catches[0].methodIds[0])!.name, "Casting");
     expect(methodManager.entity(catches[0].methodIds[1])!.name, "Lure");
     expect(methodManager.entity(catches[0].methodIds[2])!.name, "Wade");
@@ -393,7 +400,7 @@ void main() {
     expect(methods.first.name, "Baitcaster");
   });
 
-  testWidgets("Import Android catches", (tester) async {
+  testWidgets("Import Android favorite catches", (tester) async {
     var file = File("test/resources/backups/legacy_android_real.zip");
     await LegacyImporter(appManager.app, file).start();
 
@@ -404,11 +411,11 @@ void main() {
       3,
     );
 
-    var hasIsFavioriteCount = 0;
+    var hasIsFavoriteCount = 0;
     for (var cat in catchManager.list()) {
-      hasIsFavioriteCount += cat.hasIsFavorite() ? 1 : 0;
+      hasIsFavoriteCount += cat.hasIsFavorite() ? 1 : 0;
     }
-    expect(hasIsFavioriteCount, 3);
+    expect(hasIsFavoriteCount, 3);
   });
 
   testWidgets("Import Android images", (tester) async {

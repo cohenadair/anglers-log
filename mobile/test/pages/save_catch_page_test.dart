@@ -210,7 +210,8 @@ void main() {
           ..value = "Minnow")
         ..imageNames.add("flutter_logo.png")
         ..period = Period.dawn
-        ..isFavorite = true;
+        ..isFavorite = true
+        ..wasCatchAndRelease = true;
 
       when(appManager.imageManager.images(
         any,
@@ -245,6 +246,7 @@ void main() {
       expect(find.text("Color"), findsOneWidget);
       expect(find.text("Minnow"), findsOneWidget);
       expect(findCheckbox(tester, "Favorite")!.checked, isTrue);
+      expect(findCheckbox(tester, "Catch and Release")!.checked, isTrue);
     });
 
     testWidgets("Minimum fields set correctly", (tester) async {
@@ -279,6 +281,7 @@ void main() {
       expect(find.byType(Image), findsNothing);
       expect(find.byType(StaticFishingSpot), findsNothing);
       expect(findCheckbox(tester, "Favorite")!.checked, isFalse);
+      expect(findCheckbox(tester, "Catch and Release")!.checked, isFalse);
     });
 
     testWidgets("Saving", (tester) async {
@@ -334,7 +337,8 @@ void main() {
           ..value = "Minnow")
         ..imageNames.add("flutter_logo.png")
         ..period = Period.afternoon
-        ..isFavorite = true;
+        ..isFavorite = true
+        ..wasCatchAndRelease = true;
 
       when(appManager.imageManager.images(
         any,
@@ -452,6 +456,7 @@ void main() {
       expect(find.byType(StaticFishingSpot), findsOneWidget);
       expect(find.byType(Image), findsNothing);
       expect(findCheckbox(tester, "Favorite")!.checked, isFalse);
+      expect(findCheckbox(tester, "Catch and Release")!.checked, isFalse);
     });
 
     testWidgets("Saving when selecting no optional fields", (tester) async {
@@ -488,6 +493,8 @@ void main() {
       expect(cat.customEntityValues, isEmpty);
       expect(cat.hasPeriod(), isFalse);
       expect(cat.hasIsFavorite(), isFalse);
+      expect(cat.hasWasCatchAndRelease(), isTrue);
+      expect(cat.wasCatchAndRelease, isFalse);
     });
 
     testWidgets("Saving after selecting all optional fields", (tester) async {
@@ -543,6 +550,7 @@ void main() {
       await tapAndSettle(tester, find.text("Cohen"));
 
       // Select fishing methods.
+      await tester.ensureVisible(find.text("No fishing methods"));
       await tapAndSettle(tester, find.text("No fishing methods"));
       await tapAndSettle(
           tester, findManageableListItemCheckbox(tester, "Casting"));
@@ -550,8 +558,9 @@ void main() {
           tester, findManageableListItemCheckbox(tester, "Kayak"));
       await tapAndSettle(tester, find.byType(BackButton));
 
-      // Favorite.
       await tapAndSettle(tester, findListItemCheckbox(tester, "Favorite"));
+      await tapAndSettle(
+          tester, findListItemCheckbox(tester, "Catch and Release"));
 
       await tapAndSettle(tester, find.text("SAVE"));
 
@@ -576,6 +585,7 @@ void main() {
       expect(cat.methodIds.length, 2);
       expect(cat.hasPeriod(), isTrue);
       expect(cat.isFavorite, isTrue);
+      expect(cat.wasCatchAndRelease, isTrue);
     });
   });
 
@@ -823,5 +833,28 @@ void main() {
 
     var cat = result.captured.first as Catch;
     expect(cat.hasFishingSpotId(), isFalse);
+  });
+
+  testWidgets("Hidden catch and release doesn't set property", (tester) async {
+    var ids = allCatchFields().map<Id>((e) => e.id).toList()
+      ..removeWhere((id) => id == catchFieldIdCatchAndRelease());
+    when(appManager.userPreferenceManager.catchFieldIds).thenReturn(ids);
+
+    await tester.pumpWidget(
+      Testable(
+        (_) => SaveCatchPage(
+          speciesId: randomId(),
+        ),
+        appManager: appManager,
+      ),
+    );
+    await tapAndSettle(tester, find.text("SAVE"));
+
+    var result = verify(appManager.catchManager
+        .addOrUpdate(captureAny, imageFiles: anyNamed("imageFiles")));
+    result.called(1);
+
+    var cat = result.captured.first as Catch;
+    expect(cat.hasWasCatchAndRelease(), isFalse);
   });
 }

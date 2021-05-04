@@ -291,6 +291,20 @@ void main() {
         catchManager.filteredCatches(context, filter: "dusk").isEmpty, isTrue);
   });
 
+  testWidgets("Filtering by search query; catch and release", (tester) async {
+    await catchManager.addOrUpdate(Catch()
+      ..id = randomId()
+      ..wasCatchAndRelease = true);
+    await catchManager.addOrUpdate(Catch()..id = randomId());
+    await catchManager.addOrUpdate(Catch()..id = randomId());
+
+    var context = await buildContext(tester, appManager: appManager);
+    expect(catchManager.filteredCatches(context, filter: "release").length, 1);
+    expect(catchManager.filteredCatches(context, filter: "kept").length, 1);
+    expect(
+        catchManager.filteredCatches(context, filter: "dusk").isEmpty, isTrue);
+  });
+
   testWidgets("Filtering by angler", (tester) async {
     when(dataManager.insertOrReplace(any, any))
         .thenAnswer((_) => Future.value(true));
@@ -661,6 +675,36 @@ void main() {
     var catches = catchManager.filteredCatches(
       context,
       isFavoritesOnly: true,
+    );
+    expect(catches.length, 3);
+
+    expect(catchManager.filteredCatches(context).length, 4);
+  });
+
+  testWidgets("Filtering by catch and release", (tester) async {
+    when(dataManager.insertOrReplace(any, any))
+        .thenAnswer((_) => Future.value(true));
+
+    await catchManager.addOrUpdate(Catch()
+      ..id = randomId()
+      ..timestamp = Int64(DateTime(2020, 1, 1).millisecondsSinceEpoch)
+      ..wasCatchAndRelease = true);
+    await catchManager.addOrUpdate(Catch()
+      ..id = randomId()
+      ..timestamp = Int64(DateTime(2020, 2, 2).millisecondsSinceEpoch));
+    await catchManager.addOrUpdate(Catch()
+      ..id = randomId()
+      ..timestamp = Int64(DateTime(2020, 2, 2).millisecondsSinceEpoch)
+      ..wasCatchAndRelease = true);
+    await catchManager.addOrUpdate(Catch()
+      ..id = randomId()
+      ..timestamp = Int64(DateTime(2020, 4, 4).millisecondsSinceEpoch)
+      ..wasCatchAndRelease = true);
+
+    var context = await buildContext(tester, appManager: appManager);
+    var catches = catchManager.filteredCatches(
+      context,
+      isCatchAndReleaseOnly: true,
     );
     expect(catches.length, 3);
 

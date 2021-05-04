@@ -60,6 +60,7 @@ class CalculatedReport {
   final TimeManager _timeManager;
 
   late DateRange _dateRange;
+  bool _isCatchAndReleaseOnly = false;
   bool _isFavoritesOnly = false;
   int _msSinceLastCatch = 0;
 
@@ -133,6 +134,7 @@ class CalculatedReport {
     this.speciesIds = const {},
     this.periods = const {},
     DisplayDateRange? displayDateRange,
+    bool isCatchAndReleaseOnly = false,
     bool isFavoritesOnly = false,
   })  : _appManager = AppManager.of(context),
         _timeManager = AppManager.of(context).timeManager,
@@ -140,11 +142,13 @@ class CalculatedReport {
     var now = _timeManager.currentDateTime;
     _dateRange = this.displayDateRange.getValue(now);
     _containsNow = _dateRange.endDate == now;
+    _isCatchAndReleaseOnly = isCatchAndReleaseOnly;
     _isFavoritesOnly = isFavoritesOnly;
 
     var catches = _catchManager.catchesSortedByTimestamp(
       context,
       dateRange: _dateRange,
+      isCatchAndReleaseOnly: _isCatchAndReleaseOnly,
       isFavoritesOnly: _isFavoritesOnly,
       anglerIds: anglerIds,
       baitIds: baitIds,
@@ -273,6 +277,10 @@ class CalculatedReport {
 
     if (includeSpecies) {
       _addFilters<Species>(_speciesManager, speciesIds, result);
+    }
+
+    if (_isCatchAndReleaseOnly) {
+      result.add(Strings.of(context).saveReportPageCatchAndRelease);
     }
 
     if (_isFavoritesOnly) {

@@ -95,6 +95,7 @@ class _CatchPageState extends State<CatchPage> {
               builder: (context, _) => _buildFishingSpot(),
             ),
             _buildAngler(),
+            _buildCatchAndRelease(),
           ],
         );
       },
@@ -181,6 +182,24 @@ class _CatchPageState extends State<CatchPage> {
       leading: Icon(Icons.person),
       title: Text(angler.name),
     );
+  }
+
+  Widget _buildCatchAndRelease() {
+    if (!_catch.hasWasCatchAndRelease()) {
+      return Empty();
+    }
+
+    if (_catch.wasCatchAndRelease) {
+      return ListItem(
+        leading: Icon(Icons.check_circle),
+        title: Text(Strings.of(context).catchPageReleased),
+      );
+    } else {
+      return ListItem(
+        leading: Icon(Icons.error),
+        title: Text(Strings.of(context).catchPageKept),
+      );
+    }
   }
 
   Widget _buildMethods() {

@@ -73,6 +73,8 @@ Map<String, Map<String, String>> get englishStrings => {
             "You haven't yet added any catches. Tap the %s button to begin.",
         "catchPage_deleteMessage":
             "Are you sure you want to delete catch %s? This cannot be undone.",
+        "catchPage_released": "Released",
+        "catchPage_kept": "Kept",
         "saveCatchPage_newTitle": "New Catch",
         "saveCatchPage_editTitle": "Edit Catch",
         "catchField_dateTime": "Date & Time",
@@ -90,6 +92,11 @@ Map<String, Map<String, String>> get englishStrings => {
         "catchField_methods": "Fishing Methods",
         "catchField_methodsDescription": "The way in which a catch was made.",
         "catchField_noMethods": "No fishing methods",
+        "catchField_catchAndRelease": "Catch and Release",
+        "catchField_catchAndReleaseDescription":
+            "Whether or not this catch was released.",
+        "catchField_catchAndReleaseSearchString": "kept keep released release",
+        "catchField_favoriteSearchString": "favourite favorite star starred",
         "saveReportPage_newTitle": "New Report",
         "saveReportPage_editTitle": "Edit Report",
         "saveReportPage_nameExists": "Report name already exists",
@@ -104,6 +111,7 @@ Map<String, Map<String, String>> get englishStrings => {
         "saveReportPage_allBaits": "All baits",
         "saveReportPage_allFishingSpots": "All fishing spots",
         "saveReportPage_allMethods": "All fishing methods",
+        "saveReportPage_catchAndRelease": "Catch and Release Only",
         "photosPage_menuLabel": "Photos",
         "photosPage_title": "Photos (%s)",
         "photosPage_emptyTitle": "No photos",
