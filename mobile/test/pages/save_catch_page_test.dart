@@ -9,13 +9,17 @@ import 'package:mobile/bait_manager.dart';
 import 'package:mobile/fishing_spot_manager.dart';
 import 'package:mobile/method_manager.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
+import 'package:mobile/pages/fishing_spot_picker_page.dart';
 import 'package:mobile/pages/image_picker_page.dart';
 import 'package:mobile/pages/save_catch_page.dart';
 import 'package:mobile/species_manager.dart';
 import 'package:mobile/utils/catch_utils.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mobile/widgets/button.dart';
+import 'package:mobile/widgets/fishing_spot_map.dart';
+import 'package:mobile/widgets/floating_container.dart';
 import 'package:mobile/widgets/image_input.dart';
+import 'package:mobile/widgets/search_bar.dart';
 import 'package:mobile/widgets/static_fishing_spot.dart';
 import 'package:mobile/widgets/text_input.dart';
 import 'package:mockito/mockito.dart';
@@ -100,7 +104,9 @@ void main() {
 
       var fishingSpot = FishingSpot()
         ..id = randomId()
-        ..name = "Spot A";
+        ..name = "Spot A"
+        ..lat = 13
+        ..lng = 45;
       when(appManager.fishingSpotManager.entity(fishingSpot.id))
           .thenReturn(fishingSpot);
 
@@ -123,6 +129,7 @@ void main() {
 
       expect(find.text("Jan 1, 2020"), findsOneWidget);
       expect(find.text("3:30 PM"), findsOneWidget);
+      expect(find.text("Winter"), findsOneWidget);
       expect(find.text("Bait"), findsOneWidget);
 
       // Bait, angler, and time of day.
@@ -210,6 +217,7 @@ void main() {
           ..value = "Minnow")
         ..imageNames.add("flutter_logo.png")
         ..period = Period.dawn
+        ..season = Season.summer
         ..isFavorite = true
         ..wasCatchAndRelease = true;
 
@@ -233,6 +241,7 @@ void main() {
       expect(find.text("Jan 1, 2020"), findsOneWidget);
       expect(find.text("3:30 PM"), findsOneWidget);
       expect(find.text("Dawn"), findsOneWidget);
+      expect(find.text("Summer"), findsOneWidget);
       expect(find.text("Casting"), findsOneWidget);
       expect(find.text("Kayak"), findsOneWidget);
       expect(find.text("Bait"), findsOneWidget);
@@ -271,8 +280,8 @@ void main() {
       expect(find.text("Steelhead"), findsOneWidget);
       expect(find.text("Bait"), findsOneWidget);
 
-      // Bait, angler, and time of day.
-      expect(find.text("Not Selected"), findsNWidgets(3));
+      // Bait, angler, time of day, and season.
+      expect(find.text("Not Selected"), findsNWidgets(4));
 
       // Fishing methods.
       expect(find.text("No fishing methods"), findsOneWidget);
@@ -337,6 +346,7 @@ void main() {
           ..value = "Minnow")
         ..imageNames.add("flutter_logo.png")
         ..period = Period.afternoon
+        ..season = Season.summer
         ..isFavorite = true
         ..wasCatchAndRelease = true;
 
@@ -429,7 +439,9 @@ void main() {
 
       var fishingSpot = FishingSpot()
         ..id = randomId()
-        ..name = "Spot A";
+        ..name = "Spot A"
+        ..lat = 13
+        ..lng = 45;
       when(appManager.fishingSpotManager.entity(fishingSpot.id))
           .thenReturn(fishingSpot);
 
@@ -446,6 +458,7 @@ void main() {
       expect(find.text("Species"), findsOneWidget);
       expect(find.text("Steelhead"), findsOneWidget);
       expect(find.text("Bait"), findsOneWidget);
+      expect(find.text("Winter"), findsOneWidget);
 
       // Bait, angler, and time of day.
       expect(find.text("Not Selected"), findsNWidgets(3));
@@ -492,6 +505,7 @@ void main() {
       expect(cat.imageNames, isEmpty);
       expect(cat.customEntityValues, isEmpty);
       expect(cat.hasPeriod(), isFalse);
+      expect(cat.hasSeason(), isFalse);
       expect(cat.hasIsFavorite(), isFalse);
       expect(cat.hasWasCatchAndRelease(), isTrue);
       expect(cat.wasCatchAndRelease, isFalse);
@@ -541,6 +555,10 @@ void main() {
       await tapAndSettle(tester, find.text("Time Of Day"));
       await tapAndSettle(tester, find.text("Afternoon"));
 
+      // Select season.
+      await tapAndSettle(tester, find.text("Season"));
+      await tapAndSettle(tester, find.text("Summer"));
+
       // Select bait.
       await tapAndSettle(tester, find.text("Bait"));
       await tapAndSettle(tester, find.text("Rapala"));
@@ -584,6 +602,9 @@ void main() {
       expect(cat.hasAnglerId(), isTrue);
       expect(cat.methodIds.length, 2);
       expect(cat.hasPeriod(), isTrue);
+      expect(cat.period, Period.afternoon);
+      expect(cat.hasSeason(), isTrue);
+      expect(cat.season, Season.summer);
       expect(cat.isFavorite, isTrue);
       expect(cat.wasCatchAndRelease, isTrue);
     });
@@ -805,6 +826,7 @@ void main() {
     expect(find.text("Casting"), findsOneWidget);
 
     // Edit the selected angler.
+    await tester.ensureVisible(find.text("Casting"));
     await tapAndSettle(tester, find.text("Casting"));
     await tapAndSettle(tester, find.widgetWithText(ActionButton, "EDIT"));
     await tapAndSettle(tester, find.text("Casting"));
@@ -836,8 +858,10 @@ void main() {
   });
 
   testWidgets("Hidden catch and release doesn't set property", (tester) async {
-    var ids = allCatchFields().map<Id>((e) => e.id).toList()
-      ..removeWhere((id) => id == catchFieldIdCatchAndRelease());
+    var ids = allCatchFields(appManager.timeManager)
+        .map<Id>((e) => e.id)
+        .toList()
+          ..removeWhere((id) => id == catchFieldIdCatchAndRelease());
     when(appManager.userPreferenceManager.catchFieldIds).thenReturn(ids);
 
     await tester.pumpWidget(
@@ -856,5 +880,89 @@ void main() {
 
     var cat = result.captured.first as Catch;
     expect(cat.hasWasCatchAndRelease(), isFalse);
+  });
+
+  testWidgets("Season updates when date changes", (tester) async {
+    var species = Species()
+      ..id = randomId()
+      ..name = "Steelhead";
+    when(appManager.speciesManager.entity(species.id)).thenReturn(species);
+
+    var fishingSpot = FishingSpot()
+      ..id = randomId()
+      ..name = "Spot A"
+      ..lat = 13
+      ..lng = 45;
+    when(appManager.fishingSpotManager.entity(fishingSpot.id))
+        .thenReturn(fishingSpot);
+
+    await tester.pumpWidget(Testable(
+      (_) => SaveCatchPage(
+        speciesId: species.id,
+        fishingSpotId: fishingSpot.id,
+      ),
+      appManager: appManager,
+    ));
+
+    expect(find.text("Feb 1, 2020"), findsOneWidget);
+    expect(find.text("Winter"), findsOneWidget);
+
+    await tapAndSettle(tester, find.text("Date"));
+    await tapAndSettle(tester, find.byIcon(Icons.edit));
+    await enterTextAndSettle(
+        tester, find.widgetWithText(TextField, "02/01/2020"), "03/01/2020");
+    await tapAndSettle(tester, find.text("OK"));
+
+    expect(find.text("Spring"), findsOneWidget);
+  });
+
+  testWidgets("Season updates when fishing spot changes", (tester) async {
+    var species = Species()
+      ..id = randomId()
+      ..name = "Steelhead";
+    when(appManager.speciesManager.entity(species.id)).thenReturn(species);
+
+    var fishingSpot1 = FishingSpot()
+      ..id = randomId()
+      ..name = "Spot A"
+      ..lat = 13
+      ..lng = 45;
+    when(appManager.fishingSpotManager.entity(fishingSpot1.id))
+        .thenReturn(fishingSpot1);
+
+    var fishingSpot2 = FishingSpot()
+      ..id = randomId()
+      ..name = "Spot B"
+      ..lat = -13
+      ..lng = 45;
+    when(appManager.fishingSpotManager.entity(fishingSpot2.id))
+        .thenReturn(fishingSpot2);
+    when(appManager.fishingSpotManager.list())
+        .thenReturn([fishingSpot1, fishingSpot2]);
+    when(appManager.fishingSpotManager.listSortedByName())
+        .thenReturn([fishingSpot1, fishingSpot2]);
+    when(appManager.fishingSpotManager.addOrUpdate(any))
+        .thenAnswer((_) => Future.value(true));
+
+    await tester.pumpWidget(Testable(
+      (_) => SaveCatchPage(
+        speciesId: species.id,
+        fishingSpotId: fishingSpot1.id,
+      ),
+      appManager: appManager,
+    ));
+
+    expect(find.text("Feb 1, 2020"), findsOneWidget);
+    expect(find.text("Winter"), findsOneWidget);
+
+    await tapAndSettle(
+      tester,
+      find.text("Lat: 13.000000, Lng: 45.000000"),
+    );
+    await tapAndSettle(tester, find.byType(SearchBar));
+    await tapAndSettle(tester, find.text("Spot B"));
+    await tapAndSettle(tester, find.byType(BackButton));
+
+    expect(find.text("Summer"), findsOneWidget);
   });
 }

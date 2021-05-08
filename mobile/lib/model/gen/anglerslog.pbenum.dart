@@ -10,16 +10,16 @@ import 'dart:core' as $core;
 import 'package:protobuf/protobuf.dart' as $pb;
 
 class Period extends $pb.ProtobufEnum {
-  static const Period all = Period._(
+  static const Period period_all = Period._(
       0,
       const $core.bool.fromEnvironment('protobuf.omit_enum_names')
           ? ''
-          : 'all');
-  static const Period none = Period._(
+          : 'period_all');
+  static const Period period_none = Period._(
       1,
       const $core.bool.fromEnvironment('protobuf.omit_enum_names')
           ? ''
-          : 'none');
+          : 'period_none');
   static const Period dawn = Period._(
       2,
       const $core.bool.fromEnvironment('protobuf.omit_enum_names')
@@ -52,8 +52,8 @@ class Period extends $pb.ProtobufEnum {
           : 'night');
 
   static const $core.List<Period> values = <Period>[
-    all,
-    none,
+    period_all,
+    period_none,
     dawn,
     morning,
     midday,
@@ -67,6 +67,54 @@ class Period extends $pb.ProtobufEnum {
   static Period? valueOf($core.int value) => _byValue[value];
 
   const Period._($core.int v, $core.String n) : super(v, n);
+}
+
+class Season extends $pb.ProtobufEnum {
+  static const Season season_all = Season._(
+      0,
+      const $core.bool.fromEnvironment('protobuf.omit_enum_names')
+          ? ''
+          : 'season_all');
+  static const Season season_none = Season._(
+      1,
+      const $core.bool.fromEnvironment('protobuf.omit_enum_names')
+          ? ''
+          : 'season_none');
+  static const Season winter = Season._(
+      2,
+      const $core.bool.fromEnvironment('protobuf.omit_enum_names')
+          ? ''
+          : 'winter');
+  static const Season spring = Season._(
+      3,
+      const $core.bool.fromEnvironment('protobuf.omit_enum_names')
+          ? ''
+          : 'spring');
+  static const Season summer = Season._(
+      4,
+      const $core.bool.fromEnvironment('protobuf.omit_enum_names')
+          ? ''
+          : 'summer');
+  static const Season autumn = Season._(
+      5,
+      const $core.bool.fromEnvironment('protobuf.omit_enum_names')
+          ? ''
+          : 'autumn');
+
+  static const $core.List<Season> values = <Season>[
+    season_all,
+    season_none,
+    winter,
+    spring,
+    summer,
+    autumn,
+  ];
+
+  static final $core.Map<$core.int, Season> _byValue =
+      $pb.ProtobufEnum.initByValue(values);
+  static Season? valueOf($core.int value) => _byValue[value];
+
+  const Season._($core.int v, $core.String n) : super(v, n);
 }
 
 class CustomEntity_Type extends $pb.ProtobufEnum {

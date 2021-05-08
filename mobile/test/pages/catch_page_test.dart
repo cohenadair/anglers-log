@@ -55,6 +55,50 @@ void main() {
     expect(find.text("Jan 1, 2020 at 3:30 PM (Afternoon)"), findsOneWidget);
   });
 
+  testWidgets("No season renders empty", (tester) async {
+    await tester.pumpWidget(Testable(
+      (_) => CatchPage(Catch()),
+      appManager: appManager,
+    ));
+    // Wait for map timer to finish.
+    await tester.pumpAndSettle(Duration(milliseconds: 250));
+    expect(find.text("Jan 1, 2020 at 3:30 PM"), findsOneWidget);
+  });
+
+  testWidgets("Season renders with timestamp", (tester) async {
+    when(appManager.catchManager.entity(any)).thenReturn(Catch()
+      ..id = randomId()
+      ..timestamp = Int64(DateTime(2020, 1, 1, 15, 30).millisecondsSinceEpoch)
+      ..speciesId = randomId()
+      ..season = Season.autumn);
+
+    await tester.pumpWidget(Testable(
+      (_) => CatchPage(Catch()),
+      appManager: appManager,
+    ));
+    // Wait for map timer to finish.
+    await tester.pumpAndSettle(Duration(milliseconds: 250));
+    expect(find.text("Jan 1, 2020 at 3:30 PM (Autumn)"), findsOneWidget);
+  });
+
+  testWidgets("Period and season renders with timestamp", (tester) async {
+    when(appManager.catchManager.entity(any)).thenReturn(Catch()
+      ..id = randomId()
+      ..timestamp = Int64(DateTime(2020, 1, 1, 15, 30).millisecondsSinceEpoch)
+      ..speciesId = randomId()
+      ..period = Period.morning
+      ..season = Season.autumn);
+
+    await tester.pumpWidget(Testable(
+      (_) => CatchPage(Catch()),
+      appManager: appManager,
+    ));
+    // Wait for map timer to finish.
+    await tester.pumpAndSettle(Duration(milliseconds: 250));
+    expect(
+        find.text("Jan 1, 2020 at 3:30 PM (Morning, Autumn)"), findsOneWidget);
+  });
+
   testWidgets("No bait renders empty", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => CatchPage(Catch()),

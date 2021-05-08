@@ -8,9 +8,12 @@ import 'package:uuid/uuid.dart';
 
 import '../custom_entity_manager.dart';
 import '../i18n/strings.dart';
+import '../log.dart';
 import '../model/gen/anglerslog.pb.dart';
 import '../pages/picker_page.dart';
 import '../utils/string_utils.dart';
+
+final _log = Log("ProtobufUtils");
 
 /// Returns the number of occurrences of [customEntityId] in [entities].
 int entityValuesCount<T>(List<T> entities, Id customEntityId,
@@ -89,9 +92,9 @@ dynamic valueForCustomEntityType(
 
 String nameForPeriod(BuildContext context, Period period) {
   switch (period) {
-    case Period.all:
+    case Period.period_all:
       return Strings.of(context).all;
-    case Period.none:
+    case Period.period_none:
       return Strings.of(context).none;
     case Period.dawn:
       return Strings.of(context).periodDawn;
@@ -125,6 +128,42 @@ List<PickerPageItem<Period>> pickerItemsForPeriod(BuildContext context) {
     return PickerPageItem<Period>(
       title: nameForPeriod(context, period),
       value: period,
+    );
+  }).toList();
+}
+
+String nameForSeason(BuildContext context, Season season) {
+  switch (season) {
+    case Season.season_all:
+      return Strings.of(context).all;
+    case Season.season_none:
+      return Strings.of(context).none;
+    case Season.winter:
+      return Strings.of(context).seasonWinter;
+    case Season.spring:
+      return Strings.of(context).seasonSpring;
+    case Season.summer:
+      return Strings.of(context).seasonSummer;
+    case Season.autumn:
+      return Strings.of(context).seasonAutumn;
+  }
+  throw ArgumentError("Invalid input: $season");
+}
+
+Set<Season> selectableSeasons() {
+  return {
+    Season.winter,
+    Season.spring,
+    Season.summer,
+    Season.autumn,
+  };
+}
+
+List<PickerPageItem<Season>> pickerItemsForSeason(BuildContext context) {
+  return selectableSeasons().map((season) {
+    return PickerPageItem<Season>(
+      title: nameForSeason(context, season),
+      value: season,
     );
   }).toList();
 }
@@ -218,5 +257,33 @@ extension FishingSpots on FishingSpot {
       lng: lng,
       includeLabels: includeLatLngLabels,
     );
+  }
+}
+
+extension Seasons on Season {
+  static Season? from(DateTime dateTime, double? lat) {
+    if (lat == null) {
+      return null;
+    }
+
+    var isNorth = lat > 0;
+    var winterSummer = [12, 1, 2];
+    var springAutumn = [3, 4, 5];
+    var summerWinter = [6, 7, 8];
+    var autumnSpring = [9, 10, 11];
+
+    if (winterSummer.contains(dateTime.month)) {
+      return isNorth ? Season.winter : Season.summer;
+    } else if (springAutumn.contains(dateTime.month)) {
+      return isNorth ? Season.spring : Season.autumn;
+    } else if (summerWinter.contains(dateTime.month)) {
+      return isNorth ? Season.summer : Season.winter;
+    } else if (autumnSpring.contains(dateTime.month)) {
+      return isNorth ? Season.autumn : Season.spring;
+    } else {
+      _log.w("Unknown month: ${dateTime.month}");
+    }
+
+    return null;
   }
 }

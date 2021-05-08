@@ -555,6 +555,7 @@ class _StatsPageState extends State<StatsPage> {
       methodIds: report.methodIds.toSet(),
       speciesIds: report.speciesIds.toSet(),
       periods: report.periods.toSet(),
+      seasons: report.seasons.toSet(),
     );
   }
 

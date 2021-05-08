@@ -82,6 +82,7 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
   static final _idImages = catchFieldIdImages();
   static final _idMethods = catchFieldIdMethods();
   static final _idPeriod = catchFieldIdPeriod();
+  static final _idSeason = catchFieldIdSeason();
   static final _idSpecies = catchFieldIdSpecies();
   static final _idTimestamp = catchFieldIdTimestamp();
 
@@ -122,6 +123,9 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
   InputController<Period> get _periodController =>
       _fields[_idPeriod]!.controller as InputController<Period>;
 
+  InputController<Season> get _seasonController =>
+      _fields[_idSeason]!.controller as InputController<Season>;
+
   InputController<Id> get _speciesController =>
       _fields[_idSpecies]!.controller as InputController<Id>;
 
@@ -153,7 +157,7 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
     super.initState();
 
     var showingFieldIds = _userPreferencesManager.catchFieldIds;
-    for (var field in allCatchFields()) {
+    for (var field in allCatchFields(_timeManager)) {
       _fields[field.id] = field;
       // By default, show all fields.
       _fields[field.id]!.showing =
@@ -162,8 +166,14 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
 
     if (_editing) {
       _timestampController.value = _oldCatch!.timestamp.toInt();
+
+      // Enums default to the first value (i.e. 0) so we need to explicitly
+      // check if the property was set.
       _periodController.value =
           _oldCatch!.hasPeriod() ? _oldCatch!.period : null;
+      _seasonController.value =
+          _oldCatch!.hasSeason() ? _oldCatch!.season : null;
+
       _speciesController.value = _oldCatch!.speciesId;
       _baitController.value = _oldCatch!.baitId;
       _fishingSpotController.value = _oldCatch!.fishingSpotId;
@@ -185,16 +195,13 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
       _imagesController.value = widget.images;
       _fishingSpotController.value = widget.fishingSpotId;
       _methodsController.value = {};
+
+      _calculateSeason();
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    _timestampController.date =
-        _timestampController.date ?? _timeManager.currentDateTime;
-    _timestampController.time =
-        _timestampController.time ?? _timeManager.currentTime;
-
     return EditableFormPage(
       popupMenuKey: widget.popupMenuKey,
       title: Text(_editing
@@ -233,6 +240,8 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
       return _buildFavorite();
     } else if (id == _idCatchAndRelease) {
       return _buildCatchAndRelease();
+    } else if (id == _idSeason) {
+      return _buildSeason();
     } else {
       _log.e("Unknown input key: $id");
       return Empty();
@@ -249,7 +258,10 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
           context,
           initialDate: _timestampController.date,
           label: Strings.of(context).catchFieldDate,
-          onChange: (newDate) => _timestampController.date = newDate,
+          onChange: (newDate) {
+            _timestampController.date = newDate;
+            setState(_calculateSeason);
+          },
         ),
         timePicker: TimePicker(
           context,
@@ -372,11 +384,11 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
           context,
           PickerPage<Period>.single(
             title: Text(Strings.of(context).periodPickerTitle),
-            initialValue: _periodController.value ?? Period.none,
+            initialValue: _periodController.value ?? Period.period_none,
             itemBuilder: () => pickerItemsForPeriod(context),
             allItem: PickerPageItem<Period>(
               title: Strings.of(context).none,
-              value: Period.none,
+              value: Period.period_none,
               onTap: () {
                 setState(() => _periodController.value = null);
                 Navigator.of(context).pop();
@@ -384,6 +396,37 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
             ),
             onFinishedPicking: (context, period) {
               setState(() => _periodController.value = period);
+              Navigator.of(context).pop();
+            },
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _buildSeason() {
+    return ListPickerInput(
+      title: Strings.of(context).catchFieldSeason,
+      value: _seasonController.value == null
+          ? null
+          : nameForSeason(context, _seasonController.value!),
+      onTap: () {
+        push(
+          context,
+          PickerPage<Season>.single(
+            title: Text(Strings.of(context).seasonPickerTitle),
+            initialValue: _seasonController.value ?? Season.season_none,
+            itemBuilder: () => pickerItemsForSeason(context),
+            allItem: PickerPageItem<Season>(
+              title: Strings.of(context).none,
+              value: Season.season_none,
+              onTap: () {
+                setState(() => _seasonController.value = null);
+                Navigator.of(context).pop();
+              },
+            ),
+            onFinishedPicking: (context, period) {
+              setState(() => _seasonController.value = period);
               Navigator.of(context).pop();
             },
           ),
@@ -495,7 +538,7 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
     // imageNames is set in _catchManager.addOrUpdate
     var cat = Catch()
       ..id = _oldCatch?.id ?? randomId()
-      ..timestamp = Int64(_timestampController.value!)
+      ..timestamp = Int64(_timestampController.value)
       ..speciesId = _speciesController.value!
       ..customEntityValues.addAll(entityValuesFromMap(customFieldValueMap));
 
@@ -519,6 +562,10 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
 
     if (_periodController.value != null) {
       cat.period = _periodController.value!;
+    }
+
+    if (_seasonController.value != null) {
+      cat.season = _seasonController.value!;
     }
 
     // If the user cares about (i.e. the field is showing) catch and release
@@ -558,6 +605,7 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
               pickedFishingSpot.id != _fishingSpotController.value) {
             setState(() {
               _fishingSpotController.value = pickedFishingSpot?.id;
+              _calculateSeason(fishingSpot: pickedFishingSpot);
             });
           }
           Navigator.pop(context);
@@ -587,5 +635,12 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
 
     _imagesController.value = result;
     return result;
+  }
+
+  void _calculateSeason({FishingSpot? fishingSpot}) {
+    var spot =
+        fishingSpot ?? _fishingSpotManager.entity(_fishingSpotController.value);
+    _seasonController.value =
+        Seasons.from(_timestampController.dateTime, spot?.lat);
   }
 }

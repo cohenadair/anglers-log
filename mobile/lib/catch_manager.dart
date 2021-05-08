@@ -68,6 +68,9 @@ class CatchManager extends EntityManager<Catch> {
         (cat.hasPeriod() &&
             containsTrimmedLowerCase(
                 nameForPeriod(context, cat.period), filter!)) ||
+        (cat.hasSeason() &&
+            containsTrimmedLowerCase(
+                nameForSeason(context, cat.season), filter!)) ||
         (cat.hasIsFavorite() &&
             containsTrimmedLowerCase(
                 Strings.of(context).catchFieldFavoriteSearchString, filter!)) ||
@@ -103,6 +106,7 @@ class CatchManager extends EntityManager<Catch> {
     Set<Id> methodIds = const {},
     Set<Id> speciesIds = const {},
     Set<Period> periods = const {},
+    Set<Season> seasons = const {},
   }) {
     var result = List.of(filteredCatches(
       context,
@@ -117,6 +121,7 @@ class CatchManager extends EntityManager<Catch> {
       methodIds: methodIds,
       speciesIds: speciesIds,
       periods: periods,
+      seasons: seasons,
     ));
 
     result.sort((lhs, rhs) => rhs.timestamp.compareTo(lhs.timestamp));
@@ -136,6 +141,7 @@ class CatchManager extends EntityManager<Catch> {
     Set<Id> methodIds = const {},
     Set<Id> speciesIds = const {},
     Set<Period> periods = const {},
+    Set<Season> seasons = const {},
   }) {
     if (isEmpty(filter) &&
         dateRange == null &&
@@ -147,7 +153,8 @@ class CatchManager extends EntityManager<Catch> {
         fishingSpotIds.isEmpty &&
         methodIds.isEmpty &&
         speciesIds.isEmpty &&
-        periods.isEmpty) {
+        periods.isEmpty &&
+        seasons.isEmpty) {
       return entities.values.toList();
     }
 
@@ -163,7 +170,9 @@ class CatchManager extends EntityManager<Catch> {
           methodIds.intersection(cat.methodIds.toSet()).isNotEmpty;
       valid &= speciesIds.isEmpty || speciesIds.contains(cat.speciesId);
       valid &=
-          periods.isEmpty || !cat.hasPeriod() || periods.contains(cat.period);
+          periods.isEmpty || (cat.hasPeriod() && periods.contains(cat.period));
+      valid &=
+          seasons.isEmpty || (cat.hasSeason() && seasons.contains(cat.season));
       valid &= !isFavoritesOnly || cat.isFavorite;
       valid &= !isCatchAndReleaseOnly || cat.wasCatchAndRelease;
       if (!valid) {

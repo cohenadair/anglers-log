@@ -61,6 +61,7 @@ class _SaveReportPageState extends State<SaveReportPage> {
   static final _idPeriods = randomId();
   static final _idFavoritesOnly = randomId();
   static final _idCatchAndReleaseOnly = randomId();
+  static final _idSeasons = randomId();
 
   final Key _keySummaryStart = ValueKey(0);
   final Key _keyComparisonStart = ValueKey(1);
@@ -118,6 +119,9 @@ class _SaveReportPageState extends State<SaveReportPage> {
 
   BoolInputController get _catchAndReleaseOnlyController =>
       _fields[_idCatchAndReleaseOnly]!.controller as BoolInputController;
+
+  SetInputController<Season> get _seasonsController =>
+      _fields[_idSeasons]!.controller as SetInputController<Season>;
 
   Report? get _oldReport => widget.oldReport;
 
@@ -178,6 +182,11 @@ class _SaveReportPageState extends State<SaveReportPage> {
       controller: SetInputController<Period>(),
     );
 
+    _fields[_idSeasons] = Field(
+      id: _idSeasons,
+      controller: SetInputController<Season>(),
+    );
+
     _fields[_idAnglers] = Field(
       id: _idAnglers,
       controller: SetInputController<Angler>(),
@@ -222,6 +231,7 @@ class _SaveReportPageState extends State<SaveReportPage> {
       _catchAndReleaseOnlyController.value = _oldReport!.isCatchAndReleaseOnly;
       _favoritesOnlyController.value = _oldReport!.isFavoritesOnly;
       _periodsController.value = _oldReport!.periods.toSet();
+      _seasonsController.value = _oldReport!.seasons.toSet();
       _initEntitySets(
         anglerIds: _oldReport!.anglerIds,
         baitIds: _oldReport!.baitIds,
@@ -235,7 +245,6 @@ class _SaveReportPageState extends State<SaveReportPage> {
       if (_isComparison) {
         _toDateRangeController.value = DisplayDateRange.allDates;
       }
-      _periodsController.value = {};
       _initEntitySets();
     }
   }
@@ -280,6 +289,7 @@ class _SaveReportPageState extends State<SaveReportPage> {
         _idCatchAndReleaseOnly: _buildCatchAndReleaseOnly(),
         _idFavoritesOnly: _buildFavoritesOnly(),
         _idPeriods: _buildPeriodsPicker(),
+        _idSeasons: _buildSeasonsPicker(),
         _idAnglers: _buildAnglersPicker(),
         _idSpecies: _buildSpeciesPicker(),
         _idBaits: _buildBaitsPicker(),
@@ -402,35 +412,26 @@ class _SaveReportPageState extends State<SaveReportPage> {
   }
 
   Widget _buildPeriodsPicker() {
-    return MultiListPickerInput(
-      padding: insetsHorizontalDefaultVerticalWidget,
-      values: _periodsController.value
-          .map((p) => nameForPeriod(context, p))
-          .toSet(),
-      emptyValue: (context) => Strings.of(context).periodPickerAll,
-      onTap: () {
-        var allPeriods = selectablePeriods();
-        push(
-          context,
-          PickerPage<Period>(
-            title: Text(Strings.of(context).periodPickerMultiTitle),
-            initialValues: _periodsController.value.isEmpty
-                ? ({Period.all}..addAll(allPeriods))
-                : _periodsController.value,
-            allItem: PickerPageItem<Period>(
-              title: Strings.of(context).all,
-              value: Period.all,
-            ),
-            itemBuilder: () => pickerItemsForPeriod(context),
-            onFinishedPicking: (context, periods) {
-              // Treat an empty controller value as "include all", so we're
-              // not including many objects in a protobuf collection.
-              setState(() => _periodsController.value =
-                  periods.containsAll(allPeriods) ? {} : periods);
-            },
-          ),
-        );
-      },
+    return _buildNonEntityPicker<Period>(
+      controller: _periodsController,
+      nameForItem: nameForPeriod,
+      emptyValue: Strings.of(context).periodPickerAll,
+      title: Strings.of(context).periodPickerMultiTitle,
+      allItems: selectablePeriods(),
+      allItem: Period.period_all,
+      pickerItems: pickerItemsForPeriod,
+    );
+  }
+
+  Widget _buildSeasonsPicker() {
+    return _buildNonEntityPicker<Season>(
+      controller: _seasonsController,
+      nameForItem: nameForSeason,
+      emptyValue: Strings.of(context).seasonPickerAll,
+      title: Strings.of(context).seasonPickerMultiTitle,
+      allItems: selectableSeasons(),
+      allItem: Season.season_all,
+      pickerItems: pickerItemsForSeason,
     );
   }
 
@@ -545,6 +546,45 @@ class _SaveReportPageState extends State<SaveReportPage> {
     );
   }
 
+  Widget _buildNonEntityPicker<T>({
+    required SetInputController<T> controller,
+    required String Function(BuildContext, T) nameForItem,
+    required String emptyValue,
+    required String title,
+    required Set<T> allItems,
+    required T allItem,
+    required List<PickerPageItem<T>> Function(BuildContext) pickerItems,
+  }) {
+    return MultiListPickerInput(
+      padding: insetsHorizontalDefaultVerticalWidget,
+      values:
+          controller.value.map((item) => nameForItem(context, item)).toSet(),
+      emptyValue: (context) => emptyValue,
+      onTap: () {
+        push(
+          context,
+          PickerPage<T>(
+            title: Text(title),
+            initialValues: controller.value.isEmpty
+                ? ({allItem}..addAll(allItems))
+                : controller.value,
+            allItem: PickerPageItem<T>(
+              title: Strings.of(context).all,
+              value: allItem,
+            ),
+            itemBuilder: () => pickerItems(context),
+            onFinishedPicking: (context, items) {
+              // Treat an empty controller value as "include all", so we're
+              // not including many objects in a protobuf collection.
+              setState(() =>
+                  controller.value = items.containsAll(allItems) ? {} : items);
+            },
+          ),
+        );
+      },
+    );
+  }
+
   FutureOr<bool> _save(BuildContext context) {
     var report = Report()
       ..id = _oldReport?.id ?? randomId()
@@ -552,6 +592,7 @@ class _SaveReportPageState extends State<SaveReportPage> {
       ..type = _typeController.value!
       ..fromDisplayDateRangeId = _fromDateRangeController.value!.id
       ..periods.addAll(_periodsController.value)
+      ..seasons.addAll(_seasonsController.value)
       ..anglerIds.addAll(_anglersController.value.map((e) => e.id))
       ..baitIds.addAll(_baitsController.value.map((e) => e.id))
       ..fishingSpotIds.addAll(_fishingSpotsController.value.map((e) => e.id))

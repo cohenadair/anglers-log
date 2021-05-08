@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../i18n/strings.dart';
 import '../model/gen/anglerslog.pb.dart';
 import '../pages/image_picker_page.dart';
+import '../time_manager.dart';
 import '../widgets/input_controller.dart';
 import '../widgets/input_data.dart';
 
@@ -32,21 +33,29 @@ Id catchFieldIdFavorite() =>
 Id catchFieldIdCatchAndRelease() =>
     Id()..uuid = "075fc6d5-b9b4-4377-b87d-a706287e1ffc";
 
+Id catchFieldIdSeason() => Id()..uuid = "a2b00262-d130-45ce-b30b-f6e4f2d5baf5";
+
 /// Returns all catch fields, sorted by how they are rendered on a
 /// [SaveCatchPage].
-List<Field> allCatchFields() {
+List<Field> allCatchFields(TimeManager timeManager) {
   return [
     Field(
       id: catchFieldIdTimestamp(),
       removable: false,
       name: (context) => Strings.of(context).catchFieldDateTime,
-      controller: TimestampInputController(),
+      controller: TimestampInputController(timeManager),
     ),
     Field(
       id: catchFieldIdPeriod(),
       name: (context) => Strings.of(context).catchFieldPeriod,
       description: (context) => Strings.of(context).catchFieldPeriodDescription,
       controller: InputController<Period>(),
+    ),
+    Field(
+      id: catchFieldIdSeason(),
+      name: (context) => Strings.of(context).catchFieldSeason,
+      description: (context) => Strings.of(context).catchFieldSeasonDescription,
+      controller: InputController<Season>(),
     ),
     Field(
       id: catchFieldIdSpecies(),
@@ -99,8 +108,9 @@ List<Field> allCatchFields() {
 }
 
 /// Returns all catch fields sorted alphabetically.
-List<Field> allCatchFieldsSorted(BuildContext context) {
-  var fields = allCatchFields();
+List<Field> allCatchFieldsSorted(
+    BuildContext context, TimeManager timeManager) {
+  var fields = allCatchFields(timeManager);
   fields.sort((lhs, rhs) => lhs.name!(context).compareTo(rhs.name!(context)));
   return fields;
 }

@@ -116,12 +116,7 @@ class _CatchPageState extends State<CatchPage> {
               ),
               Padding(
                 padding: insetsLeftDefault,
-                child: SubtitleLabel(
-                  formatTimestamp(context, _catch.timestamp.toInt()) +
-                      (_catch.hasPeriod()
-                          ? " (${nameForPeriod(context, _catch.period)})"
-                          : ""),
-                ),
+                child: SubtitleLabel(_formatTimeFields()),
               ),
             ],
           ),
@@ -132,6 +127,26 @@ class _CatchPageState extends State<CatchPage> {
         ),
       ],
     );
+  }
+
+  String _formatTimeFields() {
+    var result = formatTimestamp(context, _catch.timestamp.toInt());
+
+    if (!_catch.hasPeriod() && !_catch.hasSeason()) {
+      return result;
+    }
+
+    result += " (";
+
+    var items = <String>[];
+    if (_catch.hasPeriod()) {
+      items.add(nameForPeriod(context, _catch.period));
+    }
+    if (_catch.hasSeason()) {
+      items.add(nameForSeason(context, _catch.season));
+    }
+
+    return result += "${items.join(", ")})";
   }
 
   Widget _buildBait() {

@@ -1070,7 +1070,8 @@ class MockCatchManager extends _i1.Mock implements _i14.CatchManager {
           Set<_i8.Id>? fishingSpotIds = const {},
           Set<_i8.Id>? methodIds = const {},
           Set<_i8.Id>? speciesIds = const {},
-          Set<_i68.Period>? periods = const {}}) =>
+          Set<_i68.Period>? periods = const {},
+          Set<_i68.Season>? seasons = const {}}) =>
       (super.noSuchMethod(
           Invocation.method(#catchesSortedByTimestamp, [
             context
@@ -1085,7 +1086,8 @@ class MockCatchManager extends _i1.Mock implements _i14.CatchManager {
             #fishingSpotIds: fishingSpotIds,
             #methodIds: methodIds,
             #speciesIds: speciesIds,
-            #periods: periods
+            #periods: periods,
+            #seasons: seasons
           }),
           returnValue: <_i8.Catch>[]) as List<_i8.Catch>);
   @override
@@ -1100,7 +1102,8 @@ class MockCatchManager extends _i1.Mock implements _i14.CatchManager {
           Set<_i8.Id>? fishingSpotIds = const {},
           Set<_i8.Id>? methodIds = const {},
           Set<_i8.Id>? speciesIds = const {},
-          Set<_i68.Period>? periods = const {}}) =>
+          Set<_i68.Period>? periods = const {},
+          Set<_i68.Season>? seasons = const {}}) =>
       (super.noSuchMethod(
           Invocation.method(#filteredCatches, [
             context
@@ -1115,7 +1118,8 @@ class MockCatchManager extends _i1.Mock implements _i14.CatchManager {
             #fishingSpotIds: fishingSpotIds,
             #methodIds: methodIds,
             #speciesIds: speciesIds,
-            #periods: periods
+            #periods: periods,
+            #seasons: seasons
           }),
           returnValue: <_i8.Catch>[]) as List<_i8.Catch>);
   @override

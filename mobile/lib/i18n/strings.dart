@@ -205,6 +205,11 @@ class Strings {
   String get catchFieldPeriodDescription =>
       _string("catchField_periodDescription");
 
+  String get catchFieldSeason => _string("catchField_season");
+
+  String get catchFieldSeasonDescription =>
+      _string("catchField_seasonDescription");
+
   String get catchFieldSpecies => _string("catchField_species");
 
   String get catchFieldImages => _string("catchField_images");
@@ -903,6 +908,14 @@ class Strings {
   String get periodPickerTitle => _string("period_pickerTitle");
   String get periodPickerMultiTitle => _string("period_pickerMultiTitle");
   String get periodPickerAll => _string("period_pickerAll");
+
+  String get seasonWinter => _string("season_winter");
+  String get seasonSpring => _string("season_spring");
+  String get seasonSummer => _string("season_summer");
+  String get seasonAutumn => _string("season_autumn");
+  String get seasonPickerTitle => _string("season_pickerTitle");
+  String get seasonPickerMultiTitle => _string("season_pickerMultiTitle");
+  String get seasonPickerAll => _string("season_pickerAll");
 }
 
 class StringsDelegate extends LocalizationsDelegate<Strings> {

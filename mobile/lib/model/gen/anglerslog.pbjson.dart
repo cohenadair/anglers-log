@@ -13,8 +13,8 @@ import 'dart:typed_data' as $typed_data;
 const Period$json = const {
   '1': 'Period',
   '2': const [
-    const {'1': 'all', '2': 0},
-    const {'1': 'none', '2': 1},
+    const {'1': 'period_all', '2': 0},
+    const {'1': 'period_none', '2': 1},
     const {'1': 'dawn', '2': 2},
     const {'1': 'morning', '2': 3},
     const {'1': 'midday', '2': 4},
@@ -26,7 +26,23 @@ const Period$json = const {
 
 /// Descriptor for `Period`. Decode as a `google.protobuf.EnumDescriptorProto`.
 final $typed_data.Uint8List periodDescriptor = $convert.base64Decode(
-    'CgZQZXJpb2QSBwoDYWxsEAASCAoEbm9uZRABEggKBGRhd24QAhILCgdtb3JuaW5nEAMSCgoGbWlkZGF5EAQSDQoJYWZ0ZXJub29uEAUSCAoEZHVzaxAGEgkKBW5pZ2h0EAc=');
+    'CgZQZXJpb2QSDgoKcGVyaW9kX2FsbBAAEg8KC3BlcmlvZF9ub25lEAESCAoEZGF3bhACEgsKB21vcm5pbmcQAxIKCgZtaWRkYXkQBBINCglhZnRlcm5vb24QBRIICgRkdXNrEAYSCQoFbmlnaHQQBw==');
+@$core.Deprecated('Use seasonDescriptor instead')
+const Season$json = const {
+  '1': 'Season',
+  '2': const [
+    const {'1': 'season_all', '2': 0},
+    const {'1': 'season_none', '2': 1},
+    const {'1': 'winter', '2': 2},
+    const {'1': 'spring', '2': 3},
+    const {'1': 'summer', '2': 4},
+    const {'1': 'autumn', '2': 5},
+  ],
+};
+
+/// Descriptor for `Season`. Decode as a `google.protobuf.EnumDescriptorProto`.
+final $typed_data.Uint8List seasonDescriptor = $convert.base64Decode(
+    'CgZTZWFzb24SDgoKc2Vhc29uX2FsbBAAEg8KC3NlYXNvbl9ub25lEAESCgoGd2ludGVyEAISCgoGc3ByaW5nEAMSCgoGc3VtbWVyEAQSCgoGYXV0dW1uEAU=');
 @$core.Deprecated('Use idDescriptor instead')
 const Id$json = const {
   '1': 'Id',
@@ -228,12 +244,20 @@ const Catch$json = const {
       '5': 8,
       '10': 'wasCatchAndRelease'
     },
+    const {
+      '1': 'season',
+      '3': 13,
+      '4': 1,
+      '5': 14,
+      '6': '.anglerslog.Season',
+      '10': 'season'
+    },
   ],
 };
 
 /// Descriptor for `Catch`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List catchDescriptor = $convert.base64Decode(
-    'CgVDYXRjaBIeCgJpZBgBIAEoCzIOLmFuZ2xlcnNsb2cuSWRSAmlkEhwKCXRpbWVzdGFtcBgCIAEoBFIJdGltZXN0YW1wEicKB2JhaXRfaWQYAyABKAsyDi5hbmdsZXJzbG9nLklkUgZiYWl0SWQSNgoPZmlzaGluZ19zcG90X2lkGAQgASgLMg4uYW5nbGVyc2xvZy5JZFINZmlzaGluZ1Nwb3RJZBItCgpzcGVjaWVzX2lkGAUgASgLMg4uYW5nbGVyc2xvZy5JZFIJc3BlY2llc0lkEh8KC2ltYWdlX25hbWVzGAYgAygJUgppbWFnZU5hbWVzEk8KFGN1c3RvbV9lbnRpdHlfdmFsdWVzGAcgAygLMh0uYW5nbGVyc2xvZy5DdXN0b21FbnRpdHlWYWx1ZVISY3VzdG9tRW50aXR5VmFsdWVzEisKCWFuZ2xlcl9pZBgIIAEoCzIOLmFuZ2xlcnNsb2cuSWRSCGFuZ2xlcklkEi0KCm1ldGhvZF9pZHMYCSADKAsyDi5hbmdsZXJzbG9nLklkUgltZXRob2RJZHMSKgoGcGVyaW9kGAogASgOMhIuYW5nbGVyc2xvZy5QZXJpb2RSBnBlcmlvZBIfCgtpc19mYXZvcml0ZRgLIAEoCFIKaXNGYXZvcml0ZRIxChV3YXNfY2F0Y2hfYW5kX3JlbGVhc2UYDCABKAhSEndhc0NhdGNoQW5kUmVsZWFzZQ==');
+    'CgVDYXRjaBIeCgJpZBgBIAEoCzIOLmFuZ2xlcnNsb2cuSWRSAmlkEhwKCXRpbWVzdGFtcBgCIAEoBFIJdGltZXN0YW1wEicKB2JhaXRfaWQYAyABKAsyDi5hbmdsZXJzbG9nLklkUgZiYWl0SWQSNgoPZmlzaGluZ19zcG90X2lkGAQgASgLMg4uYW5nbGVyc2xvZy5JZFINZmlzaGluZ1Nwb3RJZBItCgpzcGVjaWVzX2lkGAUgASgLMg4uYW5nbGVyc2xvZy5JZFIJc3BlY2llc0lkEh8KC2ltYWdlX25hbWVzGAYgAygJUgppbWFnZU5hbWVzEk8KFGN1c3RvbV9lbnRpdHlfdmFsdWVzGAcgAygLMh0uYW5nbGVyc2xvZy5DdXN0b21FbnRpdHlWYWx1ZVISY3VzdG9tRW50aXR5VmFsdWVzEisKCWFuZ2xlcl9pZBgIIAEoCzIOLmFuZ2xlcnNsb2cuSWRSCGFuZ2xlcklkEi0KCm1ldGhvZF9pZHMYCSADKAsyDi5hbmdsZXJzbG9nLklkUgltZXRob2RJZHMSKgoGcGVyaW9kGAogASgOMhIuYW5nbGVyc2xvZy5QZXJpb2RSBnBlcmlvZBIfCgtpc19mYXZvcml0ZRgLIAEoCFIKaXNGYXZvcml0ZRIxChV3YXNfY2F0Y2hfYW5kX3JlbGVhc2UYDCABKAhSEndhc0NhdGNoQW5kUmVsZWFzZRIqCgZzZWFzb24YDSABKA4yEi5hbmdsZXJzbG9nLlNlYXNvblIGc2Vhc29u');
 @$core.Deprecated('Use fishingSpotDescriptor instead')
 const FishingSpot$json = const {
   '1': 'FishingSpot',
@@ -400,6 +424,14 @@ const Report$json = const {
       '5': 8,
       '10': 'isCatchAndReleaseOnly'
     },
+    const {
+      '1': 'seasons',
+      '3': 19,
+      '4': 3,
+      '5': 14,
+      '6': '.anglerslog.Season',
+      '10': 'seasons'
+    },
   ],
   '4': const [Report_Type$json],
 };
@@ -415,7 +447,7 @@ const Report_Type$json = const {
 
 /// Descriptor for `Report`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List reportDescriptor = $convert.base64Decode(
-    'CgZSZXBvcnQSHgoCaWQYASABKAsyDi5hbmdsZXJzbG9nLklkUgJpZBISCgRuYW1lGAIgASgJUgRuYW1lEiAKC2Rlc2NyaXB0aW9uGAMgASgJUgtkZXNjcmlwdGlvbhIrCgR0eXBlGAQgASgOMhcuYW5nbGVyc2xvZy5SZXBvcnQuVHlwZVIEdHlwZRI6Chpmcm9tX2Rpc3BsYXlfZGF0ZV9yYW5nZV9pZBgFIAEoCVIWZnJvbURpc3BsYXlEYXRlUmFuZ2VJZBI2Chh0b19kaXNwbGF5X2RhdGVfcmFuZ2VfaWQYBiABKAlSFHRvRGlzcGxheURhdGVSYW5nZUlkEjAKFGZyb21fc3RhcnRfdGltZXN0YW1wGAcgASgEUhJmcm9tU3RhcnRUaW1lc3RhbXASLAoSdG9fc3RhcnRfdGltZXN0YW1wGAggASgEUhB0b1N0YXJ0VGltZXN0YW1wEiwKEmZyb21fZW5kX3RpbWVzdGFtcBgJIAEoBFIQZnJvbUVuZFRpbWVzdGFtcBIoChB0b19lbmRfdGltZXN0YW1wGAogASgEUg50b0VuZFRpbWVzdGFtcBIpCghiYWl0X2lkcxgLIAMoCzIOLmFuZ2xlcnNsb2cuSWRSB2JhaXRJZHMSOAoQZmlzaGluZ19zcG90X2lkcxgMIAMoCzIOLmFuZ2xlcnNsb2cuSWRSDmZpc2hpbmdTcG90SWRzEi8KC3NwZWNpZXNfaWRzGA0gAygLMg4uYW5nbGVyc2xvZy5JZFIKc3BlY2llc0lkcxItCgphbmdsZXJfaWRzGA4gAygLMg4uYW5nbGVyc2xvZy5JZFIJYW5nbGVySWRzEi0KCm1ldGhvZF9pZHMYDyADKAsyDi5hbmdsZXJzbG9nLklkUgltZXRob2RJZHMSLAoHcGVyaW9kcxgQIAMoDjISLmFuZ2xlcnNsb2cuUGVyaW9kUgdwZXJpb2RzEioKEWlzX2Zhdm9yaXRlc19vbmx5GBEgASgIUg9pc0Zhdm9yaXRlc09ubHkSOAoZaXNfY2F0Y2hfYW5kX3JlbGVhc2Vfb25seRgSIAEoCFIVaXNDYXRjaEFuZFJlbGVhc2VPbmx5IiMKBFR5cGUSCwoHc3VtbWFyeRAAEg4KCmNvbXBhcmlzb24QAQ==');
+    'CgZSZXBvcnQSHgoCaWQYASABKAsyDi5hbmdsZXJzbG9nLklkUgJpZBISCgRuYW1lGAIgASgJUgRuYW1lEiAKC2Rlc2NyaXB0aW9uGAMgASgJUgtkZXNjcmlwdGlvbhIrCgR0eXBlGAQgASgOMhcuYW5nbGVyc2xvZy5SZXBvcnQuVHlwZVIEdHlwZRI6Chpmcm9tX2Rpc3BsYXlfZGF0ZV9yYW5nZV9pZBgFIAEoCVIWZnJvbURpc3BsYXlEYXRlUmFuZ2VJZBI2Chh0b19kaXNwbGF5X2RhdGVfcmFuZ2VfaWQYBiABKAlSFHRvRGlzcGxheURhdGVSYW5nZUlkEjAKFGZyb21fc3RhcnRfdGltZXN0YW1wGAcgASgEUhJmcm9tU3RhcnRUaW1lc3RhbXASLAoSdG9fc3RhcnRfdGltZXN0YW1wGAggASgEUhB0b1N0YXJ0VGltZXN0YW1wEiwKEmZyb21fZW5kX3RpbWVzdGFtcBgJIAEoBFIQZnJvbUVuZFRpbWVzdGFtcBIoChB0b19lbmRfdGltZXN0YW1wGAogASgEUg50b0VuZFRpbWVzdGFtcBIpCghiYWl0X2lkcxgLIAMoCzIOLmFuZ2xlcnNsb2cuSWRSB2JhaXRJZHMSOAoQZmlzaGluZ19zcG90X2lkcxgMIAMoCzIOLmFuZ2xlcnNsb2cuSWRSDmZpc2hpbmdTcG90SWRzEi8KC3NwZWNpZXNfaWRzGA0gAygLMg4uYW5nbGVyc2xvZy5JZFIKc3BlY2llc0lkcxItCgphbmdsZXJfaWRzGA4gAygLMg4uYW5nbGVyc2xvZy5JZFIJYW5nbGVySWRzEi0KCm1ldGhvZF9pZHMYDyADKAsyDi5hbmdsZXJzbG9nLklkUgltZXRob2RJZHMSLAoHcGVyaW9kcxgQIAMoDjISLmFuZ2xlcnNsb2cuUGVyaW9kUgdwZXJpb2RzEioKEWlzX2Zhdm9yaXRlc19vbmx5GBEgASgIUg9pc0Zhdm9yaXRlc09ubHkSOAoZaXNfY2F0Y2hfYW5kX3JlbGVhc2Vfb25seRgSIAEoCFIVaXNDYXRjaEFuZFJlbGVhc2VPbmx5EiwKB3NlYXNvbnMYEyADKA4yEi5hbmdsZXJzbG9nLlNlYXNvblIHc2Vhc29ucyIjCgRUeXBlEgsKB3N1bW1hcnkQABIOCgpjb21wYXJpc29uEAE=');
 @$core.Deprecated('Use anglerDescriptor instead')
 const Angler$json = const {
   '1': 'Angler',

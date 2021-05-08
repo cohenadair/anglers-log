@@ -8,6 +8,7 @@ import 'package:mobile/widgets/input_controller.dart';
 import 'package:mockito/mockito.dart';
 
 import '../mocks/mocks.mocks.dart';
+import '../mocks/stubbed_app_manager.dart';
 import '../test_utils.dart';
 
 void main() {
@@ -103,13 +104,15 @@ void main() {
 
   group("TimestampInputController", () {
     test("Null input", () {
-      var controller = TimestampInputController();
-      expect(controller.date, isNull);
-      expect(controller.time, isNull);
+      var controller =
+          TimestampInputController(StubbedAppManager().timeManager);
+      expect(controller.date, isNotNull);
+      expect(controller.time, isNotNull);
     });
 
     test("Non-null input", () {
       var controller = TimestampInputController(
+        StubbedAppManager().timeManager,
         date: DateTime(2020, 1, 15),
         time: TimeOfDay(hour: 15, minute: 30),
       );
@@ -118,16 +121,18 @@ void main() {
     });
 
     test("Set to non-null", () {
-      var controller = TimestampInputController();
+      var controller =
+          TimestampInputController(StubbedAppManager().timeManager);
       var timestamp = DateTime(2020, 1, 15, 15, 30).millisecondsSinceEpoch;
       controller.value = timestamp;
       expect(controller.value, timestamp);
     });
 
     test("Set to null", () {
-      var controller = TimestampInputController();
+      var controller =
+          TimestampInputController(StubbedAppManager().timeManager);
       controller.value = null;
-      expect(controller.value, isNull);
+      expect(controller.value, isNotNull);
     });
   });
 }

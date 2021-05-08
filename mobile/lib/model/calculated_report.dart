@@ -56,6 +56,10 @@ class CalculatedReport {
   /// [Period] objects.
   final Set<Period> periods;
 
+  /// When set, data is only included in this model if associated with these
+  /// [Season] objects.
+  final Set<Season> seasons;
+
   final AppManager _appManager;
   final TimeManager _timeManager;
 
@@ -133,6 +137,7 @@ class CalculatedReport {
     this.methodIds = const {},
     this.speciesIds = const {},
     this.periods = const {},
+    this.seasons = const {},
     DisplayDateRange? displayDateRange,
     bool isCatchAndReleaseOnly = false,
     bool isFavoritesOnly = false,
@@ -156,6 +161,7 @@ class CalculatedReport {
       methodIds: methodIds,
       speciesIds: speciesIds,
       periods: periods,
+      seasons: seasons,
     );
 
     _msSinceLastCatch = catches.isEmpty
@@ -293,6 +299,7 @@ class CalculatedReport {
     _addFilters<Method>(_methodManager, methodIds, result);
 
     result.addAll(periods.map((p) => nameForPeriod(context, p)));
+    result.addAll(seasons.map((s) => nameForSeason(context, s)));
 
     return result;
   }

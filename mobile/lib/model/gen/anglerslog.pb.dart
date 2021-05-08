@@ -526,9 +526,10 @@ class Catch extends $pb.GeneratedMessage {
     ..pc<CustomEntityValue>(7, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'customEntityValues', $pb.PbFieldType.PM, subBuilder: CustomEntityValue.create)
     ..aOM<Id>(8, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'anglerId', subBuilder: Id.create)
     ..pc<Id>(9, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'methodIds', $pb.PbFieldType.PM, subBuilder: Id.create)
-    ..e<Period>(10, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'period', $pb.PbFieldType.OE, defaultOrMaker: Period.all, valueOf: Period.valueOf, enumValues: Period.values)
+    ..e<Period>(10, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'period', $pb.PbFieldType.OE, defaultOrMaker: Period.period_all, valueOf: Period.valueOf, enumValues: Period.values)
     ..aOB(11, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'isFavorite')
     ..aOB(12, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'wasCatchAndRelease')
+    ..e<Season>(13, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'season', $pb.PbFieldType.OE, defaultOrMaker: Season.season_all, valueOf: Season.valueOf, enumValues: Season.values)
     ..hasRequiredFields = false;
 
   Catch._() : super();
@@ -545,6 +546,7 @@ class Catch extends $pb.GeneratedMessage {
     Period? period,
     $core.bool? isFavorite,
     $core.bool? wasCatchAndRelease,
+    Season? season,
   }) {
     final _result = create();
     if (id != null) {
@@ -582,6 +584,9 @@ class Catch extends $pb.GeneratedMessage {
     }
     if (wasCatchAndRelease != null) {
       _result.wasCatchAndRelease = wasCatchAndRelease;
+    }
+    if (season != null) {
+      _result.season = season;
     }
     return _result;
   }
@@ -737,6 +742,18 @@ class Catch extends $pb.GeneratedMessage {
   $core.bool hasWasCatchAndRelease() => $_has(11);
   @$pb.TagNumber(12)
   void clearWasCatchAndRelease() => clearField(12);
+
+  @$pb.TagNumber(13)
+  Season get season => $_getN(12);
+  @$pb.TagNumber(13)
+  set season(Season v) {
+    setField(13, v);
+  }
+
+  @$pb.TagNumber(13)
+  $core.bool hasSeason() => $_has(12);
+  @$pb.TagNumber(13)
+  void clearSeason() => clearField(13);
 }
 
 class FishingSpot extends $pb.GeneratedMessage {
@@ -987,6 +1004,7 @@ class Report extends $pb.GeneratedMessage {
     ..pc<Period>(16, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'periods', $pb.PbFieldType.PE, valueOf: Period.valueOf, enumValues: Period.values)
     ..aOB(17, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'isFavoritesOnly')
     ..aOB(18, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'isCatchAndReleaseOnly')
+    ..pc<Season>(19, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'seasons', $pb.PbFieldType.PE, valueOf: Season.valueOf, enumValues: Season.values)
     ..hasRequiredFields = false;
 
   Report._() : super();
@@ -1009,6 +1027,7 @@ class Report extends $pb.GeneratedMessage {
     $core.Iterable<Period>? periods,
     $core.bool? isFavoritesOnly,
     $core.bool? isCatchAndReleaseOnly,
+    $core.Iterable<Season>? seasons,
   }) {
     final _result = create();
     if (id != null) {
@@ -1064,6 +1083,9 @@ class Report extends $pb.GeneratedMessage {
     }
     if (isCatchAndReleaseOnly != null) {
       _result.isCatchAndReleaseOnly = isCatchAndReleaseOnly;
+    }
+    if (seasons != null) {
+      _result.seasons.addAll(seasons);
     }
     return _result;
   }
@@ -1256,6 +1278,9 @@ class Report extends $pb.GeneratedMessage {
   $core.bool hasIsCatchAndReleaseOnly() => $_has(17);
   @$pb.TagNumber(18)
   void clearIsCatchAndReleaseOnly() => clearField(18);
+
+  @$pb.TagNumber(19)
+  $core.List<Season> get seasons => $_getList(18);
 }
 
 class Angler extends $pb.GeneratedMessage {

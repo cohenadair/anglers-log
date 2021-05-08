@@ -4,6 +4,7 @@ import '../../i18n/strings.dart';
 import '../../model/gen/anglerslog.pb.dart';
 import '../../res/dimen.dart';
 import '../../res/gen/custom_icons.dart';
+import '../../time_manager.dart';
 import '../../user_preference_manager.dart';
 import '../../utils/catch_utils.dart';
 import '../../widgets/list_item.dart';
@@ -25,6 +26,8 @@ class CatchFieldPickerPage extends StatefulWidget {
 class _CatchFieldPickerPageState extends State<CatchFieldPickerPage> {
   late List<Id> _selectedFields;
 
+  TimeManager get _timeManager => TimeManager.of(context);
+
   UserPreferenceManager get _userPreferencesManager =>
       UserPreferenceManager.of(context);
 
@@ -32,7 +35,7 @@ class _CatchFieldPickerPageState extends State<CatchFieldPickerPage> {
   void initState() {
     super.initState();
 
-    _selectedFields = allCatchFields()
+    _selectedFields = allCatchFields(_timeManager)
         .where((field) => !field.removable)
         .map((field) => field.id)
         .toList();
@@ -67,7 +70,7 @@ class _CatchFieldPickerPageState extends State<CatchFieldPickerPage> {
   }
 
   List<Widget> _buildFieldOptions() {
-    return allCatchFieldsSorted(context).map((field) {
+    return allCatchFieldsSorted(context, _timeManager).map((field) {
       var isEnabled = field.removable;
 
       var subtitle = field.description?.call(context);

@@ -287,6 +287,7 @@ void main() {
       methodIds: anyNamed("methodIds"),
       speciesIds: anyNamed("speciesIds"),
       periods: anyNamed("periods"),
+      seasons: anyNamed("seasons"),
     )).thenReturn(
       (catches ?? _catches)
         ..sort((lhs, rhs) => rhs.timestamp.compareTo(lhs.timestamp)),
@@ -644,6 +645,7 @@ void main() {
       methodIds: {methodId4},
       speciesIds: {speciesId4, speciesId2},
       periods: {Period.dawn, Period.night, Period.dusk},
+      seasons: {Season.autumn},
     );
 
     expect(data.filters(), {
@@ -662,6 +664,7 @@ void main() {
       "Night",
       "Dusk",
       "Favorites Only",
+      "Autumn",
     });
     expect(data.filters(includeSpecies: false), {
       "All dates",
@@ -677,6 +680,7 @@ void main() {
       "Night",
       "Dusk",
       "Favorites Only",
+      "Autumn",
     });
     expect(data.filters(includeDateRange: false), {
       "Worm",
@@ -693,6 +697,7 @@ void main() {
       "Night",
       "Dusk",
       "Favorites Only",
+      "Autumn",
     });
     expect(data.filters(includeSpecies: false, includeDateRange: false), {
       "Worm",
@@ -707,6 +712,7 @@ void main() {
       "Night",
       "Dusk",
       "Favorites Only",
+      "Autumn",
     });
   });
 
@@ -722,6 +728,7 @@ void main() {
       fishingSpotIds: {fishingSpotId0, fishingSpotId2, fishingSpotId1},
       speciesIds: {speciesId4, speciesId2},
       periods: {},
+      seasons: {},
     );
 
     // By not stubbing EntityManager.entity() methods, no filters should be

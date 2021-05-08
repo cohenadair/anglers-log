@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:quiver/strings.dart';
 
 import '../model/gen/anglerslog.pb.dart';
+import '../time_manager.dart';
 import '../utils/date_time_utils.dart';
 import '../utils/validator.dart';
 
@@ -153,21 +154,45 @@ class PasswordInputController extends TextInputController {
 /// A [TimestampInputController] value is always in milliseconds since Epoch
 /// local time.
 class TimestampInputController extends InputController<int> {
+  final TimeManager timeManager;
+
   /// The date component of the controller.
-  DateTime? date;
+  DateTime? _date;
 
   /// The time component of the controller.
-  TimeOfDay? time;
+  TimeOfDay? _time;
 
-  TimestampInputController({
-    this.date,
-    this.time,
-  });
+  TimestampInputController(
+    this.timeManager, {
+    DateTime? date,
+    TimeOfDay? time,
+  })  : _date = date,
+        _time = time;
+
+  /// Returns only the date portion of the controller's value. The time
+  /// properties of the returned [DateTime] are all 0. If the controller's
+  /// [_date] property is null, the current date is returned.
+  DateTime get date {
+    if (_date != null) {
+      return _date!;
+    }
+    var now = timeManager.currentDateTime;
+    return DateTime(now.year, now.month, now.day);
+  }
+
+  set date(DateTime? value) => _date = value;
+
+  /// Returns the controller's [TimeOfDay] value. If the controller's
+  /// [_time] property is null, the current time is returned.
+  TimeOfDay get time =>
+      _time ?? TimeOfDay.fromDateTime(timeManager.currentDateTime);
+
+  set time(TimeOfDay? value) => _time = value;
+
+  DateTime get dateTime => DateTime.fromMillisecondsSinceEpoch(value);
 
   @override
-  int? get value => date != null && time != null
-      ? combine(date!, time!).millisecondsSinceEpoch
-      : null;
+  int get value => combine(date, time).millisecondsSinceEpoch;
 
   @override
   set value(int? timestamp) {
@@ -177,7 +202,7 @@ class TimestampInputController extends InputController<int> {
       return;
     }
     date = DateTime.fromMillisecondsSinceEpoch(timestamp);
-    time = TimeOfDay.fromDateTime(date!);
+    time = TimeOfDay.fromDateTime(date);
   }
 
   @override
