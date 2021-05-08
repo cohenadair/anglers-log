@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:quiver/strings.dart';
 
 import '../i18n/strings.dart';
+import '../log.dart';
 import '../model/gen/anglerslog.pb.dart';
 import '../model/overview_report.dart';
 import '../pages/manageable_list_page.dart';
@@ -15,6 +15,8 @@ import '../widgets/widget.dart';
 import 'pro_page.dart';
 
 class ReportListPage extends StatelessWidget {
+  final _log = Log("ReportListPage");
+
   /// The generic type is dynamic here because different kinds of report
   /// objects are rendered in the list.
   final ManageableListPagePickerSettings<dynamic> pickerSettings;
@@ -65,10 +67,23 @@ class ReportListPage extends StatelessWidget {
         child: PrimaryLabel(item.title(context)),
         editable: false,
       );
-    } else {
-      assert(item is Widget);
+    } else if (item == HeadingNoteDivider) {
       return ManageableListPageItemModel(
-        child: item as Widget,
+        child: HeadingNoteDivider(
+          hideNote: ReportManager.of(context).list().isNotEmpty,
+          title: Strings.of(context).reportListPageReportTitle,
+          note: Strings.of(context).reportListPageReportAddNote,
+          noteIcon: Icons.add,
+          padding: insetsBottomWidgetSmall,
+        ),
+        editable: false,
+        selectable: false,
+      );
+    } else {
+      _log.w("Unknown item type: $item");
+
+      return ManageableListPageItemModel(
+        child: Empty(),
         editable: false,
         selectable: false,
       );
@@ -76,24 +91,9 @@ class ReportListPage extends StatelessWidget {
   }
 
   List<dynamic> _loadItems(BuildContext context) {
-    var result = <dynamic>[
+    return [
       OverviewReport(),
-    ];
-
-    var reports = <dynamic>[]
-      ..addAll(ReportManager.of(context).list())
-      // Sort alphabetically.
-      ..sort((lhs, rhs) => compareIgnoreCase(lhs.name, rhs.name));
-
-    // Separate pre-defined reports from custom reports.
-    result.add(HeadingNoteDivider(
-      hideNote: reports.isNotEmpty,
-      title: Strings.of(context).reportListPageReportTitle,
-      note: Strings.of(context).reportListPageReportAddNote,
-      noteIcon: Icons.add,
-      padding: insetsBottomWidgetSmall,
-    ));
-
-    return result..addAll(reports);
+      HeadingNoteDivider,
+    ]..addAll(ReportManager.of(context).listSortedByName());
   }
 }
