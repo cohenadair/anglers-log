@@ -54,7 +54,10 @@ void main() {
     when(appManager.subscriptionManager.isPro).thenReturn(false);
 
     when(appManager.baitManager.list()).thenReturn([]);
+
     when(appManager.reportManager.list())
+        .thenReturn([]..addAll(comparisons)..addAll(summaries));
+    when(appManager.reportManager.listSortedByName())
         .thenReturn([]..addAll(comparisons)..addAll(summaries));
   });
 

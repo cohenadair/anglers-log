@@ -193,6 +193,7 @@ void main() {
     when(appManager.catchManager.list()).thenReturn(_catches);
 
     when(appManager.reportManager.list()).thenReturn([]);
+    when(appManager.reportManager.listSortedByName()).thenReturn([]);
     when(appManager.reportManager.entityExists(any)).thenReturn(false);
 
     when(appManager.localDatabaseManager.deleteEntity(any, any))
@@ -259,6 +260,7 @@ void main() {
       ..description = "A description"
       ..type = Report_Type.summary;
     when(appManager.reportManager.list()).thenReturn([report]);
+    when(appManager.reportManager.listSortedByName()).thenReturn([report]);
     when(appManager.reportManager.entityExists(report.id)).thenReturn(true);
     when(appManager.reportManager.entity(report.id)).thenReturn(report);
 
@@ -282,6 +284,7 @@ void main() {
       ..description = "A description"
       ..type = Report_Type.comparison;
     when(appManager.reportManager.list()).thenReturn([report]);
+    when(appManager.reportManager.listSortedByName()).thenReturn([report]);
     when(appManager.reportManager.entityExists(report.id)).thenReturn(true);
     when(appManager.reportManager.entity(report.id)).thenReturn(report);
 
