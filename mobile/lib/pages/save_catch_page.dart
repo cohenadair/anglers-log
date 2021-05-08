@@ -26,6 +26,7 @@ import '../user_preference_manager.dart';
 import '../utils/catch_utils.dart';
 import '../utils/page_utils.dart';
 import '../utils/protobuf_utils.dart';
+import '../water_clarity_manager.dart';
 import '../widgets/checkbox_input.dart';
 import '../widgets/date_time_picker.dart';
 import '../widgets/image_input.dart';
@@ -40,6 +41,7 @@ import 'angler_list_page.dart';
 import 'manageable_list_page.dart';
 import 'method_list_page.dart';
 import 'picker_page.dart';
+import 'water_clarity_list_page.dart';
 
 class SaveCatchPage extends StatefulWidget {
   /// If set, invoked when it's time to pop the page from the navigation stack.
@@ -85,6 +87,7 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
   static final _idSeason = catchFieldIdSeason();
   static final _idSpecies = catchFieldIdSpecies();
   static final _idTimestamp = catchFieldIdTimestamp();
+  static final _idWaterClarity = catchFieldIdWaterClarity();
 
   final _log = Log("SaveCatchPage");
 
@@ -115,6 +118,9 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
 
   TimeManager get _timeManager => TimeManager.of(context);
 
+  WaterClarityManager get _waterClarityManager =>
+      WaterClarityManager.of(context);
+
   Catch? get _oldCatch => widget.oldCatch;
 
   TimestampInputController get _timestampController =>
@@ -126,20 +132,20 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
   InputController<Season> get _seasonController =>
       _fields[_idSeason]!.controller as InputController<Season>;
 
-  InputController<Id> get _speciesController =>
-      _fields[_idSpecies]!.controller as InputController<Id>;
+  IdInputController get _speciesController =>
+      _fields[_idSpecies]!.controller as IdInputController;
 
   ListInputController<PickedImage> get _imagesController =>
       _fields[_idImages]!.controller as ListInputController<PickedImage>;
 
-  InputController<Id> get _fishingSpotController =>
-      _fields[_idFishingSpot]!.controller as InputController<Id>;
+  IdInputController get _fishingSpotController =>
+      _fields[_idFishingSpot]!.controller as IdInputController;
 
-  InputController<Id> get _baitController =>
-      _fields[_idBait]!.controller as InputController<Id>;
+  IdInputController get _baitController =>
+      _fields[_idBait]!.controller as IdInputController;
 
-  InputController<Id> get _anglerController =>
-      _fields[_idAngler]!.controller as InputController<Id>;
+  IdInputController get _anglerController =>
+      _fields[_idAngler]!.controller as IdInputController;
 
   BoolInputController get _catchAndReleaseController =>
       _fields[_idCatchAndRelease]!.controller as BoolInputController;
@@ -149,6 +155,9 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
 
   SetInputController<Id> get _methodsController =>
       _fields[_idMethods]!.controller as SetInputController<Id>;
+
+  IdInputController get _waterClarityController =>
+      _fields[_idWaterClarity]!.controller as IdInputController;
 
   bool get _editing => _oldCatch != null;
 
@@ -181,6 +190,7 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
       _catchAndReleaseController.value = _oldCatch!.wasCatchAndRelease;
       _favoriteController.value = _oldCatch!.isFavorite;
       _methodsController.value = _oldCatch!.methodIds.toSet();
+      _waterClarityController.value = _oldCatch!.waterClarityId;
       _customEntityValues = _oldCatch!.customEntityValues;
       _imagesFuture = _pickedImagesForOldCatch;
     } else {
@@ -242,6 +252,8 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
       return _buildCatchAndRelease();
     } else if (id == _idSeason) {
       return _buildSeason();
+    } else if (id == _idWaterClarity) {
+      return _buildWaterClarity();
     } else {
       _log.e("Unknown input key: $id");
       return Empty();
@@ -328,6 +340,37 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
                     return true;
                   },
                   initialValue: angler,
+                ),
+              ),
+            );
+          },
+        );
+      },
+    );
+  }
+
+  Widget _buildWaterClarity() {
+    return EntityListenerBuilder(
+      managers: [
+        _waterClarityManager,
+      ],
+      builder: (context) {
+        var clarity =
+            _waterClarityManager.entity(_waterClarityController.value);
+        return ListPickerInput(
+          title: Strings.of(context).catchFieldWaterClarityLabel,
+          value: clarity?.name,
+          onTap: () {
+            push(
+              context,
+              WaterClarityListPage(
+                pickerSettings:
+                    ManageableListPagePickerSettings<WaterClarity>.single(
+                  onPicked: (context, clarity) {
+                    setState(() => _waterClarityController.value = clarity?.id);
+                    return true;
+                  },
+                  initialValue: clarity,
                 ),
               ),
             );
@@ -552,6 +595,10 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
 
     if (_anglerController.value != null) {
       cat.anglerId = _anglerController.value!;
+    }
+
+    if (_waterClarityController.value != null) {
+      cat.waterClarityId = _waterClarityController.value!;
     }
 
     if (_methodsController.value.isNotEmpty) {

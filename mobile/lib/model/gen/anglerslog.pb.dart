@@ -530,6 +530,7 @@ class Catch extends $pb.GeneratedMessage {
     ..aOB(11, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'isFavorite')
     ..aOB(12, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'wasCatchAndRelease')
     ..e<Season>(13, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'season', $pb.PbFieldType.OE, defaultOrMaker: Season.season_all, valueOf: Season.valueOf, enumValues: Season.values)
+    ..aOM<Id>(14, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'waterClarityId', subBuilder: Id.create)
     ..hasRequiredFields = false;
 
   Catch._() : super();
@@ -547,6 +548,7 @@ class Catch extends $pb.GeneratedMessage {
     $core.bool? isFavorite,
     $core.bool? wasCatchAndRelease,
     Season? season,
+    Id? waterClarityId,
   }) {
     final _result = create();
     if (id != null) {
@@ -587,6 +589,9 @@ class Catch extends $pb.GeneratedMessage {
     }
     if (season != null) {
       _result.season = season;
+    }
+    if (waterClarityId != null) {
+      _result.waterClarityId = waterClarityId;
     }
     return _result;
   }
@@ -754,6 +759,20 @@ class Catch extends $pb.GeneratedMessage {
   $core.bool hasSeason() => $_has(12);
   @$pb.TagNumber(13)
   void clearSeason() => clearField(13);
+
+  @$pb.TagNumber(14)
+  Id get waterClarityId => $_getN(13);
+  @$pb.TagNumber(14)
+  set waterClarityId(Id v) {
+    setField(14, v);
+  }
+
+  @$pb.TagNumber(14)
+  $core.bool hasWaterClarityId() => $_has(13);
+  @$pb.TagNumber(14)
+  void clearWaterClarityId() => clearField(14);
+  @$pb.TagNumber(14)
+  Id ensureWaterClarityId() => $_ensure(13);
 }
 
 class FishingSpot extends $pb.GeneratedMessage {
@@ -1005,6 +1024,7 @@ class Report extends $pb.GeneratedMessage {
     ..aOB(17, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'isFavoritesOnly')
     ..aOB(18, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'isCatchAndReleaseOnly')
     ..pc<Season>(19, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'seasons', $pb.PbFieldType.PE, valueOf: Season.valueOf, enumValues: Season.values)
+    ..pc<Id>(20, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'waterClarityIds', $pb.PbFieldType.PM, subBuilder: Id.create)
     ..hasRequiredFields = false;
 
   Report._() : super();
@@ -1028,6 +1048,7 @@ class Report extends $pb.GeneratedMessage {
     $core.bool? isFavoritesOnly,
     $core.bool? isCatchAndReleaseOnly,
     $core.Iterable<Season>? seasons,
+    $core.Iterable<Id>? waterClarityIds,
   }) {
     final _result = create();
     if (id != null) {
@@ -1086,6 +1107,9 @@ class Report extends $pb.GeneratedMessage {
     }
     if (seasons != null) {
       _result.seasons.addAll(seasons);
+    }
+    if (waterClarityIds != null) {
+      _result.waterClarityIds.addAll(waterClarityIds);
     }
     return _result;
   }
@@ -1281,6 +1305,9 @@ class Report extends $pb.GeneratedMessage {
 
   @$pb.TagNumber(19)
   $core.List<Season> get seasons => $_getList(18);
+
+  @$pb.TagNumber(20)
+  $core.List<Id> get waterClarityIds => $_getList(19);
 }
 
 class Angler extends $pb.GeneratedMessage {
@@ -1435,6 +1462,97 @@ class Method extends $pb.GeneratedMessage {
   static Method getDefault() =>
       _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<Method>(create);
   static Method? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  Id get id => $_getN(0);
+  @$pb.TagNumber(1)
+  set id(Id v) {
+    setField(1, v);
+  }
+
+  @$pb.TagNumber(1)
+  $core.bool hasId() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearId() => clearField(1);
+  @$pb.TagNumber(1)
+  Id ensureId() => $_ensure(0);
+
+  @$pb.TagNumber(2)
+  $core.String get name => $_getSZ(1);
+  @$pb.TagNumber(2)
+  set name($core.String v) {
+    $_setString(1, v);
+  }
+
+  @$pb.TagNumber(2)
+  $core.bool hasName() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearName() => clearField(2);
+}
+
+class WaterClarity extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      const $core.bool.fromEnvironment('protobuf.omit_message_names')
+          ? ''
+          : 'WaterClarity',
+      package: const $pb.PackageName(
+          const $core.bool.fromEnvironment('protobuf.omit_message_names')
+              ? ''
+              : 'anglerslog'),
+      createEmptyInstance: create)
+    ..aOM<Id>(
+        1,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'id',
+        subBuilder: Id.create)
+    ..aOS(
+        2,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'name')
+    ..hasRequiredFields = false;
+
+  WaterClarity._() : super();
+  factory WaterClarity({
+    Id? id,
+    $core.String? name,
+  }) {
+    final _result = create();
+    if (id != null) {
+      _result.id = id;
+    }
+    if (name != null) {
+      _result.name = name;
+    }
+    return _result;
+  }
+  factory WaterClarity.fromBuffer($core.List<$core.int> i,
+          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(i, r);
+  factory WaterClarity.fromJson($core.String i,
+          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(i, r);
+  @$core.Deprecated('Using this can add significant overhead to your binary. '
+      'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+      'Will be removed in next major version')
+  WaterClarity clone() => WaterClarity()..mergeFromMessage(this);
+  @$core.Deprecated('Using this can add significant overhead to your binary. '
+      'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+      'Will be removed in next major version')
+  WaterClarity copyWith(void Function(WaterClarity) updates) =>
+      super.copyWith((message) => updates(message as WaterClarity))
+          as WaterClarity; // ignore: deprecated_member_use
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static WaterClarity create() => WaterClarity._();
+  WaterClarity createEmptyInstance() => create();
+  static $pb.PbList<WaterClarity> createRepeated() =>
+      $pb.PbList<WaterClarity>();
+  @$core.pragma('dart2js:noInline')
+  static WaterClarity getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<WaterClarity>(create);
+  static WaterClarity? _defaultInstance;
 
   @$pb.TagNumber(1)
   Id get id => $_getN(0);

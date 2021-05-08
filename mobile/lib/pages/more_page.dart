@@ -18,6 +18,7 @@ import '../widgets/widget.dart';
 import 'angler_list_page.dart';
 import 'method_list_page.dart';
 import 'scroll_page.dart';
+import 'water_clarity_list_page.dart';
 
 class MorePage extends StatelessWidget {
   /// A [GlobalKey] for the feedback row. Used for scrolling to the feedback
@@ -86,6 +87,12 @@ class MorePage extends StatelessWidget {
           icon: Icons.public,
           title: Strings.of(context).tripListPageMenuLabel,
           page: TripListPage(),
+        ),
+        _buildPageItem(
+          context,
+          icon: CustomIcons.waterClarities,
+          title: Strings.of(context).waterClarityListPageMenuTitle,
+          page: WaterClarityListPage(),
         ),
         MinDivider(),
         _buildPageItem(

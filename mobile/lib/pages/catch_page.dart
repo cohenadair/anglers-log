@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mobile/res/gen/custom_icons.dart';
 
 import '../angler_manager.dart';
 import '../bait_category_manager.dart';
@@ -17,6 +18,7 @@ import '../species_manager.dart';
 import '../utils/date_time_utils.dart';
 import '../utils/page_utils.dart';
 import '../utils/protobuf_utils.dart';
+import '../water_clarity_manager.dart';
 import '../widgets/list_item.dart';
 import '../widgets/static_fishing_spot.dart';
 import '../widgets/text.dart';
@@ -33,13 +35,22 @@ class CatchPage extends StatefulWidget {
 
 class _CatchPageState extends State<CatchPage> {
   AnglerManager get _anglerManager => AnglerManager.of(context);
+
   BaitManager get _baitManager => BaitManager.of(context);
+
   BaitCategoryManager get _baitCategoryManager =>
       BaitCategoryManager.of(context);
+
   CatchManager get _catchManager => CatchManager.of(context);
+
   FishingSpotManager get _fishingSpotManager => FishingSpotManager.of(context);
+
   MethodManager get _methodManager => MethodManager.of(context);
+
   SpeciesManager get _speciesManager => SpeciesManager.of(context);
+
+  WaterClarityManager get _waterClarityManager =>
+      WaterClarityManager.of(context);
 
   // TODO: Remove this when Google Maps performance issue is fixed.
   // https://github.com/flutter/flutter/issues/28493
@@ -65,6 +76,7 @@ class _CatchPageState extends State<CatchPage> {
         _fishingSpotManager,
         _methodManager,
         _speciesManager,
+        _waterClarityManager,
       ],
       onDeleteEnabled: false,
       builder: (context) {
@@ -96,6 +108,7 @@ class _CatchPageState extends State<CatchPage> {
             ),
             _buildAngler(),
             _buildCatchAndRelease(),
+            _buildWaterClarity(),
           ],
         );
       },
@@ -215,6 +228,18 @@ class _CatchPageState extends State<CatchPage> {
         title: Text(Strings.of(context).catchPageKept),
       );
     }
+  }
+
+  Widget _buildWaterClarity() {
+    var clarity = _waterClarityManager.entity(_catch.waterClarityId);
+    if (clarity == null) {
+      return Empty();
+    }
+
+    return ListItem(
+      leading: Icon(CustomIcons.waterClarities),
+      title: Text(clarity.name),
+    );
   }
 
   Widget _buildMethods() {

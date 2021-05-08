@@ -73,6 +73,7 @@ message Catch {
   bool is_favorite = 11;
   bool was_catch_and_release = 12;
   Season season = 13;
+  Id water_clarity_id = 14;
 }
 
 message FishingSpot {
@@ -112,6 +113,7 @@ message Report {
   bool is_favorites_only = 17;
   bool is_catch_and_release_only = 18;
   repeated Season seasons = 19;
+  repeated Id water_clarity_ids = 20;
 }
 
 message Angler {
@@ -120,6 +122,11 @@ message Angler {
 }
 
 message Method {
+  Id id = 1;
+  string name = 2;
+}
+
+message WaterClarity {
   Id id = 1;
   string name = 2;
 }

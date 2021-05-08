@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:fixnum/fixnum.dart';
 import 'package:flutter/material.dart';
+import 'package:mobile/water_clarity_manager.dart';
 import 'package:protobuf/protobuf.dart';
 import 'package:quiver/strings.dart';
 
@@ -35,6 +36,7 @@ import 'angler_list_page.dart';
 import 'manageable_list_page.dart';
 import 'method_list_page.dart';
 import 'picker_page.dart';
+import 'water_clarity_list_page.dart';
 
 class SaveReportPage extends StatefulWidget {
   final Report? oldReport;
@@ -62,6 +64,7 @@ class _SaveReportPageState extends State<SaveReportPage> {
   static final _idFavoritesOnly = randomId();
   static final _idCatchAndReleaseOnly = randomId();
   static final _idSeasons = randomId();
+  static final _idWaterClarities = randomId();
 
   final Key _keySummaryStart = ValueKey(0);
   final Key _keyComparisonStart = ValueKey(1);
@@ -79,6 +82,9 @@ class _SaveReportPageState extends State<SaveReportPage> {
   MethodManager get _methodManager => MethodManager.of(context);
 
   SpeciesManager get _speciesManager => SpeciesManager.of(context);
+
+  WaterClarityManager get _waterClarityManager =>
+      WaterClarityManager.of(context);
 
   TextInputController get _nameController =>
       _fields[_idName]!.controller as TextInputController;
@@ -122,6 +128,10 @@ class _SaveReportPageState extends State<SaveReportPage> {
 
   SetInputController<Season> get _seasonsController =>
       _fields[_idSeasons]!.controller as SetInputController<Season>;
+
+  SetInputController<WaterClarity> get _waterClaritiesController =>
+      _fields[_idWaterClarities]!.controller
+          as SetInputController<WaterClarity>;
 
   Report? get _oldReport => widget.oldReport;
 
@@ -212,6 +222,11 @@ class _SaveReportPageState extends State<SaveReportPage> {
       controller: SetInputController<Method>(),
     );
 
+    _fields[_idWaterClarities] = Field(
+      id: _idWaterClarities,
+      controller: SetInputController<WaterClarity>(),
+    );
+
     if (_isEditing) {
       _nameController.value = _oldReport!.name;
       _descriptionController.value = _oldReport!.description;
@@ -238,6 +253,7 @@ class _SaveReportPageState extends State<SaveReportPage> {
         fishingSpotIds: _oldReport!.fishingSpotIds,
         methodIds: _oldReport!.methodIds,
         speciesIds: _oldReport!.speciesIds,
+        waterClarityIds: _oldReport!.waterClarityIds,
       );
     } else {
       _typeController.value = Report_Type.summary;
@@ -255,6 +271,7 @@ class _SaveReportPageState extends State<SaveReportPage> {
     List<Id> fishingSpotIds = const [],
     List<Id> methodIds = const [],
     List<Id> speciesIds = const [],
+    List<Id> waterClarityIds = const [],
   }) {
     // "Empty" lists will include all entities in reports, so don't actually
     // include every entity in the report object.
@@ -269,6 +286,9 @@ class _SaveReportPageState extends State<SaveReportPage> {
         methodIds.isEmpty ? {} : _methodManager.list(methodIds).toSet();
     _speciesController.value =
         speciesIds.isEmpty ? {} : _speciesManager.list(speciesIds).toSet();
+    _waterClaritiesController.value = waterClarityIds.isEmpty
+        ? {}
+        : _waterClarityManager.list(waterClarityIds).toSet();
   }
 
   @override
@@ -295,6 +315,7 @@ class _SaveReportPageState extends State<SaveReportPage> {
         _idBaits: _buildBaitsPicker(),
         _idFishingSpots: _buildFishingSpotsPicker(),
         _idMethods: _buildMethodsPicker(),
+        _idWaterClarities: _buildWaterClaritiesPicker(),
       },
       onSave: _save,
     );
@@ -503,6 +524,19 @@ class _SaveReportPageState extends State<SaveReportPage> {
     );
   }
 
+  Widget _buildWaterClaritiesPicker() {
+    return _buildEntityPicker<WaterClarity>(
+      manager: _waterClarityManager,
+      controller: _waterClaritiesController,
+      emptyValue: Strings.of(context).saveReportPageAllWaterClarities,
+      listPage: (pickerSettings) {
+        return WaterClarityListPage(
+          pickerSettings: pickerSettings,
+        );
+      },
+    );
+  }
+
   Widget _buildEntityPicker<T extends GeneratedMessage>({
     required NamedEntityManager<T> manager,
     required SetInputController<T> controller,
@@ -597,7 +631,9 @@ class _SaveReportPageState extends State<SaveReportPage> {
       ..baitIds.addAll(_baitsController.value.map((e) => e.id))
       ..fishingSpotIds.addAll(_fishingSpotsController.value.map((e) => e.id))
       ..methodIds.addAll(_methodsController.value.map((e) => e.id))
-      ..speciesIds.addAll(_speciesController.value.map((e) => e.id));
+      ..speciesIds.addAll(_speciesController.value.map((e) => e.id))
+      ..waterClarityIds
+          .addAll(_waterClaritiesController.value.map((e) => e.id));
 
     if (_toDateRangeController.value != null) {
       report.toDisplayDateRangeId = _toDateRangeController.value!.id;

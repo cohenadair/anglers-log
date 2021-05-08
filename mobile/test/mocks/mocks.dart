@@ -33,6 +33,7 @@ import 'package:mobile/species_manager.dart';
 import 'package:mobile/time_manager.dart';
 import 'package:mobile/trip_manager.dart';
 import 'package:mobile/utils/validator.dart';
+import 'package:mobile/water_clarity_manager.dart';
 import 'package:mobile/wrappers/file_picker_wrapper.dart';
 import 'package:mobile/wrappers/firebase_auth_wrapper.dart';
 import 'package:mobile/wrappers/firebase_storage_wrapper.dart';
@@ -80,6 +81,7 @@ import 'mocks.mocks.dart';
 @GenerateMocks([TimeManager])
 @GenerateMocks([TripManager])
 @GenerateMocks([UserPreferenceManager])
+@GenerateMocks([WaterClarityManager])
 @GenerateMocks([FilePickerWrapper])
 @GenerateMocks([FirebaseAuthWrapper])
 @GenerateMocks([FirebaseStorageWrapper])

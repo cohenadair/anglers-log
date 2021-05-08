@@ -35,6 +35,9 @@ Id catchFieldIdCatchAndRelease() =>
 
 Id catchFieldIdSeason() => Id()..uuid = "a2b00262-d130-45ce-b30b-f6e4f2d5baf5";
 
+Id catchFieldIdWaterClarity() =>
+    Id()..uuid = "ca035b3d-323c-44a6-a112-bede7177aeb2";
+
 /// Returns all catch fields, sorted by how they are rendered on a
 /// [SaveCatchPage].
 List<Field> allCatchFields(TimeManager timeManager) {
@@ -103,6 +106,11 @@ List<Field> allCatchFields(TimeManager timeManager) {
       description: (context) =>
           Strings.of(context).catchFieldMethodsDescription,
       controller: SetInputController<Id>(),
+    ),
+    Field(
+      id: catchFieldIdWaterClarity(),
+      name: (context) => Strings.of(context).catchFieldWaterClarityLabel,
+      controller: IdInputController(),
     ),
   ];
 }

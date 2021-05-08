@@ -10,6 +10,7 @@ import 'package:mobile/database/legacy_importer.dart';
 import 'package:mobile/fishing_spot_manager.dart';
 import 'package:mobile/method_manager.dart';
 import 'package:mobile/species_manager.dart';
+import 'package:mobile/water_clarity_manager.dart';
 import 'package:mockito/mockito.dart';
 import 'package:path/path.dart' as path;
 
@@ -32,6 +33,7 @@ void main() {
   late FishingSpotManager fishingSpotManager;
   late MethodManager methodManager;
   late SpeciesManager speciesManager;
+  late WaterClarityManager waterClarityManager;
 
   var tmpPath = "test/resources/legacy_importer/tmp";
   late Directory tmpDir;
@@ -79,6 +81,9 @@ void main() {
 
     speciesManager = SpeciesManager(appManager.app);
     when(appManager.app.speciesManager).thenReturn(speciesManager);
+
+    waterClarityManager = WaterClarityManager(appManager.app);
+    when(appManager.app.waterClarityManager).thenReturn(waterClarityManager);
 
     // Create a temporary directory for images.
     tmpDir = Directory(tmpPath);
@@ -231,6 +236,7 @@ void main() {
     expect(catches[3].timestamp.toInt(),
         DateTime(2019, 8, 10, 20, 44).millisecondsSinceEpoch);
     expect(catches[3].wasCatchAndRelease, isTrue);
+    expect(catches[3].hasWaterClarityId(), isFalse);
 
     // Three methods are set on catches, but only two actually exist. Verify
     // nothing bad happens when a method is found that doesn't exist.
@@ -281,6 +287,17 @@ void main() {
     expect(methods.last.name, "Bottom");
   });
 
+  test("Import iOS water clarities", () async {
+    var file = File("test/resources/backups/legacy_ios_real.zip");
+    await LegacyImporter(appManager.app, file).start();
+
+    var clarities = waterClarityManager.list();
+    expect(clarities, isNotNull);
+    expect(clarities.length, 9);
+    expect(clarities.first.name, "3 Feet");
+    expect(clarities.last.name, "Tea Stained");
+  });
+
   testWidgets("Import iOS images", (tester) async {
     var zip = File("test/resources/backups/legacy_ios_photos.zip");
 
@@ -324,6 +341,7 @@ void main() {
     expect(catches[0].methodIds.length, 3);
     expect(catches.first.hasWasCatchAndRelease(), isFalse);
     expect(catches.first.hasIsFavorite(), isFalse);
+    expect(catches.first.hasWaterClarityId(), isFalse);
     expect(methodManager.entity(catches[0].methodIds[0])!.name, "Casting");
     expect(methodManager.entity(catches[0].methodIds[1])!.name, "Lure");
     expect(methodManager.entity(catches[0].methodIds[2])!.name, "Wade");
@@ -398,6 +416,17 @@ void main() {
     expect(methods.length, 19);
     expect(methods.first.id.uuid, "6d071b7d-c575-4142-a48a-e984a71e86b8");
     expect(methods.first.name, "Baitcaster");
+  });
+
+  test("Import Android water clarities", () async {
+    var file = File("test/resources/backups/legacy_android_real.zip");
+    await LegacyImporter(appManager.app, file).start();
+
+    var clarities = waterClarityManager.list();
+    expect(clarities, isNotNull);
+    expect(clarities.length, 9);
+    expect(clarities.first.name, "3 Feet");
+    expect(clarities.last.name, "Tea Stained");
   });
 
   testWidgets("Import Android favorite catches", (tester) async {

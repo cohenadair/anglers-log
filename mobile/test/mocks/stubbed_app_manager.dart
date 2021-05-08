@@ -27,6 +27,7 @@ class StubbedAppManager {
   MockTimeManager timeManager = MockTimeManager();
   MockTripManager tripManager = MockTripManager();
   MockUserPreferenceManager userPreferenceManager = MockUserPreferenceManager();
+  MockWaterClarityManager waterClarityManager = MockWaterClarityManager();
 
   MockFilePickerWrapper filePickerWrapper = MockFilePickerWrapper();
   MockFirebaseAuthWrapper firebaseAuthWrapper = MockFirebaseAuthWrapper();
@@ -69,6 +70,7 @@ class StubbedAppManager {
     when(app.timeManager).thenReturn(timeManager);
     when(app.tripManager).thenReturn(tripManager);
     when(app.userPreferenceManager).thenReturn(userPreferenceManager);
+    when(app.waterClarityManager).thenReturn(waterClarityManager);
     when(app.filePickerWrapper).thenReturn(filePickerWrapper);
     when(app.firebaseAuthWrapper).thenReturn(firebaseAuthWrapper);
     when(app.firebaseStorageWrapper).thenReturn(firebaseStorageWrapper);
@@ -154,6 +156,13 @@ class StubbedAppManager {
       onDelete: anyNamed("onDelete"),
     )).thenReturn(SimpleEntityListener());
     when(speciesManager.entity(any)).thenReturn(null);
+
+    when(waterClarityManager.addSimpleListener(
+      onAdd: anyNamed("onAdd"),
+      onUpdate: anyNamed("onUpdate"),
+      onDelete: anyNamed("onDelete"),
+    )).thenReturn(SimpleEntityListener());
+    when(waterClarityManager.entity(any)).thenReturn(null);
   }
 
   void stubCurrentTime(DateTime now) {

@@ -85,13 +85,23 @@ final List<String> _schema2 = [
   """,
 ];
 
+final List<String> _schema3 = [
+  """
+  CREATE TABLE water_clarity (
+    id BLOB PRIMARY KEY,
+    bytes BLOB NOT NULL
+  );
+  """,
+];
+
 final List<List<String>> _schema = [
   _schema0,
   _schema1,
   _schema2,
+  _schema3,
 ];
 
-final int _version = 3;
+final int _version = 4;
 
 Future<String> _databasePath(String userId) async =>
     join(await (getDatabasesPath() as FutureOr<String>), "2.0", userId, _name);

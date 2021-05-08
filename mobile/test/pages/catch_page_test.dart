@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
 import 'package:mobile/pages/catch_page.dart';
+import 'package:mobile/res/gen/custom_icons.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mobile/widgets/list_item.dart';
 import 'package:mobile/widgets/static_fishing_spot.dart';
@@ -198,6 +199,31 @@ void main() {
     await tester.pumpAndSettle(Duration(milliseconds: 250));
 
     expect(find.byIcon(Icons.person), findsOneWidget);
+  });
+
+  testWidgets("No water clarity renders empty", (tester) async {
+    await tester.pumpWidget(Testable(
+      (_) => CatchPage(Catch()),
+      appManager: appManager,
+    ));
+    // Wait for map timer to finish.
+    await tester.pumpAndSettle(Duration(milliseconds: 250));
+
+    expect(find.byIcon(CustomIcons.waterClarities), findsNothing);
+  });
+
+  testWidgets("Angler renders", (tester) async {
+    when(appManager.waterClarityManager.entity(any)).thenReturn(WaterClarity()
+      ..id = randomId()
+      ..name = "Clear");
+    await tester.pumpWidget(Testable(
+      (_) => CatchPage(Catch()),
+      appManager: appManager,
+    ));
+    // Wait for map timer to finish.
+    await tester.pumpAndSettle(Duration(milliseconds: 250));
+
+    expect(find.byIcon(CustomIcons.waterClarities), findsOneWidget);
   });
 
   testWidgets("No methods renders empty", (tester) async {

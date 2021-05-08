@@ -230,6 +230,9 @@ class Strings {
 
   String get catchFieldNoMethods => _string("catchField_noMethods");
 
+  String get catchFieldWaterClarityLabel =>
+      _string("catchField_waterClarityLabel");
+
   String get saveReportPageNewTitle => _string("saveReportPage_newTitle");
 
   String get saveReportPageEditTitle => _string("saveReportPage_editTitle");
@@ -249,6 +252,9 @@ class Strings {
       _string("saveReportPage_endDateRangeLabel");
 
   String get saveReportPageAllAnglers => _string("saveReportPage_allAnglers");
+
+  String get saveReportPageAllWaterClarities =>
+      _string("saveReportPage_allWaterClarities");
 
   String get saveReportPageSpecies => _string("saveReportPage_species");
 
@@ -402,6 +408,38 @@ class Strings {
 
   String get methodListPageEmptyListDescription =>
       _string("methodListPage_emptyListDescription");
+
+  String get saveWaterClarityPageNewTitle =>
+      _string("saveWaterClarityPage_newTitle");
+
+  String get saveWaterClarityPageEditTitle =>
+      _string("saveWaterClarityPage_editTitle");
+
+  String get saveWaterClarityPageExistsMessage =>
+      _string("saveWaterClarityPage_existsMessage");
+
+  String get waterClarityListPageMenuTitle =>
+      _string("waterClarityListPage_menuTitle");
+
+  String get waterClarityListPageTitle => _string("waterClarityListPage_title");
+
+  String get waterClarityListPagePickerTitle =>
+      _string("waterClarityListPage_pickerTitle");
+
+  String get waterClarityListPageDeleteMessage =>
+      _string("waterClarityListPage_deleteMessage");
+
+  String get waterClarityListPageDeleteMessageSingular =>
+      _string("waterClarityListPage_deleteMessageSingular");
+
+  String get waterClarityListPageSearchHint =>
+      _string("waterClarityListPage_searchHint");
+
+  String get waterClarityListPageEmptyListTitle =>
+      _string("waterClarityListPage_emptyListTitle");
+
+  String get waterClarityListPageEmptyListDescription =>
+      _string("waterClarityListPage_emptyListDescription");
 
   String get statsPageMenuTitle => _string("statsPage_menuTitle");
 
@@ -900,21 +938,35 @@ class Strings {
   String get proPageRestoreError => _string("proPage_restoreError");
 
   String get periodDawn => _string("period_dawn");
+
   String get periodMorning => _string("period_morning");
+
   String get periodMidday => _string("period_midday");
+
   String get periodAfternoon => _string("period_afternoon");
+
   String get periodDusk => _string("period_dusk");
+
   String get periodNight => _string("period_night");
+
   String get periodPickerTitle => _string("period_pickerTitle");
+
   String get periodPickerMultiTitle => _string("period_pickerMultiTitle");
+
   String get periodPickerAll => _string("period_pickerAll");
 
   String get seasonWinter => _string("season_winter");
+
   String get seasonSpring => _string("season_spring");
+
   String get seasonSummer => _string("season_summer");
+
   String get seasonAutumn => _string("season_autumn");
+
   String get seasonPickerTitle => _string("season_pickerTitle");
+
   String get seasonPickerMultiTitle => _string("season_pickerMultiTitle");
+
   String get seasonPickerAll => _string("season_pickerAll");
 }
 

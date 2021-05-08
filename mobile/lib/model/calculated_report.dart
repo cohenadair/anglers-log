@@ -15,6 +15,7 @@ import '../time_manager.dart';
 import '../utils/collection_utils.dart';
 import '../utils/date_time_utils.dart';
 import '../utils/protobuf_utils.dart';
+import '../water_clarity_manager.dart';
 import 'gen/anglerslog.pb.dart';
 
 enum CalculatedReportSortOrder {
@@ -51,6 +52,10 @@ class CalculatedReport {
   /// When set, data is only included in this model if associated with these
   /// [Species] IDs.
   final Set<Id> speciesIds;
+
+  /// When set, data is only included in this model if associated with these
+  /// [WaterClarity] IDs.
+  final Set<Id> waterClarityIds;
 
   /// When set, data is only included in this model if associated with these
   /// [Period] objects.
@@ -103,6 +108,9 @@ class CalculatedReport {
 
   SpeciesManager get _speciesManager => _appManager.speciesManager;
 
+  WaterClarityManager get _waterClarityManager =>
+      _appManager.waterClarityManager;
+
   DateRange get dateRange => _dateRange;
 
   bool get containsNow => _containsNow;
@@ -136,6 +144,7 @@ class CalculatedReport {
     this.fishingSpotIds = const {},
     this.methodIds = const {},
     this.speciesIds = const {},
+    this.waterClarityIds = const {},
     this.periods = const {},
     this.seasons = const {},
     DisplayDateRange? displayDateRange,
@@ -160,6 +169,7 @@ class CalculatedReport {
       fishingSpotIds: fishingSpotIds,
       methodIds: methodIds,
       speciesIds: speciesIds,
+      waterClarityIds: waterClarityIds,
       periods: periods,
       seasons: seasons,
     );
@@ -297,6 +307,7 @@ class CalculatedReport {
     _addFilters<FishingSpot>(_fishingSpotManager, fishingSpotIds, result);
     _addFilters<Angler>(_anglerManager, anglerIds, result);
     _addFilters<Method>(_methodManager, methodIds, result);
+    _addFilters<WaterClarity>(_waterClarityManager, waterClarityIds, result);
 
     result.addAll(periods.map((p) => nameForPeriod(context, p)));
     result.addAll(seasons.map((s) => nameForSeason(context, s)));

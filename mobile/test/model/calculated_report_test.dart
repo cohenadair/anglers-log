@@ -19,6 +19,7 @@ void main() {
   late MockFishingSpotManager fishingSpotManager;
   late MockMethodManager methodManager;
   late MockSpeciesManager speciesManager;
+  late MockWaterClarityManager waterClarityManager;
 
   var anglerId0 = randomId();
   var anglerId1 = randomId();
@@ -49,6 +50,12 @@ void main() {
   var baitId2 = randomId();
   var baitId3 = randomId();
   var baitId4 = randomId();
+
+  var clarityId0 = randomId();
+  var clarityId1 = randomId();
+  var clarityId2 = randomId();
+  var clarityId3 = randomId();
+  var clarityId4 = randomId();
 
   var catchId0 = randomId();
   var catchId1 = randomId();
@@ -161,6 +168,24 @@ void main() {
       ..name = "Grub",
   };
 
+  var clarityMap = <Id, WaterClarity>{
+    clarityId0: WaterClarity()
+      ..id = clarityId0
+      ..name = "Clear",
+    clarityId1: WaterClarity()
+      ..id = clarityId1
+      ..name = "Tea Stained",
+    clarityId2: WaterClarity()
+      ..id = clarityId2
+      ..name = "Chocolate Milk",
+    clarityId3: WaterClarity()
+      ..id = clarityId3
+      ..name = "Crystal",
+    clarityId4: WaterClarity()
+      ..id = clarityId4
+      ..name = "1 Foot",
+  };
+
   var _catches = <Catch>[
     Catch()
       ..id = catchId0
@@ -168,6 +193,7 @@ void main() {
       ..speciesId = speciesId3
       ..fishingSpotId = fishingSpotId1
       ..baitId = baitId0
+      ..waterClarityId = clarityId2
       ..isFavorite = true,
     Catch()
       ..id = catchId1
@@ -187,13 +213,15 @@ void main() {
       ..timestamp = Int64(900)
       ..speciesId = speciesId1
       ..fishingSpotId = fishingSpotId0
+      ..waterClarityId = clarityId4
       ..baitId = baitId1,
     Catch()
       ..id = catchId4
       ..timestamp = Int64(78000)
       ..speciesId = speciesId4
       ..fishingSpotId = fishingSpotId1
-      ..baitId = baitId0,
+      ..baitId = baitId0
+      ..waterClarityId = clarityId3,
     Catch()
       ..id = catchId5
       ..timestamp = Int64(100000)
@@ -274,6 +302,13 @@ void main() {
         .thenReturn(speciesMap.values.toList());
     when(speciesManager.entity(any)).thenAnswer(
         (invocation) => speciesMap[invocation.positionalArguments[0]]);
+
+    waterClarityManager = appManager.waterClarityManager;
+    when(waterClarityManager.name(any))
+        .thenAnswer((invocation) => invocation.positionalArguments.first.name);
+    when(waterClarityManager.list()).thenReturn(clarityMap.values.toList());
+    when(waterClarityManager.entity(any)).thenAnswer(
+        (invocation) => clarityMap[invocation.positionalArguments[0]]);
   });
 
   void _stubCatchesByTimestamp(BuildContext context, [List<Catch>? catches]) {
@@ -286,6 +321,7 @@ void main() {
       fishingSpotIds: anyNamed("fishingSpotIds"),
       methodIds: anyNamed("methodIds"),
       speciesIds: anyNamed("speciesIds"),
+      waterClarityIds: anyNamed("waterClarityIds"),
       periods: anyNamed("periods"),
       seasons: anyNamed("seasons"),
     )).thenReturn(
@@ -644,6 +680,7 @@ void main() {
       fishingSpotIds: {fishingSpotId0, fishingSpotId2, fishingSpotId1},
       methodIds: {methodId4},
       speciesIds: {speciesId4, speciesId2},
+      waterClarityIds: {clarityId4, clarityId3, clarityId2},
       periods: {Period.dawn, Period.night, Period.dusk},
       seasons: {Season.autumn},
     );
@@ -665,6 +702,9 @@ void main() {
       "Dusk",
       "Favorites Only",
       "Autumn",
+      "1 Foot",
+      "Crystal",
+      "Chocolate Milk",
     });
     expect(data.filters(includeSpecies: false), {
       "All dates",
@@ -681,6 +721,9 @@ void main() {
       "Dusk",
       "Favorites Only",
       "Autumn",
+      "1 Foot",
+      "Crystal",
+      "Chocolate Milk",
     });
     expect(data.filters(includeDateRange: false), {
       "Worm",
@@ -698,6 +741,9 @@ void main() {
       "Dusk",
       "Favorites Only",
       "Autumn",
+      "1 Foot",
+      "Crystal",
+      "Chocolate Milk",
     });
     expect(data.filters(includeSpecies: false, includeDateRange: false), {
       "Worm",
@@ -713,6 +759,9 @@ void main() {
       "Dusk",
       "Favorites Only",
       "Autumn",
+      "1 Foot",
+      "Crystal",
+      "Chocolate Milk",
     });
   });
 

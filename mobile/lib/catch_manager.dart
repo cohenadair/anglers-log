@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:mobile/water_clarity_manager.dart';
 import 'package:provider/provider.dart';
 import 'package:quiver/strings.dart';
 
@@ -38,6 +39,9 @@ class CatchManager extends EntityManager<Catch> {
 
   SpeciesManager get _speciesManager => appManager.speciesManager;
 
+  WaterClarityManager get _waterClarityManager =>
+      appManager.waterClarityManager;
+
   CatchManager(AppManager app) : super(app) {
     app.baitManager.addListener(SimpleEntityListener(
       onDelete: _onDeleteBait,
@@ -64,6 +68,7 @@ class CatchManager extends EntityManager<Catch> {
         _baitManager.matchesFilter(cat.baitId, filter) ||
         _anglerManager.matchesFilter(cat.anglerId, filter) ||
         _methodManager.idsMatchFilter(cat.methodIds, filter) ||
+        _waterClarityManager.matchesFilter(cat.waterClarityId, filter) ||
         context == null ||
         (cat.hasPeriod() &&
             containsTrimmedLowerCase(
@@ -105,6 +110,7 @@ class CatchManager extends EntityManager<Catch> {
     Set<Id> fishingSpotIds = const {},
     Set<Id> methodIds = const {},
     Set<Id> speciesIds = const {},
+    Set<Id> waterClarityIds = const {},
     Set<Period> periods = const {},
     Set<Season> seasons = const {},
   }) {
@@ -120,6 +126,7 @@ class CatchManager extends EntityManager<Catch> {
       fishingSpotIds: fishingSpotIds,
       methodIds: methodIds,
       speciesIds: speciesIds,
+      waterClarityIds: waterClarityIds,
       periods: periods,
       seasons: seasons,
     ));
@@ -140,6 +147,7 @@ class CatchManager extends EntityManager<Catch> {
     Set<Id> fishingSpotIds = const {},
     Set<Id> methodIds = const {},
     Set<Id> speciesIds = const {},
+    Set<Id> waterClarityIds = const {},
     Set<Period> periods = const {},
     Set<Season> seasons = const {},
   }) {
@@ -153,6 +161,7 @@ class CatchManager extends EntityManager<Catch> {
         fishingSpotIds.isEmpty &&
         methodIds.isEmpty &&
         speciesIds.isEmpty &&
+        waterClarityIds.isEmpty &&
         periods.isEmpty &&
         seasons.isEmpty) {
       return entities.values.toList();
@@ -169,6 +178,8 @@ class CatchManager extends EntityManager<Catch> {
       valid &= methodIds.isEmpty ||
           methodIds.intersection(cat.methodIds.toSet()).isNotEmpty;
       valid &= speciesIds.isEmpty || speciesIds.contains(cat.speciesId);
+      valid &= waterClarityIds.isEmpty ||
+          waterClarityIds.contains(cat.waterClarityId);
       valid &=
           periods.isEmpty || (cat.hasPeriod() && periods.contains(cat.period));
       valid &=

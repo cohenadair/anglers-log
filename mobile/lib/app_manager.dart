@@ -20,6 +20,7 @@ import 'subscription_manager.dart';
 import 'time_manager.dart';
 import 'trip_manager.dart';
 import 'user_preference_manager.dart';
+import 'water_clarity_manager.dart';
 import 'wrappers/file_picker_wrapper.dart';
 import 'wrappers/firebase_auth_wrapper.dart';
 import 'wrappers/firebase_storage_wrapper.dart';
@@ -62,6 +63,7 @@ class AppManager {
   TimeManager? _timeManager;
   TripManager? _tripManager;
   UserPreferenceManager? _userPreferenceManager;
+  WaterClarityManager? _waterClarityManager;
 
   // External dependency wrappers.
   FilePickerWrapper? _filePickerWrapper;
@@ -213,6 +215,13 @@ class AppManager {
       _userPreferenceManager = UserPreferenceManager(this);
     }
     return _userPreferenceManager!;
+  }
+
+  WaterClarityManager get waterClarityManager {
+    if (_waterClarityManager == null) {
+      _waterClarityManager = WaterClarityManager(this);
+    }
+    return _waterClarityManager!;
   }
 
   FilePickerWrapper get filePickerWrapper {

@@ -99,6 +99,7 @@ Map<String, Map<String, String>> get englishStrings => {
             "Whether or not this catch was released.",
         "catchField_catchAndReleaseSearchString": "kept keep released release",
         "catchField_favoriteSearchString": "favourite favorite star starred",
+        "catchField_waterClarityLabel": "Water Clarity",
         "saveReportPage_newTitle": "New Report",
         "saveReportPage_editTitle": "Edit Report",
         "saveReportPage_nameExists": "Report name already exists",
@@ -108,6 +109,7 @@ Map<String, Map<String, String>> get englishStrings => {
         "saveReportPage_startDateRangeLabel": "Compare",
         "saveReportPage_endDateRangeLabel": "To",
         "saveReportPage_allAnglers": "All anglers",
+        "saveReportPage_allWaterClarities": "All water clarities",
         "saveReportPage_species": "Species",
         "saveReportPage_allSpecies": "All species",
         "saveReportPage_allBaits": "All baits",
@@ -179,6 +181,20 @@ Map<String, Map<String, String>> get englishStrings => {
         "methodListPage_emptyListTitle": "No fishing methods",
         "methodListPage_emptyListDescription":
             "You haven't yet added any fishing methods. Tap the %s button to begin.",
+        "saveWaterClarityPage_newTitle": "New Water Clarity",
+        "saveWaterClarityPage_editTitle": "Edit Water Clarity",
+        "saveWaterClarityPage_existsMessage": "Water Clarity already exists",
+        "waterClarityListPage_menuTitle": "Water Clarities",
+        "waterClarityListPage_title": "Water Clarities (%s)",
+        "waterClarityListPage_pickerTitle": "Select Water Clarity",
+        "waterClarityListPage_deleteMessage":
+            "%s is associated with %s catches; are you sure you want to delete it? This cannot be undone.",
+        "waterClarityListPage_deleteMessageSingular":
+            "%s is associated with %s catch; are you sure you want to delete it? This cannot be undone.",
+        "waterClarityListPage_searchHint": "Search water clarities",
+        "waterClarityListPage_emptyListTitle": "No water clarities",
+        "waterClarityListPage_emptyListDescription":
+            "You haven't yet added any water clarities. Tap the %s button to begin.",
         "statsPage_menuTitle": "Stats",
         "statsPage_title": "Stats",
         "statsPage_reportOverview": "Overview",

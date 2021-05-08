@@ -58,6 +58,10 @@ void main() {
       ..id = randomId()
       ..name = "Bass");
 
+    when(appManager.waterClarityManager.named(any)).thenReturn(null);
+    when(appManager.waterClarityManager.addOrUpdate(any))
+        .thenAnswer((_) => Future.value(true));
+
     when(appManager.pathProviderWrapper.temporaryPath)
         .thenAnswer((_) => Future.value(tmpPath));
 

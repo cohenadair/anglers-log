@@ -20,6 +20,7 @@ void main() {
   late MockLocalDatabaseManager dataManager;
   late MockImageManager imageManager;
   late MockSpeciesManager speciesManager;
+  late MockWaterClarityManager waterClarityManager;
 
   late BaitManager baitManager;
   late CatchManager catchManager;
@@ -60,6 +61,9 @@ void main() {
 
     speciesManager = appManager.speciesManager;
     when(speciesManager.matchesFilter(any, any)).thenReturn(false);
+
+    waterClarityManager = appManager.waterClarityManager;
+    when(waterClarityManager.matchesFilter(any, any)).thenReturn(false);
 
     when(appManager.methodManager.idsMatchFilter(any, any)).thenReturn(false);
 
@@ -247,6 +251,21 @@ void main() {
     expect(catchManager.filteredCatches(context, filter: "Angler").length, 2);
   });
 
+  testWidgets("Filtering by search query; water clarity", (tester) async {
+    when(appManager.waterClarityManager.matchesFilter(any, any))
+        .thenReturn(true);
+
+    await catchManager.addOrUpdate(Catch()
+      ..id = randomId()
+      ..waterClarityId = randomId());
+    await catchManager.addOrUpdate(Catch()
+      ..id = randomId()
+      ..waterClarityId = randomId());
+
+    var context = await buildContext(tester, appManager: appManager);
+    expect(catchManager.filteredCatches(context, filter: "Clarity").length, 2);
+  });
+
   testWidgets("Filtering by search query; method", (tester) async {
     when(appManager.methodManager.idsMatchFilter(any, any)).thenReturn(true);
 
@@ -365,6 +384,54 @@ void main() {
     catches = catchManager.filteredCatches(
       context,
       anglerIds: {randomId()},
+    );
+    expect(catches.isEmpty, true);
+  });
+
+  testWidgets("Filtering by water clarity", (tester) async {
+    when(dataManager.insertOrReplace(any, any))
+        .thenAnswer((_) => Future.value(true));
+
+    var clarityId0 = randomId();
+    var clarityId1 = randomId();
+    var clarityId2 = randomId();
+
+    await catchManager.addOrUpdate(Catch()
+      ..id = randomId()
+      ..timestamp = Int64(DateTime(2020, 1, 1).millisecondsSinceEpoch)
+      ..waterClarityId = clarityId0);
+    await catchManager.addOrUpdate(Catch()
+      ..id = randomId()
+      ..timestamp = Int64(DateTime(2020, 2, 2).millisecondsSinceEpoch)
+      ..waterClarityId = clarityId1);
+    await catchManager.addOrUpdate(Catch()
+      ..id = randomId()
+      ..timestamp = Int64(DateTime(2020, 2, 2).millisecondsSinceEpoch)
+      ..waterClarityId = clarityId1);
+    await catchManager.addOrUpdate(Catch()
+      ..id = randomId()
+      ..timestamp = Int64(DateTime(2020, 4, 4).millisecondsSinceEpoch)
+      ..waterClarityId = clarityId2);
+
+    var context = await buildContext(tester, appManager: appManager);
+    var catches = catchManager.filteredCatches(
+      context,
+      waterClarityIds: {clarityId1},
+    );
+    expect(catches.length, 2);
+
+    catches = catchManager.filteredCatches(
+      context,
+      waterClarityIds: {clarityId1, clarityId2},
+    );
+    expect(catches.length, 3);
+
+    catches = catchManager.filteredCatches(context);
+    expect(catches.length, 4);
+
+    catches = catchManager.filteredCatches(
+      context,
+      waterClarityIds: {randomId()},
     );
     expect(catches.isEmpty, true);
   });

@@ -19,5 +19,6 @@ void main() {
     expect(fields[8].id, catchFieldIdSeason());
     expect(fields[9].id, catchFieldIdSpecies());
     expect(fields[10].id, catchFieldIdPeriod());
+    expect(fields[11].id, catchFieldIdWaterClarity());
   });
 }

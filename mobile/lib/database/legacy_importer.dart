@@ -22,6 +22,7 @@ import '../model/gen/anglerslog.pb.dart';
 import '../species_manager.dart';
 import '../utils/protobuf_utils.dart';
 import '../utils/string_utils.dart';
+import '../water_clarity_manager.dart';
 import '../wrappers/io_wrapper.dart';
 import '../wrappers/path_provider_wrapper.dart';
 
@@ -61,6 +62,8 @@ class LegacyImporter {
   static const _keyName = "name";
   static const _keySpecies = "species";
   static const _keyUserDefines = "userDefines";
+  static const _keyWaterClarities = "waterClarities";
+  static const _keyWaterClarity = "waterClarity";
 
   /// Format of how fishing spot names are imported. The first argument is the
   /// location name, the second argument is the fishing spot name.
@@ -105,6 +108,9 @@ class LegacyImporter {
   MethodManager get _methodManager => _appManager.methodManager;
 
   SpeciesManager get _speciesManager => _appManager.speciesManager;
+
+  WaterClarityManager get _waterClarityManager =>
+      _appManager.waterClarityManager;
 
   PathProviderWrapper get _pathProviderWrapper =>
       _appManager.pathProviderWrapper;
@@ -190,6 +196,7 @@ class LegacyImporter {
     List<dynamic>? locations;
     List<dynamic>? methods;
     List<dynamic>? species;
+    List<dynamic>? waterClarities;
 
     for (var map in userDefinesJson) {
       if (!(map is Map<String, dynamic>)) {
@@ -216,6 +223,9 @@ class LegacyImporter {
         case "Species":
           species = map[_keySpecies];
           break;
+        case "Water Clarities":
+          waterClarities = map[_keyWaterClarities];
+          break;
         default:
           _log.w("Entity (${map[_keyName]}) not yet implemented");
           break;
@@ -229,6 +239,7 @@ class LegacyImporter {
     await _importLocations(locations);
     await _importMethods(methods);
     await _importSpecies(species);
+    await _importWaterClarities(waterClarities);
 
     // Catches are always imported last since they reference most other
     // entities.
@@ -362,6 +373,15 @@ class LegacyImporter {
     );
   }
 
+  Future<void> _importWaterClarities(List<dynamic>? clarities) async {
+    await _importNamedEntity(
+      clarities,
+      (name, id) async => await _waterClarityManager.addOrUpdate(WaterClarity()
+        ..id = id
+        ..name = name),
+    );
+  }
+
   Future<void> _importNamedEntity(List<dynamic>? entities,
       Future<bool> Function(String name, Id id) addEntity) async {
     if (entities == null || entities.isEmpty) {
@@ -422,6 +442,11 @@ class LegacyImporter {
         _log.w("Species (${map[_keyFishSpecies]}) not found");
       }
 
+      var waterClarity = _waterClarityManager.named(map[_keyWaterClarity]);
+      if (waterClarity == null && isNotEmpty(map[_keyWaterClarity])) {
+        _log.w("Water clarity (${map[_keyWaterClarity]}) not found");
+      }
+
       var images = <File>[];
       for (var imageMap in map[_keyImages]) {
         if (!(imageMap is Map<String, dynamic>)) {
@@ -455,6 +480,10 @@ class LegacyImporter {
 
       if (species != null) {
         cat.speciesId = species.id;
+      }
+
+      if (waterClarity != null) {
+        cat.waterClarityId = waterClarity.id;
       }
 
       bool? isFavorite = map[_keyIsFavorite];

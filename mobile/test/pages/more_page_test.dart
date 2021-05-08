@@ -54,6 +54,7 @@ void main() {
         .thenAnswer((_) => Future.value(true));
     when(appManager.urlLauncherWrapper.launch(any))
         .thenAnswer((_) => Future.value(true));
+    await tester.ensureVisible(find.text("Rate Anglers' Log"));
     await tapAndSettle(tester, find.text("Rate Anglers' Log"));
     verify(appManager.urlLauncherWrapper.launch(any)).called(1);
   });

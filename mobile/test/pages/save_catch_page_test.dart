@@ -9,15 +9,13 @@ import 'package:mobile/bait_manager.dart';
 import 'package:mobile/fishing_spot_manager.dart';
 import 'package:mobile/method_manager.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
-import 'package:mobile/pages/fishing_spot_picker_page.dart';
 import 'package:mobile/pages/image_picker_page.dart';
 import 'package:mobile/pages/save_catch_page.dart';
 import 'package:mobile/species_manager.dart';
 import 'package:mobile/utils/catch_utils.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
+import 'package:mobile/water_clarity_manager.dart';
 import 'package:mobile/widgets/button.dart';
-import 'package:mobile/widgets/fishing_spot_map.dart';
-import 'package:mobile/widgets/floating_container.dart';
 import 'package:mobile/widgets/image_input.dart';
 import 'package:mobile/widgets/search_bar.dart';
 import 'package:mobile/widgets/static_fishing_spot.dart';
@@ -132,8 +130,8 @@ void main() {
       expect(find.text("Winter"), findsOneWidget);
       expect(find.text("Bait"), findsOneWidget);
 
-      // Bait, angler, and time of day.
-      expect(find.text("Not Selected"), findsNWidgets(3));
+      // Bait, angler, time of day, and water clarity.
+      expect(find.text("Not Selected"), findsNWidgets(4));
 
       expect(find.byType(StaticFishingSpot), findsOneWidget);
       expect(find.text("Species"), findsOneWidget);
@@ -196,6 +194,11 @@ void main() {
         ..name = "Cohen";
       when(appManager.anglerManager.entity(any)).thenReturn(angler);
 
+      var clarity = WaterClarity()
+        ..id = randomId()
+        ..name = "Clear";
+      when(appManager.waterClarityManager.entity(any)).thenReturn(clarity);
+
       var method0 = Method()
         ..id = randomId()
         ..name = "Casting";
@@ -211,6 +214,7 @@ void main() {
         ..fishingSpotId = fishingSpot.id
         ..speciesId = species.id
         ..anglerId = angler.id
+        ..waterClarityId = clarity.id
         ..methodIds.addAll([method0.id, method1.id])
         ..customEntityValues.add(CustomEntityValue()
           ..customEntityId = customEntity.id
@@ -256,6 +260,7 @@ void main() {
       expect(find.text("Minnow"), findsOneWidget);
       expect(findCheckbox(tester, "Favorite")!.checked, isTrue);
       expect(findCheckbox(tester, "Catch and Release")!.checked, isTrue);
+      expect(find.text("Clear"), findsOneWidget);
     });
 
     testWidgets("Minimum fields set correctly", (tester) async {
@@ -280,8 +285,8 @@ void main() {
       expect(find.text("Steelhead"), findsOneWidget);
       expect(find.text("Bait"), findsOneWidget);
 
-      // Bait, angler, time of day, and season.
-      expect(find.text("Not Selected"), findsNWidgets(4));
+      // Bait, angler, time of day, season, and water clarity.
+      expect(find.text("Not Selected"), findsNWidgets(5));
 
       // Fishing methods.
       expect(find.text("No fishing methods"), findsOneWidget);
@@ -325,6 +330,11 @@ void main() {
         ..name = "Cohen";
       when(appManager.anglerManager.entity(any)).thenReturn(angler);
 
+      var clarity = WaterClarity()
+        ..id = randomId()
+        ..name = "Clear";
+      when(appManager.waterClarityManager.entity(any)).thenReturn(clarity);
+
       var method0 = Method()
         ..id = randomId()
         ..name = "Casting";
@@ -340,6 +350,7 @@ void main() {
         ..fishingSpotId = fishingSpot.id
         ..speciesId = species.id
         ..anglerId = angler.id
+        ..waterClarityId = clarity.id
         ..methodIds.addAll([method0.id, method1.id])
         ..customEntityValues.add(CustomEntityValue()
           ..customEntityId = customEntity.id
@@ -460,8 +471,8 @@ void main() {
       expect(find.text("Bait"), findsOneWidget);
       expect(find.text("Winter"), findsOneWidget);
 
-      // Bait, angler, and time of day.
-      expect(find.text("Not Selected"), findsNWidgets(3));
+      // Bait, angler, time of day, and water clarity.
+      expect(find.text("Not Selected"), findsNWidgets(4));
 
       // Fishing methods.
       expect(find.text("No fishing methods"), findsOneWidget);
@@ -501,6 +512,7 @@ void main() {
       expect(cat.fishingSpotId, fishingSpotId);
       expect(cat.hasBaitId(), isFalse);
       expect(cat.hasAnglerId(), isFalse);
+      expect(cat.hasWaterClarityId(), isFalse);
       expect(cat.methodIds, isEmpty);
       expect(cat.imageNames, isEmpty);
       expect(cat.customEntityValues, isEmpty);
@@ -527,6 +539,14 @@ void main() {
       ]);
       when(appManager.baitManager.formatNameWithCategory(any))
           .thenReturn("Rapala");
+
+      when(appManager.waterClarityManager
+              .listSortedByName(filter: anyNamed("filter")))
+          .thenReturn([
+        WaterClarity()
+          ..id = randomId()
+          ..name = "Clear",
+      ]);
 
       var methods = [
         Method()
@@ -567,6 +587,11 @@ void main() {
       await tapAndSettle(tester, find.text("Angler"));
       await tapAndSettle(tester, find.text("Cohen"));
 
+      // Select water clarity.
+      await tester.ensureVisible(find.text("Water Clarity"));
+      await tapAndSettle(tester, find.text("Water Clarity"));
+      await tapAndSettle(tester, find.text("Clear"));
+
       // Select fishing methods.
       await tester.ensureVisible(find.text("No fishing methods"));
       await tapAndSettle(tester, find.text("No fishing methods"));
@@ -600,6 +625,7 @@ void main() {
       expect(cat.customEntityValues, isEmpty);
       expect(cat.hasBaitId(), isTrue);
       expect(cat.hasAnglerId(), isTrue);
+      expect(cat.hasWaterClarityId(), isTrue);
       expect(cat.methodIds.length, 2);
       expect(cat.hasPeriod(), isTrue);
       expect(cat.period, Period.afternoon);
@@ -800,6 +826,42 @@ void main() {
 
     // Verify new name is shown.
     expect(find.text("Someone"), findsOneWidget);
+  });
+
+  /// https://github.com/cohenadair/anglers-log/issues/467
+  testWidgets("Updates to selected water clarity updates state",
+      (tester) async {
+    var clarity = WaterClarity()
+      ..id = randomId()
+      ..name = "Clear";
+
+    // Use real AnglerManager to test listener notifications.
+    var clarityManager = WaterClarityManager(appManager.app);
+    clarityManager.addOrUpdate(clarity);
+    when(appManager.app.waterClarityManager).thenReturn(clarityManager);
+
+    await tester.pumpWidget(
+      Testable(
+        (_) => SaveCatchPage.edit(Catch()
+          ..id = randomId()
+          ..waterClarityId = clarity.id),
+        appManager: appManager,
+      ),
+    );
+
+    expect(find.text("Clear"), findsOneWidget);
+
+    // Edit the selected angler.
+    await tester.ensureVisible(find.text("Clear"));
+    await tapAndSettle(tester, find.text("Clear"));
+    await tapAndSettle(tester, find.widgetWithText(ActionButton, "EDIT"));
+    await tapAndSettle(tester, find.text("Clear"));
+    await enterTextAndSettle(tester, find.byType(TextInput), "Stained");
+    await tapAndSettle(tester, find.text("SAVE"));
+    await tapAndSettle(tester, find.byType(BackButtonIcon));
+
+    // Verify new name is shown.
+    expect(find.text("Stained"), findsOneWidget);
   });
 
   /// https://github.com/cohenadair/anglers-log/issues/467

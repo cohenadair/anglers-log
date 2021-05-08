@@ -8,6 +8,7 @@ import 'package:mobile/pages/method_list_page.dart';
 import 'package:mobile/pages/picker_page.dart';
 import 'package:mobile/pages/save_report_page.dart';
 import 'package:mobile/pages/species_list_page.dart';
+import 'package:mobile/pages/water_clarity_list_page.dart';
 import 'package:mobile/utils/date_time_utils.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mobile/widgets/button.dart';
@@ -67,6 +68,15 @@ void main() {
       ..name = "Catfish",
   ];
 
+  var waterClarityList = <WaterClarity>[
+    WaterClarity()
+      ..id = randomId()
+      ..name = "Clear",
+    WaterClarity()
+      ..id = randomId()
+      ..name = "Stained",
+  ];
+
   setUp(() {
     appManager = StubbedAppManager();
 
@@ -117,6 +127,13 @@ void main() {
     when(appManager.speciesManager.list(any)).thenReturn(speciesList);
     when(appManager.speciesManager.listSortedByName(filter: anyNamed("filter")))
         .thenReturn(speciesList);
+
+    when(appManager.waterClarityManager.name(any))
+        .thenAnswer((invocation) => invocation.positionalArguments.first.name);
+    when(appManager.waterClarityManager.list(any)).thenReturn(waterClarityList);
+    when(appManager.waterClarityManager
+            .listSortedByName(filter: anyNamed("filter")))
+        .thenReturn(waterClarityList);
   });
 
   Future<void> selectItems(tester, String startText, List<String> items) async {
@@ -282,6 +299,17 @@ void main() {
     expect(find.byType(AnglerListPage), findsOneWidget);
   });
 
+  testWidgets("Water clarity picker shows picker page", (tester) async {
+    await tester.pumpWidget(Testable(
+      (_) => SaveReportPage(),
+      appManager: appManager,
+    ));
+
+    await tester.ensureVisible(find.text("All water clarities"));
+    await tapAndSettle(tester, find.text("All water clarities"));
+    expect(find.byType(WaterClarityListPage), findsOneWidget);
+  });
+
   testWidgets("Methods picker shows picker page", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => SaveReportPage(),
@@ -399,6 +427,27 @@ void main() {
     expect(find.text("All anglers"), findsOneWidget);
   });
 
+  testWidgets("Picking all water clarities shows single chip", (tester) async {
+    await tester.pumpWidget(Testable(
+      (_) => SaveReportPage(),
+      appManager: appManager,
+    ));
+
+    await tester.ensureVisible(find.text("All water clarities"));
+    await tapAndSettle(tester, find.text("All water clarities"));
+    expect(
+      (tester.widget(find.descendant(
+        of: find.widgetWithText(ManageableListItem, "All"),
+        matching: find.byType(PaddedCheckbox),
+      )) as PaddedCheckbox)
+          .checked,
+      isTrue,
+    );
+
+    await tapAndSettle(tester, find.byType(BackButton));
+    expect(find.text("All water clarities"), findsOneWidget);
+  });
+
   testWidgets("Picking all fishing methods shows single chip", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => SaveReportPage(),
@@ -479,6 +528,8 @@ void main() {
     await selectItems(tester, "All times of day", ["All", "Afternoon"]);
     await tester.ensureVisible(find.text("All seasons"));
     await selectItems(tester, "All seasons", ["All", "Summer"]);
+    await tester.ensureVisible(find.text("All water clarities"));
+    await selectItems(tester, "All water clarities", ["All", "Stained"]);
 
     expect(
       find.descendant(
@@ -501,6 +552,7 @@ void main() {
     expect(find.text("Casting"), findsOneWidget);
     expect(find.text("Afternoon"), findsOneWidget);
     expect(find.text("Summer"), findsOneWidget);
+    expect(find.text("Stained"), findsOneWidget);
 
     await tapAndSettle(tester, find.text("SAVE"));
 
@@ -517,6 +569,7 @@ void main() {
     expect(report.speciesIds.length, 1);
     expect(report.fishingSpotIds.length, 1);
     expect(report.methodIds.length, 1);
+    expect(report.waterClarityIds.length, 1);
     expect(report.periods.length, 1);
     expect(report.seasons.length, 1);
     expect(report.hasIsFavoritesOnly(), isFalse);
@@ -551,6 +604,7 @@ void main() {
     expect(report.methodIds.isEmpty, isTrue);
     expect(report.periods.isEmpty, isTrue);
     expect(report.seasons.isEmpty, isTrue);
+    expect(report.waterClarityIds.isEmpty, isTrue);
     expect(report.hasIsFavoritesOnly(), isFalse);
     expect(report.type, Report_Type.summary);
   });
@@ -606,6 +660,7 @@ void main() {
     expect(report.methodIds, isEmpty);
     expect(report.periods, isEmpty);
     expect(report.seasons, isEmpty);
+    expect(report.waterClarityIds, isEmpty);
     expect(report.hasIsFavoritesOnly(), isFalse);
     expect(report.type, Report_Type.comparison);
   });
@@ -642,6 +697,9 @@ void main() {
     await tester.ensureVisible(find.text("All seasons"));
     await selectItems(tester, "All seasons", ["All", "All"]);
 
+    await tester.ensureVisible(find.text("All water clarities"));
+    await selectItems(tester, "All water clarities", ["All", "All"]);
+
     expect(find.text("All anglers"), findsOneWidget);
     expect(find.text("All species"), findsOneWidget);
     expect(find.text("All baits"), findsOneWidget);
@@ -649,6 +707,7 @@ void main() {
     expect(find.text("All fishing methods"), findsOneWidget);
     expect(find.text("All times of day"), findsOneWidget);
     expect(find.text("All seasons"), findsOneWidget);
+    expect(find.text("All water clarities"), findsOneWidget);
 
     await tapAndSettle(tester, find.text("SAVE"));
 
@@ -680,6 +739,7 @@ void main() {
     report.fishingSpotIds.addAll(fishingSpotList.map((e) => e.id));
     report.methodIds.addAll(methodList.map((e) => e.id));
     report.speciesIds.addAll(speciesList.map((e) => e.id));
+    report.waterClarityIds.addAll(waterClarityList.map((e) => e.id));
     report.periods.addAll([Period.dawn, Period.afternoon]);
     report.seasons.addAll([Season.winter, Season.summer]);
 
@@ -719,6 +779,8 @@ void main() {
     expect(find.text("Afternoon"), findsOneWidget);
     expect(find.text("Winter"), findsOneWidget);
     expect(find.text("Summer"), findsOneWidget);
+    expect(find.text("Clear"), findsOneWidget);
+    expect(find.text("Stained"), findsOneWidget);
 
     await tapAndSettle(tester, find.text("SAVE"));
 
@@ -750,6 +812,7 @@ void main() {
     expect(find.text("All fishing methods"), findsOneWidget);
     expect(find.text("All times of day"), findsOneWidget);
     expect(find.text("All seasons"), findsOneWidget);
+    expect(find.text("All water clarities"), findsOneWidget);
   });
 
   testWidgets("New report without changing date ranges", (tester) async {
