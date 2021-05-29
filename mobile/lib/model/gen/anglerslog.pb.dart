@@ -531,6 +531,12 @@ class Catch extends $pb.GeneratedMessage {
     ..aOB(12, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'wasCatchAndRelease')
     ..e<Season>(13, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'season', $pb.PbFieldType.OE, defaultOrMaker: Season.season_all, valueOf: Season.valueOf, enumValues: Season.values)
     ..aOM<Id>(14, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'waterClarityId', subBuilder: Id.create)
+    ..aOM<MultiMeasurement>(15, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'waterDepth', subBuilder: MultiMeasurement.create)
+    ..aOM<MultiMeasurement>(16, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'waterTemperature', subBuilder: MultiMeasurement.create)
+    ..aOM<MultiMeasurement>(17, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'length', subBuilder: MultiMeasurement.create)
+    ..aOM<MultiMeasurement>(18, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'weight', subBuilder: MultiMeasurement.create)
+    ..a<$core.int>(19, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'quantity', $pb.PbFieldType.OU3)
+    ..aOS(20, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'notes')
     ..hasRequiredFields = false;
 
   Catch._() : super();
@@ -549,6 +555,12 @@ class Catch extends $pb.GeneratedMessage {
     $core.bool? wasCatchAndRelease,
     Season? season,
     Id? waterClarityId,
+    MultiMeasurement? waterDepth,
+    MultiMeasurement? waterTemperature,
+    MultiMeasurement? length,
+    MultiMeasurement? weight,
+    $core.int? quantity,
+    $core.String? notes,
   }) {
     final _result = create();
     if (id != null) {
@@ -592,6 +604,24 @@ class Catch extends $pb.GeneratedMessage {
     }
     if (waterClarityId != null) {
       _result.waterClarityId = waterClarityId;
+    }
+    if (waterDepth != null) {
+      _result.waterDepth = waterDepth;
+    }
+    if (waterTemperature != null) {
+      _result.waterTemperature = waterTemperature;
+    }
+    if (length != null) {
+      _result.length = length;
+    }
+    if (weight != null) {
+      _result.weight = weight;
+    }
+    if (quantity != null) {
+      _result.quantity = quantity;
+    }
+    if (notes != null) {
+      _result.notes = notes;
     }
     return _result;
   }
@@ -773,6 +803,86 @@ class Catch extends $pb.GeneratedMessage {
   void clearWaterClarityId() => clearField(14);
   @$pb.TagNumber(14)
   Id ensureWaterClarityId() => $_ensure(13);
+
+  @$pb.TagNumber(15)
+  MultiMeasurement get waterDepth => $_getN(14);
+  @$pb.TagNumber(15)
+  set waterDepth(MultiMeasurement v) {
+    setField(15, v);
+  }
+
+  @$pb.TagNumber(15)
+  $core.bool hasWaterDepth() => $_has(14);
+  @$pb.TagNumber(15)
+  void clearWaterDepth() => clearField(15);
+  @$pb.TagNumber(15)
+  MultiMeasurement ensureWaterDepth() => $_ensure(14);
+
+  @$pb.TagNumber(16)
+  MultiMeasurement get waterTemperature => $_getN(15);
+  @$pb.TagNumber(16)
+  set waterTemperature(MultiMeasurement v) {
+    setField(16, v);
+  }
+
+  @$pb.TagNumber(16)
+  $core.bool hasWaterTemperature() => $_has(15);
+  @$pb.TagNumber(16)
+  void clearWaterTemperature() => clearField(16);
+  @$pb.TagNumber(16)
+  MultiMeasurement ensureWaterTemperature() => $_ensure(15);
+
+  @$pb.TagNumber(17)
+  MultiMeasurement get length => $_getN(16);
+  @$pb.TagNumber(17)
+  set length(MultiMeasurement v) {
+    setField(17, v);
+  }
+
+  @$pb.TagNumber(17)
+  $core.bool hasLength() => $_has(16);
+  @$pb.TagNumber(17)
+  void clearLength() => clearField(17);
+  @$pb.TagNumber(17)
+  MultiMeasurement ensureLength() => $_ensure(16);
+
+  @$pb.TagNumber(18)
+  MultiMeasurement get weight => $_getN(17);
+  @$pb.TagNumber(18)
+  set weight(MultiMeasurement v) {
+    setField(18, v);
+  }
+
+  @$pb.TagNumber(18)
+  $core.bool hasWeight() => $_has(17);
+  @$pb.TagNumber(18)
+  void clearWeight() => clearField(18);
+  @$pb.TagNumber(18)
+  MultiMeasurement ensureWeight() => $_ensure(17);
+
+  @$pb.TagNumber(19)
+  $core.int get quantity => $_getIZ(18);
+  @$pb.TagNumber(19)
+  set quantity($core.int v) {
+    $_setUnsignedInt32(18, v);
+  }
+
+  @$pb.TagNumber(19)
+  $core.bool hasQuantity() => $_has(18);
+  @$pb.TagNumber(19)
+  void clearQuantity() => clearField(19);
+
+  @$pb.TagNumber(20)
+  $core.String get notes => $_getSZ(19);
+  @$pb.TagNumber(20)
+  set notes($core.String v) {
+    $_setString(19, v);
+  }
+
+  @$pb.TagNumber(20)
+  $core.bool hasNotes() => $_has(19);
+  @$pb.TagNumber(20)
+  void clearNotes() => clearField(20);
 }
 
 class FishingSpot extends $pb.GeneratedMessage {
@@ -895,6 +1005,114 @@ class FishingSpot extends $pb.GeneratedMessage {
   $core.bool hasLng() => $_has(3);
   @$pb.TagNumber(4)
   void clearLng() => clearField(4);
+}
+
+class NumberFilter extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      const $core.bool.fromEnvironment('protobuf.omit_message_names')
+          ? ''
+          : 'NumberFilter',
+      package: const $pb.PackageName(
+          const $core.bool.fromEnvironment('protobuf.omit_message_names')
+              ? ''
+              : 'anglerslog'),
+      createEmptyInstance: create)
+    ..e<NumberBoundary>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'boundary', $pb.PbFieldType.OE,
+        defaultOrMaker: NumberBoundary.number_boundary_any,
+        valueOf: NumberBoundary.valueOf,
+        enumValues: NumberBoundary.values)
+    ..aOM<MultiMeasurement>(
+        2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'from',
+        subBuilder: MultiMeasurement.create)
+    ..aOM<MultiMeasurement>(
+        3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'to',
+        subBuilder: MultiMeasurement.create)
+    ..hasRequiredFields = false;
+
+  NumberFilter._() : super();
+  factory NumberFilter({
+    NumberBoundary? boundary,
+    MultiMeasurement? from,
+    MultiMeasurement? to,
+  }) {
+    final _result = create();
+    if (boundary != null) {
+      _result.boundary = boundary;
+    }
+    if (from != null) {
+      _result.from = from;
+    }
+    if (to != null) {
+      _result.to = to;
+    }
+    return _result;
+  }
+  factory NumberFilter.fromBuffer($core.List<$core.int> i,
+          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(i, r);
+  factory NumberFilter.fromJson($core.String i,
+          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(i, r);
+  @$core.Deprecated('Using this can add significant overhead to your binary. '
+      'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+      'Will be removed in next major version')
+  NumberFilter clone() => NumberFilter()..mergeFromMessage(this);
+  @$core.Deprecated('Using this can add significant overhead to your binary. '
+      'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+      'Will be removed in next major version')
+  NumberFilter copyWith(void Function(NumberFilter) updates) =>
+      super.copyWith((message) => updates(message as NumberFilter))
+          as NumberFilter; // ignore: deprecated_member_use
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static NumberFilter create() => NumberFilter._();
+  NumberFilter createEmptyInstance() => create();
+  static $pb.PbList<NumberFilter> createRepeated() =>
+      $pb.PbList<NumberFilter>();
+  @$core.pragma('dart2js:noInline')
+  static NumberFilter getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<NumberFilter>(create);
+  static NumberFilter? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  NumberBoundary get boundary => $_getN(0);
+  @$pb.TagNumber(1)
+  set boundary(NumberBoundary v) {
+    setField(1, v);
+  }
+
+  @$pb.TagNumber(1)
+  $core.bool hasBoundary() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearBoundary() => clearField(1);
+
+  @$pb.TagNumber(2)
+  MultiMeasurement get from => $_getN(1);
+  @$pb.TagNumber(2)
+  set from(MultiMeasurement v) {
+    setField(2, v);
+  }
+
+  @$pb.TagNumber(2)
+  $core.bool hasFrom() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearFrom() => clearField(2);
+  @$pb.TagNumber(2)
+  MultiMeasurement ensureFrom() => $_ensure(1);
+
+  @$pb.TagNumber(3)
+  MultiMeasurement get to => $_getN(2);
+  @$pb.TagNumber(3)
+  set to(MultiMeasurement v) {
+    setField(3, v);
+  }
+
+  @$pb.TagNumber(3)
+  $core.bool hasTo() => $_has(2);
+  @$pb.TagNumber(3)
+  void clearTo() => clearField(3);
+  @$pb.TagNumber(3)
+  MultiMeasurement ensureTo() => $_ensure(2);
 }
 
 class Species extends $pb.GeneratedMessage {
@@ -1025,6 +1243,11 @@ class Report extends $pb.GeneratedMessage {
     ..aOB(18, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'isCatchAndReleaseOnly')
     ..pc<Season>(19, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'seasons', $pb.PbFieldType.PE, valueOf: Season.valueOf, enumValues: Season.values)
     ..pc<Id>(20, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'waterClarityIds', $pb.PbFieldType.PM, subBuilder: Id.create)
+    ..aOM<NumberFilter>(21, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'waterDepthFilter', subBuilder: NumberFilter.create)
+    ..aOM<NumberFilter>(22, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'waterTemperatureFilter', subBuilder: NumberFilter.create)
+    ..aOM<NumberFilter>(23, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'lengthFilter', subBuilder: NumberFilter.create)
+    ..aOM<NumberFilter>(24, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'weightFilter', subBuilder: NumberFilter.create)
+    ..aOM<NumberFilter>(25, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'quantityFilter', subBuilder: NumberFilter.create)
     ..hasRequiredFields = false;
 
   Report._() : super();
@@ -1049,6 +1272,11 @@ class Report extends $pb.GeneratedMessage {
     $core.bool? isCatchAndReleaseOnly,
     $core.Iterable<Season>? seasons,
     $core.Iterable<Id>? waterClarityIds,
+    NumberFilter? waterDepthFilter,
+    NumberFilter? waterTemperatureFilter,
+    NumberFilter? lengthFilter,
+    NumberFilter? weightFilter,
+    NumberFilter? quantityFilter,
   }) {
     final _result = create();
     if (id != null) {
@@ -1110,6 +1338,21 @@ class Report extends $pb.GeneratedMessage {
     }
     if (waterClarityIds != null) {
       _result.waterClarityIds.addAll(waterClarityIds);
+    }
+    if (waterDepthFilter != null) {
+      _result.waterDepthFilter = waterDepthFilter;
+    }
+    if (waterTemperatureFilter != null) {
+      _result.waterTemperatureFilter = waterTemperatureFilter;
+    }
+    if (lengthFilter != null) {
+      _result.lengthFilter = lengthFilter;
+    }
+    if (weightFilter != null) {
+      _result.weightFilter = weightFilter;
+    }
+    if (quantityFilter != null) {
+      _result.quantityFilter = quantityFilter;
     }
     return _result;
   }
@@ -1308,6 +1551,76 @@ class Report extends $pb.GeneratedMessage {
 
   @$pb.TagNumber(20)
   $core.List<Id> get waterClarityIds => $_getList(19);
+
+  @$pb.TagNumber(21)
+  NumberFilter get waterDepthFilter => $_getN(20);
+  @$pb.TagNumber(21)
+  set waterDepthFilter(NumberFilter v) {
+    setField(21, v);
+  }
+
+  @$pb.TagNumber(21)
+  $core.bool hasWaterDepthFilter() => $_has(20);
+  @$pb.TagNumber(21)
+  void clearWaterDepthFilter() => clearField(21);
+  @$pb.TagNumber(21)
+  NumberFilter ensureWaterDepthFilter() => $_ensure(20);
+
+  @$pb.TagNumber(22)
+  NumberFilter get waterTemperatureFilter => $_getN(21);
+  @$pb.TagNumber(22)
+  set waterTemperatureFilter(NumberFilter v) {
+    setField(22, v);
+  }
+
+  @$pb.TagNumber(22)
+  $core.bool hasWaterTemperatureFilter() => $_has(21);
+  @$pb.TagNumber(22)
+  void clearWaterTemperatureFilter() => clearField(22);
+  @$pb.TagNumber(22)
+  NumberFilter ensureWaterTemperatureFilter() => $_ensure(21);
+
+  @$pb.TagNumber(23)
+  NumberFilter get lengthFilter => $_getN(22);
+  @$pb.TagNumber(23)
+  set lengthFilter(NumberFilter v) {
+    setField(23, v);
+  }
+
+  @$pb.TagNumber(23)
+  $core.bool hasLengthFilter() => $_has(22);
+  @$pb.TagNumber(23)
+  void clearLengthFilter() => clearField(23);
+  @$pb.TagNumber(23)
+  NumberFilter ensureLengthFilter() => $_ensure(22);
+
+  @$pb.TagNumber(24)
+  NumberFilter get weightFilter => $_getN(23);
+  @$pb.TagNumber(24)
+  set weightFilter(NumberFilter v) {
+    setField(24, v);
+  }
+
+  @$pb.TagNumber(24)
+  $core.bool hasWeightFilter() => $_has(23);
+  @$pb.TagNumber(24)
+  void clearWeightFilter() => clearField(24);
+  @$pb.TagNumber(24)
+  NumberFilter ensureWeightFilter() => $_ensure(23);
+
+  @$pb.TagNumber(25)
+  NumberFilter get quantityFilter => $_getN(24);
+  @$pb.TagNumber(25)
+  set quantityFilter(NumberFilter v) {
+    setField(25, v);
+  }
+
+  @$pb.TagNumber(25)
+  $core.bool hasQuantityFilter() => $_has(24);
+  @$pb.TagNumber(25)
+  void clearQuantityFilter() => clearField(25);
+  @$pb.TagNumber(25)
+  NumberFilter ensureQuantityFilter() => $_ensure(24);
 }
 
 class Angler extends $pb.GeneratedMessage {
@@ -1579,6 +1892,204 @@ class WaterClarity extends $pb.GeneratedMessage {
   $core.bool hasName() => $_has(1);
   @$pb.TagNumber(2)
   void clearName() => clearField(2);
+}
+
+class Measurement extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      const $core.bool.fromEnvironment('protobuf.omit_message_names')
+          ? ''
+          : 'Measurement',
+      package: const $pb.PackageName(
+          const $core.bool.fromEnvironment('protobuf.omit_message_names')
+              ? ''
+              : 'anglerslog'),
+      createEmptyInstance: create)
+    ..e<Unit>(
+        1,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'unit',
+        $pb.PbFieldType.OE,
+        defaultOrMaker: Unit.feet,
+        valueOf: Unit.valueOf,
+        enumValues: Unit.values)
+    ..a<$core.double>(
+        2,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'value',
+        $pb.PbFieldType.OD)
+    ..hasRequiredFields = false;
+
+  Measurement._() : super();
+  factory Measurement({
+    Unit? unit,
+    $core.double? value,
+  }) {
+    final _result = create();
+    if (unit != null) {
+      _result.unit = unit;
+    }
+    if (value != null) {
+      _result.value = value;
+    }
+    return _result;
+  }
+  factory Measurement.fromBuffer($core.List<$core.int> i,
+          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(i, r);
+  factory Measurement.fromJson($core.String i,
+          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(i, r);
+  @$core.Deprecated('Using this can add significant overhead to your binary. '
+      'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+      'Will be removed in next major version')
+  Measurement clone() => Measurement()..mergeFromMessage(this);
+  @$core.Deprecated('Using this can add significant overhead to your binary. '
+      'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+      'Will be removed in next major version')
+  Measurement copyWith(void Function(Measurement) updates) =>
+      super.copyWith((message) => updates(message as Measurement))
+          as Measurement; // ignore: deprecated_member_use
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static Measurement create() => Measurement._();
+  Measurement createEmptyInstance() => create();
+  static $pb.PbList<Measurement> createRepeated() => $pb.PbList<Measurement>();
+  @$core.pragma('dart2js:noInline')
+  static Measurement getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<Measurement>(create);
+  static Measurement? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  Unit get unit => $_getN(0);
+  @$pb.TagNumber(1)
+  set unit(Unit v) {
+    setField(1, v);
+  }
+
+  @$pb.TagNumber(1)
+  $core.bool hasUnit() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearUnit() => clearField(1);
+
+  @$pb.TagNumber(2)
+  $core.double get value => $_getN(1);
+  @$pb.TagNumber(2)
+  set value($core.double v) {
+    $_setDouble(1, v);
+  }
+
+  @$pb.TagNumber(2)
+  $core.bool hasValue() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearValue() => clearField(2);
+}
+
+class MultiMeasurement extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      const $core.bool.fromEnvironment('protobuf.omit_message_names')
+          ? ''
+          : 'MultiMeasurement',
+      package: const $pb.PackageName(
+          const $core.bool.fromEnvironment('protobuf.omit_message_names')
+              ? ''
+              : 'anglerslog'),
+      createEmptyInstance: create)
+    ..e<MeasurementSystem>(
+        1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'system', $pb.PbFieldType.OE,
+        defaultOrMaker: MeasurementSystem.imperial_whole,
+        valueOf: MeasurementSystem.valueOf,
+        enumValues: MeasurementSystem.values)
+    ..aOM<Measurement>(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'mainValue',
+        protoName: 'mainValue', subBuilder: Measurement.create)
+    ..aOM<Measurement>(
+        3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'fractionValue',
+        protoName: 'fractionValue', subBuilder: Measurement.create)
+    ..hasRequiredFields = false;
+
+  MultiMeasurement._() : super();
+  factory MultiMeasurement({
+    MeasurementSystem? system,
+    Measurement? mainValue,
+    Measurement? fractionValue,
+  }) {
+    final _result = create();
+    if (system != null) {
+      _result.system = system;
+    }
+    if (mainValue != null) {
+      _result.mainValue = mainValue;
+    }
+    if (fractionValue != null) {
+      _result.fractionValue = fractionValue;
+    }
+    return _result;
+  }
+  factory MultiMeasurement.fromBuffer($core.List<$core.int> i,
+          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(i, r);
+  factory MultiMeasurement.fromJson($core.String i,
+          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(i, r);
+  @$core.Deprecated('Using this can add significant overhead to your binary. '
+      'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+      'Will be removed in next major version')
+  MultiMeasurement clone() => MultiMeasurement()..mergeFromMessage(this);
+  @$core.Deprecated('Using this can add significant overhead to your binary. '
+      'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+      'Will be removed in next major version')
+  MultiMeasurement copyWith(void Function(MultiMeasurement) updates) =>
+      super.copyWith((message) => updates(message as MultiMeasurement))
+          as MultiMeasurement; // ignore: deprecated_member_use
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static MultiMeasurement create() => MultiMeasurement._();
+  MultiMeasurement createEmptyInstance() => create();
+  static $pb.PbList<MultiMeasurement> createRepeated() =>
+      $pb.PbList<MultiMeasurement>();
+  @$core.pragma('dart2js:noInline')
+  static MultiMeasurement getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<MultiMeasurement>(create);
+  static MultiMeasurement? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  MeasurementSystem get system => $_getN(0);
+  @$pb.TagNumber(1)
+  set system(MeasurementSystem v) {
+    setField(1, v);
+  }
+
+  @$pb.TagNumber(1)
+  $core.bool hasSystem() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearSystem() => clearField(1);
+
+  @$pb.TagNumber(2)
+  Measurement get mainValue => $_getN(1);
+  @$pb.TagNumber(2)
+  set mainValue(Measurement v) {
+    setField(2, v);
+  }
+
+  @$pb.TagNumber(2)
+  $core.bool hasMainValue() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearMainValue() => clearField(2);
+  @$pb.TagNumber(2)
+  Measurement ensureMainValue() => $_ensure(1);
+
+  @$pb.TagNumber(3)
+  Measurement get fractionValue => $_getN(2);
+  @$pb.TagNumber(3)
+  set fractionValue(Measurement v) {
+    setField(3, v);
+  }
+
+  @$pb.TagNumber(3)
+  $core.bool hasFractionValue() => $_has(2);
+  @$pb.TagNumber(3)
+  void clearFractionValue() => clearField(3);
+  @$pb.TagNumber(3)
+  Measurement ensureFractionValue() => $_ensure(2);
 }
 
 // ignore_for_file: constant_identifier_names,lines_longer_than_80_chars,directives_ordering,prefer_mixin,implementation_imports

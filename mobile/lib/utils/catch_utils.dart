@@ -6,6 +6,9 @@ import '../pages/image_picker_page.dart';
 import '../time_manager.dart';
 import '../widgets/input_controller.dart';
 import '../widgets/input_data.dart';
+import 'date_time_utils.dart';
+import 'protobuf_utils.dart';
+import 'string_utils.dart';
 
 // Unique IDs for each catch field. These are stored in the database and
 // should not be changed.
@@ -37,6 +40,21 @@ Id catchFieldIdSeason() => Id()..uuid = "a2b00262-d130-45ce-b30b-f6e4f2d5baf5";
 
 Id catchFieldIdWaterClarity() =>
     Id()..uuid = "ca035b3d-323c-44a6-a112-bede7177aeb2";
+
+Id catchFieldIdWaterDepth() =>
+    Id()..uuid = "c8a58e5f-19a1-430e-9d84-5a7b1bb96c3a";
+
+Id catchFieldIdWaterTemperature() =>
+    Id()..uuid = "eb66a49b-4add-43e1-b057-e95a5854fad8";
+
+Id catchFieldIdLength() => Id()..uuid = "03ff0695-e160-4446-8f93-ba86d1ad1095";
+
+Id catchFieldIdWeight() => Id()..uuid = "ca5e1447-7aa4-4508-870c-ce8dcd1d656e";
+
+Id catchFieldIdQuantity() =>
+    Id()..uuid = "8ed48dab-b5c3-4430-a702-aa336aea0f5a";
+
+Id catchFieldIdNotes() => Id()..uuid = "a5ad6270-e131-40ad-b281-e1a4d838bf47";
 
 /// Returns all catch fields, sorted by how they are rendered on a
 /// [SaveCatchPage].
@@ -112,6 +130,38 @@ List<Field> allCatchFields(TimeManager timeManager) {
       name: (context) => Strings.of(context).catchFieldWaterClarityLabel,
       controller: IdInputController(),
     ),
+    Field(
+      id: catchFieldIdWaterDepth(),
+      name: (context) => Strings.of(context).catchFieldWaterDepthLabel,
+      controller: MultiMeasurementInputController(),
+    ),
+    Field(
+      id: catchFieldIdWaterTemperature(),
+      name: (context) => Strings.of(context).catchFieldWaterTemperatureLabel,
+      controller: MultiMeasurementInputController(),
+    ),
+    Field(
+      id: catchFieldIdLength(),
+      name: (context) => Strings.of(context).catchFieldLengthLabel,
+      controller: MultiMeasurementInputController(),
+    ),
+    Field(
+      id: catchFieldIdWeight(),
+      name: (context) => Strings.of(context).catchFieldWeightLabel,
+      controller: MultiMeasurementInputController(),
+    ),
+    Field(
+      id: catchFieldIdQuantity(),
+      name: (context) => Strings.of(context).catchFieldQuantityLabel,
+      description: (context) =>
+          Strings.of(context).catchFieldQuantityDescription,
+      controller: NumberInputController(),
+    ),
+    Field(
+      id: catchFieldIdNotes(),
+      name: (context) => Strings.of(context).catchFieldNotesLabel,
+      controller: TextInputController(),
+    ),
   ];
 }
 
@@ -121,4 +171,109 @@ List<Field> allCatchFieldsSorted(
   var fields = allCatchFields(timeManager);
   fields.sort((lhs, rhs) => lhs.name!(context).compareTo(rhs.name!(context)));
   return fields;
+}
+
+bool catchFilterMatchesPeriod(BuildContext context, String filter, Catch cat) {
+  return cat.hasPeriod() &&
+      containsTrimmedLowerCase(cat.period.displayName(context), filter);
+}
+
+bool catchFilterMatchesSeason(BuildContext context, String filter, Catch cat) {
+  return cat.hasSeason() &&
+      containsTrimmedLowerCase(cat.season.displayName(context), filter);
+}
+
+bool catchFilterMatchesFavorite(
+    BuildContext context, String filter, Catch cat) {
+  return cat.hasIsFavorite() &&
+      cat.isFavorite &&
+      containsTrimmedLowerCase(
+          Strings.of(context).catchFieldFavoriteSearchString, filter);
+}
+
+bool catchFilterMatchesCatchAndRelease(
+    BuildContext context, String filter, Catch cat) {
+  return cat.hasWasCatchAndRelease() &&
+      cat.wasCatchAndRelease &&
+      containsTrimmedLowerCase(
+          Strings.of(context).catchFieldCatchAndReleaseSearchString, filter);
+}
+
+bool catchFilterMatchesTimestamp(
+    BuildContext context, String filter, Catch cat) {
+  return cat.hasTimestamp() &&
+      containsTrimmedLowerCase(
+          timestampToSearchString(context, cat.timestamp.toInt()), filter);
+}
+
+bool catchFilterMatchesWaterDepth(
+    BuildContext context, String filter, Catch cat) {
+  if (!cat.hasWaterDepth()) {
+    return false;
+  }
+
+  var searchString = "${cat.waterDepth.displayValue(context)} ";
+  if (cat.waterDepth.system == MeasurementSystem.metric) {
+    searchString += Strings.of(context).waterDepthMetricSearchString;
+  } else {
+    searchString += Strings.of(context).waterDepthImperialSearchString;
+  }
+
+  return containsTrimmedLowerCase(searchString, filter);
+}
+
+bool catchFilterMatchesWaterTemperature(
+    BuildContext context, String filter, Catch cat) {
+  if (!cat.hasWaterTemperature()) {
+    return false;
+  }
+
+  var searchString = "${cat.waterTemperature.displayValue(context)} ";
+  if (cat.waterTemperature.system == MeasurementSystem.metric) {
+    searchString += Strings.of(context).waterTemperatureMetricSearchString;
+  } else {
+    searchString += Strings.of(context).waterTemperatureImperialSearchString;
+  }
+
+  return containsTrimmedLowerCase(searchString, filter);
+}
+
+bool catchFilterMatchesLength(BuildContext context, String filter, Catch cat) {
+  if (!cat.hasLength()) {
+    return false;
+  }
+
+  var searchString = "${cat.length.displayValue(context)} ";
+  if (cat.length.system == MeasurementSystem.metric) {
+    searchString += Strings.of(context).lengthMetricSearchString;
+  } else {
+    searchString += Strings.of(context).lengthImperialSearchString;
+  }
+
+  return containsTrimmedLowerCase(searchString, filter);
+}
+
+bool catchFilterMatchesWeight(BuildContext context, String filter, Catch cat) {
+  if (!cat.hasWeight()) {
+    return false;
+  }
+
+  var searchString = "${cat.weight.displayValue(context)} ";
+  if (cat.weight.system == MeasurementSystem.metric) {
+    searchString += Strings.of(context).weightMetricSearchString;
+  } else {
+    searchString += Strings.of(context).weightImperialSearchString;
+  }
+
+  return containsTrimmedLowerCase(searchString, filter);
+}
+
+bool catchFilterMatchesQuantity(
+    BuildContext context, String filter, Catch cat) {
+  return cat.hasQuantity() &&
+      containsTrimmedLowerCase(cat.quantity.toString(), filter);
+}
+
+bool catchFilterMatchesNotes(BuildContext context, String filter, Catch cat) {
+  return cat.hasNotes() && containsTrimmedLowerCase(cat.notes, filter);
 }

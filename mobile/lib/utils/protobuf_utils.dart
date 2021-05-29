@@ -9,9 +9,11 @@ import 'package:uuid/uuid.dart';
 import '../custom_entity_manager.dart';
 import '../i18n/strings.dart';
 import '../log.dart';
+import '../model/fraction.dart';
 import '../model/gen/anglerslog.pb.dart';
 import '../pages/picker_page.dart';
 import '../utils/string_utils.dart';
+import 'number_utils.dart';
 
 final _log = Log("ProtobufUtils");
 
@@ -32,7 +34,7 @@ int entityValuesCount<T>(List<T> entities, Id customEntityId,
   return result;
 }
 
-bool entityValuesMatchesFilter(List<CustomEntityValue> values, String? filter,
+bool filterMatchesEntityValues(List<CustomEntityValue> values, String? filter,
     CustomEntityManager customEntityManager) {
   if (isEmpty(filter)) {
     return true;
@@ -90,28 +92,6 @@ dynamic valueForCustomEntityType(
   }
 }
 
-String nameForPeriod(BuildContext context, Period period) {
-  switch (period) {
-    case Period.period_all:
-      return Strings.of(context).all;
-    case Period.period_none:
-      return Strings.of(context).none;
-    case Period.dawn:
-      return Strings.of(context).periodDawn;
-    case Period.morning:
-      return Strings.of(context).periodMorning;
-    case Period.midday:
-      return Strings.of(context).periodMidday;
-    case Period.afternoon:
-      return Strings.of(context).periodAfternoon;
-    case Period.dusk:
-      return Strings.of(context).periodDusk;
-    case Period.night:
-      return Strings.of(context).periodNight;
-  }
-  throw ArgumentError("Invalid input: $period");
-}
-
 Set<Period> selectablePeriods() {
   return {
     Period.dawn,
@@ -126,28 +106,10 @@ Set<Period> selectablePeriods() {
 List<PickerPageItem<Period>> pickerItemsForPeriod(BuildContext context) {
   return selectablePeriods().map((period) {
     return PickerPageItem<Period>(
-      title: nameForPeriod(context, period),
+      title: period.displayName(context),
       value: period,
     );
   }).toList();
-}
-
-String nameForSeason(BuildContext context, Season season) {
-  switch (season) {
-    case Season.season_all:
-      return Strings.of(context).all;
-    case Season.season_none:
-      return Strings.of(context).none;
-    case Season.winter:
-      return Strings.of(context).seasonWinter;
-    case Season.spring:
-      return Strings.of(context).seasonSpring;
-    case Season.summer:
-      return Strings.of(context).seasonSummer;
-    case Season.autumn:
-      return Strings.of(context).seasonAutumn;
-  }
-  throw ArgumentError("Invalid input: $season");
 }
 
 Set<Season> selectableSeasons() {
@@ -162,7 +124,7 @@ Set<Season> selectableSeasons() {
 List<PickerPageItem<Season>> pickerItemsForSeason(BuildContext context) {
   return selectableSeasons().map((season) {
     return PickerPageItem<Season>(
-      title: nameForSeason(context, season),
+      title: season.displayName(context),
       value: season,
     );
   }).toList();
@@ -236,6 +198,7 @@ int indexOfEntityIdOrOther(List<dynamic> list, dynamic item) {
 
 extension Ids on Id {
   List<int> get bytes => Uuid.parse(uuid);
+
   Uint8List get uint8List => Uint8List.fromList(bytes);
 }
 
@@ -257,6 +220,301 @@ extension FishingSpots on FishingSpot {
       lng: lng,
       includeLabels: includeLatLngLabels,
     );
+  }
+}
+
+extension GeneratedMessages on GeneratedMessage {
+  T copyAndUpdate<T extends GeneratedMessage>(void Function(T) updates) {
+    return (deepCopy().freeze() as T).rebuild(updates);
+  }
+}
+
+extension MeasurementSystems on MeasurementSystem {
+  String displayName(BuildContext context) {
+    switch (this) {
+      case MeasurementSystem.imperial_whole:
+        return Strings.of(context).measurementSystemImperial;
+      case MeasurementSystem.imperial_decimal:
+        return Strings.of(context).measurementSystemImperialDecimal;
+      case MeasurementSystem.metric:
+        return Strings.of(context).measurementSystemMetric;
+    }
+    throw ArgumentError("Invalid input: $this");
+  }
+}
+
+extension Measurements on Measurement {
+  String displayValue(BuildContext context) {
+    var unitString = "";
+    if (hasUnit()) {
+      unitString = "${unit.hasPreSpace ? " " : ""}"
+          "${unit.shorthandDisplayName(context)}";
+    }
+    return "$stringValue$unitString";
+  }
+
+  String get stringValue => "${value.roundIfWhole() ?? value}";
+
+  /// Updates [unit] to the new system. This method _does not_ convert values
+  /// between units.
+  Measurement toSystem(MeasurementSystem system) {
+    if (unit.measurementSystem != system) {
+      return copyAndUpdate<Measurement>((updates) {
+        updates.unit = unit.oppositeUnit;
+      });
+    }
+    return deepCopy();
+  }
+
+  bool _unitsMatch(Measurement other) {
+    if (hasUnit() && other.hasUnit() && unit != other.unit) {
+      _log.w("Can't compare different units: $unit vs. ${other.unit}");
+      return false;
+    }
+    return true;
+  }
+
+  bool operator >(Measurement other) =>
+      _unitsMatch(other) && value > other.value;
+
+  bool operator >=(Measurement other) =>
+      _unitsMatch(other) && value >= other.value;
+
+  bool operator <(Measurement other) =>
+      _unitsMatch(other) && value < other.value;
+
+  bool operator <=(Measurement other) =>
+      _unitsMatch(other) && value <= other.value;
+}
+
+extension MultiMeasurements on MultiMeasurement {
+  bool get isSet => hasMainValue() || hasFractionValue();
+
+  String displayValue(BuildContext context) {
+    // Inches require a different format than other measurements due to the
+    // fraction not having its own unit. The different format only applies
+    // when a fraction is set.
+    var fraction = Fraction.fromValue(fractionValue.value);
+    if (mainValue.hasUnit() &&
+        mainValue.unit == Unit.inches &&
+        fraction != Fraction.zero) {
+      var unit = mainValue.unit.shorthandDisplayName(context);
+      return "${mainValue.stringValue} ${fraction.symbol} $unit";
+    }
+
+    var isFractionSet = hasFractionValue() &&
+        fractionValue.hasValue() &&
+        fractionValue.value > 0;
+    return mainValue.displayValue(context) +
+        (isFractionSet ? " ${fractionValue.displayValue(context)}" : "");
+  }
+
+  /// Updates [mainValue] and [fractionValue] to the new system.
+  /// This method _does not_ convert values between units.
+  MultiMeasurement toSystem(MeasurementSystem newSystem) {
+    return copyAndUpdate<MultiMeasurement>((updates) {
+      updates
+        ..system = newSystem
+        ..mainValue = mainValue.toSystem(newSystem)
+        ..fractionValue = fractionValue.toSystem(newSystem);
+    });
+  }
+
+  bool _compare(
+    MultiMeasurement other, {
+    bool checkEquals = false,
+    required bool Function(Measurement, Measurement) comparator,
+  }) {
+    // Convert values to decimal for easy comparison.
+    var lhs = _toDecimalIfNeeded();
+    var rhs = other._toDecimalIfNeeded();
+
+    if (checkEquals && lhs == rhs) {
+      return true;
+    }
+
+    if (lhs.system != rhs.system) {
+      _log.w(
+          "Can't compare different systems: ${lhs.system} vs. ${rhs.system}");
+      return false;
+    }
+
+    return comparator(lhs.mainValue, rhs.mainValue);
+  }
+
+  MultiMeasurement _toDecimalIfNeeded() {
+    if (system != MeasurementSystem.imperial_whole) {
+      return this;
+    }
+
+    var result = deepCopy();
+    result.system = MeasurementSystem.imperial_decimal;
+
+    if (result.hasFractionValue() && result.fractionValue.hasValue()) {
+      result.mainValue.value = result.mainValue.value +
+          result.fractionValue.unit.toDecimal(result.fractionValue.value);
+    }
+
+    return result;
+  }
+
+  bool operator <(MultiMeasurement other) {
+    return _compare(
+      other,
+      comparator: (lhs, rhs) => lhs < rhs,
+    );
+  }
+
+  bool operator <=(MultiMeasurement other) {
+    return _compare(
+      other,
+      checkEquals: true,
+      comparator: (lhs, rhs) => lhs <= rhs,
+    );
+  }
+
+  bool operator >(MultiMeasurement other) {
+    return _compare(
+      other,
+      comparator: (lhs, rhs) => lhs > rhs,
+    );
+  }
+
+  bool operator >=(MultiMeasurement other) {
+    return _compare(
+      other,
+      checkEquals: true,
+      comparator: (lhs, rhs) => lhs >= rhs,
+    );
+  }
+}
+
+extension NumberBoundaries on NumberBoundary {
+  String displayName(BuildContext context) {
+    switch (this) {
+      case NumberBoundary.number_boundary_any:
+        return Strings.of(context).numberBoundaryAny;
+      case NumberBoundary.less_than:
+        return Strings.of(context).numberBoundaryLessThan;
+      case NumberBoundary.less_than_or_equal_to:
+        return Strings.of(context).numberBoundaryLessThanOrEqualTo;
+      case NumberBoundary.equal_to:
+        return Strings.of(context).numberBoundaryEqualTo;
+      case NumberBoundary.greater_than:
+        return Strings.of(context).numberBoundaryGreaterThan;
+      case NumberBoundary.greater_than_or_equal_to:
+        return Strings.of(context).numberBoundaryGreaterThanOrEqualTo;
+      case NumberBoundary.range:
+        return Strings.of(context).numberBoundaryRange;
+    }
+    throw ArgumentError("Invalid input: $this");
+  }
+}
+
+extension NumberFilters on NumberFilter {
+  bool get isSet =>
+      hasBoundary() && ((hasFrom() && from.isSet) || (hasTo() && to.isSet));
+
+  String displayValue(BuildContext context) {
+    String? result;
+    switch (boundary) {
+      case NumberBoundary.number_boundary_any:
+        return Strings.of(context).numberBoundaryAny;
+      case NumberBoundary.less_than:
+        result = Strings.of(context).numberBoundaryLessThanValue;
+        break;
+      case NumberBoundary.less_than_or_equal_to:
+        result = Strings.of(context).numberBoundaryLessThanOrEqualToValue;
+        break;
+      case NumberBoundary.equal_to:
+        result = Strings.of(context).numberBoundaryEqualToValue;
+        break;
+      case NumberBoundary.greater_than:
+        result = Strings.of(context).numberBoundaryGreaterThanValue;
+        break;
+      case NumberBoundary.greater_than_or_equal_to:
+        result = Strings.of(context).numberBoundaryGreaterThanOrEqualToValue;
+        break;
+      case NumberBoundary.range:
+        if (hasFrom() && hasTo()) {
+          return format(Strings.of(context).numberBoundaryRangeValue,
+              [from.displayValue(context), to.displayValue(context)]);
+        } else {
+          _log.w("Invalid range; missing start or end value");
+          return Strings.of(context).numberBoundaryAny;
+        }
+    }
+
+    if (isNotEmpty(result) && hasFrom()) {
+      return format(result!, [from.displayValue(context)]);
+    } else {
+      _log.w("Invalid start value for boundary: $boundary");
+      return Strings.of(context).numberBoundaryAny;
+    }
+  }
+
+  bool containsMultiMeasurement(MultiMeasurement measurement) {
+    switch (boundary) {
+      case NumberBoundary.number_boundary_any:
+        return true;
+      case NumberBoundary.less_than:
+        return measurement < from;
+      case NumberBoundary.less_than_or_equal_to:
+        return measurement <= from;
+      case NumberBoundary.equal_to:
+        return measurement == from;
+      case NumberBoundary.greater_than:
+        return measurement > from;
+      case NumberBoundary.greater_than_or_equal_to:
+        return measurement >= from;
+      case NumberBoundary.range:
+        return measurement >= from && measurement <= to;
+    }
+    return false;
+  }
+
+  bool containsMeasurement(Measurement measurement) {
+    var multiMeasurement = MultiMeasurement();
+
+    if (measurement.hasUnit()) {
+      multiMeasurement.system = measurement.unit.measurementSystem;
+    }
+
+    if (measurement.hasValue()) {
+      multiMeasurement.mainValue = measurement;
+    }
+
+    return containsMultiMeasurement(multiMeasurement);
+  }
+
+  bool containsInt(int value) {
+    return containsMeasurement(Measurement(
+      value: value.toDouble(),
+    ));
+  }
+}
+
+extension Periods on Period {
+  String displayName(BuildContext context) {
+    switch (this) {
+      case Period.period_all:
+        return Strings.of(context).all;
+      case Period.period_none:
+        return Strings.of(context).none;
+      case Period.dawn:
+        return Strings.of(context).periodDawn;
+      case Period.morning:
+        return Strings.of(context).periodMorning;
+      case Period.midday:
+        return Strings.of(context).periodMidday;
+      case Period.afternoon:
+        return Strings.of(context).periodAfternoon;
+      case Period.dusk:
+        return Strings.of(context).periodDusk;
+      case Period.night:
+        return Strings.of(context).periodNight;
+    }
+    throw ArgumentError("Invalid input: $this");
   }
 }
 
@@ -285,5 +543,130 @@ extension Seasons on Season {
     }
 
     return null;
+  }
+
+  String displayName(BuildContext context) {
+    switch (this) {
+      case Season.season_all:
+        return Strings.of(context).all;
+      case Season.season_none:
+        return Strings.of(context).none;
+      case Season.winter:
+        return Strings.of(context).seasonWinter;
+      case Season.spring:
+        return Strings.of(context).seasonSpring;
+      case Season.summer:
+        return Strings.of(context).seasonSummer;
+      case Season.autumn:
+        return Strings.of(context).seasonAutumn;
+    }
+    throw ArgumentError("Invalid input: $this");
+  }
+}
+
+extension Units on Unit {
+  static const _inchesPerFoot = 12.0;
+  static const _ouncesPerPound = 16.0;
+
+  String shorthandDisplayName(BuildContext context) {
+    switch (this) {
+      case Unit.feet:
+        return Strings.of(context).unitFeet;
+      case Unit.inches:
+        return Strings.of(context).unitInches;
+      case Unit.pounds:
+        return Strings.of(context).unitPounds;
+      case Unit.ounces:
+        return Strings.of(context).unitOunces;
+      case Unit.fahrenheit:
+        return Strings.of(context).unitFahrenheit;
+      case Unit.meters:
+        return Strings.of(context).unitMeters;
+      case Unit.centimeters:
+        return Strings.of(context).unitCentimeters;
+      case Unit.kilograms:
+        return Strings.of(context).unitKilograms;
+      case Unit.celsius:
+        return Strings.of(context).unitCelsius;
+    }
+    throw ArgumentError("Invalid input: $this");
+  }
+
+  /// True if this unit should include a space before the unit and after the
+  /// value.
+  bool get hasPreSpace {
+    switch (this) {
+      case Unit.feet:
+      case Unit.inches:
+      case Unit.pounds:
+      case Unit.ounces:
+      case Unit.meters:
+      case Unit.centimeters:
+      case Unit.kilograms:
+        return true;
+      case Unit.celsius:
+      case Unit.fahrenheit:
+        return false;
+    }
+    throw ArgumentError("Invalid input: $this");
+  }
+
+  MeasurementSystem get measurementSystem {
+    switch (this) {
+      case Unit.feet:
+      case Unit.inches:
+      case Unit.pounds:
+      case Unit.ounces:
+      case Unit.fahrenheit:
+        return MeasurementSystem.imperial_whole;
+      case Unit.meters:
+      case Unit.centimeters:
+      case Unit.kilograms:
+      case Unit.celsius:
+        return MeasurementSystem.metric;
+    }
+    throw ArgumentError("Invalid input: $this");
+  }
+
+  Unit get oppositeUnit {
+    switch (this) {
+      case Unit.feet:
+        return Unit.meters;
+      case Unit.inches:
+        return Unit.centimeters;
+      case Unit.pounds:
+      case Unit.ounces:
+        return Unit.kilograms;
+      case Unit.fahrenheit:
+        return Unit.celsius;
+      case Unit.meters:
+        return Unit.feet;
+      case Unit.centimeters:
+        return Unit.inches;
+      case Unit.kilograms:
+        return Unit.pounds;
+      case Unit.celsius:
+        return Unit.fahrenheit;
+    }
+    throw ArgumentError("Invalid input: $this");
+  }
+
+  double toDecimal(double value) {
+    switch (this) {
+      case Unit.inches:
+        return value / _inchesPerFoot;
+      case Unit.ounces:
+        return value / _ouncesPerPound;
+      case Unit.feet:
+      case Unit.pounds:
+      case Unit.fahrenheit:
+      case Unit.meters:
+      case Unit.centimeters:
+      case Unit.kilograms:
+      case Unit.celsius:
+        _log.w("Unit.toDecimal called with non-decimal unit: $this");
+        return value;
+    }
+    throw ArgumentError("Invalid input: $this");
   }
 }

@@ -59,6 +59,15 @@ void main() {
         .thenReturn([]..addAll(comparisons)..addAll(summaries));
     when(appManager.reportManager.listSortedByName())
         .thenReturn([]..addAll(comparisons)..addAll(summaries));
+
+    when(appManager.userPreferenceManager.waterDepthSystem)
+        .thenReturn(MeasurementSystem.metric);
+    when(appManager.userPreferenceManager.waterTemperatureSystem)
+        .thenReturn(MeasurementSystem.metric);
+    when(appManager.userPreferenceManager.catchLengthSystem)
+        .thenReturn(MeasurementSystem.metric);
+    when(appManager.userPreferenceManager.catchWeightSystem)
+        .thenReturn(MeasurementSystem.metric);
   });
 
   testWidgets("Current item is selected", (tester) async {

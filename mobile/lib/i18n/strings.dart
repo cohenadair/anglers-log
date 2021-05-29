@@ -174,6 +174,8 @@ class Strings {
 
   String get catchPageKept => _string("catchPage_kept");
 
+  String get catchPageQuantityLabel => _string("catchPage_quantityLabel");
+
   String get saveCatchPageNewTitle => _string("saveCatchPage_newTitle");
 
   String get saveCatchPageEditTitle => _string("saveCatchPage_editTitle");
@@ -233,6 +235,30 @@ class Strings {
   String get catchFieldWaterClarityLabel =>
       _string("catchField_waterClarityLabel");
 
+  String get catchFieldWaterDepthLabel => _string("catchField_waterDepthLabel");
+
+  String get catchFieldWaterDepthFeet => _string("catchField_waterDepthFeet");
+
+  String get catchFieldWaterDepthInches =>
+      _string("catchField_waterDepthInches");
+
+  String get catchFieldWaterDepthMeters =>
+      _string("catchField_waterDepthMeters");
+
+  String get catchFieldWaterTemperatureLabel =>
+      _string("catchField_waterTemperatureLabel");
+
+  String get catchFieldLengthLabel => _string("catchField_lengthLabel");
+
+  String get catchFieldWeightLabel => _string("catchField_weightLabel");
+
+  String get catchFieldQuantityLabel => _string("catchField_quantityLabel");
+
+  String get catchFieldQuantityDescription =>
+      _string("catchField_quantityDescription");
+
+  String get catchFieldNotesLabel => _string("catchField_notesLabel");
+
   String get saveReportPageNewTitle => _string("saveReportPage_newTitle");
 
   String get saveReportPageEditTitle => _string("saveReportPage_editTitle");
@@ -271,6 +297,11 @@ class Strings {
       _string("saveReportPage_catchAndRelease");
 
   String get saveReportPageFavorites => _string("saveReportPage_favorites");
+
+  String get saveReportPageKeywords => _string("saveReportPage_keywords");
+
+  String get saveReportPageKeywordsHint =>
+      _string("saveReportPage_keywordsHint");
 
   String get photosPageMenuLabel => _string("photosPage_menuLabel");
 
@@ -968,6 +999,116 @@ class Strings {
   String get seasonPickerMultiTitle => _string("season_pickerMultiTitle");
 
   String get seasonPickerAll => _string("season_pickerAll");
+
+  String get measurementSystemImperial => _string("measurementSystem_imperial");
+
+  String get measurementSystemImperialDecimal =>
+      _string("measurementSystem_imperialDecimal");
+
+  String get measurementSystemMetric => _string("measurementSystem_metric");
+
+  String get numberBoundaryAny => _string("numberBoundary_any");
+
+  String get numberBoundaryLessThan => _string("numberBoundary_lessThan");
+
+  String get numberBoundaryLessThanOrEqualTo =>
+      _string("numberBoundary_lessThanOrEqualTo");
+
+  String get numberBoundaryEqualTo => _string("numberBoundary_equalTo");
+
+  String get numberBoundaryGreaterThan => _string("numberBoundary_greaterThan");
+
+  String get numberBoundaryGreaterThanOrEqualTo =>
+      _string("numberBoundary_greaterThanOrEqualTo");
+
+  String get numberBoundaryRange => _string("numberBoundary_range");
+
+  String get numberBoundaryLessThanValue =>
+      _string("numberBoundary_lessThanValue");
+
+  String get numberBoundaryLessThanOrEqualToValue =>
+      _string("numberBoundary_lessThanOrEqualToValue");
+
+  String get numberBoundaryEqualToValue =>
+      _string("numberBoundary_equalToValue");
+
+  String get numberBoundaryGreaterThanValue =>
+      _string("numberBoundary_greaterThanValue");
+
+  String get numberBoundaryGreaterThanOrEqualToValue =>
+      _string("numberBoundary_greaterThanOrEqualToValue");
+
+  String get numberBoundaryRangeValue => _string("numberBoundary_rangeValue");
+
+  String get unitFeet => _string("unit_feet");
+
+  String get unitInches => _string("unit_inches");
+
+  String get unitPounds => _string("unit_pounds");
+
+  String get unitOunces => _string("unit_ounces");
+
+  String get unitFahrenheit => _string("unit_fahrenheit");
+
+  String get unitMeters => _string("unit_meters");
+
+  String get unitCentimeters => _string("unit_centimeters");
+
+  String get unitKilograms => _string("unit_kilograms");
+
+  String get unitCelsius => _string("unit_celsius");
+
+  String get numberFilterInputFrom => _string("numberFilterInput_from");
+
+  String get numberFilterInputTo => _string("numberFilterInput_to");
+
+  String get numberFilterInputValue => _string("numberFilterInput_value");
+
+  String get filterTitleWaterTemperature =>
+      _string("filterTitle_waterTemperature");
+
+  String get filterTitleWaterDepth => _string("filterTitle_waterDepth");
+
+  String get filterTitleLength => _string("filterTitle_length");
+
+  String get filterTitleWeight => _string("filterTitle_weight");
+
+  String get filterTitleQuantity => _string("filterTitle_quantity");
+
+  String get filterPageInvalidEndValue => _string("filterPage_invalidEndValue");
+
+  String get filterValueWaterTemperature =>
+      _string("filterValue_waterTemperature");
+
+  String get filterValueWaterDepth => _string("filterValue_waterDepth");
+
+  String get filterValueLength => _string("filterValue_length");
+
+  String get filterValueWeight => _string("filterValue_weight");
+
+  String get filterValueQuantity => _string("filterValue_quantity");
+
+  String get waterDepthImperialSearchString =>
+      _string("waterDepth_imperialSearchString");
+
+  String get waterDepthMetricSearchString =>
+      _string("waterDepth_metricSearchString");
+
+  String get waterTemperatureImperialSearchString =>
+      _string("waterTemperature_imperialSearchString");
+
+  String get waterTemperatureMetricSearchString =>
+      _string("waterTemperature_metricSearchString");
+
+  String get lengthImperialSearchString =>
+      _string("length_imperialSearchString");
+
+  String get lengthMetricSearchString => _string("length_metricSearchString");
+
+  String get weightImperialSearchString =>
+      _string("weight_imperialSearchString");
+
+  String get weightMetricSearchString => _string("weight_metricSearchString");
 }
 
 class StringsDelegate extends LocalizationsDelegate<Strings> {

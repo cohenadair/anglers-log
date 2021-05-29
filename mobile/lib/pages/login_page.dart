@@ -199,9 +199,9 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   bool _isInputValid() =>
-      _emailController.valid(context) && _passwordController.valid(context);
+      _emailController.isValid(context) && _passwordController.isValid(context);
 
-  void _clearError() => setState(() => _error = null);
+  void _clearError(String value) => setState(() => _error = null);
 
   String _authErrorToUserString(AuthError error) {
     switch (error) {

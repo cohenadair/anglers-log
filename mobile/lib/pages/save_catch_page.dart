@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:fixnum/fixnum.dart';
 import 'package:flutter/material.dart';
+import 'package:quiver/strings.dart';
 
 import '../angler_manager.dart';
 import '../bait_category_manager.dart';
@@ -35,7 +36,9 @@ import '../widgets/input_data.dart';
 import '../widgets/list_item.dart';
 import '../widgets/list_picker_input.dart';
 import '../widgets/multi_list_picker_input.dart';
+import '../widgets/multi_measurement_input.dart';
 import '../widgets/static_fishing_spot.dart';
+import '../widgets/text_input.dart';
 import '../widgets/widget.dart';
 import 'angler_list_page.dart';
 import 'manageable_list_page.dart';
@@ -82,12 +85,18 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
   static final _idFavorite = catchFieldIdFavorite();
   static final _idFishingSpot = catchFieldIdFishingSpot();
   static final _idImages = catchFieldIdImages();
+  static final _idLength = catchFieldIdLength();
   static final _idMethods = catchFieldIdMethods();
+  static final _idNotes = catchFieldIdNotes();
   static final _idPeriod = catchFieldIdPeriod();
+  static final _idQuantity = catchFieldIdQuantity();
   static final _idSeason = catchFieldIdSeason();
   static final _idSpecies = catchFieldIdSpecies();
   static final _idTimestamp = catchFieldIdTimestamp();
   static final _idWaterClarity = catchFieldIdWaterClarity();
+  static final _idWaterDepth = catchFieldIdWaterDepth();
+  static final _idWaterTemperature = catchFieldIdWaterTemperature();
+  static final _idWeight = catchFieldIdWeight();
 
   final _log = Log("SaveCatchPage");
 
@@ -117,6 +126,9 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
   SpeciesManager get _speciesManager => SpeciesManager.of(context);
 
   TimeManager get _timeManager => TimeManager.of(context);
+
+  UserPreferenceManager get _userPreferenceManager =>
+      UserPreferenceManager.of(context);
 
   WaterClarityManager get _waterClarityManager =>
       WaterClarityManager.of(context);
@@ -159,6 +171,25 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
   IdInputController get _waterClarityController =>
       _fields[_idWaterClarity]!.controller as IdInputController;
 
+  MultiMeasurementInputController get _waterDepthController =>
+      _fields[_idWaterDepth]!.controller as MultiMeasurementInputController;
+
+  MultiMeasurementInputController get _waterTemperatureController =>
+      _fields[_idWaterTemperature]!.controller
+          as MultiMeasurementInputController;
+
+  MultiMeasurementInputController get _lengthController =>
+      _fields[_idLength]!.controller as MultiMeasurementInputController;
+
+  MultiMeasurementInputController get _weightController =>
+      _fields[_idWeight]!.controller as MultiMeasurementInputController;
+
+  NumberInputController get _quantityController =>
+      _fields[_idQuantity]!.controller as NumberInputController;
+
+  TextInputController get _notesController =>
+      _fields[_idNotes]!.controller as TextInputController;
+
   bool get _editing => _oldCatch != null;
 
   @override
@@ -175,14 +206,10 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
 
     if (_editing) {
       _timestampController.value = _oldCatch!.timestamp.toInt();
-
-      // Enums default to the first value (i.e. 0) so we need to explicitly
-      // check if the property was set.
       _periodController.value =
           _oldCatch!.hasPeriod() ? _oldCatch!.period : null;
       _seasonController.value =
           _oldCatch!.hasSeason() ? _oldCatch!.season : null;
-
       _speciesController.value = _oldCatch!.speciesId;
       _baitController.value = _oldCatch!.baitId;
       _fishingSpotController.value = _oldCatch!.fishingSpotId;
@@ -191,6 +218,18 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
       _favoriteController.value = _oldCatch!.isFavorite;
       _methodsController.value = _oldCatch!.methodIds.toSet();
       _waterClarityController.value = _oldCatch!.waterClarityId;
+      _waterDepthController.value =
+          _oldCatch!.hasWaterDepth() ? _oldCatch!.waterDepth : null;
+      _waterTemperatureController.value =
+          _oldCatch!.hasWaterTemperature() ? _oldCatch!.waterTemperature : null;
+      _lengthController.value =
+          _oldCatch!.hasLength() ? _oldCatch!.length : null;
+      _weightController.value =
+          _oldCatch!.hasWeight() ? _oldCatch!.weight : null;
+      _quantityController.intValue =
+          _oldCatch!.hasQuantity() ? _oldCatch!.quantity : null;
+      _notesController.value =
+          isEmpty(_oldCatch!.notes) ? null : _oldCatch!.notes;
       _customEntityValues = _oldCatch!.customEntityValues;
       _imagesFuture = _pickedImagesForOldCatch;
     } else {
@@ -254,6 +293,18 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
       return _buildSeason();
     } else if (id == _idWaterClarity) {
       return _buildWaterClarity();
+    } else if (id == _idWaterDepth) {
+      return _buildWaterDepth();
+    } else if (id == _idWaterTemperature) {
+      return _buildWaterTemperature();
+    } else if (id == _idLength) {
+      return _buildLength();
+    } else if (id == _idWeight) {
+      return _buildWeight();
+    } else if (id == _idQuantity) {
+      return _buildQuantity();
+    } else if (id == _idNotes) {
+      return _buildNotes();
     } else {
       _log.e("Unknown input key: $id");
       return Empty();
@@ -380,6 +431,86 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
     );
   }
 
+  Widget _buildWaterDepth() {
+    return Padding(
+      padding: insetsHorizontalDefaultVerticalSmall,
+      child: MultiMeasurementInput(
+        spec: MultiMeasurementInputSpec.waterDepth(context),
+        controller: _waterDepthController,
+        onChanged: () => _userPreferenceManager
+            .setWaterDepthSystem(_waterDepthController.value?.system),
+      ),
+    );
+  }
+
+  Widget _buildWaterTemperature() {
+    return Padding(
+      padding: insetsHorizontalDefaultVerticalSmall,
+      child: MultiMeasurementInput(
+        spec: MultiMeasurementInputSpec.waterTemperature(context),
+        controller: _waterTemperatureController,
+        onChanged: () => _userPreferenceManager.setWaterTemperatureSystem(
+            _waterTemperatureController.value?.system),
+      ),
+    );
+  }
+
+  Widget _buildLength() {
+    return Padding(
+      padding: insetsHorizontalDefaultVerticalSmall,
+      child: MultiMeasurementInput(
+        spec: MultiMeasurementInputSpec.length(context),
+        controller: _lengthController,
+        onChanged: () => _userPreferenceManager
+            .setCatchLengthSystem(_lengthController.value?.system),
+      ),
+    );
+  }
+
+  Widget _buildWeight() {
+    return Padding(
+      padding: insetsHorizontalDefaultVerticalSmall,
+      child: MultiMeasurementInput(
+        spec: MultiMeasurementInputSpec.weight(context),
+        controller: _weightController,
+        onChanged: () => _userPreferenceManager
+            .setCatchWeightSystem(_weightController.value?.system),
+      ),
+    );
+  }
+
+  Widget _buildQuantity() {
+    return Padding(
+      padding: EdgeInsets.only(
+        top: paddingSmall,
+        left: paddingDefault,
+        right: paddingDefault,
+      ),
+      child: TextInput.number(
+        context,
+        controller: _quantityController,
+        label: Strings.of(context).catchFieldQuantityLabel,
+        signed: false,
+        decimal: false,
+      ),
+    );
+  }
+
+  Widget _buildNotes() {
+    return Padding(
+      padding: EdgeInsets.only(
+        top: paddingSmall,
+        left: paddingDefault,
+        right: paddingDefault,
+      ),
+      child: TextInput.description(
+        context,
+        title: Strings.of(context).catchFieldNotesLabel,
+        controller: _notesController,
+      ),
+    );
+  }
+
   Widget _buildMethods() {
     return EntityListenerBuilder(
       managers: [
@@ -419,9 +550,7 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
   Widget _buildPeriod() {
     return ListPickerInput(
       title: Strings.of(context).catchFieldPeriod,
-      value: _periodController.value == null
-          ? null
-          : nameForPeriod(context, _periodController.value!),
+      value: _periodController.value?.displayName(context),
       onTap: () {
         push(
           context,
@@ -450,9 +579,7 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
   Widget _buildSeason() {
     return ListPickerInput(
       title: Strings.of(context).catchFieldSeason,
-      value: _seasonController.value == null
-          ? null
-          : nameForSeason(context, _seasonController.value!),
+      value: _seasonController.value?.displayName(context),
       onTap: () {
         push(
           context,
@@ -601,6 +728,22 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
       cat.waterClarityId = _waterClarityController.value!;
     }
 
+    if (_waterDepthController.isSet) {
+      cat.waterDepth = _waterDepthController.value!;
+    }
+
+    if (_waterTemperatureController.isSet) {
+      cat.waterTemperature = _waterTemperatureController.value!;
+    }
+
+    if (_lengthController.isSet) {
+      cat.length = _lengthController.value!;
+    }
+
+    if (_weightController.isSet) {
+      cat.weight = _weightController.value!;
+    }
+
     if (_methodsController.value.isNotEmpty) {
       cat.methodIds.addAll(_methodsController.value);
     } else {
@@ -624,6 +767,14 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
 
     if (_favoriteController.value) {
       cat.isFavorite = true;
+    }
+
+    if (_quantityController.intValue != null) {
+      cat.quantity = _quantityController.intValue!;
+    }
+
+    if (isNotEmpty(_notesController.value)) {
+      cat.notes = _notesController.value!;
     }
 
     _catchManager.addOrUpdate(

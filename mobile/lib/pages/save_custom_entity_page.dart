@@ -95,7 +95,7 @@ class _SaveCustomEntityPageState extends State<SaveCustomEntityPage> {
         for (var id in _inputOptions.keys) id: _inputField(context, id)
       },
       onSave: _save,
-      isInputValid: _nameController.valid(context),
+      isInputValid: _nameController.isValid(context),
     );
   }
 
@@ -107,7 +107,7 @@ class _SaveCustomEntityPageState extends State<SaveCustomEntityPage> {
         autofocus: true,
         textInputAction: TextInputAction.next,
         // Trigger "Save" button state refresh.
-        onChanged: () => setState(() {}),
+        onChanged: (_) => setState(() {}),
       );
     } else if (id == _idDescription) {
       return TextInput.description(

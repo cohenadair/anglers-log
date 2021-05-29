@@ -9,6 +9,90 @@
 import 'dart:core' as $core;
 import 'package:protobuf/protobuf.dart' as $pb;
 
+class MeasurementSystem extends $pb.ProtobufEnum {
+  static const MeasurementSystem imperial_whole = MeasurementSystem._(
+      0,
+      const $core.bool.fromEnvironment('protobuf.omit_enum_names')
+          ? ''
+          : 'imperial_whole');
+  static const MeasurementSystem imperial_decimal = MeasurementSystem._(
+      1,
+      const $core.bool.fromEnvironment('protobuf.omit_enum_names')
+          ? ''
+          : 'imperial_decimal');
+  static const MeasurementSystem metric = MeasurementSystem._(
+      2,
+      const $core.bool.fromEnvironment('protobuf.omit_enum_names')
+          ? ''
+          : 'metric');
+
+  static const $core.List<MeasurementSystem> values = <MeasurementSystem>[
+    imperial_whole,
+    imperial_decimal,
+    metric,
+  ];
+
+  static final $core.Map<$core.int, MeasurementSystem> _byValue =
+      $pb.ProtobufEnum.initByValue(values);
+  static MeasurementSystem? valueOf($core.int value) => _byValue[value];
+
+  const MeasurementSystem._($core.int v, $core.String n) : super(v, n);
+}
+
+class NumberBoundary extends $pb.ProtobufEnum {
+  static const NumberBoundary number_boundary_any = NumberBoundary._(
+      0,
+      const $core.bool.fromEnvironment('protobuf.omit_enum_names')
+          ? ''
+          : 'number_boundary_any');
+  static const NumberBoundary less_than = NumberBoundary._(
+      1,
+      const $core.bool.fromEnvironment('protobuf.omit_enum_names')
+          ? ''
+          : 'less_than');
+  static const NumberBoundary less_than_or_equal_to = NumberBoundary._(
+      2,
+      const $core.bool.fromEnvironment('protobuf.omit_enum_names')
+          ? ''
+          : 'less_than_or_equal_to');
+  static const NumberBoundary equal_to = NumberBoundary._(
+      3,
+      const $core.bool.fromEnvironment('protobuf.omit_enum_names')
+          ? ''
+          : 'equal_to');
+  static const NumberBoundary greater_than = NumberBoundary._(
+      4,
+      const $core.bool.fromEnvironment('protobuf.omit_enum_names')
+          ? ''
+          : 'greater_than');
+  static const NumberBoundary greater_than_or_equal_to = NumberBoundary._(
+      5,
+      const $core.bool.fromEnvironment('protobuf.omit_enum_names')
+          ? ''
+          : 'greater_than_or_equal_to');
+  static const NumberBoundary range = NumberBoundary._(
+      6,
+      const $core.bool.fromEnvironment('protobuf.omit_enum_names')
+          ? ''
+          : 'range');
+
+  static const $core.List<NumberBoundary> values = <NumberBoundary>[
+    number_boundary_any,
+    less_than,
+    less_than_or_equal_to,
+    equal_to,
+    greater_than,
+    greater_than_or_equal_to,
+    range,
+  ];
+
+  static final $core.Map<$core.int, NumberBoundary> _byValue =
+      $pb.ProtobufEnum.initByValue(values);
+  static NumberBoundary? valueOf($core.int value) => _byValue[value];
+
+  const NumberBoundary._($core.int v, $core.String n) : super(v, n);
+}
+
 class Period extends $pb.ProtobufEnum {
   static const Period period_all = Period._(
       0,
@@ -115,6 +199,72 @@ class Season extends $pb.ProtobufEnum {
   static Season? valueOf($core.int value) => _byValue[value];
 
   const Season._($core.int v, $core.String n) : super(v, n);
+}
+
+class Unit extends $pb.ProtobufEnum {
+  static const Unit feet = Unit._(
+      0,
+      const $core.bool.fromEnvironment('protobuf.omit_enum_names')
+          ? ''
+          : 'feet');
+  static const Unit inches = Unit._(
+      1,
+      const $core.bool.fromEnvironment('protobuf.omit_enum_names')
+          ? ''
+          : 'inches');
+  static const Unit pounds = Unit._(
+      2,
+      const $core.bool.fromEnvironment('protobuf.omit_enum_names')
+          ? ''
+          : 'pounds');
+  static const Unit ounces = Unit._(
+      3,
+      const $core.bool.fromEnvironment('protobuf.omit_enum_names')
+          ? ''
+          : 'ounces');
+  static const Unit fahrenheit = Unit._(
+      4,
+      const $core.bool.fromEnvironment('protobuf.omit_enum_names')
+          ? ''
+          : 'fahrenheit');
+  static const Unit meters = Unit._(
+      5,
+      const $core.bool.fromEnvironment('protobuf.omit_enum_names')
+          ? ''
+          : 'meters');
+  static const Unit centimeters = Unit._(
+      6,
+      const $core.bool.fromEnvironment('protobuf.omit_enum_names')
+          ? ''
+          : 'centimeters');
+  static const Unit kilograms = Unit._(
+      7,
+      const $core.bool.fromEnvironment('protobuf.omit_enum_names')
+          ? ''
+          : 'kilograms');
+  static const Unit celsius = Unit._(
+      8,
+      const $core.bool.fromEnvironment('protobuf.omit_enum_names')
+          ? ''
+          : 'celsius');
+
+  static const $core.List<Unit> values = <Unit>[
+    feet,
+    inches,
+    pounds,
+    ounces,
+    fahrenheit,
+    meters,
+    centimeters,
+    kilograms,
+    celsius,
+  ];
+
+  static final $core.Map<$core.int, Unit> _byValue =
+      $pb.ProtobufEnum.initByValue(values);
+  static Unit? valueOf($core.int value) => _byValue[value];
+
+  const Unit._($core.int v, $core.String n) : super(v, n);
 }
 
 class CustomEntity_Type extends $pb.ProtobufEnum {

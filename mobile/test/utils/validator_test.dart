@@ -164,4 +164,38 @@ void main() {
       expect(PasswordValidator().run(context, "123456"), isNull);
     });
   });
+
+  group("RangeValidator", () {
+    testWidgets("Error if empty", (tester) async {
+      var context = await buildContext(tester);
+      expect(RangeValidator().run(context, ""), isNotNull);
+      expect(RangeValidator().run(context, null), isNotNull);
+    });
+
+    testWidgets("Error if bad double", (tester) async {
+      var context = await buildContext(tester);
+      expect(RangeValidator().run(context, "Not a number"), isNotNull);
+    });
+
+    testWidgets("Runner called", (tester) async {
+      var context = await buildContext(tester);
+      var called = false;
+      expect(
+          RangeValidator(
+            runner: (context, newValue) {
+              called = true;
+              return (context) {
+                return "This is an error!";
+              };
+            },
+          ).run(context, "2"),
+          isNotNull);
+      expect(called, isTrue);
+    });
+
+    testWidgets("Null runner", (tester) async {
+      var context = await buildContext(tester);
+      expect(RangeValidator().run(context, "2.0"), isNull);
+    });
+  });
 }

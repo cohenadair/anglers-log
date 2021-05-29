@@ -23,7 +23,7 @@ import 'mocks/stubbed_app_manager.dart';
 
 /// A widget that wraps a child in default localizations.
 class Testable extends StatelessWidget {
-  final Function(BuildContext) builder;
+  final Widget Function(BuildContext) builder;
   final MediaQueryData mediaQueryData;
   final AppManager appManager;
   final TargetPlatform? platform;
@@ -54,9 +54,7 @@ class Testable extends StatelessWidget {
         home: MediaQuery(
           data: mediaQueryData,
           child: Material(
-            child: Builder(
-              builder: builder as Widget Function(BuildContext),
-            ),
+            child: Builder(builder: builder),
           ),
         ),
       ),
@@ -131,10 +129,18 @@ T findFirstWithIcon<T>(WidgetTester tester, IconData icon) =>
     )) as T;
 
 T findSiblingOfText<T>(WidgetTester tester, Type parentType, String text) =>
-    tester.firstWidget(find.descendant(
-      of: find.widgetWithText(parentType, text),
-      matching: find.byType(T),
-    )) as T;
+    tester.firstWidget(siblingOfText(tester, parentType, text, find.byType(T)))
+        as T;
+
+Finder siblingOfText(
+    WidgetTester tester, Type parentType, String text, Finder siblingFinder) {
+  return find.descendant(
+    of: find.widgetWithText(parentType, text),
+    matching: siblingFinder,
+  );
+}
+
+Type typeOf<T>() => T;
 
 Finder findRichText(String text) {
   return find.byWidgetPredicate(

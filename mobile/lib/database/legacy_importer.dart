@@ -20,6 +20,8 @@ import '../log.dart';
 import '../method_manager.dart';
 import '../model/gen/anglerslog.pb.dart';
 import '../species_manager.dart';
+import '../user_preference_manager.dart';
+import '../utils/number_utils.dart';
 import '../utils/protobuf_utils.dart';
 import '../utils/string_utils.dart';
 import '../water_clarity_manager.dart';
@@ -46,8 +48,12 @@ class LegacyImporter {
   static const _keyEntries = "entries";
   static const _keyFishingSpot = "fishingSpot";
   static const _keyFishingSpots = "fishingSpots";
+  static const _keyFishLength = "fishLength";
+  static const _keyFishOunces = "fishOunces";
+  static const _keyFishQuantity = "fishQuantity";
   static const _keyFishResult = "fishResult";
   static const _keyFishSpecies = "fishSpecies";
+  static const _keyFishWeight = "fishWeight";
   static const _keyIsFavorite = "isFavorite";
   static const _keyMethods = "fishingMethods";
   static const _keyMethodNames = "fishingMethodNames";
@@ -59,11 +65,15 @@ class LegacyImporter {
   static const _keyLocation = "location";
   static const _keyLocations = "locations";
   static const _keyLongitude = "longitude";
+  static const _keyMeasurementSystem = "measurementSystem";
   static const _keyName = "name";
+  static const _keyNotes = "notes";
   static const _keySpecies = "species";
   static const _keyUserDefines = "userDefines";
   static const _keyWaterClarities = "waterClarities";
   static const _keyWaterClarity = "waterClarity";
+  static const _keyWaterDepth = "waterDepth";
+  static const _keyWaterTemperature = "waterTemperature";
 
   /// Format of how fishing spot names are imported. The first argument is the
   /// location name, the second argument is the fishing spot name.
@@ -76,6 +86,8 @@ class LegacyImporter {
   final Map<String, File> _images = {};
   final LegacyJsonResult? _legacyJsonResult;
   final VoidCallback? _onFinish;
+
+  late MeasurementSystem _measurementSystem;
   Map<String, dynamic> _json = {};
 
   IoWrapper get _ioWrapper => _appManager.ioWrapper;
@@ -108,6 +120,9 @@ class LegacyImporter {
   MethodManager get _methodManager => _appManager.methodManager;
 
   SpeciesManager get _speciesManager => _appManager.speciesManager;
+
+  UserPreferenceManager get _userPreferenceManager =>
+      _appManager.userPreferenceManager;
 
   WaterClarityManager get _waterClarityManager =>
       _appManager.waterClarityManager;
@@ -183,6 +198,19 @@ class LegacyImporter {
       return Future.error(LegacyImporterError.missingJournal,
           StackTrace.fromString(_jsonString));
     }
+
+    int? measurementSystem = _json[_keyJournal][_keyMeasurementSystem];
+    if (measurementSystem == 1) {
+      _measurementSystem = MeasurementSystem.metric;
+    } else {
+      // Default to imperial.
+      _measurementSystem = MeasurementSystem.imperial_whole;
+    }
+
+    _userPreferenceManager.setWaterDepthSystem(_measurementSystem);
+    _userPreferenceManager.setWaterTemperatureSystem(_measurementSystem);
+    _userPreferenceManager.setCatchLengthSystem(_measurementSystem);
+    _userPreferenceManager.setCatchWeightSystem(_measurementSystem);
 
     var userDefinesJson = _json[_keyJournal][_keyUserDefines];
     if (userDefinesJson == null || !(userDefinesJson is List)) {
@@ -496,6 +524,55 @@ class LegacyImporter {
         cat.wasCatchAndRelease = true;
       }
 
+      double? waterDepth = map[_keyWaterDepth]?.toDouble();
+      if (waterDepth != null && waterDepth > 0) {
+        cat.waterDepth =
+            _createMultiMeasurement(waterDepth, Unit.meters, Unit.feet);
+      }
+
+      double? waterTemperature = map[_keyWaterTemperature]?.toDouble();
+      if (waterTemperature != null && waterTemperature > 0) {
+        cat.waterTemperature = _createMultiMeasurement(
+            waterTemperature, Unit.celsius, Unit.fahrenheit);
+      }
+
+      double? length = map[_keyFishLength]?.toDouble();
+      if (length != null && length > 0) {
+        cat.length =
+            _createMultiMeasurement(length, Unit.centimeters, Unit.inches);
+      }
+
+      double? weight = map[_keyFishWeight]?.toDouble();
+      if (weight != null && weight > 0) {
+        var measurement =
+            _createMultiMeasurement(weight, Unit.kilograms, Unit.pounds);
+
+        // If ounces are present, override values to preserve units.
+        double? ounces = map[_keyFishOunces]?.toDouble();
+        if (ounces != null && ounces > 0) {
+          measurement
+            ..system = MeasurementSystem.imperial_whole
+            ..mainValue.unit = Unit.pounds
+            ..mainValue.value.round()
+            ..fractionValue = Measurement(
+              unit: Unit.ounces,
+              value: ounces,
+            );
+        }
+
+        cat.weight = measurement;
+      }
+
+      int? quantity = map[_keyFishQuantity];
+      if (quantity != null && quantity > 0) {
+        cat.quantity = quantity;
+      }
+
+      String? notes = map[_keyNotes];
+      if (isNotEmpty(notes)) {
+        cat.notes = notes!;
+      }
+
       await _catchManager.addOrUpdate(
         cat,
         imageFiles: images,
@@ -503,6 +580,27 @@ class LegacyImporter {
         compressImages: false,
       );
     }
+  }
+
+  MultiMeasurement _createMultiMeasurement(
+      double value, Unit metricUnit, Unit imperialUnit) {
+    var imperialSystem = value.isWhole
+        ? MeasurementSystem.imperial_whole
+        : MeasurementSystem.imperial_decimal;
+
+    var measurementSystem = _measurementSystem == MeasurementSystem.metric
+        ? _measurementSystem
+        : imperialSystem;
+
+    return MultiMeasurement(
+      system: measurementSystem,
+      mainValue: Measurement(
+        unit: measurementSystem == MeasurementSystem.metric
+            ? metricUnit
+            : imperialUnit,
+        value: value,
+      ),
+    );
   }
 
   Id _parseJsonId(String? jsonId) {

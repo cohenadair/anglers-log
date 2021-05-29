@@ -15,6 +15,7 @@ import 'package:mobile/widgets/button.dart';
 import 'package:mobile/widgets/checkbox_input.dart';
 import 'package:mobile/widgets/date_range_picker_input.dart';
 import 'package:mobile/widgets/list_item.dart';
+import 'package:mobile/widgets/text_input.dart';
 import 'package:mockito/mockito.dart';
 
 import '../mocks/stubbed_app_manager.dart';
@@ -127,6 +128,15 @@ void main() {
     when(appManager.speciesManager.list(any)).thenReturn(speciesList);
     when(appManager.speciesManager.listSortedByName(filter: anyNamed("filter")))
         .thenReturn(speciesList);
+
+    when(appManager.userPreferenceManager.waterDepthSystem)
+        .thenReturn(MeasurementSystem.metric);
+    when(appManager.userPreferenceManager.waterTemperatureSystem)
+        .thenReturn(MeasurementSystem.metric);
+    when(appManager.userPreferenceManager.catchLengthSystem)
+        .thenReturn(MeasurementSystem.metric);
+    when(appManager.userPreferenceManager.catchWeightSystem)
+        .thenReturn(MeasurementSystem.metric);
 
     when(appManager.waterClarityManager.name(any))
         .thenAnswer((invocation) => invocation.positionalArguments.first.name);
@@ -531,6 +541,41 @@ void main() {
     await tester.ensureVisible(find.text("All water clarities"));
     await selectItems(tester, "All water clarities", ["All", "Stained"]);
 
+    await tester.ensureVisible(find.text("Water Depth"));
+    await tapAndSettle(tester, find.text("Water Depth"));
+    await tapAndSettle(tester, find.text("Greater than (>)"));
+    await enterTextAndSettle(
+        tester, find.widgetWithText(TextInput, "Value"), "10");
+    await tapAndSettle(tester, find.byType(BackButton));
+
+    await tester.ensureVisible(find.text("Water Temperature"));
+    await tapAndSettle(tester, find.text("Water Temperature"));
+    await tapAndSettle(tester, find.text("Less than (<)"));
+    await enterTextAndSettle(
+        tester, find.widgetWithText(TextInput, "Value"), "15");
+    await tapAndSettle(tester, find.byType(BackButton));
+
+    await tester.ensureVisible(find.text("Length"));
+    await tapAndSettle(tester, find.text("Length"));
+    await tapAndSettle(tester, find.text("Equal to (=)"));
+    await enterTextAndSettle(
+        tester, find.widgetWithText(TextInput, "Value"), "20");
+    await tapAndSettle(tester, find.byType(BackButton));
+
+    await tester.ensureVisible(find.text("Weight"));
+    await tapAndSettle(tester, find.text("Weight"));
+    await tapAndSettle(tester, find.text("Range"));
+    await enterTextAndSettle(
+        tester, find.widgetWithText(TextInput, "From"), "10");
+    await enterTextAndSettle(
+        tester, find.widgetWithText(TextInput, "To"), "15");
+    await tapAndSettle(tester, find.byType(BackButton));
+
+    await tester.ensureVisible(find.text("Quantity"));
+    await tapAndSettle(tester, find.text("Quantity"));
+    await tapAndSettle(tester, find.text("Any"));
+    await tapAndSettle(tester, find.byType(BackButton));
+
     expect(
       find.descendant(
         of: find.widgetWithText(InkWell, "Compare"),
@@ -553,6 +598,11 @@ void main() {
     expect(find.text("Afternoon"), findsOneWidget);
     expect(find.text("Summer"), findsOneWidget);
     expect(find.text("Stained"), findsOneWidget);
+    expect(find.text("> 10 m"), findsOneWidget);
+    expect(find.text("< 15\u00B0C"), findsOneWidget);
+    expect(find.text("= 20 cm"), findsOneWidget);
+    expect(find.text("10 kg - 15 kg"), findsOneWidget);
+    expect(find.text("Any"), findsOneWidget);
 
     await tapAndSettle(tester, find.text("SAVE"));
 
@@ -574,6 +624,11 @@ void main() {
     expect(report.seasons.length, 1);
     expect(report.hasIsFavoritesOnly(), isFalse);
     expect(report.type, Report_Type.comparison);
+    expect(report.hasWaterDepthFilter(), isTrue);
+    expect(report.hasWaterTemperatureFilter(), isTrue);
+    expect(report.hasLengthFilter(), isTrue);
+    expect(report.hasWeightFilter(), isTrue);
+    expect(report.hasQuantityFilter(), isFalse);
   });
 
   testWidgets("Add summary report with preset date range", (tester) async {
@@ -607,6 +662,11 @@ void main() {
     expect(report.waterClarityIds.isEmpty, isTrue);
     expect(report.hasIsFavoritesOnly(), isFalse);
     expect(report.type, Report_Type.summary);
+    expect(report.hasWaterDepthFilter(), isFalse);
+    expect(report.hasWaterTemperatureFilter(), isFalse);
+    expect(report.hasLengthFilter(), isFalse);
+    expect(report.hasWeightFilter(), isFalse);
+    expect(report.hasQuantityFilter(), isFalse);
   });
 
   testWidgets("Add report with custom date ranges", (tester) async {
@@ -663,6 +723,11 @@ void main() {
     expect(report.waterClarityIds, isEmpty);
     expect(report.hasIsFavoritesOnly(), isFalse);
     expect(report.type, Report_Type.comparison);
+    expect(report.hasWaterDepthFilter(), isFalse);
+    expect(report.hasWaterTemperatureFilter(), isFalse);
+    expect(report.hasLengthFilter(), isFalse);
+    expect(report.hasWeightFilter(), isFalse);
+    expect(report.hasQuantityFilter(), isFalse);
   });
 
   testWidgets("Add report with all entities selected sets empty collections",
@@ -733,7 +798,51 @@ void main() {
       ..fromDisplayDateRangeId = DisplayDateRange.yesterday.id
       ..toDisplayDateRangeId = DisplayDateRange.today.id
       ..isFavoritesOnly = true
-      ..type = Report_Type.comparison;
+      ..type = Report_Type.comparison
+      ..waterDepthFilter = NumberFilter(
+        boundary: NumberBoundary.less_than,
+        from: MultiMeasurement(
+          system: MeasurementSystem.metric,
+          mainValue: Measurement(
+            unit: Unit.meters,
+            value: 1,
+          ),
+        ),
+      )
+      ..waterTemperatureFilter = NumberFilter(
+        boundary: NumberBoundary.less_than,
+        from: MultiMeasurement(
+          system: MeasurementSystem.imperial_whole,
+          mainValue: Measurement(
+            unit: Unit.fahrenheit,
+            value: 80,
+          ),
+        ),
+      )
+      ..lengthFilter = NumberFilter(
+        boundary: NumberBoundary.less_than,
+        from: MultiMeasurement(
+          system: MeasurementSystem.metric,
+          mainValue: Measurement(
+            unit: Unit.centimeters,
+            value: 10,
+          ),
+        ),
+      )
+      ..weightFilter = NumberFilter(
+        boundary: NumberBoundary.less_than,
+        from: MultiMeasurement(
+          system: MeasurementSystem.metric,
+          mainValue: Measurement(
+            unit: Unit.kilograms,
+            value: 2,
+          ),
+        ),
+      )
+      ..quantityFilter = NumberFilter(
+        boundary: NumberBoundary.less_than,
+        from: MultiMeasurement(mainValue: Measurement(value: 50)),
+      );
     report.anglerIds.addAll(anglerList.map((e) => e.id));
     report.baitIds.addAll(baitList.map((e) => e.id));
     report.fishingSpotIds.addAll(fishingSpotList.map((e) => e.id));
@@ -781,6 +890,11 @@ void main() {
     expect(find.text("Summer"), findsOneWidget);
     expect(find.text("Clear"), findsOneWidget);
     expect(find.text("Stained"), findsOneWidget);
+    expect(find.text("< 1 m"), findsOneWidget);
+    expect(find.text("< 80\u00B0F"), findsOneWidget);
+    expect(find.text("< 10 cm"), findsOneWidget);
+    expect(find.text("< 2 kg"), findsOneWidget);
+    expect(find.text("< 50"), findsOneWidget);
 
     await tapAndSettle(tester, find.text("SAVE"));
 

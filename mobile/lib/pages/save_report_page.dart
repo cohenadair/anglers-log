@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:fixnum/fixnum.dart';
 import 'package:flutter/material.dart';
-import 'package:mobile/water_clarity_manager.dart';
 import 'package:protobuf/protobuf.dart';
 import 'package:quiver/strings.dart';
 
@@ -24,11 +23,14 @@ import '../utils/date_time_utils.dart';
 import '../utils/page_utils.dart';
 import '../utils/protobuf_utils.dart';
 import '../utils/validator.dart';
+import '../water_clarity_manager.dart';
 import '../widgets/checkbox_input.dart';
 import '../widgets/date_range_picker_input.dart';
 import '../widgets/input_controller.dart';
 import '../widgets/input_data.dart';
 import '../widgets/multi_list_picker_input.dart';
+import '../widgets/multi_measurement_input.dart';
+import '../widgets/number_filter_input.dart';
 import '../widgets/radio_input.dart';
 import '../widgets/text_input.dart';
 import '../widgets/widget.dart';
@@ -50,21 +52,27 @@ class SaveReportPage extends StatefulWidget {
 }
 
 class _SaveReportPageState extends State<SaveReportPage> {
-  static final _idName = randomId();
-  static final _idDescription = randomId();
-  static final _idType = randomId();
-  static final _idStartDateRange = randomId();
-  static final _idEndDateRange = randomId();
   static final _idAnglers = randomId();
-  static final _idSpecies = randomId();
   static final _idBaits = randomId();
-  static final _idFishingSpots = randomId();
-  static final _idMethods = randomId();
-  static final _idPeriods = randomId();
-  static final _idFavoritesOnly = randomId();
   static final _idCatchAndReleaseOnly = randomId();
+  static final _idDescription = randomId();
+  static final _idEndDateRange = randomId();
+  static final _idFavoritesOnly = randomId();
+  static final _idFishingSpots = randomId();
+  static final _idLength = randomId();
+  static final _idMethods = randomId();
+  static final _idName = randomId();
+  static final _idPeriods = randomId();
+  static final _idQuantity = randomId();
   static final _idSeasons = randomId();
+  static final _idSpecies = randomId();
+  static final _idStartDateRange = randomId();
+  static final _idType = randomId();
   static final _idWaterClarities = randomId();
+  static final _idWaterDepth = randomId();
+  static final _idWaterTemperature = randomId();
+  static final _idWeight = randomId();
+  static final _idKeywords = randomId();
 
   final Key _keySummaryStart = ValueKey(0);
   final Key _keyComparisonStart = ValueKey(1);
@@ -133,6 +141,21 @@ class _SaveReportPageState extends State<SaveReportPage> {
       _fields[_idWaterClarities]!.controller
           as SetInputController<WaterClarity>;
 
+  NumberFilterInputController get _waterDepthController =>
+      _fields[_idWaterDepth]!.controller as NumberFilterInputController;
+
+  NumberFilterInputController get _waterTemperatureController =>
+      _fields[_idWaterTemperature]!.controller as NumberFilterInputController;
+
+  NumberFilterInputController get _lengthController =>
+      _fields[_idLength]!.controller as NumberFilterInputController;
+
+  NumberFilterInputController get _weightController =>
+      _fields[_idWeight]!.controller as NumberFilterInputController;
+
+  NumberFilterInputController get _quantityController =>
+      _fields[_idQuantity]!.controller as NumberFilterInputController;
+
   Report? get _oldReport => widget.oldReport;
 
   bool get _isEditing => _oldReport != null;
@@ -187,6 +210,31 @@ class _SaveReportPageState extends State<SaveReportPage> {
       controller: BoolInputController(),
     );
 
+    _fields[_idWaterDepth] = Field(
+      id: _idWaterDepth,
+      controller: NumberFilterInputController(),
+    );
+
+    _fields[_idWaterTemperature] = Field(
+      id: _idWaterTemperature,
+      controller: NumberFilterInputController(),
+    );
+
+    _fields[_idLength] = Field(
+      id: _idLength,
+      controller: NumberFilterInputController(),
+    );
+
+    _fields[_idWeight] = Field(
+      id: _idLength,
+      controller: NumberFilterInputController(),
+    );
+
+    _fields[_idQuantity] = Field(
+      id: _idQuantity,
+      controller: NumberFilterInputController(),
+    );
+
     _fields[_idPeriods] = Field(
       id: _idPeriods,
       controller: SetInputController<Period>(),
@@ -227,6 +275,11 @@ class _SaveReportPageState extends State<SaveReportPage> {
       controller: SetInputController<WaterClarity>(),
     );
 
+    _fields[_idKeywords] = Field(
+      id: _idKeywords,
+      controller: TextInputController(),
+    );
+
     if (_isEditing) {
       _nameController.value = _oldReport!.name;
       _descriptionController.value = _oldReport!.description;
@@ -247,6 +300,11 @@ class _SaveReportPageState extends State<SaveReportPage> {
       _favoritesOnlyController.value = _oldReport!.isFavoritesOnly;
       _periodsController.value = _oldReport!.periods.toSet();
       _seasonsController.value = _oldReport!.seasons.toSet();
+      _waterDepthController.value = _oldReport!.waterDepthFilter;
+      _waterTemperatureController.value = _oldReport!.waterTemperatureFilter;
+      _lengthController.value = _oldReport!.lengthFilter;
+      _weightController.value = _oldReport!.weightFilter;
+      _quantityController.value = _oldReport!.quantityFilter;
       _initEntitySets(
         anglerIds: _oldReport!.anglerIds,
         baitIds: _oldReport!.baitIds,
@@ -299,7 +357,7 @@ class _SaveReportPageState extends State<SaveReportPage> {
       title: Text(_isEditing
           ? Strings.of(context).saveReportPageEditTitle
           : Strings.of(context).saveReportPageNewTitle),
-      isInputValid: _nameController.valid(context),
+      isInputValid: _nameController.isValid(context),
       fieldBuilder: (context) => {
         _idName: _buildName(),
         _idDescription: _buildDescription(),
@@ -308,6 +366,11 @@ class _SaveReportPageState extends State<SaveReportPage> {
         _idEndDateRange: _buildEndDateRange(),
         _idCatchAndReleaseOnly: _buildCatchAndReleaseOnly(),
         _idFavoritesOnly: _buildFavoritesOnly(),
+        _idWaterDepth: _buildWaterDepth(),
+        _idWaterTemperature: _buildWaterTemperature(),
+        _idLength: _buildLength(),
+        _idWeight: _buildWeight(),
+        _idQuantity: _buildQuantity(),
         _idPeriods: _buildPeriodsPicker(),
         _idSeasons: _buildSeasonsPicker(),
         _idAnglers: _buildAnglersPicker(),
@@ -334,7 +397,7 @@ class _SaveReportPageState extends State<SaveReportPage> {
         autofocus: true,
         textInputAction: TextInputAction.next,
         // Trigger "Save" button state refresh.
-        onChanged: () => setState(() {}),
+        onChanged: (_) => setState(() {}),
       ),
     );
   }
@@ -417,6 +480,50 @@ class _SaveReportPageState extends State<SaveReportPage> {
     );
   }
 
+  Widget _buildWaterDepth() {
+    return NumberFilterInput(
+      title: Strings.of(context).catchFieldWaterDepthLabel,
+      filterTitle: Strings.of(context).filterTitleWaterDepth,
+      controller: _waterDepthController,
+      inputSpec: MultiMeasurementInputSpec.waterDepth(context),
+    );
+  }
+
+  Widget _buildWaterTemperature() {
+    return NumberFilterInput(
+      title: Strings.of(context).catchFieldWaterTemperatureLabel,
+      filterTitle: Strings.of(context).filterTitleWaterTemperature,
+      controller: _waterTemperatureController,
+      inputSpec: MultiMeasurementInputSpec.waterTemperature(context),
+    );
+  }
+
+  Widget _buildLength() {
+    return NumberFilterInput(
+      title: Strings.of(context).catchFieldLengthLabel,
+      filterTitle: Strings.of(context).filterTitleLength,
+      controller: _lengthController,
+      inputSpec: MultiMeasurementInputSpec.length(context),
+    );
+  }
+
+  Widget _buildWeight() {
+    return NumberFilterInput(
+      title: Strings.of(context).catchFieldWeightLabel,
+      filterTitle: Strings.of(context).filterTitleWeight,
+      controller: _weightController,
+      inputSpec: MultiMeasurementInputSpec.weight(context),
+    );
+  }
+
+  Widget _buildQuantity() {
+    return NumberFilterInput(
+      title: Strings.of(context).catchFieldQuantityLabel,
+      filterTitle: Strings.of(context).filterTitleQuantity,
+      controller: _quantityController,
+    );
+  }
+
   Widget _buildEndDateRange() {
     return AnimatedSwitcher(
       duration: defaultAnimationDuration,
@@ -435,7 +542,7 @@ class _SaveReportPageState extends State<SaveReportPage> {
   Widget _buildPeriodsPicker() {
     return _buildNonEntityPicker<Period>(
       controller: _periodsController,
-      nameForItem: nameForPeriod,
+      nameForItem: (context, period) => period.displayName(context),
       emptyValue: Strings.of(context).periodPickerAll,
       title: Strings.of(context).periodPickerMultiTitle,
       allItems: selectablePeriods(),
@@ -447,7 +554,7 @@ class _SaveReportPageState extends State<SaveReportPage> {
   Widget _buildSeasonsPicker() {
     return _buildNonEntityPicker<Season>(
       controller: _seasonsController,
-      nameForItem: nameForSeason,
+      nameForItem: (context, season) => season.displayName(context),
       emptyValue: Strings.of(context).seasonPickerAll,
       title: Strings.of(context).seasonPickerMultiTitle,
       allItems: selectableSeasons(),
@@ -661,6 +768,26 @@ class _SaveReportPageState extends State<SaveReportPage> {
     if (toDateRange != null && toDateRange == DisplayDateRange.custom) {
       report.toStartTimestamp = Int64(toDateRange.value(context).startMs);
       report.toEndTimestamp = Int64(toDateRange.value(context).endMs);
+    }
+
+    if (_waterDepthController.shouldAddToReport) {
+      report.waterDepthFilter = _waterDepthController.value!;
+    }
+
+    if (_waterTemperatureController.shouldAddToReport) {
+      report.waterTemperatureFilter = _waterTemperatureController.value!;
+    }
+
+    if (_lengthController.shouldAddToReport) {
+      report.lengthFilter = _lengthController.value!;
+    }
+
+    if (_weightController.shouldAddToReport) {
+      report.weightFilter = _weightController.value!;
+    }
+
+    if (_quantityController.shouldAddToReport) {
+      report.quantityFilter = _quantityController.value!;
     }
 
     _reportManager.addOrUpdate(report);

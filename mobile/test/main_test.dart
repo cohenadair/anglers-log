@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/auth_manager.dart';
 import 'package:mobile/main.dart';
+import 'package:mobile/model/gen/anglerslog.pb.dart';
 import 'package:mobile/pages/landing_page.dart';
 import 'package:mobile/pages/login_page.dart';
 import 'package:mobile/pages/main_page.dart';
@@ -36,6 +37,22 @@ void main() {
     when(appManager.userPreferenceManager.selectedReportId).thenReturn(null);
     when(appManager.userPreferenceManager.setSelectedReportId(any))
         .thenAnswer((_) => Future.value());
+    when(appManager.userPreferenceManager.setWaterDepthSystem(any))
+        .thenAnswer((_) => Future.value());
+    when(appManager.userPreferenceManager.waterDepthSystem)
+        .thenReturn(MeasurementSystem.imperial_whole);
+    when(appManager.userPreferenceManager.setWaterTemperatureSystem(any))
+        .thenAnswer((_) => Future.value());
+    when(appManager.userPreferenceManager.waterTemperatureSystem)
+        .thenReturn(MeasurementSystem.imperial_whole);
+    when(appManager.userPreferenceManager.setCatchLengthSystem(any))
+        .thenAnswer((_) => Future.value());
+    when(appManager.userPreferenceManager.catchLengthSystem)
+        .thenReturn(MeasurementSystem.imperial_whole);
+    when(appManager.userPreferenceManager.setCatchWeightSystem(any))
+        .thenAnswer((_) => Future.value());
+    when(appManager.userPreferenceManager.catchWeightSystem)
+        .thenReturn(MeasurementSystem.imperial_whole);
 
     var channel = MockMethodChannel();
     when(channel.invokeMethod(any)).thenAnswer((_) => Future.value(null));

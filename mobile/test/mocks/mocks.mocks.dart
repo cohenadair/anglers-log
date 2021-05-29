@@ -1082,7 +1082,12 @@ class MockCatchManager extends _i1.Mock implements _i14.CatchManager {
           Set<_i8.Id>? speciesIds = const {},
           Set<_i8.Id>? waterClarityIds = const {},
           Set<_i69.Period>? periods = const {},
-          Set<_i69.Season>? seasons = const {}}) =>
+          Set<_i69.Season>? seasons = const {},
+          _i8.NumberFilter? waterDepthFilter,
+          _i8.NumberFilter? waterTemperatureFilter,
+          _i8.NumberFilter? lengthFilter,
+          _i8.NumberFilter? weightFilter,
+          _i8.NumberFilter? quantityFilter}) =>
       (super.noSuchMethod(
           Invocation.method(#catchesSortedByTimestamp, [
             context
@@ -1099,7 +1104,12 @@ class MockCatchManager extends _i1.Mock implements _i14.CatchManager {
             #speciesIds: speciesIds,
             #waterClarityIds: waterClarityIds,
             #periods: periods,
-            #seasons: seasons
+            #seasons: seasons,
+            #waterDepthFilter: waterDepthFilter,
+            #waterTemperatureFilter: waterTemperatureFilter,
+            #lengthFilter: lengthFilter,
+            #weightFilter: weightFilter,
+            #quantityFilter: quantityFilter
           }),
           returnValue: <_i8.Catch>[]) as List<_i8.Catch>);
   @override
@@ -1116,7 +1126,12 @@ class MockCatchManager extends _i1.Mock implements _i14.CatchManager {
           Set<_i8.Id>? speciesIds = const {},
           Set<_i8.Id>? waterClarityIds = const {},
           Set<_i69.Period>? periods = const {},
-          Set<_i69.Season>? seasons = const {}}) =>
+          Set<_i69.Season>? seasons = const {},
+          _i8.NumberFilter? waterDepthFilter,
+          _i8.NumberFilter? waterTemperatureFilter,
+          _i8.NumberFilter? lengthFilter,
+          _i8.NumberFilter? weightFilter,
+          _i8.NumberFilter? quantityFilter}) =>
       (super.noSuchMethod(
           Invocation.method(#filteredCatches, [
             context
@@ -1133,7 +1148,12 @@ class MockCatchManager extends _i1.Mock implements _i14.CatchManager {
             #speciesIds: speciesIds,
             #waterClarityIds: waterClarityIds,
             #periods: periods,
-            #seasons: seasons
+            #seasons: seasons,
+            #waterDepthFilter: waterDepthFilter,
+            #waterTemperatureFilter: waterTemperatureFilter,
+            #lengthFilter: lengthFilter,
+            #weightFilter: weightFilter,
+            #quantityFilter: quantityFilter
           }),
           returnValue: <_i8.Catch>[]) as List<_i8.Catch>);
   @override
@@ -2492,6 +2512,27 @@ class MockUserPreferenceManager extends _i1.Mock
   @override
   _i9.Future<void> setCatchFieldIds(List<_i8.Id>? ids) =>
       (super.noSuchMethod(Invocation.method(#setCatchFieldIds, [ids]),
+          returnValue: Future.value(null),
+          returnValueForMissingStub: Future.value()) as _i9.Future<void>);
+  @override
+  _i9.Future<void> setCatchLengthSystem(_i69.MeasurementSystem? system) =>
+      (super.noSuchMethod(Invocation.method(#setCatchLengthSystem, [system]),
+          returnValue: Future.value(null),
+          returnValueForMissingStub: Future.value()) as _i9.Future<void>);
+  @override
+  _i9.Future<void> setCatchWeightSystem(_i69.MeasurementSystem? system) =>
+      (super.noSuchMethod(Invocation.method(#setCatchWeightSystem, [system]),
+          returnValue: Future.value(null),
+          returnValueForMissingStub: Future.value()) as _i9.Future<void>);
+  @override
+  _i9.Future<void> setWaterDepthSystem(_i69.MeasurementSystem? system) =>
+      (super.noSuchMethod(Invocation.method(#setWaterDepthSystem, [system]),
+          returnValue: Future.value(null),
+          returnValueForMissingStub: Future.value()) as _i9.Future<void>);
+  @override
+  _i9.Future<void> setWaterTemperatureSystem(_i69.MeasurementSystem? system) =>
+      (super.noSuchMethod(
+          Invocation.method(#setWaterTemperatureSystem, [system]),
           returnValue: Future.value(null),
           returnValueForMissingStub: Future.value()) as _i9.Future<void>);
   @override

@@ -41,6 +41,8 @@ void main() {
       imageFiles: anyNamed("imageFiles"),
     )).thenAnswer((_) => Future.value(false));
 
+    when(appManager.customEntityManager.list()).thenReturn([]);
+
     when(appManager.localDatabaseManager.insertOrReplace(any, any))
         .thenAnswer((_) => Future.value(true));
 
@@ -50,6 +52,14 @@ void main() {
     when(appManager.userPreferenceManager.baitFieldIds).thenReturn([]);
     when(appManager.userPreferenceManager.catchCustomEntityIds).thenReturn([]);
     when(appManager.userPreferenceManager.catchFieldIds).thenReturn([]);
+    when(appManager.userPreferenceManager.waterDepthSystem)
+        .thenReturn(MeasurementSystem.imperial_whole);
+    when(appManager.userPreferenceManager.waterTemperatureSystem)
+        .thenReturn(MeasurementSystem.imperial_whole);
+    when(appManager.userPreferenceManager.catchLengthSystem)
+        .thenReturn(MeasurementSystem.imperial_whole);
+    when(appManager.userPreferenceManager.catchWeightSystem)
+        .thenReturn(MeasurementSystem.imperial_whole);
 
     when(appManager.subscriptionManager.stream)
         .thenAnswer((_) => Stream.empty());
@@ -223,7 +233,40 @@ void main() {
         ..period = Period.dawn
         ..season = Season.summer
         ..isFavorite = true
-        ..wasCatchAndRelease = true;
+        ..wasCatchAndRelease = true
+        ..waterDepth = MultiMeasurement(
+          system: MeasurementSystem.imperial_whole,
+          mainValue: Measurement(
+            unit: Unit.feet,
+            value: 20,
+          ),
+        )
+        ..waterTemperature = MultiMeasurement(
+          system: MeasurementSystem.imperial_whole,
+          mainValue: Measurement(
+            unit: Unit.fahrenheit,
+            value: 75,
+          ),
+        )
+        ..length = MultiMeasurement(
+          system: MeasurementSystem.imperial_whole,
+          mainValue: Measurement(
+            unit: Unit.inches,
+            value: 15,
+          ),
+          fractionValue: Measurement(
+            value: 0.25,
+          ),
+        )
+        ..weight = MultiMeasurement(
+          system: MeasurementSystem.imperial_whole,
+          mainValue: Measurement(
+            unit: Unit.pounds,
+            value: 10,
+          ),
+        )
+        ..quantity = 3
+        ..notes = "Some test notes.";
 
       when(appManager.imageManager.images(
         any,
@@ -261,6 +304,12 @@ void main() {
       expect(findCheckbox(tester, "Favorite")!.checked, isTrue);
       expect(findCheckbox(tester, "Catch and Release")!.checked, isTrue);
       expect(find.text("Clear"), findsOneWidget);
+      expect(find.text("20"), findsOneWidget);
+      expect(find.text("75"), findsOneWidget);
+      expect(find.text("15"), findsOneWidget);
+      expect(find.text("10"), findsOneWidget);
+      expect(find.text("3"), findsOneWidget);
+      expect(find.text("Some test notes."), findsOneWidget);
     });
 
     testWidgets("Minimum fields set correctly", (tester) async {
@@ -296,6 +345,33 @@ void main() {
       expect(find.byType(StaticFishingSpot), findsNothing);
       expect(findCheckbox(tester, "Favorite")!.checked, isFalse);
       expect(findCheckbox(tester, "Catch and Release")!.checked, isFalse);
+
+      expect(
+        findFirstWithText<TextInput>(tester, "Water Depth").controller?.value,
+        isNull,
+      );
+      expect(
+        findFirstWithText<TextInput>(tester, "Water Temperature")
+            .controller
+            ?.value,
+        isNull,
+      );
+      expect(
+        findFirstWithText<TextInput>(tester, "Length").controller?.value,
+        isNull,
+      );
+      expect(
+        findFirstWithText<TextInput>(tester, "Weight").controller?.value,
+        isNull,
+      );
+      expect(
+        findFirstWithText<TextInput>(tester, "Quantity").controller?.value,
+        isNull,
+      );
+      expect(
+        findFirstWithText<TextInput>(tester, "Notes").controller?.value,
+        isNull,
+      );
     });
 
     testWidgets("Saving", (tester) async {
@@ -359,7 +435,40 @@ void main() {
         ..period = Period.afternoon
         ..season = Season.summer
         ..isFavorite = true
-        ..wasCatchAndRelease = true;
+        ..wasCatchAndRelease = true
+        ..waterDepth = MultiMeasurement(
+          system: MeasurementSystem.imperial_whole,
+          mainValue: Measurement(
+            unit: Unit.feet,
+            value: 20,
+          ),
+        )
+        ..waterTemperature = MultiMeasurement(
+          system: MeasurementSystem.imperial_whole,
+          mainValue: Measurement(
+            unit: Unit.fahrenheit,
+            value: 75,
+          ),
+        )
+        ..length = MultiMeasurement(
+          system: MeasurementSystem.imperial_whole,
+          mainValue: Measurement(
+            unit: Unit.inches,
+            value: 15,
+          ),
+          fractionValue: Measurement(
+            value: 0.25,
+          ),
+        )
+        ..weight = MultiMeasurement(
+          system: MeasurementSystem.imperial_whole,
+          mainValue: Measurement(
+            unit: Unit.pounds,
+            value: 10,
+          ),
+        )
+        ..quantity = 3
+        ..notes = "Some test notes.";
 
       when(appManager.imageManager.images(
         any,
@@ -481,6 +590,33 @@ void main() {
       expect(find.byType(Image), findsNothing);
       expect(findCheckbox(tester, "Favorite")!.checked, isFalse);
       expect(findCheckbox(tester, "Catch and Release")!.checked, isFalse);
+
+      expect(
+        findFirstWithText<TextInput>(tester, "Water Depth").controller?.value,
+        isNull,
+      );
+      expect(
+        findFirstWithText<TextInput>(tester, "Water Temperature")
+            .controller
+            ?.value,
+        isNull,
+      );
+      expect(
+        findFirstWithText<TextInput>(tester, "Length").controller?.value,
+        isNull,
+      );
+      expect(
+        findFirstWithText<TextInput>(tester, "Weight").controller?.value,
+        isNull,
+      );
+      expect(
+        findFirstWithText<TextInput>(tester, "Quantity").controller?.value,
+        isNull,
+      );
+      expect(
+        findFirstWithText<TextInput>(tester, "Notes").controller?.value,
+        isNull,
+      );
     });
 
     testWidgets("Saving when selecting no optional fields", (tester) async {
@@ -521,6 +657,12 @@ void main() {
       expect(cat.hasIsFavorite(), isFalse);
       expect(cat.hasWasCatchAndRelease(), isTrue);
       expect(cat.wasCatchAndRelease, isFalse);
+      expect(cat.hasWaterDepth(), isFalse);
+      expect(cat.hasWaterTemperature(), isFalse);
+      expect(cat.hasLength(), isFalse);
+      expect(cat.hasWeight(), isFalse);
+      expect(cat.hasQuantity(), isFalse);
+      expect(cat.hasNotes(), isFalse);
     });
 
     testWidgets("Saving after selecting all optional fields", (tester) async {
@@ -601,7 +743,12 @@ void main() {
           tester, findManageableListItemCheckbox(tester, "Kayak"));
       await tapAndSettle(tester, find.byType(BackButton));
 
+      // Set favorite.
+      await tester.ensureVisible(find.text("Favorite"));
       await tapAndSettle(tester, findListItemCheckbox(tester, "Favorite"));
+
+      // Set catch and release.
+      await tester.ensureVisible(find.text("Catch and Release"));
       await tapAndSettle(
           tester, findListItemCheckbox(tester, "Catch and Release"));
 
@@ -851,7 +998,7 @@ void main() {
 
     expect(find.text("Clear"), findsOneWidget);
 
-    // Edit the selected angler.
+    // Edit the selected water clarity.
     await tester.ensureVisible(find.text("Clear"));
     await tapAndSettle(tester, find.text("Clear"));
     await tapAndSettle(tester, find.widgetWithText(ActionButton, "EDIT"));

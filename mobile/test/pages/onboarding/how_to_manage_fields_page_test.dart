@@ -1,4 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mobile/model/gen/anglerslog.pb.dart';
 import 'package:mobile/pages/onboarding/how_to_manage_fields_page.dart';
 import 'package:mockito/mockito.dart';
 
@@ -12,8 +13,17 @@ void main() {
     appManager = StubbedAppManager();
 
     when(appManager.customEntityManager.entity(any)).thenReturn(null);
+
     when(appManager.userPreferenceManager.catchCustomEntityIds).thenReturn([]);
     when(appManager.userPreferenceManager.catchFieldIds).thenReturn([]);
+    when(appManager.userPreferenceManager.waterDepthSystem)
+        .thenReturn(MeasurementSystem.metric);
+    when(appManager.userPreferenceManager.waterTemperatureSystem)
+        .thenReturn(MeasurementSystem.metric);
+    when(appManager.userPreferenceManager.catchLengthSystem)
+        .thenReturn(MeasurementSystem.metric);
+    when(appManager.userPreferenceManager.catchWeightSystem)
+        .thenReturn(MeasurementSystem.metric);
   });
 
   testWidgets("Menu hiding/showing", (tester) async {

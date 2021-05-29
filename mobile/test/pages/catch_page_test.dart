@@ -308,4 +308,295 @@ void main() {
     expect(find.byIcon(Icons.error), findsOneWidget);
     expect(find.text("Kept"), findsOneWidget);
   });
+
+  group("Water fields", () {
+    testWidgets("No water fields", (tester) async {
+      when(appManager.catchManager.entity(any)).thenReturn(Catch());
+      await tester.pumpWidget(Testable(
+        (_) => CatchPage(Catch()),
+        appManager: appManager,
+      ));
+      // Wait for map timer to finish.
+      await tester.pumpAndSettle(Duration(milliseconds: 250));
+
+      expect(find.byIcon(CustomIcons.waterClarities), findsNothing);
+    });
+
+    testWidgets("Water clarity", (tester) async {
+      when(appManager.waterClarityManager.entity(any)).thenReturn(WaterClarity(
+        id: randomId(),
+        name: "Chocolate Milk",
+      ));
+      when(appManager.catchManager.entity(any)).thenReturn(Catch(
+        waterClarityId: randomId(),
+      ));
+
+      await tester.pumpWidget(Testable(
+        (_) => CatchPage(Catch()),
+        appManager: appManager,
+      ));
+      // Wait for map timer to finish.
+      await tester.pumpAndSettle(Duration(milliseconds: 250));
+
+      expect(find.byIcon(CustomIcons.waterClarities), findsOneWidget);
+      expect(find.text("Chocolate Milk"), findsOneWidget);
+    });
+
+    testWidgets("Water temperature", (tester) async {
+      when(appManager.catchManager.entity(any)).thenReturn(Catch(
+        waterTemperature: MultiMeasurement(
+          system: MeasurementSystem.metric,
+          mainValue: Measurement(
+            unit: Unit.celsius,
+            value: 50,
+          ),
+        ),
+      ));
+
+      await tester.pumpWidget(Testable(
+        (_) => CatchPage(Catch()),
+        appManager: appManager,
+      ));
+      // Wait for map timer to finish.
+      await tester.pumpAndSettle(Duration(milliseconds: 250));
+
+      expect(find.byIcon(CustomIcons.waterClarities), findsOneWidget);
+      expect(find.text("50\u00B0C"), findsOneWidget);
+    });
+
+    testWidgets("Water depth", (tester) async {
+      when(appManager.catchManager.entity(any)).thenReturn(Catch(
+        waterDepth: MultiMeasurement(
+          system: MeasurementSystem.metric,
+          mainValue: Measurement(
+            unit: Unit.feet,
+            value: 50,
+          ),
+        ),
+      ));
+
+      await tester.pumpWidget(Testable(
+        (_) => CatchPage(Catch()),
+        appManager: appManager,
+      ));
+      // Wait for map timer to finish.
+      await tester.pumpAndSettle(Duration(milliseconds: 250));
+
+      expect(find.byIcon(CustomIcons.waterClarities), findsOneWidget);
+      expect(find.text("50 ft"), findsOneWidget);
+    });
+
+    testWidgets("All water fields set", (tester) async {
+      when(appManager.waterClarityManager.entity(any)).thenReturn(WaterClarity(
+        id: randomId(),
+        name: "Chocolate Milk",
+      ));
+
+      when(appManager.catchManager.entity(any)).thenReturn(Catch(
+        waterTemperature: MultiMeasurement(
+          system: MeasurementSystem.metric,
+          mainValue: Measurement(
+            unit: Unit.celsius,
+            value: 50,
+          ),
+        ),
+        waterDepth: MultiMeasurement(
+          system: MeasurementSystem.metric,
+          mainValue: Measurement(
+            unit: Unit.feet,
+            value: 10,
+          ),
+        ),
+        waterClarityId: randomId(),
+      ));
+
+      await tester.pumpWidget(Testable(
+        (_) => CatchPage(Catch()),
+        appManager: appManager,
+      ));
+      // Wait for map timer to finish.
+      await tester.pumpAndSettle(Duration(milliseconds: 250));
+
+      expect(find.byIcon(CustomIcons.waterClarities), findsOneWidget);
+      expect(find.text("Chocolate Milk, 50\u00B0C, 10 ft"), findsOneWidget);
+    });
+  });
+
+  group("Size fields", () {
+    testWidgets("No size weight", (tester) async {
+      when(appManager.catchManager.entity(any)).thenReturn(Catch());
+
+      await tester.pumpWidget(Testable(
+        (_) => CatchPage(Catch()),
+        appManager: appManager,
+      ));
+      // Wait for map timer to finish.
+      await tester.pumpAndSettle(Duration(milliseconds: 250));
+
+      expect(find.byIcon(CustomIcons.ruler), findsNothing);
+    });
+
+    testWidgets("Weight", (tester) async {
+      when(appManager.catchManager.entity(any)).thenReturn(Catch(
+        weight: MultiMeasurement(
+          system: MeasurementSystem.metric,
+          mainValue: Measurement(
+            unit: Unit.kilograms,
+            value: 50,
+          ),
+        ),
+      ));
+
+      await tester.pumpWidget(Testable(
+        (_) => CatchPage(Catch()),
+        appManager: appManager,
+      ));
+      // Wait for map timer to finish.
+      await tester.pumpAndSettle(Duration(milliseconds: 250));
+
+      expect(find.byIcon(CustomIcons.ruler), findsOneWidget);
+      expect(find.text("50 kg"), findsOneWidget);
+    });
+
+    testWidgets("Length", (tester) async {
+      when(appManager.catchManager.entity(any)).thenReturn(Catch(
+        length: MultiMeasurement(
+          system: MeasurementSystem.metric,
+          mainValue: Measurement(
+            unit: Unit.centimeters,
+            value: 50,
+          ),
+        ),
+      ));
+
+      await tester.pumpWidget(Testable(
+        (_) => CatchPage(Catch()),
+        appManager: appManager,
+      ));
+      // Wait for map timer to finish.
+      await tester.pumpAndSettle(Duration(milliseconds: 250));
+
+      expect(find.byIcon(CustomIcons.ruler), findsOneWidget);
+      expect(find.text("50 cm"), findsOneWidget);
+    });
+
+    testWidgets("All size fields", (tester) async {
+      when(appManager.catchManager.entity(any)).thenReturn(Catch(
+        length: MultiMeasurement(
+          system: MeasurementSystem.metric,
+          mainValue: Measurement(
+            unit: Unit.centimeters,
+            value: 50,
+          ),
+        ),
+        weight: MultiMeasurement(
+          system: MeasurementSystem.metric,
+          mainValue: Measurement(
+            unit: Unit.kilograms,
+            value: 10,
+          ),
+        ),
+      ));
+
+      await tester.pumpWidget(Testable(
+        (_) => CatchPage(Catch()),
+        appManager: appManager,
+      ));
+      // Wait for map timer to finish.
+      await tester.pumpAndSettle(Duration(milliseconds: 250));
+
+      expect(find.byIcon(CustomIcons.ruler), findsOneWidget);
+      expect(find.text("10 kg, 50 cm"), findsOneWidget);
+    });
+  });
+
+  group("Notes fields", () {
+    testWidgets("No notes fields", (tester) async {
+      when(appManager.catchManager.entity(any)).thenReturn(Catch());
+      await tester.pumpWidget(Testable(
+        (_) => CatchPage(Catch()),
+        appManager: appManager,
+      ));
+      // Wait for map timer to finish.
+      await tester.pumpAndSettle(Duration(milliseconds: 250));
+
+      expect(find.byIcon(Icons.notes), findsNothing);
+    });
+
+    testWidgets("Empty notes field", (tester) async {
+      when(appManager.catchManager.entity(any)).thenReturn(Catch(
+        notes: "",
+      ));
+      await tester.pumpWidget(Testable(
+        (_) => CatchPage(Catch()),
+        appManager: appManager,
+      ));
+      // Wait for map timer to finish.
+      await tester.pumpAndSettle(Duration(milliseconds: 250));
+
+      expect(find.byIcon(Icons.notes), findsNothing);
+    });
+
+    testWidgets("Zero quantity", (tester) async {
+      when(appManager.catchManager.entity(any)).thenReturn(Catch(
+        quantity: 0,
+      ));
+      await tester.pumpWidget(Testable(
+        (_) => CatchPage(Catch()),
+        appManager: appManager,
+      ));
+      // Wait for map timer to finish.
+      await tester.pumpAndSettle(Duration(milliseconds: 250));
+
+      expect(find.byIcon(Icons.notes), findsNothing);
+    });
+
+    testWidgets("Quantity", (tester) async {
+      when(appManager.catchManager.entity(any)).thenReturn(Catch(
+        quantity: 5,
+      ));
+      await tester.pumpWidget(Testable(
+        (_) => CatchPage(Catch()),
+        appManager: appManager,
+      ));
+      // Wait for map timer to finish.
+      await tester.pumpAndSettle(Duration(milliseconds: 250));
+
+      expect(find.byIcon(Icons.notes), findsOneWidget);
+      expect(find.text("Quantity: 5"), findsOneWidget);
+    });
+
+    testWidgets("Notes", (tester) async {
+      when(appManager.catchManager.entity(any)).thenReturn(Catch(
+        notes: "Some notes.",
+      ));
+      await tester.pumpWidget(Testable(
+        (_) => CatchPage(Catch()),
+        appManager: appManager,
+      ));
+      // Wait for map timer to finish.
+      await tester.pumpAndSettle(Duration(milliseconds: 250));
+
+      expect(find.byIcon(Icons.notes), findsOneWidget);
+      expect(find.text("Some notes."), findsOneWidget);
+    });
+
+    testWidgets("All notes fields", (tester) async {
+      when(appManager.catchManager.entity(any)).thenReturn(Catch(
+        notes: "Some notes.",
+        quantity: 5,
+      ));
+      await tester.pumpWidget(Testable(
+        (_) => CatchPage(Catch()),
+        appManager: appManager,
+      ));
+      // Wait for map timer to finish.
+      await tester.pumpAndSettle(Duration(milliseconds: 250));
+
+      // One for each "note". Only one is visible.
+      expect(find.byIcon(Icons.notes), findsNWidgets(2));
+      expect(find.text("Some notes."), findsOneWidget);
+      expect(find.text("Quantity: 5"), findsOneWidget);
+    });
+  });
 }

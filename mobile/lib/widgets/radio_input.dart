@@ -60,22 +60,27 @@ class _RadioInputState extends State<RadioInput> {
   }
 
   Widget _buildOption(int index) {
+    var selected = _selectedIndex == index;
+    var icon =
+        selected ? Icons.radio_button_checked : Icons.radio_button_unchecked;
+
     return InkWell(
       onTap: () {
         setState(() => _selectedIndex = index);
         widget.onSelect.call(index);
       },
       child: Padding(
-        padding: insetsVerticalSmall,
+        padding: insetsVerticalWidgetSmall,
         child: HorizontalSafeArea(
           child: Row(
             children: [
-              _selectedIndex == index
-                  ? Icon(Icons.radio_button_checked)
-                  : Icon(Icons.radio_button_unchecked),
+              AnimatedSwitcher(
+                duration: defaultAnimationDuration,
+                child: Icon(icon, key: ValueKey(selected)),
+              ),
               Expanded(
                 child: Padding(
-                  padding: insetsLeftWidget,
+                  padding: EdgeInsets.only(left: paddingWidgetDouble),
                   child: PrimaryLabel(widget.optionBuilder(context, index)),
                 ),
               ),

@@ -12,7 +12,7 @@ void main() {
         (_) => TextInput.name(
           _,
           controller: TextInputController(),
-          onChanged: () => changed = true,
+          onChanged: (_) => changed = true,
         ),
       ),
     );

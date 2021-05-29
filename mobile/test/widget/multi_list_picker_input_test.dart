@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/res/dimen.dart';
 import 'package:mobile/widgets/multi_list_picker_input.dart';
+import 'package:mobile/widgets/widget.dart';
 
 import '../test_utils.dart';
 
@@ -45,7 +46,13 @@ void main() {
         ),
       ),
     );
-    expect(findFirst<Padding>(tester).padding.horizontal, paddingDefault * 2);
+
+    expect(
+      (findFirst<HorizontalSafeArea>(tester).child as Padding)
+          .padding
+          .horizontal,
+      paddingDefault * 2,
+    );
   });
 
   testWidgets("Default padding", (tester) async {

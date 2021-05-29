@@ -1,6 +1,22 @@
 syntax = "proto3";
 package anglerslog;
 
+enum MeasurementSystem {
+  imperial_whole = 0;
+  imperial_decimal = 1;
+  metric = 2;
+}
+
+enum NumberBoundary {
+  number_boundary_any = 0;
+  less_than = 1;
+  less_than_or_equal_to = 2;
+  equal_to = 3;
+  greater_than = 4;
+  greater_than_or_equal_to = 5;
+  range = 6;
+}
+
 enum Period {
   period_all = 0;
   period_none = 1;
@@ -19,6 +35,18 @@ enum Season {
   spring = 3;
   summer = 4;
   autumn = 5;
+}
+
+enum Unit {
+  feet = 0;
+  inches = 1;
+  pounds = 2;
+  ounces = 3;
+  fahrenheit = 4;
+  meters = 5;
+  centimeters = 6;
+  kilograms = 7;
+  celsius = 8;
 }
 
 // A unique ID. An Id is a wrapper for UUID string representation of protobuf bytes type that can
@@ -74,6 +102,12 @@ message Catch {
   bool was_catch_and_release = 12;
   Season season = 13;
   Id water_clarity_id = 14;
+  MultiMeasurement water_depth = 15;
+  MultiMeasurement water_temperature = 16;
+  MultiMeasurement length = 17;
+  MultiMeasurement weight = 18;
+  uint32 quantity = 19;
+  string notes = 20;
 }
 
 message FishingSpot {
@@ -81,6 +115,12 @@ message FishingSpot {
   string name = 2;
   double lat = 3;
   double lng = 4;
+}
+
+message NumberFilter {
+  NumberBoundary boundary = 1;
+  MultiMeasurement from = 2;
+  MultiMeasurement to = 3; // Only set for NumberBoundary.range.
 }
 
 message Species {
@@ -114,6 +154,11 @@ message Report {
   bool is_catch_and_release_only = 18;
   repeated Season seasons = 19;
   repeated Id water_clarity_ids = 20;
+  NumberFilter water_depth_filter = 21;
+  NumberFilter water_temperature_filter = 22;
+  NumberFilter length_filter = 23;
+  NumberFilter weight_filter = 24;
+  NumberFilter quantity_filter = 25;
 }
 
 message Angler {
@@ -129,4 +174,18 @@ message Method {
 message WaterClarity {
   Id id = 1;
   string name = 2;
+}
+
+message Measurement {
+  Unit unit = 1;
+  double value = 2;
+}
+
+// A more accurate version of Measurement to be used with fractional
+// values allowed by the imperial measurement system, such as pounds
+// (mainValue) and ounces (fractionValue).
+message MultiMeasurement {
+  MeasurementSystem system = 1;
+  Measurement mainValue = 2;
+  Measurement fractionValue = 3;
 }

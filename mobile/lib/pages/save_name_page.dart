@@ -83,11 +83,11 @@ class _SaveNamePageState extends State<SaveNamePage> {
             controller: _controller,
             autofocus: true,
             // Trigger "Save" button state refresh.
-            onChanged: () => setState(() {}),
+            onChanged: (_) => setState(() {}),
           ),
         };
       },
-      isInputValid: _controller.valid(context),
+      isInputValid: _controller.isValid(context),
     );
   }
 }

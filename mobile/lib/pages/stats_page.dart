@@ -533,7 +533,7 @@ class _StatsPageState extends State<StatsPage> {
 
   CalculatedReport _createReportModel(
     BuildContext context,
-    dynamic report,
+    Report report,
     String displayDateRangeId,
     Int64 startTimestamp,
     Int64 endTimestamp, {
@@ -557,6 +557,14 @@ class _StatsPageState extends State<StatsPage> {
       waterClarityIds: report.waterClarityIds.toSet(),
       periods: report.periods.toSet(),
       seasons: report.seasons.toSet(),
+      waterDepthFilter:
+          report.hasWaterDepthFilter() ? report.waterDepthFilter : null,
+      waterTemperatureFilter: report.hasWaterTemperatureFilter()
+          ? report.waterTemperatureFilter
+          : null,
+      lengthFilter: report.hasLengthFilter() ? report.lengthFilter : null,
+      weightFilter: report.hasWeightFilter() ? report.weightFilter : null,
+      quantityFilter: report.hasQuantityFilter() ? report.quantityFilter : null,
     );
   }
 

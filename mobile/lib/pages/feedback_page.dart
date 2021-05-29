@@ -62,6 +62,7 @@ class _FeedbackPageState extends State<FeedbackPage> {
 
   final _log = Log("FeedbackPage");
 
+  // TODO: Is this variable needed?
   final Map<Id, Field> _fields = {};
   final FocusNode _messageNode = FocusNode();
 
@@ -137,8 +138,8 @@ class _FeedbackPageState extends State<FeedbackPage> {
   Widget build(BuildContext context) {
     return FormPage.immutable(
       title: Text(widget.title ?? Strings.of(context).feedbackPageTitle),
-      isInputValid:
-          _emailController.valid(context) && _messageController.valid(context),
+      isInputValid: _emailController.isValid(context) &&
+          _messageController.isValid(context),
       saveButtonText: Strings.of(context).feedbackPageSend,
       showLoadingOverSave: _isSending,
       fieldBuilder: (context) => {
@@ -163,7 +164,7 @@ class _FeedbackPageState extends State<FeedbackPage> {
           textInputAction: TextInputAction.next,
           onSubmitted: () => FocusScope.of(context).requestFocus(_messageNode),
           // To update "Send" button state.
-          onChanged: () => setState(() {}),
+          onChanged: (_) => setState(() {}),
         ),
         _idType: _error
             ? Empty()
@@ -183,7 +184,7 @@ class _FeedbackPageState extends State<FeedbackPage> {
           maxLength: null,
           focusNode: _messageNode,
           // To update "Send" button state.
-          onChanged: () => setState(() {}),
+          onChanged: (_) => setState(() {}),
         ),
       },
       onSave: _send,

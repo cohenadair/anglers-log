@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:mobile/water_clarity_manager.dart';
 import 'package:provider/provider.dart';
 import 'package:quiver/strings.dart';
 
@@ -16,9 +15,11 @@ import 'image_manager.dart';
 import 'method_manager.dart';
 import 'model/gen/anglerslog.pb.dart';
 import 'species_manager.dart';
+import 'utils/catch_utils.dart';
 import 'utils/date_time_utils.dart';
 import 'utils/protobuf_utils.dart';
 import 'utils/string_utils.dart';
+import 'water_clarity_manager.dart';
 
 class CatchManager extends EntityManager<Catch> {
   static CatchManager of(BuildContext context) =>
@@ -61,7 +62,8 @@ class CatchManager extends EntityManager<Catch> {
   bool matchesFilter(Id id, String? filter, [BuildContext? context]) {
     var cat = entity(id);
 
-    if (cat == null ||
+    return cat == null ||
+        filter == null ||
         isEmpty(filter) ||
         _speciesManager.matchesFilter(cat.speciesId, filter) ||
         _fishingSpotManager.matchesFilter(cat.fishingSpotId, filter) ||
@@ -70,28 +72,19 @@ class CatchManager extends EntityManager<Catch> {
         _methodManager.idsMatchFilter(cat.methodIds, filter) ||
         _waterClarityManager.matchesFilter(cat.waterClarityId, filter) ||
         context == null ||
-        (cat.hasPeriod() &&
-            containsTrimmedLowerCase(
-                nameForPeriod(context, cat.period), filter!)) ||
-        (cat.hasSeason() &&
-            containsTrimmedLowerCase(
-                nameForSeason(context, cat.season), filter!)) ||
-        (cat.hasIsFavorite() &&
-            containsTrimmedLowerCase(
-                Strings.of(context).catchFieldFavoriteSearchString, filter!)) ||
-        (cat.hasWasCatchAndRelease() &&
-            containsTrimmedLowerCase(
-                Strings.of(context).catchFieldCatchAndReleaseSearchString,
-                filter!)) ||
-        timestampToSearchString(context, cat.timestamp.toInt())
-            .toLowerCase()
-            .contains(filter!.toLowerCase()) ||
-        entityValuesMatchesFilter(
-            cat.customEntityValues, filter, _customEntityManager)) {
-      return true;
-    }
-
-    return false;
+        catchFilterMatchesPeriod(context, filter, cat) ||
+        catchFilterMatchesSeason(context, filter, cat) ||
+        catchFilterMatchesFavorite(context, filter, cat) ||
+        catchFilterMatchesCatchAndRelease(context, filter, cat) ||
+        catchFilterMatchesTimestamp(context, filter, cat) ||
+        catchFilterMatchesWaterDepth(context, filter, cat) ||
+        catchFilterMatchesWaterTemperature(context, filter, cat) ||
+        catchFilterMatchesLength(context, filter, cat) ||
+        catchFilterMatchesWeight(context, filter, cat) ||
+        catchFilterMatchesQuantity(context, filter, cat) ||
+        catchFilterMatchesNotes(context, filter, cat) ||
+        filterMatchesEntityValues(
+            cat.customEntityValues, filter, _customEntityManager);
   }
 
   @override
@@ -113,6 +106,11 @@ class CatchManager extends EntityManager<Catch> {
     Set<Id> waterClarityIds = const {},
     Set<Period> periods = const {},
     Set<Season> seasons = const {},
+    NumberFilter? waterDepthFilter,
+    NumberFilter? waterTemperatureFilter,
+    NumberFilter? lengthFilter,
+    NumberFilter? weightFilter,
+    NumberFilter? quantityFilter,
   }) {
     var result = List.of(filteredCatches(
       context,
@@ -129,6 +127,11 @@ class CatchManager extends EntityManager<Catch> {
       waterClarityIds: waterClarityIds,
       periods: periods,
       seasons: seasons,
+      waterDepthFilter: waterDepthFilter,
+      waterTemperatureFilter: waterTemperatureFilter,
+      lengthFilter: lengthFilter,
+      weightFilter: weightFilter,
+      quantityFilter: quantityFilter,
     ));
 
     result.sort((lhs, rhs) => rhs.timestamp.compareTo(lhs.timestamp));
@@ -150,6 +153,11 @@ class CatchManager extends EntityManager<Catch> {
     Set<Id> waterClarityIds = const {},
     Set<Period> periods = const {},
     Set<Season> seasons = const {},
+    NumberFilter? waterDepthFilter,
+    NumberFilter? waterTemperatureFilter,
+    NumberFilter? lengthFilter,
+    NumberFilter? weightFilter,
+    NumberFilter? quantityFilter,
   }) {
     if (isEmpty(filter) &&
         dateRange == null &&
@@ -163,7 +171,12 @@ class CatchManager extends EntityManager<Catch> {
         speciesIds.isEmpty &&
         waterClarityIds.isEmpty &&
         periods.isEmpty &&
-        seasons.isEmpty) {
+        seasons.isEmpty &&
+        waterDepthFilter == null &&
+        waterTemperatureFilter == null &&
+        lengthFilter == null &&
+        weightFilter == null &&
+        quantityFilter == null) {
       return entities.values.toList();
     }
 
@@ -186,6 +199,21 @@ class CatchManager extends EntityManager<Catch> {
           seasons.isEmpty || (cat.hasSeason() && seasons.contains(cat.season));
       valid &= !isFavoritesOnly || cat.isFavorite;
       valid &= !isCatchAndReleaseOnly || cat.wasCatchAndRelease;
+      valid &= waterDepthFilter == null ||
+          (cat.hasWaterDepth() &&
+              waterDepthFilter.containsMultiMeasurement(cat.waterDepth));
+      valid &= waterTemperatureFilter == null ||
+          (cat.hasWaterTemperature() &&
+              waterTemperatureFilter
+                  .containsMultiMeasurement(cat.waterTemperature));
+      valid &= lengthFilter == null ||
+          (cat.hasLength() &&
+              lengthFilter.containsMultiMeasurement(cat.length));
+      valid &= weightFilter == null ||
+          (cat.hasWeight() &&
+              weightFilter.containsMultiMeasurement(cat.weight));
+      valid &= quantityFilter == null ||
+          (cat.hasQuantity() && quantityFilter.containsInt(cat.quantity));
       if (!valid) {
         return false;
       }

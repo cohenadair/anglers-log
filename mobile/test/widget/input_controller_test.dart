@@ -16,6 +16,9 @@ void main() {
     expect(() => InputController<Id>(), throwsAssertionError);
     expect(() => InputController<Set<Id>>(), throwsAssertionError);
     expect(() => InputController<List<Id>>(), throwsAssertionError);
+    expect(() => InputController<MultiMeasurement>(), throwsAssertionError);
+    expect(() => InputController<NumberFilter>(), throwsAssertionError);
+    expect(() => InputController<bool>(), throwsAssertionError);
   });
 
   group("IdInputController", () {
@@ -90,7 +93,7 @@ void main() {
     testWidgets("Null validator", (tester) async {
       var context = await buildContext(tester);
       var controller = TextInputController();
-      expect(controller.valid(context), isTrue);
+      expect(controller.isValid(context), isTrue);
     });
 
     testWidgets("Non-null validator", (tester) async {
@@ -98,7 +101,7 @@ void main() {
       var validator = MockNameValidator();
       when(validator.run(context, any)).thenReturn((context) => null);
       var controller = TextInputController(validator: validator);
-      expect(controller.valid(context), isTrue);
+      expect(controller.isValid(context), isTrue);
     });
   });
 
@@ -133,6 +136,50 @@ void main() {
           TimestampInputController(StubbedAppManager().timeManager);
       controller.value = null;
       expect(controller.value, isNotNull);
+    });
+  });
+
+  group("NumberFilterInputController", () {
+    test("isSet", () {
+      var controller = NumberFilterInputController();
+
+      // No value.
+      controller.value = NumberFilter();
+      expect(controller.isSet, isFalse);
+
+      // No boundary.
+      controller.value = NumberFilter(
+        from: MultiMeasurement(mainValue: Measurement(value: 10)),
+      );
+      expect(controller.isSet, isFalse);
+
+      // Boundary.
+      controller.value = NumberFilter(
+        boundary: NumberBoundary.greater_than,
+        from: MultiMeasurement(mainValue: Measurement(value: 10)),
+      );
+      expect(controller.isSet, isTrue);
+    });
+
+    test("shouldAddToReport", () {
+      // Not set.
+      var controller = NumberFilterInputController();
+      controller.value = NumberFilter();
+      expect(controller.shouldAddToReport, isFalse);
+
+      // Any boundary.
+      controller.value = NumberFilter(
+        boundary: NumberBoundary.number_boundary_any,
+        from: MultiMeasurement(mainValue: Measurement(value: 10)),
+      );
+      expect(controller.shouldAddToReport, isFalse);
+
+      // Non-any boundary.
+      controller.value = NumberFilter(
+        boundary: NumberBoundary.greater_than,
+        from: MultiMeasurement(mainValue: Measurement(value: 10)),
+      );
+      expect(controller.shouldAddToReport, isTrue);
     });
   });
 }

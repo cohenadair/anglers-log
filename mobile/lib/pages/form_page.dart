@@ -66,6 +66,8 @@ class FormPage extends StatefulWidget {
   /// The text for the "save" button. Defaults to "Save".
   final String? saveButtonText;
 
+  final bool showSaveButton;
+
   /// When true, shows a [Loading] widget instead of the "Save" button.
   final bool showLoadingOverSave;
 
@@ -87,8 +89,9 @@ class FormPage extends StatefulWidget {
     this.padding = insetsHorizontalDefault,
     this.runSpacing,
     this.saveButtonText,
+    this.showSaveButton = true,
     this.showLoadingOverSave = false,
-    required this.isInputValid,
+    this.isInputValid = true,
   }) : super(key: key);
 
   FormPage.immutable({
@@ -98,8 +101,9 @@ class FormPage extends StatefulWidget {
     FutureOr<bool> Function(BuildContext)? onSave,
     EdgeInsets padding = insetsHorizontalDefault,
     double? runSpacing,
-    required bool isInputValid,
+    bool isInputValid = true,
     String? saveButtonText,
+    bool showSaveButton = true,
     bool showLoadingOverSave = false,
   }) : this(
           key: key,
@@ -113,6 +117,7 @@ class FormPage extends StatefulWidget {
           runSpacing: runSpacing,
           isInputValid: isInputValid,
           saveButtonText: saveButtonText,
+          showSaveButton: showSaveButton,
           showLoadingOverSave: showLoadingOverSave,
         );
 
@@ -136,6 +141,10 @@ class _FormPageState extends State<FormPage> {
         actions: [
           Builder(
             builder: (context) {
+              if (!widget.showSaveButton) {
+                return Empty();
+              }
+
               // An AnimatedSwitcher is not used here because the different
               // alignments of the Loading widget and ActionButton cause the
               // animation to appear "jarring" where as a complete replace of
@@ -287,7 +296,7 @@ class _SelectionPageState extends State<_SelectionPage> {
       managers: [customEntityManager],
       builder: (context) {
         var items = pickerItems;
-        var used = pickerItems
+        var used = items
             .where((item) =>
                 item.hasValue &&
                 item.value is FormPageFieldOption &&

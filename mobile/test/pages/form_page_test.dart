@@ -50,6 +50,18 @@ void main() {
         findFirstWithText<ActionButton>(tester, "SAVE").onPressed, isNotNull);
   });
 
+  testWidgets("Save button hidden", (tester) async {
+    await tester.pumpWidget(
+      Testable(
+        (_) => FormPage(
+          fieldBuilder: (_) => {},
+          showSaveButton: false,
+        ),
+      ),
+    );
+    expect(find.text("SAVE"), findsNothing);
+  });
+
   testWidgets("Custom save button text", (tester) async {
     await tester.pumpWidget(
       Testable(

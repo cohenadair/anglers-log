@@ -72,6 +72,14 @@ void main() {
 
     when(appManager.userPreferenceManager.catchCustomEntityIds).thenReturn([]);
     when(appManager.userPreferenceManager.catchFieldIds).thenReturn([]);
+    when(appManager.userPreferenceManager.waterDepthSystem)
+        .thenReturn(MeasurementSystem.imperial_whole);
+    when(appManager.userPreferenceManager.waterTemperatureSystem)
+        .thenReturn(MeasurementSystem.imperial_whole);
+    when(appManager.userPreferenceManager.catchLengthSystem)
+        .thenReturn(MeasurementSystem.imperial_whole);
+    when(appManager.userPreferenceManager.catchWeightSystem)
+        .thenReturn(MeasurementSystem.imperial_whole);
 
     when(appManager.speciesManager.listSortedByName(filter: anyNamed("filter")))
         .thenReturn([

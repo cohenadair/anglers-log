@@ -102,6 +102,8 @@ class _EntityPageState extends State<EntityPage> {
           child: CustomEntityValues(widget.customEntityValues),
         ),
       ]);
+    } else {
+      children.add(VerticalSpace(paddingWidget));
     }
 
     return Scaffold(

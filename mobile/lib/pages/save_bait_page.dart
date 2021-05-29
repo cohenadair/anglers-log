@@ -120,7 +120,7 @@ class _SaveBaitPageState extends State<SaveBaitPage> {
       onSave: _save,
       onAddFields: (ids) =>
           _userPreferencesManager.setBaitFieldIds(ids.toList()),
-      isInputValid: _nameController.valid(context),
+      isInputValid: _nameController.isValid(context),
     );
   }
 
@@ -162,7 +162,7 @@ class _SaveBaitPageState extends State<SaveBaitPage> {
         controller: _nameController,
         autofocus: true,
         // Trigger "Save" button state refresh.
-        onChanged: () => setState(() {}),
+        onChanged: (_) => setState(() {}),
       ),
     );
   }

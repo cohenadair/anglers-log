@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:mobile/res/gen/custom_icons.dart';
+import 'package:quiver/strings.dart';
 
 import '../angler_manager.dart';
 import '../bait_category_manager.dart';
@@ -14,10 +14,12 @@ import '../pages/bait_page.dart';
 import '../pages/entity_page.dart';
 import '../pages/save_catch_page.dart';
 import '../res/dimen.dart';
+import '../res/gen/custom_icons.dart';
 import '../species_manager.dart';
 import '../utils/date_time_utils.dart';
 import '../utils/page_utils.dart';
 import '../utils/protobuf_utils.dart';
+import '../utils/string_utils.dart';
 import '../water_clarity_manager.dart';
 import '../widgets/list_item.dart';
 import '../widgets/static_fishing_spot.dart';
@@ -55,7 +57,7 @@ class _CatchPageState extends State<CatchPage> {
   // TODO: Remove this when Google Maps performance issue is fixed.
   // https://github.com/flutter/flutter/issues/28493
   final Future<bool> _fishingSpotFuture =
-      Future.delayed(Duration(milliseconds: 150), () => true);
+      Future.delayed(Duration(milliseconds: 200), () => true);
 
   late Catch _catch;
 
@@ -106,9 +108,11 @@ class _CatchPageState extends State<CatchPage> {
               future: _fishingSpotFuture,
               builder: (context, _) => _buildFishingSpot(),
             ),
+            _buildSize(),
             _buildAngler(),
             _buildCatchAndRelease(),
-            _buildWaterClarity(),
+            _buildWater(),
+            _buildNotes(),
           ],
         );
       },
@@ -153,10 +157,10 @@ class _CatchPageState extends State<CatchPage> {
 
     var items = <String>[];
     if (_catch.hasPeriod()) {
-      items.add(nameForPeriod(context, _catch.period));
+      items.add(_catch.period.displayName(context));
     }
     if (_catch.hasSeason()) {
-      items.add(nameForSeason(context, _catch.season));
+      items.add(_catch.season.displayName(context));
     }
 
     return result += "${items.join(", ")})";
@@ -230,15 +234,92 @@ class _CatchPageState extends State<CatchPage> {
     }
   }
 
-  Widget _buildWaterClarity() {
+  Widget _buildWater() {
+    var values = <String>[];
+
     var clarity = _waterClarityManager.entity(_catch.waterClarityId);
-    if (clarity == null) {
+    if (clarity != null) {
+      values.add(clarity.name);
+    }
+
+    if (_catch.hasWaterTemperature()) {
+      values.add(_catch.waterTemperature.displayValue(context));
+    }
+
+    if (_catch.hasWaterDepth()) {
+      values.add(_catch.waterDepth.displayValue(context));
+    }
+
+    if (values.isEmpty) {
       return Empty();
     }
 
     return ListItem(
       leading: Icon(CustomIcons.waterClarities),
-      title: Text(clarity.name),
+      title: Text(values.join(", ")),
+    );
+  }
+
+  Widget _buildSize() {
+    var values = <String>[];
+
+    if (_catch.hasWeight()) {
+      values.add(_catch.weight.displayValue(context));
+    }
+
+    if (_catch.hasLength()) {
+      values.add(_catch.length.displayValue(context));
+    }
+
+    if (values.isEmpty) {
+      return Empty();
+    }
+
+    return ListItem(
+      leading: Icon(CustomIcons.ruler),
+      title: Text(values.join(", ")),
+    );
+  }
+
+  Widget _buildNotes() {
+    var values = <String>[];
+
+    if (_catch.hasQuantity() && _catch.quantity > 0) {
+      values.add(format(
+          Strings.of(context).catchPageQuantityLabel, [_catch.quantity]));
+    }
+
+    if (_catch.hasNotes() && isNotEmpty(_catch.notes)) {
+      values.add(_catch.notes);
+    }
+
+    if (values.isEmpty) {
+      return Empty();
+    }
+
+    Widget buildRow(String value) {
+      return Row(
+        children: [
+          Opacity(
+            // Use Opacity so items are horizontally aligned.
+            opacity: values.indexOf(value) >= 1 ? 0.0 : 1.0,
+            child: Icon(
+              Icons.notes,
+              color: Theme.of(context).disabledColor,
+            ),
+          ),
+          HorizontalSpace(paddingWidgetDouble),
+          Expanded(child: PrimaryLabel.multiline(value)),
+        ],
+      );
+    }
+
+    return Padding(
+      padding: insetsHorizontalDefaultVerticalSmall,
+      child: Wrap(
+        runSpacing: paddingTiny,
+        children: values.map(buildRow).toList(),
+      ),
     );
   }
 

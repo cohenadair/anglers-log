@@ -50,7 +50,7 @@ class BaitManager extends NamedEntityManager<Bait> {
 
     if (super.matchesFilter(id, filter) ||
         _baitCategoryManager.matchesFilter(bait.baitCategoryId, filter) ||
-        entityValuesMatchesFilter(
+        filterMatchesEntityValues(
             bait.customEntityValues, filter, _customEntityManager)) {
       return true;
     }

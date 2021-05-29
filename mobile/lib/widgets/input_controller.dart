@@ -4,6 +4,7 @@ import 'package:quiver/strings.dart';
 import '../model/gen/anglerslog.pb.dart';
 import '../time_manager.dart';
 import '../utils/date_time_utils.dart';
+import '../utils/protobuf_utils.dart';
 import '../utils/validator.dart';
 
 /// A class for storing a value of an input widget, such as a text field or
@@ -17,14 +18,26 @@ class InputController<T> {
 
   InputController({this.value}) {
     assert(!(T == Id) || this is IdInputController,
-        "Use IdInputController instead of InputController<Id>");
+        "Use IdInputController instead>");
     assert(!(T.toString().contains("Set")) || this is SetInputController,
-        "Use SetInputController<T> instead of InputController<Set<T>>");
+        "Use SetInputController<T> instead>");
     assert(!(T.toString().contains("List")) || this is ListInputController,
-        "Use ListInputController<T> instead of InputController<List<T>>");
+        "Use ListInputController<T> instead");
+    assert(
+      !(T.toString().contains("MultiMeasurement")) ||
+          this is MultiMeasurementInputController,
+      "Use MultiMeasurementInputController instead",
+    );
+    assert(
+      !(T.toString().contains("NumberFilter")) ||
+          this is NumberFilterInputController,
+      "Use NumberFilterInputController instead",
+    );
     assert(!(T == bool) || this is BoolInputController,
-        "Use BoolInputController instead of InputController<Bool>");
+        "Use BoolInputController instead");
   }
+
+  bool get hasValue => value != null;
 
   void dispose() {
     clear();
@@ -119,17 +132,42 @@ class TextInputController extends InputController<String> {
     editingController.value = TextEditingValue(text: "");
   }
 
-  bool valid(BuildContext context) =>
+  bool isValid(BuildContext context) =>
       isEmpty(validator?.run(context, value)?.call(context));
+
+  /// Validates the controller's input immediately. This should only be called
+  /// in special cases where an input field's validity depends on another input
+  /// field's value.
+  ///
+  /// In most cases, input fields are automatically validated when input
+  /// changes.
+  ///
+  /// This method should be called within a [setState] call.
+  void validate(BuildContext context) {
+    error = validator?.run(context, value)?.call(context);
+  }
 }
 
 class NumberInputController extends TextInputController {
   NumberInputController({
     TextEditingController? editingController,
+    Validator? validator,
   }) : super(
           editingController: editingController ?? TextEditingController(),
-          validator: DoubleValidator(),
+          validator: validator ?? DoubleValidator(),
         );
+
+  bool get hasDoubleValue => doubleValue != null;
+
+  double? get doubleValue => value == null ? null : double.tryParse(value!);
+
+  set doubleValue(double? value) => super.value = value?.toString();
+
+  bool get hasIntValue => intValue != null;
+
+  int? get intValue => value == null ? null : int.tryParse(value!);
+
+  set intValue(int? value) => super.value = value?.toString();
 }
 
 class EmailInputController extends TextInputController {
@@ -211,4 +249,25 @@ class TimestampInputController extends InputController<int> {
     date = null;
     time = null;
   }
+}
+
+class NumberFilterInputController extends InputController<NumberFilter> {
+  /// Returns true if a numerical value in [NumberFilter] is set.
+  /// [value] may be non-null if the [MeasurementSystem] was updated, but values
+  /// weren't actually set.
+  bool get isSet => hasValue && value!.isSet;
+
+  /// Returns true if this controller's value should be added to a [Report]
+  /// object. A value should be added if it is set and the number boundary isn't
+  /// "any".
+  bool get shouldAddToReport =>
+      isSet && value!.boundary != NumberBoundary.number_boundary_any;
+}
+
+class MultiMeasurementInputController
+    extends InputController<MultiMeasurement> {
+  /// Returns true if a numerical value in [MeasurementSystemValue] is set.
+  /// [value] may be non-null if the [MeasurementSystem] was updated, but values
+  /// weren't actually set.
+  bool get isSet => hasValue && value!.isSet;
 }

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:quiver/strings.dart';
 
 import '../i18n/strings.dart';
+import '../res/style.dart';
 import '../utils/validator.dart';
 import '../widgets/input_controller.dart';
 
@@ -14,6 +15,8 @@ class TextInput extends StatefulWidget {
 
   final String? initialValue;
   final String? label;
+  final String? suffixText;
+  final String? hintText;
   final TextCapitalization capitalization;
   final TextInputAction? textInputAction;
 
@@ -31,7 +34,7 @@ class TextInput extends StatefulWidget {
   /// Invoked when the [TextInput] text changes, _after_ [Validator.run] is
   /// invoked. Implement this property to update the state of the parent
   /// widget.
-  final VoidCallback? onChanged;
+  final ValueChanged<String>? onChanged;
 
   /// Invoked when the "return" button is pressed on the keyboard when this
   /// [TextInput] is in focus.
@@ -43,6 +46,8 @@ class TextInput extends StatefulWidget {
   TextInput({
     this.initialValue,
     this.label,
+    this.suffixText,
+    this.hintText,
     this.capitalization = TextCapitalization.none,
     this.textInputAction,
     required this.controller,
@@ -64,7 +69,7 @@ class TextInput extends StatefulWidget {
     required TextInputController controller,
     bool enabled = true,
     bool autofocus = false,
-    VoidCallback? onChanged,
+    ValueChanged<String>? onChanged,
     TextInputAction? textInputAction,
   }) : this(
           initialValue: initialValue,
@@ -81,13 +86,15 @@ class TextInput extends StatefulWidget {
 
   TextInput.description(
     BuildContext context, {
+    String? title,
     String? initialValue,
+    String? hintText,
     required TextInputController controller,
     bool enabled = true,
     bool autofocus = false,
   }) : this(
           initialValue: initialValue,
-          label: Strings.of(context).inputDescriptionLabel,
+          label: title ?? Strings.of(context).inputDescriptionLabel,
           capitalization: TextCapitalization.sentences,
           controller: controller,
           maxLength: _inputLimitDescription,
@@ -96,29 +103,37 @@ class TextInput extends StatefulWidget {
           // Use done here to blank lines can't be entered. Also an easy way
           // to remove the keyboard on iOS.
           textInputAction: TextInputAction.done,
+          hintText: hintText,
         );
 
   TextInput.number(
     BuildContext context, {
     double? initialValue,
     String? label,
+    String? suffixText,
     String? requiredText,
     required NumberInputController? controller,
     bool enabled = true,
     bool autofocus = false,
     bool required = false,
+    bool signed = true,
+    bool decimal = true,
+    bool showMaxLength = true,
     TextInputAction? textInputAction,
+    ValueChanged<String>? onChanged,
   }) : this(
           initialValue: initialValue == null ? null : initialValue.toString(),
           label: label,
+          suffixText: suffixText,
           controller: controller,
           keyboardType:
-              TextInputType.numberWithOptions(signed: true, decimal: true),
+              TextInputType.numberWithOptions(signed: signed, decimal: decimal),
           enabled: enabled,
           autofocus: autofocus,
-          maxLength: _inputLimitNumber,
+          maxLength: showMaxLength ? _inputLimitNumber : null,
           maxLines: 1,
           textInputAction: textInputAction,
+          onChanged: onChanged,
         );
 
   TextInput.email(
@@ -127,7 +142,7 @@ class TextInput extends StatefulWidget {
     required EmailInputController controller,
     bool enabled = true,
     bool autofocus = false,
-    VoidCallback? onChanged,
+    ValueChanged<String>? onChanged,
     TextInputAction? textInputAction,
     VoidCallback? onSubmitted,
   }) : this(
@@ -147,7 +162,7 @@ class TextInput extends StatefulWidget {
   TextInput.password(
     BuildContext context, {
     required PasswordInputController controller,
-    VoidCallback? onChanged,
+    ValueChanged<String>? onChanged,
     VoidCallback? onSubmitted,
   }) : this(
           label: Strings.of(context).inputPasswordLabel,
@@ -165,6 +180,8 @@ class TextInput extends StatefulWidget {
 }
 
 class _TextInputState extends State<TextInput> {
+  static const _maxErrorHintLines = 2;
+
   ValidationCallback? get _validationCallback =>
       widget.controller?.validator?.run(context, widget.controller!.value);
 
@@ -186,6 +203,11 @@ class _TextInputState extends State<TextInput> {
         decoration: InputDecoration(
           labelText: widget.label,
           errorText: widget.controller?.error,
+          errorMaxLines: _maxErrorHintLines,
+          suffixText: widget.suffixText,
+          suffixStyle: styleInputSuffix(context),
+          hintText: widget.hintText,
+          hintMaxLines: _maxErrorHintLines,
         ),
         textCapitalization: widget.capitalization,
         textInputAction: widget.textInputAction,
@@ -193,8 +215,8 @@ class _TextInputState extends State<TextInput> {
         maxLength: widget.maxLength,
         maxLines: widget.maxLines,
         keyboardType: widget.keyboardType,
-        onChanged: (_) {
-          widget.onChanged?.call();
+        onChanged: (value) {
+          widget.onChanged?.call(value);
           setState(_updateError);
         },
         onFieldSubmitted: (_) => widget.onSubmitted?.call(),

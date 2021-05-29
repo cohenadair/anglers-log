@@ -81,6 +81,11 @@ TextStyle stylePrimary(
   return style;
 }
 
+TextStyle styleInputSuffix(BuildContext context) =>
+    stylePrimary(context).copyWith(
+      color: Colors.black54,
+    );
+
 const List<BoxShadow> boxShadowDefault = [
   BoxShadow(
     color: Colors.grey,

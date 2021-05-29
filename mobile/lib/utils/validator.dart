@@ -66,6 +66,27 @@ class DoubleValidator implements Validator {
   }
 }
 
+class RangeValidator extends DoubleValidator {
+  final ValidationCallback? Function(BuildContext, String)? runner;
+
+  RangeValidator({this.runner});
+
+  @override
+  ValidationCallback? run(BuildContext context, String? newValue) {
+    var error = EmptyValidator().run(context, newValue);
+    if (error != null) {
+      return error;
+    }
+
+    error = super.run(context, newValue);
+    if (error != null) {
+      return error;
+    } else {
+      return runner?.call(context, newValue!);
+    }
+  }
+}
+
 class EmailValidator implements Validator {
   final bool required;
 

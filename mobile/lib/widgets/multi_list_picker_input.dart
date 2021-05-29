@@ -43,14 +43,16 @@ class MultiListPickerInput extends StatelessWidget {
 
     return InkWell(
       onTap: onTap,
-      child: Padding(
-        padding: padding ?? insetsZero,
-        child: Row(
-          mainAxisSize: MainAxisSize.max,
-          children: [
-            Expanded(child: ChipWrap(items)),
-            RightChevronIcon(),
-          ],
+      child: HorizontalSafeArea(
+        child: Padding(
+          padding: padding ?? insetsZero,
+          child: Row(
+            mainAxisSize: MainAxisSize.max,
+            children: [
+              Expanded(child: ChipWrap(items)),
+              RightChevronIcon(),
+            ],
+          ),
         ),
       ),
     );

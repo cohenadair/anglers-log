@@ -9,6 +9,7 @@ import 'package:mobile/channels/migration_channel.dart';
 import 'package:mobile/database/legacy_importer.dart';
 import 'package:mobile/fishing_spot_manager.dart';
 import 'package:mobile/method_manager.dart';
+import 'package:mobile/model/gen/anglerslog.pb.dart';
 import 'package:mobile/species_manager.dart';
 import 'package:mobile/water_clarity_manager.dart';
 import 'package:mockito/mockito.dart';
@@ -172,6 +173,54 @@ void main() {
     expect(fishingSpotManager.entityCount, 94);
     expect(methodManager.entityCount, 22);
     expect(speciesManager.entityCount, 28);
+    expect(waterClarityManager.entityCount, 9);
+
+    verify(appManager.userPreferenceManager
+            .setWaterDepthSystem(MeasurementSystem.imperial_whole))
+        .called(1);
+    verify(appManager.userPreferenceManager
+            .setWaterTemperatureSystem(MeasurementSystem.imperial_whole))
+        .called(1);
+    verify(appManager.userPreferenceManager
+            .setCatchLengthSystem(MeasurementSystem.imperial_whole))
+        .called(1);
+    verify(appManager.userPreferenceManager
+            .setCatchWeightSystem(MeasurementSystem.imperial_whole))
+        .called(1);
+
+    var waterDepthCatch = catchManager
+        .list()
+        .firstWhere((cat) => cat.waterDepth.mainValue.value == 14);
+    expect(waterDepthCatch.waterDepth.system, MeasurementSystem.imperial_whole);
+    expect(waterDepthCatch.waterDepth.mainValue.value, 14);
+    expect(waterDepthCatch.waterDepth.mainValue.unit, Unit.feet);
+    expect(waterDepthCatch.waterDepth.hasFractionValue(), isFalse);
+
+    // No water temperature catches in real backup.
+
+    var weightCatch = catchManager
+        .list()
+        .firstWhere((cat) => cat.weight.mainValue.value == 22);
+    expect(weightCatch.weight.system, MeasurementSystem.imperial_whole);
+    expect(weightCatch.weight.mainValue.value, 22);
+    expect(weightCatch.weight.mainValue.unit, Unit.pounds);
+    expect(weightCatch.weight.hasFractionValue(), isFalse);
+
+    var lengthCatch = catchManager
+        .list()
+        .firstWhere((cat) => cat.length.mainValue.value == 32);
+    expect(lengthCatch.length.system, MeasurementSystem.imperial_whole);
+    expect(lengthCatch.length.mainValue.value, 32);
+    expect(lengthCatch.length.mainValue.unit, Unit.inches);
+    expect(lengthCatch.length.hasFractionValue(), isFalse);
+
+    var quantityCatch =
+        catchManager.list().firstWhere((cat) => cat.quantity == 6);
+    expect(quantityCatch.quantity, 6);
+
+    var notesCatch =
+        catchManager.list().firstWhere((cat) => cat.notes == "Caught by Tim.");
+    expect(notesCatch.notes, "Caught by Tim.");
 
     verifyIds();
   });
@@ -188,6 +237,55 @@ void main() {
     expect(fishingSpotManager.entityCount, 75);
     expect(methodManager.entityCount, 19);
     expect(speciesManager.entityCount, 26);
+    expect(waterClarityManager.entityCount, 9);
+
+    verify(appManager.userPreferenceManager
+            .setWaterDepthSystem(MeasurementSystem.imperial_whole))
+        .called(1);
+    verify(appManager.userPreferenceManager
+            .setWaterTemperatureSystem(MeasurementSystem.imperial_whole))
+        .called(1);
+    verify(appManager.userPreferenceManager
+            .setCatchLengthSystem(MeasurementSystem.imperial_whole))
+        .called(1);
+    verify(appManager.userPreferenceManager
+            .setCatchWeightSystem(MeasurementSystem.imperial_whole))
+        .called(1);
+
+    var waterDepthCatch = catchManager
+        .list()
+        .firstWhere((cat) => cat.waterDepth.mainValue.value == 14);
+    expect(waterDepthCatch.waterDepth.system, MeasurementSystem.imperial_whole);
+    expect(waterDepthCatch.waterDepth.mainValue.value, 14);
+    expect(waterDepthCatch.waterDepth.mainValue.unit, Unit.feet);
+    expect(waterDepthCatch.waterDepth.hasFractionValue(), isFalse);
+
+    // No water temperature catches in real backup.
+
+    var weightCatch = catchManager
+        .list()
+        .firstWhere((cat) => cat.weight.mainValue.value == 3.25);
+    expect(weightCatch.weight.system, MeasurementSystem.imperial_decimal);
+    expect(weightCatch.weight.mainValue.value, 3.25);
+    expect(weightCatch.weight.mainValue.unit, Unit.pounds);
+    expect(weightCatch.weight.hasFractionValue(), isFalse);
+
+    var lengthCatch = catchManager
+        .list()
+        .firstWhere((cat) => cat.length.mainValue.value == 11);
+    expect(lengthCatch.length.system, MeasurementSystem.imperial_whole);
+    expect(lengthCatch.length.mainValue.value, 11);
+    expect(lengthCatch.length.mainValue.unit, Unit.inches);
+    expect(lengthCatch.length.hasFractionValue(), isFalse);
+
+    var quantityCatch =
+        catchManager.list().firstWhere((cat) => cat.quantity == 16);
+    expect(quantityCatch.quantity, 16);
+
+    var notesCatch = catchManager.list().firstWhere((cat) =>
+        cat.notes == "Casting downstream close to shore in very slow water.");
+    expect(notesCatch.notes,
+        "Casting downstream close to shore in very slow water.");
 
     verifyIds();
   });
@@ -226,6 +324,22 @@ void main() {
     expect(catches[0].hasIsFavorite(), isFalse);
     expect(methodManager.entity(catches[0].methodIds[0])!.name, "Still");
     expect(methodManager.entity(catches[0].methodIds[1])!.name, "Bottom");
+
+    var measuredCatch =
+        catches.firstWhere((cat) => cat.length.mainValue.value == 15.75);
+    expect(measuredCatch.hasWaterDepth(), isFalse);
+    expect(measuredCatch.hasWaterTemperature(), isFalse);
+    expect(measuredCatch.hasQuantity(), isFalse);
+    expect(measuredCatch.hasNotes(), isFalse);
+    expect(measuredCatch.length.system, MeasurementSystem.imperial_decimal);
+    expect(measuredCatch.length.mainValue.value, 15.75);
+    expect(measuredCatch.length.mainValue.unit, Unit.inches);
+    expect(measuredCatch.length.hasFractionValue(), isFalse);
+    expect(measuredCatch.weight.system, MeasurementSystem.imperial_whole);
+    expect(measuredCatch.weight.mainValue.value, 7);
+    expect(measuredCatch.weight.mainValue.unit, Unit.pounds);
+    expect(measuredCatch.weight.fractionValue.value, 4);
+    expect(measuredCatch.weight.fractionValue.unit, Unit.ounces);
 
     expect(catches[1].timestamp.toInt(),
         DateTime(2019, 8, 12, 12, 44).millisecondsSinceEpoch);
@@ -327,24 +441,46 @@ void main() {
     expect(catches, isNotNull);
     expect(catches.length, 1);
 
-    expect(catches.first.timestamp.toInt(),
+    expect(catches[0].timestamp.toInt(),
         DateTime(2017, 10, 11, 17, 19, 19, 420).millisecondsSinceEpoch);
-    expect(catches.first.hasFishingSpotId(), isTrue);
+    expect(catches[0].hasFishingSpotId(), isTrue);
     expect(
         speciesManager.entity(catches[0].speciesId)!.name, "Trout - Rainbow");
-    expect(catches.first.hasBaitId(), isTrue);
+    expect(catches[0].hasBaitId(), isTrue);
     expect(baitManager.entity(catches[0].baitId)!.name,
         "Rapala F-7 - Brown Trout");
-    expect(catches.first.hasFishingSpotId(), isTrue);
+    expect(catches[0].hasFishingSpotId(), isTrue);
     expect(fishingSpotManager.entity(catches[0].fishingSpotId)!.name,
         "Bow River - Sewer Run");
     expect(catches[0].methodIds.length, 3);
-    expect(catches.first.hasWasCatchAndRelease(), isFalse);
-    expect(catches.first.hasIsFavorite(), isFalse);
-    expect(catches.first.hasWaterClarityId(), isFalse);
+    expect(catches[0].hasWasCatchAndRelease(), isFalse);
+    expect(catches[0].hasIsFavorite(), isFalse);
+    expect(catches[0].hasWaterClarityId(), isFalse);
     expect(methodManager.entity(catches[0].methodIds[0])!.name, "Casting");
     expect(methodManager.entity(catches[0].methodIds[1])!.name, "Lure");
     expect(methodManager.entity(catches[0].methodIds[2])!.name, "Wade");
+
+    var measuredCatch =
+        catches.firstWhere((cat) => cat.length.mainValue.value == 22);
+    expect(measuredCatch.waterDepth.system, MeasurementSystem.imperial_whole);
+    expect(measuredCatch.waterDepth.mainValue.value, 3);
+    expect(measuredCatch.waterDepth.mainValue.unit, Unit.feet);
+    expect(measuredCatch.waterDepth.hasFractionValue(), isFalse);
+    expect(measuredCatch.waterTemperature.system,
+        MeasurementSystem.imperial_whole);
+    expect(measuredCatch.waterTemperature.mainValue.value, 61);
+    expect(measuredCatch.waterTemperature.mainValue.unit, Unit.fahrenheit);
+    expect(measuredCatch.waterTemperature.hasFractionValue(), isFalse);
+    expect(measuredCatch.length.system, MeasurementSystem.imperial_whole);
+    expect(measuredCatch.length.mainValue.value, 22);
+    expect(measuredCatch.length.mainValue.unit, Unit.inches);
+    expect(measuredCatch.length.hasFractionValue(), isFalse);
+    expect(measuredCatch.weight.system, MeasurementSystem.imperial_decimal);
+    expect(measuredCatch.weight.mainValue.value, 3.5);
+    expect(measuredCatch.weight.mainValue.unit, Unit.pounds);
+    expect(measuredCatch.weight.hasFractionValue(), isFalse);
+    expect(measuredCatch.quantity, 5);
+    expect(measuredCatch.hasNotes(), isFalse);
   });
 
   test("Import Android locations", () async {

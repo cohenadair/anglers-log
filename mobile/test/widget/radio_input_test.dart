@@ -19,10 +19,11 @@ void main() {
       ),
     );
     expect(
-      (tester.widget(find.widgetWithText(Row, "Option 2")) as Row)
-          .children
-          .any((w) => w is Icon && w.icon == Icons.radio_button_checked),
-      isTrue,
+      find.descendant(
+        of: find.widgetWithText(Row, "Option 2"),
+        matching: find.byIcon(Icons.radio_button_checked),
+      ),
+      findsOneWidget,
     );
   });
 
@@ -68,10 +69,11 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(
-      (tester.widget(find.widgetWithText(Row, "Option 1")) as Row)
-          .children
-          .any((w) => w is Icon && w.icon == Icons.radio_button_checked),
-      isTrue,
+      find.descendant(
+        of: find.widgetWithText(Row, "Option 1"),
+        matching: find.byIcon(Icons.radio_button_checked),
+      ),
+      findsOneWidget,
     );
     expect(selected, isTrue);
   });

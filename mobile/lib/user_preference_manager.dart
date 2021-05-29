@@ -15,6 +15,10 @@ class UserPreferenceManager extends PreferenceManager {
   static const _keyCatchCustomEntityIds = "catch_custom_entity_ids";
   static const _keyBaitFieldIds = "bait_field_ids";
   static const _keyCatchFieldIds = "catch_field_ids";
+  static const _keyCatchLengthSystem = "catch_length_system";
+  static const _keyCatchWeightSystem = "catch_weight_system";
+  static const _keyWaterDepthSystem = "water_depth_system";
+  static const _keyWaterTemperatureSystem = "water_temperature_system";
 
   static const _keyRateTimerStartedAt = "rate_timer_started_at";
   static const _keyDidRateApp = "did_rate_app";
@@ -68,6 +72,30 @@ class UserPreferenceManager extends PreferenceManager {
       putIdList(_keyCatchFieldIds, ids);
 
   List<Id> get catchFieldIds => idList(_keyCatchFieldIds);
+
+  Future<void> setCatchLengthSystem(MeasurementSystem? system) =>
+      put(_keyCatchLengthSystem, system?.value);
+
+  MeasurementSystem? get catchLengthSystem =>
+      MeasurementSystem.valueOf(preferences[_keyCatchLengthSystem] ?? -1);
+
+  Future<void> setCatchWeightSystem(MeasurementSystem? system) =>
+      put(_keyCatchWeightSystem, system?.value);
+
+  MeasurementSystem? get catchWeightSystem =>
+      MeasurementSystem.valueOf(preferences[_keyCatchWeightSystem] ?? -1);
+
+  Future<void> setWaterDepthSystem(MeasurementSystem? system) =>
+      put(_keyWaterDepthSystem, system?.value);
+
+  MeasurementSystem? get waterDepthSystem =>
+      MeasurementSystem.valueOf(preferences[_keyWaterDepthSystem] ?? -1);
+
+  Future<void> setWaterTemperatureSystem(MeasurementSystem? system) =>
+      put(_keyWaterTemperatureSystem, system?.value);
+
+  MeasurementSystem? get waterTemperatureSystem =>
+      MeasurementSystem.valueOf(preferences[_keyWaterTemperatureSystem] ?? -1);
 
   Future<void> setRateTimerStartedAt(int? timestamp) =>
       put(_keyRateTimerStartedAt, timestamp);

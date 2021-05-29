@@ -15,6 +15,7 @@ import '../time_manager.dart';
 import '../utils/collection_utils.dart';
 import '../utils/date_time_utils.dart';
 import '../utils/protobuf_utils.dart';
+import '../utils/string_utils.dart';
 import '../water_clarity_manager.dart';
 import 'gen/anglerslog.pb.dart';
 
@@ -33,37 +34,57 @@ class CalculatedReport {
   /// When true, calculated collections include 0 quantities. Defaults to false.
   final bool includeZeros;
 
-  /// When set, data is only included in this model if associated with these
+  /// When set, data is only included in this report if associated with these
   /// [Angler] IDs.
   final Set<Id> anglerIds;
 
-  /// When set, data is only included in this model if associated with these
+  /// When set, data is only included in this report if associated with these
   /// [Bait] IDs.
   final Set<Id> baitIds;
 
-  /// When set, data is only included in this model if associated with these
+  /// When set, data is only included in this report if associated with these
   /// [FishingSpot] IDs.
   final Set<Id> fishingSpotIds;
 
-  /// When set, data is only included in this model if associated with these
+  /// When set, data is only included in this report if associated with these
   /// [Method] IDs.
   final Set<Id> methodIds;
 
-  /// When set, data is only included in this model if associated with these
+  /// When set, data is only included in this report if associated with these
   /// [Species] IDs.
   final Set<Id> speciesIds;
 
-  /// When set, data is only included in this model if associated with these
+  /// When set, data is only included in this report if associated with these
   /// [WaterClarity] IDs.
   final Set<Id> waterClarityIds;
 
-  /// When set, data is only included in this model if associated with these
+  /// When set, data is only included in this report if associated with these
   /// [Period] objects.
   final Set<Period> periods;
 
-  /// When set, data is only included in this model if associated with these
+  /// When set, data is only included in this report if associated with these
   /// [Season] objects.
   final Set<Season> seasons;
+
+  /// When not null, catches are only included in this report if the
+  /// [Catch.waterDepth] falls within this filter.
+  final NumberFilter? waterDepthFilter;
+
+  /// When not null, catches are only included in this report if the
+  /// [Catch.waterTemperature] falls within this filter.
+  final NumberFilter? waterTemperatureFilter;
+
+  /// When not null, catches are only included in this report if the
+  /// [Catch.length] falls within this filter.
+  final NumberFilter? lengthFilter;
+
+  /// When not null, catches are only included in this report if the
+  /// [Catch.weight] falls within this filter.
+  final NumberFilter? weightFilter;
+
+  /// When not null, catches are only included in this report if the
+  /// [Catch.quantity] falls within this filter.
+  final NumberFilter? quantityFilter;
 
   final AppManager _appManager;
   final TimeManager _timeManager;
@@ -147,6 +168,11 @@ class CalculatedReport {
     this.waterClarityIds = const {},
     this.periods = const {},
     this.seasons = const {},
+    this.waterDepthFilter,
+    this.waterTemperatureFilter,
+    this.lengthFilter,
+    this.weightFilter,
+    this.quantityFilter,
     DisplayDateRange? displayDateRange,
     bool isCatchAndReleaseOnly = false,
     bool isFavoritesOnly = false,
@@ -172,6 +198,11 @@ class CalculatedReport {
       waterClarityIds: waterClarityIds,
       periods: periods,
       seasons: seasons,
+      waterDepthFilter: waterDepthFilter,
+      waterTemperatureFilter: waterTemperatureFilter,
+      lengthFilter: lengthFilter,
+      weightFilter: weightFilter,
+      quantityFilter: quantityFilter,
     );
 
     _msSinceLastCatch = catches.isEmpty
@@ -309,10 +340,32 @@ class CalculatedReport {
     _addFilters<Method>(_methodManager, methodIds, result);
     _addFilters<WaterClarity>(_waterClarityManager, waterClarityIds, result);
 
-    result.addAll(periods.map((p) => nameForPeriod(context, p)));
-    result.addAll(seasons.map((s) => nameForSeason(context, s)));
+    result.addAll(periods.map((p) => p.displayName(context)));
+    result.addAll(seasons.map((s) => s.displayName(context)));
+
+    _addNumberFilterIfNeeded(
+        result, Strings.of(context).filterValueWaterDepth, waterDepthFilter);
+    _addNumberFilterIfNeeded(
+        result,
+        Strings.of(context).filterValueWaterTemperature,
+        waterTemperatureFilter);
+    _addNumberFilterIfNeeded(
+        result, Strings.of(context).filterValueLength, lengthFilter);
+    _addNumberFilterIfNeeded(
+        result, Strings.of(context).filterValueWeight, weightFilter);
+    _addNumberFilterIfNeeded(
+        result, Strings.of(context).filterValueQuantity, quantityFilter);
 
     return result;
+  }
+
+  void _addNumberFilterIfNeeded(
+      Set<String> filters, String text, NumberFilter? numberFilter) {
+    if (numberFilter == null ||
+        numberFilter.boundary == NumberBoundary.number_boundary_any) {
+      return;
+    }
+    filters.add(format(text, [numberFilter.displayValue(context)]));
   }
 }
 

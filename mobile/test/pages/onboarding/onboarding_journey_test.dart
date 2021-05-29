@@ -1,5 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/channels/migration_channel.dart';
+import 'package:mobile/model/gen/anglerslog.pb.dart';
 import 'package:mobile/pages/onboarding/catch_field_picker_page.dart';
 import 'package:mobile/pages/onboarding/how_to_feedback_page.dart';
 import 'package:mobile/pages/onboarding/how_to_manage_fields_page.dart';
@@ -21,8 +22,18 @@ void main() {
 
     when(appManager.locationMonitor.initialize())
         .thenAnswer((_) => Future.value(null));
+
     when(appManager.userPreferenceManager.catchCustomEntityIds).thenReturn([]);
     when(appManager.userPreferenceManager.catchFieldIds).thenReturn([]);
+    when(appManager.userPreferenceManager.waterDepthSystem)
+        .thenReturn(MeasurementSystem.metric);
+    when(appManager.userPreferenceManager.waterTemperatureSystem)
+        .thenReturn(MeasurementSystem.metric);
+    when(appManager.userPreferenceManager.catchLengthSystem)
+        .thenReturn(MeasurementSystem.metric);
+    when(appManager.userPreferenceManager.catchWeightSystem)
+        .thenReturn(MeasurementSystem.metric);
+
     when(appManager.permissionHandlerWrapper.requestLocation())
         .thenAnswer((_) => Future.value(true));
 

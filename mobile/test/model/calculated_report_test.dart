@@ -324,6 +324,11 @@ void main() {
       waterClarityIds: anyNamed("waterClarityIds"),
       periods: anyNamed("periods"),
       seasons: anyNamed("seasons"),
+      waterDepthFilter: anyNamed("waterDepthFilter"),
+      waterTemperatureFilter: anyNamed("waterTemperatureFilter"),
+      lengthFilter: anyNamed("lengthFilter"),
+      weightFilter: anyNamed("weightFilter"),
+      quantityFilter: anyNamed("quantityFilter"),
     )).thenReturn(
       (catches ?? _catches)
         ..sort((lhs, rhs) => rhs.timestamp.compareTo(lhs.timestamp)),
@@ -762,6 +767,101 @@ void main() {
       "1 Foot",
       "Crystal",
       "Chocolate Milk",
+    });
+  });
+
+  testWidgets("Measurement filters with 'any' boundary don't add a filter",
+      (tester) async {
+    var context = await buildContext(tester, appManager: appManager);
+    _stubCatchesByTimestamp(context);
+
+    var data = CalculatedReport(
+      context: context,
+      displayDateRange: DisplayDateRange.allDates,
+      waterDepthFilter: NumberFilter(
+        boundary: NumberBoundary.number_boundary_any,
+      ),
+      waterTemperatureFilter: NumberFilter(
+        boundary: NumberBoundary.number_boundary_any,
+      ),
+      lengthFilter: NumberFilter(
+        boundary: NumberBoundary.number_boundary_any,
+      ),
+      weightFilter: NumberFilter(
+        boundary: NumberBoundary.number_boundary_any,
+      ),
+      // Intentionally leave out quantityFilter to test the null case.
+    );
+
+    expect(data.filters(), {
+      "All dates",
+    });
+  });
+
+  testWidgets("Measurement filters add a filter", (tester) async {
+    var context = await buildContext(tester, appManager: appManager);
+    _stubCatchesByTimestamp(context);
+
+    var data = CalculatedReport(
+      context: context,
+      displayDateRange: DisplayDateRange.allDates,
+      waterDepthFilter: NumberFilter(
+        boundary: NumberBoundary.less_than,
+        from: MultiMeasurement(
+          system: MeasurementSystem.metric,
+          mainValue: Measurement(
+            unit: Unit.meters,
+            value: 10,
+          ),
+        ),
+      ),
+      waterTemperatureFilter: NumberFilter(
+        boundary: NumberBoundary.equal_to,
+        from: MultiMeasurement(
+          system: MeasurementSystem.metric,
+          mainValue: Measurement(
+            unit: Unit.celsius,
+            value: 20,
+          ),
+        ),
+      ),
+      lengthFilter: NumberFilter(
+        boundary: NumberBoundary.greater_than,
+        from: MultiMeasurement(
+          system: MeasurementSystem.metric,
+          mainValue: Measurement(
+            unit: Unit.centimeters,
+            value: 25,
+          ),
+        ),
+      ),
+      weightFilter: NumberFilter(
+        boundary: NumberBoundary.less_than,
+        from: MultiMeasurement(
+          system: MeasurementSystem.metric,
+          mainValue: Measurement(
+            unit: Unit.kilograms,
+            value: 2.5,
+          ),
+        ),
+      ),
+      quantityFilter: NumberFilter(
+        boundary: NumberBoundary.greater_than,
+        from: MultiMeasurement(
+          mainValue: Measurement(
+            value: 5,
+          ),
+        ),
+      ),
+    );
+
+    expect(data.filters(), {
+      "All dates",
+      "Water Depth: < 10 m",
+      "Water Temperature: = 20\u00B0C",
+      "Length: > 25 cm",
+      "Weight: < 2.5 kg",
+      "Quantity: > 5",
     });
   });
 

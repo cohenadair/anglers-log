@@ -165,6 +165,16 @@ void main() {
     expect(updatedCatches.length, 2);
   });
 
+  testWidgets("Filtering by nothing returns all catches", (tester) async {
+    await catchManager.addOrUpdate(Catch()..id = randomId());
+    await catchManager.addOrUpdate(Catch()..id = randomId());
+    await catchManager.addOrUpdate(Catch()..id = randomId());
+
+    var context = await buildContext(tester, appManager: appManager);
+
+    expect(catchManager.filteredCatches(context).length, 3);
+  });
+
   testWidgets("Filtering by search query; non-ID reference properties",
       (tester) async {
     await catchManager.addOrUpdate(Catch()
@@ -338,6 +348,122 @@ void main() {
     expect(catchManager.filteredCatches(context, filter: "kept").length, 1);
     expect(
         catchManager.filteredCatches(context, filter: "dusk").isEmpty, isTrue);
+  });
+
+  testWidgets("Filtering by search query; water depth", (tester) async {
+    await catchManager.addOrUpdate(Catch()
+      ..id = randomId()
+      ..waterDepth = MultiMeasurement(
+        system: MeasurementSystem.metric,
+        mainValue: Measurement(
+          unit: Unit.meters,
+          value: 50,
+        ),
+      ));
+    await catchManager.addOrUpdate(Catch()..id = randomId());
+    await catchManager.addOrUpdate(Catch()..id = randomId());
+
+    var context = await buildContext(tester, appManager: appManager);
+    expect(catchManager.filteredCatches(context, filter: "50").length, 1);
+    expect(catchManager.filteredCatches(context, filter: "metre").length, 1);
+    expect(
+        catchManager.filteredCatches(context, filter: "feet").isEmpty, isTrue);
+  });
+
+  testWidgets("Filtering by search query; water temperature", (tester) async {
+    await catchManager.addOrUpdate(Catch()
+      ..id = randomId()
+      ..waterTemperature = MultiMeasurement(
+          system: MeasurementSystem.imperial_whole,
+          mainValue: Measurement(
+            unit: Unit.feet,
+            value: 25,
+          ),
+          fractionValue: Measurement(
+            unit: Unit.inches,
+            value: 10,
+          )));
+    await catchManager.addOrUpdate(Catch()..id = randomId());
+    await catchManager.addOrUpdate(Catch()..id = randomId());
+
+    var context = await buildContext(tester, appManager: appManager);
+    expect(catchManager.filteredCatches(context, filter: "fahren").length, 1);
+    expect(catchManager.filteredCatches(context, filter: "10").length, 1);
+    expect(catchManager.filteredCatches(context, filter: "degrees").length, 1);
+    expect(catchManager.filteredCatches(context, filter: "celsius").isEmpty,
+        isTrue);
+  });
+
+  testWidgets("Filtering by search query; length", (tester) async {
+    await catchManager.addOrUpdate(Catch()
+      ..id = randomId()
+      ..length = MultiMeasurement(
+        system: MeasurementSystem.metric,
+        mainValue: Measurement(
+          unit: Unit.centimeters,
+          value: 50,
+        ),
+      ));
+    await catchManager.addOrUpdate(Catch()..id = randomId());
+    await catchManager.addOrUpdate(Catch()..id = randomId());
+
+    var context = await buildContext(tester, appManager: appManager);
+    expect(catchManager.filteredCatches(context, filter: "cent").length, 1);
+    expect(catchManager.filteredCatches(context, filter: "cm").length, 1);
+    expect(
+        catchManager.filteredCatches(context, filter: "inch").isEmpty, isTrue);
+    expect(
+        catchManager.filteredCatches(context, filter: "error").isEmpty, isTrue);
+  });
+
+  testWidgets("Filtering by search query; weight", (tester) async {
+    await catchManager.addOrUpdate(Catch()
+      ..id = randomId()
+      ..weight = MultiMeasurement(
+        system: MeasurementSystem.imperial_whole,
+        mainValue: Measurement(
+          unit: Unit.pounds,
+          value: 50,
+        ),
+      ));
+    await catchManager.addOrUpdate(Catch()..id = randomId());
+    await catchManager.addOrUpdate(Catch()..id = randomId());
+
+    var context = await buildContext(tester, appManager: appManager);
+    expect(catchManager.filteredCatches(context, filter: "pounds").length, 1);
+    expect(catchManager.filteredCatches(context, filter: "oz").length, 1);
+    expect(catchManager.filteredCatches(context, filter: "50").length, 1);
+    expect(catchManager.filteredCatches(context, filter: "25").isEmpty, isTrue);
+    expect(
+        catchManager.filteredCatches(context, filter: "kilo").isEmpty, isTrue);
+  });
+
+  testWidgets("Filtering by search query; quantity", (tester) async {
+    await catchManager.addOrUpdate(Catch()
+      ..id = randomId()
+      ..quantity = 10);
+    await catchManager.addOrUpdate(Catch()..id = randomId());
+    await catchManager.addOrUpdate(Catch()..id = randomId());
+
+    var context = await buildContext(tester, appManager: appManager);
+    expect(catchManager.filteredCatches(context, filter: "10").length, 1);
+    expect(
+        catchManager.filteredCatches(context, filter: "err").isEmpty, isTrue);
+  });
+
+  testWidgets("Filtering by search query; notes", (tester) async {
+    await catchManager.addOrUpdate(Catch()
+      ..id = randomId()
+      ..notes = "Some notes for the catch.");
+    await catchManager.addOrUpdate(Catch()..id = randomId());
+    await catchManager.addOrUpdate(Catch()..id = randomId());
+
+    var context = await buildContext(tester, appManager: appManager);
+    expect(
+        catchManager.filteredCatches(context, filter: "some notes").length, 1);
+    expect(catchManager.filteredCatches(context, filter: "the").length, 1);
+    expect(
+        catchManager.filteredCatches(context, filter: "bait").isEmpty, isTrue);
   });
 
   testWidgets("Filtering by angler", (tester) async {
@@ -838,6 +964,295 @@ void main() {
     expect(catches.length, 3);
 
     expect(catchManager.filteredCatches(context).length, 4);
+  });
+
+  testWidgets("Filtering by water depth", (tester) async {
+    await catchManager.addOrUpdate(Catch()
+      ..id = randomId()
+      ..waterDepth = MultiMeasurement(
+        system: MeasurementSystem.metric,
+        mainValue: Measurement(
+          unit: Unit.meters,
+          value: 50,
+        ),
+      ));
+    await catchManager.addOrUpdate(Catch()..id = randomId());
+    await catchManager.addOrUpdate(Catch()..id = randomId());
+    await catchManager.addOrUpdate(Catch()
+      ..id = randomId()
+      ..waterDepth = MultiMeasurement(
+        system: MeasurementSystem.metric,
+        mainValue: Measurement(
+          unit: Unit.meters,
+          value: 15,
+        ),
+      ));
+
+    var context = await buildContext(tester, appManager: appManager);
+
+    // No filter.
+    var catches = catchManager.filteredCatches(context);
+    expect(catches.length, 4);
+
+    // No catches.
+    catches = catchManager.filteredCatches(
+      context,
+      waterDepthFilter: NumberFilter(
+        boundary: NumberBoundary.less_than,
+        from: MultiMeasurement(
+          system: MeasurementSystem.metric,
+          mainValue: Measurement(
+            unit: Unit.meters,
+            value: 10,
+          ),
+        ),
+      ),
+    );
+    expect(catches.length, 0);
+
+    // Some catches.
+    catches = catchManager.filteredCatches(
+      context,
+      waterDepthFilter: NumberFilter(
+        boundary: NumberBoundary.less_than_or_equal_to,
+        from: MultiMeasurement(
+          system: MeasurementSystem.metric,
+          mainValue: Measurement(
+            unit: Unit.meters,
+            value: 50,
+          ),
+        ),
+      ),
+    );
+    expect(catches.length, 2);
+  });
+
+  testWidgets("Filtering by water temperature", (tester) async {
+    await catchManager.addOrUpdate(Catch()
+      ..id = randomId()
+      ..waterTemperature = MultiMeasurement(
+        system: MeasurementSystem.metric,
+        mainValue: Measurement(
+          unit: Unit.celsius,
+          value: 20,
+        ),
+      ));
+    await catchManager.addOrUpdate(Catch()..id = randomId());
+    await catchManager.addOrUpdate(Catch()..id = randomId());
+    await catchManager.addOrUpdate(Catch()
+      ..id = randomId()
+      ..waterTemperature = MultiMeasurement(
+        system: MeasurementSystem.metric,
+        mainValue: Measurement(
+          unit: Unit.celsius,
+          value: 15,
+        ),
+      ));
+
+    var context = await buildContext(tester, appManager: appManager);
+
+    // No filter.
+    var catches = catchManager.filteredCatches(context);
+    expect(catches.length, 4);
+
+    // No catches.
+    catches = catchManager.filteredCatches(
+      context,
+      waterTemperatureFilter: NumberFilter(
+        boundary: NumberBoundary.less_than,
+        from: MultiMeasurement(
+          system: MeasurementSystem.metric,
+          mainValue: Measurement(
+            unit: Unit.celsius,
+            value: 10,
+          ),
+        ),
+      ),
+    );
+    expect(catches.length, 0);
+
+    // Some catches.
+    catches = catchManager.filteredCatches(
+      context,
+      waterTemperatureFilter: NumberFilter(
+        boundary: NumberBoundary.less_than_or_equal_to,
+        from: MultiMeasurement(
+          system: MeasurementSystem.metric,
+          mainValue: Measurement(
+            unit: Unit.celsius,
+            value: 50,
+          ),
+        ),
+      ),
+    );
+    expect(catches.length, 2);
+  });
+
+  testWidgets("Filtering by length", (tester) async {
+    await catchManager.addOrUpdate(Catch()
+      ..id = randomId()
+      ..length = MultiMeasurement(
+        system: MeasurementSystem.metric,
+        mainValue: Measurement(
+          unit: Unit.centimeters,
+          value: 50,
+        ),
+      ));
+    await catchManager.addOrUpdate(Catch()..id = randomId());
+    await catchManager.addOrUpdate(Catch()..id = randomId());
+    await catchManager.addOrUpdate(Catch()
+      ..id = randomId()
+      ..length = MultiMeasurement(
+        system: MeasurementSystem.metric,
+        mainValue: Measurement(
+          unit: Unit.centimeters,
+          value: 15,
+        ),
+      ));
+
+    var context = await buildContext(tester, appManager: appManager);
+
+    // No filter.
+    var catches = catchManager.filteredCatches(context);
+    expect(catches.length, 4);
+
+    // No catches.
+    catches = catchManager.filteredCatches(
+      context,
+      lengthFilter: NumberFilter(
+        boundary: NumberBoundary.less_than,
+        from: MultiMeasurement(
+          system: MeasurementSystem.metric,
+          mainValue: Measurement(
+            unit: Unit.centimeters,
+            value: 10,
+          ),
+        ),
+      ),
+    );
+    expect(catches.length, 0);
+
+    // Some catches.
+    catches = catchManager.filteredCatches(
+      context,
+      lengthFilter: NumberFilter(
+        boundary: NumberBoundary.less_than_or_equal_to,
+        from: MultiMeasurement(
+          system: MeasurementSystem.metric,
+          mainValue: Measurement(
+            unit: Unit.centimeters,
+            value: 50,
+          ),
+        ),
+      ),
+    );
+    expect(catches.length, 2);
+  });
+
+  testWidgets("Filtering by weight", (tester) async {
+    await catchManager.addOrUpdate(Catch()
+      ..id = randomId()
+      ..weight = MultiMeasurement(
+        system: MeasurementSystem.metric,
+        mainValue: Measurement(
+          unit: Unit.kilograms,
+          value: 50,
+        ),
+      ));
+    await catchManager.addOrUpdate(Catch()..id = randomId());
+    await catchManager.addOrUpdate(Catch()..id = randomId());
+    await catchManager.addOrUpdate(Catch()
+      ..id = randomId()
+      ..weight = MultiMeasurement(
+        system: MeasurementSystem.metric,
+        mainValue: Measurement(
+          unit: Unit.kilograms,
+          value: 15,
+        ),
+      ));
+
+    var context = await buildContext(tester, appManager: appManager);
+
+    // No filter.
+    var catches = catchManager.filteredCatches(context);
+    expect(catches.length, 4);
+
+    // No catches.
+    catches = catchManager.filteredCatches(
+      context,
+      weightFilter: NumberFilter(
+        boundary: NumberBoundary.less_than,
+        from: MultiMeasurement(
+          system: MeasurementSystem.metric,
+          mainValue: Measurement(
+            unit: Unit.kilograms,
+            value: 10,
+          ),
+        ),
+      ),
+    );
+    expect(catches.length, 0);
+
+    // Some catches.
+    catches = catchManager.filteredCatches(
+      context,
+      weightFilter: NumberFilter(
+        boundary: NumberBoundary.less_than_or_equal_to,
+        from: MultiMeasurement(
+          system: MeasurementSystem.metric,
+          mainValue: Measurement(
+            unit: Unit.kilograms,
+            value: 50,
+          ),
+        ),
+      ),
+    );
+    expect(catches.length, 2);
+  });
+
+  testWidgets("Filtering by quantity", (tester) async {
+    await catchManager.addOrUpdate(Catch()
+      ..id = randomId()
+      ..quantity = 10);
+    await catchManager.addOrUpdate(Catch()..id = randomId());
+    await catchManager.addOrUpdate(Catch()..id = randomId());
+    await catchManager.addOrUpdate(Catch()
+      ..id = randomId()
+      ..quantity = 50);
+
+    var context = await buildContext(tester, appManager: appManager);
+
+    // No filter.
+    var catches = catchManager.filteredCatches(context);
+    expect(catches.length, 4);
+
+    // No catches.
+    catches = catchManager.filteredCatches(
+      context,
+      quantityFilter: NumberFilter(
+        boundary: NumberBoundary.less_than,
+        from: MultiMeasurement(
+          mainValue: Measurement(
+            value: 10,
+          ),
+        ),
+      ),
+    );
+    expect(catches.length, 0);
+
+    // Some catches.
+    catches = catchManager.filteredCatches(
+      context,
+      quantityFilter: NumberFilter(
+        boundary: NumberBoundary.less_than_or_equal_to,
+        from: MultiMeasurement(
+          mainValue: Measurement(
+            value: 50,
+          ),
+        ),
+      ),
+    );
+    expect(catches.length, 2);
   });
 
   testWidgets("Filtering by multiple things", (tester) async {

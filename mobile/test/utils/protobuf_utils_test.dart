@@ -92,18 +92,18 @@ void main() {
     when(customEntityManager.matchesFilter(any, any)).thenReturn(false);
 
     test("Empty or null filter", () {
-      expect(entityValuesMatchesFilter([], "", customEntityManager), isTrue);
-      expect(entityValuesMatchesFilter([], null, customEntityManager), isTrue);
+      expect(filterMatchesEntityValues([], "", customEntityManager), isTrue);
+      expect(filterMatchesEntityValues([], null, customEntityManager), isTrue);
     });
 
     test("Empty values", () {
-      expect(entityValuesMatchesFilter([], "Filter", customEntityManager),
+      expect(filterMatchesEntityValues([], "Filter", customEntityManager),
           isFalse);
     });
 
     test("Null values", () {
       expect(
-        entityValuesMatchesFilter(
+        filterMatchesEntityValues(
             [CustomEntityValue()..value = ""], "Filter", customEntityManager),
         isFalse,
       );
@@ -111,7 +111,7 @@ void main() {
 
     test("Values value matches filter", () {
       expect(
-        entityValuesMatchesFilter(
+        filterMatchesEntityValues(
             [CustomEntityValue()..value = "A filter value"],
             "Filter",
             customEntityManager),
@@ -249,6 +249,557 @@ void main() {
             .displayName(await buildContext(tester)),
         "Lat: 0.000000, Lng: 0.000000",
       );
+    });
+  });
+
+  group("Measurements", () {
+    testWidgets("displayValue without units", (tester) async {
+      var context = await buildContext(tester);
+      var measurement = Measurement(value: 10);
+      expect(measurement.displayValue(context), "10");
+    });
+
+    testWidgets("displayValue with units", (tester) async {
+      var context = await buildContext(tester);
+
+      // With space between value and unit.
+      var measurement = Measurement(
+        unit: Unit.pounds,
+        value: 10,
+      );
+      expect(measurement.displayValue(context), "10 lbs");
+
+      // Without space between value and unit.
+      measurement = Measurement(
+        unit: Unit.fahrenheit,
+        value: 10,
+      );
+      expect(measurement.displayValue(context), "10\u00B0F");
+    });
+
+    test("stringValue", () {
+      // Whole number.
+      var measurement = Measurement(
+        unit: Unit.pounds,
+        value: 10,
+      );
+      expect(measurement.stringValue, "10");
+
+      // Floating number.
+      measurement = Measurement(
+        unit: Unit.pounds,
+        value: 10.5,
+      );
+      expect(measurement.stringValue, "10.5");
+
+      // Whole floating number.
+      measurement = Measurement(
+        unit: Unit.pounds,
+        value: 10.0,
+      );
+      expect(measurement.stringValue, "10");
+    });
+
+    test("toSystem", () {
+      // No change in system.
+      var measurement = Measurement(
+        unit: Unit.pounds,
+        value: 10,
+      );
+      expect(
+          measurement, measurement.toSystem(MeasurementSystem.imperial_whole));
+
+      // Change system.
+      measurement = Measurement(
+        unit: Unit.pounds,
+        value: 10,
+      ).toSystem(MeasurementSystem.metric);
+      expect(measurement.unit, Unit.kilograms);
+      expect(measurement.value, 10);
+    });
+
+    test("Comparing different units returns false", () {
+      var pounds = Measurement(
+        unit: Unit.pounds,
+        value: 10,
+      );
+      var kilograms = Measurement(
+        unit: Unit.kilograms,
+        value: 5,
+      );
+
+      expect(kilograms < pounds, isFalse);
+      expect(kilograms <= pounds, isFalse);
+      expect(pounds > kilograms, isFalse);
+      expect(pounds >= kilograms, isFalse);
+    });
+
+    test("Comparing same units returns correct result", () {
+      var pounds = Measurement(
+        unit: Unit.kilograms,
+        value: 10,
+      );
+      var kilograms = Measurement(
+        unit: Unit.kilograms,
+        value: 5,
+      );
+
+      expect(kilograms < pounds, isTrue);
+      expect(kilograms <= pounds, isTrue);
+      expect(pounds > kilograms, isTrue);
+      expect(pounds >= kilograms, isTrue);
+    });
+  });
+
+  group("MultiMeasurements", () {
+    testWidgets("displayValue for inches", (tester) async {
+      var context = await buildContext(tester);
+
+      // No fraction.
+      var measurement = MultiMeasurement(
+        system: MeasurementSystem.imperial_whole,
+        mainValue: Measurement(
+          unit: Unit.inches,
+          value: 10,
+        ),
+      );
+      expect(measurement.displayValue(context), "10 in");
+
+      // Fraction.
+      measurement = MultiMeasurement(
+        system: MeasurementSystem.imperial_whole,
+        mainValue: Measurement(
+          unit: Unit.inches,
+          value: 10,
+        ),
+        fractionValue: Measurement(
+          value: 0.5,
+        ),
+      );
+      expect(measurement.displayValue(context), "10 \u00BD in");
+
+      // Fraction without unit.
+      measurement = MultiMeasurement(
+        system: MeasurementSystem.imperial_whole,
+        mainValue: Measurement(
+          unit: Unit.inches,
+          value: 10,
+        ),
+        fractionValue: Measurement(
+          value: 0.5,
+        ),
+      );
+      expect(measurement.displayValue(context), "10 \u00BD in");
+    });
+
+    testWidgets("displayValue general", (tester) async {
+      var context = await buildContext(tester);
+
+      // No fraction.
+      var measurement = MultiMeasurement(
+        system: MeasurementSystem.imperial_whole,
+        mainValue: Measurement(
+          unit: Unit.feet,
+          value: 10,
+        ),
+      );
+      expect(measurement.displayValue(context), "10 ft");
+
+      // Fraction.
+      measurement = MultiMeasurement(
+        system: MeasurementSystem.imperial_whole,
+        mainValue: Measurement(
+          unit: Unit.pounds,
+          value: 10,
+        ),
+        fractionValue: Measurement(
+          unit: Unit.ounces,
+          value: 8,
+        ),
+      );
+      expect(measurement.displayValue(context), "10 lbs 8 oz");
+    });
+
+    test("toSystem", () {
+      // No change in system.
+      var measurement = MultiMeasurement(
+        system: MeasurementSystem.imperial_whole,
+        mainValue: Measurement(
+          unit: Unit.feet,
+          value: 10,
+        ),
+        fractionValue: Measurement(
+          unit: Unit.ounces,
+          value: 5,
+        ),
+      );
+      expect(
+          measurement, measurement.toSystem(MeasurementSystem.imperial_whole));
+
+      // Change system.
+      measurement = measurement = MultiMeasurement(
+        system: MeasurementSystem.imperial_whole,
+        mainValue: Measurement(
+          unit: Unit.feet,
+          value: 10,
+        ),
+        fractionValue: Measurement(
+          unit: Unit.inches,
+          value: 5,
+        ),
+      ).toSystem(MeasurementSystem.metric);
+      expect(measurement.system, MeasurementSystem.metric);
+      expect(measurement.mainValue.unit, Unit.meters);
+      expect(measurement.mainValue.value, 10);
+      expect(measurement.fractionValue.unit, Unit.centimeters);
+      expect(measurement.fractionValue.value, 5);
+    });
+
+    test("Comparing equals", () {
+      var measurement = MultiMeasurement(
+        system: MeasurementSystem.imperial_whole,
+        mainValue: Measurement(
+          unit: Unit.feet,
+          value: 10,
+        ),
+      );
+      expect(measurement < measurement, isFalse);
+      expect(measurement <= measurement, isTrue);
+      expect(measurement > measurement, isFalse);
+      expect(measurement >= measurement, isTrue);
+    });
+
+    test("Comparing different systems always returns false", () {
+      var metric = MultiMeasurement(
+        system: MeasurementSystem.metric,
+        mainValue: Measurement(
+          unit: Unit.meters,
+          value: 10,
+        ),
+      );
+      var imperial = MultiMeasurement(
+        system: MeasurementSystem.imperial_whole,
+        mainValue: Measurement(
+          unit: Unit.feet,
+          value: 10,
+        ),
+      );
+      expect(metric < imperial, isFalse);
+      expect(metric <= imperial, isFalse);
+      expect(metric > imperial, isFalse);
+      expect(metric >= imperial, isFalse);
+    });
+
+    test("Imperial whole and imperial decimal are still comparable", () {
+      // Equals.
+      var whole = MultiMeasurement(
+        system: MeasurementSystem.imperial_whole,
+        mainValue: Measurement(
+          unit: Unit.pounds,
+          value: 10,
+        ),
+        fractionValue: Measurement(
+          unit: Unit.ounces,
+          value: 8,
+        ),
+      );
+      var decimal = MultiMeasurement(
+        system: MeasurementSystem.imperial_decimal,
+        mainValue: Measurement(
+          unit: Unit.pounds,
+          value: 10.5,
+        ),
+      );
+      expect(whole < decimal, isFalse);
+      expect(whole <= decimal, isTrue);
+      expect(whole > decimal, isFalse);
+      expect(whole >= decimal, isTrue);
+
+      // Left hand side is smaller.
+      whole = MultiMeasurement(
+        system: MeasurementSystem.imperial_whole,
+        mainValue: Measurement(
+          unit: Unit.feet,
+          value: 10,
+        ),
+        fractionValue: Measurement(
+          unit: Unit.inches,
+          value: 5,
+        ),
+      );
+      decimal = MultiMeasurement(
+        system: MeasurementSystem.imperial_decimal,
+        mainValue: Measurement(
+          unit: Unit.feet,
+          value: 10.5,
+        ),
+      );
+      expect(whole < decimal, isTrue);
+      expect(whole <= decimal, isTrue);
+      expect(whole > decimal, isFalse);
+      expect(whole >= decimal, isFalse);
+
+      // Right hand side is smaller.
+      whole = MultiMeasurement(
+        system: MeasurementSystem.imperial_whole,
+        mainValue: Measurement(
+          unit: Unit.pounds,
+          value: 10,
+        ),
+        fractionValue: Measurement(
+          unit: Unit.ounces,
+          value: 8,
+        ),
+      );
+      decimal = MultiMeasurement(
+        system: MeasurementSystem.imperial_decimal,
+        mainValue: Measurement(
+          unit: Unit.pounds,
+          value: 10.25,
+        ),
+      );
+      expect(whole < decimal, isFalse);
+      expect(whole <= decimal, isFalse);
+      expect(whole > decimal, isTrue);
+      expect(whole >= decimal, isTrue);
+    });
+
+    test("Comparing main values", () {
+      var ten = MultiMeasurement(
+        system: MeasurementSystem.metric,
+        mainValue: Measurement(
+          unit: Unit.meters,
+          value: 10,
+        ),
+      );
+      var fifteen = MultiMeasurement(
+        system: MeasurementSystem.metric,
+        mainValue: Measurement(
+          unit: Unit.meters,
+          value: 15,
+        ),
+      );
+      expect(ten < fifteen, isTrue);
+      expect(ten <= fifteen, isTrue);
+      expect(ten > fifteen, isFalse);
+      expect(ten >= fifteen, isFalse);
+    });
+
+    test("Comparing fraction values when mains are equal", () {
+      var smaller = MultiMeasurement(
+        system: MeasurementSystem.imperial_whole,
+        mainValue: Measurement(
+          unit: Unit.pounds,
+          value: 10,
+        ),
+        fractionValue: Measurement(
+          unit: Unit.ounces,
+          value: 5,
+        ),
+      );
+      var larger = MultiMeasurement(
+        system: MeasurementSystem.imperial_whole,
+        mainValue: Measurement(
+          unit: Unit.pounds,
+          value: 10,
+        ),
+        fractionValue: Measurement(
+          unit: Unit.ounces,
+          value: 8,
+        ),
+      );
+      expect(smaller < larger, isTrue);
+      expect(smaller <= larger, isTrue);
+      expect(smaller > larger, isFalse);
+      expect(smaller >= larger, isFalse);
+    });
+  });
+
+  group("NumberFilters", () {
+    test("isSet", () {
+      // No boundary.
+      var filter = NumberFilter();
+      expect(filter.isSet, isFalse);
+
+      // Neither from or to is set.
+      filter = NumberFilter(
+        boundary: NumberBoundary.greater_than,
+      );
+      expect(filter.isSet, isFalse);
+
+      // Just from set.
+      filter = NumberFilter(
+        boundary: NumberBoundary.greater_than,
+        from: MultiMeasurement(
+          mainValue: Measurement(
+            value: 10,
+          ),
+        ),
+      );
+      expect(filter.isSet, isTrue);
+
+      // Just to set.
+      filter = NumberFilter(
+        boundary: NumberBoundary.greater_than,
+        to: MultiMeasurement(
+          mainValue: Measurement(
+            value: 10,
+          ),
+        ),
+      );
+      expect(filter.isSet, isTrue);
+
+      // Both set.
+      filter = NumberFilter(
+        boundary: NumberBoundary.greater_than,
+        from: MultiMeasurement(
+          mainValue: Measurement(
+            value: 10,
+          ),
+        ),
+        to: MultiMeasurement(
+          mainValue: Measurement(
+            value: 10,
+          ),
+        ),
+      );
+      expect(filter.isSet, isTrue);
+    });
+
+    testWidgets("Any displayValue", (tester) async {
+      var filter = NumberFilter(
+        boundary: NumberBoundary.number_boundary_any,
+      );
+      expect(filter.displayValue(await buildContext(tester)), "Any");
+    });
+
+    testWidgets("Signed displayValue", (tester) async {
+      var filter = NumberFilter(
+        boundary: NumberBoundary.greater_than,
+        from: MultiMeasurement(
+          mainValue: Measurement(
+            value: 10,
+          ),
+        ),
+      );
+      expect(filter.displayValue(await buildContext(tester)), "> 10");
+    });
+
+    testWidgets("Range displayValue", (tester) async {
+      // Both from and to set.
+      var filter = NumberFilter(
+        boundary: NumberBoundary.range,
+        from: MultiMeasurement(
+          mainValue: Measurement(
+            value: 5,
+          ),
+        ),
+        to: MultiMeasurement(
+          mainValue: Measurement(
+            value: 10,
+          ),
+        ),
+      );
+      expect(filter.displayValue(await buildContext(tester)), "5 - 10");
+
+      // Only one set.
+      filter = NumberFilter(
+        boundary: NumberBoundary.range,
+        from: MultiMeasurement(
+          mainValue: Measurement(
+            value: 5,
+          ),
+        ),
+      );
+      expect(filter.displayValue(await buildContext(tester)), "Any");
+    });
+
+    testWidgets("Invalid start value in displayValue", (tester) async {
+      var filter = NumberFilter(
+        boundary: NumberBoundary.greater_than,
+      );
+      expect(filter.displayValue(await buildContext(tester)), "Any");
+    });
+
+    test("Range containsMultiMeasurement", () {
+      var filter = NumberFilter(
+        boundary: NumberBoundary.range,
+        from: MultiMeasurement(
+          mainValue: Measurement(
+            value: 5,
+          ),
+        ),
+        to: MultiMeasurement(
+          mainValue: Measurement(
+            value: 10,
+          ),
+        ),
+      );
+      expect(
+        filter.containsMultiMeasurement(MultiMeasurement(
+          mainValue: Measurement(
+            value: 5,
+          ),
+        )),
+        isTrue,
+      );
+      expect(
+        filter.containsMultiMeasurement(MultiMeasurement(
+          mainValue: Measurement(
+            value: 10,
+          ),
+        )),
+        isTrue,
+      );
+      expect(
+        filter.containsMultiMeasurement(MultiMeasurement(
+          mainValue: Measurement(
+            value: 8,
+          ),
+        )),
+        isTrue,
+      );
+      expect(
+        filter.containsMultiMeasurement(MultiMeasurement(
+          mainValue: Measurement(
+            value: 13,
+          ),
+        )),
+        isFalse,
+      );
+    });
+
+    test("containsMeasurement", () {
+      var filter = NumberFilter(
+        boundary: NumberBoundary.range,
+        from: MultiMeasurement(
+          system: MeasurementSystem.metric,
+          mainValue: Measurement(
+            unit: Unit.meters,
+            value: 5,
+          ),
+        ),
+        to: MultiMeasurement(
+          system: MeasurementSystem.metric,
+          mainValue: Measurement(
+            unit: Unit.meters,
+            value: 10,
+          ),
+        ),
+      );
+      expect(filter.containsMeasurement(Measurement(value: 13)), isFalse);
+    });
+
+    test("containsInt", () {
+      var filter = NumberFilter(
+        boundary: NumberBoundary.range,
+        from: MultiMeasurement(mainValue: Measurement(value: 5)),
+        to: MultiMeasurement(mainValue: Measurement(value: 10)),
+      );
+      expect(filter.containsInt(5), isTrue);
+      expect(filter.containsInt(10), isTrue);
+      expect(filter.containsInt(8), isTrue);
+      expect(filter.containsInt(13), isFalse);
     });
   });
 }
