@@ -10,6 +10,7 @@ Anglers' Log 2.0 Beta Testers
 * Mark Zulinski - zulinskis@gmail.com
 * Dov - dovfeder@optonline.net
 * Eric Moshier - eric@solidrockmasonry.com
+* Jeff Velick - jeffvelick3@yahoo.com
 
 ### Donators
 * Dov - dovfeder@optonline.net
