@@ -132,8 +132,10 @@ void main() {
         appManager: appManager,
       ));
 
-      // Add small delay so images future can finish.
+      // Wait for images and map futures to finish.
       await tester.pumpAndSettle(Duration(milliseconds: 100));
+      await tester.pumpAndSettle(Duration(milliseconds: 150));
+      await tester.pumpAndSettle(Duration(milliseconds: 50));
 
       expect(find.text("Jan 1, 2020"), findsOneWidget);
       expect(find.text("3:30 PM"), findsOneWidget);
@@ -282,8 +284,10 @@ void main() {
         appManager: appManager,
       ));
 
-      // Add small delay so images future can finish.
+      // Wait for images and map futures to finish.
       await tester.pumpAndSettle(Duration(milliseconds: 100));
+      await tester.pumpAndSettle(Duration(milliseconds: 150));
+      await tester.pumpAndSettle(Duration(milliseconds: 50));
 
       expect(find.text("Jan 1, 2020"), findsOneWidget);
       expect(find.text("3:30 PM"), findsOneWidget);
@@ -572,6 +576,11 @@ void main() {
         ),
         appManager: appManager,
       ));
+
+      // Wait for images and map futures to finish.
+      await tester.pumpAndSettle(Duration(milliseconds: 100));
+      await tester.pumpAndSettle(Duration(milliseconds: 150));
+      await tester.pumpAndSettle(Duration(milliseconds: 50));
 
       expect(find.text("Feb 1, 2020"), findsOneWidget);
       expect(find.text("10:30 AM"), findsOneWidget);

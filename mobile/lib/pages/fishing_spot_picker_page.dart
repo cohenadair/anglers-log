@@ -115,7 +115,7 @@ class _FishingSpotPickerPageState extends State<FishingSpotPickerPage>
         widget.startPos ?? LocationMonitor.of(context).currentLocation;
 
     // TODO #390: Initial 2 map drag attempts do not work when _startPosition
-    // is set to _currentFishingSpot
+    //  is set to _currentFishingSpot
     // Show fishing spot widgets if the picker is shown with a fishing spot
     // selected.
     var fishingSpot = _fishingSpotManager.entity(widget.fishingSpotId) ??

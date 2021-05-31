@@ -54,11 +54,6 @@ class _CatchPageState extends State<CatchPage> {
   WaterClarityManager get _waterClarityManager =>
       WaterClarityManager.of(context);
 
-  // TODO: Remove this when Google Maps performance issue is fixed.
-  // https://github.com/flutter/flutter/issues/28493
-  final Future<bool> _fishingSpotFuture =
-      Future.delayed(Duration(milliseconds: 200), () => true);
-
   late Catch _catch;
 
   @override
@@ -104,10 +99,7 @@ class _CatchPageState extends State<CatchPage> {
             ),
             _buildMethods(),
             _buildBait(),
-            EmptyFutureBuilder<bool>(
-              future: _fishingSpotFuture,
-              builder: (context, _) => _buildFishingSpot(),
-            ),
+            _buildFishingSpot(),
             _buildSize(),
             _buildAngler(),
             _buildCatchAndRelease(),

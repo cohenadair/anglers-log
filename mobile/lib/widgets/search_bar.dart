@@ -123,23 +123,28 @@ class _SearchBarState extends State<SearchBar> {
           color: Colors.transparent,
           child: InkWell(
             onTap: widget.delegate.onTap(),
+            borderRadius: BorderRadius.circular(floatingCornerRadius),
             child: Row(
               children: <Widget>[
                 leading,
                 Expanded(
-                  child: CupertinoTextField(
-                    padding: insetsZero,
-                    decoration: null,
-                    onChanged: widget.delegate.onTextChanged,
-                    placeholder: widget.hint,
-                    placeholderStyle: Theme.of(context)
-                        .textTheme
-                        .subtitle1!
-                        .copyWith(color: Theme.of(context).disabledColor),
-                    enabled: _isInput,
-                    controller: _controller,
-                    focusNode: _focusNode,
-                    cursorColor: Theme.of(context).primaryColor,
+                  // Use IgnorePointer instead of CupertinoTextField.enabled so
+                  // the background doesn't change when disabled.
+                  child: IgnorePointer(
+                    ignoring: !_isInput,
+                    child: CupertinoTextField(
+                      padding: insetsZero,
+                      decoration: null,
+                      onChanged: widget.delegate.onTextChanged,
+                      placeholder: widget.hint,
+                      placeholderStyle: Theme.of(context)
+                          .textTheme
+                          .subtitle1!
+                          .copyWith(color: Theme.of(context).disabledColor),
+                      controller: _controller,
+                      focusNode: _focusNode,
+                      cursorColor: Theme.of(context).primaryColor,
+                    ),
                   ),
                 ),
                 trailing,

@@ -18,7 +18,10 @@ void main() {
         ),
       ),
     );
-    await tester.pumpAndSettle();
+    // Wait for both futures to finish.
+    await tester.pumpAndSettle(Duration(milliseconds: 150));
+    await tester.pumpAndSettle(Duration(milliseconds: 50));
+
     expect(findFirst<GoogleMap>(tester).markers.length, 1);
   });
 }

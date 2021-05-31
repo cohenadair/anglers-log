@@ -109,8 +109,7 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
 
   // TODO: Remove this when Google Maps performance issue is fixed.
   // https://github.com/flutter/flutter/issues/28493
-  final Future<bool> _mapFuture =
-      Future.delayed(Duration(milliseconds: 150), () => true);
+  late final Future<bool> _mapFuture;
 
   Timer? _hideHelpTimer;
 
@@ -140,6 +139,8 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
         });
       });
     }
+
+    _mapFuture = Future.delayed(Duration(milliseconds: 150), () => true);
   }
 
   @override
@@ -158,7 +159,6 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
-                // Row to extend column across page.
                 _buildSearchBar(),
                 _buildMapTypeButton(),
                 _buildCurrentLocationButton(),
@@ -178,9 +178,6 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
       builder: (context, _) {
         // TODO: Move Google logo when better solution is available.
         // https://github.com/flutter/flutter/issues/39610
-        // TODO: Test onCameraIdle fix when merged. Event sometimes stops after
-        // interaction with map buttons.
-        // https://github.com/flutter/flutter/issues/33988
         return GoogleMap(
           padding: widget.mapPadding ?? insetsZero,
           mapType: _mapType,
@@ -197,8 +194,6 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
           myLocationButtonEnabled: false,
           myLocationEnabled: _myLocationEnabled,
           mapToolbarEnabled: false,
-          // TODO: Try onLongPress again when Google Maps updated.
-          // Long presses weren't being triggered first time.
           onTap: widget.onTap,
           onCameraIdle: widget.onIdle,
           onCameraMove: widget.onMove == null
