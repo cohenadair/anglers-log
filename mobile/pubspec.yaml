@@ -20,21 +20,20 @@ dependencies:
 
   archive: ^3.1.2                   # https://pub.dev/packages/archive
   cloud_firestore: ^1.0.3           # https://pub.dev/packages/cloud_firestore (Google)
+  collection: ^1.15.0               # https://pub.dev/packages/collection (Dart)
   crypto: ^3.0.0                    # https://pub.dev/packages/crypto (Dart)
-  device_info: ^2.0.0               # https://pub.dev/packages/device_info (Flutter)
+  device_info_plus: ^1.0.1          # https://pub.dev/packages/device_info (Flutter)
   file_picker: ^3.0.0               # https://pub.dev/packages/file_picker (verified)
   firebase_auth: ^1.0.1             # https://pub.dev/packages/firebase_auth (Google)
   firebase_core: ^1.0.2             # https://pub.dev/packages/firebase_core (Google)
   firebase_storage: ^8.0.1          # https://pub.dev/packages/firebase_storage (Google)
-
-  # TODO: Upgrade when released.
-  flutter_image_compress: 1.0.0-nullsafety    # https://pub.dev/packages/flutter_image_compress
+  flutter_image_compress: 1.0.0     # https://pub.dev/packages/flutter_image_compress
   geolocator: ^7.0.1                # https://pub.dev/packages/geolocator (verified)
-  google_maps_flutter: ^2.0.1       # https://pub.dev/packages/google_maps_flutter (Flutter)
+  google_maps_flutter: ^2.0.6       # https://pub.dev/packages/google_maps_flutter (Flutter)
   http: ^0.13.0                     # https://pub.dev/packages/http (Dart)
   image_picker: ^0.7.3              # https://pub.dev/packages/image_picker (Flutter)
   intl: ^0.17.0                     # https://pub.dev/packages/intl (Dart)
-  package_info: ^2.0.0              # https://pub.dev/packages/package_info (Flutter)
+  package_info_plus: ^1.0.1         # https://pub.dev/packages/package_info (Flutter)
   path: ^1.8.0                      # https://pub.dev/packages/path (Dart)
   path_provider: ^2.0.1             # https://pub.dev/packages/path_provider (Flutter)
   permission_handler: ^6.0.0        # https://pub.dev/packages/permission_handler (verified)
@@ -47,7 +46,6 @@ dependencies:
   sqflite: ^2.0.0+2                 # https://pub.dev/packages/sqflite (verified)
   url_launcher: ^6.0.2              # https://pub.dev/packages/url_launcher (Flutter)
   uuid: ^3.0.1                      # https://pub.dev/packages/uuid (verified)
-  collection: ^1.15.0-nullsafety.4
 
 dev_dependencies:
   build_runner: ^1.12.2

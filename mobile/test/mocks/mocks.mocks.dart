@@ -94,7 +94,7 @@ import 'package:mobile/wrappers/services_wrapper.dart' as _i40;
 import 'package:mobile/wrappers/shared_preferences_wrapper.dart' as _i41;
 import 'package:mobile/wrappers/url_launcher_wrapper.dart' as _i42;
 import 'package:mockito/mockito.dart' as _i1;
-import 'package:package_info/package_info.dart' as _i51;
+import 'package:package_info_plus/package_info_plus.dart' as _i51;
 import 'package:photo_manager/photo_manager.dart' as _i52;
 import 'package:photo_manager/src/filter/filter_options.dart' as _i56;
 import 'package:photo_manager/src/type.dart' as _i57;
