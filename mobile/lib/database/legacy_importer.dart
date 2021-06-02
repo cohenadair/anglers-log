@@ -564,7 +564,7 @@ class LegacyImporter {
       }
 
       int? quantity = map[_keyFishQuantity];
-      if (quantity != null && quantity > 0) {
+      if (quantity != null && quantity > 1) {
         cat.quantity = quantity;
       }
 

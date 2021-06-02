@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter_test/flutter_test.dart';
+import 'package:intl/intl.dart';
 import 'package:mobile/angler_manager.dart';
 import 'package:mobile/bait_category_manager.dart';
 import 'package:mobile/bait_manager.dart';
@@ -14,6 +15,7 @@ import 'package:mobile/species_manager.dart';
 import 'package:mobile/water_clarity_manager.dart';
 import 'package:mockito/mockito.dart';
 import 'package:path/path.dart' as path;
+import 'package:uuid/uuid.dart';
 
 import '../mocks/mocks.dart';
 import '../mocks/mocks.mocks.dart';
@@ -281,6 +283,15 @@ void main() {
     var quantityCatch =
         catchManager.list().firstWhere((cat) => cat.quantity == 16);
     expect(quantityCatch.quantity, 16);
+
+    // 1 quantity catch should not set quantity property.
+    // Fixes: https://github.com/cohenadair/anglers-log/issues/537
+    var timestamp = DateFormat("M-d-y_h-m_a_s.S")
+        .parse("09-30-2017_11-50_AM_14.442")
+        .millisecondsSinceEpoch;
+    var singleQuantity =
+        catchManager.list().firstWhere((cat) => cat.timestamp == timestamp);
+    expect(singleQuantity.hasQuantity(), isFalse);
 
     var notesCatch = catchManager.list().firstWhere((cat) =>
         cat.notes == "Casting downstream close to shore in very slow water.");
