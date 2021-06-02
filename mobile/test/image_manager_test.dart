@@ -4,11 +4,8 @@ import 'dart:typed_data';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:fixnum/fixnum.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/image_manager.dart';
-import 'package:mobile/model/gen/anglerslog.pb.dart';
-import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mockito/mockito.dart';
 
 import 'mocks/mocks.dart';
@@ -51,7 +48,7 @@ void main() {
 
     imageManager = ImageManager(appManager.app);
     await imageManager.initialize();
-    verify(appManager.ioWrapper.directory(any)).called(3);
+    verify(appManager.ioWrapper.directory(any)).called(2);
   });
 
   testWidgets("Invalid fileName input to image method", (tester) async {
@@ -380,97 +377,6 @@ void main() {
     verifyNever(appManager.imageCompressWrapper.compress(any, any, any));
   });
 
-  test("Clearing stale images", () async {
-    var img1 = MockFile();
-    when(img1.path).thenReturn("$_imagePath/image1.jpg");
-    when(img1.deleteSync()).thenAnswer((_) {});
-
-    var img2 = MockFile();
-    when(img2.path).thenReturn("$_imagePath/image2.jpg");
-    when(img2.deleteSync()).thenAnswer((_) {});
-
-    var imgDir = MockDirectory();
-    when(imgDir.create(recursive: anyNamed("recursive")))
-        .thenAnswer((realInvocation) => Future.value(imgDir));
-    when(imgDir.list()).thenAnswer((_) =>
-        Stream.fromFutures([img1, img2].map((img) => Future.value(img))));
-    when(appManager.ioWrapper.directory("$_imagePath/2.0/images"))
-        .thenReturn(imgDir);
-
-    var thumb1 = MockFile();
-    when(thumb1.path).thenReturn("$_cachePath/50/image1.jpg");
-    when(thumb1.deleteSync()).thenAnswer((_) {});
-
-    var thumb2 = MockFile();
-    when(thumb2.path).thenReturn("$_cachePath/50/image2.jpg");
-    when(thumb2.deleteSync()).thenAnswer((_) {});
-
-    // Directories should not be deleted.
-    var dir = MockDirectory();
-    when(dir.path).thenReturn("$_cachePath");
-
-    var thumbDir = MockDirectory();
-    when(thumbDir.create(recursive: anyNamed("recursive")))
-        .thenAnswer((realInvocation) => Future.value(thumbDir));
-    when(thumbDir.list(recursive: true)).thenAnswer((_) => Stream.fromFutures([
-          thumb1,
-          thumb2,
-          dir
-        ].map((img) => Future.value(img as FutureOr<FileSystemEntity>?))));
-    when(appManager.ioWrapper.directory("$_cachePath/2.0/thumbs"))
-        .thenReturn(thumbDir);
-
-    var catch1 = Catch()
-      ..id = randomId()
-      ..timestamp = Int64(5);
-    catch1.imageNames.add("image1.jpg");
-
-    var catch2 = Catch()
-      ..id = randomId()
-      ..timestamp = Int64(5);
-    catch2.imageNames.add("image2.jpg");
-
-    when(appManager.catchManager.list()).thenReturn([catch1, catch2]);
-    await imageManager.initialize();
-    verifyNever(img1.deleteSync());
-    verifyNever(img2.deleteSync());
-
-    catch2.imageNames.clear();
-    await imageManager.initialize();
-    verifyNever(img1.deleteSync());
-    verifyNever(thumb1.deleteSync());
-    verifyNever(dir.deleteSync());
-    verify(img2.deleteSync()).called(1);
-    verify(thumb2.deleteSync()).called(1);
-    verifyNever(appManager.firebaseStorageWrapper.ref(any));
-    verify(appManager.subscriptionManager.isPro).called(1);
-
-    // Reset catches.
-    catch1 = Catch()
-      ..id = randomId()
-      ..timestamp = Int64(5);
-    catch1.imageNames.add("image1.jpg");
-
-    catch2 = Catch()
-      ..id = randomId()
-      ..timestamp = Int64(5);
-    catch2.imageNames.add("image2.jpg");
-
-    when(appManager.catchManager.list()).thenReturn([catch1, catch2]);
-    when(appManager.subscriptionManager.isPro).thenReturn(true);
-    when(appManager.firebaseStorageWrapper.ref(any))
-        .thenReturn(MockReference());
-    catch1.imageNames.clear();
-    await imageManager.initialize();
-    verifyNever(img2.deleteSync());
-    verifyNever(thumb2.deleteSync());
-    verifyNever(dir.deleteSync());
-    verify(img1.deleteSync()).called(1);
-    verify(thumb1.deleteSync()).called(1);
-    verify(appManager.firebaseStorageWrapper.ref(any)).called(1);
-    verify(appManager.subscriptionManager.isPro).called(1);
-  });
-
   group("On subscription stream updates", () {
     test("Free user is a no-op", () {
       var controller = StreamController.broadcast();
@@ -492,7 +398,7 @@ void main() {
       // Reset imageManager and mocks.
       imageManager = ImageManager(appManager.app);
       await imageManager.initialize();
-      verify(appManager.ioWrapper.directory(any)).called(3);
+      verify(appManager.ioWrapper.directory(any)).called(2);
 
       controller.add(null);
 
@@ -512,7 +418,7 @@ void main() {
       // ioWrapper.directory.
       imageManager = ImageManager(appManager.app);
       await imageManager.initialize();
-      verify(appManager.ioWrapper.directory(any)).called(3);
+      verify(appManager.ioWrapper.directory(any)).called(2);
 
       // Add a couple files to directory stream.
       var dirController = StreamController<FileSystemEntity>();
@@ -552,7 +458,7 @@ void main() {
       // ioWrapper.directory.
       imageManager = ImageManager(appManager.app);
       await imageManager.initialize();
-      verify(appManager.ioWrapper.directory(any)).called(3);
+      verify(appManager.ioWrapper.directory(any)).called(2);
 
       // Add a couple files to directory stream.
       var dirController = StreamController<FileSystemEntity>();

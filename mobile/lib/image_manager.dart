@@ -11,7 +11,6 @@ import 'package:quiver/strings.dart';
 
 import 'app_manager.dart';
 import 'auth_manager.dart';
-import 'catch_manager.dart';
 import 'log.dart';
 import 'subscription_manager.dart';
 import 'wrappers/firebase_storage_wrapper.dart';
@@ -44,8 +43,6 @@ class ImageManager {
 
   AuthManager get _authManager => _appManager.authManager;
 
-  CatchManager get _catchManager => _appManager.catchManager;
-
   SubscriptionManager get _subscriptionManager =>
       _appManager.subscriptionManager;
 
@@ -74,9 +71,6 @@ class ImageManager {
     // Create directories if needed.
     await _ioWrapper.directory(_imagePath).create(recursive: true);
     await _ioWrapper.directory(_cachePath).create(recursive: true);
-
-    // Cleanup images that are no longer used.
-    await _clearStaleImages();
   }
 
   File _imageFile(String imageName) =>
@@ -359,59 +353,6 @@ class ImageManager {
     }
 
     return cachedImage.thumbnail(size);
-  }
-
-  /// Deletes images that are no longer used from memory cache and file
-  /// system.
-  Future<void> _clearStaleImages() async {
-    var images = await _ioWrapper.directory(_imagePath).list().toList();
-    for (var image in images) {
-      var name = basename(image.path);
-      var found = false;
-
-      for (var cat in _catchManager.list()) {
-        // Image found, continue on to the next image.
-        if (cat.imageNames.contains(name)) {
-          found = true;
-          break;
-        }
-      }
-
-      if (found) {
-        continue;
-      }
-
-      _log.d("Deleted stale image $name");
-      image.deleteSync();
-
-      // Delete any thumbnails.
-      var thumbs =
-          await _ioWrapper.directory(_cachePath).list(recursive: true).toList();
-      for (var thumb in thumbs) {
-        if (thumb is Directory) {
-          continue;
-        }
-
-        var cacheName = basename(thumb.path);
-        if (cacheName == name) {
-          _log.d("Deleted stale thumbnail $cacheName");
-          _thumbnails.remove(name);
-          thumb.deleteSync();
-        }
-      }
-
-      // Delete from Firebase Storage.
-      if (_subscriptionManager.isPro) {
-        try {
-          await _firebaseStorageWrapper
-              .ref(_firebaseStoragePath(name))
-              .delete();
-        } on Exception catch (_) {
-          // The file couldn't be deleted from Firebase. This is normal and
-          // will happen when cleaning up image files from a previous user.
-        }
-      }
-    }
   }
 
   /// Uploads to Firebase any local images that don't exist in Firebase.
