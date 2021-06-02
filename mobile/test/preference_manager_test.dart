@@ -49,7 +49,7 @@ class TestPreferenceManager extends PreferenceManager {
 
   @override
   void onUpgradeToPro() {
-    // TODO: implement onUpgradeToPro
+    // Nothing to do.
   }
 }
 

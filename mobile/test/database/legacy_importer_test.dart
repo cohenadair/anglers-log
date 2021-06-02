@@ -15,7 +15,6 @@ import 'package:mobile/species_manager.dart';
 import 'package:mobile/water_clarity_manager.dart';
 import 'package:mockito/mockito.dart';
 import 'package:path/path.dart' as path;
-import 'package:uuid/uuid.dart';
 
 import '../mocks/mocks.dart';
 import '../mocks/mocks.mocks.dart';

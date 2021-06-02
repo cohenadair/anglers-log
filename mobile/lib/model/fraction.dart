@@ -1,8 +1,4 @@
-import '../log.dart';
-
 class Fraction {
-  static final _log = Log("_Fraction");
-
   static const zero = Fraction("0", 0);
   static const eighth = Fraction("\u215B", 0.125);
   static const quarter = Fraction("\u00BC", 0.25);

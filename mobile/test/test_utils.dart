@@ -9,7 +9,6 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/app_manager.dart';
 import 'package:mobile/i18n/strings.dart';
-import 'package:mobile/utils/date_time_utils.dart';
 import 'package:mobile/widgets/checkbox_input.dart';
 import 'package:mobile/widgets/list_item.dart';
 import 'package:mobile/widgets/widget.dart';
@@ -60,13 +59,6 @@ class Testable extends StatelessWidget {
       ),
     );
   }
-}
-
-DisplayDateRange stubDateRange(DateRange dateRange) {
-  return DisplayDateRange.newCustom(
-    getValue: (_) => dateRange,
-    getTitle: (_) => "",
-  );
 }
 
 Future<BuildContext> buildContext(

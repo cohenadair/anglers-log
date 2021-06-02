@@ -1,5 +1,4 @@
 import 'package:collection/collection.dart' show IterableExtension;
-import 'package:fixnum/fixnum.dart';
 import 'package:flutter/material.dart';
 import 'package:quiver/strings.dart';
 
@@ -46,8 +45,7 @@ class _StatsPageState extends State<StatsPage> {
   final List<CalculatedReport> _models = [];
 
   /// The currently selected date range for viewing an [OverviewReport].
-  var _currentOverviewDateRange =
-      DisplayDateRange.of(DisplayDateRange.allDates.id);
+  var _currentOverviewDateRange = DateRange(period: DateRange_Period.allDates);
 
   /// The currently selected report from the app bar dropdown menu.
   dynamic _currentReport;
@@ -240,7 +238,7 @@ class _StatsPageState extends State<StatsPage> {
       labelBuilder: (species) => species.name,
       series: _models
           .map((model) =>
-              Series<Species>(model.catchesPerSpecies, model.displayDateRange))
+              Series<Species>(model.catchesPerSpecies, model.dateRange))
           .toList(),
       rowDetailsPage: (species, dateRange) => CatchListPage(
         enableAdding: false,
@@ -265,8 +263,8 @@ class _StatsPageState extends State<StatsPage> {
       filters: _filters(includeDateRange: !_isComparing),
       labelBuilder: (fishingSpot) => fishingSpot.displayName(context),
       series: _models
-          .map((model) => Series<FishingSpot>(
-              model.catchesPerFishingSpot, model.displayDateRange))
+          .map((model) =>
+              Series<FishingSpot>(model.catchesPerFishingSpot, model.dateRange))
           .toList(),
       rowDetailsPage: (fishingSpot, dateRange) => CatchListPage(
         enableAdding: false,
@@ -291,8 +289,7 @@ class _StatsPageState extends State<StatsPage> {
       filters: _filters(includeDateRange: !_isComparing),
       labelBuilder: (bait) => bait.name,
       series: _models
-          .map((model) =>
-              Series<Bait>(model.catchesPerBait, model.displayDateRange))
+          .map((model) => Series<Bait>(model.catchesPerBait, model.dateRange))
           .toList(),
       rowDetailsPage: (bait, dateRange) => CatchListPage(
         enableAdding: false,
@@ -358,7 +355,7 @@ class _StatsPageState extends State<StatsPage> {
       labelBuilder: (bait) => bait.name,
       series: _models
           .map((model) => Series<Bait>(
-              model.baitsPerSpecies(_currentSpecies), model.displayDateRange))
+              model.baitsPerSpecies(_currentSpecies), model.dateRange))
           .toList(),
       rowDetailsPage: (bait, _) => BaitPage(bait, static: true),
     );
@@ -381,8 +378,7 @@ class _StatsPageState extends State<StatsPage> {
       labelBuilder: (fishingSpot) => fishingSpot.displayName(context),
       series: _models
           .map((model) => Series<FishingSpot>(
-              model.fishingSpotsPerSpecies(_currentSpecies),
-              model.displayDateRange))
+              model.fishingSpotsPerSpecies(_currentSpecies), model.dateRange))
           .toList(),
       rowDetailsPage: (fishingSpot, _) => FishingSpotPage(fishingSpot),
     );
@@ -392,7 +388,7 @@ class _StatsPageState extends State<StatsPage> {
     return Column(
       children: _models
           .map((model) =>
-              _buildViewCatchesRow(model.allCatchIds, model.displayDateRange))
+              _buildViewCatchesRow(model.allCatchIds, model.dateRange))
           .toList(),
     );
   }
@@ -407,17 +403,17 @@ class _StatsPageState extends State<StatsPage> {
         }
         return _buildViewCatchesRow(
           catchIds,
-          model.displayDateRange,
+          model.dateRange,
         );
       }).toList(),
     );
   }
 
-  Widget _buildViewCatchesRow(Set<Id> catchIds, DisplayDateRange dateRange) {
+  Widget _buildViewCatchesRow(Set<Id> catchIds, DateRange dateRange) {
     if (catchIds.isEmpty) {
       return ListItem(
         title: Text(Strings.of(context).reportSummaryNumberOfCatches),
-        subtitle: Text(dateRange.title(context)),
+        subtitle: Text(dateRange.displayName(context)),
         trailing: SecondaryLabel("0"),
       );
     }
@@ -425,7 +421,7 @@ class _StatsPageState extends State<StatsPage> {
     return ListItem(
       title: Text(format(
           Strings.of(context).reportSummaryViewCatches, [catchIds.length])),
-      subtitle: Text(dateRange.title(context)),
+      subtitle: Text(dateRange.displayName(context)),
       onTap: () => push(
         context,
         CatchListPage(
@@ -485,7 +481,7 @@ class _StatsPageState extends State<StatsPage> {
   CalculatedReport _createOverviewModel() {
     return CalculatedReport(
       context: context,
-      displayDateRange: _currentOverviewDateRange,
+      range: _currentOverviewDateRange,
     );
   }
 
@@ -496,9 +492,7 @@ class _StatsPageState extends State<StatsPage> {
       _createReportModel(
         context,
         report,
-        report.fromDisplayDateRangeId,
-        report.fromStartTimestamp,
-        report.fromEndTimestamp,
+        report.fromDateRange,
         sortOrder: CalculatedReportSortOrder.largestToSmallest,
       )
     ];
@@ -510,17 +504,13 @@ class _StatsPageState extends State<StatsPage> {
     var fromModel = _createReportModel(
       context,
       report,
-      report.fromDisplayDateRangeId,
-      report.fromStartTimestamp,
-      report.fromEndTimestamp,
+      report.fromDateRange,
       includeZeros: true,
     );
     var toModel = _createReportModel(
       context,
       report,
-      report.toDisplayDateRangeId,
-      report.toStartTimestamp,
-      report.toEndTimestamp,
+      report.toDateRange,
       includeZeros: true,
     );
     fromModel.removeZerosComparedTo(toModel);
@@ -534,9 +524,7 @@ class _StatsPageState extends State<StatsPage> {
   CalculatedReport _createReportModel(
     BuildContext context,
     Report report,
-    String displayDateRangeId,
-    Int64 startTimestamp,
-    Int64 endTimestamp, {
+    DateRange dateRange, {
     bool includeZeros = false,
     CalculatedReportSortOrder sortOrder =
         CalculatedReportSortOrder.alphabetical,
@@ -545,8 +533,7 @@ class _StatsPageState extends State<StatsPage> {
       context: context,
       includeZeros: includeZeros,
       sortOrder: sortOrder,
-      displayDateRange: DisplayDateRange.of(
-          displayDateRangeId, startTimestamp.toInt(), endTimestamp.toInt()),
+      range: dateRange,
       isCatchAndReleaseOnly: report.isCatchAndReleaseOnly,
       isFavoritesOnly: report.isFavoritesOnly,
       anglerIds: report.anglerIds.toSet(),

@@ -2,6 +2,7 @@ import 'dart:typed_data';
 
 import 'package:flutter/cupertino.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:intl/intl.dart';
 import 'package:protobuf/protobuf.dart';
 import 'package:quiver/strings.dart';
 import 'package:uuid/uuid.dart';
@@ -12,7 +13,9 @@ import '../log.dart';
 import '../model/fraction.dart';
 import '../model/gen/anglerslog.pb.dart';
 import '../pages/picker_page.dart';
+import '../time_manager.dart';
 import '../utils/string_utils.dart';
+import 'date_time_utils.dart';
 import 'number_utils.dart';
 
 final _log = Log("ProtobufUtils");
@@ -669,4 +672,134 @@ extension Units on Unit {
     }
     throw ArgumentError("Invalid input: $this");
   }
+}
+
+extension DateRanges on DateRange {
+  int startMs(DateTime now) => startDate(now).millisecondsSinceEpoch;
+
+  int endMs(DateTime now) => endDate(now).millisecondsSinceEpoch;
+
+  int durationMs(DateTime now) => endMs(now) - startMs(now);
+
+  DateTime startDate(DateTime now) {
+    if (hasStartTimestamp()) {
+      return DateTime.fromMillisecondsSinceEpoch(startTimestamp.toInt());
+    }
+
+    switch (period) {
+      case DateRange_Period.allDates:
+        return DateTime.fromMicrosecondsSinceEpoch(0);
+      case DateRange_Period.today:
+        return dateTimeToDayAccuracy(now);
+      case DateRange_Period.yesterday:
+        return dateTimeToDayAccuracy(now).subtract(Duration(days: 1));
+      case DateRange_Period.thisWeek:
+        return startOfWeek(now);
+      case DateRange_Period.thisMonth:
+      case DateRange_Period.custom: // Default custom to this month.
+        return startOfMonth(now);
+      case DateRange_Period.thisYear:
+        return startOfYear(now);
+      case DateRange_Period.lastWeek:
+        return startOfWeek(now).subtract(Duration(days: DateTime.daysPerWeek));
+      case DateRange_Period.lastMonth:
+        var year = now.year;
+        var month = now.month - 1;
+        if (month < DateTime.january) {
+          month = DateTime.december;
+          year -= 1;
+        }
+        return DateTime(year, month);
+      case DateRange_Period.lastYear:
+        return DateTime(now.year - 1);
+      case DateRange_Period.last7Days:
+        return now.subtract(Duration(days: 7));
+      case DateRange_Period.last14Days:
+        return now.subtract(Duration(days: 14));
+      case DateRange_Period.last30Days:
+        return now.subtract(Duration(days: 30));
+      case DateRange_Period.last60Days:
+        return now.subtract(Duration(days: 60));
+      case DateRange_Period.last12Months:
+        return now.subtract(Duration(days: 365));
+    }
+    throw ArgumentError("Invalid input: $period");
+  }
+
+  DateTime endDate(DateTime now) {
+    if (hasEndTimestamp()) {
+      return DateTime.fromMillisecondsSinceEpoch(endTimestamp.toInt());
+    }
+
+    switch (period) {
+      case DateRange_Period.allDates:
+      case DateRange_Period.today:
+      case DateRange_Period.thisWeek:
+      case DateRange_Period.thisMonth:
+      case DateRange_Period.custom: // Default custom to this month.
+      case DateRange_Period.thisYear:
+      case DateRange_Period.last7Days:
+      case DateRange_Period.last14Days:
+      case DateRange_Period.last30Days:
+      case DateRange_Period.last60Days:
+      case DateRange_Period.last12Months:
+        return now;
+      case DateRange_Period.yesterday:
+        return dateTimeToDayAccuracy(now);
+      case DateRange_Period.lastWeek:
+        return startOfWeek(now);
+      case DateRange_Period.lastMonth:
+        return startOfMonth(now);
+      case DateRange_Period.lastYear:
+        return startOfYear(now);
+    }
+    throw ArgumentError("Invalid input: $period");
+  }
+
+  String displayName(BuildContext context) {
+    var now = TimeManager.of(context).currentDateTime;
+
+    if (hasStartTimestamp() && hasEndTimestamp()) {
+      var formatter = DateFormat(monthDayYearFormat);
+      return "${formatter.format(startDate(now))} - "
+          "${formatter.format(endDate(now))}";
+    }
+
+    switch (period) {
+      case DateRange_Period.allDates:
+        return Strings.of(context).analysisDurationAllDates;
+      case DateRange_Period.today:
+        return Strings.of(context).analysisDurationToday;
+      case DateRange_Period.yesterday:
+        return Strings.of(context).analysisDurationYesterday;
+      case DateRange_Period.thisWeek:
+        return Strings.of(context).analysisDurationThisWeek;
+      case DateRange_Period.thisMonth:
+        return Strings.of(context).analysisDurationThisMonth;
+      case DateRange_Period.thisYear:
+        return Strings.of(context).analysisDurationThisYear;
+      case DateRange_Period.last7Days:
+        return Strings.of(context).analysisDurationLast7Days;
+      case DateRange_Period.last14Days:
+        return Strings.of(context).analysisDurationLast14Days;
+      case DateRange_Period.last30Days:
+        return Strings.of(context).analysisDurationLast30Days;
+      case DateRange_Period.last60Days:
+        return Strings.of(context).analysisDurationLast60Days;
+      case DateRange_Period.last12Months:
+        return Strings.of(context).analysisDurationLast12Months;
+      case DateRange_Period.lastWeek:
+        return Strings.of(context).analysisDurationLastWeek;
+      case DateRange_Period.lastMonth:
+        return Strings.of(context).analysisDurationLastMonth;
+      case DateRange_Period.lastYear:
+        return Strings.of(context).analysisDurationLastYear;
+      case DateRange_Period.custom:
+        return Strings.of(context).analysisDurationCustom;
+    }
+    throw ArgumentError("Invalid input: $period");
+  }
+
+  bool contains(int timestamp, DateTime now) =>
+      timestamp >= startMs(now) && timestamp <= endMs(now);
 }

@@ -1,18 +1,20 @@
 import 'dart:async';
 
+import 'package:fixnum/fixnum.dart';
 import 'package:flutter/material.dart';
 
 import '../app_manager.dart';
 import '../i18n/strings.dart';
+import '../model/gen/anglerslog.pb.dart';
 import '../pages/picker_page.dart';
 import '../time_manager.dart';
-import '../utils/date_time_utils.dart';
+import '../utils/protobuf_utils.dart';
 
 /// A [ListPicker] wrapper widget for selecting a date range, such as the
 /// "Last 7 days" or "This week" from a list.
 class DateRangePickerPage extends StatefulWidget {
-  final DisplayDateRange initialValue;
-  final void Function(DisplayDateRange) onDateRangePicked;
+  final DateRange initialValue;
+  final void Function(DateRange) onDateRangePicked;
 
   DateRangePickerPage({
     required this.initialValue,
@@ -24,7 +26,7 @@ class DateRangePickerPage extends StatefulWidget {
 }
 
 class _DateRangePickerPageState extends State<DateRangePickerPage> {
-  DisplayDateRange _customDateRange = DisplayDateRange.custom;
+  DateRange _customDateRange = DateRange(period: DateRange_Period.custom);
 
   TimeManager get _timeManager => AppManager.of(context).timeManager;
 
@@ -32,40 +34,40 @@ class _DateRangePickerPageState extends State<DateRangePickerPage> {
   void initState() {
     super.initState();
 
-    if (widget.initialValue == DisplayDateRange.custom) {
+    if (widget.initialValue.period == DateRange_Period.custom) {
       _customDateRange = widget.initialValue;
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    return PickerPage<DisplayDateRange>.single(
+    return PickerPage<DateRange>.single(
       title: Text(Strings.of(context).dateRangePickerPageTitle),
       initialValue: widget.initialValue,
       onFinishedPicking: (context, dateRange) =>
           widget.onDateRangePicked(dateRange),
-      allItem: _buildItem(context, DisplayDateRange.allDates),
+      allItem: _buildItem(context, DateRange_Period.allDates),
       itemBuilder: () => [
-        _buildItem(context, DisplayDateRange.today),
-        _buildItem(context, DisplayDateRange.yesterday),
+        _buildItem(context, DateRange_Period.today),
+        _buildItem(context, DateRange_Period.yesterday),
         PickerPageItem.divider(),
-        _buildItem(context, DisplayDateRange.thisWeek),
-        _buildItem(context, DisplayDateRange.thisMonth),
-        _buildItem(context, DisplayDateRange.thisYear),
+        _buildItem(context, DateRange_Period.thisWeek),
+        _buildItem(context, DateRange_Period.thisMonth),
+        _buildItem(context, DateRange_Period.thisYear),
         PickerPageItem.divider(),
-        _buildItem(context, DisplayDateRange.lastWeek),
-        _buildItem(context, DisplayDateRange.lastMonth),
-        _buildItem(context, DisplayDateRange.lastYear),
+        _buildItem(context, DateRange_Period.lastWeek),
+        _buildItem(context, DateRange_Period.lastMonth),
+        _buildItem(context, DateRange_Period.lastYear),
         PickerPageItem.divider(),
-        _buildItem(context, DisplayDateRange.last7Days),
-        _buildItem(context, DisplayDateRange.last14Days),
-        _buildItem(context, DisplayDateRange.last30Days),
-        _buildItem(context, DisplayDateRange.last60Days),
-        _buildItem(context, DisplayDateRange.last12Months),
+        _buildItem(context, DateRange_Period.last7Days),
+        _buildItem(context, DateRange_Period.last14Days),
+        _buildItem(context, DateRange_Period.last30Days),
+        _buildItem(context, DateRange_Period.last60Days),
+        _buildItem(context, DateRange_Period.last12Months),
         PickerPageItem.divider(),
-        PickerPageItem<DisplayDateRange>(
+        PickerPageItem<DateRange>(
           popsOnPicked: false,
-          title: _customDateRange.title(context),
+          title: _customDateRange.displayName(context),
           onTap: () => _onTapCustom(context),
           value: _customDateRange,
         ),
@@ -73,25 +75,25 @@ class _DateRangePickerPageState extends State<DateRangePickerPage> {
     );
   }
 
-  PickerPageItem<DisplayDateRange> _buildItem(
+  PickerPageItem<DateRange> _buildItem(
     BuildContext context,
-    DisplayDateRange duration,
+    DateRange_Period period,
   ) {
-    return PickerPageItem<DisplayDateRange>(
-      title: duration.title(context),
-      value: duration,
+    var value = DateRange()..period = period;
+    return PickerPageItem<DateRange>(
+      title: value.displayName(context),
+      value: value,
     );
   }
 
   Future<void> _onTapCustom(BuildContext context) async {
     var now = _timeManager.currentDateTime;
-    var customValue = _customDateRange.getValue(now);
 
     var pickedRange = await showDateRangePicker(
       context: context,
       initialDateRange: DateTimeRange(
-        start: customValue.startDate,
-        end: customValue.endDate,
+        start: _customDateRange.startDate(now),
+        end: _customDateRange.endDate(now),
       ),
       firstDate: DateTime.fromMillisecondsSinceEpoch(0),
       lastDate: now,
@@ -113,13 +115,9 @@ class _DateRangePickerPageState extends State<DateRangePickerPage> {
       endDate = now;
     }
 
-    var dateRange = DateRange(
-      startDate: pickedRange.start,
-      endDate: endDate,
-    );
-
-    widget.onDateRangePicked(
-      DisplayDateRange.newCustomFromDateRange(dateRange),
-    );
+    widget.onDateRangePicked(DateRange()
+      ..period = DateRange_Period.custom
+      ..startTimestamp = Int64(pickedRange.start.millisecondsSinceEpoch)
+      ..endTimestamp = Int64(endDate.millisecondsSinceEpoch));
   }
 }

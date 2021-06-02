@@ -9,7 +9,6 @@ import 'package:mobile/pages/picker_page.dart';
 import 'package:mobile/pages/save_report_page.dart';
 import 'package:mobile/pages/species_list_page.dart';
 import 'package:mobile/pages/water_clarity_list_page.dart';
-import 'package:mobile/utils/date_time_utils.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mobile/widgets/button.dart';
 import 'package:mobile/widgets/checkbox_input.dart';
@@ -23,6 +22,8 @@ import '../test_utils.dart';
 
 void main() {
   late StubbedAppManager appManager;
+
+  var now = DateTime.fromMillisecondsSinceEpoch(1600000000000);
 
   var anglerList = <Angler>[
     Angler()
@@ -99,8 +100,7 @@ void main() {
     when(appManager.baitManager.filteredList(any)).thenReturn(baitList);
 
     // Sunday, September 13, 2020 12:26:40 PM GMT
-    when(appManager.timeManager.currentDateTime)
-        .thenReturn(DateTime.fromMillisecondsSinceEpoch(1600000000000));
+    when(appManager.timeManager.currentDateTime).thenReturn(now);
 
     when(appManager.reportManager.addOrUpdate(any))
         .thenAnswer((_) => Future.value(false));
@@ -612,8 +612,10 @@ void main() {
     Report report = result.captured.first;
     expect(report.name, "Report Name");
     expect(report.description, "A brief description.");
-    expect(report.fromDisplayDateRangeId, DisplayDateRange.lastMonth.id);
-    expect(report.toDisplayDateRangeId, DisplayDateRange.thisMonth.id);
+    expect(report.hasFromDateRange(), isTrue);
+    expect(report.fromDateRange.period, DateRange_Period.lastMonth);
+    expect(report.hasToDateRange(), isTrue);
+    expect(report.toDateRange.period, DateRange_Period.thisMonth);
     expect(report.anglerIds.length, 1);
     expect(report.baitIds.length, 1);
     expect(report.speciesIds.length, 1);
@@ -650,8 +652,9 @@ void main() {
 
     Report report = result.captured.first;
     expect(report.name, "Report Name");
-    expect(report.fromDisplayDateRangeId, DisplayDateRange.lastMonth.id);
-    expect(report.hasToDisplayDateRangeId(), isFalse);
+    expect(report.hasFromDateRange(), isTrue);
+    expect(report.fromDateRange.period, DateRange_Period.lastMonth);
+    expect(report.hasToDateRange(), isFalse);
     expect(report.anglerIds.isEmpty, isTrue);
     expect(report.baitIds.isEmpty, isTrue);
     expect(report.speciesIds.isEmpty, isTrue);
@@ -675,8 +678,8 @@ void main() {
     await tester.pumpWidget(Testable(
       (context) {
         // Custom DisplayDateRange default to "this month".
-        fromDateRange = DisplayDateRange.thisMonth.value(context);
-        toDateRange = DisplayDateRange.thisMonth.value(context);
+        fromDateRange = DateRange(period: DateRange_Period.thisMonth);
+        toDateRange = DateRange(period: DateRange_Period.thisMonth);
         return SaveReportPage();
       },
       appManager: appManager,
@@ -707,12 +710,14 @@ void main() {
 
     Report report = result.captured.first;
     expect(report.name, "Report Name");
-    expect(report.fromDisplayDateRangeId, DisplayDateRange.custom.id);
-    expect(report.fromStartTimestamp.toInt(), fromDateRange.startMs);
-    expect(report.fromEndTimestamp.toInt(), fromDateRange.endMs);
-    expect(report.toDisplayDateRangeId, DisplayDateRange.custom.id);
-    expect(report.toStartTimestamp.toInt(), toDateRange.startMs);
-    expect(report.toEndTimestamp.toInt(), toDateRange.endMs);
+    expect(report.hasFromDateRange(), isTrue);
+    expect(report.fromDateRange.period, DateRange_Period.custom);
+    expect(report.fromDateRange.startTimestamp.toInt(),
+        fromDateRange.startMs(now));
+    expect(report.fromDateRange.endTimestamp.toInt(), fromDateRange.endMs(now));
+    expect(report.toDateRange.period, DateRange_Period.custom);
+    expect(report.toDateRange.startTimestamp.toInt(), toDateRange.startMs(now));
+    expect(report.toDateRange.endTimestamp.toInt(), toDateRange.endMs(now));
     expect(report.anglerIds, isEmpty);
     expect(report.baitIds, isEmpty);
     expect(report.speciesIds, isEmpty);
@@ -795,8 +800,8 @@ void main() {
       ..id = randomId()
       ..name = "Report Name"
       ..description = "Report description"
-      ..fromDisplayDateRangeId = DisplayDateRange.yesterday.id
-      ..toDisplayDateRangeId = DisplayDateRange.today.id
+      ..fromDateRange = DateRange(period: DateRange_Period.yesterday)
+      ..toDateRange = DateRange(period: DateRange_Period.today)
       ..isFavoritesOnly = true
       ..type = Report_Type.comparison
       ..waterDepthFilter = NumberFilter(
@@ -911,8 +916,8 @@ void main() {
       ..id = randomId()
       ..name = "Report Name"
       ..description = "Report description"
-      ..fromDisplayDateRangeId = DisplayDateRange.yesterday.id
-      ..toDisplayDateRangeId = DisplayDateRange.today.id;
+      ..fromDateRange = DateRange(period: DateRange_Period.yesterday)
+      ..toDateRange = DateRange(period: DateRange_Period.today);
 
     await tester.pumpWidget(Testable(
       (_) => SaveReportPage.edit(report),

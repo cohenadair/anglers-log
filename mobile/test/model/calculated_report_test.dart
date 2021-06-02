@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
 import 'package:mobile/model/calculated_report.dart';
-import 'package:mobile/utils/date_time_utils.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mockito/mockito.dart';
 
@@ -342,7 +341,7 @@ void main() {
     // Normal use case.
     var data = CalculatedReport(
       context: context,
-      displayDateRange: DisplayDateRange.allDates,
+      range: DateRange(period: DateRange_Period.allDates),
     );
 
     expect(data.containsNow, true);
@@ -514,7 +513,7 @@ void main() {
 
     var data = CalculatedReport(
       context: context,
-      displayDateRange: DisplayDateRange.allDates,
+      range: DateRange(period: DateRange_Period.allDates),
       includeZeros: true,
     );
 
@@ -527,7 +526,7 @@ void main() {
 
     var data = CalculatedReport(
       context: context,
-      displayDateRange: DisplayDateRange.allDates,
+      range: DateRange(period: DateRange_Period.allDates),
       sortOrder: CalculatedReportSortOrder.alphabetical,
     );
 
@@ -603,7 +602,7 @@ void main() {
 
     var data = CalculatedReport(
       context: context,
-      displayDateRange: DisplayDateRange.allDates,
+      range: DateRange(period: DateRange_Period.allDates),
     );
 
     expect(data.catchesPerSpecies.keys.toList(), [
@@ -678,7 +677,7 @@ void main() {
 
     var data = CalculatedReport(
       context: context,
-      displayDateRange: DisplayDateRange.allDates,
+      range: DateRange(period: DateRange_Period.allDates),
       isFavoritesOnly: true,
       anglerIds: {anglerId2, anglerId3},
       baitIds: {baitId0, baitId4},
@@ -777,7 +776,7 @@ void main() {
 
     var data = CalculatedReport(
       context: context,
-      displayDateRange: DisplayDateRange.allDates,
+      range: DateRange(period: DateRange_Period.allDates),
       waterDepthFilter: NumberFilter(
         boundary: NumberBoundary.number_boundary_any,
       ),
@@ -804,7 +803,7 @@ void main() {
 
     var data = CalculatedReport(
       context: context,
-      displayDateRange: DisplayDateRange.allDates,
+      range: DateRange(period: DateRange_Period.allDates),
       waterDepthFilter: NumberFilter(
         boundary: NumberBoundary.less_than,
         from: MultiMeasurement(
@@ -871,7 +870,7 @@ void main() {
 
     var data = CalculatedReport(
       context: context,
-      displayDateRange: DisplayDateRange.allDates,
+      range: DateRange(period: DateRange_Period.allDates),
       isFavoritesOnly: false,
       baitIds: {baitId0, baitId4},
       fishingSpotIds: {fishingSpotId0, fishingSpotId2, fishingSpotId1},
@@ -900,14 +899,14 @@ void main() {
 
     var data1 = CalculatedReport(
       context: context,
-      displayDateRange: DisplayDateRange.allDates,
+      range: DateRange(period: DateRange_Period.allDates),
       includeZeros: true,
     );
     expect(data1.catchesPerSpecies.length, 5);
 
     var data2 = CalculatedReport(
       context: context,
-      displayDateRange: DisplayDateRange.allDates,
+      range: DateRange(period: DateRange_Period.allDates),
       includeZeros: true,
     );
     expect(data2.catchesPerSpecies.length, 5);

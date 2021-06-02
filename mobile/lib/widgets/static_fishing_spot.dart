@@ -126,10 +126,12 @@ class _StaticFishingSpotState extends State<StaticFishingSpot> {
               future: Future.delayed(Duration(milliseconds: 50), () => true),
               builder: (context, snapshot) => AnimatedSwitcher(
                 duration: defaultAnimationDuration,
-                child: snapshot.hasData ? Empty() : Container(
-                  color: loadingColor,
-                  constraints: BoxConstraints.expand(),
-                ),
+                child: snapshot.hasData
+                    ? Empty()
+                    : Container(
+                        color: loadingColor,
+                        constraints: BoxConstraints.expand(),
+                      ),
               ),
             ),
           ],

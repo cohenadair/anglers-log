@@ -349,6 +349,55 @@ const Catch$json = const {
 /// Descriptor for `Catch`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List catchDescriptor = $convert.base64Decode(
     'CgVDYXRjaBIeCgJpZBgBIAEoCzIOLmFuZ2xlcnNsb2cuSWRSAmlkEhwKCXRpbWVzdGFtcBgCIAEoBFIJdGltZXN0YW1wEicKB2JhaXRfaWQYAyABKAsyDi5hbmdsZXJzbG9nLklkUgZiYWl0SWQSNgoPZmlzaGluZ19zcG90X2lkGAQgASgLMg4uYW5nbGVyc2xvZy5JZFINZmlzaGluZ1Nwb3RJZBItCgpzcGVjaWVzX2lkGAUgASgLMg4uYW5nbGVyc2xvZy5JZFIJc3BlY2llc0lkEh8KC2ltYWdlX25hbWVzGAYgAygJUgppbWFnZU5hbWVzEk8KFGN1c3RvbV9lbnRpdHlfdmFsdWVzGAcgAygLMh0uYW5nbGVyc2xvZy5DdXN0b21FbnRpdHlWYWx1ZVISY3VzdG9tRW50aXR5VmFsdWVzEisKCWFuZ2xlcl9pZBgIIAEoCzIOLmFuZ2xlcnNsb2cuSWRSCGFuZ2xlcklkEi0KCm1ldGhvZF9pZHMYCSADKAsyDi5hbmdsZXJzbG9nLklkUgltZXRob2RJZHMSKgoGcGVyaW9kGAogASgOMhIuYW5nbGVyc2xvZy5QZXJpb2RSBnBlcmlvZBIfCgtpc19mYXZvcml0ZRgLIAEoCFIKaXNGYXZvcml0ZRIxChV3YXNfY2F0Y2hfYW5kX3JlbGVhc2UYDCABKAhSEndhc0NhdGNoQW5kUmVsZWFzZRIqCgZzZWFzb24YDSABKA4yEi5hbmdsZXJzbG9nLlNlYXNvblIGc2Vhc29uEjgKEHdhdGVyX2NsYXJpdHlfaWQYDiABKAsyDi5hbmdsZXJzbG9nLklkUg53YXRlckNsYXJpdHlJZBI9Cgt3YXRlcl9kZXB0aBgPIAEoCzIcLmFuZ2xlcnNsb2cuTXVsdGlNZWFzdXJlbWVudFIKd2F0ZXJEZXB0aBJJChF3YXRlcl90ZW1wZXJhdHVyZRgQIAEoCzIcLmFuZ2xlcnNsb2cuTXVsdGlNZWFzdXJlbWVudFIQd2F0ZXJUZW1wZXJhdHVyZRI0CgZsZW5ndGgYESABKAsyHC5hbmdsZXJzbG9nLk11bHRpTWVhc3VyZW1lbnRSBmxlbmd0aBI0CgZ3ZWlnaHQYEiABKAsyHC5hbmdsZXJzbG9nLk11bHRpTWVhc3VyZW1lbnRSBndlaWdodBIaCghxdWFudGl0eRgTIAEoDVIIcXVhbnRpdHkSFAoFbm90ZXMYFCABKAlSBW5vdGVz');
+@$core.Deprecated('Use dateRangeDescriptor instead')
+const DateRange$json = const {
+  '1': 'DateRange',
+  '2': const [
+    const {
+      '1': 'period',
+      '3': 1,
+      '4': 1,
+      '5': 14,
+      '6': '.anglerslog.DateRange.Period',
+      '10': 'period'
+    },
+    const {
+      '1': 'start_timestamp',
+      '3': 2,
+      '4': 1,
+      '5': 4,
+      '10': 'startTimestamp'
+    },
+    const {'1': 'end_timestamp', '3': 3, '4': 1, '5': 4, '10': 'endTimestamp'},
+  ],
+  '4': const [DateRange_Period$json],
+};
+
+@$core.Deprecated('Use dateRangeDescriptor instead')
+const DateRange_Period$json = const {
+  '1': 'Period',
+  '2': const [
+    const {'1': 'allDates', '2': 0},
+    const {'1': 'today', '2': 1},
+    const {'1': 'yesterday', '2': 2},
+    const {'1': 'thisWeek', '2': 3},
+    const {'1': 'thisMonth', '2': 4},
+    const {'1': 'thisYear', '2': 5},
+    const {'1': 'lastWeek', '2': 6},
+    const {'1': 'lastMonth', '2': 7},
+    const {'1': 'lastYear', '2': 8},
+    const {'1': 'last7Days', '2': 9},
+    const {'1': 'last14Days', '2': 10},
+    const {'1': 'last30Days', '2': 11},
+    const {'1': 'last60Days', '2': 12},
+    const {'1': 'last12Months', '2': 13},
+    const {'1': 'custom', '2': 14},
+  ],
+};
+
+/// Descriptor for `DateRange`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List dateRangeDescriptor = $convert.base64Decode(
+    'CglEYXRlUmFuZ2USNAoGcGVyaW9kGAEgASgOMhwuYW5nbGVyc2xvZy5EYXRlUmFuZ2UuUGVyaW9kUgZwZXJpb2QSJwoPc3RhcnRfdGltZXN0YW1wGAIgASgEUg5zdGFydFRpbWVzdGFtcBIjCg1lbmRfdGltZXN0YW1wGAMgASgEUgxlbmRUaW1lc3RhbXAi4wEKBlBlcmlvZBIMCghhbGxEYXRlcxAAEgkKBXRvZGF5EAESDQoJeWVzdGVyZGF5EAISDAoIdGhpc1dlZWsQAxINCgl0aGlzTW9udGgQBBIMCgh0aGlzWWVhchAFEgwKCGxhc3RXZWVrEAYSDQoJbGFzdE1vbnRoEAcSDAoIbGFzdFllYXIQCBINCglsYXN0N0RheXMQCRIOCgpsYXN0MTREYXlzEAoSDgoKbGFzdDMwRGF5cxALEg4KCmxhc3Q2MERheXMQDBIQCgxsYXN0MTJNb250aHMQDRIKCgZjdXN0b20QDg==');
 @$core.Deprecated('Use fishingSpotDescriptor instead')
 const FishingSpot$json = const {
   '1': 'FishingSpot',
@@ -446,50 +495,24 @@ const Report$json = const {
       '10': 'type'
     },
     const {
-      '1': 'from_display_date_range_id',
+      '1': 'from_date_range',
       '3': 5,
       '4': 1,
-      '5': 9,
-      '10': 'fromDisplayDateRangeId'
+      '5': 11,
+      '6': '.anglerslog.DateRange',
+      '10': 'fromDateRange'
     },
     const {
-      '1': 'to_display_date_range_id',
+      '1': 'to_date_range',
       '3': 6,
       '4': 1,
-      '5': 9,
-      '10': 'toDisplayDateRangeId'
-    },
-    const {
-      '1': 'from_start_timestamp',
-      '3': 7,
-      '4': 1,
-      '5': 4,
-      '10': 'fromStartTimestamp'
-    },
-    const {
-      '1': 'to_start_timestamp',
-      '3': 8,
-      '4': 1,
-      '5': 4,
-      '10': 'toStartTimestamp'
-    },
-    const {
-      '1': 'from_end_timestamp',
-      '3': 9,
-      '4': 1,
-      '5': 4,
-      '10': 'fromEndTimestamp'
-    },
-    const {
-      '1': 'to_end_timestamp',
-      '3': 10,
-      '4': 1,
-      '5': 4,
-      '10': 'toEndTimestamp'
+      '5': 11,
+      '6': '.anglerslog.DateRange',
+      '10': 'toDateRange'
     },
     const {
       '1': 'bait_ids',
-      '3': 11,
+      '3': 7,
       '4': 3,
       '5': 11,
       '6': '.anglerslog.Id',
@@ -497,7 +520,7 @@ const Report$json = const {
     },
     const {
       '1': 'fishing_spot_ids',
-      '3': 12,
+      '3': 8,
       '4': 3,
       '5': 11,
       '6': '.anglerslog.Id',
@@ -505,7 +528,7 @@ const Report$json = const {
     },
     const {
       '1': 'species_ids',
-      '3': 13,
+      '3': 9,
       '4': 3,
       '5': 11,
       '6': '.anglerslog.Id',
@@ -513,7 +536,7 @@ const Report$json = const {
     },
     const {
       '1': 'angler_ids',
-      '3': 14,
+      '3': 10,
       '4': 3,
       '5': 11,
       '6': '.anglerslog.Id',
@@ -521,7 +544,7 @@ const Report$json = const {
     },
     const {
       '1': 'method_ids',
-      '3': 15,
+      '3': 11,
       '4': 3,
       '5': 11,
       '6': '.anglerslog.Id',
@@ -529,7 +552,7 @@ const Report$json = const {
     },
     const {
       '1': 'periods',
-      '3': 16,
+      '3': 12,
       '4': 3,
       '5': 14,
       '6': '.anglerslog.Period',
@@ -537,21 +560,21 @@ const Report$json = const {
     },
     const {
       '1': 'is_favorites_only',
-      '3': 17,
+      '3': 13,
       '4': 1,
       '5': 8,
       '10': 'isFavoritesOnly'
     },
     const {
       '1': 'is_catch_and_release_only',
-      '3': 18,
+      '3': 14,
       '4': 1,
       '5': 8,
       '10': 'isCatchAndReleaseOnly'
     },
     const {
       '1': 'seasons',
-      '3': 19,
+      '3': 15,
       '4': 3,
       '5': 14,
       '6': '.anglerslog.Season',
@@ -559,7 +582,7 @@ const Report$json = const {
     },
     const {
       '1': 'water_clarity_ids',
-      '3': 20,
+      '3': 16,
       '4': 3,
       '5': 11,
       '6': '.anglerslog.Id',
@@ -567,7 +590,7 @@ const Report$json = const {
     },
     const {
       '1': 'water_depth_filter',
-      '3': 21,
+      '3': 17,
       '4': 1,
       '5': 11,
       '6': '.anglerslog.NumberFilter',
@@ -575,7 +598,7 @@ const Report$json = const {
     },
     const {
       '1': 'water_temperature_filter',
-      '3': 22,
+      '3': 18,
       '4': 1,
       '5': 11,
       '6': '.anglerslog.NumberFilter',
@@ -583,7 +606,7 @@ const Report$json = const {
     },
     const {
       '1': 'length_filter',
-      '3': 23,
+      '3': 19,
       '4': 1,
       '5': 11,
       '6': '.anglerslog.NumberFilter',
@@ -591,7 +614,7 @@ const Report$json = const {
     },
     const {
       '1': 'weight_filter',
-      '3': 24,
+      '3': 20,
       '4': 1,
       '5': 11,
       '6': '.anglerslog.NumberFilter',
@@ -599,7 +622,7 @@ const Report$json = const {
     },
     const {
       '1': 'quantity_filter',
-      '3': 25,
+      '3': 21,
       '4': 1,
       '5': 11,
       '6': '.anglerslog.NumberFilter',
@@ -620,7 +643,7 @@ const Report_Type$json = const {
 
 /// Descriptor for `Report`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List reportDescriptor = $convert.base64Decode(
-    'CgZSZXBvcnQSHgoCaWQYASABKAsyDi5hbmdsZXJzbG9nLklkUgJpZBISCgRuYW1lGAIgASgJUgRuYW1lEiAKC2Rlc2NyaXB0aW9uGAMgASgJUgtkZXNjcmlwdGlvbhIrCgR0eXBlGAQgASgOMhcuYW5nbGVyc2xvZy5SZXBvcnQuVHlwZVIEdHlwZRI6Chpmcm9tX2Rpc3BsYXlfZGF0ZV9yYW5nZV9pZBgFIAEoCVIWZnJvbURpc3BsYXlEYXRlUmFuZ2VJZBI2Chh0b19kaXNwbGF5X2RhdGVfcmFuZ2VfaWQYBiABKAlSFHRvRGlzcGxheURhdGVSYW5nZUlkEjAKFGZyb21fc3RhcnRfdGltZXN0YW1wGAcgASgEUhJmcm9tU3RhcnRUaW1lc3RhbXASLAoSdG9fc3RhcnRfdGltZXN0YW1wGAggASgEUhB0b1N0YXJ0VGltZXN0YW1wEiwKEmZyb21fZW5kX3RpbWVzdGFtcBgJIAEoBFIQZnJvbUVuZFRpbWVzdGFtcBIoChB0b19lbmRfdGltZXN0YW1wGAogASgEUg50b0VuZFRpbWVzdGFtcBIpCghiYWl0X2lkcxgLIAMoCzIOLmFuZ2xlcnNsb2cuSWRSB2JhaXRJZHMSOAoQZmlzaGluZ19zcG90X2lkcxgMIAMoCzIOLmFuZ2xlcnNsb2cuSWRSDmZpc2hpbmdTcG90SWRzEi8KC3NwZWNpZXNfaWRzGA0gAygLMg4uYW5nbGVyc2xvZy5JZFIKc3BlY2llc0lkcxItCgphbmdsZXJfaWRzGA4gAygLMg4uYW5nbGVyc2xvZy5JZFIJYW5nbGVySWRzEi0KCm1ldGhvZF9pZHMYDyADKAsyDi5hbmdsZXJzbG9nLklkUgltZXRob2RJZHMSLAoHcGVyaW9kcxgQIAMoDjISLmFuZ2xlcnNsb2cuUGVyaW9kUgdwZXJpb2RzEioKEWlzX2Zhdm9yaXRlc19vbmx5GBEgASgIUg9pc0Zhdm9yaXRlc09ubHkSOAoZaXNfY2F0Y2hfYW5kX3JlbGVhc2Vfb25seRgSIAEoCFIVaXNDYXRjaEFuZFJlbGVhc2VPbmx5EiwKB3NlYXNvbnMYEyADKA4yEi5hbmdsZXJzbG9nLlNlYXNvblIHc2Vhc29ucxI6ChF3YXRlcl9jbGFyaXR5X2lkcxgUIAMoCzIOLmFuZ2xlcnNsb2cuSWRSD3dhdGVyQ2xhcml0eUlkcxJGChJ3YXRlcl9kZXB0aF9maWx0ZXIYFSABKAsyGC5hbmdsZXJzbG9nLk51bWJlckZpbHRlclIQd2F0ZXJEZXB0aEZpbHRlchJSChh3YXRlcl90ZW1wZXJhdHVyZV9maWx0ZXIYFiABKAsyGC5hbmdsZXJzbG9nLk51bWJlckZpbHRlclIWd2F0ZXJUZW1wZXJhdHVyZUZpbHRlchI9Cg1sZW5ndGhfZmlsdGVyGBcgASgLMhguYW5nbGVyc2xvZy5OdW1iZXJGaWx0ZXJSDGxlbmd0aEZpbHRlchI9Cg13ZWlnaHRfZmlsdGVyGBggASgLMhguYW5nbGVyc2xvZy5OdW1iZXJGaWx0ZXJSDHdlaWdodEZpbHRlchJBCg9xdWFudGl0eV9maWx0ZXIYGSABKAsyGC5hbmdsZXJzbG9nLk51bWJlckZpbHRlclIOcXVhbnRpdHlGaWx0ZXIiIwoEVHlwZRILCgdzdW1tYXJ5EAASDgoKY29tcGFyaXNvbhAB');
+    'CgZSZXBvcnQSHgoCaWQYASABKAsyDi5hbmdsZXJzbG9nLklkUgJpZBISCgRuYW1lGAIgASgJUgRuYW1lEiAKC2Rlc2NyaXB0aW9uGAMgASgJUgtkZXNjcmlwdGlvbhIrCgR0eXBlGAQgASgOMhcuYW5nbGVyc2xvZy5SZXBvcnQuVHlwZVIEdHlwZRI9Cg9mcm9tX2RhdGVfcmFuZ2UYBSABKAsyFS5hbmdsZXJzbG9nLkRhdGVSYW5nZVINZnJvbURhdGVSYW5nZRI5Cg10b19kYXRlX3JhbmdlGAYgASgLMhUuYW5nbGVyc2xvZy5EYXRlUmFuZ2VSC3RvRGF0ZVJhbmdlEikKCGJhaXRfaWRzGAcgAygLMg4uYW5nbGVyc2xvZy5JZFIHYmFpdElkcxI4ChBmaXNoaW5nX3Nwb3RfaWRzGAggAygLMg4uYW5nbGVyc2xvZy5JZFIOZmlzaGluZ1Nwb3RJZHMSLwoLc3BlY2llc19pZHMYCSADKAsyDi5hbmdsZXJzbG9nLklkUgpzcGVjaWVzSWRzEi0KCmFuZ2xlcl9pZHMYCiADKAsyDi5hbmdsZXJzbG9nLklkUglhbmdsZXJJZHMSLQoKbWV0aG9kX2lkcxgLIAMoCzIOLmFuZ2xlcnNsb2cuSWRSCW1ldGhvZElkcxIsCgdwZXJpb2RzGAwgAygOMhIuYW5nbGVyc2xvZy5QZXJpb2RSB3BlcmlvZHMSKgoRaXNfZmF2b3JpdGVzX29ubHkYDSABKAhSD2lzRmF2b3JpdGVzT25seRI4Chlpc19jYXRjaF9hbmRfcmVsZWFzZV9vbmx5GA4gASgIUhVpc0NhdGNoQW5kUmVsZWFzZU9ubHkSLAoHc2Vhc29ucxgPIAMoDjISLmFuZ2xlcnNsb2cuU2Vhc29uUgdzZWFzb25zEjoKEXdhdGVyX2NsYXJpdHlfaWRzGBAgAygLMg4uYW5nbGVyc2xvZy5JZFIPd2F0ZXJDbGFyaXR5SWRzEkYKEndhdGVyX2RlcHRoX2ZpbHRlchgRIAEoCzIYLmFuZ2xlcnNsb2cuTnVtYmVyRmlsdGVyUhB3YXRlckRlcHRoRmlsdGVyElIKGHdhdGVyX3RlbXBlcmF0dXJlX2ZpbHRlchgSIAEoCzIYLmFuZ2xlcnNsb2cuTnVtYmVyRmlsdGVyUhZ3YXRlclRlbXBlcmF0dXJlRmlsdGVyEj0KDWxlbmd0aF9maWx0ZXIYEyABKAsyGC5hbmdsZXJzbG9nLk51bWJlckZpbHRlclIMbGVuZ3RoRmlsdGVyEj0KDXdlaWdodF9maWx0ZXIYFCABKAsyGC5hbmdsZXJzbG9nLk51bWJlckZpbHRlclIMd2VpZ2h0RmlsdGVyEkEKD3F1YW50aXR5X2ZpbHRlchgVIAEoCzIYLmFuZ2xlcnNsb2cuTnVtYmVyRmlsdGVyUg5xdWFudGl0eUZpbHRlciIjCgRUeXBlEgsKB3N1bW1hcnkQABIOCgpjb21wYXJpc29uEAE=');
 @$core.Deprecated('Use anglerDescriptor instead')
 const Angler$json = const {
   '1': 'Angler',

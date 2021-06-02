@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
-import 'package:mobile/utils/date_time_utils.dart';
 import 'package:mobile/widgets/chart.dart';
 import 'package:mobile/widgets/widget.dart';
 import 'package:mockito/mockito.dart';
@@ -15,7 +14,7 @@ void main() {
         (tester) async {
       var series = Series<Species>({
         Species()..name = "Bass": 5,
-      }, DisplayDateRange.last7Days);
+      }, DateRange(period: DateRange_Period.last7Days));
 
       await tester.pumpWidget(
         Testable(
@@ -54,12 +53,12 @@ void main() {
         (tester) async {
       var series1 = Series<Species>({
         Species()..name = "Bass": 5,
-      }, DisplayDateRange.last7Days);
+      }, DateRange(period: DateRange_Period.last7Days));
 
       var series2 = Series<Species>({
         Species()..name = "Bass": 5,
         Species()..name = "Trout": 10,
-      }, DisplayDateRange.last7Days);
+      }, DateRange(period: DateRange_Period.last7Days));
 
       await tester.pumpWidget(
         Testable(
@@ -80,7 +79,7 @@ void main() {
       var series = Series<Species>({
         Species()..name = "Bass": 5,
         Species()..name = "Trout": 10,
-      }, DisplayDateRange.last7Days);
+      }, DateRange(period: DateRange_Period.last7Days));
 
       await tester.pumpWidget(
         Testable(
@@ -100,12 +99,12 @@ void main() {
       var series1 = Series<Species>({
         Species()..name = "Bass": 5,
         Species()..name = "Trout": 10,
-      }, DisplayDateRange.last7Days);
+      }, DateRange(period: DateRange_Period.last7Days));
 
       var series2 = Series<Species>({
         Species()..name = "Bass": 8,
         Species()..name = "Trout": 11,
-      }, DisplayDateRange.lastMonth);
+      }, DateRange(period: DateRange_Period.lastMonth));
 
       await tester.pumpWidget(
         Testable(
@@ -126,11 +125,11 @@ void main() {
     testWidgets("Series max value 0 shows empty rows", (tester) async {
       var series1 = Series<Species>({
         Species()..name = "Bass": 0,
-      }, DisplayDateRange.last7Days);
+      }, DateRange(period: DateRange_Period.last7Days));
 
       var series2 = Series<Species>({
         Species()..name = "Bass": 0,
-      }, DisplayDateRange.lastMonth);
+      }, DateRange(period: DateRange_Period.lastMonth));
 
       await tester.pumpWidget(
         Testable(
@@ -151,7 +150,7 @@ void main() {
 
       var series = Series<Species>({
         Species()..name = "Bass": 10,
-      }, DisplayDateRange.lastMonth);
+      }, DateRange(period: DateRange_Period.lastMonth));
 
       var tapped = false;
       await tester.pumpWidget(Testable(
@@ -180,21 +179,21 @@ void main() {
         Species()..name = "Catfish": 3,
         Species()..name = "Skipjack": 17,
         Species()..name = "Pike": 30,
-      }, DisplayDateRange.lastYear);
+      }, DateRange(period: DateRange_Period.lastYear));
 
       var series2 = Series<Species>({
         Species()..name = "Bass": 12,
         Species()..name = "Catfish": 5,
         Species()..name = "Skipjack": 13,
         Species()..name = "Pike": 15,
-      }, DisplayDateRange.thisYear);
+      }, DateRange(period: DateRange_Period.thisYear));
 
       var series3 = Series<Species>({
         Species()..name = "Bass": 0,
         Species()..name = "Catfish": 0,
         Species()..name = "Skipjack": 0,
         Species()..name = "Pike": 0,
-      }, DisplayDateRange.lastMonth);
+      }, DateRange(period: DateRange_Period.lastMonth));
 
       await tester.pumpWidget(
         Testable(
@@ -240,14 +239,14 @@ void main() {
         Species()..name = "Catfish": 3,
         Species()..name = "Skipjack": 17,
         Species()..name = "Pike": 30,
-      }, DisplayDateRange.lastYear);
+      }, DateRange(period: DateRange_Period.lastYear));
 
       var series2 = Series<Species>({
         Species()..name = "Bass": 12,
         Species()..name = "Catfish": 5,
         Species()..name = "Skipjack": 13,
         Species()..name = "Pike": 15,
-      }, DisplayDateRange.thisYear);
+      }, DateRange(period: DateRange_Period.thisYear));
 
       await tester.pumpWidget(
         Testable(
@@ -268,12 +267,12 @@ void main() {
       var series1 = Series<Species>({
         Species()..name = "Bass": 10,
         Species()..name = "Catfish": 3,
-      }, DisplayDateRange.lastYear);
+      }, DateRange(period: DateRange_Period.lastYear));
 
       var series2 = Series<Species>({
         Species()..name = "Bass": 12,
         Species()..name = "Catfish": 5,
-      }, DisplayDateRange.thisYear);
+      }, DateRange(period: DateRange_Period.thisYear));
 
       await tester.pumpWidget(
         Testable(
@@ -295,14 +294,14 @@ void main() {
         Species()..name = "Catfish": 3,
         Species()..name = "Skipjack": 17,
         Species()..name = "Pike": 30,
-      }, DisplayDateRange.lastYear);
+      }, DateRange(period: DateRange_Period.lastYear));
 
       var series2 = Series<Species>({
         Species()..name = "Bass": 12,
         Species()..name = "Catfish": 5,
         Species()..name = "Skipjack": 13,
         Species()..name = "Pike": 15,
-      }, DisplayDateRange.thisYear);
+      }, DateRange(period: DateRange_Period.thisYear));
 
       await tester.pumpWidget(
         Testable(
@@ -338,7 +337,7 @@ void main() {
         Species()..name = "Catfish": 3,
         Species()..name = "Skipjack": 17,
         Species()..name = "Pike": 30,
-      }, DisplayDateRange.lastYear);
+      }, DateRange(period: DateRange_Period.lastYear));
 
       await tester.pumpWidget(Testable(
         (_) => Chart(
@@ -369,7 +368,7 @@ void main() {
         Species()..name = "Catfish": 3,
         Species()..name = "Skipjack": 17,
         Species()..name = "Pike": 30,
-      }, DisplayDateRange.lastYear);
+      }, DateRange(period: DateRange_Period.lastYear));
 
       await tester.pumpWidget(Testable(
         (_) => Chart(

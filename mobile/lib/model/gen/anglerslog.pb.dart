@@ -885,6 +885,110 @@ class Catch extends $pb.GeneratedMessage {
   void clearNotes() => clearField(20);
 }
 
+class DateRange extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      const $core.bool.fromEnvironment('protobuf.omit_message_names')
+          ? ''
+          : 'DateRange',
+      package: const $pb.PackageName(
+          const $core.bool.fromEnvironment('protobuf.omit_message_names')
+              ? ''
+              : 'anglerslog'),
+      createEmptyInstance: create)
+    ..e<DateRange_Period>(
+        1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'period', $pb.PbFieldType.OE,
+        defaultOrMaker: DateRange_Period.allDates,
+        valueOf: DateRange_Period.valueOf,
+        enumValues: DateRange_Period.values)
+    ..a<$fixnum.Int64>(
+        2,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'startTimestamp',
+        $pb.PbFieldType.OU6,
+        defaultOrMaker: $fixnum.Int64.ZERO)
+    ..a<$fixnum.Int64>(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'endTimestamp', $pb.PbFieldType.OU6, defaultOrMaker: $fixnum.Int64.ZERO)
+    ..hasRequiredFields = false;
+
+  DateRange._() : super();
+  factory DateRange({
+    DateRange_Period? period,
+    $fixnum.Int64? startTimestamp,
+    $fixnum.Int64? endTimestamp,
+  }) {
+    final _result = create();
+    if (period != null) {
+      _result.period = period;
+    }
+    if (startTimestamp != null) {
+      _result.startTimestamp = startTimestamp;
+    }
+    if (endTimestamp != null) {
+      _result.endTimestamp = endTimestamp;
+    }
+    return _result;
+  }
+  factory DateRange.fromBuffer($core.List<$core.int> i,
+          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(i, r);
+  factory DateRange.fromJson($core.String i,
+          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(i, r);
+  @$core.Deprecated('Using this can add significant overhead to your binary. '
+      'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+      'Will be removed in next major version')
+  DateRange clone() => DateRange()..mergeFromMessage(this);
+  @$core.Deprecated('Using this can add significant overhead to your binary. '
+      'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+      'Will be removed in next major version')
+  DateRange copyWith(void Function(DateRange) updates) =>
+      super.copyWith((message) => updates(message as DateRange))
+          as DateRange; // ignore: deprecated_member_use
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static DateRange create() => DateRange._();
+  DateRange createEmptyInstance() => create();
+  static $pb.PbList<DateRange> createRepeated() => $pb.PbList<DateRange>();
+  @$core.pragma('dart2js:noInline')
+  static DateRange getDefault() =>
+      _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<DateRange>(create);
+  static DateRange? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  DateRange_Period get period => $_getN(0);
+  @$pb.TagNumber(1)
+  set period(DateRange_Period v) {
+    setField(1, v);
+  }
+
+  @$pb.TagNumber(1)
+  $core.bool hasPeriod() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearPeriod() => clearField(1);
+
+  @$pb.TagNumber(2)
+  $fixnum.Int64 get startTimestamp => $_getI64(1);
+  @$pb.TagNumber(2)
+  set startTimestamp($fixnum.Int64 v) {
+    $_setInt64(1, v);
+  }
+
+  @$pb.TagNumber(2)
+  $core.bool hasStartTimestamp() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearStartTimestamp() => clearField(2);
+
+  @$pb.TagNumber(3)
+  $fixnum.Int64 get endTimestamp => $_getI64(2);
+  @$pb.TagNumber(3)
+  set endTimestamp($fixnum.Int64 v) {
+    $_setInt64(2, v);
+  }
+
+  @$pb.TagNumber(3)
+  $core.bool hasEndTimestamp() => $_has(2);
+  @$pb.TagNumber(3)
+  void clearEndTimestamp() => clearField(3);
+}
+
 class FishingSpot extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(
       const $core.bool.fromEnvironment('protobuf.omit_message_names')
@@ -1227,27 +1331,23 @@ class Report extends $pb.GeneratedMessage {
         defaultOrMaker: Report_Type.summary,
         valueOf: Report_Type.valueOf,
         enumValues: Report_Type.values)
-    ..aOS(5, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'fromDisplayDateRangeId')
-    ..aOS(6, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'toDisplayDateRangeId')
-    ..a<$fixnum.Int64>(7, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'fromStartTimestamp', $pb.PbFieldType.OU6, defaultOrMaker: $fixnum.Int64.ZERO)
-    ..a<$fixnum.Int64>(8, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'toStartTimestamp', $pb.PbFieldType.OU6, defaultOrMaker: $fixnum.Int64.ZERO)
-    ..a<$fixnum.Int64>(9, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'fromEndTimestamp', $pb.PbFieldType.OU6, defaultOrMaker: $fixnum.Int64.ZERO)
-    ..a<$fixnum.Int64>(10, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'toEndTimestamp', $pb.PbFieldType.OU6, defaultOrMaker: $fixnum.Int64.ZERO)
-    ..pc<Id>(11, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'baitIds', $pb.PbFieldType.PM, subBuilder: Id.create)
-    ..pc<Id>(12, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'fishingSpotIds', $pb.PbFieldType.PM, subBuilder: Id.create)
-    ..pc<Id>(13, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'speciesIds', $pb.PbFieldType.PM, subBuilder: Id.create)
-    ..pc<Id>(14, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'anglerIds', $pb.PbFieldType.PM, subBuilder: Id.create)
-    ..pc<Id>(15, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'methodIds', $pb.PbFieldType.PM, subBuilder: Id.create)
-    ..pc<Period>(16, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'periods', $pb.PbFieldType.PE, valueOf: Period.valueOf, enumValues: Period.values)
-    ..aOB(17, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'isFavoritesOnly')
-    ..aOB(18, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'isCatchAndReleaseOnly')
-    ..pc<Season>(19, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'seasons', $pb.PbFieldType.PE, valueOf: Season.valueOf, enumValues: Season.values)
-    ..pc<Id>(20, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'waterClarityIds', $pb.PbFieldType.PM, subBuilder: Id.create)
-    ..aOM<NumberFilter>(21, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'waterDepthFilter', subBuilder: NumberFilter.create)
-    ..aOM<NumberFilter>(22, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'waterTemperatureFilter', subBuilder: NumberFilter.create)
-    ..aOM<NumberFilter>(23, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'lengthFilter', subBuilder: NumberFilter.create)
-    ..aOM<NumberFilter>(24, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'weightFilter', subBuilder: NumberFilter.create)
-    ..aOM<NumberFilter>(25, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'quantityFilter', subBuilder: NumberFilter.create)
+    ..aOM<DateRange>(5, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'fromDateRange', subBuilder: DateRange.create)
+    ..aOM<DateRange>(6, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'toDateRange', subBuilder: DateRange.create)
+    ..pc<Id>(7, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'baitIds', $pb.PbFieldType.PM, subBuilder: Id.create)
+    ..pc<Id>(8, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'fishingSpotIds', $pb.PbFieldType.PM, subBuilder: Id.create)
+    ..pc<Id>(9, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'speciesIds', $pb.PbFieldType.PM, subBuilder: Id.create)
+    ..pc<Id>(10, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'anglerIds', $pb.PbFieldType.PM, subBuilder: Id.create)
+    ..pc<Id>(11, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'methodIds', $pb.PbFieldType.PM, subBuilder: Id.create)
+    ..pc<Period>(12, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'periods', $pb.PbFieldType.PE, valueOf: Period.valueOf, enumValues: Period.values)
+    ..aOB(13, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'isFavoritesOnly')
+    ..aOB(14, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'isCatchAndReleaseOnly')
+    ..pc<Season>(15, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'seasons', $pb.PbFieldType.PE, valueOf: Season.valueOf, enumValues: Season.values)
+    ..pc<Id>(16, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'waterClarityIds', $pb.PbFieldType.PM, subBuilder: Id.create)
+    ..aOM<NumberFilter>(17, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'waterDepthFilter', subBuilder: NumberFilter.create)
+    ..aOM<NumberFilter>(18, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'waterTemperatureFilter', subBuilder: NumberFilter.create)
+    ..aOM<NumberFilter>(19, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'lengthFilter', subBuilder: NumberFilter.create)
+    ..aOM<NumberFilter>(20, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'weightFilter', subBuilder: NumberFilter.create)
+    ..aOM<NumberFilter>(21, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'quantityFilter', subBuilder: NumberFilter.create)
     ..hasRequiredFields = false;
 
   Report._() : super();
@@ -1256,12 +1356,8 @@ class Report extends $pb.GeneratedMessage {
     $core.String? name,
     $core.String? description,
     Report_Type? type,
-    $core.String? fromDisplayDateRangeId,
-    $core.String? toDisplayDateRangeId,
-    $fixnum.Int64? fromStartTimestamp,
-    $fixnum.Int64? toStartTimestamp,
-    $fixnum.Int64? fromEndTimestamp,
-    $fixnum.Int64? toEndTimestamp,
+    DateRange? fromDateRange,
+    DateRange? toDateRange,
     $core.Iterable<Id>? baitIds,
     $core.Iterable<Id>? fishingSpotIds,
     $core.Iterable<Id>? speciesIds,
@@ -1291,23 +1387,11 @@ class Report extends $pb.GeneratedMessage {
     if (type != null) {
       _result.type = type;
     }
-    if (fromDisplayDateRangeId != null) {
-      _result.fromDisplayDateRangeId = fromDisplayDateRangeId;
+    if (fromDateRange != null) {
+      _result.fromDateRange = fromDateRange;
     }
-    if (toDisplayDateRangeId != null) {
-      _result.toDisplayDateRangeId = toDisplayDateRangeId;
-    }
-    if (fromStartTimestamp != null) {
-      _result.fromStartTimestamp = fromStartTimestamp;
-    }
-    if (toStartTimestamp != null) {
-      _result.toStartTimestamp = toStartTimestamp;
-    }
-    if (fromEndTimestamp != null) {
-      _result.fromEndTimestamp = fromEndTimestamp;
-    }
-    if (toEndTimestamp != null) {
-      _result.toEndTimestamp = toEndTimestamp;
+    if (toDateRange != null) {
+      _result.toDateRange = toDateRange;
     }
     if (baitIds != null) {
       _result.baitIds.addAll(baitIds);
@@ -1433,194 +1517,150 @@ class Report extends $pb.GeneratedMessage {
   void clearType() => clearField(4);
 
   @$pb.TagNumber(5)
-  $core.String get fromDisplayDateRangeId => $_getSZ(4);
+  DateRange get fromDateRange => $_getN(4);
   @$pb.TagNumber(5)
-  set fromDisplayDateRangeId($core.String v) {
-    $_setString(4, v);
+  set fromDateRange(DateRange v) {
+    setField(5, v);
   }
 
   @$pb.TagNumber(5)
-  $core.bool hasFromDisplayDateRangeId() => $_has(4);
+  $core.bool hasFromDateRange() => $_has(4);
   @$pb.TagNumber(5)
-  void clearFromDisplayDateRangeId() => clearField(5);
+  void clearFromDateRange() => clearField(5);
+  @$pb.TagNumber(5)
+  DateRange ensureFromDateRange() => $_ensure(4);
 
   @$pb.TagNumber(6)
-  $core.String get toDisplayDateRangeId => $_getSZ(5);
+  DateRange get toDateRange => $_getN(5);
   @$pb.TagNumber(6)
-  set toDisplayDateRangeId($core.String v) {
-    $_setString(5, v);
+  set toDateRange(DateRange v) {
+    setField(6, v);
   }
 
   @$pb.TagNumber(6)
-  $core.bool hasToDisplayDateRangeId() => $_has(5);
+  $core.bool hasToDateRange() => $_has(5);
   @$pb.TagNumber(6)
-  void clearToDisplayDateRangeId() => clearField(6);
+  void clearToDateRange() => clearField(6);
+  @$pb.TagNumber(6)
+  DateRange ensureToDateRange() => $_ensure(5);
 
   @$pb.TagNumber(7)
-  $fixnum.Int64 get fromStartTimestamp => $_getI64(6);
-  @$pb.TagNumber(7)
-  set fromStartTimestamp($fixnum.Int64 v) {
-    $_setInt64(6, v);
-  }
-
-  @$pb.TagNumber(7)
-  $core.bool hasFromStartTimestamp() => $_has(6);
-  @$pb.TagNumber(7)
-  void clearFromStartTimestamp() => clearField(7);
+  $core.List<Id> get baitIds => $_getList(6);
 
   @$pb.TagNumber(8)
-  $fixnum.Int64 get toStartTimestamp => $_getI64(7);
-  @$pb.TagNumber(8)
-  set toStartTimestamp($fixnum.Int64 v) {
-    $_setInt64(7, v);
-  }
-
-  @$pb.TagNumber(8)
-  $core.bool hasToStartTimestamp() => $_has(7);
-  @$pb.TagNumber(8)
-  void clearToStartTimestamp() => clearField(8);
+  $core.List<Id> get fishingSpotIds => $_getList(7);
 
   @$pb.TagNumber(9)
-  $fixnum.Int64 get fromEndTimestamp => $_getI64(8);
-  @$pb.TagNumber(9)
-  set fromEndTimestamp($fixnum.Int64 v) {
-    $_setInt64(8, v);
-  }
-
-  @$pb.TagNumber(9)
-  $core.bool hasFromEndTimestamp() => $_has(8);
-  @$pb.TagNumber(9)
-  void clearFromEndTimestamp() => clearField(9);
+  $core.List<Id> get speciesIds => $_getList(8);
 
   @$pb.TagNumber(10)
-  $fixnum.Int64 get toEndTimestamp => $_getI64(9);
-  @$pb.TagNumber(10)
-  set toEndTimestamp($fixnum.Int64 v) {
-    $_setInt64(9, v);
-  }
-
-  @$pb.TagNumber(10)
-  $core.bool hasToEndTimestamp() => $_has(9);
-  @$pb.TagNumber(10)
-  void clearToEndTimestamp() => clearField(10);
+  $core.List<Id> get anglerIds => $_getList(9);
 
   @$pb.TagNumber(11)
-  $core.List<Id> get baitIds => $_getList(10);
+  $core.List<Id> get methodIds => $_getList(10);
 
   @$pb.TagNumber(12)
-  $core.List<Id> get fishingSpotIds => $_getList(11);
+  $core.List<Period> get periods => $_getList(11);
 
   @$pb.TagNumber(13)
-  $core.List<Id> get speciesIds => $_getList(12);
+  $core.bool get isFavoritesOnly => $_getBF(12);
+  @$pb.TagNumber(13)
+  set isFavoritesOnly($core.bool v) {
+    $_setBool(12, v);
+  }
+
+  @$pb.TagNumber(13)
+  $core.bool hasIsFavoritesOnly() => $_has(12);
+  @$pb.TagNumber(13)
+  void clearIsFavoritesOnly() => clearField(13);
 
   @$pb.TagNumber(14)
-  $core.List<Id> get anglerIds => $_getList(13);
+  $core.bool get isCatchAndReleaseOnly => $_getBF(13);
+  @$pb.TagNumber(14)
+  set isCatchAndReleaseOnly($core.bool v) {
+    $_setBool(13, v);
+  }
+
+  @$pb.TagNumber(14)
+  $core.bool hasIsCatchAndReleaseOnly() => $_has(13);
+  @$pb.TagNumber(14)
+  void clearIsCatchAndReleaseOnly() => clearField(14);
 
   @$pb.TagNumber(15)
-  $core.List<Id> get methodIds => $_getList(14);
+  $core.List<Season> get seasons => $_getList(14);
 
   @$pb.TagNumber(16)
-  $core.List<Period> get periods => $_getList(15);
+  $core.List<Id> get waterClarityIds => $_getList(15);
 
   @$pb.TagNumber(17)
-  $core.bool get isFavoritesOnly => $_getBF(16);
+  NumberFilter get waterDepthFilter => $_getN(16);
   @$pb.TagNumber(17)
-  set isFavoritesOnly($core.bool v) {
-    $_setBool(16, v);
+  set waterDepthFilter(NumberFilter v) {
+    setField(17, v);
   }
 
   @$pb.TagNumber(17)
-  $core.bool hasIsFavoritesOnly() => $_has(16);
+  $core.bool hasWaterDepthFilter() => $_has(16);
   @$pb.TagNumber(17)
-  void clearIsFavoritesOnly() => clearField(17);
+  void clearWaterDepthFilter() => clearField(17);
+  @$pb.TagNumber(17)
+  NumberFilter ensureWaterDepthFilter() => $_ensure(16);
 
   @$pb.TagNumber(18)
-  $core.bool get isCatchAndReleaseOnly => $_getBF(17);
+  NumberFilter get waterTemperatureFilter => $_getN(17);
   @$pb.TagNumber(18)
-  set isCatchAndReleaseOnly($core.bool v) {
-    $_setBool(17, v);
+  set waterTemperatureFilter(NumberFilter v) {
+    setField(18, v);
   }
 
   @$pb.TagNumber(18)
-  $core.bool hasIsCatchAndReleaseOnly() => $_has(17);
+  $core.bool hasWaterTemperatureFilter() => $_has(17);
   @$pb.TagNumber(18)
-  void clearIsCatchAndReleaseOnly() => clearField(18);
+  void clearWaterTemperatureFilter() => clearField(18);
+  @$pb.TagNumber(18)
+  NumberFilter ensureWaterTemperatureFilter() => $_ensure(17);
 
   @$pb.TagNumber(19)
-  $core.List<Season> get seasons => $_getList(18);
+  NumberFilter get lengthFilter => $_getN(18);
+  @$pb.TagNumber(19)
+  set lengthFilter(NumberFilter v) {
+    setField(19, v);
+  }
+
+  @$pb.TagNumber(19)
+  $core.bool hasLengthFilter() => $_has(18);
+  @$pb.TagNumber(19)
+  void clearLengthFilter() => clearField(19);
+  @$pb.TagNumber(19)
+  NumberFilter ensureLengthFilter() => $_ensure(18);
 
   @$pb.TagNumber(20)
-  $core.List<Id> get waterClarityIds => $_getList(19);
+  NumberFilter get weightFilter => $_getN(19);
+  @$pb.TagNumber(20)
+  set weightFilter(NumberFilter v) {
+    setField(20, v);
+  }
+
+  @$pb.TagNumber(20)
+  $core.bool hasWeightFilter() => $_has(19);
+  @$pb.TagNumber(20)
+  void clearWeightFilter() => clearField(20);
+  @$pb.TagNumber(20)
+  NumberFilter ensureWeightFilter() => $_ensure(19);
 
   @$pb.TagNumber(21)
-  NumberFilter get waterDepthFilter => $_getN(20);
+  NumberFilter get quantityFilter => $_getN(20);
   @$pb.TagNumber(21)
-  set waterDepthFilter(NumberFilter v) {
+  set quantityFilter(NumberFilter v) {
     setField(21, v);
   }
 
   @$pb.TagNumber(21)
-  $core.bool hasWaterDepthFilter() => $_has(20);
+  $core.bool hasQuantityFilter() => $_has(20);
   @$pb.TagNumber(21)
-  void clearWaterDepthFilter() => clearField(21);
+  void clearQuantityFilter() => clearField(21);
   @$pb.TagNumber(21)
-  NumberFilter ensureWaterDepthFilter() => $_ensure(20);
-
-  @$pb.TagNumber(22)
-  NumberFilter get waterTemperatureFilter => $_getN(21);
-  @$pb.TagNumber(22)
-  set waterTemperatureFilter(NumberFilter v) {
-    setField(22, v);
-  }
-
-  @$pb.TagNumber(22)
-  $core.bool hasWaterTemperatureFilter() => $_has(21);
-  @$pb.TagNumber(22)
-  void clearWaterTemperatureFilter() => clearField(22);
-  @$pb.TagNumber(22)
-  NumberFilter ensureWaterTemperatureFilter() => $_ensure(21);
-
-  @$pb.TagNumber(23)
-  NumberFilter get lengthFilter => $_getN(22);
-  @$pb.TagNumber(23)
-  set lengthFilter(NumberFilter v) {
-    setField(23, v);
-  }
-
-  @$pb.TagNumber(23)
-  $core.bool hasLengthFilter() => $_has(22);
-  @$pb.TagNumber(23)
-  void clearLengthFilter() => clearField(23);
-  @$pb.TagNumber(23)
-  NumberFilter ensureLengthFilter() => $_ensure(22);
-
-  @$pb.TagNumber(24)
-  NumberFilter get weightFilter => $_getN(23);
-  @$pb.TagNumber(24)
-  set weightFilter(NumberFilter v) {
-    setField(24, v);
-  }
-
-  @$pb.TagNumber(24)
-  $core.bool hasWeightFilter() => $_has(23);
-  @$pb.TagNumber(24)
-  void clearWeightFilter() => clearField(24);
-  @$pb.TagNumber(24)
-  NumberFilter ensureWeightFilter() => $_ensure(23);
-
-  @$pb.TagNumber(25)
-  NumberFilter get quantityFilter => $_getN(24);
-  @$pb.TagNumber(25)
-  set quantityFilter(NumberFilter v) {
-    setField(25, v);
-  }
-
-  @$pb.TagNumber(25)
-  $core.bool hasQuantityFilter() => $_has(24);
-  @$pb.TagNumber(25)
-  void clearQuantityFilter() => clearField(25);
-  @$pb.TagNumber(25)
-  NumberFilter ensureQuantityFilter() => $_ensure(24);
+  NumberFilter ensureQuantityFilter() => $_ensure(20);
 }
 
 class Angler extends $pb.GeneratedMessage {

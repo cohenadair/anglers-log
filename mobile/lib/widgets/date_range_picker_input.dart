@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 
+import '../model/gen/anglerslog.pb.dart';
 import '../pages/date_range_picker_page.dart';
-import '../utils/date_time_utils.dart';
 import '../utils/page_utils.dart';
+import '../utils/protobuf_utils.dart';
 import '../widgets/list_picker_input.dart';
 
 class DateRangePickerInput extends StatefulWidget {
@@ -11,8 +12,8 @@ class DateRangePickerInput extends StatefulWidget {
   /// See [ListPickerInput.title].
   final String? title;
 
-  final DisplayDateRange? initialDateRange;
-  final void Function(DisplayDateRange) onPicked;
+  final DateRange? initialDateRange;
+  final void Function(DateRange) onPicked;
 
   DateRangePickerInput({
     this.key,
@@ -26,19 +27,20 @@ class DateRangePickerInput extends StatefulWidget {
 }
 
 class _DateRangePickerInputState extends State<DateRangePickerInput> {
-  late DisplayDateRange _currentDateRange;
+  late DateRange _currentDateRange;
 
   @override
   void initState() {
     super.initState();
-    _currentDateRange = widget.initialDateRange ?? DisplayDateRange.allDates;
+    _currentDateRange =
+        widget.initialDateRange ?? DateRange(period: DateRange_Period.allDates);
   }
 
   @override
   Widget build(BuildContext context) {
     return ListPickerInput(
       title: widget.title,
-      value: _currentDateRange.title(context),
+      value: _currentDateRange.displayName(context),
       onTap: () {
         push(
           context,

@@ -15,6 +15,7 @@ import 'image_manager.dart';
 import 'method_manager.dart';
 import 'model/gen/anglerslog.pb.dart';
 import 'species_manager.dart';
+import 'time_manager.dart';
 import 'utils/catch_utils.dart';
 import 'utils/date_time_utils.dart';
 import 'utils/protobuf_utils.dart';
@@ -39,6 +40,8 @@ class CatchManager extends EntityManager<Catch> {
   MethodManager get _methodManager => appManager.methodManager;
 
   SpeciesManager get _speciesManager => appManager.speciesManager;
+
+  TimeManager get _timeManager => appManager.timeManager;
 
   WaterClarityManager get _waterClarityManager =>
       appManager.waterClarityManager;
@@ -182,7 +185,9 @@ class CatchManager extends EntityManager<Catch> {
 
     return entities.values.where((cat) {
       var valid = true;
-      valid &= dateRange == null || dateRange.contains(cat.timestamp.toInt());
+      valid &= dateRange == null ||
+          dateRange.contains(
+              cat.timestamp.toInt(), _timeManager.currentDateTime);
       valid &= anglerIds.isEmpty || anglerIds.contains(cat.anglerId);
       valid &= baitIds.isEmpty || baitIds.contains(cat.baitId);
       valid &= catchIds.isEmpty || catchIds.contains(cat.id);

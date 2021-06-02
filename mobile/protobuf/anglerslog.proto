@@ -110,6 +110,32 @@ message Catch {
   string notes = 20;
 }
 
+message DateRange {
+  enum Period {
+    allDates = 0;
+    today = 1;
+    yesterday = 2;
+    thisWeek = 3;
+    thisMonth = 4;
+    thisYear = 5;
+    lastWeek = 6;
+    lastMonth = 7;
+    lastYear = 8;
+    last7Days = 9;
+    last14Days = 10;
+    last30Days = 11;
+    last60Days = 12;
+    last12Months = 13;
+    custom = 14;
+  }
+
+  Period period = 1;
+
+  // Should only be set for Period.custom.
+  uint64 start_timestamp = 2;
+  uint64 end_timestamp = 3;
+}
+
 message FishingSpot {
   Id id = 1;
   string name = 2;
@@ -138,27 +164,23 @@ message Report {
   string name = 2;
   string description = 3;
   Type type = 4;
-  string from_display_date_range_id = 5;
-  string to_display_date_range_id = 6;
-  uint64 from_start_timestamp = 7;
-  uint64 to_start_timestamp = 8;
-  uint64 from_end_timestamp = 9;
-  uint64 to_end_timestamp = 10;
-  repeated Id bait_ids = 11;
-  repeated Id fishing_spot_ids = 12;
-  repeated Id species_ids = 13;
-  repeated Id angler_ids = 14;
-  repeated Id method_ids = 15;
-  repeated Period periods = 16;
-  bool is_favorites_only = 17;
-  bool is_catch_and_release_only = 18;
-  repeated Season seasons = 19;
-  repeated Id water_clarity_ids = 20;
-  NumberFilter water_depth_filter = 21;
-  NumberFilter water_temperature_filter = 22;
-  NumberFilter length_filter = 23;
-  NumberFilter weight_filter = 24;
-  NumberFilter quantity_filter = 25;
+  DateRange from_date_range = 5;
+  DateRange to_date_range = 6;
+  repeated Id bait_ids = 7;
+  repeated Id fishing_spot_ids = 8;
+  repeated Id species_ids = 9;
+  repeated Id angler_ids = 10;
+  repeated Id method_ids = 11;
+  repeated Period periods = 12;
+  bool is_favorites_only = 13;
+  bool is_catch_and_release_only = 14;
+  repeated Season seasons = 15;
+  repeated Id water_clarity_ids = 16;
+  NumberFilter water_depth_filter = 17;
+  NumberFilter water_temperature_filter = 18;
+  NumberFilter length_filter = 19;
+  NumberFilter weight_filter = 20;
+  NumberFilter quantity_filter = 21;
 }
 
 message Angler {

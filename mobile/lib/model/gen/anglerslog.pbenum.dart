@@ -297,6 +297,108 @@ class CustomEntity_Type extends $pb.ProtobufEnum {
   const CustomEntity_Type._($core.int v, $core.String n) : super(v, n);
 }
 
+class DateRange_Period extends $pb.ProtobufEnum {
+  static const DateRange_Period allDates = DateRange_Period._(
+      0,
+      const $core.bool.fromEnvironment('protobuf.omit_enum_names')
+          ? ''
+          : 'allDates');
+  static const DateRange_Period today = DateRange_Period._(
+      1,
+      const $core.bool.fromEnvironment('protobuf.omit_enum_names')
+          ? ''
+          : 'today');
+  static const DateRange_Period yesterday = DateRange_Period._(
+      2,
+      const $core.bool.fromEnvironment('protobuf.omit_enum_names')
+          ? ''
+          : 'yesterday');
+  static const DateRange_Period thisWeek = DateRange_Period._(
+      3,
+      const $core.bool.fromEnvironment('protobuf.omit_enum_names')
+          ? ''
+          : 'thisWeek');
+  static const DateRange_Period thisMonth = DateRange_Period._(
+      4,
+      const $core.bool.fromEnvironment('protobuf.omit_enum_names')
+          ? ''
+          : 'thisMonth');
+  static const DateRange_Period thisYear = DateRange_Period._(
+      5,
+      const $core.bool.fromEnvironment('protobuf.omit_enum_names')
+          ? ''
+          : 'thisYear');
+  static const DateRange_Period lastWeek = DateRange_Period._(
+      6,
+      const $core.bool.fromEnvironment('protobuf.omit_enum_names')
+          ? ''
+          : 'lastWeek');
+  static const DateRange_Period lastMonth = DateRange_Period._(
+      7,
+      const $core.bool.fromEnvironment('protobuf.omit_enum_names')
+          ? ''
+          : 'lastMonth');
+  static const DateRange_Period lastYear = DateRange_Period._(
+      8,
+      const $core.bool.fromEnvironment('protobuf.omit_enum_names')
+          ? ''
+          : 'lastYear');
+  static const DateRange_Period last7Days = DateRange_Period._(
+      9,
+      const $core.bool.fromEnvironment('protobuf.omit_enum_names')
+          ? ''
+          : 'last7Days');
+  static const DateRange_Period last14Days = DateRange_Period._(
+      10,
+      const $core.bool.fromEnvironment('protobuf.omit_enum_names')
+          ? ''
+          : 'last14Days');
+  static const DateRange_Period last30Days = DateRange_Period._(
+      11,
+      const $core.bool.fromEnvironment('protobuf.omit_enum_names')
+          ? ''
+          : 'last30Days');
+  static const DateRange_Period last60Days = DateRange_Period._(
+      12,
+      const $core.bool.fromEnvironment('protobuf.omit_enum_names')
+          ? ''
+          : 'last60Days');
+  static const DateRange_Period last12Months = DateRange_Period._(
+      13,
+      const $core.bool.fromEnvironment('protobuf.omit_enum_names')
+          ? ''
+          : 'last12Months');
+  static const DateRange_Period custom = DateRange_Period._(
+      14,
+      const $core.bool.fromEnvironment('protobuf.omit_enum_names')
+          ? ''
+          : 'custom');
+
+  static const $core.List<DateRange_Period> values = <DateRange_Period>[
+    allDates,
+    today,
+    yesterday,
+    thisWeek,
+    thisMonth,
+    thisYear,
+    lastWeek,
+    lastMonth,
+    lastYear,
+    last7Days,
+    last14Days,
+    last30Days,
+    last60Days,
+    last12Months,
+    custom,
+  ];
+
+  static final $core.Map<$core.int, DateRange_Period> _byValue =
+      $pb.ProtobufEnum.initByValue(values);
+  static DateRange_Period? valueOf($core.int value) => _byValue[value];
+
+  const DateRange_Period._($core.int v, $core.String n) : super(v, n);
+}
+
 class Report_Type extends $pb.ProtobufEnum {
   static const Report_Type summary = Report_Type._(
       0,

@@ -339,7 +339,7 @@ class AppBarDropdownItem<T> extends DropdownMenuItem<T> {
     required BuildContext context,
     required this.text,
     required this.value,
-  })   : assert(isNotEmpty(text)),
+  })  : assert(isNotEmpty(text)),
         super(
           child: Text(
             text,

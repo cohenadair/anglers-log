@@ -6,7 +6,6 @@ import 'package:mobile/bait_manager.dart';
 import 'package:mobile/catch_manager.dart';
 import 'package:mobile/fishing_spot_manager.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
-import 'package:mobile/utils/date_time_utils.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mockito/mockito.dart';
 
@@ -628,8 +627,9 @@ void main() {
     var catches = catchManager.filteredCatches(
       context,
       dateRange: DateRange(
-        startDate: DateTime.fromMillisecondsSinceEpoch(0),
-        endDate: DateTime.fromMillisecondsSinceEpoch(15000),
+        period: DateRange_Period.custom,
+        startTimestamp: Int64(0),
+        endTimestamp: Int64(15000),
       ),
     );
     expect(catches.length, 2);
@@ -640,8 +640,9 @@ void main() {
     catches = catchManager.filteredCatches(
       context,
       dateRange: DateRange(
-        startDate: DateTime.fromMillisecondsSinceEpoch(20001),
-        endDate: DateTime.fromMillisecondsSinceEpoch(30000),
+        period: DateRange_Period.custom,
+        startTimestamp: Int64(20001),
+        endTimestamp: Int64(30000),
       ),
     );
     expect(catches.isEmpty, true);

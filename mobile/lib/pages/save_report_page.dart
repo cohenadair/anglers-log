@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:fixnum/fixnum.dart';
 import 'package:flutter/material.dart';
 import 'package:protobuf/protobuf.dart';
 import 'package:quiver/strings.dart';
@@ -19,7 +18,6 @@ import '../pages/species_list_page.dart';
 import '../report_manager.dart';
 import '../res/dimen.dart';
 import '../species_manager.dart';
-import '../utils/date_time_utils.dart';
 import '../utils/page_utils.dart';
 import '../utils/protobuf_utils.dart';
 import '../utils/validator.dart';
@@ -103,12 +101,11 @@ class _SaveReportPageState extends State<SaveReportPage> {
   InputController<Report_Type> get _typeController =>
       _fields[_idType]!.controller as InputController<Report_Type>;
 
-  InputController<DisplayDateRange> get _fromDateRangeController =>
-      _fields[_idStartDateRange]!.controller
-          as InputController<DisplayDateRange>;
+  InputController<DateRange> get _fromDateRangeController =>
+      _fields[_idStartDateRange]!.controller as InputController<DateRange>;
 
-  InputController<DisplayDateRange> get _toDateRangeController =>
-      _fields[_idEndDateRange]!.controller as InputController<DisplayDateRange>;
+  InputController<DateRange> get _toDateRangeController =>
+      _fields[_idEndDateRange]!.controller as InputController<DateRange>;
 
   SetInputController<Angler> get _anglersController =>
       _fields[_idAnglers]!.controller as SetInputController<Angler>;
@@ -192,12 +189,12 @@ class _SaveReportPageState extends State<SaveReportPage> {
 
     _fields[_idStartDateRange] = Field(
       id: _idStartDateRange,
-      controller: InputController<DisplayDateRange>(),
+      controller: InputController<DateRange>(),
     );
 
     _fields[_idEndDateRange] = Field(
       id: _idStartDateRange,
-      controller: InputController<DisplayDateRange>(),
+      controller: InputController<DateRange>(),
     );
 
     _fields[_idCatchAndReleaseOnly] = Field(
@@ -284,17 +281,9 @@ class _SaveReportPageState extends State<SaveReportPage> {
       _nameController.value = _oldReport!.name;
       _descriptionController.value = _oldReport!.description;
       _typeController.value = _oldReport!.type;
-      _fromDateRangeController.value = DisplayDateRange.of(
-        _oldReport!.fromDisplayDateRangeId,
-        _oldReport!.fromStartTimestamp.toInt(),
-        _oldReport!.fromEndTimestamp.toInt(),
-      );
+      _fromDateRangeController.value = _oldReport!.fromDateRange;
       if (_isComparison) {
-        _toDateRangeController.value = DisplayDateRange.of(
-          _oldReport!.toDisplayDateRangeId,
-          _oldReport!.toStartTimestamp.toInt(),
-          _oldReport!.toEndTimestamp.toInt(),
-        );
+        _toDateRangeController.value = _oldReport!.toDateRange;
       }
       _catchAndReleaseOnlyController.value = _oldReport!.isCatchAndReleaseOnly;
       _favoritesOnlyController.value = _oldReport!.isFavoritesOnly;
@@ -315,9 +304,11 @@ class _SaveReportPageState extends State<SaveReportPage> {
       );
     } else {
       _typeController.value = Report_Type.summary;
-      _fromDateRangeController.value = DisplayDateRange.allDates;
+      _fromDateRangeController.value =
+          DateRange(period: DateRange_Period.allDates);
       if (_isComparison) {
-        _toDateRangeController.value = DisplayDateRange.allDates;
+        _toDateRangeController.value =
+            DateRange(period: DateRange_Period.allDates);
       }
       _initEntitySets();
     }
@@ -731,7 +722,6 @@ class _SaveReportPageState extends State<SaveReportPage> {
       ..id = _oldReport?.id ?? randomId()
       ..name = _nameController.value!
       ..type = _typeController.value!
-      ..fromDisplayDateRangeId = _fromDateRangeController.value!.id
       ..periods.addAll(_periodsController.value)
       ..seasons.addAll(_seasonsController.value)
       ..anglerIds.addAll(_anglersController.value.map((e) => e.id))
@@ -741,10 +731,6 @@ class _SaveReportPageState extends State<SaveReportPage> {
       ..speciesIds.addAll(_speciesController.value.map((e) => e.id))
       ..waterClarityIds
           .addAll(_waterClaritiesController.value.map((e) => e.id));
-
-    if (_toDateRangeController.value != null) {
-      report.toDisplayDateRangeId = _toDateRangeController.value!.id;
-    }
 
     if (isNotEmpty(_descriptionController.value)) {
       report.description = _descriptionController.value!;
@@ -758,16 +744,12 @@ class _SaveReportPageState extends State<SaveReportPage> {
       report.isFavoritesOnly = true;
     }
 
-    var fromDateRange = _fromDateRangeController.value!;
-    if (fromDateRange == DisplayDateRange.custom) {
-      report.fromStartTimestamp = Int64(fromDateRange.value(context).startMs);
-      report.fromEndTimestamp = Int64(fromDateRange.value(context).endMs);
+    if (_fromDateRangeController.hasValue) {
+      report.fromDateRange = _fromDateRangeController.value!;
     }
 
-    var toDateRange = _toDateRangeController.value;
-    if (toDateRange != null && toDateRange == DisplayDateRange.custom) {
-      report.toStartTimestamp = Int64(toDateRange.value(context).startMs);
-      report.toEndTimestamp = Int64(toDateRange.value(context).endMs);
+    if (_toDateRangeController.hasValue) {
+      report.toDateRange = _toDateRangeController.value!;
     }
 
     if (_waterDepthController.shouldAddToReport) {

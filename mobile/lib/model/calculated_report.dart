@@ -13,7 +13,6 @@ import '../named_entity_manager.dart';
 import '../species_manager.dart';
 import '../time_manager.dart';
 import '../utils/collection_utils.dart';
-import '../utils/date_time_utils.dart';
 import '../utils/protobuf_utils.dart';
 import '../utils/string_utils.dart';
 import '../water_clarity_manager.dart';
@@ -28,7 +27,7 @@ enum CalculatedReportSortOrder {
 /// a report.
 class CalculatedReport {
   final BuildContext context;
-  final DisplayDateRange displayDateRange;
+  final DateRange dateRange;
   final CalculatedReportSortOrder sortOrder;
 
   /// When true, calculated collections include 0 quantities. Defaults to false.
@@ -89,7 +88,6 @@ class CalculatedReport {
   final AppManager _appManager;
   final TimeManager _timeManager;
 
-  late DateRange _dateRange;
   bool _isCatchAndReleaseOnly = false;
   bool _isFavoritesOnly = false;
   int _msSinceLastCatch = 0;
@@ -97,7 +95,7 @@ class CalculatedReport {
   /// True if the date range of the report includes "now"; false otherwise.
   bool _containsNow = true;
 
-  /// All [Catch] IDs within [displayDateRange].
+  /// All [Catch] IDs within [dateRange].
   final Set<Id> _catchIds = {};
   final Map<Species, Set<Id>> _catchIdsPerSpecies = {};
   Map<Species, int> _catchesPerSpecies = {};
@@ -106,7 +104,7 @@ class CalculatedReport {
   Map<FishingSpot, int> _catchesPerFishingSpot = {};
 
   /// Total number of catches made per fishing spot for each species within
-  /// [displayDateRange].
+  /// [dateRange].
   _MapOfMappedInt<Species?, FishingSpot> _fishingSpotsPerSpecies =
       _MapOfMappedInt();
 
@@ -114,7 +112,7 @@ class CalculatedReport {
   Map<Bait, int> _catchesPerBait = {};
 
   /// Total number of catches made per bait for each species within
-  /// [displayDateRange].
+  /// [dateRange].
   _MapOfMappedInt<Species?, Bait> _baitsPerSpecies = _MapOfMappedInt();
 
   AnglerManager get _anglerManager => _appManager.anglerManager;
@@ -131,8 +129,6 @@ class CalculatedReport {
 
   WaterClarityManager get _waterClarityManager =>
       _appManager.waterClarityManager;
-
-  DateRange get dateRange => _dateRange;
 
   bool get containsNow => _containsNow;
 
@@ -173,21 +169,20 @@ class CalculatedReport {
     this.lengthFilter,
     this.weightFilter,
     this.quantityFilter,
-    DisplayDateRange? displayDateRange,
+    DateRange? range,
     bool isCatchAndReleaseOnly = false,
     bool isFavoritesOnly = false,
   })  : _appManager = AppManager.of(context),
         _timeManager = AppManager.of(context).timeManager,
-        displayDateRange = displayDateRange ?? DisplayDateRange.allDates {
+        dateRange = range ?? DateRange(period: DateRange_Period.allDates) {
     var now = _timeManager.currentDateTime;
-    _dateRange = this.displayDateRange.getValue(now);
-    _containsNow = _dateRange.endDate == now;
+    _containsNow = dateRange.endDate(now) == now;
     _isCatchAndReleaseOnly = isCatchAndReleaseOnly;
     _isFavoritesOnly = isFavoritesOnly;
 
     var catches = _catchManager.catchesSortedByTimestamp(
       context,
-      dateRange: _dateRange,
+      dateRange: dateRange,
       isCatchAndReleaseOnly: _isCatchAndReleaseOnly,
       isFavoritesOnly: _isFavoritesOnly,
       anglerIds: anglerIds,
@@ -319,7 +314,7 @@ class CalculatedReport {
   }) {
     var result = <String>{};
     if (includeDateRange) {
-      result.add(displayDateRange.title(context));
+      result.add(dateRange.displayName(context));
     }
 
     if (includeSpecies) {

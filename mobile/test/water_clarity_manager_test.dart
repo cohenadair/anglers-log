@@ -1,5 +1,4 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mobile/angler_manager.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mobile/water_clarity_manager.dart';

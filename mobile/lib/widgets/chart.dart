@@ -6,10 +6,11 @@ import 'package:quiver/strings.dart';
 
 import '../i18n/strings.dart';
 import '../log.dart';
+import '../model/gen/anglerslog.pb.dart';
 import '../res/dimen.dart';
 import '../utils/collection_utils.dart';
-import '../utils/date_time_utils.dart';
 import '../utils/page_utils.dart';
+import '../utils/protobuf_utils.dart';
 import '../widgets/list_item.dart';
 import '../widgets/text.dart';
 import '../widgets/widget.dart';
@@ -65,19 +66,18 @@ class Series<T> {
   final Map<T, int> data;
 
   /// Used as a title in the legend.
-  final DisplayDateRange displayDateRange;
+  final DateRange dateRange;
 
   Color? _color;
 
-  Series(this.data, this.displayDateRange) : assert(data.isNotEmpty);
+  Series(this.data, this.dateRange) : assert(data.isNotEmpty);
 
   int get length => data.length;
 
   int get maxValue => max(data.values) ?? 0;
 
   Series<T> limitToFirst(int count) {
-    return Series<T>(
-        firstElements(data, numberOfElements: count), displayDateRange)
+    return Series<T>(firstElements(data, numberOfElements: count), dateRange)
       .._color = _color;
   }
 }
@@ -210,7 +210,7 @@ class _ChartState<T> extends State<Chart<T>> {
                     color: series._color,
                   ),
                   HorizontalSpace(paddingWidgetSmall),
-                  Text(series.displayDateRange.title(context)),
+                  Text(series.dateRange.displayName(context)),
                 ],
               ),
             )
@@ -275,8 +275,7 @@ class _ChartState<T> extends State<Chart<T>> {
     return InkWell(
       onTap: widget.onTapRow == null
           ? null
-          : () => widget.onTapRow!
-              .call(item, series.displayDateRange.value(context)),
+          : () => widget.onTapRow!.call(item, series.dateRange),
       child: Stack(
         alignment: Alignment.centerLeft,
         children: [

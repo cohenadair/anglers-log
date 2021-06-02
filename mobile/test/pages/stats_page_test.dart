@@ -3,7 +3,6 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/report_manager.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
 import 'package:mobile/pages/stats_page.dart';
-import 'package:mobile/utils/date_time_utils.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mobile/widgets/chart.dart';
 import 'package:mobile/widgets/list_item.dart';
@@ -413,7 +412,7 @@ void main() {
         ..id = randomId()
         ..name = "Summary Report"
         ..type = Report_Type.summary
-        ..fromDisplayDateRangeId = DisplayDateRange.allDates.id;
+        ..fromDateRange = DateRange(period: DateRange_Period.allDates);
       when(appManager.userPreferenceManager.selectedReportId)
           .thenReturn(report.id);
       when(appManager.reportManager.entity(any)).thenReturn(report);
@@ -443,8 +442,8 @@ void main() {
         ..id = randomId()
         ..name = "Comparison Report"
         ..type = Report_Type.comparison
-        ..fromDisplayDateRangeId = DisplayDateRange.last7Days.id
-        ..toDisplayDateRangeId = DisplayDateRange.allDates.id
+        ..fromDateRange = DateRange(period: DateRange_Period.last7Days)
+        ..toDateRange = DateRange(period: DateRange_Period.allDates)
         ..baitIds.add(baitId0)
         ..fishingSpotIds.addAll({fishingSpotId0, fishingSpotId1})
         ..speciesIds.addAll({speciesId0, speciesId1});
@@ -533,7 +532,7 @@ void main() {
         ..id = randomId()
         ..name = "Summary Report"
         ..type = Report_Type.summary
-        ..fromDisplayDateRangeId = DisplayDateRange.allDates.id
+        ..fromDateRange = DateRange(period: DateRange_Period.allDates)
         ..baitIds.add(baitId0)
         ..fishingSpotIds.add(fishingSpotId0)
         ..speciesIds.add(speciesId0);
@@ -735,8 +734,8 @@ void main() {
         ..id = randomId()
         ..name = "Comparison Report"
         ..type = Report_Type.comparison
-        ..fromDisplayDateRangeId = DisplayDateRange.allDates.id
-        ..toDisplayDateRangeId = DisplayDateRange.last7Days.id;
+        ..fromDateRange = DateRange(period: DateRange_Period.allDates)
+        ..toDateRange = DateRange(period: DateRange_Period.last7Days);
       when(appManager.userPreferenceManager.selectedReportId)
           .thenReturn(report.id);
       when(appManager.reportManager.entity(any)).thenReturn(report);
@@ -759,7 +758,7 @@ void main() {
         ..id = randomId()
         ..name = "Summary Report"
         ..type = Report_Type.summary
-        ..fromDisplayDateRangeId = DisplayDateRange.lastYear.id;
+        ..fromDateRange = DateRange(period: DateRange_Period.lastYear);
       when(appManager.userPreferenceManager.selectedReportId)
           .thenReturn(report.id);
       when(appManager.reportManager.entity(any)).thenReturn(report);
@@ -781,7 +780,7 @@ void main() {
         ..id = randomId()
         ..name = "Summary Report"
         ..type = Report_Type.summary
-        ..fromDisplayDateRangeId = DisplayDateRange.allDates.id;
+        ..fromDateRange = DateRange(period: DateRange_Period.allDates);
       when(appManager.userPreferenceManager.selectedReportId)
           .thenReturn(report.id);
       when(appManager.reportManager.entity(any)).thenReturn(report);
@@ -822,8 +821,8 @@ void main() {
         ..id = randomId()
         ..name = "Comparison Report"
         ..type = Report_Type.comparison
-        ..fromDisplayDateRangeId = DisplayDateRange.last7Days.id
-        ..toDisplayDateRangeId = DisplayDateRange.lastMonth.id;
+        ..fromDateRange = DateRange(period: DateRange_Period.last7Days)
+        ..toDateRange = DateRange(period: DateRange_Period.lastMonth);
       when(appManager.userPreferenceManager.selectedReportId)
           .thenReturn(report.id);
       when(appManager.reportManager.entity(any)).thenReturn(report);
@@ -849,10 +848,16 @@ void main() {
         ..id = randomId()
         ..name = "Comparison Report"
         ..type = Report_Type.comparison
-        ..fromStartTimestamp = Int64(0)
-        ..toStartTimestamp = Int64(4)
-        ..fromEndTimestamp = Int64(5)
-        ..toEndTimestamp = Int64(500);
+        ..fromDateRange = DateRange(
+          period: DateRange_Period.custom,
+          startTimestamp: Int64(0),
+          endTimestamp: Int64(5),
+        )
+        ..toDateRange = DateRange(
+          period: DateRange_Period.custom,
+          startTimestamp: Int64(4),
+          endTimestamp: Int64(500),
+        );
       when(appManager.userPreferenceManager.selectedReportId)
           .thenReturn(report.id);
       when(appManager.reportManager.entity(report.id)).thenReturn(report);
@@ -867,7 +872,7 @@ void main() {
       )).thenAnswer((invocation) {
         var dateRange =
             invocation.namedArguments[Symbol("dateRange")] as DateRange;
-        if (dateRange.startMs == 0) {
+        if (dateRange.startMs(DateTime.now()) == 0) {
           return [];
         }
         return _catches

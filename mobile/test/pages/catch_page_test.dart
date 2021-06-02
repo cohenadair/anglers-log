@@ -337,7 +337,7 @@ void main() {
       ));
       // Wait for map timer to finish.
       await tester.pumpAndSettle(Duration(milliseconds: 150));
-    await tester.pumpAndSettle(Duration(milliseconds: 50));
+      await tester.pumpAndSettle(Duration(milliseconds: 50));
 
       expect(find.byIcon(CustomIcons.waterClarities), findsNothing);
     });
@@ -357,7 +357,7 @@ void main() {
       ));
       // Wait for map timer to finish.
       await tester.pumpAndSettle(Duration(milliseconds: 150));
-    await tester.pumpAndSettle(Duration(milliseconds: 50));
+      await tester.pumpAndSettle(Duration(milliseconds: 50));
 
       expect(find.byIcon(CustomIcons.waterClarities), findsOneWidget);
       expect(find.text("Chocolate Milk"), findsOneWidget);
@@ -380,7 +380,7 @@ void main() {
       ));
       // Wait for map timer to finish.
       await tester.pumpAndSettle(Duration(milliseconds: 150));
-    await tester.pumpAndSettle(Duration(milliseconds: 50));
+      await tester.pumpAndSettle(Duration(milliseconds: 50));
 
       expect(find.byIcon(CustomIcons.waterClarities), findsOneWidget);
       expect(find.text("50\u00B0C"), findsOneWidget);
@@ -403,7 +403,7 @@ void main() {
       ));
       // Wait for map timer to finish.
       await tester.pumpAndSettle(Duration(milliseconds: 150));
-    await tester.pumpAndSettle(Duration(milliseconds: 50));
+      await tester.pumpAndSettle(Duration(milliseconds: 50));
 
       expect(find.byIcon(CustomIcons.waterClarities), findsOneWidget);
       expect(find.text("50 ft"), findsOneWidget);
@@ -439,7 +439,7 @@ void main() {
       ));
       // Wait for map timer to finish.
       await tester.pumpAndSettle(Duration(milliseconds: 150));
-    await tester.pumpAndSettle(Duration(milliseconds: 50));
+      await tester.pumpAndSettle(Duration(milliseconds: 50));
 
       expect(find.byIcon(CustomIcons.waterClarities), findsOneWidget);
       expect(find.text("Chocolate Milk, 50\u00B0C, 10 ft"), findsOneWidget);
@@ -456,7 +456,7 @@ void main() {
       ));
       // Wait for map timer to finish.
       await tester.pumpAndSettle(Duration(milliseconds: 150));
-    await tester.pumpAndSettle(Duration(milliseconds: 50));
+      await tester.pumpAndSettle(Duration(milliseconds: 50));
 
       expect(find.byIcon(CustomIcons.ruler), findsNothing);
     });
@@ -478,7 +478,7 @@ void main() {
       ));
       // Wait for map timer to finish.
       await tester.pumpAndSettle(Duration(milliseconds: 150));
-    await tester.pumpAndSettle(Duration(milliseconds: 50));
+      await tester.pumpAndSettle(Duration(milliseconds: 50));
 
       expect(find.byIcon(CustomIcons.ruler), findsOneWidget);
       expect(find.text("50 kg"), findsOneWidget);
@@ -501,7 +501,7 @@ void main() {
       ));
       // Wait for map timer to finish.
       await tester.pumpAndSettle(Duration(milliseconds: 150));
-    await tester.pumpAndSettle(Duration(milliseconds: 50));
+      await tester.pumpAndSettle(Duration(milliseconds: 50));
 
       expect(find.byIcon(CustomIcons.ruler), findsOneWidget);
       expect(find.text("50 cm"), findsOneWidget);
@@ -531,7 +531,7 @@ void main() {
       ));
       // Wait for map timer to finish.
       await tester.pumpAndSettle(Duration(milliseconds: 150));
-    await tester.pumpAndSettle(Duration(milliseconds: 50));
+      await tester.pumpAndSettle(Duration(milliseconds: 50));
 
       expect(find.byIcon(CustomIcons.ruler), findsOneWidget);
       expect(find.text("10 kg, 50 cm"), findsOneWidget);
@@ -547,7 +547,7 @@ void main() {
       ));
       // Wait for map timer to finish.
       await tester.pumpAndSettle(Duration(milliseconds: 150));
-    await tester.pumpAndSettle(Duration(milliseconds: 50));
+      await tester.pumpAndSettle(Duration(milliseconds: 50));
 
       expect(find.byIcon(Icons.notes), findsNothing);
     });
@@ -562,7 +562,7 @@ void main() {
       ));
       // Wait for map timer to finish.
       await tester.pumpAndSettle(Duration(milliseconds: 150));
-    await tester.pumpAndSettle(Duration(milliseconds: 50));
+      await tester.pumpAndSettle(Duration(milliseconds: 50));
 
       expect(find.byIcon(Icons.notes), findsNothing);
     });
@@ -577,7 +577,7 @@ void main() {
       ));
       // Wait for map timer to finish.
       await tester.pumpAndSettle(Duration(milliseconds: 150));
-    await tester.pumpAndSettle(Duration(milliseconds: 50));
+      await tester.pumpAndSettle(Duration(milliseconds: 50));
 
       expect(find.byIcon(Icons.notes), findsNothing);
     });
@@ -592,7 +592,7 @@ void main() {
       ));
       // Wait for map timer to finish.
       await tester.pumpAndSettle(Duration(milliseconds: 150));
-    await tester.pumpAndSettle(Duration(milliseconds: 50));
+      await tester.pumpAndSettle(Duration(milliseconds: 50));
 
       expect(find.byIcon(Icons.notes), findsOneWidget);
       expect(find.text("Quantity: 5"), findsOneWidget);
@@ -608,7 +608,7 @@ void main() {
       ));
       // Wait for map timer to finish.
       await tester.pumpAndSettle(Duration(milliseconds: 150));
-    await tester.pumpAndSettle(Duration(milliseconds: 50));
+      await tester.pumpAndSettle(Duration(milliseconds: 50));
 
       expect(find.byIcon(Icons.notes), findsOneWidget);
       expect(find.text("Some notes."), findsOneWidget);
@@ -625,7 +625,7 @@ void main() {
       ));
       // Wait for map timer to finish.
       await tester.pumpAndSettle(Duration(milliseconds: 150));
-    await tester.pumpAndSettle(Duration(milliseconds: 50));
+      await tester.pumpAndSettle(Duration(milliseconds: 50));
 
       // One for each "note". Only one is visible.
       expect(find.byIcon(Icons.notes), findsNWidgets(2));
