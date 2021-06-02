@@ -228,11 +228,14 @@ class _ManageableListPageState<T> extends State<ManageableListPage<T>> {
             // TODO: Use animated switcher - https://github.com/flutter/flutter/issues/64069
             SliverVisibility(
               visible: _animatedList.isNotEmpty,
-              sliver: SliverAnimatedList(
-                key: _animatedListKey,
-                initialItemCount: _animatedList.length,
-                itemBuilder: (context, i, animation) =>
-                    _buildItem(context, _animatedList[i], animation),
+              sliver: SliverSafeArea(
+                top: false,
+                sliver: SliverAnimatedList(
+                  key: _animatedListKey,
+                  initialItemCount: _animatedList.length,
+                  itemBuilder: (context, i, animation) =>
+                      _buildItem(context, _animatedList[i], animation),
+                ),
               ),
               replacementSliver: SliverFillRemaining(
                 fillOverscroll: true,
