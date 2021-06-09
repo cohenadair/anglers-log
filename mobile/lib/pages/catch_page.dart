@@ -320,9 +320,12 @@ class _CatchPageState extends State<CatchPage> {
       return Empty();
     }
 
-    return ListItem(
-      title: ChipWrap(
-          _methodManager.list(_catch.methodIds).map((m) => m.name).toSet()),
-    );
+    var methodNames =
+        _methodManager.list(_catch.methodIds).map((m) => m.name).toSet();
+    if (methodNames.isEmpty) {
+      return Empty();
+    }
+
+    return ListItem(title: ChipWrap(methodNames));
   }
 }

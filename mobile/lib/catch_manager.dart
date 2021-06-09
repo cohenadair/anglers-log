@@ -46,14 +46,7 @@ class CatchManager extends EntityManager<Catch> {
   WaterClarityManager get _waterClarityManager =>
       appManager.waterClarityManager;
 
-  CatchManager(AppManager app) : super(app) {
-    app.baitManager.addListener(SimpleEntityListener(
-      onDelete: _onDeleteBait,
-    ));
-    app.fishingSpotManager.addListener(SimpleEntityListener(
-      onDelete: _onDeleteFishingSpot,
-    ));
-  }
+  CatchManager(AppManager app) : super(app);
 
   @override
   Catch entityFromBytes(List<int> bytes) => Catch.fromBuffer(bytes);
@@ -276,19 +269,5 @@ class CatchManager extends EntityManager<Catch> {
   int numberOfCustomEntityValues(Id customEntityId) {
     return entityValuesCount<Catch>(
         list(), customEntityId, (cat) => cat.customEntityValues);
-  }
-
-  void _onDeleteBait(Bait bait) {
-    for (var cat
-        in List<Catch>.from(list().where((cat) => bait.id == cat.baitId))) {
-      addOrUpdate(cat..clearBaitId());
-    }
-  }
-
-  void _onDeleteFishingSpot(FishingSpot fishingSpot) {
-    for (var cat in List<Catch>.from(
-        list().where((cat) => fishingSpot.id == cat.fishingSpotId))) {
-      addOrUpdate(cat..clearFishingSpotId());
-    }
   }
 }

@@ -279,6 +279,25 @@ void main() {
     expect(find.text("Kayak"), findsOneWidget);
   });
 
+  testWidgets("Fishing methods don't render if they don't exist",
+      (tester) async {
+    when(appManager.catchManager.entity(any)).thenReturn(Catch()
+      ..id = randomId()
+      ..timestamp = Int64(DateTime(2020, 1, 1, 15, 30).millisecondsSinceEpoch)
+      ..speciesId = randomId()
+      ..methodIds.add(randomId()));
+    when(appManager.methodManager.list(any)).thenReturn([]);
+    await tester.pumpWidget(Testable(
+      (_) => CatchPage(Catch()..methodIds.add(randomId())),
+      appManager: appManager,
+    ));
+    // Wait for map timer to finish.
+    await tester.pumpAndSettle(Duration(milliseconds: 150));
+    await tester.pumpAndSettle(Duration(milliseconds: 50));
+
+    expect(find.byType(ChipWrap), findsNothing);
+  });
+
   testWidgets("No catch and release data renders empty", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => CatchPage(Catch()),
