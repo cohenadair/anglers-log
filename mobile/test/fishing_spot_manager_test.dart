@@ -155,6 +155,34 @@ void main() {
     expect(fishingSpotManager.numberOfCatches(fishingSpotId4), 1);
   });
 
+  test("listSortedByName includes names first", () async {
+    await fishingSpotManager.addOrUpdate(
+      FishingSpot()
+        ..id = randomId()
+        ..lat = 36.955296
+        ..lng = -85.240337,
+    );
+    await fishingSpotManager.addOrUpdate(
+      FishingSpot()
+        ..id = randomId()
+        ..name = "Zebra"
+        ..lat = 35.955296
+        ..lng = -84.240337,
+    );
+    await fishingSpotManager.addOrUpdate(
+      FishingSpot()
+        ..id = randomId()
+        ..name = "Balloon"
+        ..lat = 30.955296
+        ..lng = -80.240337,
+    );
+
+    var sortedSpots = fishingSpotManager.listSortedByName();
+    expect(sortedSpots[0].name, "Balloon");
+    expect(sortedSpots[1].name, "Zebra");
+    expect(sortedSpots[2].hasName(), isFalse);
+  });
+
   group("deleteMessage", () {
     testWidgets("Singular", (tester) async {
       var fishingSpot = FishingSpot()

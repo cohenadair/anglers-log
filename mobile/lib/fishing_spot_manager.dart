@@ -32,6 +32,22 @@ class FishingSpotManager extends NamedEntityManager<FishingSpot> {
   @override
   String get tableName => "fishing_spot";
 
+  @override
+  List<FishingSpot> listSortedByName({String? filter}) {
+    var namedSpots = <FishingSpot>[];
+    var otherSpots = <FishingSpot>[];
+
+    for (var fishingSpot in super.listSortedByName(filter: filter)) {
+      if (isEmpty(fishingSpot.name)) {
+        otherSpots.add(fishingSpot);
+      } else {
+        namedSpots.add(fishingSpot);
+      }
+    }
+
+    return namedSpots..addAll(otherSpots);
+  }
+
   /// Returns the closest [FishingSpot] within [meters] of [latLng], or null if
   /// one does not exist. [meters] defaults to 30.
   FishingSpot? withinRadius(LatLng? latLng, [int meters = 30]) {
