@@ -174,20 +174,22 @@ class _MultiMeasurementInputState extends State<MultiMeasurementInput> {
       }
     }
 
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.baseline,
-      textBaseline: TextBaseline.alphabetic,
-      children: [
-        Expanded(child: wholeInput),
-        imperialFractionInput == null
-            ? Empty()
-            : HorizontalSpace(paddingWidget),
-        imperialFractionInput == null ? Empty() : imperialFractionInput,
-        inchesLabel == null ? Empty() : HorizontalSpace(paddingWidget),
-        inchesLabel == null ? Empty() : inchesLabel,
-        HorizontalSpace(paddingWidgetSmall),
-        _buildSystemSwitcher(),
-      ],
+    return HorizontalSafeArea(
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.baseline,
+        textBaseline: TextBaseline.alphabetic,
+        children: [
+          Expanded(child: wholeInput),
+          imperialFractionInput == null
+              ? Empty()
+              : HorizontalSpace(paddingWidget),
+          imperialFractionInput == null ? Empty() : imperialFractionInput,
+          inchesLabel == null ? Empty() : HorizontalSpace(paddingWidget),
+          inchesLabel == null ? Empty() : inchesLabel,
+          HorizontalSpace(paddingWidgetSmall),
+          _buildSystemSwitcher(),
+        ],
+      ),
     );
   }
 
@@ -365,6 +367,42 @@ class MultiMeasurementInputSpec {
           metricUnit: Unit.celsius,
           defaultSystem:
               UserPreferenceManager.of(context).waterTemperatureSystem,
+        );
+
+  MultiMeasurementInputSpec.windSpeed(BuildContext context)
+      : this(
+          title: Strings.of(context).atmosphereInputWindSpeed,
+          imperialMainUnit: Unit.miles_per_hour,
+          imperialFractionType: ImperialFractionType.none,
+          metricUnit: Unit.kilometers_per_hour,
+          defaultSystem: UserPreferenceManager.of(context).windSpeedSystem,
+        );
+
+  MultiMeasurementInputSpec.airTemperature(BuildContext context)
+      : this(
+          title: Strings.of(context).atmosphereInputTemperature,
+          imperialMainUnit: Unit.fahrenheit,
+          imperialFractionType: ImperialFractionType.none,
+          metricUnit: Unit.celsius,
+          defaultSystem: UserPreferenceManager.of(context).airTemperatureSystem,
+        );
+
+  MultiMeasurementInputSpec.airPressure(BuildContext context)
+      : this(
+          title: Strings.of(context).atmosphereInputAtmosphericPressure,
+          imperialMainUnit: Unit.pounds_per_square_inch,
+          imperialFractionType: ImperialFractionType.none,
+          metricUnit: Unit.millibars,
+          defaultSystem: UserPreferenceManager.of(context).airPressureSystem,
+        );
+
+  MultiMeasurementInputSpec.airVisibility(BuildContext context)
+      : this(
+          title: Strings.of(context).atmosphereInputAirVisibility,
+          imperialMainUnit: Unit.miles,
+          imperialFractionType: ImperialFractionType.none,
+          metricUnit: Unit.kilometers,
+          defaultSystem: UserPreferenceManager.of(context).airVisibilitySystem,
         );
 
   MultiMeasurementInputSpec copyWith({

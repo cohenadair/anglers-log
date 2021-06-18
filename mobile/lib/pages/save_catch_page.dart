@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:quiver/strings.dart';
 
 import '../angler_manager.dart';
+import '../atmosphere_fetcher.dart';
 import '../bait_category_manager.dart';
 import '../bait_manager.dart';
 import '../catch_manager.dart';
@@ -12,6 +13,7 @@ import '../entity_manager.dart';
 import '../fishing_spot_manager.dart';
 import '../i18n/strings.dart';
 import '../image_manager.dart';
+import '../location_monitor.dart';
 import '../log.dart';
 import '../method_manager.dart';
 import '../model/gen/anglerslog.pb.dart';
@@ -28,6 +30,7 @@ import '../utils/catch_utils.dart';
 import '../utils/page_utils.dart';
 import '../utils/protobuf_utils.dart';
 import '../water_clarity_manager.dart';
+import '../widgets/atmosphere_input.dart';
 import '../widgets/checkbox_input.dart';
 import '../widgets/date_time_picker.dart';
 import '../widgets/image_input.dart';
@@ -43,7 +46,6 @@ import '../widgets/widget.dart';
 import 'angler_list_page.dart';
 import 'manageable_list_page.dart';
 import 'method_list_page.dart';
-import 'picker_page.dart';
 import 'water_clarity_list_page.dart';
 
 class SaveCatchPage extends StatefulWidget {
@@ -80,6 +82,7 @@ class SaveCatchPage extends StatefulWidget {
 
 class _SaveCatchPageState extends State<SaveCatchPage> {
   static final _idAngler = catchFieldIdAngler();
+  static final _idAtmosphere = catchFieldIdAtmosphere();
   static final _idBait = catchFieldIdBait();
   static final _idCatchAndRelease = catchFieldIdCatchAndRelease();
   static final _idFavorite = catchFieldIdFavorite();
@@ -118,10 +121,9 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
 
   ImageManager get _imageManager => ImageManager.of(context);
 
-  MethodManager get _methodManager => MethodManager.of(context);
+  LocationMonitor get _locationMonitor => LocationMonitor.of(context);
 
-  UserPreferenceManager get _userPreferencesManager =>
-      UserPreferenceManager.of(context);
+  MethodManager get _methodManager => MethodManager.of(context);
 
   SpeciesManager get _speciesManager => SpeciesManager.of(context);
 
@@ -190,13 +192,16 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
   TextInputController get _notesController =>
       _fields[_idNotes]!.controller as TextInputController;
 
+  InputController<Atmosphere> get _atmosphereController =>
+      _fields[_idAtmosphere]!.controller as InputController<Atmosphere>;
+
   bool get _editing => _oldCatch != null;
 
   @override
   void initState() {
     super.initState();
 
-    var showingFieldIds = _userPreferencesManager.catchFieldIds;
+    var showingFieldIds = _userPreferenceManager.catchFieldIds;
     for (var field in allCatchFields(_timeManager)) {
       _fields[field.id] = field;
       // By default, show all fields.
@@ -230,6 +235,8 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
           _oldCatch!.hasQuantity() ? _oldCatch!.quantity : null;
       _notesController.value =
           isEmpty(_oldCatch!.notes) ? null : _oldCatch!.notes;
+      _atmosphereController.value =
+          _oldCatch!.hasAtmosphere() ? _oldCatch!.atmosphere : null;
       _customEntityValues = _oldCatch!.customEntityValues;
       _imagesFuture = _pickedImagesForOldCatch;
     } else {
@@ -259,11 +266,11 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
       runSpacing: 0,
       padding: insetsZero,
       fields: _fields,
-      customEntityIds: _userPreferencesManager.catchCustomEntityIds,
+      customEntityIds: _userPreferenceManager.catchCustomEntityIds,
       customEntityValues: _customEntityValues,
       onBuildField: _buildField,
       onAddFields: (ids) =>
-          _userPreferencesManager.setCatchFieldIds(ids.toList()),
+          _userPreferenceManager.setCatchFieldIds(ids.toList()),
       onSave: _save,
     );
   }
@@ -305,6 +312,8 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
       return _buildQuantity();
     } else if (id == _idNotes) {
       return _buildNotes();
+    } else if (id == _idAtmosphere) {
+      return _buildAtmosphere();
     } else {
       _log.e("Unknown input key: $id");
       return Empty();
@@ -511,6 +520,17 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
     );
   }
 
+  Widget _buildAtmosphere() {
+    var fishingSpot = _fishingSpotManager.entity(_fishingSpotController.value);
+    return AtmosphereInput(
+      fetcher: AtmosphereFetcher(_timestampController.value,
+          fishingSpot?.latLng ?? _locationMonitor.currentLocation),
+      padding: insetsDefault,
+      initialValue: _atmosphereController.value,
+      onChanged: (atmosphere) => _atmosphereController.value = atmosphere,
+    );
+  }
+
   Widget _buildMethods() {
     return EntityListenerBuilder(
       managers: [
@@ -548,60 +568,28 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
   }
 
   Widget _buildPeriod() {
-    return ListPickerInput(
+    return ListPickerInput.withSinglePickerPage<Period>(
+      context: context,
+      controller: _periodController,
       title: Strings.of(context).catchFieldPeriod,
-      value: _periodController.value?.displayName(context),
-      onTap: () {
-        push(
-          context,
-          PickerPage<Period>.single(
-            title: Text(Strings.of(context).periodPickerTitle),
-            initialValue: _periodController.value ?? Period.period_none,
-            itemBuilder: () => pickerItemsForPeriod(context),
-            allItem: PickerPageItem<Period>(
-              title: Strings.of(context).none,
-              value: Period.period_none,
-              onTap: () {
-                setState(() => _periodController.value = null);
-                Navigator.of(context).pop();
-              },
-            ),
-            onFinishedPicking: (context, period) {
-              setState(() => _periodController.value = period);
-              Navigator.of(context).pop();
-            },
-          ),
-        );
-      },
+      pickerTitle: Strings.of(context).periodPickerTitle,
+      valueDisplayName: _periodController.value?.displayName(context),
+      noneItem: Period.period_none,
+      itemBuilder: Periods.pickerItems,
+      onPicked: (value) => setState(() => _periodController.value = value),
     );
   }
 
   Widget _buildSeason() {
-    return ListPickerInput(
+    return ListPickerInput.withSinglePickerPage<Season>(
+      context: context,
+      controller: _seasonController,
       title: Strings.of(context).catchFieldSeason,
-      value: _seasonController.value?.displayName(context),
-      onTap: () {
-        push(
-          context,
-          PickerPage<Season>.single(
-            title: Text(Strings.of(context).seasonPickerTitle),
-            initialValue: _seasonController.value ?? Season.season_none,
-            itemBuilder: () => pickerItemsForSeason(context),
-            allItem: PickerPageItem<Season>(
-              title: Strings.of(context).none,
-              value: Season.season_none,
-              onTap: () {
-                setState(() => _seasonController.value = null);
-                Navigator.of(context).pop();
-              },
-            ),
-            onFinishedPicking: (context, period) {
-              setState(() => _seasonController.value = period);
-              Navigator.of(context).pop();
-            },
-          ),
-        );
-      },
+      pickerTitle: Strings.of(context).seasonPickerTitle,
+      valueDisplayName: _seasonController.value?.displayName(context),
+      noneItem: Season.season_none,
+      itemBuilder: Seasons.pickerItems,
+      onPicked: (value) => setState(() => _seasonController.value = value),
     );
   }
 
@@ -702,7 +690,7 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
   }
 
   FutureOr<bool> _save(Map<Id, dynamic> customFieldValueMap) {
-    _userPreferencesManager
+    _userPreferenceManager
         .setCatchCustomEntityIds(customFieldValueMap.keys.toList());
 
     // imageNames is set in _catchManager.addOrUpdate
@@ -712,19 +700,19 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
       ..speciesId = _speciesController.value!
       ..customEntityValues.addAll(entityValuesFromMap(customFieldValueMap));
 
-    if (_fishingSpotController.value != null) {
+    if (_fishingSpotController.hasValue) {
       cat.fishingSpotId = _fishingSpotController.value!;
     }
 
-    if (_baitController.value != null) {
+    if (_baitController.hasValue) {
       cat.baitId = _baitController.value!;
     }
 
-    if (_anglerController.value != null) {
+    if (_anglerController.hasValue) {
       cat.anglerId = _anglerController.value!;
     }
 
-    if (_waterClarityController.value != null) {
+    if (_waterClarityController.hasValue) {
       cat.waterClarityId = _waterClarityController.value!;
     }
 
@@ -750,11 +738,11 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
       cat.methodIds.clear();
     }
 
-    if (_periodController.value != null) {
+    if (_periodController.hasValue) {
       cat.period = _periodController.value!;
     }
 
-    if (_seasonController.value != null) {
+    if (_seasonController.hasValue) {
       cat.season = _seasonController.value!;
     }
 
@@ -769,12 +757,16 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
       cat.isFavorite = true;
     }
 
-    if (_quantityController.intValue != null) {
+    if (_quantityController.hasIntValue) {
       cat.quantity = _quantityController.intValue!;
     }
 
     if (isNotEmpty(_notesController.value)) {
       cat.notes = _notesController.value!;
+    }
+
+    if (_atmosphereController.hasValue) {
+      cat.atmosphere = _atmosphereController.value!;
     }
 
     _catchManager.addOrUpdate(

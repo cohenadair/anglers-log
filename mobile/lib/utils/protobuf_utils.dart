@@ -95,44 +95,6 @@ dynamic valueForCustomEntityType(
   }
 }
 
-Set<Period> selectablePeriods() {
-  return {
-    Period.dawn,
-    Period.morning,
-    Period.midday,
-    Period.afternoon,
-    Period.dusk,
-    Period.night,
-  };
-}
-
-List<PickerPageItem<Period>> pickerItemsForPeriod(BuildContext context) {
-  return selectablePeriods().map((period) {
-    return PickerPageItem<Period>(
-      title: period.displayName(context),
-      value: period,
-    );
-  }).toList();
-}
-
-Set<Season> selectableSeasons() {
-  return {
-    Season.winter,
-    Season.spring,
-    Season.summer,
-    Season.autumn,
-  };
-}
-
-List<PickerPageItem<Season>> pickerItemsForSeason(BuildContext context) {
-  return selectableSeasons().map((season) {
-    return PickerPageItem<Season>(
-      title: season.displayName(context),
-      value: season,
-    );
-  }).toList();
-}
-
 Id randomId() => Id()..uuid = Uuid().v4();
 
 /// Parses [idString] into an [Id] object. Throws an [AssertionError] if
@@ -197,6 +159,32 @@ int indexOfEntityIdOrOther(List<dynamic> list, dynamic item) {
   }
 
   return -1;
+}
+
+Set<T> _selectable<T>(List<T> values, List<T> excludeValues) {
+  return Set.of(values)..removeWhere((value) => excludeValues.contains(value));
+}
+
+List<PickerPageItem<T>> _pickerItems<T>(
+  BuildContext context,
+  List<T> values,
+  List<T> excludeValues,
+  String Function(BuildContext, T) displayName, {
+  bool sort = true,
+}) {
+  var modifiedList = _selectable(values, excludeValues).toList();
+
+  if (sort) {
+    modifiedList.sort((rhs, lhs) =>
+        displayName(context, rhs).compareTo(displayName(context, lhs)));
+  }
+
+  return modifiedList.map((value) {
+    return PickerPageItem<T>(
+      title: displayName(context, value),
+      value: value,
+    );
+  }).toList();
 }
 
 extension Ids on Id {
@@ -519,6 +507,21 @@ extension Periods on Period {
     }
     throw ArgumentError("Invalid input: $this");
   }
+
+  static Set<Period> selectable() {
+    return _selectable<Period>(
+        Period.values, [Period.period_none, Period.period_all]);
+  }
+
+  static List<PickerPageItem<Period>> pickerItems(BuildContext context) {
+    return _pickerItems(
+      context,
+      Periods.selectable().toList(),
+      [],
+      (context, period) => period.displayName(context),
+      sort: false,
+    );
+  }
 }
 
 extension Seasons on Season {
@@ -565,6 +568,21 @@ extension Seasons on Season {
     }
     throw ArgumentError("Invalid input: $this");
   }
+
+  static Set<Season> selectable() {
+    return _selectable<Season>(
+        Season.values, [Season.season_none, Season.season_all]);
+  }
+
+  static List<PickerPageItem<Season>> pickerItems(BuildContext context) {
+    return _pickerItems(
+      context,
+      Seasons.selectable().toList(),
+      [],
+      (context, season) => season.displayName(context),
+      sort: false,
+    );
+  }
 }
 
 extension Units on Unit {
@@ -591,6 +609,18 @@ extension Units on Unit {
         return Strings.of(context).unitKilograms;
       case Unit.celsius:
         return Strings.of(context).unitCelsius;
+      case Unit.miles_per_hour:
+        return Strings.of(context).unitMilesPerHour;
+      case Unit.kilometers_per_hour:
+        return Strings.of(context).unitKilometersPerHour;
+      case Unit.millibars:
+        return Strings.of(context).unitMillibars;
+      case Unit.pounds_per_square_inch:
+        return Strings.of(context).unitPoundsPerSquareInch;
+      case Unit.miles:
+        return Strings.of(context).unitMiles;
+      case Unit.kilometers:
+        return Strings.of(context).unitKilometers;
     }
     throw ArgumentError("Invalid input: $this");
   }
@@ -606,6 +636,12 @@ extension Units on Unit {
       case Unit.meters:
       case Unit.centimeters:
       case Unit.kilograms:
+      case Unit.miles_per_hour:
+      case Unit.kilometers_per_hour:
+      case Unit.millibars:
+      case Unit.pounds_per_square_inch:
+      case Unit.miles:
+      case Unit.kilometers:
         return true;
       case Unit.celsius:
       case Unit.fahrenheit:
@@ -621,11 +657,17 @@ extension Units on Unit {
       case Unit.pounds:
       case Unit.ounces:
       case Unit.fahrenheit:
+      case Unit.miles_per_hour:
+      case Unit.miles:
+      case Unit.pounds_per_square_inch:
         return MeasurementSystem.imperial_whole;
       case Unit.meters:
       case Unit.centimeters:
       case Unit.kilograms:
       case Unit.celsius:
+      case Unit.kilometers_per_hour:
+      case Unit.kilometers:
+      case Unit.millibars:
         return MeasurementSystem.metric;
     }
     throw ArgumentError("Invalid input: $this");
@@ -650,6 +692,18 @@ extension Units on Unit {
         return Unit.pounds;
       case Unit.celsius:
         return Unit.fahrenheit;
+      case Unit.miles_per_hour:
+        return Unit.kilometers_per_hour;
+      case Unit.kilometers_per_hour:
+        return Unit.miles_per_hour;
+      case Unit.millibars:
+        return Unit.pounds_per_square_inch;
+      case Unit.pounds_per_square_inch:
+        return Unit.millibars;
+      case Unit.miles:
+        return Unit.kilometers;
+      case Unit.kilometers:
+        return Unit.miles;
     }
     throw ArgumentError("Invalid input: $this");
   }
@@ -667,6 +721,12 @@ extension Units on Unit {
       case Unit.centimeters:
       case Unit.kilograms:
       case Unit.celsius:
+      case Unit.miles_per_hour:
+      case Unit.kilometers_per_hour:
+      case Unit.millibars:
+      case Unit.pounds_per_square_inch:
+      case Unit.miles:
+      case Unit.kilometers:
         _log.w("Unit.toDecimal called with non-decimal unit: $this");
         return value;
     }
@@ -802,4 +862,123 @@ extension DateRanges on DateRange {
 
   bool contains(int timestamp, DateTime now) =>
       timestamp >= startMs(now) && timestamp <= endMs(now);
+}
+
+extension MoonPhases on MoonPhase {
+  String displayName(BuildContext context) {
+    switch (this) {
+      case MoonPhase.moon_phase_none:
+        return Strings.of(context).none;
+      case MoonPhase.new_:
+        return Strings.of(context).moonPhaseNew;
+      case MoonPhase.waxing_crescent:
+        return Strings.of(context).moonPhaseWaxingCrescent;
+      case MoonPhase.first_quarter:
+        return Strings.of(context).moonPhaseFirstQuarter;
+      case MoonPhase.waxing_gibbous:
+        return Strings.of(context).moonPhaseWaxingGibbous;
+      case MoonPhase.full:
+        return Strings.of(context).moonPhaseFull;
+      case MoonPhase.waning_gibbous:
+        return Strings.of(context).moonPhaseWaningGibbous;
+      case MoonPhase.last_quarter:
+        return Strings.of(context).moonPhaseLastQuarter;
+      case MoonPhase.waning_crescent:
+        return Strings.of(context).moonPhaseWaningCrescent;
+    }
+    throw ArgumentError("Invalid input: $this");
+  }
+
+  static List<PickerPageItem<MoonPhase>> pickerItems(BuildContext context) {
+    return _pickerItems(
+      context,
+      MoonPhase.values,
+      [MoonPhase.moon_phase_none],
+      (context, phase) => phase.displayName(context),
+      sort: false,
+    );
+  }
+}
+
+extension Directions on Direction {
+  String displayName(BuildContext context) {
+    switch (this) {
+      case Direction.direction_none:
+        return Strings.of(context).none;
+      case Direction.north:
+        return Strings.of(context).directionNorth;
+      case Direction.north_east:
+        return Strings.of(context).directionNorthEast;
+      case Direction.east:
+        return Strings.of(context).directionEast;
+      case Direction.south_east:
+        return Strings.of(context).directionSouthEast;
+      case Direction.south:
+        return Strings.of(context).directionSouth;
+      case Direction.south_west:
+        return Strings.of(context).directionSouthWest;
+      case Direction.west:
+        return Strings.of(context).directionWest;
+      case Direction.north_west:
+        return Strings.of(context).directionNorthWest;
+    }
+    throw ArgumentError("Invalid input: $this");
+  }
+
+  static List<PickerPageItem<Direction>> pickerItems(BuildContext context) {
+    return _pickerItems(
+      context,
+      Direction.values,
+      [Direction.direction_none],
+      (context, direction) => direction.displayName(context),
+      sort: false,
+    );
+  }
+}
+
+extension SkyConditions on SkyCondition {
+  String displayName(BuildContext context) {
+    switch (this) {
+      case SkyCondition.sky_condition_none:
+        return Strings.of(context).none;
+      case SkyCondition.snow:
+        return Strings.of(context).skyConditionSnow;
+      case SkyCondition.drizzle:
+        return Strings.of(context).skyConditionDrizzle;
+      case SkyCondition.dust:
+        return Strings.of(context).skyConditionDust;
+      case SkyCondition.fog:
+        return Strings.of(context).skyConditionFog;
+      case SkyCondition.rain:
+        return Strings.of(context).skyConditionRain;
+      case SkyCondition.tornado:
+        return Strings.of(context).skyConditionTornado;
+      case SkyCondition.hail:
+        return Strings.of(context).skyConditionHail;
+      case SkyCondition.ice:
+        return Strings.of(context).skyConditionIce;
+      case SkyCondition.storm:
+        return Strings.of(context).skyConditionStorm;
+      case SkyCondition.mist:
+        return Strings.of(context).skyConditionMist;
+      case SkyCondition.smoke:
+        return Strings.of(context).skyConditionSmoke;
+      case SkyCondition.overcast:
+        return Strings.of(context).skyConditionOvercast;
+      case SkyCondition.cloudy:
+        return Strings.of(context).skyConditionCloudy;
+      case SkyCondition.clear:
+        return Strings.of(context).skyConditionClear;
+    }
+    throw ArgumentError("Invalid input: $this");
+  }
+
+  static List<PickerPageItem<SkyCondition>> pickerItems(BuildContext context) {
+    return _pickerItems(
+      context,
+      SkyCondition.values,
+      [SkyCondition.sky_condition_none],
+      (context, condition) => condition.displayName(context),
+    );
+  }
 }

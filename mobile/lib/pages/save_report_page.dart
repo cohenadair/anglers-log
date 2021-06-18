@@ -536,9 +536,9 @@ class _SaveReportPageState extends State<SaveReportPage> {
       nameForItem: (context, period) => period.displayName(context),
       emptyValue: Strings.of(context).periodPickerAll,
       title: Strings.of(context).periodPickerMultiTitle,
-      allItems: selectablePeriods(),
+      allItems: Periods.selectable(),
       allItem: Period.period_all,
-      pickerItems: pickerItemsForPeriod,
+      pickerItems: Periods.pickerItems,
     );
   }
 
@@ -548,9 +548,9 @@ class _SaveReportPageState extends State<SaveReportPage> {
       nameForItem: (context, season) => season.displayName(context),
       emptyValue: Strings.of(context).seasonPickerAll,
       title: Strings.of(context).seasonPickerMultiTitle,
-      allItems: selectableSeasons(),
+      allItems: Seasons.selectable(),
       allItem: Season.season_all,
-      pickerItems: pickerItemsForSeason,
+      pickerItems: Seasons.pickerItems,
     );
   }
 

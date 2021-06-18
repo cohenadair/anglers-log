@@ -37,6 +37,11 @@ class FormPage extends StatefulWidget {
   /// See [AppBar.title].
   final Widget? title;
 
+  /// A widget rendered at the top of the list that scrolls with the input form.
+  /// This widget does not appear in the "manage fields" page for editable
+  /// forms.
+  final Widget? header;
+
   final FieldBuilder fieldBuilder;
 
   /// A [List] of fields that can be added to the form, if the user desires.
@@ -52,6 +57,10 @@ class FormPage extends StatefulWidget {
 
   /// Whether this form's components can be added or removed.
   final bool editable;
+
+  /// When true, and when [editable] is true, custom fields can be added to
+  /// this form. Defaults to true.
+  final bool allowCustomEntities;
 
   /// Called when the save button is pressed. Returning true will dismiss
   /// the form page; false will leave it open.
@@ -77,21 +86,31 @@ class FormPage extends StatefulWidget {
   /// programmatically showing the popup menu.
   final GlobalKey<PopupMenuButtonState>? popupMenuKey;
 
+  /// See [ScrollPage.onRefresh].
+  final Future<void> Function()? onRefresh;
+
+  /// See [ScrollPage.refreshIndicatorKey].
+  final Key? refreshIndicatorKey;
+
   FormPage({
     Key? key,
     this.popupMenuKey,
     this.title,
+    this.header,
     required this.fieldBuilder,
     this.onSave,
     this.addFieldOptions = const [],
     this.onAddFields,
     this.editable = true,
+    this.allowCustomEntities = true,
     this.padding = insetsHorizontalDefault,
     this.runSpacing,
     this.saveButtonText,
     this.showSaveButton = true,
     this.showLoadingOverSave = false,
     this.isInputValid = true,
+    this.onRefresh,
+    this.refreshIndicatorKey,
   }) : super(key: key);
 
   FormPage.immutable({
@@ -113,6 +132,7 @@ class FormPage extends StatefulWidget {
           addFieldOptions: const [],
           onAddFields: null,
           editable: false,
+          allowCustomEntities: false,
           padding: padding,
           runSpacing: runSpacing,
           isInputValid: isInputValid,
@@ -194,10 +214,12 @@ class _FormPageState extends State<FormPage> {
           child: ScrollPage(
             padding: insetsBottomDefault,
             enableHorizontalSafeArea: false,
+            onRefresh: widget.onRefresh,
+            refreshIndicatorKey: widget.refreshIndicatorKey,
             children: [
               Wrap(
                 runSpacing: widget.runSpacing ?? paddingSmall,
-                children: widget.fieldBuilder(context).values.toList(),
+                children: _buildChildren(),
               ),
             ],
           ),
@@ -206,8 +228,20 @@ class _FormPageState extends State<FormPage> {
     );
   }
 
+  List<Widget> _buildChildren() {
+    var children = <Widget>[];
+
+    if (widget.header != null) {
+      children.add(widget.header!);
+    }
+    children.addAll(widget.fieldBuilder(context).values);
+
+    return children;
+  }
+
   Widget _addFieldSelectionPage() {
     return _SelectionPage(
+      allowCustomFields: widget.allowCustomEntities,
       options: widget.addFieldOptions,
       onSelectItems: (selectedIds) => widget.onAddFields?.call(selectedIds),
     );
@@ -272,10 +306,12 @@ enum _OverflowOption {
 }
 
 class _SelectionPage extends StatefulWidget {
+  final bool allowCustomFields;
   final List<FormPageFieldOption> options;
   final void Function(Set<Id>) onSelectItems;
 
   _SelectionPage({
+    this.allowCustomFields = true,
     required this.options,
     required this.onSelectItems,
   });
@@ -313,12 +349,20 @@ class _SelectionPageState extends State<_SelectionPage> {
                 items.map((item) => (item as FormPageFieldOption).id).toSet());
             Navigator.pop(context);
           },
-          action: IconButton(
-            icon: Icon(_addItemIconData),
-            onPressed: () => present(context, SaveCustomEntityPage()),
-          ),
+          action: _buildAction(),
         );
       },
+    );
+  }
+
+  Widget? _buildAction() {
+    if (!widget.allowCustomFields) {
+      return null;
+    }
+
+    return IconButton(
+      icon: Icon(_addItemIconData),
+      onPressed: () => present(context, SaveCustomEntityPage()),
     );
   }
 
@@ -349,44 +393,46 @@ class _SelectionPageState extends State<_SelectionPage> {
       ),
     );
 
-    // Add custom field separator/title.
-    result..add(PickerPageItem.heading(Strings.of(context).customFields));
+    if (widget.allowCustomFields) {
+      // Add custom field separator/title.
+      result..add(PickerPageItem.heading(Strings.of(context).customFields));
 
-    // Add customs fields that aren't already part of the form.
-    for (var entity in customEntityManager.list()) {
-      var option = customFields.firstWhereOrNull(
-        (field) => field.id == entity.id,
-      );
+      // Add customs fields that aren't already part of the form.
+      for (var entity in customEntityManager.list()) {
+        var option = customFields.firstWhereOrNull(
+          (field) => field.id == entity.id,
+        );
 
-      if (option == null) {
-        customFields.add(FormPageFieldOption(
-          id: entity.id,
-          name: entity.name,
-          description: entity.description,
+        if (option == null) {
+          customFields.add(FormPageFieldOption(
+            id: entity.id,
+            name: entity.name,
+            description: entity.description,
+          ));
+        }
+      }
+
+      // Ensure alphabetical order.
+      customFields.sort((a, b) => a.name.compareTo(b.name));
+
+      // If there are no custom fields, show a note on how to add them.
+      if (customFields.isEmpty) {
+        result.add(PickerPageItem.note(
+          title: Strings.of(context).formPageItemAddCustomFieldNote,
+          noteIcon: _addItemIconData,
         ));
       }
-    }
 
-    // Ensure alphabetical order.
-    customFields.sort((a, b) => a.name.compareTo(b.name));
-
-    // If there are no custom fields, show a note on how to add them.
-    if (customFields.isEmpty) {
-      result.add(PickerPageItem.note(
-        title: Strings.of(context).formPageItemAddCustomFieldNote,
-        noteIcon: _addItemIconData,
-      ));
-    }
-
-    result.addAll(
-      customFields.map(
-        (field) => PickerPageItem<FormPageFieldOption>(
-          title: field.name,
-          subtitle: field.description,
-          value: field,
+      result.addAll(
+        customFields.map(
+          (field) => PickerPageItem<FormPageFieldOption>(
+            title: field.name,
+            subtitle: field.description,
+            value: field,
+          ),
         ),
-      ),
-    );
+      );
+    }
 
     return result;
   }

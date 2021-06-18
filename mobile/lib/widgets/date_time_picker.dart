@@ -120,6 +120,7 @@ class TimePicker extends FormField<TimeOfDay> {
     Function(TimeOfDay)? onChange,
     FormFieldValidator<TimeOfDay>? validator,
     bool enabled = true,
+    EdgeInsets padding = insetsZero,
   })  : assert(isNotEmpty(label)),
         super(
           initialValue: initialTime ?? TimeManager.of(context).currentTime,
@@ -129,6 +130,7 @@ class TimePicker extends FormField<TimeOfDay> {
               label: label,
               errorText: state.errorText,
               enabled: enabled,
+              padding: padding,
               type: _PickerType(
                 getValue: () {
                   return TimeLabel(
@@ -169,34 +171,41 @@ class _Picker extends StatelessWidget {
   final String label;
   final String? errorText;
   final bool enabled;
+  final EdgeInsets padding;
 
   _Picker({
     required this.type,
     required this.label,
     this.errorText,
     this.enabled = true,
+    this.padding = insetsZero,
   }) : assert(isNotEmpty(label));
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: enabled ? type.openPicker : null,
-      child: InputDecorator(
-        decoration: InputDecoration(
-          enabled: enabled,
-          labelText: label,
-          errorText: errorText,
-          errorMaxLines: 2,
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: <Widget>[
-            Expanded(child: type.getValue()),
-            EnabledOpacity(
+      child: HorizontalSafeArea(
+        child: Padding(
+          padding: padding,
+          child: InputDecorator(
+            decoration: InputDecoration(
               enabled: enabled,
-              child: DropdownIcon(),
+              labelText: label,
+              errorText: errorText,
+              errorMaxLines: 2,
             ),
-          ],
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Expanded(child: type.getValue()),
+                EnabledOpacity(
+                  enabled: enabled,
+                  child: DropdownIcon(),
+                ),
+              ],
+            ),
+          ),
         ),
       ),
     );

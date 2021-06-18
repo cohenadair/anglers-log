@@ -1,10 +1,34 @@
 syntax = "proto3";
 package anglerslog;
 
+enum Direction {
+  direction_none = 0;
+  north = 1;
+  north_east = 2;
+  east = 3;
+  south_east = 4;
+  south = 5;
+  south_west = 6;
+  west = 7;
+  north_west = 8;
+}
+
 enum MeasurementSystem {
   imperial_whole = 0;
   imperial_decimal = 1;
   metric = 2;
+}
+
+enum MoonPhase {
+  moon_phase_none = 0;
+  new = 1;
+  waxing_crescent = 2;
+  first_quarter = 3;
+  waxing_gibbous = 4;
+  full = 5;
+  waning_gibbous = 6;
+  last_quarter = 7;
+  waning_crescent = 8;
 }
 
 enum NumberBoundary {
@@ -37,6 +61,24 @@ enum Season {
   autumn = 5;
 }
 
+enum SkyCondition {
+  sky_condition_none = 0;
+  snow = 1;
+  drizzle = 2;
+  dust = 3;
+  fog = 4;
+  rain = 5;
+  tornado = 6;
+  hail = 7;
+  ice = 8;
+  storm = 9;
+  mist = 10;
+  smoke = 11;
+  overcast = 12;
+  cloudy = 13;
+  clear = 14;
+}
+
 enum Unit {
   feet = 0;
   inches = 1;
@@ -47,6 +89,12 @@ enum Unit {
   centimeters = 6;
   kilograms = 7;
   celsius = 8;
+  miles_per_hour = 9;
+  kilometers_per_hour = 10;
+  millibars = 11;
+  pounds_per_square_inch = 12;
+  miles = 13;
+  kilometers = 14;
 }
 
 // A unique ID. An Id is a wrapper for UUID string representation of protobuf bytes type that can
@@ -55,6 +103,19 @@ enum Unit {
 // to differentiate between a "string" and a "string that is an ID".
 message Id {
   string uuid = 1;
+}
+
+message Atmosphere {
+  Measurement temperature = 1;
+  SkyCondition sky_condition = 2;
+  Measurement wind_speed = 3;
+  Direction wind_direction = 4;
+  Measurement pressure = 5;
+  uint32 humidity = 6;
+  Measurement visibility = 7;
+  MoonPhase moon_phase = 8;
+  uint64 sunrise_timestamp = 9;
+  uint64 sunset_timestamp = 10;
 }
 
 message CustomEntity {
@@ -108,6 +169,7 @@ message Catch {
   MultiMeasurement weight = 18;
   uint32 quantity = 19;
   string notes = 20;
+  Atmosphere atmosphere = 21;
 }
 
 message DateRange {

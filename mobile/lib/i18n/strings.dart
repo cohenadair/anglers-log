@@ -180,6 +180,8 @@ class Strings {
 
   String get saveCatchPageEditTitle => _string("saveCatchPage_editTitle");
 
+  String get catchFieldAtmosphere => _string("catchField_atmosphere");
+
   String get catchFieldDateTime => _string("catchField_dateTime");
 
   String get catchFieldDate => _string("catchField_date");
@@ -1058,6 +1060,18 @@ class Strings {
 
   String get unitCelsius => _string("unit_celsius");
 
+  String get unitMilesPerHour => _string("unit_milesPerHour");
+
+  String get unitKilometersPerHour => _string("unit_kilometersPerHour");
+
+  String get unitMillibars => _string("unit_millibars");
+
+  String get unitPoundsPerSquareInch => _string("unit_pounds_per_square_inch");
+
+  String get unitMiles => _string("unit_miles");
+
+  String get unitKilometers => _string("unit_kilometers");
+
   String get numberFilterInputFrom => _string("numberFilterInput_from");
 
   String get numberFilterInputTo => _string("numberFilterInput_to");
@@ -1109,6 +1123,116 @@ class Strings {
       _string("weight_imperialSearchString");
 
   String get weightMetricSearchString => _string("weight_metricSearchString");
+
+  String get moonPhasePickerTitle => _string("moonPhase_pickerTitle");
+
+  String get moonPhaseNew => _string("moonPhase_new");
+
+  String get moonPhaseWaxingCrescent => _string("moonPhase_waxingCrescent");
+
+  String get moonPhaseFirstQuarter => _string("moonPhase_firstQuarter");
+
+  String get moonPhaseWaxingGibbous => _string("moonPhase_waxingGibbous");
+
+  String get moonPhaseFull => _string("moonPhase_full");
+
+  String get moonPhaseWaningGibbous => _string("moonPhase_waningGibbous");
+
+  String get moonPhaseLastQuarter => _string("moonPhase_lastQuarter");
+
+  String get moonPhaseWaningCrescent => _string("moonPhase_waningCrescent");
+
+  String get atmosphereInputTemperature =>
+      _string("atmosphereInput_temperature");
+
+  String get atmosphereInputSkyCondition =>
+      _string("atmosphereInput_skyCondition");
+
+  String get atmosphereInputWindSpeed => _string("atmosphereInput_windSpeed");
+
+  String get atmosphereInputWindDirection =>
+      _string("atmosphereInput_windDirection");
+
+  String get atmosphereInputPressure => _string("atmosphereInput_pressure");
+
+  String get atmosphereInputAtmosphericPressure =>
+      _string("atmosphereInput_atmosphericPressure");
+
+  String get atmosphereInputHumidity => _string("atmosphereInput_humidity");
+
+  String get atmosphereInputAirHumidity =>
+      _string("atmosphereInput_airHumidity");
+
+  String get atmosphereInputVisibility => _string("atmosphereInput_visibility");
+
+  String get atmosphereInputAirVisibility =>
+      _string("atmosphereInput_airVisibility");
+
+  String get atmosphereInputMoon => _string("atmosphereInput_moon");
+
+  String get atmosphereInputMoonPhase => _string("atmosphereInput_moonPhase");
+
+  String get atmosphereInputSunrise => _string("atmosphereInput_sunrise");
+
+  String get atmosphereInputTimeOfSunrise =>
+      _string("atmosphereInput_timeOfSunrise");
+
+  String get atmosphereInputSunset => _string("atmosphereInput_sunset");
+
+  String get atmosphereInputTimeOfSunset =>
+      _string("atmosphereInput_timeOfSunset");
+
+  String get atmosphereInputAutoFetch => _string("atmosphereInput_autoFetch");
+
+  String get atmosphereInputFetchError => _string("atmosphereInput_fetchError");
+
+  String get directionPickerTitle => _string("direction_pickerTitle");
+
+  String get directionNorth => _string("direction_north");
+
+  String get directionNorthEast => _string("direction_northEast");
+
+  String get directionEast => _string("direction_east");
+
+  String get directionSouthEast => _string("direction_southEast");
+
+  String get directionSouth => _string("direction_south");
+
+  String get directionSouthWest => _string("direction_southWest");
+
+  String get directionWest => _string("direction_west");
+
+  String get directionNorthWest => _string("direction_northWest");
+
+  String get skyConditionPickerTitle => _string("skyCondition_pickerTitle");
+
+  String get skyConditionSnow => _string("skyCondition_snow");
+
+  String get skyConditionDrizzle => _string("skyCondition_drizzle");
+
+  String get skyConditionDust => _string("skyCondition_dust");
+
+  String get skyConditionFog => _string("skyCondition_fog");
+
+  String get skyConditionRain => _string("skyCondition_rain");
+
+  String get skyConditionTornado => _string("skyCondition_tornado");
+
+  String get skyConditionHail => _string("skyCondition_hail");
+
+  String get skyConditionIce => _string("skyCondition_ice");
+
+  String get skyConditionStorm => _string("skyCondition_storm");
+
+  String get skyConditionMist => _string("skyCondition_mist");
+
+  String get skyConditionSmoke => _string("skyCondition_smoke");
+
+  String get skyConditionOvercast => _string("skyCondition_overcast");
+
+  String get skyConditionCloudy => _string("skyCondition_cloudy");
+
+  String get skyConditionClear => _string("skyCondition_clear");
 }
 
 class StringsDelegate extends LocalizationsDelegate<Strings> {

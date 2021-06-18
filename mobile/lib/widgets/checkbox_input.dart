@@ -63,7 +63,7 @@ class _PaddedCheckboxState extends State<PaddedCheckbox> {
   void didUpdateWidget(PaddedCheckbox oldWidget) {
     super.didUpdateWidget(oldWidget);
 
-    if (oldWidget.checked != widget.checked) {
+    if (_checked != widget.checked) {
       _checked = widget.checked;
     }
   }
