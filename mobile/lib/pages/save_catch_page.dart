@@ -523,7 +523,7 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
   Widget _buildAtmosphere() {
     var fishingSpot = _fishingSpotManager.entity(_fishingSpotController.value);
     return AtmosphereInput(
-      fetcher: AtmosphereFetcher(_timestampController.value,
+      fetcher: AtmosphereFetcher(context, _timestampController.value,
           fishingSpot?.latLng ?? _locationMonitor.currentLocation),
       padding: insetsDefault,
       initialValue: _atmosphereController.value,

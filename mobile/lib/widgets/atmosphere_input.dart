@@ -56,11 +56,14 @@ class _AtmosphereInputState extends State<AtmosphereInput> {
   @override
   Widget build(BuildContext context) {
     return DetailInput(
-      onTap: () => push(context, _AtmosphereInputPage(
-        fetcher: widget.fetcher,
-        initialValue: widget.initialValue,
-        onChanged: widget.onChanged,
-      )),
+      onTap: () => push(
+        context,
+        _AtmosphereInputPage(
+          fetcher: widget.fetcher,
+          initialValue: _atmosphere,
+          onChanged: widget.onChanged,
+        ),
+      ),
       children: [
         Expanded(child: _buildItems()),
       ],
@@ -223,6 +226,8 @@ class __AtmosphereInputPageState extends State<_AtmosphereInputPage> {
   // they are inaccurate.
   var _didPickSunrise = false;
   var _didPickSunset = false;
+
+  var _temperatureInputController = NumberInputController();
 
   TimeManager get _timeManager => TimeManager.of(context);
 
@@ -428,6 +433,7 @@ class __AtmosphereInputPageState extends State<_AtmosphereInputPage> {
       child: MultiMeasurementInput(
         spec: MultiMeasurementInputSpec.airTemperature(context),
         controller: _temperatureController,
+        mainController: _temperatureInputController,
         onChanged: () => _userPreferenceManager
             .setAirTemperatureSystem(_temperatureController.value?.system),
       ),
@@ -542,17 +548,20 @@ class __AtmosphereInputPageState extends State<_AtmosphereInputPage> {
   }
 
   Widget _buildSunset() {
-    return TimePicker(context,
-        padding: EdgeInsets.only(
-          left: paddingDefault,
-          right: paddingDefault,
-          bottom: paddingWidget,
-        ),
-        label: Strings.of(context).atmosphereInputTimeOfSunset,
-        initialTime: _sunsetController.time, onChange: (newTime) {
-      _sunsetController.time = newTime;
-      _didPickSunset = true;
-    });
+    return TimePicker(
+      context,
+      padding: EdgeInsets.only(
+        left: paddingDefault,
+        right: paddingDefault,
+        bottom: paddingWidget,
+      ),
+      label: Strings.of(context).atmosphereInputTimeOfSunset,
+      initialTime: _sunsetController.time,
+      onChange: (newTime) {
+        _sunsetController.time = newTime;
+        _didPickSunset = true;
+      },
+    );
   }
 
   Future<void> _fetch() async {
@@ -561,11 +570,53 @@ class __AtmosphereInputPageState extends State<_AtmosphereInputPage> {
       showErrorSnackBar(context, Strings.of(context).atmosphereInputFetchError);
       return;
     }
-
-    _update(atmosphere);
+    setState(() {
+      _update(atmosphere);
+    });
   }
 
   void _update(Atmosphere atmosphere) {
-    // TODO
+    if (atmosphere.hasTemperature()) {
+      _temperatureInputController.doubleValue = atmosphere.temperature.value;
+      _temperatureController.value =
+          MultiMeasurements.from(atmosphere.temperature);
+    }
+
+    if (atmosphere.hasSkyCondition()) {
+      _skyConditionController.value = atmosphere.skyCondition;
+    }
+
+    if (atmosphere.hasWindDirection()) {
+      _directionController.value = atmosphere.windDirection;
+    }
+
+    if (atmosphere.hasWindSpeed()) {
+      _windSpeedController.value = MultiMeasurements.from(atmosphere.windSpeed);
+    }
+
+    if (atmosphere.hasPressure()) {
+      _pressureController.value = MultiMeasurements.from(atmosphere.pressure);
+    }
+
+    if (atmosphere.hasVisibility()) {
+      _visibilityController.value =
+          MultiMeasurements.from(atmosphere.visibility);
+    }
+
+    if (atmosphere.hasHumidity()) {
+      _humidityController.intValue = atmosphere.humidity;
+    }
+
+    if (atmosphere.hasMoonPhase()) {
+      _moonPhaseController.value = atmosphere.moonPhase;
+    }
+
+    if (atmosphere.hasSunriseTimestamp()) {
+      _sunriseController.value = atmosphere.sunriseTimestamp.toInt();
+    }
+
+    if (atmosphere.hasSunsetTimestamp()) {
+      _sunsetController.value = atmosphere.sunsetTimestamp.toInt();
+    }
   }
 }

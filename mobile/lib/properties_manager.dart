@@ -10,10 +10,11 @@ class PropertiesManager {
   static PropertiesManager of(BuildContext context) =>
       Provider.of<AppManager>(context, listen: false).propertiesManager;
 
-  final String _keyClientSenderEmail = "clientsender.email";
+  final String _keyClientSenderEmail = "clientSender.email";
   final String _keySupportEmail = "support.email";
-  final String _keySendGridApiKey = "sendgrid.apikey";
-  final String _keyRevenueCatApiKey = "revenuecat.apiKey";
+  final String _keySendGridApiKey = "sendGrid.apikey";
+  final String _keyRevenueCatApiKey = "revenueCat.apiKey";
+  final String _keyVisualCrossing = "visualCrossing.apiKey";
 
   final String _path = "assets/sensitive.properties";
   final String _feedbackTemplatePath = "assets/feedback_template";
@@ -34,6 +35,9 @@ class PropertiesManager {
   String get sendGridApiKey => _properties.stringForKey(_keySendGridApiKey);
 
   String get revenueCatApiKey => _properties.stringForKey(_keyRevenueCatApiKey);
+
+  String get visualCrossingApiKey =>
+      _properties.stringForKey(_keyVisualCrossing);
 
   String get feedbackTemplate => _feedbackTemplate;
 }

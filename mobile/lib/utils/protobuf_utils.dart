@@ -279,6 +279,13 @@ extension Measurements on Measurement {
 }
 
 extension MultiMeasurements on MultiMeasurement {
+  static MultiMeasurement from(Measurement measurement) {
+    return MultiMeasurement(
+      system: measurement.unit.measurementSystem,
+      mainValue: measurement,
+    );
+  }
+
   bool get isSet => hasMainValue() || hasFractionValue();
 
   String displayValue(BuildContext context) {
@@ -486,6 +493,21 @@ extension NumberFilters on NumberFilter {
 }
 
 extension Periods on Period {
+  static Set<Period> selectable() {
+    return _selectable<Period>(
+        Period.values, [Period.period_none, Period.period_all]);
+  }
+
+  static List<PickerPageItem<Period>> pickerItems(BuildContext context) {
+    return _pickerItems(
+      context,
+      Periods.selectable().toList(),
+      [],
+      (context, period) => period.displayName(context),
+      sort: false,
+    );
+  }
+
   String displayName(BuildContext context) {
     switch (this) {
       case Period.period_all:
@@ -506,21 +528,6 @@ extension Periods on Period {
         return Strings.of(context).periodNight;
     }
     throw ArgumentError("Invalid input: $this");
-  }
-
-  static Set<Period> selectable() {
-    return _selectable<Period>(
-        Period.values, [Period.period_none, Period.period_all]);
-  }
-
-  static List<PickerPageItem<Period>> pickerItems(BuildContext context) {
-    return _pickerItems(
-      context,
-      Periods.selectable().toList(),
-      [],
-      (context, period) => period.displayName(context),
-      sort: false,
-    );
   }
 }
 
@@ -551,6 +558,21 @@ extension Seasons on Season {
     return null;
   }
 
+  static Set<Season> selectable() {
+    return _selectable<Season>(
+        Season.values, [Season.season_none, Season.season_all]);
+  }
+
+  static List<PickerPageItem<Season>> pickerItems(BuildContext context) {
+    return _pickerItems(
+      context,
+      Seasons.selectable().toList(),
+      [],
+      (context, season) => season.displayName(context),
+      sort: false,
+    );
+  }
+
   String displayName(BuildContext context) {
     switch (this) {
       case Season.season_all:
@@ -567,21 +589,6 @@ extension Seasons on Season {
         return Strings.of(context).seasonAutumn;
     }
     throw ArgumentError("Invalid input: $this");
-  }
-
-  static Set<Season> selectable() {
-    return _selectable<Season>(
-        Season.values, [Season.season_none, Season.season_all]);
-  }
-
-  static List<PickerPageItem<Season>> pickerItems(BuildContext context) {
-    return _pickerItems(
-      context,
-      Seasons.selectable().toList(),
-      [],
-      (context, season) => season.displayName(context),
-      sort: false,
-    );
   }
 }
 
@@ -732,6 +739,35 @@ extension Units on Unit {
     }
     throw ArgumentError("Invalid input: $this");
   }
+
+  /// Converts [value] to this [Unit]. [Unit] must be the [oppositeUnit] of
+  /// the caller, otherwise [value] is returned unchanged.
+  double convertFrom(Unit unit, double value) {
+    if (unit == this) {
+      return value;
+    }
+
+    if (unit != oppositeUnit) {
+      _log.w("Can't convert $unit to $this");
+      return value;
+    }
+
+    switch (this) {
+      // Fahrenheit to celsius.
+      case Unit.celsius:
+        return (value - 32) * (5 / 9);
+      // Miles to kilometers.
+      case Unit.kilometers_per_hour:
+      case Unit.kilometers:
+        return value * 1.609344;
+      // Millibars to pounds per square inch.
+      case Unit.pounds_per_square_inch:
+        return value * 0.0145038;
+      default:
+        _log.w("Unsupported conversion for $this");
+        return value;
+    }
+  }
 }
 
 extension DateRanges on DateRange {
@@ -865,6 +901,41 @@ extension DateRanges on DateRange {
 }
 
 extension MoonPhases on MoonPhase {
+  static List<PickerPageItem<MoonPhase>> pickerItems(BuildContext context) {
+    return _pickerItems(
+      context,
+      MoonPhase.values,
+      [MoonPhase.moon_phase_none],
+      (context, phase) => phase.displayName(context),
+      sort: false,
+    );
+  }
+
+  /// Converts a Visual Crossing moon phase value to a [MoonPhase].
+  /// See https://www.visualcrossing.com/resources/documentation/weather-data/weather-data-documentation/.
+  static MoonPhase fromDouble(double value) {
+    if (value == 0) {
+      return MoonPhase.new_;
+    }
+    if (value < 0.25) {
+      return MoonPhase.waxing_crescent;
+    } else if (value == 0.25) {
+      return MoonPhase.first_quarter;
+    } else if (value < 0.5) {
+      return MoonPhase.waxing_gibbous;
+    } else if (value == 0.5) {
+      return MoonPhase.full;
+    } else if (value < 0.75) {
+      return MoonPhase.waning_gibbous;
+    } else if (value == 0.75) {
+      return MoonPhase.last_quarter;
+    } else if (value <= 1) {
+      return MoonPhase.waning_crescent;
+    } else {
+      return MoonPhase.moon_phase_none;
+    }
+  }
+
   String displayName(BuildContext context) {
     switch (this) {
       case MoonPhase.moon_phase_none:
@@ -888,19 +959,45 @@ extension MoonPhases on MoonPhase {
     }
     throw ArgumentError("Invalid input: $this");
   }
-
-  static List<PickerPageItem<MoonPhase>> pickerItems(BuildContext context) {
-    return _pickerItems(
-      context,
-      MoonPhase.values,
-      [MoonPhase.moon_phase_none],
-      (context, phase) => phase.displayName(context),
-      sort: false,
-    );
-  }
 }
 
 extension Directions on Direction {
+  static List<PickerPageItem<Direction>> pickerItems(BuildContext context) {
+    return _pickerItems(
+      context,
+      Direction.values,
+      [Direction.direction_none],
+      (context, direction) => direction.displayName(context),
+      sort: false,
+    );
+  }
+
+  static Direction fromDegrees(double degrees) {
+    var closest = Direction.north;
+    var minDifference = 360.0;
+
+    for (var direction in Direction.values) {
+      if (direction == Direction.direction_none) {
+        continue;
+      }
+
+      var diff = (direction.toDegrees() - degrees).abs();
+      if (diff < minDifference) {
+        minDifference = diff;
+        closest = direction;
+      }
+    }
+
+    // North is at both 0 and 360 degrees. Do the additional 360 degrees check
+    // here.
+    var diff = 360 - degrees;
+    if (diff < minDifference) {
+      closest = Direction.north;
+    }
+
+    return closest;
+  }
+
   String displayName(BuildContext context) {
     switch (this) {
       case Direction.direction_none:
@@ -925,18 +1022,105 @@ extension Directions on Direction {
     throw ArgumentError("Invalid input: $this");
   }
 
-  static List<PickerPageItem<Direction>> pickerItems(BuildContext context) {
-    return _pickerItems(
-      context,
-      Direction.values,
-      [Direction.direction_none],
-      (context, direction) => direction.displayName(context),
-      sort: false,
-    );
+  double toDegrees() {
+    switch (this) {
+      case Direction.north:
+        return 0.0;
+      case Direction.north_east:
+        return 45.0;
+      case Direction.east:
+        return 90.0;
+      case Direction.south_east:
+        return 135.0;
+      case Direction.south:
+        return 180.0;
+      case Direction.south_west:
+        return 225.0;
+      case Direction.west:
+        return 270.0;
+      case Direction.north_west:
+        return 315.0;
+    }
+    throw ArgumentError("Invalid input: $this");
   }
 }
 
 extension SkyConditions on SkyCondition {
+  static List<PickerPageItem<SkyCondition>> pickerItems(BuildContext context) {
+    return _pickerItems(
+      context,
+      SkyCondition.values,
+      [SkyCondition.sky_condition_none],
+      (context, condition) => condition.displayName(context),
+    );
+  }
+
+  /// Converts a Visual Crossing conditions type to a [SkyCondition].
+  /// See https://github.com/visualcrossing/WeatherApi/blob/master/lang/en.txt.
+  static SkyCondition fromType(String type) {
+    switch (type) {
+      case "type_1":
+      case "type_31":
+      case "type_32":
+      case "type_33":
+      case "type_34":
+      case "type_35":
+      case "type_36":
+        return SkyCondition.snow;
+      case "type_2":
+      case "type_3":
+      case "type_4":
+      case "type_5":
+      case "type_6":
+        return SkyCondition.drizzle;
+      case "type_7":
+      case "type_39":
+        return SkyCondition.dust;
+      case "type_8":
+      case "type_12":
+        return SkyCondition.fog;
+      case "type_9":
+      case "type_10":
+      case "type_11":
+      case "type_13":
+      case "type_14":
+      case "type_20":
+      case "type_21":
+      case "type_22":
+      case "type_23":
+      case "type_24":
+      case "type_25":
+      case "type_26":
+        return SkyCondition.rain;
+      case "type_15":
+        return SkyCondition.tornado;
+      case "type_16":
+      case "type_40":
+        return SkyCondition.hail;
+      case "type_17":
+        return SkyCondition.ice;
+      case "type_18":
+      case "type_37":
+      case "type_38":
+        return SkyCondition.storm;
+      case "type_19":
+        return SkyCondition.mist;
+      case "type_30":
+        return SkyCondition.smoke;
+      case "type_41":
+        return SkyCondition.overcast;
+      case "type_27":
+      case "type_28":
+      case "type_42":
+        return SkyCondition.cloudy;
+      case "type_43":
+        return SkyCondition.clear;
+      default:
+        _log.w("Unknown conditions type: $type");
+        return SkyCondition.sky_condition_none;
+    }
+  }
+
   String displayName(BuildContext context) {
     switch (this) {
       case SkyCondition.sky_condition_none:
@@ -971,14 +1155,5 @@ extension SkyConditions on SkyCondition {
         return Strings.of(context).skyConditionClear;
     }
     throw ArgumentError("Invalid input: $this");
-  }
-
-  static List<PickerPageItem<SkyCondition>> pickerItems(BuildContext context) {
-    return _pickerItems(
-      context,
-      SkyCondition.values,
-      [SkyCondition.sky_condition_none],
-      (context, condition) => condition.displayName(context),
-    );
   }
 }
