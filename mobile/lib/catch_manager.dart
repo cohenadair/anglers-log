@@ -79,6 +79,7 @@ class CatchManager extends EntityManager<Catch> {
         catchFilterMatchesWeight(context, filter, cat) ||
         catchFilterMatchesQuantity(context, filter, cat) ||
         catchFilterMatchesNotes(context, filter, cat) ||
+        catchFilterMatchesAtmosphere(context, filter, cat) ||
         filterMatchesEntityValues(
             cat.customEntityValues, filter, _customEntityManager);
   }
@@ -102,11 +103,19 @@ class CatchManager extends EntityManager<Catch> {
     Set<Id> waterClarityIds = const {},
     Set<Period> periods = const {},
     Set<Season> seasons = const {},
+    Set<Direction> windDirections = const {},
+    Set<SkyCondition> skyConditions = const {},
+    Set<MoonPhase> moonPhases = const {},
     NumberFilter? waterDepthFilter,
     NumberFilter? waterTemperatureFilter,
     NumberFilter? lengthFilter,
     NumberFilter? weightFilter,
     NumberFilter? quantityFilter,
+    NumberFilter? airTemperatureFilter,
+    NumberFilter? airPressureFilter,
+    NumberFilter? airHumidityFilter,
+    NumberFilter? airVisibilityFilter,
+    NumberFilter? windSpeedFilter,
   }) {
     var result = List.of(filteredCatches(
       context,
@@ -123,11 +132,19 @@ class CatchManager extends EntityManager<Catch> {
       waterClarityIds: waterClarityIds,
       periods: periods,
       seasons: seasons,
+      windDirections: windDirections,
+      skyConditions: skyConditions,
+      moonPhases: moonPhases,
       waterDepthFilter: waterDepthFilter,
       waterTemperatureFilter: waterTemperatureFilter,
       lengthFilter: lengthFilter,
       weightFilter: weightFilter,
       quantityFilter: quantityFilter,
+      airTemperatureFilter: airTemperatureFilter,
+      airPressureFilter: airPressureFilter,
+      airHumidityFilter: airHumidityFilter,
+      airVisibilityFilter: airVisibilityFilter,
+      windSpeedFilter: windSpeedFilter,
     ));
 
     result.sort((lhs, rhs) => rhs.timestamp.compareTo(lhs.timestamp));
@@ -149,11 +166,19 @@ class CatchManager extends EntityManager<Catch> {
     Set<Id> waterClarityIds = const {},
     Set<Period> periods = const {},
     Set<Season> seasons = const {},
+    Set<Direction> windDirections = const {},
+    Set<SkyCondition> skyConditions = const {},
+    Set<MoonPhase> moonPhases = const {},
     NumberFilter? waterDepthFilter,
     NumberFilter? waterTemperatureFilter,
     NumberFilter? lengthFilter,
     NumberFilter? weightFilter,
     NumberFilter? quantityFilter,
+    NumberFilter? airTemperatureFilter,
+    NumberFilter? airPressureFilter,
+    NumberFilter? airHumidityFilter,
+    NumberFilter? airVisibilityFilter,
+    NumberFilter? windSpeedFilter,
   }) {
     if (isEmpty(filter) &&
         dateRange == null &&
@@ -168,12 +193,54 @@ class CatchManager extends EntityManager<Catch> {
         waterClarityIds.isEmpty &&
         periods.isEmpty &&
         seasons.isEmpty &&
+        windDirections.isEmpty &&
+        skyConditions.isEmpty &&
+        moonPhases.isEmpty &&
         waterDepthFilter == null &&
         waterTemperatureFilter == null &&
         lengthFilter == null &&
         weightFilter == null &&
-        quantityFilter == null) {
+        quantityFilter == null &&
+        airTemperatureFilter == null &&
+        airPressureFilter == null &&
+        airHumidityFilter == null &&
+        airVisibilityFilter == null &&
+        windSpeedFilter == null) {
       return entities.values.toList();
+    }
+
+    bool isSetValid<T>(
+      Set<T> items,
+      T value, {
+      required bool hasValue,
+    }) {
+      return items.isEmpty || (hasValue && items.contains(value));
+    }
+
+    bool isNumberFilterMultiMeasurementValid(
+      NumberFilter? filter,
+      MultiMeasurement measurement, {
+      required bool hasValue,
+    }) {
+      return filter == null ||
+          (hasValue && filter.containsMultiMeasurement(measurement));
+    }
+
+    bool isNumberFilterMeasurementValid(
+      NumberFilter? filter,
+      Measurement measurement, {
+      required bool hasValue,
+    }) {
+      return filter == null ||
+          (hasValue && filter.containsMeasurement(measurement));
+    }
+
+    bool isNumberFilterIntValid(
+      NumberFilter? filter,
+      int value, {
+      required bool hasValue,
+    }) {
+      return filter == null || (hasValue && filter.containsInt(value));
     }
 
     return entities.values.where((cat) {
@@ -181,37 +248,62 @@ class CatchManager extends EntityManager<Catch> {
       valid &= dateRange == null ||
           dateRange.contains(
               cat.timestamp.toInt(), _timeManager.currentDateTime);
-      valid &= anglerIds.isEmpty || anglerIds.contains(cat.anglerId);
-      valid &= baitIds.isEmpty || baitIds.contains(cat.baitId);
-      valid &= catchIds.isEmpty || catchIds.contains(cat.id);
       valid &=
-          fishingSpotIds.isEmpty || fishingSpotIds.contains(cat.fishingSpotId);
+          isSetValid<Id>(anglerIds, cat.anglerId, hasValue: cat.hasAnglerId());
+      valid &= isSetValid<Id>(baitIds, cat.baitId, hasValue: cat.hasBaitId());
+      valid &= isSetValid<Id>(catchIds, cat.id, hasValue: cat.hasId());
+      valid &= isSetValid<Id>(fishingSpotIds, cat.fishingSpotId,
+          hasValue: cat.hasFishingSpotId());
+      valid &= isSetValid<Id>(speciesIds, cat.speciesId,
+          hasValue: cat.hasSpeciesId());
+      valid &= isSetValid<Id>(waterClarityIds, cat.waterClarityId,
+          hasValue: cat.hasWaterClarityId());
       valid &= methodIds.isEmpty ||
           methodIds.intersection(cat.methodIds.toSet()).isNotEmpty;
-      valid &= speciesIds.isEmpty || speciesIds.contains(cat.speciesId);
-      valid &= waterClarityIds.isEmpty ||
-          waterClarityIds.contains(cat.waterClarityId);
       valid &=
-          periods.isEmpty || (cat.hasPeriod() && periods.contains(cat.period));
+          isSetValid<Period>(periods, cat.period, hasValue: cat.hasPeriod());
       valid &=
-          seasons.isEmpty || (cat.hasSeason() && seasons.contains(cat.season));
+          isSetValid<Season>(seasons, cat.season, hasValue: cat.hasSeason());
+      valid &= isSetValid<Direction>(
+          windDirections, cat.atmosphere.windDirection,
+          hasValue: cat.hasAtmosphere() && cat.atmosphere.hasWindDirection());
+      valid &= isSetValid<MoonPhase>(moonPhases, cat.atmosphere.moonPhase,
+          hasValue: cat.hasAtmosphere() && cat.atmosphere.hasMoonPhase());
+      valid &= skyConditions.isEmpty ||
+          (cat.hasAtmosphere() &&
+              skyConditions
+                  .intersection(cat.atmosphere.skyConditions.toSet())
+                  .isNotEmpty);
       valid &= !isFavoritesOnly || cat.isFavorite;
       valid &= !isCatchAndReleaseOnly || cat.wasCatchAndRelease;
-      valid &= waterDepthFilter == null ||
-          (cat.hasWaterDepth() &&
-              waterDepthFilter.containsMultiMeasurement(cat.waterDepth));
-      valid &= waterTemperatureFilter == null ||
-          (cat.hasWaterTemperature() &&
-              waterTemperatureFilter
-                  .containsMultiMeasurement(cat.waterTemperature));
-      valid &= lengthFilter == null ||
-          (cat.hasLength() &&
-              lengthFilter.containsMultiMeasurement(cat.length));
-      valid &= weightFilter == null ||
-          (cat.hasWeight() &&
-              weightFilter.containsMultiMeasurement(cat.weight));
-      valid &= quantityFilter == null ||
-          (cat.hasQuantity() && quantityFilter.containsInt(cat.quantity));
+      valid &= isNumberFilterMultiMeasurementValid(
+          waterDepthFilter, cat.waterDepth,
+          hasValue: cat.hasWaterDepth());
+      valid &= isNumberFilterMultiMeasurementValid(
+          waterTemperatureFilter, cat.waterTemperature,
+          hasValue: cat.hasWaterTemperature());
+      valid &= isNumberFilterMultiMeasurementValid(lengthFilter, cat.length,
+          hasValue: cat.hasLength());
+      valid &= isNumberFilterMultiMeasurementValid(weightFilter, cat.weight,
+          hasValue: cat.hasWeight());
+      valid &= isNumberFilterIntValid(quantityFilter, cat.quantity,
+          hasValue: cat.hasQuantity());
+      valid &= isNumberFilterMeasurementValid(
+          airTemperatureFilter, cat.atmosphere.temperature,
+          hasValue: cat.hasAtmosphere() && cat.atmosphere.hasTemperature());
+      valid &= isNumberFilterMeasurementValid(
+          airPressureFilter, cat.atmosphere.pressure,
+          hasValue: cat.hasAtmosphere() && cat.atmosphere.hasPressure());
+      valid &= isNumberFilterIntValid(
+          airHumidityFilter, cat.atmosphere.humidity,
+          hasValue: cat.hasAtmosphere() && cat.atmosphere.hasHumidity());
+      valid &= isNumberFilterMeasurementValid(
+          airVisibilityFilter, cat.atmosphere.visibility,
+          hasValue: cat.hasAtmosphere() && cat.atmosphere.hasVisibility());
+      valid &= isNumberFilterMeasurementValid(
+          windSpeedFilter, cat.atmosphere.windSpeed,
+          hasValue: cat.hasAtmosphere() && cat.atmosphere.hasWindSpeed());
+
       if (!valid) {
         return false;
       }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mobile/res/style.dart';
 import 'package:quiver/strings.dart';
 
 import '../model/gen/anglerslog.pb.dart';
@@ -55,7 +56,10 @@ class HeadingDivider extends StatelessWidget {
           child: SafeArea(
             top: false,
             bottom: false,
-            child: HeadingLabel(text),
+            child: Text(
+              text,
+              style: styleListHeading(context),
+            ),
           ),
         ),
       ],

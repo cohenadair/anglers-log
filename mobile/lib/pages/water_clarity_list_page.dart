@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mobile/res/style.dart';
 
 import '../i18n/strings.dart';
 import '../model/gen/anglerslog.pb.dart';
@@ -24,15 +25,16 @@ class WaterClarityListPage extends StatelessWidget {
         format(
             Strings.of(context).waterClarityListPageTitle, [clarities.length]),
       ),
-      pickerTitleBuilder: (_) =>
-          Text(Strings.of(context).waterClarityListPagePickerTitle),
       itemBuilder: (context, clarity) => ManageableListPageItemModel(
-        child: PrimaryLabel(clarity.name),
+        child: Text(clarity.name, style: stylePrimary(context)),
       ),
       searchDelegate: ManageableListPageSearchDelegate(
         hint: Strings.of(context).waterClarityListPageSearchHint,
       ),
-      pickerSettings: pickerSettings,
+      pickerSettings: pickerSettings?.copyWith(
+        title: Text(Strings.of(context).pickerTitleWaterClarity),
+        multiTitle: Text(Strings.of(context).pickerTitleWaterClarities),
+      ),
       itemManager: ManageableListPageItemManager<WaterClarity>(
         listenerManagers: [waterClarityManager],
         loadItems: (query) =>

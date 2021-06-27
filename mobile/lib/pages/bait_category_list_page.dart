@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mobile/res/style.dart';
 
 import '../bait_category_manager.dart';
 import '../i18n/strings.dart';
@@ -25,15 +26,15 @@ class BaitCategoryListPage extends StatelessWidget {
         format(
             Strings.of(context).baitCategoryListPageTitle, [categories.length]),
       ),
-      pickerTitleBuilder: (_) =>
-          Text(Strings.of(context).baitCategoryListPagePickerTitle),
       itemBuilder: (context, category) => ManageableListPageItemModel(
-        child: PrimaryLabel(category.name),
+        child: Text(category.name, style: stylePrimary(context)),
       ),
       searchDelegate: ManageableListPageSearchDelegate(
         hint: Strings.of(context).baitCategoryListPageSearchHint,
       ),
-      pickerSettings: pickerSettings,
+      pickerSettings: pickerSettings?.copyWith(
+        title: Text(Strings.of(context).pickerTitleBaitCategory),
+      ),
       itemManager: ManageableListPageItemManager<BaitCategory>(
         listenerManagers: [baitCategoryManager],
         loadItems: (query) =>

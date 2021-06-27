@@ -7,6 +7,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart' as maps;
 import 'package:image_picker/image_picker.dart';
+import 'package:mobile/res/style.dart';
 import 'package:photo_manager/photo_manager.dart';
 import 'package:quiver/strings.dart';
 
@@ -366,7 +367,7 @@ class _ImagePickerPageState extends State<ImagePickerPage> {
                 widget.allowsMultipleSelection
                     ? Padding(
                         padding: insetsHorizontalDefault,
-                        child: PrimaryLabel(
+                        child: Text(
                           format(
                             Strings.of(context).imagePickerPageSelectedLabel,
                             [
@@ -374,6 +375,7 @@ class _ImagePickerPageState extends State<ImagePickerPage> {
                               _galleryAsset?.assetCount ?? 0
                             ],
                           ),
+                          style: stylePrimary(context)
                         ),
                       )
                     : Empty(),

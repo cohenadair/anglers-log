@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:mobile/res/style.dart';
 import 'package:quiver/iterables.dart';
 import 'package:quiver/strings.dart';
 
@@ -293,7 +294,7 @@ class _ChartState<T> extends State<Chart<T>> {
           ),
           Padding(
             padding: insetsHorizontalWidgetTiny,
-            child: Label("${widget.labelBuilder(item)} ($value)"),
+            child: Text("${widget.labelBuilder(item)} ($value)"),
           ),
         ],
       ),
@@ -411,7 +412,10 @@ class _ChartPage<T> extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          HeadingLabel(Strings.of(context).reportSummaryFilters),
+          Text(
+            Strings.of(context).reportSummaryFilters,
+            style: styleListHeading(context),
+          ),
           VerticalSpace(paddingWidget),
           ChipWrap(filters),
         ],

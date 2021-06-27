@@ -41,7 +41,7 @@ class BottomSheetPicker<T> extends StatelessWidget {
 
   Widget _buildItem(BuildContext context, String title, T? value) {
     return ListItem(
-      title: Label(title),
+      title: Text(title),
       trailing: Visibility(
         visible: currentValue != null && currentValue == value,
         child: Icon(

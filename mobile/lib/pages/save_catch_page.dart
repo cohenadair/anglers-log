@@ -24,6 +24,7 @@ import '../pages/image_picker_page.dart';
 import '../pages/species_list_page.dart';
 import '../res/dimen.dart';
 import '../species_manager.dart';
+import '../subscription_manager.dart';
 import '../time_manager.dart';
 import '../user_preference_manager.dart';
 import '../utils/catch_utils.dart';
@@ -33,9 +34,9 @@ import '../water_clarity_manager.dart';
 import '../widgets/atmosphere_input.dart';
 import '../widgets/checkbox_input.dart';
 import '../widgets/date_time_picker.dart';
+import '../widgets/field.dart';
 import '../widgets/image_input.dart';
 import '../widgets/input_controller.dart';
-import '../widgets/input_data.dart';
 import '../widgets/list_item.dart';
 import '../widgets/list_picker_input.dart';
 import '../widgets/multi_list_picker_input.dart';
@@ -102,8 +103,12 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
   static final _idWeight = catchFieldIdWeight();
 
   final _log = Log("SaveCatchPage");
-
   final Map<Id, Field> _fields = {};
+
+  late final MultiMeasurementInputState _waterDepthInputState;
+  late final MultiMeasurementInputState _waterTemperatureInputState;
+  late final MultiMeasurementInputState _lengthInputState;
+  late final MultiMeasurementInputState _weightInputState;
 
   Future<List<PickedImage>> _imagesFuture = Future.value([]);
   List<CustomEntityValue> _customEntityValues = [];
@@ -126,6 +131,9 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
   MethodManager get _methodManager => MethodManager.of(context);
 
   SpeciesManager get _speciesManager => SpeciesManager.of(context);
+
+  SubscriptionManager get _subscriptionManager =>
+      SubscriptionManager.of(context);
 
   TimeManager get _timeManager => TimeManager.of(context);
 
@@ -209,6 +217,18 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
           showingFieldIds.isEmpty || showingFieldIds.contains(field.id);
     }
 
+    _waterDepthInputState = MultiMeasurementInputState.waterDepth(context);
+    _waterTemperatureInputState =
+        MultiMeasurementInputState.waterTemperature(context);
+    _lengthInputState = MultiMeasurementInputState.length(context);
+    _weightInputState = MultiMeasurementInputState.weight(context);
+
+    _fields[_idWaterDepth]!.controller = _waterDepthInputState.controller;
+    _fields[_idWaterTemperature]!.controller =
+        _waterTemperatureInputState.controller;
+    _fields[_idLength]!.controller = _lengthInputState.controller;
+    _fields[_idWeight]!.controller = _weightInputState.controller;
+
     if (_editing) {
       _timestampController.value = _oldCatch!.timestamp.toInt();
       _periodController.value =
@@ -253,6 +273,7 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
       _methodsController.value = {};
 
       _calculateSeason();
+      _fetchAtmosphereIfNeeded();
     }
   }
 
@@ -328,18 +349,18 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
       child: DateTimePicker(
         datePicker: DatePicker(
           context,
-          initialDate: _timestampController.date,
+          controller: _timestampController,
           label: Strings.of(context).catchFieldDate,
           onChange: (newDate) {
-            _timestampController.date = newDate;
+            _fetchAtmosphereIfNeeded();
             setState(_calculateSeason);
           },
         ),
         timePicker: TimePicker(
           context,
-          initialTime: _timestampController.time,
+          controller: _timestampController,
           label: Strings.of(context).catchFieldTime,
-          onChange: (newTime) => _timestampController.time = newTime,
+          onChange: (_) => _fetchAtmosphereIfNeeded(),
         ),
       ),
     );
@@ -444,8 +465,7 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
     return Padding(
       padding: insetsHorizontalDefaultVerticalSmall,
       child: MultiMeasurementInput(
-        spec: MultiMeasurementInputSpec.waterDepth(context),
-        controller: _waterDepthController,
+        state: _waterDepthInputState,
         onChanged: () => _userPreferenceManager
             .setWaterDepthSystem(_waterDepthController.value?.system),
       ),
@@ -456,8 +476,7 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
     return Padding(
       padding: insetsHorizontalDefaultVerticalSmall,
       child: MultiMeasurementInput(
-        spec: MultiMeasurementInputSpec.waterTemperature(context),
-        controller: _waterTemperatureController,
+        state: _waterTemperatureInputState,
         onChanged: () => _userPreferenceManager.setWaterTemperatureSystem(
             _waterTemperatureController.value?.system),
       ),
@@ -468,8 +487,7 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
     return Padding(
       padding: insetsHorizontalDefaultVerticalSmall,
       child: MultiMeasurementInput(
-        spec: MultiMeasurementInputSpec.length(context),
-        controller: _lengthController,
+        state: _lengthInputState,
         onChanged: () => _userPreferenceManager
             .setCatchLengthSystem(_lengthController.value?.system),
       ),
@@ -480,8 +498,7 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
     return Padding(
       padding: insetsHorizontalDefaultVerticalSmall,
       child: MultiMeasurementInput(
-        spec: MultiMeasurementInputSpec.weight(context),
-        controller: _weightController,
+        state: _weightInputState,
         onChanged: () => _userPreferenceManager
             .setCatchWeightSystem(_weightController.value?.system),
       ),
@@ -521,13 +538,10 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
   }
 
   Widget _buildAtmosphere() {
-    var fishingSpot = _fishingSpotManager.entity(_fishingSpotController.value);
     return AtmosphereInput(
-      fetcher: AtmosphereFetcher(context, _timestampController.value,
-          fishingSpot?.latLng ?? _locationMonitor.currentLocation),
+      fetcher: newAtmosphereFetcher(),
       padding: insetsDefault,
-      initialValue: _atmosphereController.value,
-      onChanged: (atmosphere) => _atmosphereController.value = atmosphere,
+      controller: _atmosphereController,
     );
   }
 
@@ -572,7 +586,7 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
       context: context,
       controller: _periodController,
       title: Strings.of(context).catchFieldPeriod,
-      pickerTitle: Strings.of(context).periodPickerTitle,
+      pickerTitle: Strings.of(context).pickerTitleTimeOfDay,
       valueDisplayName: _periodController.value?.displayName(context),
       noneItem: Period.period_none,
       itemBuilder: Periods.pickerItems,
@@ -585,7 +599,7 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
       context: context,
       controller: _seasonController,
       title: Strings.of(context).catchFieldSeason,
-      pickerTitle: Strings.of(context).seasonPickerTitle,
+      pickerTitle: Strings.of(context).pickerTitleSeason,
       valueDisplayName: _seasonController.value?.displayName(context),
       noneItem: Season.season_none,
       itemBuilder: Seasons.pickerItems,
@@ -832,5 +846,23 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
         fishingSpot ?? _fishingSpotManager.entity(_fishingSpotController.value);
     _seasonController.value =
         Seasons.from(_timestampController.dateTime, spot?.lat);
+  }
+
+  AtmosphereFetcher newAtmosphereFetcher() {
+    var fishingSpot = _fishingSpotManager.entity(_fishingSpotController.value);
+    return AtmosphereFetcher(context, _timestampController.value,
+        fishingSpot?.latLng ?? _locationMonitor.currentLocation);
+  }
+
+  void _fetchAtmosphereIfNeeded() {
+    if (_subscriptionManager.isFree ||
+        !_fields[_idAtmosphere]!.showing ||
+        !_userPreferenceManager.autoFetchAtmosphere) {
+      return;
+    }
+
+    newAtmosphereFetcher()
+        .fetch()
+        .then((atmosphere) => _atmosphereController.value = atmosphere);
   }
 }

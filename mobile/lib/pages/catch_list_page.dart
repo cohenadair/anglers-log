@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mobile/res/style.dart';
 import 'package:quiver/strings.dart';
 
 import '../bait_category_manager.dart';
@@ -115,12 +116,12 @@ class CatchListPage extends StatelessWidget {
     var fishingSpot = fishingSpotManager.entity(cat.fishingSpotId);
     if (fishingSpot != null && isNotEmpty(fishingSpot.name)) {
       // Use fishing spot name as subtitle if available.
-      subtitle2 = SubtitleLabel(fishingSpot.name);
+      subtitle2 = Text(fishingSpot.name, style: styleSubtitle(context));
     } else {
       // Fallback on bait as a subtitle.
       var formattedName = baitManager.formatNameWithCategory(cat.baitId);
       if (isNotEmpty(formattedName)) {
-        subtitle2 = SubtitleLabel(formattedName!);
+        subtitle2 = Text(formattedName!, style: styleSubtitle(context));
       }
     }
 
@@ -135,9 +136,15 @@ class CatchListPage extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                PrimaryLabel(speciesManager.entity(cat.speciesId)?.name ??
-                    Strings.of(context).unknownSpecies),
-                SubtitleLabel(formatTimestamp(context, cat.timestamp.toInt())),
+                Text(
+                  speciesManager.entity(cat.speciesId)?.name ??
+                      Strings.of(context).unknownSpecies,
+                  style: stylePrimary(context),
+                ),
+                Text(
+                  formatTimestamp(context, cat.timestamp.toInt()),
+                  style: styleSubtitle(context),
+                ),
                 subtitle2,
               ],
             ),

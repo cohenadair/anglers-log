@@ -20,7 +20,7 @@ void main() {
       ),
     );
     expect(find.widgetWithText(Label, "Value"), findsOneWidget);
-    expect(find.byType(SecondaryLabel), findsNothing);
+    expect(find.byType(SecondaryText), findsNothing);
     expect(find.byType(Empty), findsOneWidget);
   });
 
@@ -32,7 +32,7 @@ void main() {
         ),
       ),
     );
-    expect(find.byType(SecondaryLabel), findsOneWidget);
+    expect(find.byType(SecondaryText), findsOneWidget);
     expect(find.text("Not Selected"), findsOneWidget);
   });
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mobile/res/style.dart';
 
 import '../../i18n/strings.dart';
 import '../../model/gen/anglerslog.pb.dart';
@@ -58,10 +59,11 @@ class _CatchFieldPickerPageState extends State<CatchFieldPickerPage> {
         VerticalSpace(paddingWidget),
         Padding(
           padding: insetsHorizontalDefault,
-          child: PrimaryLabel(
+          child: Text(
             Strings.of(context).onboardingJourneyCatchFieldDescription,
             overflow: TextOverflow.visible,
-            align: TextAlign.center,
+            textAlign: TextAlign.center,
+            style: stylePrimary(context),
           ),
         ),
         VerticalSpace(paddingWidget),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mobile/res/style.dart';
 
 import '../bait_category_manager.dart';
 import '../bait_manager.dart';
@@ -49,25 +50,22 @@ class _BaitListPageState extends State<BaitListPage> {
         format(Strings.of(context).baitListPageTitle,
             [baits.whereType<Bait>().length]),
       ),
-      pickerTitleBuilder: (_) => Text(widget.pickerSettings!.isMulti
-          ? Strings.of(context).baitListPagePickerTitleMulti
-          : Strings.of(context).baitListPagePickerTitle),
       forceCenterTitle: !_picking,
       searchDelegate: ManageableListPageSearchDelegate(
         hint: Strings.of(context).baitListPageSearchHint,
       ),
-      pickerSettings: _picking
-          ? widget.pickerSettings!.copyWith(
-              onPicked: (context, items) {
-                items.removeWhere((e) => !(e is Bait));
-                return widget.pickerSettings!.onPicked(
-                  context,
-                  items.map((e) => (e as Bait)).toSet(),
-                );
-              },
-              containsAll: (selectedItems) => selectedItems.containsAll(_baits),
-            )
-          : null,
+      pickerSettings: widget.pickerSettings?.copyWith(
+        onPicked: (context, items) {
+          items.removeWhere((e) => !(e is Bait));
+          return widget.pickerSettings!.onPicked(
+            context,
+            items.map((e) => (e as Bait)).toSet(),
+          );
+        },
+        containsAll: (selectedItems) => selectedItems.containsAll(_baits),
+        title: Text(Strings.of(context).pickerTitleBait),
+        multiTitle: Text(Strings.of(context).pickerTitleBaits),
+      ),
       itemBuilder: (context, item) {
         if (item is BaitCategory) {
           return ManageableListPageItemModel(
@@ -75,12 +73,12 @@ class _BaitListPageState extends State<BaitListPage> {
             selectable: false,
             child: Padding(
               padding: insetsDefault,
-              child: HeadingLabel(item.name),
+              child: Text(item.name, style: styleListHeading(context)),
             ),
           );
         } else if (item is Bait) {
           return ManageableListPageItemModel(
-            child: PrimaryLabel(item.name),
+            child: Text(item.name, style: stylePrimary(context)),
           );
         } else {
           assert(item is Widget);

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mobile/res/style.dart';
 
 import '../i18n/strings.dart';
 import '../model/gen/anglerslog.pb.dart';
@@ -30,17 +31,18 @@ class SpeciesListPage extends StatelessWidget {
         format(Strings.of(context).speciesListPageTitle,
             [speciesManager.entityCount]),
       ),
-      pickerTitleBuilder: (_) =>
-          Text(Strings.of(context).speciesListPagePickerTitle),
       appBarLeading: appBarLeading,
       forceCenterTitle: pickerSettings == null,
       itemBuilder: (context, species) => ManageableListPageItemModel(
-        child: PrimaryLabel(species.name),
+        child: Text(species.name, style: stylePrimary(context)),
       ),
       searchDelegate: ManageableListPageSearchDelegate(
         hint: Strings.of(context).speciesListPageSearchHint,
       ),
-      pickerSettings: pickerSettings,
+      pickerSettings: pickerSettings?.copyWith(
+        title: Text(Strings.of(context).pickerTitleSpecies),
+        multiTitle: Text(Strings.of(context).pickerTitleSpecies),
+      ),
       itemManager: ManageableListPageItemManager<Species>(
         listenerManagers: [speciesManager],
         loadItems: (query) => speciesManager.listSortedByName(filter: query),

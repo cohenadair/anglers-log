@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:mobile/utils/page_utils.dart';
 import 'package:quiver/strings.dart';
 
 import '../i18n/strings.dart';
 import '../pages/manageable_list_page.dart';
 import '../pages/picker_page.dart';
+import '../res/style.dart';
+import '../utils/page_utils.dart';
 import '../widgets/radio_input.dart';
-import '../widgets/text.dart';
 import '../widgets/widget.dart';
 import 'detail_input.dart';
 import 'input_controller.dart';
@@ -77,17 +77,21 @@ class ListPickerInput extends StatelessWidget {
     return DetailInput(
       onTap: onTap,
       children: [
-        PrimaryLabel(isEmpty(title) ? value! : title!),
+        Text(
+          isEmpty(title) ? value! : title!,
+          style: stylePrimary(context),
+        ),
         Expanded(
           // If there's no title widget, the value widget will render at
           // the start of the row.
           child: isEmpty(title)
               ? Empty()
-              : SecondaryLabel(
+              : Text(
                   isEmpty(value)
                       ? Strings.of(context).inputNotSelected
                       : value!,
-                  align: TextAlign.right,
+                  textAlign: TextAlign.right,
+                  style: styleSecondary(context),
                 ),
         ),
       ],

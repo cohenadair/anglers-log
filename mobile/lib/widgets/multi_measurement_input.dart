@@ -8,7 +8,6 @@ import '../model/gen/anglerslog.pb.dart';
 import '../res/dimen.dart';
 import '../res/style.dart';
 import '../user_preference_manager.dart';
-import '../utils/number_utils.dart';
 import '../utils/protobuf_utils.dart';
 import 'input_controller.dart';
 import 'text_input.dart';
@@ -29,33 +28,20 @@ enum ImperialFractionType {
 /// A generic widget that gets input of measurement values and allows users to
 /// switch between imperial and metric systems.
 class MultiMeasurementInput extends StatefulWidget {
-  /// See [MultiMeasurementInputSpec].
-  final MultiMeasurementInputSpec spec;
+  /// See [MultiMeasurementInputState].
+  final MultiMeasurementInputState state;
 
   /// Invoked when the input or measurement system changes. To access the latest
-  /// value, use [controller].
+  /// value, use [state.controller].
   final VoidCallback? onChanged;
-
-  final MultiMeasurementInputController controller;
-
-  /// A [NumberInputController] for the main input field. Defaults to
-  /// [NumberInputController()].
-  final NumberInputController? mainController;
-
-  /// A [NumberInputController] for the fraction input field. Defaults to
-  /// [NumberInputController()].
-  final NumberInputController? fractionController;
 
   /// When true (default), includes an [PopupMenuButton] that allows the
   /// [MeasurementSystem] to be changed.
   final bool allowSystemSwitching;
 
   MultiMeasurementInput({
-    required this.spec,
-    required this.controller,
+    required this.state,
     this.onChanged,
-    this.mainController,
-    this.fractionController,
     this.allowSystemSwitching = true,
   });
 
@@ -68,12 +54,9 @@ class _MultiMeasurementInputState extends State<MultiMeasurementInput> {
 
   final _log = Log("MultiMeasurementInput");
 
-  late final NumberInputController _mainController;
-  late final NumberInputController _imperialFractionController;
+  MultiMeasurementInputController get _controller => widget.state.controller;
 
-  late MeasurementSystem _system;
-  late Unit _mainUnit;
-  late Unit? _imperialFractionUnit;
+  MeasurementSystem get _system => _controller.system;
 
   bool get _isImperialWhole => _system == MeasurementSystem.imperial_whole;
 
@@ -84,51 +67,27 @@ class _MultiMeasurementInputState extends State<MultiMeasurementInput> {
   @override
   void initState() {
     super.initState();
-
-    _mainController = widget.mainController ?? NumberInputController();
-    _imperialFractionController =
-        widget.fractionController ?? NumberInputController();
-
-    _resetSystem();
-
-    if (widget.controller.hasValue) {
-      var measurement = widget.controller.value!;
-      _mainController.doubleValue =
-          measurement.hasMainValue() ? measurement.mainValue.value : null;
-      _imperialFractionController.doubleValue = measurement.hasFractionValue()
-          ? measurement.fractionValue.value
-          : null;
-    }
-
-    _roundValuesIfNeeded();
-  }
-
-  @override
-  void didUpdateWidget(MultiMeasurementInput oldWidget) {
-    super.didUpdateWidget(oldWidget);
-    _system = widget.controller.hasValue
-        ? widget.controller.value?.system ?? _system
-        : _system;
+    _updateSystem(_controller.system);
   }
 
   @override
   Widget build(BuildContext context) {
     var fractionType =
-        widget.spec.imperialFractionType ?? ImperialFractionType.textField;
+        widget.state.imperialFractionType ?? ImperialFractionType.textField;
 
     var imperialWholeSuffix =
         _isImperialWhole && fractionType == ImperialFractionType.inchesDropdown
             ? null
-            : widget.spec.imperialMainUnit.shorthandDisplayName(context);
-    var metricSuffix = widget.spec.metricUnit.shorthandDisplayName(context);
+            : widget.state.imperialMainUnit.shorthandDisplayName(context);
+    var metricSuffix = widget.state.metricUnit.shorthandDisplayName(context);
 
     var wholeInput = TextInput.number(
       context,
-      label: widget.spec.title,
+      label: widget.state.title?.call(context),
       suffixText: _isImperialWhole || _isImperialDecimal
           ? imperialWholeSuffix
           : metricSuffix,
-      controller: _mainController,
+      controller: _controller.mainController,
       decimal: _isMetric || _isImperialDecimal,
       signed: false,
       showMaxLength: false,
@@ -144,9 +103,9 @@ class _MultiMeasurementInputState extends State<MultiMeasurementInput> {
             context,
             // Keeps text field underline aligned with wholeInput.
             label: "",
-            suffixText:
-                widget.spec.imperialFractionUnit?.shorthandDisplayName(context),
-            controller: _imperialFractionController,
+            suffixText: widget.state.imperialFractionUnit
+                ?.shorthandDisplayName(context),
+            controller: _controller.fractionController,
             decimal: false,
             signed: false,
             showMaxLength: false,
@@ -157,9 +116,9 @@ class _MultiMeasurementInputState extends State<MultiMeasurementInput> {
         imperialFractionInput = SizedBox(
           width: _inchesDropdownWidth,
           child: _InchesDropdownInput(
-            initialValue: _imperialFractionController.doubleValue,
+            initialValue: _controller.fractionController.doubleValue,
             onChanged: (value) {
-              _imperialFractionController.doubleValue = value;
+              _controller.fractionController.doubleValue = value;
               _notifyOnChanged();
             },
           ),
@@ -167,10 +126,10 @@ class _MultiMeasurementInputState extends State<MultiMeasurementInput> {
 
         inchesLabel = Text(
           Unit.inches.shorthandDisplayName(context),
-          style: styleInputSuffix(context),
+          style: styleSecondary(context),
         );
       } else {
-        _log.w("Unknown fraction type: ${widget.spec.imperialFractionType}");
+        _log.w("Unknown fraction type: ${widget.state.imperialFractionType}");
       }
     }
 
@@ -227,85 +186,36 @@ class _MultiMeasurementInputState extends State<MultiMeasurementInput> {
   }
 
   void _updateSystem(MeasurementSystem system) {
-    _system = system;
+    _controller.system = system;
 
     switch (_system) {
       case MeasurementSystem.imperial_whole:
-        // When switching from imperial whole, round the metric
-        // value to the nearest whole number, since the imperial whole
-        // number cannot be a decimal.
-        _roundValuesIfNeeded();
-        _mainUnit = widget.spec.imperialMainUnit;
-        _imperialFractionUnit = widget.spec.imperialFractionUnit;
+        _controller.mainUnit = widget.state.imperialMainUnit;
+        _controller.fractionUnit = widget.state.imperialFractionUnit;
         break;
       case MeasurementSystem.imperial_decimal:
         // Clear out fractional value when it isn't needed.
-        _imperialFractionController.value = null;
-        _mainUnit = widget.spec.imperialMainUnit;
-        _imperialFractionUnit = null;
+        _controller.fractionController.clear();
+        _controller.mainUnit = widget.state.imperialMainUnit;
+        _controller.fractionUnit = null;
         break;
       case MeasurementSystem.metric:
         // Clear out fractional value when it isn't needed.
-        _imperialFractionController.value = null;
-        _mainUnit = widget.spec.metricUnit;
-        _imperialFractionUnit = null;
+        _controller.fractionController.clear();
+        _controller.mainUnit = widget.state.metricUnit;
+        _controller.fractionUnit = null;
         break;
     }
   }
 
-  void _resetSystem() {
-    var controllerSystem =
-        widget.controller.hasValue && widget.controller.value!.hasSystem()
-            ? widget.controller.value!.system
-            : null;
-    _updateSystem(controllerSystem ??
-        widget.spec.defaultSystem ??
-        MeasurementSystem.imperial_whole);
-  }
-
-  void _notifyOnChanged() {
-    var main = Measurement(unit: _mainUnit);
-    if (_mainController.hasDoubleValue) {
-      main.value = _mainController.doubleValue!;
-    }
-
-    var fraction = Measurement(unit: _imperialFractionUnit);
-    if (_imperialFractionController.hasDoubleValue) {
-      fraction.value = _imperialFractionController.doubleValue!;
-    }
-
-    widget.controller.value = MultiMeasurement(
-      system: _system,
-      mainValue: main,
-      fractionValue: fraction,
-    );
-    widget.onChanged?.call();
-  }
-
-  void _roundValuesIfNeeded() {
-    if (_mainController.hasDoubleValue &&
-        (_mainController.doubleValue!.isWhole || _isImperialWhole)) {
-      _mainController.value = _mainController.doubleValue?.round().toString();
-    }
-
-    // Only round values if not using inches; inch values are stored as
-    // decimals.
-    //
-    // Only round values if a value exists, otherwise the value will be set to
-    // 0.0, which is not what we want; we want users to explicitly enter
-    // values.
-    if (widget.spec.imperialFractionType !=
-            ImperialFractionType.inchesDropdown &&
-        _imperialFractionController.hasValue) {
-      _imperialFractionController.value =
-          _imperialFractionController.doubleValue?.round().toString();
-    }
-  }
+  void _notifyOnChanged() => widget.onChanged?.call();
 }
 
-class MultiMeasurementInputSpec {
+/// A state object to manipulate the different values in a
+/// [MultiMeasurementInput] widget.
+class MultiMeasurementInputState {
   /// The title of the input. Renders as the title of the "main" [TextInput].
-  final String? title;
+  String Function(BuildContext)? title;
 
   /// The main imperial unit, such as feet.
   final Unit imperialMainUnit;
@@ -322,36 +232,58 @@ class MultiMeasurementInputSpec {
   final Unit metricUnit;
   final MeasurementSystem? defaultSystem;
 
-  MultiMeasurementInputSpec({
+  late final MultiMeasurementInputController controller;
+
+  MultiMeasurementInputState({
     this.title,
     required this.imperialMainUnit,
     this.imperialFractionUnit,
     this.imperialFractionType,
     required this.metricUnit,
     this.defaultSystem,
-  });
+    NumberInputController? mainController,
+    NumberInputController? fractionController,
+  }) {
+    if (defaultSystem == null) {
+      controller = MultiMeasurementInputController(
+        system: MeasurementSystem.imperial_whole,
+        mainUnit: imperialMainUnit,
+        fractionUnit: imperialFractionUnit,
+        mainController: mainController,
+        fractionController: fractionController,
+      );
+    } else {
+      controller = MultiMeasurementInputController(
+        system: defaultSystem!,
+        mainUnit: defaultSystem!.isMetric ? metricUnit : imperialMainUnit,
+        fractionUnit: imperialFractionUnit,
+        mainController: mainController,
+        fractionController: fractionController,
+      );
+    }
+  }
 
-  MultiMeasurementInputSpec.length(BuildContext context)
+  MultiMeasurementInputState.length(BuildContext context)
       : this(
-          title: Strings.of(context).catchFieldLengthLabel,
+          title: (context) => Strings.of(context).catchFieldLengthLabel,
           imperialMainUnit: Unit.inches,
           imperialFractionType: ImperialFractionType.inchesDropdown,
           metricUnit: Unit.centimeters,
           defaultSystem: UserPreferenceManager.of(context).catchLengthSystem,
         );
 
-  MultiMeasurementInputSpec.weight(BuildContext context)
+  MultiMeasurementInputState.weight(BuildContext context)
       : this(
-          title: Strings.of(context).catchFieldWeightLabel,
+          title: (context) => Strings.of(context).catchFieldWeightLabel,
           imperialMainUnit: Unit.pounds,
           imperialFractionUnit: Unit.ounces,
           metricUnit: Unit.kilograms,
           defaultSystem: UserPreferenceManager.of(context).catchWeightSystem,
         );
 
-  MultiMeasurementInputSpec.waterDepth(BuildContext context)
+  MultiMeasurementInputState.waterDepth(BuildContext context)
       : this(
-          title: Strings.of(context).catchFieldWaterDepthLabel,
+          title: (context) => Strings.of(context).catchFieldWaterDepthLabel,
           imperialMainUnit: Unit.feet,
           imperialFractionUnit: Unit.inches,
           imperialFractionType: ImperialFractionType.textField,
@@ -359,9 +291,10 @@ class MultiMeasurementInputSpec {
           defaultSystem: UserPreferenceManager.of(context).waterDepthSystem,
         );
 
-  MultiMeasurementInputSpec.waterTemperature(BuildContext context)
+  MultiMeasurementInputState.waterTemperature(BuildContext context)
       : this(
-          title: Strings.of(context).catchFieldWaterTemperatureLabel,
+          title: (context) =>
+              Strings.of(context).catchFieldWaterTemperatureLabel,
           imperialMainUnit: Unit.fahrenheit,
           imperialFractionType: ImperialFractionType.none,
           metricUnit: Unit.celsius,
@@ -369,57 +302,62 @@ class MultiMeasurementInputSpec {
               UserPreferenceManager.of(context).waterTemperatureSystem,
         );
 
-  MultiMeasurementInputSpec.windSpeed(BuildContext context)
+  MultiMeasurementInputState.windSpeed(BuildContext context)
       : this(
-          title: Strings.of(context).atmosphereInputWindSpeed,
+          title: (context) => Strings.of(context).atmosphereInputWindSpeed,
           imperialMainUnit: Unit.miles_per_hour,
           imperialFractionType: ImperialFractionType.none,
           metricUnit: Unit.kilometers_per_hour,
           defaultSystem: UserPreferenceManager.of(context).windSpeedSystem,
         );
 
-  MultiMeasurementInputSpec.airTemperature(BuildContext context)
+  MultiMeasurementInputState.airTemperature(BuildContext context)
       : this(
-          title: Strings.of(context).atmosphereInputTemperature,
+          title: (context) => Strings.of(context).atmosphereInputTemperature,
           imperialMainUnit: Unit.fahrenheit,
           imperialFractionType: ImperialFractionType.none,
           metricUnit: Unit.celsius,
           defaultSystem: UserPreferenceManager.of(context).airTemperatureSystem,
         );
 
-  MultiMeasurementInputSpec.airPressure(BuildContext context)
+  MultiMeasurementInputState.airPressure(BuildContext context)
       : this(
-          title: Strings.of(context).atmosphereInputAtmosphericPressure,
+          title: (context) =>
+              Strings.of(context).atmosphereInputAtmosphericPressure,
           imperialMainUnit: Unit.pounds_per_square_inch,
           imperialFractionType: ImperialFractionType.none,
           metricUnit: Unit.millibars,
           defaultSystem: UserPreferenceManager.of(context).airPressureSystem,
         );
 
-  MultiMeasurementInputSpec.airVisibility(BuildContext context)
+  MultiMeasurementInputState.airVisibility(BuildContext context)
       : this(
-          title: Strings.of(context).atmosphereInputAirVisibility,
+          title: (context) => Strings.of(context).atmosphereInputAirVisibility,
           imperialMainUnit: Unit.miles,
           imperialFractionType: ImperialFractionType.none,
           metricUnit: Unit.kilometers,
           defaultSystem: UserPreferenceManager.of(context).airVisibilitySystem,
         );
 
-  MultiMeasurementInputSpec copyWith({
-    String? title,
+  MultiMeasurementInputState copy({
+    String Function(BuildContext)? title,
     Unit? imperialMainUnit,
     Unit? imperialFractionUnit,
     ImperialFractionType? imperialFractionType,
     Unit? metricUnit,
     MeasurementSystem? defaultSystem,
+    NumberInputController? mainController,
+    NumberInputController? fractionController,
   }) {
-    return MultiMeasurementInputSpec(
+    return MultiMeasurementInputState(
       title: title ?? this.title,
       imperialMainUnit: imperialMainUnit ?? this.imperialMainUnit,
       imperialFractionUnit: imperialFractionUnit ?? this.imperialFractionUnit,
       imperialFractionType: imperialFractionType ?? this.imperialFractionType,
       metricUnit: metricUnit ?? this.metricUnit,
       defaultSystem: defaultSystem ?? this.defaultSystem,
+      mainController: mainController ?? controller.mainController,
+      fractionController: fractionController ?? controller.fractionController,
     );
   }
 }

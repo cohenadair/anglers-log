@@ -10,6 +10,7 @@ import 'log.dart';
 import 'model/gen/anglerslog.pb.dart';
 import 'properties_manager.dart';
 import 'user_preference_manager.dart';
+import 'utils/atmosphere_utils.dart';
 import 'utils/protobuf_utils.dart';
 import 'utils/string_utils.dart';
 import 'wrappers/http_wrapper.dart';
@@ -39,9 +40,35 @@ class AtmosphereFetcher {
       return null;
     }
 
-    // Non-sun data.
-    var json = await get("conditions,humidity,moonphase,pressure,"
-        "temp,visibility,windspeed,winddir,sunriseEpoch,sunsetEpoch");
+    // Only include fields the user specifically wants. This excludes unwanted
+    // data from the start so we don't have to worry about it at the UI level.
+    // It also slightly decreases data consumption.
+    var showingFieldIds = _userPreferenceManager.atmosphereFieldIds;
+    var elements = <String>[];
+    for (var id in showingFieldIds) {
+      if (id == atmosphereFieldIdTemperature) {
+        elements.add("temp");
+      } else if (id == atmosphereFieldIdHumidity) {
+        elements.add("humidity");
+      } else if (id == atmosphereFieldIdSkyCondition) {
+        elements.add("conditions");
+      } else if (id == atmosphereFieldIdMoonPhase) {
+        elements.add("moonphase");
+      } else if (id == atmosphereFieldIdPressure) {
+        elements.add("pressure");
+      } else if (id == atmosphereFieldIdVisibility) {
+        elements.add("visibility");
+      } else if (id == atmosphereFieldIdWindSpeed) {
+        elements.add("windspeed");
+      } else if (id == atmosphereFieldIdWindDirection) {
+        elements.add("winddir");
+      } else if (id == atmosphereFieldIdSunriseTimestamp) {
+        elements.add("sunriseEpoch");
+      } else if (id == atmosphereFieldIdSunsetTimestamp) {
+        elements.add("sunsetEpoch");
+      }
+    }
+    var json = await get(elements.join(","));
     if (json == null) {
       return null;
     }
@@ -104,17 +131,17 @@ class AtmosphereFetcher {
 
     var conditions = json["conditions"];
     if (isNotEmpty(conditions)) {
-      result.skyCondition = SkyConditions.fromType(conditions);
+      result.skyConditions.addAll(SkyConditions.fromTypes(conditions));
     }
 
     var sunrise = json["sunriseEpoch"];
     if (sunrise != null && sunrise > 0) {
-      result.sunriseTimestamp = Int64(sunrise);
+      result.sunriseTimestamp = Int64(sunrise * Duration.millisecondsPerSecond);
     }
 
     var sunset = json["sunsetEpoch"];
     if (sunset != null && sunset > 0) {
-      result.sunsetTimestamp = Int64(sunset);
+      result.sunsetTimestamp = Int64(sunset * Duration.millisecondsPerSecond);
     }
 
     var moon = json["moonphase"];

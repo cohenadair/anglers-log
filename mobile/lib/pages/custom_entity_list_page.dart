@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mobile/res/style.dart';
 import 'package:quiver/strings.dart';
 
 import '../bait_manager.dart';
@@ -26,10 +27,10 @@ class CustomEntityListPage extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            PrimaryLabel(entity.name),
+            Text(entity.name, style: stylePrimary(context)),
             isEmpty(entity.description)
                 ? Empty()
-                : SubtitleLabel(entity.description),
+                : Text(entity.description, style: styleSubtitle(context)),
           ],
         ),
       ),

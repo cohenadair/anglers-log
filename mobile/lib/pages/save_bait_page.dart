@@ -17,7 +17,7 @@ import '../utils/page_utils.dart';
 import '../utils/protobuf_utils.dart';
 import '../utils/validator.dart';
 import '../widgets/input_controller.dart';
-import '../widgets/input_data.dart';
+import '../widgets/field.dart';
 import '../widgets/list_picker_input.dart';
 import '../widgets/text_input.dart';
 import '../widgets/widget.dart';

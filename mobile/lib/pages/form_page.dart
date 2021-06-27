@@ -341,7 +341,7 @@ class _SelectionPageState extends State<_SelectionPage> {
             .toSet();
 
         return PickerPage(
-          title: Text(Strings.of(context).formPageSelectFieldsTitle),
+          title: Text(Strings.of(context).pickerTitleFields),
           initialValues: used,
           itemBuilder: () => items,
           onFinishedPicking: (context, items) {

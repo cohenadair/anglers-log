@@ -10,7 +10,7 @@ import '../model/gen/anglerslog.pb.dart';
 import '../pages/form_page.dart';
 import '../res/dimen.dart';
 import '../utils/protobuf_utils.dart';
-import '../widgets/input_data.dart';
+import '../widgets/field.dart';
 import '../widgets/input_type.dart';
 import '../widgets/widget.dart';
 

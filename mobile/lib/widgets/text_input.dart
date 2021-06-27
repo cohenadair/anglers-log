@@ -205,7 +205,7 @@ class _TextInputState extends State<TextInput> {
           errorText: widget.controller?.error,
           errorMaxLines: _maxErrorHintLines,
           suffixText: widget.suffixText,
-          suffixStyle: styleInputSuffix(context),
+          suffixStyle: styleSecondary(context),
           hintText: widget.hintText,
           hintMaxLines: _maxErrorHintLines,
         ),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mobile/res/style.dart';
 
 import '../../i18n/strings.dart';
 import '../../location_monitor.dart';
@@ -33,10 +34,11 @@ class LocationPermissionPage extends StatelessWidget {
         VerticalSpace(paddingWidget),
         Padding(
           padding: insetsHorizontalDefault,
-          child: PrimaryLabel(
+          child: Text(
             Strings.of(context).onboardingJourneyLocationAccessDescription,
             overflow: TextOverflow.visible,
-            align: TextAlign.center,
+            textAlign: TextAlign.center,
+            style: stylePrimary(context),
           ),
         ),
         VerticalSpace(paddingWidget),

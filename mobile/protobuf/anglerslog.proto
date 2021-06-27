@@ -2,15 +2,16 @@ syntax = "proto3";
 package anglerslog;
 
 enum Direction {
-  direction_none = 0;
-  north = 1;
-  north_east = 2;
-  east = 3;
-  south_east = 4;
-  south = 5;
-  south_west = 6;
-  west = 7;
-  north_west = 8;
+  direction_all = 0;
+  direction_none = 1;
+  north = 2;
+  north_east = 3;
+  east = 4;
+  south_east = 5;
+  south = 6;
+  south_west = 7;
+  west = 8;
+  north_west = 9;
 }
 
 enum MeasurementSystem {
@@ -20,15 +21,16 @@ enum MeasurementSystem {
 }
 
 enum MoonPhase {
-  moon_phase_none = 0;
-  new = 1;
-  waxing_crescent = 2;
-  first_quarter = 3;
-  waxing_gibbous = 4;
-  full = 5;
-  waning_gibbous = 6;
-  last_quarter = 7;
-  waning_crescent = 8;
+  moon_phase_all = 0;
+  moon_phase_none = 1;
+  new = 2;
+  waxing_crescent = 3;
+  first_quarter = 4;
+  waxing_gibbous = 5;
+  full = 6;
+  waning_gibbous = 7;
+  last_quarter = 8;
+  waning_crescent = 9;
 }
 
 enum NumberBoundary {
@@ -62,21 +64,22 @@ enum Season {
 }
 
 enum SkyCondition {
-  sky_condition_none = 0;
-  snow = 1;
-  drizzle = 2;
-  dust = 3;
-  fog = 4;
-  rain = 5;
-  tornado = 6;
-  hail = 7;
-  ice = 8;
-  storm = 9;
-  mist = 10;
-  smoke = 11;
-  overcast = 12;
-  cloudy = 13;
-  clear = 14;
+  sky_condition_all = 0;
+  sky_condition_none = 1;
+  snow = 2;
+  drizzle = 3;
+  dust = 4;
+  fog = 5;
+  rain = 6;
+  tornado = 7;
+  hail = 8;
+  ice = 9;
+  storm = 10;
+  mist = 11;
+  smoke = 12;
+  overcast = 13;
+  cloudy = 14;
+  clear = 15;
 }
 
 enum Unit {
@@ -107,7 +110,7 @@ message Id {
 
 message Atmosphere {
   Measurement temperature = 1;
-  SkyCondition sky_condition = 2;
+  repeated SkyCondition sky_conditions = 2;
   Measurement wind_speed = 3;
   Direction wind_direction = 4;
   Measurement pressure = 5;
@@ -243,6 +246,14 @@ message Report {
   NumberFilter length_filter = 19;
   NumberFilter weight_filter = 20;
   NumberFilter quantity_filter = 21;
+  NumberFilter air_temperature_filter = 22;
+  NumberFilter air_pressure_filter = 23;
+  NumberFilter air_humidity_filter = 24;
+  NumberFilter air_visibility_filter = 25;
+  NumberFilter wind_speed_filter = 26;
+  repeated Direction wind_directions = 27;
+  repeated SkyCondition sky_conditions = 28;
+  repeated MoonPhase moon_phases = 29;
 }
 
 message Angler {

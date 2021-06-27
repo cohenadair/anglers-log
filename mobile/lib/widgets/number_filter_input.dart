@@ -23,14 +23,14 @@ class NumberFilterInput extends StatefulWidget {
 
   final NumberFilterInputController controller;
 
-  /// See [_NumberFilterPage.inputSpec].
-  final MultiMeasurementInputSpec? inputSpec;
+  /// See [_NumberFilterPage.inputState].
+  final MultiMeasurementInputState? inputState;
 
   NumberFilterInput({
     required this.title,
     required this.filterTitle,
     required this.controller,
-    this.inputSpec,
+    this.inputState,
   });
 
   @override
@@ -62,7 +62,7 @@ class _NumberFilterInputState extends State<NumberFilterInput> {
           _NumberFilterPage(
             title: widget.filterTitle,
             initialValue: value,
-            inputSpec: widget.inputSpec,
+            inputState: widget.inputState,
             onChanged: (numberFilter) =>
                 setState(() => widget.controller.value = numberFilter),
           ),
@@ -77,14 +77,14 @@ class _NumberFilterPage extends StatefulWidget {
   final NumberFilter initialValue;
 
   /// If null, will show standard [TextField.number] for whole number input.
-  final MultiMeasurementInputSpec? inputSpec;
+  final MultiMeasurementInputState? inputState;
 
   final ValueChanged<NumberFilter>? onChanged;
 
   _NumberFilterPage({
     required this.title,
     required this.initialValue,
-    required this.inputSpec,
+    required this.inputState,
     this.onChanged,
   });
 
@@ -99,23 +99,29 @@ class __NumberFilterPageState extends State<_NumberFilterPage> {
 
   final _boundaryController = InputController<NumberBoundary>();
 
-  // Controllers for input with units, such as [Catch.waterTemperature].
-  final _fromMeasurementController = MultiMeasurementInputController();
-  final _fromMeasurementMainController = NumberInputController(
-    validator: EmptyValidator(),
-  );
-  final _toMeasurementController = MultiMeasurementInputController();
-  late final NumberInputController _toMeasurementMainController;
+  // Spec for input with units, such as [Catch.waterTemperature].
+  late final MultiMeasurementInputState _fromMeasurementState;
+  late final MultiMeasurementInputState _toMeasurementState;
 
   // Controllers for input without units, such as [Catch.quantity].
-  final _fromNumberController = NumberInputController(
-    validator: EmptyValidator(),
-  );
+  late final NumberInputController _fromNumberController;
   late final NumberInputController _toNumberController;
 
-  bool get _inputHasUnits => widget.inputSpec != null;
+  bool get _inputHasUnits => widget.inputState != null;
 
   NumberFilter get _initialValue => widget.initialValue;
+
+  MultiMeasurementInputController get _fromMeasurementController =>
+      _fromMeasurementState.controller;
+
+  NumberInputController get _fromMeasurementMainController =>
+      _fromMeasurementController.mainController;
+
+  MultiMeasurementInputController get _toMeasurementController =>
+      _toMeasurementState.controller;
+
+  NumberInputController get _toMeasurementMainController =>
+      _toMeasurementController.mainController;
 
   @override
   void initState() {
@@ -125,8 +131,8 @@ class __NumberFilterPageState extends State<_NumberFilterPage> {
         ? _initialValue.boundary
         : NumberBoundary.number_boundary_any;
 
-    _initUnitInput();
-    _initNonUnitInput();
+    _initMeasurementInput();
+    _initNumberInput();
   }
 
   @override
@@ -168,7 +174,7 @@ class __NumberFilterPageState extends State<_NumberFilterPage> {
     Widget child;
     if (_boundaryController.value == NumberBoundary.number_boundary_any) {
       child = Empty();
-    } else if (widget.inputSpec == null) {
+    } else if (widget.inputState == null) {
       child = TextInput.number(
         context,
         label: label,
@@ -181,10 +187,10 @@ class __NumberFilterPageState extends State<_NumberFilterPage> {
         }),
       );
     } else {
+      _fromMeasurementState.title = (_) => label;
+
       child = MultiMeasurementInput(
-        spec: widget.inputSpec!.copyWith(title: label),
-        controller: _fromMeasurementController,
-        mainController: _fromMeasurementMainController,
+        state: _fromMeasurementState,
         allowSystemSwitching: true,
         onChanged: () => setState(() {
           // Must update units before validation so the correct units are
@@ -208,7 +214,7 @@ class __NumberFilterPageState extends State<_NumberFilterPage> {
     Widget child;
     if (_boundaryController.value != NumberBoundary.range) {
       child = Empty();
-    } else if (widget.inputSpec == null) {
+    } else if (widget.inputState == null) {
       child = TextInput.number(
         context,
         label: label,
@@ -218,10 +224,10 @@ class __NumberFilterPageState extends State<_NumberFilterPage> {
         onChanged: (_) => _notifyIfNeeded(),
       );
     } else {
+      _toMeasurementState.title = (_) => label;
+
       child = MultiMeasurementInput(
-        spec: widget.inputSpec!.copyWith(title: label),
-        controller: _toMeasurementController,
-        mainController: _toMeasurementMainController,
+        state: _toMeasurementState,
         allowSystemSwitching: false,
         onChanged: () => setState(() {
           // Need to validate, in case the fraction input changed.
@@ -316,40 +322,47 @@ class __NumberFilterPageState extends State<_NumberFilterPage> {
     _toMeasurementController.value = newEnd;
   }
 
-  void _initUnitInput() {
+  void _initMeasurementInput() {
     if (!_inputHasUnits) {
       return;
     }
 
-    _fromMeasurementController.value =
-        _initialValue.hasFrom() ? _initialValue.from : null;
-    _toMeasurementController.value =
-        _initialValue.hasTo() ? _initialValue.to : null;
-    _toMeasurementMainController = NumberInputController(
-      validator: RangeValidator(runner: (context, newValue) {
-        if (_toMeasurementController.hasValue &&
-            _fromMeasurementController.hasValue &&
-            _fromMeasurementController.value! >=
-                _toMeasurementController.value!) {
-          return (context) => format(
-              Strings.of(context).filterPageInvalidEndValue,
-              [_fromMeasurementController.value!.displayValue(context)]);
-        }
-        return null;
-      }),
+    _fromMeasurementState = widget.inputState!.copy(
+      mainController: NumberInputController(
+        validator: EmptyValidator(),
+      ),
     );
+
+    _toMeasurementState = widget.inputState!.copy(
+      mainController: NumberInputController(
+        validator: RangeValidator(runner: (context, newValue) {
+          if (_toMeasurementController.hasValue &&
+              _fromMeasurementController.hasValue &&
+              _fromMeasurementController.value! >=
+                  _toMeasurementController.value!) {
+            return (context) => format(
+                Strings.of(context).filterPageInvalidEndValue,
+                [_fromMeasurementController.value!.displayValue(context)]);
+          }
+          return null;
+        }),
+      ),
+    );
+
+    _fromMeasurementState.controller.value =
+        _initialValue.hasFrom() ? _initialValue.from : null;
+    _toMeasurementState.controller.value =
+        _initialValue.hasTo() ? _initialValue.to : null;
   }
 
-  void _initNonUnitInput() {
+  void _initNumberInput() {
     if (_inputHasUnits) {
       return;
     }
 
-    _fromNumberController.intValue = _initialValue.hasFrom() &&
-            _initialValue.from.hasMainValue() &&
-            _initialValue.from.mainValue.hasValue()
-        ? _initialValue.from.mainValue.value.round()
-        : null;
+    _fromNumberController = NumberInputController(
+      validator: EmptyValidator(),
+    );
 
     _toNumberController = NumberInputController(
       validator: RangeValidator(runner: (context, newValue) {
@@ -363,6 +376,12 @@ class __NumberFilterPageState extends State<_NumberFilterPage> {
         return null;
       }),
     );
+
+    _fromNumberController.intValue = _initialValue.hasFrom() &&
+            _initialValue.from.hasMainValue() &&
+            _initialValue.from.mainValue.hasValue()
+        ? _initialValue.from.mainValue.value.round()
+        : null;
 
     _toNumberController.intValue = _initialValue.hasTo() &&
             _initialValue.to.hasMainValue() &&

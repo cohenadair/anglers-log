@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:quiver/strings.dart';
 
 import '../res/dimen.dart';
-import '../time_manager.dart';
 import '../widgets/text.dart';
 import '../widgets/widget.dart';
+import 'input_controller.dart';
 
 /// A container for separate date and time pickers. Renders a horizontal [Flex]
 /// widget with a 3:2 ratio for [DatePicker] and [TimePicker] respectively.
@@ -70,13 +70,13 @@ class DatePicker extends FormField<DateTime> {
   DatePicker(
     BuildContext context, {
     required String label,
-    DateTime? initialDate,
+    required TimestampInputController controller,
     void Function(DateTime)? onChange,
     FormFieldValidator<DateTime>? validator,
     bool enabled = true,
   })  : assert(isNotEmpty(label)),
         super(
-          initialValue: initialDate ?? TimeManager.of(context).currentDateTime,
+          initialValue: controller.date,
           validator: validator,
           builder: (state) {
             return _Picker(
@@ -84,16 +84,16 @@ class DatePicker extends FormField<DateTime> {
               errorText: state.errorText,
               enabled: enabled,
               type: _PickerType(
-                getValue: () {
+                value: () {
                   return DateLabel(
-                    state.value!,
+                    controller.date,
                     enabled: enabled,
                   );
                 },
                 openPicker: () {
                   showDatePicker(
                     context: state.context,
-                    initialDate: state.value!,
+                    initialDate: controller.date,
                     // Weird requirement of showDatePicker, but essentially
                     // let the user pick any date.
                     firstDate: DateTime(1900),
@@ -102,6 +102,7 @@ class DatePicker extends FormField<DateTime> {
                     if (dateTime == null) {
                       return;
                     }
+                    controller.date = dateTime;
                     state.didChange(dateTime);
                     onChange?.call(dateTime);
                   });
@@ -116,14 +117,14 @@ class TimePicker extends FormField<TimeOfDay> {
   TimePicker(
     BuildContext context, {
     required String label,
-    TimeOfDay? initialTime,
+    required TimestampInputController controller,
     Function(TimeOfDay)? onChange,
     FormFieldValidator<TimeOfDay>? validator,
     bool enabled = true,
     EdgeInsets padding = insetsZero,
   })  : assert(isNotEmpty(label)),
         super(
-          initialValue: initialTime ?? TimeManager.of(context).currentTime,
+          initialValue: controller.time,
           validator: validator,
           builder: (state) {
             return _Picker(
@@ -132,20 +133,21 @@ class TimePicker extends FormField<TimeOfDay> {
               enabled: enabled,
               padding: padding,
               type: _PickerType(
-                getValue: () {
+                value: () {
                   return TimeLabel(
-                    state.value!,
+                    controller.time,
                     enabled: enabled,
                   );
                 },
                 openPicker: () {
                   showTimePicker(
                     context: state.context,
-                    initialTime: state.value!,
+                    initialTime: controller.time,
                   ).then((time) {
                     if (time == null) {
                       return;
                     }
+                    controller.time = time;
                     state.didChange(time);
                     onChange?.call(time);
                   });
@@ -157,11 +159,11 @@ class TimePicker extends FormField<TimeOfDay> {
 }
 
 class _PickerType {
-  final Widget Function() getValue;
+  final Widget Function() value;
   final VoidCallback openPicker;
 
   _PickerType({
-    required this.getValue,
+    required this.value,
     required this.openPicker,
   });
 }
@@ -198,7 +200,7 @@ class _Picker extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
-                Expanded(child: type.getValue()),
+                Expanded(child: type.value()),
                 EnabledOpacity(
                   enabled: enabled,
                   child: DropdownIcon(),

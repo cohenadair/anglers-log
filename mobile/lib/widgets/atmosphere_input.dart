@@ -1,57 +1,45 @@
+import 'package:fixnum/fixnum.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:quiver/strings.dart';
 
 import '../atmosphere_fetcher.dart';
 import '../i18n/strings.dart';
 import '../log.dart';
 import '../model/gen/anglerslog.pb.dart';
 import '../pages/editable_form_page.dart';
+import '../pages/picker_page.dart';
 import '../pages/pro_page.dart';
 import '../res/dimen.dart';
+import '../res/style.dart';
 import '../subscription_manager.dart';
 import '../time_manager.dart';
 import '../user_preference_manager.dart';
-import '../utils/date_time_utils.dart';
+import '../utils/atmosphere_utils.dart';
 import '../utils/page_utils.dart';
 import '../utils/protobuf_utils.dart';
 import '../utils/snackbar_utils.dart';
-import 'checkbox_input.dart';
+import 'atmosphere_wrap.dart';
 import 'date_time_picker.dart';
 import 'detail_input.dart';
+import 'field.dart';
 import 'input_controller.dart';
-import 'input_data.dart';
+import 'list_item.dart';
 import 'list_picker_input.dart';
+import 'multi_list_picker_input.dart';
 import 'multi_measurement_input.dart';
-import 'text.dart';
 import 'text_input.dart';
 import 'widget.dart';
 
-class AtmosphereInput extends StatefulWidget {
+class AtmosphereInput extends StatelessWidget {
   final AtmosphereFetcher fetcher;
-  final Atmosphere? initialValue;
   final EdgeInsets? padding;
-  final void Function(Atmosphere)? onChanged;
+  final InputController<Atmosphere> controller;
 
   AtmosphereInput({
     required this.fetcher,
-    this.initialValue,
+    required this.controller,
     this.padding,
-    this.onChanged,
   });
-
-  @override
-  _AtmosphereInputState createState() => _AtmosphereInputState();
-}
-
-class _AtmosphereInputState extends State<AtmosphereInput> {
-  late Atmosphere _atmosphere;
-
-  @override
-  void initState() {
-    super.initState();
-    _atmosphere = widget.initialValue ?? Atmosphere();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -59,133 +47,57 @@ class _AtmosphereInputState extends State<AtmosphereInput> {
       onTap: () => push(
         context,
         _AtmosphereInputPage(
-          fetcher: widget.fetcher,
-          initialValue: _atmosphere,
-          onChanged: widget.onChanged,
+          fetcher: fetcher,
+          controller: controller,
         ),
       ),
       children: [
-        Expanded(child: _buildItems()),
+        Expanded(child: _buildItems(context)),
       ],
     );
   }
 
-  Widget _buildItems() {
-    var children = <Widget>[];
+  Widget _buildItems(BuildContext context) {
+    return ValueListenableBuilder<Atmosphere?>(
+      valueListenable: controller,
+      builder: (context, atmosphere, _) {
+        CrossFadeState state;
+        if (atmosphere == null) {
+          state = CrossFadeState.showFirst;
+        } else {
+          state = CrossFadeState.showSecond;
+        }
 
-    if (_atmosphere.hasTemperature()) {
-      children.add(_AtmosphereItem(
-        icon: Icons.filter_drama,
-        title: _atmosphere.temperature.displayValue(context),
-        subtitle: _atmosphere.skyCondition.displayName(context),
-      ));
-    }
+        var firstChild = Text(
+          Strings.of(context).catchFieldAtmosphere,
+          style: stylePrimary(context),
+        );
 
-    if (_atmosphere.hasWindSpeed()) {
-      children.add(_AtmosphereItem(
-        icon: Icons.air,
-        title: _atmosphere.windSpeed.displayValue(context),
-        subtitle: _atmosphere.windDirection.displayName(context),
-      ));
-    }
+        Widget secondChild;
+        if (atmosphere == null) {
+          secondChild = Empty();
+        } else {
+          secondChild = AtmosphereWrap(atmosphere);
+        }
 
-    if (_atmosphere.hasPressure()) {
-      children.add(_AtmosphereItem(
-        icon: Icons.speed,
-        title: _atmosphere.pressure.displayValue(context),
-        subtitle: Strings.of(context).atmosphereInputPressure,
-      ));
-    }
-
-    if (_atmosphere.hasVisibility()) {
-      children.add(_AtmosphereItem(
-        icon: Icons.visibility,
-        title: _atmosphere.visibility.displayValue(context),
-        subtitle: Strings.of(context).atmosphereInputVisibility,
-      ));
-    }
-
-    if (_atmosphere.hasHumidity()) {
-      children.add(_AtmosphereItem(
-        icon: Icons.water,
-        title: "${_atmosphere.humidity}%",
-        subtitle: Strings.of(context).atmosphereInputHumidity,
-      ));
-    }
-
-    if (_atmosphere.hasSunriseTimestamp()) {
-      children.add(_AtmosphereItem(
-        icon: Icons.wb_sunny_outlined,
-        title: formatTimestampTime(context, _atmosphere.sunriseTimestamp),
-        subtitle: Strings.of(context).atmosphereInputSunrise,
-      ));
-    }
-
-    if (_atmosphere.hasSunsetTimestamp()) {
-      children.add(_AtmosphereItem(
-        icon: Icons.wb_sunny,
-        title: formatTimestampTime(context, _atmosphere.sunsetTimestamp),
-        subtitle: Strings.of(context).atmosphereInputSunset,
-      ));
-    }
-
-    if (_atmosphere.hasMoonPhase()) {
-      children.add(_AtmosphereItem(
-        icon: Icons.nightlight,
-        title: _atmosphere.moonPhase.displayName(context),
-        subtitle: Strings.of(context).atmosphereInputMoon,
-      ));
-    }
-
-    if (children.isEmpty) {
-      return PrimaryLabel(Strings.of(context).catchFieldAtmosphere);
-    }
-
-    return Wrap(
-      spacing: paddingWidget,
-      runSpacing: paddingWidget,
-      children: children,
-    );
-  }
-}
-
-class _AtmosphereItem extends StatelessWidget {
-  static const _width = 65.0;
-
-  final IconData icon;
-  final String title;
-  final String? subtitle;
-
-  _AtmosphereItem({
-    required this.icon,
-    required this.title,
-    this.subtitle,
-  }) : assert(isNotEmpty(title));
-
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      width: _width,
-      child: Column(
-        children: [
-          Icon(icon),
-          PrimaryLabel.multiline(title, align: TextAlign.center),
-          isEmpty(subtitle) ? Empty() : SubtitleLabel(subtitle!),
-        ],
-      ),
+        return AnimatedCrossFade(
+          crossFadeState: state,
+          duration: defaultAnimationDuration,
+          firstChild: firstChild,
+          secondChild: secondChild,
+        );
+      },
     );
   }
 }
 
 class _AtmosphereInputPage extends StatefulWidget {
   final AtmosphereFetcher fetcher;
-  final Atmosphere? initialValue;
-  final void Function(Atmosphere)? onChanged;
+  final InputController<Atmosphere> controller;
 
   _AtmosphereInputPage({
     required this.fetcher,
-    this.initialValue,
-    this.onChanged,
+    required this.controller,
   });
 
   @override
@@ -193,41 +105,25 @@ class _AtmosphereInputPage extends StatefulWidget {
 }
 
 class __AtmosphereInputPageState extends State<_AtmosphereInputPage> {
-  // Unique IDs for each field. These are stored in the database and should not
-  // be changed.
-  static final _idTemperature = Id()
-    ..uuid = "efabb5c4-1160-484c-8fdc-a62c71e8e417";
-  static final _idWindSpeed = Id()
-    ..uuid = "26fc9f13-9e0c-4117-af03-71cbd1a46fb8";
-  static final _idWindDirection = Id()
-    ..uuid = "3d5a136c-53d6-4198-a5fc-96cbfa620bcf";
-  static final _idPressure = Id()
-    ..uuid = "cade6d54-aa10-43ef-8741-4421c1a761aa";
-  static final _idHumidity = Id()
-    ..uuid = "2a799a3f-3eca-4a46-858c-88fb89e66e7b";
-  static final _idVisibility = Id()
-    ..uuid = "62705e70-9c6b-417d-9a5e-6f3cd59ffd80";
-  static final _idMoonPhase = Id()
-    ..uuid = "46754037-37bc-4db2-a25e-6cc396d3b815";
-  static final _idSkyCondition = Id()
-    ..uuid = "d1d6446b-d73d-4343-8f0d-77a51b4a0735";
-  static final _idSunriseTimestamp = Id()
-    ..uuid = "07a54092-b0dd-43bd-ab07-f26718b2dd7c";
-  static final _idSunsetTimestamp = Id()
-    ..uuid = "a6a440f4-66a5-4243-b1ce-f3ed4f0cbd66";
+  static final _idTemperature = atmosphereFieldIdTemperature;
+  static final _idWindSpeed = atmosphereFieldIdWindSpeed;
+  static final _idWindDirection = atmosphereFieldIdWindDirection;
+  static final _idPressure = atmosphereFieldIdPressure;
+  static final _idHumidity = atmosphereFieldIdHumidity;
+  static final _idVisibility = atmosphereFieldIdVisibility;
+  static final _idMoonPhase = atmosphereFieldIdMoonPhase;
+  static final _idSkyCondition = atmosphereFieldIdSkyCondition;
+  static final _idSunriseTimestamp = atmosphereFieldIdSunriseTimestamp;
+  static final _idSunsetTimestamp = atmosphereFieldIdSunsetTimestamp;
 
   final _log = Log("AtmosphereInputPage");
 
   final _fields = <Id, Field>{};
-  final _refreshIndicatorKey = GlobalKey<RefreshIndicatorState>();
 
-  // Used to determine if a sunset and sunrise time was actually picked or
-  // fetched from the web. We don't want to include default times (now) since
-  // they are inaccurate.
-  var _didPickSunrise = false;
-  var _didPickSunset = false;
-
-  var _temperatureInputController = NumberInputController();
+  late final MultiMeasurementInputState _airTemperatureInputState;
+  late final MultiMeasurementInputState _windSpeedInputState;
+  late final MultiMeasurementInputState _airPressureInputState;
+  late final MultiMeasurementInputState _airVisibilityInputState;
 
   TimeManager get _timeManager => TimeManager.of(context);
 
@@ -240,8 +136,8 @@ class __AtmosphereInputPageState extends State<_AtmosphereInputPage> {
   MultiMeasurementInputController get _temperatureController =>
       _fields[_idTemperature]!.controller as MultiMeasurementInputController;
 
-  InputController<SkyCondition> get _skyConditionController =>
-      _fields[_idSkyCondition]!.controller as InputController<SkyCondition>;
+  SetInputController<SkyCondition> get _skyConditionController =>
+      _fields[_idSkyCondition]!.controller as SetInputController<SkyCondition>;
 
   MultiMeasurementInputController get _windSpeedController =>
       _fields[_idWindSpeed]!.controller as MultiMeasurementInputController;
@@ -271,16 +167,23 @@ class __AtmosphereInputPageState extends State<_AtmosphereInputPage> {
   void initState() {
     super.initState();
 
+    _airTemperatureInputState =
+        MultiMeasurementInputState.airTemperature(context);
+    _windSpeedInputState = MultiMeasurementInputState.windSpeed(context);
+    _airPressureInputState = MultiMeasurementInputState.airPressure(context);
+    _airVisibilityInputState =
+        MultiMeasurementInputState.airVisibility(context);
+
     _fields[_idTemperature] = Field(
       id: _idTemperature,
       name: (context) => Strings.of(context).atmosphereInputTemperature,
-      controller: MultiMeasurementInputController(),
+      controller: _airTemperatureInputState.controller,
     );
 
     _fields[_idSkyCondition] = Field(
       id: _idSkyCondition,
-      name: (context) => Strings.of(context).atmosphereInputSkyCondition,
-      controller: InputController<SkyCondition>(),
+      name: (context) => Strings.of(context).atmosphereInputSkyConditions,
+      controller: SetInputController<SkyCondition>(),
     );
 
     _fields[_idWindDirection] = Field(
@@ -292,19 +195,19 @@ class __AtmosphereInputPageState extends State<_AtmosphereInputPage> {
     _fields[_idWindSpeed] = Field(
       id: _idWindSpeed,
       name: (context) => Strings.of(context).atmosphereInputWindSpeed,
-      controller: MultiMeasurementInputController(),
+      controller: _windSpeedInputState.controller,
     );
 
     _fields[_idPressure] = Field(
       id: _idPressure,
       name: (context) => Strings.of(context).atmosphereInputAtmosphericPressure,
-      controller: MultiMeasurementInputController(),
+      controller: _airPressureInputState.controller,
     );
 
     _fields[_idVisibility] = Field(
       id: _idVisibility,
       name: (context) => Strings.of(context).atmosphereInputAirVisibility,
-      controller: MultiMeasurementInputController(),
+      controller: _airVisibilityInputState.controller,
     );
 
     _fields[_idHumidity] = Field(
@@ -338,17 +241,8 @@ class __AtmosphereInputPageState extends State<_AtmosphereInputPage> {
           showingFieldIds.isEmpty || showingFieldIds.contains(field.id);
     }
 
-    // Fetch data if needed.
-    if (_subscriptionManager.isPro &&
-        _userPreferenceManager.autoFetchAtmosphere &&
-        widget.initialValue == null) {
-      // This must be done in a post frame callback so
-      // _refreshIndicatorKey.currentState returns a non-null value.
-      WidgetsBinding.instance?.addPostFrameCallback((_) {
-        _refreshIndicatorKey.currentState?.show();
-      });
-    } else if (widget.initialValue != null) {
-      _update(widget.initialValue!);
+    if (widget.controller.value != null) {
+      _updateFromAtmosphere(widget.controller.value!);
     }
   }
 
@@ -362,38 +256,32 @@ class __AtmosphereInputPageState extends State<_AtmosphereInputPage> {
       padding: insetsZero,
       fields: _fields,
       onBuildField: _buildField,
-      onAddFields: (ids) =>
-          _userPreferenceManager.setAtmosphereFieldIds(ids.toList()),
+      onAddFields: (ids) {
+        _userPreferenceManager.setAtmosphereFieldIds(ids.toList());
+
+        // Clear fields that are no longer showing.
+        for (var field in _fields.values) {
+          if (!ids.contains(field.id)) {
+            field.controller.clear();
+          }
+        }
+        _updateFromControllers();
+      },
       onRefresh: _fetch,
-      refreshIndicatorKey: _refreshIndicatorKey,
     );
   }
 
   Widget _buildHeader() {
     return Column(
       children: [
-        Padding(
-          padding: insetsHorizontalDefault,
-          child: CheckboxInput(
-            label: Strings.of(context).atmosphereInputAutoFetch,
-            value: _userPreferenceManager.autoFetchAtmosphere,
-            onChanged: (checked) {
-              if (_subscriptionManager.isPro && checked) {
-                _userPreferenceManager.setAutoFetchAtmosphere(true);
-                // Invoke refresh callback and show progress indicator.
-                _refreshIndicatorKey.currentState?.show();
-              } else if (checked) {
-                // "Uncheck" checkbox, since automatically refreshing data is
-                // a pro feature.
-                setState(() {
-                  _userPreferenceManager.setAutoFetchAtmosphere(false);
-                });
-                present(context, ProPage());
-              } else {
-                _userPreferenceManager.setAutoFetchAtmosphere(false);
-              }
-            },
-          ),
+        PickerListItem(
+          padding: insetsDefault,
+          title: Strings.of(context).none,
+          isSelected: !widget.controller.hasValue,
+          onTap: () {
+            widget.controller.clear();
+            Navigator.pop(context);
+          },
         ),
         MinDivider(),
       ],
@@ -416,7 +304,7 @@ class __AtmosphereInputPageState extends State<_AtmosphereInputPage> {
     } else if (id == _idMoonPhase) {
       return _buildMoonPhase();
     } else if (id == _idSkyCondition) {
-      return _buildSkyCondition();
+      return _buildSkyConditions();
     } else if (id == _idSunriseTimestamp) {
       return _buildSunrise();
     } else if (id == _idSunsetTimestamp) {
@@ -431,26 +319,45 @@ class __AtmosphereInputPageState extends State<_AtmosphereInputPage> {
     return Padding(
       padding: insetsHorizontalDefaultVerticalSmall,
       child: MultiMeasurementInput(
-        spec: MultiMeasurementInputSpec.airTemperature(context),
-        controller: _temperatureController,
-        mainController: _temperatureInputController,
-        onChanged: () => _userPreferenceManager
-            .setAirTemperatureSystem(_temperatureController.value?.system),
+        state: _airTemperatureInputState,
+        onChanged: () {
+          _userPreferenceManager
+              .setAirTemperatureSystem(_temperatureController.value?.system);
+          _updateFromControllers();
+        },
       ),
     );
   }
 
-  Widget _buildSkyCondition() {
-    return ListPickerInput.withSinglePickerPage<SkyCondition>(
-      context: context,
-      controller: _skyConditionController,
-      title: Strings.of(context).atmosphereInputSkyCondition,
-      pickerTitle: Strings.of(context).skyConditionPickerTitle,
-      valueDisplayName: _skyConditionController.value?.displayName(context),
-      noneItem: SkyCondition.sky_condition_none,
-      itemBuilder: SkyConditions.pickerItems,
-      onPicked: (value) =>
-          setState(() => _skyConditionController.value = value),
+  Widget _buildSkyConditions() {
+    return MultiListPickerInput(
+      padding: insetsHorizontalDefaultVerticalWidget,
+      values: _skyConditionController.value
+          .map((c) => c.displayName(context))
+          .toSet(),
+      emptyValue: (context) =>
+          Strings.of(context).atmosphereInputNoSkyConditions,
+      onTap: () {
+        push(
+          context,
+          PickerPage<SkyCondition>(
+            itemBuilder: () => SkyConditions.pickerItems(context),
+            initialValues: _skyConditionController.value,
+            title: Text(Strings.of(context).pickerTitleSkyConditions),
+            allItem: PickerPageItem<SkyCondition>(
+              title: Strings.of(context).all,
+              value: SkyCondition.sky_condition_all,
+              isMultiNone: true,
+            ),
+            onFinishedPicking: (context, skyConditions) {
+              setState(() {
+                _skyConditionController.value = skyConditions;
+                _updateFromControllers();
+              });
+            },
+          ),
+        );
+      },
     );
   }
 
@@ -458,10 +365,12 @@ class __AtmosphereInputPageState extends State<_AtmosphereInputPage> {
     return Padding(
       padding: insetsHorizontalDefaultVerticalSmall,
       child: MultiMeasurementInput(
-        spec: MultiMeasurementInputSpec.windSpeed(context),
-        controller: _windSpeedController,
-        onChanged: () => _userPreferenceManager
-            .setWindSpeedSystem(_windSpeedController.value?.system),
+        state: _windSpeedInputState,
+        onChanged: () {
+          _userPreferenceManager
+              .setWindSpeedSystem(_windSpeedController.value?.system);
+          _updateFromControllers();
+        },
       ),
     );
   }
@@ -471,11 +380,14 @@ class __AtmosphereInputPageState extends State<_AtmosphereInputPage> {
       context: context,
       controller: _directionController,
       title: Strings.of(context).atmosphereInputWindDirection,
-      pickerTitle: Strings.of(context).directionPickerTitle,
+      pickerTitle: Strings.of(context).pickerTitleWindDirection,
       valueDisplayName: _directionController.value?.displayName(context),
       noneItem: Direction.direction_none,
       itemBuilder: Directions.pickerItems,
-      onPicked: (value) => setState(() => _directionController.value = value),
+      onPicked: (value) => setState(() {
+        _directionController.value = value;
+        _updateFromControllers();
+      }),
     );
   }
 
@@ -483,10 +395,12 @@ class __AtmosphereInputPageState extends State<_AtmosphereInputPage> {
     return Padding(
       padding: insetsHorizontalDefaultVerticalSmall,
       child: MultiMeasurementInput(
-        spec: MultiMeasurementInputSpec.airPressure(context),
-        controller: _pressureController,
-        onChanged: () => _userPreferenceManager
-            .setAirPressureSystem(_pressureController.value?.system),
+        state: _airPressureInputState,
+        onChanged: () {
+          _userPreferenceManager
+              .setAirPressureSystem(_pressureController.value?.system);
+          _updateFromControllers();
+        },
       ),
     );
   }
@@ -501,6 +415,7 @@ class __AtmosphereInputPageState extends State<_AtmosphereInputPage> {
         suffixText: "%",
         decimal: false,
         signed: false,
+        onChanged: (_) => _updateFromControllers(),
       ),
     );
   }
@@ -509,10 +424,12 @@ class __AtmosphereInputPageState extends State<_AtmosphereInputPage> {
     return Padding(
       padding: insetsHorizontalDefaultVerticalSmall,
       child: MultiMeasurementInput(
-        spec: MultiMeasurementInputSpec.airVisibility(context),
-        controller: _visibilityController,
-        onChanged: () => _userPreferenceManager
-            .setAirVisibilitySystem(_visibilityController.value?.system),
+        state: _airVisibilityInputState,
+        onChanged: () {
+          _userPreferenceManager
+              .setAirVisibilitySystem(_visibilityController.value?.system);
+          _updateFromControllers();
+        },
       ),
     );
   }
@@ -522,11 +439,14 @@ class __AtmosphereInputPageState extends State<_AtmosphereInputPage> {
       context: context,
       controller: _moonPhaseController,
       title: Strings.of(context).atmosphereInputMoonPhase,
-      pickerTitle: Strings.of(context).moonPhasePickerTitle,
+      pickerTitle: Strings.of(context).pickerTitleMoonPhase,
       valueDisplayName: _moonPhaseController.value?.displayName(context),
       noneItem: MoonPhase.moon_phase_none,
       itemBuilder: MoonPhases.pickerItems,
-      onPicked: (value) => setState(() => _moonPhaseController.value = value),
+      onPicked: (value) => setState(() {
+        _moonPhaseController.value = value;
+        _updateFromControllers();
+      }),
     );
   }
 
@@ -539,11 +459,8 @@ class __AtmosphereInputPageState extends State<_AtmosphereInputPage> {
         bottom: paddingWidget,
       ),
       label: Strings.of(context).atmosphereInputTimeOfSunrise,
-      initialTime: _sunriseController.time,
-      onChange: (newTime) {
-        _sunriseController.time = newTime;
-        _didPickSunrise = true;
-      },
+      controller: _sunriseController,
+      onChange: (_) => _updateFromControllers(),
     );
   }
 
@@ -556,34 +473,35 @@ class __AtmosphereInputPageState extends State<_AtmosphereInputPage> {
         bottom: paddingWidget,
       ),
       label: Strings.of(context).atmosphereInputTimeOfSunset,
-      initialTime: _sunsetController.time,
-      onChange: (newTime) {
-        _sunsetController.time = newTime;
-        _didPickSunset = true;
-      },
+      controller: _sunsetController,
+      onChange: (_) => _updateFromControllers(),
     );
   }
 
   Future<void> _fetch() async {
+    if (_subscriptionManager.isFree) {
+      present(context, ProPage());
+      return;
+    }
+
     var atmosphere = await widget.fetcher.fetch();
     if (atmosphere == null) {
       showErrorSnackBar(context, Strings.of(context).atmosphereInputFetchError);
       return;
     }
     setState(() {
-      _update(atmosphere);
+      _updateFromAtmosphere(atmosphere);
     });
   }
 
-  void _update(Atmosphere atmosphere) {
+  void _updateFromAtmosphere(Atmosphere atmosphere) {
     if (atmosphere.hasTemperature()) {
-      _temperatureInputController.doubleValue = atmosphere.temperature.value;
-      _temperatureController.value =
-          MultiMeasurements.from(atmosphere.temperature);
+      _temperatureController.value = MultiMeasurements.from(
+          atmosphere.temperature, _userPreferenceManager.airTemperatureSystem);
     }
 
-    if (atmosphere.hasSkyCondition()) {
-      _skyConditionController.value = atmosphere.skyCondition;
+    if (atmosphere.skyConditions.isNotEmpty) {
+      _skyConditionController.value = atmosphere.skyConditions.toSet();
     }
 
     if (atmosphere.hasWindDirection()) {
@@ -591,16 +509,18 @@ class __AtmosphereInputPageState extends State<_AtmosphereInputPage> {
     }
 
     if (atmosphere.hasWindSpeed()) {
-      _windSpeedController.value = MultiMeasurements.from(atmosphere.windSpeed);
+      _windSpeedController.value = MultiMeasurements.from(
+          atmosphere.windSpeed, _userPreferenceManager.windSpeedSystem);
     }
 
     if (atmosphere.hasPressure()) {
-      _pressureController.value = MultiMeasurements.from(atmosphere.pressure);
+      _pressureController.value = MultiMeasurements.from(
+          atmosphere.pressure, _userPreferenceManager.airPressureSystem);
     }
 
     if (atmosphere.hasVisibility()) {
-      _visibilityController.value =
-          MultiMeasurements.from(atmosphere.visibility);
+      _visibilityController.value = MultiMeasurements.from(
+          atmosphere.visibility, _userPreferenceManager.airVisibilitySystem);
     }
 
     if (atmosphere.hasHumidity()) {
@@ -618,5 +538,64 @@ class __AtmosphereInputPageState extends State<_AtmosphereInputPage> {
     if (atmosphere.hasSunsetTimestamp()) {
       _sunsetController.value = atmosphere.sunsetTimestamp.toInt();
     }
+
+    widget.controller.value = atmosphere;
+  }
+
+  void _updateFromControllers() {
+    var result = Atmosphere();
+    var isSet = false;
+
+    if (_temperatureController.isSet) {
+      result.temperature = _temperatureController.value!.mainValue;
+      isSet = true;
+    }
+
+    if (_skyConditionController.hasValue) {
+      result.skyConditions.addAll(_skyConditionController.value);
+      isSet = true;
+    }
+
+    if (_directionController.hasValue) {
+      result.windDirection = _directionController.value!;
+      isSet = true;
+    }
+
+    if (_windSpeedController.isSet) {
+      result.windSpeed = _windSpeedController.value!.mainValue;
+      isSet = true;
+    }
+
+    if (_pressureController.isSet) {
+      result.pressure = _pressureController.value!.mainValue;
+      isSet = true;
+    }
+
+    if (_visibilityController.isSet) {
+      result.visibility = _visibilityController.value!.mainValue;
+      isSet = true;
+    }
+
+    if (_humidityController.hasIntValue) {
+      result.humidity = _humidityController.intValue!;
+      isSet = true;
+    }
+
+    if (_moonPhaseController.hasValue) {
+      result.moonPhase = _moonPhaseController.value!;
+      isSet = true;
+    }
+
+    if (_sunriseController.hasValue) {
+      result.sunriseTimestamp = Int64(_sunriseController.value);
+      isSet = true;
+    }
+
+    if (_sunsetController.hasValue) {
+      result.sunsetTimestamp = Int64(_sunsetController.value);
+      isSet = true;
+    }
+
+    widget.controller.value = isSet ? result : null;
   }
 }

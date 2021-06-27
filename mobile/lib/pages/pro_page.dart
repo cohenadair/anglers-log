@@ -54,7 +54,7 @@ class _ProPageState extends State<ProPage> {
           CustomIcons.catches,
           size: _logoHeight,
         ),
-        Label(
+        Text(
           Strings.of(context).proPageUpgradeTitle,
           style: styleTitle2,
         ),
@@ -66,6 +66,8 @@ class _ProPageState extends State<ProPage> {
         _buildFeatureRow(Strings.of(context).proPageBackup),
         VerticalSpace(paddingWidget),
         _buildFeatureRow(Strings.of(context).proPageSync),
+        VerticalSpace(paddingWidget),
+        _buildFeatureRow(Strings.of(context).proPageAtmosphere),
         VerticalSpace(paddingWidget),
         _buildFeatureRow(Strings.of(context).proPageReports),
         VerticalSpace(paddingWidget),
@@ -79,7 +81,13 @@ class _ProPageState extends State<ProPage> {
   Widget _buildFeatureRow(String description) {
     return Row(
       children: [
-        Expanded(child: PrimaryLabel.multiline(description)),
+        Expanded(
+          child: Text(
+            description,
+            style: stylePrimary(context),
+            overflow: TextOverflow.visible,
+          ),
+        ),
         HorizontalSpace(paddingWidget),
         Icon(
           Icons.check_circle_outline,
@@ -174,14 +182,16 @@ class _ProPageState extends State<ProPage> {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              PrimaryLabel(
+              Text(
                 format(priceText, [sub.price]),
-                fontWeight: fontWeightBold,
+                style: styleSubtitle(context).copyWith(
+                  fontWeight: fontWeightBold,
+                ),
               ),
               VerticalSpace(paddingTiny),
-              Label(format(trialText, [sub.trialLengthDays])),
+              Text(format(trialText, [sub.trialLengthDays])),
               VerticalSpace(paddingTiny),
-              Label(
+              Text(
                 billingFrequencyText,
                 style: styleSubtext,
               ),

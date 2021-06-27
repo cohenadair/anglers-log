@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mobile/res/style.dart';
 import 'package:quiver/strings.dart';
 
 import '../fishing_spot_manager.dart';
@@ -28,20 +29,6 @@ class FishingSpotListPage extends StatelessWidget {
           [fishingSpots.length],
         ),
       ),
-      pickerTitleBuilder: (fishingSpots) {
-        if (pickerSettings == null) {
-          return Empty();
-        }
-
-        var title = "";
-        if (pickerSettings!.isMulti) {
-          title = Strings.of(context).fishingSpotListPageMultiPickerTitle;
-        } else {
-          title = Strings.of(context).fishingSpotListPageSinglePickerTitle;
-        }
-
-        return Text(title);
-      },
       forceCenterTitle: pickerSettings == null,
       itemBuilder: (context, fishingSpot) {
         var latLngString = formatLatLng(
@@ -53,11 +40,12 @@ class FishingSpotListPage extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              PrimaryLabel(isNotEmpty(fishingSpot.name)
-                  ? fishingSpot.name
-                  : latLngString),
+              Text(
+                isNotEmpty(fishingSpot.name) ? fishingSpot.name : latLngString,
+                style: stylePrimary(context),
+              ),
               isNotEmpty(fishingSpot.name)
-                  ? SubtitleLabel(latLngString)
+                  ? Text(latLngString, style: styleSubtitle(context))
                   : Empty(),
             ],
           ),
@@ -66,7 +54,10 @@ class FishingSpotListPage extends StatelessWidget {
       searchDelegate: ManageableListPageSearchDelegate(
         hint: Strings.of(context).fishingSpotListPageSearchHint,
       ),
-      pickerSettings: pickerSettings,
+      pickerSettings: pickerSettings?.copyWith(
+        title: Text(Strings.of(context).pickerTitleFishingSpot),
+        multiTitle: Text(Strings.of(context).pickerTitleFishingSpots),
+      ),
       itemManager: ManageableListPageItemManager<FishingSpot>(
         listenerManagers: [fishingSpotManager],
         loadItems: (query) =>

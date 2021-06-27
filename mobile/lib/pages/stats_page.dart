@@ -1,5 +1,6 @@
 import 'package:collection/collection.dart' show IterableExtension;
 import 'package:flutter/material.dart';
+import 'package:mobile/res/style.dart';
 import 'package:quiver/strings.dart';
 
 import '../bait_manager.dart';
@@ -169,7 +170,10 @@ class _StatsPageState extends State<StatsPage> {
         isNotEmpty(_currentReport.description)) {
       child = Padding(
         padding: insetsDefault,
-        child: Label.multiline(_currentReport.description!),
+        child: Text(
+          _currentReport.description!,
+          overflow: TextOverflow.visible,
+        ),
       );
     }
 
@@ -191,7 +195,10 @@ class _StatsPageState extends State<StatsPage> {
       children = [
         Padding(
           padding: insetsDefault,
-          child: HeadingLabel(Strings.of(context).reportSummaryCatchTitle),
+          child: Text(
+            Strings.of(context).reportSummaryCatchTitle,
+            style: styleListHeading(context),
+          ),
         ),
         _buildViewCatches(),
         _buildSinceLastCatch(),
@@ -308,12 +315,15 @@ class _StatsPageState extends State<StatsPage> {
 
     return ListItem(
       title: Text(Strings.of(context).reportSummarySinceLastCatch),
-      trailing: SecondaryLabel(formatDuration(
-        context: context,
-        millisecondsDuration: _models.first.msSinceLastCatch,
-        includesSeconds: false,
-        condensed: true,
-      )),
+      trailing: Text(
+        formatDuration(
+          context: context,
+          millisecondsDuration: _models.first.msSinceLastCatch,
+          includesSeconds: false,
+          condensed: true,
+        ),
+        style: styleSecondary(context),
+      ),
     );
   }
 
@@ -414,7 +424,7 @@ class _StatsPageState extends State<StatsPage> {
       return ListItem(
         title: Text(Strings.of(context).reportSummaryNumberOfCatches),
         subtitle: Text(dateRange.displayName(context)),
-        trailing: SecondaryLabel("0"),
+        trailing: Text("0", style: styleSecondary(context)),
       );
     }
 
@@ -544,6 +554,9 @@ class _StatsPageState extends State<StatsPage> {
       waterClarityIds: report.waterClarityIds.toSet(),
       periods: report.periods.toSet(),
       seasons: report.seasons.toSet(),
+      windDirections: report.windDirections.toSet(),
+      skyConditions: report.skyConditions.toSet(),
+      moonPhases: report.moonPhases.toSet(),
       waterDepthFilter:
           report.hasWaterDepthFilter() ? report.waterDepthFilter : null,
       waterTemperatureFilter: report.hasWaterTemperatureFilter()
@@ -552,6 +565,16 @@ class _StatsPageState extends State<StatsPage> {
       lengthFilter: report.hasLengthFilter() ? report.lengthFilter : null,
       weightFilter: report.hasWeightFilter() ? report.weightFilter : null,
       quantityFilter: report.hasQuantityFilter() ? report.quantityFilter : null,
+      airTemperatureFilter:
+          report.hasAirTemperatureFilter() ? report.airTemperatureFilter : null,
+      airPressureFilter:
+          report.hasAirPressureFilter() ? report.airPressureFilter : null,
+      airHumidityFilter:
+          report.hasAirHumidityFilter() ? report.airHumidityFilter : null,
+      airVisibilityFilter:
+          report.hasAirVisibilityFilter() ? report.airVisibilityFilter : null,
+      windSpeedFilter:
+          report.hasWindSpeedFilter() ? report.windSpeedFilter : null,
     );
   }
 

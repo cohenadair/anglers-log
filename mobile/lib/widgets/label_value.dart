@@ -27,14 +27,17 @@ class LabelValue extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var title = Label(
+    var title = Text(
       label,
       style: TextStyle(
         fontWeight: fontWeightBold,
       ),
     );
 
-    var subtitle = SecondaryLabel(value);
+    var subtitle = Text(
+      value,
+      style: styleSecondary(context),
+    );
 
     var child;
     if (value.length > _textWrapLength) {

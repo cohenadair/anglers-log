@@ -42,7 +42,7 @@ class _DateRangePickerPageState extends State<DateRangePickerPage> {
   @override
   Widget build(BuildContext context) {
     return PickerPage<DateRange>.single(
-      title: Text(Strings.of(context).dateRangePickerPageTitle),
+      title: Text(Strings.of(context).pickerTitleDateRange),
       initialValue: widget.initialValue,
       onFinishedPicking: (context, dateRange) =>
           widget.onDateRangePicked(dateRange),

@@ -4,19 +4,17 @@ import 'package:quiver/strings.dart';
 import '../model/gen/anglerslog.pb.dart';
 import '../time_manager.dart';
 import '../utils/date_time_utils.dart';
+import '../utils/number_utils.dart';
 import '../utils/protobuf_utils.dart';
 import '../utils/validator.dart';
 
 /// A class for storing a value of an input widget, such as a text field or
 /// check box.
-class InputController<T> {
-  /// The value of the controller, such as [bool] or [String].
-  T? value;
-
+class InputController<T> extends ValueNotifier<T?> {
   /// The current error message for the [InputController], if there is one.
   String? error;
 
-  InputController({this.value}) {
+  InputController({T? value}) : super(value) {
     assert(!(T == Id) || this is IdInputController,
         "Use IdInputController instead>");
     assert(!(T.toString().contains("Set")) || this is SetInputController,
@@ -41,6 +39,7 @@ class InputController<T> {
 
   void dispose() {
     clear();
+    super.dispose();
   }
 
   void clear() {
@@ -120,6 +119,7 @@ class TextInputController extends InputController<String> {
 
   @override
   void dispose() {
+    super.dispose();
     editingController.dispose();
   }
 
@@ -249,6 +249,9 @@ class TimestampInputController extends InputController<int> {
     date = null;
     time = null;
   }
+
+  @override
+  bool get hasValue => _date != null || _time != null;
 }
 
 class NumberFilterInputController extends InputController<NumberFilter> {
@@ -266,8 +269,113 @@ class NumberFilterInputController extends InputController<NumberFilter> {
 
 class MultiMeasurementInputController
     extends InputController<MultiMeasurement> {
-  /// Returns true if a numerical value in [MeasurementSystemValue] is set.
-  /// [value] may be non-null if the [MeasurementSystem] was updated, but values
-  /// weren't actually set.
-  bool get isSet => hasValue && value!.isSet;
+  final NumberInputController mainController;
+  final NumberInputController fractionController;
+
+  Unit mainUnit;
+  Unit? fractionUnit;
+
+  MeasurementSystem _system;
+
+  MultiMeasurementInputController({
+    NumberInputController? mainController,
+    NumberInputController? fractionController,
+    MeasurementSystem system = MeasurementSystem.imperial_whole,
+    required this.mainUnit,
+    this.fractionUnit,
+  })  : mainController = mainController ?? NumberInputController(),
+        fractionController = fractionController ?? NumberInputController(),
+        _system = system;
+
+  @override
+  set value(MultiMeasurement? newValue) {
+    if (newValue == null) {
+      mainController.clear();
+      fractionController.clear();
+    } else {
+      if (newValue.hasSystem()) {
+        _system = newValue.system;
+      }
+
+      mainController.doubleValue =
+          newValue.mainValue.hasValue() ? newValue.mainValue.value : null;
+      if (newValue.mainValue.hasUnit()) {
+        mainUnit = newValue.mainValue.unit;
+      }
+
+      fractionController.doubleValue = newValue.fractionValue.hasValue()
+          ? newValue.fractionValue.value
+          : null;
+      fractionUnit =
+          newValue.fractionValue.hasUnit() ? newValue.fractionValue.unit : null;
+    }
+
+    _round();
+    super.value = value;
+  }
+
+  @override
+  MultiMeasurement? get value {
+    if (!mainController.hasValue && !fractionController.hasValue) {
+      return null;
+    }
+
+    var result = MultiMeasurement(system: system);
+
+    if (mainController.hasDoubleValue) {
+      result.mainValue = Measurement(
+        unit: mainUnit,
+        value: mainController.doubleValue,
+      );
+    }
+
+    if (fractionUnit != null && fractionController.hasDoubleValue) {
+      result.fractionValue = Measurement(
+        unit: fractionUnit,
+        value: fractionController.doubleValue,
+      );
+    }
+
+    return result;
+  }
+
+  MeasurementSystem get system => _system;
+
+  set system(MeasurementSystem newSystem) {
+    _system = newSystem;
+    _round();
+  }
+
+  /// Returns true if a numerical value in [value] is set to a non-null value.
+  bool get isSet {
+    var value = this.value;
+    return value != null && value.isSet;
+  }
+
+  /// Rounds values to a reasonable value for displaying to the user.
+  void _round() {
+    // First round to a single decimal place.
+    mainController.value =
+        mainController.doubleValue?.toStringAsFixed(Measurements.decimalPlaces);
+
+    // Doubles that are whole, and imperial_whole system.
+    if (mainController.hasDoubleValue &&
+        (mainController.doubleValue!.isWhole ||
+            _system == MeasurementSystem.imperial_whole)) {
+      mainController.value = mainController.doubleValue?.round().toString();
+    }
+
+    // Only round values if not using inches; inch values are stored as
+    // decimals.
+    //
+    // Only round values if a value exists, otherwise the value will be set to
+    // 0.0, which is not what we want; we want users to explicitly enter
+    // values.
+    if (fractionUnit != null &&
+        fractionUnit != Unit.inches &&
+        fractionController.hasValue) {
+      fractionController.value =
+          fractionController.doubleValue?.round().toString();
+    }
+  }
 }

@@ -26,7 +26,6 @@ import '../widgets/bottom_sheet_picker.dart';
 import '../widgets/button.dart';
 import '../widgets/fishing_spot_map.dart';
 import '../widgets/styled_bottom_sheet.dart';
-import '../widgets/text.dart';
 import '../widgets/widget.dart';
 import '../wrappers/url_launcher_wrapper.dart';
 import 'add_catch_journey.dart';
@@ -315,7 +314,7 @@ class _FishingSpotBottomSheet extends StatelessWidget {
 
     var name = Padding(
       padding: insetsHorizontalDefault,
-      child: Label(
+      child: Text(
         nameStr,
         style: styleHeading,
       ),
@@ -329,9 +328,9 @@ class _FishingSpotBottomSheet extends StatelessWidget {
           right: paddingDefault,
           top: paddingWidgetTiny,
         ),
-        child: Label(
+        child: Text(
           latLng,
-          style: styleSecondary,
+          style: styleSecondary(context),
         ),
       );
     }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mobile/res/style.dart';
 
 import '../i18n/strings.dart';
 import '../log.dart';
@@ -31,8 +32,6 @@ class ReportListPage extends StatelessWidget {
     var reportManager = ReportManager.of(context);
 
     return ManageableListPage<dynamic>(
-      pickerTitleBuilder: (_) =>
-          Text(Strings.of(context).reportListPagePickerTitle),
       itemBuilder: _buildItem,
       itemManager: ManageableListPageItemManager<dynamic>(
         listenerManagers: [
@@ -52,6 +51,7 @@ class ReportListPage extends StatelessWidget {
       ),
       pickerSettings: pickerSettings.copyWith(
         isRequired: true,
+        title: Text(Strings.of(context).pickerTitleReport),
       ),
     );
   }
@@ -59,12 +59,12 @@ class ReportListPage extends StatelessWidget {
   ManageableListPageItemModel _buildItem(BuildContext context, dynamic item) {
     if (item is Report) {
       return ManageableListPageItemModel(
-        child: PrimaryLabel(item.name),
+        child: Text(item.name, style: stylePrimary(context)),
         editable: true,
       );
     } else if (item is OverviewReport) {
       return ManageableListPageItemModel(
-        child: PrimaryLabel(item.title(context)),
+        child: Text(item.title(context), style: stylePrimary(context)),
         editable: false,
       );
     } else if (item == HeadingNoteDivider) {

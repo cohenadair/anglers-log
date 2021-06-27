@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mobile/res/style.dart';
 import 'package:quiver/strings.dart';
 
 import '../res/dimen.dart';
@@ -52,7 +53,10 @@ class _RadioInputState extends State<RadioInput> {
                     right: paddingDefault,
                     bottom: paddingWidgetSmall,
                   ),
-                  child: HeadingLabel(widget.title!),
+                  child: Text(
+                    widget.title!,
+                    style: styleListHeading(context),
+                  ),
                 ),
         ]..addAll(List<Widget>.generate(widget.optionCount, _buildOption)),
       ),
@@ -81,7 +85,10 @@ class _RadioInputState extends State<RadioInput> {
               Expanded(
                 child: Padding(
                   padding: EdgeInsets.only(left: paddingWidgetDouble),
-                  child: PrimaryLabel(widget.optionBuilder(context, index)),
+                  child: Text(
+                    widget.optionBuilder(context, index),
+                    style: stylePrimary(context),
+                  ),
                 ),
               ),
             ],

@@ -35,7 +35,7 @@ void main() {
     await tester.pumpWidget(
       Testable(
         (context) => MultiMeasurementInput(
-          spec: MultiMeasurementInputSpec.waterDepth(context),
+          state: MultiMeasurementInputState.waterDepth(context),
           controller: controller,
         ),
         appManager: appManager,
@@ -51,7 +51,7 @@ void main() {
     await tester.pumpWidget(
       Testable(
         (context) => MultiMeasurementInput(
-          spec: MultiMeasurementInputSpec.waterDepth(context),
+          state: MultiMeasurementInputState.waterDepth(context),
           controller: MultiMeasurementInputController(),
         ),
         appManager: appManager,
@@ -68,7 +68,7 @@ void main() {
     await tester.pumpWidget(
       Testable(
         (context) => MultiMeasurementInput(
-          spec: MultiMeasurementInputSpec(
+          state: MultiMeasurementInputState(
             imperialMainUnit: Unit.feet,
             metricUnit: Unit.meters,
           ),
@@ -101,7 +101,7 @@ void main() {
     await tester.pumpWidget(
       Testable(
         (context) => MultiMeasurementInput(
-          spec: MultiMeasurementInputSpec.weight(context),
+          state: MultiMeasurementInputState.weight(context),
           controller: controller,
         ),
         appManager: appManager,
@@ -126,7 +126,7 @@ void main() {
     await tester.pumpWidget(
       Testable(
         (context) => MultiMeasurementInput(
-          spec: MultiMeasurementInputSpec.weight(context),
+          state: MultiMeasurementInputState.weight(context),
           controller: controller,
           mainController: mainController,
           fractionController: fractionController,
@@ -155,7 +155,7 @@ void main() {
     await tester.pumpWidget(
       Testable(
         (context) => MultiMeasurementInput(
-          spec: MultiMeasurementInputSpec.weight(context),
+          state: MultiMeasurementInputState.weight(context),
           controller: controller,
         ),
         appManager: appManager,
@@ -179,7 +179,7 @@ void main() {
     await tester.pumpWidget(
       Testable(
         (context) => MultiMeasurementInput(
-          spec: MultiMeasurementInputSpec.weight(context),
+          state: MultiMeasurementInputState.weight(context),
           controller: controller,
         ),
         appManager: appManager,
@@ -202,7 +202,7 @@ void main() {
     await tester.pumpWidget(
       Testable(
         (context) => MultiMeasurementInput(
-          spec: MultiMeasurementInputSpec.weight(context),
+          state: MultiMeasurementInputState.weight(context),
           controller: controller,
         ),
         appManager: appManager,
@@ -226,7 +226,7 @@ void main() {
     await tester.pumpWidget(
       Testable(
         (context) => MultiMeasurementInput(
-          spec: MultiMeasurementInputSpec.weight(context),
+          state: MultiMeasurementInputState.weight(context),
           controller: controller,
         ),
         appManager: appManager,
@@ -249,7 +249,7 @@ void main() {
     await tester.pumpWidget(
       Testable(
         (context) => MultiMeasurementInput(
-          spec: MultiMeasurementInputSpec.weight(context),
+          state: MultiMeasurementInputState.weight(context),
           controller: controller,
         ),
         appManager: appManager,
@@ -278,7 +278,7 @@ void main() {
     await tester.pumpWidget(
       Testable(
         (context) => MultiMeasurementInput(
-          spec: MultiMeasurementInputSpec.length(context),
+          state: MultiMeasurementInputState.length(context),
           controller: controller,
         ),
         appManager: appManager,
@@ -302,7 +302,7 @@ void main() {
     await tester.pumpWidget(
       Testable(
         (context) => MultiMeasurementInput(
-          spec: MultiMeasurementInputSpec.waterDepth(context),
+          state: MultiMeasurementInputState.waterDepth(context),
           controller: controller,
         ),
         appManager: appManager,
@@ -325,7 +325,7 @@ void main() {
     await tester.pumpWidget(
       Testable(
         (context) => MultiMeasurementInput(
-          spec: MultiMeasurementInputSpec.waterDepth(context),
+          state: MultiMeasurementInputState.waterDepth(context),
           controller: controller,
         ),
         appManager: appManager,
@@ -346,7 +346,7 @@ void main() {
     await tester.pumpWidget(
       Testable(
         (context) => MultiMeasurementInput(
-          spec: MultiMeasurementInputSpec.waterDepth(context),
+          state: MultiMeasurementInputState.waterDepth(context),
           controller: controller,
           onChanged: () => called = true,
         ),
@@ -364,7 +364,7 @@ void main() {
     await tester.pumpWidget(
       Testable(
         (context) => MultiMeasurementInput(
-          spec: MultiMeasurementInputSpec.waterTemperature(context),
+          state: MultiMeasurementInputState.waterTemperature(context),
           controller: MultiMeasurementInputController(),
         ),
         appManager: appManager,
@@ -381,7 +381,7 @@ void main() {
     await tester.pumpWidget(
       Testable(
         (context) => MultiMeasurementInput(
-          spec: MultiMeasurementInputSpec.waterDepth(context),
+          state: MultiMeasurementInputState.waterDepth(context),
           controller: MultiMeasurementInputController(),
         ),
         appManager: appManager,
@@ -398,7 +398,7 @@ void main() {
     await tester.pumpWidget(
       Testable(
         (context) => MultiMeasurementInput(
-          spec: MultiMeasurementInputSpec.length(context),
+          state: MultiMeasurementInputState.length(context),
           controller: MultiMeasurementInputController(),
         ),
         appManager: appManager,
@@ -421,7 +421,7 @@ void main() {
     await tester.pumpWidget(
       Testable(
         (context) => MultiMeasurementInput(
-          spec: MultiMeasurementInputSpec.waterDepth(context),
+          state: MultiMeasurementInputState.waterDepth(context),
           controller: controller,
           onChanged: () => called = true,
         ),
@@ -447,7 +447,7 @@ void main() {
     await tester.pumpWidget(
       Testable(
         (context) => MultiMeasurementInput(
-          spec: MultiMeasurementInputSpec.length(context),
+          state: MultiMeasurementInputState.length(context),
           controller: controller,
           onChanged: () => called = true,
         ),
@@ -480,7 +480,7 @@ void main() {
     await tester.pumpWidget(
       Testable(
         (context) => MultiMeasurementInput(
-          spec: MultiMeasurementInputSpec.waterDepth(context),
+          state: MultiMeasurementInputState.waterDepth(context),
           controller: controller,
           onChanged: () => called = true,
         ),
@@ -516,7 +516,7 @@ void main() {
     await tester.pumpWidget(
       Testable(
         (context) => MultiMeasurementInput(
-          spec: MultiMeasurementInputSpec.waterDepth(context),
+          state: MultiMeasurementInputState.waterDepth(context),
           controller: controller,
           onChanged: () => called = true,
         ),
@@ -554,7 +554,7 @@ void main() {
     await tester.pumpWidget(
       Testable(
         (context) => MultiMeasurementInput(
-          spec: MultiMeasurementInputSpec.waterDepth(context),
+          state: MultiMeasurementInputState.waterDepth(context),
           controller: controller,
           onChanged: () => called = true,
         ),
@@ -589,7 +589,7 @@ void main() {
     await tester.pumpWidget(
       Testable(
         (context) => MultiMeasurementInput(
-          spec: MultiMeasurementInputSpec.waterDepth(context),
+          state: MultiMeasurementInputState.waterDepth(context),
           controller: controller,
           onChanged: () => called = true,
         ),

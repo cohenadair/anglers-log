@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mobile/res/style.dart';
 
 import '../angler_manager.dart';
 import '../i18n/strings.dart';
@@ -23,15 +24,16 @@ class AnglerListPage extends StatelessWidget {
       titleBuilder: (anglers) => Text(
         format(Strings.of(context).anglerListPageTitle, [anglers.length]),
       ),
-      pickerTitleBuilder: (_) =>
-          Text(Strings.of(context).anglerListPagePickerTitle),
       itemBuilder: (context, angler) => ManageableListPageItemModel(
-        child: PrimaryLabel(angler.name),
+        child: Text(angler.name, style: stylePrimary(context)),
       ),
       searchDelegate: ManageableListPageSearchDelegate(
         hint: Strings.of(context).anglerListPageSearchHint,
       ),
-      pickerSettings: pickerSettings,
+      pickerSettings: pickerSettings?.copyWith(
+        title: Text(Strings.of(context).pickerTitleAngler),
+        multiTitle: Text(Strings.of(context).pickerTitleAnglers),
+      ),
       itemManager: ManageableListPageItemManager<Angler>(
         listenerManagers: [anglerManager],
         loadItems: (query) => anglerManager.listSortedByName(filter: query),

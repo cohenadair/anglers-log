@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:mobile/res/style.dart';
 
 import '../../i18n/strings.dart';
 import '../../log.dart';
@@ -67,10 +68,11 @@ class _HowToFeedbackPageState extends State<HowToFeedbackPage> {
         VerticalSpace(paddingWidgetDouble),
         Padding(
           padding: insetsHorizontalDefault,
-          child: PrimaryLabel(
+          child: Text(
             Strings.of(context).onboardingJourneyHowToFeedbackDescription,
             overflow: TextOverflow.visible,
-            align: TextAlign.center,
+            textAlign: TextAlign.center,
+            style: stylePrimary(context),
           ),
         ),
         VerticalSpace(paddingWidget),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mobile/res/style.dart';
 
 import '../bait_category_manager.dart';
 import '../bait_manager.dart';
@@ -82,7 +83,7 @@ class _BaitPageState extends State<BaitPage> {
 
     return Padding(
       padding: insetsHorizontalDefault,
-      child: HeadingLabel(baitCategory.name),
+      child: Text(baitCategory.name, style: styleListHeading(context)),
     );
   }
 }

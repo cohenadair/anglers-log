@@ -47,7 +47,7 @@ void main() {
 
     expect(tapped, isTrue);
     expect(find.byType(RightChevronIcon), findsOneWidget);
-    expect(findFirst<ListItem>(tester).contentPadding!.right, paddingSmall);
+    expect(findFirst<ListItem>(tester).padding!.right, paddingSmall);
   });
 
   testWidgets("Tap disabled", (tester) async {
@@ -59,7 +59,7 @@ void main() {
       ),
     );
     expect(find.byType(RightChevronIcon), findsNothing);
-    expect(findFirst<ListItem>(tester).contentPadding!.right, paddingDefault);
+    expect(findFirst<ListItem>(tester).padding!.right, paddingDefault);
   });
 
   testWidgets("Empty title shows subtitle", (tester) async {

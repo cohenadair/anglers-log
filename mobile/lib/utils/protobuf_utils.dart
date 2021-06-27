@@ -232,9 +232,13 @@ extension MeasurementSystems on MeasurementSystem {
     }
     throw ArgumentError("Invalid input: $this");
   }
+
+  bool get isMetric => this == MeasurementSystem.metric;
 }
 
 extension Measurements on Measurement {
+  static const decimalPlaces = 1;
+
   String displayValue(BuildContext context) {
     var unitString = "";
     if (hasUnit()) {
@@ -244,7 +248,11 @@ extension Measurements on Measurement {
     return "$stringValue$unitString";
   }
 
-  String get stringValue => "${value.roundIfWhole() ?? value}";
+  String get stringValue =>
+      "${value.roundIfWhole() ?? value.toStringAsFixed(decimalPlaces)}";
+
+  String filterString(BuildContext context) =>
+      "${displayValue(context)} ${unit.filterString(context)}";
 
   /// Updates [unit] to the new system. This method _does not_ convert values
   /// between units.
@@ -279,9 +287,10 @@ extension Measurements on Measurement {
 }
 
 extension MultiMeasurements on MultiMeasurement {
-  static MultiMeasurement from(Measurement measurement) {
+  static MultiMeasurement from(
+      Measurement measurement, MeasurementSystem? userPreferenceSystem) {
     return MultiMeasurement(
-      system: measurement.unit.measurementSystem,
+      system: userPreferenceSystem ?? measurement.unit.measurementSystem,
       mainValue: measurement,
     );
   }
@@ -305,6 +314,17 @@ extension MultiMeasurements on MultiMeasurement {
         fractionValue.value > 0;
     return mainValue.displayValue(context) +
         (isFractionSet ? " ${fractionValue.displayValue(context)}" : "");
+  }
+
+  String filterString(BuildContext context) {
+    var result = "";
+    if (hasMainValue()) {
+      result += " ${mainValue.filterString(context)}";
+    }
+    if (hasFractionValue()) {
+      result += " ${fractionValue.filterString(context)}";
+    }
+    return result.trim();
   }
 
   /// Updates [mainValue] and [fractionValue] to the new system.
@@ -632,6 +652,42 @@ extension Units on Unit {
     throw ArgumentError("Invalid input: $this");
   }
 
+  String filterString(BuildContext context) {
+    switch (this) {
+      case Unit.feet:
+        return Strings.of(context).keywordsDepthImperial;
+      case Unit.inches:
+        return Strings.of(context).keywordsLengthImperial;
+      case Unit.pounds:
+        return Strings.of(context).keywordsWeightImperial;
+      case Unit.ounces:
+        return Strings.of(context).keywordsWeightImperial;
+      case Unit.fahrenheit:
+        return Strings.of(context).keywordsTemperatureImperial;
+      case Unit.meters:
+        return Strings.of(context).keywordsDepthMetric;
+      case Unit.centimeters:
+        return Strings.of(context).keywordsLengthMetric;
+      case Unit.kilograms:
+        return Strings.of(context).keywordsWeightMetric;
+      case Unit.celsius:
+        return Strings.of(context).keywordsTemperatureMetric;
+      case Unit.miles_per_hour:
+        return Strings.of(context).keywordsSpeedImperial;
+      case Unit.kilometers_per_hour:
+        return Strings.of(context).keywordsSpeedMetric;
+      case Unit.millibars:
+        return Strings.of(context).keywordsAirPressureMetric;
+      case Unit.pounds_per_square_inch:
+        return Strings.of(context).keywordsAirPressureImperial;
+      case Unit.miles:
+        return Strings.of(context).keywordsAirVisibilityImperial;
+      case Unit.kilometers:
+        return Strings.of(context).keywordsAirVisibilityMetric;
+    }
+    throw ArgumentError("Invalid input: $this");
+  }
+
   /// True if this unit should include a space before the unit and after the
   /// value.
   bool get hasPreSpace {
@@ -901,11 +957,16 @@ extension DateRanges on DateRange {
 }
 
 extension MoonPhases on MoonPhase {
+  static Set<MoonPhase> selectable() {
+    return _selectable<MoonPhase>(MoonPhase.values,
+        [MoonPhase.moon_phase_none, MoonPhase.moon_phase_all]);
+  }
+
   static List<PickerPageItem<MoonPhase>> pickerItems(BuildContext context) {
     return _pickerItems(
       context,
-      MoonPhase.values,
-      [MoonPhase.moon_phase_none],
+      MoonPhases.selectable().toList(),
+      [],
       (context, phase) => phase.displayName(context),
       sort: false,
     );
@@ -938,6 +999,8 @@ extension MoonPhases on MoonPhase {
 
   String displayName(BuildContext context) {
     switch (this) {
+      case MoonPhase.moon_phase_all:
+        return Strings.of(context).all;
       case MoonPhase.moon_phase_none:
         return Strings.of(context).none;
       case MoonPhase.new_:
@@ -959,14 +1022,23 @@ extension MoonPhases on MoonPhase {
     }
     throw ArgumentError("Invalid input: $this");
   }
+
+  String chipName(BuildContext context) {
+    return format(Strings.of(context).moonPhaseChip, [displayName(context)]);
+  }
 }
 
 extension Directions on Direction {
+  static Set<Direction> selectable() {
+    return _selectable<Direction>(
+        Direction.values, [Direction.direction_none, Direction.direction_all]);
+  }
+
   static List<PickerPageItem<Direction>> pickerItems(BuildContext context) {
     return _pickerItems(
       context,
-      Direction.values,
-      [Direction.direction_none],
+      Directions.selectable().toList(),
+      [],
       (context, direction) => direction.displayName(context),
       sort: false,
     );
@@ -976,11 +1048,7 @@ extension Directions on Direction {
     var closest = Direction.north;
     var minDifference = 360.0;
 
-    for (var direction in Direction.values) {
-      if (direction == Direction.direction_none) {
-        continue;
-      }
-
+    for (var direction in Directions.selectable()) {
       var diff = (direction.toDegrees() - degrees).abs();
       if (diff < minDifference) {
         minDifference = diff;
@@ -1000,6 +1068,8 @@ extension Directions on Direction {
 
   String displayName(BuildContext context) {
     switch (this) {
+      case Direction.direction_all:
+        return Strings.of(context).all;
       case Direction.direction_none:
         return Strings.of(context).none;
       case Direction.north:
@@ -1018,6 +1088,36 @@ extension Directions on Direction {
         return Strings.of(context).directionWest;
       case Direction.north_west:
         return Strings.of(context).directionNorthWest;
+    }
+    throw ArgumentError("Invalid input: $this");
+  }
+
+  String chipName(BuildContext context) {
+    return format(
+        Strings.of(context).directionWindChip, [displayName(context)]);
+  }
+
+  String filterString(BuildContext context) {
+    switch (this) {
+      case Direction.direction_all:
+      case Direction.direction_none:
+        return "";
+      case Direction.north:
+        return Strings.of(context).keywordsNorth;
+      case Direction.north_east:
+        return Strings.of(context).keywordsNorthEast;
+      case Direction.east:
+        return Strings.of(context).keywordsEast;
+      case Direction.south_east:
+        return Strings.of(context).keywordsSouthEast;
+      case Direction.south:
+        return Strings.of(context).keywordsSouth;
+      case Direction.south_west:
+        return Strings.of(context).keywordsSouthWest;
+      case Direction.west:
+        return Strings.of(context).keywordsWest;
+      case Direction.north_west:
+        return Strings.of(context).keywordsNorthWest;
     }
     throw ArgumentError("Invalid input: $this");
   }
@@ -1046,83 +1146,116 @@ extension Directions on Direction {
 }
 
 extension SkyConditions on SkyCondition {
+  static Set<SkyCondition> selectable() {
+    return _selectable<SkyCondition>(SkyCondition.values,
+        [SkyCondition.sky_condition_none, SkyCondition.sky_condition_all]);
+  }
+
   static List<PickerPageItem<SkyCondition>> pickerItems(BuildContext context) {
     return _pickerItems(
       context,
-      SkyCondition.values,
-      [SkyCondition.sky_condition_none],
+      SkyConditions.selectable().toList(),
+      [],
       (context, condition) => condition.displayName(context),
     );
   }
 
+  static String displayNameForList(
+      BuildContext context, List<SkyCondition> conditions) {
+    return conditions.map((c) => c.displayName(context)).join(", ");
+  }
+
   /// Converts a Visual Crossing conditions type to a [SkyCondition].
   /// See https://github.com/visualcrossing/WeatherApi/blob/master/lang/en.txt.
-  static SkyCondition fromType(String type) {
-    switch (type) {
-      case "type_1":
-      case "type_31":
-      case "type_32":
-      case "type_33":
-      case "type_34":
-      case "type_35":
-      case "type_36":
-        return SkyCondition.snow;
-      case "type_2":
-      case "type_3":
-      case "type_4":
-      case "type_5":
-      case "type_6":
-        return SkyCondition.drizzle;
-      case "type_7":
-      case "type_39":
-        return SkyCondition.dust;
-      case "type_8":
-      case "type_12":
-        return SkyCondition.fog;
-      case "type_9":
-      case "type_10":
-      case "type_11":
-      case "type_13":
-      case "type_14":
-      case "type_20":
-      case "type_21":
-      case "type_22":
-      case "type_23":
-      case "type_24":
-      case "type_25":
-      case "type_26":
-        return SkyCondition.rain;
-      case "type_15":
-        return SkyCondition.tornado;
-      case "type_16":
-      case "type_40":
-        return SkyCondition.hail;
-      case "type_17":
-        return SkyCondition.ice;
-      case "type_18":
-      case "type_37":
-      case "type_38":
-        return SkyCondition.storm;
-      case "type_19":
-        return SkyCondition.mist;
-      case "type_30":
-        return SkyCondition.smoke;
-      case "type_41":
-        return SkyCondition.overcast;
-      case "type_27":
-      case "type_28":
-      case "type_42":
-        return SkyCondition.cloudy;
-      case "type_43":
-        return SkyCondition.clear;
-      default:
-        _log.w("Unknown conditions type: $type");
-        return SkyCondition.sky_condition_none;
+  static List<SkyCondition> fromTypes(String types) {
+    var result = <SkyCondition>[];
+    var typeList = types.split(",");
+
+    for (var type in typeList) {
+      switch (type.trim()) {
+        case "type_1":
+        case "type_31":
+        case "type_32":
+        case "type_33":
+        case "type_34":
+        case "type_35":
+        case "type_36":
+          result.add(SkyCondition.snow);
+          break;
+        case "type_2":
+        case "type_3":
+        case "type_4":
+        case "type_5":
+        case "type_6":
+          result.add(SkyCondition.drizzle);
+          break;
+        case "type_7":
+        case "type_39":
+          result.add(SkyCondition.dust);
+          break;
+        case "type_8":
+        case "type_12":
+          result.add(SkyCondition.fog);
+          break;
+        case "type_9":
+        case "type_10":
+        case "type_11":
+        case "type_13":
+        case "type_14":
+        case "type_20":
+        case "type_21":
+        case "type_22":
+        case "type_23":
+        case "type_24":
+        case "type_25":
+        case "type_26":
+          result.add(SkyCondition.rain);
+          break;
+        case "type_15":
+          result.add(SkyCondition.tornado);
+          break;
+        case "type_16":
+        case "type_40":
+          result.add(SkyCondition.hail);
+          break;
+        case "type_17":
+          result.add(SkyCondition.ice);
+          break;
+        case "type_18":
+        case "type_37":
+        case "type_38":
+          result.add(SkyCondition.storm);
+          break;
+        case "type_19":
+          result.add(SkyCondition.mist);
+          break;
+        case "type_30":
+          result.add(SkyCondition.smoke);
+          break;
+        case "type_41":
+          result.add(SkyCondition.overcast);
+          break;
+        case "type_27":
+        case "type_28":
+        case "type_42":
+          result.add(SkyCondition.cloudy);
+          break;
+        case "type_43":
+          result.add(SkyCondition.clear);
+          break;
+        default:
+          _log.w("Unknown conditions type: $type");
+          break;
+      }
     }
+
+    return result;
   }
 
   String displayName(BuildContext context) {
     switch (this) {
+      case SkyCondition.sky_condition_all:
+        return Strings.of(context).all;
       case SkyCondition.sky_condition_none:
         return Strings.of(context).none;
       case SkyCondition.snow:
