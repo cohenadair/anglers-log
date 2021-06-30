@@ -234,6 +234,8 @@ extension MeasurementSystems on MeasurementSystem {
   }
 
   bool get isMetric => this == MeasurementSystem.metric;
+
+  bool get isImperialWhole => this == MeasurementSystem.imperial_whole;
 }
 
 extension Measurements on Measurement {

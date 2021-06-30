@@ -32,6 +32,8 @@ void main() {
 
     when(appManager.locationMonitor.currentLocation).thenReturn(null);
 
+    when(appManager.subscriptionManager.isFree).thenReturn(false);
+
     when(appManager.userPreferenceManager.didOnboard).thenReturn(true);
     when(appManager.userPreferenceManager.catchFieldIds).thenReturn([]);
     when(appManager.userPreferenceManager.selectedReportId).thenReturn(null);
@@ -53,6 +55,8 @@ void main() {
         .thenAnswer((_) => Future.value());
     when(appManager.userPreferenceManager.catchWeightSystem)
         .thenReturn(MeasurementSystem.imperial_whole);
+    when(appManager.userPreferenceManager.autoFetchAtmosphere)
+        .thenReturn(false);
 
     var channel = MockMethodChannel();
     when(channel.invokeMethod(any)).thenAnswer((_) => Future.value(null));

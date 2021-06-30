@@ -105,10 +105,10 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
   final _log = Log("SaveCatchPage");
   final Map<Id, Field> _fields = {};
 
-  late final MultiMeasurementInputState _waterDepthInputState;
-  late final MultiMeasurementInputState _waterTemperatureInputState;
-  late final MultiMeasurementInputState _lengthInputState;
-  late final MultiMeasurementInputState _weightInputState;
+  late final MultiMeasurementInputSpec _waterDepthInputState;
+  late final MultiMeasurementInputSpec _waterTemperatureInputState;
+  late final MultiMeasurementInputSpec _lengthInputState;
+  late final MultiMeasurementInputSpec _weightInputState;
 
   Future<List<PickedImage>> _imagesFuture = Future.value([]);
   List<CustomEntityValue> _customEntityValues = [];
@@ -217,17 +217,18 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
           showingFieldIds.isEmpty || showingFieldIds.contains(field.id);
     }
 
-    _waterDepthInputState = MultiMeasurementInputState.waterDepth(context);
+    _waterDepthInputState = MultiMeasurementInputSpec.waterDepth(context);
     _waterTemperatureInputState =
-        MultiMeasurementInputState.waterTemperature(context);
-    _lengthInputState = MultiMeasurementInputState.length(context);
-    _weightInputState = MultiMeasurementInputState.weight(context);
+        MultiMeasurementInputSpec.waterTemperature(context);
+    _lengthInputState = MultiMeasurementInputSpec.length(context);
+    _weightInputState = MultiMeasurementInputSpec.weight(context);
 
-    _fields[_idWaterDepth]!.controller = _waterDepthInputState.controller;
+    _fields[_idWaterDepth]!.controller =
+        _waterDepthInputState.newInputController();
     _fields[_idWaterTemperature]!.controller =
-        _waterTemperatureInputState.controller;
-    _fields[_idLength]!.controller = _lengthInputState.controller;
-    _fields[_idWeight]!.controller = _weightInputState.controller;
+        _waterTemperatureInputState.newInputController();
+    _fields[_idLength]!.controller = _lengthInputState.newInputController();
+    _fields[_idWeight]!.controller = _weightInputState.newInputController();
 
     if (_editing) {
       _timestampController.value = _oldCatch!.timestamp.toInt();
@@ -465,7 +466,8 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
     return Padding(
       padding: insetsHorizontalDefaultVerticalSmall,
       child: MultiMeasurementInput(
-        state: _waterDepthInputState,
+        spec: _waterDepthInputState,
+        controller: _waterDepthController,
         onChanged: () => _userPreferenceManager
             .setWaterDepthSystem(_waterDepthController.value?.system),
       ),
@@ -476,7 +478,8 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
     return Padding(
       padding: insetsHorizontalDefaultVerticalSmall,
       child: MultiMeasurementInput(
-        state: _waterTemperatureInputState,
+        spec: _waterTemperatureInputState,
+        controller: _waterTemperatureController,
         onChanged: () => _userPreferenceManager.setWaterTemperatureSystem(
             _waterTemperatureController.value?.system),
       ),
@@ -487,7 +490,8 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
     return Padding(
       padding: insetsHorizontalDefaultVerticalSmall,
       child: MultiMeasurementInput(
-        state: _lengthInputState,
+        spec: _lengthInputState,
+        controller: _lengthController,
         onChanged: () => _userPreferenceManager
             .setCatchLengthSystem(_lengthController.value?.system),
       ),
@@ -498,7 +502,8 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
     return Padding(
       padding: insetsHorizontalDefaultVerticalSmall,
       child: MultiMeasurementInput(
-        state: _weightInputState,
+        spec: _weightInputState,
+        controller: _weightController,
         onChanged: () => _userPreferenceManager
             .setCatchWeightSystem(_weightController.value?.system),
       ),
@@ -608,24 +613,18 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
   }
 
   Widget _buildFavorite() {
-    return Padding(
-      padding: insetsHorizontalDefault,
-      child: CheckboxInput(
-        label: Strings.of(context).catchFieldFavorite,
-        value: _favoriteController.value,
-        onChanged: (checked) => _favoriteController.value = checked,
-      ),
+    return CheckboxInput(
+      label: Strings.of(context).catchFieldFavorite,
+      value: _favoriteController.value,
+      onChanged: (checked) => _favoriteController.value = checked,
     );
   }
 
   Widget _buildCatchAndRelease() {
-    return Padding(
-      padding: insetsHorizontalDefault,
-      child: CheckboxInput(
-        label: Strings.of(context).catchFieldCatchAndRelease,
-        value: _catchAndReleaseController.value,
-        onChanged: (checked) => _catchAndReleaseController.value = checked,
-      ),
+    return CheckboxInput(
+      label: Strings.of(context).catchFieldCatchAndRelease,
+      value: _catchAndReleaseController.value,
+      onChanged: (checked) => _catchAndReleaseController.value = checked,
     );
   }
 

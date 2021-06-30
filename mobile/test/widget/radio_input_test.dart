@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/widgets/radio_input.dart';
-import 'package:mobile/widgets/text.dart';
 
 import '../test_utils.dart';
 
@@ -28,17 +27,16 @@ void main() {
   });
 
   testWidgets("Title is set", (tester) async {
-    await tester.pumpWidget(
-      Testable(
-        (_) => RadioInput(
-          optionCount: 3,
-          optionBuilder: (context, i) => "Option $i",
-          onSelect: (_) {},
-          title: "Title",
-        ),
+    var context = await pumpContext(
+      tester,
+      (_) => RadioInput(
+        optionCount: 3,
+        optionBuilder: (context, i) => "Option $i",
+        onSelect: (_) {},
+        title: "Title",
       ),
     );
-    expect(find.byType(HeadingLabel), findsOneWidget);
+    expect(find.listHeadingText(context), findsOneWidget);
   });
 
   testWidgets("Title is not set", (tester) async {
@@ -51,7 +49,7 @@ void main() {
         ),
       ),
     );
-    expect(find.byType(HeadingLabel), findsNothing);
+    expect(find.headingText(), findsNothing);
   });
 
   testWidgets("Change selection", (tester) async {

@@ -120,10 +120,10 @@ class __AtmosphereInputPageState extends State<_AtmosphereInputPage> {
 
   final _fields = <Id, Field>{};
 
-  late final MultiMeasurementInputState _airTemperatureInputState;
-  late final MultiMeasurementInputState _windSpeedInputState;
-  late final MultiMeasurementInputState _airPressureInputState;
-  late final MultiMeasurementInputState _airVisibilityInputState;
+  late final MultiMeasurementInputSpec _airTemperatureInputState;
+  late final MultiMeasurementInputSpec _windSpeedInputState;
+  late final MultiMeasurementInputSpec _airPressureInputState;
+  late final MultiMeasurementInputSpec _airVisibilityInputState;
 
   TimeManager get _timeManager => TimeManager.of(context);
 
@@ -168,16 +168,16 @@ class __AtmosphereInputPageState extends State<_AtmosphereInputPage> {
     super.initState();
 
     _airTemperatureInputState =
-        MultiMeasurementInputState.airTemperature(context);
-    _windSpeedInputState = MultiMeasurementInputState.windSpeed(context);
-    _airPressureInputState = MultiMeasurementInputState.airPressure(context);
+        MultiMeasurementInputSpec.airTemperature(context);
+    _windSpeedInputState = MultiMeasurementInputSpec.windSpeed(context);
+    _airPressureInputState = MultiMeasurementInputSpec.airPressure(context);
     _airVisibilityInputState =
-        MultiMeasurementInputState.airVisibility(context);
+        MultiMeasurementInputSpec.airVisibility(context);
 
     _fields[_idTemperature] = Field(
       id: _idTemperature,
       name: (context) => Strings.of(context).atmosphereInputTemperature,
-      controller: _airTemperatureInputState.controller,
+      controller: _airTemperatureInputState.newInputController(),
     );
 
     _fields[_idSkyCondition] = Field(
@@ -195,19 +195,19 @@ class __AtmosphereInputPageState extends State<_AtmosphereInputPage> {
     _fields[_idWindSpeed] = Field(
       id: _idWindSpeed,
       name: (context) => Strings.of(context).atmosphereInputWindSpeed,
-      controller: _windSpeedInputState.controller,
+      controller: _windSpeedInputState.newInputController(),
     );
 
     _fields[_idPressure] = Field(
       id: _idPressure,
       name: (context) => Strings.of(context).atmosphereInputAtmosphericPressure,
-      controller: _airPressureInputState.controller,
+      controller: _airPressureInputState.newInputController(),
     );
 
     _fields[_idVisibility] = Field(
       id: _idVisibility,
       name: (context) => Strings.of(context).atmosphereInputAirVisibility,
-      controller: _airVisibilityInputState.controller,
+      controller: _airVisibilityInputState.newInputController(),
     );
 
     _fields[_idHumidity] = Field(
@@ -319,7 +319,8 @@ class __AtmosphereInputPageState extends State<_AtmosphereInputPage> {
     return Padding(
       padding: insetsHorizontalDefaultVerticalSmall,
       child: MultiMeasurementInput(
-        state: _airTemperatureInputState,
+        spec: _airTemperatureInputState,
+        controller: _temperatureController,
         onChanged: () {
           _userPreferenceManager
               .setAirTemperatureSystem(_temperatureController.value?.system);
@@ -365,7 +366,8 @@ class __AtmosphereInputPageState extends State<_AtmosphereInputPage> {
     return Padding(
       padding: insetsHorizontalDefaultVerticalSmall,
       child: MultiMeasurementInput(
-        state: _windSpeedInputState,
+        spec: _windSpeedInputState,
+        controller: _windSpeedController,
         onChanged: () {
           _userPreferenceManager
               .setWindSpeedSystem(_windSpeedController.value?.system);
@@ -395,7 +397,8 @@ class __AtmosphereInputPageState extends State<_AtmosphereInputPage> {
     return Padding(
       padding: insetsHorizontalDefaultVerticalSmall,
       child: MultiMeasurementInput(
-        state: _airPressureInputState,
+        spec: _airPressureInputState,
+        controller: _pressureController,
         onChanged: () {
           _userPreferenceManager
               .setAirPressureSystem(_pressureController.value?.system);
@@ -424,7 +427,8 @@ class __AtmosphereInputPageState extends State<_AtmosphereInputPage> {
     return Padding(
       padding: insetsHorizontalDefaultVerticalSmall,
       child: MultiMeasurementInput(
-        state: _airVisibilityInputState,
+        spec: _airVisibilityInputState,
+        controller: _visibilityController,
         onChanged: () {
           _userPreferenceManager
               .setAirVisibilitySystem(_visibilityController.value?.system);

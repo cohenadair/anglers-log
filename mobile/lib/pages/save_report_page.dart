@@ -255,7 +255,7 @@ class _SaveReportPageState extends State<SaveReportPage> {
     );
 
     _fields[_idWeight] = Field(
-      id: _idLength,
+      id: _idWeight,
       controller: NumberFilterInputController(),
     );
 
@@ -538,24 +538,18 @@ class _SaveReportPageState extends State<SaveReportPage> {
   }
 
   Widget _buildCatchAndReleaseOnly() {
-    return Padding(
-      padding: insetsHorizontalDefault,
-      child: CheckboxInput(
-        label: Strings.of(context).saveReportPageCatchAndRelease,
-        value: _catchAndReleaseOnlyController.value,
-        onChanged: (checked) => _catchAndReleaseOnlyController.value = checked,
-      ),
+    return CheckboxInput(
+      label: Strings.of(context).saveReportPageCatchAndRelease,
+      value: _catchAndReleaseOnlyController.value,
+      onChanged: (checked) => _catchAndReleaseOnlyController.value = checked,
     );
   }
 
   Widget _buildFavoritesOnly() {
-    return Padding(
-      padding: insetsHorizontalDefault,
-      child: CheckboxInput(
-        label: Strings.of(context).saveReportPageFavorites,
-        value: _favoritesOnlyController.value,
-        onChanged: (checked) => _favoritesOnlyController.value = checked,
-      ),
+    return CheckboxInput(
+      label: Strings.of(context).saveReportPageFavorites,
+      value: _favoritesOnlyController.value,
+      onChanged: (checked) => _favoritesOnlyController.value = checked,
     );
   }
 
@@ -564,7 +558,7 @@ class _SaveReportPageState extends State<SaveReportPage> {
       title: Strings.of(context).catchFieldWaterDepthLabel,
       filterTitle: Strings.of(context).filterTitleWaterDepth,
       controller: _waterDepthController,
-      inputState: MultiMeasurementInputState.waterDepth(context),
+      inputState: MultiMeasurementInputSpec.waterDepth(context),
     );
   }
 
@@ -573,7 +567,7 @@ class _SaveReportPageState extends State<SaveReportPage> {
       title: Strings.of(context).catchFieldWaterTemperatureLabel,
       filterTitle: Strings.of(context).filterTitleWaterTemperature,
       controller: _waterTemperatureController,
-      inputState: MultiMeasurementInputState.waterTemperature(context),
+      inputState: MultiMeasurementInputSpec.waterTemperature(context),
     );
   }
 
@@ -582,7 +576,7 @@ class _SaveReportPageState extends State<SaveReportPage> {
       title: Strings.of(context).catchFieldLengthLabel,
       filterTitle: Strings.of(context).filterTitleLength,
       controller: _lengthController,
-      inputState: MultiMeasurementInputState.length(context),
+      inputState: MultiMeasurementInputSpec.length(context),
     );
   }
 
@@ -591,7 +585,7 @@ class _SaveReportPageState extends State<SaveReportPage> {
       title: Strings.of(context).catchFieldWeightLabel,
       filterTitle: Strings.of(context).filterTitleWeight,
       controller: _weightController,
-      inputState: MultiMeasurementInputState.weight(context),
+      inputState: MultiMeasurementInputSpec.weight(context),
     );
   }
 
@@ -715,7 +709,7 @@ class _SaveReportPageState extends State<SaveReportPage> {
       title: Strings.of(context).atmosphereInputAirTemperature,
       filterTitle: Strings.of(context).filterTitleAirTemperature,
       controller: _airTemperatureController,
-      inputState: MultiMeasurementInputState.airTemperature(context),
+      inputState: MultiMeasurementInputSpec.airTemperature(context),
     );
   }
 
@@ -724,13 +718,14 @@ class _SaveReportPageState extends State<SaveReportPage> {
       title: Strings.of(context).atmosphereInputAtmosphericPressure,
       filterTitle: Strings.of(context).filterTitleAirPressure,
       controller: _airPressureController,
-      inputState: MultiMeasurementInputState.airPressure(context),
+      inputState: MultiMeasurementInputSpec.airPressure(context),
     );
   }
 
   Widget _buildAirHumidity() {
     return NumberFilterInput(
       title: Strings.of(context).atmosphereInputAirHumidity,
+      textInputSuffix: "%",
       filterTitle: Strings.of(context).filterTitleAirHumidity,
       controller: _airHumidityController,
     );
@@ -741,7 +736,7 @@ class _SaveReportPageState extends State<SaveReportPage> {
       title: Strings.of(context).atmosphereInputAirVisibility,
       filterTitle: Strings.of(context).filterTitleAirVisibility,
       controller: _airVisibilityController,
-      inputState: MultiMeasurementInputState.airVisibility(context),
+      inputState: MultiMeasurementInputSpec.airVisibility(context),
     );
   }
 
@@ -750,7 +745,7 @@ class _SaveReportPageState extends State<SaveReportPage> {
       title: Strings.of(context).atmosphereInputWindSpeed,
       filterTitle: Strings.of(context).filterTitleWindSpeed,
       controller: _windSpeedController,
-      inputState: MultiMeasurementInputState.windSpeed(context),
+      inputState: MultiMeasurementInputSpec.windSpeed(context),
     );
   }
 

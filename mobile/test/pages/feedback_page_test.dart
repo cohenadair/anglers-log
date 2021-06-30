@@ -189,7 +189,7 @@ void main() {
         .thenReturn("random-api-key");
     when(appManager.httpWrapper.post(
       any,
-      auth: anyNamed("auth"),
+      headers: anyNamed("headers"),
       body: anyNamed("body"),
     )).thenAnswer((_) => Future.value(Response("", 400)));
 
@@ -218,7 +218,7 @@ void main() {
         .thenReturn("random-api-key");
     when(appManager.httpWrapper.post(
       any,
-      auth: anyNamed("auth"),
+      headers: anyNamed("headers"),
       body: anyNamed("body"),
     )).thenAnswer((_) =>
         Future.delayed(Duration(milliseconds: 165), () => Response("", 202)));

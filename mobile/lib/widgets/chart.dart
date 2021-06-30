@@ -1,7 +1,6 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:mobile/res/style.dart';
 import 'package:quiver/iterables.dart';
 import 'package:quiver/strings.dart';
 
@@ -9,11 +8,11 @@ import '../i18n/strings.dart';
 import '../log.dart';
 import '../model/gen/anglerslog.pb.dart';
 import '../res/dimen.dart';
+import '../res/style.dart';
 import '../utils/collection_utils.dart';
 import '../utils/page_utils.dart';
 import '../utils/protobuf_utils.dart';
 import '../widgets/list_item.dart';
-import '../widgets/text.dart';
 import '../widgets/widget.dart';
 
 /// An [ExpandableListItem] that, when tapped, shows a condensed [Chart] widget.
@@ -83,6 +82,8 @@ class Series<T> {
   }
 }
 
+/// A horizontal bar chart. All [Chart] widgets should be children of a
+/// [Scrollable] widget, otherwise an overflow exception may be thrown.
 class Chart<T> extends StatefulWidget {
   static const _rowColorOpacity = 0.65;
 

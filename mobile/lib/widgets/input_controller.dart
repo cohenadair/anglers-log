@@ -272,20 +272,22 @@ class MultiMeasurementInputController
   final NumberInputController mainController;
   final NumberInputController fractionController;
 
-  Unit mainUnit;
-  Unit? fractionUnit;
+  Unit _mainUnit;
+  Unit? _fractionUnit;
 
   MeasurementSystem _system;
 
   MultiMeasurementInputController({
     NumberInputController? mainController,
     NumberInputController? fractionController,
-    MeasurementSystem system = MeasurementSystem.imperial_whole,
-    required this.mainUnit,
-    this.fractionUnit,
+    MeasurementSystem? system,
+    required Unit mainUnit,
+    Unit? fractionUnit,
   })  : mainController = mainController ?? NumberInputController(),
         fractionController = fractionController ?? NumberInputController(),
-        _system = system;
+        _system = system ?? MeasurementSystem.imperial_whole,
+        _mainUnit = mainUnit,
+        _fractionUnit = fractionUnit;
 
   @override
   set value(MultiMeasurement? newValue) {
@@ -300,13 +302,13 @@ class MultiMeasurementInputController
       mainController.doubleValue =
           newValue.mainValue.hasValue() ? newValue.mainValue.value : null;
       if (newValue.mainValue.hasUnit()) {
-        mainUnit = newValue.mainValue.unit;
+        _mainUnit = newValue.mainValue.unit;
       }
 
       fractionController.doubleValue = newValue.fractionValue.hasValue()
           ? newValue.fractionValue.value
           : null;
-      fractionUnit =
+      _fractionUnit =
           newValue.fractionValue.hasUnit() ? newValue.fractionValue.unit : null;
     }
 
@@ -324,16 +326,21 @@ class MultiMeasurementInputController
 
     if (mainController.hasDoubleValue) {
       result.mainValue = Measurement(
-        unit: mainUnit,
+        unit: _mainUnit,
         value: mainController.doubleValue,
       );
     }
 
-    if (fractionUnit != null && fractionController.hasDoubleValue) {
-      result.fractionValue = Measurement(
-        unit: fractionUnit,
+    if (fractionController.hasDoubleValue) {
+      var measurement = Measurement(
         value: fractionController.doubleValue,
       );
+
+      if (_fractionUnit != null) {
+        measurement.unit = _fractionUnit!;
+      }
+
+      result.fractionValue = measurement;
     }
 
     return result;
@@ -371,8 +378,8 @@ class MultiMeasurementInputController
     // Only round values if a value exists, otherwise the value will be set to
     // 0.0, which is not what we want; we want users to explicitly enter
     // values.
-    if (fractionUnit != null &&
-        fractionUnit != Unit.inches &&
+    if (_fractionUnit != null &&
+        _fractionUnit != Unit.inches &&
         fractionController.hasValue) {
       fractionController.value =
           fractionController.doubleValue?.round().toString();

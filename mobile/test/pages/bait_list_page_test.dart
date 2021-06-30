@@ -10,7 +10,6 @@ import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mobile/widgets/button.dart';
 import 'package:mobile/widgets/checkbox_input.dart';
 import 'package:mobile/widgets/list_item.dart';
-import 'package:mobile/widgets/text.dart';
 import 'package:mockito/mockito.dart';
 
 import '../mocks/stubbed_app_manager.dart';
@@ -103,10 +102,11 @@ void main() {
   });
 
   testWidgets("Normal title when filtered", (tester) async {
-    await tester.pumpWidget(Testable(
+    var context = await pumpContext(
+      tester,
       (_) => BaitListPage(),
       appManager: appManager,
-    ));
+    );
     expect(find.text("Baits (5)"), findsOneWidget);
 
     when(appManager.baitManager.filteredList(any)).thenReturn([
@@ -116,7 +116,7 @@ void main() {
     await enterTextAndSettle(tester, find.byType(CupertinoTextField), "Shad");
     await tester.pumpAndSettle(Duration(milliseconds: 600));
 
-    expect(find.byType(PrimaryLabel), findsNWidgets(2));
+    expect(find.primaryText(context), findsNWidgets(2));
     expect(find.text("Baits (2)"), findsOneWidget);
   });
 
@@ -225,24 +225,25 @@ void main() {
   });
 
   testWidgets("Different item types are rendered", (tester) async {
-    await tester.pumpWidget(Testable(
+    var context = await pumpContext(
+      tester,
       (_) => BaitListPage(),
       appManager: appManager,
-    ));
+    );
 
     var baitCategoryHeadings =
-        tester.widgetList(find.byType(HeadingLabel)).toList();
+        tester.widgetList(find.listHeadingText(context)).toList();
     expect(baitCategoryHeadings.length, 2);
-    expect((baitCategoryHeadings[0] as HeadingLabel).text, "Artificial");
-    expect((baitCategoryHeadings[1] as HeadingLabel).text, "Live");
+    expect((baitCategoryHeadings[0] as Text).data, "Artificial");
+    expect((baitCategoryHeadings[1] as Text).data, "Live");
 
-    var baitLabels = tester.widgetList(find.byType(PrimaryLabel)).toList();
+    var baitLabels = tester.widgetList(find.primaryText(context)).toList();
     expect(baitLabels.length, 5);
-    expect((baitLabels[0] as PrimaryLabel).text, "Countdown Rapala 7");
-    expect((baitLabels[1] as PrimaryLabel).text, "Skunk Flatfish");
-    expect((baitLabels[2] as PrimaryLabel).text, "Bullhead Minnow");
-    expect((baitLabels[3] as PrimaryLabel).text, "Gizzard Shad");
-    expect((baitLabels[4] as PrimaryLabel).text, "Threadfin Shad");
+    expect((baitLabels[0] as Text).data, "Countdown Rapala 7");
+    expect((baitLabels[1] as Text).data, "Skunk Flatfish");
+    expect((baitLabels[2] as Text).data, "Bullhead Minnow");
+    expect((baitLabels[3] as Text).data, "Gizzard Shad");
+    expect((baitLabels[4] as Text).data, "Threadfin Shad");
 
     expect(find.byType(Divider), findsOneWidget);
   });

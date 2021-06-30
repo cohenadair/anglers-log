@@ -3,7 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/res/dimen.dart';
 import 'package:mobile/widgets/checkbox_input.dart';
 import 'package:mobile/widgets/list_item.dart';
-import 'package:mobile/widgets/text.dart';
+import 'package:mobile/widgets/widget.dart';
 
 import '../test_utils.dart';
 
@@ -55,15 +55,16 @@ void main() {
     });
 
     testWidgets("Custom text widget doesn't use default style", (tester) async {
-      await tester.pumpWidget(
-        Testable(
-          (_) => ManageableListItem(
-            child: NoteLabel("Child"),
-            onTapDeleteButton: () => false,
-          ),
+      var context = await pumpContext(
+        tester,
+        (_) => ManageableListItem(
+          child: MinDivider(),
+          onTapDeleteButton: () => false,
         ),
       );
-      expect(find.byType(NoteLabel), findsOneWidget);
+
+      expect(find.byType(MinDivider), findsOneWidget);
+      expect(find.primaryText(context), findsNothing);
     });
 
     testWidgets("Tapping delete button shows dialog", (tester) async {
@@ -166,28 +167,25 @@ void main() {
 
   group("PickerListItem", () {
     testWidgets("Non-null subtitle", (tester) async {
-      await tester.pumpWidget(
-        Testable(
-          (_) => PickerListItem(
-            title: "Test",
-            subtitle: "Subtitle",
-          ),
+      var context = await pumpContext(
+        tester,
+        (_) => PickerListItem(
+          title: "Test",
+          subtitle: "Subtitle",
         ),
       );
 
-      expect(find.byType(SubtitleLabel), findsOneWidget);
+      expect(find.subtitleText(context), findsOneWidget);
     });
 
     testWidgets("Null subtitle", (tester) async {
-      await tester.pumpWidget(
-        Testable(
-          (_) => PickerListItem(
-            title: "Test",
-          ),
+      var context = await pumpContext(
+        tester,
+        (_) => PickerListItem(
+          title: "Test",
         ),
       );
-
-      expect(find.byType(SubtitleLabel), findsNothing);
+      expect(find.subtitleText(context), findsNothing);
     });
 
     testWidgets("Selected when multi", (tester) async {

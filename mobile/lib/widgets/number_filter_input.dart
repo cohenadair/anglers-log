@@ -21,16 +21,21 @@ class NumberFilterInput extends StatefulWidget {
   /// The title of the page shown when [NumberFilterInput] is tapped.
   final String filterTitle;
 
+  /// The suffix for the number input fields. This field is ignored if
+  /// [inputState] is not null.
+  final String? textInputSuffix;
+
   final NumberFilterInputController controller;
 
-  /// See [_NumberFilterPage.inputState].
-  final MultiMeasurementInputState? inputState;
+  /// See [_NumberFilterPage.inputSpec].
+  final MultiMeasurementInputSpec? inputState;
 
   NumberFilterInput({
     required this.title,
     required this.filterTitle,
     required this.controller,
     this.inputState,
+    this.textInputSuffix,
   });
 
   @override
@@ -61,8 +66,9 @@ class _NumberFilterInputState extends State<NumberFilterInput> {
           context,
           _NumberFilterPage(
             title: widget.filterTitle,
+            textInputSuffix: widget.textInputSuffix,
             initialValue: value,
-            inputState: widget.inputState,
+            inputSpec: widget.inputState,
             onChanged: (numberFilter) =>
                 setState(() => widget.controller.value = numberFilter),
           ),
@@ -74,17 +80,19 @@ class _NumberFilterInputState extends State<NumberFilterInput> {
 
 class _NumberFilterPage extends StatefulWidget {
   final String title;
+  final String? textInputSuffix;
   final NumberFilter initialValue;
 
   /// If null, will show standard [TextField.number] for whole number input.
-  final MultiMeasurementInputState? inputState;
+  final MultiMeasurementInputSpec? inputSpec;
 
   final ValueChanged<NumberFilter>? onChanged;
 
   _NumberFilterPage({
     required this.title,
     required this.initialValue,
-    required this.inputState,
+    this.textInputSuffix,
+    this.inputSpec,
     this.onChanged,
   });
 
@@ -100,25 +108,19 @@ class __NumberFilterPageState extends State<_NumberFilterPage> {
   final _boundaryController = InputController<NumberBoundary>();
 
   // Spec for input with units, such as [Catch.waterTemperature].
-  late final MultiMeasurementInputState _fromMeasurementState;
-  late final MultiMeasurementInputState _toMeasurementState;
+  late final MultiMeasurementInputController _fromMeasurementController;
+  late final MultiMeasurementInputController _toMeasurementController;
 
   // Controllers for input without units, such as [Catch.quantity].
   late final NumberInputController _fromNumberController;
   late final NumberInputController _toNumberController;
 
-  bool get _inputHasUnits => widget.inputState != null;
+  bool get _inputHasUnits => widget.inputSpec != null;
 
   NumberFilter get _initialValue => widget.initialValue;
 
-  MultiMeasurementInputController get _fromMeasurementController =>
-      _fromMeasurementState.controller;
-
   NumberInputController get _fromMeasurementMainController =>
       _fromMeasurementController.mainController;
-
-  MultiMeasurementInputController get _toMeasurementController =>
-      _toMeasurementState.controller;
 
   NumberInputController get _toMeasurementMainController =>
       _toMeasurementController.mainController;
@@ -174,32 +176,11 @@ class __NumberFilterPageState extends State<_NumberFilterPage> {
     Widget child;
     if (_boundaryController.value == NumberBoundary.number_boundary_any) {
       child = Empty();
-    } else if (widget.inputState == null) {
-      child = TextInput.number(
-        context,
-        label: label,
-        controller: _fromNumberController,
-        decimal: false,
-        signed: false,
-        onChanged: (_) => setState(() {
-          _toNumberController.validate(context);
-          _notifyIfNeeded();
-        }),
-      );
+    } else if (widget.inputSpec == null) {
+      child = _buildPlainInput(label, _fromNumberController,
+          onChanged: () => _toNumberController.validate(context));
     } else {
-      _fromMeasurementState.title = (_) => label;
-
-      child = MultiMeasurementInput(
-        state: _fromMeasurementState,
-        allowSystemSwitching: true,
-        onChanged: () => setState(() {
-          // Must update units before validation so the correct units are
-          // being compared.
-          _updateToInputUnits();
-          _toMeasurementMainController.validate(context);
-          _notifyIfNeeded();
-        }),
-      );
+      child = _buildMeasurementInput(label, _fromMeasurementController);
     }
 
     return AnimatedSwitcher(
@@ -214,32 +195,49 @@ class __NumberFilterPageState extends State<_NumberFilterPage> {
     Widget child;
     if (_boundaryController.value != NumberBoundary.range) {
       child = Empty();
-    } else if (widget.inputState == null) {
-      child = TextInput.number(
-        context,
-        label: label,
-        controller: _toNumberController,
-        decimal: false,
-        signed: false,
-        onChanged: (_) => _notifyIfNeeded(),
-      );
+    } else if (widget.inputSpec == null) {
+      child = _buildPlainInput(label, _toNumberController);
     } else {
-      _toMeasurementState.title = (_) => label;
-
-      child = MultiMeasurementInput(
-        state: _toMeasurementState,
-        allowSystemSwitching: false,
-        onChanged: () => setState(() {
-          // Need to validate, in case the fraction input changed.
-          _toMeasurementMainController.validate(context);
-          _notifyIfNeeded();
-        }),
-      );
+      child = _buildMeasurementInput(label, _toMeasurementController);
     }
 
     return AnimatedSwitcher(
       duration: defaultAnimationDuration,
       child: child,
+    );
+  }
+
+  Widget _buildPlainInput(
+    String label,
+    NumberInputController controller, {
+    VoidCallback? onChanged,
+  }) {
+    return TextInput.number(
+      context,
+      label: label,
+      controller: controller,
+      decimal: false,
+      signed: false,
+      suffixText: widget.textInputSuffix,
+      onChanged: (_) => setState(() {
+        onChanged?.call();
+        _notifyIfNeeded();
+      }),
+    );
+  }
+
+  Widget _buildMeasurementInput(
+      String label, MultiMeasurementInputController controller) {
+    return MultiMeasurementInput(
+      spec: widget.inputSpec!,
+      controller: controller,
+      title: label,
+      onChanged: () => setState(() {
+        // Must update units before validation so the correct units are
+        // being compared.
+        _toMeasurementMainController.validate(context);
+        _notifyIfNeeded();
+      }),
     );
   }
 
@@ -308,32 +306,18 @@ class __NumberFilterPageState extends State<_NumberFilterPage> {
     return filter;
   }
 
-  void _updateToInputUnits() {
-    if (!_fromMeasurementController.hasValue) {
-      return;
-    }
-
-    var newEnd = _toMeasurementController.value ?? MultiMeasurement();
-
-    if (_fromMeasurementController.value!.hasSystem()) {
-      newEnd = newEnd.toSystem(_fromMeasurementController.value!.system);
-    }
-
-    _toMeasurementController.value = newEnd;
-  }
-
   void _initMeasurementInput() {
     if (!_inputHasUnits) {
       return;
     }
 
-    _fromMeasurementState = widget.inputState!.copy(
+    _fromMeasurementController = widget.inputSpec!.newInputController(
       mainController: NumberInputController(
         validator: EmptyValidator(),
       ),
     );
 
-    _toMeasurementState = widget.inputState!.copy(
+    _toMeasurementController = widget.inputSpec!.newInputController(
       mainController: NumberInputController(
         validator: RangeValidator(runner: (context, newValue) {
           if (_toMeasurementController.hasValue &&
@@ -349,9 +333,9 @@ class __NumberFilterPageState extends State<_NumberFilterPage> {
       ),
     );
 
-    _fromMeasurementState.controller.value =
+    _fromMeasurementController.value =
         _initialValue.hasFrom() ? _initialValue.from : null;
-    _toMeasurementState.controller.value =
+    _toMeasurementController.value =
         _initialValue.hasTo() ? _initialValue.to : null;
   }
 

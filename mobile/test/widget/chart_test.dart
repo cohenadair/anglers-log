@@ -197,11 +197,15 @@ void main() {
 
       await tester.pumpWidget(
         Testable(
-          (_) => Chart(
-            series: [series1, series2, series3],
-            labelBuilder: (dynamic species) => species.name,
-            viewAllTitle: "View all",
-            chartPageDescription: "A description.",
+          (_) => ListView(
+            children: [
+              Chart<Species>(
+                series: [series1, series2, series3],
+                labelBuilder: (species) => species.name,
+                viewAllTitle: "View all",
+                chartPageDescription: "A description.",
+              ),
+            ],
           ),
         ),
       );
@@ -250,11 +254,15 @@ void main() {
 
       await tester.pumpWidget(
         Testable(
-          (_) => Chart(
-            series: [series1, series2],
-            labelBuilder: (dynamic species) => species.name,
-            viewAllTitle: "View all",
-            chartPageDescription: "A description.",
+          (_) => ListView(
+            children: [
+              Chart(
+                series: [series1, series2],
+                labelBuilder: (dynamic species) => species.name,
+                viewAllTitle: "View all",
+                chartPageDescription: "A description.",
+              ),
+            ],
           ),
         ),
       );
@@ -276,11 +284,15 @@ void main() {
 
       await tester.pumpWidget(
         Testable(
-          (_) => Chart(
-            series: [series1, series2],
-            labelBuilder: (dynamic species) => species.name,
-            viewAllTitle: "View all",
-            chartPageDescription: "A description.",
+          (_) => ListView(
+            children: [
+              Chart(
+                series: [series1, series2],
+                labelBuilder: (dynamic species) => species.name,
+                viewAllTitle: "View all",
+                chartPageDescription: "A description.",
+              ),
+            ],
           ),
         ),
       );
@@ -305,11 +317,15 @@ void main() {
 
       await tester.pumpWidget(
         Testable(
-          (_) => Chart(
-            series: [series1, series2],
-            labelBuilder: (dynamic species) => species.name,
-            chartPageDescription: "A description.",
-            showAll: true,
+          (_) => ListView(
+            children: [
+              Chart(
+                series: [series1, series2],
+                labelBuilder: (dynamic species) => species.name,
+                chartPageDescription: "A description.",
+                showAll: true,
+              ),
+            ],
           ),
         ),
       );
@@ -317,12 +333,16 @@ void main() {
 
       await tester.pumpWidget(
         Testable(
-          (_) => Chart(
-            series: [series1, series2],
-            labelBuilder: (dynamic species) => species.name,
-            viewAllTitle: "View all",
-            chartPageDescription: "A description.",
-            showAll: true,
+          (_) => ListView(
+            children: [
+              Chart(
+                series: [series1, series2],
+                labelBuilder: (dynamic species) => species.name,
+                viewAllTitle: "View all",
+                chartPageDescription: "A description.",
+                showAll: true,
+              ),
+            ],
           ),
         ),
       );

@@ -278,15 +278,12 @@ void main() {
     await catchManager.addOrUpdate(Catch()
       ..id = randomId()
       ..waterTemperature = MultiMeasurement(
-          system: MeasurementSystem.imperial_whole,
-          mainValue: Measurement(
-            unit: Unit.feet,
-            value: 25,
-          ),
-          fractionValue: Measurement(
-            unit: Unit.inches,
-            value: 10,
-          )));
+        system: MeasurementSystem.imperial_whole,
+        mainValue: Measurement(
+          unit: Unit.fahrenheit,
+          value: 10,
+        ),
+      ));
     await catchManager.addOrUpdate(Catch()..id = randomId());
     await catchManager.addOrUpdate(Catch()..id = randomId());
 

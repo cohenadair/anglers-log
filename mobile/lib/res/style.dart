@@ -65,10 +65,8 @@ TextStyle styleNote(BuildContext context) {
 TextStyle stylePrimary(
   BuildContext context, {
   bool enabled = true,
-  FontWeight? fontWeight,
 }) {
   return Theme.of(context).textTheme.subtitle1!.copyWith(
-        fontWeight: fontWeight,
         color: enabled
             ? Theme.of(context).textTheme.subtitle1!.color
             : Theme.of(context).disabledColor,

@@ -14,6 +14,10 @@ void main() {
 
     when(appManager.customEntityManager.entity(any)).thenReturn(null);
 
+    when(appManager.locationMonitor.currentLocation).thenReturn(null);
+
+    when(appManager.subscriptionManager.isFree).thenReturn(false);
+
     when(appManager.userPreferenceManager.catchCustomEntityIds).thenReturn([]);
     when(appManager.userPreferenceManager.catchFieldIds).thenReturn([]);
     when(appManager.userPreferenceManager.waterDepthSystem)
@@ -24,6 +28,8 @@ void main() {
         .thenReturn(MeasurementSystem.metric);
     when(appManager.userPreferenceManager.catchWeightSystem)
         .thenReturn(MeasurementSystem.metric);
+    when(appManager.userPreferenceManager.autoFetchAtmosphere)
+        .thenReturn(false);
   });
 
   testWidgets("Menu hiding/showing", (tester) async {

@@ -395,7 +395,8 @@ void main() {
     when(appManager.customEntityManager.list()).thenReturn([customEntity]);
     when(appManager.customEntityManager.entity(customEntityId))
         .thenReturn(customEntity);
-    await tester.pumpWidget(Testable(
+    var context = await pumpContext(
+      tester,
       (_) => FormPage(
         fieldBuilder: (context) => {
           customEntityId: TextInput.name(
@@ -412,12 +413,12 @@ void main() {
         ],
       ),
       appManager: appManager,
-    ));
+    );
 
     await tapAndSettle(tester, find.byIcon(FormPage.moreMenuIcon));
     await tapAndSettle(tester, find.text("Manage Fields"));
 
-    expect(find.byType(NoteLabel), findsNothing);
+    expect(find.noteText(context), findsNothing);
     expect(find.text("Name"), findsOneWidget);
   });
 

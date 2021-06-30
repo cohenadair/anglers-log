@@ -34,37 +34,4 @@ void main() {
     expect(find.text("Value 1"), findsOneWidget);
     expect(find.text("Value 2"), findsOneWidget);
   });
-
-  testWidgets("Custom padding", (tester) async {
-    await tester.pumpWidget(
-      Testable(
-        (_) => MultiListPickerInput(
-          values: {},
-          emptyValue: (_) => "Empty",
-          onTap: () {},
-          padding: insetsDefault,
-        ),
-      ),
-    );
-
-    expect(
-      (findFirst<HorizontalSafeArea>(tester).child as Padding)
-          .padding
-          .horizontal,
-      paddingDefault * 2,
-    );
-  });
-
-  testWidgets("Default padding", (tester) async {
-    await tester.pumpWidget(
-      Testable(
-        (_) => MultiListPickerInput(
-          values: {},
-          emptyValue: (_) => "Empty",
-          onTap: () {},
-        ),
-      ),
-    );
-    expect(findFirst<Padding>(tester).padding.horizontal, 0);
-  });
 }

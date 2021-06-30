@@ -3,7 +3,6 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/res/dimen.dart';
 import 'package:mobile/widgets/floating_container.dart';
 import 'package:mobile/widgets/list_item.dart';
-import 'package:mobile/widgets/text.dart';
 import 'package:mobile/widgets/widget.dart';
 
 import '../test_utils.dart';
@@ -63,30 +62,27 @@ void main() {
   });
 
   testWidgets("Empty title shows subtitle", (tester) async {
-    await tester.pumpWidget(
-      Testable(
-        (_) => FloatingContainer(
-          subtitle: "Subtitle",
-        ),
+    var context = await pumpContext(
+      tester,
+      (_) => FloatingContainer(
+        subtitle: "Subtitle",
       ),
     );
-    expect(find.byType(SubtitleLabel), findsNothing);
-    expect(find.text("Subtitle"), findsOneWidget);
+
+    expect(find.primaryText(context, text: "Subtitle"), findsNothing);
   });
 
   testWidgets("Title and subtitle", (tester) async {
-    await tester.pumpWidget(
-      Testable(
-        (_) => FloatingContainer(
-          title: "Title",
-          subtitle: "Subtitle",
-        ),
+    var context = await pumpContext(
+      tester,
+      (_) => FloatingContainer(
+        title: "Title",
+        subtitle: "Subtitle",
       ),
     );
-    expect(find.byType(Label), findsNWidgets(2)); // Title and Subtitle
-    expect(find.text("Title"), findsOneWidget);
-    expect(find.byType(SubtitleLabel), findsOneWidget);
-    expect(find.text("Subtitle"), findsOneWidget);
+
+    expect(find.headingText(text: "Title"), findsOneWidget);
+    expect(find.secondaryText(context, text: "Subtitle"), findsOneWidget);
   });
 
   testWidgets("Title/subtitle cannot both be empty", (tester) async {

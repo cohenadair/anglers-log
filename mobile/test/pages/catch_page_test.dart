@@ -7,7 +7,6 @@ import 'package:mobile/res/gen/custom_icons.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mobile/widgets/list_item.dart';
 import 'package:mobile/widgets/static_fishing_spot.dart';
-import 'package:mobile/widgets/text.dart';
 import 'package:mobile/widgets/widget.dart';
 import 'package:mockito/mockito.dart';
 
@@ -122,16 +121,17 @@ void main() {
         ..id = randomId()
         ..name = "Worm",
     );
-    await tester.pumpWidget(Testable(
+    var context = await pumpContext(
+      tester,
       (_) => CatchPage(Catch()),
       appManager: appManager,
-    ));
+    );
     // Wait for map timer to finish.
     await tester.pumpAndSettle(Duration(milliseconds: 150));
     await tester.pumpAndSettle(Duration(milliseconds: 50));
 
     expect(find.text("Worm"), findsOneWidget);
-    expect(find.byType(SubtitleLabel), findsOneWidget); // One for time label.
+    expect(find.subtitleText(context), findsOneWidget); // One for time label.
   });
 
   testWidgets("Bait with category shows subtitle", (tester) async {

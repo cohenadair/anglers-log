@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../auth_manager.dart';
 import '../i18n/strings.dart';
 import '../log.dart';
+import '../res/gen/custom_icons.dart';
 import '../res/style.dart';
 import '../subscription_manager.dart';
 import '../user_preference_manager.dart';
@@ -12,6 +13,7 @@ import '../widgets/checkbox_input.dart';
 import '../widgets/list_item.dart';
 import '../widgets/widget.dart';
 import 'pro_page.dart';
+import 'units_page.dart';
 
 class SettingsPage extends StatefulWidget {
   @override
@@ -36,6 +38,8 @@ class _SettingsPageState extends State<SettingsPage> {
       body: ListView(
         children: <Widget>[
           _buildFetchAtmosphere(context),
+          MinDivider(),
+          _buildUnits(context),
           MinDivider(),
           _buildPro(context),
           MinDivider(),
@@ -64,6 +68,15 @@ class _SettingsPageState extends State<SettingsPage> {
           _userPreferenceManager.setAutoFetchAtmosphere(false);
         }
       },
+    );
+  }
+
+  Widget _buildUnits(BuildContext context) {
+    return ListItem(
+      title: Text("DEV TODO"),
+      leading: Icon(CustomIcons.ruler),
+      trailing: RightChevronIcon(),
+      onTap: () => push(context, UnitsPage()),
     );
   }
 

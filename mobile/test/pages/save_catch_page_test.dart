@@ -60,10 +60,13 @@ void main() {
         .thenReturn(MeasurementSystem.imperial_whole);
     when(appManager.userPreferenceManager.catchWeightSystem)
         .thenReturn(MeasurementSystem.imperial_whole);
+    when(appManager.userPreferenceManager.autoFetchAtmosphere)
+        .thenReturn(false);
 
     when(appManager.subscriptionManager.stream)
         .thenAnswer((_) => Stream.empty());
     when(appManager.subscriptionManager.isPro).thenReturn(false);
+    when(appManager.subscriptionManager.isFree).thenReturn(true);
 
     appManager.stubCurrentTime(DateTime(2020, 2, 1, 10, 30));
   });

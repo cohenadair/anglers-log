@@ -602,7 +602,7 @@ Map<String, Map<String, String>> get englishStrings => {
         "pickerTitle_windDirection": "Select Wind Direction",
         "pickerTitle_windDirections": "Select Wind Directions",
         "keywords_temperatureMetric": "celsius temperature degrees c",
-        "keywords_temperatureImperial": "fahrenheit temperature degrees c",
+        "keywords_temperatureImperial": "fahrenheit temperature degrees f",
         "keywords_speedMetric": "kilometers per hour speed wind",
         "keywords_speedImperial": "miles per hour speed wind",
         "keywords_airPressureMetric": "atmospheric air pressure millibars",

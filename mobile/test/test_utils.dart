@@ -9,6 +9,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/app_manager.dart';
 import 'package:mobile/i18n/strings.dart';
+import 'package:mobile/res/style.dart';
 import 'package:mobile/widgets/checkbox_input.dart';
 import 'package:mobile/widgets/list_item.dart';
 import 'package:mobile/widgets/widget.dart';
@@ -79,6 +80,24 @@ Future<BuildContext> buildContext(
     appManager: appManager,
   ));
   return context!;
+}
+
+Future<BuildContext> pumpContext(
+  WidgetTester tester,
+  Widget Function(BuildContext) builder, {
+  StubbedAppManager? appManager,
+}) async {
+  late BuildContext context;
+  await tester.pumpWidget(
+    Testable(
+      (buildContext) {
+        context = buildContext;
+        return builder(context);
+      },
+      appManager: appManager,
+    ),
+  );
+  return context;
 }
 
 MockAssetEntity createMockAssetEntity({
@@ -220,4 +239,50 @@ Future<Uint8List?> stubImage(
     size: anyNamed("size"),
   )).thenAnswer((_) => Future.value(image));
   return image;
+}
+
+extension CommonFindersExt on CommonFinders {
+  Finder textStyle(String? text, TextStyle style) => find.byWidgetPredicate(
+      (w) => w is Text && w.style == style && (text == null || w.data == text));
+
+  Finder primaryText(
+    BuildContext context, {
+    String? text,
+  }) {
+    return textStyle(text, stylePrimary(context));
+  }
+
+  Finder secondaryText(
+    BuildContext context, {
+    String? text,
+  }) {
+    return textStyle(text, styleSecondary(context));
+  }
+
+  Finder subtitleText(
+    BuildContext context, {
+    String? text,
+  }) {
+    return textStyle(text, styleSubtitle(context));
+  }
+
+  Finder headingText({
+    String? text,
+  }) {
+    return textStyle(text, styleHeading);
+  }
+
+  Finder listHeadingText(
+    BuildContext context, {
+    String? text,
+  }) {
+    return textStyle(text, styleListHeading(context));
+  }
+
+  Finder noteText(
+    BuildContext context, {
+    String? text,
+  }) {
+    return textStyle(text, styleNote(context));
+  }
 }

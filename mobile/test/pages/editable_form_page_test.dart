@@ -282,7 +282,8 @@ void main() {
     var id2 = randomId();
     var id3 = randomId();
 
-    await tester.pumpWidget(Testable(
+    var context = await pumpContext(
+      tester,
       (_) => EditableFormPage(
         fields: {
           // Shows "Required" subtitle.
@@ -318,14 +319,14 @@ void main() {
         ],
       ),
       appManager: appManager,
-    ));
+    );
 
     // Open field picker.
     await tapAndSettle(
         tester, find.widgetWithIcon(IconButton, Icons.more_vert));
     await tapAndSettle(tester, find.text("Manage Fields"));
 
-    expect(find.byType(SubtitleLabel), findsNWidgets(3));
+    expect(find.subtitleText(context), findsNWidgets(3));
     expect(find.text("Required"), findsOneWidget);
     expect(find.text("Input 2 description."), findsOneWidget);
     expect(find.text("A test description."), findsOneWidget);

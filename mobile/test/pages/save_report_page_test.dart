@@ -137,6 +137,16 @@ void main() {
         .thenReturn(MeasurementSystem.metric);
     when(appManager.userPreferenceManager.catchWeightSystem)
         .thenReturn(MeasurementSystem.metric);
+    when(appManager.userPreferenceManager.catchWeightSystem)
+        .thenReturn(MeasurementSystem.metric);
+    when(appManager.userPreferenceManager.airTemperatureSystem)
+        .thenReturn(MeasurementSystem.metric);
+    when(appManager.userPreferenceManager.airVisibilitySystem)
+        .thenReturn(MeasurementSystem.metric);
+    when(appManager.userPreferenceManager.airPressureSystem)
+        .thenReturn(MeasurementSystem.metric);
+    when(appManager.userPreferenceManager.windSpeedSystem)
+        .thenReturn(MeasurementSystem.metric);
 
     when(appManager.waterClarityManager.name(any))
         .thenAnswer((invocation) => invocation.positionalArguments.first.name);
@@ -602,7 +612,9 @@ void main() {
     expect(find.text("< 15\u00B0C"), findsOneWidget);
     expect(find.text("= 20 cm"), findsOneWidget);
     expect(find.text("10 kg - 15 kg"), findsOneWidget);
-    expect(find.text("Any"), findsOneWidget);
+    // TODO: Add values for atmosphere filters.
+    // expect(find.text("Any"), findsOneWidget);
+    expect(find.text("Any"), findsNWidgets(6));
 
     await tapAndSettle(tester, find.text("SAVE"));
 

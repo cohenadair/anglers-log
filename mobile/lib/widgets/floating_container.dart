@@ -62,7 +62,7 @@ class FloatingContainer extends StatelessWidget {
                     : Text(subtitle!),
                 subtitle: isEmpty(title) || isEmpty(subtitle)
                     ? null
-                    : Text(subtitle!, style: styleSubtitle(context)),
+                    : Text(subtitle!, style: styleSecondary(context)),
                 onTap: onTap,
                 trailing: _tapEnabled ? RightChevronIcon() : null,
               ),

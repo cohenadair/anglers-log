@@ -4,7 +4,6 @@ import 'package:mobile/pages/fishing_spot_list_page.dart';
 import 'package:mobile/pages/manageable_list_page.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mobile/widgets/checkbox_input.dart';
-import 'package:mobile/widgets/text.dart';
 import 'package:mockito/mockito.dart';
 
 import '../mocks/stubbed_app_manager.dart';
@@ -87,20 +86,22 @@ void main() {
     });
 
     testWidgets("Spot with no name shows coordinates as title", (tester) async {
-      await tester.pumpWidget(Testable(
+      var context = await pumpContext(
+        tester,
         (_) => FishingSpotListPage(),
         appManager: appManager,
-      ));
-      expect(find.widgetWithText(PrimaryLabel, "Lat: 1.234568, Lng: 7.654322"),
+      );
+      expect(find.primaryText(context, text: "Lat: 1.234568, Lng: 7.654322"),
           findsOneWidget);
     });
 
     testWidgets("Spot with name shows coordinates as subtitle", (tester) async {
-      await tester.pumpWidget(Testable(
+      var context = await pumpContext(
+        tester,
         (_) => FishingSpotListPage(),
         appManager: appManager,
-      ));
-      expect(find.widgetWithText(SubtitleLabel, "Lat: 1.234567, Lng: 7.654321"),
+      );
+      expect(find.subtitleText(context, text: "Lat: 1.234567, Lng: 7.654321"),
           findsOneWidget);
     });
   });
