@@ -224,6 +224,12 @@ Future<void> enterTextAndSettle(
   await tester.pumpAndSettle();
 }
 
+Future<void> enterTextFieldAndSettle(
+    WidgetTester tester, String textFieldTitle, String text) async {
+  await tester.enterText(find.widgetWithText(TextField, textFieldTitle), text);
+  await tester.pumpAndSettle();
+}
+
 Future<Uint8List?> stubImage(
     StubbedAppManager appManager, WidgetTester tester, String name,
     {bool anyName = false}) async {

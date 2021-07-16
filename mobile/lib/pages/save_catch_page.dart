@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:quiver/strings.dart';
 
 import '../angler_manager.dart';
+import '../app_manager.dart';
 import '../atmosphere_fetcher.dart';
 import '../bait_category_manager.dart';
 import '../bait_manager.dart';
@@ -849,7 +850,7 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
 
   AtmosphereFetcher newAtmosphereFetcher() {
     var fishingSpot = _fishingSpotManager.entity(_fishingSpotController.value);
-    return AtmosphereFetcher(context, _timestampController.value,
+    return AtmosphereFetcher(AppManager.of(context), _timestampController.value,
         fishingSpot?.latLng ?? _locationMonitor.currentLocation);
   }
 

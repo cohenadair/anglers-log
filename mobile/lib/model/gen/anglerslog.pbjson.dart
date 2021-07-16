@@ -150,11 +150,12 @@ const Unit$json = const {
     const {'1': 'pounds_per_square_inch', '2': 12},
     const {'1': 'miles', '2': 13},
     const {'1': 'kilometers', '2': 14},
+    const {'1': 'percent', '2': 15},
   ],
 };
 
 /// Descriptor for `Unit`. Decode as a `google.protobuf.EnumDescriptorProto`.
-final $typed_data.Uint8List unitDescriptor = $convert.base64Decode('CgRVbml0EggKBGZlZXQQABIKCgZpbmNoZXMQARIKCgZwb3VuZHMQAhIKCgZvdW5jZXMQAxIOCgpmYWhyZW5oZWl0EAQSCgoGbWV0ZXJzEAUSDwoLY2VudGltZXRlcnMQBhINCglraWxvZ3JhbXMQBxILCgdjZWxzaXVzEAgSEgoObWlsZXNfcGVyX2hvdXIQCRIXChNraWxvbWV0ZXJzX3Blcl9ob3VyEAoSDQoJbWlsbGliYXJzEAsSGgoWcG91bmRzX3Blcl9zcXVhcmVfaW5jaBAMEgkKBW1pbGVzEA0SDgoKa2lsb21ldGVycxAO');
+final $typed_data.Uint8List unitDescriptor = $convert.base64Decode('CgRVbml0EggKBGZlZXQQABIKCgZpbmNoZXMQARIKCgZwb3VuZHMQAhIKCgZvdW5jZXMQAxIOCgpmYWhyZW5oZWl0EAQSCgoGbWV0ZXJzEAUSDwoLY2VudGltZXRlcnMQBhINCglraWxvZ3JhbXMQBxILCgdjZWxzaXVzEAgSEgoObWlsZXNfcGVyX2hvdXIQCRIXChNraWxvbWV0ZXJzX3Blcl9ob3VyEAoSDQoJbWlsbGliYXJzEAsSGgoWcG91bmRzX3Blcl9zcXVhcmVfaW5jaBAMEgkKBW1pbGVzEA0SDgoKa2lsb21ldGVycxAOEgsKB3BlcmNlbnQQDw==');
 @$core.Deprecated('Use idDescriptor instead')
 const Id$json = const {
   '1': 'Id',
@@ -174,16 +175,16 @@ const Atmosphere$json = const {
     const {'1': 'wind_speed', '3': 3, '4': 1, '5': 11, '6': '.anglerslog.Measurement', '10': 'windSpeed'},
     const {'1': 'wind_direction', '3': 4, '4': 1, '5': 14, '6': '.anglerslog.Direction', '10': 'windDirection'},
     const {'1': 'pressure', '3': 5, '4': 1, '5': 11, '6': '.anglerslog.Measurement', '10': 'pressure'},
-    const {'1': 'humidity', '3': 6, '4': 1, '5': 13, '10': 'humidity'},
+    const {'1': 'humidity', '3': 6, '4': 1, '5': 11, '6': '.anglerslog.Measurement', '10': 'humidity'},
     const {'1': 'visibility', '3': 7, '4': 1, '5': 11, '6': '.anglerslog.Measurement', '10': 'visibility'},
     const {'1': 'moon_phase', '3': 8, '4': 1, '5': 14, '6': '.anglerslog.MoonPhase', '10': 'moonPhase'},
-    const {'1': 'sunrise_timestamp', '3': 9, '4': 1, '5': 4, '10': 'sunriseTimestamp'},
-    const {'1': 'sunset_timestamp', '3': 10, '4': 1, '5': 4, '10': 'sunsetTimestamp'},
+    const {'1': 'sunrise_millis', '3': 9, '4': 1, '5': 4, '10': 'sunriseMillis'},
+    const {'1': 'sunset_millis', '3': 10, '4': 1, '5': 4, '10': 'sunsetMillis'},
   ],
 };
 
 /// Descriptor for `Atmosphere`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List atmosphereDescriptor = $convert.base64Decode('CgpBdG1vc3BoZXJlEjkKC3RlbXBlcmF0dXJlGAEgASgLMhcuYW5nbGVyc2xvZy5NZWFzdXJlbWVudFILdGVtcGVyYXR1cmUSPwoOc2t5X2NvbmRpdGlvbnMYAiADKA4yGC5hbmdsZXJzbG9nLlNreUNvbmRpdGlvblINc2t5Q29uZGl0aW9ucxI2Cgp3aW5kX3NwZWVkGAMgASgLMhcuYW5nbGVyc2xvZy5NZWFzdXJlbWVudFIJd2luZFNwZWVkEjwKDndpbmRfZGlyZWN0aW9uGAQgASgOMhUuYW5nbGVyc2xvZy5EaXJlY3Rpb25SDXdpbmREaXJlY3Rpb24SMwoIcHJlc3N1cmUYBSABKAsyFy5hbmdsZXJzbG9nLk1lYXN1cmVtZW50UghwcmVzc3VyZRIaCghodW1pZGl0eRgGIAEoDVIIaHVtaWRpdHkSNwoKdmlzaWJpbGl0eRgHIAEoCzIXLmFuZ2xlcnNsb2cuTWVhc3VyZW1lbnRSCnZpc2liaWxpdHkSNAoKbW9vbl9waGFzZRgIIAEoDjIVLmFuZ2xlcnNsb2cuTW9vblBoYXNlUgltb29uUGhhc2USKwoRc3VucmlzZV90aW1lc3RhbXAYCSABKARSEHN1bnJpc2VUaW1lc3RhbXASKQoQc3Vuc2V0X3RpbWVzdGFtcBgKIAEoBFIPc3Vuc2V0VGltZXN0YW1w');
+final $typed_data.Uint8List atmosphereDescriptor = $convert.base64Decode('CgpBdG1vc3BoZXJlEjkKC3RlbXBlcmF0dXJlGAEgASgLMhcuYW5nbGVyc2xvZy5NZWFzdXJlbWVudFILdGVtcGVyYXR1cmUSPwoOc2t5X2NvbmRpdGlvbnMYAiADKA4yGC5hbmdsZXJzbG9nLlNreUNvbmRpdGlvblINc2t5Q29uZGl0aW9ucxI2Cgp3aW5kX3NwZWVkGAMgASgLMhcuYW5nbGVyc2xvZy5NZWFzdXJlbWVudFIJd2luZFNwZWVkEjwKDndpbmRfZGlyZWN0aW9uGAQgASgOMhUuYW5nbGVyc2xvZy5EaXJlY3Rpb25SDXdpbmREaXJlY3Rpb24SMwoIcHJlc3N1cmUYBSABKAsyFy5hbmdsZXJzbG9nLk1lYXN1cmVtZW50UghwcmVzc3VyZRIzCghodW1pZGl0eRgGIAEoCzIXLmFuZ2xlcnNsb2cuTWVhc3VyZW1lbnRSCGh1bWlkaXR5EjcKCnZpc2liaWxpdHkYByABKAsyFy5hbmdsZXJzbG9nLk1lYXN1cmVtZW50Ugp2aXNpYmlsaXR5EjQKCm1vb25fcGhhc2UYCCABKA4yFS5hbmdsZXJzbG9nLk1vb25QaGFzZVIJbW9vblBoYXNlEiUKDnN1bnJpc2VfbWlsbGlzGAkgASgEUg1zdW5yaXNlTWlsbGlzEiMKDXN1bnNldF9taWxsaXMYCiABKARSDHN1bnNldE1pbGxpcw==');
 @$core.Deprecated('Use customEntityDescriptor instead')
 const CustomEntity$json = const {
   '1': 'CustomEntity',

@@ -8,6 +8,84 @@ import 'package:mobile/widgets/widget.dart';
 import '../test_utils.dart';
 
 void main() {
+  group("ListItem", () {
+    testWidgets("Text title/subtitle use default style", (tester) async {
+      await tester.pumpWidget(Testable(
+        (_) => ListItem(
+          title: Text("Title"),
+          subtitle: Text("Subtitle"),
+        ),
+      ));
+
+      expect(find.byType(DefaultTextStyle), findsNWidgets(4));
+    });
+
+    testWidgets("Leading icons use default style", (tester) async {
+      await tester.pumpWidget(Testable(
+        (_) => ListItem(
+          leading: Icon(Icons.check),
+        ),
+      ));
+
+      expect(find.byType(IconTheme), findsNWidgets(3));
+    });
+
+    testWidgets("Default padding", (tester) async {
+      await tester.pumpWidget(Testable((_) => ListItem()));
+      expect(
+        find.byWidgetPredicate(
+            (widget) => widget is Padding && widget.padding == insetsDefault),
+        findsOneWidget,
+      );
+    });
+
+    testWidgets("Custom padding", (tester) async {
+      await tester.pumpWidget(Testable(
+        (_) => ListItem(
+          padding: EdgeInsets.all(1),
+        ),
+      ));
+
+      expect(
+        find.byWidgetPredicate((widget) =>
+            widget is Padding && widget.padding == EdgeInsets.all(1)),
+        findsOneWidget,
+      );
+    });
+
+    testWidgets("Null leading/trailing/title/subtitle", (tester) async {
+      await tester.pumpWidget(Testable(
+        (_) => ListItem(
+          title: null,
+          subtitle: null,
+          trailing: null,
+          leading: null,
+        ),
+      ));
+
+      expect(find.byType(HorizontalSpace), findsNothing);
+      expect(find.byType(Empty), findsNWidgets(6));
+    });
+
+    testWidgets("Non-null leading/trailing/title/subtitle", (tester) async {
+      await tester.pumpWidget(Testable(
+        (_) => ListItem(
+          title: Text("Title"),
+          subtitle: Text("Subtitle"),
+          trailing: Icon(Icons.chevron_right),
+          leading: Icon(Icons.check),
+        ),
+      ));
+
+      expect(find.byType(HorizontalSpace), findsNWidgets(2));
+      expect(find.byType(Empty), findsNothing);
+      expect(find.text("Title"), findsOneWidget);
+      expect(find.text("Subtitle"), findsOneWidget);
+      expect(find.byIcon(Icons.chevron_right), findsOneWidget);
+      expect(find.byIcon(Icons.check), findsOneWidget);
+    });
+  });
+
   group("ExpansionListItem", () {
     testWidgets("Expanded on tap", (tester) async {
       var changed = false;

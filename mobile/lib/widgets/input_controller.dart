@@ -220,6 +220,12 @@ class TimestampInputController extends InputController<int> {
 
   set date(DateTime? value) => _date = value;
 
+  int get timeInMillis {
+    var timeValue = time;
+    return timeValue.hour * Duration.millisecondsPerHour +
+        timeValue.minute * Duration.millisecondsPerMinute;
+  }
+
   /// Returns the controller's [TimeOfDay] value. If the controller's
   /// [_time] property is null, the current time is returned.
   TimeOfDay get time =>
@@ -378,6 +384,9 @@ class MultiMeasurementInputController
     // Only round values if a value exists, otherwise the value will be set to
     // 0.0, which is not what we want; we want users to explicitly enter
     // values.
+    //
+    // Note that fractionController should never have an imperial_decimal
+    // unit. Instead, mainController should be used with imperial_decimal.
     if (_fractionUnit != null &&
         _fractionUnit != Unit.inches &&
         fractionController.hasValue) {

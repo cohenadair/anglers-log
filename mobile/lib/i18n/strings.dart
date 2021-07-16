@@ -1033,6 +1033,8 @@ class Strings {
 
   String get unitPoundsPerSquareInch => _string("unit_pounds_per_square_inch");
 
+  String get unitPercent => _string("unit_percent");
+
   String get unitMiles => _string("unit_miles");
 
   String get unitKilometers => _string("unit_kilometers");
@@ -1288,6 +1290,8 @@ class Strings {
   String get keywordsWeightMetric => _string("keywords_weightMetric");
 
   String get keywordsWeightImperial => _string("keywords_weightImperial");
+
+  String get keywordsPercent => _string("keywords_percent");
 
   String get keywordsNorth => _string("keywords_north");
 

@@ -2,15 +2,16 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:fixnum/fixnum.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:quiver/strings.dart';
 
+import 'app_manager.dart';
 import 'log.dart';
 import 'model/gen/anglerslog.pb.dart';
 import 'properties_manager.dart';
 import 'user_preference_manager.dart';
 import 'utils/atmosphere_utils.dart';
+import 'utils/number_utils.dart';
 import 'utils/protobuf_utils.dart';
 import 'utils/string_utils.dart';
 import 'wrappers/http_wrapper.dart';
@@ -22,18 +23,18 @@ class AtmosphereFetcher {
 
   final _log = Log("AtmosphereFetcher");
 
-  final BuildContext context;
+  final AppManager appManager;
   final int timestamp;
   final LatLng? latLng;
 
-  HttpWrapper get _http => HttpWrapper.of(context);
+  HttpWrapper get _http => appManager.httpWrapper;
 
-  PropertiesManager get _propertiesManager => PropertiesManager.of(context);
+  PropertiesManager get _propertiesManager => appManager.propertiesManager;
 
   UserPreferenceManager get _userPreferenceManager =>
-      UserPreferenceManager.of(context);
+      appManager.userPreferenceManager;
 
-  AtmosphereFetcher(this.context, this.timestamp, this.latLng);
+  AtmosphereFetcher(this.appManager, this.timestamp, this.latLng);
 
   Future<Atmosphere?> fetch() async {
     if (latLng == null) {
@@ -79,72 +80,79 @@ class AtmosphereFetcher {
   Atmosphere _atmosphereFromJson(Map<String, dynamic> json) {
     var result = Atmosphere();
 
-    var temperature = json["temp"];
+    var temperature = doubleFromDynamic(json["temp"]);
     if (temperature != null) {
       result.temperature = _measurement(
-          temperature,
-          _userPreferenceManager.airTemperatureSystem,
-          Unit.celsius,
-          Unit.fahrenheit,
-          Unit.fahrenheit);
+        value: temperature,
+        system: _userPreferenceManager.airTemperatureSystem,
+        metricUnit: Unit.celsius,
+        imperialUnit: Unit.fahrenheit,
+        apiUnit: Unit.fahrenheit,
+      );
     }
 
-    var humidity = json["humidity"];
+    var humidity = intFromDynamic(json["humidity"]);
     if (humidity != null) {
-      result.humidity = humidity.round();
+      result.humidity = Measurement(
+        unit: Unit.percent,
+        value: humidity.roundToDouble(),
+      );
     }
 
-    var windSpeed = json["windspeed"];
+    var windSpeed = doubleFromDynamic(json["windspeed"]);
     if (windSpeed != null) {
       result.windSpeed = _measurement(
-          windSpeed,
-          _userPreferenceManager.windSpeedSystem,
-          Unit.kilometers_per_hour,
-          Unit.miles_per_hour,
-          Unit.miles_per_hour);
+        value: windSpeed,
+        system: _userPreferenceManager.windSpeedSystem,
+        metricUnit: Unit.kilometers_per_hour,
+        imperialUnit: Unit.miles_per_hour,
+        apiUnit: Unit.miles_per_hour,
+      );
     }
 
-    var windDirection = json["winddir"];
+    var windDirection = doubleFromDynamic(json["winddir"]);
     if (windDirection != null) {
       result.windDirection = Directions.fromDegrees(windDirection);
     }
 
-    var pressure = json["pressure"];
+    var pressure = doubleFromDynamic(json["pressure"]);
     if (pressure != null) {
       result.pressure = _measurement(
-          pressure,
-          _userPreferenceManager.airPressureSystem,
-          Unit.millibars,
-          Unit.pounds_per_square_inch,
-          Unit.millibars);
+        value: pressure,
+        system: _userPreferenceManager.airPressureSystem,
+        metricUnit: Unit.millibars,
+        imperialUnit: Unit.pounds_per_square_inch,
+        apiUnit: Unit.millibars,
+      );
     }
 
-    var visibility = json["visibility"];
+    var visibility = doubleFromDynamic(json["visibility"]);
     if (visibility != null) {
       result.visibility = _measurement(
-          visibility,
-          _userPreferenceManager.airVisibilitySystem,
-          Unit.kilometers,
-          Unit.miles,
-          Unit.miles);
+        value: visibility,
+        system: _userPreferenceManager.airVisibilitySystem,
+        metricUnit: Unit.kilometers,
+        imperialUnit: Unit.miles,
+        apiUnit: Unit.miles,
+      );
     }
 
     var conditions = json["conditions"];
-    if (isNotEmpty(conditions)) {
+    if (conditions is String && isNotEmpty(conditions)) {
       result.skyConditions.addAll(SkyConditions.fromTypes(conditions));
     }
 
-    var sunrise = json["sunriseEpoch"];
+    var sunrise = intFromDynamic(json["sunriseEpoch"]);
     if (sunrise != null && sunrise > 0) {
-      result.sunriseTimestamp = Int64(sunrise * Duration.millisecondsPerSecond);
+      result.sunriseMillis = Int64(sunrise * Duration.millisecondsPerSecond);
     }
 
-    var sunset = json["sunsetEpoch"];
+    var sunset = intFromDynamic(json["sunsetEpoch"]);
     if (sunset != null && sunset > 0) {
-      result.sunsetTimestamp = Int64(sunset * Duration.millisecondsPerSecond);
+      result.sunsetMillis = Int64(sunset * Duration.millisecondsPerSecond);
     }
 
-    var moon = json["moonphase"];
+    var moon = doubleFromDynamic(json["moonphase"]);
     if (moon != null) {
       result.moonPhase = MoonPhases.fromDouble(moon);
     }
@@ -177,13 +185,28 @@ class AtmosphereFetcher {
       return null;
     }
 
-    var json = jsonDecode(response.body);
+    // Catch any parsing errors as a safety measure. We cannot trust that
+    // the response object will always be a value JSON string.
+    dynamic json;
+    try {
+      json = jsonDecode(response.body);
+    // ignore: avoid_catches_without_on_clauses
+    } catch (error) {
+      json = null;
+    }
+
     if (!_isValidJsonMap(json)) {
       _log.e("Response body is a non-JSON format: ${response.body}");
       return null;
     }
 
-    var daysJson = json["days"]?.first;
+    var daysList = json["days"];
+    if (daysList == null || !(daysList is List)) {
+      _log.e("Response body has invalid \"days\" key: ${response.body}");
+      return null;
+    }
+
+    var daysJson = daysList.first;
     if (!_isValidJsonMap(daysJson)) {
       _log.e("Response body has invalid \"days\" key: ${response.body}");
       return null;
@@ -195,14 +218,25 @@ class AtmosphereFetcher {
   bool _isValidJsonMap(dynamic possibleJson) =>
       possibleJson != null && possibleJson is Map<String, dynamic>;
 
-  Measurement _measurement(double value, MeasurementSystem? system,
-      Unit metricUnit, Unit imperialUnit, Unit apiUnit) {
+  Measurement _measurement({
+    required double value,
+    required MeasurementSystem? system,
+    required Unit metricUnit,
+    required Unit imperialUnit,
+    required Unit apiUnit,
+  }) {
     var unit = system == null || system == MeasurementSystem.metric
         ? metricUnit
         : imperialUnit;
+
+    var convertedValue = unit.convertFrom(apiUnit, value);
+    if (system == MeasurementSystem.imperial_whole) {
+      convertedValue = convertedValue.roundToDouble();
+    }
+
     return Measurement(
       unit: unit,
-      value: unit.convertFrom(apiUnit, value),
+      value: convertedValue,
     );
   }
 }

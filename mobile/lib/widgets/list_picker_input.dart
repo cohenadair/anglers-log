@@ -42,8 +42,7 @@ class ListPickerInput extends StatelessWidget {
           context,
           PickerPage<T>.single(
             title: Text(pickerTitle),
-            initialValue:
-            controller.value ?? noneItem,
+            initialValue: controller.value ?? noneItem,
             itemBuilder: () => itemBuilder(context),
             allItem: PickerPageItem<T>(
               title: Strings.of(context).none,

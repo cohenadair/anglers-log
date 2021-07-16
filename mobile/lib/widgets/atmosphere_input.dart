@@ -27,7 +27,6 @@ import 'list_item.dart';
 import 'list_picker_input.dart';
 import 'multi_list_picker_input.dart';
 import 'multi_measurement_input.dart';
-import 'text_input.dart';
 import 'widget.dart';
 
 class AtmosphereInput extends StatelessWidget {
@@ -121,9 +120,10 @@ class __AtmosphereInputPageState extends State<_AtmosphereInputPage> {
   final _fields = <Id, Field>{};
 
   late final MultiMeasurementInputSpec _airTemperatureInputState;
-  late final MultiMeasurementInputSpec _windSpeedInputState;
   late final MultiMeasurementInputSpec _airPressureInputState;
   late final MultiMeasurementInputSpec _airVisibilityInputState;
+  late final MultiMeasurementInputSpec _airHumidityInputState;
+  late final MultiMeasurementInputSpec _windSpeedInputState;
 
   TimeManager get _timeManager => TimeManager.of(context);
 
@@ -148,8 +148,8 @@ class __AtmosphereInputPageState extends State<_AtmosphereInputPage> {
   MultiMeasurementInputController get _pressureController =>
       _fields[_idPressure]!.controller as MultiMeasurementInputController;
 
-  NumberInputController get _humidityController =>
-      _fields[_idHumidity]!.controller as NumberInputController;
+  MultiMeasurementInputController get _humidityController =>
+      _fields[_idHumidity]!.controller as MultiMeasurementInputController;
 
   MultiMeasurementInputController get _visibilityController =>
       _fields[_idVisibility]!.controller as MultiMeasurementInputController;
@@ -169,10 +169,11 @@ class __AtmosphereInputPageState extends State<_AtmosphereInputPage> {
 
     _airTemperatureInputState =
         MultiMeasurementInputSpec.airTemperature(context);
-    _windSpeedInputState = MultiMeasurementInputSpec.windSpeed(context);
     _airPressureInputState = MultiMeasurementInputSpec.airPressure(context);
     _airVisibilityInputState =
         MultiMeasurementInputSpec.airVisibility(context);
+    _airHumidityInputState = MultiMeasurementInputSpec.airHumidity(context);
+    _windSpeedInputState = MultiMeasurementInputSpec.windSpeed(context);
 
     _fields[_idTemperature] = Field(
       id: _idTemperature,
@@ -213,7 +214,7 @@ class __AtmosphereInputPageState extends State<_AtmosphereInputPage> {
     _fields[_idHumidity] = Field(
       id: _idHumidity,
       name: (context) => Strings.of(context).atmosphereInputAirHumidity,
-      controller: NumberInputController(),
+      controller: _airHumidityInputState.newInputController(),
     );
 
     _fields[_idMoonPhase] = Field(
@@ -321,11 +322,7 @@ class __AtmosphereInputPageState extends State<_AtmosphereInputPage> {
       child: MultiMeasurementInput(
         spec: _airTemperatureInputState,
         controller: _temperatureController,
-        onChanged: () {
-          _userPreferenceManager
-              .setAirTemperatureSystem(_temperatureController.value?.system);
-          _updateFromControllers();
-        },
+        onChanged: _updateFromControllers,
       ),
     );
   }
@@ -368,11 +365,7 @@ class __AtmosphereInputPageState extends State<_AtmosphereInputPage> {
       child: MultiMeasurementInput(
         spec: _windSpeedInputState,
         controller: _windSpeedController,
-        onChanged: () {
-          _userPreferenceManager
-              .setWindSpeedSystem(_windSpeedController.value?.system);
-          _updateFromControllers();
-        },
+        onChanged: _updateFromControllers,
       ),
     );
   }
@@ -399,11 +392,7 @@ class __AtmosphereInputPageState extends State<_AtmosphereInputPage> {
       child: MultiMeasurementInput(
         spec: _airPressureInputState,
         controller: _pressureController,
-        onChanged: () {
-          _userPreferenceManager
-              .setAirPressureSystem(_pressureController.value?.system);
-          _updateFromControllers();
-        },
+        onChanged: _updateFromControllers,
       ),
     );
   }
@@ -411,14 +400,10 @@ class __AtmosphereInputPageState extends State<_AtmosphereInputPage> {
   Widget _buildHumidity() {
     return Padding(
       padding: insetsHorizontalDefaultVerticalSmall,
-      child: TextInput.number(
-        context,
+      child: MultiMeasurementInput(
+        spec: _airHumidityInputState,
         controller: _humidityController,
-        label: Strings.of(context).atmosphereInputAirHumidity,
-        suffixText: "%",
-        decimal: false,
-        signed: false,
-        onChanged: (_) => _updateFromControllers(),
+        onChanged: _updateFromControllers,
       ),
     );
   }
@@ -429,11 +414,7 @@ class __AtmosphereInputPageState extends State<_AtmosphereInputPage> {
       child: MultiMeasurementInput(
         spec: _airVisibilityInputState,
         controller: _visibilityController,
-        onChanged: () {
-          _userPreferenceManager
-              .setAirVisibilitySystem(_visibilityController.value?.system);
-          _updateFromControllers();
-        },
+        onChanged: _updateFromControllers,
       ),
     );
   }
@@ -493,6 +474,7 @@ class __AtmosphereInputPageState extends State<_AtmosphereInputPage> {
       showErrorSnackBar(context, Strings.of(context).atmosphereInputFetchError);
       return;
     }
+
     setState(() {
       _updateFromAtmosphere(atmosphere);
     });
@@ -528,19 +510,20 @@ class __AtmosphereInputPageState extends State<_AtmosphereInputPage> {
     }
 
     if (atmosphere.hasHumidity()) {
-      _humidityController.intValue = atmosphere.humidity;
+      _humidityController.value =
+          MultiMeasurements.from(atmosphere.humidity, null);
     }
 
     if (atmosphere.hasMoonPhase()) {
       _moonPhaseController.value = atmosphere.moonPhase;
     }
 
-    if (atmosphere.hasSunriseTimestamp()) {
-      _sunriseController.value = atmosphere.sunriseTimestamp.toInt();
+    if (atmosphere.hasSunriseMillis()) {
+      _sunriseController.value = atmosphere.sunriseMillis.toInt();
     }
 
-    if (atmosphere.hasSunsetTimestamp()) {
-      _sunsetController.value = atmosphere.sunsetTimestamp.toInt();
+    if (atmosphere.hasSunsetMillis()) {
+      _sunsetController.value = atmosphere.sunsetMillis.toInt();
     }
 
     widget.controller.value = atmosphere;
@@ -580,8 +563,8 @@ class __AtmosphereInputPageState extends State<_AtmosphereInputPage> {
       isSet = true;
     }
 
-    if (_humidityController.hasIntValue) {
-      result.humidity = _humidityController.intValue!;
+    if (_humidityController.isSet) {
+      result.humidity = _humidityController.value!.mainValue;
       isSet = true;
     }
 
@@ -591,12 +574,12 @@ class __AtmosphereInputPageState extends State<_AtmosphereInputPage> {
     }
 
     if (_sunriseController.hasValue) {
-      result.sunriseTimestamp = Int64(_sunriseController.value);
+      result.sunriseMillis = Int64(_sunriseController.timeInMillis);
       isSet = true;
     }
 
     if (_sunsetController.hasValue) {
-      result.sunsetTimestamp = Int64(_sunsetController.value);
+      result.sunsetMillis = Int64(_sunsetController.timeInMillis);
       isSet = true;
     }
 

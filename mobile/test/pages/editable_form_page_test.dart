@@ -21,6 +21,24 @@ void main() {
     when(appManager.customEntityManager.list()).thenReturn([]);
   });
 
+  testWidgets("Custom fields hidden", (tester) async {
+    await tester.pumpWidget(Testable(
+      (_) => EditableFormPage(
+        allowCustomEntities: false,
+        customEntityValues: [
+          CustomEntityValue()
+            ..customEntityId = randomId()
+            ..value = "Test",
+        ],
+      ),
+      appManager: appManager,
+    ));
+
+    expect(find.byType(IconLabel), findsNothing);
+    expect(find.widgetWithText(TextField, "Custom Field 1"), findsNothing);
+    expect(find.widgetWithText(TextField, "Test"), findsNothing);
+  });
+
   testWidgets("Note shows when there are no custom values", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => EditableFormPage(),

@@ -21,21 +21,16 @@ class NumberFilterInput extends StatefulWidget {
   /// The title of the page shown when [NumberFilterInput] is tapped.
   final String filterTitle;
 
-  /// The suffix for the number input fields. This field is ignored if
-  /// [inputState] is not null.
-  final String? textInputSuffix;
-
   final NumberFilterInputController controller;
 
   /// See [_NumberFilterPage.inputSpec].
-  final MultiMeasurementInputSpec? inputState;
+  final MultiMeasurementInputSpec? inputSpec;
 
   NumberFilterInput({
     required this.title,
     required this.filterTitle,
     required this.controller,
-    this.inputState,
-    this.textInputSuffix,
+    this.inputSpec,
   });
 
   @override
@@ -66,9 +61,8 @@ class _NumberFilterInputState extends State<NumberFilterInput> {
           context,
           _NumberFilterPage(
             title: widget.filterTitle,
-            textInputSuffix: widget.textInputSuffix,
             initialValue: value,
-            inputSpec: widget.inputState,
+            inputSpec: widget.inputSpec,
             onChanged: (numberFilter) =>
                 setState(() => widget.controller.value = numberFilter),
           ),
@@ -80,7 +74,6 @@ class _NumberFilterInputState extends State<NumberFilterInput> {
 
 class _NumberFilterPage extends StatefulWidget {
   final String title;
-  final String? textInputSuffix;
   final NumberFilter initialValue;
 
   /// If null, will show standard [TextField.number] for whole number input.
@@ -91,7 +84,6 @@ class _NumberFilterPage extends StatefulWidget {
   _NumberFilterPage({
     required this.title,
     required this.initialValue,
-    this.textInputSuffix,
     this.inputSpec,
     this.onChanged,
   });
@@ -218,7 +210,6 @@ class __NumberFilterPageState extends State<_NumberFilterPage> {
       controller: controller,
       decimal: false,
       signed: false,
-      suffixText: widget.textInputSuffix,
       onChanged: (_) => setState(() {
         onChanged?.call();
         _notifyIfNeeded();

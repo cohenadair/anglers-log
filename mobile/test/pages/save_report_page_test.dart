@@ -540,14 +540,19 @@ void main() {
     await selectItems(tester, "All anglers", ["All", "Cohen"]);
     await selectItems(tester, "All species", ["All", "Catfish"]);
     await selectItems(tester, "All baits", ["All", "Spoon"]);
+
     await tester.ensureVisible(find.text("All fishing spots"));
     await selectItems(tester, "All fishing spots", ["All", "B"]);
+
     await tester.ensureVisible(find.text("All fishing methods"));
     await selectItems(tester, "All fishing methods", ["All", "Casting"]);
+
     await tester.ensureVisible(find.text("All times of day"));
     await selectItems(tester, "All times of day", ["All", "Afternoon"]);
+
     await tester.ensureVisible(find.text("All seasons"));
     await selectItems(tester, "All seasons", ["All", "Summer"]);
+
     await tester.ensureVisible(find.text("All water clarities"));
     await selectItems(tester, "All water clarities", ["All", "Stained"]);
 
@@ -586,6 +591,51 @@ void main() {
     await tapAndSettle(tester, find.text("Any"));
     await tapAndSettle(tester, find.byType(BackButton));
 
+    await tester.ensureVisible(find.text("Air Temperature"));
+    await tapAndSettle(tester, find.text("Air Temperature"));
+    await tapAndSettle(tester, find.text("Equal to (=)"));
+    await enterTextAndSettle(
+        tester, find.widgetWithText(TextInput, "Value"), "20");
+    await tapAndSettle(tester, find.byType(BackButton));
+
+    await tester.ensureVisible(find.text("Air Humidity"));
+    await tapAndSettle(tester, find.text("Air Humidity"));
+    await tapAndSettle(tester, find.text("Equal to (=)"));
+    await enterTextAndSettle(
+        tester, find.widgetWithText(TextInput, "Value"), "20");
+    await tapAndSettle(tester, find.byType(BackButton));
+
+    await tester.ensureVisible(find.text("Air Visibility"));
+    await tapAndSettle(tester, find.text("Air Visibility"));
+    await tapAndSettle(tester, find.text("Equal to (=)"));
+    await enterTextAndSettle(
+        tester, find.widgetWithText(TextInput, "Value"), "20");
+    await tapAndSettle(tester, find.byType(BackButton));
+
+    await tester.ensureVisible(find.text("Atmospheric Pressure"));
+    await tapAndSettle(tester, find.text("Atmospheric Pressure"));
+    await tapAndSettle(tester, find.text("Equal to (=)"));
+    await enterTextAndSettle(
+        tester, find.widgetWithText(TextInput, "Value"), "20");
+    await tapAndSettle(tester, find.byType(BackButton));
+
+    await tester.ensureVisible(find.text("Wind Speed"));
+    await tapAndSettle(tester, find.text("Wind Speed"));
+    await tapAndSettle(tester, find.text("Equal to (=)"));
+    await enterTextAndSettle(
+        tester, find.widgetWithText(TextInput, "Value"), "20");
+    await tapAndSettle(tester, find.byType(BackButton));
+
+    await tester.ensureVisible(find.text("All wind directions"));
+    await selectItems(tester, "All wind directions", ["All", "NE"]);
+
+    await tester.ensureVisible(find.text("All sky conditions"));
+    await selectItems(
+        tester, "All sky conditions", ["All", "Cloudy", "Drizzle"]);
+
+    await tester.ensureVisible(find.text("All moon phases"));
+    await selectItems(tester, "All moon phases", ["All", "Full"]);
+
     expect(
       find.descendant(
         of: find.widgetWithText(InkWell, "Compare"),
@@ -612,9 +662,16 @@ void main() {
     expect(find.text("< 15\u00B0C"), findsOneWidget);
     expect(find.text("= 20 cm"), findsOneWidget);
     expect(find.text("10 kg - 15 kg"), findsOneWidget);
-    // TODO: Add values for atmosphere filters.
-    // expect(find.text("Any"), findsOneWidget);
-    expect(find.text("Any"), findsNWidgets(6));
+    expect(find.text("= 20\u00B0C"), findsOneWidget);
+    expect(find.text("= 20%"), findsOneWidget);
+    expect(find.text("= 20 km"), findsOneWidget);
+    expect(find.text("= 20 MB"), findsOneWidget);
+    expect(find.text("= 20 km/h"), findsOneWidget);
+    expect(find.text("Wind: NE"), findsOneWidget);
+    expect(find.text("Drizzle"), findsOneWidget);
+    expect(find.text("Cloudy"), findsOneWidget);
+    expect(find.text("Full Moon"), findsOneWidget);
+    expect(find.text("Any"), findsOneWidget);
 
     await tapAndSettle(tester, find.text("SAVE"));
 
@@ -636,6 +693,9 @@ void main() {
     expect(report.waterClarityIds.length, 1);
     expect(report.periods.length, 1);
     expect(report.seasons.length, 1);
+    expect(report.windDirections.length, 1);
+    expect(report.skyConditions.length, 2);
+    expect(report.moonPhases.length, 1);
     expect(report.hasIsFavoritesOnly(), isFalse);
     expect(report.type, Report_Type.comparison);
     expect(report.hasWaterDepthFilter(), isTrue);
@@ -643,6 +703,11 @@ void main() {
     expect(report.hasLengthFilter(), isTrue);
     expect(report.hasWeightFilter(), isTrue);
     expect(report.hasQuantityFilter(), isFalse);
+    expect(report.hasAirTemperatureFilter(), isTrue);
+    expect(report.hasAirVisibilityFilter(), isTrue);
+    expect(report.hasAirHumidityFilter(), isTrue);
+    expect(report.hasAirPressureFilter(), isTrue);
+    expect(report.hasWindSpeedFilter(), isTrue);
   });
 
   testWidgets("Add summary report with preset date range", (tester) async {
@@ -738,6 +803,9 @@ void main() {
     expect(report.periods, isEmpty);
     expect(report.seasons, isEmpty);
     expect(report.waterClarityIds, isEmpty);
+    expect(report.windDirections, isEmpty);
+    expect(report.skyConditions, isEmpty);
+    expect(report.moonPhases, isEmpty);
     expect(report.hasIsFavoritesOnly(), isFalse);
     expect(report.type, Report_Type.comparison);
     expect(report.hasWaterDepthFilter(), isFalse);
@@ -745,6 +813,11 @@ void main() {
     expect(report.hasLengthFilter(), isFalse);
     expect(report.hasWeightFilter(), isFalse);
     expect(report.hasQuantityFilter(), isFalse);
+    expect(report.hasAirTemperatureFilter(), isFalse);
+    expect(report.hasAirHumidityFilter(), isFalse);
+    expect(report.hasAirVisibilityFilter(), isFalse);
+    expect(report.hasAirPressureFilter(), isFalse);
+    expect(report.hasWindSpeedFilter(), isFalse);
   });
 
   testWidgets("Add report with all entities selected sets empty collections",
@@ -944,6 +1017,9 @@ void main() {
     expect(find.text("All times of day"), findsOneWidget);
     expect(find.text("All seasons"), findsOneWidget);
     expect(find.text("All water clarities"), findsOneWidget);
+    expect(find.text("All wind directions"), findsOneWidget);
+    expect(find.text("All sky conditions"), findsOneWidget);
+    expect(find.text("All moon phases"), findsOneWidget);
   });
 
   testWidgets("New report without changing date ranges", (tester) async {

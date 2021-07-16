@@ -650,6 +650,8 @@ extension Units on Unit {
         return Strings.of(context).unitMiles;
       case Unit.kilometers:
         return Strings.of(context).unitKilometers;
+      case Unit.percent:
+        return Strings.of(context).unitPercent;
     }
     throw ArgumentError("Invalid input: $this");
   }
@@ -686,6 +688,8 @@ extension Units on Unit {
         return Strings.of(context).keywordsAirVisibilityImperial;
       case Unit.kilometers:
         return Strings.of(context).keywordsAirVisibilityMetric;
+      case Unit.percent:
+        return Strings.of(context).keywordsPercent;
     }
     throw ArgumentError("Invalid input: $this");
   }
@@ -710,6 +714,7 @@ extension Units on Unit {
         return true;
       case Unit.celsius:
       case Unit.fahrenheit:
+      case Unit.percent:
         return false;
     }
     throw ArgumentError("Invalid input: $this");
@@ -733,6 +738,9 @@ extension Units on Unit {
       case Unit.kilometers_per_hour:
       case Unit.kilometers:
       case Unit.millibars:
+        return MeasurementSystem.metric;
+      // Units that don't have an associated system will use metric.
+      case Unit.percent:
         return MeasurementSystem.metric;
     }
     throw ArgumentError("Invalid input: $this");
@@ -769,6 +777,8 @@ extension Units on Unit {
         return Unit.kilometers;
       case Unit.kilometers:
         return Unit.miles;
+      case Unit.percent:
+        return Unit.percent;
     }
     throw ArgumentError("Invalid input: $this");
   }
@@ -792,6 +802,7 @@ extension Units on Unit {
       case Unit.pounds_per_square_inch:
       case Unit.miles:
       case Unit.kilometers:
+      case Unit.percent:
         _log.w("Unit.toDecimal called with non-decimal unit: $this");
         return value;
     }
@@ -1169,8 +1180,8 @@ extension SkyConditions on SkyCondition {
 
   /// Converts a Visual Crossing conditions type to a [SkyCondition].
   /// See https://github.com/visualcrossing/WeatherApi/blob/master/lang/en.txt.
-  static List<SkyCondition> fromTypes(String types) {
-    var result = <SkyCondition>[];
+  static Set<SkyCondition> fromTypes(String types) {
+    var result = <SkyCondition>{};
     var typeList = types.split(",");
 
     for (var type in typeList) {

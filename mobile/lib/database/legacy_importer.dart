@@ -598,7 +598,7 @@ class LegacyImporter {
   Atmosphere _parseWeatherData(Map<String, dynamic> weatherData) {
     var atmosphere = Atmosphere();
 
-    var temperature = _doubleFromDynamic(weatherData[_keyTemperature]);
+    var temperature = doubleFromDynamic(weatherData[_keyTemperature]);
     if (temperature != null) {
       atmosphere.temperature = Measurement(
         unit: _measurementSystem.isMetric ? Unit.celsius : Unit.fahrenheit,
@@ -606,7 +606,7 @@ class LegacyImporter {
       );
     }
 
-    var windSpeed = _doubleFromDynamic(weatherData[_keyWindSpeed]);
+    var windSpeed = doubleFromDynamic(weatherData[_keyWindSpeed]);
     if (windSpeed != null) {
       atmosphere.windSpeed = Measurement(
         unit: _measurementSystem.isMetric
@@ -623,19 +623,6 @@ class LegacyImporter {
     }
 
     return atmosphere;
-  }
-
-  double? _doubleFromDynamic(dynamic value) {
-    if (value == null) {
-      // ignore: avoid_returning_null
-      return null;
-    } else if (value is String) {
-      return double.tryParse(value);
-    } else if (value is int) {
-      return value.toDouble();
-    } else {
-      return value as double;
-    }
   }
 
   /// Converts sky conditions from https://openweathermap.org/weather-conditions
@@ -672,7 +659,10 @@ class LegacyImporter {
       case "clear":
         return [SkyCondition.clear];
       case "clouds":
+      case "cloudy":    // Not in OpenWeather doc, but appears in legacy JSON.
         return [SkyCondition.cloudy];
+      case "overcast":  // Not in OpenWeather doc, but appears in legacy JSON.
+        return [SkyCondition.overcast];
     }
     return [];
   }

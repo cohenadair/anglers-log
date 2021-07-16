@@ -304,7 +304,7 @@ bool catchFilterMatchesAtmosphere(
   }
 
   if (atmosphere.hasHumidity()) {
-    searchString += " ${atmosphere.humidity}%";
+    searchString += " ${atmosphere.humidity.filterString(context)}";
     searchString += " ${Strings.of(context).keywordsAirHumidity}";
   }
 
@@ -313,11 +313,11 @@ bool catchFilterMatchesAtmosphere(
     searchString += " ${Strings.of(context).keywordsMoon}";
   }
 
-  if (atmosphere.hasSunsetTimestamp()) {
+  if (atmosphere.hasSunsetMillis()) {
     searchString += " ${Strings.of(context).keywordsSunset}";
   }
 
-  if (atmosphere.hasSunsetTimestamp()) {
+  if (atmosphere.hasSunsetMillis()) {
     searchString += " ${Strings.of(context).keywordsSunrise}";
   }
 

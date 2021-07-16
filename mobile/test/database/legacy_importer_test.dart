@@ -188,6 +188,18 @@ void main() {
     verify(appManager.userPreferenceManager
             .setCatchWeightSystem(MeasurementSystem.imperial_whole))
         .called(1);
+    verify(appManager.userPreferenceManager
+            .setAirTemperatureSystem(MeasurementSystem.imperial_whole))
+        .called(1);
+    verify(appManager.userPreferenceManager
+            .setAirPressureSystem(MeasurementSystem.imperial_whole))
+        .called(1);
+    verify(appManager.userPreferenceManager
+            .setAirVisibilitySystem(MeasurementSystem.imperial_whole))
+        .called(1);
+    verify(appManager.userPreferenceManager
+            .setWindSpeedSystem(MeasurementSystem.imperial_whole))
+        .called(1);
 
     var waterDepthCatch = catchManager
         .list()
@@ -223,6 +235,19 @@ void main() {
         catchManager.list().firstWhere((cat) => cat.notes == "Caught by Tim.");
     expect(notesCatch.notes, "Caught by Tim.");
 
+    // Weather.
+    expect(
+      catchManager.list().firstWhere((cat) =>
+          cat.hasAtmosphere() &&
+          cat.atmosphere.temperature.value == 25 &&
+          cat.atmosphere.temperature.unit == Unit.fahrenheit &&
+          cat.atmosphere.windSpeed.value == 8 &&
+          cat.atmosphere.windSpeed.unit == Unit.miles_per_hour &&
+          cat.atmosphere.skyConditions.first == SkyCondition.cloudy),
+      isNotNull,
+    );
+    expect(catchManager.list().where((cat) => cat.hasAtmosphere()).length, 53);
+
     verifyIds();
   });
 
@@ -251,6 +276,18 @@ void main() {
         .called(1);
     verify(appManager.userPreferenceManager
             .setCatchWeightSystem(MeasurementSystem.imperial_whole))
+        .called(1);
+    verify(appManager.userPreferenceManager
+            .setAirTemperatureSystem(MeasurementSystem.imperial_whole))
+        .called(1);
+    verify(appManager.userPreferenceManager
+            .setAirPressureSystem(MeasurementSystem.imperial_whole))
+        .called(1);
+    verify(appManager.userPreferenceManager
+            .setAirVisibilitySystem(MeasurementSystem.imperial_whole))
+        .called(1);
+    verify(appManager.userPreferenceManager
+            .setWindSpeedSystem(MeasurementSystem.imperial_whole))
         .called(1);
 
     var waterDepthCatch = catchManager
@@ -296,6 +333,19 @@ void main() {
         cat.notes == "Casting downstream close to shore in very slow water.");
     expect(notesCatch.notes,
         "Casting downstream close to shore in very slow water.");
+
+    // Weather.
+    expect(
+      catchManager.list().firstWhere((cat) =>
+          cat.hasAtmosphere() &&
+          cat.atmosphere.temperature.value == 68 &&
+          cat.atmosphere.temperature.unit == Unit.fahrenheit &&
+          cat.atmosphere.windSpeed.value == 4 &&
+          cat.atmosphere.windSpeed.unit == Unit.miles_per_hour &&
+          cat.atmosphere.skyConditions.first == SkyCondition.clear),
+      isNotNull,
+    );
+    expect(catchManager.list().where((cat) => cat.hasAtmosphere()).length, 36);
 
     verifyIds();
   });
@@ -612,6 +662,47 @@ void main() {
     expect(catches, isNotNull);
     expect(catches.length, 2);
     expect(importedImages.length, 3);
+  });
+
+  test("Import metric units", () async {
+    var file = File("test/resources/backups/metric.zip");
+    await LegacyImporter(appManager.app, file).start();
+
+    verify(appManager.userPreferenceManager
+            .setWaterDepthSystem(MeasurementSystem.metric))
+        .called(1);
+    verify(appManager.userPreferenceManager
+            .setWaterTemperatureSystem(MeasurementSystem.metric))
+        .called(1);
+    verify(appManager.userPreferenceManager
+            .setCatchLengthSystem(MeasurementSystem.metric))
+        .called(1);
+    verify(appManager.userPreferenceManager
+            .setCatchWeightSystem(MeasurementSystem.metric))
+        .called(1);
+    verify(appManager.userPreferenceManager
+            .setAirTemperatureSystem(MeasurementSystem.metric))
+        .called(1);
+    verify(appManager.userPreferenceManager
+            .setAirPressureSystem(MeasurementSystem.metric))
+        .called(1);
+    verify(appManager.userPreferenceManager
+            .setAirVisibilitySystem(MeasurementSystem.metric))
+        .called(1);
+    verify(appManager.userPreferenceManager
+            .setWindSpeedSystem(MeasurementSystem.metric))
+        .called(1);
+
+    var cat = catchManager.list().first;
+    expect(
+      cat.hasAtmosphere() &&
+          cat.atmosphere.temperature.value == 81 &&
+          cat.atmosphere.temperature.unit == Unit.celsius &&
+          cat.atmosphere.windSpeed.value == 0.47 &&
+          cat.atmosphere.windSpeed.unit == Unit.kilometers_per_hour &&
+          cat.atmosphere.skyConditions.first == SkyCondition.clear,
+      isTrue,
+    );
   });
 
   group("Migration", () {

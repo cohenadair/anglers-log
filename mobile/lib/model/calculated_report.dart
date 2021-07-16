@@ -385,9 +385,9 @@ class CalculatedReport {
 
     result.addAll(periods.map((e) => e.displayName(context)));
     result.addAll(seasons.map((e) => e.displayName(context)));
-    result.addAll(windDirections.map((e) => e.displayName(context)));
+    result.addAll(windDirections.map((e) => e.chipName(context)));
     result.addAll(skyConditions.map((e) => e.displayName(context)));
-    result.addAll(moonPhases.map((e) => e.displayName(context)));
+    result.addAll(moonPhases.map((e) => e.chipName(context)));
 
     _addNumberFilterIfNeeded(
         result, Strings.of(context).filterValueWaterDepth, waterDepthFilter);

@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:mobile/res/style.dart';
 import 'package:quiver/strings.dart';
 
 import '../i18n/strings.dart';
 import '../model/gen/anglerslog.pb.dart';
 import '../res/dimen.dart';
 import '../res/gen/custom_icons.dart';
+import '../res/style.dart';
 import '../utils/date_time_utils.dart';
 import '../utils/protobuf_utils.dart';
-import 'text.dart';
 import 'widget.dart';
 
 class AtmosphereWrap extends StatelessWidget {
@@ -56,23 +55,23 @@ class AtmosphereWrap extends StatelessWidget {
     if (atmosphere.hasHumidity()) {
       children.add(_Item(
         icon: CustomIcons.humidity,
-        title: "${atmosphere.humidity}%",
+        title: atmosphere.humidity.displayValue(context),
         subtitle: Strings.of(context).atmosphereInputHumidity,
       ));
     }
 
-    if (atmosphere.hasSunriseTimestamp()) {
+    if (atmosphere.hasSunriseMillis()) {
       children.add(_Item(
         icon: CustomIcons.sunrise,
-        title: formatTimestampTime(context, atmosphere.sunriseTimestamp),
+        title: formatTimeMillis(context, atmosphere.sunriseMillis),
         subtitle: Strings.of(context).atmosphereInputSunrise,
       ));
     }
 
-    if (atmosphere.hasSunsetTimestamp()) {
+    if (atmosphere.hasSunsetMillis()) {
       children.add(_Item(
         icon: CustomIcons.sunset,
-        title: formatTimestampTime(context, atmosphere.sunsetTimestamp),
+        title: formatTimeMillis(context, atmosphere.sunsetMillis),
         subtitle: Strings.of(context).atmosphereInputSunset,
       ));
     }

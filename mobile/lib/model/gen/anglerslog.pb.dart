@@ -68,11 +68,11 @@ class Atmosphere extends $pb.GeneratedMessage {
     ..aOM<Measurement>(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'windSpeed', subBuilder: Measurement.create)
     ..e<Direction>(4, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'windDirection', $pb.PbFieldType.OE, defaultOrMaker: Direction.direction_all, valueOf: Direction.valueOf, enumValues: Direction.values)
     ..aOM<Measurement>(5, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'pressure', subBuilder: Measurement.create)
-    ..a<$core.int>(6, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'humidity', $pb.PbFieldType.OU3)
+    ..aOM<Measurement>(6, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'humidity', subBuilder: Measurement.create)
     ..aOM<Measurement>(7, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'visibility', subBuilder: Measurement.create)
     ..e<MoonPhase>(8, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'moonPhase', $pb.PbFieldType.OE, defaultOrMaker: MoonPhase.moon_phase_all, valueOf: MoonPhase.valueOf, enumValues: MoonPhase.values)
-    ..a<$fixnum.Int64>(9, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'sunriseTimestamp', $pb.PbFieldType.OU6, defaultOrMaker: $fixnum.Int64.ZERO)
-    ..a<$fixnum.Int64>(10, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'sunsetTimestamp', $pb.PbFieldType.OU6, defaultOrMaker: $fixnum.Int64.ZERO)
+    ..a<$fixnum.Int64>(9, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'sunriseMillis', $pb.PbFieldType.OU6, defaultOrMaker: $fixnum.Int64.ZERO)
+    ..a<$fixnum.Int64>(10, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'sunsetMillis', $pb.PbFieldType.OU6, defaultOrMaker: $fixnum.Int64.ZERO)
     ..hasRequiredFields = false
   ;
 
@@ -83,11 +83,11 @@ class Atmosphere extends $pb.GeneratedMessage {
     Measurement? windSpeed,
     Direction? windDirection,
     Measurement? pressure,
-    $core.int? humidity,
+    Measurement? humidity,
     Measurement? visibility,
     MoonPhase? moonPhase,
-    $fixnum.Int64? sunriseTimestamp,
-    $fixnum.Int64? sunsetTimestamp,
+    $fixnum.Int64? sunriseMillis,
+    $fixnum.Int64? sunsetMillis,
   }) {
     final _result = create();
     if (temperature != null) {
@@ -114,11 +114,11 @@ class Atmosphere extends $pb.GeneratedMessage {
     if (moonPhase != null) {
       _result.moonPhase = moonPhase;
     }
-    if (sunriseTimestamp != null) {
-      _result.sunriseTimestamp = sunriseTimestamp;
+    if (sunriseMillis != null) {
+      _result.sunriseMillis = sunriseMillis;
     }
-    if (sunsetTimestamp != null) {
-      _result.sunsetTimestamp = sunsetTimestamp;
+    if (sunsetMillis != null) {
+      _result.sunsetMillis = sunsetMillis;
     }
     return _result;
   }
@@ -189,13 +189,15 @@ class Atmosphere extends $pb.GeneratedMessage {
   Measurement ensurePressure() => $_ensure(4);
 
   @$pb.TagNumber(6)
-  $core.int get humidity => $_getIZ(5);
+  Measurement get humidity => $_getN(5);
   @$pb.TagNumber(6)
-  set humidity($core.int v) { $_setUnsignedInt32(5, v); }
+  set humidity(Measurement v) { setField(6, v); }
   @$pb.TagNumber(6)
   $core.bool hasHumidity() => $_has(5);
   @$pb.TagNumber(6)
   void clearHumidity() => clearField(6);
+  @$pb.TagNumber(6)
+  Measurement ensureHumidity() => $_ensure(5);
 
   @$pb.TagNumber(7)
   Measurement get visibility => $_getN(6);
@@ -218,22 +220,22 @@ class Atmosphere extends $pb.GeneratedMessage {
   void clearMoonPhase() => clearField(8);
 
   @$pb.TagNumber(9)
-  $fixnum.Int64 get sunriseTimestamp => $_getI64(8);
+  $fixnum.Int64 get sunriseMillis => $_getI64(8);
   @$pb.TagNumber(9)
-  set sunriseTimestamp($fixnum.Int64 v) { $_setInt64(8, v); }
+  set sunriseMillis($fixnum.Int64 v) { $_setInt64(8, v); }
   @$pb.TagNumber(9)
-  $core.bool hasSunriseTimestamp() => $_has(8);
+  $core.bool hasSunriseMillis() => $_has(8);
   @$pb.TagNumber(9)
-  void clearSunriseTimestamp() => clearField(9);
+  void clearSunriseMillis() => clearField(9);
 
   @$pb.TagNumber(10)
-  $fixnum.Int64 get sunsetTimestamp => $_getI64(9);
+  $fixnum.Int64 get sunsetMillis => $_getI64(9);
   @$pb.TagNumber(10)
-  set sunsetTimestamp($fixnum.Int64 v) { $_setInt64(9, v); }
+  set sunsetMillis($fixnum.Int64 v) { $_setInt64(9, v); }
   @$pb.TagNumber(10)
-  $core.bool hasSunsetTimestamp() => $_has(9);
+  $core.bool hasSunsetMillis() => $_has(9);
   @$pb.TagNumber(10)
-  void clearSunsetTimestamp() => clearField(10);
+  void clearSunsetMillis() => clearField(10);
 }
 
 class CustomEntity extends $pb.GeneratedMessage {

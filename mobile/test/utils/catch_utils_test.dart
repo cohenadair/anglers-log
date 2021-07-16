@@ -291,4 +291,54 @@ void main() {
     expect(catchFilterMatchesNotes(context, "test", cat), isTrue);
     expect(catchFilterMatchesNotes(context, "error", cat), isFalse);
   });
+
+  testWidgets("catchFilterMatchesAtmosphere", (tester) async {
+    var context = await buildContext(tester);
+
+    // Without atmosphere.
+    var cat = Catch();
+    expect(catchFilterMatchesAtmosphere(context, "", cat), isFalse);
+
+    // With atmosphere.
+    cat = Catch(
+      atmosphere: Atmosphere(
+        temperature: Measurement(
+          unit: Unit.fahrenheit,
+          value: 58,
+        ),
+        skyConditions: [SkyCondition.cloudy],
+        windSpeed: Measurement(
+          unit: Unit.kilometers_per_hour,
+          value: 6.5,
+        ),
+        windDirection: Direction.north,
+        pressure: Measurement(
+          unit: Unit.pounds_per_square_inch,
+          value: 1000,
+        ),
+        humidity: Measurement(
+          unit: Unit.percent,
+          value: 50,
+        ),
+        visibility: Measurement(
+          unit: Unit.miles,
+          value: 10,
+        ),
+        moonPhase: MoonPhase.full,
+        sunriseMillis: Int64(10000),
+        sunsetMillis: Int64(15000),
+      ),
+    );
+    expect(catchFilterMatchesAtmosphere(context, "58", cat), isTrue);
+    expect(catchFilterMatchesAtmosphere(context, "6.5", cat), isTrue);
+    expect(catchFilterMatchesAtmosphere(context, "1000", cat), isTrue);
+    expect(catchFilterMatchesAtmosphere(context, "50", cat), isTrue);
+    expect(catchFilterMatchesAtmosphere(context, "10", cat), isTrue);
+    expect(catchFilterMatchesAtmosphere(context, "full", cat), isTrue);
+    expect(catchFilterMatchesAtmosphere(context, "sunrise", cat), isTrue);
+    expect(catchFilterMatchesAtmosphere(context, "sunset", cat), isTrue);
+    expect(catchFilterMatchesAtmosphere(context, "500", cat), isFalse);
+    expect(catchFilterMatchesAtmosphere(context, "37", cat), isFalse);
+    expect(catchFilterMatchesAtmosphere(context, "nothing", cat), isFalse);
+  });
 }

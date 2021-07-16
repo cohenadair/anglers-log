@@ -222,6 +222,7 @@ class Unit extends $pb.ProtobufEnum {
   static const Unit pounds_per_square_inch = Unit._(12, const $core.bool.fromEnvironment('protobuf.omit_enum_names') ? '' : 'pounds_per_square_inch');
   static const Unit miles = Unit._(13, const $core.bool.fromEnvironment('protobuf.omit_enum_names') ? '' : 'miles');
   static const Unit kilometers = Unit._(14, const $core.bool.fromEnvironment('protobuf.omit_enum_names') ? '' : 'kilometers');
+  static const Unit percent = Unit._(15, const $core.bool.fromEnvironment('protobuf.omit_enum_names') ? '' : 'percent');
 
   static const $core.List<Unit> values = <Unit> [
     feet,
@@ -239,6 +240,7 @@ class Unit extends $pb.ProtobufEnum {
     pounds_per_square_inch,
     miles,
     kilometers,
+    percent,
   ];
 
   static final $core.Map<$core.int, Unit> _byValue = $pb.ProtobufEnum.initByValue(values);

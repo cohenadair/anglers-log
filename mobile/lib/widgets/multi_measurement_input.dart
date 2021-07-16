@@ -206,6 +206,13 @@ class MultiMeasurementInputSpec {
           title: (context) => Strings.of(context).atmosphereInputAirVisibility,
         );
 
+  MultiMeasurementInputSpec.airHumidity(BuildContext context)
+      : this._(
+          imperial: Unit.percent,
+          metric: Unit.percent,
+          title: (context) => Strings.of(context).atmosphereInputAirHumidity,
+        );
+
   MultiMeasurementInputController newInputController({
     NumberInputController? mainController,
     NumberInputController? fractionController,

@@ -176,11 +176,13 @@ String formatTimeOfDay(BuildContext context, TimeOfDay time) {
   );
 }
 
-String formatTimestampTime(BuildContext context, Int64 timestamp) {
-  return formatTimeOfDay(
-      context,
-      TimeOfDay.fromDateTime(
-          DateTime.fromMillisecondsSinceEpoch(timestamp.toInt())));
+String formatTimeMillis(BuildContext context, Int64 millis) {
+  var ms = millis.toInt();
+  var hours =
+      (ms / Duration.millisecondsPerHour % Duration.hoursPerDay).floor();
+  var minutes =
+      (ms / Duration.millisecondsPerMinute % Duration.secondsPerMinute).round();
+  return formatTimeOfDay(context, TimeOfDay(hour: hours, minute: minutes));
 }
 
 /// Returns a formatted [DateTime] to be displayed to the user. Includes date

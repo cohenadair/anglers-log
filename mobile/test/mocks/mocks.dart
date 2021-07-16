@@ -8,10 +8,12 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart' as google;
+import 'package:http/http.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mobile/angler_manager.dart';
 import 'package:mobile/app_manager.dart';
 import 'package:mobile/app_preference_manager.dart';
+import 'package:mobile/atmosphere_fetcher.dart';
 import 'package:mobile/auth_manager.dart';
 import 'package:mobile/bait_category_manager.dart';
 import 'package:mobile/bait_manager.dart';
@@ -64,6 +66,7 @@ import 'mocks.mocks.dart';
 @GenerateMocks([AnglerManager])
 @GenerateMocks([AppManager])
 @GenerateMocks([AppPreferenceManager])
+@GenerateMocks([AtmosphereFetcher])
 @GenerateMocks([BaitCategoryManager])
 @GenerateMocks([BaitManager])
 @GenerateMocks([CatchManager])
@@ -124,6 +127,7 @@ import 'mocks.mocks.dart';
 @GenerateMocks([PurchaserInfo])
 @GenerateMocks([QuerySnapshot])
 @GenerateMocks([Reference])
+@GenerateMocks([Response])
 @GenerateMocks([], customMocks: [MockSpec<StreamSubscription>()])
 @GenerateMocks([TaskSnapshot])
 @GenerateMocks([UploadTask])

@@ -406,4 +406,56 @@ void main() {
     expect(findCheckbox(tester, "Option B")!.checked, isFalse);
     expect(findCheckbox(tester, "Option C")!.checked, isFalse);
   });
+
+  testWidgets("Multi-none item pops navigator with empty selection",
+      (tester) async {
+    Set<String>? pickedItems;
+    await tester.pumpWidget(
+      Testable(
+        (_) => PickerPage<String>(
+          itemBuilder: () => [
+            PickerPageItem(title: "Option A", value: "Option A"),
+            PickerPageItem(title: "Option B", value: "Option B"),
+            PickerPageItem(title: "Option C", value: "Option C"),
+          ],
+          onFinishedPicking: (_, items) => pickedItems = items,
+          allItem: PickerPageItem(
+            title: "None",
+            value: "None",
+            isMultiNone: true,
+          ),
+          initialValues: {},
+          multiSelect: true,
+        ),
+      ),
+    );
+
+    expect(find.text("None"), findsOneWidget);
+
+    var check = tester.widget<AnimatedVisibility>(find.descendant(
+      of: find.widgetWithText(PickerListItem, "None"),
+      matching: find.byType(AnimatedVisibility),
+    ));
+    expect(check.visible, isTrue);
+
+    await tapAndSettle(
+      tester,
+      find.descendant(
+        of: find.widgetWithText(ListItem, "Option A"),
+        matching: find.byType(PaddedCheckbox),
+      ),
+    );
+    // Wait for check to disappear.
+    await tester.pumpAndSettle(Duration(milliseconds: 200));
+
+    check = tester.widget<AnimatedVisibility>(find.descendant(
+      of: find.widgetWithText(PickerListItem, "None"),
+      matching: find.byType(AnimatedVisibility),
+    ));
+    expect(check.visible, isFalse);
+
+    await tapAndSettle(tester, find.text("None"));
+    expect(pickedItems, isNotNull);
+    expect(pickedItems!, isEmpty);
+  });
 }

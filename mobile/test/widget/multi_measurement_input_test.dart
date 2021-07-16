@@ -306,4 +306,65 @@ void main() {
     expect(find.text("\u00BD"), findsOneWidget);
     expect(controller.value!.fractionValue.value, 0.5);
   });
+
+  testWidgets("Custom title", (tester) async {
+    await tester.pumpWidget(
+      Testable(
+        (context) {
+          var spec = MultiMeasurementInputSpec.length(context);
+          return MultiMeasurementInput(
+            spec: spec,
+            controller: spec.newInputController(),
+            onChanged: () {},
+            title: "Custom Title",
+          );
+        },
+        appManager: appManager,
+      ),
+    );
+
+    expect(find.text("Custom Title"), findsOneWidget);
+  });
+
+  testWidgets("Spec title", (tester) async {
+    await tester.pumpWidget(
+      Testable(
+        (context) {
+          var spec = MultiMeasurementInputSpec.length(context);
+          return MultiMeasurementInput(
+            spec: spec,
+            controller: spec.newInputController(),
+            onChanged: () {},
+          );
+        },
+        appManager: appManager,
+      ),
+    );
+
+    expect(find.text("Length"), findsOneWidget);
+  });
+
+  testWidgets("newInputController sets mainUnit", (tester) async {
+    var context = await buildContext(tester, appManager: appManager);
+
+    var spec = MultiMeasurementInputSpec.airHumidity(context);
+    var controller = spec.newInputController();
+    expect(controller.system, MeasurementSystem.imperial_whole);
+
+    spec = MultiMeasurementInputSpec.waterTemperature(context);
+    controller = spec.newInputController();
+    expect(controller.system, MeasurementSystem.metric);
+
+    when(appManager.userPreferenceManager.waterTemperatureSystem)
+        .thenReturn(MeasurementSystem.imperial_whole);
+    spec = MultiMeasurementInputSpec.waterTemperature(context);
+    controller = spec.newInputController();
+    expect(controller.system, MeasurementSystem.imperial_whole);
+
+    when(appManager.userPreferenceManager.waterTemperatureSystem)
+        .thenReturn(MeasurementSystem.imperial_decimal);
+    spec = MultiMeasurementInputSpec.waterTemperature(context);
+    controller = spec.newInputController();
+    expect(controller.system, MeasurementSystem.imperial_decimal);
+  });
 }

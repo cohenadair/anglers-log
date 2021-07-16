@@ -98,6 +98,7 @@ enum Unit {
   pounds_per_square_inch = 12;
   miles = 13;
   kilometers = 14;
+  percent = 15;
 }
 
 // A unique ID. An Id is a wrapper for UUID string representation of protobuf bytes type that can
@@ -114,11 +115,11 @@ message Atmosphere {
   Measurement wind_speed = 3;
   Direction wind_direction = 4;
   Measurement pressure = 5;
-  uint32 humidity = 6;
+  Measurement humidity = 6;
   Measurement visibility = 7;
   MoonPhase moon_phase = 8;
-  uint64 sunrise_timestamp = 9;
-  uint64 sunset_timestamp = 10;
+  uint64 sunrise_millis = 9;
+  uint64 sunset_millis = 10;
 }
 
 message CustomEntity {

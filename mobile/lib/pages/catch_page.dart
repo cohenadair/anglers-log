@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:mobile/res/style.dart';
 import 'package:quiver/strings.dart';
 
 import '../angler_manager.dart';
@@ -16,6 +15,7 @@ import '../pages/entity_page.dart';
 import '../pages/save_catch_page.dart';
 import '../res/dimen.dart';
 import '../res/gen/custom_icons.dart';
+import '../res/style.dart';
 import '../species_manager.dart';
 import '../utils/date_time_utils.dart';
 import '../utils/page_utils.dart';

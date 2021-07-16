@@ -124,6 +124,8 @@ void main() {
       expect(find.text("1"), findsNothing);
       expect(changed, isTrue);
       expect(find.text("Jan 26, 2020"), findsOneWidget);
+      expect(controller.value, isNotNull);
+      expect(controller.value, DateTime(2020, 1, 26).millisecondsSinceEpoch);
     });
 
     testWidgets("TimePicker time picked", (tester) async {
@@ -171,6 +173,9 @@ void main() {
       expect(find.byKey(ValueKey<String>('time-picker-dial')), findsNothing);
       expect(changed, isTrue);
       expect(find.text("6:50 AM"), findsOneWidget);
+
+      expect(controller.time, isNotNull);
+      expect(controller.time, TimeOfDay(hour: 6, minute: 50));
     });
   });
 }

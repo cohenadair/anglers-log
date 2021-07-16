@@ -294,7 +294,7 @@ class CatchManager extends EntityManager<Catch> {
       valid &= isNumberFilterMeasurementValid(
           airPressureFilter, cat.atmosphere.pressure,
           hasValue: cat.hasAtmosphere() && cat.atmosphere.hasPressure());
-      valid &= isNumberFilterIntValid(
+      valid &= isNumberFilterMeasurementValid(
           airHumidityFilter, cat.atmosphere.humidity,
           hasValue: cat.hasAtmosphere() && cat.atmosphere.hasHumidity());
       valid &= isNumberFilterMeasurementValid(

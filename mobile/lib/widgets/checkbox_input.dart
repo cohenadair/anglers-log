@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:mobile/res/style.dart';
 import 'package:quiver/strings.dart';
 
 import '../res/dimen.dart';
+import '../res/style.dart';
 import '../widgets/list_item.dart';
 import '../widgets/text.dart';
 import 'widget.dart';
