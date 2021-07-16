@@ -3,7 +3,6 @@ import 'package:quiver/strings.dart';
 
 import '../res/dimen.dart';
 import '../res/style.dart';
-import '../widgets/text.dart';
 
 /// A widget that displays a bold label with a slightly larger and lighter
 /// value text. By default, the label and value are displayed in a [Row].

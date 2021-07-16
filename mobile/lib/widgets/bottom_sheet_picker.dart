@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import 'list_item.dart';
-import 'text.dart';
 import 'widget.dart';
 
 Future<void> showBottomSheetPicker(

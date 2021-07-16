@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:mobile/res/style.dart';
 
 import '../bait_category_manager.dart';
 import '../bait_manager.dart';
@@ -8,6 +7,7 @@ import '../model/gen/anglerslog.pb.dart';
 import '../pages/entity_page.dart';
 import '../pages/save_bait_page.dart';
 import '../res/dimen.dart';
+import '../res/style.dart';
 import '../utils/page_utils.dart';
 import '../widgets/text.dart';
 import '../widgets/widget.dart';

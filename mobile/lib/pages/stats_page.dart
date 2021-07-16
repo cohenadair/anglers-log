@@ -1,6 +1,5 @@
 import 'package:collection/collection.dart' show IterableExtension;
 import 'package:flutter/material.dart';
-import 'package:mobile/res/style.dart';
 import 'package:quiver/strings.dart';
 
 import '../bait_manager.dart';
@@ -16,6 +15,7 @@ import '../pages/report_list_page.dart';
 import '../report_manager.dart';
 import '../res/dimen.dart';
 import '../res/gen/custom_icons.dart';
+import '../res/style.dart';
 import '../species_manager.dart';
 import '../user_preference_manager.dart';
 import '../utils/date_time_utils.dart';
@@ -27,7 +27,6 @@ import '../widgets/date_range_picker_input.dart';
 import '../widgets/empty_list_placeholder.dart';
 import '../widgets/list_item.dart';
 import '../widgets/list_picker_input.dart';
-import '../widgets/text.dart';
 import '../widgets/widget.dart';
 import 'bait_page.dart';
 import 'catch_list_page.dart';

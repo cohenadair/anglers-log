@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:mobile/res/style.dart';
 
 import '../bait_category_manager.dart';
 import '../bait_manager.dart';
@@ -10,9 +9,9 @@ import '../pages/bait_page.dart';
 import '../pages/manageable_list_page.dart';
 import '../pages/save_bait_page.dart';
 import '../res/dimen.dart';
+import '../res/style.dart';
 import '../utils/protobuf_utils.dart';
 import '../utils/string_utils.dart';
-import '../widgets/text.dart';
 import '../widgets/widget.dart';
 
 class BaitListPage extends StatefulWidget {

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:quiver/strings.dart';
 
 import '../widgets/list_picker_input.dart';
-import '../widgets/text.dart';
 import '../widgets/widget.dart';
 import 'detail_input.dart';
 

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:mobile/res/style.dart';
 
 import '../i18n/strings.dart';
 import '../log.dart';
@@ -9,9 +8,9 @@ import '../pages/manageable_list_page.dart';
 import '../pages/save_report_page.dart';
 import '../report_manager.dart';
 import '../res/dimen.dart';
+import '../res/style.dart';
 import '../subscription_manager.dart';
 import '../utils/string_utils.dart';
-import '../widgets/text.dart';
 import '../widgets/widget.dart';
 import 'pro_page.dart';
 

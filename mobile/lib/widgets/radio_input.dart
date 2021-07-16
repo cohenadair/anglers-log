@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:mobile/res/style.dart';
 import 'package:quiver/strings.dart';
 
 import '../res/dimen.dart';
-import '../widgets/text.dart';
+import '../res/style.dart';
 import '../widgets/widget.dart';
 
 /// A radio button selection widget. This should be used when three or fewer

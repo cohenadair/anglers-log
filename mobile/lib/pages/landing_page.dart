@@ -4,7 +4,6 @@ import '../i18n/strings.dart';
 import '../res/dimen.dart';
 import '../res/gen/custom_icons.dart';
 import '../res/style.dart';
-import '../widgets/text.dart';
 
 /// The page shown while initialization futures are completing.
 class LandingPage extends StatelessWidget {

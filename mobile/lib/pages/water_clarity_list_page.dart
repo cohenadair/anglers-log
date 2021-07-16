@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:mobile/res/style.dart';
 
 import '../i18n/strings.dart';
 import '../model/gen/anglerslog.pb.dart';
 import '../pages/manageable_list_page.dart';
+import '../res/style.dart';
 import '../utils/string_utils.dart';
 import '../water_clarity_manager.dart';
-import '../widgets/text.dart';
 import 'save_water_clarity_page.dart';
 
 class WaterClarityListPage extends StatelessWidget {

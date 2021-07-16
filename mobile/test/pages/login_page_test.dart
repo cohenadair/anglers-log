@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/auth_manager.dart';
 import 'package:mobile/pages/login_page.dart';

@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:mobile/res/style.dart';
 
 import '../angler_manager.dart';
 import '../i18n/strings.dart';
 import '../model/gen/anglerslog.pb.dart';
 import '../pages/manageable_list_page.dart';
+import '../res/style.dart';
 import '../utils/string_utils.dart';
-import '../widgets/text.dart';
 import 'save_angler_page.dart';
 
 class AnglerListPage extends StatelessWidget {

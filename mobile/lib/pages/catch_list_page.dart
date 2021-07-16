@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:mobile/res/style.dart';
 import 'package:quiver/strings.dart';
 
 import '../bait_category_manager.dart';
@@ -14,11 +13,11 @@ import '../pages/manageable_list_page.dart';
 import '../pages/save_catch_page.dart';
 import '../res/dimen.dart';
 import '../res/gen/custom_icons.dart';
+import '../res/style.dart';
 import '../species_manager.dart';
 import '../utils/date_time_utils.dart';
 import '../utils/string_utils.dart';
 import '../widgets/photo.dart';
-import '../widgets/text.dart';
 import '../widgets/widget.dart';
 
 class CatchListPage extends StatelessWidget {

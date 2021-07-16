@@ -1,11 +1,11 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:mobile/res/style.dart';
 
 import '../../i18n/strings.dart';
 import '../../log.dart';
 import '../../res/dimen.dart';
+import '../../res/style.dart';
 import '../../widgets/text.dart';
 import '../../widgets/widget.dart';
 import '../more_page.dart';

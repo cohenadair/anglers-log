@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:mobile/res/style.dart';
 
 import '../i18n/strings.dart';
 import '../pages/image_picker_page.dart';
 import '../res/dimen.dart';
+import '../res/style.dart';
 import '../utils/page_utils.dart';
 import '../widgets/widget.dart';
-import 'text.dart';
 
 /// An input widget that allows selection of one or more photos, as well as
 /// taking a photo from the device's camera.
