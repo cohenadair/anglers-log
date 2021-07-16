@@ -170,8 +170,7 @@ class __AtmosphereInputPageState extends State<_AtmosphereInputPage> {
     _airTemperatureInputState =
         MultiMeasurementInputSpec.airTemperature(context);
     _airPressureInputState = MultiMeasurementInputSpec.airPressure(context);
-    _airVisibilityInputState =
-        MultiMeasurementInputSpec.airVisibility(context);
+    _airVisibilityInputState = MultiMeasurementInputSpec.airVisibility(context);
     _airHumidityInputState = MultiMeasurementInputSpec.airHumidity(context);
     _windSpeedInputState = MultiMeasurementInputSpec.windSpeed(context);
 

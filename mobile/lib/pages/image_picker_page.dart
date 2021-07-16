@@ -374,7 +374,7 @@ class _ImagePickerPageState extends State<ImagePickerPage> {
                               _galleryAsset?.assetCount ?? 0
                             ],
                           ),
-                          style: stylePrimary(context)
+                          style: stylePrimary(context),
                         ),
                       )
                     : Empty(),

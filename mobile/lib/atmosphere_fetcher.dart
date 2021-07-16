@@ -190,8 +190,7 @@ class AtmosphereFetcher {
     dynamic json;
     try {
       json = jsonDecode(response.body);
-    // ignore: avoid_catches_without_on_clauses
-    } catch (error) {
+    } on Exception {
       json = null;
     }
 

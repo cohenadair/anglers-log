@@ -637,19 +637,15 @@ class LegacyImporter {
       case "rain":
         return [SkyCondition.rain];
       case "snow":
-        // Fallthrough.
       case "squall":
         return [SkyCondition.snow];
       case "mist":
         return [SkyCondition.mist];
       case "smoke":
-        // Fallthrough.
       case "ash":
-        // Fallthrough.
       case "haze":
         return [SkyCondition.smoke];
       case "dust":
-        // Fallthrough.
       case "sand":
         return [SkyCondition.dust];
       case "fog":
@@ -659,9 +655,9 @@ class LegacyImporter {
       case "clear":
         return [SkyCondition.clear];
       case "clouds":
-      case "cloudy":    // Not in OpenWeather doc, but appears in legacy JSON.
+      case "cloudy": // Not in OpenWeather doc, but appears in legacy JSON.
         return [SkyCondition.cloudy];
-      case "overcast":  // Not in OpenWeather doc, but appears in legacy JSON.
+      case "overcast": // Not in OpenWeather doc, but appears in legacy JSON.
         return [SkyCondition.overcast];
     }
     return [];
@@ -673,9 +669,8 @@ class LegacyImporter {
         ? MeasurementSystem.imperial_whole
         : MeasurementSystem.imperial_decimal;
 
-    var measurementSystem = _measurementSystem.isMetric
-        ? _measurementSystem
-        : imperialSystem;
+    var measurementSystem =
+        _measurementSystem.isMetric ? _measurementSystem : imperialSystem;
 
     return MultiMeasurement(
       system: measurementSystem,

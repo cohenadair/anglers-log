@@ -56,20 +56,23 @@ void main() {
   });
 
   testWidgets("Shows no items", (tester) async {
-    await tester
-        .pumpWidget(Testable((_) => AtmosphereWrap(Atmosphere())));
+    await tester.pumpWidget(Testable((_) => AtmosphereWrap(Atmosphere())));
 
     expect(find.byType(Icon), findsNothing);
     expect(find.byType(Text), findsNothing);
   });
 
   testWidgets("No subtitle on item shows empty", (tester) async {
-    await tester.pumpWidget(Testable((_) => AtmosphereWrap(Atmosphere(
-      temperature: Measurement(
-        unit: Unit.celsius,
-        value: 15,
+    await tester.pumpWidget(Testable(
+      (_) => AtmosphereWrap(
+        Atmosphere(
+          temperature: Measurement(
+            unit: Unit.celsius,
+            value: 15,
+          ),
+        ),
       ),
-    ))));
+    ));
 
     expect(find.byType(Text), findsOneWidget);
     expect(find.text("15\u00B0C"), findsOneWidget);

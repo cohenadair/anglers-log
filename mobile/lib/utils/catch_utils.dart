@@ -270,7 +270,7 @@ bool catchFilterMatchesAtmosphere(
   if (!cat.hasAtmosphere()) {
     return false;
   }
-  
+
   var atmosphere = cat.atmosphere;
   var searchString = "";
 

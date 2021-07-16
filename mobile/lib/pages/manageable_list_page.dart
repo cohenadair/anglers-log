@@ -181,7 +181,8 @@ class _ManageableListPageState<T> extends State<ManageableListPage<T>> {
     }
 
     var pickerTitle = _isPickingMulti
-        ? widget.pickerSettings?.multiTitle : widget.pickerSettings?.title;
+        ? widget.pickerSettings?.multiTitle
+        : widget.pickerSettings?.title;
 
     return WillPopScope(
       onWillPop: () {

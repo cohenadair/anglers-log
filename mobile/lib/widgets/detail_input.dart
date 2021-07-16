@@ -22,10 +22,11 @@ class DetailInput extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var items = List.of(children)..add(Padding(
-      padding: insetsLeftWidgetSmall,
-      child: RightChevronIcon(),
-    ));
+    var items = List.of(children)
+      ..add(Padding(
+        padding: insetsLeftWidgetSmall,
+        child: RightChevronIcon(),
+      ));
 
     return InkWell(
       onTap: onTap,

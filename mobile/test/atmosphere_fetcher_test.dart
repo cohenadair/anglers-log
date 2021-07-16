@@ -89,9 +89,11 @@ void main() {
     expect(result.captured.first is Uri, isTrue);
 
     var uri = result.captured.first as Uri;
-    expect(uri.queryParameters["elements"], "temp,humidity,conditions,"
-        "moonphase,pressure,visibility,windspeed,winddir,sunriseEpoch,"
-        "sunsetEpoch");
+    expect(
+      uri.queryParameters["elements"],
+      "temp,humidity,conditions,moonphase,pressure,visibility,windspeed,"
+      "winddir,sunriseEpoch,sunsetEpoch",
+    );
   });
 
   test("Bad response status code", () async {
@@ -179,7 +181,8 @@ void main() {
 
   test("Successful response", () async {
     // Real response from VisualCrossing API.
-    var json = '{"queryCost":1,"latitude":35.925178304610114,"longitude":-83.96468538790941,"resolvedAddress":"35.925178304610114,-83.96468538790941","address":"35.925178304610114,-83.96468538790941","timezone":"America/New_York","tzoffset":-4.0,"days":[{"temp":77.9,"humidity":79.15,"windspeed":12.1,"winddir":93.8,"pressure":1021.9,"visibility":9.9,"sunriseEpoch":1624962142,"sunsetEpoch":1625014586,"moonphase":0.64,"conditions":"type_21, type_42"}],"currentConditions":{"temp":74.0,"humidity":90.3,"windspeed":4.7,"winddir":8.0,"pressure":1022.5,"visibility":9.9,"conditions":"type_42","sunriseEpoch":1624962142,"sunsetEpoch":1625014586,"moonphase":0.63}}';
+    var json =
+        '{"queryCost":1,"latitude":35.925178304610114,"longitude":-83.96468538790941,"resolvedAddress":"35.925178304610114,-83.96468538790941","address":"35.925178304610114,-83.96468538790941","timezone":"America/New_York","tzoffset":-4.0,"days":[{"temp":77.9,"humidity":79.15,"windspeed":12.1,"winddir":93.8,"pressure":1021.9,"visibility":9.9,"sunriseEpoch":1624962142,"sunsetEpoch":1625014586,"moonphase":0.64,"conditions":"type_21, type_42"}],"currentConditions":{"temp":74.0,"humidity":90.3,"windspeed":4.7,"winddir":8.0,"pressure":1022.5,"visibility":9.9,"conditions":"type_42","sunriseEpoch":1624962142,"sunsetEpoch":1625014586,"moonphase":0.63}}';
     var response = MockResponse();
     when(response.statusCode).thenReturn(HttpStatus.ok);
     when(response.body).thenReturn(json);
@@ -218,7 +221,8 @@ void main() {
         .thenReturn(MeasurementSystem.metric);
 
     // Real response from VisualCrossing API.
-    var json = '{"queryCost":1,"latitude":35.925178304610114,"longitude":-83.96468538790941,"resolvedAddress":"35.925178304610114,-83.96468538790941","address":"35.925178304610114,-83.96468538790941","timezone":"America/New_York","tzoffset":-4.0,"days":[{"temp":77.9,"humidity":79.15,"windspeed":12.1,"winddir":93.8,"pressure":1021.9,"visibility":9.9,"sunriseEpoch":1624962142,"sunsetEpoch":1625014586,"moonphase":0.64,"conditions":"type_21, type_42"}],"currentConditions":{"temp":74.0,"humidity":90.3,"windspeed":4.7,"winddir":8.0,"pressure":1022.5,"visibility":9.9,"conditions":"type_42","sunriseEpoch":1624962142,"sunsetEpoch":1625014586,"moonphase":0.63}}';
+    var json =
+        '{"queryCost":1,"latitude":35.925178304610114,"longitude":-83.96468538790941,"resolvedAddress":"35.925178304610114,-83.96468538790941","address":"35.925178304610114,-83.96468538790941","timezone":"America/New_York","tzoffset":-4.0,"days":[{"temp":77.9,"humidity":79.15,"windspeed":12.1,"winddir":93.8,"pressure":1021.9,"visibility":9.9,"sunriseEpoch":1624962142,"sunsetEpoch":1625014586,"moonphase":0.64,"conditions":"type_21, type_42"}],"currentConditions":{"temp":74.0,"humidity":90.3,"windspeed":4.7,"winddir":8.0,"pressure":1022.5,"visibility":9.9,"conditions":"type_42","sunriseEpoch":1624962142,"sunsetEpoch":1625014586,"moonphase":0.63}}';
     var response = MockResponse();
     when(response.statusCode).thenReturn(HttpStatus.ok);
     when(response.body).thenReturn(json);

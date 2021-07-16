@@ -1262,7 +1262,8 @@ void main() {
   group("SkyConditions", () {
     test("fromTypes", () {
       expect(SkyConditions.fromTypes("type_31,type_33,type_6"), [
-        SkyCondition.snow, SkyCondition.drizzle,
+        SkyCondition.snow,
+        SkyCondition.drizzle,
       ]);
     });
   });

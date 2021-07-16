@@ -192,16 +192,19 @@ void main() {
       controller.fractionController.intValue = 60;
 
       expect(controller.value, isNotNull);
-      expect(controller.value, MultiMeasurement(
-        system: MeasurementSystem.imperial_whole,
-        mainValue: Measurement(
-          unit: Unit.kilometers,
-          value: 50,
+      expect(
+        controller.value,
+        MultiMeasurement(
+          system: MeasurementSystem.imperial_whole,
+          mainValue: Measurement(
+            unit: Unit.kilometers,
+            value: 50,
+          ),
+          fractionValue: Measurement(
+            value: 60,
+          ),
         ),
-        fractionValue: Measurement(
-          value: 60,
-        ),
-      ));
+      );
 
       controller.value = null;
       expect(controller.mainController.hasValue, isFalse);

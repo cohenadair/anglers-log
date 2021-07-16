@@ -892,8 +892,7 @@ class _SaveReportPageState extends State<SaveReportPage> {
       ..fishingSpotIds.addAll(_fishingSpotsController.value.map((e) => e.id))
       ..methodIds.addAll(_methodsController.value.map((e) => e.id))
       ..speciesIds.addAll(_speciesController.value.map((e) => e.id))
-      ..waterClarityIds
-          .addAll(_waterClaritiesController.value.map((e) => e.id))
+      ..waterClarityIds.addAll(_waterClaritiesController.value.map((e) => e.id))
       ..windDirections.addAll(_windDirectionsController.value)
       ..skyConditions.addAll(_skyConditionsController.value)
       ..moonPhases.addAll(_moonPhasesController.value);

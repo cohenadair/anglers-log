@@ -7,9 +7,7 @@ class UnitsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ScrollPage(
-      appBar: AppBar(
-
-      ),
+      appBar: AppBar(),
     );
   }
 }

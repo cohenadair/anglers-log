@@ -237,8 +237,10 @@ Map<String, Map<String, String>> get englishStrings => {
         "tripListPage_menuLabel": "Trips",
         "tripListPage_title": "Trips (%s)",
         "settingsPage_title": "Settings",
-        "settingsPage_fetchAtmosphereTitle": "Auto-fetch atmosphere and weather",
-        "settingsPage_fetchAtmosphereDescription": "Automatically fetch atmosphere and weather data when adding new catches.",
+        "settingsPage_fetchAtmosphereTitle":
+            "Auto-fetch atmosphere and weather",
+        "settingsPage_fetchAtmosphereDescription":
+            "Automatically fetch atmosphere and weather data when adding new catches.",
         "settingsPage_logout": "Logout",
         "settingsPage_logoutConfirmMessage": "Are you sure you want to logout?",
         "mapPage_menuLabel": "Map",
@@ -553,7 +555,8 @@ Map<String, Map<String, String>> get englishStrings => {
         "atmosphereInput_timeOfSunrise": "Time of Sunrise",
         "atmosphereInput_sunset": "Sunset",
         "atmosphereInput_timeOfSunset": "Time of Sunset",
-        "atmosphereInput_fetchError": "Unable to fetch data at this time. Please try again later.",
+        "atmosphereInput_fetchError":
+            "Unable to fetch data at this time. Please try again later.",
         "direction_north": "N",
         "direction_northEast": "NE",
         "direction_east": "E",
@@ -606,7 +609,8 @@ Map<String, Map<String, String>> get englishStrings => {
         "keywords_speedMetric": "kilometers per hour speed wind",
         "keywords_speedImperial": "miles per hour speed wind",
         "keywords_airPressureMetric": "atmospheric air pressure millibars",
-        "keywords_airPressureImperial": "atmospheric air pressure pounds per square inch",
+        "keywords_airPressureImperial":
+            "atmospheric air pressure pounds per square inch",
         "keywords_airHumidity": "humidity percent moisture",
         "keywords_airVisibilityMetric": "kilometers visibility",
         "keywords_airVisibilityImperial": "miles visibility",
