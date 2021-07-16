@@ -4,8 +4,8 @@ import '../i18n/strings.dart';
 import '../method_manager.dart';
 import '../model/gen/anglerslog.pb.dart';
 import '../pages/manageable_list_page.dart';
+import '../res/style.dart';
 import '../utils/string_utils.dart';
-import '../widgets/text.dart';
 import 'save_method_page.dart';
 
 class MethodListPage extends StatelessWidget {
@@ -23,15 +23,15 @@ class MethodListPage extends StatelessWidget {
       titleBuilder: (anglers) => Text(
         format(Strings.of(context).methodListPageTitle, [anglers.length]),
       ),
-      pickerTitleBuilder: (_) =>
-          Text(Strings.of(context).methodListPagePickerTitle),
       itemBuilder: (context, method) => ManageableListPageItemModel(
-        child: PrimaryLabel(method.name),
+        child: Text(method.name, style: stylePrimary(context)),
       ),
       searchDelegate: ManageableListPageSearchDelegate(
         hint: Strings.of(context).methodListPageSearchHint,
       ),
-      pickerSettings: pickerSettings,
+      pickerSettings: pickerSettings?.copyWith(
+        multiTitle: Text(Strings.of(context).pickerTitleFishingMethods),
+      ),
       itemManager: ManageableListPageItemManager<Method>(
         listenerManagers: [methodManager],
         loadItems: (query) => methodManager.listSortedByName(filter: query),

@@ -11,23 +11,24 @@ void main() {
     var fields = allCatchFieldsSorted(
         await buildContext(tester), StubbedAppManager().timeManager);
     expect(fields[0].id, catchFieldIdAngler());
-    expect(fields[1].id, catchFieldIdBait());
-    expect(fields[2].id, catchFieldIdCatchAndRelease());
-    expect(fields[3].id, catchFieldIdTimestamp());
-    expect(fields[4].id, catchFieldIdFavorite());
-    expect(fields[5].id, catchFieldIdMethods());
-    expect(fields[6].id, catchFieldIdFishingSpot());
-    expect(fields[7].id, catchFieldIdLength());
-    expect(fields[8].id, catchFieldIdNotes());
-    expect(fields[9].id, catchFieldIdImages());
-    expect(fields[10].id, catchFieldIdQuantity());
-    expect(fields[11].id, catchFieldIdSeason());
-    expect(fields[12].id, catchFieldIdSpecies());
-    expect(fields[13].id, catchFieldIdPeriod());
-    expect(fields[14].id, catchFieldIdWaterClarity());
-    expect(fields[15].id, catchFieldIdWaterDepth());
-    expect(fields[16].id, catchFieldIdWaterTemperature());
-    expect(fields[17].id, catchFieldIdWeight());
+    expect(fields[1].id, catchFieldIdAtmosphere());
+    expect(fields[2].id, catchFieldIdBait());
+    expect(fields[3].id, catchFieldIdCatchAndRelease());
+    expect(fields[4].id, catchFieldIdTimestamp());
+    expect(fields[5].id, catchFieldIdFavorite());
+    expect(fields[6].id, catchFieldIdMethods());
+    expect(fields[7].id, catchFieldIdFishingSpot());
+    expect(fields[8].id, catchFieldIdLength());
+    expect(fields[9].id, catchFieldIdNotes());
+    expect(fields[10].id, catchFieldIdImages());
+    expect(fields[11].id, catchFieldIdQuantity());
+    expect(fields[12].id, catchFieldIdSeason());
+    expect(fields[13].id, catchFieldIdSpecies());
+    expect(fields[14].id, catchFieldIdPeriod());
+    expect(fields[15].id, catchFieldIdWaterClarity());
+    expect(fields[16].id, catchFieldIdWaterDepth());
+    expect(fields[17].id, catchFieldIdWaterTemperature());
+    expect(fields[18].id, catchFieldIdWeight());
   });
 
   testWidgets("catchFilterMatchesPeriod", (tester) async {
@@ -289,5 +290,55 @@ void main() {
     expect(catchFilterMatchesNotes(context, "notes. ", cat), isTrue);
     expect(catchFilterMatchesNotes(context, "test", cat), isTrue);
     expect(catchFilterMatchesNotes(context, "error", cat), isFalse);
+  });
+
+  testWidgets("catchFilterMatchesAtmosphere", (tester) async {
+    var context = await buildContext(tester);
+
+    // Without atmosphere.
+    var cat = Catch();
+    expect(catchFilterMatchesAtmosphere(context, "", cat), isFalse);
+
+    // With atmosphere.
+    cat = Catch(
+      atmosphere: Atmosphere(
+        temperature: Measurement(
+          unit: Unit.fahrenheit,
+          value: 58,
+        ),
+        skyConditions: [SkyCondition.cloudy],
+        windSpeed: Measurement(
+          unit: Unit.kilometers_per_hour,
+          value: 6.5,
+        ),
+        windDirection: Direction.north,
+        pressure: Measurement(
+          unit: Unit.pounds_per_square_inch,
+          value: 1000,
+        ),
+        humidity: Measurement(
+          unit: Unit.percent,
+          value: 50,
+        ),
+        visibility: Measurement(
+          unit: Unit.miles,
+          value: 10,
+        ),
+        moonPhase: MoonPhase.full,
+        sunriseMillis: Int64(10000),
+        sunsetMillis: Int64(15000),
+      ),
+    );
+    expect(catchFilterMatchesAtmosphere(context, "58", cat), isTrue);
+    expect(catchFilterMatchesAtmosphere(context, "6.5", cat), isTrue);
+    expect(catchFilterMatchesAtmosphere(context, "1000", cat), isTrue);
+    expect(catchFilterMatchesAtmosphere(context, "50", cat), isTrue);
+    expect(catchFilterMatchesAtmosphere(context, "10", cat), isTrue);
+    expect(catchFilterMatchesAtmosphere(context, "full", cat), isTrue);
+    expect(catchFilterMatchesAtmosphere(context, "sunrise", cat), isTrue);
+    expect(catchFilterMatchesAtmosphere(context, "sunset", cat), isTrue);
+    expect(catchFilterMatchesAtmosphere(context, "500", cat), isFalse);
+    expect(catchFilterMatchesAtmosphere(context, "37", cat), isFalse);
+    expect(catchFilterMatchesAtmosphere(context, "nothing", cat), isFalse);
   });
 }

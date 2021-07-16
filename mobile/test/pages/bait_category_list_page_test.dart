@@ -34,6 +34,7 @@ void main() {
       (_) => BaitCategoryListPage(
         pickerSettings: ManageableListPagePickerSettings(
           onPicked: (_, __) => false,
+          isMulti: false,
         ),
       ),
       appManager: appManager,

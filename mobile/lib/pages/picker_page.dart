@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 
+import '../i18n/strings.dart';
 import '../model/gen/anglerslog.pb.dart';
 import '../res/dimen.dart';
+import '../res/style.dart';
 import '../widgets/list_item.dart';
 import '../widgets/text.dart';
 import '../widgets/widget.dart';
@@ -154,7 +156,7 @@ class _PickerPageState<T> extends State<PickerPage<T>> {
               child: Padding(
                 padding: insetsHorizontalDefault,
                 child: item.noteIcon == null
-                    ? NoteLabel(item.title!)
+                    ? Text(item.title!, style: styleNote(context))
                     : IconLabel(
                         text: item.title!,
                         icon: Icon(
@@ -163,6 +165,18 @@ class _PickerPageState<T> extends State<PickerPage<T>> {
                         ),
                       ),
               ),
+            );
+          }
+
+          if (item.isMultiNone && widget.allItem != null) {
+            return PickerListItem(
+              title: Strings.of(context).none,
+              isSelected: _selectedValues.isEmpty,
+              isEnabled: widget.allItem!.enabled,
+              onTap: () {
+                _listItemTapped(null);
+                Navigator.pop(context);
+              },
             );
           }
 
@@ -200,10 +214,11 @@ class _PickerPageState<T> extends State<PickerPage<T>> {
     );
   }
 
-  void _listItemTapped(PickerPageItem<T> item) async {
-    var selected = {
-      item.value,
-    };
+  void _listItemTapped(PickerPageItem<T>? item) async {
+    var selected = <T>{};
+    if (item != null) {
+      selected.add(item.value);
+    }
     setState(() {
       _selectedValues = selected;
     });
@@ -253,6 +268,10 @@ class PickerPageItem<T> {
 
   final IconData? noteIcon;
 
+  /// A special type of item that shows a "None" row that will clear all
+  /// selected items and pop the navigation stack when picking multiple items.
+  final bool isMultiNone;
+
   final T? _value;
   final bool _divider;
   final bool _heading;
@@ -264,6 +283,7 @@ class PickerPageItem<T> {
         enabled = false,
         popsOnPicked = false,
         onTap = null,
+        isMultiNone = false,
         noteIcon = null,
         _value = null,
         _divider = true,
@@ -275,6 +295,7 @@ class PickerPageItem<T> {
         enabled = false,
         popsOnPicked = false,
         onTap = null,
+        isMultiNone = false,
         noteIcon = null,
         _value = null,
         _divider = false,
@@ -291,6 +312,7 @@ class PickerPageItem<T> {
         enabled = false,
         popsOnPicked = false,
         onTap = null,
+        isMultiNone = false,
         _value = null,
         _divider = false,
         _heading = false,
@@ -303,6 +325,7 @@ class PickerPageItem<T> {
     this.enabled = true,
     this.popsOnPicked = true,
     this.onTap,
+    this.isMultiNone = false,
   })  : noteIcon = null,
         _value = value,
         _divider = false,

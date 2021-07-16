@@ -104,6 +104,25 @@ void main() {
   }
 
   group("Picker", () {
+    testWidgets("Multi-picker title", (tester) async {
+      await tester.pumpWidget(
+        Testable(
+          (_) => ManageableListPage<String>(
+            itemManager: defaultItemManager,
+            itemBuilder: defaultItemBuilder,
+            pickerSettings: ManageableListPagePickerSettings<String>(
+              isMulti: true,
+              onPicked: (context, items) => false,
+              multiTitle: Text("Multi Title"),
+              title: Text("Single Title"),
+            ),
+          ),
+        ),
+      );
+
+      expect(find.text("Multi Title"), findsOneWidget);
+    });
+
     testWidgets("Multi-picker initial values", (tester) async {
       await tester.pumpWidget(
         Testable(
@@ -149,6 +168,25 @@ void main() {
       verifyCheckbox(tester, "Largemouth Bass", checked: true);
       verifyCheckbox(tester, "Striped Bass", checked: true);
       verifyCheckbox(tester, "White Bass", checked: true);
+    });
+
+    testWidgets("Single-picker title", (tester) async {
+      await tester.pumpWidget(
+        Testable(
+          (_) => ManageableListPage<String>(
+            itemManager: defaultItemManager,
+            itemBuilder: defaultItemBuilder,
+            pickerSettings: ManageableListPagePickerSettings<String>(
+              isMulti: false,
+              onPicked: (context, items) => false,
+              multiTitle: Text("Multi Title"),
+              title: Text("Single Title"),
+            ),
+          ),
+        ),
+      );
+
+      expect(find.text("Single Title"), findsOneWidget);
     });
 
     testWidgets("Single-picker initial value", (tester) async {

@@ -9,11 +9,11 @@ import '../utils/dialog_utils.dart';
 import '../widgets/button.dart';
 import '../widgets/widget.dart';
 import 'checkbox_input.dart';
-import 'text.dart';
 
-/// A [ListTile] wrapper with app default properties.
+/// A custom [ListTile]-like widget with app default properties. This widget
+/// also automatically adjusts its height to fit its content, unlike [ListTile].
 class ListItem extends StatelessWidget {
-  final EdgeInsets? contentPadding;
+  final EdgeInsets? padding;
   final Widget? title;
   final Widget? subtitle;
   final Widget? leading;
@@ -23,7 +23,7 @@ class ListItem extends StatelessWidget {
 
   ListItem({
     Key? key,
-    this.contentPadding,
+    this.padding,
     this.title,
     this.subtitle,
     this.leading,
@@ -34,17 +34,55 @@ class ListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      top: false,
-      bottom: false,
-      child: ListTile(
-        contentPadding: contentPadding,
-        title: title,
-        subtitle: subtitle,
-        leading: leading,
-        trailing: trailing,
-        onTap: onTap,
-        enabled: enabled,
+    // Use default styling for text widgets.
+    var title = this.title;
+    if (title is Text) {
+      title = DefaultTextStyle(
+        style: stylePrimary(context, enabled: enabled),
+        child: title,
+      );
+    }
+
+    var subtitle = this.subtitle;
+    if (subtitle is Text) {
+      subtitle = DefaultTextStyle(
+        style: styleSubtitle(context, enabled: enabled),
+        child: subtitle,
+      );
+    }
+
+    // Use the Material default for icon color.
+    var leading = this.leading;
+    if (leading is Icon) {
+      leading = IconTheme.merge(
+        data: IconThemeData(color: Colors.black45),
+        child: leading,
+      );
+    }
+
+    return InkWell(
+      onTap: onTap,
+      child: HorizontalSafeArea(
+        child: Padding(
+          padding: padding ?? insetsDefault,
+          child: Row(
+            children: [
+              leading ?? Empty(),
+              leading == null ? Empty() : HorizontalSpace(paddingWidgetDouble),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    title ?? Empty(),
+                    subtitle ?? Empty(),
+                  ],
+                ),
+              ),
+              trailing == null ? Empty() : HorizontalSpace(paddingWidget),
+              trailing ?? Empty(),
+            ],
+          ),
+        ),
       ),
     );
   }
@@ -53,6 +91,7 @@ class ListItem extends StatelessWidget {
 class PickerListItem extends StatelessWidget {
   final String title;
   final String? subtitle;
+  final EdgeInsets? padding;
   final bool isEnabled;
   final bool isSelected;
 
@@ -72,6 +111,7 @@ class PickerListItem extends StatelessWidget {
   PickerListItem({
     required this.title,
     this.subtitle,
+    this.padding,
     this.isEnabled = true,
     this.isSelected = false,
     this.isMulti = false,
@@ -84,8 +124,14 @@ class PickerListItem extends StatelessWidget {
     return EnabledOpacity(
       enabled: isEnabled,
       child: ListItem(
+        padding: padding,
         title: Text(title),
-        subtitle: isNotEmpty(subtitle) ? SubtitleLabel(subtitle!) : null,
+        subtitle: isNotEmpty(subtitle)
+            ? Text(
+                subtitle!,
+                style: styleSubtitle(context),
+              )
+            : null,
         enabled: isEnabled,
         onTap: onTap,
         trailing: _buildListItemTrailing(context),
@@ -93,7 +139,7 @@ class PickerListItem extends StatelessWidget {
     );
   }
 
-  Widget? _buildListItemTrailing(BuildContext context) {
+  Widget _buildListItemTrailing(BuildContext context) {
     if (isMulti) {
       // Checkboxes for multi-select pickers.
       return PaddedCheckbox(
@@ -101,15 +147,16 @@ class PickerListItem extends StatelessWidget {
         checked: isSelected,
         onChanged: onCheckboxChanged,
       );
-    } else if (isSelected) {
-      // A simple check mark icon for initial value for single item pickers.
-      return Icon(
-        Icons.check,
-        color: Theme.of(context).primaryColor,
-      );
     }
 
-    return null;
+    // A simple check mark icon for initial value for single item pickers.
+    return AnimatedVisibility(
+      visible: isSelected,
+      child: Icon(
+        Icons.check,
+        color: Theme.of(context).primaryColor,
+      ),
+    );
   }
 }
 
@@ -229,10 +276,8 @@ class ManageableListItem extends StatelessWidget {
   Widget build(BuildContext context) {
     var child = this.child;
     if (child is Text) {
-      // If the child is just a plain Text widget, style it the same as a
-      // system ListTile.
       child = DefaultTextStyle(
-        style: Theme.of(context).textTheme.subtitle1!,
+        style: stylePrimary(context),
         child: child,
       );
     }

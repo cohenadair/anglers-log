@@ -2,7 +2,6 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
 import 'package:mobile/pages/bait_page.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
-import 'package:mobile/widgets/text.dart';
 import 'package:mockito/mockito.dart';
 
 import '../mocks/stubbed_app_manager.dart';
@@ -21,11 +20,12 @@ void main() {
   });
 
   testWidgets("Null bait category renders empty", (tester) async {
-    await tester.pumpWidget(Testable(
+    var context = await pumpContext(
+      tester,
       (_) => BaitPage(Bait()),
       appManager: appManager,
-    ));
-    expect(find.byType(HeadingLabel), findsNothing);
+    );
+    expect(find.listHeadingText(context), findsNothing);
   });
 
   testWidgets("Non-null bait category", (tester) async {
@@ -34,12 +34,13 @@ void main() {
         ..id = randomId()
         ..name = "Rapala",
     );
-    await tester.pumpWidget(Testable(
+    var context = await pumpContext(
+      tester,
       (_) => BaitPage(Bait()),
       appManager: appManager,
-    ));
+    );
 
-    expect(find.byType(HeadingLabel), findsOneWidget);
+    expect(find.listHeadingText(context), findsOneWidget);
     expect(find.text("Rapala"), findsOneWidget);
     expect(find.text("Countdown Brown Trout"), findsOneWidget);
   });

@@ -15,12 +15,14 @@ import '../pages/entity_page.dart';
 import '../pages/save_catch_page.dart';
 import '../res/dimen.dart';
 import '../res/gen/custom_icons.dart';
+import '../res/style.dart';
 import '../species_manager.dart';
 import '../utils/date_time_utils.dart';
 import '../utils/page_utils.dart';
 import '../utils/protobuf_utils.dart';
 import '../utils/string_utils.dart';
 import '../water_clarity_manager.dart';
+import '../widgets/atmosphere_wrap.dart';
 import '../widgets/list_item.dart';
 import '../widgets/static_fishing_spot.dart';
 import '../widgets/text.dart';
@@ -100,6 +102,7 @@ class _CatchPageState extends State<CatchPage> {
             _buildMethods(),
             _buildBait(),
             _buildFishingSpot(),
+            _buildAtmosphere(),
             _buildSize(),
             _buildAngler(),
             _buildCatchAndRelease(),
@@ -125,7 +128,10 @@ class _CatchPageState extends State<CatchPage> {
               ),
               Padding(
                 padding: insetsLeftDefault,
-                child: SubtitleLabel(_formatTimeFields()),
+                child: Text(
+                  _formatTimeFields(),
+                  style: styleSubtitle(context),
+                ),
               ),
             ],
           ),
@@ -167,11 +173,11 @@ class _CatchPageState extends State<CatchPage> {
     Widget? subtitle;
     var baitCategory = _baitCategoryManager.entity(bait.baitCategoryId);
     if (baitCategory != null) {
-      subtitle = SubtitleLabel(baitCategory.name);
+      subtitle = Text(baitCategory.name, style: styleSubtitle(context));
     }
 
     return ListItem(
-      title: Label(bait.name),
+      title: Text(bait.name),
       subtitle: subtitle,
       trailing: RightChevronIcon(),
       onTap: () => push(
@@ -193,6 +199,17 @@ class _CatchPageState extends State<CatchPage> {
     return StaticFishingSpot(
       fishingSpot,
       padding: insetsHorizontalDefaultVerticalSmall,
+    );
+  }
+
+  Widget _buildAtmosphere() {
+    if (!_catch.hasAtmosphere()) {
+      return Empty();
+    }
+
+    return Padding(
+      padding: insetsDefault,
+      child: AtmosphereWrap(_catch.atmosphere),
     );
   }
 
@@ -301,7 +318,13 @@ class _CatchPageState extends State<CatchPage> {
             ),
           ),
           HorizontalSpace(paddingWidgetDouble),
-          Expanded(child: PrimaryLabel.multiline(value)),
+          Expanded(
+            child: Text(
+              value,
+              style: stylePrimary(context),
+              overflow: TextOverflow.visible,
+            ),
+          ),
         ],
       );
     }

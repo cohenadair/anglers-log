@@ -3,16 +3,31 @@ import 'package:flutter/material.dart';
 import '../auth_manager.dart';
 import '../i18n/strings.dart';
 import '../log.dart';
+import '../res/gen/custom_icons.dart';
 import '../res/style.dart';
+import '../subscription_manager.dart';
+import '../user_preference_manager.dart';
 import '../utils/dialog_utils.dart';
 import '../utils/page_utils.dart';
+import '../widgets/checkbox_input.dart';
 import '../widgets/list_item.dart';
-import '../widgets/text.dart';
 import '../widgets/widget.dart';
 import 'pro_page.dart';
+import 'units_page.dart';
 
-class SettingsPage extends StatelessWidget {
+class SettingsPage extends StatefulWidget {
+  @override
+  _SettingsPageState createState() => _SettingsPageState();
+}
+
+class _SettingsPageState extends State<SettingsPage> {
   final _log = Log("SettingsPage");
+
+  SubscriptionManager get _subscriptionManager =>
+      SubscriptionManager.of(context);
+
+  UserPreferenceManager get _userPreferenceManager =>
+      UserPreferenceManager.of(context);
 
   @override
   Widget build(BuildContext context) {
@@ -22,11 +37,46 @@ class SettingsPage extends StatelessWidget {
       ),
       body: ListView(
         children: <Widget>[
+          _buildFetchAtmosphere(context),
+          MinDivider(),
+          _buildUnits(context),
+          MinDivider(),
           _buildPro(context),
           MinDivider(),
           _buildLogout(context),
         ],
       ),
+    );
+  }
+
+  Widget _buildFetchAtmosphere(BuildContext context) {
+    return CheckboxInput(
+      label: Strings.of(context).settingsPageFetchAtmosphereTitle,
+      description: Strings.of(context).settingsPageFetchAtmosphereDescription,
+      value: _userPreferenceManager.autoFetchAtmosphere,
+      onChanged: (checked) {
+        if (_subscriptionManager.isPro && checked) {
+          _userPreferenceManager.setAutoFetchAtmosphere(true);
+        } else if (checked) {
+          // "Uncheck" checkbox, since automatically refreshing data is
+          // a pro feature.
+          setState(() {
+            _userPreferenceManager.setAutoFetchAtmosphere(false);
+          });
+          present(context, ProPage());
+        } else {
+          _userPreferenceManager.setAutoFetchAtmosphere(false);
+        }
+      },
+    );
+  }
+
+  Widget _buildUnits(BuildContext context) {
+    return ListItem(
+      title: Text("DEV TODO"),
+      leading: Icon(CustomIcons.ruler),
+      trailing: RightChevronIcon(),
+      onTap: () => push(context, UnitsPage()),
     );
   }
 
@@ -42,7 +92,7 @@ class SettingsPage extends StatelessWidget {
     var authManager = AuthManager.of(context);
 
     return ListItem(
-      title: Label(
+      title: Text(
         Strings.of(context).settingsPageLogout,
         style: styleError,
       ),
@@ -56,7 +106,7 @@ class SettingsPage extends StatelessWidget {
         showConfirmYesDialog(
           context: context,
           description:
-              Label(Strings.of(context).settingsPageLogoutConfirmMessage),
+              Text(Strings.of(context).settingsPageLogoutConfirmMessage),
           onConfirm: () async => AuthManager.of(context).logout(),
         );
       },

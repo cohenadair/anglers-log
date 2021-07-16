@@ -108,10 +108,11 @@ class _LoginPageState extends State<LoginPage> {
 
     return Padding(
       padding: insetsTopDefault,
-      child: Label.multiline(
+      child: Text(
         _authErrorToUserString(_error!),
         style: styleError,
-        align: TextAlign.center,
+        textAlign: TextAlign.center,
+        overflow: TextOverflow.visible,
       ),
     );
   }

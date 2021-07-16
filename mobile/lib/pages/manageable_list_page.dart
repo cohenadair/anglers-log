@@ -34,11 +34,6 @@ class ManageableListPage<T> extends StatefulWidget {
   /// See [SliverAppBar.title].
   final Widget Function(List<T>)? titleBuilder;
 
-  /// Shown when [pickerSettings] is not null.
-  ///
-  /// See [SliverAppBar.title].
-  final Widget Function(List<T>)? pickerTitleBuilder;
-
   /// A custom widget to show as the leading widget in a [SliverAppBar].
   final Widget? appBarLeading;
 
@@ -67,7 +62,6 @@ class ManageableListPage<T> extends StatefulWidget {
     required this.itemManager,
     required this.itemBuilder,
     this.titleBuilder,
-    this.pickerTitleBuilder,
     this.appBarLeading,
     this.itemsHaveThumbnail = false,
     this.forceCenterTitle = false,
@@ -186,6 +180,10 @@ class _ManageableListPageState<T> extends State<ManageableListPage<T>> {
       );
     }
 
+    var pickerTitle = _isPickingMulti
+        ? widget.pickerSettings?.multiTitle
+        : widget.pickerSettings?.title;
+
     return WillPopScope(
       onWillPop: () {
         if (_isPickingMulti) {
@@ -203,8 +201,7 @@ class _ManageableListPageState<T> extends State<ManageableListPage<T>> {
               pinned: false,
               snap: true,
               title: _isPicking
-                  ? widget.pickerTitleBuilder?.call(_animatedList.items) ??
-                      Empty()
+                  ? pickerTitle ?? Empty()
                   : widget.titleBuilder?.call(_animatedList.items) ?? Empty(),
               actions: _buildActions(_animatedList.items),
               expandedHeight: _hasSearch ? _appBarExpandedHeight : 0.0,
@@ -491,6 +488,12 @@ typedef PickerContainsAllCallback<T> = bool Function(Set<T> selectedItems);
 /// A convenience class for storing the properties related to when a
 /// [ManageableListPage] is being used to pick items from a list.
 class ManageableListPagePickerSettings<T> {
+  /// The title of the picker page when picking a single item.
+  final Widget? title;
+
+  /// The title of the picker page when picking a multiple items.
+  final Widget? multiTitle;
+
   /// Invoked when picking has finished. Returning true will pop the picker
   /// from the current [Navigator]. [pickedItems] is guaranteed to have one
   /// and only one item if [isMulti] is false, otherwise includes all items that
@@ -516,6 +519,8 @@ class ManageableListPagePickerSettings<T> {
 
   ManageableListPagePickerSettings({
     required this.onPicked,
+    this.title,
+    this.multiTitle,
     this.initialValues = const {},
     this.isMulti = true,
     this.isRequired = false,
@@ -524,6 +529,7 @@ class ManageableListPagePickerSettings<T> {
 
   ManageableListPagePickerSettings.single({
     required bool Function(BuildContext, T?) onPicked,
+    Widget? title,
     T? initialValue,
     bool isRequired = false,
   }) : this(
@@ -533,23 +539,26 @@ class ManageableListPagePickerSettings<T> {
           isMulti: false,
           isRequired: isRequired,
           containsAll: null,
+          title: title,
         );
 
-  ManageableListPagePickerSettings copyWith({
+  ManageableListPagePickerSettings<T> copyWith({
     OnPickedCallback<T>? onPicked,
     Set<T>? initialValues,
     bool? isMulti,
     bool? isRequired,
     PickerContainsAllCallback<T>? containsAll,
+    Widget? title,
+    Widget? multiTitle,
   }) {
-    return ManageableListPagePickerSettings(
-      onPicked: onPicked as bool Function(BuildContext, Set<dynamic>)? ??
-          this.onPicked as bool Function(BuildContext, Set<dynamic>),
+    return ManageableListPagePickerSettings<T>(
+      onPicked: onPicked ?? this.onPicked,
       initialValues: initialValues ?? this.initialValues,
       isMulti: isMulti ?? this.isMulti,
       isRequired: isRequired ?? this.isRequired,
-      containsAll: containsAll as bool Function(Set<dynamic>)? ??
-          this.containsAll as bool Function(Set<dynamic>)?,
+      containsAll: containsAll ?? this.containsAll,
+      title: title ?? this.title,
+      multiTitle: multiTitle ?? this.multiTitle,
     );
   }
 }

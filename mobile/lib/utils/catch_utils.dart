@@ -4,8 +4,8 @@ import '../i18n/strings.dart';
 import '../model/gen/anglerslog.pb.dart';
 import '../pages/image_picker_page.dart';
 import '../time_manager.dart';
+import '../widgets/field.dart';
 import '../widgets/input_controller.dart';
-import '../widgets/input_data.dart';
 import 'date_time_utils.dart';
 import 'protobuf_utils.dart';
 import 'string_utils.dart';
@@ -55,6 +55,9 @@ Id catchFieldIdQuantity() =>
     Id()..uuid = "8ed48dab-b5c3-4430-a702-aa336aea0f5a";
 
 Id catchFieldIdNotes() => Id()..uuid = "a5ad6270-e131-40ad-b281-e1a4d838bf47";
+
+Id catchFieldIdAtmosphere() =>
+    Id()..uuid = "93f2a6bc-fb18-43a1-92c1-18c727440257";
 
 /// Returns all catch fields, sorted by how they are rendered on a
 /// [SaveCatchPage].
@@ -126,6 +129,11 @@ List<Field> allCatchFields(TimeManager timeManager) {
       controller: SetInputController<Id>(),
     ),
     Field(
+      id: catchFieldIdAtmosphere(),
+      name: (context) => Strings.of(context).catchFieldAtmosphere,
+      controller: InputController<Atmosphere>(),
+    ),
+    Field(
       id: catchFieldIdWaterClarity(),
       name: (context) => Strings.of(context).catchFieldWaterClarityLabel,
       controller: IdInputController(),
@@ -133,22 +141,30 @@ List<Field> allCatchFields(TimeManager timeManager) {
     Field(
       id: catchFieldIdWaterDepth(),
       name: (context) => Strings.of(context).catchFieldWaterDepthLabel,
-      controller: MultiMeasurementInputController(),
+      // When used for actual input, this should be reset to an applicable
+      // controller depending on the widget being used.
+      controller: InputController(),
     ),
     Field(
       id: catchFieldIdWaterTemperature(),
       name: (context) => Strings.of(context).catchFieldWaterTemperatureLabel,
-      controller: MultiMeasurementInputController(),
+      // When used for actual input, this should be reset to an applicable
+      // controller depending on the widget being used.
+      controller: InputController(),
     ),
     Field(
       id: catchFieldIdLength(),
       name: (context) => Strings.of(context).catchFieldLengthLabel,
-      controller: MultiMeasurementInputController(),
+      // When used for actual input, this should be reset to an applicable
+      // controller depending on the widget being used.
+      controller: InputController(),
     ),
     Field(
       id: catchFieldIdWeight(),
       name: (context) => Strings.of(context).catchFieldWeightLabel,
-      controller: MultiMeasurementInputController(),
+      // When used for actual input, this should be reset to an applicable
+      // controller depending on the widget being used.
+      controller: InputController(),
     ),
     Field(
       id: catchFieldIdQuantity(),
@@ -187,8 +203,7 @@ bool catchFilterMatchesFavorite(
     BuildContext context, String filter, Catch cat) {
   return cat.hasIsFavorite() &&
       cat.isFavorite &&
-      containsTrimmedLowerCase(
-          Strings.of(context).catchFieldFavoriteSearchString, filter);
+      containsTrimmedLowerCase(Strings.of(context).keywordsFavorite, filter);
 }
 
 bool catchFilterMatchesCatchAndRelease(
@@ -196,7 +211,7 @@ bool catchFilterMatchesCatchAndRelease(
   return cat.hasWasCatchAndRelease() &&
       cat.wasCatchAndRelease &&
       containsTrimmedLowerCase(
-          Strings.of(context).catchFieldCatchAndReleaseSearchString, filter);
+          Strings.of(context).keywordsCatchAndRelease, filter);
 }
 
 bool catchFilterMatchesTimestamp(
@@ -206,66 +221,38 @@ bool catchFilterMatchesTimestamp(
           timestampToSearchString(context, cat.timestamp.toInt()), filter);
 }
 
-bool catchFilterMatchesWaterDepth(
-    BuildContext context, String filter, Catch cat) {
-  if (!cat.hasWaterDepth()) {
+bool _catchFilterMatchesMultiMeasurement(BuildContext context,
+    MultiMeasurement measurement, bool hasValue, String filter) {
+  if (!hasValue) {
     return false;
   }
 
-  var searchString = "${cat.waterDepth.displayValue(context)} ";
-  if (cat.waterDepth.system == MeasurementSystem.metric) {
-    searchString += Strings.of(context).waterDepthMetricSearchString;
-  } else {
-    searchString += Strings.of(context).waterDepthImperialSearchString;
-  }
+  var searchString = "${measurement.displayValue(context)} "
+      "${measurement.filterString(context)}";
 
   return containsTrimmedLowerCase(searchString, filter);
+}
+
+bool catchFilterMatchesWaterDepth(
+    BuildContext context, String filter, Catch cat) {
+  return _catchFilterMatchesMultiMeasurement(
+      context, cat.waterDepth, cat.hasWaterDepth(), filter);
 }
 
 bool catchFilterMatchesWaterTemperature(
     BuildContext context, String filter, Catch cat) {
-  if (!cat.hasWaterTemperature()) {
-    return false;
-  }
-
-  var searchString = "${cat.waterTemperature.displayValue(context)} ";
-  if (cat.waterTemperature.system == MeasurementSystem.metric) {
-    searchString += Strings.of(context).waterTemperatureMetricSearchString;
-  } else {
-    searchString += Strings.of(context).waterTemperatureImperialSearchString;
-  }
-
-  return containsTrimmedLowerCase(searchString, filter);
+  return _catchFilterMatchesMultiMeasurement(
+      context, cat.waterTemperature, cat.hasWaterTemperature(), filter);
 }
 
 bool catchFilterMatchesLength(BuildContext context, String filter, Catch cat) {
-  if (!cat.hasLength()) {
-    return false;
-  }
-
-  var searchString = "${cat.length.displayValue(context)} ";
-  if (cat.length.system == MeasurementSystem.metric) {
-    searchString += Strings.of(context).lengthMetricSearchString;
-  } else {
-    searchString += Strings.of(context).lengthImperialSearchString;
-  }
-
-  return containsTrimmedLowerCase(searchString, filter);
+  return _catchFilterMatchesMultiMeasurement(
+      context, cat.length, cat.hasLength(), filter);
 }
 
 bool catchFilterMatchesWeight(BuildContext context, String filter, Catch cat) {
-  if (!cat.hasWeight()) {
-    return false;
-  }
-
-  var searchString = "${cat.weight.displayValue(context)} ";
-  if (cat.weight.system == MeasurementSystem.metric) {
-    searchString += Strings.of(context).weightMetricSearchString;
-  } else {
-    searchString += Strings.of(context).weightImperialSearchString;
-  }
-
-  return containsTrimmedLowerCase(searchString, filter);
+  return _catchFilterMatchesMultiMeasurement(
+      context, cat.weight, cat.hasWeight(), filter);
 }
 
 bool catchFilterMatchesQuantity(
@@ -276,4 +263,63 @@ bool catchFilterMatchesQuantity(
 
 bool catchFilterMatchesNotes(BuildContext context, String filter, Catch cat) {
   return cat.hasNotes() && containsTrimmedLowerCase(cat.notes, filter);
+}
+
+bool catchFilterMatchesAtmosphere(
+    BuildContext context, String filter, Catch cat) {
+  if (!cat.hasAtmosphere()) {
+    return false;
+  }
+
+  var atmosphere = cat.atmosphere;
+  var searchString = "";
+
+  if (atmosphere.hasTemperature()) {
+    searchString += " ${atmosphere.temperature.displayValue(context)}";
+    searchString += " ${atmosphere.temperature.filterString(context)}";
+  }
+
+  if (atmosphere.hasWindSpeed()) {
+    searchString += " ${atmosphere.windSpeed.displayValue(context)}";
+    searchString += " ${atmosphere.windSpeed.filterString(context)}";
+  }
+
+  if (atmosphere.hasPressure()) {
+    searchString += " ${atmosphere.pressure.displayValue(context)}";
+    searchString += " ${atmosphere.pressure.filterString(context)}";
+  }
+
+  if (atmosphere.hasVisibility()) {
+    searchString += " ${atmosphere.visibility.displayValue(context)}";
+    searchString += " ${atmosphere.visibility.filterString(context)}";
+  }
+
+  if (atmosphere.skyConditions.isNotEmpty) {
+    searchString += " ${atmosphere.skyConditions.join(" ")}";
+  }
+
+  if (atmosphere.hasWindDirection()) {
+    searchString += " ${atmosphere.windDirection.filterString(context)}";
+    searchString += " ${Strings.of(context).keywordsWindDirection}";
+  }
+
+  if (atmosphere.hasHumidity()) {
+    searchString += " ${atmosphere.humidity.filterString(context)}";
+    searchString += " ${Strings.of(context).keywordsAirHumidity}";
+  }
+
+  if (atmosphere.hasMoonPhase()) {
+    searchString += " ${atmosphere.moonPhase.displayName(context)}";
+    searchString += " ${Strings.of(context).keywordsMoon}";
+  }
+
+  if (atmosphere.hasSunsetMillis()) {
+    searchString += " ${Strings.of(context).keywordsSunset}";
+  }
+
+  if (atmosphere.hasSunsetMillis()) {
+    searchString += " ${Strings.of(context).keywordsSunrise}";
+  }
+
+  return containsTrimmedLowerCase(searchString, filter);
 }

@@ -22,6 +22,7 @@ void main() {
 
     when(appManager.locationMonitor.initialize())
         .thenAnswer((_) => Future.value(null));
+    when(appManager.locationMonitor.currentLocation).thenReturn(null);
 
     when(appManager.userPreferenceManager.catchCustomEntityIds).thenReturn([]);
     when(appManager.userPreferenceManager.catchFieldIds).thenReturn([]);
@@ -33,9 +34,13 @@ void main() {
         .thenReturn(MeasurementSystem.metric);
     when(appManager.userPreferenceManager.catchWeightSystem)
         .thenReturn(MeasurementSystem.metric);
+    when(appManager.userPreferenceManager.autoFetchAtmosphere)
+        .thenReturn(false);
 
     when(appManager.permissionHandlerWrapper.requestLocation())
         .thenAnswer((_) => Future.value(true));
+
+    when(appManager.subscriptionManager.isFree).thenReturn(false);
 
     var dir = MockDirectory();
     when(dir.listSync()).thenReturn([]);

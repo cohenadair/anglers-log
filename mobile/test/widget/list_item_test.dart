@@ -3,11 +3,89 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/res/dimen.dart';
 import 'package:mobile/widgets/checkbox_input.dart';
 import 'package:mobile/widgets/list_item.dart';
-import 'package:mobile/widgets/text.dart';
+import 'package:mobile/widgets/widget.dart';
 
 import '../test_utils.dart';
 
 void main() {
+  group("ListItem", () {
+    testWidgets("Text title/subtitle use default style", (tester) async {
+      await tester.pumpWidget(Testable(
+        (_) => ListItem(
+          title: Text("Title"),
+          subtitle: Text("Subtitle"),
+        ),
+      ));
+
+      expect(find.byType(DefaultTextStyle), findsNWidgets(4));
+    });
+
+    testWidgets("Leading icons use default style", (tester) async {
+      await tester.pumpWidget(Testable(
+        (_) => ListItem(
+          leading: Icon(Icons.check),
+        ),
+      ));
+
+      expect(find.byType(IconTheme), findsNWidgets(3));
+    });
+
+    testWidgets("Default padding", (tester) async {
+      await tester.pumpWidget(Testable((_) => ListItem()));
+      expect(
+        find.byWidgetPredicate(
+            (widget) => widget is Padding && widget.padding == insetsDefault),
+        findsOneWidget,
+      );
+    });
+
+    testWidgets("Custom padding", (tester) async {
+      await tester.pumpWidget(Testable(
+        (_) => ListItem(
+          padding: EdgeInsets.all(1),
+        ),
+      ));
+
+      expect(
+        find.byWidgetPredicate((widget) =>
+            widget is Padding && widget.padding == EdgeInsets.all(1)),
+        findsOneWidget,
+      );
+    });
+
+    testWidgets("Null leading/trailing/title/subtitle", (tester) async {
+      await tester.pumpWidget(Testable(
+        (_) => ListItem(
+          title: null,
+          subtitle: null,
+          trailing: null,
+          leading: null,
+        ),
+      ));
+
+      expect(find.byType(HorizontalSpace), findsNothing);
+      expect(find.byType(Empty), findsNWidgets(6));
+    });
+
+    testWidgets("Non-null leading/trailing/title/subtitle", (tester) async {
+      await tester.pumpWidget(Testable(
+        (_) => ListItem(
+          title: Text("Title"),
+          subtitle: Text("Subtitle"),
+          trailing: Icon(Icons.chevron_right),
+          leading: Icon(Icons.check),
+        ),
+      ));
+
+      expect(find.byType(HorizontalSpace), findsNWidgets(2));
+      expect(find.byType(Empty), findsNothing);
+      expect(find.text("Title"), findsOneWidget);
+      expect(find.text("Subtitle"), findsOneWidget);
+      expect(find.byIcon(Icons.chevron_right), findsOneWidget);
+      expect(find.byIcon(Icons.check), findsOneWidget);
+    });
+  });
+
   group("ExpansionListItem", () {
     testWidgets("Expanded on tap", (tester) async {
       var changed = false;
@@ -55,15 +133,16 @@ void main() {
     });
 
     testWidgets("Custom text widget doesn't use default style", (tester) async {
-      await tester.pumpWidget(
-        Testable(
-          (_) => ManageableListItem(
-            child: NoteLabel("Child"),
-            onTapDeleteButton: () => false,
-          ),
+      var context = await pumpContext(
+        tester,
+        (_) => ManageableListItem(
+          child: MinDivider(),
+          onTapDeleteButton: () => false,
         ),
       );
-      expect(find.byType(NoteLabel), findsOneWidget);
+
+      expect(find.byType(MinDivider), findsOneWidget);
+      expect(find.primaryText(context), findsNothing);
     });
 
     testWidgets("Tapping delete button shows dialog", (tester) async {
@@ -166,28 +245,25 @@ void main() {
 
   group("PickerListItem", () {
     testWidgets("Non-null subtitle", (tester) async {
-      await tester.pumpWidget(
-        Testable(
-          (_) => PickerListItem(
-            title: "Test",
-            subtitle: "Subtitle",
-          ),
+      var context = await pumpContext(
+        tester,
+        (_) => PickerListItem(
+          title: "Test",
+          subtitle: "Subtitle",
         ),
       );
 
-      expect(find.byType(SubtitleLabel), findsOneWidget);
+      expect(find.subtitleText(context), findsOneWidget);
     });
 
     testWidgets("Null subtitle", (tester) async {
-      await tester.pumpWidget(
-        Testable(
-          (_) => PickerListItem(
-            title: "Test",
-          ),
+      var context = await pumpContext(
+        tester,
+        (_) => PickerListItem(
+          title: "Test",
         ),
       );
-
-      expect(find.byType(SubtitleLabel), findsNothing);
+      expect(find.subtitleText(context), findsNothing);
     });
 
     testWidgets("Selected when multi", (tester) async {

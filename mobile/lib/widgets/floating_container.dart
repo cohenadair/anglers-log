@@ -4,7 +4,6 @@ import 'package:quiver/strings.dart';
 import '../res/dimen.dart';
 import '../res/style.dart';
 import '../widgets/list_item.dart';
-import '../widgets/text.dart';
 import '../widgets/widget.dart';
 
 /// A floating container aligned to the bottom of its container. This widget
@@ -52,16 +51,18 @@ class FloatingContainer extends StatelessWidget {
                   BorderRadius.all(Radius.circular(floatingCornerRadius)),
               color: Colors.transparent,
               child: ListItem(
-                contentPadding: EdgeInsets.only(
+                padding: EdgeInsets.only(
                   left: paddingDefault,
                   right: _tapEnabled ? paddingSmall : paddingDefault,
+                  top: paddingDefault,
+                  bottom: paddingDefault,
                 ),
                 title: isNotEmpty(title)
-                    ? Label(title!, style: styleHeading)
-                    : Label(subtitle!),
+                    ? Text(title!, style: styleHeading)
+                    : Text(subtitle!),
                 subtitle: isEmpty(title) || isEmpty(subtitle)
                     ? null
-                    : SubtitleLabel(subtitle!),
+                    : Text(subtitle!, style: styleSecondary(context)),
                 onTap: onTap,
                 trailing: _tapEnabled ? RightChevronIcon() : null,
               ),

@@ -8,8 +8,8 @@ import '../i18n/strings.dart';
 import '../model/gen/anglerslog.pb.dart';
 import '../pages/manageable_list_page.dart';
 import '../pages/save_custom_entity_page.dart';
+import '../res/style.dart';
 import '../utils/string_utils.dart';
-import '../widgets/text.dart';
 import '../widgets/widget.dart';
 
 class CustomEntityListPage extends StatelessWidget {
@@ -26,10 +26,10 @@ class CustomEntityListPage extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            PrimaryLabel(entity.name),
+            Text(entity.name, style: stylePrimary(context)),
             isEmpty(entity.description)
                 ? Empty()
-                : SubtitleLabel(entity.description),
+                : Text(entity.description, style: styleSubtitle(context)),
           ],
         ),
       ),

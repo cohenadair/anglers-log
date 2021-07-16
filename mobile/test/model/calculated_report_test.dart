@@ -323,11 +323,19 @@ void main() {
       waterClarityIds: anyNamed("waterClarityIds"),
       periods: anyNamed("periods"),
       seasons: anyNamed("seasons"),
+      windDirections: anyNamed("windDirections"),
+      skyConditions: anyNamed("skyConditions"),
+      moonPhases: anyNamed("moonPhases"),
       waterDepthFilter: anyNamed("waterDepthFilter"),
       waterTemperatureFilter: anyNamed("waterTemperatureFilter"),
       lengthFilter: anyNamed("lengthFilter"),
       weightFilter: anyNamed("weightFilter"),
       quantityFilter: anyNamed("quantityFilter"),
+      airTemperatureFilter: anyNamed("airTemperatureFilter"),
+      airPressureFilter: anyNamed("airPressureFilter"),
+      airHumidityFilter: anyNamed("airHumidityFilter"),
+      airVisibilityFilter: anyNamed("airVisibilityFilter"),
+      windSpeedFilter: anyNamed("windSpeedFilter"),
     )).thenReturn(
       (catches ?? _catches)
         ..sort((lhs, rhs) => rhs.timestamp.compareTo(lhs.timestamp)),
@@ -687,6 +695,9 @@ void main() {
       waterClarityIds: {clarityId4, clarityId3, clarityId2},
       periods: {Period.dawn, Period.night, Period.dusk},
       seasons: {Season.autumn},
+      windDirections: {Direction.east},
+      skyConditions: {SkyCondition.rain, SkyCondition.drizzle},
+      moonPhases: {MoonPhase.full},
     );
 
     expect(data.filters(), {
@@ -709,6 +720,10 @@ void main() {
       "1 Foot",
       "Crystal",
       "Chocolate Milk",
+      "Wind: E",
+      "Rain",
+      "Drizzle",
+      "Full Moon",
     });
     expect(data.filters(includeSpecies: false), {
       "All dates",
@@ -728,6 +743,10 @@ void main() {
       "1 Foot",
       "Crystal",
       "Chocolate Milk",
+      "Wind: E",
+      "Rain",
+      "Drizzle",
+      "Full Moon",
     });
     expect(data.filters(includeDateRange: false), {
       "Worm",
@@ -748,6 +767,10 @@ void main() {
       "1 Foot",
       "Crystal",
       "Chocolate Milk",
+      "Wind: E",
+      "Rain",
+      "Drizzle",
+      "Full Moon",
     });
     expect(data.filters(includeSpecies: false, includeDateRange: false), {
       "Worm",
@@ -766,6 +789,10 @@ void main() {
       "1 Foot",
       "Crystal",
       "Chocolate Milk",
+      "Wind: E",
+      "Rain",
+      "Drizzle",
+      "Full Moon",
     });
   });
 
@@ -790,6 +817,21 @@ void main() {
         boundary: NumberBoundary.number_boundary_any,
       ),
       // Intentionally leave out quantityFilter to test the null case.
+      airTemperatureFilter: NumberFilter(
+        boundary: NumberBoundary.number_boundary_any,
+      ),
+      airPressureFilter: NumberFilter(
+        boundary: NumberBoundary.number_boundary_any,
+      ),
+      airHumidityFilter: NumberFilter(
+        boundary: NumberBoundary.number_boundary_any,
+      ),
+      airVisibilityFilter: NumberFilter(
+        boundary: NumberBoundary.number_boundary_any,
+      ),
+      windSpeedFilter: NumberFilter(
+        boundary: NumberBoundary.number_boundary_any,
+      ),
     );
 
     expect(data.filters(), {
@@ -852,6 +894,61 @@ void main() {
           ),
         ),
       ),
+      airTemperatureFilter: NumberFilter(
+        boundary: NumberBoundary.range,
+        from: MultiMeasurement(
+          system: MeasurementSystem.metric,
+          mainValue: Measurement(
+            unit: Unit.celsius,
+            value: 10,
+          ),
+        ),
+        to: MultiMeasurement(
+          system: MeasurementSystem.metric,
+          mainValue: Measurement(
+            unit: Unit.celsius,
+            value: 25,
+          ),
+        ),
+      ),
+      airPressureFilter: NumberFilter(
+        boundary: NumberBoundary.less_than,
+        from: MultiMeasurement(
+          system: MeasurementSystem.metric,
+          mainValue: Measurement(
+            unit: Unit.millibars,
+            value: 1050,
+          ),
+        ),
+      ),
+      airVisibilityFilter: NumberFilter(
+        boundary: NumberBoundary.greater_than,
+        from: MultiMeasurement(
+          system: MeasurementSystem.imperial_decimal,
+          mainValue: Measurement(
+            unit: Unit.miles,
+            value: 5,
+          ),
+        ),
+      ),
+      airHumidityFilter: NumberFilter(
+        boundary: NumberBoundary.equal_to,
+        from: MultiMeasurement(
+          mainValue: Measurement(
+            value: 75,
+          ),
+        ),
+      ),
+      windSpeedFilter: NumberFilter(
+        boundary: NumberBoundary.greater_than,
+        from: MultiMeasurement(
+          system: MeasurementSystem.imperial_decimal,
+          mainValue: Measurement(
+            unit: Unit.miles,
+            value: 3.5,
+          ),
+        ),
+      ),
     );
 
     expect(data.filters(), {
@@ -861,6 +958,11 @@ void main() {
       "Length: > 25 cm",
       "Weight: < 2.5 kg",
       "Quantity: > 5",
+      "Air Temperature: 10\u00B0C - 25\u00B0C",
+      "Atmospheric Pressure: < 1050 MB",
+      "Air Humidity: = 75%",
+      "Air Visibility: > 5 mi",
+      "Wind Speed: > 3.5 mi",
     });
   });
 

@@ -14,10 +14,10 @@ import '../i18n/strings.dart';
 import '../log.dart';
 import '../res/dimen.dart';
 import '../res/gen/custom_icons.dart';
+import '../res/style.dart';
 import '../utils/string_utils.dart';
 import '../widgets/button.dart';
 import '../widgets/empty_list_placeholder.dart';
-import '../widgets/text.dart';
 import '../widgets/widget.dart';
 import '../wrappers/file_picker_wrapper.dart';
 import '../wrappers/image_picker_wrapper.dart';
@@ -366,7 +366,7 @@ class _ImagePickerPageState extends State<ImagePickerPage> {
                 widget.allowsMultipleSelection
                     ? Padding(
                         padding: insetsHorizontalDefault,
-                        child: PrimaryLabel(
+                        child: Text(
                           format(
                             Strings.of(context).imagePickerPageSelectedLabel,
                             [
@@ -374,6 +374,7 @@ class _ImagePickerPageState extends State<ImagePickerPage> {
                               _galleryAsset?.assetCount ?? 0
                             ],
                           ),
+                          style: stylePrimary(context),
                         ),
                       )
                     : Empty(),

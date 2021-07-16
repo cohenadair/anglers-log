@@ -26,138 +26,26 @@ void main() {
         .thenReturn(MeasurementSystem.metric);
   });
 
-  testWidgets("System defaults to controller", (tester) async {
-    var controller = MultiMeasurementInputController();
-    controller.value = MultiMeasurement(
-      system: MeasurementSystem.metric,
-    );
-
-    await tester.pumpWidget(
-      Testable(
-        (context) => MultiMeasurementInput(
-          spec: MultiMeasurementInputSpec.waterDepth(context),
-          controller: controller,
-        ),
-        appManager: appManager,
-      ),
-    );
-
-    // Enter text so units are shown.
-    await enterTextAndSettle(tester, find.byType(TextInput), "10");
-    expect(find.text("m"), findsOneWidget);
-  });
-
-  testWidgets("System defaults to spec", (tester) async {
-    await tester.pumpWidget(
-      Testable(
-        (context) => MultiMeasurementInput(
-          spec: MultiMeasurementInputSpec.waterDepth(context),
-          controller: MultiMeasurementInputController(),
-        ),
-        appManager: appManager,
-      ),
-    );
-
-    // Enter text so units are shown.
-    await enterTextAndSettle(tester, find.byType(TextInput), "10");
-
-    expect(find.text("m"), findsOneWidget);
-  });
-
-  testWidgets("System defaults to imperial_whole", (tester) async {
-    await tester.pumpWidget(
-      Testable(
-        (context) => MultiMeasurementInput(
-          spec: MultiMeasurementInputSpec(
-            imperialMainUnit: Unit.feet,
-            metricUnit: Unit.meters,
-          ),
-          controller: MultiMeasurementInputController(),
-        ),
-        appManager: appManager,
-      ),
-    );
-
-    // Enter text so units are shown.
-    await enterTextAndSettle(tester, find.byType(TextInput).first, "10");
-
-    expect(find.text("ft"), findsOneWidget);
-  });
-
-  testWidgets("Initial values", (tester) async {
-    var controller = MultiMeasurementInputController();
-    controller.value = MultiMeasurement(
-      system: MeasurementSystem.imperial_whole,
-      mainValue: Measurement(
-        unit: Unit.pounds,
-        value: 10,
-      ),
-      fractionValue: Measurement(
-        unit: Unit.ounces,
-        value: 8,
-      ),
-    );
-
-    await tester.pumpWidget(
-      Testable(
-        (context) => MultiMeasurementInput(
-          spec: MultiMeasurementInputSpec.weight(context),
-          controller: controller,
-        ),
-        appManager: appManager,
-      ),
-    );
-
-    expect(find.text("10"), findsOneWidget);
-    expect(find.text("8"), findsOneWidget);
-    expect(find.text("lbs"), findsOneWidget);
-    expect(find.text("oz"), findsOneWidget);
-  });
-
-  testWidgets("No initial values", (tester) async {
-    var controller = MultiMeasurementInputController();
-    controller.value = MultiMeasurement(
-      system: MeasurementSystem.imperial_whole,
-    );
-
-    var mainController = NumberInputController();
-    var fractionController = NumberInputController();
-
-    await tester.pumpWidget(
-      Testable(
-        (context) => MultiMeasurementInput(
-          spec: MultiMeasurementInputSpec.weight(context),
-          controller: controller,
-          mainController: mainController,
-          fractionController: fractionController,
-        ),
-        appManager: appManager,
-      ),
-    );
-
-    expect(mainController.hasValue, isFalse);
-    expect(fractionController.hasValue, isFalse);
-    expect(find.text("lbs"), findsOneWidget);
-    expect(find.text("oz"), findsOneWidget);
-  });
-
   testWidgets("Round initial double mainValue with decimal system",
       (tester) async {
-    var controller = MultiMeasurementInputController();
-    controller.value = MultiMeasurement(
-      system: MeasurementSystem.imperial_decimal,
-      mainValue: Measurement(
-        unit: Unit.feet,
-        value: 12.3,
-      ),
-    );
-
     await tester.pumpWidget(
       Testable(
-        (context) => MultiMeasurementInput(
-          spec: MultiMeasurementInputSpec.weight(context),
-          controller: controller,
-        ),
+        (context) {
+          var spec = MultiMeasurementInputSpec.weight(context);
+          var controller = spec.newInputController();
+          controller.value = MultiMeasurement(
+            system: MeasurementSystem.imperial_decimal,
+            mainValue: Measurement(
+              unit: Unit.feet,
+              value: 12.3,
+            ),
+          );
+
+          return MultiMeasurementInput(
+            spec: spec,
+            controller: controller,
+          );
+        },
         appManager: appManager,
       ),
     );
@@ -167,21 +55,24 @@ void main() {
 
   testWidgets("Round initial double mainValue with whole system",
       (tester) async {
-    var controller = MultiMeasurementInputController();
-    controller.value = MultiMeasurement(
-      system: MeasurementSystem.imperial_whole,
-      mainValue: Measurement(
-        unit: Unit.feet,
-        value: 12.3,
-      ),
-    );
-
     await tester.pumpWidget(
       Testable(
-        (context) => MultiMeasurementInput(
-          spec: MultiMeasurementInputSpec.weight(context),
-          controller: controller,
-        ),
+        (context) {
+          var spec = MultiMeasurementInputSpec.weight(context);
+          var controller = spec.newInputController();
+          controller.value = MultiMeasurement(
+            system: MeasurementSystem.imperial_whole,
+            mainValue: Measurement(
+              unit: Unit.feet,
+              value: 12.3,
+            ),
+          );
+
+          return MultiMeasurementInput(
+            spec: spec,
+            controller: controller,
+          );
+        },
         appManager: appManager,
       ),
     );
@@ -190,21 +81,24 @@ void main() {
   });
 
   testWidgets("Round initial double mainValue when whole", (tester) async {
-    var controller = MultiMeasurementInputController();
-    controller.value = MultiMeasurement(
-      system: MeasurementSystem.imperial_whole,
-      mainValue: Measurement(
-        unit: Unit.feet,
-        value: 12.0,
-      ),
-    );
-
     await tester.pumpWidget(
       Testable(
-        (context) => MultiMeasurementInput(
-          spec: MultiMeasurementInputSpec.weight(context),
-          controller: controller,
-        ),
+        (context) {
+          var spec = MultiMeasurementInputSpec.weight(context);
+          var controller = spec.newInputController();
+          controller.value = MultiMeasurement(
+            system: MeasurementSystem.imperial_whole,
+            mainValue: Measurement(
+              unit: Unit.feet,
+              value: 12.0,
+            ),
+          );
+
+          return MultiMeasurementInput(
+            spec: spec,
+            controller: controller,
+          );
+        },
         appManager: appManager,
       ),
     );
@@ -214,73 +108,51 @@ void main() {
 
   testWidgets("Round initial double fractionValue with whole system",
       (tester) async {
-    var controller = MultiMeasurementInputController();
-    controller.value = MultiMeasurement(
-      system: MeasurementSystem.imperial_whole,
-      fractionValue: Measurement(
-        unit: Unit.feet,
-        value: 12.3,
-      ),
-    );
-
     await tester.pumpWidget(
       Testable(
-        (context) => MultiMeasurementInput(
-          spec: MultiMeasurementInputSpec.weight(context),
-          controller: controller,
-        ),
+        (context) {
+          var spec = MultiMeasurementInputSpec.weight(context);
+          var controller = spec.newInputController();
+          controller.value = MultiMeasurement(
+            system: MeasurementSystem.imperial_whole,
+            fractionValue: Measurement(
+              unit: Unit.feet,
+              value: 12.0,
+            ),
+          );
+
+          return MultiMeasurementInput(
+            spec: spec,
+            controller: controller,
+          );
+        },
         appManager: appManager,
       ),
     );
 
     expect(find.text("12"), findsOneWidget);
-  });
-
-  testWidgets("Round initial double fractionValue when whole", (tester) async {
-    var controller = MultiMeasurementInputController();
-    controller.value = MultiMeasurement(
-      system: MeasurementSystem.imperial_whole,
-      fractionValue: Measurement(
-        unit: Unit.feet,
-        value: 12.0,
-      ),
-    );
-
-    await tester.pumpWidget(
-      Testable(
-        (context) => MultiMeasurementInput(
-          spec: MultiMeasurementInputSpec.weight(context),
-          controller: controller,
-        ),
-        appManager: appManager,
-      ),
-    );
-
-    expect(find.text("12"), findsOneWidget);
-  });
-
-  testWidgets("didUpdateWidget updates system", (tester) async {
-    // Can't test didUpdateWidget behaviour in this test. It is tested in
-    // number_filter_input_test.dart.
   });
 
   testWidgets("Imperial 'main' text field doesn't show units for inches",
       (tester) async {
-    var controller = MultiMeasurementInputController();
-    controller.value = MultiMeasurement(
-      system: MeasurementSystem.imperial_whole,
-      mainValue: Measurement(
-        unit: Unit.inches,
-        value: 12.0,
-      ),
-    );
-
     await tester.pumpWidget(
       Testable(
-        (context) => MultiMeasurementInput(
-          spec: MultiMeasurementInputSpec.length(context),
-          controller: controller,
-        ),
+        (context) {
+          var spec = MultiMeasurementInputSpec.length(context);
+          var controller = spec.newInputController();
+          controller.value = MultiMeasurement(
+            system: MeasurementSystem.imperial_whole,
+            mainValue: Measurement(
+              unit: Unit.inches,
+              value: 12.0,
+            ),
+          );
+
+          return MultiMeasurementInput(
+            spec: spec,
+            controller: controller,
+          );
+        },
         appManager: appManager,
       ),
     );
@@ -290,21 +162,24 @@ void main() {
   });
 
   testWidgets("Imperial 'main' text field shows imperial unit", (tester) async {
-    var controller = MultiMeasurementInputController();
-    controller.value = MultiMeasurement(
-      system: MeasurementSystem.imperial_whole,
-      mainValue: Measurement(
-        unit: Unit.feet,
-        value: 12.0,
-      ),
-    );
-
     await tester.pumpWidget(
       Testable(
-        (context) => MultiMeasurementInput(
-          spec: MultiMeasurementInputSpec.waterDepth(context),
-          controller: controller,
-        ),
+        (context) {
+          var spec = MultiMeasurementInputSpec.waterDepth(context);
+          var controller = spec.newInputController();
+          controller.value = MultiMeasurement(
+            system: MeasurementSystem.imperial_whole,
+            mainValue: Measurement(
+              unit: Unit.feet,
+              value: 12.0,
+            ),
+          );
+
+          return MultiMeasurementInput(
+            spec: spec,
+            controller: controller,
+          );
+        },
         appManager: appManager,
       ),
     );
@@ -313,21 +188,24 @@ void main() {
   });
 
   testWidgets("Imperial 'main' text field shows metric unit", (tester) async {
-    var controller = MultiMeasurementInputController();
-    controller.value = MultiMeasurement(
-      system: MeasurementSystem.metric,
-      mainValue: Measurement(
-        unit: Unit.meters,
-        value: 12.0,
-      ),
-    );
-
     await tester.pumpWidget(
       Testable(
-        (context) => MultiMeasurementInput(
-          spec: MultiMeasurementInputSpec.waterDepth(context),
-          controller: controller,
-        ),
+        (context) {
+          var spec = MultiMeasurementInputSpec.waterDepth(context);
+          var controller = spec.newInputController();
+          controller.value = MultiMeasurement(
+            system: MeasurementSystem.metric,
+            mainValue: Measurement(
+              unit: Unit.meters,
+              value: 12.0,
+            ),
+          );
+
+          return MultiMeasurementInput(
+            spec: spec,
+            controller: controller,
+          );
+        },
         appManager: appManager,
       ),
     );
@@ -336,20 +214,24 @@ void main() {
   });
 
   testWidgets("'main' text field notifies when changed", (tester) async {
-    var controller = MultiMeasurementInputController();
-    controller.value = MultiMeasurement(
-      system: MeasurementSystem.metric,
-      mainValue: Measurement(unit: Unit.meters),
-    );
-
     var called = false;
+    late MultiMeasurementInputController controller;
     await tester.pumpWidget(
       Testable(
-        (context) => MultiMeasurementInput(
-          spec: MultiMeasurementInputSpec.waterDepth(context),
-          controller: controller,
-          onChanged: () => called = true,
-        ),
+        (context) {
+          var spec = MultiMeasurementInputSpec.waterDepth(context);
+          controller = spec.newInputController();
+          controller.value = MultiMeasurement(
+            system: MeasurementSystem.metric,
+            mainValue: Measurement(unit: Unit.meters),
+          );
+
+          return MultiMeasurementInput(
+            spec: spec,
+            controller: controller,
+            onChanged: () => called = true,
+          );
+        },
         appManager: appManager,
       ),
     );
@@ -360,71 +242,26 @@ void main() {
     expect(controller.value!.mainValue.value, 12);
   });
 
-  testWidgets("Fraction type 'none' doesn't show input field", (tester) async {
-    await tester.pumpWidget(
-      Testable(
-        (context) => MultiMeasurementInput(
-          spec: MultiMeasurementInputSpec.waterTemperature(context),
-          controller: MultiMeasurementInputController(),
-        ),
-        appManager: appManager,
-      ),
-    );
-
-    expect(find.byType(TextInput), findsOneWidget);
-  });
-
-  testWidgets("Fraction type 'textField' shows text field", (tester) async {
-    when(appManager.userPreferenceManager.waterDepthSystem)
-        .thenReturn(MeasurementSystem.imperial_whole);
-
-    await tester.pumpWidget(
-      Testable(
-        (context) => MultiMeasurementInput(
-          spec: MultiMeasurementInputSpec.waterDepth(context),
-          controller: MultiMeasurementInputController(),
-        ),
-        appManager: appManager,
-      ),
-    );
-
-    expect(find.byType(TextInput), findsNWidgets(2));
-  });
-
-  testWidgets("Fraction type 'inches' shows selector and unit", (tester) async {
-    when(appManager.userPreferenceManager.catchLengthSystem)
-        .thenReturn(MeasurementSystem.imperial_whole);
-
-    await tester.pumpWidget(
-      Testable(
-        (context) => MultiMeasurementInput(
-          spec: MultiMeasurementInputSpec.length(context),
-          controller: MultiMeasurementInputController(),
-        ),
-        appManager: appManager,
-      ),
-    );
-
-    expect(find.byType(TextInput), findsOneWidget);
-    expect(find.byType(typeOf<DropdownButton<Fraction>>()), findsOneWidget);
-  });
-
   testWidgets("Fraction text field notifies when changed", (tester) async {
-    var controller = MultiMeasurementInputController();
-    controller.value = MultiMeasurement(
-      system: MeasurementSystem.imperial_whole,
-      mainValue: Measurement(unit: Unit.pounds),
-      fractionValue: Measurement(unit: Unit.ounces),
-    );
-
     var called = false;
+    late MultiMeasurementInputController controller;
     await tester.pumpWidget(
       Testable(
-        (context) => MultiMeasurementInput(
-          spec: MultiMeasurementInputSpec.waterDepth(context),
-          controller: controller,
-          onChanged: () => called = true,
-        ),
+        (context) {
+          var spec = MultiMeasurementInputSpec.waterDepth(context);
+          controller = spec.newInputController();
+          controller.value = MultiMeasurement(
+            system: MeasurementSystem.imperial_whole,
+            mainValue: Measurement(unit: Unit.meters),
+            fractionValue: Measurement(unit: Unit.ounces),
+          );
+
+          return MultiMeasurementInput(
+            spec: spec,
+            controller: controller,
+            onChanged: () => called = true,
+          );
+        },
         appManager: appManager,
       ),
     );
@@ -437,20 +274,24 @@ void main() {
   });
 
   testWidgets("Inches selector notifies when changed", (tester) async {
-    var controller = MultiMeasurementInputController();
-    controller.value = MultiMeasurement(
-      system: MeasurementSystem.imperial_whole,
-      mainValue: Measurement(unit: Unit.inches),
-    );
-
     var called = false;
+    late MultiMeasurementInputController controller;
     await tester.pumpWidget(
       Testable(
-        (context) => MultiMeasurementInput(
-          spec: MultiMeasurementInputSpec.length(context),
-          controller: controller,
-          onChanged: () => called = true,
-        ),
+        (context) {
+          var spec = MultiMeasurementInputSpec.length(context);
+          controller = spec.newInputController();
+          controller.value = MultiMeasurement(
+            system: MeasurementSystem.imperial_whole,
+            mainValue: Measurement(unit: Unit.inches),
+          );
+
+          return MultiMeasurementInput(
+            spec: spec,
+            controller: controller,
+            onChanged: () => called = true,
+          );
+        },
         appManager: appManager,
       ),
     );
@@ -466,145 +307,64 @@ void main() {
     expect(controller.value!.fractionValue.value, 0.5);
   });
 
-  testWidgets("Changing system to imperial whole", (tester) async {
-    var controller = MultiMeasurementInputController();
-    controller.value = MultiMeasurement(
-      system: MeasurementSystem.metric,
-      mainValue: Measurement(
-        unit: Unit.meters,
-        value: 10,
-      ),
-    );
-
-    var called = false;
+  testWidgets("Custom title", (tester) async {
     await tester.pumpWidget(
       Testable(
-        (context) => MultiMeasurementInput(
-          spec: MultiMeasurementInputSpec.waterDepth(context),
-          controller: controller,
-          onChanged: () => called = true,
-        ),
+        (context) {
+          var spec = MultiMeasurementInputSpec.length(context);
+          return MultiMeasurementInput(
+            spec: spec,
+            controller: spec.newInputController(),
+            onChanged: () {},
+            title: "Custom Title",
+          );
+        },
         appManager: appManager,
       ),
     );
 
-    expect(find.text("m"), findsOneWidget);
-
-    await tapAndSettle(tester, find.byIcon(Icons.more_vert));
-    await tapAndSettle(tester, find.text("Imperial"));
-
-    expect(called, isTrue);
-    expect(find.text("m"), findsNothing);
-    expect(find.text("ft"), findsOneWidget);
+    expect(find.text("Custom Title"), findsOneWidget);
   });
 
-  testWidgets("Changing system to imperial decimal", (tester) async {
-    var controller = MultiMeasurementInputController();
-    controller.value = MultiMeasurement(
-      system: MeasurementSystem.imperial_whole,
-      mainValue: Measurement(
-        unit: Unit.feet,
-        value: 10,
-      ),
-      fractionValue: Measurement(
-        unit: Unit.inches,
-        value: 8,
-      ),
-    );
-
-    var called = false;
+  testWidgets("Spec title", (tester) async {
     await tester.pumpWidget(
       Testable(
-        (context) => MultiMeasurementInput(
-          spec: MultiMeasurementInputSpec.waterDepth(context),
-          controller: controller,
-          onChanged: () => called = true,
-        ),
+        (context) {
+          var spec = MultiMeasurementInputSpec.length(context);
+          return MultiMeasurementInput(
+            spec: spec,
+            controller: spec.newInputController(),
+            onChanged: () {},
+          );
+        },
         appManager: appManager,
       ),
     );
 
-    expect(find.byType(TextInput), findsNWidgets(2));
-    expect(find.text("in"), findsOneWidget);
-
-    await tapAndSettle(tester, find.byIcon(Icons.more_vert));
-    await tapAndSettle(tester, find.text("Imperial Decimal"));
-
-    expect(called, isTrue);
-    expect(find.text("ft"), findsOneWidget);
-    expect(find.text("in"), findsNothing);
-    expect(find.byType(TextInput), findsOneWidget);
+    expect(find.text("Length"), findsOneWidget);
   });
 
-  testWidgets("Changing system to metric", (tester) async {
-    var controller = MultiMeasurementInputController();
-    controller.value = MultiMeasurement(
-      system: MeasurementSystem.imperial_whole,
-      mainValue: Measurement(
-        unit: Unit.feet,
-        value: 10,
-      ),
-      fractionValue: Measurement(
-        unit: Unit.inches,
-        value: 8,
-      ),
-    );
+  testWidgets("newInputController sets mainUnit", (tester) async {
+    var context = await buildContext(tester, appManager: appManager);
 
-    var called = false;
-    await tester.pumpWidget(
-      Testable(
-        (context) => MultiMeasurementInput(
-          spec: MultiMeasurementInputSpec.waterDepth(context),
-          controller: controller,
-          onChanged: () => called = true,
-        ),
-        appManager: appManager,
-      ),
-    );
+    var spec = MultiMeasurementInputSpec.airHumidity(context);
+    var controller = spec.newInputController();
+    expect(controller.system, MeasurementSystem.imperial_whole);
 
-    expect(find.byType(TextInput), findsNWidgets(2));
-    expect(find.text("in"), findsOneWidget);
+    spec = MultiMeasurementInputSpec.waterTemperature(context);
+    controller = spec.newInputController();
+    expect(controller.system, MeasurementSystem.metric);
 
-    await tapAndSettle(tester, find.byIcon(Icons.more_vert));
-    await tapAndSettle(tester, find.text("Metric"));
+    when(appManager.userPreferenceManager.waterTemperatureSystem)
+        .thenReturn(MeasurementSystem.imperial_whole);
+    spec = MultiMeasurementInputSpec.waterTemperature(context);
+    controller = spec.newInputController();
+    expect(controller.system, MeasurementSystem.imperial_whole);
 
-    expect(called, isTrue);
-    expect(find.text("ft"), findsNothing);
-    expect(find.text("in"), findsNothing);
-    expect(find.text("m"), findsOneWidget);
-    expect(find.byType(TextInput), findsOneWidget);
-  });
-
-  testWidgets("Changing to imperial whole rounds values", (tester) async {
-    var controller = MultiMeasurementInputController();
-    controller.value = MultiMeasurement(
-      system: MeasurementSystem.metric,
-      mainValue: Measurement(
-        unit: Unit.meters,
-        value: 10.6,
-      ),
-    );
-
-    var called = false;
-    await tester.pumpWidget(
-      Testable(
-        (context) => MultiMeasurementInput(
-          spec: MultiMeasurementInputSpec.waterDepth(context),
-          controller: controller,
-          onChanged: () => called = true,
-        ),
-        appManager: appManager,
-      ),
-    );
-
-    expect(find.text("m"), findsOneWidget);
-
-    await tapAndSettle(tester, find.byIcon(Icons.more_vert));
-    await tapAndSettle(tester, find.text("Imperial"));
-
-    expect(called, isTrue);
-    expect(find.text("m"), findsNothing);
-    expect(find.text("ft"), findsOneWidget);
-    expect(find.text("11"), findsOneWidget);
+    when(appManager.userPreferenceManager.waterTemperatureSystem)
+        .thenReturn(MeasurementSystem.imperial_decimal);
+    spec = MultiMeasurementInputSpec.waterTemperature(context);
+    controller = spec.newInputController();
+    expect(controller.system, MeasurementSystem.imperial_decimal);
   });
 }

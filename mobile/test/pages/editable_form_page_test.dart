@@ -5,7 +5,7 @@ import 'package:mobile/pages/editable_form_page.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mobile/widgets/checkbox_input.dart';
 import 'package:mobile/widgets/input_controller.dart';
-import 'package:mobile/widgets/input_data.dart';
+import 'package:mobile/widgets/field.dart';
 import 'package:mobile/widgets/list_item.dart';
 import 'package:mobile/widgets/text.dart';
 import 'package:mockito/mockito.dart';
@@ -19,6 +19,24 @@ void main() {
   setUp(() {
     appManager = StubbedAppManager();
     when(appManager.customEntityManager.list()).thenReturn([]);
+  });
+
+  testWidgets("Custom fields hidden", (tester) async {
+    await tester.pumpWidget(Testable(
+      (_) => EditableFormPage(
+        allowCustomEntities: false,
+        customEntityValues: [
+          CustomEntityValue()
+            ..customEntityId = randomId()
+            ..value = "Test",
+        ],
+      ),
+      appManager: appManager,
+    ));
+
+    expect(find.byType(IconLabel), findsNothing);
+    expect(find.widgetWithText(TextField, "Custom Field 1"), findsNothing);
+    expect(find.widgetWithText(TextField, "Test"), findsNothing);
   });
 
   testWidgets("Note shows when there are no custom values", (tester) async {
@@ -282,7 +300,8 @@ void main() {
     var id2 = randomId();
     var id3 = randomId();
 
-    await tester.pumpWidget(Testable(
+    var context = await pumpContext(
+      tester,
       (_) => EditableFormPage(
         fields: {
           // Shows "Required" subtitle.
@@ -318,14 +337,14 @@ void main() {
         ],
       ),
       appManager: appManager,
-    ));
+    );
 
     // Open field picker.
     await tapAndSettle(
         tester, find.widgetWithIcon(IconButton, Icons.more_vert));
     await tapAndSettle(tester, find.text("Manage Fields"));
 
-    expect(find.byType(SubtitleLabel), findsNWidgets(3));
+    expect(find.subtitleText(context), findsNWidgets(3));
     expect(find.text("Required"), findsOneWidget);
     expect(find.text("Input 2 description."), findsOneWidget);
     expect(find.text("A test description."), findsOneWidget);

@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import '../i18n/strings.dart';
 import '../pages/image_picker_page.dart';
 import '../res/dimen.dart';
+import '../res/style.dart';
 import '../utils/page_utils.dart';
-import '../widgets/text.dart';
 import '../widgets/widget.dart';
 
 /// An input widget that allows selection of one or more photos, as well as
@@ -63,9 +63,12 @@ class ImageInput extends StatelessWidget {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
-                      PrimaryLabel(allowsMultipleSelection
-                          ? Strings.of(context).inputPhotosLabel
-                          : Strings.of(context).inputPhotoLabel),
+                      Text(
+                        allowsMultipleSelection
+                            ? Strings.of(context).inputPhotosLabel
+                            : Strings.of(context).inputPhotoLabel,
+                        style: stylePrimary(context),
+                      ),
                       RightChevronIcon(),
                     ],
                   ),

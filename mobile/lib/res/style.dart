@@ -29,10 +29,6 @@ const TextStyle styleTitleAlert = TextStyle(
   color: Colors.black,
 );
 
-const TextStyle styleSecondary = TextStyle(
-  color: Colors.black54,
-);
-
 const TextStyle styleHyperlink = TextStyle(
   color: Colors.blue,
   decoration: TextDecoration.underline,
@@ -60,31 +56,44 @@ TextStyle styleSubtext = TextStyle(
   fontStyle: FontStyle.italic,
 );
 
-TextStyle styleNote(BuildContext context) =>
-    Theme.of(context).textTheme.subtitle1!.copyWith(
-          fontStyle: FontStyle.italic,
-        );
+TextStyle styleNote(BuildContext context) {
+  return Theme.of(context).textTheme.subtitle1!.copyWith(
+        fontStyle: FontStyle.italic,
+      );
+}
 
 TextStyle stylePrimary(
   BuildContext context, {
   bool enabled = true,
-  FontWeight? fontWeight,
 }) {
-  var style = Theme.of(context).textTheme.subtitle1!.copyWith(
-        fontWeight: fontWeight,
+  return Theme.of(context).textTheme.subtitle1!.copyWith(
+        color: enabled
+            ? Theme.of(context).textTheme.subtitle1!.color
+            : Theme.of(context).disabledColor,
       );
-  if (!enabled) {
-    style = style.copyWith(
-      color: Theme.of(context).disabledColor,
-    );
-  }
-  return style;
 }
 
-TextStyle styleInputSuffix(BuildContext context) =>
-    stylePrimary(context).copyWith(
-      color: Colors.black54,
-    );
+TextStyle styleSecondary(BuildContext context) {
+  return stylePrimary(context).copyWith(
+    color: Colors.black54,
+  );
+}
+
+TextStyle styleSubtitle(
+  BuildContext context, {
+  bool enabled = true,
+}) {
+  return Theme.of(context).textTheme.subtitle2!.copyWith(
+        color: enabled ? Colors.grey : Theme.of(context).disabledColor,
+        fontWeight: FontWeight.normal,
+      );
+}
+
+TextStyle styleListHeading(BuildContext context) {
+  return Theme.of(context).textTheme.bodyText1!.copyWith(
+        color: Theme.of(context).primaryColor,
+      );
+}
 
 const List<BoxShadow> boxShadowDefault = [
   BoxShadow(

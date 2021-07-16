@@ -33,4 +33,33 @@ void main() {
 
     expect(find.byType(Center), findsNothing);
   });
+
+  testWidgets("Includes refresh indicator", (tester) async {
+    await tester.pumpWidget(
+      Testable(
+        (_) => ScrollPage(
+          children: [
+            Text("Test"),
+          ],
+          onRefresh: () => Future.value(),
+        ),
+      ),
+    );
+
+    expect(find.byType(RefreshIndicator), findsOneWidget);
+  });
+
+  testWidgets("No refresh indicator", (tester) async {
+    await tester.pumpWidget(
+      Testable(
+        (_) => ScrollPage(
+          children: [
+            Text("Test"),
+          ],
+        ),
+      ),
+    );
+
+    expect(find.byType(RefreshIndicator), findsNothing);
+  });
 }

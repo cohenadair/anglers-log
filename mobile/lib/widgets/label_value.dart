@@ -3,7 +3,6 @@ import 'package:quiver/strings.dart';
 
 import '../res/dimen.dart';
 import '../res/style.dart';
-import '../widgets/text.dart';
 
 /// A widget that displays a bold label with a slightly larger and lighter
 /// value text. By default, the label and value are displayed in a [Row].
@@ -27,14 +26,17 @@ class LabelValue extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var title = Label(
+    var title = Text(
       label,
       style: TextStyle(
         fontWeight: fontWeightBold,
       ),
     );
 
-    var subtitle = SecondaryLabel(value);
+    var subtitle = Text(
+      value,
+      style: styleSecondary(context),
+    );
 
     var child;
     if (value.length > _textWrapLength) {

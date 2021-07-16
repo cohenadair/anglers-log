@@ -24,8 +24,8 @@ import '../utils/validator.dart';
 import '../water_clarity_manager.dart';
 import '../widgets/checkbox_input.dart';
 import '../widgets/date_range_picker_input.dart';
+import '../widgets/field.dart';
 import '../widgets/input_controller.dart';
-import '../widgets/input_data.dart';
 import '../widgets/multi_list_picker_input.dart';
 import '../widgets/multi_measurement_input.dart';
 import '../widgets/number_filter_input.dart';
@@ -50,6 +50,10 @@ class SaveReportPage extends StatefulWidget {
 }
 
 class _SaveReportPageState extends State<SaveReportPage> {
+  static final _idAirTemperature = randomId();
+  static final _idAirHumidity = randomId();
+  static final _idAirPressure = randomId();
+  static final _idAirVisibility = randomId();
   static final _idAnglers = randomId();
   static final _idBaits = randomId();
   static final _idCatchAndReleaseOnly = randomId();
@@ -59,10 +63,12 @@ class _SaveReportPageState extends State<SaveReportPage> {
   static final _idFishingSpots = randomId();
   static final _idLength = randomId();
   static final _idMethods = randomId();
+  static final _idMoonPhases = randomId();
   static final _idName = randomId();
   static final _idPeriods = randomId();
   static final _idQuantity = randomId();
   static final _idSeasons = randomId();
+  static final _idSkyConditions = randomId();
   static final _idSpecies = randomId();
   static final _idStartDateRange = randomId();
   static final _idType = randomId();
@@ -70,6 +76,8 @@ class _SaveReportPageState extends State<SaveReportPage> {
   static final _idWaterDepth = randomId();
   static final _idWaterTemperature = randomId();
   static final _idWeight = randomId();
+  static final _idWindDirections = randomId();
+  static final _idWindSpeed = randomId();
   static final _idKeywords = randomId();
 
   final Key _keySummaryStart = ValueKey(0);
@@ -153,6 +161,30 @@ class _SaveReportPageState extends State<SaveReportPage> {
   NumberFilterInputController get _quantityController =>
       _fields[_idQuantity]!.controller as NumberFilterInputController;
 
+  NumberFilterInputController get _airTemperatureController =>
+      _fields[_idAirTemperature]!.controller as NumberFilterInputController;
+
+  NumberFilterInputController get _airPressureController =>
+      _fields[_idAirPressure]!.controller as NumberFilterInputController;
+
+  NumberFilterInputController get _airHumidityController =>
+      _fields[_idAirHumidity]!.controller as NumberFilterInputController;
+
+  NumberFilterInputController get _airVisibilityController =>
+      _fields[_idAirVisibility]!.controller as NumberFilterInputController;
+
+  NumberFilterInputController get _windSpeedController =>
+      _fields[_idWindSpeed]!.controller as NumberFilterInputController;
+
+  SetInputController<Direction> get _windDirectionsController =>
+      _fields[_idWindDirections]!.controller as SetInputController<Direction>;
+
+  SetInputController<SkyCondition> get _skyConditionsController =>
+      _fields[_idSkyConditions]!.controller as SetInputController<SkyCondition>;
+
+  SetInputController<MoonPhase> get _moonPhasesController =>
+      _fields[_idMoonPhases]!.controller as SetInputController<MoonPhase>;
+
   Report? get _oldReport => widget.oldReport;
 
   bool get _isEditing => _oldReport != null;
@@ -223,13 +255,53 @@ class _SaveReportPageState extends State<SaveReportPage> {
     );
 
     _fields[_idWeight] = Field(
-      id: _idLength,
+      id: _idWeight,
       controller: NumberFilterInputController(),
     );
 
     _fields[_idQuantity] = Field(
       id: _idQuantity,
       controller: NumberFilterInputController(),
+    );
+
+    _fields[_idAirTemperature] = Field(
+      id: _idAirTemperature,
+      controller: NumberFilterInputController(),
+    );
+
+    _fields[_idAirPressure] = Field(
+      id: _idAirPressure,
+      controller: NumberFilterInputController(),
+    );
+
+    _fields[_idAirHumidity] = Field(
+      id: _idAirHumidity,
+      controller: NumberFilterInputController(),
+    );
+
+    _fields[_idAirVisibility] = Field(
+      id: _idAirVisibility,
+      controller: NumberFilterInputController(),
+    );
+
+    _fields[_idWindSpeed] = Field(
+      id: _idWindSpeed,
+      controller: NumberFilterInputController(),
+    );
+
+    _fields[_idWindDirections] = Field(
+      id: _idWindDirections,
+      controller: SetInputController<Direction>(),
+    );
+
+    _fields[_idSkyConditions] = Field(
+      id: _idSkyConditions,
+      controller: SetInputController<SkyCondition>(),
+    );
+
+    _fields[_idMoonPhases] = Field(
+      id: _idMoonPhases,
+      controller: SetInputController<MoonPhase>(),
     );
 
     _fields[_idPeriods] = Field(
@@ -294,6 +366,14 @@ class _SaveReportPageState extends State<SaveReportPage> {
       _lengthController.value = _oldReport!.lengthFilter;
       _weightController.value = _oldReport!.weightFilter;
       _quantityController.value = _oldReport!.quantityFilter;
+      _airTemperatureController.value = _oldReport!.airTemperatureFilter;
+      _airPressureController.value = _oldReport!.airPressureFilter;
+      _airHumidityController.value = _oldReport!.airHumidityFilter;
+      _airVisibilityController.value = _oldReport!.airVisibilityFilter;
+      _windSpeedController.value = _oldReport!.windSpeedFilter;
+      _windDirectionsController.value = _oldReport!.windDirections.toSet();
+      _skyConditionsController.value = _oldReport!.skyConditions.toSet();
+      _moonPhasesController.value = _oldReport!.moonPhases.toSet();
       _initEntitySets(
         anglerIds: _oldReport!.anglerIds,
         baitIds: _oldReport!.baitIds,
@@ -362,6 +442,15 @@ class _SaveReportPageState extends State<SaveReportPage> {
         _idLength: _buildLength(),
         _idWeight: _buildWeight(),
         _idQuantity: _buildQuantity(),
+        _idAirTemperature: _buildAirTemperature(),
+        _idAirHumidity: _buildAirHumidity(),
+        _idAirVisibility: _buildAirVisibility(),
+        _idAirPressure: _buildAirPressure(),
+        _idWindSpeed: _buildWindSpeed(),
+        _idWindDirections: _buildWindDirections(),
+        _idSkyConditions: _buildSkyConditions(),
+        _idMoonPhases: _buildMoonPhases(),
+        _idWaterClarities: _buildWaterClaritiesPicker(),
         _idPeriods: _buildPeriodsPicker(),
         _idSeasons: _buildSeasonsPicker(),
         _idAnglers: _buildAnglersPicker(),
@@ -369,7 +458,6 @@ class _SaveReportPageState extends State<SaveReportPage> {
         _idBaits: _buildBaitsPicker(),
         _idFishingSpots: _buildFishingSpotsPicker(),
         _idMethods: _buildMethodsPicker(),
-        _idWaterClarities: _buildWaterClaritiesPicker(),
       },
       onSave: _save,
     );
@@ -450,24 +538,18 @@ class _SaveReportPageState extends State<SaveReportPage> {
   }
 
   Widget _buildCatchAndReleaseOnly() {
-    return Padding(
-      padding: insetsHorizontalDefault,
-      child: CheckboxInput(
-        label: Strings.of(context).saveReportPageCatchAndRelease,
-        value: _catchAndReleaseOnlyController.value,
-        onChanged: (checked) => _catchAndReleaseOnlyController.value = checked,
-      ),
+    return CheckboxInput(
+      label: Strings.of(context).saveReportPageCatchAndRelease,
+      value: _catchAndReleaseOnlyController.value,
+      onChanged: (checked) => _catchAndReleaseOnlyController.value = checked,
     );
   }
 
   Widget _buildFavoritesOnly() {
-    return Padding(
-      padding: insetsHorizontalDefault,
-      child: CheckboxInput(
-        label: Strings.of(context).saveReportPageFavorites,
-        value: _favoritesOnlyController.value,
-        onChanged: (checked) => _favoritesOnlyController.value = checked,
-      ),
+    return CheckboxInput(
+      label: Strings.of(context).saveReportPageFavorites,
+      value: _favoritesOnlyController.value,
+      onChanged: (checked) => _favoritesOnlyController.value = checked,
     );
   }
 
@@ -535,10 +617,10 @@ class _SaveReportPageState extends State<SaveReportPage> {
       controller: _periodsController,
       nameForItem: (context, period) => period.displayName(context),
       emptyValue: Strings.of(context).periodPickerAll,
-      title: Strings.of(context).periodPickerMultiTitle,
-      allItems: selectablePeriods(),
+      pickerPageTitle: Strings.of(context).pickerTitleTimesOfDay,
+      allItems: Periods.selectable(),
       allItem: Period.period_all,
-      pickerItems: pickerItemsForPeriod,
+      pickerItems: Periods.pickerItems,
     );
   }
 
@@ -547,10 +629,10 @@ class _SaveReportPageState extends State<SaveReportPage> {
       controller: _seasonsController,
       nameForItem: (context, season) => season.displayName(context),
       emptyValue: Strings.of(context).seasonPickerAll,
-      title: Strings.of(context).seasonPickerMultiTitle,
-      allItems: selectableSeasons(),
+      pickerPageTitle: Strings.of(context).pickerTitleSeasons,
+      allItems: Seasons.selectable(),
       allItem: Season.season_all,
-      pickerItems: pickerItemsForSeason,
+      pickerItems: Seasons.pickerItems,
     );
   }
 
@@ -622,6 +704,87 @@ class _SaveReportPageState extends State<SaveReportPage> {
     );
   }
 
+  Widget _buildAirTemperature() {
+    return NumberFilterInput(
+      title: Strings.of(context).atmosphereInputAirTemperature,
+      filterTitle: Strings.of(context).filterTitleAirTemperature,
+      controller: _airTemperatureController,
+      inputSpec: MultiMeasurementInputSpec.airTemperature(context),
+    );
+  }
+
+  Widget _buildAirPressure() {
+    return NumberFilterInput(
+      title: Strings.of(context).atmosphereInputAtmosphericPressure,
+      filterTitle: Strings.of(context).filterTitleAirPressure,
+      controller: _airPressureController,
+      inputSpec: MultiMeasurementInputSpec.airPressure(context),
+    );
+  }
+
+  Widget _buildAirHumidity() {
+    return NumberFilterInput(
+      title: Strings.of(context).atmosphereInputAirHumidity,
+      filterTitle: Strings.of(context).filterTitleAirHumidity,
+      controller: _airHumidityController,
+      inputSpec: MultiMeasurementInputSpec.airHumidity(context),
+    );
+  }
+
+  Widget _buildAirVisibility() {
+    return NumberFilterInput(
+      title: Strings.of(context).atmosphereInputAirVisibility,
+      filterTitle: Strings.of(context).filterTitleAirVisibility,
+      controller: _airVisibilityController,
+      inputSpec: MultiMeasurementInputSpec.airVisibility(context),
+    );
+  }
+
+  Widget _buildWindSpeed() {
+    return NumberFilterInput(
+      title: Strings.of(context).atmosphereInputWindSpeed,
+      filterTitle: Strings.of(context).filterTitleWindSpeed,
+      controller: _windSpeedController,
+      inputSpec: MultiMeasurementInputSpec.windSpeed(context),
+    );
+  }
+
+  Widget _buildWindDirections() {
+    return _buildNonEntityPicker<Direction>(
+      controller: _windDirectionsController,
+      nameForItem: (context, direction) => direction.chipName(context),
+      emptyValue: Strings.of(context).saveReportPageAllWindDirections,
+      pickerPageTitle: Strings.of(context).pickerTitleWindDirections,
+      allItems: Directions.selectable(),
+      allItem: Direction.direction_none,
+      pickerItems: Directions.pickerItems,
+    );
+  }
+
+  Widget _buildSkyConditions() {
+    return _buildNonEntityPicker<SkyCondition>(
+      controller: _skyConditionsController,
+      nameForItem: (context, condition) => condition.displayName(context),
+      emptyValue: Strings.of(context).saveReportPageAllSkyConditions,
+      pickerPageTitle: Strings.of(context).pickerTitleSkyConditions,
+      allItems: SkyConditions.selectable(),
+      allItem: SkyCondition.sky_condition_none,
+      pickerItems: SkyConditions.pickerItems,
+    );
+  }
+
+  Widget _buildMoonPhases() {
+    return _buildNonEntityPicker<MoonPhase>(
+      controller: _moonPhasesController,
+      nameForItem: (context, condition) => condition.chipName(context),
+      emptyValue: Strings.of(context).saveReportPageAllMoonPhases,
+      pickerPageTitle: Strings.of(context).pickerTitleMoonPhases,
+      allItems: MoonPhases.selectable(),
+      allItem: MoonPhase.moon_phase_none,
+      pickerItems: MoonPhases.pickerItems,
+    );
+  }
+
   Widget _buildWaterClaritiesPicker() {
     return _buildEntityPicker<WaterClarity>(
       manager: _waterClarityManager,
@@ -682,7 +845,7 @@ class _SaveReportPageState extends State<SaveReportPage> {
     required SetInputController<T> controller,
     required String Function(BuildContext, T) nameForItem,
     required String emptyValue,
-    required String title,
+    required String pickerPageTitle,
     required Set<T> allItems,
     required T allItem,
     required List<PickerPageItem<T>> Function(BuildContext) pickerItems,
@@ -696,7 +859,7 @@ class _SaveReportPageState extends State<SaveReportPage> {
         push(
           context,
           PickerPage<T>(
-            title: Text(title),
+            title: Text(pickerPageTitle),
             initialValues: controller.value.isEmpty
                 ? ({allItem}..addAll(allItems))
                 : controller.value,
@@ -729,8 +892,10 @@ class _SaveReportPageState extends State<SaveReportPage> {
       ..fishingSpotIds.addAll(_fishingSpotsController.value.map((e) => e.id))
       ..methodIds.addAll(_methodsController.value.map((e) => e.id))
       ..speciesIds.addAll(_speciesController.value.map((e) => e.id))
-      ..waterClarityIds
-          .addAll(_waterClaritiesController.value.map((e) => e.id));
+      ..waterClarityIds.addAll(_waterClaritiesController.value.map((e) => e.id))
+      ..windDirections.addAll(_windDirectionsController.value)
+      ..skyConditions.addAll(_skyConditionsController.value)
+      ..moonPhases.addAll(_moonPhasesController.value);
 
     if (isNotEmpty(_descriptionController.value)) {
       report.description = _descriptionController.value!;
@@ -770,6 +935,26 @@ class _SaveReportPageState extends State<SaveReportPage> {
 
     if (_quantityController.shouldAddToReport) {
       report.quantityFilter = _quantityController.value!;
+    }
+
+    if (_airTemperatureController.shouldAddToReport) {
+      report.airTemperatureFilter = _airTemperatureController.value!;
+    }
+
+    if (_airPressureController.shouldAddToReport) {
+      report.airPressureFilter = _airPressureController.value!;
+    }
+
+    if (_airHumidityController.shouldAddToReport) {
+      report.airHumidityFilter = _airHumidityController.value!;
+    }
+
+    if (_airVisibilityController.shouldAddToReport) {
+      report.airVisibilityFilter = _airVisibilityController.value!;
+    }
+
+    if (_windSpeedController.shouldAddToReport) {
+      report.windSpeedFilter = _windSpeedController.value!;
     }
 
     _reportManager.addOrUpdate(report);

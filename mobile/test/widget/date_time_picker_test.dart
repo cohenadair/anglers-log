@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/widgets/date_time_picker.dart';
+import 'package:mobile/widgets/input_controller.dart';
 import 'package:mobile/widgets/widget.dart';
 
 import '../mocks/stubbed_app_manager.dart';
@@ -20,10 +21,12 @@ void main() {
           datePicker: DatePicker(
             context,
             label: "Date Picker",
+            controller: TimestampInputController(appManager.timeManager),
           ),
           timePicker: TimePicker(
             context,
             label: "Time Picker",
+            controller: TimestampInputController(appManager.timeManager),
           ),
           helper: Text("A helping message"),
         ),
@@ -40,10 +43,12 @@ void main() {
           datePicker: DatePicker(
             context,
             label: "Date Picker",
+            controller: TimestampInputController(appManager.timeManager),
           ),
           timePicker: TimePicker(
             context,
             label: "Time Picker",
+            controller: TimestampInputController(appManager.timeManager),
           ),
         ),
         appManager: appManager,
@@ -59,6 +64,7 @@ void main() {
         (context) => DatePicker(
           context,
           label: "Date Picker",
+          controller: TimestampInputController(appManager.timeManager),
         ),
         appManager: appManager,
       ));
@@ -75,6 +81,7 @@ void main() {
           context,
           label: "Date Picker",
           enabled: false,
+          controller: TimestampInputController(appManager.timeManager),
         ),
         appManager: appManager,
       ));
@@ -87,12 +94,15 @@ void main() {
 
     testWidgets("DatePicker date picked", (tester) async {
       var changed = false;
+      var controller = TimestampInputController(appManager.timeManager);
+      controller.value = DateTime(2020, 1, 25).millisecondsSinceEpoch;
+
       await tester.pumpWidget(Testable(
         (context) => DatePicker(
           context,
           label: "Date Picker",
           onChange: (_) => changed = true,
-          initialDate: DateTime(2020, 1, 25),
+          controller: controller,
         ),
         appManager: appManager,
       ));
@@ -114,16 +124,21 @@ void main() {
       expect(find.text("1"), findsNothing);
       expect(changed, isTrue);
       expect(find.text("Jan 26, 2020"), findsOneWidget);
+      expect(controller.value, isNotNull);
+      expect(controller.value, DateTime(2020, 1, 26).millisecondsSinceEpoch);
     });
 
     testWidgets("TimePicker time picked", (tester) async {
       var changed = false;
+      var controller = TimestampInputController(appManager.timeManager);
+      controller.time = TimeOfDay(hour: 5, minute: 20);
+
       await tester.pumpWidget(Testable(
         (context) => TimePicker(
           context,
           label: "Time Picker",
           onChange: (_) => changed = true,
-          initialTime: TimeOfDay(hour: 5, minute: 20),
+          controller: controller,
         ),
         appManager: appManager,
       ));
@@ -158,6 +173,9 @@ void main() {
       expect(find.byKey(ValueKey<String>('time-picker-dial')), findsNothing);
       expect(changed, isTrue);
       expect(find.text("6:50 AM"), findsOneWidget);
+
+      expect(controller.time, isNotNull);
+      expect(controller.time, TimeOfDay(hour: 6, minute: 50));
     });
   });
 }

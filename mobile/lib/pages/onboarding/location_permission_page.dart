@@ -3,11 +3,11 @@ import 'package:flutter/material.dart';
 import '../../i18n/strings.dart';
 import '../../location_monitor.dart';
 import '../../res/dimen.dart';
+import '../../res/style.dart';
 import '../../widgets/button.dart';
 import '../../widgets/text.dart';
 import '../../widgets/widget.dart';
 import '../../wrappers/permission_handler_wrapper.dart';
-
 import 'onboarding_page.dart';
 
 class LocationPermissionPage extends StatelessWidget {
@@ -33,10 +33,11 @@ class LocationPermissionPage extends StatelessWidget {
         VerticalSpace(paddingWidget),
         Padding(
           padding: insetsHorizontalDefault,
-          child: PrimaryLabel(
+          child: Text(
             Strings.of(context).onboardingJourneyLocationAccessDescription,
             overflow: TextOverflow.visible,
-            align: TextAlign.center,
+            textAlign: TextAlign.center,
+            style: stylePrimary(context),
           ),
         ),
         VerticalSpace(paddingWidget),

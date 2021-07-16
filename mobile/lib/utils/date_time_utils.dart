@@ -1,3 +1,4 @@
+import 'package:fixnum/fixnum.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:quiver/time.dart';
@@ -173,6 +174,15 @@ String formatTimeOfDay(BuildContext context, TimeOfDay time) {
     time,
     alwaysUse24HourFormat: MediaQuery.of(context).alwaysUse24HourFormat,
   );
+}
+
+String formatTimeMillis(BuildContext context, Int64 millis) {
+  var ms = millis.toInt();
+  var hours =
+      (ms / Duration.millisecondsPerHour % Duration.hoursPerDay).floor();
+  var minutes =
+      (ms / Duration.millisecondsPerMinute % Duration.secondsPerMinute).round();
+  return formatTimeOfDay(context, TimeOfDay(hour: hours, minute: minutes));
 }
 
 /// Returns a formatted [DateTime] to be displayed to the user. Includes date

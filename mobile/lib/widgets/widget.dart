@@ -4,6 +4,7 @@ import 'package:quiver/strings.dart';
 import '../model/gen/anglerslog.pb.dart';
 import '../res/color.dart';
 import '../res/dimen.dart';
+import '../res/style.dart';
 import '../widgets/text.dart';
 
 const defaultAnimationDuration = Duration(milliseconds: 150);
@@ -55,7 +56,10 @@ class HeadingDivider extends StatelessWidget {
           child: SafeArea(
             top: false,
             bottom: false,
-            child: HeadingLabel(text),
+            child: Text(
+              text,
+              style: styleListHeading(context),
+            ),
           ),
         ),
       ],

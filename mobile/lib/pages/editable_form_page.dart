@@ -10,12 +10,15 @@ import '../model/gen/anglerslog.pb.dart';
 import '../pages/form_page.dart';
 import '../res/dimen.dart';
 import '../utils/protobuf_utils.dart';
-import '../widgets/input_data.dart';
+import '../widgets/field.dart';
 import '../widgets/input_type.dart';
 import '../widgets/widget.dart';
 
 class EditableFormPage extends StatefulWidget {
   final Widget? title;
+
+  /// See [FormPage.header].
+  final Widget? header;
 
   /// A unique ID to [Field] map of all valid fields for the form.
   final Map<Id, Field> fields;
@@ -27,6 +30,17 @@ class EditableFormPage extends StatefulWidget {
 
   /// A list of [CustomEntityValue] objects associated with custom fields.
   final List<CustomEntityValue> customEntityValues;
+
+  /// When true, users can add custom entities to the form. When false,
+  /// [customEntityIds] and [customEntityValues] are ignored. Defaults to
+  /// true.
+  final bool allowCustomEntities;
+
+  /// See [FormPage.onRefresh].
+  final Future<void> Function()? onRefresh;
+
+  /// See [FormPage.refreshIndicatorKey].
+  final Key? refreshIndicatorKey;
 
   /// Called when an input field needs to be built. The ID of the input field
   /// is passed into the function.
@@ -45,6 +59,9 @@ class EditableFormPage extends StatefulWidget {
   /// See [FormPage.isInputValid].
   final bool isInputValid;
 
+  /// See [FormPage.showSaveButton].
+  final bool showSaveButton;
+
   /// See [FormPage.runSpacing].
   final double? runSpacing;
 
@@ -56,15 +73,20 @@ class EditableFormPage extends StatefulWidget {
   EditableFormPage({
     this.popupMenuKey,
     this.title,
+    this.header,
     this.fields = const {},
     this.customEntityIds = const [],
     this.customEntityValues = const [],
+    this.allowCustomEntities = true,
     this.onBuildField,
     this.onAddFields,
     this.onSave,
     this.padding = insetsHorizontalDefault,
     this.isInputValid = true,
+    this.showSaveButton = true,
     this.runSpacing,
+    this.onRefresh,
+    this.refreshIndicatorKey,
   });
 
   @override
@@ -85,35 +107,37 @@ class _EditableFormPageState extends State<EditableFormPage> {
     super.initState();
     _fields.addAll(_allInputFields);
 
-    // Add fake InputData for custom fields separator.
-    var fakeInput = Field.fake();
-    _fields[fakeInput.id] = fakeInput;
+    if (widget.allowCustomEntities) {
+      // Add fake InputData for custom fields separator.
+      var fakeInput = Field.fake();
+      _fields[fakeInput.id] = fakeInput;
 
-    // Add custom fields.
-    for (var id in widget.customEntityIds) {
-      var customEntity = _customEntityManager.entity(id);
-      if (customEntity != null) {
-        _fields[id] = Field.fromCustomEntity(customEntity);
-      }
-    }
-
-    // Set custom fields' initial values.
-    for (var value in widget.customEntityValues) {
-      var entity = _customEntityManager.entity(value.customEntityId);
-      if (entity == null) {
-        continue;
+      // Add custom fields.
+      for (var id in widget.customEntityIds) {
+        var customEntity = _customEntityManager.entity(id);
+        if (customEntity != null) {
+          _fields[id] = Field.fromCustomEntity(customEntity);
+        }
       }
 
-      // If a CustomEntityValue doesn't exist in widget.customEntityIds, it
-      // means the field was removed from the form at some point by the user.
-      // In these cases, add the related custom field so the user can edit all
-      // values of the form.
-      if (!_fields.containsKey(entity.id)) {
-        _fields[entity.id] = Field.fromCustomEntity(entity);
-      }
+      // Set custom fields' initial values.
+      for (var value in widget.customEntityValues) {
+        var entity = _customEntityManager.entity(value.customEntityId);
+        if (entity == null) {
+          continue;
+        }
 
-      _fields[entity.id]!.controller.value =
-          valueForCustomEntityType(entity.type, value);
+        // If a CustomEntityValue doesn't exist in widget.customEntityIds, it
+        // means the field was removed from the form at some point by the user.
+        // In these cases, add the related custom field so the user can edit all
+        // values of the form.
+        if (!_fields.containsKey(entity.id)) {
+          _fields[entity.id] = Field.fromCustomEntity(entity);
+        }
+
+        _fields[entity.id]!.controller.value =
+            valueForCustomEntityType(entity.type, value);
+      }
     }
   }
 
@@ -131,18 +155,22 @@ class _EditableFormPageState extends State<EditableFormPage> {
     return FormPage(
       popupMenuKey: widget.popupMenuKey,
       title: widget.title,
+      header: widget.header,
       runSpacing: widget.runSpacing,
       padding: widget.padding,
       fieldBuilder: (context) =>
           <Id, Widget>{for (var id in _fields.keys) id: _inputWidget(id)},
       onSave: (_) {
         var customFieldValues = <Id, dynamic>{};
-        for (var id in _fields.keys) {
-          var field = _fields[id]!;
-          if (_customEntityManager.entity(id) != null &&
-              field.showing &&
-              !field.fake) {
-            customFieldValues[id] = field.controller.value;
+
+        if (widget.allowCustomEntities) {
+          for (var id in _fields.keys) {
+            var field = _fields[id]!;
+            if (_customEntityManager.entity(id) != null &&
+                field.showing &&
+                !field.fake) {
+              customFieldValues[id] = field.controller.value;
+            }
           }
         }
 
@@ -173,6 +201,10 @@ class _EditableFormPageState extends State<EditableFormPage> {
       }).toList(),
       onAddFields: _addInputWidgets,
       isInputValid: widget.isInputValid,
+      showSaveButton: widget.showSaveButton,
+      allowCustomEntities: widget.allowCustomEntities,
+      onRefresh: widget.onRefresh,
+      refreshIndicatorKey: widget.refreshIndicatorKey,
     );
   }
 
@@ -180,7 +212,7 @@ class _EditableFormPageState extends State<EditableFormPage> {
     assert(_fields.containsKey(id));
     var field = _fields[id]!;
 
-    // For now, always show "fake" fields.
+    // Add custom fields divider.
     if (field.fake) {
       var hasCustomFields = _fields.keys.firstWhereOrNull(
               (id) => _customEntityManager.entity(id) != null) !=

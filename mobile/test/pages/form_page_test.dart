@@ -395,7 +395,8 @@ void main() {
     when(appManager.customEntityManager.list()).thenReturn([customEntity]);
     when(appManager.customEntityManager.entity(customEntityId))
         .thenReturn(customEntity);
-    await tester.pumpWidget(Testable(
+    var context = await pumpContext(
+      tester,
       (_) => FormPage(
         fieldBuilder: (context) => {
           customEntityId: TextInput.name(
@@ -412,12 +413,12 @@ void main() {
         ],
       ),
       appManager: appManager,
-    ));
+    );
 
     await tapAndSettle(tester, find.byIcon(FormPage.moreMenuIcon));
     await tapAndSettle(tester, find.text("Manage Fields"));
 
-    expect(find.byType(NoteLabel), findsNothing);
+    expect(find.noteText(context), findsNothing);
     expect(find.text("Name"), findsOneWidget);
   });
 
@@ -524,5 +525,53 @@ void main() {
     await tapAndSettle(tester, find.text("Manage Fields"));
 
     expect(find.byType(IconLabel), findsOneWidget);
+  });
+
+  testWidgets("Header is rendered", (tester) async {
+    await tester.pumpWidget(Testable(
+      (_) => FormPage(
+        fieldBuilder: (_) => {},
+        isInputValid: true,
+        header: Text("Header"),
+      ),
+      appManager: appManager,
+    ));
+
+    expect(find.text("Header"), findsOneWidget);
+  });
+
+  testWidgets("Selection page when allowCustomFields is false", (tester) async {
+    await tester.pumpWidget(Testable(
+      (_) => FormPage(
+        fieldBuilder: (_) => {},
+        isInputValid: true,
+        allowCustomEntities: false,
+      ),
+      appManager: appManager,
+    ));
+
+    await tapAndSettle(tester, find.byIcon(FormPage.moreMenuIcon));
+    await tapAndSettle(tester, find.text("Manage Fields"));
+
+    expect(find.byIcon(Icons.add), findsNothing);
+    expect(find.byType(HeadingDivider), findsNothing);
+  });
+
+  testWidgets("Selection page when allowCustomFields is true", (tester) async {
+    await tester.pumpWidget(Testable(
+      (_) => FormPage(
+        fieldBuilder: (_) => {},
+        isInputValid: true,
+        allowCustomEntities: true,
+      ),
+      appManager: appManager,
+    ));
+
+    await tapAndSettle(tester, find.byIcon(FormPage.moreMenuIcon));
+    await tapAndSettle(tester, find.text("Manage Fields"));
+
+    // One in action bar, one in HeadingDivider.
+    expect(find.byIcon(Icons.add), findsNWidgets(2));
+    expect(find.byType(HeadingDivider), findsOneWidget);
   });
 }

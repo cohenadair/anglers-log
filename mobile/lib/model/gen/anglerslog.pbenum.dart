@@ -9,6 +9,78 @@
 import 'dart:core' as $core;
 import 'package:protobuf/protobuf.dart' as $pb;
 
+class Direction extends $pb.ProtobufEnum {
+  static const Direction direction_all = Direction._(
+      0,
+      const $core.bool.fromEnvironment('protobuf.omit_enum_names')
+          ? ''
+          : 'direction_all');
+  static const Direction direction_none = Direction._(
+      1,
+      const $core.bool.fromEnvironment('protobuf.omit_enum_names')
+          ? ''
+          : 'direction_none');
+  static const Direction north = Direction._(
+      2,
+      const $core.bool.fromEnvironment('protobuf.omit_enum_names')
+          ? ''
+          : 'north');
+  static const Direction north_east = Direction._(
+      3,
+      const $core.bool.fromEnvironment('protobuf.omit_enum_names')
+          ? ''
+          : 'north_east');
+  static const Direction east = Direction._(
+      4,
+      const $core.bool.fromEnvironment('protobuf.omit_enum_names')
+          ? ''
+          : 'east');
+  static const Direction south_east = Direction._(
+      5,
+      const $core.bool.fromEnvironment('protobuf.omit_enum_names')
+          ? ''
+          : 'south_east');
+  static const Direction south = Direction._(
+      6,
+      const $core.bool.fromEnvironment('protobuf.omit_enum_names')
+          ? ''
+          : 'south');
+  static const Direction south_west = Direction._(
+      7,
+      const $core.bool.fromEnvironment('protobuf.omit_enum_names')
+          ? ''
+          : 'south_west');
+  static const Direction west = Direction._(
+      8,
+      const $core.bool.fromEnvironment('protobuf.omit_enum_names')
+          ? ''
+          : 'west');
+  static const Direction north_west = Direction._(
+      9,
+      const $core.bool.fromEnvironment('protobuf.omit_enum_names')
+          ? ''
+          : 'north_west');
+
+  static const $core.List<Direction> values = <Direction>[
+    direction_all,
+    direction_none,
+    north,
+    north_east,
+    east,
+    south_east,
+    south,
+    south_west,
+    west,
+    north_west,
+  ];
+
+  static final $core.Map<$core.int, Direction> _byValue =
+      $pb.ProtobufEnum.initByValue(values);
+  static Direction? valueOf($core.int value) => _byValue[value];
+
+  const Direction._($core.int v, $core.String n) : super(v, n);
+}
+
 class MeasurementSystem extends $pb.ProtobufEnum {
   static const MeasurementSystem imperial_whole = MeasurementSystem._(
       0,
@@ -37,6 +109,78 @@ class MeasurementSystem extends $pb.ProtobufEnum {
   static MeasurementSystem? valueOf($core.int value) => _byValue[value];
 
   const MeasurementSystem._($core.int v, $core.String n) : super(v, n);
+}
+
+class MoonPhase extends $pb.ProtobufEnum {
+  static const MoonPhase moon_phase_all = MoonPhase._(
+      0,
+      const $core.bool.fromEnvironment('protobuf.omit_enum_names')
+          ? ''
+          : 'moon_phase_all');
+  static const MoonPhase moon_phase_none = MoonPhase._(
+      1,
+      const $core.bool.fromEnvironment('protobuf.omit_enum_names')
+          ? ''
+          : 'moon_phase_none');
+  static const MoonPhase new_ = MoonPhase._(
+      2,
+      const $core.bool.fromEnvironment('protobuf.omit_enum_names')
+          ? ''
+          : 'new');
+  static const MoonPhase waxing_crescent = MoonPhase._(
+      3,
+      const $core.bool.fromEnvironment('protobuf.omit_enum_names')
+          ? ''
+          : 'waxing_crescent');
+  static const MoonPhase first_quarter = MoonPhase._(
+      4,
+      const $core.bool.fromEnvironment('protobuf.omit_enum_names')
+          ? ''
+          : 'first_quarter');
+  static const MoonPhase waxing_gibbous = MoonPhase._(
+      5,
+      const $core.bool.fromEnvironment('protobuf.omit_enum_names')
+          ? ''
+          : 'waxing_gibbous');
+  static const MoonPhase full = MoonPhase._(
+      6,
+      const $core.bool.fromEnvironment('protobuf.omit_enum_names')
+          ? ''
+          : 'full');
+  static const MoonPhase waning_gibbous = MoonPhase._(
+      7,
+      const $core.bool.fromEnvironment('protobuf.omit_enum_names')
+          ? ''
+          : 'waning_gibbous');
+  static const MoonPhase last_quarter = MoonPhase._(
+      8,
+      const $core.bool.fromEnvironment('protobuf.omit_enum_names')
+          ? ''
+          : 'last_quarter');
+  static const MoonPhase waning_crescent = MoonPhase._(
+      9,
+      const $core.bool.fromEnvironment('protobuf.omit_enum_names')
+          ? ''
+          : 'waning_crescent');
+
+  static const $core.List<MoonPhase> values = <MoonPhase>[
+    moon_phase_all,
+    moon_phase_none,
+    new_,
+    waxing_crescent,
+    first_quarter,
+    waxing_gibbous,
+    full,
+    waning_gibbous,
+    last_quarter,
+    waning_crescent,
+  ];
+
+  static final $core.Map<$core.int, MoonPhase> _byValue =
+      $pb.ProtobufEnum.initByValue(values);
+  static MoonPhase? valueOf($core.int value) => _byValue[value];
+
+  const MoonPhase._($core.int v, $core.String n) : super(v, n);
 }
 
 class NumberBoundary extends $pb.ProtobufEnum {
@@ -201,6 +345,114 @@ class Season extends $pb.ProtobufEnum {
   const Season._($core.int v, $core.String n) : super(v, n);
 }
 
+class SkyCondition extends $pb.ProtobufEnum {
+  static const SkyCondition sky_condition_all = SkyCondition._(
+      0,
+      const $core.bool.fromEnvironment('protobuf.omit_enum_names')
+          ? ''
+          : 'sky_condition_all');
+  static const SkyCondition sky_condition_none = SkyCondition._(
+      1,
+      const $core.bool.fromEnvironment('protobuf.omit_enum_names')
+          ? ''
+          : 'sky_condition_none');
+  static const SkyCondition snow = SkyCondition._(
+      2,
+      const $core.bool.fromEnvironment('protobuf.omit_enum_names')
+          ? ''
+          : 'snow');
+  static const SkyCondition drizzle = SkyCondition._(
+      3,
+      const $core.bool.fromEnvironment('protobuf.omit_enum_names')
+          ? ''
+          : 'drizzle');
+  static const SkyCondition dust = SkyCondition._(
+      4,
+      const $core.bool.fromEnvironment('protobuf.omit_enum_names')
+          ? ''
+          : 'dust');
+  static const SkyCondition fog = SkyCondition._(
+      5,
+      const $core.bool.fromEnvironment('protobuf.omit_enum_names')
+          ? ''
+          : 'fog');
+  static const SkyCondition rain = SkyCondition._(
+      6,
+      const $core.bool.fromEnvironment('protobuf.omit_enum_names')
+          ? ''
+          : 'rain');
+  static const SkyCondition tornado = SkyCondition._(
+      7,
+      const $core.bool.fromEnvironment('protobuf.omit_enum_names')
+          ? ''
+          : 'tornado');
+  static const SkyCondition hail = SkyCondition._(
+      8,
+      const $core.bool.fromEnvironment('protobuf.omit_enum_names')
+          ? ''
+          : 'hail');
+  static const SkyCondition ice = SkyCondition._(
+      9,
+      const $core.bool.fromEnvironment('protobuf.omit_enum_names')
+          ? ''
+          : 'ice');
+  static const SkyCondition storm = SkyCondition._(
+      10,
+      const $core.bool.fromEnvironment('protobuf.omit_enum_names')
+          ? ''
+          : 'storm');
+  static const SkyCondition mist = SkyCondition._(
+      11,
+      const $core.bool.fromEnvironment('protobuf.omit_enum_names')
+          ? ''
+          : 'mist');
+  static const SkyCondition smoke = SkyCondition._(
+      12,
+      const $core.bool.fromEnvironment('protobuf.omit_enum_names')
+          ? ''
+          : 'smoke');
+  static const SkyCondition overcast = SkyCondition._(
+      13,
+      const $core.bool.fromEnvironment('protobuf.omit_enum_names')
+          ? ''
+          : 'overcast');
+  static const SkyCondition cloudy = SkyCondition._(
+      14,
+      const $core.bool.fromEnvironment('protobuf.omit_enum_names')
+          ? ''
+          : 'cloudy');
+  static const SkyCondition clear = SkyCondition._(
+      15,
+      const $core.bool.fromEnvironment('protobuf.omit_enum_names')
+          ? ''
+          : 'clear');
+
+  static const $core.List<SkyCondition> values = <SkyCondition>[
+    sky_condition_all,
+    sky_condition_none,
+    snow,
+    drizzle,
+    dust,
+    fog,
+    rain,
+    tornado,
+    hail,
+    ice,
+    storm,
+    mist,
+    smoke,
+    overcast,
+    cloudy,
+    clear,
+  ];
+
+  static final $core.Map<$core.int, SkyCondition> _byValue =
+      $pb.ProtobufEnum.initByValue(values);
+  static SkyCondition? valueOf($core.int value) => _byValue[value];
+
+  const SkyCondition._($core.int v, $core.String n) : super(v, n);
+}
+
 class Unit extends $pb.ProtobufEnum {
   static const Unit feet = Unit._(
       0,
@@ -247,6 +499,41 @@ class Unit extends $pb.ProtobufEnum {
       const $core.bool.fromEnvironment('protobuf.omit_enum_names')
           ? ''
           : 'celsius');
+  static const Unit miles_per_hour = Unit._(
+      9,
+      const $core.bool.fromEnvironment('protobuf.omit_enum_names')
+          ? ''
+          : 'miles_per_hour');
+  static const Unit kilometers_per_hour = Unit._(
+      10,
+      const $core.bool.fromEnvironment('protobuf.omit_enum_names')
+          ? ''
+          : 'kilometers_per_hour');
+  static const Unit millibars = Unit._(
+      11,
+      const $core.bool.fromEnvironment('protobuf.omit_enum_names')
+          ? ''
+          : 'millibars');
+  static const Unit pounds_per_square_inch = Unit._(
+      12,
+      const $core.bool.fromEnvironment('protobuf.omit_enum_names')
+          ? ''
+          : 'pounds_per_square_inch');
+  static const Unit miles = Unit._(
+      13,
+      const $core.bool.fromEnvironment('protobuf.omit_enum_names')
+          ? ''
+          : 'miles');
+  static const Unit kilometers = Unit._(
+      14,
+      const $core.bool.fromEnvironment('protobuf.omit_enum_names')
+          ? ''
+          : 'kilometers');
+  static const Unit percent = Unit._(
+      15,
+      const $core.bool.fromEnvironment('protobuf.omit_enum_names')
+          ? ''
+          : 'percent');
 
   static const $core.List<Unit> values = <Unit>[
     feet,
@@ -258,6 +545,13 @@ class Unit extends $pb.ProtobufEnum {
     centimeters,
     kilograms,
     celsius,
+    miles_per_hour,
+    kilometers_per_hour,
+    millibars,
+    pounds_per_square_inch,
+    miles,
+    kilometers,
+    percent,
   ];
 
   static final $core.Map<$core.int, Unit> _byValue =

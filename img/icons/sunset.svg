@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 64 (93537) - https://sketch.com -->
+    <title>img/icons/sunset</title>
+    <desc>Created with Sketch.</desc>
+    <g id="img/icons/sunset" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="wb_sunny_black_24dp">
+            <polygon id="Path" points="0 0 24 0 24 24 0 24"></polygon>
+            <path d="M6.76,15.29 L4.96,13.5 L3.55,14.91 L5.34,16.7 L6.76,15.29 Z M13,11 L11,11 L11,13.95 L13,13.95 L13,11 L13,11 Z M20.45,14.91 L19.04,13.5 L17.25,15.29 L18.66,16.7 L20.45,14.91 Z M12,16.45 C14.6286278,16.45 16.4443224,17.783329 17.447084,20.4499871 L23,20.45 L23,22.45 L1,22.45 L1,20.45 L6.55291597,20.4499871 C7.55567755,17.783329 9.37137223,16.45 12,16.45 Z M13.0050812,1.49491881 L13.0050812,4.5 L15.0050812,4.5 L12.0050812,7.5 L9.00508119,4.5 L11.0050812,4.5 L11.0050812,1.49491881 L13.0050812,1.49491881 Z" id="Shape" fill="#000000" fill-rule="nonzero"></path>
+        </g>
+    </g>
+</svg>

@@ -182,4 +182,190 @@ void main() {
       expect(controller.shouldAddToReport, isTrue);
     });
   });
+
+  group("MultiMeasurementInputController", () {
+    test("Setting value to null", () {
+      var controller = MultiMeasurementInputController(
+        mainUnit: Unit.kilometers,
+      );
+      controller.mainController.intValue = 50;
+      controller.fractionController.intValue = 60;
+
+      expect(controller.value, isNotNull);
+      expect(
+        controller.value,
+        MultiMeasurement(
+          system: MeasurementSystem.imperial_whole,
+          mainValue: Measurement(
+            unit: Unit.kilometers,
+            value: 50,
+          ),
+          fractionValue: Measurement(
+            value: 60,
+          ),
+        ),
+      );
+
+      controller.value = null;
+      expect(controller.mainController.hasValue, isFalse);
+      expect(controller.fractionController.hasValue, isFalse);
+      expect(controller.hasValue, isFalse);
+    });
+
+    test("Setting value updates controllers", () {
+      var controller = MultiMeasurementInputController(
+        mainUnit: Unit.kilometers,
+      );
+
+      controller.value = MultiMeasurement(
+        system: MeasurementSystem.imperial_whole,
+        mainValue: Measurement(
+          value: 50,
+        ),
+        fractionValue: Measurement(
+          value: 60,
+        ),
+      );
+
+      expect(controller.mainController.hasIntValue, isTrue);
+      expect(controller.mainController.intValue, 50);
+      expect(controller.fractionController.hasDoubleValue, isTrue);
+      expect(controller.fractionController.doubleValue, 60);
+    });
+
+    test("Setting value without a main value", () {
+      var controller = MultiMeasurementInputController(
+        mainUnit: Unit.kilometers,
+      );
+
+      controller.value = MultiMeasurement(
+        system: MeasurementSystem.imperial_whole,
+        fractionValue: Measurement(
+          unit: Unit.meters,
+          value: 60,
+        ),
+      );
+
+      expect(controller.value, isNotNull);
+      expect(controller.value!.hasMainValue(), isFalse);
+      expect(controller.value!.hasFractionValue(), isTrue);
+      expect(controller.value!.fractionValue.unit, Unit.meters);
+      expect(controller.value!.fractionValue.value, 60);
+    });
+
+    test("Setting value without a fraction value", () {
+      var controller = MultiMeasurementInputController(
+        mainUnit: Unit.kilometers,
+      );
+
+      controller.value = MultiMeasurement(
+        system: MeasurementSystem.imperial_whole,
+        mainValue: Measurement(
+          value: 60,
+        ),
+      );
+
+      expect(controller.value, isNotNull);
+      expect(controller.value!.hasMainValue(), isTrue);
+      expect(controller.value!.hasFractionValue(), isFalse);
+    });
+
+    test("Setting value without a fraction unit", () {
+      var controller = MultiMeasurementInputController(
+        mainUnit: Unit.kilometers,
+      );
+
+      controller.value = MultiMeasurement(
+        system: MeasurementSystem.imperial_whole,
+        fractionValue: Measurement(
+          value: 60,
+        ),
+      );
+
+      expect(controller.value, isNotNull);
+      expect(controller.value!.hasMainValue(), isFalse);
+      expect(controller.value!.hasFractionValue(), isTrue);
+      expect(controller.value!.fractionValue.hasUnit(), isFalse);
+      expect(controller.value!.fractionValue.value, 60);
+    });
+
+    test("Setting system round values", () {
+      var controller = MultiMeasurementInputController(
+        mainUnit: Unit.kilometers,
+      );
+
+      controller.value = MultiMeasurement(
+        system: MeasurementSystem.imperial_decimal,
+        mainValue: Measurement(
+          value: 60.256485,
+        ),
+      );
+
+      controller.system = MeasurementSystem.metric;
+
+      expect(controller.value, isNotNull);
+      expect(controller.value!.mainValue.value, 60.3);
+    });
+
+    test("Rounding", () {
+      var controller = MultiMeasurementInputController(
+        mainUnit: Unit.kilometers,
+      );
+
+      controller.value = MultiMeasurement(
+        system: MeasurementSystem.imperial_whole,
+        // Rounded to 60.0.
+        mainValue: Measurement(
+          value: 60.256485,
+        ),
+        // Not rounded.
+        fractionValue: Measurement(
+          value: 0.75,
+        ),
+      );
+
+      expect(controller.value, isNotNull);
+      expect(controller.value!.mainValue.value, 60);
+      expect(controller.value!.fractionValue.value, 0.75);
+
+      controller.value = MultiMeasurement(
+        system: MeasurementSystem.imperial_whole,
+        // Not rounded.
+        fractionValue: Measurement(
+          unit: Unit.inches,
+          value: 10.75,
+        ),
+      );
+
+      expect(controller.value!.fractionValue.value, 10.75);
+
+      controller.value = MultiMeasurement(
+        system: MeasurementSystem.imperial_whole,
+        // Fraction values are always rounded to whole numbers.
+        fractionValue: Measurement(
+          unit: Unit.kilometers,
+          value: 10.75,
+        ),
+      );
+
+      expect(controller.value!.fractionValue.value, 11);
+    });
+
+    test("isSet", () {
+      var controller = MultiMeasurementInputController(
+        mainUnit: Unit.kilometers,
+      );
+      expect(controller.isSet, isFalse);
+
+      controller.value = MultiMeasurement(
+        system: MeasurementSystem.imperial_whole,
+        fractionValue: Measurement(
+          unit: Unit.kilometers,
+          value: 10.75,
+        ),
+      );
+
+      expect(controller.isSet, isTrue);
+    });
+  });
 }

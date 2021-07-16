@@ -13,12 +13,18 @@ class UserPreferenceManager extends PreferenceManager {
 
   static const _keyBaitCustomEntityIds = "bait_custom_entity_ids";
   static const _keyCatchCustomEntityIds = "catch_custom_entity_ids";
+  static const _keyAtmosphereFieldIds = "atmosphere_field_ids";
   static const _keyBaitFieldIds = "bait_field_ids";
   static const _keyCatchFieldIds = "catch_field_ids";
   static const _keyCatchLengthSystem = "catch_length_system";
   static const _keyCatchWeightSystem = "catch_weight_system";
   static const _keyWaterDepthSystem = "water_depth_system";
   static const _keyWaterTemperatureSystem = "water_temperature_system";
+  static const _keyAirTemperatureSystem = "air_temperature_system";
+  static const _keyAirPressureSystem = "air_pressure_system";
+  static const _keyAirVisibilitySystem = "air_visibility_system";
+  static const _keyWindSpeedSystem = "wind_speed_system";
+  static const _keyAutoFetchAtmosphere = "auto_fetch_atmosphere";
 
   static const _keyRateTimerStartedAt = "rate_timer_started_at";
   static const _keyDidRateApp = "did_rate_app";
@@ -63,6 +69,11 @@ class UserPreferenceManager extends PreferenceManager {
 
   List<Id> get catchCustomEntityIds => idList(_keyCatchCustomEntityIds);
 
+  Future<void> setAtmosphereFieldIds(List<Id> ids) =>
+      putIdList(_keyAtmosphereFieldIds, ids);
+
+  List<Id> get atmosphereFieldIds => idList(_keyAtmosphereFieldIds);
+
   Future<void> setBaitFieldIds(List<Id> ids) =>
       putIdList(_keyBaitFieldIds, ids);
 
@@ -96,6 +107,36 @@ class UserPreferenceManager extends PreferenceManager {
 
   MeasurementSystem? get waterTemperatureSystem =>
       MeasurementSystem.valueOf(preferences[_keyWaterTemperatureSystem] ?? -1);
+
+  Future<void> setAirTemperatureSystem(MeasurementSystem? system) =>
+      put(_keyAirTemperatureSystem, system?.value);
+
+  MeasurementSystem? get airTemperatureSystem =>
+      MeasurementSystem.valueOf(preferences[_keyAirTemperatureSystem] ?? -1);
+
+  Future<void> setAirPressureSystem(MeasurementSystem? system) =>
+      put(_keyAirPressureSystem, system?.value);
+
+  MeasurementSystem? get airPressureSystem =>
+      MeasurementSystem.valueOf(preferences[_keyAirPressureSystem] ?? -1);
+
+  Future<void> setAirVisibilitySystem(MeasurementSystem? system) =>
+      put(_keyAirVisibilitySystem, system?.value);
+
+  MeasurementSystem? get airVisibilitySystem =>
+      MeasurementSystem.valueOf(preferences[_keyAirVisibilitySystem] ?? -1);
+
+  Future<void> setWindSpeedSystem(MeasurementSystem? system) =>
+      put(_keyWindSpeedSystem, system?.value);
+
+  MeasurementSystem? get windSpeedSystem =>
+      MeasurementSystem.valueOf(preferences[_keyWindSpeedSystem] ?? -1);
+
+  // ignore: avoid_positional_boolean_parameters
+  Future<void> setAutoFetchAtmosphere(bool autoFetch) =>
+      put(_keyAutoFetchAtmosphere, autoFetch);
+
+  bool get autoFetchAtmosphere => preferences[_keyAutoFetchAtmosphere] ?? false;
 
   Future<void> setRateTimerStartedAt(int? timestamp) =>
       put(_keyRateTimerStartedAt, timestamp);

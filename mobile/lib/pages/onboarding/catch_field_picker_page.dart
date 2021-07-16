@@ -4,11 +4,11 @@ import '../../i18n/strings.dart';
 import '../../model/gen/anglerslog.pb.dart';
 import '../../res/dimen.dart';
 import '../../res/gen/custom_icons.dart';
+import '../../res/style.dart';
 import '../../time_manager.dart';
 import '../../user_preference_manager.dart';
 import '../../utils/catch_utils.dart';
 import '../../widgets/list_item.dart';
-import '../../widgets/text.dart';
 import '../../widgets/widget.dart';
 import 'onboarding_page.dart';
 
@@ -58,10 +58,11 @@ class _CatchFieldPickerPageState extends State<CatchFieldPickerPage> {
         VerticalSpace(paddingWidget),
         Padding(
           padding: insetsHorizontalDefault,
-          child: PrimaryLabel(
+          child: Text(
             Strings.of(context).onboardingJourneyCatchFieldDescription,
             overflow: TextOverflow.visible,
-            align: TextAlign.center,
+            textAlign: TextAlign.center,
+            style: stylePrimary(context),
           ),
         ),
         VerticalSpace(paddingWidget),

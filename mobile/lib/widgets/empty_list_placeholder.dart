@@ -69,11 +69,11 @@ class EmptyListPlaceholder extends StatelessWidget {
       var enabled = false;
 
       if (descriptionIcon == null) {
-        descriptionWidget = PrimaryLabel(
+        descriptionWidget = Text(
           description,
           overflow: overflow,
-          align: align,
-          enabled: enabled,
+          textAlign: align,
+          style: stylePrimary(context, enabled: enabled),
         );
       } else {
         descriptionWidget = IconLabel(

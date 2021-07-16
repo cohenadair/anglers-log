@@ -38,7 +38,7 @@ void main() {
       ),
       appManager: appManager,
     ));
-    expect(find.text("Select Water Clarity"), findsOneWidget);
+    expect(find.text("Select Water Clarities"), findsOneWidget);
   });
 
   testWidgets("Normal title", (tester) async {

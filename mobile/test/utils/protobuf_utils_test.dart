@@ -8,6 +8,27 @@ import '../mocks/mocks.mocks.dart';
 import '../test_utils.dart';
 
 void main() {
+  group("_pickerItems", () {
+    testWidgets("Values are excluded", (tester) async {
+      var items = Periods.pickerItems(await buildContext(tester));
+      expect(items.length, Period.values.length - 2);
+      expect(items.contains(Period.period_all), isFalse);
+      expect(items.contains(Period.period_none), isFalse);
+    });
+
+    testWidgets("Values are sorted", (tester) async {
+      var items = SkyConditions.pickerItems(await buildContext(tester));
+      expect(items.length, SkyCondition.values.length - 2);
+      expect(items[0].value, SkyCondition.clear);
+    });
+
+    testWidgets("Values are not sorted", (tester) async {
+      var items = Periods.pickerItems(await buildContext(tester));
+      expect(items.length, Period.values.length - 2);
+      expect(items[0].value, Period.dawn);
+    });
+  });
+
   group("Id", () {
     test("Invalid input", () {
       expect(() => parseId(""), throwsAssertionError);
@@ -288,9 +309,9 @@ void main() {
       // Floating number.
       measurement = Measurement(
         unit: Unit.pounds,
-        value: 10.5,
+        value: 10.556842132,
       );
-      expect(measurement.stringValue, "10.5");
+      expect(measurement.stringValue, "10.6");
 
       // Whole floating number.
       measurement = Measurement(
@@ -420,6 +441,32 @@ void main() {
       expect(measurement.displayValue(context), "10 lbs 8 oz");
     });
 
+    test("from with null system", () {
+      var measurement = MultiMeasurements.from(
+        Measurement(
+          unit: Unit.pounds,
+          value: 10,
+        ),
+        null,
+      );
+      expect(measurement.system, MeasurementSystem.imperial_whole);
+      expect(measurement.mainValue.unit, Unit.pounds);
+      expect(measurement.mainValue.value, 10);
+    });
+
+    test("from with non-null system", () {
+      var measurement = MultiMeasurements.from(
+        Measurement(
+          unit: Unit.pounds,
+          value: 10,
+        ),
+        MeasurementSystem.metric,
+      );
+      expect(measurement.system, MeasurementSystem.metric);
+      expect(measurement.mainValue.unit, Unit.pounds);
+      expect(measurement.mainValue.value, 10);
+    });
+
     test("toSystem", () {
       // No change in system.
       var measurement = MultiMeasurement(
@@ -453,6 +500,52 @@ void main() {
       expect(measurement.mainValue.value, 10);
       expect(measurement.fractionValue.unit, Unit.centimeters);
       expect(measurement.fractionValue.value, 5);
+    });
+
+    testWidgets("filterString with no values", (tester) async {
+      var measurement = MultiMeasurement();
+      expect(measurement.filterString(await buildContext(tester)), isEmpty);
+    });
+
+    testWidgets("filterString with main value only", (tester) async {
+      var measurement = MultiMeasurement(
+        mainValue: Measurement(
+          unit: Unit.pounds,
+          value: 10,
+        ),
+      );
+      var context = await buildContext(tester);
+      expect(measurement.filterString(context), isNotEmpty);
+      expect(measurement.filterString(context).contains("lbs"), isTrue);
+    });
+
+    testWidgets("filterString with fraction value only", (tester) async {
+      var measurement = MultiMeasurement(
+        fractionValue: Measurement(
+          unit: Unit.pounds,
+          value: 10,
+        ),
+      );
+      var context = await buildContext(tester);
+      expect(measurement.filterString(context), isNotEmpty);
+      expect(measurement.filterString(context).contains("lbs"), isTrue);
+    });
+
+    testWidgets("filterString with main and fraction values", (tester) async {
+      var measurement = MultiMeasurement(
+        mainValue: Measurement(
+          unit: Unit.pounds,
+          value: 10,
+        ),
+        fractionValue: Measurement(
+          unit: Unit.kilometers,
+          value: 15,
+        ),
+      );
+      var context = await buildContext(tester);
+      expect(measurement.filterString(context), isNotEmpty);
+      expect(measurement.filterString(context).contains("lbs"), isTrue);
+      expect(measurement.filterString(context).contains("km"), isTrue);
     });
 
     test("Comparing equals", () {
@@ -1098,6 +1191,80 @@ void main() {
         now: DateTime(2019, 3, 13, 15, 30),
         expectedStart: DateTime(2018, 3, 13, 15, 30),
       );
+    });
+  });
+
+  group("Units", () {
+    test("convertFrom with the same unit", () {
+      expect(Unit.kilometers.convertFrom(Unit.kilometers, 10), 10);
+    });
+
+    test("convertFrom with a non-opposite unit", () {
+      expect(Unit.kilometers.convertFrom(Unit.pounds, 10), 10);
+    });
+
+    test("convertFrom with unsupported unit", () {
+      expect(Unit.meters.convertFrom(Unit.kilometers, 10), 10);
+    });
+  });
+
+  group("Directions", () {
+    test("fromDegrees north", () {
+      expect(Directions.fromDegrees(0), Direction.north);
+      expect(Directions.fromDegrees(360), Direction.north);
+      expect(Directions.fromDegrees(10), Direction.north);
+      expect(Directions.fromDegrees(350), Direction.north);
+    });
+
+    test("fromDegrees north east", () {
+      expect(Directions.fromDegrees(45), Direction.north_east);
+      expect(Directions.fromDegrees(35), Direction.north_east);
+      expect(Directions.fromDegrees(55), Direction.north_east);
+    });
+
+    test("fromDegrees east", () {
+      expect(Directions.fromDegrees(90), Direction.east);
+      expect(Directions.fromDegrees(80), Direction.east);
+      expect(Directions.fromDegrees(100), Direction.east);
+    });
+
+    test("fromDegrees south east", () {
+      expect(Directions.fromDegrees(135), Direction.south_east);
+      expect(Directions.fromDegrees(125), Direction.south_east);
+      expect(Directions.fromDegrees(145), Direction.south_east);
+    });
+
+    test("fromDegrees south", () {
+      expect(Directions.fromDegrees(180), Direction.south);
+      expect(Directions.fromDegrees(170), Direction.south);
+      expect(Directions.fromDegrees(190), Direction.south);
+    });
+
+    test("fromDegrees south west", () {
+      expect(Directions.fromDegrees(225), Direction.south_west);
+      expect(Directions.fromDegrees(215), Direction.south_west);
+      expect(Directions.fromDegrees(235), Direction.south_west);
+    });
+
+    test("fromDegrees west", () {
+      expect(Directions.fromDegrees(270), Direction.west);
+      expect(Directions.fromDegrees(260), Direction.west);
+      expect(Directions.fromDegrees(280), Direction.west);
+    });
+
+    test("fromDegrees north west", () {
+      expect(Directions.fromDegrees(315), Direction.north_west);
+      expect(Directions.fromDegrees(305), Direction.north_west);
+      expect(Directions.fromDegrees(325), Direction.north_west);
+    });
+  });
+
+  group("SkyConditions", () {
+    test("fromTypes", () {
+      expect(SkyConditions.fromTypes("type_31,type_33,type_6"), [
+        SkyCondition.snow,
+        SkyCondition.drizzle,
+      ]);
     });
   });
 }

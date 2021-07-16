@@ -80,6 +80,8 @@ void main() {
         .thenReturn(MeasurementSystem.imperial_whole);
     when(appManager.userPreferenceManager.catchWeightSystem)
         .thenReturn(MeasurementSystem.imperial_whole);
+    when(appManager.userPreferenceManager.autoFetchAtmosphere)
+        .thenReturn(false);
 
     when(appManager.speciesManager.listSortedByName(filter: anyNamed("filter")))
         .thenReturn([
@@ -87,6 +89,8 @@ void main() {
         ..id = randomId()
         ..name = "Steelhead"
     ]);
+
+    when(appManager.subscriptionManager.isFree).thenReturn(false);
   });
 
   testWidgets("Picked image uses location data to fetch existing fishing spot",

@@ -82,6 +82,7 @@ void main() {
     ));
 
     await tester.pumpAndSettle(Duration(milliseconds: 50));
+    await tester.ensureVisible(find.text("Billed monthly"));
     await tester.tap(find.text("Billed monthly"));
     await tester.pump();
 

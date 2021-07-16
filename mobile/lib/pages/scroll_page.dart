@@ -17,6 +17,15 @@ class ScrollPage extends StatelessWidget {
   final bool enableHorizontalSafeArea;
   final bool centerContent;
 
+  /// When non-null, material swipe-to-refresh feature is enabled. See
+  /// [RefreshIndicator.onRefresh].
+  final Future<void> Function()? onRefresh;
+
+  /// Sets the [RefreshIndicator] key, which can be used to hide/show the
+  /// refresh indicator programmatically. This field is ignored if [onRefresh]
+  /// is null.
+  final Key? refreshIndicatorKey;
+
   ScrollPage({
     this.appBar,
     this.children = const [],
@@ -25,6 +34,8 @@ class ScrollPage extends StatelessWidget {
     this.extendBodyBehindAppBar = true,
     this.enableHorizontalSafeArea = true,
     this.centerContent = false,
+    this.onRefresh,
+    this.refreshIndicatorKey,
   });
 
   @override
@@ -46,6 +57,10 @@ class ScrollPage extends StatelessWidget {
             ..add(VerticalSpace(padding.bottom)),
         ),
       ),
+      // Ensures view is scrollable, even when items don't exceed screen size.
+      physics: AlwaysScrollableScrollPhysics(),
+      // Ensures items are cut off when over-scrolling on iOS.
+      clipBehavior: Clip.none,
     );
 
     if (centerContent) {
@@ -54,11 +69,20 @@ class ScrollPage extends StatelessWidget {
       );
     }
 
+    var child = scrollView;
+    if (onRefresh != null) {
+      child = RefreshIndicator(
+        key: refreshIndicatorKey,
+        onRefresh: onRefresh!,
+        child: scrollView,
+      );
+    }
+
     return Scaffold(
       appBar: appBar,
       extendBodyBehindAppBar: extendBodyBehindAppBar,
       persistentFooterButtons: footer,
-      body: scrollView,
+      body: child,
     );
   }
 }

@@ -65,6 +65,18 @@ class CalculatedReport {
   /// [Season] objects.
   final Set<Season> seasons;
 
+  /// When set, data is only included in this report if associated with these
+  /// [Direction] objects.
+  final Set<Direction> windDirections;
+
+  /// When set, data is only included in this report if associated with these
+  /// [SkyCondition] objects.
+  final Set<SkyCondition> skyConditions;
+
+  /// When set, data is only included in this report if associated with these
+  /// [MoonPhase] objects.
+  final Set<MoonPhase> moonPhases;
+
   /// When not null, catches are only included in this report if the
   /// [Catch.waterDepth] falls within this filter.
   final NumberFilter? waterDepthFilter;
@@ -84,6 +96,26 @@ class CalculatedReport {
   /// When not null, catches are only included in this report if the
   /// [Catch.quantity] falls within this filter.
   final NumberFilter? quantityFilter;
+
+  /// When not null, catches are only included in this report if the
+  /// [Catch.atmosphere] falls within this filter.
+  final NumberFilter? airTemperatureFilter;
+
+  /// When not null, catches are only included in this report if the
+  /// [Catch.atmosphere] falls within this filter.
+  final NumberFilter? airPressureFilter;
+
+  /// When not null, catches are only included in this report if the
+  /// [Catch.atmosphere] falls within this filter.
+  final NumberFilter? airHumidityFilter;
+
+  /// When not null, catches are only included in this report if the
+  /// [Catch.atmosphere] falls within this filter.
+  final NumberFilter? airVisibilityFilter;
+
+  /// When not null, catches are only included in this report if the
+  /// [Catch.atmosphere] falls within this filter.
+  final NumberFilter? windSpeedFilter;
 
   final AppManager _appManager;
   final TimeManager _timeManager;
@@ -164,11 +196,19 @@ class CalculatedReport {
     this.waterClarityIds = const {},
     this.periods = const {},
     this.seasons = const {},
+    this.windDirections = const {},
+    this.skyConditions = const {},
+    this.moonPhases = const {},
     this.waterDepthFilter,
     this.waterTemperatureFilter,
     this.lengthFilter,
     this.weightFilter,
     this.quantityFilter,
+    this.airTemperatureFilter,
+    this.airPressureFilter,
+    this.airHumidityFilter,
+    this.airVisibilityFilter,
+    this.windSpeedFilter,
     DateRange? range,
     bool isCatchAndReleaseOnly = false,
     bool isFavoritesOnly = false,
@@ -193,11 +233,19 @@ class CalculatedReport {
       waterClarityIds: waterClarityIds,
       periods: periods,
       seasons: seasons,
+      windDirections: windDirections,
+      skyConditions: skyConditions,
+      moonPhases: moonPhases,
       waterDepthFilter: waterDepthFilter,
       waterTemperatureFilter: waterTemperatureFilter,
       lengthFilter: lengthFilter,
       weightFilter: weightFilter,
       quantityFilter: quantityFilter,
+      airTemperatureFilter: airTemperatureFilter,
+      airPressureFilter: airPressureFilter,
+      airHumidityFilter: airHumidityFilter,
+      airVisibilityFilter: airVisibilityFilter,
+      windSpeedFilter: windSpeedFilter,
     );
 
     _msSinceLastCatch = catches.isEmpty
@@ -335,8 +383,11 @@ class CalculatedReport {
     _addFilters<Method>(_methodManager, methodIds, result);
     _addFilters<WaterClarity>(_waterClarityManager, waterClarityIds, result);
 
-    result.addAll(periods.map((p) => p.displayName(context)));
-    result.addAll(seasons.map((s) => s.displayName(context)));
+    result.addAll(periods.map((e) => e.displayName(context)));
+    result.addAll(seasons.map((e) => e.displayName(context)));
+    result.addAll(windDirections.map((e) => e.chipName(context)));
+    result.addAll(skyConditions.map((e) => e.displayName(context)));
+    result.addAll(moonPhases.map((e) => e.chipName(context)));
 
     _addNumberFilterIfNeeded(
         result, Strings.of(context).filterValueWaterDepth, waterDepthFilter);
@@ -350,6 +401,16 @@ class CalculatedReport {
         result, Strings.of(context).filterValueWeight, weightFilter);
     _addNumberFilterIfNeeded(
         result, Strings.of(context).filterValueQuantity, quantityFilter);
+    _addNumberFilterIfNeeded(result,
+        Strings.of(context).filterValueAirTemperature, airTemperatureFilter);
+    _addNumberFilterIfNeeded(
+        result, Strings.of(context).filterValueAirPressure, airPressureFilter);
+    _addNumberFilterIfNeeded(
+        result, Strings.of(context).filterValueAirHumidity, airHumidityFilter);
+    _addNumberFilterIfNeeded(result,
+        Strings.of(context).filterValueAirVisibility, airVisibilityFilter);
+    _addNumberFilterIfNeeded(
+        result, Strings.of(context).filterValueWindSpeed, windSpeedFilter);
 
     return result;
   }

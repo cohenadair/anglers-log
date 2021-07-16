@@ -365,40 +365,6 @@ void main() {
     expect(find.text("Must be greater than 20 m"), findsOneWidget);
   });
 
-  testWidgets("Changing units on 'from' field changes 'to' field",
-      (tester) async {
-    var controller = NumberFilterInputController();
-
-    await tester.pumpWidget(
-      Testable(
-        (context) => NumberFilterInput(
-          filterTitle: "Filter Title",
-          title: "Filter",
-          controller: controller,
-          inputSpec: MultiMeasurementInputSpec.waterDepth(context),
-        ),
-        appManager: appManager,
-      ),
-    );
-
-    await tapAndSettle(tester, find.text("Filter"));
-    await tapAndSettle(tester, find.text("Range"));
-    await enterTextAndSettle(
-        tester, find.widgetWithText(TextInput, "From"), "10");
-    await enterTextAndSettle(
-        tester, find.widgetWithText(TextInput, "To"), "15");
-    expect(controller.value!.from.mainValue.value, 10);
-    expect(controller.value!.to.mainValue.value, 15);
-
-    expect(find.text("m"), findsNWidgets(2));
-
-    await tapAndSettle(tester, find.byIcon(Icons.more_vert).first);
-    await tapAndSettle(tester, find.text("Imperial"));
-
-    expect(find.text("m"), findsNothing);
-    expect(find.text("ft"), findsNWidgets(2));
-  });
-
   testWidgets("Unit 'to' field validated when when changed", (tester) async {
     var controller = NumberFilterInputController();
 

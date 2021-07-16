@@ -80,6 +80,229 @@ class Id extends $pb.GeneratedMessage {
   void clearUuid() => clearField(1);
 }
 
+class Atmosphere extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'Atmosphere',
+      package: const $pb.PackageName(
+          const $core.bool.fromEnvironment('protobuf.omit_message_names')
+              ? ''
+              : 'anglerslog'),
+      createEmptyInstance: create)
+    ..aOM<Measurement>(
+        1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'temperature',
+        subBuilder: Measurement.create)
+    ..pc<SkyCondition>(
+        2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'skyConditions', $pb.PbFieldType.PE,
+        valueOf: SkyCondition.valueOf, enumValues: SkyCondition.values)
+    ..aOM<Measurement>(
+        3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'windSpeed',
+        subBuilder: Measurement.create)
+    ..e<Direction>(
+        4, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'windDirection', $pb.PbFieldType.OE,
+        defaultOrMaker: Direction.direction_all,
+        valueOf: Direction.valueOf,
+        enumValues: Direction.values)
+    ..aOM<Measurement>(5, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'pressure', subBuilder: Measurement.create)
+    ..aOM<Measurement>(6, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'humidity', subBuilder: Measurement.create)
+    ..aOM<Measurement>(7, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'visibility', subBuilder: Measurement.create)
+    ..e<MoonPhase>(8, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'moonPhase', $pb.PbFieldType.OE, defaultOrMaker: MoonPhase.moon_phase_all, valueOf: MoonPhase.valueOf, enumValues: MoonPhase.values)
+    ..a<$fixnum.Int64>(9, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'sunriseMillis', $pb.PbFieldType.OU6, defaultOrMaker: $fixnum.Int64.ZERO)
+    ..a<$fixnum.Int64>(10, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'sunsetMillis', $pb.PbFieldType.OU6, defaultOrMaker: $fixnum.Int64.ZERO)
+    ..hasRequiredFields = false;
+
+  Atmosphere._() : super();
+  factory Atmosphere({
+    Measurement? temperature,
+    $core.Iterable<SkyCondition>? skyConditions,
+    Measurement? windSpeed,
+    Direction? windDirection,
+    Measurement? pressure,
+    Measurement? humidity,
+    Measurement? visibility,
+    MoonPhase? moonPhase,
+    $fixnum.Int64? sunriseMillis,
+    $fixnum.Int64? sunsetMillis,
+  }) {
+    final _result = create();
+    if (temperature != null) {
+      _result.temperature = temperature;
+    }
+    if (skyConditions != null) {
+      _result.skyConditions.addAll(skyConditions);
+    }
+    if (windSpeed != null) {
+      _result.windSpeed = windSpeed;
+    }
+    if (windDirection != null) {
+      _result.windDirection = windDirection;
+    }
+    if (pressure != null) {
+      _result.pressure = pressure;
+    }
+    if (humidity != null) {
+      _result.humidity = humidity;
+    }
+    if (visibility != null) {
+      _result.visibility = visibility;
+    }
+    if (moonPhase != null) {
+      _result.moonPhase = moonPhase;
+    }
+    if (sunriseMillis != null) {
+      _result.sunriseMillis = sunriseMillis;
+    }
+    if (sunsetMillis != null) {
+      _result.sunsetMillis = sunsetMillis;
+    }
+    return _result;
+  }
+  factory Atmosphere.fromBuffer($core.List<$core.int> i,
+          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(i, r);
+  factory Atmosphere.fromJson($core.String i,
+          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(i, r);
+  @$core.Deprecated('Using this can add significant overhead to your binary. '
+      'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+      'Will be removed in next major version')
+  Atmosphere clone() => Atmosphere()..mergeFromMessage(this);
+  @$core.Deprecated('Using this can add significant overhead to your binary. '
+      'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+      'Will be removed in next major version')
+  Atmosphere copyWith(void Function(Atmosphere) updates) =>
+      super.copyWith((message) => updates(message as Atmosphere))
+          as Atmosphere; // ignore: deprecated_member_use
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static Atmosphere create() => Atmosphere._();
+  Atmosphere createEmptyInstance() => create();
+  static $pb.PbList<Atmosphere> createRepeated() => $pb.PbList<Atmosphere>();
+  @$core.pragma('dart2js:noInline')
+  static Atmosphere getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<Atmosphere>(create);
+  static Atmosphere? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  Measurement get temperature => $_getN(0);
+  @$pb.TagNumber(1)
+  set temperature(Measurement v) {
+    setField(1, v);
+  }
+
+  @$pb.TagNumber(1)
+  $core.bool hasTemperature() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearTemperature() => clearField(1);
+  @$pb.TagNumber(1)
+  Measurement ensureTemperature() => $_ensure(0);
+
+  @$pb.TagNumber(2)
+  $core.List<SkyCondition> get skyConditions => $_getList(1);
+
+  @$pb.TagNumber(3)
+  Measurement get windSpeed => $_getN(2);
+  @$pb.TagNumber(3)
+  set windSpeed(Measurement v) {
+    setField(3, v);
+  }
+
+  @$pb.TagNumber(3)
+  $core.bool hasWindSpeed() => $_has(2);
+  @$pb.TagNumber(3)
+  void clearWindSpeed() => clearField(3);
+  @$pb.TagNumber(3)
+  Measurement ensureWindSpeed() => $_ensure(2);
+
+  @$pb.TagNumber(4)
+  Direction get windDirection => $_getN(3);
+  @$pb.TagNumber(4)
+  set windDirection(Direction v) {
+    setField(4, v);
+  }
+
+  @$pb.TagNumber(4)
+  $core.bool hasWindDirection() => $_has(3);
+  @$pb.TagNumber(4)
+  void clearWindDirection() => clearField(4);
+
+  @$pb.TagNumber(5)
+  Measurement get pressure => $_getN(4);
+  @$pb.TagNumber(5)
+  set pressure(Measurement v) {
+    setField(5, v);
+  }
+
+  @$pb.TagNumber(5)
+  $core.bool hasPressure() => $_has(4);
+  @$pb.TagNumber(5)
+  void clearPressure() => clearField(5);
+  @$pb.TagNumber(5)
+  Measurement ensurePressure() => $_ensure(4);
+
+  @$pb.TagNumber(6)
+  Measurement get humidity => $_getN(5);
+  @$pb.TagNumber(6)
+  set humidity(Measurement v) {
+    setField(6, v);
+  }
+
+  @$pb.TagNumber(6)
+  $core.bool hasHumidity() => $_has(5);
+  @$pb.TagNumber(6)
+  void clearHumidity() => clearField(6);
+  @$pb.TagNumber(6)
+  Measurement ensureHumidity() => $_ensure(5);
+
+  @$pb.TagNumber(7)
+  Measurement get visibility => $_getN(6);
+  @$pb.TagNumber(7)
+  set visibility(Measurement v) {
+    setField(7, v);
+  }
+
+  @$pb.TagNumber(7)
+  $core.bool hasVisibility() => $_has(6);
+  @$pb.TagNumber(7)
+  void clearVisibility() => clearField(7);
+  @$pb.TagNumber(7)
+  Measurement ensureVisibility() => $_ensure(6);
+
+  @$pb.TagNumber(8)
+  MoonPhase get moonPhase => $_getN(7);
+  @$pb.TagNumber(8)
+  set moonPhase(MoonPhase v) {
+    setField(8, v);
+  }
+
+  @$pb.TagNumber(8)
+  $core.bool hasMoonPhase() => $_has(7);
+  @$pb.TagNumber(8)
+  void clearMoonPhase() => clearField(8);
+
+  @$pb.TagNumber(9)
+  $fixnum.Int64 get sunriseMillis => $_getI64(8);
+  @$pb.TagNumber(9)
+  set sunriseMillis($fixnum.Int64 v) {
+    $_setInt64(8, v);
+  }
+
+  @$pb.TagNumber(9)
+  $core.bool hasSunriseMillis() => $_has(8);
+  @$pb.TagNumber(9)
+  void clearSunriseMillis() => clearField(9);
+
+  @$pb.TagNumber(10)
+  $fixnum.Int64 get sunsetMillis => $_getI64(9);
+  @$pb.TagNumber(10)
+  set sunsetMillis($fixnum.Int64 v) {
+    $_setInt64(9, v);
+  }
+
+  @$pb.TagNumber(10)
+  $core.bool hasSunsetMillis() => $_has(9);
+  @$pb.TagNumber(10)
+  void clearSunsetMillis() => clearField(10);
+}
+
 class CustomEntity extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'CustomEntity',
       package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names')
@@ -537,6 +760,7 @@ class Catch extends $pb.GeneratedMessage {
     ..aOM<MultiMeasurement>(18, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'weight', subBuilder: MultiMeasurement.create)
     ..a<$core.int>(19, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'quantity', $pb.PbFieldType.OU3)
     ..aOS(20, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'notes')
+    ..aOM<Atmosphere>(21, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'atmosphere', subBuilder: Atmosphere.create)
     ..hasRequiredFields = false;
 
   Catch._() : super();
@@ -561,6 +785,7 @@ class Catch extends $pb.GeneratedMessage {
     MultiMeasurement? weight,
     $core.int? quantity,
     $core.String? notes,
+    Atmosphere? atmosphere,
   }) {
     final _result = create();
     if (id != null) {
@@ -622,6 +847,9 @@ class Catch extends $pb.GeneratedMessage {
     }
     if (notes != null) {
       _result.notes = notes;
+    }
+    if (atmosphere != null) {
+      _result.atmosphere = atmosphere;
     }
     return _result;
   }
@@ -883,6 +1111,20 @@ class Catch extends $pb.GeneratedMessage {
   $core.bool hasNotes() => $_has(19);
   @$pb.TagNumber(20)
   void clearNotes() => clearField(20);
+
+  @$pb.TagNumber(21)
+  Atmosphere get atmosphere => $_getN(20);
+  @$pb.TagNumber(21)
+  set atmosphere(Atmosphere v) {
+    setField(21, v);
+  }
+
+  @$pb.TagNumber(21)
+  $core.bool hasAtmosphere() => $_has(20);
+  @$pb.TagNumber(21)
+  void clearAtmosphere() => clearField(21);
+  @$pb.TagNumber(21)
+  Atmosphere ensureAtmosphere() => $_ensure(20);
 }
 
 class DateRange extends $pb.GeneratedMessage {
@@ -1348,6 +1590,14 @@ class Report extends $pb.GeneratedMessage {
     ..aOM<NumberFilter>(19, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'lengthFilter', subBuilder: NumberFilter.create)
     ..aOM<NumberFilter>(20, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'weightFilter', subBuilder: NumberFilter.create)
     ..aOM<NumberFilter>(21, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'quantityFilter', subBuilder: NumberFilter.create)
+    ..aOM<NumberFilter>(22, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'airTemperatureFilter', subBuilder: NumberFilter.create)
+    ..aOM<NumberFilter>(23, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'airPressureFilter', subBuilder: NumberFilter.create)
+    ..aOM<NumberFilter>(24, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'airHumidityFilter', subBuilder: NumberFilter.create)
+    ..aOM<NumberFilter>(25, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'airVisibilityFilter', subBuilder: NumberFilter.create)
+    ..aOM<NumberFilter>(26, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'windSpeedFilter', subBuilder: NumberFilter.create)
+    ..pc<Direction>(27, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'windDirections', $pb.PbFieldType.PE, valueOf: Direction.valueOf, enumValues: Direction.values)
+    ..pc<SkyCondition>(28, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'skyConditions', $pb.PbFieldType.PE, valueOf: SkyCondition.valueOf, enumValues: SkyCondition.values)
+    ..pc<MoonPhase>(29, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'moonPhases', $pb.PbFieldType.PE, valueOf: MoonPhase.valueOf, enumValues: MoonPhase.values)
     ..hasRequiredFields = false;
 
   Report._() : super();
@@ -1373,6 +1623,14 @@ class Report extends $pb.GeneratedMessage {
     NumberFilter? lengthFilter,
     NumberFilter? weightFilter,
     NumberFilter? quantityFilter,
+    NumberFilter? airTemperatureFilter,
+    NumberFilter? airPressureFilter,
+    NumberFilter? airHumidityFilter,
+    NumberFilter? airVisibilityFilter,
+    NumberFilter? windSpeedFilter,
+    $core.Iterable<Direction>? windDirections,
+    $core.Iterable<SkyCondition>? skyConditions,
+    $core.Iterable<MoonPhase>? moonPhases,
   }) {
     final _result = create();
     if (id != null) {
@@ -1437,6 +1695,30 @@ class Report extends $pb.GeneratedMessage {
     }
     if (quantityFilter != null) {
       _result.quantityFilter = quantityFilter;
+    }
+    if (airTemperatureFilter != null) {
+      _result.airTemperatureFilter = airTemperatureFilter;
+    }
+    if (airPressureFilter != null) {
+      _result.airPressureFilter = airPressureFilter;
+    }
+    if (airHumidityFilter != null) {
+      _result.airHumidityFilter = airHumidityFilter;
+    }
+    if (airVisibilityFilter != null) {
+      _result.airVisibilityFilter = airVisibilityFilter;
+    }
+    if (windSpeedFilter != null) {
+      _result.windSpeedFilter = windSpeedFilter;
+    }
+    if (windDirections != null) {
+      _result.windDirections.addAll(windDirections);
+    }
+    if (skyConditions != null) {
+      _result.skyConditions.addAll(skyConditions);
+    }
+    if (moonPhases != null) {
+      _result.moonPhases.addAll(moonPhases);
     }
     return _result;
   }
@@ -1661,6 +1943,85 @@ class Report extends $pb.GeneratedMessage {
   void clearQuantityFilter() => clearField(21);
   @$pb.TagNumber(21)
   NumberFilter ensureQuantityFilter() => $_ensure(20);
+
+  @$pb.TagNumber(22)
+  NumberFilter get airTemperatureFilter => $_getN(21);
+  @$pb.TagNumber(22)
+  set airTemperatureFilter(NumberFilter v) {
+    setField(22, v);
+  }
+
+  @$pb.TagNumber(22)
+  $core.bool hasAirTemperatureFilter() => $_has(21);
+  @$pb.TagNumber(22)
+  void clearAirTemperatureFilter() => clearField(22);
+  @$pb.TagNumber(22)
+  NumberFilter ensureAirTemperatureFilter() => $_ensure(21);
+
+  @$pb.TagNumber(23)
+  NumberFilter get airPressureFilter => $_getN(22);
+  @$pb.TagNumber(23)
+  set airPressureFilter(NumberFilter v) {
+    setField(23, v);
+  }
+
+  @$pb.TagNumber(23)
+  $core.bool hasAirPressureFilter() => $_has(22);
+  @$pb.TagNumber(23)
+  void clearAirPressureFilter() => clearField(23);
+  @$pb.TagNumber(23)
+  NumberFilter ensureAirPressureFilter() => $_ensure(22);
+
+  @$pb.TagNumber(24)
+  NumberFilter get airHumidityFilter => $_getN(23);
+  @$pb.TagNumber(24)
+  set airHumidityFilter(NumberFilter v) {
+    setField(24, v);
+  }
+
+  @$pb.TagNumber(24)
+  $core.bool hasAirHumidityFilter() => $_has(23);
+  @$pb.TagNumber(24)
+  void clearAirHumidityFilter() => clearField(24);
+  @$pb.TagNumber(24)
+  NumberFilter ensureAirHumidityFilter() => $_ensure(23);
+
+  @$pb.TagNumber(25)
+  NumberFilter get airVisibilityFilter => $_getN(24);
+  @$pb.TagNumber(25)
+  set airVisibilityFilter(NumberFilter v) {
+    setField(25, v);
+  }
+
+  @$pb.TagNumber(25)
+  $core.bool hasAirVisibilityFilter() => $_has(24);
+  @$pb.TagNumber(25)
+  void clearAirVisibilityFilter() => clearField(25);
+  @$pb.TagNumber(25)
+  NumberFilter ensureAirVisibilityFilter() => $_ensure(24);
+
+  @$pb.TagNumber(26)
+  NumberFilter get windSpeedFilter => $_getN(25);
+  @$pb.TagNumber(26)
+  set windSpeedFilter(NumberFilter v) {
+    setField(26, v);
+  }
+
+  @$pb.TagNumber(26)
+  $core.bool hasWindSpeedFilter() => $_has(25);
+  @$pb.TagNumber(26)
+  void clearWindSpeedFilter() => clearField(26);
+  @$pb.TagNumber(26)
+  NumberFilter ensureWindSpeedFilter() => $_ensure(25);
+
+  @$pb.TagNumber(27)
+  $core.List<Direction> get windDirections => $_getList(26);
+
+  @$pb.TagNumber(28)
+  $core.List<SkyCondition> get skyConditions => $_getList(27);
+
+  @$pb.TagNumber(29)
+  $core.List<MoonPhase> get moonPhases => $_getList(28);
 }
 
 class Angler extends $pb.GeneratedMessage {

@@ -2,27 +2,39 @@ import 'package:flutter/material.dart';
 import 'package:quiver/strings.dart';
 
 import '../res/dimen.dart';
+import '../res/style.dart';
 import '../widgets/list_item.dart';
 import '../widgets/text.dart';
 import 'widget.dart';
 
 class CheckboxInput extends StatelessWidget {
   final String label;
+  final String? description;
   final bool value;
   final bool enabled;
   final void Function(bool)? onChanged;
 
   CheckboxInput({
     required this.label,
+    this.description,
     this.value = false,
     this.enabled = true,
     this.onChanged,
   }) : assert(isNotEmpty(label));
 
   Widget build(BuildContext context) {
+    Widget descriptionWidget = Empty();
+    if (isNotEmpty(description)) {
+      descriptionWidget = Text(
+        description!,
+        style: styleSubtitle(context, enabled: enabled),
+        overflow: TextOverflow.visible,
+      );
+    }
+
     return ListItem(
-      contentPadding: insetsZero,
-      title: enabled ? Label(label) : DisabledLabel(label),
+      title: enabled ? Text(label) : DisabledLabel(label),
+      subtitle: descriptionWidget,
       trailing: PaddedCheckbox(
         checked: value,
         enabled: enabled,
@@ -63,7 +75,7 @@ class _PaddedCheckboxState extends State<PaddedCheckbox> {
   void didUpdateWidget(PaddedCheckbox oldWidget) {
     super.didUpdateWidget(oldWidget);
 
-    if (oldWidget.checked != widget.checked) {
+    if (_checked != widget.checked) {
       _checked = widget.checked;
     }
   }

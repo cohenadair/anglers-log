@@ -4,6 +4,8 @@ import 'package:fixnum/fixnum.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:http/http.dart';
 import 'package:mobile/angler_manager.dart';
 import 'package:mobile/bait_manager.dart';
 import 'package:mobile/fishing_spot_manager.dart';
@@ -16,6 +18,7 @@ import 'package:mobile/utils/catch_utils.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mobile/water_clarity_manager.dart';
 import 'package:mobile/widgets/button.dart';
+import 'package:mobile/widgets/date_time_picker.dart';
 import 'package:mobile/widgets/image_input.dart';
 import 'package:mobile/widgets/search_bar.dart';
 import 'package:mobile/widgets/static_fishing_spot.dart';
@@ -48,6 +51,9 @@ void main() {
 
     when(appManager.locationMonitor.currentLocation).thenReturn(null);
 
+    when(appManager.propertiesManager.visualCrossingApiKey).thenReturn("");
+
+    when(appManager.userPreferenceManager.atmosphereFieldIds).thenReturn([]);
     when(appManager.userPreferenceManager.baitCustomEntityIds).thenReturn([]);
     when(appManager.userPreferenceManager.baitFieldIds).thenReturn([]);
     when(appManager.userPreferenceManager.catchCustomEntityIds).thenReturn([]);
@@ -60,10 +66,21 @@ void main() {
         .thenReturn(MeasurementSystem.imperial_whole);
     when(appManager.userPreferenceManager.catchWeightSystem)
         .thenReturn(MeasurementSystem.imperial_whole);
+    when(appManager.userPreferenceManager.autoFetchAtmosphere)
+        .thenReturn(false);
+    when(appManager.userPreferenceManager.airTemperatureSystem)
+        .thenReturn(MeasurementSystem.imperial_decimal);
+    when(appManager.userPreferenceManager.airVisibilitySystem)
+        .thenReturn(MeasurementSystem.imperial_decimal);
+    when(appManager.userPreferenceManager.airPressureSystem)
+        .thenReturn(MeasurementSystem.metric);
+    when(appManager.userPreferenceManager.windSpeedSystem)
+        .thenReturn(MeasurementSystem.imperial_decimal);
 
     when(appManager.subscriptionManager.stream)
         .thenAnswer((_) => Stream.empty());
     when(appManager.subscriptionManager.isPro).thenReturn(false);
+    when(appManager.subscriptionManager.isFree).thenReturn(true);
 
     appManager.stubCurrentTime(DateTime(2020, 2, 1, 10, 30));
   });
@@ -268,7 +285,34 @@ void main() {
           ),
         )
         ..quantity = 3
-        ..notes = "Some test notes.";
+        ..notes = "Some test notes."
+        ..atmosphere = Atmosphere(
+          temperature: Measurement(
+            unit: Unit.fahrenheit,
+            value: 58,
+          ),
+          skyConditions: [SkyCondition.cloudy],
+          windSpeed: Measurement(
+            unit: Unit.kilometers_per_hour,
+            value: 6.5,
+          ),
+          windDirection: Direction.north,
+          pressure: Measurement(
+            unit: Unit.pounds_per_square_inch,
+            value: 1000,
+          ),
+          humidity: Measurement(
+            unit: Unit.percent,
+            value: 50,
+          ),
+          visibility: Measurement(
+            unit: Unit.miles,
+            value: 10,
+          ),
+          moonPhase: MoonPhase.full,
+          sunriseMillis: Int64(10000),
+          sunsetMillis: Int64(15000),
+        );
 
       when(appManager.imageManager.images(
         any,
@@ -313,7 +357,17 @@ void main() {
       expect(find.text("15"), findsOneWidget);
       expect(find.text("10"), findsOneWidget);
       expect(find.text("3"), findsOneWidget);
-      expect(find.text("Some test notes."), findsOneWidget);
+      expect(find.text("Cloudy"), findsOneWidget);
+      expect(find.text("58\u00B0F"), findsOneWidget);
+      expect(find.text("6.5 km/h"), findsOneWidget);
+      expect(find.text("N"), findsOneWidget);
+      expect(find.text("1000 psi"), findsOneWidget);
+      expect(find.text("10 mi"), findsOneWidget);
+      expect(find.text("50%"), findsOneWidget);
+      expect(find.text("Sunrise"), findsOneWidget);
+      expect(find.text("Sunset"), findsOneWidget);
+      expect(find.text("Full"), findsOneWidget);
+      expect(find.text("Moon"), findsOneWidget);
     });
 
     testWidgets("Minimum fields set correctly", (tester) async {
@@ -349,6 +403,7 @@ void main() {
       expect(find.byType(StaticFishingSpot), findsNothing);
       expect(findCheckbox(tester, "Favorite")!.checked, isFalse);
       expect(findCheckbox(tester, "Catch and Release")!.checked, isFalse);
+      expect(find.text("Atmosphere & Weather"), findsOneWidget);
 
       expect(
         findFirstWithText<TextInput>(tester, "Water Depth").controller?.value,
@@ -472,7 +527,34 @@ void main() {
           ),
         )
         ..quantity = 3
-        ..notes = "Some test notes.";
+        ..notes = "Some test notes."
+        ..atmosphere = Atmosphere(
+          temperature: Measurement(
+            unit: Unit.fahrenheit,
+            value: 58,
+          ),
+          skyConditions: [SkyCondition.cloudy],
+          windSpeed: Measurement(
+            unit: Unit.kilometers_per_hour,
+            value: 6.5,
+          ),
+          windDirection: Direction.north,
+          pressure: Measurement(
+            unit: Unit.pounds_per_square_inch,
+            value: 1000,
+          ),
+          humidity: Measurement(
+            unit: Unit.percent,
+            value: 50,
+          ),
+          visibility: Measurement(
+            unit: Unit.miles,
+            value: 10,
+          ),
+          moonPhase: MoonPhase.full,
+          sunriseMillis: Int64(10000),
+          sunsetMillis: Int64(15000),
+        );
 
       when(appManager.imageManager.images(
         any,
@@ -599,6 +681,7 @@ void main() {
       expect(find.byType(Image), findsNothing);
       expect(findCheckbox(tester, "Favorite")!.checked, isFalse);
       expect(findCheckbox(tester, "Catch and Release")!.checked, isFalse);
+      expect(find.text("Atmosphere & Weather"), findsOneWidget);
 
       expect(
         findFirstWithText<TextInput>(tester, "Water Depth").controller?.value,
@@ -672,6 +755,7 @@ void main() {
       expect(cat.hasWeight(), isFalse);
       expect(cat.hasQuantity(), isFalse);
       expect(cat.hasNotes(), isFalse);
+      expect(cat.hasAtmosphere(), isFalse);
     });
 
     testWidgets("Saving after selecting all optional fields", (tester) async {
@@ -761,6 +845,13 @@ void main() {
       await tapAndSettle(
           tester, findListItemCheckbox(tester, "Catch and Release"));
 
+      // Set atmosphere.
+      await tester.ensureVisible(find.text("Atmosphere & Weather"));
+      await tapAndSettle(tester, find.text("Atmosphere & Weather"));
+      await enterTextAndSettle(
+          tester, find.widgetWithText(TextField, "Air Temperature"), "58");
+      await tapAndSettle(tester, find.byType(BackButtonIcon));
+
       await tapAndSettle(tester, find.text("SAVE"));
 
       var result = verify(
@@ -789,6 +880,8 @@ void main() {
       expect(cat.season, Season.summer);
       expect(cat.isFavorite, isTrue);
       expect(cat.wasCatchAndRelease, isTrue);
+      expect(cat.hasAtmosphere(), isTrue);
+      expect(cat.atmosphere.temperature.value, 58);
     });
   });
 
@@ -1182,5 +1275,112 @@ void main() {
     await tapAndSettle(tester, find.byType(BackButton));
 
     expect(find.text("Summer"), findsOneWidget);
+  });
+
+  testWidgets("Atmosphere automatically fetched for new catches",
+      (tester) async {
+    when(appManager.subscriptionManager.isFree).thenReturn(false);
+    when(appManager.userPreferenceManager.autoFetchAtmosphere).thenReturn(true);
+    when(appManager.locationMonitor.currentLocation).thenReturn(LatLng(0, 0));
+    when(appManager.httpWrapper.get(any))
+        .thenAnswer((_) => Future.value(Response("", HttpStatus.ok)));
+
+    await tester.pumpWidget(Testable(
+      (_) => SaveCatchPage(
+        speciesId: randomId(),
+      ),
+      appManager: appManager,
+    ));
+
+    verify(appManager.httpWrapper.get(any)).called(1);
+  });
+
+  testWidgets("Atmosphere automatically fetched after changing date and time",
+      (tester) async {
+    when(appManager.timeManager.currentDateTime)
+        .thenReturn(DateTime(2020, 1, 1, 15, 30));
+    when(appManager.subscriptionManager.isFree).thenReturn(false);
+    when(appManager.userPreferenceManager.autoFetchAtmosphere).thenReturn(true);
+    when(appManager.locationMonitor.currentLocation).thenReturn(LatLng(0, 0));
+    when(appManager.httpWrapper.get(any))
+        .thenAnswer((_) => Future.value(Response("", HttpStatus.ok)));
+
+    await tester.pumpWidget(Testable(
+      (_) => SaveCatchPage(
+        speciesId: randomId(),
+      ),
+      appManager: appManager,
+    ));
+
+    // Select a different date.
+    await tapAndSettle(tester, find.byType(DatePicker));
+    await tapAndSettle(tester, find.text("2"));
+    await tapAndSettle(tester, find.text("OK"));
+
+    // Select a different time.
+    await tapAndSettle(tester, find.byType(TimePicker));
+    var center = tester
+        .getCenter(find.byKey(const ValueKey<String>('time-picker-dial')));
+    await tester.tapAt(Offset(center.dx - 10, center.dy));
+    await tapAndSettle(tester, find.text("OK"));
+
+    // Once on load, once when the date is changed, once when the time is
+    // changed.
+    verify(appManager.httpWrapper.get(any)).called(3);
+  });
+
+  testWidgets("Atmosphere not fetched for free users", (tester) async {
+    when(appManager.subscriptionManager.isFree).thenReturn(true);
+    when(appManager.userPreferenceManager.autoFetchAtmosphere).thenReturn(true);
+    when(appManager.locationMonitor.currentLocation).thenReturn(LatLng(0, 0));
+    when(appManager.httpWrapper.get(any))
+        .thenAnswer((_) => Future.value(Response("", HttpStatus.ok)));
+
+    await tester.pumpWidget(Testable(
+      (_) => SaveCatchPage(
+        speciesId: randomId(),
+      ),
+      appManager: appManager,
+    ));
+
+    verifyNever(appManager.httpWrapper.get(any));
+  });
+
+  testWidgets("Atmosphere not fetched if not tracking", (tester) async {
+    when(appManager.subscriptionManager.isFree).thenReturn(false);
+    when(appManager.userPreferenceManager.catchFieldIds).thenReturn(
+        allCatchFields(appManager.timeManager).map((e) => e.id).toList()
+          ..remove(catchFieldIdAtmosphere()));
+    when(appManager.userPreferenceManager.autoFetchAtmosphere).thenReturn(true);
+    when(appManager.locationMonitor.currentLocation).thenReturn(LatLng(0, 0));
+    when(appManager.httpWrapper.get(any))
+        .thenAnswer((_) => Future.value(Response("", HttpStatus.ok)));
+
+    await tester.pumpWidget(Testable(
+      (_) => SaveCatchPage(
+        speciesId: randomId(),
+      ),
+      appManager: appManager,
+    ));
+
+    verifyNever(appManager.httpWrapper.get(any));
+  });
+
+  testWidgets("Atmosphere not fetched if not in preferences", (tester) async {
+    when(appManager.subscriptionManager.isFree).thenReturn(false);
+    when(appManager.userPreferenceManager.autoFetchAtmosphere)
+        .thenReturn(false);
+    when(appManager.locationMonitor.currentLocation).thenReturn(LatLng(0, 0));
+    when(appManager.httpWrapper.get(any))
+        .thenAnswer((_) => Future.value(Response("", HttpStatus.ok)));
+
+    await tester.pumpWidget(Testable(
+      (_) => SaveCatchPage(
+        speciesId: randomId(),
+      ),
+      appManager: appManager,
+    ));
+
+    verifyNever(appManager.httpWrapper.get(any));
   });
 }

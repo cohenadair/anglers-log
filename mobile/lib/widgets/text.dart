@@ -6,75 +6,6 @@ import '../res/dimen.dart';
 import '../res/style.dart';
 import '../utils/date_time_utils.dart';
 
-/// A default text Widget that should be used in place of [Text].
-class Label extends StatelessWidget {
-  final String text;
-  final TextAlign? align;
-  final TextOverflow? overflow;
-  final TextStyle? style;
-
-  Label(
-    this.text, {
-    this.align,
-    this.overflow,
-    this.style,
-  });
-
-  Label.multiline(
-    this.text, {
-    this.align,
-    this.style,
-  }) : overflow = TextOverflow.visible;
-
-  @override
-  Widget build(BuildContext context) {
-    return Text(
-      text,
-      textAlign: align,
-      overflow: overflow ?? TextOverflow.ellipsis,
-      style: style,
-    );
-  }
-}
-
-class HeadingLabel extends StatelessWidget {
-  final String text;
-
-  HeadingLabel(this.text);
-
-  @override
-  Widget build(BuildContext context) {
-    return Label(
-      text,
-      style: Theme.of(context).textTheme.bodyText1!.copyWith(
-            color: Theme.of(context).primaryColor,
-          ),
-    );
-  }
-}
-
-class NoteLabel extends StatelessWidget {
-  final String text;
-  final TextAlign? align;
-  final TextOverflow? overflow;
-
-  NoteLabel(
-    this.text, {
-    this.align,
-    this.overflow,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Label(
-      text,
-      align: align,
-      overflow: overflow,
-      style: styleNote(context),
-    );
-  }
-}
-
 /// A text widget that inserts an [Icon] into a [String]. The given [String]
 /// can only have a single "%s" substitution.
 class IconLabel extends StatelessWidget {
@@ -121,63 +52,6 @@ class IconLabel extends StatelessWidget {
   }
 }
 
-/// Text that matches the primary label in a [ListTile].
-class PrimaryLabel extends StatelessWidget {
-  final String text;
-  final TextAlign? align;
-  final TextOverflow? overflow;
-  final FontWeight? fontWeight;
-  final bool enabled;
-
-  PrimaryLabel(
-    this.text, {
-    this.align,
-    this.overflow,
-    this.fontWeight,
-    this.enabled = true,
-  });
-
-  PrimaryLabel.multiline(
-    this.text, {
-    this.align,
-    this.fontWeight,
-    this.enabled = true,
-  }) : overflow = TextOverflow.visible;
-
-  @override
-  Widget build(BuildContext context) {
-    return Label(
-      text,
-      align: align,
-      overflow: overflow,
-      style: stylePrimary(
-        context,
-        enabled: enabled,
-        fontWeight: fontWeight,
-      ),
-    );
-  }
-}
-
-class SecondaryLabel extends StatelessWidget {
-  final String text;
-  final TextAlign? align;
-
-  SecondaryLabel(
-    this.text, {
-    this.align,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return PrimaryLabel(
-      text,
-      enabled: false,
-      align: align,
-    );
-  }
-}
-
 class TitleLabel extends StatelessWidget {
   final String text;
   final TextAlign? align;
@@ -199,10 +73,10 @@ class TitleLabel extends StatelessWidget {
         left: paddingDefault - 2.0,
         right: paddingDefault,
       ),
-      child: Label(
+      child: Text(
         text,
         style: styleTitle1,
-        align: align,
+        textAlign: align,
         overflow: overflow,
       ),
     );
@@ -222,28 +96,11 @@ class AlertTitleLabel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Label(
+    return Text(
       text,
       style: styleTitleAlert,
-      align: align,
+      textAlign: align,
       overflow: overflow,
-    );
-  }
-}
-
-class SubtitleLabel extends StatelessWidget {
-  final String text;
-
-  SubtitleLabel(this.text);
-
-  @override
-  Widget build(BuildContext context) {
-    return Label(
-      text,
-      style: Theme.of(context).textTheme.subtitle2!.copyWith(
-            color: Colors.grey,
-            fontWeight: FontWeight.normal,
-          ),
     );
   }
 }
@@ -261,7 +118,7 @@ class EnabledLabel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Label(
+    return Text(
       text,
       style: TextStyle(
         color: enabled ? null : Theme.of(context).disabledColor,

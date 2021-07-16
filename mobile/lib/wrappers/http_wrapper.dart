@@ -11,17 +11,18 @@ class HttpWrapper {
       Provider.of<AppManager>(context, listen: false).httpWrapper;
 
   Future<http.Response> post(
-    String url, {
-    required String auth,
-    required Map<String, dynamic> body,
+    Uri url, {
+    Map<String, String>? headers,
+    Object? body,
+    Encoding? encoding,
   }) {
-    return http.post(
-      Uri.parse(url),
-      headers: <String, String>{
-        "Content-Type": "application/json; charset=UTF-8",
-        "Authorization": auth,
-      },
-      body: jsonEncode(body),
-    );
+    return http.post(url, headers: headers, body: body, encoding: encoding);
+  }
+
+  Future<http.Response> get(
+    Uri url, {
+    Map<String, String>? headers,
+  }) {
+    return http.get(url, headers: headers);
   }
 }

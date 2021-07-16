@@ -4,7 +4,6 @@ import '../i18n/strings.dart';
 import '../res/dimen.dart';
 import '../res/gen/custom_icons.dart';
 import '../res/style.dart';
-import '../widgets/text.dart';
 
 /// The page shown while initialization futures are completing.
 class LandingPage extends StatelessWidget {
@@ -29,11 +28,11 @@ class LandingPage extends StatelessWidget {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Label(
+                  Text(
                     Strings.of(context).by,
                     style: TextStyle(color: Colors.white54),
                   ),
-                  Label(
+                  Text(
                     Strings.of(context).devName,
                     style: stylePrimary(context).copyWith(
                       color: Colors.white,

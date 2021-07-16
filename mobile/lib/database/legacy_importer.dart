@@ -68,12 +68,16 @@ class LegacyImporter {
   static const _keyMeasurementSystem = "measurementSystem";
   static const _keyName = "name";
   static const _keyNotes = "notes";
+  static const _keySkyConditions = "skyConditions";
   static const _keySpecies = "species";
+  static const _keyTemperature = "temperature";
   static const _keyUserDefines = "userDefines";
   static const _keyWaterClarities = "waterClarities";
   static const _keyWaterClarity = "waterClarity";
   static const _keyWaterDepth = "waterDepth";
   static const _keyWaterTemperature = "waterTemperature";
+  static const _keyWeatherData = "weatherData";
+  static const _keyWindSpeed = "windSpeed";
 
   /// Format of how fishing spot names are imported. The first argument is the
   /// location name, the second argument is the fishing spot name.
@@ -211,6 +215,10 @@ class LegacyImporter {
     _userPreferenceManager.setWaterTemperatureSystem(_measurementSystem);
     _userPreferenceManager.setCatchLengthSystem(_measurementSystem);
     _userPreferenceManager.setCatchWeightSystem(_measurementSystem);
+    _userPreferenceManager.setAirTemperatureSystem(_measurementSystem);
+    _userPreferenceManager.setAirPressureSystem(_measurementSystem);
+    _userPreferenceManager.setAirVisibilitySystem(_measurementSystem);
+    _userPreferenceManager.setWindSpeedSystem(_measurementSystem);
 
     var userDefinesJson = _json[_keyJournal][_keyUserDefines];
     if (userDefinesJson == null || !(userDefinesJson is List)) {
@@ -573,6 +581,11 @@ class LegacyImporter {
         cat.notes = notes!;
       }
 
+      Map<String, dynamic>? weather = map[_keyWeatherData];
+      if (weather != null && weather.isNotEmpty) {
+        cat.atmosphere = _parseWeatherData(weather);
+      }
+
       await _catchManager.addOrUpdate(
         cat,
         imageFiles: images,
@@ -582,22 +595,87 @@ class LegacyImporter {
     }
   }
 
+  Atmosphere _parseWeatherData(Map<String, dynamic> weatherData) {
+    var atmosphere = Atmosphere();
+
+    var temperature = doubleFromDynamic(weatherData[_keyTemperature]);
+    if (temperature != null) {
+      atmosphere.temperature = Measurement(
+        unit: _measurementSystem.isMetric ? Unit.celsius : Unit.fahrenheit,
+        value: temperature,
+      );
+    }
+
+    var windSpeed = doubleFromDynamic(weatherData[_keyWindSpeed]);
+    if (windSpeed != null) {
+      atmosphere.windSpeed = Measurement(
+        unit: _measurementSystem.isMetric
+            ? Unit.kilometers_per_hour
+            : Unit.miles_per_hour,
+        value: windSpeed.toDouble(),
+      );
+    }
+
+    var skyConditions = weatherData[_keySkyConditions];
+    if (isNotEmpty(skyConditions)) {
+      atmosphere.skyConditions
+          .addAll(_skyConditionsFromOpenWeatherMap(skyConditions));
+    }
+
+    return atmosphere;
+  }
+
+  /// Converts sky conditions from https://openweathermap.org/weather-conditions
+  /// to a list of [SkyCondition]s. OpenWeatherMap was used in the legacy
+  /// version of Anglers' Log.
+  List<SkyCondition> _skyConditionsFromOpenWeatherMap(String skyConditions) {
+    switch (skyConditions.toLowerCase()) {
+      case "thunderstorm":
+        return [SkyCondition.storm];
+      case "drizzle":
+        return [SkyCondition.drizzle];
+      case "rain":
+        return [SkyCondition.rain];
+      case "snow":
+      case "squall":
+        return [SkyCondition.snow];
+      case "mist":
+        return [SkyCondition.mist];
+      case "smoke":
+      case "ash":
+      case "haze":
+        return [SkyCondition.smoke];
+      case "dust":
+      case "sand":
+        return [SkyCondition.dust];
+      case "fog":
+        return [SkyCondition.fog];
+      case "tornado":
+        return [SkyCondition.tornado];
+      case "clear":
+        return [SkyCondition.clear];
+      case "clouds":
+      case "cloudy": // Not in OpenWeather doc, but appears in legacy JSON.
+        return [SkyCondition.cloudy];
+      case "overcast": // Not in OpenWeather doc, but appears in legacy JSON.
+        return [SkyCondition.overcast];
+    }
+    return [];
+  }
+
   MultiMeasurement _createMultiMeasurement(
       double value, Unit metricUnit, Unit imperialUnit) {
     var imperialSystem = value.isWhole
         ? MeasurementSystem.imperial_whole
         : MeasurementSystem.imperial_decimal;
 
-    var measurementSystem = _measurementSystem == MeasurementSystem.metric
-        ? _measurementSystem
-        : imperialSystem;
+    var measurementSystem =
+        _measurementSystem.isMetric ? _measurementSystem : imperialSystem;
 
     return MultiMeasurement(
       system: measurementSystem,
       mainValue: Measurement(
-        unit: measurementSystem == MeasurementSystem.metric
-            ? metricUnit
-            : imperialUnit,
+        unit: measurementSystem.isMetric ? metricUnit : imperialUnit,
         value: value,
       ),
     );

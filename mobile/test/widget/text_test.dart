@@ -31,34 +31,6 @@ void main() {
     });
   });
 
-  group("PrimaryLabel", () {
-    testWidgets("State color", (tester) async {
-      await tester.pumpWidget(
-        Testable(
-          (_) => PrimaryLabel(
-            "Test",
-            enabled: true,
-          ),
-        ),
-      );
-      var enabledColor =
-          (tester.firstWidget(find.text("Test")) as Text).style!.color;
-
-      await tester.pumpWidget(
-        Testable(
-          (_) => PrimaryLabel(
-            "Test 2",
-            enabled: false,
-          ),
-        ),
-      );
-      var disabledColor =
-          (tester.firstWidget(find.text("Test 2")) as Text).style!.color;
-
-      expect(enabledColor != disabledColor, isTrue);
-    });
-  });
-
   group("EnabledLabel", () {
     testWidgets("State color", (tester) async {
       await tester.pumpWidget(

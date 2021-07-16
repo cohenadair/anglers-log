@@ -4,8 +4,8 @@ import '../angler_manager.dart';
 import '../i18n/strings.dart';
 import '../model/gen/anglerslog.pb.dart';
 import '../pages/manageable_list_page.dart';
+import '../res/style.dart';
 import '../utils/string_utils.dart';
-import '../widgets/text.dart';
 import 'save_angler_page.dart';
 
 class AnglerListPage extends StatelessWidget {
@@ -23,15 +23,16 @@ class AnglerListPage extends StatelessWidget {
       titleBuilder: (anglers) => Text(
         format(Strings.of(context).anglerListPageTitle, [anglers.length]),
       ),
-      pickerTitleBuilder: (_) =>
-          Text(Strings.of(context).anglerListPagePickerTitle),
       itemBuilder: (context, angler) => ManageableListPageItemModel(
-        child: PrimaryLabel(angler.name),
+        child: Text(angler.name, style: stylePrimary(context)),
       ),
       searchDelegate: ManageableListPageSearchDelegate(
         hint: Strings.of(context).anglerListPageSearchHint,
       ),
-      pickerSettings: pickerSettings,
+      pickerSettings: pickerSettings?.copyWith(
+        title: Text(Strings.of(context).pickerTitleAngler),
+        multiTitle: Text(Strings.of(context).pickerTitleAnglers),
+      ),
       itemManager: ManageableListPageItemManager<Angler>(
         listenerManagers: [anglerManager],
         loadItems: (query) => anglerManager.listSortedByName(filter: query),

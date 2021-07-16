@@ -226,6 +226,53 @@ void main() {
         catchManager.filteredCatches(context, filter: "fall").isEmpty, isTrue);
   });
 
+  testWidgets("Filtering by search query; wind direction", (tester) async {
+    await catchManager.addOrUpdate(Catch()
+      ..id = randomId()
+      ..atmosphere = Atmosphere(windDirection: Direction.east));
+    await catchManager.addOrUpdate(Catch()..id = randomId());
+    await catchManager.addOrUpdate(Catch()..id = randomId());
+
+    var context = await buildContext(tester, appManager: appManager);
+    expect(catchManager.filteredCatches(context, filter: "eas").length, 1);
+    expect(catchManager.filteredCatches(context, filter: "east").length, 1);
+    expect(
+        catchManager.filteredCatches(context, filter: "west").isEmpty, isTrue);
+  });
+
+  testWidgets("Filtering by search query; sky conditions", (tester) async {
+    await catchManager.addOrUpdate(Catch()
+      ..id = randomId()
+      ..atmosphere =
+          Atmosphere(skyConditions: [SkyCondition.rain, SkyCondition.cloudy]));
+    await catchManager.addOrUpdate(Catch()
+      ..id = randomId()
+      ..atmosphere = Atmosphere(skyConditions: [SkyCondition.snow]));
+    await catchManager.addOrUpdate(Catch()..id = randomId());
+
+    var context = await buildContext(tester, appManager: appManager);
+    expect(catchManager.filteredCatches(context, filter: "snow").length, 1);
+    expect(catchManager.filteredCatches(context, filter: "rain").length, 1);
+    expect(
+        catchManager.filteredCatches(context, filter: "fog").isEmpty, isTrue);
+  });
+
+  testWidgets("Filtering by search query; moon phase", (tester) async {
+    await catchManager.addOrUpdate(Catch()
+      ..id = randomId()
+      ..atmosphere = Atmosphere(moonPhase: MoonPhase.first_quarter));
+    await catchManager.addOrUpdate(Catch()
+      ..id = randomId()
+      ..atmosphere = Atmosphere(moonPhase: MoonPhase.last_quarter));
+    await catchManager.addOrUpdate(Catch()..id = randomId());
+
+    var context = await buildContext(tester, appManager: appManager);
+    expect(catchManager.filteredCatches(context, filter: "quart").length, 2);
+    expect(catchManager.filteredCatches(context, filter: "last").length, 1);
+    expect(
+        catchManager.filteredCatches(context, filter: "full").isEmpty, isTrue);
+  });
+
   testWidgets("Filtering by search query; favorite", (tester) async {
     await catchManager.addOrUpdate(Catch()
       ..id = randomId()
@@ -278,15 +325,12 @@ void main() {
     await catchManager.addOrUpdate(Catch()
       ..id = randomId()
       ..waterTemperature = MultiMeasurement(
-          system: MeasurementSystem.imperial_whole,
-          mainValue: Measurement(
-            unit: Unit.feet,
-            value: 25,
-          ),
-          fractionValue: Measurement(
-            unit: Unit.inches,
-            value: 10,
-          )));
+        system: MeasurementSystem.imperial_whole,
+        mainValue: Measurement(
+          unit: Unit.fahrenheit,
+          value: 10,
+        ),
+      ));
     await catchManager.addOrUpdate(Catch()..id = randomId());
     await catchManager.addOrUpdate(Catch()..id = randomId());
 
@@ -353,6 +397,111 @@ void main() {
     expect(catchManager.filteredCatches(context, filter: "10").length, 1);
     expect(
         catchManager.filteredCatches(context, filter: "err").isEmpty, isTrue);
+  });
+
+  testWidgets("Filtering by search query; air temperature", (tester) async {
+    await catchManager.addOrUpdate(Catch()
+      ..id = randomId()
+      ..atmosphere = Atmosphere(
+        temperature: Measurement(
+          unit: Unit.fahrenheit,
+          value: 80,
+        ),
+      ));
+    await catchManager.addOrUpdate(Catch()..id = randomId());
+    await catchManager.addOrUpdate(Catch()..id = randomId());
+
+    var context = await buildContext(tester, appManager: appManager);
+    expect(catchManager.filteredCatches(context, filter: "fahre").length, 1);
+    expect(catchManager.filteredCatches(context, filter: "f").length, 1);
+    expect(catchManager.filteredCatches(context, filter: "80").length, 1);
+    expect(catchManager.filteredCatches(context, filter: "30").isEmpty, isTrue);
+    expect(catchManager.filteredCatches(context, filter: "celsius").isEmpty,
+        isTrue);
+  });
+
+  testWidgets("Filtering by search query; air pressure", (tester) async {
+    await catchManager.addOrUpdate(Catch()
+      ..id = randomId()
+      ..atmosphere = Atmosphere(
+        pressure: Measurement(
+          unit: Unit.millibars,
+          value: 1000,
+        ),
+      ));
+    await catchManager.addOrUpdate(Catch()..id = randomId());
+    await catchManager.addOrUpdate(Catch()..id = randomId());
+
+    var context = await buildContext(tester, appManager: appManager);
+    expect(catchManager.filteredCatches(context, filter: "mill").length, 1);
+    expect(catchManager.filteredCatches(context, filter: "mb").length, 1);
+    expect(catchManager.filteredCatches(context, filter: "1000").length, 1);
+    expect(catchManager.filteredCatches(context, filter: "30").isEmpty, isTrue);
+    expect(
+        catchManager.filteredCatches(context, filter: "pound").isEmpty, isTrue);
+  });
+
+  testWidgets("Filtering by search query; air humidity", (tester) async {
+    await catchManager.addOrUpdate(Catch()
+      ..id = randomId()
+      ..atmosphere = Atmosphere(
+        humidity: Measurement(
+          unit: Unit.percent,
+          value: 50,
+        ),
+      ));
+    await catchManager.addOrUpdate(Catch()..id = randomId());
+    await catchManager.addOrUpdate(Catch()..id = randomId());
+
+    var context = await buildContext(tester, appManager: appManager);
+    expect(catchManager.filteredCatches(context, filter: "humid").length, 1);
+    expect(catchManager.filteredCatches(context, filter: "%").length, 1);
+    expect(catchManager.filteredCatches(context, filter: "50").length, 1);
+    expect(catchManager.filteredCatches(context, filter: "30").isEmpty, isTrue);
+    expect(
+        catchManager.filteredCatches(context, filter: "pound").isEmpty, isTrue);
+  });
+
+  testWidgets("Filtering by search query; air visibility", (tester) async {
+    await catchManager.addOrUpdate(Catch()
+      ..id = randomId()
+      ..atmosphere = Atmosphere(
+        visibility: Measurement(
+          unit: Unit.kilometers,
+          value: 10.5,
+        ),
+      ));
+    await catchManager.addOrUpdate(Catch()..id = randomId());
+    await catchManager.addOrUpdate(Catch()..id = randomId());
+
+    var context = await buildContext(tester, appManager: appManager);
+    expect(catchManager.filteredCatches(context, filter: "kilo").length, 1);
+    expect(catchManager.filteredCatches(context, filter: "km").length, 1);
+    expect(catchManager.filteredCatches(context, filter: "10.5").length, 1);
+    expect(catchManager.filteredCatches(context, filter: "30").isEmpty, isTrue);
+    expect(
+        catchManager.filteredCatches(context, filter: "pound").isEmpty, isTrue);
+  });
+
+  testWidgets("Filtering by search query; wind speed", (tester) async {
+    await catchManager.addOrUpdate(Catch()
+      ..id = randomId()
+      ..atmosphere = Atmosphere(
+        windSpeed: Measurement(
+          unit: Unit.kilometers_per_hour,
+          value: 9,
+        ),
+      ));
+    await catchManager.addOrUpdate(Catch()..id = randomId());
+    await catchManager.addOrUpdate(Catch()..id = randomId());
+
+    var context = await buildContext(tester, appManager: appManager);
+    expect(catchManager.filteredCatches(context, filter: "kilo").length, 1);
+    expect(catchManager.filteredCatches(context, filter: "km").length, 1);
+    expect(catchManager.filteredCatches(context, filter: "9").length, 1);
+    expect(catchManager.filteredCatches(context, filter: "30").isEmpty, isTrue);
+    expect(
+        catchManager.filteredCatches(context, filter: "pound").isEmpty, isTrue);
   });
 
   testWidgets("Filtering by search query; notes", (tester) async {
@@ -812,6 +961,136 @@ void main() {
     expect(catches.isEmpty, true);
   });
 
+  testWidgets("Filtering by wind direction", (tester) async {
+    when(dataManager.insertOrReplace(any, any))
+        .thenAnswer((_) => Future.value(true));
+
+    await catchManager.addOrUpdate(Catch()
+      ..id = randomId()
+      ..timestamp = Int64(DateTime(2020, 1, 1).millisecondsSinceEpoch)
+      ..atmosphere = Atmosphere(windDirection: Direction.east));
+    await catchManager.addOrUpdate(Catch()
+      ..id = randomId()
+      ..timestamp = Int64(DateTime(2020, 2, 2).millisecondsSinceEpoch)
+      ..atmosphere = Atmosphere(windDirection: Direction.west));
+    await catchManager.addOrUpdate(Catch()
+      ..id = randomId()
+      ..timestamp = Int64(DateTime(2020, 2, 2).millisecondsSinceEpoch)
+      ..atmosphere = Atmosphere(windDirection: Direction.north));
+    await catchManager.addOrUpdate(Catch()
+      ..id = randomId()
+      ..timestamp = Int64(DateTime(2020, 4, 4).millisecondsSinceEpoch));
+
+    var context = await buildContext(tester, appManager: appManager);
+    var catches = catchManager.filteredCatches(
+      context,
+      windDirections: {Direction.east},
+    );
+    expect(catches.length, 1);
+
+    catches = catchManager.filteredCatches(
+      context,
+      windDirections: {Direction.east, Direction.north},
+    );
+    expect(catches.length, 2);
+
+    catches = catchManager.filteredCatches(context);
+    expect(catches.length, 4);
+
+    catches = catchManager.filteredCatches(
+      context,
+      windDirections: {Direction.south},
+    );
+    expect(catches.isEmpty, true);
+  });
+
+  testWidgets("Filtering by sky condition", (tester) async {
+    when(dataManager.insertOrReplace(any, any))
+        .thenAnswer((_) => Future.value(true));
+
+    await catchManager.addOrUpdate(Catch()
+      ..id = randomId()
+      ..timestamp = Int64(DateTime(2020, 1, 1).millisecondsSinceEpoch)
+      ..atmosphere = Atmosphere(skyConditions: [SkyCondition.rain]));
+    await catchManager.addOrUpdate(Catch()
+      ..id = randomId()
+      ..timestamp = Int64(DateTime(2020, 2, 2).millisecondsSinceEpoch)
+      ..atmosphere =
+          Atmosphere(skyConditions: [SkyCondition.snow, SkyCondition.clear]));
+    await catchManager.addOrUpdate(Catch()
+      ..id = randomId()
+      ..timestamp = Int64(DateTime(2020, 2, 2).millisecondsSinceEpoch)
+      ..atmosphere = Atmosphere(skyConditions: [SkyCondition.fog]));
+    await catchManager.addOrUpdate(Catch()
+      ..id = randomId()
+      ..timestamp = Int64(DateTime(2020, 4, 4).millisecondsSinceEpoch));
+
+    var context = await buildContext(tester, appManager: appManager);
+    var catches = catchManager.filteredCatches(
+      context,
+      skyConditions: {SkyCondition.clear},
+    );
+    expect(catches.length, 1);
+
+    catches = catchManager.filteredCatches(
+      context,
+      skyConditions: {SkyCondition.clear, SkyCondition.fog},
+    );
+    expect(catches.length, 2);
+
+    catches = catchManager.filteredCatches(context);
+    expect(catches.length, 4);
+
+    catches = catchManager.filteredCatches(
+      context,
+      skyConditions: {SkyCondition.storm},
+    );
+    expect(catches.isEmpty, true);
+  });
+
+  testWidgets("Filtering by moon phase", (tester) async {
+    when(dataManager.insertOrReplace(any, any))
+        .thenAnswer((_) => Future.value(true));
+
+    await catchManager.addOrUpdate(Catch()
+      ..id = randomId()
+      ..timestamp = Int64(DateTime(2020, 1, 1).millisecondsSinceEpoch)
+      ..atmosphere = Atmosphere(moonPhase: MoonPhase.full));
+    await catchManager.addOrUpdate(Catch()
+      ..id = randomId()
+      ..timestamp = Int64(DateTime(2020, 2, 2).millisecondsSinceEpoch)
+      ..atmosphere = Atmosphere(moonPhase: MoonPhase.waning_crescent));
+    await catchManager.addOrUpdate(Catch()
+      ..id = randomId()
+      ..timestamp = Int64(DateTime(2020, 2, 2).millisecondsSinceEpoch)
+      ..atmosphere = Atmosphere(moonPhase: MoonPhase.new_));
+    await catchManager.addOrUpdate(Catch()
+      ..id = randomId()
+      ..timestamp = Int64(DateTime(2020, 4, 4).millisecondsSinceEpoch));
+
+    var context = await buildContext(tester, appManager: appManager);
+    var catches = catchManager.filteredCatches(
+      context,
+      moonPhases: {MoonPhase.full},
+    );
+    expect(catches.length, 1);
+
+    catches = catchManager.filteredCatches(
+      context,
+      moonPhases: {MoonPhase.full, MoonPhase.new_},
+    );
+    expect(catches.length, 2);
+
+    catches = catchManager.filteredCatches(context);
+    expect(catches.length, 4);
+
+    catches = catchManager.filteredCatches(
+      context,
+      moonPhases: {MoonPhase.waxing_gibbous},
+    );
+    expect(catches.isEmpty, true);
+  });
+
   testWidgets("Filtering by favorite", (tester) async {
     when(dataManager.insertOrReplace(any, any))
         .thenAnswer((_) => Future.value(true));
@@ -1154,6 +1433,299 @@ void main() {
         from: MultiMeasurement(
           mainValue: Measurement(
             value: 50,
+          ),
+        ),
+      ),
+    );
+    expect(catches.length, 2);
+  });
+
+  testWidgets("Filtering by air temperature", (tester) async {
+    await catchManager.addOrUpdate(Catch()
+      ..id = randomId()
+      ..atmosphere = Atmosphere(
+        temperature: Measurement(
+          unit: Unit.fahrenheit,
+          value: 80,
+        ),
+      ));
+    await catchManager.addOrUpdate(Catch()..id = randomId());
+    await catchManager.addOrUpdate(Catch()..id = randomId());
+    await catchManager.addOrUpdate(Catch()
+      ..id = randomId()
+      ..atmosphere = Atmosphere(
+        temperature: Measurement(
+          unit: Unit.fahrenheit,
+          value: 60,
+        ),
+      ));
+
+    var context = await buildContext(tester, appManager: appManager);
+
+    // No filter.
+    var catches = catchManager.filteredCatches(context);
+    expect(catches.length, 4);
+
+    // No catches.
+    catches = catchManager.filteredCatches(
+      context,
+      airTemperatureFilter: NumberFilter(
+        boundary: NumberBoundary.less_than,
+        from: MultiMeasurement(
+          system: MeasurementSystem.imperial_whole,
+          mainValue: Measurement(
+            unit: Unit.fahrenheit,
+            value: 40,
+          ),
+        ),
+      ),
+    );
+    expect(catches.length, 0);
+
+    // Some catches.
+    catches = catchManager.filteredCatches(
+      context,
+      airTemperatureFilter: NumberFilter(
+        boundary: NumberBoundary.less_than_or_equal_to,
+        from: MultiMeasurement(
+          system: MeasurementSystem.imperial_whole,
+          mainValue: Measurement(
+            unit: Unit.fahrenheit,
+            value: 80,
+          ),
+        ),
+      ),
+    );
+    expect(catches.length, 2);
+  });
+
+  testWidgets("Filtering by air pressure", (tester) async {
+    await catchManager.addOrUpdate(Catch()
+      ..id = randomId()
+      ..atmosphere = Atmosphere(
+        pressure: Measurement(
+          unit: Unit.millibars,
+          value: 1000,
+        ),
+      ));
+    await catchManager.addOrUpdate(Catch()..id = randomId());
+    await catchManager.addOrUpdate(Catch()..id = randomId());
+    await catchManager.addOrUpdate(Catch()
+      ..id = randomId()
+      ..atmosphere = Atmosphere(
+        pressure: Measurement(
+          unit: Unit.millibars,
+          value: 1300,
+        ),
+      ));
+
+    var context = await buildContext(tester, appManager: appManager);
+
+    // No filter.
+    var catches = catchManager.filteredCatches(context);
+    expect(catches.length, 4);
+
+    // No catches.
+    catches = catchManager.filteredCatches(
+      context,
+      airPressureFilter: NumberFilter(
+        boundary: NumberBoundary.less_than,
+        from: MultiMeasurement(
+          system: MeasurementSystem.metric,
+          mainValue: Measurement(
+            unit: Unit.millibars,
+            value: 800,
+          ),
+        ),
+      ),
+    );
+    expect(catches.length, 0);
+
+    // Some catches.
+    catches = catchManager.filteredCatches(
+      context,
+      airPressureFilter: NumberFilter(
+        boundary: NumberBoundary.greater_than,
+        from: MultiMeasurement(
+          system: MeasurementSystem.metric,
+          mainValue: Measurement(
+            unit: Unit.millibars,
+            value: 900,
+          ),
+        ),
+      ),
+    );
+    expect(catches.length, 2);
+  });
+
+  testWidgets("Filtering by air humidity", (tester) async {
+    await catchManager.addOrUpdate(Catch()
+      ..id = randomId()
+      ..atmosphere = Atmosphere(
+        humidity: Measurement(
+          unit: Unit.percent,
+          value: 80,
+        ),
+      ));
+    await catchManager.addOrUpdate(Catch()..id = randomId());
+    await catchManager.addOrUpdate(Catch()..id = randomId());
+    await catchManager.addOrUpdate(Catch()
+      ..id = randomId()
+      ..atmosphere = Atmosphere(
+        humidity: Measurement(
+          unit: Unit.percent,
+          value: 30,
+        ),
+      ));
+
+    var context = await buildContext(tester, appManager: appManager);
+
+    // No filter.
+    var catches = catchManager.filteredCatches(context);
+    expect(catches.length, 4);
+
+    // No catches.
+    catches = catchManager.filteredCatches(
+      context,
+      airHumidityFilter: NumberFilter(
+        boundary: NumberBoundary.less_than,
+        from: MultiMeasurement(
+          mainValue: Measurement(
+            unit: Unit.percent,
+            value: 30,
+          ),
+        ),
+      ),
+    );
+    expect(catches.length, 0);
+
+    // Some catches.
+    catches = catchManager.filteredCatches(
+      context,
+      airHumidityFilter: NumberFilter(
+        boundary: NumberBoundary.greater_than_or_equal_to,
+        from: MultiMeasurement(
+          mainValue: Measurement(
+            unit: Unit.percent,
+            value: 30,
+          ),
+        ),
+      ),
+    );
+    expect(catches.length, 2);
+  });
+
+  testWidgets("Filtering by air visibility", (tester) async {
+    await catchManager.addOrUpdate(Catch()
+      ..id = randomId()
+      ..atmosphere = Atmosphere(
+        visibility: Measurement(
+          unit: Unit.miles,
+          value: 10.5,
+        ),
+      ));
+    await catchManager.addOrUpdate(Catch()..id = randomId());
+    await catchManager.addOrUpdate(Catch()..id = randomId());
+    await catchManager.addOrUpdate(Catch()
+      ..id = randomId()
+      ..atmosphere = Atmosphere(
+        visibility: Measurement(
+          unit: Unit.miles,
+          value: 8,
+        ),
+      ));
+
+    var context = await buildContext(tester, appManager: appManager);
+
+    // No filter.
+    var catches = catchManager.filteredCatches(context);
+    expect(catches.length, 4);
+
+    // No catches.
+    catches = catchManager.filteredCatches(
+      context,
+      airVisibilityFilter: NumberFilter(
+        boundary: NumberBoundary.less_than,
+        from: MultiMeasurement(
+          system: MeasurementSystem.imperial_decimal,
+          mainValue: Measurement(
+            unit: Unit.miles,
+            value: 5.5,
+          ),
+        ),
+      ),
+    );
+    expect(catches.length, 0);
+
+    // Some catches.
+    catches = catchManager.filteredCatches(
+      context,
+      airVisibilityFilter: NumberFilter(
+        boundary: NumberBoundary.greater_than,
+        from: MultiMeasurement(
+          system: MeasurementSystem.imperial_decimal,
+          mainValue: Measurement(
+            unit: Unit.miles,
+            value: 5.5,
+          ),
+        ),
+      ),
+    );
+    expect(catches.length, 2);
+  });
+
+  testWidgets("Filtering by wind speed", (tester) async {
+    await catchManager.addOrUpdate(Catch()
+      ..id = randomId()
+      ..atmosphere = Atmosphere(
+        windSpeed: Measurement(
+          unit: Unit.kilometers_per_hour,
+          value: 10.5,
+        ),
+      ));
+    await catchManager.addOrUpdate(Catch()..id = randomId());
+    await catchManager.addOrUpdate(Catch()..id = randomId());
+    await catchManager.addOrUpdate(Catch()
+      ..id = randomId()
+      ..atmosphere = Atmosphere(
+        windSpeed: Measurement(
+          unit: Unit.kilometers_per_hour,
+          value: 5,
+        ),
+      ));
+
+    var context = await buildContext(tester, appManager: appManager);
+
+    // No filter.
+    var catches = catchManager.filteredCatches(context);
+    expect(catches.length, 4);
+
+    // No catches.
+    catches = catchManager.filteredCatches(
+      context,
+      windSpeedFilter: NumberFilter(
+        boundary: NumberBoundary.less_than,
+        from: MultiMeasurement(
+          system: MeasurementSystem.metric,
+          mainValue: Measurement(
+            unit: Unit.kilometers_per_hour,
+            value: 4,
+          ),
+        ),
+      ),
+    );
+    expect(catches.length, 0);
+
+    // Some catches.
+    catches = catchManager.filteredCatches(
+      context,
+      windSpeedFilter: NumberFilter(
+        boundary: NumberBoundary.greater_than_or_equal_to,
+        from: MultiMeasurement(
+          system: MeasurementSystem.metric,
+          mainValue: Measurement(
+            unit: Unit.kilometers_per_hour,
+            value: 5,
           ),
         ),
       ),

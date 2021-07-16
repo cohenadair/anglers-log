@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:device_info_plus/device_info_plus.dart';
@@ -16,8 +17,8 @@ import '../utils/protobuf_utils.dart';
 import '../utils/snackbar_utils.dart';
 import '../utils/string_utils.dart';
 import '../utils/validator.dart';
+import '../widgets/field.dart';
 import '../widgets/input_controller.dart';
-import '../widgets/input_data.dart';
 import '../widgets/radio_input.dart';
 import '../widgets/text_input.dart';
 import '../widgets/widget.dart';
@@ -52,7 +53,6 @@ class FeedbackPage extends StatefulWidget {
 
 class _FeedbackPageState extends State<FeedbackPage> {
   static const _urlSendGrid = "https://api.sendgrid.com/v3/mail/send";
-  static const _responseAccepted = 202;
 
   static final _idWarning = randomId();
   static final _idName = randomId();
@@ -270,12 +270,15 @@ class _FeedbackPageState extends State<FeedbackPage> {
     };
 
     var response = await _http.post(
-      _urlSendGrid,
-      auth: "Bearer ${_propertiesManager.sendGridApiKey}",
-      body: body,
+      Uri.parse(_urlSendGrid),
+      headers: <String, String>{
+        "Content-Type": "application/json; charset=UTF-8",
+        "Authorization": "Bearer ${_propertiesManager.sendGridApiKey}",
+      },
+      body: jsonEncode(body),
     );
 
-    if (response.statusCode != _responseAccepted) {
+    if (response.statusCode != HttpStatus.accepted) {
       _log.e("Error sending feedback: ${response.statusCode}");
 
       showErrorSnackBar(

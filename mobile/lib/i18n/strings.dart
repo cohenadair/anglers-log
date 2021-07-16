@@ -180,6 +180,8 @@ class Strings {
 
   String get saveCatchPageEditTitle => _string("saveCatchPage_editTitle");
 
+  String get catchFieldAtmosphere => _string("catchField_atmosphere");
+
   String get catchFieldDateTime => _string("catchField_dateTime");
 
   String get catchFieldDate => _string("catchField_date");
@@ -191,13 +193,7 @@ class Strings {
   String get catchFieldCatchAndReleaseDescription =>
       _string("catchField_catchAndReleaseDescription");
 
-  String get catchFieldCatchAndReleaseSearchString =>
-      _string("catchField_catchAndReleaseSearchString");
-
   String get catchFieldFavorite => _string("catchField_favorite");
-
-  String get catchFieldFavoriteSearchString =>
-      _string("catchField_favoriteSearchString");
 
   String get catchFieldFavoriteDescription =>
       _string("catchField_favoriteDescription");
@@ -298,10 +294,14 @@ class Strings {
 
   String get saveReportPageFavorites => _string("saveReportPage_favorites");
 
-  String get saveReportPageKeywords => _string("saveReportPage_keywords");
+  String get saveReportPageAllWindDirections =>
+      _string("saveReportPage_allWindDirections");
 
-  String get saveReportPageKeywordsHint =>
-      _string("saveReportPage_keywordsHint");
+  String get saveReportPageAllSkyConditions =>
+      _string("saveReportPage_allSkyConditions");
+
+  String get saveReportPageAllMoonPhases =>
+      _string("saveReportPage_allMoonPhases");
 
   String get photosPageMenuLabel => _string("photosPage_menuLabel");
 
@@ -315,11 +315,6 @@ class Strings {
   String get baitListPageMenuLabel => _string("baitListPage_menuLabel");
 
   String get baitListPageTitle => _string("baitListPage_title");
-
-  String get baitListPagePickerTitle => _string("baitListPage_pickerTitle");
-
-  String get baitListPagePickerTitleMulti =>
-      _string("baitListPage_pickerTitleMulti");
 
   String get baitListPageOtherCategory => _string("baitListPage_otherCategory");
 
@@ -335,8 +330,6 @@ class Strings {
 
   String get baitListPageEmptyListDescription =>
       _string("baitListPage_emptyListDescription");
-
-  String get reportListPagePickerTitle => _string("reportListPage_pickerTitle");
 
   String get reportListPageConfirmDelete =>
       _string("reportListPage_confirmDelete");
@@ -368,9 +361,6 @@ class Strings {
 
   String get baitCategoryListPageTitle => _string("baitCategoryListPage_title");
 
-  String get baitCategoryListPagePickerTitle =>
-      _string("baitCategoryListPage_pickerTitle");
-
   String get baitCategoryListPageDeleteMessage =>
       _string("baitCategoryListPage_deleteMessage");
 
@@ -397,8 +387,6 @@ class Strings {
 
   String get anglerListPageTitle => _string("anglerListPage_title");
 
-  String get anglerListPagePickerTitle => _string("anglerListPage_pickerTitle");
-
   String get anglerListPageDeleteMessage =>
       _string("anglerListPage_deleteMessage");
 
@@ -423,8 +411,6 @@ class Strings {
   String get methodListPageMenuTitle => _string("methodListPage_menuTitle");
 
   String get methodListPageTitle => _string("methodListPage_title");
-
-  String get methodListPagePickerTitle => _string("methodListPage_pickerTitle");
 
   String get methodListPageDeleteMessage =>
       _string("methodListPage_deleteMessage");
@@ -453,9 +439,6 @@ class Strings {
       _string("waterClarityListPage_menuTitle");
 
   String get waterClarityListPageTitle => _string("waterClarityListPage_title");
-
-  String get waterClarityListPagePickerTitle =>
-      _string("waterClarityListPage_pickerTitle");
 
   String get waterClarityListPageDeleteMessage =>
       _string("waterClarityListPage_deleteMessage");
@@ -531,8 +514,6 @@ class Strings {
   String get reportSummaryFishingSpotsPerSpeciesDescription =>
       _string("reportSummary_fishingSpotsPerSpeciesDescription");
 
-  String get dateRangePickerPageTitle => _string("dateRangePickerPage_title");
-
   String get morePageTitle => _string("morePage_title");
 
   String get morePageRateApp => _string("morePage_rateApp");
@@ -545,6 +526,12 @@ class Strings {
 
   String get settingsPageLogoutConfirmMessage =>
       _string("settingsPage_logoutConfirmMessage");
+
+  String get settingsPageFetchAtmosphereTitle =>
+      _string("settingsPage_fetchAtmosphereTitle");
+
+  String get settingsPageFetchAtmosphereDescription =>
+      _string("settingsPage_fetchAtmosphereDescription");
 
   String get mapPageMenuLabel => _string("mapPage_menuLabel");
 
@@ -601,8 +588,6 @@ class Strings {
   String get formPageConfirmRemoveFields =>
       _string("formPage_confirmRemoveFields");
 
-  String get formPageSelectFieldsTitle => _string("formPage_selectFieldsTitle");
-
   String get formPageItemAddCustomFieldNote =>
       _string("formPage_addCustomFieldNote");
 
@@ -655,9 +640,6 @@ class Strings {
 
   String get speciesListPageTitle => _string("speciesListPage_title");
 
-  String get speciesListPagePickerTitle =>
-      _string("speciesListPage_pickerTitle");
-
   String get speciesListPageConfirmDelete =>
       _string("speciesListPage_confirmDelete");
 
@@ -675,18 +657,9 @@ class Strings {
   String get speciesListPageEmptyListDescription =>
       _string("speciesListPage_emptyListDescription");
 
-  String get fishingSpotPickerPageTitle =>
-      _string("fishingSpotPickerPage_title");
-
   String get fishingSpotPickerPageHint => _string("fishingSpotPickerPage_hint");
 
   String get fishingSpotListPageTitle => _string("fishingSpotListPage_title");
-
-  String get fishingSpotListPageMultiPickerTitle =>
-      _string("fishingSpotListPage_multiPickerTitle");
-
-  String get fishingSpotListPageSinglePickerTitle =>
-      _string("fishingSpotListPage_singlePickerTitle");
 
   String get fishingSpotListPageSearchHint =>
       _string("fishingSpotListPage_searchHint");
@@ -934,6 +907,8 @@ class Strings {
 
   String get proPageBackup => _string("proPage_backup");
 
+  String get proPageAtmosphere => _string("proPage_atmosphere");
+
   String get proPageSync => _string("proPage_sync");
 
   String get proPageReports => _string("proPage_reports");
@@ -980,10 +955,6 @@ class Strings {
 
   String get periodNight => _string("period_night");
 
-  String get periodPickerTitle => _string("period_pickerTitle");
-
-  String get periodPickerMultiTitle => _string("period_pickerMultiTitle");
-
   String get periodPickerAll => _string("period_pickerAll");
 
   String get seasonWinter => _string("season_winter");
@@ -993,10 +964,6 @@ class Strings {
   String get seasonSummer => _string("season_summer");
 
   String get seasonAutumn => _string("season_autumn");
-
-  String get seasonPickerTitle => _string("season_pickerTitle");
-
-  String get seasonPickerMultiTitle => _string("season_pickerMultiTitle");
 
   String get seasonPickerAll => _string("season_pickerAll");
 
@@ -1058,6 +1025,20 @@ class Strings {
 
   String get unitCelsius => _string("unit_celsius");
 
+  String get unitMilesPerHour => _string("unit_milesPerHour");
+
+  String get unitKilometersPerHour => _string("unit_kilometersPerHour");
+
+  String get unitMillibars => _string("unit_millibars");
+
+  String get unitPoundsPerSquareInch => _string("unit_pounds_per_square_inch");
+
+  String get unitPercent => _string("unit_percent");
+
+  String get unitMiles => _string("unit_miles");
+
+  String get unitKilometers => _string("unit_kilometers");
+
   String get numberFilterInputFrom => _string("numberFilterInput_from");
 
   String get numberFilterInputTo => _string("numberFilterInput_to");
@@ -1075,6 +1056,16 @@ class Strings {
 
   String get filterTitleQuantity => _string("filterTitle_quantity");
 
+  String get filterTitleAirTemperature => _string("filterTitle_airTemperature");
+
+  String get filterTitleAirPressure => _string("filterTitle_airPressure");
+
+  String get filterTitleAirHumidity => _string("filterTitle_airHumidity");
+
+  String get filterTitleAirVisibility => _string("filterTitle_airVisibility");
+
+  String get filterTitleWindSpeed => _string("filterTitle_windSpeed");
+
   String get filterPageInvalidEndValue => _string("filterPage_invalidEndValue");
 
   String get filterValueWaterTemperature =>
@@ -1088,27 +1079,239 @@ class Strings {
 
   String get filterValueQuantity => _string("filterValue_quantity");
 
-  String get waterDepthImperialSearchString =>
-      _string("waterDepth_imperialSearchString");
+  String get filterValueAirTemperature => _string("filterValue_airTemperature");
 
-  String get waterDepthMetricSearchString =>
-      _string("waterDepth_metricSearchString");
+  String get filterValueAirPressure => _string("filterValue_airPressure");
 
-  String get waterTemperatureImperialSearchString =>
-      _string("waterTemperature_imperialSearchString");
+  String get filterValueAirHumidity => _string("filterValue_airHumidity");
 
-  String get waterTemperatureMetricSearchString =>
-      _string("waterTemperature_metricSearchString");
+  String get filterValueAirVisibility => _string("filterValue_airVisibility");
 
-  String get lengthImperialSearchString =>
-      _string("length_imperialSearchString");
+  String get filterValueWindSpeed => _string("filterValue_windSpeed");
 
-  String get lengthMetricSearchString => _string("length_metricSearchString");
+  String get moonPhaseNew => _string("moonPhase_new");
 
-  String get weightImperialSearchString =>
-      _string("weight_imperialSearchString");
+  String get moonPhaseWaxingCrescent => _string("moonPhase_waxingCrescent");
 
-  String get weightMetricSearchString => _string("weight_metricSearchString");
+  String get moonPhaseFirstQuarter => _string("moonPhase_firstQuarter");
+
+  String get moonPhaseWaxingGibbous => _string("moonPhase_waxingGibbous");
+
+  String get moonPhaseFull => _string("moonPhase_full");
+
+  String get moonPhaseWaningGibbous => _string("moonPhase_waningGibbous");
+
+  String get moonPhaseLastQuarter => _string("moonPhase_lastQuarter");
+
+  String get moonPhaseWaningCrescent => _string("moonPhase_waningCrescent");
+
+  String get moonPhaseChip => _string("moonPhase_chip");
+
+  String get atmosphereInputTemperature =>
+      _string("atmosphereInput_temperature");
+
+  String get atmosphereInputAirTemperature =>
+      _string("atmosphereInput_airTemperature");
+
+  String get atmosphereInputSkyConditions =>
+      _string("atmosphereInput_skyConditions");
+
+  String get atmosphereInputNoSkyConditions =>
+      _string("atmosphereInput_noSkyConditions");
+
+  String get atmosphereInputWindSpeed => _string("atmosphereInput_windSpeed");
+
+  String get atmosphereInputWindDirection =>
+      _string("atmosphereInput_windDirection");
+
+  String get atmosphereInputPressure => _string("atmosphereInput_pressure");
+
+  String get atmosphereInputAtmosphericPressure =>
+      _string("atmosphereInput_atmosphericPressure");
+
+  String get atmosphereInputHumidity => _string("atmosphereInput_humidity");
+
+  String get atmosphereInputAirHumidity =>
+      _string("atmosphereInput_airHumidity");
+
+  String get atmosphereInputVisibility => _string("atmosphereInput_visibility");
+
+  String get atmosphereInputAirVisibility =>
+      _string("atmosphereInput_airVisibility");
+
+  String get atmosphereInputMoon => _string("atmosphereInput_moon");
+
+  String get atmosphereInputMoonPhase => _string("atmosphereInput_moonPhase");
+
+  String get atmosphereInputSunrise => _string("atmosphereInput_sunrise");
+
+  String get atmosphereInputTimeOfSunrise =>
+      _string("atmosphereInput_timeOfSunrise");
+
+  String get atmosphereInputSunset => _string("atmosphereInput_sunset");
+
+  String get atmosphereInputTimeOfSunset =>
+      _string("atmosphereInput_timeOfSunset");
+
+  String get atmosphereInputFetchError => _string("atmosphereInput_fetchError");
+
+  String get directionNorth => _string("direction_north");
+
+  String get directionNorthEast => _string("direction_northEast");
+
+  String get directionEast => _string("direction_east");
+
+  String get directionSouthEast => _string("direction_southEast");
+
+  String get directionSouth => _string("direction_south");
+
+  String get directionSouthWest => _string("direction_southWest");
+
+  String get directionWest => _string("direction_west");
+
+  String get directionNorthWest => _string("direction_northWest");
+
+  String get directionWindChip => _string("direction_windChip");
+
+  String get skyConditionSnow => _string("skyCondition_snow");
+
+  String get skyConditionDrizzle => _string("skyCondition_drizzle");
+
+  String get skyConditionDust => _string("skyCondition_dust");
+
+  String get skyConditionFog => _string("skyCondition_fog");
+
+  String get skyConditionRain => _string("skyCondition_rain");
+
+  String get skyConditionTornado => _string("skyCondition_tornado");
+
+  String get skyConditionHail => _string("skyCondition_hail");
+
+  String get skyConditionIce => _string("skyCondition_ice");
+
+  String get skyConditionStorm => _string("skyCondition_storm");
+
+  String get skyConditionMist => _string("skyCondition_mist");
+
+  String get skyConditionSmoke => _string("skyCondition_smoke");
+
+  String get skyConditionOvercast => _string("skyCondition_overcast");
+
+  String get skyConditionCloudy => _string("skyCondition_cloudy");
+
+  String get skyConditionClear => _string("skyCondition_clear");
+
+  String get pickerTitleBait => _string("pickerTitle_bait");
+
+  String get pickerTitleBaits => _string("pickerTitle_baits");
+
+  String get pickerTitleBaitCategory => _string("pickerTitle_baitCategory");
+
+  String get pickerTitleAngler => _string("pickerTitle_angler");
+
+  String get pickerTitleAnglers => _string("pickerTitle_anglers");
+
+  String get pickerTitleFishingMethods => _string("pickerTitle_fishingMethods");
+
+  String get pickerTitleWaterClarity => _string("pickerTitle_waterClarity");
+
+  String get pickerTitleWaterClarities => _string("pickerTitle_waterClarities");
+
+  String get pickerTitleDateRange => _string("pickerTitle_dateRange");
+
+  String get pickerTitleFields => _string("pickerTitle_fields");
+
+  String get pickerTitleReport => _string("pickerTitle_report");
+
+  String get pickerTitleSpecies => _string("pickerTitle_species");
+
+  String get pickerTitleFishingSpot => _string("pickerTitle_fishingSpot");
+
+  String get pickerTitleFishingSpots => _string("pickerTitle_fishingSpots");
+
+  String get pickerTitleTimeOfDay => _string("pickerTitle_timeOfDay");
+
+  String get pickerTitleTimesOfDay => _string("pickerTitle_timesOfDay");
+
+  String get pickerTitleSeason => _string("pickerTitle_season");
+
+  String get pickerTitleSeasons => _string("pickerTitle_seasons");
+
+  String get pickerTitleMoonPhase => _string("pickerTitle_moonPhase");
+
+  String get pickerTitleMoonPhases => _string("pickerTitle_moonPhases");
+
+  String get pickerTitleSkyCondition => _string("pickerTitle_skyCondition");
+
+  String get pickerTitleSkyConditions => _string("pickerTitle_skyConditions");
+
+  String get pickerTitleWindDirection => _string("pickerTitle_windDirection");
+
+  String get pickerTitleWindDirections => _string("pickerTitle_windDirections");
+
+  String get keywordsTemperatureMetric => _string("keywords_temperatureMetric");
+
+  String get keywordsTemperatureImperial =>
+      _string("keywords_temperatureImperial");
+
+  String get keywordsSpeedMetric => _string("keywords_speedMetric");
+
+  String get keywordsSpeedImperial => _string("keywords_speedImperial");
+
+  String get keywordsAirPressureMetric => _string("keywords_airPressureMetric");
+
+  String get keywordsAirPressureImperial =>
+      _string("keywords_airPressureImperial");
+
+  String get keywordsAirHumidity => _string("keywords_airHumidity");
+
+  String get keywordsAirVisibilityMetric =>
+      _string("keywords_airVisibilityMetric");
+
+  String get keywordsAirVisibilityImperial =>
+      _string("keywords_airVisibilityImperial");
+
+  String get keywordsSunrise => _string("keywords_sunrise");
+
+  String get keywordsSunset => _string("keywords_sunset");
+
+  String get keywordsCatchAndRelease => _string("keywords_catchAndRelease");
+
+  String get keywordsFavorite => _string("keywords_favorite");
+
+  String get keywordsDepthMetric => _string("keywords_depthMetric");
+
+  String get keywordsDepthImperial => _string("keywords_depthImperial");
+
+  String get keywordsLengthMetric => _string("keywords_lengthMetric");
+
+  String get keywordsLengthImperial => _string("keywords_lengthImperial");
+
+  String get keywordsWeightMetric => _string("keywords_weightMetric");
+
+  String get keywordsWeightImperial => _string("keywords_weightImperial");
+
+  String get keywordsPercent => _string("keywords_percent");
+
+  String get keywordsNorth => _string("keywords_north");
+
+  String get keywordsNorthEast => _string("keywords_northEast");
+
+  String get keywordsEast => _string("keywords_east");
+
+  String get keywordsSouthEast => _string("keywords_southEast");
+
+  String get keywordsSouth => _string("keywords_south");
+
+  String get keywordsSouthWest => _string("keywords_southWest");
+
+  String get keywordsWest => _string("keywords_west");
+
+  String get keywordsNorthWest => _string("keywords_northWest");
+
+  String get keywordsWindDirection => _string("keywords_windDirection");
+
+  String get keywordsMoon => _string("keywords_moon");
 }
 
 class StringsDelegate extends LocalizationsDelegate<Strings> {

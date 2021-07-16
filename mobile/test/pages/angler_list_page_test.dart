@@ -34,6 +34,7 @@ void main() {
       (_) => AnglerListPage(
         pickerSettings: ManageableListPagePickerSettings(
           onPicked: (_, __) => false,
+          isMulti: false,
         ),
       ),
       appManager: appManager,

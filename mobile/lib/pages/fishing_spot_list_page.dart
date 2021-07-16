@@ -6,8 +6,8 @@ import '../i18n/strings.dart';
 import '../model/gen/anglerslog.pb.dart';
 import '../pages/manageable_list_page.dart';
 import '../pages/save_fishing_spot_page.dart';
+import '../res/style.dart';
 import '../utils/string_utils.dart';
-import '../widgets/text.dart';
 import '../widgets/widget.dart';
 
 class FishingSpotListPage extends StatelessWidget {
@@ -28,20 +28,6 @@ class FishingSpotListPage extends StatelessWidget {
           [fishingSpots.length],
         ),
       ),
-      pickerTitleBuilder: (fishingSpots) {
-        if (pickerSettings == null) {
-          return Empty();
-        }
-
-        var title = "";
-        if (pickerSettings!.isMulti) {
-          title = Strings.of(context).fishingSpotListPageMultiPickerTitle;
-        } else {
-          title = Strings.of(context).fishingSpotListPageSinglePickerTitle;
-        }
-
-        return Text(title);
-      },
       forceCenterTitle: pickerSettings == null,
       itemBuilder: (context, fishingSpot) {
         var latLngString = formatLatLng(
@@ -53,11 +39,12 @@ class FishingSpotListPage extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              PrimaryLabel(isNotEmpty(fishingSpot.name)
-                  ? fishingSpot.name
-                  : latLngString),
+              Text(
+                isNotEmpty(fishingSpot.name) ? fishingSpot.name : latLngString,
+                style: stylePrimary(context),
+              ),
               isNotEmpty(fishingSpot.name)
-                  ? SubtitleLabel(latLngString)
+                  ? Text(latLngString, style: styleSubtitle(context))
                   : Empty(),
             ],
           ),
@@ -66,7 +53,10 @@ class FishingSpotListPage extends StatelessWidget {
       searchDelegate: ManageableListPageSearchDelegate(
         hint: Strings.of(context).fishingSpotListPageSearchHint,
       ),
-      pickerSettings: pickerSettings,
+      pickerSettings: pickerSettings?.copyWith(
+        title: Text(Strings.of(context).pickerTitleFishingSpot),
+        multiTitle: Text(Strings.of(context).pickerTitleFishingSpots),
+      ),
       itemManager: ManageableListPageItemManager<FishingSpot>(
         listenerManagers: [fishingSpotManager],
         loadItems: (query) =>

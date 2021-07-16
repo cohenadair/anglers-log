@@ -2,7 +2,6 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/auth_manager.dart';
 import 'package:mobile/pages/login_page.dart';
 import 'package:mobile/widgets/button.dart';
-import 'package:mobile/widgets/text.dart';
 import 'package:mobile/widgets/text_input.dart';
 import 'package:mobile/widgets/widget.dart';
 import 'package:mockito/mockito.dart';
@@ -64,9 +63,6 @@ void main() {
       appManager: appManager,
     ));
 
-    // Title label.
-    expect(find.byType(Label), findsOneWidget);
-
     await tester.enterText(
         find.widgetWithText(TextInput, "Email"), "test@test.com");
     await tester.enterText(
@@ -82,7 +78,6 @@ void main() {
 
     expect(find.text("Please connect to the internet and try again."),
         findsOneWidget);
-    expect(find.byType(Label), findsNWidgets(2));
   });
 
   testWidgets("Reset password works as expected", (tester) async {

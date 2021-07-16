@@ -7,6 +7,7 @@ import '../model/gen/anglerslog.pb.dart';
 import '../pages/entity_page.dart';
 import '../pages/save_bait_page.dart';
 import '../res/dimen.dart';
+import '../res/style.dart';
 import '../utils/page_utils.dart';
 import '../widgets/text.dart';
 import '../widgets/widget.dart';
@@ -82,7 +83,7 @@ class _BaitPageState extends State<BaitPage> {
 
     return Padding(
       padding: insetsHorizontalDefault,
-      child: HeadingLabel(baitCategory.name),
+      child: Text(baitCategory.name, style: styleListHeading(context)),
     );
   }
 }

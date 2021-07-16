@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/widgets/checkbox_input.dart';
+import 'package:mobile/widgets/list_item.dart';
 import 'package:mobile/widgets/text.dart';
+import 'package:mobile/widgets/widget.dart';
 
 import '../test_utils.dart';
 
@@ -36,5 +38,23 @@ void main() {
       ),
     );
     expect(find.byType(DisabledLabel), findsOneWidget);
+  });
+
+  testWidgets("Hides description", (tester) async {
+    await tester.pumpWidget(Testable((_) => CheckboxInput(label: "Test")));
+    expect(findFirst<ListItem>(tester).subtitle is Empty, isTrue);
+  });
+
+  testWidgets("Shows description", (tester) async {
+    await tester.pumpWidget(
+      Testable(
+        (_) => CheckboxInput(
+          label: "Test",
+          description: "Description",
+        ),
+      ),
+    );
+    expect(findFirst<ListItem>(tester).subtitle is Empty, isFalse);
+    expect(find.text("Description"), findsOneWidget);
   });
 }

@@ -5,9 +5,9 @@ import 'package:mobile/model/gen/anglerslog.pb.dart';
 import 'package:mobile/pages/catch_page.dart';
 import 'package:mobile/res/gen/custom_icons.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
+import 'package:mobile/widgets/atmosphere_wrap.dart';
 import 'package:mobile/widgets/list_item.dart';
 import 'package:mobile/widgets/static_fishing_spot.dart';
-import 'package:mobile/widgets/text.dart';
 import 'package:mobile/widgets/widget.dart';
 import 'package:mockito/mockito.dart';
 
@@ -122,16 +122,17 @@ void main() {
         ..id = randomId()
         ..name = "Worm",
     );
-    await tester.pumpWidget(Testable(
+    var context = await pumpContext(
+      tester,
       (_) => CatchPage(Catch()),
       appManager: appManager,
-    ));
+    );
     // Wait for map timer to finish.
     await tester.pumpAndSettle(Duration(milliseconds: 150));
     await tester.pumpAndSettle(Duration(milliseconds: 50));
 
     expect(find.text("Worm"), findsOneWidget);
-    expect(find.byType(SubtitleLabel), findsOneWidget); // One for time label.
+    expect(find.subtitleText(context), findsOneWidget); // One for time label.
   });
 
   testWidgets("Bait with category shows subtitle", (tester) async {
@@ -345,6 +346,40 @@ void main() {
 
     expect(find.byIcon(Icons.error), findsOneWidget);
     expect(find.text("Kept"), findsOneWidget);
+  });
+
+  testWidgets("No atmosphere renders empty", (tester) async {
+    await tester.pumpWidget(Testable(
+      (_) => CatchPage(Catch()),
+      appManager: appManager,
+    ));
+    // Wait for map timer to finish.
+    await tester.pumpAndSettle(Duration(milliseconds: 150));
+    await tester.pumpAndSettle(Duration(milliseconds: 50));
+
+    expect(find.byType(AtmosphereWrap), findsNothing);
+  });
+
+  testWidgets("Atmosphere renders", (tester) async {
+    when(appManager.catchManager.entity(any)).thenReturn(Catch()
+      ..id = randomId()
+      ..timestamp = Int64(DateTime(2020, 1, 1, 15, 30).millisecondsSinceEpoch)
+      ..atmosphere = Atmosphere(
+        humidity: Measurement(
+          unit: Unit.percent,
+          value: 50,
+        ),
+      ));
+
+    await tester.pumpWidget(Testable(
+      (_) => CatchPage(Catch()),
+      appManager: appManager,
+    ));
+    // Wait for map timer to finish.
+    await tester.pumpAndSettle(Duration(milliseconds: 150));
+    await tester.pumpAndSettle(Duration(milliseconds: 50));
+
+    expect(find.byType(AtmosphereWrap), findsOneWidget);
   });
 
   group("Water fields", () {

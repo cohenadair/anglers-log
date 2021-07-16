@@ -13,11 +13,11 @@ import '../pages/manageable_list_page.dart';
 import '../pages/save_catch_page.dart';
 import '../res/dimen.dart';
 import '../res/gen/custom_icons.dart';
+import '../res/style.dart';
 import '../species_manager.dart';
 import '../utils/date_time_utils.dart';
 import '../utils/string_utils.dart';
 import '../widgets/photo.dart';
-import '../widgets/text.dart';
 import '../widgets/widget.dart';
 
 class CatchListPage extends StatelessWidget {
@@ -115,12 +115,12 @@ class CatchListPage extends StatelessWidget {
     var fishingSpot = fishingSpotManager.entity(cat.fishingSpotId);
     if (fishingSpot != null && isNotEmpty(fishingSpot.name)) {
       // Use fishing spot name as subtitle if available.
-      subtitle2 = SubtitleLabel(fishingSpot.name);
+      subtitle2 = Text(fishingSpot.name, style: styleSubtitle(context));
     } else {
       // Fallback on bait as a subtitle.
       var formattedName = baitManager.formatNameWithCategory(cat.baitId);
       if (isNotEmpty(formattedName)) {
-        subtitle2 = SubtitleLabel(formattedName!);
+        subtitle2 = Text(formattedName!, style: styleSubtitle(context));
       }
     }
 
@@ -135,9 +135,15 @@ class CatchListPage extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                PrimaryLabel(speciesManager.entity(cat.speciesId)?.name ??
-                    Strings.of(context).unknownSpecies),
-                SubtitleLabel(formatTimestamp(context, cat.timestamp.toInt())),
+                Text(
+                  speciesManager.entity(cat.speciesId)?.name ??
+                      Strings.of(context).unknownSpecies,
+                  style: stylePrimary(context),
+                ),
+                Text(
+                  formatTimestamp(context, cat.timestamp.toInt()),
+                  style: styleSubtitle(context),
+                ),
                 subtitle2,
               ],
             ),

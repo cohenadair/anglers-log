@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:quiver/strings.dart';
 
 import '../res/dimen.dart';
-import '../widgets/text.dart';
+import '../res/style.dart';
 import '../widgets/widget.dart';
 
 /// A radio button selection widget. This should be used when three or fewer
@@ -52,7 +52,10 @@ class _RadioInputState extends State<RadioInput> {
                     right: paddingDefault,
                     bottom: paddingWidgetSmall,
                   ),
-                  child: HeadingLabel(widget.title!),
+                  child: Text(
+                    widget.title!,
+                    style: styleListHeading(context),
+                  ),
                 ),
         ]..addAll(List<Widget>.generate(widget.optionCount, _buildOption)),
       ),
@@ -81,7 +84,10 @@ class _RadioInputState extends State<RadioInput> {
               Expanded(
                 child: Padding(
                   padding: EdgeInsets.only(left: paddingWidgetDouble),
-                  child: PrimaryLabel(widget.optionBuilder(context, index)),
+                  child: Text(
+                    widget.optionBuilder(context, index),
+                    style: stylePrimary(context),
+                  ),
                 ),
               ),
             ],

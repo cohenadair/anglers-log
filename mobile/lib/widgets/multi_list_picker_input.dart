@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:quiver/strings.dart';
 
-import '../res/dimen.dart';
 import '../widgets/list_picker_input.dart';
-import '../widgets/text.dart';
 import '../widgets/widget.dart';
+import 'detail_input.dart';
 
 /// A generic picker widget for selecting multiple items from a list. For
 /// selecting only a single item, use [ListPickerInput].
@@ -41,20 +40,12 @@ class MultiListPickerInput extends StatelessWidget {
       }
     }
 
-    return InkWell(
+    return DetailInput(
       onTap: onTap,
-      child: HorizontalSafeArea(
-        child: Padding(
-          padding: padding ?? insetsZero,
-          child: Row(
-            mainAxisSize: MainAxisSize.max,
-            children: [
-              Expanded(child: ChipWrap(items)),
-              RightChevronIcon(),
-            ],
-          ),
-        ),
-      ),
+      padding: padding,
+      children: [
+        Expanded(child: ChipWrap(items)),
+      ],
     );
   }
 }

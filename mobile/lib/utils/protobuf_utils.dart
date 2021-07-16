@@ -95,44 +95,6 @@ dynamic valueForCustomEntityType(
   }
 }
 
-Set<Period> selectablePeriods() {
-  return {
-    Period.dawn,
-    Period.morning,
-    Period.midday,
-    Period.afternoon,
-    Period.dusk,
-    Period.night,
-  };
-}
-
-List<PickerPageItem<Period>> pickerItemsForPeriod(BuildContext context) {
-  return selectablePeriods().map((period) {
-    return PickerPageItem<Period>(
-      title: period.displayName(context),
-      value: period,
-    );
-  }).toList();
-}
-
-Set<Season> selectableSeasons() {
-  return {
-    Season.winter,
-    Season.spring,
-    Season.summer,
-    Season.autumn,
-  };
-}
-
-List<PickerPageItem<Season>> pickerItemsForSeason(BuildContext context) {
-  return selectableSeasons().map((season) {
-    return PickerPageItem<Season>(
-      title: season.displayName(context),
-      value: season,
-    );
-  }).toList();
-}
-
 Id randomId() => Id()..uuid = Uuid().v4();
 
 /// Parses [idString] into an [Id] object. Throws an [AssertionError] if
@@ -199,6 +161,32 @@ int indexOfEntityIdOrOther(List<dynamic> list, dynamic item) {
   return -1;
 }
 
+Set<T> _selectable<T>(List<T> values, List<T> excludeValues) {
+  return Set.of(values)..removeWhere((value) => excludeValues.contains(value));
+}
+
+List<PickerPageItem<T>> _pickerItems<T>(
+  BuildContext context,
+  List<T> values,
+  List<T> excludeValues,
+  String Function(BuildContext, T) displayName, {
+  bool sort = true,
+}) {
+  var modifiedList = _selectable(values, excludeValues).toList();
+
+  if (sort) {
+    modifiedList.sort((rhs, lhs) =>
+        displayName(context, rhs).compareTo(displayName(context, lhs)));
+  }
+
+  return modifiedList.map((value) {
+    return PickerPageItem<T>(
+      title: displayName(context, value),
+      value: value,
+    );
+  }).toList();
+}
+
 extension Ids on Id {
   List<int> get bytes => Uuid.parse(uuid);
 
@@ -244,9 +232,15 @@ extension MeasurementSystems on MeasurementSystem {
     }
     throw ArgumentError("Invalid input: $this");
   }
+
+  bool get isMetric => this == MeasurementSystem.metric;
+
+  bool get isImperialWhole => this == MeasurementSystem.imperial_whole;
 }
 
 extension Measurements on Measurement {
+  static const decimalPlaces = 1;
+
   String displayValue(BuildContext context) {
     var unitString = "";
     if (hasUnit()) {
@@ -256,7 +250,11 @@ extension Measurements on Measurement {
     return "$stringValue$unitString";
   }
 
-  String get stringValue => "${value.roundIfWhole() ?? value}";
+  String get stringValue =>
+      "${value.roundIfWhole() ?? value.toStringAsFixed(decimalPlaces)}";
+
+  String filterString(BuildContext context) =>
+      "${displayValue(context)} ${unit.filterString(context)}";
 
   /// Updates [unit] to the new system. This method _does not_ convert values
   /// between units.
@@ -291,6 +289,14 @@ extension Measurements on Measurement {
 }
 
 extension MultiMeasurements on MultiMeasurement {
+  static MultiMeasurement from(
+      Measurement measurement, MeasurementSystem? userPreferenceSystem) {
+    return MultiMeasurement(
+      system: userPreferenceSystem ?? measurement.unit.measurementSystem,
+      mainValue: measurement,
+    );
+  }
+
   bool get isSet => hasMainValue() || hasFractionValue();
 
   String displayValue(BuildContext context) {
@@ -310,6 +316,17 @@ extension MultiMeasurements on MultiMeasurement {
         fractionValue.value > 0;
     return mainValue.displayValue(context) +
         (isFractionSet ? " ${fractionValue.displayValue(context)}" : "");
+  }
+
+  String filterString(BuildContext context) {
+    var result = "";
+    if (hasMainValue()) {
+      result += " ${mainValue.filterString(context)}";
+    }
+    if (hasFractionValue()) {
+      result += " ${fractionValue.filterString(context)}";
+    }
+    return result.trim();
   }
 
   /// Updates [mainValue] and [fractionValue] to the new system.
@@ -336,12 +353,8 @@ extension MultiMeasurements on MultiMeasurement {
       return true;
     }
 
-    if (lhs.system != rhs.system) {
-      _log.w(
-          "Can't compare different systems: ${lhs.system} vs. ${rhs.system}");
-      return false;
-    }
-
+    // Note that unit comparison is done in Measurement operator overrides, so
+    // there's no need to do it here.
     return comparator(lhs.mainValue, rhs.mainValue);
   }
 
@@ -498,6 +511,21 @@ extension NumberFilters on NumberFilter {
 }
 
 extension Periods on Period {
+  static Set<Period> selectable() {
+    return _selectable<Period>(
+        Period.values, [Period.period_none, Period.period_all]);
+  }
+
+  static List<PickerPageItem<Period>> pickerItems(BuildContext context) {
+    return _pickerItems(
+      context,
+      Periods.selectable().toList(),
+      [],
+      (context, period) => period.displayName(context),
+      sort: false,
+    );
+  }
+
   String displayName(BuildContext context) {
     switch (this) {
       case Period.period_all:
@@ -548,6 +576,21 @@ extension Seasons on Season {
     return null;
   }
 
+  static Set<Season> selectable() {
+    return _selectable<Season>(
+        Season.values, [Season.season_none, Season.season_all]);
+  }
+
+  static List<PickerPageItem<Season>> pickerItems(BuildContext context) {
+    return _pickerItems(
+      context,
+      Seasons.selectable().toList(),
+      [],
+      (context, season) => season.displayName(context),
+      sort: false,
+    );
+  }
+
   String displayName(BuildContext context) {
     switch (this) {
       case Season.season_all:
@@ -591,6 +634,58 @@ extension Units on Unit {
         return Strings.of(context).unitKilograms;
       case Unit.celsius:
         return Strings.of(context).unitCelsius;
+      case Unit.miles_per_hour:
+        return Strings.of(context).unitMilesPerHour;
+      case Unit.kilometers_per_hour:
+        return Strings.of(context).unitKilometersPerHour;
+      case Unit.millibars:
+        return Strings.of(context).unitMillibars;
+      case Unit.pounds_per_square_inch:
+        return Strings.of(context).unitPoundsPerSquareInch;
+      case Unit.miles:
+        return Strings.of(context).unitMiles;
+      case Unit.kilometers:
+        return Strings.of(context).unitKilometers;
+      case Unit.percent:
+        return Strings.of(context).unitPercent;
+    }
+    throw ArgumentError("Invalid input: $this");
+  }
+
+  String filterString(BuildContext context) {
+    switch (this) {
+      case Unit.feet:
+        return Strings.of(context).keywordsDepthImperial;
+      case Unit.inches:
+        return Strings.of(context).keywordsLengthImperial;
+      case Unit.pounds:
+        return Strings.of(context).keywordsWeightImperial;
+      case Unit.ounces:
+        return Strings.of(context).keywordsWeightImperial;
+      case Unit.fahrenheit:
+        return Strings.of(context).keywordsTemperatureImperial;
+      case Unit.meters:
+        return Strings.of(context).keywordsDepthMetric;
+      case Unit.centimeters:
+        return Strings.of(context).keywordsLengthMetric;
+      case Unit.kilograms:
+        return Strings.of(context).keywordsWeightMetric;
+      case Unit.celsius:
+        return Strings.of(context).keywordsTemperatureMetric;
+      case Unit.miles_per_hour:
+        return Strings.of(context).keywordsSpeedImperial;
+      case Unit.kilometers_per_hour:
+        return Strings.of(context).keywordsSpeedMetric;
+      case Unit.millibars:
+        return Strings.of(context).keywordsAirPressureMetric;
+      case Unit.pounds_per_square_inch:
+        return Strings.of(context).keywordsAirPressureImperial;
+      case Unit.miles:
+        return Strings.of(context).keywordsAirVisibilityImperial;
+      case Unit.kilometers:
+        return Strings.of(context).keywordsAirVisibilityMetric;
+      case Unit.percent:
+        return Strings.of(context).keywordsPercent;
     }
     throw ArgumentError("Invalid input: $this");
   }
@@ -606,9 +701,16 @@ extension Units on Unit {
       case Unit.meters:
       case Unit.centimeters:
       case Unit.kilograms:
+      case Unit.miles_per_hour:
+      case Unit.kilometers_per_hour:
+      case Unit.millibars:
+      case Unit.pounds_per_square_inch:
+      case Unit.miles:
+      case Unit.kilometers:
         return true;
       case Unit.celsius:
       case Unit.fahrenheit:
+      case Unit.percent:
         return false;
     }
     throw ArgumentError("Invalid input: $this");
@@ -621,11 +723,20 @@ extension Units on Unit {
       case Unit.pounds:
       case Unit.ounces:
       case Unit.fahrenheit:
+      case Unit.miles_per_hour:
+      case Unit.miles:
+      case Unit.pounds_per_square_inch:
         return MeasurementSystem.imperial_whole;
       case Unit.meters:
       case Unit.centimeters:
       case Unit.kilograms:
       case Unit.celsius:
+      case Unit.kilometers_per_hour:
+      case Unit.kilometers:
+      case Unit.millibars:
+        return MeasurementSystem.metric;
+      // Units that don't have an associated system will use metric.
+      case Unit.percent:
         return MeasurementSystem.metric;
     }
     throw ArgumentError("Invalid input: $this");
@@ -650,6 +761,20 @@ extension Units on Unit {
         return Unit.pounds;
       case Unit.celsius:
         return Unit.fahrenheit;
+      case Unit.miles_per_hour:
+        return Unit.kilometers_per_hour;
+      case Unit.kilometers_per_hour:
+        return Unit.miles_per_hour;
+      case Unit.millibars:
+        return Unit.pounds_per_square_inch;
+      case Unit.pounds_per_square_inch:
+        return Unit.millibars;
+      case Unit.miles:
+        return Unit.kilometers;
+      case Unit.kilometers:
+        return Unit.miles;
+      case Unit.percent:
+        return Unit.percent;
     }
     throw ArgumentError("Invalid input: $this");
   }
@@ -667,10 +792,46 @@ extension Units on Unit {
       case Unit.centimeters:
       case Unit.kilograms:
       case Unit.celsius:
+      case Unit.miles_per_hour:
+      case Unit.kilometers_per_hour:
+      case Unit.millibars:
+      case Unit.pounds_per_square_inch:
+      case Unit.miles:
+      case Unit.kilometers:
+      case Unit.percent:
         _log.w("Unit.toDecimal called with non-decimal unit: $this");
         return value;
     }
     throw ArgumentError("Invalid input: $this");
+  }
+
+  /// Converts [value] to this [Unit]. [Unit] must be the [oppositeUnit] of
+  /// the caller, otherwise [value] is returned unchanged.
+  double convertFrom(Unit unit, double value) {
+    if (unit == this) {
+      return value;
+    }
+
+    if (unit != oppositeUnit) {
+      _log.w("Can't convert $unit to $this");
+      return value;
+    }
+
+    switch (this) {
+      // Fahrenheit to celsius.
+      case Unit.celsius:
+        return (value - 32) * (5 / 9);
+      // Miles to kilometers.
+      case Unit.kilometers_per_hour:
+      case Unit.kilometers:
+        return value * 1.609344;
+      // Millibars to pounds per square inch.
+      case Unit.pounds_per_square_inch:
+        return value * 0.0145038;
+      default:
+        _log.w("Unsupported conversion for $this");
+        return value;
+    }
   }
 }
 
@@ -802,4 +963,339 @@ extension DateRanges on DateRange {
 
   bool contains(int timestamp, DateTime now) =>
       timestamp >= startMs(now) && timestamp <= endMs(now);
+}
+
+extension MoonPhases on MoonPhase {
+  static Set<MoonPhase> selectable() {
+    return _selectable<MoonPhase>(MoonPhase.values,
+        [MoonPhase.moon_phase_none, MoonPhase.moon_phase_all]);
+  }
+
+  static List<PickerPageItem<MoonPhase>> pickerItems(BuildContext context) {
+    return _pickerItems(
+      context,
+      MoonPhases.selectable().toList(),
+      [],
+      (context, phase) => phase.displayName(context),
+      sort: false,
+    );
+  }
+
+  /// Converts a Visual Crossing moon phase value to a [MoonPhase].
+  /// See https://www.visualcrossing.com/resources/documentation/weather-data/weather-data-documentation/.
+  static MoonPhase fromDouble(double value) {
+    if (value == 0) {
+      return MoonPhase.new_;
+    }
+    if (value < 0.25) {
+      return MoonPhase.waxing_crescent;
+    } else if (value == 0.25) {
+      return MoonPhase.first_quarter;
+    } else if (value < 0.5) {
+      return MoonPhase.waxing_gibbous;
+    } else if (value == 0.5) {
+      return MoonPhase.full;
+    } else if (value < 0.75) {
+      return MoonPhase.waning_gibbous;
+    } else if (value == 0.75) {
+      return MoonPhase.last_quarter;
+    } else if (value <= 1) {
+      return MoonPhase.waning_crescent;
+    } else {
+      return MoonPhase.moon_phase_none;
+    }
+  }
+
+  String displayName(BuildContext context) {
+    switch (this) {
+      case MoonPhase.moon_phase_all:
+        return Strings.of(context).all;
+      case MoonPhase.moon_phase_none:
+        return Strings.of(context).none;
+      case MoonPhase.new_:
+        return Strings.of(context).moonPhaseNew;
+      case MoonPhase.waxing_crescent:
+        return Strings.of(context).moonPhaseWaxingCrescent;
+      case MoonPhase.first_quarter:
+        return Strings.of(context).moonPhaseFirstQuarter;
+      case MoonPhase.waxing_gibbous:
+        return Strings.of(context).moonPhaseWaxingGibbous;
+      case MoonPhase.full:
+        return Strings.of(context).moonPhaseFull;
+      case MoonPhase.waning_gibbous:
+        return Strings.of(context).moonPhaseWaningGibbous;
+      case MoonPhase.last_quarter:
+        return Strings.of(context).moonPhaseLastQuarter;
+      case MoonPhase.waning_crescent:
+        return Strings.of(context).moonPhaseWaningCrescent;
+    }
+    throw ArgumentError("Invalid input: $this");
+  }
+
+  String chipName(BuildContext context) {
+    return format(Strings.of(context).moonPhaseChip, [displayName(context)]);
+  }
+}
+
+extension Directions on Direction {
+  static Set<Direction> selectable() {
+    return _selectable<Direction>(
+        Direction.values, [Direction.direction_none, Direction.direction_all]);
+  }
+
+  static List<PickerPageItem<Direction>> pickerItems(BuildContext context) {
+    return _pickerItems(
+      context,
+      Directions.selectable().toList(),
+      [],
+      (context, direction) => direction.displayName(context),
+      sort: false,
+    );
+  }
+
+  static Direction fromDegrees(double degrees) {
+    var closest = Direction.north;
+    var minDifference = 360.0;
+
+    for (var direction in Directions.selectable()) {
+      var diff = (direction.toDegrees() - degrees).abs();
+      if (diff < minDifference) {
+        minDifference = diff;
+        closest = direction;
+      }
+    }
+
+    // North is at both 0 and 360 degrees. Do the additional 360 degrees check
+    // here.
+    var diff = 360 - degrees;
+    if (diff < minDifference) {
+      closest = Direction.north;
+    }
+
+    return closest;
+  }
+
+  String displayName(BuildContext context) {
+    switch (this) {
+      case Direction.direction_all:
+        return Strings.of(context).all;
+      case Direction.direction_none:
+        return Strings.of(context).none;
+      case Direction.north:
+        return Strings.of(context).directionNorth;
+      case Direction.north_east:
+        return Strings.of(context).directionNorthEast;
+      case Direction.east:
+        return Strings.of(context).directionEast;
+      case Direction.south_east:
+        return Strings.of(context).directionSouthEast;
+      case Direction.south:
+        return Strings.of(context).directionSouth;
+      case Direction.south_west:
+        return Strings.of(context).directionSouthWest;
+      case Direction.west:
+        return Strings.of(context).directionWest;
+      case Direction.north_west:
+        return Strings.of(context).directionNorthWest;
+    }
+    throw ArgumentError("Invalid input: $this");
+  }
+
+  String chipName(BuildContext context) {
+    return format(
+        Strings.of(context).directionWindChip, [displayName(context)]);
+  }
+
+  String filterString(BuildContext context) {
+    switch (this) {
+      case Direction.direction_all:
+      case Direction.direction_none:
+        return "";
+      case Direction.north:
+        return Strings.of(context).keywordsNorth;
+      case Direction.north_east:
+        return Strings.of(context).keywordsNorthEast;
+      case Direction.east:
+        return Strings.of(context).keywordsEast;
+      case Direction.south_east:
+        return Strings.of(context).keywordsSouthEast;
+      case Direction.south:
+        return Strings.of(context).keywordsSouth;
+      case Direction.south_west:
+        return Strings.of(context).keywordsSouthWest;
+      case Direction.west:
+        return Strings.of(context).keywordsWest;
+      case Direction.north_west:
+        return Strings.of(context).keywordsNorthWest;
+    }
+    throw ArgumentError("Invalid input: $this");
+  }
+
+  double toDegrees() {
+    switch (this) {
+      case Direction.north:
+        return 0.0;
+      case Direction.north_east:
+        return 45.0;
+      case Direction.east:
+        return 90.0;
+      case Direction.south_east:
+        return 135.0;
+      case Direction.south:
+        return 180.0;
+      case Direction.south_west:
+        return 225.0;
+      case Direction.west:
+        return 270.0;
+      case Direction.north_west:
+        return 315.0;
+    }
+    throw ArgumentError("Invalid input: $this");
+  }
+}
+
+extension SkyConditions on SkyCondition {
+  static Set<SkyCondition> selectable() {
+    return _selectable<SkyCondition>(SkyCondition.values,
+        [SkyCondition.sky_condition_none, SkyCondition.sky_condition_all]);
+  }
+
+  static List<PickerPageItem<SkyCondition>> pickerItems(BuildContext context) {
+    return _pickerItems(
+      context,
+      SkyConditions.selectable().toList(),
+      [],
+      (context, condition) => condition.displayName(context),
+    );
+  }
+
+  static String displayNameForList(
+      BuildContext context, List<SkyCondition> conditions) {
+    return conditions.map((c) => c.displayName(context)).join(", ");
+  }
+
+  /// Converts a Visual Crossing conditions type to a [SkyCondition].
+  /// See https://github.com/visualcrossing/WeatherApi/blob/master/lang/en.txt.
+  static Set<SkyCondition> fromTypes(String types) {
+    var result = <SkyCondition>{};
+    var typeList = types.split(",");
+
+    for (var type in typeList) {
+      switch (type.trim()) {
+        case "type_1":
+        case "type_31":
+        case "type_32":
+        case "type_33":
+        case "type_34":
+        case "type_35":
+        case "type_36":
+          result.add(SkyCondition.snow);
+          break;
+        case "type_2":
+        case "type_3":
+        case "type_4":
+        case "type_5":
+        case "type_6":
+          result.add(SkyCondition.drizzle);
+          break;
+        case "type_7":
+        case "type_39":
+          result.add(SkyCondition.dust);
+          break;
+        case "type_8":
+        case "type_12":
+          result.add(SkyCondition.fog);
+          break;
+        case "type_9":
+        case "type_10":
+        case "type_11":
+        case "type_13":
+        case "type_14":
+        case "type_20":
+        case "type_21":
+        case "type_22":
+        case "type_23":
+        case "type_24":
+        case "type_25":
+        case "type_26":
+          result.add(SkyCondition.rain);
+          break;
+        case "type_15":
+          result.add(SkyCondition.tornado);
+          break;
+        case "type_16":
+        case "type_40":
+          result.add(SkyCondition.hail);
+          break;
+        case "type_17":
+          result.add(SkyCondition.ice);
+          break;
+        case "type_18":
+        case "type_37":
+        case "type_38":
+          result.add(SkyCondition.storm);
+          break;
+        case "type_19":
+          result.add(SkyCondition.mist);
+          break;
+        case "type_30":
+          result.add(SkyCondition.smoke);
+          break;
+        case "type_41":
+          result.add(SkyCondition.overcast);
+          break;
+        case "type_27":
+        case "type_28":
+        case "type_42":
+          result.add(SkyCondition.cloudy);
+          break;
+        case "type_43":
+          result.add(SkyCondition.clear);
+          break;
+        default:
+          _log.w("Unknown conditions type: $type");
+          break;
+      }
+    }
+
+    return result;
+  }
+
+  String displayName(BuildContext context) {
+    switch (this) {
+      case SkyCondition.sky_condition_all:
+        return Strings.of(context).all;
+      case SkyCondition.sky_condition_none:
+        return Strings.of(context).none;
+      case SkyCondition.snow:
+        return Strings.of(context).skyConditionSnow;
+      case SkyCondition.drizzle:
+        return Strings.of(context).skyConditionDrizzle;
+      case SkyCondition.dust:
+        return Strings.of(context).skyConditionDust;
+      case SkyCondition.fog:
+        return Strings.of(context).skyConditionFog;
+      case SkyCondition.rain:
+        return Strings.of(context).skyConditionRain;
+      case SkyCondition.tornado:
+        return Strings.of(context).skyConditionTornado;
+      case SkyCondition.hail:
+        return Strings.of(context).skyConditionHail;
+      case SkyCondition.ice:
+        return Strings.of(context).skyConditionIce;
+      case SkyCondition.storm:
+        return Strings.of(context).skyConditionStorm;
+      case SkyCondition.mist:
+        return Strings.of(context).skyConditionMist;
+      case SkyCondition.smoke:
+        return Strings.of(context).skyConditionSmoke;
+      case SkyCondition.overcast:
+        return Strings.of(context).skyConditionOvercast;
+      case SkyCondition.cloudy:
+        return Strings.of(context).skyConditionCloudy;
+      case SkyCondition.clear:
+        return Strings.of(context).skyConditionClear;
+    }
+    throw ArgumentError("Invalid input: $this");
+  }
 }

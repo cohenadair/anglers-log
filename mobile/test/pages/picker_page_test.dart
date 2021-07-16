@@ -6,6 +6,7 @@ import 'package:mobile/widgets/button.dart';
 import 'package:mobile/widgets/checkbox_input.dart';
 import 'package:mobile/widgets/list_item.dart';
 import 'package:mobile/widgets/text.dart';
+import 'package:mobile/widgets/widget.dart';
 
 import '../test_utils.dart';
 
@@ -45,26 +46,31 @@ void main() {
       ),
     );
 
-    expect(
-      find.descendant(
-        of: find.widgetWithText(ListItem, "Option A"),
-        matching: find.byIcon(Icons.check),
-      ),
-      findsNothing,
+    var optionA = find.descendant(
+      of: find.widgetWithText(ListItem, "Option A"),
+      matching: find.byType(AnimatedVisibility),
     );
     expect(
-      find.descendant(
-        of: find.widgetWithText(ListItem, "Option B"),
-        matching: find.byIcon(Icons.check),
-      ),
-      findsOneWidget,
+      (optionA.evaluate().first.widget as AnimatedVisibility).visible,
+      isFalse,
+    );
+
+    var optionB = find.descendant(
+      of: find.widgetWithText(ListItem, "Option B"),
+      matching: find.byType(AnimatedVisibility),
     );
     expect(
-      find.descendant(
-        of: find.widgetWithText(ListItem, "Option C"),
-        matching: find.byIcon(Icons.check),
-      ),
-      findsNothing,
+      (optionB.evaluate().first.widget as AnimatedVisibility).visible,
+      isTrue,
+    );
+
+    var optionC = find.descendant(
+      of: find.widgetWithText(ListItem, "Option C"),
+      matching: find.byType(AnimatedVisibility),
+    );
+    expect(
+      (optionC.evaluate().first.widget as AnimatedVisibility).visible,
+      isFalse,
     );
   });
 
@@ -190,37 +196,35 @@ void main() {
   });
 
   testWidgets("Heading item", (tester) async {
-    await tester.pumpWidget(
-      Testable(
-        (_) => PickerPage<String>(
-          itemBuilder: () => [
-            PickerPageItem(title: "Option A", value: "Option A"),
-            PickerPageItem.heading("Heading"),
-            PickerPageItem(title: "Option B", value: "Option B"),
-          ],
-          onFinishedPicking: (_, __) => {},
-        ),
+    var context = await pumpContext(
+      tester,
+      (_) => PickerPage<String>(
+        itemBuilder: () => [
+          PickerPageItem(title: "Option A", value: "Option A"),
+          PickerPageItem.heading("Heading"),
+          PickerPageItem(title: "Option B", value: "Option B"),
+        ],
+        onFinishedPicking: (_, __) => {},
       ),
     );
 
-    expect(find.widgetWithText(HeadingLabel, "Heading"), findsOneWidget);
+    expect(find.listHeadingText(context, text: "Heading"), findsOneWidget);
   });
 
   testWidgets("Note item", (tester) async {
-    await tester.pumpWidget(
-      Testable(
-        (_) => PickerPage<String>(
-          itemBuilder: () => [
-            PickerPageItem(title: "Option A", value: "Option A"),
-            PickerPageItem.note(title: "A note"),
-            PickerPageItem(title: "Option B", value: "Option B"),
-          ],
-          onFinishedPicking: (_, __) => {},
-        ),
+    var context = await pumpContext(
+      tester,
+      (_) => PickerPage<String>(
+        itemBuilder: () => [
+          PickerPageItem(title: "Option A", value: "Option A"),
+          PickerPageItem.note(title: "A note"),
+          PickerPageItem(title: "Option B", value: "Option B"),
+        ],
+        onFinishedPicking: (_, __) => {},
       ),
     );
 
-    expect(find.widgetWithText(NoteLabel, "A note"), findsOneWidget);
+    expect(find.noteText(context, text: "A note"), findsOneWidget);
   });
 
   testWidgets("Note icon item", (tester) async {
@@ -300,37 +304,35 @@ void main() {
   });
 
   testWidgets("Item with subtitle", (tester) async {
-    await tester.pumpWidget(
-      Testable(
-        (_) => PickerPage<String>(
-          itemBuilder: () => [
-            PickerPageItem(
-              title: "Option A",
-              value: "Option A",
-              subtitle: "Subtitle",
-            ),
-          ],
-          onFinishedPicking: (_, __) => {},
-        ),
+    var context = await pumpContext(
+      tester,
+      (_) => PickerPage<String>(
+        itemBuilder: () => [
+          PickerPageItem(
+            title: "Option A",
+            value: "Option A",
+            subtitle: "Subtitle",
+          ),
+        ],
+        onFinishedPicking: (_, __) => {},
       ),
     );
 
-    expect(find.widgetWithText(SubtitleLabel, "Subtitle"), findsOneWidget);
+    expect(find.subtitleText(context, text: "Subtitle"), findsOneWidget);
   });
 
   testWidgets("Item without subtitle", (tester) async {
-    await tester.pumpWidget(
-      Testable(
-        (_) => PickerPage<String>(
-          itemBuilder: () => [
-            PickerPageItem(title: "Option A", value: "Option A"),
-          ],
-          onFinishedPicking: (_, __) => {},
-        ),
+    var context = await pumpContext(
+      tester,
+      (_) => PickerPage<String>(
+        itemBuilder: () => [
+          PickerPageItem(title: "Option A", value: "Option A"),
+        ],
+        onFinishedPicking: (_, __) => {},
       ),
     );
 
-    expect(find.byType(SubtitleLabel), findsNothing);
+    expect(find.subtitleText(context), findsNothing);
   });
 
   testWidgets("All item selects/deselects other items", (tester) async {
@@ -403,5 +405,57 @@ void main() {
     expect(findCheckbox(tester, "Option A")!.checked, isTrue);
     expect(findCheckbox(tester, "Option B")!.checked, isFalse);
     expect(findCheckbox(tester, "Option C")!.checked, isFalse);
+  });
+
+  testWidgets("Multi-none item pops navigator with empty selection",
+      (tester) async {
+    Set<String>? pickedItems;
+    await tester.pumpWidget(
+      Testable(
+        (_) => PickerPage<String>(
+          itemBuilder: () => [
+            PickerPageItem(title: "Option A", value: "Option A"),
+            PickerPageItem(title: "Option B", value: "Option B"),
+            PickerPageItem(title: "Option C", value: "Option C"),
+          ],
+          onFinishedPicking: (_, items) => pickedItems = items,
+          allItem: PickerPageItem(
+            title: "None",
+            value: "None",
+            isMultiNone: true,
+          ),
+          initialValues: {},
+          multiSelect: true,
+        ),
+      ),
+    );
+
+    expect(find.text("None"), findsOneWidget);
+
+    var check = tester.widget<AnimatedVisibility>(find.descendant(
+      of: find.widgetWithText(PickerListItem, "None"),
+      matching: find.byType(AnimatedVisibility),
+    ));
+    expect(check.visible, isTrue);
+
+    await tapAndSettle(
+      tester,
+      find.descendant(
+        of: find.widgetWithText(ListItem, "Option A"),
+        matching: find.byType(PaddedCheckbox),
+      ),
+    );
+    // Wait for check to disappear.
+    await tester.pumpAndSettle(Duration(milliseconds: 200));
+
+    check = tester.widget<AnimatedVisibility>(find.descendant(
+      of: find.widgetWithText(PickerListItem, "None"),
+      matching: find.byType(AnimatedVisibility),
+    ));
+    expect(check.visible, isFalse);
+
+    await tapAndSettle(tester, find.text("None"));
+    expect(pickedItems, isNotNull);
+    expect(pickedItems!, isEmpty);
   });
 }
