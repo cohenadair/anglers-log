@@ -220,7 +220,7 @@ void main() {
     await enterTextFieldAndSettle(
         tester, "Air Visibility", newAtmosphere.visibility.value.toString());
     await enterTextFieldAndSettle(
-        tester, "Air Humidity", newAtmosphere.humidity.toString());
+        tester, "Air Humidity", newAtmosphere.humidity.value.toString());
 
     await tester.ensureVisible(find.text("Moon Phase"));
     await tapAndSettle(tester, find.text("Moon Phase"));

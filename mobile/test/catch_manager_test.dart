@@ -1591,6 +1591,7 @@ void main() {
         boundary: NumberBoundary.less_than,
         from: MultiMeasurement(
           mainValue: Measurement(
+            unit: Unit.percent,
             value: 30,
           ),
         ),
@@ -1605,6 +1606,7 @@ void main() {
         boundary: NumberBoundary.greater_than_or_equal_to,
         from: MultiMeasurement(
           mainValue: Measurement(
+            unit: Unit.percent,
             value: 30,
           ),
         ),

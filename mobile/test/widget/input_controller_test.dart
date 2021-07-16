@@ -341,14 +341,14 @@ void main() {
 
       controller.value = MultiMeasurement(
         system: MeasurementSystem.imperial_whole,
-        // Rounded to 10.8.
+        // Fraction values are always rounded to whole numbers.
         fractionValue: Measurement(
           unit: Unit.kilometers,
           value: 10.75,
         ),
       );
 
-      expect(controller.value!.fractionValue.value, 10.8);
+      expect(controller.value!.fractionValue.value, 11);
     });
 
     test("isSet", () {

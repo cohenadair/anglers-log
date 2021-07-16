@@ -195,7 +195,7 @@ void main() {
     expect(atmosphere, isNotNull);
     expect(atmosphere!.temperature.value, 77.9);
     expect(atmosphere.temperature.unit, Unit.fahrenheit);
-    expect(atmosphere.humidity, 79); // Rounded
+    expect(atmosphere.humidity.value, 79.0);
     expect(atmosphere.windSpeed.value, 12.1);
     expect(atmosphere.windSpeed.unit, Unit.miles_per_hour);
     expect(atmosphere.windDirection, Direction.east);
@@ -235,7 +235,7 @@ void main() {
     expect(atmosphere, isNotNull);
     expect(atmosphere!.temperature.value, 78);
     expect(atmosphere.temperature.unit, Unit.fahrenheit);
-    expect(atmosphere.humidity, 79); // Rounded
+    expect(atmosphere.humidity.value, 79.0);
     expect(atmosphere.windSpeed.value, 19.4730624);
     expect(atmosphere.windSpeed.unit, Unit.kilometers_per_hour);
     expect(atmosphere.windDirection, Direction.east);

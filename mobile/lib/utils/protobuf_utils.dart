@@ -353,12 +353,8 @@ extension MultiMeasurements on MultiMeasurement {
       return true;
     }
 
-    if (lhs.system != rhs.system) {
-      _log.w(
-          "Can't compare different systems: ${lhs.system} vs. ${rhs.system}");
-      return false;
-    }
-
+    // Note that unit comparison is done in Measurement operator overrides, so
+    // there's no need to do it here.
     return comparator(lhs.mainValue, rhs.mainValue);
   }
 
