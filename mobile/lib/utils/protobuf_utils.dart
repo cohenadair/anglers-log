@@ -239,7 +239,7 @@ extension MeasurementSystems on MeasurementSystem {
 }
 
 extension Measurements on Measurement {
-  static const decimalPlaces = 1;
+  static const decimalPlaces = 2;
 
   String displayValue(BuildContext context) {
     var unitString = "";

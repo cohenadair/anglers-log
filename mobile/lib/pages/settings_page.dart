@@ -73,7 +73,7 @@ class _SettingsPageState extends State<SettingsPage> {
 
   Widget _buildUnits(BuildContext context) {
     return ListItem(
-      title: Text("DEV TODO"),
+      title: Text(Strings.of(context).unitsPageTitle),
       leading: Icon(CustomIcons.ruler),
       trailing: RightChevronIcon(),
       onTap: () => push(context, UnitsPage()),
