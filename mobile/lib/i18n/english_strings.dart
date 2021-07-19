@@ -299,6 +299,7 @@ Map<String, Map<String, String>> get englishStrings => {
         "formPage_addCustomFieldNote":
             "To add a custom field, tap the %s icon.",
         "formPage_manageFieldsNote": "To manage fields, tap the %s icon.",
+        "formPage_manageUnits": "Manage Units",
         "saveCustomEntityPage_newTitle": "New Field",
         "saveCustomEntityPage_editTitle": "Edit Field",
         "saveCustomEntityPage_nameExists": "Field name already exists",

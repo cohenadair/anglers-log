@@ -46,12 +46,11 @@ import '../widgets/static_fishing_spot.dart';
 import '../widgets/text_input.dart';
 import '../widgets/widget.dart';
 import 'angler_list_page.dart';
+import 'form_page.dart';
 import 'manageable_list_page.dart';
 import 'method_list_page.dart';
 import 'water_clarity_list_page.dart';
 
-// TODO: Add overflow item for updating units to here and atmosphere input
-// TODO: Add preferences listener(s)
 class SaveCatchPage extends StatefulWidget {
   /// If set, invoked when it's time to pop the page from the navigation stack.
   final VoidCallback? popOverride;
@@ -115,6 +114,7 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
 
   Future<List<PickedImage>> _imagesFuture = Future.value([]);
   List<CustomEntityValue> _customEntityValues = [];
+  StreamSubscription<void>? _userPreferenceSubscription;
 
   AnglerManager get _anglerManager => AnglerManager.of(context);
 
@@ -279,6 +279,20 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
       _calculateSeason();
       _fetchAtmosphereIfNeeded();
     }
+
+    _userPreferenceSubscription = _userPreferenceManager.stream.listen((_) {
+      _waterDepthController.system = _userPreferenceManager.waterDepthSystem;
+      _waterTemperatureController.system =
+          _userPreferenceManager.waterTemperatureSystem;
+      _lengthController.system = _userPreferenceManager.catchLengthSystem;
+      _weightController.system = _userPreferenceManager.catchWeightSystem;
+    });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _userPreferenceSubscription?.cancel();
   }
 
   @override
@@ -297,6 +311,7 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
       onAddFields: (ids) =>
           _userPreferenceManager.setCatchFieldIds(ids.toList()),
       onSave: _save,
+      overflowOptions: [FormPageOverflowOption.manageUnits(context)],
     );
   }
 
@@ -472,7 +487,7 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
         spec: _waterDepthInputState,
         controller: _waterDepthController,
         onChanged: () => _userPreferenceManager
-            .setWaterDepthSystem(_waterDepthController.value?.system),
+            .setWaterDepthSystem(_waterDepthController.value.system),
       ),
     );
   }
@@ -484,7 +499,7 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
         spec: _waterTemperatureInputState,
         controller: _waterTemperatureController,
         onChanged: () => _userPreferenceManager.setWaterTemperatureSystem(
-            _waterTemperatureController.value?.system),
+            _waterTemperatureController.value.system),
       ),
     );
   }
@@ -496,7 +511,7 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
         spec: _lengthInputState,
         controller: _lengthController,
         onChanged: () => _userPreferenceManager
-            .setCatchLengthSystem(_lengthController.value?.system),
+            .setCatchLengthSystem(_lengthController.value.system),
       ),
     );
   }
@@ -508,7 +523,7 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
         spec: _weightInputState,
         controller: _weightController,
         onChanged: () => _userPreferenceManager
-            .setCatchWeightSystem(_weightController.value?.system),
+            .setCatchWeightSystem(_weightController.value.system),
       ),
     );
   }
@@ -733,19 +748,19 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
     }
 
     if (_waterDepthController.isSet) {
-      cat.waterDepth = _waterDepthController.value!;
+      cat.waterDepth = _waterDepthController.value;
     }
 
     if (_waterTemperatureController.isSet) {
-      cat.waterTemperature = _waterTemperatureController.value!;
+      cat.waterTemperature = _waterTemperatureController.value;
     }
 
     if (_lengthController.isSet) {
-      cat.length = _lengthController.value!;
+      cat.length = _lengthController.value;
     }
 
     if (_weightController.isSet) {
-      cat.weight = _weightController.value!;
+      cat.weight = _weightController.value;
     }
 
     if (_methodsController.value.isNotEmpty) {

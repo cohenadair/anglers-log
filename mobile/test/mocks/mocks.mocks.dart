@@ -2122,6 +2122,9 @@ class MockPreferenceManager extends _i1.Mock implements _i71.PreferenceManager {
       (super.noSuchMethod(Invocation.getter(#tableName), returnValue: '')
           as String);
   @override
+  _i9.Stream<void> get stream => (super.noSuchMethod(Invocation.getter(#stream),
+      returnValue: Stream<void>.empty()) as _i9.Stream<void>);
+  @override
   _i2.FirestoreWrapper get firestore =>
       (super.noSuchMethod(Invocation.getter(#firestore),
           returnValue: _FakeFirestoreWrapper()) as _i2.FirestoreWrapper);
@@ -2545,6 +2548,9 @@ class MockUserPreferenceManager extends _i1.Mock
   Map<String, dynamic> get preferences =>
       (super.noSuchMethod(Invocation.getter(#preferences),
           returnValue: <String, dynamic>{}) as Map<String, dynamic>);
+  @override
+  _i9.Stream<void> get stream => (super.noSuchMethod(Invocation.getter(#stream),
+      returnValue: Stream<void>.empty()) as _i9.Stream<void>);
   @override
   _i2.FirestoreWrapper get firestore =>
       (super.noSuchMethod(Invocation.getter(#firestore),

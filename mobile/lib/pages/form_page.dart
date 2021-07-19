@@ -15,6 +15,7 @@ import '../utils/page_utils.dart';
 import '../widgets/button.dart';
 import '../widgets/widget.dart';
 import 'scroll_page.dart';
+import 'units_page.dart';
 
 /// A function responsible for building all input widgets.
 ///
@@ -92,6 +93,10 @@ class FormPage extends StatefulWidget {
   /// See [ScrollPage.refreshIndicatorKey].
   final Key? refreshIndicatorKey;
 
+  /// A list of items to show in the page's overflow menu, indicated by a
+  /// vertical dots icon on the right side of the [AppBar].
+  final List<FormPageOverflowOption> overflowOptions;
+
   FormPage({
     Key? key,
     this.popupMenuKey,
@@ -111,6 +116,7 @@ class FormPage extends StatefulWidget {
     this.isInputValid = true,
     this.onRefresh,
     this.refreshIndicatorKey,
+    this.overflowOptions = const [],
   }) : super(key: key);
 
   FormPage.immutable({
@@ -124,6 +130,7 @@ class FormPage extends StatefulWidget {
     String? saveButtonText,
     bool showSaveButton = true,
     bool showLoadingOverSave = false,
+    List<FormPageOverflowOption> overflowOptions = const [],
   }) : this(
           key: key,
           title: title,
@@ -139,6 +146,7 @@ class FormPage extends StatefulWidget {
           saveButtonText: saveButtonText,
           showSaveButton: showSaveButton,
           showLoadingOverSave: showLoadingOverSave,
+          overflowOptions: overflowOptions,
         );
 
   @override
@@ -188,23 +196,7 @@ class _FormPageState extends State<FormPage> {
               );
             },
           ),
-          widget.editable
-              ? PopupMenuButton<_OverflowOption>(
-                  key: widget.popupMenuKey,
-                  icon: Icon(FormPage.moreMenuIcon),
-                  itemBuilder: (context) => [
-                    PopupMenuItem<_OverflowOption>(
-                      value: _OverflowOption.manageFields,
-                      child: Text(Strings.of(context).formPageManageFieldText),
-                    ),
-                  ],
-                  onSelected: (option) {
-                    if (option == _OverflowOption.manageFields) {
-                      present(context, _addFieldSelectionPage());
-                    }
-                  },
-                )
-              : Empty(),
+          _buildOverflowMenu(),
         ],
       ),
       body: Padding(
@@ -225,6 +217,28 @@ class _FormPageState extends State<FormPage> {
           ),
         ),
       ),
+    );
+  }
+
+  Widget _buildOverflowMenu() {
+    if (!widget.editable && widget.overflowOptions.isEmpty) {
+      return Empty();
+    }
+
+    var options = <FormPageOverflowOption>[];
+    if (widget.editable) {
+      options.add(FormPageOverflowOption(
+          Strings.of(context).formPageManageFieldText,
+          () => present(context, _addFieldSelectionPage())));
+    }
+    options..addAll(widget.overflowOptions);
+
+    return PopupMenuButton<FormPageOverflowOption>(
+      key: widget.popupMenuKey,
+      icon: Icon(FormPage.moreMenuIcon),
+      itemBuilder: (context) =>
+          options.map((e) => e.toPopupMenuItem()).toList(),
+      onSelected: (option) => option.action(),
     );
   }
 
@@ -301,8 +315,33 @@ class FormPageFieldOption {
   int get hashCode => hash4(id, name, used, removable);
 }
 
-enum _OverflowOption {
-  manageFields,
+/// A convenience class for defining options for a [FormPage] overflow menu,
+/// rendered in the [AppBar].
+@immutable
+class FormPageOverflowOption {
+  static FormPageOverflowOption manageUnits(BuildContext context) {
+    return FormPageOverflowOption(Strings.of(context).formPageManageUnits,
+        () => present(context, UnitsPage()));
+  }
+
+  final String name;
+  final VoidCallback action;
+
+  FormPageOverflowOption(this.name, this.action);
+
+  PopupMenuItem<FormPageOverflowOption> toPopupMenuItem() {
+    return PopupMenuItem<FormPageOverflowOption>(
+      value: this,
+      child: Text(name),
+    );
+  }
+
+  @override
+  bool operator ==(Object other) =>
+      other is FormPageOverflowOption && name == other.name;
+
+  @override
+  int get hashCode => name.hashCode;
 }
 
 class _SelectionPage extends StatefulWidget {

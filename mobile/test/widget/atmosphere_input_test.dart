@@ -23,7 +23,20 @@ void main() {
   setUp(() {
     appManager = StubbedAppManager();
 
+    when(appManager.authManager.stream).thenAnswer((_) => Stream.empty());
+
+    when(appManager.localDatabaseManager.fetchAll(any))
+        .thenAnswer((_) => Future.value([]));
+    when(appManager.localDatabaseManager.insertOrReplace(any, any))
+        .thenAnswer((_) => Future.value(true));
+
     when(appManager.propertiesManager.visualCrossingApiKey).thenReturn("");
+
+    when(appManager.subscriptionManager.stream)
+        .thenAnswer((_) => Stream.empty());
+    when(appManager.subscriptionManager.isPro).thenReturn(false);
+    when(appManager.subscriptionManager.isFree).thenReturn(true);
+
     when(appManager.userPreferenceManager.atmosphereFieldIds).thenReturn([]);
     when(appManager.userPreferenceManager.airTemperatureSystem)
         .thenReturn(MeasurementSystem.metric);
@@ -33,6 +46,8 @@ void main() {
         .thenReturn(MeasurementSystem.metric);
     when(appManager.userPreferenceManager.windSpeedSystem)
         .thenReturn(MeasurementSystem.metric);
+    when(appManager.userPreferenceManager.stream)
+        .thenAnswer((_) => Stream.empty());
 
     fetcher = MockAtmosphereFetcher();
     controller = InputController<Atmosphere>();
@@ -385,5 +400,47 @@ void main() {
 
     expect(controller.hasValue, isTrue);
     expect(controller.value, newAtmosphere);
+  });
+
+  testWidgets("Updating units updates widgets", (tester) async {
+    var preferenceManager = NoFirestoreUserPreferenceManager(appManager.app);
+    await preferenceManager.initialize();
+
+    await preferenceManager.setAirTemperatureSystem(MeasurementSystem.metric);
+    await preferenceManager.setAirPressureSystem(MeasurementSystem.metric);
+    await preferenceManager.setAirVisibilitySystem(MeasurementSystem.metric);
+    await preferenceManager.setWindSpeedSystem(MeasurementSystem.metric);
+
+    when(appManager.app.userPreferenceManager).thenReturn(preferenceManager);
+
+    await tester.pumpWidget(Testable(
+      (_) => AtmosphereInput(
+        fetcher: fetcher,
+        controller: controller,
+      ),
+      appManager: appManager,
+    ));
+
+    await tapAndSettle(tester, find.byIcon(Icons.chevron_right));
+
+    expect(find.text("MB"), findsOneWidget);
+    expect(find.text("\u00B0C"), findsOneWidget);
+    expect(find.text("km"), findsOneWidget);
+    expect(find.text("km/h"), findsOneWidget);
+
+    await preferenceManager
+        .setAirTemperatureSystem(MeasurementSystem.imperial_decimal);
+    await preferenceManager
+        .setAirPressureSystem(MeasurementSystem.imperial_decimal);
+    await preferenceManager
+        .setAirVisibilitySystem(MeasurementSystem.imperial_decimal);
+    await preferenceManager
+        .setWindSpeedSystem(MeasurementSystem.imperial_decimal);
+    await tester.pumpAndSettle();
+
+    expect(find.text("psi"), findsOneWidget);
+    expect(find.text("\u00B0F"), findsOneWidget);
+    expect(find.text("mi"), findsOneWidget);
+    expect(find.text("mph"), findsOneWidget);
   });
 }

@@ -114,6 +114,76 @@ void main() {
     expect(find.byIcon(FormPage.moreMenuIcon), findsNothing);
   });
 
+  testWidgets("Immutable form with overflow options shows menu",
+      (tester) async {
+    await tester.pumpWidget(
+      Testable(
+        (_) => FormPage.immutable(
+          fieldBuilder: (_) => {},
+          isInputValid: true,
+          overflowOptions: [
+            FormPageOverflowOption("Test", () {}),
+          ],
+        ),
+      ),
+    );
+    expect(find.byIcon(FormPage.moreMenuIcon), findsOneWidget);
+  });
+
+  testWidgets("Immutable form without overflow options hides menu",
+      (tester) async {
+    await tester.pumpWidget(
+      Testable(
+        (_) => FormPage.immutable(
+          fieldBuilder: (_) => {},
+          isInputValid: true,
+          overflowOptions: [],
+        ),
+      ),
+    );
+    expect(find.byIcon(FormPage.moreMenuIcon), findsNothing);
+  });
+
+  testWidgets("Custom overflow options are shown", (tester) async {
+    await tester.pumpWidget(
+      Testable(
+        (_) => FormPage.immutable(
+          fieldBuilder: (_) => {},
+          isInputValid: true,
+          overflowOptions: [
+            FormPageOverflowOption("Option 1", () {}),
+            FormPageOverflowOption("Option 2", () {}),
+          ],
+        ),
+      ),
+    );
+
+    await tapAndSettle(tester, find.byIcon(FormPage.moreMenuIcon));
+
+    expect(find.text("Option 1"), findsOneWidget);
+    expect(find.text("Option 2"), findsOneWidget);
+  });
+
+  testWidgets("Selecting overflow option invokes callback", (tester) async {
+    var called = false;
+    await tester.pumpWidget(
+      Testable(
+        (_) => FormPage.immutable(
+          fieldBuilder: (_) => {},
+          isInputValid: true,
+          overflowOptions: [
+            FormPageOverflowOption("Test", () => called = true),
+          ],
+        ),
+      ),
+    );
+
+    await tapAndSettle(tester, find.byIcon(FormPage.moreMenuIcon));
+    await tapAndSettle(tester, find.text("Test"));
+
+    expect(called, isTrue);
+  });
+
   testWidgets("All form fields are built", (tester) async {
     await tester.pumpWidget(
       Testable(

@@ -298,29 +298,6 @@ void main() {
       expect(measurement.displayValue(context), "10\u00B0F");
     });
 
-    test("stringValue", () {
-      // Whole number.
-      var measurement = Measurement(
-        unit: Unit.pounds,
-        value: 10,
-      );
-      expect(measurement.stringValue, "10");
-
-      // Floating number.
-      measurement = Measurement(
-        unit: Unit.pounds,
-        value: 10.556842132,
-      );
-      expect(measurement.stringValue, "10.6");
-
-      // Whole floating number.
-      measurement = Measurement(
-        unit: Unit.pounds,
-        value: 10.0,
-      );
-      expect(measurement.stringValue, "10");
-    });
-
     test("toSystem", () {
       // No change in system.
       var measurement = Measurement(

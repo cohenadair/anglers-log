@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:fixnum/fixnum.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -7,6 +9,7 @@ import '../i18n/strings.dart';
 import '../log.dart';
 import '../model/gen/anglerslog.pb.dart';
 import '../pages/editable_form_page.dart';
+import '../pages/form_page.dart';
 import '../pages/picker_page.dart';
 import '../pages/pro_page.dart';
 import '../res/dimen.dart';
@@ -124,6 +127,8 @@ class __AtmosphereInputPageState extends State<_AtmosphereInputPage> {
   late final MultiMeasurementInputSpec _airVisibilityInputState;
   late final MultiMeasurementInputSpec _airHumidityInputState;
   late final MultiMeasurementInputSpec _windSpeedInputState;
+
+  StreamSubscription<void>? _userPreferenceSubscription;
 
   TimeManager get _timeManager => TimeManager.of(context);
 
@@ -244,6 +249,20 @@ class __AtmosphereInputPageState extends State<_AtmosphereInputPage> {
     if (widget.controller.value != null) {
       _updateFromAtmosphere(widget.controller.value!);
     }
+
+    _userPreferenceSubscription = _userPreferenceManager.stream.listen((_) {
+      _temperatureController.system =
+          _userPreferenceManager.airTemperatureSystem;
+      _windSpeedController.system = _userPreferenceManager.windSpeedSystem;
+      _pressureController.system = _userPreferenceManager.airPressureSystem;
+      _visibilityController.system = _userPreferenceManager.airVisibilitySystem;
+    });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _userPreferenceSubscription?.cancel();
   }
 
   @override
@@ -268,6 +287,7 @@ class __AtmosphereInputPageState extends State<_AtmosphereInputPage> {
         _updateFromControllers();
       },
       onRefresh: _fetch,
+      overflowOptions: [FormPageOverflowOption.manageUnits(context)],
     );
   }
 
@@ -533,7 +553,7 @@ class __AtmosphereInputPageState extends State<_AtmosphereInputPage> {
     var isSet = false;
 
     if (_temperatureController.isSet) {
-      result.temperature = _temperatureController.value!.mainValue;
+      result.temperature = _temperatureController.value.mainValue;
       isSet = true;
     }
 
@@ -548,22 +568,22 @@ class __AtmosphereInputPageState extends State<_AtmosphereInputPage> {
     }
 
     if (_windSpeedController.isSet) {
-      result.windSpeed = _windSpeedController.value!.mainValue;
+      result.windSpeed = _windSpeedController.value.mainValue;
       isSet = true;
     }
 
     if (_pressureController.isSet) {
-      result.pressure = _pressureController.value!.mainValue;
+      result.pressure = _pressureController.value.mainValue;
       isSet = true;
     }
 
     if (_visibilityController.isSet) {
-      result.visibility = _visibilityController.value!.mainValue;
+      result.visibility = _visibilityController.value.mainValue;
       isSet = true;
     }
 
     if (_humidityController.isSet) {
-      result.humidity = _humidityController.value!.mainValue;
+      result.humidity = _humidityController.value.mainValue;
       isSet = true;
     }
 

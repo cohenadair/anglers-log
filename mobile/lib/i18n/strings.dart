@@ -648,6 +648,8 @@ class Strings {
 
   String get formPageManageFieldsNote => _string("formPage_manageFieldsNote");
 
+  String get formPageManageUnits => _string("formPage_manageUnits");
+
   String get imagePickerPageNoPhotosFoundTitle =>
       _string("imagePickerPage_noPhotosFoundTitle");
 
