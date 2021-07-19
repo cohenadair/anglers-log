@@ -239,7 +239,7 @@ void main() {
     await enterTextAndSettle(tester, find.byType(TextInput), "12");
 
     expect(called, isTrue);
-    expect(controller.value!.mainValue.value, 12);
+    expect(controller.value.mainValue.value, 12);
   });
 
   testWidgets("Fraction text field notifies when changed", (tester) async {
@@ -270,7 +270,7 @@ void main() {
     await enterTextAndSettle(tester, find.byType(TextInput).last, "8");
 
     expect(called, isTrue);
-    expect(controller.value!.fractionValue.value, 8);
+    expect(controller.value.fractionValue.value, 8);
   });
 
   testWidgets("Inches selector notifies when changed", (tester) async {
@@ -304,7 +304,7 @@ void main() {
 
     expect(called, isTrue);
     expect(find.text("\u00BD"), findsOneWidget);
-    expect(controller.value!.fractionValue.value, 0.5);
+    expect(controller.value.fractionValue.value, 0.5);
   });
 
   testWidgets("Custom title", (tester) async {

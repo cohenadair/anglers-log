@@ -82,6 +82,8 @@ void main() {
         .thenReturn(MeasurementSystem.imperial_whole);
     when(appManager.userPreferenceManager.autoFetchAtmosphere)
         .thenReturn(false);
+    when(appManager.userPreferenceManager.stream)
+        .thenAnswer((_) => Stream.empty());
 
     when(appManager.speciesManager.listSortedByName(filter: anyNamed("filter")))
         .thenReturn([

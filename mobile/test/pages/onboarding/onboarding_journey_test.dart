@@ -36,6 +36,8 @@ void main() {
         .thenReturn(MeasurementSystem.metric);
     when(appManager.userPreferenceManager.autoFetchAtmosphere)
         .thenReturn(false);
+    when(appManager.userPreferenceManager.stream)
+        .thenAnswer((_) => Stream.empty());
 
     when(appManager.permissionHandlerWrapper.requestLocation())
         .thenAnswer((_) => Future.value(true));

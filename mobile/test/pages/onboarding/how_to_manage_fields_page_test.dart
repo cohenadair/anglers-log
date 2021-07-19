@@ -30,6 +30,8 @@ void main() {
         .thenReturn(MeasurementSystem.metric);
     when(appManager.userPreferenceManager.autoFetchAtmosphere)
         .thenReturn(false);
+    when(appManager.userPreferenceManager.stream)
+        .thenAnswer((_) => Stream.empty());
   });
 
   testWidgets("Menu hiding/showing", (tester) async {

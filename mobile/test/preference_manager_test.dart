@@ -198,6 +198,23 @@ void main() {
     expect(preferenceManager.prefs, isEmpty);
   });
 
+  testWidgets("Setting property notifies listener", (tester) async {
+    var called = false;
+    var sub = preferenceManager.stream.listen((_) {
+      called = true;
+    });
+
+    await tester.runAsync(() async {
+      preferenceManager.testInt = 10;
+
+      // Give some time for listeners to to be invoked.
+      await Future.delayed(Duration(milliseconds: 50));
+
+      expect(called, isTrue);
+      sub.cancel();
+    });
+  });
+
   test("Firestore document is added if it doesn't exist", () async {
     when(appManager.subscriptionManager.isPro).thenReturn(true);
 

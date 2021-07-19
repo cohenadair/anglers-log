@@ -45,6 +45,13 @@ class MultiMeasurementInput extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    return ValueListenableBuilder<MultiMeasurement?>(
+      valueListenable: controller,
+      builder: (context, _, __) => _buildInput(context),
+    );
+  }
+
+  Widget _buildInput(BuildContext context) {
     var imperialWholeSuffix = _isImperialWhole && spec.imperial == Unit.inches
         ? null
         : spec.imperial.shorthandDisplayName(context);

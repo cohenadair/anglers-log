@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:quiver/strings.dart';
 
+import '../log.dart';
 import '../model/gen/anglerslog.pb.dart';
 import '../time_manager.dart';
 import '../utils/date_time_utils.dart';
@@ -275,6 +276,8 @@ class NumberFilterInputController extends InputController<NumberFilter> {
 
 class MultiMeasurementInputController
     extends InputController<MultiMeasurement> {
+  final _log = Log("MultiMeasurementInputController");
+
   final NumberInputController mainController;
   final NumberInputController fractionController;
 
@@ -294,6 +297,12 @@ class MultiMeasurementInputController
         _system = system ?? MeasurementSystem.imperial_whole,
         _mainUnit = mainUnit,
         _fractionUnit = fractionUnit;
+
+  @override
+  bool get hasValue {
+    _log.w("hasValue will always return true. Do you mean to call isSet?");
+    return super.hasValue;
+  }
 
   @override
   set value(MultiMeasurement? newValue) {
@@ -323,11 +332,7 @@ class MultiMeasurementInputController
   }
 
   @override
-  MultiMeasurement? get value {
-    if (!mainController.hasValue && !fractionController.hasValue) {
-      return null;
-    }
-
+  MultiMeasurement get value {
     var result = MultiMeasurement(system: system);
 
     if (mainController.hasDoubleValue) {
@@ -354,27 +359,27 @@ class MultiMeasurementInputController
 
   MeasurementSystem get system => _system;
 
-  set system(MeasurementSystem newSystem) {
-    _system = newSystem;
-    _round();
+  set system(MeasurementSystem? newSystem) {
+    if (newSystem == null || newSystem == _system) {
+      return;
+    }
+
+    // Update entire value here so listeners are notified.
+    value = value.copyAndUpdate<MultiMeasurement>((updates) {
+      updates.system = newSystem;
+    });
   }
 
   /// Returns true if a numerical value in [value] is set to a non-null value.
-  bool get isSet {
-    var value = this.value;
-    return value != null && value.isSet;
-  }
+  bool get isSet => value.isSet;
 
   /// Rounds values to a reasonable value for displaying to the user.
   void _round() {
-    // First round to a single decimal place.
-    mainController.value =
-        mainController.doubleValue?.toStringAsFixed(Measurements.decimalPlaces);
+    mainController.value = mainController.doubleValue?.displayValue;
 
-    // Doubles that are whole, and imperial_whole system.
+    // Round to whole number if using imperial_whole system.
     if (mainController.hasDoubleValue &&
-        (mainController.doubleValue!.isWhole ||
-            _system == MeasurementSystem.imperial_whole)) {
+        _system == MeasurementSystem.imperial_whole) {
       mainController.value = mainController.doubleValue?.round().toString();
     }
 

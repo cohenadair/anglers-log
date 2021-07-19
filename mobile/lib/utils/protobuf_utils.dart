@@ -239,8 +239,6 @@ extension MeasurementSystems on MeasurementSystem {
 }
 
 extension Measurements on Measurement {
-  static const decimalPlaces = 1;
-
   String displayValue(BuildContext context) {
     var unitString = "";
     if (hasUnit()) {
@@ -250,8 +248,7 @@ extension Measurements on Measurement {
     return "$stringValue$unitString";
   }
 
-  String get stringValue =>
-      "${value.roundIfWhole() ?? value.toStringAsFixed(decimalPlaces)}";
+  String get stringValue => value.displayValue;
 
   String filterString(BuildContext context) =>
       "${displayValue(context)} ${unit.filterString(context)}";

@@ -11,6 +11,7 @@ import 'local_database_manager.dart';
 import 'log.dart';
 import 'model/gen/anglerslog.pb.dart';
 import 'utils/protobuf_utils.dart';
+import 'utils/void_stream_controller.dart';
 import 'wrappers/firestore_wrapper.dart';
 
 /// An abstract class for managing a collection of preferences. This class has
@@ -29,11 +30,16 @@ abstract class PreferenceManager extends DataSourceFacilitator {
   @protected
   final Map<String, dynamic> preferences = {};
 
+  final _controller = VoidStreamController();
+
   late Log _log;
 
   PreferenceManager(AppManager appManager) : super(appManager) {
     _log = Log("PreferenceManager($runtimeType)");
   }
+
+  /// A [Stream] that fires events when any preference updates.
+  Stream<void> get stream => _controller.stream;
 
   @protected
   FirestoreWrapper get firestore => appManager.firestoreWrapper;
@@ -93,6 +99,8 @@ abstract class PreferenceManager extends DataSourceFacilitator {
     } else {
       putLocal(key, value);
     }
+
+    _controller.notify();
   }
 
   @protected

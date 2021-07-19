@@ -533,6 +533,61 @@ class Strings {
   String get settingsPageFetchAtmosphereDescription =>
       _string("settingsPage_fetchAtmosphereDescription");
 
+  String get unitsPageTitle => _string("unitsPage_title");
+
+  String get unitsPageCatchLengthCentimeters =>
+      _string("unitsPage_catchLengthCentimeters");
+
+  String get unitsPageWaterDepthMeters => _string("unitsPage_waterDepthMeters");
+
+  String get unitsPageAirVisibilityKilometers =>
+      _string("unitsPage_airVisibilityKilometers");
+
+  String get unitsPageWindSpeedKilometers =>
+      _string("unitsPage_windSpeedKilometers");
+
+  String get unitsPageCatchLengthFractionalInches =>
+      _string("unitsPage_catchLengthFractionalInches");
+
+  String get unitsPageCatchLengthInches =>
+      _string("unitsPage_catchLengthInches");
+
+  String get unitsPageCatchWeightPoundsOunces =>
+      _string("unitsPage_catchWeightPoundsOunces");
+
+  String get unitsPageCatchWeightPounds =>
+      _string("unitsPage_catchWeightPounds");
+
+  String get unitsPageCatchWeightKilograms =>
+      _string("unitsPage_catchWeightKilograms");
+
+  String get unitsPageWaterTemperatureFahrenheit =>
+      _string("unitsPage_waterTemperatureFahrenheit");
+
+  String get unitsPageWaterTemperatureCelsius =>
+      _string("unitsPage_waterTemperatureCelsius");
+
+  String get unitsPageWaterDepthFeetInches =>
+      _string("unitsPage_waterDepthFeetInches");
+
+  String get unitsPageWaterDepthFeet => _string("unitsPage_waterDepthFeet");
+
+  String get unitsPageAirTemperatureFahrenheit =>
+      _string("unitsPage_airTemperatureFahrenheit");
+
+  String get unitsPageAirTemperatureCelsius =>
+      _string("unitsPage_airTemperatureCelsius");
+
+  String get unitsPageAirPressurePsi => _string("unitsPage_airPressurePsi");
+
+  String get unitsPageAirPressureMillibars =>
+      _string("unitsPage_airPressureMillibars");
+
+  String get unitsPageAirVisibilityMiles =>
+      _string("unitsPage_airVisibilityMiles");
+
+  String get unitsPageWindSpeedMiles => _string("unitsPage_windSpeedMiles");
+
   String get mapPageMenuLabel => _string("mapPage_menuLabel");
 
   String get mapPageDeleteFishingSpot => _string("mapPage_deleteFishingSpot");
@@ -592,6 +647,8 @@ class Strings {
       _string("formPage_addCustomFieldNote");
 
   String get formPageManageFieldsNote => _string("formPage_manageFieldsNote");
+
+  String get formPageManageUnits => _string("formPage_manageUnits");
 
   String get imagePickerPageNoPhotosFoundTitle =>
       _string("imagePickerPage_noPhotosFoundTitle");

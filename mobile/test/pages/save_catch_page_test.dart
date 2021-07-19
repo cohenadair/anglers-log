@@ -76,6 +76,8 @@ void main() {
         .thenReturn(MeasurementSystem.metric);
     when(appManager.userPreferenceManager.windSpeedSystem)
         .thenReturn(MeasurementSystem.imperial_decimal);
+    when(appManager.userPreferenceManager.stream)
+        .thenAnswer((_) => Stream.empty());
 
     when(appManager.subscriptionManager.stream)
         .thenAnswer((_) => Stream.empty());
@@ -1382,5 +1384,48 @@ void main() {
     ));
 
     verifyNever(appManager.httpWrapper.get(any));
+  });
+
+  testWidgets("Updating units updates widgets", (tester) async {
+    when(appManager.localDatabaseManager.fetchAll(any))
+        .thenAnswer((_) => Future.value([]));
+
+    var preferenceManager = NoFirestoreUserPreferenceManager(appManager.app);
+    await preferenceManager.initialize();
+
+    await preferenceManager.setWaterDepthSystem(MeasurementSystem.metric);
+    await preferenceManager.setWaterTemperatureSystem(MeasurementSystem.metric);
+    await preferenceManager.setCatchLengthSystem(MeasurementSystem.metric);
+    await preferenceManager.setCatchWeightSystem(MeasurementSystem.metric);
+
+    when(appManager.app.userPreferenceManager).thenReturn(preferenceManager);
+
+    await tester.pumpWidget(Testable(
+      (_) => SaveCatchPage(
+        speciesId: randomId(),
+        fishingSpotId: randomId(),
+      ),
+      appManager: appManager,
+    ));
+
+    expect(find.text("m"), findsOneWidget);
+    expect(find.text("\u00B0C"), findsOneWidget);
+    expect(find.text("cm"), findsOneWidget);
+    expect(find.text("kg"), findsOneWidget);
+
+    await preferenceManager
+        .setWaterDepthSystem(MeasurementSystem.imperial_decimal);
+    await preferenceManager
+        .setWaterTemperatureSystem(MeasurementSystem.imperial_decimal);
+    await preferenceManager
+        .setCatchLengthSystem(MeasurementSystem.imperial_decimal);
+    await preferenceManager
+        .setCatchWeightSystem(MeasurementSystem.imperial_decimal);
+    await tester.pumpAndSettle();
+
+    expect(find.text("ft"), findsOneWidget);
+    expect(find.text("\u00B0F"), findsOneWidget);
+    expect(find.text("in"), findsOneWidget);
+    expect(find.text("lbs"), findsOneWidget);
   });
 }

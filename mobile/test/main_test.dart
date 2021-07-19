@@ -57,6 +57,8 @@ void main() {
         .thenReturn(MeasurementSystem.imperial_whole);
     when(appManager.userPreferenceManager.autoFetchAtmosphere)
         .thenReturn(false);
+    when(appManager.userPreferenceManager.stream)
+        .thenAnswer((_) => Stream.empty());
 
     var channel = MockMethodChannel();
     when(channel.invokeMethod(any)).thenAnswer((_) => Future.value(null));

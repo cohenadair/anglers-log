@@ -48,4 +48,17 @@ extension Doubles on double {
   bool get isWhole => this % 1 == 0;
 
   int? roundIfWhole() => isWhole ? round() : null;
+
+  String get displayValue {
+    if (isWhole) {
+      return round().toString();
+    }
+
+    var fixed = toStringAsFixed(2);
+    if (fixed[fixed.length - 1] == "0") {
+      fixed = fixed.substring(0, fixed.length - 1);
+    }
+
+    return fixed;
+  }
 }

@@ -256,12 +256,12 @@ class __NumberFilterPageState extends State<_NumberFilterPage> {
     var filter = NumberFilter();
     filter.boundary = _boundaryController.value!;
 
-    if (_fromMeasurementController.hasValue) {
-      filter.from = _fromMeasurementController.value!;
+    if (_fromMeasurementController.isSet) {
+      filter.from = _fromMeasurementController.value;
     }
 
-    if (_toMeasurementController.hasValue) {
-      filter.to = _toMeasurementController.value!;
+    if (_toMeasurementController.isSet) {
+      filter.to = _toMeasurementController.value;
     }
 
     return filter;
@@ -311,13 +311,13 @@ class __NumberFilterPageState extends State<_NumberFilterPage> {
     _toMeasurementController = widget.inputSpec!.newInputController(
       mainController: NumberInputController(
         validator: RangeValidator(runner: (context, newValue) {
-          if (_toMeasurementController.hasValue &&
-              _fromMeasurementController.hasValue &&
-              _fromMeasurementController.value! >=
-                  _toMeasurementController.value!) {
+          if (_toMeasurementController.isSet &&
+              _fromMeasurementController.isSet &&
+              _fromMeasurementController.value >=
+                  _toMeasurementController.value) {
             return (context) => format(
                 Strings.of(context).filterPageInvalidEndValue,
-                [_fromMeasurementController.value!.displayValue(context)]);
+                [_fromMeasurementController.value.displayValue(context)]);
           }
           return null;
         }),

@@ -10,6 +10,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/app_manager.dart';
 import 'package:mobile/i18n/strings.dart';
 import 'package:mobile/res/style.dart';
+import 'package:mobile/user_preference_manager.dart';
 import 'package:mobile/widgets/checkbox_input.dart';
 import 'package:mobile/widgets/list_item.dart';
 import 'package:mobile/widgets/widget.dart';
@@ -20,6 +21,18 @@ import 'package:provider/provider.dart';
 import 'mocks/mocks.dart';
 import 'mocks/mocks.mocks.dart';
 import 'mocks/stubbed_app_manager.dart';
+
+/// A convenience class that uses a real [UserPreferenceManager] without the
+/// Firebase dependency.
+class NoFirestoreUserPreferenceManager extends UserPreferenceManager {
+  NoFirestoreUserPreferenceManager(AppManager appManager) : super(appManager);
+
+  @override
+  bool get enableFirestore => false;
+
+  @override
+  bool get shouldUseFirestore => false;
+}
 
 /// A widget that wraps a child in default localizations.
 class Testable extends StatelessWidget {

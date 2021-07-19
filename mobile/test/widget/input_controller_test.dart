@@ -5,6 +5,7 @@ import 'package:mobile/model/gen/anglerslog.pb.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mobile/utils/validator.dart';
 import 'package:mobile/widgets/input_controller.dart';
+import 'package:mobile/widgets/widget.dart';
 import 'package:mockito/mockito.dart';
 
 import '../mocks/mocks.mocks.dart';
@@ -209,7 +210,7 @@ void main() {
       controller.value = null;
       expect(controller.mainController.hasValue, isFalse);
       expect(controller.fractionController.hasValue, isFalse);
-      expect(controller.hasValue, isFalse);
+      expect(controller.isSet, isFalse);
     });
 
     test("Setting value updates controllers", () {
@@ -246,11 +247,10 @@ void main() {
         ),
       );
 
-      expect(controller.value, isNotNull);
-      expect(controller.value!.hasMainValue(), isFalse);
-      expect(controller.value!.hasFractionValue(), isTrue);
-      expect(controller.value!.fractionValue.unit, Unit.meters);
-      expect(controller.value!.fractionValue.value, 60);
+      expect(controller.value.hasMainValue(), isFalse);
+      expect(controller.value.hasFractionValue(), isTrue);
+      expect(controller.value.fractionValue.unit, Unit.meters);
+      expect(controller.value.fractionValue.value, 60);
     });
 
     test("Setting value without a fraction value", () {
@@ -265,9 +265,8 @@ void main() {
         ),
       );
 
-      expect(controller.value, isNotNull);
-      expect(controller.value!.hasMainValue(), isTrue);
-      expect(controller.value!.hasFractionValue(), isFalse);
+      expect(controller.value.hasMainValue(), isTrue);
+      expect(controller.value.hasFractionValue(), isFalse);
     });
 
     test("Setting value without a fraction unit", () {
@@ -282,14 +281,14 @@ void main() {
         ),
       );
 
-      expect(controller.value, isNotNull);
-      expect(controller.value!.hasMainValue(), isFalse);
-      expect(controller.value!.hasFractionValue(), isTrue);
-      expect(controller.value!.fractionValue.hasUnit(), isFalse);
-      expect(controller.value!.fractionValue.value, 60);
+      expect(controller.value.hasMainValue(), isFalse);
+      expect(controller.value.hasFractionValue(), isTrue);
+      expect(controller.value.fractionValue.hasUnit(), isFalse);
+      expect(controller.value.fractionValue.value, 60);
     });
 
-    test("Setting system round values", () {
+    testWidgets("Setting system updates and rounds existing value",
+        (tester) async {
       var controller = MultiMeasurementInputController(
         mainUnit: Unit.kilometers,
       );
@@ -301,10 +300,56 @@ void main() {
         ),
       );
 
-      controller.system = MeasurementSystem.metric;
+      var callCount = 0;
+      await tester.pumpWidget(
+        Testable(
+          (_) => ValueListenableBuilder<MultiMeasurement?>(
+            valueListenable: controller,
+            builder: (context, _, __) {
+              callCount += 1;
+              return Empty();
+            },
+          ),
+        ),
+      );
+      expect(callCount, 1);
 
-      expect(controller.value, isNotNull);
-      expect(controller.value!.mainValue.value, 60.3);
+      controller.system = MeasurementSystem.metric;
+      await tester.pumpAndSettle();
+
+      expect(controller.value.mainValue.value, 60.26);
+      expect(controller.value.system, MeasurementSystem.metric);
+      expect(controller.system, MeasurementSystem.metric);
+      expect(callCount, 2);
+    });
+
+    testWidgets("Setting system no-ops", (tester) async {
+      var controller = MultiMeasurementInputController(
+        system: MeasurementSystem.imperial_decimal,
+        mainUnit: Unit.kilometers,
+      );
+
+      var callCount = 0;
+      await tester.pumpWidget(
+        Testable(
+          (_) => ValueListenableBuilder<MultiMeasurement?>(
+            valueListenable: controller,
+            builder: (context, _, __) {
+              callCount += 1;
+              return Empty();
+            },
+          ),
+        ),
+      );
+      expect(callCount, 1);
+
+      controller.system = null;
+      await tester.pumpAndSettle();
+      expect(callCount, 1);
+
+      controller.system = MeasurementSystem.imperial_decimal;
+      await tester.pumpAndSettle();
+      expect(callCount, 1);
     });
 
     test("Rounding", () {
@@ -324,9 +369,8 @@ void main() {
         ),
       );
 
-      expect(controller.value, isNotNull);
-      expect(controller.value!.mainValue.value, 60);
-      expect(controller.value!.fractionValue.value, 0.75);
+      expect(controller.value.mainValue.value, 60);
+      expect(controller.value.fractionValue.value, 0.75);
 
       controller.value = MultiMeasurement(
         system: MeasurementSystem.imperial_whole,
@@ -337,7 +381,7 @@ void main() {
         ),
       );
 
-      expect(controller.value!.fractionValue.value, 10.75);
+      expect(controller.value.fractionValue.value, 10.75);
 
       controller.value = MultiMeasurement(
         system: MeasurementSystem.imperial_whole,
@@ -348,7 +392,7 @@ void main() {
         ),
       );
 
-      expect(controller.value!.fractionValue.value, 11);
+      expect(controller.value.fractionValue.value, 11);
     });
 
     test("isSet", () {

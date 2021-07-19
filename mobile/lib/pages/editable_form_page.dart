@@ -70,6 +70,9 @@ class EditableFormPage extends StatefulWidget {
   /// See [FormPage.popupMenuKey].
   final GlobalKey<PopupMenuButtonState>? popupMenuKey;
 
+  /// See [FormPage.overflowOptions].
+  final List<FormPageOverflowOption> overflowOptions;
+
   EditableFormPage({
     this.popupMenuKey,
     this.title,
@@ -87,6 +90,7 @@ class EditableFormPage extends StatefulWidget {
     this.runSpacing,
     this.onRefresh,
     this.refreshIndicatorKey,
+    this.overflowOptions = const [],
   });
 
   @override
@@ -205,6 +209,7 @@ class _EditableFormPageState extends State<EditableFormPage> {
       allowCustomEntities: widget.allowCustomEntities,
       onRefresh: widget.onRefresh,
       refreshIndicatorKey: widget.refreshIndicatorKey,
+      overflowOptions: widget.overflowOptions,
     );
   }
 
