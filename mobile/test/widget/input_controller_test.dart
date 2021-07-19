@@ -210,7 +210,6 @@ void main() {
       controller.value = null;
       expect(controller.mainController.hasValue, isFalse);
       expect(controller.fractionController.hasValue, isFalse);
-      expect(controller.hasValue, isTrue);
       expect(controller.isSet, isFalse);
     });
 
