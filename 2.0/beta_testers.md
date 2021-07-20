@@ -11,6 +11,7 @@ Anglers' Log 2.0 Beta Testers
 * Dov - dovfeder@optonline.net
 * Eric Moshier - eric@solidrockmasonry.com
 * Jeff Velick - jeffvelick3@yahoo.com
+* Jonathan - jonnyboyvo@yahoo.com
 
 ### Donators
 * Dov - dovfeder@optonline.net
