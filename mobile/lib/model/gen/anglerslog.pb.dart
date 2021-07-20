@@ -742,7 +742,7 @@ class Catch extends $pb.GeneratedMessage {
         const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'timestamp',
         $pb.PbFieldType.OU6,
         defaultOrMaker: $fixnum.Int64.ZERO)
-    ..aOM<Id>(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'baitId', subBuilder: Id.create)
+    ..pc<Id>(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'baitIds', $pb.PbFieldType.PM, subBuilder: Id.create)
     ..aOM<Id>(4, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'fishingSpotId', subBuilder: Id.create)
     ..aOM<Id>(5, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'speciesId', subBuilder: Id.create)
     ..pPS(6, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'imageNames')
@@ -767,7 +767,7 @@ class Catch extends $pb.GeneratedMessage {
   factory Catch({
     Id? id,
     $fixnum.Int64? timestamp,
-    Id? baitId,
+    $core.Iterable<Id>? baitIds,
     Id? fishingSpotId,
     Id? speciesId,
     $core.Iterable<$core.String>? imageNames,
@@ -794,8 +794,8 @@ class Catch extends $pb.GeneratedMessage {
     if (timestamp != null) {
       _result.timestamp = timestamp;
     }
-    if (baitId != null) {
-      _result.baitId = baitId;
+    if (baitIds != null) {
+      _result.baitIds.addAll(baitIds);
     }
     if (fishingSpotId != null) {
       _result.fishingSpotId = fishingSpotId;
@@ -906,18 +906,7 @@ class Catch extends $pb.GeneratedMessage {
   void clearTimestamp() => clearField(2);
 
   @$pb.TagNumber(3)
-  Id get baitId => $_getN(2);
-  @$pb.TagNumber(3)
-  set baitId(Id v) {
-    setField(3, v);
-  }
-
-  @$pb.TagNumber(3)
-  $core.bool hasBaitId() => $_has(2);
-  @$pb.TagNumber(3)
-  void clearBaitId() => clearField(3);
-  @$pb.TagNumber(3)
-  Id ensureBaitId() => $_ensure(2);
+  $core.List<Id> get baitIds => $_getList(2);
 
   @$pb.TagNumber(4)
   Id get fishingSpotId => $_getN(3);

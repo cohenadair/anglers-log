@@ -289,11 +289,13 @@ class CalculatedReport {
         _fishingSpotsPerSpecies.inc(species, fishingSpot);
       }
 
-      var bait = _baitManager.entity(cat.baitId);
-      if (bait != null) {
-        _catchesPerBait.putIfAbsent(bait, () => 0);
-        _catchesPerBait[bait] = _catchesPerBait[bait]! + 1;
-        _baitsPerSpecies.inc(species, bait);
+      for (var id in cat.baitIds) {
+        var bait = _baitManager.entity(id);
+        if (bait != null) {
+          _catchesPerBait.putIfAbsent(bait, () => 0);
+          _catchesPerBait[bait] = _catchesPerBait[bait]! + 1;
+          _baitsPerSpecies.inc(species, bait);
+        }
       }
     }
 

@@ -90,7 +90,7 @@ List<Field> allCatchFields(TimeManager timeManager) {
     Field(
       id: catchFieldIdBait(),
       name: (context) => Strings.of(context).catchFieldBaitLabel,
-      controller: IdInputController(),
+      controller: SetInputController<Id>(),
     ),
     Field(
       id: catchFieldIdImages(),

@@ -166,8 +166,8 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
   IdInputController get _fishingSpotController =>
       _fields[_idFishingSpot]!.controller as IdInputController;
 
-  IdInputController get _baitController =>
-      _fields[_idBait]!.controller as IdInputController;
+  SetInputController<Id> get _baitsController =>
+      _fields[_idBait]!.controller as SetInputController<Id>;
 
   IdInputController get _anglerController =>
       _fields[_idAngler]!.controller as IdInputController;
@@ -240,7 +240,8 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
       _seasonController.value =
           _oldCatch!.hasSeason() ? _oldCatch!.season : null;
       _speciesController.value = _oldCatch!.speciesId;
-      _baitController.value = _oldCatch!.baitId;
+      _baitsController.value = _oldCatch!.baitIds.toSet();
+      ;
       _fishingSpotController.value = _oldCatch!.fishingSpotId;
       _anglerController.value = _oldCatch!.anglerId;
       _catchAndReleaseController.value = _oldCatch!.wasCatchAndRelease;
@@ -325,7 +326,7 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
     } else if (id == _idFishingSpot) {
       return _buildFishingSpot();
     } else if (id == _idBait) {
-      return _buildBait();
+      return _buildBaits();
     } else if (id == _idAngler) {
       return _buildAngler();
     } else if (id == _idMethods) {
@@ -385,32 +386,34 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
     );
   }
 
-  Widget _buildBait() {
+  Widget _buildBaits() {
     return EntityListenerBuilder(
       managers: [
         _baitCategoryManager,
         _baitManager,
       ],
       builder: (context) {
-        String? value;
-        if (_baitController.value != null) {
-          value = _baitManager.formatNameWithCategory(_baitController.value);
-        }
+        var values = _baitsController.value.isNotEmpty
+            ? _baitManager.list(_baitsController.value)
+            : <Bait>[];
 
-        return ListPickerInput(
-          title: Strings.of(context).catchFieldBaitLabel,
-          value: value,
+        return MultiListPickerInput(
+          padding: insetsHorizontalDefaultVerticalWidget,
+          values: values
+              .map((bait) => _baitManager.formatNameWithCategory(bait.id)!)
+              .toSet(),
+          emptyValue: (context) => Strings.of(context).catchFieldNoBaits,
           onTap: () {
             push(
               context,
               BaitListPage(
-                pickerSettings:
-                    ManageableListPagePickerSettings<dynamic>.single(
-                  onPicked: (context, bait) {
-                    setState(() => _baitController.value = bait?.id);
+                pickerSettings: ManageableListPagePickerSettings<dynamic>(
+                  onPicked: (context, baits) {
+                    setState(() => _baitsController.value =
+                        baits.map<Id>((e) => e.id).toSet());
                     return true;
                   },
-                  initialValue: _baitManager.entity(_baitController.value),
+                  initialValues: values.toSet(),
                 ),
               ),
             );
@@ -575,7 +578,7 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
       ],
       builder: (context) {
         var values = _methodsController.value.isNotEmpty
-            ? _methodManager.list(_methodsController.value.toList())
+            ? _methodManager.list(_methodsController.value)
             : <Method>[];
 
         return MultiListPickerInput(
@@ -735,8 +738,10 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
       cat.fishingSpotId = _fishingSpotController.value!;
     }
 
-    if (_baitController.hasValue) {
-      cat.baitId = _baitController.value!;
+    if (_baitsController.value.isNotEmpty) {
+      cat.baitIds.addAll(_baitsController.value);
+    } else {
+      cat.baitIds.clear();
     }
 
     if (_anglerController.hasValue) {

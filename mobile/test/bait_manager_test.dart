@@ -103,22 +103,22 @@ void main() {
         ..id = randomId()
         ..timestamp = Int64(0)
         ..speciesId = speciesId0
-        ..baitId = baitId0,
+        ..baitIds.add(baitId0),
       Catch()
         ..id = randomId()
         ..timestamp = Int64(0)
         ..speciesId = speciesId0
-        ..baitId = baitId1,
+        ..baitIds.add(baitId1),
       Catch()
         ..id = randomId()
         ..timestamp = Int64(0)
         ..speciesId = speciesId0
-        ..baitId = baitId2,
+        ..baitIds.add(baitId2),
       Catch()
         ..id = randomId()
         ..timestamp = Int64(0)
         ..speciesId = speciesId0
-        ..baitId = baitId0,
+        ..baitIds.add(baitId0),
       Catch()
         ..id = randomId()
         ..timestamp = Int64(0)
@@ -310,7 +310,7 @@ void main() {
           ..id = randomId()
           ..timestamp = Int64(0)
           ..speciesId = randomId()
-          ..baitId = bait.id,
+          ..baitIds.add(bait.id),
       ]);
 
       var context = await buildContext(tester);
@@ -346,12 +346,12 @@ void main() {
           ..id = randomId()
           ..timestamp = Int64(0)
           ..speciesId = randomId()
-          ..baitId = bait.id,
+          ..baitIds.add(bait.id),
         Catch()
           ..id = randomId()
           ..timestamp = Int64(5)
           ..speciesId = randomId()
-          ..baitId = bait.id,
+          ..baitIds.add(bait.id),
       ]);
 
       var context = await buildContext(tester);
@@ -377,7 +377,7 @@ void main() {
           ..id = randomId()
           ..timestamp = Int64(5)
           ..speciesId = randomId()
-          ..baitId = bait.id,
+          ..baitIds.add(bait.id),
       ]);
 
       var context = await buildContext(tester);

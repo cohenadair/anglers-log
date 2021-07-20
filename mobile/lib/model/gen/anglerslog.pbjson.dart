@@ -384,12 +384,12 @@ const Catch$json = const {
     },
     const {'1': 'timestamp', '3': 2, '4': 1, '5': 4, '10': 'timestamp'},
     const {
-      '1': 'bait_id',
+      '1': 'bait_ids',
       '3': 3,
-      '4': 1,
+      '4': 3,
       '5': 11,
       '6': '.anglerslog.Id',
-      '10': 'baitId'
+      '10': 'baitIds'
     },
     const {
       '1': 'fishing_spot_id',
@@ -511,7 +511,7 @@ const Catch$json = const {
 
 /// Descriptor for `Catch`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List catchDescriptor = $convert.base64Decode(
-    'CgVDYXRjaBIeCgJpZBgBIAEoCzIOLmFuZ2xlcnNsb2cuSWRSAmlkEhwKCXRpbWVzdGFtcBgCIAEoBFIJdGltZXN0YW1wEicKB2JhaXRfaWQYAyABKAsyDi5hbmdsZXJzbG9nLklkUgZiYWl0SWQSNgoPZmlzaGluZ19zcG90X2lkGAQgASgLMg4uYW5nbGVyc2xvZy5JZFINZmlzaGluZ1Nwb3RJZBItCgpzcGVjaWVzX2lkGAUgASgLMg4uYW5nbGVyc2xvZy5JZFIJc3BlY2llc0lkEh8KC2ltYWdlX25hbWVzGAYgAygJUgppbWFnZU5hbWVzEk8KFGN1c3RvbV9lbnRpdHlfdmFsdWVzGAcgAygLMh0uYW5nbGVyc2xvZy5DdXN0b21FbnRpdHlWYWx1ZVISY3VzdG9tRW50aXR5VmFsdWVzEisKCWFuZ2xlcl9pZBgIIAEoCzIOLmFuZ2xlcnNsb2cuSWRSCGFuZ2xlcklkEi0KCm1ldGhvZF9pZHMYCSADKAsyDi5hbmdsZXJzbG9nLklkUgltZXRob2RJZHMSKgoGcGVyaW9kGAogASgOMhIuYW5nbGVyc2xvZy5QZXJpb2RSBnBlcmlvZBIfCgtpc19mYXZvcml0ZRgLIAEoCFIKaXNGYXZvcml0ZRIxChV3YXNfY2F0Y2hfYW5kX3JlbGVhc2UYDCABKAhSEndhc0NhdGNoQW5kUmVsZWFzZRIqCgZzZWFzb24YDSABKA4yEi5hbmdsZXJzbG9nLlNlYXNvblIGc2Vhc29uEjgKEHdhdGVyX2NsYXJpdHlfaWQYDiABKAsyDi5hbmdsZXJzbG9nLklkUg53YXRlckNsYXJpdHlJZBI9Cgt3YXRlcl9kZXB0aBgPIAEoCzIcLmFuZ2xlcnNsb2cuTXVsdGlNZWFzdXJlbWVudFIKd2F0ZXJEZXB0aBJJChF3YXRlcl90ZW1wZXJhdHVyZRgQIAEoCzIcLmFuZ2xlcnNsb2cuTXVsdGlNZWFzdXJlbWVudFIQd2F0ZXJUZW1wZXJhdHVyZRI0CgZsZW5ndGgYESABKAsyHC5hbmdsZXJzbG9nLk11bHRpTWVhc3VyZW1lbnRSBmxlbmd0aBI0CgZ3ZWlnaHQYEiABKAsyHC5hbmdsZXJzbG9nLk11bHRpTWVhc3VyZW1lbnRSBndlaWdodBIaCghxdWFudGl0eRgTIAEoDVIIcXVhbnRpdHkSFAoFbm90ZXMYFCABKAlSBW5vdGVzEjYKCmF0bW9zcGhlcmUYFSABKAsyFi5hbmdsZXJzbG9nLkF0bW9zcGhlcmVSCmF0bW9zcGhlcmU=');
+    'CgVDYXRjaBIeCgJpZBgBIAEoCzIOLmFuZ2xlcnNsb2cuSWRSAmlkEhwKCXRpbWVzdGFtcBgCIAEoBFIJdGltZXN0YW1wEikKCGJhaXRfaWRzGAMgAygLMg4uYW5nbGVyc2xvZy5JZFIHYmFpdElkcxI2Cg9maXNoaW5nX3Nwb3RfaWQYBCABKAsyDi5hbmdsZXJzbG9nLklkUg1maXNoaW5nU3BvdElkEi0KCnNwZWNpZXNfaWQYBSABKAsyDi5hbmdsZXJzbG9nLklkUglzcGVjaWVzSWQSHwoLaW1hZ2VfbmFtZXMYBiADKAlSCmltYWdlTmFtZXMSTwoUY3VzdG9tX2VudGl0eV92YWx1ZXMYByADKAsyHS5hbmdsZXJzbG9nLkN1c3RvbUVudGl0eVZhbHVlUhJjdXN0b21FbnRpdHlWYWx1ZXMSKwoJYW5nbGVyX2lkGAggASgLMg4uYW5nbGVyc2xvZy5JZFIIYW5nbGVySWQSLQoKbWV0aG9kX2lkcxgJIAMoCzIOLmFuZ2xlcnNsb2cuSWRSCW1ldGhvZElkcxIqCgZwZXJpb2QYCiABKA4yEi5hbmdsZXJzbG9nLlBlcmlvZFIGcGVyaW9kEh8KC2lzX2Zhdm9yaXRlGAsgASgIUgppc0Zhdm9yaXRlEjEKFXdhc19jYXRjaF9hbmRfcmVsZWFzZRgMIAEoCFISd2FzQ2F0Y2hBbmRSZWxlYXNlEioKBnNlYXNvbhgNIAEoDjISLmFuZ2xlcnNsb2cuU2Vhc29uUgZzZWFzb24SOAoQd2F0ZXJfY2xhcml0eV9pZBgOIAEoCzIOLmFuZ2xlcnNsb2cuSWRSDndhdGVyQ2xhcml0eUlkEj0KC3dhdGVyX2RlcHRoGA8gASgLMhwuYW5nbGVyc2xvZy5NdWx0aU1lYXN1cmVtZW50Ugp3YXRlckRlcHRoEkkKEXdhdGVyX3RlbXBlcmF0dXJlGBAgASgLMhwuYW5nbGVyc2xvZy5NdWx0aU1lYXN1cmVtZW50UhB3YXRlclRlbXBlcmF0dXJlEjQKBmxlbmd0aBgRIAEoCzIcLmFuZ2xlcnNsb2cuTXVsdGlNZWFzdXJlbWVudFIGbGVuZ3RoEjQKBndlaWdodBgSIAEoCzIcLmFuZ2xlcnNsb2cuTXVsdGlNZWFzdXJlbWVudFIGd2VpZ2h0EhoKCHF1YW50aXR5GBMgASgNUghxdWFudGl0eRIUCgVub3RlcxgUIAEoCVIFbm90ZXMSNgoKYXRtb3NwaGVyZRgVIAEoCzIWLmFuZ2xlcnNsb2cuQXRtb3NwaGVyZVIKYXRtb3NwaGVyZQ==');
 @$core.Deprecated('Use dateRangeDescriptor instead')
 const DateRange$json = const {
   '1': 'DateRange',

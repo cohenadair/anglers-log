@@ -100,7 +100,7 @@ class _CatchPageState extends State<CatchPage> {
               child: _buildHeader(),
             ),
             _buildMethods(),
-            _buildBait(),
+            _buildBaits(),
             _buildFishingSpot(),
             _buildAtmosphere(),
             _buildSize(),
@@ -164,30 +164,35 @@ class _CatchPageState extends State<CatchPage> {
     return result += "${items.join(", ")})";
   }
 
-  Widget _buildBait() {
-    var bait = _baitManager.entity(_catch.baitId);
-    if (bait == null) {
+  Widget _buildBaits() {
+    var baits = _baitManager.list(_catch.baitIds);
+    if (baits.isEmpty) {
       return Empty();
     }
 
-    Widget? subtitle;
-    var baitCategory = _baitCategoryManager.entity(bait.baitCategoryId);
-    if (baitCategory != null) {
-      subtitle = Text(baitCategory.name, style: styleSubtitle(context));
+    var children = <Widget>[];
+    for (var bait in baits) {
+      Widget? subtitle;
+      var baitCategory = _baitCategoryManager.entity(bait.baitCategoryId);
+      if (baitCategory != null) {
+        subtitle = Text(baitCategory.name, style: styleSubtitle(context));
+      }
+
+      children.add(ListItem(
+        title: Text(bait.name),
+        subtitle: subtitle,
+        trailing: RightChevronIcon(),
+        onTap: () => push(
+          context,
+          BaitPage(
+            bait,
+            static: true,
+          ),
+        ),
+      ));
     }
 
-    return ListItem(
-      title: Text(bait.name),
-      subtitle: subtitle,
-      trailing: RightChevronIcon(),
-      onTap: () => push(
-        context,
-        BaitPage(
-          bait,
-          static: true,
-        ),
-      ),
-    );
+    return Column(children: children);
   }
 
   Widget _buildFishingSpot() {

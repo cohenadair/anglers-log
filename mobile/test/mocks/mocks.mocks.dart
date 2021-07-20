@@ -425,7 +425,7 @@ class MockAnglerManager extends _i1.Mock implements _i11.AnglerManager {
               returnValue: _FakeStreamSubscription<dynamic>())
           as _i9.StreamSubscription<dynamic>);
   @override
-  List<_i8.Angler> list([List<_i8.Id>? ids]) =>
+  List<_i8.Angler> list([Iterable<_i8.Id>? ids]) =>
       (super.noSuchMethod(Invocation.method(#list, [ids]),
           returnValue: <_i8.Angler>[]) as List<_i8.Angler>);
   @override
@@ -433,7 +433,7 @@ class MockAnglerManager extends _i1.Mock implements _i11.AnglerManager {
       (super.noSuchMethod(Invocation.method(#filteredList, [filter]),
           returnValue: <_i8.Angler>[]) as List<_i8.Angler>);
   @override
-  bool idsMatchFilter(List<_i8.Id>? ids, String? filter) =>
+  bool idsMatchFilter(Iterable<_i8.Id>? ids, String? filter) =>
       (super.noSuchMethod(Invocation.method(#idsMatchFilter, [ids, filter]),
           returnValue: false) as bool);
   @override
@@ -796,7 +796,7 @@ class MockBaitCategoryManager extends _i1.Mock
               returnValue: _FakeStreamSubscription<dynamic>())
           as _i9.StreamSubscription<dynamic>);
   @override
-  List<_i8.BaitCategory> list([List<_i8.Id>? ids]) =>
+  List<_i8.BaitCategory> list([Iterable<_i8.Id>? ids]) =>
       (super.noSuchMethod(Invocation.method(#list, [ids]),
           returnValue: <_i8.BaitCategory>[]) as List<_i8.BaitCategory>);
   @override
@@ -804,7 +804,7 @@ class MockBaitCategoryManager extends _i1.Mock
       (super.noSuchMethod(Invocation.method(#filteredList, [filter]),
           returnValue: <_i8.BaitCategory>[]) as List<_i8.BaitCategory>);
   @override
-  bool idsMatchFilter(List<_i8.Id>? ids, String? filter) =>
+  bool idsMatchFilter(Iterable<_i8.Id>? ids, String? filter) =>
       (super.noSuchMethod(Invocation.method(#idsMatchFilter, [ids, filter]),
           returnValue: false) as bool);
   @override
@@ -967,7 +967,7 @@ class MockBaitManager extends _i1.Mock implements _i13.BaitManager {
               returnValue: _FakeStreamSubscription<dynamic>())
           as _i9.StreamSubscription<dynamic>);
   @override
-  List<_i8.Bait> list([List<_i8.Id>? ids]) =>
+  List<_i8.Bait> list([Iterable<_i8.Id>? ids]) =>
       (super.noSuchMethod(Invocation.method(#list, [ids]),
           returnValue: <_i8.Bait>[]) as List<_i8.Bait>);
   @override
@@ -975,7 +975,7 @@ class MockBaitManager extends _i1.Mock implements _i13.BaitManager {
       (super.noSuchMethod(Invocation.method(#filteredList, [filter]),
           returnValue: <_i8.Bait>[]) as List<_i8.Bait>);
   @override
-  bool idsMatchFilter(List<_i8.Id>? ids, String? filter) =>
+  bool idsMatchFilter(Iterable<_i8.Id>? ids, String? filter) =>
       (super.noSuchMethod(Invocation.method(#idsMatchFilter, [ids, filter]),
           returnValue: false) as bool);
   @override
@@ -1261,7 +1261,7 @@ class MockCatchManager extends _i1.Mock implements _i14.CatchManager {
               returnValue: _FakeStreamSubscription<dynamic>())
           as _i9.StreamSubscription<dynamic>);
   @override
-  List<_i8.Catch> list([List<_i8.Id>? ids]) =>
+  List<_i8.Catch> list([Iterable<_i8.Id>? ids]) =>
       (super.noSuchMethod(Invocation.method(#list, [ids]),
           returnValue: <_i8.Catch>[]) as List<_i8.Catch>);
   @override
@@ -1269,7 +1269,7 @@ class MockCatchManager extends _i1.Mock implements _i14.CatchManager {
       (super.noSuchMethod(Invocation.method(#filteredList, [filter]),
           returnValue: <_i8.Catch>[]) as List<_i8.Catch>);
   @override
-  bool idsMatchFilter(List<_i8.Id>? ids, String? filter) =>
+  bool idsMatchFilter(Iterable<_i8.Id>? ids, String? filter) =>
       (super.noSuchMethod(Invocation.method(#idsMatchFilter, [ids, filter]),
           returnValue: false) as bool);
   @override
@@ -1412,7 +1412,7 @@ class MockCustomEntityManager extends _i1.Mock
               returnValue: _FakeStreamSubscription<dynamic>())
           as _i9.StreamSubscription<dynamic>);
   @override
-  List<_i8.CustomEntity> list([List<_i8.Id>? ids]) =>
+  List<_i8.CustomEntity> list([Iterable<_i8.Id>? ids]) =>
       (super.noSuchMethod(Invocation.method(#list, [ids]),
           returnValue: <_i8.CustomEntity>[]) as List<_i8.CustomEntity>);
   @override
@@ -1420,7 +1420,7 @@ class MockCustomEntityManager extends _i1.Mock
       (super.noSuchMethod(Invocation.method(#filteredList, [filter]),
           returnValue: <_i8.CustomEntity>[]) as List<_i8.CustomEntity>);
   @override
-  bool idsMatchFilter(List<_i8.Id>? ids, String? filter) =>
+  bool idsMatchFilter(Iterable<_i8.Id>? ids, String? filter) =>
       (super.noSuchMethod(Invocation.method(#idsMatchFilter, [ids, filter]),
           returnValue: false) as bool);
   @override
@@ -1580,7 +1580,7 @@ class MockReportManager extends _i1.Mock implements _i21.ReportManager {
               returnValue: _FakeStreamSubscription<dynamic>())
           as _i9.StreamSubscription<dynamic>);
   @override
-  List<_i8.Report> list([List<_i8.Id>? ids]) =>
+  List<_i8.Report> list([Iterable<_i8.Id>? ids]) =>
       (super.noSuchMethod(Invocation.method(#list, [ids]),
           returnValue: <_i8.Report>[]) as List<_i8.Report>);
   @override
@@ -1588,7 +1588,7 @@ class MockReportManager extends _i1.Mock implements _i21.ReportManager {
       (super.noSuchMethod(Invocation.method(#filteredList, [filter]),
           returnValue: <_i8.Report>[]) as List<_i8.Report>);
   @override
-  bool idsMatchFilter(List<_i8.Id>? ids, String? filter) =>
+  bool idsMatchFilter(Iterable<_i8.Id>? ids, String? filter) =>
       (super.noSuchMethod(Invocation.method(#idsMatchFilter, [ids, filter]),
           returnValue: false) as bool);
   @override
@@ -1750,7 +1750,7 @@ class MockFishingSpotManager extends _i1.Mock
               returnValue: _FakeStreamSubscription<dynamic>())
           as _i9.StreamSubscription<dynamic>);
   @override
-  List<_i8.FishingSpot> list([List<_i8.Id>? ids]) =>
+  List<_i8.FishingSpot> list([Iterable<_i8.Id>? ids]) =>
       (super.noSuchMethod(Invocation.method(#list, [ids]),
           returnValue: <_i8.FishingSpot>[]) as List<_i8.FishingSpot>);
   @override
@@ -1758,7 +1758,7 @@ class MockFishingSpotManager extends _i1.Mock
       (super.noSuchMethod(Invocation.method(#filteredList, [filter]),
           returnValue: <_i8.FishingSpot>[]) as List<_i8.FishingSpot>);
   @override
-  bool idsMatchFilter(List<_i8.Id>? ids, String? filter) =>
+  bool idsMatchFilter(Iterable<_i8.Id>? ids, String? filter) =>
       (super.noSuchMethod(Invocation.method(#idsMatchFilter, [ids, filter]),
           returnValue: false) as bool);
   @override
@@ -2039,7 +2039,7 @@ class MockMethodManager extends _i1.Mock implements _i19.MethodManager {
               returnValue: _FakeStreamSubscription<dynamic>())
           as _i9.StreamSubscription<dynamic>);
   @override
-  List<_i8.Method> list([List<_i8.Id>? ids]) =>
+  List<_i8.Method> list([Iterable<_i8.Id>? ids]) =>
       (super.noSuchMethod(Invocation.method(#list, [ids]),
           returnValue: <_i8.Method>[]) as List<_i8.Method>);
   @override
@@ -2047,7 +2047,7 @@ class MockMethodManager extends _i1.Mock implements _i19.MethodManager {
       (super.noSuchMethod(Invocation.method(#filteredList, [filter]),
           returnValue: <_i8.Method>[]) as List<_i8.Method>);
   @override
-  bool idsMatchFilter(List<_i8.Id>? ids, String? filter) =>
+  bool idsMatchFilter(Iterable<_i8.Id>? ids, String? filter) =>
       (super.noSuchMethod(Invocation.method(#idsMatchFilter, [ids, filter]),
           returnValue: false) as bool);
   @override
@@ -2342,7 +2342,7 @@ class MockSpeciesManager extends _i1.Mock implements _i22.SpeciesManager {
               returnValue: _FakeStreamSubscription<dynamic>())
           as _i9.StreamSubscription<dynamic>);
   @override
-  List<_i8.Species> list([List<_i8.Id>? ids]) =>
+  List<_i8.Species> list([Iterable<_i8.Id>? ids]) =>
       (super.noSuchMethod(Invocation.method(#list, [ids]),
           returnValue: <_i8.Species>[]) as List<_i8.Species>);
   @override
@@ -2350,7 +2350,7 @@ class MockSpeciesManager extends _i1.Mock implements _i22.SpeciesManager {
       (super.noSuchMethod(Invocation.method(#filteredList, [filter]),
           returnValue: <_i8.Species>[]) as List<_i8.Species>);
   @override
-  bool idsMatchFilter(List<_i8.Id>? ids, String? filter) =>
+  bool idsMatchFilter(Iterable<_i8.Id>? ids, String? filter) =>
       (super.noSuchMethod(Invocation.method(#idsMatchFilter, [ids, filter]),
           returnValue: false) as bool);
   @override
@@ -2815,7 +2815,7 @@ class MockWaterClarityManager extends _i1.Mock
               returnValue: _FakeStreamSubscription<dynamic>())
           as _i9.StreamSubscription<dynamic>);
   @override
-  List<_i8.WaterClarity> list([List<_i8.Id>? ids]) =>
+  List<_i8.WaterClarity> list([Iterable<_i8.Id>? ids]) =>
       (super.noSuchMethod(Invocation.method(#list, [ids]),
           returnValue: <_i8.WaterClarity>[]) as List<_i8.WaterClarity>);
   @override
@@ -2823,7 +2823,7 @@ class MockWaterClarityManager extends _i1.Mock
       (super.noSuchMethod(Invocation.method(#filteredList, [filter]),
           returnValue: <_i8.WaterClarity>[]) as List<_i8.WaterClarity>);
   @override
-  bool idsMatchFilter(List<_i8.Id>? ids, String? filter) =>
+  bool idsMatchFilter(Iterable<_i8.Id>? ids, String? filter) =>
       (super.noSuchMethod(Invocation.method(#idsMatchFilter, [ids, filter]),
           returnValue: false) as bool);
   @override

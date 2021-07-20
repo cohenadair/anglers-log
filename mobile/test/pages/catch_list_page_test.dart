@@ -29,7 +29,7 @@ void main() {
       Catch()
         ..id = randomId()
         ..timestamp = Int64(DateTime(2020, 1, 1).millisecondsSinceEpoch)
-        ..baitId = randomId(),
+        ..baitIds.add(randomId()),
     ]);
 
     when(appManager.speciesManager.entity(any)).thenReturn(Species()

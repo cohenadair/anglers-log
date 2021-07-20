@@ -63,7 +63,7 @@ class CatchManager extends EntityManager<Catch> {
         isEmpty(filter) ||
         _speciesManager.matchesFilter(cat.speciesId, filter) ||
         _fishingSpotManager.matchesFilter(cat.fishingSpotId, filter) ||
-        _baitManager.matchesFilter(cat.baitId, filter) ||
+        _baitManager.idsMatchFilter(cat.baitIds, filter) ||
         _anglerManager.matchesFilter(cat.anglerId, filter) ||
         _methodManager.idsMatchFilter(cat.methodIds, filter) ||
         _waterClarityManager.matchesFilter(cat.waterClarityId, filter) ||
@@ -250,7 +250,8 @@ class CatchManager extends EntityManager<Catch> {
               cat.timestamp.toInt(), _timeManager.currentDateTime);
       valid &=
           isSetValid<Id>(anglerIds, cat.anglerId, hasValue: cat.hasAnglerId());
-      valid &= isSetValid<Id>(baitIds, cat.baitId, hasValue: cat.hasBaitId());
+      valid &= baitIds.isEmpty ||
+          baitIds.intersection(cat.baitIds.toSet()).isNotEmpty;
       valid &= isSetValid<Id>(catchIds, cat.id, hasValue: cat.hasId());
       valid &= isSetValid<Id>(fishingSpotIds, cat.fishingSpotId,
           hasValue: cat.hasFishingSpotId());

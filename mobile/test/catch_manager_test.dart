@@ -106,14 +106,14 @@ void main() {
   testWidgets("Filtering by search query; bait", (tester) async {
     var baitManager = MockBaitManager();
     when(appManager.app.baitManager).thenReturn(baitManager);
-    when(baitManager.matchesFilter(any, any)).thenReturn(true);
+    when(baitManager.idsMatchFilter(any, any)).thenReturn(true);
 
     await catchManager.addOrUpdate(Catch()
       ..id = randomId()
-      ..baitId = randomId());
+      ..baitIds.add(randomId()));
     await catchManager.addOrUpdate(Catch()
       ..id = randomId()
-      ..baitId = randomId());
+      ..baitIds.add(randomId()));
 
     var context = await buildContext(tester, appManager: appManager);
     expect(catchManager.filteredCatches(context, filter: "Bait").length, 2);
@@ -758,16 +758,16 @@ void main() {
 
     await catchManager.addOrUpdate(Catch()
       ..id = randomId()
-      ..baitId = baitId0);
+      ..baitIds.add(baitId0));
     await catchManager.addOrUpdate(Catch()
       ..id = randomId()
-      ..baitId = baitId1);
+      ..baitIds.add(baitId1));
     await catchManager.addOrUpdate(Catch()
       ..id = randomId()
-      ..baitId = baitId0);
+      ..baitIds.add(baitId0));
     await catchManager.addOrUpdate(Catch()
       ..id = randomId()
-      ..baitId = baitId3);
+      ..baitIds.add(baitId3));
 
     var context = await buildContext(tester, appManager: appManager);
     var catches = catchManager.filteredCatches(
@@ -1752,19 +1752,19 @@ void main() {
       ..id = catchId0
       ..timestamp = Int64(5000)
       ..speciesId = speciesId0
-      ..baitId = baitId0
+      ..baitIds.add(baitId0)
       ..fishingSpotId = fishingSpotId0);
     await catchManager.addOrUpdate(Catch()
       ..id = randomId()
       ..timestamp = Int64(10000)
       ..speciesId = speciesId1
-      ..baitId = baitId1
+      ..baitIds.add(baitId1)
       ..fishingSpotId = fishingSpotId1);
     await catchManager.addOrUpdate(Catch()
       ..id = randomId()
       ..timestamp = Int64(20000)
       ..speciesId = speciesId1
-      ..baitId = baitId0
+      ..baitIds.add(baitId0)
       ..fishingSpotId = fishingSpotId1);
 
     var context = await buildContext(tester, appManager: appManager);

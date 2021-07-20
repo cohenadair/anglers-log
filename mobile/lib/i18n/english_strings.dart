@@ -104,6 +104,7 @@ Map<String, Map<String, String>> get englishStrings => {
         "catchField_methods": "Fishing Methods",
         "catchField_methodsDescription": "The way in which a catch was made.",
         "catchField_noMethods": "No fishing methods",
+        "catchField_noBaits": "No baits",
         "catchField_catchAndRelease": "Catch and Release",
         "catchField_catchAndReleaseDescription":
             "Whether or not this catch was released.",

@@ -159,10 +159,10 @@ void main() {
       expect(find.text("Jan 1, 2020"), findsOneWidget);
       expect(find.text("3:30 PM"), findsOneWidget);
       expect(find.text("Winter"), findsOneWidget);
-      expect(find.text("Bait"), findsOneWidget);
+      expect(find.text("No baits"), findsOneWidget);
 
-      // Bait, angler, time of day, and water clarity.
-      expect(find.text("Not Selected"), findsNWidgets(4));
+      // Angler, time of day, and water clarity.
+      expect(find.text("Not Selected"), findsNWidgets(3));
 
       expect(find.byType(StaticFishingSpot), findsOneWidget);
       expect(find.text("Species"), findsOneWidget);
@@ -206,7 +206,7 @@ void main() {
       var bait = Bait()
         ..id = randomId()
         ..name = "Rapala";
-      when(appManager.baitManager.entity(any)).thenReturn(bait);
+      when(appManager.baitManager.list(any)).thenReturn([bait]);
       when(appManager.baitManager.formatNameWithCategory(any))
           .thenReturn("Rapala");
 
@@ -241,7 +241,7 @@ void main() {
       var cat = Catch()
         ..id = randomId()
         ..timestamp = Int64(DateTime(2020, 1, 1, 15, 30).millisecondsSinceEpoch)
-        ..baitId = bait.id
+        ..baitIds.add(bait.id)
         ..fishingSpotId = fishingSpot.id
         ..speciesId = species.id
         ..anglerId = angler.id
@@ -341,7 +341,6 @@ void main() {
       expect(find.text("Summer"), findsOneWidget);
       expect(find.text("Casting"), findsOneWidget);
       expect(find.text("Kayak"), findsOneWidget);
-      expect(find.text("Bait"), findsOneWidget);
       expect(find.text("Rapala"), findsOneWidget);
       expect(find.byType(StaticFishingSpot), findsOneWidget);
       expect(find.text("Species"), findsOneWidget);
@@ -392,10 +391,10 @@ void main() {
       expect(find.text("3:30 PM"), findsOneWidget);
       expect(find.text("Species"), findsOneWidget);
       expect(find.text("Steelhead"), findsOneWidget);
-      expect(find.text("Bait"), findsOneWidget);
+      expect(find.text("No baits"), findsOneWidget);
 
-      // Bait, angler, time of day, season, and water clarity.
-      expect(find.text("Not Selected"), findsNWidgets(5));
+      // Angler, time of day, season, and water clarity.
+      expect(find.text("Not Selected"), findsNWidgets(4));
 
       // Fishing methods.
       expect(find.text("No fishing methods"), findsOneWidget);
@@ -483,7 +482,7 @@ void main() {
       var cat = Catch()
         ..id = randomId()
         ..timestamp = Int64(DateTime(2020, 1, 1, 15, 30).millisecondsSinceEpoch)
-        ..baitId = bait.id
+        ..baitIds.add(bait.id)
         ..fishingSpotId = fishingSpot.id
         ..speciesId = species.id
         ..anglerId = angler.id
@@ -670,11 +669,11 @@ void main() {
       expect(find.text("10:30 AM"), findsOneWidget);
       expect(find.text("Species"), findsOneWidget);
       expect(find.text("Steelhead"), findsOneWidget);
-      expect(find.text("Bait"), findsOneWidget);
+      expect(find.text("No baits"), findsOneWidget);
       expect(find.text("Winter"), findsOneWidget);
 
-      // Bait, angler, time of day, and water clarity.
-      expect(find.text("Not Selected"), findsNWidgets(4));
+      // Angler, time of day, and water clarity.
+      expect(find.text("Not Selected"), findsNWidgets(3));
 
       // Fishing methods.
       expect(find.text("No fishing methods"), findsOneWidget);
@@ -740,7 +739,7 @@ void main() {
           DateTime(2020, 2, 1, 10, 30).millisecondsSinceEpoch);
       expect(cat.speciesId, speciesId);
       expect(cat.fishingSpotId, fishingSpotId);
-      expect(cat.hasBaitId(), isFalse);
+      expect(cat.baitIds, isEmpty);
       expect(cat.hasAnglerId(), isFalse);
       expect(cat.hasWaterClarityId(), isFalse);
       expect(cat.methodIds, isEmpty);
@@ -817,8 +816,10 @@ void main() {
       await tapAndSettle(tester, find.text("Summer"));
 
       // Select bait.
-      await tapAndSettle(tester, find.text("Bait"));
-      await tapAndSettle(tester, find.text("Rapala"));
+      await tapAndSettle(tester, find.text("No baits"));
+      await tapAndSettle(
+          tester, findManageableListItemCheckbox(tester, "Rapala"));
+      await tapAndSettle(tester, find.byType(BackButton));
 
       // Select angler.
       await tapAndSettle(tester, find.text("Angler"));
@@ -872,7 +873,7 @@ void main() {
       expect(cat.fishingSpotId, fishingSpotId);
       expect(cat.imageNames, isEmpty);
       expect(cat.customEntityValues, isEmpty);
-      expect(cat.hasBaitId(), isTrue);
+      expect(cat.baitIds, isNotEmpty);
       expect(cat.hasAnglerId(), isTrue);
       expect(cat.hasWaterClarityId(), isTrue);
       expect(cat.methodIds.length, 2);
@@ -993,7 +994,7 @@ void main() {
         (_) => SaveCatchPage.edit(Catch()
           ..id = randomId()
           ..speciesId = randomId()
-          ..baitId = bait.id),
+          ..baitIds.add(bait.id)),
         appManager: appManager,
       ),
     );

@@ -116,9 +116,9 @@ class CatchListPage extends StatelessWidget {
     if (fishingSpot != null && isNotEmpty(fishingSpot.name)) {
       // Use fishing spot name as subtitle if available.
       subtitle2 = Text(fishingSpot.name, style: styleSubtitle(context));
-    } else {
+    } else if (cat.baitIds.isNotEmpty) {
       // Fallback on bait as a subtitle.
-      var formattedName = baitManager.formatNameWithCategory(cat.baitId);
+      var formattedName = baitManager.formatNameWithCategory(cat.baitIds.first);
       if (isNotEmpty(formattedName)) {
         subtitle2 = Text(formattedName!, style: styleSubtitle(context));
       }

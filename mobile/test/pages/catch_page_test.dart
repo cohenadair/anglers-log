@@ -117,11 +117,11 @@ void main() {
   });
 
   testWidgets("Bait without category doesn't show subtitle", (tester) async {
-    when(appManager.baitManager.entity(any)).thenReturn(
+    when(appManager.baitManager.list(any)).thenReturn([
       Bait()
         ..id = randomId()
         ..name = "Worm",
-    );
+    ]);
     var context = await pumpContext(
       tester,
       (_) => CatchPage(Catch()),
@@ -136,9 +136,11 @@ void main() {
   });
 
   testWidgets("Bait with category shows subtitle", (tester) async {
-    when(appManager.baitManager.entity(any)).thenReturn(Bait()
-      ..id = randomId()
-      ..name = "Worm");
+    when(appManager.baitManager.list(any)).thenReturn([
+      Bait()
+        ..id = randomId()
+        ..name = "Worm",
+    ]);
     when(appManager.baitCategoryManager.entity(any)).thenReturn(
       BaitCategory()
         ..id = randomId()
@@ -154,6 +156,29 @@ void main() {
 
     expect(find.text("Worm"), findsOneWidget);
     expect(find.text("Live Bait"), findsOneWidget);
+  });
+
+  testWidgets("Multiple baits rendered", (tester) async {
+    var baits = [
+      Bait()
+        ..id = randomId()
+        ..name = "Worm",
+      Bait()
+        ..id = randomId()
+        ..name = "Minnow",
+    ];
+    when(appManager.baitManager.list(any)).thenReturn(baits);
+
+    await tester.pumpWidget(Testable(
+      (_) => CatchPage(Catch()),
+      appManager: appManager,
+    ));
+    // Wait for map timer to finish.
+    await tester.pumpAndSettle(Duration(milliseconds: 150));
+    await tester.pumpAndSettle(Duration(milliseconds: 50));
+
+    expect(find.text("Worm"), findsOneWidget);
+    expect(find.text("Minnow"), findsOneWidget);
   });
 
   testWidgets("No fishing spot renders empty", (tester) async {

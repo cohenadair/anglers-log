@@ -155,7 +155,7 @@ message BaitCategory {
 message Catch {
   Id id = 1;
   uint64 timestamp = 2;
-  Id bait_id = 3;
+  repeated Id bait_ids = 3;
   Id fishing_spot_id = 4;
   Id species_id = 5;
   repeated string image_names = 6;

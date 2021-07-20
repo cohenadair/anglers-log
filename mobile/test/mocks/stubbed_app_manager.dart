@@ -114,6 +114,7 @@ class StubbedAppManager {
       onDelete: anyNamed("onDelete"),
     )).thenReturn(SimpleEntityListener());
     when(baitManager.entity(any)).thenReturn(null);
+    when(baitManager.list(any)).thenReturn([]);
 
     when(catchManager.addSimpleListener(
       onAdd: anyNamed("onAdd"),

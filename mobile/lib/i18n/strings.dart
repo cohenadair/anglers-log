@@ -228,6 +228,8 @@ class Strings {
 
   String get catchFieldNoMethods => _string("catchField_noMethods");
 
+  String get catchFieldNoBaits => _string("catchField_noBaits");
+
   String get catchFieldWaterClarityLabel =>
       _string("catchField_waterClarityLabel");
 

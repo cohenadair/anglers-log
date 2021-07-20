@@ -191,7 +191,7 @@ void main() {
       ..timestamp = Int64(10)
       ..speciesId = speciesId3
       ..fishingSpotId = fishingSpotId1
-      ..baitId = baitId0
+      ..baitIds.add(baitId0)
       ..waterClarityId = clarityId2
       ..isFavorite = true,
     Catch()
@@ -199,13 +199,13 @@ void main() {
       ..timestamp = Int64(5000)
       ..speciesId = speciesId4
       ..fishingSpotId = fishingSpotId3
-      ..baitId = baitId4,
+      ..baitIds.add(baitId4),
     Catch()
       ..id = catchId2
       ..timestamp = Int64(100)
       ..speciesId = speciesId0
       ..fishingSpotId = fishingSpotId4
-      ..baitId = baitId0
+      ..baitIds.add(baitId0)
       ..isFavorite = true,
     Catch()
       ..id = catchId3
@@ -213,45 +213,45 @@ void main() {
       ..speciesId = speciesId1
       ..fishingSpotId = fishingSpotId0
       ..waterClarityId = clarityId4
-      ..baitId = baitId1,
+      ..baitIds.add(baitId1),
     Catch()
       ..id = catchId4
       ..timestamp = Int64(78000)
       ..speciesId = speciesId4
       ..fishingSpotId = fishingSpotId1
-      ..baitId = baitId0
+      ..baitIds.add(baitId0)
       ..waterClarityId = clarityId3,
     Catch()
       ..id = catchId5
       ..timestamp = Int64(100000)
       ..speciesId = speciesId3
       ..fishingSpotId = fishingSpotId1
-      ..baitId = baitId2,
+      ..baitIds.add(baitId2),
     Catch()
       ..id = catchId6
       ..timestamp = Int64(800)
       ..speciesId = speciesId1
       ..fishingSpotId = fishingSpotId2
-      ..baitId = baitId1,
+      ..baitIds.add(baitId1),
     Catch()
       ..id = catchId7
       ..timestamp = Int64(70)
       ..speciesId = speciesId1
       ..fishingSpotId = fishingSpotId1
-      ..baitId = baitId0
+      ..baitIds.add(baitId0)
       ..isFavorite = true,
     Catch()
       ..id = catchId8
       ..timestamp = Int64(15)
       ..speciesId = speciesId1
       ..fishingSpotId = fishingSpotId1
-      ..baitId = baitId1,
+      ..baitIds.add(baitId1),
     Catch()
       ..id = catchId9
       ..timestamp = Int64(6000)
       ..speciesId = speciesId4
       ..fishingSpotId = fishingSpotId1
-      ..baitId = baitId0,
+      ..baitIds.add(baitId0),
   ];
 
   setUp(() {
