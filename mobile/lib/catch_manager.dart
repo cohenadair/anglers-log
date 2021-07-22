@@ -80,6 +80,7 @@ class CatchManager extends EntityManager<Catch> {
         catchFilterMatchesQuantity(context, filter, cat) ||
         catchFilterMatchesNotes(context, filter, cat) ||
         catchFilterMatchesAtmosphere(context, filter, cat) ||
+        catchFilterMatchesTide(context, filter, cat) ||
         filterMatchesEntityValues(
             cat.customEntityValues, filter, _customEntityManager);
   }
@@ -106,6 +107,7 @@ class CatchManager extends EntityManager<Catch> {
     Set<Direction> windDirections = const {},
     Set<SkyCondition> skyConditions = const {},
     Set<MoonPhase> moonPhases = const {},
+    Set<TideType> tideTypes = const {},
     NumberFilter? waterDepthFilter,
     NumberFilter? waterTemperatureFilter,
     NumberFilter? lengthFilter,
@@ -135,6 +137,7 @@ class CatchManager extends EntityManager<Catch> {
       windDirections: windDirections,
       skyConditions: skyConditions,
       moonPhases: moonPhases,
+      tideTypes: tideTypes,
       waterDepthFilter: waterDepthFilter,
       waterTemperatureFilter: waterTemperatureFilter,
       lengthFilter: lengthFilter,
@@ -169,6 +172,7 @@ class CatchManager extends EntityManager<Catch> {
     Set<Direction> windDirections = const {},
     Set<SkyCondition> skyConditions = const {},
     Set<MoonPhase> moonPhases = const {},
+    Set<TideType> tideTypes = const {},
     NumberFilter? waterDepthFilter,
     NumberFilter? waterTemperatureFilter,
     NumberFilter? lengthFilter,
@@ -196,6 +200,7 @@ class CatchManager extends EntityManager<Catch> {
         windDirections.isEmpty &&
         skyConditions.isEmpty &&
         moonPhases.isEmpty &&
+        tideTypes.isEmpty &&
         waterDepthFilter == null &&
         waterTemperatureFilter == null &&
         lengthFilter == null &&
@@ -270,6 +275,8 @@ class CatchManager extends EntityManager<Catch> {
           hasValue: cat.hasAtmosphere() && cat.atmosphere.hasWindDirection());
       valid &= isSetValid<MoonPhase>(moonPhases, cat.atmosphere.moonPhase,
           hasValue: cat.hasAtmosphere() && cat.atmosphere.hasMoonPhase());
+      valid &= isSetValid<TideType>(tideTypes, cat.tide.type,
+          hasValue: cat.hasTide() && cat.tide.hasType());
       valid &= skyConditions.isEmpty ||
           (cat.hasAtmosphere() &&
               skyConditions

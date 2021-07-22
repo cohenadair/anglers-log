@@ -82,6 +82,16 @@ enum SkyCondition {
   clear = 15;
 }
 
+enum TideType {
+  tide_type_all = 0;
+  tide_type_none = 1;
+  low = 2;
+  outgoing = 3;
+  high = 4;
+  slack = 5;
+  incoming = 6;
+}
+
 enum Unit {
   feet = 0;
   inches = 1;
@@ -118,8 +128,8 @@ message Atmosphere {
   Measurement humidity = 6;
   Measurement visibility = 7;
   MoonPhase moon_phase = 8;
-  uint64 sunrise_millis = 9;
-  uint64 sunset_millis = 10;
+  uint64 sunrise_timestamp = 9;
+  uint64 sunset_timestamp = 10;
 }
 
 message CustomEntity {
@@ -174,6 +184,7 @@ message Catch {
   uint32 quantity = 19;
   string notes = 20;
   Atmosphere atmosphere = 21;
+  Tide tide = 22;
 }
 
 message DateRange {
@@ -255,6 +266,7 @@ message Report {
   repeated Direction wind_directions = 27;
   repeated SkyCondition sky_conditions = 28;
   repeated MoonPhase moon_phases = 29;
+  repeated TideType tide_types = 30;
 }
 
 message Angler {
@@ -284,4 +296,10 @@ message MultiMeasurement {
   MeasurementSystem system = 1;
   Measurement mainValue = 2;
   Measurement fractionValue = 3;
+}
+
+message Tide {
+  TideType type = 1;
+  uint64 low_timestamp = 2;
+  uint64 high_timestamp = 3;
 }

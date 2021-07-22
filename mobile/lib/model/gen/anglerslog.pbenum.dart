@@ -453,6 +453,60 @@ class SkyCondition extends $pb.ProtobufEnum {
   const SkyCondition._($core.int v, $core.String n) : super(v, n);
 }
 
+class TideType extends $pb.ProtobufEnum {
+  static const TideType tide_type_all = TideType._(
+      0,
+      const $core.bool.fromEnvironment('protobuf.omit_enum_names')
+          ? ''
+          : 'tide_type_all');
+  static const TideType tide_type_none = TideType._(
+      1,
+      const $core.bool.fromEnvironment('protobuf.omit_enum_names')
+          ? ''
+          : 'tide_type_none');
+  static const TideType low = TideType._(
+      2,
+      const $core.bool.fromEnvironment('protobuf.omit_enum_names')
+          ? ''
+          : 'low');
+  static const TideType outgoing = TideType._(
+      3,
+      const $core.bool.fromEnvironment('protobuf.omit_enum_names')
+          ? ''
+          : 'outgoing');
+  static const TideType high = TideType._(
+      4,
+      const $core.bool.fromEnvironment('protobuf.omit_enum_names')
+          ? ''
+          : 'high');
+  static const TideType slack = TideType._(
+      5,
+      const $core.bool.fromEnvironment('protobuf.omit_enum_names')
+          ? ''
+          : 'slack');
+  static const TideType incoming = TideType._(
+      6,
+      const $core.bool.fromEnvironment('protobuf.omit_enum_names')
+          ? ''
+          : 'incoming');
+
+  static const $core.List<TideType> values = <TideType>[
+    tide_type_all,
+    tide_type_none,
+    low,
+    outgoing,
+    high,
+    slack,
+    incoming,
+  ];
+
+  static final $core.Map<$core.int, TideType> _byValue =
+      $pb.ProtobufEnum.initByValue(values);
+  static TideType? valueOf($core.int value) => _byValue[value];
+
+  const TideType._($core.int v, $core.String n) : super(v, n);
+}
+
 class Unit extends $pb.ProtobufEnum {
   static const Unit feet = Unit._(
       0,

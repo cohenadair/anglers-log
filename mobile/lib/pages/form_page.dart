@@ -122,6 +122,7 @@ class FormPage extends StatefulWidget {
   FormPage.immutable({
     Key? key,
     Widget? title,
+    Widget? header,
     required FieldBuilder fieldBuilder,
     FutureOr<bool> Function(BuildContext)? onSave,
     EdgeInsets padding = insetsHorizontalDefault,
@@ -135,6 +136,7 @@ class FormPage extends StatefulWidget {
           key: key,
           title: title,
           fieldBuilder: fieldBuilder,
+          header: header,
           onSave: onSave,
           addFieldOptions: const [],
           onAddFields: null,

@@ -13,7 +13,7 @@ class RadioInput extends StatefulWidget {
   final int optionCount;
   final String Function(BuildContext, int) optionBuilder;
   final void Function(int) onSelect;
-  final int initialSelectedIndex;
+  final int? initialSelectedIndex;
   final EdgeInsets? padding;
 
   RadioInput({
@@ -30,7 +30,7 @@ class RadioInput extends StatefulWidget {
 }
 
 class _RadioInputState extends State<RadioInput> {
-  late int _selectedIndex;
+  late int? _selectedIndex;
 
   @override
   void initState() {
@@ -40,7 +40,10 @@ class _RadioInputState extends State<RadioInput> {
 
   Widget build(BuildContext context) {
     return Padding(
-      padding: widget.padding ?? insetsZero,
+      padding: EdgeInsets.only(
+        top: widget.padding?.top ?? 0,
+        bottom: widget.padding?.bottom ?? 0,
+      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -63,7 +66,7 @@ class _RadioInputState extends State<RadioInput> {
   }
 
   Widget _buildOption(int index) {
-    var selected = _selectedIndex == index;
+    var selected = _selectedIndex != null && _selectedIndex == index;
     var icon =
         selected ? Icons.radio_button_checked : Icons.radio_button_unchecked;
 
@@ -73,7 +76,12 @@ class _RadioInputState extends State<RadioInput> {
         widget.onSelect.call(index);
       },
       child: Padding(
-        padding: insetsVerticalWidgetSmall,
+        padding: EdgeInsets.only(
+          left: widget.padding?.left ?? 0,
+          right: widget.padding?.right ?? 0,
+          top: paddingWidgetSmall,
+          bottom: paddingWidgetSmall,
+        ),
         child: HorizontalSafeArea(
           child: Row(
             children: [

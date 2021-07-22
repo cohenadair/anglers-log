@@ -326,6 +326,7 @@ void main() {
       windDirections: anyNamed("windDirections"),
       skyConditions: anyNamed("skyConditions"),
       moonPhases: anyNamed("moonPhases"),
+      tideTypes: anyNamed("tideTypes"),
       waterDepthFilter: anyNamed("waterDepthFilter"),
       waterTemperatureFilter: anyNamed("waterTemperatureFilter"),
       lengthFilter: anyNamed("lengthFilter"),
@@ -698,6 +699,7 @@ void main() {
       windDirections: {Direction.east},
       skyConditions: {SkyCondition.rain, SkyCondition.drizzle},
       moonPhases: {MoonPhase.full},
+      tideTypes: {TideType.high, TideType.low},
     );
 
     expect(data.filters(), {
@@ -724,6 +726,8 @@ void main() {
       "Rain",
       "Drizzle",
       "Full Moon",
+      "Low Tide",
+      "High Tide",
     });
     expect(data.filters(includeSpecies: false), {
       "All dates",
@@ -747,6 +751,8 @@ void main() {
       "Rain",
       "Drizzle",
       "Full Moon",
+      "Low Tide",
+      "High Tide",
     });
     expect(data.filters(includeDateRange: false), {
       "Worm",
@@ -771,6 +777,8 @@ void main() {
       "Rain",
       "Drizzle",
       "Full Moon",
+      "Low Tide",
+      "High Tide",
     });
     expect(data.filters(includeSpecies: false, includeDateRange: false), {
       "Worm",
@@ -793,6 +801,8 @@ void main() {
       "Rain",
       "Drizzle",
       "Full Moon",
+      "Low Tide",
+      "High Tide",
     });
   });
 

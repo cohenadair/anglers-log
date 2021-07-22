@@ -161,8 +161,8 @@ void main() {
       expect(find.text("Winter"), findsOneWidget);
       expect(find.text("No baits"), findsOneWidget);
 
-      // Angler, time of day, and water clarity.
-      expect(find.text("Not Selected"), findsNWidgets(3));
+      // Angler, time of day, tide, and water clarity.
+      expect(find.text("Not Selected"), findsNWidgets(4));
 
       expect(find.byType(StaticFishingSpot), findsOneWidget);
       expect(find.text("Species"), findsOneWidget);
@@ -312,9 +312,10 @@ void main() {
             value: 10,
           ),
           moonPhase: MoonPhase.full,
-          sunriseMillis: Int64(10000),
-          sunsetMillis: Int64(15000),
-        );
+          sunriseTimestamp: Int64(10000),
+          sunsetTimestamp: Int64(15000),
+        )
+        ..tide = Tide(type: TideType.outgoing);
 
       when(appManager.imageManager.images(
         any,
@@ -369,6 +370,7 @@ void main() {
       expect(find.text("Sunset"), findsOneWidget);
       expect(find.text("Full"), findsOneWidget);
       expect(find.text("Moon"), findsOneWidget);
+      expect(find.text("Outgoing"), findsOneWidget);
     });
 
     testWidgets("Minimum fields set correctly", (tester) async {
@@ -393,8 +395,8 @@ void main() {
       expect(find.text("Steelhead"), findsOneWidget);
       expect(find.text("No baits"), findsOneWidget);
 
-      // Angler, time of day, season, and water clarity.
-      expect(find.text("Not Selected"), findsNWidgets(4));
+      // Angler, time of day, season, tide, and water clarity.
+      expect(find.text("Not Selected"), findsNWidgets(5));
 
       // Fishing methods.
       expect(find.text("No fishing methods"), findsOneWidget);
@@ -553,9 +555,10 @@ void main() {
             value: 10,
           ),
           moonPhase: MoonPhase.full,
-          sunriseMillis: Int64(10000),
-          sunsetMillis: Int64(15000),
-        );
+          sunriseTimestamp: Int64(10000),
+          sunsetTimestamp: Int64(15000),
+        )
+        ..tide = Tide(type: TideType.outgoing);
 
       when(appManager.imageManager.images(
         any,
@@ -672,8 +675,8 @@ void main() {
       expect(find.text("No baits"), findsOneWidget);
       expect(find.text("Winter"), findsOneWidget);
 
-      // Angler, time of day, and water clarity.
-      expect(find.text("Not Selected"), findsNWidgets(3));
+      // Angler, time of day, tide, and water clarity.
+      expect(find.text("Not Selected"), findsNWidgets(4));
 
       // Fishing methods.
       expect(find.text("No fishing methods"), findsOneWidget);
@@ -757,6 +760,7 @@ void main() {
       expect(cat.hasQuantity(), isFalse);
       expect(cat.hasNotes(), isFalse);
       expect(cat.hasAtmosphere(), isFalse);
+      expect(cat.hasTide(), isFalse);
     });
 
     testWidgets("Saving after selecting all optional fields", (tester) async {
@@ -855,6 +859,12 @@ void main() {
           tester, find.widgetWithText(TextField, "Air Temperature"), "58");
       await tapAndSettle(tester, find.byType(BackButtonIcon));
 
+      // Tide.
+      await tester.ensureVisible(find.text("Tide"));
+      await tapAndSettle(tester, find.text("Tide"));
+      await tapAndSettle(tester, find.text("Outgoing"));
+      await tapAndSettle(tester, find.byType(BackButtonIcon));
+
       await tapAndSettle(tester, find.text("SAVE"));
 
       var result = verify(
@@ -885,6 +895,8 @@ void main() {
       expect(cat.wasCatchAndRelease, isTrue);
       expect(cat.hasAtmosphere(), isTrue);
       expect(cat.atmosphere.temperature.value, 58);
+      expect(cat.hasTide(), isTrue);
+      expect(cat.tide.type, TideType.outgoing);
     });
   });
 

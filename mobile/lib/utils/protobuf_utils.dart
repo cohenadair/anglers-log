@@ -1296,3 +1296,107 @@ extension SkyConditions on SkyCondition {
     throw ArgumentError("Invalid input: $this");
   }
 }
+
+extension TideTypes on TideType {
+  static Set<TideType> selectable() {
+    return _selectable<TideType>(
+        TideType.values, [TideType.tide_type_none, TideType.tide_type_all]);
+  }
+
+  static List<PickerPageItem<TideType>> pickerItems(BuildContext context) {
+    return _pickerItems(
+      context,
+      TideTypes.selectable().toList(),
+      [],
+      (context, type) => type.displayName(context),
+      sort: false,
+    );
+  }
+
+  String displayName(BuildContext context) {
+    switch (this) {
+      case TideType.tide_type_none:
+        return Strings.of(context).none;
+      case TideType.tide_type_all:
+        return Strings.of(context).all;
+      case TideType.low:
+        return Strings.of(context).tideTypeLow;
+      case TideType.outgoing:
+        return Strings.of(context).tideTypeOutgoing;
+      case TideType.high:
+        return Strings.of(context).tideTypeHigh;
+      case TideType.slack:
+        return Strings.of(context).tideTypeSlack;
+      case TideType.incoming:
+        return Strings.of(context).tideTypeIncoming;
+    }
+    throw ArgumentError("Invalid input: $this");
+  }
+
+  String chipName(BuildContext context) {
+    switch (this) {
+      case TideType.tide_type_none:
+        return Strings.of(context).none;
+      case TideType.tide_type_all:
+        return Strings.of(context).all;
+      case TideType.low:
+        return Strings.of(context).tideLow;
+      case TideType.outgoing:
+        return Strings.of(context).tideOutgoing;
+      case TideType.high:
+        return Strings.of(context).tideHigh;
+      case TideType.slack:
+        return Strings.of(context).tideSlack;
+      case TideType.incoming:
+        return Strings.of(context).tideIncoming;
+    }
+    throw ArgumentError("Invalid input: $this");
+  }
+}
+
+extension Tides on Tide {
+  String? displayValue(BuildContext context, {bool useChipName = false}) {
+    if (!hasType() && !hasLowTimestamp() && !hasHighTimestamp()) {
+      return null;
+    }
+
+    var result = "";
+
+    if (hasType()) {
+      result +=
+          useChipName ? type.chipName(context) : type.displayName(context);
+    }
+
+    if (hasLowTimestamp() || hasHighTimestamp()) {
+      if (hasType()) {
+        result += " ";
+      }
+
+      if (hasType()) {
+        result += "(";
+      }
+
+      if (hasLowTimestamp()) {
+        result += format(Strings.of(context).tideInputLowTimeValue, [
+          formatTimeMillis(context, lowTimestamp),
+        ]);
+
+        if (hasHighTimestamp()) {
+          result += ", ";
+        }
+      }
+
+      if (hasHighTimestamp()) {
+        result += format(Strings.of(context).tideInputHighTimeValue, [
+          formatTimeMillis(context, highTimestamp),
+        ]);
+      }
+
+      if (hasType()) {
+        result += ")";
+      }
+    }
+
+    return result;
+  }
+}

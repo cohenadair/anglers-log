@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:quiver/strings.dart';
 
+import '../i18n/strings.dart';
 import '../model/gen/anglerslog.pb.dart';
 import '../res/color.dart';
 import '../res/dimen.dart';
 import '../res/style.dart';
 import '../widgets/text.dart';
+import 'input_controller.dart';
+import 'list_item.dart';
 
 const defaultAnimationDuration = Duration(milliseconds: 150);
 
@@ -463,6 +466,40 @@ class CatchFavoriteStar extends StatelessWidget {
         Icons.star,
         size: large ? _largeSize : null,
       ),
+    );
+  }
+}
+
+/// A convenience widget to be used at the top of an input [FormPage]. When
+/// tapped, [controller] is cleared and the current [Navigator] is popped. This
+/// widget will automatically update when [controller.value] changes.
+class NoneFormHeader extends StatelessWidget {
+  final InputController controller;
+
+  NoneFormHeader({
+    required this.controller,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return ValueListenableBuilder(
+      valueListenable: controller,
+      builder: (context, _, __) {
+        return Column(
+          children: [
+            PickerListItem(
+              padding: insetsDefault,
+              title: Strings.of(context).none,
+              isSelected: !controller.hasValue,
+              onTap: () {
+                controller.clear();
+                Navigator.pop(context);
+              },
+            ),
+            MinDivider(),
+          ],
+        );
+      },
     );
   }
 }

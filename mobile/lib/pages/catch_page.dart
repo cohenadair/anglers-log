@@ -23,6 +23,7 @@ import '../utils/protobuf_utils.dart';
 import '../utils/string_utils.dart';
 import '../water_clarity_manager.dart';
 import '../widgets/atmosphere_wrap.dart';
+import '../widgets/icon_list.dart';
 import '../widgets/list_item.dart';
 import '../widgets/static_fishing_spot.dart';
 import '../widgets/text.dart';
@@ -249,28 +250,46 @@ class _CatchPageState extends State<CatchPage> {
   }
 
   Widget _buildWater() {
-    var values = <String>[];
+    var waterValues = <String>[];
 
     var clarity = _waterClarityManager.entity(_catch.waterClarityId);
     if (clarity != null) {
-      values.add(clarity.name);
+      waterValues.add(clarity.name);
     }
 
     if (_catch.hasWaterTemperature()) {
-      values.add(_catch.waterTemperature.displayValue(context));
+      waterValues.add(_catch.waterTemperature.displayValue(context));
     }
 
     if (_catch.hasWaterDepth()) {
-      values.add(_catch.waterDepth.displayValue(context));
+      waterValues.add(_catch.waterDepth.displayValue(context));
     }
 
-    if (values.isEmpty) {
+    String? tide;
+    if (_catch.hasTide()) {
+      tide = _catch.tide.displayValue(context, useChipName: true);
+    }
+
+    if (waterValues.isEmpty && isEmpty(tide)) {
       return Empty();
     }
 
-    return ListItem(
-      leading: Icon(CustomIcons.waterClarities),
-      title: Text(values.join(", ")),
+    var values = <String>[];
+
+    if (waterValues.isNotEmpty) {
+      values.add(waterValues.join(", "));
+    }
+
+    if (isNotEmpty(tide)) {
+      values.add(tide!);
+    }
+
+    return Padding(
+      padding: insetsDefault,
+      child: IconList(
+        values: values,
+        icon: CustomIcons.waterClarities,
+      ),
     );
   }
 
@@ -311,34 +330,11 @@ class _CatchPageState extends State<CatchPage> {
       return Empty();
     }
 
-    Widget buildRow(String value) {
-      return Row(
-        children: [
-          Opacity(
-            // Use Opacity so items are horizontally aligned.
-            opacity: values.indexOf(value) >= 1 ? 0.0 : 1.0,
-            child: Icon(
-              Icons.notes,
-              color: Theme.of(context).disabledColor,
-            ),
-          ),
-          HorizontalSpace(paddingWidgetDouble),
-          Expanded(
-            child: Text(
-              value,
-              style: stylePrimary(context),
-              overflow: TextOverflow.visible,
-            ),
-          ),
-        ],
-      );
-    }
-
     return Padding(
       padding: insetsHorizontalDefaultVerticalSmall,
-      child: Wrap(
-        runSpacing: paddingTiny,
-        children: values.map(buildRow).toList(),
+      child: IconList(
+        values: values,
+        icon: Icons.notes,
       ),
     );
   }

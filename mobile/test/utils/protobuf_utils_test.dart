@@ -1,3 +1,4 @@
+import 'package:fixnum/fixnum.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
@@ -1242,6 +1243,99 @@ void main() {
         SkyCondition.snow,
         SkyCondition.drizzle,
       ]);
+    });
+  });
+
+  group("Tides", () {
+    testWidgets("displayValue returns null if no properties are set",
+        (tester) async {
+      expect(Tide().displayValue(await buildContext(tester)), isNull);
+    });
+
+    testWidgets("displayValue has type and uses chip name", (tester) async {
+      expect(
+        Tide(
+          type: TideType.high,
+        ).displayValue(await buildContext(tester), useChipName: true),
+        "High Tide",
+      );
+    });
+
+    testWidgets("displayValue has type and does not use chip name",
+        (tester) async {
+      expect(
+        Tide(
+          type: TideType.high,
+        ).displayValue(await buildContext(tester), useChipName: false),
+        "High",
+      );
+    });
+
+    testWidgets("displayValue with tide times and no type", (tester) async {
+      expect(
+        Tide(
+          // Thursday, July 22, 2021 11:56:43 AM GMT
+          lowTimestamp: Int64(1626955003000),
+          // Thursday, July 22, 2021 5:56:43 PM GMT
+          highTimestamp: Int64(1626976603000),
+        ).displayValue(await buildContext(tester)),
+        "L: 7:56 AM, H: 1:56 PM",
+      );
+    });
+
+    testWidgets("displayValue type and low tide", (tester) async {
+      expect(
+        Tide(
+          type: TideType.high,
+          // Thursday, July 22, 2021 11:56:43 AM GMT
+          lowTimestamp: Int64(1626955003000),
+        ).displayValue(await buildContext(tester)),
+        "High (L: 7:56 AM)",
+      );
+    });
+
+    testWidgets("displayValue type and high tide", (tester) async {
+      expect(
+        Tide(
+          type: TideType.high,
+          // Thursday, July 22, 2021 11:56:43 AM GMT
+          highTimestamp: Int64(1626955003000),
+        ).displayValue(await buildContext(tester)),
+        "High (H: 7:56 AM)",
+      );
+    });
+
+    testWidgets("displayValue low tide only", (tester) async {
+      expect(
+        Tide(
+          // Thursday, July 22, 2021 11:56:43 AM GMT
+          lowTimestamp: Int64(1626955003000),
+        ).displayValue(await buildContext(tester)),
+        "L: 7:56 AM",
+      );
+    });
+
+    testWidgets("displayValue high tide only", (tester) async {
+      expect(
+        Tide(
+          // Thursday, July 22, 2021 11:56:43 AM GMT
+          highTimestamp: Int64(1626955003000),
+        ).displayValue(await buildContext(tester)),
+        "H: 7:56 AM",
+      );
+    });
+
+    testWidgets("displayValue all properties", (tester) async {
+      expect(
+        Tide(
+          type: TideType.high,
+          // Thursday, July 22, 2021 11:56:43 AM GMT
+          lowTimestamp: Int64(1626955003000),
+          // Thursday, July 22, 2021 5:56:43 PM GMT
+          highTimestamp: Int64(1626976603000),
+        ).displayValue(await buildContext(tester)),
+        "High (L: 7:56 AM, H: 1:56 PM)",
+      );
     });
   });
 }

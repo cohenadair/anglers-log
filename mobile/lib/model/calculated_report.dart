@@ -77,6 +77,10 @@ class CalculatedReport {
   /// [MoonPhase] objects.
   final Set<MoonPhase> moonPhases;
 
+  /// When set, data is only included in this report if associated with these
+  /// [TideType] objects.
+  final Set<TideType> tideTypes;
+
   /// When not null, catches are only included in this report if the
   /// [Catch.waterDepth] falls within this filter.
   final NumberFilter? waterDepthFilter;
@@ -199,6 +203,7 @@ class CalculatedReport {
     this.windDirections = const {},
     this.skyConditions = const {},
     this.moonPhases = const {},
+    this.tideTypes = const {},
     this.waterDepthFilter,
     this.waterTemperatureFilter,
     this.lengthFilter,
@@ -236,6 +241,7 @@ class CalculatedReport {
       windDirections: windDirections,
       skyConditions: skyConditions,
       moonPhases: moonPhases,
+      tideTypes: tideTypes,
       waterDepthFilter: waterDepthFilter,
       waterTemperatureFilter: waterTemperatureFilter,
       lengthFilter: lengthFilter,
@@ -390,6 +396,7 @@ class CalculatedReport {
     result.addAll(windDirections.map((e) => e.chipName(context)));
     result.addAll(skyConditions.map((e) => e.displayName(context)));
     result.addAll(moonPhases.map((e) => e.chipName(context)));
+    result.addAll(tideTypes.map((e) => e.chipName(context)));
 
     _addNumberFilterIfNeeded(
         result, Strings.of(context).filterValueWaterDepth, waterDepthFilter);

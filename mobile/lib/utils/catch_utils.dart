@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:quiver/strings.dart';
 
 import '../i18n/strings.dart';
 import '../model/gen/anglerslog.pb.dart';
@@ -58,6 +59,8 @@ Id catchFieldIdNotes() => Id()..uuid = "a5ad6270-e131-40ad-b281-e1a4d838bf47";
 
 Id catchFieldIdAtmosphere() =>
     Id()..uuid = "93f2a6bc-fb18-43a1-92c1-18c727440257";
+
+Id catchFieldIdTide() => Id()..uuid = "5443a6ba-1860-4818-8b15-a6125121f451";
 
 /// Returns all catch fields, sorted by how they are rendered on a
 /// [SaveCatchPage].
@@ -132,6 +135,11 @@ List<Field> allCatchFields(TimeManager timeManager) {
       id: catchFieldIdAtmosphere(),
       name: (context) => Strings.of(context).catchFieldAtmosphere,
       controller: InputController<Atmosphere>(),
+    ),
+    Field(
+      id: catchFieldIdTide(),
+      name: (context) => Strings.of(context).catchFieldTide,
+      controller: InputController<Tide>(),
     ),
     Field(
       id: catchFieldIdWaterClarity(),
@@ -313,13 +321,23 @@ bool catchFilterMatchesAtmosphere(
     searchString += " ${Strings.of(context).keywordsMoon}";
   }
 
-  if (atmosphere.hasSunsetMillis()) {
+  if (atmosphere.hasSunsetTimestamp()) {
     searchString += " ${Strings.of(context).keywordsSunset}";
   }
 
-  if (atmosphere.hasSunsetMillis()) {
+  if (atmosphere.hasSunriseTimestamp()) {
     searchString += " ${Strings.of(context).keywordsSunrise}";
   }
 
   return containsTrimmedLowerCase(searchString, filter);
+}
+
+bool catchFilterMatchesTide(BuildContext context, String filter, Catch cat) {
+  if (!cat.hasTide()) {
+    return false;
+  }
+
+  var searchString = cat.tide.displayValue(context, useChipName: true);
+  return isNotEmpty(searchString) &&
+      containsTrimmedLowerCase(searchString!, filter);
 }

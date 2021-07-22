@@ -32,10 +32,8 @@ void main() {
         value: 10,
       ),
       moonPhase: MoonPhase.full,
-      // 09:00
-      sunriseMillis: Int64(32400000),
-      // 15:00
-      sunsetMillis: Int64(54000000),
+      sunriseTimestamp: Int64(1624366800000),
+      sunsetTimestamp: Int64(1624388400000),
     );
   }
 

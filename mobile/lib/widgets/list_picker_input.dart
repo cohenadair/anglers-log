@@ -4,6 +4,7 @@ import 'package:quiver/strings.dart';
 import '../i18n/strings.dart';
 import '../pages/manageable_list_page.dart';
 import '../pages/picker_page.dart';
+import '../res/dimen.dart';
 import '../res/style.dart';
 import '../utils/page_utils.dart';
 import '../widgets/radio_input.dart';
@@ -80,6 +81,7 @@ class ListPickerInput extends StatelessWidget {
           isEmpty(title) ? value! : title!,
           style: stylePrimary(context),
         ),
+        HorizontalSpace(paddingWidget),
         Expanded(
           // If there's no title widget, the value widget will render at
           // the start of the row.
@@ -91,6 +93,7 @@ class ListPickerInput extends StatelessWidget {
                       : value!,
                   textAlign: TextAlign.right,
                   style: styleSecondary(context),
+                  overflow: TextOverflow.ellipsis,
                 ),
         ),
       ],

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
+import 'package:mobile/widgets/input_controller.dart';
 import 'package:mobile/widgets/text.dart';
 import 'package:mobile/widgets/widget.dart';
 
@@ -236,6 +237,19 @@ void main() {
 
       expect(find.byIcon(Icons.star), findsOneWidget);
       expect(findFirst<Icon>(tester).size, 40.0);
+    });
+  });
+
+  group("NoneFormHeader", () {
+    testWidgets("Controller is cleared on tap", (tester) async {
+      var controller = InputController<int>(value: 5);
+      await tester
+          .pumpWidget(Testable((_) => NoneFormHeader(controller: controller)));
+
+      expect(controller.hasValue, isTrue);
+
+      await tapAndSettle(tester, find.text("None"));
+      expect(controller.hasValue, isFalse);
     });
   });
 }

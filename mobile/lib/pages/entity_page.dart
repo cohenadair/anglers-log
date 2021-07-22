@@ -81,7 +81,7 @@ class _EntityPageState extends State<EntityPage> {
   @override
   void didUpdateWidget(EntityPage oldWidget) {
     super.didUpdateWidget(oldWidget);
-    _isImageShowing = _hasImages;
+    _calculateIsImageShowing();
   }
 
   @override

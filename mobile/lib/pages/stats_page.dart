@@ -556,6 +556,7 @@ class _StatsPageState extends State<StatsPage> {
       windDirections: report.windDirections.toSet(),
       skyConditions: report.skyConditions.toSet(),
       moonPhases: report.moonPhases.toSet(),
+      tideTypes: report.tideTypes.toSet(),
       waterDepthFilter:
           report.hasWaterDepthFilter() ? report.waterDepthFilter : null,
       waterTemperatureFilter: report.hasWaterTemperatureFilter()

@@ -71,6 +71,7 @@ class _SaveReportPageState extends State<SaveReportPage> {
   static final _idSkyConditions = randomId();
   static final _idSpecies = randomId();
   static final _idStartDateRange = randomId();
+  static final _idTideTypes = randomId();
   static final _idType = randomId();
   static final _idWaterClarities = randomId();
   static final _idWaterDepth = randomId();
@@ -184,6 +185,9 @@ class _SaveReportPageState extends State<SaveReportPage> {
 
   SetInputController<MoonPhase> get _moonPhasesController =>
       _fields[_idMoonPhases]!.controller as SetInputController<MoonPhase>;
+
+  SetInputController<TideType> get _tideTypesController =>
+      _fields[_idTideTypes]!.controller as SetInputController<TideType>;
 
   Report? get _oldReport => widget.oldReport;
 
@@ -304,6 +308,11 @@ class _SaveReportPageState extends State<SaveReportPage> {
       controller: SetInputController<MoonPhase>(),
     );
 
+    _fields[_idTideTypes] = Field(
+      id: _idTideTypes,
+      controller: SetInputController<TideType>(),
+    );
+
     _fields[_idPeriods] = Field(
       id: _idPeriods,
       controller: SetInputController<Period>(),
@@ -374,6 +383,7 @@ class _SaveReportPageState extends State<SaveReportPage> {
       _windDirectionsController.value = _oldReport!.windDirections.toSet();
       _skyConditionsController.value = _oldReport!.skyConditions.toSet();
       _moonPhasesController.value = _oldReport!.moonPhases.toSet();
+      _tideTypesController.value = _oldReport!.tideTypes.toSet();
       _initEntitySets(
         anglerIds: _oldReport!.anglerIds,
         baitIds: _oldReport!.baitIds,
@@ -450,6 +460,7 @@ class _SaveReportPageState extends State<SaveReportPage> {
         _idWindDirections: _buildWindDirections(),
         _idSkyConditions: _buildSkyConditions(),
         _idMoonPhases: _buildMoonPhases(),
+        _idTideTypes: _buildTideTypes(),
         _idWaterClarities: _buildWaterClaritiesPicker(),
         _idPeriods: _buildPeriodsPicker(),
         _idSeasons: _buildSeasonsPicker(),
@@ -776,12 +787,24 @@ class _SaveReportPageState extends State<SaveReportPage> {
   Widget _buildMoonPhases() {
     return _buildNonEntityPicker<MoonPhase>(
       controller: _moonPhasesController,
-      nameForItem: (context, condition) => condition.chipName(context),
+      nameForItem: (context, moonPhase) => moonPhase.chipName(context),
       emptyValue: Strings.of(context).saveReportPageAllMoonPhases,
       pickerPageTitle: Strings.of(context).pickerTitleMoonPhases,
       allItems: MoonPhases.selectable(),
       allItem: MoonPhase.moon_phase_none,
       pickerItems: MoonPhases.pickerItems,
+    );
+  }
+
+  Widget _buildTideTypes() {
+    return _buildNonEntityPicker<TideType>(
+      controller: _tideTypesController,
+      nameForItem: (context, type) => type.chipName(context),
+      emptyValue: Strings.of(context).saveReportPageAllTideTypes,
+      pickerPageTitle: Strings.of(context).pickerTitleTides,
+      allItems: TideTypes.selectable(),
+      allItem: TideType.tide_type_none,
+      pickerItems: TideTypes.pickerItems,
     );
   }
 
@@ -895,7 +918,8 @@ class _SaveReportPageState extends State<SaveReportPage> {
       ..waterClarityIds.addAll(_waterClaritiesController.value.map((e) => e.id))
       ..windDirections.addAll(_windDirectionsController.value)
       ..skyConditions.addAll(_skyConditionsController.value)
-      ..moonPhases.addAll(_moonPhasesController.value);
+      ..moonPhases.addAll(_moonPhasesController.value)
+      ..tideTypes.addAll(_tideTypesController.value);
 
     if (isNotEmpty(_descriptionController.value)) {
       report.description = _descriptionController.value!;

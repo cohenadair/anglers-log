@@ -167,12 +167,12 @@ void main() {
 
   test("Wrong data type - sunrise", () async {
     expectMissingField(
-        "sunriseEpoch", (atmosphere) => atmosphere.hasSunriseMillis());
+        "sunriseEpoch", (atmosphere) => atmosphere.hasSunsetTimestamp());
   });
 
   test("Wrong data type - sunset", () async {
     expectMissingField(
-        "sunsetEpoch", (atmosphere) => atmosphere.hasSunsetMillis());
+        "sunsetEpoch", (atmosphere) => atmosphere.hasSunsetTimestamp());
   });
 
   test("Wrong data type - moon phase", () async {
@@ -203,8 +203,8 @@ void main() {
     expect(atmosphere.pressure.unit, Unit.millibars);
     expect(atmosphere.visibility.value, 9.9);
     expect(atmosphere.visibility.unit, Unit.miles);
-    expect(atmosphere.sunriseMillis.toInt(), 1624962142000); // ms
-    expect(atmosphere.sunsetMillis.toInt(), 1625014586000); // ms
+    expect(atmosphere.sunriseTimestamp.toInt(), 1624962142000); // ms
+    expect(atmosphere.sunsetTimestamp.toInt(), 1625014586000); // ms
     expect(atmosphere.moonPhase, MoonPhase.waning_gibbous);
     expect(atmosphere.skyConditions, [SkyCondition.rain, SkyCondition.cloudy]);
   });
@@ -243,8 +243,8 @@ void main() {
     expect(atmosphere.pressure.unit, Unit.pounds_per_square_inch);
     expect(atmosphere.visibility.value, 15.932505600000002);
     expect(atmosphere.visibility.unit, Unit.kilometers);
-    expect(atmosphere.sunriseMillis.toInt(), 1624962142000); // ms
-    expect(atmosphere.sunsetMillis.toInt(), 1625014586000); // ms
+    expect(atmosphere.sunriseTimestamp.toInt(), 1624962142000); // ms
+    expect(atmosphere.sunsetTimestamp.toInt(), 1625014586000); // ms
     expect(atmosphere.moonPhase, MoonPhase.waning_gibbous);
     expect(atmosphere.skyConditions, [SkyCondition.rain, SkyCondition.cloudy]);
   });

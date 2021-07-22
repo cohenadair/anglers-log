@@ -144,12 +144,12 @@ class AtmosphereFetcher {
 
     var sunrise = intFromDynamic(json["sunriseEpoch"]);
     if (sunrise != null && sunrise > 0) {
-      result.sunriseMillis = Int64(sunrise * Duration.millisecondsPerSecond);
+      result.sunriseTimestamp = Int64(sunrise * Duration.millisecondsPerSecond);
     }
 
     var sunset = intFromDynamic(json["sunsetEpoch"]);
     if (sunset != null && sunset > 0) {
-      result.sunsetMillis = Int64(sunset * Duration.millisecondsPerSecond);
+      result.sunsetTimestamp = Int64(sunset * Duration.millisecondsPerSecond);
     }
 
     var moon = doubleFromDynamic(json["moonphase"]);

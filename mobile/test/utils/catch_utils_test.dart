@@ -24,11 +24,12 @@ void main() {
     expect(fields[11].id, catchFieldIdQuantity());
     expect(fields[12].id, catchFieldIdSeason());
     expect(fields[13].id, catchFieldIdSpecies());
-    expect(fields[14].id, catchFieldIdPeriod());
-    expect(fields[15].id, catchFieldIdWaterClarity());
-    expect(fields[16].id, catchFieldIdWaterDepth());
-    expect(fields[17].id, catchFieldIdWaterTemperature());
-    expect(fields[18].id, catchFieldIdWeight());
+    expect(fields[14].id, catchFieldIdTide());
+    expect(fields[15].id, catchFieldIdPeriod());
+    expect(fields[16].id, catchFieldIdWaterClarity());
+    expect(fields[17].id, catchFieldIdWaterDepth());
+    expect(fields[18].id, catchFieldIdWaterTemperature());
+    expect(fields[19].id, catchFieldIdWeight());
   });
 
   testWidgets("catchFilterMatchesPeriod", (tester) async {
@@ -325,8 +326,8 @@ void main() {
           value: 10,
         ),
         moonPhase: MoonPhase.full,
-        sunriseMillis: Int64(10000),
-        sunsetMillis: Int64(15000),
+        sunriseTimestamp: Int64(10000),
+        sunsetTimestamp: Int64(15000),
       ),
     );
     expect(catchFilterMatchesAtmosphere(context, "58", cat), isTrue);
@@ -340,5 +341,31 @@ void main() {
     expect(catchFilterMatchesAtmosphere(context, "500", cat), isFalse);
     expect(catchFilterMatchesAtmosphere(context, "37", cat), isFalse);
     expect(catchFilterMatchesAtmosphere(context, "nothing", cat), isFalse);
+  });
+
+  testWidgets("catchFilterMatchesTide", (tester) async {
+    var context = await buildContext(tester);
+
+    // Without tide.
+    var cat = Catch();
+    expect(catchFilterMatchesTide(context, "", cat), isFalse);
+
+    // With tide.
+    cat = Catch(
+      tide: Tide(
+        type: TideType.high,
+        // Thursday, July 22, 2021 11:56:43 AM GMT
+        lowTimestamp: Int64(1626955003000),
+        // Thursday, July 22, 2021 5:56:43 PM GMT
+        highTimestamp: Int64(1626976603000),
+      ),
+    );
+
+    expect(catchFilterMatchesTide(context, "high", cat), isTrue);
+    expect(catchFilterMatchesTide(context, "7:56", cat), isTrue);
+    expect(catchFilterMatchesTide(context, "PM", cat), isTrue);
+    expect(catchFilterMatchesTide(context, "tide", cat), isTrue);
+    expect(catchFilterMatchesTide(context, "22", cat), isFalse);
+    expect(catchFilterMatchesTide(context, "out", cat), isFalse);
   });
 }

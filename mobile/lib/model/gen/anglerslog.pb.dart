@@ -105,8 +105,8 @@ class Atmosphere extends $pb.GeneratedMessage {
     ..aOM<Measurement>(6, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'humidity', subBuilder: Measurement.create)
     ..aOM<Measurement>(7, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'visibility', subBuilder: Measurement.create)
     ..e<MoonPhase>(8, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'moonPhase', $pb.PbFieldType.OE, defaultOrMaker: MoonPhase.moon_phase_all, valueOf: MoonPhase.valueOf, enumValues: MoonPhase.values)
-    ..a<$fixnum.Int64>(9, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'sunriseMillis', $pb.PbFieldType.OU6, defaultOrMaker: $fixnum.Int64.ZERO)
-    ..a<$fixnum.Int64>(10, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'sunsetMillis', $pb.PbFieldType.OU6, defaultOrMaker: $fixnum.Int64.ZERO)
+    ..a<$fixnum.Int64>(9, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'sunriseTimestamp', $pb.PbFieldType.OU6, defaultOrMaker: $fixnum.Int64.ZERO)
+    ..a<$fixnum.Int64>(10, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'sunsetTimestamp', $pb.PbFieldType.OU6, defaultOrMaker: $fixnum.Int64.ZERO)
     ..hasRequiredFields = false;
 
   Atmosphere._() : super();
@@ -119,8 +119,8 @@ class Atmosphere extends $pb.GeneratedMessage {
     Measurement? humidity,
     Measurement? visibility,
     MoonPhase? moonPhase,
-    $fixnum.Int64? sunriseMillis,
-    $fixnum.Int64? sunsetMillis,
+    $fixnum.Int64? sunriseTimestamp,
+    $fixnum.Int64? sunsetTimestamp,
   }) {
     final _result = create();
     if (temperature != null) {
@@ -147,11 +147,11 @@ class Atmosphere extends $pb.GeneratedMessage {
     if (moonPhase != null) {
       _result.moonPhase = moonPhase;
     }
-    if (sunriseMillis != null) {
-      _result.sunriseMillis = sunriseMillis;
+    if (sunriseTimestamp != null) {
+      _result.sunriseTimestamp = sunriseTimestamp;
     }
-    if (sunsetMillis != null) {
-      _result.sunsetMillis = sunsetMillis;
+    if (sunsetTimestamp != null) {
+      _result.sunsetTimestamp = sunsetTimestamp;
     }
     return _result;
   }
@@ -279,28 +279,28 @@ class Atmosphere extends $pb.GeneratedMessage {
   void clearMoonPhase() => clearField(8);
 
   @$pb.TagNumber(9)
-  $fixnum.Int64 get sunriseMillis => $_getI64(8);
+  $fixnum.Int64 get sunriseTimestamp => $_getI64(8);
   @$pb.TagNumber(9)
-  set sunriseMillis($fixnum.Int64 v) {
+  set sunriseTimestamp($fixnum.Int64 v) {
     $_setInt64(8, v);
   }
 
   @$pb.TagNumber(9)
-  $core.bool hasSunriseMillis() => $_has(8);
+  $core.bool hasSunriseTimestamp() => $_has(8);
   @$pb.TagNumber(9)
-  void clearSunriseMillis() => clearField(9);
+  void clearSunriseTimestamp() => clearField(9);
 
   @$pb.TagNumber(10)
-  $fixnum.Int64 get sunsetMillis => $_getI64(9);
+  $fixnum.Int64 get sunsetTimestamp => $_getI64(9);
   @$pb.TagNumber(10)
-  set sunsetMillis($fixnum.Int64 v) {
+  set sunsetTimestamp($fixnum.Int64 v) {
     $_setInt64(9, v);
   }
 
   @$pb.TagNumber(10)
-  $core.bool hasSunsetMillis() => $_has(9);
+  $core.bool hasSunsetTimestamp() => $_has(9);
   @$pb.TagNumber(10)
-  void clearSunsetMillis() => clearField(10);
+  void clearSunsetTimestamp() => clearField(10);
 }
 
 class CustomEntity extends $pb.GeneratedMessage {
@@ -761,6 +761,7 @@ class Catch extends $pb.GeneratedMessage {
     ..a<$core.int>(19, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'quantity', $pb.PbFieldType.OU3)
     ..aOS(20, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'notes')
     ..aOM<Atmosphere>(21, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'atmosphere', subBuilder: Atmosphere.create)
+    ..aOM<Tide>(22, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'tide', subBuilder: Tide.create)
     ..hasRequiredFields = false;
 
   Catch._() : super();
@@ -786,6 +787,7 @@ class Catch extends $pb.GeneratedMessage {
     $core.int? quantity,
     $core.String? notes,
     Atmosphere? atmosphere,
+    Tide? tide,
   }) {
     final _result = create();
     if (id != null) {
@@ -850,6 +852,9 @@ class Catch extends $pb.GeneratedMessage {
     }
     if (atmosphere != null) {
       _result.atmosphere = atmosphere;
+    }
+    if (tide != null) {
+      _result.tide = tide;
     }
     return _result;
   }
@@ -1114,6 +1119,20 @@ class Catch extends $pb.GeneratedMessage {
   void clearAtmosphere() => clearField(21);
   @$pb.TagNumber(21)
   Atmosphere ensureAtmosphere() => $_ensure(20);
+
+  @$pb.TagNumber(22)
+  Tide get tide => $_getN(21);
+  @$pb.TagNumber(22)
+  set tide(Tide v) {
+    setField(22, v);
+  }
+
+  @$pb.TagNumber(22)
+  $core.bool hasTide() => $_has(21);
+  @$pb.TagNumber(22)
+  void clearTide() => clearField(22);
+  @$pb.TagNumber(22)
+  Tide ensureTide() => $_ensure(21);
 }
 
 class DateRange extends $pb.GeneratedMessage {
@@ -1587,6 +1606,7 @@ class Report extends $pb.GeneratedMessage {
     ..pc<Direction>(27, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'windDirections', $pb.PbFieldType.PE, valueOf: Direction.valueOf, enumValues: Direction.values)
     ..pc<SkyCondition>(28, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'skyConditions', $pb.PbFieldType.PE, valueOf: SkyCondition.valueOf, enumValues: SkyCondition.values)
     ..pc<MoonPhase>(29, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'moonPhases', $pb.PbFieldType.PE, valueOf: MoonPhase.valueOf, enumValues: MoonPhase.values)
+    ..pc<TideType>(30, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'tideTypes', $pb.PbFieldType.PE, valueOf: TideType.valueOf, enumValues: TideType.values)
     ..hasRequiredFields = false;
 
   Report._() : super();
@@ -1620,6 +1640,7 @@ class Report extends $pb.GeneratedMessage {
     $core.Iterable<Direction>? windDirections,
     $core.Iterable<SkyCondition>? skyConditions,
     $core.Iterable<MoonPhase>? moonPhases,
+    $core.Iterable<TideType>? tideTypes,
   }) {
     final _result = create();
     if (id != null) {
@@ -1708,6 +1729,9 @@ class Report extends $pb.GeneratedMessage {
     }
     if (moonPhases != null) {
       _result.moonPhases.addAll(moonPhases);
+    }
+    if (tideTypes != null) {
+      _result.tideTypes.addAll(tideTypes);
     }
     return _result;
   }
@@ -2011,6 +2035,9 @@ class Report extends $pb.GeneratedMessage {
 
   @$pb.TagNumber(29)
   $core.List<MoonPhase> get moonPhases => $_getList(28);
+
+  @$pb.TagNumber(30)
+  $core.List<TideType> get tideTypes => $_getList(29);
 }
 
 class Angler extends $pb.GeneratedMessage {
@@ -2480,6 +2507,109 @@ class MultiMeasurement extends $pb.GeneratedMessage {
   void clearFractionValue() => clearField(3);
   @$pb.TagNumber(3)
   Measurement ensureFractionValue() => $_ensure(2);
+}
+
+class Tide extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i =
+      $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'Tide',
+          package: const $pb.PackageName(
+              const $core.bool.fromEnvironment('protobuf.omit_message_names')
+                  ? ''
+                  : 'anglerslog'),
+          createEmptyInstance: create)
+        ..e<TideType>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'type', $pb.PbFieldType.OE,
+            defaultOrMaker: TideType.tide_type_all,
+            valueOf: TideType.valueOf,
+            enumValues: TideType.values)
+        ..a<$fixnum.Int64>(
+            2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'lowTimestamp', $pb.PbFieldType.OU6,
+            defaultOrMaker: $fixnum.Int64.ZERO)
+        ..a<$fixnum.Int64>(
+            3,
+            const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'highTimestamp',
+            $pb.PbFieldType.OU6,
+            defaultOrMaker: $fixnum.Int64.ZERO)
+        ..hasRequiredFields = false;
+
+  Tide._() : super();
+  factory Tide({
+    TideType? type,
+    $fixnum.Int64? lowTimestamp,
+    $fixnum.Int64? highTimestamp,
+  }) {
+    final _result = create();
+    if (type != null) {
+      _result.type = type;
+    }
+    if (lowTimestamp != null) {
+      _result.lowTimestamp = lowTimestamp;
+    }
+    if (highTimestamp != null) {
+      _result.highTimestamp = highTimestamp;
+    }
+    return _result;
+  }
+  factory Tide.fromBuffer($core.List<$core.int> i,
+          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(i, r);
+  factory Tide.fromJson($core.String i,
+          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(i, r);
+  @$core.Deprecated('Using this can add significant overhead to your binary. '
+      'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+      'Will be removed in next major version')
+  Tide clone() => Tide()..mergeFromMessage(this);
+  @$core.Deprecated('Using this can add significant overhead to your binary. '
+      'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+      'Will be removed in next major version')
+  Tide copyWith(void Function(Tide) updates) =>
+      super.copyWith((message) => updates(message as Tide))
+          as Tide; // ignore: deprecated_member_use
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static Tide create() => Tide._();
+  Tide createEmptyInstance() => create();
+  static $pb.PbList<Tide> createRepeated() => $pb.PbList<Tide>();
+  @$core.pragma('dart2js:noInline')
+  static Tide getDefault() =>
+      _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<Tide>(create);
+  static Tide? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  TideType get type => $_getN(0);
+  @$pb.TagNumber(1)
+  set type(TideType v) {
+    setField(1, v);
+  }
+
+  @$pb.TagNumber(1)
+  $core.bool hasType() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearType() => clearField(1);
+
+  @$pb.TagNumber(2)
+  $fixnum.Int64 get lowTimestamp => $_getI64(1);
+  @$pb.TagNumber(2)
+  set lowTimestamp($fixnum.Int64 v) {
+    $_setInt64(1, v);
+  }
+
+  @$pb.TagNumber(2)
+  $core.bool hasLowTimestamp() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearLowTimestamp() => clearField(2);
+
+  @$pb.TagNumber(3)
+  $fixnum.Int64 get highTimestamp => $_getI64(2);
+  @$pb.TagNumber(3)
+  set highTimestamp($fixnum.Int64 v) {
+    $_setInt64(2, v);
+  }
+
+  @$pb.TagNumber(3)
+  $core.bool hasHighTimestamp() => $_has(2);
+  @$pb.TagNumber(3)
+  void clearHighTimestamp() => clearField(3);
 }
 
 // ignore_for_file: constant_identifier_names,lines_longer_than_80_chars,directives_ordering,prefer_mixin,implementation_imports

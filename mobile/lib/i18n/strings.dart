@@ -182,6 +182,8 @@ class Strings {
 
   String get catchFieldAtmosphere => _string("catchField_atmosphere");
 
+  String get catchFieldTide => _string("catchField_tide");
+
   String get catchFieldDateTime => _string("catchField_dateTime");
 
   String get catchFieldDate => _string("catchField_date");
@@ -304,6 +306,9 @@ class Strings {
 
   String get saveReportPageAllMoonPhases =>
       _string("saveReportPage_allMoonPhases");
+
+  String get saveReportPageAllTideTypes =>
+      _string("saveReportPage_allTideTypes");
 
   String get photosPageMenuLabel => _string("photosPage_menuLabel");
 
@@ -1308,6 +1313,10 @@ class Strings {
 
   String get pickerTitleWindDirections => _string("pickerTitle_windDirections");
 
+  String get pickerTitleTide => _string("pickerTitle_tide");
+
+  String get pickerTitleTides => _string("pickerTitle_tides");
+
   String get keywordsTemperatureMetric => _string("keywords_temperatureMetric");
 
   String get keywordsTemperatureImperial =>
@@ -1371,6 +1380,36 @@ class Strings {
   String get keywordsWindDirection => _string("keywords_windDirection");
 
   String get keywordsMoon => _string("keywords_moon");
+
+  String get tideInputTitle => _string("tideInput_title");
+
+  String get tideInputLowTimeValue => _string("tideInput_lowTimeValue");
+
+  String get tideInputHighTimeValue => _string("tideInput_highTimeValue");
+
+  String get tideInputLowTimeLabel => _string("tideInput_lowTimeLabel");
+
+  String get tideInputHighTimeLabel => _string("tideInput_highTimeLabel");
+
+  String get tideTypeLow => _string("tideType_low");
+
+  String get tideTypeOutgoing => _string("tideType_outgoing");
+
+  String get tideTypeHigh => _string("tideType_high");
+
+  String get tideTypeSlack => _string("tideType_slack");
+
+  String get tideTypeIncoming => _string("tideType_incoming");
+
+  String get tideLow => _string("tide_low");
+
+  String get tideOutgoing => _string("tide_outgoing");
+
+  String get tideHigh => _string("tide_high");
+
+  String get tideSlack => _string("tide_slack");
+
+  String get tideIncoming => _string("tide_incoming");
 }
 
 class StringsDelegate extends LocalizationsDelegate<Strings> {

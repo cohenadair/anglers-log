@@ -44,6 +44,7 @@ import '../widgets/multi_list_picker_input.dart';
 import '../widgets/multi_measurement_input.dart';
 import '../widgets/static_fishing_spot.dart';
 import '../widgets/text_input.dart';
+import '../widgets/tide_input.dart';
 import '../widgets/widget.dart';
 import 'angler_list_page.dart';
 import 'form_page.dart';
@@ -98,6 +99,7 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
   static final _idQuantity = catchFieldIdQuantity();
   static final _idSeason = catchFieldIdSeason();
   static final _idSpecies = catchFieldIdSpecies();
+  static final _idTide = catchFieldIdTide();
   static final _idTimestamp = catchFieldIdTimestamp();
   static final _idWaterClarity = catchFieldIdWaterClarity();
   static final _idWaterDepth = catchFieldIdWaterDepth();
@@ -206,6 +208,9 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
   InputController<Atmosphere> get _atmosphereController =>
       _fields[_idAtmosphere]!.controller as InputController<Atmosphere>;
 
+  InputController<Tide> get _tideController =>
+      _fields[_idTide]!.controller as InputController<Tide>;
+
   bool get _editing => _oldCatch != null;
 
   @override
@@ -241,7 +246,6 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
           _oldCatch!.hasSeason() ? _oldCatch!.season : null;
       _speciesController.value = _oldCatch!.speciesId;
       _baitsController.value = _oldCatch!.baitIds.toSet();
-      ;
       _fishingSpotController.value = _oldCatch!.fishingSpotId;
       _anglerController.value = _oldCatch!.anglerId;
       _catchAndReleaseController.value = _oldCatch!.wasCatchAndRelease;
@@ -262,6 +266,7 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
           isEmpty(_oldCatch!.notes) ? null : _oldCatch!.notes;
       _atmosphereController.value =
           _oldCatch!.hasAtmosphere() ? _oldCatch!.atmosphere : null;
+      _tideController.value = _oldCatch!.hasTide() ? _oldCatch!.tide : null;
       _customEntityValues = _oldCatch!.customEntityValues;
       _imagesFuture = _pickedImagesForOldCatch;
     } else {
@@ -355,6 +360,8 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
       return _buildNotes();
     } else if (id == _idAtmosphere) {
       return _buildAtmosphere();
+    } else if (id == _idTide) {
+      return _buildTide();
     } else {
       _log.e("Unknown input key: $id");
       return Empty();
@@ -568,6 +575,12 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
       fetcher: newAtmosphereFetcher(),
       padding: insetsDefault,
       controller: _atmosphereController,
+    );
+  }
+
+  Widget _buildTide() {
+    return TideInput(
+      controller: _tideController,
     );
   }
 
@@ -803,6 +816,10 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
 
     if (_atmosphereController.hasValue) {
       cat.atmosphere = _atmosphereController.value!;
+    }
+
+    if (_tideController.hasValue) {
+      cat.tide = _tideController.value!;
     }
 
     _catchManager.addOrUpdate(

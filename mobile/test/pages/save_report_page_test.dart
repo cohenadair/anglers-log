@@ -519,6 +519,21 @@ void main() {
     expect(find.text("All seasons"), findsOneWidget);
   });
 
+  testWidgets("Picking all tides shows single chip", (tester) async {
+    await tester.pumpWidget(Testable(
+      (_) => SaveReportPage(),
+      appManager: appManager,
+    ));
+
+    await tester.ensureVisible(find.text("All tides"));
+    await tapAndSettle(tester, find.text("All tides"));
+    expect(findSiblingOfText<PaddedCheckbox>(tester, ListItem, "All").checked,
+        isTrue);
+
+    await tapAndSettle(tester, find.byType(BackButton));
+    expect(find.text("All tides"), findsOneWidget);
+  });
+
   testWidgets("Add report with all fields modified", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => SaveReportPage(),
@@ -636,6 +651,9 @@ void main() {
     await tester.ensureVisible(find.text("All moon phases"));
     await selectItems(tester, "All moon phases", ["All", "Full"]);
 
+    await tester.ensureVisible(find.text("All tides"));
+    await selectItems(tester, "All tides", ["All", "Outgoing"]);
+
     expect(
       find.descendant(
         of: find.widgetWithText(InkWell, "Compare"),
@@ -672,6 +690,7 @@ void main() {
     expect(find.text("Cloudy"), findsOneWidget);
     expect(find.text("Full Moon"), findsOneWidget);
     expect(find.text("Any"), findsOneWidget);
+    expect(find.text("Outgoing Tide"), findsOneWidget);
 
     await tapAndSettle(tester, find.text("SAVE"));
 
@@ -941,6 +960,8 @@ void main() {
     report.waterClarityIds.addAll(waterClarityList.map((e) => e.id));
     report.periods.addAll([Period.dawn, Period.afternoon]);
     report.seasons.addAll([Season.winter, Season.summer]);
+    report.moonPhases.addAll([MoonPhase.full]);
+    report.tideTypes.addAll([TideType.outgoing, TideType.incoming]);
 
     await tester.pumpWidget(Testable(
       (_) => SaveReportPage.edit(report),
@@ -985,6 +1006,9 @@ void main() {
     expect(find.text("< 10 cm"), findsOneWidget);
     expect(find.text("< 2 kg"), findsOneWidget);
     expect(find.text("< 50"), findsOneWidget);
+    expect(find.text("Full Moon"), findsOneWidget);
+    expect(find.text("Outgoing Tide"), findsOneWidget);
+    expect(find.text("Incoming Tide"), findsOneWidget);
 
     await tapAndSettle(tester, find.text("SAVE"));
 
@@ -1020,6 +1044,7 @@ void main() {
     expect(find.text("All wind directions"), findsOneWidget);
     expect(find.text("All sky conditions"), findsOneWidget);
     expect(find.text("All moon phases"), findsOneWidget);
+    expect(find.text("All tides"), findsOneWidget);
   });
 
   testWidgets("New report without changing date ranges", (tester) async {

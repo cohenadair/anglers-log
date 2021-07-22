@@ -488,6 +488,22 @@ void main() {
       expect(find.text("50 ft"), findsOneWidget);
     });
 
+    testWidgets("Tide", (tester) async {
+      when(appManager.catchManager.entity(any))
+          .thenReturn(Catch(tide: Tide(type: TideType.outgoing)));
+
+      await tester.pumpWidget(Testable(
+        (_) => CatchPage(Catch()),
+        appManager: appManager,
+      ));
+      // Wait for map timer to finish.
+      await tester.pumpAndSettle(Duration(milliseconds: 150));
+      await tester.pumpAndSettle(Duration(milliseconds: 50));
+
+      expect(find.byIcon(CustomIcons.waterClarities), findsOneWidget);
+      expect(find.text("Outgoing Tide"), findsOneWidget);
+    });
+
     testWidgets("All water fields set", (tester) async {
       when(appManager.waterClarityManager.entity(any)).thenReturn(WaterClarity(
         id: randomId(),
@@ -510,6 +526,7 @@ void main() {
           ),
         ),
         waterClarityId: randomId(),
+        tide: Tide(type: TideType.outgoing),
       ));
 
       await tester.pumpWidget(Testable(
@@ -520,8 +537,8 @@ void main() {
       await tester.pumpAndSettle(Duration(milliseconds: 150));
       await tester.pumpAndSettle(Duration(milliseconds: 50));
 
-      expect(find.byIcon(CustomIcons.waterClarities), findsOneWidget);
       expect(find.text("Chocolate Milk, 50\u00B0C, 10 ft"), findsOneWidget);
+      expect(find.text("Outgoing Tide"), findsOneWidget);
     });
   });
 

@@ -26,7 +26,6 @@ import 'date_time_picker.dart';
 import 'detail_input.dart';
 import 'field.dart';
 import 'input_controller.dart';
-import 'list_item.dart';
 import 'list_picker_input.dart';
 import 'multi_list_picker_input.dart';
 import 'multi_measurement_input.dart';
@@ -269,7 +268,7 @@ class __AtmosphereInputPageState extends State<_AtmosphereInputPage> {
   Widget build(BuildContext context) {
     return EditableFormPage(
       title: Text(Strings.of(context).catchFieldAtmosphere),
-      header: _buildHeader(),
+      header: NoneFormHeader(controller: widget.controller),
       showSaveButton: false,
       allowCustomEntities: false,
       padding: insetsZero,
@@ -288,23 +287,6 @@ class __AtmosphereInputPageState extends State<_AtmosphereInputPage> {
       },
       onRefresh: _fetch,
       overflowOptions: [FormPageOverflowOption.manageUnits(context)],
-    );
-  }
-
-  Widget _buildHeader() {
-    return Column(
-      children: [
-        PickerListItem(
-          padding: insetsDefault,
-          title: Strings.of(context).none,
-          isSelected: !widget.controller.hasValue,
-          onTap: () {
-            widget.controller.clear();
-            Navigator.pop(context);
-          },
-        ),
-        MinDivider(),
-      ],
     );
   }
 
@@ -537,12 +519,12 @@ class __AtmosphereInputPageState extends State<_AtmosphereInputPage> {
       _moonPhaseController.value = atmosphere.moonPhase;
     }
 
-    if (atmosphere.hasSunriseMillis()) {
-      _sunriseController.value = atmosphere.sunriseMillis.toInt();
+    if (atmosphere.hasSunriseTimestamp()) {
+      _sunriseController.value = atmosphere.sunriseTimestamp.toInt();
     }
 
-    if (atmosphere.hasSunsetMillis()) {
-      _sunsetController.value = atmosphere.sunsetMillis.toInt();
+    if (atmosphere.hasSunsetTimestamp()) {
+      _sunsetController.value = atmosphere.sunsetTimestamp.toInt();
     }
 
     widget.controller.value = atmosphere;
@@ -593,12 +575,12 @@ class __AtmosphereInputPageState extends State<_AtmosphereInputPage> {
     }
 
     if (_sunriseController.hasValue) {
-      result.sunriseMillis = Int64(_sunriseController.timeInMillis);
+      result.sunriseTimestamp = Int64(_sunriseController.value);
       isSet = true;
     }
 
     if (_sunsetController.hasValue) {
-      result.sunsetMillis = Int64(_sunsetController.timeInMillis);
+      result.sunsetTimestamp = Int64(_sunsetController.value);
       isSet = true;
     }
 

@@ -60,18 +60,18 @@ class AtmosphereWrap extends StatelessWidget {
       ));
     }
 
-    if (atmosphere.hasSunriseMillis()) {
+    if (atmosphere.hasSunriseTimestamp()) {
       children.add(_Item(
         icon: CustomIcons.sunrise,
-        title: formatTimeMillis(context, atmosphere.sunriseMillis),
+        title: formatTimeMillis(context, atmosphere.sunriseTimestamp),
         subtitle: Strings.of(context).atmosphereInputSunrise,
       ));
     }
 
-    if (atmosphere.hasSunsetMillis()) {
+    if (atmosphere.hasSunsetTimestamp()) {
       children.add(_Item(
         icon: CustomIcons.sunset,
-        title: formatTimeMillis(context, atmosphere.sunsetMillis),
+        title: formatTimeMillis(context, atmosphere.sunsetTimestamp),
         subtitle: Strings.of(context).atmosphereInputSunset,
       ));
     }
@@ -93,8 +93,6 @@ class AtmosphereWrap extends StatelessWidget {
 }
 
 class _Item extends StatelessWidget {
-  static const _width = 65.0;
-
   final IconData icon;
   final String title;
   final String? subtitle;
@@ -107,26 +105,23 @@ class _Item extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: _width,
-      child: Column(
-        children: [
-          Icon(icon),
-          Text(
-            title,
-            textAlign: TextAlign.center,
-            overflow: TextOverflow.visible,
-          ),
-          isEmpty(subtitle)
-              ? Empty()
-              : Text(
-                  subtitle!,
-                  textAlign: TextAlign.center,
-                  style: styleSubtitle(context),
-                  overflow: TextOverflow.visible,
-                ),
-        ],
-      ),
+    return Column(
+      children: [
+        Icon(icon),
+        Text(
+          title,
+          textAlign: TextAlign.center,
+          overflow: TextOverflow.visible,
+        ),
+        isEmpty(subtitle)
+            ? Empty()
+            : Text(
+                subtitle!,
+                textAlign: TextAlign.center,
+                style: styleSubtitle(context),
+                overflow: TextOverflow.visible,
+              ),
+      ],
     );
   }
 }

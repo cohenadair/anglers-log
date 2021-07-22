@@ -139,6 +139,23 @@ const SkyCondition$json = const {
 /// Descriptor for `SkyCondition`. Decode as a `google.protobuf.EnumDescriptorProto`.
 final $typed_data.Uint8List skyConditionDescriptor = $convert.base64Decode(
     'CgxTa3lDb25kaXRpb24SFQoRc2t5X2NvbmRpdGlvbl9hbGwQABIWChJza3lfY29uZGl0aW9uX25vbmUQARIICgRzbm93EAISCwoHZHJpenpsZRADEggKBGR1c3QQBBIHCgNmb2cQBRIICgRyYWluEAYSCwoHdG9ybmFkbxAHEggKBGhhaWwQCBIHCgNpY2UQCRIJCgVzdG9ybRAKEggKBG1pc3QQCxIJCgVzbW9rZRAMEgwKCG92ZXJjYXN0EA0SCgoGY2xvdWR5EA4SCQoFY2xlYXIQDw==');
+@$core.Deprecated('Use tideTypeDescriptor instead')
+const TideType$json = const {
+  '1': 'TideType',
+  '2': const [
+    const {'1': 'tide_type_all', '2': 0},
+    const {'1': 'tide_type_none', '2': 1},
+    const {'1': 'low', '2': 2},
+    const {'1': 'outgoing', '2': 3},
+    const {'1': 'high', '2': 4},
+    const {'1': 'slack', '2': 5},
+    const {'1': 'incoming', '2': 6},
+  ],
+};
+
+/// Descriptor for `TideType`. Decode as a `google.protobuf.EnumDescriptorProto`.
+final $typed_data.Uint8List tideTypeDescriptor = $convert.base64Decode(
+    'CghUaWRlVHlwZRIRCg10aWRlX3R5cGVfYWxsEAASEgoOdGlkZV90eXBlX25vbmUQARIHCgNsb3cQAhIMCghvdXRnb2luZxADEggKBGhpZ2gQBBIJCgVzbGFjaxAFEgwKCGluY29taW5nEAY=');
 @$core.Deprecated('Use unitDescriptor instead')
 const Unit$json = const {
   '1': 'Unit',
@@ -245,19 +262,25 @@ const Atmosphere$json = const {
       '10': 'moonPhase'
     },
     const {
-      '1': 'sunrise_millis',
+      '1': 'sunrise_timestamp',
       '3': 9,
       '4': 1,
       '5': 4,
-      '10': 'sunriseMillis'
+      '10': 'sunriseTimestamp'
     },
-    const {'1': 'sunset_millis', '3': 10, '4': 1, '5': 4, '10': 'sunsetMillis'},
+    const {
+      '1': 'sunset_timestamp',
+      '3': 10,
+      '4': 1,
+      '5': 4,
+      '10': 'sunsetTimestamp'
+    },
   ],
 };
 
 /// Descriptor for `Atmosphere`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List atmosphereDescriptor = $convert.base64Decode(
-    'CgpBdG1vc3BoZXJlEjkKC3RlbXBlcmF0dXJlGAEgASgLMhcuYW5nbGVyc2xvZy5NZWFzdXJlbWVudFILdGVtcGVyYXR1cmUSPwoOc2t5X2NvbmRpdGlvbnMYAiADKA4yGC5hbmdsZXJzbG9nLlNreUNvbmRpdGlvblINc2t5Q29uZGl0aW9ucxI2Cgp3aW5kX3NwZWVkGAMgASgLMhcuYW5nbGVyc2xvZy5NZWFzdXJlbWVudFIJd2luZFNwZWVkEjwKDndpbmRfZGlyZWN0aW9uGAQgASgOMhUuYW5nbGVyc2xvZy5EaXJlY3Rpb25SDXdpbmREaXJlY3Rpb24SMwoIcHJlc3N1cmUYBSABKAsyFy5hbmdsZXJzbG9nLk1lYXN1cmVtZW50UghwcmVzc3VyZRIzCghodW1pZGl0eRgGIAEoCzIXLmFuZ2xlcnNsb2cuTWVhc3VyZW1lbnRSCGh1bWlkaXR5EjcKCnZpc2liaWxpdHkYByABKAsyFy5hbmdsZXJzbG9nLk1lYXN1cmVtZW50Ugp2aXNpYmlsaXR5EjQKCm1vb25fcGhhc2UYCCABKA4yFS5hbmdsZXJzbG9nLk1vb25QaGFzZVIJbW9vblBoYXNlEiUKDnN1bnJpc2VfbWlsbGlzGAkgASgEUg1zdW5yaXNlTWlsbGlzEiMKDXN1bnNldF9taWxsaXMYCiABKARSDHN1bnNldE1pbGxpcw==');
+    'CgpBdG1vc3BoZXJlEjkKC3RlbXBlcmF0dXJlGAEgASgLMhcuYW5nbGVyc2xvZy5NZWFzdXJlbWVudFILdGVtcGVyYXR1cmUSPwoOc2t5X2NvbmRpdGlvbnMYAiADKA4yGC5hbmdsZXJzbG9nLlNreUNvbmRpdGlvblINc2t5Q29uZGl0aW9ucxI2Cgp3aW5kX3NwZWVkGAMgASgLMhcuYW5nbGVyc2xvZy5NZWFzdXJlbWVudFIJd2luZFNwZWVkEjwKDndpbmRfZGlyZWN0aW9uGAQgASgOMhUuYW5nbGVyc2xvZy5EaXJlY3Rpb25SDXdpbmREaXJlY3Rpb24SMwoIcHJlc3N1cmUYBSABKAsyFy5hbmdsZXJzbG9nLk1lYXN1cmVtZW50UghwcmVzc3VyZRIzCghodW1pZGl0eRgGIAEoCzIXLmFuZ2xlcnNsb2cuTWVhc3VyZW1lbnRSCGh1bWlkaXR5EjcKCnZpc2liaWxpdHkYByABKAsyFy5hbmdsZXJzbG9nLk1lYXN1cmVtZW50Ugp2aXNpYmlsaXR5EjQKCm1vb25fcGhhc2UYCCABKA4yFS5hbmdsZXJzbG9nLk1vb25QaGFzZVIJbW9vblBoYXNlEisKEXN1bnJpc2VfdGltZXN0YW1wGAkgASgEUhBzdW5yaXNlVGltZXN0YW1wEikKEHN1bnNldF90aW1lc3RhbXAYCiABKARSD3N1bnNldFRpbWVzdGFtcA==');
 @$core.Deprecated('Use customEntityDescriptor instead')
 const CustomEntity$json = const {
   '1': 'CustomEntity',
@@ -506,12 +529,20 @@ const Catch$json = const {
       '6': '.anglerslog.Atmosphere',
       '10': 'atmosphere'
     },
+    const {
+      '1': 'tide',
+      '3': 22,
+      '4': 1,
+      '5': 11,
+      '6': '.anglerslog.Tide',
+      '10': 'tide'
+    },
   ],
 };
 
 /// Descriptor for `Catch`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List catchDescriptor = $convert.base64Decode(
-    'CgVDYXRjaBIeCgJpZBgBIAEoCzIOLmFuZ2xlcnNsb2cuSWRSAmlkEhwKCXRpbWVzdGFtcBgCIAEoBFIJdGltZXN0YW1wEikKCGJhaXRfaWRzGAMgAygLMg4uYW5nbGVyc2xvZy5JZFIHYmFpdElkcxI2Cg9maXNoaW5nX3Nwb3RfaWQYBCABKAsyDi5hbmdsZXJzbG9nLklkUg1maXNoaW5nU3BvdElkEi0KCnNwZWNpZXNfaWQYBSABKAsyDi5hbmdsZXJzbG9nLklkUglzcGVjaWVzSWQSHwoLaW1hZ2VfbmFtZXMYBiADKAlSCmltYWdlTmFtZXMSTwoUY3VzdG9tX2VudGl0eV92YWx1ZXMYByADKAsyHS5hbmdsZXJzbG9nLkN1c3RvbUVudGl0eVZhbHVlUhJjdXN0b21FbnRpdHlWYWx1ZXMSKwoJYW5nbGVyX2lkGAggASgLMg4uYW5nbGVyc2xvZy5JZFIIYW5nbGVySWQSLQoKbWV0aG9kX2lkcxgJIAMoCzIOLmFuZ2xlcnNsb2cuSWRSCW1ldGhvZElkcxIqCgZwZXJpb2QYCiABKA4yEi5hbmdsZXJzbG9nLlBlcmlvZFIGcGVyaW9kEh8KC2lzX2Zhdm9yaXRlGAsgASgIUgppc0Zhdm9yaXRlEjEKFXdhc19jYXRjaF9hbmRfcmVsZWFzZRgMIAEoCFISd2FzQ2F0Y2hBbmRSZWxlYXNlEioKBnNlYXNvbhgNIAEoDjISLmFuZ2xlcnNsb2cuU2Vhc29uUgZzZWFzb24SOAoQd2F0ZXJfY2xhcml0eV9pZBgOIAEoCzIOLmFuZ2xlcnNsb2cuSWRSDndhdGVyQ2xhcml0eUlkEj0KC3dhdGVyX2RlcHRoGA8gASgLMhwuYW5nbGVyc2xvZy5NdWx0aU1lYXN1cmVtZW50Ugp3YXRlckRlcHRoEkkKEXdhdGVyX3RlbXBlcmF0dXJlGBAgASgLMhwuYW5nbGVyc2xvZy5NdWx0aU1lYXN1cmVtZW50UhB3YXRlclRlbXBlcmF0dXJlEjQKBmxlbmd0aBgRIAEoCzIcLmFuZ2xlcnNsb2cuTXVsdGlNZWFzdXJlbWVudFIGbGVuZ3RoEjQKBndlaWdodBgSIAEoCzIcLmFuZ2xlcnNsb2cuTXVsdGlNZWFzdXJlbWVudFIGd2VpZ2h0EhoKCHF1YW50aXR5GBMgASgNUghxdWFudGl0eRIUCgVub3RlcxgUIAEoCVIFbm90ZXMSNgoKYXRtb3NwaGVyZRgVIAEoCzIWLmFuZ2xlcnNsb2cuQXRtb3NwaGVyZVIKYXRtb3NwaGVyZQ==');
+    'CgVDYXRjaBIeCgJpZBgBIAEoCzIOLmFuZ2xlcnNsb2cuSWRSAmlkEhwKCXRpbWVzdGFtcBgCIAEoBFIJdGltZXN0YW1wEikKCGJhaXRfaWRzGAMgAygLMg4uYW5nbGVyc2xvZy5JZFIHYmFpdElkcxI2Cg9maXNoaW5nX3Nwb3RfaWQYBCABKAsyDi5hbmdsZXJzbG9nLklkUg1maXNoaW5nU3BvdElkEi0KCnNwZWNpZXNfaWQYBSABKAsyDi5hbmdsZXJzbG9nLklkUglzcGVjaWVzSWQSHwoLaW1hZ2VfbmFtZXMYBiADKAlSCmltYWdlTmFtZXMSTwoUY3VzdG9tX2VudGl0eV92YWx1ZXMYByADKAsyHS5hbmdsZXJzbG9nLkN1c3RvbUVudGl0eVZhbHVlUhJjdXN0b21FbnRpdHlWYWx1ZXMSKwoJYW5nbGVyX2lkGAggASgLMg4uYW5nbGVyc2xvZy5JZFIIYW5nbGVySWQSLQoKbWV0aG9kX2lkcxgJIAMoCzIOLmFuZ2xlcnNsb2cuSWRSCW1ldGhvZElkcxIqCgZwZXJpb2QYCiABKA4yEi5hbmdsZXJzbG9nLlBlcmlvZFIGcGVyaW9kEh8KC2lzX2Zhdm9yaXRlGAsgASgIUgppc0Zhdm9yaXRlEjEKFXdhc19jYXRjaF9hbmRfcmVsZWFzZRgMIAEoCFISd2FzQ2F0Y2hBbmRSZWxlYXNlEioKBnNlYXNvbhgNIAEoDjISLmFuZ2xlcnNsb2cuU2Vhc29uUgZzZWFzb24SOAoQd2F0ZXJfY2xhcml0eV9pZBgOIAEoCzIOLmFuZ2xlcnNsb2cuSWRSDndhdGVyQ2xhcml0eUlkEj0KC3dhdGVyX2RlcHRoGA8gASgLMhwuYW5nbGVyc2xvZy5NdWx0aU1lYXN1cmVtZW50Ugp3YXRlckRlcHRoEkkKEXdhdGVyX3RlbXBlcmF0dXJlGBAgASgLMhwuYW5nbGVyc2xvZy5NdWx0aU1lYXN1cmVtZW50UhB3YXRlclRlbXBlcmF0dXJlEjQKBmxlbmd0aBgRIAEoCzIcLmFuZ2xlcnNsb2cuTXVsdGlNZWFzdXJlbWVudFIGbGVuZ3RoEjQKBndlaWdodBgSIAEoCzIcLmFuZ2xlcnNsb2cuTXVsdGlNZWFzdXJlbWVudFIGd2VpZ2h0EhoKCHF1YW50aXR5GBMgASgNUghxdWFudGl0eRIUCgVub3RlcxgUIAEoCVIFbm90ZXMSNgoKYXRtb3NwaGVyZRgVIAEoCzIWLmFuZ2xlcnNsb2cuQXRtb3NwaGVyZVIKYXRtb3NwaGVyZRIkCgR0aWRlGBYgASgLMhAuYW5nbGVyc2xvZy5UaWRlUgR0aWRl');
 @$core.Deprecated('Use dateRangeDescriptor instead')
 const DateRange$json = const {
   '1': 'DateRange',
@@ -855,6 +886,14 @@ const Report$json = const {
       '6': '.anglerslog.MoonPhase',
       '10': 'moonPhases'
     },
+    const {
+      '1': 'tide_types',
+      '3': 30,
+      '4': 3,
+      '5': 14,
+      '6': '.anglerslog.TideType',
+      '10': 'tideTypes'
+    },
   ],
   '4': const [Report_Type$json],
 };
@@ -870,7 +909,7 @@ const Report_Type$json = const {
 
 /// Descriptor for `Report`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List reportDescriptor = $convert.base64Decode(
-    'CgZSZXBvcnQSHgoCaWQYASABKAsyDi5hbmdsZXJzbG9nLklkUgJpZBISCgRuYW1lGAIgASgJUgRuYW1lEiAKC2Rlc2NyaXB0aW9uGAMgASgJUgtkZXNjcmlwdGlvbhIrCgR0eXBlGAQgASgOMhcuYW5nbGVyc2xvZy5SZXBvcnQuVHlwZVIEdHlwZRI9Cg9mcm9tX2RhdGVfcmFuZ2UYBSABKAsyFS5hbmdsZXJzbG9nLkRhdGVSYW5nZVINZnJvbURhdGVSYW5nZRI5Cg10b19kYXRlX3JhbmdlGAYgASgLMhUuYW5nbGVyc2xvZy5EYXRlUmFuZ2VSC3RvRGF0ZVJhbmdlEikKCGJhaXRfaWRzGAcgAygLMg4uYW5nbGVyc2xvZy5JZFIHYmFpdElkcxI4ChBmaXNoaW5nX3Nwb3RfaWRzGAggAygLMg4uYW5nbGVyc2xvZy5JZFIOZmlzaGluZ1Nwb3RJZHMSLwoLc3BlY2llc19pZHMYCSADKAsyDi5hbmdsZXJzbG9nLklkUgpzcGVjaWVzSWRzEi0KCmFuZ2xlcl9pZHMYCiADKAsyDi5hbmdsZXJzbG9nLklkUglhbmdsZXJJZHMSLQoKbWV0aG9kX2lkcxgLIAMoCzIOLmFuZ2xlcnNsb2cuSWRSCW1ldGhvZElkcxIsCgdwZXJpb2RzGAwgAygOMhIuYW5nbGVyc2xvZy5QZXJpb2RSB3BlcmlvZHMSKgoRaXNfZmF2b3JpdGVzX29ubHkYDSABKAhSD2lzRmF2b3JpdGVzT25seRI4Chlpc19jYXRjaF9hbmRfcmVsZWFzZV9vbmx5GA4gASgIUhVpc0NhdGNoQW5kUmVsZWFzZU9ubHkSLAoHc2Vhc29ucxgPIAMoDjISLmFuZ2xlcnNsb2cuU2Vhc29uUgdzZWFzb25zEjoKEXdhdGVyX2NsYXJpdHlfaWRzGBAgAygLMg4uYW5nbGVyc2xvZy5JZFIPd2F0ZXJDbGFyaXR5SWRzEkYKEndhdGVyX2RlcHRoX2ZpbHRlchgRIAEoCzIYLmFuZ2xlcnNsb2cuTnVtYmVyRmlsdGVyUhB3YXRlckRlcHRoRmlsdGVyElIKGHdhdGVyX3RlbXBlcmF0dXJlX2ZpbHRlchgSIAEoCzIYLmFuZ2xlcnNsb2cuTnVtYmVyRmlsdGVyUhZ3YXRlclRlbXBlcmF0dXJlRmlsdGVyEj0KDWxlbmd0aF9maWx0ZXIYEyABKAsyGC5hbmdsZXJzbG9nLk51bWJlckZpbHRlclIMbGVuZ3RoRmlsdGVyEj0KDXdlaWdodF9maWx0ZXIYFCABKAsyGC5hbmdsZXJzbG9nLk51bWJlckZpbHRlclIMd2VpZ2h0RmlsdGVyEkEKD3F1YW50aXR5X2ZpbHRlchgVIAEoCzIYLmFuZ2xlcnNsb2cuTnVtYmVyRmlsdGVyUg5xdWFudGl0eUZpbHRlchJOChZhaXJfdGVtcGVyYXR1cmVfZmlsdGVyGBYgASgLMhguYW5nbGVyc2xvZy5OdW1iZXJGaWx0ZXJSFGFpclRlbXBlcmF0dXJlRmlsdGVyEkgKE2Fpcl9wcmVzc3VyZV9maWx0ZXIYFyABKAsyGC5hbmdsZXJzbG9nLk51bWJlckZpbHRlclIRYWlyUHJlc3N1cmVGaWx0ZXISSAoTYWlyX2h1bWlkaXR5X2ZpbHRlchgYIAEoCzIYLmFuZ2xlcnNsb2cuTnVtYmVyRmlsdGVyUhFhaXJIdW1pZGl0eUZpbHRlchJMChVhaXJfdmlzaWJpbGl0eV9maWx0ZXIYGSABKAsyGC5hbmdsZXJzbG9nLk51bWJlckZpbHRlclITYWlyVmlzaWJpbGl0eUZpbHRlchJEChF3aW5kX3NwZWVkX2ZpbHRlchgaIAEoCzIYLmFuZ2xlcnNsb2cuTnVtYmVyRmlsdGVyUg93aW5kU3BlZWRGaWx0ZXISPgoPd2luZF9kaXJlY3Rpb25zGBsgAygOMhUuYW5nbGVyc2xvZy5EaXJlY3Rpb25SDndpbmREaXJlY3Rpb25zEj8KDnNreV9jb25kaXRpb25zGBwgAygOMhguYW5nbGVyc2xvZy5Ta3lDb25kaXRpb25SDXNreUNvbmRpdGlvbnMSNgoLbW9vbl9waGFzZXMYHSADKA4yFS5hbmdsZXJzbG9nLk1vb25QaGFzZVIKbW9vblBoYXNlcyIjCgRUeXBlEgsKB3N1bW1hcnkQABIOCgpjb21wYXJpc29uEAE=');
+    'CgZSZXBvcnQSHgoCaWQYASABKAsyDi5hbmdsZXJzbG9nLklkUgJpZBISCgRuYW1lGAIgASgJUgRuYW1lEiAKC2Rlc2NyaXB0aW9uGAMgASgJUgtkZXNjcmlwdGlvbhIrCgR0eXBlGAQgASgOMhcuYW5nbGVyc2xvZy5SZXBvcnQuVHlwZVIEdHlwZRI9Cg9mcm9tX2RhdGVfcmFuZ2UYBSABKAsyFS5hbmdsZXJzbG9nLkRhdGVSYW5nZVINZnJvbURhdGVSYW5nZRI5Cg10b19kYXRlX3JhbmdlGAYgASgLMhUuYW5nbGVyc2xvZy5EYXRlUmFuZ2VSC3RvRGF0ZVJhbmdlEikKCGJhaXRfaWRzGAcgAygLMg4uYW5nbGVyc2xvZy5JZFIHYmFpdElkcxI4ChBmaXNoaW5nX3Nwb3RfaWRzGAggAygLMg4uYW5nbGVyc2xvZy5JZFIOZmlzaGluZ1Nwb3RJZHMSLwoLc3BlY2llc19pZHMYCSADKAsyDi5hbmdsZXJzbG9nLklkUgpzcGVjaWVzSWRzEi0KCmFuZ2xlcl9pZHMYCiADKAsyDi5hbmdsZXJzbG9nLklkUglhbmdsZXJJZHMSLQoKbWV0aG9kX2lkcxgLIAMoCzIOLmFuZ2xlcnNsb2cuSWRSCW1ldGhvZElkcxIsCgdwZXJpb2RzGAwgAygOMhIuYW5nbGVyc2xvZy5QZXJpb2RSB3BlcmlvZHMSKgoRaXNfZmF2b3JpdGVzX29ubHkYDSABKAhSD2lzRmF2b3JpdGVzT25seRI4Chlpc19jYXRjaF9hbmRfcmVsZWFzZV9vbmx5GA4gASgIUhVpc0NhdGNoQW5kUmVsZWFzZU9ubHkSLAoHc2Vhc29ucxgPIAMoDjISLmFuZ2xlcnNsb2cuU2Vhc29uUgdzZWFzb25zEjoKEXdhdGVyX2NsYXJpdHlfaWRzGBAgAygLMg4uYW5nbGVyc2xvZy5JZFIPd2F0ZXJDbGFyaXR5SWRzEkYKEndhdGVyX2RlcHRoX2ZpbHRlchgRIAEoCzIYLmFuZ2xlcnNsb2cuTnVtYmVyRmlsdGVyUhB3YXRlckRlcHRoRmlsdGVyElIKGHdhdGVyX3RlbXBlcmF0dXJlX2ZpbHRlchgSIAEoCzIYLmFuZ2xlcnNsb2cuTnVtYmVyRmlsdGVyUhZ3YXRlclRlbXBlcmF0dXJlRmlsdGVyEj0KDWxlbmd0aF9maWx0ZXIYEyABKAsyGC5hbmdsZXJzbG9nLk51bWJlckZpbHRlclIMbGVuZ3RoRmlsdGVyEj0KDXdlaWdodF9maWx0ZXIYFCABKAsyGC5hbmdsZXJzbG9nLk51bWJlckZpbHRlclIMd2VpZ2h0RmlsdGVyEkEKD3F1YW50aXR5X2ZpbHRlchgVIAEoCzIYLmFuZ2xlcnNsb2cuTnVtYmVyRmlsdGVyUg5xdWFudGl0eUZpbHRlchJOChZhaXJfdGVtcGVyYXR1cmVfZmlsdGVyGBYgASgLMhguYW5nbGVyc2xvZy5OdW1iZXJGaWx0ZXJSFGFpclRlbXBlcmF0dXJlRmlsdGVyEkgKE2Fpcl9wcmVzc3VyZV9maWx0ZXIYFyABKAsyGC5hbmdsZXJzbG9nLk51bWJlckZpbHRlclIRYWlyUHJlc3N1cmVGaWx0ZXISSAoTYWlyX2h1bWlkaXR5X2ZpbHRlchgYIAEoCzIYLmFuZ2xlcnNsb2cuTnVtYmVyRmlsdGVyUhFhaXJIdW1pZGl0eUZpbHRlchJMChVhaXJfdmlzaWJpbGl0eV9maWx0ZXIYGSABKAsyGC5hbmdsZXJzbG9nLk51bWJlckZpbHRlclITYWlyVmlzaWJpbGl0eUZpbHRlchJEChF3aW5kX3NwZWVkX2ZpbHRlchgaIAEoCzIYLmFuZ2xlcnNsb2cuTnVtYmVyRmlsdGVyUg93aW5kU3BlZWRGaWx0ZXISPgoPd2luZF9kaXJlY3Rpb25zGBsgAygOMhUuYW5nbGVyc2xvZy5EaXJlY3Rpb25SDndpbmREaXJlY3Rpb25zEj8KDnNreV9jb25kaXRpb25zGBwgAygOMhguYW5nbGVyc2xvZy5Ta3lDb25kaXRpb25SDXNreUNvbmRpdGlvbnMSNgoLbW9vbl9waGFzZXMYHSADKA4yFS5hbmdsZXJzbG9nLk1vb25QaGFzZVIKbW9vblBoYXNlcxIzCgp0aWRlX3R5cGVzGB4gAygOMhQuYW5nbGVyc2xvZy5UaWRlVHlwZVIJdGlkZVR5cGVzIiMKBFR5cGUSCwoHc3VtbWFyeRAAEg4KCmNvbXBhcmlzb24QAQ==');
 @$core.Deprecated('Use anglerDescriptor instead')
 const Angler$json = const {
   '1': 'Angler',
@@ -981,4 +1020,30 @@ const MultiMeasurement$json = const {
 /// Descriptor for `MultiMeasurement`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List multiMeasurementDescriptor = $convert.base64Decode(
     'ChBNdWx0aU1lYXN1cmVtZW50EjUKBnN5c3RlbRgBIAEoDjIdLmFuZ2xlcnNsb2cuTWVhc3VyZW1lbnRTeXN0ZW1SBnN5c3RlbRI1CgltYWluVmFsdWUYAiABKAsyFy5hbmdsZXJzbG9nLk1lYXN1cmVtZW50UgltYWluVmFsdWUSPQoNZnJhY3Rpb25WYWx1ZRgDIAEoCzIXLmFuZ2xlcnNsb2cuTWVhc3VyZW1lbnRSDWZyYWN0aW9uVmFsdWU=');
+@$core.Deprecated('Use tideDescriptor instead')
+const Tide$json = const {
+  '1': 'Tide',
+  '2': const [
+    const {
+      '1': 'type',
+      '3': 1,
+      '4': 1,
+      '5': 14,
+      '6': '.anglerslog.TideType',
+      '10': 'type'
+    },
+    const {'1': 'low_timestamp', '3': 2, '4': 1, '5': 4, '10': 'lowTimestamp'},
+    const {
+      '1': 'high_timestamp',
+      '3': 3,
+      '4': 1,
+      '5': 4,
+      '10': 'highTimestamp'
+    },
+  ],
+};
+
+/// Descriptor for `Tide`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List tideDescriptor = $convert.base64Decode(
+    'CgRUaWRlEigKBHR5cGUYASABKA4yFC5hbmdsZXJzbG9nLlRpZGVUeXBlUgR0eXBlEiMKDWxvd190aW1lc3RhbXAYAiABKARSDGxvd1RpbWVzdGFtcBIlCg5oaWdoX3RpbWVzdGFtcBgDIAEoBFINaGlnaFRpbWVzdGFtcA==');
 // ignore_for_file: constant_identifier_names,lines_longer_than_80_chars,directives_ordering,prefer_mixin,implementation_imports

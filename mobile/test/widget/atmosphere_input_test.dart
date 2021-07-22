@@ -78,8 +78,8 @@ void main() {
         value: 10,
       ),
       moonPhase: MoonPhase.full,
-      sunriseMillis: Int64(8000),
-      sunsetMillis: Int64(9000),
+      sunriseTimestamp: Int64(1624348800000),
+      sunsetTimestamp: Int64(1624381200000),
     );
   }
 
@@ -212,9 +212,8 @@ void main() {
         value: 12,
       ),
       moonPhase: MoonPhase.new_,
-      sunriseMillis: Int64(32400000),
-      // 09:00
-      sunsetMillis: Int64(54000000), // 15:00
+      sunriseTimestamp: Int64(1624366800000),
+      sunsetTimestamp: Int64(1624388400000),
     );
 
     // Set all values to something different.
@@ -245,7 +244,7 @@ void main() {
     await tapAndSettle(tester, find.text("Time of Sunrise"));
     await tapAndSettle(tester, find.text("AM"));
     var center = tester
-        .getCenter(find.byKey(const ValueKey<String>('time-picker-dial')));
+        .getCenter(find.byKey(const ValueKey<String>("time-picker-dial")));
     await tester.tapAt(Offset(center.dx - 10, center.dy));
     await tapAndSettle(tester, find.text("OK"));
 
@@ -375,10 +374,8 @@ void main() {
         value: 12,
       ),
       moonPhase: MoonPhase.new_,
-      // 09:00
-      sunriseMillis: Int64(32400000),
-      // 15:00
-      sunsetMillis: Int64(54000000),
+      sunriseTimestamp: Int64(1624366800000),
+      sunsetTimestamp: Int64(1624388400000),
     );
 
     when(appManager.subscriptionManager.isFree).thenReturn(false);
