@@ -78,6 +78,8 @@ void main() {
         .thenReturn(MeasurementSystem.metric);
     when(appManager.userPreferenceManager.windSpeedSystem)
         .thenReturn(MeasurementSystem.metric);
+    when(appManager.userPreferenceManager.catchFieldIds).thenReturn([]);
+    when(appManager.userPreferenceManager.atmosphereFieldIds).thenReturn([]);
   });
 
   testWidgets("Current item is selected", (tester) async {

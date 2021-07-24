@@ -18,6 +18,9 @@ import '../pages/species_list_page.dart';
 import '../report_manager.dart';
 import '../res/dimen.dart';
 import '../species_manager.dart';
+import '../user_preference_manager.dart';
+import '../utils/atmosphere_utils.dart';
+import '../utils/catch_utils.dart';
 import '../utils/page_utils.dart';
 import '../utils/protobuf_utils.dart';
 import '../utils/validator.dart';
@@ -93,6 +96,9 @@ class _SaveReportPageState extends State<SaveReportPage> {
   MethodManager get _methodManager => MethodManager.of(context);
 
   SpeciesManager get _speciesManager => SpeciesManager.of(context);
+
+  UserPreferenceManager get _userPreferenceManager =>
+      UserPreferenceManager.of(context);
 
   WaterClarityManager get _waterClarityManager =>
       WaterClarityManager.of(context);
@@ -309,6 +315,10 @@ class _SaveReportPageState extends State<SaveReportPage> {
   }
 
   Widget _buildCatchAndReleaseOnly() {
+    if (hideCatchField(catchFieldIdCatchAndRelease)) {
+      return Empty();
+    }
+
     return CheckboxInput(
       label: Strings.of(context).saveReportPageCatchAndRelease,
       value: _catchAndReleaseOnlyController.value,
@@ -317,6 +327,10 @@ class _SaveReportPageState extends State<SaveReportPage> {
   }
 
   Widget _buildFavoritesOnly() {
+    if (hideCatchField(catchFieldIdFavorite)) {
+      return Empty();
+    }
+
     return CheckboxInput(
       label: Strings.of(context).saveReportPageFavorites,
       value: _favoritesOnlyController.value,
@@ -325,6 +339,10 @@ class _SaveReportPageState extends State<SaveReportPage> {
   }
 
   Widget _buildWaterDepth() {
+    if (hideCatchField(catchFieldIdWaterDepth)) {
+      return Empty();
+    }
+
     return NumberFilterInput(
       title: Strings.of(context).catchFieldWaterDepthLabel,
       filterTitle: Strings.of(context).filterTitleWaterDepth,
@@ -334,6 +352,10 @@ class _SaveReportPageState extends State<SaveReportPage> {
   }
 
   Widget _buildWaterTemperature() {
+    if (hideCatchField(catchFieldIdWaterTemperature)) {
+      return Empty();
+    }
+
     return NumberFilterInput(
       title: Strings.of(context).catchFieldWaterTemperatureLabel,
       filterTitle: Strings.of(context).filterTitleWaterTemperature,
@@ -343,6 +365,10 @@ class _SaveReportPageState extends State<SaveReportPage> {
   }
 
   Widget _buildLength() {
+    if (hideCatchField(catchFieldIdLength)) {
+      return Empty();
+    }
+
     return NumberFilterInput(
       title: Strings.of(context).catchFieldLengthLabel,
       filterTitle: Strings.of(context).filterTitleLength,
@@ -352,6 +378,10 @@ class _SaveReportPageState extends State<SaveReportPage> {
   }
 
   Widget _buildWeight() {
+    if (hideCatchField(catchFieldIdWeight)) {
+      return Empty();
+    }
+
     return NumberFilterInput(
       title: Strings.of(context).catchFieldWeightLabel,
       filterTitle: Strings.of(context).filterTitleWeight,
@@ -361,6 +391,10 @@ class _SaveReportPageState extends State<SaveReportPage> {
   }
 
   Widget _buildQuantity() {
+    if (hideCatchField(catchFieldIdQuantity)) {
+      return Empty();
+    }
+
     return NumberFilterInput(
       title: Strings.of(context).catchFieldQuantityLabel,
       filterTitle: Strings.of(context).filterTitleQuantity,
@@ -392,6 +426,7 @@ class _SaveReportPageState extends State<SaveReportPage> {
       allItems: Periods.selectable(),
       allItem: Period.period_all,
       pickerItems: Periods.pickerItems,
+      isHidden: hideCatchField(catchFieldIdPeriod),
     );
   }
 
@@ -404,6 +439,7 @@ class _SaveReportPageState extends State<SaveReportPage> {
       allItems: Seasons.selectable(),
       allItem: Season.season_all,
       pickerItems: Seasons.pickerItems,
+      isHidden: hideCatchField(catchFieldIdSeason),
     );
   }
 
@@ -412,6 +448,7 @@ class _SaveReportPageState extends State<SaveReportPage> {
       manager: _anglerManager,
       controller: _anglersController,
       emptyValue: Strings.of(context).saveReportPageAllAnglers,
+      isHidden: hideCatchField(catchFieldIdAngler),
       listPage: (pickerSettings) => AnglerListPage(
         pickerSettings: pickerSettings,
       ),
@@ -423,6 +460,7 @@ class _SaveReportPageState extends State<SaveReportPage> {
       manager: _speciesManager,
       controller: _speciesController,
       emptyValue: Strings.of(context).saveReportPageAllSpecies,
+      isHidden: hideCatchField(catchFieldIdSpecies),
       listPage: (pickerSettings) => SpeciesListPage(
         pickerSettings: pickerSettings,
       ),
@@ -435,6 +473,7 @@ class _SaveReportPageState extends State<SaveReportPage> {
       manager: _baitManager,
       controller: _baitsController,
       emptyValue: Strings.of(context).saveReportPageAllBaits,
+      isHidden: hideCatchField(catchFieldIdBait),
       dynamicListPage: BaitListPage(
         pickerSettings: ManageableListPagePickerSettings<dynamic>(
           onPicked: (context, items) {
@@ -456,6 +495,7 @@ class _SaveReportPageState extends State<SaveReportPage> {
       manager: _fishingSpotManager,
       controller: _fishingSpotsController,
       emptyValue: Strings.of(context).saveReportPageAllFishingSpots,
+      isHidden: hideCatchField(catchFieldIdFishingSpot),
       listPage: (pickerSettings) => FishingSpotListPage(
         pickerSettings: pickerSettings,
       ),
@@ -467,6 +507,7 @@ class _SaveReportPageState extends State<SaveReportPage> {
       manager: _methodManager,
       controller: _methodsController,
       emptyValue: Strings.of(context).saveReportPageAllMethods,
+      isHidden: hideCatchField(catchFieldIdMethods),
       listPage: (pickerSettings) {
         return MethodListPage(
           pickerSettings: pickerSettings,
@@ -476,6 +517,10 @@ class _SaveReportPageState extends State<SaveReportPage> {
   }
 
   Widget _buildAirTemperature() {
+    if (hideAtmosphereField(atmosphereFieldIdTemperature)) {
+      return Empty();
+    }
+
     return NumberFilterInput(
       title: Strings.of(context).atmosphereInputAirTemperature,
       filterTitle: Strings.of(context).filterTitleAirTemperature,
@@ -485,6 +530,10 @@ class _SaveReportPageState extends State<SaveReportPage> {
   }
 
   Widget _buildAirPressure() {
+    if (hideAtmosphereField(atmosphereFieldIdPressure)) {
+      return Empty();
+    }
+
     return NumberFilterInput(
       title: Strings.of(context).atmosphereInputAtmosphericPressure,
       filterTitle: Strings.of(context).filterTitleAirPressure,
@@ -494,6 +543,10 @@ class _SaveReportPageState extends State<SaveReportPage> {
   }
 
   Widget _buildAirHumidity() {
+    if (hideAtmosphereField(atmosphereFieldIdHumidity)) {
+      return Empty();
+    }
+
     return NumberFilterInput(
       title: Strings.of(context).atmosphereInputAirHumidity,
       filterTitle: Strings.of(context).filterTitleAirHumidity,
@@ -503,6 +556,10 @@ class _SaveReportPageState extends State<SaveReportPage> {
   }
 
   Widget _buildAirVisibility() {
+    if (hideAtmosphereField(atmosphereFieldIdVisibility)) {
+      return Empty();
+    }
+
     return NumberFilterInput(
       title: Strings.of(context).atmosphereInputAirVisibility,
       filterTitle: Strings.of(context).filterTitleAirVisibility,
@@ -512,6 +569,10 @@ class _SaveReportPageState extends State<SaveReportPage> {
   }
 
   Widget _buildWindSpeed() {
+    if (hideAtmosphereField(atmosphereFieldIdWindSpeed)) {
+      return Empty();
+    }
+
     return NumberFilterInput(
       title: Strings.of(context).atmosphereInputWindSpeed,
       filterTitle: Strings.of(context).filterTitleWindSpeed,
@@ -529,6 +590,7 @@ class _SaveReportPageState extends State<SaveReportPage> {
       allItems: Directions.selectable(),
       allItem: Direction.direction_none,
       pickerItems: Directions.pickerItems,
+      isHidden: hideAtmosphereField(atmosphereFieldIdWindDirection),
     );
   }
 
@@ -541,6 +603,7 @@ class _SaveReportPageState extends State<SaveReportPage> {
       allItems: SkyConditions.selectable(),
       allItem: SkyCondition.sky_condition_none,
       pickerItems: SkyConditions.pickerItems,
+      isHidden: hideAtmosphereField(atmosphereFieldIdTemperature),
     );
   }
 
@@ -553,6 +616,7 @@ class _SaveReportPageState extends State<SaveReportPage> {
       allItems: MoonPhases.selectable(),
       allItem: MoonPhase.moon_phase_none,
       pickerItems: MoonPhases.pickerItems,
+      isHidden: hideAtmosphereField(atmosphereFieldIdMoonPhase),
     );
   }
 
@@ -565,6 +629,7 @@ class _SaveReportPageState extends State<SaveReportPage> {
       allItems: TideTypes.selectable(),
       allItem: TideType.tide_type_none,
       pickerItems: TideTypes.pickerItems,
+      isHidden: hideCatchField(catchFieldIdTide),
     );
   }
 
@@ -573,6 +638,7 @@ class _SaveReportPageState extends State<SaveReportPage> {
       manager: _waterClarityManager,
       controller: _waterClaritiesController,
       emptyValue: Strings.of(context).saveReportPageAllWaterClarities,
+      isHidden: hideCatchField(catchFieldIdWaterClarity),
       listPage: (pickerSettings) {
         return WaterClarityListPage(
           pickerSettings: pickerSettings,
@@ -585,12 +651,17 @@ class _SaveReportPageState extends State<SaveReportPage> {
     required NamedEntityManager<T> manager,
     required SetInputController<T> controller,
     required String emptyValue,
+    required bool isHidden,
     Widget Function(ManageableListPagePickerSettings<T>)? listPage,
     // Used for when a picker page can have multiple entities displayed, such
     // as a BaitListPage, which shows bait categories as well as baits. In
     // these cases a definitive type T does not work.
     Widget? dynamicListPage,
   }) {
+    if (isHidden) {
+      return Empty();
+    }
+
     assert(listPage != null || dynamicListPage != null);
 
     return MultiListPickerInput(
@@ -632,7 +703,12 @@ class _SaveReportPageState extends State<SaveReportPage> {
     required Set<T> allItems,
     required T allItem,
     required List<PickerPageItem<T>> Function(BuildContext) pickerItems,
+    required bool isHidden,
   }) {
+    if (isHidden) {
+      return Empty();
+    }
+
     return MultiListPickerInput(
       padding: insetsHorizontalDefaultVerticalWidget,
       values:
@@ -743,5 +819,16 @@ class _SaveReportPageState extends State<SaveReportPage> {
 
     _reportManager.addOrUpdate(report);
     return true;
+  }
+
+  bool hideCatchField(Id id) {
+    return _userPreferenceManager.catchFieldIds.isNotEmpty &&
+        !_userPreferenceManager.catchFieldIds.contains(id);
+  }
+
+  bool hideAtmosphereField(Id id) {
+    return hideCatchField(catchFieldIdAtmosphere) ||
+        (_userPreferenceManager.atmosphereFieldIds.isNotEmpty &&
+            !_userPreferenceManager.atmosphereFieldIds.contains(id));
   }
 }

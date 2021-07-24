@@ -9,6 +9,8 @@ import 'package:mobile/pages/picker_page.dart';
 import 'package:mobile/pages/save_report_page.dart';
 import 'package:mobile/pages/species_list_page.dart';
 import 'package:mobile/pages/water_clarity_list_page.dart';
+import 'package:mobile/utils/atmosphere_utils.dart';
+import 'package:mobile/utils/catch_utils.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mobile/widgets/button.dart';
 import 'package:mobile/widgets/checkbox_input.dart';
@@ -147,6 +149,8 @@ void main() {
         .thenReturn(MeasurementSystem.metric);
     when(appManager.userPreferenceManager.windSpeedSystem)
         .thenReturn(MeasurementSystem.metric);
+    when(appManager.userPreferenceManager.catchFieldIds).thenReturn([]);
+    when(appManager.userPreferenceManager.atmosphereFieldIds).thenReturn([]);
 
     when(appManager.waterClarityManager.name(any))
         .thenAnswer((invocation) => invocation.positionalArguments.first.name);
@@ -166,6 +170,20 @@ void main() {
       ));
     }
     await tapAndSettle(tester, find.byType(BackButton));
+  }
+
+  void stubCatchFields(BuildContext context, Id excludeId) {
+    var allFields = allCatchFields(context);
+    allFields.removeWhere((e) => e.id == excludeId);
+    when(appManager.userPreferenceManager.catchFieldIds)
+        .thenReturn(allFields.map<Id>((e) => e.id).toList());
+  }
+
+  void stubAtmosphereFields(Id excludeId) {
+    var allFields = allAtmosphereFieldIds;
+    allFields.removeWhere((e) => e == excludeId);
+    when(appManager.userPreferenceManager.atmosphereFieldIds)
+        .thenReturn(allFields);
   }
 
   testWidgets("New title", (tester) async {
@@ -1099,5 +1117,269 @@ void main() {
     result.called(1);
 
     expect(result.captured.first.isCatchAndReleaseOnly, isTrue);
+  });
+
+  testWidgets("Catch and release hidden when not tracked", (tester) async {
+    await tester.pumpWidget(Testable(
+      (context) {
+        stubCatchFields(context, catchFieldIdCatchAndRelease);
+        return SaveReportPage();
+      },
+      appManager: appManager,
+    ));
+    expect(find.text("Catch and Release Only"), findsNothing);
+  });
+
+  testWidgets("Favorites hidden when not tracked", (tester) async {
+    await tester.pumpWidget(Testable(
+      (context) {
+        stubCatchFields(context, catchFieldIdFavorite);
+        return SaveReportPage();
+      },
+      appManager: appManager,
+    ));
+    expect(find.text("Favorites Only"), findsNothing);
+  });
+
+  testWidgets("Water depth hidden when not tracked", (tester) async {
+    await tester.pumpWidget(Testable(
+      (context) {
+        stubCatchFields(context, catchFieldIdWaterDepth);
+        return SaveReportPage();
+      },
+      appManager: appManager,
+    ));
+    expect(find.text("Water Depth"), findsNothing);
+  });
+
+  testWidgets("Water temperature hidden when not tracked", (tester) async {
+    await tester.pumpWidget(Testable(
+      (context) {
+        stubCatchFields(context, catchFieldIdWaterTemperature);
+        return SaveReportPage();
+      },
+      appManager: appManager,
+    ));
+    expect(find.text("Water Temperature"), findsNothing);
+  });
+
+  testWidgets("Length hidden when not tracked", (tester) async {
+    await tester.pumpWidget(Testable(
+      (context) {
+        stubCatchFields(context, catchFieldIdLength);
+        return SaveReportPage();
+      },
+      appManager: appManager,
+    ));
+    expect(find.text("Length"), findsNothing);
+  });
+
+  testWidgets("Weight hidden when not tracked", (tester) async {
+    await tester.pumpWidget(Testable(
+      (context) {
+        stubCatchFields(context, catchFieldIdWeight);
+        return SaveReportPage();
+      },
+      appManager: appManager,
+    ));
+    expect(find.text("Weight"), findsNothing);
+  });
+
+  testWidgets("Quantity hidden when not tracked", (tester) async {
+    await tester.pumpWidget(Testable(
+      (context) {
+        stubCatchFields(context, catchFieldIdQuantity);
+        return SaveReportPage();
+      },
+      appManager: appManager,
+    ));
+    expect(find.text("Quantity"), findsNothing);
+  });
+
+  testWidgets("Periods hidden when not tracked", (tester) async {
+    await tester.pumpWidget(Testable(
+      (context) {
+        stubCatchFields(context, catchFieldIdPeriod);
+        return SaveReportPage();
+      },
+      appManager: appManager,
+    ));
+    expect(find.text("All times of day"), findsNothing);
+  });
+
+  testWidgets("Seasons hidden when not tracked", (tester) async {
+    await tester.pumpWidget(Testable(
+      (context) {
+        stubCatchFields(context, catchFieldIdSeason);
+        return SaveReportPage();
+      },
+      appManager: appManager,
+    ));
+    expect(find.text("All seasons"), findsNothing);
+  });
+
+  testWidgets("Anglers hidden when not tracked", (tester) async {
+    await tester.pumpWidget(Testable(
+      (context) {
+        stubCatchFields(context, catchFieldIdAngler);
+        return SaveReportPage();
+      },
+      appManager: appManager,
+    ));
+    expect(find.text("All anglers"), findsNothing);
+  });
+
+  testWidgets("Species hidden when not tracked", (tester) async {
+    await tester.pumpWidget(Testable(
+      (context) {
+        stubCatchFields(context, catchFieldIdSpecies);
+        return SaveReportPage();
+      },
+      appManager: appManager,
+    ));
+    expect(find.text("All species"), findsNothing);
+  });
+
+  testWidgets("Baits hidden when not tracked", (tester) async {
+    await tester.pumpWidget(Testable(
+      (context) {
+        stubCatchFields(context, catchFieldIdBait);
+        return SaveReportPage();
+      },
+      appManager: appManager,
+    ));
+    expect(find.text("All baits"), findsNothing);
+  });
+
+  testWidgets("Fishing spots hidden when not tracked", (tester) async {
+    await tester.pumpWidget(Testable(
+      (context) {
+        stubCatchFields(context, catchFieldIdFishingSpot);
+        return SaveReportPage();
+      },
+      appManager: appManager,
+    ));
+    expect(find.text("All fishing spots"), findsNothing);
+  });
+
+  testWidgets("Methods hidden when not tracked", (tester) async {
+    await tester.pumpWidget(Testable(
+      (context) {
+        stubCatchFields(context, catchFieldIdMethods);
+        return SaveReportPage();
+      },
+      appManager: appManager,
+    ));
+    expect(find.text("All fishing methods"), findsNothing);
+  });
+
+  testWidgets("Air temperature hidden when not tracked", (tester) async {
+    await tester.pumpWidget(Testable(
+      (context) {
+        stubAtmosphereFields(atmosphereFieldIdTemperature);
+        return SaveReportPage();
+      },
+      appManager: appManager,
+    ));
+    expect(find.text("Air Temperature"), findsNothing);
+  });
+
+  testWidgets("Air pressure hidden when not tracked", (tester) async {
+    await tester.pumpWidget(Testable(
+      (context) {
+        stubAtmosphereFields(atmosphereFieldIdPressure);
+        return SaveReportPage();
+      },
+      appManager: appManager,
+    ));
+    expect(find.text("Atmospheric Pressure"), findsNothing);
+  });
+
+  testWidgets("Air humidity hidden when not tracked", (tester) async {
+    await tester.pumpWidget(Testable(
+      (context) {
+        stubAtmosphereFields(atmosphereFieldIdHumidity);
+        return SaveReportPage();
+      },
+      appManager: appManager,
+    ));
+    expect(find.text("Air Humidity"), findsNothing);
+  });
+
+  testWidgets("Air visibility hidden when not tracked", (tester) async {
+    await tester.pumpWidget(Testable(
+      (context) {
+        stubAtmosphereFields(atmosphereFieldIdVisibility);
+        return SaveReportPage();
+      },
+      appManager: appManager,
+    ));
+    expect(find.text("Air Visibility"), findsNothing);
+  });
+
+  testWidgets("Wind speeds hidden when not tracked", (tester) async {
+    await tester.pumpWidget(Testable(
+      (context) {
+        stubAtmosphereFields(atmosphereFieldIdWindSpeed);
+        return SaveReportPage();
+      },
+      appManager: appManager,
+    ));
+    expect(find.text("Wind Speed"), findsNothing);
+  });
+
+  testWidgets("Wind directions hidden when not tracked", (tester) async {
+    await tester.pumpWidget(Testable(
+      (context) {
+        stubAtmosphereFields(atmosphereFieldIdWindDirection);
+        return SaveReportPage();
+      },
+      appManager: appManager,
+    ));
+    expect(find.text("All wind directions"), findsNothing);
+  });
+
+  testWidgets("Sky conditions hidden when not tracked", (tester) async {
+    await tester.pumpWidget(Testable(
+      (context) {
+        stubAtmosphereFields(atmosphereFieldIdSkyCondition);
+        return SaveReportPage();
+      },
+      appManager: appManager,
+    ));
+    expect(find.text("All sky conditions"), findsNothing);
+  });
+
+  testWidgets("Moon phases hidden when not tracked", (tester) async {
+    await tester.pumpWidget(Testable(
+      (context) {
+        stubAtmosphereFields(atmosphereFieldIdMoonPhase);
+        return SaveReportPage();
+      },
+      appManager: appManager,
+    ));
+    expect(find.text("All moon phases"), findsNothing);
+  });
+
+  testWidgets("Tides hidden when not tracked", (tester) async {
+    await tester.pumpWidget(Testable(
+      (context) {
+        stubCatchFields(context, catchFieldIdTide);
+        return SaveReportPage();
+      },
+      appManager: appManager,
+    ));
+    expect(find.text("All tides"), findsNothing);
+  });
+
+  testWidgets("Water clarities hidden when not tracked", (tester) async {
+    await tester.pumpWidget(Testable(
+      (context) {
+        stubCatchFields(context, catchFieldIdWaterClarity);
+        return SaveReportPage();
+      },
+      appManager: appManager,
+    ));
+    expect(find.text("All water clarities"), findsNothing);
   });
 }
