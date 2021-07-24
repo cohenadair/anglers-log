@@ -74,9 +74,9 @@ class _SaveBaitPageState extends State<SaveBaitPage> {
       id: _idBaitCategory,
       name: (context) => Strings.of(context).saveBaitPageCategoryLabel,
       controller: IdInputController(),
-      removable: true,
+      isRemovable: true,
       // Only include bait category field if not disabled by the user.
-      showing: baitFieldIds.isEmpty || baitFieldIds.contains(_idBaitCategory),
+      isShowing: baitFieldIds.isEmpty || baitFieldIds.contains(_idBaitCategory),
     );
 
     _fields[_idName] = Field(
@@ -86,8 +86,8 @@ class _SaveBaitPageState extends State<SaveBaitPage> {
         validator: NameValidator(),
       ),
       // Name field is required; always include it.
-      removable: false,
-      showing: true,
+      isRemovable: false,
+      isShowing: true,
     );
 
     if (_editing) {

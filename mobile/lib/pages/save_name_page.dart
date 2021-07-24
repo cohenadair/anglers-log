@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:quiver/strings.dart';
 
 import '../pages/form_page.dart';
-import '../utils/protobuf_utils.dart';
 import '../utils/string_utils.dart';
 import '../utils/validator.dart';
 import '../widgets/input_controller.dart';
@@ -36,8 +35,6 @@ class SaveNamePage extends StatefulWidget {
 }
 
 class _SaveNamePageState extends State<SaveNamePage> {
-  static final _idName = randomId();
-
   late final TextInputController _controller;
 
   @override
@@ -76,17 +73,15 @@ class _SaveNamePageState extends State<SaveNamePage> {
 
         return false;
       },
-      fieldBuilder: (context) {
-        return {
-          _idName: TextInput.name(
-            context,
-            controller: _controller,
-            autofocus: true,
-            // Trigger "Save" button state refresh.
-            onChanged: (_) => setState(() {}),
-          ),
-        };
-      },
+      fieldBuilder: (context) => [
+        TextInput.name(
+          context,
+          controller: _controller,
+          autofocus: true,
+          // Trigger "Save" button state refresh.
+          onChanged: (_) => setState(() {}),
+        ),
+      ],
       isInputValid: _controller.isValid(context),
     );
   }

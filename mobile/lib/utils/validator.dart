@@ -32,7 +32,7 @@ class NameValidator implements Validator {
   /// If non-null, input equal to [oldName] is considered valid.
   final String? oldName;
 
-  final String Function(BuildContext)? nameExistsMessage;
+  final LocalizedString? nameExistsMessage;
   final bool Function(String)? nameExists;
 
   NameValidator({

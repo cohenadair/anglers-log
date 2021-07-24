@@ -7,182 +7,160 @@ import '../pages/image_picker_page.dart';
 import '../time_manager.dart';
 import '../widgets/field.dart';
 import '../widgets/input_controller.dart';
+import '../widgets/multi_measurement_input.dart';
 import 'date_time_utils.dart';
 import 'protobuf_utils.dart';
 import 'string_utils.dart';
 
 // Unique IDs for each catch field. These are stored in the database and
 // should not be changed.
-Id catchFieldIdAngler() => Id()..uuid = "d1568a03-c34f-4840-b032-b0b3077847d3";
-
-Id catchFieldIdBait() => Id()..uuid = "916e26ae-9448-4cef-b518-cfe4b4c1e5e8";
-
-Id catchFieldIdPeriod() => Id()..uuid = "5ad83f1a-cc8f-48c4-a5bb-5394abd2e1f8";
-
-Id catchFieldIdFishingSpot() =>
-    Id()..uuid = "2e4e6124-6fc8-4a60-b8f3-b42debd97a99";
-
-Id catchFieldIdImages() => Id()..uuid = "cb268ed0-59e2-469e-9279-a74e15ff42e8";
-
-Id catchFieldIdMethods() => Id()..uuid = "b494335f-a9fb-4c1b-b4ec-40658645ef12";
-
-Id catchFieldIdSpecies() => Id()..uuid = "7c4a5178-4e3b-4b97-ac69-b4a5439c4d94";
-
-Id catchFieldIdTimestamp() =>
-    Id()..uuid = "dbe382be-b219-4703-af11-a8ce16a191b7";
-
-Id catchFieldIdFavorite() =>
-    Id()..uuid = "a12f6861-475f-475a-af29-c4fc6fe0a0bc";
-
-Id catchFieldIdCatchAndRelease() =>
-    Id()..uuid = "075fc6d5-b9b4-4377-b87d-a706287e1ffc";
-
-Id catchFieldIdSeason() => Id()..uuid = "a2b00262-d130-45ce-b30b-f6e4f2d5baf5";
-
-Id catchFieldIdWaterClarity() =>
-    Id()..uuid = "ca035b3d-323c-44a6-a112-bede7177aeb2";
-
-Id catchFieldIdWaterDepth() =>
-    Id()..uuid = "c8a58e5f-19a1-430e-9d84-5a7b1bb96c3a";
-
-Id catchFieldIdWaterTemperature() =>
-    Id()..uuid = "eb66a49b-4add-43e1-b057-e95a5854fad8";
-
-Id catchFieldIdLength() => Id()..uuid = "03ff0695-e160-4446-8f93-ba86d1ad1095";
-
-Id catchFieldIdWeight() => Id()..uuid = "ca5e1447-7aa4-4508-870c-ce8dcd1d656e";
-
-Id catchFieldIdQuantity() =>
-    Id()..uuid = "8ed48dab-b5c3-4430-a702-aa336aea0f5a";
-
-Id catchFieldIdNotes() => Id()..uuid = "a5ad6270-e131-40ad-b281-e1a4d838bf47";
-
-Id catchFieldIdAtmosphere() =>
-    Id()..uuid = "93f2a6bc-fb18-43a1-92c1-18c727440257";
-
-Id catchFieldIdTide() => Id()..uuid = "5443a6ba-1860-4818-8b15-a6125121f451";
+final catchFieldIdAngler = Id()..uuid = "d1568a03-c34f-4840-b032-b0b3077847d3";
+final catchFieldIdBait = Id()..uuid = "916e26ae-9448-4cef-b518-cfe4b4c1e5e8";
+final catchFieldIdPeriod = Id()..uuid = "5ad83f1a-cc8f-48c4-a5bb-5394abd2e1f8";
+final catchFieldIdFishingSpot = Id()
+  ..uuid = "2e4e6124-6fc8-4a60-b8f3-b42debd97a99";
+final catchFieldIdImages = Id()..uuid = "cb268ed0-59e2-469e-9279-a74e15ff42e8";
+final catchFieldIdMethods = Id()..uuid = "b494335f-a9fb-4c1b-b4ec-40658645ef12";
+final catchFieldIdSpecies = Id()..uuid = "7c4a5178-4e3b-4b97-ac69-b4a5439c4d94";
+final catchFieldIdTimestamp = Id()
+  ..uuid = "dbe382be-b219-4703-af11-a8ce16a191b7";
+final catchFieldIdFavorite = Id()
+  ..uuid = "a12f6861-475f-475a-af29-c4fc6fe0a0bc";
+final catchFieldIdCatchAndRelease = Id()
+  ..uuid = "075fc6d5-b9b4-4377-b87d-a706287e1ffc";
+final catchFieldIdSeason = Id()..uuid = "a2b00262-d130-45ce-b30b-f6e4f2d5baf5";
+final catchFieldIdWaterClarity = Id()
+  ..uuid = "ca035b3d-323c-44a6-a112-bede7177aeb2";
+final catchFieldIdWaterDepth = Id()
+  ..uuid = "c8a58e5f-19a1-430e-9d84-5a7b1bb96c3a";
+final catchFieldIdWaterTemperature = Id()
+  ..uuid = "eb66a49b-4add-43e1-b057-e95a5854fad8";
+final catchFieldIdLength = Id()..uuid = "03ff0695-e160-4446-8f93-ba86d1ad1095";
+final catchFieldIdWeight = Id()..uuid = "ca5e1447-7aa4-4508-870c-ce8dcd1d656e";
+final catchFieldIdQuantity = Id()
+  ..uuid = "8ed48dab-b5c3-4430-a702-aa336aea0f5a";
+final catchFieldIdNotes = Id()..uuid = "a5ad6270-e131-40ad-b281-e1a4d838bf47";
+final catchFieldIdAtmosphere = Id()
+  ..uuid = "93f2a6bc-fb18-43a1-92c1-18c727440257";
+final catchFieldIdTide = Id()..uuid = "5443a6ba-1860-4818-8b15-a6125121f451";
 
 /// Returns all catch fields, sorted by how they are rendered on a
 /// [SaveCatchPage].
-List<Field> allCatchFields(TimeManager timeManager) {
+List<Field> allCatchFields(BuildContext context) {
   return [
     Field(
-      id: catchFieldIdTimestamp(),
-      removable: false,
+      id: catchFieldIdTimestamp,
+      isRemovable: false,
       name: (context) => Strings.of(context).catchFieldDateTime,
-      controller: TimestampInputController(timeManager),
+      controller: TimestampInputController(TimeManager.of(context)),
     ),
     Field(
-      id: catchFieldIdPeriod(),
+      id: catchFieldIdPeriod,
       name: (context) => Strings.of(context).catchFieldPeriod,
       description: (context) => Strings.of(context).catchFieldPeriodDescription,
       controller: InputController<Period>(),
     ),
     Field(
-      id: catchFieldIdSeason(),
+      id: catchFieldIdSeason,
       name: (context) => Strings.of(context).catchFieldSeason,
       description: (context) => Strings.of(context).catchFieldSeasonDescription,
       controller: InputController<Season>(),
     ),
     Field(
-      id: catchFieldIdSpecies(),
-      removable: false,
+      id: catchFieldIdSpecies,
+      isRemovable: false,
       name: (context) => Strings.of(context).catchFieldSpecies,
       controller: IdInputController(),
     ),
     Field(
-      id: catchFieldIdBait(),
+      id: catchFieldIdBait,
       name: (context) => Strings.of(context).catchFieldBaitLabel,
       controller: SetInputController<Id>(),
     ),
     Field(
-      id: catchFieldIdImages(),
+      id: catchFieldIdImages,
       name: (context) => Strings.of(context).catchFieldImages,
       controller: ListInputController<PickedImage>(),
     ),
     Field(
-      id: catchFieldIdFishingSpot(),
+      id: catchFieldIdFishingSpot,
       name: (context) => Strings.of(context).catchFieldFishingSpot,
       description: (context) =>
           Strings.of(context).catchFieldFishingSpotDescription,
       controller: IdInputController(),
     ),
     Field(
-      id: catchFieldIdAngler(),
+      id: catchFieldIdAngler,
       name: (context) => Strings.of(context).catchFieldAnglerLabel,
       controller: IdInputController(),
     ),
     Field(
-      id: catchFieldIdCatchAndRelease(),
+      id: catchFieldIdCatchAndRelease,
       name: (context) => Strings.of(context).catchFieldCatchAndRelease,
       description: (context) =>
           Strings.of(context).catchFieldCatchAndReleaseDescription,
       controller: BoolInputController(),
     ),
     Field(
-      id: catchFieldIdFavorite(),
+      id: catchFieldIdFavorite,
       name: (context) => Strings.of(context).catchFieldFavorite,
       controller: BoolInputController(),
     ),
     Field(
-      id: catchFieldIdMethods(),
+      id: catchFieldIdMethods,
       name: (context) => Strings.of(context).catchFieldMethodsLabel,
       description: (context) =>
           Strings.of(context).catchFieldMethodsDescription,
       controller: SetInputController<Id>(),
     ),
     Field(
-      id: catchFieldIdAtmosphere(),
+      id: catchFieldIdAtmosphere,
       name: (context) => Strings.of(context).catchFieldAtmosphere,
       controller: InputController<Atmosphere>(),
     ),
     Field(
-      id: catchFieldIdTide(),
+      id: catchFieldIdTide,
       name: (context) => Strings.of(context).catchFieldTide,
       controller: InputController<Tide>(),
     ),
     Field(
-      id: catchFieldIdWaterClarity(),
+      id: catchFieldIdWaterClarity,
       name: (context) => Strings.of(context).catchFieldWaterClarityLabel,
       controller: IdInputController(),
     ),
     Field(
-      id: catchFieldIdWaterDepth(),
+      id: catchFieldIdWaterDepth,
       name: (context) => Strings.of(context).catchFieldWaterDepthLabel,
-      // When used for actual input, this should be reset to an applicable
-      // controller depending on the widget being used.
-      controller: InputController(),
+      controller:
+          MultiMeasurementInputSpec.waterDepth(context).newInputController(),
     ),
     Field(
-      id: catchFieldIdWaterTemperature(),
+      id: catchFieldIdWaterTemperature,
       name: (context) => Strings.of(context).catchFieldWaterTemperatureLabel,
-      // When used for actual input, this should be reset to an applicable
-      // controller depending on the widget being used.
-      controller: InputController(),
+      controller: MultiMeasurementInputSpec.waterTemperature(context)
+          .newInputController(),
     ),
     Field(
-      id: catchFieldIdLength(),
+      id: catchFieldIdLength,
       name: (context) => Strings.of(context).catchFieldLengthLabel,
-      // When used for actual input, this should be reset to an applicable
-      // controller depending on the widget being used.
-      controller: InputController(),
+      controller:
+          MultiMeasurementInputSpec.length(context).newInputController(),
     ),
     Field(
-      id: catchFieldIdWeight(),
+      id: catchFieldIdWeight,
       name: (context) => Strings.of(context).catchFieldWeightLabel,
-      // When used for actual input, this should be reset to an applicable
-      // controller depending on the widget being used.
-      controller: InputController(),
+      controller:
+          MultiMeasurementInputSpec.weight(context).newInputController(),
     ),
     Field(
-      id: catchFieldIdQuantity(),
+      id: catchFieldIdQuantity,
       name: (context) => Strings.of(context).catchFieldQuantityLabel,
       description: (context) =>
           Strings.of(context).catchFieldQuantityDescription,
       controller: NumberInputController(),
     ),
     Field(
-      id: catchFieldIdNotes(),
+      id: catchFieldIdNotes,
       name: (context) => Strings.of(context).catchFieldNotesLabel,
       controller: TextInputController(),
     ),
@@ -190,9 +168,8 @@ List<Field> allCatchFields(TimeManager timeManager) {
 }
 
 /// Returns all catch fields sorted alphabetically.
-List<Field> allCatchFieldsSorted(
-    BuildContext context, TimeManager timeManager) {
-  var fields = allCatchFields(timeManager);
+List<Field> allCatchFieldsSorted(BuildContext context) {
+  var fields = allCatchFields(context);
   fields.sort((lhs, rhs) => lhs.name!(context).compareTo(rhs.name!(context)));
   return fields;
 }

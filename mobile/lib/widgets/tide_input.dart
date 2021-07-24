@@ -60,10 +60,6 @@ class _TideInputPage extends StatefulWidget {
 }
 
 class __TideInputPageState extends State<_TideInputPage> {
-  static final _idType = randomId();
-  static final _idLowTimestamp = randomId();
-  static final _idHighTimestamp = randomId();
-
   late TimestampInputController _lowTideController;
   late TimestampInputController _highTideController;
 
@@ -97,11 +93,11 @@ class __TideInputPageState extends State<_TideInputPage> {
       padding: insetsZero,
       showSaveButton: false,
       header: NoneFormHeader(controller: controller),
-      fieldBuilder: (context) => {
-        _idType: _buildType(),
-        _idLowTimestamp: _buildLowTime(),
-        _idHighTimestamp: _buildHighTime(),
-      },
+      fieldBuilder: (context) => [
+        _buildType(),
+        _buildLowTime(),
+        _buildHighTime(),
+      ],
     );
   }
 

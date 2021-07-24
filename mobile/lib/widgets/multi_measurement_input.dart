@@ -135,7 +135,7 @@ class MultiMeasurementInputSpec {
   final MeasurementSystem? system;
 
   /// The title of the input. Renders as the title of the "main" [TextInput].
-  final String Function(BuildContext)? title;
+  final LocalizedString? title;
 
   MultiMeasurementInputSpec._({
     required this.imperial,

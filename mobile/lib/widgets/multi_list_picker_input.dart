@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:quiver/strings.dart';
 
+import '../i18n/strings.dart';
 import '../widgets/list_picker_input.dart';
 import '../widgets/widget.dart';
 import 'detail_input.dart';
@@ -17,7 +18,7 @@ class MultiListPickerInput extends StatelessWidget {
   final EdgeInsets? padding;
 
   /// The text that is displayed when no items are selected.
-  final String Function(BuildContext) emptyValue;
+  final LocalizedString emptyValue;
 
   MultiListPickerInput({
     required this.values,

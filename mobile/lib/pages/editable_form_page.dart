@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:collection/collection.dart' show IterableExtension;
 import 'package:flutter/material.dart';
-import 'package:quiver/strings.dart';
 
 import '../custom_entity_manager.dart';
 import '../i18n/strings.dart';
@@ -171,8 +170,8 @@ class _EditableFormPageState extends State<EditableFormPage> {
           for (var id in _fields.keys) {
             var field = _fields[id]!;
             if (_customEntityManager.entity(id) != null &&
-                field.showing &&
-                !field.fake) {
+                field.isShowing &&
+                !field.isFake) {
               customFieldValues[id] = field.controller.value;
             }
           }
@@ -184,25 +183,8 @@ class _EditableFormPageState extends State<EditableFormPage> {
           return widget.onSave!.call(customFieldValues);
         }
       },
-      addFieldOptions: _fields.keys.where((id) => !_fields[id]!.fake).map((id) {
-        var field = _fields[id]!;
-
-        assert(field.name != null);
-        var fieldName = field.name!(context);
-
-        var description = field.description?.call(context);
-        if (isEmpty(description) && !field.removable) {
-          description = Strings.of(context).inputGenericRequired;
-        }
-
-        return FormPageFieldOption(
-          id: id,
-          name: fieldName,
-          description: description,
-          used: field.showing,
-          removable: field.removable,
-        );
-      }).toList(),
+      editableFields: List.of(_fields.values)
+        ..removeWhere((field) => _fields[field.id]!.isFake),
       onAddFields: _addInputWidgets,
       isInputValid: widget.isInputValid,
       showSaveButton: widget.showSaveButton,
@@ -218,7 +200,7 @@ class _EditableFormPageState extends State<EditableFormPage> {
     var field = _fields[id]!;
 
     // Add custom fields divider.
-    if (field.fake) {
+    if (field.isFake) {
       var hasCustomFields = _fields.keys.firstWhereOrNull(
               (id) => _customEntityManager.entity(id) != null) !=
           null;
@@ -232,7 +214,7 @@ class _EditableFormPageState extends State<EditableFormPage> {
       );
     }
 
-    if (!field.showing) {
+    if (!field.isShowing) {
       return Empty();
     }
 
@@ -264,7 +246,7 @@ class _EditableFormPageState extends State<EditableFormPage> {
             id: id,
             controller: inputTypeController(customField.type),
             name: (_) => customField.name,
-            showing: true,
+            isShowing: true,
           ),
         );
       }
@@ -274,7 +256,7 @@ class _EditableFormPageState extends State<EditableFormPage> {
 
     setState(() {
       for (var field in _fields.values) {
-        field.showing = ids.contains(field.id);
+        field.isShowing = ids.contains(field.id);
       }
     });
   }

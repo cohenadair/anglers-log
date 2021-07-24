@@ -93,10 +93,6 @@ class _NumberFilterPage extends StatefulWidget {
 }
 
 class __NumberFilterPageState extends State<_NumberFilterPage> {
-  static final _idBoundary = randomId();
-  static final _idFromValue = randomId();
-  static final _idToValue = randomId();
-
   final _boundaryController = InputController<NumberBoundary>();
 
   // Spec for input with units, such as [Catch.waterTemperature].
@@ -134,11 +130,11 @@ class __NumberFilterPageState extends State<_NumberFilterPage> {
     return FormPage.immutable(
       title: Text(widget.title),
       showSaveButton: false,
-      fieldBuilder: (context) => {
-        _idBoundary: _buildBoundary(),
-        _idFromValue: _buildFromValue(),
-        _idToValue: _buildToValue(),
-      },
+      fieldBuilder: (context) => [
+        _buildBoundary(),
+        _buildFromValue(),
+        _buildToValue(),
+      ],
     );
   }
 

@@ -211,8 +211,8 @@ void main() {
     when(appManager.fishingSpotManager.entityExists(any)).thenReturn(false);
 
     when(appManager.userPreferenceManager.catchFieldIds).thenReturn([
-      catchFieldIdTimestamp(),
-      catchFieldIdSpecies(),
+      catchFieldIdTimestamp,
+      catchFieldIdSpecies,
     ]);
 
     await tester.pumpWidget(Testable(
@@ -286,8 +286,8 @@ void main() {
   testWidgets("Image picker is skipped when not tracking images",
       (tester) async {
     when(appManager.userPreferenceManager.catchFieldIds).thenReturn([
-      catchFieldIdTimestamp(),
-      catchFieldIdSpecies(),
+      catchFieldIdTimestamp,
+      catchFieldIdSpecies,
     ]);
 
     await tester.pumpWidget(Testable(

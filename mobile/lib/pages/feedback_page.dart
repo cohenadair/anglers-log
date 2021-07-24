@@ -8,16 +8,13 @@ import 'package:quiver/strings.dart';
 import '../auth_manager.dart';
 import '../i18n/strings.dart';
 import '../log.dart';
-import '../model/gen/anglerslog.pb.dart';
 import '../pages/form_page.dart';
 import '../properties_manager.dart';
 import '../res/dimen.dart';
 import '../res/style.dart';
-import '../utils/protobuf_utils.dart';
 import '../utils/snackbar_utils.dart';
 import '../utils/string_utils.dart';
 import '../utils/validator.dart';
-import '../widgets/field.dart';
 import '../widgets/input_controller.dart';
 import '../widgets/radio_input.dart';
 import '../widgets/text_input.dart';
@@ -54,17 +51,13 @@ class FeedbackPage extends StatefulWidget {
 class _FeedbackPageState extends State<FeedbackPage> {
   static const _urlSendGrid = "https://api.sendgrid.com/v3/mail/send";
 
-  static final _idWarning = randomId();
-  static final _idName = randomId();
-  static final _idEmail = randomId();
-  static final _idType = randomId();
-  static final _idMessage = randomId();
-
   final _log = Log("FeedbackPage");
-
-  // TODO: Is this variable needed?
-  final Map<Id, Field> _fields = {};
   final FocusNode _messageNode = FocusNode();
+
+  final _nameController = TextInputController();
+  final _emailController = EmailInputController();
+  final _typeController = InputController<_FeedbackType>();
+  late final TextInputController _messageController;
 
   var _isSending = false;
 
@@ -78,18 +71,6 @@ class _FeedbackPageState extends State<FeedbackPage> {
 
   PropertiesManager get _propertiesManager => PropertiesManager.of(context);
 
-  TextInputController get _nameController =>
-      _fields[_idName]!.controller as TextInputController;
-
-  EmailInputController get _emailController =>
-      _fields[_idEmail]!.controller as EmailInputController;
-
-  InputController<_FeedbackType> get _typeController =>
-      _fields[_idType]!.controller as InputController<_FeedbackType>;
-
-  TextInputController get _messageController =>
-      _fields[_idMessage]!.controller as TextInputController;
-
   bool get _error => isNotEmpty(widget.error);
 
   _FeedbackType get _typeValue {
@@ -101,36 +82,12 @@ class _FeedbackPageState extends State<FeedbackPage> {
   void initState() {
     super.initState();
 
-    _fields[_idWarning] = Field(
-      id: _idWarning,
-      controller: InputController(),
+    _messageController = TextInputController(
+      // Message field is only required if an error isn't being sent.
+      validator: _error ? null : EmptyValidator(),
     );
 
-    _fields[_idName] = Field(
-      id: _idName,
-      controller: TextInputController(),
-    );
-
-    _fields[_idEmail] = Field(
-      id: _idEmail,
-      controller: EmailInputController(),
-    );
-
-    _fields[_idType] = Field(
-      id: _idType,
-      controller: InputController<_FeedbackType>(
-        value: _FeedbackType.bug,
-      ),
-    );
-
-    _fields[_idMessage] = Field(
-      id: _idMessage,
-      controller: TextInputController(
-        // Message field is only required if an error isn't being sent.
-        validator: _error ? null : EmptyValidator(),
-      ),
-    );
-
+    _typeController.value = _FeedbackType.bug;
     _emailController.value = _authManager.userEmail;
   }
 
@@ -142,8 +99,8 @@ class _FeedbackPageState extends State<FeedbackPage> {
           _messageController.isValid(context),
       saveButtonText: Strings.of(context).feedbackPageSend,
       showLoadingOverSave: _isSending,
-      fieldBuilder: (context) => {
-        _idWarning: _error && isNotEmpty(widget.warningMessage)
+      fieldBuilder: (context) => [
+        _error && isNotEmpty(widget.warningMessage)
             ? Padding(
                 padding: insetsTopDefault,
                 child: Text(
@@ -152,13 +109,13 @@ class _FeedbackPageState extends State<FeedbackPage> {
                 ),
               )
             : Empty(),
-        _idName: TextInput.name(
+        TextInput.name(
           context,
           controller: _nameController,
           autofocus: true,
           textInputAction: TextInputAction.next,
         ),
-        _idEmail: TextInput.email(
+        TextInput.email(
           context,
           controller: _emailController,
           textInputAction: TextInputAction.next,
@@ -166,7 +123,7 @@ class _FeedbackPageState extends State<FeedbackPage> {
           // To update "Send" button state.
           onChanged: (_) => setState(() {}),
         ),
-        _idType: _error
+        _error
             ? Empty()
             : RadioInput(
                 initialSelectedIndex: _FeedbackType.values.indexOf(_typeValue),
@@ -177,7 +134,7 @@ class _FeedbackPageState extends State<FeedbackPage> {
                   _typeController.value = _FeedbackType.values[i];
                 }),
               ),
-        _idMessage: TextInput(
+        TextInput(
           label: Strings.of(context).feedbackPageMessage,
           controller: _messageController,
           capitalization: TextCapitalization.sentences,
@@ -186,7 +143,7 @@ class _FeedbackPageState extends State<FeedbackPage> {
           // To update "Send" button state.
           onChanged: (_) => setState(() {}),
         ),
-      },
+      ],
       onSave: _send,
     );
   }

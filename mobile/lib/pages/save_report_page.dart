@@ -24,7 +24,6 @@ import '../utils/validator.dart';
 import '../water_clarity_manager.dart';
 import '../widgets/checkbox_input.dart';
 import '../widgets/date_range_picker_input.dart';
-import '../widgets/field.dart';
 import '../widgets/input_controller.dart';
 import '../widgets/multi_list_picker_input.dart';
 import '../widgets/multi_measurement_input.dart';
@@ -50,41 +49,38 @@ class SaveReportPage extends StatefulWidget {
 }
 
 class _SaveReportPageState extends State<SaveReportPage> {
-  static final _idAirTemperature = randomId();
-  static final _idAirHumidity = randomId();
-  static final _idAirPressure = randomId();
-  static final _idAirVisibility = randomId();
-  static final _idAnglers = randomId();
-  static final _idBaits = randomId();
-  static final _idCatchAndReleaseOnly = randomId();
-  static final _idDescription = randomId();
-  static final _idEndDateRange = randomId();
-  static final _idFavoritesOnly = randomId();
-  static final _idFishingSpots = randomId();
-  static final _idLength = randomId();
-  static final _idMethods = randomId();
-  static final _idMoonPhases = randomId();
-  static final _idName = randomId();
-  static final _idPeriods = randomId();
-  static final _idQuantity = randomId();
-  static final _idSeasons = randomId();
-  static final _idSkyConditions = randomId();
-  static final _idSpecies = randomId();
-  static final _idStartDateRange = randomId();
-  static final _idTideTypes = randomId();
-  static final _idType = randomId();
-  static final _idWaterClarities = randomId();
-  static final _idWaterDepth = randomId();
-  static final _idWaterTemperature = randomId();
-  static final _idWeight = randomId();
-  static final _idWindDirections = randomId();
-  static final _idWindSpeed = randomId();
-  static final _idKeywords = randomId();
-
   final Key _keySummaryStart = ValueKey(0);
   final Key _keyComparisonStart = ValueKey(1);
 
-  final Map<Id, Field> _fields = {};
+  late final _nameController;
+  final _descriptionController = TextInputController();
+  final _typeController = InputController<Report_Type>();
+  final _fromDateRangeController = InputController<DateRange>();
+  final _toDateRangeController = InputController<DateRange>();
+  final _anglersController = SetInputController<Angler>();
+  final _speciesController = SetInputController<Species>();
+  final _baitsController = SetInputController<Bait>();
+  final _fishingSpotsController = SetInputController<FishingSpot>();
+  final _methodsController = SetInputController<Method>();
+  final _periodsController = SetInputController<Period>();
+  final _favoritesOnlyController = BoolInputController();
+  final _catchAndReleaseOnlyController = BoolInputController();
+  final _seasonsController = SetInputController<Season>();
+  final _waterClaritiesController = SetInputController<WaterClarity>();
+  final _waterDepthController = NumberFilterInputController();
+  final _waterTemperatureController = NumberFilterInputController();
+  final _lengthController = NumberFilterInputController();
+  final _weightController = NumberFilterInputController();
+  final _quantityController = NumberFilterInputController();
+  final _airTemperatureController = NumberFilterInputController();
+  final _airPressureController = NumberFilterInputController();
+  final _airHumidityController = NumberFilterInputController();
+  final _airVisibilityController = NumberFilterInputController();
+  final _windSpeedController = NumberFilterInputController();
+  final _windDirectionsController = SetInputController<Direction>();
+  final _skyConditionsController = SetInputController<SkyCondition>();
+  final _moonPhasesController = SetInputController<MoonPhase>();
+  final _tideTypesController = SetInputController<TideType>();
 
   AnglerManager get _anglerManager => AnglerManager.of(context);
 
@@ -101,94 +97,6 @@ class _SaveReportPageState extends State<SaveReportPage> {
   WaterClarityManager get _waterClarityManager =>
       WaterClarityManager.of(context);
 
-  TextInputController get _nameController =>
-      _fields[_idName]!.controller as TextInputController;
-
-  TextInputController get _descriptionController =>
-      _fields[_idDescription]!.controller as TextInputController;
-
-  InputController<Report_Type> get _typeController =>
-      _fields[_idType]!.controller as InputController<Report_Type>;
-
-  InputController<DateRange> get _fromDateRangeController =>
-      _fields[_idStartDateRange]!.controller as InputController<DateRange>;
-
-  InputController<DateRange> get _toDateRangeController =>
-      _fields[_idEndDateRange]!.controller as InputController<DateRange>;
-
-  SetInputController<Angler> get _anglersController =>
-      _fields[_idAnglers]!.controller as SetInputController<Angler>;
-
-  SetInputController<Species> get _speciesController =>
-      _fields[_idSpecies]!.controller as SetInputController<Species>;
-
-  SetInputController<Bait> get _baitsController =>
-      _fields[_idBaits]!.controller as SetInputController<Bait>;
-
-  SetInputController<FishingSpot> get _fishingSpotsController =>
-      _fields[_idFishingSpots]!.controller as SetInputController<FishingSpot>;
-
-  SetInputController<Method> get _methodsController =>
-      _fields[_idMethods]!.controller as SetInputController<Method>;
-
-  SetInputController<Period> get _periodsController =>
-      _fields[_idPeriods]!.controller as SetInputController<Period>;
-
-  BoolInputController get _favoritesOnlyController =>
-      _fields[_idFavoritesOnly]!.controller as BoolInputController;
-
-  BoolInputController get _catchAndReleaseOnlyController =>
-      _fields[_idCatchAndReleaseOnly]!.controller as BoolInputController;
-
-  SetInputController<Season> get _seasonsController =>
-      _fields[_idSeasons]!.controller as SetInputController<Season>;
-
-  SetInputController<WaterClarity> get _waterClaritiesController =>
-      _fields[_idWaterClarities]!.controller
-          as SetInputController<WaterClarity>;
-
-  NumberFilterInputController get _waterDepthController =>
-      _fields[_idWaterDepth]!.controller as NumberFilterInputController;
-
-  NumberFilterInputController get _waterTemperatureController =>
-      _fields[_idWaterTemperature]!.controller as NumberFilterInputController;
-
-  NumberFilterInputController get _lengthController =>
-      _fields[_idLength]!.controller as NumberFilterInputController;
-
-  NumberFilterInputController get _weightController =>
-      _fields[_idWeight]!.controller as NumberFilterInputController;
-
-  NumberFilterInputController get _quantityController =>
-      _fields[_idQuantity]!.controller as NumberFilterInputController;
-
-  NumberFilterInputController get _airTemperatureController =>
-      _fields[_idAirTemperature]!.controller as NumberFilterInputController;
-
-  NumberFilterInputController get _airPressureController =>
-      _fields[_idAirPressure]!.controller as NumberFilterInputController;
-
-  NumberFilterInputController get _airHumidityController =>
-      _fields[_idAirHumidity]!.controller as NumberFilterInputController;
-
-  NumberFilterInputController get _airVisibilityController =>
-      _fields[_idAirVisibility]!.controller as NumberFilterInputController;
-
-  NumberFilterInputController get _windSpeedController =>
-      _fields[_idWindSpeed]!.controller as NumberFilterInputController;
-
-  SetInputController<Direction> get _windDirectionsController =>
-      _fields[_idWindDirections]!.controller as SetInputController<Direction>;
-
-  SetInputController<SkyCondition> get _skyConditionsController =>
-      _fields[_idSkyConditions]!.controller as SetInputController<SkyCondition>;
-
-  SetInputController<MoonPhase> get _moonPhasesController =>
-      _fields[_idMoonPhases]!.controller as SetInputController<MoonPhase>;
-
-  SetInputController<TideType> get _tideTypesController =>
-      _fields[_idTideTypes]!.controller as SetInputController<TideType>;
-
   Report? get _oldReport => widget.oldReport;
 
   bool get _isEditing => _oldReport != null;
@@ -201,161 +109,13 @@ class _SaveReportPageState extends State<SaveReportPage> {
   void initState() {
     super.initState();
 
-    _fields[_idName] = Field(
-      id: _idName,
-      controller: TextInputController(
-        validator: NameValidator(
-          nameExistsMessage: (context) =>
-              Strings.of(context).saveReportPageNameExists,
-          nameExists: (newName) => _reportManager.nameExists(newName),
-          oldName: _oldReport?.name,
-        ),
+    _nameController = TextInputController(
+      validator: NameValidator(
+        nameExistsMessage: (context) =>
+            Strings.of(context).saveReportPageNameExists,
+        nameExists: (newName) => _reportManager.nameExists(newName),
+        oldName: _oldReport?.name,
       ),
-    );
-
-    _fields[_idDescription] = Field(
-      id: _idDescription,
-      controller: TextInputController(),
-    );
-
-    _fields[_idType] = Field(
-      id: _idType,
-      controller: InputController<Report_Type>(),
-    );
-
-    _fields[_idStartDateRange] = Field(
-      id: _idStartDateRange,
-      controller: InputController<DateRange>(),
-    );
-
-    _fields[_idEndDateRange] = Field(
-      id: _idStartDateRange,
-      controller: InputController<DateRange>(),
-    );
-
-    _fields[_idCatchAndReleaseOnly] = Field(
-      id: _idCatchAndReleaseOnly,
-      controller: BoolInputController(),
-    );
-
-    _fields[_idFavoritesOnly] = Field(
-      id: _idFavoritesOnly,
-      controller: BoolInputController(),
-    );
-
-    _fields[_idWaterDepth] = Field(
-      id: _idWaterDepth,
-      controller: NumberFilterInputController(),
-    );
-
-    _fields[_idWaterTemperature] = Field(
-      id: _idWaterTemperature,
-      controller: NumberFilterInputController(),
-    );
-
-    _fields[_idLength] = Field(
-      id: _idLength,
-      controller: NumberFilterInputController(),
-    );
-
-    _fields[_idWeight] = Field(
-      id: _idWeight,
-      controller: NumberFilterInputController(),
-    );
-
-    _fields[_idQuantity] = Field(
-      id: _idQuantity,
-      controller: NumberFilterInputController(),
-    );
-
-    _fields[_idAirTemperature] = Field(
-      id: _idAirTemperature,
-      controller: NumberFilterInputController(),
-    );
-
-    _fields[_idAirPressure] = Field(
-      id: _idAirPressure,
-      controller: NumberFilterInputController(),
-    );
-
-    _fields[_idAirHumidity] = Field(
-      id: _idAirHumidity,
-      controller: NumberFilterInputController(),
-    );
-
-    _fields[_idAirVisibility] = Field(
-      id: _idAirVisibility,
-      controller: NumberFilterInputController(),
-    );
-
-    _fields[_idWindSpeed] = Field(
-      id: _idWindSpeed,
-      controller: NumberFilterInputController(),
-    );
-
-    _fields[_idWindDirections] = Field(
-      id: _idWindDirections,
-      controller: SetInputController<Direction>(),
-    );
-
-    _fields[_idSkyConditions] = Field(
-      id: _idSkyConditions,
-      controller: SetInputController<SkyCondition>(),
-    );
-
-    _fields[_idMoonPhases] = Field(
-      id: _idMoonPhases,
-      controller: SetInputController<MoonPhase>(),
-    );
-
-    _fields[_idTideTypes] = Field(
-      id: _idTideTypes,
-      controller: SetInputController<TideType>(),
-    );
-
-    _fields[_idPeriods] = Field(
-      id: _idPeriods,
-      controller: SetInputController<Period>(),
-    );
-
-    _fields[_idSeasons] = Field(
-      id: _idSeasons,
-      controller: SetInputController<Season>(),
-    );
-
-    _fields[_idAnglers] = Field(
-      id: _idAnglers,
-      controller: SetInputController<Angler>(),
-    );
-
-    _fields[_idSpecies] = Field(
-      id: _idSpecies,
-      controller: SetInputController<Species>(),
-    );
-
-    _fields[_idBaits] = Field(
-      id: _idBaits,
-      controller: SetInputController<Bait>(),
-    );
-
-    _fields[_idFishingSpots] = Field(
-      id: _idFishingSpots,
-      controller: SetInputController<FishingSpot>(),
-    );
-
-    _fields[_idMethods] = Field(
-      id: _idMethods,
-      controller: SetInputController<Method>(),
-    );
-
-    _fields[_idWaterClarities] = Field(
-      id: _idWaterClarities,
-      controller: SetInputController<WaterClarity>(),
-    );
-
-    _fields[_idKeywords] = Field(
-      id: _idKeywords,
-      controller: TextInputController(),
     );
 
     if (_isEditing) {
@@ -439,37 +199,37 @@ class _SaveReportPageState extends State<SaveReportPage> {
           ? Strings.of(context).saveReportPageEditTitle
           : Strings.of(context).saveReportPageNewTitle),
       isInputValid: _nameController.isValid(context),
-      fieldBuilder: (context) => {
-        _idName: _buildName(),
-        _idDescription: _buildDescription(),
-        _idType: _buildType(),
-        _idStartDateRange: _buildStartDateRange(),
-        _idEndDateRange: _buildEndDateRange(),
-        _idCatchAndReleaseOnly: _buildCatchAndReleaseOnly(),
-        _idFavoritesOnly: _buildFavoritesOnly(),
-        _idWaterDepth: _buildWaterDepth(),
-        _idWaterTemperature: _buildWaterTemperature(),
-        _idLength: _buildLength(),
-        _idWeight: _buildWeight(),
-        _idQuantity: _buildQuantity(),
-        _idAirTemperature: _buildAirTemperature(),
-        _idAirHumidity: _buildAirHumidity(),
-        _idAirVisibility: _buildAirVisibility(),
-        _idAirPressure: _buildAirPressure(),
-        _idWindSpeed: _buildWindSpeed(),
-        _idWindDirections: _buildWindDirections(),
-        _idSkyConditions: _buildSkyConditions(),
-        _idMoonPhases: _buildMoonPhases(),
-        _idTideTypes: _buildTideTypes(),
-        _idWaterClarities: _buildWaterClaritiesPicker(),
-        _idPeriods: _buildPeriodsPicker(),
-        _idSeasons: _buildSeasonsPicker(),
-        _idAnglers: _buildAnglersPicker(),
-        _idSpecies: _buildSpeciesPicker(),
-        _idBaits: _buildBaitsPicker(),
-        _idFishingSpots: _buildFishingSpotsPicker(),
-        _idMethods: _buildMethodsPicker(),
-      },
+      fieldBuilder: (context) => [
+        _buildName(),
+        _buildDescription(),
+        _buildType(),
+        _buildStartDateRange(),
+        _buildEndDateRange(),
+        _buildCatchAndReleaseOnly(),
+        _buildFavoritesOnly(),
+        _buildWaterDepth(),
+        _buildWaterTemperature(),
+        _buildLength(),
+        _buildWeight(),
+        _buildQuantity(),
+        _buildAirTemperature(),
+        _buildAirHumidity(),
+        _buildAirVisibility(),
+        _buildAirPressure(),
+        _buildWindSpeed(),
+        _buildWindDirections(),
+        _buildSkyConditions(),
+        _buildMoonPhases(),
+        _buildTideTypes(),
+        _buildWaterClaritiesPicker(),
+        _buildPeriodsPicker(),
+        _buildSeasonsPicker(),
+        _buildAnglersPicker(),
+        _buildSpeciesPicker(),
+        _buildBaitsPicker(),
+        _buildFishingSpotsPicker(),
+        _buildMethodsPicker(),
+      ],
       onSave: _save,
     );
   }

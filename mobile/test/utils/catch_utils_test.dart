@@ -2,34 +2,46 @@ import 'package:fixnum/fixnum.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
 import 'package:mobile/utils/catch_utils.dart';
+import 'package:mockito/mockito.dart';
 
 import '../mocks/stubbed_app_manager.dart';
 import '../test_utils.dart';
 
 void main() {
   testWidgets("allCatchFieldsSorted", (tester) async {
+    var appManager = StubbedAppManager();
+
+    when(appManager.userPreferenceManager.waterDepthSystem)
+        .thenReturn(MeasurementSystem.imperial_whole);
+    when(appManager.userPreferenceManager.waterTemperatureSystem)
+        .thenReturn(MeasurementSystem.imperial_whole);
+    when(appManager.userPreferenceManager.catchLengthSystem)
+        .thenReturn(MeasurementSystem.imperial_whole);
+    when(appManager.userPreferenceManager.catchWeightSystem)
+        .thenReturn(MeasurementSystem.imperial_whole);
+
     var fields = allCatchFieldsSorted(
-        await buildContext(tester), StubbedAppManager().timeManager);
-    expect(fields[0].id, catchFieldIdAngler());
-    expect(fields[1].id, catchFieldIdAtmosphere());
-    expect(fields[2].id, catchFieldIdBait());
-    expect(fields[3].id, catchFieldIdCatchAndRelease());
-    expect(fields[4].id, catchFieldIdTimestamp());
-    expect(fields[5].id, catchFieldIdFavorite());
-    expect(fields[6].id, catchFieldIdMethods());
-    expect(fields[7].id, catchFieldIdFishingSpot());
-    expect(fields[8].id, catchFieldIdLength());
-    expect(fields[9].id, catchFieldIdNotes());
-    expect(fields[10].id, catchFieldIdImages());
-    expect(fields[11].id, catchFieldIdQuantity());
-    expect(fields[12].id, catchFieldIdSeason());
-    expect(fields[13].id, catchFieldIdSpecies());
-    expect(fields[14].id, catchFieldIdTide());
-    expect(fields[15].id, catchFieldIdPeriod());
-    expect(fields[16].id, catchFieldIdWaterClarity());
-    expect(fields[17].id, catchFieldIdWaterDepth());
-    expect(fields[18].id, catchFieldIdWaterTemperature());
-    expect(fields[19].id, catchFieldIdWeight());
+        await buildContext(tester, appManager: appManager));
+    expect(fields[0].id, catchFieldIdAngler);
+    expect(fields[1].id, catchFieldIdAtmosphere);
+    expect(fields[2].id, catchFieldIdBait);
+    expect(fields[3].id, catchFieldIdCatchAndRelease);
+    expect(fields[4].id, catchFieldIdTimestamp);
+    expect(fields[5].id, catchFieldIdFavorite);
+    expect(fields[6].id, catchFieldIdMethods);
+    expect(fields[7].id, catchFieldIdFishingSpot);
+    expect(fields[8].id, catchFieldIdLength);
+    expect(fields[9].id, catchFieldIdNotes);
+    expect(fields[10].id, catchFieldIdImages);
+    expect(fields[11].id, catchFieldIdQuantity);
+    expect(fields[12].id, catchFieldIdSeason);
+    expect(fields[13].id, catchFieldIdSpecies);
+    expect(fields[14].id, catchFieldIdTide);
+    expect(fields[15].id, catchFieldIdPeriod);
+    expect(fields[16].id, catchFieldIdWaterClarity);
+    expect(fields[17].id, catchFieldIdWaterDepth);
+    expect(fields[18].id, catchFieldIdWaterTemperature);
+    expect(fields[19].id, catchFieldIdWeight);
   });
 
   testWidgets("catchFilterMatchesPeriod", (tester) async {

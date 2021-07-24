@@ -6,6 +6,8 @@ import 'package:quiver/strings.dart';
 
 import '../i18n/english_strings.dart';
 
+typedef LocalizedString = String Function(BuildContext);
+
 class Strings {
   static const List<String> _supportedLanguages = ["en"];
 

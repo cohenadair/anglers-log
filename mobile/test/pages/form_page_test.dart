@@ -6,6 +6,7 @@ import 'package:mobile/pages/save_custom_entity_page.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mobile/widgets/button.dart';
 import 'package:mobile/widgets/checkbox_input.dart';
+import 'package:mobile/widgets/field.dart';
 import 'package:mobile/widgets/input_controller.dart';
 import 'package:mobile/widgets/list_item.dart';
 import 'package:mobile/widgets/text.dart';
@@ -106,7 +107,7 @@ void main() {
     await tester.pumpWidget(
       Testable(
         (_) => FormPage.immutable(
-          fieldBuilder: (_) => {},
+          fieldBuilder: (_) => [],
           isInputValid: true,
         ),
       ),
@@ -119,7 +120,7 @@ void main() {
     await tester.pumpWidget(
       Testable(
         (_) => FormPage.immutable(
-          fieldBuilder: (_) => {},
+          fieldBuilder: (_) => [],
           isInputValid: true,
           overflowOptions: [
             FormPageOverflowOption("Test", () {}),
@@ -135,7 +136,7 @@ void main() {
     await tester.pumpWidget(
       Testable(
         (_) => FormPage.immutable(
-          fieldBuilder: (_) => {},
+          fieldBuilder: (_) => [],
           isInputValid: true,
           overflowOptions: [],
         ),
@@ -148,7 +149,7 @@ void main() {
     await tester.pumpWidget(
       Testable(
         (_) => FormPage.immutable(
-          fieldBuilder: (_) => {},
+          fieldBuilder: (_) => [],
           isInputValid: true,
           overflowOptions: [
             FormPageOverflowOption("Option 1", () {}),
@@ -169,7 +170,7 @@ void main() {
     await tester.pumpWidget(
       Testable(
         (_) => FormPage.immutable(
-          fieldBuilder: (_) => {},
+          fieldBuilder: (_) => [],
           isInputValid: true,
           overflowOptions: [
             FormPageOverflowOption("Test", () => called = true),
@@ -188,24 +189,24 @@ void main() {
     await tester.pumpWidget(
       Testable(
         (_) => FormPage.immutable(
-          fieldBuilder: (context) => {
-            randomId(): TextInput.name(
+          fieldBuilder: (context) => [
+            TextInput.name(
               context,
               controller: TextInputController(),
             ),
-            randomId(): TextInput.description(
+            TextInput.description(
               context,
               controller: TextInputController(),
             ),
-            randomId(): TextInput.number(
+            TextInput.number(
               context,
               controller: NumberInputController(),
               label: "Age",
             ),
-            randomId(): CheckboxInput(
+            CheckboxInput(
               label: "Enabled",
             ),
-          },
+          ],
           isInputValid: true,
         ),
       ),
@@ -222,7 +223,7 @@ void main() {
   testWidgets("Null onSave pops page", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => FormPage.immutable(
-        fieldBuilder: (_) => {},
+        fieldBuilder: (_) => [],
         isInputValid: true,
         onSave: null,
       ),
@@ -235,7 +236,7 @@ void main() {
   testWidgets("onSave returns false does not pop page", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => FormPage.immutable(
-        fieldBuilder: (_) => {},
+        fieldBuilder: (_) => [],
         isInputValid: true,
         onSave: (_) => false,
       ),
@@ -248,7 +249,7 @@ void main() {
   testWidgets("onSave returns true pops page", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => FormPage.immutable(
-        fieldBuilder: (_) => {},
+        fieldBuilder: (_) => [],
         isInputValid: true,
         onSave: (_) => true,
       ),
@@ -266,15 +267,15 @@ void main() {
     await tester.pumpWidget(
       Testable(
         (_) => FormPage.immutable(
-          fieldBuilder: (context) => {
-            randomId(): TextFormField(
+          fieldBuilder: (context) => [
+            TextFormField(
               validator: (_) {
                 validateCalled = true;
                 return "Invalid value";
               },
               onSaved: (_) => onTextFieldSavedCalled = true,
             ),
-          },
+          ],
           isInputValid: true,
           onSave: (_) => onFormSaveCalled = true,
         ),
@@ -314,25 +315,30 @@ void main() {
             label: "Enabled",
           ),
         },
-        addFieldOptions: [
-          FormPageFieldOption(
+        editableFields: [
+          Field(
             id: nameId,
-            name: "Name",
-            used: true,
+            name: (_) => "Name",
+            isShowing: true,
+            controller: InputController(),
           ),
-          FormPageFieldOption(
-            id: nameId,
-            name: "Description",
+          Field(
+            id: descriptionId,
+            name: (_) => "Description",
+            isShowing: false,
+            controller: InputController(),
           ),
-          FormPageFieldOption(
-            id: nameId,
-            name: "Age",
-            used: true,
+          Field(
+            id: ageId,
+            name: (_) => "Age",
+            isShowing: true,
+            controller: InputController(),
           ),
-          FormPageFieldOption(
-            id: nameId,
-            name: "Enabled",
-            removable: false,
+          Field(
+            id: enabledId,
+            name: (_) => "Enabled",
+            isRemovable: false,
+            controller: InputController(),
           ),
         ],
         isInputValid: true,
@@ -362,7 +368,7 @@ void main() {
     expect(find.text("Enabled"), findsOneWidget);
     expect(
         findSiblingOfText<PaddedCheckbox>(tester, ListItem, "Enabled").checked,
-        isFalse);
+        isTrue);
     expect(findFirstWithText<ListItem>(tester, "Enabled").enabled, isFalse);
 
     expect(find.byType(PaddedCheckbox), findsNWidgets(4));
@@ -379,11 +385,12 @@ void main() {
             controller: TextInputController(),
           ),
         },
-        addFieldOptions: [
-          FormPageFieldOption(
+        editableFields: [
+          Field(
             id: nameId,
-            name: "Name",
-            used: true,
+            name: (_) => "Name",
+            isShowing: true,
+            controller: InputController(),
           ),
         ],
         isInputValid: true,
@@ -413,11 +420,12 @@ void main() {
             controller: TextInputController(),
           ),
         },
-        addFieldOptions: [
-          FormPageFieldOption(
+        editableFields: [
+          Field(
             id: nameId,
-            name: "Name",
-            used: true,
+            name: (_) => "Name",
+            isShowing: true,
+            controller: InputController(),
           ),
         ],
         isInputValid: true,
@@ -475,10 +483,11 @@ void main() {
           ),
         },
         isInputValid: true,
-        addFieldOptions: [
-          FormPageFieldOption(
+        editableFields: [
+          Field(
             id: customEntityId,
-            name: customEntity.name,
+            name: (_) => customEntity.name,
+            controller: InputController(),
           ),
         ],
       ),
@@ -506,10 +515,11 @@ void main() {
       (_) => FormPage(
         fieldBuilder: (context) => {},
         isInputValid: true,
-        addFieldOptions: [
-          FormPageFieldOption(
+        editableFields: [
+          Field(
             id: customEntityId,
-            name: customEntity.name,
+            name: (_) => customEntity.name,
+            controller: InputController(),
           ),
         ],
       ),
@@ -549,14 +559,16 @@ void main() {
       (_) => FormPage(
         fieldBuilder: (context) => {},
         isInputValid: true,
-        addFieldOptions: [
-          FormPageFieldOption(
+        editableFields: [
+          Field(
             id: customEntityId1,
-            name: customEntity1.name,
+            name: (_) => customEntity1.name,
+            controller: InputController(),
           ),
-          FormPageFieldOption(
+          Field(
             id: customEntityId2,
-            name: customEntity2.name,
+            name: (_) => customEntity2.name,
+            controller: InputController(),
           ),
         ],
       ),

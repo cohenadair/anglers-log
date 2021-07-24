@@ -135,7 +135,7 @@ class _MainPageState extends State<MainPage> {
 
 class _BarItemData {
   final _NavigatorPage? page;
-  final String Function(BuildContext) titleBuilder;
+  final LocalizedString titleBuilder;
   final IconData icon;
 
   /// If set, overrides the default behaviour of showing the associated

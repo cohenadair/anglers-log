@@ -241,7 +241,7 @@ class __AtmosphereInputPageState extends State<_AtmosphereInputPage> {
     // Only show fields that the user is interested in.
     var showingFieldIds = _userPreferenceManager.atmosphereFieldIds;
     for (var field in _fields.values) {
-      field.showing =
+      field.isShowing =
           showingFieldIds.isEmpty || showingFieldIds.contains(field.id);
     }
 

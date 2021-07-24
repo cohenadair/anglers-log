@@ -290,7 +290,7 @@ class PickerPageItem<T> {
         _heading = false,
         _note = false;
 
-  PickerPageItem.heading(String this.title)
+  PickerPageItem.heading(this.title)
       : subtitle = null,
         enabled = false,
         popsOnPicked = false,

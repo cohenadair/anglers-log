@@ -100,13 +100,13 @@ void main() {
             id: id1,
             controller: TextInputController(),
             name: (_) => "Input 1",
-            showing: false,
+            isShowing: false,
           ),
           id2: Field(
             id: id2,
             controller: TextInputController(),
             name: (_) => "Input 2",
-            showing: true,
+            isShowing: true,
           ),
         },
         onBuildField: (id) => Text(id.toString()),
@@ -118,7 +118,7 @@ void main() {
     expect(find.text(id2.toString()), findsOneWidget);
   });
 
-  testWidgets("Field selection excludes fake InputData", (tester) async {
+  testWidgets("Field selection excludes fake fields", (tester) async {
     var id1 = randomId();
     var id2 = randomId();
     await tester.pumpWidget(Testable(
@@ -128,13 +128,13 @@ void main() {
             id: id1,
             controller: TextInputController(),
             name: (_) => "Input 1",
-            showing: true,
+            isShowing: true,
           ),
           id2: Field(
             id: id2,
             controller: TextInputController(),
             name: (_) => "Input 2",
-            showing: true,
+            isShowing: true,
           ),
         },
         onBuildField: (id) => Text(id.toString()),
@@ -166,13 +166,13 @@ void main() {
             id: id1,
             controller: TextInputController(),
             name: (_) => "Input 1",
-            showing: false,
+            isShowing: false,
           ),
           id2: Field(
             id: id2,
             controller: TextInputController(),
             name: (_) => "Input 2",
-            showing: true,
+            isShowing: true,
           ),
         },
         onBuildField: (id) => Text(id.toString()),
@@ -309,7 +309,7 @@ void main() {
             id: id1,
             controller: TextInputController(),
             name: (_) => "Input 1",
-            removable: false,
+            isRemovable: false,
           ),
           // Shows "Input 2 description" subtitle.
           id2: Field(
@@ -317,7 +317,7 @@ void main() {
             controller: TextInputController(),
             name: (_) => "Input 2",
             description: (_) => "Input 2 description.",
-            removable: true,
+            isRemovable: true,
           ),
           // Shows no subtitle.
           id3: Field(

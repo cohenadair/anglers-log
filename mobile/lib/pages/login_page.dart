@@ -248,10 +248,10 @@ class _Mode {
     actionText: (context) => Strings.of(context).loginPageSignUpActionText,
   );
 
-  final String Function(BuildContext) title;
-  final String Function(BuildContext) buttonText;
-  final String Function(BuildContext) questionText;
-  final String Function(BuildContext) actionText;
+  final LocalizedString title;
+  final LocalizedString buttonText;
+  final LocalizedString questionText;
+  final LocalizedString actionText;
 
   _Mode({
     required this.title,

@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:collection/collection.dart' show IterableExtension;
 import 'package:flutter/material.dart';
-import 'package:quiver/core.dart';
 
 import '../custom_entity_manager.dart';
 import '../entity_manager.dart';
@@ -13,6 +12,7 @@ import '../pages/save_custom_entity_page.dart';
 import '../res/dimen.dart';
 import '../utils/page_utils.dart';
 import '../widgets/button.dart';
+import '../widgets/field.dart';
 import '../widgets/widget.dart';
 import 'scroll_page.dart';
 import 'units_page.dart';
@@ -23,9 +23,13 @@ import 'units_page.dart';
 /// underlying model object, such as "angler" or "bait_id". The returned
 /// map value [Widget] is the widget that is displayed.
 ///
-/// Note that the returned map key is used in keeping track of [InputFields]
+/// Note that the returned map key is used in keeping track of [Fields]
 /// that are selected for deletion.
-typedef FieldBuilder = Map<Id, Widget> Function(BuildContext);
+typedef FieldMapBuilder = Map<Id, Widget> Function(BuildContext);
+
+/// A function responsible for building all input widgets when [Form.immutable]
+/// is used.
+typedef FieldListBuilder = List<Widget> Function(BuildContext);
 
 /// A customizable user input page that supports user-manageable input fields.
 /// If desired, users can add and remove input fields.
@@ -43,10 +47,9 @@ class FormPage extends StatefulWidget {
   /// forms.
   final Widget? header;
 
-  final FieldBuilder fieldBuilder;
-
-  /// A [List] of fields that can be added to the form, if the user desires.
-  final List<FormPageFieldOption> addFieldOptions;
+  /// A [List] of fields that can be added to or removed from the form by the
+  /// user. This field does not apply when using [FormPage.immutable].
+  final List<Field> editableFields;
 
   /// Called when a field is added to the form.
   final void Function(Set<Id> ids)? onAddFields;
@@ -57,9 +60,9 @@ class FormPage extends StatefulWidget {
   final bool isInputValid;
 
   /// Whether this form's components can be added or removed.
-  final bool editable;
+  final bool isEditable;
 
-  /// When true, and when [editable] is true, custom fields can be added to
+  /// When true, and when [isEditable] is true, custom fields can be added to
   /// this form. Defaults to true.
   final bool allowCustomEntities;
 
@@ -97,16 +100,19 @@ class FormPage extends StatefulWidget {
   /// vertical dots icon on the right side of the [AppBar].
   final List<FormPageOverflowOption> overflowOptions;
 
+  final FieldMapBuilder? _fieldMapBuilder;
+  final FieldListBuilder? _fieldListBuilder;
+
   FormPage({
     Key? key,
     this.popupMenuKey,
     this.title,
     this.header,
-    required this.fieldBuilder,
+    required FieldMapBuilder fieldBuilder,
     this.onSave,
-    this.addFieldOptions = const [],
+    this.editableFields = const [],
     this.onAddFields,
-    this.editable = true,
+    this.isEditable = true,
     this.allowCustomEntities = true,
     this.padding = insetsHorizontalDefault,
     this.runSpacing,
@@ -117,13 +123,15 @@ class FormPage extends StatefulWidget {
     this.onRefresh,
     this.refreshIndicatorKey,
     this.overflowOptions = const [],
-  }) : super(key: key);
+  })  : _fieldMapBuilder = fieldBuilder,
+        _fieldListBuilder = null,
+        super(key: key);
 
   FormPage.immutable({
     Key? key,
     Widget? title,
     Widget? header,
-    required FieldBuilder fieldBuilder,
+    required FieldListBuilder fieldBuilder,
     FutureOr<bool> Function(BuildContext)? onSave,
     EdgeInsets padding = insetsHorizontalDefault,
     double? runSpacing,
@@ -132,15 +140,14 @@ class FormPage extends StatefulWidget {
     bool showSaveButton = true,
     bool showLoadingOverSave = false,
     List<FormPageOverflowOption> overflowOptions = const [],
-  }) : this(
+  }) : this._(
           key: key,
           title: title,
-          fieldBuilder: fieldBuilder,
           header: header,
           onSave: onSave,
-          addFieldOptions: const [],
+          editableFields: const [],
           onAddFields: null,
-          editable: false,
+          isEditable: false,
           allowCustomEntities: false,
           padding: padding,
           runSpacing: runSpacing,
@@ -149,7 +156,33 @@ class FormPage extends StatefulWidget {
           showSaveButton: showSaveButton,
           showLoadingOverSave: showLoadingOverSave,
           overflowOptions: overflowOptions,
+          fieldListBuilder: fieldBuilder,
         );
+
+  FormPage._({
+    Key? key,
+    this.popupMenuKey,
+    this.title,
+    this.header,
+    FieldMapBuilder? fieldMapBuilder,
+    FieldListBuilder? fieldListBuilder,
+    this.onSave,
+    this.editableFields = const [],
+    this.onAddFields,
+    this.isEditable = true,
+    this.allowCustomEntities = true,
+    this.padding = insetsHorizontalDefault,
+    this.runSpacing,
+    this.saveButtonText,
+    this.showSaveButton = true,
+    this.showLoadingOverSave = false,
+    this.isInputValid = true,
+    this.onRefresh,
+    this.refreshIndicatorKey,
+    this.overflowOptions = const [],
+  })  : _fieldMapBuilder = fieldMapBuilder,
+        _fieldListBuilder = fieldListBuilder,
+        super(key: key);
 
   @override
   _FormPageState createState() => _FormPageState();
@@ -194,7 +227,7 @@ class _FormPageState extends State<FormPage> {
                 text: widget.saveButtonText ?? Strings.of(context).save,
                 onPressed:
                     widget.isInputValid ? () => _onPressedSave(context) : null,
-                condensed: widget.editable,
+                condensed: widget.isEditable,
               );
             },
           ),
@@ -223,12 +256,12 @@ class _FormPageState extends State<FormPage> {
   }
 
   Widget _buildOverflowMenu() {
-    if (!widget.editable && widget.overflowOptions.isEmpty) {
+    if (!widget.isEditable && widget.overflowOptions.isEmpty) {
       return Empty();
     }
 
     var options = <FormPageOverflowOption>[];
-    if (widget.editable) {
+    if (widget.isEditable) {
       options.add(FormPageOverflowOption(
           Strings.of(context).formPageManageFieldText,
           () => present(context, _addFieldSelectionPage())));
@@ -250,7 +283,9 @@ class _FormPageState extends State<FormPage> {
     if (widget.header != null) {
       children.add(widget.header!);
     }
-    children.addAll(widget.fieldBuilder(context).values);
+    children
+      ..addAll(widget._fieldMapBuilder?.call(context).values ?? [])
+      ..addAll(widget._fieldListBuilder?.call(context) ?? []);
 
     return children;
   }
@@ -258,7 +293,7 @@ class _FormPageState extends State<FormPage> {
   Widget _addFieldSelectionPage() {
     return _SelectionPage(
       allowCustomFields: widget.allowCustomEntities,
-      options: widget.addFieldOptions,
+      fields: widget.editableFields,
       onSelectItems: (selectedIds) => widget.onAddFields?.call(selectedIds),
     );
   }
@@ -274,47 +309,6 @@ class _FormPageState extends State<FormPage> {
       Navigator.pop(context);
     }
   }
-}
-
-/// A small data structure that stores information on fields that can be added
-/// to the form by a user.
-// TODO: Probably can be refactored to use Field class.
-@immutable
-class FormPageFieldOption {
-  /// The unique ID of the field. Used for identification purposes.
-  final Id id;
-
-  /// A required name of the field, as seen and selected by the user.
-  final String name;
-
-  /// An optional description of the field, as seen by the user.
-  final String? description;
-
-  /// Whether or not the option is already part of the form.
-  final bool used;
-
-  /// Whether or not the field can be removed from the form. Defaults to `true`.
-  final bool removable;
-
-  FormPageFieldOption({
-    required this.id,
-    required this.name,
-    this.description,
-    this.used = false,
-    this.removable = true,
-  });
-
-  @override
-  bool operator ==(Object other) =>
-      other is FormPageFieldOption &&
-      id == other.id &&
-      name == other.name &&
-      description == other.description &&
-      used == other.used &&
-      removable == other.removable;
-
-  @override
-  int get hashCode => hash4(id, name, used, removable);
 }
 
 /// A convenience class for defining options for a [FormPage] overflow menu,
@@ -348,12 +342,12 @@ class FormPageOverflowOption {
 
 class _SelectionPage extends StatefulWidget {
   final bool allowCustomFields;
-  final List<FormPageFieldOption> options;
+  final List<Field> fields;
   final void Function(Set<Id>) onSelectItems;
 
   _SelectionPage({
     this.allowCustomFields = true,
-    required this.options,
+    required this.fields,
     required this.onSelectItems,
   });
 
@@ -373,21 +367,14 @@ class _SelectionPageState extends State<_SelectionPage> {
       managers: [customEntityManager],
       builder: (context) {
         var items = pickerItems;
-        var used = items
-            .where((item) =>
-                item.hasValue &&
-                item.value is FormPageFieldOption &&
-                item.value.used)
-            .map((item) => item.value! as FormPageFieldOption)
-            .toSet();
+        var initialValues = initialPickerItems(items);
 
         return PickerPage(
           title: Text(Strings.of(context).pickerTitleFields),
-          initialValues: used,
+          initialValues: initialValues,
           itemBuilder: () => items,
           onFinishedPicking: (context, items) {
-            widget.onSelectItems(
-                items.map((item) => (item as FormPageFieldOption).id).toSet());
+            widget.onSelectItems(items.map((item) => item as Id).toSet());
             Navigator.pop(context);
           },
           action: _buildAction(),
@@ -412,25 +399,30 @@ class _SelectionPageState extends State<_SelectionPage> {
 
     // Split custom fields and normal fields that are already included in the
     // form.
-    var customFields = <FormPageFieldOption>[];
-    var normalFields = <FormPageFieldOption>[];
-    for (var option in widget.options) {
-      if (customEntityManager.entity(option.id) == null) {
-        normalFields.add(option);
+    var customFields = <Field>[];
+    var normalFields = <Field>[];
+    for (var field in widget.fields) {
+      if (customEntityManager.entity(field.id) == null) {
+        normalFields.add(field);
       } else {
-        customFields.add(option);
+        customFields.add(field);
       }
     }
 
     // Add included field options.
     result.addAll(
       normalFields.map(
-        (item) => PickerPageItem<FormPageFieldOption>(
-          title: item.name,
-          subtitle: item.description,
-          value: item,
-          enabled: item.removable,
-        ),
+        (item) {
+          assert(
+              item.name != null, "Fields in an editable form must have a name");
+
+          return PickerPageItem<Id>(
+            title: item.name?.call(context),
+            subtitle: item.description?.call(context),
+            value: item.id,
+            enabled: item.isRemovable,
+          );
+        },
       ),
     );
 
@@ -440,21 +432,18 @@ class _SelectionPageState extends State<_SelectionPage> {
 
       // Add customs fields that aren't already part of the form.
       for (var entity in customEntityManager.list()) {
-        var option = customFields.firstWhereOrNull(
-          (field) => field.id == entity.id,
-        );
-
-        if (option == null) {
-          customFields.add(FormPageFieldOption(
-            id: entity.id,
-            name: entity.name,
-            description: entity.description,
-          ));
+        if (customFields.firstWhereOrNull((field) => field.id == entity.id) ==
+            null) {
+          customFields.add(Field.fromCustomEntity(entity));
         }
       }
 
       // Ensure alphabetical order.
-      customFields.sort((a, b) => a.name.compareTo(b.name));
+      customFields.sort((a, b) {
+        assert(a.name != null && b.name != null,
+            "Custom field in an editable form must have a name");
+        return a.name!(context).compareTo(b.name!(context));
+      });
 
       // If there are no custom fields, show a note on how to add them.
       if (customFields.isEmpty) {
@@ -466,15 +455,31 @@ class _SelectionPageState extends State<_SelectionPage> {
 
       result.addAll(
         customFields.map(
-          (field) => PickerPageItem<FormPageFieldOption>(
-            title: field.name,
-            subtitle: field.description,
-            value: field,
+          (field) => PickerPageItem<Id>(
+            title: field.name?.call(context),
+            subtitle: field.description?.call(context),
+            value: field.id,
           ),
         ),
       );
     }
 
     return result;
+  }
+
+  Set<Id> initialPickerItems(List<PickerPageItem<dynamic>> allItems) {
+    return allItems
+        .where((item) {
+          if (!item.hasValue || !(item.value is Id)) {
+            return false;
+          }
+
+          var isShowing = widget.fields
+              .firstWhereOrNull((e) => e.id == item.value)
+              ?.isShowing;
+          return isShowing ?? false;
+        })
+        .map<Id>((item) => item.value!)
+        .toSet();
   }
 }

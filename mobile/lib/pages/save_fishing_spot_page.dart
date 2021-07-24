@@ -35,8 +35,6 @@ class SaveFishingSpotPage extends StatefulWidget {
 }
 
 class _SaveFishingSpotPageState extends State<SaveFishingSpotPage> {
-  static final _idName = randomId();
-
   final _nameController = TextInputController();
 
   FishingSpotManager get _fishingSpotManager => FishingSpotManager.of(context);
@@ -73,15 +71,13 @@ class _SaveFishingSpotPageState extends State<SaveFishingSpotPage> {
 
         return true;
       },
-      fieldBuilder: (context) {
-        return {
-          _idName: TextInput.name(
-            context,
-            controller: _nameController,
-            autofocus: true,
-          ),
-        };
-      },
+      fieldBuilder: (context) => [
+        TextInput.name(
+          context,
+          controller: _nameController,
+          autofocus: true,
+        ),
+      ],
       isInputValid: true,
     );
   }

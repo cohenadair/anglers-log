@@ -1,4 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mobile/model/gen/anglerslog.pb.dart';
 import 'package:mobile/pages/onboarding/catch_field_picker_page.dart';
 import 'package:mobile/widgets/checkbox_input.dart';
 import 'package:mobile/widgets/list_item.dart';
@@ -12,6 +13,15 @@ void main() {
 
   setUp(() {
     appManager = StubbedAppManager();
+
+    when(appManager.userPreferenceManager.waterDepthSystem)
+        .thenReturn(MeasurementSystem.imperial_whole);
+    when(appManager.userPreferenceManager.waterTemperatureSystem)
+        .thenReturn(MeasurementSystem.imperial_whole);
+    when(appManager.userPreferenceManager.catchLengthSystem)
+        .thenReturn(MeasurementSystem.imperial_whole);
+    when(appManager.userPreferenceManager.catchWeightSystem)
+        .thenReturn(MeasurementSystem.imperial_whole);
   });
 
   testWidgets("Null onNext doesn't crash", (tester) async {

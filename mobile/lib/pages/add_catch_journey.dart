@@ -176,13 +176,12 @@ class _AddCatchJourneyState extends State<AddCatchJourney> {
 
   bool _isTrackingImages() {
     var catchFieldIds = _userPreferencesManager.catchFieldIds;
-    return catchFieldIds.isEmpty ||
-        catchFieldIds.contains(catchFieldIdImages());
+    return catchFieldIds.isEmpty || catchFieldIds.contains(catchFieldIdImages);
   }
 
   bool _isTrackingFishingSpots() {
     var catchFieldIds = _userPreferencesManager.catchFieldIds;
     return catchFieldIds.isEmpty ||
-        catchFieldIds.contains(catchFieldIdFishingSpot());
+        catchFieldIds.contains(catchFieldIdFishingSpot);
   }
 }

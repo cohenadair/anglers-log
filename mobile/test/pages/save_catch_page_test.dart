@@ -927,9 +927,9 @@ void main() {
 
   testWidgets("Only show fields saved in preferences", (tester) async {
     when(appManager.userPreferenceManager.catchFieldIds).thenReturn([
-      catchFieldIdTimestamp(),
-      catchFieldIdSpecies(),
-      catchFieldIdBait(),
+      catchFieldIdTimestamp,
+      catchFieldIdSpecies,
+      catchFieldIdBait,
     ]);
     var species = Species()
       ..id = randomId()
@@ -1184,17 +1184,17 @@ void main() {
   });
 
   testWidgets("Hidden catch and release doesn't set property", (tester) async {
-    var ids = allCatchFields(appManager.timeManager)
-        .map<Id>((e) => e.id)
-        .toList()
-          ..removeWhere((id) => id == catchFieldIdCatchAndRelease());
-    when(appManager.userPreferenceManager.catchFieldIds).thenReturn(ids);
-
     await tester.pumpWidget(
       Testable(
-        (_) => SaveCatchPage(
-          speciesId: randomId(),
-        ),
+        (context) {
+          var ids = allCatchFields(context).map<Id>((e) => e.id).toList()
+            ..removeWhere((id) => id == catchFieldIdCatchAndRelease);
+          when(appManager.userPreferenceManager.catchFieldIds).thenReturn(ids);
+
+          return SaveCatchPage(
+            speciesId: randomId(),
+          );
+        },
         appManager: appManager,
       ),
     );
@@ -1363,18 +1363,21 @@ void main() {
 
   testWidgets("Atmosphere not fetched if not tracking", (tester) async {
     when(appManager.subscriptionManager.isFree).thenReturn(false);
-    when(appManager.userPreferenceManager.catchFieldIds).thenReturn(
-        allCatchFields(appManager.timeManager).map((e) => e.id).toList()
-          ..remove(catchFieldIdAtmosphere()));
     when(appManager.userPreferenceManager.autoFetchAtmosphere).thenReturn(true);
     when(appManager.locationMonitor.currentLocation).thenReturn(LatLng(0, 0));
     when(appManager.httpWrapper.get(any))
         .thenAnswer((_) => Future.value(Response("", HttpStatus.ok)));
 
     await tester.pumpWidget(Testable(
-      (_) => SaveCatchPage(
-        speciesId: randomId(),
-      ),
+      (context) {
+        when(appManager.userPreferenceManager.catchFieldIds).thenReturn(
+            allCatchFields(context).map((e) => e.id).toList()
+              ..remove(catchFieldIdAtmosphere));
+
+        return SaveCatchPage(
+          speciesId: randomId(),
+        );
+      },
       appManager: appManager,
     ));
 

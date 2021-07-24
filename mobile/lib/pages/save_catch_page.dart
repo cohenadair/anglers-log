@@ -26,7 +26,6 @@ import '../pages/species_list_page.dart';
 import '../res/dimen.dart';
 import '../species_manager.dart';
 import '../subscription_manager.dart';
-import '../time_manager.dart';
 import '../user_preference_manager.dart';
 import '../utils/catch_utils.dart';
 import '../utils/page_utils.dart';
@@ -85,26 +84,26 @@ class SaveCatchPage extends StatefulWidget {
 }
 
 class _SaveCatchPageState extends State<SaveCatchPage> {
-  static final _idAngler = catchFieldIdAngler();
-  static final _idAtmosphere = catchFieldIdAtmosphere();
-  static final _idBait = catchFieldIdBait();
-  static final _idCatchAndRelease = catchFieldIdCatchAndRelease();
-  static final _idFavorite = catchFieldIdFavorite();
-  static final _idFishingSpot = catchFieldIdFishingSpot();
-  static final _idImages = catchFieldIdImages();
-  static final _idLength = catchFieldIdLength();
-  static final _idMethods = catchFieldIdMethods();
-  static final _idNotes = catchFieldIdNotes();
-  static final _idPeriod = catchFieldIdPeriod();
-  static final _idQuantity = catchFieldIdQuantity();
-  static final _idSeason = catchFieldIdSeason();
-  static final _idSpecies = catchFieldIdSpecies();
-  static final _idTide = catchFieldIdTide();
-  static final _idTimestamp = catchFieldIdTimestamp();
-  static final _idWaterClarity = catchFieldIdWaterClarity();
-  static final _idWaterDepth = catchFieldIdWaterDepth();
-  static final _idWaterTemperature = catchFieldIdWaterTemperature();
-  static final _idWeight = catchFieldIdWeight();
+  static final _idAngler = catchFieldIdAngler;
+  static final _idAtmosphere = catchFieldIdAtmosphere;
+  static final _idBait = catchFieldIdBait;
+  static final _idCatchAndRelease = catchFieldIdCatchAndRelease;
+  static final _idFavorite = catchFieldIdFavorite;
+  static final _idFishingSpot = catchFieldIdFishingSpot;
+  static final _idImages = catchFieldIdImages;
+  static final _idLength = catchFieldIdLength;
+  static final _idMethods = catchFieldIdMethods;
+  static final _idNotes = catchFieldIdNotes;
+  static final _idPeriod = catchFieldIdPeriod;
+  static final _idQuantity = catchFieldIdQuantity;
+  static final _idSeason = catchFieldIdSeason;
+  static final _idSpecies = catchFieldIdSpecies;
+  static final _idTide = catchFieldIdTide;
+  static final _idTimestamp = catchFieldIdTimestamp;
+  static final _idWaterClarity = catchFieldIdWaterClarity;
+  static final _idWaterDepth = catchFieldIdWaterDepth;
+  static final _idWaterTemperature = catchFieldIdWaterTemperature;
+  static final _idWeight = catchFieldIdWeight;
 
   final _log = Log("SaveCatchPage");
   final Map<Id, Field> _fields = {};
@@ -139,8 +138,6 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
 
   SubscriptionManager get _subscriptionManager =>
       SubscriptionManager.of(context);
-
-  TimeManager get _timeManager => TimeManager.of(context);
 
   UserPreferenceManager get _userPreferenceManager =>
       UserPreferenceManager.of(context);
@@ -218,10 +215,10 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
     super.initState();
 
     var showingFieldIds = _userPreferenceManager.catchFieldIds;
-    for (var field in allCatchFields(_timeManager)) {
+    for (var field in allCatchFields(context)) {
       _fields[field.id] = field;
       // By default, show all fields.
-      _fields[field.id]!.showing =
+      _fields[field.id]!.isShowing =
           showingFieldIds.isEmpty || showingFieldIds.contains(field.id);
     }
 
@@ -230,13 +227,6 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
         MultiMeasurementInputSpec.waterTemperature(context);
     _lengthInputState = MultiMeasurementInputSpec.length(context);
     _weightInputState = MultiMeasurementInputSpec.weight(context);
-
-    _fields[_idWaterDepth]!.controller =
-        _waterDepthInputState.newInputController();
-    _fields[_idWaterTemperature]!.controller =
-        _waterTemperatureInputState.newInputController();
-    _fields[_idLength]!.controller = _lengthInputState.newInputController();
-    _fields[_idWeight]!.controller = _weightInputState.newInputController();
 
     if (_editing) {
       _timestampController.value = _oldCatch!.timestamp.toInt();
@@ -798,7 +788,7 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
     // If the user cares about (i.e. the field is showing) catch and release
     // data, always set it.
     if (_fields[_idCatchAndRelease] != null &&
-        _fields[_idCatchAndRelease]!.showing) {
+        _fields[_idCatchAndRelease]!.isShowing) {
       cat.wasCatchAndRelease = _catchAndReleaseController.value;
     }
 
@@ -895,7 +885,7 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
 
   void _fetchAtmosphereIfNeeded() {
     if (_subscriptionManager.isFree ||
-        !_fields[_idAtmosphere]!.showing ||
+        !_fields[_idAtmosphere]!.isShowing ||
         !_userPreferenceManager.autoFetchAtmosphere) {
       return;
     }
