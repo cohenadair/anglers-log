@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mobile/pages/photo_gallery_page.dart';
 import 'package:mobile/res/gen/custom_icons.dart';
 import 'package:mobile/widgets/photo.dart';
 import 'package:mobile/widgets/widget.dart';
@@ -46,7 +47,7 @@ void main() {
     await tester.pumpWidget(Testable(
       (_) => Photo(
         fileName: null,
-        circular: true,
+        isCircular: true,
         width: 50,
         height: 50,
       ),
@@ -128,5 +129,21 @@ void main() {
       )).captured.single,
       50,
     );
+  });
+
+  testWidgets("Tapping photo opens gallery", (tester) async {
+    await stubImage(appManager, tester, "flutter_logo.png", anyName: true);
+
+    await tester.pumpWidget(Testable(
+      (_) => Photo(
+        fileName: "flutter_logo.png",
+        galleryImages: ["flutter_logo.png"],
+      ),
+      appManager: appManager,
+    ));
+    // Wait for photo future to settle.
+    await tester.pump(Duration(milliseconds: 250));
+    await tapAndSettle(tester, find.byType(Photo).first);
+    expect(find.byType(PhotoGalleryPage), findsOneWidget);
   });
 }

@@ -5,7 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:quiver/strings.dart';
 
 import '../image_manager.dart';
+import '../pages/photo_gallery_page.dart';
 import '../res/gen/custom_icons.dart';
+import '../utils/page_utils.dart';
 import '../widgets/widget.dart';
 
 /// A widget that displays a photo on the screen. The photo source is one
@@ -29,14 +31,19 @@ class Photo extends StatefulWidget {
   final double? cacheSize;
 
   /// If true, [Photo] will be rendered in a circle. Default is false.
-  final bool circular;
+  final bool isCircular;
+
+  /// If not empty, a [PhotoGalleryPage] is shown when this [Photo] is tapped,
+  /// allowing the user to view [galleryImages] in fullscreen.
+  final List<String> galleryImages;
 
   Photo({
     required this.fileName,
     this.width,
     this.height,
     this.cacheSize,
-    this.circular = false,
+    this.isCircular = false,
+    this.galleryImages = const [],
   }) : assert((width != null && height != null) ||
             (width == null && height == null));
 
@@ -45,7 +52,7 @@ class Photo extends StatefulWidget {
           fileName: fileName,
           width: _listItemSize,
           height: _listItemSize,
-          circular: true,
+          isCircular: true,
         );
 
   @override
@@ -93,8 +100,9 @@ class _PhotoState extends State<Photo> {
                   height: h,
                   decoration: BoxDecoration(
                     color: Theme.of(context).primaryColor,
-                    shape:
-                        widget.circular ? BoxShape.circle : BoxShape.rectangle,
+                    shape: widget.isCircular
+                        ? BoxShape.circle
+                        : BoxShape.rectangle,
                   ),
                   child: Icon(
                     CustomIcons.catches,
@@ -118,8 +126,23 @@ class _PhotoState extends State<Photo> {
         //      with images.
         // So no animation is used to keep things simple since an animation is
         // hardly noticeable anyway.
-        if (widget.circular) {
-          return ClipOval(
+        if (widget.isCircular) {
+          child = ClipOval(
+            child: child,
+          );
+        }
+
+        if (widget.galleryImages.isNotEmpty && image != null) {
+          return GestureDetector(
+            onTap: () {
+              fade(
+                context,
+                PhotoGalleryPage(
+                  fileNames: widget.galleryImages,
+                  initialFileName: widget.fileName!,
+                ),
+              );
+            },
             child: child,
           );
         }

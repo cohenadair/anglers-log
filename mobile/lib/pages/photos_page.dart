@@ -3,9 +3,7 @@ import 'package:flutter/material.dart';
 import '../catch_manager.dart';
 import '../entity_manager.dart';
 import '../i18n/strings.dart';
-import '../pages/photo_gallery_page.dart';
 import '../res/dimen.dart';
-import '../utils/page_utils.dart';
 import '../widgets/button.dart';
 import '../widgets/empty_list_placeholder.dart';
 import '../widgets/photo.dart';
@@ -38,7 +36,11 @@ class PhotosPage extends StatelessWidget {
                         childAspectRatio: _aspectRatioThumb,
                       ),
                       delegate: SliverChildBuilderDelegate(
-                        (context, i) => _buildThumbnail(context, fileNames, i),
+                        (context, i) => Photo(
+                          fileName: fileNames[i],
+                          cacheSize: galleryMaxThumbSize,
+                          galleryImages: fileNames,
+                        ),
                         childCount: fileNames.length,
                       ),
                     ),
@@ -66,28 +68,6 @@ class PhotosPage extends StatelessWidget {
             ],
           );
         },
-      ),
-    );
-  }
-
-  Widget _buildThumbnail(
-    BuildContext context,
-    List<String> allFileNames,
-    int index,
-  ) {
-    return GestureDetector(
-      onTap: () {
-        fade(
-          context,
-          PhotoGalleryPage(
-            fileNames: allFileNames,
-            initialFileName: allFileNames[index],
-          ),
-        );
-      },
-      child: Photo(
-        fileName: allFileNames[index],
-        cacheSize: galleryMaxThumbSize,
       ),
     );
   }

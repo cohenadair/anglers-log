@@ -182,6 +182,7 @@ class _EntityPageState extends State<EntityPage> {
                   width: MediaQuery.of(context).size.width,
                   // Top padding adds status bar/safe area padding.
                   height: MediaQuery.of(context).padding.top + _imageHeight,
+                  galleryImages: imageNames,
                 ),
               )
               .toList()),

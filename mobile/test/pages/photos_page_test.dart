@@ -39,19 +39,6 @@ void main() {
     expect(find.byType(Photo), findsNWidgets(4));
   });
 
-  testWidgets("Tapping thumbnail opens image", (tester) async {
-    await stubImage(appManager, tester, "flutter_logo.png", anyName: true);
-
-    await tester.pumpWidget(Testable(
-      (_) => PhotosPage(),
-      appManager: appManager,
-    ));
-    // Wait for photo future to settle.
-    await tester.pump(Duration(milliseconds: 250));
-    await tapAndSettle(tester, find.byType(Photo).first);
-    expect(find.byType(PhotoGalleryPage), findsOneWidget);
-  });
-
   testWidgets("If there are no images, gradient app bar isn't shown",
       (tester) async {
     when(appManager.catchManager.imageNamesSortedByTimestamp(any))

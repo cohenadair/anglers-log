@@ -18,7 +18,13 @@ class PhotoGalleryPage extends StatefulWidget {
 }
 
 class _PhotoGalleryPageState extends State<PhotoGalleryPage> {
+  static const _minScale = 1.0;
+  static const _maxScale = 5.0;
+
+  final _transformationController = TransformationController();
   late PageController _controller;
+
+  ScrollPhysics? _scrollPhysics;
 
   @override
   void initState() {
@@ -42,11 +48,19 @@ class _PhotoGalleryPageState extends State<PhotoGalleryPage> {
         children: [
           PageView.builder(
             controller: _controller,
+            physics: _scrollPhysics,
             itemCount: widget.fileNames.length,
             itemBuilder: (context, i) => Container(
               color: Colors.black,
               child: Center(
-                child: Photo(fileName: widget.fileNames[i]),
+                child: InteractiveViewer(
+                  minScale: _minScale,
+                  maxScale: _maxScale,
+                  onInteractionEnd: _onInteractionEnd,
+                  transformationController: _transformationController,
+                  clipBehavior: Clip.none,
+                  child: Photo(fileName: widget.fileNames[i]),
+                ),
               ),
             ),
           ),
@@ -54,5 +68,15 @@ class _PhotoGalleryPageState extends State<PhotoGalleryPage> {
         ],
       ),
     );
+  }
+
+  void _onInteractionEnd(ScaleEndDetails details) {
+    // Don't allow scrolling in the PageView if the image is zoomed in. This is
+    // required for panning to work property.
+    setState(() {
+      _scrollPhysics = _transformationController.value.getMaxScaleOnAxis() > 1
+          ? NeverScrollableScrollPhysics()
+          : null;
+    });
   }
 }
