@@ -7,6 +7,7 @@ import '../entity_manager.dart';
 import '../i18n/strings.dart';
 import '../log.dart';
 import '../res/dimen.dart';
+import '../utils/animated_list_model.dart';
 import '../utils/page_utils.dart';
 import '../utils/protobuf_utils.dart';
 import '../utils/search_timer.dart';
@@ -84,9 +85,8 @@ class _ManageableListPageState<T> extends State<ManageableListPage<T>> {
 
   final _log = Log("ManageableListPage<$T>");
 
-  GlobalKey<SliverAnimatedListState> _animatedListKey =
-      GlobalKey<SliverAnimatedListState>();
-  late _AnimatedListModel<T> _animatedList;
+  final _animatedListKey = GlobalKey<SliverAnimatedListState>();
+  late AnimatedListModel<T, SliverAnimatedListState> _animatedList;
 
   late SearchTimer _searchTimer;
   bool _isEditing = false;
@@ -129,8 +129,7 @@ class _ManageableListPageState<T> extends State<ManageableListPage<T>> {
 
     _searchTimer = SearchTimer(() => setState(_syncAnimatedList));
 
-    _animatedListKey = GlobalKey<SliverAnimatedListState>();
-    _animatedList = _AnimatedListModel(
+    _animatedList = AnimatedListModel<T, SliverAnimatedListState>(
       listKey: _animatedListKey,
       initialItems: widget.itemManager.loadItems(_searchText),
       removedItemBuilder: _buildItem,
@@ -672,94 +671,4 @@ enum _ViewingState {
   pickingSingle,
   pickingMulti,
   viewing,
-}
-
-/// Keeps a Dart [List] in sync with an [AnimatedList].
-///
-/// The [insert] and [removeAt] methods apply to both the internal list and
-/// the animated list that belongs to [listKey].
-///
-/// Derived from https://api.flutter.dev/flutter/widgets/SliverAnimatedList-class.html
-/// sample project.
-class _AnimatedListModel<T> {
-  GlobalKey<SliverAnimatedListState> listKey;
-  final Widget Function(BuildContext, T, Animation<double>) removedItemBuilder;
-  final List<T> _items;
-
-  _AnimatedListModel({
-    required this.listKey,
-    required this.removedItemBuilder,
-    List<T>? initialItems,
-  }) : _items = initialItems == null ? [] : List.of(initialItems);
-
-  // Note that this will return null if there are no items in the list.
-  SliverAnimatedListState? get _animatedList {
-    return listKey.currentState;
-  }
-
-  List<T> get items => _items;
-
-  int get length => _items.length;
-
-  bool get isEmpty => _items.isEmpty;
-
-  bool get isNotEmpty => _items.isNotEmpty;
-
-  void insert(int index, T item) {
-    _items.insert(index, item);
-    _animatedList?.insertItem(index, duration: defaultAnimationDuration);
-  }
-
-  T? removeAt(int index) {
-    // Don't attempt to remove an item if it isn't in the underlying data model.
-    // This can happen in specialized situations, such as when a bait category
-    // isn't shown in a bait list because there are no baits associated with
-    // that category.
-    if (index < 0 || index >= _items.length) {
-      return null;
-    }
-
-    var removedItem = _items.removeAt(index);
-
-    _animatedList?.removeItem(
-      index,
-      (context, animation) =>
-          removedItemBuilder(context, removedItem, animation),
-      duration: defaultAnimationDuration,
-    );
-    return removedItem;
-  }
-
-  int indexOf(T item) => _items.indexOf(item);
-
-  T operator [](int index) => _items[index];
-
-  /// Adds and removes all necessary items so that [_items] is in sync with
-  /// [newItems]. Useful for inserting or removing multiple items.
-  void resetItems(List<T> newItems) {
-    // First, remove all existing items that aren't in the new item list.
-    for (var i = _items.length - 1; i >= 0; i--) {
-      if (!containsEntityIdOrOther(newItems, _items[i])) {
-        removeAt(i);
-      }
-    }
-
-    // At this point, _items is equal to newItems, minus any new items. Removing
-    // items first allows for new items to be added in the correct indices of
-    // _items.
-    for (var i = 0; i < newItems.length; i++) {
-      if (!containsEntityIdOrOther(_items, newItems[i])) {
-        insert(i, newItems[i]);
-      }
-    }
-
-    // Lastly, update the value of any items that weren't added or removed so
-    // the list shows the most up to date data.
-    for (var i = 0; i < _items.length; i++) {
-      var indexInNewItems = indexOfEntityIdOrOther(newItems, _items[i]);
-      if (indexInNewItems >= 0) {
-        _items[i] = newItems[indexInNewItems];
-      }
-    }
-  }
 }

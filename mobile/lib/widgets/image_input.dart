@@ -38,7 +38,7 @@ class ImageInput extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return EnabledOpacity(
-      enabled: enabled,
+      isEnabled: enabled,
       child: InkWell(
         onTap: enabled
             ? () {

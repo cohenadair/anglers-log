@@ -28,9 +28,9 @@ class Field {
   /// `true`.
   final bool isRemovable;
 
-  /// True if the [Field] is fake. This is useful for inserting section
-  /// separators in to the form.
-  final bool isFake;
+  /// A function that builds a "fake" field; for example, a widget that isn't
+  /// actually an input field, like a [MinDivider].
+  final Widget Function(BuildContext)? fakeBuilder;
 
   final InputController controller;
 
@@ -46,7 +46,7 @@ class Field {
     LocalizedString? description,
     this.isShowing = true,
     this.isRemovable = true,
-  }) : isFake = false {
+  }) : fakeBuilder = null {
     if (description == null && !isRemovable) {
       // Fields without a description and not removable are by definition,
       // required. Indicate this is the case in the user-facing description.
@@ -63,14 +63,17 @@ class Field {
         description = _customEntityDescription(entity),
         isShowing = true,
         isRemovable = true,
-        isFake = false;
+        fakeBuilder = null;
 
-  Field.fake()
-      : id = randomId(),
+  Field.fake({
+    required Widget Function(BuildContext) builder,
+  })  : id = randomId(),
         controller = InputController(),
         name = null,
         description = null,
         isShowing = true,
         isRemovable = true,
-        isFake = true;
+        fakeBuilder = builder;
+
+  bool get isFake => fakeBuilder != null;
 }

@@ -54,7 +54,6 @@ class _BaitPageState extends State<BaitPage> {
         _bait = _baitManager.entity(widget.bait.id) ?? _bait;
 
         return EntityPage(
-          customEntityValues: _bait.customEntityValues,
           padding: EdgeInsets.only(
             top: paddingDefault,
             bottom: paddingDefault,

@@ -129,6 +129,8 @@ class Strings {
 
   String get inputNameLabel => _string("input_nameLabel");
 
+  String get inputColorLabel => _string("input_colorLabel");
+
   String get inputGenericRequired => _string("input_genericRequired");
 
   String get inputDescriptionLabel => _string("input_descriptionLabel");
@@ -355,6 +357,8 @@ class Strings {
   String get saveBaitPageCategoryLabel => _string("saveBaitPage_categoryLabel");
 
   String get saveBaitPageBaitExists => _string("saveBaitPage_baitExists");
+
+  String get saveBaitPageVariants => _string("saveBaitPage_variants");
 
   String get saveBaitCategoryPageNewTitle =>
       _string("saveBaitCategoryPage_newTitle");
@@ -1412,6 +1416,11 @@ class Strings {
   String get tideSlack => _string("tide_slack");
 
   String get tideIncoming => _string("tide_incoming");
+
+  String get saveBaitVariantPageTitle => _string("saveBaitVariantPage_title");
+
+  String get saveBaitVariantPageEditTitle =>
+      _string("saveBaitVariantPage_editTitle");
 }
 
 class StringsDelegate extends LocalizationsDelegate<Strings> {

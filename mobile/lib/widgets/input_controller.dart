@@ -105,6 +105,8 @@ class TextInputController extends InputController<String> {
   })  : editingController = editingController ?? TextEditingController(),
         super();
 
+  TextInputController.name() : this(validator: NameValidator());
+
   @override
   String? get value {
     var text = editingController.text.trim();

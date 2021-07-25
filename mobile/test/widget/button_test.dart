@@ -81,7 +81,7 @@ void main() {
 
     testWidgets("Disabled", (tester) async {
       await tester.pumpWidget(Testable((_) => ActionButton.done()));
-      expect(findFirst<EnabledOpacity>(tester).enabled, isFalse);
+      expect(findFirst<EnabledOpacity>(tester).isEnabled, isFalse);
     });
 
     testWidgets("Enabled", (tester) async {
@@ -92,7 +92,7 @@ void main() {
           ),
         ),
       );
-      expect(findFirst<EnabledOpacity>(tester).enabled, isTrue);
+      expect(findFirst<EnabledOpacity>(tester).isEnabled, isTrue);
     });
 
     testWidgets("Condensed", (tester) async {

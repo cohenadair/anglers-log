@@ -122,7 +122,7 @@ class PickerListItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return EnabledOpacity(
-      enabled: isEnabled,
+      isEnabled: isEnabled,
       child: ListItem(
         padding: padding,
         title: Text(title),
@@ -286,7 +286,7 @@ class ManageableListItem extends StatelessWidget {
       top: false,
       bottom: false,
       child: EnabledOpacity(
-        enabled: enabled,
+        isEnabled: enabled,
         child: InkWell(
           onTap: onTap,
           child: Row(
@@ -356,15 +356,7 @@ class ManageableListItem extends StatelessWidget {
       state: editing ? CrossFadeState.showFirst : CrossFadeState.showSecond,
       firstChild: Padding(
         padding: insetsRightDefault,
-        child: Text(
-          Strings.of(context).edit.toUpperCase(),
-          style: TextStyle(
-            color: Theme.of(context).primaryColor,
-            fontWeight: fontWeightBold,
-          ),
-          overflow: TextOverflow.visible,
-          maxLines: 1,
-        ),
+        child: FakeTextButton(Strings.of(context).edit),
       ),
       secondChild: trailingWidget,
     );

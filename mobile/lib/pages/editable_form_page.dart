@@ -58,6 +58,10 @@ class EditableFormPage extends StatefulWidget {
   /// See [FormPage.isInputValid].
   final bool isInputValid;
 
+  /// See [FormPage.isEditable]. This is useful for conditionally making the
+  /// form editable. Defaults to true.
+  final bool isEditable;
+
   /// See [FormPage.showSaveButton].
   final bool showSaveButton;
 
@@ -85,6 +89,7 @@ class EditableFormPage extends StatefulWidget {
     this.onSave,
     this.padding = insetsHorizontalDefault,
     this.isInputValid = true,
+    this.isEditable = true,
     this.showSaveButton = true,
     this.runSpacing,
     this.onRefresh,
@@ -111,9 +116,9 @@ class _EditableFormPageState extends State<EditableFormPage> {
     _fields.addAll(_allInputFields);
 
     if (widget.allowCustomEntities) {
-      // Add fake InputData for custom fields separator.
-      var fakeInput = Field.fake();
-      _fields[fakeInput.id] = fakeInput;
+      // Add a fake Field for custom fields separator.
+      var customField = Field.fake(builder: _buildCustomFieldHeader);
+      _fields[customField.id] = customField;
 
       // Add custom fields.
       for (var id in widget.customEntityIds) {
@@ -187,11 +192,36 @@ class _EditableFormPageState extends State<EditableFormPage> {
         ..removeWhere((field) => _fields[field.id]!.isFake),
       onAddFields: _addInputWidgets,
       isInputValid: widget.isInputValid,
+      isEditable: widget.isEditable,
       showSaveButton: widget.showSaveButton,
       allowCustomEntities: widget.allowCustomEntities,
       onRefresh: widget.onRefresh,
       refreshIndicatorKey: widget.refreshIndicatorKey,
       overflowOptions: widget.overflowOptions,
+    );
+  }
+
+  Widget _buildCustomFieldHeader(BuildContext context) {
+    Widget child;
+    if (widget.isEditable) {
+      var visibleField = _fields.values.firstWhereOrNull((field) =>
+          _customEntityManager.entityExists(field.id) && field.isShowing);
+
+      child = HeadingNoteDivider(
+        hideNote: visibleField != null,
+        title: Strings.of(context).customFields,
+        note: Strings.of(context).formPageManageFieldsNote,
+        noteIcon: FormPage.moreMenuIcon,
+      );
+    } else if (widget.customEntityIds.isNotEmpty) {
+      child = HeadingDivider(Strings.of(context).customFields);
+    } else {
+      return Empty();
+    }
+
+    return Padding(
+      padding: insetsVerticalWidgetSmall,
+      child: child,
     );
   }
 
@@ -201,17 +231,7 @@ class _EditableFormPageState extends State<EditableFormPage> {
 
     // Add custom fields divider.
     if (field.isFake) {
-      var hasCustomFields = _fields.keys.firstWhereOrNull(
-              (id) => _customEntityManager.entity(id) != null) !=
-          null;
-
-      return HeadingNoteDivider(
-        hideNote: hasCustomFields,
-        title: Strings.of(context).customFields,
-        note: Strings.of(context).formPageManageFieldsNote,
-        noteIcon: FormPage.moreMenuIcon,
-        padding: insetsVerticalWidgetSmall,
-      );
+      return field.fakeBuilder!(context);
     }
 
     if (!field.isShowing) {

@@ -117,7 +117,7 @@ class ActionButton extends StatelessWidget {
     );
 
     return EnabledOpacity(
-      enabled: onPressed != null,
+      isEnabled: onPressed != null,
       child: child,
     );
   }
@@ -186,7 +186,9 @@ class MinimumIconButton extends StatelessWidget {
         onTap: onTap,
         child: Icon(
           icon,
-          color: color ?? Theme.of(context).primaryColor,
+          color: onTap == null
+              ? Theme.of(context).disabledColor
+              : color ?? Theme.of(context).primaryColor,
         ),
       ),
     );
@@ -366,6 +368,25 @@ class SmallTextButton extends StatelessWidget {
         ),
       ),
       onPressed: onPressed,
+    );
+  }
+}
+
+class FakeTextButton extends StatelessWidget {
+  final String text;
+
+  FakeTextButton(this.text);
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      text.toUpperCase(),
+      style: TextStyle(
+        color: Theme.of(context).primaryColor,
+        fontWeight: fontWeightBold,
+      ),
+      overflow: TextOverflow.visible,
+      maxLines: 1,
     );
   }
 }

@@ -48,10 +48,9 @@ class BaitManager extends NamedEntityManager<Bait> {
       return false;
     }
 
+    // TODO: Consider variants.
     if (super.matchesFilter(id, filter) ||
-        _baitCategoryManager.matchesFilter(bait.baitCategoryId, filter) ||
-        filterMatchesEntityValues(
-            bait.customEntityValues, filter, _customEntityManager)) {
+        _baitCategoryManager.matchesFilter(bait.baitCategoryId, filter)) {
       return true;
     }
 
@@ -61,11 +60,11 @@ class BaitManager extends NamedEntityManager<Bait> {
   /// Returns true if the given [Bait] is a duplicate of an existing bait. A
   /// duplicate is defined as all equal properties, except [Bait.id].
   bool duplicate(Bait rhs) {
+    // TODO: Consider variants.
     return list()
         .where((lhs) =>
             lhs.baitCategoryId == rhs.baitCategoryId &&
             equalsTrimmedIgnoreCase(lhs.name, rhs.name) &&
-            listEquals(lhs.customEntityValues, rhs.customEntityValues) &&
             lhs.id != rhs.id)
         .isNotEmpty;
   }
@@ -77,8 +76,8 @@ class BaitManager extends NamedEntityManager<Bait> {
   /// Returns the total number of [CustomEntityValue] objects associated with
   /// [Bait] objects and [customEntityId].
   int numberOfCustomEntityValues(Id customEntityId) {
-    return entityValuesCount<Bait>(
-        list(), customEntityId, (bait) => bait.customEntityValues);
+    // TODO: Handle variants.
+    return 0;
   }
 
   String? formatNameWithCategory(Id? baitId) {

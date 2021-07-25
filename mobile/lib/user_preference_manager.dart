@@ -11,10 +11,10 @@ class UserPreferenceManager extends PreferenceManager {
   static UserPreferenceManager of(BuildContext context) =>
       Provider.of<AppManager>(context, listen: false).userPreferenceManager;
 
-  static const _keyBaitCustomEntityIds = "bait_custom_entity_ids";
+  static const _keyBaitVariantCustomIds = "bait_variant_custom_ids";
   static const _keyCatchCustomEntityIds = "catch_custom_entity_ids";
   static const _keyAtmosphereFieldIds = "atmosphere_field_ids";
-  static const _keyBaitFieldIds = "bait_field_ids";
+  static const _keyBaitVariantFieldIds = "bait_variant_field_ids";
   static const _keyCatchFieldIds = "catch_field_ids";
   static const _keyCatchLengthSystem = "catch_length_system";
   static const _keyCatchWeightSystem = "catch_weight_system";
@@ -59,10 +59,10 @@ class UserPreferenceManager extends PreferenceManager {
     // regardless of subscription status.
   }
 
-  Future<void> setBaitCustomEntityIds(List<Id> ids) =>
-      putIdList(_keyBaitCustomEntityIds, ids);
+  Future<void> setBaitVariantCustomIds(List<Id> ids) =>
+      putIdList(_keyBaitVariantCustomIds, ids);
 
-  List<Id> get baitCustomEntityIds => idList(_keyBaitCustomEntityIds);
+  List<Id> get baitVariantCustomIds => idList(_keyBaitVariantCustomIds);
 
   Future<void> setCatchCustomEntityIds(List<Id> ids) =>
       putIdList(_keyCatchCustomEntityIds, ids);
@@ -74,10 +74,10 @@ class UserPreferenceManager extends PreferenceManager {
 
   List<Id> get atmosphereFieldIds => idList(_keyAtmosphereFieldIds);
 
-  Future<void> setBaitFieldIds(List<Id> ids) =>
-      putIdList(_keyBaitFieldIds, ids);
+  Future<void> setBaitVariantFieldIds(List<Id> ids) =>
+      putIdList(_keyBaitVariantFieldIds, ids);
 
-  List<Id> get baitFieldIds => idList(_keyBaitFieldIds);
+  List<Id> get baitVariantFieldIds => idList(_keyBaitVariantFieldIds);
 
   Future<void> setCatchFieldIds(List<Id> ids) =>
       putIdList(_keyCatchFieldIds, ids);
@@ -162,7 +162,7 @@ class UserPreferenceManager extends PreferenceManager {
   bool get isPro => preferences[_keyIsPro] ?? false;
 
   Future<void> _onDeleteCustomEntity(CustomEntity entity) async {
-    await setBaitCustomEntityIds(baitCustomEntityIds..remove(entity.id));
+    await setBaitVariantCustomIds(baitVariantCustomIds..remove(entity.id));
     await setCatchCustomEntityIds(catchCustomEntityIds..remove(entity.id));
   }
 }

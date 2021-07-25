@@ -79,6 +79,10 @@ TextStyle styleSecondary(BuildContext context) {
   );
 }
 
+TextStyle disabledStyle(BuildContext context) {
+  return TextStyle(color: Theme.of(context).disabledColor);
+}
+
 TextStyle styleSubtitle(
   BuildContext context, {
   bool enabled = true,

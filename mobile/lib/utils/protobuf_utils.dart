@@ -1,6 +1,7 @@
 import 'dart:typed_data';
 
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:protobuf/protobuf.dart';
@@ -185,6 +186,17 @@ List<PickerPageItem<T>> _pickerItems<T>(
       value: value,
     );
   }).toList();
+}
+
+extension BaitVariants on BaitVariant {
+  bool isDuplicate(BaitVariant? other) {
+    if (other == null) {
+      return false;
+    }
+
+    return color == other.color &&
+        listEquals(customEntityValues, other.customEntityValues);
+  }
 }
 
 extension Ids on Id {

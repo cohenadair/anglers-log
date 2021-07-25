@@ -9,6 +9,7 @@ Map<String, Map<String, String>> get englishStrings => {
         "unitsPage_waterDepthMeters": "Meters (%s)",
         "unitsPage_airVisibilityKilometers": "Kilometers (%s)",
         "unitsPage_windSpeedKilometers": "Kilometers per hour (%s)",
+        "input_colorLabel": "Color",
       },
       "CA": {
         "catchField_favorite": "Favourite",
@@ -18,6 +19,7 @@ Map<String, Map<String, String>> get englishStrings => {
         "unitsPage_waterDepthMeters": "Metres (%s)",
         "unitsPage_airVisibilityKilometers": "Kilometres (%s)",
         "unitsPage_windSpeedKilometers": "Kilometres per hour (%s)",
+        "input_colorLabel": "Colour",
       },
       "default": {
         "appName": "Anglers' Log",
@@ -159,6 +161,7 @@ Map<String, Map<String, String>> get englishStrings => {
         "saveBaitPage_categoryLabel": "Bait Category",
         "saveBaitPage_baitExists":
             "A bait with these properties already exists. Please change at least one field and try again.",
+        "saveBaitPage_variants": "Variants",
         "saveBaitCategoryPage_newTitle": "New Bait Category",
         "saveBaitCategoryPage_editTitle": "Edit Bait Category",
         "saveBaitCategoryPage_existsMessage": "Bait category already exists",
@@ -680,5 +683,7 @@ Map<String, Map<String, String>> get englishStrings => {
         "tide_high": "High Tide",
         "tide_slack": "Slack Tide",
         "tide_incoming": "Incoming Tide",
+        "saveBaitVariantPage_title": "Edit Bait Variant",
+        "saveBaitVariantPage_editTitle": "New Bait Variant",
       },
     };

@@ -154,7 +154,26 @@ message Bait {
   Id id = 1;
   string name = 2;
   Id bait_category_id = 3;
-  repeated CustomEntityValue custom_entity_values = 4;
+  string image_name = 4;
+  string type = 5;
+  repeated BaitVariant variants = 6;
+}
+
+message BaitVariant {
+  Id id = 1;
+  Id base_id = 2;
+  string color = 3;
+  string model_number = 4;
+  string size = 5;
+  double min_dive_depth = 6;
+  double max_dive_depth = 7;
+  string description = 8;
+  repeated CustomEntityValue custom_entity_values = 9;
+}
+
+message PickedBait {
+  Id bait_id = 1;
+  Id variant_id = 2;
 }
 
 message BaitCategory {

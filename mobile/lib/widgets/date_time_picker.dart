@@ -202,7 +202,7 @@ class _Picker extends StatelessWidget {
               children: <Widget>[
                 Expanded(child: type.value()),
                 EnabledOpacity(
-                  enabled: enabled,
+                  isEnabled: enabled,
                   child: DropdownIcon(),
                 ),
               ],

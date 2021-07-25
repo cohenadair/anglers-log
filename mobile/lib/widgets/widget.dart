@@ -37,9 +37,14 @@ class HeadingDivider extends StatelessWidget {
   final String text;
   final bool showDivider;
 
+  /// A widget that's rendered at the right edge of the screen, in the same
+  /// [Row] as [text].
+  final Widget? trailing;
+
   HeadingDivider(
     this.text, {
     this.showDivider = true,
+    this.trailing,
   });
 
   @override
@@ -59,9 +64,16 @@ class HeadingDivider extends StatelessWidget {
           child: SafeArea(
             top: false,
             bottom: false,
-            child: Text(
-              text,
-              style: styleListHeading(context),
+            child: Row(
+              children: [
+                Expanded(
+                  child: Text(
+                    text,
+                    style: styleListHeading(context),
+                  ),
+                ),
+                trailing ?? Empty(),
+              ],
             ),
           ),
         ),
@@ -200,25 +212,25 @@ class SwipeChip extends StatelessWidget {
   }
 }
 
-/// An [Opacity] wrapper whose state depends on the [enabled] property.
+/// An [Opacity] wrapper whose state depends on the [isEnabled] property.
 class EnabledOpacity extends StatelessWidget {
   static const double _disabledOpacity = 0.5;
 
   final Key? key;
-  final bool enabled;
+  final bool isEnabled;
   final Widget child;
 
   EnabledOpacity({
     required this.child,
     this.key,
-    this.enabled = true,
+    this.isEnabled = true,
   });
 
   @override
   Widget build(BuildContext context) {
     return Opacity(
       key: key,
-      opacity: enabled ? 1.0 : _disabledOpacity,
+      opacity: isEnabled ? 1.0 : _disabledOpacity,
       child: child,
     );
   }

@@ -8,7 +8,6 @@
 import 'dart:core' as $core;
 import 'dart:convert' as $convert;
 import 'dart:typed_data' as $typed_data;
-
 @$core.Deprecated('Use directionDescriptor instead')
 const Direction$json = const {
   '1': 'Direction',
@@ -27,8 +26,7 @@ const Direction$json = const {
 };
 
 /// Descriptor for `Direction`. Decode as a `google.protobuf.EnumDescriptorProto`.
-final $typed_data.Uint8List directionDescriptor = $convert.base64Decode(
-    'CglEaXJlY3Rpb24SEQoNZGlyZWN0aW9uX2FsbBAAEhIKDmRpcmVjdGlvbl9ub25lEAESCQoFbm9ydGgQAhIOCgpub3J0aF9lYXN0EAMSCAoEZWFzdBAEEg4KCnNvdXRoX2Vhc3QQBRIJCgVzb3V0aBAGEg4KCnNvdXRoX3dlc3QQBxIICgR3ZXN0EAgSDgoKbm9ydGhfd2VzdBAJ');
+final $typed_data.Uint8List directionDescriptor = $convert.base64Decode('CglEaXJlY3Rpb24SEQoNZGlyZWN0aW9uX2FsbBAAEhIKDmRpcmVjdGlvbl9ub25lEAESCQoFbm9ydGgQAhIOCgpub3J0aF9lYXN0EAMSCAoEZWFzdBAEEg4KCnNvdXRoX2Vhc3QQBRIJCgVzb3V0aBAGEg4KCnNvdXRoX3dlc3QQBxIICgR3ZXN0EAgSDgoKbm9ydGhfd2VzdBAJ');
 @$core.Deprecated('Use measurementSystemDescriptor instead')
 const MeasurementSystem$json = const {
   '1': 'MeasurementSystem',
@@ -40,8 +38,7 @@ const MeasurementSystem$json = const {
 };
 
 /// Descriptor for `MeasurementSystem`. Decode as a `google.protobuf.EnumDescriptorProto`.
-final $typed_data.Uint8List measurementSystemDescriptor = $convert.base64Decode(
-    'ChFNZWFzdXJlbWVudFN5c3RlbRISCg5pbXBlcmlhbF93aG9sZRAAEhQKEGltcGVyaWFsX2RlY2ltYWwQARIKCgZtZXRyaWMQAg==');
+final $typed_data.Uint8List measurementSystemDescriptor = $convert.base64Decode('ChFNZWFzdXJlbWVudFN5c3RlbRISCg5pbXBlcmlhbF93aG9sZRAAEhQKEGltcGVyaWFsX2RlY2ltYWwQARIKCgZtZXRyaWMQAg==');
 @$core.Deprecated('Use moonPhaseDescriptor instead')
 const MoonPhase$json = const {
   '1': 'MoonPhase',
@@ -60,8 +57,7 @@ const MoonPhase$json = const {
 };
 
 /// Descriptor for `MoonPhase`. Decode as a `google.protobuf.EnumDescriptorProto`.
-final $typed_data.Uint8List moonPhaseDescriptor = $convert.base64Decode(
-    'CglNb29uUGhhc2USEgoObW9vbl9waGFzZV9hbGwQABITCg9tb29uX3BoYXNlX25vbmUQARIHCgNuZXcQAhITCg93YXhpbmdfY3Jlc2NlbnQQAxIRCg1maXJzdF9xdWFydGVyEAQSEgoOd2F4aW5nX2dpYmJvdXMQBRIICgRmdWxsEAYSEgoOd2FuaW5nX2dpYmJvdXMQBxIQCgxsYXN0X3F1YXJ0ZXIQCBITCg93YW5pbmdfY3Jlc2NlbnQQCQ==');
+final $typed_data.Uint8List moonPhaseDescriptor = $convert.base64Decode('CglNb29uUGhhc2USEgoObW9vbl9waGFzZV9hbGwQABITCg9tb29uX3BoYXNlX25vbmUQARIHCgNuZXcQAhITCg93YXhpbmdfY3Jlc2NlbnQQAxIRCg1maXJzdF9xdWFydGVyEAQSEgoOd2F4aW5nX2dpYmJvdXMQBRIICgRmdWxsEAYSEgoOd2FuaW5nX2dpYmJvdXMQBxIQCgxsYXN0X3F1YXJ0ZXIQCBITCg93YW5pbmdfY3Jlc2NlbnQQCQ==');
 @$core.Deprecated('Use numberBoundaryDescriptor instead')
 const NumberBoundary$json = const {
   '1': 'NumberBoundary',
@@ -77,8 +73,7 @@ const NumberBoundary$json = const {
 };
 
 /// Descriptor for `NumberBoundary`. Decode as a `google.protobuf.EnumDescriptorProto`.
-final $typed_data.Uint8List numberBoundaryDescriptor = $convert.base64Decode(
-    'Cg5OdW1iZXJCb3VuZGFyeRIXChNudW1iZXJfYm91bmRhcnlfYW55EAASDQoJbGVzc190aGFuEAESGQoVbGVzc190aGFuX29yX2VxdWFsX3RvEAISDAoIZXF1YWxfdG8QAxIQCgxncmVhdGVyX3RoYW4QBBIcChhncmVhdGVyX3RoYW5fb3JfZXF1YWxfdG8QBRIJCgVyYW5nZRAG');
+final $typed_data.Uint8List numberBoundaryDescriptor = $convert.base64Decode('Cg5OdW1iZXJCb3VuZGFyeRIXChNudW1iZXJfYm91bmRhcnlfYW55EAASDQoJbGVzc190aGFuEAESGQoVbGVzc190aGFuX29yX2VxdWFsX3RvEAISDAoIZXF1YWxfdG8QAxIQCgxncmVhdGVyX3RoYW4QBBIcChhncmVhdGVyX3RoYW5fb3JfZXF1YWxfdG8QBRIJCgVyYW5nZRAG');
 @$core.Deprecated('Use periodDescriptor instead')
 const Period$json = const {
   '1': 'Period',
@@ -95,8 +90,7 @@ const Period$json = const {
 };
 
 /// Descriptor for `Period`. Decode as a `google.protobuf.EnumDescriptorProto`.
-final $typed_data.Uint8List periodDescriptor = $convert.base64Decode(
-    'CgZQZXJpb2QSDgoKcGVyaW9kX2FsbBAAEg8KC3BlcmlvZF9ub25lEAESCAoEZGF3bhACEgsKB21vcm5pbmcQAxIKCgZtaWRkYXkQBBINCglhZnRlcm5vb24QBRIICgRkdXNrEAYSCQoFbmlnaHQQBw==');
+final $typed_data.Uint8List periodDescriptor = $convert.base64Decode('CgZQZXJpb2QSDgoKcGVyaW9kX2FsbBAAEg8KC3BlcmlvZF9ub25lEAESCAoEZGF3bhACEgsKB21vcm5pbmcQAxIKCgZtaWRkYXkQBBINCglhZnRlcm5vb24QBRIICgRkdXNrEAYSCQoFbmlnaHQQBw==');
 @$core.Deprecated('Use seasonDescriptor instead')
 const Season$json = const {
   '1': 'Season',
@@ -111,8 +105,7 @@ const Season$json = const {
 };
 
 /// Descriptor for `Season`. Decode as a `google.protobuf.EnumDescriptorProto`.
-final $typed_data.Uint8List seasonDescriptor = $convert.base64Decode(
-    'CgZTZWFzb24SDgoKc2Vhc29uX2FsbBAAEg8KC3NlYXNvbl9ub25lEAESCgoGd2ludGVyEAISCgoGc3ByaW5nEAMSCgoGc3VtbWVyEAQSCgoGYXV0dW1uEAU=');
+final $typed_data.Uint8List seasonDescriptor = $convert.base64Decode('CgZTZWFzb24SDgoKc2Vhc29uX2FsbBAAEg8KC3NlYXNvbl9ub25lEAESCgoGd2ludGVyEAISCgoGc3ByaW5nEAMSCgoGc3VtbWVyEAQSCgoGYXV0dW1uEAU=');
 @$core.Deprecated('Use skyConditionDescriptor instead')
 const SkyCondition$json = const {
   '1': 'SkyCondition',
@@ -137,8 +130,7 @@ const SkyCondition$json = const {
 };
 
 /// Descriptor for `SkyCondition`. Decode as a `google.protobuf.EnumDescriptorProto`.
-final $typed_data.Uint8List skyConditionDescriptor = $convert.base64Decode(
-    'CgxTa3lDb25kaXRpb24SFQoRc2t5X2NvbmRpdGlvbl9hbGwQABIWChJza3lfY29uZGl0aW9uX25vbmUQARIICgRzbm93EAISCwoHZHJpenpsZRADEggKBGR1c3QQBBIHCgNmb2cQBRIICgRyYWluEAYSCwoHdG9ybmFkbxAHEggKBGhhaWwQCBIHCgNpY2UQCRIJCgVzdG9ybRAKEggKBG1pc3QQCxIJCgVzbW9rZRAMEgwKCG92ZXJjYXN0EA0SCgoGY2xvdWR5EA4SCQoFY2xlYXIQDw==');
+final $typed_data.Uint8List skyConditionDescriptor = $convert.base64Decode('CgxTa3lDb25kaXRpb24SFQoRc2t5X2NvbmRpdGlvbl9hbGwQABIWChJza3lfY29uZGl0aW9uX25vbmUQARIICgRzbm93EAISCwoHZHJpenpsZRADEggKBGR1c3QQBBIHCgNmb2cQBRIICgRyYWluEAYSCwoHdG9ybmFkbxAHEggKBGhhaWwQCBIHCgNpY2UQCRIJCgVzdG9ybRAKEggKBG1pc3QQCxIJCgVzbW9rZRAMEgwKCG92ZXJjYXN0EA0SCgoGY2xvdWR5EA4SCQoFY2xlYXIQDw==');
 @$core.Deprecated('Use tideTypeDescriptor instead')
 const TideType$json = const {
   '1': 'TideType',
@@ -154,8 +146,7 @@ const TideType$json = const {
 };
 
 /// Descriptor for `TideType`. Decode as a `google.protobuf.EnumDescriptorProto`.
-final $typed_data.Uint8List tideTypeDescriptor = $convert.base64Decode(
-    'CghUaWRlVHlwZRIRCg10aWRlX3R5cGVfYWxsEAASEgoOdGlkZV90eXBlX25vbmUQARIHCgNsb3cQAhIMCghvdXRnb2luZxADEggKBGhpZ2gQBBIJCgVzbGFjaxAFEgwKCGluY29taW5nEAY=');
+final $typed_data.Uint8List tideTypeDescriptor = $convert.base64Decode('CghUaWRlVHlwZRIRCg10aWRlX3R5cGVfYWxsEAASEgoOdGlkZV90eXBlX25vbmUQARIHCgNsb3cQAhIMCghvdXRnb2luZxADEggKBGhpZ2gQBBIJCgVzbGFjaxAFEgwKCGluY29taW5nEAY=');
 @$core.Deprecated('Use unitDescriptor instead')
 const Unit$json = const {
   '1': 'Unit',
@@ -180,8 +171,7 @@ const Unit$json = const {
 };
 
 /// Descriptor for `Unit`. Decode as a `google.protobuf.EnumDescriptorProto`.
-final $typed_data.Uint8List unitDescriptor = $convert.base64Decode(
-    'CgRVbml0EggKBGZlZXQQABIKCgZpbmNoZXMQARIKCgZwb3VuZHMQAhIKCgZvdW5jZXMQAxIOCgpmYWhyZW5oZWl0EAQSCgoGbWV0ZXJzEAUSDwoLY2VudGltZXRlcnMQBhINCglraWxvZ3JhbXMQBxILCgdjZWxzaXVzEAgSEgoObWlsZXNfcGVyX2hvdXIQCRIXChNraWxvbWV0ZXJzX3Blcl9ob3VyEAoSDQoJbWlsbGliYXJzEAsSGgoWcG91bmRzX3Blcl9zcXVhcmVfaW5jaBAMEgkKBW1pbGVzEA0SDgoKa2lsb21ldGVycxAOEgsKB3BlcmNlbnQQDw==');
+final $typed_data.Uint8List unitDescriptor = $convert.base64Decode('CgRVbml0EggKBGZlZXQQABIKCgZpbmNoZXMQARIKCgZwb3VuZHMQAhIKCgZvdW5jZXMQAxIOCgpmYWhyZW5oZWl0EAQSCgoGbWV0ZXJzEAUSDwoLY2VudGltZXRlcnMQBhINCglraWxvZ3JhbXMQBxILCgdjZWxzaXVzEAgSEgoObWlsZXNfcGVyX2hvdXIQCRIXChNraWxvbWV0ZXJzX3Blcl9ob3VyEAoSDQoJbWlsbGliYXJzEAsSGgoWcG91bmRzX3Blcl9zcXVhcmVfaW5jaBAMEgkKBW1pbGVzEA0SDgoKa2lsb21ldGVycxAOEgsKB3BlcmNlbnQQDw==');
 @$core.Deprecated('Use idDescriptor instead')
 const Id$json = const {
   '1': 'Id',
@@ -191,118 +181,34 @@ const Id$json = const {
 };
 
 /// Descriptor for `Id`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List idDescriptor =
-    $convert.base64Decode('CgJJZBISCgR1dWlkGAEgASgJUgR1dWlk');
+final $typed_data.Uint8List idDescriptor = $convert.base64Decode('CgJJZBISCgR1dWlkGAEgASgJUgR1dWlk');
 @$core.Deprecated('Use atmosphereDescriptor instead')
 const Atmosphere$json = const {
   '1': 'Atmosphere',
   '2': const [
-    const {
-      '1': 'temperature',
-      '3': 1,
-      '4': 1,
-      '5': 11,
-      '6': '.anglerslog.Measurement',
-      '10': 'temperature'
-    },
-    const {
-      '1': 'sky_conditions',
-      '3': 2,
-      '4': 3,
-      '5': 14,
-      '6': '.anglerslog.SkyCondition',
-      '10': 'skyConditions'
-    },
-    const {
-      '1': 'wind_speed',
-      '3': 3,
-      '4': 1,
-      '5': 11,
-      '6': '.anglerslog.Measurement',
-      '10': 'windSpeed'
-    },
-    const {
-      '1': 'wind_direction',
-      '3': 4,
-      '4': 1,
-      '5': 14,
-      '6': '.anglerslog.Direction',
-      '10': 'windDirection'
-    },
-    const {
-      '1': 'pressure',
-      '3': 5,
-      '4': 1,
-      '5': 11,
-      '6': '.anglerslog.Measurement',
-      '10': 'pressure'
-    },
-    const {
-      '1': 'humidity',
-      '3': 6,
-      '4': 1,
-      '5': 11,
-      '6': '.anglerslog.Measurement',
-      '10': 'humidity'
-    },
-    const {
-      '1': 'visibility',
-      '3': 7,
-      '4': 1,
-      '5': 11,
-      '6': '.anglerslog.Measurement',
-      '10': 'visibility'
-    },
-    const {
-      '1': 'moon_phase',
-      '3': 8,
-      '4': 1,
-      '5': 14,
-      '6': '.anglerslog.MoonPhase',
-      '10': 'moonPhase'
-    },
-    const {
-      '1': 'sunrise_timestamp',
-      '3': 9,
-      '4': 1,
-      '5': 4,
-      '10': 'sunriseTimestamp'
-    },
-    const {
-      '1': 'sunset_timestamp',
-      '3': 10,
-      '4': 1,
-      '5': 4,
-      '10': 'sunsetTimestamp'
-    },
+    const {'1': 'temperature', '3': 1, '4': 1, '5': 11, '6': '.anglerslog.Measurement', '10': 'temperature'},
+    const {'1': 'sky_conditions', '3': 2, '4': 3, '5': 14, '6': '.anglerslog.SkyCondition', '10': 'skyConditions'},
+    const {'1': 'wind_speed', '3': 3, '4': 1, '5': 11, '6': '.anglerslog.Measurement', '10': 'windSpeed'},
+    const {'1': 'wind_direction', '3': 4, '4': 1, '5': 14, '6': '.anglerslog.Direction', '10': 'windDirection'},
+    const {'1': 'pressure', '3': 5, '4': 1, '5': 11, '6': '.anglerslog.Measurement', '10': 'pressure'},
+    const {'1': 'humidity', '3': 6, '4': 1, '5': 11, '6': '.anglerslog.Measurement', '10': 'humidity'},
+    const {'1': 'visibility', '3': 7, '4': 1, '5': 11, '6': '.anglerslog.Measurement', '10': 'visibility'},
+    const {'1': 'moon_phase', '3': 8, '4': 1, '5': 14, '6': '.anglerslog.MoonPhase', '10': 'moonPhase'},
+    const {'1': 'sunrise_timestamp', '3': 9, '4': 1, '5': 4, '10': 'sunriseTimestamp'},
+    const {'1': 'sunset_timestamp', '3': 10, '4': 1, '5': 4, '10': 'sunsetTimestamp'},
   ],
 };
 
 /// Descriptor for `Atmosphere`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List atmosphereDescriptor = $convert.base64Decode(
-    'CgpBdG1vc3BoZXJlEjkKC3RlbXBlcmF0dXJlGAEgASgLMhcuYW5nbGVyc2xvZy5NZWFzdXJlbWVudFILdGVtcGVyYXR1cmUSPwoOc2t5X2NvbmRpdGlvbnMYAiADKA4yGC5hbmdsZXJzbG9nLlNreUNvbmRpdGlvblINc2t5Q29uZGl0aW9ucxI2Cgp3aW5kX3NwZWVkGAMgASgLMhcuYW5nbGVyc2xvZy5NZWFzdXJlbWVudFIJd2luZFNwZWVkEjwKDndpbmRfZGlyZWN0aW9uGAQgASgOMhUuYW5nbGVyc2xvZy5EaXJlY3Rpb25SDXdpbmREaXJlY3Rpb24SMwoIcHJlc3N1cmUYBSABKAsyFy5hbmdsZXJzbG9nLk1lYXN1cmVtZW50UghwcmVzc3VyZRIzCghodW1pZGl0eRgGIAEoCzIXLmFuZ2xlcnNsb2cuTWVhc3VyZW1lbnRSCGh1bWlkaXR5EjcKCnZpc2liaWxpdHkYByABKAsyFy5hbmdsZXJzbG9nLk1lYXN1cmVtZW50Ugp2aXNpYmlsaXR5EjQKCm1vb25fcGhhc2UYCCABKA4yFS5hbmdsZXJzbG9nLk1vb25QaGFzZVIJbW9vblBoYXNlEisKEXN1bnJpc2VfdGltZXN0YW1wGAkgASgEUhBzdW5yaXNlVGltZXN0YW1wEikKEHN1bnNldF90aW1lc3RhbXAYCiABKARSD3N1bnNldFRpbWVzdGFtcA==');
+final $typed_data.Uint8List atmosphereDescriptor = $convert.base64Decode('CgpBdG1vc3BoZXJlEjkKC3RlbXBlcmF0dXJlGAEgASgLMhcuYW5nbGVyc2xvZy5NZWFzdXJlbWVudFILdGVtcGVyYXR1cmUSPwoOc2t5X2NvbmRpdGlvbnMYAiADKA4yGC5hbmdsZXJzbG9nLlNreUNvbmRpdGlvblINc2t5Q29uZGl0aW9ucxI2Cgp3aW5kX3NwZWVkGAMgASgLMhcuYW5nbGVyc2xvZy5NZWFzdXJlbWVudFIJd2luZFNwZWVkEjwKDndpbmRfZGlyZWN0aW9uGAQgASgOMhUuYW5nbGVyc2xvZy5EaXJlY3Rpb25SDXdpbmREaXJlY3Rpb24SMwoIcHJlc3N1cmUYBSABKAsyFy5hbmdsZXJzbG9nLk1lYXN1cmVtZW50UghwcmVzc3VyZRIzCghodW1pZGl0eRgGIAEoCzIXLmFuZ2xlcnNsb2cuTWVhc3VyZW1lbnRSCGh1bWlkaXR5EjcKCnZpc2liaWxpdHkYByABKAsyFy5hbmdsZXJzbG9nLk1lYXN1cmVtZW50Ugp2aXNpYmlsaXR5EjQKCm1vb25fcGhhc2UYCCABKA4yFS5hbmdsZXJzbG9nLk1vb25QaGFzZVIJbW9vblBoYXNlEisKEXN1bnJpc2VfdGltZXN0YW1wGAkgASgEUhBzdW5yaXNlVGltZXN0YW1wEikKEHN1bnNldF90aW1lc3RhbXAYCiABKARSD3N1bnNldFRpbWVzdGFtcA==');
 @$core.Deprecated('Use customEntityDescriptor instead')
 const CustomEntity$json = const {
   '1': 'CustomEntity',
   '2': const [
-    const {
-      '1': 'id',
-      '3': 1,
-      '4': 1,
-      '5': 11,
-      '6': '.anglerslog.Id',
-      '10': 'id'
-    },
+    const {'1': 'id', '3': 1, '4': 1, '5': 11, '6': '.anglerslog.Id', '10': 'id'},
     const {'1': 'name', '3': 2, '4': 1, '5': 9, '10': 'name'},
     const {'1': 'description', '3': 3, '4': 1, '5': 9, '10': 'description'},
-    const {
-      '1': 'type',
-      '3': 4,
-      '4': 1,
-      '5': 14,
-      '6': '.anglerslog.CustomEntity.Type',
-      '10': 'type'
-    },
+    const {'1': 'type', '3': 4, '4': 1, '5': 14, '6': '.anglerslog.CustomEntity.Type', '10': 'type'},
   ],
   '4': const [CustomEntity_Type$json],
 };
@@ -318,250 +224,99 @@ const CustomEntity_Type$json = const {
 };
 
 /// Descriptor for `CustomEntity`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List customEntityDescriptor = $convert.base64Decode(
-    'CgxDdXN0b21FbnRpdHkSHgoCaWQYASABKAsyDi5hbmdsZXJzbG9nLklkUgJpZBISCgRuYW1lGAIgASgJUgRuYW1lEiAKC2Rlc2NyaXB0aW9uGAMgASgJUgtkZXNjcmlwdGlvbhIxCgR0eXBlGAQgASgOMh0uYW5nbGVyc2xvZy5DdXN0b21FbnRpdHkuVHlwZVIEdHlwZSIpCgRUeXBlEgsKB2Jvb2xlYW4QABIKCgZudW1iZXIQARIICgR0ZXh0EAI=');
+final $typed_data.Uint8List customEntityDescriptor = $convert.base64Decode('CgxDdXN0b21FbnRpdHkSHgoCaWQYASABKAsyDi5hbmdsZXJzbG9nLklkUgJpZBISCgRuYW1lGAIgASgJUgRuYW1lEiAKC2Rlc2NyaXB0aW9uGAMgASgJUgtkZXNjcmlwdGlvbhIxCgR0eXBlGAQgASgOMh0uYW5nbGVyc2xvZy5DdXN0b21FbnRpdHkuVHlwZVIEdHlwZSIpCgRUeXBlEgsKB2Jvb2xlYW4QABIKCgZudW1iZXIQARIICgR0ZXh0EAI=');
 @$core.Deprecated('Use customEntityValueDescriptor instead')
 const CustomEntityValue$json = const {
   '1': 'CustomEntityValue',
   '2': const [
-    const {
-      '1': 'custom_entity_id',
-      '3': 1,
-      '4': 1,
-      '5': 11,
-      '6': '.anglerslog.Id',
-      '10': 'customEntityId'
-    },
+    const {'1': 'custom_entity_id', '3': 1, '4': 1, '5': 11, '6': '.anglerslog.Id', '10': 'customEntityId'},
     const {'1': 'value', '3': 2, '4': 1, '5': 9, '10': 'value'},
   ],
 };
 
 /// Descriptor for `CustomEntityValue`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List customEntityValueDescriptor = $convert.base64Decode(
-    'ChFDdXN0b21FbnRpdHlWYWx1ZRI4ChBjdXN0b21fZW50aXR5X2lkGAEgASgLMg4uYW5nbGVyc2xvZy5JZFIOY3VzdG9tRW50aXR5SWQSFAoFdmFsdWUYAiABKAlSBXZhbHVl');
+final $typed_data.Uint8List customEntityValueDescriptor = $convert.base64Decode('ChFDdXN0b21FbnRpdHlWYWx1ZRI4ChBjdXN0b21fZW50aXR5X2lkGAEgASgLMg4uYW5nbGVyc2xvZy5JZFIOY3VzdG9tRW50aXR5SWQSFAoFdmFsdWUYAiABKAlSBXZhbHVl');
 @$core.Deprecated('Use baitDescriptor instead')
 const Bait$json = const {
   '1': 'Bait',
   '2': const [
-    const {
-      '1': 'id',
-      '3': 1,
-      '4': 1,
-      '5': 11,
-      '6': '.anglerslog.Id',
-      '10': 'id'
-    },
+    const {'1': 'id', '3': 1, '4': 1, '5': 11, '6': '.anglerslog.Id', '10': 'id'},
     const {'1': 'name', '3': 2, '4': 1, '5': 9, '10': 'name'},
-    const {
-      '1': 'bait_category_id',
-      '3': 3,
-      '4': 1,
-      '5': 11,
-      '6': '.anglerslog.Id',
-      '10': 'baitCategoryId'
-    },
-    const {
-      '1': 'custom_entity_values',
-      '3': 4,
-      '4': 3,
-      '5': 11,
-      '6': '.anglerslog.CustomEntityValue',
-      '10': 'customEntityValues'
-    },
+    const {'1': 'bait_category_id', '3': 3, '4': 1, '5': 11, '6': '.anglerslog.Id', '10': 'baitCategoryId'},
+    const {'1': 'image_name', '3': 4, '4': 1, '5': 9, '10': 'imageName'},
+    const {'1': 'type', '3': 5, '4': 1, '5': 9, '10': 'type'},
+    const {'1': 'variants', '3': 6, '4': 3, '5': 11, '6': '.anglerslog.BaitVariant', '10': 'variants'},
   ],
 };
 
 /// Descriptor for `Bait`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List baitDescriptor = $convert.base64Decode(
-    'CgRCYWl0Eh4KAmlkGAEgASgLMg4uYW5nbGVyc2xvZy5JZFICaWQSEgoEbmFtZRgCIAEoCVIEbmFtZRI4ChBiYWl0X2NhdGVnb3J5X2lkGAMgASgLMg4uYW5nbGVyc2xvZy5JZFIOYmFpdENhdGVnb3J5SWQSTwoUY3VzdG9tX2VudGl0eV92YWx1ZXMYBCADKAsyHS5hbmdsZXJzbG9nLkN1c3RvbUVudGl0eVZhbHVlUhJjdXN0b21FbnRpdHlWYWx1ZXM=');
+final $typed_data.Uint8List baitDescriptor = $convert.base64Decode('CgRCYWl0Eh4KAmlkGAEgASgLMg4uYW5nbGVyc2xvZy5JZFICaWQSEgoEbmFtZRgCIAEoCVIEbmFtZRI4ChBiYWl0X2NhdGVnb3J5X2lkGAMgASgLMg4uYW5nbGVyc2xvZy5JZFIOYmFpdENhdGVnb3J5SWQSHQoKaW1hZ2VfbmFtZRgEIAEoCVIJaW1hZ2VOYW1lEhIKBHR5cGUYBSABKAlSBHR5cGUSMwoIdmFyaWFudHMYBiADKAsyFy5hbmdsZXJzbG9nLkJhaXRWYXJpYW50Ugh2YXJpYW50cw==');
+@$core.Deprecated('Use baitVariantDescriptor instead')
+const BaitVariant$json = const {
+  '1': 'BaitVariant',
+  '2': const [
+    const {'1': 'id', '3': 1, '4': 1, '5': 11, '6': '.anglerslog.Id', '10': 'id'},
+    const {'1': 'base_id', '3': 2, '4': 1, '5': 11, '6': '.anglerslog.Id', '10': 'baseId'},
+    const {'1': 'color', '3': 3, '4': 1, '5': 9, '10': 'color'},
+    const {'1': 'model_number', '3': 4, '4': 1, '5': 9, '10': 'modelNumber'},
+    const {'1': 'size', '3': 5, '4': 1, '5': 9, '10': 'size'},
+    const {'1': 'min_dive_depth', '3': 6, '4': 1, '5': 1, '10': 'minDiveDepth'},
+    const {'1': 'max_dive_depth', '3': 7, '4': 1, '5': 1, '10': 'maxDiveDepth'},
+    const {'1': 'description', '3': 8, '4': 1, '5': 9, '10': 'description'},
+    const {'1': 'custom_entity_values', '3': 9, '4': 3, '5': 11, '6': '.anglerslog.CustomEntityValue', '10': 'customEntityValues'},
+  ],
+};
+
+/// Descriptor for `BaitVariant`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List baitVariantDescriptor = $convert.base64Decode('CgtCYWl0VmFyaWFudBIeCgJpZBgBIAEoCzIOLmFuZ2xlcnNsb2cuSWRSAmlkEicKB2Jhc2VfaWQYAiABKAsyDi5hbmdsZXJzbG9nLklkUgZiYXNlSWQSFAoFY29sb3IYAyABKAlSBWNvbG9yEiEKDG1vZGVsX251bWJlchgEIAEoCVILbW9kZWxOdW1iZXISEgoEc2l6ZRgFIAEoCVIEc2l6ZRIkCg5taW5fZGl2ZV9kZXB0aBgGIAEoAVIMbWluRGl2ZURlcHRoEiQKDm1heF9kaXZlX2RlcHRoGAcgASgBUgxtYXhEaXZlRGVwdGgSIAoLZGVzY3JpcHRpb24YCCABKAlSC2Rlc2NyaXB0aW9uEk8KFGN1c3RvbV9lbnRpdHlfdmFsdWVzGAkgAygLMh0uYW5nbGVyc2xvZy5DdXN0b21FbnRpdHlWYWx1ZVISY3VzdG9tRW50aXR5VmFsdWVz');
 @$core.Deprecated('Use baitCategoryDescriptor instead')
 const BaitCategory$json = const {
   '1': 'BaitCategory',
   '2': const [
-    const {
-      '1': 'id',
-      '3': 1,
-      '4': 1,
-      '5': 11,
-      '6': '.anglerslog.Id',
-      '10': 'id'
-    },
+    const {'1': 'id', '3': 1, '4': 1, '5': 11, '6': '.anglerslog.Id', '10': 'id'},
     const {'1': 'name', '3': 2, '4': 1, '5': 9, '10': 'name'},
   ],
 };
 
 /// Descriptor for `BaitCategory`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List baitCategoryDescriptor = $convert.base64Decode(
-    'CgxCYWl0Q2F0ZWdvcnkSHgoCaWQYASABKAsyDi5hbmdsZXJzbG9nLklkUgJpZBISCgRuYW1lGAIgASgJUgRuYW1l');
+final $typed_data.Uint8List baitCategoryDescriptor = $convert.base64Decode('CgxCYWl0Q2F0ZWdvcnkSHgoCaWQYASABKAsyDi5hbmdsZXJzbG9nLklkUgJpZBISCgRuYW1lGAIgASgJUgRuYW1l');
 @$core.Deprecated('Use catchDescriptor instead')
 const Catch$json = const {
   '1': 'Catch',
   '2': const [
-    const {
-      '1': 'id',
-      '3': 1,
-      '4': 1,
-      '5': 11,
-      '6': '.anglerslog.Id',
-      '10': 'id'
-    },
+    const {'1': 'id', '3': 1, '4': 1, '5': 11, '6': '.anglerslog.Id', '10': 'id'},
     const {'1': 'timestamp', '3': 2, '4': 1, '5': 4, '10': 'timestamp'},
-    const {
-      '1': 'bait_ids',
-      '3': 3,
-      '4': 3,
-      '5': 11,
-      '6': '.anglerslog.Id',
-      '10': 'baitIds'
-    },
-    const {
-      '1': 'fishing_spot_id',
-      '3': 4,
-      '4': 1,
-      '5': 11,
-      '6': '.anglerslog.Id',
-      '10': 'fishingSpotId'
-    },
-    const {
-      '1': 'species_id',
-      '3': 5,
-      '4': 1,
-      '5': 11,
-      '6': '.anglerslog.Id',
-      '10': 'speciesId'
-    },
+    const {'1': 'bait_ids', '3': 3, '4': 3, '5': 11, '6': '.anglerslog.Id', '10': 'baitIds'},
+    const {'1': 'fishing_spot_id', '3': 4, '4': 1, '5': 11, '6': '.anglerslog.Id', '10': 'fishingSpotId'},
+    const {'1': 'species_id', '3': 5, '4': 1, '5': 11, '6': '.anglerslog.Id', '10': 'speciesId'},
     const {'1': 'image_names', '3': 6, '4': 3, '5': 9, '10': 'imageNames'},
-    const {
-      '1': 'custom_entity_values',
-      '3': 7,
-      '4': 3,
-      '5': 11,
-      '6': '.anglerslog.CustomEntityValue',
-      '10': 'customEntityValues'
-    },
-    const {
-      '1': 'angler_id',
-      '3': 8,
-      '4': 1,
-      '5': 11,
-      '6': '.anglerslog.Id',
-      '10': 'anglerId'
-    },
-    const {
-      '1': 'method_ids',
-      '3': 9,
-      '4': 3,
-      '5': 11,
-      '6': '.anglerslog.Id',
-      '10': 'methodIds'
-    },
-    const {
-      '1': 'period',
-      '3': 10,
-      '4': 1,
-      '5': 14,
-      '6': '.anglerslog.Period',
-      '10': 'period'
-    },
+    const {'1': 'custom_entity_values', '3': 7, '4': 3, '5': 11, '6': '.anglerslog.CustomEntityValue', '10': 'customEntityValues'},
+    const {'1': 'angler_id', '3': 8, '4': 1, '5': 11, '6': '.anglerslog.Id', '10': 'anglerId'},
+    const {'1': 'method_ids', '3': 9, '4': 3, '5': 11, '6': '.anglerslog.Id', '10': 'methodIds'},
+    const {'1': 'period', '3': 10, '4': 1, '5': 14, '6': '.anglerslog.Period', '10': 'period'},
     const {'1': 'is_favorite', '3': 11, '4': 1, '5': 8, '10': 'isFavorite'},
-    const {
-      '1': 'was_catch_and_release',
-      '3': 12,
-      '4': 1,
-      '5': 8,
-      '10': 'wasCatchAndRelease'
-    },
-    const {
-      '1': 'season',
-      '3': 13,
-      '4': 1,
-      '5': 14,
-      '6': '.anglerslog.Season',
-      '10': 'season'
-    },
-    const {
-      '1': 'water_clarity_id',
-      '3': 14,
-      '4': 1,
-      '5': 11,
-      '6': '.anglerslog.Id',
-      '10': 'waterClarityId'
-    },
-    const {
-      '1': 'water_depth',
-      '3': 15,
-      '4': 1,
-      '5': 11,
-      '6': '.anglerslog.MultiMeasurement',
-      '10': 'waterDepth'
-    },
-    const {
-      '1': 'water_temperature',
-      '3': 16,
-      '4': 1,
-      '5': 11,
-      '6': '.anglerslog.MultiMeasurement',
-      '10': 'waterTemperature'
-    },
-    const {
-      '1': 'length',
-      '3': 17,
-      '4': 1,
-      '5': 11,
-      '6': '.anglerslog.MultiMeasurement',
-      '10': 'length'
-    },
-    const {
-      '1': 'weight',
-      '3': 18,
-      '4': 1,
-      '5': 11,
-      '6': '.anglerslog.MultiMeasurement',
-      '10': 'weight'
-    },
+    const {'1': 'was_catch_and_release', '3': 12, '4': 1, '5': 8, '10': 'wasCatchAndRelease'},
+    const {'1': 'season', '3': 13, '4': 1, '5': 14, '6': '.anglerslog.Season', '10': 'season'},
+    const {'1': 'water_clarity_id', '3': 14, '4': 1, '5': 11, '6': '.anglerslog.Id', '10': 'waterClarityId'},
+    const {'1': 'water_depth', '3': 15, '4': 1, '5': 11, '6': '.anglerslog.MultiMeasurement', '10': 'waterDepth'},
+    const {'1': 'water_temperature', '3': 16, '4': 1, '5': 11, '6': '.anglerslog.MultiMeasurement', '10': 'waterTemperature'},
+    const {'1': 'length', '3': 17, '4': 1, '5': 11, '6': '.anglerslog.MultiMeasurement', '10': 'length'},
+    const {'1': 'weight', '3': 18, '4': 1, '5': 11, '6': '.anglerslog.MultiMeasurement', '10': 'weight'},
     const {'1': 'quantity', '3': 19, '4': 1, '5': 13, '10': 'quantity'},
     const {'1': 'notes', '3': 20, '4': 1, '5': 9, '10': 'notes'},
-    const {
-      '1': 'atmosphere',
-      '3': 21,
-      '4': 1,
-      '5': 11,
-      '6': '.anglerslog.Atmosphere',
-      '10': 'atmosphere'
-    },
-    const {
-      '1': 'tide',
-      '3': 22,
-      '4': 1,
-      '5': 11,
-      '6': '.anglerslog.Tide',
-      '10': 'tide'
-    },
+    const {'1': 'atmosphere', '3': 21, '4': 1, '5': 11, '6': '.anglerslog.Atmosphere', '10': 'atmosphere'},
+    const {'1': 'tide', '3': 22, '4': 1, '5': 11, '6': '.anglerslog.Tide', '10': 'tide'},
   ],
 };
 
 /// Descriptor for `Catch`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List catchDescriptor = $convert.base64Decode(
-    'CgVDYXRjaBIeCgJpZBgBIAEoCzIOLmFuZ2xlcnNsb2cuSWRSAmlkEhwKCXRpbWVzdGFtcBgCIAEoBFIJdGltZXN0YW1wEikKCGJhaXRfaWRzGAMgAygLMg4uYW5nbGVyc2xvZy5JZFIHYmFpdElkcxI2Cg9maXNoaW5nX3Nwb3RfaWQYBCABKAsyDi5hbmdsZXJzbG9nLklkUg1maXNoaW5nU3BvdElkEi0KCnNwZWNpZXNfaWQYBSABKAsyDi5hbmdsZXJzbG9nLklkUglzcGVjaWVzSWQSHwoLaW1hZ2VfbmFtZXMYBiADKAlSCmltYWdlTmFtZXMSTwoUY3VzdG9tX2VudGl0eV92YWx1ZXMYByADKAsyHS5hbmdsZXJzbG9nLkN1c3RvbUVudGl0eVZhbHVlUhJjdXN0b21FbnRpdHlWYWx1ZXMSKwoJYW5nbGVyX2lkGAggASgLMg4uYW5nbGVyc2xvZy5JZFIIYW5nbGVySWQSLQoKbWV0aG9kX2lkcxgJIAMoCzIOLmFuZ2xlcnNsb2cuSWRSCW1ldGhvZElkcxIqCgZwZXJpb2QYCiABKA4yEi5hbmdsZXJzbG9nLlBlcmlvZFIGcGVyaW9kEh8KC2lzX2Zhdm9yaXRlGAsgASgIUgppc0Zhdm9yaXRlEjEKFXdhc19jYXRjaF9hbmRfcmVsZWFzZRgMIAEoCFISd2FzQ2F0Y2hBbmRSZWxlYXNlEioKBnNlYXNvbhgNIAEoDjISLmFuZ2xlcnNsb2cuU2Vhc29uUgZzZWFzb24SOAoQd2F0ZXJfY2xhcml0eV9pZBgOIAEoCzIOLmFuZ2xlcnNsb2cuSWRSDndhdGVyQ2xhcml0eUlkEj0KC3dhdGVyX2RlcHRoGA8gASgLMhwuYW5nbGVyc2xvZy5NdWx0aU1lYXN1cmVtZW50Ugp3YXRlckRlcHRoEkkKEXdhdGVyX3RlbXBlcmF0dXJlGBAgASgLMhwuYW5nbGVyc2xvZy5NdWx0aU1lYXN1cmVtZW50UhB3YXRlclRlbXBlcmF0dXJlEjQKBmxlbmd0aBgRIAEoCzIcLmFuZ2xlcnNsb2cuTXVsdGlNZWFzdXJlbWVudFIGbGVuZ3RoEjQKBndlaWdodBgSIAEoCzIcLmFuZ2xlcnNsb2cuTXVsdGlNZWFzdXJlbWVudFIGd2VpZ2h0EhoKCHF1YW50aXR5GBMgASgNUghxdWFudGl0eRIUCgVub3RlcxgUIAEoCVIFbm90ZXMSNgoKYXRtb3NwaGVyZRgVIAEoCzIWLmFuZ2xlcnNsb2cuQXRtb3NwaGVyZVIKYXRtb3NwaGVyZRIkCgR0aWRlGBYgASgLMhAuYW5nbGVyc2xvZy5UaWRlUgR0aWRl');
+final $typed_data.Uint8List catchDescriptor = $convert.base64Decode('CgVDYXRjaBIeCgJpZBgBIAEoCzIOLmFuZ2xlcnNsb2cuSWRSAmlkEhwKCXRpbWVzdGFtcBgCIAEoBFIJdGltZXN0YW1wEikKCGJhaXRfaWRzGAMgAygLMg4uYW5nbGVyc2xvZy5JZFIHYmFpdElkcxI2Cg9maXNoaW5nX3Nwb3RfaWQYBCABKAsyDi5hbmdsZXJzbG9nLklkUg1maXNoaW5nU3BvdElkEi0KCnNwZWNpZXNfaWQYBSABKAsyDi5hbmdsZXJzbG9nLklkUglzcGVjaWVzSWQSHwoLaW1hZ2VfbmFtZXMYBiADKAlSCmltYWdlTmFtZXMSTwoUY3VzdG9tX2VudGl0eV92YWx1ZXMYByADKAsyHS5hbmdsZXJzbG9nLkN1c3RvbUVudGl0eVZhbHVlUhJjdXN0b21FbnRpdHlWYWx1ZXMSKwoJYW5nbGVyX2lkGAggASgLMg4uYW5nbGVyc2xvZy5JZFIIYW5nbGVySWQSLQoKbWV0aG9kX2lkcxgJIAMoCzIOLmFuZ2xlcnNsb2cuSWRSCW1ldGhvZElkcxIqCgZwZXJpb2QYCiABKA4yEi5hbmdsZXJzbG9nLlBlcmlvZFIGcGVyaW9kEh8KC2lzX2Zhdm9yaXRlGAsgASgIUgppc0Zhdm9yaXRlEjEKFXdhc19jYXRjaF9hbmRfcmVsZWFzZRgMIAEoCFISd2FzQ2F0Y2hBbmRSZWxlYXNlEioKBnNlYXNvbhgNIAEoDjISLmFuZ2xlcnNsb2cuU2Vhc29uUgZzZWFzb24SOAoQd2F0ZXJfY2xhcml0eV9pZBgOIAEoCzIOLmFuZ2xlcnNsb2cuSWRSDndhdGVyQ2xhcml0eUlkEj0KC3dhdGVyX2RlcHRoGA8gASgLMhwuYW5nbGVyc2xvZy5NdWx0aU1lYXN1cmVtZW50Ugp3YXRlckRlcHRoEkkKEXdhdGVyX3RlbXBlcmF0dXJlGBAgASgLMhwuYW5nbGVyc2xvZy5NdWx0aU1lYXN1cmVtZW50UhB3YXRlclRlbXBlcmF0dXJlEjQKBmxlbmd0aBgRIAEoCzIcLmFuZ2xlcnNsb2cuTXVsdGlNZWFzdXJlbWVudFIGbGVuZ3RoEjQKBndlaWdodBgSIAEoCzIcLmFuZ2xlcnNsb2cuTXVsdGlNZWFzdXJlbWVudFIGd2VpZ2h0EhoKCHF1YW50aXR5GBMgASgNUghxdWFudGl0eRIUCgVub3RlcxgUIAEoCVIFbm90ZXMSNgoKYXRtb3NwaGVyZRgVIAEoCzIWLmFuZ2xlcnNsb2cuQXRtb3NwaGVyZVIKYXRtb3NwaGVyZRIkCgR0aWRlGBYgASgLMhAuYW5nbGVyc2xvZy5UaWRlUgR0aWRl');
 @$core.Deprecated('Use dateRangeDescriptor instead')
 const DateRange$json = const {
   '1': 'DateRange',
   '2': const [
-    const {
-      '1': 'period',
-      '3': 1,
-      '4': 1,
-      '5': 14,
-      '6': '.anglerslog.DateRange.Period',
-      '10': 'period'
-    },
-    const {
-      '1': 'start_timestamp',
-      '3': 2,
-      '4': 1,
-      '5': 4,
-      '10': 'startTimestamp'
-    },
+    const {'1': 'period', '3': 1, '4': 1, '5': 14, '6': '.anglerslog.DateRange.Period', '10': 'period'},
+    const {'1': 'start_timestamp', '3': 2, '4': 1, '5': 4, '10': 'startTimestamp'},
     const {'1': 'end_timestamp', '3': 3, '4': 1, '5': 4, '10': 'endTimestamp'},
   ],
   '4': const [DateRange_Period$json],
@@ -590,20 +345,12 @@ const DateRange_Period$json = const {
 };
 
 /// Descriptor for `DateRange`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List dateRangeDescriptor = $convert.base64Decode(
-    'CglEYXRlUmFuZ2USNAoGcGVyaW9kGAEgASgOMhwuYW5nbGVyc2xvZy5EYXRlUmFuZ2UuUGVyaW9kUgZwZXJpb2QSJwoPc3RhcnRfdGltZXN0YW1wGAIgASgEUg5zdGFydFRpbWVzdGFtcBIjCg1lbmRfdGltZXN0YW1wGAMgASgEUgxlbmRUaW1lc3RhbXAi4wEKBlBlcmlvZBIMCghhbGxEYXRlcxAAEgkKBXRvZGF5EAESDQoJeWVzdGVyZGF5EAISDAoIdGhpc1dlZWsQAxINCgl0aGlzTW9udGgQBBIMCgh0aGlzWWVhchAFEgwKCGxhc3RXZWVrEAYSDQoJbGFzdE1vbnRoEAcSDAoIbGFzdFllYXIQCBINCglsYXN0N0RheXMQCRIOCgpsYXN0MTREYXlzEAoSDgoKbGFzdDMwRGF5cxALEg4KCmxhc3Q2MERheXMQDBIQCgxsYXN0MTJNb250aHMQDRIKCgZjdXN0b20QDg==');
+final $typed_data.Uint8List dateRangeDescriptor = $convert.base64Decode('CglEYXRlUmFuZ2USNAoGcGVyaW9kGAEgASgOMhwuYW5nbGVyc2xvZy5EYXRlUmFuZ2UuUGVyaW9kUgZwZXJpb2QSJwoPc3RhcnRfdGltZXN0YW1wGAIgASgEUg5zdGFydFRpbWVzdGFtcBIjCg1lbmRfdGltZXN0YW1wGAMgASgEUgxlbmRUaW1lc3RhbXAi4wEKBlBlcmlvZBIMCghhbGxEYXRlcxAAEgkKBXRvZGF5EAESDQoJeWVzdGVyZGF5EAISDAoIdGhpc1dlZWsQAxINCgl0aGlzTW9udGgQBBIMCgh0aGlzWWVhchAFEgwKCGxhc3RXZWVrEAYSDQoJbGFzdE1vbnRoEAcSDAoIbGFzdFllYXIQCBINCglsYXN0N0RheXMQCRIOCgpsYXN0MTREYXlzEAoSDgoKbGFzdDMwRGF5cxALEg4KCmxhc3Q2MERheXMQDBIQCgxsYXN0MTJNb250aHMQDRIKCgZjdXN0b20QDg==');
 @$core.Deprecated('Use fishingSpotDescriptor instead')
 const FishingSpot$json = const {
   '1': 'FishingSpot',
   '2': const [
-    const {
-      '1': 'id',
-      '3': 1,
-      '4': 1,
-      '5': 11,
-      '6': '.anglerslog.Id',
-      '10': 'id'
-    },
+    const {'1': 'id', '3': 1, '4': 1, '5': 11, '6': '.anglerslog.Id', '10': 'id'},
     const {'1': 'name', '3': 2, '4': 1, '5': 9, '10': 'name'},
     const {'1': 'lat', '3': 3, '4': 1, '5': 1, '10': 'lat'},
     const {'1': 'lng', '3': 4, '4': 1, '5': 1, '10': 'lng'},
@@ -611,289 +358,64 @@ const FishingSpot$json = const {
 };
 
 /// Descriptor for `FishingSpot`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List fishingSpotDescriptor = $convert.base64Decode(
-    'CgtGaXNoaW5nU3BvdBIeCgJpZBgBIAEoCzIOLmFuZ2xlcnNsb2cuSWRSAmlkEhIKBG5hbWUYAiABKAlSBG5hbWUSEAoDbGF0GAMgASgBUgNsYXQSEAoDbG5nGAQgASgBUgNsbmc=');
+final $typed_data.Uint8List fishingSpotDescriptor = $convert.base64Decode('CgtGaXNoaW5nU3BvdBIeCgJpZBgBIAEoCzIOLmFuZ2xlcnNsb2cuSWRSAmlkEhIKBG5hbWUYAiABKAlSBG5hbWUSEAoDbGF0GAMgASgBUgNsYXQSEAoDbG5nGAQgASgBUgNsbmc=');
 @$core.Deprecated('Use numberFilterDescriptor instead')
 const NumberFilter$json = const {
   '1': 'NumberFilter',
   '2': const [
-    const {
-      '1': 'boundary',
-      '3': 1,
-      '4': 1,
-      '5': 14,
-      '6': '.anglerslog.NumberBoundary',
-      '10': 'boundary'
-    },
-    const {
-      '1': 'from',
-      '3': 2,
-      '4': 1,
-      '5': 11,
-      '6': '.anglerslog.MultiMeasurement',
-      '10': 'from'
-    },
-    const {
-      '1': 'to',
-      '3': 3,
-      '4': 1,
-      '5': 11,
-      '6': '.anglerslog.MultiMeasurement',
-      '10': 'to'
-    },
+    const {'1': 'boundary', '3': 1, '4': 1, '5': 14, '6': '.anglerslog.NumberBoundary', '10': 'boundary'},
+    const {'1': 'from', '3': 2, '4': 1, '5': 11, '6': '.anglerslog.MultiMeasurement', '10': 'from'},
+    const {'1': 'to', '3': 3, '4': 1, '5': 11, '6': '.anglerslog.MultiMeasurement', '10': 'to'},
   ],
 };
 
 /// Descriptor for `NumberFilter`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List numberFilterDescriptor = $convert.base64Decode(
-    'CgxOdW1iZXJGaWx0ZXISNgoIYm91bmRhcnkYASABKA4yGi5hbmdsZXJzbG9nLk51bWJlckJvdW5kYXJ5Ughib3VuZGFyeRIwCgRmcm9tGAIgASgLMhwuYW5nbGVyc2xvZy5NdWx0aU1lYXN1cmVtZW50UgRmcm9tEiwKAnRvGAMgASgLMhwuYW5nbGVyc2xvZy5NdWx0aU1lYXN1cmVtZW50UgJ0bw==');
+final $typed_data.Uint8List numberFilterDescriptor = $convert.base64Decode('CgxOdW1iZXJGaWx0ZXISNgoIYm91bmRhcnkYASABKA4yGi5hbmdsZXJzbG9nLk51bWJlckJvdW5kYXJ5Ughib3VuZGFyeRIwCgRmcm9tGAIgASgLMhwuYW5nbGVyc2xvZy5NdWx0aU1lYXN1cmVtZW50UgRmcm9tEiwKAnRvGAMgASgLMhwuYW5nbGVyc2xvZy5NdWx0aU1lYXN1cmVtZW50UgJ0bw==');
 @$core.Deprecated('Use speciesDescriptor instead')
 const Species$json = const {
   '1': 'Species',
   '2': const [
-    const {
-      '1': 'id',
-      '3': 1,
-      '4': 1,
-      '5': 11,
-      '6': '.anglerslog.Id',
-      '10': 'id'
-    },
+    const {'1': 'id', '3': 1, '4': 1, '5': 11, '6': '.anglerslog.Id', '10': 'id'},
     const {'1': 'name', '3': 2, '4': 1, '5': 9, '10': 'name'},
   ],
 };
 
 /// Descriptor for `Species`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List speciesDescriptor = $convert.base64Decode(
-    'CgdTcGVjaWVzEh4KAmlkGAEgASgLMg4uYW5nbGVyc2xvZy5JZFICaWQSEgoEbmFtZRgCIAEoCVIEbmFtZQ==');
+final $typed_data.Uint8List speciesDescriptor = $convert.base64Decode('CgdTcGVjaWVzEh4KAmlkGAEgASgLMg4uYW5nbGVyc2xvZy5JZFICaWQSEgoEbmFtZRgCIAEoCVIEbmFtZQ==');
 @$core.Deprecated('Use reportDescriptor instead')
 const Report$json = const {
   '1': 'Report',
   '2': const [
-    const {
-      '1': 'id',
-      '3': 1,
-      '4': 1,
-      '5': 11,
-      '6': '.anglerslog.Id',
-      '10': 'id'
-    },
+    const {'1': 'id', '3': 1, '4': 1, '5': 11, '6': '.anglerslog.Id', '10': 'id'},
     const {'1': 'name', '3': 2, '4': 1, '5': 9, '10': 'name'},
     const {'1': 'description', '3': 3, '4': 1, '5': 9, '10': 'description'},
-    const {
-      '1': 'type',
-      '3': 4,
-      '4': 1,
-      '5': 14,
-      '6': '.anglerslog.Report.Type',
-      '10': 'type'
-    },
-    const {
-      '1': 'from_date_range',
-      '3': 5,
-      '4': 1,
-      '5': 11,
-      '6': '.anglerslog.DateRange',
-      '10': 'fromDateRange'
-    },
-    const {
-      '1': 'to_date_range',
-      '3': 6,
-      '4': 1,
-      '5': 11,
-      '6': '.anglerslog.DateRange',
-      '10': 'toDateRange'
-    },
-    const {
-      '1': 'bait_ids',
-      '3': 7,
-      '4': 3,
-      '5': 11,
-      '6': '.anglerslog.Id',
-      '10': 'baitIds'
-    },
-    const {
-      '1': 'fishing_spot_ids',
-      '3': 8,
-      '4': 3,
-      '5': 11,
-      '6': '.anglerslog.Id',
-      '10': 'fishingSpotIds'
-    },
-    const {
-      '1': 'species_ids',
-      '3': 9,
-      '4': 3,
-      '5': 11,
-      '6': '.anglerslog.Id',
-      '10': 'speciesIds'
-    },
-    const {
-      '1': 'angler_ids',
-      '3': 10,
-      '4': 3,
-      '5': 11,
-      '6': '.anglerslog.Id',
-      '10': 'anglerIds'
-    },
-    const {
-      '1': 'method_ids',
-      '3': 11,
-      '4': 3,
-      '5': 11,
-      '6': '.anglerslog.Id',
-      '10': 'methodIds'
-    },
-    const {
-      '1': 'periods',
-      '3': 12,
-      '4': 3,
-      '5': 14,
-      '6': '.anglerslog.Period',
-      '10': 'periods'
-    },
-    const {
-      '1': 'is_favorites_only',
-      '3': 13,
-      '4': 1,
-      '5': 8,
-      '10': 'isFavoritesOnly'
-    },
-    const {
-      '1': 'is_catch_and_release_only',
-      '3': 14,
-      '4': 1,
-      '5': 8,
-      '10': 'isCatchAndReleaseOnly'
-    },
-    const {
-      '1': 'seasons',
-      '3': 15,
-      '4': 3,
-      '5': 14,
-      '6': '.anglerslog.Season',
-      '10': 'seasons'
-    },
-    const {
-      '1': 'water_clarity_ids',
-      '3': 16,
-      '4': 3,
-      '5': 11,
-      '6': '.anglerslog.Id',
-      '10': 'waterClarityIds'
-    },
-    const {
-      '1': 'water_depth_filter',
-      '3': 17,
-      '4': 1,
-      '5': 11,
-      '6': '.anglerslog.NumberFilter',
-      '10': 'waterDepthFilter'
-    },
-    const {
-      '1': 'water_temperature_filter',
-      '3': 18,
-      '4': 1,
-      '5': 11,
-      '6': '.anglerslog.NumberFilter',
-      '10': 'waterTemperatureFilter'
-    },
-    const {
-      '1': 'length_filter',
-      '3': 19,
-      '4': 1,
-      '5': 11,
-      '6': '.anglerslog.NumberFilter',
-      '10': 'lengthFilter'
-    },
-    const {
-      '1': 'weight_filter',
-      '3': 20,
-      '4': 1,
-      '5': 11,
-      '6': '.anglerslog.NumberFilter',
-      '10': 'weightFilter'
-    },
-    const {
-      '1': 'quantity_filter',
-      '3': 21,
-      '4': 1,
-      '5': 11,
-      '6': '.anglerslog.NumberFilter',
-      '10': 'quantityFilter'
-    },
-    const {
-      '1': 'air_temperature_filter',
-      '3': 22,
-      '4': 1,
-      '5': 11,
-      '6': '.anglerslog.NumberFilter',
-      '10': 'airTemperatureFilter'
-    },
-    const {
-      '1': 'air_pressure_filter',
-      '3': 23,
-      '4': 1,
-      '5': 11,
-      '6': '.anglerslog.NumberFilter',
-      '10': 'airPressureFilter'
-    },
-    const {
-      '1': 'air_humidity_filter',
-      '3': 24,
-      '4': 1,
-      '5': 11,
-      '6': '.anglerslog.NumberFilter',
-      '10': 'airHumidityFilter'
-    },
-    const {
-      '1': 'air_visibility_filter',
-      '3': 25,
-      '4': 1,
-      '5': 11,
-      '6': '.anglerslog.NumberFilter',
-      '10': 'airVisibilityFilter'
-    },
-    const {
-      '1': 'wind_speed_filter',
-      '3': 26,
-      '4': 1,
-      '5': 11,
-      '6': '.anglerslog.NumberFilter',
-      '10': 'windSpeedFilter'
-    },
-    const {
-      '1': 'wind_directions',
-      '3': 27,
-      '4': 3,
-      '5': 14,
-      '6': '.anglerslog.Direction',
-      '10': 'windDirections'
-    },
-    const {
-      '1': 'sky_conditions',
-      '3': 28,
-      '4': 3,
-      '5': 14,
-      '6': '.anglerslog.SkyCondition',
-      '10': 'skyConditions'
-    },
-    const {
-      '1': 'moon_phases',
-      '3': 29,
-      '4': 3,
-      '5': 14,
-      '6': '.anglerslog.MoonPhase',
-      '10': 'moonPhases'
-    },
-    const {
-      '1': 'tide_types',
-      '3': 30,
-      '4': 3,
-      '5': 14,
-      '6': '.anglerslog.TideType',
-      '10': 'tideTypes'
-    },
+    const {'1': 'type', '3': 4, '4': 1, '5': 14, '6': '.anglerslog.Report.Type', '10': 'type'},
+    const {'1': 'from_date_range', '3': 5, '4': 1, '5': 11, '6': '.anglerslog.DateRange', '10': 'fromDateRange'},
+    const {'1': 'to_date_range', '3': 6, '4': 1, '5': 11, '6': '.anglerslog.DateRange', '10': 'toDateRange'},
+    const {'1': 'bait_ids', '3': 7, '4': 3, '5': 11, '6': '.anglerslog.Id', '10': 'baitIds'},
+    const {'1': 'fishing_spot_ids', '3': 8, '4': 3, '5': 11, '6': '.anglerslog.Id', '10': 'fishingSpotIds'},
+    const {'1': 'species_ids', '3': 9, '4': 3, '5': 11, '6': '.anglerslog.Id', '10': 'speciesIds'},
+    const {'1': 'angler_ids', '3': 10, '4': 3, '5': 11, '6': '.anglerslog.Id', '10': 'anglerIds'},
+    const {'1': 'method_ids', '3': 11, '4': 3, '5': 11, '6': '.anglerslog.Id', '10': 'methodIds'},
+    const {'1': 'periods', '3': 12, '4': 3, '5': 14, '6': '.anglerslog.Period', '10': 'periods'},
+    const {'1': 'is_favorites_only', '3': 13, '4': 1, '5': 8, '10': 'isFavoritesOnly'},
+    const {'1': 'is_catch_and_release_only', '3': 14, '4': 1, '5': 8, '10': 'isCatchAndReleaseOnly'},
+    const {'1': 'seasons', '3': 15, '4': 3, '5': 14, '6': '.anglerslog.Season', '10': 'seasons'},
+    const {'1': 'water_clarity_ids', '3': 16, '4': 3, '5': 11, '6': '.anglerslog.Id', '10': 'waterClarityIds'},
+    const {'1': 'water_depth_filter', '3': 17, '4': 1, '5': 11, '6': '.anglerslog.NumberFilter', '10': 'waterDepthFilter'},
+    const {'1': 'water_temperature_filter', '3': 18, '4': 1, '5': 11, '6': '.anglerslog.NumberFilter', '10': 'waterTemperatureFilter'},
+    const {'1': 'length_filter', '3': 19, '4': 1, '5': 11, '6': '.anglerslog.NumberFilter', '10': 'lengthFilter'},
+    const {'1': 'weight_filter', '3': 20, '4': 1, '5': 11, '6': '.anglerslog.NumberFilter', '10': 'weightFilter'},
+    const {'1': 'quantity_filter', '3': 21, '4': 1, '5': 11, '6': '.anglerslog.NumberFilter', '10': 'quantityFilter'},
+    const {'1': 'air_temperature_filter', '3': 22, '4': 1, '5': 11, '6': '.anglerslog.NumberFilter', '10': 'airTemperatureFilter'},
+    const {'1': 'air_pressure_filter', '3': 23, '4': 1, '5': 11, '6': '.anglerslog.NumberFilter', '10': 'airPressureFilter'},
+    const {'1': 'air_humidity_filter', '3': 24, '4': 1, '5': 11, '6': '.anglerslog.NumberFilter', '10': 'airHumidityFilter'},
+    const {'1': 'air_visibility_filter', '3': 25, '4': 1, '5': 11, '6': '.anglerslog.NumberFilter', '10': 'airVisibilityFilter'},
+    const {'1': 'wind_speed_filter', '3': 26, '4': 1, '5': 11, '6': '.anglerslog.NumberFilter', '10': 'windSpeedFilter'},
+    const {'1': 'wind_directions', '3': 27, '4': 3, '5': 14, '6': '.anglerslog.Direction', '10': 'windDirections'},
+    const {'1': 'sky_conditions', '3': 28, '4': 3, '5': 14, '6': '.anglerslog.SkyCondition', '10': 'skyConditions'},
+    const {'1': 'moon_phases', '3': 29, '4': 3, '5': 14, '6': '.anglerslog.MoonPhase', '10': 'moonPhases'},
+    const {'1': 'tide_types', '3': 30, '4': 3, '5': 14, '6': '.anglerslog.TideType', '10': 'tideTypes'},
   ],
   '4': const [Report_Type$json],
 };
@@ -908,142 +430,73 @@ const Report_Type$json = const {
 };
 
 /// Descriptor for `Report`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List reportDescriptor = $convert.base64Decode(
-    'CgZSZXBvcnQSHgoCaWQYASABKAsyDi5hbmdsZXJzbG9nLklkUgJpZBISCgRuYW1lGAIgASgJUgRuYW1lEiAKC2Rlc2NyaXB0aW9uGAMgASgJUgtkZXNjcmlwdGlvbhIrCgR0eXBlGAQgASgOMhcuYW5nbGVyc2xvZy5SZXBvcnQuVHlwZVIEdHlwZRI9Cg9mcm9tX2RhdGVfcmFuZ2UYBSABKAsyFS5hbmdsZXJzbG9nLkRhdGVSYW5nZVINZnJvbURhdGVSYW5nZRI5Cg10b19kYXRlX3JhbmdlGAYgASgLMhUuYW5nbGVyc2xvZy5EYXRlUmFuZ2VSC3RvRGF0ZVJhbmdlEikKCGJhaXRfaWRzGAcgAygLMg4uYW5nbGVyc2xvZy5JZFIHYmFpdElkcxI4ChBmaXNoaW5nX3Nwb3RfaWRzGAggAygLMg4uYW5nbGVyc2xvZy5JZFIOZmlzaGluZ1Nwb3RJZHMSLwoLc3BlY2llc19pZHMYCSADKAsyDi5hbmdsZXJzbG9nLklkUgpzcGVjaWVzSWRzEi0KCmFuZ2xlcl9pZHMYCiADKAsyDi5hbmdsZXJzbG9nLklkUglhbmdsZXJJZHMSLQoKbWV0aG9kX2lkcxgLIAMoCzIOLmFuZ2xlcnNsb2cuSWRSCW1ldGhvZElkcxIsCgdwZXJpb2RzGAwgAygOMhIuYW5nbGVyc2xvZy5QZXJpb2RSB3BlcmlvZHMSKgoRaXNfZmF2b3JpdGVzX29ubHkYDSABKAhSD2lzRmF2b3JpdGVzT25seRI4Chlpc19jYXRjaF9hbmRfcmVsZWFzZV9vbmx5GA4gASgIUhVpc0NhdGNoQW5kUmVsZWFzZU9ubHkSLAoHc2Vhc29ucxgPIAMoDjISLmFuZ2xlcnNsb2cuU2Vhc29uUgdzZWFzb25zEjoKEXdhdGVyX2NsYXJpdHlfaWRzGBAgAygLMg4uYW5nbGVyc2xvZy5JZFIPd2F0ZXJDbGFyaXR5SWRzEkYKEndhdGVyX2RlcHRoX2ZpbHRlchgRIAEoCzIYLmFuZ2xlcnNsb2cuTnVtYmVyRmlsdGVyUhB3YXRlckRlcHRoRmlsdGVyElIKGHdhdGVyX3RlbXBlcmF0dXJlX2ZpbHRlchgSIAEoCzIYLmFuZ2xlcnNsb2cuTnVtYmVyRmlsdGVyUhZ3YXRlclRlbXBlcmF0dXJlRmlsdGVyEj0KDWxlbmd0aF9maWx0ZXIYEyABKAsyGC5hbmdsZXJzbG9nLk51bWJlckZpbHRlclIMbGVuZ3RoRmlsdGVyEj0KDXdlaWdodF9maWx0ZXIYFCABKAsyGC5hbmdsZXJzbG9nLk51bWJlckZpbHRlclIMd2VpZ2h0RmlsdGVyEkEKD3F1YW50aXR5X2ZpbHRlchgVIAEoCzIYLmFuZ2xlcnNsb2cuTnVtYmVyRmlsdGVyUg5xdWFudGl0eUZpbHRlchJOChZhaXJfdGVtcGVyYXR1cmVfZmlsdGVyGBYgASgLMhguYW5nbGVyc2xvZy5OdW1iZXJGaWx0ZXJSFGFpclRlbXBlcmF0dXJlRmlsdGVyEkgKE2Fpcl9wcmVzc3VyZV9maWx0ZXIYFyABKAsyGC5hbmdsZXJzbG9nLk51bWJlckZpbHRlclIRYWlyUHJlc3N1cmVGaWx0ZXISSAoTYWlyX2h1bWlkaXR5X2ZpbHRlchgYIAEoCzIYLmFuZ2xlcnNsb2cuTnVtYmVyRmlsdGVyUhFhaXJIdW1pZGl0eUZpbHRlchJMChVhaXJfdmlzaWJpbGl0eV9maWx0ZXIYGSABKAsyGC5hbmdsZXJzbG9nLk51bWJlckZpbHRlclITYWlyVmlzaWJpbGl0eUZpbHRlchJEChF3aW5kX3NwZWVkX2ZpbHRlchgaIAEoCzIYLmFuZ2xlcnNsb2cuTnVtYmVyRmlsdGVyUg93aW5kU3BlZWRGaWx0ZXISPgoPd2luZF9kaXJlY3Rpb25zGBsgAygOMhUuYW5nbGVyc2xvZy5EaXJlY3Rpb25SDndpbmREaXJlY3Rpb25zEj8KDnNreV9jb25kaXRpb25zGBwgAygOMhguYW5nbGVyc2xvZy5Ta3lDb25kaXRpb25SDXNreUNvbmRpdGlvbnMSNgoLbW9vbl9waGFzZXMYHSADKA4yFS5hbmdsZXJzbG9nLk1vb25QaGFzZVIKbW9vblBoYXNlcxIzCgp0aWRlX3R5cGVzGB4gAygOMhQuYW5nbGVyc2xvZy5UaWRlVHlwZVIJdGlkZVR5cGVzIiMKBFR5cGUSCwoHc3VtbWFyeRAAEg4KCmNvbXBhcmlzb24QAQ==');
+final $typed_data.Uint8List reportDescriptor = $convert.base64Decode('CgZSZXBvcnQSHgoCaWQYASABKAsyDi5hbmdsZXJzbG9nLklkUgJpZBISCgRuYW1lGAIgASgJUgRuYW1lEiAKC2Rlc2NyaXB0aW9uGAMgASgJUgtkZXNjcmlwdGlvbhIrCgR0eXBlGAQgASgOMhcuYW5nbGVyc2xvZy5SZXBvcnQuVHlwZVIEdHlwZRI9Cg9mcm9tX2RhdGVfcmFuZ2UYBSABKAsyFS5hbmdsZXJzbG9nLkRhdGVSYW5nZVINZnJvbURhdGVSYW5nZRI5Cg10b19kYXRlX3JhbmdlGAYgASgLMhUuYW5nbGVyc2xvZy5EYXRlUmFuZ2VSC3RvRGF0ZVJhbmdlEikKCGJhaXRfaWRzGAcgAygLMg4uYW5nbGVyc2xvZy5JZFIHYmFpdElkcxI4ChBmaXNoaW5nX3Nwb3RfaWRzGAggAygLMg4uYW5nbGVyc2xvZy5JZFIOZmlzaGluZ1Nwb3RJZHMSLwoLc3BlY2llc19pZHMYCSADKAsyDi5hbmdsZXJzbG9nLklkUgpzcGVjaWVzSWRzEi0KCmFuZ2xlcl9pZHMYCiADKAsyDi5hbmdsZXJzbG9nLklkUglhbmdsZXJJZHMSLQoKbWV0aG9kX2lkcxgLIAMoCzIOLmFuZ2xlcnNsb2cuSWRSCW1ldGhvZElkcxIsCgdwZXJpb2RzGAwgAygOMhIuYW5nbGVyc2xvZy5QZXJpb2RSB3BlcmlvZHMSKgoRaXNfZmF2b3JpdGVzX29ubHkYDSABKAhSD2lzRmF2b3JpdGVzT25seRI4Chlpc19jYXRjaF9hbmRfcmVsZWFzZV9vbmx5GA4gASgIUhVpc0NhdGNoQW5kUmVsZWFzZU9ubHkSLAoHc2Vhc29ucxgPIAMoDjISLmFuZ2xlcnNsb2cuU2Vhc29uUgdzZWFzb25zEjoKEXdhdGVyX2NsYXJpdHlfaWRzGBAgAygLMg4uYW5nbGVyc2xvZy5JZFIPd2F0ZXJDbGFyaXR5SWRzEkYKEndhdGVyX2RlcHRoX2ZpbHRlchgRIAEoCzIYLmFuZ2xlcnNsb2cuTnVtYmVyRmlsdGVyUhB3YXRlckRlcHRoRmlsdGVyElIKGHdhdGVyX3RlbXBlcmF0dXJlX2ZpbHRlchgSIAEoCzIYLmFuZ2xlcnNsb2cuTnVtYmVyRmlsdGVyUhZ3YXRlclRlbXBlcmF0dXJlRmlsdGVyEj0KDWxlbmd0aF9maWx0ZXIYEyABKAsyGC5hbmdsZXJzbG9nLk51bWJlckZpbHRlclIMbGVuZ3RoRmlsdGVyEj0KDXdlaWdodF9maWx0ZXIYFCABKAsyGC5hbmdsZXJzbG9nLk51bWJlckZpbHRlclIMd2VpZ2h0RmlsdGVyEkEKD3F1YW50aXR5X2ZpbHRlchgVIAEoCzIYLmFuZ2xlcnNsb2cuTnVtYmVyRmlsdGVyUg5xdWFudGl0eUZpbHRlchJOChZhaXJfdGVtcGVyYXR1cmVfZmlsdGVyGBYgASgLMhguYW5nbGVyc2xvZy5OdW1iZXJGaWx0ZXJSFGFpclRlbXBlcmF0dXJlRmlsdGVyEkgKE2Fpcl9wcmVzc3VyZV9maWx0ZXIYFyABKAsyGC5hbmdsZXJzbG9nLk51bWJlckZpbHRlclIRYWlyUHJlc3N1cmVGaWx0ZXISSAoTYWlyX2h1bWlkaXR5X2ZpbHRlchgYIAEoCzIYLmFuZ2xlcnNsb2cuTnVtYmVyRmlsdGVyUhFhaXJIdW1pZGl0eUZpbHRlchJMChVhaXJfdmlzaWJpbGl0eV9maWx0ZXIYGSABKAsyGC5hbmdsZXJzbG9nLk51bWJlckZpbHRlclITYWlyVmlzaWJpbGl0eUZpbHRlchJEChF3aW5kX3NwZWVkX2ZpbHRlchgaIAEoCzIYLmFuZ2xlcnNsb2cuTnVtYmVyRmlsdGVyUg93aW5kU3BlZWRGaWx0ZXISPgoPd2luZF9kaXJlY3Rpb25zGBsgAygOMhUuYW5nbGVyc2xvZy5EaXJlY3Rpb25SDndpbmREaXJlY3Rpb25zEj8KDnNreV9jb25kaXRpb25zGBwgAygOMhguYW5nbGVyc2xvZy5Ta3lDb25kaXRpb25SDXNreUNvbmRpdGlvbnMSNgoLbW9vbl9waGFzZXMYHSADKA4yFS5hbmdsZXJzbG9nLk1vb25QaGFzZVIKbW9vblBoYXNlcxIzCgp0aWRlX3R5cGVzGB4gAygOMhQuYW5nbGVyc2xvZy5UaWRlVHlwZVIJdGlkZVR5cGVzIiMKBFR5cGUSCwoHc3VtbWFyeRAAEg4KCmNvbXBhcmlzb24QAQ==');
 @$core.Deprecated('Use anglerDescriptor instead')
 const Angler$json = const {
   '1': 'Angler',
   '2': const [
-    const {
-      '1': 'id',
-      '3': 1,
-      '4': 1,
-      '5': 11,
-      '6': '.anglerslog.Id',
-      '10': 'id'
-    },
+    const {'1': 'id', '3': 1, '4': 1, '5': 11, '6': '.anglerslog.Id', '10': 'id'},
     const {'1': 'name', '3': 2, '4': 1, '5': 9, '10': 'name'},
   ],
 };
 
 /// Descriptor for `Angler`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List anglerDescriptor = $convert.base64Decode(
-    'CgZBbmdsZXISHgoCaWQYASABKAsyDi5hbmdsZXJzbG9nLklkUgJpZBISCgRuYW1lGAIgASgJUgRuYW1l');
+final $typed_data.Uint8List anglerDescriptor = $convert.base64Decode('CgZBbmdsZXISHgoCaWQYASABKAsyDi5hbmdsZXJzbG9nLklkUgJpZBISCgRuYW1lGAIgASgJUgRuYW1l');
 @$core.Deprecated('Use methodDescriptor instead')
 const Method$json = const {
   '1': 'Method',
   '2': const [
-    const {
-      '1': 'id',
-      '3': 1,
-      '4': 1,
-      '5': 11,
-      '6': '.anglerslog.Id',
-      '10': 'id'
-    },
+    const {'1': 'id', '3': 1, '4': 1, '5': 11, '6': '.anglerslog.Id', '10': 'id'},
     const {'1': 'name', '3': 2, '4': 1, '5': 9, '10': 'name'},
   ],
 };
 
 /// Descriptor for `Method`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List methodDescriptor = $convert.base64Decode(
-    'CgZNZXRob2QSHgoCaWQYASABKAsyDi5hbmdsZXJzbG9nLklkUgJpZBISCgRuYW1lGAIgASgJUgRuYW1l');
+final $typed_data.Uint8List methodDescriptor = $convert.base64Decode('CgZNZXRob2QSHgoCaWQYASABKAsyDi5hbmdsZXJzbG9nLklkUgJpZBISCgRuYW1lGAIgASgJUgRuYW1l');
 @$core.Deprecated('Use waterClarityDescriptor instead')
 const WaterClarity$json = const {
   '1': 'WaterClarity',
   '2': const [
-    const {
-      '1': 'id',
-      '3': 1,
-      '4': 1,
-      '5': 11,
-      '6': '.anglerslog.Id',
-      '10': 'id'
-    },
+    const {'1': 'id', '3': 1, '4': 1, '5': 11, '6': '.anglerslog.Id', '10': 'id'},
     const {'1': 'name', '3': 2, '4': 1, '5': 9, '10': 'name'},
   ],
 };
 
 /// Descriptor for `WaterClarity`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List waterClarityDescriptor = $convert.base64Decode(
-    'CgxXYXRlckNsYXJpdHkSHgoCaWQYASABKAsyDi5hbmdsZXJzbG9nLklkUgJpZBISCgRuYW1lGAIgASgJUgRuYW1l');
+final $typed_data.Uint8List waterClarityDescriptor = $convert.base64Decode('CgxXYXRlckNsYXJpdHkSHgoCaWQYASABKAsyDi5hbmdsZXJzbG9nLklkUgJpZBISCgRuYW1lGAIgASgJUgRuYW1l');
 @$core.Deprecated('Use measurementDescriptor instead')
 const Measurement$json = const {
   '1': 'Measurement',
   '2': const [
-    const {
-      '1': 'unit',
-      '3': 1,
-      '4': 1,
-      '5': 14,
-      '6': '.anglerslog.Unit',
-      '10': 'unit'
-    },
+    const {'1': 'unit', '3': 1, '4': 1, '5': 14, '6': '.anglerslog.Unit', '10': 'unit'},
     const {'1': 'value', '3': 2, '4': 1, '5': 1, '10': 'value'},
   ],
 };
 
 /// Descriptor for `Measurement`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List measurementDescriptor = $convert.base64Decode(
-    'CgtNZWFzdXJlbWVudBIkCgR1bml0GAEgASgOMhAuYW5nbGVyc2xvZy5Vbml0UgR1bml0EhQKBXZhbHVlGAIgASgBUgV2YWx1ZQ==');
+final $typed_data.Uint8List measurementDescriptor = $convert.base64Decode('CgtNZWFzdXJlbWVudBIkCgR1bml0GAEgASgOMhAuYW5nbGVyc2xvZy5Vbml0UgR1bml0EhQKBXZhbHVlGAIgASgBUgV2YWx1ZQ==');
 @$core.Deprecated('Use multiMeasurementDescriptor instead')
 const MultiMeasurement$json = const {
   '1': 'MultiMeasurement',
   '2': const [
-    const {
-      '1': 'system',
-      '3': 1,
-      '4': 1,
-      '5': 14,
-      '6': '.anglerslog.MeasurementSystem',
-      '10': 'system'
-    },
-    const {
-      '1': 'mainValue',
-      '3': 2,
-      '4': 1,
-      '5': 11,
-      '6': '.anglerslog.Measurement',
-      '10': 'mainValue'
-    },
-    const {
-      '1': 'fractionValue',
-      '3': 3,
-      '4': 1,
-      '5': 11,
-      '6': '.anglerslog.Measurement',
-      '10': 'fractionValue'
-    },
+    const {'1': 'system', '3': 1, '4': 1, '5': 14, '6': '.anglerslog.MeasurementSystem', '10': 'system'},
+    const {'1': 'mainValue', '3': 2, '4': 1, '5': 11, '6': '.anglerslog.Measurement', '10': 'mainValue'},
+    const {'1': 'fractionValue', '3': 3, '4': 1, '5': 11, '6': '.anglerslog.Measurement', '10': 'fractionValue'},
   ],
 };
 
 /// Descriptor for `MultiMeasurement`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List multiMeasurementDescriptor = $convert.base64Decode(
-    'ChBNdWx0aU1lYXN1cmVtZW50EjUKBnN5c3RlbRgBIAEoDjIdLmFuZ2xlcnNsb2cuTWVhc3VyZW1lbnRTeXN0ZW1SBnN5c3RlbRI1CgltYWluVmFsdWUYAiABKAsyFy5hbmdsZXJzbG9nLk1lYXN1cmVtZW50UgltYWluVmFsdWUSPQoNZnJhY3Rpb25WYWx1ZRgDIAEoCzIXLmFuZ2xlcnNsb2cuTWVhc3VyZW1lbnRSDWZyYWN0aW9uVmFsdWU=');
+final $typed_data.Uint8List multiMeasurementDescriptor = $convert.base64Decode('ChBNdWx0aU1lYXN1cmVtZW50EjUKBnN5c3RlbRgBIAEoDjIdLmFuZ2xlcnNsb2cuTWVhc3VyZW1lbnRTeXN0ZW1SBnN5c3RlbRI1CgltYWluVmFsdWUYAiABKAsyFy5hbmdsZXJzbG9nLk1lYXN1cmVtZW50UgltYWluVmFsdWUSPQoNZnJhY3Rpb25WYWx1ZRgDIAEoCzIXLmFuZ2xlcnNsb2cuTWVhc3VyZW1lbnRSDWZyYWN0aW9uVmFsdWU=');
 @$core.Deprecated('Use tideDescriptor instead')
 const Tide$json = const {
   '1': 'Tide',
   '2': const [
-    const {
-      '1': 'type',
-      '3': 1,
-      '4': 1,
-      '5': 14,
-      '6': '.anglerslog.TideType',
-      '10': 'type'
-    },
+    const {'1': 'type', '3': 1, '4': 1, '5': 14, '6': '.anglerslog.TideType', '10': 'type'},
     const {'1': 'low_timestamp', '3': 2, '4': 1, '5': 4, '10': 'lowTimestamp'},
-    const {
-      '1': 'high_timestamp',
-      '3': 3,
-      '4': 1,
-      '5': 4,
-      '10': 'highTimestamp'
-    },
+    const {'1': 'high_timestamp', '3': 3, '4': 1, '5': 4, '10': 'highTimestamp'},
   ],
 };
 
 /// Descriptor for `Tide`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List tideDescriptor = $convert.base64Decode(
-    'CgRUaWRlEigKBHR5cGUYASABKA4yFC5hbmdsZXJzbG9nLlRpZGVUeXBlUgR0eXBlEiMKDWxvd190aW1lc3RhbXAYAiABKARSDGxvd1RpbWVzdGFtcBIlCg5oaWdoX3RpbWVzdGFtcBgDIAEoBFINaGlnaFRpbWVzdGFtcA==');
+final $typed_data.Uint8List tideDescriptor = $convert.base64Decode('CgRUaWRlEigKBHR5cGUYASABKA4yFC5hbmdsZXJzbG9nLlRpZGVUeXBlUgR0eXBlEiMKDWxvd190aW1lc3RhbXAYAiABKARSDGxvd1RpbWVzdGFtcBIlCg5oaWdoX3RpbWVzdGFtcBgDIAEoBFINaGlnaFRpbWVzdGFtcA==');
 // ignore_for_file: constant_identifier_names,lines_longer_than_80_chars,directives_ordering,prefer_mixin,implementation_imports
