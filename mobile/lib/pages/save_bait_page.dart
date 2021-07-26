@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:collection/collection.dart' show IterableExtension;
 import 'package:flutter/material.dart';
 
 import '../bait_category_manager.dart';
@@ -10,19 +9,15 @@ import '../i18n/strings.dart';
 import '../model/gen/anglerslog.pb.dart';
 import '../pages/bait_category_list_page.dart';
 import '../res/dimen.dart';
-import '../utils/animated_list_model.dart';
 import '../utils/dialog_utils.dart';
 import '../utils/page_utils.dart';
 import '../utils/protobuf_utils.dart';
-import '../widgets/button.dart';
+import '../widgets/bait_variant_list_input.dart';
 import '../widgets/input_controller.dart';
-import '../widgets/list_item.dart';
 import '../widgets/list_picker_input.dart';
 import '../widgets/text_input.dart';
-import '../widgets/widget.dart';
 import 'form_page.dart';
 import 'manageable_list_page.dart';
-import 'save_bait_variant_page.dart';
 
 class SaveBaitPage extends StatefulWidget {
   final Bait? oldBait;
@@ -38,9 +33,7 @@ class SaveBaitPage extends StatefulWidget {
 class _SaveBaitPageState extends State<SaveBaitPage> {
   final _baitCategoryController = IdInputController();
   final _nameController = TextInputController.name();
-
-  final _baitVariantsKey = GlobalKey<AnimatedListState>();
-  late AnimatedListModel<BaitVariant, AnimatedListState> _baitVariants;
+  final _variantsController = ListInputController<BaitVariant>();
 
   Bait? get _oldBait => widget.oldBait;
 
@@ -55,19 +48,12 @@ class _SaveBaitPageState extends State<SaveBaitPage> {
   void initState() {
     super.initState();
 
-    var baitVariants = <BaitVariant>[];
     if (_isEditing) {
       _nameController.value = _oldBait!.name;
       _baitCategoryController.value =
           _oldBait!.hasBaitCategoryId() ? _oldBait!.baitCategoryId : null;
-      baitVariants = _oldBait!.variants;
+      _variantsController.value = _oldBait!.variants;
     }
-
-    _baitVariants = AnimatedListModel<BaitVariant, AnimatedListState>(
-      listKey: _baitVariantsKey,
-      initialItems: baitVariants,
-      removedItemBuilder: _buildVariantItem,
-    );
   }
 
   @override
@@ -132,75 +118,19 @@ class _SaveBaitPageState extends State<SaveBaitPage> {
   }
 
   Widget _buildVariants() {
-    VoidCallback? onTap;
-    if (_isInputValid) {
-      onTap = () {
-        present(
-          context,
-          SaveBaitVariantPage(onSave: _addOrUpdateVariant),
-        );
-      };
-    }
-
-    return Column(
-      children: [
-        Padding(
-          padding: EdgeInsets.only(
-            top: paddingWidgetSmall,
-            bottom: paddingWidget,
-          ),
-          child: HeadingDivider(
-            Strings.of(context).saveBaitPageVariants,
-            trailing: MinimumIconButton(
-              icon: Icons.add,
-              onTap: onTap,
-            ),
-          ),
-        ),
-        AnimatedList(
-          key: _baitVariantsKey,
-          initialItemCount: _baitVariants.length,
-          itemBuilder: (context, index, animation) =>
-              _buildVariantItem(context, _baitVariants[index], animation),
-          physics: NeverScrollableScrollPhysics(),
-          shrinkWrap: true,
-        ),
-      ],
+    return Padding(
+      padding: insetsTopWidget,
+      child: BaitVariantListInput(controller: _variantsController),
     );
-  }
-
-  Widget _buildVariantItem(
-      BuildContext context, BaitVariant variant, Animation<double> animation) {
-    return SizeTransition(
-      sizeFactor: animation,
-      child: _BaitVariantListItem(
-        variant,
-        onAddOrUpdate: _addOrUpdateVariant,
-        onConfirmDelete: () => _baitVariants.remove(variant),
-      ),
-    );
-  }
-
-  void _addOrUpdateVariant(BaitVariant? variant) {
-    if (variant == null ||
-        _baitVariants.items.firstWhereOrNull((e) => variant.isDuplicate(e)) !=
-            null) {
-      return;
-    }
-
-    var index = _baitVariants.items.indexWhere((e) => e.id == variant.id);
-    if (index >= 0) {
-      _baitVariants.replace(index, variant);
-    } else {
-      _baitVariants.insert(0, variant);
-    }
   }
 
   FutureOr<bool> _save(BuildContext context) {
     var newBait = Bait()
       ..id = _oldBait?.id ?? randomId()
-      ..name = _nameController.value!
-      ..variants.addAll(_baitVariants.items);
+      ..name = _nameController.value!;
+
+    newBait.variants.clear();
+    newBait.variants.addAll(_variantsController.value);
 
     if (_baitCategoryController.value != null) {
       newBait.baitCategoryId = _baitCategoryController.value!;
@@ -219,38 +149,4 @@ class _SaveBaitPageState extends State<SaveBaitPage> {
   }
 
   bool get _isInputValid => _nameController.isValid(context);
-}
-
-class _BaitVariantListItem extends StatelessWidget {
-  final BaitVariant baitVariant;
-  final void Function(BaitVariant?)? onAddOrUpdate;
-
-  /// See [ManageableListItem.onConfirmDelete].
-  final VoidCallback? onConfirmDelete;
-
-  _BaitVariantListItem(
-    this.baitVariant, {
-    this.onAddOrUpdate,
-    this.onConfirmDelete,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return ManageableListItem(
-      child: Text(baitVariant.color),
-      editing: true,
-      onTap: () {
-        present(
-          context,
-          SaveBaitVariantPage.edit(
-            baitVariant,
-            onSave: onAddOrUpdate,
-          ),
-        );
-      },
-      // TODO: Need to consider catches with bait variant being deleted.
-      deleteMessageBuilder: (context) => Text("TODO"),
-      onConfirmDelete: onConfirmDelete ?? () {},
-    );
-  }
 }

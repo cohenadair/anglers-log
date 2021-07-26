@@ -11,6 +11,7 @@ import '../utils/animated_list_model.dart';
 import '../utils/page_utils.dart';
 import '../utils/protobuf_utils.dart';
 import '../utils/search_timer.dart';
+import '../widgets/animated_list_transition.dart';
 import '../widgets/button.dart';
 import '../widgets/checkbox_input.dart';
 import '../widgets/empty_list_placeholder.dart';
@@ -402,9 +403,8 @@ class _ManageableListPageState<T> extends State<ManageableListPage<T>> {
       trailing: trailing,
     );
 
-    return SizeTransition(
-      axis: Axis.vertical,
-      sizeFactor: animation,
+    return AnimatedListTransition(
+      animation: animation,
       child: listItem,
     );
   }

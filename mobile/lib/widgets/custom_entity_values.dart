@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../custom_entity_manager.dart';
 import '../model/gen/anglerslog.pb.dart';
 import '../res/dimen.dart';
+import '../res/style.dart';
 import '../utils/protobuf_utils.dart';
 import '../widgets/label_value.dart';
 import '../widgets/widget.dart';
@@ -11,8 +12,12 @@ import '../widgets/widget.dart';
 /// [CustomEntityValue] objects.
 class CustomEntityValues extends StatelessWidget {
   final List<CustomEntityValue> values;
+  final bool isCondensed;
 
-  CustomEntityValues(this.values);
+  CustomEntityValues(
+    this.values, {
+    this.isCondensed = false,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -22,16 +27,20 @@ class CustomEntityValues extends StatelessWidget {
 
     var entityManager = CustomEntityManager.of(context);
 
+    if (isCondensed) {
+      return _buildCondensed(context, entityManager);
+    }
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: values
-          .map((value) => _buildWidget(context, entityManager, value))
+          .map((value) => _buildExpandedItem(context, entityManager, value))
           .toList(),
     );
   }
 
-  Widget _buildWidget(BuildContext context, CustomEntityManager entityManager,
-      CustomEntityValue entityValue) {
+  Widget _buildExpandedItem(BuildContext context,
+      CustomEntityManager entityManager, CustomEntityValue entityValue) {
     var entity = entityManager.entity(entityValue.customEntityId);
     if (entity == null) {
       return Empty();
@@ -44,6 +53,28 @@ class CustomEntityValues extends StatelessWidget {
         label: entity.name,
         value: value,
       ),
+    );
+  }
+
+  Widget _buildCondensed(
+      BuildContext context, CustomEntityManager entityManager) {
+    return Text(
+      values.fold<String>("", (value, item) {
+        var entity = entityManager.entity(item.customEntityId);
+        if (entity == null) {
+          return value;
+        }
+
+        value += "${entity.name}: "
+            "${valueForCustomEntityType(entity.type, item, context)}";
+
+        if (item != values.last) {
+          value += ", ";
+        }
+
+        return value;
+      }),
+      style: styleSubtitle(context),
     );
   }
 }

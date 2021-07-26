@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../widgets/input_controller.dart';
 import '../widgets/widget.dart';
 import 'protobuf_utils.dart';
 
@@ -13,6 +14,7 @@ import 'protobuf_utils.dart';
 /// https://api.flutter.dev/flutter/widgets/SliverAnimatedList-class.html
 /// sample project.
 class AnimatedListModel<T, StateType extends State<StatefulWidget>> {
+  final ListInputController<T>? controller;
   final Widget Function(BuildContext, T, Animation<double>) removedItemBuilder;
   final List<T> _items;
 
@@ -21,6 +23,7 @@ class AnimatedListModel<T, StateType extends State<StatefulWidget>> {
   AnimatedListModel({
     required this.listKey,
     required this.removedItemBuilder,
+    this.controller,
     List<T>? initialItems,
   }) : _items = initialItems == null ? [] : List.of(initialItems);
 
@@ -51,6 +54,7 @@ class AnimatedListModel<T, StateType extends State<StatefulWidget>> {
       [Duration duration = defaultAnimationDuration]) {
     _items.insert(index, item);
     _animatedList?.insertItem(index, duration: duration);
+    controller?.value = _items;
   }
 
   T? removeAt(int index, [Duration duration = defaultAnimationDuration]) {
@@ -70,6 +74,7 @@ class AnimatedListModel<T, StateType extends State<StatefulWidget>> {
       duration: duration,
     );
 
+    controller?.value = _items;
     return removedItem;
   }
 
@@ -111,5 +116,7 @@ class AnimatedListModel<T, StateType extends State<StatefulWidget>> {
         _items[i] = newItems[indexInNewItems];
       }
     }
+
+    controller?.value = _items;
   }
 }

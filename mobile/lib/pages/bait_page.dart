@@ -9,6 +9,7 @@ import '../pages/save_bait_page.dart';
 import '../res/dimen.dart';
 import '../res/style.dart';
 import '../utils/page_utils.dart';
+import '../widgets/bait_variant_list_input.dart';
 import '../widgets/text.dart';
 import '../widgets/widget.dart';
 
@@ -64,10 +65,8 @@ class _BaitPageState extends State<BaitPage> {
           deleteMessage: _baitManager.deleteMessage(context, _bait),
           children: [
             _buildBaitCategory(),
-            TitleLabel(
-              _bait.name,
-              overflow: TextOverflow.visible,
-            ),
+            _buildTitle(),
+            _buildVariants(),
           ],
         );
       },
@@ -84,5 +83,23 @@ class _BaitPageState extends State<BaitPage> {
       padding: insetsHorizontalDefault,
       child: Text(baitCategory.name, style: styleListHeading(context)),
     );
+  }
+
+  Widget _buildTitle() {
+    return Padding(
+      padding: insetsBottomWidget,
+      child: TitleLabel(
+        _bait.name,
+        overflow: TextOverflow.visible,
+      ),
+    );
+  }
+
+  Widget _buildVariants() {
+    if (_bait.variants.isEmpty) {
+      return Empty();
+    }
+
+    return BaitVariantListInput.static(_bait.variants);
   }
 }
