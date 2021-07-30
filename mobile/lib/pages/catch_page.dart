@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:mobile/pages/bait_variant_page.dart';
+import 'package:mobile/widgets/bait_variant_list_input.dart';
+import 'package:mobile/widgets/bait_variant_list_item.dart';
 import 'package:quiver/strings.dart';
 
 import '../angler_manager.dart';
@@ -166,31 +169,37 @@ class _CatchPageState extends State<CatchPage> {
   }
 
   Widget _buildBaits() {
-    var baits = _baitManager.list(_catch.baitIds);
-    if (baits.isEmpty) {
+    if (_catch.baits.isEmpty) {
       return Empty();
     }
 
     var children = <Widget>[];
-    for (var bait in baits) {
-      Widget? subtitle;
-      var baitCategory = _baitCategoryManager.entity(bait.baitCategoryId);
-      if (baitCategory != null) {
-        subtitle = Text(baitCategory.name, style: styleSubtitle(context));
+    for (var attachment in _catch.baits) {
+      var bait = _baitManager.entity(attachment.baitId);
+      if (bait == null) {
+        continue;
       }
 
-      children.add(ListItem(
-        title: Text(bait.name),
-        subtitle: subtitle,
-        trailing: RightChevronIcon(),
-        onTap: () => push(
-          context,
-          BaitPage(
-            bait,
-            static: true,
-          ),
-        ),
-      ));
+      var variant = _baitManager.variant(bait, attachment.variantId);
+      if (variant == null) {
+        Widget? subtitle;
+        var baitCategory = _baitCategoryManager.entity(bait.baitCategoryId);
+        if (baitCategory != null) {
+          subtitle = Text(baitCategory.name, style: styleSubtitle(context));
+        }
+
+        children.add(ListItem(
+          title: Text(bait.name),
+          subtitle: subtitle,
+          trailing: RightChevronIcon(),
+          onTap: () => push(context, BaitPage(bait)),
+        ));
+      } else {
+        children.add(BaitVariantListItem(
+          variant,
+          showBase: true,
+        ));
+      }
     }
 
     return Column(children: children);

@@ -12,15 +12,11 @@ import '../res/dimen.dart';
 import '../res/style.dart';
 import '../utils/protobuf_utils.dart';
 import '../utils/string_utils.dart';
+import '../widgets/bait_variant_list_input.dart';
 import '../widgets/widget.dart';
 
 class BaitListPage extends StatefulWidget {
-  /// Even though the generic type in this object is [dynamic],
-  /// [pickerSettings.onPicked] is guaranteed to pass only [Bait] objects.
-  ///
-  /// The generic type is dynamic here because not only Bait objects are shown
-  /// in the list; there are also BaitCategory objects.
-  final ManageableListPagePickerSettings<dynamic>? pickerSettings;
+  final BaitListPagePickerSettings? pickerSettings;
 
   BaitListPage({
     this.pickerSettings,
@@ -33,14 +29,15 @@ class BaitListPage extends StatefulWidget {
 class _BaitListPageState extends State<BaitListPage> {
   static const _log = Log("BaitListPage");
 
-  List<Bait> _baits = [];
+  var _baits = <Bait>[];
+  final _selectedVariants = <BaitVariant>{};
 
   BaitCategoryManager get _baitCategoryManager =>
       BaitCategoryManager.of(context);
 
   BaitManager get _baitManager => BaitManager.of(context);
 
-  bool get _picking => widget.pickerSettings != null;
+  bool get _isPicking => widget.pickerSettings != null;
 
   @override
   Widget build(BuildContext context) {
@@ -49,36 +46,28 @@ class _BaitListPageState extends State<BaitListPage> {
         format(Strings.of(context).baitListPageTitle,
             [baits.whereType<Bait>().length]),
       ),
-      forceCenterTitle: !_picking,
+      forceCenterTitle: !_isPicking,
       searchDelegate: ManageableListPageSearchDelegate(
         hint: Strings.of(context).baitListPageSearchHint,
       ),
-      pickerSettings: widget.pickerSettings?.copyWith(
-        onPicked: (context, items) {
-          items.removeWhere((e) => !(e is Bait));
-          return widget.pickerSettings!.onPicked(
-            context,
-            items.map((e) => (e as Bait)).toSet(),
-          );
-        },
-        containsAll: (selectedItems) => selectedItems.containsAll(_baits),
-        title: Text(Strings.of(context).pickerTitleBait),
-        multiTitle: Text(Strings.of(context).pickerTitleBaits),
-      ),
+      pickerSettings: manageableListPagePickerSettings,
       itemBuilder: (context, item) {
         if (item is BaitCategory) {
           return ManageableListPageItemModel(
             editable: false,
             selectable: false,
             child: Padding(
-              padding: insetsDefault,
+              padding: EdgeInsets.only(
+                left: paddingDefault,
+                right: paddingDefault,
+                top: paddingDefault,
+                bottom: paddingWidgetSmall,
+              ),
               child: Text(item.name, style: styleListHeading(context)),
             ),
           );
         } else if (item is Bait) {
-          return ManageableListPageItemModel(
-            child: Text(item.name, style: stylePrimary(context)),
-          );
+          return _buildBaitItem(item);
         } else {
           assert(item is Widget);
           return ManageableListPageItemModel(
@@ -157,4 +146,115 @@ class _BaitListPageState extends State<BaitListPage> {
 
     return result;
   }
+
+  ManageableListPageItemModel _buildBaitItem(Bait bait) {
+    Widget? grandchild;
+    if (bait.variants.isNotEmpty && _isPicking) {
+      grandchild = BaitVariantListInput.static(
+        bait.variants,
+        showHeader: false,
+        isCondensed: true,
+        onCheckboxChanged: (variant, isChecked) {
+          if (isChecked) {
+            _selectedVariants.add(variant);
+          } else {
+            _selectedVariants.remove(variant);
+          }
+        },
+        selectedItems: _selectedVariants,
+      );
+    }
+
+    return ManageableListPageItemModel(
+      grandchild: grandchild,
+      child: Row(
+        children: [
+          Expanded(
+            child: Text(
+              bait.name,
+              style: stylePrimary(context),
+            ),
+          ),
+          Chip(
+            label: Text(format(
+              Strings.of(context).baitListPageVariantsLabel,
+              [bait.variants.length],
+            )),
+            materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _onPickedAll(bool isChecked) {
+    if (isChecked) {
+      for (var bait in _baits) {
+        for (var variant in bait.variants) {
+          _selectedVariants.add(variant);
+        }
+      }
+    } else {
+      _selectedVariants.clear();
+    }
+  }
+
+  BaitListPagePickerSettings get _pickerSettings {
+    assert(_isPicking, "Check _isPicking before accessing _pickerSettings");
+    return widget.pickerSettings!;
+  }
+
+  ManageableListPagePickerSettings? get manageableListPagePickerSettings {
+    if (!_isPicking) {
+      return null;
+    }
+
+    // ManageableListPage picker manages Bait objects, so we need to ensure
+    // only Bait objects are passed to the ManageableListPage's picker settings.
+    // In addition, we only want to pass in Bait objects whose associated
+    // BaitAttachment does not include a variant.
+    //
+    // Note that BaitVariant picking is handled exclusively in this widget.
+    var initialValues = <Bait>{};
+    for (var attachment in _pickerSettings.initialValues) {
+      if (attachment.hasVariantId()) {
+        continue;
+      }
+
+      var bait = _baitManager.entity(attachment.baitId);
+      if (bait != null) {
+        initialValues.add(bait);
+      }
+    }
+
+    return ManageableListPagePickerSettings(
+      onPicked: (context, items) {
+        // Only include selected baits that don't have variants. Variants are
+        // selected individually.
+        items
+          ..removeWhere((e) => !(e is Bait) || e.variants.isNotEmpty);
+
+        var attachments = <BaitAttachment>{};
+        attachments.addAll(items.map((e) => (e as Bait).toAttachment()));
+        attachments.addAll(_selectedVariants.map((e) => e.toAttachment()));
+
+        return _pickerSettings.onPicked(context, attachments);
+      },
+      onPickedAll: (isChecked) => setState(() => _onPickedAll(isChecked)),
+      containsAll: (selectedItems) => selectedItems.containsAll(_baits),
+      title: Text(Strings.of(context).pickerTitleBait),
+      multiTitle: Text(Strings.of(context).pickerTitleBaits),
+      initialValues: initialValues,
+    );
+  }
+}
+
+class BaitListPagePickerSettings {
+  final bool Function(BuildContext, Set<BaitAttachment>) onPicked;
+  final Set<BaitAttachment> initialValues;
+
+  BaitListPagePickerSettings({
+    required this.onPicked,
+    required this.initialValues,
+  });
 }

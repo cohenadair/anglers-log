@@ -107,11 +107,7 @@ class HeadingNoteDivider extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Padding(
-            padding: hideNote
-                ? insetsZero
-                : EdgeInsets.only(
-                    bottom: paddingWidget,
-                  ),
+            padding: insetsBottomWidgetSmall,
             child: HeadingDivider(title),
           ),
           _buildNote(),
@@ -121,20 +117,23 @@ class HeadingNoteDivider extends StatelessWidget {
   }
 
   Widget _buildNote() {
-    if (hideNote) {
-      return Empty();
-    }
-
-    return Padding(
-      padding: insetsHorizontalDefault,
-      child: SafeArea(
-        top: false,
-        bottom: false,
-        child: IconLabel(
-          text: note!,
-          icon: Icon(
-            noteIcon,
-            color: Colors.black,
+    return AnimatedSwitcher(
+      duration: defaultAnimationDuration,
+      child: hideNote ? Empty() : Padding(
+        padding: EdgeInsets.only(
+          left: paddingDefault,
+          right: paddingDefault,
+          top: paddingWidget,
+        ),
+        child: SafeArea(
+          top: false,
+          bottom: false,
+          child: IconLabel(
+            text: note!,
+            icon: Icon(
+              noteIcon,
+              color: Colors.black,
+            ),
           ),
         ),
       ),

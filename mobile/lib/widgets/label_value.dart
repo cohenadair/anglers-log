@@ -4,10 +4,9 @@ import 'package:quiver/strings.dart';
 import '../res/dimen.dart';
 import '../res/style.dart';
 
-/// A widget that displays a bold label with a slightly larger and lighter
-/// value text. By default, the label and value are displayed in a [Row].
-/// If [value] is too long, its [Widget] is rendered below [label] in a
-/// [Column].
+/// A widget that displays a primary label with a secondary label value text.
+/// By default, the label and value are displayed in a [Row]. If [value] is
+/// too long, its [Widget] is rendered below [label] in a [Column].
 class LabelValue extends StatelessWidget {
   /// The maximum length of a value's text before rendering as a title-subtitle
   /// [Column] instead of a [Row].
@@ -15,12 +14,14 @@ class LabelValue extends StatelessWidget {
 
   final String label;
   final String value;
-  final EdgeInsets? padding;
+  final TextStyle? labelStyle;
+  final TextStyle? valueStyle;
 
   LabelValue({
     required this.label,
     required this.value,
-    this.padding,
+    this.labelStyle,
+    this.valueStyle,
   })  : assert(isNotEmpty(label)),
         assert(isNotEmpty(value));
 
@@ -28,9 +29,7 @@ class LabelValue extends StatelessWidget {
   Widget build(BuildContext context) {
     var title = Text(
       label,
-      style: TextStyle(
-        fontWeight: fontWeightBold,
-      ),
+      style: stylePrimary(context),
     );
 
     var subtitle = Text(
@@ -43,7 +42,10 @@ class LabelValue extends StatelessWidget {
       child = Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          title,
+          Padding(
+            padding: insetsBottomSmall,
+            child: title,
+          ),
           subtitle,
         ],
       );
@@ -58,7 +60,7 @@ class LabelValue extends StatelessWidget {
     }
 
     return Padding(
-      padding: padding ?? insetsZero,
+      padding: insetsHorizontalDefaultVerticalWidget,
       child: child,
     );
   }

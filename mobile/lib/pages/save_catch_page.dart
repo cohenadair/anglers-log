@@ -7,8 +7,6 @@ import 'package:quiver/strings.dart';
 import '../angler_manager.dart';
 import '../app_manager.dart';
 import '../atmosphere_fetcher.dart';
-import '../bait_category_manager.dart';
-import '../bait_manager.dart';
 import '../catch_manager.dart';
 import '../entity_manager.dart';
 import '../fishing_spot_manager.dart';
@@ -18,7 +16,6 @@ import '../location_monitor.dart';
 import '../log.dart';
 import '../method_manager.dart';
 import '../model/gen/anglerslog.pb.dart';
-import '../pages/bait_list_page.dart';
 import '../pages/editable_form_page.dart';
 import '../pages/fishing_spot_picker_page.dart';
 import '../pages/image_picker_page.dart';
@@ -32,6 +29,7 @@ import '../utils/page_utils.dart';
 import '../utils/protobuf_utils.dart';
 import '../water_clarity_manager.dart';
 import '../widgets/atmosphere_input.dart';
+import '../widgets/bait_picker_input.dart';
 import '../widgets/checkbox_input.dart';
 import '../widgets/date_time_picker.dart';
 import '../widgets/field.dart';
@@ -119,11 +117,6 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
 
   AnglerManager get _anglerManager => AnglerManager.of(context);
 
-  BaitCategoryManager get _baitCategoryManager =>
-      BaitCategoryManager.of(context);
-
-  BaitManager get _baitManager => BaitManager.of(context);
-
   CatchManager get _catchManager => CatchManager.of(context);
 
   FishingSpotManager get _fishingSpotManager => FishingSpotManager.of(context);
@@ -165,8 +158,8 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
   IdInputController get _fishingSpotController =>
       _fields[_idFishingSpot]!.controller as IdInputController;
 
-  SetInputController<Id> get _baitsController =>
-      _fields[_idBait]!.controller as SetInputController<Id>;
+  SetInputController<BaitAttachment> get _baitsController =>
+      _fields[_idBait]!.controller as SetInputController<BaitAttachment>;
 
   IdInputController get _anglerController =>
       _fields[_idAngler]!.controller as IdInputController;
@@ -235,7 +228,7 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
       _seasonController.value =
           _oldCatch!.hasSeason() ? _oldCatch!.season : null;
       _speciesController.value = _oldCatch!.speciesId;
-      _baitsController.value = _oldCatch!.baitIds.toSet();
+      _baitsController.value = _oldCatch!.baits.toSet();
       _fishingSpotController.value = _oldCatch!.fishingSpotId;
       _anglerController.value = _oldCatch!.anglerId;
       _catchAndReleaseController.value = _oldCatch!.wasCatchAndRelease;
@@ -384,39 +377,9 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
   }
 
   Widget _buildBaits() {
-    return EntityListenerBuilder(
-      managers: [
-        _baitCategoryManager,
-        _baitManager,
-      ],
-      builder: (context) {
-        var values = _baitsController.value.isNotEmpty
-            ? _baitManager.list(_baitsController.value)
-            : <Bait>[];
-
-        return MultiListPickerInput(
-          padding: insetsHorizontalDefaultVerticalWidget,
-          values: values
-              .map((bait) => _baitManager.formatNameWithCategory(bait.id)!)
-              .toSet(),
-          emptyValue: (context) => Strings.of(context).catchFieldNoBaits,
-          onTap: () {
-            push(
-              context,
-              BaitListPage(
-                pickerSettings: ManageableListPagePickerSettings<dynamic>(
-                  onPicked: (context, baits) {
-                    setState(() => _baitsController.value =
-                        baits.map<Id>((e) => e.id).toSet());
-                    return true;
-                  },
-                  initialValues: values.toSet(),
-                ),
-              ),
-            );
-          },
-        );
-      },
+    return BaitPickerInput(
+      controller: _baitsController,
+      emptyValue: (context) => Strings.of(context).catchFieldNoBaits,
     );
   }
 
@@ -742,9 +705,9 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
     }
 
     if (_baitsController.value.isNotEmpty) {
-      cat.baitIds.addAll(_baitsController.value);
+      cat.baits.addAll(_baitsController.value);
     } else {
-      cat.baitIds.clear();
+      cat.baits.clear();
     }
 
     if (_anglerController.hasValue) {

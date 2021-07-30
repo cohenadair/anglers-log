@@ -156,12 +156,17 @@ Map<String, Map<String, String>> get englishStrings => {
         "baitListPage_emptyListTitle": "No baits",
         "baitListPage_emptyListDescription":
             "You haven't yet added any baits. Tap the %s button to begin.",
+        "baitListPage_variantsLabel": "%s Variants",
         "saveBaitPage_newTitle": "New Bait",
         "saveBaitPage_editTitle": "Edit Bait",
         "saveBaitPage_categoryLabel": "Bait Category",
         "saveBaitPage_baitExists":
             "A bait with these properties already exists. Please change at least one field and try again.",
         "saveBaitPage_variants": "Variants",
+        "saveBaitPage_deleteVariantSingular":
+            "This variant is associated with %s catch; are you sure you want to delete it? This cannot be undone.",
+        "saveBaitPage_deleteVariantPlural":
+            "This variant is associated with %s catches; are you sure you want to delete it? This cannot be undone.",
         "saveBaitCategoryPage_newTitle": "New Bait Category",
         "saveBaitCategoryPage_editTitle": "Edit Bait Category",
         "saveBaitCategoryPage_existsMessage": "Bait category already exists",
@@ -685,5 +690,12 @@ Map<String, Map<String, String>> get englishStrings => {
         "tide_incoming": "Incoming Tide",
         "saveBaitVariantPage_title": "Edit Bait Variant",
         "saveBaitVariantPage_editTitle": "New Bait Variant",
+        "baitVariantPage_variantLabel": "Variant of",
+        "baitVariantPage_model": "Model Number",
+        "baitVariantPage_size": "Size",
+        "baitVariantPage_diveDepth": "Dive Depth",
+        "baitType_artificial": "Artificial",
+        "baitType_real": "Real",
+        "baitType_live": "Live",
       },
     };

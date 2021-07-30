@@ -75,7 +75,7 @@ List<Field> allCatchFields(BuildContext context) {
     Field(
       id: catchFieldIdBait,
       name: (context) => Strings.of(context).catchFieldBaitLabel,
-      controller: SetInputController<Id>(),
+      controller: SetInputController<BaitAttachment>(),
     ),
     Field(
       id: catchFieldIdImages,

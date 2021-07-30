@@ -291,6 +291,23 @@ class CustomEntity_Type extends $pb.ProtobufEnum {
   const CustomEntity_Type._($core.int v, $core.String n) : super(v, n);
 }
 
+class Bait_Type extends $pb.ProtobufEnum {
+  static const Bait_Type artificial = Bait_Type._(0, const $core.bool.fromEnvironment('protobuf.omit_enum_names') ? '' : 'artificial');
+  static const Bait_Type real = Bait_Type._(1, const $core.bool.fromEnvironment('protobuf.omit_enum_names') ? '' : 'real');
+  static const Bait_Type live = Bait_Type._(2, const $core.bool.fromEnvironment('protobuf.omit_enum_names') ? '' : 'live');
+
+  static const $core.List<Bait_Type> values = <Bait_Type> [
+    artificial,
+    real,
+    live,
+  ];
+
+  static final $core.Map<$core.int, Bait_Type> _byValue = $pb.ProtobufEnum.initByValue(values);
+  static Bait_Type? valueOf($core.int value) => _byValue[value];
+
+  const Bait_Type._($core.int v, $core.String n) : super(v, n);
+}
+
 class DateRange_Period extends $pb.ProtobufEnum {
   static const DateRange_Period allDates = DateRange_Period._(0, const $core.bool.fromEnvironment('protobuf.omit_enum_names') ? '' : 'allDates');
   static const DateRange_Period today = DateRange_Period._(1, const $core.bool.fromEnvironment('protobuf.omit_enum_names') ? '' : 'today');

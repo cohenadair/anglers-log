@@ -173,7 +173,7 @@ void main() {
     var report = Report()..id = randomId();
     report.baitIds.add(baitToRemove.id);
 
-    reportManager.removeBait(report, baitToRemove);
+    reportManager.removePickedBait(report, baitToRemove);
     expect(
       report.baitIds.contains(baitToRemove.id),
       isFalse,

@@ -1548,7 +1548,7 @@ class MockReportManager extends _i1.Mock implements _i21.ReportManager {
       (super.noSuchMethod(Invocation.method(#name, [report]), returnValue: '')
           as String);
   @override
-  bool removeBait(_i8.Report? report, _i8.Bait? bait) =>
+  bool removePickedBait(_i8.Report? report, _i8.Bait? bait) =>
       (super.noSuchMethod(Invocation.method(#removeBait, [report, bait]),
           returnValue: false) as bool);
   @override

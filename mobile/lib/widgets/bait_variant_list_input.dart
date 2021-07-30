@@ -6,32 +6,53 @@ import '../i18n/strings.dart';
 import '../model/gen/anglerslog.pb.dart';
 import '../pages/save_bait_variant_page.dart';
 import '../res/dimen.dart';
-import '../res/style.dart';
 import '../utils/animated_list_model.dart';
 import '../utils/page_utils.dart';
 import '../utils/protobuf_utils.dart';
 import 'animated_list_transition.dart';
+import 'bait_variant_list_item.dart';
 import 'button.dart';
-import 'custom_entity_values.dart';
+import 'checkbox_input.dart';
 import 'input_controller.dart';
-import 'list_item.dart';
 import 'widget.dart';
 
 class BaitVariantListInput extends StatefulWidget {
   final void Function(BaitVariant?)? onSave;
   final ListInputController<BaitVariant> controller;
+  final EdgeInsets? padding;
   final bool isEditing;
+  final bool isCondensed;
+  final bool showHeader;
+
+  final void Function(BaitVariant, bool)? onCheckboxChanged;
+  final Set<BaitVariant> selectedItems;
 
   BaitVariantListInput({
     required this.controller,
     this.onSave,
+    this.onCheckboxChanged,
+    this.padding,
     this.isEditing = true,
+    this.isCondensed = false,
+    this.showHeader = true,
+    this.selectedItems = const {},
   });
 
-  BaitVariantListInput.static(List<BaitVariant> items)
-      : this(
+  BaitVariantListInput.static(
+    List<BaitVariant> items, {
+    bool showHeader = true,
+    bool isCondensed = false,
+    EdgeInsets? padding,
+    void Function(BaitVariant, bool)? onCheckboxChanged,
+    Set<BaitVariant> selectedItems = const {},
+  }) : this(
           controller: ListInputController<BaitVariant>()..value = items,
           isEditing: false,
+          isCondensed: isCondensed,
+          showHeader: showHeader,
+          padding: padding,
+          onCheckboxChanged: onCheckboxChanged,
+          selectedItems: selectedItems,
         );
 
   @override
@@ -78,15 +99,20 @@ class _BaitVariantListInputState extends State<BaitVariantListInput> {
       );
     }
 
+    Widget header = Empty();
+    if (widget.showHeader) {
+      header = Padding(
+        padding: insetsBottomWidget,
+        child: HeadingDivider(
+          Strings.of(context).saveBaitPageVariants,
+          trailing: headerTrailing,
+        ),
+      );
+    }
+
     return Column(
       children: [
-        Padding(
-          padding: insetsBottomWidget,
-          child: HeadingDivider(
-            Strings.of(context).saveBaitPageVariants,
-            trailing: headerTrailing,
-          ),
-        ),
+        header,
         AnimatedList(
           key: _key,
           initialItemCount: _items.length,
@@ -101,37 +127,23 @@ class _BaitVariantListInputState extends State<BaitVariantListInput> {
 
   Widget _buildItem(
       BuildContext context, BaitVariant variant, Animation<double> animation) {
-    VoidCallback? onTap;
-    if (widget.isEditing) {
-      onTap = () {
-        present(
-          context,
-          SaveBaitVariantPage.edit(
-            variant,
-            onSave: _onAddOrUpdate,
-          ),
-        );
-      };
+    Widget? trailing;
+    if (widget.onCheckboxChanged != null) {
+      trailing = PaddedCheckbox(
+        onChanged: (isChecked) => widget.onCheckboxChanged!(variant, isChecked),
+        checked: widget.selectedItems.contains(variant),
+      );
     }
 
     return AnimatedListTransition(
       animation: animation,
-      child: ManageableListItem(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              variant.color,
-              style: stylePrimary(context),
-            ),
-            CustomEntityValues(variant.customEntityValues, isCondensed: true),
-          ],
-        ),
-        editing: widget.isEditing,
-        onTap: onTap,
-        // TODO: Need to consider catches with bait variant being deleted.
-        deleteMessageBuilder: (context) => Text("TODO"),
-        onConfirmDelete: () => _items.remove(variant),
+      child: BaitVariantListItem(
+        variant,
+        trailing: trailing,
+        isEditing: widget.isEditing,
+        isCondensed: widget.isCondensed,
+        onDelete: () => _items.remove(variant),
+        onSave: _onAddOrUpdate,
       ),
     );
   }

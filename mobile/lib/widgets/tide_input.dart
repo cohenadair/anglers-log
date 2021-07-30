@@ -32,7 +32,7 @@ class _TideInputState extends State<TideInput> {
 
   @override
   Widget build(BuildContext context) {
-    return ValueListenableBuilder(
+    return ValueListenableBuilder<Tide?>(
       valueListenable: widget.controller,
       builder: (context, _, __) {
         return ListPickerInput(

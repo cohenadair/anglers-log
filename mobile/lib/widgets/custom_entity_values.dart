@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 
 import '../custom_entity_manager.dart';
 import '../model/gen/anglerslog.pb.dart';
-import '../res/dimen.dart';
 import '../res/style.dart';
 import '../utils/protobuf_utils.dart';
 import '../widgets/label_value.dart';
@@ -47,33 +46,16 @@ class CustomEntityValues extends StatelessWidget {
     }
 
     dynamic value = valueForCustomEntityType(entity.type, entityValue, context);
-    return Padding(
-      padding: insetsVerticalWidgetSmall,
-      child: LabelValue(
-        label: entity.name,
-        value: value,
-      ),
+    return LabelValue(
+      label: entity.name,
+      value: value,
     );
   }
 
   Widget _buildCondensed(
       BuildContext context, CustomEntityManager entityManager) {
     return Text(
-      values.fold<String>("", (value, item) {
-        var entity = entityManager.entity(item.customEntityId);
-        if (entity == null) {
-          return value;
-        }
-
-        value += "${entity.name}: "
-            "${valueForCustomEntityType(entity.type, item, context)}";
-
-        if (item != values.last) {
-          value += ", ";
-        }
-
-        return value;
-      }),
+      entityManager.customValuesDisplayValue(values, context),
       style: styleSubtitle(context),
     );
   }

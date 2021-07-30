@@ -66,6 +66,7 @@ class _SaveBaitPageState extends State<SaveBaitPage> {
       fieldBuilder: (context) => [
         _buildCategory(),
         _buildName(),
+        // TODO: Add remaining fields
         _buildVariants(),
       ],
       onSave: _save,
@@ -142,6 +143,11 @@ class _SaveBaitPageState extends State<SaveBaitPage> {
         description: Text(Strings.of(context).saveBaitPageBaitExists),
       );
       return false;
+    }
+
+    // Set variant baseId only when validation as passed.
+    for (var variant in newBait.variants) {
+      variant.baseId = newBait.id;
     }
 
     _baitManager.addOrUpdate(newBait);

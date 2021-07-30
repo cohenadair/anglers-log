@@ -1,6 +1,7 @@
-import 'package:flutter/foundation.dart';
+import 'package:collection/collection.dart' show IterableExtension;
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:quiver/strings.dart';
 
 import 'app_manager.dart';
 import 'bait_category_manager.dart';
@@ -19,7 +20,9 @@ class BaitManager extends NamedEntityManager<Bait> {
 
   BaitCategoryManager get _baitCategoryManager =>
       appManager.baitCategoryManager;
+
   CatchManager get _catchManager => appManager.catchManager;
+
   CustomEntityManager get _customEntityManager =>
       appManager.customEntityManager;
 
@@ -42,42 +45,115 @@ class BaitManager extends NamedEntityManager<Bait> {
   String get tableName => "bait";
 
   @override
-  bool matchesFilter(Id id, String? filter) {
+  bool matchesFilter(Id id, String? filter, [BuildContext? context]) {
     var bait = entity(id);
     if (bait == null) {
       return false;
     }
 
-    // TODO: Consider variants.
-    if (super.matchesFilter(id, filter) ||
-        _baitCategoryManager.matchesFilter(bait.baitCategoryId, filter)) {
+    if (_baseMatchesFilter(bait, filter) ||
+        _variantsMatchesFilter(bait.variants, filter!) ||
+        context == null ||
+        containsTrimmedLowerCase(bait.type.filterString(context), filter)) {
       return true;
     }
 
     return false;
   }
 
-  /// Returns true if the given [Bait] is a duplicate of an existing bait. A
-  /// duplicate is defined as all equal properties, except [Bait.id].
-  bool duplicate(Bait rhs) {
-    // TODO: Consider variants.
-    return list()
-        .where((lhs) =>
-            lhs.baitCategoryId == rhs.baitCategoryId &&
-            equalsTrimmedIgnoreCase(lhs.name, rhs.name) &&
-            lhs.id != rhs.id)
-        .isNotEmpty;
+  /// Returns true if only the base properties of [bait] match [filter].
+  bool _baseMatchesFilter(Bait bait, String? filter) {
+    return super.matchesFilter(bait.id, filter) ||
+        _baitCategoryManager.matchesFilter(bait.baitCategoryId, filter);
   }
 
-  /// Returns the number of [Catch] objects associated with the given [Bait].
-  int numberOfCatches(Id? baitId) => numberOf<Catch>(
-      baitId, _catchManager.list(), (cat) => cat.baitIds.contains(baitId));
+  /// Returns true if any [BaitVariant] in [variants] matches [filter].
+  bool _variantsMatchesFilter(List<BaitVariant> variants, String? filter) {
+    if (isEmpty(filter)) {
+      return true;
+    }
+
+    for (var variant in variants) {
+      if (containsTrimmedLowerCase(variant.color, filter!) ||
+          containsTrimmedLowerCase(variant.modelNumber, filter) ||
+          containsTrimmedLowerCase(variant.size, filter) ||
+          containsTrimmedLowerCase(variant.minDiveDepth.toString(), filter) ||
+          containsTrimmedLowerCase(variant.maxDiveDepth.toString(), filter) ||
+          containsTrimmedLowerCase(variant.description, filter) ||
+          filterMatchesEntityValues(
+              variant.customEntityValues, filter, _customEntityManager)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  bool attachmentsMatchesFilter(
+      Iterable<BaitAttachment> attachments, String? filter) {
+    for (var attachment in attachments) {
+      var bait = entity(attachment.baitId);
+      if (bait != null &&
+          (_baseMatchesFilter(bait, filter) ||
+              _variantsMatchesFilter(bait.variants, filter))) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  /// Returns true if the given [Bait] is a duplicate of an existing bait. A
+  /// duplicate is defined as all equal properties, except [Bait.id], which
+  /// must be different.
+  bool duplicate(Bait rhs) {
+    // Copy each bait and clear out the ID. The remaining fields can be compared
+    // using the == operator for the copied objects.
+    Bait clearId(Bait b) =>
+        b.copyAndUpdate<Bait>((updates) => updates.clearId());
+
+    var rhsCopy = clearId(rhs);
+    var filteredList =
+        list().where((lhs) => clearId(lhs) == rhsCopy && lhs.id != rhs.id);
+
+    return filteredList.isNotEmpty;
+  }
+
+  /// Returns the number of [Catch] objects associated with the given [Bait] ID.
+  int numberOfCatches(Id? baitId) {
+    return numberOf<Catch>(baitId, _catchManager.list(),
+        (cat) => cat.baits.where((e) => e.baitId == baitId).isNotEmpty);
+  }
+
+  /// Returns the number of [Catch] objects associated with the given
+  /// [BaitVariant] ID.
+  int numberOfVariantCatches(Id? variantId) {
+    return numberOf<Catch>(variantId, _catchManager.list(),
+        (cat) => cat.baits.where((e) => e.variantId == variantId).isNotEmpty);
+  }
 
   /// Returns the total number of [CustomEntityValue] objects associated with
   /// [Bait] objects and [customEntityId].
   int numberOfCustomEntityValues(Id customEntityId) {
-    // TODO: Handle variants.
-    return 0;
+    var result = 0;
+
+    for (var bait in list()) {
+      if (bait.variants.isEmpty) {
+        continue;
+      }
+
+      for (var variant in bait.variants) {
+        if (variant.customEntityValues.isEmpty) {
+          continue;
+        }
+
+        for (var value in variant.customEntityValues) {
+          if (value.customEntityId == customEntityId) {
+            result += 1;
+          }
+        }
+      }
+    }
+
+    return result;
   }
 
   String? formatNameWithCategory(Id? baitId) {
@@ -92,6 +168,90 @@ class BaitManager extends NamedEntityManager<Bait> {
     }
 
     return bait.name;
+  }
+
+  /// Returns a list of all possible [BaitAttachment] instances created from
+  /// each [Bait] object. A [BaitAttachment] will always have a
+  /// [BaitAttachment.baitId] property, but may not have a
+  /// [BaitAttachment.variantId] property if the [Bait] associated with
+  /// [BaitAttachment.baitId] doesn't have any variants.
+  List<BaitAttachment> baitAttachmentList() {
+    var result = <BaitAttachment>[];
+
+    var baits = list();
+    for (var bait in baits) {
+      if (bait.variants.isEmpty) {
+        result.add(bait.toAttachment());
+      } else {
+        for (var variant in bait.variants) {
+          result.add(variant.toAttachment());
+        }
+      }
+    }
+
+    return result;
+  }
+
+  BaitVariant? variant(Bait bait, Id variantId) {
+    return bait.variants.firstWhereOrNull((e) => e.id == variantId);
+  }
+
+  String attachmentDisplayValue(
+      BaitAttachment attachment, BuildContext context) {
+    var bait = entity(attachment.baitId);
+    if (bait == null) {
+      assert(
+          false, "A BaitAttachment must be associated with an existing Bait.");
+      return "";
+    }
+
+    var formattedBait = formatNameWithCategory(bait.id)!;
+    var variant = this.variant(bait, attachment.variantId);
+
+    if (variant == null) {
+      return formattedBait;
+    } else {
+      return "$formattedBait (${variantDisplayValue(variant, context)})";
+    }
+  }
+
+  List<String> attachmentsDisplayValues(
+      Iterable<BaitAttachment> attachments, BuildContext context) {
+    return attachments
+        .map((e) => attachmentDisplayValue(e, context))
+        .toList();
+  }
+
+  String variantDisplayValue(BaitVariant variant, BuildContext context) {
+    var values = <String>[];
+
+    if (variant.hasColor()) {
+      values.add(variant.color);
+    }
+
+    if (variant.hasModelNumber()) {
+      values.add(variant.modelNumber);
+    }
+
+    if (variant.hasSize()) {
+      values.add(variant.size);
+    }
+
+    if (variant.hasMinDiveDepth() && variant.hasMaxDiveDepth()) {
+      values.add("${variant.minDiveDepth.displayValue(context)} - "
+          "${variant.minDiveDepth.displayValue(context)}");
+    } else if (variant.hasMinDiveDepth()) {
+      values.add(variant.minDiveDepth.displayValue(context));
+    } else if (variant.hasMaxDiveDepth()) {
+      values.add(variant.maxDiveDepth.displayValue(context));
+    }
+
+    // BaitVariant.description is intentionally left out here so this display
+    // value doesn't become too long.
+
+    // TODO: Include custom entity values. Maybe restrict to 2-3 values.
+
+    return values.join(", ");
   }
 
   String deleteMessage(BuildContext context, Bait bait) {
@@ -109,6 +269,28 @@ class BaitManager extends NamedEntityManager<Bait> {
     }
 
     return format(string, [baitName, numOfCatches]);
+  }
+
+  String deleteVariantMessage(BuildContext context, BaitVariant variant) {
+    var numOfCatches = numberOfVariantCatches(variant.id);
+    var string = numOfCatches == 1
+        ? Strings.of(context).saveBaitPageDeleteVariantSingular
+        : Strings.of(context).saveBaitPageDeleteVariantPlural;
+    return format(string, [numOfCatches]);
+  }
+
+  int Function(BaitAttachment, BaitAttachment) get baitAttachmentComparator =>
+      (lhs, rhs) =>
+          compareIgnoreCase(_sortValue(lhs.baitId), _sortValue(rhs.baitId));
+
+  String _sortValue(Id baitId) {
+    var bait = entity(baitId);
+    if (bait == null) {
+      return "";
+    }
+
+    // TODO: Consider variant properties
+    return bait.name;
   }
 
   void _onDeleteBaitCategory(BaitCategory baitCategory) {

@@ -37,21 +37,21 @@ class CatchListPage extends StatelessWidget {
   /// [fishingSpotIds].
   final Set<Id> fishingSpotIds;
 
-  /// If set, shows only the catches whose bait is included in [baitIds].
-  final Set<Id> baitIds;
+  /// If set, shows only the catches whose bait is included in [baits].
+  final Set<BaitAttachment> baits;
 
   bool get filtered =>
       dateRange != null ||
       catchIds.isNotEmpty ||
       speciesIds.isNotEmpty ||
       fishingSpotIds.isNotEmpty ||
-      baitIds.isNotEmpty;
+          baits.isNotEmpty;
 
   CatchListPage({
     this.enableAdding = true,
     this.dateRange,
     this.catchIds = const {},
-    this.baitIds = const {},
+    this.baits = const {},
     this.fishingSpotIds = const {},
     this.speciesIds = const {},
   });
@@ -88,7 +88,7 @@ class CatchListPage extends StatelessWidget {
           catchIds: catchIds,
           speciesIds: speciesIds,
           fishingSpotIds: fishingSpotIds,
-          baitIds: baitIds,
+          baits: baits,
         ),
         emptyItemsSettings: ManageableListPageEmptyListSettings(
           icon: CustomIcons.catches,
@@ -116,9 +116,10 @@ class CatchListPage extends StatelessWidget {
     if (fishingSpot != null && isNotEmpty(fishingSpot.name)) {
       // Use fishing spot name as subtitle if available.
       subtitle2 = Text(fishingSpot.name, style: styleSubtitle(context));
-    } else if (cat.baitIds.isNotEmpty) {
+    } else if (cat.baits.isNotEmpty) {
       // Fallback on bait as a subtitle.
-      var formattedName = baitManager.formatNameWithCategory(cat.baitIds.first);
+      var formattedName =
+          baitManager.formatNameWithCategory(cat.baits.first.baitId);
       if (isNotEmpty(formattedName)) {
         subtitle2 = Text(formattedName!, style: styleSubtitle(context));
       }

@@ -57,13 +57,15 @@ class CatchManager extends EntityManager<Catch> {
   @override
   bool matchesFilter(Id id, String? filter, [BuildContext? context]) {
     var cat = entity(id);
+    if (cat == null) {
+      return false;
+    }
 
-    return cat == null ||
-        filter == null ||
+    return filter == null ||
         isEmpty(filter) ||
         _speciesManager.matchesFilter(cat.speciesId, filter) ||
         _fishingSpotManager.matchesFilter(cat.fishingSpotId, filter) ||
-        _baitManager.idsMatchFilter(cat.baitIds, filter) ||
+        _baitManager.attachmentsMatchesFilter(cat.baits, filter) ||
         _anglerManager.matchesFilter(cat.anglerId, filter) ||
         _methodManager.idsMatchFilter(cat.methodIds, filter) ||
         _waterClarityManager.matchesFilter(cat.waterClarityId, filter) ||
@@ -96,7 +98,7 @@ class CatchManager extends EntityManager<Catch> {
     bool isCatchAndReleaseOnly = false,
     bool isFavoritesOnly = false,
     Set<Id> anglerIds = const {},
-    Set<Id> baitIds = const {},
+    Set<BaitAttachment> baits = const {},
     Set<Id> catchIds = const {},
     Set<Id> fishingSpotIds = const {},
     Set<Id> methodIds = const {},
@@ -126,7 +128,7 @@ class CatchManager extends EntityManager<Catch> {
       isCatchAndReleaseOnly: isCatchAndReleaseOnly,
       isFavoritesOnly: isFavoritesOnly,
       anglerIds: anglerIds,
-      baitIds: baitIds,
+      baits: baits,
       catchIds: catchIds,
       fishingSpotIds: fishingSpotIds,
       methodIds: methodIds,
@@ -161,7 +163,7 @@ class CatchManager extends EntityManager<Catch> {
     bool isCatchAndReleaseOnly = false,
     bool isFavoritesOnly = false,
     Set<Id> anglerIds = const {},
-    Set<Id> baitIds = const {},
+    Set<BaitAttachment> baits = const {},
     Set<Id> catchIds = const {},
     Set<Id> fishingSpotIds = const {},
     Set<Id> methodIds = const {},
@@ -189,7 +191,7 @@ class CatchManager extends EntityManager<Catch> {
         !isCatchAndReleaseOnly &&
         !isFavoritesOnly &&
         anglerIds.isEmpty &&
-        baitIds.isEmpty &&
+        baits.isEmpty &&
         catchIds.isEmpty &&
         fishingSpotIds.isEmpty &&
         methodIds.isEmpty &&
@@ -255,8 +257,8 @@ class CatchManager extends EntityManager<Catch> {
               cat.timestamp.toInt(), _timeManager.currentDateTime);
       valid &=
           isSetValid<Id>(anglerIds, cat.anglerId, hasValue: cat.hasAnglerId());
-      valid &= baitIds.isEmpty ||
-          baitIds.intersection(cat.baitIds.toSet()).isNotEmpty;
+      valid &= baits.isEmpty ||
+          baits.intersection(cat.baits.toSet()).isNotEmpty;
       valid &= isSetValid<Id>(catchIds, cat.id, hasValue: cat.hasId());
       valid &= isSetValid<Id>(fishingSpotIds, cat.fishingSpotId,
           hasValue: cat.hasFishingSpotId());

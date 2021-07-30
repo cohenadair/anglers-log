@@ -163,12 +163,14 @@ class PickerListItem extends StatelessWidget {
 class ExpansionListItem extends StatefulWidget {
   final Widget title;
   final List<Widget> children;
+  final Widget? trailing;
   final Function(bool)? onExpansionChanged;
   final bool toBottomSafeArea;
 
   ExpansionListItem({
     required this.title,
     this.children = const [],
+    this.trailing,
     this.onExpansionChanged,
     this.toBottomSafeArea = false,
   });
@@ -200,6 +202,7 @@ class _ExpansionListItemState extends State<ExpansionListItem> {
               key: _key,
               title: widget.title,
               children: widget.children,
+              trailing: widget.trailing,
               onExpansionChanged: (expanded) {
                 setState(() {
                   _expanded = expanded;
@@ -231,6 +234,8 @@ class _ExpansionListItemState extends State<ExpansionListItem> {
 class ManageableListItem extends StatelessWidget {
   final Widget child;
 
+  final Widget? grandchild;
+
   /// The trailing [Widget] to show when not editing.
   final Widget? trailing;
 
@@ -261,8 +266,11 @@ class ManageableListItem extends StatelessWidget {
   /// When true, renders the entire [Widget] as disabled, and is not clickable.
   final bool enabled;
 
+  final bool isCondensed;
+
   ManageableListItem({
     required this.child,
+    this.grandchild,
     this.deleteMessageBuilder,
     this.onConfirmDelete,
     this.onTap,
@@ -270,6 +278,7 @@ class ManageableListItem extends StatelessWidget {
     this.trailing,
     this.editing = false,
     this.enabled = true,
+    this.isCondensed = false,
   }) : assert(onTapDeleteButton != null ||
             (deleteMessageBuilder != null && onConfirmDelete != null));
 
@@ -282,6 +291,18 @@ class ManageableListItem extends StatelessWidget {
       );
     }
 
+    var grandchild = this.grandchild;
+    if (grandchild is Text) {
+      grandchild = DefaultTextStyle(
+        style: stylePrimary(context),
+        child: child,
+      );
+    }
+
+    if (grandchild != null) {
+      grandchild = ManageableListGrandchild(child: grandchild);
+    }
+
     return SafeArea(
       top: false,
       bottom: false,
@@ -289,18 +310,26 @@ class ManageableListItem extends StatelessWidget {
         isEnabled: enabled,
         child: InkWell(
           onTap: onTap,
-          child: Row(
-            mainAxisSize: MainAxisSize.max,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: <Widget>[
-              _buildDeleteIcon(context),
-              Expanded(
-                child: Padding(
-                  padding: insetsDefault,
-                  child: child,
-                ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                mainAxisSize: MainAxisSize.max,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  _buildDeleteIcon(context),
+                  Expanded(
+                    child: Padding(
+                      padding: isCondensed
+                          ? insetsHorizontalDefaultVerticalSmall
+                          : insetsDefault,
+                      child: child,
+                    ),
+                  ),
+                  _buildTrailing(context),
+                ],
               ),
-              _buildTrailing(context),
+              grandchild ?? Empty(),
             ],
           ),
         ),
@@ -359,6 +388,37 @@ class ManageableListItem extends StatelessWidget {
         child: FakeTextButton(Strings.of(context).edit),
       ),
       secondChild: trailingWidget,
+    );
+  }
+}
+
+class ManageableListGrandchild extends StatelessWidget {
+  static const leftBorderWidth = 1.0;
+
+  final Widget child;
+
+  ManageableListGrandchild({
+    required this.child,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.only(
+        left: paddingDefault + paddingDefault,
+        bottom: paddingWidget,
+      ),
+      child: Container(
+        decoration: BoxDecoration(
+          border: Border(
+            left: BorderSide(
+              width: leftBorderWidth,
+              color: Theme.of(context).primaryColor,
+            ),
+          ),
+        ),
+        child: child,
+      ),
     );
   }
 }

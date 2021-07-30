@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:protobuf/protobuf.dart';
-import 'package:quiver/strings.dart';
 
 import '../angler_manager.dart';
 import '../app_manager.dart';
@@ -38,8 +37,8 @@ class CalculatedReport {
   final Set<Id> anglerIds;
 
   /// When set, data is only included in this report if associated with these
-  /// [Bait] IDs.
-  final Set<Id> baitIds;
+  /// [BaitAttachment] objects.
+  final Set<BaitAttachment> baits;
 
   /// When set, data is only included in this report if associated with these
   /// [FishingSpot] IDs.
@@ -145,11 +144,12 @@ class CalculatedReport {
       _MapOfMappedInt();
 
   /// Total number of catches per [Bait].
-  Map<Bait, int> _catchesPerBait = {};
+  Map<BaitAttachment, int> _catchesPerBait = {};
 
   /// Total number of catches made per bait for each species within
   /// [dateRange].
-  _MapOfMappedInt<Species?, Bait> _baitsPerSpecies = _MapOfMappedInt();
+  _MapOfMappedInt<Species?, BaitAttachment> _baitsPerSpecies =
+      _MapOfMappedInt();
 
   AnglerManager get _anglerManager => _appManager.anglerManager;
 
@@ -180,9 +180,9 @@ class CalculatedReport {
 
   Map<FishingSpot, int> get catchesPerFishingSpot => _catchesPerFishingSpot;
 
-  Map<Bait, int> get catchesPerBait => _catchesPerBait;
+  Map<BaitAttachment, int> get catchesPerBait => _catchesPerBait;
 
-  Map<Bait, int> baitsPerSpecies(Species? species) =>
+  Map<BaitAttachment, int> baitsPerSpecies(Species? species) =>
       _baitsPerSpecies[species] ?? {};
 
   Map<FishingSpot, int> fishingSpotsPerSpecies(Species? species) =>
@@ -193,7 +193,7 @@ class CalculatedReport {
     this.includeZeros = false,
     this.sortOrder = CalculatedReportSortOrder.largestToSmallest,
     this.anglerIds = const {},
-    this.baitIds = const {},
+    this.baits = const {},
     this.fishingSpotIds = const {},
     this.methodIds = const {},
     this.speciesIds = const {},
@@ -231,7 +231,7 @@ class CalculatedReport {
       isCatchAndReleaseOnly: _isCatchAndReleaseOnly,
       isFavoritesOnly: _isFavoritesOnly,
       anglerIds: anglerIds,
-      baitIds: baitIds,
+      baits: baits,
       fishingSpotIds: fishingSpotIds,
       methodIds: methodIds,
       speciesIds: speciesIds,
@@ -271,8 +271,19 @@ class CalculatedReport {
             .forEach((species, map) => map[fishingSpot] = 0);
       });
       _baitManager.list().forEach((bait) {
-        _catchesPerBait.putIfAbsent(bait, () => 0);
-        _baitsPerSpecies.value.forEach((species, map) => map[bait] = 0);
+        setZero(BaitAttachment baitAttachment) {
+          _catchesPerBait.putIfAbsent(baitAttachment, () => 0);
+          _baitsPerSpecies.value
+              .forEach((species, map) => map[baitAttachment] = 0);
+        }
+
+        if (bait.variants.isEmpty) {
+          setZero(bait.toAttachment());
+        } else {
+          for (var variant in bait.variants) {
+            setZero(variant.toAttachment());
+          }
+        }
       });
     }
 
@@ -295,34 +306,31 @@ class CalculatedReport {
         _fishingSpotsPerSpecies.inc(species, fishingSpot);
       }
 
-      for (var id in cat.baitIds) {
-        var bait = _baitManager.entity(id);
-        if (bait != null) {
-          _catchesPerBait.putIfAbsent(bait, () => 0);
-          _catchesPerBait[bait] = _catchesPerBait[bait]! + 1;
-          _baitsPerSpecies.inc(species, bait);
-        }
+      for (var baitAttachment in cat.baits) {
+        _catchesPerBait.putIfAbsent(baitAttachment, () => 0);
+        _catchesPerBait[baitAttachment] = _catchesPerBait[baitAttachment]! + 1;
+        _baitsPerSpecies.inc(species, baitAttachment);
       }
     }
 
     // Sort all maps.
     switch (sortOrder) {
       case CalculatedReportSortOrder.alphabetical:
-        _catchesPerSpecies = sortedMap<Species>(_catchesPerSpecies,
-            (lhs, rhs) => compareIgnoreCase(lhs.name, rhs.name));
-        _catchesPerFishingSpot = sortedMap<FishingSpot>(_catchesPerFishingSpot,
-            (lhs, rhs) => compareIgnoreCase(lhs.name, rhs.name));
-        _catchesPerBait = sortedMap<Bait>(_catchesPerBait,
-            (lhs, rhs) => compareIgnoreCase(lhs.name, rhs.name));
-        _fishingSpotsPerSpecies = _fishingSpotsPerSpecies
-            .sorted((lhs, rhs) => compareIgnoreCase(lhs.name, rhs.name));
-        _baitsPerSpecies = _baitsPerSpecies
-            .sorted((lhs, rhs) => compareIgnoreCase(lhs.name, rhs.name));
+        _catchesPerSpecies = sortedMap<Species>(
+            _catchesPerSpecies, _speciesManager.nameComparator);
+        _catchesPerFishingSpot = sortedMap<FishingSpot>(
+            _catchesPerFishingSpot, _fishingSpotManager.nameComparator);
+        _catchesPerBait = sortedMap<BaitAttachment>(
+            _catchesPerBait, _baitManager.baitAttachmentComparator);
+        _fishingSpotsPerSpecies =
+            _fishingSpotsPerSpecies.sorted(_fishingSpotManager.nameComparator);
+        _baitsPerSpecies =
+            _baitsPerSpecies.sorted(_baitManager.baitAttachmentComparator);
         break;
       case CalculatedReportSortOrder.largestToSmallest:
         _catchesPerSpecies = sortedMap<Species>(_catchesPerSpecies);
         _catchesPerFishingSpot = sortedMap<FishingSpot>(_catchesPerFishingSpot);
-        _catchesPerBait = sortedMap<Bait>(_catchesPerBait);
+        _catchesPerBait = sortedMap<BaitAttachment>(_catchesPerBait);
         _fishingSpotsPerSpecies = _fishingSpotsPerSpecies.sorted();
         _baitsPerSpecies = _baitsPerSpecies.sorted();
         break;
@@ -385,7 +393,13 @@ class CalculatedReport {
       result.add(Strings.of(context).saveReportPageFavorites);
     }
 
-    _addFilters<Bait>(_baitManager, baitIds, result);
+    result.addAll(
+      baits
+          .where((e) => _baitManager.entity(e.baitId) != null)
+          .map((e) => _baitManager.attachmentDisplayValue(e, context))
+          .where((e) => e != null)
+          .toList() as List<String>,
+    );
     _addFilters<FishingSpot>(_fishingSpotManager, fishingSpotIds, result);
     _addFilters<Angler>(_anglerManager, anglerIds, result);
     _addFilters<Method>(_methodManager, methodIds, result);

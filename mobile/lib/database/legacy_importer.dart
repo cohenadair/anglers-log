@@ -503,7 +503,7 @@ class LegacyImporter {
         ..timestamp = Int64(dateTime.millisecondsSinceEpoch);
 
       if (bait != null) {
-        cat.baitIds.add(bait.id);
+        cat.baits.add(bait.toAttachment());
       }
 
       if (fishingSpot != null) {

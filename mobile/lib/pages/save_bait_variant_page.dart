@@ -65,6 +65,8 @@ class _SaveBaitVariantPageState extends State<SaveBaitVariantPage> {
       controller: TextInputController(),
     );
 
+    // TODO: Add remaining fields
+
     // Only include fields being tracked by the user.
     var fieldIds = _userPreferencesManager.baitVariantFieldIds;
     for (var field in _fields.values) {
@@ -122,6 +124,7 @@ class _SaveBaitVariantPageState extends State<SaveBaitVariantPage> {
     _userPreferencesManager
         .setBaitVariantCustomIds(customFieldValueMap.keys.toList());
 
+    // Note that baseId is set when the base Bait object is saved.
     var newVariant = BaitVariant()
       ..id = _oldBaitVariant?.id ?? randomId()
       ..customEntityValues.addAll(entityValuesFromMap(customFieldValueMap));

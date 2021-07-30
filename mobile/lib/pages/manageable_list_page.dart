@@ -319,12 +319,13 @@ class _ManageableListPageState<T> extends State<ManageableListPage<T>> {
       trailing = PaddedCheckbox(
         checked: widget.pickerSettings!.containsAll?.call(_selectedValues) ??
             _selectedValues.containsAll(items),
-        onChanged: (checked) => setState(() {
-          if (checked) {
+        onChanged: (isChecked) => setState(() {
+          if (isChecked) {
             _selectedValues = items.toSet();
           } else {
             _selectedValues.clear();
           }
+          widget.pickerSettings!.onPickedAll?.call(isChecked);
         }),
       );
       onTap = null;
@@ -370,6 +371,11 @@ class _ManageableListPageState<T> extends State<ManageableListPage<T>> {
       trailing = _isItemSelected(itemValue) ? Icon(_iconCheck) : null;
     }
 
+    // For now, don't allow selecting all of bait's variants at once.
+    if (_isPicking && item.grandchild != null) {
+      trailing = Empty();
+    }
+
     var canEdit = _isEditing && item.editable;
     var enabled = !_isEditing || canEdit;
 
@@ -401,6 +407,7 @@ class _ManageableListPageState<T> extends State<ManageableListPage<T>> {
           ? null
           : () => widget.itemManager.onTapDeleteButton!(itemValue),
       trailing: trailing,
+      grandchild: item.grandchild,
     );
 
     return AnimatedListTransition(
@@ -516,6 +523,8 @@ class ManageableListPagePickerSettings<T> {
   /// This property only applies when [isMulti] is true.
   final PickerContainsAllCallback<T>? containsAll;
 
+  final void Function(bool)? onPickedAll;
+
   ManageableListPagePickerSettings({
     required this.onPicked,
     this.title,
@@ -524,6 +533,7 @@ class ManageableListPagePickerSettings<T> {
     this.isMulti = true,
     this.isRequired = false,
     this.containsAll,
+    this.onPickedAll,
   });
 
   ManageableListPagePickerSettings.single({
@@ -549,6 +559,7 @@ class ManageableListPagePickerSettings<T> {
     PickerContainsAllCallback<T>? containsAll,
     Widget? title,
     Widget? multiTitle,
+    void Function(bool)? onPickedAll,
   }) {
     return ManageableListPagePickerSettings<T>(
       onPicked: onPicked ?? this.onPicked,
@@ -558,6 +569,7 @@ class ManageableListPagePickerSettings<T> {
       containsAll: containsAll ?? this.containsAll,
       title: title ?? this.title,
       multiTitle: multiTitle ?? this.multiTitle,
+      onPickedAll: onPickedAll ?? this.onPickedAll,
     );
   }
 }
@@ -587,8 +599,11 @@ class ManageableListPageItemModel {
   /// is most commonly a [Text] widget.
   final Widget child;
 
+  final Widget? grandchild;
+
   ManageableListPageItemModel({
     required this.child,
+    this.grandchild,
     this.editable = true,
     this.selectable = true,
   });

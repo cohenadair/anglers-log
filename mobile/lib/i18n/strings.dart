@@ -342,6 +342,8 @@ class Strings {
   String get baitListPageEmptyListDescription =>
       _string("baitListPage_emptyListDescription");
 
+  String get baitListPageVariantsLabel => _string("baitListPage_variantsLabel");
+
   String get reportListPageConfirmDelete =>
       _string("reportListPage_confirmDelete");
 
@@ -359,6 +361,12 @@ class Strings {
   String get saveBaitPageBaitExists => _string("saveBaitPage_baitExists");
 
   String get saveBaitPageVariants => _string("saveBaitPage_variants");
+
+  String get saveBaitPageDeleteVariantSingular =>
+      _string("saveBaitPage_deleteVariantSingular");
+
+  String get saveBaitPageDeleteVariantPlural =>
+      _string("saveBaitPage_deleteVariantPlural");
 
   String get saveBaitCategoryPageNewTitle =>
       _string("saveBaitCategoryPage_newTitle");
@@ -1421,6 +1429,21 @@ class Strings {
 
   String get saveBaitVariantPageEditTitle =>
       _string("saveBaitVariantPage_editTitle");
+
+  String get baitVariantPageVariantLabel =>
+      _string("baitVariantPage_variantLabel");
+
+  String get baitVariantPageModel => _string("baitVariantPage_model");
+
+  String get baitVariantPageSize => _string("baitVariantPage_size");
+
+  String get baitVariantPageDiveDepth => _string("baitVariantPage_diveDepth");
+
+  String get baitTypeArtificial => _string("baitType_artificial");
+
+  String get baitTypeReal => _string("baitType_real");
+
+  String get baitTypeLive => _string("baitType_live");
 }
 
 class StringsDelegate extends LocalizationsDelegate<Strings> {
