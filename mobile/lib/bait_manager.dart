@@ -196,6 +196,15 @@ class BaitManager extends NamedEntityManager<Bait> {
     return bait.variants.firstWhereOrNull((e) => e.id == variantId);
   }
 
+  BaitVariant? variantFromAttachment(BaitAttachment attachment) {
+    var bait = entity(attachment.baitId);
+    if (bait == null) {
+      return null;
+    }
+
+    return variant(bait, attachment.variantId);
+  }
+
   String attachmentDisplayValue(
       BaitAttachment attachment, BuildContext context) {
     var bait = entity(attachment.baitId);
@@ -206,7 +215,7 @@ class BaitManager extends NamedEntityManager<Bait> {
     }
 
     var formattedBait = formatNameWithCategory(bait.id)!;
-    var variant = this.variant(bait, attachment.variantId);
+    var variant = variantFromAttachment(attachment);
 
     if (variant == null) {
       return formattedBait;
@@ -217,9 +226,7 @@ class BaitManager extends NamedEntityManager<Bait> {
 
   List<String> attachmentsDisplayValues(
       Iterable<BaitAttachment> attachments, BuildContext context) {
-    return attachments
-        .map((e) => attachmentDisplayValue(e, context))
-        .toList();
+    return attachments.map((e) => attachmentDisplayValue(e, context)).toList();
   }
 
   String variantDisplayValue(BaitVariant variant, BuildContext context) {

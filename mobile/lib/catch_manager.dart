@@ -257,8 +257,8 @@ class CatchManager extends EntityManager<Catch> {
               cat.timestamp.toInt(), _timeManager.currentDateTime);
       valid &=
           isSetValid<Id>(anglerIds, cat.anglerId, hasValue: cat.hasAnglerId());
-      valid &= baits.isEmpty ||
-          baits.intersection(cat.baits.toSet()).isNotEmpty;
+      valid &=
+          baits.isEmpty || baits.intersection(cat.baits.toSet()).isNotEmpty;
       valid &= isSetValid<Id>(catchIds, cat.id, hasValue: cat.hasId());
       valid &= isSetValid<Id>(fishingSpotIds, cat.fishingSpotId,
           hasValue: cat.hasFishingSpotId());

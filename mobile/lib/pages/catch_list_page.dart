@@ -45,7 +45,7 @@ class CatchListPage extends StatelessWidget {
       catchIds.isNotEmpty ||
       speciesIds.isNotEmpty ||
       fishingSpotIds.isNotEmpty ||
-          baits.isNotEmpty;
+      baits.isNotEmpty;
 
   CatchListPage({
     this.enableAdding = true,

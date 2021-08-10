@@ -119,24 +119,26 @@ class HeadingNoteDivider extends StatelessWidget {
   Widget _buildNote() {
     return AnimatedSwitcher(
       duration: defaultAnimationDuration,
-      child: hideNote ? Empty() : Padding(
-        padding: EdgeInsets.only(
-          left: paddingDefault,
-          right: paddingDefault,
-          top: paddingWidget,
-        ),
-        child: SafeArea(
-          top: false,
-          bottom: false,
-          child: IconLabel(
-            text: note!,
-            icon: Icon(
-              noteIcon,
-              color: Colors.black,
+      child: hideNote
+          ? Empty()
+          : Padding(
+              padding: EdgeInsets.only(
+                left: paddingDefault,
+                right: paddingDefault,
+                top: paddingWidget,
+              ),
+              child: SafeArea(
+                top: false,
+                bottom: false,
+                child: IconLabel(
+                  text: note!,
+                  icon: Icon(
+                    noteIcon,
+                    color: Colors.black,
+                  ),
+                ),
+              ),
             ),
-          ),
-        ),
-      ),
     );
   }
 }

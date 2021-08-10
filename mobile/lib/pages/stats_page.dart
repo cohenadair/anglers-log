@@ -384,7 +384,7 @@ class _StatsPageState extends State<StatsPage> {
         }
 
         return BaitPage(bait, static: true);
-      }
+      },
     );
   }
 
