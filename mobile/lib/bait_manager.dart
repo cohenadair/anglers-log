@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:collection/collection.dart' show IterableExtension;
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -9,6 +11,7 @@ import 'catch_manager.dart';
 import 'custom_entity_manager.dart';
 import 'entity_manager.dart';
 import 'i18n/strings.dart';
+import 'image_manager.dart';
 import 'model/gen/anglerslog.pb.dart';
 import 'named_entity_manager.dart';
 import 'utils/protobuf_utils.dart';
@@ -25,6 +28,8 @@ class BaitManager extends NamedEntityManager<Bait> {
 
   CustomEntityManager get _customEntityManager =>
       appManager.customEntityManager;
+
+  ImageManager get _imageManager => appManager.imageManager;
 
   BaitManager(AppManager app) : super(app) {
     app.baitCategoryManager.addListener(SimpleEntityListener(
@@ -51,20 +56,35 @@ class BaitManager extends NamedEntityManager<Bait> {
       return false;
     }
 
-    if (_baseMatchesFilter(bait, filter) ||
+    if (super.matchesFilter(bait.id, filter) ||
         _variantsMatchesFilter(bait.variants, filter!) ||
         context == null ||
-        containsTrimmedLowerCase(bait.type.filterString(context), filter)) {
+        _baitCategoryManager.matchesFilter(bait.baitCategoryId, filter) ||
+        (bait.hasType() &&
+            containsTrimmedLowerCase(
+                bait.type.filterString(context), filter))) {
       return true;
     }
 
     return false;
   }
 
-  /// Returns true if only the base properties of [bait] match [filter].
-  bool _baseMatchesFilter(Bait bait, String? filter) {
-    return super.matchesFilter(bait.id, filter) ||
-        _baitCategoryManager.matchesFilter(bait.baitCategoryId, filter);
+  @override
+  Future<bool> addOrUpdate(
+    Bait bait, {
+    File? imageFile,
+    bool compressImages = true,
+    bool notify = true,
+  }) async {
+    if (imageFile != null) {
+      var savedImages =
+          await _imageManager.save([imageFile], compress: compressImages);
+      if (savedImages.isNotEmpty) {
+        bait.imageName = savedImages.first;
+      }
+    }
+
+    return super.addOrUpdate(bait, notify: notify);
   }
 
   /// Returns true if any [BaitVariant] in [variants] matches [filter].
@@ -88,13 +108,10 @@ class BaitManager extends NamedEntityManager<Bait> {
     return false;
   }
 
-  bool attachmentsMatchesFilter(
-      Iterable<BaitAttachment> attachments, String? filter) {
+  bool attachmentsMatchesFilter(Iterable<BaitAttachment> attachments,
+      String? filter, BuildContext context) {
     for (var attachment in attachments) {
-      var bait = entity(attachment.baitId);
-      if (bait != null &&
-          (_baseMatchesFilter(bait, filter) ||
-              _variantsMatchesFilter(bait.variants, filter))) {
+      if (matchesFilter(attachment.baitId, filter)) {
         return true;
       }
     }
@@ -205,13 +222,11 @@ class BaitManager extends NamedEntityManager<Bait> {
     return variant(bait, attachment.variantId);
   }
 
-  String attachmentDisplayValue(
+  String? attachmentDisplayValue(
       BaitAttachment attachment, BuildContext context) {
     var bait = entity(attachment.baitId);
     if (bait == null) {
-      assert(
-          false, "A BaitAttachment must be associated with an existing Bait.");
-      return "";
+      return null;
     }
 
     var formattedBait = formatNameWithCategory(bait.id)!;
@@ -220,16 +235,34 @@ class BaitManager extends NamedEntityManager<Bait> {
     if (variant == null) {
       return formattedBait;
     } else {
-      return "$formattedBait (${variantDisplayValue(variant, context)})";
+      return "$formattedBait (${variantDisplayValue(
+        variant,
+        context,
+        includeCustomValues: true,
+      )})";
     }
   }
 
   List<String> attachmentsDisplayValues(
       Iterable<BaitAttachment> attachments, BuildContext context) {
-    return attachments.map((e) => attachmentDisplayValue(e, context)).toList();
+    var result = <String>[];
+
+    for (var attachment in attachments) {
+      var displayValue = attachmentDisplayValue(attachment, context);
+      if (isEmpty(displayValue)) {
+        continue;
+      }
+      result.add(displayValue!);
+    }
+
+    return result;
   }
 
-  String variantDisplayValue(BaitVariant variant, BuildContext context) {
+  String variantDisplayValue(
+    BaitVariant variant,
+    BuildContext context, {
+    bool includeCustomValues = false,
+  }) {
     var values = <String>[];
 
     if (variant.hasColor()) {
@@ -253,12 +286,15 @@ class BaitManager extends NamedEntityManager<Bait> {
       values.add(variant.maxDiveDepth.displayValue(context));
     }
 
+    if (includeCustomValues) {
+      values.add(_customEntityManager.customValuesDisplayValue(
+          variant.customEntityValues, context));
+    }
+
     // BaitVariant.description is intentionally left out here so this display
     // value doesn't become too long.
 
-    // TODO: Include custom entity values. Maybe restrict to 2-3 values.
-
-    return values.join(", ");
+    return formatList(values);
   }
 
   String deleteMessage(BuildContext context, Bait bait) {
@@ -296,8 +332,7 @@ class BaitManager extends NamedEntityManager<Bait> {
       return "";
     }
 
-    // TODO: Consider variant properties
-    return bait.name;
+    return formatNameWithCategory(baitId) ?? bait.name;
   }
 
   void _onDeleteBaitCategory(BaitCategory baitCategory) {

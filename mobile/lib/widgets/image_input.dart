@@ -1,122 +1,135 @@
 import 'package:flutter/material.dart';
+import 'package:quiver/strings.dart';
 
-import '../i18n/strings.dart';
+import '../image_manager.dart';
 import '../pages/image_picker_page.dart';
 import '../res/dimen.dart';
-import '../res/style.dart';
-import '../utils/page_utils.dart';
-import '../widgets/widget.dart';
+import 'image_picker.dart';
+import 'input_controller.dart';
+import 'widget.dart';
 
-/// An input widget that allows selection of one or more photos, as well as
-/// taking a photo from the device's camera.
-class ImageInput extends StatelessWidget {
-  final bool enabled;
-  final bool allowsMultipleSelection;
-  final List<PickedImage> currentImages;
-  final void Function(List<PickedImage>) onImagesPicked;
+/// A form input widget that allows picking of images from a user's device.
+/// For picking a single image, consider using [SingleImageInput].
+class ImageInput extends StatefulWidget {
+  final List<String> initialImageNames;
+  final ListInputController<PickedImage> controller;
+  final bool isMulti;
 
   ImageInput({
-    required this.onImagesPicked,
-    this.enabled = true,
-    this.allowsMultipleSelection = true,
-    List<PickedImage> initialImages = const [],
-  }) : currentImages = initialImages;
+    required this.initialImageNames,
+    required this.controller,
+    this.isMulti = true,
+  });
 
-  ImageInput.single({
-    required Future<bool> Function() requestPhotoPermission,
-    bool enabled = true,
-    PickedImage? currentImage,
-    required Function(PickedImage?) onImagePicked,
-  }) : this(
-          enabled: enabled,
-          allowsMultipleSelection: false,
-          initialImages: currentImage == null ? [] : [currentImage],
-          onImagesPicked: (images) =>
-              onImagePicked(images.isNotEmpty ? images.first : null),
-        );
+  @override
+  _ImageInputState createState() => _ImageInputState();
+}
+
+class _ImageInputState extends State<ImageInput> {
+  Future<List<PickedImage>> _imagesFuture = Future.value([]);
+
+  ListInputController<PickedImage> get _controller => widget.controller;
+
+  ImageManager get _imageManager => ImageManager.of(context);
+
+  @override
+  void initState() {
+    super.initState();
+    _imagesFuture = _fetchInitialImage();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return EnabledOpacity(
-      isEnabled: enabled,
-      child: InkWell(
-        onTap: enabled
-            ? () {
-                push(
-                  context,
-                  ImagePickerPage(
-                    allowsMultipleSelection: allowsMultipleSelection,
-                    initialImages: currentImages,
-                    onImagesPicked: (_, images) => onImagesPicked(images),
-                  ),
-                );
-              }
-            : null,
-        child: Padding(
-          padding: insetsVerticalDefault,
-          child: HorizontalSafeArea(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Padding(
-                  padding: insetsHorizontalDefault,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      Text(
-                        allowsMultipleSelection
-                            ? Strings.of(context).inputPhotosLabel
-                            : Strings.of(context).inputPhotoLabel,
-                        style: stylePrimary(context),
-                      ),
-                      RightChevronIcon(),
-                    ],
-                  ),
-                ),
-                _buildThumbnails(),
-              ],
-            ),
-          ),
-        ),
-      ),
+    return EmptyFutureBuilder<List<PickedImage>>(
+      future: _imagesFuture,
+      builder: (context, images) {
+        return ImagePicker(
+          initialImages: _controller.value,
+          isMulti: widget.isMulti,
+          onImagesPicked: (pickedImage) {
+            setState(() {
+              _controller.value = pickedImage;
+              _imagesFuture = Future.value(_controller.value);
+            });
+          },
+        );
+      },
     );
   }
 
-  Widget _buildThumbnails() {
-    if (currentImages.isEmpty) {
-      return Empty();
+  Future<List<PickedImage>> _fetchInitialImage() async {
+    if (widget.initialImageNames.isEmpty) {
+      return Future.value([]);
     }
 
-    return Container(
-      padding: insetsTopWidgetSmall,
-      constraints: BoxConstraints(maxHeight: galleryMaxThumbSize),
-      child: ListView.separated(
-        physics: enabled ? null : NeverScrollableScrollPhysics(),
-        scrollDirection: Axis.horizontal,
-        itemCount: currentImages.length,
-        itemBuilder: (context, i) {
-          var image = currentImages[i];
-          var leftPadding = i == 0 ? paddingDefault : 0.0;
-          var rightPadding =
-              i == currentImages.length - 1 ? paddingDefault : 0.0;
-          return Container(
-            padding: EdgeInsets.only(
-              left: leftPadding,
-              right: rightPadding,
-            ),
-            width: galleryMaxThumbSize + leftPadding + rightPadding,
-            child: ClipRRect(
-              child: image.thumbData == null
-                  ? Image.file(image.originalFile!, fit: BoxFit.cover)
-                  : Image.memory(image.thumbData!, fit: BoxFit.cover),
-              borderRadius: BorderRadius.all(
-                Radius.circular(floatingCornerRadius),
-              ),
-            ),
-          );
-        },
-        separatorBuilder: (context, i) => Container(width: gallerySpacing),
+    var imageMap = await _imageManager.images(
+      context,
+      imageNames: widget.initialImageNames,
+      size: galleryMaxThumbSize,
+    );
+
+    if (imageMap.isEmpty) {
+      return Future.value(null);
+    }
+
+    var result = <PickedImage>[];
+    imageMap.forEach(
+      (file, bytes) => result.add(
+        PickedImage(
+          originalFile: file,
+          thumbData: bytes,
+        ),
       ),
     );
+
+    _controller.value = result;
+    return result;
+  }
+}
+
+class SingleImageInput extends StatefulWidget {
+  final String? initialImageName;
+  final InputController<PickedImage> controller;
+
+  SingleImageInput({
+    required this.initialImageName,
+    required this.controller,
+  });
+
+  @override
+  _SingleImageInputState createState() => _SingleImageInputState();
+}
+
+class _SingleImageInputState extends State<SingleImageInput> {
+  final _multiController = ListInputController<PickedImage>();
+  late final _multiControllerListener;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _multiControllerListener = _onUpdate;
+    _multiController.addListener(_multiControllerListener);
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _multiController.removeListener(_multiControllerListener);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return ImageInput(
+      initialImageNames:
+          isEmpty(widget.initialImageName) ? [] : [widget.initialImageName!],
+      controller: _multiController,
+      isMulti: false,
+    );
+  }
+
+  void _onUpdate() {
+    widget.controller.value =
+        _multiController.value.isNotEmpty ? _multiController.value.first : null;
   }
 }

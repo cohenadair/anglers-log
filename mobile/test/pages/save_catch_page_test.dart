@@ -19,7 +19,7 @@ import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mobile/water_clarity_manager.dart';
 import 'package:mobile/widgets/button.dart';
 import 'package:mobile/widgets/date_time_picker.dart';
-import 'package:mobile/widgets/image_input.dart';
+import 'package:mobile/widgets/image_picker.dart';
 import 'package:mobile/widgets/search_bar.dart';
 import 'package:mobile/widgets/static_fishing_spot.dart';
 import 'package:mobile/widgets/text_input.dart';
@@ -953,7 +953,7 @@ void main() {
     expect(find.text("Time"), findsOneWidget);
     expect(find.text("Species"), findsOneWidget);
     expect(find.byType(StaticFishingSpot), findsNothing);
-    expect(find.byType(ImageInput), findsNothing);
+    expect(find.byType(ImagePicker), findsNothing);
   });
 
   /// https://github.com/cohenadair/anglers-log/issues/462

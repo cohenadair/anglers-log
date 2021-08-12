@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/pages/image_picker_page.dart';
-import 'package:mobile/widgets/image_input.dart';
+import 'package:mobile/widgets/image_picker.dart';
 import 'package:mobile/widgets/widget.dart';
 import 'package:mockito/mockito.dart';
 
@@ -25,7 +25,7 @@ void main() {
 
   testWidgets("Enabled", (tester) async {
     await tester.pumpWidget(Testable(
-      (_) => ImageInput(
+      (_) => ImagePicker(
         onImagesPicked: (_) => {},
       ),
       appManager: appManager,
@@ -40,9 +40,9 @@ void main() {
   testWidgets("Disabled", (tester) async {
     await tester.pumpWidget(
       Testable(
-        (_) => ImageInput(
+        (_) => ImagePicker(
           onImagesPicked: (_) => {},
-          enabled: false,
+          isEnabled: false,
         ),
       ),
     );
@@ -56,7 +56,7 @@ void main() {
   testWidgets("Single selection", (tester) async {
     await tester.pumpWidget(
       Testable(
-        (_) => ImageInput.single(
+        (_) => ImagePicker.single(
           onImagePicked: (_) => {},
           requestPhotoPermission: () => Future.value(true),
         ),
@@ -69,7 +69,7 @@ void main() {
   testWidgets("Multiple selection", (tester) async {
     await tester.pumpWidget(
       Testable(
-        (_) => ImageInput(
+        (_) => ImagePicker(
           onImagesPicked: (_) => {},
         ),
       ),
@@ -81,7 +81,7 @@ void main() {
   testWidgets("No images", (tester) async {
     await tester.pumpWidget(
       Testable(
-        (_) => ImageInput(
+        (_) => ImagePicker(
           onImagesPicked: (_) => {},
         ),
       ),
@@ -93,7 +93,7 @@ void main() {
   testWidgets("At least one image, enabled", (tester) async {
     await tester.pumpWidget(
       Testable(
-        (_) => ImageInput(
+        (_) => ImagePicker(
           onImagesPicked: (_) => {},
           initialImages: [
             PickedImage(originalFile: File("test/resources/flutter_logo.png")),
@@ -110,13 +110,13 @@ void main() {
   testWidgets("At least one image, disabled", (tester) async {
     await tester.pumpWidget(
       Testable(
-        (_) => ImageInput(
+        (_) => ImagePicker(
           onImagesPicked: (_) => {},
           initialImages: [
             PickedImage(originalFile: File("test/resources/flutter_logo.png")),
             PickedImage(originalFile: File("test/resources/flutter_logo.png")),
           ],
-          enabled: false,
+          isEnabled: false,
         ),
       ),
     );
@@ -128,7 +128,7 @@ void main() {
   testWidgets("Load from file", (tester) async {
     await tester.pumpWidget(
       Testable(
-        (_) => ImageInput(
+        (_) => ImagePicker(
           onImagesPicked: (_) => {},
           initialImages: [
             PickedImage(originalFile: File("test/resources/flutter_logo.png")),
@@ -143,7 +143,7 @@ void main() {
   testWidgets("Load from memory", (tester) async {
     await tester.pumpWidget(
       Testable(
-        (_) => ImageInput(
+        (_) => ImagePicker(
           onImagesPicked: (_) => {},
           initialImages: [
             PickedImage(

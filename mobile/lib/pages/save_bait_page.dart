@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 
@@ -13,10 +14,13 @@ import '../utils/dialog_utils.dart';
 import '../utils/page_utils.dart';
 import '../utils/protobuf_utils.dart';
 import '../widgets/bait_variant_list_input.dart';
+import '../widgets/image_input.dart';
 import '../widgets/input_controller.dart';
 import '../widgets/list_picker_input.dart';
+import '../widgets/radio_input.dart';
 import '../widgets/text_input.dart';
 import 'form_page.dart';
+import 'image_picker_page.dart';
 import 'manageable_list_page.dart';
 
 class SaveBaitPage extends StatefulWidget {
@@ -33,6 +37,8 @@ class SaveBaitPage extends StatefulWidget {
 class _SaveBaitPageState extends State<SaveBaitPage> {
   final _baitCategoryController = IdInputController();
   final _nameController = TextInputController.name();
+  final _imageController = InputController<PickedImage>();
+  final _typeController = InputController<Bait_Type>();
   final _variantsController = ListInputController<BaitVariant>();
 
   Bait? get _oldBait => widget.oldBait;
@@ -52,7 +58,10 @@ class _SaveBaitPageState extends State<SaveBaitPage> {
       _nameController.value = _oldBait!.name;
       _baitCategoryController.value =
           _oldBait!.hasBaitCategoryId() ? _oldBait!.baitCategoryId : null;
+      _typeController.value = _oldBait!.hasType() ? _oldBait!.type : null;
       _variantsController.value = _oldBait!.variants;
+    } else {
+      _typeController.value = Bait_Type.artificial;
     }
   }
 
@@ -66,7 +75,8 @@ class _SaveBaitPageState extends State<SaveBaitPage> {
       fieldBuilder: (context) => [
         _buildCategory(),
         _buildName(),
-        // TODO: Add remaining fields
+        _buildType(),
+        _buildImage(),
         _buildVariants(),
       ],
       onSave: _save,
@@ -107,7 +117,11 @@ class _SaveBaitPageState extends State<SaveBaitPage> {
 
   Widget _buildName() {
     return Padding(
-      padding: insetsHorizontalDefault,
+      padding: EdgeInsets.only(
+        left: paddingDefault,
+        right: paddingDefault,
+        bottom: paddingWidgetSmall,
+      ),
       child: TextInput.name(
         context,
         controller: _nameController,
@@ -118,14 +132,30 @@ class _SaveBaitPageState extends State<SaveBaitPage> {
     );
   }
 
-  Widget _buildVariants() {
-    return Padding(
-      padding: insetsTopWidget,
-      child: BaitVariantListInput(controller: _variantsController),
+  Widget _buildType() {
+    return RadioInput(
+      padding: insetsHorizontalDefaultVerticalSmall,
+      optionCount: Bait_Type.values.length,
+      optionBuilder: (context, index) =>
+          Bait_Type.values[index].displayName(context),
+      onSelect: (selectedIndex) =>
+          _typeController.value = Bait_Type.values[selectedIndex],
     );
   }
 
+  Widget _buildImage() {
+    return SingleImageInput(
+      initialImageName: _oldBait?.imageName,
+      controller: _imageController,
+    );
+  }
+
+  Widget _buildVariants() {
+    return BaitVariantListInput(controller: _variantsController);
+  }
+
   FutureOr<bool> _save(BuildContext context) {
+    // imageName is set in _baitManager.addOrUpdate
     var newBait = Bait()
       ..id = _oldBait?.id ?? randomId()
       ..name = _nameController.value!;
@@ -135,6 +165,10 @@ class _SaveBaitPageState extends State<SaveBaitPage> {
 
     if (_baitCategoryController.value != null) {
       newBait.baitCategoryId = _baitCategoryController.value!;
+    }
+
+    if (_typeController.hasValue) {
+      newBait.type = _typeController.value!;
     }
 
     if (_baitManager.duplicate(newBait)) {
@@ -150,7 +184,13 @@ class _SaveBaitPageState extends State<SaveBaitPage> {
       variant.baseId = newBait.id;
     }
 
-    _baitManager.addOrUpdate(newBait);
+    File? imageFile;
+    if (_imageController.hasValue &&
+        _imageController.value!.originalFile != null) {
+      imageFile = _imageController.value!.originalFile!;
+    }
+
+    _baitManager.addOrUpdate(newBait, imageFile: imageFile);
     return true;
   }
 

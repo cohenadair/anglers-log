@@ -131,9 +131,8 @@ class _EntityPageState extends State<EntityPage> {
             sliver: SliverPadding(
               padding: widget.padding,
               sliver: SliverList(
-                delegate: SliverChildBuilderDelegate(
-                  (context, i) => children[i],
-                  childCount: children.length,
+                delegate: SliverChildListDelegate(
+                  children,
                 ),
               ),
             ),

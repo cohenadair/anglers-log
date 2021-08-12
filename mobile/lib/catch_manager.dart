@@ -65,11 +65,11 @@ class CatchManager extends EntityManager<Catch> {
         isEmpty(filter) ||
         _speciesManager.matchesFilter(cat.speciesId, filter) ||
         _fishingSpotManager.matchesFilter(cat.fishingSpotId, filter) ||
-        _baitManager.attachmentsMatchesFilter(cat.baits, filter) ||
         _anglerManager.matchesFilter(cat.anglerId, filter) ||
         _methodManager.idsMatchFilter(cat.methodIds, filter) ||
         _waterClarityManager.matchesFilter(cat.waterClarityId, filter) ||
         context == null ||
+        _baitManager.attachmentsMatchesFilter(cat.baits, filter, context) ||
         catchFilterMatchesPeriod(context, filter, cat) ||
         catchFilterMatchesSeason(context, filter, cat) ||
         catchFilterMatchesFavorite(context, filter, cat) ||

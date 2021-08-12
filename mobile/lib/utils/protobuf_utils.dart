@@ -1,7 +1,6 @@
 import 'dart:typed_data';
 
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:protobuf/protobuf.dart';
@@ -213,15 +212,6 @@ extension BaitTypes on Bait_Type {
 extension BaitVariants on BaitVariant {
   BaitAttachment toAttachment() =>
       BaitAttachment(baitId: baseId, variantId: id);
-
-  bool isDuplicate(BaitVariant? other) {
-    if (other == null) {
-      return false;
-    }
-
-    return color == other.color &&
-        listEquals(customEntityValues, other.customEntityValues);
-  }
 
   String? diveDepthDisplayValue(BuildContext context) {
     if (hasMinDiveDepth() && hasMaxDiveDepth()) {

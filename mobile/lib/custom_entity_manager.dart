@@ -5,6 +5,7 @@ import 'app_manager.dart';
 import 'model/gen/anglerslog.pb.dart';
 import 'named_entity_manager.dart';
 import 'utils/protobuf_utils.dart';
+import 'utils/string_utils.dart';
 
 class CustomEntityManager extends NamedEntityManager<CustomEntity> {
   static CustomEntityManager of(BuildContext context) =>
@@ -27,20 +28,17 @@ class CustomEntityManager extends NamedEntityManager<CustomEntity> {
 
   String customValuesDisplayValue(
       List<CustomEntityValue> values, BuildContext context) {
-    return values.fold<String>("", (value, item) {
-      var entity = this.entity(item.customEntityId);
+    var result = <String>[];
+    for (var value in values) {
+      var entity = this.entity(value.customEntityId);
       if (entity == null) {
-        return value;
+        continue;
       }
 
-      value += "${entity.name}: "
-          "${valueForCustomEntityType(entity.type, item, context)}";
+      result.add("${entity.name}: "
+          "${valueForCustomEntityType(entity.type, value, context)}");
+    }
 
-      if (item != values.last) {
-        value += ", ";
-      }
-
-      return value;
-    });
+    return formatList(result);
   }
 }

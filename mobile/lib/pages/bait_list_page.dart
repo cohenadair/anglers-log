@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../bait_category_manager.dart';
 import '../bait_manager.dart';
+import '../catch_manager.dart';
 import '../entity_manager.dart';
 import '../i18n/strings.dart';
 import '../log.dart';
@@ -16,6 +17,7 @@ import '../utils/protobuf_utils.dart';
 import '../utils/string_utils.dart';
 import '../widgets/bait_variant_list_input.dart';
 import '../widgets/input_controller.dart';
+import '../widgets/list_item.dart';
 import '../widgets/multi_list_picker_input.dart';
 import '../widgets/widget.dart';
 
@@ -44,16 +46,20 @@ class _BaitListPageState extends State<BaitListPage> {
 
   BaitManager get _baitManager => BaitManager.of(context);
 
+  CatchManager get _catchManager => CatchManager.of(context);
+
   bool get _isPicking => widget._pickerSettings != null;
 
   @override
   void initState() {
     super.initState();
 
-    for (var attachment in _pickerSettings.initialValues) {
-      var variant = _baitManager.variantFromAttachment(attachment);
-      if (variant != null) {
-        _selectedVariants.add(variant);
+    if (_isPicking) {
+      for (var attachment in _pickerSettings.initialValues) {
+        var variant = _baitManager.variantFromAttachment(attachment);
+        if (variant != null) {
+          _selectedVariants.add(variant);
+        }
       }
     }
   }
@@ -100,6 +106,7 @@ class _BaitListPageState extends State<BaitListPage> {
         listenerManagers: [
           _baitCategoryManager,
           _baitManager,
+          _catchManager,
         ],
         loadItems: _buildItems,
         emptyItemsSettings: ManageableListPageEmptyListSettings(
@@ -186,24 +193,23 @@ class _BaitListPageState extends State<BaitListPage> {
       );
     }
 
+    var numberOfCatches = _baitManager.numberOfCatches(bait.id);
+    var subtitle = numberOfCatches == 1
+        ? format(Strings.of(context).baitListPageNumberOfCatchesSingular,
+            [numberOfCatches])
+        : format(
+            Strings.of(context).baitListPageNumberOfCatches, [numberOfCatches]);
+
     return ManageableListPageItemModel(
       grandchild: grandchild,
-      child: Row(
-        children: [
-          Expanded(
-            child: Text(
-              bait.name,
-              style: stylePrimary(context),
-            ),
-          ),
-          Chip(
-            label: Text(format(
-              Strings.of(context).baitListPageVariantsLabel,
-              [bait.variants.length],
-            )),
-            materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-          ),
-        ],
+      child: ManageableListImageItem(
+        imageName: bait.hasImageName() ? bait.imageName : null,
+        title: bait.name,
+        subtitle: subtitle,
+        trailing: MinChip(format(
+          Strings.of(context).baitListPageVariantsLabel,
+          [bait.variants.length],
+        )),
       ),
     );
   }

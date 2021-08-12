@@ -47,6 +47,7 @@ Widget inputTypeWidget(
   required String label,
   InputController? controller,
   Function(bool)? onCheckboxChanged,
+  Function(String)? onTextFieldChanged,
   bool enabled = true,
 }) {
   switch (type) {
@@ -58,6 +59,7 @@ Widget inputTypeWidget(
         initialValue: null,
         controller: controller as NumberInputController?,
         enabled: enabled,
+        onChanged: onTextFieldChanged,
       );
     case CustomEntity_Type.boolean:
       return CheckboxInput(
@@ -76,6 +78,7 @@ Widget inputTypeWidget(
         initialValue: null,
         controller: controller as TextInputController?,
         enabled: enabled,
+        onChanged: onTextFieldChanged,
       );
   }
 

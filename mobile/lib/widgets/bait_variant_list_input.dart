@@ -150,7 +150,7 @@ class _BaitVariantListInputState extends State<BaitVariantListInput> {
 
   void _onAddOrUpdate(BaitVariant? variant) {
     if (variant == null ||
-        _items.items.firstWhereOrNull((e) => variant.isDuplicate(e)) != null) {
+        _items.items.firstWhereOrNull((e) => variant == e) != null) {
       return;
     }
 

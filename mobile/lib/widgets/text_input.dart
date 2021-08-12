@@ -92,6 +92,7 @@ class TextInput extends StatefulWidget {
     required TextInputController controller,
     bool enabled = true,
     bool autofocus = false,
+    ValueChanged<String>? onChanged,
   }) : this(
           initialValue: initialValue,
           label: title ?? Strings.of(context).inputDescriptionLabel,
@@ -100,6 +101,7 @@ class TextInput extends StatefulWidget {
           maxLength: _inputLimitDescription,
           enabled: enabled,
           autofocus: autofocus,
+          onChanged: onChanged,
           // Use done here to blank lines can't be entered. Also an easy way
           // to remove the keyboard on iOS.
           textInputAction: TextInputAction.done,

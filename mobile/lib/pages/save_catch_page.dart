@@ -11,7 +11,6 @@ import '../catch_manager.dart';
 import '../entity_manager.dart';
 import '../fishing_spot_manager.dart';
 import '../i18n/strings.dart';
-import '../image_manager.dart';
 import '../location_monitor.dart';
 import '../log.dart';
 import '../method_manager.dart';
@@ -111,7 +110,6 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
   late final MultiMeasurementInputSpec _lengthInputState;
   late final MultiMeasurementInputSpec _weightInputState;
 
-  Future<List<PickedImage>> _imagesFuture = Future.value([]);
   List<CustomEntityValue> _customEntityValues = [];
   StreamSubscription<void>? _userPreferenceSubscription;
 
@@ -120,8 +118,6 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
   CatchManager get _catchManager => CatchManager.of(context);
 
   FishingSpotManager get _fishingSpotManager => FishingSpotManager.of(context);
-
-  ImageManager get _imageManager => ImageManager.of(context);
 
   LocationMonitor get _locationMonitor => LocationMonitor.of(context);
 
@@ -251,7 +247,6 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
           _oldCatch!.hasAtmosphere() ? _oldCatch!.atmosphere : null;
       _tideController.value = _oldCatch!.hasTide() ? _oldCatch!.tide : null;
       _customEntityValues = _oldCatch!.customEntityValues;
-      _imagesFuture = _pickedImagesForOldCatch;
     } else {
       if (widget.images.isNotEmpty) {
         var image = widget.images.first;
@@ -449,8 +444,6 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
       child: MultiMeasurementInput(
         spec: _waterDepthInputState,
         controller: _waterDepthController,
-        onChanged: () => _userPreferenceManager
-            .setWaterDepthSystem(_waterDepthController.value.system),
       ),
     );
   }
@@ -461,8 +454,6 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
       child: MultiMeasurementInput(
         spec: _waterTemperatureInputState,
         controller: _waterTemperatureController,
-        onChanged: () => _userPreferenceManager.setWaterTemperatureSystem(
-            _waterTemperatureController.value.system),
       ),
     );
   }
@@ -473,8 +464,6 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
       child: MultiMeasurementInput(
         spec: _lengthInputState,
         controller: _lengthController,
-        onChanged: () => _userPreferenceManager
-            .setCatchLengthSystem(_lengthController.value.system),
       ),
     );
   }
@@ -485,8 +474,6 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
       child: MultiMeasurementInput(
         spec: _weightInputState,
         controller: _weightController,
-        onChanged: () => _userPreferenceManager
-            .setCatchWeightSystem(_weightController.value.system),
       ),
     );
   }
@@ -673,19 +660,9 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
   }
 
   Widget _buildImages() {
-    return EmptyFutureBuilder<List<PickedImage>>(
-      future: _imagesFuture,
-      builder: (context, images) {
-        return ImageInput(
-          initialImages: _imagesController.value,
-          onImagesPicked: (pickedImages) {
-            setState(() {
-              _imagesController.value = pickedImages;
-              _imagesFuture = Future.value(_imagesController.value);
-            });
-          },
-        );
-      },
+    return ImageInput(
+      initialImageNames: _oldCatch?.imageNames ?? [],
+      controller: _imagesController,
     );
   }
 
@@ -808,29 +785,6 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
         },
       ),
     );
-  }
-
-  /// Converts [oldCatch] images into a list of [PickedImage] objects to be
-  /// managed by the [ImageInput].
-  Future<List<PickedImage>> get _pickedImagesForOldCatch async {
-    if (!_editing || _oldCatch!.imageNames.isEmpty) {
-      return Future.value([]);
-    }
-
-    var imageMap = await _imageManager.images(
-      context,
-      imageNames: _oldCatch!.imageNames,
-      size: galleryMaxThumbSize,
-    );
-
-    var result = <PickedImage>[];
-    imageMap.forEach((file, bytes) => result.add(PickedImage(
-          originalFile: file,
-          thumbData: bytes,
-        )));
-
-    _imagesController.value = result;
-    return result;
   }
 
   void _calculateSeason({FishingSpot? fishingSpot}) {

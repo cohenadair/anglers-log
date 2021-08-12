@@ -295,7 +295,7 @@ class _StatsPageState extends State<StatsPage> {
           Strings.of(context).reportSummaryCatchesPerBaitDescription,
       filters: _filters(includeDateRange: !_isComparing),
       labelBuilder: (attachment) =>
-          _baitManager.attachmentDisplayValue(attachment, context),
+          _baitManager.attachmentDisplayValue(attachment, context) ?? "",
       series: _models
           .map((model) =>
               Series<BaitAttachment>(model.catchesPerBait, model.dateRange))
@@ -365,7 +365,7 @@ class _StatsPageState extends State<StatsPage> {
         includeDateRange: !_isComparing,
       )..add(_currentSpecies!.name),
       labelBuilder: (attachment) =>
-          _baitManager.attachmentDisplayValue(attachment, context),
+          _baitManager.attachmentDisplayValue(attachment, context) ?? "",
       series: _models
           .map((model) => Series<BaitAttachment>(
               model.baitsPerSpecies(_currentSpecies), model.dateRange))

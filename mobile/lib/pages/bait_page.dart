@@ -9,6 +9,7 @@ import '../pages/save_bait_page.dart';
 import '../res/dimen.dart';
 import '../res/style.dart';
 import '../utils/page_utils.dart';
+import '../utils/protobuf_utils.dart';
 import '../widgets/bait_variant_list_input.dart';
 import '../widgets/text.dart';
 import '../widgets/widget.dart';
@@ -66,8 +67,10 @@ class _BaitPageState extends State<BaitPage> {
           children: [
             _buildBaitCategory(),
             _buildTitle(),
+            _buildType(),
             _buildVariants(),
           ],
+          imageNames: _bait.hasImageName() ? [_bait.imageName] : [],
         );
       },
     );
@@ -91,6 +94,24 @@ class _BaitPageState extends State<BaitPage> {
       child: TitleLabel(
         _bait.name,
         overflow: TextOverflow.visible,
+      ),
+    );
+  }
+
+  Widget _buildType() {
+    if (!_bait.hasType()) {
+      return Empty();
+    }
+
+    return Align(
+      alignment: Alignment.centerLeft,
+      child: Padding(
+        padding: EdgeInsets.only(
+          left: paddingDefault,
+          right: paddingDefault,
+          bottom: paddingWidget,
+        ),
+        child: MinChip(_bait.type.displayName(context)),
       ),
     );
   }

@@ -35,6 +35,12 @@ class EditableFormPage extends StatefulWidget {
   /// true.
   final bool allowCustomEntities;
 
+  /// Called when a custom field changes.
+  ///
+  /// A map of [CustomEntity] ID to value objects included in the form is passed
+  /// into the callback.
+  final void Function(Map<Id, dynamic>)? onCustomFieldChanged;
+
   /// See [FormPage.onRefresh].
   final Future<void> Function()? onRefresh;
 
@@ -84,6 +90,7 @@ class EditableFormPage extends StatefulWidget {
     this.customEntityIds = const [],
     this.customEntityValues = const [],
     this.allowCustomEntities = true,
+    this.onCustomFieldChanged,
     this.onBuildField,
     this.onAddFields,
     this.onSave,
@@ -169,23 +176,10 @@ class _EditableFormPageState extends State<EditableFormPage> {
       fieldBuilder: (context) =>
           <Id, Widget>{for (var id in _fields.keys) id: _inputWidget(id)},
       onSave: (_) {
-        var customFieldValues = <Id, dynamic>{};
-
-        if (widget.allowCustomEntities) {
-          for (var id in _fields.keys) {
-            var field = _fields[id]!;
-            if (_customEntityManager.entity(id) != null &&
-                field.isShowing &&
-                !field.isFake) {
-              customFieldValues[id] = field.controller.value;
-            }
-          }
-        }
-
         if (widget.onSave == null) {
           return false;
         } else {
-          return widget.onSave!.call(customFieldValues);
+          return widget.onSave!.call(_customFieldValues());
         }
       },
       editableFields: List.of(_fields.values)
@@ -220,7 +214,10 @@ class _EditableFormPageState extends State<EditableFormPage> {
     }
 
     return Padding(
-      padding: insetsVerticalWidgetSmall,
+      padding: EdgeInsets.only(
+        top: paddingWidget,
+        bottom: paddingWidgetSmall,
+      ),
       child: child,
     );
   }
@@ -247,12 +244,20 @@ class _EditableFormPageState extends State<EditableFormPage> {
           type: customField.type,
           label: customField.name,
           controller: field.controller,
-          onCheckboxChanged: (newValue) => field.controller.value = newValue,
+          onCheckboxChanged: (newValue) {
+            field.controller.value = newValue;
+            _onCustomFieldChanged();
+          },
+          onTextFieldChanged: (newValue) => _onCustomFieldChanged(),
         ),
       );
     }
 
     return widget.onBuildField?.call(id) ?? Empty();
+  }
+
+  void _onCustomFieldChanged() {
+    widget.onCustomFieldChanged?.call(_customFieldValues());
   }
 
   void _addInputWidgets(Set<Id> ids) {
@@ -279,5 +284,22 @@ class _EditableFormPageState extends State<EditableFormPage> {
         field.isShowing = ids.contains(field.id);
       }
     });
+  }
+
+  Map<Id, dynamic> _customFieldValues() {
+    var customFieldValues = <Id, dynamic>{};
+
+    if (widget.allowCustomEntities) {
+      for (var id in _fields.keys) {
+        var field = _fields[id]!;
+        if (_customEntityManager.entity(id) != null &&
+            field.isShowing &&
+            !field.isFake) {
+          customFieldValues[id] = field.controller.value;
+        }
+      }
+    }
+
+    return customFieldValues;
   }
 }

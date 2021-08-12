@@ -389,14 +389,21 @@ class ChipWrap extends StatelessWidget {
     return Wrap(
       spacing: paddingWidgetSmall,
       runSpacing: paddingWidgetSmall,
-      children: items
-          .map(
-            (item) => Chip(
-              label: Text(item),
-              materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-            ),
-          )
-          .toList(),
+      children: items.map((item) => MinChip(item)).toList(),
+    );
+  }
+}
+
+class MinChip extends StatelessWidget {
+  final String label;
+
+  MinChip(this.label);
+
+  @override
+  Widget build(BuildContext context) {
+    return Chip(
+      label: Text(label),
+      materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
     );
   }
 }

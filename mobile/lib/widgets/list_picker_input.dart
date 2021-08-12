@@ -96,7 +96,6 @@ class ListPickerInput extends StatelessWidget {
                       : value!,
                   textAlign: TextAlign.right,
                   style: styleSecondary(context),
-                  overflow: TextOverflow.ellipsis,
                 ),
         ),
       ],

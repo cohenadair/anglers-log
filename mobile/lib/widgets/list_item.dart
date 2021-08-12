@@ -9,6 +9,7 @@ import '../utils/dialog_utils.dart';
 import '../widgets/button.dart';
 import '../widgets/widget.dart';
 import 'checkbox_input.dart';
+import 'photo.dart';
 
 /// A custom [ListTile]-like widget with app default properties. This widget
 /// also automatically adjusts its height to fit its content, unlike [ListTile].
@@ -84,6 +85,46 @@ class ListItem extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+}
+
+/// A wrapper for [ManageableListItem] with a [ManageableListImageItem] child.
+/// Generally speaking, [ManageableListItem] and [ManageableListImageItem]
+/// shouldn't be used outside a [ManageableListPage]; [ListItem] should be used
+/// instead. However, horizontal spacing between the leading and content
+/// widgets is different when using a leading thumbnail, so we use this
+/// convenience class for such cases.
+class ImageListItem extends StatelessWidget {
+  final String? imageName;
+  final String? title;
+  final String? subtitle;
+  final String? subtitle2;
+  final Widget? trailing;
+  final VoidCallback? onTap;
+
+  ImageListItem({
+    this.imageName,
+    this.title,
+    this.subtitle,
+    this.subtitle2,
+    this.trailing,
+    this.onTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return ManageableListItem(
+      child: ManageableListImageItem(
+        imageName: imageName,
+        title: title,
+        subtitle: subtitle,
+        subtitle2: subtitle2,
+        trailing: trailing,
+      ),
+      onTap: onTap,
+      // In this state, the delete button will never be shown.
+      onTapDeleteButton: () => false,
     );
   }
 }
@@ -419,6 +460,58 @@ class ManageableListGrandchild extends StatelessWidget {
         ),
         child: child,
       ),
+    );
+  }
+}
+
+class ManageableListImageItem extends StatelessWidget {
+  final String? imageName;
+  final String? title;
+  final String? subtitle;
+  final String? subtitle2;
+  final Widget? trailing;
+
+  ManageableListImageItem({
+    this.imageName,
+    this.title,
+    this.subtitle,
+    this.subtitle2,
+    this.trailing,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        Photo.listThumbnail(imageName),
+        HorizontalSpace(paddingWidget),
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              isEmpty(title)
+                  ? Empty()
+                  : Text(
+                      title!,
+                      style: stylePrimary(context),
+                    ),
+              isEmpty(subtitle)
+                  ? Empty()
+                  : Text(
+                      subtitle!,
+                      style: styleSubtitle(context),
+                    ),
+              isEmpty(subtitle2)
+                  ? Empty()
+                  : Text(
+                      subtitle2!,
+                      style: styleSubtitle(context),
+                    ),
+            ],
+          ),
+        ),
+        trailing ?? Empty(),
+      ],
     );
   }
 }

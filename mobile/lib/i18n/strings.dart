@@ -344,6 +344,12 @@ class Strings {
 
   String get baitListPageVariantsLabel => _string("baitListPage_variantsLabel");
 
+  String get baitListPageNumberOfCatches =>
+      _string("baitListPage_numberOfCatches");
+
+  String get baitListPageNumberOfCatchesSingular =>
+      _string("baitListPage_numberOfCatchesSingular");
+
   String get reportListPageConfirmDelete =>
       _string("reportListPage_confirmDelete");
 
@@ -1429,6 +1435,17 @@ class Strings {
 
   String get saveBaitVariantPageEditTitle =>
       _string("saveBaitVariantPage_editTitle");
+
+  String get saveBaitVariantPageModelNumber =>
+      _string("saveBaitVariantPage_modelNumber");
+
+  String get saveBaitVariantPageSize => _string("saveBaitVariantPage_size");
+
+  String get saveBaitVariantPageMinDiveDepth =>
+      _string("saveBaitVariantPage_minDiveDepth");
+
+  String get saveBaitVariantPageMaxDiveDepth =>
+      _string("saveBaitVariantPage_maxDiveDepth");
 
   String get baitVariantPageVariantLabel =>
       _string("baitVariantPage_variantLabel");

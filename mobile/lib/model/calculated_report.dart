@@ -393,13 +393,7 @@ class CalculatedReport {
       result.add(Strings.of(context).saveReportPageFavorites);
     }
 
-    result.addAll(
-      baits
-          .where((e) => _baitManager.entity(e.baitId) != null)
-          .map((e) => _baitManager.attachmentDisplayValue(e, context))
-          .where((e) => e != null)
-          .toList() as List<String>,
-    );
+    result.addAll(_baitManager.attachmentsDisplayValues(baits, context));
     _addFilters<FishingSpot>(_fishingSpotManager, fishingSpotIds, result);
     _addFilters<Angler>(_anglerManager, anglerIds, result);
     _addFilters<Method>(_methodManager, methodIds, result);
