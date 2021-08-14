@@ -32,7 +32,7 @@ void main() {
       catchIds: anyNamed("catchIds"),
       speciesIds: anyNamed("speciesIds"),
       fishingSpotIds: anyNamed("fishingSpotIds"),
-      baitIds: anyNamed("baitIds"),
+      baits: anyNamed("baits"),
     )).thenReturn([]);
 
     when(appManager.reportManager.entityExists(any)).thenReturn(false);

@@ -37,6 +37,9 @@ void main() {
 
     when(appManager.authManager.stream).thenAnswer((_) => Stream.empty());
 
+    when(appManager.baitManager.attachmentsDisplayValues(any, any))
+        .thenReturn([]);
+
     when(appManager.baitCategoryManager.listSortedByName()).thenReturn([]);
 
     when(appManager.catchManager.addOrUpdate(
@@ -45,6 +48,7 @@ void main() {
     )).thenAnswer((_) => Future.value(false));
 
     when(appManager.customEntityManager.list()).thenReturn([]);
+    when(appManager.customEntityManager.entityExists(any)).thenReturn(false);
 
     when(appManager.localDatabaseManager.insertOrReplace(any, any))
         .thenAnswer((_) => Future.value(true));
@@ -54,8 +58,8 @@ void main() {
     when(appManager.propertiesManager.visualCrossingApiKey).thenReturn("");
 
     when(appManager.userPreferenceManager.atmosphereFieldIds).thenReturn([]);
-    when(appManager.userPreferenceManager.baitCustomEntityIds).thenReturn([]);
-    when(appManager.userPreferenceManager.baitFieldIds).thenReturn([]);
+    when(appManager.userPreferenceManager.baitVariantCustomIds).thenReturn([]);
+    when(appManager.userPreferenceManager.baitVariantFieldIds).thenReturn([]);
     when(appManager.userPreferenceManager.catchCustomEntityIds).thenReturn([]);
     when(appManager.userPreferenceManager.catchFieldIds).thenReturn([]);
     when(appManager.userPreferenceManager.waterDepthSystem)
@@ -207,8 +211,8 @@ void main() {
         ..id = randomId()
         ..name = "Rapala";
       when(appManager.baitManager.list(any)).thenReturn([bait]);
-      when(appManager.baitManager.formatNameWithCategory(any))
-          .thenReturn("Rapala");
+      when(appManager.baitManager.attachmentsDisplayValues(any, any))
+          .thenReturn(["Rapala"]);
 
       var fishingSpot = FishingSpot()
         ..id = randomId()
@@ -241,7 +245,7 @@ void main() {
       var cat = Catch()
         ..id = randomId()
         ..timestamp = Int64(DateTime(2020, 1, 1, 15, 30).millisecondsSinceEpoch)
-        ..baitIds.add(bait.id)
+        ..baits.add(BaitAttachment(baitId: bait.id))
         ..fishingSpotId = fishingSpot.id
         ..speciesId = species.id
         ..anglerId = angler.id
@@ -484,7 +488,7 @@ void main() {
       var cat = Catch()
         ..id = randomId()
         ..timestamp = Int64(DateTime(2020, 1, 1, 15, 30).millisecondsSinceEpoch)
-        ..baitIds.add(bait.id)
+        ..baits.add(BaitAttachment(baitId: bait.id))
         ..fishingSpotId = fishingSpot.id
         ..speciesId = species.id
         ..anglerId = angler.id
@@ -742,7 +746,7 @@ void main() {
           DateTime(2020, 2, 1, 10, 30).millisecondsSinceEpoch);
       expect(cat.speciesId, speciesId);
       expect(cat.fishingSpotId, fishingSpotId);
-      expect(cat.baitIds, isEmpty);
+      expect(cat.baits, isEmpty);
       expect(cat.hasAnglerId(), isFalse);
       expect(cat.hasWaterClarityId(), isFalse);
       expect(cat.methodIds, isEmpty);
@@ -772,13 +776,18 @@ void main() {
           ..name = "Cohen",
       ]);
 
-      when(appManager.baitManager.filteredList(any)).thenReturn([
-        Bait()
-          ..id = randomId()
-          ..name = "Rapala",
+      var bait = Bait()
+        ..id = randomId()
+        ..name = "Rapala";
+      when(appManager.baitManager.baitAttachmentList()).thenReturn([
+        BaitAttachment(baitId: bait.id),
       ]);
-      when(appManager.baitManager.formatNameWithCategory(any))
-          .thenReturn("Rapala");
+      when(appManager.baitManager.filteredList(any)).thenReturn([bait]);
+      when(appManager.baitManager.attachmentsDisplayValues(any, any))
+          .thenReturn([]);
+      when(appManager.baitManager.variantFromAttachment(any))
+          .thenReturn(BaitVariant(id: randomId(), baseId: bait.id));
+      when(appManager.baitManager.numberOfCatches(any)).thenReturn(0);
 
       when(appManager.waterClarityManager
               .listSortedByName(filter: anyNamed("filter")))
@@ -883,7 +892,7 @@ void main() {
       expect(cat.fishingSpotId, fishingSpotId);
       expect(cat.imageNames, isEmpty);
       expect(cat.customEntityValues, isEmpty);
-      expect(cat.baitIds, isNotEmpty);
+      expect(cat.baits, isNotEmpty);
       expect(cat.hasAnglerId(), isTrue);
       expect(cat.hasWaterClarityId(), isTrue);
       expect(cat.methodIds.length, 2);
@@ -1001,12 +1010,14 @@ void main() {
     baitManager.addOrUpdate(bait);
     when(appManager.app.baitManager).thenReturn(baitManager);
 
+    when(appManager.catchManager.list()).thenReturn([]);
+
     await tester.pumpWidget(
       Testable(
         (_) => SaveCatchPage.edit(Catch()
           ..id = randomId()
           ..speciesId = randomId()
-          ..baitIds.add(bait.id)),
+          ..baits.add(BaitAttachment(baitId: bait.id))),
         appManager: appManager,
       ),
     );

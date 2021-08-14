@@ -24,12 +24,12 @@ void main() {
       catchIds: anyNamed("catchIds"),
       speciesIds: anyNamed("speciesIds"),
       fishingSpotIds: anyNamed("fishingSpotIds"),
-      baitIds: anyNamed("baitIds"),
+      baits: anyNamed("baits"),
     )).thenReturn([
       Catch()
         ..id = randomId()
         ..timestamp = Int64(DateTime(2020, 1, 1).millisecondsSinceEpoch)
-        ..baitIds.add(randomId()),
+        ..baits.add(BaitAttachment(baitId: randomId())),
     ]);
 
     when(appManager.speciesManager.entity(any)).thenReturn(Species()

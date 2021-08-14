@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart' show IterableExtension;
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
@@ -43,6 +44,11 @@ void main() {
     Bait()
       ..id = randomId()
       ..name = "Spoon",
+  ];
+
+  var baitAttachmentList = <BaitAttachment>[
+    BaitAttachment(baitId: baitList[0].id),
+    BaitAttachment(baitId: baitList[1].id),
   ];
 
   var fishingSpotList = <FishingSpot>[
@@ -96,10 +102,24 @@ void main() {
 
     when(appManager.baitManager.name(any))
         .thenAnswer((invocation) => invocation.positionalArguments.first.name);
+    when(appManager.baitManager.entity(any)).thenAnswer((invocation) => baitList
+        .firstWhereOrNull((e) => e.id == invocation.positionalArguments.first));
     when(appManager.baitManager.list(any)).thenReturn(baitList);
     when(appManager.baitManager.listSortedByName(filter: anyNamed("filter")))
         .thenReturn(baitList);
     when(appManager.baitManager.filteredList(any)).thenReturn(baitList);
+    when(appManager.baitManager.attachmentsDisplayValues(any, any))
+        .thenAnswer((invocation) {
+      var result = <String>[];
+      for (var attachment in invocation.positionalArguments.first) {
+        result.add(baitList.firstWhere((e) => e.id == attachment.baitId).name);
+      }
+      return result;
+    });
+    when(appManager.baitManager.variantFromAttachment(any)).thenReturn(null);
+    when(appManager.baitManager.baitAttachmentList())
+        .thenReturn(baitAttachmentList);
+    when(appManager.baitManager.numberOfCatches(any)).thenReturn(0);
 
     // Sunday, September 13, 2020 12:26:40 PM GMT
     when(appManager.timeManager.currentDateTime).thenReturn(now);
@@ -723,7 +743,7 @@ void main() {
     expect(report.hasToDateRange(), isTrue);
     expect(report.toDateRange.period, DateRange_Period.thisMonth);
     expect(report.anglerIds.length, 1);
-    expect(report.baitIds.length, 1);
+    expect(report.baits.length, 1);
     expect(report.speciesIds.length, 1);
     expect(report.fishingSpotIds.length, 1);
     expect(report.methodIds.length, 1);
@@ -770,7 +790,7 @@ void main() {
     expect(report.fromDateRange.period, DateRange_Period.lastMonth);
     expect(report.hasToDateRange(), isFalse);
     expect(report.anglerIds.isEmpty, isTrue);
-    expect(report.baitIds.isEmpty, isTrue);
+    expect(report.baits.isEmpty, isTrue);
     expect(report.speciesIds.isEmpty, isTrue);
     expect(report.fishingSpotIds.isEmpty, isTrue);
     expect(report.methodIds.isEmpty, isTrue);
@@ -833,7 +853,7 @@ void main() {
     expect(report.toDateRange.startTimestamp.toInt(), toDateRange.startMs(now));
     expect(report.toDateRange.endTimestamp.toInt(), toDateRange.endMs(now));
     expect(report.anglerIds, isEmpty);
-    expect(report.baitIds, isEmpty);
+    expect(report.baits, isEmpty);
     expect(report.speciesIds, isEmpty);
     expect(report.fishingSpotIds, isEmpty);
     expect(report.methodIds, isEmpty);
@@ -909,7 +929,7 @@ void main() {
     Report report = result.captured.first;
     expect(report.name, "Report Name");
     expect(report.anglerIds, isEmpty);
-    expect(report.baitIds, isEmpty);
+    expect(report.baits, isEmpty);
     expect(report.speciesIds, isEmpty);
     expect(report.fishingSpotIds, isEmpty);
     expect(report.methodIds, isEmpty);
@@ -971,7 +991,7 @@ void main() {
         from: MultiMeasurement(mainValue: Measurement(value: 50)),
       );
     report.anglerIds.addAll(anglerList.map((e) => e.id));
-    report.baitIds.addAll(baitList.map((e) => e.id));
+    report.baits.addAll(baitList.map((e) => BaitAttachment(baitId: e.id)));
     report.fishingSpotIds.addAll(fishingSpotList.map((e) => e.id));
     report.methodIds.addAll(methodList.map((e) => e.id));
     report.speciesIds.addAll(speciesList.map((e) => e.id));

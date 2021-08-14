@@ -5,6 +5,7 @@ import 'package:mobile/model/gen/anglerslog.pb.dart';
 import 'package:mobile/model/calculated_report.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mockito/mockito.dart';
+import 'package:quiver/strings.dart';
 
 import '../mocks/mocks.mocks.dart';
 import '../mocks/stubbed_app_manager.dart';
@@ -49,6 +50,12 @@ void main() {
   var baitId2 = randomId();
   var baitId3 = randomId();
   var baitId4 = randomId();
+
+  var baitAttachment0 = BaitAttachment(baitId: baitId0);
+  var baitAttachment1 = BaitAttachment(baitId: baitId1);
+  var baitAttachment2 = BaitAttachment(baitId: baitId2);
+  var baitAttachment3 = BaitAttachment(baitId: baitId3);
+  var baitAttachment4 = BaitAttachment(baitId: baitId4);
 
   var clarityId0 = randomId();
   var clarityId1 = randomId();
@@ -191,7 +198,7 @@ void main() {
       ..timestamp = Int64(10)
       ..speciesId = speciesId3
       ..fishingSpotId = fishingSpotId1
-      ..baitIds.add(baitId0)
+      ..baits.add(baitAttachment0)
       ..waterClarityId = clarityId2
       ..isFavorite = true,
     Catch()
@@ -199,13 +206,13 @@ void main() {
       ..timestamp = Int64(5000)
       ..speciesId = speciesId4
       ..fishingSpotId = fishingSpotId3
-      ..baitIds.add(baitId4),
+      ..baits.add(baitAttachment4),
     Catch()
       ..id = catchId2
       ..timestamp = Int64(100)
       ..speciesId = speciesId0
       ..fishingSpotId = fishingSpotId4
-      ..baitIds.add(baitId0)
+      ..baits.add(baitAttachment0)
       ..isFavorite = true,
     Catch()
       ..id = catchId3
@@ -213,45 +220,45 @@ void main() {
       ..speciesId = speciesId1
       ..fishingSpotId = fishingSpotId0
       ..waterClarityId = clarityId4
-      ..baitIds.add(baitId1),
+      ..baits.add(baitAttachment1),
     Catch()
       ..id = catchId4
       ..timestamp = Int64(78000)
       ..speciesId = speciesId4
       ..fishingSpotId = fishingSpotId1
-      ..baitIds.add(baitId0)
+      ..baits.add(baitAttachment0)
       ..waterClarityId = clarityId3,
     Catch()
       ..id = catchId5
       ..timestamp = Int64(100000)
       ..speciesId = speciesId3
       ..fishingSpotId = fishingSpotId1
-      ..baitIds.add(baitId2),
+      ..baits.add(baitAttachment2),
     Catch()
       ..id = catchId6
       ..timestamp = Int64(800)
       ..speciesId = speciesId1
       ..fishingSpotId = fishingSpotId2
-      ..baitIds.add(baitId1),
+      ..baits.add(baitAttachment1),
     Catch()
       ..id = catchId7
       ..timestamp = Int64(70)
       ..speciesId = speciesId1
       ..fishingSpotId = fishingSpotId1
-      ..baitIds.add(baitId0)
+      ..baits.add(baitAttachment0)
       ..isFavorite = true,
     Catch()
       ..id = catchId8
       ..timestamp = Int64(15)
       ..speciesId = speciesId1
       ..fishingSpotId = fishingSpotId1
-      ..baitIds.add(baitId1),
+      ..baits.add(baitAttachment1),
     Catch()
       ..id = catchId9
       ..timestamp = Int64(6000)
       ..speciesId = speciesId4
       ..fishingSpotId = fishingSpotId1
-      ..baitIds.add(baitId0),
+      ..baits.add(baitAttachment0),
   ];
 
   setUp(() {
@@ -270,6 +277,7 @@ void main() {
     when(baitManager.list()).thenReturn(baitMap.values.toList());
     when(baitManager.entity(any))
         .thenAnswer((invocation) => baitMap[invocation.positionalArguments[0]]);
+    when(baitManager.baitAttachmentComparator).thenReturn((lhs, rhs) => 0);
 
     catchManager = appManager.catchManager;
     when(catchManager.list()).thenReturn(_catches);
@@ -285,6 +293,8 @@ void main() {
     when(fishingSpotManager.list()).thenReturn(fishingSpotMap.values.toList());
     when(fishingSpotManager.entity(any)).thenAnswer(
         (invocation) => fishingSpotMap[invocation.positionalArguments[0]]);
+    when(fishingSpotManager.nameComparator)
+        .thenReturn((lhs, rhs) => compareIgnoreCase(lhs.name, rhs.name));
 
     methodManager = appManager.methodManager;
     when(methodManager.name(any))
@@ -301,6 +311,8 @@ void main() {
         .thenReturn(speciesMap.values.toList());
     when(speciesManager.entity(any)).thenAnswer(
         (invocation) => speciesMap[invocation.positionalArguments[0]]);
+    when(speciesManager.nameComparator)
+        .thenReturn((lhs, rhs) => compareIgnoreCase(lhs.name, rhs.name));
 
     waterClarityManager = appManager.waterClarityManager;
     when(waterClarityManager.name(any))
@@ -316,7 +328,7 @@ void main() {
       dateRange: anyNamed("dateRange"),
       isFavoritesOnly: anyNamed("isFavoritesOnly"),
       anglerIds: anyNamed("anglerIds"),
-      baitIds: anyNamed("baitIds"),
+      baits: anyNamed("baits"),
       fishingSpotIds: anyNamed("fishingSpotIds"),
       methodIds: anyNamed("methodIds"),
       speciesIds: anyNamed("speciesIds"),
@@ -380,37 +392,55 @@ void main() {
     expect(data.catchesPerFishingSpot[fishingSpotMap[fishingSpotId0]!], 1);
 
     expect(data.catchesPerBait.length, 4);
-    expect(data.catchesPerBait[baitMap[baitId0]!], 5);
-    expect(data.catchesPerBait[baitMap[baitId1]!], 3);
-    expect(data.catchesPerBait[baitMap[baitId2]!], 1);
-    expect(data.catchesPerBait[baitMap[baitId3]!], null);
-    expect(data.catchesPerBait[baitMap[baitId4]!], 1);
+    expect(data.catchesPerBait[baitAttachment0], 5);
+    expect(data.catchesPerBait[baitAttachment1], 3);
+    expect(data.catchesPerBait[baitAttachment2], 1);
+    expect(data.catchesPerBait[baitAttachment3], null);
+    expect(data.catchesPerBait[baitAttachment4], 1);
 
-    expect(data.baitsPerSpecies(speciesMap[speciesId1]!)[baitMap[baitId1]!], 3);
-    expect(data.baitsPerSpecies(speciesMap[speciesId1]!)[baitMap[baitId0]!], 1);
+    expect(data.baitsPerSpecies(speciesMap[speciesId1]!)[baitAttachment1], 3);
+    expect(data.baitsPerSpecies(speciesMap[speciesId1]!)[baitAttachment0], 1);
     expect(
-        data.baitsPerSpecies(speciesMap[speciesId1]!)[baitMap[baitId4]!], null);
+      data.baitsPerSpecies(speciesMap[speciesId1]!)[baitAttachment4],
+      null,
+    );
     expect(
-        data.baitsPerSpecies(speciesMap[speciesId1]!)[baitMap[baitId2]!], null);
+      data.baitsPerSpecies(speciesMap[speciesId1]!)[baitAttachment2],
+      null,
+    );
     expect(
-        data.baitsPerSpecies(speciesMap[speciesId4]!)[baitMap[baitId1]!], null);
-    expect(data.baitsPerSpecies(speciesMap[speciesId4]!)[baitMap[baitId0]!], 2);
-    expect(data.baitsPerSpecies(speciesMap[speciesId4]!)[baitMap[baitId4]!], 1);
+      data.baitsPerSpecies(speciesMap[speciesId4]!)[baitAttachment1],
+      null,
+    );
+    expect(data.baitsPerSpecies(speciesMap[speciesId4]!)[baitAttachment0], 2);
+    expect(data.baitsPerSpecies(speciesMap[speciesId4]!)[baitAttachment4], 1);
     expect(
-        data.baitsPerSpecies(speciesMap[speciesId4]!)[baitMap[baitId2]!], null);
+      data.baitsPerSpecies(speciesMap[speciesId4]!)[baitAttachment2],
+      null,
+    );
     expect(
-        data.baitsPerSpecies(speciesMap[speciesId3]!)[baitMap[baitId1]!], null);
-    expect(data.baitsPerSpecies(speciesMap[speciesId3]!)[baitMap[baitId0]!], 1);
+      data.baitsPerSpecies(speciesMap[speciesId3]!)[baitAttachment1],
+      null,
+    );
+    expect(data.baitsPerSpecies(speciesMap[speciesId3]!)[baitAttachment0], 1);
     expect(
-        data.baitsPerSpecies(speciesMap[speciesId3]!)[baitMap[baitId4]!], null);
-    expect(data.baitsPerSpecies(speciesMap[speciesId3]!)[baitMap[baitId2]!], 1);
+      data.baitsPerSpecies(speciesMap[speciesId3]!)[baitAttachment4],
+      null,
+    );
+    expect(data.baitsPerSpecies(speciesMap[speciesId3]!)[baitAttachment2], 1);
     expect(
-        data.baitsPerSpecies(speciesMap[speciesId0]!)[baitMap[baitId1]!], null);
-    expect(data.baitsPerSpecies(speciesMap[speciesId0]!)[baitMap[baitId0]!], 1);
+      data.baitsPerSpecies(speciesMap[speciesId0]!)[baitAttachment1],
+      null,
+    );
+    expect(data.baitsPerSpecies(speciesMap[speciesId0]!)[baitAttachment0], 1);
     expect(
-        data.baitsPerSpecies(speciesMap[speciesId0]!)[baitMap[baitId4]!], null);
+      data.baitsPerSpecies(speciesMap[speciesId0]!)[baitAttachment4],
+      null,
+    );
     expect(
-        data.baitsPerSpecies(speciesMap[speciesId0]!)[baitMap[baitId2]!], null);
+      data.baitsPerSpecies(speciesMap[speciesId0]!)[baitAttachment2],
+      null,
+    );
     expect(data.baitsPerSpecies(speciesMap[speciesId2]!), {});
 
     expect(
@@ -533,76 +563,16 @@ void main() {
     var context = await buildContext(tester, appManager: appManager);
     _stubCatchesByTimestamp(context);
 
-    var data = CalculatedReport(
+    CalculatedReport(
       context: context,
       range: DateRange(period: DateRange_Period.allDates),
       sortOrder: CalculatedReportSortOrder.alphabetical,
     );
 
-    expect(data.catchesPerSpecies.keys.toList(), [
-      speciesMap[speciesId3]!,
-      speciesMap[speciesId0]!,
-      speciesMap[speciesId1]!,
-      speciesMap[speciesId4]!,
-    ]);
-    expect(data.catchesPerFishingSpot.keys.toList(), [
-      fishingSpotMap[fishingSpotId4]!,
-      fishingSpotMap[fishingSpotId2]!,
-      fishingSpotMap[fishingSpotId1]!,
-      fishingSpotMap[fishingSpotId3]!,
-      fishingSpotMap[fishingSpotId0]!,
-    ]);
-    expect(data.catchesPerBait.keys.toList(), [
-      baitMap[baitId1]!,
-      baitMap[baitId4]!,
-      baitMap[baitId2]!,
-      baitMap[baitId0]!,
-    ]);
-    expect(
-      data.fishingSpotsPerSpecies(speciesMap[speciesId3]!).keys.toList(),
-      [
-        fishingSpotMap[fishingSpotId1]!,
-      ],
-    );
-    expect(
-      data.fishingSpotsPerSpecies(speciesMap[speciesId0]!).keys.toList(),
-      [
-        fishingSpotMap[fishingSpotId4]!,
-      ],
-    );
-    expect(
-        data.fishingSpotsPerSpecies(speciesMap[speciesId2]!).keys.toList(), []);
-    expect(
-      data.fishingSpotsPerSpecies(speciesMap[speciesId4]!).keys.toList(),
-      [
-        fishingSpotMap[fishingSpotId1]!,
-        fishingSpotMap[fishingSpotId3]!,
-      ],
-    );
-    expect(
-      data.fishingSpotsPerSpecies(speciesMap[speciesId1]!).keys.toList(),
-      [
-        fishingSpotMap[fishingSpotId2]!,
-        fishingSpotMap[fishingSpotId1]!,
-        fishingSpotMap[fishingSpotId0]!,
-      ],
-    );
-    expect(data.baitsPerSpecies(speciesMap[speciesId3]!).keys.toList(), [
-      baitMap[baitId2]!,
-      baitMap[baitId0]!,
-    ]);
-    expect(data.baitsPerSpecies(speciesMap[speciesId0]!).keys.toList(), [
-      baitMap[baitId0]!,
-    ]);
-    expect(data.baitsPerSpecies(speciesMap[speciesId2]!).keys.toList(), []);
-    expect(data.baitsPerSpecies(speciesMap[speciesId4]!).keys.toList(), [
-      baitMap[baitId4]!,
-      baitMap[baitId0]!,
-    ]);
-    expect(data.baitsPerSpecies(speciesMap[speciesId1]!).keys.toList(), [
-      baitMap[baitId1]!,
-      baitMap[baitId0]!,
-    ]);
+    // Verify comparators are called and trust they work as expected.
+    verify(speciesManager.nameComparator).called(1);
+    verify(fishingSpotManager.nameComparator).called(2);
+    verify(baitManager.baitAttachmentComparator).called(2);
   });
 
   testWidgets("Gather data sequential order", (tester) async {
@@ -628,10 +598,10 @@ void main() {
       fishingSpotMap[fishingSpotId4]!,
     ]);
     expect(data.catchesPerBait.keys.toList(), [
-      baitMap[baitId0]!,
-      baitMap[baitId1]!,
-      baitMap[baitId2]!,
-      baitMap[baitId4]!,
+      baitAttachment0,
+      baitAttachment1,
+      baitAttachment2,
+      baitAttachment4,
     ]);
     expect(
       data.fishingSpotsPerSpecies(speciesMap[speciesId3]!).keys.toList(),
@@ -663,33 +633,37 @@ void main() {
       ],
     );
     expect(data.baitsPerSpecies(speciesMap[speciesId3]!).keys.toList(), [
-      baitMap[baitId2]!,
-      baitMap[baitId0]!,
+      baitAttachment2,
+      baitAttachment0,
     ]);
     expect(data.baitsPerSpecies(speciesMap[speciesId0]!).keys.toList(), [
-      baitMap[baitId0]!,
+      baitAttachment0,
     ]);
     expect(data.baitsPerSpecies(speciesMap[speciesId2]!).keys.toList(), []);
     expect(data.baitsPerSpecies(speciesMap[speciesId4]!).keys.toList(), [
-      baitMap[baitId0]!,
-      baitMap[baitId4]!,
+      baitAttachment0,
+      baitAttachment4,
     ]);
     expect(data.baitsPerSpecies(speciesMap[speciesId1]!).keys.toList(), [
-      baitMap[baitId1]!,
-      baitMap[baitId0]!,
+      baitAttachment1,
+      baitAttachment0,
     ]);
   });
 
   testWidgets("Filters", (tester) async {
     var context = await buildContext(tester, appManager: appManager);
     _stubCatchesByTimestamp(context);
+    when(baitManager.attachmentsDisplayValues(any, any)).thenReturn([
+      "Bait1",
+      "Bait2",
+    ]);
 
     var data = CalculatedReport(
       context: context,
       range: DateRange(period: DateRange_Period.allDates),
       isFavoritesOnly: true,
       anglerIds: {anglerId2, anglerId3},
-      baitIds: {baitId0, baitId4},
+      baits: {baitAttachment0, baitAttachment4},
       fishingSpotIds: {fishingSpotId0, fishingSpotId2, fishingSpotId1},
       methodIds: {methodId4},
       speciesIds: {speciesId4, speciesId2},
@@ -704,8 +678,8 @@ void main() {
 
     expect(data.filters(), {
       "All dates",
-      "Worm",
-      "Grub",
+      "Bait1",
+      "Bait2",
       "E",
       "B",
       "C",
@@ -731,8 +705,8 @@ void main() {
     });
     expect(data.filters(includeSpecies: false), {
       "All dates",
-      "Worm",
-      "Grub",
+      "Bait1",
+      "Bait2",
       "E",
       "B",
       "C",
@@ -755,8 +729,8 @@ void main() {
       "High Tide",
     });
     expect(data.filters(includeDateRange: false), {
-      "Worm",
-      "Grub",
+      "Bait1",
+      "Bait2",
       "E",
       "B",
       "C",
@@ -781,8 +755,8 @@ void main() {
       "High Tide",
     });
     expect(data.filters(includeSpecies: false, includeDateRange: false), {
-      "Worm",
-      "Grub",
+      "Bait1",
+      "Bait2",
       "E",
       "B",
       "C",
@@ -810,6 +784,7 @@ void main() {
       (tester) async {
     var context = await buildContext(tester, appManager: appManager);
     _stubCatchesByTimestamp(context);
+    when(baitManager.attachmentsDisplayValues(any, any)).thenReturn([]);
 
     var data = CalculatedReport(
       context: context,
@@ -852,6 +827,7 @@ void main() {
   testWidgets("Measurement filters add a filter", (tester) async {
     var context = await buildContext(tester, appManager: appManager);
     _stubCatchesByTimestamp(context);
+    when(baitManager.attachmentsDisplayValues(any, any)).thenReturn([]);
 
     var data = CalculatedReport(
       context: context,
@@ -984,7 +960,7 @@ void main() {
       context: context,
       range: DateRange(period: DateRange_Period.allDates),
       isFavoritesOnly: false,
-      baitIds: {baitId0, baitId4},
+      baits: {baitAttachment0, baitAttachment4},
       fishingSpotIds: {fishingSpotId0, fishingSpotId2, fishingSpotId1},
       speciesIds: {speciesId4, speciesId2},
       periods: {},
@@ -994,7 +970,7 @@ void main() {
     // By not stubbing EntityManager.entity() methods, no filters should be
     // entity names.
     when(anglerManager.entity(any)).thenReturn(null);
-    when(baitManager.entity(any)).thenReturn(null);
+    when(baitManager.attachmentsDisplayValues(any, any)).thenReturn([]);
     when(fishingSpotManager.entity(any)).thenReturn(null);
     when(speciesManager.entity(any)).thenReturn(null);
 

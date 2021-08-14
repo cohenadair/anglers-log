@@ -82,12 +82,12 @@ void main() {
     });
 
     await preferenceManager
-        .setBaitCustomEntityIds([deleteEntity.id, randomId()]);
+        .setBaitVariantCustomIds([deleteEntity.id, randomId()]);
     expect(map, isNotEmpty);
 
     // Trust Firestore listeners will work and invoke listener manually.
     listener!(snapshot);
-    expect(preferenceManager.baitCustomEntityIds.length, 2);
+    expect(preferenceManager.baitVariantCustomIds.length, 2);
 
     await preferenceManager.setCatchCustomEntityIds([deleteEntity.id]);
     expect(map, isNotEmpty);
@@ -106,7 +106,7 @@ void main() {
       // Trust Firestore listeners will work and invoke listener manually.
       listener!(snapshot);
 
-      expect(preferenceManager.baitCustomEntityIds.length, 1);
+      expect(preferenceManager.baitVariantCustomIds.length, 1);
       expect(preferenceManager.catchCustomEntityIds.isEmpty, true);
     });
   });

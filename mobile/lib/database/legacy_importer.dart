@@ -362,11 +362,14 @@ class LegacyImporter {
       File? image;
       var imageMap = map[_keyImage];
       if ((imageMap is Map<String, dynamic>)) {
-        var fileName = basename(imageMap[_keyImagePath]);
-        if (_images.containsKey(fileName)) {
-          image = _images[fileName]!;
-        } else {
-          _log.w("Image $fileName not found in legacy data");
+        var imagePath = imageMap[_keyImagePath];
+        if (isNotEmpty(imagePath)) {
+          var fileName = basename(imagePath);
+          if (_images.containsKey(fileName)) {
+            image = _images[fileName]!;
+          } else {
+            _log.w("Image $fileName not found in legacy data");
+          }
         }
       } else {
         _log.w("Corrupt image data (should be json map): $map");

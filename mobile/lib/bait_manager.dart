@@ -58,12 +58,13 @@ class BaitManager extends NamedEntityManager<Bait> {
 
     if (super.matchesFilter(bait.id, filter) ||
         _variantsMatchesFilter(bait.variants, filter!) ||
-        context == null ||
-        _baitCategoryManager.matchesFilter(bait.baitCategoryId, filter) ||
-        (bait.hasType() &&
-            containsTrimmedLowerCase(
-                bait.type.filterString(context), filter))) {
+        _baitCategoryManager.matchesFilter(bait.baitCategoryId, filter)) {
       return true;
+    }
+
+    if (context != null) {
+      return bait.hasType() &&
+          containsTrimmedLowerCase(bait.type.filterString(context), filter);
     }
 
     return false;

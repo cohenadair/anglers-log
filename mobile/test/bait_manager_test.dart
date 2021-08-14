@@ -98,27 +98,31 @@ void main() {
     var baitId1 = randomId();
     var baitId2 = randomId();
 
+    var baitAttachment0 = BaitAttachment(baitId: baitId0);
+    var baitAttachment1 = BaitAttachment(baitId: baitId1);
+    var baitAttachment2 = BaitAttachment(baitId: baitId2);
+
     when(catchManager.list()).thenReturn([
       Catch()
         ..id = randomId()
         ..timestamp = Int64(0)
         ..speciesId = speciesId0
-        ..baitIds.add(baitId0),
+        ..baits.add(baitAttachment0),
       Catch()
         ..id = randomId()
         ..timestamp = Int64(0)
         ..speciesId = speciesId0
-        ..baitIds.add(baitId1),
+        ..baits.add(baitAttachment1),
       Catch()
         ..id = randomId()
         ..timestamp = Int64(0)
         ..speciesId = speciesId0
-        ..baitIds.add(baitId2),
+        ..baits.add(baitAttachment2),
       Catch()
         ..id = randomId()
         ..timestamp = Int64(0)
         ..speciesId = speciesId0
-        ..baitIds.add(baitId0),
+        ..baits.add(baitAttachment0),
       Catch()
         ..id = randomId()
         ..timestamp = Int64(0)
@@ -180,13 +184,6 @@ void main() {
     bait.baitCategoryId = category.id;
     await baitManager.addOrUpdate(bait);
     expect(baitManager.matchesFilter(baitId1, "Bug"), true);
-
-    // Custom entity values
-    bait.customEntityValues.add(CustomEntityValue()
-      ..customEntityId = randomId()
-      ..value = "Test");
-    await baitManager.addOrUpdate(bait);
-    expect(baitManager.matchesFilter(baitId1, "Test"), true);
   });
 
   group("duplicate", () {
@@ -264,23 +261,17 @@ void main() {
     });
 
     test("true with all properties", () async {
-      var value = CustomEntityValue()
-        ..customEntityId = randomId()
-        ..value = "10";
       var categoryId = randomId();
 
       var bait1 = Bait()
         ..id = randomId()
         ..name = "Rapala"
         ..baitCategoryId = categoryId;
-      bait1.customEntityValues.add(value);
 
       var bait2 = Bait()
         ..id = randomId()
         ..name = "Rapala"
         ..baitCategoryId = categoryId;
-      bait2.customEntityValues
-          .add(CustomEntityValue.fromBuffer(value.writeToBuffer()));
 
       await baitManager.addOrUpdate(bait1);
       expect(baitManager.duplicate(bait2), isTrue);
@@ -310,7 +301,7 @@ void main() {
           ..id = randomId()
           ..timestamp = Int64(0)
           ..speciesId = randomId()
-          ..baitIds.add(bait.id),
+          ..baits.add(BaitAttachment(baitId: bait.id)),
       ]);
 
       var context = await buildContext(tester);
@@ -346,12 +337,12 @@ void main() {
           ..id = randomId()
           ..timestamp = Int64(0)
           ..speciesId = randomId()
-          ..baitIds.add(bait.id),
+          ..baits.add(BaitAttachment(baitId: bait.id)),
         Catch()
           ..id = randomId()
           ..timestamp = Int64(5)
           ..speciesId = randomId()
-          ..baitIds.add(bait.id),
+          ..baits.add(BaitAttachment(baitId: bait.id)),
       ]);
 
       var context = await buildContext(tester);
@@ -377,7 +368,7 @@ void main() {
           ..id = randomId()
           ..timestamp = Int64(5)
           ..speciesId = randomId()
-          ..baitIds.add(bait.id),
+          ..baits.add(BaitAttachment(baitId: bait.id)),
       ]);
 
       var context = await buildContext(tester);

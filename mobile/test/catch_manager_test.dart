@@ -106,14 +106,14 @@ void main() {
   testWidgets("Filtering by search query; bait", (tester) async {
     var baitManager = MockBaitManager();
     when(appManager.app.baitManager).thenReturn(baitManager);
-    when(baitManager.idsMatchFilter(any, any)).thenReturn(true);
+    when(baitManager.attachmentsMatchesFilter(any, any, any)).thenReturn(true);
 
     await catchManager.addOrUpdate(Catch()
       ..id = randomId()
-      ..baitIds.add(randomId()));
+      ..baits.add(BaitAttachment(baitId: randomId())));
     await catchManager.addOrUpdate(Catch()
       ..id = randomId()
-      ..baitIds.add(randomId()));
+      ..baits.add(BaitAttachment(baitId: randomId())));
 
     var context = await buildContext(tester, appManager: appManager);
     expect(catchManager.filteredCatches(context, filter: "Bait").length, 2);
@@ -772,29 +772,34 @@ void main() {
     var baitId2 = randomId();
     var baitId3 = randomId();
 
+    var baitAttachment0 = BaitAttachment(baitId: baitId0);
+    var baitAttachment1 = BaitAttachment(baitId: baitId1);
+    var baitAttachment2 = BaitAttachment(baitId: baitId2);
+    var baitAttachment3 = BaitAttachment(baitId: baitId3);
+
     await catchManager.addOrUpdate(Catch()
       ..id = randomId()
-      ..baitIds.add(baitId0));
+      ..baits.add(baitAttachment0));
     await catchManager.addOrUpdate(Catch()
       ..id = randomId()
-      ..baitIds.add(baitId1));
+      ..baits.add(baitAttachment1));
     await catchManager.addOrUpdate(Catch()
       ..id = randomId()
-      ..baitIds.add(baitId0));
+      ..baits.add(baitAttachment0));
     await catchManager.addOrUpdate(Catch()
       ..id = randomId()
-      ..baitIds.add(baitId3));
+      ..baits.add(baitAttachment3));
 
     var context = await buildContext(tester, appManager: appManager);
     var catches = catchManager.filteredCatches(
       context,
-      baitIds: {baitId0},
+      baits: {baitAttachment0},
     );
     expect(catches.length, 2);
 
     catches = catchManager.filteredCatches(
       context,
-      baitIds: {baitId0, baitId3},
+      baits: {baitAttachment0, baitAttachment3},
     );
     expect(catches.length, 3);
 
@@ -803,7 +808,7 @@ void main() {
 
     catches = catchManager.filteredCatches(
       context,
-      baitIds: {baitId2},
+      baits: {baitAttachment2},
     );
     expect(catches.isEmpty, true);
   });
@@ -1804,6 +1809,9 @@ void main() {
     var baitId0 = randomId();
     var baitId1 = randomId();
 
+    var baitAttachment0 = BaitAttachment(baitId: baitId0);
+    var baitAttachment1 = BaitAttachment(baitId: baitId1);
+
     var fishingSpotId0 = randomId();
     var fishingSpotId1 = randomId();
 
@@ -1811,19 +1819,19 @@ void main() {
       ..id = catchId0
       ..timestamp = Int64(5000)
       ..speciesId = speciesId0
-      ..baitIds.add(baitId0)
+      ..baits.add(baitAttachment0)
       ..fishingSpotId = fishingSpotId0);
     await catchManager.addOrUpdate(Catch()
       ..id = randomId()
       ..timestamp = Int64(10000)
       ..speciesId = speciesId1
-      ..baitIds.add(baitId1)
+      ..baits.add(baitAttachment1)
       ..fishingSpotId = fishingSpotId1);
     await catchManager.addOrUpdate(Catch()
       ..id = randomId()
       ..timestamp = Int64(20000)
       ..speciesId = speciesId1
-      ..baitIds.add(baitId0)
+      ..baits.add(baitAttachment0)
       ..fishingSpotId = fishingSpotId1);
 
     var context = await buildContext(tester, appManager: appManager);
@@ -1831,7 +1839,7 @@ void main() {
       context,
       catchIds: {catchId0},
       speciesIds: {speciesId0},
-      baitIds: {baitId0},
+      baits: {baitAttachment0},
       fishingSpotIds: {fishingSpotId0},
     );
     expect(catches.length, 1);
@@ -1843,7 +1851,7 @@ void main() {
       context,
       catchIds: {catchId0},
       speciesIds: {randomId()},
-      baitIds: {baitId0},
+      baits: {baitAttachment0},
     );
     expect(catches.isEmpty, true);
   });

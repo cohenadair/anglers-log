@@ -78,8 +78,8 @@ void main() {
           ),
         ),
       );
-      expect(find.byType(IconLabel), findsOneWidget);
-      expect(find.byType(Empty), findsNothing);
+      var switcher = findFirst<AnimatedSwitcher>(tester);
+      expect(switcher.child is Padding, isTrue);
     });
 
     testWidgets("Hidden note", (tester) async {
@@ -93,8 +93,8 @@ void main() {
           ),
         ),
       );
-      expect(find.byType(IconLabel), findsNothing);
-      expect(find.byType(Empty), findsOneWidget);
+      var switcher = findFirst<AnimatedSwitcher>(tester);
+      expect(switcher.child is Empty, isTrue);
     });
   });
 

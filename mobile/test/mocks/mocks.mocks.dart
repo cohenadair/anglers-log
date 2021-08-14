@@ -342,6 +342,11 @@ class MockAnglerManager extends _i1.Mock implements _i11.AnglerManager {
       (super.noSuchMethod(Invocation.getter(#tableName), returnValue: '')
           as String);
   @override
+  int Function(_i8.Angler, _i8.Angler) get nameComparator =>
+      (super.noSuchMethod(Invocation.getter(#nameComparator),
+              returnValue: (_i8.Angler __p0, _i8.Angler __p1) => 0)
+          as int Function(_i8.Angler, _i8.Angler));
+  @override
   Map<_i8.Id, _i8.Angler> get entities =>
       (super.noSuchMethod(Invocation.getter(#entities),
           returnValue: <_i8.Id, _i8.Angler>{}) as Map<_i8.Id, _i8.Angler>);
@@ -710,6 +715,11 @@ class MockBaitCategoryManager extends _i1.Mock
       (super.noSuchMethod(Invocation.getter(#tableName), returnValue: '')
           as String);
   @override
+  int Function(_i8.BaitCategory, _i8.BaitCategory) get nameComparator =>
+      (super.noSuchMethod(Invocation.getter(#nameComparator),
+              returnValue: (_i8.BaitCategory __p0, _i8.BaitCategory __p1) => 0)
+          as int Function(_i8.BaitCategory, _i8.BaitCategory));
+  @override
   Map<_i8.Id, _i8.BaitCategory> get entities =>
       (super.noSuchMethod(Invocation.getter(#entities),
               returnValue: <_i8.Id, _i8.BaitCategory>{})
@@ -876,6 +886,17 @@ class MockBaitManager extends _i1.Mock implements _i13.BaitManager {
       (super.noSuchMethod(Invocation.getter(#tableName), returnValue: '')
           as String);
   @override
+  int Function(_i8.BaitAttachment, _i8.BaitAttachment)
+      get baitAttachmentComparator =>
+          (super.noSuchMethod(Invocation.getter(#baitAttachmentComparator),
+              returnValue: (_i8.BaitAttachment __p0, _i8.BaitAttachment __p1) =>
+                  0) as int Function(_i8.BaitAttachment, _i8.BaitAttachment));
+  @override
+  int Function(_i8.Bait, _i8.Bait) get nameComparator =>
+      (super.noSuchMethod(Invocation.getter(#nameComparator),
+              returnValue: (_i8.Bait __p0, _i8.Bait __p1) => 0)
+          as int Function(_i8.Bait, _i8.Bait));
+  @override
   Map<_i8.Id, _i8.Bait> get entities =>
       (super.noSuchMethod(Invocation.getter(#entities),
           returnValue: <_i8.Id, _i8.Bait>{}) as Map<_i8.Id, _i8.Bait>);
@@ -928,8 +949,31 @@ class MockBaitManager extends _i1.Mock implements _i13.BaitManager {
       (super.noSuchMethod(Invocation.method(#name, [bait]), returnValue: '')
           as String);
   @override
-  bool matchesFilter(_i8.Id? id, String? filter) =>
-      (super.noSuchMethod(Invocation.method(#matchesFilter, [id, filter]),
+  bool matchesFilter(_i8.Id? id, String? filter,
+          [_i66.BuildContext? context]) =>
+      (super.noSuchMethod(
+          Invocation.method(#matchesFilter, [id, filter, context]),
+          returnValue: false) as bool);
+  @override
+  _i9.Future<bool> addOrUpdate(_i8.Bait? bait,
+          {_i50.File? imageFile,
+          bool? compressImages = true,
+          bool? notify = true}) =>
+      (super.noSuchMethod(
+          Invocation.method(#addOrUpdate, [
+            bait
+          ], {
+            #imageFile: imageFile,
+            #compressImages: compressImages,
+            #notify: notify
+          }),
+          returnValue: Future.value(false)) as _i9.Future<bool>);
+  @override
+  bool attachmentsMatchesFilter(Iterable<_i8.BaitAttachment>? attachments,
+          String? filter, _i66.BuildContext? context) =>
+      (super.noSuchMethod(
+          Invocation.method(
+              #attachmentsMatchesFilter, [attachments, filter, context]),
           returnValue: false) as bool);
   @override
   bool duplicate(_i8.Bait? rhs) =>
@@ -940,12 +984,56 @@ class MockBaitManager extends _i1.Mock implements _i13.BaitManager {
       (super.noSuchMethod(Invocation.method(#numberOfCatches, [baitId]),
           returnValue: 0) as int);
   @override
+  int numberOfVariantCatches(_i8.Id? variantId) => (super.noSuchMethod(
+      Invocation.method(#numberOfVariantCatches, [variantId]),
+      returnValue: 0) as int);
+  @override
   int numberOfCustomEntityValues(_i8.Id? customEntityId) => (super.noSuchMethod(
       Invocation.method(#numberOfCustomEntityValues, [customEntityId]),
       returnValue: 0) as int);
   @override
+  List<_i8.BaitAttachment> baitAttachmentList() =>
+      (super.noSuchMethod(Invocation.method(#baitAttachmentList, []),
+          returnValue: <_i8.BaitAttachment>[]) as List<_i8.BaitAttachment>);
+  @override
+  _i8.BaitVariant? variant(_i8.Bait? bait, _i8.Id? variantId) =>
+      (super.noSuchMethod(Invocation.method(#variant, [bait, variantId]))
+          as _i8.BaitVariant?);
+  @override
+  _i8.BaitVariant? variantFromAttachment(_i8.BaitAttachment? attachment) =>
+      (super.noSuchMethod(
+              Invocation.method(#variantFromAttachment, [attachment]))
+          as _i8.BaitVariant?);
+  @override
+  String? attachmentDisplayValue(
+          _i8.BaitAttachment? attachment, _i66.BuildContext? context) =>
+      (super.noSuchMethod(
+              Invocation.method(#attachmentDisplayValue, [attachment, context]))
+          as String?);
+  @override
+  List<String> attachmentsDisplayValues(
+          Iterable<_i8.BaitAttachment>? attachments,
+          _i66.BuildContext? context) =>
+      (super.noSuchMethod(
+          Invocation.method(#attachmentsDisplayValues, [attachments, context]),
+          returnValue: <String>[]) as List<String>);
+  @override
+  String variantDisplayValue(
+          _i8.BaitVariant? variant, _i66.BuildContext? context,
+          {bool? includeCustomValues = false}) =>
+      (super.noSuchMethod(
+          Invocation.method(#variantDisplayValue, [variant, context],
+              {#includeCustomValues: includeCustomValues}),
+          returnValue: '') as String);
+  @override
   String deleteMessage(_i66.BuildContext? context, _i8.Bait? bait) =>
       (super.noSuchMethod(Invocation.method(#deleteMessage, [context, bait]),
+          returnValue: '') as String);
+  @override
+  String deleteVariantMessage(
+          _i66.BuildContext? context, _i8.BaitVariant? variant) =>
+      (super.noSuchMethod(
+          Invocation.method(#deleteVariantMessage, [context, variant]),
           returnValue: '') as String);
   @override
   List<_i8.Bait> listSortedByName({String? filter}) => (super.noSuchMethod(
@@ -982,11 +1070,6 @@ class MockBaitManager extends _i1.Mock implements _i13.BaitManager {
   bool entityExists(_i8.Id? id) =>
       (super.noSuchMethod(Invocation.method(#entityExists, [id]),
           returnValue: false) as bool);
-  @override
-  _i9.Future<bool> addOrUpdate(_i8.Bait? entity, {bool? notify = true}) =>
-      (super.noSuchMethod(
-          Invocation.method(#addOrUpdate, [entity], {#notify: notify}),
-          returnValue: Future.value(false)) as _i9.Future<bool>);
   @override
   _i9.Future<bool> delete(_i8.Id? entityId, {bool? notify = true}) => (super
       .noSuchMethod(Invocation.method(#delete, [entityId], {#notify: notify}),
@@ -1106,7 +1189,7 @@ class MockCatchManager extends _i1.Mock implements _i14.CatchManager {
           bool? isCatchAndReleaseOnly = false,
           bool? isFavoritesOnly = false,
           Set<_i8.Id>? anglerIds = const {},
-          Set<_i8.Id>? baitIds = const {},
+          Set<_i8.BaitAttachment>? baits = const {},
           Set<_i8.Id>? catchIds = const {},
           Set<_i8.Id>? fishingSpotIds = const {},
           Set<_i8.Id>? methodIds = const {},
@@ -1137,7 +1220,7 @@ class MockCatchManager extends _i1.Mock implements _i14.CatchManager {
             #isCatchAndReleaseOnly: isCatchAndReleaseOnly,
             #isFavoritesOnly: isFavoritesOnly,
             #anglerIds: anglerIds,
-            #baitIds: baitIds,
+            #baits: baits,
             #catchIds: catchIds,
             #fishingSpotIds: fishingSpotIds,
             #methodIds: methodIds,
@@ -1168,7 +1251,7 @@ class MockCatchManager extends _i1.Mock implements _i14.CatchManager {
           bool? isCatchAndReleaseOnly = false,
           bool? isFavoritesOnly = false,
           Set<_i8.Id>? anglerIds = const {},
-          Set<_i8.Id>? baitIds = const {},
+          Set<_i8.BaitAttachment>? baits = const {},
           Set<_i8.Id>? catchIds = const {},
           Set<_i8.Id>? fishingSpotIds = const {},
           Set<_i8.Id>? methodIds = const {},
@@ -1199,7 +1282,7 @@ class MockCatchManager extends _i1.Mock implements _i14.CatchManager {
             #isCatchAndReleaseOnly: isCatchAndReleaseOnly,
             #isFavoritesOnly: isFavoritesOnly,
             #anglerIds: anglerIds,
-            #baitIds: baitIds,
+            #baits: baits,
             #catchIds: catchIds,
             #fishingSpotIds: fishingSpotIds,
             #methodIds: methodIds,
@@ -1340,6 +1423,11 @@ class MockCustomEntityManager extends _i1.Mock
       (super.noSuchMethod(Invocation.getter(#tableName), returnValue: '')
           as String);
   @override
+  int Function(_i8.CustomEntity, _i8.CustomEntity) get nameComparator =>
+      (super.noSuchMethod(Invocation.getter(#nameComparator),
+              returnValue: (_i8.CustomEntity __p0, _i8.CustomEntity __p1) => 0)
+          as int Function(_i8.CustomEntity, _i8.CustomEntity));
+  @override
   Map<_i8.Id, _i8.CustomEntity> get entities =>
       (super.noSuchMethod(Invocation.getter(#entities),
               returnValue: <_i8.Id, _i8.CustomEntity>{})
@@ -1392,6 +1480,12 @@ class MockCustomEntityManager extends _i1.Mock
   String name(_i8.CustomEntity? entity) =>
       (super.noSuchMethod(Invocation.method(#name, [entity]), returnValue: '')
           as String);
+  @override
+  String customValuesDisplayValue(
+          List<_i8.CustomEntityValue>? values, _i66.BuildContext? context) =>
+      (super.noSuchMethod(
+          Invocation.method(#customValuesDisplayValue, [values, context]),
+          returnValue: '') as String);
   @override
   List<_i8.CustomEntity> listSortedByName({String? filter}) => (super
       .noSuchMethod(Invocation.method(#listSortedByName, [], {#filter: filter}),
@@ -1496,6 +1590,11 @@ class MockReportManager extends _i1.Mock implements _i21.ReportManager {
       (super.noSuchMethod(Invocation.getter(#tableName), returnValue: '')
           as String);
   @override
+  int Function(_i8.Report, _i8.Report) get nameComparator =>
+      (super.noSuchMethod(Invocation.getter(#nameComparator),
+              returnValue: (_i8.Report __p0, _i8.Report __p1) => 0)
+          as int Function(_i8.Report, _i8.Report));
+  @override
   Map<_i8.Id, _i8.Report> get entities =>
       (super.noSuchMethod(Invocation.getter(#entities),
           returnValue: <_i8.Id, _i8.Report>{}) as Map<_i8.Id, _i8.Report>);
@@ -1548,9 +1647,9 @@ class MockReportManager extends _i1.Mock implements _i21.ReportManager {
       (super.noSuchMethod(Invocation.method(#name, [report]), returnValue: '')
           as String);
   @override
-  bool removePickedBait(_i8.Report? report, _i8.Bait? bait) =>
-      (super.noSuchMethod(Invocation.method(#removeBait, [report, bait]),
-          returnValue: false) as bool);
+  void removeAttachedBaits(_i8.Report? report, _i8.Id? baitId) => super
+      .noSuchMethod(Invocation.method(#removePickedBaits, [report, baitId]),
+          returnValueForMissingStub: null);
   @override
   bool removeFishingSpot(_i8.Report? report, _i8.FishingSpot? fishingSpot) =>
       (super.noSuchMethod(
@@ -1663,6 +1762,11 @@ class MockFishingSpotManager extends _i1.Mock
   String get tableName =>
       (super.noSuchMethod(Invocation.getter(#tableName), returnValue: '')
           as String);
+  @override
+  int Function(_i8.FishingSpot, _i8.FishingSpot) get nameComparator =>
+      (super.noSuchMethod(Invocation.getter(#nameComparator),
+              returnValue: (_i8.FishingSpot __p0, _i8.FishingSpot __p1) => 0)
+          as int Function(_i8.FishingSpot, _i8.FishingSpot));
   @override
   Map<_i8.Id, _i8.FishingSpot> get entities =>
       (super.noSuchMethod(Invocation.getter(#entities),
@@ -1959,6 +2063,11 @@ class MockMethodManager extends _i1.Mock implements _i19.MethodManager {
   String get tableName =>
       (super.noSuchMethod(Invocation.getter(#tableName), returnValue: '')
           as String);
+  @override
+  int Function(_i8.Method, _i8.Method) get nameComparator =>
+      (super.noSuchMethod(Invocation.getter(#nameComparator),
+              returnValue: (_i8.Method __p0, _i8.Method __p1) => 0)
+          as int Function(_i8.Method, _i8.Method));
   @override
   Map<_i8.Id, _i8.Method> get entities =>
       (super.noSuchMethod(Invocation.getter(#entities),
@@ -2263,6 +2372,11 @@ class MockSpeciesManager extends _i1.Mock implements _i22.SpeciesManager {
       (super.noSuchMethod(Invocation.getter(#tableName), returnValue: '')
           as String);
   @override
+  int Function(_i8.Species, _i8.Species) get nameComparator =>
+      (super.noSuchMethod(Invocation.getter(#nameComparator),
+              returnValue: (_i8.Species __p0, _i8.Species __p1) => 0)
+          as int Function(_i8.Species, _i8.Species));
+  @override
   Map<_i8.Id, _i8.Species> get entities =>
       (super.noSuchMethod(Invocation.getter(#entities),
           returnValue: <_i8.Id, _i8.Species>{}) as Map<_i8.Id, _i8.Species>);
@@ -2513,8 +2627,8 @@ class MockUserPreferenceManager extends _i1.Mock
       (super.noSuchMethod(Invocation.getter(#shouldUseFirestore),
           returnValue: false) as bool);
   @override
-  List<_i8.Id> get baitCustomEntityIds =>
-      (super.noSuchMethod(Invocation.getter(#baitCustomEntityIds),
+  List<_i8.Id> get baitVariantCustomIds =>
+      (super.noSuchMethod(Invocation.getter(#baitVariantCustomIds),
           returnValue: <_i8.Id>[]) as List<_i8.Id>);
   @override
   List<_i8.Id> get catchCustomEntityIds =>
@@ -2525,8 +2639,8 @@ class MockUserPreferenceManager extends _i1.Mock
       (super.noSuchMethod(Invocation.getter(#atmosphereFieldIds),
           returnValue: <_i8.Id>[]) as List<_i8.Id>);
   @override
-  List<_i8.Id> get baitFieldIds =>
-      (super.noSuchMethod(Invocation.getter(#baitFieldIds),
+  List<_i8.Id> get baitVariantFieldIds =>
+      (super.noSuchMethod(Invocation.getter(#baitVariantFieldIds),
           returnValue: <_i8.Id>[]) as List<_i8.Id>);
   @override
   List<_i8.Id> get catchFieldIds =>
@@ -2580,8 +2694,8 @@ class MockUserPreferenceManager extends _i1.Mock
       (super.noSuchMethod(Invocation.getter(#subscriptionManager),
           returnValue: _FakeSubscriptionManager()) as _i7.SubscriptionManager);
   @override
-  _i9.Future<void> setBaitCustomEntityIds(List<_i8.Id>? ids) =>
-      (super.noSuchMethod(Invocation.method(#setBaitCustomEntityIds, [ids]),
+  _i9.Future<void> setBaitVariantCustomIds(List<_i8.Id>? ids) =>
+      (super.noSuchMethod(Invocation.method(#setBaitVariantCustomIds, [ids]),
           returnValue: Future.value(null),
           returnValueForMissingStub: Future.value()) as _i9.Future<void>);
   @override
@@ -2595,8 +2709,8 @@ class MockUserPreferenceManager extends _i1.Mock
           returnValue: Future.value(null),
           returnValueForMissingStub: Future.value()) as _i9.Future<void>);
   @override
-  _i9.Future<void> setBaitFieldIds(List<_i8.Id>? ids) =>
-      (super.noSuchMethod(Invocation.method(#setBaitFieldIds, [ids]),
+  _i9.Future<void> setBaitVariantFieldIds(List<_i8.Id>? ids) =>
+      (super.noSuchMethod(Invocation.method(#setBaitVariantFieldIds, [ids]),
           returnValue: Future.value(null),
           returnValueForMissingStub: Future.value()) as _i9.Future<void>);
   @override
@@ -2734,6 +2848,11 @@ class MockWaterClarityManager extends _i1.Mock
   String get tableName =>
       (super.noSuchMethod(Invocation.getter(#tableName), returnValue: '')
           as String);
+  @override
+  int Function(_i8.WaterClarity, _i8.WaterClarity) get nameComparator =>
+      (super.noSuchMethod(Invocation.getter(#nameComparator),
+              returnValue: (_i8.WaterClarity __p0, _i8.WaterClarity __p1) => 0)
+          as int Function(_i8.WaterClarity, _i8.WaterClarity));
   @override
   Map<_i8.Id, _i8.WaterClarity> get entities =>
       (super.noSuchMethod(Invocation.getter(#entities),

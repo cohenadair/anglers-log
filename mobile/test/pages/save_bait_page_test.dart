@@ -27,8 +27,8 @@ void main() {
     when(appManager.localDatabaseManager.insertOrReplace(any, any))
         .thenAnswer((_) => Future.value(true));
 
-    when(appManager.userPreferenceManager.baitCustomEntityIds).thenReturn([]);
-    when(appManager.userPreferenceManager.baitFieldIds).thenReturn([]);
+    when(appManager.userPreferenceManager.baitVariantCustomIds).thenReturn([]);
+    when(appManager.userPreferenceManager.baitVariantFieldIds).thenReturn([]);
 
     when(appManager.subscriptionManager.stream)
         .thenAnswer((_) => Stream.empty());
@@ -42,32 +42,6 @@ void main() {
     ));
     expect(find.text("Not Selected"), findsOneWidget);
     expect(findFirst<TextField>(tester).controller!.text, isEmpty);
-  });
-
-  testWidgets("Hide bait category", (tester) async {
-    when(appManager.userPreferenceManager.baitFieldIds).thenReturn([
-      Id()..uuid = "017ae032-477b-4fe4-9be0-ea0a05a576f9", // Name ID
-    ]);
-
-    await tester.pumpWidget(Testable(
-      (_) => SaveBaitPage(),
-      appManager: appManager,
-    ));
-
-    expect(find.text("Bait Category"), findsNothing);
-    expect(find.text("Name"), findsOneWidget);
-  });
-
-  testWidgets("Shows bait category when empty IDs", (tester) async {
-    when(appManager.userPreferenceManager.baitFieldIds).thenReturn([]);
-
-    await tester.pumpWidget(Testable(
-      (_) => SaveBaitPage(),
-      appManager: appManager,
-    ));
-
-    expect(find.text("Bait Category"), findsOneWidget);
-    expect(find.text("Name"), findsOneWidget);
   });
 
   testWidgets("Edit title", (tester) async {
@@ -133,27 +107,13 @@ void main() {
       ..id = categoryId
       ..name = "Lure";
 
-    var customEntityId = randomId();
     var bait = Bait()
       ..id = randomId()
       ..name = "Rapala"
-      ..baitCategoryId = categoryId
-      ..customEntityValues.addAll([
-        CustomEntityValue()
-          ..customEntityId = customEntityId
-          ..value = "Custom Value",
-      ]);
+      ..baitCategoryId = categoryId;
 
     when(appManager.baitCategoryManager.entity(any)).thenReturn(baitCategory);
     when(appManager.baitManager.duplicate(any)).thenReturn(false);
-    when(appManager.customEntityManager.entity(customEntityId))
-        .thenReturn(CustomEntity()
-          ..id = customEntityId
-          ..type = CustomEntity_Type.text
-          ..name = "Custom Entity");
-    when(appManager.userPreferenceManager.baitCustomEntityIds).thenReturn([
-      customEntityId,
-    ]);
 
     await tester.pumpWidget(Testable(
       (_) => SaveBaitPage.edit(bait),
@@ -163,8 +123,6 @@ void main() {
     expect(find.text("Not Selected"), findsNothing);
     expect(find.text("Lure"), findsOneWidget);
     expect(find.text("Rapala"), findsOneWidget);
-    expect(find.text("Custom Entity"), findsOneWidget);
-    expect(find.text("Custom Value"), findsOneWidget);
 
     await enterTextAndSettle(
         tester, find.widgetWithText(TextField, "Name"), "Plug");
@@ -177,8 +135,6 @@ void main() {
     expect(newBait.id, bait.id);
     expect(newBait.baitCategoryId, bait.baitCategoryId);
     expect(newBait.name, "Plug");
-    expect(newBait.customEntityValues.length, bait.customEntityValues.length);
-    expect(bait.customEntityValues.first.value, "Custom Value");
   });
 
   testWidgets("Duplicate bait shows dialog", (tester) async {
@@ -226,7 +182,6 @@ void main() {
     Bait bait = result.captured.first;
     expect(bait.name, "Plug");
     expect(bait.hasBaitCategoryId(), isFalse);
-    expect(bait.customEntityValues.isEmpty, isTrue);
   });
 
   /// https://github.com/cohenadair/anglers-log/issues/462
@@ -234,7 +189,7 @@ void main() {
       (tester) async {
     var baitCategory = BaitCategory()
       ..id = randomId()
-      ..name = "Live";
+      ..name = "Spoon";
 
     // Use real BaitManager to test listener notifications.
     var baitCategoryManager = BaitCategoryManager(appManager.app);
@@ -250,17 +205,17 @@ void main() {
       ),
     );
 
-    expect(find.text("Live"), findsOneWidget);
+    expect(find.text("Spoon"), findsOneWidget);
 
     // Edit the selected category.
-    await tapAndSettle(tester, find.text("Live"));
+    await tapAndSettle(tester, find.text("Spoon"));
     await tapAndSettle(tester, find.widgetWithText(ActionButton, "EDIT"));
-    await tapAndSettle(tester, find.text("Live"));
-    await enterTextAndSettle(tester, find.byType(TextInput), "Live 2");
+    await tapAndSettle(tester, find.text("Spoon"));
+    await enterTextAndSettle(tester, find.byType(TextInput), "Spoon 2");
     await tapAndSettle(tester, find.text("SAVE"));
     await tapAndSettle(tester, find.byType(BackButtonIcon));
 
     // Verify new category name is shown.
-    expect(find.text("Live 2"), findsOneWidget);
+    expect(find.text("Spoon 2"), findsOneWidget);
   });
 }

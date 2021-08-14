@@ -19,6 +19,7 @@ void main() {
   setUp(() {
     appManager = StubbedAppManager();
     when(appManager.customEntityManager.list()).thenReturn([]);
+    when(appManager.customEntityManager.entityExists(any)).thenReturn(true);
   });
 
   testWidgets("Custom fields hidden", (tester) async {
@@ -40,10 +41,12 @@ void main() {
   });
 
   testWidgets("Note shows when there are no custom values", (tester) async {
+    when(appManager.customEntityManager.entityExists(any)).thenReturn(false);
     await tester.pumpWidget(Testable(
       (_) => EditableFormPage(),
       appManager: appManager,
     ));
+
     expect(find.byType(IconLabel), findsOneWidget);
   });
 

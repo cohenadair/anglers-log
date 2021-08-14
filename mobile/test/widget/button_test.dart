@@ -129,12 +129,13 @@ void main() {
   });
 
   group("MinimumIconButton", () {
-    testWidgets("Color", (tester) async {
+    testWidgets("Custom color when enabled", (tester) async {
       await tester.pumpWidget(
         Testable(
           (_) => MinimumIconButton(
             icon: Icons.group,
             color: Colors.red,
+            onTap: () {},
           ),
         ),
       );

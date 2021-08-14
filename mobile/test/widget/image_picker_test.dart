@@ -58,7 +58,6 @@ void main() {
       Testable(
         (_) => ImagePicker.single(
           onImagePicked: (_) => {},
-          requestPhotoPermission: () => Future.value(true),
         ),
       ),
     );

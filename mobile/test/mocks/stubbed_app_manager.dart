@@ -99,6 +99,9 @@ class StubbedAppManager {
       onUpdate: anyNamed("onUpdate"),
       onDelete: anyNamed("onDelete"),
     )).thenReturn(SimpleEntityListener());
+
+    // TODO: Don't stub these by default; lead to unnecessary investigations on
+    //  failed tests.
     when(anglerManager.entity(any)).thenReturn(null);
 
     when(baitCategoryManager.addSimpleListener(
