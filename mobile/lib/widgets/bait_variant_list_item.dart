@@ -16,6 +16,7 @@ class BaitVariantListItem extends StatelessWidget {
   final Widget? trailing;
   final bool isEditing;
   final bool isCondensed;
+  final bool isPicking;
   final bool showBase;
   final VoidCallback? onDelete;
   final void Function(BaitVariant?)? onSave;
@@ -25,6 +26,7 @@ class BaitVariantListItem extends StatelessWidget {
     this.trailing,
     this.isEditing = false,
     this.isCondensed = false,
+    this.isPicking = false,
     this.showBase = false,
     this.onDelete,
     this.onSave,
@@ -76,7 +78,7 @@ class BaitVariantListItem extends StatelessWidget {
         ],
       ),
       editing: isEditing,
-      onTap: onTap,
+      onTap: isPicking ? null : onTap,
       deleteMessageBuilder: (context) =>
           Text(baitManager.deleteVariantMessage(context, variant)),
       onConfirmDelete: onDelete,

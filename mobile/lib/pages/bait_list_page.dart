@@ -38,6 +38,12 @@ class BaitListPage extends StatefulWidget {
 class _BaitListPageState extends State<BaitListPage> {
   static const _log = Log("BaitListPage");
 
+  // Required for comparisons when updating the list after data model changes.
+  // Without a consistent ID, multiple "No Category" headings are created and
+  // removed, resulting in a jarring UI transition.
+  final _noCategoryId = Id(uuid: "131dfbc9-4313-48b6-930e-867298e553b9");
+
+  BaitCategory? _firstCategory;
   var _baits = <Bait>[];
   final _selectedVariants = <BaitVariant>{};
 
@@ -83,23 +89,17 @@ class _BaitListPageState extends State<BaitListPage> {
             selectable: false,
             child: Padding(
               padding: EdgeInsets.only(
-                left: paddingDefault,
-                right: paddingDefault,
-                top: paddingDefault,
-                bottom: paddingWidgetSmall,
+                top: paddingWidgetSmall,
+                bottom: paddingWidget,
               ),
-              child: Text(item.name, style: styleListHeading(context)),
+              child: HeadingDivider(
+                item.name,
+                showDivider: _firstCategory == null || item != _firstCategory,
+              ),
             ),
           );
-        } else if (item is Bait) {
-          return _buildBaitItem(item);
         } else {
-          assert(item is Widget);
-          return ManageableListPageItemModel(
-            editable: false,
-            selectable: false,
-            child: item as Widget,
-          );
+          return _buildBaitItem(item);
         }
       },
       itemManager: ManageableListPageItemManager<dynamic>(
@@ -139,7 +139,7 @@ class _BaitListPageState extends State<BaitListPage> {
     // Add a category for baits that don't have a category. This is purposely
     // added to the end of the sorted list.
     var noCategory = BaitCategory()
-      ..id = randomId()
+      ..id = _noCategoryId
       ..name = Strings.of(context).baitListPageOtherCategory;
     categories.add(noCategory);
 
@@ -160,9 +160,9 @@ class _BaitListPageState extends State<BaitListPage> {
         continue;
       }
 
-      // Add a divider between categories; skip first one.
-      if (result.isNotEmpty) {
-        result.add(MinDivider());
+      // Cache first item so we can hide the divider.
+      if (result.isEmpty) {
+        _firstCategory = category;
       }
 
       result.add(category);
@@ -180,6 +180,7 @@ class _BaitListPageState extends State<BaitListPage> {
         bait.variants,
         showHeader: false,
         isCondensed: true,
+        isPicking: true,
         onCheckboxChanged: (variant, isChecked) {
           setState(() {
             if (isChecked) {

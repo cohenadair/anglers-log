@@ -344,6 +344,8 @@ class ManageableListItem extends StatelessWidget {
       grandchild = ManageableListGrandchild(child: grandchild);
     }
 
+    var touchColor = onTap == null ? Colors.transparent : null;
+
     return SafeArea(
       top: false,
       bottom: false,
@@ -351,6 +353,8 @@ class ManageableListItem extends StatelessWidget {
         isEnabled: enabled,
         child: InkWell(
           onTap: onTap,
+          splashColor: touchColor,
+          highlightColor: touchColor,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [

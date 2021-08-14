@@ -95,8 +95,6 @@ class _ManageableListPageState<T> extends State<ManageableListPage<T>> {
   _ViewingState _viewingState = _ViewingState.viewing;
   String? _searchText;
 
-  bool get _isViewing => _viewingState == _ViewingState.viewing;
-
   bool get _isPickingMulti => _viewingState == _ViewingState.pickingMulti;
 
   bool get _isPickingSingle => _viewingState == _ViewingState.pickingSingle;
@@ -379,6 +377,19 @@ class _ManageableListPageState<T> extends State<ManageableListPage<T>> {
     var canEdit = _isEditing && item.editable;
     var enabled = !_isEditing || canEdit;
 
+    VoidCallback? onTap;
+    if (enabled) {
+      if (canEdit) {
+        onTap = () => present(
+            context, widget.itemManager.editPageBuilder!(itemValue));
+      } else if (_isPickingSingle) {
+        onTap = () => _finishPicking({itemValue});
+      } else if (_hasDetailPage && !_isPickingMulti) {
+        onTap = () =>
+            push(context, widget.itemManager.detailPageBuilder!(itemValue));
+      }
+    }
+
     var listItem = ManageableListItem(
       child: item.child,
       editing: canEdit,
@@ -386,23 +397,7 @@ class _ManageableListPageState<T> extends State<ManageableListPage<T>> {
       deleteMessageBuilder: (context) =>
           widget.itemManager.deleteWidget(context, itemValue),
       onConfirmDelete: () => widget.itemManager.deleteItem(context, itemValue),
-      onTap: !enabled || (_isViewing && !_hasDetailPage && !canEdit)
-          ? null
-          : () {
-              if (_isPickingMulti && !canEdit) {
-                // Taps are consumed by trailing checkbox in this case.
-                return;
-              }
-
-              if (canEdit) {
-                present(
-                    context, widget.itemManager.editPageBuilder!(itemValue));
-              } else if (_isPickingSingle) {
-                _finishPicking({itemValue});
-              } else if (widget.itemManager.detailPageBuilder != null) {
-                push(context, widget.itemManager.detailPageBuilder!(itemValue));
-              }
-            },
+      onTap: onTap,
       onTapDeleteButton: widget.itemManager.onTapDeleteButton == null
           ? null
           : () => widget.itemManager.onTapDeleteButton!(itemValue),
@@ -587,6 +582,7 @@ class ManageableListPageSearchDelegate {
 
 /// A convenient class for storing properties for a single item in a
 /// [ManageableListPage].
+@immutable
 class ManageableListPageItemModel {
   /// True if this item can be edited; false otherwise. This may be false for
   /// section headers or dividers. Defaults to true.

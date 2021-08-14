@@ -8,7 +8,6 @@ import '../pages/save_bait_variant_page.dart';
 import '../res/dimen.dart';
 import '../utils/animated_list_model.dart';
 import '../utils/page_utils.dart';
-import '../utils/protobuf_utils.dart';
 import 'animated_list_transition.dart';
 import 'bait_variant_list_item.dart';
 import 'button.dart';
@@ -22,6 +21,7 @@ class BaitVariantListInput extends StatefulWidget {
   final EdgeInsets? padding;
   final bool isEditing;
   final bool isCondensed;
+  final bool isPicking;
   final bool showHeader;
 
   final void Function(BaitVariant, bool)? onCheckboxChanged;
@@ -34,6 +34,7 @@ class BaitVariantListInput extends StatefulWidget {
     this.padding,
     this.isEditing = true,
     this.isCondensed = false,
+    this.isPicking = false,
     this.showHeader = true,
     this.selectedItems = const {},
   });
@@ -42,6 +43,7 @@ class BaitVariantListInput extends StatefulWidget {
     List<BaitVariant> items, {
     bool showHeader = true,
     bool isCondensed = false,
+    bool isPicking = false,
     EdgeInsets? padding,
     void Function(BaitVariant, bool)? onCheckboxChanged,
     Set<BaitVariant> selectedItems = const {},
@@ -49,6 +51,7 @@ class BaitVariantListInput extends StatefulWidget {
           controller: ListInputController<BaitVariant>()..value = items,
           isEditing: false,
           isCondensed: isCondensed,
+          isPicking: isPicking,
           showHeader: showHeader,
           padding: padding,
           onCheckboxChanged: onCheckboxChanged,
@@ -142,6 +145,7 @@ class _BaitVariantListInputState extends State<BaitVariantListInput> {
         trailing: trailing,
         isEditing: widget.isEditing,
         isCondensed: widget.isCondensed,
+        isPicking: widget.isPicking,
         onDelete: () => _items.remove(variant),
         onSave: _onAddOrUpdate,
       ),
