@@ -117,7 +117,7 @@ void main() {
       return result;
     });
     when(appManager.baitManager.variantFromAttachment(any)).thenReturn(null);
-    when(appManager.baitManager.baitAttachmentList())
+    when(appManager.baitManager.attachmentList())
         .thenReturn(baitAttachmentList);
     when(appManager.baitManager.numberOfCatches(any)).thenReturn(0);
 

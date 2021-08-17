@@ -380,8 +380,8 @@ class _ManageableListPageState<T> extends State<ManageableListPage<T>> {
     VoidCallback? onTap;
     if (enabled) {
       if (canEdit) {
-        onTap = () => present(
-            context, widget.itemManager.editPageBuilder!(itemValue));
+        onTap = () =>
+            present(context, widget.itemManager.editPageBuilder!(itemValue));
       } else if (_isPickingSingle) {
         onTap = () => _finishPicking({itemValue});
       } else if (_hasDetailPage && !_isPickingMulti) {

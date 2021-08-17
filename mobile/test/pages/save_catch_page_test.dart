@@ -779,7 +779,7 @@ void main() {
       var bait = Bait()
         ..id = randomId()
         ..name = "Rapala";
-      when(appManager.baitManager.baitAttachmentList()).thenReturn([
+      when(appManager.baitManager.attachmentList()).thenReturn([
         BaitAttachment(baitId: bait.id),
       ]);
       when(appManager.baitManager.filteredList(any)).thenReturn([bait]);

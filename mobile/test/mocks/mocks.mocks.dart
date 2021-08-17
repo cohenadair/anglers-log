@@ -887,7 +887,7 @@ class MockBaitManager extends _i1.Mock implements _i13.BaitManager {
           as String);
   @override
   int Function(_i8.BaitAttachment, _i8.BaitAttachment)
-      get baitAttachmentComparator =>
+      get attachmentComparator =>
           (super.noSuchMethod(Invocation.getter(#baitAttachmentComparator),
               returnValue: (_i8.BaitAttachment __p0, _i8.BaitAttachment __p1) =>
                   0) as int Function(_i8.BaitAttachment, _i8.BaitAttachment));
@@ -992,7 +992,7 @@ class MockBaitManager extends _i1.Mock implements _i13.BaitManager {
       Invocation.method(#numberOfCustomEntityValues, [customEntityId]),
       returnValue: 0) as int);
   @override
-  List<_i8.BaitAttachment> baitAttachmentList() =>
+  List<_i8.BaitAttachment> attachmentList() =>
       (super.noSuchMethod(Invocation.method(#baitAttachmentList, []),
           returnValue: <_i8.BaitAttachment>[]) as List<_i8.BaitAttachment>);
   @override

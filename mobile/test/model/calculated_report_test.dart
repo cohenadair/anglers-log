@@ -277,7 +277,7 @@ void main() {
     when(baitManager.list()).thenReturn(baitMap.values.toList());
     when(baitManager.entity(any))
         .thenAnswer((invocation) => baitMap[invocation.positionalArguments[0]]);
-    when(baitManager.baitAttachmentComparator).thenReturn((lhs, rhs) => 0);
+    when(baitManager.attachmentComparator).thenReturn((lhs, rhs) => 0);
 
     catchManager = appManager.catchManager;
     when(catchManager.list()).thenReturn(_catches);
@@ -572,7 +572,7 @@ void main() {
     // Verify comparators are called and trust they work as expected.
     verify(speciesManager.nameComparator).called(1);
     verify(fishingSpotManager.nameComparator).called(2);
-    verify(baitManager.baitAttachmentComparator).called(2);
+    verify(baitManager.attachmentComparator).called(2);
   });
 
   testWidgets("Gather data sequential order", (tester) async {

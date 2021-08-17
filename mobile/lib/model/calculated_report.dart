@@ -321,11 +321,11 @@ class CalculatedReport {
         _catchesPerFishingSpot = sortedMap<FishingSpot>(
             _catchesPerFishingSpot, _fishingSpotManager.nameComparator);
         _catchesPerBait = sortedMap<BaitAttachment>(
-            _catchesPerBait, _baitManager.baitAttachmentComparator);
+            _catchesPerBait, _baitManager.attachmentComparator);
         _fishingSpotsPerSpecies =
             _fishingSpotsPerSpecies.sorted(_fishingSpotManager.nameComparator);
         _baitsPerSpecies =
-            _baitsPerSpecies.sorted(_baitManager.baitAttachmentComparator);
+            _baitsPerSpecies.sorted(_baitManager.attachmentComparator);
         break;
       case CalculatedReportSortOrder.largestToSmallest:
         _catchesPerSpecies = sortedMap<Species>(_catchesPerSpecies);

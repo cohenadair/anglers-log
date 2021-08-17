@@ -189,7 +189,7 @@ void main() {
         .thenAnswer((invocation) => baitMap[invocation.positionalArguments[0]]);
     when(appManager.baitManager.nameComparator)
         .thenReturn((lhs, rhs) => quiver.compareIgnoreCase(lhs.name, rhs.name));
-    when(appManager.baitManager.baitAttachmentComparator)
+    when(appManager.baitManager.attachmentComparator)
         .thenReturn((lhs, rhs) => 0);
     when(appManager.baitManager.attachmentsDisplayValues(any, any))
         .thenAnswer((invocation) {

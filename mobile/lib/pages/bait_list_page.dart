@@ -270,7 +270,7 @@ class _BaitListPageState extends State<BaitListPage> {
         // available BaitAttachment objects, we know the user has selected all
         // items.
         var baits = _noVariantBaits(selectedItems);
-        var all = _baitManager.baitAttachmentList();
+        var all = _baitManager.attachmentList();
         return baits.length + _selectedVariants.length == all.length;
       },
       title: Text(Strings.of(context).pickerTitleBait),
@@ -341,7 +341,7 @@ class BaitPickerInput extends StatelessWidget {
   }
 
   void _showBaitListPage(BuildContext context, BaitManager baitManager) {
-    var allValues = baitManager.baitAttachmentList().toSet();
+    var allValues = baitManager.attachmentList().toSet();
 
     push(
       context,

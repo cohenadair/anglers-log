@@ -82,6 +82,8 @@ class BaitManager extends NamedEntityManager<Bait> {
           await _imageManager.save([imageFile], compress: compressImages);
       if (savedImages.isNotEmpty) {
         bait.imageName = savedImages.first;
+      } else {
+        bait.clearImageName();
       }
     }
 
@@ -89,13 +91,9 @@ class BaitManager extends NamedEntityManager<Bait> {
   }
 
   /// Returns true if any [BaitVariant] in [variants] matches [filter].
-  bool _variantsMatchesFilter(List<BaitVariant> variants, String? filter) {
-    if (isEmpty(filter)) {
-      return true;
-    }
-
+  bool _variantsMatchesFilter(List<BaitVariant> variants, String filter) {
     for (var variant in variants) {
-      if (containsTrimmedLowerCase(variant.color, filter!) ||
+      if (containsTrimmedLowerCase(variant.color, filter) ||
           containsTrimmedLowerCase(variant.modelNumber, filter) ||
           containsTrimmedLowerCase(variant.size, filter) ||
           containsTrimmedLowerCase(variant.minDiveDepth.toString(), filter) ||
@@ -112,7 +110,7 @@ class BaitManager extends NamedEntityManager<Bait> {
   bool attachmentsMatchesFilter(Iterable<BaitAttachment> attachments,
       String? filter, BuildContext context) {
     for (var attachment in attachments) {
-      if (matchesFilter(attachment.baitId, filter)) {
+      if (matchesFilter(attachment.baitId, filter, context)) {
         return true;
       }
     }
@@ -193,7 +191,7 @@ class BaitManager extends NamedEntityManager<Bait> {
   /// [BaitAttachment.baitId] property, but may not have a
   /// [BaitAttachment.variantId] property if the [Bait] associated with
   /// [BaitAttachment.baitId] doesn't have any variants.
-  List<BaitAttachment> baitAttachmentList() {
+  List<BaitAttachment> attachmentList() {
     var result = <BaitAttachment>[];
 
     var baits = list();
@@ -280,11 +278,15 @@ class BaitManager extends NamedEntityManager<Bait> {
 
     if (variant.hasMinDiveDepth() && variant.hasMaxDiveDepth()) {
       values.add("${variant.minDiveDepth.displayValue(context)} - "
-          "${variant.minDiveDepth.displayValue(context)}");
+          "${variant.maxDiveDepth.displayValue(context)}");
     } else if (variant.hasMinDiveDepth()) {
-      values.add(variant.minDiveDepth.displayValue(context));
+      values.add(format(
+          Strings.of(context).numberBoundaryGreaterThanOrEqualToValue,
+          [variant.minDiveDepth.displayValue(context)]));
     } else if (variant.hasMaxDiveDepth()) {
-      values.add(variant.maxDiveDepth.displayValue(context));
+      values.add(format(
+          Strings.of(context).numberBoundaryLessThanOrEqualToValue,
+          [variant.maxDiveDepth.displayValue(context)]));
     }
 
     if (includeCustomValues) {
@@ -323,7 +325,7 @@ class BaitManager extends NamedEntityManager<Bait> {
     return format(string, [numOfCatches]);
   }
 
-  int Function(BaitAttachment, BaitAttachment) get baitAttachmentComparator =>
+  int Function(BaitAttachment, BaitAttachment) get attachmentComparator =>
       (lhs, rhs) =>
           compareIgnoreCase(_sortValue(lhs.baitId), _sortValue(rhs.baitId));
 
