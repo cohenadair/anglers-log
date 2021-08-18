@@ -69,6 +69,11 @@ void main() {
     catchManager = CatchManager(appManager.app);
   });
 
+  test("matchesFilter catch doesn't exist", () {
+    expect(catchManager.matchesFilter(randomId(), "Test"), isFalse);
+    verifyNever(speciesManager.matchesFilter(any, any));
+  });
+
   testWidgets("Filtering by nothing returns all catches", (tester) async {
     await catchManager.addOrUpdate(Catch()..id = randomId());
     await catchManager.addOrUpdate(Catch()..id = randomId());

@@ -221,6 +221,14 @@ class BaitManager extends NamedEntityManager<Bait> {
     return variant(bait, attachment.variantId);
   }
 
+  /// Returns a user-facing value for [attachment], or null if the [Bait]
+  /// associated with [attachment] doesn't exist. The returned value is in the
+  /// format "<category name> - <bait name> (<variant display values>)".
+  /// For example:
+  ///   - Minnow
+  ///   - Live - Minnow
+  ///   - Minnow (Size: Small)
+  ///   - Live - Minnow (Size: Small)
   String? attachmentDisplayValue(
       BaitAttachment attachment, BuildContext context) {
     var bait = entity(attachment.baitId);
@@ -242,6 +250,10 @@ class BaitManager extends NamedEntityManager<Bait> {
     }
   }
 
+  /// Returns a list of user-facing values for each [BaitAttachment] in
+  /// [attachments].
+  ///
+  /// Calls [attachmentDisplayValue] for each [BaitAttachment].
   List<String> attachmentsDisplayValues(
       Iterable<BaitAttachment> attachments, BuildContext context) {
     var result = <String>[];
@@ -257,6 +269,10 @@ class BaitManager extends NamedEntityManager<Bait> {
     return result;
   }
 
+  /// Returns a user-facing value for [variant], or an empty string if [variant]
+  /// doesn't have any values set. The bait variant's properties are joined
+  /// using [formatList]. [BaitVariant.description] is intentionally excluded
+  /// from the result to avoid unnecessarily long return values.
   String variantDisplayValue(
     BaitVariant variant,
     BuildContext context, {
@@ -300,6 +316,8 @@ class BaitManager extends NamedEntityManager<Bait> {
     return formatList(values);
   }
 
+  /// Returns a user-facing confirmation message that should be shown when
+  /// a user attempts to delete a [Bait].
   String deleteMessage(BuildContext context, Bait bait) {
     var numOfCatches = numberOfCatches(bait.id);
     var string = numOfCatches == 1
@@ -317,6 +335,8 @@ class BaitManager extends NamedEntityManager<Bait> {
     return format(string, [baitName, numOfCatches]);
   }
 
+  /// Returns a user-facing confirmation message that should be shown when
+  /// a user attempts to delete a [BaitVariant].
   String deleteVariantMessage(BuildContext context, BaitVariant variant) {
     var numOfCatches = numberOfVariantCatches(variant.id);
     var string = numOfCatches == 1

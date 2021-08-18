@@ -249,6 +249,31 @@ void main() {
     expect(catchManager.list().where((cat) => cat.hasAtmosphere()).length, 53);
 
     verifyIds();
+
+    // Verify baits are imported correctly.
+
+    // Artificial, color.
+    var bigBlue = baitManager.list().firstWhere((e) => e.name == "Big Blue");
+    expect(bigBlue.type, Bait_Type.artificial);
+    expect(bigBlue.variants.length, 1);
+    expect(bigBlue.variants.first.color, "Blue And Silver");
+
+    // Real, size.
+    var blueRoe = baitManager.list().firstWhere((e) => e.name == "Blue");
+    expect(blueRoe.type, Bait_Type.real);
+    expect(blueRoe.variants.length, 1);
+    expect(blueRoe.variants.first.size, "Medium");
+
+    // Live, description.
+    var crayfish = baitManager.list().firstWhere((e) => e.name == "Crayfish");
+    expect(crayfish.type, Bait_Type.live);
+    expect(crayfish.variants.length, 1);
+    expect(crayfish.variants.first.description,
+        "Hooked through the end of the tail.");
+
+    // No variants.
+    var leech = baitManager.list().firstWhere((e) => e.name == "Leech");
+    expect(leech.variants, isEmpty);
   });
 
   test("Import legacy Android", () async {
@@ -348,6 +373,31 @@ void main() {
     expect(catchManager.list().where((cat) => cat.hasAtmosphere()).length, 36);
 
     verifyIds();
+
+    // Verify baits are imported correctly.
+
+    // Artificial, color.
+    var bigBlue = baitManager.list().firstWhere((e) => e.name == "Big Blue");
+    expect(bigBlue.type, Bait_Type.artificial);
+    expect(bigBlue.variants.length, 1);
+    expect(bigBlue.variants.first.color, "Blue And Silver");
+
+    // Real, size.
+    var blueRoe = baitManager.list().firstWhere((e) => e.name == "Blue");
+    expect(blueRoe.type, Bait_Type.real);
+    expect(blueRoe.variants.length, 1);
+    expect(blueRoe.variants.first.size, "Medium");
+
+    // Live, description.
+    var crayfish = baitManager.list().firstWhere((e) => e.name == "Crayfish");
+    expect(crayfish.type, Bait_Type.live);
+    expect(crayfish.variants.length, 1);
+    expect(crayfish.variants.first.description,
+        "Hooked through the end of the tail.");
+
+    // No variants.
+    var leech = baitManager.list().firstWhere((e) => e.name == "Leech");
+    expect(leech.variants, isEmpty);
   });
 
   test("Empty user defines", () async {
@@ -433,11 +483,19 @@ void main() {
     var file = File("test/resources/backups/legacy_ios_entities.zip");
     await LegacyImporter(appManager.app, file).start();
 
+    // Note that imageName is tested in the tests that import photos. In this
+    // test, photos are not included in the test .zip file.
+
     var baits = baitManager.list();
     expect(baits, isNotNull);
     expect(baits.length, 1);
     expect(baits.first.name, "Corn");
     expect(baits.first.hasBaitCategoryId(), false);
+    expect(baits.first.type, Bait_Type.real);
+    expect(baits.first.variants.length, 1);
+    expect(baits.first.variants.first.description, "4-5 on line, 2-3 on hook.");
+    expect(baits.first.variants.first.hasSize(), isFalse);
+    expect(baits.first.variants.first.hasColor(), isFalse);
   });
 
   test("Import iOS species", () async {
@@ -564,6 +622,9 @@ void main() {
     var file = File("test/resources/backups/legacy_android_entities.zip");
     await LegacyImporter(appManager.app, file).start();
 
+    // Note that imageName is tested in the tests that import photos. In this
+    // test, photos are not included in the test .zip file.
+
     var baits = baitManager.listSortedByName();
     expect(baits, isNotNull);
     expect(baits.length, 2);
@@ -571,9 +632,19 @@ void main() {
     expect(baits[0].name, "Rapala F-7 - Brown Trout");
     expect(baits[0].hasBaitCategoryId(), true);
     expect(baitCategoryManager.entity(baits[0].baitCategoryId)!.name, "Other");
+    expect(baits[0].type, Bait_Type.artificial);
+    expect(baits[0].variants.length, 1);
+    expect(baits[0].variants.first.description, "Depth 3-5'.");
+    expect(baits[0].variants.first.size, "F-7");
+    expect(baits[0].variants.first.color, "Brown Trout");
 
     expect(baits[1].name, "Z-Man");
     expect(baits[1].hasBaitCategoryId(), false);
+    expect(baits[0].type, Bait_Type.artificial);
+    expect(baits[0].variants.length, 1);
+    expect(baits[0].variants.first.description, "Depth 3-5'.");
+    expect(baits[0].variants.first.size, "F-7");
+    expect(baits[0].variants.first.color, "Brown Trout");
   });
 
   test("Import Android species", () async {
