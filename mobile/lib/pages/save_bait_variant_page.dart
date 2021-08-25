@@ -55,7 +55,6 @@ class _SaveBaitVariantPageState extends State<SaveBaitVariantPage> {
   final Map<Id, Field> _fields = {};
 
   List<CustomEntityValue> _customEntityValues = [];
-  List<CustomEntityValue> _newCustomEntityValues = [];
 
   UserPreferenceManager get _userPreferencesManager =>
       UserPreferenceManager.of(context);
@@ -162,7 +161,7 @@ class _SaveBaitVariantPageState extends State<SaveBaitVariantPage> {
       customEntityIds: _userPreferencesManager.baitVariantCustomIds,
       customEntityValues: _customEntityValues,
       onCustomFieldChanged: (map) {
-        _newCustomEntityValues = entityValuesFromMap(map);
+        _customEntityValues = entityValuesFromMap(map);
         _onFieldUpdated();
       },
       onBuildField: _buildField,
@@ -274,7 +273,7 @@ class _SaveBaitVariantPageState extends State<SaveBaitVariantPage> {
       padding: insetsHorizontalDefault,
       child: TextInput.description(
         context,
-        title: Strings.of(context).catchFieldNotesLabel,
+        title: Strings.of(context).saveBaitVariantPageDescription,
         controller: _descriptionController,
         onChanged: (_) => _onFieldUpdated(),
       ),
@@ -285,7 +284,7 @@ class _SaveBaitVariantPageState extends State<SaveBaitVariantPage> {
     // Note that baseId is set when the base Bait object is saved.
     var newVariant = BaitVariant()
       ..id = _oldBaitVariant?.id ?? randomId()
-      ..customEntityValues.addAll(_newCustomEntityValues);
+      ..customEntityValues.addAll(_customEntityValues);
 
     if (isNotEmpty(_colorController.value)) {
       newVariant.color = _colorController.value!;

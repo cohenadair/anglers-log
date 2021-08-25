@@ -65,7 +65,7 @@ class EditableFormPage extends StatefulWidget {
   final bool isInputValid;
 
   /// See [FormPage.isEditable]. This is useful for conditionally making the
-  /// form editable. Defaults to true.
+  /// form editable on subsequent builds. Defaults to true.
   final bool isEditable;
 
   /// See [FormPage.showSaveButton].

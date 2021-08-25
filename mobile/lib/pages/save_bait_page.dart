@@ -60,7 +60,9 @@ class _SaveBaitPageState extends State<SaveBaitPage> {
           _oldBait!.hasBaitCategoryId() ? _oldBait!.baitCategoryId : null;
       _typeController.value = _oldBait!.hasType() ? _oldBait!.type : null;
       _variantsController.value = _oldBait!.variants;
-    } else {
+    }
+
+    if (!_typeController.hasValue) {
       _typeController.value = Bait_Type.artificial;
     }
   }
@@ -135,6 +137,7 @@ class _SaveBaitPageState extends State<SaveBaitPage> {
   Widget _buildType() {
     return RadioInput(
       padding: insetsHorizontalDefaultVerticalSmall,
+      initialSelectedIndex: _typeController.value!.value,
       optionCount: Bait_Type.values.length,
       optionBuilder: (context, index) =>
           Bait_Type.values[index].displayName(context),

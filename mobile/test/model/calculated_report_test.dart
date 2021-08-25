@@ -51,8 +51,17 @@ void main() {
   var baitId3 = randomId();
   var baitId4 = randomId();
 
-  var baitAttachment0 = BaitAttachment(baitId: baitId0);
-  var baitAttachment1 = BaitAttachment(baitId: baitId1);
+  var baitVariantId0 = randomId();
+  var baitVariantId1 = randomId();
+
+  var baitAttachment0 = BaitAttachment(
+    baitId: baitId0,
+    variantId: baitVariantId0,
+  );
+  var baitAttachment1 = BaitAttachment(
+    baitId: baitId1,
+    variantId: baitVariantId1,
+  );
   var baitAttachment2 = BaitAttachment(baitId: baitId2);
   var baitAttachment3 = BaitAttachment(baitId: baitId3);
   var baitAttachment4 = BaitAttachment(baitId: baitId4);
@@ -159,10 +168,20 @@ void main() {
   var baitMap = <Id, Bait>{
     baitId0: Bait()
       ..id = baitId0
-      ..name = "Worm",
+      ..name = "Worm"
+      ..variants.add(BaitVariant(
+        id: baitVariantId0,
+        baseId: baitId0,
+        color: "Brown",
+      )),
     baitId1: Bait()
       ..id = baitId1
-      ..name = "Bugger",
+      ..name = "Bugger"
+      ..variants.add(BaitVariant(
+        id: baitVariantId1,
+        baseId: baitId1,
+        color: "Olive",
+      )),
     baitId2: Bait()
       ..id = baitId2
       ..name = "Minnow",
@@ -557,6 +576,8 @@ void main() {
     );
 
     expect(data.catchesPerSpecies.length, 5);
+    expect(data.catchesPerFishingSpot.length, 5);
+    expect(data.catchesPerBait.length, 5);
   });
 
   testWidgets("Gather data alphabetical order", (tester) async {

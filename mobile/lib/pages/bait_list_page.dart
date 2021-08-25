@@ -5,13 +5,11 @@ import '../bait_manager.dart';
 import '../catch_manager.dart';
 import '../entity_manager.dart';
 import '../i18n/strings.dart';
-import '../log.dart';
 import '../model/gen/anglerslog.pb.dart';
 import '../pages/bait_page.dart';
 import '../pages/manageable_list_page.dart';
 import '../pages/save_bait_page.dart';
 import '../res/dimen.dart';
-import '../res/style.dart';
 import '../utils/page_utils.dart';
 import '../utils/protobuf_utils.dart';
 import '../utils/string_utils.dart';
@@ -22,22 +20,20 @@ import '../widgets/multi_list_picker_input.dart';
 import '../widgets/widget.dart';
 
 class BaitListPage extends StatefulWidget {
-  final BaitListPagePickerSettings? _pickerSettings;
+  final BaitListPagePickerSettings? pickerSettings;
 
-  BaitListPage() : _pickerSettings = null;
+  BaitListPage() : pickerSettings = null;
 
   /// To create a picker, use [BaitPickerInput].
   BaitListPage._picker({
-    BaitListPagePickerSettings? pickerSettings,
-  }) : _pickerSettings = pickerSettings;
+    this.pickerSettings,
+  });
 
   @override
   _BaitListPageState createState() => _BaitListPageState();
 }
 
 class _BaitListPageState extends State<BaitListPage> {
-  static const _log = Log("BaitListPage");
-
   // Required for comparisons when updating the list after data model changes.
   // Without a consistent ID, multiple "No Category" headings are created and
   // removed, resulting in a jarring UI transition.
@@ -54,7 +50,7 @@ class _BaitListPageState extends State<BaitListPage> {
 
   CatchManager get _catchManager => CatchManager.of(context);
 
-  bool get _isPicking => widget._pickerSettings != null;
+  bool get _isPicking => widget.pickerSettings != null;
 
   @override
   void initState() {
@@ -117,11 +113,8 @@ class _BaitListPageState extends State<BaitListPage> {
         deleteWidget: (context, bait) =>
             Text(_baitManager.deleteMessage(context, bait)),
         deleteItem: (context, bait) {
-          if (bait is Bait) {
-            _baitManager.delete(bait.id);
-          } else {
-            _log.e("Calling deleteItem callback on non-bait object.");
-          }
+          assert(bait is Bait, "Cannot delete a non-bait object");
+          _baitManager.delete(bait.id);
         },
         addPageBuilder: () => SaveBaitPage(),
         detailPageBuilder: (bait) => BaitPage(bait as Bait),
@@ -229,7 +222,7 @@ class _BaitListPageState extends State<BaitListPage> {
 
   BaitListPagePickerSettings get _pickerSettings {
     assert(_isPicking, "Check _isPicking before accessing _pickerSettings");
-    return widget._pickerSettings!;
+    return widget.pickerSettings!;
   }
 
   ManageableListPagePickerSettings? get manageableListPagePickerSettings {

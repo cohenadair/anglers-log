@@ -62,4 +62,27 @@ void main() {
     expect(entityManager.nameExists("  catfish "), true);
     expect(entityManager.nameExists("perch"), false);
   });
+
+  test("nameComparator", () async {
+    var species = [
+      Species()
+        ..id = randomId()
+        ..name = "Smallmouth Bass",
+      Species()
+        ..id = randomId()
+        ..name = "Largemouth Bass",
+      Species()
+        ..id = randomId()
+        ..name = "Blue Catfish",
+      Species()
+        ..id = randomId()
+        ..name = "Flathead Catfish",
+    ];
+
+    species.sort(entityManager.nameComparator);
+    expect(species[0].name, "Blue Catfish");
+    expect(species[1].name, "Flathead Catfish");
+    expect(species[2].name, "Largemouth Bass");
+    expect(species[3].name, "Smallmouth Bass");
+  });
 }

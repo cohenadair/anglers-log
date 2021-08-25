@@ -19,6 +19,7 @@ import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mobile/water_clarity_manager.dart';
 import 'package:mobile/widgets/button.dart';
 import 'package:mobile/widgets/date_time_picker.dart';
+import 'package:mobile/widgets/image_input.dart';
 import 'package:mobile/widgets/image_picker.dart';
 import 'package:mobile/widgets/search_bar.dart';
 import 'package:mobile/widgets/static_fishing_spot.dart';
@@ -438,6 +439,9 @@ void main() {
         findFirstWithText<TextInput>(tester, "Notes").controller?.value,
         isNull,
       );
+
+      var image = tester.widget<ImageInput>(find.byType(ImageInput));
+      expect(image.initialImageNames, isEmpty);
     });
 
     testWidgets("Saving", (tester) async {

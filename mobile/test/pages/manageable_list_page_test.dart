@@ -571,6 +571,48 @@ void main() {
       verifyCheckbox(tester, "White Bass", checked: false);
     });
 
+    testWidgets("Multi-picker onPicked all invoked", (tester) async {
+      var invoked = false;
+      await tester.pumpWidget(
+        Testable(
+          (_) => ManageableListPage<String>(
+            itemManager: defaultItemManager,
+            itemBuilder: defaultItemBuilder,
+            pickerSettings: ManageableListPagePickerSettings<String>(
+              onPicked: (context, items) => false,
+              onPickedAll: (_) => invoked = true,
+            ),
+          ),
+        ),
+      );
+
+      await tapAndSettle(tester, findManageableListItemCheckbox(tester, "All"));
+      expect(invoked, isTrue);
+    });
+
+    testWidgets("Trailing is empty for items with a grandchild",
+        (tester) async {
+      await tester.pumpWidget(
+        Testable(
+          (_) => ManageableListPage<String>(
+            itemManager: defaultItemManager,
+            itemBuilder: (context, item) => ManageableListPageItemModel(
+              child: Text(item),
+              grandchild: item == "White Bass" ? Text("Grandchild") : null,
+            ),
+            pickerSettings: ManageableListPagePickerSettings<String>(
+              onPicked: (context, items) => false,
+              isMulti: true,
+            ),
+          ),
+        ),
+      );
+
+      // There should be 4 checkboxes -- "All", and all items, except
+      // "White Bass".
+      expect(find.byType(PaddedCheckbox), findsNWidgets(4));
+    });
+
     testWidgets("Not-required single-picker shows clear option",
         (tester) async {
       await tester.pumpWidget(

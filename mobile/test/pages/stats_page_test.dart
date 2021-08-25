@@ -1,5 +1,9 @@
 import 'package:fixnum/fixnum.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mobile/pages/bait_page.dart';
+import 'package:mobile/pages/bait_variant_page.dart';
 import 'package:mobile/report_manager.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
 import 'package:mobile/pages/stats_page.dart';
@@ -34,10 +38,15 @@ void main() {
   var baitId3 = randomId();
   var baitId4 = randomId();
 
+  var baitVariantId0 = randomId();
+
   var baitAttachment0 = BaitAttachment(baitId: baitId0);
   var baitAttachment1 = BaitAttachment(baitId: baitId1);
   var baitAttachment2 = BaitAttachment(baitId: baitId2);
-  var baitAttachment4 = BaitAttachment(baitId: baitId4);
+  var baitAttachment4 = BaitAttachment(
+    baitId: baitId4,
+    variantId: baitVariantId0,
+  );
 
   var catchId0 = randomId();
   var catchId1 = randomId();
@@ -111,7 +120,14 @@ void main() {
       ..name = "Grasshopper",
     baitId4: Bait()
       ..id = baitId4
-      ..name = "Grub",
+      ..name = "Grub"
+      ..variants.add(
+        BaitVariant(
+          id: baitVariantId0,
+          baseId: baitId4,
+          color: "Red",
+        ),
+      ),
   };
 
   var _catches = <Catch>[
@@ -921,5 +937,80 @@ void main() {
         findsNWidgets(2),
       );
     });
+  });
+
+  testWidgets("Clicking baits per species chart opens BaitPage",
+      (tester) async {
+    when(appManager.baitManager.attachmentDisplayValue(any, any))
+        .thenReturn("Attachment 0");
+    when(appManager.baitManager.entityExists(any)).thenReturn(true);
+    when(appManager.baitManager.deleteMessage(any, any)).thenReturn("Delete");
+    when(appManager.baitManager.formatNameWithCategory(any)).thenReturn("Name");
+
+    _stubCatchesByTimestamp([
+      Catch()
+        ..id = randomId()
+        ..speciesId = speciesId0
+        ..baits.add(baitAttachment0),
+    ]);
+
+    // The widget being tapped below is off the default screen size (800x600),
+    // so we set the canvas size here, otherwise the "hit test" fails. Note that
+    // ensureVisible and dragUntilVisible do not seem to work for whatever
+    // reason.
+    var size = Size(1024, 768);
+    setCanvasSize(tester, size);
+
+    await tester.pumpWidget(
+      Testable(
+        (_) => StatsPage(),
+        appManager: appManager,
+        mediaQueryData: MediaQueryData(size: size),
+      ),
+    );
+
+    expect(find.text("Per bait"), findsNWidgets(2));
+
+    await tapAndSettle(tester, find.text("Per bait").last);
+    await tapAndSettle(tester, find.text("Attachment 0 (1)"));
+    expect(find.byType(BaitPage), findsOneWidget);
+  });
+
+  testWidgets("Clicking baits per species chart opens BaitVariantPage",
+      (tester) async {
+    when(appManager.baitManager.attachmentDisplayValue(any, any))
+        .thenReturn("Attachment 4");
+    when(appManager.baitManager.entityExists(any)).thenReturn(true);
+    when(appManager.baitManager.variant(any, any))
+        .thenReturn(baitMap[baitId4]!.variants.first);
+    when(appManager.baitManager.formatNameWithCategory(any)).thenReturn("Name");
+
+    _stubCatchesByTimestamp([
+      Catch()
+        ..id = randomId()
+        ..speciesId = speciesId0
+        ..baits.add(baitAttachment4),
+    ]);
+
+    // The widget being tapped below is off the default screen size (800x600),
+    // so we set the canvas size here, otherwise the "hit test" fails. Note that
+    // ensureVisible and dragUntilVisible do not seem to work for whatever
+    // reason.
+    var size = Size(1024, 768);
+    setCanvasSize(tester, size);
+
+    await tester.pumpWidget(
+      Testable(
+        (_) => StatsPage(),
+        appManager: appManager,
+        mediaQueryData: MediaQueryData(size: size),
+      ),
+    );
+
+    expect(find.text("Per bait"), findsNWidgets(2));
+
+    await tapAndSettle(tester, find.text("Per bait").last);
+    await tapAndSettle(tester, find.text("Attachment 4 (1)"));
+    expect(find.byType(BaitVariantPage), findsOneWidget);
   });
 }

@@ -1447,6 +1447,9 @@ class Strings {
   String get saveBaitVariantPageMaxDiveDepth =>
       _string("saveBaitVariantPage_maxDiveDepth");
 
+  String get saveBaitVariantPageDescription =>
+      _string("saveBaitVariantPage_description");
+
   String get baitVariantPageVariantLabel =>
       _string("baitVariantPage_variantLabel");
 

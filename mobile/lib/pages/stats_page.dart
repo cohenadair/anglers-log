@@ -294,8 +294,7 @@ class _StatsPageState extends State<StatsPage> {
       viewAllDescription:
           Strings.of(context).reportSummaryCatchesPerBaitDescription,
       filters: _filters(includeDateRange: !_isComparing),
-      labelBuilder: (attachment) =>
-          _baitManager.attachmentDisplayValue(attachment, context) ?? "",
+      labelBuilder: _attachmentDisplayValue,
       series: _models
           .map((model) =>
               Series<BaitAttachment>(model.catchesPerBait, model.dateRange))
@@ -364,8 +363,7 @@ class _StatsPageState extends State<StatsPage> {
         includeSpecies: false,
         includeDateRange: !_isComparing,
       )..add(_currentSpecies!.name),
-      labelBuilder: (attachment) =>
-          _baitManager.attachmentDisplayValue(attachment, context) ?? "",
+      labelBuilder: _attachmentDisplayValue,
       series: _models
           .map((model) => Series<BaitAttachment>(
               model.baitsPerSpecies(_currentSpecies), model.dateRange))
@@ -613,5 +611,11 @@ class _StatsPageState extends State<StatsPage> {
 
   bool _meets(bool Function(CalculatedReport model) condition) {
     return _models.firstWhereOrNull((model) => condition(model)) != null;
+  }
+
+  String _attachmentDisplayValue(BaitAttachment attachment) {
+    var value = _baitManager.attachmentDisplayValue(attachment, context);
+    assert(isNotEmpty(value), "Cannot display a bait that doesn't exist");
+    return value!;
   }
 }

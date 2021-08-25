@@ -156,6 +156,7 @@ class _ChartState<T> extends State<Chart<T>> {
 
   static const _legendIndicatorSize = 15.0;
   static const _rowHeight = 20.0;
+  static const _rowCornerRadius = 5.0;
   static const _condensedRowCount = 3;
 
   /// A subset of [widget.series] of size [_condensedRowCount].
@@ -279,23 +280,33 @@ class _ChartState<T> extends State<Chart<T>> {
           ? null
           : () => widget.onTapRow!.call(item, series.dateRange),
       child: Stack(
+        clipBehavior: Clip.hardEdge,
         alignment: Alignment.centerLeft,
         children: [
           Container(
             height: _rowHeight,
             width: maxWidth,
-            color: _emptyBgColor,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(_rowCornerRadius),
+              color: _emptyBgColor,
+            ),
           ),
           Container(
             height: _rowHeight,
             width: value.toDouble() /
                 maxValue *
                 (maxWidth - widget.padding.left - widget.padding.right),
-            color: color,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(_rowCornerRadius),
+              color: color,
+            ),
           ),
           Padding(
             padding: insetsHorizontalWidgetTiny,
-            child: Text("${widget.labelBuilder(item)} ($value)"),
+            child: Text(
+              "${widget.labelBuilder(item)} ($value)",
+              overflow: TextOverflow.ellipsis,
+            ),
           ),
         ],
       ),

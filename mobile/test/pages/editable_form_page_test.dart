@@ -8,6 +8,7 @@ import 'package:mobile/widgets/input_controller.dart';
 import 'package:mobile/widgets/field.dart';
 import 'package:mobile/widgets/list_item.dart';
 import 'package:mobile/widgets/text.dart';
+import 'package:mobile/widgets/widget.dart';
 import 'package:mockito/mockito.dart';
 
 import '../mocks/stubbed_app_manager.dart';
@@ -351,5 +352,84 @@ void main() {
     expect(find.text("Required"), findsOneWidget);
     expect(find.text("Input 2 description."), findsOneWidget);
     expect(find.text("A test description."), findsOneWidget);
+  });
+
+  testWidgets("onCustomFieldChanged invoked", (tester) async {
+    var custom1 = CustomEntity()
+      ..id = randomId()
+      ..name = "Custom Field"
+      ..type = CustomEntity_Type.boolean;
+    when(appManager.customEntityManager.entity(custom1.id)).thenReturn(custom1);
+
+    var invoked = false;
+    await pumpContext(
+      tester,
+      (_) => EditableFormPage(
+        fields: {},
+        onBuildField: (id) => Text(id.toString()),
+        customEntityValues: [
+          CustomEntityValue()
+            ..customEntityId = custom1.id
+            ..value = "true",
+        ],
+        onCustomFieldChanged: (_) => invoked = true,
+      ),
+      appManager: appManager,
+    );
+
+    await tapAndSettle(tester, find.byType(PaddedCheckbox));
+    expect(invoked, isTrue);
+  });
+
+  testWidgets("Custom field header shows note when editable", (tester) async {
+    await pumpContext(
+      tester,
+      (_) => EditableFormPage(
+        fields: {},
+        onBuildField: (_) => Empty(),
+        isEditable: true,
+      ),
+      appManager: appManager,
+    );
+    expect(find.byType(HeadingNoteDivider), findsOneWidget);
+  });
+
+  testWidgets("Custom field header hides note when editable", (tester) async {
+    var custom1 = CustomEntity()
+      ..id = randomId()
+      ..name = "Custom Field"
+      ..type = CustomEntity_Type.text;
+    when(appManager.customEntityManager.entity(custom1.id)).thenReturn(custom1);
+
+    await pumpContext(
+      tester,
+      (_) => EditableFormPage(
+        fields: {},
+        onBuildField: (id) => Text(id.toString()),
+        customEntityIds: [
+          custom1.id,
+        ],
+        isEditable: false,
+      ),
+      appManager: appManager,
+    );
+
+    expect(find.byType(HeadingNoteDivider), findsNothing);
+    expect(find.byType(HeadingDivider), findsOneWidget);
+  });
+
+  testWidgets("No custom fields hides header", (tester) async {
+    await pumpContext(
+      tester,
+      (_) => EditableFormPage(
+        fields: {},
+        onBuildField: (id) => Text(id.toString()),
+        isEditable: false,
+      ),
+      appManager: appManager,
+    );
+
+    expect(find.byType(HeadingNoteDivider), findsNothing);
+    expect(find.byType(HeadingDivider), findsNothing);
   });
 }

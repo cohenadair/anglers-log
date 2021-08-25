@@ -696,6 +696,7 @@ Map<String, Map<String, String>> get englishStrings => {
         "saveBaitVariantPage_size": "Size",
         "saveBaitVariantPage_minDiveDepth": "Minimum Dive Depth",
         "saveBaitVariantPage_maxDiveDepth": "Maximum Dive Depth",
+        "saveBaitVariantPage_description": "Description",
         "baitVariantPage_variantLabel": "Variant of",
         "baitVariantPage_model": "Model Number",
         "baitVariantPage_size": "Size",

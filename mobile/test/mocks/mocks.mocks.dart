@@ -888,7 +888,7 @@ class MockBaitManager extends _i1.Mock implements _i13.BaitManager {
   @override
   int Function(_i8.BaitAttachment, _i8.BaitAttachment)
       get attachmentComparator =>
-          (super.noSuchMethod(Invocation.getter(#baitAttachmentComparator),
+          (super.noSuchMethod(Invocation.getter(#attachmentComparator),
               returnValue: (_i8.BaitAttachment __p0, _i8.BaitAttachment __p1) =>
                   0) as int Function(_i8.BaitAttachment, _i8.BaitAttachment));
   @override
@@ -993,7 +993,7 @@ class MockBaitManager extends _i1.Mock implements _i13.BaitManager {
       returnValue: 0) as int);
   @override
   List<_i8.BaitAttachment> attachmentList() =>
-      (super.noSuchMethod(Invocation.method(#baitAttachmentList, []),
+      (super.noSuchMethod(Invocation.method(#attachmentList, []),
           returnValue: <_i8.BaitAttachment>[]) as List<_i8.BaitAttachment>);
   @override
   _i8.BaitVariant? variant(_i8.Bait? bait, _i8.Id? variantId) =>
@@ -1648,7 +1648,7 @@ class MockReportManager extends _i1.Mock implements _i21.ReportManager {
           as String);
   @override
   void removeAttachedBaits(_i8.Report? report, _i8.Id? baitId) => super
-      .noSuchMethod(Invocation.method(#removePickedBaits, [report, baitId]),
+      .noSuchMethod(Invocation.method(#removeAttachedBaits, [report, baitId]),
           returnValueForMissingStub: null);
   @override
   bool removeFishingSpot(_i8.Report? report, _i8.FishingSpot? fishingSpot) =>
@@ -3115,6 +3115,16 @@ class MockFirestoreWrapper extends _i1.Mock implements _i2.FirestoreWrapper {
   _i48.DocumentReference doc(String? path) =>
       (super.noSuchMethod(Invocation.method(#doc, [path]),
           returnValue: _FakeDocumentReference()) as _i48.DocumentReference);
+}
+
+/// A class which mocks [GlobalKey].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockGlobalKey<T extends _i66.State<_i66.StatefulWidget>> extends _i1.Mock
+    implements _i66.GlobalKey<T> {
+  MockGlobalKey() {
+    _i1.throwOnMissingStub(this);
+  }
 }
 
 /// A class which mocks [HttpWrapper].

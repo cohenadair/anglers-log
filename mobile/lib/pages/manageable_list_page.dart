@@ -369,7 +369,7 @@ class _ManageableListPageState<T> extends State<ManageableListPage<T>> {
       trailing = _isItemSelected(itemValue) ? Icon(_iconCheck) : null;
     }
 
-    // For now, don't allow selecting all of bait's variants at once.
+    // For now, don't allow selecting items with a grandchild.
     if (_isPicking && item.grandchild != null) {
       trailing = Empty();
     }
