@@ -211,7 +211,7 @@ class _TextInputState extends State<TextInput> {
           hintText: widget.hintText,
           hintMaxLines: _maxErrorHintLines,
         ),
-        style: widget.enabled ? null : disabledStyle(context),
+        style: widget.enabled ? null : styleDisabled(context),
         textCapitalization: widget.capitalization,
         textInputAction: widget.textInputAction,
         enabled: widget.enabled,

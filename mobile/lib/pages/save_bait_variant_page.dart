@@ -18,10 +18,7 @@ import 'editable_form_page.dart';
 
 class SaveBaitVariantPage extends StatefulWidget {
   final BaitVariant? oldBaitVariant;
-
-  /// Called when the variant is saved. This function is invoked with null if
-  /// no fields contain a value.
-  final void Function(BaitVariant?)? onSave;
+  final void Function(BaitVariant)? onSave;
 
   SaveBaitVariantPage({
     this.onSave,
@@ -326,7 +323,12 @@ class _SaveBaitVariantPageState extends State<SaveBaitVariantPage> {
   FutureOr<bool> _save(Map<Id, dynamic> customFieldValueMap) {
     _userPreferencesManager
         .setBaitVariantCustomIds(customFieldValueMap.keys.toList());
-    widget.onSave?.call(_variantFromControllers());
+
+    var newVariant = _variantFromControllers();
+    if (newVariant != null) {
+      widget.onSave?.call(newVariant);
+    }
+
     return true;
   }
 

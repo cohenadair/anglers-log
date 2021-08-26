@@ -176,7 +176,9 @@ Finder findRichText(String text) {
       (widget) => widget is RichText && widget.text.toPlainText() == text);
 }
 
-Finder findManageableListItemCheckbox(WidgetTester tester, String item, {
+Finder findManageableListItemCheckbox(
+  WidgetTester tester,
+  String item, {
   bool skipOffstage = true,
 }) {
   return find.descendant(
@@ -315,5 +317,12 @@ extension CommonFindersExt on CommonFinders {
     String? text,
   }) {
     return textStyle(text, styleNote(context));
+  }
+
+  Finder disabledText(
+    BuildContext context, {
+    String? text,
+  }) {
+    return textStyle(text, styleDisabled(context));
   }
 }

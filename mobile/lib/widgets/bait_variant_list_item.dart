@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:quiver/strings.dart';
 
 import '../bait_manager.dart';
 import '../model/gen/anglerslog.pb.dart';
@@ -17,9 +16,8 @@ class BaitVariantListItem extends StatelessWidget {
   final bool isEditing;
   final bool isCondensed;
   final bool isPicking;
-  final bool showBase;
   final VoidCallback? onDelete;
-  final void Function(BaitVariant?)? onSave;
+  final void Function(BaitVariant)? onSave;
 
   BaitVariantListItem(
     this.variant, {
@@ -27,7 +25,6 @@ class BaitVariantListItem extends StatelessWidget {
     this.isEditing = false,
     this.isCondensed = false,
     this.isPicking = false,
-    this.showBase = false,
     this.onDelete,
     this.onSave,
   });
@@ -51,24 +48,12 @@ class BaitVariantListItem extends StatelessWidget {
       onTap = () => push(context, BaitVariantPage(variant));
     }
 
-    String? title;
-    if (showBase) {
-      var name = baitManager.formatNameWithCategory(variant.baseId);
-      if (isNotEmpty(name)) {
-        title = name;
-      }
-    }
-
-    if (title == null) {
-      title = baitManager.variantDisplayValue(variant, context);
-    }
-
     return ManageableListItem(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            title,
+            baitManager.variantDisplayValue(variant, context),
             style: stylePrimary(context),
           ),
           CustomEntityValues(
@@ -81,7 +66,7 @@ class BaitVariantListItem extends StatelessWidget {
       onTap: isPicking ? null : onTap,
       deleteMessageBuilder: (context) =>
           Text(baitManager.deleteVariantMessage(context, variant)),
-      onConfirmDelete: onDelete,
+      onConfirmDelete: onDelete ?? () {},
       isCondensed: isCondensed,
       trailing: trailing ?? RightChevronIcon(),
     );

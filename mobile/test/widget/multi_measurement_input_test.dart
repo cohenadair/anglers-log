@@ -367,4 +367,18 @@ void main() {
     controller = spec.newInputController();
     expect(controller.system, MeasurementSystem.imperial_decimal);
   });
+
+  testWidgets("Water depth MultiMeasurementInputSpec custom title",
+      (tester) async {
+    var context = await buildContext(tester, appManager: appManager);
+    expect(
+      MultiMeasurementInputSpec.waterDepth(context, title: "Test")
+          .title!(context),
+      "Test",
+    );
+    expect(
+      MultiMeasurementInputSpec.waterDepth(context).title!(context),
+      "Water Depth",
+    );
+  });
 }

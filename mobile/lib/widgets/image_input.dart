@@ -16,8 +16,8 @@ class ImageInput extends StatefulWidget {
   final bool isMulti;
 
   ImageInput({
-    required this.initialImageNames,
     required this.controller,
+    this.initialImageNames = const [],
     this.isMulti = true,
   });
 
@@ -92,8 +92,8 @@ class SingleImageInput extends StatefulWidget {
   final InputController<PickedImage> controller;
 
   SingleImageInput({
-    required this.initialImageName,
     required this.controller,
+    this.initialImageName,
   });
 
   @override

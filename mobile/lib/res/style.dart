@@ -79,7 +79,7 @@ TextStyle styleSecondary(BuildContext context) {
   );
 }
 
-TextStyle disabledStyle(BuildContext context) {
+TextStyle styleDisabled(BuildContext context) {
   return TextStyle(color: Theme.of(context).disabledColor);
 }
 

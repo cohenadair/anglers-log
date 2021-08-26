@@ -141,6 +141,18 @@ void main() {
       );
       expect(findFirst<Icon>(tester).color, Colors.red);
     });
+
+    testWidgets("Disabled color when disabled", (tester) async {
+      await tester.pumpWidget(
+        Testable(
+          (_) => MinimumIconButton(
+            icon: Icons.group,
+            color: Colors.red,
+          ),
+        ),
+      );
+      expect(findFirst<Icon>(tester).color != Colors.red, isTrue);
+    });
   });
 
   group("FloatingButton", () {

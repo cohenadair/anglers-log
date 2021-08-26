@@ -16,25 +16,33 @@ import 'input_controller.dart';
 import 'widget.dart';
 
 class BaitVariantListInput extends StatefulWidget {
-  final void Function(BaitVariant?)? onSave;
   final ListInputController<BaitVariant> controller;
   final EdgeInsets? padding;
+
+  /// When true, items in the list include delete and edit buttons. If
+  /// [showHeader] is true, an add button is rendered in the header.
   final bool isEditing;
+
   final bool isCondensed;
-  final bool isPicking;
+
+  /// True if the "Variants" header should show. Note that if this value is
+  /// false and [isEditing] is true, the "Add" button will not be shown.
   final bool showHeader;
 
+  /// When non-null, a [PaddingCheckbox] is rendered as the trialing widget
+  /// of each item in the list.
   final void Function(BaitVariant, bool)? onCheckboxChanged;
+
+  /// The items that are selected in the list. This field is ignored if
+  /// [onCheckboxChanged] is null.
   final Set<BaitVariant> selectedItems;
 
   BaitVariantListInput({
     required this.controller,
-    this.onSave,
     this.onCheckboxChanged,
     this.padding,
     this.isEditing = true,
     this.isCondensed = false,
-    this.isPicking = false,
     this.showHeader = true,
     this.selectedItems = const {},
   });
@@ -43,7 +51,6 @@ class BaitVariantListInput extends StatefulWidget {
     List<BaitVariant> items, {
     bool showHeader = true,
     bool isCondensed = false,
-    bool isPicking = false,
     EdgeInsets? padding,
     void Function(BaitVariant, bool)? onCheckboxChanged,
     Set<BaitVariant> selectedItems = const {},
@@ -51,7 +58,6 @@ class BaitVariantListInput extends StatefulWidget {
           controller: ListInputController<BaitVariant>()..value = items,
           isEditing: false,
           isCondensed: isCondensed,
-          isPicking: isPicking,
           showHeader: showHeader,
           padding: padding,
           onCheckboxChanged: onCheckboxChanged,
@@ -145,16 +151,15 @@ class _BaitVariantListInputState extends State<BaitVariantListInput> {
         trailing: trailing,
         isEditing: widget.isEditing,
         isCondensed: widget.isCondensed,
-        isPicking: widget.isPicking,
+        isPicking: widget.onCheckboxChanged != null,
         onDelete: () => _items.remove(variant),
         onSave: _onAddOrUpdate,
       ),
     );
   }
 
-  void _onAddOrUpdate(BaitVariant? variant) {
-    if (variant == null ||
-        _items.items.firstWhereOrNull((e) => variant == e) != null) {
+  void _onAddOrUpdate(BaitVariant variant) {
+    if (_items.items.firstWhereOrNull((e) => variant == e) != null) {
       return;
     }
 

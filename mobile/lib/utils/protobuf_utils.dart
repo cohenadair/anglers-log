@@ -216,7 +216,7 @@ extension BaitVariants on BaitVariant {
   String? diveDepthDisplayValue(BuildContext context) {
     if (hasMinDiveDepth() && hasMaxDiveDepth()) {
       return "${minDiveDepth.displayValue(context)} - "
-          "${minDiveDepth.displayValue(context)}";
+          "${maxDiveDepth.displayValue(context)}";
     } else if (hasMinDiveDepth()) {
       return minDiveDepth.displayValue(context);
     } else if (hasMaxDiveDepth()) {

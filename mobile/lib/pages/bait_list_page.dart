@@ -173,7 +173,6 @@ class _BaitListPageState extends State<BaitListPage> {
         bait.variants,
         showHeader: false,
         isCondensed: true,
-        isPicking: true,
         onCheckboxChanged: (variant, isChecked) {
           setState(() {
             if (isChecked) {
