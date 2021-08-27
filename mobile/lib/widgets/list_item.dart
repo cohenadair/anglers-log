@@ -9,6 +9,8 @@ import '../utils/dialog_utils.dart';
 import '../widgets/button.dart';
 import '../widgets/widget.dart';
 import 'checkbox_input.dart';
+import 'photo.dart';
+import 'text.dart';
 
 /// A custom [ListTile]-like widget with app default properties. This widget
 /// also automatically adjusts its height to fit its content, unlike [ListTile].
@@ -88,6 +90,46 @@ class ListItem extends StatelessWidget {
   }
 }
 
+/// A wrapper for [ManageableListItem] with a [ManageableListImageItem] child.
+/// Generally speaking, [ManageableListItem] and [ManageableListImageItem]
+/// shouldn't be used outside a [ManageableListPage]; [ListItem] should be used
+/// instead. However, horizontal spacing between the leading and content
+/// widgets is different when using a leading thumbnail, so we use this
+/// convenience class for such cases.
+class ImageListItem extends StatelessWidget {
+  final String? imageName;
+  final String? title;
+  final String? subtitle;
+  final String? subtitle2;
+  final Widget? trailing;
+  final VoidCallback? onTap;
+
+  ImageListItem({
+    this.imageName,
+    this.title,
+    this.subtitle,
+    this.subtitle2,
+    this.trailing,
+    this.onTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return ManageableListItem(
+      child: ManageableListImageItem(
+        imageName: imageName,
+        title: title,
+        subtitle: subtitle,
+        subtitle2: subtitle2,
+        trailing: trailing,
+      ),
+      onTap: onTap,
+      // In this state, the delete button will never be shown.
+      onTapDeleteButton: () => false,
+    );
+  }
+}
+
 class PickerListItem extends StatelessWidget {
   final String title;
   final String? subtitle;
@@ -122,7 +164,7 @@ class PickerListItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return EnabledOpacity(
-      enabled: isEnabled,
+      isEnabled: isEnabled,
       child: ListItem(
         padding: padding,
         title: Text(title),
@@ -163,12 +205,14 @@ class PickerListItem extends StatelessWidget {
 class ExpansionListItem extends StatefulWidget {
   final Widget title;
   final List<Widget> children;
+  final Widget? trailing;
   final Function(bool)? onExpansionChanged;
   final bool toBottomSafeArea;
 
   ExpansionListItem({
     required this.title,
     this.children = const [],
+    this.trailing,
     this.onExpansionChanged,
     this.toBottomSafeArea = false,
   });
@@ -200,6 +244,7 @@ class _ExpansionListItemState extends State<ExpansionListItem> {
               key: _key,
               title: widget.title,
               children: widget.children,
+              trailing: widget.trailing,
               onExpansionChanged: (expanded) {
                 setState(() {
                   _expanded = expanded;
@@ -231,6 +276,8 @@ class _ExpansionListItemState extends State<ExpansionListItem> {
 class ManageableListItem extends StatelessWidget {
   final Widget child;
 
+  final Widget? grandchild;
+
   /// The trailing [Widget] to show when not editing.
   final Widget? trailing;
 
@@ -261,8 +308,11 @@ class ManageableListItem extends StatelessWidget {
   /// When true, renders the entire [Widget] as disabled, and is not clickable.
   final bool enabled;
 
+  final bool isCondensed;
+
   ManageableListItem({
     required this.child,
+    this.grandchild,
     this.deleteMessageBuilder,
     this.onConfirmDelete,
     this.onTap,
@@ -270,6 +320,7 @@ class ManageableListItem extends StatelessWidget {
     this.trailing,
     this.editing = false,
     this.enabled = true,
+    this.isCondensed = false,
   }) : assert(onTapDeleteButton != null ||
             (deleteMessageBuilder != null && onConfirmDelete != null));
 
@@ -282,25 +333,49 @@ class ManageableListItem extends StatelessWidget {
       );
     }
 
+    var grandchild = this.grandchild;
+    if (grandchild is Text) {
+      grandchild = DefaultTextStyle(
+        style: stylePrimary(context),
+        child: child,
+      );
+    }
+
+    if (grandchild != null) {
+      grandchild = ManageableListGrandchild(child: grandchild);
+    }
+
+    var touchColor = onTap == null ? Colors.transparent : null;
+
     return SafeArea(
       top: false,
       bottom: false,
       child: EnabledOpacity(
-        enabled: enabled,
+        isEnabled: enabled,
         child: InkWell(
           onTap: onTap,
-          child: Row(
-            mainAxisSize: MainAxisSize.max,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: <Widget>[
-              _buildDeleteIcon(context),
-              Expanded(
-                child: Padding(
-                  padding: insetsDefault,
-                  child: child,
-                ),
+          splashColor: touchColor,
+          highlightColor: touchColor,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                mainAxisSize: MainAxisSize.max,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  _buildDeleteIcon(context),
+                  Expanded(
+                    child: Padding(
+                      padding: isCondensed
+                          ? insetsHorizontalDefaultVerticalSmall
+                          : insetsDefault,
+                      child: child,
+                    ),
+                  ),
+                  _buildTrailing(context),
+                ],
               ),
-              _buildTrailing(context),
+              grandchild ?? Empty(),
             ],
           ),
         ),
@@ -356,17 +431,94 @@ class ManageableListItem extends StatelessWidget {
       state: editing ? CrossFadeState.showFirst : CrossFadeState.showSecond,
       firstChild: Padding(
         padding: insetsRightDefault,
-        child: Text(
-          Strings.of(context).edit.toUpperCase(),
-          style: TextStyle(
-            color: Theme.of(context).primaryColor,
-            fontWeight: fontWeightBold,
-          ),
-          overflow: TextOverflow.visible,
-          maxLines: 1,
-        ),
+        child: FakeTextButton(Strings.of(context).edit),
       ),
       secondChild: trailingWidget,
+    );
+  }
+}
+
+class ManageableListGrandchild extends StatelessWidget {
+  static const leftBorderWidth = 1.0;
+
+  final Widget child;
+
+  ManageableListGrandchild({
+    required this.child,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.only(
+        left: paddingDefault + paddingDefault,
+        bottom: paddingWidget,
+      ),
+      child: Container(
+        decoration: BoxDecoration(
+          border: Border(
+            left: BorderSide(
+              width: leftBorderWidth,
+              color: Theme.of(context).primaryColor,
+            ),
+          ),
+        ),
+        child: child,
+      ),
+    );
+  }
+}
+
+class ManageableListImageItem extends StatelessWidget {
+  final String? imageName;
+  final String? title;
+  final String? subtitle;
+  final String? subtitle2;
+  final Widget? trailing;
+
+  ManageableListImageItem({
+    this.imageName,
+    this.title,
+    this.subtitle,
+    this.subtitle2,
+    this.trailing,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    var trailing = this.trailing;
+    if (trailing != null) {
+      trailing = Padding(
+        padding: insetsLeftWidget,
+        child: trailing,
+      );
+    }
+
+    return Row(
+      children: [
+        Photo.listThumbnail(imageName),
+        HorizontalSpace(paddingWidget),
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SingleLineText(
+                title,
+                style: stylePrimary(context),
+              ),
+              SingleLineText(
+                subtitle,
+                style: styleSubtitle(context),
+              ),
+              SingleLineText(
+                subtitle2,
+                style: styleSubtitle(context),
+              ),
+            ],
+          ),
+        ),
+        trailing ?? Empty(),
+      ],
     );
   }
 }

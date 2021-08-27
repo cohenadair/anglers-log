@@ -9,6 +9,8 @@ import '../pages/save_bait_page.dart';
 import '../res/dimen.dart';
 import '../res/style.dart';
 import '../utils/page_utils.dart';
+import '../utils/protobuf_utils.dart';
+import '../widgets/bait_variant_list_input.dart';
 import '../widgets/text.dart';
 import '../widgets/widget.dart';
 
@@ -54,7 +56,6 @@ class _BaitPageState extends State<BaitPage> {
         _bait = _baitManager.entity(widget.bait.id) ?? _bait;
 
         return EntityPage(
-          customEntityValues: _bait.customEntityValues,
           padding: EdgeInsets.only(
             top: paddingDefault,
             bottom: paddingDefault,
@@ -65,11 +66,11 @@ class _BaitPageState extends State<BaitPage> {
           deleteMessage: _baitManager.deleteMessage(context, _bait),
           children: [
             _buildBaitCategory(),
-            TitleLabel(
-              _bait.name,
-              overflow: TextOverflow.visible,
-            ),
+            _buildTitle(),
+            _buildType(),
+            _buildVariants(),
           ],
+          imageNames: _bait.hasImageName() ? [_bait.imageName] : [],
         );
       },
     );
@@ -85,5 +86,41 @@ class _BaitPageState extends State<BaitPage> {
       padding: insetsHorizontalDefault,
       child: Text(baitCategory.name, style: styleListHeading(context)),
     );
+  }
+
+  Widget _buildTitle() {
+    return Padding(
+      padding: insetsBottomWidget,
+      child: TitleLabel(
+        _bait.name,
+        overflow: TextOverflow.visible,
+      ),
+    );
+  }
+
+  Widget _buildType() {
+    if (!_bait.hasType()) {
+      return Empty();
+    }
+
+    return Align(
+      alignment: Alignment.centerLeft,
+      child: Padding(
+        padding: EdgeInsets.only(
+          left: paddingDefault,
+          right: paddingDefault,
+          bottom: paddingWidget,
+        ),
+        child: MinChip(_bait.type.displayName(context)),
+      ),
+    );
+  }
+
+  Widget _buildVariants() {
+    if (_bait.variants.isEmpty) {
+      return Empty();
+    }
+
+    return BaitVariantListInput.static(_bait.variants);
   }
 }

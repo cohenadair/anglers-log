@@ -10,6 +10,7 @@ import 'widget.dart';
 class DetailInput extends StatelessWidget {
   final EdgeInsets? padding;
   final VoidCallback? onTap;
+  final bool isEnabled;
 
   /// The children of the widget, laid out in a [Row].
   final List<Widget> children;
@@ -17,6 +18,7 @@ class DetailInput extends StatelessWidget {
   DetailInput({
     this.padding,
     this.onTap,
+    this.isEnabled = true,
     this.children = const [],
   });
 
@@ -28,12 +30,15 @@ class DetailInput extends StatelessWidget {
         child: RightChevronIcon(),
       ));
 
-    return InkWell(
-      onTap: onTap,
-      child: Padding(
-        padding: padding ?? insetsDefault,
-        child: HorizontalSafeArea(
-          child: Row(children: items),
+    return EnabledOpacity(
+      isEnabled: isEnabled,
+      child: InkWell(
+        onTap: isEnabled ? onTap : null,
+        child: Padding(
+          padding: padding ?? insetsDefault,
+          child: HorizontalSafeArea(
+            child: Row(children: items),
+          ),
         ),
       ),
     );

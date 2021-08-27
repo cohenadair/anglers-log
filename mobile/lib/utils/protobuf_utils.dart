@@ -20,6 +20,8 @@ import 'number_utils.dart';
 
 final _log = Log("ProtobufUtils");
 
+// TODO: Move these CustomEntityValue functions to CustomEntityManager.
+
 /// Returns the number of occurrences of [customEntityId] in [entities].
 int entityValuesCount<T>(List<T> entities, Id customEntityId,
     List<CustomEntityValue> Function(T) getValues) {
@@ -185,6 +187,44 @@ List<PickerPageItem<T>> _pickerItems<T>(
       value: value,
     );
   }).toList();
+}
+
+extension Baits on Bait {
+  BaitAttachment toAttachment() => BaitAttachment(baitId: id);
+}
+
+extension BaitTypes on Bait_Type {
+  String displayName(BuildContext context) {
+    switch (this) {
+      case Bait_Type.artificial:
+        return Strings.of(context).baitTypeArtificial;
+      case Bait_Type.real:
+        return Strings.of(context).baitTypeReal;
+      case Bait_Type.live:
+        return Strings.of(context).baitTypeLive;
+    }
+    throw ArgumentError("Invalid input: $this");
+  }
+
+  String filterString(BuildContext context) => displayName(context);
+}
+
+extension BaitVariants on BaitVariant {
+  BaitAttachment toAttachment() =>
+      BaitAttachment(baitId: baseId, variantId: id);
+
+  String? diveDepthDisplayValue(BuildContext context) {
+    if (hasMinDiveDepth() && hasMaxDiveDepth()) {
+      return "${minDiveDepth.displayValue(context)} - "
+          "${maxDiveDepth.displayValue(context)}";
+    } else if (hasMinDiveDepth()) {
+      return minDiveDepth.displayValue(context);
+    } else if (hasMaxDiveDepth()) {
+      return maxDiveDepth.displayValue(context);
+    } else {
+      return null;
+    }
+  }
 }
 
 extension Ids on Id {

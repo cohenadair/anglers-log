@@ -13,9 +13,12 @@ abstract class NamedEntityManager<T extends GeneratedMessage>
 
   NamedEntityManager(AppManager app) : super(app);
 
+  int Function(T, T) get nameComparator =>
+      (lhs, rhs) => compareIgnoreCase(name(lhs), name(rhs));
+
   List<T> listSortedByName({String? filter}) {
     var result = List<T>.from(filteredList(filter));
-    result.sort((lhs, rhs) => compareIgnoreCase(name(lhs), name(rhs)));
+    result.sort(nameComparator);
     return result;
   }
 
@@ -30,7 +33,7 @@ abstract class NamedEntityManager<T extends GeneratedMessage>
       return false;
     }
 
-    return name(entity).toLowerCase().contains(filter!.toLowerCase());
+    return containsTrimmedLowerCase(name(entity), filter!);
   }
 
   bool nameExists(String name) {

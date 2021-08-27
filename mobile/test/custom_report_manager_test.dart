@@ -114,7 +114,7 @@ void main() {
 
     var report = Report()
       ..id = randomId()
-      ..baitIds.add(bait.id);
+      ..baits.add(BaitAttachment(baitId: bait.id));
     reportManager.addOrUpdate(report);
 
     await baitManager.addOrUpdate(bait);
@@ -167,15 +167,15 @@ void main() {
     expect(updatedReports.first.id, report.id);
   });
 
-  test("removeBait", () async {
-    var baitToRemove = Bait()..id = randomId();
+  test("removeAttachedBaits", () async {
+    var attachmentToRemove = BaitAttachment(baitId: randomId());
 
     var report = Report()..id = randomId();
-    report.baitIds.add(baitToRemove.id);
+    report.baits.add(attachmentToRemove);
 
-    reportManager.removeBait(report, baitToRemove);
+    reportManager.removeAttachedBaits(report, attachmentToRemove.baitId);
     expect(
-      report.baitIds.contains(baitToRemove.id),
+      report.baits.contains(attachmentToRemove),
       isFalse,
     );
   });

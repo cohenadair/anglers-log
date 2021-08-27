@@ -3,7 +3,6 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mobile/widgets/input_controller.dart';
-import 'package:mobile/widgets/text.dart';
 import 'package:mobile/widgets/widget.dart';
 
 import '../test_utils.dart';
@@ -25,6 +24,30 @@ void main() {
         ),
       );
       expect(find.byType(MinDivider), findsNothing);
+    });
+
+    testWidgets("Custom trailing", (tester) async {
+      await tester.pumpWidget(
+        Testable(
+          (_) => HeadingDivider(
+            "Test",
+            trailing: Icon(Icons.add),
+          ),
+        ),
+      );
+      expect(find.byIcon(Icons.add), findsOneWidget);
+    });
+
+    testWidgets("No trailing", (tester) async {
+      await tester.pumpWidget(
+        Testable(
+          (_) => HeadingDivider(
+            "Test",
+            showDivider: true,
+          ),
+        ),
+      );
+      expect(find.byType(Empty), findsOneWidget);
     });
   });
 
@@ -78,8 +101,8 @@ void main() {
           ),
         ),
       );
-      expect(find.byType(IconLabel), findsOneWidget);
-      expect(find.byType(Empty), findsNothing);
+      var switcher = findFirst<AnimatedSwitcher>(tester);
+      expect(switcher.child is Padding, isTrue);
     });
 
     testWidgets("Hidden note", (tester) async {
@@ -93,8 +116,8 @@ void main() {
           ),
         ),
       );
-      expect(find.byType(IconLabel), findsNothing);
-      expect(find.byType(Empty), findsOneWidget);
+      var switcher = findFirst<AnimatedSwitcher>(tester);
+      expect(switcher.child is Empty, isTrue);
     });
   });
 

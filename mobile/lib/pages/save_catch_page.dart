@@ -7,18 +7,14 @@ import 'package:quiver/strings.dart';
 import '../angler_manager.dart';
 import '../app_manager.dart';
 import '../atmosphere_fetcher.dart';
-import '../bait_category_manager.dart';
-import '../bait_manager.dart';
 import '../catch_manager.dart';
 import '../entity_manager.dart';
 import '../fishing_spot_manager.dart';
 import '../i18n/strings.dart';
-import '../image_manager.dart';
 import '../location_monitor.dart';
 import '../log.dart';
 import '../method_manager.dart';
 import '../model/gen/anglerslog.pb.dart';
-import '../pages/bait_list_page.dart';
 import '../pages/editable_form_page.dart';
 import '../pages/fishing_spot_picker_page.dart';
 import '../pages/image_picker_page.dart';
@@ -46,6 +42,7 @@ import '../widgets/text_input.dart';
 import '../widgets/tide_input.dart';
 import '../widgets/widget.dart';
 import 'angler_list_page.dart';
+import 'bait_list_page.dart';
 import 'form_page.dart';
 import 'manageable_list_page.dart';
 import 'method_list_page.dart';
@@ -113,22 +110,14 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
   late final MultiMeasurementInputSpec _lengthInputState;
   late final MultiMeasurementInputSpec _weightInputState;
 
-  Future<List<PickedImage>> _imagesFuture = Future.value([]);
   List<CustomEntityValue> _customEntityValues = [];
   StreamSubscription<void>? _userPreferenceSubscription;
 
   AnglerManager get _anglerManager => AnglerManager.of(context);
 
-  BaitCategoryManager get _baitCategoryManager =>
-      BaitCategoryManager.of(context);
-
-  BaitManager get _baitManager => BaitManager.of(context);
-
   CatchManager get _catchManager => CatchManager.of(context);
 
   FishingSpotManager get _fishingSpotManager => FishingSpotManager.of(context);
-
-  ImageManager get _imageManager => ImageManager.of(context);
 
   LocationMonitor get _locationMonitor => LocationMonitor.of(context);
 
@@ -165,8 +154,8 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
   IdInputController get _fishingSpotController =>
       _fields[_idFishingSpot]!.controller as IdInputController;
 
-  SetInputController<Id> get _baitsController =>
-      _fields[_idBait]!.controller as SetInputController<Id>;
+  SetInputController<BaitAttachment> get _baitsController =>
+      _fields[_idBait]!.controller as SetInputController<BaitAttachment>;
 
   IdInputController get _anglerController =>
       _fields[_idAngler]!.controller as IdInputController;
@@ -235,7 +224,7 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
       _seasonController.value =
           _oldCatch!.hasSeason() ? _oldCatch!.season : null;
       _speciesController.value = _oldCatch!.speciesId;
-      _baitsController.value = _oldCatch!.baitIds.toSet();
+      _baitsController.value = _oldCatch!.baits.toSet();
       _fishingSpotController.value = _oldCatch!.fishingSpotId;
       _anglerController.value = _oldCatch!.anglerId;
       _catchAndReleaseController.value = _oldCatch!.wasCatchAndRelease;
@@ -258,7 +247,6 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
           _oldCatch!.hasAtmosphere() ? _oldCatch!.atmosphere : null;
       _tideController.value = _oldCatch!.hasTide() ? _oldCatch!.tide : null;
       _customEntityValues = _oldCatch!.customEntityValues;
-      _imagesFuture = _pickedImagesForOldCatch;
     } else {
       if (widget.images.isNotEmpty) {
         var image = widget.images.first;
@@ -384,39 +372,9 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
   }
 
   Widget _buildBaits() {
-    return EntityListenerBuilder(
-      managers: [
-        _baitCategoryManager,
-        _baitManager,
-      ],
-      builder: (context) {
-        var values = _baitsController.value.isNotEmpty
-            ? _baitManager.list(_baitsController.value)
-            : <Bait>[];
-
-        return MultiListPickerInput(
-          padding: insetsHorizontalDefaultVerticalWidget,
-          values: values
-              .map((bait) => _baitManager.formatNameWithCategory(bait.id)!)
-              .toSet(),
-          emptyValue: (context) => Strings.of(context).catchFieldNoBaits,
-          onTap: () {
-            push(
-              context,
-              BaitListPage(
-                pickerSettings: ManageableListPagePickerSettings<dynamic>(
-                  onPicked: (context, baits) {
-                    setState(() => _baitsController.value =
-                        baits.map<Id>((e) => e.id).toSet());
-                    return true;
-                  },
-                  initialValues: values.toSet(),
-                ),
-              ),
-            );
-          },
-        );
-      },
+    return BaitPickerInput(
+      controller: _baitsController,
+      emptyValue: (context) => Strings.of(context).catchFieldNoBaits,
     );
   }
 
@@ -486,8 +444,6 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
       child: MultiMeasurementInput(
         spec: _waterDepthInputState,
         controller: _waterDepthController,
-        onChanged: () => _userPreferenceManager
-            .setWaterDepthSystem(_waterDepthController.value.system),
       ),
     );
   }
@@ -498,8 +454,6 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
       child: MultiMeasurementInput(
         spec: _waterTemperatureInputState,
         controller: _waterTemperatureController,
-        onChanged: () => _userPreferenceManager.setWaterTemperatureSystem(
-            _waterTemperatureController.value.system),
       ),
     );
   }
@@ -510,8 +464,6 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
       child: MultiMeasurementInput(
         spec: _lengthInputState,
         controller: _lengthController,
-        onChanged: () => _userPreferenceManager
-            .setCatchLengthSystem(_lengthController.value.system),
       ),
     );
   }
@@ -522,8 +474,6 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
       child: MultiMeasurementInput(
         spec: _weightInputState,
         controller: _weightController,
-        onChanged: () => _userPreferenceManager
-            .setCatchWeightSystem(_weightController.value.system),
       ),
     );
   }
@@ -710,19 +660,9 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
   }
 
   Widget _buildImages() {
-    return EmptyFutureBuilder<List<PickedImage>>(
-      future: _imagesFuture,
-      builder: (context, images) {
-        return ImageInput(
-          initialImages: _imagesController.value,
-          onImagesPicked: (pickedImages) {
-            setState(() {
-              _imagesController.value = pickedImages;
-              _imagesFuture = Future.value(_imagesController.value);
-            });
-          },
-        );
-      },
+    return ImageInput(
+      initialImageNames: _oldCatch?.imageNames ?? [],
+      controller: _imagesController,
     );
   }
 
@@ -742,9 +682,9 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
     }
 
     if (_baitsController.value.isNotEmpty) {
-      cat.baitIds.addAll(_baitsController.value);
+      cat.baits.addAll(_baitsController.value);
     } else {
-      cat.baitIds.clear();
+      cat.baits.clear();
     }
 
     if (_anglerController.hasValue) {
@@ -845,29 +785,6 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
         },
       ),
     );
-  }
-
-  /// Converts [oldCatch] images into a list of [PickedImage] objects to be
-  /// managed by the [ImageInput].
-  Future<List<PickedImage>> get _pickedImagesForOldCatch async {
-    if (!_editing || _oldCatch!.imageNames.isEmpty) {
-      return Future.value([]);
-    }
-
-    var imageMap = await _imageManager.images(
-      context,
-      imageNames: _oldCatch!.imageNames,
-      size: galleryMaxThumbSize,
-    );
-
-    var result = <PickedImage>[];
-    imageMap.forEach((file, bytes) => result.add(PickedImage(
-          originalFile: file,
-          thumbData: bytes,
-        )));
-
-    _imagesController.value = result;
-    return result;
   }
 
   void _calculateSeason({FishingSpot? fishingSpot}) {

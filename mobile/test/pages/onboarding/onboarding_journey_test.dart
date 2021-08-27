@@ -20,6 +20,11 @@ void main() {
   setUp(() {
     appManager = StubbedAppManager();
 
+    when(appManager.baitManager.attachmentsDisplayValues(any, any))
+        .thenReturn([]);
+
+    when(appManager.customEntityManager.entityExists(any)).thenReturn(false);
+
     when(appManager.locationMonitor.initialize())
         .thenAnswer((_) => Future.value(null));
     when(appManager.locationMonitor.currentLocation).thenReturn(null);

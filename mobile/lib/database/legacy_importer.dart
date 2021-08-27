@@ -41,8 +41,11 @@ class LegacyImporter {
   static const _keyAnglers = "anglers";
   static const _keyBaitCategories = "baitCategories";
   static const _keyBaitCategory = "baitCategory";
+  static const _keyBaitDescription = "baitDescription";
   static const _keyBaits = "baits";
+  static const _keyBaitType = "baitType";
   static const _keyBaitUsed = "baitUsed";
+  static const _keyColor = "color";
   static const _keyCoordinates = "coordinates";
   static const _keyDate = "date";
   static const _keyEntries = "entries";
@@ -59,6 +62,7 @@ class LegacyImporter {
   static const _keyMethodNames = "fishingMethodNames";
   static const _keyId = "id";
   static const _keyImagePath = "imagePath";
+  static const _keyImage = "image";
   static const _keyImages = "images";
   static const _keyJournal = "journal";
   static const _keyLatitude = "latitude";
@@ -69,6 +73,7 @@ class LegacyImporter {
   static const _keyName = "name";
   static const _keyNotes = "notes";
   static const _keySkyConditions = "skyConditions";
+  static const _keySize = "size";
   static const _keySpecies = "species";
   static const _keyTemperature = "temperature";
   static const _keyUserDefines = "userDefines";
@@ -316,7 +321,69 @@ class LegacyImporter {
         }
       }
 
-      await _baitManager.addOrUpdate(bait);
+      int? type = map[_keyBaitType];
+      if (type != null) {
+        if (type == 0) {
+          bait.type = Bait_Type.artificial;
+        } else if (type == 1) {
+          bait.type = Bait_Type.live;
+        } else if (type == 2) {
+          bait.type = Bait_Type.real;
+        } else {
+          _log.w("Bait type $type not supported");
+        }
+      }
+
+      var variant = BaitVariant(
+        id: randomId(),
+        baseId: bait.id,
+      );
+      var isVariantSet = false;
+
+      var color = map[_keyColor];
+      if (isNotEmpty(color)) {
+        variant.color = color;
+        isVariantSet = true;
+      }
+
+      var size = map[_keySize];
+      if (isNotEmpty(size)) {
+        variant.size = size;
+        isVariantSet = true;
+      }
+
+      var description = map[_keyBaitDescription];
+      if (isNotEmpty(description)) {
+        variant.description = description;
+        isVariantSet = true;
+      }
+
+      if (isVariantSet) {
+        bait.variants.add(variant);
+      }
+
+      File? image;
+      var imageMap = map[_keyImage];
+      if ((imageMap is Map<String, dynamic>)) {
+        var imagePath = imageMap[_keyImagePath];
+        if (isNotEmpty(imagePath)) {
+          var fileName = basename(imagePath);
+          if (_images.containsKey(fileName)) {
+            image = _images[fileName]!;
+          } else {
+            _log.w("Image $fileName not found in legacy data");
+          }
+        }
+      } else {
+        _log.w("Corrupt image data (should be json map): $map");
+      }
+
+      await _baitManager.addOrUpdate(
+        bait,
+        imageFile: image,
+        // Images were already compressed by legacy Anglers' Log.
+        compressImages: false,
+      );
     }
   }
 
@@ -503,7 +570,7 @@ class LegacyImporter {
         ..timestamp = Int64(dateTime.millisecondsSinceEpoch);
 
       if (bait != null) {
-        cat.baitIds.add(bait.id);
+        cat.baits.add(bait.toAttachment());
       }
 
       if (fishingSpot != null) {

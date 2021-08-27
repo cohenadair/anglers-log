@@ -62,4 +62,79 @@ void main() {
 
     expect(find.byType(RefreshIndicator), findsNothing);
   });
+
+  testWidgets("Default clip behavior when showing footer", (tester) async {
+    await pumpContext(
+      tester,
+      (_) => ScrollPage(
+        children: [
+          Text("Test"),
+        ],
+        footer: [
+          TextButton(
+            child: Text("Tap Me"),
+            onPressed: () {},
+          ),
+        ],
+      ),
+    );
+    expect(
+      tester
+          .widget<SingleChildScrollView>(find.byType(SingleChildScrollView))
+          .clipBehavior,
+      Clip.hardEdge,
+    );
+  });
+
+  testWidgets("No clip behavior with empty footer", (tester) async {
+    await pumpContext(
+      tester,
+      (_) => ScrollPage(
+        children: [
+          Text("Test"),
+        ],
+        footer: [],
+      ),
+    );
+    expect(
+      tester
+          .widget<SingleChildScrollView>(find.byType(SingleChildScrollView))
+          .clipBehavior,
+      Clip.none,
+    );
+  });
+
+  testWidgets("Null footer buttons with empty input", (tester) async {
+    await pumpContext(
+      tester,
+      (_) => ScrollPage(
+        children: [
+          Text("Test"),
+        ],
+        footer: [],
+      ),
+    );
+    expect(
+      tester.widget<Scaffold>(find.byType(Scaffold)).persistentFooterButtons,
+      isNull,
+    );
+  });
+
+  testWidgets("Non-null footer buttons with valid input", (tester) async {
+    await pumpContext(
+      tester,
+      (_) => ScrollPage(
+        children: [
+          Text("Test"),
+        ],
+        footer: [
+          Text("A"),
+        ],
+      ),
+    );
+    expect(
+      tester.widget<Scaffold>(find.byType(Scaffold)).persistentFooterButtons,
+      isNotNull,
+    );
+  });
 }

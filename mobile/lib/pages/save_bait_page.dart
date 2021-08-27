@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 
@@ -6,21 +7,20 @@ import '../bait_category_manager.dart';
 import '../bait_manager.dart';
 import '../entity_manager.dart';
 import '../i18n/strings.dart';
-import '../log.dart';
 import '../model/gen/anglerslog.pb.dart';
 import '../pages/bait_category_list_page.dart';
-import '../pages/editable_form_page.dart';
 import '../res/dimen.dart';
-import '../user_preference_manager.dart';
 import '../utils/dialog_utils.dart';
 import '../utils/page_utils.dart';
 import '../utils/protobuf_utils.dart';
-import '../utils/validator.dart';
-import '../widgets/field.dart';
+import '../widgets/bait_variant_list_input.dart';
+import '../widgets/image_input.dart';
 import '../widgets/input_controller.dart';
 import '../widgets/list_picker_input.dart';
+import '../widgets/radio_input.dart';
 import '../widgets/text_input.dart';
-import '../widgets/widget.dart';
+import 'form_page.dart';
+import 'image_picker_page.dart';
 import 'manageable_list_page.dart';
 
 class SaveBaitPage extends StatefulWidget {
@@ -35,96 +35,59 @@ class SaveBaitPage extends StatefulWidget {
 }
 
 class _SaveBaitPageState extends State<SaveBaitPage> {
-  // Unique IDs for each bait field. These are stored in the database and
-  // should not be changed.
-  static final _idBaitCategory = Id()
-    ..uuid = "832e8f16-3fb6-4530-b8d7-7840734cf465";
-  static final _idName = Id()..uuid = "017ae032-477b-4fe4-9be0-ea0a05a576f9";
-
-  final _log = Log("SaveBaitPage");
-
-  final Map<Id, Field> _fields = {};
-  List<CustomEntityValue> _customEntityValues = [];
+  final _baitCategoryController = IdInputController();
+  final _nameController = TextInputController.name();
+  final _imageController = InputController<PickedImage>();
+  final _typeController = InputController<Bait_Type>();
+  final _variantsController = ListInputController<BaitVariant>();
 
   Bait? get _oldBait => widget.oldBait;
 
-  bool get _editing => _oldBait != null;
+  bool get _isEditing => _oldBait != null;
 
   BaitCategoryManager get _baitCategoryManager =>
       BaitCategoryManager.of(context);
 
   BaitManager get _baitManager => BaitManager.of(context);
 
-  UserPreferenceManager get _userPreferencesManager =>
-      UserPreferenceManager.of(context);
-
-  InputController<Id> get _baitCategoryController =>
-      _fields[_idBaitCategory]!.controller as InputController<Id>;
-
-  TextInputController get _nameController =>
-      _fields[_idName]!.controller as TextInputController;
-
   @override
   void initState() {
     super.initState();
 
-    var baitFieldIds = _userPreferencesManager.baitFieldIds;
-
-    _fields[_idBaitCategory] = Field(
-      id: _idBaitCategory,
-      name: (context) => Strings.of(context).saveBaitPageCategoryLabel,
-      controller: IdInputController(),
-      isRemovable: true,
-      // Only include bait category field if not disabled by the user.
-      isShowing: baitFieldIds.isEmpty || baitFieldIds.contains(_idBaitCategory),
-    );
-
-    _fields[_idName] = Field(
-      id: _idName,
-      name: (context) => Strings.of(context).inputNameLabel,
-      controller: TextInputController(
-        validator: NameValidator(),
-      ),
-      // Name field is required; always include it.
-      isRemovable: false,
-      isShowing: true,
-    );
-
-    if (_editing) {
-      _baitCategoryController.value = _oldBait!.baitCategoryId;
+    if (_isEditing) {
       _nameController.value = _oldBait!.name;
-      _customEntityValues = _oldBait!.customEntityValues;
+      _baitCategoryController.value =
+          _oldBait!.hasBaitCategoryId() ? _oldBait!.baitCategoryId : null;
+      _typeController.value = _oldBait!.hasType() ? _oldBait!.type : null;
+      _variantsController.value = _oldBait!.variants;
+    }
+
+    if (!_typeController.hasValue) {
+      _typeController.value = Bait_Type.artificial;
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    return EditableFormPage(
-      title: _editing
+    return FormPage.immutable(
+      title: _isEditing
           ? Text(Strings.of(context).saveBaitPageEditTitle)
           : Text(Strings.of(context).saveBaitPageNewTitle),
       padding: insetsZero,
-      fields: _fields,
-      customEntityIds: _userPreferencesManager.baitCustomEntityIds,
-      customEntityValues: _customEntityValues,
-      onBuildField: (id) {
-        if (id == _idName) {
-          return _buildNameField();
-        } else if (id == _idBaitCategory) {
-          return _buildCategoryPicker();
-        } else {
-          _log.e("Unknown input key: $id");
-          return Empty();
-        }
-      },
+      fieldBuilder: (context) => [
+        _buildCategory(),
+        _buildName(),
+        _buildType(),
+        _buildImage(),
+        _buildVariants(),
+      ],
       onSave: _save,
-      onAddFields: (ids) =>
-          _userPreferencesManager.setBaitFieldIds(ids.toList()),
-      isInputValid: _nameController.isValid(context),
+      isInputValid: _isInputValid,
+      runSpacing: 0,
     );
   }
 
-  Widget _buildCategoryPicker() {
+  Widget _buildCategory() {
     return EntityListenerBuilder(
       managers: [_baitCategoryManager],
       builder: (context) {
@@ -154,9 +117,13 @@ class _SaveBaitPageState extends State<SaveBaitPage> {
     );
   }
 
-  Widget _buildNameField() {
+  Widget _buildName() {
     return Padding(
-      padding: insetsHorizontalDefault,
+      padding: EdgeInsets.only(
+        left: paddingDefault,
+        right: paddingDefault,
+        bottom: paddingWidgetSmall,
+      ),
       child: TextInput.name(
         context,
         controller: _nameController,
@@ -167,17 +134,44 @@ class _SaveBaitPageState extends State<SaveBaitPage> {
     );
   }
 
-  FutureOr<bool> _save(Map<Id, dynamic> customFieldValueMap) {
-    _userPreferencesManager
-        .setBaitCustomEntityIds(customFieldValueMap.keys.toList());
+  Widget _buildType() {
+    return RadioInput(
+      padding: insetsHorizontalDefaultVerticalSmall,
+      initialSelectedIndex: _typeController.value!.value,
+      optionCount: Bait_Type.values.length,
+      optionBuilder: (context, index) =>
+          Bait_Type.values[index].displayName(context),
+      onSelect: (selectedIndex) =>
+          _typeController.value = Bait_Type.values[selectedIndex],
+    );
+  }
 
+  Widget _buildImage() {
+    return SingleImageInput(
+      initialImageName: _oldBait?.imageName,
+      controller: _imageController,
+    );
+  }
+
+  Widget _buildVariants() {
+    return BaitVariantListInput(controller: _variantsController);
+  }
+
+  FutureOr<bool> _save(BuildContext context) {
+    // imageName is set in _baitManager.addOrUpdate
     var newBait = Bait()
       ..id = _oldBait?.id ?? randomId()
-      ..name = _nameController.value!
-      ..customEntityValues.addAll(entityValuesFromMap(customFieldValueMap));
+      ..name = _nameController.value!;
+
+    newBait.variants.clear();
+    newBait.variants.addAll(_variantsController.value);
 
     if (_baitCategoryController.value != null) {
       newBait.baitCategoryId = _baitCategoryController.value!;
+    }
+
+    if (_typeController.hasValue) {
+      newBait.type = _typeController.value!;
     }
 
     if (_baitManager.duplicate(newBait)) {
@@ -188,7 +182,20 @@ class _SaveBaitPageState extends State<SaveBaitPage> {
       return false;
     }
 
-    _baitManager.addOrUpdate(newBait);
+    // Set variant baseId only when validation as passed.
+    for (var variant in newBait.variants) {
+      variant.baseId = newBait.id;
+    }
+
+    File? imageFile;
+    if (_imageController.hasValue &&
+        _imageController.value!.originalFile != null) {
+      imageFile = _imageController.value!.originalFile!;
+    }
+
+    _baitManager.addOrUpdate(newBait, imageFile: imageFile);
     return true;
   }
+
+  bool get _isInputValid => _nameController.isValid(context);
 }

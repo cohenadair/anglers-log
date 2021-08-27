@@ -83,7 +83,7 @@ class _PaddedCheckboxState extends State<PaddedCheckbox> {
   @override
   Widget build(BuildContext context) {
     return EnabledOpacity(
-      enabled: widget.enabled,
+      isEnabled: widget.enabled,
       child: Padding(
         padding: widget.padding,
         child: SizedBox(

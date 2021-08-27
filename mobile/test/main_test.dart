@@ -137,8 +137,11 @@ void main() {
       catchIds: anyNamed("catchIds"),
       speciesIds: anyNamed("speciesIds"),
       fishingSpotIds: anyNamed("fishingSpotIds"),
-      baitIds: anyNamed("baitIds"),
+      baits: anyNamed("baits"),
     )).thenReturn([]);
+    when(appManager.customEntityManager.entityExists(any)).thenReturn(false);
+    when(appManager.baitManager.attachmentsDisplayValues(any, any))
+        .thenReturn([]);
 
     await tester.pumpWidget(AnglersLog(appManager.app));
 
@@ -168,7 +171,7 @@ void main() {
       catchIds: anyNamed("catchIds"),
       speciesIds: anyNamed("speciesIds"),
       fishingSpotIds: anyNamed("fishingSpotIds"),
-      baitIds: anyNamed("baitIds"),
+      baits: anyNamed("baits"),
     )).thenReturn([]);
 
     await tester.pumpWidget(AnglersLog(appManager.app));
@@ -204,7 +207,7 @@ void main() {
       catchIds: anyNamed("catchIds"),
       speciesIds: anyNamed("speciesIds"),
       fishingSpotIds: anyNamed("fishingSpotIds"),
-      baitIds: anyNamed("baitIds"),
+      baits: anyNamed("baits"),
     )).thenReturn([]);
 
     await tester.pumpWidget(AnglersLog(appManager.app));
@@ -238,7 +241,7 @@ void main() {
       catchIds: anyNamed("catchIds"),
       speciesIds: anyNamed("speciesIds"),
       fishingSpotIds: anyNamed("fishingSpotIds"),
-      baitIds: anyNamed("baitIds"),
+      baits: anyNamed("baits"),
     )).thenReturn([]);
 
     await tester.pumpWidget(AnglersLog(appManager.app));

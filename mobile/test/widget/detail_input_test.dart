@@ -30,4 +30,34 @@ void main() {
       insetsDefault,
     );
   });
+
+  testWidgets("Disabled doesn't invoke onTap", (tester) async {
+    var invoked = false;
+    await tester.pumpWidget(
+      Testable(
+        (_) => DetailInput(
+          isEnabled: false,
+          onTap: () => invoked = true,
+        ),
+      ),
+    );
+
+    await tapAndSettle(tester, find.byType(DetailInput));
+    expect(invoked, isFalse);
+  });
+
+  testWidgets("Enabled invokes onTap", (tester) async {
+    var invoked = false;
+    await tester.pumpWidget(
+      Testable(
+        (_) => DetailInput(
+          isEnabled: true,
+          onTap: () => invoked = true,
+        ),
+      ),
+    );
+
+    await tapAndSettle(tester, find.byType(DetailInput));
+    expect(invoked, isTrue);
+  });
 }

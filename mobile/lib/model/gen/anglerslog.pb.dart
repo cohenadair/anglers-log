@@ -519,7 +519,10 @@ class CustomEntityValue extends $pb.GeneratedMessage {
 }
 
 class Bait extends $pb.GeneratedMessage {
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'Bait',
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      const $core.bool.fromEnvironment('protobuf.omit_message_names')
+          ? ''
+          : 'Bait',
       package: const $pb.PackageName(
           const $core.bool.fromEnvironment('protobuf.omit_message_names')
               ? ''
@@ -532,13 +535,12 @@ class Bait extends $pb.GeneratedMessage {
         const $core.bool.fromEnvironment('protobuf.omit_field_names')
             ? ''
             : 'name')
-    ..aOM<Id>(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'baitCategoryId',
+    ..aOM<Id>(
+        3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'baitCategoryId',
         subBuilder: Id.create)
-    ..pc<CustomEntityValue>(
-        4,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'customEntityValues',
-        $pb.PbFieldType.PM,
-        subBuilder: CustomEntityValue.create)
+    ..aOS(4, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'imageName')
+    ..e<Bait_Type>(5, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'type', $pb.PbFieldType.OE, defaultOrMaker: Bait_Type.artificial, valueOf: Bait_Type.valueOf, enumValues: Bait_Type.values)
+    ..pc<BaitVariant>(6, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'variants', $pb.PbFieldType.PM, subBuilder: BaitVariant.create)
     ..hasRequiredFields = false;
 
   Bait._() : super();
@@ -546,7 +548,9 @@ class Bait extends $pb.GeneratedMessage {
     Id? id,
     $core.String? name,
     Id? baitCategoryId,
-    $core.Iterable<CustomEntityValue>? customEntityValues,
+    $core.String? imageName,
+    Bait_Type? type,
+    $core.Iterable<BaitVariant>? variants,
   }) {
     final _result = create();
     if (id != null) {
@@ -558,8 +562,14 @@ class Bait extends $pb.GeneratedMessage {
     if (baitCategoryId != null) {
       _result.baitCategoryId = baitCategoryId;
     }
-    if (customEntityValues != null) {
-      _result.customEntityValues.addAll(customEntityValues);
+    if (imageName != null) {
+      _result.imageName = imageName;
+    }
+    if (type != null) {
+      _result.type = type;
+    }
+    if (variants != null) {
+      _result.variants.addAll(variants);
     }
     return _result;
   }
@@ -630,7 +640,326 @@ class Bait extends $pb.GeneratedMessage {
   Id ensureBaitCategoryId() => $_ensure(2);
 
   @$pb.TagNumber(4)
-  $core.List<CustomEntityValue> get customEntityValues => $_getList(3);
+  $core.String get imageName => $_getSZ(3);
+  @$pb.TagNumber(4)
+  set imageName($core.String v) {
+    $_setString(3, v);
+  }
+
+  @$pb.TagNumber(4)
+  $core.bool hasImageName() => $_has(3);
+  @$pb.TagNumber(4)
+  void clearImageName() => clearField(4);
+
+  @$pb.TagNumber(5)
+  Bait_Type get type => $_getN(4);
+  @$pb.TagNumber(5)
+  set type(Bait_Type v) {
+    setField(5, v);
+  }
+
+  @$pb.TagNumber(5)
+  $core.bool hasType() => $_has(4);
+  @$pb.TagNumber(5)
+  void clearType() => clearField(5);
+
+  @$pb.TagNumber(6)
+  $core.List<BaitVariant> get variants => $_getList(5);
+}
+
+class BaitVariant extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      const $core.bool.fromEnvironment('protobuf.omit_message_names')
+          ? ''
+          : 'BaitVariant',
+      package: const $pb.PackageName(
+          const $core.bool.fromEnvironment('protobuf.omit_message_names')
+              ? ''
+              : 'anglerslog'),
+      createEmptyInstance: create)
+    ..aOM<Id>(
+        1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'id',
+        subBuilder: Id.create)
+    ..aOM<Id>(
+        2,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'baseId',
+        subBuilder: Id.create)
+    ..aOS(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'color')
+    ..aOS(4, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'modelNumber')
+    ..aOS(5, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'size')
+    ..aOM<MultiMeasurement>(6, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'minDiveDepth', subBuilder: MultiMeasurement.create)
+    ..aOM<MultiMeasurement>(7, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'maxDiveDepth', subBuilder: MultiMeasurement.create)
+    ..aOS(8, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'description')
+    ..pc<CustomEntityValue>(9, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'customEntityValues', $pb.PbFieldType.PM, subBuilder: CustomEntityValue.create)
+    ..hasRequiredFields = false;
+
+  BaitVariant._() : super();
+  factory BaitVariant({
+    Id? id,
+    Id? baseId,
+    $core.String? color,
+    $core.String? modelNumber,
+    $core.String? size,
+    MultiMeasurement? minDiveDepth,
+    MultiMeasurement? maxDiveDepth,
+    $core.String? description,
+    $core.Iterable<CustomEntityValue>? customEntityValues,
+  }) {
+    final _result = create();
+    if (id != null) {
+      _result.id = id;
+    }
+    if (baseId != null) {
+      _result.baseId = baseId;
+    }
+    if (color != null) {
+      _result.color = color;
+    }
+    if (modelNumber != null) {
+      _result.modelNumber = modelNumber;
+    }
+    if (size != null) {
+      _result.size = size;
+    }
+    if (minDiveDepth != null) {
+      _result.minDiveDepth = minDiveDepth;
+    }
+    if (maxDiveDepth != null) {
+      _result.maxDiveDepth = maxDiveDepth;
+    }
+    if (description != null) {
+      _result.description = description;
+    }
+    if (customEntityValues != null) {
+      _result.customEntityValues.addAll(customEntityValues);
+    }
+    return _result;
+  }
+  factory BaitVariant.fromBuffer($core.List<$core.int> i,
+          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(i, r);
+  factory BaitVariant.fromJson($core.String i,
+          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(i, r);
+  @$core.Deprecated('Using this can add significant overhead to your binary. '
+      'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+      'Will be removed in next major version')
+  BaitVariant clone() => BaitVariant()..mergeFromMessage(this);
+  @$core.Deprecated('Using this can add significant overhead to your binary. '
+      'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+      'Will be removed in next major version')
+  BaitVariant copyWith(void Function(BaitVariant) updates) =>
+      super.copyWith((message) => updates(message as BaitVariant))
+          as BaitVariant; // ignore: deprecated_member_use
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static BaitVariant create() => BaitVariant._();
+  BaitVariant createEmptyInstance() => create();
+  static $pb.PbList<BaitVariant> createRepeated() => $pb.PbList<BaitVariant>();
+  @$core.pragma('dart2js:noInline')
+  static BaitVariant getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<BaitVariant>(create);
+  static BaitVariant? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  Id get id => $_getN(0);
+  @$pb.TagNumber(1)
+  set id(Id v) {
+    setField(1, v);
+  }
+
+  @$pb.TagNumber(1)
+  $core.bool hasId() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearId() => clearField(1);
+  @$pb.TagNumber(1)
+  Id ensureId() => $_ensure(0);
+
+  @$pb.TagNumber(2)
+  Id get baseId => $_getN(1);
+  @$pb.TagNumber(2)
+  set baseId(Id v) {
+    setField(2, v);
+  }
+
+  @$pb.TagNumber(2)
+  $core.bool hasBaseId() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearBaseId() => clearField(2);
+  @$pb.TagNumber(2)
+  Id ensureBaseId() => $_ensure(1);
+
+  @$pb.TagNumber(3)
+  $core.String get color => $_getSZ(2);
+  @$pb.TagNumber(3)
+  set color($core.String v) {
+    $_setString(2, v);
+  }
+
+  @$pb.TagNumber(3)
+  $core.bool hasColor() => $_has(2);
+  @$pb.TagNumber(3)
+  void clearColor() => clearField(3);
+
+  @$pb.TagNumber(4)
+  $core.String get modelNumber => $_getSZ(3);
+  @$pb.TagNumber(4)
+  set modelNumber($core.String v) {
+    $_setString(3, v);
+  }
+
+  @$pb.TagNumber(4)
+  $core.bool hasModelNumber() => $_has(3);
+  @$pb.TagNumber(4)
+  void clearModelNumber() => clearField(4);
+
+  @$pb.TagNumber(5)
+  $core.String get size => $_getSZ(4);
+  @$pb.TagNumber(5)
+  set size($core.String v) {
+    $_setString(4, v);
+  }
+
+  @$pb.TagNumber(5)
+  $core.bool hasSize() => $_has(4);
+  @$pb.TagNumber(5)
+  void clearSize() => clearField(5);
+
+  @$pb.TagNumber(6)
+  MultiMeasurement get minDiveDepth => $_getN(5);
+  @$pb.TagNumber(6)
+  set minDiveDepth(MultiMeasurement v) {
+    setField(6, v);
+  }
+
+  @$pb.TagNumber(6)
+  $core.bool hasMinDiveDepth() => $_has(5);
+  @$pb.TagNumber(6)
+  void clearMinDiveDepth() => clearField(6);
+  @$pb.TagNumber(6)
+  MultiMeasurement ensureMinDiveDepth() => $_ensure(5);
+
+  @$pb.TagNumber(7)
+  MultiMeasurement get maxDiveDepth => $_getN(6);
+  @$pb.TagNumber(7)
+  set maxDiveDepth(MultiMeasurement v) {
+    setField(7, v);
+  }
+
+  @$pb.TagNumber(7)
+  $core.bool hasMaxDiveDepth() => $_has(6);
+  @$pb.TagNumber(7)
+  void clearMaxDiveDepth() => clearField(7);
+  @$pb.TagNumber(7)
+  MultiMeasurement ensureMaxDiveDepth() => $_ensure(6);
+
+  @$pb.TagNumber(8)
+  $core.String get description => $_getSZ(7);
+  @$pb.TagNumber(8)
+  set description($core.String v) {
+    $_setString(7, v);
+  }
+
+  @$pb.TagNumber(8)
+  $core.bool hasDescription() => $_has(7);
+  @$pb.TagNumber(8)
+  void clearDescription() => clearField(8);
+
+  @$pb.TagNumber(9)
+  $core.List<CustomEntityValue> get customEntityValues => $_getList(8);
+}
+
+class BaitAttachment extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      const $core.bool.fromEnvironment('protobuf.omit_message_names')
+          ? ''
+          : 'BaitAttachment',
+      package: const $pb.PackageName(
+          const $core.bool.fromEnvironment('protobuf.omit_message_names')
+              ? ''
+              : 'anglerslog'),
+      createEmptyInstance: create)
+    ..aOM<Id>(
+        1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'baitId',
+        subBuilder: Id.create)
+    ..aOM<Id>(
+        2,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'variantId',
+        subBuilder: Id.create)
+    ..hasRequiredFields = false;
+
+  BaitAttachment._() : super();
+  factory BaitAttachment({
+    Id? baitId,
+    Id? variantId,
+  }) {
+    final _result = create();
+    if (baitId != null) {
+      _result.baitId = baitId;
+    }
+    if (variantId != null) {
+      _result.variantId = variantId;
+    }
+    return _result;
+  }
+  factory BaitAttachment.fromBuffer($core.List<$core.int> i,
+          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(i, r);
+  factory BaitAttachment.fromJson($core.String i,
+          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(i, r);
+  @$core.Deprecated('Using this can add significant overhead to your binary. '
+      'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+      'Will be removed in next major version')
+  BaitAttachment clone() => BaitAttachment()..mergeFromMessage(this);
+  @$core.Deprecated('Using this can add significant overhead to your binary. '
+      'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+      'Will be removed in next major version')
+  BaitAttachment copyWith(void Function(BaitAttachment) updates) =>
+      super.copyWith((message) => updates(message as BaitAttachment))
+          as BaitAttachment; // ignore: deprecated_member_use
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static BaitAttachment create() => BaitAttachment._();
+  BaitAttachment createEmptyInstance() => create();
+  static $pb.PbList<BaitAttachment> createRepeated() =>
+      $pb.PbList<BaitAttachment>();
+  @$core.pragma('dart2js:noInline')
+  static BaitAttachment getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<BaitAttachment>(create);
+  static BaitAttachment? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  Id get baitId => $_getN(0);
+  @$pb.TagNumber(1)
+  set baitId(Id v) {
+    setField(1, v);
+  }
+
+  @$pb.TagNumber(1)
+  $core.bool hasBaitId() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearBaitId() => clearField(1);
+  @$pb.TagNumber(1)
+  Id ensureBaitId() => $_ensure(0);
+
+  @$pb.TagNumber(2)
+  Id get variantId => $_getN(1);
+  @$pb.TagNumber(2)
+  set variantId(Id v) {
+    setField(2, v);
+  }
+
+  @$pb.TagNumber(2)
+  $core.bool hasVariantId() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearVariantId() => clearField(2);
+  @$pb.TagNumber(2)
+  Id ensureVariantId() => $_ensure(1);
 }
 
 class BaitCategory extends $pb.GeneratedMessage {
@@ -734,15 +1063,13 @@ class Catch extends $pb.GeneratedMessage {
               ? ''
               : 'anglerslog'),
       createEmptyInstance: create)
-    ..aOM<Id>(
-        1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'id',
+    ..aOM<Id>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'id',
         subBuilder: Id.create)
-    ..a<$fixnum.Int64>(
-        2,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'timestamp',
-        $pb.PbFieldType.OU6,
+    ..a<$fixnum.Int64>(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'timestamp', $pb.PbFieldType.OU6,
         defaultOrMaker: $fixnum.Int64.ZERO)
-    ..pc<Id>(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'baitIds', $pb.PbFieldType.PM, subBuilder: Id.create)
+    ..pc<BaitAttachment>(
+        3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'baits', $pb.PbFieldType.PM,
+        subBuilder: BaitAttachment.create)
     ..aOM<Id>(4, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'fishingSpotId', subBuilder: Id.create)
     ..aOM<Id>(5, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'speciesId', subBuilder: Id.create)
     ..pPS(6, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'imageNames')
@@ -768,7 +1095,7 @@ class Catch extends $pb.GeneratedMessage {
   factory Catch({
     Id? id,
     $fixnum.Int64? timestamp,
-    $core.Iterable<Id>? baitIds,
+    $core.Iterable<BaitAttachment>? baits,
     Id? fishingSpotId,
     Id? speciesId,
     $core.Iterable<$core.String>? imageNames,
@@ -796,8 +1123,8 @@ class Catch extends $pb.GeneratedMessage {
     if (timestamp != null) {
       _result.timestamp = timestamp;
     }
-    if (baitIds != null) {
-      _result.baitIds.addAll(baitIds);
+    if (baits != null) {
+      _result.baits.addAll(baits);
     }
     if (fishingSpotId != null) {
       _result.fishingSpotId = fishingSpotId;
@@ -911,7 +1238,7 @@ class Catch extends $pb.GeneratedMessage {
   void clearTimestamp() => clearField(2);
 
   @$pb.TagNumber(3)
-  $core.List<Id> get baitIds => $_getList(2);
+  $core.List<BaitAttachment> get baits => $_getList(2);
 
   @$pb.TagNumber(4)
   Id get fishingSpotId => $_getN(3);
@@ -1583,7 +1910,7 @@ class Report extends $pb.GeneratedMessage {
         enumValues: Report_Type.values)
     ..aOM<DateRange>(5, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'fromDateRange', subBuilder: DateRange.create)
     ..aOM<DateRange>(6, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'toDateRange', subBuilder: DateRange.create)
-    ..pc<Id>(7, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'baitIds', $pb.PbFieldType.PM, subBuilder: Id.create)
+    ..pc<BaitAttachment>(7, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'baits', $pb.PbFieldType.PM, subBuilder: BaitAttachment.create)
     ..pc<Id>(8, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'fishingSpotIds', $pb.PbFieldType.PM, subBuilder: Id.create)
     ..pc<Id>(9, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'speciesIds', $pb.PbFieldType.PM, subBuilder: Id.create)
     ..pc<Id>(10, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'anglerIds', $pb.PbFieldType.PM, subBuilder: Id.create)
@@ -1617,7 +1944,7 @@ class Report extends $pb.GeneratedMessage {
     Report_Type? type,
     DateRange? fromDateRange,
     DateRange? toDateRange,
-    $core.Iterable<Id>? baitIds,
+    $core.Iterable<BaitAttachment>? baits,
     $core.Iterable<Id>? fishingSpotIds,
     $core.Iterable<Id>? speciesIds,
     $core.Iterable<Id>? anglerIds,
@@ -1661,8 +1988,8 @@ class Report extends $pb.GeneratedMessage {
     if (toDateRange != null) {
       _result.toDateRange = toDateRange;
     }
-    if (baitIds != null) {
-      _result.baitIds.addAll(baitIds);
+    if (baits != null) {
+      _result.baits.addAll(baits);
     }
     if (fishingSpotIds != null) {
       _result.fishingSpotIds.addAll(fishingSpotIds);
@@ -1840,7 +2167,7 @@ class Report extends $pb.GeneratedMessage {
   DateRange ensureToDateRange() => $_ensure(5);
 
   @$pb.TagNumber(7)
-  $core.List<Id> get baitIds => $_getList(6);
+  $core.List<BaitAttachment> get baits => $_getList(6);
 
   @$pb.TagNumber(8)
   $core.List<Id> get fishingSpotIds => $_getList(7);

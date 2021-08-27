@@ -129,6 +129,8 @@ class Strings {
 
   String get inputNameLabel => _string("input_nameLabel");
 
+  String get inputColorLabel => _string("input_colorLabel");
+
   String get inputGenericRequired => _string("input_genericRequired");
 
   String get inputDescriptionLabel => _string("input_descriptionLabel");
@@ -340,6 +342,16 @@ class Strings {
   String get baitListPageEmptyListDescription =>
       _string("baitListPage_emptyListDescription");
 
+  String get baitListPageVariantsLabel => _string("baitListPage_variantsLabel");
+
+  String get baitListPageVariantLabel => _string("baitListPage_variantLabel");
+
+  String get baitListPageNumberOfCatches =>
+      _string("baitListPage_numberOfCatches");
+
+  String get baitListPageNumberOfCatchesSingular =>
+      _string("baitListPage_numberOfCatchesSingular");
+
   String get reportListPageConfirmDelete =>
       _string("reportListPage_confirmDelete");
 
@@ -355,6 +367,14 @@ class Strings {
   String get saveBaitPageCategoryLabel => _string("saveBaitPage_categoryLabel");
 
   String get saveBaitPageBaitExists => _string("saveBaitPage_baitExists");
+
+  String get saveBaitPageVariants => _string("saveBaitPage_variants");
+
+  String get saveBaitPageDeleteVariantSingular =>
+      _string("saveBaitPage_deleteVariantSingular");
+
+  String get saveBaitPageDeleteVariantPlural =>
+      _string("saveBaitPage_deleteVariantPlural");
 
   String get saveBaitCategoryPageNewTitle =>
       _string("saveBaitCategoryPage_newTitle");
@@ -1187,6 +1207,8 @@ class Strings {
 
   String get atmosphereInputWindSpeed => _string("atmosphereInput_windSpeed");
 
+  String get atmosphereInputWind => _string("atmosphereInput_wind");
+
   String get atmosphereInputWindDirection =>
       _string("atmosphereInput_windDirection");
 
@@ -1412,6 +1434,40 @@ class Strings {
   String get tideSlack => _string("tide_slack");
 
   String get tideIncoming => _string("tide_incoming");
+
+  String get saveBaitVariantPageTitle => _string("saveBaitVariantPage_title");
+
+  String get saveBaitVariantPageEditTitle =>
+      _string("saveBaitVariantPage_editTitle");
+
+  String get saveBaitVariantPageModelNumber =>
+      _string("saveBaitVariantPage_modelNumber");
+
+  String get saveBaitVariantPageSize => _string("saveBaitVariantPage_size");
+
+  String get saveBaitVariantPageMinDiveDepth =>
+      _string("saveBaitVariantPage_minDiveDepth");
+
+  String get saveBaitVariantPageMaxDiveDepth =>
+      _string("saveBaitVariantPage_maxDiveDepth");
+
+  String get saveBaitVariantPageDescription =>
+      _string("saveBaitVariantPage_description");
+
+  String get baitVariantPageVariantLabel =>
+      _string("baitVariantPage_variantLabel");
+
+  String get baitVariantPageModel => _string("baitVariantPage_model");
+
+  String get baitVariantPageSize => _string("baitVariantPage_size");
+
+  String get baitVariantPageDiveDepth => _string("baitVariantPage_diveDepth");
+
+  String get baitTypeArtificial => _string("baitType_artificial");
+
+  String get baitTypeReal => _string("baitType_real");
+
+  String get baitTypeLive => _string("baitType_live");
 }
 
 class StringsDelegate extends LocalizationsDelegate<Strings> {

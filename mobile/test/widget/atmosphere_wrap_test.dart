@@ -75,4 +75,39 @@ void main() {
     expect(find.byType(Text), findsOneWidget);
     expect(find.text("15\u00B0C"), findsOneWidget);
   });
+
+  testWidgets("No wind direction shows plain label", (tester) async {
+    await tester.pumpWidget(Testable(
+      (_) => AtmosphereWrap(
+        Atmosphere(
+          windSpeed: Measurement(
+            unit: Unit.miles_per_hour,
+            value: 15,
+          ),
+        ),
+      ),
+    ));
+
+    expect(find.byType(Text), findsNWidgets(2));
+    expect(find.text("15 mph"), findsOneWidget);
+    expect(find.text("Wind"), findsOneWidget);
+  });
+
+  testWidgets("Wind direction shows", (tester) async {
+    await tester.pumpWidget(Testable(
+      (_) => AtmosphereWrap(
+        Atmosphere(
+          windSpeed: Measurement(
+            unit: Unit.miles_per_hour,
+            value: 15,
+          ),
+          windDirection: Direction.north,
+        ),
+      ),
+    ));
+
+    expect(find.byType(Text), findsNWidgets(2));
+    expect(find.text("15 mph"), findsOneWidget);
+    expect(find.text("N"), findsOneWidget);
+  });
 }

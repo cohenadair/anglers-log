@@ -162,13 +162,16 @@ class MultiMeasurementInputSpec {
           title: (context) => Strings.of(context).catchFieldWeightLabel,
         );
 
-  MultiMeasurementInputSpec.waterDepth(BuildContext context)
-      : this._(
+  MultiMeasurementInputSpec.waterDepth(
+    BuildContext context, {
+    String? title,
+  }) : this._(
           imperial: Unit.feet,
           metric: Unit.meters,
           fraction: Unit.inches,
           system: UserPreferenceManager.of(context).waterDepthSystem,
-          title: (context) => Strings.of(context).catchFieldWaterDepthLabel,
+          title: (context) =>
+              title ?? Strings.of(context).catchFieldWaterDepthLabel,
         );
 
   MultiMeasurementInputSpec.waterTemperature(BuildContext context)

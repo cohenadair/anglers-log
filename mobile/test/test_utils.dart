@@ -75,6 +75,11 @@ class Testable extends StatelessWidget {
   }
 }
 
+void setCanvasSize(WidgetTester tester, Size size) {
+  tester.binding.window.physicalSizeTestValue = size;
+  tester.binding.window.devicePixelRatioTestValue = 1.0;
+}
+
 Future<BuildContext> buildContext(
   WidgetTester tester, {
   bool use24Hour = false,
@@ -171,10 +176,19 @@ Finder findRichText(String text) {
       (widget) => widget is RichText && widget.text.toPlainText() == text);
 }
 
-Finder findManageableListItemCheckbox(WidgetTester tester, String item) {
+Finder findManageableListItemCheckbox(
+  WidgetTester tester,
+  String item, {
+  bool skipOffstage = true,
+}) {
   return find.descendant(
-    of: find.widgetWithText(ManageableListItem, item),
-    matching: find.byType(PaddedCheckbox),
+    of: find.widgetWithText(
+      ManageableListItem,
+      item,
+      skipOffstage: skipOffstage,
+    ),
+    matching: find.byType(PaddedCheckbox, skipOffstage: skipOffstage),
+    skipOffstage: skipOffstage,
   );
 }
 
@@ -303,5 +317,12 @@ extension CommonFindersExt on CommonFinders {
     String? text,
   }) {
     return textStyle(text, styleNote(context));
+  }
+
+  Finder disabledText(
+    BuildContext context, {
+    String? text,
+  }) {
+    return textStyle(text, styleDisabled(context));
   }
 }

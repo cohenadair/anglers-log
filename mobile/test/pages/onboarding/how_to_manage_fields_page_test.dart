@@ -12,7 +12,11 @@ void main() {
   setUp(() {
     appManager = StubbedAppManager();
 
+    when(appManager.baitManager.attachmentsDisplayValues(any, any))
+        .thenReturn([]);
+
     when(appManager.customEntityManager.entity(any)).thenReturn(null);
+    when(appManager.customEntityManager.entityExists(any)).thenReturn(false);
 
     when(appManager.locationMonitor.currentLocation).thenReturn(null);
 

@@ -244,6 +244,9 @@ void main() {
   });
 
   testWidgets("ProPage is shown when user is not pro", (tester) async {
+    when(appManager.baitManager.attachmentsDisplayValues(any, any))
+        .thenReturn([]);
+
     when(appManager.subscriptionManager.isPro).thenReturn(false);
     when(appManager.subscriptionManager.subscriptions())
         .thenAnswer((_) => Future.value(null));

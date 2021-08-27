@@ -66,15 +66,18 @@ class ListPickerInput extends StatelessWidget {
   final String? title;
   final String? value;
   final VoidCallback? onTap;
+  final bool isEnabled;
 
   ListPickerInput({
     this.title,
     this.value,
     this.onTap,
+    this.isEnabled = true,
   }) : assert(isNotEmpty(title) || isNotEmpty(value));
 
   Widget build(BuildContext context) {
     return DetailInput(
+      isEnabled: isEnabled,
       onTap: onTap,
       children: [
         Text(
@@ -93,7 +96,6 @@ class ListPickerInput extends StatelessWidget {
                       : value!,
                   textAlign: TextAlign.right,
                   style: styleSecondary(context),
-                  overflow: TextOverflow.ellipsis,
                 ),
         ),
       ],

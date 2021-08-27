@@ -37,9 +37,14 @@ class HeadingDivider extends StatelessWidget {
   final String text;
   final bool showDivider;
 
+  /// A widget that's rendered at the right edge of the screen, in the same
+  /// [Row] as [text].
+  final Widget? trailing;
+
   HeadingDivider(
     this.text, {
     this.showDivider = true,
+    this.trailing,
   });
 
   @override
@@ -59,9 +64,16 @@ class HeadingDivider extends StatelessWidget {
           child: SafeArea(
             top: false,
             bottom: false,
-            child: Text(
-              text,
-              style: styleListHeading(context),
+            child: Row(
+              children: [
+                Expanded(
+                  child: Text(
+                    text,
+                    style: styleListHeading(context),
+                  ),
+                ),
+                trailing ?? Empty(),
+              ],
             ),
           ),
         ),
@@ -95,11 +107,7 @@ class HeadingNoteDivider extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Padding(
-            padding: hideNote
-                ? insetsZero
-                : EdgeInsets.only(
-                    bottom: paddingWidget,
-                  ),
+            padding: insetsBottomWidgetSmall,
             child: HeadingDivider(title),
           ),
           _buildNote(),
@@ -109,23 +117,28 @@ class HeadingNoteDivider extends StatelessWidget {
   }
 
   Widget _buildNote() {
-    if (hideNote) {
-      return Empty();
-    }
-
-    return Padding(
-      padding: insetsHorizontalDefault,
-      child: SafeArea(
-        top: false,
-        bottom: false,
-        child: IconLabel(
-          text: note!,
-          icon: Icon(
-            noteIcon,
-            color: Colors.black,
-          ),
-        ),
-      ),
+    return AnimatedSwitcher(
+      duration: defaultAnimationDuration,
+      child: hideNote
+          ? Empty()
+          : Padding(
+              padding: EdgeInsets.only(
+                left: paddingDefault,
+                right: paddingDefault,
+                top: paddingWidget,
+              ),
+              child: SafeArea(
+                top: false,
+                bottom: false,
+                child: IconLabel(
+                  text: note!,
+                  icon: Icon(
+                    noteIcon,
+                    color: Colors.black,
+                  ),
+                ),
+              ),
+            ),
     );
   }
 }
@@ -200,25 +213,25 @@ class SwipeChip extends StatelessWidget {
   }
 }
 
-/// An [Opacity] wrapper whose state depends on the [enabled] property.
+/// An [Opacity] wrapper whose state depends on the [isEnabled] property.
 class EnabledOpacity extends StatelessWidget {
   static const double _disabledOpacity = 0.5;
 
   final Key? key;
-  final bool enabled;
+  final bool isEnabled;
   final Widget child;
 
   EnabledOpacity({
     required this.child,
     this.key,
-    this.enabled = true,
+    this.isEnabled = true,
   });
 
   @override
   Widget build(BuildContext context) {
     return Opacity(
       key: key,
-      opacity: enabled ? 1.0 : _disabledOpacity,
+      opacity: isEnabled ? 1.0 : _disabledOpacity,
       child: child,
     );
   }
@@ -376,14 +389,21 @@ class ChipWrap extends StatelessWidget {
     return Wrap(
       spacing: paddingWidgetSmall,
       runSpacing: paddingWidgetSmall,
-      children: items
-          .map(
-            (item) => Chip(
-              label: Text(item),
-              materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-            ),
-          )
-          .toList(),
+      children: items.map((item) => MinChip(item)).toList(),
+    );
+  }
+}
+
+class MinChip extends StatelessWidget {
+  final String label;
+
+  MinChip(this.label);
+
+  @override
+  Widget build(BuildContext context) {
+    return Chip(
+      label: Text(label),
+      materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
     );
   }
 }

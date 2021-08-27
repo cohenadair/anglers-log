@@ -77,4 +77,34 @@ void main() {
     expect(find.text("Yes"), findsOneWidget);
     expect(find.text("150"), findsOneWidget);
   });
+
+  testWidgets("Condensed", (tester) async {
+    var id1 = randomId();
+    when(appManager.customEntityManager.entity(id1)).thenReturn(
+      CustomEntity()
+        ..name = "Entity 1"
+        ..type = CustomEntity_Type.text,
+    );
+    when(appManager.customEntityManager.customValuesDisplayValue(any, any))
+        .thenReturn("Entity 1: Test 1");
+
+    var context = await pumpContext(
+      tester,
+      (_) => CustomEntityValues(
+        [
+          CustomEntityValue()
+            ..customEntityId = id1
+            ..value = "Test 1",
+        ],
+        isCondensed: true,
+      ),
+      appManager: appManager,
+    );
+
+    expect(find.byType(LabelValue), findsNothing);
+    expect(
+      find.subtitleText(context, text: "Entity 1: Test 1"),
+      findsOneWidget,
+    );
+  });
 }

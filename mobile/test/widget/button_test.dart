@@ -81,7 +81,7 @@ void main() {
 
     testWidgets("Disabled", (tester) async {
       await tester.pumpWidget(Testable((_) => ActionButton.done()));
-      expect(findFirst<EnabledOpacity>(tester).enabled, isFalse);
+      expect(findFirst<EnabledOpacity>(tester).isEnabled, isFalse);
     });
 
     testWidgets("Enabled", (tester) async {
@@ -92,7 +92,7 @@ void main() {
           ),
         ),
       );
-      expect(findFirst<EnabledOpacity>(tester).enabled, isTrue);
+      expect(findFirst<EnabledOpacity>(tester).isEnabled, isTrue);
     });
 
     testWidgets("Condensed", (tester) async {
@@ -129,7 +129,20 @@ void main() {
   });
 
   group("MinimumIconButton", () {
-    testWidgets("Color", (tester) async {
+    testWidgets("Custom color when enabled", (tester) async {
+      await tester.pumpWidget(
+        Testable(
+          (_) => MinimumIconButton(
+            icon: Icons.group,
+            color: Colors.red,
+            onTap: () {},
+          ),
+        ),
+      );
+      expect(findFirst<Icon>(tester).color, Colors.red);
+    });
+
+    testWidgets("Disabled color when disabled", (tester) async {
       await tester.pumpWidget(
         Testable(
           (_) => MinimumIconButton(
@@ -138,7 +151,7 @@ void main() {
           ),
         ),
       );
-      expect(findFirst<Icon>(tester).color, Colors.red);
+      expect(findFirst<Icon>(tester).color != Colors.red, isTrue);
     });
   });
 

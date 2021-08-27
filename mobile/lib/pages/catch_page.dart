@@ -28,6 +28,7 @@ import '../widgets/list_item.dart';
 import '../widgets/static_fishing_spot.dart';
 import '../widgets/text.dart';
 import '../widgets/widget.dart';
+import 'bait_variant_page.dart';
 
 class CatchPage extends StatefulWidget {
   final Catch cat;
@@ -166,34 +167,13 @@ class _CatchPageState extends State<CatchPage> {
   }
 
   Widget _buildBaits() {
-    var baits = _baitManager.list(_catch.baitIds);
-    if (baits.isEmpty) {
+    if (_catch.baits.isEmpty) {
       return Empty();
     }
 
-    var children = <Widget>[];
-    for (var bait in baits) {
-      Widget? subtitle;
-      var baitCategory = _baitCategoryManager.entity(bait.baitCategoryId);
-      if (baitCategory != null) {
-        subtitle = Text(baitCategory.name, style: styleSubtitle(context));
-      }
-
-      children.add(ListItem(
-        title: Text(bait.name),
-        subtitle: subtitle,
-        trailing: RightChevronIcon(),
-        onTap: () => push(
-          context,
-          BaitPage(
-            bait,
-            static: true,
-          ),
-        ),
-      ));
-    }
-
-    return Column(children: children);
+    return Column(
+      children: _catch.baits.map((e) => _BaitAttachmentListItem(e)).toList(),
+    );
   }
 
   Widget _buildFishingSpot() {
@@ -351,5 +331,59 @@ class _CatchPageState extends State<CatchPage> {
     }
 
     return ListItem(title: ChipWrap(methodNames));
+  }
+}
+
+class _BaitAttachmentListItem extends StatelessWidget {
+  final BaitAttachment attachment;
+
+  _BaitAttachmentListItem(this.attachment);
+
+  @override
+  Widget build(BuildContext context) {
+    var baitManager = BaitManager.of(context);
+
+    var bait = baitManager.entity(attachment.baitId);
+    if (bait == null) {
+      return Empty();
+    }
+
+    // If the variant attached to this attachment no longer exists, do not
+    // show anything.
+    var variant = baitManager.variant(bait, attachment.variantId);
+    if (attachment.hasVariantId() && variant == null) {
+      return Empty();
+    }
+
+    var title = baitManager.formatNameWithCategory(bait.id)!;
+    String? subtitle;
+    VoidCallback onTap;
+
+    if (variant == null) {
+      onTap = () => push(context, BaitPage(bait));
+    } else {
+      subtitle = baitManager.variantDisplayValue(
+        variant,
+        context,
+        includeCustomValues: true,
+      );
+      onTap = () {
+        push(
+          context,
+          BaitVariantPage(
+            variant,
+            allowBaseViewing: true,
+          ),
+        );
+      };
+    }
+
+    return ImageListItem(
+      imageName: bait.hasImageName() ? bait.imageName : null,
+      title: title,
+      subtitle: subtitle,
+      trailing: RightChevronIcon(),
+      onTap: onTap,
+    );
   }
 }

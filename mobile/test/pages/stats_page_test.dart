@@ -1,5 +1,9 @@
 import 'package:fixnum/fixnum.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mobile/pages/bait_page.dart';
+import 'package:mobile/pages/bait_variant_page.dart';
 import 'package:mobile/report_manager.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
 import 'package:mobile/pages/stats_page.dart';
@@ -8,6 +12,7 @@ import 'package:mobile/widgets/chart.dart';
 import 'package:mobile/widgets/list_item.dart';
 import 'package:mobile/widgets/list_picker_input.dart';
 import 'package:mockito/mockito.dart';
+import 'package:quiver/strings.dart' as quiver;
 
 import '../mocks/stubbed_app_manager.dart';
 import '../test_utils.dart';
@@ -32,6 +37,16 @@ void main() {
   var baitId2 = randomId();
   var baitId3 = randomId();
   var baitId4 = randomId();
+
+  var baitVariantId0 = randomId();
+
+  var baitAttachment0 = BaitAttachment(baitId: baitId0);
+  var baitAttachment1 = BaitAttachment(baitId: baitId1);
+  var baitAttachment2 = BaitAttachment(baitId: baitId2);
+  var baitAttachment4 = BaitAttachment(
+    baitId: baitId4,
+    variantId: baitVariantId0,
+  );
 
   var catchId0 = randomId();
   var catchId1 = randomId();
@@ -105,7 +120,14 @@ void main() {
       ..name = "Grasshopper",
     baitId4: Bait()
       ..id = baitId4
-      ..name = "Grub",
+      ..name = "Grub"
+      ..variants.add(
+        BaitVariant(
+          id: baitVariantId0,
+          baseId: baitId4,
+          color: "Red",
+        ),
+      ),
   };
 
   var _catches = <Catch>[
@@ -114,61 +136,61 @@ void main() {
       ..timestamp = Int64(10)
       ..speciesId = speciesId3
       ..fishingSpotId = fishingSpotId1
-      ..baitIds.add(baitId0),
+      ..baits.add(baitAttachment0),
     Catch()
       ..id = catchId1
       ..timestamp = Int64(5000)
       ..speciesId = speciesId4
       ..fishingSpotId = fishingSpotId3
-      ..baitIds.add(baitId4),
+      ..baits.add(baitAttachment4),
     Catch()
       ..id = catchId2
       ..timestamp = Int64(100)
       ..speciesId = speciesId0
       ..fishingSpotId = fishingSpotId4
-      ..baitIds.add(baitId0),
+      ..baits.add(baitAttachment0),
     Catch()
       ..id = catchId3
       ..timestamp = Int64(900)
       ..speciesId = speciesId1
       ..fishingSpotId = fishingSpotId0
-      ..baitIds.add(baitId1),
+      ..baits.add(baitAttachment1),
     Catch()
       ..id = catchId4
       ..timestamp = Int64(78000)
       ..speciesId = speciesId4
       ..fishingSpotId = fishingSpotId1
-      ..baitIds.add(baitId0),
+      ..baits.add(baitAttachment0),
     Catch()
       ..id = catchId5
       ..timestamp = Int64(100000)
       ..speciesId = speciesId3
       ..fishingSpotId = fishingSpotId1
-      ..baitIds.add(baitId2),
+      ..baits.add(baitAttachment2),
     Catch()
       ..id = catchId6
       ..timestamp = Int64(800)
       ..speciesId = speciesId1
       ..fishingSpotId = fishingSpotId2
-      ..baitIds.add(baitId1),
+      ..baits.add(baitAttachment1),
     Catch()
       ..id = catchId7
       ..timestamp = Int64(70)
       ..speciesId = speciesId1
       ..fishingSpotId = fishingSpotId1
-      ..baitIds.add(baitId0),
+      ..baits.add(baitAttachment0),
     Catch()
       ..id = catchId8
       ..timestamp = Int64(15)
       ..speciesId = speciesId1
       ..fishingSpotId = fishingSpotId1
-      ..baitIds.add(baitId1),
+      ..baits.add(baitAttachment1),
     Catch()
       ..id = catchId9
       ..timestamp = Int64(6000)
       ..speciesId = speciesId4
       ..fishingSpotId = fishingSpotId1
-      ..baitIds.add(baitId0),
+      ..baits.add(baitAttachment0),
   ];
 
   setUp(() {
@@ -181,11 +203,23 @@ void main() {
     when(appManager.baitManager.list()).thenReturn(baitMap.values.toList());
     when(appManager.baitManager.entity(any))
         .thenAnswer((invocation) => baitMap[invocation.positionalArguments[0]]);
+    when(appManager.baitManager.nameComparator)
+        .thenReturn((lhs, rhs) => quiver.compareIgnoreCase(lhs.name, rhs.name));
+    when(appManager.baitManager.attachmentComparator)
+        .thenReturn((lhs, rhs) => 0);
+    when(appManager.baitManager.attachmentsDisplayValues(any, any))
+        .thenAnswer((invocation) {
+      var result = <String>[];
+      for (var attachment in invocation.positionalArguments.first) {
+        result.add(baitMap[attachment.baitId]!.name);
+      }
+      return result;
+    });
 
     when(appManager.catchManager.catchesSortedByTimestamp(
       any,
       dateRange: anyNamed("dateRange"),
-      baitIds: anyNamed("baitIds"),
+      baits: anyNamed("baits"),
       fishingSpotIds: anyNamed("fishingSpotIds"),
       speciesIds: anyNamed("speciesIds"),
     )).thenReturn([]);
@@ -194,6 +228,8 @@ void main() {
     when(appManager.reportManager.list()).thenReturn([]);
     when(appManager.reportManager.listSortedByName()).thenReturn([]);
     when(appManager.reportManager.entityExists(any)).thenReturn(false);
+    when(appManager.reportManager.nameComparator)
+        .thenReturn((lhs, rhs) => quiver.compareIgnoreCase(lhs.name, rhs.name));
 
     when(appManager.localDatabaseManager.deleteEntity(any, any))
         .thenAnswer((_) => Future.value(true));
@@ -206,6 +242,8 @@ void main() {
         .thenReturn(fishingSpotMap.values.toList());
     when(appManager.fishingSpotManager.entity(any)).thenAnswer(
         (invocation) => fishingSpotMap[invocation.positionalArguments[0]]);
+    when(appManager.fishingSpotManager.nameComparator)
+        .thenReturn((lhs, rhs) => quiver.compareIgnoreCase(lhs.name, rhs.name));
 
     when(appManager.speciesManager.name(any))
         .thenAnswer((invocation) => invocation.positionalArguments.first.name);
@@ -215,6 +253,8 @@ void main() {
         .thenReturn(speciesMap.values.toList());
     when(appManager.speciesManager.entity(any)).thenAnswer(
         (invocation) => speciesMap[invocation.positionalArguments[0]]);
+    when(appManager.speciesManager.nameComparator)
+        .thenReturn((lhs, rhs) => quiver.compareIgnoreCase(lhs.name, rhs.name));
 
     when(appManager.subscriptionManager.stream)
         .thenAnswer((_) => Stream.empty());
@@ -234,7 +274,7 @@ void main() {
     when(appManager.catchManager.catchesSortedByTimestamp(
       any,
       dateRange: anyNamed("dateRange"),
-      baitIds: anyNamed("baitIds"),
+      baits: anyNamed("baits"),
       fishingSpotIds: anyNamed("fishingSpotIds"),
       speciesIds: anyNamed("speciesIds"),
     )).thenReturn(
@@ -444,7 +484,7 @@ void main() {
         ..type = Report_Type.comparison
         ..fromDateRange = DateRange(period: DateRange_Period.last7Days)
         ..toDateRange = DateRange(period: DateRange_Period.allDates)
-        ..baitIds.add(baitId0)
+        ..baits.add(baitAttachment0)
         ..fishingSpotIds.addAll({fishingSpotId0, fishingSpotId1})
         ..speciesIds.addAll({speciesId0, speciesId1});
       when(appManager.userPreferenceManager.selectedReportId)
@@ -486,7 +526,8 @@ void main() {
       );
 
       expect(
-        findFirstWithText<ExpandableChart<Bait>>(tester, "Per bait").filters,
+        findFirstWithText<ExpandableChart<BaitAttachment>>(tester, "Per bait")
+            .filters,
         {
           "Worm",
           "E",
@@ -497,7 +538,7 @@ void main() {
       );
 
       expect(
-        findType<ExpandableChart<Bait>>(tester, skipOffstage: false)
+        findType<ExpandableChart<BaitAttachment>>(tester, skipOffstage: false)
             .where((widget) =>
                 widget.viewAllDescription ==
                 "Viewing number of catches per species per bait.")
@@ -533,7 +574,7 @@ void main() {
         ..name = "Summary Report"
         ..type = Report_Type.summary
         ..fromDateRange = DateRange(period: DateRange_Period.allDates)
-        ..baitIds.add(baitId0)
+        ..baits.add(baitAttachment0)
         ..fishingSpotIds.add(fishingSpotId0)
         ..speciesIds.add(speciesId0);
       when(appManager.userPreferenceManager.selectedReportId)
@@ -573,7 +614,8 @@ void main() {
       );
 
       expect(
-        findFirstWithText<ExpandableChart<Bait>>(tester, "Per bait").filters,
+        findFirstWithText<ExpandableChart<BaitAttachment>>(tester, "Per bait")
+            .filters,
         {
           "Worm",
           "E",
@@ -583,7 +625,7 @@ void main() {
       );
 
       expect(
-        findType<ExpandableChart<Bait>>(tester, skipOffstage: false)
+        findType<ExpandableChart<BaitAttachment>>(tester, skipOffstage: false)
             .where((widget) =>
                 widget.viewAllDescription ==
                 "Viewing number of catches per species per bait.")
@@ -684,7 +726,7 @@ void main() {
         ),
       );
 
-      expect(findType<ExpandableChart<Bait>>(tester), isEmpty);
+      expect(findType<ExpandableChart<BaitAttachment>>(tester), isEmpty);
     });
 
     testWidgets("Catches per bait charts/baits per species showing",
@@ -693,15 +735,15 @@ void main() {
         Catch()
           ..id = randomId()
           ..speciesId = speciesId0
-          ..baitIds.add(baitId0),
+          ..baits.add(baitAttachment0),
         Catch()
           ..id = randomId()
           ..speciesId = speciesId0
-          ..baitIds.add(baitId0),
+          ..baits.add(baitAttachment0),
         Catch()
           ..id = randomId()
           ..speciesId = speciesId0
-          ..baitIds.add(baitId0),
+          ..baits.add(baitAttachment0),
       ]);
 
       await tester.pumpWidget(
@@ -711,7 +753,7 @@ void main() {
         ),
       );
 
-      expect(findType<ExpandableChart<Bait>>(tester).length, 2);
+      expect(findType<ExpandableChart<BaitAttachment>>(tester).length, 2);
     });
 
     testWidgets("Time since last catch row is hidden when there are no catches",
@@ -866,7 +908,7 @@ void main() {
       when(appManager.catchManager.catchesSortedByTimestamp(
         any,
         dateRange: anyNamed("dateRange"),
-        baitIds: anyNamed("baitIds"),
+        baits: anyNamed("baits"),
         fishingSpotIds: anyNamed("fishingSpotIds"),
         speciesIds: anyNamed("speciesIds"),
       )).thenAnswer((invocation) {
@@ -895,5 +937,80 @@ void main() {
         findsNWidgets(2),
       );
     });
+  });
+
+  testWidgets("Clicking baits per species chart opens BaitPage",
+      (tester) async {
+    when(appManager.baitManager.attachmentDisplayValue(any, any))
+        .thenReturn("Attachment 0");
+    when(appManager.baitManager.entityExists(any)).thenReturn(true);
+    when(appManager.baitManager.deleteMessage(any, any)).thenReturn("Delete");
+    when(appManager.baitManager.formatNameWithCategory(any)).thenReturn("Name");
+
+    _stubCatchesByTimestamp([
+      Catch()
+        ..id = randomId()
+        ..speciesId = speciesId0
+        ..baits.add(baitAttachment0),
+    ]);
+
+    // The widget being tapped below is off the default screen size (800x600),
+    // so we set the canvas size here, otherwise the "hit test" fails. Note that
+    // ensureVisible and dragUntilVisible do not seem to work for whatever
+    // reason.
+    var size = Size(1024, 768);
+    setCanvasSize(tester, size);
+
+    await tester.pumpWidget(
+      Testable(
+        (_) => StatsPage(),
+        appManager: appManager,
+        mediaQueryData: MediaQueryData(size: size),
+      ),
+    );
+
+    expect(find.text("Per bait"), findsNWidgets(2));
+
+    await tapAndSettle(tester, find.text("Per bait").last);
+    await tapAndSettle(tester, find.text("Attachment 0 (1)"));
+    expect(find.byType(BaitPage), findsOneWidget);
+  });
+
+  testWidgets("Clicking baits per species chart opens BaitVariantPage",
+      (tester) async {
+    when(appManager.baitManager.attachmentDisplayValue(any, any))
+        .thenReturn("Attachment 4");
+    when(appManager.baitManager.entityExists(any)).thenReturn(true);
+    when(appManager.baitManager.variant(any, any))
+        .thenReturn(baitMap[baitId4]!.variants.first);
+    when(appManager.baitManager.formatNameWithCategory(any)).thenReturn("Name");
+
+    _stubCatchesByTimestamp([
+      Catch()
+        ..id = randomId()
+        ..speciesId = speciesId0
+        ..baits.add(baitAttachment4),
+    ]);
+
+    // The widget being tapped below is off the default screen size (800x600),
+    // so we set the canvas size here, otherwise the "hit test" fails. Note that
+    // ensureVisible and dragUntilVisible do not seem to work for whatever
+    // reason.
+    var size = Size(1024, 768);
+    setCanvasSize(tester, size);
+
+    await tester.pumpWidget(
+      Testable(
+        (_) => StatsPage(),
+        appManager: appManager,
+        mediaQueryData: MediaQueryData(size: size),
+      ),
+    );
+
+    expect(find.text("Per bait"), findsNWidgets(2));
+
+    await tapAndSettle(tester, find.text("Per bait").last);
+    await tapAndSettle(tester, find.text("Attachment 4 (1)"));
+    expect(find.byType(BaitVariantPage), findsOneWidget);
   });
 }

@@ -37,9 +37,9 @@ class OnboardingPage extends StatelessWidget {
     );
   }
 
-  List<Widget>? _buildFooter(BuildContext context) {
+  List<Widget> _buildFooter(BuildContext context) {
     if (onPressedNextButton == null) {
-      return null;
+      return [];
     }
 
     return [

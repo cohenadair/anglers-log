@@ -90,6 +90,7 @@ import 'mocks.mocks.dart';
 @GenerateMocks([FirebaseStorageWrapper])
 @GenerateMocks([FirebaseWrapper])
 @GenerateMocks([FirestoreWrapper])
+@GenerateMocks([], customMocks: [MockSpec<GlobalKey>()])
 @GenerateMocks([HttpWrapper])
 @GenerateMocks([ImageCompressWrapper])
 @GenerateMocks([IoWrapper])

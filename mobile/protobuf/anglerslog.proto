@@ -151,10 +151,37 @@ message CustomEntityValue {
 }
 
 message Bait {
+  enum Type {
+    artificial = 0;
+    real = 1;
+    live = 2;
+  }
+
   Id id = 1;
   string name = 2;
   Id bait_category_id = 3;
-  repeated CustomEntityValue custom_entity_values = 4;
+  string image_name = 4;
+  Type type = 5;
+  repeated BaitVariant variants = 6;
+}
+
+message BaitVariant {
+  Id id = 1;
+  Id base_id = 2;
+  string color = 3;
+  string model_number = 4;
+  string size = 5;
+  MultiMeasurement min_dive_depth = 6;
+  MultiMeasurement max_dive_depth = 7;
+  string description = 8;
+  repeated CustomEntityValue custom_entity_values = 9;
+}
+
+// A "picked bait" is a Bait or Bait/BaitVariant combination that has been attached to another
+// entity, such as a Catch or Report.
+message BaitAttachment {
+  Id bait_id = 1;
+  Id variant_id = 2;
 }
 
 message BaitCategory {
@@ -165,7 +192,7 @@ message BaitCategory {
 message Catch {
   Id id = 1;
   uint64 timestamp = 2;
-  repeated Id bait_ids = 3;
+  repeated BaitAttachment baits = 3;
   Id fishing_spot_id = 4;
   Id species_id = 5;
   repeated string image_names = 6;
@@ -243,7 +270,7 @@ message Report {
   Type type = 4;
   DateRange from_date_range = 5;
   DateRange to_date_range = 6;
-  repeated Id bait_ids = 7;
+  repeated BaitAttachment baits = 7;
   repeated Id fishing_spot_ids = 8;
   repeated Id species_ids = 9;
   repeated Id angler_ids = 10;

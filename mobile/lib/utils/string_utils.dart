@@ -18,6 +18,10 @@ String format(String s, List<dynamic> args) {
   return s.replaceAllMapped(RegExp(r'%s'), (match) => args[index++].toString());
 }
 
+String formatList(List<String> items) {
+  return items.where(isNotEmpty).join(", ");
+}
+
 String formatLatLng({
   required BuildContext context,
   required double lat,

@@ -1,160 +1,133 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/pages/image_picker_page.dart';
 import 'package:mobile/widgets/image_input.dart';
-import 'package:mobile/widgets/widget.dart';
+import 'package:mobile/widgets/image_picker.dart';
+import 'package:mobile/widgets/input_controller.dart';
 import 'package:mockito/mockito.dart';
 
+import '../mocks/mocks.dart';
+import '../mocks/mocks.mocks.dart';
 import '../mocks/stubbed_app_manager.dart';
 import '../test_utils.dart';
 
 void main() {
   late StubbedAppManager appManager;
+  late MockAssetPathEntity allAlbum;
+
+  late List<MockAssetEntity> mockAssets;
 
   setUp(() {
     appManager = StubbedAppManager();
 
+    mockAssets = [
+      createMockAssetEntity(fileName: "android_logo.png"),
+      createMockAssetEntity(fileName: "anglers_log_logo.png"),
+      createMockAssetEntity(fileName: "apple_logo.png"),
+      createMockAssetEntity(fileName: "flutter_logo.png"),
+    ];
+    allAlbum = MockAssetPathEntity();
+    when(allAlbum.assetCount).thenReturn(mockAssets.length);
+    when(allAlbum.getAssetListPaged(any, any))
+        .thenAnswer((_) => Future.value(mockAssets));
+    when(appManager.imagePickerWrapper.getImage(any))
+        .thenAnswer((_) => Future.value(null));
+    when(appManager.photoManagerWrapper.getAllAssetPathEntity(any))
+        .thenAnswer((_) => Future.value(allAlbum));
     when(appManager.permissionHandlerWrapper.requestPhotos())
         .thenAnswer((_) => Future.value(true));
-
-    when(appManager.photoManagerWrapper.getAllAssetPathEntity(any))
-        .thenAnswer((_) => Future.value(null));
   });
 
-  testWidgets("Enabled", (tester) async {
-    await tester.pumpWidget(Testable(
+  testWidgets("Controller updated when images picked", (tester) async {
+    var controller = ListInputController<PickedImage>();
+    await pumpContext(
+      tester,
       (_) => ImageInput(
-        onImagesPicked: (_) => {},
+        controller: controller,
+        initialImageNames: [],
       ),
       appManager: appManager,
-    ));
+    );
+    // Wait for futures.
+    await tester.pumpAndSettle(Duration(milliseconds: 50));
 
-    await tester.tap(find.byType(InkWell));
-    await tester.pumpAndSettle();
+    await tapAndSettle(tester, find.byType(ImagePicker));
+
+    // Wait for futures.
+    await tester.pumpAndSettle(Duration(milliseconds: 50));
 
     expect(find.byType(ImagePickerPage), findsOneWidget);
-  });
+    await tapAndSettle(tester, find.byType(Image).first);
+    await tapAndSettle(tester, find.text("DONE"));
 
-  testWidgets("Disabled", (tester) async {
-    await tester.pumpWidget(
-      Testable(
-        (_) => ImageInput(
-          onImagesPicked: (_) => {},
-          enabled: false,
-        ),
-      ),
-    );
-
-    await tester.tap(find.byType(InkWell));
-    await tester.pumpAndSettle();
-
+    expect(find.byType(Image), findsOneWidget);
     expect(find.byType(ImagePickerPage), findsNothing);
+    expect(controller.value.length, 1);
   });
 
-  testWidgets("Single selection", (tester) async {
-    await tester.pumpWidget(
-      Testable(
-        (_) => ImageInput.single(
-          onImagePicked: (_) => {},
-          requestPhotoPermission: () => Future.value(true),
-        ),
+  testWidgets("No initial images", (tester) async {
+    await pumpContext(
+      tester,
+      (_) => ImageInput(
+        controller: ListInputController<PickedImage>(),
+        initialImageNames: [],
       ),
+      appManager: appManager,
     );
-    expect(find.text("Photo"), findsOneWidget);
-    expect(find.text("Photos"), findsNothing);
+
+    verifyNever(appManager.imageManager.images(
+      any,
+      imageNames: anyNamed("imageNames"),
+      size: anyNamed("size"),
+    ));
   });
 
-  testWidgets("Multiple selection", (tester) async {
-    await tester.pumpWidget(
-      Testable(
-        (_) => ImageInput(
-          onImagesPicked: (_) => {},
-        ),
+  testWidgets("ImageManager returns no results", (tester) async {
+    when(appManager.imageManager.images(
+      any,
+      imageNames: anyNamed("imageNames"),
+      size: anyNamed("size"),
+    )).thenAnswer((_) => Future.value({}));
+
+    var controller = ListInputController<PickedImage>();
+    await pumpContext(
+      tester,
+      (_) => ImageInput(
+        controller: controller,
+        initialImageNames: ["flutter_logo.png"],
       ),
+      appManager: appManager,
     );
-    expect(find.text("Photos"), findsOneWidget);
-    expect(find.text("Photo"), findsNothing);
+
+    verify(appManager.imageManager.images(
+      any,
+      imageNames: anyNamed("imageNames"),
+      size: anyNamed("size"),
+    )).called(1);
+    expect(controller.value.isEmpty, isTrue);
   });
 
-  testWidgets("No images", (tester) async {
-    await tester.pumpWidget(
-      Testable(
-        (_) => ImageInput(
-          onImagesPicked: (_) => {},
-        ),
-      ),
+  testWidgets("SingleImageInput controller updated when image is picked",
+      (tester) async {
+    var controller = InputController<PickedImage>();
+    await pumpContext(
+      tester,
+      (_) => SingleImageInput(controller: controller),
+      appManager: appManager,
     );
-    expect(find.byType(Image), findsNothing);
-    expect(find.byType(Empty), findsOneWidget);
-  });
+    // Wait for futures.
+    await tester.pumpAndSettle(Duration(milliseconds: 50));
 
-  testWidgets("At least one image, enabled", (tester) async {
-    await tester.pumpWidget(
-      Testable(
-        (_) => ImageInput(
-          onImagesPicked: (_) => {},
-          initialImages: [
-            PickedImage(originalFile: File("test/resources/flutter_logo.png")),
-            PickedImage(originalFile: File("test/resources/flutter_logo.png")),
-          ],
-        ),
-      ),
-    );
+    await tapAndSettle(tester, find.byType(ImagePicker));
 
-    expect(find.byType(Image), findsNWidgets(2));
-    expect(findFirst<ListView>(tester).physics, isNull);
-  });
+    // Wait for futures.
+    await tester.pumpAndSettle(Duration(milliseconds: 50));
 
-  testWidgets("At least one image, disabled", (tester) async {
-    await tester.pumpWidget(
-      Testable(
-        (_) => ImageInput(
-          onImagesPicked: (_) => {},
-          initialImages: [
-            PickedImage(originalFile: File("test/resources/flutter_logo.png")),
-            PickedImage(originalFile: File("test/resources/flutter_logo.png")),
-          ],
-          enabled: false,
-        ),
-      ),
-    );
-
-    expect(find.byType(Image), findsNWidgets(2));
-    expect(findFirst<ListView>(tester).physics, isNotNull);
-  });
-
-  testWidgets("Load from file", (tester) async {
-    await tester.pumpWidget(
-      Testable(
-        (_) => ImageInput(
-          onImagesPicked: (_) => {},
-          initialImages: [
-            PickedImage(originalFile: File("test/resources/flutter_logo.png")),
-          ],
-        ),
-      ),
-    );
+    expect(find.byType(ImagePickerPage), findsOneWidget);
+    await tapAndSettle(tester, find.byType(Image).first);
 
     expect(find.byType(Image), findsOneWidget);
-  });
-
-  testWidgets("Load from memory", (tester) async {
-    await tester.pumpWidget(
-      Testable(
-        (_) => ImageInput(
-          onImagesPicked: (_) => {},
-          initialImages: [
-            PickedImage(
-              thumbData:
-                  File("test/resources/flutter_logo.png").readAsBytesSync(),
-            ),
-          ],
-        ),
-      ),
-    );
-
-    expect(find.byType(Image), findsOneWidget);
+    expect(find.byType(ImagePickerPage), findsNothing);
+    expect(controller.hasValue, isTrue);
   });
 }

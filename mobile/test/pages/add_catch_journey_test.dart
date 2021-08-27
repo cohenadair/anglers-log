@@ -26,9 +26,14 @@ void main() {
   setUp(() {
     appManager = StubbedAppManager();
 
+    when(appManager.baitManager.attachmentsDisplayValues(any, any))
+        .thenReturn([]);
+
     when(appManager.catchManager
             .addOrUpdate(any, imageFiles: anyNamed("imageFiles")))
         .thenAnswer((_) => Future.value(false));
+
+    when(appManager.customEntityManager.entityExists(any)).thenReturn(false);
 
     when(appManager.fishingSpotManager.list()).thenReturn([]);
     when(appManager.fishingSpotManager.listSortedByName()).thenReturn([]);

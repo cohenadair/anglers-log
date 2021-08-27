@@ -28,8 +28,11 @@ void main() {
     when(appManager.baitCategoryManager.addOrUpdate(any))
         .thenAnswer((_) => Future.value(true));
 
-    when(appManager.baitManager.addOrUpdate(any))
-        .thenAnswer((_) => Future.value(true));
+    when(appManager.baitManager.addOrUpdate(
+      any,
+      imageFile: anyNamed("imageFile"),
+      compressImages: anyNamed("compressImages"),
+    )).thenAnswer((_) => Future.value(true));
     when(appManager.baitManager.named(any)).thenReturn(null);
 
     when(appManager.catchManager.addOrUpdate(

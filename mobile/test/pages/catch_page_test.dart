@@ -2,6 +2,8 @@ import 'package:fixnum/fixnum.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
+import 'package:mobile/pages/bait_page.dart';
+import 'package:mobile/pages/bait_variant_page.dart';
 import 'package:mobile/pages/catch_page.dart';
 import 'package:mobile/res/gen/custom_icons.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
@@ -114,71 +116,6 @@ void main() {
     await tester.pumpAndSettle(Duration(milliseconds: 150));
     await tester.pumpAndSettle(Duration(milliseconds: 50));
     expect(find.byType(ListItem), findsNothing);
-  });
-
-  testWidgets("Bait without category doesn't show subtitle", (tester) async {
-    when(appManager.baitManager.list(any)).thenReturn([
-      Bait()
-        ..id = randomId()
-        ..name = "Worm",
-    ]);
-    var context = await pumpContext(
-      tester,
-      (_) => CatchPage(Catch()),
-      appManager: appManager,
-    );
-    // Wait for map timer to finish.
-    await tester.pumpAndSettle(Duration(milliseconds: 150));
-    await tester.pumpAndSettle(Duration(milliseconds: 50));
-
-    expect(find.text("Worm"), findsOneWidget);
-    expect(find.subtitleText(context), findsOneWidget); // One for time label.
-  });
-
-  testWidgets("Bait with category shows subtitle", (tester) async {
-    when(appManager.baitManager.list(any)).thenReturn([
-      Bait()
-        ..id = randomId()
-        ..name = "Worm",
-    ]);
-    when(appManager.baitCategoryManager.entity(any)).thenReturn(
-      BaitCategory()
-        ..id = randomId()
-        ..name = "Live Bait",
-    );
-    await tester.pumpWidget(Testable(
-      (_) => CatchPage(Catch()),
-      appManager: appManager,
-    ));
-    // Wait for map timer to finish.
-    await tester.pumpAndSettle(Duration(milliseconds: 150));
-    await tester.pumpAndSettle(Duration(milliseconds: 50));
-
-    expect(find.text("Worm"), findsOneWidget);
-    expect(find.text("Live Bait"), findsOneWidget);
-  });
-
-  testWidgets("Multiple baits rendered", (tester) async {
-    var baits = [
-      Bait()
-        ..id = randomId()
-        ..name = "Worm",
-      Bait()
-        ..id = randomId()
-        ..name = "Minnow",
-    ];
-    when(appManager.baitManager.list(any)).thenReturn(baits);
-
-    await tester.pumpWidget(Testable(
-      (_) => CatchPage(Catch()),
-      appManager: appManager,
-    ));
-    // Wait for map timer to finish.
-    await tester.pumpAndSettle(Duration(milliseconds: 150));
-    await tester.pumpAndSettle(Duration(milliseconds: 50));
-
-    expect(find.text("Worm"), findsOneWidget);
-    expect(find.text("Minnow"), findsOneWidget);
   });
 
   testWidgets("No fishing spot renders empty", (tester) async {
@@ -405,6 +342,37 @@ void main() {
     await tester.pumpAndSettle(Duration(milliseconds: 50));
 
     expect(find.byType(AtmosphereWrap), findsOneWidget);
+  });
+
+  testWidgets("Multiple baits rendered", (tester) async {
+    var baitId0 = randomId();
+    var baitId1 = randomId();
+
+    when(appManager.catchManager.entity(any)).thenReturn(Catch()
+      ..id = randomId()
+      ..timestamp = Int64(DateTime(2020, 1, 1, 15, 30).millisecondsSinceEpoch)
+      ..baits.addAll([
+        BaitAttachment(baitId: baitId0),
+        BaitAttachment(baitId: baitId1),
+      ]));
+
+    when(appManager.baitManager.entity(baitId0)).thenReturn(Bait(
+      id: baitId0,
+      name: "Bait 0",
+    ));
+    when(appManager.baitManager.entity(baitId1)).thenReturn(Bait(
+      id: baitId1,
+      name: "Bait 1",
+    ));
+    when(appManager.baitManager.variant(any, any)).thenReturn(null);
+    when(appManager.baitManager.formatNameWithCategory(any)).thenReturn("Test");
+
+    await tester.pumpWidget(Testable(
+      (_) => CatchPage(Catch()),
+      appManager: appManager,
+    ));
+
+    expect(find.text("Test"), findsNWidgets(2));
   });
 
   group("Water fields", () {
@@ -727,6 +695,174 @@ void main() {
       expect(find.byIcon(Icons.notes), findsNWidgets(2));
       expect(find.text("Some notes."), findsOneWidget);
       expect(find.text("Quantity: 5"), findsOneWidget);
+    });
+  });
+
+  group("_BaitAttachmentListItem", () {
+    testWidgets("Bait is null renders empty", (tester) async {
+      var baitId0 = randomId();
+      var baitId1 = randomId();
+
+      when(appManager.catchManager.entity(any)).thenReturn(Catch()
+        ..id = randomId()
+        ..timestamp = Int64(DateTime(2020, 1, 1, 15, 30).millisecondsSinceEpoch)
+        ..baits.addAll([
+          BaitAttachment(baitId: baitId0),
+          BaitAttachment(baitId: baitId1),
+        ]));
+
+      when(appManager.baitManager.entity(baitId0)).thenReturn(Bait(
+        id: baitId0,
+        name: "Bait 0",
+      ));
+      when(appManager.baitManager.entity(baitId1)).thenReturn(null);
+      when(appManager.baitManager.variant(any, any)).thenReturn(null);
+      when(appManager.baitManager.formatNameWithCategory(any))
+          .thenReturn("Test");
+
+      await tester.pumpWidget(Testable(
+        (_) => CatchPage(Catch()),
+        appManager: appManager,
+      ));
+
+      expect(find.text("Test"), findsOneWidget);
+    });
+
+    testWidgets("Bait variant is null renders empty", (tester) async {
+      var baitId0 = randomId();
+      var baitId1 = randomId();
+
+      when(appManager.catchManager.entity(any)).thenReturn(Catch()
+        ..id = randomId()
+        ..timestamp = Int64(DateTime(2020, 1, 1, 15, 30).millisecondsSinceEpoch)
+        ..baits.addAll([
+          BaitAttachment(baitId: baitId0, variantId: randomId()),
+          BaitAttachment(baitId: baitId1),
+        ]));
+
+      when(appManager.baitManager.entity(baitId0)).thenReturn(Bait(
+        id: baitId0,
+        name: "Bait 0",
+      ));
+      when(appManager.baitManager.entity(baitId1)).thenReturn(Bait(
+        id: baitId1,
+        name: "Bait 1",
+      ));
+      when(appManager.baitManager.variant(any, any)).thenReturn(null);
+      when(appManager.baitManager.formatNameWithCategory(any))
+          .thenReturn("Test");
+
+      await tester.pumpWidget(Testable(
+        (_) => CatchPage(Catch()),
+        appManager: appManager,
+      ));
+
+      expect(find.text("Test"), findsOneWidget);
+    });
+
+    testWidgets("Tapping variant shows variant page", (tester) async {
+      when(appManager.catchManager.entity(any)).thenReturn(Catch()
+        ..id = randomId()
+        ..timestamp = Int64(DateTime(2020, 1, 1, 15, 30).millisecondsSinceEpoch)
+        ..baits.addAll([
+          BaitAttachment(baitId: randomId(), variantId: randomId()),
+        ]));
+
+      when(appManager.baitManager.entity(any)).thenReturn(Bait(
+        name: "Bait 0",
+      ));
+      when(appManager.baitManager.variant(any, any)).thenReturn(BaitVariant(
+        color: "Red",
+      ));
+      when(appManager.baitManager.variantDisplayValue(
+        any,
+        any,
+        includeCustomValues: anyNamed("includeCustomValues"),
+      )).thenReturn("Red");
+      when(appManager.baitManager.formatNameWithCategory(any))
+          .thenReturn("Test");
+
+      await tester.pumpWidget(Testable(
+        (_) => CatchPage(Catch()),
+        appManager: appManager,
+      ));
+
+      await tapAndSettle(tester, find.text("Test"));
+      expect(find.byType(BaitVariantPage), findsOneWidget);
+    });
+
+    testWidgets("Tapping bait shows bait page", (tester) async {
+      when(appManager.catchManager.entity(any)).thenReturn(Catch()
+        ..id = randomId()
+        ..timestamp = Int64(DateTime(2020, 1, 1, 15, 30).millisecondsSinceEpoch)
+        ..baits.addAll([
+          BaitAttachment(baitId: randomId()),
+        ]));
+
+      when(appManager.baitManager.entity(any)).thenReturn(Bait(
+        name: "Bait 0",
+      ));
+      when(appManager.baitManager.variant(any, any)).thenReturn(null);
+      when(appManager.baitManager.formatNameWithCategory(any))
+          .thenReturn("Test");
+      when(appManager.baitManager.deleteMessage(any, any)).thenReturn("Delete");
+
+      await tester.pumpWidget(Testable(
+        (_) => CatchPage(Catch()),
+        appManager: appManager,
+      ));
+
+      await tapAndSettle(tester, find.text("Test"));
+      expect(find.byType(BaitPage), findsOneWidget);
+    });
+
+    testWidgets("Image passed to ImageListItem", (tester) async {
+      when(appManager.catchManager.entity(any)).thenReturn(Catch()
+        ..id = randomId()
+        ..timestamp = Int64(DateTime(2020, 1, 1, 15, 30).millisecondsSinceEpoch)
+        ..baits.addAll([
+          BaitAttachment(baitId: randomId()),
+        ]));
+
+      when(appManager.baitManager.entity(any)).thenReturn(Bait(
+        name: "Bait 0",
+        imageName: "image.png",
+      ));
+      when(appManager.baitManager.variant(any, any)).thenReturn(null);
+      when(appManager.baitManager.formatNameWithCategory(any))
+          .thenReturn("Test");
+
+      await tester.pumpWidget(Testable(
+        (_) => CatchPage(Catch()),
+        appManager: appManager,
+      ));
+
+      var imageItem = tester.widget<ImageListItem>(find.byType(ImageListItem));
+      expect(imageItem.imageName, "image.png");
+    });
+
+    testWidgets("Null image passed to ImageListItem", (tester) async {
+      when(appManager.catchManager.entity(any)).thenReturn(Catch()
+        ..id = randomId()
+        ..timestamp = Int64(DateTime(2020, 1, 1, 15, 30).millisecondsSinceEpoch)
+        ..baits.addAll([
+          BaitAttachment(baitId: randomId()),
+        ]));
+
+      when(appManager.baitManager.entity(any)).thenReturn(Bait(
+        name: "Bait 0",
+      ));
+      when(appManager.baitManager.variant(any, any)).thenReturn(null);
+      when(appManager.baitManager.formatNameWithCategory(any))
+          .thenReturn("Test");
+
+      await tester.pumpWidget(Testable(
+        (_) => CatchPage(Catch()),
+        appManager: appManager,
+      ));
+
+      var imageItem = tester.widget<ImageListItem>(find.byType(ImageListItem));
+      expect(imageItem.imageName, isNull);
     });
   });
 }

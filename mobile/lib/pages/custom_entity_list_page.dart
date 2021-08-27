@@ -9,8 +9,10 @@ import '../model/gen/anglerslog.pb.dart';
 import '../pages/manageable_list_page.dart';
 import '../pages/save_custom_entity_page.dart';
 import '../res/style.dart';
+import '../subscription_manager.dart';
 import '../utils/string_utils.dart';
 import '../widgets/widget.dart';
+import 'pro_page.dart';
 
 class CustomEntityListPage extends StatelessWidget {
   @override
@@ -18,6 +20,7 @@ class CustomEntityListPage extends StatelessWidget {
     var baitManager = BaitManager.of(context);
     var catchManager = CatchManager.of(context);
     var customEntityManager = CustomEntityManager.of(context);
+    var subscriptionManager = SubscriptionManager.of(context);
 
     return ManageableListPage<CustomEntity>(
       titleBuilder: (entities) => Text(format(
@@ -58,7 +61,8 @@ class CustomEntityListPage extends StatelessWidget {
         ),
         deleteItem: (context, entity) async =>
             await customEntityManager.delete(entity.id),
-        addPageBuilder: () => SaveCustomEntityPage(),
+        addPageBuilder: () =>
+            subscriptionManager.isPro ? SaveCustomEntityPage() : ProPage(),
         editPageBuilder: (entity) => SaveCustomEntityPage.edit(entity),
       ),
     );

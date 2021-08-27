@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:fixnum/fixnum.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/bait_category_manager.dart';
@@ -98,27 +100,31 @@ void main() {
     var baitId1 = randomId();
     var baitId2 = randomId();
 
+    var baitAttachment0 = BaitAttachment(baitId: baitId0);
+    var baitAttachment1 = BaitAttachment(baitId: baitId1);
+    var baitAttachment2 = BaitAttachment(baitId: baitId2);
+
     when(catchManager.list()).thenReturn([
       Catch()
         ..id = randomId()
         ..timestamp = Int64(0)
         ..speciesId = speciesId0
-        ..baitIds.add(baitId0),
+        ..baits.add(baitAttachment0),
       Catch()
         ..id = randomId()
         ..timestamp = Int64(0)
         ..speciesId = speciesId0
-        ..baitIds.add(baitId1),
+        ..baits.add(baitAttachment1),
       Catch()
         ..id = randomId()
         ..timestamp = Int64(0)
         ..speciesId = speciesId0
-        ..baitIds.add(baitId2),
+        ..baits.add(baitAttachment2),
       Catch()
         ..id = randomId()
         ..timestamp = Int64(0)
         ..speciesId = speciesId0
-        ..baitIds.add(baitId0),
+        ..baits.add(baitAttachment0),
       Catch()
         ..id = randomId()
         ..timestamp = Int64(0)
@@ -156,7 +162,7 @@ void main() {
     expect(baitManager.formatNameWithCategory(bait.id), "Test");
   });
 
-  test("Filtering", () async {
+  testWidgets("Filtering", (tester) async {
     var baitId0 = randomId();
     var baitId1 = randomId();
 
@@ -164,7 +170,8 @@ void main() {
 
     var bait = Bait()
       ..id = baitId1
-      ..name = "Rapala";
+      ..name = "Rapala"
+      ..type = Bait_Type.artificial;
 
     await baitManager.addOrUpdate(bait);
     expect(baitManager.matchesFilter(baitId1, ""), true);
@@ -181,12 +188,156 @@ void main() {
     await baitManager.addOrUpdate(bait);
     expect(baitManager.matchesFilter(baitId1, "Bug"), true);
 
-    // Custom entity values
-    bait.customEntityValues.add(CustomEntityValue()
-      ..customEntityId = randomId()
-      ..value = "Test");
+    // Type
+    var context = await buildContext(tester);
+    expect(baitManager.matchesFilter(baitId1, "artificial", context), true);
+
+    // Remove type
+    await baitManager.addOrUpdate(Bait()
+      ..id = baitId1
+      ..name = "Rapala");
+    expect(baitManager.matchesFilter(baitId1, "artificial", context), false);
+  });
+
+  test("Filtering by bait variant", () async {
+    var baitId = randomId();
+    var baitVariant = BaitVariant(
+      baseId: baitId,
+      color: "Red",
+      modelNumber: "AB123",
+      size: "Large",
+      minDiveDepth: MultiMeasurement(
+        mainValue: Measurement(
+          unit: Unit.meters,
+          value: 10,
+        ),
+      ),
+      maxDiveDepth: MultiMeasurement(
+        mainValue: Measurement(
+          unit: Unit.meters,
+          value: 20,
+        ),
+      ),
+      description: "This is a test bait",
+    );
+    var bait = Bait()
+      ..id = baitId
+      ..name = "Rapala"
+      ..variants.add(baitVariant);
+
     await baitManager.addOrUpdate(bait);
-    expect(baitManager.matchesFilter(baitId1, "Test"), true);
+    expect(baitManager.matchesFilter(baitId, "lure"), false);
+    expect(baitManager.matchesFilter(baitId, "red"), true);
+    expect(baitManager.matchesFilter(baitId, "AB"), true);
+    expect(baitManager.matchesFilter(baitId, "large"), true);
+    expect(baitManager.matchesFilter(baitId, "10"), true);
+    expect(baitManager.matchesFilter(baitId, "20"), true);
+    expect(baitManager.matchesFilter(baitId, "test bait"), true);
+  });
+
+  test("Filtering by bait variant custom entity values", () async {
+    var baitId = randomId();
+    var customEntityId = randomId();
+    var baitVariant = BaitVariant(
+      baseId: baitId,
+      customEntityValues: [
+        CustomEntityValue(
+          customEntityId: customEntityId,
+          // Value doesn't matter. CustomEntityManager is stubbed to always
+          // return true.
+          value: 10.toString(),
+        ),
+      ],
+    );
+    var bait = Bait()
+      ..id = baitId
+      ..name = "Rapala"
+      ..variants.add(baitVariant);
+
+    when(appManager.customEntityManager.matchesFilter(any, any))
+        .thenReturn(true);
+
+    await baitManager.addOrUpdate(bait);
+    expect(baitManager.matchesFilter(baitId, "10"), true);
+  });
+
+  test("Add without image", () async {
+    await baitManager.addOrUpdate(Bait()
+      ..id = randomId()
+      ..name = "Rapala");
+    verifyNever(
+        appManager.imageManager.save(any, compress: anyNamed("compress")));
+  });
+
+  test("Add with image; error saving", () async {
+    when(appManager.imageManager.save(any, compress: anyNamed("compress")))
+        .thenAnswer((_) => Future.value([]));
+
+    var id = randomId();
+    await baitManager.addOrUpdate(
+      Bait()
+        ..id = id
+        ..name = "Rapala"
+        ..imageName = "123123123",
+      imageFile: File("123123123.jpg"),
+    );
+
+    verify(appManager.imageManager.save(any, compress: anyNamed("compress")))
+        .called(1);
+
+    var bait = baitManager.entity(id);
+    expect(bait, isNotNull);
+    expect(bait!.hasImageName(), isFalse);
+  });
+
+  test("Add with image", () async {
+    when(appManager.imageManager.save(any, compress: anyNamed("compress")))
+        .thenAnswer((_) => Future.value(["123123123"]));
+
+    var id = randomId();
+    await baitManager.addOrUpdate(
+      Bait()
+        ..id = id
+        ..name = "Rapala",
+      imageFile: File("123123123.jpg"),
+    );
+
+    verify(appManager.imageManager.save(any, compress: anyNamed("compress")))
+        .called(1);
+
+    var bait = baitManager.entity(id);
+    expect(bait, isNotNull);
+    expect(bait!.hasImageName(), isTrue);
+  });
+
+  testWidgets("attachmentsMatchesFilter", (tester) async {
+    var id0 = randomId();
+    var id1 = randomId();
+    await baitManager.addOrUpdate(Bait()
+      ..id = id0
+      ..name = "Rapala");
+    await baitManager.addOrUpdate(Bait()
+      ..id = id1
+      ..name = "Spoon");
+
+    var context = await buildContext(tester);
+    var attachments = <BaitAttachment>[
+      BaitAttachment(baitId: id0),
+      BaitAttachment(baitId: id1),
+    ];
+
+    expect(
+      baitManager.attachmentsMatchesFilter(attachments, "Live", context),
+      isFalse,
+    );
+    expect(
+      baitManager.attachmentsMatchesFilter(attachments, "Spoon", context),
+      isTrue,
+    );
+    expect(
+      baitManager.attachmentsMatchesFilter(attachments, "Rapala", context),
+      isTrue,
+    );
   });
 
   group("duplicate", () {
@@ -264,23 +415,17 @@ void main() {
     });
 
     test("true with all properties", () async {
-      var value = CustomEntityValue()
-        ..customEntityId = randomId()
-        ..value = "10";
       var categoryId = randomId();
 
       var bait1 = Bait()
         ..id = randomId()
         ..name = "Rapala"
         ..baitCategoryId = categoryId;
-      bait1.customEntityValues.add(value);
 
       var bait2 = Bait()
         ..id = randomId()
         ..name = "Rapala"
         ..baitCategoryId = categoryId;
-      bait2.customEntityValues
-          .add(CustomEntityValue.fromBuffer(value.writeToBuffer()));
 
       await baitManager.addOrUpdate(bait1);
       expect(baitManager.duplicate(bait2), isTrue);
@@ -310,7 +455,7 @@ void main() {
           ..id = randomId()
           ..timestamp = Int64(0)
           ..speciesId = randomId()
-          ..baitIds.add(bait.id),
+          ..baits.add(BaitAttachment(baitId: bait.id)),
       ]);
 
       var context = await buildContext(tester);
@@ -346,12 +491,12 @@ void main() {
           ..id = randomId()
           ..timestamp = Int64(0)
           ..speciesId = randomId()
-          ..baitIds.add(bait.id),
+          ..baits.add(BaitAttachment(baitId: bait.id)),
         Catch()
           ..id = randomId()
           ..timestamp = Int64(5)
           ..speciesId = randomId()
-          ..baitIds.add(bait.id),
+          ..baits.add(BaitAttachment(baitId: bait.id)),
       ]);
 
       var context = await buildContext(tester);
@@ -377,7 +522,7 @@ void main() {
           ..id = randomId()
           ..timestamp = Int64(5)
           ..speciesId = randomId()
-          ..baitIds.add(bait.id),
+          ..baits.add(BaitAttachment(baitId: bait.id)),
       ]);
 
       var context = await buildContext(tester);
@@ -387,5 +532,576 @@ void main() {
         "delete it? This cannot be undone.",
       );
     });
+  });
+
+  test("numberOfCatches", () {
+    var baitId0 = randomId();
+    var baitId1 = randomId();
+
+    when(appManager.catchManager.list()).thenReturn([
+      Catch(
+        id: randomId(),
+        baits: [
+          BaitAttachment(baitId: baitId0),
+        ],
+      ),
+      Catch(
+        id: randomId(),
+        baits: [
+          BaitAttachment(baitId: baitId1),
+        ],
+      ),
+      Catch(
+        id: randomId(),
+        baits: [
+          BaitAttachment(baitId: baitId0),
+        ],
+      ),
+    ]);
+
+    expect(baitManager.numberOfCatches(baitId0), 2);
+    expect(baitManager.numberOfCatches(baitId1), 1);
+    expect(baitManager.numberOfCatches(randomId()), 0);
+  });
+
+  test("numberOfVariantCatches", () {
+    var baitId0 = randomId();
+    var baitId1 = randomId();
+    var variantId0 = randomId();
+    var variantId1 = randomId();
+
+    when(appManager.catchManager.list()).thenReturn([
+      Catch(
+        id: randomId(),
+        baits: [
+          BaitAttachment(
+            baitId: baitId0,
+            variantId: variantId0,
+          ),
+        ],
+      ),
+      Catch(
+        id: randomId(),
+        baits: [
+          BaitAttachment(
+            baitId: baitId1,
+            variantId: variantId1,
+          ),
+        ],
+      ),
+      Catch(
+        id: randomId(),
+        baits: [
+          BaitAttachment(
+            baitId: baitId0,
+            variantId: variantId0,
+          ),
+        ],
+      ),
+    ]);
+
+    expect(baitManager.numberOfVariantCatches(variantId0), 2);
+    expect(baitManager.numberOfVariantCatches(variantId1), 1);
+    expect(baitManager.numberOfVariantCatches(randomId()), 0);
+  });
+
+  test("numberOfCustomEntityValues", () async {
+    var customId0 = randomId();
+    var customId1 = randomId();
+    var customId2 = randomId();
+
+    Bait bait(Id customId) {
+      return Bait(
+        id: randomId(),
+        variants: [
+          BaitVariant(
+            baseId: randomId(),
+            customEntityValues: [
+              CustomEntityValue(
+                customEntityId: customId,
+              )
+            ],
+          ),
+        ],
+      );
+    }
+
+    var baits = <Bait>[
+      Bait(id: randomId()),
+      bait(customId0),
+      Bait(id: randomId()),
+      bait(customId2),
+      bait(customId0),
+      bait(customId1),
+      Bait(
+        id: randomId(),
+        variants: [
+          BaitVariant(),
+          BaitVariant(),
+        ],
+      ),
+      bait(customId0),
+      bait(customId2),
+      Bait(
+        id: randomId(),
+        variants: [
+          BaitVariant(),
+        ],
+      ),
+    ];
+
+    for (var bait in baits) {
+      await baitManager.addOrUpdate(bait);
+    }
+
+    expect(baitManager.numberOfCustomEntityValues(customId0), 3);
+    expect(baitManager.numberOfCustomEntityValues(customId1), 1);
+    expect(baitManager.numberOfCustomEntityValues(customId2), 2);
+    expect(baitManager.numberOfCustomEntityValues(randomId()), 0);
+  });
+
+  test("baitAttachmentList", () async {
+    expect(baitManager.entityCount, 0);
+    expect(baitManager.attachmentList().length, 0);
+
+    Bait baitWithVariant() {
+      return Bait(
+        id: randomId(),
+        variants: [
+          BaitVariant(
+            id: randomId(),
+            baseId: randomId(),
+          ),
+        ],
+      );
+    }
+
+    var baits = <Bait>[
+      Bait(id: randomId()),
+      baitWithVariant(),
+      Bait(id: randomId()),
+      baitWithVariant(),
+      baitWithVariant(),
+      baitWithVariant(),
+      Bait(
+        id: randomId(),
+        variants: [
+          BaitVariant(id: randomId()),
+          BaitVariant(id: randomId()),
+        ],
+      ),
+      baitWithVariant(),
+      baitWithVariant(),
+      Bait(id: randomId()),
+    ];
+
+    for (var bait in baits) {
+      await baitManager.addOrUpdate(bait);
+    }
+
+    expect(baitManager.entityCount, 10);
+
+    var attachments = baitManager.attachmentList();
+    expect(attachments.length, 11);
+  });
+
+  test("variantFromAttachment bait doesn't exist", () async {
+    expect(baitManager.variantFromAttachment(BaitAttachment()), isNull);
+  });
+
+  test("variantFromAttachment variant doesn't exist", () async {
+    var baitId = randomId();
+    await baitManager.addOrUpdate(Bait(
+      id: baitId,
+      name: "Test",
+    ));
+
+    expect(
+        baitManager.variantFromAttachment(BaitAttachment(
+          baitId: baitId,
+          variantId: randomId(),
+        )),
+        isNull);
+  });
+
+  test("variantFromAttachment success", () async {
+    var baitId = randomId();
+    var variantId = randomId();
+
+    await baitManager.addOrUpdate(Bait(
+      id: baitId,
+      name: "Test",
+      variants: [
+        BaitVariant(
+          id: variantId,
+          color: "Blue",
+        ),
+      ],
+    ));
+
+    expect(
+        baitManager.variantFromAttachment(BaitAttachment(
+          baitId: baitId,
+          variantId: variantId,
+        )),
+        isNotNull);
+  });
+
+  testWidgets("attachmentDisplayValue bait doesn't exist", (tester) async {
+    var context = await buildContext(tester);
+    expect(
+      baitManager.attachmentDisplayValue(BaitAttachment(), context),
+      isNull,
+    );
+  });
+
+  testWidgets("attachmentDisplayValue variant doesn't exist", (tester) async {
+    var context = await buildContext(tester);
+    var baitId = randomId();
+    await baitManager.addOrUpdate(Bait(
+      id: baitId,
+      name: "Test",
+    ));
+
+    expect(
+      baitManager.attachmentDisplayValue(
+        BaitAttachment(
+          baitId: baitId,
+          variantId: randomId(),
+        ),
+        context,
+      ),
+      "Test",
+    );
+  });
+
+  testWidgets("attachmentDisplayValue variant exists", (tester) async {
+    when(appManager.customEntityManager.customValuesDisplayValue(any, any))
+        .thenReturn("");
+
+    var context = await buildContext(tester);
+    var baitId = randomId();
+    var variantId = randomId();
+
+    await baitManager.addOrUpdate(Bait(
+      id: baitId,
+      name: "Test",
+      variants: [
+        BaitVariant(
+          id: variantId,
+          color: "Blue",
+        ),
+      ],
+    ));
+
+    expect(
+      baitManager.attachmentDisplayValue(
+        BaitAttachment(
+          baitId: baitId,
+          variantId: variantId,
+        ),
+        context,
+      ),
+      "Test (Blue)",
+    );
+  });
+
+  testWidgets("attachmentsDisplayValues", (tester) async {
+    when(appManager.customEntityManager.customValuesDisplayValue(any, any))
+        .thenReturn("");
+
+    var context = await buildContext(tester);
+    var baitId0 = randomId();
+    var baitId1 = randomId();
+    var variantId0 = randomId();
+    var variantId1 = randomId();
+
+    await baitManager.addOrUpdate(Bait(
+      id: baitId0,
+      name: "Test",
+      variants: [
+        BaitVariant(
+          id: variantId0,
+          color: "Blue",
+        ),
+      ],
+    ));
+    await baitManager.addOrUpdate(Bait(
+      id: baitId1,
+      name: "Test 2",
+      variants: [
+        BaitVariant(
+          id: variantId1,
+          color: "Red",
+        ),
+      ],
+    ));
+    await baitManager.addOrUpdate(Bait(
+      id: randomId(),
+      name: "Test 3",
+      variants: [
+        BaitVariant(
+          id: randomId(),
+          color: "Green",
+        ),
+      ],
+    ));
+
+    expect(
+      baitManager.attachmentsDisplayValues(
+        [
+          BaitAttachment(
+            baitId: baitId0,
+            variantId: variantId0,
+          ),
+          BaitAttachment(
+            baitId: baitId1,
+            variantId: variantId1,
+          ),
+          BaitAttachment(
+            baitId: randomId(),
+            variantId: randomId(),
+          ),
+        ],
+        context,
+      ),
+      [
+        "Test (Blue)",
+        "Test 2 (Red)",
+      ],
+    );
+  });
+
+  testWidgets("variantDisplayValue all fields", (tester) async {
+    var context = await buildContext(tester);
+    var variant = BaitVariant(
+      id: randomId(),
+      color: "Red",
+      modelNumber: "AB123",
+      size: "Small",
+      minDiveDepth: MultiMeasurement(
+        mainValue: Measurement(
+          unit: Unit.meters,
+          value: 5,
+        ),
+      ),
+      maxDiveDepth: MultiMeasurement(
+        mainValue: Measurement(
+          unit: Unit.meters,
+          value: 10,
+        ),
+      ),
+    );
+
+    expect(
+      baitManager.variantDisplayValue(variant, context),
+      "Red, AB123, Small, 5 m - 10 m",
+    );
+  });
+
+  testWidgets("variantDisplayValue min dive depth", (tester) async {
+    var context = await buildContext(tester);
+    var variant = BaitVariant(
+      id: randomId(),
+      minDiveDepth: MultiMeasurement(
+        mainValue: Measurement(
+          unit: Unit.meters,
+          value: 5,
+        ),
+      ),
+    );
+
+    expect(
+      baitManager.variantDisplayValue(variant, context),
+      "\u2265 5 m",
+    );
+  });
+
+  testWidgets("variantDisplayValue max dive depth", (tester) async {
+    var context = await buildContext(tester);
+    var variant = BaitVariant(
+      id: randomId(),
+      maxDiveDepth: MultiMeasurement(
+        mainValue: Measurement(
+          unit: Unit.meters,
+          value: 5,
+        ),
+      ),
+    );
+
+    expect(
+      baitManager.variantDisplayValue(variant, context),
+      "\u2264 5 m",
+    );
+  });
+
+  testWidgets("variantDisplayValue include custom values", (tester) async {
+    when(appManager.customEntityManager.customValuesDisplayValue(any, any))
+        .thenReturn("Tag: 12, Label: Value");
+
+    var context = await buildContext(tester);
+    var variant = BaitVariant(
+      id: randomId(),
+      color: "Red",
+    );
+
+    expect(
+      baitManager.variantDisplayValue(
+        variant,
+        context,
+        includeCustomValues: true,
+      ),
+      "Red, Tag: 12, Label: Value",
+    );
+  });
+
+  testWidgets("variantDisplayValue exclude custom values", (tester) async {
+    when(appManager.customEntityManager.customValuesDisplayValue(any, any))
+        .thenReturn("Tag: 12, Label: Value");
+
+    var context = await buildContext(tester);
+    var variant = BaitVariant(
+      id: randomId(),
+      color: "Red",
+    );
+
+    expect(
+      baitManager.variantDisplayValue(
+        variant,
+        context,
+        includeCustomValues: false,
+      ),
+      "Red",
+    );
+  });
+
+  testWidgets(
+      "variantDisplayValue includes description if all others are empty",
+      (tester) async {
+    var context = await buildContext(tester);
+    var variant = BaitVariant(
+      id: randomId(),
+      description: "Test description.",
+    );
+    expect(
+      baitManager.variantDisplayValue(variant, context),
+      "Test description.",
+    );
+  });
+
+  testWidgets(
+      "variantDisplayValue excludes description if others are not empty",
+      (tester) async {
+    var context = await buildContext(tester);
+    var variant = BaitVariant(
+      id: randomId(),
+      color: "Red",
+      description: "Test description.",
+    );
+    expect(
+      baitManager.variantDisplayValue(variant, context),
+      "Red",
+    );
+  });
+
+  testWidgets("deleteVariantMessage", (tester) async {
+    var context = await buildContext(tester);
+    var baitId0 = randomId();
+    var baitId1 = randomId();
+    var variantId0 = randomId();
+    var variantId1 = randomId();
+
+    when(appManager.catchManager.list()).thenReturn([
+      Catch(
+        id: randomId(),
+        baits: [
+          BaitAttachment(
+            baitId: baitId0,
+            variantId: variantId0,
+          ),
+        ],
+      ),
+      Catch(
+        id: randomId(),
+        baits: [
+          BaitAttachment(
+            baitId: baitId1,
+            variantId: variantId1,
+          ),
+        ],
+      ),
+      Catch(
+        id: randomId(),
+        baits: [
+          BaitAttachment(
+            baitId: baitId0,
+            variantId: variantId0,
+          ),
+        ],
+      ),
+    ]);
+
+    expect(
+      baitManager.deleteVariantMessage(context, BaitVariant(id: variantId0)),
+      "This variant is associated with 2 catches; are you sure you want "
+      "to delete it? This cannot be undone.",
+    );
+    expect(
+      baitManager.deleteVariantMessage(context, BaitVariant(id: variantId1)),
+      "This variant is associated with 1 catch; are you sure you want "
+      "to delete it? This cannot be undone.",
+    );
+  });
+
+  test("baitAttachmentComparator", () async {
+    var categoryId = randomId();
+    await baitCategoryManager.addOrUpdate(BaitCategory(
+      id: categoryId,
+      name: "Live",
+    ));
+
+    var baitId0 = randomId();
+    var baitId1 = randomId();
+    var baitId2 = randomId();
+    var baitId3 = randomId();
+    var baits = <Bait>[
+      Bait(
+        id: baitId0,
+        name: "C",
+        baitCategoryId: categoryId,
+      ),
+      Bait(
+        id: baitId1,
+        name: "D",
+      ),
+      Bait(
+        id: baitId2,
+        name: "A",
+      ),
+      Bait(
+        id: baitId3,
+        name: "B",
+      ),
+    ];
+    for (var bait in baits) {
+      await baitManager.addOrUpdate(bait);
+    }
+
+    var attachments = <BaitAttachment>[
+      BaitAttachment(baitId: baitId0),
+      BaitAttachment(baitId: baitId1),
+      BaitAttachment(baitId: baitId2),
+      BaitAttachment(baitId: baitId3),
+    ];
+
+    attachments.sort(baitManager.attachmentComparator);
+
+    expect(baitManager.entity(attachments[0].baitId)!.name, "A");
+    expect(baitManager.entity(attachments[1].baitId)!.name, "B");
+    expect(baitManager.entity(attachments[2].baitId)!.name, "D");
+
+    // Bait "C" has category "Live", so the sorting value is "Live - C" and
+    // therefore, is last in the list.
+    expect(baitManager.entity(attachments[3].baitId)!.name, "C");
   });
 }

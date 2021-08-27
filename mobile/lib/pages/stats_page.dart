@@ -29,6 +29,7 @@ import '../widgets/list_item.dart';
 import '../widgets/list_picker_input.dart';
 import '../widgets/widget.dart';
 import 'bait_page.dart';
+import 'bait_variant_page.dart';
 import 'catch_list_page.dart';
 import 'fishing_spot_page.dart';
 import 'manageable_list_page.dart';
@@ -249,7 +250,7 @@ class _StatsPageState extends State<StatsPage> {
       rowDetailsPage: (species, dateRange) => CatchListPage(
         enableAdding: false,
         dateRange: dateRange,
-        baitIds: _models.first.baitIds,
+        baits: _models.first.baits,
         fishingSpotIds: _models.first.fishingSpotIds,
         speciesIds: {species.id},
       ),
@@ -275,7 +276,7 @@ class _StatsPageState extends State<StatsPage> {
       rowDetailsPage: (fishingSpot, dateRange) => CatchListPage(
         enableAdding: false,
         dateRange: dateRange,
-        baitIds: _models.first.baitIds,
+        baits: _models.first.baits,
         fishingSpotIds: {fishingSpot.id},
         speciesIds: _models.first.speciesIds,
       ),
@@ -287,20 +288,21 @@ class _StatsPageState extends State<StatsPage> {
       return Empty();
     }
 
-    return ExpandableChart<Bait>(
+    return ExpandableChart<BaitAttachment>(
       title: Strings.of(context).reportSummaryPerBait,
       viewAllTitle: Strings.of(context).reportSummaryViewBaits,
       viewAllDescription:
           Strings.of(context).reportSummaryCatchesPerBaitDescription,
       filters: _filters(includeDateRange: !_isComparing),
-      labelBuilder: (bait) => bait.name,
+      labelBuilder: _attachmentDisplayValue,
       series: _models
-          .map((model) => Series<Bait>(model.catchesPerBait, model.dateRange))
+          .map((model) =>
+              Series<BaitAttachment>(model.catchesPerBait, model.dateRange))
           .toList(),
-      rowDetailsPage: (bait, dateRange) => CatchListPage(
+      rowDetailsPage: (baitAttachment, dateRange) => CatchListPage(
         enableAdding: false,
         dateRange: dateRange,
-        baitIds: {bait.id},
+        baits: {baitAttachment},
         fishingSpotIds: _models.first.fishingSpotIds,
         speciesIds: _models.first.speciesIds,
       ),
@@ -352,7 +354,7 @@ class _StatsPageState extends State<StatsPage> {
       return Empty();
     }
 
-    return ExpandableChart<Bait>(
+    return ExpandableChart<BaitAttachment>(
       title: Strings.of(context).reportSummaryPerBait,
       viewAllTitle: Strings.of(context).reportSummaryViewBaits,
       viewAllDescription:
@@ -361,12 +363,26 @@ class _StatsPageState extends State<StatsPage> {
         includeSpecies: false,
         includeDateRange: !_isComparing,
       )..add(_currentSpecies!.name),
-      labelBuilder: (bait) => bait.name,
+      labelBuilder: _attachmentDisplayValue,
       series: _models
-          .map((model) => Series<Bait>(
+          .map((model) => Series<BaitAttachment>(
               model.baitsPerSpecies(_currentSpecies), model.dateRange))
           .toList(),
-      rowDetailsPage: (bait, _) => BaitPage(bait, static: true),
+      rowDetailsPage: (attachment, _) {
+        assert(_baitManager.entityExists(attachment.baitId),
+            "Cannot create a chart with a Bait that doesn't exist");
+
+        var bait = _baitManager.entity(attachment.baitId)!;
+
+        if (attachment.hasVariantId()) {
+          var variant = _baitManager.variant(bait, attachment.variantId);
+          if (variant != null) {
+            return BaitVariantPage(variant);
+          }
+        }
+
+        return BaitPage(bait, static: true);
+      },
     );
   }
 
@@ -546,7 +562,7 @@ class _StatsPageState extends State<StatsPage> {
       isCatchAndReleaseOnly: report.isCatchAndReleaseOnly,
       isFavoritesOnly: report.isFavoritesOnly,
       anglerIds: report.anglerIds.toSet(),
-      baitIds: report.baitIds.toSet(),
+      baits: report.baits.toSet(),
       fishingSpotIds: report.fishingSpotIds.toSet(),
       methodIds: report.methodIds.toSet(),
       speciesIds: report.speciesIds.toSet(),
@@ -595,5 +611,11 @@ class _StatsPageState extends State<StatsPage> {
 
   bool _meets(bool Function(CalculatedReport model) condition) {
     return _models.firstWhereOrNull((model) => condition(model)) != null;
+  }
+
+  String _attachmentDisplayValue(BaitAttachment attachment) {
+    var value = _baitManager.attachmentDisplayValue(attachment, context);
+    assert(isNotEmpty(value), "Cannot display a bait that doesn't exist");
+    return value!;
   }
 }

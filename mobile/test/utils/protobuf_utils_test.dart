@@ -1338,4 +1338,66 @@ void main() {
       );
     });
   });
+
+  group("BaitVariants", () {
+    testWidgets("diveDepthDisplayValue with both min and max", (tester) async {
+      expect(
+        BaitVariant(
+          minDiveDepth: MultiMeasurement(
+            system: MeasurementSystem.metric,
+            mainValue: Measurement(
+              unit: Unit.meters,
+              value: 5,
+            ),
+          ),
+          maxDiveDepth: MultiMeasurement(
+            system: MeasurementSystem.metric,
+            mainValue: Measurement(
+              unit: Unit.meters,
+              value: 10,
+            ),
+          ),
+        ).diveDepthDisplayValue(await buildContext(tester)),
+        "5 m - 10 m",
+      );
+    });
+
+    testWidgets("diveDepthDisplayValue with min only", (tester) async {
+      expect(
+        BaitVariant(
+          minDiveDepth: MultiMeasurement(
+            system: MeasurementSystem.metric,
+            mainValue: Measurement(
+              unit: Unit.meters,
+              value: 5,
+            ),
+          ),
+        ).diveDepthDisplayValue(await buildContext(tester)),
+        "5 m",
+      );
+    });
+
+    testWidgets("diveDepthDisplayValue with max only", (tester) async {
+      expect(
+        BaitVariant(
+          maxDiveDepth: MultiMeasurement(
+            system: MeasurementSystem.metric,
+            mainValue: Measurement(
+              unit: Unit.meters,
+              value: 10,
+            ),
+          ),
+        ).diveDepthDisplayValue(await buildContext(tester)),
+        "10 m",
+      );
+    });
+
+    testWidgets("diveDepthDisplayValue with neither min nor max",
+        (tester) async {
+      expect(
+        BaitVariant().diveDepthDisplayValue(await buildContext(tester)),
+        isNull,
+      );
+    });
+  });
 }

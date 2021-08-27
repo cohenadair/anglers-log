@@ -34,7 +34,8 @@ class ReportManager extends NamedEntityManager<Report> {
   @override
   String get tableName => "custom_report";
 
-  bool removeBait(Report report, Bait bait) => report.baitIds.remove(bait.id);
+  void removeAttachedBaits(Report report, Id baitId) =>
+      report.baits.removeWhere((e) => e.baitId == baitId);
 
   bool removeFishingSpot(Report report, FishingSpot fishingSpot) =>
       report.fishingSpotIds.remove(fishingSpot.id);
@@ -43,7 +44,11 @@ class ReportManager extends NamedEntityManager<Report> {
       report.speciesIds.remove(species.id);
 
   void _onDeleteBait(Bait bait) async {
-    _onEntityDeleted((report) => removeBait(report, bait));
+    _onEntityDeleted((report) {
+      var length = report.baits.length;
+      removeAttachedBaits(report, bait.id);
+      return report.baits.length != length;
+    });
   }
 
   void _onDeleteFishingSpot(FishingSpot fishingSpot) async {
