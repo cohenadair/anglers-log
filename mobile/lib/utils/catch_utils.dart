@@ -104,6 +104,8 @@ List<Field> allCatchFields(BuildContext context) {
     Field(
       id: catchFieldIdFavorite,
       name: (context) => Strings.of(context).catchFieldFavorite,
+      description: (context) =>
+          Strings.of(context).catchFieldFavoriteDescription,
       controller: BoolInputController(),
     ),
     Field(

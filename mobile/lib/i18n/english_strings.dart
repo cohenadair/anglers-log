@@ -3,7 +3,7 @@
 Map<String, Map<String, String>> get englishStrings => {
       "US": {
         "catchField_favorite": "Favorite",
-        "catchField_favoriteDescription": "A favorite catch.",
+        "catchField_favoriteDescription": "Whether a catch was one of your favorites.",
         "saveReportPage_favorites": "Favorites Only",
         "unitsPage_catchLengthCentimeters": "Centimeters (%s)",
         "unitsPage_waterDepthMeters": "Meters (%s)",
@@ -13,7 +13,7 @@ Map<String, Map<String, String>> get englishStrings => {
       },
       "CA": {
         "catchField_favorite": "Favourite",
-        "catchField_favoriteDescription": "A favourite catch.",
+        "catchField_favoriteDescription": "Whether a catch was one of your favourites.",
         "saveReportPage_favorites": "Favourites",
         "unitsPage_catchLengthCentimeters": "Centimetres (%s)",
         "unitsPage_waterDepthMeters": "Metres (%s)",
