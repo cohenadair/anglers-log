@@ -193,7 +193,7 @@ void main() {
     await stubImage(appManager, tester, "flutter_logo.png");
 
     await tester.pumpWidget(Testable(
-          (_) => BaitListPage(),
+      (_) => BaitListPage(),
       appManager: appManager,
     ));
     // Required to replace placeholder with image.

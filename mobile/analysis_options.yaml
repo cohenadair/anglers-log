@@ -4,6 +4,7 @@ analyzer:
   exclude:
     lib/model/gen/**
     lib/res/gen/**
+    test/mocks/mocks.mocks.dart
 
 linter:
   rules:

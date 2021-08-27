@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:collection/collection.dart' show IterableExtension;
 import 'package:flutter/material.dart';
-import 'package:mobile/pages/pro_page.dart';
 
 import '../custom_entity_manager.dart';
 import '../entity_manager.dart';
@@ -16,6 +15,7 @@ import '../utils/page_utils.dart';
 import '../widgets/button.dart';
 import '../widgets/field.dart';
 import '../widgets/widget.dart';
+import 'pro_page.dart';
 import 'scroll_page.dart';
 import 'units_page.dart';
 

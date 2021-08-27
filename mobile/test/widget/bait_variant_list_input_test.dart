@@ -171,7 +171,7 @@ void main() {
 
     await pumpContext(
       tester,
-        (_) => BaitVariantListInput(
+      (_) => BaitVariantListInput(
         controller: controller,
       ),
       appManager: appManager,
