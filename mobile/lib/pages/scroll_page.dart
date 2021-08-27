@@ -7,7 +7,7 @@ class ScrollPage extends StatelessWidget {
   final List<Widget> children;
 
   /// See [Scaffold.persistentFooterButtons].
-  final List<Widget>? footer;
+  final List<Widget> footer;
 
   final EdgeInsets padding;
 
@@ -29,7 +29,7 @@ class ScrollPage extends StatelessWidget {
   ScrollPage({
     this.appBar,
     this.children = const [],
-    this.footer,
+    this.footer = const [],
     this.padding = insetsZero,
     this.extendBodyBehindAppBar = true,
     this.enableHorizontalSafeArea = true,
@@ -59,8 +59,9 @@ class ScrollPage extends StatelessWidget {
       ),
       // Ensures view is scrollable, even when items don't exceed screen size.
       physics: AlwaysScrollableScrollPhysics(),
-      // Ensures items are cut off when over-scrolling on iOS.
-      clipBehavior: Clip.none,
+      // Ensures items are cut off when over-scrolling on iOS. This only
+      // applies when a persistent footer isn't being used.
+      clipBehavior: footer.isEmpty ? Clip.none : Clip.hardEdge,
     );
 
     if (centerContent) {
