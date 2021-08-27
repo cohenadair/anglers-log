@@ -13,6 +13,7 @@ Anglers' Log 2.0 Beta Testers
 * Jeff Velick - jeffvelick3@yahoo.com
 * Jonathan - jonnyboyvo@yahoo.com
 * Petter Ronningen - petterronningen@live.no
+* Ruan Benade - ruan.benade@gmail.com (UX designer)
 
 ### Donators
 * Dov - dovfeder@optonline.net
