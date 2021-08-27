@@ -334,7 +334,10 @@ class LegacyImporter {
         }
       }
 
-      var variant = BaitVariant();
+      var variant = BaitVariant(
+        id: randomId(),
+        baseId: bait.id,
+      );
       var isVariantSet = false;
 
       var color = map[_keyColor];

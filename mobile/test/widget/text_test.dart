@@ -1,10 +1,31 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/widgets/text.dart';
+import 'package:mobile/widgets/widget.dart';
 
 import '../test_utils.dart';
 
 void main() {
+  group("SingleLineText", () {
+    testWidgets("Null text renders Empty", (tester) async {
+      await pumpContext(tester, (_) => SingleLineText(null));
+      expect(find.byType(Empty), findsOneWidget);
+      expect(find.byType(Text), findsNothing);
+    });
+
+    testWidgets("Empty text renders Empty", (tester) async {
+      await pumpContext(tester, (_) => SingleLineText(""));
+      expect(find.byType(Empty), findsOneWidget);
+      expect(find.byType(Text), findsNothing);
+    });
+
+    testWidgets("Non-empty text renders text", (tester) async {
+      await pumpContext(tester, (_) => SingleLineText("Test"));
+      expect(find.byType(Empty), findsNothing);
+      expect(find.byType(Text), findsOneWidget);
+    });
+  });
+
   group("IconNoteLabel", () {
     testWidgets("Bad input", (tester) async {
       await tester.pumpWidget(

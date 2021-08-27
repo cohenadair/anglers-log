@@ -103,4 +103,38 @@ void main() {
       Clip.none,
     );
   });
+
+  testWidgets("Null footer buttons with empty input", (tester) async {
+    await pumpContext(
+      tester,
+      (_) => ScrollPage(
+        children: [
+          Text("Test"),
+        ],
+        footer: [],
+      ),
+    );
+    expect(
+      tester.widget<Scaffold>(find.byType(Scaffold)).persistentFooterButtons,
+      isNull,
+    );
+  });
+
+  testWidgets("Non-null footer buttons with valid input", (tester) async {
+    await pumpContext(
+      tester,
+      (_) => ScrollPage(
+        children: [
+          Text("Test"),
+        ],
+        footer: [
+          Text("A"),
+        ],
+      ),
+    );
+    expect(
+      tester.widget<Scaffold>(find.byType(Scaffold)).persistentFooterButtons,
+      isNotNull,
+    );
+  });
 }

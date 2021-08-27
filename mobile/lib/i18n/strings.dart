@@ -344,6 +344,8 @@ class Strings {
 
   String get baitListPageVariantsLabel => _string("baitListPage_variantsLabel");
 
+  String get baitListPageVariantLabel => _string("baitListPage_variantLabel");
+
   String get baitListPageNumberOfCatches =>
       _string("baitListPage_numberOfCatches");
 
@@ -1204,6 +1206,8 @@ class Strings {
       _string("atmosphereInput_noSkyConditions");
 
   String get atmosphereInputWindSpeed => _string("atmosphereInput_windSpeed");
+
+  String get atmosphereInputWind => _string("atmosphereInput_wind");
 
   String get atmosphereInputWindDirection =>
       _string("atmosphereInput_windDirection");

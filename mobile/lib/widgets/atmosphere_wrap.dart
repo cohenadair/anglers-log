@@ -32,7 +32,9 @@ class AtmosphereWrap extends StatelessWidget {
       children.add(_Item(
         icon: Icons.air,
         title: atmosphere.windSpeed.displayValue(context),
-        subtitle: atmosphere.windDirection.displayName(context),
+        subtitle: atmosphere.hasWindDirection()
+            ? atmosphere.windDirection.displayName(context)
+            : Strings.of(context).atmosphereInputWind,
       ));
     }
 

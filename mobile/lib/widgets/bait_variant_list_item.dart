@@ -8,6 +8,7 @@ import '../res/style.dart';
 import '../utils/page_utils.dart';
 import 'custom_entity_values.dart';
 import 'list_item.dart';
+import 'text.dart';
 import 'widget.dart';
 
 class BaitVariantListItem extends StatelessWidget {
@@ -48,17 +49,25 @@ class BaitVariantListItem extends StatelessWidget {
       onTap = () => push(context, BaitVariantPage(variant));
     }
 
+    var title = baitManager.variantDisplayValue(variant, context);
+
     return ManageableListItem(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            baitManager.variantDisplayValue(variant, context),
+          SingleLineText(
+            title,
             style: stylePrimary(context),
           ),
           CustomEntityValues(
             variant.customEntityValues,
             isCondensed: true,
+          ),
+          // Only show a separate description line if the description isn't
+          // already present in the title.
+          SingleLineText(
+            title.contains(variant.description) ? null : variant.description,
+            style: styleSubtitle(context),
           ),
         ],
       ),

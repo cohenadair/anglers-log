@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
 import 'package:mobile/pages/form_page.dart';
+import 'package:mobile/pages/pro_page.dart';
 import 'package:mobile/pages/save_custom_entity_page.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mobile/widgets/button.dart';
@@ -24,6 +25,9 @@ void main() {
     appManager = StubbedAppManager();
 
     when(appManager.customEntityManager.list()).thenReturn([]);
+
+    when(appManager.subscriptionManager.subscriptions())
+        .thenAnswer((_) => Future.value(null));
   });
 
   testWidgets("Save button disabled when isInputValid = false", (tester) async {
@@ -446,23 +450,6 @@ void main() {
     expect(find.text("Select Fields"), findsNothing);
   });
 
-  testWidgets("Selection page add button opens save entity page",
-      (tester) async {
-    await tester.pumpWidget(Testable(
-      (_) => FormPage(
-        fieldBuilder: (context) => {},
-        isInputValid: true,
-      ),
-      appManager: appManager,
-    ));
-
-    await tapAndSettle(tester, find.byIcon(FormPage.moreMenuIcon));
-    await tapAndSettle(tester, find.text("Manage Fields"));
-    await tapAndSettle(tester, find.widgetWithIcon(IconButton, Icons.add));
-
-    expect(find.byType(SaveCustomEntityPage), findsOneWidget);
-  });
-
   testWidgets("Custom fields included in form are shown on selection page",
       (tester) async {
     var customEntityId = randomId();
@@ -655,5 +642,47 @@ void main() {
     // One in action bar, one in HeadingDivider.
     expect(find.byIcon(Icons.add), findsNWidgets(2));
     expect(find.byType(HeadingDivider), findsOneWidget);
+  });
+
+  testWidgets("Non-pro users are shown ProPage when adding a field",
+      (tester) async {
+    when(appManager.subscriptionManager.isPro).thenReturn(false);
+
+    await tester.pumpWidget(Testable(
+      (_) => FormPage(
+        fieldBuilder: (_) => {},
+        isInputValid: true,
+        allowCustomEntities: true,
+      ),
+      appManager: appManager,
+    ));
+
+    await tapAndSettle(tester, find.byIcon(FormPage.moreMenuIcon));
+    await tapAndSettle(tester, find.text("Manage Fields"));
+    await tapAndSettle(tester, find.byIcon(Icons.add).last);
+
+    expect(find.byType(ProPage), findsOneWidget);
+    expect(find.byType(SaveCustomEntityPage), findsNothing);
+  });
+
+  testWidgets("Pro users are shown SaveCustomEntity when adding a field",
+      (tester) async {
+    when(appManager.subscriptionManager.isPro).thenReturn(true);
+
+    await tester.pumpWidget(Testable(
+      (_) => FormPage(
+        fieldBuilder: (_) => {},
+        isInputValid: true,
+        allowCustomEntities: true,
+      ),
+      appManager: appManager,
+    ));
+
+    await tapAndSettle(tester, find.byIcon(FormPage.moreMenuIcon));
+    await tapAndSettle(tester, find.text("Manage Fields"));
+    await tapAndSettle(tester, find.byIcon(Icons.add).last);
+
+    expect(find.byType(ProPage), findsNothing);
+    expect(find.byType(SaveCustomEntityPage), findsOneWidget);
   });
 }

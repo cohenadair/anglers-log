@@ -10,6 +10,7 @@ import '../widgets/button.dart';
 import '../widgets/widget.dart';
 import 'checkbox_input.dart';
 import 'photo.dart';
+import 'text.dart';
 
 /// A custom [ListTile]-like widget with app default properties. This widget
 /// also automatically adjusts its height to fit its content, unlike [ListTile].
@@ -485,6 +486,14 @@ class ManageableListImageItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var trailing = this.trailing;
+    if (trailing != null) {
+      trailing = Padding(
+        padding: insetsLeftWidget,
+        child: trailing,
+      );
+    }
+
     return Row(
       children: [
         Photo.listThumbnail(imageName),
@@ -493,24 +502,18 @@ class ManageableListImageItem extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              isEmpty(title)
-                  ? Empty()
-                  : Text(
-                      title!,
-                      style: stylePrimary(context),
-                    ),
-              isEmpty(subtitle)
-                  ? Empty()
-                  : Text(
-                      subtitle!,
-                      style: styleSubtitle(context),
-                    ),
-              isEmpty(subtitle2)
-                  ? Empty()
-                  : Text(
-                      subtitle2!,
-                      style: styleSubtitle(context),
-                    ),
+              SingleLineText(
+                title,
+                style: stylePrimary(context),
+              ),
+              SingleLineText(
+                subtitle,
+                style: styleSubtitle(context),
+              ),
+              SingleLineText(
+                subtitle2,
+                style: styleSubtitle(context),
+              ),
             ],
           ),
         ),

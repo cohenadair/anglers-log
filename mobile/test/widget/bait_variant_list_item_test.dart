@@ -85,4 +85,40 @@ void main() {
     );
     expect(find.byType(RightChevronIcon), findsOneWidget);
   });
+
+  testWidgets("Description shown if not in title text", (tester) async {
+    when(appManager.baitManager.variantDisplayValue(any, any))
+        .thenReturn("Red");
+
+    await pumpContext(
+      tester,
+      (_) => BaitVariantListItem(
+        BaitVariant(
+          color: "Red",
+          description: "Description",
+        ),
+      ),
+      appManager: appManager,
+    );
+
+    expect(find.text("Red"), findsOneWidget);
+    expect(find.text("Description"), findsOneWidget);
+  });
+
+  testWidgets("Description shown if not in title text", (tester) async {
+    when(appManager.baitManager.variantDisplayValue(any, any))
+        .thenReturn("Description");
+
+    var context = await pumpContext(
+      tester,
+      (_) => BaitVariantListItem(
+        BaitVariant(
+          description: "Description",
+        ),
+      ),
+      appManager: appManager,
+    );
+
+    expect(find.primaryText(context, text: "Description"), findsOneWidget);
+  });
 }

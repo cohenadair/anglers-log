@@ -157,6 +157,7 @@ Map<String, Map<String, String>> get englishStrings => {
         "baitListPage_emptyListDescription":
             "You haven't yet added any baits. Tap the %s button to begin.",
         "baitListPage_variantsLabel": "%s Variants",
+        "baitListPage_variantLabel": "%s Variant",
         "baitListPage_numberOfCatches": "%s Catches",
         "baitListPage_numberOfCatchesSingular": "%s Catch",
         "saveBaitPage_newTitle": "New Bait",
@@ -580,6 +581,7 @@ Map<String, Map<String, String>> get englishStrings => {
         "atmosphereInput_skyConditions": "Sky Conditions",
         "atmosphereInput_noSkyConditions": "No sky conditions",
         "atmosphereInput_windSpeed": "Wind Speed",
+        "atmosphereInput_wind": "Wind",
         "atmosphereInput_windDirection": "Wind Direction",
         "atmosphereInput_pressure": "Pressure",
         "atmosphereInput_atmosphericPressure": "Atmospheric Pressure",

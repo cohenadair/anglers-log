@@ -5,6 +5,31 @@ import 'package:quiver/strings.dart';
 import '../res/dimen.dart';
 import '../res/style.dart';
 import '../utils/date_time_utils.dart';
+import 'widget.dart';
+
+class SingleLineText extends StatelessWidget {
+  final String? text;
+  final TextStyle? style;
+
+  SingleLineText(
+    this.text, {
+    this.style,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    if (isEmpty(text)) {
+      return Empty();
+    }
+
+    return Text(
+      text!,
+      style: style,
+      overflow: TextOverflow.ellipsis,
+      maxLines: 1,
+    );
+  }
+}
 
 /// A text widget that inserts an [Icon] into a [String]. The given [String]
 /// can only have a single "%s" substitution.

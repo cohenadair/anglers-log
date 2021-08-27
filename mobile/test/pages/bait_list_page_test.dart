@@ -193,7 +193,7 @@ void main() {
     await stubImage(appManager, tester, "flutter_logo.png");
 
     await tester.pumpWidget(Testable(
-      (_) => BaitListPage(),
+          (_) => BaitListPage(),
       appManager: appManager,
     ));
     // Required to replace placeholder with image.
@@ -201,6 +201,16 @@ void main() {
 
     expect(find.byIcon(CustomIcons.catches), findsNWidgets(4));
     expect(find.byType(Image), findsOneWidget);
+  });
+
+  testWidgets("Bait shows number of variants", (tester) async {
+    await tester.pumpWidget(Testable(
+      (_) => BaitListPage(),
+      appManager: appManager,
+    ));
+
+    expect(find.text("1 Variant"), findsNWidgets(2));
+    expect(find.text("0 Variants"), findsNWidgets(3));
   });
 
   group("BaitPickerInput", () {

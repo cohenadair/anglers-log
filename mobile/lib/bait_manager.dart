@@ -271,8 +271,8 @@ class BaitManager extends NamedEntityManager<Bait> {
 
   /// Returns a user-facing value for [variant], or an empty string if [variant]
   /// doesn't have any values set. The bait variant's properties are joined
-  /// using [formatList]. [BaitVariant.description] is intentionally excluded
-  /// from the result to avoid unnecessarily long return values.
+  /// using [formatList]. [BaitVariant.description] is only included if it is
+  /// the only field set. We do this to ensure the result isn't too long.
   String variantDisplayValue(
     BaitVariant variant,
     BuildContext context, {
@@ -310,8 +310,9 @@ class BaitManager extends NamedEntityManager<Bait> {
           variant.customEntityValues, context));
     }
 
-    // BaitVariant.description is intentionally left out here so this display
-    // value doesn't become too long.
+    if (values.isEmpty && variant.hasDescription()) {
+      values.add(variant.description);
+    }
 
     return formatList(values);
   }

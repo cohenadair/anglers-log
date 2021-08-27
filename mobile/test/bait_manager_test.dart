@@ -975,6 +975,35 @@ void main() {
     );
   });
 
+  testWidgets(
+      "variantDisplayValue includes description if all others are empty",
+      (tester) async {
+    var context = await buildContext(tester);
+    var variant = BaitVariant(
+      id: randomId(),
+      description: "Test description.",
+    );
+    expect(
+      baitManager.variantDisplayValue(variant, context),
+      "Test description.",
+    );
+  });
+
+  testWidgets(
+      "variantDisplayValue excludes description if others are not empty",
+      (tester) async {
+    var context = await buildContext(tester);
+    var variant = BaitVariant(
+      id: randomId(),
+      color: "Red",
+      description: "Test description.",
+    );
+    expect(
+      baitManager.variantDisplayValue(variant, context),
+      "Red",
+    );
+  });
+
   testWidgets("deleteVariantMessage", (tester) async {
     var context = await buildContext(tester);
     var baitId0 = randomId();

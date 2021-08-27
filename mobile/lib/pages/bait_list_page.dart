@@ -193,16 +193,17 @@ class _BaitListPageState extends State<BaitListPage> {
         : format(
             Strings.of(context).baitListPageNumberOfCatches, [numberOfCatches]);
 
+    var variantLabel = bait.variants.length == 1
+        ? Strings.of(context).baitListPageVariantLabel
+        : Strings.of(context).baitListPageVariantsLabel;
+
     return ManageableListPageItemModel(
       grandchild: grandchild,
       child: ManageableListImageItem(
         imageName: bait.hasImageName() ? bait.imageName : null,
         title: bait.name,
         subtitle: subtitle,
-        trailing: MinChip(format(
-          Strings.of(context).baitListPageVariantsLabel,
-          [bait.variants.length],
-        )),
+        trailing: MinChip(format(variantLabel, [bait.variants.length])),
       ),
     );
   }

@@ -493,6 +493,8 @@ void main() {
     expect(baits.first.hasBaitCategoryId(), false);
     expect(baits.first.type, Bait_Type.real);
     expect(baits.first.variants.length, 1);
+    expect(baits.first.variants.first.hasId(), isTrue);
+    expect(baits.first.variants.first.hasBaseId(), isTrue);
     expect(baits.first.variants.first.description, "4-5 on line, 2-3 on hook.");
     expect(baits.first.variants.first.hasSize(), isFalse);
     expect(baits.first.variants.first.hasColor(), isFalse);
@@ -634,17 +636,21 @@ void main() {
     expect(baitCategoryManager.entity(baits[0].baitCategoryId)!.name, "Other");
     expect(baits[0].type, Bait_Type.artificial);
     expect(baits[0].variants.length, 1);
+    expect(baits[0].variants.first.hasId(), isTrue);
+    expect(baits[0].variants.first.hasBaseId(), isTrue);
     expect(baits[0].variants.first.description, "Depth 3-5'.");
     expect(baits[0].variants.first.size, "F-7");
     expect(baits[0].variants.first.color, "Brown Trout");
 
     expect(baits[1].name, "Z-Man");
     expect(baits[1].hasBaitCategoryId(), false);
-    expect(baits[0].type, Bait_Type.artificial);
-    expect(baits[0].variants.length, 1);
-    expect(baits[0].variants.first.description, "Depth 3-5'.");
-    expect(baits[0].variants.first.size, "F-7");
-    expect(baits[0].variants.first.color, "Brown Trout");
+    expect(baits[1].type, Bait_Type.artificial);
+    expect(baits[1].variants.length, 1);
+    expect(baits[1].variants.first.hasId(), isTrue);
+    expect(baits[1].variants.first.hasBaseId(), isTrue);
+    expect(baits[1].variants.first.description, "Depth 3-5'.");
+    expect(baits[1].variants.first.size, "F-7");
+    expect(baits[1].variants.first.color, "Brown Trout");
   });
 
   test("Import Android species", () async {

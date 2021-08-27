@@ -82,7 +82,7 @@ class ScrollPage extends StatelessWidget {
     return Scaffold(
       appBar: appBar,
       extendBodyBehindAppBar: extendBodyBehindAppBar,
-      persistentFooterButtons: footer,
+      persistentFooterButtons: footer.isEmpty ? null : footer,
       body: child,
     );
   }
