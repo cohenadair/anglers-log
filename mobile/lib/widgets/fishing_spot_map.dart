@@ -42,18 +42,6 @@ class FishingSpotMap extends StatefulWidget {
   final bool showHelpButton;
   final bool showFishingSpotActionButtons;
 
-  /// See [GoogleMap.onCameraIdle].
-  final VoidCallback? onIdle;
-
-  /// See [GoogleMap.onCameraMove].
-  final void Function(LatLng)? onMove;
-
-  /// See [GoogleMap.onCameraMoveStarted].
-  final VoidCallback? onMoveStarted;
-
-  /// Invoked when the map type changes.
-  final void Function(MapType)? onMapTypeChanged;
-
   /// Widgets placed in the map's stack, between the actual map, and the search
   /// bar and floating action buttons. This is used as an easy way to show
   /// the [HelpTooltip] above all widgets.
@@ -72,10 +60,6 @@ class FishingSpotMap extends StatefulWidget {
     this.showMapTypeButton = true,
     this.showHelpButton = true,
     this.showFishingSpotActionButtons = true,
-    this.onIdle,
-    this.onMove,
-    this.onMoveStarted,
-    this.onMapTypeChanged,
     this.children = const [],
     this.isPage = true,
   }) : _isStatic = false;
@@ -91,10 +75,6 @@ class FishingSpotMap extends StatefulWidget {
         showMapTypeButton = false,
         showHelpButton = false,
         showFishingSpotActionButtons = false,
-        onIdle = null,
-        onMove = null,
-        onMoveStarted = null,
-        onMapTypeChanged = null,
         children = const [],
         isPage = false,
         _isStatic = true;
@@ -108,10 +88,6 @@ class FishingSpotMap extends StatefulWidget {
         showMapTypeButton = true,
         showHelpButton = false,
         showFishingSpotActionButtons = true,
-        onIdle = null,
-        onMove = null,
-        onMoveStarted = null,
-        onMapTypeChanged = null,
         children = [
           SafeArea(
             child: FloatingButton.back(
@@ -257,7 +233,7 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
             right: 10,
             top: widget.showSearchBar ? SearchBar.height : 0,
             // TODO: Need some value here to show the Google logo
-            bottom: 0,
+            bottom: 0.0,
           ),
           mapType: _mapType,
           markers: markers,
@@ -274,11 +250,6 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
           myLocationEnabled: _myLocationEnabled,
           mapToolbarEnabled: false,
           onTap: (latLng) => setState(() => _dropPin(latLng)),
-          onCameraIdle: widget.onIdle,
-          onCameraMove: widget.onMove == null
-              ? null
-              : (position) => widget.onMove!(position.target),
-          onCameraMoveStarted: widget.onMoveStarted,
         );
       },
     );
@@ -384,13 +355,10 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
               Strings.of(context).mapPageMapTypeTerrain: MapType.terrain,
             },
             onPicked: (newMapType) {
-              if (newMapType != _mapType) {
-                var type = newMapType ?? MapType.normal;
-                setState(() {
-                  _mapType = type;
-                });
-                widget.onMapTypeChanged?.call(type);
+              if (newMapType == _mapType) {
+                return;
               }
+              setState(() => _mapType = newMapType ?? MapType.normal);
             },
           ),
         );
