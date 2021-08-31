@@ -25,13 +25,13 @@ import '../utils/string_utils.dart';
 import '../widgets/chart.dart';
 import '../widgets/date_range_picker_input.dart';
 import '../widgets/empty_list_placeholder.dart';
+import '../widgets/fishing_spot_map.dart';
 import '../widgets/list_item.dart';
 import '../widgets/list_picker_input.dart';
 import '../widgets/widget.dart';
 import 'bait_page.dart';
 import 'bait_variant_page.dart';
 import 'catch_list_page.dart';
-import 'fishing_spot_page.dart';
 import 'manageable_list_page.dart';
 import 'species_list_page.dart';
 
@@ -405,7 +405,7 @@ class _StatsPageState extends State<StatsPage> {
           .map((model) => Series<FishingSpot>(
               model.fishingSpotsPerSpecies(_currentSpecies), model.dateRange))
           .toList(),
-      rowDetailsPage: (fishingSpot, _) => FishingSpotPage(fishingSpot),
+      rowDetailsPage: (fishingSpot, _) => FishingSpotMap.selected(fishingSpot),
     );
   }
 

@@ -5,6 +5,7 @@ import 'package:protobuf/protobuf.dart';
 import 'package:quiver/strings.dart';
 
 import '../angler_manager.dart';
+import '../body_of_water_manager.dart';
 import '../fishing_spot_manager.dart';
 import '../i18n/strings.dart';
 import '../method_manager.dart';
@@ -34,6 +35,7 @@ import '../widgets/text_input.dart';
 import '../widgets/widget.dart';
 import 'angler_list_page.dart';
 import 'bait_list_page.dart';
+import 'body_of_water_list_page.dart';
 import 'manageable_list_page.dart';
 import 'method_list_page.dart';
 import 'picker_page.dart';
@@ -63,6 +65,7 @@ class _SaveReportPageState extends State<SaveReportPage> {
   final _speciesController = SetInputController<Species>();
   final _baitsController = SetInputController<BaitAttachment>();
   final _fishingSpotsController = SetInputController<FishingSpot>();
+  final _bodiesOfWaterController = SetInputController<BodyOfWater>();
   final _methodsController = SetInputController<Method>();
   final _periodsController = SetInputController<Period>();
   final _favoritesOnlyController = BoolInputController();
@@ -85,6 +88,8 @@ class _SaveReportPageState extends State<SaveReportPage> {
   final _tideTypesController = SetInputController<TideType>();
 
   AnglerManager get _anglerManager => AnglerManager.of(context);
+
+  BodyOfWaterManager get _bodyOfWaterManager => BodyOfWaterManager.of(context);
 
   ReportManager get _reportManager => ReportManager.of(context);
 
@@ -151,6 +156,7 @@ class _SaveReportPageState extends State<SaveReportPage> {
       _initEntitySets(
         anglerIds: _oldReport!.anglerIds,
         fishingSpotIds: _oldReport!.fishingSpotIds,
+        bodyOfWaterIds: _oldReport!.bodyOfWaterIds,
         methodIds: _oldReport!.methodIds,
         speciesIds: _oldReport!.speciesIds,
         waterClarityIds: _oldReport!.waterClarityIds,
@@ -170,6 +176,7 @@ class _SaveReportPageState extends State<SaveReportPage> {
   void _initEntitySets({
     List<Id> anglerIds = const [],
     List<Id> fishingSpotIds = const [],
+    List<Id> bodyOfWaterIds = const [],
     List<Id> methodIds = const [],
     List<Id> speciesIds = const [],
     List<Id> waterClarityIds = const [],
@@ -181,6 +188,9 @@ class _SaveReportPageState extends State<SaveReportPage> {
     _fishingSpotsController.value = fishingSpotIds.isEmpty
         ? {}
         : _fishingSpotManager.list(fishingSpotIds).toSet();
+    _bodiesOfWaterController.value = bodyOfWaterIds.isEmpty
+        ? {}
+        : _bodyOfWaterManager.list(bodyOfWaterIds).toSet();
     _methodsController.value =
         methodIds.isEmpty ? {} : _methodManager.list(methodIds).toSet();
     _speciesController.value =
@@ -227,6 +237,7 @@ class _SaveReportPageState extends State<SaveReportPage> {
         _buildAnglersPicker(),
         _buildSpeciesPicker(),
         _buildBaitsPicker(),
+        _buildBodiesOfWaterPicker(),
         _buildFishingSpotsPicker(),
         _buildMethodsPicker(),
       ],
@@ -473,6 +484,18 @@ class _SaveReportPageState extends State<SaveReportPage> {
     );
   }
 
+  Widget _buildBodiesOfWaterPicker() {
+    return _buildEntityPicker<BodyOfWater>(
+      manager: _bodyOfWaterManager,
+      controller: _bodiesOfWaterController,
+      emptyValue: Strings.of(context).saveReportPageAllBodiesOfWater,
+      isHidden: hideCatchField(catchFieldIdFishingSpot),
+      listPage: (pickerSettings) => BodyOfWaterListPage(
+        pickerSettings: pickerSettings,
+      ),
+    );
+  }
+
   Widget _buildFishingSpotsPicker() {
     return _buildEntityPicker<FishingSpot>(
       manager: _fishingSpotManager,
@@ -646,18 +669,18 @@ class _SaveReportPageState extends State<SaveReportPage> {
       values: controller.value.map((e) => manager.name(e)).toSet(),
       emptyValue: (context) => emptyValue,
       onTap: () {
-        var allEntities = manager.list().toSet();
         var pickerPage = listPage!(
           ManageableListPagePickerSettings<T>(
             onPicked: (context, entities) {
               // Treat an empty controller value as "include all", so we're
               // not including 100s of objects in a protobuf collection.
               setState(() => controller.value =
-                  entities.containsAll(allEntities) ? {} : entities);
+                  entities.containsAll(manager.list()) ? {} : entities);
               return true;
             },
-            initialValues:
-                controller.value.isEmpty ? allEntities : controller.value,
+            initialValues: controller.value.isEmpty
+                ? manager.list().toSet()
+                : controller.value,
           ),
         );
 
@@ -723,6 +746,7 @@ class _SaveReportPageState extends State<SaveReportPage> {
       ..anglerIds.addAll(_anglersController.value.map((e) => e.id))
       ..baits.addAll(_baitsController.value)
       ..fishingSpotIds.addAll(_fishingSpotsController.value.map((e) => e.id))
+      ..bodyOfWaterIds.addAll(_bodiesOfWaterController.value.map((e) => e.id))
       ..methodIds.addAll(_methodsController.value.map((e) => e.id))
       ..speciesIds.addAll(_speciesController.value.map((e) => e.id))
       ..waterClarityIds.addAll(_waterClaritiesController.value.map((e) => e.id))

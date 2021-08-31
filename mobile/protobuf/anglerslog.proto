@@ -240,11 +240,19 @@ message DateRange {
   uint64 end_timestamp = 3;
 }
 
+message BodyOfWater {
+  Id id = 1;
+  string name = 2;
+}
+
 message FishingSpot {
   Id id = 1;
   string name = 2;
   double lat = 3;
   double lng = 4;
+  Id body_of_water_id = 5;
+  string image_name = 6;
+  string notes = 7;
 }
 
 message NumberFilter {
@@ -294,6 +302,7 @@ message Report {
   repeated SkyCondition sky_conditions = 28;
   repeated MoonPhase moon_phases = 29;
   repeated TideType tide_types = 30;
+  repeated Id body_of_water_ids = 31;
 }
 
 message Angler {

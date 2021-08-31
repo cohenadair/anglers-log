@@ -89,13 +89,13 @@ class FishingSpotMarker extends Marker {
   final Id id;
   final FishingSpot fishingSpot;
   final void Function(FishingSpot)? onTapFishingSpot;
-  final bool active;
+  final bool isActive;
   final double zIndex;
 
   FishingSpotMarker({
     required this.fishingSpot,
     this.onTapFishingSpot,
-    this.active = false,
+    this.isActive = false,
     this.zIndex = 0.0,
   })  : id = fishingSpot.id,
         super(
@@ -104,7 +104,7 @@ class FishingSpotMarker extends Marker {
           onTap: onTapFishingSpot == null
               ? null
               : () => onTapFishingSpot(fishingSpot),
-          icon: active ? _activeIcon : _normalIcon,
+          icon: isActive ? _activeIcon : _normalIcon,
           zIndex: zIndex,
         );
 
@@ -115,7 +115,7 @@ class FishingSpotMarker extends Marker {
     return FishingSpotMarker(
       fishingSpot: fishingSpot,
       onTapFishingSpot: onTapFishingSpot,
-      active: active,
+      isActive: active,
       zIndex: zIndex ?? this.zIndex,
     );
   }

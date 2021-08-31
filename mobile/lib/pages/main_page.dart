@@ -5,12 +5,12 @@ import '../entity_manager.dart';
 import '../i18n/strings.dart';
 import '../model/gen/anglerslog.pb.dart';
 import '../pages/catch_list_page.dart';
-import '../pages/map_page.dart';
 import '../pages/more_page.dart';
 import '../pages/stats_page.dart';
 import '../res/gen/custom_icons.dart';
 import '../utils/dialog_utils.dart';
 import '../utils/page_utils.dart';
+import '../widgets/fishing_spot_map.dart';
 import '../widgets/widget.dart';
 import 'add_anything_page.dart';
 
@@ -40,7 +40,7 @@ class _MainPageState extends State<MainPage> {
       _BarItemData(
         page: _NavigatorPage(
           navigatorKey: GlobalKey<NavigatorState>(),
-          builder: (context) => MapPage(),
+          builder: (context) => FishingSpotMap(),
         ),
         icon: Icons.map,
         titleBuilder: (context) => Strings.of(context).mapPageMenuLabel,

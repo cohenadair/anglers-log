@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mobile/widgets/styled_bottom_sheet.dart';
+import 'package:mobile/widgets/slide_up_transition.dart';
 
 import '../test_utils.dart';
 
@@ -9,7 +9,7 @@ void main() {
     var invoked = false;
     await tester.pumpWidget(
       Testable(
-        (_) => StyledBottomSheet(
+        (_) => SlideUpTransition(
           child: Text("Test"),
           onDismissed: () => invoked = true,
         ),

@@ -4,6 +4,7 @@ import 'package:quiver/strings.dart';
 import '../angler_manager.dart';
 import '../bait_category_manager.dart';
 import '../bait_manager.dart';
+import '../body_of_water_manager.dart';
 import '../catch_manager.dart';
 import '../entity_manager.dart';
 import '../fishing_spot_manager.dart';
@@ -23,9 +24,9 @@ import '../utils/protobuf_utils.dart';
 import '../utils/string_utils.dart';
 import '../water_clarity_manager.dart';
 import '../widgets/atmosphere_wrap.dart';
+import '../widgets/fishing_spot_map.dart';
 import '../widgets/icon_list.dart';
 import '../widgets/list_item.dart';
-import '../widgets/static_fishing_spot.dart';
 import '../widgets/text.dart';
 import '../widgets/widget.dart';
 import 'bait_variant_page.dart';
@@ -46,6 +47,8 @@ class _CatchPageState extends State<CatchPage> {
 
   BaitCategoryManager get _baitCategoryManager =>
       BaitCategoryManager.of(context);
+
+  BodyOfWaterManager get _bodyOfWaterManager => BodyOfWaterManager.of(context);
 
   CatchManager get _catchManager => CatchManager.of(context);
 
@@ -73,6 +76,7 @@ class _CatchPageState extends State<CatchPage> {
         _anglerManager,
         _baitCategoryManager,
         _baitManager,
+        _bodyOfWaterManager,
         _catchManager,
         _fishingSpotManager,
         _methodManager,
@@ -182,7 +186,7 @@ class _CatchPageState extends State<CatchPage> {
       return Empty();
     }
 
-    return StaticFishingSpot(
+    return StaticFishingSpotMap(
       fishingSpot,
       padding: insetsHorizontalDefaultVerticalSmall,
     );

@@ -87,7 +87,7 @@ List<Field> allCatchFields(BuildContext context) {
       name: (context) => Strings.of(context).catchFieldFishingSpot,
       description: (context) =>
           Strings.of(context).catchFieldFishingSpotDescription,
-      controller: IdInputController(),
+      controller: InputController<FishingSpot>(),
     ),
     Field(
       id: catchFieldIdAngler,

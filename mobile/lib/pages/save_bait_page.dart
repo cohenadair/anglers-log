@@ -166,7 +166,7 @@ class _SaveBaitPageState extends State<SaveBaitPage> {
     newBait.variants.clear();
     newBait.variants.addAll(_variantsController.value);
 
-    if (_baitCategoryController.value != null) {
+    if (_baitCategoryController.hasValue) {
       newBait.baitCategoryId = _baitCategoryController.value!;
     }
 

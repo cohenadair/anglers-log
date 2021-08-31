@@ -250,7 +250,7 @@ void main() {
   testWidgets("Opening picker with custom start position", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => FishingSpotPickerPage(
-        startPos: LatLng(1.234567, 8.765432),
+        startPosition: LatLng(1.234567, 8.765432),
         onPicked: (_, __) {},
       ),
       appManager: appManager,

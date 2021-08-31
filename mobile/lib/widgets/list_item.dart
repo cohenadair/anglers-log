@@ -101,16 +101,22 @@ class ImageListItem extends StatelessWidget {
   final String? title;
   final String? subtitle;
   final String? subtitle2;
+  final String? subtitle3;
   final Widget? trailing;
   final VoidCallback? onTap;
+
+  /// See [ManageableListImageItem.showPlaceholder].
+  final bool showPlaceholder;
 
   ImageListItem({
     this.imageName,
     this.title,
     this.subtitle,
     this.subtitle2,
+    this.subtitle3,
     this.trailing,
     this.onTap,
+    this.showPlaceholder = true,
   });
 
   @override
@@ -121,7 +127,9 @@ class ImageListItem extends StatelessWidget {
         title: title,
         subtitle: subtitle,
         subtitle2: subtitle2,
+        subtitle3: subtitle3,
         trailing: trailing,
+        showPlaceholder: showPlaceholder,
       ),
       onTap: onTap,
       // In this state, the delete button will never be shown.
@@ -474,14 +482,20 @@ class ManageableListImageItem extends StatelessWidget {
   final String? title;
   final String? subtitle;
   final String? subtitle2;
+  final String? subtitle3;
   final Widget? trailing;
+
+  /// See [Photo.showPlaceholder].
+  final bool showPlaceholder;
 
   ManageableListImageItem({
     this.imageName,
     this.title,
     this.subtitle,
     this.subtitle2,
+    this.subtitle3,
     this.trailing,
+    this.showPlaceholder = true,
   });
 
   @override
@@ -496,8 +510,11 @@ class ManageableListImageItem extends StatelessWidget {
 
     return Row(
       children: [
-        Photo.listThumbnail(imageName),
-        HorizontalSpace(paddingWidget),
+        Photo.listThumbnail(
+          imageName,
+          showPlaceholder: showPlaceholder,
+          padding: insetsRightWidget,
+        ),
         Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -514,6 +531,12 @@ class ManageableListImageItem extends StatelessWidget {
                 subtitle2,
                 style: styleSubtitle(context),
               ),
+              isEmpty(subtitle3)
+                  ? Empty()
+                  : Text(
+                      subtitle3!,
+                      style: styleSubtitle(context),
+                    ),
             ],
           ),
         ),

@@ -292,6 +292,9 @@ class Strings {
 
   String get saveReportPageAllBaits => _string("saveReportPage_allBaits");
 
+  String get saveReportPageAllBodiesOfWater =>
+      _string("saveReportPage_allBodiesOfWater");
+
   String get saveReportPageAllFishingSpots =>
       _string("saveReportPage_allFishingSpots");
 
@@ -661,6 +664,9 @@ class Strings {
 
   String get saveFishingSpotPageEditTitle =>
       _string("saveFishingSpotPage_editTitle");
+
+  String get saveFishingSpotPageBodyOfWaterLabel =>
+      _string("saveFishingSpotPage_bodyOfWaterLabel");
 
   String get formPageManageFieldText => _string("formPage_manageFieldText");
 
@@ -1341,6 +1347,10 @@ class Strings {
 
   String get pickerTitleTides => _string("pickerTitle_tides");
 
+  String get pickerTitleBodyOfWater => _string("pickerTitle_bodyOfWater");
+
+  String get pickerTitleBodiesOfWater => _string("pickerTitle_bodiesOfWater");
+
   String get keywordsTemperatureMetric => _string("keywords_temperatureMetric");
 
   String get keywordsTemperatureImperial =>
@@ -1468,6 +1478,35 @@ class Strings {
   String get baitTypeReal => _string("baitType_real");
 
   String get baitTypeLive => _string("baitType_live");
+
+  String get bodyOfWaterListPageDeleteMessage =>
+      _string("bodyOfWaterListPage_deleteMessage");
+
+  String get bodyOfWaterListPageDeleteMessageSingular =>
+      _string("bodyOfWaterListPage_deleteMessageSingular");
+
+  String get bodyOfWaterListPageMenuLabel =>
+      _string("bodyOfWaterListPage_menuLabel");
+
+  String get bodyOfWaterListPageTitle => _string("bodyOfWaterListPage_title");
+
+  String get bodyOfWaterListPageSearchHint =>
+      _string("bodyOfWaterListPage_searchHint");
+
+  String get bodyOfWaterListPageEmptyListTitle =>
+      _string("bodyOfWaterListPage_emptyListTitle");
+
+  String get bodyOfWaterListPageEmptyListDescription =>
+      _string("bodyOfWaterListPage_emptyListDescription");
+
+  String get saveBodyOfWaterPageNewTitle =>
+      _string("saveBodyOfWaterPage_newTitle");
+
+  String get saveBodyOfWaterPageEditTitle =>
+      _string("saveBodyOfWaterPage_editTitle");
+
+  String get saveBodyOfWaterPageExistsMessage =>
+      _string("saveBodyOfWaterPage_existsMessage");
 }
 
 class StringsDelegate extends LocalizationsDelegate<Strings> {

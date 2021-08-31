@@ -6,6 +6,7 @@ import 'app_preference_manager.dart';
 import 'auth_manager.dart';
 import 'bait_category_manager.dart';
 import 'bait_manager.dart';
+import 'body_of_water_manager.dart';
 import 'catch_manager.dart';
 import 'custom_entity_manager.dart';
 import 'fishing_spot_manager.dart';
@@ -49,6 +50,7 @@ class AppManager {
   AuthManager? _authManager;
   BaitCategoryManager? _baitCategoryManager;
   BaitManager? _baitManager;
+  BodyOfWaterManager? _bodyOfWaterManager;
   CatchManager? _catchManager;
   CustomEntityManager? _customEntityManager;
   FishingSpotManager? _fishingSpotManager;
@@ -117,6 +119,13 @@ class AppManager {
       _baitManager = BaitManager(this);
     }
     return _baitManager!;
+  }
+
+  BodyOfWaterManager get bodyOfWaterManager {
+    if (_bodyOfWaterManager == null) {
+      _bodyOfWaterManager = BodyOfWaterManager(this);
+    }
+    return _bodyOfWaterManager!;
   }
 
   CatchManager get catchManager {

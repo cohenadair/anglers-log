@@ -8,7 +8,7 @@ import 'package:mobile/pages/save_fishing_spot_page.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mobile/widgets/list_item.dart';
 import 'package:mobile/widgets/search_bar.dart';
-import 'package:mobile/widgets/styled_bottom_sheet.dart';
+import 'package:mobile/widgets/slide_up_transition.dart';
 import 'package:mobile/widgets/widget.dart';
 import 'package:mockito/mockito.dart';
 import 'package:protobuf/protobuf.dart';
@@ -92,7 +92,7 @@ void main() {
     expect(find.byIcon(Icons.clear), findsOneWidget);
     expect(findFirstWithIcon<AnimatedVisibility>(tester, Icons.clear).visible,
         isTrue);
-    expect(find.byType(StyledBottomSheet), findsOneWidget);
+    expect(find.byType(SlideUpTransition), findsOneWidget);
     expect(find.text("Lat: 2.345678, Lng: 6.543210"), findsOneWidget);
 
     // TODO (1): Verify marker color
@@ -114,7 +114,7 @@ void main() {
     expect(find.text("Lat: 1.234567, Lng: 7.654321"), findsOneWidget);
     expect(findFirstWithIcon<AnimatedVisibility>(tester, Icons.clear).visible,
         isTrue);
-    expect(find.byType(StyledBottomSheet), findsOneWidget);
+    expect(find.byType(SlideUpTransition), findsOneWidget);
 
     // TODO (1): Verify marker color
   });
@@ -134,7 +134,7 @@ void main() {
     expect(find.text("A"), findsNWidgets(2));
     expect(findFirstWithIcon<AnimatedVisibility>(tester, Icons.clear).visible,
         isTrue);
-    expect(find.byType(StyledBottomSheet), findsOneWidget);
+    expect(find.byType(SlideUpTransition), findsOneWidget);
 
     // Clear current selection.
     await tapAndSettle(tester, find.byIcon(Icons.clear));
@@ -142,7 +142,7 @@ void main() {
     expect(find.text("A"), findsNothing);
     expect(findFirstWithIcon<AnimatedVisibility>(tester, Icons.clear).visible,
         isFalse);
-    expect(find.byType(StyledBottomSheet), findsNothing);
+    expect(find.byType(SlideUpTransition), findsNothing);
   });
 
   testWidgets("No active fishing spot", (tester) async {
@@ -157,7 +157,7 @@ void main() {
     expect(find.text("Search fishing spots"), findsOneWidget);
     expect(findFirstWithIcon<AnimatedVisibility>(tester, Icons.clear).visible,
         isFalse);
-    expect(find.byType(StyledBottomSheet), findsNothing);
+    expect(find.byType(SlideUpTransition), findsNothing);
   });
 
   testWidgets("Picking new spot from search moves map", (tester) async {
@@ -230,7 +230,7 @@ void main() {
     expect(find.text("Search fishing spots"), findsOneWidget);
     expect(findFirstWithIcon<AnimatedVisibility>(tester, Icons.clear).visible,
         isFalse);
-    expect(find.byType(StyledBottomSheet), findsNothing);
+    expect(find.byType(SlideUpTransition), findsNothing);
   });
 
   testWidgets("Dismissing (swipe down) bottom sheet clears active spot",
@@ -247,13 +247,13 @@ void main() {
     await tapAndSettle(tester, find.text("A"));
 
     // Dismiss bottom sheet.
-    await tester.fling(find.byType(StyledBottomSheet), Offset(0, 300), 800);
+    await tester.fling(find.byType(SlideUpTransition), Offset(0, 300), 800);
     await tester.pumpAndSettle();
 
     expect(find.text("Search fishing spots"), findsOneWidget);
     expect(findFirstWithIcon<AnimatedVisibility>(tester, Icons.clear).visible,
         isFalse);
-    expect(find.byType(StyledBottomSheet), findsNothing);
+    expect(find.byType(SlideUpTransition), findsNothing);
   });
 
   testWidgets("Deleting spot clears active spot", (tester) async {
@@ -282,7 +282,7 @@ void main() {
     expect(find.text("Search fishing spots"), findsOneWidget);
     expect(findFirstWithIcon<AnimatedVisibility>(tester, Icons.clear).visible,
         isFalse);
-    expect(find.byType(StyledBottomSheet), findsNothing);
+    expect(find.byType(SlideUpTransition), findsNothing);
   });
 
   testWidgets("Edit chip opens edit page", (tester) async {
