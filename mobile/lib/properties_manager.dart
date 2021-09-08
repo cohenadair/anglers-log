@@ -15,6 +15,7 @@ class PropertiesManager {
   final String _keySendGridApiKey = "sendGrid.apikey";
   final String _keyRevenueCatApiKey = "revenueCat.apiKey";
   final String _keyVisualCrossing = "visualCrossing.apiKey";
+  final String _keyMapbox = "mapbox.apiKey";
 
   final String _path = "assets/sensitive.properties";
   final String _feedbackTemplatePath = "assets/feedback_template";
@@ -38,6 +39,8 @@ class PropertiesManager {
 
   String get visualCrossingApiKey =>
       _properties.stringForKey(_keyVisualCrossing);
+
+  String get mapboxApiKey => _properties.stringForKey(_keyMapbox);
 
   String get feedbackTemplate => _feedbackTemplate;
 }

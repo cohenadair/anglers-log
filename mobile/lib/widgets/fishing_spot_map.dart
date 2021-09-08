@@ -1,9 +1,11 @@
 import 'dart:async';
 import 'dart:io';
+import 'dart:math';
 
 import 'package:collection/collection.dart' show IterableExtension;
 import 'package:flutter/material.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:mapbox_gl/mapbox_gl.dart';
 import 'package:quiver/strings.dart';
 
 import '../entity_manager.dart';
@@ -14,6 +16,7 @@ import '../log.dart';
 import '../model/gen/anglerslog.pb.dart';
 import '../pages/fishing_spot_list_page.dart';
 import '../pages/manageable_list_page.dart';
+import '../properties_manager.dart';
 import '../res/dimen.dart';
 import '../res/style.dart';
 import '../utils/dialog_utils.dart';
@@ -24,13 +27,17 @@ import '../utils/snackbar_utils.dart';
 import '../widgets/button.dart';
 import '../widgets/search_bar.dart';
 import '../widgets/widget.dart';
+import '../wrappers/io_wrapper.dart';
 import '../wrappers/permission_handler_wrapper.dart';
+import '../wrappers/url_launcher_wrapper.dart';
 import 'bottom_sheet_picker.dart';
+import 'checkbox_input.dart';
 import 'fishing_spot_details.dart';
 import 'input_controller.dart';
 import 'slide_up_transition.dart';
 
 /// A [GoogleMap] wrapper that listens and responds to [FishingSpot] changes.
+/// For a smaller, static map, use [StaticFishingSpotMap].
 class FishingSpotMap extends StatefulWidget {
   /// When non-null, sets up the map as an input picker.
   late final FishingSpotMapPickerSettings? pickerSettings;
@@ -103,24 +110,37 @@ class FishingSpotMap extends StatefulWidget {
 }
 
 class _FishingSpotMapState extends State<FishingSpotMap> {
-  static const _zoomDefault = 15.0;
+  static const _mapStyleNormal =
+      "mapbox://styles/cohenadair/ckt1zqb8d1h1p17pglx4pmz4y/draft";
+  static const _mapStyleSatellite =
+      "mapbox://styles/cohenadair/ckt1m613b127t17qqf3mmw47h/draft";
+  static const _pinActive = "active-pin";
+  static const _pinInactive = "inactive-pin";
+  static const _pinSize = 1.5;
+  static const _zoomDefault = 13.0;
+
+  /// An arbitrary value used to detail how much to offset the map's position
+  /// based on the size of the fishing spot widget being shown.
+  static const _fishingSpotDetailOffsetFactor = 0.00004117647059;
+
+  final _fishingSpotKey = GlobalKey();
 
   final _log = Log("FishingSpotMap");
 
-  // TODO: Remove this when Google Maps performance issue is fixed.
-  // https://github.com/flutter/flutter/issues/28493
+  // Wait for navigation animations to finish before loading the map. This
+  // allows for a smooth animation.
   late final Future<bool> _mapFuture;
 
-  final Completer<GoogleMapController> _mapController = Completer();
-  final Set<FishingSpotMarker> _fishingSpotMarkers = {};
-  FishingSpotMarker? _activeMarker;
-  FishingSpot? _activeFishingSpot;
+  late MapboxMapController _mapController;
 
+  Symbol? _activeSymbol;
   Timer? _hideHelpTimer;
 
-  MapType _mapType = MapType.normal;
+  var _currentStyle = _mapStyleNormal;
   bool _showHelp = false;
   bool _myLocationEnabled = true;
+  bool _isSetup = false;
+  bool _isTelemetryEnabled = true;
 
   // Displayed while dismissing the fishing spot container.
   FishingSpot? _oldFishingSpot;
@@ -135,25 +155,32 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
   PermissionHandlerWrapper get _permissionHandlerWrapper =>
       PermissionHandlerWrapper.of(context);
 
+  PropertiesManager get _propertiesManager => PropertiesManager.of(context);
+
   FishingSpotMapPickerSettings? get _pickerSettings => widget.pickerSettings;
 
-  bool get _hasActiveMarker => _activeMarker != null;
-
-  bool get _hasActiveFishingSpot => _activeFishingSpot != null;
+  bool get _hasActiveSymbol => _activeSymbol != null;
 
   bool get _isPicking => _pickerSettings != null;
 
   bool get _isStatic => widget._isStatic;
+
+  bool get _isDroppedPin =>
+      _hasActiveSymbol &&
+      !_fishingSpotManager.entityExists(_activeSymbol!.fishingSpot.id);
+
+  FishingSpot? get _activeFishingSpot => _activeSymbol?.fishingSpot;
 
   @override
   void initState() {
     super.initState();
 
     _myLocationEnabled = !_isStatic && _locationMonitor.currentLocation != null;
-    _updateMarkers();
-    _setupPicker();
+    _mapFuture = Future.delayed(Duration(milliseconds: 300), () => true);
 
-    _mapFuture = Future.delayed(Duration(milliseconds: 150), () => true);
+    // Refresh state so Mapbox attribution padding is updated. This needs to be
+    // done after the fishing spot widget is rendered.
+    WidgetsBinding.instance?.addPostFrameCallback((_) => setState(() {}));
   }
 
   @override
@@ -164,8 +191,9 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
     // is picked for a catch, and then that catch is saved.
     if (oldWidget.pickerSettings?.controller.value !=
         _pickerSettings?.controller.value) {
-      _updateMarkers();
-      _selectFishingSpot(_pickerSettings?.controller.value, animate: false);
+      _updateSymbols().then(
+        (_) => _selectFishingSpot(_pickerSettings?.controller.value),
+      );
     }
   }
 
@@ -173,23 +201,24 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
   void dispose() {
     super.dispose();
     _hideHelpTimer?.cancel();
+    _mapController.onSymbolTapped.remove(_onSymbolTapped);
   }
 
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () {
-        _pickerSettings?.controller.value =
-            _activeFishingSpot ?? _activeMarker?.fishingSpot;
+        _pickerSettings?.controller.value = _activeSymbol?.fishingSpot;
         return Future.value(true);
       },
       child: EntityListenerBuilder(
         managers: [_fishingSpotManager],
-        onAnyChange: _onFishingSpotsUpdated,
+        onAnyChange: _updateSymbols,
         builder: (context) {
           var stack = Stack(
             children: [_buildMap()]
               ..addAll(widget.children)
+              ..add(_buildNoSelectionMapAttribution())
               ..add(_buildFishingSpot())
               ..add(
                 SafeArea(
@@ -197,7 +226,7 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
                       _buildSearchBar(),
-                      _buildMapTypeButton(),
+                      _buildMapStyleButton(),
                       _buildCurrentLocationButton(),
                       _buildZoomExtentsButton(),
                       _buildHelpButton(),
@@ -215,41 +244,32 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
   }
 
   Widget _buildMap() {
-    var markers = Set.of(_fishingSpotMarkers);
-    if (_hasActiveMarker) {
-      markers.add(_activeMarker!);
-    }
-
-    var startPosition = _activeFishingSpot?.latLng ??
-        _activeMarker?.fishingSpot.latLng ??
-        LatLng(0, 0);
-
     return EmptyFutureBuilder<bool>(
       future: _mapFuture,
       builder: (context, _) {
-        return GoogleMap(
-          padding: EdgeInsets.only(
-            left: 10,
-            right: 10,
-            top: widget.showSearchBar ? SearchBar.height : 0,
-            // TODO: Need some value here to show the Google logo
-            bottom: 0.0,
+        var start = _activeSymbol?.fishingSpot.latLng ??
+            _pickerSettings?.controller.value?.latLng ??
+            _locationMonitor.currentLocation ??
+            LatLng(0, 0);
+
+        return IgnorePointer(
+          ignoring: _isStatic,
+          child: MapboxMap(
+            accessToken: _propertiesManager.mapboxApiKey,
+            // Hide default attribution views, so we can show our own and
+            // position them easier.
+            attributionButtonMargins: Point(0, -1000),
+            logoViewMargins: Point(0, -1000),
+            myLocationEnabled: _myLocationEnabled,
+            styleString: _currentStyle,
+            initialCameraPosition: CameraPosition(
+              target: _offsetLatLng(start),
+              zoom: start.latitude == 0 ? 0 : _zoomDefault,
+            ),
+            onMapCreated: (controller) => _mapController = controller,
+            onMapLongClick: (_, latLng) => _dropPin(latLng),
+            onStyleLoadedCallback: _onMapStyleLoaded,
           ),
-          mapType: _mapType,
-          markers: markers,
-          initialCameraPosition: CameraPosition(
-            target: startPosition,
-            zoom: startPosition.latitude == 0 ? 0 : _zoomDefault,
-          ),
-          onMapCreated: (controller) {
-            if (!_mapController.isCompleted) {
-              _mapController.complete(controller);
-            }
-          },
-          myLocationButtonEnabled: false,
-          myLocationEnabled: _myLocationEnabled,
-          mapToolbarEnabled: false,
-          onTap: (latLng) => setState(() => _dropPin(latLng)),
         );
       },
     );
@@ -262,15 +282,17 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
     }
 
     String? name;
-    if (_hasActiveFishingSpot) {
-      // Showing active fishing spot.
-      name = _activeFishingSpot!.displayName(
-        context,
-        includeLatLngLabels: false,
-      );
-    } else if (_hasActiveMarker) {
-      // A pin was dropped.
-      name = Strings.of(context).mapPageDroppedPin;
+    if (_hasActiveSymbol) {
+      if (_fishingSpotManager.entityExists(_activeSymbol!.fishingSpot.id)) {
+        // Showing active fishing spot.
+        name = _activeSymbol!.fishingSpot.displayName(
+          context,
+          includeLatLngLabels: false,
+        );
+      } else {
+        // A pin was dropped.
+        name = Strings.of(context).mapPageDroppedPin;
+      }
     }
 
     Widget? leading;
@@ -278,7 +300,7 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
     if (_isPicking) {
       if (_pickerSettings!.onNext != null) {
         VoidCallback? onPressed;
-        if (_hasActiveFishingSpot) {
+        if (_fishingSpotManager.entityExists(_activeSymbol?.fishingSpot.id)) {
           onPressed = () {
             _pickerSettings!.controller.value = _activeFishingSpot;
             _pickerSettings!.onNext!.call();
@@ -301,7 +323,7 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
         visible: isNotEmpty(name),
         child: IconButton(
           icon: Icon(Icons.clear),
-          onPressed: () => setState(_dismissActiveFishingSpot),
+          onPressed: () => _selectFishingSpot(null, dismissIfNull: true),
         ),
       );
     }
@@ -325,7 +347,7 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
             pickerSettings:
                 ManageableListPagePickerSettings<FishingSpot>.single(
               onPicked: (context, fishingSpot) {
-                setState(() => _selectFishingSpot(fishingSpot, animate: false));
+                _selectFishingSpot(fishingSpot);
                 return true;
               },
               initialValue: _activeFishingSpot,
@@ -336,7 +358,7 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
     );
   }
 
-  Widget _buildMapTypeButton() {
+  Widget _buildMapStyleButton() {
     if (!widget.showMapTypeButton) {
       return Empty();
     }
@@ -346,19 +368,17 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
       onPressed: () {
         showBottomSheetPicker(
           context,
-          (context) => BottomSheetPicker<MapType>(
-            currentValue: _mapType,
+          (context) => BottomSheetPicker<String>(
+            currentValue: _currentStyle,
             items: {
-              Strings.of(context).mapPageMapTypeNormal: MapType.normal,
-              Strings.of(context).mapPageMapTypeSatellite: MapType.satellite,
-              Strings.of(context).mapPageMapTypeHybrid: MapType.hybrid,
-              Strings.of(context).mapPageMapTypeTerrain: MapType.terrain,
+              Strings.of(context).mapPageMapTypeNormal: _mapStyleNormal,
+              Strings.of(context).mapPageMapTypeSatellite: _mapStyleSatellite,
             },
-            onPicked: (newMapType) {
-              if (newMapType == _mapType) {
+            onPicked: (newStyle) {
+              if (newStyle == _currentStyle) {
                 return;
               }
-              setState(() => _mapType = newMapType ?? MapType.normal);
+              setState(() => _currentStyle = newStyle ?? _mapStyleNormal);
             },
           ),
         );
@@ -401,13 +421,13 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
           showErrorSnackBar(
               context, Strings.of(context).mapPageErrorGettingLocation);
         } else {
-          moveMap(_mapController, currentLocation, zoom: _zoomDefault);
+          _moveMap(currentLocation);
           setState(() {
             _myLocationEnabled = true;
             if (_isPicking) {
               _dropPin(currentLocation);
             } else {
-              _dismissActiveFishingSpot();
+              _selectFishingSpot(null, dismissIfNull: true);
             }
           });
         }
@@ -428,14 +448,17 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
       ),
       icon: Icons.zoom_out_map,
       onPressed: () {
-        var bounds = mapBounds(_fishingSpotMarkers);
+        var bounds = mapBounds(_fishingSpotManager.list());
         if (bounds == null) {
           return;
         }
-        setState(() {
-          _mapController.future.then((controller) => controller.animateCamera(
-              CameraUpdate.newLatLngBounds(bounds, paddingDefaultDouble)));
-        });
+        _mapController.animateCamera(CameraUpdate.newLatLngBounds(
+          bounds,
+          left: paddingDefaultDouble,
+          right: paddingDefaultDouble,
+          top: paddingDefaultDouble,
+          bottom: paddingDefaultDouble,
+        ));
       },
     );
   }
@@ -482,157 +505,228 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
       fishingSpot = _oldFishingSpot;
     }
 
-    var isDroppedPin = false;
-    if (fishingSpot == null && _hasActiveMarker) {
-      fishingSpot = _activeMarker!.fishingSpot;
+    var isDroppedPin = _isDroppedPin;
+    if (fishingSpot == null && _hasActiveSymbol) {
+      fishingSpot = _activeSymbol!.fishingSpot;
       isDroppedPin = true;
     }
 
-    if (fishingSpot == null) {
-      return Empty();
+    // If the map isn't yet setup, but there's a picked spot, use that for
+    // rendering. This allows us to calculate the padding for Mapbox
+    // attributions.
+    if (fishingSpot == null && !_isSetup) {
+      fishingSpot = _pickerSettings?.controller.value;
     }
 
-    var details = FishingSpotDetails(
-      fishingSpot,
-      isDroppedPin: isDroppedPin,
-      isPicking: _isPicking,
-      showActionButtons: widget.showFishingSpotActionButtons,
+    Widget details = Empty();
+    if (fishingSpot != null) {
+      details = Padding(
+        padding: insetsTopWidgetSmall,
+        child: FishingSpotDetails(
+          fishingSpot,
+          containerKey: _fishingSpotKey,
+          isDroppedPin: isDroppedPin,
+          isPicking: _isPicking,
+          showActionButtons: widget.showFishingSpotActionButtons,
+        ),
+      );
+    }
+
+    var container = Align(
+      alignment: Alignment.bottomCenter,
+      child: Padding(
+        padding: EdgeInsets.only(
+          left: paddingDefault,
+          right: paddingDefault,
+          bottom: paddingDefault,
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            _buildAttribution(),
+            details,
+          ],
+        ),
+      ),
     );
 
     if (_isStatic) {
-      return details;
+      return container;
     }
 
     return SafeArea(
       child: SlideUpTransition(
-        isVisible: !_isDismissingFishingSpot,
-        onDismissed: () => setState(_clearActiveFishingSpot),
-        child: details,
+        isVisible: !_isDismissingFishingSpot && fishingSpot != null,
+        onDismissed: () => _selectFishingSpot(null),
+        child: container,
       ),
     );
   }
 
-  void _onFishingSpotsUpdated() {
-    _updateMarkers();
+  Widget _buildNoSelectionMapAttribution() {
+    return SafeArea(
+      child: Align(
+        alignment: Alignment.bottomCenter,
+        child: Padding(
+          padding: insetsDefault,
+          child: _buildAttribution(),
+        ),
+      ),
+    );
+  }
 
-    if (_activeMarker == null) {
-      return;
+  Widget _buildAttribution() {
+    return _MapboxAttribution(
+      logoColor: _currentStyle == _mapStyleNormal ? Colors.black : Colors.white,
+      isTelemetryEnabled: _isTelemetryEnabled,
+      onTelemetryToggled: (enabled) async {
+        await _mapController.setTelemetryEnabled(enabled);
+        _isTelemetryEnabled = await _mapController.getTelemetryEnabled();
+        setState(() {});
+      },
+    );
+  }
+
+  Future<void> _onMapStyleLoaded() async {
+    // TODO: Some map settings are cleared when a new map style is loaded, so we
+    //  reset the map as a workaround. For more details:
+    //  https://github.com/tobrun/flutter-mapbox-gl/issues/349
+    _mapController.onSymbolTapped.remove(_onSymbolTapped);
+    _mapController.onSymbolTapped.add(_onSymbolTapped);
+    _mapController.setSymbolIconAllowOverlap(true);
+    _isTelemetryEnabled = await _mapController.getTelemetryEnabled();
+
+    await _updateSymbols();
+
+    // If the map has already been setup, it means a new map style was selected
+    // by the user. In this case, reselect the active fishing spot.
+    if (_isSetup) {
+      _selectFishingSpot(_activeFishingSpot);
+    } else {
+      _setupPicker();
+      _isSetup = true;
+    }
+  }
+
+  void _onSymbolTapped(Symbol symbol) {
+    _selectFishingSpot(symbol.fishingSpot, animateMapMovement: true);
+  }
+
+  Future<void> _updateSymbols() async {
+    _mapController.clearSymbols();
+
+    var options = <SymbolOptions>[];
+    var data = <Map<dynamic, dynamic>>[];
+
+    // Iterate all fishing spots, creating SymbolOptions and data maps so all
+    // symbols can be added with one call to the platform channel.
+    for (var fishingSpot in _fishingSpotManager.list()) {
+      if (_isStatic && _pickerSettings?.controller.value != fishingSpot) {
+        continue;
+      }
+
+      options.add(_createSymbolOptions(fishingSpot));
+      data.add(_Symbols.fishingSpotData(fishingSpot));
     }
 
-    // Reset the active marker and fishing spot, if there was one.
-    var updatedSpot =
-        _fishingSpotManager.withLatLng(_activeMarker!.fishingSpot);
-    _setActiveFishingSpot(
-      updatedSpot,
-      _fishingSpotMarkers.firstWhereOrNull(
-        (m) => m.position == _activeMarker!.position,
-      ),
-      updatedSpot,
-    );
+    var symbols = await _mapController.addSymbols(options, data);
+
+    // Reset the active symbol to one of the newly created symbols.
+    if (_hasActiveSymbol) {
+      _activeSymbol = symbols.firstWhereOrNull(
+          (s) => s.fishingSpot.id == _activeSymbol!.fishingSpot.id);
+    }
   }
 
-  void _updateMarkers() {
-    _fishingSpotMarkers.clear();
-    _fishingSpotManager.list().forEach((f) {
-      if (!_isStatic || _pickerSettings?.controller.value == f) {
-        _fishingSpotMarkers.add(_createFishingSpotMarker(f));
-      }
-    });
-  }
+  Future<void> _dropPin(LatLng latLng) async {
+    // Select an existing fishing spot if
+    var fishingSpot = _fishingSpotManager.withinRadius(latLng);
 
-  FishingSpotMarker _createFishingSpotMarker(FishingSpot fishingSpot) {
-    return FishingSpotMarker(
-      fishingSpot: fishingSpot,
-      isActive: false,
-      onTapFishingSpot: (spot) => setState(() => _selectFishingSpot(spot)),
-    );
-  }
-
-  FishingSpotMarker _createDroppedPinMarker(LatLng latLng) {
-    return FishingSpotMarker(
-      fishingSpot: FishingSpot()
+    if (fishingSpot == null) {
+      // Add a new pin to the map.
+      fishingSpot = FishingSpot()
         ..id = randomId()
         ..lat = latLng.latitude
-        ..lng = latLng.longitude,
-      isActive: true,
+        ..lng = latLng.longitude;
+      await _mapController.addSymbol(
+        _createSymbolOptions(
+          fishingSpot,
+          isActive: true,
+        ),
+        _Symbols.fishingSpotData(fishingSpot),
+      );
+    }
+
+    // Select the new pin.
+    _selectFishingSpot(fishingSpot, animateMapMovement: true);
+  }
+
+  SymbolOptions _createSymbolOptions(
+    FishingSpot fishingSpot, {
+    bool isActive = false,
+  }) {
+    return SymbolOptions(
+      geometry: fishingSpot.latLng,
+      iconImage: isActive ? _pinActive : _pinInactive,
+      iconSize: _pinSize,
     );
   }
 
-  FishingSpotMarker _copyMarker(FishingSpotMarker marker, bool active,
-      [double? zIndex]) {
-    return marker.duplicate(
-      active: active,
-      zIndex: zIndex,
-    );
-  }
+  Future<void> _selectFishingSpot(
+    FishingSpot? fishingSpot, {
+    bool animateMapMovement = false,
+    // When true and fishingSpot == null, the current fishing spot widget is
+    // animated out of view.
+    bool dismissIfNull = false,
+  }) async {
+    var newActiveSymbol = _activeSymbol;
+    var newIsDismissingFishingSpot = _isDismissingFishingSpot;
+    var newOldFishingSpot = _oldFishingSpot;
 
-  FishingSpotMarker? _findMarker(Id id) {
-    return _fishingSpotMarkers.firstWhereOrNull((marker) => marker.id == id);
-  }
+    if (_isDroppedPin) {
+      // Remove the current dropped pin, if one exists.
+      await _mapController.removeSymbol(_activeSymbol!);
+      newActiveSymbol = null;
+    } else if (_hasActiveSymbol) {
+      // Mark the active symbol as inactive.
+      await _mapController.updateSymbol(
+        _activeSymbol!,
+        SymbolOptions(iconImage: _pinInactive),
+      );
+    }
 
-  void _dropPin(LatLng latLng) {
-    var pin = _createDroppedPinMarker(latLng);
-    _setActiveFishingSpot(null, pin, pin.fishingSpot);
-    moveMap(_mapController, latLng);
-  }
-
-  void _selectFishingSpot(FishingSpot? fishingSpot, {bool animate = true}) {
     if (fishingSpot == null) {
-      _clearActiveFishingSpot();
-      return;
-    }
+      newActiveSymbol = null;
 
-    var marker = _findMarker(fishingSpot.id);
-    if (marker == null) {
-      _log.e("Couldn't find marker for selected fishing spot");
-    }
+      if (dismissIfNull) {
+        newOldFishingSpot = _activeSymbol?.fishingSpot;
+        newIsDismissingFishingSpot = true;
+      } else {
+        newIsDismissingFishingSpot = false;
+      }
+    } else {
+      // Find the symbol associated with the given fishing spot.
+      newActiveSymbol = _mapController.symbols
+          .firstWhereOrNull((s) => s.fishingSpot.id == fishingSpot.id);
 
-    _setActiveFishingSpot(fishingSpot, marker, fishingSpot);
-    moveMap(_mapController, _activeFishingSpot!.latLng, animate: animate);
-  }
+      if (newActiveSymbol == null) {
+        _log.e("Couldn't find symbol associated with fishing spot");
+      } else {
+        // Update map.
+        await _mapController.updateSymbol(
+          newActiveSymbol,
+          SymbolOptions(iconImage: _pinActive),
+        );
 
-  void _dismissActiveFishingSpot() {
-    if (!_hasActiveFishingSpot && !_hasActiveMarker) {
-      return;
-    }
-
-    _oldFishingSpot = _activeFishingSpot ?? _activeMarker?.fishingSpot;
-    _isDismissingFishingSpot = true;
-  }
-
-  void _setActiveFishingSpot(FishingSpot? fishingSpot,
-      FishingSpotMarker? marker, FishingSpot? pickerControllerValue) {
-    // A marker's icon property is readonly, so we rebuild the current active
-    // marker to give it a default icon, then remove and add it to the
-    // fishing spot markers.
-    //
-    // This only applies if the active marker belongs to an existing fishing
-    // spot. A dropped pin is removed from the map when updating the active
-    // marker.
-    if (_hasActiveMarker) {
-      var activeMarker = _findMarker(_activeMarker!.id);
-      if (activeMarker != null) {
-        if (_fishingSpotMarkers.remove(activeMarker)) {
-          _fishingSpotMarkers.add(_copyMarker(activeMarker, false));
-        } else {
-          _log.e("Error removing marker");
-        }
+        _moveMap(newActiveSymbol.latLng, animate: animateMapMovement);
       }
     }
 
-    if (marker == null) {
-      _activeMarker = null;
-    } else {
-      // Active marker should always appear on top.
-      _activeMarker = _copyMarker(marker, true, 1000);
-    }
-
-    _activeFishingSpot = fishingSpot;
-  }
-
-  void _clearActiveFishingSpot() {
-    _setActiveFishingSpot(null, null, null);
-    _isDismissingFishingSpot = false;
+    setState(() {
+      _activeSymbol = newActiveSymbol;
+      _isDismissingFishingSpot = newIsDismissingFishingSpot;
+      _oldFishingSpot = newOldFishingSpot;
+    });
   }
 
   void _setupPicker() {
@@ -643,7 +737,7 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
     // Select the current fishing spot if it exists in the database.
     var selectedValue = _pickerSettings?.controller.value;
     if (_fishingSpotManager.entityExists(selectedValue?.id)) {
-      _selectFishingSpot(_pickerSettings?.controller.value, animate: false);
+      _selectFishingSpot(_pickerSettings?.controller.value);
       return;
     }
 
@@ -654,12 +748,35 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
     var closeSpot = _fishingSpotManager.withinRadius(selectedLatLng) ??
         _fishingSpotManager.withinRadius(currentLocation);
     if (closeSpot != null) {
-      _selectFishingSpot(closeSpot, animate: false);
+      _selectFishingSpot(closeSpot);
       return;
     }
 
     // As a fallback, drop a pin at the user's current location.
     _dropPin(currentLocation ?? LatLng(0, 0));
+  }
+
+  /// Offsets [latLng] to account for the height of the fishing spot widget.
+  /// This should only be used when setting the map position, not when creating
+  /// [Symbol] instances.
+  LatLng _offsetLatLng(LatLng latLng) {
+    var offset = 0.0;
+    if (_fishingSpotKey.currentContext != null) {
+      var fishingSpotBox =
+          _fishingSpotKey.currentContext!.findRenderObject() as RenderBox;
+      offset = fishingSpotBox.size.height * _fishingSpotDetailOffsetFactor;
+    }
+
+    return LatLng(latLng.latitude - offset, latLng.longitude);
+  }
+
+  void _moveMap(LatLng latLng, {bool animate = true}) {
+    moveMap(
+      _mapController,
+      _offsetLatLng(latLng),
+      animate: animate,
+      zoom: _zoomDefault,
+    );
   }
 }
 
@@ -694,9 +811,6 @@ class StaticFishingSpotMap extends StatelessWidget {
     this.onTap,
   });
 
-  // TODO: Map moves slightly when scrolling inside a scrollable view; for
-  //  example, SaveCatchPage. Verify fixed when Google Maps library is updated.
-
   @override
   Widget build(BuildContext context) {
     return HorizontalSafeArea(
@@ -709,12 +823,92 @@ class StaticFishingSpotMap extends StatelessWidget {
               borderRadius: BorderRadius.all(
                 Radius.circular(floatingCornerRadius),
               ),
-              child: IgnorePointer(
-                child: FishingSpotMap._static(fishingSpot),
-              ),
+              child: FishingSpotMap._static(fishingSpot),
             ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+extension _Symbols on Symbol {
+  static const _keyFishingSpot = "fishing_spot";
+
+  static Map<dynamic, dynamic> fishingSpotData(FishingSpot fishingSpot) => {
+        _keyFishingSpot: fishingSpot,
+      };
+
+  FishingSpot get fishingSpot => data![_keyFishingSpot] as FishingSpot;
+
+  LatLng get latLng => options.geometry!;
+}
+
+class _MapboxAttribution extends StatelessWidget {
+  static const _urlMapbox = "https://www.mapbox.com/about/maps/";
+  static const _urlOpenStreetMap = "http://www.openstreetmap.org/copyright";
+  static const _urlImproveThisMap = "https://www.mapbox.com/map-feedback/";
+  static const _urlMaxar = "https://www.maxar.com/";
+
+  static const _size = Size(85, 20);
+
+  final Color logoColor;
+  final void Function(bool) onTelemetryToggled;
+  final bool isTelemetryEnabled;
+
+  _MapboxAttribution({
+    required this.logoColor,
+    required this.onTelemetryToggled,
+    required this.isTelemetryEnabled,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        SizedBox(
+          width: _size.width,
+          height: _size.height,
+          child: SvgPicture.asset(
+            "assets/mapbox-logo.svg",
+            color: logoColor,
+          ),
+        ),
+        MinimumIconButton(
+          icon: Icons.info_outline,
+          onTap: () => showBottomSheetPicker(
+            context,
+            _buildPicker,
+          ),
+        ),
+      ],
+    );
+  }
+
+  BottomSheetPicker _buildPicker(BuildContext context) {
+    return BottomSheetPicker<String>(
+      title: IoWrapper.of(context).isAndroid
+          ? Strings.of(context).mapAttributionTitleAndroid
+          : Strings.of(context).mapAttributionTitleApple,
+      itemStyle: styleHyperlink,
+      items: {
+        Strings.of(context).mapAttributionMapbox: _urlMapbox,
+        Strings.of(context).mapAttributionOpenStreetMap: _urlOpenStreetMap,
+        Strings.of(context).mapAttributionImproveThisMap: _urlImproveThisMap,
+        Strings.of(context).mapAttributionMaxar: _urlMaxar,
+      },
+      onPicked: (url) {
+        if (isEmpty(url)) {
+          return;
+        }
+        UrlLauncherWrapper.of(context).launch(url!);
+      },
+      footer: CheckboxInput(
+        label: Strings.of(context).mapAttributionTelemetryTitle,
+        description: Strings.of(context).mapAttributionTelemetryDescription,
+        value: isTelemetryEnabled,
+        onChanged: onTelemetryToggled,
       ),
     );
   }

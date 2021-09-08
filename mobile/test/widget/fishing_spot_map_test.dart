@@ -489,12 +489,12 @@ void main() {
           (_) => FishingSpotMap(
             mapController: completer,
             markers: {
-              FishingSpotMarker(
+              FishingSpotSymbol(
                 fishingSpot: FishingSpot()
                   ..lat = 50
                   ..lng = 1,
               ),
-              FishingSpotMarker(
+              FishingSpotSymbol(
                 fishingSpot: FishingSpot()
                   ..lat = -45
                   ..lng = 150,

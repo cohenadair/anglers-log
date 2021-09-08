@@ -725,5 +725,14 @@ Map<String, Map<String, String>> get englishStrings => {
         "saveBodyOfWaterPage_newTitle": "New Body Of Water",
         "saveBodyOfWaterPage_editTitle": "Edit Body Of Water",
         "saveBodyOfWaterPage_existsMessage": "Body of water already exists",
+        "mapAttribution_titleApple": "Mapbox Maps SDK for iOS",
+        "mapAttribution_titleAndroid": "Mapbox Maps SDK for Android",
+        "mapAttribution_mapbox": "\u00A9 Mapbox",
+        "mapAttribution_openStreetMap": "\u00A9 OpenStreetMap",
+        "mapAttributionImproveThisMap": "Improve This Map",
+        "mapAttribution_maxar": "\u00A9 Maxar",
+        "mapAttribution_telemetryTitle": "Mapbox Telemetry",
+        "mapAttribution_telemetryDescription":
+            "Help make OpenStreetMap and Mapbox maps better by contributing anonymous usage data.",
       },
     };

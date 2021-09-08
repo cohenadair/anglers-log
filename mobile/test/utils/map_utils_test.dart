@@ -24,22 +24,22 @@ void main() {
 
     test("Normal case", () {
       var bounds = mapBounds({
-        FishingSpotMarker(
+        FishingSpotSymbol(
           fishingSpot: FishingSpot()
             ..lat = 50
             ..lng = 1,
         ),
-        FishingSpotMarker(
+        FishingSpotSymbol(
           fishingSpot: FishingSpot()
             ..lat = -45
             ..lng = 150,
         ),
-        FishingSpotMarker(
+        FishingSpotSymbol(
           fishingSpot: FishingSpot()
             ..lat = -10
             ..lng = 35,
         ),
-        FishingSpotMarker(
+        FishingSpotSymbol(
           fishingSpot: FishingSpot()
             ..lat = 89
             ..lng = -75,

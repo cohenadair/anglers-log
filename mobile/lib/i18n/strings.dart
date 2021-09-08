@@ -1507,6 +1507,27 @@ class Strings {
 
   String get saveBodyOfWaterPageExistsMessage =>
       _string("saveBodyOfWaterPage_existsMessage");
+
+  String get mapAttributionTitleApple => _string("mapAttribution_titleApple");
+
+  String get mapAttributionTitleAndroid =>
+      _string("mapAttribution_titleAndroid");
+
+  String get mapAttributionMapbox => _string("mapAttribution_mapbox");
+
+  String get mapAttributionOpenStreetMap =>
+      _string("mapAttribution_openStreetMap");
+
+  String get mapAttributionImproveThisMap =>
+      _string("mapAttributionImproveThisMap");
+
+  String get mapAttributionMaxar => _string("mapAttribution_maxar");
+
+  String get mapAttributionTelemetryTitle =>
+      _string("mapAttribution_telemetryTitle");
+
+  String get mapAttributionTelemetryDescription =>
+      _string("mapAttribution_telemetryDescription");
 }
 
 class StringsDelegate extends LocalizationsDelegate<Strings> {

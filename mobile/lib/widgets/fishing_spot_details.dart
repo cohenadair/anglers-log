@@ -45,8 +45,13 @@ class FishingSpotDetails extends StatelessWidget {
   /// When true, the action buttons at the bottom are hidden. Defaults to false.
   final bool showActionButtons;
 
+  /// The [Key] for the details [Container]. This value is ignored when
+  /// [isListItem] is true.
+  final Key? containerKey;
+
   FishingSpotDetails(
     this.fishingSpot, {
+    this.containerKey,
     this.isDroppedPin = false,
     this.isListItem = false,
     this.isPicking = false,
@@ -109,18 +114,15 @@ class FishingSpotDetails extends StatelessWidget {
       );
     }
 
-    return Align(
-      alignment: Alignment.bottomCenter,
-      child: Container(
-        margin: insetsDefault,
-        decoration: FloatingBoxDecoration.rectangle(),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            listItem,
-            actionButtons,
-          ],
-        ),
+    return Container(
+      key: containerKey,
+      decoration: FloatingBoxDecoration.rectangle(),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          listItem,
+          actionButtons,
+        ],
       ),
     );
   }
