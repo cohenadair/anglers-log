@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:mapbox_gl/mapbox_gl.dart';
@@ -13,10 +14,13 @@ import '../pages/form_page.dart';
 import '../res/dimen.dart';
 import '../utils/page_utils.dart';
 import '../utils/protobuf_utils.dart';
+import '../widgets/image_input.dart';
 import '../widgets/input_controller.dart';
 import '../widgets/list_picker_input.dart';
 import '../widgets/text_input.dart';
+import '../widgets/widget.dart';
 import 'body_of_water_list_page.dart';
+import 'image_picker_page.dart';
 import 'manageable_list_page.dart';
 
 class SaveFishingSpotPage extends StatefulWidget {
@@ -46,6 +50,8 @@ class SaveFishingSpotPage extends StatefulWidget {
 class _SaveFishingSpotPageState extends State<SaveFishingSpotPage> {
   final _bodyOfWaterController = IdInputController();
   final _nameController = TextInputController();
+  final _imageController = InputController<PickedImage>();
+  final _notesController = TextInputController();
 
   BodyOfWaterManager get _bodyOfWaterManager => BodyOfWaterManager.of(context);
 
@@ -63,7 +69,10 @@ class _SaveFishingSpotPageState extends State<SaveFishingSpotPage> {
       _bodyOfWaterController.value = _oldFishingSpot!.hasBodyOfWaterId()
           ? _oldFishingSpot!.bodyOfWaterId
           : null;
-      _nameController.value = _oldFishingSpot!.name;
+      _nameController.value =
+          _oldFishingSpot!.hasName() ? _oldFishingSpot!.name : null;
+      _notesController.value =
+          _oldFishingSpot!.hasNotes() ? _oldFishingSpot!.notes : null;
     }
   }
 
@@ -75,12 +84,17 @@ class _SaveFishingSpotPageState extends State<SaveFishingSpotPage> {
     }
 
     return FormPage.immutable(
+      runSpacing: 0,
       title: Text(title),
       padding: insetsZero,
       onSave: _onSave,
       fieldBuilder: (context) => [
         _buildBodyOfWater(),
+        _buildImage(),
+        VerticalSpace(paddingWidgetSmall),
         _buildName(),
+        VerticalSpace(paddingWidgetSmall),
+        _buildNotes(),
       ],
       isInputValid: true,
     );
@@ -118,11 +132,7 @@ class _SaveFishingSpotPageState extends State<SaveFishingSpotPage> {
 
   Widget _buildName() {
     return Padding(
-      padding: EdgeInsets.only(
-        left: paddingDefault,
-        right: paddingDefault,
-        bottom: paddingWidgetSmall,
-      ),
+      padding: insetsHorizontalDefault,
       child: TextInput.name(
         context,
         controller: _nameController,
@@ -131,7 +141,25 @@ class _SaveFishingSpotPageState extends State<SaveFishingSpotPage> {
     );
   }
 
-  FutureOr<bool> _onSave(BuildContext context) {
+  Widget _buildImage() {
+    return SingleImageInput(
+      initialImageName: _oldFishingSpot?.imageName,
+      controller: _imageController,
+    );
+  }
+
+  Widget _buildNotes() {
+    return Padding(
+      padding: insetsHorizontalDefault,
+      child: TextInput.description(
+        context,
+        title: Strings.of(context).inputNotesLabel,
+        controller: _notesController,
+      ),
+    );
+  }
+
+  FutureOr<bool> _onSave(BuildContext context) async {
     var newFishingSpot = FishingSpot()
       ..id = _oldFishingSpot?.id ?? randomId()
       ..lat = _oldFishingSpot?.lat ?? widget.latLng!.latitude
@@ -145,8 +173,22 @@ class _SaveFishingSpotPageState extends State<SaveFishingSpotPage> {
       newFishingSpot.name = _nameController.value!;
     }
 
-    _fishingSpotManager.addOrUpdate(newFishingSpot);
-    widget.onSave?.call(newFishingSpot);
+    if (isNotEmpty(_notesController.value)) {
+      newFishingSpot.notes = _notesController.value!;
+    }
+
+    File? imageFile;
+    if (_imageController.hasValue &&
+        _imageController.value!.originalFile != null) {
+      imageFile = _imageController.value!.originalFile!;
+    }
+
+    if (await _fishingSpotManager.addOrUpdate(
+      newFishingSpot,
+      imageFile: imageFile,
+    )) {
+      widget.onSave?.call(newFishingSpot);
+    }
 
     return true;
   }

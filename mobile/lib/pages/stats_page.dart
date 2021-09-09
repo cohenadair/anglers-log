@@ -564,6 +564,7 @@ class _StatsPageState extends State<StatsPage> {
       anglerIds: report.anglerIds.toSet(),
       baits: report.baits.toSet(),
       fishingSpotIds: report.fishingSpotIds.toSet(),
+      bodyOfWaterIds: report.bodyOfWaterIds.toSet(),
       methodIds: report.methodIds.toSet(),
       speciesIds: report.speciesIds.toSet(),
       waterClarityIds: report.waterClarityIds.toSet(),

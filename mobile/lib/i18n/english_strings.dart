@@ -66,6 +66,7 @@ Map<String, Map<String, String>> get englishStrings => {
         "input_nameLabel": "Name",
         "input_genericRequired": "Required",
         "input_descriptionLabel": "Description",
+        "input_notesLabel": "Notes",
         "input_invalidNumber": "Invalid number input",
         "input_photoLabel": "Photo",
         "input_photosLabel": "Photos",

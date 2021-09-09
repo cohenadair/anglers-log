@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:collection/collection.dart' show IterableExtension;
 import 'package:flutter/cupertino.dart';
 import 'package:mapbox_gl/mapbox_gl.dart';
@@ -5,8 +7,10 @@ import 'package:provider/provider.dart';
 import 'package:quiver/strings.dart';
 
 import 'app_manager.dart';
+import 'body_of_water_manager.dart';
 import 'catch_manager.dart';
 import 'i18n/strings.dart';
+import 'image_manager.dart';
 import 'model/gen/anglerslog.pb.dart';
 import 'named_entity_manager.dart';
 import 'utils/map_utils.dart';
@@ -16,7 +20,11 @@ class FishingSpotManager extends NamedEntityManager<FishingSpot> {
   static FishingSpotManager of(BuildContext context) =>
       Provider.of<AppManager>(context, listen: false).fishingSpotManager;
 
+  BodyOfWaterManager get _bodyOfWaterManager => appManager.bodyOfWaterManager;
+
   CatchManager get _catchManager => appManager.catchManager;
+
+  ImageManager get _imageManager => appManager.imageManager;
 
   FishingSpotManager(AppManager app) : super(app);
 
@@ -33,6 +41,18 @@ class FishingSpotManager extends NamedEntityManager<FishingSpot> {
   String get tableName => "fishing_spot";
 
   @override
+  bool matchesFilter(Id id, String? filter, [BuildContext? context]) {
+    var fishingSpot = entity(id);
+    if (fishingSpot == null) {
+      return false;
+    }
+
+    return super.matchesFilter(fishingSpot.id, filter) ||
+        _bodyOfWaterManager.matchesFilter(fishingSpot.bodyOfWaterId, filter) ||
+        containsTrimmedLowerCase(fishingSpot.notes, filter!);
+  }
+
+  @override
   List<FishingSpot> listSortedByName({String? filter}) {
     var namedSpots = <FishingSpot>[];
     var otherSpots = <FishingSpot>[];
@@ -46,6 +66,24 @@ class FishingSpotManager extends NamedEntityManager<FishingSpot> {
     }
 
     return namedSpots..addAll(otherSpots);
+  }
+
+  @override
+  Future<bool> addOrUpdate(
+    FishingSpot fishingSpot, {
+    File? imageFile,
+    bool notify = true,
+  }) async {
+    if (imageFile != null) {
+      var savedImages = await _imageManager.save([imageFile], compress: true);
+      if (savedImages.isNotEmpty) {
+        fishingSpot.imageName = savedImages.first;
+      } else {
+        fishingSpot.clearImageName();
+      }
+    }
+
+    return super.addOrUpdate(fishingSpot, notify: notify);
   }
 
   /// Returns the closest [FishingSpot] within [meters] of [latLng], or null if

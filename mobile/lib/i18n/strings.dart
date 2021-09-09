@@ -135,6 +135,8 @@ class Strings {
 
   String get inputDescriptionLabel => _string("input_descriptionLabel");
 
+  String get inputNotesLabel => _string("input_notesLabel");
+
   String get inputInvalidNumber => _string("input_invalidNumber");
 
   String get inputPhotoLabel => _string("input_photoLabel");

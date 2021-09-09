@@ -101,6 +101,7 @@ class CatchManager extends EntityManager<Catch> {
     Set<BaitAttachment> baits = const {},
     Set<Id> catchIds = const {},
     Set<Id> fishingSpotIds = const {},
+    Set<Id> bodyOfWaterIds = const {},
     Set<Id> methodIds = const {},
     Set<Id> speciesIds = const {},
     Set<Id> waterClarityIds = const {},
@@ -131,6 +132,7 @@ class CatchManager extends EntityManager<Catch> {
       baits: baits,
       catchIds: catchIds,
       fishingSpotIds: fishingSpotIds,
+      bodyOfWaterIds: bodyOfWaterIds,
       methodIds: methodIds,
       speciesIds: speciesIds,
       waterClarityIds: waterClarityIds,
@@ -166,6 +168,7 @@ class CatchManager extends EntityManager<Catch> {
     Set<BaitAttachment> baits = const {},
     Set<Id> catchIds = const {},
     Set<Id> fishingSpotIds = const {},
+    Set<Id> bodyOfWaterIds = const {},
     Set<Id> methodIds = const {},
     Set<Id> speciesIds = const {},
     Set<Id> waterClarityIds = const {},
@@ -194,6 +197,7 @@ class CatchManager extends EntityManager<Catch> {
         baits.isEmpty &&
         catchIds.isEmpty &&
         fishingSpotIds.isEmpty &&
+        bodyOfWaterIds.isEmpty &&
         methodIds.isEmpty &&
         speciesIds.isEmpty &&
         waterClarityIds.isEmpty &&
@@ -218,7 +222,7 @@ class CatchManager extends EntityManager<Catch> {
 
     bool isSetValid<T>(
       Set<T> items,
-      T value, {
+      T? value, {
       required bool hasValue,
     }) {
       return items.isEmpty || (hasValue && items.contains(value));
@@ -262,6 +266,9 @@ class CatchManager extends EntityManager<Catch> {
       valid &= isSetValid<Id>(catchIds, cat.id, hasValue: cat.hasId());
       valid &= isSetValid<Id>(fishingSpotIds, cat.fishingSpotId,
           hasValue: cat.hasFishingSpotId());
+      valid &= isSetValid<Id>(bodyOfWaterIds,
+          _fishingSpotManager.entity(cat.fishingSpotId)?.bodyOfWaterId,
+          hasValue: _fishingSpotManager.entityExists(cat.fishingSpotId));
       valid &= isSetValid<Id>(speciesIds, cat.speciesId,
           hasValue: cat.hasSpeciesId());
       valid &= isSetValid<Id>(waterClarityIds, cat.waterClarityId,
