@@ -17,8 +17,7 @@ class BodyOfWaterManager extends NamedEntityManager<BodyOfWater> {
   BodyOfWaterManager(AppManager app) : super(app);
 
   @override
-  BodyOfWater entityFromBytes(List<int> bytes) =>
-      BodyOfWater.fromBuffer(bytes);
+  BodyOfWater entityFromBytes(List<int> bytes) => BodyOfWater.fromBuffer(bytes);
 
   @override
   Id id(BodyOfWater bodyOfWater) => bodyOfWater.id;
