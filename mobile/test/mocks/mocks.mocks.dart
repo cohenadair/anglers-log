@@ -76,8 +76,6 @@ import 'package:sqflite/sqflite.dart' as _i54;
 // ignore_for_file: invalid_use_of_visible_for_testing_member
 // ignore_for_file: prefer_const_constructors
 // ignore_for_file: unnecessary_parenthesis
-// ignore_for_file: camel_case_types
-// ignore_for_file: avoid_types_on_closure_parameters
 
 class _FakeFirestoreWrapper_0 extends _i1.Fake implements _i2.FirestoreWrapper {
 }
@@ -952,25 +950,19 @@ class MockBaitManager extends _i1.Mock implements _i13.BaitManager {
       (super.noSuchMethod(Invocation.method(#name, [bait]), returnValue: '')
           as String);
   @override
+  void setImageName(_i8.Bait? bait, String? imageName) =>
+      super.noSuchMethod(Invocation.method(#setImageName, [bait, imageName]),
+          returnValueForMissingStub: null);
+  @override
+  void clearImageName(_i8.Bait? bait) =>
+      super.noSuchMethod(Invocation.method(#clearImageName, [bait]),
+          returnValueForMissingStub: null);
+  @override
   bool matchesFilter(_i8.Id? id, String? filter,
           [_i44.BuildContext? context]) =>
       (super.noSuchMethod(
           Invocation.method(#matchesFilter, [id, filter, context]),
           returnValue: false) as bool);
-  @override
-  _i9.Future<bool> addOrUpdate(_i8.Bait? bait,
-          {_i49.File? imageFile,
-          bool? compressImages = true,
-          bool? notify = true}) =>
-      (super.noSuchMethod(
-          Invocation.method(#addOrUpdate, [
-            bait
-          ], {
-            #imageFile: imageFile,
-            #compressImages: compressImages,
-            #notify: notify
-          }),
-          returnValue: Future<bool>.value(false)) as _i9.Future<bool>);
   @override
   bool attachmentsMatchesFilter(Iterable<_i8.BaitAttachment>? attachments,
           String? filter, _i44.BuildContext? context) =>
@@ -1038,6 +1030,20 @@ class MockBaitManager extends _i1.Mock implements _i13.BaitManager {
       (super.noSuchMethod(
           Invocation.method(#deleteVariantMessage, [context, variant]),
           returnValue: '') as String);
+  @override
+  _i9.Future<bool> addOrUpdate(_i8.Bait? entity,
+          {_i49.File? imageFile,
+          bool? compressImages = true,
+          bool? notify = true}) =>
+      (super.noSuchMethod(
+          Invocation.method(#addOrUpdate, [
+            entity
+          ], {
+            #imageFile: imageFile,
+            #compressImages: compressImages,
+            #notify: notify
+          }),
+          returnValue: Future<bool>.value(false)) as _i9.Future<bool>);
   @override
   List<_i8.Bait> listSortedByName({String? filter}) => (super.noSuchMethod(
       Invocation.method(#listSortedByName, [], {#filter: filter}),
@@ -1864,6 +1870,14 @@ class MockFishingSpotManager extends _i1.Mock
       (super.noSuchMethod(Invocation.method(#name, [fishingSpot]),
           returnValue: '') as String);
   @override
+  void setImageName(_i8.FishingSpot? fishingSpot, String? imageName) => super
+      .noSuchMethod(Invocation.method(#setImageName, [fishingSpot, imageName]),
+          returnValueForMissingStub: null);
+  @override
+  void clearImageName(_i8.FishingSpot? fishingSpot) =>
+      super.noSuchMethod(Invocation.method(#clearImageName, [fishingSpot]),
+          returnValueForMissingStub: null);
+  @override
   bool matchesFilter(_i8.Id? id, String? filter,
           [_i44.BuildContext? context]) =>
       (super.noSuchMethod(
@@ -1873,13 +1887,6 @@ class MockFishingSpotManager extends _i1.Mock
   List<_i8.FishingSpot> listSortedByName({String? filter}) => (super
       .noSuchMethod(Invocation.method(#listSortedByName, [], {#filter: filter}),
           returnValue: <_i8.FishingSpot>[]) as List<_i8.FishingSpot>);
-  @override
-  _i9.Future<bool> addOrUpdate(_i8.FishingSpot? fishingSpot,
-          {_i49.File? imageFile, bool? notify = true}) =>
-      (super.noSuchMethod(
-          Invocation.method(#addOrUpdate, [fishingSpot],
-              {#imageFile: imageFile, #notify: notify}),
-          returnValue: Future<bool>.value(false)) as _i9.Future<bool>);
   @override
   _i8.FishingSpot? withinRadius(_i57.LatLng? latLng, [int? meters = 30]) =>
       (super.noSuchMethod(Invocation.method(#withinRadius, [latLng, meters]))
@@ -1894,6 +1901,20 @@ class MockFishingSpotManager extends _i1.Mock
       (super.noSuchMethod(
           Invocation.method(#deleteMessage, [context, fishingSpot]),
           returnValue: '') as String);
+  @override
+  _i9.Future<bool> addOrUpdate(_i8.FishingSpot? entity,
+          {_i49.File? imageFile,
+          bool? compressImages = true,
+          bool? notify = true}) =>
+      (super.noSuchMethod(
+          Invocation.method(#addOrUpdate, [
+            entity
+          ], {
+            #imageFile: imageFile,
+            #compressImages: compressImages,
+            #notify: notify
+          }),
+          returnValue: Future<bool>.value(false)) as _i9.Future<bool>);
   @override
   bool nameExists(String? name) =>
       (super.noSuchMethod(Invocation.method(#nameExists, [name]),

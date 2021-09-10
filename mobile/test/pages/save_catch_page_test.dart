@@ -4,8 +4,8 @@ import 'package:fixnum/fixnum.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:http/http.dart';
+import 'package:mapbox_gl/mapbox_gl.dart';
 import 'package:mobile/angler_manager.dart';
 import 'package:mobile/bait_manager.dart';
 import 'package:mobile/fishing_spot_manager.dart';
@@ -19,10 +19,10 @@ import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mobile/water_clarity_manager.dart';
 import 'package:mobile/widgets/button.dart';
 import 'package:mobile/widgets/date_time_picker.dart';
+import 'package:mobile/widgets/fishing_spot_map.dart';
 import 'package:mobile/widgets/image_input.dart';
 import 'package:mobile/widgets/image_picker.dart';
 import 'package:mobile/widgets/search_bar.dart';
-import 'package:mobile/widgets/static_fishing_spot.dart';
 import 'package:mobile/widgets/text_input.dart';
 import 'package:mockito/mockito.dart';
 import 'package:path/path.dart';
@@ -151,7 +151,7 @@ void main() {
             ),
           ],
           speciesId: species.id,
-          fishingSpotId: fishingSpot.id,
+          fishingSpot: fishingSpot,
         ),
         appManager: appManager,
       ));
@@ -169,7 +169,7 @@ void main() {
       // Angler, time of day, tide, and water clarity.
       expect(find.text("Not Selected"), findsNWidgets(4));
 
-      expect(find.byType(StaticFishingSpot), findsOneWidget);
+      expect(find.byType(FishingSpotMap), findsOneWidget);
       expect(find.text("Species"), findsOneWidget);
       expect(find.text("Steelhead"), findsOneWidget);
       expect(find.byType(Image), findsOneWidget);
@@ -186,7 +186,7 @@ void main() {
             ),
           ],
           speciesId: randomId(),
-          fishingSpotId: randomId(),
+          fishingSpot: FishingSpot(id: randomId()),
           popOverride: () => invoked = true,
         ),
         appManager: appManager,
@@ -348,7 +348,7 @@ void main() {
       expect(find.text("Casting"), findsOneWidget);
       expect(find.text("Kayak"), findsOneWidget);
       expect(find.text("Rapala"), findsOneWidget);
-      expect(find.byType(StaticFishingSpot), findsOneWidget);
+      expect(find.byType(FishingSpotMap), findsOneWidget);
       expect(find.text("Species"), findsOneWidget);
       expect(find.text("Steelhead"), findsOneWidget);
       expect(find.text("Angler"), findsOneWidget);
@@ -408,7 +408,7 @@ void main() {
 
       expect(find.text("Fishing Spot"), findsOneWidget);
       expect(find.byType(Image), findsNothing);
-      expect(find.byType(StaticFishingSpot), findsNothing);
+      expect(find.byType(FishingSpotMap), findsNothing);
       expect(findCheckbox(tester, "Favorite")!.checked, isFalse);
       expect(findCheckbox(tester, "Catch and Release")!.checked, isFalse);
       expect(find.text("Atmosphere & Weather"), findsOneWidget);
@@ -666,7 +666,7 @@ void main() {
       await tester.pumpWidget(Testable(
         (_) => SaveCatchPage(
           speciesId: species.id,
-          fishingSpotId: fishingSpot.id,
+          fishingSpot: fishingSpot,
         ),
         appManager: appManager,
       ));
@@ -689,7 +689,7 @@ void main() {
       // Fishing methods.
       expect(find.text("No fishing methods"), findsOneWidget);
 
-      expect(find.byType(StaticFishingSpot), findsOneWidget);
+      expect(find.byType(FishingSpotMap), findsOneWidget);
       expect(find.byType(Image), findsNothing);
       expect(findCheckbox(tester, "Favorite")!.checked, isFalse);
       expect(findCheckbox(tester, "Catch and Release")!.checked, isFalse);
@@ -729,7 +729,7 @@ void main() {
       await tester.pumpWidget(Testable(
         (_) => SaveCatchPage(
           speciesId: speciesId,
-          fishingSpotId: fishingSpotId,
+          fishingSpot: FishingSpot(id: fishingSpotId),
         ),
         appManager: appManager,
       ));
@@ -819,7 +819,7 @@ void main() {
       await tester.pumpWidget(Testable(
         (_) => SaveCatchPage(
           speciesId: speciesId,
-          fishingSpotId: fishingSpotId,
+          fishingSpot: FishingSpot(id: fishingSpotId),
         ),
         appManager: appManager,
       ));
@@ -957,7 +957,7 @@ void main() {
     await tester.pumpWidget(Testable(
       (_) => SaveCatchPage(
         speciesId: species.id,
-        fishingSpotId: fishingSpot.id,
+        fishingSpot: fishingSpot,
       ),
       appManager: appManager,
     ));
@@ -965,7 +965,7 @@ void main() {
     expect(find.text("Date"), findsOneWidget);
     expect(find.text("Time"), findsOneWidget);
     expect(find.text("Species"), findsOneWidget);
-    expect(find.byType(StaticFishingSpot), findsNothing);
+    expect(find.byType(FishingSpotMap), findsNothing);
     expect(find.byType(ImagePicker), findsNothing);
   });
 
@@ -1240,7 +1240,7 @@ void main() {
     await tester.pumpWidget(Testable(
       (_) => SaveCatchPage(
         speciesId: species.id,
-        fishingSpotId: fishingSpot.id,
+        fishingSpot: fishingSpot,
       ),
       appManager: appManager,
     ));
@@ -1288,7 +1288,7 @@ void main() {
     await tester.pumpWidget(Testable(
       (_) => SaveCatchPage(
         speciesId: species.id,
-        fishingSpotId: fishingSpot1.id,
+        fishingSpot: fishingSpot1,
       ),
       appManager: appManager,
     ));
@@ -1434,7 +1434,7 @@ void main() {
     await tester.pumpWidget(Testable(
       (_) => SaveCatchPage(
         speciesId: randomId(),
-        fishingSpotId: randomId(),
+        fishingSpot: FishingSpot(id: randomId()),
       ),
       appManager: appManager,
     ));

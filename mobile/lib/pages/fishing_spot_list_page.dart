@@ -116,7 +116,7 @@ class FishingSpotListPagePickerSettings {
 
   FishingSpotListPagePickerSettings({
     required this.onPicked,
-    required this.initialValues,
+    this.initialValues = const {},
     this.isMulti = true,
   });
 

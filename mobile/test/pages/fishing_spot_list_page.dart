@@ -1,7 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
 import 'package:mobile/pages/fishing_spot_list_page.dart';
-import 'package:mobile/pages/manageable_list_page.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mobile/widgets/checkbox_input.dart';
 import 'package:mockito/mockito.dart';
@@ -34,7 +33,7 @@ void main() {
     testWidgets("Single title", (tester) async {
       await tester.pumpWidget(Testable(
         (_) => FishingSpotListPage(
-          pickerSettings: ManageableListPagePickerSettings.single(
+          pickerSettings: FishingSpotListPagePickerSettings.single(
             onPicked: (_, __) => true,
           ),
         ),
@@ -46,7 +45,7 @@ void main() {
     testWidgets("Multi title", (tester) async {
       await tester.pumpWidget(Testable(
         (_) => FishingSpotListPage(
-          pickerSettings: ManageableListPagePickerSettings(
+          pickerSettings: FishingSpotListPagePickerSettings(
             onPicked: (_, __) => true,
           ),
         ),
@@ -58,7 +57,7 @@ void main() {
     testWidgets("Has checkboxes", (tester) async {
       await tester.pumpWidget(Testable(
         (_) => FishingSpotListPage(
-          pickerSettings: ManageableListPagePickerSettings(
+          pickerSettings: FishingSpotListPagePickerSettings(
             onPicked: (_, __) => true,
           ),
         ),

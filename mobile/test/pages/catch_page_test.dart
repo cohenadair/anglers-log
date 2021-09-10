@@ -8,8 +8,8 @@ import 'package:mobile/pages/catch_page.dart';
 import 'package:mobile/res/gen/custom_icons.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mobile/widgets/atmosphere_wrap.dart';
+import 'package:mobile/widgets/fishing_spot_map.dart';
 import 'package:mobile/widgets/list_item.dart';
-import 'package:mobile/widgets/static_fishing_spot.dart';
 import 'package:mobile/widgets/widget.dart';
 import 'package:mockito/mockito.dart';
 
@@ -127,7 +127,7 @@ void main() {
     await tester.pumpAndSettle(Duration(milliseconds: 150));
     await tester.pumpAndSettle(Duration(milliseconds: 50));
 
-    expect(find.byType(StaticFishingSpot), findsNothing);
+    expect(find.byType(FishingSpotMap), findsNothing);
   });
 
   testWidgets("Fishing spot renders", (tester) async {
@@ -146,7 +146,7 @@ void main() {
     await tester.pumpAndSettle(Duration(milliseconds: 150));
     await tester.pumpAndSettle(Duration(milliseconds: 50));
 
-    expect(find.byType(StaticFishingSpot), findsOneWidget);
+    expect(find.byType(FishingSpotMap), findsOneWidget);
   });
 
   testWidgets("No angler renders empty", (tester) async {
