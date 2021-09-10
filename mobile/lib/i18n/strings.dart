@@ -764,6 +764,9 @@ class Strings {
   String get fishingSpotListPageEmptyListDescription =>
       _string("fishingSpotListPage_emptyListDescription");
 
+  String get fishingSpotListPageNoBodyOfWater =>
+      _string("fishingSpotListPage_noBodyOfWater");
+
   String get fishingSpotMapLocationPermissionTitle =>
       _string("fishingSpotMap_locationPermissionTitle");
 

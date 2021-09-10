@@ -15,7 +15,6 @@ import '../location_monitor.dart';
 import '../log.dart';
 import '../model/gen/anglerslog.pb.dart';
 import '../pages/fishing_spot_list_page.dart';
-import '../pages/manageable_list_page.dart';
 import '../properties_manager.dart';
 import '../res/dimen.dart';
 import '../res/style.dart';
@@ -344,8 +343,7 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
         present(
           context,
           FishingSpotListPage(
-            pickerSettings:
-                ManageableListPagePickerSettings<FishingSpot>.single(
+            pickerSettings: FishingSpotListPagePickerSettings.single(
               onPicked: (context, fishingSpot) {
                 _selectFishingSpot(fishingSpot);
                 return true;
@@ -635,6 +633,9 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
     if (_hasActiveSymbol) {
       _activeSymbol = symbols.firstWhereOrNull(
           (s) => s.fishingSpot.id == _activeSymbol!.fishingSpot.id);
+      if (_hasActiveSymbol) {
+        _selectFishingSpot(_activeSymbol!.fishingSpot);
+      }
     }
   }
 

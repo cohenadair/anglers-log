@@ -364,12 +364,13 @@ Map<String, Map<String, String>> get englishStrings => {
         "speciesListPage_emptyListDescription":
             "You haven't yet added any species. Tap the %s button to begin.",
         "fishingSpotPickerPage_hint":
-            "Drag the map to use exact coordinates, or select an existing fishing spot.",
+            "Long press the map to pick exact coordinates, or select an existing fishing spot.",
         "fishingSpotListPage_title": "Fishing Spots (%s)",
         "fishingSpotListPage_searchHint": "Search fishing spots",
         "fishingSpotListPage_emptyListTitle": "No fishing spots",
         "fishingSpotListPage_emptyListDescription":
             "To add a fishing spot, tap on the map and save the dropped pin.",
+        "fishingSpotListPage_noBodyOfWater": "No Body Of Water",
         "fishingSpotMap_locationPermissionTitle": "Location Access",
         "fishingSpotMap_locationPermissionDescription":
             "To show your current location, you must grant Anglers' Log access to read your device's location. To do so, open your device settings.",

@@ -497,13 +497,24 @@ class _SaveReportPageState extends State<SaveReportPage> {
   }
 
   Widget _buildFishingSpotsPicker() {
+    var allFishingSpots = _fishingSpotManager.list().toSet();
+
     return _buildEntityPicker<FishingSpot>(
       manager: _fishingSpotManager,
       controller: _fishingSpotsController,
       emptyValue: Strings.of(context).saveReportPageAllFishingSpots,
       isHidden: hideCatchField(catchFieldIdFishingSpot),
-      listPage: (pickerSettings) => FishingSpotListPage(
-        pickerSettings: pickerSettings,
+      customListPage: FishingSpotListPage(
+        pickerSettings: FishingSpotListPagePickerSettings(
+          onPicked: (context, fishingSpots) {
+            setState(() => _fishingSpotsController.value =
+                fishingSpots.containsAll(allFishingSpots) ? {} : fishingSpots);
+            return true;
+          },
+          initialValues: _fishingSpotsController.value.isEmpty
+              ? allFishingSpots
+              : _fishingSpotsController.value,
+        ),
       ),
     );
   }
@@ -658,36 +669,42 @@ class _SaveReportPageState extends State<SaveReportPage> {
     required SetInputController<T> controller,
     required String emptyValue,
     required bool isHidden,
-    required Widget Function(ManageableListPagePickerSettings<T>)? listPage,
+    Widget Function(ManageableListPagePickerSettings<T>)? listPage,
+    // Used for when a picker page can have multiple entities displayed, such
+    // as a FishingSpotListPage, which shows bodies of water as well as
+    // fishing spots. In these cases a definitive type T does not work.
+    Widget? customListPage,
   }) {
     if (isHidden) {
       return Empty();
     }
+
+    assert(listPage != null || customListPage != null);
 
     return MultiListPickerInput(
       padding: insetsHorizontalDefaultVerticalWidget,
       values: controller.value.map((e) => manager.name(e)).toSet(),
       emptyValue: (context) => emptyValue,
       onTap: () {
-        var pickerPage = listPage!(
-          ManageableListPagePickerSettings<T>(
-            onPicked: (context, entities) {
-              // Treat an empty controller value as "include all", so we're
-              // not including 100s of objects in a protobuf collection.
-              setState(() => controller.value =
-                  entities.containsAll(manager.list()) ? {} : entities);
-              return true;
-            },
-            initialValues: controller.value.isEmpty
-                ? manager.list().toSet()
-                : controller.value,
-          ),
-        );
+        var pickerPage = customListPage;
+        if (pickerPage == null) {
+          pickerPage = listPage!(
+            ManageableListPagePickerSettings<T>(
+              onPicked: (context, entities) {
+                // Treat an empty controller value as "include all", so we're
+                // not including 100s of objects in a protobuf collection.
+                setState(() => controller.value =
+                    entities.containsAll(manager.list()) ? {} : entities);
+                return true;
+              },
+              initialValues: controller.value.isEmpty
+                  ? manager.list().toSet()
+                  : controller.value,
+            ),
+          );
+        }
 
-        push(
-          context,
-          pickerPage,
-        );
+        push(context, pickerPage);
       },
     );
   }
