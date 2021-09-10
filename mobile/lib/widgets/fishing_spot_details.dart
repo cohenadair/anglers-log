@@ -98,6 +98,7 @@ class FishingSpotDetails extends StatelessWidget {
       subtitle3: isListItem ? null : fishingSpot.notes,
       imageName: fishingSpot.imageName,
       showPlaceholder: false,
+      showFullImageOnTap: true,
       onTap: isListItem ? onTap : null,
       trailing: isListItem && onTap != null ? RightChevronIcon() : null,
     );

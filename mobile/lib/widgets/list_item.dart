@@ -105,6 +105,9 @@ class ImageListItem extends StatelessWidget {
   final Widget? trailing;
   final VoidCallback? onTap;
 
+  /// See [ManageableListImageItem.showFullImageOnTap].
+  final bool showFullImageOnTap;
+
   /// See [ManageableListImageItem.showPlaceholder].
   final bool showPlaceholder;
 
@@ -117,6 +120,7 @@ class ImageListItem extends StatelessWidget {
     this.trailing,
     this.onTap,
     this.showPlaceholder = true,
+    this.showFullImageOnTap = false,
   });
 
   @override
@@ -130,6 +134,7 @@ class ImageListItem extends StatelessWidget {
         subtitle3: subtitle3,
         trailing: trailing,
         showPlaceholder: showPlaceholder,
+        showFullImageOnTap: showFullImageOnTap,
       ),
       onTap: onTap,
       // In this state, the delete button will never be shown.
@@ -485,6 +490,9 @@ class ManageableListImageItem extends StatelessWidget {
   final String? subtitle3;
   final Widget? trailing;
 
+  /// See [Photo.showFullOnTap].
+  final bool showFullImageOnTap;
+
   /// See [Photo.showPlaceholder].
   final bool showPlaceholder;
 
@@ -496,6 +504,7 @@ class ManageableListImageItem extends StatelessWidget {
     this.subtitle3,
     this.trailing,
     this.showPlaceholder = true,
+    this.showFullImageOnTap = false,
   });
 
   @override
@@ -513,6 +522,7 @@ class ManageableListImageItem extends StatelessWidget {
         Photo.listThumbnail(
           imageName,
           showPlaceholder: showPlaceholder,
+          showFullOnTap: showFullImageOnTap,
           padding: insetsRightWidget,
         ),
         Expanded(

@@ -42,6 +42,10 @@ class Photo extends StatefulWidget {
   /// [ImageManager]. Defaults to true.
   final bool showPlaceholder;
 
+  /// When true, tapping the [Photo] will open the image in a full screen
+  /// view. Defaults to false.
+  final bool showFullOnTap;
+
   /// If [showPlaceholder] is false, and [imageName] does not exist, this field
   /// is ignored.
   final EdgeInsets? padding;
@@ -54,6 +58,7 @@ class Photo extends StatefulWidget {
     this.isCircular = false,
     this.galleryImages = const [],
     this.showPlaceholder = true,
+    this.showFullOnTap = false,
     this.padding,
   }) : assert((width != null && height != null) ||
             (width == null && height == null));
@@ -61,6 +66,7 @@ class Photo extends StatefulWidget {
   Photo.listThumbnail(
     String? fileName, {
     bool showPlaceholder = true,
+    bool showFullOnTap = false,
     EdgeInsets? padding,
   }) : this(
           fileName: fileName,
@@ -68,6 +74,7 @@ class Photo extends StatefulWidget {
           height: _listItemSize,
           isCircular: true,
           showPlaceholder: showPlaceholder,
+          showFullOnTap: showFullOnTap,
           padding: padding,
         );
 
@@ -152,13 +159,16 @@ class _PhotoState extends State<Photo> {
           );
         }
 
-        if (widget.galleryImages.isNotEmpty && image != null) {
-          return GestureDetector(
+        if ((widget.galleryImages.isNotEmpty || widget.showFullOnTap) &&
+            image != null) {
+          child = GestureDetector(
             onTap: () {
               fade(
                 context,
                 PhotoGalleryPage(
-                  fileNames: widget.galleryImages,
+                  fileNames: widget.galleryImages.isEmpty
+                      ? [widget.fileName!]
+                      : widget.galleryImages,
                   initialFileName: widget.fileName!,
                 ),
               );
