@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:http/http.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:mapbox_gl/mapbox_gl.dart' as map;
 import 'package:mobile/angler_manager.dart';
 import 'package:mobile/app_manager.dart';
 import 'package:mobile/app_preference_manager.dart';
@@ -16,6 +17,7 @@ import 'package:mobile/atmosphere_fetcher.dart';
 import 'package:mobile/auth_manager.dart';
 import 'package:mobile/bait_category_manager.dart';
 import 'package:mobile/bait_manager.dart';
+import 'package:mobile/body_of_water_manager.dart';
 import 'package:mobile/catch_manager.dart';
 import 'package:mobile/report_manager.dart';
 import 'package:mobile/custom_entity_manager.dart';
@@ -68,6 +70,7 @@ import 'mocks.mocks.dart';
 @GenerateMocks([AtmosphereFetcher])
 @GenerateMocks([BaitCategoryManager])
 @GenerateMocks([BaitManager])
+@GenerateMocks([BodyOfWaterManager])
 @GenerateMocks([CatchManager])
 @GenerateMocks([CustomEntityManager])
 @GenerateMocks([ReportManager])
@@ -93,6 +96,7 @@ import 'mocks.mocks.dart';
 @GenerateMocks([HttpWrapper])
 @GenerateMocks([ImageCompressWrapper])
 @GenerateMocks([IoWrapper])
+@GenerateMocks([map.MapboxMapController])
 @GenerateMocks([PackageInfoWrapper])
 @GenerateMocks([PathProviderWrapper])
 @GenerateMocks([PermissionHandlerWrapper])

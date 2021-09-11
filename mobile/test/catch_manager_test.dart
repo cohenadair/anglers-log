@@ -128,6 +128,8 @@ void main() {
     var fishingSpotManager = MockFishingSpotManager();
     when(appManager.app.fishingSpotManager).thenReturn(fishingSpotManager);
     when(fishingSpotManager.matchesFilter(any, any)).thenReturn(true);
+    when(fishingSpotManager.entity(any)).thenReturn(null);
+    when(fishingSpotManager.entityExists(any)).thenReturn(false);
 
     await catchManager.addOrUpdate(Catch()
       ..id = randomId()

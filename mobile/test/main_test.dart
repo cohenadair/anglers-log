@@ -32,6 +32,8 @@ void main() {
 
     when(appManager.locationMonitor.currentLocation).thenReturn(null);
 
+    when(appManager.propertiesManager.mapboxApiKey).thenReturn("");
+
     when(appManager.subscriptionManager.isFree).thenReturn(false);
 
     when(appManager.userPreferenceManager.didOnboard).thenReturn(true);
@@ -175,7 +177,7 @@ void main() {
     )).thenReturn([]);
 
     await tester.pumpWidget(AnglersLog(appManager.app));
-    await tester.pumpAndSettle(Duration(milliseconds: 150));
+    await tester.pumpAndSettle(Duration(milliseconds: 300));
 
     expect(find.byType(OnboardingJourney), findsNothing);
     expect(find.byType(MainPage), findsOneWidget);
@@ -224,7 +226,7 @@ void main() {
 
     when(appManager.authManager.state).thenReturn(AuthState.loggedIn);
     controller.add(AuthState.loggedIn);
-    await tester.pumpAndSettle(Duration(milliseconds: 150));
+    await tester.pumpAndSettle(Duration(milliseconds: 300));
     expect(find.byType(MainPage), findsOneWidget);
   });
 
@@ -254,7 +256,7 @@ void main() {
 
     when(appManager.authManager.state).thenReturn(AuthState.loggedIn);
     controller.add(AuthState.loggedIn);
-    await tester.pumpAndSettle(Duration(milliseconds: 150));
+    await tester.pumpAndSettle(Duration(milliseconds: 300));
     expect(find.byType(MainPage), findsOneWidget);
   });
 

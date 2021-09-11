@@ -298,21 +298,16 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
     Widget? trailing;
     if (_isPicking) {
       if (_pickerSettings!.onNext != null) {
-        VoidCallback? onPressed;
-        if (_fishingSpotManager.entityExists(_activeSymbol?.fishingSpot.id)) {
-          onPressed = () {
-            _pickerSettings!.controller.value = _activeFishingSpot;
-            _pickerSettings!.onNext!.call();
-          };
-        }
-
         trailing = Padding(
           padding: insetsRightWidgetSmall,
           child: ActionButton(
             condensed: true,
             text: Strings.of(context).next,
             textColor: Theme.of(context).primaryColor,
-            onPressed: onPressed,
+            onPressed: () {
+              _pickerSettings!.controller.value = _activeFishingSpot;
+              _pickerSettings!.onNext!.call();
+            },
           ),
         );
       }
@@ -742,19 +737,15 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
       return;
     }
 
-    // If the selected spot doesn't exist, see if one is close to the selected
-    // spot or the user's current location.
-    var currentLocation = _locationMonitor.currentLocation;
-    var selectedLatLng = selectedValue?.latLng;
-    var closeSpot = _fishingSpotManager.withinRadius(selectedLatLng) ??
-        _fishingSpotManager.withinRadius(currentLocation);
-    if (closeSpot != null) {
-      _selectFishingSpot(closeSpot);
+    // If the picked spot doesn't exist, drop a pin. Note that _dropPin
+    // checks for existing fishing spots that are close by.
+    if (selectedValue != null) {
+      _dropPin(selectedValue.latLng);
       return;
     }
 
-    // As a fallback, drop a pin at the user's current location.
-    _dropPin(currentLocation ?? LatLng(0, 0));
+    // If there is no picker value, fallback on the user's current location.
+    _dropPin(_locationMonitor.currentLocation ?? LatLng(0, 0));
   }
 
   /// Offsets [latLng] to account for the height of the fishing spot widget.

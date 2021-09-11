@@ -16,7 +16,7 @@ void main() {
     appManager = StubbedAppManager();
 
     when(appManager.fishingSpotManager.addOrUpdate(any))
-        .thenAnswer((_) => Future.value(false));
+        .thenAnswer((_) => Future.value(true));
   });
 
   testWidgets("New title", (tester) async {

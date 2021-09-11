@@ -4,29 +4,35 @@
 // Do not manually edit this file.
 
 import 'dart:async' as _i9;
-import 'dart:convert' as _i61;
+import 'dart:convert' as _i62;
 import 'dart:io' as _i49;
-import 'dart:typed_data' as _i58;
+import 'dart:math' as _i51;
+import 'dart:typed_data' as _i59;
+import 'dart:ui' as _i66;
 
 import 'package:cloud_firestore/cloud_firestore.dart' as _i47;
-import 'package:file_picker/file_picker.dart' as _i60;
+import 'package:file_picker/file_picker.dart' as _i61;
 import 'package:firebase_auth/firebase_auth.dart' as _i45;
 import 'package:firebase_storage/firebase_storage.dart' as _i46;
+import 'package:flutter/foundation.dart' as _i64;
+import 'package:flutter/gestures.dart' as _i65;
 import 'package:flutter/material.dart' as _i44;
-import 'package:flutter/services.dart' as _i52;
+import 'package:flutter/services.dart' as _i54;
 import 'package:http/http.dart' as _i48;
-import 'package:mapbox_gl/mapbox_gl.dart' as _i57;
+import 'package:mapbox_gl/mapbox_gl.dart' as _i50;
+import 'package:mapbox_gl_platform_interface/mapbox_gl_platform_interface.dart'
+    as _i63;
 import 'package:mobile/angler_manager.dart' as _i11;
 import 'package:mobile/app_manager.dart' as _i4;
 import 'package:mobile/app_preference_manager.dart' as _i5;
-import 'package:mobile/atmosphere_fetcher.dart' as _i56;
+import 'package:mobile/atmosphere_fetcher.dart' as _i58;
 import 'package:mobile/auth_manager.dart' as _i6;
 import 'package:mobile/bait_category_manager.dart' as _i12;
 import 'package:mobile/bait_manager.dart' as _i13;
 import 'package:mobile/body_of_water_manager.dart' as _i14;
 import 'package:mobile/catch_manager.dart' as _i15;
 import 'package:mobile/custom_entity_manager.dart' as _i16;
-import 'package:mobile/database/legacy_importer.dart' as _i62;
+import 'package:mobile/database/legacy_importer.dart' as _i67;
 import 'package:mobile/entity_manager.dart' as _i10;
 import 'package:mobile/fishing_spot_manager.dart' as _i17;
 import 'package:mobile/image_manager.dart' as _i18;
@@ -34,7 +40,7 @@ import 'package:mobile/local_database_manager.dart' as _i3;
 import 'package:mobile/location_monitor.dart' as _i19;
 import 'package:mobile/method_manager.dart' as _i20;
 import 'package:mobile/model/gen/anglerslog.pb.dart' as _i8;
-import 'package:mobile/preference_manager.dart' as _i59;
+import 'package:mobile/preference_manager.dart' as _i60;
 import 'package:mobile/properties_manager.dart' as _i21;
 import 'package:mobile/report_manager.dart' as _i22;
 import 'package:mobile/species_manager.dart' as _i23;
@@ -42,7 +48,7 @@ import 'package:mobile/subscription_manager.dart' as _i7;
 import 'package:mobile/time_manager.dart' as _i24;
 import 'package:mobile/trip_manager.dart' as _i25;
 import 'package:mobile/user_preference_manager.dart' as _i26;
-import 'package:mobile/utils/validator.dart' as _i63;
+import 'package:mobile/utils/validator.dart' as _i68;
 import 'package:mobile/water_clarity_manager.dart' as _i27;
 import 'package:mobile/wrappers/file_picker_wrapper.dart' as _i28;
 import 'package:mobile/wrappers/firebase_auth_wrapper.dart' as _i29;
@@ -62,12 +68,12 @@ import 'package:mobile/wrappers/services_wrapper.dart' as _i41;
 import 'package:mobile/wrappers/shared_preferences_wrapper.dart' as _i42;
 import 'package:mobile/wrappers/url_launcher_wrapper.dart' as _i43;
 import 'package:mockito/mockito.dart' as _i1;
-import 'package:package_info_plus/package_info_plus.dart' as _i50;
-import 'package:photo_manager/photo_manager.dart' as _i53;
-import 'package:protobuf/protobuf.dart' as _i55;
-import 'package:purchases_flutter/purchases_flutter.dart' as _i51;
-import 'package:purchases_flutter/transaction.dart' as _i64;
-import 'package:sqflite/sqflite.dart' as _i54;
+import 'package:package_info_plus/package_info_plus.dart' as _i52;
+import 'package:photo_manager/photo_manager.dart' as _i55;
+import 'package:protobuf/protobuf.dart' as _i57;
+import 'package:purchases_flutter/purchases_flutter.dart' as _i53;
+import 'package:purchases_flutter/transaction.dart' as _i69;
+import 'package:sqflite/sqflite.dart' as _i56;
 
 // ignore_for_file: avoid_redundant_argument_values
 // ignore_for_file: avoid_setters_without_getters
@@ -195,106 +201,132 @@ class _FakeBaitCategory_43 extends _i1.Fake implements _i8.BaitCategory {}
 
 class _FakeBait_44 extends _i1.Fake implements _i8.Bait {}
 
-class _FakeCatch_45 extends _i1.Fake implements _i8.Catch {}
+class _FakeBodyOfWater_45 extends _i1.Fake implements _i8.BodyOfWater {}
 
-class _FakeCustomEntity_46 extends _i1.Fake implements _i8.CustomEntity {}
+class _FakeCatch_46 extends _i1.Fake implements _i8.Catch {}
 
-class _FakeReport_47 extends _i1.Fake implements _i8.Report {}
+class _FakeCustomEntity_47 extends _i1.Fake implements _i8.CustomEntity {}
 
-class _FakeFishingSpot_48 extends _i1.Fake implements _i8.FishingSpot {}
+class _FakeReport_48 extends _i1.Fake implements _i8.Report {}
 
-class _FakeMethod_49 extends _i1.Fake implements _i8.Method {}
+class _FakeFishingSpot_49 extends _i1.Fake implements _i8.FishingSpot {}
 
-class _FakeSpecies_50 extends _i1.Fake implements _i8.Species {}
+class _FakeMethod_50 extends _i1.Fake implements _i8.Method {}
 
-class _FakeDateTime_51 extends _i1.Fake implements DateTime {}
+class _FakeSpecies_51 extends _i1.Fake implements _i8.Species {}
 
-class _FakeTimeOfDay_52 extends _i1.Fake implements _i44.TimeOfDay {}
+class _FakeDateTime_52 extends _i1.Fake implements DateTime {}
 
-class _FakeWaterClarity_53 extends _i1.Fake implements _i8.WaterClarity {}
+class _FakeTimeOfDay_53 extends _i1.Fake implements _i44.TimeOfDay {}
 
-class _FakeUserCredential_54 extends _i1.Fake implements _i45.UserCredential {}
+class _FakeWaterClarity_54 extends _i1.Fake implements _i8.WaterClarity {}
 
-class _FakeReference_55 extends _i1.Fake implements _i46.Reference {}
+class _FakeUserCredential_55 extends _i1.Fake implements _i45.UserCredential {}
 
-class _FakeCollectionReference_56 extends _i1.Fake
+class _FakeReference_56 extends _i1.Fake implements _i46.Reference {}
+
+class _FakeCollectionReference_57 extends _i1.Fake
     implements _i47.CollectionReference {}
 
-class _FakeDocumentReference_57 extends _i1.Fake
+class _FakeDocumentReference_58 extends _i1.Fake
     implements _i47.DocumentReference {}
 
-class _FakeResponse_58 extends _i1.Fake implements _i48.Response {}
+class _FakeResponse_59 extends _i1.Fake implements _i48.Response {}
 
-class _FakeDirectory_59 extends _i1.Fake implements _i49.Directory {}
+class _FakeDirectory_60 extends _i1.Fake implements _i49.Directory {}
 
-class _FakeFile_60 extends _i1.Fake implements _i49.File {}
+class _FakeFile_61 extends _i1.Fake implements _i49.File {}
 
-class _FakePackageInfo_61 extends _i1.Fake implements _i50.PackageInfo {}
+class _FakeArgumentCallbacks_62<T> extends _i1.Fake
+    implements _i50.ArgumentCallbacks<T> {}
 
-class _FakeOfferings_62 extends _i1.Fake implements _i51.Offerings {}
+class _FakeWidget_63 extends _i1.Fake implements _i44.Widget {
+  @override
+  String toString(
+          {_i44.DiagnosticLevel? minLevel = _i44.DiagnosticLevel.info}) =>
+      super.toString();
+}
 
-class _FakePurchaserInfo_63 extends _i1.Fake implements _i51.PurchaserInfo {}
+class _FakeSymbol_64 extends _i1.Fake implements _i50.Symbol {}
 
-class _FakeMethodChannel_64 extends _i1.Fake implements _i52.MethodChannel {}
+class _FakeLatLng_65 extends _i1.Fake implements _i50.LatLng {}
 
-class _FakeFilterOptionGroup_65 extends _i1.Fake
-    implements _i53.FilterOptionGroup {}
+class _FakeLine_66 extends _i1.Fake implements _i50.Line {}
 
-class _FakeRequestType_66 extends _i1.Fake implements _i53.RequestType {}
+class _FakeCircle_67 extends _i1.Fake implements _i50.Circle {}
 
-class _FakeFirebaseFirestore_67 extends _i1.Fake
+class _FakeFill_68 extends _i1.Fake implements _i50.Fill {}
+
+class _FakeLatLngBounds_69 extends _i1.Fake implements _i50.LatLngBounds {}
+
+class _FakePoint_70<T extends num> extends _i1.Fake implements _i51.Point<T> {}
+
+class _FakePackageInfo_71 extends _i1.Fake implements _i52.PackageInfo {}
+
+class _FakeOfferings_72 extends _i1.Fake implements _i53.Offerings {}
+
+class _FakePurchaserInfo_73 extends _i1.Fake implements _i53.PurchaserInfo {}
+
+class _FakeMethodChannel_74 extends _i1.Fake implements _i54.MethodChannel {}
+
+class _FakeFilterOptionGroup_75 extends _i1.Fake
+    implements _i55.FilterOptionGroup {}
+
+class _FakeRequestType_76 extends _i1.Fake implements _i55.RequestType {}
+
+class _FakeFirebaseFirestore_77 extends _i1.Fake
     implements _i47.FirebaseFirestore {}
 
-class _FakeQuery_68 extends _i1.Fake implements _i47.Query {}
+class _FakeQuery_78 extends _i1.Fake implements _i47.Query {}
 
-class _FakeQuerySnapshot_69 extends _i1.Fake implements _i47.QuerySnapshot {}
+class _FakeQuerySnapshot_79 extends _i1.Fake implements _i47.QuerySnapshot {}
 
-class _FakeBatch_70 extends _i1.Fake implements _i54.Batch {}
+class _FakeBatch_80 extends _i1.Fake implements _i56.Batch {}
 
-class _FakeUri_71 extends _i1.Fake implements Uri {}
+class _FakeUri_81 extends _i1.Fake implements Uri {}
 
-class _FakeFileStat_72 extends _i1.Fake implements _i49.FileStat {}
+class _FakeFileStat_82 extends _i1.Fake implements _i49.FileStat {}
 
-class _FakeFileSystemEntity_73 extends _i1.Fake
+class _FakeFileSystemEntity_83 extends _i1.Fake
     implements _i49.FileSystemEntity {}
 
-class _FakeDocumentSnapshot_74 extends _i1.Fake
+class _FakeDocumentSnapshot_84 extends _i1.Fake
     implements _i47.DocumentSnapshot {}
 
-class _FakeSnapshotMetadata_75 extends _i1.Fake
+class _FakeSnapshotMetadata_85 extends _i1.Fake
     implements _i47.SnapshotMetadata {}
 
-class _FakeFirebaseStorage_76 extends _i1.Fake implements _i46.FirebaseStorage {
+class _FakeFirebaseStorage_86 extends _i1.Fake implements _i46.FirebaseStorage {
 }
 
-class _FakeTaskSnapshot_77 extends _i1.Fake implements _i46.TaskSnapshot {}
+class _FakeTaskSnapshot_87 extends _i1.Fake implements _i46.TaskSnapshot {}
 
-class _FakeMethodCodec_78 extends _i1.Fake implements _i52.MethodCodec {}
+class _FakeMethodCodec_88 extends _i1.Fake implements _i54.MethodCodec {}
 
-class _FakeBinaryMessenger_79 extends _i1.Fake implements _i52.BinaryMessenger {
+class _FakeBinaryMessenger_89 extends _i1.Fake implements _i54.BinaryMessenger {
 }
 
-class _FakeProduct_80 extends _i1.Fake implements _i51.Product {}
+class _FakeProduct_90 extends _i1.Fake implements _i53.Product {}
 
-class _FakeEntitlementInfos_81 extends _i1.Fake
-    implements _i51.EntitlementInfos {}
+class _FakeEntitlementInfos_91 extends _i1.Fake
+    implements _i53.EntitlementInfos {}
 
-class _FakeFullMetadata_82 extends _i1.Fake implements _i46.FullMetadata {}
+class _FakeFullMetadata_92 extends _i1.Fake implements _i46.FullMetadata {}
 
-class _FakeListResult_83 extends _i1.Fake implements _i46.ListResult {}
+class _FakeListResult_93 extends _i1.Fake implements _i46.ListResult {}
 
-class _FakeUploadTask_84 extends _i1.Fake implements _i46.UploadTask {}
+class _FakeUploadTask_94 extends _i1.Fake implements _i46.UploadTask {}
 
-class _FakeDownloadTask_85 extends _i1.Fake implements _i46.DownloadTask {}
+class _FakeDownloadTask_95 extends _i1.Fake implements _i46.DownloadTask {}
 
-class _FakeUserMetadata_86 extends _i1.Fake implements _i45.UserMetadata {}
+class _FakeUserMetadata_96 extends _i1.Fake implements _i45.UserMetadata {}
 
-class _FakeIdTokenResult_87 extends _i1.Fake implements _i45.IdTokenResult {}
+class _FakeIdTokenResult_97 extends _i1.Fake implements _i45.IdTokenResult {}
 
-class _FakeConfirmationResult_88 extends _i1.Fake
+class _FakeConfirmationResult_98 extends _i1.Fake
     implements _i45.ConfirmationResult {}
 
-class _FakeUser_89 extends _i1.Fake implements _i45.User {}
+class _FakeUser_99 extends _i1.Fake implements _i45.User {}
 
 /// A class which mocks [AnglerManager].
 ///
@@ -429,7 +461,7 @@ class MockAnglerManager extends _i1.Mock implements _i11.AnglerManager {
       .noSuchMethod(Invocation.method(#delete, [entityId], {#notify: notify}),
           returnValue: Future<bool>.value(false)) as _i9.Future<bool>);
   @override
-  int numberOf<T extends _i55.GeneratedMessage>(
+  int numberOf<T extends _i57.GeneratedMessage>(
           _i8.Id? id, List<T>? items, bool Function(T)? matches) =>
       (super.noSuchMethod(Invocation.method(#numberOf, [id, items, matches]),
           returnValue: 0) as int);
@@ -666,7 +698,7 @@ class MockAppPreferenceManager extends _i1.Mock
 /// A class which mocks [AtmosphereFetcher].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockAtmosphereFetcher extends _i1.Mock implements _i56.AtmosphereFetcher {
+class MockAtmosphereFetcher extends _i1.Mock implements _i58.AtmosphereFetcher {
   MockAtmosphereFetcher() {
     _i1.throwOnMissingStub(this);
   }
@@ -831,7 +863,7 @@ class MockBaitCategoryManager extends _i1.Mock
       .noSuchMethod(Invocation.method(#delete, [entityId], {#notify: notify}),
           returnValue: Future<bool>.value(false)) as _i9.Future<bool>);
   @override
-  int numberOf<T extends _i55.GeneratedMessage>(
+  int numberOf<T extends _i57.GeneratedMessage>(
           _i8.Id? id, List<T>? items, bool Function(T)? matches) =>
       (super.noSuchMethod(Invocation.method(#numberOf, [id, items, matches]),
           returnValue: 0) as int);
@@ -1091,7 +1123,7 @@ class MockBaitManager extends _i1.Mock implements _i13.BaitManager {
       .noSuchMethod(Invocation.method(#delete, [entityId], {#notify: notify}),
           returnValue: Future<bool>.value(false)) as _i9.Future<bool>);
   @override
-  int numberOf<T extends _i55.GeneratedMessage>(
+  int numberOf<T extends _i57.GeneratedMessage>(
           _i8.Id? id, List<T>? items, bool Function(T)? matches) =>
       (super.noSuchMethod(Invocation.method(#numberOf, [id, items, matches]),
           returnValue: 0) as int);
@@ -1125,6 +1157,187 @@ class MockBaitManager extends _i1.Mock implements _i13.BaitManager {
                   {#onAdd: onAdd, #onDelete: onDelete, #onUpdate: onUpdate}),
               returnValue: _FakeSimpleEntityListener_9<_i8.Bait>())
           as _i10.SimpleEntityListener<_i8.Bait>);
+  @override
+  _i9.Future<void> initialize() =>
+      (super.noSuchMethod(Invocation.method(#initialize, []),
+          returnValue: Future<void>.value(),
+          returnValueForMissingStub: Future<void>.value()) as _i9.Future<void>);
+  @override
+  String toString() => super.toString();
+}
+
+/// A class which mocks [BodyOfWaterManager].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockBodyOfWaterManager extends _i1.Mock
+    implements _i14.BodyOfWaterManager {
+  MockBodyOfWaterManager() {
+    _i1.throwOnMissingStub(this);
+  }
+
+  @override
+  String get tableName =>
+      (super.noSuchMethod(Invocation.getter(#tableName), returnValue: '')
+          as String);
+  @override
+  int Function(_i8.BodyOfWater, _i8.BodyOfWater) get nameComparator =>
+      (super.noSuchMethod(Invocation.getter(#nameComparator),
+              returnValue: (_i8.BodyOfWater __p0, _i8.BodyOfWater __p1) => 0)
+          as int Function(_i8.BodyOfWater, _i8.BodyOfWater));
+  @override
+  Map<_i8.Id, _i8.BodyOfWater> get entities =>
+      (super.noSuchMethod(Invocation.getter(#entities),
+              returnValue: <_i8.Id, _i8.BodyOfWater>{})
+          as Map<_i8.Id, _i8.BodyOfWater>);
+  @override
+  bool get enableFirestore => (super
+          .noSuchMethod(Invocation.getter(#enableFirestore), returnValue: false)
+      as bool);
+  @override
+  _i2.FirestoreWrapper get firestore =>
+      (super.noSuchMethod(Invocation.getter(#firestore),
+          returnValue: _FakeFirestoreWrapper_0()) as _i2.FirestoreWrapper);
+  @override
+  _i3.LocalDatabaseManager get localDatabaseManager => (super.noSuchMethod(
+      Invocation.getter(#localDatabaseManager),
+      returnValue: _FakeLocalDatabaseManager_1()) as _i3.LocalDatabaseManager);
+  @override
+  int get entityCount =>
+      (super.noSuchMethod(Invocation.getter(#entityCount), returnValue: 0)
+          as int);
+  @override
+  _i4.AppManager get appManager =>
+      (super.noSuchMethod(Invocation.getter(#appManager),
+          returnValue: _FakeAppManager_2()) as _i4.AppManager);
+  @override
+  _i5.AppPreferenceManager get appPreferenceManager => (super.noSuchMethod(
+      Invocation.getter(#appPreferenceManager),
+      returnValue: _FakeAppPreferenceManager_3()) as _i5.AppPreferenceManager);
+  @override
+  _i6.AuthManager get authManager =>
+      (super.noSuchMethod(Invocation.getter(#authManager),
+          returnValue: _FakeAuthManager_4()) as _i6.AuthManager);
+  @override
+  _i7.SubscriptionManager get subscriptionManager => (super.noSuchMethod(
+      Invocation.getter(#subscriptionManager),
+      returnValue: _FakeSubscriptionManager_5()) as _i7.SubscriptionManager);
+  @override
+  bool get shouldUseFirestore =>
+      (super.noSuchMethod(Invocation.getter(#shouldUseFirestore),
+          returnValue: false) as bool);
+  @override
+  _i8.BodyOfWater entityFromBytes(List<int>? bytes) =>
+      (super.noSuchMethod(Invocation.method(#entityFromBytes, [bytes]),
+          returnValue: _FakeBodyOfWater_45()) as _i8.BodyOfWater);
+  @override
+  _i8.Id id(_i8.BodyOfWater? bodyOfWater) =>
+      (super.noSuchMethod(Invocation.method(#id, [bodyOfWater]),
+          returnValue: _FakeId_7()) as _i8.Id);
+  @override
+  String name(_i8.BodyOfWater? bodyOfWater) =>
+      (super.noSuchMethod(Invocation.method(#name, [bodyOfWater]),
+          returnValue: '') as String);
+  @override
+  int numberOfFishingSpots(_i8.Id? bodyOfWaterId) => (super.noSuchMethod(
+      Invocation.method(#numberOfFishingSpots, [bodyOfWaterId]),
+      returnValue: 0) as int);
+  @override
+  String deleteMessage(
+          _i44.BuildContext? context, _i8.BodyOfWater? bodyOfWater) =>
+      (super.noSuchMethod(
+          Invocation.method(#deleteMessage, [context, bodyOfWater]),
+          returnValue: '') as String);
+  @override
+  List<_i8.BodyOfWater> listSortedByName({String? filter}) => (super
+      .noSuchMethod(Invocation.method(#listSortedByName, [], {#filter: filter}),
+          returnValue: <_i8.BodyOfWater>[]) as List<_i8.BodyOfWater>);
+  @override
+  bool matchesFilter(_i8.Id? id, String? filter) =>
+      (super.noSuchMethod(Invocation.method(#matchesFilter, [id, filter]),
+          returnValue: false) as bool);
+  @override
+  bool nameExists(String? name) =>
+      (super.noSuchMethod(Invocation.method(#nameExists, [name]),
+          returnValue: false) as bool);
+  @override
+  _i9.Future<void> initializeLocalData() =>
+      (super.noSuchMethod(Invocation.method(#initializeLocalData, []),
+          returnValue: Future<void>.value(),
+          returnValueForMissingStub: Future<void>.value()) as _i9.Future<void>);
+  @override
+  void clearMemory() => super.noSuchMethod(Invocation.method(#clearMemory, []),
+      returnValueForMissingStub: null);
+  @override
+  _i9.StreamSubscription<dynamic> initializeFirestore(
+          _i9.Completer<dynamic>? completer) =>
+      (super.noSuchMethod(Invocation.method(#initializeFirestore, [completer]),
+              returnValue: _FakeStreamSubscription_8<dynamic>())
+          as _i9.StreamSubscription<dynamic>);
+  @override
+  void onUpgradeToPro() =>
+      super.noSuchMethod(Invocation.method(#onUpgradeToPro, []),
+          returnValueForMissingStub: null);
+  @override
+  List<_i8.BodyOfWater> list([Iterable<_i8.Id>? ids]) =>
+      (super.noSuchMethod(Invocation.method(#list, [ids]),
+          returnValue: <_i8.BodyOfWater>[]) as List<_i8.BodyOfWater>);
+  @override
+  List<_i8.BodyOfWater> filteredList(String? filter) =>
+      (super.noSuchMethod(Invocation.method(#filteredList, [filter]),
+          returnValue: <_i8.BodyOfWater>[]) as List<_i8.BodyOfWater>);
+  @override
+  bool idsMatchFilter(Iterable<_i8.Id>? ids, String? filter) =>
+      (super.noSuchMethod(Invocation.method(#idsMatchFilter, [ids, filter]),
+          returnValue: false) as bool);
+  @override
+  bool entityExists(_i8.Id? id) =>
+      (super.noSuchMethod(Invocation.method(#entityExists, [id]),
+          returnValue: false) as bool);
+  @override
+  _i9.Future<bool> addOrUpdate(_i8.BodyOfWater? entity,
+          {bool? notify = true}) =>
+      (super.noSuchMethod(
+          Invocation.method(#addOrUpdate, [entity], {#notify: notify}),
+          returnValue: Future<bool>.value(false)) as _i9.Future<bool>);
+  @override
+  _i9.Future<bool> delete(_i8.Id? entityId, {bool? notify = true}) => (super
+      .noSuchMethod(Invocation.method(#delete, [entityId], {#notify: notify}),
+          returnValue: Future<bool>.value(false)) as _i9.Future<bool>);
+  @override
+  int numberOf<T extends _i57.GeneratedMessage>(
+          _i8.Id? id, List<T>? items, bool Function(T)? matches) =>
+      (super.noSuchMethod(Invocation.method(#numberOf, [id, items, matches]),
+          returnValue: 0) as int);
+  @override
+  void addListener(_i10.EntityListener<_i8.BodyOfWater>? listener) =>
+      super.noSuchMethod(Invocation.method(#addListener, [listener]),
+          returnValueForMissingStub: null);
+  @override
+  void removeListener(_i10.EntityListener<_i8.BodyOfWater>? listener) =>
+      super.noSuchMethod(Invocation.method(#removeListener, [listener]),
+          returnValueForMissingStub: null);
+  @override
+  void notifyOnAdd(_i8.BodyOfWater? entity) =>
+      super.noSuchMethod(Invocation.method(#notifyOnAdd, [entity]),
+          returnValueForMissingStub: null);
+  @override
+  void notifyOnDelete(_i8.BodyOfWater? entity) =>
+      super.noSuchMethod(Invocation.method(#notifyOnDelete, [entity]),
+          returnValueForMissingStub: null);
+  @override
+  void notifyOnUpdate(_i8.BodyOfWater? entity) =>
+      super.noSuchMethod(Invocation.method(#notifyOnUpdate, [entity]),
+          returnValueForMissingStub: null);
+  @override
+  _i10.SimpleEntityListener<_i8.BodyOfWater> addSimpleListener(
+          {void Function(_i8.BodyOfWater)? onAdd,
+          void Function(_i8.BodyOfWater)? onDelete,
+          void Function(_i8.BodyOfWater)? onUpdate}) =>
+      (super.noSuchMethod(
+              Invocation.method(#addSimpleListener, [],
+                  {#onAdd: onAdd, #onDelete: onDelete, #onUpdate: onUpdate}),
+              returnValue: _FakeSimpleEntityListener_9<_i8.BodyOfWater>())
+          as _i10.SimpleEntityListener<_i8.BodyOfWater>);
   @override
   _i9.Future<void> initialize() =>
       (super.noSuchMethod(Invocation.method(#initialize, []),
@@ -1189,7 +1402,7 @@ class MockCatchManager extends _i1.Mock implements _i15.CatchManager {
   @override
   _i8.Catch entityFromBytes(List<int>? bytes) =>
       (super.noSuchMethod(Invocation.method(#entityFromBytes, [bytes]),
-          returnValue: _FakeCatch_45()) as _i8.Catch);
+          returnValue: _FakeCatch_46()) as _i8.Catch);
   @override
   _i8.Id id(_i8.Catch? cat) => (super
           .noSuchMethod(Invocation.method(#id, [cat]), returnValue: _FakeId_7())
@@ -1397,7 +1610,7 @@ class MockCatchManager extends _i1.Mock implements _i15.CatchManager {
       .noSuchMethod(Invocation.method(#delete, [entityId], {#notify: notify}),
           returnValue: Future<bool>.value(false)) as _i9.Future<bool>);
   @override
-  int numberOf<T extends _i55.GeneratedMessage>(
+  int numberOf<T extends _i57.GeneratedMessage>(
           _i8.Id? id, List<T>? items, bool Function(T)? matches) =>
       (super.noSuchMethod(Invocation.method(#numberOf, [id, items, matches]),
           returnValue: 0) as int);
@@ -1502,7 +1715,7 @@ class MockCustomEntityManager extends _i1.Mock
   @override
   _i8.CustomEntity entityFromBytes(List<int>? bytes) =>
       (super.noSuchMethod(Invocation.method(#entityFromBytes, [bytes]),
-          returnValue: _FakeCustomEntity_46()) as _i8.CustomEntity);
+          returnValue: _FakeCustomEntity_47()) as _i8.CustomEntity);
   @override
   _i8.Id id(_i8.CustomEntity? entity) =>
       (super.noSuchMethod(Invocation.method(#id, [entity]),
@@ -1574,7 +1787,7 @@ class MockCustomEntityManager extends _i1.Mock
       .noSuchMethod(Invocation.method(#delete, [entityId], {#notify: notify}),
           returnValue: Future<bool>.value(false)) as _i9.Future<bool>);
   @override
-  int numberOf<T extends _i55.GeneratedMessage>(
+  int numberOf<T extends _i57.GeneratedMessage>(
           _i8.Id? id, List<T>? items, bool Function(T)? matches) =>
       (super.noSuchMethod(Invocation.method(#numberOf, [id, items, matches]),
           returnValue: 0) as int);
@@ -1677,7 +1890,7 @@ class MockReportManager extends _i1.Mock implements _i22.ReportManager {
   @override
   _i8.Report entityFromBytes(List<int>? bytes) =>
       (super.noSuchMethod(Invocation.method(#entityFromBytes, [bytes]),
-          returnValue: _FakeReport_47()) as _i8.Report);
+          returnValue: _FakeReport_48()) as _i8.Report);
   @override
   _i8.Id id(_i8.Report? report) =>
       (super.noSuchMethod(Invocation.method(#id, [report]),
@@ -1755,7 +1968,7 @@ class MockReportManager extends _i1.Mock implements _i22.ReportManager {
       .noSuchMethod(Invocation.method(#delete, [entityId], {#notify: notify}),
           returnValue: Future<bool>.value(false)) as _i9.Future<bool>);
   @override
-  int numberOf<T extends _i55.GeneratedMessage>(
+  int numberOf<T extends _i57.GeneratedMessage>(
           _i8.Id? id, List<T>? items, bool Function(T)? matches) =>
       (super.noSuchMethod(Invocation.method(#numberOf, [id, items, matches]),
           returnValue: 0) as int);
@@ -1860,7 +2073,7 @@ class MockFishingSpotManager extends _i1.Mock
   @override
   _i8.FishingSpot entityFromBytes(List<int>? bytes) =>
       (super.noSuchMethod(Invocation.method(#entityFromBytes, [bytes]),
-          returnValue: _FakeFishingSpot_48()) as _i8.FishingSpot);
+          returnValue: _FakeFishingSpot_49()) as _i8.FishingSpot);
   @override
   _i8.Id id(_i8.FishingSpot? fishingSpot) =>
       (super.noSuchMethod(Invocation.method(#id, [fishingSpot]),
@@ -1888,7 +2101,7 @@ class MockFishingSpotManager extends _i1.Mock
       .noSuchMethod(Invocation.method(#listSortedByName, [], {#filter: filter}),
           returnValue: <_i8.FishingSpot>[]) as List<_i8.FishingSpot>);
   @override
-  _i8.FishingSpot? withinRadius(_i57.LatLng? latLng, [int? meters = 30]) =>
+  _i8.FishingSpot? withinRadius(_i50.LatLng? latLng, [int? meters = 30]) =>
       (super.noSuchMethod(Invocation.method(#withinRadius, [latLng, meters]))
           as _i8.FishingSpot?);
   @override
@@ -1958,7 +2171,7 @@ class MockFishingSpotManager extends _i1.Mock
       .noSuchMethod(Invocation.method(#delete, [entityId], {#notify: notify}),
           returnValue: Future<bool>.value(false)) as _i9.Future<bool>);
   @override
-  int numberOf<T extends _i55.GeneratedMessage>(
+  int numberOf<T extends _i57.GeneratedMessage>(
           _i8.Id? id, List<T>? items, bool Function(T)? matches) =>
       (super.noSuchMethod(Invocation.method(#numberOf, [id, items, matches]),
           returnValue: 0) as int);
@@ -2015,22 +2228,22 @@ class MockImageManager extends _i1.Mock implements _i18.ImageManager {
           returnValue: Future<void>.value(),
           returnValueForMissingStub: Future<void>.value()) as _i9.Future<void>);
   @override
-  _i9.Future<_i58.Uint8List?> image(_i44.BuildContext? context,
+  _i9.Future<_i59.Uint8List?> image(_i44.BuildContext? context,
           {String? fileName, double? size}) =>
       (super.noSuchMethod(
               Invocation.method(
                   #image, [context], {#fileName: fileName, #size: size}),
-              returnValue: Future<_i58.Uint8List?>.value())
-          as _i9.Future<_i58.Uint8List?>);
+              returnValue: Future<_i59.Uint8List?>.value())
+          as _i9.Future<_i59.Uint8List?>);
   @override
-  _i9.Future<Map<_i49.File, _i58.Uint8List>> images(_i44.BuildContext? context,
+  _i9.Future<Map<_i49.File, _i59.Uint8List>> images(_i44.BuildContext? context,
           {List<String>? imageNames, double? size}) =>
       (super.noSuchMethod(
               Invocation.method(
                   #images, [context], {#imageNames: imageNames, #size: size}),
-              returnValue: Future<Map<_i49.File, _i58.Uint8List>>.value(
-                  <_i49.File, _i58.Uint8List>{}))
-          as _i9.Future<Map<_i49.File, _i58.Uint8List>>);
+              returnValue: Future<Map<_i49.File, _i59.Uint8List>>.value(
+                  <_i49.File, _i59.Uint8List>{}))
+          as _i9.Future<Map<_i49.File, _i59.Uint8List>>);
   @override
   _i9.Future<List<String>> save(List<_i49.File>? files,
           {bool? compress = true}) =>
@@ -2052,12 +2265,12 @@ class MockLocalDatabaseManager extends _i1.Mock
   }
 
   @override
-  _i9.Future<void> initialize({_i54.DatabaseExecutor? database}) => (super
+  _i9.Future<void> initialize({_i56.DatabaseExecutor? database}) => (super
       .noSuchMethod(Invocation.method(#initialize, [], {#database: database}),
           returnValue: Future<void>.value(),
           returnValueForMissingStub: Future<void>.value()) as _i9.Future<void>);
   @override
-  _i9.Future<List<dynamic>> commitBatch(void Function(_i54.Batch)? execute) =>
+  _i9.Future<List<dynamic>> commitBatch(void Function(_i56.Batch)? execute) =>
       (super.noSuchMethod(Invocation.method(#commitBatch, [execute]),
               returnValue: Future<List<dynamic>>.value(<dynamic>[]))
           as _i9.Future<List<dynamic>>);
@@ -2198,7 +2411,7 @@ class MockMethodManager extends _i1.Mock implements _i20.MethodManager {
   @override
   _i8.Method entityFromBytes(List<int>? bytes) =>
       (super.noSuchMethod(Invocation.method(#entityFromBytes, [bytes]),
-          returnValue: _FakeMethod_49()) as _i8.Method);
+          returnValue: _FakeMethod_50()) as _i8.Method);
   @override
   _i8.Id id(_i8.Method? method) =>
       (super.noSuchMethod(Invocation.method(#id, [method]),
@@ -2271,7 +2484,7 @@ class MockMethodManager extends _i1.Mock implements _i20.MethodManager {
       .noSuchMethod(Invocation.method(#delete, [entityId], {#notify: notify}),
           returnValue: Future<bool>.value(false)) as _i9.Future<bool>);
   @override
-  int numberOf<T extends _i55.GeneratedMessage>(
+  int numberOf<T extends _i57.GeneratedMessage>(
           _i8.Id? id, List<T>? items, bool Function(T)? matches) =>
       (super.noSuchMethod(Invocation.method(#numberOf, [id, items, matches]),
           returnValue: 0) as int);
@@ -2317,7 +2530,7 @@ class MockMethodManager extends _i1.Mock implements _i20.MethodManager {
 /// A class which mocks [PreferenceManager].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockPreferenceManager extends _i1.Mock implements _i59.PreferenceManager {
+class MockPreferenceManager extends _i1.Mock implements _i60.PreferenceManager {
   MockPreferenceManager() {
     _i1.throwOnMissingStub(this);
   }
@@ -2530,7 +2743,7 @@ class MockSpeciesManager extends _i1.Mock implements _i23.SpeciesManager {
   @override
   _i8.Species entityFromBytes(List<int>? bytes) =>
       (super.noSuchMethod(Invocation.method(#entityFromBytes, [bytes]),
-          returnValue: _FakeSpecies_50()) as _i8.Species);
+          returnValue: _FakeSpecies_51()) as _i8.Species);
   @override
   _i8.Id id(_i8.Species? species) =>
       (super.noSuchMethod(Invocation.method(#id, [species]),
@@ -2599,7 +2812,7 @@ class MockSpeciesManager extends _i1.Mock implements _i23.SpeciesManager {
           Invocation.method(#addOrUpdate, [entity], {#notify: notify}),
           returnValue: Future<bool>.value(false)) as _i9.Future<bool>);
   @override
-  int numberOf<T extends _i55.GeneratedMessage>(
+  int numberOf<T extends _i57.GeneratedMessage>(
           _i8.Id? id, List<T>? items, bool Function(T)? matches) =>
       (super.noSuchMethod(Invocation.method(#numberOf, [id, items, matches]),
           returnValue: 0) as int);
@@ -2698,11 +2911,11 @@ class MockTimeManager extends _i1.Mock implements _i24.TimeManager {
   @override
   DateTime get currentDateTime =>
       (super.noSuchMethod(Invocation.getter(#currentDateTime),
-          returnValue: _FakeDateTime_51()) as DateTime);
+          returnValue: _FakeDateTime_52()) as DateTime);
   @override
   _i44.TimeOfDay get currentTime =>
       (super.noSuchMethod(Invocation.getter(#currentTime),
-          returnValue: _FakeTimeOfDay_52()) as _i44.TimeOfDay);
+          returnValue: _FakeTimeOfDay_53()) as _i44.TimeOfDay);
   @override
   int get msSinceEpoch =>
       (super.noSuchMethod(Invocation.getter(#msSinceEpoch), returnValue: 0)
@@ -3032,7 +3245,7 @@ class MockWaterClarityManager extends _i1.Mock
   @override
   _i8.WaterClarity entityFromBytes(List<int>? bytes) =>
       (super.noSuchMethod(Invocation.method(#entityFromBytes, [bytes]),
-          returnValue: _FakeWaterClarity_53()) as _i8.WaterClarity);
+          returnValue: _FakeWaterClarity_54()) as _i8.WaterClarity);
   @override
   _i8.Id id(_i8.WaterClarity? clarity) =>
       (super.noSuchMethod(Invocation.method(#id, [clarity]),
@@ -3106,7 +3319,7 @@ class MockWaterClarityManager extends _i1.Mock
       .noSuchMethod(Invocation.method(#delete, [entityId], {#notify: notify}),
           returnValue: Future<bool>.value(false)) as _i9.Future<bool>);
   @override
-  int numberOf<T extends _i55.GeneratedMessage>(
+  int numberOf<T extends _i57.GeneratedMessage>(
           _i8.Id? id, List<T>? items, bool Function(T)? matches) =>
       (super.noSuchMethod(Invocation.method(#numberOf, [id, items, matches]),
           returnValue: 0) as int);
@@ -3158,8 +3371,8 @@ class MockFilePickerWrapper extends _i1.Mock implements _i28.FilePickerWrapper {
   }
 
   @override
-  _i9.Future<_i60.FilePickerResult?> pickFiles(
-          {_i60.FileType? type = _i60.FileType.any,
+  _i9.Future<_i61.FilePickerResult?> pickFiles(
+          {_i61.FileType? type = _i61.FileType.any,
           List<String>? allowedExtensions,
           bool? allowMultiple = false}) =>
       (super.noSuchMethod(
@@ -3168,8 +3381,8 @@ class MockFilePickerWrapper extends _i1.Mock implements _i28.FilePickerWrapper {
                 #allowedExtensions: allowedExtensions,
                 #allowMultiple: allowMultiple
               }),
-              returnValue: Future<_i60.FilePickerResult?>.value())
-          as _i9.Future<_i60.FilePickerResult?>);
+              returnValue: Future<_i61.FilePickerResult?>.value())
+          as _i9.Future<_i61.FilePickerResult?>);
   @override
   String toString() => super.toString();
 }
@@ -3199,7 +3412,7 @@ class MockFirebaseAuthWrapper extends _i1.Mock
               Invocation.method(#signInWithEmailAndPassword, [],
                   {#email: email, #password: password}),
               returnValue:
-                  Future<_i45.UserCredential>.value(_FakeUserCredential_54()))
+                  Future<_i45.UserCredential>.value(_FakeUserCredential_55()))
           as _i9.Future<_i45.UserCredential>);
   @override
   _i9.Future<_i45.UserCredential> createUserWithEmailAndPassword(
@@ -3208,7 +3421,7 @@ class MockFirebaseAuthWrapper extends _i1.Mock
               Invocation.method(#createUserWithEmailAndPassword, [],
                   {#email: email, #password: password}),
               returnValue:
-                  Future<_i45.UserCredential>.value(_FakeUserCredential_54()))
+                  Future<_i45.UserCredential>.value(_FakeUserCredential_55()))
           as _i9.Future<_i45.UserCredential>);
   @override
   _i9.Future<void> sendPasswordResetEmail(String? email) =>
@@ -3231,7 +3444,7 @@ class MockFirebaseStorageWrapper extends _i1.Mock
   @override
   _i46.Reference ref([String? path]) =>
       (super.noSuchMethod(Invocation.method(#ref, [path]),
-          returnValue: _FakeReference_55()) as _i46.Reference);
+          returnValue: _FakeReference_56()) as _i46.Reference);
   @override
   String toString() => super.toString();
 }
@@ -3264,11 +3477,11 @@ class MockFirestoreWrapper extends _i1.Mock implements _i2.FirestoreWrapper {
   @override
   _i47.CollectionReference collection(String? path) => (super.noSuchMethod(
       Invocation.method(#collection, [path]),
-      returnValue: _FakeCollectionReference_56()) as _i47.CollectionReference);
+      returnValue: _FakeCollectionReference_57()) as _i47.CollectionReference);
   @override
   _i47.DocumentReference doc(String? path) =>
       (super.noSuchMethod(Invocation.method(#doc, [path]),
-          returnValue: _FakeDocumentReference_57()) as _i47.DocumentReference);
+          returnValue: _FakeDocumentReference_58()) as _i47.DocumentReference);
   @override
   String toString() => super.toString();
 }
@@ -3298,16 +3511,16 @@ class MockHttpWrapper extends _i1.Mock implements _i32.HttpWrapper {
   _i9.Future<_i48.Response> post(Uri? url,
           {Map<String, String>? headers,
           Object? body,
-          _i61.Encoding? encoding}) =>
+          _i62.Encoding? encoding}) =>
       (super.noSuchMethod(
               Invocation.method(#post, [url],
                   {#headers: headers, #body: body, #encoding: encoding}),
-              returnValue: Future<_i48.Response>.value(_FakeResponse_58()))
+              returnValue: Future<_i48.Response>.value(_FakeResponse_59()))
           as _i9.Future<_i48.Response>);
   @override
   _i9.Future<_i48.Response> get(Uri? url, {Map<String, String>? headers}) =>
       (super.noSuchMethod(Invocation.method(#get, [url], {#headers: headers}),
-              returnValue: Future<_i48.Response>.value(_FakeResponse_58()))
+              returnValue: Future<_i48.Response>.value(_FakeResponse_59()))
           as _i9.Future<_i48.Response>);
   @override
   String toString() => super.toString();
@@ -3323,10 +3536,10 @@ class MockImageCompressWrapper extends _i1.Mock
   }
 
   @override
-  _i9.Future<_i58.Uint8List?> compress(String? path, int? quality, int? size) =>
+  _i9.Future<_i59.Uint8List?> compress(String? path, int? quality, int? size) =>
       (super.noSuchMethod(Invocation.method(#compress, [path, quality, size]),
-              returnValue: Future<_i58.Uint8List?>.value())
-          as _i9.Future<_i58.Uint8List?>);
+              returnValue: Future<_i59.Uint8List?>.value())
+          as _i9.Future<_i59.Uint8List?>);
   @override
   String toString() => super.toString();
 }
@@ -3350,15 +3563,397 @@ class MockIoWrapper extends _i1.Mock implements _i35.IoWrapper {
   @override
   _i49.Directory directory(String? path) =>
       (super.noSuchMethod(Invocation.method(#directory, [path]),
-          returnValue: _FakeDirectory_59()) as _i49.Directory);
+          returnValue: _FakeDirectory_60()) as _i49.Directory);
   @override
   _i49.File file(String? path) =>
       (super.noSuchMethod(Invocation.method(#file, [path]),
-          returnValue: _FakeFile_60()) as _i49.File);
+          returnValue: _FakeFile_61()) as _i49.File);
   @override
   _i9.Future<bool> isConnected() =>
       (super.noSuchMethod(Invocation.method(#isConnected, []),
           returnValue: Future<bool>.value(false)) as _i9.Future<bool>);
+  @override
+  String toString() => super.toString();
+}
+
+/// A class which mocks [MapboxMapController].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockMapboxMapController extends _i1.Mock
+    implements _i50.MapboxMapController {
+  MockMapboxMapController() {
+    _i1.throwOnMissingStub(this);
+  }
+
+  @override
+  _i50.ArgumentCallbacks<_i50.Symbol> get onSymbolTapped =>
+      (super.noSuchMethod(Invocation.getter(#onSymbolTapped),
+              returnValue: _FakeArgumentCallbacks_62<_i50.Symbol>())
+          as _i50.ArgumentCallbacks<_i50.Symbol>);
+  @override
+  _i50.ArgumentCallbacks<_i50.Circle> get onCircleTapped =>
+      (super.noSuchMethod(Invocation.getter(#onCircleTapped),
+              returnValue: _FakeArgumentCallbacks_62<_i50.Circle>())
+          as _i50.ArgumentCallbacks<_i50.Circle>);
+  @override
+  _i50.ArgumentCallbacks<_i50.Fill> get onFillTapped =>
+      (super.noSuchMethod(Invocation.getter(#onFillTapped),
+              returnValue: _FakeArgumentCallbacks_62<_i50.Fill>())
+          as _i50.ArgumentCallbacks<_i50.Fill>);
+  @override
+  _i50.ArgumentCallbacks<_i50.Symbol> get onInfoWindowTapped =>
+      (super.noSuchMethod(Invocation.getter(#onInfoWindowTapped),
+              returnValue: _FakeArgumentCallbacks_62<_i50.Symbol>())
+          as _i50.ArgumentCallbacks<_i50.Symbol>);
+  @override
+  _i50.ArgumentCallbacks<_i50.Line> get onLineTapped =>
+      (super.noSuchMethod(Invocation.getter(#onLineTapped),
+              returnValue: _FakeArgumentCallbacks_62<_i50.Line>())
+          as _i50.ArgumentCallbacks<_i50.Line>);
+  @override
+  Set<_i50.Symbol> get symbols =>
+      (super.noSuchMethod(Invocation.getter(#symbols),
+          returnValue: <_i50.Symbol>{}) as Set<_i50.Symbol>);
+  @override
+  Set<_i50.Line> get lines =>
+      (super.noSuchMethod(Invocation.getter(#lines), returnValue: <_i50.Line>{})
+          as Set<_i50.Line>);
+  @override
+  Set<_i50.Circle> get circles =>
+      (super.noSuchMethod(Invocation.getter(#circles),
+          returnValue: <_i50.Circle>{}) as Set<_i50.Circle>);
+  @override
+  Set<_i50.Fill> get fills =>
+      (super.noSuchMethod(Invocation.getter(#fills), returnValue: <_i50.Fill>{})
+          as Set<_i50.Fill>);
+  @override
+  bool get isCameraMoving => (super
+          .noSuchMethod(Invocation.getter(#isCameraMoving), returnValue: false)
+      as bool);
+  @override
+  bool get hasListeners =>
+      (super.noSuchMethod(Invocation.getter(#hasListeners), returnValue: false)
+          as bool);
+  @override
+  _i44.Widget buildView(
+          Map<String, dynamic>? creationParams,
+          _i63.OnPlatformViewCreatedCallback? onPlatformViewCreated,
+          Set<_i64.Factory<_i65.OneSequenceGestureRecognizer>>?
+              gestureRecognizers) =>
+      (super.noSuchMethod(
+          Invocation.method(#buildView,
+              [creationParams, onPlatformViewCreated, gestureRecognizers]),
+          returnValue: _FakeWidget_63()) as _i44.Widget);
+  @override
+  _i9.Future<bool?> animateCamera(_i50.CameraUpdate? cameraUpdate) =>
+      (super.noSuchMethod(Invocation.method(#animateCamera, [cameraUpdate]),
+          returnValue: Future<bool?>.value()) as _i9.Future<bool?>);
+  @override
+  _i9.Future<bool?> moveCamera(_i50.CameraUpdate? cameraUpdate) =>
+      (super.noSuchMethod(Invocation.method(#moveCamera, [cameraUpdate]),
+          returnValue: Future<bool?>.value()) as _i9.Future<bool?>);
+  @override
+  _i9.Future<void> updateMyLocationTrackingMode(
+          _i50.MyLocationTrackingMode? myLocationTrackingMode) =>
+      (super.noSuchMethod(
+          Invocation.method(
+              #updateMyLocationTrackingMode, [myLocationTrackingMode]),
+          returnValue: Future<void>.value(),
+          returnValueForMissingStub: Future<void>.value()) as _i9.Future<void>);
+  @override
+  _i9.Future<void> matchMapLanguageWithDeviceDefault() => (super.noSuchMethod(
+      Invocation.method(#matchMapLanguageWithDeviceDefault, []),
+      returnValue: Future<void>.value(),
+      returnValueForMissingStub: Future<void>.value()) as _i9.Future<void>);
+  @override
+  _i9.Future<void> updateContentInsets(_i44.EdgeInsets? insets,
+          [bool? animated = false]) =>
+      (super.noSuchMethod(
+          Invocation.method(#updateContentInsets, [insets, animated]),
+          returnValue: Future<void>.value(),
+          returnValueForMissingStub: Future<void>.value()) as _i9.Future<void>);
+  @override
+  _i9.Future<void> setMapLanguage(String? language) =>
+      (super.noSuchMethod(Invocation.method(#setMapLanguage, [language]),
+          returnValue: Future<void>.value(),
+          returnValueForMissingStub: Future<void>.value()) as _i9.Future<void>);
+  @override
+  _i9.Future<void> setTelemetryEnabled(bool? enabled) =>
+      (super.noSuchMethod(Invocation.method(#setTelemetryEnabled, [enabled]),
+          returnValue: Future<void>.value(),
+          returnValueForMissingStub: Future<void>.value()) as _i9.Future<void>);
+  @override
+  _i9.Future<bool> getTelemetryEnabled() =>
+      (super.noSuchMethod(Invocation.method(#getTelemetryEnabled, []),
+          returnValue: Future<bool>.value(false)) as _i9.Future<bool>);
+  @override
+  _i9.Future<_i50.Symbol> addSymbol(_i50.SymbolOptions? options,
+          [Map<dynamic, dynamic>? data]) =>
+      (super.noSuchMethod(Invocation.method(#addSymbol, [options, data]),
+              returnValue: Future<_i50.Symbol>.value(_FakeSymbol_64()))
+          as _i9.Future<_i50.Symbol>);
+  @override
+  _i9.Future<List<_i50.Symbol>> addSymbols(List<_i50.SymbolOptions>? options,
+          [List<Map<dynamic, dynamic>>? data]) =>
+      (super.noSuchMethod(Invocation.method(#addSymbols, [options, data]),
+              returnValue: Future<List<_i50.Symbol>>.value(<_i50.Symbol>[]))
+          as _i9.Future<List<_i50.Symbol>>);
+  @override
+  _i9.Future<void> updateSymbol(
+          _i50.Symbol? symbol, _i50.SymbolOptions? changes) =>
+      (super.noSuchMethod(Invocation.method(#updateSymbol, [symbol, changes]),
+          returnValue: Future<void>.value(),
+          returnValueForMissingStub: Future<void>.value()) as _i9.Future<void>);
+  @override
+  _i9.Future<_i50.LatLng> getSymbolLatLng(_i50.Symbol? symbol) =>
+      (super.noSuchMethod(Invocation.method(#getSymbolLatLng, [symbol]),
+              returnValue: Future<_i50.LatLng>.value(_FakeLatLng_65()))
+          as _i9.Future<_i50.LatLng>);
+  @override
+  _i9.Future<void> removeSymbol(_i50.Symbol? symbol) =>
+      (super.noSuchMethod(Invocation.method(#removeSymbol, [symbol]),
+          returnValue: Future<void>.value(),
+          returnValueForMissingStub: Future<void>.value()) as _i9.Future<void>);
+  @override
+  _i9.Future<void> removeSymbols(Iterable<_i50.Symbol>? symbols) =>
+      (super.noSuchMethod(Invocation.method(#removeSymbols, [symbols]),
+          returnValue: Future<void>.value(),
+          returnValueForMissingStub: Future<void>.value()) as _i9.Future<void>);
+  @override
+  _i9.Future<void> clearSymbols() =>
+      (super.noSuchMethod(Invocation.method(#clearSymbols, []),
+          returnValue: Future<void>.value(),
+          returnValueForMissingStub: Future<void>.value()) as _i9.Future<void>);
+  @override
+  _i9.Future<_i50.Line> addLine(_i50.LineOptions? options,
+          [Map<dynamic, dynamic>? data]) =>
+      (super.noSuchMethod(Invocation.method(#addLine, [options, data]),
+              returnValue: Future<_i50.Line>.value(_FakeLine_66()))
+          as _i9.Future<_i50.Line>);
+  @override
+  _i9.Future<List<_i50.Line>> addLines(List<_i50.LineOptions>? options,
+          [List<Map<dynamic, dynamic>>? data]) =>
+      (super.noSuchMethod(Invocation.method(#addLines, [options, data]),
+              returnValue: Future<List<_i50.Line>>.value(<_i50.Line>[]))
+          as _i9.Future<List<_i50.Line>>);
+  @override
+  _i9.Future<void> updateLine(_i50.Line? line, _i50.LineOptions? changes) =>
+      (super.noSuchMethod(Invocation.method(#updateLine, [line, changes]),
+          returnValue: Future<void>.value(),
+          returnValueForMissingStub: Future<void>.value()) as _i9.Future<void>);
+  @override
+  _i9.Future<List<_i50.LatLng>> getLineLatLngs(_i50.Line? line) =>
+      (super.noSuchMethod(Invocation.method(#getLineLatLngs, [line]),
+              returnValue: Future<List<_i50.LatLng>>.value(<_i50.LatLng>[]))
+          as _i9.Future<List<_i50.LatLng>>);
+  @override
+  _i9.Future<void> removeLine(_i50.Line? line) =>
+      (super.noSuchMethod(Invocation.method(#removeLine, [line]),
+          returnValue: Future<void>.value(),
+          returnValueForMissingStub: Future<void>.value()) as _i9.Future<void>);
+  @override
+  _i9.Future<void> removeLines(Iterable<_i50.Line>? lines) =>
+      (super.noSuchMethod(Invocation.method(#removeLines, [lines]),
+          returnValue: Future<void>.value(),
+          returnValueForMissingStub: Future<void>.value()) as _i9.Future<void>);
+  @override
+  _i9.Future<void> clearLines() =>
+      (super.noSuchMethod(Invocation.method(#clearLines, []),
+          returnValue: Future<void>.value(),
+          returnValueForMissingStub: Future<void>.value()) as _i9.Future<void>);
+  @override
+  _i9.Future<_i50.Circle> addCircle(_i50.CircleOptions? options,
+          [Map<dynamic, dynamic>? data]) =>
+      (super.noSuchMethod(Invocation.method(#addCircle, [options, data]),
+              returnValue: Future<_i50.Circle>.value(_FakeCircle_67()))
+          as _i9.Future<_i50.Circle>);
+  @override
+  _i9.Future<List<_i50.Circle>> addCircles(List<_i50.CircleOptions>? options,
+          [List<Map<dynamic, dynamic>>? data]) =>
+      (super.noSuchMethod(Invocation.method(#addCircles, [options, data]),
+              returnValue: Future<List<_i50.Circle>>.value(<_i50.Circle>[]))
+          as _i9.Future<List<_i50.Circle>>);
+  @override
+  _i9.Future<void> updateCircle(
+          _i50.Circle? circle, _i50.CircleOptions? changes) =>
+      (super.noSuchMethod(Invocation.method(#updateCircle, [circle, changes]),
+          returnValue: Future<void>.value(),
+          returnValueForMissingStub: Future<void>.value()) as _i9.Future<void>);
+  @override
+  _i9.Future<_i50.LatLng> getCircleLatLng(_i50.Circle? circle) =>
+      (super.noSuchMethod(Invocation.method(#getCircleLatLng, [circle]),
+              returnValue: Future<_i50.LatLng>.value(_FakeLatLng_65()))
+          as _i9.Future<_i50.LatLng>);
+  @override
+  _i9.Future<void> removeCircle(_i50.Circle? circle) =>
+      (super.noSuchMethod(Invocation.method(#removeCircle, [circle]),
+          returnValue: Future<void>.value(),
+          returnValueForMissingStub: Future<void>.value()) as _i9.Future<void>);
+  @override
+  _i9.Future<void> removeCircles(Iterable<_i50.Circle>? circles) =>
+      (super.noSuchMethod(Invocation.method(#removeCircles, [circles]),
+          returnValue: Future<void>.value(),
+          returnValueForMissingStub: Future<void>.value()) as _i9.Future<void>);
+  @override
+  _i9.Future<void> clearCircles() =>
+      (super.noSuchMethod(Invocation.method(#clearCircles, []),
+          returnValue: Future<void>.value(),
+          returnValueForMissingStub: Future<void>.value()) as _i9.Future<void>);
+  @override
+  _i9.Future<_i50.Fill> addFill(_i50.FillOptions? options,
+          [Map<dynamic, dynamic>? data]) =>
+      (super.noSuchMethod(Invocation.method(#addFill, [options, data]),
+              returnValue: Future<_i50.Fill>.value(_FakeFill_68()))
+          as _i9.Future<_i50.Fill>);
+  @override
+  _i9.Future<List<_i50.Fill>> addFills(List<_i50.FillOptions>? options,
+          [List<Map<dynamic, dynamic>>? data]) =>
+      (super.noSuchMethod(Invocation.method(#addFills, [options, data]),
+              returnValue: Future<List<_i50.Fill>>.value(<_i50.Fill>[]))
+          as _i9.Future<List<_i50.Fill>>);
+  @override
+  _i9.Future<void> updateFill(_i50.Fill? fill, _i50.FillOptions? changes) =>
+      (super.noSuchMethod(Invocation.method(#updateFill, [fill, changes]),
+          returnValue: Future<void>.value(),
+          returnValueForMissingStub: Future<void>.value()) as _i9.Future<void>);
+  @override
+  _i9.Future<void> clearFills() =>
+      (super.noSuchMethod(Invocation.method(#clearFills, []),
+          returnValue: Future<void>.value(),
+          returnValueForMissingStub: Future<void>.value()) as _i9.Future<void>);
+  @override
+  _i9.Future<void> removeFill(_i50.Fill? fill) =>
+      (super.noSuchMethod(Invocation.method(#removeFill, [fill]),
+          returnValue: Future<void>.value(),
+          returnValueForMissingStub: Future<void>.value()) as _i9.Future<void>);
+  @override
+  _i9.Future<void> removeFills(Iterable<_i50.Fill>? fills) =>
+      (super.noSuchMethod(Invocation.method(#removeFills, [fills]),
+          returnValue: Future<void>.value(),
+          returnValueForMissingStub: Future<void>.value()) as _i9.Future<void>);
+  @override
+  _i9.Future<List<dynamic>> queryRenderedFeatures(_i51.Point<double>? point,
+          List<String>? layerIds, List<Object>? filter) =>
+      (super.noSuchMethod(
+          Invocation.method(#queryRenderedFeatures, [point, layerIds, filter]),
+          returnValue:
+              Future<List<dynamic>>.value(<dynamic>[])) as _i9
+          .Future<List<dynamic>>);
+  @override
+  _i9.Future<List<dynamic>> queryRenderedFeaturesInRect(
+          _i66.Rect? rect, List<String>? layerIds, String? filter) =>
+      (super.noSuchMethod(
+              Invocation.method(
+                  #queryRenderedFeaturesInRect, [rect, layerIds, filter]),
+              returnValue: Future<List<dynamic>>.value(<dynamic>[]))
+          as _i9.Future<List<dynamic>>);
+  @override
+  _i9.Future<dynamic> invalidateAmbientCache() =>
+      (super.noSuchMethod(Invocation.method(#invalidateAmbientCache, []),
+          returnValue: Future<dynamic>.value()) as _i9.Future<dynamic>);
+  @override
+  _i9.Future<_i50.LatLng?> requestMyLocationLatLng() => (super.noSuchMethod(
+      Invocation.method(#requestMyLocationLatLng, []),
+      returnValue: Future<_i50.LatLng?>.value()) as _i9.Future<_i50.LatLng?>);
+  @override
+  _i9.Future<_i50.LatLngBounds> getVisibleRegion() => (super.noSuchMethod(
+          Invocation.method(#getVisibleRegion, []),
+          returnValue: Future<_i50.LatLngBounds>.value(_FakeLatLngBounds_69()))
+      as _i9.Future<_i50.LatLngBounds>);
+  @override
+  _i9.Future<void> addImage(String? name, _i59.Uint8List? bytes,
+          [bool? sdf = false]) =>
+      (super.noSuchMethod(Invocation.method(#addImage, [name, bytes, sdf]),
+          returnValue: Future<void>.value(),
+          returnValueForMissingStub: Future<void>.value()) as _i9.Future<void>);
+  @override
+  _i9.Future<void> setSymbolIconAllowOverlap(bool? enable) => (super
+      .noSuchMethod(Invocation.method(#setSymbolIconAllowOverlap, [enable]),
+          returnValue: Future<void>.value(),
+          returnValueForMissingStub: Future<void>.value()) as _i9.Future<void>);
+  @override
+  _i9.Future<void> setSymbolIconIgnorePlacement(bool? enable) => (super
+      .noSuchMethod(Invocation.method(#setSymbolIconIgnorePlacement, [enable]),
+          returnValue: Future<void>.value(),
+          returnValueForMissingStub: Future<void>.value()) as _i9.Future<void>);
+  @override
+  _i9.Future<void> setSymbolTextAllowOverlap(bool? enable) => (super
+      .noSuchMethod(Invocation.method(#setSymbolTextAllowOverlap, [enable]),
+          returnValue: Future<void>.value(),
+          returnValueForMissingStub: Future<void>.value()) as _i9.Future<void>);
+  @override
+  _i9.Future<void> setSymbolTextIgnorePlacement(bool? enable) => (super
+      .noSuchMethod(Invocation.method(#setSymbolTextIgnorePlacement, [enable]),
+          returnValue: Future<void>.value(),
+          returnValueForMissingStub: Future<void>.value()) as _i9.Future<void>);
+  @override
+  _i9.Future<void> addImageSource(String? imageSourceId, _i59.Uint8List? bytes,
+          _i50.LatLngQuad? coordinates) =>
+      (super.noSuchMethod(
+          Invocation.method(
+              #addImageSource, [imageSourceId, bytes, coordinates]),
+          returnValue: Future<void>.value(),
+          returnValueForMissingStub: Future<void>.value()) as _i9.Future<void>);
+  @override
+  _i9.Future<void> removeImageSource(String? imageSourceId) => (super
+      .noSuchMethod(Invocation.method(#removeImageSource, [imageSourceId]),
+          returnValue: Future<void>.value(),
+          returnValueForMissingStub: Future<void>.value()) as _i9.Future<void>);
+  @override
+  _i9.Future<void> addLayer(String? imageLayerId, String? imageSourceId) =>
+      (super.noSuchMethod(
+          Invocation.method(#addLayer, [imageLayerId, imageSourceId]),
+          returnValue: Future<void>.value(),
+          returnValueForMissingStub: Future<void>.value()) as _i9.Future<void>);
+  @override
+  _i9.Future<void> addLayerBelow(
+          String? imageLayerId, String? imageSourceId, String? belowLayerId) =>
+      (super.noSuchMethod(
+          Invocation.method(
+              #addLayerBelow, [imageLayerId, imageSourceId, belowLayerId]),
+          returnValue: Future<void>.value(),
+          returnValueForMissingStub: Future<void>.value()) as _i9.Future<void>);
+  @override
+  _i9.Future<void> removeLayer(String? imageLayerId) =>
+      (super.noSuchMethod(Invocation.method(#removeLayer, [imageLayerId]),
+          returnValue: Future<void>.value(),
+          returnValueForMissingStub: Future<void>.value()) as _i9.Future<void>);
+  @override
+  _i9.Future<_i51.Point<num>> toScreenLocation(_i50.LatLng? latLng) =>
+      (super.noSuchMethod(Invocation.method(#toScreenLocation, [latLng]),
+              returnValue: Future<_i51.Point<num>>.value(_FakePoint_70<num>()))
+          as _i9.Future<_i51.Point<num>>);
+  @override
+  _i9.Future<List<_i51.Point<num>>> toScreenLocationBatch(
+          Iterable<_i50.LatLng>? latLngs) =>
+      (super.noSuchMethod(Invocation.method(#toScreenLocationBatch, [latLngs]),
+              returnValue:
+                  Future<List<_i51.Point<num>>>.value(<_i51.Point<num>>[]))
+          as _i9.Future<List<_i51.Point<num>>>);
+  @override
+  _i9.Future<_i50.LatLng> toLatLng(_i51.Point<num>? screenLocation) =>
+      (super.noSuchMethod(Invocation.method(#toLatLng, [screenLocation]),
+              returnValue: Future<_i50.LatLng>.value(_FakeLatLng_65()))
+          as _i9.Future<_i50.LatLng>);
+  @override
+  _i9.Future<double> getMetersPerPixelAtLatitude(double? latitude) => (super
+      .noSuchMethod(Invocation.method(#getMetersPerPixelAtLatitude, [latitude]),
+          returnValue: Future<double>.value(0.0)) as _i9.Future<double>);
+  @override
+  void addListener(_i66.VoidCallback? listener) =>
+      super.noSuchMethod(Invocation.method(#addListener, [listener]),
+          returnValueForMissingStub: null);
+  @override
+  void removeListener(_i66.VoidCallback? listener) =>
+      super.noSuchMethod(Invocation.method(#removeListener, [listener]),
+          returnValueForMissingStub: null);
+  @override
+  void dispose() => super.noSuchMethod(Invocation.method(#dispose, []),
+      returnValueForMissingStub: null);
+  @override
+  void notifyListeners() =>
+      super.noSuchMethod(Invocation.method(#notifyListeners, []),
+          returnValueForMissingStub: null);
   @override
   String toString() => super.toString();
 }
@@ -3373,10 +3968,10 @@ class MockPackageInfoWrapper extends _i1.Mock
   }
 
   @override
-  _i9.Future<_i50.PackageInfo> fromPlatform() => (super.noSuchMethod(
+  _i9.Future<_i52.PackageInfo> fromPlatform() => (super.noSuchMethod(
           Invocation.method(#fromPlatform, []),
-          returnValue: Future<_i50.PackageInfo>.value(_FakePackageInfo_61()))
-      as _i9.Future<_i50.PackageInfo>);
+          returnValue: Future<_i52.PackageInfo>.value(_FakePackageInfo_71()))
+      as _i9.Future<_i52.PackageInfo>);
   @override
   String toString() => super.toString();
 }
@@ -3441,11 +4036,11 @@ class MockPhotoManagerWrapper extends _i1.Mock
   }
 
   @override
-  _i9.Future<_i53.AssetPathEntity?> getAllAssetPathEntity(
-          _i53.RequestType? type) =>
+  _i9.Future<_i55.AssetPathEntity?> getAllAssetPathEntity(
+          _i55.RequestType? type) =>
       (super.noSuchMethod(Invocation.method(#getAllAssetPathEntity, [type]),
-              returnValue: Future<_i53.AssetPathEntity?>.value())
-          as _i9.Future<_i53.AssetPathEntity?>);
+              returnValue: Future<_i55.AssetPathEntity?>.value())
+          as _i9.Future<_i55.AssetPathEntity?>);
   @override
   String toString() => super.toString();
 }
@@ -3460,7 +4055,7 @@ class MockPurchasesWrapper extends _i1.Mock implements _i40.PurchasesWrapper {
 
   @override
   void addPurchaserInfoUpdateListener(
-          dynamic Function(_i51.PurchaserInfo)? listener) =>
+          dynamic Function(_i53.PurchaserInfo)? listener) =>
       super.noSuchMethod(
           Invocation.method(#addPurchaserInfoUpdateListener, [listener]),
           returnValueForMissingStub: null);
@@ -3478,40 +4073,40 @@ class MockPurchasesWrapper extends _i1.Mock implements _i40.PurchasesWrapper {
       super.noSuchMethod(Invocation.method(#setDebugEnabled, [enabled]),
           returnValueForMissingStub: null);
   @override
-  _i9.Future<_i51.Offerings> getOfferings() =>
+  _i9.Future<_i53.Offerings> getOfferings() =>
       (super.noSuchMethod(Invocation.method(#getOfferings, []),
-              returnValue: Future<_i51.Offerings>.value(_FakeOfferings_62()))
-          as _i9.Future<_i51.Offerings>);
+              returnValue: Future<_i53.Offerings>.value(_FakeOfferings_72()))
+          as _i9.Future<_i53.Offerings>);
   @override
-  _i9.Future<_i51.PurchaserInfo> getPurchaserInfo() =>
+  _i9.Future<_i53.PurchaserInfo> getPurchaserInfo() =>
       (super.noSuchMethod(Invocation.method(#getPurchaserInfo, []),
               returnValue:
-                  Future<_i51.PurchaserInfo>.value(_FakePurchaserInfo_63()))
-          as _i9.Future<_i51.PurchaserInfo>);
+                  Future<_i53.PurchaserInfo>.value(_FakePurchaserInfo_73()))
+          as _i9.Future<_i53.PurchaserInfo>);
   @override
-  _i9.Future<_i51.PurchaserInfo> identify(String? appUserId) =>
+  _i9.Future<_i53.PurchaserInfo> identify(String? appUserId) =>
       (super.noSuchMethod(Invocation.method(#identify, [appUserId]),
               returnValue:
-                  Future<_i51.PurchaserInfo>.value(_FakePurchaserInfo_63()))
-          as _i9.Future<_i51.PurchaserInfo>);
+                  Future<_i53.PurchaserInfo>.value(_FakePurchaserInfo_73()))
+          as _i9.Future<_i53.PurchaserInfo>);
   @override
-  _i9.Future<_i51.PurchaserInfo> purchasePackage(_i51.Package? package) =>
+  _i9.Future<_i53.PurchaserInfo> purchasePackage(_i53.Package? package) =>
       (super.noSuchMethod(Invocation.method(#purchasePackage, [package]),
               returnValue:
-                  Future<_i51.PurchaserInfo>.value(_FakePurchaserInfo_63()))
-          as _i9.Future<_i51.PurchaserInfo>);
+                  Future<_i53.PurchaserInfo>.value(_FakePurchaserInfo_73()))
+          as _i9.Future<_i53.PurchaserInfo>);
   @override
-  _i9.Future<_i51.PurchaserInfo> reset() =>
+  _i9.Future<_i53.PurchaserInfo> reset() =>
       (super.noSuchMethod(Invocation.method(#reset, []),
               returnValue:
-                  Future<_i51.PurchaserInfo>.value(_FakePurchaserInfo_63()))
-          as _i9.Future<_i51.PurchaserInfo>);
+                  Future<_i53.PurchaserInfo>.value(_FakePurchaserInfo_73()))
+          as _i9.Future<_i53.PurchaserInfo>);
   @override
-  _i9.Future<_i51.PurchaserInfo> restoreTransactions() =>
+  _i9.Future<_i53.PurchaserInfo> restoreTransactions() =>
       (super.noSuchMethod(Invocation.method(#restoreTransactions, []),
               returnValue:
-                  Future<_i51.PurchaserInfo>.value(_FakePurchaserInfo_63()))
-          as _i9.Future<_i51.PurchaserInfo>);
+                  Future<_i53.PurchaserInfo>.value(_FakePurchaserInfo_73()))
+          as _i9.Future<_i53.PurchaserInfo>);
   @override
   String toString() => super.toString();
 }
@@ -3525,9 +4120,9 @@ class MockServicesWrapper extends _i1.Mock implements _i41.ServicesWrapper {
   }
 
   @override
-  _i52.MethodChannel methodChannel(String? name) =>
+  _i54.MethodChannel methodChannel(String? name) =>
       (super.noSuchMethod(Invocation.method(#methodChannel, [name]),
-          returnValue: _FakeMethodChannel_64()) as _i52.MethodChannel);
+          returnValue: _FakeMethodChannel_74()) as _i54.MethodChannel);
   @override
   String toString() => super.toString();
 }
@@ -3577,7 +4172,7 @@ class MockUrlLauncherWrapper extends _i1.Mock
 /// A class which mocks [AssetPathEntity].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockAssetPathEntity extends _i1.Mock implements _i53.AssetPathEntity {
+class MockAssetPathEntity extends _i1.Mock implements _i55.AssetPathEntity {
   MockAssetPathEntity() {
     _i1.throwOnMissingStub(this);
   }
@@ -3611,11 +4206,11 @@ class MockAssetPathEntity extends _i1.Mock implements _i53.AssetPathEntity {
       super.noSuchMethod(Invocation.setter(#albumType, _albumType),
           returnValueForMissingStub: null);
   @override
-  _i53.FilterOptionGroup get filterOption =>
+  _i55.FilterOptionGroup get filterOption =>
       (super.noSuchMethod(Invocation.getter(#filterOption),
-          returnValue: _FakeFilterOptionGroup_65()) as _i53.FilterOptionGroup);
+          returnValue: _FakeFilterOptionGroup_75()) as _i55.FilterOptionGroup);
   @override
-  set filterOption(_i53.FilterOptionGroup? _filterOption) =>
+  set filterOption(_i55.FilterOptionGroup? _filterOption) =>
       super.noSuchMethod(Invocation.setter(#filterOption, _filterOption),
           returnValueForMissingStub: null);
   @override
@@ -3627,10 +4222,10 @@ class MockAssetPathEntity extends _i1.Mock implements _i53.AssetPathEntity {
       super.noSuchMethod(Invocation.setter(#isAll, _isAll),
           returnValueForMissingStub: null);
   @override
-  _i53.RequestType get type => (super.noSuchMethod(Invocation.getter(#type),
-      returnValue: _FakeRequestType_66()) as _i53.RequestType);
+  _i55.RequestType get type => (super.noSuchMethod(Invocation.getter(#type),
+      returnValue: _FakeRequestType_76()) as _i55.RequestType);
   @override
-  set type(_i53.RequestType? type) =>
+  set type(_i55.RequestType? type) =>
       super.noSuchMethod(Invocation.setter(#type, type),
           returnValueForMissingStub: null);
   @override
@@ -3641,11 +4236,11 @@ class MockAssetPathEntity extends _i1.Mock implements _i53.AssetPathEntity {
       super.noSuchMethod(Invocation.setter(#typeInt, typeInt),
           returnValueForMissingStub: null);
   @override
-  _i9.Future<List<_i53.AssetEntity>> get assetList =>
+  _i9.Future<List<_i55.AssetEntity>> get assetList =>
       (super.noSuchMethod(Invocation.getter(#assetList),
               returnValue:
-                  Future<List<_i53.AssetEntity>>.value(<_i53.AssetEntity>[]))
-          as _i9.Future<List<_i53.AssetEntity>>);
+                  Future<List<_i55.AssetEntity>>.value(<_i55.AssetEntity>[]))
+          as _i9.Future<List<_i55.AssetEntity>>);
   @override
   _i9.Future<void> refreshPathProperties({bool? maxDateTimeToNow = true}) =>
       (super.noSuchMethod(
@@ -3654,27 +4249,27 @@ class MockAssetPathEntity extends _i1.Mock implements _i53.AssetPathEntity {
           returnValue: Future<void>.value(),
           returnValueForMissingStub: Future<void>.value()) as _i9.Future<void>);
   @override
-  _i9.Future<List<_i53.AssetEntity>> getAssetListPaged(
+  _i9.Future<List<_i55.AssetEntity>> getAssetListPaged(
           int? page, int? pageSize) =>
       (super.noSuchMethod(
               Invocation.method(#getAssetListPaged, [page, pageSize]),
               returnValue:
-                  Future<List<_i53.AssetEntity>>.value(<_i53.AssetEntity>[]))
-          as _i9.Future<List<_i53.AssetEntity>>);
+                  Future<List<_i55.AssetEntity>>.value(<_i55.AssetEntity>[]))
+          as _i9.Future<List<_i55.AssetEntity>>);
   @override
-  _i9.Future<List<_i53.AssetEntity>> getAssetListRange(
+  _i9.Future<List<_i55.AssetEntity>> getAssetListRange(
           {int? start, int? end}) =>
       (super.noSuchMethod(
           Invocation.method(#getAssetListRange, [], {#start: start, #end: end}),
           returnValue:
-              Future<List<_i53.AssetEntity>>.value(<_i53.AssetEntity>[])) as _i9
-          .Future<List<_i53.AssetEntity>>);
+              Future<List<_i55.AssetEntity>>.value(<_i55.AssetEntity>[])) as _i9
+          .Future<List<_i55.AssetEntity>>);
   @override
-  _i9.Future<List<_i53.AssetPathEntity>> getSubPathList() =>
+  _i9.Future<List<_i55.AssetPathEntity>> getSubPathList() =>
       (super.noSuchMethod(Invocation.method(#getSubPathList, []),
-              returnValue: Future<List<_i53.AssetPathEntity>>.value(
-                  <_i53.AssetPathEntity>[]))
-          as _i9.Future<List<_i53.AssetPathEntity>>);
+              returnValue: Future<List<_i55.AssetPathEntity>>.value(
+                  <_i55.AssetPathEntity>[]))
+          as _i9.Future<List<_i55.AssetPathEntity>>);
   @override
   String toString() => super.toString();
 }
@@ -3682,7 +4277,7 @@ class MockAssetPathEntity extends _i1.Mock implements _i53.AssetPathEntity {
 /// A class which mocks [Batch].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockBatch extends _i1.Mock implements _i54.Batch {
+class MockBatch extends _i1.Mock implements _i56.Batch {
   MockBatch() {
     _i1.throwOnMissingStub(this);
   }
@@ -3705,7 +4300,7 @@ class MockBatch extends _i1.Mock implements _i54.Batch {
   @override
   void insert(String? table, Map<String, Object?>? values,
           {String? nullColumnHack,
-          _i54.ConflictAlgorithm? conflictAlgorithm}) =>
+          _i56.ConflictAlgorithm? conflictAlgorithm}) =>
       super.noSuchMethod(
           Invocation.method(#insert, [
             table,
@@ -3723,7 +4318,7 @@ class MockBatch extends _i1.Mock implements _i54.Batch {
   void update(String? table, Map<String, Object?>? values,
           {String? where,
           List<Object?>? whereArgs,
-          _i54.ConflictAlgorithm? conflictAlgorithm}) =>
+          _i56.ConflictAlgorithm? conflictAlgorithm}) =>
       super.noSuchMethod(
           Invocation.method(#update, [
             table,
@@ -3801,7 +4396,7 @@ class MockCollectionReference extends _i1.Mock
   @override
   _i47.FirebaseFirestore get firestore =>
       (super.noSuchMethod(Invocation.getter(#firestore),
-          returnValue: _FakeFirebaseFirestore_67()) as _i47.FirebaseFirestore);
+          returnValue: _FakeFirebaseFirestore_77()) as _i47.FirebaseFirestore);
   @override
   Map<String, dynamic> get parameters =>
       (super.noSuchMethod(Invocation.getter(#parameters),
@@ -3810,45 +4405,45 @@ class MockCollectionReference extends _i1.Mock
   _i9.Future<_i47.DocumentReference> add(Map<String, dynamic>? data) =>
       (super.noSuchMethod(Invocation.method(#add, [data]),
               returnValue: Future<_i47.DocumentReference>.value(
-                  _FakeDocumentReference_57()))
+                  _FakeDocumentReference_58()))
           as _i9.Future<_i47.DocumentReference>);
   @override
   _i47.DocumentReference doc([String? path]) =>
       (super.noSuchMethod(Invocation.method(#doc, [path]),
-          returnValue: _FakeDocumentReference_57()) as _i47.DocumentReference);
+          returnValue: _FakeDocumentReference_58()) as _i47.DocumentReference);
   @override
   String toString() => super.toString();
   @override
   _i47.Query endAtDocument(_i47.DocumentSnapshot? documentSnapshot) =>
       (super.noSuchMethod(Invocation.method(#endAtDocument, [documentSnapshot]),
-          returnValue: _FakeQuery_68()) as _i47.Query);
+          returnValue: _FakeQuery_78()) as _i47.Query);
   @override
   _i47.Query endAt(List<dynamic>? values) =>
       (super.noSuchMethod(Invocation.method(#endAt, [values]),
-          returnValue: _FakeQuery_68()) as _i47.Query);
+          returnValue: _FakeQuery_78()) as _i47.Query);
   @override
   _i47.Query endBeforeDocument(_i47.DocumentSnapshot? documentSnapshot) =>
       (super.noSuchMethod(
           Invocation.method(#endBeforeDocument, [documentSnapshot]),
-          returnValue: _FakeQuery_68()) as _i47.Query);
+          returnValue: _FakeQuery_78()) as _i47.Query);
   @override
   _i47.Query endBefore(List<dynamic>? values) =>
       (super.noSuchMethod(Invocation.method(#endBefore, [values]),
-          returnValue: _FakeQuery_68()) as _i47.Query);
+          returnValue: _FakeQuery_78()) as _i47.Query);
   @override
   _i9.Future<_i47.QuerySnapshot> get([_i47.GetOptions? options]) =>
       (super.noSuchMethod(Invocation.method(#get, [options]),
               returnValue:
-                  Future<_i47.QuerySnapshot>.value(_FakeQuerySnapshot_69()))
+                  Future<_i47.QuerySnapshot>.value(_FakeQuerySnapshot_79()))
           as _i9.Future<_i47.QuerySnapshot>);
   @override
   _i47.Query limit(int? limit) =>
       (super.noSuchMethod(Invocation.method(#limit, [limit]),
-          returnValue: _FakeQuery_68()) as _i47.Query);
+          returnValue: _FakeQuery_78()) as _i47.Query);
   @override
   _i47.Query limitToLast(int? limit) =>
       (super.noSuchMethod(Invocation.method(#limitToLast, [limit]),
-          returnValue: _FakeQuery_68()) as _i47.Query);
+          returnValue: _FakeQuery_78()) as _i47.Query);
   @override
   _i9.Stream<_i47.QuerySnapshot> snapshots(
           {bool? includeMetadataChanges = false}) =>
@@ -3861,24 +4456,24 @@ class MockCollectionReference extends _i1.Mock
   _i47.Query orderBy(dynamic field, {bool? descending = false}) =>
       (super.noSuchMethod(
           Invocation.method(#orderBy, [field], {#descending: descending}),
-          returnValue: _FakeQuery_68()) as _i47.Query);
+          returnValue: _FakeQuery_78()) as _i47.Query);
   @override
   _i47.Query startAfterDocument(_i47.DocumentSnapshot? documentSnapshot) =>
       (super.noSuchMethod(
           Invocation.method(#startAfterDocument, [documentSnapshot]),
-          returnValue: _FakeQuery_68()) as _i47.Query);
+          returnValue: _FakeQuery_78()) as _i47.Query);
   @override
   _i47.Query startAfter(List<dynamic>? values) =>
       (super.noSuchMethod(Invocation.method(#startAfter, [values]),
-          returnValue: _FakeQuery_68()) as _i47.Query);
+          returnValue: _FakeQuery_78()) as _i47.Query);
   @override
   _i47.Query startAtDocument(_i47.DocumentSnapshot? documentSnapshot) => (super
       .noSuchMethod(Invocation.method(#startAtDocument, [documentSnapshot]),
-          returnValue: _FakeQuery_68()) as _i47.Query);
+          returnValue: _FakeQuery_78()) as _i47.Query);
   @override
   _i47.Query startAt(List<dynamic>? values) =>
       (super.noSuchMethod(Invocation.method(#startAt, [values]),
-          returnValue: _FakeQuery_68()) as _i47.Query);
+          returnValue: _FakeQuery_78()) as _i47.Query);
   @override
   _i47.Query where(dynamic field,
           {dynamic isEqualTo,
@@ -3908,7 +4503,7 @@ class MockCollectionReference extends _i1.Mock
             #whereNotIn: whereNotIn,
             #isNull: isNull
           }),
-          returnValue: _FakeQuery_68()) as _i47.Query);
+          returnValue: _FakeQuery_78()) as _i47.Query);
 }
 
 /// A class which mocks [Completer].
@@ -3941,7 +4536,7 @@ class MockCompleter<T> extends _i1.Mock implements _i9.Completer<T> {
 /// A class which mocks [DatabaseExecutor].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockDatabaseExecutor extends _i1.Mock implements _i54.DatabaseExecutor {
+class MockDatabaseExecutor extends _i1.Mock implements _i56.DatabaseExecutor {
   MockDatabaseExecutor() {
     _i1.throwOnMissingStub(this);
   }
@@ -3958,7 +4553,7 @@ class MockDatabaseExecutor extends _i1.Mock implements _i54.DatabaseExecutor {
   @override
   _i9.Future<int> insert(String? table, Map<String, Object?>? values,
           {String? nullColumnHack,
-          _i54.ConflictAlgorithm? conflictAlgorithm}) =>
+          _i56.ConflictAlgorithm? conflictAlgorithm}) =>
       (super.noSuchMethod(
           Invocation.method(#insert, [
             table,
@@ -4011,7 +4606,7 @@ class MockDatabaseExecutor extends _i1.Mock implements _i54.DatabaseExecutor {
   _i9.Future<int> update(String? table, Map<String, Object?>? values,
           {String? where,
           List<Object?>? whereArgs,
-          _i54.ConflictAlgorithm? conflictAlgorithm}) =>
+          _i56.ConflictAlgorithm? conflictAlgorithm}) =>
       (super.noSuchMethod(
           Invocation.method(#update, [
             table,
@@ -4034,8 +4629,8 @@ class MockDatabaseExecutor extends _i1.Mock implements _i54.DatabaseExecutor {
               #delete, [table], {#where: where, #whereArgs: whereArgs}),
           returnValue: Future<int>.value(0)) as _i9.Future<int>);
   @override
-  _i54.Batch batch() => (super.noSuchMethod(Invocation.method(#batch, []),
-      returnValue: _FakeBatch_70()) as _i54.Batch);
+  _i56.Batch batch() => (super.noSuchMethod(Invocation.method(#batch, []),
+      returnValue: _FakeBatch_80()) as _i56.Batch);
   @override
   String toString() => super.toString();
 }
@@ -4053,23 +4648,23 @@ class MockDirectory extends _i1.Mock implements _i49.Directory {
       (super.noSuchMethod(Invocation.getter(#path), returnValue: '') as String);
   @override
   Uri get uri =>
-      (super.noSuchMethod(Invocation.getter(#uri), returnValue: _FakeUri_71())
+      (super.noSuchMethod(Invocation.getter(#uri), returnValue: _FakeUri_81())
           as Uri);
   @override
   _i49.Directory get absolute =>
       (super.noSuchMethod(Invocation.getter(#absolute),
-          returnValue: _FakeDirectory_59()) as _i49.Directory);
+          returnValue: _FakeDirectory_60()) as _i49.Directory);
   @override
   bool get isAbsolute =>
       (super.noSuchMethod(Invocation.getter(#isAbsolute), returnValue: false)
           as bool);
   @override
   _i49.Directory get parent => (super.noSuchMethod(Invocation.getter(#parent),
-      returnValue: _FakeDirectory_59()) as _i49.Directory);
+      returnValue: _FakeDirectory_60()) as _i49.Directory);
   @override
   _i9.Future<_i49.Directory> create({bool? recursive = false}) => (super
           .noSuchMethod(Invocation.method(#create, [], {#recursive: recursive}),
-              returnValue: Future<_i49.Directory>.value(_FakeDirectory_59()))
+              returnValue: Future<_i49.Directory>.value(_FakeDirectory_60()))
       as _i9.Future<_i49.Directory>);
   @override
   void createSync({bool? recursive = false}) => super.noSuchMethod(
@@ -4078,12 +4673,12 @@ class MockDirectory extends _i1.Mock implements _i49.Directory {
   @override
   _i9.Future<_i49.Directory> createTemp([String? prefix]) =>
       (super.noSuchMethod(Invocation.method(#createTemp, [prefix]),
-              returnValue: Future<_i49.Directory>.value(_FakeDirectory_59()))
+              returnValue: Future<_i49.Directory>.value(_FakeDirectory_60()))
           as _i9.Future<_i49.Directory>);
   @override
   _i49.Directory createTempSync([String? prefix]) =>
       (super.noSuchMethod(Invocation.method(#createTempSync, [prefix]),
-          returnValue: _FakeDirectory_59()) as _i49.Directory);
+          returnValue: _FakeDirectory_60()) as _i49.Directory);
   @override
   _i9.Future<String> resolveSymbolicLinks() =>
       (super.noSuchMethod(Invocation.method(#resolveSymbolicLinks, []),
@@ -4095,12 +4690,12 @@ class MockDirectory extends _i1.Mock implements _i49.Directory {
   @override
   _i9.Future<_i49.Directory> rename(String? newPath) =>
       (super.noSuchMethod(Invocation.method(#rename, [newPath]),
-              returnValue: Future<_i49.Directory>.value(_FakeDirectory_59()))
+              returnValue: Future<_i49.Directory>.value(_FakeDirectory_60()))
           as _i9.Future<_i49.Directory>);
   @override
   _i49.Directory renameSync(String? newPath) =>
       (super.noSuchMethod(Invocation.method(#renameSync, [newPath]),
-          returnValue: _FakeDirectory_59()) as _i49.Directory);
+          returnValue: _FakeDirectory_60()) as _i49.Directory);
   @override
   _i9.Stream<_i49.FileSystemEntity> list(
           {bool? recursive = false, bool? followLinks = true}) =>
@@ -4129,17 +4724,17 @@ class MockDirectory extends _i1.Mock implements _i49.Directory {
   @override
   _i9.Future<_i49.FileStat> stat() =>
       (super.noSuchMethod(Invocation.method(#stat, []),
-              returnValue: Future<_i49.FileStat>.value(_FakeFileStat_72()))
+              returnValue: Future<_i49.FileStat>.value(_FakeFileStat_82()))
           as _i9.Future<_i49.FileStat>);
   @override
   _i49.FileStat statSync() =>
       (super.noSuchMethod(Invocation.method(#statSync, []),
-          returnValue: _FakeFileStat_72()) as _i49.FileStat);
+          returnValue: _FakeFileStat_82()) as _i49.FileStat);
   @override
   _i9.Future<_i49.FileSystemEntity> delete({bool? recursive = false}) => (super
           .noSuchMethod(Invocation.method(#delete, [], {#recursive: recursive}),
               returnValue: Future<_i49.FileSystemEntity>.value(
-                  _FakeFileSystemEntity_73()))
+                  _FakeFileSystemEntity_83()))
       as _i9.Future<_i49.FileSystemEntity>);
   @override
   void deleteSync({bool? recursive = false}) => super.noSuchMethod(
@@ -4175,7 +4770,7 @@ class MockDocumentChange extends _i1.Mock implements _i47.DocumentChange {
       (super.noSuchMethod(Invocation.getter(#newIndex), returnValue: 0) as int);
   @override
   _i47.DocumentSnapshot get doc => (super.noSuchMethod(Invocation.getter(#doc),
-      returnValue: _FakeDocumentSnapshot_74()) as _i47.DocumentSnapshot);
+      returnValue: _FakeDocumentSnapshot_84()) as _i47.DocumentSnapshot);
   @override
   String toString() => super.toString();
 }
@@ -4191,21 +4786,21 @@ class MockDocumentReference extends _i1.Mock implements _i47.DocumentReference {
   @override
   _i47.FirebaseFirestore get firestore =>
       (super.noSuchMethod(Invocation.getter(#firestore),
-          returnValue: _FakeFirebaseFirestore_67()) as _i47.FirebaseFirestore);
+          returnValue: _FakeFirebaseFirestore_77()) as _i47.FirebaseFirestore);
   @override
   String get id =>
       (super.noSuchMethod(Invocation.getter(#id), returnValue: '') as String);
   @override
   _i47.CollectionReference get parent => (super.noSuchMethod(
       Invocation.getter(#parent),
-      returnValue: _FakeCollectionReference_56()) as _i47.CollectionReference);
+      returnValue: _FakeCollectionReference_57()) as _i47.CollectionReference);
   @override
   String get path =>
       (super.noSuchMethod(Invocation.getter(#path), returnValue: '') as String);
   @override
   _i47.CollectionReference collection(String? collectionPath) =>
       (super.noSuchMethod(Invocation.method(#collection, [collectionPath]),
-              returnValue: _FakeCollectionReference_56())
+              returnValue: _FakeCollectionReference_57())
           as _i47.CollectionReference);
   @override
   _i9.Future<void> delete() =>
@@ -4216,7 +4811,7 @@ class MockDocumentReference extends _i1.Mock implements _i47.DocumentReference {
   _i9.Future<_i47.DocumentSnapshot> get([_i47.GetOptions? options]) =>
       (super.noSuchMethod(Invocation.method(#get, [options]),
               returnValue: Future<_i47.DocumentSnapshot>.value(
-                  _FakeDocumentSnapshot_74()))
+                  _FakeDocumentSnapshot_84()))
           as _i9.Future<_i47.DocumentSnapshot>);
   @override
   _i9.Stream<_i47.DocumentSnapshot> snapshots(
@@ -4255,11 +4850,11 @@ class MockDocumentSnapshot extends _i1.Mock implements _i47.DocumentSnapshot {
   @override
   _i47.DocumentReference get reference =>
       (super.noSuchMethod(Invocation.getter(#reference),
-          returnValue: _FakeDocumentReference_57()) as _i47.DocumentReference);
+          returnValue: _FakeDocumentReference_58()) as _i47.DocumentReference);
   @override
   _i47.SnapshotMetadata get metadata =>
       (super.noSuchMethod(Invocation.getter(#metadata),
-          returnValue: _FakeSnapshotMetadata_75()) as _i47.SnapshotMetadata);
+          returnValue: _FakeSnapshotMetadata_85()) as _i47.SnapshotMetadata);
   @override
   bool get exists =>
       (super.noSuchMethod(Invocation.getter(#exists), returnValue: false)
@@ -4279,7 +4874,7 @@ class MockDownloadTask extends _i1.Mock implements _i46.DownloadTask {
   @override
   _i46.FirebaseStorage get storage =>
       (super.noSuchMethod(Invocation.getter(#storage),
-          returnValue: _FakeFirebaseStorage_76()) as _i46.FirebaseStorage);
+          returnValue: _FakeFirebaseStorage_86()) as _i46.FirebaseStorage);
   @override
   _i9.Stream<_i46.TaskSnapshot> get snapshotEvents =>
       (super.noSuchMethod(Invocation.getter(#snapshotEvents),
@@ -4288,7 +4883,7 @@ class MockDownloadTask extends _i1.Mock implements _i46.DownloadTask {
   @override
   _i46.TaskSnapshot get snapshot =>
       (super.noSuchMethod(Invocation.getter(#snapshot),
-          returnValue: _FakeTaskSnapshot_77()) as _i46.TaskSnapshot);
+          returnValue: _FakeTaskSnapshot_87()) as _i46.TaskSnapshot);
   @override
   _i9.Future<bool> pause() => (super.noSuchMethod(Invocation.method(#pause, []),
       returnValue: Future<bool>.value(false)) as _i9.Future<bool>);
@@ -4311,7 +4906,7 @@ class MockDownloadTask extends _i1.Mock implements _i46.DownloadTask {
       (super.noSuchMethod(
               Invocation.method(#catchError, [onError], {#test: test}),
               returnValue:
-                  Future<_i46.TaskSnapshot>.value(_FakeTaskSnapshot_77()))
+                  Future<_i46.TaskSnapshot>.value(_FakeTaskSnapshot_87()))
           as _i9.Future<_i46.TaskSnapshot>);
   @override
   _i9.Future<S> then<S>(_i9.FutureOr<S>? Function(_i46.TaskSnapshot)? onValue,
@@ -4324,7 +4919,7 @@ class MockDownloadTask extends _i1.Mock implements _i46.DownloadTask {
           _i9.FutureOr<dynamic>? Function()? action) =>
       (super.noSuchMethod(Invocation.method(#whenComplete, [action]),
               returnValue:
-                  Future<_i46.TaskSnapshot>.value(_FakeTaskSnapshot_77()))
+                  Future<_i46.TaskSnapshot>.value(_FakeTaskSnapshot_87()))
           as _i9.Future<_i46.TaskSnapshot>);
   @override
   _i9.Future<_i46.TaskSnapshot> timeout(Duration? timeLimit,
@@ -4332,7 +4927,7 @@ class MockDownloadTask extends _i1.Mock implements _i46.DownloadTask {
       (super.noSuchMethod(
               Invocation.method(#timeout, [timeLimit], {#onTimeout: onTimeout}),
               returnValue:
-                  Future<_i46.TaskSnapshot>.value(_FakeTaskSnapshot_77()))
+                  Future<_i46.TaskSnapshot>.value(_FakeTaskSnapshot_87()))
           as _i9.Future<_i46.TaskSnapshot>);
   @override
   String toString() => super.toString();
@@ -4341,7 +4936,7 @@ class MockDownloadTask extends _i1.Mock implements _i46.DownloadTask {
 /// A class which mocks [EntitlementInfo].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockEntitlementInfo extends _i1.Mock implements _i51.EntitlementInfo {
+class MockEntitlementInfo extends _i1.Mock implements _i53.EntitlementInfo {
   MockEntitlementInfo() {
     _i1.throwOnMissingStub(this);
   }
@@ -4359,9 +4954,9 @@ class MockEntitlementInfo extends _i1.Mock implements _i51.EntitlementInfo {
       (super.noSuchMethod(Invocation.getter(#willRenew), returnValue: false)
           as bool);
   @override
-  _i51.PeriodType get periodType =>
+  _i53.PeriodType get periodType =>
       (super.noSuchMethod(Invocation.getter(#periodType),
-          returnValue: _i51.PeriodType.intro) as _i51.PeriodType);
+          returnValue: _i53.PeriodType.intro) as _i53.PeriodType);
   @override
   String get latestPurchaseDate => (super
           .noSuchMethod(Invocation.getter(#latestPurchaseDate), returnValue: '')
@@ -4371,8 +4966,8 @@ class MockEntitlementInfo extends _i1.Mock implements _i51.EntitlementInfo {
       (super.noSuchMethod(Invocation.getter(#originalPurchaseDate),
           returnValue: '') as String);
   @override
-  _i51.Store get store => (super.noSuchMethod(Invocation.getter(#store),
-      returnValue: _i51.Store.appStore) as _i51.Store);
+  _i53.Store get store => (super.noSuchMethod(Invocation.getter(#store),
+      returnValue: _i53.Store.appStore) as _i53.Store);
   @override
   String get productIdentifier => (super
           .noSuchMethod(Invocation.getter(#productIdentifier), returnValue: '')
@@ -4388,21 +4983,21 @@ class MockEntitlementInfo extends _i1.Mock implements _i51.EntitlementInfo {
 /// A class which mocks [EntitlementInfos].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockEntitlementInfos extends _i1.Mock implements _i51.EntitlementInfos {
+class MockEntitlementInfos extends _i1.Mock implements _i53.EntitlementInfos {
   MockEntitlementInfos() {
     _i1.throwOnMissingStub(this);
   }
 
   @override
-  Map<String, _i51.EntitlementInfo> get all =>
+  Map<String, _i53.EntitlementInfo> get all =>
       (super.noSuchMethod(Invocation.getter(#all),
-              returnValue: <String, _i51.EntitlementInfo>{})
-          as Map<String, _i51.EntitlementInfo>);
+              returnValue: <String, _i53.EntitlementInfo>{})
+          as Map<String, _i53.EntitlementInfo>);
   @override
-  Map<String, _i51.EntitlementInfo> get active =>
+  Map<String, _i53.EntitlementInfo> get active =>
       (super.noSuchMethod(Invocation.getter(#active),
-              returnValue: <String, _i51.EntitlementInfo>{})
-          as Map<String, _i51.EntitlementInfo>);
+              returnValue: <String, _i53.EntitlementInfo>{})
+          as Map<String, _i53.EntitlementInfo>);
   @override
   String toString() => super.toString();
 }
@@ -4444,7 +5039,7 @@ class MockFileSystemEntity extends _i1.Mock implements _i49.FileSystemEntity {
       (super.noSuchMethod(Invocation.getter(#path), returnValue: '') as String);
   @override
   Uri get uri =>
-      (super.noSuchMethod(Invocation.getter(#uri), returnValue: _FakeUri_71())
+      (super.noSuchMethod(Invocation.getter(#uri), returnValue: _FakeUri_81())
           as Uri);
   @override
   bool get isAbsolute =>
@@ -4453,10 +5048,10 @@ class MockFileSystemEntity extends _i1.Mock implements _i49.FileSystemEntity {
   @override
   _i49.FileSystemEntity get absolute =>
       (super.noSuchMethod(Invocation.getter(#absolute),
-          returnValue: _FakeFileSystemEntity_73()) as _i49.FileSystemEntity);
+          returnValue: _FakeFileSystemEntity_83()) as _i49.FileSystemEntity);
   @override
   _i49.Directory get parent => (super.noSuchMethod(Invocation.getter(#parent),
-      returnValue: _FakeDirectory_59()) as _i49.Directory);
+      returnValue: _FakeDirectory_60()) as _i49.Directory);
   @override
   _i9.Future<bool> exists() =>
       (super.noSuchMethod(Invocation.method(#exists, []),
@@ -4468,12 +5063,12 @@ class MockFileSystemEntity extends _i1.Mock implements _i49.FileSystemEntity {
   _i9.Future<_i49.FileSystemEntity> rename(String? newPath) =>
       (super.noSuchMethod(Invocation.method(#rename, [newPath]),
               returnValue: Future<_i49.FileSystemEntity>.value(
-                  _FakeFileSystemEntity_73()))
+                  _FakeFileSystemEntity_83()))
           as _i9.Future<_i49.FileSystemEntity>);
   @override
   _i49.FileSystemEntity renameSync(String? newPath) =>
       (super.noSuchMethod(Invocation.method(#renameSync, [newPath]),
-          returnValue: _FakeFileSystemEntity_73()) as _i49.FileSystemEntity);
+          returnValue: _FakeFileSystemEntity_83()) as _i49.FileSystemEntity);
   @override
   _i9.Future<String> resolveSymbolicLinks() =>
       (super.noSuchMethod(Invocation.method(#resolveSymbolicLinks, []),
@@ -4485,17 +5080,17 @@ class MockFileSystemEntity extends _i1.Mock implements _i49.FileSystemEntity {
   @override
   _i9.Future<_i49.FileStat> stat() =>
       (super.noSuchMethod(Invocation.method(#stat, []),
-              returnValue: Future<_i49.FileStat>.value(_FakeFileStat_72()))
+              returnValue: Future<_i49.FileStat>.value(_FakeFileStat_82()))
           as _i9.Future<_i49.FileStat>);
   @override
   _i49.FileStat statSync() =>
       (super.noSuchMethod(Invocation.method(#statSync, []),
-          returnValue: _FakeFileStat_72()) as _i49.FileStat);
+          returnValue: _FakeFileStat_82()) as _i49.FileStat);
   @override
   _i9.Future<_i49.FileSystemEntity> delete({bool? recursive = false}) => (super
           .noSuchMethod(Invocation.method(#delete, [], {#recursive: recursive}),
               returnValue: Future<_i49.FileSystemEntity>.value(
-                  _FakeFileSystemEntity_73()))
+                  _FakeFileSystemEntity_83()))
       as _i9.Future<_i49.FileSystemEntity>);
   @override
   void deleteSync({bool? recursive = false}) => super.noSuchMethod(
@@ -4535,7 +5130,7 @@ class MockFullMetadata extends _i1.Mock implements _i46.FullMetadata {
 /// A class which mocks [LegacyImporter].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockLegacyImporter extends _i1.Mock implements _i62.LegacyImporter {
+class MockLegacyImporter extends _i1.Mock implements _i67.LegacyImporter {
   MockLegacyImporter() {
     _i1.throwOnMissingStub(this);
   }
@@ -4551,7 +5146,7 @@ class MockLegacyImporter extends _i1.Mock implements _i62.LegacyImporter {
 /// A class which mocks [MethodChannel].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockMethodChannel extends _i1.Mock implements _i52.MethodChannel {
+class MockMethodChannel extends _i1.Mock implements _i54.MethodChannel {
   MockMethodChannel() {
     _i1.throwOnMissingStub(this);
   }
@@ -4560,12 +5155,12 @@ class MockMethodChannel extends _i1.Mock implements _i52.MethodChannel {
   String get name =>
       (super.noSuchMethod(Invocation.getter(#name), returnValue: '') as String);
   @override
-  _i52.MethodCodec get codec => (super.noSuchMethod(Invocation.getter(#codec),
-      returnValue: _FakeMethodCodec_78()) as _i52.MethodCodec);
+  _i54.MethodCodec get codec => (super.noSuchMethod(Invocation.getter(#codec),
+      returnValue: _FakeMethodCodec_88()) as _i54.MethodCodec);
   @override
-  _i52.BinaryMessenger get binaryMessenger =>
+  _i54.BinaryMessenger get binaryMessenger =>
       (super.noSuchMethod(Invocation.getter(#binaryMessenger),
-          returnValue: _FakeBinaryMessenger_79()) as _i52.BinaryMessenger);
+          returnValue: _FakeBinaryMessenger_89()) as _i54.BinaryMessenger);
   @override
   _i9.Future<T?> invokeMethod<T>(String? method, [dynamic arguments]) =>
       (super.noSuchMethod(Invocation.method(#invokeMethod, [method, arguments]),
@@ -4584,23 +5179,23 @@ class MockMethodChannel extends _i1.Mock implements _i52.MethodChannel {
           returnValue: Future<Map<K, V>?>.value()) as _i9.Future<Map<K, V>?>);
   @override
   void setMethodCallHandler(
-          _i9.Future<dynamic> Function(_i52.MethodCall)? handler) =>
+          _i9.Future<dynamic> Function(_i54.MethodCall)? handler) =>
       super.noSuchMethod(Invocation.method(#setMethodCallHandler, [handler]),
           returnValueForMissingStub: null);
   @override
   bool checkMethodCallHandler(
-          _i9.Future<dynamic> Function(_i52.MethodCall)? handler) =>
+          _i9.Future<dynamic> Function(_i54.MethodCall)? handler) =>
       (super.noSuchMethod(Invocation.method(#checkMethodCallHandler, [handler]),
           returnValue: false) as bool);
   @override
   void setMockMethodCallHandler(
-          _i9.Future<dynamic>? Function(_i52.MethodCall)? handler) =>
+          _i9.Future<dynamic>? Function(_i54.MethodCall)? handler) =>
       super.noSuchMethod(
           Invocation.method(#setMockMethodCallHandler, [handler]),
           returnValueForMissingStub: null);
   @override
   bool checkMockMethodCallHandler(
-          _i9.Future<dynamic> Function(_i52.MethodCall)? handler) =>
+          _i9.Future<dynamic> Function(_i54.MethodCall)? handler) =>
       (super.noSuchMethod(
           Invocation.method(#checkMockMethodCallHandler, [handler]),
           returnValue: false) as bool);
@@ -4611,15 +5206,15 @@ class MockMethodChannel extends _i1.Mock implements _i52.MethodChannel {
 /// A class which mocks [NameValidator].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockNameValidator extends _i1.Mock implements _i63.NameValidator {
+class MockNameValidator extends _i1.Mock implements _i68.NameValidator {
   MockNameValidator() {
     _i1.throwOnMissingStub(this);
   }
 
   @override
-  _i63.ValidationCallback? run(_i44.BuildContext? context, String? newName) =>
+  _i68.ValidationCallback? run(_i44.BuildContext? context, String? newName) =>
       (super.noSuchMethod(Invocation.method(#run, [context, newName]))
-          as _i63.ValidationCallback?);
+          as _i68.ValidationCallback?);
   @override
   String toString() => super.toString();
 }
@@ -4670,7 +5265,7 @@ class MockNavigatorObserver extends _i1.Mock implements _i44.NavigatorObserver {
 /// A class which mocks [Offering].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockOffering extends _i1.Mock implements _i51.Offering {
+class MockOffering extends _i1.Mock implements _i53.Offering {
   MockOffering() {
     _i1.throwOnMissingStub(this);
   }
@@ -4684,13 +5279,13 @@ class MockOffering extends _i1.Mock implements _i51.Offering {
           .noSuchMethod(Invocation.getter(#serverDescription), returnValue: '')
       as String);
   @override
-  List<_i51.Package> get availablePackages =>
+  List<_i53.Package> get availablePackages =>
       (super.noSuchMethod(Invocation.getter(#availablePackages),
-          returnValue: <_i51.Package>[]) as List<_i51.Package>);
+          returnValue: <_i53.Package>[]) as List<_i53.Package>);
   @override
-  _i51.Package? getPackage(String? identifier) =>
+  _i53.Package? getPackage(String? identifier) =>
       (super.noSuchMethod(Invocation.method(#getPackage, [identifier]))
-          as _i51.Package?);
+          as _i53.Package?);
   @override
   String toString() => super.toString();
 }
@@ -4698,19 +5293,19 @@ class MockOffering extends _i1.Mock implements _i51.Offering {
 /// A class which mocks [Offerings].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockOfferings extends _i1.Mock implements _i51.Offerings {
+class MockOfferings extends _i1.Mock implements _i53.Offerings {
   MockOfferings() {
     _i1.throwOnMissingStub(this);
   }
 
   @override
-  Map<String, _i51.Offering> get all => (super.noSuchMethod(
+  Map<String, _i53.Offering> get all => (super.noSuchMethod(
       Invocation.getter(#all),
-      returnValue: <String, _i51.Offering>{}) as Map<String, _i51.Offering>);
+      returnValue: <String, _i53.Offering>{}) as Map<String, _i53.Offering>);
   @override
-  _i51.Offering? getOffering(String? identifier) =>
+  _i53.Offering? getOffering(String? identifier) =>
       (super.noSuchMethod(Invocation.method(#getOffering, [identifier]))
-          as _i51.Offering?);
+          as _i53.Offering?);
   @override
   String toString() => super.toString();
 }
@@ -4718,7 +5313,7 @@ class MockOfferings extends _i1.Mock implements _i51.Offerings {
 /// A class which mocks [Package].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockPackage extends _i1.Mock implements _i51.Package {
+class MockPackage extends _i1.Mock implements _i53.Package {
   MockPackage() {
     _i1.throwOnMissingStub(this);
   }
@@ -4728,12 +5323,12 @@ class MockPackage extends _i1.Mock implements _i51.Package {
       (super.noSuchMethod(Invocation.getter(#identifier), returnValue: '')
           as String);
   @override
-  _i51.PackageType get packageType =>
+  _i53.PackageType get packageType =>
       (super.noSuchMethod(Invocation.getter(#packageType),
-          returnValue: _i51.PackageType.unknown) as _i51.PackageType);
+          returnValue: _i53.PackageType.unknown) as _i53.PackageType);
   @override
-  _i51.Product get product => (super.noSuchMethod(Invocation.getter(#product),
-      returnValue: _FakeProduct_80()) as _i51.Product);
+  _i53.Product get product => (super.noSuchMethod(Invocation.getter(#product),
+      returnValue: _FakeProduct_90()) as _i53.Product);
   @override
   String get offeringIdentifier => (super
           .noSuchMethod(Invocation.getter(#offeringIdentifier), returnValue: '')
@@ -4745,7 +5340,7 @@ class MockPackage extends _i1.Mock implements _i51.Package {
 /// A class which mocks [Product].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockProduct extends _i1.Mock implements _i51.Product {
+class MockProduct extends _i1.Mock implements _i53.Product {
   MockProduct() {
     _i1.throwOnMissingStub(this);
   }
@@ -4781,15 +5376,15 @@ class MockProduct extends _i1.Mock implements _i51.Product {
 /// A class which mocks [PurchaserInfo].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockPurchaserInfo extends _i1.Mock implements _i51.PurchaserInfo {
+class MockPurchaserInfo extends _i1.Mock implements _i53.PurchaserInfo {
   MockPurchaserInfo() {
     _i1.throwOnMissingStub(this);
   }
 
   @override
-  _i51.EntitlementInfos get entitlements =>
+  _i53.EntitlementInfos get entitlements =>
       (super.noSuchMethod(Invocation.getter(#entitlements),
-          returnValue: _FakeEntitlementInfos_81()) as _i51.EntitlementInfos);
+          returnValue: _FakeEntitlementInfos_91()) as _i53.EntitlementInfos);
   @override
   Map<String, String?> get allExpirationDates =>
       (super.noSuchMethod(Invocation.getter(#allExpirationDates),
@@ -4807,9 +5402,9 @@ class MockPurchaserInfo extends _i1.Mock implements _i51.PurchaserInfo {
       (super.noSuchMethod(Invocation.getter(#allPurchasedProductIdentifiers),
           returnValue: <String>[]) as List<String>);
   @override
-  List<_i64.Transaction> get nonSubscriptionTransactions =>
+  List<_i69.Transaction> get nonSubscriptionTransactions =>
       (super.noSuchMethod(Invocation.getter(#nonSubscriptionTransactions),
-          returnValue: <_i64.Transaction>[]) as List<_i64.Transaction>);
+          returnValue: <_i69.Transaction>[]) as List<_i69.Transaction>);
   @override
   String get firstSeen =>
       (super.noSuchMethod(Invocation.getter(#firstSeen), returnValue: '')
@@ -4846,7 +5441,7 @@ class MockQuerySnapshot extends _i1.Mock implements _i47.QuerySnapshot {
   @override
   _i47.SnapshotMetadata get metadata =>
       (super.noSuchMethod(Invocation.getter(#metadata),
-          returnValue: _FakeSnapshotMetadata_75()) as _i47.SnapshotMetadata);
+          returnValue: _FakeSnapshotMetadata_85()) as _i47.SnapshotMetadata);
   @override
   int get size =>
       (super.noSuchMethod(Invocation.getter(#size), returnValue: 0) as int);
@@ -4865,7 +5460,7 @@ class MockReference extends _i1.Mock implements _i46.Reference {
   @override
   _i46.FirebaseStorage get storage =>
       (super.noSuchMethod(Invocation.getter(#storage),
-          returnValue: _FakeFirebaseStorage_76()) as _i46.FirebaseStorage);
+          returnValue: _FakeFirebaseStorage_86()) as _i46.FirebaseStorage);
   @override
   String get bucket =>
       (super.noSuchMethod(Invocation.getter(#bucket), returnValue: '')
@@ -4879,11 +5474,11 @@ class MockReference extends _i1.Mock implements _i46.Reference {
       (super.noSuchMethod(Invocation.getter(#name), returnValue: '') as String);
   @override
   _i46.Reference get root => (super.noSuchMethod(Invocation.getter(#root),
-      returnValue: _FakeReference_55()) as _i46.Reference);
+      returnValue: _FakeReference_56()) as _i46.Reference);
   @override
   _i46.Reference child(String? path) =>
       (super.noSuchMethod(Invocation.method(#child, [path]),
-          returnValue: _FakeReference_55()) as _i46.Reference);
+          returnValue: _FakeReference_56()) as _i46.Reference);
   @override
   _i9.Future<void> delete() =>
       (super.noSuchMethod(Invocation.method(#delete, []),
@@ -4896,36 +5491,36 @@ class MockReference extends _i1.Mock implements _i46.Reference {
   @override
   _i9.Future<_i46.FullMetadata> getMetadata() => (super.noSuchMethod(
           Invocation.method(#getMetadata, []),
-          returnValue: Future<_i46.FullMetadata>.value(_FakeFullMetadata_82()))
+          returnValue: Future<_i46.FullMetadata>.value(_FakeFullMetadata_92()))
       as _i9.Future<_i46.FullMetadata>);
   @override
   _i9.Future<_i46.ListResult> list([_i46.ListOptions? options]) =>
       (super.noSuchMethod(Invocation.method(#list, [options]),
-              returnValue: Future<_i46.ListResult>.value(_FakeListResult_83()))
+              returnValue: Future<_i46.ListResult>.value(_FakeListResult_93()))
           as _i9.Future<_i46.ListResult>);
   @override
   _i9.Future<_i46.ListResult> listAll() =>
       (super.noSuchMethod(Invocation.method(#listAll, []),
-              returnValue: Future<_i46.ListResult>.value(_FakeListResult_83()))
+              returnValue: Future<_i46.ListResult>.value(_FakeListResult_93()))
           as _i9.Future<_i46.ListResult>);
   @override
-  _i9.Future<_i58.Uint8List?> getData([int? maxSize = 10485760]) =>
+  _i9.Future<_i59.Uint8List?> getData([int? maxSize = 10485760]) =>
       (super.noSuchMethod(Invocation.method(#getData, [maxSize]),
-              returnValue: Future<_i58.Uint8List?>.value())
-          as _i9.Future<_i58.Uint8List?>);
+              returnValue: Future<_i59.Uint8List?>.value())
+          as _i9.Future<_i59.Uint8List?>);
   @override
-  _i46.UploadTask putData(_i58.Uint8List? data,
+  _i46.UploadTask putData(_i59.Uint8List? data,
           [_i46.SettableMetadata? metadata]) =>
       (super.noSuchMethod(Invocation.method(#putData, [data, metadata]),
-          returnValue: _FakeUploadTask_84()) as _i46.UploadTask);
+          returnValue: _FakeUploadTask_94()) as _i46.UploadTask);
   @override
   _i46.UploadTask putBlob(dynamic blob, [_i46.SettableMetadata? metadata]) =>
       (super.noSuchMethod(Invocation.method(#putBlob, [blob, metadata]),
-          returnValue: _FakeUploadTask_84()) as _i46.UploadTask);
+          returnValue: _FakeUploadTask_94()) as _i46.UploadTask);
   @override
   _i46.UploadTask putFile(_i49.File? file, [_i46.SettableMetadata? metadata]) =>
       (super.noSuchMethod(Invocation.method(#putFile, [file, metadata]),
-          returnValue: _FakeUploadTask_84()) as _i46.UploadTask);
+          returnValue: _FakeUploadTask_94()) as _i46.UploadTask);
   @override
   _i46.UploadTask putString(String? data,
           {_i46.PutStringFormat? format = _i46.PutStringFormat.raw,
@@ -4933,18 +5528,18 @@ class MockReference extends _i1.Mock implements _i46.Reference {
       (super.noSuchMethod(
           Invocation.method(
               #putString, [data], {#format: format, #metadata: metadata}),
-          returnValue: _FakeUploadTask_84()) as _i46.UploadTask);
+          returnValue: _FakeUploadTask_94()) as _i46.UploadTask);
   @override
   _i9.Future<_i46.FullMetadata> updateMetadata(
           _i46.SettableMetadata? metadata) =>
       (super.noSuchMethod(Invocation.method(#updateMetadata, [metadata]),
               returnValue:
-                  Future<_i46.FullMetadata>.value(_FakeFullMetadata_82()))
+                  Future<_i46.FullMetadata>.value(_FakeFullMetadata_92()))
           as _i9.Future<_i46.FullMetadata>);
   @override
   _i46.DownloadTask writeToFile(_i49.File? file) =>
       (super.noSuchMethod(Invocation.method(#writeToFile, [file]),
-          returnValue: _FakeDownloadTask_85()) as _i46.DownloadTask);
+          returnValue: _FakeDownloadTask_95()) as _i46.DownloadTask);
   @override
   String toString() => super.toString();
 }
@@ -4958,9 +5553,9 @@ class MockResponse extends _i1.Mock implements _i48.Response {
   }
 
   @override
-  _i58.Uint8List get bodyBytes =>
+  _i59.Uint8List get bodyBytes =>
       (super.noSuchMethod(Invocation.getter(#bodyBytes),
-          returnValue: _i58.Uint8List(0)) as _i58.Uint8List);
+          returnValue: _i59.Uint8List(0)) as _i59.Uint8List);
   @override
   String get body =>
       (super.noSuchMethod(Invocation.getter(#body), returnValue: '') as String);
@@ -5040,14 +5635,14 @@ class MockTaskSnapshot extends _i1.Mock implements _i46.TaskSnapshot {
   @override
   _i46.FirebaseStorage get storage =>
       (super.noSuchMethod(Invocation.getter(#storage),
-          returnValue: _FakeFirebaseStorage_76()) as _i46.FirebaseStorage);
+          returnValue: _FakeFirebaseStorage_86()) as _i46.FirebaseStorage);
   @override
   int get bytesTransferred =>
       (super.noSuchMethod(Invocation.getter(#bytesTransferred), returnValue: 0)
           as int);
   @override
   _i46.Reference get ref => (super.noSuchMethod(Invocation.getter(#ref),
-      returnValue: _FakeReference_55()) as _i46.Reference);
+      returnValue: _FakeReference_56()) as _i46.Reference);
   @override
   _i46.TaskState get state => (super.noSuchMethod(Invocation.getter(#state),
       returnValue: _i46.TaskState.paused) as _i46.TaskState);
@@ -5070,7 +5665,7 @@ class MockUploadTask extends _i1.Mock implements _i46.UploadTask {
   @override
   _i46.FirebaseStorage get storage =>
       (super.noSuchMethod(Invocation.getter(#storage),
-          returnValue: _FakeFirebaseStorage_76()) as _i46.FirebaseStorage);
+          returnValue: _FakeFirebaseStorage_86()) as _i46.FirebaseStorage);
   @override
   _i9.Stream<_i46.TaskSnapshot> get snapshotEvents =>
       (super.noSuchMethod(Invocation.getter(#snapshotEvents),
@@ -5079,7 +5674,7 @@ class MockUploadTask extends _i1.Mock implements _i46.UploadTask {
   @override
   _i46.TaskSnapshot get snapshot =>
       (super.noSuchMethod(Invocation.getter(#snapshot),
-          returnValue: _FakeTaskSnapshot_77()) as _i46.TaskSnapshot);
+          returnValue: _FakeTaskSnapshot_87()) as _i46.TaskSnapshot);
   @override
   _i9.Future<bool> pause() => (super.noSuchMethod(Invocation.method(#pause, []),
       returnValue: Future<bool>.value(false)) as _i9.Future<bool>);
@@ -5102,7 +5697,7 @@ class MockUploadTask extends _i1.Mock implements _i46.UploadTask {
       (super.noSuchMethod(
               Invocation.method(#catchError, [onError], {#test: test}),
               returnValue:
-                  Future<_i46.TaskSnapshot>.value(_FakeTaskSnapshot_77()))
+                  Future<_i46.TaskSnapshot>.value(_FakeTaskSnapshot_87()))
           as _i9.Future<_i46.TaskSnapshot>);
   @override
   _i9.Future<S> then<S>(_i9.FutureOr<S>? Function(_i46.TaskSnapshot)? onValue,
@@ -5115,7 +5710,7 @@ class MockUploadTask extends _i1.Mock implements _i46.UploadTask {
           _i9.FutureOr<dynamic>? Function()? action) =>
       (super.noSuchMethod(Invocation.method(#whenComplete, [action]),
               returnValue:
-                  Future<_i46.TaskSnapshot>.value(_FakeTaskSnapshot_77()))
+                  Future<_i46.TaskSnapshot>.value(_FakeTaskSnapshot_87()))
           as _i9.Future<_i46.TaskSnapshot>);
   @override
   _i9.Future<_i46.TaskSnapshot> timeout(Duration? timeLimit,
@@ -5123,7 +5718,7 @@ class MockUploadTask extends _i1.Mock implements _i46.UploadTask {
       (super.noSuchMethod(
               Invocation.method(#timeout, [timeLimit], {#onTimeout: onTimeout}),
               returnValue:
-                  Future<_i46.TaskSnapshot>.value(_FakeTaskSnapshot_77()))
+                  Future<_i46.TaskSnapshot>.value(_FakeTaskSnapshot_87()))
           as _i9.Future<_i46.TaskSnapshot>);
   @override
   String toString() => super.toString();
@@ -5148,7 +5743,7 @@ class MockUser extends _i1.Mock implements _i45.User {
   @override
   _i45.UserMetadata get metadata =>
       (super.noSuchMethod(Invocation.getter(#metadata),
-          returnValue: _FakeUserMetadata_86()) as _i45.UserMetadata);
+          returnValue: _FakeUserMetadata_96()) as _i45.UserMetadata);
   @override
   List<_i45.UserInfo> get providerData =>
       (super.noSuchMethod(Invocation.getter(#providerData),
@@ -5170,14 +5765,14 @@ class MockUser extends _i1.Mock implements _i45.User {
           [bool? forceRefresh = false]) =>
       (super.noSuchMethod(Invocation.method(#getIdTokenResult, [forceRefresh]),
               returnValue:
-                  Future<_i45.IdTokenResult>.value(_FakeIdTokenResult_87()))
+                  Future<_i45.IdTokenResult>.value(_FakeIdTokenResult_97()))
           as _i9.Future<_i45.IdTokenResult>);
   @override
   _i9.Future<_i45.UserCredential> linkWithCredential(
           _i45.AuthCredential? credential) =>
       (super.noSuchMethod(Invocation.method(#linkWithCredential, [credential]),
               returnValue:
-                  Future<_i45.UserCredential>.value(_FakeUserCredential_54()))
+                  Future<_i45.UserCredential>.value(_FakeUserCredential_55()))
           as _i9.Future<_i45.UserCredential>);
   @override
   _i9.Future<_i45.ConfirmationResult> linkWithPhoneNumber(String? phoneNumber,
@@ -5185,7 +5780,7 @@ class MockUser extends _i1.Mock implements _i45.User {
       (super.noSuchMethod(
               Invocation.method(#linkWithPhoneNumber, [phoneNumber, verifier]),
               returnValue: Future<_i45.ConfirmationResult>.value(
-                  _FakeConfirmationResult_88()))
+                  _FakeConfirmationResult_98()))
           as _i9.Future<_i45.ConfirmationResult>);
   @override
   _i9.Future<_i45.UserCredential> reauthenticateWithCredential(
@@ -5193,7 +5788,7 @@ class MockUser extends _i1.Mock implements _i45.User {
       (super.noSuchMethod(
               Invocation.method(#reauthenticateWithCredential, [credential]),
               returnValue:
-                  Future<_i45.UserCredential>.value(_FakeUserCredential_54()))
+                  Future<_i45.UserCredential>.value(_FakeUserCredential_55()))
           as _i9.Future<_i45.UserCredential>);
   @override
   _i9.Future<void> reload() =>
@@ -5210,7 +5805,7 @@ class MockUser extends _i1.Mock implements _i45.User {
   @override
   _i9.Future<_i45.User> unlink(String? providerId) =>
       (super.noSuchMethod(Invocation.method(#unlink, [providerId]),
-              returnValue: Future<_i45.User>.value(_FakeUser_89()))
+              returnValue: Future<_i45.User>.value(_FakeUser_99()))
           as _i9.Future<_i45.User>);
   @override
   _i9.Future<void> updateEmail(String? newEmail) =>

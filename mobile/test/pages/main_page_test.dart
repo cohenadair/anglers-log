@@ -38,8 +38,11 @@ void main() {
     when(appManager.reportManager.entityExists(any)).thenReturn(false);
 
     when(appManager.fishingSpotManager.list()).thenReturn([]);
+    when(appManager.fishingSpotManager.entityExists(any)).thenReturn(false);
 
     when(appManager.locationMonitor.currentLocation).thenReturn(null);
+
+    when(appManager.propertiesManager.mapboxApiKey).thenReturn("");
 
     when(appManager.subscriptionManager.stream)
         .thenAnswer((_) => Stream.empty());
