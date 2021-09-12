@@ -121,6 +121,10 @@ void main() {
         .thenReturn(baitAttachmentList);
     when(appManager.baitManager.numberOfCatches(any)).thenReturn(0);
 
+    when(appManager.bodyOfWaterManager
+            .listSortedByName(filter: anyNamed("filter")))
+        .thenReturn([]);
+
     // Sunday, September 13, 2020 12:26:40 PM GMT
     when(appManager.timeManager.currentDateTime).thenReturn(now);
 
@@ -135,6 +139,8 @@ void main() {
     when(appManager.fishingSpotManager.name(any))
         .thenAnswer((invocation) => invocation.positionalArguments.first.name);
     when(appManager.fishingSpotManager.list(any)).thenReturn(fishingSpotList);
+    when(appManager.fishingSpotManager.filteredList(any))
+        .thenReturn(fishingSpotList);
     when(appManager.fishingSpotManager
             .listSortedByName(filter: anyNamed("filter")))
         .thenReturn(fishingSpotList);

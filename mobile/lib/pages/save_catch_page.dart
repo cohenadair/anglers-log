@@ -261,7 +261,7 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
       _fishingSpotController.value = widget.fishingSpot;
       _methodsController.value = {};
 
-      _calculateSeason();
+      _calculateSeasonIfNeeded();
       _fetchAtmosphereIfNeeded();
     }
 
@@ -359,7 +359,7 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
           label: Strings.of(context).catchFieldDate,
           onChange: (newDate) {
             _fetchAtmosphereIfNeeded();
-            setState(_calculateSeason);
+            setState(_calculateSeasonIfNeeded);
           },
         ),
         timePicker: TimePicker(
@@ -578,7 +578,7 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
     return ValueListenableBuilder(
       valueListenable: _fishingSpotController,
       builder: (_, __, ___) {
-        _calculateSeason();
+        _calculateSeasonIfNeeded();
 
         return ListPickerInput.withSinglePickerPage<Season>(
           context: context,
@@ -802,7 +802,11 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
     );
   }
 
-  void _calculateSeason() {
+  void _calculateSeasonIfNeeded() {
+    if (!_fields[_idSeason]!.isShowing) {
+      return;
+    }
+
     var spot = _fishingSpotController.value;
     _seasonController.value =
         Seasons.from(_timestampController.dateTime, spot?.lat);

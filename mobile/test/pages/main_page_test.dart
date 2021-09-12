@@ -9,13 +9,16 @@ import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mockito/mockito.dart';
 
 import '../mocks/stubbed_app_manager.dart';
+import '../mocks/stubbed_map_controller.dart';
 import '../test_utils.dart';
 
 void main() {
   late StubbedAppManager appManager;
+  late StubbedMapController mapController;
 
   setUp(() {
     appManager = StubbedAppManager();
+    mapController = StubbedMapController();
 
     when(appManager.authManager.stream).thenAnswer((_) => Stream.empty());
 
@@ -61,7 +64,8 @@ void main() {
       appManager: appManager,
     ));
     // Let map timers settle.
-    await tester.pumpAndSettle(Duration(milliseconds: 250));
+    await tester.pumpAndSettle(Duration(milliseconds: 300));
+    await mapController.finishLoading(tester);
 
     // Starts on Catches page.
     expect(findFirst<IndexedStack>(tester).index, 1);
@@ -91,7 +95,8 @@ void main() {
       appManager: appManager,
     ));
     // Let map timers settle.
-    await tester.pumpAndSettle(Duration(milliseconds: 250));
+    await tester.pumpAndSettle(Duration(milliseconds: 300));
+    await mapController.finishLoading(tester);
 
     await tapAndSettle(tester, find.byIcon(Icons.more_horiz));
     await tapAndSettle(tester, find.text("Bait Categories"));
@@ -109,7 +114,8 @@ void main() {
       appManager: appManager,
     ));
     // Let map timers settle.
-    await tester.pumpAndSettle(Duration(milliseconds: 250));
+    await tester.pumpAndSettle(Duration(milliseconds: 300));
+    await mapController.finishLoading(tester);
 
     await tapAndSettle(tester, find.byIcon(Icons.more_horiz));
     await tapAndSettle(tester, find.text("Bait Categories"));
@@ -135,6 +141,9 @@ void main() {
       (_) => MainPage(),
       appManager: appManager,
     ));
+    // Let map timers settle.
+    await tester.pumpAndSettle(Duration(milliseconds: 300));
+    await mapController.finishLoading(tester);
 
     var quarterDuration = Duration.millisecondsPerDay * (365 / 4);
     when(appManager.timeManager.msSinceEpoch)
