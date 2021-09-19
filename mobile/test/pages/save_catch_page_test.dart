@@ -22,6 +22,7 @@ import 'package:mobile/widgets/date_time_picker.dart';
 import 'package:mobile/widgets/fishing_spot_details.dart';
 import 'package:mobile/widgets/image_input.dart';
 import 'package:mobile/widgets/image_picker.dart';
+import 'package:mobile/widgets/list_item.dart';
 import 'package:mobile/widgets/search_bar.dart';
 import 'package:mobile/widgets/text_input.dart';
 import 'package:mockito/mockito.dart';
@@ -1332,6 +1333,34 @@ void main() {
     expect(find.text("Summer"), findsOneWidget);
   });
 
+  testWidgets("Season is not calculated if not tracking", (tester) async {
+    when(appManager.userPreferenceManager.catchFieldIds).thenReturn([
+      catchFieldIdTimestamp,
+      catchFieldIdSpecies,
+      catchFieldIdFishingSpot,
+    ]);
+
+    await tester.pumpWidget(Testable(
+      (_) => SaveCatchPage(
+        speciesId: randomId(),
+      ),
+      appManager: appManager,
+    ));
+
+    await tapAndSettle(tester, find.text("SAVE"));
+
+    var result = verify(
+      appManager.catchManager.addOrUpdate(
+        captureAny,
+        imageFiles: anyNamed("imageFiles"),
+      ),
+    );
+    result.called(1);
+
+    // If the season on the catch isn't set, it means it was never calculated.
+    expect((result.captured.first as Catch).hasSeason(), isFalse);
+  });
+
   testWidgets("Atmosphere automatically fetched for new catches",
       (tester) async {
     when(appManager.subscriptionManager.isFree).thenReturn(false);
@@ -1483,5 +1512,71 @@ void main() {
     expect(find.text("\u00B0F"), findsOneWidget);
     expect(find.text("in"), findsOneWidget);
     expect(find.text("lbs"), findsOneWidget);
+  });
+
+  testWidgets("Picking fishing spot that doesn't exist", (tester) async {
+    when(appManager.fishingSpotManager.entity(any)).thenReturn(null);
+    when(appManager.fishingSpotManager.entityExists(any)).thenReturn(false);
+    when(appManager.fishingSpotManager.list()).thenReturn([]);
+    when(appManager.fishingSpotManager.withinRadius(any)).thenReturn(null);
+    when(appManager.fishingSpotManager.addOrUpdate(any))
+        .thenAnswer((_) => Future.value(true));
+
+    await tester.pumpWidget(Testable(
+      (_) => SaveCatchPage(
+        speciesId: randomId(),
+      ),
+      appManager: appManager,
+    ));
+
+    expect(find.widgetWithText(ListItem, "Fishing Spot"), findsOneWidget);
+
+    // Pick a fishing spot.
+    await tapAndSettle(tester, find.text("Fishing Spot"));
+    await tester.pumpAndSettle(Duration(milliseconds: 300));
+    await mapController.finishLoading(tester);
+    await tapAndSettle(tester, find.byType(BackButton));
+
+    expect(find.widgetWithText(ListItem, "Fishing Spot"), findsNothing);
+    expect(find.byType(FishingSpotDetails), findsOneWidget);
+
+    // Save and verify.
+    await tapAndSettle(tester, find.text("SAVE"));
+    verify(appManager.fishingSpotManager.addOrUpdate(any)).called(1);
+  });
+
+  testWidgets("Picking fishing spot that exists", (tester) async {
+    var fishingSpot = FishingSpot(
+      id: randomId(),
+      name: "Name",
+      lat: 1.23456,
+      lng: 6.54321,
+    );
+
+    when(appManager.fishingSpotManager.entity(any)).thenReturn(fishingSpot);
+    when(appManager.fishingSpotManager.entityExists(any)).thenReturn(true);
+    when(appManager.fishingSpotManager.list()).thenReturn([
+      fishingSpot,
+    ]);
+    when(appManager.fishingSpotManager.withinRadius(any)).thenReturn(null);
+
+    await tester.pumpWidget(Testable(
+      (_) => SaveCatchPage(
+        speciesId: randomId(),
+      ),
+      appManager: appManager,
+    ));
+
+    expect(find.byType(FishingSpotDetails), findsOneWidget);
+
+    // Pick a fishing spot.
+    await tapAndSettle(tester, find.text("Name"));
+    await tester.pumpAndSettle(Duration(milliseconds: 300));
+    await mapController.finishLoading(tester);
+    await tapAndSettle(tester, find.byType(BackButton));
+
+    // Save and verify.
+    await tapAndSettle(tester, find.text("SAVE"));
+    verifyNever(appManager.fishingSpotManager.addOrUpdate(any));
   });
 }

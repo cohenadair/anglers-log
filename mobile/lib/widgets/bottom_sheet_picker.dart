@@ -68,7 +68,7 @@ class BottomSheetPicker<T> extends StatelessWidget {
   Widget _buildItem(BuildContext context, String title, T? value) {
     Widget titleWidget = Text(title);
     if (itemStyle != null) {
-      titleWidget = Text(title, style: styleHyperlink);
+      titleWidget = Text(title, style: itemStyle);
     }
 
     return ListItem(

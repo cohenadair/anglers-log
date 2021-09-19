@@ -763,12 +763,16 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
   }
 
   void _moveMap(LatLng latLng, {bool animate = true}) {
-    moveMap(
-      _mapController,
-      _offsetLatLng(latLng),
-      animate: animate,
+    var update = CameraUpdate.newCameraPosition(CameraPosition(
+      target: _offsetLatLng(latLng),
       zoom: _zoomDefault,
-    );
+    ));
+
+    if (animate) {
+      _mapController.animateCamera(update);
+    } else {
+      _mapController.moveCamera(update);
+    }
   }
 }
 

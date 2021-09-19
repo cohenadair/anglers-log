@@ -4,6 +4,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
 import 'package:mobile/pages/angler_list_page.dart';
 import 'package:mobile/pages/bait_list_page.dart';
+import 'package:mobile/pages/body_of_water_list_page.dart';
 import 'package:mobile/pages/fishing_spot_list_page.dart';
 import 'package:mobile/pages/method_list_page.dart';
 import 'package:mobile/pages/picker_page.dart';
@@ -87,6 +88,15 @@ void main() {
       ..name = "Stained",
   ];
 
+  var bodyOfWaterList = <BodyOfWater>[
+    BodyOfWater()
+      ..id = randomId()
+      ..name = "Lake Huron",
+    BodyOfWater()
+      ..id = randomId()
+      ..name = "Tennessee River",
+  ];
+
   setUp(() {
     appManager = StubbedAppManager();
 
@@ -121,9 +131,12 @@ void main() {
         .thenReturn(baitAttachmentList);
     when(appManager.baitManager.numberOfCatches(any)).thenReturn(0);
 
+    when(appManager.bodyOfWaterManager.name(any))
+        .thenAnswer((invocation) => invocation.positionalArguments.first.name);
+    when(appManager.bodyOfWaterManager.list(any)).thenReturn(bodyOfWaterList);
     when(appManager.bodyOfWaterManager
             .listSortedByName(filter: anyNamed("filter")))
-        .thenReturn([]);
+        .thenReturn(bodyOfWaterList);
 
     // Sunday, September 13, 2020 12:26:40 PM GMT
     when(appManager.timeManager.currentDateTime).thenReturn(now);
@@ -352,6 +365,17 @@ void main() {
     expect(find.byType(FishingSpotListPage), findsOneWidget);
   });
 
+  testWidgets("Body of water picker shows picker page", (tester) async {
+    await tester.pumpWidget(Testable(
+      (_) => SaveReportPage(),
+      appManager: appManager,
+    ));
+
+    await tester.ensureVisible(find.text("All bodies of water"));
+    await tapAndSettle(tester, find.text("All bodies of water"));
+    expect(find.byType(BodyOfWaterListPage), findsOneWidget);
+  });
+
   testWidgets("Angler picker shows picker page", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => SaveReportPage(),
@@ -468,6 +492,27 @@ void main() {
 
     await tapAndSettle(tester, find.byType(BackButton));
     expect(find.text("All fishing spots"), findsOneWidget);
+  });
+
+  testWidgets("Picking all bodies of water shows single chip", (tester) async {
+    await tester.pumpWidget(Testable(
+      (_) => SaveReportPage(),
+      appManager: appManager,
+    ));
+
+    await tester.ensureVisible(find.text("All bodies of water"));
+    await tapAndSettle(tester, find.text("All bodies of water"));
+    expect(
+      (tester.widget(find.descendant(
+        of: find.widgetWithText(ManageableListItem, "All"),
+        matching: find.byType(PaddedCheckbox),
+      )) as PaddedCheckbox)
+          .checked,
+      isTrue,
+    );
+
+    await tapAndSettle(tester, find.byType(BackButton));
+    expect(find.text("All bodies of water"), findsOneWidget);
   });
 
   testWidgets("Picking all anglers shows single chip", (tester) async {
@@ -603,6 +648,9 @@ void main() {
     await tester.ensureVisible(find.text("All fishing spots"));
     await selectItems(tester, "All fishing spots", ["All", "B"]);
 
+    await tester.ensureVisible(find.text("All bodies of water"));
+    await selectItems(tester, "All bodies of water", ["All", "Lake Huron"]);
+
     await tester.ensureVisible(find.text("All fishing methods"));
     await selectItems(tester, "All fishing methods", ["All", "Casting"]);
 
@@ -735,6 +783,7 @@ void main() {
     expect(find.text("Full Moon"), findsOneWidget);
     expect(find.text("Any"), findsOneWidget);
     expect(find.text("Outgoing Tide"), findsOneWidget);
+    expect(find.text("Lake Huron"), findsOneWidget);
 
     await tapAndSettle(tester, find.text("SAVE"));
 
@@ -752,6 +801,7 @@ void main() {
     expect(report.baits.length, 1);
     expect(report.speciesIds.length, 1);
     expect(report.fishingSpotIds.length, 1);
+    expect(report.bodyOfWaterIds.length, 1);
     expect(report.methodIds.length, 1);
     expect(report.waterClarityIds.length, 1);
     expect(report.periods.length, 1);
@@ -906,6 +956,9 @@ void main() {
     await tester.ensureVisible(find.text("All fishing spots"));
     await selectItems(tester, "All fishing spots", ["All", "All"]);
 
+    await tester.ensureVisible(find.text("All bodies of water"));
+    await selectItems(tester, "All bodies of water", ["All", "All"]);
+
     await tester.ensureVisible(find.text("All fishing methods"));
     await selectItems(tester, "All fishing methods", ["All", "All"]);
 
@@ -922,6 +975,7 @@ void main() {
     expect(find.text("All species"), findsOneWidget);
     expect(find.text("All baits"), findsOneWidget);
     expect(find.text("All fishing spots"), findsOneWidget);
+    expect(find.text("All bodies of water"), findsOneWidget);
     expect(find.text("All fishing methods"), findsOneWidget);
     expect(find.text("All times of day"), findsOneWidget);
     expect(find.text("All seasons"), findsOneWidget);
@@ -938,6 +992,8 @@ void main() {
     expect(report.baits, isEmpty);
     expect(report.speciesIds, isEmpty);
     expect(report.fishingSpotIds, isEmpty);
+    expect(report.bodyOfWaterIds, isEmpty);
+    expect(report.waterClarityIds, isEmpty);
     expect(report.methodIds, isEmpty);
     expect(report.periods, isEmpty);
     expect(report.seasons, isEmpty);
@@ -999,6 +1055,7 @@ void main() {
     report.anglerIds.addAll(anglerList.map((e) => e.id));
     report.baits.addAll(baitList.map((e) => BaitAttachment(baitId: e.id)));
     report.fishingSpotIds.addAll(fishingSpotList.map((e) => e.id));
+    report.bodyOfWaterIds.addAll(bodyOfWaterList.map((e) => e.id));
     report.methodIds.addAll(methodList.map((e) => e.id));
     report.speciesIds.addAll(speciesList.map((e) => e.id));
     report.waterClarityIds.addAll(waterClarityList.map((e) => e.id));
@@ -1053,6 +1110,8 @@ void main() {
     expect(find.text("Full Moon"), findsOneWidget);
     expect(find.text("Outgoing Tide"), findsOneWidget);
     expect(find.text("Incoming Tide"), findsOneWidget);
+    expect(find.text("Lake Huron"), findsOneWidget);
+    expect(find.text("Tennessee River"), findsOneWidget);
 
     await tapAndSettle(tester, find.text("SAVE"));
 
@@ -1082,6 +1141,7 @@ void main() {
     expect(find.text("All fishing spots"), findsOneWidget);
     expect(find.text("All baits"), findsOneWidget);
     expect(find.text("All fishing methods"), findsOneWidget);
+    expect(find.text("All bodies of water"), findsOneWidget);
     expect(find.text("All times of day"), findsOneWidget);
     expect(find.text("All seasons"), findsOneWidget);
     expect(find.text("All water clarities"), findsOneWidget);
@@ -1286,6 +1346,17 @@ void main() {
       appManager: appManager,
     ));
     expect(find.text("All fishing spots"), findsNothing);
+  });
+
+  testWidgets("Bodies of water hidden when not tracked", (tester) async {
+    await tester.pumpWidget(Testable(
+      (context) {
+        stubCatchFields(context, catchFieldIdFishingSpot);
+        return SaveReportPage();
+      },
+      appManager: appManager,
+    ));
+    expect(find.text("All bodies of water"), findsNothing);
   });
 
   testWidgets("Methods hidden when not tracked", (tester) async {

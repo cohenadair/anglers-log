@@ -260,17 +260,27 @@ Future<void> enterTextFieldAndSettle(
 Future<Uint8List?> stubImage(
     StubbedAppManager appManager, WidgetTester tester, String name,
     {bool anyName = false}) async {
+  File? file;
   Uint8List? image;
   // runAsync is required here because readAsBytes does real async
   // work and can't be used with pump().
   await tester.runAsync(() async {
-    image = await File("test/resources/$name").readAsBytes();
+    file = File("test/resources/$name");
+    image = await file!.readAsBytes();
   });
+
   when(appManager.imageManager.image(
     any,
     fileName: anyName ? anyNamed("fileName") : name,
     size: anyNamed("size"),
   )).thenAnswer((_) => Future.value(image));
+
+  when(appManager.imageManager.images(
+    any,
+    imageNames: anyName ? anyNamed("fileNames") : [name],
+    size: anyNamed("size"),
+  )).thenAnswer((_) => Future.value({file!: image!}));
+
   return image;
 }
 
@@ -303,6 +313,12 @@ extension CommonFindersExt on CommonFinders {
     String? text,
   }) {
     return textStyle(text, styleHeading);
+  }
+
+  Finder headingSmallText({
+    String? text,
+  }) {
+    return textStyle(text, styleHeadingSmall);
   }
 
   Finder listHeadingText(

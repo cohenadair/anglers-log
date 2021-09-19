@@ -34,10 +34,10 @@ class FishingSpotListPage extends StatelessWidget {
     );
 
     return ManageableListPage<dynamic>(
-      titleBuilder: (fishingSpots) => Text(
+      titleBuilder: (items) => Text(
         format(
           Strings.of(context).fishingSpotListPageTitle,
-          [fishingSpots.length],
+          [items.whereType<FishingSpot>().length],
         ),
       ),
       forceCenterTitle: !_isPicking,

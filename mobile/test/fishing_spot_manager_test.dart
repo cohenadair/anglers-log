@@ -183,6 +183,75 @@ void main() {
     expect(sortedSpots[2].hasName(), isFalse);
   });
 
+  test("setImageName", () {
+    var id = randomId();
+    var fishingSpot = FishingSpot(id: id);
+    expect(fishingSpot.id, id);
+    expect(fishingSpot.hasImageName(), isFalse);
+
+    fishingSpotManager.setImageName(fishingSpot, "test_name.png");
+    expect(fishingSpot.id, id);
+    expect(fishingSpot.hasImageName(), isTrue);
+  });
+
+  test("clearImageName", () {
+    var id = randomId();
+    var fishingSpot = FishingSpot(
+      id: id,
+      imageName: "test_name.png",
+    );
+    expect(fishingSpot.id, id);
+    expect(fishingSpot.hasImageName(), isTrue);
+
+    fishingSpotManager.clearImageName(fishingSpot);
+    expect(fishingSpot.id, id);
+    expect(fishingSpot.hasImageName(), isFalse);
+  });
+
+  test("matchesFilter no fishing spot", () {
+    expect(fishingSpotManager.matchesFilter(randomId(), null), isFalse);
+  });
+
+  test("matchesFilter super returns true", () async {
+    var id = randomId();
+    await fishingSpotManager.addOrUpdate(FishingSpot(
+      id: id,
+      name: "Test",
+    ));
+    expect(fishingSpotManager.matchesFilter(id, "Test"), isTrue);
+  });
+
+  testWidgets("matchesFilter body of water match", (tester) async {
+    var id = randomId();
+    await fishingSpotManager.addOrUpdate(FishingSpot(
+      id: id,
+      name: "Test",
+    ));
+
+    var context = await buildContext(tester, appManager: appManager);
+    when(appManager.bodyOfWaterManager.matchesFilter(any, any))
+        .thenReturn(true);
+
+    expect(
+        fishingSpotManager.matchesFilter(id, "Body Of Water", context), isTrue);
+  });
+
+  testWidgets("matchesFilter notes match", (tester) async {
+    var id = randomId();
+    await fishingSpotManager.addOrUpdate(FishingSpot(
+      id: id,
+      name: "Test",
+      notes: "Some notes",
+    ));
+
+    var context = await buildContext(tester, appManager: appManager);
+    when(appManager.bodyOfWaterManager.matchesFilter(any, any))
+        .thenReturn(false);
+
+    expect(fishingSpotManager.matchesFilter(id, "note", context), isTrue);
+    expect(fishingSpotManager.matchesFilter(id, "bad", context), isFalse);
+  });
+
   group("deleteMessage", () {
     testWidgets("Singular", (tester) async {
       var fishingSpot = FishingSpot()

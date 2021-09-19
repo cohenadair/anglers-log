@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:mobile/wrappers/io_wrapper.dart';
 import 'package:quiver/strings.dart';
 
 import '../body_of_water_manager.dart';
@@ -242,9 +243,7 @@ class _FishingSpotActions extends StatelessWidget {
           context: context,
           description:
               Text(fishingSpotManager.deleteMessage(context, fishingSpot)),
-          onDelete: () {
-            fishingSpotManager.delete(fishingSpot.id);
-          },
+          onDelete: () => fishingSpotManager.delete(fishingSpot.id),
         );
       },
     );
@@ -265,15 +264,16 @@ class _FishingSpotActions extends StatelessWidget {
   bool _fishingSpotExists(BuildContext context) =>
       FishingSpotManager.of(context).entityExists(fishingSpot.id);
 
-  void _launchDirections(BuildContext context) async {
+  Future<void> _launchDirections(BuildContext context) async {
     var navigationAppOptions = <String, String>{};
     var urlLauncher = UrlLauncherWrapper.of(context);
+    var io = IoWrapper.of(context);
     var destination = "${fishingSpot.lat}%2C${fishingSpot.lng}";
 
     // Openable on Android as standard URL. Do not include as an option on
     // Android devices.
     var appleMapsUrl = "https://maps.apple.com/?daddr=$destination";
-    if (Platform.isIOS && await urlLauncher.canLaunch(appleMapsUrl)) {
+    if (io.isIOS && await urlLauncher.canLaunch(appleMapsUrl)) {
       navigationAppOptions[Strings.of(context).mapPageAppleMaps] = appleMapsUrl;
     }
 

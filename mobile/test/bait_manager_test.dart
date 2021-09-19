@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:fixnum/fixnum.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/bait_category_manager.dart';
@@ -259,55 +257,6 @@ void main() {
 
     await baitManager.addOrUpdate(bait);
     expect(baitManager.matchesFilter(baitId, "10"), true);
-  });
-
-  test("Add without image", () async {
-    await baitManager.addOrUpdate(Bait()
-      ..id = randomId()
-      ..name = "Rapala");
-    verifyNever(
-        appManager.imageManager.save(any, compress: anyNamed("compress")));
-  });
-
-  test("Add with image; error saving", () async {
-    when(appManager.imageManager.save(any, compress: anyNamed("compress")))
-        .thenAnswer((_) => Future.value([]));
-
-    var id = randomId();
-    await baitManager.addOrUpdate(
-      Bait()
-        ..id = id
-        ..name = "Rapala"
-        ..imageName = "123123123",
-      imageFile: File("123123123.jpg"),
-    );
-
-    verify(appManager.imageManager.save(any, compress: anyNamed("compress")))
-        .called(1);
-
-    var bait = baitManager.entity(id);
-    expect(bait, isNotNull);
-    expect(bait!.hasImageName(), isFalse);
-  });
-
-  test("Add with image", () async {
-    when(appManager.imageManager.save(any, compress: anyNamed("compress")))
-        .thenAnswer((_) => Future.value(["123123123"]));
-
-    var id = randomId();
-    await baitManager.addOrUpdate(
-      Bait()
-        ..id = id
-        ..name = "Rapala",
-      imageFile: File("123123123.jpg"),
-    );
-
-    verify(appManager.imageManager.save(any, compress: anyNamed("compress")))
-        .called(1);
-
-    var bait = baitManager.entity(id);
-    expect(bait, isNotNull);
-    expect(bait!.hasImageName(), isTrue);
   });
 
   testWidgets("attachmentsMatchesFilter", (tester) async {

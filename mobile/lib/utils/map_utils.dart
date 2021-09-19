@@ -4,29 +4,6 @@ import 'package:mapbox_gl/mapbox_gl.dart';
 
 import '../model/gen/anglerslog.pb.dart';
 
-void moveMap(
-  MapboxMapController controller,
-  LatLng latLng, {
-  bool animate = true,
-  double? zoom,
-}) {
-  CameraUpdate update;
-  if (zoom == null) {
-    update = CameraUpdate.newLatLng(latLng);
-  } else {
-    update = CameraUpdate.newCameraPosition(CameraPosition(
-      target: latLng,
-      zoom: zoom,
-    ));
-  }
-
-  if (animate) {
-    controller.animateCamera(update);
-  } else {
-    controller.moveCamera(update);
-  }
-}
-
 /// Returns an approximate distance, in meters, between the given [LatLng]
 /// objects.
 double distanceBetween(LatLng? latLng1, LatLng? latLng2) {

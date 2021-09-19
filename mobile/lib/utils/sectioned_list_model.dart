@@ -48,7 +48,7 @@ abstract class SectionedListModel<Header, Item> {
     // This is purposely added to the end of the sorted list.
     headers.add(noSectionHeader(context));
 
-    // First, organize baits in to category collections.
+    // First, organize items into header collections.
     var map = <Id, List<Item>>{};
     for (var item in _items) {
       var id = itemHasHeaderId(item) ? itemHeaderId(item) : noSectionHeaderId;
@@ -56,11 +56,11 @@ abstract class SectionedListModel<Header, Item> {
       map[id]!.add(item);
     }
 
-    // Next, iterate categories and create list items.
+    // Next, iterate headers and create list items.
     for (var i = 0; i < headers.length; i++) {
       var header = headers[i];
 
-      // Skip categories that don't have any baits.
+      // Skip headers that don't have any items.
       if (!map.containsKey(headerId(header)) ||
           map[headerId(header)]!.isEmpty) {
         continue;
