@@ -30,6 +30,36 @@ void main() {
     expect(find.byIcon(CustomIcons.catches), findsOneWidget);
   });
 
+  testWidgets("showPlaceholder set to false", (tester) async {
+    await tester.pumpWidget(Testable(
+      (_) => Photo(
+        fileName: null,
+        width: 50,
+        height: 50,
+        showPlaceholder: false,
+      ),
+      appManager: appManager,
+    ));
+    await tester.pump(Duration(milliseconds: 250));
+
+    expect(find.byIcon(CustomIcons.catches), findsNothing);
+  });
+
+  testWidgets("Empty child", (tester) async {
+    await tester.pumpWidget(Testable(
+      (_) => Photo(
+        fileName: null,
+        width: 50,
+        height: 50,
+        showPlaceholder: false,
+      ),
+      appManager: appManager,
+    ));
+    await tester.pump(Duration(milliseconds: 250));
+
+    expect(find.byType(Empty), findsOneWidget);
+  });
+
   testWidgets("Invalid image no size shows empty placeholder", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => Photo(
@@ -138,6 +168,22 @@ void main() {
       (_) => Photo(
         fileName: "flutter_logo.png",
         galleryImages: ["flutter_logo.png"],
+      ),
+      appManager: appManager,
+    ));
+    // Wait for photo future to settle.
+    await tester.pump(Duration(milliseconds: 250));
+    await tapAndSettle(tester, find.byType(Photo).first);
+    expect(find.byType(PhotoGalleryPage), findsOneWidget);
+  });
+
+  testWidgets("showFullOnTap shows full screen image", (tester) async {
+    await stubImage(appManager, tester, "flutter_logo.png", anyName: true);
+
+    await tester.pumpWidget(Testable(
+      (_) => Photo(
+        fileName: "flutter_logo.png",
+        showFullOnTap: true,
       ),
       appManager: appManager,
     ));

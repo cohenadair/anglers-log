@@ -277,7 +277,7 @@ Future<Uint8List?> stubImage(
 
   when(appManager.imageManager.images(
     any,
-    imageNames: anyName ? anyNamed("fileNames") : [name],
+    imageNames: anyName ? anyNamed("imageNames") : [name],
     size: anyNamed("size"),
   )).thenAnswer((_) => Future.value({file!: image!}));
 

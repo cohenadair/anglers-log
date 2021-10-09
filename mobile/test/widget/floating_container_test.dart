@@ -66,6 +66,13 @@ void main() {
     expect(tester.takeException(), isAssertionError);
   });
 
+  testWidgets("No title shows subtitle as title", (tester) async {
+    var context = await pumpContext(tester, (_) => FloatingContainer(
+      subtitle: "Subtitle",
+    ));
+    expect(find.primaryText(context, text: "Subtitle"), findsOneWidget);
+  });
+
   testWidgets("Children are added", (tester) async {
     await tester.pumpWidget(
       Testable(
