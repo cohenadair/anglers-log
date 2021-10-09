@@ -88,26 +88,26 @@ class _TestModel extends SectionedListModel<BaitCategory, Bait> {
 
   @override
   List<Bait> filteredItemList(String? filter) => [
-    Bait(
-      id: randomId(),
-      name: "Minnow",
-      baitCategoryId: _baitCategories[1].id,
-    ),
-    Bait(
-      id: randomId(),
-      name: "Olive",
-      baitCategoryId: _baitCategories[0].id,
-    ),
-    Bait(
-      id: randomId(),
-      name: "Cyan",
-      baitCategoryId: _baitCategories[0].id,
-    ),
-    Bait(
-      id: randomId(),
-      name: "Crank",
-    ),
-  ];
+        Bait(
+          id: randomId(),
+          name: "Minnow",
+          baitCategoryId: _baitCategories[1].id,
+        ),
+        Bait(
+          id: randomId(),
+          name: "Olive",
+          baitCategoryId: _baitCategories[0].id,
+        ),
+        Bait(
+          id: randomId(),
+          name: "Cyan",
+          baitCategoryId: _baitCategories[0].id,
+        ),
+        Bait(
+          id: randomId(),
+          name: "Crank",
+        ),
+      ];
 
   @override
   Id headerId(BaitCategory header) => header.id;

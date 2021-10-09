@@ -81,16 +81,28 @@ void main() {
 
     var context = await buildContext(tester);
 
-    expect(bodyOfWaterManager.deleteMessage(context, BodyOfWater(
-      id: bodyOfWaterId0,
-      name: "Body Of Water 1",
-    )), "Body Of Water 1 is associated with 3 fishing spots; are you sure "
-        "you want to delete it? This cannot be undone.",);
+    expect(
+      bodyOfWaterManager.deleteMessage(
+        context,
+        BodyOfWater(
+          id: bodyOfWaterId0,
+          name: "Body Of Water 1",
+        ),
+      ),
+      "Body Of Water 1 is associated with 3 fishing spots; are you sure "
+      "you want to delete it? This cannot be undone.",
+    );
 
-    expect(bodyOfWaterManager.deleteMessage(context, BodyOfWater(
-      id: bodyOfWaterId1,
-      name: "Body Of Water 2",
-    )), "Body Of Water 2 is associated with 1 fishing spot; are you sure "
-        "you want to delete it? This cannot be undone.",);
+    expect(
+      bodyOfWaterManager.deleteMessage(
+        context,
+        BodyOfWater(
+          id: bodyOfWaterId1,
+          name: "Body Of Water 2",
+        ),
+      ),
+      "Body Of Water 2 is associated with 1 fishing spot; are you sure "
+      "you want to delete it? This cannot be undone.",
+    );
   });
 }

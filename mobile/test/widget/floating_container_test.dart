@@ -67,9 +67,12 @@ void main() {
   });
 
   testWidgets("No title shows subtitle as title", (tester) async {
-    var context = await pumpContext(tester, (_) => FloatingContainer(
-      subtitle: "Subtitle",
-    ));
+    var context = await pumpContext(
+      tester,
+      (_) => FloatingContainer(
+        subtitle: "Subtitle",
+      ),
+    );
     expect(find.primaryText(context, text: "Subtitle"), findsOneWidget);
   });
 

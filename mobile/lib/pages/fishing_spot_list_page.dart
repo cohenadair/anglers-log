@@ -76,8 +76,7 @@ class FishingSpotListPage extends StatelessWidget {
     return ManageableListPagePickerSettings<dynamic>(
       onPicked: (context, fishingSpots) {
         fishingSpots..removeWhere((e) => !(e is FishingSpot));
-        return pickerSettings!.onPicked(
-            context,
+        return pickerSettings!.onPicked(context,
             fishingSpots.map<FishingSpot>((e) => e as FishingSpot).toSet());
       },
       containsAll: (fishingSpots) => fishingSpots.containsAll(model.items),

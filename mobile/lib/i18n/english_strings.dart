@@ -375,7 +375,8 @@ Map<String, Map<String, String>> get englishStrings => {
         "fishingSpotMap_locationPermissionDescription":
             "To show your current location, you must grant Anglers' Log access to read your device's location. To do so, open your device settings.",
         "fishingSpotMap_locationPermissionOpenSettings": "Open Settings",
-        "fishingSpotMap_addSpotHelp": "Long press anywhere on the map to drop a pin and add a fishing spot.",
+        "fishingSpotMap_addSpotHelp":
+            "Long press anywhere on the map to drop a pin and add a fishing spot.",
         "feedbackPage_title": "Send Feedback",
         "feedbackPage_send": "Send",
         "feedbackPage_message": "Message",

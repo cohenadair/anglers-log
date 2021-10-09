@@ -82,6 +82,8 @@ import 'package:sqflite/sqflite.dart' as _i56;
 // ignore_for_file: invalid_use_of_visible_for_testing_member
 // ignore_for_file: prefer_const_constructors
 // ignore_for_file: unnecessary_parenthesis
+// ignore_for_file: camel_case_types
+// ignore_for_file: avoid_types_on_closure_parameters
 
 class _FakeFirestoreWrapper_0 extends _i1.Fake implements _i2.FirestoreWrapper {
 }
