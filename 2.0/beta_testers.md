@@ -14,6 +14,7 @@ Anglers' Log 2.0 Beta Testers
 * Jonathan - jonnyboyvo@yahoo.com
 * Petter Ronningen - petterronningen@live.no
 * Ruan Benade - ruan.benade@gmail.com (UX designer)
+* Craig Haffner - craighaffner@bigpond.com
 
 ### Donators
 * Dov - dovfeder@optonline.net
