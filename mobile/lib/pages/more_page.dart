@@ -16,6 +16,7 @@ import '../utils/store_utils.dart';
 import '../widgets/list_item.dart';
 import '../widgets/widget.dart';
 import 'angler_list_page.dart';
+import 'body_of_water_list_page.dart';
 import 'method_list_page.dart';
 import 'scroll_page.dart';
 import 'water_clarity_list_page.dart';
@@ -57,6 +58,12 @@ class MorePage extends StatelessWidget {
           icon: Icons.bug_report,
           title: Strings.of(context).baitListPageMenuLabel,
           page: BaitListPage(),
+        ),
+        _buildPageItem(
+          context,
+          icon: Icons.water,
+          title: Strings.of(context).bodyOfWaterListPageMenuLabel,
+          page: BodyOfWaterListPage(),
         ),
         _buildPageItem(
           context,

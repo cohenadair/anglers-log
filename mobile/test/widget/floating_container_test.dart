@@ -46,7 +46,7 @@ void main() {
 
     expect(tapped, isTrue);
     expect(find.byType(RightChevronIcon), findsOneWidget);
-    expect(findFirst<ListItem>(tester).padding!.right, paddingSmall);
+    expect(findFirst<ImageListItem>(tester).trailing!, isNotNull);
   });
 
   testWidgets("Tap disabled", (tester) async {
@@ -58,36 +58,22 @@ void main() {
       ),
     );
     expect(find.byType(RightChevronIcon), findsNothing);
-    expect(findFirst<ListItem>(tester).padding!.right, paddingDefault);
-  });
-
-  testWidgets("Empty title shows subtitle", (tester) async {
-    var context = await pumpContext(
-      tester,
-      (_) => FloatingContainer(
-        subtitle: "Subtitle",
-      ),
-    );
-
-    expect(find.primaryText(context, text: "Subtitle"), findsNothing);
-  });
-
-  testWidgets("Title and subtitle", (tester) async {
-    var context = await pumpContext(
-      tester,
-      (_) => FloatingContainer(
-        title: "Title",
-        subtitle: "Subtitle",
-      ),
-    );
-
-    expect(find.headingText(text: "Title"), findsOneWidget);
-    expect(find.secondaryText(context, text: "Subtitle"), findsOneWidget);
+    expect(findFirst<ImageListItem>(tester).trailing, isNull);
   });
 
   testWidgets("Title/subtitle cannot both be empty", (tester) async {
     await tester.pumpWidget(Testable((_) => FloatingContainer()));
     expect(tester.takeException(), isAssertionError);
+  });
+
+  testWidgets("No title shows subtitle as title", (tester) async {
+    var context = await pumpContext(
+      tester,
+      (_) => FloatingContainer(
+        subtitle: "Subtitle",
+      ),
+    );
+    expect(find.primaryText(context, text: "Subtitle"), findsOneWidget);
   });
 
   testWidgets("Children are added", (tester) async {

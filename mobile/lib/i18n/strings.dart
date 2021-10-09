@@ -135,6 +135,8 @@ class Strings {
 
   String get inputDescriptionLabel => _string("input_descriptionLabel");
 
+  String get inputNotesLabel => _string("input_notesLabel");
+
   String get inputInvalidNumber => _string("input_invalidNumber");
 
   String get inputPhotoLabel => _string("input_photoLabel");
@@ -291,6 +293,9 @@ class Strings {
   String get saveReportPageAllSpecies => _string("saveReportPage_allSpecies");
 
   String get saveReportPageAllBaits => _string("saveReportPage_allBaits");
+
+  String get saveReportPageAllBodiesOfWater =>
+      _string("saveReportPage_allBodiesOfWater");
 
   String get saveReportPageAllFishingSpots =>
       _string("saveReportPage_allFishingSpots");
@@ -662,6 +667,9 @@ class Strings {
   String get saveFishingSpotPageEditTitle =>
       _string("saveFishingSpotPage_editTitle");
 
+  String get saveFishingSpotPageBodyOfWaterLabel =>
+      _string("saveFishingSpotPage_bodyOfWaterLabel");
+
   String get formPageManageFieldText => _string("formPage_manageFieldText");
 
   String get formPageRemoveFieldsText => _string("formPage_removeFieldsText");
@@ -756,6 +764,9 @@ class Strings {
   String get fishingSpotListPageEmptyListDescription =>
       _string("fishingSpotListPage_emptyListDescription");
 
+  String get fishingSpotListPageNoBodyOfWater =>
+      _string("fishingSpotListPage_noBodyOfWater");
+
   String get fishingSpotMapLocationPermissionTitle =>
       _string("fishingSpotMap_locationPermissionTitle");
 
@@ -764,6 +775,8 @@ class Strings {
 
   String get fishingSpotMapLocationPermissionOpenSettings =>
       _string("fishingSpotMap_locationPermissionOpenSettings");
+
+  String get fishingSpotMapAddSpotHelp => _string("fishingSpotMap_addSpotHelp");
 
   String get customEntityListPageTitle => _string("customEntityListPage_title");
 
@@ -1341,6 +1354,10 @@ class Strings {
 
   String get pickerTitleTides => _string("pickerTitle_tides");
 
+  String get pickerTitleBodyOfWater => _string("pickerTitle_bodyOfWater");
+
+  String get pickerTitleBodiesOfWater => _string("pickerTitle_bodiesOfWater");
+
   String get keywordsTemperatureMetric => _string("keywords_temperatureMetric");
 
   String get keywordsTemperatureImperial =>
@@ -1468,6 +1485,56 @@ class Strings {
   String get baitTypeReal => _string("baitType_real");
 
   String get baitTypeLive => _string("baitType_live");
+
+  String get bodyOfWaterListPageDeleteMessage =>
+      _string("bodyOfWaterListPage_deleteMessage");
+
+  String get bodyOfWaterListPageDeleteMessageSingular =>
+      _string("bodyOfWaterListPage_deleteMessageSingular");
+
+  String get bodyOfWaterListPageMenuLabel =>
+      _string("bodyOfWaterListPage_menuLabel");
+
+  String get bodyOfWaterListPageTitle => _string("bodyOfWaterListPage_title");
+
+  String get bodyOfWaterListPageSearchHint =>
+      _string("bodyOfWaterListPage_searchHint");
+
+  String get bodyOfWaterListPageEmptyListTitle =>
+      _string("bodyOfWaterListPage_emptyListTitle");
+
+  String get bodyOfWaterListPageEmptyListDescription =>
+      _string("bodyOfWaterListPage_emptyListDescription");
+
+  String get saveBodyOfWaterPageNewTitle =>
+      _string("saveBodyOfWaterPage_newTitle");
+
+  String get saveBodyOfWaterPageEditTitle =>
+      _string("saveBodyOfWaterPage_editTitle");
+
+  String get saveBodyOfWaterPageExistsMessage =>
+      _string("saveBodyOfWaterPage_existsMessage");
+
+  String get mapAttributionTitleApple => _string("mapAttribution_titleApple");
+
+  String get mapAttributionTitleAndroid =>
+      _string("mapAttribution_titleAndroid");
+
+  String get mapAttributionMapbox => _string("mapAttribution_mapbox");
+
+  String get mapAttributionOpenStreetMap =>
+      _string("mapAttribution_openStreetMap");
+
+  String get mapAttributionImproveThisMap =>
+      _string("mapAttributionImproveThisMap");
+
+  String get mapAttributionMaxar => _string("mapAttribution_maxar");
+
+  String get mapAttributionTelemetryTitle =>
+      _string("mapAttribution_telemetryTitle");
+
+  String get mapAttributionTelemetryDescription =>
+      _string("mapAttribution_telemetryDescription");
 }
 
 class StringsDelegate extends LocalizationsDelegate<Strings> {

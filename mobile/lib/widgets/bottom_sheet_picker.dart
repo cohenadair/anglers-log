@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:quiver/strings.dart';
 
+import '../res/dimen.dart';
+import '../res/style.dart';
 import 'list_item.dart';
 import 'widget.dart';
 
@@ -17,30 +20,59 @@ class BottomSheetPicker<T> extends StatelessWidget {
   final void Function(T?)? onPicked;
   final T? currentValue;
   final Map<String, T> items;
+  final String? title;
+  final TextStyle? itemStyle;
+  final Widget? footer;
 
   BottomSheetPicker({
     this.items = const {},
     this.onPicked,
     this.currentValue,
+    this.title,
+    this.itemStyle,
+    this.footer,
   });
 
   @override
   Widget build(BuildContext context) {
+    Widget titleWidget = Empty();
+    if (isNotEmpty(title)) {
+      titleWidget = Padding(
+        padding: insetsDefault,
+        child: Text(
+          title!,
+          style: styleHeadingSmall,
+        ),
+      );
+    }
+
     return SafeArea(
       bottom: true,
       child: Column(
         mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          SwipeChip(),
-        ]..addAll(
-            items.keys.map((key) => _buildItem(context, key, items[key]))),
+          Align(
+            alignment: Alignment.center,
+            child: SwipeChip(),
+          ),
+          titleWidget,
+        ]
+          ..addAll(
+              items.keys.map((key) => _buildItem(context, key, items[key])))
+          ..add(footer ?? Empty()),
       ),
     );
   }
 
   Widget _buildItem(BuildContext context, String title, T? value) {
+    Widget titleWidget = Text(title);
+    if (itemStyle != null) {
+      titleWidget = Text(title, style: itemStyle);
+    }
+
     return ListItem(
-      title: Text(title),
+      title: titleWidget,
       trailing: Visibility(
         visible: currentValue != null && currentValue == value,
         child: Icon(

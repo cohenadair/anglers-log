@@ -7,9 +7,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart' as google;
 import 'package:http/http.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:mapbox_gl/mapbox_gl.dart' as map;
 import 'package:mobile/angler_manager.dart';
 import 'package:mobile/app_manager.dart';
 import 'package:mobile/app_preference_manager.dart';
@@ -17,6 +17,7 @@ import 'package:mobile/atmosphere_fetcher.dart';
 import 'package:mobile/auth_manager.dart';
 import 'package:mobile/bait_category_manager.dart';
 import 'package:mobile/bait_manager.dart';
+import 'package:mobile/body_of_water_manager.dart';
 import 'package:mobile/catch_manager.dart';
 import 'package:mobile/report_manager.dart';
 import 'package:mobile/custom_entity_manager.dart';
@@ -66,9 +67,11 @@ import 'mocks.mocks.dart';
 @GenerateMocks([AnglerManager])
 @GenerateMocks([AppManager])
 @GenerateMocks([AppPreferenceManager])
+@GenerateMocks([], customMocks: [MockSpec<map.ArgumentCallbacks>()])
 @GenerateMocks([AtmosphereFetcher])
 @GenerateMocks([BaitCategoryManager])
 @GenerateMocks([BaitManager])
+@GenerateMocks([BodyOfWaterManager])
 @GenerateMocks([CatchManager])
 @GenerateMocks([CustomEntityManager])
 @GenerateMocks([ReportManager])
@@ -94,6 +97,7 @@ import 'mocks.mocks.dart';
 @GenerateMocks([HttpWrapper])
 @GenerateMocks([ImageCompressWrapper])
 @GenerateMocks([IoWrapper])
+@GenerateMocks([map.MapboxMapController])
 @GenerateMocks([PackageInfoWrapper])
 @GenerateMocks([PathProviderWrapper])
 @GenerateMocks([PermissionHandlerWrapper])
@@ -134,15 +138,6 @@ import 'mocks.mocks.dart';
 @GenerateMocks([UploadTask])
 @GenerateMocks([User])
 @GenerateMocks([UserCredential])
-
-// @GenerateMocks produces LatLng conflict AssetEntity LatLng class.
-class MockGoogleMapController extends Mock
-    implements google.GoogleMapController {
-  @override
-  Future<void> animateCamera(google.CameraUpdate? update) =>
-      super.noSuchMethod(Invocation.method(#animateCamera, [update]),
-          returnValue: Future.value()) as Future<void>;
-}
 
 // @GenerateMocks interprets AuthError as a class and tries to call
 // AuthError?.value, which throws a compile time error.

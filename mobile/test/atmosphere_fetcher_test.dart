@@ -1,7 +1,7 @@
 import 'dart:io';
 
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:http/http.dart';
+import 'package:mapbox_gl/mapbox_gl.dart';
 import 'package:mobile/atmosphere_fetcher.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
 import 'package:mobile/utils/atmosphere_utils.dart';

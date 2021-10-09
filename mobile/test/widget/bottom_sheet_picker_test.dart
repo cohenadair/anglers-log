@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mobile/res/style.dart';
 import 'package:mobile/widgets/bottom_sheet_picker.dart';
 import 'package:mobile/widgets/list_item.dart';
+import 'package:mobile/widgets/widget.dart';
 
 import '../test_utils.dart';
 
@@ -87,5 +89,59 @@ void main() {
     expect(find.text("Option 1"), findsOneWidget);
     expect(find.text("Option 2"), findsOneWidget);
     expect(find.text("Option 3"), findsOneWidget);
+  });
+
+  testWidgets("Title is shown", (tester) async {
+    await tester.pumpWidget(
+      Testable(
+        (_) => BottomSheetPicker<String>(
+          title: "Title",
+        ),
+      ),
+    );
+    expect(find.headingSmallText(text: "Title"), findsOneWidget);
+  });
+
+  testWidgets("Title is hidden", (tester) async {
+    await tester.pumpWidget(Testable((_) => BottomSheetPicker<String>()));
+    expect(find.byType(Text), findsNothing);
+  });
+
+  testWidgets("Footer is shown", (tester) async {
+    await tester.pumpWidget(
+      Testable(
+        (_) => BottomSheetPicker<String>(
+          footer: Text("Footer"),
+        ),
+      ),
+    );
+    expect(find.text("Footer"), findsOneWidget);
+    expect(find.byType(Empty), findsOneWidget);
+  });
+
+  testWidgets("Footer is hidden", (tester) async {
+    await tester.pumpWidget(Testable((_) => BottomSheetPicker<String>()));
+    expect(find.byType(Text), findsNothing);
+    expect(find.byType(Empty), findsNWidgets(2));
+  });
+
+  testWidgets("Item has custom style", (tester) async {
+    await tester.pumpWidget(
+      Testable(
+        (_) => BottomSheetPicker<String>(
+          currentValue: "Value 1",
+          items: {
+            "Option 1": "Value 1",
+            "Option 2": "Value 2",
+            "Option 3": "Value 3",
+          },
+          itemStyle: styleHeading,
+        ),
+      ),
+    );
+
+    expect(find.headingText(text: "Option 1"), findsOneWidget);
+    expect(find.headingText(text: "Option 2"), findsOneWidget);
+    expect(find.headingText(text: "Option 3"), findsOneWidget);
   });
 }

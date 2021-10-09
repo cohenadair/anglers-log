@@ -6,6 +6,7 @@ import 'package:quiver/strings.dart';
 
 import '../image_manager.dart';
 import '../pages/photo_gallery_page.dart';
+import '../res/dimen.dart';
 import '../res/gen/custom_icons.dart';
 import '../utils/page_utils.dart';
 import '../widgets/widget.dart';
@@ -37,6 +38,18 @@ class Photo extends StatefulWidget {
   /// allowing the user to view [galleryImages] in fullscreen.
   final List<String> galleryImages;
 
+  /// When true, shows a placeholder image if [imageName] doesn't exist in
+  /// [ImageManager]. Defaults to true.
+  final bool showPlaceholder;
+
+  /// When true, tapping the [Photo] will open the image in a full screen
+  /// view. Defaults to false.
+  final bool showFullOnTap;
+
+  /// If [showPlaceholder] is false, and [imageName] does not exist, this field
+  /// is ignored.
+  final EdgeInsets? padding;
+
   Photo({
     required this.fileName,
     this.width,
@@ -44,15 +57,25 @@ class Photo extends StatefulWidget {
     this.cacheSize,
     this.isCircular = false,
     this.galleryImages = const [],
+    this.showPlaceholder = true,
+    this.showFullOnTap = false,
+    this.padding,
   }) : assert((width != null && height != null) ||
             (width == null && height == null));
 
-  Photo.listThumbnail(String? fileName)
-      : this(
+  Photo.listThumbnail(
+    String? fileName, {
+    bool showPlaceholder = true,
+    bool showFullOnTap = false,
+    EdgeInsets? padding,
+  }) : this(
           fileName: fileName,
           width: _listItemSize,
           height: _listItemSize,
           isCircular: true,
+          showPlaceholder: showPlaceholder,
+          showFullOnTap: showFullOnTap,
+          padding: padding,
         );
 
   @override
@@ -90,8 +113,8 @@ class _PhotoState extends State<Photo> {
         var h = widget.height;
         var hasSize = w != null && h != null;
 
-        Widget child;
-        if (image == null) {
+        Widget child = Empty();
+        if (image == null && widget.showPlaceholder) {
           // Use a default icon placeholder if a size was specified, otherwise
           // use an empty widget.
           child = hasSize
@@ -111,13 +134,17 @@ class _PhotoState extends State<Photo> {
                   ),
                 )
               : Empty();
-        } else {
+        } else if (image != null) {
           child = Image.memory(
             image,
             width: w,
             height: h,
             fit: BoxFit.cover,
           );
+        }
+
+        if (child is Empty) {
+          return child;
         }
 
         // Note that an AnimatedSwitcher isn't used here for a couple reasons:
@@ -132,13 +159,16 @@ class _PhotoState extends State<Photo> {
           );
         }
 
-        if (widget.galleryImages.isNotEmpty && image != null) {
-          return GestureDetector(
+        if ((widget.galleryImages.isNotEmpty || widget.showFullOnTap) &&
+            image != null) {
+          child = GestureDetector(
             onTap: () {
               fade(
                 context,
                 PhotoGalleryPage(
-                  fileNames: widget.galleryImages,
+                  fileNames: widget.galleryImages.isEmpty
+                      ? [widget.fileName!]
+                      : widget.galleryImages,
                   initialFileName: widget.fileName!,
                 ),
               );
@@ -147,7 +177,10 @@ class _PhotoState extends State<Photo> {
           );
         }
 
-        return child;
+        return Padding(
+          padding: widget.padding ?? insetsZero,
+          child: child,
+        );
       },
     );
   }

@@ -13,13 +13,16 @@ import 'package:uuid/uuid.dart';
 
 import 'mocks/mocks.mocks.dart';
 import 'mocks/stubbed_app_manager.dart';
+import 'mocks/stubbed_map_controller.dart';
 import 'test_utils.dart';
 
 void main() {
   late StubbedAppManager appManager;
+  late StubbedMapController mapController;
 
   setUp(() {
     appManager = StubbedAppManager();
+    mapController = StubbedMapController();
 
     when(appManager.appPreferenceManager.lastLoggedInEmail).thenReturn(null);
 
@@ -31,6 +34,8 @@ void main() {
     when(appManager.reportManager.entityExists(any)).thenReturn(false);
 
     when(appManager.locationMonitor.currentLocation).thenReturn(null);
+
+    when(appManager.propertiesManager.mapboxApiKey).thenReturn("");
 
     when(appManager.subscriptionManager.isFree).thenReturn(false);
 
@@ -175,7 +180,8 @@ void main() {
     )).thenReturn([]);
 
     await tester.pumpWidget(AnglersLog(appManager.app));
-    await tester.pumpAndSettle(Duration(milliseconds: 150));
+    await tester.pumpAndSettle(Duration(milliseconds: 300));
+    await mapController.finishLoading(tester);
 
     expect(find.byType(OnboardingJourney), findsNothing);
     expect(find.byType(MainPage), findsOneWidget);
@@ -224,7 +230,8 @@ void main() {
 
     when(appManager.authManager.state).thenReturn(AuthState.loggedIn);
     controller.add(AuthState.loggedIn);
-    await tester.pumpAndSettle(Duration(milliseconds: 150));
+    await tester.pumpAndSettle(Duration(milliseconds: 300));
+    await mapController.finishLoading(tester);
     expect(find.byType(MainPage), findsOneWidget);
   });
 
@@ -254,7 +261,8 @@ void main() {
 
     when(appManager.authManager.state).thenReturn(AuthState.loggedIn);
     controller.add(AuthState.loggedIn);
-    await tester.pumpAndSettle(Duration(milliseconds: 150));
+    await tester.pumpAndSettle(Duration(milliseconds: 300));
+    await mapController.finishLoading(tester);
     expect(find.byType(MainPage), findsOneWidget);
   });
 

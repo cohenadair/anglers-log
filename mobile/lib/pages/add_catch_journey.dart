@@ -2,16 +2,16 @@ import 'package:flutter/material.dart';
 
 import '../fishing_spot_manager.dart';
 import '../i18n/strings.dart';
-import '../location_monitor.dart';
 import '../log.dart';
 import '../model/gen/anglerslog.pb.dart';
-import '../pages/fishing_spot_picker_page.dart';
 import '../pages/image_picker_page.dart';
 import '../pages/save_catch_page.dart';
 import '../pages/species_list_page.dart';
 import '../user_preference_manager.dart';
 import '../utils/catch_utils.dart';
 import '../utils/protobuf_utils.dart';
+import '../widgets/fishing_spot_map.dart';
+import '../widgets/input_controller.dart';
 import 'manageable_list_page.dart';
 
 /// Presents a workflow (journey) for adding a [Catch].
@@ -32,24 +32,22 @@ class _AddCatchJourneyState extends State<AddCatchJourney> {
   final String _saveCatchRoute = "save_catch";
 
   final _log = Log("AddCatchJourney");
+  final _fishingSpotController = InputController<FishingSpot>();
 
   FishingSpotManager get _fishingSpotManager => FishingSpotManager.of(context);
-
-  LocationMonitor get _locationMonitor => LocationMonitor.of(context);
 
   UserPreferenceManager get _userPreferencesManager =>
       UserPreferenceManager.of(context);
 
   List<PickedImage> _images = [];
   Species? _species;
-  FishingSpot? _fishingSpot;
 
   bool get _isFishingSpotPrePicked => widget.fishingSpot != null;
 
   @override
   void initState() {
     super.initState();
-    _fishingSpot = widget.fishingSpot;
+    _fishingSpotController.value = widget.fishingSpot;
   }
 
   @override
@@ -88,12 +86,12 @@ class _AddCatchJourneyState extends State<AddCatchJourney> {
                         _fishingSpotManager.withinRadius(image.position);
 
                     if (existingSpot == null) {
-                      _fishingSpot = FishingSpot()
+                      _fishingSpotController.value = FishingSpot()
                         ..id = randomId()
                         ..lat = image.position!.latitude
                         ..lng = image.position!.longitude;
                     } else {
-                      _fishingSpot = existingSpot;
+                      _fishingSpotController.value = existingSpot;
                     }
 
                     break;
@@ -114,7 +112,8 @@ class _AddCatchJourneyState extends State<AddCatchJourney> {
 
                   // If the fishing spot already exists in the database, skip
                   // the fishing spot picker page.
-                  if (_fishingSpotManager.entityExists(_fishingSpot?.id) ||
+                  if (_fishingSpotManager
+                          .entityExists(_fishingSpotController.value?.id) ||
                       !_isTrackingFishingSpots()) {
                     Navigator.of(context).pushNamed(_saveCatchRoute);
                   } else {
@@ -132,17 +131,11 @@ class _AddCatchJourneyState extends State<AddCatchJourney> {
           );
         } else if (name == _pickFishingSpotRoute) {
           return MaterialPageRoute(
-            builder: (context) => FishingSpotPickerPage(
-              startPos: _fishingSpot?.latLng,
-              fishingSpotId: _fishingSpot?.id ??
-                  _fishingSpotManager
-                      .withinRadius(_locationMonitor.currentLocation)
-                      ?.id,
-              onPicked: (context, fishingSpot) {
-                _fishingSpot = fishingSpot;
-                Navigator.of(context).pushNamed(_saveCatchRoute);
-              },
-              actionButtonText: Strings.of(context).next,
+            builder: (context) => FishingSpotMap(
+              pickerSettings: FishingSpotMapPickerSettings(
+                controller: _fishingSpotController,
+                onNext: () => Navigator.of(context).pushNamed(_saveCatchRoute),
+              ),
             ),
           );
         } else if (name == _saveCatchRoute) {
@@ -150,7 +143,7 @@ class _AddCatchJourneyState extends State<AddCatchJourney> {
             builder: (context) => SaveCatchPage(
               images: _images,
               speciesId: _species!.id,
-              fishingSpotId: _fishingSpot?.id,
+              fishingSpot: _fishingSpotController.value,
               popOverride: () =>
                   Navigator.of(context, rootNavigator: true).pop(),
             ),

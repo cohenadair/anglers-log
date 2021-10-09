@@ -7,6 +7,8 @@ import '../res/style.dart';
 import '../widgets/widget.dart';
 
 class SearchBar extends StatefulWidget {
+  static const height = 40.0;
+
   final String? text;
   final String? hint;
   final EdgeInsets? margin;
@@ -45,8 +47,6 @@ class SearchBar extends StatefulWidget {
 }
 
 class _SearchBarState extends State<SearchBar> {
-  final double _height = 40.0;
-
   final TextEditingController _controller = TextEditingController();
   final FocusNode _focusNode = FocusNode();
 
@@ -114,7 +114,7 @@ class _SearchBarState extends State<SearchBar> {
 
     return SafeArea(
       child: Container(
-        height: _height,
+        height: SearchBar.height,
         margin: widget.margin,
         decoration: FloatingBoxDecoration.rectangle(elevated: widget.elevated),
         // Wrap InkWell in a Material widget so the fill animation is shown

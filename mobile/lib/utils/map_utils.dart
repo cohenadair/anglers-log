@@ -1,30 +1,8 @@
-import 'dart:async';
 import 'dart:math';
 
-import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:mapbox_gl/mapbox_gl.dart';
 
 import '../model/gen/anglerslog.pb.dart';
-
-void moveMap(Completer<GoogleMapController> controller, LatLng latLng,
-    {bool animate = true, double? zoom}) {
-  controller.future.then((controller) {
-    CameraUpdate update;
-    if (zoom == null) {
-      update = CameraUpdate.newLatLng(latLng);
-    } else {
-      update = CameraUpdate.newCameraPosition(CameraPosition(
-        target: latLng,
-        zoom: zoom,
-      ));
-    }
-
-    if (animate) {
-      controller.animateCamera(update);
-    } else {
-      controller.moveCamera(update);
-    }
-  });
-}
 
 /// Returns an approximate distance, in meters, between the given [LatLng]
 /// objects.
@@ -44,19 +22,19 @@ double distanceBetween(LatLng? latLng1, LatLng? latLng2) {
   return sqrt(pow(latDistance, 2) + pow(lngDistance, 2));
 }
 
-LatLngBounds? mapBounds(Set<Marker>? markers) {
-  if (markers == null || markers.isEmpty) {
+LatLngBounds? mapBounds(Iterable<FishingSpot> fishingSpots) {
+  if (fishingSpots.isEmpty) {
     return null;
   }
 
-  var mostWestLat = markers.first.position.latitude;
-  var mostEastLat = markers.first.position.latitude;
-  var mostNorthLng = markers.first.position.longitude;
-  var mostSouthLng = markers.first.position.longitude;
+  var mostWestLat = fishingSpots.first.lat;
+  var mostEastLat = fishingSpots.first.lat;
+  var mostNorthLng = fishingSpots.first.lng;
+  var mostSouthLng = fishingSpots.first.lng;
 
-  for (var marker in markers) {
-    var lat = marker.position.latitude;
-    var lng = marker.position.longitude;
+  for (var fishingSpot in fishingSpots) {
+    var lat = fishingSpot.lat;
+    var lng = fishingSpot.lng;
 
     if (lat < mostWestLat) {
       mostWestLat = lat;
@@ -79,44 +57,4 @@ LatLngBounds? mapBounds(Set<Marker>? markers) {
     southwest: LatLng(mostWestLat, mostSouthLng),
     northeast: LatLng(mostEastLat, mostNorthLng),
   );
-}
-
-class FishingSpotMarker extends Marker {
-  static final _normalIcon = BitmapDescriptor.defaultMarker;
-  static final _activeIcon =
-      BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueBlue);
-
-  final Id id;
-  final FishingSpot fishingSpot;
-  final void Function(FishingSpot)? onTapFishingSpot;
-  final bool active;
-  final double zIndex;
-
-  FishingSpotMarker({
-    required this.fishingSpot,
-    this.onTapFishingSpot,
-    this.active = false,
-    this.zIndex = 0.0,
-  })  : id = fishingSpot.id,
-        super(
-          markerId: MarkerId(fishingSpot.id.uuid),
-          position: LatLng(fishingSpot.lat, fishingSpot.lng),
-          onTap: onTapFishingSpot == null
-              ? null
-              : () => onTapFishingSpot(fishingSpot),
-          icon: active ? _activeIcon : _normalIcon,
-          zIndex: zIndex,
-        );
-
-  FishingSpotMarker duplicate({
-    bool active = false,
-    double? zIndex,
-  }) {
-    return FishingSpotMarker(
-      fishingSpot: fishingSpot,
-      onTapFishingSpot: onTapFishingSpot,
-      active: active,
-      zIndex: zIndex ?? this.zIndex,
-    );
-  }
 }

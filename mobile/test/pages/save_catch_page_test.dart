@@ -4,8 +4,8 @@ import 'package:fixnum/fixnum.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:http/http.dart';
+import 'package:mapbox_gl/mapbox_gl.dart';
 import 'package:mobile/angler_manager.dart';
 import 'package:mobile/bait_manager.dart';
 import 'package:mobile/fishing_spot_manager.dart';
@@ -19,22 +19,26 @@ import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mobile/water_clarity_manager.dart';
 import 'package:mobile/widgets/button.dart';
 import 'package:mobile/widgets/date_time_picker.dart';
+import 'package:mobile/widgets/fishing_spot_details.dart';
 import 'package:mobile/widgets/image_input.dart';
 import 'package:mobile/widgets/image_picker.dart';
+import 'package:mobile/widgets/list_item.dart';
 import 'package:mobile/widgets/search_bar.dart';
-import 'package:mobile/widgets/static_fishing_spot.dart';
 import 'package:mobile/widgets/text_input.dart';
 import 'package:mockito/mockito.dart';
 import 'package:path/path.dart';
 
 import '../mocks/stubbed_app_manager.dart';
+import '../mocks/stubbed_map_controller.dart';
 import '../test_utils.dart';
 
 void main() {
   late StubbedAppManager appManager;
+  late StubbedMapController mapController;
 
   setUp(() {
     appManager = StubbedAppManager();
+    mapController = StubbedMapController();
 
     when(appManager.authManager.stream).thenAnswer((_) => Stream.empty());
 
@@ -51,12 +55,16 @@ void main() {
     when(appManager.customEntityManager.list()).thenReturn([]);
     when(appManager.customEntityManager.entityExists(any)).thenReturn(false);
 
+    when(appManager.fishingSpotManager.entityExists(any))
+        .thenAnswer((invocation) => invocation.positionalArguments[0] != null);
+
     when(appManager.localDatabaseManager.insertOrReplace(any, any))
         .thenAnswer((_) => Future.value(true));
 
     when(appManager.locationMonitor.currentLocation).thenReturn(null);
 
     when(appManager.propertiesManager.visualCrossingApiKey).thenReturn("");
+    when(appManager.propertiesManager.mapboxApiKey).thenReturn("");
 
     when(appManager.userPreferenceManager.atmosphereFieldIds).thenReturn([]);
     when(appManager.userPreferenceManager.baitVariantCustomIds).thenReturn([]);
@@ -151,7 +159,7 @@ void main() {
             ),
           ],
           speciesId: species.id,
-          fishingSpotId: fishingSpot.id,
+          fishingSpot: fishingSpot,
         ),
         appManager: appManager,
       ));
@@ -169,7 +177,7 @@ void main() {
       // Angler, time of day, tide, and water clarity.
       expect(find.text("Not Selected"), findsNWidgets(4));
 
-      expect(find.byType(StaticFishingSpot), findsOneWidget);
+      expect(find.byType(FishingSpotDetails), findsOneWidget);
       expect(find.text("Species"), findsOneWidget);
       expect(find.text("Steelhead"), findsOneWidget);
       expect(find.byType(Image), findsOneWidget);
@@ -186,7 +194,7 @@ void main() {
             ),
           ],
           speciesId: randomId(),
-          fishingSpotId: randomId(),
+          fishingSpot: FishingSpot(id: randomId()),
           popOverride: () => invoked = true,
         ),
         appManager: appManager,
@@ -348,7 +356,7 @@ void main() {
       expect(find.text("Casting"), findsOneWidget);
       expect(find.text("Kayak"), findsOneWidget);
       expect(find.text("Rapala"), findsOneWidget);
-      expect(find.byType(StaticFishingSpot), findsOneWidget);
+      expect(find.byType(FishingSpotDetails), findsOneWidget);
       expect(find.text("Species"), findsOneWidget);
       expect(find.text("Steelhead"), findsOneWidget);
       expect(find.text("Angler"), findsOneWidget);
@@ -408,7 +416,7 @@ void main() {
 
       expect(find.text("Fishing Spot"), findsOneWidget);
       expect(find.byType(Image), findsNothing);
-      expect(find.byType(StaticFishingSpot), findsNothing);
+      expect(find.byType(FishingSpotDetails), findsNothing);
       expect(findCheckbox(tester, "Favorite")!.checked, isFalse);
       expect(findCheckbox(tester, "Catch and Release")!.checked, isFalse);
       expect(find.text("Atmosphere & Weather"), findsOneWidget);
@@ -666,7 +674,7 @@ void main() {
       await tester.pumpWidget(Testable(
         (_) => SaveCatchPage(
           speciesId: species.id,
-          fishingSpotId: fishingSpot.id,
+          fishingSpot: fishingSpot,
         ),
         appManager: appManager,
       ));
@@ -689,7 +697,7 @@ void main() {
       // Fishing methods.
       expect(find.text("No fishing methods"), findsOneWidget);
 
-      expect(find.byType(StaticFishingSpot), findsOneWidget);
+      expect(find.byType(FishingSpotDetails), findsOneWidget);
       expect(find.byType(Image), findsNothing);
       expect(findCheckbox(tester, "Favorite")!.checked, isFalse);
       expect(findCheckbox(tester, "Catch and Release")!.checked, isFalse);
@@ -729,7 +737,7 @@ void main() {
       await tester.pumpWidget(Testable(
         (_) => SaveCatchPage(
           speciesId: speciesId,
-          fishingSpotId: fishingSpotId,
+          fishingSpot: FishingSpot(id: fishingSpotId),
         ),
         appManager: appManager,
       ));
@@ -757,7 +765,7 @@ void main() {
       expect(cat.imageNames, isEmpty);
       expect(cat.customEntityValues, isEmpty);
       expect(cat.hasPeriod(), isFalse);
-      expect(cat.hasSeason(), isFalse);
+      expect(cat.hasSeason(), isTrue); // Automatically calculated.
       expect(cat.hasIsFavorite(), isFalse);
       expect(cat.hasWasCatchAndRelease(), isTrue);
       expect(cat.wasCatchAndRelease, isFalse);
@@ -819,7 +827,7 @@ void main() {
       await tester.pumpWidget(Testable(
         (_) => SaveCatchPage(
           speciesId: speciesId,
-          fishingSpotId: fishingSpotId,
+          fishingSpot: FishingSpot(id: fishingSpotId),
         ),
         appManager: appManager,
       ));
@@ -957,7 +965,7 @@ void main() {
     await tester.pumpWidget(Testable(
       (_) => SaveCatchPage(
         speciesId: species.id,
-        fishingSpotId: fishingSpot.id,
+        fishingSpot: fishingSpot,
       ),
       appManager: appManager,
     ));
@@ -965,7 +973,7 @@ void main() {
     expect(find.text("Date"), findsOneWidget);
     expect(find.text("Time"), findsOneWidget);
     expect(find.text("Species"), findsOneWidget);
-    expect(find.byType(StaticFishingSpot), findsNothing);
+    expect(find.byType(FishingSpotDetails), findsNothing);
     expect(find.byType(ImagePicker), findsNothing);
   });
 
@@ -1064,8 +1072,14 @@ void main() {
 
     // Edit the selected fishing spot.
     await tapAndSettle(tester, find.text("A"));
-    await tapAndSettle(tester, find.widgetWithText(ActionButton, "EDIT"));
-    await enterTextAndSettle(tester, find.byType(TextInput), "B");
+
+    // Finish loading the map.
+    await tester.pumpAndSettle(Duration(milliseconds: 300));
+    await mapController.finishLoading(tester);
+
+    await tapAndSettle(tester, find.text("Edit"));
+    await enterTextAndSettle(
+        tester, find.widgetWithText(TextInput, "Name"), "B");
     await tapAndSettle(tester, find.text("SAVE"));
     await tapAndSettle(tester, find.byType(BackButtonIcon));
 
@@ -1240,7 +1254,7 @@ void main() {
     await tester.pumpWidget(Testable(
       (_) => SaveCatchPage(
         speciesId: species.id,
-        fishingSpotId: fishingSpot.id,
+        fishingSpot: fishingSpot,
       ),
       appManager: appManager,
     ));
@@ -1280,15 +1294,22 @@ void main() {
         .thenReturn(fishingSpot2);
     when(appManager.fishingSpotManager.list())
         .thenReturn([fishingSpot1, fishingSpot2]);
-    when(appManager.fishingSpotManager.listSortedByName())
+    when(appManager.fishingSpotManager.filteredList(any))
+        .thenReturn([fishingSpot1, fishingSpot2]);
+    when(appManager.fishingSpotManager
+            .listSortedByName(filter: anyNamed("filter")))
         .thenReturn([fishingSpot1, fishingSpot2]);
     when(appManager.fishingSpotManager.addOrUpdate(any))
         .thenAnswer((_) => Future.value(true));
 
+    when(appManager.bodyOfWaterManager
+            .listSortedByName(filter: anyNamed("filter")))
+        .thenReturn([]);
+
     await tester.pumpWidget(Testable(
       (_) => SaveCatchPage(
         speciesId: species.id,
-        fishingSpotId: fishingSpot1.id,
+        fishingSpot: fishingSpot1,
       ),
       appManager: appManager,
     ));
@@ -1300,11 +1321,44 @@ void main() {
       tester,
       find.text("Lat: 13.000000, Lng: 45.000000"),
     );
+
+    // Finish loading the map.
+    await tester.pumpAndSettle(Duration(milliseconds: 300));
+    await mapController.finishLoading(tester);
+
     await tapAndSettle(tester, find.byType(SearchBar));
     await tapAndSettle(tester, find.text("Spot B"));
     await tapAndSettle(tester, find.byType(BackButton));
 
     expect(find.text("Summer"), findsOneWidget);
+  });
+
+  testWidgets("Season is not calculated if not tracking", (tester) async {
+    when(appManager.userPreferenceManager.catchFieldIds).thenReturn([
+      catchFieldIdTimestamp,
+      catchFieldIdSpecies,
+      catchFieldIdFishingSpot,
+    ]);
+
+    await tester.pumpWidget(Testable(
+      (_) => SaveCatchPage(
+        speciesId: randomId(),
+      ),
+      appManager: appManager,
+    ));
+
+    await tapAndSettle(tester, find.text("SAVE"));
+
+    var result = verify(
+      appManager.catchManager.addOrUpdate(
+        captureAny,
+        imageFiles: anyNamed("imageFiles"),
+      ),
+    );
+    result.called(1);
+
+    // If the season on the catch isn't set, it means it was never calculated.
+    expect((result.captured.first as Catch).hasSeason(), isFalse);
   });
 
   testWidgets("Atmosphere automatically fetched for new catches",
@@ -1434,7 +1488,7 @@ void main() {
     await tester.pumpWidget(Testable(
       (_) => SaveCatchPage(
         speciesId: randomId(),
-        fishingSpotId: randomId(),
+        fishingSpot: FishingSpot(id: randomId()),
       ),
       appManager: appManager,
     ));
@@ -1458,5 +1512,71 @@ void main() {
     expect(find.text("\u00B0F"), findsOneWidget);
     expect(find.text("in"), findsOneWidget);
     expect(find.text("lbs"), findsOneWidget);
+  });
+
+  testWidgets("Picking fishing spot that doesn't exist", (tester) async {
+    when(appManager.fishingSpotManager.entity(any)).thenReturn(null);
+    when(appManager.fishingSpotManager.entityExists(any)).thenReturn(false);
+    when(appManager.fishingSpotManager.list()).thenReturn([]);
+    when(appManager.fishingSpotManager.withinRadius(any)).thenReturn(null);
+    when(appManager.fishingSpotManager.addOrUpdate(any))
+        .thenAnswer((_) => Future.value(true));
+
+    await tester.pumpWidget(Testable(
+      (_) => SaveCatchPage(
+        speciesId: randomId(),
+      ),
+      appManager: appManager,
+    ));
+
+    expect(find.widgetWithText(ListItem, "Fishing Spot"), findsOneWidget);
+
+    // Pick a fishing spot.
+    await tapAndSettle(tester, find.text("Fishing Spot"));
+    await tester.pumpAndSettle(Duration(milliseconds: 300));
+    await mapController.finishLoading(tester);
+    await tapAndSettle(tester, find.byType(BackButton));
+
+    expect(find.widgetWithText(ListItem, "Fishing Spot"), findsNothing);
+    expect(find.byType(FishingSpotDetails), findsOneWidget);
+
+    // Save and verify.
+    await tapAndSettle(tester, find.text("SAVE"));
+    verify(appManager.fishingSpotManager.addOrUpdate(any)).called(1);
+  });
+
+  testWidgets("Picking fishing spot that exists", (tester) async {
+    var fishingSpot = FishingSpot(
+      id: randomId(),
+      name: "Name",
+      lat: 1.23456,
+      lng: 6.54321,
+    );
+
+    when(appManager.fishingSpotManager.entity(any)).thenReturn(fishingSpot);
+    when(appManager.fishingSpotManager.entityExists(any)).thenReturn(true);
+    when(appManager.fishingSpotManager.list()).thenReturn([
+      fishingSpot,
+    ]);
+    when(appManager.fishingSpotManager.withinRadius(any)).thenReturn(null);
+
+    await tester.pumpWidget(Testable(
+      (_) => SaveCatchPage(
+        speciesId: randomId(),
+      ),
+      appManager: appManager,
+    ));
+
+    expect(find.byType(FishingSpotDetails), findsOneWidget);
+
+    // Pick a fishing spot.
+    await tapAndSettle(tester, find.text("Name"));
+    await tester.pumpAndSettle(Duration(milliseconds: 300));
+    await mapController.finishLoading(tester);
+    await tapAndSettle(tester, find.byType(BackButton));
+
+    // Save and verify.
+    await tapAndSettle(tester, find.text("SAVE"));
+    verifyNever(appManager.fishingSpotManager.addOrUpdate(any));
   });
 }

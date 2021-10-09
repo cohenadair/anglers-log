@@ -73,4 +73,20 @@ void main() {
     expect(newBaitCategory.id, baitCategory.id);
     expect(newBaitCategory.name, "Bead");
   });
+
+  testWidgets("Editing name that already exists", (tester) async {
+    when(appManager.baitCategoryManager.nameExists(any)).thenReturn(true);
+
+    var baitCategory = BaitCategory()
+      ..id = randomId()
+      ..name = "Lure";
+
+    await tester.pumpWidget(Testable(
+      (_) => SaveBaitCategoryPage.edit(baitCategory),
+      appManager: appManager,
+    ));
+
+    await enterTextAndSettle(tester, find.byType(TextField), "Rapala");
+    expect(find.text("Bait category already exists"), findsOneWidget);
+  });
 }

@@ -15,6 +15,7 @@ void main() {
   late StubbedAppManager appManager;
   late MockAnglerManager anglerManager;
   late MockBaitManager baitManager;
+  late MockBodyOfWaterManager bodyOfWaterManager;
   late MockCatchManager catchManager;
   late MockFishingSpotManager fishingSpotManager;
   late MockMethodManager methodManager;
@@ -38,6 +39,12 @@ void main() {
   var fishingSpotId2 = randomId();
   var fishingSpotId3 = randomId();
   var fishingSpotId4 = randomId();
+
+  var bodyOfWaterId0 = randomId();
+  var bodyOfWaterId1 = randomId();
+  var bodyOfWaterId2 = randomId();
+  var bodyOfWaterId3 = randomId();
+  var bodyOfWaterId4 = randomId();
 
   var methodId0 = randomId();
   var methodId1 = randomId();
@@ -124,27 +131,50 @@ void main() {
       ..id = fishingSpotId0
       ..name = "E"
       ..lat = 0.4
-      ..lng = 0.0,
+      ..lng = 0.0
+      ..bodyOfWaterId = bodyOfWaterId0,
     fishingSpotId1: FishingSpot()
       ..id = fishingSpotId1
       ..name = "C"
       ..lat = 0.2
-      ..lng = 0.2,
+      ..lng = 0.2
+      ..bodyOfWaterId = bodyOfWaterId1,
     fishingSpotId2: FishingSpot()
       ..id = fishingSpotId2
       ..name = "B"
       ..lat = 0.1
-      ..lng = 0.3,
+      ..lng = 0.3
+      ..bodyOfWaterId = bodyOfWaterId2,
     fishingSpotId3: FishingSpot()
       ..id = fishingSpotId3
       ..name = "D"
       ..lat = 0.3
-      ..lng = 0.1,
+      ..lng = 0.1
+      ..bodyOfWaterId = bodyOfWaterId3,
     fishingSpotId4: FishingSpot()
       ..id = fishingSpotId4
       ..name = "A"
       ..lat = 0.0
-      ..lng = 0.4,
+      ..lng = 0.4
+      ..bodyOfWaterId = bodyOfWaterId4,
+  };
+
+  var bodyOfWaterMap = <Id, BodyOfWater>{
+    bodyOfWaterId0: BodyOfWater()
+      ..id = bodyOfWaterId0
+      ..name = "Lake Huron",
+    bodyOfWaterId1: BodyOfWater()
+      ..id = bodyOfWaterId1
+      ..name = "Tennessee River",
+    bodyOfWaterId2: BodyOfWater()
+      ..id = bodyOfWaterId2
+      ..name = "Bow River",
+    bodyOfWaterId3: BodyOfWater()
+      ..id = bodyOfWaterId3
+      ..name = "Nine Mile River",
+    bodyOfWaterId4: BodyOfWater()
+      ..id = bodyOfWaterId4
+      ..name = "Maitland River",
   };
 
   var methodMap = <Id, Method>{
@@ -298,6 +328,13 @@ void main() {
         .thenAnswer((invocation) => baitMap[invocation.positionalArguments[0]]);
     when(baitManager.attachmentComparator).thenReturn((lhs, rhs) => 0);
 
+    bodyOfWaterManager = appManager.bodyOfWaterManager;
+    when(bodyOfWaterManager.name(any))
+        .thenAnswer((invocation) => invocation.positionalArguments.first.name);
+    when(bodyOfWaterManager.list()).thenReturn(bodyOfWaterMap.values.toList());
+    when(bodyOfWaterManager.entity(any)).thenAnswer(
+        (invocation) => bodyOfWaterMap[invocation.positionalArguments[0]]);
+
     catchManager = appManager.catchManager;
     when(catchManager.list()).thenReturn(_catches);
 
@@ -349,6 +386,7 @@ void main() {
       anglerIds: anyNamed("anglerIds"),
       baits: anyNamed("baits"),
       fishingSpotIds: anyNamed("fishingSpotIds"),
+      bodyOfWaterIds: anyNamed("bodyOfWaterIds"),
       methodIds: anyNamed("methodIds"),
       speciesIds: anyNamed("speciesIds"),
       waterClarityIds: anyNamed("waterClarityIds"),
@@ -686,6 +724,7 @@ void main() {
       anglerIds: {anglerId2, anglerId3},
       baits: {baitAttachment0, baitAttachment4},
       fishingSpotIds: {fishingSpotId0, fishingSpotId2, fishingSpotId1},
+      bodyOfWaterIds: {bodyOfWaterId0},
       methodIds: {methodId4},
       speciesIds: {speciesId4, speciesId2},
       waterClarityIds: {clarityId4, clarityId3, clarityId2},
@@ -723,6 +762,7 @@ void main() {
       "Full Moon",
       "Low Tide",
       "High Tide",
+      "Lake Huron",
     });
     expect(data.filters(includeSpecies: false), {
       "All dates",
@@ -748,6 +788,7 @@ void main() {
       "Full Moon",
       "Low Tide",
       "High Tide",
+      "Lake Huron",
     });
     expect(data.filters(includeDateRange: false), {
       "Bait1",
@@ -774,6 +815,7 @@ void main() {
       "Full Moon",
       "Low Tide",
       "High Tide",
+      "Lake Huron",
     });
     expect(data.filters(includeSpecies: false, includeDateRange: false), {
       "Bait1",
@@ -798,6 +840,7 @@ void main() {
       "Full Moon",
       "Low Tide",
       "High Tide",
+      "Lake Huron",
     });
   });
 

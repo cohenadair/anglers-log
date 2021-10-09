@@ -32,6 +32,7 @@ class BaitPage extends StatefulWidget {
 class _BaitPageState extends State<BaitPage> {
   BaitCategoryManager get _baitCategoryManager =>
       BaitCategoryManager.of(context);
+
   BaitManager get _baitManager => BaitManager.of(context);
 
   late Bait _bait;

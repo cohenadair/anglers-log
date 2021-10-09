@@ -243,6 +243,62 @@ void main() {
     });
   });
 
+  group("ManageableListImageItem", () {
+    testWidgets("Padding added to trailing widget", (tester) async {
+      await tester.pumpWidget(
+        Testable(
+          (_) => ManageableListImageItem(
+            title: "Title",
+            subtitle: "Subtitle",
+            subtitle2: "Subtitle 2",
+            trailing: RightChevronIcon(),
+          ),
+        ),
+      );
+      // One for image, one for trailing.
+      expect(find.byType(Padding), findsNWidgets(2));
+    });
+
+    testWidgets("No trailing widget", (tester) async {
+      await tester.pumpWidget(
+        Testable(
+          (_) => ManageableListImageItem(
+            title: "Title",
+            subtitle: "Subtitle",
+            subtitle2: "Subtitle 2",
+          ),
+        ),
+      );
+      // One for image.
+      expect(find.byType(Padding), findsOneWidget);
+    });
+
+    testWidgets("Empty subtitle3", (tester) async {
+      var context = await pumpContext(
+        tester,
+        (_) => ManageableListImageItem(
+          title: "Title",
+          subtitle: "Subtitle",
+          subtitle2: "Subtitle 2",
+        ),
+      );
+      expect(find.subtitleText(context, text: null), findsNWidgets(2));
+    });
+
+    testWidgets("Non-empty subtitle3", (tester) async {
+      var context = await pumpContext(
+        tester,
+        (_) => ManageableListImageItem(
+          title: "Title",
+          subtitle: "Subtitle",
+          subtitle2: "Subtitle 2",
+          subtitle3: "Subtitle 3",
+        ),
+      );
+      expect(find.subtitleText(context, text: null), findsNWidgets(3));
+    });
+  });
+
   group("PickerListItem", () {
     testWidgets("Non-null subtitle", (tester) async {
       var context = await pumpContext(

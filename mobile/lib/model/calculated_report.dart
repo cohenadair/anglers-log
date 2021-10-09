@@ -4,6 +4,7 @@ import 'package:protobuf/protobuf.dart';
 import '../angler_manager.dart';
 import '../app_manager.dart';
 import '../bait_manager.dart';
+import '../body_of_water_manager.dart';
 import '../catch_manager.dart';
 import '../fishing_spot_manager.dart';
 import '../i18n/strings.dart';
@@ -43,6 +44,10 @@ class CalculatedReport {
   /// When set, data is only included in this report if associated with these
   /// [FishingSpot] IDs.
   final Set<Id> fishingSpotIds;
+
+  /// When set, data is only included in this report if associated with these
+  /// [BodyOfWater] IDs.
+  final Set<Id> bodyOfWaterIds;
 
   /// When set, data is only included in this report if associated with these
   /// [Method] IDs.
@@ -155,6 +160,8 @@ class CalculatedReport {
 
   BaitManager get _baitManager => _appManager.baitManager;
 
+  BodyOfWaterManager get _bodyOfWaterManager => _appManager.bodyOfWaterManager;
+
   CatchManager get _catchManager => _appManager.catchManager;
 
   FishingSpotManager get _fishingSpotManager => _appManager.fishingSpotManager;
@@ -195,6 +202,7 @@ class CalculatedReport {
     this.anglerIds = const {},
     this.baits = const {},
     this.fishingSpotIds = const {},
+    this.bodyOfWaterIds = const {},
     this.methodIds = const {},
     this.speciesIds = const {},
     this.waterClarityIds = const {},
@@ -233,6 +241,7 @@ class CalculatedReport {
       anglerIds: anglerIds,
       baits: baits,
       fishingSpotIds: fishingSpotIds,
+      bodyOfWaterIds: bodyOfWaterIds,
       methodIds: methodIds,
       speciesIds: speciesIds,
       waterClarityIds: waterClarityIds,
@@ -395,6 +404,7 @@ class CalculatedReport {
 
     result.addAll(_baitManager.attachmentsDisplayValues(baits, context));
     _addFilters<FishingSpot>(_fishingSpotManager, fishingSpotIds, result);
+    _addFilters<BodyOfWater>(_bodyOfWaterManager, bodyOfWaterIds, result);
     _addFilters<Angler>(_anglerManager, anglerIds, result);
     _addFilters<Method>(_methodManager, methodIds, result);
     _addFilters<WaterClarity>(_waterClarityManager, waterClarityIds, result);

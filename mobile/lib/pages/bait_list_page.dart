@@ -12,6 +12,7 @@ import '../pages/save_bait_page.dart';
 import '../res/dimen.dart';
 import '../utils/page_utils.dart';
 import '../utils/protobuf_utils.dart';
+import '../utils/sectioned_list_model.dart';
 import '../utils/string_utils.dart';
 import '../widgets/bait_variant_list_input.dart';
 import '../widgets/input_controller.dart';
@@ -34,13 +35,7 @@ class BaitListPage extends StatefulWidget {
 }
 
 class _BaitListPageState extends State<BaitListPage> {
-  // Required for comparisons when updating the list after data model changes.
-  // Without a consistent ID, multiple "No Category" headings are created and
-  // removed, resulting in a jarring UI transition.
-  final _noCategoryId = Id(uuid: "131dfbc9-4313-48b6-930e-867298e553b9");
-
-  BaitCategory? _firstCategory;
-  var _baits = <Bait>[];
+  late final _BaitListPageModel _model;
   final _selectedVariants = <BaitVariant>{};
 
   BaitCategoryManager get _baitCategoryManager =>
@@ -55,6 +50,12 @@ class _BaitListPageState extends State<BaitListPage> {
   @override
   void initState() {
     super.initState();
+
+    _model = _BaitListPageModel(
+      baitCategoryManager: _baitCategoryManager,
+      baitManager: _baitManager,
+      itemBuilder: _buildBaitItem,
+    );
 
     if (_isPicking) {
       for (var attachment in _pickerSettings.initialValues) {
@@ -77,34 +78,15 @@ class _BaitListPageState extends State<BaitListPage> {
       searchDelegate: ManageableListPageSearchDelegate(
         hint: Strings.of(context).baitListPageSearchHint,
       ),
-      pickerSettings: manageableListPagePickerSettings,
-      itemBuilder: (context, item) {
-        if (item is BaitCategory) {
-          return ManageableListPageItemModel(
-            editable: false,
-            selectable: false,
-            child: Padding(
-              padding: EdgeInsets.only(
-                top: paddingWidgetSmall,
-                bottom: paddingWidget,
-              ),
-              child: HeadingDivider(
-                item.name,
-                showDivider: _firstCategory == null || item != _firstCategory,
-              ),
-            ),
-          );
-        } else {
-          return _buildBaitItem(item);
-        }
-      },
+      pickerSettings: _manageableListPagePickerSettings,
+      itemBuilder: _model.buildItemModel,
       itemManager: ManageableListPageItemManager<dynamic>(
         listenerManagers: [
           _baitCategoryManager,
           _baitManager,
           _catchManager,
         ],
-        loadItems: _buildItems,
+        loadItems: (filter) => _model.buildModel(context, filter),
         emptyItemsSettings: ManageableListPageEmptyListSettings(
           icon: Icons.bug_report,
           title: Strings.of(context).baitListPageEmptyListTitle,
@@ -123,50 +105,7 @@ class _BaitListPageState extends State<BaitListPage> {
     );
   }
 
-  List<dynamic> _buildItems(String? query) {
-    var result = <dynamic>[];
-
-    var categories = List.from(_baitCategoryManager.listSortedByName());
-    _baits = _baitManager.filteredList(query);
-
-    // Add a category for baits that don't have a category. This is purposely
-    // added to the end of the sorted list.
-    var noCategory = BaitCategory()
-      ..id = _noCategoryId
-      ..name = Strings.of(context).baitListPageOtherCategory;
-    categories.add(noCategory);
-
-    // First, organize baits in to category collections.
-    var map = <Id, List<Bait>>{};
-    for (var bait in _baits) {
-      var id = bait.hasBaitCategoryId() ? bait.baitCategoryId : noCategory.id;
-      map.putIfAbsent(id, () => []);
-      map[id]!.add(bait);
-    }
-
-    // Next, iterate categories and create list items.
-    for (var i = 0; i < categories.length; i++) {
-      BaitCategory category = categories[i];
-
-      // Skip categories that don't have any baits.
-      if (!map.containsKey(category.id) || map[category.id]!.isEmpty) {
-        continue;
-      }
-
-      // Cache first item so we can hide the divider.
-      if (result.isEmpty) {
-        _firstCategory = category;
-      }
-
-      result.add(category);
-      map[category.id]!.sort((lhs, rhs) => lhs.name.compareTo(rhs.name));
-      result.addAll(map[category.id]!);
-    }
-
-    return result;
-  }
-
-  ManageableListPageItemModel _buildBaitItem(Bait bait) {
+  ManageableListPageItemModel _buildBaitItem(BuildContext context, Bait bait) {
     Widget? grandchild;
     if (bait.variants.isNotEmpty && _isPicking) {
       grandchild = BaitVariantListInput.static(
@@ -210,7 +149,7 @@ class _BaitListPageState extends State<BaitListPage> {
 
   void _onPickedAll(bool isChecked) {
     if (isChecked) {
-      for (var bait in _baits) {
+      for (var bait in _model.items) {
         for (var variant in bait.variants) {
           _selectedVariants.add(variant);
         }
@@ -225,7 +164,8 @@ class _BaitListPageState extends State<BaitListPage> {
     return widget.pickerSettings!;
   }
 
-  ManageableListPagePickerSettings? get manageableListPagePickerSettings {
+  ManageableListPagePickerSettings<dynamic>?
+      get _manageableListPagePickerSettings {
     if (!_isPicking) {
       return null;
     }
@@ -248,7 +188,7 @@ class _BaitListPageState extends State<BaitListPage> {
       }
     }
 
-    return ManageableListPagePickerSettings(
+    return ManageableListPagePickerSettings<dynamic>(
       onPicked: (context, items) {
         var attachments = <BaitAttachment>{};
         attachments.addAll(_noVariantBaits(items).map((e) => e.toAttachment()));
@@ -355,4 +295,57 @@ class BaitPickerInput extends StatelessWidget {
       ),
     );
   }
+}
+
+class _BaitListPageModel extends SectionedListModel<BaitCategory, Bait> {
+  final _noCategoryId = Id(uuid: "131dfbc9-4313-48b6-930e-867298e553b9");
+
+  final BaitCategoryManager baitCategoryManager;
+  final BaitManager baitManager;
+  final ManageableListPageItemModel Function(BuildContext context, Bait)
+      itemBuilder;
+
+  _BaitListPageModel({
+    required this.baitCategoryManager,
+    required this.baitManager,
+    required this.itemBuilder,
+  });
+
+  @override
+  ManageableListPageItemModel buildItem(BuildContext context, Bait item) =>
+      itemBuilder(context, item);
+
+  @override
+  List<Bait> filteredItemList(String? filter) =>
+      baitManager.filteredList(filter);
+
+  @override
+  Id headerId(BaitCategory header) => header.id;
+
+  @override
+  String headerName(BaitCategory header) => header.name;
+
+  @override
+  bool itemHasHeaderId(Bait item) => item.hasBaitCategoryId();
+
+  @override
+  Id itemHeaderId(Bait item) => item.baitCategoryId;
+
+  @override
+  String itemName(BuildContext context, Bait item) => item.name;
+
+  @override
+  BaitCategory noSectionHeader(BuildContext context) {
+    return BaitCategory(
+      id: _noCategoryId,
+      name: Strings.of(context).baitListPageOtherCategory,
+    );
+  }
+
+  @override
+  Id get noSectionHeaderId => _noCategoryId;
+
+  @override
+  List<BaitCategory> get sectionHeaders =>
+      baitCategoryManager.listSortedByName();
 }

@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:collection/collection.dart' show IterableExtension;
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -11,13 +9,12 @@ import 'catch_manager.dart';
 import 'custom_entity_manager.dart';
 import 'entity_manager.dart';
 import 'i18n/strings.dart';
-import 'image_manager.dart';
+import 'image_entity_manager.dart';
 import 'model/gen/anglerslog.pb.dart';
-import 'named_entity_manager.dart';
 import 'utils/protobuf_utils.dart';
 import 'utils/string_utils.dart';
 
-class BaitManager extends NamedEntityManager<Bait> {
+class BaitManager extends ImageEntityManager<Bait> {
   static BaitManager of(BuildContext context) =>
       Provider.of<AppManager>(context, listen: false).baitManager;
 
@@ -28,8 +25,6 @@ class BaitManager extends NamedEntityManager<Bait> {
 
   CustomEntityManager get _customEntityManager =>
       appManager.customEntityManager;
-
-  ImageManager get _imageManager => appManager.imageManager;
 
   BaitManager(AppManager app) : super(app) {
     app.baitCategoryManager.addListener(SimpleEntityListener(
@@ -50,6 +45,12 @@ class BaitManager extends NamedEntityManager<Bait> {
   String get tableName => "bait";
 
   @override
+  void setImageName(Bait bait, String imageName) => bait.imageName = imageName;
+
+  @override
+  void clearImageName(Bait bait) => bait.clearImageName();
+
+  @override
   bool matchesFilter(Id id, String? filter, [BuildContext? context]) {
     var bait = entity(id);
     if (bait == null) {
@@ -68,26 +69,6 @@ class BaitManager extends NamedEntityManager<Bait> {
     }
 
     return false;
-  }
-
-  @override
-  Future<bool> addOrUpdate(
-    Bait bait, {
-    File? imageFile,
-    bool compressImages = true,
-    bool notify = true,
-  }) async {
-    if (imageFile != null) {
-      var savedImages =
-          await _imageManager.save([imageFile], compress: compressImages);
-      if (savedImages.isNotEmpty) {
-        bait.imageName = savedImages.first;
-      } else {
-        bait.clearImageName();
-      }
-    }
-
-    return super.addOrUpdate(bait, notify: notify);
   }
 
   /// Returns true if any [BaitVariant] in [variants] matches [filter].

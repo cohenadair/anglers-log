@@ -18,7 +18,7 @@ class FloatingContainer extends StatelessWidget {
   final String? title;
   final String? subtitle;
   final EdgeInsets? margin;
-  final Alignment alignment;
+  final Alignment? alignment;
   final VoidCallback? onTap;
 
   /// Rendered below [title] and [subtitle].
@@ -28,7 +28,7 @@ class FloatingContainer extends StatelessWidget {
     this.title,
     this.subtitle,
     this.margin,
-    this.alignment = Alignment.bottomCenter,
+    this.alignment,
     this.onTap,
     this.children = const [],
   }) : assert(isNotEmpty(title) || isNotEmpty(subtitle));
@@ -37,8 +37,17 @@ class FloatingContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    String? title;
+    String? subtitle;
+    if (isNotEmpty(this.title)) {
+      title = this.title;
+      subtitle = this.subtitle;
+    } else if (isNotEmpty(this.subtitle)) {
+      title = this.subtitle;
+    }
+
     return Align(
-      alignment: alignment,
+      alignment: alignment ?? Alignment.bottomCenter,
       child: Container(
         margin: margin ?? insetsDefault,
         decoration: FloatingBoxDecoration.rectangle(),
@@ -50,21 +59,12 @@ class FloatingContainer extends StatelessWidget {
               borderRadius:
                   BorderRadius.all(Radius.circular(floatingCornerRadius)),
               color: Colors.transparent,
-              child: ListItem(
-                padding: EdgeInsets.only(
-                  left: paddingDefault,
-                  right: _tapEnabled ? paddingSmall : paddingDefault,
-                  top: paddingDefault,
-                  bottom: paddingDefault,
-                ),
-                title: isNotEmpty(title)
-                    ? Text(title!, style: styleHeading)
-                    : Text(subtitle!),
-                subtitle: isEmpty(title) || isEmpty(subtitle)
-                    ? null
-                    : Text(subtitle!, style: styleSecondary(context)),
+              child: ImageListItem(
+                title: title,
+                subtitle: subtitle,
                 onTap: onTap,
                 trailing: _tapEnabled ? RightChevronIcon() : null,
+                showPlaceholder: false,
               ),
             ),
           ]..addAll(children),

@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart' as google;
 import 'package:mobile/model/gen/anglerslog.pb.dart';
 import 'package:mobile/pages/add_catch_journey.dart';
-import 'package:mobile/pages/fishing_spot_picker_page.dart';
 import 'package:mobile/pages/image_picker_page.dart';
 import 'package:mobile/pages/save_catch_page.dart';
 import 'package:mobile/pages/species_list_page.dart';
@@ -14,17 +12,19 @@ import 'package:mobile/widgets/fishing_spot_map.dart';
 import 'package:mockito/mockito.dart';
 import 'package:photo_manager/photo_manager.dart';
 
-import '../mocks/mocks.dart';
 import '../mocks/mocks.mocks.dart';
 import '../mocks/stubbed_app_manager.dart';
+import '../mocks/stubbed_map_controller.dart';
 import '../test_utils.dart';
 
 void main() {
   late StubbedAppManager appManager;
+  late StubbedMapController mapController;
   late MockAssetPathEntity allAlbum;
 
   setUp(() {
     appManager = StubbedAppManager();
+    mapController = StubbedMapController();
 
     when(appManager.baitManager.attachmentsDisplayValues(any, any))
         .thenReturn([]);
@@ -45,6 +45,8 @@ void main() {
         .thenAnswer((_) => Future.value(true));
 
     when(appManager.locationMonitor.currentLocation).thenReturn(null);
+
+    when(appManager.propertiesManager.mapboxApiKey).thenReturn("");
 
     var mockAssets = [
       createMockAssetEntity(
@@ -126,7 +128,7 @@ void main() {
 
     await tapAndSettle(tester, find.text("Steelhead"));
 
-    expect(find.byType(FishingSpotPickerPage), findsNothing);
+    expect(find.byType(FishingSpotMap), findsNothing);
     expect(find.byType(SaveCatchPage), findsOneWidget);
     expect(find.text("Spot 1"), findsOneWidget);
     expect(find.text("Lat: 9.876543, Lng: 3.456789"), findsOneWidget);
@@ -148,25 +150,19 @@ void main() {
 
     // Select species.
     await tapAndSettle(tester, find.text("Steelhead"));
-    expect(find.byType(FishingSpotPickerPage), findsOneWidget);
+    expect(find.byType(FishingSpotMap), findsOneWidget);
 
-    // Manually trigger map's onIdle since Google Maps doesn't trigger it in
-    // unit tests.
-    findFirst<google.GoogleMap>(tester)
-        .onMapCreated!(MockGoogleMapController());
-    findFirst<FishingSpotMap>(tester).onIdle!();
-
-    // Wait for "pending" fishing spot animation so NEXT button is enabled.
-    await tester.pump(Duration(milliseconds: 1000));
-
+    await mapController.finishLoading(tester);
     expect(
         findFirstWithText<ActionButton>(tester, "NEXT").onPressed, isNotNull);
     await tapAndSettle(tester, find.text("NEXT"));
 
-    var result = verify(appManager.fishingSpotManager.addOrUpdate(captureAny));
-    result.called(1);
-    var fishingSpot = result.captured.first as FishingSpot;
-    expect(findFirst<SaveCatchPage>(tester).fishingSpotId, fishingSpot.id);
+    var saveCatchPage = findFirst<SaveCatchPage>(tester);
+    expect(saveCatchPage.fishingSpot, isNotNull);
+    expect(saveCatchPage.fishingSpot!.lat.toStringAsFixed(6),
+        1.234567.toStringAsFixed(6));
+    expect(saveCatchPage.fishingSpot!.lng.toStringAsFixed(6),
+        7.654321.toStringAsFixed(6));
   });
 
   testWidgets("Picked image without location data shows fishing spot picker",
@@ -185,10 +181,11 @@ void main() {
     verifyNever(appManager.fishingSpotManager.withinRadius(any, any));
 
     await tapAndSettle(tester, find.text("Steelhead"));
-    expect(find.byType(FishingSpotPickerPage), findsOneWidget);
-    expect(findFirstWithText<ActionButton>(tester, "NEXT").onPressed, isNull);
+    await mapController.finishLoading(tester);
 
-    // TODO: Can't test any further; GoogleMap doesn't yet support gestures.
+    expect(find.byType(FishingSpotMap), findsOneWidget);
+    expect(
+        findFirstWithText<ActionButton>(tester, "NEXT").onPressed, isNotNull);
   });
 
   testWidgets("Saving catch pops entire journey", (tester) async {
@@ -206,7 +203,7 @@ void main() {
     await tapAndSettle(tester, find.text("SAVE"));
 
     expect(find.byType(SaveCatchPage), findsNothing);
-    expect(find.byType(FishingSpotPickerPage), findsNothing);
+    expect(find.byType(FishingSpotMap), findsNothing);
     expect(find.byType(SpeciesListPage), findsNothing);
     expect(find.byType(ImagePickerPage), findsNothing);
   });
@@ -228,7 +225,7 @@ void main() {
 
     await tapAndSettle(tester, find.text("Steelhead"));
 
-    expect(findFirst<SaveCatchPage>(tester).fishingSpotId, isNull);
+    expect(findFirst<SaveCatchPage>(tester).fishingSpot, isNull);
     expect(find.text("Fishing Spot"), findsNothing);
   });
 
@@ -284,8 +281,9 @@ void main() {
 
     await tapAndSettle(tester, find.text("NEXT"));
     await tapAndSettle(tester, find.text("Steelhead"));
+    await mapController.finishLoading(tester);
 
-    expect(find.byType(FishingSpotPickerPage), findsOneWidget);
+    expect(find.byType(FishingSpotMap), findsOneWidget);
   });
 
   testWidgets("Image picker is skipped when not tracking images",

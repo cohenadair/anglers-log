@@ -13,6 +13,7 @@ class StubbedAppManager {
   MockAuthManager authManager = MockAuthManager();
   MockBaitCategoryManager baitCategoryManager = MockBaitCategoryManager();
   MockBaitManager baitManager = MockBaitManager();
+  MockBodyOfWaterManager bodyOfWaterManager = MockBodyOfWaterManager();
   MockCatchManager catchManager = MockCatchManager();
   MockCustomEntityManager customEntityManager = MockCustomEntityManager();
   MockFishingSpotManager fishingSpotManager = MockFishingSpotManager();
@@ -56,6 +57,7 @@ class StubbedAppManager {
     when(app.authManager).thenReturn(authManager);
     when(app.baitCategoryManager).thenReturn(baitCategoryManager);
     when(app.baitManager).thenReturn(baitManager);
+    when(app.bodyOfWaterManager).thenReturn(bodyOfWaterManager);
     when(app.catchManager).thenReturn(catchManager);
     when(app.customEntityManager).thenReturn(customEntityManager);
     when(app.fishingSpotManager).thenReturn(fishingSpotManager);
@@ -118,6 +120,14 @@ class StubbedAppManager {
     )).thenReturn(SimpleEntityListener());
     when(baitManager.entity(any)).thenReturn(null);
     when(baitManager.list(any)).thenReturn([]);
+
+    when(bodyOfWaterManager.addSimpleListener(
+      onAdd: anyNamed("onAdd"),
+      onUpdate: anyNamed("onUpdate"),
+      onDelete: anyNamed("onDelete"),
+    )).thenReturn(SimpleEntityListener());
+    when(bodyOfWaterManager.entity(any)).thenReturn(null);
+    when(bodyOfWaterManager.list(any)).thenReturn([]);
 
     when(catchManager.addSimpleListener(
       onAdd: anyNamed("onAdd"),

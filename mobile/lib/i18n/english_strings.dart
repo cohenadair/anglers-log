@@ -3,7 +3,8 @@
 Map<String, Map<String, String>> get englishStrings => {
       "US": {
         "catchField_favorite": "Favorite",
-        "catchField_favoriteDescription": "Whether a catch was one of your favorites.",
+        "catchField_favoriteDescription":
+            "Whether a catch was one of your favorites.",
         "saveReportPage_favorites": "Favorites Only",
         "unitsPage_catchLengthCentimeters": "Centimeters (%s)",
         "unitsPage_waterDepthMeters": "Meters (%s)",
@@ -13,7 +14,8 @@ Map<String, Map<String, String>> get englishStrings => {
       },
       "CA": {
         "catchField_favorite": "Favourite",
-        "catchField_favoriteDescription": "Whether a catch was one of your favourites.",
+        "catchField_favoriteDescription":
+            "Whether a catch was one of your favourites.",
         "saveReportPage_favorites": "Favourites",
         "unitsPage_catchLengthCentimeters": "Centimetres (%s)",
         "unitsPage_waterDepthMeters": "Metres (%s)",
@@ -64,6 +66,7 @@ Map<String, Map<String, String>> get englishStrings => {
         "input_nameLabel": "Name",
         "input_genericRequired": "Required",
         "input_descriptionLabel": "Description",
+        "input_notesLabel": "Notes",
         "input_invalidNumber": "Invalid number input",
         "input_photoLabel": "Photo",
         "input_photosLabel": "Photos",
@@ -133,6 +136,7 @@ Map<String, Map<String, String>> get englishStrings => {
         "saveReportPage_species": "Species",
         "saveReportPage_allSpecies": "All species",
         "saveReportPage_allBaits": "All baits",
+        "saveReportPage_allBodiesOfWater": "All bodies of water",
         "saveReportPage_allFishingSpots": "All fishing spots",
         "saveReportPage_allMethods": "All fishing methods",
         "saveReportPage_catchAndRelease": "Catch and Release Only",
@@ -306,6 +310,7 @@ Map<String, Map<String, String>> get englishStrings => {
         "mapPage_waze": "Waze",
         "saveFishingSpotPage_newTitle": "New Fishing Spot",
         "saveFishingSpotPage_editTitle": "Edit Fishing Spot",
+        "saveFishingSpotPage_bodyOfWaterLabel": "Body Of Water",
         "formPage_manageFieldText": "Manage Fields",
         "formPage_removeFieldsText": "Remove Fields",
         "formPage_confirmRemoveField": "Remove 1 Field",
@@ -359,16 +364,19 @@ Map<String, Map<String, String>> get englishStrings => {
         "speciesListPage_emptyListDescription":
             "You haven't yet added any species. Tap the %s button to begin.",
         "fishingSpotPickerPage_hint":
-            "Drag the map to use exact coordinates, or select an existing fishing spot.",
+            "Long press the map to pick exact coordinates, or select an existing fishing spot.",
         "fishingSpotListPage_title": "Fishing Spots (%s)",
         "fishingSpotListPage_searchHint": "Search fishing spots",
         "fishingSpotListPage_emptyListTitle": "No fishing spots",
         "fishingSpotListPage_emptyListDescription":
             "To add a fishing spot, tap on the map and save the dropped pin.",
+        "fishingSpotListPage_noBodyOfWater": "No Body Of Water",
         "fishingSpotMap_locationPermissionTitle": "Location Access",
         "fishingSpotMap_locationPermissionDescription":
             "To show your current location, you must grant Anglers' Log access to read your device's location. To do so, open your device settings.",
         "fishingSpotMap_locationPermissionOpenSettings": "Open Settings",
+        "fishingSpotMap_addSpotHelp":
+            "Long press anywhere on the map to drop a pin and add a fishing spot.",
         "feedbackPage_title": "Send Feedback",
         "feedbackPage_send": "Send",
         "feedbackPage_message": "Message",
@@ -646,6 +654,8 @@ Map<String, Map<String, String>> get englishStrings => {
         "pickerTitle_windDirections": "Select Wind Directions",
         "pickerTitle_tide": "Select Tide",
         "pickerTitle_tides": "Select Tides",
+        "pickerTitle_bodyOfWater": "Select Body Of Water",
+        "pickerTitle_bodiesOfWater": "Select Bodies Of Water",
         "keywords_temperatureMetric": "celsius temperature degrees c",
         "keywords_temperatureImperial": "fahrenheit temperature degrees f",
         "keywords_speedMetric": "kilometers per hour speed wind",
@@ -706,5 +716,27 @@ Map<String, Map<String, String>> get englishStrings => {
         "baitType_artificial": "Artificial",
         "baitType_real": "Real",
         "baitType_live": "Live",
+        "bodyOfWaterListPage_deleteMessage":
+            "%s is associated with %s fishing spots; are you sure you want to delete it? This cannot be undone.",
+        "bodyOfWaterListPage_deleteMessageSingular":
+            "%s is associated with %s fishing spot; are you sure you want to delete it? This cannot be undone.",
+        "bodyOfWaterListPage_menuLabel": "Bodies Of Water",
+        "bodyOfWaterListPage_title": "Bodies Of Water (%s)",
+        "bodyOfWaterListPage_searchHint": "Search bodies of water",
+        "bodyOfWaterListPage_emptyListTitle": "No bodies of water",
+        "bodyOfWaterListPage_emptyListDescription":
+            "You haven't yet added any bodies of water. Tap the %s button to begin.",
+        "saveBodyOfWaterPage_newTitle": "New Body Of Water",
+        "saveBodyOfWaterPage_editTitle": "Edit Body Of Water",
+        "saveBodyOfWaterPage_existsMessage": "Body of water already exists",
+        "mapAttribution_titleApple": "Mapbox Maps SDK for iOS",
+        "mapAttribution_titleAndroid": "Mapbox Maps SDK for Android",
+        "mapAttribution_mapbox": "\u00A9 Mapbox",
+        "mapAttribution_openStreetMap": "\u00A9 OpenStreetMap",
+        "mapAttributionImproveThisMap": "Improve This Map",
+        "mapAttribution_maxar": "\u00A9 Maxar",
+        "mapAttribution_telemetryTitle": "Mapbox Telemetry",
+        "mapAttribution_telemetryDescription":
+            "Help make OpenStreetMap and Mapbox maps better by contributing anonymous usage data.",
       },
     };

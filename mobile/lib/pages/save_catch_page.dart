@@ -16,7 +16,6 @@ import '../log.dart';
 import '../method_manager.dart';
 import '../model/gen/anglerslog.pb.dart';
 import '../pages/editable_form_page.dart';
-import '../pages/fishing_spot_picker_page.dart';
 import '../pages/image_picker_page.dart';
 import '../pages/species_list_page.dart';
 import '../res/dimen.dart';
@@ -31,13 +30,14 @@ import '../widgets/atmosphere_input.dart';
 import '../widgets/checkbox_input.dart';
 import '../widgets/date_time_picker.dart';
 import '../widgets/field.dart';
+import '../widgets/fishing_spot_details.dart';
+import '../widgets/fishing_spot_map.dart';
 import '../widgets/image_input.dart';
 import '../widgets/input_controller.dart';
 import '../widgets/list_item.dart';
 import '../widgets/list_picker_input.dart';
 import '../widgets/multi_list_picker_input.dart';
 import '../widgets/multi_measurement_input.dart';
-import '../widgets/static_fishing_spot.dart';
 import '../widgets/text_input.dart';
 import '../widgets/tide_input.dart';
 import '../widgets/widget.dart';
@@ -54,7 +54,7 @@ class SaveCatchPage extends StatefulWidget {
 
   final List<PickedImage> images;
   final Id? speciesId;
-  final Id? fishingSpotId;
+  final FishingSpot? fishingSpot;
 
   final Catch? oldCatch;
 
@@ -65,7 +65,7 @@ class SaveCatchPage extends StatefulWidget {
     required this.speciesId,
     this.popupMenuKey,
     this.images = const [],
-    this.fishingSpotId,
+    this.fishingSpot,
     this.popOverride,
   }) : oldCatch = null;
 
@@ -74,7 +74,7 @@ class SaveCatchPage extends StatefulWidget {
         popOverride = null,
         images = const [],
         speciesId = null,
-        fishingSpotId = null;
+        fishingSpot = null;
 
   @override
   _SaveCatchPageState createState() => _SaveCatchPageState();
@@ -151,8 +151,8 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
   ListInputController<PickedImage> get _imagesController =>
       _fields[_idImages]!.controller as ListInputController<PickedImage>;
 
-  IdInputController get _fishingSpotController =>
-      _fields[_idFishingSpot]!.controller as IdInputController;
+  InputController<FishingSpot> get _fishingSpotController =>
+      _fields[_idFishingSpot]!.controller as InputController<FishingSpot>;
 
   SetInputController<BaitAttachment> get _baitsController =>
       _fields[_idBait]!.controller as SetInputController<BaitAttachment>;
@@ -225,7 +225,8 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
           _oldCatch!.hasSeason() ? _oldCatch!.season : null;
       _speciesController.value = _oldCatch!.speciesId;
       _baitsController.value = _oldCatch!.baits.toSet();
-      _fishingSpotController.value = _oldCatch!.fishingSpotId;
+      _fishingSpotController.value =
+          _fishingSpotManager.entity(_oldCatch!.fishingSpotId);
       _anglerController.value = _oldCatch!.anglerId;
       _catchAndReleaseController.value = _oldCatch!.wasCatchAndRelease;
       _favoriteController.value = _oldCatch!.isFavorite;
@@ -257,10 +258,10 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
       }
       _speciesController.value = widget.speciesId;
       _imagesController.value = widget.images;
-      _fishingSpotController.value = widget.fishingSpotId;
+      _fishingSpotController.value = widget.fishingSpot;
       _methodsController.value = {};
 
-      _calculateSeason();
+      _calculateSeasonIfNeeded();
       _fetchAtmosphereIfNeeded();
     }
 
@@ -358,7 +359,7 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
           label: Strings.of(context).catchFieldDate,
           onChange: (newDate) {
             _fetchAtmosphereIfNeeded();
-            setState(_calculateSeason);
+            setState(_calculateSeasonIfNeeded);
           },
         ),
         timePicker: TimePicker(
@@ -574,15 +575,22 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
   }
 
   Widget _buildSeason() {
-    return ListPickerInput.withSinglePickerPage<Season>(
-      context: context,
-      controller: _seasonController,
-      title: Strings.of(context).catchFieldSeason,
-      pickerTitle: Strings.of(context).pickerTitleSeason,
-      valueDisplayName: _seasonController.value?.displayName(context),
-      noneItem: Season.season_none,
-      itemBuilder: Seasons.pickerItems,
-      onPicked: (value) => setState(() => _seasonController.value = value),
+    return ValueListenableBuilder(
+      valueListenable: _fishingSpotController,
+      builder: (_, __, ___) {
+        _calculateSeasonIfNeeded();
+
+        return ListPickerInput.withSinglePickerPage<Season>(
+          context: context,
+          controller: _seasonController,
+          title: Strings.of(context).catchFieldSeason,
+          pickerTitle: Strings.of(context).pickerTitleSeason,
+          valueDisplayName: _seasonController.value?.displayName(context),
+          noneItem: Season.season_none,
+          itemBuilder: Seasons.pickerItems,
+          onPicked: (value) => setState(() => _seasonController.value = value),
+        );
+      },
     );
   }
 
@@ -608,21 +616,28 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
         _fishingSpotManager,
       ],
       builder: (context) {
-        var fishingSpot =
-            _fishingSpotManager.entity(_fishingSpotController.value);
+        return ValueListenableBuilder<FishingSpot?>(
+          valueListenable: _fishingSpotController,
+          builder: (context, pickedSpot, __) {
+            // Always fetch the latest version if it exists.
+            var fishingSpot =
+                _fishingSpotManager.entity(_fishingSpotController.value?.id) ??
+                    pickedSpot;
 
-        if (fishingSpot == null) {
-          return ListItem(
-            title: Text(Strings.of(context).catchFieldFishingSpot),
-            trailing: RightChevronIcon(),
-            onTap: _pushFishingSpotPicker,
-          );
-        }
+            if (fishingSpot == null) {
+              return ListItem(
+                title: Text(Strings.of(context).catchFieldFishingSpot),
+                trailing: RightChevronIcon(),
+                onTap: _pushFishingSpotPicker,
+              );
+            }
 
-        return StaticFishingSpot(
-          fishingSpot,
-          padding: insetsHorizontalDefaultVerticalSmall,
-          onTap: _pushFishingSpotPicker,
+            return FishingSpotDetails(
+              fishingSpot,
+              isListItem: true,
+              onTap: _pushFishingSpotPicker,
+            );
+          },
         );
       },
     );
@@ -678,7 +693,15 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
       ..customEntityValues.addAll(entityValuesFromMap(customFieldValueMap));
 
     if (_fishingSpotController.hasValue) {
-      cat.fishingSpotId = _fishingSpotController.value!;
+      cat.fishingSpotId = _fishingSpotController.value!.id;
+
+      // If the fishing spot doesn't yet exist in the database, add it now.
+      // This can happen when a user picks a completely new fishing spot, but
+      // doesn't save any property changes, such as setting a name or body of
+      // water.
+      if (!_fishingSpotManager.entityExists(cat.fishingSpotId)) {
+        _fishingSpotManager.addOrUpdate(_fishingSpotController.value!);
+      }
     }
 
     if (_baitsController.value.isNotEmpty) {
@@ -771,31 +794,26 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
   void _pushFishingSpotPicker() {
     push(
       context,
-      FishingSpotPickerPage(
-        fishingSpotId: _fishingSpotController.value,
-        onPicked: (context, pickedFishingSpot) {
-          if (pickedFishingSpot == null ||
-              pickedFishingSpot.id != _fishingSpotController.value) {
-            setState(() {
-              _fishingSpotController.value = pickedFishingSpot?.id;
-              _calculateSeason(fishingSpot: pickedFishingSpot);
-            });
-          }
-          Navigator.pop(context);
-        },
+      FishingSpotMap(
+        pickerSettings: FishingSpotMapPickerSettings(
+          controller: _fishingSpotController,
+        ),
       ),
     );
   }
 
-  void _calculateSeason({FishingSpot? fishingSpot}) {
-    var spot =
-        fishingSpot ?? _fishingSpotManager.entity(_fishingSpotController.value);
+  void _calculateSeasonIfNeeded() {
+    if (!_fields[_idSeason]!.isShowing) {
+      return;
+    }
+
+    var spot = _fishingSpotController.value;
     _seasonController.value =
         Seasons.from(_timestampController.dateTime, spot?.lat);
   }
 
   AtmosphereFetcher newAtmosphereFetcher() {
-    var fishingSpot = _fishingSpotManager.entity(_fishingSpotController.value);
+    var fishingSpot = _fishingSpotController.value;
     return AtmosphereFetcher(AppManager.of(context), _timestampController.value,
         fishingSpot?.latLng ?? _locationMonitor.currentLocation);
   }

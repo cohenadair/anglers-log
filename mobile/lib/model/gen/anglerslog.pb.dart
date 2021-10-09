@@ -1566,6 +1566,96 @@ class DateRange extends $pb.GeneratedMessage {
   void clearEndTimestamp() => clearField(3);
 }
 
+class BodyOfWater extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      const $core.bool.fromEnvironment('protobuf.omit_message_names')
+          ? ''
+          : 'BodyOfWater',
+      package: const $pb.PackageName(
+          const $core.bool.fromEnvironment('protobuf.omit_message_names')
+              ? ''
+              : 'anglerslog'),
+      createEmptyInstance: create)
+    ..aOM<Id>(
+        1,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'id',
+        subBuilder: Id.create)
+    ..aOS(
+        2,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'name')
+    ..hasRequiredFields = false;
+
+  BodyOfWater._() : super();
+  factory BodyOfWater({
+    Id? id,
+    $core.String? name,
+  }) {
+    final _result = create();
+    if (id != null) {
+      _result.id = id;
+    }
+    if (name != null) {
+      _result.name = name;
+    }
+    return _result;
+  }
+  factory BodyOfWater.fromBuffer($core.List<$core.int> i,
+          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(i, r);
+  factory BodyOfWater.fromJson($core.String i,
+          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(i, r);
+  @$core.Deprecated('Using this can add significant overhead to your binary. '
+      'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+      'Will be removed in next major version')
+  BodyOfWater clone() => BodyOfWater()..mergeFromMessage(this);
+  @$core.Deprecated('Using this can add significant overhead to your binary. '
+      'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+      'Will be removed in next major version')
+  BodyOfWater copyWith(void Function(BodyOfWater) updates) =>
+      super.copyWith((message) => updates(message as BodyOfWater))
+          as BodyOfWater; // ignore: deprecated_member_use
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static BodyOfWater create() => BodyOfWater._();
+  BodyOfWater createEmptyInstance() => create();
+  static $pb.PbList<BodyOfWater> createRepeated() => $pb.PbList<BodyOfWater>();
+  @$core.pragma('dart2js:noInline')
+  static BodyOfWater getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<BodyOfWater>(create);
+  static BodyOfWater? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  Id get id => $_getN(0);
+  @$pb.TagNumber(1)
+  set id(Id v) {
+    setField(1, v);
+  }
+
+  @$pb.TagNumber(1)
+  $core.bool hasId() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearId() => clearField(1);
+  @$pb.TagNumber(1)
+  Id ensureId() => $_ensure(0);
+
+  @$pb.TagNumber(2)
+  $core.String get name => $_getSZ(1);
+  @$pb.TagNumber(2)
+  set name($core.String v) {
+    $_setString(1, v);
+  }
+
+  @$pb.TagNumber(2)
+  $core.bool hasName() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearName() => clearField(2);
+}
+
 class FishingSpot extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(
       const $core.bool.fromEnvironment('protobuf.omit_message_names')
@@ -1587,6 +1677,9 @@ class FishingSpot extends $pb.GeneratedMessage {
     ..a<$core.double>(
         3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'lat', $pb.PbFieldType.OD)
     ..a<$core.double>(4, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'lng', $pb.PbFieldType.OD)
+    ..aOM<Id>(5, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'bodyOfWaterId', subBuilder: Id.create)
+    ..aOS(6, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'imageName')
+    ..aOS(7, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'notes')
     ..hasRequiredFields = false;
 
   FishingSpot._() : super();
@@ -1595,6 +1688,9 @@ class FishingSpot extends $pb.GeneratedMessage {
     $core.String? name,
     $core.double? lat,
     $core.double? lng,
+    Id? bodyOfWaterId,
+    $core.String? imageName,
+    $core.String? notes,
   }) {
     final _result = create();
     if (id != null) {
@@ -1608,6 +1704,15 @@ class FishingSpot extends $pb.GeneratedMessage {
     }
     if (lng != null) {
       _result.lng = lng;
+    }
+    if (bodyOfWaterId != null) {
+      _result.bodyOfWaterId = bodyOfWaterId;
+    }
+    if (imageName != null) {
+      _result.imageName = imageName;
+    }
+    if (notes != null) {
+      _result.notes = notes;
     }
     return _result;
   }
@@ -1686,6 +1791,44 @@ class FishingSpot extends $pb.GeneratedMessage {
   $core.bool hasLng() => $_has(3);
   @$pb.TagNumber(4)
   void clearLng() => clearField(4);
+
+  @$pb.TagNumber(5)
+  Id get bodyOfWaterId => $_getN(4);
+  @$pb.TagNumber(5)
+  set bodyOfWaterId(Id v) {
+    setField(5, v);
+  }
+
+  @$pb.TagNumber(5)
+  $core.bool hasBodyOfWaterId() => $_has(4);
+  @$pb.TagNumber(5)
+  void clearBodyOfWaterId() => clearField(5);
+  @$pb.TagNumber(5)
+  Id ensureBodyOfWaterId() => $_ensure(4);
+
+  @$pb.TagNumber(6)
+  $core.String get imageName => $_getSZ(5);
+  @$pb.TagNumber(6)
+  set imageName($core.String v) {
+    $_setString(5, v);
+  }
+
+  @$pb.TagNumber(6)
+  $core.bool hasImageName() => $_has(5);
+  @$pb.TagNumber(6)
+  void clearImageName() => clearField(6);
+
+  @$pb.TagNumber(7)
+  $core.String get notes => $_getSZ(6);
+  @$pb.TagNumber(7)
+  set notes($core.String v) {
+    $_setString(6, v);
+  }
+
+  @$pb.TagNumber(7)
+  $core.bool hasNotes() => $_has(6);
+  @$pb.TagNumber(7)
+  void clearNotes() => clearField(7);
 }
 
 class NumberFilter extends $pb.GeneratedMessage {
@@ -1934,6 +2077,7 @@ class Report extends $pb.GeneratedMessage {
     ..pc<SkyCondition>(28, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'skyConditions', $pb.PbFieldType.PE, valueOf: SkyCondition.valueOf, enumValues: SkyCondition.values)
     ..pc<MoonPhase>(29, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'moonPhases', $pb.PbFieldType.PE, valueOf: MoonPhase.valueOf, enumValues: MoonPhase.values)
     ..pc<TideType>(30, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'tideTypes', $pb.PbFieldType.PE, valueOf: TideType.valueOf, enumValues: TideType.values)
+    ..pc<Id>(31, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'bodyOfWaterIds', $pb.PbFieldType.PM, subBuilder: Id.create)
     ..hasRequiredFields = false;
 
   Report._() : super();
@@ -1968,6 +2112,7 @@ class Report extends $pb.GeneratedMessage {
     $core.Iterable<SkyCondition>? skyConditions,
     $core.Iterable<MoonPhase>? moonPhases,
     $core.Iterable<TideType>? tideTypes,
+    $core.Iterable<Id>? bodyOfWaterIds,
   }) {
     final _result = create();
     if (id != null) {
@@ -2059,6 +2204,9 @@ class Report extends $pb.GeneratedMessage {
     }
     if (tideTypes != null) {
       _result.tideTypes.addAll(tideTypes);
+    }
+    if (bodyOfWaterIds != null) {
+      _result.bodyOfWaterIds.addAll(bodyOfWaterIds);
     }
     return _result;
   }
@@ -2365,6 +2513,9 @@ class Report extends $pb.GeneratedMessage {
 
   @$pb.TagNumber(30)
   $core.List<TideType> get tideTypes => $_getList(29);
+
+  @$pb.TagNumber(31)
+  $core.List<Id> get bodyOfWaterIds => $_getList(30);
 }
 
 class Angler extends $pb.GeneratedMessage {

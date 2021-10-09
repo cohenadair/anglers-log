@@ -128,6 +128,8 @@ void main() {
     var fishingSpotManager = MockFishingSpotManager();
     when(appManager.app.fishingSpotManager).thenReturn(fishingSpotManager);
     when(fishingSpotManager.matchesFilter(any, any)).thenReturn(true);
+    when(fishingSpotManager.entity(any)).thenReturn(null);
+    when(fishingSpotManager.entityExists(any)).thenReturn(false);
 
     await catchManager.addOrUpdate(Catch()
       ..id = randomId()
@@ -766,6 +768,78 @@ void main() {
       fishingSpotIds: {fishingSpotId2},
     );
     expect(catches.isEmpty, true);
+  });
+
+  testWidgets("Filtering by body of water", (tester) async {
+    when(dataManager.insertOrReplace(any, any))
+        .thenAnswer((_) => Future.value(true));
+
+    var fishingSpotId0 = randomId();
+    var fishingSpotId1 = randomId();
+    var fishingSpotId2 = randomId();
+    var fishingSpotId3 = randomId();
+
+    await catchManager.addOrUpdate(Catch()
+      ..id = randomId()
+      ..fishingSpotId = fishingSpotId0);
+    await catchManager.addOrUpdate(Catch()
+      ..id = randomId()
+      ..fishingSpotId = fishingSpotId1);
+    await catchManager.addOrUpdate(Catch()
+      ..id = randomId()
+      ..fishingSpotId = fishingSpotId0);
+    await catchManager.addOrUpdate(Catch()
+      ..id = randomId()
+      ..fishingSpotId = fishingSpotId3);
+
+    var bodyOfWaterId0 = randomId();
+    var bodyOfWaterId1 = randomId();
+    var bodyOfWaterId2 = randomId();
+
+    var fishingSpotManager = MockFishingSpotManager();
+    when(appManager.app.fishingSpotManager).thenReturn(fishingSpotManager);
+
+    when(fishingSpotManager.entity(fishingSpotId0)).thenReturn(FishingSpot(
+      id: fishingSpotId0,
+      bodyOfWaterId: bodyOfWaterId0,
+    ));
+
+    when(fishingSpotManager.entity(fishingSpotId1)).thenReturn(FishingSpot(
+      id: fishingSpotId1,
+      bodyOfWaterId: bodyOfWaterId1,
+    ));
+
+    when(fishingSpotManager.entity(fishingSpotId2)).thenReturn(FishingSpot(
+      id: fishingSpotId2,
+      bodyOfWaterId: bodyOfWaterId2,
+    ));
+
+    when(fishingSpotManager.entity(fishingSpotId3))
+        .thenReturn(FishingSpot(id: fishingSpotId3));
+
+    when(fishingSpotManager.entityExists(any)).thenReturn(true);
+
+    var context = await buildContext(tester, appManager: appManager);
+    var catches = catchManager.filteredCatches(
+      context,
+      bodyOfWaterIds: {bodyOfWaterId0},
+    );
+    expect(catches.length, 2);
+
+    catches = catchManager.filteredCatches(
+      context,
+      bodyOfWaterIds: {bodyOfWaterId0, bodyOfWaterId1},
+    );
+    expect(catches.length, 3);
+
+    catches = catchManager.filteredCatches(context);
+    expect(catches.length, 4);
+
+    catches = catchManager.filteredCatches(
+      context,
+      bodyOfWaterIds: {randomId()},
+    );
+    expect(catches.isEmpty, isTrue);
   });
 
   testWidgets("Filtering by bait", (tester) async {

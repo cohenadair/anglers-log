@@ -1,20 +1,23 @@
 import 'package:collection/collection.dart' show IterableExtension;
 import 'package:flutter/cupertino.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:mapbox_gl/mapbox_gl.dart';
 import 'package:provider/provider.dart';
 import 'package:quiver/strings.dart';
 
 import 'app_manager.dart';
+import 'body_of_water_manager.dart';
 import 'catch_manager.dart';
 import 'i18n/strings.dart';
+import 'image_entity_manager.dart';
 import 'model/gen/anglerslog.pb.dart';
-import 'named_entity_manager.dart';
 import 'utils/map_utils.dart';
 import 'utils/string_utils.dart';
 
-class FishingSpotManager extends NamedEntityManager<FishingSpot> {
+class FishingSpotManager extends ImageEntityManager<FishingSpot> {
   static FishingSpotManager of(BuildContext context) =>
       Provider.of<AppManager>(context, listen: false).fishingSpotManager;
+
+  BodyOfWaterManager get _bodyOfWaterManager => appManager.bodyOfWaterManager;
 
   CatchManager get _catchManager => appManager.catchManager;
 
@@ -31,6 +34,25 @@ class FishingSpotManager extends NamedEntityManager<FishingSpot> {
 
   @override
   String get tableName => "fishing_spot";
+
+  @override
+  void setImageName(FishingSpot fishingSpot, String imageName) =>
+      fishingSpot.imageName = imageName;
+
+  @override
+  void clearImageName(FishingSpot fishingSpot) => fishingSpot.clearImageName();
+
+  @override
+  bool matchesFilter(Id id, String? filter, [BuildContext? context]) {
+    var fishingSpot = entity(id);
+    if (fishingSpot == null) {
+      return false;
+    }
+
+    return super.matchesFilter(fishingSpot.id, filter) ||
+        _bodyOfWaterManager.matchesFilter(fishingSpot.bodyOfWaterId, filter) ||
+        containsTrimmedLowerCase(fishingSpot.notes, filter!);
+  }
 
   @override
   List<FishingSpot> listSortedByName({String? filter}) {
