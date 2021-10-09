@@ -67,6 +67,7 @@ import 'mocks.mocks.dart';
 @GenerateMocks([AnglerManager])
 @GenerateMocks([AppManager])
 @GenerateMocks([AppPreferenceManager])
+@GenerateMocks([], customMocks: [MockSpec<map.ArgumentCallbacks>()])
 @GenerateMocks([AtmosphereFetcher])
 @GenerateMocks([BaitCategoryManager])
 @GenerateMocks([BaitManager])

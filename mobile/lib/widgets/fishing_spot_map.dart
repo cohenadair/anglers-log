@@ -74,7 +74,7 @@ class FishingSpotMap extends StatefulWidget {
   /// used inside a sized box. This constructor should not be used directly.
   /// Instead, use [StaticFishingSpotMap].
   FishingSpotMap._static(FishingSpot fishingSpot)
-      : pickerSettings = FishingSpotMapPickerSettings.static(fishingSpot),
+      : pickerSettings = FishingSpotMapPickerSettings._static(fishingSpot),
         showSearchBar = false,
         showMyLocationButton = false,
         showZoomExtentsButton = false,
@@ -87,7 +87,7 @@ class FishingSpotMap extends StatefulWidget {
 
   /// A fishing spot page, with [fishingSpot] already selected.
   FishingSpotMap.selected(FishingSpot fishingSpot)
-      : pickerSettings = FishingSpotMapPickerSettings.static(fishingSpot),
+      : pickerSettings = FishingSpotMapPickerSettings._static(fishingSpot),
         showSearchBar = false,
         showMyLocationButton = true,
         showZoomExtentsButton = true,
@@ -118,7 +118,7 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
   static const _pinSize = 1.5;
   static const _zoomDefault = 13.0;
 
-  /// An arbitrary value used to detail how much to offset the map's position
+  /// An arbitrary value used to calculate how much to offset the map's position
   /// based on the size of the fishing spot widget being shown.
   static const _fishingSpotDetailOffsetFactor = 0.00004117647059;
 
@@ -165,8 +165,7 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
   bool get _isStatic => widget._isStatic;
 
   bool get _isDroppedPin =>
-      _hasActiveSymbol &&
-      !_fishingSpotManager.entityExists(_activeSymbol!.fishingSpot.id);
+      !_fishingSpotManager.entityExists(_activeSymbol?.fishingSpot.id);
 
   FishingSpot? get _activeFishingSpot => _activeSymbol?.fishingSpot;
 
@@ -457,7 +456,7 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
   }
 
   Widget _buildHelpButton() {
-    if (!_isPicking || !widget.showHelpButton) {
+    if (!widget.showHelpButton) {
       return Empty();
     }
 
@@ -469,24 +468,18 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
       ),
       icon: Icons.help,
       pushed: _showHelp,
-      onPressed: () {
-        setState(() {
-          _showHelp = !_showHelp;
-        });
-      },
+      onPressed: () => setState(() => _showHelp = !_showHelp),
     );
   }
 
   Widget _buildHelp() {
-    if (!_isPicking) {
-      return Empty();
-    }
-
     return HelpTooltip(
       margin: insetsHorizontalDefault,
       showing: _showHelp,
       child: Text(
-        Strings.of(context).fishingSpotPickerPageHint,
+        _isPicking
+            ? Strings.of(context).fishingSpotPickerPageHint
+            : Strings.of(context).fishingSpotMapAddSpotHelp,
         style: styleLight,
       ),
     );
@@ -496,12 +489,6 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
     var fishingSpot = _activeFishingSpot;
     if (_isDismissingFishingSpot && _oldFishingSpot != null) {
       fishingSpot = _oldFishingSpot;
-    }
-
-    var isDroppedPin = _isDroppedPin;
-    if (fishingSpot == null && _hasActiveSymbol) {
-      fishingSpot = _activeSymbol!.fishingSpot;
-      isDroppedPin = true;
     }
 
     // If the map isn't yet setup, but there's a picked spot, use that for
@@ -518,7 +505,7 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
         child: FishingSpotDetails(
           fishingSpot,
           containerKey: _fishingSpotKey,
-          isDroppedPin: isDroppedPin,
+          isDroppedPin: _isDroppedPin,
           isPicking: _isPicking,
           showActionButtons: widget.showFishingSpotActionButtons,
         ),
@@ -569,7 +556,7 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
   }
 
   Widget _buildAttribution() {
-    return _MapboxAttribution(
+    return MapboxAttribution(
       logoColor: _currentStyle == _mapStyleNormal ? Colors.black : Colors.white,
       isTelemetryEnabled: _isTelemetryEnabled,
       onTelemetryToggled: (enabled) async {
@@ -601,8 +588,8 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
     }
   }
 
-  void _onSymbolTapped(Symbol symbol) {
-    _selectFishingSpot(symbol.fishingSpot, animateMapMovement: true);
+  Future<void> _onSymbolTapped(Symbol symbol) async {
+    return _selectFishingSpot(symbol.fishingSpot, animateMapMovement: true);
   }
 
   Future<void> _updateSymbols() async {
@@ -681,7 +668,9 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
 
     if (_isDroppedPin) {
       // Remove the current dropped pin, if one exists.
-      await _mapController.removeSymbol(_activeSymbol!);
+      if (_hasActiveSymbol) {
+        await _mapController.removeSymbol(_activeSymbol!);
+      }
       newActiveSymbol = null;
     } else if (_hasActiveSymbol) {
       // Mark the active symbol as inactive.
@@ -787,7 +776,7 @@ class FishingSpotMapPickerSettings {
     this.onNext,
   });
 
-  FishingSpotMapPickerSettings.static(FishingSpot fishingSpot)
+  FishingSpotMapPickerSettings._static(FishingSpot fishingSpot)
       : this(
           controller: InputController<FishingSpot>()..value = fishingSpot,
         );
@@ -831,16 +820,18 @@ class StaticFishingSpotMap extends StatelessWidget {
 extension _Symbols on Symbol {
   static const _keyFishingSpot = "fishing_spot";
 
-  static Map<dynamic, dynamic> fishingSpotData(FishingSpot fishingSpot) => {
-        _keyFishingSpot: fishingSpot,
-      };
+  static Map<dynamic, dynamic> fishingSpotData(FishingSpot fishingSpot) {
+    return {
+      _keyFishingSpot: fishingSpot,
+    };
+  }
 
   FishingSpot get fishingSpot => data![_keyFishingSpot] as FishingSpot;
 
   LatLng get latLng => options.geometry!;
 }
 
-class _MapboxAttribution extends StatelessWidget {
+class MapboxAttribution extends StatelessWidget {
   static const _urlMapbox = "https://www.mapbox.com/about/maps/";
   static const _urlOpenStreetMap = "http://www.openstreetmap.org/copyright";
   static const _urlImproveThisMap = "https://www.mapbox.com/map-feedback/";
@@ -852,7 +843,7 @@ class _MapboxAttribution extends StatelessWidget {
   final void Function(bool) onTelemetryToggled;
   final bool isTelemetryEnabled;
 
-  _MapboxAttribution({
+  MapboxAttribution({
     required this.logoColor,
     required this.onTelemetryToggled,
     required this.isTelemetryEnabled,
@@ -894,12 +885,7 @@ class _MapboxAttribution extends StatelessWidget {
         Strings.of(context).mapAttributionImproveThisMap: _urlImproveThisMap,
         Strings.of(context).mapAttributionMaxar: _urlMaxar,
       },
-      onPicked: (url) {
-        if (isEmpty(url)) {
-          return;
-        }
-        UrlLauncherWrapper.of(context).launch(url!);
-      },
+      onPicked: (url) => UrlLauncherWrapper.of(context).launch(url!),
       footer: CheckboxInput(
         label: Strings.of(context).mapAttributionTelemetryTitle,
         description: Strings.of(context).mapAttributionTelemetryDescription,

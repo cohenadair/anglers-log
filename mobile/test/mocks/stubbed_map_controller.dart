@@ -68,6 +68,10 @@ class StubbedMapController {
     await tester.pumpAndSettle(Duration(milliseconds: 50));
   }
 
+  int get symbolCount => _symbols.length;
+
+  void clearSymbols() => _symbols.clear();
+
   Symbol _createSymbol(SymbolOptions options, Map<dynamic, dynamic> data) =>
       Symbol(randomId().uuid, options, data);
 }

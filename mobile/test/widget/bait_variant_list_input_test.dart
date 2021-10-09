@@ -266,7 +266,7 @@ class _ParentRebuildTesterState extends State<_ParentRebuildTester> {
         ),
         BaitVariantListInput(
           controller: widget.controller,
-        )
+        ),
       ],
     );
   }

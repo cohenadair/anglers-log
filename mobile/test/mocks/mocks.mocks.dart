@@ -4,14 +4,14 @@
 // Do not manually edit this file.
 
 import 'dart:async' as _i9;
-import 'dart:convert' as _i62;
+import 'dart:convert' as _i63;
 import 'dart:io' as _i49;
 import 'dart:math' as _i51;
-import 'dart:typed_data' as _i59;
+import 'dart:typed_data' as _i60;
 import 'dart:ui' as _i66;
 
 import 'package:cloud_firestore/cloud_firestore.dart' as _i47;
-import 'package:file_picker/file_picker.dart' as _i61;
+import 'package:file_picker/file_picker.dart' as _i62;
 import 'package:firebase_auth/firebase_auth.dart' as _i45;
 import 'package:firebase_storage/firebase_storage.dart' as _i46;
 import 'package:flutter/foundation.dart' as _i64;
@@ -21,11 +21,11 @@ import 'package:flutter/services.dart' as _i54;
 import 'package:http/http.dart' as _i48;
 import 'package:mapbox_gl/mapbox_gl.dart' as _i50;
 import 'package:mapbox_gl_platform_interface/mapbox_gl_platform_interface.dart'
-    as _i63;
+    as _i58;
 import 'package:mobile/angler_manager.dart' as _i11;
 import 'package:mobile/app_manager.dart' as _i4;
 import 'package:mobile/app_preference_manager.dart' as _i5;
-import 'package:mobile/atmosphere_fetcher.dart' as _i58;
+import 'package:mobile/atmosphere_fetcher.dart' as _i59;
 import 'package:mobile/auth_manager.dart' as _i6;
 import 'package:mobile/bait_category_manager.dart' as _i12;
 import 'package:mobile/bait_manager.dart' as _i13;
@@ -40,7 +40,7 @@ import 'package:mobile/local_database_manager.dart' as _i3;
 import 'package:mobile/location_monitor.dart' as _i19;
 import 'package:mobile/method_manager.dart' as _i20;
 import 'package:mobile/model/gen/anglerslog.pb.dart' as _i8;
-import 'package:mobile/preference_manager.dart' as _i60;
+import 'package:mobile/preference_manager.dart' as _i61;
 import 'package:mobile/properties_manager.dart' as _i21;
 import 'package:mobile/report_manager.dart' as _i22;
 import 'package:mobile/species_manager.dart' as _i23;
@@ -695,10 +695,43 @@ class MockAppPreferenceManager extends _i1.Mock
   String toString() => super.toString();
 }
 
+/// A class which mocks [ArgumentCallbacks].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockArgumentCallbacks<T> extends _i1.Mock
+    implements _i50.ArgumentCallbacks<T> {
+  MockArgumentCallbacks() {
+    _i1.throwOnMissingStub(this);
+  }
+
+  @override
+  bool get isEmpty =>
+      (super.noSuchMethod(Invocation.getter(#isEmpty), returnValue: false)
+          as bool);
+  @override
+  bool get isNotEmpty =>
+      (super.noSuchMethod(Invocation.getter(#isNotEmpty), returnValue: false)
+          as bool);
+  @override
+  void call(T? argument) =>
+      super.noSuchMethod(Invocation.method(#call, [argument]),
+          returnValueForMissingStub: null);
+  @override
+  void add(_i58.ArgumentCallback<T>? callback) =>
+      super.noSuchMethod(Invocation.method(#add, [callback]),
+          returnValueForMissingStub: null);
+  @override
+  void remove(_i58.ArgumentCallback<T>? callback) =>
+      super.noSuchMethod(Invocation.method(#remove, [callback]),
+          returnValueForMissingStub: null);
+  @override
+  String toString() => super.toString();
+}
+
 /// A class which mocks [AtmosphereFetcher].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockAtmosphereFetcher extends _i1.Mock implements _i58.AtmosphereFetcher {
+class MockAtmosphereFetcher extends _i1.Mock implements _i59.AtmosphereFetcher {
   MockAtmosphereFetcher() {
     _i1.throwOnMissingStub(this);
   }
@@ -2228,22 +2261,22 @@ class MockImageManager extends _i1.Mock implements _i18.ImageManager {
           returnValue: Future<void>.value(),
           returnValueForMissingStub: Future<void>.value()) as _i9.Future<void>);
   @override
-  _i9.Future<_i59.Uint8List?> image(_i44.BuildContext? context,
+  _i9.Future<_i60.Uint8List?> image(_i44.BuildContext? context,
           {String? fileName, double? size}) =>
       (super.noSuchMethod(
               Invocation.method(
                   #image, [context], {#fileName: fileName, #size: size}),
-              returnValue: Future<_i59.Uint8List?>.value())
-          as _i9.Future<_i59.Uint8List?>);
+              returnValue: Future<_i60.Uint8List?>.value())
+          as _i9.Future<_i60.Uint8List?>);
   @override
-  _i9.Future<Map<_i49.File, _i59.Uint8List>> images(_i44.BuildContext? context,
+  _i9.Future<Map<_i49.File, _i60.Uint8List>> images(_i44.BuildContext? context,
           {List<String>? imageNames, double? size}) =>
       (super.noSuchMethod(
               Invocation.method(
                   #images, [context], {#imageNames: imageNames, #size: size}),
-              returnValue: Future<Map<_i49.File, _i59.Uint8List>>.value(
-                  <_i49.File, _i59.Uint8List>{}))
-          as _i9.Future<Map<_i49.File, _i59.Uint8List>>);
+              returnValue: Future<Map<_i49.File, _i60.Uint8List>>.value(
+                  <_i49.File, _i60.Uint8List>{}))
+          as _i9.Future<Map<_i49.File, _i60.Uint8List>>);
   @override
   _i9.Future<List<String>> save(List<_i49.File>? files,
           {bool? compress = true}) =>
@@ -2530,7 +2563,7 @@ class MockMethodManager extends _i1.Mock implements _i20.MethodManager {
 /// A class which mocks [PreferenceManager].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockPreferenceManager extends _i1.Mock implements _i60.PreferenceManager {
+class MockPreferenceManager extends _i1.Mock implements _i61.PreferenceManager {
   MockPreferenceManager() {
     _i1.throwOnMissingStub(this);
   }
@@ -3371,8 +3404,8 @@ class MockFilePickerWrapper extends _i1.Mock implements _i28.FilePickerWrapper {
   }
 
   @override
-  _i9.Future<_i61.FilePickerResult?> pickFiles(
-          {_i61.FileType? type = _i61.FileType.any,
+  _i9.Future<_i62.FilePickerResult?> pickFiles(
+          {_i62.FileType? type = _i62.FileType.any,
           List<String>? allowedExtensions,
           bool? allowMultiple = false}) =>
       (super.noSuchMethod(
@@ -3381,8 +3414,8 @@ class MockFilePickerWrapper extends _i1.Mock implements _i28.FilePickerWrapper {
                 #allowedExtensions: allowedExtensions,
                 #allowMultiple: allowMultiple
               }),
-              returnValue: Future<_i61.FilePickerResult?>.value())
-          as _i9.Future<_i61.FilePickerResult?>);
+              returnValue: Future<_i62.FilePickerResult?>.value())
+          as _i9.Future<_i62.FilePickerResult?>);
   @override
   String toString() => super.toString();
 }
@@ -3511,7 +3544,7 @@ class MockHttpWrapper extends _i1.Mock implements _i32.HttpWrapper {
   _i9.Future<_i48.Response> post(Uri? url,
           {Map<String, String>? headers,
           Object? body,
-          _i62.Encoding? encoding}) =>
+          _i63.Encoding? encoding}) =>
       (super.noSuchMethod(
               Invocation.method(#post, [url],
                   {#headers: headers, #body: body, #encoding: encoding}),
@@ -3536,10 +3569,10 @@ class MockImageCompressWrapper extends _i1.Mock
   }
 
   @override
-  _i9.Future<_i59.Uint8List?> compress(String? path, int? quality, int? size) =>
+  _i9.Future<_i60.Uint8List?> compress(String? path, int? quality, int? size) =>
       (super.noSuchMethod(Invocation.method(#compress, [path, quality, size]),
-              returnValue: Future<_i59.Uint8List?>.value())
-          as _i9.Future<_i59.Uint8List?>);
+              returnValue: Future<_i60.Uint8List?>.value())
+          as _i9.Future<_i60.Uint8List?>);
   @override
   String toString() => super.toString();
 }
@@ -3637,7 +3670,7 @@ class MockMapboxMapController extends _i1.Mock
   @override
   _i44.Widget buildView(
           Map<String, dynamic>? creationParams,
-          _i63.OnPlatformViewCreatedCallback? onPlatformViewCreated,
+          _i58.OnPlatformViewCreatedCallback? onPlatformViewCreated,
           Set<_i64.Factory<_i65.OneSequenceGestureRecognizer>>?
               gestureRecognizers) =>
       (super.noSuchMethod(
@@ -3861,7 +3894,7 @@ class MockMapboxMapController extends _i1.Mock
           returnValue: Future<_i50.LatLngBounds>.value(_FakeLatLngBounds_69()))
       as _i9.Future<_i50.LatLngBounds>);
   @override
-  _i9.Future<void> addImage(String? name, _i59.Uint8List? bytes,
+  _i9.Future<void> addImage(String? name, _i60.Uint8List? bytes,
           [bool? sdf = false]) =>
       (super.noSuchMethod(Invocation.method(#addImage, [name, bytes, sdf]),
           returnValue: Future<void>.value(),
@@ -3887,7 +3920,7 @@ class MockMapboxMapController extends _i1.Mock
           returnValue: Future<void>.value(),
           returnValueForMissingStub: Future<void>.value()) as _i9.Future<void>);
   @override
-  _i9.Future<void> addImageSource(String? imageSourceId, _i59.Uint8List? bytes,
+  _i9.Future<void> addImageSource(String? imageSourceId, _i60.Uint8List? bytes,
           _i50.LatLngQuad? coordinates) =>
       (super.noSuchMethod(
           Invocation.method(
@@ -5504,12 +5537,12 @@ class MockReference extends _i1.Mock implements _i46.Reference {
               returnValue: Future<_i46.ListResult>.value(_FakeListResult_93()))
           as _i9.Future<_i46.ListResult>);
   @override
-  _i9.Future<_i59.Uint8List?> getData([int? maxSize = 10485760]) =>
+  _i9.Future<_i60.Uint8List?> getData([int? maxSize = 10485760]) =>
       (super.noSuchMethod(Invocation.method(#getData, [maxSize]),
-              returnValue: Future<_i59.Uint8List?>.value())
-          as _i9.Future<_i59.Uint8List?>);
+              returnValue: Future<_i60.Uint8List?>.value())
+          as _i9.Future<_i60.Uint8List?>);
   @override
-  _i46.UploadTask putData(_i59.Uint8List? data,
+  _i46.UploadTask putData(_i60.Uint8List? data,
           [_i46.SettableMetadata? metadata]) =>
       (super.noSuchMethod(Invocation.method(#putData, [data, metadata]),
           returnValue: _FakeUploadTask_94()) as _i46.UploadTask);
@@ -5553,9 +5586,9 @@ class MockResponse extends _i1.Mock implements _i48.Response {
   }
 
   @override
-  _i59.Uint8List get bodyBytes =>
+  _i60.Uint8List get bodyBytes =>
       (super.noSuchMethod(Invocation.getter(#bodyBytes),
-          returnValue: _i59.Uint8List(0)) as _i59.Uint8List);
+          returnValue: _i60.Uint8List(0)) as _i60.Uint8List);
   @override
   String get body =>
       (super.noSuchMethod(Invocation.getter(#body), returnValue: '') as String);

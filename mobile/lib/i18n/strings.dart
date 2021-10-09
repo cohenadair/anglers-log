@@ -776,6 +776,8 @@ class Strings {
   String get fishingSpotMapLocationPermissionOpenSettings =>
       _string("fishingSpotMap_locationPermissionOpenSettings");
 
+  String get fishingSpotMapAddSpotHelp => _string("fishingSpotMap_addSpotHelp");
+
   String get customEntityListPageTitle => _string("customEntityListPage_title");
 
   String get customEntityListPageDelete =>
