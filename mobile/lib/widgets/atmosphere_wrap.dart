@@ -13,7 +13,7 @@ import 'widget.dart';
 class AtmosphereWrap extends StatelessWidget {
   final Atmosphere atmosphere;
 
-  AtmosphereWrap(this.atmosphere);
+  const AtmosphereWrap(this.atmosphere);
 
   @override
   Widget build(BuildContext context) {

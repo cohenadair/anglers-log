@@ -182,7 +182,7 @@ class _StatsPageState extends State<StatsPage> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           child,
-          child is Empty ? Empty() : MinDivider(),
+          child is Empty ? Empty() : const MinDivider(),
         ],
       ),
     );
@@ -206,7 +206,7 @@ class _StatsPageState extends State<StatsPage> {
         _buildCatchesPerFishingSpot(),
         _buildCatchesPerBait(),
         HeadingDivider(Strings.of(context).reportSummarySpeciesTitle),
-        VerticalSpace(paddingWidget),
+        const VerticalSpace(paddingWidget),
         _buildSpeciesPicker(),
         _buildViewCatchesPerSpecies(),
         _buildFishingSpotsPerSpecies(),

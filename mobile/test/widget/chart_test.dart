@@ -161,7 +161,7 @@ void main() {
           chartPageDescription: "A description.",
           onTapRow: (dynamic _, __) => tapped = true,
         ),
-        mediaQueryData: MediaQueryData(
+        mediaQueryData: const MediaQueryData(
           // Chart row widths are based on screen size. Need to give a screen
           // size to tap.
           size: Size(500, 500),
@@ -365,9 +365,9 @@ void main() {
           labelBuilder: (dynamic species) => species.name,
           viewAllTitle: "View all",
           chartPageDescription: "A description.",
-          chartPageFilters: {"Filter 1", "Filter 2"},
+          chartPageFilters: const {"Filter 1", "Filter 2"},
         ),
-        mediaQueryData: MediaQueryData(
+        mediaQueryData: const MediaQueryData(
           // Chart row widths are based on screen size. Need to give a screen
           // size to tap.
           size: Size(500, 500),
@@ -397,7 +397,7 @@ void main() {
           viewAllTitle: "View all",
           chartPageDescription: "A description.",
         ),
-        mediaQueryData: MediaQueryData(
+        mediaQueryData: const MediaQueryData(
           // Chart row widths are based on screen size. Need to give a screen
           // size to tap.
           size: Size(500, 500),

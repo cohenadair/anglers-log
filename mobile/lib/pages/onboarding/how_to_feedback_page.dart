@@ -15,7 +15,7 @@ import 'onboarding_page.dart';
 class HowToFeedbackPage extends StatefulWidget {
   final VoidCallback? onNext;
 
-  HowToFeedbackPage({
+  const HowToFeedbackPage({
     this.onNext,
   });
 
@@ -28,7 +28,8 @@ class _HowToFeedbackPageState extends State<HowToFeedbackPage> {
   static const _scrollToTopAfter = Duration(seconds: 2, milliseconds: 500);
   static const _scrollToFeedbackAfter = Duration(seconds: 1);
 
-  final _log = Log("HowToFeedbackPage");
+  static const _log = Log("HowToFeedbackPage");
+
   final _feedbackKey = GlobalKey();
 
   late Timer _scrollTimer;
@@ -52,20 +53,20 @@ class _HowToFeedbackPageState extends State<HowToFeedbackPage> {
       nextButtonText: Strings.of(context).finish,
       onPressedNextButton: widget.onNext,
       children: <Widget>[
-        VerticalSpace(paddingWidget),
+        const VerticalSpace(paddingWidget),
         TitleLabel(
           Strings.of(context).onboardingJourneyHowToFeedbackTitle,
           overflow: TextOverflow.visible,
           align: TextAlign.center,
         ),
-        VerticalSpace(paddingWidgetDouble),
+        const VerticalSpace(paddingWidgetDouble),
         EmbeddedPage(
           showBackButton: false,
           childBuilder: (context) => MorePage(
             feedbackKey: _feedbackKey,
           ),
         ),
-        VerticalSpace(paddingWidgetDouble),
+        const VerticalSpace(paddingWidgetDouble),
         Padding(
           padding: insetsHorizontalDefault,
           child: Text(
@@ -75,7 +76,7 @@ class _HowToFeedbackPageState extends State<HowToFeedbackPage> {
             style: stylePrimary(context),
           ),
         ),
-        VerticalSpace(paddingWidget),
+        const VerticalSpace(paddingWidget),
       ],
     );
   }

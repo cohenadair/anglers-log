@@ -20,11 +20,11 @@ class SaveCustomEntityPage extends StatefulWidget {
   final CustomEntity? oldEntity;
   final void Function(CustomEntity)? onSave;
 
-  SaveCustomEntityPage({
+  const SaveCustomEntityPage({
     this.onSave,
   }) : oldEntity = null;
 
-  SaveCustomEntityPage.edit(
+  const SaveCustomEntityPage.edit(
     CustomEntity this.oldEntity, {
     this.onSave,
   });
@@ -34,7 +34,7 @@ class SaveCustomEntityPage extends StatefulWidget {
 }
 
 class _SaveCustomEntityPageState extends State<SaveCustomEntityPage> {
-  late final _nameController;
+  late final TextInputController _nameController;
   final _descriptionController = TextInputController();
   final _dataTypeController = InputController<CustomEntity_Type>();
 

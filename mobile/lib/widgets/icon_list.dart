@@ -11,7 +11,7 @@ class IconList extends StatelessWidget {
   final List<String> values;
   final IconData icon;
 
-  IconList({
+  const IconList({
     required this.values,
     required this.icon,
   });
@@ -35,7 +35,7 @@ class IconList extends StatelessWidget {
             color: Theme.of(context).disabledColor,
           ),
         ),
-        HorizontalSpace(paddingWidgetDouble),
+        const HorizontalSpace(paddingWidgetDouble),
         Expanded(
           child: Text(
             value,

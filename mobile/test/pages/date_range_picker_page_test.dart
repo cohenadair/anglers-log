@@ -32,7 +32,7 @@ void main() {
     ));
 
     // Scroll so custom date range is shown.
-    await tester.drag(find.text("Last year"), Offset(0, -400));
+    await tester.drag(find.text("Last year"), const Offset(0, -400));
     await tester.pumpAndSettle();
 
     expect(find.text("Jan 1, 2020 - Feb 1, 2020"), findsOneWidget);
@@ -62,7 +62,7 @@ void main() {
     ));
 
     // Scroll so custom date range is shown.
-    await tester.drag(find.text("Last year"), Offset(0, -400));
+    await tester.drag(find.text("Last year"), const Offset(0, -400));
     await tester.pumpAndSettle();
     await tapAndSettle(tester, find.text("Custom"));
 
@@ -80,7 +80,7 @@ void main() {
     ));
 
     // Scroll so custom date range is shown.
-    await tester.drag(find.text("Last year"), Offset(0, -400));
+    await tester.drag(find.text("Last year"), const Offset(0, -400));
     await tester.pumpAndSettle();
     await tapAndSettle(tester, find.text("Custom"));
     await tapAndSettle(tester, find.text("CANCEL"));
@@ -101,7 +101,7 @@ void main() {
     ));
 
     // Scroll so custom date range is shown.
-    await tester.drag(find.text("Last year"), Offset(0, -400));
+    await tester.drag(find.text("Last year"), const Offset(0, -400));
     await tester.pumpAndSettle();
     await tapAndSettle(tester, find.text("Custom"));
     await enterTextAndSettle(
@@ -136,7 +136,7 @@ void main() {
     ));
 
     // Scroll so custom date range is shown.
-    await tester.drag(find.text("Last year"), Offset(0, -400));
+    await tester.drag(find.text("Last year"), const Offset(0, -400));
     await tester.pumpAndSettle();
     await tapAndSettle(tester, find.text("Custom"));
     await tapAndSettle(tester, find.text("OK"));

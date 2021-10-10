@@ -27,20 +27,20 @@ class FishingSpotManager extends ImageEntityManager<FishingSpot> {
   FishingSpot entityFromBytes(List<int> bytes) => FishingSpot.fromBuffer(bytes);
 
   @override
-  Id id(FishingSpot fishingSpot) => fishingSpot.id;
+  Id id(FishingSpot entity) => entity.id;
 
   @override
-  String name(FishingSpot fishingSpot) => fishingSpot.name;
+  String name(FishingSpot entity) => entity.name;
 
   @override
   String get tableName => "fishing_spot";
 
   @override
-  void setImageName(FishingSpot fishingSpot, String imageName) =>
-      fishingSpot.imageName = imageName;
+  void setImageName(FishingSpot entity, String imageName) =>
+      entity.imageName = imageName;
 
   @override
-  void clearImageName(FishingSpot fishingSpot) => fishingSpot.clearImageName();
+  void clearImageName(FishingSpot entity) => entity.clearImageName();
 
   @override
   bool matchesFilter(Id id, String? filter, [BuildContext? context]) {

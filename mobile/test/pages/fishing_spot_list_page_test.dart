@@ -41,7 +41,7 @@ void main() {
 
   testWidgets("Not picking has null picker settings", (tester) async {
     await tester.pumpWidget(Testable(
-      (_) => FishingSpotListPage(),
+      (_) => const FishingSpotListPage(),
       appManager: appManager,
     ));
 
@@ -179,7 +179,7 @@ void main() {
   group("Normal list", () {
     testWidgets("Title", (tester) async {
       await tester.pumpWidget(Testable(
-        (_) => FishingSpotListPage(),
+        (_) => const FishingSpotListPage(),
         appManager: appManager,
       ));
       expect(find.text("Fishing Spots (2)"), findsOneWidget);
@@ -187,7 +187,7 @@ void main() {
 
     testWidgets("Does not have checkboxes", (tester) async {
       await tester.pumpWidget(Testable(
-        (_) => FishingSpotListPage(),
+        (_) => const FishingSpotListPage(),
         appManager: appManager,
       ));
       expect(find.byType(PaddedCheckbox), findsNothing);
@@ -196,7 +196,7 @@ void main() {
     testWidgets("Spot with no name shows coordinates as title", (tester) async {
       var context = await pumpContext(
         tester,
-        (_) => FishingSpotListPage(),
+        (_) => const FishingSpotListPage(),
         appManager: appManager,
       );
       expect(find.primaryText(context, text: "Lat: 1.234568, Lng: 7.654322"),
@@ -207,7 +207,7 @@ void main() {
     testWidgets("Spot with name shows coordinates as subtitle", (tester) async {
       var context = await pumpContext(
         tester,
-        (_) => FishingSpotListPage(),
+        (_) => const FishingSpotListPage(),
         appManager: appManager,
       );
       expect(

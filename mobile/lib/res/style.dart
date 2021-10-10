@@ -51,7 +51,7 @@ const TextStyle styleLight = TextStyle(
   color: Colors.white,
 );
 
-TextStyle styleSubtext = TextStyle(
+const TextStyle styleSubtext = TextStyle(
   fontSize: 11.0,
   fontStyle: FontStyle.italic,
 );
@@ -117,20 +117,19 @@ const List<BoxShadow> boxShadowSmallBottom = [
 /// A [BoxDecoration] wrapper that should be used for any "floating" widgets
 /// used throughout the app.
 class FloatingBoxDecoration extends BoxDecoration {
-  final Color color = Colors.white;
   final bool elevated;
 
-  FloatingBoxDecoration.rectangle({
+  const FloatingBoxDecoration.rectangle({
     this.elevated = true,
   }) : super(
           color: Colors.white,
           boxShadow: elevated ? boxShadowSmallBottom : null,
-          borderRadius: BorderRadius.all(
+          borderRadius: const BorderRadius.all(
             Radius.circular(floatingCornerRadius),
           ),
         );
 
-  FloatingBoxDecoration.circle({
+  const FloatingBoxDecoration.circle({
     this.elevated = true,
   }) : super(
           color: Colors.white,

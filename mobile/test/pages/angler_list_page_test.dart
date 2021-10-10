@@ -44,7 +44,7 @@ void main() {
 
   testWidgets("Normal title", (tester) async {
     await tester.pumpWidget(Testable(
-      (_) => AnglerListPage(),
+      (_) => const AnglerListPage(),
       appManager: appManager,
     ));
     expect(find.text("Anglers (2)"), findsOneWidget);
@@ -52,7 +52,7 @@ void main() {
 
   testWidgets("Normal title filtered", (tester) async {
     await tester.pumpWidget(Testable(
-      (_) => AnglerListPage(),
+      (_) => const AnglerListPage(),
       appManager: appManager,
     ));
     expect(find.text("Anglers (2)"), findsOneWidget);
@@ -62,7 +62,7 @@ void main() {
     )).thenReturn([anglers[0]]);
 
     await enterTextAndSettle(tester, find.byType(CupertinoTextField), "Any");
-    await tester.pumpAndSettle(Duration(milliseconds: 600));
+    await tester.pumpAndSettle(const Duration(milliseconds: 600));
 
     expect(find.text("Anglers (1)"), findsOneWidget);
   });

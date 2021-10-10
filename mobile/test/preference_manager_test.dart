@@ -63,7 +63,7 @@ void main() {
 
     when(appManager.appPreferenceManager.lastLoggedInEmail).thenReturn("");
 
-    when(appManager.authManager.stream).thenAnswer((_) => Stream.empty());
+    when(appManager.authManager.stream).thenAnswer((_) => const Stream.empty());
 
     when(appManager.localDatabaseManager.insertOrReplace(any, any))
         .thenAnswer((_) => Future.value(true));
@@ -74,7 +74,7 @@ void main() {
     )).thenAnswer((_) => Future.value(true));
 
     when(appManager.subscriptionManager.stream)
-        .thenAnswer((_) => Stream.empty());
+        .thenAnswer((_) => const Stream.empty());
     when(appManager.subscriptionManager.isPro).thenReturn(false);
 
     preferenceManager = TestPreferenceManager(appManager.app);
@@ -121,19 +121,20 @@ void main() {
   test("Initialize Firestore data", () async {
     when(appManager.subscriptionManager.isPro).thenReturn(true);
 
-    var snapshot = MockDocumentSnapshot();
+    var snapshot = MockDocumentSnapshot<Map<String, dynamic>>();
     when(snapshot.exists).thenReturn(false);
     when(snapshot.data()).thenReturn({});
 
-    var doc = MockDocumentReference();
+    var doc = MockDocumentReference<Map<String, dynamic>>();
     when(doc.get()).thenAnswer((_) => Future.value(snapshot));
     when(appManager.firestoreWrapper.doc(any)).thenReturn(doc);
 
-    var stream = MockStream<MockDocumentSnapshot>();
+    var stream = MockStream<MockDocumentSnapshot<Map<String, dynamic>>>();
     // Mimic Firebase's behaviour by invoking listener immediately.
     when(stream.listen(any)).thenAnswer((invocation) {
       invocation.positionalArguments.first(snapshot);
-      return MockStreamSubscription<MockDocumentSnapshot>();
+      return MockStreamSubscription<
+          MockDocumentSnapshot<Map<String, dynamic>>>();
     });
     when(doc.snapshots()).thenAnswer((_) => stream);
 
@@ -208,7 +209,7 @@ void main() {
       preferenceManager.testInt = 10;
 
       // Give some time for listeners to to be invoked.
-      await Future.delayed(Duration(milliseconds: 50));
+      await Future.delayed(const Duration(milliseconds: 50));
 
       expect(called, isTrue);
       sub.cancel();
@@ -218,9 +219,9 @@ void main() {
   test("Firestore document is added if it doesn't exist", () async {
     when(appManager.subscriptionManager.isPro).thenReturn(true);
 
-    var snapshot = MockDocumentSnapshot();
+    var snapshot = MockDocumentSnapshot<Map<String, dynamic>>();
     when(snapshot.exists).thenReturn(false);
-    var doc = MockDocumentReference();
+    var doc = MockDocumentReference<Map<String, dynamic>>();
     when(doc.get()).thenAnswer((_) => Future.value(snapshot));
     when(appManager.firestoreWrapper.doc(any)).thenReturn(doc);
 
@@ -236,9 +237,9 @@ void main() {
   test("Firestore document is updated if it exists", () async {
     when(appManager.subscriptionManager.isPro).thenReturn(true);
 
-    var snapshot = MockDocumentSnapshot();
+    var snapshot = MockDocumentSnapshot<Map<String, dynamic>>();
     when(snapshot.exists).thenReturn(true);
-    var doc = MockDocumentReference();
+    var doc = MockDocumentReference<Map<String, dynamic>>();
     when(doc.get()).thenAnswer((_) => Future.value(snapshot));
     when(appManager.firestoreWrapper.doc(any)).thenReturn(doc);
 

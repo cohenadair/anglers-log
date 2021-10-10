@@ -196,7 +196,7 @@ void main() {
   setUp(() {
     appManager = StubbedAppManager();
 
-    when(appManager.authManager.stream).thenAnswer((_) => Stream.empty());
+    when(appManager.authManager.stream).thenAnswer((_) => const Stream.empty());
 
     when(appManager.baitManager.name(any))
         .thenAnswer((invocation) => invocation.positionalArguments.first.name);
@@ -257,7 +257,7 @@ void main() {
         .thenReturn((lhs, rhs) => quiver.compareIgnoreCase(lhs.name, rhs.name));
 
     when(appManager.subscriptionManager.stream)
-        .thenAnswer((_) => Stream.empty());
+        .thenAnswer((_) => const Stream.empty());
     when(appManager.subscriptionManager.isPro).thenReturn(false);
 
     when(appManager.timeManager.currentDateTime)
@@ -364,7 +364,7 @@ void main() {
     await comparisonReportManager.delete(reportId);
 
     // Wait for listeners to be invoked.
-    await tester.pumpAndSettle(Duration(milliseconds: 250));
+    await tester.pumpAndSettle(const Duration(milliseconds: 250));
     expect(find.text("Comparison"), findsNothing);
     expect(find.text("Overview"), findsOneWidget);
   });
@@ -398,7 +398,7 @@ void main() {
       ..type = Report_Type.comparison);
 
     // Wait for listeners to be invoked.
-    await tester.pumpAndSettle(Duration(milliseconds: 250));
+    await tester.pumpAndSettle(const Duration(milliseconds: 250));
     expect(find.text("Comparison 2"), findsOneWidget);
     expect(find.text("Test description 2."), findsOneWidget);
     expect(find.text("Comparison"), findsNothing);
@@ -434,7 +434,7 @@ void main() {
     await reportManager.delete(summaryId);
 
     // Wait for listeners to be invoked.
-    await tester.pumpAndSettle(Duration(milliseconds: 250));
+    await tester.pumpAndSettle(const Duration(milliseconds: 250));
     expect(find.text("Comparison"), findsOneWidget);
   });
 
@@ -913,7 +913,7 @@ void main() {
         speciesIds: anyNamed("speciesIds"),
       )).thenAnswer((invocation) {
         var dateRange =
-            invocation.namedArguments[Symbol("dateRange")] as DateRange;
+            invocation.namedArguments[const Symbol("dateRange")] as DateRange;
         if (dateRange.startMs(DateTime.now()) == 0) {
           return [];
         }
@@ -958,7 +958,7 @@ void main() {
     // so we set the canvas size here, otherwise the "hit test" fails. Note that
     // ensureVisible and dragUntilVisible do not seem to work for whatever
     // reason.
-    var size = Size(1024, 768);
+    var size = const Size(1024, 768);
     setCanvasSize(tester, size);
 
     await tester.pumpWidget(
@@ -996,7 +996,7 @@ void main() {
     // so we set the canvas size here, otherwise the "hit test" fails. Note that
     // ensureVisible and dragUntilVisible do not seem to work for whatever
     // reason.
-    var size = Size(1024, 768);
+    var size = const Size(1024, 768);
     setCanvasSize(tester, size);
 
     await tester.pumpWidget(

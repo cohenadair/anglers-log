@@ -176,7 +176,7 @@ void _showDestructiveDialog({
     builder: (context) => AlertDialog(
       title: title == null ? null : Text(title),
       titleTextStyle: styleTitleAlert,
-      content: description == null ? null : description,
+      content: description,
       actions: <Widget>[
         _buildDialogButton(
           context: context,

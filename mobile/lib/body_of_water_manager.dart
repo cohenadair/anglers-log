@@ -20,10 +20,10 @@ class BodyOfWaterManager extends NamedEntityManager<BodyOfWater> {
   BodyOfWater entityFromBytes(List<int> bytes) => BodyOfWater.fromBuffer(bytes);
 
   @override
-  Id id(BodyOfWater bodyOfWater) => bodyOfWater.id;
+  Id id(BodyOfWater entity) => entity.id;
 
   @override
-  String name(BodyOfWater bodyOfWater) => bodyOfWater.name;
+  String name(BodyOfWater entity) => entity.name;
 
   @override
   String get tableName => "body_of_water";

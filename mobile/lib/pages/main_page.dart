@@ -48,7 +48,7 @@ class _MainPageState extends State<MainPage> {
       _BarItemData(
         page: _NavigatorPage(
           navigatorKey: GlobalKey<NavigatorState>(),
-          builder: (context) => CatchListPage(),
+          builder: (context) => const CatchListPage(),
         ),
         icon: CustomIcons.catches,
         titleBuilder: (context) => Strings.of(context).catchListPageMenuLabel,
@@ -69,7 +69,7 @@ class _MainPageState extends State<MainPage> {
       _BarItemData(
         page: _NavigatorPage(
           navigatorKey: GlobalKey<NavigatorState>(),
-          builder: (context) => MorePage(),
+          builder: (context) => const MorePage(),
         ),
         icon: Icons.more_horiz,
         titleBuilder: (context) => Strings.of(context).morePageTitle,
@@ -89,6 +89,7 @@ class _MainPageState extends State<MainPage> {
     _catchManager.removeListener(_catchManagerListener);
   }
 
+  @override
   Widget build(BuildContext context) {
     return WillPopScope(
       // Ensure clicking the Android physical back button closes a pushed page
@@ -159,7 +160,7 @@ class _NavigatorPage extends StatelessWidget {
   final GlobalKey<NavigatorState> navigatorKey;
   final Widget Function(BuildContext) builder;
 
-  _NavigatorPage({
+  const _NavigatorPage({
     required this.navigatorKey,
     required this.builder,
   });

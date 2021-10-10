@@ -12,7 +12,7 @@ class LandingPage extends StatelessWidget {
     return Scaffold(
       backgroundColor: Theme.of(context).primaryColor,
       body: Stack(children: [
-        Align(
+        const Align(
           alignment: Alignment(0.0, -0.5),
           child: Icon(
             CustomIcons.catches,
@@ -30,7 +30,7 @@ class LandingPage extends StatelessWidget {
                 children: [
                   Text(
                     Strings.of(context).by,
-                    style: TextStyle(color: Colors.white54),
+                    style: const TextStyle(color: Colors.white54),
                   ),
                   Text(
                     Strings.of(context).devName,

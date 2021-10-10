@@ -28,7 +28,7 @@ String formatLatLng({
   required double lng,
   bool includeLabels = true,
 }) {
-  final decimalPlaces = 6;
+  const decimalPlaces = 6;
 
   return format(
     includeLabels

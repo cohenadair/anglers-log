@@ -108,12 +108,12 @@ import 'mocks.mocks.dart';
 @GenerateMocks([UrlLauncherWrapper])
 @GenerateMocks([AssetPathEntity])
 @GenerateMocks([Batch])
-@GenerateMocks([CollectionReference])
+@GenerateMocks([], customMocks: [MockSpec<CollectionReference>()])
 @GenerateMocks([Completer])
 @GenerateMocks([DatabaseExecutor])
 @GenerateMocks([Directory])
 @GenerateMocks([DocumentChange])
-@GenerateMocks([DocumentReference])
+@GenerateMocks([], customMocks: [MockSpec<DocumentReference>()])
 @GenerateMocks([DocumentSnapshot])
 @GenerateMocks([DownloadTask])
 @GenerateMocks([EntitlementInfo])
@@ -225,9 +225,9 @@ class MockImagePickerWrapper extends Mock implements ImagePickerWrapper {
 class MockStream<T> extends Mock implements Stream<T> {
   @override
   StreamSubscription<T> listen(
-    void onData(T event)?, {
+    void Function(T event)? onData, {
     Function? onError,
-    void onDone()?,
+    void Function()? onDone,
     bool? cancelOnError,
   }) {
     return (super.noSuchMethod(
@@ -282,7 +282,7 @@ class MockAssetEntity extends AssetEntity {
   @override
   Future<LatLng> latlngAsync() {
     latLngAsyncCalls++;
-    return Future.value(latLngAsync ?? LatLng(latitude: 0, longitude: 0));
+    return Future.value(latLngAsync ?? const LatLng(latitude: 0, longitude: 0));
   }
 
   @override

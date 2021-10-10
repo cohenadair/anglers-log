@@ -34,7 +34,7 @@ import 'bait_variant_page.dart';
 class CatchPage extends StatefulWidget {
   final Catch cat;
 
-  CatchPage(this.cat);
+  const CatchPage(this.cat);
 
   @override
   _CatchPageState createState() => _CatchPageState();
@@ -98,7 +98,7 @@ class _CatchPageState extends State<CatchPage> {
           imageNames: _catch.imageNames,
           children: <Widget>[
             Container(
-              padding: EdgeInsets.only(
+              padding: const EdgeInsets.only(
                 top: paddingDefault,
                 right: paddingDefault,
                 bottom: paddingSmall,
@@ -210,7 +210,7 @@ class _CatchPageState extends State<CatchPage> {
     }
 
     return ListItem(
-      leading: Icon(Icons.person),
+      leading: const Icon(Icons.person),
       title: Text(angler.name),
     );
   }
@@ -222,12 +222,12 @@ class _CatchPageState extends State<CatchPage> {
 
     if (_catch.wasCatchAndRelease) {
       return ListItem(
-        leading: Icon(Icons.check_circle),
+        leading: const Icon(Icons.check_circle),
         title: Text(Strings.of(context).catchPageReleased),
       );
     } else {
       return ListItem(
-        leading: Icon(Icons.error),
+        leading: const Icon(Icons.error),
         title: Text(Strings.of(context).catchPageKept),
       );
     }
@@ -293,7 +293,7 @@ class _CatchPageState extends State<CatchPage> {
     }
 
     return ListItem(
-      leading: Icon(CustomIcons.ruler),
+      leading: const Icon(CustomIcons.ruler),
       title: Text(values.join(", ")),
     );
   }
@@ -341,7 +341,7 @@ class _CatchPageState extends State<CatchPage> {
 class _BaitAttachmentListItem extends StatelessWidget {
   final BaitAttachment attachment;
 
-  _BaitAttachmentListItem(this.attachment);
+  const _BaitAttachmentListItem(this.attachment);
 
   @override
   Widget build(BuildContext context) {

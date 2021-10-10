@@ -25,19 +25,19 @@ class UnitsPage extends StatelessWidget {
       ),
       children: [
         _buildCatchLength(context),
-        MinDivider(),
+        const MinDivider(),
         _buildCatchWeight(context),
-        MinDivider(),
+        const MinDivider(),
         _buildWaterTemperature(context),
-        MinDivider(),
+        const MinDivider(),
         _buildWaterDepth(context),
-        MinDivider(),
+        const MinDivider(),
         _buildAirTemperature(context),
-        MinDivider(),
+        const MinDivider(),
         _buildAirVisibility(context),
-        MinDivider(),
+        const MinDivider(),
         _buildAirPressure(context),
-        MinDivider(),
+        const MinDivider(),
         _buildWindSpeed(context),
       ],
     );
@@ -350,7 +350,7 @@ class _UnitSelector extends StatelessWidget {
   final List<_UnitSelectorOption> options;
   final void Function(MeasurementSystem)? onSelect;
 
-  _UnitSelector({
+  const _UnitSelector({
     required this.title,
     required this.initialValue,
     required this.options,
@@ -370,7 +370,7 @@ class _UnitSelector extends StatelessWidget {
           ),
         ),
         RadioInput(
-          padding: EdgeInsets.only(
+          padding: const EdgeInsets.only(
             left: paddingDefault,
             right: paddingDefault,
             bottom: paddingWidgetSmall,

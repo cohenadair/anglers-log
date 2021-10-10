@@ -10,9 +10,9 @@ import '../utils/validator.dart';
 class SaveMethodPage extends StatelessWidget {
   final Method? oldMethod;
 
-  SaveMethodPage() : oldMethod = null;
+  const SaveMethodPage() : oldMethod = null;
 
-  SaveMethodPage.edit(this.oldMethod);
+  const SaveMethodPage.edit(this.oldMethod);
 
   @override
   Widget build(BuildContext context) {

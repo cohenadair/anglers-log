@@ -10,7 +10,7 @@ class MigrationPage extends StatefulWidget {
   final LegacyImporter importer;
   final VoidCallback? onNext;
 
-  MigrationPage({
+  const MigrationPage({
     required this.importer,
     this.onNext,
   });

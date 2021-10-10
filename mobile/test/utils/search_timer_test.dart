@@ -31,7 +31,7 @@ void main() {
     timer.finish();
 
     // Use a Future to simulate a timeout.
-    await Future.delayed(Duration(milliseconds: 500), () {});
+    await Future.delayed(const Duration(milliseconds: 500), () {});
     expect(called, false);
   });
 }

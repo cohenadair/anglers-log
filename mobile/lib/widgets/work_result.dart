@@ -14,11 +14,11 @@ class WorkResult extends StatelessWidget {
   final TextStyle _style;
   final IconData _icon;
 
-  WorkResult.success(this.description)
+  const WorkResult.success(this.description)
       : _style = styleSuccess,
         _icon = Icons.check_circle;
 
-  WorkResult.error(this.description)
+  const WorkResult.error(this.description)
       : _style = styleError,
         _icon = Icons.error;
 
@@ -31,7 +31,7 @@ class WorkResult extends StatelessWidget {
           color: _style.color,
           size: _iconSize,
         ),
-        VerticalSpace(paddingWidgetSmall),
+        const VerticalSpace(paddingWidgetSmall),
         Text(
           description,
           style: _style,

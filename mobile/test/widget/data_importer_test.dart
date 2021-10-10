@@ -113,13 +113,17 @@ void main() {
     )).thenAnswer(
       (_) => Future.value(
         FilePickerResult([
-          PlatformFile(path: "test/resources/backups/legacy_ios_entities.zip")
+          PlatformFile(
+            path: "test/resources/backups/legacy_ios_entities.zip",
+            name: "legacy_ios_entities.zip",
+            size: 100,
+          ),
         ]),
       ),
     );
 
-    when(appManager.pathProviderWrapper.temporaryPath).thenAnswer(
-        (_) => Future.delayed(Duration(milliseconds: 100), () => tmpPath));
+    when(appManager.pathProviderWrapper.temporaryPath).thenAnswer((_) =>
+        Future.delayed(const Duration(milliseconds: 100), () => tmpPath));
 
     await tester.pumpWidget(Testable(
       (_) => defaultImporter(),
@@ -131,7 +135,7 @@ void main() {
     expect(findFirstWithText<Button>(tester, "CHOOSE FILE").onPressed, isNull);
 
     // Expire delayed future and verify start button is enabled again.
-    await tester.pumpAndSettle(Duration(milliseconds: 150));
+    await tester.pumpAndSettle(const Duration(milliseconds: 150));
     expect(
         findFirstWithText<Button>(tester, "CHOOSE FILE").onPressed, isNotNull);
   });
@@ -189,8 +193,13 @@ void main() {
       allowedExtensions: anyNamed("allowedExtensions"),
     )).thenAnswer(
       (_) => Future.value(
-        FilePickerResult(
-            [PlatformFile(path: "test/resources/backups/no_journal.zip")]),
+        FilePickerResult([
+          PlatformFile(
+            path: "test/resources/backups/no_journal.zip",
+            name: "no_journal.zip",
+            size: 100,
+          ),
+        ]),
       ),
     );
 
@@ -209,8 +218,13 @@ void main() {
       allowedExtensions: anyNamed("allowedExtensions"),
     )).thenAnswer(
       (_) => Future.value(
-        FilePickerResult(
-            [PlatformFile(path: "test/resources/backups/no_journal.zip")]),
+        FilePickerResult([
+          PlatformFile(
+            path: "test/resources/backups/no_journal.zip",
+            name: "no_journal.zip",
+            size: 100,
+          ),
+        ]),
       ),
     );
 
@@ -232,7 +246,11 @@ void main() {
     )).thenAnswer(
       (_) => Future.value(
         FilePickerResult([
-          PlatformFile(path: "test/resources/backups/legacy_ios_entities.zip")
+          PlatformFile(
+            path: "test/resources/backups/legacy_ios_entities.zip",
+            name: "no_journal.zip",
+            size: 100,
+          ),
         ]),
       ),
     );

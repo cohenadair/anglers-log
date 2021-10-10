@@ -31,7 +31,7 @@ void main() {
 
     await pumpContext(
       tester,
-      (_) => SaveBaitVariantPage(),
+      (_) => const SaveBaitVariantPage(),
       appManager: appManager,
     );
 
@@ -48,7 +48,7 @@ void main() {
 
     await pumpContext(
       tester,
-      (_) => SaveBaitVariantPage(),
+      (_) => const SaveBaitVariantPage(),
       appManager: appManager,
     );
 
@@ -145,7 +145,7 @@ void main() {
   testWidgets("Save button disabled when there's no input", (tester) async {
     await pumpContext(
       tester,
-      (_) => SaveBaitVariantPage(),
+      (_) => const SaveBaitVariantPage(),
       appManager: appManager,
     );
 
@@ -156,7 +156,7 @@ void main() {
   testWidgets("Save button enabled with valid input", (tester) async {
     await pumpContext(
       tester,
-      (_) => SaveBaitVariantPage(),
+      (_) => const SaveBaitVariantPage(),
       appManager: appManager,
     );
 
@@ -183,7 +183,7 @@ void main() {
 
     await pumpContext(
       tester,
-      (_) => SaveBaitVariantPage(),
+      (_) => const SaveBaitVariantPage(),
       appManager: appManager,
     );
 

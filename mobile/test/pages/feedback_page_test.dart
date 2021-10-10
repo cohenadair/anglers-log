@@ -36,7 +36,7 @@ void main() {
 
   testWidgets("Message required for non-errors", (tester) async {
     await tester.pumpWidget(Testable(
-      (_) => FeedbackPage(),
+      (_) => const FeedbackPage(),
       appManager: appManager,
     ));
     expect(findFirstWithText<ActionButton>(tester, "SEND").onPressed, isNull);
@@ -46,7 +46,7 @@ void main() {
   testWidgets("Custom title", (tester) async {
     await tester.pumpWidget(
       Testable(
-        (_) => FeedbackPage(
+        (_) => const FeedbackPage(
           title: "Title",
         ),
         appManager: appManager,
@@ -57,7 +57,7 @@ void main() {
 
   testWidgets("Default title", (tester) async {
     await tester.pumpWidget(Testable(
-      (_) => FeedbackPage(),
+      (_) => const FeedbackPage(),
       appManager: appManager,
     ));
     expect(find.text("Send Feedback"), findsOneWidget);
@@ -66,7 +66,7 @@ void main() {
   testWidgets("Warning message shown", (tester) async {
     await tester.pumpWidget(
       Testable(
-        (_) => FeedbackPage(
+        (_) => const FeedbackPage(
           warningMessage: "This is a warning.",
           error: "Error",
         ),
@@ -79,7 +79,7 @@ void main() {
   testWidgets("Warning message not shown", (tester) async {
     await tester.pumpWidget(
       Testable(
-        (_) => FeedbackPage(
+        (_) => const FeedbackPage(
           warningMessage: "This is a warning.",
         ),
         appManager: appManager,
@@ -90,7 +90,7 @@ void main() {
 
   testWidgets("Send button state updates when email changes", (tester) async {
     await tester.pumpWidget(Testable(
-      (_) => FeedbackPage(),
+      (_) => const FeedbackPage(),
       appManager: appManager,
     ));
     expect(findFirstWithText<ActionButton>(tester, "SEND").onPressed, isNull);
@@ -115,7 +115,7 @@ void main() {
   testWidgets("For errors, type RadioInput is hidden", (tester) async {
     await tester.pumpWidget(
       Testable(
-        (_) => FeedbackPage(
+        (_) => const FeedbackPage(
           error: "Error",
         ),
         appManager: appManager,
@@ -126,7 +126,7 @@ void main() {
 
   testWidgets("For non-errors, type RadioInput is shown", (tester) async {
     await tester.pumpWidget(Testable(
-      (_) => FeedbackPage(),
+      (_) => const FeedbackPage(),
       appManager: appManager,
     ));
     expect(find.byType(RadioInput), findsOneWidget);
@@ -134,7 +134,7 @@ void main() {
 
   testWidgets("Selecting type updates state", (tester) async {
     await tester.pumpWidget(Testable(
-      (_) => FeedbackPage(),
+      (_) => const FeedbackPage(),
       appManager: appManager,
     ));
     expect(findSiblingOfText<Icon>(tester, InkWell, "Bug").icon,
@@ -157,7 +157,7 @@ void main() {
 
   testWidgets("Snackbar shows for no connection", (tester) async {
     await tester.pumpWidget(Testable(
-      (_) => FeedbackPage(
+      (_) => const FeedbackPage(
         error: "Error",
       ),
       appManager: appManager,
@@ -177,7 +177,7 @@ void main() {
 
   testWidgets("Error Snackbar shows for sending error", (tester) async {
     await tester.pumpWidget(Testable(
-      (_) => FeedbackPage(
+      (_) => const FeedbackPage(
         error: "Error",
       ),
       appManager: appManager,
@@ -206,7 +206,7 @@ void main() {
 
   testWidgets("Successful send closes page", (tester) async {
     await tester.pumpWidget(Testable(
-      (_) => FeedbackPage(
+      (_) => const FeedbackPage(
         error: "Error",
       ),
       appManager: appManager,
@@ -220,8 +220,8 @@ void main() {
       any,
       headers: anyNamed("headers"),
       body: anyNamed("body"),
-    )).thenAnswer((_) =>
-        Future.delayed(Duration(milliseconds: 165), () => Response("", 202)));
+    )).thenAnswer((_) => Future.delayed(
+        const Duration(milliseconds: 165), () => Response("", 202)));
 
     await tester.tap(find.text("SEND"));
     await tester.pump();
@@ -237,7 +237,7 @@ void main() {
     when(appManager.authManager.userEmail).thenReturn("test@test.com");
 
     await tester.pumpWidget(Testable(
-      (_) => FeedbackPage(),
+      (_) => const FeedbackPage(),
       appManager: appManager,
     ));
 

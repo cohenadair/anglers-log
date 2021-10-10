@@ -15,7 +15,7 @@ import 'onboarding_page.dart';
 class HowToManageFieldsPage extends StatefulWidget {
   final VoidCallback? onNext;
 
-  HowToManageFieldsPage({
+  const HowToManageFieldsPage({
     this.onNext,
   });
 
@@ -56,20 +56,20 @@ class _HowToManageFieldsPageState extends State<HowToManageFieldsPage> {
     return OnboardingPage(
       onPressedNextButton: widget.onNext,
       children: <Widget>[
-        VerticalSpace(paddingWidget),
+        const VerticalSpace(paddingWidget),
         TitleLabel(
           Strings.of(context).onboardingJourneyManageFieldsTitle,
           overflow: TextOverflow.visible,
           align: TextAlign.center,
         ),
-        VerticalSpace(paddingWidgetDouble),
+        const VerticalSpace(paddingWidgetDouble),
         EmbeddedPage(
           childBuilder: (context) => SaveCatchPage(
             speciesId: randomId(),
             popupMenuKey: _popupMenuKey,
           ),
         ),
-        VerticalSpace(paddingWidgetDouble),
+        const VerticalSpace(paddingWidgetDouble),
         Padding(
           padding: insetsHorizontalDefault,
           child: Text(
@@ -79,7 +79,7 @@ class _HowToManageFieldsPageState extends State<HowToManageFieldsPage> {
             style: stylePrimary(context),
           ),
         ),
-        VerticalSpace(paddingWidget),
+        const VerticalSpace(paddingWidget),
       ],
     );
   }

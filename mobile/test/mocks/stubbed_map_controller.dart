@@ -65,7 +65,7 @@ class StubbedMapController {
     var mapboxMap = findFirst<MapboxMap>(tester);
     mapboxMap.onMapCreated!(value);
     mapboxMap.onStyleLoadedCallback!();
-    await tester.pumpAndSettle(Duration(milliseconds: 50));
+    await tester.pumpAndSettle(const Duration(milliseconds: 50));
   }
 
   int get symbolCount => _symbols.length;

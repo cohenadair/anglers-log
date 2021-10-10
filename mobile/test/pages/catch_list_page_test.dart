@@ -39,7 +39,7 @@ void main() {
 
   testWidgets("Adding disabled", (tester) async {
     await tester.pumpWidget(Testable(
-      (_) => CatchListPage(
+      (_) => const CatchListPage(
         enableAdding: false,
       ),
       appManager: appManager,
@@ -49,7 +49,7 @@ void main() {
 
   testWidgets("Adding enabled", (tester) async {
     await tester.pumpWidget(Testable(
-      (_) => CatchListPage(
+      (_) => const CatchListPage(
         enableAdding: true,
       ),
       appManager: appManager,
@@ -64,7 +64,7 @@ void main() {
       ..lat = 1.234567
       ..lng = 7.654321);
     await tester.pumpWidget(Testable(
-      (_) => CatchListPage(),
+      (_) => const CatchListPage(),
       appManager: appManager,
     ));
 
@@ -78,7 +78,7 @@ void main() {
     when(appManager.baitManager.formatNameWithCategory(any))
         .thenReturn("Roe Bag");
     await tester.pumpWidget(Testable(
-      (_) => CatchListPage(),
+      (_) => const CatchListPage(),
       appManager: appManager,
     ));
 
@@ -97,7 +97,7 @@ void main() {
     when(appManager.baitManager.formatNameWithCategory(any))
         .thenReturn("Roe Bag");
     await tester.pumpWidget(Testable(
-      (_) => CatchListPage(),
+      (_) => const CatchListPage(),
       appManager: appManager,
     ));
 
@@ -107,7 +107,7 @@ void main() {
   testWidgets("No subtitle if bait and fishing spot are null", (tester) async {
     var context = await pumpContext(
       tester,
-      (_) => CatchListPage(),
+      (_) => const CatchListPage(),
       appManager: appManager,
     );
     // 1 widget for the timestamp subtitle on one row.

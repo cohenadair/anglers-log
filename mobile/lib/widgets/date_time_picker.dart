@@ -13,7 +13,7 @@ class DateTimePicker extends StatelessWidget {
   final TimePicker timePicker;
   final Widget? helper;
 
-  DateTimePicker({
+  const DateTimePicker({
     required this.datePicker,
     required this.timePicker,
     this.helper,
@@ -34,7 +34,7 @@ class DateTimePicker extends StatelessWidget {
                 right: false,
                 bottom: false,
                 child: Padding(
-                  padding: EdgeInsets.only(
+                  padding: const EdgeInsets.only(
                     left: paddingDefault,
                     right: paddingWidget,
                   ),

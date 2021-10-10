@@ -26,7 +26,7 @@ class BaitVariantPage extends StatefulWidget {
   /// navigation stack.
   final bool allowBaseViewing;
 
-  BaitVariantPage(
+  const BaitVariantPage(
     this.variant, {
     this.allowBaseViewing = false,
   });
@@ -85,7 +85,7 @@ class _BaitVariantPageState extends State<BaitVariantPage> {
     }
 
     return ListItem(
-      padding: EdgeInsets.only(
+      padding: const EdgeInsets.only(
         right: paddingDefault,
         top: paddingDefault,
         bottom: paddingDefault,

@@ -7,16 +7,14 @@ import '../utils/protobuf_utils.dart';
 import '../widgets/list_picker_input.dart';
 
 class DateRangePickerInput extends StatefulWidget {
-  final Key? key;
-
   /// See [ListPickerInput.title].
   final String? title;
 
   final DateRange? initialDateRange;
   final void Function(DateRange) onPicked;
 
-  DateRangePickerInput({
-    this.key,
+  const DateRangePickerInput({
+    Key? key,
     this.title,
     this.initialDateRange,
     required this.onPicked,

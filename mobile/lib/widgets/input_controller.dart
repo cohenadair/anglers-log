@@ -38,6 +38,7 @@ class InputController<T> extends ValueNotifier<T?> {
 
   bool get hasValue => value != null;
 
+  @override
   void dispose() {
     clear();
     super.dispose();
@@ -132,7 +133,7 @@ class TextInputController extends InputController<String> {
   }
 
   void clearText() {
-    editingController.value = TextEditingValue(text: "");
+    editingController.value = const TextEditingValue(text: "");
   }
 
   bool isValid(BuildContext context) =>
@@ -278,7 +279,7 @@ class NumberFilterInputController extends InputController<NumberFilter> {
 
 class MultiMeasurementInputController
     extends InputController<MultiMeasurement> {
-  final _log = Log("MultiMeasurementInputController");
+  static const _log = Log("MultiMeasurementInputController");
 
   final NumberInputController mainController;
   final NumberInputController fractionController;

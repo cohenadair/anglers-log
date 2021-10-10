@@ -28,7 +28,7 @@ void main() {
             label: "Time Picker",
             controller: TimestampInputController(appManager.timeManager),
           ),
-          helper: Text("A helping message"),
+          helper: const Text("A helping message"),
         ),
         appManager: appManager,
       ));
@@ -131,7 +131,7 @@ void main() {
     testWidgets("TimePicker time picked", (tester) async {
       var changed = false;
       var controller = TimestampInputController(appManager.timeManager);
-      controller.time = TimeOfDay(hour: 5, minute: 20);
+      controller.time = const TimeOfDay(hour: 5, minute: 20);
 
       await tester.pumpWidget(Testable(
         (context) => TimePicker(
@@ -157,8 +157,8 @@ void main() {
 
       // Click time based on center clock, since actual Text widgets aren't
       // used.
-      var center =
-          tester.getCenter(find.byKey(ValueKey<String>('time-picker-dial')));
+      var center = tester
+          .getCenter(find.byKey(const ValueKey<String>('time-picker-dial')));
       var hour6 = Offset(center.dx, center.dy + 50.0); // 6:00
       var min48 = Offset(center.dx - 50.0, center.dy - 15); // 50 min
 
@@ -170,12 +170,13 @@ void main() {
       await tester.pumpAndSettle();
 
       // Dialog disappears and callback called.
-      expect(find.byKey(ValueKey<String>('time-picker-dial')), findsNothing);
+      expect(
+          find.byKey(const ValueKey<String>('time-picker-dial')), findsNothing);
       expect(changed, isTrue);
       expect(find.text("6:50 AM"), findsOneWidget);
 
       expect(controller.time, isNotNull);
-      expect(controller.time, TimeOfDay(hour: 6, minute: 50));
+      expect(controller.time, const TimeOfDay(hour: 6, minute: 50));
     });
   });
 }

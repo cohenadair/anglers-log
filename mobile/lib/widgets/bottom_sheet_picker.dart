@@ -24,7 +24,7 @@ class BottomSheetPicker<T> extends StatelessWidget {
   final TextStyle? itemStyle;
   final Widget? footer;
 
-  BottomSheetPicker({
+  const BottomSheetPicker({
     this.items = const {},
     this.onPicked,
     this.currentValue,
@@ -57,10 +57,9 @@ class BottomSheetPicker<T> extends StatelessWidget {
             child: SwipeChip(),
           ),
           titleWidget,
-        ]
-          ..addAll(
-              items.keys.map((key) => _buildItem(context, key, items[key])))
-          ..add(footer ?? Empty()),
+          ...items.keys.map((key) => _buildItem(context, key, items[key])),
+          footer ?? Empty()
+        ],
       ),
     );
   }

@@ -15,13 +15,13 @@ import '../widgets/widget.dart';
 import 'pro_page.dart';
 
 class ReportListPage extends StatelessWidget {
-  final _log = Log("ReportListPage");
+  static const _log = Log("ReportListPage");
 
   /// The generic type is dynamic here because different kinds of report
   /// objects are rendered in the list.
   final ManageableListPagePickerSettings<dynamic> pickerSettings;
 
-  ReportListPage({
+  const ReportListPage({
     required this.pickerSettings,
   });
 
@@ -45,7 +45,7 @@ class ReportListPage extends StatelessWidget {
         ),
         deleteItem: (_, item) => reportManager.delete(item.id),
         addPageBuilder: () =>
-            subscriptionManager.isPro ? SaveReportPage() : ProPage(),
+            subscriptionManager.isPro ? const SaveReportPage() : ProPage(),
         editPageBuilder: (report) => SaveReportPage.edit(report),
       ),
       pickerSettings: pickerSettings.copyWith(
@@ -93,6 +93,7 @@ class ReportListPage extends StatelessWidget {
     return [
       OverviewReport(),
       HeadingNoteDivider,
-    ]..addAll(ReportManager.of(context).listSortedByName());
+      ...ReportManager.of(context).listSortedByName(),
+    ];
   }
 }

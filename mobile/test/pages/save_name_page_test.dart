@@ -10,7 +10,7 @@ void main() {
   testWidgets("Editing a name renders old name", (tester) async {
     await tester.pumpWidget(
       Testable(
-        (_) => SaveNamePage(
+        (_) => const SaveNamePage(
           title: Text("Title"),
           oldName: "Old name",
         ),
@@ -25,7 +25,7 @@ void main() {
       (tester) async {
     await tester.pumpWidget(
       Testable(
-        (_) => SaveNamePage(
+        (_) => const SaveNamePage(
           title: Text("Title"),
         ),
       ),
@@ -40,7 +40,7 @@ void main() {
     await tester.pumpWidget(
       Testable(
         (_) => SaveNamePage(
-          title: Text("Title"),
+          title: const Text("Title"),
           oldName: "Old name",
           onSave: (_) => invoked = true,
         ),
@@ -53,7 +53,7 @@ void main() {
 
   testWidgets("Null onSave pops page", (tester) async {
     await tester.pumpWidget(Testable(
-      (_) => SaveNamePage(
+      (_) => const SaveNamePage(
         title: Text("Title"),
       ),
     ));
@@ -66,7 +66,7 @@ void main() {
   testWidgets("Non-null onSave pops page if returns true", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => SaveNamePage(
-        title: Text("Title"),
+        title: const Text("Title"),
         onSave: (_) => true,
       ),
     ));
@@ -80,7 +80,7 @@ void main() {
       (tester) async {
     await tester.pumpWidget(Testable(
       (_) => SaveNamePage(
-        title: Text("Title"),
+        title: const Text("Title"),
         onSave: (_) => false,
       ),
     ));
@@ -94,7 +94,7 @@ void main() {
     await tester.pumpWidget(
       Testable(
         (_) => SaveNamePage(
-          title: Text("Title"),
+          title: const Text("Title"),
           validator: NameValidator(
             nameExists: (_) => true,
             nameExistsMessage: (_) => "Name exists",

@@ -78,7 +78,7 @@ void main() {
   setUp(() async {
     appManager = StubbedAppManager();
 
-    when(appManager.authManager.stream).thenAnswer((_) => Stream.empty());
+    when(appManager.authManager.stream).thenAnswer((_) => const Stream.empty());
 
     when(appManager.baitCategoryManager.listSortedByName())
         .thenReturn(baitCategories);
@@ -97,7 +97,7 @@ void main() {
         .thenAnswer((_) => Future.value(true));
 
     when(appManager.subscriptionManager.stream)
-        .thenAnswer((_) => Stream.empty());
+        .thenAnswer((_) => const Stream.empty());
     when(appManager.subscriptionManager.isPro).thenReturn(false);
 
     baitManager = BaitManager(appManager.app);
@@ -110,7 +110,7 @@ void main() {
 
   testWidgets("Normal title", (tester) async {
     await tester.pumpWidget(Testable(
-      (_) => BaitListPage(),
+      (_) => const BaitListPage(),
       appManager: appManager,
     ));
     expect(find.text("Baits (5)"), findsOneWidget);
@@ -119,13 +119,13 @@ void main() {
   testWidgets("Normal title when filtered", (tester) async {
     var context = await pumpContext(
       tester,
-      (_) => BaitListPage(),
+      (_) => const BaitListPage(),
       appManager: appManager,
     );
     expect(find.text("Baits (5)"), findsOneWidget);
 
     await enterTextAndSettle(tester, find.byType(CupertinoTextField), "Shad");
-    await tester.pumpAndSettle(Duration(milliseconds: 600));
+    await tester.pumpAndSettle(const Duration(milliseconds: 600));
 
     expect(find.primaryText(context), findsNWidgets(2));
     expect(find.text("Baits (2)"), findsOneWidget);
@@ -134,7 +134,7 @@ void main() {
   testWidgets("Different item types are rendered", (tester) async {
     var context = await pumpContext(
       tester,
-      (_) => BaitListPage(),
+      (_) => const BaitListPage(),
       appManager: appManager,
     );
 
@@ -157,7 +157,7 @@ void main() {
 
   testWidgets("First category does not include a divider", (tester) async {
     await tester.pumpWidget(Testable(
-      (_) => BaitListPage(),
+      (_) => const BaitListPage(),
       appManager: appManager,
     ));
 
@@ -181,7 +181,7 @@ void main() {
     ]);
 
     await tester.pumpWidget(Testable(
-      (_) => BaitListPage(),
+      (_) => const BaitListPage(),
       appManager: appManager,
     ));
 
@@ -193,7 +193,7 @@ void main() {
     await stubImage(appManager, tester, "flutter_logo.png");
 
     await tester.pumpWidget(Testable(
-      (_) => BaitListPage(),
+      (_) => const BaitListPage(),
       appManager: appManager,
     ));
     // Required to replace placeholder with image.
@@ -205,7 +205,7 @@ void main() {
 
   testWidgets("Bait shows number of variants", (tester) async {
     await tester.pumpWidget(Testable(
-      (_) => BaitListPage(),
+      (_) => const BaitListPage(),
       appManager: appManager,
     ));
 

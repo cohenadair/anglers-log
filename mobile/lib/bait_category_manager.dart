@@ -21,10 +21,10 @@ class BaitCategoryManager extends NamedEntityManager<BaitCategory> {
       BaitCategory.fromBuffer(bytes);
 
   @override
-  Id id(BaitCategory baitCategory) => baitCategory.id;
+  Id id(BaitCategory entity) => entity.id;
 
   @override
-  String name(BaitCategory baitCategory) => baitCategory.name;
+  String name(BaitCategory entity) => entity.name;
 
   @override
   String get tableName => "bait_category";

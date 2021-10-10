@@ -50,14 +50,14 @@ class FloatingContainer extends StatelessWidget {
       alignment: alignment ?? Alignment.bottomCenter,
       child: Container(
         margin: margin ?? insetsDefault,
-        decoration: FloatingBoxDecoration.rectangle(),
+        decoration: const FloatingBoxDecoration.rectangle(),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             Material(
               clipBehavior: Clip.antiAlias,
               borderRadius:
-                  BorderRadius.all(Radius.circular(floatingCornerRadius)),
+                  const BorderRadius.all(Radius.circular(floatingCornerRadius)),
               color: Colors.transparent,
               child: ImageListItem(
                 title: title,
@@ -67,7 +67,8 @@ class FloatingContainer extends StatelessWidget {
                 showPlaceholder: false,
               ),
             ),
-          ]..addAll(children),
+            ...children,
+          ],
         ),
       ),
     );

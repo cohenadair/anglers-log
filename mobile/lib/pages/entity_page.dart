@@ -94,7 +94,7 @@ class _EntityPageState extends State<EntityPage> {
           child: HeadingDivider(Strings.of(context).customFields),
         ),
         Padding(
-          padding: EdgeInsets.only(
+          padding: const EdgeInsets.only(
             left: paddingDefault,
             right: paddingDefault,
             bottom: paddingSmall,
@@ -103,7 +103,7 @@ class _EntityPageState extends State<EntityPage> {
         ),
       ]);
     } else {
-      children.add(VerticalSpace(paddingWidget));
+      children.add(const VerticalSpace(paddingWidget));
     }
 
     return Scaffold(
@@ -161,7 +161,7 @@ class _EntityPageState extends State<EntityPage> {
         ));
 
         if (i < imageNames.length - 1) {
-          carousel.add(Container(
+          carousel.add(const SizedBox(
             width: paddingWidgetSmall,
             height: 0,
           ));
@@ -174,17 +174,19 @@ class _EntityPageState extends State<EntityPage> {
       children: [
         PageView(
           controller: _imageController,
-          children: []..addAll(imageNames
-              .map(
-                (fileName) => Photo(
-                  fileName: fileName,
-                  width: MediaQuery.of(context).size.width,
-                  // Top padding adds status bar/safe area padding.
-                  height: MediaQuery.of(context).padding.top + _imageHeight,
-                  galleryImages: imageNames,
-                ),
-              )
-              .toList()),
+          children: [
+            ...imageNames
+                .map(
+                  (fileName) => Photo(
+                    fileName: fileName,
+                    width: MediaQuery.of(context).size.width,
+                    // Top padding adds status bar/safe area padding.
+                    height: MediaQuery.of(context).padding.top + _imageHeight,
+                    galleryImages: imageNames,
+                  ),
+                )
+                .toList()
+          ],
           onPageChanged: (newPage) => setState(() {
             _imageIndex = newPage;
           }),
@@ -225,7 +227,7 @@ class _EntityPageState extends State<EntityPage> {
         key: ValueKey<bool>(_isImageShowing),
         icon: _isImageShowing ? Icons.edit : null,
         text: _isImageShowing ? null : Strings.of(context).edit,
-        padding: EdgeInsets.only(
+        padding: const EdgeInsets.only(
           left: paddingWidget,
           right: paddingWidget,
           top: paddingWidgetSmall,
@@ -246,7 +248,7 @@ class _EntityPageState extends State<EntityPage> {
       child: FloatingButton.icon(
         key: ValueKey<bool>(_isImageShowing),
         icon: Icons.delete,
-        padding: EdgeInsets.only(
+        padding: const EdgeInsets.only(
           right: paddingWidgetSmall,
           top: paddingWidgetSmall,
         ),

@@ -9,19 +9,23 @@ import '../test_utils.dart';
 void main() {
   test("isLater", () {
     expect(
-      isLater(TimeOfDay(hour: 10, minute: 30), TimeOfDay(hour: 8, minute: 30)),
+      isLater(const TimeOfDay(hour: 10, minute: 30),
+          const TimeOfDay(hour: 8, minute: 30)),
       true,
     );
     expect(
-      isLater(TimeOfDay(hour: 10, minute: 30), TimeOfDay(hour: 10, minute: 30)),
+      isLater(const TimeOfDay(hour: 10, minute: 30),
+          const TimeOfDay(hour: 10, minute: 30)),
       false,
     );
     expect(
-      isLater(TimeOfDay(hour: 10, minute: 30), TimeOfDay(hour: 10, minute: 45)),
+      isLater(const TimeOfDay(hour: 10, minute: 30),
+          const TimeOfDay(hour: 10, minute: 45)),
       false,
     );
     expect(
-      isLater(TimeOfDay(hour: 10, minute: 30), TimeOfDay(hour: 10, minute: 15)),
+      isLater(const TimeOfDay(hour: 10, minute: 30),
+          const TimeOfDay(hour: 10, minute: 15)),
       true,
     );
   });
@@ -158,7 +162,7 @@ void main() {
   test("combine", () {
     expect(
       combine(DateTime(2020, 10, 26, 15, 30, 20, 1000),
-          TimeOfDay(hour: 16, minute: 45)),
+          const TimeOfDay(hour: 16, minute: 45)),
       DateTime(2020, 10, 26, 16, 45, 20, 1000),
     );
   });
@@ -183,12 +187,12 @@ void main() {
   testWidgets("formatTimeOfDay", (tester) async {
     expect(
       formatTimeOfDay(
-          await buildContext(tester), TimeOfDay(hour: 15, minute: 30)),
+          await buildContext(tester), const TimeOfDay(hour: 15, minute: 30)),
       "3:30 PM",
     );
     expect(
       formatTimeOfDay(await buildContext(tester, use24Hour: true),
-          TimeOfDay(hour: 15, minute: 30)),
+          const TimeOfDay(hour: 15, minute: 30)),
       "15:30",
     );
   });
@@ -241,7 +245,7 @@ void main() {
     });
 
     testWidgets("All units", (tester) async {
-      var ms = Duration(
+      var ms = const Duration(
         days: 2,
         hours: 5,
         minutes: 45,
@@ -269,7 +273,7 @@ void main() {
     });
 
     testWidgets("Days only", (tester) async {
-      var ms = Duration(
+      var ms = const Duration(
         days: 2,
       ).inMilliseconds;
 
@@ -294,7 +298,7 @@ void main() {
     });
 
     testWidgets("Hours only", (tester) async {
-      var ms = Duration(
+      var ms = const Duration(
         hours: 10,
       ).inMilliseconds;
 
@@ -319,7 +323,7 @@ void main() {
     });
 
     testWidgets("Minutes only", (tester) async {
-      var ms = Duration(
+      var ms = const Duration(
         minutes: 20,
       ).inMilliseconds;
 
@@ -344,7 +348,7 @@ void main() {
     });
 
     testWidgets("Seconds only", (tester) async {
-      var ms = Duration(
+      var ms = const Duration(
         seconds: 50,
       ).inMilliseconds;
 
@@ -369,7 +373,7 @@ void main() {
     });
 
     testWidgets("Excluding days", (tester) async {
-      var ms = Duration(
+      var ms = const Duration(
         days: 2,
         hours: 5,
         minutes: 45,
@@ -389,7 +393,7 @@ void main() {
     });
 
     testWidgets("Excluding hours", (tester) async {
-      var ms = Duration(
+      var ms = const Duration(
         days: 2,
         hours: 5,
         minutes: 45,
@@ -410,7 +414,7 @@ void main() {
     });
 
     testWidgets("Excluding minutes", (tester) async {
-      var ms = Duration(
+      var ms = const Duration(
         days: 2,
         hours: 5,
         minutes: 45,
@@ -432,7 +436,7 @@ void main() {
     });
 
     testWidgets("Excluding all", (tester) async {
-      var ms = Duration(
+      var ms = const Duration(
         days: 2,
         hours: 5,
         minutes: 45,
@@ -455,7 +459,7 @@ void main() {
     });
 
     testWidgets("Show highest two only", (tester) async {
-      var ms = Duration(
+      var ms = const Duration(
         days: 2,
         hours: 5,
         minutes: 45,
@@ -473,7 +477,7 @@ void main() {
         "2d 5h",
       );
 
-      ms = Duration(
+      ms = const Duration(
         hours: 5,
         minutes: 45,
         seconds: 30,
@@ -489,7 +493,7 @@ void main() {
         "5h 45m",
       );
 
-      ms = Duration(
+      ms = const Duration(
         minutes: 45,
         seconds: 30,
       ).inMilliseconds;
@@ -504,7 +508,7 @@ void main() {
         "45m 30s",
       );
 
-      ms = Duration(
+      ms = const Duration(
         seconds: 30,
       ).inMilliseconds;
 
@@ -520,7 +524,7 @@ void main() {
     });
 
     testWidgets("With duration unit", (tester) async {
-      var ms = Duration(
+      var ms = const Duration(
         days: 2,
         hours: 5,
         minutes: 45,

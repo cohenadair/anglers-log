@@ -42,7 +42,7 @@ void main() {
     when(appManager.userPreferenceManager.autoFetchAtmosphere)
         .thenReturn(false);
     when(appManager.userPreferenceManager.stream)
-        .thenAnswer((_) => Stream.empty());
+        .thenAnswer((_) => const Stream.empty());
 
     when(appManager.permissionHandlerWrapper.requestLocation())
         .thenAnswer((_) => Future.value(true));

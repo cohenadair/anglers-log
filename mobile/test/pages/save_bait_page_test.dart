@@ -22,7 +22,7 @@ void main() {
   setUp(() {
     appManager = StubbedAppManager();
 
-    when(appManager.authManager.stream).thenAnswer((_) => Stream.empty());
+    when(appManager.authManager.stream).thenAnswer((_) => const Stream.empty());
 
     when(appManager.baitManager.addOrUpdate(
       any,
@@ -43,13 +43,13 @@ void main() {
         .thenReturn(MeasurementSystem.metric);
 
     when(appManager.subscriptionManager.stream)
-        .thenAnswer((_) => Stream.empty());
+        .thenAnswer((_) => const Stream.empty());
     when(appManager.subscriptionManager.isPro).thenReturn(false);
   });
 
   testWidgets("Default values for new", (tester) async {
     await tester.pumpWidget(Testable(
-      (_) => SaveBaitPage(),
+      (_) => const SaveBaitPage(),
       appManager: appManager,
     ));
     expect(find.text("Not Selected"), findsOneWidget);
@@ -70,7 +70,7 @@ void main() {
 
   testWidgets("New title", (tester) async {
     await tester.pumpWidget(Testable(
-      (_) => SaveBaitPage(),
+      (_) => const SaveBaitPage(),
       appManager: appManager,
     ));
     expect(find.text("New Bait"), findsOneWidget);
@@ -88,7 +88,7 @@ void main() {
         .thenReturn(baitCategory);
 
     await tester.pumpWidget(Testable(
-      (_) => SaveBaitPage(),
+      (_) => const SaveBaitPage(),
       appManager: appManager,
     ));
 
@@ -102,7 +102,7 @@ void main() {
 
   testWidgets("Updating name updates save button state", (tester) async {
     await tester.pumpWidget(Testable(
-      (_) => SaveBaitPage(),
+      (_) => const SaveBaitPage(),
       appManager: appManager,
     ));
 
@@ -216,7 +216,7 @@ void main() {
 
   testWidgets("New saving minimum", (tester) async {
     await tester.pumpWidget(Testable(
-      (_) => SaveBaitPage(),
+      (_) => const SaveBaitPage(),
       appManager: appManager,
     ));
 
@@ -274,7 +274,7 @@ void main() {
         .thenAnswer((_) => Future.value(["image_name.png"]));
 
     await tester.pumpWidget(Testable(
-      (_) => SaveBaitPage(),
+      (_) => const SaveBaitPage(),
       appManager: appManager,
     ));
 

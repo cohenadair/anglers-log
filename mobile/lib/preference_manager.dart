@@ -168,8 +168,7 @@ abstract class PreferenceManager extends DataSourceFacilitator {
       return Future.value();
     }
 
-    return put(key,
-        value == null ? null : value.map((id) => id.uuid.toString()).toList());
+    return put(key, value?.map((id) => id.uuid.toString()).toList());
   }
 
   @protected

@@ -10,14 +10,14 @@ import '../test_utils.dart';
 void main() {
   group("HeadingDivider", () {
     testWidgets("Divider shown", (tester) async {
-      await tester.pumpWidget(Testable((_) => HeadingDivider("Test")));
+      await tester.pumpWidget(Testable((_) => const HeadingDivider("Test")));
       expect(find.byType(MinDivider), findsOneWidget);
     });
 
     testWidgets("Divider hidden", (tester) async {
       await tester.pumpWidget(
         Testable(
-          (_) => HeadingDivider(
+          (_) => const HeadingDivider(
             "Test",
             showDivider: false,
           ),
@@ -29,7 +29,7 @@ void main() {
     testWidgets("Custom trailing", (tester) async {
       await tester.pumpWidget(
         Testable(
-          (_) => HeadingDivider(
+          (_) => const HeadingDivider(
             "Test",
             trailing: Icon(Icons.add),
           ),
@@ -41,7 +41,7 @@ void main() {
     testWidgets("No trailing", (tester) async {
       await tester.pumpWidget(
         Testable(
-          (_) => HeadingDivider(
+          (_) => const HeadingDivider(
             "Test",
             showDivider: true,
           ),
@@ -126,20 +126,21 @@ void main() {
       await tester.pumpWidget(
         Testable(
           (_) => EmptyFutureBuilder<bool>(
-            future: Future.delayed(Duration(milliseconds: 100), () => true),
+            future:
+                Future.delayed(const Duration(milliseconds: 100), () => true),
             builder: (context, value) => Text(value! ? "True" : "False"),
           ),
         ),
       );
       expect(find.byType(Empty), findsOneWidget);
-      await tester.pumpAndSettle(Duration(milliseconds: 150));
+      await tester.pumpAndSettle(const Duration(milliseconds: 150));
       expect(find.text("True"), findsOneWidget);
     });
   });
 
   group("ChipWrap", () {
     testWidgets("Empty input", (tester) async {
-      await tester.pumpWidget(Testable((_) => ChipWrap()));
+      await tester.pumpWidget(Testable((_) => const ChipWrap()));
       expect(find.byType(Empty), findsOneWidget);
       expect(find.byType(Chip), findsNothing);
     });
@@ -147,7 +148,7 @@ void main() {
     testWidgets("All chips rendered", (tester) async {
       await tester.pumpWidget(
         Testable(
-          (_) => ChipWrap({
+          (_) => const ChipWrap({
             "Chip 1",
             "Chip 2",
             "Chip 3",
@@ -164,7 +165,7 @@ void main() {
     testWidgets("Centered includes a centered column", (tester) async {
       await tester.pumpWidget(
         Testable(
-          (_) => Loading(
+          (_) => const Loading(
             isCentered: true,
             label: "Test...",
           ),
@@ -180,7 +181,7 @@ void main() {
         (tester) async {
       await tester.pumpWidget(
         Testable(
-          (_) => Loading(
+          (_) => const Loading(
             isCentered: false,
             label: "Test...",
           ),
@@ -195,7 +196,7 @@ void main() {
     testWidgets("Not centered; no label just shows indicator", (tester) async {
       await tester.pumpWidget(
         Testable(
-          (_) => Loading(
+          (_) => const Loading(
             isCentered: false,
           ),
         ),

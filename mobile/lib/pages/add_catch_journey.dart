@@ -19,7 +19,7 @@ class AddCatchJourney extends StatefulWidget {
   /// An ID of a [FishingSpot] to be used for the catch added.
   final FishingSpot? fishingSpot;
 
-  AddCatchJourney({this.fishingSpot});
+  const AddCatchJourney({this.fishingSpot});
 
   @override
   _AddCatchJourneyState createState() => _AddCatchJourneyState();
@@ -31,7 +31,7 @@ class _AddCatchJourneyState extends State<AddCatchJourney> {
   final String _pickFishingSpotRoute = "pick_fishing_spot";
   final String _saveCatchRoute = "save_catch";
 
-  final _log = Log("AddCatchJourney");
+  final _log = const Log("AddCatchJourney");
   final _fishingSpotController = InputController<FishingSpot>();
 
   FishingSpotManager get _fishingSpotManager => FishingSpotManager.of(context);
@@ -162,7 +162,7 @@ class _AddCatchJourneyState extends State<AddCatchJourney> {
     // Navigator is used and this route is the initial route, which
     // has nowhere to go back to.
     return IconButton(
-      icon: Icon(Icons.close),
+      icon: const Icon(Icons.close),
       onPressed: () => Navigator.of(context, rootNavigator: true).pop(),
     );
   }

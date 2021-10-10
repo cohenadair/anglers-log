@@ -23,7 +23,7 @@ class ListItem extends StatelessWidget {
   final VoidCallback? onTap;
   final bool enabled;
 
-  ListItem({
+  const ListItem({
     Key? key,
     this.padding,
     this.title,
@@ -57,7 +57,7 @@ class ListItem extends StatelessWidget {
     var leading = this.leading;
     if (leading is Icon) {
       leading = IconTheme.merge(
-        data: IconThemeData(color: Colors.black45),
+        data: const IconThemeData(color: Colors.black45),
         child: leading,
       );
     }
@@ -70,7 +70,9 @@ class ListItem extends StatelessWidget {
           child: Row(
             children: [
               leading ?? Empty(),
-              leading == null ? Empty() : HorizontalSpace(paddingWidgetDouble),
+              leading == null
+                  ? Empty()
+                  : const HorizontalSpace(paddingWidgetDouble),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -80,7 +82,7 @@ class ListItem extends StatelessWidget {
                   ],
                 ),
               ),
-              trailing == null ? Empty() : HorizontalSpace(paddingWidget),
+              trailing == null ? Empty() : const HorizontalSpace(paddingWidget),
               trailing ?? Empty(),
             ],
           ),
@@ -111,7 +113,7 @@ class ImageListItem extends StatelessWidget {
   /// See [ManageableListImageItem.showPlaceholder].
   final bool showPlaceholder;
 
-  ImageListItem({
+  const ImageListItem({
     this.imageName,
     this.title,
     this.subtitle,
@@ -222,7 +224,7 @@ class ExpansionListItem extends StatefulWidget {
   final Function(bool)? onExpansionChanged;
   final bool toBottomSafeArea;
 
-  ExpansionListItem({
+  const ExpansionListItem({
     required this.title,
     this.children = const [],
     this.trailing,
@@ -250,8 +252,9 @@ class _ExpansionListItemState extends State<ExpansionListItem> {
           Theme(
             data: Theme.of(context).copyWith(
               dividerColor: Colors.transparent,
-              accentColor: colorInputIconAccent,
               unselectedWidgetColor: colorInputIconAccent,
+              colorScheme: ColorScheme.fromSwatch()
+                  .copyWith(secondary: colorInputIconAccent),
             ),
             child: ExpansionTile(
               key: _key,
@@ -323,7 +326,7 @@ class ManageableListItem extends StatelessWidget {
 
   final bool isCondensed;
 
-  ManageableListItem({
+  const ManageableListItem({
     required this.child,
     this.grandchild,
     this.deleteMessageBuilder,
@@ -337,6 +340,7 @@ class ManageableListItem extends StatelessWidget {
   }) : assert(onTapDeleteButton != null ||
             (deleteMessageBuilder != null && onConfirmDelete != null));
 
+  @override
   Widget build(BuildContext context) {
     var child = this.child;
     if (child is Text) {
@@ -456,14 +460,14 @@ class ManageableListGrandchild extends StatelessWidget {
 
   final Widget child;
 
-  ManageableListGrandchild({
+  const ManageableListGrandchild({
     required this.child,
   });
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.only(
+      padding: const EdgeInsets.only(
         left: paddingDefault + paddingDefault,
         bottom: paddingWidget,
       ),
@@ -496,7 +500,7 @@ class ManageableListImageItem extends StatelessWidget {
   /// See [Photo.showPlaceholder].
   final bool showPlaceholder;
 
-  ManageableListImageItem({
+  const ManageableListImageItem({
     this.imageName,
     this.title,
     this.subtitle,
@@ -565,7 +569,7 @@ class _RowEndsCrossFade extends StatelessWidget {
   final Widget firstChild;
   final Widget secondChild;
 
-  _RowEndsCrossFade({
+  const _RowEndsCrossFade({
     required this.state,
     required this.firstChild,
     required this.secondChild,
@@ -605,7 +609,7 @@ class _RowEndsCrossFade extends StatelessWidget {
   }
 
   Widget _buildChildContainer(Widget child) {
-    return Container(
+    return SizedBox(
       height: _maxTrailingHeight,
       child: Center(
         child: child,

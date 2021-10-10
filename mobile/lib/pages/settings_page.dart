@@ -21,7 +21,7 @@ class SettingsPage extends StatefulWidget {
 }
 
 class _SettingsPageState extends State<SettingsPage> {
-  final _log = Log("SettingsPage");
+  static const _log = Log("SettingsPage");
 
   SubscriptionManager get _subscriptionManager =>
       SubscriptionManager.of(context);
@@ -38,11 +38,11 @@ class _SettingsPageState extends State<SettingsPage> {
       body: ListView(
         children: <Widget>[
           _buildFetchAtmosphere(context),
-          MinDivider(),
+          const MinDivider(),
           _buildUnits(context),
-          MinDivider(),
+          const MinDivider(),
           _buildPro(context),
-          MinDivider(),
+          const MinDivider(),
           _buildLogout(context),
         ],
       ),
@@ -74,7 +74,7 @@ class _SettingsPageState extends State<SettingsPage> {
   Widget _buildUnits(BuildContext context) {
     return ListItem(
       title: Text(Strings.of(context).unitsPageTitle),
-      leading: Icon(CustomIcons.ruler),
+      leading: const Icon(CustomIcons.ruler),
       trailing: RightChevronIcon(),
       onTap: () => push(context, UnitsPage()),
     );
@@ -83,7 +83,7 @@ class _SettingsPageState extends State<SettingsPage> {
   Widget _buildPro(BuildContext context) {
     return ListItem(
       title: Text(Strings.of(context).morePagePro),
-      leading: Icon(Icons.stars),
+      leading: const Icon(Icons.stars),
       onTap: () => present(context, ProPage()),
     );
   }

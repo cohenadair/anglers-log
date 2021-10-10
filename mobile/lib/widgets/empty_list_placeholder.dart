@@ -36,7 +36,7 @@ class EmptyListPlaceholder extends StatelessWidget {
   /// true.
   final bool scrollable;
 
-  EmptyListPlaceholder({
+  const EmptyListPlaceholder({
     required this.title,
     required this.description,
     this.descriptionIcon,
@@ -45,7 +45,7 @@ class EmptyListPlaceholder extends StatelessWidget {
     this.scrollable = true,
   });
 
-  EmptyListPlaceholder.static({
+  const EmptyListPlaceholder.static({
     required String title,
     required String description,
     IconData? descriptionIcon,

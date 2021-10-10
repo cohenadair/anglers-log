@@ -15,14 +15,14 @@ const defaultAnimationDuration = Duration(milliseconds: 150);
 class Empty extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return SizedBox();
+    return const SizedBox();
   }
 }
 
 class MinDivider extends StatelessWidget {
   final Color? color;
 
-  MinDivider({this.color});
+  const MinDivider({this.color});
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +41,7 @@ class HeadingDivider extends StatelessWidget {
   /// [Row] as [text].
   final Widget? trailing;
 
-  HeadingDivider(
+  const HeadingDivider(
     this.text, {
     this.showDivider = true,
     this.trailing,
@@ -52,9 +52,9 @@ class HeadingDivider extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        showDivider ? MinDivider() : Empty(),
+        showDivider ? const MinDivider() : Empty(),
         Padding(
-          padding: EdgeInsets.only(
+          padding: const EdgeInsets.only(
             top: paddingWidget,
             left: paddingDefault,
             right: paddingDefault,
@@ -122,7 +122,7 @@ class HeadingNoteDivider extends StatelessWidget {
       child: hideNote
           ? Empty()
           : Padding(
-              padding: EdgeInsets.only(
+              padding: const EdgeInsets.only(
                 left: paddingDefault,
                 right: paddingDefault,
                 top: paddingWidget,
@@ -152,7 +152,7 @@ class Loading extends StatelessWidget {
   final bool isCentered;
   final Color? color;
 
-  Loading({
+  const Loading({
     this.padding = insetsZero,
     this.label,
     this.isCentered = true,
@@ -162,7 +162,7 @@ class Loading extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var indicator = SizedBox.fromSize(
-      size: Size(_size, _size),
+      size: const Size(_size, _size),
       child: CircularProgressIndicator(
         strokeWidth: _strokeWidth,
         backgroundColor: color,
@@ -177,7 +177,7 @@ class Loading extends StatelessWidget {
               isCentered ? MainAxisAlignment.center : MainAxisAlignment.start,
           children: [
             indicator,
-            VerticalSpace(paddingWidget),
+            const VerticalSpace(paddingWidget),
             isEmpty(label) ? Empty() : Text(label!),
           ],
         ),
@@ -217,15 +217,14 @@ class SwipeChip extends StatelessWidget {
 class EnabledOpacity extends StatelessWidget {
   static const double _disabledOpacity = 0.5;
 
-  final Key? key;
   final bool isEnabled;
   final Widget child;
 
-  EnabledOpacity({
+  const EnabledOpacity({
+    Key? key,
     required this.child,
-    this.key,
     this.isEnabled = true,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -240,7 +239,7 @@ class EnabledOpacity extends StatelessWidget {
 class RightChevronIcon extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Icon(
+    return const Icon(
       Icons.chevron_right,
       color: colorInputIconAccent,
     );
@@ -250,7 +249,7 @@ class RightChevronIcon extends StatelessWidget {
 class DropdownIcon extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Icon(
+    return const Icon(
       Icons.arrow_drop_down,
       color: colorInputIconAccent,
     );
@@ -263,7 +262,7 @@ class HelpTooltip extends StatelessWidget {
   final bool showing;
   final EdgeInsets margin;
 
-  HelpTooltip({
+  const HelpTooltip({
     required this.child,
     this.showing = false,
     this.margin = insetsDefault,
@@ -277,7 +276,7 @@ class HelpTooltip extends StatelessWidget {
         child: Container(
           decoration: BoxDecoration(
             color: Colors.black.withOpacity(0.70),
-            borderRadius: BorderRadius.all(Radius.circular(5.0)),
+            borderRadius: const BorderRadius.all(Radius.circular(5.0)),
           ),
           padding: insetsDefault,
           margin: margin,
@@ -293,7 +292,7 @@ class AnimatedVisibility extends StatelessWidget {
   final bool visible;
   final Widget child;
 
-  AnimatedVisibility({
+  const AnimatedVisibility({
     this.visible = true,
     required this.child,
   });
@@ -314,7 +313,7 @@ class EmptyFutureBuilder<T> extends StatelessWidget {
   final Future<T> future;
   final Widget Function(BuildContext, T?) builder;
 
-  EmptyFutureBuilder({
+  const EmptyFutureBuilder({
     required this.future,
     required this.builder,
   });
@@ -336,7 +335,7 @@ class EmptyFutureBuilder<T> extends StatelessWidget {
 class VerticalSpace extends StatelessWidget {
   final double size;
 
-  VerticalSpace(this.size);
+  const VerticalSpace(this.size);
 
   @override
   Widget build(BuildContext context) => Container(height: size);
@@ -345,7 +344,7 @@ class VerticalSpace extends StatelessWidget {
 class HorizontalSpace extends StatelessWidget {
   final double size;
 
-  HorizontalSpace(this.size);
+  const HorizontalSpace(this.size);
 
   @override
   Widget build(BuildContext context) => Container(width: size);
@@ -353,12 +352,11 @@ class HorizontalSpace extends StatelessWidget {
 
 class AppBarDropdownItem<T> extends DropdownMenuItem<T> {
   final String text;
-  final T value;
 
   AppBarDropdownItem({
     required BuildContext context,
     required this.text,
-    required this.value,
+    T? value,
   })  : assert(isNotEmpty(text)),
         super(
           child: Text(
@@ -378,7 +376,7 @@ class AppBarDropdownItem<T> extends DropdownMenuItem<T> {
 class ChipWrap extends StatelessWidget {
   final Set<String> items;
 
-  ChipWrap([this.items = const {}]);
+  const ChipWrap([this.items = const {}]);
 
   @override
   Widget build(BuildContext context) {
@@ -397,7 +395,7 @@ class ChipWrap extends StatelessWidget {
 class MinChip extends StatelessWidget {
   final String label;
 
-  MinChip(this.label);
+  const MinChip(this.label);
 
   @override
   Widget build(BuildContext context) {
@@ -411,7 +409,7 @@ class MinChip extends StatelessWidget {
 class HorizontalSafeArea extends StatelessWidget {
   final Widget child;
 
-  HorizontalSafeArea({
+  const HorizontalSafeArea({
     required this.child,
   });
 
@@ -426,12 +424,12 @@ class HorizontalSafeArea extends StatelessWidget {
 }
 
 class WatermarkLogo extends StatelessWidget {
-  static final _size = 150.0;
+  static const _size = 150.0;
 
   final IconData icon;
   final Color? color;
 
-  WatermarkLogo({
+  const WatermarkLogo({
     required this.icon,
     this.color,
   });
@@ -469,7 +467,7 @@ class CatchFavoriteStar extends StatelessWidget {
   final Catch cat;
   final bool large;
 
-  CatchFavoriteStar(
+  const CatchFavoriteStar(
     this.cat, {
     this.large = false,
   });
@@ -496,7 +494,7 @@ class CatchFavoriteStar extends StatelessWidget {
 class NoneFormHeader extends StatelessWidget {
   final InputController controller;
 
-  NoneFormHeader({
+  const NoneFormHeader({
     required this.controller,
   });
 
@@ -516,7 +514,7 @@ class NoneFormHeader extends StatelessWidget {
                 Navigator.pop(context);
               },
             ),
-            MinDivider(),
+            const MinDivider(),
           ],
         );
       },

@@ -6,9 +6,9 @@ import 'package:sqflite/sqflite.dart';
 
 import '../log.dart';
 
-final _log = Log("SQLiteOpenHelper");
+const _log = Log("SQLiteOpenHelper");
 
-final String _name = "anglerslog.db";
+const String _name = "anglerslog.db";
 
 final List<String> _schema0 = [
   """
@@ -111,10 +111,10 @@ final List<List<String>> _schema = [
   _schema4
 ];
 
-final int _version = 5;
+const int _version = 5;
 
 Future<String> _databasePath(String userId) async =>
-    join(await (getDatabasesPath() as FutureOr<String>), "2.0", userId, _name);
+    join(await getDatabasesPath(), "2.0", userId, _name);
 
 Future<Database> openDb(String userId) async {
   var path = await _databasePath(userId);

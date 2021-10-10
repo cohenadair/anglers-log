@@ -37,7 +37,7 @@ class FeedbackPage extends StatefulWidget {
   /// If set, will be sent with the feedback message as an attachment.
   final String? attachment;
 
-  FeedbackPage({
+  const FeedbackPage({
     this.title,
     this.error,
     this.warningMessage,
@@ -51,7 +51,7 @@ class FeedbackPage extends StatefulWidget {
 class _FeedbackPageState extends State<FeedbackPage> {
   static const _urlSendGrid = "https://api.sendgrid.com/v3/mail/send";
 
-  final _log = Log("FeedbackPage");
+  final _log = const Log("FeedbackPage");
   final FocusNode _messageNode = FocusNode();
 
   final _nameController = TextInputController();

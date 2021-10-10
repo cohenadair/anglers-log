@@ -17,12 +17,12 @@ void main() {
   setUp(() {
     appManager = StubbedAppManager();
 
-    when(appManager.authManager.stream).thenAnswer((_) => Stream.empty());
+    when(appManager.authManager.stream).thenAnswer((_) => const Stream.empty());
 
     baitManager = appManager.baitManager;
 
     when(appManager.subscriptionManager.stream)
-        .thenAnswer((_) => Stream.empty());
+        .thenAnswer((_) => const Stream.empty());
 
     baitCategoryManager = BaitCategoryManager(appManager.app);
   });

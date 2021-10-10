@@ -16,7 +16,7 @@ class SpeciesListPage extends StatelessWidget {
   /// See [ManageableListPage.appBarLeading].
   final Widget? appBarLeading;
 
-  SpeciesListPage({
+  const SpeciesListPage({
     this.pickerSettings,
     this.appBarLeading,
   });
@@ -77,7 +77,7 @@ class SpeciesListPage extends StatelessWidget {
 
           return true;
         },
-        addPageBuilder: () => SaveSpeciesPage(),
+        addPageBuilder: () => const SaveSpeciesPage(),
         editPageBuilder: (species) => SaveSpeciesPage.edit(species),
       ),
     );

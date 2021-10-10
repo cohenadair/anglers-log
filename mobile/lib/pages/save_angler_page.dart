@@ -10,9 +10,9 @@ import '../utils/validator.dart';
 class SaveAnglerPage extends StatelessWidget {
   final Angler? oldAngler;
 
-  SaveAnglerPage() : oldAngler = null;
+  const SaveAnglerPage() : oldAngler = null;
 
-  SaveAnglerPage.edit(this.oldAngler);
+  const SaveAnglerPage.edit(this.oldAngler);
 
   @override
   Widget build(BuildContext context) {

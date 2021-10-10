@@ -23,7 +23,7 @@ void main() {
   setUp(() {
     appManager = StubbedAppManager();
 
-    when(appManager.authManager.stream).thenAnswer((_) => Stream.empty());
+    when(appManager.authManager.stream).thenAnswer((_) => const Stream.empty());
 
     when(appManager.localDatabaseManager.insertOrReplace(any, any))
         .thenAnswer((_) => Future.value(true));
@@ -35,7 +35,7 @@ void main() {
     when(appManager.speciesManager.addListener(any)).thenAnswer((_) {});
 
     when(appManager.subscriptionManager.stream)
-        .thenAnswer((_) => Stream.empty());
+        .thenAnswer((_) => const Stream.empty());
     when(appManager.subscriptionManager.isPro).thenReturn(false);
 
     // Setup real objects.
@@ -87,7 +87,7 @@ void main() {
     verify(reportListener.onAdd).called(1);
 
     // Wait for addOrUpdate calls to finish.
-    await Future.delayed(Duration(milliseconds: 50));
+    await Future.delayed(const Duration(milliseconds: 50));
 
     expect(updatedReports.length, 1);
     expect(updatedReports.first.id, report.id);
@@ -123,7 +123,7 @@ void main() {
     verify(reportListener.onAdd).called(1);
 
     // Wait for addOrUpdate calls to finish.
-    await Future.delayed(Duration(milliseconds: 50));
+    await Future.delayed(const Duration(milliseconds: 50));
 
     expect(updatedReports.length, 1);
     expect(updatedReports.first.id, report.id);
@@ -161,7 +161,7 @@ void main() {
     verify(reportListener.onAdd).called(1);
 
     // Wait for addOrUpdate calls to finish.
-    await Future.delayed(Duration(milliseconds: 50));
+    await Future.delayed(const Duration(milliseconds: 50));
 
     expect(updatedReports.length, 1);
     expect(updatedReports.first.id, report.id);

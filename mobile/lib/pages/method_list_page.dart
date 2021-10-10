@@ -11,7 +11,7 @@ import 'save_method_page.dart';
 class MethodListPage extends StatelessWidget {
   final ManageableListPagePickerSettings<Method>? pickerSettings;
 
-  MethodListPage({
+  const MethodListPage({
     this.pickerSettings,
   });
 
@@ -43,7 +43,7 @@ class MethodListPage extends StatelessWidget {
         deleteWidget: (context, method) =>
             Text(methodManager.deleteMessage(context, method)),
         deleteItem: (context, method) => methodManager.delete(method.id),
-        addPageBuilder: () => SaveMethodPage(),
+        addPageBuilder: () => const SaveMethodPage(),
         editPageBuilder: (method) => SaveMethodPage.edit(method),
       ),
     );

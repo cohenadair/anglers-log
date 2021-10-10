@@ -43,7 +43,7 @@ class TextInput extends StatefulWidget {
   /// See [TextField.focusNode].
   final FocusNode? focusNode;
 
-  TextInput({
+  const TextInput({
     this.initialValue,
     this.label,
     this.suffixText,
@@ -124,7 +124,7 @@ class TextInput extends StatefulWidget {
     TextInputAction? textInputAction,
     ValueChanged<String>? onChanged,
   }) : this(
-          initialValue: initialValue == null ? null : initialValue.toString(),
+          initialValue: initialValue?.toString(),
           label: label,
           suffixText: suffixText,
           controller: controller,

@@ -5,7 +5,7 @@ import 'package:quiver/strings.dart';
 
 /// A [Timer] wrapper for use with a search feature.
 class SearchTimer {
-  final Duration _inputDelayDuration = Duration(milliseconds: 500);
+  final Duration _inputDelayDuration = const Duration(milliseconds: 500);
 
   /// Invoked when the [SearchTimer] is reset with an empty query, or if the
   /// underlying [Timer] runs out.

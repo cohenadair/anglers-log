@@ -23,7 +23,7 @@ class SaveNamePage extends StatefulWidget {
   /// Invoked when the name input changes.
   final NameValidator? validator;
 
-  SaveNamePage({
+  const SaveNamePage({
     required this.title,
     this.oldName,
     this.onSave,

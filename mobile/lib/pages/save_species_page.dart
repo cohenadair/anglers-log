@@ -10,9 +10,9 @@ import '../utils/validator.dart';
 class SaveSpeciesPage extends StatelessWidget {
   final Species? oldSpecies;
 
-  SaveSpeciesPage() : oldSpecies = null;
+  const SaveSpeciesPage() : oldSpecies = null;
 
-  SaveSpeciesPage.edit(Species this.oldSpecies);
+  const SaveSpeciesPage.edit(Species this.oldSpecies);
 
   @override
   Widget build(BuildContext context) {

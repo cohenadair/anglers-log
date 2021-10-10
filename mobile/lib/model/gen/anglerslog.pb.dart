@@ -81,32 +81,85 @@ class Id extends $pb.GeneratedMessage {
 }
 
 class Atmosphere extends $pb.GeneratedMessage {
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'Atmosphere',
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      const $core.bool.fromEnvironment('protobuf.omit_message_names')
+          ? ''
+          : 'Atmosphere',
       package: const $pb.PackageName(
           const $core.bool.fromEnvironment('protobuf.omit_message_names')
               ? ''
               : 'anglerslog'),
       createEmptyInstance: create)
     ..aOM<Measurement>(
-        1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'temperature',
+        1,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'temperature',
         subBuilder: Measurement.create)
     ..pc<SkyCondition>(
-        2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'skyConditions', $pb.PbFieldType.PE,
-        valueOf: SkyCondition.valueOf, enumValues: SkyCondition.values)
+        2,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'skyConditions',
+        $pb.PbFieldType.PE,
+        valueOf: SkyCondition.valueOf,
+        enumValues: SkyCondition.values)
     ..aOM<Measurement>(
-        3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'windSpeed',
+        3,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'windSpeed',
         subBuilder: Measurement.create)
     ..e<Direction>(
-        4, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'windDirection', $pb.PbFieldType.OE,
+        4,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'windDirection',
+        $pb.PbFieldType.OE,
         defaultOrMaker: Direction.direction_all,
         valueOf: Direction.valueOf,
         enumValues: Direction.values)
-    ..aOM<Measurement>(5, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'pressure', subBuilder: Measurement.create)
-    ..aOM<Measurement>(6, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'humidity', subBuilder: Measurement.create)
-    ..aOM<Measurement>(7, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'visibility', subBuilder: Measurement.create)
-    ..e<MoonPhase>(8, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'moonPhase', $pb.PbFieldType.OE, defaultOrMaker: MoonPhase.moon_phase_all, valueOf: MoonPhase.valueOf, enumValues: MoonPhase.values)
-    ..a<$fixnum.Int64>(9, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'sunriseTimestamp', $pb.PbFieldType.OU6, defaultOrMaker: $fixnum.Int64.ZERO)
-    ..a<$fixnum.Int64>(10, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'sunsetTimestamp', $pb.PbFieldType.OU6, defaultOrMaker: $fixnum.Int64.ZERO)
+    ..aOM<Measurement>(
+        5,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'pressure',
+        subBuilder: Measurement.create)
+    ..aOM<Measurement>(
+        6,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'humidity',
+        subBuilder: Measurement.create)
+    ..aOM<Measurement>(
+        7,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'visibility',
+        subBuilder: Measurement.create)
+    ..e<MoonPhase>(
+        8,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'moonPhase',
+        $pb.PbFieldType.OE,
+        defaultOrMaker: MoonPhase.moon_phase_all,
+        valueOf: MoonPhase.valueOf,
+        enumValues: MoonPhase.values)
+    ..a<$fixnum.Int64>(
+        9,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'sunriseTimestamp',
+        $pb.PbFieldType.OU6,
+        defaultOrMaker: $fixnum.Int64.ZERO)
+    ..a<$fixnum.Int64>(
+        10,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'sunsetTimestamp',
+        $pb.PbFieldType.OU6,
+        defaultOrMaker: $fixnum.Int64.ZERO)
     ..hasRequiredFields = false;
 
   Atmosphere._() : super();
@@ -304,12 +357,20 @@ class Atmosphere extends $pb.GeneratedMessage {
 }
 
 class CustomEntity extends $pb.GeneratedMessage {
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'CustomEntity',
-      package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names')
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      const $core.bool.fromEnvironment('protobuf.omit_message_names')
           ? ''
-          : 'anglerslog'),
+          : 'CustomEntity',
+      package: const $pb.PackageName(
+          const $core.bool.fromEnvironment('protobuf.omit_message_names')
+              ? ''
+              : 'anglerslog'),
       createEmptyInstance: create)
-    ..aOM<Id>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'id',
+    ..aOM<Id>(
+        1,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'id',
         subBuilder: Id.create)
     ..aOS(
         2,
@@ -321,7 +382,12 @@ class CustomEntity extends $pb.GeneratedMessage {
         const $core.bool.fromEnvironment('protobuf.omit_field_names')
             ? ''
             : 'description')
-    ..e<CustomEntity_Type>(4, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'type', $pb.PbFieldType.OE,
+    ..e<CustomEntity_Type>(
+        4,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'type',
+        $pb.PbFieldType.OE,
         defaultOrMaker: CustomEntity_Type.boolean,
         valueOf: CustomEntity_Type.valueOf,
         enumValues: CustomEntity_Type.values)
@@ -528,7 +594,11 @@ class Bait extends $pb.GeneratedMessage {
               ? ''
               : 'anglerslog'),
       createEmptyInstance: create)
-    ..aOM<Id>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'id',
+    ..aOM<Id>(
+        1,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'id',
         subBuilder: Id.create)
     ..aOS(
         2,
@@ -536,11 +606,32 @@ class Bait extends $pb.GeneratedMessage {
             ? ''
             : 'name')
     ..aOM<Id>(
-        3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'baitCategoryId',
+        3,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'baitCategoryId',
         subBuilder: Id.create)
-    ..aOS(4, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'imageName')
-    ..e<Bait_Type>(5, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'type', $pb.PbFieldType.OE, defaultOrMaker: Bait_Type.artificial, valueOf: Bait_Type.valueOf, enumValues: Bait_Type.values)
-    ..pc<BaitVariant>(6, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'variants', $pb.PbFieldType.PM, subBuilder: BaitVariant.create)
+    ..aOS(
+        4,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'imageName')
+    ..e<Bait_Type>(
+        5,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'type',
+        $pb.PbFieldType.OE,
+        defaultOrMaker: Bait_Type.artificial,
+        valueOf: Bait_Type.valueOf,
+        enumValues: Bait_Type.values)
+    ..pc<BaitVariant>(
+        6,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'variants',
+        $pb.PbFieldType.PM,
+        subBuilder: BaitVariant.create)
     ..hasRequiredFields = false;
 
   Bait._() : super();
@@ -678,7 +769,10 @@ class BaitVariant extends $pb.GeneratedMessage {
               : 'anglerslog'),
       createEmptyInstance: create)
     ..aOM<Id>(
-        1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'id',
+        1,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'id',
         subBuilder: Id.create)
     ..aOM<Id>(
         2,
@@ -686,13 +780,45 @@ class BaitVariant extends $pb.GeneratedMessage {
             ? ''
             : 'baseId',
         subBuilder: Id.create)
-    ..aOS(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'color')
-    ..aOS(4, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'modelNumber')
-    ..aOS(5, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'size')
-    ..aOM<MultiMeasurement>(6, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'minDiveDepth', subBuilder: MultiMeasurement.create)
-    ..aOM<MultiMeasurement>(7, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'maxDiveDepth', subBuilder: MultiMeasurement.create)
-    ..aOS(8, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'description')
-    ..pc<CustomEntityValue>(9, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'customEntityValues', $pb.PbFieldType.PM, subBuilder: CustomEntityValue.create)
+    ..aOS(
+        3,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'color')
+    ..aOS(
+        4,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'modelNumber')
+    ..aOS(
+        5,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'size')
+    ..aOM<MultiMeasurement>(
+        6,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'minDiveDepth',
+        subBuilder: MultiMeasurement.create)
+    ..aOM<MultiMeasurement>(
+        7,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'maxDiveDepth',
+        subBuilder: MultiMeasurement.create)
+    ..aOS(
+        8,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'description')
+    ..pc<CustomEntityValue>(
+        9,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'customEntityValues',
+        $pb.PbFieldType.PM,
+        subBuilder: CustomEntityValue.create)
     ..hasRequiredFields = false;
 
   BaitVariant._() : super();
@@ -882,7 +1008,10 @@ class BaitAttachment extends $pb.GeneratedMessage {
               : 'anglerslog'),
       createEmptyInstance: create)
     ..aOM<Id>(
-        1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'baitId',
+        1,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'baitId',
         subBuilder: Id.create)
     ..aOM<Id>(
         2,
@@ -1063,32 +1192,144 @@ class Catch extends $pb.GeneratedMessage {
               ? ''
               : 'anglerslog'),
       createEmptyInstance: create)
-    ..aOM<Id>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'id',
+    ..aOM<Id>(
+        1,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'id',
         subBuilder: Id.create)
-    ..a<$fixnum.Int64>(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'timestamp', $pb.PbFieldType.OU6,
+    ..a<$fixnum.Int64>(
+        2,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'timestamp',
+        $pb.PbFieldType.OU6,
         defaultOrMaker: $fixnum.Int64.ZERO)
     ..pc<BaitAttachment>(
-        3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'baits', $pb.PbFieldType.PM,
+        3,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'baits',
+        $pb.PbFieldType.PM,
         subBuilder: BaitAttachment.create)
-    ..aOM<Id>(4, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'fishingSpotId', subBuilder: Id.create)
-    ..aOM<Id>(5, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'speciesId', subBuilder: Id.create)
-    ..pPS(6, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'imageNames')
-    ..pc<CustomEntityValue>(7, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'customEntityValues', $pb.PbFieldType.PM, subBuilder: CustomEntityValue.create)
-    ..aOM<Id>(8, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'anglerId', subBuilder: Id.create)
-    ..pc<Id>(9, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'methodIds', $pb.PbFieldType.PM, subBuilder: Id.create)
-    ..e<Period>(10, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'period', $pb.PbFieldType.OE, defaultOrMaker: Period.period_all, valueOf: Period.valueOf, enumValues: Period.values)
-    ..aOB(11, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'isFavorite')
-    ..aOB(12, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'wasCatchAndRelease')
-    ..e<Season>(13, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'season', $pb.PbFieldType.OE, defaultOrMaker: Season.season_all, valueOf: Season.valueOf, enumValues: Season.values)
-    ..aOM<Id>(14, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'waterClarityId', subBuilder: Id.create)
-    ..aOM<MultiMeasurement>(15, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'waterDepth', subBuilder: MultiMeasurement.create)
-    ..aOM<MultiMeasurement>(16, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'waterTemperature', subBuilder: MultiMeasurement.create)
-    ..aOM<MultiMeasurement>(17, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'length', subBuilder: MultiMeasurement.create)
-    ..aOM<MultiMeasurement>(18, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'weight', subBuilder: MultiMeasurement.create)
-    ..a<$core.int>(19, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'quantity', $pb.PbFieldType.OU3)
-    ..aOS(20, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'notes')
-    ..aOM<Atmosphere>(21, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'atmosphere', subBuilder: Atmosphere.create)
-    ..aOM<Tide>(22, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'tide', subBuilder: Tide.create)
+    ..aOM<Id>(
+        4,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'fishingSpotId',
+        subBuilder: Id.create)
+    ..aOM<Id>(
+        5,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'speciesId',
+        subBuilder: Id.create)
+    ..pPS(
+        6,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'imageNames')
+    ..pc<CustomEntityValue>(
+        7,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'customEntityValues',
+        $pb.PbFieldType.PM,
+        subBuilder: CustomEntityValue.create)
+    ..aOM<Id>(
+        8,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'anglerId',
+        subBuilder: Id.create)
+    ..pc<Id>(
+        9,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'methodIds',
+        $pb.PbFieldType.PM,
+        subBuilder: Id.create)
+    ..e<Period>(
+        10,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'period',
+        $pb.PbFieldType.OE,
+        defaultOrMaker: Period.period_all,
+        valueOf: Period.valueOf,
+        enumValues: Period.values)
+    ..aOB(
+        11,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'isFavorite')
+    ..aOB(
+        12,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'wasCatchAndRelease')
+    ..e<Season>(
+        13,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'season',
+        $pb.PbFieldType.OE,
+        defaultOrMaker: Season.season_all,
+        valueOf: Season.valueOf,
+        enumValues: Season.values)
+    ..aOM<Id>(
+        14,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'waterClarityId',
+        subBuilder: Id.create)
+    ..aOM<MultiMeasurement>(
+        15,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'waterDepth',
+        subBuilder: MultiMeasurement.create)
+    ..aOM<MultiMeasurement>(
+        16,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'waterTemperature',
+        subBuilder: MultiMeasurement.create)
+    ..aOM<MultiMeasurement>(
+        17,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'length',
+        subBuilder: MultiMeasurement.create)
+    ..aOM<MultiMeasurement>(
+        18,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'weight',
+        subBuilder: MultiMeasurement.create)
+    ..a<$core.int>(
+        19,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'quantity',
+        $pb.PbFieldType.OU3)
+    ..aOS(
+        20,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'notes')
+    ..aOM<Atmosphere>(
+        21,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'atmosphere',
+        subBuilder: Atmosphere.create)
+    ..aOM<Tide>(
+        22,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'tide',
+        subBuilder: Tide.create)
     ..hasRequiredFields = false;
 
   Catch._() : super();
@@ -1473,16 +1714,28 @@ class DateRange extends $pb.GeneratedMessage {
               : 'anglerslog'),
       createEmptyInstance: create)
     ..e<DateRange_Period>(
-        1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'period', $pb.PbFieldType.OE,
+        1,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'period',
+        $pb.PbFieldType.OE,
         defaultOrMaker: DateRange_Period.allDates,
         valueOf: DateRange_Period.valueOf,
         enumValues: DateRange_Period.values)
     ..a<$fixnum.Int64>(
         2,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'startTimestamp',
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'startTimestamp',
         $pb.PbFieldType.OU6,
         defaultOrMaker: $fixnum.Int64.ZERO)
-    ..a<$fixnum.Int64>(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'endTimestamp', $pb.PbFieldType.OU6, defaultOrMaker: $fixnum.Int64.ZERO)
+    ..a<$fixnum.Int64>(
+        3,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'endTimestamp',
+        $pb.PbFieldType.OU6,
+        defaultOrMaker: $fixnum.Int64.ZERO)
     ..hasRequiredFields = false;
 
   DateRange._() : super();
@@ -1667,7 +1920,10 @@ class FishingSpot extends $pb.GeneratedMessage {
               : 'anglerslog'),
       createEmptyInstance: create)
     ..aOM<Id>(
-        1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'id',
+        1,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'id',
         subBuilder: Id.create)
     ..aOS(
         2,
@@ -1675,11 +1931,33 @@ class FishingSpot extends $pb.GeneratedMessage {
             ? ''
             : 'name')
     ..a<$core.double>(
-        3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'lat', $pb.PbFieldType.OD)
-    ..a<$core.double>(4, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'lng', $pb.PbFieldType.OD)
-    ..aOM<Id>(5, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'bodyOfWaterId', subBuilder: Id.create)
-    ..aOS(6, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'imageName')
-    ..aOS(7, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'notes')
+        3,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'lat',
+        $pb.PbFieldType.OD)
+    ..a<$core.double>(
+        4,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'lng',
+        $pb.PbFieldType.OD)
+    ..aOM<Id>(
+        5,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'bodyOfWaterId',
+        subBuilder: Id.create)
+    ..aOS(
+        6,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'imageName')
+    ..aOS(
+        7,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'notes')
     ..hasRequiredFields = false;
 
   FishingSpot._() : super();
@@ -1841,15 +2119,26 @@ class NumberFilter extends $pb.GeneratedMessage {
               ? ''
               : 'anglerslog'),
       createEmptyInstance: create)
-    ..e<NumberBoundary>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'boundary', $pb.PbFieldType.OE,
+    ..e<NumberBoundary>(
+        1,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'boundary',
+        $pb.PbFieldType.OE,
         defaultOrMaker: NumberBoundary.number_boundary_any,
         valueOf: NumberBoundary.valueOf,
         enumValues: NumberBoundary.values)
     ..aOM<MultiMeasurement>(
-        2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'from',
+        2,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'from',
         subBuilder: MultiMeasurement.create)
     ..aOM<MultiMeasurement>(
-        3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'to',
+        3,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'to',
         subBuilder: MultiMeasurement.create)
     ..hasRequiredFields = false;
 
@@ -2030,12 +2319,20 @@ class Species extends $pb.GeneratedMessage {
 }
 
 class Report extends $pb.GeneratedMessage {
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'Report',
-      package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names')
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      const $core.bool.fromEnvironment('protobuf.omit_message_names')
           ? ''
-          : 'anglerslog'),
+          : 'Report',
+      package: const $pb.PackageName(
+          const $core.bool.fromEnvironment('protobuf.omit_message_names')
+              ? ''
+              : 'anglerslog'),
       createEmptyInstance: create)
-    ..aOM<Id>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'id',
+    ..aOM<Id>(
+        1,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'id',
         subBuilder: Id.create)
     ..aOS(
         2,
@@ -2047,37 +2344,194 @@ class Report extends $pb.GeneratedMessage {
         const $core.bool.fromEnvironment('protobuf.omit_field_names')
             ? ''
             : 'description')
-    ..e<Report_Type>(4, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'type', $pb.PbFieldType.OE,
+    ..e<Report_Type>(
+        4,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'type',
+        $pb.PbFieldType.OE,
         defaultOrMaker: Report_Type.summary,
         valueOf: Report_Type.valueOf,
         enumValues: Report_Type.values)
-    ..aOM<DateRange>(5, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'fromDateRange', subBuilder: DateRange.create)
-    ..aOM<DateRange>(6, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'toDateRange', subBuilder: DateRange.create)
-    ..pc<BaitAttachment>(7, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'baits', $pb.PbFieldType.PM, subBuilder: BaitAttachment.create)
-    ..pc<Id>(8, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'fishingSpotIds', $pb.PbFieldType.PM, subBuilder: Id.create)
-    ..pc<Id>(9, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'speciesIds', $pb.PbFieldType.PM, subBuilder: Id.create)
-    ..pc<Id>(10, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'anglerIds', $pb.PbFieldType.PM, subBuilder: Id.create)
-    ..pc<Id>(11, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'methodIds', $pb.PbFieldType.PM, subBuilder: Id.create)
-    ..pc<Period>(12, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'periods', $pb.PbFieldType.PE, valueOf: Period.valueOf, enumValues: Period.values)
-    ..aOB(13, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'isFavoritesOnly')
-    ..aOB(14, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'isCatchAndReleaseOnly')
-    ..pc<Season>(15, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'seasons', $pb.PbFieldType.PE, valueOf: Season.valueOf, enumValues: Season.values)
-    ..pc<Id>(16, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'waterClarityIds', $pb.PbFieldType.PM, subBuilder: Id.create)
-    ..aOM<NumberFilter>(17, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'waterDepthFilter', subBuilder: NumberFilter.create)
-    ..aOM<NumberFilter>(18, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'waterTemperatureFilter', subBuilder: NumberFilter.create)
-    ..aOM<NumberFilter>(19, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'lengthFilter', subBuilder: NumberFilter.create)
-    ..aOM<NumberFilter>(20, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'weightFilter', subBuilder: NumberFilter.create)
-    ..aOM<NumberFilter>(21, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'quantityFilter', subBuilder: NumberFilter.create)
-    ..aOM<NumberFilter>(22, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'airTemperatureFilter', subBuilder: NumberFilter.create)
-    ..aOM<NumberFilter>(23, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'airPressureFilter', subBuilder: NumberFilter.create)
-    ..aOM<NumberFilter>(24, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'airHumidityFilter', subBuilder: NumberFilter.create)
-    ..aOM<NumberFilter>(25, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'airVisibilityFilter', subBuilder: NumberFilter.create)
-    ..aOM<NumberFilter>(26, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'windSpeedFilter', subBuilder: NumberFilter.create)
-    ..pc<Direction>(27, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'windDirections', $pb.PbFieldType.PE, valueOf: Direction.valueOf, enumValues: Direction.values)
-    ..pc<SkyCondition>(28, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'skyConditions', $pb.PbFieldType.PE, valueOf: SkyCondition.valueOf, enumValues: SkyCondition.values)
-    ..pc<MoonPhase>(29, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'moonPhases', $pb.PbFieldType.PE, valueOf: MoonPhase.valueOf, enumValues: MoonPhase.values)
-    ..pc<TideType>(30, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'tideTypes', $pb.PbFieldType.PE, valueOf: TideType.valueOf, enumValues: TideType.values)
-    ..pc<Id>(31, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'bodyOfWaterIds', $pb.PbFieldType.PM, subBuilder: Id.create)
+    ..aOM<DateRange>(
+        5,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'fromDateRange',
+        subBuilder: DateRange.create)
+    ..aOM<DateRange>(
+        6,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'toDateRange',
+        subBuilder: DateRange.create)
+    ..pc<BaitAttachment>(
+        7,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'baits',
+        $pb.PbFieldType.PM,
+        subBuilder: BaitAttachment.create)
+    ..pc<Id>(
+        8,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'fishingSpotIds',
+        $pb.PbFieldType.PM,
+        subBuilder: Id.create)
+    ..pc<Id>(
+        9,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'speciesIds',
+        $pb.PbFieldType.PM,
+        subBuilder: Id.create)
+    ..pc<Id>(
+        10,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'anglerIds',
+        $pb.PbFieldType.PM,
+        subBuilder: Id.create)
+    ..pc<Id>(
+        11,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'methodIds',
+        $pb.PbFieldType.PM,
+        subBuilder: Id.create)
+    ..pc<Period>(
+        12,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'periods',
+        $pb.PbFieldType.PE,
+        valueOf: Period.valueOf,
+        enumValues: Period.values)
+    ..aOB(
+        13,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'isFavoritesOnly')
+    ..aOB(
+        14,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'isCatchAndReleaseOnly')
+    ..pc<Season>(
+        15,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'seasons',
+        $pb.PbFieldType.PE,
+        valueOf: Season.valueOf,
+        enumValues: Season.values)
+    ..pc<Id>(
+        16,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'waterClarityIds',
+        $pb.PbFieldType.PM,
+        subBuilder: Id.create)
+    ..aOM<NumberFilter>(
+        17,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'waterDepthFilter',
+        subBuilder: NumberFilter.create)
+    ..aOM<NumberFilter>(
+        18,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'waterTemperatureFilter',
+        subBuilder: NumberFilter.create)
+    ..aOM<NumberFilter>(
+        19,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'lengthFilter',
+        subBuilder: NumberFilter.create)
+    ..aOM<NumberFilter>(
+        20,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'weightFilter',
+        subBuilder: NumberFilter.create)
+    ..aOM<NumberFilter>(
+        21,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'quantityFilter',
+        subBuilder: NumberFilter.create)
+    ..aOM<NumberFilter>(
+        22,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'airTemperatureFilter',
+        subBuilder: NumberFilter.create)
+    ..aOM<NumberFilter>(
+        23,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'airPressureFilter',
+        subBuilder: NumberFilter.create)
+    ..aOM<NumberFilter>(
+        24,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'airHumidityFilter',
+        subBuilder: NumberFilter.create)
+    ..aOM<NumberFilter>(
+        25,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'airVisibilityFilter',
+        subBuilder: NumberFilter.create)
+    ..aOM<NumberFilter>(
+        26,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'windSpeedFilter',
+        subBuilder: NumberFilter.create)
+    ..pc<Direction>(
+        27,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'windDirections',
+        $pb.PbFieldType.PE,
+        valueOf: Direction.valueOf,
+        enumValues: Direction.values)
+    ..pc<SkyCondition>(
+        28,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'skyConditions',
+        $pb.PbFieldType.PE,
+        valueOf: SkyCondition.valueOf,
+        enumValues: SkyCondition.values)
+    ..pc<MoonPhase>(
+        29,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'moonPhases',
+        $pb.PbFieldType.PE,
+        valueOf: MoonPhase.valueOf,
+        enumValues: MoonPhase.values)
+    ..pc<TideType>(
+        30,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'tideTypes',
+        $pb.PbFieldType.PE,
+        valueOf: TideType.valueOf,
+        enumValues: TideType.values)
+    ..pc<Id>(
+        31,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'bodyOfWaterIds',
+        $pb.PbFieldType.PM,
+        subBuilder: Id.create)
     ..hasRequiredFields = false;
 
   Report._() : super();
@@ -2810,7 +3264,9 @@ class Measurement extends $pb.GeneratedMessage {
         enumValues: Unit.values)
     ..a<$core.double>(
         2,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'value',
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'value',
         $pb.PbFieldType.OD)
     ..hasRequiredFields = false;
 
@@ -2890,15 +3346,28 @@ class MultiMeasurement extends $pb.GeneratedMessage {
               : 'anglerslog'),
       createEmptyInstance: create)
     ..e<MeasurementSystem>(
-        1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'system', $pb.PbFieldType.OE,
+        1,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'system',
+        $pb.PbFieldType.OE,
         defaultOrMaker: MeasurementSystem.imperial_whole,
         valueOf: MeasurementSystem.valueOf,
         enumValues: MeasurementSystem.values)
-    ..aOM<Measurement>(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'mainValue',
-        protoName: 'mainValue', subBuilder: Measurement.create)
     ..aOM<Measurement>(
-        3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'fractionValue',
-        protoName: 'fractionValue', subBuilder: Measurement.create)
+        2,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'mainValue',
+        protoName: 'mainValue',
+        subBuilder: Measurement.create)
+    ..aOM<Measurement>(
+        3,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'fractionValue',
+        protoName: 'fractionValue',
+        subBuilder: Measurement.create)
     ..hasRequiredFields = false;
 
   MultiMeasurement._() : super();
@@ -2988,26 +3457,39 @@ class MultiMeasurement extends $pb.GeneratedMessage {
 }
 
 class Tide extends $pb.GeneratedMessage {
-  static final $pb.BuilderInfo _i =
-      $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'Tide',
-          package: const $pb.PackageName(
-              const $core.bool.fromEnvironment('protobuf.omit_message_names')
-                  ? ''
-                  : 'anglerslog'),
-          createEmptyInstance: create)
-        ..e<TideType>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'type', $pb.PbFieldType.OE,
-            defaultOrMaker: TideType.tide_type_all,
-            valueOf: TideType.valueOf,
-            enumValues: TideType.values)
-        ..a<$fixnum.Int64>(
-            2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'lowTimestamp', $pb.PbFieldType.OU6,
-            defaultOrMaker: $fixnum.Int64.ZERO)
-        ..a<$fixnum.Int64>(
-            3,
-            const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'highTimestamp',
-            $pb.PbFieldType.OU6,
-            defaultOrMaker: $fixnum.Int64.ZERO)
-        ..hasRequiredFields = false;
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      const $core.bool.fromEnvironment('protobuf.omit_message_names')
+          ? ''
+          : 'Tide',
+      package: const $pb.PackageName(
+          const $core.bool.fromEnvironment('protobuf.omit_message_names')
+              ? ''
+              : 'anglerslog'),
+      createEmptyInstance: create)
+    ..e<TideType>(
+        1,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'type',
+        $pb.PbFieldType.OE,
+        defaultOrMaker: TideType.tide_type_all,
+        valueOf: TideType.valueOf,
+        enumValues: TideType.values)
+    ..a<$fixnum.Int64>(
+        2,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'lowTimestamp',
+        $pb.PbFieldType.OU6,
+        defaultOrMaker: $fixnum.Int64.ZERO)
+    ..a<$fixnum.Int64>(
+        3,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'highTimestamp',
+        $pb.PbFieldType.OU6,
+        defaultOrMaker: $fixnum.Int64.ZERO)
+    ..hasRequiredFields = false;
 
   Tide._() : super();
   factory Tide({

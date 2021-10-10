@@ -21,7 +21,7 @@ void main() {
         .thenAnswer((_) => Future.value(true));
 
     when(appManager.subscriptionManager.stream)
-        .thenAnswer((_) => Stream.empty());
+        .thenAnswer((_) => const Stream.empty());
     when(appManager.subscriptionManager.isPro).thenReturn(false);
   });
 
@@ -35,13 +35,13 @@ void main() {
 
     when(appManager.authManager.state).thenReturn(AuthState.loggedIn);
     controller.add(null);
-    await Future.delayed(Duration(milliseconds: 50));
+    await Future.delayed(const Duration(milliseconds: 50));
     expect(preferenceManager.lastLoggedInEmail, "test@test.com");
 
     // ID doesn't change on logout.
     when(appManager.authManager.state).thenReturn(AuthState.loggedOut);
     controller.add(null);
-    await Future.delayed(Duration(milliseconds: 50));
+    await Future.delayed(const Duration(milliseconds: 50));
     expect(preferenceManager.lastLoggedInEmail, "test@test.com");
   });
 

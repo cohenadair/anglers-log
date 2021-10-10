@@ -50,7 +50,7 @@ void main() {
     when(appManager.appPreferenceManager.lastLoggedInEmail).thenReturn("");
 
     when(appManager.authManager.firestoreDocPath).thenReturn("");
-    when(appManager.authManager.stream).thenAnswer((_) => Stream.empty());
+    when(appManager.authManager.stream).thenAnswer((_) => const Stream.empty());
 
     when(appManager.localDatabaseManager.insertOrReplace(any, any))
         .thenAnswer((realInvocation) => Future.value(true));
@@ -58,7 +58,7 @@ void main() {
         .thenAnswer((_) => Future.value(true));
 
     when(appManager.subscriptionManager.stream)
-        .thenAnswer((_) => Stream.empty());
+        .thenAnswer((_) => const Stream.empty());
     when(appManager.subscriptionManager.isPro).thenReturn(false);
 
     entityManager = TestEntityManager(appManager.app);
@@ -120,17 +120,17 @@ void main() {
   test("Test initialize Firestore", () async {
     when(appManager.subscriptionManager.isPro).thenReturn(true);
 
-    var snapshot = MockQuerySnapshot();
+    var snapshot = MockQuerySnapshot<Map<String, dynamic>>();
     when(snapshot.docChanges).thenReturn([]);
 
     // Mimic Firebase's behaviour by invoking listener immediately.
-    var stream = MockStream<MockQuerySnapshot>();
+    var stream = MockStream<MockQuerySnapshot<Map<String, dynamic>>>();
     when(stream.listen(any)).thenAnswer(((invocation) {
       invocation.positionalArguments.first(snapshot);
-      return MockStreamSubscription<MockQuerySnapshot>();
+      return MockStreamSubscription<MockQuerySnapshot<Map<String, dynamic>>>();
     }));
 
-    var collection = MockCollectionReference();
+    var collection = MockCollectionReference<Map<String, dynamic>>();
     when(collection.snapshots()).thenAnswer((_) => stream);
 
     when(appManager.firestoreWrapper.collection(any)).thenReturn(collection);
@@ -152,9 +152,9 @@ void main() {
     verify(snapshot.docChanges).called(1);
 
     // Bytes can't be parsed.
-    var docSnapshot = MockDocumentSnapshot();
+    var docSnapshot = MockDocumentSnapshot<Map<String, dynamic>>();
     when(docSnapshot.data()).thenReturn({});
-    var docChange = MockDocumentChange();
+    var docChange = MockDocumentChange<Map<String, dynamic>>();
     when(docChange.doc).thenReturn(docSnapshot);
     when(snapshot.docChanges).thenReturn([
       docChange,
@@ -208,7 +208,7 @@ void main() {
     when(appManager.localDatabaseManager.insertOrReplace(any, any))
         .thenAnswer((_) => Future.value(true));
     when(appManager.subscriptionManager.stream)
-        .thenAnswer((_) => Stream.empty());
+        .thenAnswer((_) => const Stream.empty());
     when(appManager.subscriptionManager.isPro).thenReturn(false);
 
     var listener = MockEntityListener<Species>();
@@ -258,8 +258,8 @@ void main() {
   });
 
   test("Add or update Firestore", () async {
-    var collection = MockCollectionReference();
-    var doc = MockDocumentReference();
+    var collection = MockCollectionReference<Map<String, dynamic>>();
+    var doc = MockDocumentReference<Map<String, dynamic>>();
     when(collection.doc(any)).thenReturn(doc);
     when(appManager.firestoreWrapper.collection(any)).thenReturn(collection);
     when(appManager.subscriptionManager.isPro).thenReturn(true);
@@ -276,7 +276,7 @@ void main() {
 
   test("Delete from Firestore", () async {
     when(appManager.subscriptionManager.stream)
-        .thenAnswer((_) => Stream.empty());
+        .thenAnswer((_) => const Stream.empty());
     when(appManager.subscriptionManager.isPro).thenReturn(false);
 
     await entityManager.addOrUpdate(Species()
@@ -293,7 +293,7 @@ void main() {
     when(appManager.localDatabaseManager.deleteEntity(any, any))
         .thenAnswer((_) => Future.value(true));
     when(appManager.subscriptionManager.stream)
-        .thenAnswer((_) => Stream.empty());
+        .thenAnswer((_) => const Stream.empty());
     when(appManager.subscriptionManager.isPro).thenReturn(false);
 
     var listener = MockEntityListener<Species>();

@@ -42,7 +42,7 @@ class SubscriptionManager {
   static const _trialDaysYearly = 14;
   static const _trialDaysMonthly = 7;
 
-  final _log = Log("SubscriptionManager");
+  final _log = const Log("SubscriptionManager");
   final _controller = VoidStreamController();
 
   final AppManager _appManager;

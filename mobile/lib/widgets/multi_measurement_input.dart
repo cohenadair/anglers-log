@@ -28,7 +28,7 @@ class MultiMeasurementInput extends StatelessWidget {
   /// value, use [state.controller].
   final VoidCallback? onChanged;
 
-  MultiMeasurementInput({
+  const MultiMeasurementInput({
     required this.spec,
     required this.controller,
     this.title,
@@ -114,10 +114,10 @@ class MultiMeasurementInput extends StatelessWidget {
           Expanded(child: wholeInput),
           imperialFractionInput == null
               ? Empty()
-              : HorizontalSpace(paddingWidget),
-          imperialFractionInput == null ? Empty() : imperialFractionInput,
-          inchesLabel == null ? Empty() : HorizontalSpace(paddingWidget),
-          inchesLabel == null ? Empty() : inchesLabel,
+              : const HorizontalSpace(paddingWidget),
+          imperialFractionInput ?? Empty(),
+          inchesLabel == null ? Empty() : const HorizontalSpace(paddingWidget),
+          inchesLabel ?? Empty(),
         ],
       ),
     );
@@ -241,7 +241,7 @@ class _InchesDropdownInput extends StatefulWidget {
   final double? initialValue;
   final void Function(double?)? onChanged;
 
-  _InchesDropdownInput({
+  const _InchesDropdownInput({
     this.initialValue,
     this.onChanged,
   });

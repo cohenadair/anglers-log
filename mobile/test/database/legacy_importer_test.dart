@@ -43,19 +43,19 @@ void main() {
   setUp(() {
     appManager = StubbedAppManager();
 
-    when(appManager.authManager.stream).thenAnswer((_) => Stream.empty());
+    when(appManager.authManager.stream).thenAnswer((_) => const Stream.empty());
 
     dataManager = appManager.localDatabaseManager;
     when(dataManager.insertOrReplace(any, any))
         .thenAnswer((_) => Future.value(true));
 
     imageManager = appManager.imageManager;
-    when(imageManager.save(any)).thenAnswer((_) => Future.value());
+    when(imageManager.save(any)).thenAnswer((_) => Future.value([]));
     when(imageManager.save(any, compress: anyNamed("compress")))
         .thenAnswer((_) => Future.value([]));
 
     when(appManager.subscriptionManager.stream)
-        .thenAnswer((_) => Stream.empty());
+        .thenAnswer((_) => const Stream.empty());
     when(appManager.subscriptionManager.isPro).thenReturn(false);
 
     ioWrapper = appManager.ioWrapper;

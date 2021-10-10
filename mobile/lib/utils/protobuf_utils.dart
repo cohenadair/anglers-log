@@ -18,7 +18,7 @@ import '../utils/string_utils.dart';
 import 'date_time_utils.dart';
 import 'number_utils.dart';
 
-final _log = Log("ProtobufUtils");
+const _log = Log("ProtobufUtils");
 
 // TODO: Move these CustomEntityValue functions to CustomEntityManager.
 
@@ -97,7 +97,7 @@ dynamic valueForCustomEntityType(
   }
 }
 
-Id randomId() => Id()..uuid = Uuid().v4();
+Id randomId() => Id()..uuid = const Uuid().v4();
 
 /// Parses [idString] into an [Id] object. Throws an [AssertionError] if
 /// [idString] is null or empty, or if [idString] isn't a valid UUID.
@@ -142,13 +142,13 @@ bool containsEntityIdOrOther(Iterable iterable, dynamic item) {
 /// This method will throw an exception if [item] is of type [GeneratedMessage],
 /// but does not have an [id] property.
 int indexOfEntityIdOrOther(List<dynamic> list, dynamic item) {
-  if (!(item is GeneratedMessage)) {
+  if (item is! GeneratedMessage) {
     return list.indexOf(item);
   }
 
   for (var i = 0; i < list.length; i++) {
     // For non-GeneratedMessage objects in list, use ==.
-    if (!(list[i] is GeneratedMessage)) {
+    if (list[i] is! GeneratedMessage) {
       if (list[i] == item) {
         return i;
       }
@@ -890,7 +890,7 @@ extension DateRanges on DateRange {
       case DateRange_Period.today:
         return dateTimeToDayAccuracy(now);
       case DateRange_Period.yesterday:
-        return dateTimeToDayAccuracy(now).subtract(Duration(days: 1));
+        return dateTimeToDayAccuracy(now).subtract(const Duration(days: 1));
       case DateRange_Period.thisWeek:
         return startOfWeek(now);
       case DateRange_Period.thisMonth:
@@ -899,7 +899,8 @@ extension DateRanges on DateRange {
       case DateRange_Period.thisYear:
         return startOfYear(now);
       case DateRange_Period.lastWeek:
-        return startOfWeek(now).subtract(Duration(days: DateTime.daysPerWeek));
+        return startOfWeek(now)
+            .subtract(const Duration(days: DateTime.daysPerWeek));
       case DateRange_Period.lastMonth:
         var year = now.year;
         var month = now.month - 1;
@@ -911,15 +912,15 @@ extension DateRanges on DateRange {
       case DateRange_Period.lastYear:
         return DateTime(now.year - 1);
       case DateRange_Period.last7Days:
-        return now.subtract(Duration(days: 7));
+        return now.subtract(const Duration(days: 7));
       case DateRange_Period.last14Days:
-        return now.subtract(Duration(days: 14));
+        return now.subtract(const Duration(days: 14));
       case DateRange_Period.last30Days:
-        return now.subtract(Duration(days: 30));
+        return now.subtract(const Duration(days: 30));
       case DateRange_Period.last60Days:
-        return now.subtract(Duration(days: 60));
+        return now.subtract(const Duration(days: 60));
       case DateRange_Period.last12Months:
-        return now.subtract(Duration(days: 365));
+        return now.subtract(const Duration(days: 365));
     }
     throw ArgumentError("Invalid input: $period");
   }
@@ -1170,6 +1171,9 @@ extension Directions on Direction {
 
   double toDegrees() {
     switch (this) {
+      case Direction.direction_all:
+      case Direction.direction_none:
+        throw ArgumentError("Invalid input: $this");
       case Direction.north:
         return 0.0;
       case Direction.north_east:

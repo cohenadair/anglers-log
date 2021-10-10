@@ -16,7 +16,7 @@ class DateRangePickerPage extends StatefulWidget {
   final DateRange initialValue;
   final void Function(DateRange) onDateRangePicked;
 
-  DateRangePickerPage({
+  const DateRangePickerPage({
     required this.initialValue,
     required this.onDateRangePicked,
   });
@@ -110,7 +110,7 @@ class _DateRangePickerPageState extends State<DateRangePickerPage> {
     // Always add a day to the end date, so the end date is included. The
     // date range picker cuts the end date off at the beginning of the day. If
     // adding a day puts the end time in the future, clamp it to at "now".
-    var endDate = pickedRange.end.add(Duration(days: 1));
+    var endDate = pickedRange.end.add(const Duration(days: 1));
     if (endDate.isAfter(now)) {
       endDate = now;
     }

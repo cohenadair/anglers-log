@@ -26,7 +26,7 @@ class ScrollPage extends StatelessWidget {
   /// is null.
   final Key? refreshIndicatorKey;
 
-  ScrollPage({
+  const ScrollPage({
     this.appBar,
     this.children = const [],
     this.footer = const [],
@@ -51,14 +51,15 @@ class ScrollPage extends StatelessWidget {
         left: enableHorizontalSafeArea,
         right: enableHorizontalSafeArea,
         child: Column(
-          children: []
-            ..add(VerticalSpace(padding.top))
-            ..addAll(children)
-            ..add(VerticalSpace(padding.bottom)),
+          children: [
+            VerticalSpace(padding.top),
+            ...children,
+            VerticalSpace(padding.bottom),
+          ],
         ),
       ),
       // Ensures view is scrollable, even when items don't exceed screen size.
-      physics: AlwaysScrollableScrollPhysics(),
+      physics: const AlwaysScrollableScrollPhysics(),
       // Ensures items are cut off when over-scrolling on iOS. This only
       // applies when a persistent footer isn't being used.
       clipBehavior: footer.isEmpty ? Clip.none : Clip.hardEdge,

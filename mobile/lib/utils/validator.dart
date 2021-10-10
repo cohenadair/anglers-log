@@ -19,6 +19,7 @@ class GenericValidator implements Validator {
 
   GenericValidator(this.runner);
 
+  @override
   ValidationCallback run(BuildContext context, String? newValue) {
     return runner(context, newValue);
   }

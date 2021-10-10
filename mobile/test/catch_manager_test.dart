@@ -30,7 +30,7 @@ void main() {
 
     when(appManager.anglerManager.matchesFilter(any, any)).thenReturn(false);
 
-    when(appManager.authManager.stream).thenAnswer((_) => Stream.empty());
+    when(appManager.authManager.stream).thenAnswer((_) => const Stream.empty());
 
     baitCategoryManager = appManager.baitCategoryManager;
     when(baitCategoryManager.addListener(any)).thenAnswer((_) {});
@@ -49,7 +49,7 @@ void main() {
     );
 
     when(appManager.subscriptionManager.stream)
-        .thenAnswer((_) => Stream.empty());
+        .thenAnswer((_) => const Stream.empty());
     when(appManager.subscriptionManager.isPro).thenReturn(false);
 
     fishingSpotManager = FishingSpotManager(appManager.app);

@@ -11,7 +11,7 @@ import 'save_body_of_water_page.dart';
 class BodyOfWaterListPage extends StatelessWidget {
   final ManageableListPagePickerSettings<BodyOfWater>? pickerSettings;
 
-  BodyOfWaterListPage({
+  const BodyOfWaterListPage({
     this.pickerSettings,
   });
 
@@ -46,7 +46,7 @@ class BodyOfWaterListPage extends StatelessWidget {
         deleteWidget: (context, body) =>
             Text(bodyOfWaterManager.deleteMessage(context, body)),
         deleteItem: (context, body) => bodyOfWaterManager.delete(body.id),
-        addPageBuilder: () => SaveBodyOfWaterPage(),
+        addPageBuilder: () => const SaveBodyOfWaterPage(),
         editPageBuilder: (body) => SaveBodyOfWaterPage.edit(body),
       ),
     );

@@ -86,9 +86,9 @@ class LegacyImporter {
 
   /// Format of how fishing spot names are imported. The first argument is the
   /// location name, the second argument is the fishing spot name.
-  static final _nameFormatFishingSpot = "%s - %s";
+  static const _nameFormatFishingSpot = "%s - %s";
 
-  final _log = Log("LegacyImporter");
+  final _log = const Log("LegacyImporter");
 
   final AppManager _appManager;
   final File? _zipFile;
@@ -190,7 +190,7 @@ class LegacyImporter {
       var content = Uint8List.fromList(archiveFile.content);
 
       if (extension(archiveFile.name) == _fileExtensionJson) {
-        _json = jsonDecode(Utf8Decoder().convert(content)) ?? {};
+        _json = jsonDecode(const Utf8Decoder().convert(content)) ?? {};
       } else {
         // Copy all images to a temporary directory.
         var tmpFile = File("${tmpDir.path}/${archiveFile.name}")
@@ -226,7 +226,7 @@ class LegacyImporter {
     _userPreferenceManager.setWindSpeedSystem(_measurementSystem);
 
     var userDefinesJson = _json[_keyJournal][_keyUserDefines];
-    if (userDefinesJson == null || !(userDefinesJson is List)) {
+    if (userDefinesJson == null || userDefinesJson is! List) {
       return Future.error(LegacyImporterError.missingUserDefines,
           StackTrace.fromString(_jsonString));
     }
@@ -240,7 +240,7 @@ class LegacyImporter {
     List<dynamic>? waterClarities;
 
     for (var map in userDefinesJson) {
-      if (!(map is Map<String, dynamic>)) {
+      if (map is! Map<String, dynamic>) {
         _log.w("Corrupt user define (should be json map): $map");
         continue;
       }
@@ -310,11 +310,9 @@ class LegacyImporter {
         var baitCategoryId =
             _baitCategoryManager.named(map[_keyBaitCategory]!)?.id;
 
-        if (baitCategoryId == null) {
-          baitCategoryId = _baitCategoryManager
-              .entity(_parseJsonId(map[_keyBaitCategory]))
-              ?.id;
-        }
+        baitCategoryId ??= _baitCategoryManager
+            .entity(_parseJsonId(map[_keyBaitCategory]))
+            ?.id;
 
         if (baitCategoryId != null) {
           bait.baitCategoryId = baitCategoryId;
@@ -552,7 +550,7 @@ class LegacyImporter {
 
       var images = <File>[];
       for (var imageMap in map[_keyImages]) {
-        if (!(imageMap is Map<String, dynamic>)) {
+        if (imageMap is! Map<String, dynamic>) {
           _log.w("Corrupt image data (should be json map): $map");
           continue;
         }

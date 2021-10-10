@@ -34,12 +34,12 @@ class SaveFishingSpotPage extends StatefulWidget {
   /// database.
   final void Function(FishingSpot)? onSave;
 
-  SaveFishingSpotPage({
+  const SaveFishingSpotPage({
     required this.latLng,
     this.onSave,
   }) : oldFishingSpot = null;
 
-  SaveFishingSpotPage.edit(this.oldFishingSpot)
+  const SaveFishingSpotPage.edit(this.oldFishingSpot)
       : latLng = null,
         onSave = null;
 
@@ -91,9 +91,9 @@ class _SaveFishingSpotPageState extends State<SaveFishingSpotPage> {
       fieldBuilder: (context) => [
         _buildBodyOfWater(),
         _buildImage(),
-        VerticalSpace(paddingWidgetSmall),
+        const VerticalSpace(paddingWidgetSmall),
         _buildName(),
-        VerticalSpace(paddingWidgetSmall),
+        const VerticalSpace(paddingWidgetSmall),
         _buildNotes(),
       ],
       isInputValid: true,

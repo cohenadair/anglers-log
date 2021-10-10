@@ -12,7 +12,7 @@ class PhotoManagerWrapper {
     var paths = await PhotoManager.getAssetPathList(
       type: type,
       onlyAll: true,
-      filterOption: FilterOptionGroup()..addOrderOption(OrderOption()),
+      filterOption: FilterOptionGroup()..addOrderOption(const OrderOption()),
     );
     return paths.isEmpty ? null : paths.first;
   }

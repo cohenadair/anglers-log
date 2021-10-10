@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart' show IterableExtension;
 import 'package:fixnum/fixnum.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
@@ -13,8 +14,14 @@ void main() {
     testWidgets("Values are excluded", (tester) async {
       var items = Periods.pickerItems(await buildContext(tester));
       expect(items.length, Period.values.length - 2);
-      expect(items.contains(Period.period_all), isFalse);
-      expect(items.contains(Period.period_none), isFalse);
+      expect(
+        items.firstWhereOrNull((e) => e.value == Period.period_all),
+        isNull,
+      );
+      expect(
+        items.firstWhereOrNull((e) => e.value == Period.period_none),
+        isNull,
+      );
     });
 
     testWidgets("Values are sorted", (tester) async {
@@ -243,7 +250,7 @@ void main() {
     });
 
     test("Good UUID string", () {
-      var id = parseId(Uuid().v1());
+      var id = parseId(const Uuid().v1());
       expect(id, isNotNull);
       expect(id.uuid, isNotEmpty);
     });

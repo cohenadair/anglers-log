@@ -18,7 +18,7 @@ void main() {
   testWidgets("Current item has icon", (tester) async {
     await tester.pumpWidget(
       Testable(
-        (_) => BottomSheetPicker<String>(
+        (_) => const BottomSheetPicker<String>(
           currentValue: "Value 1",
           items: {
             "Option 1": "Value 1",
@@ -37,7 +37,7 @@ void main() {
   testWidgets("No current item does not have icon", (tester) async {
     await tester.pumpWidget(
       Testable(
-        (_) => BottomSheetPicker<String>(
+        (_) => const BottomSheetPicker<String>(
           items: {
             "Option 1": "Value 1",
             "Option 2": "Value 2",
@@ -57,7 +57,7 @@ void main() {
     await tester.pumpWidget(
       Testable(
         (_) => BottomSheetPicker<String>(
-          items: {
+          items: const {
             "Option 1": "Value 1",
             "Option 2": "Value 2",
             "Option 3": "Value 3",
@@ -75,7 +75,7 @@ void main() {
   testWidgets("All items rendered", (tester) async {
     await tester.pumpWidget(
       Testable(
-        (_) => BottomSheetPicker<String>(
+        (_) => const BottomSheetPicker<String>(
           currentValue: "Value 1",
           items: {
             "Option 1": "Value 1",
@@ -94,7 +94,7 @@ void main() {
   testWidgets("Title is shown", (tester) async {
     await tester.pumpWidget(
       Testable(
-        (_) => BottomSheetPicker<String>(
+        (_) => const BottomSheetPicker<String>(
           title: "Title",
         ),
       ),
@@ -103,14 +103,14 @@ void main() {
   });
 
   testWidgets("Title is hidden", (tester) async {
-    await tester.pumpWidget(Testable((_) => BottomSheetPicker<String>()));
+    await tester.pumpWidget(Testable((_) => const BottomSheetPicker<String>()));
     expect(find.byType(Text), findsNothing);
   });
 
   testWidgets("Footer is shown", (tester) async {
     await tester.pumpWidget(
       Testable(
-        (_) => BottomSheetPicker<String>(
+        (_) => const BottomSheetPicker<String>(
           footer: Text("Footer"),
         ),
       ),
@@ -120,7 +120,7 @@ void main() {
   });
 
   testWidgets("Footer is hidden", (tester) async {
-    await tester.pumpWidget(Testable((_) => BottomSheetPicker<String>()));
+    await tester.pumpWidget(Testable((_) => const BottomSheetPicker<String>()));
     expect(find.byType(Text), findsNothing);
     expect(find.byType(Empty), findsNWidgets(2));
   });
@@ -128,7 +128,7 @@ void main() {
   testWidgets("Item has custom style", (tester) async {
     await tester.pumpWidget(
       Testable(
-        (_) => BottomSheetPicker<String>(
+        (_) => const BottomSheetPicker<String>(
           currentValue: "Value 1",
           items: {
             "Option 1": "Value 1",

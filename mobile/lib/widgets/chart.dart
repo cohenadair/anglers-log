@@ -27,7 +27,7 @@ class ExpandableChart<T> extends StatelessWidget {
   /// See [Chart.labelBuilder].
   final String Function(T) labelBuilder;
 
-  ExpandableChart({
+  const ExpandableChart({
     required this.title,
     this.viewAllTitle,
     this.viewAllDescription,
@@ -42,7 +42,7 @@ class ExpandableChart<T> extends StatelessWidget {
     return ExpansionListItem(
       title: Text(
         title,
-        style: TextStyle(color: Colors.black),
+        style: const TextStyle(color: Colors.black),
       ),
       children: [
         Chart<T>(
@@ -150,14 +150,14 @@ class Chart<T> extends StatefulWidget {
 }
 
 class _ChartState<T> extends State<Chart<T>> {
-  static final _log = Log("MyChart");
-
-  static final Color _emptyBgColor = Colors.grey.withOpacity(0.15);
+  static const _log = Log("MyChart");
 
   static const _legendIndicatorSize = 15.0;
   static const _rowHeight = 20.0;
   static const _rowCornerRadius = 5.0;
   static const _condensedRowCount = 3;
+
+  static final Color _emptyBgColor = Colors.grey.withOpacity(0.15);
 
   /// A subset of [widget.series] of size [_condensedRowCount].
   List<Series<T>> _displayData = [];
@@ -212,7 +212,7 @@ class _ChartState<T> extends State<Chart<T>> {
                     height: _legendIndicatorSize,
                     color: series._color,
                   ),
-                  HorizontalSpace(paddingWidgetSmall),
+                  const HorizontalSpace(paddingWidgetSmall),
                   Text(series.dateRange.displayName(context)),
                 ],
               ),
@@ -317,7 +317,7 @@ class _ChartState<T> extends State<Chart<T>> {
     if (widget.showAll ||
         isEmpty(widget.viewAllTitle) ||
         _maxRowCount <= _condensedRowCount) {
-      return VerticalSpace(paddingWidgetSmall);
+      return const VerticalSpace(paddingWidgetSmall);
     }
 
     assert(isNotEmpty(widget.chartPageDescription),
@@ -393,7 +393,7 @@ class _ChartPage<T> extends StatelessWidget {
               _buildFilters(context),
               Chart<T>(
                 series: series,
-                padding: EdgeInsets.only(
+                padding: const EdgeInsets.only(
                   left: paddingDefault,
                   right: paddingDefault,
                   bottom: paddingSmall,
@@ -416,7 +416,7 @@ class _ChartPage<T> extends StatelessWidget {
     }
 
     return Padding(
-      padding: EdgeInsets.only(
+      padding: const EdgeInsets.only(
         left: paddingDefault,
         right: paddingDefault,
         bottom: paddingWidget,
@@ -428,7 +428,7 @@ class _ChartPage<T> extends StatelessWidget {
             Strings.of(context).reportSummaryFilters,
             style: styleListHeading(context),
           ),
-          VerticalSpace(paddingWidget),
+          const VerticalSpace(paddingWidget),
           ChipWrap(filters),
         ],
       ),

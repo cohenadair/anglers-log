@@ -11,7 +11,7 @@ import 'save_angler_page.dart';
 class AnglerListPage extends StatelessWidget {
   final ManageableListPagePickerSettings<Angler>? pickerSettings;
 
-  AnglerListPage({
+  const AnglerListPage({
     this.pickerSettings,
   });
 
@@ -44,7 +44,7 @@ class AnglerListPage extends StatelessWidget {
         deleteWidget: (context, angler) =>
             Text(anglerManager.deleteMessage(context, angler)),
         deleteItem: (context, angler) => anglerManager.delete(angler.id),
-        addPageBuilder: () => SaveAnglerPage(),
+        addPageBuilder: () => const SaveAnglerPage(),
         editPageBuilder: (angler) => SaveAnglerPage.edit(angler),
       ),
     );

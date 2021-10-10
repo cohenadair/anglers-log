@@ -31,7 +31,7 @@ class SearchBar extends StatefulWidget {
 
   final SearchBarDelegate delegate;
 
-  SearchBar({
+  const SearchBar({
     this.text,
     this.hint,
     this.margin,
@@ -88,7 +88,7 @@ class _SearchBarState extends State<SearchBar> {
             left: paddingDefault,
             right: widget.leadingPadding ?? paddingDefault,
           ),
-          child: Icon(Icons.search, color: Colors.black),
+          child: const Icon(Icons.search, color: Colors.black),
         );
 
     Widget trailing = Empty();
@@ -98,7 +98,7 @@ class _SearchBarState extends State<SearchBar> {
       trailing = AnimatedVisibility(
         visible: focused || isNotEmpty(_controller.text),
         child: IconButton(
-          icon: Icon(Icons.close),
+          icon: const Icon(Icons.close),
           onPressed: () {
             setState(() {
               // Only notify delegate if text changes.

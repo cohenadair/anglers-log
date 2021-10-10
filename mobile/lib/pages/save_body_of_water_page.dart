@@ -10,9 +10,9 @@ import '../utils/validator.dart';
 class SaveBodyOfWaterPage extends StatelessWidget {
   final BodyOfWater? oldBodyOfWater;
 
-  SaveBodyOfWaterPage() : oldBodyOfWater = null;
+  const SaveBodyOfWaterPage() : oldBodyOfWater = null;
 
-  SaveBodyOfWaterPage.edit(this.oldBodyOfWater);
+  const SaveBodyOfWaterPage.edit(this.oldBodyOfWater);
 
   @override
   Widget build(BuildContext context) {

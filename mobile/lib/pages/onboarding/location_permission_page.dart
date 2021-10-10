@@ -13,24 +13,25 @@ import 'onboarding_page.dart';
 class LocationPermissionPage extends StatelessWidget {
   final VoidCallback? onNext;
 
-  LocationPermissionPage({
+  const LocationPermissionPage({
     this.onNext,
   });
 
+  @override
   Widget build(BuildContext context) {
     return OnboardingPage(
       onPressedNextButton: onNext,
       nextButtonEnabled: false,
       children: [
-        VerticalSpace(paddingWidget),
-        WatermarkLogo(icon: Icons.location_on),
-        VerticalSpace(paddingWidgetDouble),
+        const VerticalSpace(paddingWidget),
+        const WatermarkLogo(icon: Icons.location_on),
+        const VerticalSpace(paddingWidgetDouble),
         TitleLabel(
           Strings.of(context).onboardingJourneyLocationAccessTitle,
           overflow: TextOverflow.visible,
           align: TextAlign.center,
         ),
-        VerticalSpace(paddingWidget),
+        const VerticalSpace(paddingWidget),
         Padding(
           padding: insetsHorizontalDefault,
           child: Text(
@@ -40,7 +41,7 @@ class LocationPermissionPage extends StatelessWidget {
             style: stylePrimary(context),
           ),
         ),
-        VerticalSpace(paddingWidget),
+        const VerticalSpace(paddingWidget),
         Align(
           child: Button(
             text: Strings.of(context).onboardingJourneyLocationAccessButton,
@@ -53,7 +54,7 @@ class LocationPermissionPage extends StatelessWidget {
             },
           ),
         ),
-        VerticalSpace(paddingWidget),
+        const VerticalSpace(paddingWidget),
       ],
     );
   }

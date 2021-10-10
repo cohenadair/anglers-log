@@ -58,6 +58,7 @@ class FishingSpotMap extends StatefulWidget {
 
   final bool _isStatic;
 
+  // ignore: prefer_const_constructors_in_immutables
   FishingSpotMap({
     this.pickerSettings,
     this.showSearchBar = true,
@@ -95,7 +96,7 @@ class FishingSpotMap extends StatefulWidget {
         showHelpButton = false,
         showFishingSpotActionButtons = true,
         children = [
-          SafeArea(
+          const SafeArea(
             child: FloatingButton.back(
               padding: insetsDefault,
             ),
@@ -110,9 +111,9 @@ class FishingSpotMap extends StatefulWidget {
 
 class _FishingSpotMapState extends State<FishingSpotMap> {
   static const _mapStyleNormal =
-      "mapbox://styles/cohenadair/ckt1zqb8d1h1p17pglx4pmz4y/draft";
+      "mapbox://styles/cohenadair/ckt1m613b127t17qqf3mmw47h";
   static const _mapStyleSatellite =
-      "mapbox://styles/cohenadair/ckt1m613b127t17qqf3mmw47h/draft";
+      "mapbox://styles/cohenadair/ckt1zqb8d1h1p17pglx4pmz4y";
   static const _pinActive = "active-pin";
   static const _pinInactive = "inactive-pin";
   static const _pinSize = 1.5;
@@ -122,9 +123,9 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
   /// based on the size of the fishing spot widget being shown.
   static const _fishingSpotDetailOffsetFactor = 0.00004117647059;
 
-  final _fishingSpotKey = GlobalKey();
+  static const _log = Log("FishingSpotMap");
 
-  final _log = Log("FishingSpotMap");
+  final _fishingSpotKey = GlobalKey();
 
   // Wait for navigation animations to finish before loading the map. This
   // allows for a smooth animation.
@@ -174,7 +175,7 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
     super.initState();
 
     _myLocationEnabled = !_isStatic && _locationMonitor.currentLocation != null;
-    _mapFuture = Future.delayed(Duration(milliseconds: 300), () => true);
+    _mapFuture = Future.delayed(const Duration(milliseconds: 300), () => true);
 
     // Refresh state so Mapbox attribution padding is updated. This needs to be
     // done after the fishing spot widget is rendered.
@@ -213,27 +214,25 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
         managers: [_fishingSpotManager],
         onAnyChange: _updateSymbols,
         builder: (context) {
-          var stack = Stack(
-            children: [_buildMap()]
-              ..addAll(widget.children)
-              ..add(_buildNoSelectionMapAttribution())
-              ..add(_buildFishingSpot())
-              ..add(
-                SafeArea(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
-                      _buildSearchBar(),
-                      _buildMapStyleButton(),
-                      _buildCurrentLocationButton(),
-                      _buildZoomExtentsButton(),
-                      _buildHelpButton(),
-                      _buildHelp(),
-                    ],
-                  ),
-                ),
+          var stack = Stack(children: [
+            _buildMap(),
+            ...widget.children,
+            _buildNoSelectionMapAttribution(),
+            _buildFishingSpot(),
+            SafeArea(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  _buildSearchBar(),
+                  _buildMapStyleButton(),
+                  _buildCurrentLocationButton(),
+                  _buildZoomExtentsButton(),
+                  _buildHelpButton(),
+                  _buildHelp(),
+                ],
               ),
-          );
+            ),
+          ]);
 
           return widget.isPage ? Scaffold(body: stack) : stack;
         },
@@ -248,7 +247,7 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
         var start = _activeSymbol?.fishingSpot.latLng ??
             _pickerSettings?.controller.value?.latLng ??
             _locationMonitor.currentLocation ??
-            LatLng(0, 0);
+            const LatLng(0, 0);
 
         return IgnorePointer(
           ignoring: _isStatic,
@@ -256,8 +255,8 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
             accessToken: _propertiesManager.mapboxApiKey,
             // Hide default attribution views, so we can show our own and
             // position them easier.
-            attributionButtonMargins: Point(0, -1000),
-            logoViewMargins: Point(0, -1000),
+            attributionButtonMargins: const Point(0, -1000),
+            logoViewMargins: const Point(0, -1000),
             myLocationEnabled: _myLocationEnabled,
             styleString: _currentStyle,
             initialCameraPosition: CameraPosition(
@@ -310,12 +309,12 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
           ),
         );
       }
-      leading = BackButton();
+      leading = const BackButton();
     } else {
       trailing = AnimatedVisibility(
         visible: isNotEmpty(name),
         child: IconButton(
-          icon: Icon(Icons.clear),
+          icon: const Icon(Icons.clear),
           onPressed: () => _selectFishingSpot(null, dismissIfNull: true),
         ),
       );
@@ -384,7 +383,7 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
     }
 
     return FloatingButton.icon(
-      padding: EdgeInsets.only(
+      padding: const EdgeInsets.only(
         left: paddingDefault,
         right: paddingDefault,
         bottom: paddingDefault,
@@ -433,7 +432,7 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
     }
 
     return FloatingButton.icon(
-      padding: EdgeInsets.only(
+      padding: const EdgeInsets.only(
         left: paddingDefault,
         right: paddingDefault,
         bottom: paddingDefault,
@@ -461,7 +460,7 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
     }
 
     return FloatingButton.icon(
-      padding: EdgeInsets.only(
+      padding: const EdgeInsets.only(
         left: paddingDefault,
         right: paddingDefault,
         bottom: paddingDefault,
@@ -515,7 +514,7 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
     var container = Align(
       alignment: Alignment.bottomCenter,
       child: Padding(
-        padding: EdgeInsets.only(
+        padding: const EdgeInsets.only(
           left: paddingDefault,
           right: paddingDefault,
           bottom: paddingDefault,
@@ -676,7 +675,7 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
       // Mark the active symbol as inactive.
       await _mapController.updateSymbol(
         _activeSymbol!,
-        SymbolOptions(iconImage: _pinInactive),
+        const SymbolOptions(iconImage: _pinInactive),
       );
     }
 
@@ -700,7 +699,7 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
         // Update map.
         await _mapController.updateSymbol(
           newActiveSymbol,
-          SymbolOptions(iconImage: _pinActive),
+          const SymbolOptions(iconImage: _pinActive),
         );
 
         _moveMap(newActiveSymbol.latLng, animate: animateMapMovement);
@@ -734,7 +733,7 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
     }
 
     // If there is no picker value, fallback on the user's current location.
-    _dropPin(_locationMonitor.currentLocation ?? LatLng(0, 0));
+    _dropPin(_locationMonitor.currentLocation ?? const LatLng(0, 0));
   }
 
   /// Offsets [latLng] to account for the height of the fishing spot widget.
@@ -790,7 +789,7 @@ class StaticFishingSpotMap extends StatelessWidget {
   final EdgeInsets? padding;
   final VoidCallback? onTap;
 
-  StaticFishingSpotMap(
+  const StaticFishingSpotMap(
     this.fishingSpot, {
     this.padding,
     this.onTap,
@@ -805,7 +804,7 @@ class StaticFishingSpotMap extends StatelessWidget {
         child: Stack(
           children: [
             ClipRRect(
-              borderRadius: BorderRadius.all(
+              borderRadius: const BorderRadius.all(
                 Radius.circular(floatingCornerRadius),
               ),
               child: FishingSpotMap._static(fishingSpot),
@@ -843,7 +842,7 @@ class MapboxAttribution extends StatelessWidget {
   final void Function(bool) onTelemetryToggled;
   final bool isTelemetryEnabled;
 
-  MapboxAttribution({
+  const MapboxAttribution({
     required this.logoColor,
     required this.onTelemetryToggled,
     required this.isTelemetryEnabled,

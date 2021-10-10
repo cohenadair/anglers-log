@@ -29,7 +29,7 @@ class MorePage extends StatelessWidget {
   /// draw the user's attention.
   final GlobalKey? feedbackKey;
 
-  MorePage({
+  const MorePage({
     this.feedbackKey,
   });
 
@@ -45,25 +45,25 @@ class MorePage extends StatelessWidget {
           context,
           icon: Icons.person,
           title: Strings.of(context).anglerListPageMenuTitle,
-          page: AnglerListPage(),
+          page: const AnglerListPage(),
         ),
         _buildPageItem(
           context,
           icon: CustomIcons.baitCategories,
           title: Strings.of(context).baitCategoryListPageMenuTitle,
-          page: BaitCategoryListPage(),
+          page: const BaitCategoryListPage(),
         ),
         _buildPageItem(
           context,
           icon: Icons.bug_report,
           title: Strings.of(context).baitListPageMenuLabel,
-          page: BaitListPage(),
+          page: const BaitListPage(),
         ),
         _buildPageItem(
           context,
           icon: Icons.water,
           title: Strings.of(context).bodyOfWaterListPageMenuLabel,
-          page: BodyOfWaterListPage(),
+          page: const BodyOfWaterListPage(),
         ),
         _buildPageItem(
           context,
@@ -75,7 +75,7 @@ class MorePage extends StatelessWidget {
           context,
           icon: Icons.list,
           title: Strings.of(context).methodListPageMenuTitle,
-          page: MethodListPage(),
+          page: const MethodListPage(),
         ),
         _buildPageItem(
           context,
@@ -87,7 +87,7 @@ class MorePage extends StatelessWidget {
           context,
           icon: CustomIcons.species,
           title: Strings.of(context).speciesListPageMenuTitle,
-          page: SpeciesListPage(),
+          page: const SpeciesListPage(),
         ),
         _buildPageItem(
           context,
@@ -99,9 +99,9 @@ class MorePage extends StatelessWidget {
           context,
           icon: CustomIcons.waterClarities,
           title: Strings.of(context).waterClarityListPageMenuTitle,
-          page: WaterClarityListPage(),
+          page: const WaterClarityListPage(),
         ),
-        MinDivider(),
+        const MinDivider(),
         _buildPageItem(
           context,
           icon: Icons.cloud_download,
@@ -109,17 +109,15 @@ class MorePage extends StatelessWidget {
           page: ImportPage(),
           presentPage: true,
         ),
-        MinDivider(),
-      ]
-        ..addAll(_buildRateAndFeedbackItems(context))
-        ..addAll([
-          _buildPageItem(
-            context,
-            icon: Icons.settings,
-            title: Strings.of(context).settingsPageTitle,
-            page: SettingsPage(),
-          ),
-        ]),
+        const MinDivider(),
+        ..._buildRateAndFeedbackItems(context),
+        _buildPageItem(
+          context,
+          icon: Icons.settings,
+          title: Strings.of(context).settingsPageTitle,
+          page: SettingsPage(),
+        ),
+      ],
     );
   }
 
@@ -136,7 +134,7 @@ class MorePage extends StatelessWidget {
       key: feedbackKey,
       icon: Icons.feedback,
       title: Strings.of(context).feedbackPageTitle,
-      page: FeedbackPage(),
+      page: const FeedbackPage(),
       presentPage: true,
     );
 
@@ -144,7 +142,7 @@ class MorePage extends StatelessWidget {
       return [rateItem, feedbackItem];
     }
 
-    var borderSide = BorderSide(
+    var borderSide = const BorderSide(
       width: 1.0,
       color: Colors.green,
     );

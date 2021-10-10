@@ -22,8 +22,8 @@ class ImageManager {
   static ImageManager of(BuildContext context) =>
       Provider.of<AppManager>(context, listen: false).imageManager;
 
-  static final _dirNameImages = "2.0/images";
-  static final _dirNameThumbs = "2.0/thumbs";
+  static const _dirNameImages = "2.0/images";
+  static const _dirNameThumbs = "2.0/thumbs";
 
   static const _debug = false;
   static const _log = Log("ImageManager");
@@ -295,9 +295,7 @@ class ImageManager {
       return cachedImage.thumbnail(size);
     }
 
-    if (cachedImage == null) {
-      cachedImage = _CachedThumbnail(fileName);
-    }
+    cachedImage ??= _CachedThumbnail(fileName);
 
     // Create sized directory if it doesn't exist.
     var sizePath = "$_cachePath/${size.round()}";

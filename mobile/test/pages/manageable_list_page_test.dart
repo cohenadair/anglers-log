@@ -41,7 +41,7 @@ void main() {
     // EntityManagerListener is needed.
     appManager = StubbedAppManager();
 
-    when(appManager.authManager.stream).thenAnswer((_) => Stream.empty());
+    when(appManager.authManager.stream).thenAnswer((_) => const Stream.empty());
 
     when(appManager.catchManager.list()).thenReturn([]);
     when(appManager.catchManager.existsWith(speciesId: anyNamed("speciesId")))
@@ -53,7 +53,7 @@ void main() {
         .thenAnswer((_) => Future.value(true));
 
     when(appManager.subscriptionManager.stream)
-        .thenAnswer((_) => Stream.empty());
+        .thenAnswer((_) => const Stream.empty());
     when(appManager.subscriptionManager.isPro).thenReturn(false);
 
     speciesManager = SpeciesManager(appManager.app);
@@ -72,7 +72,7 @@ void main() {
   }
 
   Widget deleteWidget(BuildContext context, String item) =>
-      Text("Delete item?");
+      const Text("Delete item?");
   deleteItem(BuildContext context, String item) => items.remove(item);
 
   var defaultItemManager = ManageableListPageItemManager<String>(
@@ -113,8 +113,8 @@ void main() {
             pickerSettings: ManageableListPagePickerSettings<String>(
               isMulti: true,
               onPicked: (context, items) => false,
-              multiTitle: Text("Multi Title"),
-              title: Text("Single Title"),
+              multiTitle: const Text("Multi Title"),
+              title: const Text("Single Title"),
             ),
           ),
         ),
@@ -179,8 +179,8 @@ void main() {
             pickerSettings: ManageableListPagePickerSettings<String>(
               isMulti: false,
               onPicked: (context, items) => false,
-              multiTitle: Text("Multi Title"),
-              title: Text("Single Title"),
+              multiTitle: const Text("Multi Title"),
+              title: const Text("Single Title"),
             ),
           ),
         ),
@@ -390,7 +390,7 @@ void main() {
               loadItems: loadItems,
               deleteWidget: deleteWidget,
               deleteItem: deleteItem,
-              addPageBuilder: () => SaveNamePage(title: Text("New Name")),
+              addPageBuilder: () => const SaveNamePage(title: Text("New Name")),
               editPageBuilder: (_) => Empty(),
             ),
             itemBuilder: defaultItemBuilder,
@@ -598,7 +598,8 @@ void main() {
             itemManager: defaultItemManager,
             itemBuilder: (context, item) => ManageableListPageItemModel(
               child: Text(item),
-              grandchild: item == "White Bass" ? Text("Grandchild") : null,
+              grandchild:
+                  item == "White Bass" ? const Text("Grandchild") : null,
             ),
             pickerSettings: ManageableListPagePickerSettings<String>(
               onPicked: (context, items) => false,
@@ -754,7 +755,7 @@ void main() {
 
     await tester.enterText(find.byType(CupertinoTextField), "mouth");
     // Wait for SearchTimer.
-    await tester.pumpAndSettle(Duration(milliseconds: 750));
+    await tester.pumpAndSettle(const Duration(milliseconds: 750));
 
     expect(find.text("Smallmouth Bass"), findsOneWidget);
     expect(find.text("Largemouth Bass"), findsOneWidget);
@@ -779,7 +780,7 @@ void main() {
 
     await tester.enterText(find.byType(CupertinoTextField), "Pike");
     // Wait for SearchTimer.
-    await tester.pumpAndSettle(Duration(milliseconds: 750));
+    await tester.pumpAndSettle(const Duration(milliseconds: 750));
 
     expect(find.byType(EmptyListPlaceholder), findsOneWidget);
     expect(find.text("Smallmouth Bass"), findsNothing);
@@ -799,7 +800,7 @@ void main() {
         (_) => ManageableListPage<Species>(
           itemManager: ManageableListPageItemManager<Species>(
             loadItems: (species) => speciesManager.list(),
-            deleteWidget: (_, __) => Text("Delete"),
+            deleteWidget: (_, __) => const Text("Delete"),
             deleteItem: (_, __) {},
             listenerManagers: [speciesManager],
           ),
@@ -827,7 +828,7 @@ void main() {
         (_) => ManageableListPage<String>(
           itemManager: defaultItemManager,
           itemBuilder: defaultItemBuilder,
-          titleBuilder: (_) => Text("A Title"),
+          titleBuilder: (_) => const Text("A Title"),
         ),
       ),
     );
@@ -847,7 +848,7 @@ void main() {
           ),
           itemBuilder: (_, item) {
             if (item == "Smallmouth Bass") {
-              return ManageableListPageItemModel(
+              return const ManageableListPageItemModel(
                 child: Text("Smallmouth Bass"),
                 editable: false,
                 selectable: false,
@@ -878,7 +879,7 @@ void main() {
         ),
         itemBuilder: (_, item) {
           if (item == "Smallmouth Bass") {
-            return ManageableListPageItemModel(
+            return const ManageableListPageItemModel(
               child: Text("Smallmouth Bass"),
               editable: false,
             );
@@ -940,7 +941,7 @@ void main() {
         ),
         itemBuilder: (_, item) {
           if (item == "Smallmouth Bass") {
-            return ManageableListPageItemModel(
+            return const ManageableListPageItemModel(
               child: Text("Smallmouth Bass"),
               editable: false,
             );
@@ -1095,7 +1096,7 @@ void main() {
 
     await tester.pumpWidget(
       Testable(
-        (_) => SpeciesListPage(),
+        (_) => const SpeciesListPage(),
         appManager: appManager,
       ),
     );
@@ -1209,7 +1210,7 @@ void main() {
     );
 
     await enterTextAndSettle(tester, find.byType(CupertinoTextField), "Test");
-    await tester.pumpAndSettle(Duration(milliseconds: 500));
+    await tester.pumpAndSettle(const Duration(milliseconds: 500));
     expect(find.byIcon(Icons.search_off), findsOneWidget);
   });
 
@@ -1237,7 +1238,7 @@ void main() {
       (tester) async {
     await tester.pumpWidget(
       Testable(
-        (_) => SpeciesListPage(),
+        (_) => const SpeciesListPage(),
         appManager: appManager,
       ),
     );
@@ -1448,7 +1449,7 @@ void main() {
     expect(((widgets[5]).child as Text).data, "Rainbow");
 
     // Update an item and verify the change is shown in the list.
-    items[0]..name = "Bass (Edited)";
+    items[0].name = "Bass (Edited)";
     await speciesManager.addOrUpdate(species);
     await tester.pumpAndSettle();
     expect(find.text("Bass (Edited)"), findsOneWidget);

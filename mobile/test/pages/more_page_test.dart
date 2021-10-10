@@ -21,7 +21,7 @@ void main() {
 
   testWidgets("Page is pushed", (tester) async {
     await tester.pumpWidget(Testable(
-      (_) => MorePage(),
+      (_) => const MorePage(),
       appManager: appManager,
     ));
 
@@ -33,7 +33,7 @@ void main() {
 
   testWidgets("Page is presented", (tester) async {
     await tester.pumpWidget(Testable(
-      (_) => MorePage(),
+      (_) => const MorePage(),
       appManager: appManager,
     ));
 
@@ -46,7 +46,7 @@ void main() {
 
   testWidgets("Custom onTap", (tester) async {
     await tester.pumpWidget(Testable(
-      (_) => MorePage(),
+      (_) => const MorePage(),
       appManager: appManager,
     ));
 
@@ -61,7 +61,7 @@ void main() {
 
   testWidgets("Rate and feedback are not highlighted", (tester) async {
     await tester.pumpWidget(Testable(
-      (_) => MorePage(),
+      (_) => const MorePage(),
       appManager: appManager,
     ));
 

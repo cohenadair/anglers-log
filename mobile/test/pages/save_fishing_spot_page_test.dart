@@ -35,7 +35,7 @@ void main() {
 
   testWidgets("New title", (tester) async {
     await tester.pumpWidget(Testable(
-      (_) => SaveFishingSpotPage(
+      (_) => const SaveFishingSpotPage(
         latLng: LatLng(1.000000, 2.000000),
       ),
       appManager: appManager,
@@ -56,7 +56,7 @@ void main() {
         .thenAnswer((_) => Future.value(["image_name.png"]));
 
     await tester.pumpWidget(Testable(
-      (_) => SaveFishingSpotPage(
+      (_) => const SaveFishingSpotPage(
         latLng: LatLng(1.000000, 2.000000),
       ),
       appManager: appManager,
@@ -100,7 +100,7 @@ void main() {
 
   testWidgets("Save fishing spot no optional properties set", (tester) async {
     await tester.pumpWidget(Testable(
-      (_) => SaveFishingSpotPage(
+      (_) => const SaveFishingSpotPage(
         latLng: LatLng(1.000000, 2.000000),
       ),
       appManager: appManager,
@@ -123,7 +123,7 @@ void main() {
     var invoked = false;
     await tester.pumpWidget(Testable(
       (_) => SaveFishingSpotPage(
-        latLng: LatLng(1.000000, 2.000000),
+        latLng: const LatLng(1.000000, 2.000000),
         onSave: (_) => invoked = true,
       ),
       appManager: appManager,
@@ -154,7 +154,7 @@ void main() {
       appManager: appManager,
     ));
     // Wait for image future to finish.
-    await tester.pumpAndSettle(Duration(milliseconds: 50));
+    await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
     expect(find.text("Test Spot"), findsOneWidget);
     expect(find.text("Some test notes"), findsOneWidget);

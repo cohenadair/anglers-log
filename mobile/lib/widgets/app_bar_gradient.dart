@@ -10,7 +10,7 @@ class AppBarGradient extends StatelessWidget {
 
   final double height;
 
-  AppBarGradient({
+  const AppBarGradient({
     this.height = _defaultHeight,
   });
 

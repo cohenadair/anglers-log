@@ -61,20 +61,20 @@ class _LoginPageState extends State<LoginPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
-              Icon(
+              const Icon(
                 CustomIcons.catches,
                 size: _logoSize,
               ),
-              VerticalSpace(paddingWidget),
+              const VerticalSpace(paddingWidget),
               TitleLabel(Strings.of(context).appName),
-              VerticalSpace(paddingWidget),
+              const VerticalSpace(paddingWidget),
               TextInput.email(
                 context,
                 controller: _emailController,
                 onChanged: _clearError,
                 textInputAction: TextInputAction.next,
               ),
-              VerticalSpace(paddingWidgetTiny),
+              const VerticalSpace(paddingWidgetTiny),
               TextInput.password(
                 context,
                 controller: _passwordController,
@@ -82,16 +82,16 @@ class _LoginPageState extends State<LoginPage> {
                 onSubmitted: _handleLoginOrSignUp(),
               ),
               _buildErrorRow(),
-              VerticalSpace(paddingWidget),
+              const VerticalSpace(paddingWidget),
               Button(
                 text: _mode.buttonText(context),
                 onPressed: _handleLoginOrSignUp(),
               ),
-              VerticalSpace(paddingWidget),
+              const VerticalSpace(paddingWidget),
               _buildInfoRow(),
-              VerticalSpace(paddingWidget),
+              const VerticalSpace(paddingWidget),
               AnimatedVisibility(
-                child: Loading(isCentered: false),
+                child: const Loading(isCentered: false),
                 visible: _isLoading,
               ),
             ],

@@ -3,7 +3,7 @@ import 'package:quiver/strings.dart';
 import '../log.dart';
 
 class PropertiesFile {
-  final _log = Log("PropertiesFile");
+  final _log = const Log("PropertiesFile");
 
   final Map<String, String> _properties = {};
 

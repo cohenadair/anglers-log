@@ -23,10 +23,10 @@ import '../widgets/widget.dart';
 class BaitListPage extends StatefulWidget {
   final BaitListPagePickerSettings? pickerSettings;
 
-  BaitListPage() : pickerSettings = null;
+  const BaitListPage() : pickerSettings = null;
 
   /// To create a picker, use [BaitPickerInput].
-  BaitListPage._picker({
+  const BaitListPage._picker({
     this.pickerSettings,
   });
 
@@ -98,7 +98,7 @@ class _BaitListPageState extends State<BaitListPage> {
           assert(bait is Bait, "Cannot delete a non-bait object");
           _baitManager.delete(bait.id);
         },
-        addPageBuilder: () => SaveBaitPage(),
+        addPageBuilder: () => const SaveBaitPage(),
         detailPageBuilder: (bait) => BaitPage(bait as Bait),
         editPageBuilder: (bait) => SaveBaitPage.edit(bait),
       ),
@@ -218,7 +218,7 @@ class _BaitListPageState extends State<BaitListPage> {
   /// separately in this class.
   Set<Bait> _noVariantBaits(Set<dynamic> items) {
     var result = List.of(items);
-    result..removeWhere((e) => !(e is Bait) || e.variants.isNotEmpty);
+    result.removeWhere((e) => e is! Bait || e.variants.isNotEmpty);
     return result.map<Bait>((e) => e as Bait).toSet();
   }
 }
@@ -241,7 +241,7 @@ class BaitPickerInput extends StatelessWidget {
   /// being selected.
   final bool isAllEmpty;
 
-  BaitPickerInput({
+  const BaitPickerInput({
     required this.controller,
     required this.emptyValue,
     this.isAllEmpty = false,

@@ -11,7 +11,7 @@ class LocationMonitor {
   static LocationMonitor of(BuildContext context) =>
       Provider.of<AppManager>(context, listen: false).locationMonitor;
 
-  final _log = Log("LocationMonitor");
+  final _log = const Log("LocationMonitor");
   final distanceFilterMeters = 20;
 
   final AppManager appManager;

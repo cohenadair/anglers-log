@@ -22,6 +22,7 @@ class CheckboxInput extends StatelessWidget {
     this.onChanged,
   }) : assert(isNotEmpty(label));
 
+  @override
   Widget build(BuildContext context) {
     Widget descriptionWidget = Empty();
     if (isNotEmpty(description)) {
@@ -51,7 +52,7 @@ class PaddedCheckbox extends StatefulWidget {
   final EdgeInsets padding;
   final void Function(bool)? onChanged;
 
-  PaddedCheckbox({
+  const PaddedCheckbox({
     this.checked = false,
     this.enabled = true,
     this.padding = insetsZero,

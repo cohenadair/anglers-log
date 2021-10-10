@@ -49,10 +49,10 @@ void main() {
     expect(findFirst<AnimatedVisibility>(tester).visible, isFalse);
 
     when(appManager.authManager.login(any, any)).thenAnswer(
-        (_) => Future.delayed(Duration(milliseconds: 50), () => null));
+        (_) => Future.delayed(const Duration(milliseconds: 50), () => null));
 
     await tester.tap(find.text("LOGIN"));
-    await tester.pump(Duration(milliseconds: 100));
+    await tester.pump(const Duration(milliseconds: 100));
 
     expect(findFirst<AnimatedVisibility>(tester).visible, isTrue);
   });
@@ -71,10 +71,10 @@ void main() {
 
     when(appManager.authManager.login(any, any)).thenAnswer((_) =>
         Future.delayed(
-            Duration(milliseconds: 50), () => AuthError.noConnection));
+            const Duration(milliseconds: 50), () => AuthError.noConnection));
 
     await tester.tap(find.text("LOGIN"));
-    await tester.pump(Duration(milliseconds: 100));
+    await tester.pump(const Duration(milliseconds: 100));
 
     expect(find.text("Please connect to the internet and try again."),
         findsOneWidget);
@@ -85,7 +85,7 @@ void main() {
         .thenAnswer((_) => Future.value(null));
     when(appManager.authManager.login(any, any)).thenAnswer((_) =>
         Future.delayed(
-            Duration(milliseconds: 50), () => AuthError.wrongPassword));
+            const Duration(milliseconds: 50), () => AuthError.wrongPassword));
 
     await tester.pumpWidget(Testable(
       (_) => LoginPage(),
@@ -100,7 +100,7 @@ void main() {
 
     expect(findFirstWithText<Button>(tester, "LOGIN").onPressed, isNotNull);
     await tester.tap(find.text("LOGIN"));
-    await tester.pump(Duration(milliseconds: 100));
+    await tester.pump(const Duration(milliseconds: 100));
 
     expect(
       tapRichTextContaining(
@@ -164,10 +164,10 @@ void main() {
     expect(findFirst<AnimatedVisibility>(tester).visible, isFalse);
 
     when(appManager.authManager.login(any, any)).thenAnswer(
-        (_) => Future.delayed(Duration(milliseconds: 50), () => null));
+        (_) => Future.delayed(const Duration(milliseconds: 50), () => null));
 
     await tester.tap(find.text("LOGIN"));
-    await tester.pump(Duration(milliseconds: 100));
+    await tester.pump(const Duration(milliseconds: 100));
 
     expect(findFirst<AnimatedVisibility>(tester).visible, isTrue);
   });
@@ -192,10 +192,10 @@ void main() {
     expect(findFirst<AnimatedVisibility>(tester).visible, isFalse);
 
     when(appManager.authManager.signUp(any, any)).thenAnswer(
-        (_) => Future.delayed(Duration(milliseconds: 50), () => null));
+        (_) => Future.delayed(const Duration(milliseconds: 50), () => null));
 
     await tester.tap(find.text("SIGN UP"));
-    await tester.pump(Duration(milliseconds: 100));
+    await tester.pump(const Duration(milliseconds: 100));
 
     expect(findFirst<AnimatedVisibility>(tester).visible, isTrue);
   });

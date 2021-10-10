@@ -22,7 +22,7 @@ void main() {
   testWidgets("Custom input", (tester) async {
     await tester.pumpWidget(
       Testable(
-        (_) => EmptyListPlaceholder(
+        (_) => const EmptyListPlaceholder(
           title: "Test title",
           description: "Test description",
           icon: Icons.group,
@@ -41,7 +41,7 @@ void main() {
   testWidgets("Custom input scrollable", (tester) async {
     await tester.pumpWidget(
       Testable(
-        (_) => EmptyListPlaceholder(
+        (_) => const EmptyListPlaceholder(
           title: "Test title",
           description: "Test description",
           icon: Icons.group,

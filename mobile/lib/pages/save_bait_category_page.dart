@@ -10,9 +10,9 @@ import '../utils/validator.dart';
 class SaveBaitCategoryPage extends StatelessWidget {
   final BaitCategory? oldBaitCategory;
 
-  SaveBaitCategoryPage() : oldBaitCategory = null;
+  const SaveBaitCategoryPage() : oldBaitCategory = null;
 
-  SaveBaitCategoryPage.edit(this.oldBaitCategory);
+  const SaveBaitCategoryPage.edit(this.oldBaitCategory);
 
   @override
   Widget build(BuildContext context) {

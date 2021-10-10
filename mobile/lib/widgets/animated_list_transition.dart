@@ -6,7 +6,7 @@ class AnimatedListTransition extends StatelessWidget {
   final Animation<double> animation;
   final Widget child;
 
-  AnimatedListTransition({
+  const AnimatedListTransition({
     required this.animation,
     required this.child,
   });

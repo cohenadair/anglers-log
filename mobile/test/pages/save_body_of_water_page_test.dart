@@ -29,7 +29,7 @@ void main() {
 
   testWidgets("New title", (tester) async {
     await tester.pumpWidget(Testable(
-      (_) => SaveBodyOfWaterPage(),
+      (_) => const SaveBodyOfWaterPage(),
       appManager: appManager,
     ));
     expect(find.text("New Body Of Water"), findsOneWidget);
@@ -37,7 +37,7 @@ void main() {
 
   testWidgets("Save new", (tester) async {
     await tester.pumpWidget(Testable(
-      (_) => SaveBodyOfWaterPage(),
+      (_) => const SaveBodyOfWaterPage(),
       appManager: appManager,
     ));
 

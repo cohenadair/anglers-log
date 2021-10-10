@@ -22,7 +22,7 @@ void main() {
 
     await tester.pumpWidget(Testable(
       (_) => PhotoGalleryPage(
-        fileNames: [
+        fileNames: const [
           "flutter_logo.png",
           "anglers_log_logo.png",
           "apple_logo.png",
@@ -33,7 +33,7 @@ void main() {
       appManager: appManager,
     ));
     // Let image future settle.
-    await tester.pumpAndSettle(Duration(milliseconds: 250));
+    await tester.pumpAndSettle(const Duration(milliseconds: 250));
 
     expect(find.byType(Photo), findsOneWidget);
     verify(appManager.imageManager.image(
@@ -51,7 +51,7 @@ void main() {
 
     await tester.pumpWidget(Testable(
       (_) => PhotoGalleryPage(
-        fileNames: [
+        fileNames: const [
           "flutter_logo.png",
           "anglers_log_logo.png",
           "apple_logo.png",
@@ -62,7 +62,7 @@ void main() {
       appManager: appManager,
     ));
     // Let image future settle.
-    await tester.pumpAndSettle(Duration(milliseconds: 250));
+    await tester.pumpAndSettle(const Duration(milliseconds: 250));
 
     verify(appManager.imageManager.image(
       any,
@@ -71,8 +71,9 @@ void main() {
     )).called(1);
 
     // Swipe left.
-    await tester.fling(find.byType(PhotoGalleryPage), Offset(-300, 0), 800);
-    await tester.pumpAndSettle(Duration(milliseconds: 250));
+    await tester.fling(
+        find.byType(PhotoGalleryPage), const Offset(-300, 0), 800);
+    await tester.pumpAndSettle(const Duration(milliseconds: 250));
 
     verify(appManager.imageManager.image(
       any,
@@ -81,8 +82,9 @@ void main() {
     )).called(1);
 
     // Swipe back.
-    await tester.fling(find.byType(PhotoGalleryPage), Offset(300, 0), 800);
-    await tester.pumpAndSettle(Duration(milliseconds: 250));
+    await tester.fling(
+        find.byType(PhotoGalleryPage), const Offset(300, 0), 800);
+    await tester.pumpAndSettle(const Duration(milliseconds: 250));
 
     verify(appManager.imageManager.image(
       any,
@@ -99,7 +101,7 @@ void main() {
 
     await tester.pumpWidget(Testable(
       (_) => PhotoGalleryPage(
-        fileNames: [
+        fileNames: const [
           "flutter_logo.png",
           "anglers_log_logo.png",
           "apple_logo.png",
@@ -110,7 +112,7 @@ void main() {
       appManager: appManager,
     ));
     // Let image future settle.
-    await tester.pumpAndSettle(Duration(milliseconds: 250));
+    await tester.pumpAndSettle(const Duration(milliseconds: 250));
 
     // Verify correct image is loaded.
     verify(appManager.imageManager.image(
@@ -126,16 +128,17 @@ void main() {
     final touch2 = await tester.startGesture(center.translate(10, 0));
 
     // Zoom in.
-    await touch1.moveBy(Offset(-200, 0));
-    await touch2.moveBy(Offset(200, 0));
+    await touch1.moveBy(const Offset(-200, 0));
+    await touch2.moveBy(const Offset(200, 0));
     await touch1.up();
     await touch2.up();
 
     await tester.pumpAndSettle();
 
     // Swipe left should not work.
-    await tester.fling(find.byType(PhotoGalleryPage), Offset(-300, 0), 800);
-    await tester.pumpAndSettle(Duration(milliseconds: 250));
+    await tester.fling(
+        find.byType(PhotoGalleryPage), const Offset(-300, 0), 800);
+    await tester.pumpAndSettle(const Duration(milliseconds: 250));
 
     // TODO: This shouldn't actually be called. There's an issue loading images
     //  in widget tests that causes them to have no size. So unless an image

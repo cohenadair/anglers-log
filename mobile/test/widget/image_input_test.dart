@@ -44,17 +44,17 @@ void main() {
       tester,
       (_) => ImageInput(
         controller: controller,
-        initialImageNames: [],
+        initialImageNames: const [],
       ),
       appManager: appManager,
     );
     // Wait for futures.
-    await tester.pumpAndSettle(Duration(milliseconds: 50));
+    await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
     await tapAndSettle(tester, find.byType(ImagePicker));
 
     // Wait for futures.
-    await tester.pumpAndSettle(Duration(milliseconds: 50));
+    await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
     expect(find.byType(ImagePickerPage), findsOneWidget);
     await tapAndSettle(tester, find.byType(Image).first);
@@ -70,7 +70,7 @@ void main() {
       tester,
       (_) => ImageInput(
         controller: ListInputController<PickedImage>(),
-        initialImageNames: [],
+        initialImageNames: const [],
       ),
       appManager: appManager,
     );
@@ -94,7 +94,7 @@ void main() {
       tester,
       (_) => ImageInput(
         controller: controller,
-        initialImageNames: ["flutter_logo.png"],
+        initialImageNames: const ["flutter_logo.png"],
       ),
       appManager: appManager,
     );
@@ -116,12 +116,12 @@ void main() {
       appManager: appManager,
     );
     // Wait for futures.
-    await tester.pumpAndSettle(Duration(milliseconds: 50));
+    await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
     await tapAndSettle(tester, find.byType(ImagePicker));
 
     // Wait for futures.
-    await tester.pumpAndSettle(Duration(milliseconds: 50));
+    await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
     expect(find.byType(ImagePickerPage), findsOneWidget);
     await tapAndSettle(tester, find.byType(Image).first);

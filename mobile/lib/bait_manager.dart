@@ -36,19 +36,20 @@ class BaitManager extends ImageEntityManager<Bait> {
   Bait entityFromBytes(List<int> bytes) => Bait.fromBuffer(bytes);
 
   @override
-  Id id(Bait bait) => bait.id;
+  Id id(Bait entity) => entity.id;
 
   @override
-  String name(Bait bait) => bait.name;
+  String name(Bait entity) => entity.name;
 
   @override
   String get tableName => "bait";
 
   @override
-  void setImageName(Bait bait, String imageName) => bait.imageName = imageName;
+  void setImageName(Bait entity, String imageName) =>
+      entity.imageName = imageName;
 
   @override
-  void clearImageName(Bait bait) => bait.clearImageName();
+  void clearImageName(Bait entity) => entity.clearImageName();
 
   @override
   bool matchesFilter(Id id, String? filter, [BuildContext? context]) {

@@ -11,7 +11,7 @@ import 'save_water_clarity_page.dart';
 class WaterClarityListPage extends StatelessWidget {
   final ManageableListPagePickerSettings<WaterClarity>? pickerSettings;
 
-  WaterClarityListPage({
+  const WaterClarityListPage({
     this.pickerSettings,
   });
 
@@ -48,7 +48,7 @@ class WaterClarityListPage extends StatelessWidget {
             Text(waterClarityManager.deleteMessage(context, clarity)),
         deleteItem: (context, clarity) =>
             waterClarityManager.delete(clarity.id),
-        addPageBuilder: () => SaveWaterClarityPage(),
+        addPageBuilder: () => const SaveWaterClarityPage(),
         editPageBuilder: (clarity) => SaveWaterClarityPage.edit(clarity),
       ),
     );

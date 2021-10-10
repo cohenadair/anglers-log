@@ -17,7 +17,7 @@ class OnboardingJourney extends StatefulWidget {
   final VoidCallback? onFinishedMigration;
   final VoidCallback onFinished;
 
-  OnboardingJourney({
+  const OnboardingJourney({
     this.legacyJsonResult,
     this.onFinishedMigration,
     required this.onFinished,
@@ -34,7 +34,7 @@ class _OnboardingJourneyState extends State<OnboardingJourney> {
   static const _routeLocationPermission = "location_permission";
   static const _routeFeedback = "feedback";
 
-  final _log = Log("OnboardingJourney");
+  static const _log = Log("OnboardingJourney");
 
   AppManager get _appManager => AppManager.of(context);
 

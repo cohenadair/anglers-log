@@ -19,7 +19,7 @@ void main() {
   setUp(() async {
     appManager = StubbedAppManager();
 
-    when(appManager.authManager.stream).thenAnswer((_) => Stream.empty());
+    when(appManager.authManager.stream).thenAnswer((_) => const Stream.empty());
 
     catchManager = appManager.catchManager;
 
@@ -30,7 +30,7 @@ void main() {
         .thenAnswer((_) => Future.value(true));
 
     when(appManager.subscriptionManager.stream)
-        .thenAnswer((_) => Stream.empty());
+        .thenAnswer((_) => const Stream.empty());
     when(appManager.subscriptionManager.isPro).thenReturn(false);
 
     fishingSpotManager = FishingSpotManager(appManager.app);
@@ -38,7 +38,7 @@ void main() {
 
   test("Fishing spot within radius", () async {
     // Null cases.
-    var fishingSpot = fishingSpotManager.withinRadius(LatLng(0, 0), 20);
+    var fishingSpot = fishingSpotManager.withinRadius(const LatLng(0, 0), 20);
     expect(fishingSpot, isNull);
 
     fishingSpot = fishingSpotManager.withinRadius(null);
@@ -56,8 +56,8 @@ void main() {
       ..lat = 35.955348
       ..lng = -84.240310;
     await fishingSpotManager.addOrUpdate(newSpot);
-    fishingSpot =
-        fishingSpotManager.withinRadius(LatLng(35.955348, -84.240310), 20);
+    fishingSpot = fishingSpotManager.withinRadius(
+        const LatLng(35.955348, -84.240310), 20);
     expect(fishingSpot, isNotNull);
     await fishingSpotManager.delete(newSpot.id);
 
@@ -67,8 +67,8 @@ void main() {
       ..lat = 35.953638
       ..lng = -84.241233;
     await fishingSpotManager.addOrUpdate(newSpot);
-    fishingSpot =
-        fishingSpotManager.withinRadius(LatLng(35.955348, -84.240310), 20);
+    fishingSpot = fishingSpotManager.withinRadius(
+        const LatLng(35.955348, -84.240310), 20);
     expect(fishingSpot, isNull);
     await fishingSpotManager.delete(newSpot.id);
 
@@ -86,8 +86,8 @@ void main() {
       ..lat = 35.955335
       ..lng = -84.240300);
 
-    fishingSpot =
-        fishingSpotManager.withinRadius(LatLng(35.955340, -84.240295), 20);
+    fishingSpot = fishingSpotManager.withinRadius(
+        const LatLng(35.955340, -84.240295), 20);
     expect(fishingSpot, isNotNull);
     expect(fishingSpot!.lat, 35.955335);
     expect(fishingSpot.lng, -84.240300);

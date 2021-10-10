@@ -14,7 +14,7 @@ import 'onboarding_page.dart';
 class CatchFieldPickerPage extends StatefulWidget {
   final VoidCallback? onNext;
 
-  CatchFieldPickerPage({
+  const CatchFieldPickerPage({
     this.onNext,
   });
 
@@ -46,13 +46,13 @@ class _CatchFieldPickerPageState extends State<CatchFieldPickerPage> {
       onPressedNextButton: widget.onNext == null ? null : _onPressedNext,
       children: <Widget>[
         SafeArea(child: Empty()),
-        Padding(
+        const Padding(
           padding: insetsHorizontalDefault,
           child: WatermarkLogo(
             icon: CustomIcons.catches,
           ),
         ),
-        VerticalSpace(paddingWidget),
+        const VerticalSpace(paddingWidget),
         Padding(
           padding: insetsHorizontalDefault,
           child: Text(
@@ -62,8 +62,9 @@ class _CatchFieldPickerPageState extends State<CatchFieldPickerPage> {
             style: stylePrimary(context),
           ),
         ),
-        VerticalSpace(paddingWidget),
-      ]..addAll(_buildFieldOptions()),
+        const VerticalSpace(paddingWidget),
+        ..._buildFieldOptions(),
+      ],
     );
   }
 

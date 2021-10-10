@@ -23,7 +23,7 @@ void main() {
   setUp(() {
     appManager = StubbedAppManager();
 
-    when(appManager.authManager.stream).thenAnswer((_) => Stream.empty());
+    when(appManager.authManager.stream).thenAnswer((_) => const Stream.empty());
 
     when(appManager.localDatabaseManager.fetchAll(any))
         .thenAnswer((_) => Future.value([]));
@@ -33,7 +33,7 @@ void main() {
     when(appManager.propertiesManager.visualCrossingApiKey).thenReturn("");
 
     when(appManager.subscriptionManager.stream)
-        .thenAnswer((_) => Stream.empty());
+        .thenAnswer((_) => const Stream.empty());
     when(appManager.subscriptionManager.isPro).thenReturn(false);
     when(appManager.subscriptionManager.isFree).thenReturn(true);
 
@@ -47,7 +47,7 @@ void main() {
     when(appManager.userPreferenceManager.windSpeedSystem)
         .thenReturn(MeasurementSystem.metric);
     when(appManager.userPreferenceManager.stream)
-        .thenAnswer((_) => Stream.empty());
+        .thenAnswer((_) => const Stream.empty());
 
     fetcher = MockAtmosphereFetcher();
     controller = InputController<Atmosphere>();
@@ -320,7 +320,7 @@ void main() {
         .thenAnswer((_) => Future.value(null));
 
     await tapAndSettle(tester, find.byIcon(Icons.chevron_right));
-    await tester.drag(find.byType(RefreshIndicator), Offset(0, 300));
+    await tester.drag(find.byType(RefreshIndicator), const Offset(0, 300));
     await tester.pumpAndSettle();
 
     expect(find.byType(ProPage), findsOneWidget);
@@ -339,7 +339,7 @@ void main() {
     ));
 
     await tapAndSettle(tester, find.byIcon(Icons.chevron_right));
-    await tester.drag(find.byType(RefreshIndicator), Offset(0, 300));
+    await tester.drag(find.byType(RefreshIndicator), const Offset(0, 300));
     await tester.pumpAndSettle();
 
     expect(find.byType(SnackBar), findsOneWidget);
@@ -392,7 +392,7 @@ void main() {
     );
 
     await tapAndSettle(tester, find.byIcon(Icons.chevron_right));
-    await tester.drag(find.byType(RefreshIndicator), Offset(0, 300));
+    await tester.drag(find.byType(RefreshIndicator), const Offset(0, 300));
     await tester.pumpAndSettle();
 
     expect(controller.hasValue, isTrue);

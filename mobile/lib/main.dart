@@ -22,7 +22,7 @@ void main() {
 class AnglersLog extends StatefulWidget {
   final AppManager appManager;
 
-  AnglersLog(this.appManager);
+  const AnglersLog(this.appManager);
 
   @override
   _AnglersLogState createState() => _AnglersLogState();
@@ -60,7 +60,7 @@ class _AnglersLogState extends State<AnglersLog> {
           buttonTheme: ButtonThemeData(
             disabledColor: Colors.lightBlue.shade500,
           ),
-          iconTheme: IconThemeData(
+          iconTheme: const IconThemeData(
             color: Colors.lightBlue,
           ),
           errorColor: Colors.red,
@@ -81,7 +81,7 @@ class _AnglersLogState extends State<AnglersLog> {
           GlobalMaterialLocalizations.delegate,
           GlobalWidgetsLocalizations.delegate,
         ],
-        supportedLocales: [
+        supportedLocales: const [
           Locale('en', 'US'),
           Locale('en', 'CA'),
         ],

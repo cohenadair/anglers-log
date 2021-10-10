@@ -19,7 +19,7 @@ void main() {
     appManager = StubbedAppManager();
 
     when(appManager.authManager.userId).thenReturn("");
-    when(appManager.authManager.stream).thenAnswer((_) => Stream.empty());
+    when(appManager.authManager.stream).thenAnswer((_) => const Stream.empty());
 
     when(appManager.propertiesManager.revenueCatApiKey).thenReturn("");
 
@@ -41,7 +41,7 @@ void main() {
     await subscriptionManager.initialize();
 
     controller.notify();
-    await Future.delayed(Duration(milliseconds: 50));
+    await Future.delayed(const Duration(milliseconds: 50));
 
     verify(appManager.purchasesWrapper.identify(any)).called(1);
     verifyNever(appManager.purchasesWrapper.reset());
@@ -55,7 +55,7 @@ void main() {
     await subscriptionManager.initialize();
 
     controller.notify();
-    await Future.delayed(Duration(milliseconds: 50));
+    await Future.delayed(const Duration(milliseconds: 50));
 
     verifyNever(appManager.purchasesWrapper.identify(any));
     verify(appManager.purchasesWrapper.reset()).called(1);
@@ -171,7 +171,7 @@ void main() {
     expect(restoreResult, RestoreSubscriptionResult.success);
     expect(subscriptionManager.isPro, isTrue);
 
-    await Future.delayed(Duration(milliseconds: 50));
+    await Future.delayed(const Duration(milliseconds: 50));
     expect(called, isTrue);
 
     listener.cancel();

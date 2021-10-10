@@ -20,7 +20,7 @@ class BaitVariantListItem extends StatelessWidget {
   final VoidCallback? onDelete;
   final void Function(BaitVariant)? onSave;
 
-  BaitVariantListItem(
+  const BaitVariantListItem(
     this.variant, {
     this.trailing,
     this.isEditing = false,

@@ -54,7 +54,7 @@ void main() {
         .thenAnswer((_) => Future.value(true));
 
     var user = MockUser();
-    when(user.uid).thenReturn(Uuid().v4().toString());
+    when(user.uid).thenReturn(const Uuid().v4().toString());
     var userCredential = MockUserCredential();
     when(userCredential.user).thenReturn(user);
     when(appManager.firebaseAuthWrapper.signInWithEmailAndPassword(
@@ -109,7 +109,7 @@ void main() {
     // Initializing state until all managers have been initialized.
     authManager.stream.listen((_) => callbackStates.add(authManager.state));
     listener(user);
-    await Future.delayed(Duration(milliseconds: 50));
+    await Future.delayed(const Duration(milliseconds: 50));
 
     expect(callbackStates.length, 2);
     expect(callbackStates.first, AuthState.initializing);

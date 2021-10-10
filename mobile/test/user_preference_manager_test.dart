@@ -18,7 +18,7 @@ void main() {
   setUp(() async {
     appManager = StubbedAppManager();
 
-    when(appManager.authManager.stream).thenAnswer((_) => Stream.empty());
+    when(appManager.authManager.stream).thenAnswer((_) => const Stream.empty());
     when(appManager.authManager.firestoreDocPath).thenAnswer((_) => "usr");
 
     when(appManager.localDatabaseManager.insertOrReplace(any, any))
@@ -32,7 +32,7 @@ void main() {
     )).thenAnswer((_) => Future.value(true));
 
     when(appManager.subscriptionManager.stream)
-        .thenAnswer((_) => Stream.empty());
+        .thenAnswer((_) => const Stream.empty());
     when(appManager.subscriptionManager.isPro).thenReturn(false);
 
     preferenceManager = UserPreferenceManager(appManager.app);
@@ -51,20 +51,21 @@ void main() {
 
     when(appManager.app.customEntityManager).thenReturn(realEntityManager);
 
-    var doc = MockDocumentReference();
+    var doc = MockDocumentReference<Map<String, dynamic>>();
 
     var map = <String, dynamic>{};
-    var snapshot = MockDocumentSnapshot();
+    var snapshot = MockDocumentSnapshot<Map<String, dynamic>>();
     when(snapshot.data()).thenReturn(map);
 
-    var stream = MockStream<MockDocumentSnapshot>();
+    var stream = MockStream<MockDocumentSnapshot<Map<String, dynamic>>>();
     when(appManager.firestoreWrapper.doc(any)).thenReturn(doc);
 
-    Function(DocumentSnapshot)? listener;
+    Function(DocumentSnapshot<Map<String, dynamic>>)? listener;
     when(stream.listen(any)).thenAnswer(((invocation) {
       listener = invocation.positionalArguments.first;
       listener!(snapshot);
-      return MockStreamSubscription<MockDocumentSnapshot>();
+      return MockStreamSubscription<
+          MockDocumentSnapshot<Map<String, dynamic>>>();
     }));
     when(doc.snapshots()).thenAnswer((_) => stream);
 
@@ -77,7 +78,7 @@ void main() {
     when(snapshot.exists).thenReturn(true);
     when(doc.get()).thenAnswer((_) => Future.value(snapshot));
     when(doc.update(any)).thenAnswer((invocation) {
-      map..addAll(invocation.positionalArguments.first);
+      map.addAll(invocation.positionalArguments.first);
       return Future.value();
     });
 
@@ -101,7 +102,7 @@ void main() {
       await realEntityManager.delete(deleteEntity.id);
 
       // Give some time for listeners to to be invoked.
-      await Future.delayed(Duration(milliseconds: 50));
+      await Future.delayed(const Duration(milliseconds: 50));
 
       // Trust Firestore listeners will work and invoke listener manually.
       listener!(snapshot);

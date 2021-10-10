@@ -42,7 +42,7 @@ class AuthManager {
 
   static const _collectionUser = "user";
 
-  final _log = Log("AuthManager");
+  final _log = const Log("AuthManager");
   final _controller = VoidStreamController();
 
   final AppManager _appManager;
@@ -141,8 +141,6 @@ class AuthManager {
         return AuthError.wrongPassword;
       case "email-already-in-use":
         return AuthError.emailInUse;
-      case "invalid-email":
-        return AuthError.invalidEmail;
       case "operation-not-allowed":
         return AuthError.operationNotAllowed;
       case "weak-password":

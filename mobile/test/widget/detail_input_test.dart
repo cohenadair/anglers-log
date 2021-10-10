@@ -7,24 +7,24 @@ import '../test_utils.dart';
 
 void main() {
   testWidgets("Right chevron added", (tester) async {
-    await tester.pumpWidget(Testable((_) => DetailInput()));
+    await tester.pumpWidget(Testable((_) => const DetailInput()));
     expect(find.byIcon(Icons.chevron_right), findsOneWidget);
   });
 
   testWidgets("Custom padding", (tester) async {
     await tester.pumpWidget(Testable(
-      (_) => DetailInput(
+      (_) => const DetailInput(
         padding: EdgeInsets.all(5),
       ),
     ));
     expect(
       (tester.widgetList<Padding>(find.byType(Padding)).first).padding,
-      EdgeInsets.all(5),
+      const EdgeInsets.all(5),
     );
   });
 
   testWidgets("Default padding", (tester) async {
-    await tester.pumpWidget(Testable((_) => DetailInput()));
+    await tester.pumpWidget(Testable((_) => const DetailInput()));
     expect(
       (tester.widgetList<Padding>(find.byType(Padding)).first).padding,
       insetsDefault,

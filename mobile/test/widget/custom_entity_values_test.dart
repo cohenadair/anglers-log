@@ -18,7 +18,7 @@ void main() {
 
   testWidgets("Empty input", (tester) async {
     await tester.pumpWidget(
-        Testable((_) => CustomEntityValues([]), appManager: appManager));
+        Testable((_) => const CustomEntityValues([]), appManager: appManager));
     expect(find.byType(Empty), findsOneWidget);
   });
 

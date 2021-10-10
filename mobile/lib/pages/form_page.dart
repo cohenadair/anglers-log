@@ -105,7 +105,7 @@ class FormPage extends StatefulWidget {
   final FieldMapBuilder? _fieldMapBuilder;
   final FieldListBuilder? _fieldListBuilder;
 
-  FormPage({
+  const FormPage({
     Key? key,
     this.popupMenuKey,
     this.title,
@@ -129,7 +129,7 @@ class FormPage extends StatefulWidget {
         _fieldListBuilder = null,
         super(key: key);
 
-  FormPage.immutable({
+  const FormPage.immutable({
     Key? key,
     Widget? title,
     Widget? header,
@@ -161,7 +161,7 @@ class FormPage extends StatefulWidget {
           fieldListBuilder: fieldBuilder,
         );
 
-  FormPage._({
+  const FormPage._({
     Key? key,
     this.popupMenuKey,
     this.title,
@@ -215,7 +215,7 @@ class _FormPageState extends State<FormPage> {
               // animation to appear "jarring" where as a complete replace of
               // the widget looks nicer.
               if (widget.showLoadingOverSave) {
-                return Loading(
+                return const Loading(
                   padding: EdgeInsets.only(
                     right: paddingDefault,
                     top: paddingDefault,
@@ -268,11 +268,11 @@ class _FormPageState extends State<FormPage> {
           Strings.of(context).formPageManageFieldText,
           () => present(context, _addFieldSelectionPage())));
     }
-    options..addAll(widget.overflowOptions);
+    options.addAll(widget.overflowOptions);
 
     return PopupMenuButton<FormPageOverflowOption>(
       key: widget.popupMenuKey,
-      icon: Icon(FormPage.moreMenuIcon),
+      icon: const Icon(FormPage.moreMenuIcon),
       itemBuilder: (context) =>
           options.map((e) => e.toPopupMenuItem()).toList(),
       onSelected: (option) => option.action(),
@@ -325,7 +325,7 @@ class FormPageOverflowOption {
   final String name;
   final VoidCallback action;
 
-  FormPageOverflowOption(this.name, this.action);
+  const FormPageOverflowOption(this.name, this.action);
 
   PopupMenuItem<FormPageOverflowOption> toPopupMenuItem() {
     return PopupMenuItem<FormPageOverflowOption>(
@@ -347,7 +347,7 @@ class _SelectionPage extends StatefulWidget {
   final List<Field> fields;
   final void Function(Set<Id>) onSelectItems;
 
-  _SelectionPage({
+  const _SelectionPage({
     this.allowCustomFields = true,
     required this.fields,
     required this.onSelectItems,
@@ -397,7 +397,7 @@ class _SelectionPageState extends State<_SelectionPage> {
       icon: Icon(_addItemIconData),
       onPressed: () {
         if (_subscriptionManager.isPro) {
-          present(context, SaveCustomEntityPage());
+          present(context, const SaveCustomEntityPage());
         } else {
           present(context, ProPage());
         }
@@ -439,7 +439,7 @@ class _SelectionPageState extends State<_SelectionPage> {
 
     if (widget.allowCustomFields) {
       // Add custom field separator/title.
-      result..add(PickerPageItem.heading(Strings.of(context).customFields));
+      result.add(PickerPageItem.heading(Strings.of(context).customFields));
 
       // Add customs fields that aren't already part of the form.
       for (var entity in customEntityManager.list()) {
@@ -481,7 +481,7 @@ class _SelectionPageState extends State<_SelectionPage> {
   Set<Id> initialPickerItems(List<PickerPageItem<dynamic>> allItems) {
     return allItems
         .where((item) {
-          if (!item.hasValue || !(item.value is Id)) {
+          if (!item.hasValue || item.value is! Id) {
             return false;
           }
 

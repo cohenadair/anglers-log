@@ -87,268 +87,192 @@ class AppManager {
   UrlLauncherWrapper? _urlLauncherWrapper;
 
   AnglerManager get anglerManager {
-    if (_anglerManager == null) {
-      _anglerManager = AnglerManager(this);
-    }
+    _anglerManager ??= AnglerManager(this);
     return _anglerManager!;
   }
 
   AppPreferenceManager get appPreferenceManager {
-    if (_appPreferenceManager == null) {
-      _appPreferenceManager = AppPreferenceManager(this);
-    }
+    _appPreferenceManager ??= AppPreferenceManager(this);
     return _appPreferenceManager!;
   }
 
   AuthManager get authManager {
-    if (_authManager == null) {
-      _authManager = AuthManager(this);
-    }
+    _authManager ??= AuthManager(this);
     return _authManager!;
   }
 
   BaitCategoryManager get baitCategoryManager {
-    if (_baitCategoryManager == null) {
-      _baitCategoryManager = BaitCategoryManager(this);
-    }
+    _baitCategoryManager ??= BaitCategoryManager(this);
     return _baitCategoryManager!;
   }
 
   BaitManager get baitManager {
-    if (_baitManager == null) {
-      _baitManager = BaitManager(this);
-    }
+    _baitManager ??= BaitManager(this);
     return _baitManager!;
   }
 
   BodyOfWaterManager get bodyOfWaterManager {
-    if (_bodyOfWaterManager == null) {
-      _bodyOfWaterManager = BodyOfWaterManager(this);
-    }
+    _bodyOfWaterManager ??= BodyOfWaterManager(this);
     return _bodyOfWaterManager!;
   }
 
   CatchManager get catchManager {
-    if (_catchManager == null) {
-      _catchManager = CatchManager(this);
-    }
+    _catchManager ??= CatchManager(this);
     return _catchManager!;
   }
 
   CustomEntityManager get customEntityManager {
-    if (_customEntityManager == null) {
-      _customEntityManager = CustomEntityManager(this);
-    }
+    _customEntityManager ??= CustomEntityManager(this);
     return _customEntityManager!;
   }
 
   FishingSpotManager get fishingSpotManager {
-    if (_fishingSpotManager == null) {
-      _fishingSpotManager = FishingSpotManager(this);
-    }
+    _fishingSpotManager ??= FishingSpotManager(this);
     return _fishingSpotManager!;
   }
 
   ImageManager get imageManager {
-    if (_imageManager == null) {
-      _imageManager = ImageManager(this);
-    }
+    _imageManager ??= ImageManager(this);
     return _imageManager!;
   }
 
   LocalDatabaseManager get localDatabaseManager {
-    if (_localDatabaseManager == null) {
-      _localDatabaseManager = LocalDatabaseManager(this);
-    }
+    _localDatabaseManager ??= LocalDatabaseManager(this);
     return _localDatabaseManager!;
   }
 
   LocationMonitor get locationMonitor {
-    if (_locationMonitor == null) {
-      _locationMonitor = LocationMonitor(this);
-    }
+    _locationMonitor ??= LocationMonitor(this);
     return _locationMonitor!;
   }
 
   MethodManager get methodManager {
-    if (_methodManager == null) {
-      _methodManager = MethodManager(this);
-    }
+    _methodManager ??= MethodManager(this);
     return _methodManager!;
   }
 
   PropertiesManager get propertiesManager {
-    if (_propertiesManager == null) {
-      _propertiesManager = PropertiesManager();
-    }
+    _propertiesManager ??= PropertiesManager();
     return _propertiesManager!;
   }
 
   ReportManager get reportManager {
-    if (_reportManager == null) {
-      _reportManager = ReportManager(this);
-    }
+    _reportManager ??= ReportManager(this);
     return _reportManager!;
   }
 
   SpeciesManager get speciesManager {
-    if (_speciesManager == null) {
-      _speciesManager = SpeciesManager(this);
-    }
+    _speciesManager ??= SpeciesManager(this);
     return _speciesManager!;
   }
 
   SubscriptionManager get subscriptionManager {
-    if (_subscriptionManager == null) {
-      _subscriptionManager = SubscriptionManager(this);
-    }
+    _subscriptionManager ??= SubscriptionManager(this);
     return _subscriptionManager!;
   }
 
   TimeManager get timeManager {
-    if (_timeManager == null) {
-      _timeManager = TimeManager();
-    }
+    _timeManager ??= TimeManager();
     return _timeManager!;
   }
 
   TripManager get tripManager {
-    if (_tripManager == null) {
-      _tripManager = TripManager();
-    }
+    _tripManager ??= TripManager();
     return _tripManager!;
   }
 
   UserPreferenceManager get userPreferenceManager {
-    if (_userPreferenceManager == null) {
-      _userPreferenceManager = UserPreferenceManager(this);
-    }
+    _userPreferenceManager ??= UserPreferenceManager(this);
     return _userPreferenceManager!;
   }
 
   WaterClarityManager get waterClarityManager {
-    if (_waterClarityManager == null) {
-      _waterClarityManager = WaterClarityManager(this);
-    }
+    _waterClarityManager ??= WaterClarityManager(this);
     return _waterClarityManager!;
   }
 
   FilePickerWrapper get filePickerWrapper {
-    if (_filePickerWrapper == null) {
-      _filePickerWrapper = FilePickerWrapper();
-    }
+    _filePickerWrapper ??= FilePickerWrapper();
     return _filePickerWrapper!;
   }
 
   FirebaseAuthWrapper get firebaseAuthWrapper {
-    if (_firebaseAuthWrapper == null) {
-      _firebaseAuthWrapper = FirebaseAuthWrapper();
-    }
+    _firebaseAuthWrapper ??= FirebaseAuthWrapper();
     return _firebaseAuthWrapper!;
   }
 
   FirebaseStorageWrapper get firebaseStorageWrapper {
-    if (_firebaseStorageWrapper == null) {
-      _firebaseStorageWrapper = FirebaseStorageWrapper();
-    }
+    _firebaseStorageWrapper ??= FirebaseStorageWrapper();
     return _firebaseStorageWrapper!;
   }
 
   FirebaseWrapper get firebaseWrapper {
-    if (_firebaseWrapper == null) {
-      _firebaseWrapper = FirebaseWrapper();
-    }
+    _firebaseWrapper ??= FirebaseWrapper();
     return _firebaseWrapper!;
   }
 
   FirestoreWrapper get firestoreWrapper {
-    if (_firestoreWrapper == null) {
-      _firestoreWrapper = FirestoreWrapper();
-    }
+    _firestoreWrapper ??= FirestoreWrapper();
     return _firestoreWrapper!;
   }
 
   HttpWrapper get httpWrapper {
-    if (_httpWrapper == null) {
-      _httpWrapper = HttpWrapper();
-    }
+    _httpWrapper ??= HttpWrapper();
     return _httpWrapper!;
   }
 
   ImageCompressWrapper get imageCompressWrapper {
-    if (_imageCompressWrapper == null) {
-      _imageCompressWrapper = ImageCompressWrapper();
-    }
+    _imageCompressWrapper ??= ImageCompressWrapper();
     return _imageCompressWrapper!;
   }
 
   ImagePickerWrapper get imagePickerWrapper {
-    if (_imagePickerWrapper == null) {
-      _imagePickerWrapper = ImagePickerWrapper();
-    }
+    _imagePickerWrapper ??= ImagePickerWrapper();
     return _imagePickerWrapper!;
   }
 
   IoWrapper get ioWrapper {
-    if (_ioWrapper == null) {
-      _ioWrapper = IoWrapper();
-    }
+    _ioWrapper ??= IoWrapper();
     return _ioWrapper!;
   }
 
   PackageInfoWrapper get packageInfoWrapper {
-    if (_packageInfoWrapper == null) {
-      _packageInfoWrapper = PackageInfoWrapper();
-    }
+    _packageInfoWrapper ??= PackageInfoWrapper();
     return _packageInfoWrapper!;
   }
 
   PathProviderWrapper get pathProviderWrapper {
-    if (_pathProviderWrapper == null) {
-      _pathProviderWrapper = PathProviderWrapper();
-    }
+    _pathProviderWrapper ??= PathProviderWrapper();
     return _pathProviderWrapper!;
   }
 
   PermissionHandlerWrapper get permissionHandlerWrapper {
-    if (_permissionHandlerWrapper == null) {
-      _permissionHandlerWrapper = PermissionHandlerWrapper();
-    }
+    _permissionHandlerWrapper ??= PermissionHandlerWrapper();
     return _permissionHandlerWrapper!;
   }
 
   PhotoManagerWrapper get photoManagerWrapper {
-    if (_photoManagerWrapper == null) {
-      _photoManagerWrapper = PhotoManagerWrapper();
-    }
+    _photoManagerWrapper ??= PhotoManagerWrapper();
     return _photoManagerWrapper!;
   }
 
   PurchasesWrapper get purchasesWrapper {
-    if (_purchasesWrapper == null) {
-      _purchasesWrapper = PurchasesWrapper();
-    }
+    _purchasesWrapper ??= PurchasesWrapper();
     return _purchasesWrapper!;
   }
 
   ServicesWrapper get servicesWrapper {
-    if (_servicesWrapper == null) {
-      _servicesWrapper = ServicesWrapper();
-    }
+    _servicesWrapper ??= ServicesWrapper();
     return _servicesWrapper!;
   }
 
   SharedPreferencesWrapper get sharedPreferencesWrapper {
-    if (_sharedPreferencesWrapper == null) {
-      _sharedPreferencesWrapper = SharedPreferencesWrapper();
-    }
+    _sharedPreferencesWrapper ??= SharedPreferencesWrapper();
     return _sharedPreferencesWrapper!;
   }
 
   UrlLauncherWrapper get urlLauncherWrapper {
-    if (_urlLauncherWrapper == null) {
-      _urlLauncherWrapper = UrlLauncherWrapper();
-    }
+    _urlLauncherWrapper ??= UrlLauncherWrapper();
     return _urlLauncherWrapper!;
   }
 }

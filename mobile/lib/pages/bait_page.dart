@@ -20,7 +20,7 @@ class BaitPage extends StatefulWidget {
   /// See [EntityPage.static].
   final bool static;
 
-  BaitPage(
+  const BaitPage(
     this.bait, {
     this.static = false,
   });
@@ -57,7 +57,7 @@ class _BaitPageState extends State<BaitPage> {
         _bait = _baitManager.entity(widget.bait.id) ?? _bait;
 
         return EntityPage(
-          padding: EdgeInsets.only(
+          padding: const EdgeInsets.only(
             top: paddingDefault,
             bottom: paddingDefault,
           ),
@@ -107,7 +107,7 @@ class _BaitPageState extends State<BaitPage> {
     return Align(
       alignment: Alignment.centerLeft,
       child: Padding(
-        padding: EdgeInsets.only(
+        padding: const EdgeInsets.only(
           left: paddingDefault,
           right: paddingDefault,
           bottom: paddingWidget,

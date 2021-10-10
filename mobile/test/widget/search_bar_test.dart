@@ -12,7 +12,7 @@ void main() {
       Testable(
         (_) => SearchBar(
           delegate: InputSearchBarDelegate((_) {}),
-          leading: Text("LEAD"),
+          leading: const Text("LEAD"),
         ),
       ),
     );
@@ -36,7 +36,7 @@ void main() {
       Testable(
         (_) => SearchBar(
           delegate: InputSearchBarDelegate((_) {}),
-          trailing: Text("TRAIL"),
+          trailing: const Text("TRAIL"),
         ),
       ),
     );

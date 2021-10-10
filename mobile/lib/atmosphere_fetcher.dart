@@ -21,7 +21,7 @@ class AtmosphereFetcher {
   static const _path =
       "/VisualCrossingWebServices/rest/services/timeline/%s,%s/%s";
 
-  final _log = Log("AtmosphereFetcher");
+  final _log = const Log("AtmosphereFetcher");
 
   final AppManager appManager;
   final int timestamp;
@@ -200,7 +200,7 @@ class AtmosphereFetcher {
     }
 
     var daysList = json["days"];
-    if (daysList == null || !(daysList is List)) {
+    if (daysList == null || daysList is! List) {
       _log.e("Response body has invalid \"days\" key: ${response.body}");
       return null;
     }

@@ -15,7 +15,7 @@ class DetailInput extends StatelessWidget {
   /// The children of the widget, laid out in a [Row].
   final List<Widget> children;
 
-  DetailInput({
+  const DetailInput({
     this.padding,
     this.onTap,
     this.isEnabled = true,

@@ -8,19 +8,19 @@ import '../test_utils.dart';
 void main() {
   group("SingleLineText", () {
     testWidgets("Null text renders Empty", (tester) async {
-      await pumpContext(tester, (_) => SingleLineText(null));
+      await pumpContext(tester, (_) => const SingleLineText(null));
       expect(find.byType(Empty), findsOneWidget);
       expect(find.byType(Text), findsNothing);
     });
 
     testWidgets("Empty text renders Empty", (tester) async {
-      await pumpContext(tester, (_) => SingleLineText(""));
+      await pumpContext(tester, (_) => const SingleLineText(""));
       expect(find.byType(Empty), findsOneWidget);
       expect(find.byType(Text), findsNothing);
     });
 
     testWidgets("Non-empty text renders text", (tester) async {
-      await pumpContext(tester, (_) => SingleLineText("Test"));
+      await pumpContext(tester, (_) => const SingleLineText("Test"));
       expect(find.byType(Empty), findsNothing);
       expect(find.byType(Text), findsOneWidget);
     });
@@ -32,7 +32,7 @@ void main() {
         Testable(
           (_) => IconLabel(
             text: "Test",
-            icon: Icon(Icons.group),
+            icon: const Icon(Icons.group),
           ),
         ),
       );
@@ -44,7 +44,7 @@ void main() {
         Testable(
           (_) => IconLabel(
             text: "Test %s",
-            icon: Icon(Icons.group),
+            icon: const Icon(Icons.group),
           ),
         ),
       );
@@ -56,7 +56,7 @@ void main() {
     testWidgets("State color", (tester) async {
       await tester.pumpWidget(
         Testable(
-          (_) => EnabledLabel(
+          (_) => const EnabledLabel(
             "Test",
             enabled: true,
           ),
@@ -67,7 +67,7 @@ void main() {
 
       await tester.pumpWidget(
         Testable(
-          (_) => EnabledLabel(
+          (_) => const EnabledLabel(
             "Test 2",
             enabled: false,
           ),

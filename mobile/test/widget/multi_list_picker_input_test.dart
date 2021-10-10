@@ -8,7 +8,7 @@ void main() {
     await tester.pumpWidget(
       Testable(
         (_) => MultiListPickerInput(
-          values: {},
+          values: const {},
           emptyValue: (_) => "Empty",
           onTap: () {},
         ),
@@ -21,7 +21,7 @@ void main() {
     await tester.pumpWidget(
       Testable(
         (_) => MultiListPickerInput(
-          values: {"Value 1", "Value 2"},
+          values: const {"Value 1", "Value 2"},
           emptyValue: (_) => "Empty",
           onTap: () {},
         ),

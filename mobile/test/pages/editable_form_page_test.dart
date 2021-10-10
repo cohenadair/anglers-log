@@ -44,7 +44,7 @@ void main() {
   testWidgets("Note shows when there are no custom values", (tester) async {
     when(appManager.customEntityManager.entityExists(any)).thenReturn(false);
     await tester.pumpWidget(Testable(
-      (_) => EditableFormPage(),
+      (_) => const EditableFormPage(),
       appManager: appManager,
     ));
 
@@ -365,7 +365,7 @@ void main() {
     await pumpContext(
       tester,
       (_) => EditableFormPage(
-        fields: {},
+        fields: const {},
         onBuildField: (id) => Text(id.toString()),
         customEntityValues: [
           CustomEntityValue()
@@ -385,7 +385,7 @@ void main() {
     await pumpContext(
       tester,
       (_) => EditableFormPage(
-        fields: {},
+        fields: const {},
         onBuildField: (_) => Empty(),
         isEditable: true,
       ),
@@ -404,7 +404,7 @@ void main() {
     await pumpContext(
       tester,
       (_) => EditableFormPage(
-        fields: {},
+        fields: const {},
         onBuildField: (id) => Text(id.toString()),
         customEntityIds: [
           custom1.id,
@@ -422,7 +422,7 @@ void main() {
     await pumpContext(
       tester,
       (_) => EditableFormPage(
-        fields: {},
+        fields: const {},
         onBuildField: (id) => Text(id.toString()),
         isEditable: false,
       ),

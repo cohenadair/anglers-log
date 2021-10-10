@@ -137,12 +137,12 @@ class _PickerPageState<T> extends State<PickerPage<T>> {
       children: children
         ..addAll(items.map((item) {
           if (item._divider) {
-            return MinDivider();
+            return const MinDivider();
           }
 
           if (item._heading) {
             return Padding(
-              padding: EdgeInsets.only(
+              padding: const EdgeInsets.only(
                 bottom: paddingWidget,
               ),
               child: HeadingDivider(item.title!),

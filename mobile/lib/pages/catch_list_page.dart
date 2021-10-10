@@ -45,7 +45,7 @@ class CatchListPage extends StatelessWidget {
       fishingSpotIds.isNotEmpty ||
       baits.isNotEmpty;
 
-  CatchListPage({
+  const CatchListPage({
     this.enableAdding = true,
     this.dateRange,
     this.catchIds = const {},
@@ -54,6 +54,7 @@ class CatchListPage extends StatelessWidget {
     this.speciesIds = const {},
   });
 
+  @override
   Widget build(BuildContext context) {
     var baitCategoryManager = BaitCategoryManager.of(context);
     var baitManager = BaitManager.of(context);
@@ -96,7 +97,7 @@ class CatchListPage extends StatelessWidget {
         deleteWidget: (context, cat) =>
             Text(catchManager.deleteMessage(context, cat)),
         deleteItem: (context, cat) => catchManager.delete(cat.id),
-        addPageBuilder: enableAdding ? () => AddCatchJourney() : null,
+        addPageBuilder: enableAdding ? () => const AddCatchJourney() : null,
         detailPageBuilder: (cat) => CatchPage(cat),
         editPageBuilder: (cat) => SaveCatchPage.edit(cat),
       ),

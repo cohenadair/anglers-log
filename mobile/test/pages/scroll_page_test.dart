@@ -8,7 +8,7 @@ void main() {
   testWidgets("Centered content", (tester) async {
     await tester.pumpWidget(
       Testable(
-        (_) => ScrollPage(
+        (_) => const ScrollPage(
           centerContent: true,
           children: [
             Text("Test"),
@@ -23,7 +23,7 @@ void main() {
   testWidgets("Not centered content", (tester) async {
     await tester.pumpWidget(
       Testable(
-        (_) => ScrollPage(
+        (_) => const ScrollPage(
           children: [
             Text("Test"),
           ],
@@ -38,7 +38,7 @@ void main() {
     await tester.pumpWidget(
       Testable(
         (_) => ScrollPage(
-          children: [
+          children: const [
             Text("Test"),
           ],
           onRefresh: () => Future.value(),
@@ -52,7 +52,7 @@ void main() {
   testWidgets("No refresh indicator", (tester) async {
     await tester.pumpWidget(
       Testable(
-        (_) => ScrollPage(
+        (_) => const ScrollPage(
           children: [
             Text("Test"),
           ],
@@ -67,12 +67,12 @@ void main() {
     await pumpContext(
       tester,
       (_) => ScrollPage(
-        children: [
+        children: const [
           Text("Test"),
         ],
         footer: [
           TextButton(
-            child: Text("Tap Me"),
+            child: const Text("Tap Me"),
             onPressed: () {},
           ),
         ],
@@ -89,7 +89,7 @@ void main() {
   testWidgets("No clip behavior with empty footer", (tester) async {
     await pumpContext(
       tester,
-      (_) => ScrollPage(
+      (_) => const ScrollPage(
         children: [
           Text("Test"),
         ],
@@ -107,7 +107,7 @@ void main() {
   testWidgets("Null footer buttons with empty input", (tester) async {
     await pumpContext(
       tester,
-      (_) => ScrollPage(
+      (_) => const ScrollPage(
         children: [
           Text("Test"),
         ],
@@ -123,7 +123,7 @@ void main() {
   testWidgets("Non-null footer buttons with valid input", (tester) async {
     await pumpContext(
       tester,
-      (_) => ScrollPage(
+      (_) => const ScrollPage(
         children: [
           Text("Test"),
         ],

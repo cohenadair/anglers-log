@@ -48,7 +48,7 @@ void main() {
     ));
 
     // Wait for map future to finish.
-    await tester.pumpAndSettle(Duration(milliseconds: 300));
+    await tester.pumpAndSettle(const Duration(milliseconds: 300));
     await mapController.finishLoading(tester);
   }
 
@@ -193,7 +193,8 @@ void main() {
   });
 
   testWidgets("Start value is current location", (tester) async {
-    when(appManager.locationMonitor.currentLocation).thenReturn(LatLng(5, 6));
+    when(appManager.locationMonitor.currentLocation)
+        .thenReturn(const LatLng(5, 6));
 
     await pumpMap(tester, FishingSpotMap());
 
@@ -213,7 +214,8 @@ void main() {
   });
 
   testWidgets("Uses default zoom when start is not null", (tester) async {
-    when(appManager.locationMonitor.currentLocation).thenReturn(LatLng(5, 6));
+    when(appManager.locationMonitor.currentLocation)
+        .thenReturn(const LatLng(5, 6));
 
     await pumpMap(tester, FishingSpotMap());
 
@@ -451,8 +453,8 @@ void main() {
       ),
     );
 
-    var normal = "ckt1zqb8d1h1p17pglx4pmz4y";
-    var satellite = "ckt1m613b127t17qqf3mmw47h";
+    var normal = "ckt1m613b127t17qqf3mmw47h";
+    var satellite = "ckt1zqb8d1h1p17pglx4pmz4y";
 
     expect(findMap(tester).styleString!.contains(normal), isTrue);
     expect(find.text("Spot 1"), findsNWidgets(2));
@@ -476,7 +478,7 @@ void main() {
       ),
     );
 
-    var normal = "ckt1zqb8d1h1p17pglx4pmz4y";
+    var normal = "ckt1m613b127t17qqf3mmw47h";
 
     expect(findMap(tester).styleString!.contains(normal), isTrue);
 
@@ -532,7 +534,8 @@ void main() {
 
   testWidgets("Picking current location button drops pin", (tester) async {
     when(appManager.fishingSpotManager.entityExists(any)).thenReturn(false);
-    when(appManager.locationMonitor.currentLocation).thenReturn(LatLng(1, 2));
+    when(appManager.locationMonitor.currentLocation)
+        .thenReturn(const LatLng(1, 2));
     when(appManager.permissionHandlerWrapper.requestLocation())
         .thenAnswer((_) => Future.value(true));
 
@@ -552,7 +555,8 @@ void main() {
 
   testWidgets("Current location button clears fishing spot when not picking",
       (tester) async {
-    when(appManager.locationMonitor.currentLocation).thenReturn(LatLng(1, 2));
+    when(appManager.locationMonitor.currentLocation)
+        .thenReturn(const LatLng(1, 2));
     when(appManager.permissionHandlerWrapper.requestLocation())
         .thenAnswer((_) => Future.value(true));
 
@@ -984,7 +988,8 @@ void main() {
   testWidgets("Setting up picker drops pin at current location",
       (tester) async {
     when(appManager.fishingSpotManager.entityExists(any)).thenReturn(false);
-    when(appManager.locationMonitor.currentLocation).thenReturn(LatLng(1, 2));
+    when(appManager.locationMonitor.currentLocation)
+        .thenReturn(const LatLng(1, 2));
 
     await pumpMap(
       tester,
@@ -1017,7 +1022,8 @@ void main() {
   });
 
   testWidgets("Map movement is animated", (tester) async {
-    when(appManager.locationMonitor.currentLocation).thenReturn(LatLng(1, 2));
+    when(appManager.locationMonitor.currentLocation)
+        .thenReturn(const LatLng(1, 2));
     when(appManager.permissionHandlerWrapper.requestLocation())
         .thenAnswer((_) => Future.value(true));
 
@@ -1097,7 +1103,7 @@ void main() {
 class _DidUpdateWidgetTester extends StatefulWidget {
   final InputController<FishingSpot> controller;
 
-  _DidUpdateWidgetTester(this.controller);
+  const _DidUpdateWidgetTester(this.controller);
 
   @override
   __DidUpdateWidgetTesterState createState() => __DidUpdateWidgetTesterState();

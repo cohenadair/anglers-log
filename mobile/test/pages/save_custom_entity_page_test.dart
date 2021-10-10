@@ -22,7 +22,7 @@ void main() {
 
   testWidgets("New title", (tester) async {
     await tester.pumpWidget(Testable(
-      (_) => SaveCustomEntityPage(),
+      (_) => const SaveCustomEntityPage(),
       appManager: appManager,
     ));
     expect(find.text("New Field"), findsOneWidget);
@@ -38,7 +38,7 @@ void main() {
 
   testWidgets("Save button state updates when name changes", (tester) async {
     await tester.pumpWidget(Testable(
-      (_) => SaveCustomEntityPage(),
+      (_) => const SaveCustomEntityPage(),
       appManager: appManager,
     ));
 
@@ -51,7 +51,7 @@ void main() {
 
   testWidgets("All type options are rendered", (tester) async {
     await tester.pumpWidget(Testable(
-      (_) => SaveCustomEntityPage(),
+      (_) => const SaveCustomEntityPage(),
       appManager: appManager,
     ));
 
@@ -100,7 +100,7 @@ void main() {
 
   testWidgets("New with minimum properties", (tester) async {
     await tester.pumpWidget(Testable(
-      (_) => SaveCustomEntityPage(),
+      (_) => const SaveCustomEntityPage(),
       appManager: appManager,
     ));
 

@@ -35,26 +35,26 @@ void main() {
     when(appManager.userPreferenceManager.autoFetchAtmosphere)
         .thenReturn(false);
     when(appManager.userPreferenceManager.stream)
-        .thenAnswer((_) => Stream.empty());
+        .thenAnswer((_) => const Stream.empty());
   });
 
   testWidgets("Menu hiding/showing", (tester) async {
     await tester.pumpWidget(
       Testable(
-        (_) => HowToManageFieldsPage(),
+        (_) => const HowToManageFieldsPage(),
         appManager: appManager,
       ),
     );
     // One for title.
     expect(find.text("Manage Fields"), findsOneWidget);
 
-    await tester.pump(Duration(milliseconds: 2000));
+    await tester.pump(const Duration(milliseconds: 2000));
     expect(find.text("Manage Fields"), findsNWidgets(2));
 
-    await tester.pump(Duration(milliseconds: 2000));
+    await tester.pump(const Duration(milliseconds: 2000));
     expect(find.text("Manage Fields"), findsOneWidget);
 
-    await tester.pump(Duration(milliseconds: 2000));
+    await tester.pump(const Duration(milliseconds: 2000));
     expect(find.text("Manage Fields"), findsNWidgets(2));
   });
 }

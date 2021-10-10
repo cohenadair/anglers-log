@@ -118,7 +118,7 @@ void main() {
       var controller = TimestampInputController(
         StubbedAppManager().timeManager,
         date: DateTime(2020, 1, 15),
-        time: TimeOfDay(hour: 15, minute: 30),
+        time: const TimeOfDay(hour: 15, minute: 30),
       );
       expect(controller.value,
           DateTime(2020, 1, 15, 15, 30).millisecondsSinceEpoch);

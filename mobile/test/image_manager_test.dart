@@ -29,10 +29,10 @@ void main() {
     var directory = MockDirectory();
     when(directory.create(recursive: anyNamed("recursive")))
         .thenAnswer((realInvocation) => Future.value(directory));
-    when(directory.list()).thenAnswer((_) => Stream.empty());
+    when(directory.list()).thenAnswer((_) => const Stream.empty());
 
     when(appManager.subscriptionManager.stream)
-        .thenAnswer((_) => Stream.empty());
+        .thenAnswer((_) => const Stream.empty());
     when(appManager.subscriptionManager.isPro).thenReturn(false);
 
     when(appManager.imageCompressWrapper.compress(any, any, any))
@@ -242,7 +242,7 @@ void main() {
 
     // File doesn't exist, but user isn't pro.
     when(appManager.subscriptionManager.stream)
-        .thenAnswer((_) => Stream.empty());
+        .thenAnswer((_) => const Stream.empty());
     when(appManager.subscriptionManager.isPro).thenReturn(false);
     when(file.exists()).thenAnswer((_) => Future.value(false));
     expect(await imageManager.image(context, fileName: "test.jpg"), isNull);
@@ -403,7 +403,7 @@ void main() {
       controller.add(null);
 
       // Wait for callback to finish.
-      await Future.delayed(Duration(milliseconds: 50));
+      await Future.delayed(const Duration(milliseconds: 50));
       verify(appManager.ioWrapper.directory(any)).called(1);
       verifyNever(appManager.firebaseStorageWrapper.ref(any));
     });
@@ -442,7 +442,7 @@ void main() {
       subController.add(null);
 
       // Wait for callback to finish.
-      await Future.delayed(Duration(milliseconds: 50));
+      await Future.delayed(const Duration(milliseconds: 50));
       verify(appManager.ioWrapper.directory(any)).called(1);
       verify(appManager.firebaseStorageWrapper.ref(any)).called(2);
       verifyNever(appManager.subscriptionManager.isPro);
@@ -481,7 +481,7 @@ void main() {
       subController.add(null);
 
       // Wait for callback to finish.
-      await Future.delayed(Duration(milliseconds: 50));
+      await Future.delayed(const Duration(milliseconds: 50));
       verify(appManager.ioWrapper.directory(any)).called(1);
       verify(appManager.firebaseStorageWrapper.ref(any)).called(2);
       verify(appManager.subscriptionManager.isPro).called(2);

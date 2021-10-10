@@ -82,7 +82,7 @@ class EditableFormPage extends StatefulWidget {
   /// See [FormPage.overflowOptions].
   final List<FormPageOverflowOption> overflowOptions;
 
-  EditableFormPage({
+  const EditableFormPage({
     this.popupMenuKey,
     this.title,
     this.header,
@@ -214,7 +214,7 @@ class _EditableFormPageState extends State<EditableFormPage> {
     }
 
     return Padding(
-      padding: EdgeInsets.only(
+      padding: const EdgeInsets.only(
         top: paddingWidget,
         bottom: paddingWidgetSmall,
       ),

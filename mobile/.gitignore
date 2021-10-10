@@ -81,3 +81,4 @@ ios/Flutter/flutter_export_environment.sh
 # Sensitive
 assets/sensitive.properties
 android/keystore.properties
+android/signed-apk-keystore.jks

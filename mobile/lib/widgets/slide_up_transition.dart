@@ -12,7 +12,7 @@ class SlideUpTransition extends StatefulWidget {
   final VoidCallback? onDismissed;
   final bool isVisible;
 
-  SlideUpTransition({
+  const SlideUpTransition({
     required this.child,
     this.onDismissed,
     this.isVisible = true,
@@ -45,7 +45,7 @@ class _SlideUpTransitionState extends State<SlideUpTransition>
     };
 
     _offset = Tween<Offset>(
-      begin: Offset(0.0, 1.0),
+      begin: const Offset(0.0, 1.0),
       end: Offset.zero,
     ).animate(_controller);
   }

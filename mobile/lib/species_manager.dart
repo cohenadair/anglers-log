@@ -18,25 +18,25 @@ class SpeciesManager extends NamedEntityManager<Species> {
   Species entityFromBytes(List<int> bytes) => Species.fromBuffer(bytes);
 
   @override
-  Id id(Species species) => species.id;
+  Id id(Species entity) => entity.id;
 
   @override
-  String name(Species species) => species.name;
+  String name(Species entity) => entity.name;
 
   @override
   String get tableName => "species";
 
   @override
   Future<bool> delete(
-    Id id, {
+    Id entityId, {
     bool notify = true,
   }) async {
     // Species is a required field of Catch, so do not allow users to delete
     // species that are attached to any catches.
-    if (_catchManager.existsWith(speciesId: id)) {
+    if (_catchManager.existsWith(speciesId: entityId)) {
       return false;
     }
-    return super.delete(id, notify: notify);
+    return super.delete(entityId, notify: notify);
   }
 
   int numberOfCatches(Id? speciesId) => numberOf<Catch>(

@@ -15,7 +15,7 @@ class Button extends StatelessWidget {
   final Icon? icon;
   final Color? color;
 
-  Button({
+  const Button({
     required this.text,
     required this.onPressed,
     this.icon,
@@ -58,35 +58,35 @@ class ActionButton extends StatelessWidget {
 
   final String? _stringId;
 
-  ActionButton({
+  const ActionButton({
     required this.text,
     this.onPressed,
     this.condensed = false,
     this.textColor,
   }) : _stringId = null;
 
-  ActionButton.done({
+  const ActionButton.done({
     this.onPressed,
     this.condensed = false,
     this.textColor,
   })  : _stringId = "done",
         text = null;
 
-  ActionButton.save({
+  const ActionButton.save({
     this.onPressed,
     this.condensed = false,
     this.textColor,
   })  : _stringId = "save",
         text = null;
 
-  ActionButton.cancel({
+  const ActionButton.cancel({
     this.onPressed,
     this.condensed = false,
     this.textColor,
   })  : _stringId = "cancel",
         text = null;
 
-  ActionButton.edit({
+  const ActionButton.edit({
     this.onPressed,
     this.condensed = false,
     this.textColor,
@@ -105,12 +105,12 @@ class ActionButton extends StatelessWidget {
     );
 
     Widget child = RawMaterialButton(
-      constraints: BoxConstraints(),
+      constraints: const BoxConstraints(),
       padding: EdgeInsets.all(condensed ? paddingSmall : paddingDefault),
       onPressed: onPressed,
       child: textWidget,
-      shape: CircleBorder(side: BorderSide(color: Colors.transparent)),
-      textStyle: TextStyle(
+      shape: const CircleBorder(side: BorderSide(color: Colors.transparent)),
+      textStyle: const TextStyle(
         fontWeight: FontWeight.w500,
         color: Colors.black,
       ),
@@ -170,7 +170,7 @@ class MinimumIconButton extends StatelessWidget {
   final VoidCallback? onTap;
   final Color? color;
 
-  MinimumIconButton({
+  const MinimumIconButton({
     required this.icon,
     this.color,
     this.onTap,
@@ -203,7 +203,6 @@ class MinimumIconButton extends StatelessWidget {
 class FloatingButton extends StatelessWidget {
   static const double _fabSize = 40.0;
 
-  final Key? key;
   final EdgeInsets? padding;
 
   /// The icon shown inside the "floating" part of the button. If null, [text]
@@ -235,7 +234,7 @@ class FloatingButton extends StatelessWidget {
   final bool _isCloseButton;
 
   FloatingButton({
-    this.key,
+    Key? key,
     this.padding,
     this.icon,
     this.text,
@@ -246,10 +245,11 @@ class FloatingButton extends StatelessWidget {
   })  : assert((icon == null && isNotEmpty(text)) ||
             (icon != null && isEmpty(text))),
         _isBackButton = false,
-        _isCloseButton = false;
+        _isCloseButton = false,
+        super(key: key);
 
-  FloatingButton.icon({
-    this.key,
+  const FloatingButton.icon({
+    Key? key,
     this.padding,
     required this.icon,
     this.onPressed,
@@ -258,10 +258,11 @@ class FloatingButton extends StatelessWidget {
     this.transparentBackground = false,
   })  : _isBackButton = false,
         _isCloseButton = false,
-        text = null;
+        text = null,
+        super(key: key);
 
-  FloatingButton.back({
-    this.key,
+  const FloatingButton.back({
+    Key? key,
     this.padding,
     this.transparentBackground = false,
   })  : _isBackButton = true,
@@ -270,10 +271,11 @@ class FloatingButton extends StatelessWidget {
         label = null,
         pushed = false,
         icon = null,
-        text = null;
+        text = null,
+        super(key: key);
 
-  FloatingButton.close({
-    this.key,
+  const FloatingButton.close({
+    Key? key,
     this.padding,
     this.transparentBackground = false,
   })  : _isBackButton = false,
@@ -282,17 +284,18 @@ class FloatingButton extends StatelessWidget {
         label = null,
         pushed = false,
         icon = null,
-        text = null;
+        text = null,
+        super(key: key);
 
   @override
   Widget build(BuildContext context) {
     Widget circleChild;
     if (_isBackButton) {
       if (Theme.of(context).platform == TargetPlatform.android) {
-        circleChild = Icon(Icons.arrow_back);
+        circleChild = const Icon(Icons.arrow_back);
       } else {
         // The iOS back button icon is not centered, so add some padding.
-        circleChild = Padding(
+        circleChild = const Padding(
           padding: insetsLeftWidgetSmall,
           child: Icon(
             Icons.arrow_back_ios,
@@ -315,13 +318,14 @@ class FloatingButton extends StatelessWidget {
       child: Column(
         children: [
           Container(
-            decoration:
-                transparentBackground ? null : FloatingBoxDecoration.circle(),
+            decoration: transparentBackground
+                ? null
+                : const FloatingBoxDecoration.circle(),
             width: _fabSize,
             height: _fabSize,
             child: RawMaterialButton(
               child: circleChild,
-              shape: CircleBorder(),
+              shape: const CircleBorder(),
               fillColor: transparentBackground
                   ? null
                   : (pushed ? Colors.grey : Colors.white),
@@ -346,12 +350,12 @@ class FloatingButton extends StatelessWidget {
 }
 
 class SmallTextButton extends StatelessWidget {
-  static final _fontSize = 14.0;
+  static const _fontSize = 14.0;
 
   final String text;
   final VoidCallback? onPressed;
 
-  SmallTextButton({
+  const SmallTextButton({
     required this.text,
     this.onPressed,
   });
@@ -375,7 +379,7 @@ class SmallTextButton extends StatelessWidget {
 class FakeTextButton extends StatelessWidget {
   final String text;
 
-  FakeTextButton(this.text);
+  const FakeTextButton(this.text);
 
   @override
   Widget build(BuildContext context) {

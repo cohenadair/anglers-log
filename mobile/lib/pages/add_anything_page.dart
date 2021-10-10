@@ -15,7 +15,7 @@ class AddAnythingPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // TODO: Verify BackdropFilter fix on GoogleMap (https://github.com/flutter/flutter/issues/43902)
+    // TODO: Verify BackdropFilter fix on map (https://github.com/flutter/flutter/issues/43902)
     return BackdropFilter(
       filter: ImageFilter.blur(
         sigmaX: _blurSigma,
@@ -42,7 +42,7 @@ class AddAnythingPage extends StatelessWidget {
                             label: Strings.of(context).addAnythingPageCatch,
                             onPressed: () {
                               Navigator.of(context).pop();
-                              present(context, AddCatchJourney());
+                              present(context, const AddCatchJourney());
                             },
                           ),
                           FloatingButton.icon(

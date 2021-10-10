@@ -286,8 +286,8 @@ abstract class EntityManager<T extends GeneratedMessage>
   }
 
   @protected
-  int numberOf<T extends GeneratedMessage>(
-      Id? id, List<T> items, bool Function(T) matches) {
+  int numberOf<E extends GeneratedMessage>(
+      Id? id, List<E> items, bool Function(E) matches) {
     if (id == null) {
       return 0;
     }
@@ -377,7 +377,7 @@ class EntityListenerBuilder extends StatefulWidget {
   /// for a smoother transition. Defaults to true.
   final bool onDeleteEnabled;
 
-  EntityListenerBuilder({
+  const EntityListenerBuilder({
     required this.managers,
     required this.builder,
     this.onAdd,

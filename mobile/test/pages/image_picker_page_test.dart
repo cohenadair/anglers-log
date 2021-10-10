@@ -52,7 +52,7 @@ void main() {
       ),
       appManager: appManager,
     ));
-    await tester.pumpAndSettle(Duration(milliseconds: 50));
+    await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
     expect(find.byType(EmptyListPlaceholder), findsOneWidget);
   });
@@ -65,7 +65,7 @@ void main() {
       ),
       appManager: appManager,
     ));
-    await tester.pumpAndSettle(Duration(milliseconds: 50));
+    await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
     expect(find.byType(EmptyListPlaceholder), findsOneWidget);
   });
@@ -79,7 +79,7 @@ void main() {
       ),
       appManager: appManager,
     ));
-    await tester.pumpAndSettle(Duration(milliseconds: 50));
+    await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
     expect(find.byType(EmptyListPlaceholder), findsOneWidget);
   });
@@ -95,7 +95,7 @@ void main() {
       ),
       appManager: appManager,
     ));
-    await tester.pumpAndSettle(Duration(milliseconds: 50));
+    await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
     expect(find.byIcon(Icons.check_circle), findsNWidgets(2));
   });
@@ -109,7 +109,7 @@ void main() {
       ),
       appManager: appManager,
     ));
-    await tester.pumpAndSettle(Duration(milliseconds: 50));
+    await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
     await tapAndSettle(tester, find.text("Gallery"));
     await tapAndSettle(tester, find.text("Camera").last);
@@ -126,7 +126,7 @@ void main() {
       ),
       appManager: appManager,
     ));
-    await tester.pumpAndSettle(Duration(milliseconds: 50));
+    await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
     when(appManager.imagePickerWrapper.getImage(any))
         .thenAnswer((_) => Future.value(PickedFile("")));
@@ -146,7 +146,7 @@ void main() {
       ),
       appManager: appManager,
     ));
-    await tester.pumpAndSettle(Duration(milliseconds: 50));
+    await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
     when(appManager.filePickerWrapper.pickFiles(
       type: anyNamed("type"),
@@ -169,7 +169,7 @@ void main() {
       ),
       appManager: appManager,
     ));
-    await tester.pumpAndSettle(Duration(milliseconds: 50));
+    await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
     when(appManager.filePickerWrapper.pickFiles(
       type: anyNamed("type"),
@@ -186,7 +186,7 @@ void main() {
     when(appManager.filePickerWrapper.pickFiles(
       type: anyNamed("type"),
       allowMultiple: anyNamed("allowMultiple"),
-    )).thenAnswer((_) => Future.value(FilePickerResult([])));
+    )).thenAnswer((_) => Future.value(const FilePickerResult([])));
 
     await tapAndSettle(tester, find.text("Gallery"));
     await tapAndSettle(tester, find.text("Browse").last);
@@ -204,7 +204,7 @@ void main() {
       ),
       appManager: appManager,
     ));
-    await tester.pumpAndSettle(Duration(milliseconds: 50));
+    await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
     when(appManager.filePickerWrapper.pickFiles(
       type: anyNamed("type"),
@@ -212,8 +212,8 @@ void main() {
     )).thenAnswer(
       (_) => Future.value(
         FilePickerResult([
-          PlatformFile(path: "test.jpg"),
-          PlatformFile(path: "test2.png"),
+          PlatformFile(path: "test.jpg", name: "test.jpg", size: 100),
+          PlatformFile(path: "test2.png", name: "test2.png", size: 100),
         ]),
       ),
     );
@@ -232,7 +232,7 @@ void main() {
       ),
       appManager: appManager,
     ));
-    await tester.pumpAndSettle(Duration(milliseconds: 50));
+    await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
     expect(find.text("DONE"), findsNothing);
   });
@@ -244,7 +244,7 @@ void main() {
       ),
       appManager: appManager,
     ));
-    await tester.pumpAndSettle(Duration(milliseconds: 50));
+    await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
     expect(find.text("DONE"), findsOneWidget);
   });
@@ -257,7 +257,7 @@ void main() {
       ),
       appManager: appManager,
     ));
-    await tester.pumpAndSettle(Duration(milliseconds: 50));
+    await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
     expect(findFirstWithText<ActionButton>(tester, "DONE").onPressed, isNull);
   });
@@ -270,7 +270,7 @@ void main() {
       ),
       appManager: appManager,
     ));
-    await tester.pumpAndSettle(Duration(milliseconds: 50));
+    await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
     expect(
         findFirstWithText<ActionButton>(tester, "DONE").onPressed, isNotNull);
@@ -285,7 +285,7 @@ void main() {
       ),
       appManager: appManager,
     ));
-    await tester.pumpAndSettle(Duration(milliseconds: 50));
+    await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
     await tapAndSettle(tester, find.text("DONE"));
 
@@ -304,7 +304,7 @@ void main() {
       ),
       appManager: appManager,
     ));
-    await tester.pumpAndSettle(Duration(milliseconds: 50));
+    await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
     expect(find.byIcon(Icons.check_circle), findsNWidgets(2));
 
@@ -323,7 +323,7 @@ void main() {
       ),
       appManager: appManager,
     ));
-    await tester.pumpAndSettle(Duration(milliseconds: 50));
+    await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
     await tapAndSettle(tester, find.text("CLEAR"));
     expect(called, isTrue);
@@ -340,7 +340,7 @@ void main() {
       ),
       appManager: appManager,
     ));
-    await tester.pumpAndSettle(Duration(milliseconds: 50));
+    await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
     expect(find.byIcon(Icons.check_circle), findsNWidgets(2));
     expect(find.text("2 / 4 Selected"), findsOneWidget);
@@ -354,7 +354,7 @@ void main() {
       ),
       appManager: appManager,
     ));
-    await tester.pumpAndSettle(Duration(milliseconds: 50));
+    await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
     await tapAndSettle(tester, find.byType(Image).first);
     expect(find.byIcon(Icons.check_circle), findsOneWidget);
@@ -372,7 +372,7 @@ void main() {
       ),
       appManager: appManager,
     ));
-    await tester.pumpAndSettle(Duration(milliseconds: 50));
+    await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
     await tapAndSettle(tester, find.byType(Image).first);
     expect(called, isTrue);
@@ -387,7 +387,7 @@ void main() {
       ),
       appManager: appManager,
     ));
-    await tester.pumpAndSettle(Duration(milliseconds: 50));
+    await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
     await tapAndSettle(tester, find.byType(Image).first);
     await tapAndSettle(tester, find.text("DONE"));
@@ -411,7 +411,7 @@ void main() {
       ),
       appManager: appManager,
     ));
-    await tester.pumpAndSettle(Duration(milliseconds: 50));
+    await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
     await tapAndSettle(tester, find.byType(Image).first);
     expect(result!.position, isNull);
@@ -422,7 +422,7 @@ void main() {
     var entity = createMockAssetEntity(
       fileName: "android_logo.png",
       latLngAsync: null,
-      latLngLegacy: LatLng(latitude: 0.654321, longitude: 0.123456),
+      latLngLegacy: const LatLng(latitude: 0.654321, longitude: 0.123456),
     );
     when(allAlbum.getAssetListPaged(any, any))
         .thenAnswer((_) => Future.value([entity]));
@@ -434,7 +434,7 @@ void main() {
       ),
       appManager: appManager,
     ));
-    await tester.pumpAndSettle(Duration(milliseconds: 50));
+    await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
     await tapAndSettle(tester, find.byType(Image).first);
     expect(result!.position, isNotNull);
@@ -444,7 +444,7 @@ void main() {
   testWidgets("Picked image with valid OS coordinates", (tester) async {
     var entity = createMockAssetEntity(
       fileName: "android_logo.png",
-      latLngAsync: LatLng(latitude: 0.654321, longitude: 0.123456),
+      latLngAsync: const LatLng(latitude: 0.654321, longitude: 0.123456),
       latLngLegacy: null,
     );
     when(allAlbum.getAssetListPaged(any, any))
@@ -457,7 +457,7 @@ void main() {
       ),
       appManager: appManager,
     ));
-    await tester.pumpAndSettle(Duration(milliseconds: 50));
+    await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
     await tapAndSettle(tester, find.byType(Image).first);
     expect(result!.position, isNotNull);
@@ -498,7 +498,7 @@ void main() {
     expect(find.byType(GridView), findsOneWidget);
 
     // Pump and settle, to complete the future.
-    await tester.pumpAndSettle(Duration(milliseconds: 50));
+    await tester.pumpAndSettle(const Duration(milliseconds: 50));
     expect(find.byType(EmptyListPlaceholder), findsOneWidget);
   });
 
@@ -516,7 +516,7 @@ void main() {
     expect(find.byType(GridView), findsOneWidget);
 
     // Pump and settle, to complete the future.
-    await tester.pumpAndSettle(Duration(milliseconds: 50));
+    await tester.pumpAndSettle(const Duration(milliseconds: 50));
     expect(find.byType(Image), findsNWidgets(4));
     expect(find.byType(GridView), findsOneWidget);
   });
@@ -531,7 +531,7 @@ void main() {
       ),
       appManager: appManager,
     ));
-    await tester.pumpAndSettle(Duration(milliseconds: 50));
+    await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
     expect(find.text("OPEN SETTINGS"), findsOneWidget);
   });
@@ -552,7 +552,7 @@ void main() {
         size: Size(w, h),
       ),
     ));
-    await tester.pumpAndSettle(Duration(milliseconds: 50));
+    await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
     // Verify initial load.
     verify(allAlbum.getAssetListPaged(0, any)).called(1);
@@ -578,9 +578,9 @@ void main() {
     ];
 
     // Scroll enough to load a new page.
-    var gesture = await tester.startGesture(Offset(0, 300));
-    await gesture.moveBy(Offset(0, -300));
-    await tester.pumpAndSettle(Duration(milliseconds: 50));
+    var gesture = await tester.startGesture(const Offset(0, 300));
+    await gesture.moveBy(const Offset(0, -300));
+    await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
     // Verify another page load.
     verify(allAlbum.getAssetListPaged(1, any)).called(1);
@@ -606,9 +606,9 @@ void main() {
     ];
 
     // Repeat.
-    gesture = await tester.startGesture(Offset(0, 300));
-    await gesture.moveBy(Offset(0, -300));
-    await tester.pumpAndSettle(Duration(milliseconds: 50));
+    gesture = await tester.startGesture(const Offset(0, 300));
+    await gesture.moveBy(const Offset(0, -300));
+    await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
     // Verify another page load.
     verify(allAlbum.getAssetListPaged(2, any)).called(1);

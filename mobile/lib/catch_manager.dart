@@ -52,7 +52,7 @@ class CatchManager extends EntityManager<Catch> {
   Catch entityFromBytes(List<int> bytes) => Catch.fromBuffer(bytes);
 
   @override
-  Id id(Catch cat) => cat.id;
+  Id id(Catch entity) => entity.id;
 
   @override
   bool matchesFilter(Id id, String? filter, [BuildContext? context]) {
@@ -339,16 +339,16 @@ class CatchManager extends EntityManager<Catch> {
 
   @override
   Future<bool> addOrUpdate(
-    Catch cat, {
+    Catch entity, {
     List<File> imageFiles = const [],
     bool compressImages = true,
     bool notify = true,
   }) async {
-    cat.imageNames.clear();
-    cat.imageNames
+    entity.imageNames.clear();
+    entity.imageNames
         .addAll(await _imageManager.save(imageFiles, compress: compressImages));
 
-    return super.addOrUpdate(cat, notify: notify);
+    return super.addOrUpdate(entity, notify: notify);
   }
 
   /// Returns true if a [Catch] with the given properties exists.

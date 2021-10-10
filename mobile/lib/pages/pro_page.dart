@@ -43,14 +43,14 @@ class _ProPageState extends State<ProPage> {
   Widget build(BuildContext context) {
     return ScrollPage(
       appBar: TransparentAppBar(context),
-      padding: EdgeInsets.only(
+      padding: const EdgeInsets.only(
         left: paddingDefault,
         right: paddingDefault,
         bottom: paddingDefault,
       ),
       extendBodyBehindAppBar: true,
       children: [
-        Icon(
+        const Icon(
           CustomIcons.catches,
           size: _logoHeight,
         ),
@@ -58,21 +58,21 @@ class _ProPageState extends State<ProPage> {
           Strings.of(context).proPageUpgradeTitle,
           style: styleTitle2,
         ),
-        VerticalSpace(paddingWidgetSmall),
+        const VerticalSpace(paddingWidgetSmall),
         TitleLabel(Strings.of(context).proPageProTitle),
-        VerticalSpace(paddingWidgetSmall),
-        Icon(Icons.stars),
-        VerticalSpace(paddingWidgetDouble),
+        const VerticalSpace(paddingWidgetSmall),
+        const Icon(Icons.stars),
+        const VerticalSpace(paddingWidgetDouble),
         _buildFeatureRow(Strings.of(context).proPageBackup),
-        VerticalSpace(paddingWidget),
+        const VerticalSpace(paddingWidget),
         _buildFeatureRow(Strings.of(context).proPageSync),
-        VerticalSpace(paddingWidget),
+        const VerticalSpace(paddingWidget),
         _buildFeatureRow(Strings.of(context).proPageAtmosphere),
-        VerticalSpace(paddingWidget),
+        const VerticalSpace(paddingWidget),
         _buildFeatureRow(Strings.of(context).proPageReports),
-        VerticalSpace(paddingWidget),
+        const VerticalSpace(paddingWidget),
         _buildFeatureRow(Strings.of(context).proPageCustomFields),
-        VerticalSpace(paddingWidgetDouble),
+        const VerticalSpace(paddingWidgetDouble),
         _buildSubscriptionState(),
       ],
     );
@@ -88,8 +88,8 @@ class _ProPageState extends State<ProPage> {
             overflow: TextOverflow.visible,
           ),
         ),
-        HorizontalSpace(paddingWidget),
-        Icon(
+        const HorizontalSpace(paddingWidget),
+        const Icon(
           Icons.check_circle_outline,
           color: Colors.green,
           size: _checkSize,
@@ -102,7 +102,7 @@ class _ProPageState extends State<ProPage> {
     Widget child;
 
     if (_isPendingTransaction) {
-      child = Loading();
+      child = const Loading();
     } else if (_subscriptionManager.isPro) {
       child = WorkResult.success(Strings.of(context).proPageUpgradeSuccess);
     } else {
@@ -112,7 +112,7 @@ class _ProPageState extends State<ProPage> {
           return AnimatedSwitcher(
             duration: defaultAnimationDuration,
             child: snapshot.connectionState != ConnectionState.done
-                ? Loading()
+                ? const Loading()
                 : _buildSubscriptionOptions(snapshot.data),
           );
         },
@@ -133,7 +133,8 @@ class _ProPageState extends State<ProPage> {
     return Column(
       children: [
         Container(
-          constraints: BoxConstraints(maxWidth: _maxButtonsContainerWidth),
+          constraints:
+              const BoxConstraints(maxWidth: _maxButtonsContainerWidth),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -143,7 +144,7 @@ class _ProPageState extends State<ProPage> {
                 trialText: Strings.of(context).proPageYearlyTrial,
                 billingFrequencyText: Strings.of(context).proPageYearlySubtext,
               ),
-              HorizontalSpace(paddingDefault),
+              const HorizontalSpace(paddingDefault),
               _buildSubscriptionButton(
                 sub: subscriptions.monthly,
                 priceText: Strings.of(context).proPageMonthlyTitle,
@@ -188,9 +189,9 @@ class _ProPageState extends State<ProPage> {
                   fontWeight: fontWeightBold,
                 ),
               ),
-              VerticalSpace(paddingTiny),
+              const VerticalSpace(paddingTiny),
               Text(format(trialText, [sub.trialLengthDays])),
-              VerticalSpace(paddingTiny),
+              const VerticalSpace(paddingTiny),
               Text(
                 billingFrequencyText,
                 style: styleSubtext,

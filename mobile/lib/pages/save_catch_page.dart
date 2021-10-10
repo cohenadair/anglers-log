@@ -61,7 +61,7 @@ class SaveCatchPage extends StatefulWidget {
   /// See [EditableFormPage.popupMenuKey].
   final GlobalKey<PopupMenuButtonState>? popupMenuKey;
 
-  SaveCatchPage({
+  const SaveCatchPage({
     required this.speciesId,
     this.popupMenuKey,
     this.images = const [],
@@ -69,7 +69,7 @@ class SaveCatchPage extends StatefulWidget {
     this.popOverride,
   }) : oldCatch = null;
 
-  SaveCatchPage.edit(this.oldCatch)
+  const SaveCatchPage.edit(this.oldCatch)
       : popupMenuKey = null,
         popOverride = null,
         images = const [],
@@ -102,7 +102,7 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
   static final _idWaterTemperature = catchFieldIdWaterTemperature;
   static final _idWeight = catchFieldIdWeight;
 
-  final _log = Log("SaveCatchPage");
+  final _log = const Log("SaveCatchPage");
   final Map<Id, Field> _fields = {};
 
   late final MultiMeasurementInputSpec _waterDepthInputState;
@@ -349,7 +349,7 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
 
   Widget _buildTimestamp() {
     return Padding(
-      padding: EdgeInsets.only(
+      padding: const EdgeInsets.only(
         bottom: paddingWidgetSmall,
       ),
       child: DateTimePicker(
@@ -481,7 +481,7 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
 
   Widget _buildQuantity() {
     return Padding(
-      padding: EdgeInsets.only(
+      padding: const EdgeInsets.only(
         top: paddingSmall,
         left: paddingDefault,
         right: paddingDefault,
@@ -498,7 +498,7 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
 
   Widget _buildNotes() {
     return Padding(
-      padding: EdgeInsets.only(
+      padding: const EdgeInsets.only(
         top: paddingSmall,
         left: paddingDefault,
         right: paddingDefault,

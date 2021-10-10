@@ -15,7 +15,7 @@ class ImageInput extends StatefulWidget {
   final ListInputController<PickedImage> controller;
   final bool isMulti;
 
-  ImageInput({
+  const ImageInput({
     required this.controller,
     this.initialImageNames = const [],
     this.isMulti = true,
@@ -69,7 +69,7 @@ class _ImageInputState extends State<ImageInput> {
     );
 
     if (imageMap.isEmpty) {
-      return Future.value(null);
+      return Future.value([]);
     }
 
     var result = <PickedImage>[];
@@ -91,7 +91,7 @@ class SingleImageInput extends StatefulWidget {
   final String? initialImageName;
   final InputController<PickedImage> controller;
 
-  SingleImageInput({
+  const SingleImageInput({
     required this.controller,
     this.initialImageName,
   });
@@ -102,7 +102,7 @@ class SingleImageInput extends StatefulWidget {
 
 class _SingleImageInputState extends State<SingleImageInput> {
   final _multiController = ListInputController<PickedImage>();
-  late final _multiControllerListener;
+  late final VoidCallback _multiControllerListener;
 
   @override
   void initState() {

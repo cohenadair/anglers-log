@@ -63,7 +63,7 @@ class Testable extends StatelessWidget {
           GlobalMaterialLocalizations.delegate,
           GlobalWidgetsLocalizations.delegate,
         ],
-        locale: Locale("en", "CA"),
+        locale: const Locale("en", "CA"),
         home: MediaQuery(
           data: mediaQueryData,
           child: Material(

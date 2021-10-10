@@ -460,8 +460,8 @@ void main() {
     expect(find.text("Waze"), findsOneWidget);
 
     // Dismiss bottom sheet.
-    await tester.fling(find.text("Apple Maps"), Offset(0, 100), 800);
-    await tester.pumpAndSettle(Duration(milliseconds: 150));
+    await tester.fling(find.text("Apple Maps"), const Offset(0, 100), 800);
+    await tester.pumpAndSettle(const Duration(milliseconds: 150));
     expect(find.text("Google Maps"), findsNothing);
     expect(find.text("Apple Maps"), findsNothing);
     expect(find.text("Waze"), findsNothing);

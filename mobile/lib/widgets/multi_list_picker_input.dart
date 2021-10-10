@@ -20,7 +20,7 @@ class MultiListPickerInput extends StatelessWidget {
   /// The text that is displayed when no items are selected.
   final LocalizedString emptyValue;
 
-  MultiListPickerInput({
+  const MultiListPickerInput({
     required this.values,
     this.padding,
     required this.emptyValue,

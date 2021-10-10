@@ -62,7 +62,7 @@ void main() {
       ),
     ];
     await tapAndSettle(tester, find.widgetWithText(Button, "TEST"));
-    await tester.pumpAndSettle(Duration(milliseconds: 500));
+    await tester.pumpAndSettle(const Duration(milliseconds: 500));
 
     expect(find.text("Red"), findsOneWidget);
     expect(find.text("Green"), findsOneWidget);
@@ -249,7 +249,7 @@ void main() {
 class _ParentRebuildTester extends StatefulWidget {
   final ListInputController<BaitVariant> controller;
 
-  _ParentRebuildTester(this.controller);
+  const _ParentRebuildTester(this.controller);
 
   @override
   _ParentRebuildTesterState createState() => _ParentRebuildTesterState();

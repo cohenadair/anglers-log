@@ -28,8 +28,8 @@ void main() {
 
     when(appManager.authManager.initialize())
         .thenAnswer((_) => Future.value(null));
-    when(appManager.authManager.userId).thenReturn(Uuid().v4());
-    when(appManager.authManager.stream).thenAnswer((_) => Stream.empty());
+    when(appManager.authManager.userId).thenReturn(const Uuid().v4());
+    when(appManager.authManager.stream).thenAnswer((_) => const Stream.empty());
 
     when(appManager.reportManager.entityExists(any)).thenReturn(false);
 
@@ -63,7 +63,7 @@ void main() {
     when(appManager.userPreferenceManager.autoFetchAtmosphere)
         .thenReturn(false);
     when(appManager.userPreferenceManager.stream)
-        .thenAnswer((_) => Stream.empty());
+        .thenAnswer((_) => const Stream.empty());
 
     var channel = MockMethodChannel();
     when(channel.invokeMethod(any)).thenAnswer((_) => Future.value(null));
@@ -73,7 +73,7 @@ void main() {
   testWidgets("LandingPage is shown until app initializes", (tester) async {
     // Stub an initialization method taking some time.
     when(appManager.firebaseWrapper.initializeApp()).thenAnswer(
-        (_) => Future.delayed(Duration(milliseconds: 50), () => true));
+        (_) => Future.delayed(const Duration(milliseconds: 50), () => true));
     when(appManager.authManager.state).thenReturn(AuthState.loggedOut);
 
     await tester.pumpWidget(AnglersLog(appManager.app));
@@ -84,7 +84,7 @@ void main() {
     expect(find.byType(MainPage), findsNothing);
 
     // Wait for delayed initialization + AnimatedSwitcher.
-    await tester.pump(Duration(milliseconds: 210));
+    await tester.pump(const Duration(milliseconds: 210));
 
     expect(find.byType(LandingPage), findsNothing);
     expect(find.byType(LoginPage), findsOneWidget);
@@ -95,13 +95,13 @@ void main() {
   testWidgets("Landing page shown while AuthState is unknown", (tester) async {
     // Stub an initialization method taking some time.
     when(appManager.firebaseWrapper.initializeApp()).thenAnswer(
-        (_) => Future.delayed(Duration(milliseconds: 50), () => true));
+        (_) => Future.delayed(const Duration(milliseconds: 50), () => true));
     when(appManager.authManager.state).thenReturn(AuthState.unknown);
 
     await tester.pumpWidget(AnglersLog(appManager.app));
 
     // Wait for delayed initialization + AnimatedSwitcher.
-    await tester.pump(Duration(milliseconds: 210));
+    await tester.pump(const Duration(milliseconds: 210));
 
     expect(find.byType(LandingPage), findsOneWidget);
   });
@@ -109,14 +109,14 @@ void main() {
   testWidgets("Onboarding shown after login", (tester) async {
     // Stub an initialization method taking some time.
     when(appManager.firebaseWrapper.initializeApp()).thenAnswer(
-        (_) => Future.delayed(Duration(milliseconds: 50), () => true));
+        (_) => Future.delayed(const Duration(milliseconds: 50), () => true));
     when(appManager.userPreferenceManager.didOnboard).thenReturn(false);
     when(appManager.authManager.state).thenReturn(AuthState.loggedIn);
 
     await tester.pumpWidget(AnglersLog(appManager.app));
 
     // Wait for delayed initialization + AnimatedSwitcher.
-    await tester.pump(Duration(milliseconds: 210));
+    await tester.pump(const Duration(milliseconds: 210));
 
     expect(find.byType(OnboardingJourney), findsOneWidget);
     expect(find.byType(MainPage), findsNothing);
@@ -126,7 +126,7 @@ void main() {
       (tester) async {
     // Stub an initialization method taking some time.
     when(appManager.firebaseWrapper.initializeApp()).thenAnswer(
-        (_) => Future.delayed(Duration(milliseconds: 50), () => true));
+        (_) => Future.delayed(const Duration(milliseconds: 50), () => true));
     when(appManager.userPreferenceManager.catchCustomEntityIds).thenReturn([]);
     when(appManager.userPreferenceManager.didOnboard).thenReturn(false);
     when(appManager.authManager.state).thenReturn(AuthState.loggedIn);
@@ -151,7 +151,7 @@ void main() {
     await tester.pumpWidget(AnglersLog(appManager.app));
 
     // Wait for delayed initialization + AnimatedSwitcher.
-    await tester.pump(Duration(milliseconds: 210));
+    await tester.pump(const Duration(milliseconds: 210));
 
     expect(find.byType(OnboardingJourney), findsOneWidget);
     expect(find.byType(MainPage), findsNothing);
@@ -180,7 +180,7 @@ void main() {
     )).thenReturn([]);
 
     await tester.pumpWidget(AnglersLog(appManager.app));
-    await tester.pumpAndSettle(Duration(milliseconds: 300));
+    await tester.pumpAndSettle(const Duration(milliseconds: 300));
     await mapController.finishLoading(tester);
 
     expect(find.byType(OnboardingJourney), findsNothing);
@@ -230,7 +230,7 @@ void main() {
 
     when(appManager.authManager.state).thenReturn(AuthState.loggedIn);
     controller.add(AuthState.loggedIn);
-    await tester.pumpAndSettle(Duration(milliseconds: 300));
+    await tester.pumpAndSettle(const Duration(milliseconds: 300));
     await mapController.finishLoading(tester);
     expect(find.byType(MainPage), findsOneWidget);
   });
@@ -261,7 +261,7 @@ void main() {
 
     when(appManager.authManager.state).thenReturn(AuthState.loggedIn);
     controller.add(AuthState.loggedIn);
-    await tester.pumpAndSettle(Duration(milliseconds: 300));
+    await tester.pumpAndSettle(const Duration(milliseconds: 300));
     await mapController.finishLoading(tester);
     expect(find.byType(MainPage), findsOneWidget);
   });
@@ -270,7 +270,7 @@ void main() {
       (tester) async {
     // Stub an initialization method taking some time.
     when(appManager.firebaseWrapper.initializeApp()).thenAnswer(
-        (_) => Future.delayed(Duration(milliseconds: 50), () => true));
+        (_) => Future.delayed(const Duration(milliseconds: 50), () => true));
     when(appManager.authManager.state).thenReturn(AuthState.loggedIn);
     when(appManager.userPreferenceManager.didOnboard).thenReturn(false);
 
@@ -282,7 +282,7 @@ void main() {
     await tester.pumpWidget(AnglersLog(appManager.app));
 
     // Wait for delayed initialization + AnimatedSwitcher.
-    await tester.pump(Duration(milliseconds: 210));
+    await tester.pump(const Duration(milliseconds: 210));
 
     verify(appManager.servicesWrapper.methodChannel(any)).called(1);
     var onboardingJourney = findFirst<OnboardingJourney>(tester);

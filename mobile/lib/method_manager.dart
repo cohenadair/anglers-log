@@ -20,10 +20,10 @@ class MethodManager extends NamedEntityManager<Method> {
   Method entityFromBytes(List<int> bytes) => Method.fromBuffer(bytes);
 
   @override
-  Id id(Method method) => method.id;
+  Id id(Method entity) => entity.id;
 
   @override
-  String name(Method method) => method.name;
+  String name(Method entity) => entity.name;
 
   @override
   String get tableName => "method";

@@ -27,7 +27,7 @@ void main() {
     testWidgets("No images", (tester) async {
       await tester.pumpWidget(Testable(
         (_) => EntityPage(
-          children: [],
+          children: const [],
           static: true,
         ),
       ));
@@ -45,18 +45,18 @@ void main() {
         (buildContext) {
           context = buildContext;
           return EntityPage(
-            imageNames: [
+            imageNames: const [
               "flutter_logo.png",
               "anglers_log_logo.png",
               "android_logo.png",
               "apple_logo.png"
             ],
-            children: [],
+            children: const [],
             static: true,
           );
         },
         appManager: appManager,
-        mediaQueryData: MediaQueryData(
+        mediaQueryData: const MediaQueryData(
           size: Size(800, 800),
         ),
       ));
@@ -83,8 +83,8 @@ void main() {
       expect(findFirst<Photo>(tester).fileName, "flutter_logo.png");
 
       // Swipe to the next image.
-      await tester.fling(find.byType(Photo), Offset(-300, 0), 800);
-      await tester.pumpAndSettle(Duration(milliseconds: 250));
+      await tester.fling(find.byType(Photo), const Offset(-300, 0), 800);
+      await tester.pumpAndSettle(const Duration(milliseconds: 250));
       await tester.pumpAndSettle();
 
       expect(findFirst<Photo>(tester).fileName, "anglers_log_logo.png");
@@ -109,14 +109,14 @@ void main() {
       await stubImage(appManager, tester, "flutter_logo.png");
       await tester.pumpWidget(Testable(
         (_) => EntityPage(
-          imageNames: [
+          imageNames: const [
             "flutter_logo.png",
           ],
-          children: [],
+          children: const [],
           static: true,
         ),
         appManager: appManager,
-        mediaQueryData: MediaQueryData(
+        mediaQueryData: const MediaQueryData(
           size: Size(800, 800),
         ),
       ));
@@ -135,7 +135,7 @@ void main() {
   testWidgets("No custom entities hide separator", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => EntityPage(
-        children: [],
+        children: const [],
         static: true,
       ),
     ));
@@ -152,7 +152,7 @@ void main() {
     );
     await tester.pumpWidget(Testable(
       (_) => EntityPage(
-        children: [],
+        children: const [],
         customEntityValues: [
           CustomEntityValue()
             ..customEntityId = customEntityId
@@ -173,7 +173,7 @@ void main() {
     await tester.pumpWidget(
       Testable(
         (_) => EntityPage(
-          children: [],
+          children: const [],
           static: true,
         ),
       ),
@@ -194,9 +194,9 @@ void main() {
     await tester.pumpWidget(
       Testable(
         (_) => EntityPage(
-          children: [],
+          children: const [],
           static: true,
-          imageNames: [
+          imageNames: const [
             "apple_logo.png",
           ],
         ),
@@ -212,7 +212,7 @@ void main() {
   testWidgets("Dynamic page shows edit and delete buttons", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => EntityPage(
-        children: [],
+        children: const [],
         onEdit: () {},
         onDelete: () {},
         deleteMessage: "Test",
@@ -234,8 +234,8 @@ void main() {
     await tester.pumpWidget(
       Testable(
         (_) => EntityPage(
-          children: [],
-          imageNames: [
+          children: const [],
+          imageNames: const [
             "apple_logo.png",
           ],
           onEdit: () {},
@@ -257,7 +257,7 @@ void main() {
     await tester.pumpWidget(
       Testable(
         (_) => EntityPage(
-          children: [],
+          children: const [],
           deleteMessage: "This is a delete message.",
           onDelete: () {},
           onEdit: () {},
@@ -274,7 +274,7 @@ void main() {
     await tester.pumpWidget(
       Testable(
         (_) => EntityPage(
-          children: [
+          children: const [
             Text("Child 1"),
             Text("Child 2"),
           ],
@@ -296,10 +296,10 @@ void main() {
           onEdit: () {},
           onDelete: () {},
           deleteMessage: "Delete",
-          imageNames: [
+          imageNames: const [
             "flutter_logo.png",
           ],
-          children: [
+          children: const [
             ListItem(title: Text("Child")),
             ListItem(title: Text("Child")),
             ListItem(title: Text("Child")),
@@ -318,7 +318,7 @@ void main() {
             ListItem(title: Text("Last")),
           ],
         ),
-        mediaQueryData: MediaQueryData(
+        mediaQueryData: const MediaQueryData(
           size: Size(300, 500),
         ),
       ),

@@ -26,9 +26,9 @@ import 'manageable_list_page.dart';
 class SaveBaitPage extends StatefulWidget {
   final Bait? oldBait;
 
-  SaveBaitPage() : oldBait = null;
+  const SaveBaitPage() : oldBait = null;
 
-  SaveBaitPage.edit(this.oldBait);
+  const SaveBaitPage.edit(this.oldBait);
 
   @override
   _SaveBaitPageState createState() => _SaveBaitPageState();
@@ -119,7 +119,7 @@ class _SaveBaitPageState extends State<SaveBaitPage> {
 
   Widget _buildName() {
     return Padding(
-      padding: EdgeInsets.only(
+      padding: const EdgeInsets.only(
         left: paddingDefault,
         right: paddingDefault,
         bottom: paddingWidgetSmall,

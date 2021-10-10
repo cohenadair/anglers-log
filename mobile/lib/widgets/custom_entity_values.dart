@@ -13,7 +13,7 @@ class CustomEntityValues extends StatelessWidget {
   final List<CustomEntityValue> values;
   final bool isCondensed;
 
-  CustomEntityValues(
+  const CustomEntityValues(
     this.values, {
     this.isCondensed = false,
   });

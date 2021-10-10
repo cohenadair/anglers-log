@@ -37,7 +37,7 @@ class BaitVariantListInput extends StatefulWidget {
   /// [onCheckboxChanged] is null.
   final Set<BaitVariant> selectedItems;
 
-  BaitVariantListInput({
+  const BaitVariantListInput({
     required this.controller,
     this.onCheckboxChanged,
     this.padding,
@@ -127,7 +127,7 @@ class _BaitVariantListInputState extends State<BaitVariantListInput> {
           initialItemCount: _items.length,
           itemBuilder: (context, index, animation) =>
               _buildItem(context, _items[index], animation),
-          physics: NeverScrollableScrollPhysics(),
+          physics: const NeverScrollableScrollPhysics(),
           shrinkWrap: true,
         ),
       ],

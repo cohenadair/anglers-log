@@ -11,7 +11,7 @@ class SingleLineText extends StatelessWidget {
   final String? text;
   final TextStyle? style;
 
-  SingleLineText(
+  const SingleLineText(
     this.text, {
     this.style,
   });
@@ -82,7 +82,7 @@ class TitleLabel extends StatelessWidget {
   final TextAlign? align;
   final TextOverflow? overflow;
 
-  TitleLabel(
+  const TitleLabel(
     this.text, {
     this.align,
     this.overflow,
@@ -113,7 +113,7 @@ class AlertTitleLabel extends StatelessWidget {
   final TextAlign? align;
   final TextOverflow? overflow;
 
-  AlertTitleLabel(
+  const AlertTitleLabel(
     this.text, {
     this.align,
     this.overflow,
@@ -136,7 +136,7 @@ class EnabledLabel extends StatelessWidget {
   final String text;
   final bool enabled;
 
-  EnabledLabel(
+  const EnabledLabel(
     this.text, {
     this.enabled = false,
   });
@@ -155,7 +155,7 @@ class EnabledLabel extends StatelessWidget {
 class DisabledLabel extends StatelessWidget {
   final String text;
 
-  DisabledLabel(this.text);
+  const DisabledLabel(this.text);
 
   @override
   Widget build(BuildContext context) {
@@ -171,7 +171,7 @@ class DateLabel extends StatelessWidget {
   final DateTime date;
   final bool enabled;
 
-  DateLabel(
+  const DateLabel(
     this.date, {
     this.enabled = true,
   });
@@ -195,7 +195,7 @@ class TimeLabel extends StatelessWidget {
   final TimeOfDay time;
   final bool enabled;
 
-  TimeLabel(
+  const TimeLabel(
     this.time, {
     this.enabled = true,
   });

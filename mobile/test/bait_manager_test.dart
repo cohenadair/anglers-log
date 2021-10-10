@@ -22,7 +22,7 @@ void main() {
   setUp(() {
     appManager = StubbedAppManager();
 
-    when(appManager.authManager.stream).thenAnswer((_) => Stream.empty());
+    when(appManager.authManager.stream).thenAnswer((_) => const Stream.empty());
 
     catchManager = appManager.catchManager;
 
@@ -34,7 +34,7 @@ void main() {
         .thenAnswer((_) => Future.value(true));
 
     when(appManager.subscriptionManager.stream)
-        .thenAnswer((_) => Stream.empty());
+        .thenAnswer((_) => const Stream.empty());
     when(appManager.subscriptionManager.isPro).thenReturn(false);
 
     baitCategoryManager = BaitCategoryManager(appManager.app);
@@ -82,7 +82,7 @@ void main() {
     await baitCategoryManager.delete(category.id);
 
     // Wait for addOrUpdate calls to finish.
-    await Future.delayed(Duration(milliseconds: 50));
+    await Future.delayed(const Duration(milliseconds: 50));
 
     // Verify listeners are notified and memory cache updated.
     verify(baitListener.onUpdate).called(2);

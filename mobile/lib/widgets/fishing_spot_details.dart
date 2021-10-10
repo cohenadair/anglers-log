@@ -50,7 +50,7 @@ class FishingSpotDetails extends StatelessWidget {
   /// [isListItem] is true.
   final Key? containerKey;
 
-  FishingSpotDetails(
+  const FishingSpotDetails(
     this.fishingSpot, {
     this.containerKey,
     this.isDroppedPin = false,
@@ -118,7 +118,7 @@ class FishingSpotDetails extends StatelessWidget {
 
     return Container(
       key: containerKey,
-      decoration: FloatingBoxDecoration.rectangle(),
+      decoration: const FloatingBoxDecoration.rectangle(),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
@@ -133,8 +133,8 @@ class FishingSpotDetails extends StatelessWidget {
 /// A widget that shows a [Row] of [ChipButtons] related to the given
 /// [FishingSpot].
 class _FishingSpotActions extends StatelessWidget {
-  final _log = Log("_FishingSpotActions");
-  final _chipHeight = 32.0;
+  static const _log = Log("_FishingSpotActions");
+  static const _chipHeight = 32.0;
 
   /// Note that an [Id] is not used here because the [FishingSpot] being shown
   /// hasn't necessarily been added to [FishingSpotManager] yet.
@@ -146,7 +146,7 @@ class _FishingSpotActions extends StatelessWidget {
   ///   - Save
   final bool isPicking;
 
-  _FishingSpotActions(
+  const _FishingSpotActions(
     this.fishingSpot, {
     this.isPicking = false,
   });
@@ -173,7 +173,7 @@ class _FishingSpotActions extends StatelessWidget {
       child: ListView.separated(
         padding: insetsHorizontalDefault,
         scrollDirection: Axis.horizontal,
-        separatorBuilder: (_, i) => HorizontalSpace(paddingWidgetSmall),
+        separatorBuilder: (_, i) => const HorizontalSpace(paddingWidgetSmall),
         itemBuilder: (context, i) => children[i],
         itemCount: children.length,
       ),

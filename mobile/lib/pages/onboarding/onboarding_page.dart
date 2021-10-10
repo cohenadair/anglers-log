@@ -14,7 +14,7 @@ class OnboardingPage extends StatelessWidget {
   final bool showBackButton;
   final VoidCallback? onPressedNextButton;
 
-  OnboardingPage({
+  const OnboardingPage({
     this.children = const [],
     this.padding = insetsZero,
     this.nextButtonText,
@@ -58,7 +58,7 @@ class OnboardingPage extends StatelessWidget {
     }
 
     return IconButton(
-      icon: BackButtonIcon(),
+      icon: const BackButtonIcon(),
       onPressed: () => Navigator.of(context).pop(),
     );
   }

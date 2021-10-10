@@ -51,8 +51,8 @@ void main() {
     var mockAssets = [
       createMockAssetEntity(
         fileName: "android_logo.png",
-        latLngLegacy: LatLng(latitude: 1.234567, longitude: 7.654321),
-        latLngAsync: LatLng(latitude: 1.234567, longitude: 7.654321),
+        latLngLegacy: const LatLng(latitude: 1.234567, longitude: 7.654321),
+        latLngAsync: const LatLng(latitude: 1.234567, longitude: 7.654321),
         dateTime: DateTime(2020, 4, 1),
       ),
       createMockAssetEntity(
@@ -90,7 +90,7 @@ void main() {
     when(appManager.userPreferenceManager.autoFetchAtmosphere)
         .thenReturn(false);
     when(appManager.userPreferenceManager.stream)
-        .thenAnswer((_) => Stream.empty());
+        .thenAnswer((_) => const Stream.empty());
 
     when(appManager.speciesManager.listSortedByName(filter: anyNamed("filter")))
         .thenReturn([
@@ -105,10 +105,10 @@ void main() {
   testWidgets("Picked image uses location data to fetch existing fishing spot",
       (tester) async {
     await tester.pumpWidget(Testable(
-      (_) => AddCatchJourney(),
+      (_) => const AddCatchJourney(),
       appManager: appManager,
     ));
-    await tester.pumpAndSettle(Duration(milliseconds: 50));
+    await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
     var fishingSpot = FishingSpot()
       ..id = randomId()
@@ -139,10 +139,10 @@ void main() {
     when(appManager.fishingSpotManager.entityExists(any)).thenReturn(false);
 
     await tester.pumpWidget(Testable(
-      (_) => AddCatchJourney(),
+      (_) => const AddCatchJourney(),
       appManager: appManager,
     ));
-    await tester.pumpAndSettle(Duration(milliseconds: 50));
+    await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
     // Select first photo.
     await tapAndSettle(tester, find.byType(Image).first);
@@ -170,10 +170,10 @@ void main() {
     when(appManager.fishingSpotManager.entityExists(any)).thenReturn(false);
 
     await tester.pumpWidget(Testable(
-      (_) => AddCatchJourney(),
+      (_) => const AddCatchJourney(),
       appManager: appManager,
     ));
-    await tester.pumpAndSettle(Duration(milliseconds: 50));
+    await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
     await tapAndSettle(tester, find.byType(Image).at(1));
     await tapAndSettle(tester, find.text("NEXT"));
@@ -192,10 +192,10 @@ void main() {
     when(appManager.fishingSpotManager.entityExists(any)).thenReturn(true);
 
     await tester.pumpWidget(Testable(
-      (_) => AddCatchJourney(),
+      (_) => const AddCatchJourney(),
       appManager: appManager,
     ));
-    await tester.pumpAndSettle(Duration(milliseconds: 50));
+    await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
     await tapAndSettle(tester, find.byType(Image).first);
     await tapAndSettle(tester, find.text("NEXT"));
@@ -218,10 +218,10 @@ void main() {
     ]);
 
     await tester.pumpWidget(Testable(
-      (_) => AddCatchJourney(),
+      (_) => const AddCatchJourney(),
       appManager: appManager,
     ));
-    await tester.pumpAndSettle(Duration(milliseconds: 50));
+    await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
     await tapAndSettle(tester, find.text("Steelhead"));
 
@@ -234,10 +234,10 @@ void main() {
     when(appManager.fishingSpotManager.entityExists(any)).thenReturn(true);
 
     await tester.pumpWidget(Testable(
-      (_) => AddCatchJourney(),
+      (_) => const AddCatchJourney(),
       appManager: appManager,
     ));
-    await tester.pumpAndSettle(Duration(milliseconds: 50));
+    await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
     await tapAndSettle(tester, find.text("NEXT"));
     await tapAndSettle(tester, find.text("Steelhead"));
@@ -258,7 +258,7 @@ void main() {
       ),
       appManager: appManager,
     ));
-    await tester.pumpAndSettle(Duration(milliseconds: 50));
+    await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
     await tapAndSettle(tester, find.byType(Image).first);
     await tapAndSettle(tester, find.text("NEXT"));
@@ -274,10 +274,10 @@ void main() {
     when(appManager.fishingSpotManager.entityExists(any)).thenReturn(false);
 
     await tester.pumpWidget(Testable(
-      (_) => AddCatchJourney(),
+      (_) => const AddCatchJourney(),
       appManager: appManager,
     ));
-    await tester.pumpAndSettle(Duration(milliseconds: 50));
+    await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
     await tapAndSettle(tester, find.text("NEXT"));
     await tapAndSettle(tester, find.text("Steelhead"));
@@ -294,10 +294,10 @@ void main() {
     ]);
 
     await tester.pumpWidget(Testable(
-      (_) => AddCatchJourney(),
+      (_) => const AddCatchJourney(),
       appManager: appManager,
     ));
-    await tester.pumpAndSettle(Duration(milliseconds: 50));
+    await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
     expect(find.byType(ImagePickerPage), findsNothing);
     expect(find.byType(SpeciesListPage), findsOneWidget);
@@ -312,10 +312,10 @@ void main() {
     when(appManager.userPreferenceManager.catchFieldIds).thenReturn([]);
 
     await tester.pumpWidget(Testable(
-      (_) => AddCatchJourney(),
+      (_) => const AddCatchJourney(),
       appManager: appManager,
     ));
-    await tester.pumpAndSettle(Duration(milliseconds: 50));
+    await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
     expect(find.byType(ImagePickerPage), findsOneWidget);
     expect(find.byType(SpeciesListPage), findsNothing);

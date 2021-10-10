@@ -20,10 +20,10 @@ class AnglerManager extends NamedEntityManager<Angler> {
   Angler entityFromBytes(List<int> bytes) => Angler.fromBuffer(bytes);
 
   @override
-  Id id(Angler angler) => angler.id;
+  Id id(Angler entity) => entity.id;
 
   @override
-  String name(Angler angler) => angler.name;
+  String name(Angler entity) => entity.name;
 
   @override
   String get tableName => "angler";

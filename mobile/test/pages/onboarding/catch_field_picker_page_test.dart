@@ -81,7 +81,7 @@ void main() {
   testWidgets("Item shows correct content", (tester) async {
     await tester.pumpWidget(
       Testable(
-        (_) => CatchFieldPickerPage(),
+        (_) => const CatchFieldPickerPage(),
         appManager: appManager,
       ),
     );

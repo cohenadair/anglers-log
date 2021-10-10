@@ -37,7 +37,7 @@ void main() {
   setUp(() async {
     appManager = StubbedAppManager();
 
-    when(appManager.authManager.stream).thenAnswer((_) => Stream.empty());
+    when(appManager.authManager.stream).thenAnswer((_) => const Stream.empty());
 
     when(appManager.catchManager.existsWith(speciesId: anyNamed("speciesId")))
         .thenReturn(false);
@@ -49,7 +49,7 @@ void main() {
         .thenAnswer((_) => Future.value(true));
 
     when(appManager.subscriptionManager.stream)
-        .thenAnswer((_) => Stream.empty());
+        .thenAnswer((_) => const Stream.empty());
     when(appManager.subscriptionManager.isPro).thenReturn(false);
 
     speciesManager = SpeciesManager(appManager.app);
@@ -63,19 +63,19 @@ void main() {
   group("Normal list page", () {
     testWidgets("Title updates when species updated", (tester) async {
       await tester.pumpWidget(Testable(
-        (_) => SpeciesListPage(),
+        (_) => const SpeciesListPage(),
         appManager: appManager,
       ));
 
       expect(find.text("Species (5)"), findsOneWidget);
       await speciesManager.delete(speciesList[0].id);
-      await tester.pumpAndSettle(Duration(milliseconds: 250));
+      await tester.pumpAndSettle(const Duration(milliseconds: 250));
       expect(find.text("Species (4)"), findsOneWidget);
     });
 
     testWidgets("List updates when species updated", (tester) async {
       await tester.pumpWidget(Testable(
-        (_) => SpeciesListPage(),
+        (_) => const SpeciesListPage(),
         appManager: appManager,
       ));
 
@@ -85,14 +85,14 @@ void main() {
       expect(find.text("Striped Bass"), findsOneWidget);
       expect(find.text("Pike"), findsOneWidget);
       await speciesManager.delete(speciesList[0].id);
-      await tester.pumpAndSettle(Duration(milliseconds: 250));
+      await tester.pumpAndSettle(const Duration(milliseconds: 250));
       expect(find.text("Steelhead"), findsNothing);
     });
 
     testWidgets("Species deleted if not associated with a catch",
         (tester) async {
       await tester.pumpWidget(Testable(
-        (_) => SpeciesListPage(),
+        (_) => const SpeciesListPage(),
         appManager: appManager,
       ));
 
@@ -116,7 +116,7 @@ void main() {
       ]);
 
       await tester.pumpWidget(Testable(
-        (_) => SpeciesListPage(),
+        (_) => const SpeciesListPage(),
         appManager: appManager,
       ));
 
@@ -145,7 +145,7 @@ void main() {
       ]);
 
       await tester.pumpWidget(Testable(
-        (_) => SpeciesListPage(),
+        (_) => const SpeciesListPage(),
         appManager: appManager,
       ));
 
@@ -161,7 +161,7 @@ void main() {
 
     testWidgets("Edit screen shown", (tester) async {
       await tester.pumpWidget(Testable(
-        (_) => SpeciesListPage(),
+        (_) => const SpeciesListPage(),
         appManager: appManager,
       ));
 
@@ -172,7 +172,7 @@ void main() {
 
     testWidgets("New species page shown", (tester) async {
       await tester.pumpWidget(Testable(
-        (_) => SpeciesListPage(),
+        (_) => const SpeciesListPage(),
         appManager: appManager,
       ));
 

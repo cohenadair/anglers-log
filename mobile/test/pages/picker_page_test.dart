@@ -21,7 +21,7 @@ void main() {
             PickerPageItem(title: "Option C", value: "Option C"),
           ],
           onFinishedPicking: (_, __) => {},
-          initialValues: {"Option A", "Option C"},
+          initialValues: const {"Option A", "Option C"},
         ),
       ),
     );
@@ -138,7 +138,7 @@ void main() {
             PickerPageItem(title: "Option A", value: "Option A"),
           ],
           onFinishedPicking: (_, __) => {},
-          action: Icon(Icons.search),
+          action: const Icon(Icons.search),
         ),
       ),
     );
@@ -154,7 +154,7 @@ void main() {
             PickerPageItem(title: "Option A", value: "Option A"),
           ],
           onFinishedPicking: (_, __) => {},
-          listHeader: Text("This is a list header."),
+          listHeader: const Text("This is a list header."),
         ),
       ),
     );
@@ -346,7 +346,7 @@ void main() {
           ],
           onFinishedPicking: (_, __) => {},
           allItem: PickerPageItem(title: "All", value: "All"),
-          initialValues: {"Option A", "Option B"},
+          initialValues: const {"Option A", "Option B"},
         ),
       ),
     );
@@ -388,7 +388,7 @@ void main() {
           ],
           onFinishedPicking: (_, __) => {},
           allItem: PickerPageItem(title: "All", value: "All"),
-          initialValues: {"All"},
+          initialValues: const {"All"},
         ),
       ),
     );
@@ -424,7 +424,7 @@ void main() {
             value: "None",
             isMultiNone: true,
           ),
-          initialValues: {},
+          initialValues: const {},
           multiSelect: true,
         ),
       ),
@@ -446,7 +446,7 @@ void main() {
       ),
     );
     // Wait for check to disappear.
-    await tester.pumpAndSettle(Duration(milliseconds: 200));
+    await tester.pumpAndSettle(const Duration(milliseconds: 200));
 
     check = tester.widget<AnimatedVisibility>(find.descendant(
       of: find.widgetWithText(PickerListItem, "None"),

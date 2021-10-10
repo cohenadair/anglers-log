@@ -21,7 +21,7 @@ void main() {
 
   testWidgets("New title", (tester) async {
     await tester.pumpWidget(Testable(
-      (_) => SaveSpeciesPage(),
+      (_) => const SaveSpeciesPage(),
       appManager: appManager,
     ));
     expect(find.text("New Species"), findsOneWidget);
@@ -42,7 +42,7 @@ void main() {
 
   testWidgets("SpeciesManager callback invoked", (tester) async {
     await tester.pumpWidget(Testable(
-      (_) => SaveSpeciesPage(),
+      (_) => const SaveSpeciesPage(),
       appManager: appManager,
     ));
 

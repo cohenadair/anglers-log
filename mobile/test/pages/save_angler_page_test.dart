@@ -29,7 +29,7 @@ void main() {
 
   testWidgets("New title", (tester) async {
     await tester.pumpWidget(Testable(
-      (_) => SaveAnglerPage(),
+      (_) => const SaveAnglerPage(),
       appManager: appManager,
     ));
     expect(find.text("New Angler"), findsOneWidget);
@@ -37,7 +37,7 @@ void main() {
 
   testWidgets("Save new", (tester) async {
     await tester.pumpWidget(Testable(
-      (_) => SaveAnglerPage(),
+      (_) => const SaveAnglerPage(),
       appManager: appManager,
     ));
 

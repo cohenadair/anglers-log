@@ -64,7 +64,7 @@ class _PhotoGalleryPageState extends State<PhotoGalleryPage> {
               ),
             ),
           ),
-          SafeArea(child: FloatingButton.close()),
+          const SafeArea(child: FloatingButton.close()),
         ],
       ),
     );
@@ -75,7 +75,7 @@ class _PhotoGalleryPageState extends State<PhotoGalleryPage> {
     // required for panning to work property.
     setState(() {
       _scrollPhysics = _transformationController.value.getMaxScaleOnAxis() > 1
-          ? NeverScrollableScrollPhysics()
+          ? const NeverScrollableScrollPhysics()
           : null;
     });
   }

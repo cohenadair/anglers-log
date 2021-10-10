@@ -37,7 +37,7 @@ class LabelValue extends StatelessWidget {
       style: styleSecondary(context),
     );
 
-    var child;
+    Widget child;
     if (value.length > _textWrapLength) {
       child = Column(
         crossAxisAlignment: CrossAxisAlignment.start,

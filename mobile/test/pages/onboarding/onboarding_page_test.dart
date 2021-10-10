@@ -7,7 +7,7 @@ import '../../test_utils.dart';
 
 void main() {
   testWidgets("Disabled next button doesn't show bottom bar", (tester) async {
-    await tester.pumpWidget(Testable((_) => OnboardingPage()));
+    await tester.pumpWidget(Testable((_) => const OnboardingPage()));
     expect(find.byType(IconButton), findsNothing);
     expect(find.byType(ActionButton), findsNothing);
   });

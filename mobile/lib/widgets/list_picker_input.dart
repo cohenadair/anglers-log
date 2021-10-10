@@ -75,6 +75,7 @@ class ListPickerInput extends StatelessWidget {
     this.isEnabled = true,
   }) : assert(isNotEmpty(title) || isNotEmpty(value));
 
+  @override
   Widget build(BuildContext context) {
     return DetailInput(
       isEnabled: isEnabled,
@@ -84,7 +85,7 @@ class ListPickerInput extends StatelessWidget {
           isEmpty(title) ? value! : title!,
           style: stylePrimary(context),
         ),
-        HorizontalSpace(paddingWidget),
+        const HorizontalSpace(paddingWidget),
         Expanded(
           // If there's no title widget, the value widget will render at
           // the start of the row.

@@ -40,7 +40,7 @@ void main() {
     appManager = StubbedAppManager();
     mapController = StubbedMapController();
 
-    when(appManager.authManager.stream).thenAnswer((_) => Stream.empty());
+    when(appManager.authManager.stream).thenAnswer((_) => const Stream.empty());
 
     when(appManager.baitManager.attachmentsDisplayValues(any, any))
         .thenReturn([]);
@@ -90,10 +90,10 @@ void main() {
     when(appManager.userPreferenceManager.windSpeedSystem)
         .thenReturn(MeasurementSystem.imperial_decimal);
     when(appManager.userPreferenceManager.stream)
-        .thenAnswer((_) => Stream.empty());
+        .thenAnswer((_) => const Stream.empty());
 
     when(appManager.subscriptionManager.stream)
-        .thenAnswer((_) => Stream.empty());
+        .thenAnswer((_) => const Stream.empty());
     when(appManager.subscriptionManager.isPro).thenReturn(false);
     when(appManager.subscriptionManager.isFree).thenReturn(true);
 
@@ -165,9 +165,9 @@ void main() {
       ));
 
       // Wait for images and map futures to finish.
-      await tester.pumpAndSettle(Duration(milliseconds: 100));
-      await tester.pumpAndSettle(Duration(milliseconds: 150));
-      await tester.pumpAndSettle(Duration(milliseconds: 50));
+      await tester.pumpAndSettle(const Duration(milliseconds: 100));
+      await tester.pumpAndSettle(const Duration(milliseconds: 150));
+      await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
       expect(find.text("Jan 1, 2020"), findsOneWidget);
       expect(find.text("3:30 PM"), findsOneWidget);
@@ -345,9 +345,9 @@ void main() {
       ));
 
       // Wait for images and map futures to finish.
-      await tester.pumpAndSettle(Duration(milliseconds: 100));
-      await tester.pumpAndSettle(Duration(milliseconds: 150));
-      await tester.pumpAndSettle(Duration(milliseconds: 50));
+      await tester.pumpAndSettle(const Duration(milliseconds: 100));
+      await tester.pumpAndSettle(const Duration(milliseconds: 150));
+      await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
       expect(find.text("Jan 1, 2020"), findsOneWidget);
       expect(find.text("3:30 PM"), findsOneWidget);
@@ -591,7 +591,7 @@ void main() {
       ));
 
       // Add small delay so images future can finish.
-      await tester.pumpAndSettle(Duration(milliseconds: 100));
+      await tester.pumpAndSettle(const Duration(milliseconds: 100));
 
       when(appManager.catchManager.addOrUpdate(
         captureAny,
@@ -641,7 +641,7 @@ void main() {
       ));
 
       // Wait for image future to finish.
-      await tester.pumpAndSettle(Duration(milliseconds: 50));
+      await tester.pumpAndSettle(const Duration(milliseconds: 50));
       expect(find.byType(Image), findsOneWidget);
 
       await tapAndSettle(tester, find.text("SAVE"));
@@ -680,9 +680,9 @@ void main() {
       ));
 
       // Wait for images and map futures to finish.
-      await tester.pumpAndSettle(Duration(milliseconds: 100));
-      await tester.pumpAndSettle(Duration(milliseconds: 150));
-      await tester.pumpAndSettle(Duration(milliseconds: 50));
+      await tester.pumpAndSettle(const Duration(milliseconds: 100));
+      await tester.pumpAndSettle(const Duration(milliseconds: 150));
+      await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
       expect(find.text("Feb 1, 2020"), findsOneWidget);
       expect(find.text("10:30 AM"), findsOneWidget);
@@ -1074,7 +1074,7 @@ void main() {
     await tapAndSettle(tester, find.text("A"));
 
     // Finish loading the map.
-    await tester.pumpAndSettle(Duration(milliseconds: 300));
+    await tester.pumpAndSettle(const Duration(milliseconds: 300));
     await mapController.finishLoading(tester);
 
     await tapAndSettle(tester, find.text("Edit"));
@@ -1323,7 +1323,7 @@ void main() {
     );
 
     // Finish loading the map.
-    await tester.pumpAndSettle(Duration(milliseconds: 300));
+    await tester.pumpAndSettle(const Duration(milliseconds: 300));
     await mapController.finishLoading(tester);
 
     await tapAndSettle(tester, find.byType(SearchBar));
@@ -1365,7 +1365,8 @@ void main() {
       (tester) async {
     when(appManager.subscriptionManager.isFree).thenReturn(false);
     when(appManager.userPreferenceManager.autoFetchAtmosphere).thenReturn(true);
-    when(appManager.locationMonitor.currentLocation).thenReturn(LatLng(0, 0));
+    when(appManager.locationMonitor.currentLocation)
+        .thenReturn(const LatLng(0, 0));
     when(appManager.httpWrapper.get(any))
         .thenAnswer((_) => Future.value(Response("", HttpStatus.ok)));
 
@@ -1385,7 +1386,8 @@ void main() {
         .thenReturn(DateTime(2020, 1, 1, 15, 30));
     when(appManager.subscriptionManager.isFree).thenReturn(false);
     when(appManager.userPreferenceManager.autoFetchAtmosphere).thenReturn(true);
-    when(appManager.locationMonitor.currentLocation).thenReturn(LatLng(0, 0));
+    when(appManager.locationMonitor.currentLocation)
+        .thenReturn(const LatLng(0, 0));
     when(appManager.httpWrapper.get(any))
         .thenAnswer((_) => Future.value(Response("", HttpStatus.ok)));
 
@@ -1416,7 +1418,8 @@ void main() {
   testWidgets("Atmosphere not fetched for free users", (tester) async {
     when(appManager.subscriptionManager.isFree).thenReturn(true);
     when(appManager.userPreferenceManager.autoFetchAtmosphere).thenReturn(true);
-    when(appManager.locationMonitor.currentLocation).thenReturn(LatLng(0, 0));
+    when(appManager.locationMonitor.currentLocation)
+        .thenReturn(const LatLng(0, 0));
     when(appManager.httpWrapper.get(any))
         .thenAnswer((_) => Future.value(Response("", HttpStatus.ok)));
 
@@ -1433,7 +1436,8 @@ void main() {
   testWidgets("Atmosphere not fetched if not tracking", (tester) async {
     when(appManager.subscriptionManager.isFree).thenReturn(false);
     when(appManager.userPreferenceManager.autoFetchAtmosphere).thenReturn(true);
-    when(appManager.locationMonitor.currentLocation).thenReturn(LatLng(0, 0));
+    when(appManager.locationMonitor.currentLocation)
+        .thenReturn(const LatLng(0, 0));
     when(appManager.httpWrapper.get(any))
         .thenAnswer((_) => Future.value(Response("", HttpStatus.ok)));
 
@@ -1457,7 +1461,8 @@ void main() {
     when(appManager.subscriptionManager.isFree).thenReturn(false);
     when(appManager.userPreferenceManager.autoFetchAtmosphere)
         .thenReturn(false);
-    when(appManager.locationMonitor.currentLocation).thenReturn(LatLng(0, 0));
+    when(appManager.locationMonitor.currentLocation)
+        .thenReturn(const LatLng(0, 0));
     when(appManager.httpWrapper.get(any))
         .thenAnswer((_) => Future.value(Response("", HttpStatus.ok)));
 
@@ -1533,7 +1538,7 @@ void main() {
 
     // Pick a fishing spot.
     await tapAndSettle(tester, find.text("Fishing Spot"));
-    await tester.pumpAndSettle(Duration(milliseconds: 300));
+    await tester.pumpAndSettle(const Duration(milliseconds: 300));
     await mapController.finishLoading(tester);
     await tapAndSettle(tester, find.byType(BackButton));
 
@@ -1571,7 +1576,7 @@ void main() {
 
     // Pick a fishing spot.
     await tapAndSettle(tester, find.text("Name"));
-    await tester.pumpAndSettle(Duration(milliseconds: 300));
+    await tester.pumpAndSettle(const Duration(milliseconds: 300));
     await mapController.finishLoading(tester);
     await tapAndSettle(tester, find.byType(BackButton));
 

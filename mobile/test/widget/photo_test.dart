@@ -18,21 +18,21 @@ void main() {
 
   testWidgets("Invalid image shows placeholder", (tester) async {
     await tester.pumpWidget(Testable(
-      (_) => Photo(
+      (_) => const Photo(
         fileName: null,
         width: 50,
         height: 50,
       ),
       appManager: appManager,
     ));
-    await tester.pump(Duration(milliseconds: 250));
+    await tester.pump(const Duration(milliseconds: 250));
 
     expect(find.byIcon(CustomIcons.catches), findsOneWidget);
   });
 
   testWidgets("showPlaceholder set to false", (tester) async {
     await tester.pumpWidget(Testable(
-      (_) => Photo(
+      (_) => const Photo(
         fileName: null,
         width: 50,
         height: 50,
@@ -40,14 +40,14 @@ void main() {
       ),
       appManager: appManager,
     ));
-    await tester.pump(Duration(milliseconds: 250));
+    await tester.pump(const Duration(milliseconds: 250));
 
     expect(find.byIcon(CustomIcons.catches), findsNothing);
   });
 
   testWidgets("Empty child", (tester) async {
     await tester.pumpWidget(Testable(
-      (_) => Photo(
+      (_) => const Photo(
         fileName: null,
         width: 50,
         height: 50,
@@ -55,19 +55,19 @@ void main() {
       ),
       appManager: appManager,
     ));
-    await tester.pump(Duration(milliseconds: 250));
+    await tester.pump(const Duration(milliseconds: 250));
 
     expect(find.byType(Empty), findsOneWidget);
   });
 
   testWidgets("Invalid image no size shows empty placeholder", (tester) async {
     await tester.pumpWidget(Testable(
-      (_) => Photo(
+      (_) => const Photo(
         fileName: null,
       ),
       appManager: appManager,
     ));
-    await tester.pump(Duration(milliseconds: 250));
+    await tester.pump(const Duration(milliseconds: 250));
 
     expect(find.byIcon(CustomIcons.catches), findsNothing);
     expect(find.byType(Empty), findsOneWidget);
@@ -75,7 +75,7 @@ void main() {
 
   testWidgets("Circular placeholder", (tester) async {
     await tester.pumpWidget(Testable(
-      (_) => Photo(
+      (_) => const Photo(
         fileName: null,
         isCircular: true,
         width: 50,
@@ -83,7 +83,7 @@ void main() {
       ),
       appManager: appManager,
     ));
-    await tester.pump(Duration(milliseconds: 250));
+    await tester.pump(const Duration(milliseconds: 250));
 
     expect((findFirst<Container>(tester).decoration as BoxDecoration).shape,
         BoxShape.circle);
@@ -92,14 +92,14 @@ void main() {
 
   testWidgets("Rectangular placeholder", (tester) async {
     await tester.pumpWidget(Testable(
-      (_) => Photo(
+      (_) => const Photo(
         fileName: null,
         width: 50,
         height: 50,
       ),
       appManager: appManager,
     ));
-    await tester.pump(Duration(milliseconds: 250));
+    await tester.pump(const Duration(milliseconds: 250));
 
     expect((findFirst<Container>(tester).decoration as BoxDecoration).shape,
         BoxShape.rectangle);
@@ -110,25 +110,25 @@ void main() {
     await stubImage(appManager, tester, "flutter_logo.png");
 
     await tester.pumpWidget(Testable(
-      (_) => Photo(
+      (_) => const Photo(
         fileName: "flutter_logo.png",
       ),
       appManager: appManager,
     ));
-    await tester.pump(Duration(milliseconds: 250));
+    await tester.pump(const Duration(milliseconds: 250));
 
     expect(find.byType(RawImage), findsOneWidget);
   });
 
   testWidgets("Given cache size is honored", (tester) async {
     await tester.pumpWidget(Testable(
-      (_) => Photo(
+      (_) => const Photo(
         fileName: "flutter_logo.png",
         cacheSize: 50,
       ),
       appManager: appManager,
     ));
-    await tester.pump(Duration(milliseconds: 250));
+    await tester.pump(const Duration(milliseconds: 250));
 
     expect(
       verify(appManager.imageManager.image(
@@ -142,14 +142,14 @@ void main() {
 
   testWidgets("If no cache size, widget size is used", (tester) async {
     await tester.pumpWidget(Testable(
-      (_) => Photo(
+      (_) => const Photo(
         fileName: "flutter_logo.png",
         width: 50,
         height: 50,
       ),
       appManager: appManager,
     ));
-    await tester.pump(Duration(milliseconds: 250));
+    await tester.pump(const Duration(milliseconds: 250));
 
     expect(
       verify(appManager.imageManager.image(
@@ -165,14 +165,14 @@ void main() {
     await stubImage(appManager, tester, "flutter_logo.png", anyName: true);
 
     await tester.pumpWidget(Testable(
-      (_) => Photo(
+      (_) => const Photo(
         fileName: "flutter_logo.png",
         galleryImages: ["flutter_logo.png"],
       ),
       appManager: appManager,
     ));
     // Wait for photo future to settle.
-    await tester.pump(Duration(milliseconds: 250));
+    await tester.pump(const Duration(milliseconds: 250));
     await tapAndSettle(tester, find.byType(Photo).first);
     expect(find.byType(PhotoGalleryPage), findsOneWidget);
   });
@@ -181,14 +181,14 @@ void main() {
     await stubImage(appManager, tester, "flutter_logo.png", anyName: true);
 
     await tester.pumpWidget(Testable(
-      (_) => Photo(
+      (_) => const Photo(
         fileName: "flutter_logo.png",
         showFullOnTap: true,
       ),
       appManager: appManager,
     ));
     // Wait for photo future to settle.
-    await tester.pump(Duration(milliseconds: 250));
+    await tester.pump(const Duration(milliseconds: 250));
     await tapAndSettle(tester, find.byType(Photo).first);
     expect(find.byType(PhotoGalleryPage), findsOneWidget);
   });

@@ -16,7 +16,7 @@ class RadioInput extends StatefulWidget {
   final int? initialSelectedIndex;
   final EdgeInsets? padding;
 
-  RadioInput({
+  const RadioInput({
     required this.optionCount,
     required this.optionBuilder,
     required this.onSelect,
@@ -38,6 +38,7 @@ class _RadioInputState extends State<RadioInput> {
     _selectedIndex = widget.initialSelectedIndex;
   }
 
+  @override
   Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsets.only(
@@ -50,7 +51,7 @@ class _RadioInputState extends State<RadioInput> {
           isEmpty(widget.title)
               ? Empty()
               : Padding(
-                  padding: EdgeInsets.only(
+                  padding: const EdgeInsets.only(
                     left: paddingDefault,
                     right: paddingDefault,
                     bottom: paddingWidgetSmall,
@@ -60,7 +61,8 @@ class _RadioInputState extends State<RadioInput> {
                     style: styleListHeading(context),
                   ),
                 ),
-        ]..addAll(List<Widget>.generate(widget.optionCount, _buildOption)),
+          ...List<Widget>.generate(widget.optionCount, _buildOption),
+        ],
       ),
     );
   }
@@ -91,7 +93,7 @@ class _RadioInputState extends State<RadioInput> {
               ),
               Expanded(
                 child: Padding(
-                  padding: EdgeInsets.only(left: paddingWidgetDouble),
+                  padding: const EdgeInsets.only(left: paddingWidgetDouble),
                   child: Text(
                     widget.optionBuilder(context, index),
                     style: stylePrimary(context),

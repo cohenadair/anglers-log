@@ -8,8 +8,9 @@ class FirestoreWrapper {
   static FirestoreWrapper of(BuildContext context) =>
       Provider.of<AppManager>(context, listen: false).firestoreWrapper;
 
-  CollectionReference collection(String path) =>
+  CollectionReference<Map<String, dynamic>> collection(String path) =>
       FirebaseFirestore.instance.collection(path);
 
-  DocumentReference doc(String path) => FirebaseFirestore.instance.doc(path);
+  DocumentReference<Map<String, dynamic>> doc(String path) =>
+      FirebaseFirestore.instance.doc(path);
 }

@@ -26,7 +26,7 @@ class NumberFilterInput extends StatefulWidget {
   /// See [_NumberFilterPage.inputSpec].
   final MultiMeasurementInputSpec? inputSpec;
 
-  NumberFilterInput({
+  const NumberFilterInput({
     required this.title,
     required this.filterTitle,
     required this.controller,
@@ -44,11 +44,9 @@ class _NumberFilterInputState extends State<NumberFilterInput> {
   void initState() {
     super.initState();
 
-    if (widget.controller.value == null) {
-      widget.controller.value = NumberFilter(
-        boundary: NumberBoundary.number_boundary_any,
-      );
-    }
+    widget.controller.value ??= NumberFilter(
+      boundary: NumberBoundary.number_boundary_any,
+    );
   }
 
   @override
@@ -81,7 +79,7 @@ class _NumberFilterPage extends StatefulWidget {
 
   final ValueChanged<NumberFilter>? onChanged;
 
-  _NumberFilterPage({
+  const _NumberFilterPage({
     required this.title,
     required this.initialValue,
     this.inputSpec,

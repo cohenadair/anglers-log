@@ -26,10 +26,10 @@ class ReportManager extends NamedEntityManager<Report> {
   Report entityFromBytes(List<int> bytes) => Report.fromBuffer(bytes);
 
   @override
-  Id id(Report report) => report.id;
+  Id id(Report entity) => entity.id;
 
   @override
-  String name(Report report) => report.name;
+  String name(Report entity) => entity.name;
 
   @override
   String get tableName => "custom_report";

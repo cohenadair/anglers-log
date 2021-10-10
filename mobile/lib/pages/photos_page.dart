@@ -29,7 +29,8 @@ class PhotosPage extends StatelessWidget {
                   SliverVisibility(
                     visible: fileNames.isNotEmpty,
                     sliver: SliverGrid(
-                      gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+                      gridDelegate:
+                          const SliverGridDelegateWithMaxCrossAxisExtent(
                         maxCrossAxisExtent: galleryMaxThumbSize,
                         crossAxisSpacing: gallerySpacing,
                         mainAxisSpacing: gallerySpacing,
@@ -59,7 +60,7 @@ class PhotosPage extends StatelessWidget {
                   ),
                 ],
               ),
-              SafeArea(
+              const SafeArea(
                 child: Align(
                   alignment: Alignment.topLeft,
                   child: FloatingButton.back(),

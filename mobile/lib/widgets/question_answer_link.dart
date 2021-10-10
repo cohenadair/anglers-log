@@ -25,11 +25,11 @@ class QuestionAnswerLink extends StatelessWidget {
       text: TextSpan(children: [
         TextSpan(
           text: question,
-          style: TextStyle(
+          style: const TextStyle(
             color: Colors.black,
           ),
         ),
-        TextSpan(text: " "),
+        const TextSpan(text: " "),
         TextSpan(
           text: actionText,
           style: styleHyperlink,

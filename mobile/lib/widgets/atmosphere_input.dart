@@ -36,7 +36,7 @@ class AtmosphereInput extends StatelessWidget {
   final EdgeInsets? padding;
   final InputController<Atmosphere> controller;
 
-  AtmosphereInput({
+  const AtmosphereInput({
     required this.fetcher,
     required this.controller,
     this.padding,
@@ -96,7 +96,7 @@ class _AtmosphereInputPage extends StatefulWidget {
   final AtmosphereFetcher fetcher;
   final InputController<Atmosphere> controller;
 
-  _AtmosphereInputPage({
+  const _AtmosphereInputPage({
     required this.fetcher,
     required this.controller,
   });
@@ -106,6 +106,8 @@ class _AtmosphereInputPage extends StatefulWidget {
 }
 
 class __AtmosphereInputPageState extends State<_AtmosphereInputPage> {
+  static const _log = Log("AtmosphereInputPage");
+
   static final _idTemperature = atmosphereFieldIdTemperature;
   static final _idWindSpeed = atmosphereFieldIdWindSpeed;
   static final _idWindDirection = atmosphereFieldIdWindDirection;
@@ -116,8 +118,6 @@ class __AtmosphereInputPageState extends State<_AtmosphereInputPage> {
   static final _idSkyCondition = atmosphereFieldIdSkyCondition;
   static final _idSunriseTimestamp = atmosphereFieldIdSunriseTimestamp;
   static final _idSunsetTimestamp = atmosphereFieldIdSunsetTimestamp;
-
-  final _log = Log("AtmosphereInputPage");
 
   final _fields = <Id, Field>{};
 
@@ -439,7 +439,7 @@ class __AtmosphereInputPageState extends State<_AtmosphereInputPage> {
   Widget _buildSunrise() {
     return TimePicker(
       context,
-      padding: EdgeInsets.only(
+      padding: const EdgeInsets.only(
         left: paddingDefault,
         right: paddingDefault,
         bottom: paddingWidget,
@@ -453,7 +453,7 @@ class __AtmosphereInputPageState extends State<_AtmosphereInputPage> {
   Widget _buildSunset() {
     return TimePicker(
       context,
-      padding: EdgeInsets.only(
+      padding: const EdgeInsets.only(
         left: paddingDefault,
         right: paddingDefault,
         bottom: paddingWidget,

@@ -227,7 +227,7 @@ void main() {
 
   testWidgets("New title", (tester) async {
     await tester.pumpWidget(Testable(
-      (_) => SaveReportPage(),
+      (_) => const SaveReportPage(),
       appManager: appManager,
     ));
     expect(find.text("New Report"), findsOneWidget);
@@ -248,7 +248,7 @@ void main() {
 
   testWidgets("Type defaults to summary", (tester) async {
     await tester.pumpWidget(Testable(
-      (_) => SaveReportPage(),
+      (_) => const SaveReportPage(),
       appManager: appManager,
     ));
     expect(
@@ -262,7 +262,7 @@ void main() {
 
   testWidgets("Date range defaults to all", (tester) async {
     await tester.pumpWidget(Testable(
-      (_) => SaveReportPage(),
+      (_) => const SaveReportPage(),
       appManager: appManager,
     ));
     expect(find.text("All dates"), findsOneWidget);
@@ -270,7 +270,7 @@ void main() {
 
   testWidgets("Save button state updates when name changes", (tester) async {
     await tester.pumpWidget(Testable(
-      (_) => SaveReportPage(),
+      (_) => const SaveReportPage(),
       appManager: appManager,
     ));
 
@@ -286,7 +286,7 @@ void main() {
 
   testWidgets("Selecting type updates date range pickers", (tester) async {
     await tester.pumpWidget(Testable(
-      (_) => SaveReportPage(),
+      (_) => const SaveReportPage(),
       appManager: appManager,
     ));
 
@@ -309,7 +309,7 @@ void main() {
 
   testWidgets("Picking start date updates state", (tester) async {
     await tester.pumpWidget(Testable(
-      (_) => SaveReportPage(),
+      (_) => const SaveReportPage(),
       appManager: appManager,
     ));
 
@@ -321,7 +321,7 @@ void main() {
 
   testWidgets("Picking end date updates state", (tester) async {
     await tester.pumpWidget(Testable(
-      (_) => SaveReportPage(),
+      (_) => const SaveReportPage(),
       appManager: appManager,
     ));
 
@@ -334,7 +334,7 @@ void main() {
 
   testWidgets("Species picker shows picker page", (tester) async {
     await tester.pumpWidget(Testable(
-      (_) => SaveReportPage(),
+      (_) => const SaveReportPage(),
       appManager: appManager,
     ));
 
@@ -345,7 +345,7 @@ void main() {
 
   testWidgets("Bait picker shows picker page", (tester) async {
     await tester.pumpWidget(Testable(
-      (_) => SaveReportPage(),
+      (_) => const SaveReportPage(),
       appManager: appManager,
     ));
 
@@ -356,7 +356,7 @@ void main() {
 
   testWidgets("Fishing spot picker shows picker page", (tester) async {
     await tester.pumpWidget(Testable(
-      (_) => SaveReportPage(),
+      (_) => const SaveReportPage(),
       appManager: appManager,
     ));
 
@@ -367,7 +367,7 @@ void main() {
 
   testWidgets("Body of water picker shows picker page", (tester) async {
     await tester.pumpWidget(Testable(
-      (_) => SaveReportPage(),
+      (_) => const SaveReportPage(),
       appManager: appManager,
     ));
 
@@ -378,7 +378,7 @@ void main() {
 
   testWidgets("Angler picker shows picker page", (tester) async {
     await tester.pumpWidget(Testable(
-      (_) => SaveReportPage(),
+      (_) => const SaveReportPage(),
       appManager: appManager,
     ));
 
@@ -389,7 +389,7 @@ void main() {
 
   testWidgets("Water clarity picker shows picker page", (tester) async {
     await tester.pumpWidget(Testable(
-      (_) => SaveReportPage(),
+      (_) => const SaveReportPage(),
       appManager: appManager,
     ));
 
@@ -400,7 +400,7 @@ void main() {
 
   testWidgets("Methods picker shows picker page", (tester) async {
     await tester.pumpWidget(Testable(
-      (_) => SaveReportPage(),
+      (_) => const SaveReportPage(),
       appManager: appManager,
     ));
 
@@ -411,7 +411,7 @@ void main() {
 
   testWidgets("Periods picker shows picker page", (tester) async {
     await tester.pumpWidget(Testable(
-      (_) => SaveReportPage(),
+      (_) => const SaveReportPage(),
       appManager: appManager,
     ));
 
@@ -422,7 +422,7 @@ void main() {
 
   testWidgets("Seasons picker shows picker page", (tester) async {
     await tester.pumpWidget(Testable(
-      (_) => SaveReportPage(),
+      (_) => const SaveReportPage(),
       appManager: appManager,
     ));
 
@@ -433,7 +433,7 @@ void main() {
 
   testWidgets("Picking all species shows single chip", (tester) async {
     await tester.pumpWidget(Testable(
-      (_) => SaveReportPage(),
+      (_) => const SaveReportPage(),
       appManager: appManager,
     ));
 
@@ -454,7 +454,7 @@ void main() {
 
   testWidgets("Picking all baits shows single chip", (tester) async {
     await tester.pumpWidget(Testable(
-      (_) => SaveReportPage(),
+      (_) => const SaveReportPage(),
       appManager: appManager,
     ));
 
@@ -475,7 +475,7 @@ void main() {
 
   testWidgets("Picking all fishing spots shows single chip", (tester) async {
     await tester.pumpWidget(Testable(
-      (_) => SaveReportPage(),
+      (_) => const SaveReportPage(),
       appManager: appManager,
     ));
 
@@ -496,7 +496,7 @@ void main() {
 
   testWidgets("Picking all bodies of water shows single chip", (tester) async {
     await tester.pumpWidget(Testable(
-      (_) => SaveReportPage(),
+      (_) => const SaveReportPage(),
       appManager: appManager,
     ));
 
@@ -517,7 +517,7 @@ void main() {
 
   testWidgets("Picking all anglers shows single chip", (tester) async {
     await tester.pumpWidget(Testable(
-      (_) => SaveReportPage(),
+      (_) => const SaveReportPage(),
       appManager: appManager,
     ));
 
@@ -538,7 +538,7 @@ void main() {
 
   testWidgets("Picking all water clarities shows single chip", (tester) async {
     await tester.pumpWidget(Testable(
-      (_) => SaveReportPage(),
+      (_) => const SaveReportPage(),
       appManager: appManager,
     ));
 
@@ -559,7 +559,7 @@ void main() {
 
   testWidgets("Picking all fishing methods shows single chip", (tester) async {
     await tester.pumpWidget(Testable(
-      (_) => SaveReportPage(),
+      (_) => const SaveReportPage(),
       appManager: appManager,
     ));
 
@@ -580,7 +580,7 @@ void main() {
 
   testWidgets("Picking all periods shows single chip", (tester) async {
     await tester.pumpWidget(Testable(
-      (_) => SaveReportPage(),
+      (_) => const SaveReportPage(),
       appManager: appManager,
     ));
 
@@ -595,7 +595,7 @@ void main() {
 
   testWidgets("Picking all seasons shows single chip", (tester) async {
     await tester.pumpWidget(Testable(
-      (_) => SaveReportPage(),
+      (_) => const SaveReportPage(),
       appManager: appManager,
     ));
 
@@ -610,7 +610,7 @@ void main() {
 
   testWidgets("Picking all tides shows single chip", (tester) async {
     await tester.pumpWidget(Testable(
-      (_) => SaveReportPage(),
+      (_) => const SaveReportPage(),
       appManager: appManager,
     ));
 
@@ -625,7 +625,7 @@ void main() {
 
   testWidgets("Add report with all fields modified", (tester) async {
     await tester.pumpWidget(Testable(
-      (_) => SaveReportPage(),
+      (_) => const SaveReportPage(),
       appManager: appManager,
     ));
 
@@ -825,7 +825,7 @@ void main() {
 
   testWidgets("Add summary report with preset date range", (tester) async {
     await tester.pumpWidget(Testable(
-      (_) => SaveReportPage(),
+      (_) => const SaveReportPage(),
       appManager: appManager,
     ));
 
@@ -870,7 +870,7 @@ void main() {
         // Custom DisplayDateRange default to "this month".
         fromDateRange = DateRange(period: DateRange_Period.thisMonth);
         toDateRange = DateRange(period: DateRange_Period.thisMonth);
-        return SaveReportPage();
+        return const SaveReportPage();
       },
       appManager: appManager,
     ));
@@ -881,14 +881,14 @@ void main() {
 
     await tapAndSettle(tester, find.text("Compare"));
     // Scroll so "Custom" is visible.
-    await tester.drag(find.text("Last year"), Offset(0, -400));
+    await tester.drag(find.text("Last year"), const Offset(0, -400));
     await tester.pumpAndSettle();
     await tapAndSettle(tester, find.text("Custom"));
     await tapAndSettle(tester, find.text("OK"));
 
     await tapAndSettle(tester, find.text("To"));
     // Scroll so "Custom" is visible.
-    await tester.drag(find.text("Last year"), Offset(0, -400));
+    await tester.drag(find.text("Last year"), const Offset(0, -400));
     await tester.pumpAndSettle();
     await tapAndSettle(tester, find.text("Custom"));
     await tapAndSettle(tester, find.text("OK"));
@@ -936,7 +936,7 @@ void main() {
   testWidgets("Add report with all entities selected sets empty collections",
       (tester) async {
     await tester.pumpWidget(Testable(
-      (_) => SaveReportPage(),
+      (_) => const SaveReportPage(),
       appManager: appManager,
     ));
 
@@ -1153,7 +1153,7 @@ void main() {
 
   testWidgets("New report without changing date ranges", (tester) async {
     await tester.pumpWidget(Testable(
-      (_) => SaveReportPage(),
+      (_) => const SaveReportPage(),
       appManager: appManager,
     ));
 
@@ -1168,7 +1168,7 @@ void main() {
 
   testWidgets("Checking favorites only sets property", (tester) async {
     await tester.pumpWidget(Testable(
-      (_) => SaveReportPage(),
+      (_) => const SaveReportPage(),
       appManager: appManager,
     ));
 
@@ -1187,7 +1187,7 @@ void main() {
 
   testWidgets("Checking catch and release only sets property", (tester) async {
     await tester.pumpWidget(Testable(
-      (_) => SaveReportPage(),
+      (_) => const SaveReportPage(),
       appManager: appManager,
     ));
 
@@ -1209,7 +1209,7 @@ void main() {
     await tester.pumpWidget(Testable(
       (context) {
         stubCatchFields(context, catchFieldIdCatchAndRelease);
-        return SaveReportPage();
+        return const SaveReportPage();
       },
       appManager: appManager,
     ));
@@ -1220,7 +1220,7 @@ void main() {
     await tester.pumpWidget(Testable(
       (context) {
         stubCatchFields(context, catchFieldIdFavorite);
-        return SaveReportPage();
+        return const SaveReportPage();
       },
       appManager: appManager,
     ));
@@ -1231,7 +1231,7 @@ void main() {
     await tester.pumpWidget(Testable(
       (context) {
         stubCatchFields(context, catchFieldIdWaterDepth);
-        return SaveReportPage();
+        return const SaveReportPage();
       },
       appManager: appManager,
     ));
@@ -1242,7 +1242,7 @@ void main() {
     await tester.pumpWidget(Testable(
       (context) {
         stubCatchFields(context, catchFieldIdWaterTemperature);
-        return SaveReportPage();
+        return const SaveReportPage();
       },
       appManager: appManager,
     ));
@@ -1253,7 +1253,7 @@ void main() {
     await tester.pumpWidget(Testable(
       (context) {
         stubCatchFields(context, catchFieldIdLength);
-        return SaveReportPage();
+        return const SaveReportPage();
       },
       appManager: appManager,
     ));
@@ -1264,7 +1264,7 @@ void main() {
     await tester.pumpWidget(Testable(
       (context) {
         stubCatchFields(context, catchFieldIdWeight);
-        return SaveReportPage();
+        return const SaveReportPage();
       },
       appManager: appManager,
     ));
@@ -1275,7 +1275,7 @@ void main() {
     await tester.pumpWidget(Testable(
       (context) {
         stubCatchFields(context, catchFieldIdQuantity);
-        return SaveReportPage();
+        return const SaveReportPage();
       },
       appManager: appManager,
     ));
@@ -1286,7 +1286,7 @@ void main() {
     await tester.pumpWidget(Testable(
       (context) {
         stubCatchFields(context, catchFieldIdPeriod);
-        return SaveReportPage();
+        return const SaveReportPage();
       },
       appManager: appManager,
     ));
@@ -1297,7 +1297,7 @@ void main() {
     await tester.pumpWidget(Testable(
       (context) {
         stubCatchFields(context, catchFieldIdSeason);
-        return SaveReportPage();
+        return const SaveReportPage();
       },
       appManager: appManager,
     ));
@@ -1308,7 +1308,7 @@ void main() {
     await tester.pumpWidget(Testable(
       (context) {
         stubCatchFields(context, catchFieldIdAngler);
-        return SaveReportPage();
+        return const SaveReportPage();
       },
       appManager: appManager,
     ));
@@ -1319,7 +1319,7 @@ void main() {
     await tester.pumpWidget(Testable(
       (context) {
         stubCatchFields(context, catchFieldIdSpecies);
-        return SaveReportPage();
+        return const SaveReportPage();
       },
       appManager: appManager,
     ));
@@ -1330,7 +1330,7 @@ void main() {
     await tester.pumpWidget(Testable(
       (context) {
         stubCatchFields(context, catchFieldIdBait);
-        return SaveReportPage();
+        return const SaveReportPage();
       },
       appManager: appManager,
     ));
@@ -1341,7 +1341,7 @@ void main() {
     await tester.pumpWidget(Testable(
       (context) {
         stubCatchFields(context, catchFieldIdFishingSpot);
-        return SaveReportPage();
+        return const SaveReportPage();
       },
       appManager: appManager,
     ));
@@ -1352,7 +1352,7 @@ void main() {
     await tester.pumpWidget(Testable(
       (context) {
         stubCatchFields(context, catchFieldIdFishingSpot);
-        return SaveReportPage();
+        return const SaveReportPage();
       },
       appManager: appManager,
     ));
@@ -1363,7 +1363,7 @@ void main() {
     await tester.pumpWidget(Testable(
       (context) {
         stubCatchFields(context, catchFieldIdMethods);
-        return SaveReportPage();
+        return const SaveReportPage();
       },
       appManager: appManager,
     ));
@@ -1374,7 +1374,7 @@ void main() {
     await tester.pumpWidget(Testable(
       (context) {
         stubAtmosphereFields(atmosphereFieldIdTemperature);
-        return SaveReportPage();
+        return const SaveReportPage();
       },
       appManager: appManager,
     ));
@@ -1385,7 +1385,7 @@ void main() {
     await tester.pumpWidget(Testable(
       (context) {
         stubAtmosphereFields(atmosphereFieldIdPressure);
-        return SaveReportPage();
+        return const SaveReportPage();
       },
       appManager: appManager,
     ));
@@ -1396,7 +1396,7 @@ void main() {
     await tester.pumpWidget(Testable(
       (context) {
         stubAtmosphereFields(atmosphereFieldIdHumidity);
-        return SaveReportPage();
+        return const SaveReportPage();
       },
       appManager: appManager,
     ));
@@ -1407,7 +1407,7 @@ void main() {
     await tester.pumpWidget(Testable(
       (context) {
         stubAtmosphereFields(atmosphereFieldIdVisibility);
-        return SaveReportPage();
+        return const SaveReportPage();
       },
       appManager: appManager,
     ));
@@ -1418,7 +1418,7 @@ void main() {
     await tester.pumpWidget(Testable(
       (context) {
         stubAtmosphereFields(atmosphereFieldIdWindSpeed);
-        return SaveReportPage();
+        return const SaveReportPage();
       },
       appManager: appManager,
     ));
@@ -1429,7 +1429,7 @@ void main() {
     await tester.pumpWidget(Testable(
       (context) {
         stubAtmosphereFields(atmosphereFieldIdWindDirection);
-        return SaveReportPage();
+        return const SaveReportPage();
       },
       appManager: appManager,
     ));
@@ -1440,7 +1440,7 @@ void main() {
     await tester.pumpWidget(Testable(
       (context) {
         stubAtmosphereFields(atmosphereFieldIdSkyCondition);
-        return SaveReportPage();
+        return const SaveReportPage();
       },
       appManager: appManager,
     ));
@@ -1451,7 +1451,7 @@ void main() {
     await tester.pumpWidget(Testable(
       (context) {
         stubAtmosphereFields(atmosphereFieldIdMoonPhase);
-        return SaveReportPage();
+        return const SaveReportPage();
       },
       appManager: appManager,
     ));
@@ -1462,7 +1462,7 @@ void main() {
     await tester.pumpWidget(Testable(
       (context) {
         stubCatchFields(context, catchFieldIdTide);
-        return SaveReportPage();
+        return const SaveReportPage();
       },
       appManager: appManager,
     ));
@@ -1473,7 +1473,7 @@ void main() {
     await tester.pumpWidget(Testable(
       (context) {
         stubCatchFields(context, catchFieldIdWaterClarity);
-        return SaveReportPage();
+        return const SaveReportPage();
       },
       appManager: appManager,
     ));

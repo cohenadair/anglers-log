@@ -17,7 +17,7 @@ class LocalDatabaseManager {
   static LocalDatabaseManager of(BuildContext context) =>
       Provider.of<AppManager>(context, listen: false).localDatabaseManager;
 
-  final _log = Log("DataManager");
+  final _log = const Log("DataManager");
   final AppManager _appManager;
 
   late DatabaseExecutor _database;

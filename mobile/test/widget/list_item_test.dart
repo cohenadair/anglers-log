@@ -11,7 +11,7 @@ void main() {
   group("ListItem", () {
     testWidgets("Text title/subtitle use default style", (tester) async {
       await tester.pumpWidget(Testable(
-        (_) => ListItem(
+        (_) => const ListItem(
           title: Text("Title"),
           subtitle: Text("Subtitle"),
         ),
@@ -22,7 +22,7 @@ void main() {
 
     testWidgets("Leading icons use default style", (tester) async {
       await tester.pumpWidget(Testable(
-        (_) => ListItem(
+        (_) => const ListItem(
           leading: Icon(Icons.check),
         ),
       ));
@@ -31,7 +31,7 @@ void main() {
     });
 
     testWidgets("Default padding", (tester) async {
-      await tester.pumpWidget(Testable((_) => ListItem()));
+      await tester.pumpWidget(Testable((_) => const ListItem()));
       expect(
         find.byWidgetPredicate(
             (widget) => widget is Padding && widget.padding == insetsDefault),
@@ -41,21 +41,21 @@ void main() {
 
     testWidgets("Custom padding", (tester) async {
       await tester.pumpWidget(Testable(
-        (_) => ListItem(
+        (_) => const ListItem(
           padding: EdgeInsets.all(1),
         ),
       ));
 
       expect(
         find.byWidgetPredicate((widget) =>
-            widget is Padding && widget.padding == EdgeInsets.all(1)),
+            widget is Padding && widget.padding == const EdgeInsets.all(1)),
         findsOneWidget,
       );
     });
 
     testWidgets("Null leading/trailing/title/subtitle", (tester) async {
       await tester.pumpWidget(Testable(
-        (_) => ListItem(
+        (_) => const ListItem(
           title: null,
           subtitle: null,
           trailing: null,
@@ -69,7 +69,7 @@ void main() {
 
     testWidgets("Non-null leading/trailing/title/subtitle", (tester) async {
       await tester.pumpWidget(Testable(
-        (_) => ListItem(
+        (_) => const ListItem(
           title: Text("Title"),
           subtitle: Text("Subtitle"),
           trailing: Icon(Icons.chevron_right),
@@ -92,8 +92,8 @@ void main() {
       await tester.pumpWidget(
         Testable(
           (_) => ExpansionListItem(
-            title: Text("Title"),
-            children: [
+            title: const Text("Title"),
+            children: const [
               Text("Child 1"),
               Text("Child 2"),
             ],
@@ -122,7 +122,7 @@ void main() {
       await tester.pumpWidget(
         Testable(
           (_) => ManageableListItem(
-            child: Text("Child"),
+            child: const Text("Child"),
             editing: true,
             onTapDeleteButton: () => false,
           ),
@@ -136,7 +136,7 @@ void main() {
       var context = await pumpContext(
         tester,
         (_) => ManageableListItem(
-          child: MinDivider(),
+          child: const MinDivider(),
           onTapDeleteButton: () => false,
         ),
       );
@@ -149,8 +149,8 @@ void main() {
       await tester.pumpWidget(
         Testable(
           (_) => ManageableListItem(
-            child: Text("Child"),
-            deleteMessageBuilder: (_) => Text("A delete message."),
+            child: const Text("Child"),
+            deleteMessageBuilder: (_) => const Text("A delete message."),
             onConfirmDelete: () {},
             editing: true,
           ),
@@ -167,8 +167,8 @@ void main() {
       await tester.pumpWidget(
         Testable(
           (_) => ManageableListItem(
-            child: Text("Child"),
-            deleteMessageBuilder: (_) => Text("A delete message."),
+            child: const Text("Child"),
+            deleteMessageBuilder: (_) => const Text("A delete message."),
             onConfirmDelete: () => confirmed = true,
             editing: true,
           ),
@@ -188,7 +188,7 @@ void main() {
       await tester.pumpWidget(
         Testable(
           (_) => ManageableListItem(
-            child: Text("Child"),
+            child: const Text("Child"),
             onTapDeleteButton: () => tapped = true,
             editing: true,
           ),
@@ -204,10 +204,10 @@ void main() {
       await tester.pumpWidget(
         Testable(
           (_) => ManageableListItem(
-            child: Text("Child"),
+            child: const Text("Child"),
             onTapDeleteButton: () => false,
             editing: true,
-            trailing: Icon(Icons.style),
+            trailing: const Icon(Icons.style),
           ),
         ),
       );
@@ -226,9 +226,9 @@ void main() {
       await tester.pumpWidget(
         Testable(
           (_) => ManageableListItem(
-            child: Text("Child"),
+            child: const Text("Child"),
             onTapDeleteButton: () => false,
-            trailing: Icon(Icons.style),
+            trailing: const Icon(Icons.style),
           ),
         ),
       );
@@ -262,7 +262,7 @@ void main() {
     testWidgets("No trailing widget", (tester) async {
       await tester.pumpWidget(
         Testable(
-          (_) => ManageableListImageItem(
+          (_) => const ManageableListImageItem(
             title: "Title",
             subtitle: "Subtitle",
             subtitle2: "Subtitle 2",
@@ -276,7 +276,7 @@ void main() {
     testWidgets("Empty subtitle3", (tester) async {
       var context = await pumpContext(
         tester,
-        (_) => ManageableListImageItem(
+        (_) => const ManageableListImageItem(
           title: "Title",
           subtitle: "Subtitle",
           subtitle2: "Subtitle 2",
@@ -288,7 +288,7 @@ void main() {
     testWidgets("Non-empty subtitle3", (tester) async {
       var context = await pumpContext(
         tester,
-        (_) => ManageableListImageItem(
+        (_) => const ManageableListImageItem(
           title: "Title",
           subtitle: "Subtitle",
           subtitle2: "Subtitle 2",

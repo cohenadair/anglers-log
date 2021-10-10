@@ -20,7 +20,7 @@ void main() {
     appManager = StubbedAppManager();
     mapController = StubbedMapController();
 
-    when(appManager.authManager.stream).thenAnswer((_) => Stream.empty());
+    when(appManager.authManager.stream).thenAnswer((_) => const Stream.empty());
 
     when(appManager.baitCategoryManager.listSortedByName(
       filter: anyNamed("filter"),
@@ -48,7 +48,7 @@ void main() {
     when(appManager.propertiesManager.mapboxApiKey).thenReturn("");
 
     when(appManager.subscriptionManager.stream)
-        .thenAnswer((_) => Stream.empty());
+        .thenAnswer((_) => const Stream.empty());
     when(appManager.subscriptionManager.isPro).thenReturn(false);
 
     when(appManager.timeManager.currentDateTime).thenReturn(DateTime.now());
@@ -64,7 +64,7 @@ void main() {
       appManager: appManager,
     ));
     // Let map timers settle.
-    await tester.pumpAndSettle(Duration(milliseconds: 300));
+    await tester.pumpAndSettle(const Duration(milliseconds: 300));
     await mapController.finishLoading(tester);
 
     // Starts on Catches page.
@@ -95,7 +95,7 @@ void main() {
       appManager: appManager,
     ));
     // Let map timers settle.
-    await tester.pumpAndSettle(Duration(milliseconds: 300));
+    await tester.pumpAndSettle(const Duration(milliseconds: 300));
     await mapController.finishLoading(tester);
 
     await tapAndSettle(tester, find.byIcon(Icons.more_horiz));
@@ -114,7 +114,7 @@ void main() {
       appManager: appManager,
     ));
     // Let map timers settle.
-    await tester.pumpAndSettle(Duration(milliseconds: 300));
+    await tester.pumpAndSettle(const Duration(milliseconds: 300));
     await mapController.finishLoading(tester);
 
     await tapAndSettle(tester, find.byIcon(Icons.more_horiz));
@@ -142,7 +142,7 @@ void main() {
       appManager: appManager,
     ));
     // Let map timers settle.
-    await tester.pumpAndSettle(Duration(milliseconds: 300));
+    await tester.pumpAndSettle(const Duration(milliseconds: 300));
     await mapController.finishLoading(tester);
 
     var quarterDuration = Duration.millisecondsPerDay * (365 / 4);

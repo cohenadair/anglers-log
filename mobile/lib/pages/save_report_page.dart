@@ -44,19 +44,19 @@ import 'water_clarity_list_page.dart';
 class SaveReportPage extends StatefulWidget {
   final Report? oldReport;
 
-  SaveReportPage() : oldReport = null;
+  const SaveReportPage() : oldReport = null;
 
-  SaveReportPage.edit(this.oldReport) : assert(oldReport != null);
+  const SaveReportPage.edit(this.oldReport) : assert(oldReport != null);
 
   @override
   _SaveReportPageState createState() => _SaveReportPageState();
 }
 
 class _SaveReportPageState extends State<SaveReportPage> {
-  final Key _keySummaryStart = ValueKey(0);
-  final Key _keyComparisonStart = ValueKey(1);
+  static const Key _keySummaryStart = ValueKey(0);
+  static const Key _keyComparisonStart = ValueKey(1);
 
-  late final _nameController;
+  late final TextInputController _nameController;
   final _descriptionController = TextInputController();
   final _typeController = InputController<Report_Type>();
   final _fromDateRangeController = InputController<DateRange>();
@@ -247,7 +247,7 @@ class _SaveReportPageState extends State<SaveReportPage> {
 
   Widget _buildName() {
     return Padding(
-      padding: EdgeInsets.only(
+      padding: const EdgeInsets.only(
         left: paddingDefault,
         right: paddingDefault,
         bottom: paddingSmall,
@@ -265,7 +265,7 @@ class _SaveReportPageState extends State<SaveReportPage> {
 
   Widget _buildDescription() {
     return Padding(
-      padding: EdgeInsets.only(
+      padding: const EdgeInsets.only(
         left: paddingDefault,
         right: paddingDefault,
         bottom: paddingSmall,
@@ -687,22 +687,20 @@ class _SaveReportPageState extends State<SaveReportPage> {
       emptyValue: (context) => emptyValue,
       onTap: () {
         var pickerPage = customListPage;
-        if (pickerPage == null) {
-          pickerPage = listPage!(
-            ManageableListPagePickerSettings<T>(
-              onPicked: (context, entities) {
-                // Treat an empty controller value as "include all", so we're
-                // not including 100s of objects in a protobuf collection.
-                setState(() => controller.value =
-                    entities.containsAll(manager.list()) ? {} : entities);
-                return true;
-              },
-              initialValues: controller.value.isEmpty
-                  ? manager.list().toSet()
-                  : controller.value,
-            ),
-          );
-        }
+        pickerPage ??= listPage!(
+          ManageableListPagePickerSettings<T>(
+            onPicked: (context, entities) {
+              // Treat an empty controller value as "include all", so we're
+              // not including 100s of objects in a protobuf collection.
+              setState(() => controller.value =
+                  entities.containsAll(manager.list()) ? {} : entities);
+              return true;
+            },
+            initialValues: controller.value.isEmpty
+                ? manager.list().toSet()
+                : controller.value,
+          ),
+        );
 
         push(context, pickerPage);
       },

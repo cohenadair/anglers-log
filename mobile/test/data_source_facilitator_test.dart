@@ -55,10 +55,10 @@ void main() {
   setUp(() {
     appManager = StubbedAppManager();
 
-    when(appManager.authManager.stream).thenAnswer((_) => Stream.empty());
+    when(appManager.authManager.stream).thenAnswer((_) => const Stream.empty());
 
     when(appManager.subscriptionManager.stream)
-        .thenAnswer((_) => Stream.empty());
+        .thenAnswer((_) => const Stream.empty());
 
     facilitator = TestDataSourceFacilitator(appManager.app);
   });
@@ -77,7 +77,7 @@ void main() {
     expect(facilitator.initializeFirestoreCount, 1);
 
     controller.add(null);
-    await Future.delayed(Duration(milliseconds: 50));
+    await Future.delayed(const Duration(milliseconds: 50));
     verify(facilitator.listener.cancel()).called(1);
   });
 
@@ -93,7 +93,7 @@ void main() {
     expect(facilitator.initializeLocalDataCount, 1);
 
     controller.add(null);
-    await Future.delayed(Duration(milliseconds: 50));
+    await Future.delayed(const Duration(milliseconds: 50));
     expect(facilitator.clearLocalDataCount, 1);
   });
 
@@ -112,7 +112,7 @@ void main() {
     when(appManager.appPreferenceManager.lastLoggedInEmail).thenReturn(null);
     when(appManager.authManager.userId).thenReturn(null);
     when(appManager.subscriptionManager.stream)
-        .thenAnswer((_) => Stream.empty());
+        .thenAnswer((_) => const Stream.empty());
     when(appManager.subscriptionManager.isPro).thenReturn(false);
 
     facilitator.firestoreEnabled = false;
@@ -142,12 +142,12 @@ void main() {
     controller.add(null);
 
     // Need to wait for Firebase initialization Future to finish.
-    await Future.delayed(Duration(milliseconds: 50));
+    await Future.delayed(const Duration(milliseconds: 50));
     expect(facilitator.onUpgradeToProCount, 1);
 
     // Verify onUpgradeToPro is not invoked again if another event is fired.
     controller.add(null);
-    await Future.delayed(Duration(milliseconds: 50));
+    await Future.delayed(const Duration(milliseconds: 50));
     expect(facilitator.onUpgradeToProCount, 1);
   });
 }

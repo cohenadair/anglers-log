@@ -24,7 +24,7 @@ void main() {
 class _TestSlide extends StatefulWidget {
   final VoidCallback? onDismissed;
 
-  _TestSlide(this.onDismissed);
+  const _TestSlide(this.onDismissed);
 
   @override
   __TestSlideState createState() => __TestSlideState();
@@ -42,7 +42,7 @@ class __TestSlideState extends State<_TestSlide> {
           onPressed: () => setState(() => _isVisible = false),
         ),
         SlideUpTransition(
-          child: Text("Text"),
+          child: const Text("Text"),
           isVisible: _isVisible,
           onDismissed: widget.onDismissed,
         ),

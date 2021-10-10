@@ -97,7 +97,7 @@ class ImagePickerPage extends StatefulWidget {
   /// A [Widget] to override the default [AppBar] leading behaviour.
   final Widget? appBarLeading;
 
-  ImagePickerPage({
+  const ImagePickerPage({
     required this.onImagesPicked,
     this.allowsMultipleSelection = true,
     this.initialImages = const [],
@@ -128,7 +128,7 @@ class _ImagePickerPageState extends State<ImagePickerPage> {
   /// position reaches its max - thumbnail size * _loadNextPageFactor.
   static const int _loadNextPageFactor = 3;
 
-  final _log = Log("ImagePickerPage");
+  final _log = const Log("ImagePickerPage");
 
   /// A future that gets an [AssetPathEntity] containing all of a users photos.
   Future<AssetPathEntity?>? _galleryFuture;
@@ -202,10 +202,8 @@ class _ImagePickerPageState extends State<ImagePickerPage> {
             return _buildNoPermission();
           }
 
-          if (_galleryFuture == null) {
-            _galleryFuture =
-                _photoManager.getAllAssetPathEntity(RequestType.image);
-          }
+          _galleryFuture ??=
+              _photoManager.getAllAssetPathEntity(RequestType.image);
 
           return FutureBuilder<AssetPathEntity?>(
             future: _galleryFuture,
@@ -347,7 +345,7 @@ class _ImagePickerPageState extends State<ImagePickerPage> {
             removeBottom: true,
             removeTop: true,
             child: GridView.builder(
-              gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+              gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
                 maxCrossAxisExtent: galleryMaxThumbSize,
                 crossAxisSpacing: gallerySpacing,
                 mainAxisSpacing: gallerySpacing,
@@ -467,7 +465,7 @@ class _ImagePickerPageState extends State<ImagePickerPage> {
     return LayoutBuilder(
       builder: (context, constraints) {
         return Container(
-          constraints: BoxConstraints.expand(), // Fill parent.
+          constraints: const BoxConstraints.expand(), // Fill parent.
           decoration: BoxDecoration(
             color: Theme.of(context).primaryColor,
           ),
@@ -512,8 +510,8 @@ class _ImagePickerPageState extends State<ImagePickerPage> {
   Widget _buildSelectedCover(bool selected) {
     return Visibility(
       visible: selected,
-      child: Padding(
-        padding: const EdgeInsets.all(_selectedPadding),
+      child: const Padding(
+        padding: EdgeInsets.all(_selectedPadding),
         child: Align(
           alignment: Alignment.topRight,
           child: Icon(Icons.check_circle),
@@ -543,7 +541,7 @@ class _ImagePickerPageState extends State<ImagePickerPage> {
                     Strings.of(context).imagePickerPageNoPermissionMessage,
                 scrollable: false,
               ),
-              VerticalSpace(paddingWidget),
+              const VerticalSpace(paddingWidget),
               Button(
                 text: Strings.of(context).imagePickerPageOpenSettings,
                 onPressed: () => _permissionHandlerWrapper.openSettings(),

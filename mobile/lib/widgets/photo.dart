@@ -20,7 +20,7 @@ import '../widgets/widget.dart';
 /// is fetched from [ImageManager]. If non-null, the largest of [width] and
 /// [height] is fetched from [ImageManager].
 class Photo extends StatefulWidget {
-  static final double _listItemSize = 48;
+  static const double _listItemSize = 48;
 
   /// The unique file name of the image.
   final String? fileName;
@@ -50,7 +50,7 @@ class Photo extends StatefulWidget {
   /// is ignored.
   final EdgeInsets? padding;
 
-  Photo({
+  const Photo({
     required this.fileName,
     this.width,
     this.height,
@@ -63,7 +63,7 @@ class Photo extends StatefulWidget {
   }) : assert((width != null && height != null) ||
             (width == null && height == null));
 
-  Photo.listThumbnail(
+  const Photo.listThumbnail(
     String? fileName, {
     bool showPlaceholder = true,
     bool showFullOnTap = false,
@@ -191,11 +191,9 @@ class _PhotoState extends State<Photo> {
     }
 
     var size = widget.cacheSize;
-    if (size == null) {
-      size = widget.width == null || widget.height == null
-          ? null
-          : max<double>(widget.width!, widget.height!);
-    }
+    size ??= widget.width == null || widget.height == null
+        ? null
+        : max<double>(widget.width!, widget.height!);
 
     return await _imageManager.image(context,
         fileName: widget.fileName!, size: size);

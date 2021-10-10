@@ -18,7 +18,7 @@ void main() {
     appManager = StubbedAppManager();
 
     when(appManager.subscriptionManager.stream)
-        .thenAnswer((_) => Stream.empty());
+        .thenAnswer((_) => const Stream.empty());
     when(appManager.subscriptionManager.isPro).thenReturn(false);
 
     var monthlyProduct = MockProduct();
@@ -40,7 +40,7 @@ void main() {
       (tester) async {
     when(appManager.subscriptionManager.subscriptions()).thenAnswer(
       (_) => Future.delayed(
-        Duration(milliseconds: 50),
+        const Duration(milliseconds: 50),
         () => Subscriptions(
           Subscription(monthlyPackage, 7),
           Subscription(yearlyPackage, 14),
@@ -57,7 +57,7 @@ void main() {
     expect(find.byType(ElevatedButton), findsNothing);
 
     // Wait for subscriptions to be fetched.
-    await tester.pumpAndSettle(Duration(milliseconds: 50));
+    await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
     expect(find.byType(Loading), findsNothing);
     expect(find.byType(ElevatedButton), findsNWidgets(2));
@@ -73,15 +73,15 @@ void main() {
         ),
       ),
     );
-    when(appManager.subscriptionManager.purchaseSubscription(any))
-        .thenAnswer((_) => Future.delayed(Duration(milliseconds: 50), () {}));
+    when(appManager.subscriptionManager.purchaseSubscription(any)).thenAnswer(
+        (_) => Future.delayed(const Duration(milliseconds: 50), () {}));
 
     await tester.pumpWidget(Testable(
       (_) => ProPage(),
       appManager: appManager,
     ));
 
-    await tester.pumpAndSettle(Duration(milliseconds: 50));
+    await tester.pumpAndSettle(const Duration(milliseconds: 50));
     await tester.ensureVisible(find.text("Billed monthly"));
     await tester.tap(find.text("Billed monthly"));
     await tester.pump();
@@ -91,7 +91,7 @@ void main() {
 
     // Wait for purchase to finish.
     when(appManager.subscriptionManager.isPro).thenReturn(true);
-    await tester.pumpAndSettle(Duration(milliseconds: 50));
+    await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
     expect(find.text("Congratulations, you are an Anglers' Log Pro user!"),
         findsOneWidget);
@@ -119,7 +119,7 @@ void main() {
       appManager: appManager,
     ));
 
-    await tester.pumpAndSettle(Duration(milliseconds: 50));
+    await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
     expect(
       find.text("Unable to fetch subscription options. Please ensure your"
@@ -139,7 +139,7 @@ void main() {
       ),
     );
     when(appManager.subscriptionManager.restoreSubscription()).thenAnswer((_) =>
-        Future.delayed(Duration(milliseconds: 50),
+        Future.delayed(const Duration(milliseconds: 50),
             () => RestoreSubscriptionResult.success));
 
     await tester.pumpWidget(Testable(
@@ -147,7 +147,7 @@ void main() {
       appManager: appManager,
     ));
 
-    await tester.pumpAndSettle(Duration(milliseconds: 50));
+    await tester.pumpAndSettle(const Duration(milliseconds: 50));
     expect(
       tapRichTextContaining(
           tester, "Purchased Pro on another device? Restore.", "Restore."),
@@ -160,7 +160,7 @@ void main() {
 
     // Wait for purchase to finish.
     when(appManager.subscriptionManager.isPro).thenReturn(true);
-    await tester.pumpAndSettle(Duration(milliseconds: 50));
+    await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
     expect(find.text("Congratulations, you are an Anglers' Log Pro user!"),
         findsOneWidget);
@@ -177,7 +177,7 @@ void main() {
       ),
     );
     when(appManager.subscriptionManager.restoreSubscription()).thenAnswer((_) =>
-        Future.delayed(Duration(milliseconds: 50),
+        Future.delayed(const Duration(milliseconds: 50),
             () => RestoreSubscriptionResult.noSubscriptionsFound));
 
     await tester.pumpWidget(Testable(
@@ -185,7 +185,7 @@ void main() {
       appManager: appManager,
     ));
 
-    await tester.pumpAndSettle(Duration(milliseconds: 50));
+    await tester.pumpAndSettle(const Duration(milliseconds: 50));
     expect(
       tapRichTextContaining(
           tester, "Purchased Pro on another device? Restore.", "Restore."),
@@ -198,7 +198,7 @@ void main() {
 
     // Wait for purchase to finish.
     when(appManager.subscriptionManager.isPro).thenReturn(false);
-    await tester.pumpAndSettle(Duration(milliseconds: 50));
+    await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
     expect(
       find.text("There were no previous purchases found. Please ensure "
@@ -219,7 +219,7 @@ void main() {
       ),
     );
     when(appManager.subscriptionManager.restoreSubscription()).thenAnswer((_) =>
-        Future.delayed(Duration(milliseconds: 50),
+        Future.delayed(const Duration(milliseconds: 50),
             () => RestoreSubscriptionResult.noSubscriptionsFound));
 
     await tester.pumpWidget(Testable(
@@ -227,7 +227,7 @@ void main() {
       appManager: appManager,
     ));
 
-    await tester.pumpAndSettle(Duration(milliseconds: 50));
+    await tester.pumpAndSettle(const Duration(milliseconds: 50));
     expect(
       tapRichTextContaining(
           tester, "Purchased Pro on another device? Restore.", "Restore."),
@@ -240,7 +240,7 @@ void main() {
 
     // Wait for purchase to finish.
     when(appManager.subscriptionManager.isPro).thenReturn(false);
-    await tester.pumpAndSettle(Duration(milliseconds: 50));
+    await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
     expect(
       find.text("There were no previous purchases found. Please ensure you"
@@ -261,15 +261,15 @@ void main() {
       ),
     );
     when(appManager.subscriptionManager.restoreSubscription()).thenAnswer((_) =>
-        Future.delayed(
-            Duration(milliseconds: 50), () => RestoreSubscriptionResult.error));
+        Future.delayed(const Duration(milliseconds: 50),
+            () => RestoreSubscriptionResult.error));
 
     await tester.pumpWidget(Testable(
       (_) => ProPage(),
       appManager: appManager,
     ));
 
-    await tester.pumpAndSettle(Duration(milliseconds: 50));
+    await tester.pumpAndSettle(const Duration(milliseconds: 50));
     expect(
       tapRichTextContaining(
           tester, "Purchased Pro on another device? Restore.", "Restore."),
@@ -282,7 +282,7 @@ void main() {
 
     // Wait for purchase to finish.
     when(appManager.subscriptionManager.isPro).thenReturn(false);
-    await tester.pumpAndSettle(Duration(milliseconds: 50));
+    await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
     expect(
       find.text("Unexpected error occurred. Please ensure your device is "

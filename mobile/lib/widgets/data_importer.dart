@@ -35,7 +35,7 @@ class DataImporter extends StatefulWidget {
 
   final void Function(bool success)? onFinish;
 
-  DataImporter({
+  const DataImporter({
     this.importer,
     required this.watermarkIcon,
     required this.titleText,
@@ -69,19 +69,19 @@ class _DataImporterState extends State<DataImporter> {
             icon: widget.watermarkIcon,
           ),
         ),
-        VerticalSpace(paddingWidget),
+        const VerticalSpace(paddingWidget),
         TitleLabel(
           widget.titleText,
           overflow: TextOverflow.visible,
           align: TextAlign.center,
         ),
-        VerticalSpace(paddingWidget),
+        const VerticalSpace(paddingWidget),
         Text(
           widget.descriptionText,
           style: Theme.of(context).textTheme.subtitle1,
           textAlign: TextAlign.center,
         ),
-        VerticalSpace(paddingWidget),
+        const VerticalSpace(paddingWidget),
         _buildStartButton(),
         _buildFeedbackWidgets(),
       ],
@@ -122,7 +122,7 @@ class _DataImporterState extends State<DataImporter> {
         break;
       case _RenderState.error:
         children.add(WorkResult.error(widget.errorText));
-        children.add(VerticalSpace(paddingWidget));
+        children.add(const VerticalSpace(paddingWidget));
         children.add(Button(
           text: Strings.of(context).importPageSendReport,
           onPressed: () => present(

@@ -46,8 +46,8 @@ void main() {
       appManager: appManager,
     ));
     // Wait for map timer to finish.
-    await tester.pumpAndSettle(Duration(milliseconds: 300));
-    await tester.pumpAndSettle(Duration(milliseconds: 50));
+    await tester.pumpAndSettle(const Duration(milliseconds: 300));
+    await tester.pumpAndSettle(const Duration(milliseconds: 50));
     expect(find.text("Jan 1, 2020 at 3:30 PM"), findsOneWidget);
   });
 
@@ -63,8 +63,8 @@ void main() {
       appManager: appManager,
     ));
     // Wait for map timer to finish.
-    await tester.pumpAndSettle(Duration(milliseconds: 300));
-    await tester.pumpAndSettle(Duration(milliseconds: 50));
+    await tester.pumpAndSettle(const Duration(milliseconds: 300));
+    await tester.pumpAndSettle(const Duration(milliseconds: 50));
     expect(find.text("Jan 1, 2020 at 3:30 PM (Afternoon)"), findsOneWidget);
   });
 
@@ -74,8 +74,8 @@ void main() {
       appManager: appManager,
     ));
     // Wait for map timer to finish.
-    await tester.pumpAndSettle(Duration(milliseconds: 300));
-    await tester.pumpAndSettle(Duration(milliseconds: 50));
+    await tester.pumpAndSettle(const Duration(milliseconds: 300));
+    await tester.pumpAndSettle(const Duration(milliseconds: 50));
     expect(find.text("Jan 1, 2020 at 3:30 PM"), findsOneWidget);
   });
 
@@ -91,8 +91,8 @@ void main() {
       appManager: appManager,
     ));
     // Wait for map timer to finish.
-    await tester.pumpAndSettle(Duration(milliseconds: 300));
-    await tester.pumpAndSettle(Duration(milliseconds: 50));
+    await tester.pumpAndSettle(const Duration(milliseconds: 300));
+    await tester.pumpAndSettle(const Duration(milliseconds: 50));
     expect(find.text("Jan 1, 2020 at 3:30 PM (Autumn)"), findsOneWidget);
   });
 
@@ -109,8 +109,8 @@ void main() {
       appManager: appManager,
     ));
     // Wait for map timer to finish.
-    await tester.pumpAndSettle(Duration(milliseconds: 300));
-    await tester.pumpAndSettle(Duration(milliseconds: 50));
+    await tester.pumpAndSettle(const Duration(milliseconds: 300));
+    await tester.pumpAndSettle(const Duration(milliseconds: 50));
     expect(
         find.text("Jan 1, 2020 at 3:30 PM (Morning, Autumn)"), findsOneWidget);
   });
@@ -121,8 +121,8 @@ void main() {
       appManager: appManager,
     ));
     // Wait for map timer to finish.
-    await tester.pumpAndSettle(Duration(milliseconds: 300));
-    await tester.pumpAndSettle(Duration(milliseconds: 50));
+    await tester.pumpAndSettle(const Duration(milliseconds: 300));
+    await tester.pumpAndSettle(const Duration(milliseconds: 50));
     expect(find.byType(ListItem), findsNothing);
   });
 
@@ -132,8 +132,8 @@ void main() {
       appManager: appManager,
     ));
     // Wait for map timer to finish.
-    await tester.pumpAndSettle(Duration(milliseconds: 300));
-    await tester.pumpAndSettle(Duration(milliseconds: 50));
+    await tester.pumpAndSettle(const Duration(milliseconds: 300));
+    await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
     expect(find.byType(FishingSpotMap), findsNothing);
   });
@@ -152,7 +152,7 @@ void main() {
       appManager: appManager,
     ));
     // Wait for map timer to finish.
-    await tester.pumpAndSettle(Duration(milliseconds: 300));
+    await tester.pumpAndSettle(const Duration(milliseconds: 300));
     await mapController.finishLoading(tester);
 
     expect(find.byType(FishingSpotMap), findsOneWidget);
@@ -164,8 +164,8 @@ void main() {
       appManager: appManager,
     ));
     // Wait for map timer to finish.
-    await tester.pumpAndSettle(Duration(milliseconds: 300));
-    await tester.pumpAndSettle(Duration(milliseconds: 50));
+    await tester.pumpAndSettle(const Duration(milliseconds: 300));
+    await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
     expect(find.byIcon(Icons.person), findsNothing);
   });
@@ -179,8 +179,8 @@ void main() {
       appManager: appManager,
     ));
     // Wait for map timer to finish.
-    await tester.pumpAndSettle(Duration(milliseconds: 300));
-    await tester.pumpAndSettle(Duration(milliseconds: 50));
+    await tester.pumpAndSettle(const Duration(milliseconds: 300));
+    await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
     expect(find.byIcon(Icons.person), findsOneWidget);
   });
@@ -191,8 +191,8 @@ void main() {
       appManager: appManager,
     ));
     // Wait for map timer to finish.
-    await tester.pumpAndSettle(Duration(milliseconds: 300));
-    await tester.pumpAndSettle(Duration(milliseconds: 50));
+    await tester.pumpAndSettle(const Duration(milliseconds: 300));
+    await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
     expect(find.byIcon(CustomIcons.waterClarities), findsNothing);
   });
@@ -206,8 +206,8 @@ void main() {
       appManager: appManager,
     ));
     // Wait for map timer to finish.
-    await tester.pumpAndSettle(Duration(milliseconds: 300));
-    await tester.pumpAndSettle(Duration(milliseconds: 50));
+    await tester.pumpAndSettle(const Duration(milliseconds: 300));
+    await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
     expect(find.byIcon(CustomIcons.waterClarities), findsOneWidget);
   });
@@ -218,8 +218,8 @@ void main() {
       appManager: appManager,
     ));
     // Wait for map timer to finish.
-    await tester.pumpAndSettle(Duration(milliseconds: 300));
-    await tester.pumpAndSettle(Duration(milliseconds: 50));
+    await tester.pumpAndSettle(const Duration(milliseconds: 300));
+    await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
     expect(find.byType(ChipWrap), findsNothing);
   });
@@ -243,8 +243,8 @@ void main() {
       appManager: appManager,
     ));
     // Wait for map timer to finish.
-    await tester.pumpAndSettle(Duration(milliseconds: 300));
-    await tester.pumpAndSettle(Duration(milliseconds: 50));
+    await tester.pumpAndSettle(const Duration(milliseconds: 300));
+    await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
     expect(find.byType(ChipWrap), findsOneWidget);
     expect(find.text("Casting"), findsOneWidget);
@@ -264,8 +264,8 @@ void main() {
       appManager: appManager,
     ));
     // Wait for map timer to finish.
-    await tester.pumpAndSettle(Duration(milliseconds: 300));
-    await tester.pumpAndSettle(Duration(milliseconds: 50));
+    await tester.pumpAndSettle(const Duration(milliseconds: 300));
+    await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
     expect(find.byType(ChipWrap), findsNothing);
   });
@@ -276,8 +276,8 @@ void main() {
       appManager: appManager,
     ));
     // Wait for map timer to finish.
-    await tester.pumpAndSettle(Duration(milliseconds: 300));
-    await tester.pumpAndSettle(Duration(milliseconds: 50));
+    await tester.pumpAndSettle(const Duration(milliseconds: 300));
+    await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
     expect(find.byIcon(Icons.check_circle), findsNothing);
     expect(find.byIcon(Icons.error), findsNothing);
@@ -294,8 +294,8 @@ void main() {
       appManager: appManager,
     ));
     // Wait for map timer to finish.
-    await tester.pumpAndSettle(Duration(milliseconds: 300));
-    await tester.pumpAndSettle(Duration(milliseconds: 50));
+    await tester.pumpAndSettle(const Duration(milliseconds: 300));
+    await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
     expect(find.byIcon(Icons.check_circle), findsOneWidget);
     expect(find.text("Released"), findsOneWidget);
@@ -312,8 +312,8 @@ void main() {
       appManager: appManager,
     ));
     // Wait for map timer to finish.
-    await tester.pumpAndSettle(Duration(milliseconds: 300));
-    await tester.pumpAndSettle(Duration(milliseconds: 50));
+    await tester.pumpAndSettle(const Duration(milliseconds: 300));
+    await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
     expect(find.byIcon(Icons.error), findsOneWidget);
     expect(find.text("Kept"), findsOneWidget);
@@ -325,8 +325,8 @@ void main() {
       appManager: appManager,
     ));
     // Wait for map timer to finish.
-    await tester.pumpAndSettle(Duration(milliseconds: 300));
-    await tester.pumpAndSettle(Duration(milliseconds: 50));
+    await tester.pumpAndSettle(const Duration(milliseconds: 300));
+    await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
     expect(find.byType(AtmosphereWrap), findsNothing);
   });
@@ -347,8 +347,8 @@ void main() {
       appManager: appManager,
     ));
     // Wait for map timer to finish.
-    await tester.pumpAndSettle(Duration(milliseconds: 300));
-    await tester.pumpAndSettle(Duration(milliseconds: 50));
+    await tester.pumpAndSettle(const Duration(milliseconds: 300));
+    await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
     expect(find.byType(AtmosphereWrap), findsOneWidget);
   });
@@ -392,8 +392,8 @@ void main() {
         appManager: appManager,
       ));
       // Wait for map timer to finish.
-      await tester.pumpAndSettle(Duration(milliseconds: 300));
-      await tester.pumpAndSettle(Duration(milliseconds: 50));
+      await tester.pumpAndSettle(const Duration(milliseconds: 300));
+      await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
       expect(find.byIcon(CustomIcons.waterClarities), findsNothing);
     });
@@ -412,8 +412,8 @@ void main() {
         appManager: appManager,
       ));
       // Wait for map timer to finish.
-      await tester.pumpAndSettle(Duration(milliseconds: 300));
-      await tester.pumpAndSettle(Duration(milliseconds: 50));
+      await tester.pumpAndSettle(const Duration(milliseconds: 300));
+      await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
       expect(find.byIcon(CustomIcons.waterClarities), findsOneWidget);
       expect(find.text("Chocolate Milk"), findsOneWidget);
@@ -435,8 +435,8 @@ void main() {
         appManager: appManager,
       ));
       // Wait for map timer to finish.
-      await tester.pumpAndSettle(Duration(milliseconds: 300));
-      await tester.pumpAndSettle(Duration(milliseconds: 50));
+      await tester.pumpAndSettle(const Duration(milliseconds: 300));
+      await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
       expect(find.byIcon(CustomIcons.waterClarities), findsOneWidget);
       expect(find.text("50\u00B0C"), findsOneWidget);
@@ -458,8 +458,8 @@ void main() {
         appManager: appManager,
       ));
       // Wait for map timer to finish.
-      await tester.pumpAndSettle(Duration(milliseconds: 300));
-      await tester.pumpAndSettle(Duration(milliseconds: 50));
+      await tester.pumpAndSettle(const Duration(milliseconds: 300));
+      await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
       expect(find.byIcon(CustomIcons.waterClarities), findsOneWidget);
       expect(find.text("50 ft"), findsOneWidget);
@@ -474,8 +474,8 @@ void main() {
         appManager: appManager,
       ));
       // Wait for map timer to finish.
-      await tester.pumpAndSettle(Duration(milliseconds: 300));
-      await tester.pumpAndSettle(Duration(milliseconds: 50));
+      await tester.pumpAndSettle(const Duration(milliseconds: 300));
+      await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
       expect(find.byIcon(CustomIcons.waterClarities), findsOneWidget);
       expect(find.text("Outgoing Tide"), findsOneWidget);
@@ -511,8 +511,8 @@ void main() {
         appManager: appManager,
       ));
       // Wait for map timer to finish.
-      await tester.pumpAndSettle(Duration(milliseconds: 300));
-      await tester.pumpAndSettle(Duration(milliseconds: 50));
+      await tester.pumpAndSettle(const Duration(milliseconds: 300));
+      await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
       expect(find.text("Chocolate Milk, 50\u00B0C, 10 ft"), findsOneWidget);
       expect(find.text("Outgoing Tide"), findsOneWidget);
@@ -528,8 +528,8 @@ void main() {
         appManager: appManager,
       ));
       // Wait for map timer to finish.
-      await tester.pumpAndSettle(Duration(milliseconds: 300));
-      await tester.pumpAndSettle(Duration(milliseconds: 50));
+      await tester.pumpAndSettle(const Duration(milliseconds: 300));
+      await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
       expect(find.byIcon(CustomIcons.ruler), findsNothing);
     });
@@ -550,8 +550,8 @@ void main() {
         appManager: appManager,
       ));
       // Wait for map timer to finish.
-      await tester.pumpAndSettle(Duration(milliseconds: 300));
-      await tester.pumpAndSettle(Duration(milliseconds: 50));
+      await tester.pumpAndSettle(const Duration(milliseconds: 300));
+      await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
       expect(find.byIcon(CustomIcons.ruler), findsOneWidget);
       expect(find.text("50 kg"), findsOneWidget);
@@ -573,8 +573,8 @@ void main() {
         appManager: appManager,
       ));
       // Wait for map timer to finish.
-      await tester.pumpAndSettle(Duration(milliseconds: 300));
-      await tester.pumpAndSettle(Duration(milliseconds: 50));
+      await tester.pumpAndSettle(const Duration(milliseconds: 300));
+      await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
       expect(find.byIcon(CustomIcons.ruler), findsOneWidget);
       expect(find.text("50 cm"), findsOneWidget);
@@ -603,8 +603,8 @@ void main() {
         appManager: appManager,
       ));
       // Wait for map timer to finish.
-      await tester.pumpAndSettle(Duration(milliseconds: 300));
-      await tester.pumpAndSettle(Duration(milliseconds: 50));
+      await tester.pumpAndSettle(const Duration(milliseconds: 300));
+      await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
       expect(find.byIcon(CustomIcons.ruler), findsOneWidget);
       expect(find.text("10 kg, 50 cm"), findsOneWidget);
@@ -619,8 +619,8 @@ void main() {
         appManager: appManager,
       ));
       // Wait for map timer to finish.
-      await tester.pumpAndSettle(Duration(milliseconds: 300));
-      await tester.pumpAndSettle(Duration(milliseconds: 50));
+      await tester.pumpAndSettle(const Duration(milliseconds: 300));
+      await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
       expect(find.byIcon(Icons.notes), findsNothing);
     });
@@ -634,8 +634,8 @@ void main() {
         appManager: appManager,
       ));
       // Wait for map timer to finish.
-      await tester.pumpAndSettle(Duration(milliseconds: 300));
-      await tester.pumpAndSettle(Duration(milliseconds: 50));
+      await tester.pumpAndSettle(const Duration(milliseconds: 300));
+      await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
       expect(find.byIcon(Icons.notes), findsNothing);
     });
@@ -649,8 +649,8 @@ void main() {
         appManager: appManager,
       ));
       // Wait for map timer to finish.
-      await tester.pumpAndSettle(Duration(milliseconds: 300));
-      await tester.pumpAndSettle(Duration(milliseconds: 50));
+      await tester.pumpAndSettle(const Duration(milliseconds: 300));
+      await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
       expect(find.byIcon(Icons.notes), findsNothing);
     });
@@ -664,8 +664,8 @@ void main() {
         appManager: appManager,
       ));
       // Wait for map timer to finish.
-      await tester.pumpAndSettle(Duration(milliseconds: 300));
-      await tester.pumpAndSettle(Duration(milliseconds: 50));
+      await tester.pumpAndSettle(const Duration(milliseconds: 300));
+      await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
       expect(find.byIcon(Icons.notes), findsOneWidget);
       expect(find.text("Quantity: 5"), findsOneWidget);
@@ -680,8 +680,8 @@ void main() {
         appManager: appManager,
       ));
       // Wait for map timer to finish.
-      await tester.pumpAndSettle(Duration(milliseconds: 300));
-      await tester.pumpAndSettle(Duration(milliseconds: 50));
+      await tester.pumpAndSettle(const Duration(milliseconds: 300));
+      await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
       expect(find.byIcon(Icons.notes), findsOneWidget);
       expect(find.text("Some notes."), findsOneWidget);
@@ -697,8 +697,8 @@ void main() {
         appManager: appManager,
       ));
       // Wait for map timer to finish.
-      await tester.pumpAndSettle(Duration(milliseconds: 300));
-      await tester.pumpAndSettle(Duration(milliseconds: 50));
+      await tester.pumpAndSettle(const Duration(milliseconds: 300));
+      await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
       // One for each "note". Only one is visible.
       expect(find.byIcon(Icons.notes), findsNWidgets(2));

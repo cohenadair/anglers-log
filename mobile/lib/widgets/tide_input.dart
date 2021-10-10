@@ -17,7 +17,7 @@ import 'widget.dart';
 class TideInput extends StatefulWidget {
   final InputController<Tide> controller;
 
-  TideInput({
+  const TideInput({
     required this.controller,
   });
 
@@ -53,7 +53,7 @@ class _TideInputState extends State<TideInput> {
 class _TideInputPage extends StatefulWidget {
   final InputController<Tide> controller;
 
-  _TideInputPage(this.controller);
+  const _TideInputPage(this.controller);
 
   @override
   __TideInputPageState createState() => __TideInputPageState();
@@ -110,7 +110,7 @@ class __TideInputPageState extends State<_TideInputPage> {
     }
 
     return RadioInput(
-      padding: EdgeInsets.only(
+      padding: const EdgeInsets.only(
         top: paddingWidgetSmall,
         bottom: paddingWidgetSmall,
         left: paddingDefault,
@@ -126,7 +126,7 @@ class __TideInputPageState extends State<_TideInputPage> {
   Widget _buildLowTime() {
     return TimePicker(
       context,
-      padding: EdgeInsets.only(
+      padding: const EdgeInsets.only(
         left: paddingDefault,
         right: paddingDefault,
         bottom: paddingWidget,
@@ -140,7 +140,7 @@ class __TideInputPageState extends State<_TideInputPage> {
   Widget _buildHighTime() {
     return TimePicker(
       context,
-      padding: EdgeInsets.only(
+      padding: const EdgeInsets.only(
         left: paddingDefault,
         right: paddingDefault,
         bottom: paddingWidget,

@@ -16,7 +16,7 @@ import '../widgets/widget.dart';
 class FishingSpotListPage extends StatelessWidget {
   final FishingSpotListPagePickerSettings? pickerSettings;
 
-  FishingSpotListPage({
+  const FishingSpotListPage({
     this.pickerSettings,
   });
 
@@ -75,7 +75,7 @@ class FishingSpotListPage extends StatelessWidget {
 
     return ManageableListPagePickerSettings<dynamic>(
       onPicked: (context, fishingSpots) {
-        fishingSpots..removeWhere((e) => !(e is FishingSpot));
+        fishingSpots.removeWhere((e) => e is! FishingSpot);
         return pickerSettings!.onPicked(context,
             fishingSpots.map<FishingSpot>((e) => e as FishingSpot).toSet());
       },

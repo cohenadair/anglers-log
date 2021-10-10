@@ -18,7 +18,7 @@ class ImagePicker extends StatelessWidget {
   final List<PickedImage> currentImages;
   final void Function(List<PickedImage>) onImagesPicked;
 
-  ImagePicker({
+  const ImagePicker({
     required this.onImagesPicked,
     this.isEnabled = true,
     this.isMulti = true,
@@ -91,9 +91,9 @@ class ImagePicker extends StatelessWidget {
 
     return Container(
       padding: insetsTopWidgetSmall,
-      constraints: BoxConstraints(maxHeight: galleryMaxThumbSize),
+      constraints: const BoxConstraints(maxHeight: galleryMaxThumbSize),
       child: ListView.separated(
-        physics: isEnabled ? null : NeverScrollableScrollPhysics(),
+        physics: isEnabled ? null : const NeverScrollableScrollPhysics(),
         scrollDirection: Axis.horizontal,
         itemCount: currentImages.length,
         itemBuilder: (context, i) {
@@ -111,7 +111,7 @@ class ImagePicker extends StatelessWidget {
               child: image.thumbData == null
                   ? Image.file(image.originalFile!, fit: BoxFit.cover)
                   : Image.memory(image.thumbData!, fit: BoxFit.cover),
-              borderRadius: BorderRadius.all(
+              borderRadius: const BorderRadius.all(
                 Radius.circular(floatingCornerRadius),
               ),
             ),

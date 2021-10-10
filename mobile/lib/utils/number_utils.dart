@@ -1,6 +1,6 @@
 import '../log.dart';
 
-final _log = Log("NumberUtils");
+const _log = Log("NumberUtils");
 
 /// Converts [value] to a [double], if possible. This function will work if
 /// [value] is one of the following data types:

@@ -20,11 +20,11 @@ class SaveBaitVariantPage extends StatefulWidget {
   final BaitVariant? oldBaitVariant;
   final void Function(BaitVariant)? onSave;
 
-  SaveBaitVariantPage({
+  const SaveBaitVariantPage({
     this.onSave,
   }) : oldBaitVariant = null;
 
-  SaveBaitVariantPage.edit(
+  const SaveBaitVariantPage.edit(
     this.oldBaitVariant, {
     this.onSave,
   });
@@ -47,7 +47,7 @@ class _SaveBaitVariantPageState extends State<SaveBaitVariantPage> {
   static final _idDescription = Id()
     ..uuid = "3115c29d-b919-41e5-b19f-ec877e134dbe";
 
-  final _log = Log("SaveBaitVariantPage");
+  final _log = const Log("SaveBaitVariantPage");
 
   final Map<Id, Field> _fields = {};
 
@@ -227,7 +227,7 @@ class _SaveBaitVariantPageState extends State<SaveBaitVariantPage> {
 
   Widget _buildMinDiveDepth() {
     return Padding(
-      padding: EdgeInsets.only(
+      padding: const EdgeInsets.only(
         left: paddingDefault,
         right: paddingDefault,
         // Need a little extra padding here to make up for the lack of max
@@ -247,7 +247,7 @@ class _SaveBaitVariantPageState extends State<SaveBaitVariantPage> {
 
   Widget _buildMaxDiveDepth() {
     return Padding(
-      padding: EdgeInsets.only(
+      padding: const EdgeInsets.only(
         left: paddingDefault,
         right: paddingDefault,
         // Need a little extra padding here to make up for the lack of max

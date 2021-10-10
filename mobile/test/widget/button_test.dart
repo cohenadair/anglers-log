@@ -29,7 +29,7 @@ void main() {
       var button = Button(
         text: "Test",
         onPressed: () => {},
-        icon: Icon(Icons.group),
+        icon: const Icon(Icons.group),
       );
 
       await tester.pumpWidget(Testable((_) => button));
@@ -39,21 +39,21 @@ void main() {
 
   group("ActionButton", () {
     testWidgets("Constructors", (tester) async {
-      await tester.pumpWidget(Testable((_) => ActionButton.done()));
+      await tester.pumpWidget(Testable((_) => const ActionButton.done()));
       expect(find.text("DONE"), findsOneWidget);
 
-      await tester.pumpWidget(Testable((_) => ActionButton.save()));
+      await tester.pumpWidget(Testable((_) => const ActionButton.save()));
       expect(find.text("SAVE"), findsOneWidget);
 
-      await tester.pumpWidget(Testable((_) => ActionButton.cancel()));
+      await tester.pumpWidget(Testable((_) => const ActionButton.cancel()));
       expect(find.text("CANCEL"), findsOneWidget);
 
-      await tester.pumpWidget(Testable((_) => ActionButton.edit()));
+      await tester.pumpWidget(Testable((_) => const ActionButton.edit()));
       expect(find.text("EDIT"), findsOneWidget);
 
       await tester.pumpWidget(
         Testable(
-          (_) => ActionButton(
+          (_) => const ActionButton(
             text: "Test",
           ),
         ),
@@ -62,7 +62,7 @@ void main() {
     });
 
     testWidgets("Text is always uppercase", (tester) async {
-      await tester.pumpWidget(Testable((_) => ActionButton.done()));
+      await tester.pumpWidget(Testable((_) => const ActionButton.done()));
       expect(find.text("DONE"), findsOneWidget);
       expect(find.text("Done"), findsNothing);
     });
@@ -70,7 +70,7 @@ void main() {
     testWidgets("Text color", (tester) async {
       await tester.pumpWidget(
         Testable(
-          (_) => ActionButton.done(
+          (_) => const ActionButton.done(
             textColor: Colors.red,
           ),
         ),
@@ -80,7 +80,7 @@ void main() {
     });
 
     testWidgets("Disabled", (tester) async {
-      await tester.pumpWidget(Testable((_) => ActionButton.done()));
+      await tester.pumpWidget(Testable((_) => const ActionButton.done()));
       expect(findFirst<EnabledOpacity>(tester).isEnabled, isFalse);
     });
 
@@ -98,7 +98,7 @@ void main() {
     testWidgets("Condensed", (tester) async {
       await tester.pumpWidget(
         Testable(
-          (_) => ActionButton.done(
+          (_) => const ActionButton.done(
             condensed: true,
           ),
         ),
@@ -107,7 +107,7 @@ void main() {
     });
 
     testWidgets("Not condensed", (tester) async {
-      await tester.pumpWidget(Testable((_) => ActionButton.done()));
+      await tester.pumpWidget(Testable((_) => const ActionButton.done()));
       expect(findFirst<RawMaterialButton>(tester).padding, insetsDefault);
     });
   });
@@ -145,7 +145,7 @@ void main() {
     testWidgets("Disabled color when disabled", (tester) async {
       await tester.pumpWidget(
         Testable(
-          (_) => MinimumIconButton(
+          (_) => const MinimumIconButton(
             icon: Icons.group,
             color: Colors.red,
           ),
@@ -234,7 +234,7 @@ void main() {
     testWidgets("Android back button", (tester) async {
       await tester.pumpWidget(
         Testable(
-          (_) => FloatingButton.back(),
+          (_) => const FloatingButton.back(),
           platform: TargetPlatform.android,
         ),
       );
@@ -249,7 +249,7 @@ void main() {
     testWidgets("iOS back button", (tester) async {
       await tester.pumpWidget(
         Testable(
-          (_) => FloatingButton.back(),
+          (_) => const FloatingButton.back(),
           platform: TargetPlatform.iOS,
         ),
       );
@@ -264,7 +264,7 @@ void main() {
     testWidgets("Close button", (tester) async {
       await tester.pumpWidget(
         Testable(
-          (_) => FloatingButton.close(),
+          (_) => const FloatingButton.close(),
         ),
       );
       expect(find.byIcon(Icons.close), findsOneWidget);

@@ -10,9 +10,9 @@ import '../water_clarity_manager.dart';
 class SaveWaterClarityPage extends StatelessWidget {
   final WaterClarity? oldWaterClarity;
 
-  SaveWaterClarityPage() : oldWaterClarity = null;
+  const SaveWaterClarityPage() : oldWaterClarity = null;
 
-  SaveWaterClarityPage.edit(this.oldWaterClarity);
+  const SaveWaterClarityPage.edit(this.oldWaterClarity);
 
   @override
   Widget build(BuildContext context) {

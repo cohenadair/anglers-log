@@ -21,10 +21,10 @@ class WaterClarityManager extends NamedEntityManager<WaterClarity> {
       WaterClarity.fromBuffer(bytes);
 
   @override
-  Id id(WaterClarity clarity) => clarity.id;
+  Id id(WaterClarity entity) => entity.id;
 
   @override
-  String name(WaterClarity clarity) => clarity.name;
+  String name(WaterClarity entity) => entity.name;
 
   @override
   String get tableName => "water_clarity";

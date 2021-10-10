@@ -12,7 +12,7 @@ import '../utils/string_utils.dart';
 class BaitCategoryListPage extends StatelessWidget {
   final ManageableListPagePickerSettings<BaitCategory>? pickerSettings;
 
-  BaitCategoryListPage({
+  const BaitCategoryListPage({
     this.pickerSettings,
   });
 
@@ -48,7 +48,7 @@ class BaitCategoryListPage extends StatelessWidget {
             Text(baitCategoryManager.deleteMessage(context, category)),
         deleteItem: (context, category) =>
             baitCategoryManager.delete(category.id),
-        addPageBuilder: () => SaveBaitCategoryPage(),
+        addPageBuilder: () => const SaveBaitCategoryPage(),
         editPageBuilder: (category) => SaveBaitCategoryPage.edit(category),
       ),
     );

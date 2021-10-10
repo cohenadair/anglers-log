@@ -17,7 +17,7 @@ class EmbeddedPage extends StatelessWidget {
   final bool showBackButton;
   final Widget Function(BuildContext) childBuilder;
 
-  EmbeddedPage({
+  const EmbeddedPage({
     this.showBackButton = true,
     required this.childBuilder,
   });
@@ -27,14 +27,14 @@ class EmbeddedPage extends StatelessWidget {
     var routes = <Route>[];
     if (showBackButton) {
       routes.add(MaterialPageRoute(
-        settings: RouteSettings(
+        settings: const RouteSettings(
           name: _routeRoot,
         ),
         builder: (_) => Empty(),
       ));
     }
     routes.add(MaterialPageRoute(
-      settings: RouteSettings(
+      settings: const RouteSettings(
         name: _routeNotRoot,
       ),
       builder: (context) => MediaQuery.removePadding(
@@ -45,7 +45,7 @@ class EmbeddedPage extends StatelessWidget {
     ));
 
     return Container(
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
         boxShadow: boxShadowSmallBottom,
         borderRadius: BorderRadius.all(Radius.circular(floatingCornerRadius)),
       ),

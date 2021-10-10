@@ -87,7 +87,7 @@ abstract class SectionedListModel<Header, Item> {
         editable: false,
         selectable: false,
         child: Padding(
-          padding: EdgeInsets.only(
+          padding: const EdgeInsets.only(
             top: paddingWidgetSmall,
             bottom: paddingWidget,
           ),

@@ -60,7 +60,7 @@ class ManageableListPage<T> extends StatefulWidget {
   /// See [ManageableListPageSearchDelegate].
   final ManageableListPageSearchDelegate? searchDelegate;
 
-  ManageableListPage({
+  const ManageableListPage({
     required this.itemManager,
     required this.itemBuilder,
     this.titleBuilder,
@@ -141,6 +141,7 @@ class _ManageableListPageState<T> extends State<ManageableListPage<T>> {
     _searchTimer.finish();
   }
 
+  @override
   Widget build(BuildContext context) {
     if (widget.itemManager.listenerManagers.isEmpty) {
       return _buildScaffold(context);
@@ -214,7 +215,7 @@ class _ManageableListPageState<T> extends State<ManageableListPage<T>> {
                   Column(
                     children: [
                       _buildNoneItem(context, _animatedList.items),
-                      MinDivider(),
+                      const MinDivider(),
                     ],
                   ),
                 ]),
@@ -253,7 +254,7 @@ class _ManageableListPageState<T> extends State<ManageableListPage<T>> {
 
     return FlexibleSpaceBar(
       background: Padding(
-        padding: EdgeInsets.only(
+        padding: const EdgeInsets.only(
           left: paddingDefault,
           right: paddingDefault,
           bottom: paddingSmall,
@@ -297,7 +298,7 @@ class _ManageableListPageState<T> extends State<ManageableListPage<T>> {
     // Only include the add button if new items can be added.
     if (_isAddable) {
       result.add(IconButton(
-        icon: Icon(_iconAdd),
+        icon: const Icon(_iconAdd),
         onPressed: () => present(context, widget.itemManager.addPageBuilder!()),
       ));
     }
@@ -310,7 +311,7 @@ class _ManageableListPageState<T> extends State<ManageableListPage<T>> {
     Widget? trailing;
     VoidCallback? onTap;
     if (_isPickingSingle) {
-      trailing = _selectedValues.isEmpty ? Icon(_iconCheck) : null;
+      trailing = _selectedValues.isEmpty ? const Icon(_iconCheck) : null;
       onTap = () => _finishPicking({});
     } else if (_isPickingMulti) {
       label = Strings.of(context).all;
@@ -366,7 +367,7 @@ class _ManageableListPageState<T> extends State<ManageableListPage<T>> {
         widget.itemManager.detailPageBuilder == null) {
       // Don't show detail disclosure indicator if we're picking a single
       // value, or if there isn't any detail to show.
-      trailing = _isItemSelected(itemValue) ? Icon(_iconCheck) : null;
+      trailing = _isItemSelected(itemValue) ? const Icon(_iconCheck) : null;
     }
 
     // For now, don't allow selecting items with a grandchild.
@@ -436,7 +437,7 @@ class _ManageableListPageState<T> extends State<ManageableListPage<T>> {
     _onEntityAddedOrDeleted((newItems) {
       // Don't animate any entity additions if it isn't an entity associated
       // with this ManageableListPage.
-      if (!(entity is T)) {
+      if (entity is! T) {
         return;
       }
 
@@ -597,7 +598,7 @@ class ManageableListPageItemModel {
 
   final Widget? grandchild;
 
-  ManageableListPageItemModel({
+  const ManageableListPageItemModel({
     required this.child,
     this.grandchild,
     this.editable = true,

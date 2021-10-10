@@ -7,7 +7,7 @@ import '../test_utils.dart';
 void main() {
   testWidgets("Only first icon is visible", (tester) async {
     await tester.pumpWidget((Testable(
-      (_) => IconList(
+      (_) => const IconList(
         values: ["Item 1", "Item 2", "Item 3"],
         icon: Icons.add,
       ),
@@ -22,7 +22,7 @@ void main() {
 
   testWidgets("All items are shown", (tester) async {
     await tester.pumpWidget((Testable(
-      (_) => IconList(
+      (_) => const IconList(
         values: ["Item 1", "Item 2", "Item 3"],
         icon: Icons.add,
       ),

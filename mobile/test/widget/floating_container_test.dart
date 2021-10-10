@@ -24,11 +24,11 @@ void main() {
       Testable(
         (_) => FloatingContainer(
           title: "Test",
-          margin: EdgeInsets.all(37),
+          margin: const EdgeInsets.all(37),
         ),
       ),
     );
-    expect(findFirst<Container>(tester).margin, EdgeInsets.all(37));
+    expect(findFirst<Container>(tester).margin, const EdgeInsets.all(37));
   });
 
   testWidgets("Tap enabled", (tester) async {
@@ -82,7 +82,7 @@ void main() {
         (_) => FloatingContainer(
           title: "Title",
           subtitle: "Subtitle",
-          children: [
+          children: const [
             Text("Child 1"),
             Text("Child 2"),
             Text("Child 3"),
