@@ -111,9 +111,9 @@ class FishingSpotMap extends StatefulWidget {
 
 class _FishingSpotMapState extends State<FishingSpotMap> {
   static const _mapStyleNormal =
-      "mapbox://styles/cohenadair/ckt1m613b127t17qqf3mmw47h";
-  static const _mapStyleSatellite =
       "mapbox://styles/cohenadair/ckt1zqb8d1h1p17pglx4pmz4y";
+  static const _mapStyleSatellite =
+      "mapbox://styles/cohenadair/ckt1m613b127t17qqf3mmw47h";
   static const _pinActive = "active-pin";
   static const _pinInactive = "inactive-pin";
   static const _pinSize = 1.5;

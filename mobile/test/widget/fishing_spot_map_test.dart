@@ -453,8 +453,8 @@ void main() {
       ),
     );
 
-    var normal = "ckt1m613b127t17qqf3mmw47h";
-    var satellite = "ckt1zqb8d1h1p17pglx4pmz4y";
+    var normal = "ckt1zqb8d1h1p17pglx4pmz4y";
+    var satellite = "ckt1m613b127t17qqf3mmw47h";
 
     expect(findMap(tester).styleString!.contains(normal), isTrue);
     expect(find.text("Spot 1"), findsNWidgets(2));
@@ -478,7 +478,7 @@ void main() {
       ),
     );
 
-    var normal = "ckt1m613b127t17qqf3mmw47h";
+    var normal = "ckt1zqb8d1h1p17pglx4pmz4y";
 
     expect(findMap(tester).styleString!.contains(normal), isTrue);
 
