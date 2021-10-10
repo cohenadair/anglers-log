@@ -58,6 +58,7 @@ import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:photo_manager/photo_manager.dart';
 import 'package:purchases_flutter/object_wrappers.dart';
+import 'package:purchases_flutter/purchases_flutter.dart';
 import 'package:sqflite/sqflite.dart';
 
 import 'mocks.mocks.dart';
@@ -122,6 +123,7 @@ import 'mocks.mocks.dart';
 @GenerateMocks([FileSystemEntity])
 @GenerateMocks([FullMetadata])
 @GenerateMocks([LegacyImporter])
+@GenerateMocks([LogInResult])
 @GenerateMocks([MethodChannel])
 @GenerateMocks([NameValidator])
 @GenerateMocks([NavigatorObserver])
@@ -216,9 +218,9 @@ class MockFile extends Mock implements File {
 // (one from unsupported.dart and one from io.dart in the image_picker library).
 class MockImagePickerWrapper extends Mock implements ImagePickerWrapper {
   @override
-  Future<PickedFile?> getImage(ImageSource? source) =>
+  Future<XFile?> pickImage(ImageSource? source) =>
       super.noSuchMethod(Invocation.method(#getImage, [source]),
-          returnValue: Future.value(null)) as Future<PickedFile?>;
+          returnValue: Future.value(null)) as Future<XFile?>;
 }
 
 // @GenerateMocks can't generate mock because of an internal type used in API.

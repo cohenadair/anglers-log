@@ -154,7 +154,7 @@ class ChipButton extends StatelessWidget {
           fontWeight: fontWeightBold,
         ),
       ),
-      backgroundColor: Theme.of(context).accentColor,
+      backgroundColor: Theme.of(context).colorScheme.secondary,
       pressElevation: 1,
       onPressed: onPressed == null ? () {} : onPressed!,
     );

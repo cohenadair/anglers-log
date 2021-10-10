@@ -23,8 +23,8 @@ void main() {
 
     when(appManager.propertiesManager.revenueCatApiKey).thenReturn("");
 
-    when(appManager.purchasesWrapper.identify(any))
-        .thenAnswer((_) => Future.value(MockPurchaserInfo()));
+    when(appManager.purchasesWrapper.logIn(any))
+        .thenAnswer((_) => Future.value(MockLogInResult()));
     when(appManager.purchasesWrapper.reset())
         .thenAnswer((_) => Future.value(MockPurchaserInfo()));
 
@@ -43,7 +43,7 @@ void main() {
     controller.notify();
     await Future.delayed(const Duration(milliseconds: 50));
 
-    verify(appManager.purchasesWrapper.identify(any)).called(1);
+    verify(appManager.purchasesWrapper.logIn(any)).called(1);
     verifyNever(appManager.purchasesWrapper.reset());
   });
 
@@ -57,7 +57,7 @@ void main() {
     controller.notify();
     await Future.delayed(const Duration(milliseconds: 50));
 
-    verifyNever(appManager.purchasesWrapper.identify(any));
+    verifyNever(appManager.purchasesWrapper.logIn(any));
     verify(appManager.purchasesWrapper.reset()).called(1);
   });
 

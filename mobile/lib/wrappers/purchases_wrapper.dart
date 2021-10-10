@@ -14,23 +14,18 @@ class PurchasesWrapper {
   Future<void> setup(String apiKey) => Purchases.setup(apiKey);
 
   // ignore: avoid_positional_boolean_parameters
-  void setAllowSharingStoreAccount(bool allowSharing) =>
-      Purchases.setAllowSharingStoreAccount(allowSharing);
-
-  // ignore: avoid_positional_boolean_parameters
   void setDebugEnabled(bool enabled) => Purchases.setDebugLogsEnabled(enabled);
 
   Future<Offerings> getOfferings() => Purchases.getOfferings();
 
   Future<PurchaserInfo> getPurchaserInfo() => Purchases.getPurchaserInfo();
 
-  Future<PurchaserInfo> identify(String appUserId) =>
-      Purchases.identify(appUserId);
+  Future<LogInResult> logIn(String appUserId) => Purchases.logIn(appUserId);
 
   Future<PurchaserInfo> purchasePackage(Package package) =>
       Purchases.purchasePackage(package);
 
-  Future<PurchaserInfo> reset() => Purchases.reset();
+  Future<PurchaserInfo> reset() => Purchases.logOut();
 
   Future<PurchaserInfo> restoreTransactions() =>
       Purchases.restoreTransactions();

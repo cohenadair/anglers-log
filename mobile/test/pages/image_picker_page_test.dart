@@ -34,7 +34,7 @@ void main() {
     when(allAlbum.assetCount).thenReturn(mockAssets.length);
     when(allAlbum.getAssetListPaged(any, any))
         .thenAnswer((_) => Future.value(mockAssets));
-    when(appManager.imagePickerWrapper.getImage(any))
+    when(appManager.imagePickerWrapper.pickImage(any))
         .thenAnswer((_) => Future.value(null));
     when(appManager.photoManagerWrapper.getAllAssetPathEntity(any))
         .thenAnswer((_) => Future.value(allAlbum));
@@ -114,7 +114,7 @@ void main() {
     await tapAndSettle(tester, find.text("Gallery"));
     await tapAndSettle(tester, find.text("Camera").last);
 
-    verify(appManager.imagePickerWrapper.getImage(any)).called(1);
+    verify(appManager.imagePickerWrapper.pickImage(any)).called(1);
     expect(called, isFalse);
   });
 
@@ -128,13 +128,13 @@ void main() {
     ));
     await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
-    when(appManager.imagePickerWrapper.getImage(any))
-        .thenAnswer((_) => Future.value(PickedFile("")));
+    when(appManager.imagePickerWrapper.pickImage(any))
+        .thenAnswer((_) => Future.value(XFile("")));
 
     await tapAndSettle(tester, find.text("Gallery"));
     await tapAndSettle(tester, find.text("Camera").last);
 
-    verify(appManager.imagePickerWrapper.getImage(any)).called(1);
+    verify(appManager.imagePickerWrapper.pickImage(any)).called(1);
     expect(called, isTrue);
   });
 

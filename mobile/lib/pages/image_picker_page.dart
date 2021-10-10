@@ -554,7 +554,7 @@ class _ImagePickerPageState extends State<ImagePickerPage> {
   }
 
   void _openCamera() async {
-    var image = await _imagePicker.getImage(ImageSource.camera);
+    var image = await _imagePicker.pickImage(ImageSource.camera);
     if (image != null) {
       _pop([PickedImage(originalFile: File(image.path))]);
     }

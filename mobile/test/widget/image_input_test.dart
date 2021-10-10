@@ -30,7 +30,7 @@ void main() {
     when(allAlbum.assetCount).thenReturn(mockAssets.length);
     when(allAlbum.getAssetListPaged(any, any))
         .thenAnswer((_) => Future.value(mockAssets));
-    when(appManager.imagePickerWrapper.getImage(any))
+    when(appManager.imagePickerWrapper.pickImage(any))
         .thenAnswer((_) => Future.value(null));
     when(appManager.photoManagerWrapper.getAllAssetPathEntity(any))
         .thenAnswer((_) => Future.value(allAlbum));

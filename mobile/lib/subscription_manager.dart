@@ -76,17 +76,13 @@ class SubscriptionManager {
     await _purchasesWrapper.setup(_propertiesManager.revenueCatApiKey);
     _purchasesWrapper.setDebugEnabled(_debugPurchases);
 
-    // Allows the same Apple ID/Google account to be used to restore purchases
-    // on multiple Anglers' Log accounts, since IAPs are tied to storefront IDs.
-    _purchasesWrapper.setAllowSharingStoreAccount(true);
-
     // Setup purchase state listener.
     _purchasesWrapper
         .addPurchaserInfoUpdateListener(_setStateFromPurchaserInfo);
 
     _authManager.stream.listen((_) {
       if (_authManager.state == AuthState.loggedIn) {
-        _purchasesWrapper.identify(_authManager.userId!);
+        _purchasesWrapper.logIn(_authManager.userId!);
       } else {
         _purchasesWrapper.reset();
       }
