@@ -25,7 +25,7 @@ void main() {
 
     when(appManager.purchasesWrapper.logIn(any))
         .thenAnswer((_) => Future.value(MockLogInResult()));
-    when(appManager.purchasesWrapper.reset())
+    when(appManager.purchasesWrapper.logOut())
         .thenAnswer((_) => Future.value(MockPurchaserInfo()));
 
     when(appManager.userPreferenceManager.isPro).thenReturn(false);
@@ -44,7 +44,7 @@ void main() {
     await Future.delayed(const Duration(milliseconds: 50));
 
     verify(appManager.purchasesWrapper.logIn(any)).called(1);
-    verifyNever(appManager.purchasesWrapper.reset());
+    verifyNever(appManager.purchasesWrapper.logOut());
   });
 
   test("RevenueCat user reset on logout", () async {
@@ -58,7 +58,7 @@ void main() {
     await Future.delayed(const Duration(milliseconds: 50));
 
     verifyNever(appManager.purchasesWrapper.logIn(any));
-    verify(appManager.purchasesWrapper.reset()).called(1);
+    verify(appManager.purchasesWrapper.logOut()).called(1);
   });
 
   test("Successful restore error sets state to pro", () async {

@@ -83,8 +83,8 @@ class SubscriptionManager {
     _authManager.stream.listen((_) {
       if (_authManager.state == AuthState.loggedIn) {
         _purchasesWrapper.logIn(_authManager.userId!);
-      } else {
-        _purchasesWrapper.reset();
+      } else if (_authManager.state == AuthState.loggedOut) {
+        _purchasesWrapper.logOut();
       }
     });
   }

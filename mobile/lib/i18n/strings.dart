@@ -162,6 +162,25 @@ class Strings {
 
   String get tripListPageTitle => _string("tripListPage_title");
 
+  String get tripListPageSearchHint => _string("tripListPage_searchHint");
+
+  String get tripListPageEmptyListTitle =>
+      _string("tripListPage_emptyListTitle");
+
+  String get tripListPageEmptyListDescription =>
+      _string("tripListPage_emptyListDescription");
+
+  String get tripListPageDeleteMessageSingular =>
+      _string("tripListPage_deleteMessageSingular");
+
+  String get tripListPageDeleteMessage => _string("tripListPage_deleteMessage");
+
+  String get saveTripPageEditTitle => _string("saveTripPage_editTitle");
+
+  String get saveTripPageNewTitle => _string("saveTripPage_newTitle");
+
+  String get tripPageSkunked => _string("tripPage_skunked");
+
   String get catchListPageMenuLabel => _string("catchListPage_menuLabel");
 
   String get catchListPageTitle => _string("catchListPage_title");

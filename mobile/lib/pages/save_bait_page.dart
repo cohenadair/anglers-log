@@ -158,7 +158,7 @@ class _SaveBaitPageState extends State<SaveBaitPage> {
   }
 
   FutureOr<bool> _save(BuildContext context) {
-    // imageName is set in _baitManager.addOrUpdate
+    // imageName is set in _baitManager.addOrUpdate.
     var newBait = Bait()
       ..id = _oldBait?.id ?? randomId()
       ..name = _nameController.value!;

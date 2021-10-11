@@ -189,6 +189,65 @@ List<PickerPageItem<T>> _pickerItems<T>(
   }).toList();
 }
 
+extension Atmospheres on Atmosphere {
+  bool matchesFilter(BuildContext context, String? filter) {
+    if (isEmpty(filter)) {
+      return false;
+    }
+
+    var searchString = "";
+
+    if (hasTemperature()) {
+      searchString += " ${temperature.displayValue(context)}";
+      searchString += " ${temperature.filterString(context)}";
+    }
+
+    if (hasWindSpeed()) {
+      searchString += " ${windSpeed.displayValue(context)}";
+      searchString += " ${windSpeed.filterString(context)}";
+    }
+
+    if (hasPressure()) {
+      searchString += " ${pressure.displayValue(context)}";
+      searchString += " ${pressure.filterString(context)}";
+    }
+
+    if (hasVisibility()) {
+      searchString += " ${visibility.displayValue(context)}";
+      searchString += " ${visibility.filterString(context)}";
+    }
+
+    if (skyConditions.isNotEmpty) {
+      searchString += " ${skyConditions.join(" ")}";
+    }
+
+    if (hasWindDirection()) {
+      searchString += " ${windDirection.filterString(context)}";
+      searchString += " ${Strings.of(context).keywordsWindDirection}";
+    }
+
+    if (hasHumidity()) {
+      searchString += " ${humidity.filterString(context)}";
+      searchString += " ${Strings.of(context).keywordsAirHumidity}";
+    }
+
+    if (hasMoonPhase()) {
+      searchString += " ${moonPhase.displayName(context)}";
+      searchString += " ${Strings.of(context).keywordsMoon}";
+    }
+
+    if (hasSunsetTimestamp()) {
+      searchString += " ${Strings.of(context).keywordsSunset}";
+    }
+
+    if (hasSunriseTimestamp()) {
+      searchString += " ${Strings.of(context).keywordsSunrise}";
+    }
+
+    return containsTrimmedLowerCase(searchString, filter!);
+  }  
+}
+
 extension Baits on Bait {
   BaitAttachment toAttachment() => BaitAttachment(baitId: id);
 }
@@ -1442,5 +1501,11 @@ extension Tides on Tide {
     }
 
     return result;
+  }
+}
+
+extension Trips on Trip {
+  String displayName(BuildContext context) {
+    return name;
   }
 }

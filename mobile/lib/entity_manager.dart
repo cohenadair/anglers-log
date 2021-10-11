@@ -144,6 +144,15 @@ abstract class EntityManager<T extends GeneratedMessage>
 
   String get _collectionPath => "${authManager.firestoreDocPath}/$tableName";
 
+  bool idsMatchesFilter(List<Id> ids, String? filter) {
+    for (var id in ids) {
+      if (matchesFilter(id, filter)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
   List<T> list([Iterable<Id>? ids]) {
     if (ids == null || ids.isEmpty) {
       return List.unmodifiable(entities.values);

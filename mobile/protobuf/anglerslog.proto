@@ -320,6 +320,33 @@ message WaterClarity {
   string name = 2;
 }
 
+message Trip {
+  message EntityCatches {
+    Id entity_id = 1;
+    uint32 number_of_catches = 2;
+  }
+
+  message BaitCatches {
+    BaitAttachment attachment = 1;
+    uint32 number_of_catches = 2;
+  }
+
+  Id id = 1;
+  string name = 2;
+  uint64 start_timestamp = 3;
+  uint64 end_timestamp = 4;
+  repeated string image_names = 5;
+  repeated Id catch_ids = 6;
+  repeated EntityCatches fishing_spot_catches = 7;
+  repeated EntityCatches angler_catches = 8;
+  repeated EntityCatches species_catches = 9;
+  repeated BaitCatches bait_catches = 10;
+  repeated CustomEntityValue custom_entity_values = 11;
+  string notes = 12;
+  bool was_skunked = 13;
+  Atmosphere atmosphere = 14;
+}
+
 message Measurement {
   Unit unit = 1;
   double value = 2;

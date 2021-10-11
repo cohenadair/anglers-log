@@ -257,58 +257,7 @@ bool catchFilterMatchesAtmosphere(
   if (!cat.hasAtmosphere()) {
     return false;
   }
-
-  var atmosphere = cat.atmosphere;
-  var searchString = "";
-
-  if (atmosphere.hasTemperature()) {
-    searchString += " ${atmosphere.temperature.displayValue(context)}";
-    searchString += " ${atmosphere.temperature.filterString(context)}";
-  }
-
-  if (atmosphere.hasWindSpeed()) {
-    searchString += " ${atmosphere.windSpeed.displayValue(context)}";
-    searchString += " ${atmosphere.windSpeed.filterString(context)}";
-  }
-
-  if (atmosphere.hasPressure()) {
-    searchString += " ${atmosphere.pressure.displayValue(context)}";
-    searchString += " ${atmosphere.pressure.filterString(context)}";
-  }
-
-  if (atmosphere.hasVisibility()) {
-    searchString += " ${atmosphere.visibility.displayValue(context)}";
-    searchString += " ${atmosphere.visibility.filterString(context)}";
-  }
-
-  if (atmosphere.skyConditions.isNotEmpty) {
-    searchString += " ${atmosphere.skyConditions.join(" ")}";
-  }
-
-  if (atmosphere.hasWindDirection()) {
-    searchString += " ${atmosphere.windDirection.filterString(context)}";
-    searchString += " ${Strings.of(context).keywordsWindDirection}";
-  }
-
-  if (atmosphere.hasHumidity()) {
-    searchString += " ${atmosphere.humidity.filterString(context)}";
-    searchString += " ${Strings.of(context).keywordsAirHumidity}";
-  }
-
-  if (atmosphere.hasMoonPhase()) {
-    searchString += " ${atmosphere.moonPhase.displayName(context)}";
-    searchString += " ${Strings.of(context).keywordsMoon}";
-  }
-
-  if (atmosphere.hasSunsetTimestamp()) {
-    searchString += " ${Strings.of(context).keywordsSunset}";
-  }
-
-  if (atmosphere.hasSunriseTimestamp()) {
-    searchString += " ${Strings.of(context).keywordsSunrise}";
-  }
-
-  return containsTrimmedLowerCase(searchString, filter);
+  return cat.atmosphere.matchesFilter(context, filter);
 }
 
 bool catchFilterMatchesTide(BuildContext context, String filter, Catch cat) {

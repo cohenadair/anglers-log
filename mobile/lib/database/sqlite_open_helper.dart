@@ -103,15 +103,25 @@ final List<String> _schema4 = [
   """,
 ];
 
+final List<String> _schema5 = [
+  """
+  CREATE TABLE trip (
+    id BLOB PRIMARY KEY,
+    bytes BLOB NOT NULL
+  );
+  """,
+];
+
 final List<List<String>> _schema = [
   _schema0,
   _schema1,
   _schema2,
   _schema3,
-  _schema4
+  _schema4,
+  _schema5
 ];
 
-const int _version = 5;
+const int _version = 6;
 
 Future<String> _databasePath(String userId) async =>
     join(await getDatabasesPath(), "2.0", userId, _name);

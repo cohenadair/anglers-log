@@ -262,6 +262,17 @@ Map<String, Map<String, String>> get englishStrings => {
         "morePage_pro": "Anglers' Log Pro",
         "tripListPage_menuLabel": "Trips",
         "tripListPage_title": "Trips (%s)",
+        "tripListPage_searchHint": "Search trips",
+        "tripListPage_emptyListTitle": "No trips",
+        "tripListPage_emptyListDescription":
+            "You haven't yet added any trips. Tap the %s button to begin.",
+        "tripListPage_deleteMessageSingular":
+            "%s is associated with %s catch; are you sure you want to delete it? This cannot be undone.",
+        "tripListPage_deleteMessage":
+            "Are you sure you want to delete trip %s? This cannot be undone.",
+        "saveTripPage_editTitle": "Edit Trip",
+        "saveTripPage_newTitle": "New Trip",
+        "tripPage_skunked": "Skunked",
         "settingsPage_title": "Settings",
         "settingsPage_fetchAtmosphereTitle":
             "Auto-fetch atmosphere and weather",
