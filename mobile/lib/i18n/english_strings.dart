@@ -91,9 +91,9 @@ Map<String, Map<String, String>> get englishStrings => {
         "catchPage_quantityLabel": "Quantity: %s",
         "saveCatchPage_newTitle": "New Catch",
         "saveCatchPage_editTitle": "Edit Catch",
-        "catchField_atmosphere": "Atmosphere & Weather",
+        "catchField_atmosphere": "Atmosphere and Weather",
         "catchField_tide": "Tide",
-        "catchField_dateTime": "Date & Time",
+        "catchField_dateTime": "Date and Time",
         "catchField_date": "Date",
         "catchField_time": "Time",
         "catchField_period": "Time Of Day",
@@ -266,12 +266,16 @@ Map<String, Map<String, String>> get englishStrings => {
         "tripListPage_emptyListTitle": "No trips",
         "tripListPage_emptyListDescription":
             "You haven't yet added any trips. Tap the %s button to begin.",
-        "tripListPage_deleteMessageSingular":
-            "%s is associated with %s catch; are you sure you want to delete it? This cannot be undone.",
         "tripListPage_deleteMessage":
             "Are you sure you want to delete trip %s? This cannot be undone.",
         "saveTripPage_editTitle": "Edit Trip",
         "saveTripPage_newTitle": "New Trip",
+        "saveTripPage_startDate": "Start Date",
+        "saveTripPage_startTime": "Start Time",
+        "saveTripPage_startDateTime": "Start Date and Time",
+        "saveTripPage_endDate": "End Date",
+        "saveTripPage_endTime": "End Time",
+        "saveTripPage_endDateTime": "End Date and Time",
         "tripPage_skunked": "Skunked",
         "settingsPage_title": "Settings",
         "settingsPage_fetchAtmosphereTitle":

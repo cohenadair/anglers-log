@@ -170,14 +170,23 @@ class Strings {
   String get tripListPageEmptyListDescription =>
       _string("tripListPage_emptyListDescription");
 
-  String get tripListPageDeleteMessageSingular =>
-      _string("tripListPage_deleteMessageSingular");
-
   String get tripListPageDeleteMessage => _string("tripListPage_deleteMessage");
 
   String get saveTripPageEditTitle => _string("saveTripPage_editTitle");
 
   String get saveTripPageNewTitle => _string("saveTripPage_newTitle");
+
+  String get saveTripPageStartDate => _string("saveTripPage_startDate");
+
+  String get saveTripPageStartTime => _string("saveTripPage_startTime");
+
+  String get saveTripPageStartDateTime => _string("saveTripPage_startDateTime");
+
+  String get saveTripPageEndDate => _string("saveTripPage_endDate");
+
+  String get saveTripPageEndTime => _string("saveTripPage_endTime");
+
+  String get saveTripPageEndDateTime => _string("saveTripPage_endDateTime");
 
   String get tripPageSkunked => _string("tripPage_skunked");
 

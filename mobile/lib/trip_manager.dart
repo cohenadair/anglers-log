@@ -93,17 +93,8 @@ class TripManager extends NamedEntityManager<Trip> {
             trip.customEntityValues, filter, _customEntityManager);
   }
 
-  /// Returns the number of [Catch] objects associated with the given [Bait] ID.
-  int numberOfCatches(Id? baitId) {
-    return numberOf<Catch>(baitId, _catchManager.list(),
-        (cat) => cat.baits.where((e) => e.baitId == baitId).isNotEmpty);
-  }
-
   String deleteMessage(BuildContext context, Trip trip) {
-    var numOfCatches = numberOfCatches(trip.id);
-    var string = numOfCatches == 1
-        ? Strings.of(context).tripListPageDeleteMessageSingular
-        : Strings.of(context).tripListPageDeleteMessage;
-    return format(string, [trip.displayName(context), numOfCatches]);
+    return format(Strings.of(context).tripListPageDeleteMessage,
+        [trip.displayName(context)]);
   }
 }

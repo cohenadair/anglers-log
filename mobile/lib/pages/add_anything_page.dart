@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:mobile/pages/save_trip_page.dart';
 
 import '../i18n/strings.dart';
 import '../pages/add_catch_journey.dart';
@@ -48,7 +49,10 @@ class AddAnythingPage extends StatelessWidget {
                           FloatingButton.icon(
                             icon: Icons.public,
                             label: Strings.of(context).addAnythingPageTrip,
-                            onPressed: () {},
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                              present(context, const SaveTripPage());
+                            },
                           ),
                         ],
                       ),

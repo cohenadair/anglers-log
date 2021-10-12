@@ -53,7 +53,7 @@ class _SaveBaitVariantPageState extends State<SaveBaitVariantPage> {
 
   List<CustomEntityValue> _customEntityValues = [];
 
-  UserPreferenceManager get _userPreferencesManager =>
+  UserPreferenceManager get _userPreferenceManager =>
       UserPreferenceManager.of(context);
 
   BaitVariant? get _oldBaitVariant => widget.oldBaitVariant;
@@ -120,12 +120,6 @@ class _SaveBaitVariantPageState extends State<SaveBaitVariantPage> {
       controller: TextInputController(),
     );
 
-    // Only include fields being tracked by the user.
-    var fieldIds = _userPreferencesManager.baitVariantFieldIds;
-    for (var field in _fields.values) {
-      field.isShowing = fieldIds.isEmpty || fieldIds.contains(field.id);
-    }
-
     if (_isEditing) {
       _colorController.value =
           _oldBaitVariant!.hasColor() ? _oldBaitVariant!.color : null;
@@ -155,7 +149,8 @@ class _SaveBaitVariantPageState extends State<SaveBaitVariantPage> {
           : Text(Strings.of(context).saveBaitVariantPageEditTitle),
       padding: insetsZero,
       fields: _fields,
-      customEntityIds: _userPreferencesManager.baitVariantCustomIds,
+      trackedFieldIds: _userPreferenceManager.baitVariantFieldIds,
+      customEntityIds: _userPreferenceManager.baitVariantCustomIds,
       customEntityValues: _customEntityValues,
       onCustomFieldChanged: (map) {
         _customEntityValues = entityValuesFromMap(map);
@@ -164,7 +159,7 @@ class _SaveBaitVariantPageState extends State<SaveBaitVariantPage> {
       onBuildField: _buildField,
       onSave: _save,
       onAddFields: (ids) =>
-          _userPreferencesManager.setBaitVariantFieldIds(ids.toList()),
+          _userPreferenceManager.setBaitVariantFieldIds(ids.toList()),
       runSpacing: 0,
       isInputValid: _variantFromControllers() != null,
     );
@@ -321,7 +316,7 @@ class _SaveBaitVariantPageState extends State<SaveBaitVariantPage> {
   }
 
   FutureOr<bool> _save(Map<Id, dynamic> customFieldValueMap) {
-    _userPreferencesManager
+    _userPreferenceManager
         .setBaitVariantCustomIds(customFieldValueMap.keys.toList());
 
     var newVariant = _variantFromControllers();

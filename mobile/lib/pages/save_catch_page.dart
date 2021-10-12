@@ -148,8 +148,8 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
   IdInputController get _speciesController =>
       _fields[_idSpecies]!.controller as IdInputController;
 
-  ListInputController<PickedImage> get _imagesController =>
-      _fields[_idImages]!.controller as ListInputController<PickedImage>;
+  ImagesInputController get _imagesController =>
+      _fields[_idImages]!.controller as ImagesInputController;
 
   InputController<FishingSpot> get _fishingSpotController =>
       _fields[_idFishingSpot]!.controller as InputController<FishingSpot>;
@@ -203,12 +203,8 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
   void initState() {
     super.initState();
 
-    var showingFieldIds = _userPreferenceManager.catchFieldIds;
     for (var field in allCatchFields(context)) {
       _fields[field.id] = field;
-      // By default, show all fields.
-      _fields[field.id]!.isShowing =
-          showingFieldIds.isEmpty || showingFieldIds.contains(field.id);
     }
 
     _waterDepthInputState = MultiMeasurementInputSpec.waterDepth(context);
@@ -290,6 +286,7 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
       runSpacing: 0,
       padding: insetsZero,
       fields: _fields,
+      trackedFieldIds: _userPreferenceManager.catchFieldIds,
       customEntityIds: _userPreferenceManager.catchCustomEntityIds,
       customEntityValues: _customEntityValues,
       onBuildField: _buildField,
@@ -777,10 +774,7 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
 
     _catchManager.addOrUpdate(
       cat,
-      imageFiles: _imagesController.value
-          .where((img) => img.originalFile != null)
-          .map((img) => img.originalFile!)
-          .toList(),
+      imageFiles: _imagesController.originalFiles,
     );
 
     if (widget.popOverride != null) {

@@ -80,7 +80,7 @@ List<Field> allCatchFields(BuildContext context) {
     Field(
       id: catchFieldIdImages,
       name: (context) => Strings.of(context).catchFieldImages,
-      controller: ListInputController<PickedImage>(),
+      controller: ImagesInputController(),
     ),
     Field(
       id: catchFieldIdFishingSpot,

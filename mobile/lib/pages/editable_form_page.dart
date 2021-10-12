@@ -22,6 +22,10 @@ class EditableFormPage extends StatefulWidget {
   /// A unique ID to [Field] map of all valid fields for the form.
   final Map<Id, Field> fields;
 
+  /// A list of field IDs being tracked by the user. Used to hide/show fields
+  /// accordingly.
+  final List<Id> trackedFieldIds;
+
   /// A list of all [CustomEntity] objects associated with this form. These will
   /// each have their own input widget, and their initial values are determined
   /// by [customEntityValues].
@@ -87,6 +91,7 @@ class EditableFormPage extends StatefulWidget {
     this.title,
     this.header,
     this.fields = const {},
+    this.trackedFieldIds = const[],
     this.customEntityIds = const [],
     this.customEntityValues = const [],
     this.allowCustomEntities = true,
@@ -153,6 +158,12 @@ class _EditableFormPageState extends State<EditableFormPage> {
         _fields[entity.id]!.controller.value =
             valueForCustomEntityType(entity.type, value);
       }
+    }
+
+    // Only include fields being tracked by the user.
+    for (var field in _fields.values) {
+      field.isShowing = widget.trackedFieldIds.isEmpty ||
+          widget.trackedFieldIds.contains(field.id);
     }
   }
 
