@@ -1,6 +1,7 @@
 import 'dart:typed_data';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/app_manager.dart';
 import 'package:mobile/entity_manager.dart';
@@ -27,6 +28,9 @@ class TestEntityManager extends EntityManager<Species> {
 
   @override
   Id id(Species species) => species.id;
+
+  @override
+  String displayName(BuildContext context, Species entity) => entity.name;
 
   @override
   bool matchesFilter(Id id, String? filter) => matchesFilterResult;

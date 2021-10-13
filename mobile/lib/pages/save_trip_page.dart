@@ -2,7 +2,9 @@ import 'dart:async';
 
 import 'package:fixnum/fixnum.dart';
 import 'package:flutter/material.dart';
+import 'package:mobile/body_of_water_manager.dart';
 import 'package:mobile/catch_manager.dart';
+import 'package:mobile/pages/body_of_water_list_page.dart';
 import 'package:mobile/pages/catch_list_page.dart';
 import 'package:mobile/pages/editable_form_page.dart';
 import 'package:mobile/res/dimen.dart';
@@ -13,6 +15,7 @@ import 'package:mobile/user_preference_manager.dart';
 import 'package:mobile/utils/page_utils.dart';
 import 'package:mobile/widgets/checkbox_input.dart';
 import 'package:mobile/widgets/date_time_picker.dart';
+import 'package:mobile/widgets/multi_entity_picker_input.dart';
 import 'package:mobile/widgets/field.dart';
 import 'package:mobile/widgets/image_input.dart';
 import 'package:mobile/widgets/multi_list_picker_input.dart';
@@ -49,6 +52,8 @@ class _SaveTripPageState extends State<SaveTripPage> {
   static final _idName = Id(uuid: "d9a83fa6-926d-474d-8ddf-8d0e044d2ea4");
   static final _idImages = Id(uuid: "8c593cbb-4782-49c7-b540-0c22d8175b3f");
   static final _idCatches = Id(uuid: "0806fcc4-5d77-44b4-85e2-ebc066f37e12");
+  static final _idBodiesOfWater =
+      Id(uuid: "45c91a90-62d1-47fe-b360-c5494a265ef6");
   static final _idFishingSpotCatches =
       Id(uuid: "70d19321-1cc7-4842-b7e4-252ce79f18d0");
   static final _idAnglerCatches =
@@ -69,6 +74,8 @@ class _SaveTripPageState extends State<SaveTripPage> {
   Trip? get _oldTrip => widget.oldTrip;
 
   bool get _isEditing => _oldTrip != null;
+
+  BodyOfWaterManager get _bodyOfWaterManager => BodyOfWaterManager.of(context);
 
   CatchManager get _catchManager => CatchManager.of(context);
 
@@ -95,6 +102,9 @@ class _SaveTripPageState extends State<SaveTripPage> {
 
   SetInputController<Id> get _catchesController =>
       _fields[_idCatches]!.controller as SetInputController<Id>;
+
+  SetInputController<Id> get _bodiesOfWaterController =>
+      _fields[_idBodiesOfWater]!.controller as SetInputController<Id>;
 
   @override
   void initState() {
@@ -132,11 +142,18 @@ class _SaveTripPageState extends State<SaveTripPage> {
       controller: SetInputController<Id>(),
     );
 
+    _fields[_idBodiesOfWater] = Field(
+      id: _idBodiesOfWater,
+      name: (context) => Strings.of(context).saveTripPageBodiesOfWater,
+      controller: SetInputController<Id>(),
+    );
+
     if (_isEditing) {
       _startTimestampController.value = _oldTrip!.startTimestamp.toInt();
       _endTimestampController.value = _oldTrip!.endTimestamp.toInt();
       _nameController.value = _oldTrip!.hasName() ? _oldTrip!.name : null;
       _catchesController.value = _oldTrip!.catchIds.toSet();
+      _bodiesOfWaterController.value = _oldTrip!.bodyOfWaterIds.toSet();
       _customEntityValues = _oldTrip!.customEntityValues;
     }
   }
@@ -180,6 +197,8 @@ class _SaveTripPageState extends State<SaveTripPage> {
       return _buildNotes();
     } else if (id == _idCatches) {
       return _buildCatches();
+    } else if (id == _idBodiesOfWater) {
+      return _buildBodiesOfWater();
     } else if (id == _idWasSkunked) {
       return _buildSkunked();
     } else if (id == _idAtmosphere) {
@@ -255,39 +274,26 @@ class _SaveTripPageState extends State<SaveTripPage> {
   }
 
   Widget _buildCatches() {
-    return EntityListenerBuilder(
-      managers: [
-        _catchManager,
-      ],
-      builder: (context) {
-        var values = _catchesController.value.isNotEmpty
-            ? _catchManager.list(_catchesController.value)
-            : <Catch>[];
+    return MultiEntityPickerInput<Catch>(
+      manager: _catchManager,
+      controller: _catchesController,
+      emptyValue: Strings.of(context).saveTripPageNoCatches,
+      isHidden: !_fields[_idCatches]!.isShowing,
+      listPage: (pickerSettings) =>
+          CatchListPage(pickerSettings: pickerSettings),
+      onPicked: (ids) => setState(() => _catchesController.value = ids),
+    );
+  }
 
-        return MultiListPickerInput(
-          padding: insetsHorizontalDefaultVerticalWidget,
-          values: values
-              .where((cat) => _speciesManager.entityExists(cat.speciesId))
-              .map((cat) => _speciesManager.entity(cat.speciesId)!.name)
-              .toSet(),
-          emptyValue: (context) => Strings.of(context).saveTripPageNoCatches,
-          onTap: () {
-            push(
-              context,
-              CatchListPage(
-                pickerSettings: ManageableListPagePickerSettings<Catch>(
-                  onPicked: (context, catches) {
-                    setState(() => _catchesController.value =
-                        catches.map((c) => c.id).toSet());
-                    return true;
-                  },
-                  initialValues: values.toSet(),
-                ),
-              ),
-            );
-          },
-        );
-      },
+  Widget _buildBodiesOfWater() {
+    return MultiEntityPickerInput<BodyOfWater>(
+      manager: _bodyOfWaterManager,
+      controller: _bodiesOfWaterController,
+      emptyValue: Strings.of(context).saveTripPageNoBodiesOfWater,
+      isHidden: !_fields[_idBodiesOfWater]!.isShowing,
+      listPage: (pickerSettings) =>
+          BodyOfWaterListPage(pickerSettings: pickerSettings),
+      onPicked: (ids) => setState(() => _bodiesOfWaterController.value = ids),
     );
   }
 
@@ -321,6 +327,12 @@ class _SaveTripPageState extends State<SaveTripPage> {
       newTrip.catchIds.addAll(_catchesController.value);
     } else {
       newTrip.catchIds.clear();
+    }
+
+    if (_bodiesOfWaterController.value.isNotEmpty) {
+      newTrip.bodyOfWaterIds.addAll(_bodiesOfWaterController.value);
+    } else {
+      newTrip.bodyOfWaterIds.clear();
     }
 
     _tripManager.addOrUpdate(

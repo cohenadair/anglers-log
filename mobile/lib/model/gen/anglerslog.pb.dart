@@ -2288,14 +2288,15 @@ class Trip extends $pb.GeneratedMessage {
     ..a<$fixnum.Int64>(4, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'endTimestamp', $pb.PbFieldType.OU6, defaultOrMaker: $fixnum.Int64.ZERO)
     ..pPS(5, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'imageNames')
     ..pc<Id>(6, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'catchIds', $pb.PbFieldType.PM, subBuilder: Id.create)
-    ..pc<Trip_EntityCatches>(7, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'fishingSpotCatches', $pb.PbFieldType.PM, subBuilder: Trip_EntityCatches.create)
-    ..pc<Trip_EntityCatches>(8, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'anglerCatches', $pb.PbFieldType.PM, subBuilder: Trip_EntityCatches.create)
-    ..pc<Trip_EntityCatches>(9, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'speciesCatches', $pb.PbFieldType.PM, subBuilder: Trip_EntityCatches.create)
-    ..pc<Trip_BaitCatches>(10, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'baitCatches', $pb.PbFieldType.PM, subBuilder: Trip_BaitCatches.create)
-    ..pc<CustomEntityValue>(11, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'customEntityValues', $pb.PbFieldType.PM, subBuilder: CustomEntityValue.create)
-    ..aOS(12, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'notes')
-    ..aOB(13, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'wasSkunked')
-    ..aOM<Atmosphere>(14, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'atmosphere', subBuilder: Atmosphere.create)
+    ..pc<Id>(7, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'bodyOfWaterIds', $pb.PbFieldType.PM, subBuilder: Id.create)
+    ..pc<Trip_EntityCatches>(8, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'fishingSpotCatches', $pb.PbFieldType.PM, subBuilder: Trip_EntityCatches.create)
+    ..pc<Trip_EntityCatches>(9, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'anglerCatches', $pb.PbFieldType.PM, subBuilder: Trip_EntityCatches.create)
+    ..pc<Trip_EntityCatches>(10, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'speciesCatches', $pb.PbFieldType.PM, subBuilder: Trip_EntityCatches.create)
+    ..pc<Trip_BaitCatches>(11, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'baitCatches', $pb.PbFieldType.PM, subBuilder: Trip_BaitCatches.create)
+    ..pc<CustomEntityValue>(12, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'customEntityValues', $pb.PbFieldType.PM, subBuilder: CustomEntityValue.create)
+    ..aOS(13, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'notes')
+    ..aOB(14, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'wasSkunked')
+    ..aOM<Atmosphere>(15, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'atmosphere', subBuilder: Atmosphere.create)
     ..hasRequiredFields = false
   ;
 
@@ -2307,6 +2308,7 @@ class Trip extends $pb.GeneratedMessage {
     $fixnum.Int64? endTimestamp,
     $core.Iterable<$core.String>? imageNames,
     $core.Iterable<Id>? catchIds,
+    $core.Iterable<Id>? bodyOfWaterIds,
     $core.Iterable<Trip_EntityCatches>? fishingSpotCatches,
     $core.Iterable<Trip_EntityCatches>? anglerCatches,
     $core.Iterable<Trip_EntityCatches>? speciesCatches,
@@ -2334,6 +2336,9 @@ class Trip extends $pb.GeneratedMessage {
     }
     if (catchIds != null) {
       _result.catchIds.addAll(catchIds);
+    }
+    if (bodyOfWaterIds != null) {
+      _result.bodyOfWaterIds.addAll(bodyOfWaterIds);
     }
     if (fishingSpotCatches != null) {
       _result.fishingSpotCatches.addAll(fishingSpotCatches);
@@ -2427,48 +2432,51 @@ class Trip extends $pb.GeneratedMessage {
   $core.List<Id> get catchIds => $_getList(5);
 
   @$pb.TagNumber(7)
-  $core.List<Trip_EntityCatches> get fishingSpotCatches => $_getList(6);
+  $core.List<Id> get bodyOfWaterIds => $_getList(6);
 
   @$pb.TagNumber(8)
-  $core.List<Trip_EntityCatches> get anglerCatches => $_getList(7);
+  $core.List<Trip_EntityCatches> get fishingSpotCatches => $_getList(7);
 
   @$pb.TagNumber(9)
-  $core.List<Trip_EntityCatches> get speciesCatches => $_getList(8);
+  $core.List<Trip_EntityCatches> get anglerCatches => $_getList(8);
 
   @$pb.TagNumber(10)
-  $core.List<Trip_BaitCatches> get baitCatches => $_getList(9);
+  $core.List<Trip_EntityCatches> get speciesCatches => $_getList(9);
 
   @$pb.TagNumber(11)
-  $core.List<CustomEntityValue> get customEntityValues => $_getList(10);
+  $core.List<Trip_BaitCatches> get baitCatches => $_getList(10);
 
   @$pb.TagNumber(12)
-  $core.String get notes => $_getSZ(11);
-  @$pb.TagNumber(12)
-  set notes($core.String v) { $_setString(11, v); }
-  @$pb.TagNumber(12)
-  $core.bool hasNotes() => $_has(11);
-  @$pb.TagNumber(12)
-  void clearNotes() => clearField(12);
+  $core.List<CustomEntityValue> get customEntityValues => $_getList(11);
 
   @$pb.TagNumber(13)
-  $core.bool get wasSkunked => $_getBF(12);
+  $core.String get notes => $_getSZ(12);
   @$pb.TagNumber(13)
-  set wasSkunked($core.bool v) { $_setBool(12, v); }
+  set notes($core.String v) { $_setString(12, v); }
   @$pb.TagNumber(13)
-  $core.bool hasWasSkunked() => $_has(12);
+  $core.bool hasNotes() => $_has(12);
   @$pb.TagNumber(13)
-  void clearWasSkunked() => clearField(13);
+  void clearNotes() => clearField(13);
 
   @$pb.TagNumber(14)
-  Atmosphere get atmosphere => $_getN(13);
+  $core.bool get wasSkunked => $_getBF(13);
   @$pb.TagNumber(14)
-  set atmosphere(Atmosphere v) { setField(14, v); }
+  set wasSkunked($core.bool v) { $_setBool(13, v); }
   @$pb.TagNumber(14)
-  $core.bool hasAtmosphere() => $_has(13);
+  $core.bool hasWasSkunked() => $_has(13);
   @$pb.TagNumber(14)
-  void clearAtmosphere() => clearField(14);
-  @$pb.TagNumber(14)
-  Atmosphere ensureAtmosphere() => $_ensure(13);
+  void clearWasSkunked() => clearField(14);
+
+  @$pb.TagNumber(15)
+  Atmosphere get atmosphere => $_getN(14);
+  @$pb.TagNumber(15)
+  set atmosphere(Atmosphere v) { setField(15, v); }
+  @$pb.TagNumber(15)
+  $core.bool hasAtmosphere() => $_has(14);
+  @$pb.TagNumber(15)
+  void clearAtmosphere() => clearField(15);
+  @$pb.TagNumber(15)
+  Atmosphere ensureAtmosphere() => $_ensure(14);
 }
 
 class Measurement extends $pb.GeneratedMessage {

@@ -1,4 +1,5 @@
 import 'package:collection/collection.dart' show IterableExtension;
+import 'package:flutter/material.dart';
 import 'package:protobuf/protobuf.dart';
 import 'package:quiver/strings.dart';
 
@@ -21,6 +22,9 @@ abstract class NamedEntityManager<T extends GeneratedMessage>
     result.sort(nameComparator);
     return result;
   }
+
+  @override
+  String displayName(BuildContext context, T entity) => name(entity);
 
   @override
   bool matchesFilter(Id id, String? filter) {

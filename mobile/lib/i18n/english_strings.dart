@@ -279,6 +279,8 @@ Map<String, Map<String, String>> get englishStrings => {
         "saveTripPage_allDay": "All Day",
         "saveTripPage_catches": "Catches",
         "saveTripPage_noCatches": "No catches",
+        "saveTripPage_bodiesOfWater": "Bodies Of Water",
+        "saveTripPage_noBodiesOfWater": "No bodies of water",
         "tripPage_skunked": "Skunked",
         "settingsPage_title": "Settings",
         "settingsPage_fetchAtmosphereTitle":

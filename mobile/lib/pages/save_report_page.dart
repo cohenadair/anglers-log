@@ -1,16 +1,16 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:protobuf/protobuf.dart';
+import 'package:mobile/widgets/multi_entity_picker_input.dart';
 import 'package:quiver/strings.dart';
 
 import '../angler_manager.dart';
 import '../body_of_water_manager.dart';
+import '../entity_manager.dart';
 import '../fishing_spot_manager.dart';
 import '../i18n/strings.dart';
 import '../method_manager.dart';
 import '../model/gen/anglerslog.pb.dart';
-import '../named_entity_manager.dart';
 import '../pages/fishing_spot_list_page.dart';
 import '../pages/form_page.dart';
 import '../pages/species_list_page.dart';
@@ -36,7 +36,6 @@ import '../widgets/widget.dart';
 import 'angler_list_page.dart';
 import 'bait_list_page.dart';
 import 'body_of_water_list_page.dart';
-import 'manageable_list_page.dart';
 import 'method_list_page.dart';
 import 'picker_page.dart';
 import 'water_clarity_list_page.dart';
@@ -61,17 +60,17 @@ class _SaveReportPageState extends State<SaveReportPage> {
   final _typeController = InputController<Report_Type>();
   final _fromDateRangeController = InputController<DateRange>();
   final _toDateRangeController = InputController<DateRange>();
-  final _anglersController = SetInputController<Angler>();
-  final _speciesController = SetInputController<Species>();
+  final _anglersController = SetInputController<Id>();
+  final _speciesController = SetInputController<Id>();
   final _baitsController = SetInputController<BaitAttachment>();
-  final _fishingSpotsController = SetInputController<FishingSpot>();
-  final _bodiesOfWaterController = SetInputController<BodyOfWater>();
-  final _methodsController = SetInputController<Method>();
+  final _fishingSpotsController = SetInputController<Id>();
+  final _bodiesOfWaterController = SetInputController<Id>();
+  final _methodsController = SetInputController<Id>();
   final _periodsController = SetInputController<Period>();
   final _favoritesOnlyController = BoolInputController();
   final _catchAndReleaseOnlyController = BoolInputController();
   final _seasonsController = SetInputController<Season>();
-  final _waterClaritiesController = SetInputController<WaterClarity>();
+  final _waterClaritiesController = SetInputController<Id>();
   final _waterDepthController = NumberFilterInputController();
   final _waterTemperatureController = NumberFilterInputController();
   final _lengthController = NumberFilterInputController();
@@ -184,20 +183,18 @@ class _SaveReportPageState extends State<SaveReportPage> {
     // "Empty" lists will include all entities in reports, so don't actually
     // include every entity in the report object.
     _anglersController.value =
-        anglerIds.isEmpty ? {} : _anglerManager.list(anglerIds).toSet();
-    _fishingSpotsController.value = fishingSpotIds.isEmpty
-        ? {}
-        : _fishingSpotManager.list(fishingSpotIds).toSet();
-    _bodiesOfWaterController.value = bodyOfWaterIds.isEmpty
-        ? {}
-        : _bodyOfWaterManager.list(bodyOfWaterIds).toSet();
+        anglerIds.isEmpty ? {} : _anglerManager.idSet(anglerIds);
+    _fishingSpotsController.value =
+        fishingSpotIds.isEmpty ? {} : _fishingSpotManager.idSet(fishingSpotIds);
+    _bodiesOfWaterController.value =
+        bodyOfWaterIds.isEmpty ? {} : _bodyOfWaterManager.idSet(bodyOfWaterIds);
     _methodsController.value =
-        methodIds.isEmpty ? {} : _methodManager.list(methodIds).toSet();
+        methodIds.isEmpty ? {} : _methodManager.idSet(methodIds);
     _speciesController.value =
-        speciesIds.isEmpty ? {} : _speciesManager.list(speciesIds).toSet();
+        speciesIds.isEmpty ? {} : _speciesManager.idSet(speciesIds);
     _waterClaritiesController.value = waterClarityIds.isEmpty
         ? {}
-        : _waterClarityManager.list(waterClarityIds).toSet();
+        : _waterClarityManager.idSet(waterClarityIds);
   }
 
   @override
@@ -449,7 +446,7 @@ class _SaveReportPageState extends State<SaveReportPage> {
   }
 
   Widget _buildAnglersPicker() {
-    return _buildEntityPicker<Angler>(
+    return MultiEntityPickerInput<Angler>(
       manager: _anglerManager,
       controller: _anglersController,
       emptyValue: Strings.of(context).saveReportPageAllAnglers,
@@ -457,11 +454,13 @@ class _SaveReportPageState extends State<SaveReportPage> {
       listPage: (pickerSettings) => AnglerListPage(
         pickerSettings: pickerSettings,
       ),
+      onPicked: (ids) =>
+          _updatePickedEntities(ids, _anglerManager, _anglersController),
     );
   }
 
   Widget _buildSpeciesPicker() {
-    return _buildEntityPicker<Species>(
+    return MultiEntityPickerInput<Species>(
       manager: _speciesManager,
       controller: _speciesController,
       emptyValue: Strings.of(context).saveReportPageAllSpecies,
@@ -469,6 +468,8 @@ class _SaveReportPageState extends State<SaveReportPage> {
       listPage: (pickerSettings) => SpeciesListPage(
         pickerSettings: pickerSettings,
       ),
+      onPicked: (ids) =>
+          _updatePickedEntities(ids, _speciesManager, _speciesController),
     );
   }
 
@@ -485,7 +486,7 @@ class _SaveReportPageState extends State<SaveReportPage> {
   }
 
   Widget _buildBodiesOfWaterPicker() {
-    return _buildEntityPicker<BodyOfWater>(
+    return MultiEntityPickerInput<BodyOfWater>(
       manager: _bodyOfWaterManager,
       controller: _bodiesOfWaterController,
       emptyValue: Strings.of(context).saveReportPageAllBodiesOfWater,
@@ -493,13 +494,15 @@ class _SaveReportPageState extends State<SaveReportPage> {
       listPage: (pickerSettings) => BodyOfWaterListPage(
         pickerSettings: pickerSettings,
       ),
+      onPicked: (ids) => _updatePickedEntities(
+          ids, _bodyOfWaterManager, _bodiesOfWaterController),
     );
   }
 
   Widget _buildFishingSpotsPicker() {
     var allFishingSpots = _fishingSpotManager.list().toSet();
 
-    return _buildEntityPicker<FishingSpot>(
+    return MultiEntityPickerInput<FishingSpot>(
       manager: _fishingSpotManager,
       controller: _fishingSpotsController,
       emptyValue: Strings.of(context).saveReportPageAllFishingSpots,
@@ -507,20 +510,20 @@ class _SaveReportPageState extends State<SaveReportPage> {
       customListPage: FishingSpotListPage(
         pickerSettings: FishingSpotListPagePickerSettings(
           onPicked: (context, fishingSpots) {
-            setState(() => _fishingSpotsController.value =
-                fishingSpots.containsAll(allFishingSpots) ? {} : fishingSpots);
+            _updatePickedEntities(fishingSpots.map((e) => e.id).toSet(),
+                _methodManager, _methodsController);
             return true;
           },
           initialValues: _fishingSpotsController.value.isEmpty
               ? allFishingSpots
-              : _fishingSpotsController.value,
+              : _fishingSpotManager.list(_fishingSpotsController.value).toSet(),
         ),
       ),
     );
   }
 
   Widget _buildMethodsPicker() {
-    return _buildEntityPicker<Method>(
+    return MultiEntityPickerInput<Method>(
       manager: _methodManager,
       controller: _methodsController,
       emptyValue: Strings.of(context).saveReportPageAllMethods,
@@ -530,6 +533,8 @@ class _SaveReportPageState extends State<SaveReportPage> {
           pickerSettings: pickerSettings,
         );
       },
+      onPicked: (ids) =>
+          _updatePickedEntities(ids, _methodManager, _methodsController),
     );
   }
 
@@ -651,7 +656,7 @@ class _SaveReportPageState extends State<SaveReportPage> {
   }
 
   Widget _buildWaterClaritiesPicker() {
-    return _buildEntityPicker<WaterClarity>(
+    return MultiEntityPickerInput<WaterClarity>(
       manager: _waterClarityManager,
       controller: _waterClaritiesController,
       emptyValue: Strings.of(context).saveReportPageAllWaterClarities,
@@ -661,49 +666,8 @@ class _SaveReportPageState extends State<SaveReportPage> {
           pickerSettings: pickerSettings,
         );
       },
-    );
-  }
-
-  Widget _buildEntityPicker<T extends GeneratedMessage>({
-    required NamedEntityManager<T> manager,
-    required SetInputController<T> controller,
-    required String emptyValue,
-    required bool isHidden,
-    Widget Function(ManageableListPagePickerSettings<T>)? listPage,
-    // Used for when a picker page can have multiple entities displayed, such
-    // as a FishingSpotListPage, which shows bodies of water as well as
-    // fishing spots. In these cases a definitive type T does not work.
-    Widget? customListPage,
-  }) {
-    if (isHidden) {
-      return Empty();
-    }
-
-    assert(listPage != null || customListPage != null);
-
-    return MultiListPickerInput(
-      padding: insetsHorizontalDefaultVerticalWidget,
-      values: controller.value.map((e) => manager.name(e)).toSet(),
-      emptyValue: (context) => emptyValue,
-      onTap: () {
-        var pickerPage = customListPage;
-        pickerPage ??= listPage!(
-          ManageableListPagePickerSettings<T>(
-            onPicked: (context, entities) {
-              // Treat an empty controller value as "include all", so we're
-              // not including 100s of objects in a protobuf collection.
-              setState(() => controller.value =
-                  entities.containsAll(manager.list()) ? {} : entities);
-              return true;
-            },
-            initialValues: controller.value.isEmpty
-                ? manager.list().toSet()
-                : controller.value,
-          ),
-        );
-
-        push(context, pickerPage);
-      },
+      onPicked: (ids) => _updatePickedEntities(
+          ids, _waterClarityManager, _waterClaritiesController),
     );
   }
 
@@ -751,6 +715,14 @@ class _SaveReportPageState extends State<SaveReportPage> {
     );
   }
 
+  void _updatePickedEntities(Set<Id> pickedIds, EntityManager manager,
+      SetInputController<Id> controller) {
+    // Treat an empty controller value as "include all", so we're
+    // not including 100s of objects in a protobuf collection.
+    setState(() => controller.value =
+        pickedIds.containsAll(manager.idSet()) ? {} : pickedIds);
+  }
+
   FutureOr<bool> _save(BuildContext context) {
     var report = Report()
       ..id = _oldReport?.id ?? randomId()
@@ -758,13 +730,13 @@ class _SaveReportPageState extends State<SaveReportPage> {
       ..type = _typeController.value!
       ..periods.addAll(_periodsController.value)
       ..seasons.addAll(_seasonsController.value)
-      ..anglerIds.addAll(_anglersController.value.map((e) => e.id))
+      ..anglerIds.addAll(_anglersController.value)
       ..baits.addAll(_baitsController.value)
-      ..fishingSpotIds.addAll(_fishingSpotsController.value.map((e) => e.id))
-      ..bodyOfWaterIds.addAll(_bodiesOfWaterController.value.map((e) => e.id))
-      ..methodIds.addAll(_methodsController.value.map((e) => e.id))
-      ..speciesIds.addAll(_speciesController.value.map((e) => e.id))
-      ..waterClarityIds.addAll(_waterClaritiesController.value.map((e) => e.id))
+      ..fishingSpotIds.addAll(_fishingSpotsController.value)
+      ..bodyOfWaterIds.addAll(_bodiesOfWaterController.value)
+      ..methodIds.addAll(_methodsController.value)
+      ..speciesIds.addAll(_speciesController.value)
+      ..waterClarityIds.addAll(_waterClaritiesController.value)
       ..windDirections.addAll(_windDirectionsController.value)
       ..skyConditions.addAll(_skyConditionsController.value)
       ..moonPhases.addAll(_moonPhasesController.value)

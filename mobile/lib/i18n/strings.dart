@@ -194,6 +194,11 @@ class Strings {
 
   String get saveTripPageNoCatches => _string("saveTripPage_noCatches");
 
+  String get saveTripPageBodiesOfWater => _string("saveTripPage_bodiesOfWater");
+
+  String get saveTripPageNoBodiesOfWater =>
+      _string("saveTripPage_noBodiesOfWater");
+
   String get tripPageSkunked => _string("tripPage_skunked");
 
   String get catchListPageMenuLabel => _string("catchListPage_menuLabel");

@@ -337,14 +337,15 @@ message Trip {
   uint64 end_timestamp = 4;
   repeated string image_names = 5;
   repeated Id catch_ids = 6;
-  repeated EntityCatches fishing_spot_catches = 7;
-  repeated EntityCatches angler_catches = 8;
-  repeated EntityCatches species_catches = 9;
-  repeated BaitCatches bait_catches = 10;
-  repeated CustomEntityValue custom_entity_values = 11;
-  string notes = 12;
-  bool was_skunked = 13;
-  Atmosphere atmosphere = 14;
+  repeated Id body_of_water_ids = 7;
+  repeated EntityCatches fishing_spot_catches = 8;
+  repeated EntityCatches angler_catches = 9;
+  repeated EntityCatches species_catches = 10;
+  repeated BaitCatches bait_catches = 11;
+  repeated CustomEntityValue custom_entity_values = 12;
+  string notes = 13;
+  bool was_skunked = 14;
+  Atmosphere atmosphere = 15;
 }
 
 message Measurement {

@@ -511,14 +511,15 @@ const Trip$json = const {
     const {'1': 'end_timestamp', '3': 4, '4': 1, '5': 4, '10': 'endTimestamp'},
     const {'1': 'image_names', '3': 5, '4': 3, '5': 9, '10': 'imageNames'},
     const {'1': 'catch_ids', '3': 6, '4': 3, '5': 11, '6': '.anglerslog.Id', '10': 'catchIds'},
-    const {'1': 'fishing_spot_catches', '3': 7, '4': 3, '5': 11, '6': '.anglerslog.Trip.EntityCatches', '10': 'fishingSpotCatches'},
-    const {'1': 'angler_catches', '3': 8, '4': 3, '5': 11, '6': '.anglerslog.Trip.EntityCatches', '10': 'anglerCatches'},
-    const {'1': 'species_catches', '3': 9, '4': 3, '5': 11, '6': '.anglerslog.Trip.EntityCatches', '10': 'speciesCatches'},
-    const {'1': 'bait_catches', '3': 10, '4': 3, '5': 11, '6': '.anglerslog.Trip.BaitCatches', '10': 'baitCatches'},
-    const {'1': 'custom_entity_values', '3': 11, '4': 3, '5': 11, '6': '.anglerslog.CustomEntityValue', '10': 'customEntityValues'},
-    const {'1': 'notes', '3': 12, '4': 1, '5': 9, '10': 'notes'},
-    const {'1': 'was_skunked', '3': 13, '4': 1, '5': 8, '10': 'wasSkunked'},
-    const {'1': 'atmosphere', '3': 14, '4': 1, '5': 11, '6': '.anglerslog.Atmosphere', '10': 'atmosphere'},
+    const {'1': 'body_of_water_ids', '3': 7, '4': 3, '5': 11, '6': '.anglerslog.Id', '10': 'bodyOfWaterIds'},
+    const {'1': 'fishing_spot_catches', '3': 8, '4': 3, '5': 11, '6': '.anglerslog.Trip.EntityCatches', '10': 'fishingSpotCatches'},
+    const {'1': 'angler_catches', '3': 9, '4': 3, '5': 11, '6': '.anglerslog.Trip.EntityCatches', '10': 'anglerCatches'},
+    const {'1': 'species_catches', '3': 10, '4': 3, '5': 11, '6': '.anglerslog.Trip.EntityCatches', '10': 'speciesCatches'},
+    const {'1': 'bait_catches', '3': 11, '4': 3, '5': 11, '6': '.anglerslog.Trip.BaitCatches', '10': 'baitCatches'},
+    const {'1': 'custom_entity_values', '3': 12, '4': 3, '5': 11, '6': '.anglerslog.CustomEntityValue', '10': 'customEntityValues'},
+    const {'1': 'notes', '3': 13, '4': 1, '5': 9, '10': 'notes'},
+    const {'1': 'was_skunked', '3': 14, '4': 1, '5': 8, '10': 'wasSkunked'},
+    const {'1': 'atmosphere', '3': 15, '4': 1, '5': 11, '6': '.anglerslog.Atmosphere', '10': 'atmosphere'},
   ],
   '3': const [Trip_EntityCatches$json, Trip_BaitCatches$json],
 };
@@ -542,7 +543,7 @@ const Trip_BaitCatches$json = const {
 };
 
 /// Descriptor for `Trip`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List tripDescriptor = $convert.base64Decode('CgRUcmlwEh4KAmlkGAEgASgLMg4uYW5nbGVyc2xvZy5JZFICaWQSEgoEbmFtZRgCIAEoCVIEbmFtZRInCg9zdGFydF90aW1lc3RhbXAYAyABKARSDnN0YXJ0VGltZXN0YW1wEiMKDWVuZF90aW1lc3RhbXAYBCABKARSDGVuZFRpbWVzdGFtcBIfCgtpbWFnZV9uYW1lcxgFIAMoCVIKaW1hZ2VOYW1lcxIrCgljYXRjaF9pZHMYBiADKAsyDi5hbmdsZXJzbG9nLklkUghjYXRjaElkcxJQChRmaXNoaW5nX3Nwb3RfY2F0Y2hlcxgHIAMoCzIeLmFuZ2xlcnNsb2cuVHJpcC5FbnRpdHlDYXRjaGVzUhJmaXNoaW5nU3BvdENhdGNoZXMSRQoOYW5nbGVyX2NhdGNoZXMYCCADKAsyHi5hbmdsZXJzbG9nLlRyaXAuRW50aXR5Q2F0Y2hlc1INYW5nbGVyQ2F0Y2hlcxJHCg9zcGVjaWVzX2NhdGNoZXMYCSADKAsyHi5hbmdsZXJzbG9nLlRyaXAuRW50aXR5Q2F0Y2hlc1IOc3BlY2llc0NhdGNoZXMSPwoMYmFpdF9jYXRjaGVzGAogAygLMhwuYW5nbGVyc2xvZy5UcmlwLkJhaXRDYXRjaGVzUgtiYWl0Q2F0Y2hlcxJPChRjdXN0b21fZW50aXR5X3ZhbHVlcxgLIAMoCzIdLmFuZ2xlcnNsb2cuQ3VzdG9tRW50aXR5VmFsdWVSEmN1c3RvbUVudGl0eVZhbHVlcxIUCgVub3RlcxgMIAEoCVIFbm90ZXMSHwoLd2FzX3NrdW5rZWQYDSABKAhSCndhc1NrdW5rZWQSNgoKYXRtb3NwaGVyZRgOIAEoCzIWLmFuZ2xlcnNsb2cuQXRtb3NwaGVyZVIKYXRtb3NwaGVyZRpoCg1FbnRpdHlDYXRjaGVzEisKCWVudGl0eV9pZBgBIAEoCzIOLmFuZ2xlcnNsb2cuSWRSCGVudGl0eUlkEioKEW51bWJlcl9vZl9jYXRjaGVzGAIgASgNUg9udW1iZXJPZkNhdGNoZXMadQoLQmFpdENhdGNoZXMSOgoKYXR0YWNobWVudBgBIAEoCzIaLmFuZ2xlcnNsb2cuQmFpdEF0dGFjaG1lbnRSCmF0dGFjaG1lbnQSKgoRbnVtYmVyX29mX2NhdGNoZXMYAiABKA1SD251bWJlck9mQ2F0Y2hlcw==');
+final $typed_data.Uint8List tripDescriptor = $convert.base64Decode('CgRUcmlwEh4KAmlkGAEgASgLMg4uYW5nbGVyc2xvZy5JZFICaWQSEgoEbmFtZRgCIAEoCVIEbmFtZRInCg9zdGFydF90aW1lc3RhbXAYAyABKARSDnN0YXJ0VGltZXN0YW1wEiMKDWVuZF90aW1lc3RhbXAYBCABKARSDGVuZFRpbWVzdGFtcBIfCgtpbWFnZV9uYW1lcxgFIAMoCVIKaW1hZ2VOYW1lcxIrCgljYXRjaF9pZHMYBiADKAsyDi5hbmdsZXJzbG9nLklkUghjYXRjaElkcxI5ChFib2R5X29mX3dhdGVyX2lkcxgHIAMoCzIOLmFuZ2xlcnNsb2cuSWRSDmJvZHlPZldhdGVySWRzElAKFGZpc2hpbmdfc3BvdF9jYXRjaGVzGAggAygLMh4uYW5nbGVyc2xvZy5UcmlwLkVudGl0eUNhdGNoZXNSEmZpc2hpbmdTcG90Q2F0Y2hlcxJFCg5hbmdsZXJfY2F0Y2hlcxgJIAMoCzIeLmFuZ2xlcnNsb2cuVHJpcC5FbnRpdHlDYXRjaGVzUg1hbmdsZXJDYXRjaGVzEkcKD3NwZWNpZXNfY2F0Y2hlcxgKIAMoCzIeLmFuZ2xlcnNsb2cuVHJpcC5FbnRpdHlDYXRjaGVzUg5zcGVjaWVzQ2F0Y2hlcxI/CgxiYWl0X2NhdGNoZXMYCyADKAsyHC5hbmdsZXJzbG9nLlRyaXAuQmFpdENhdGNoZXNSC2JhaXRDYXRjaGVzEk8KFGN1c3RvbV9lbnRpdHlfdmFsdWVzGAwgAygLMh0uYW5nbGVyc2xvZy5DdXN0b21FbnRpdHlWYWx1ZVISY3VzdG9tRW50aXR5VmFsdWVzEhQKBW5vdGVzGA0gASgJUgVub3RlcxIfCgt3YXNfc2t1bmtlZBgOIAEoCFIKd2FzU2t1bmtlZBI2CgphdG1vc3BoZXJlGA8gASgLMhYuYW5nbGVyc2xvZy5BdG1vc3BoZXJlUgphdG1vc3BoZXJlGmgKDUVudGl0eUNhdGNoZXMSKwoJZW50aXR5X2lkGAEgASgLMg4uYW5nbGVyc2xvZy5JZFIIZW50aXR5SWQSKgoRbnVtYmVyX29mX2NhdGNoZXMYAiABKA1SD251bWJlck9mQ2F0Y2hlcxp1CgtCYWl0Q2F0Y2hlcxI6CgphdHRhY2htZW50GAEgASgLMhouYW5nbGVyc2xvZy5CYWl0QXR0YWNobWVudFIKYXR0YWNobWVudBIqChFudW1iZXJfb2ZfY2F0Y2hlcxgCIAEoDVIPbnVtYmVyT2ZDYXRjaGVz');
 @$core.Deprecated('Use measurementDescriptor instead')
 const Measurement$json = const {
   '1': 'Measurement',

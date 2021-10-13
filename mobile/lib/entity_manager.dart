@@ -59,6 +59,9 @@ abstract class EntityManager<T extends GeneratedMessage>
 
   Id id(T entity);
 
+  /// Returns a value for [T] to be displayed to the user.
+  String displayName(BuildContext context, T entity);
+
   bool matchesFilter(Id id, String? filter);
 
   /// Parses a Protobuf byte representation of T.
@@ -152,6 +155,8 @@ abstract class EntityManager<T extends GeneratedMessage>
     }
     return false;
   }
+
+  Set<Id> idSet([Iterable<Id>? ids]) => list(ids).map((e) => id(e)).toSet();
 
   List<T> list([Iterable<Id>? ids]) {
     if (ids == null || ids.isEmpty) {
