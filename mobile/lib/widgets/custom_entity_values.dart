@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mobile/res/dimen.dart';
 
 import '../custom_entity_manager.dart';
 import '../model/gen/anglerslog.pb.dart';
@@ -49,6 +50,7 @@ class CustomEntityValues extends StatelessWidget {
     return LabelValue(
       label: entity.name,
       value: value,
+      padding: insetsZero,
     );
   }
 

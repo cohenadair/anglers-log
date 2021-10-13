@@ -188,6 +188,12 @@ class Strings {
 
   String get saveTripPageEndDateTime => _string("saveTripPage_endDateTime");
 
+  String get saveTripPageAllDay => _string("saveTripPage_allDay");
+
+  String get saveTripPageCatches => _string("saveTripPage_catches");
+
+  String get saveTripPageNoCatches => _string("saveTripPage_noCatches");
+
   String get tripPageSkunked => _string("tripPage_skunked");
 
   String get catchListPageMenuLabel => _string("catchListPage_menuLabel");
@@ -1385,6 +1391,8 @@ class Strings {
   String get pickerTitleBodyOfWater => _string("pickerTitle_bodyOfWater");
 
   String get pickerTitleBodiesOfWater => _string("pickerTitle_bodiesOfWater");
+
+  String get pickerTitleCatches => _string("pickerTitle_catches");
 
   String get keywordsTemperatureMetric => _string("keywords_temperatureMetric");
 

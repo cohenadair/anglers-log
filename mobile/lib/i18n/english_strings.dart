@@ -276,6 +276,9 @@ Map<String, Map<String, String>> get englishStrings => {
         "saveTripPage_endDate": "End Date",
         "saveTripPage_endTime": "End Time",
         "saveTripPage_endDateTime": "End Date and Time",
+        "saveTripPage_allDay": "All Day",
+        "saveTripPage_catches": "Catches",
+        "saveTripPage_noCatches": "No catches",
         "tripPage_skunked": "Skunked",
         "settingsPage_title": "Settings",
         "settingsPage_fetchAtmosphereTitle":
@@ -671,6 +674,7 @@ Map<String, Map<String, String>> get englishStrings => {
         "pickerTitle_tides": "Select Tides",
         "pickerTitle_bodyOfWater": "Select Body Of Water",
         "pickerTitle_bodiesOfWater": "Select Bodies Of Water",
+        "pickerTitle_catches": "Select Catches",
         "keywords_temperatureMetric": "celsius temperature degrees c",
         "keywords_temperatureImperial": "fahrenheit temperature degrees f",
         "keywords_speedMetric": "kilometers per hour speed wind",

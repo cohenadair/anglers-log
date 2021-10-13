@@ -94,11 +94,7 @@ class _EntityPageState extends State<EntityPage> {
           child: HeadingDivider(Strings.of(context).customFields),
         ),
         Padding(
-          padding: const EdgeInsets.only(
-            left: paddingDefault,
-            right: paddingDefault,
-            bottom: paddingSmall,
-          ),
+          padding: insetsDefault,
           child: CustomEntityValues(widget.customEntityValues),
         ),
       ]);

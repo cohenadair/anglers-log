@@ -16,12 +16,14 @@ class LabelValue extends StatelessWidget {
   final String value;
   final TextStyle? labelStyle;
   final TextStyle? valueStyle;
+  final EdgeInsets? padding;
 
   LabelValue({
     required this.label,
     required this.value,
     this.labelStyle,
     this.valueStyle,
+    this.padding,
   })  : assert(isNotEmpty(label)),
         assert(isNotEmpty(value));
 
@@ -60,7 +62,7 @@ class LabelValue extends StatelessWidget {
     }
 
     return Padding(
-      padding: insetsHorizontalDefaultVerticalWidget,
+      padding: padding ?? insetsHorizontalDefaultVerticalWidget,
       child: child,
     );
   }

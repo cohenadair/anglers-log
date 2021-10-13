@@ -38,6 +38,9 @@ class CatchListPage extends StatelessWidget {
   /// If set, shows only the catches whose bait is included in [baits].
   final Set<BaitAttachment> baits;
 
+  /// See [ManageableListPage.pickerSettings].
+  final ManageableListPagePickerSettings<Catch>? pickerSettings;
+
   bool get filtered =>
       dateRange != null ||
       catchIds.isNotEmpty ||
@@ -52,6 +55,7 @@ class CatchListPage extends StatelessWidget {
     this.baits = const {},
     this.fishingSpotIds = const {},
     this.speciesIds = const {},
+    this.pickerSettings,
   });
 
   @override
@@ -66,9 +70,12 @@ class CatchListPage extends StatelessWidget {
       titleBuilder: (catches) => Text(
         format(Strings.of(context).catchListPageTitle, [catches.length]),
       ),
-      forceCenterTitle: true,
+      forceCenterTitle: pickerSettings == null,
       searchDelegate: ManageableListPageSearchDelegate(
         hint: Strings.of(context).catchListPageSearchHint,
+      ),
+      pickerSettings: pickerSettings?.copyWith(
+        multiTitle: Text(Strings.of(context).pickerTitleCatches),
       ),
       itemBuilder: _buildListItem,
       itemsHaveThumbnail: true,

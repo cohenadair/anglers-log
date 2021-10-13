@@ -2,23 +2,31 @@ import 'dart:async';
 
 import 'package:fixnum/fixnum.dart';
 import 'package:flutter/material.dart';
+import 'package:mobile/catch_manager.dart';
+import 'package:mobile/pages/catch_list_page.dart';
 import 'package:mobile/pages/editable_form_page.dart';
 import 'package:mobile/res/dimen.dart';
+import 'package:mobile/species_manager.dart';
 import 'package:mobile/time_manager.dart';
 import 'package:mobile/trip_manager.dart';
 import 'package:mobile/user_preference_manager.dart';
+import 'package:mobile/utils/page_utils.dart';
+import 'package:mobile/widgets/checkbox_input.dart';
 import 'package:mobile/widgets/date_time_picker.dart';
 import 'package:mobile/widgets/field.dart';
 import 'package:mobile/widgets/image_input.dart';
+import 'package:mobile/widgets/multi_list_picker_input.dart';
 import 'package:mobile/widgets/widget.dart';
 import 'package:quiver/strings.dart';
 
+import '../entity_manager.dart';
 import '../i18n/strings.dart';
 import '../log.dart';
 import '../model/gen/anglerslog.pb.dart';
 import '../utils/protobuf_utils.dart';
 import '../widgets/input_controller.dart';
 import '../widgets/text_input.dart';
+import 'manageable_list_page.dart';
 
 class SaveTripPage extends StatefulWidget {
   final Trip? oldTrip;
@@ -40,6 +48,7 @@ class _SaveTripPageState extends State<SaveTripPage> {
       Id(uuid: "c6afa4ff-add6-4a01-b69a-ba6f9b456c85");
   static final _idName = Id(uuid: "d9a83fa6-926d-474d-8ddf-8d0e044d2ea4");
   static final _idImages = Id(uuid: "8c593cbb-4782-49c7-b540-0c22d8175b3f");
+  static final _idCatches = Id(uuid: "0806fcc4-5d77-44b4-85e2-ebc066f37e12");
   static final _idFishingSpotCatches =
       Id(uuid: "70d19321-1cc7-4842-b7e4-252ce79f18d0");
   static final _idAnglerCatches =
@@ -61,6 +70,10 @@ class _SaveTripPageState extends State<SaveTripPage> {
 
   bool get _isEditing => _oldTrip != null;
 
+  CatchManager get _catchManager => CatchManager.of(context);
+
+  SpeciesManager get _speciesManager => SpeciesManager.of(context);
+
   TimeManager get _timeManager => TimeManager.of(context);
 
   TripManager get _tripManager => TripManager.of(context);
@@ -79,6 +92,9 @@ class _SaveTripPageState extends State<SaveTripPage> {
 
   ImagesInputController get _imagesController =>
       _fields[_idImages]!.controller as ImagesInputController;
+
+  SetInputController<Id> get _catchesController =>
+      _fields[_idCatches]!.controller as SetInputController<Id>;
 
   @override
   void initState() {
@@ -110,10 +126,17 @@ class _SaveTripPageState extends State<SaveTripPage> {
       controller: ImagesInputController(),
     );
 
+    _fields[_idCatches] = Field(
+      id: _idCatches,
+      name: (context) => Strings.of(context).saveTripPageCatches,
+      controller: SetInputController<Id>(),
+    );
+
     if (_isEditing) {
       _startTimestampController.value = _oldTrip!.startTimestamp.toInt();
       _endTimestampController.value = _oldTrip!.endTimestamp.toInt();
       _nameController.value = _oldTrip!.hasName() ? _oldTrip!.name : null;
+      _catchesController.value = _oldTrip!.catchIds.toSet();
       _customEntityValues = _oldTrip!.customEntityValues;
     }
   }
@@ -145,6 +168,22 @@ class _SaveTripPageState extends State<SaveTripPage> {
       return _buildName();
     } else if (id == _idImages) {
       return _buildImages();
+    } else if (id == _idFishingSpotCatches) {
+      return _buildFishingSpotCatches();
+    } else if (id == _idAnglerCatches) {
+      return _buildAnglerCatches();
+    } else if (id == _idBaitCatches) {
+      return _buildBaitCatches();
+    } else if (id == _idSpeciesCatches) {
+      return _buildSpeciesCatches();
+    } else if (id == _idNotes) {
+      return _buildNotes();
+    } else if (id == _idCatches) {
+      return _buildCatches();
+    } else if (id == _idWasSkunked) {
+      return _buildSkunked();
+    } else if (id == _idAtmosphere) {
+      return _buildAtmosphere();
     } else {
       _log.e("Unknown input key: $id");
       return Empty();
@@ -154,17 +193,10 @@ class _SaveTripPageState extends State<SaveTripPage> {
   Widget _buildStartTime() {
     return Padding(
       padding: insetsVerticalWidgetSmall,
-      child: DateTimePicker(
-        datePicker: DatePicker(
-          context,
-          controller: _startTimestampController,
-          label: Strings.of(context).saveTripPageStartDate,
-        ),
-        timePicker: TimePicker(
-          context,
-          controller: _startTimestampController,
-          label: Strings.of(context).saveTripPageStartDate,
-        ),
+      child: _DateTimeAllDayPicker(
+        controller: _startTimestampController,
+        dateLabel: Strings.of(context).saveTripPageStartDate,
+        timeLabel: Strings.of(context).saveTripPageStartDate,
       ),
     );
   }
@@ -172,17 +204,10 @@ class _SaveTripPageState extends State<SaveTripPage> {
   Widget _buildEndTime() {
     return Padding(
       padding: insetsVerticalWidgetSmall,
-      child: DateTimePicker(
-        datePicker: DatePicker(
-          context,
-          controller: _endTimestampController,
-          label: Strings.of(context).saveTripPageEndDate,
-        ),
-        timePicker: TimePicker(
-          context,
-          controller: _endTimestampController,
-          label: Strings.of(context).saveTripPageEndDate,
-        ),
+      child: _DateTimeAllDayPicker(
+        controller: _endTimestampController,
+        dateLabel: Strings.of(context).saveTripPageEndDate,
+        timeLabel: Strings.of(context).saveTripPageEndDate,
       ),
     );
   }
@@ -204,6 +229,78 @@ class _SaveTripPageState extends State<SaveTripPage> {
     );
   }
 
+  Widget _buildFishingSpotCatches() {
+    // TODO
+    return Empty();
+  }
+
+  Widget _buildAnglerCatches() {
+    // TODO
+    return Empty();
+  }
+
+  Widget _buildBaitCatches() {
+    // TODO
+    return Empty();
+  }
+
+  Widget _buildSpeciesCatches() {
+    // TODO
+    return Empty();
+  }
+
+  Widget _buildNotes() {
+    // TODO
+    return Empty();
+  }
+
+  Widget _buildCatches() {
+    return EntityListenerBuilder(
+      managers: [
+        _catchManager,
+      ],
+      builder: (context) {
+        var values = _catchesController.value.isNotEmpty
+            ? _catchManager.list(_catchesController.value)
+            : <Catch>[];
+
+        return MultiListPickerInput(
+          padding: insetsHorizontalDefaultVerticalWidget,
+          values: values
+              .where((cat) => _speciesManager.entityExists(cat.speciesId))
+              .map((cat) => _speciesManager.entity(cat.speciesId)!.name)
+              .toSet(),
+          emptyValue: (context) => Strings.of(context).saveTripPageNoCatches,
+          onTap: () {
+            push(
+              context,
+              CatchListPage(
+                pickerSettings: ManageableListPagePickerSettings<Catch>(
+                  onPicked: (context, catches) {
+                    setState(() => _catchesController.value =
+                        catches.map((c) => c.id).toSet());
+                    return true;
+                  },
+                  initialValues: values.toSet(),
+                ),
+              ),
+            );
+          },
+        );
+      },
+    );
+  }
+
+  Widget _buildSkunked() {
+    // TODO
+    return Empty();
+  }
+
+  Widget _buildAtmosphere() {
+    // TODO
+    return Empty();
+  }
+
   FutureOr<bool> _save(Map<Id, dynamic> customFieldValueMap) {
     _userPreferenceManager
         .setTripCustomEntityIds(customFieldValueMap.keys.toList());
@@ -220,11 +317,73 @@ class _SaveTripPageState extends State<SaveTripPage> {
       newTrip.name = _nameController.value!;
     }
 
+    if (_catchesController.value.isNotEmpty) {
+      newTrip.catchIds.addAll(_catchesController.value);
+    } else {
+      newTrip.catchIds.clear();
+    }
+
     _tripManager.addOrUpdate(
       newTrip,
       imageFiles: _imagesController.originalFiles,
     );
 
     return true;
+  }
+}
+
+class _DateTimeAllDayPicker extends StatefulWidget {
+  final TimestampInputController controller;
+  final String dateLabel;
+  final String timeLabel;
+
+  const _DateTimeAllDayPicker({
+    required this.controller,
+    required this.dateLabel,
+    required this.timeLabel,
+  });
+
+  @override
+  State<_DateTimeAllDayPicker> createState() => _DateTimeAllDayPickerState();
+}
+
+class _DateTimeAllDayPickerState extends State<_DateTimeAllDayPicker> {
+  bool _isAllDay = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        Expanded(
+          child: DateTimePicker(
+            datePicker: DatePicker(
+              context,
+              controller: widget.controller,
+              label: Strings.of(context).saveTripPageStartDate,
+            ),
+            timePicker: TimePicker(
+              context,
+              controller: widget.controller,
+              label: Strings.of(context).saveTripPageStartDate,
+              enabled: !_isAllDay,
+            ),
+          ),
+        ),
+        Row(
+          children: [
+            Text(Strings.of(context).saveTripPageAllDay),
+            const HorizontalSpace(paddingWidgetSmall),
+            PaddedCheckbox(
+              checked: _isAllDay,
+              onChanged: (checked) => setState(() {
+                _isAllDay = checked;
+                widget.controller.time = const TimeOfDay(hour: 0, minute: 0);
+              }),
+            ),
+            const HorizontalSpace(paddingDefault),
+          ],
+        ),
+      ],
+    );
   }
 }

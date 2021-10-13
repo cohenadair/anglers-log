@@ -84,6 +84,9 @@ class _ManageableListPageState<T> extends State<ManageableListPage<T>> {
   /// Additional padding required to line up search text with [ListItem] text.
   static const _thumbSearchTextOffset = 24.0;
 
+  /// Additional padding required to line up title text with search hint text.
+  static const _thumbTitleTextOffset = 8.0;
+
   final _log = Log("ManageableListPage<$T>");
 
   final _animatedListKey = GlobalKey<SliverAnimatedListState>();
@@ -179,10 +182,6 @@ class _ManageableListPageState<T> extends State<ManageableListPage<T>> {
       );
     }
 
-    var pickerTitle = _isPickingMulti
-        ? widget.pickerSettings?.multiTitle
-        : widget.pickerSettings?.title;
-
     return WillPopScope(
       onWillPop: () {
         if (_isPickingMulti) {
@@ -199,9 +198,7 @@ class _ManageableListPageState<T> extends State<ManageableListPage<T>> {
               floating: true,
               pinned: false,
               snap: true,
-              title: _isPicking
-                  ? pickerTitle ?? Empty()
-                  : widget.titleBuilder?.call(_animatedList.items) ?? Empty(),
+              title: _buildTitle(),
               actions: _buildActions(_animatedList.items),
               expandedHeight: _hasSearch ? _appBarExpandedHeight : 0.0,
               flexibleSpace: _buildSearchBar(),
@@ -245,6 +242,32 @@ class _ManageableListPageState<T> extends State<ManageableListPage<T>> {
         ),
       ),
     );
+  }
+
+  Widget? _buildTitle() {
+    Widget? title;
+    if (_isPicking) {
+      title = _isPickingMulti
+          ? widget.pickerSettings?.multiTitle
+          : widget.pickerSettings?.title;
+    } else {
+      title = widget.titleBuilder?.call(_animatedList.items);
+    }
+
+    // For lists that include thumbnails, add additional padding to left
+    // aligned titles so the title, search hint, and list item titles all
+    // horizontally align.
+    if (title != null &&
+        title is Text &&
+        !widget.forceCenterTitle &&
+        widget.itemsHaveThumbnail) {
+      return Padding(
+        padding: const EdgeInsets.only(left: _thumbTitleTextOffset),
+        child: title,
+      );
+    }
+
+    return title;
   }
 
   Widget? _buildSearchBar() {
