@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:mobile/widgets/multi_entity_picker_input.dart';
+import 'package:mobile/widgets/entity_picker_input.dart';
 import 'package:quiver/strings.dart';
 
 import '../angler_manager.dart';
@@ -446,7 +446,7 @@ class _SaveReportPageState extends State<SaveReportPage> {
   }
 
   Widget _buildAnglersPicker() {
-    return MultiEntityPickerInput<Angler>(
+    return EntityPickerInput<Angler>.multi(
       manager: _anglerManager,
       controller: _anglersController,
       emptyValue: Strings.of(context).saveReportPageAllAnglers,
@@ -460,7 +460,7 @@ class _SaveReportPageState extends State<SaveReportPage> {
   }
 
   Widget _buildSpeciesPicker() {
-    return MultiEntityPickerInput<Species>(
+    return EntityPickerInput<Species>.multi(
       manager: _speciesManager,
       controller: _speciesController,
       emptyValue: Strings.of(context).saveReportPageAllSpecies,
@@ -486,7 +486,7 @@ class _SaveReportPageState extends State<SaveReportPage> {
   }
 
   Widget _buildBodiesOfWaterPicker() {
-    return MultiEntityPickerInput<BodyOfWater>(
+    return EntityPickerInput<BodyOfWater>.multi(
       manager: _bodyOfWaterManager,
       controller: _bodiesOfWaterController,
       emptyValue: Strings.of(context).saveReportPageAllBodiesOfWater,
@@ -502,7 +502,7 @@ class _SaveReportPageState extends State<SaveReportPage> {
   Widget _buildFishingSpotsPicker() {
     var allFishingSpots = _fishingSpotManager.list().toSet();
 
-    return MultiEntityPickerInput<FishingSpot>(
+    return EntityPickerInput<FishingSpot>.multi(
       manager: _fishingSpotManager,
       controller: _fishingSpotsController,
       emptyValue: Strings.of(context).saveReportPageAllFishingSpots,
@@ -523,7 +523,7 @@ class _SaveReportPageState extends State<SaveReportPage> {
   }
 
   Widget _buildMethodsPicker() {
-    return MultiEntityPickerInput<Method>(
+    return EntityPickerInput<Method>.multi(
       manager: _methodManager,
       controller: _methodsController,
       emptyValue: Strings.of(context).saveReportPageAllMethods,
@@ -656,7 +656,7 @@ class _SaveReportPageState extends State<SaveReportPage> {
   }
 
   Widget _buildWaterClaritiesPicker() {
-    return MultiEntityPickerInput<WaterClarity>(
+    return EntityPickerInput<WaterClarity>.multi(
       manager: _waterClarityManager,
       controller: _waterClaritiesController,
       emptyValue: Strings.of(context).saveReportPageAllWaterClarities,

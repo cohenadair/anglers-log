@@ -90,7 +90,7 @@ class _EntityPageState extends State<EntityPage> {
     if (widget.customEntityValues.isNotEmpty) {
       children.addAll([
         Padding(
-          padding: insetsVerticalWidget,
+          padding: insetsBottomDefault,
           child: HeadingDivider(Strings.of(context).customFields),
         ),
         Padding(

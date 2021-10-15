@@ -32,6 +32,23 @@ class FishingSpotManager extends ImageEntityManager<FishingSpot> {
   @override
   String name(FishingSpot entity) => entity.name;
 
+  /// Returns [name] if it is not empty, otherwise returns the
+  /// spot's coordinates as a string in the format provided by [formatLatLng].
+  @override
+  String displayName(BuildContext context, FishingSpot entity, {
+    bool includeLatLngLabels = true,
+  }) {
+    if (isNotEmpty(entity.name)) {
+      return entity.name;
+    }
+    return formatLatLng(
+      context: context,
+      lat: entity.lat,
+      lng: entity.lng,
+      includeLabels: includeLatLngLabels,
+    );
+  }
+
   @override
   String get tableName => "fishing_spot";
 

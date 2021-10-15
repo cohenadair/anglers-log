@@ -4,6 +4,8 @@ import 'package:fixnum/fixnum.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile/body_of_water_manager.dart';
 import 'package:mobile/catch_manager.dart';
+import 'package:mobile/fishing_spot_manager.dart';
+import 'package:mobile/location_monitor.dart';
 import 'package:mobile/pages/body_of_water_list_page.dart';
 import 'package:mobile/pages/catch_list_page.dart';
 import 'package:mobile/pages/editable_form_page.dart';
@@ -12,24 +14,23 @@ import 'package:mobile/species_manager.dart';
 import 'package:mobile/time_manager.dart';
 import 'package:mobile/trip_manager.dart';
 import 'package:mobile/user_preference_manager.dart';
-import 'package:mobile/utils/page_utils.dart';
+import 'package:mobile/widgets/atmosphere_input.dart';
 import 'package:mobile/widgets/checkbox_input.dart';
 import 'package:mobile/widgets/date_time_picker.dart';
-import 'package:mobile/widgets/multi_entity_picker_input.dart';
+import 'package:mobile/widgets/entity_picker_input.dart';
 import 'package:mobile/widgets/field.dart';
 import 'package:mobile/widgets/image_input.dart';
-import 'package:mobile/widgets/multi_list_picker_input.dart';
 import 'package:mobile/widgets/widget.dart';
 import 'package:quiver/strings.dart';
 
-import '../entity_manager.dart';
+import '../app_manager.dart';
+import '../atmosphere_fetcher.dart';
 import '../i18n/strings.dart';
 import '../log.dart';
 import '../model/gen/anglerslog.pb.dart';
 import '../utils/protobuf_utils.dart';
 import '../widgets/input_controller.dart';
 import '../widgets/text_input.dart';
-import 'manageable_list_page.dart';
 
 class SaveTripPage extends StatefulWidget {
   final Trip? oldTrip;
@@ -75,9 +76,15 @@ class _SaveTripPageState extends State<SaveTripPage> {
 
   bool get _isEditing => _oldTrip != null;
 
+  AppManager get _appManager => AppManager.of(context);
+
   BodyOfWaterManager get _bodyOfWaterManager => BodyOfWaterManager.of(context);
 
   CatchManager get _catchManager => CatchManager.of(context);
+
+  FishingSpotManager get _fishingSpotManager => FishingSpotManager.of(context);
+
+  LocationMonitor get _locationMonitor => LocationMonitor.of(context);
 
   SpeciesManager get _speciesManager => SpeciesManager.of(context);
 
@@ -105,6 +112,9 @@ class _SaveTripPageState extends State<SaveTripPage> {
 
   SetInputController<Id> get _bodiesOfWaterController =>
       _fields[_idBodiesOfWater]!.controller as SetInputController<Id>;
+
+  InputController<Atmosphere> get _atmosphereController =>
+      _fields[_idAtmosphere]!.controller as InputController<Atmosphere>;
 
   @override
   void initState() {
@@ -146,6 +156,12 @@ class _SaveTripPageState extends State<SaveTripPage> {
       id: _idBodiesOfWater,
       name: (context) => Strings.of(context).saveTripPageBodiesOfWater,
       controller: SetInputController<Id>(),
+    );
+
+    _fields[_idAtmosphere] = Field(
+      id: _idAtmosphere,
+      name: (context) => Strings.of(context).inputAtmosphere,
+      controller: InputController<Atmosphere>(),
     );
 
     if (_isEditing) {
@@ -274,7 +290,7 @@ class _SaveTripPageState extends State<SaveTripPage> {
   }
 
   Widget _buildCatches() {
-    return MultiEntityPickerInput<Catch>(
+    return EntityPickerInput<Catch>.multi(
       manager: _catchManager,
       controller: _catchesController,
       emptyValue: Strings.of(context).saveTripPageNoCatches,
@@ -286,7 +302,7 @@ class _SaveTripPageState extends State<SaveTripPage> {
   }
 
   Widget _buildBodiesOfWater() {
-    return MultiEntityPickerInput<BodyOfWater>(
+    return EntityPickerInput<BodyOfWater>.multi(
       manager: _bodyOfWaterManager,
       controller: _bodiesOfWaterController,
       emptyValue: Strings.of(context).saveTripPageNoBodiesOfWater,
@@ -303,8 +319,31 @@ class _SaveTripPageState extends State<SaveTripPage> {
   }
 
   Widget _buildAtmosphere() {
-    // TODO
-    return Empty();
+    // Use the first location we know about.
+    var latLng = _locationMonitor.currentLocation;
+    for (var id in _catchesController.value) {
+      var cat = _catchManager.entity(id);
+      if (cat == null || !cat.hasFishingSpotId()) {
+        continue;
+      }
+
+      var fishingSpot = _fishingSpotManager.entity(cat.fishingSpotId);
+      if (fishingSpot != null) {
+        latLng = fishingSpot.latLng;
+        break;
+      }
+    }
+
+    // Use the timestamp in the middle of the start and end times.
+    var time =
+        ((_endTimestampController.value + _startTimestampController.value) / 2)
+            .round();
+    var fetcher = AtmosphereFetcher(_appManager, time, latLng);
+
+    return AtmosphereInput(
+      fetcher: fetcher,
+      controller: _atmosphereController,
+    );
   }
 
   FutureOr<bool> _save(Map<Id, dynamic> customFieldValueMap) {
@@ -397,5 +436,12 @@ class _DateTimeAllDayPickerState extends State<_DateTimeAllDayPicker> {
         ),
       ],
     );
+  }
+}
+
+class _QuantityPicker extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Empty();
   }
 }

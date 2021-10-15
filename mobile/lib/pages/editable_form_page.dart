@@ -226,7 +226,6 @@ class _EditableFormPageState extends State<EditableFormPage> {
 
     return Padding(
       padding: const EdgeInsets.only(
-        top: paddingWidget,
         bottom: paddingWidgetSmall,
       ),
       child: child,

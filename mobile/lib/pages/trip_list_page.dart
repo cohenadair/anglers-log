@@ -4,7 +4,6 @@ import '../i18n/strings.dart';
 import '../model/gen/anglerslog.pb.dart';
 import '../pages/manageable_list_page.dart';
 import '../trip_manager.dart';
-import '../utils/protobuf_utils.dart';
 import '../utils/string_utils.dart';
 import '../widgets/list_item.dart';
 import 'save_trip_page.dart';
@@ -23,7 +22,8 @@ class TripListPage extends StatelessWidget {
       searchDelegate: ManageableListPageSearchDelegate(
         hint: Strings.of(context).tripListPageSearchHint,
       ),
-      itemBuilder: _buildListItem,
+      itemBuilder: (context, trip) =>
+          _buildListItem(context, tripManager, trip),
       itemsHaveThumbnail: true,
       itemManager: ManageableListPageItemManager<Trip>(
         listenerManagers: [
@@ -45,11 +45,12 @@ class TripListPage extends StatelessWidget {
     );
   }
 
-  ManageableListPageItemModel _buildListItem(BuildContext context, Trip trip) {
+  ManageableListPageItemModel _buildListItem(
+      BuildContext context, TripManager tripManager, Trip trip) {
     return ManageableListPageItemModel(
       child: ManageableListImageItem(
         imageName: trip.imageNames.isNotEmpty ? trip.imageNames.first : null,
-        title: trip.displayName(context),
+        title: tripManager.displayName(context, trip),
         subtitle: "TODO",
         subtitle2: "TODO",
       ),

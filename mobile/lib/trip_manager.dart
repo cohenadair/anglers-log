@@ -4,7 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:mobile/angler_manager.dart';
 import 'package:mobile/bait_manager.dart';
 import 'package:mobile/catch_manager.dart';
+import 'package:mobile/utils/date_time_utils.dart';
 import 'package:provider/provider.dart';
+import 'package:quiver/strings.dart';
 
 import 'app_manager.dart';
 import 'custom_entity_manager.dart';
@@ -46,6 +48,15 @@ class TripManager extends NamedEntityManager<Trip> {
 
   @override
   String name(Trip entity) => entity.name;
+
+  @override
+  String displayName(BuildContext context, Trip entity) {
+    if (isNotEmpty(name(entity))) {
+      return name(entity);
+    }
+    return formatDateTimeRange(
+        context, entity.startDateTime, entity.endDateTime);
+  }
 
   @override
   String get tableName => "trip";
@@ -95,6 +106,6 @@ class TripManager extends NamedEntityManager<Trip> {
 
   String deleteMessage(BuildContext context, Trip trip) {
     return format(Strings.of(context).tripListPageDeleteMessage,
-        [trip.displayName(context)]);
+        [displayName(context, trip)]);
   }
 }

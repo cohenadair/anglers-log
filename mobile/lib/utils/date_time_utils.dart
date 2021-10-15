@@ -199,6 +199,10 @@ String formatDateTime(BuildContext context, DateTime dateTime) {
   ]);
 }
 
+String formatDateTimeRange(BuildContext context, DateTime start, DateTime end) {
+  return "${formatDateTime(context, start)} - ${formatDateTime(context, end)}";
+}
+
 String formatTimestamp(BuildContext context, int timestamp) {
   return formatDateTime(
       context, DateTime.fromMillisecondsSinceEpoch(timestamp));

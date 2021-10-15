@@ -154,6 +154,8 @@ class Strings {
   String get inputPasswordInvalidLength =>
       _string("input_passwordInvalidLength");
 
+  String get inputAtmosphere => _string("input_atmosphere");
+
   String get addAnythingPageCatch => _string("addAnythingPage_catch");
 
   String get addAnythingPageTrip => _string("addAnythingPage_trip");
@@ -224,8 +226,6 @@ class Strings {
   String get saveCatchPageNewTitle => _string("saveCatchPage_newTitle");
 
   String get saveCatchPageEditTitle => _string("saveCatchPage_editTitle");
-
-  String get catchFieldAtmosphere => _string("catchField_atmosphere");
 
   String get catchFieldTide => _string("catchField_tide");
 

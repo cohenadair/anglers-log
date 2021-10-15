@@ -2,26 +2,23 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:mobile/widgets/entity_picker_input.dart';
 
 import '../bait_category_manager.dart';
 import '../bait_manager.dart';
-import '../entity_manager.dart';
 import '../i18n/strings.dart';
 import '../model/gen/anglerslog.pb.dart';
 import '../pages/bait_category_list_page.dart';
 import '../res/dimen.dart';
 import '../utils/dialog_utils.dart';
-import '../utils/page_utils.dart';
 import '../utils/protobuf_utils.dart';
 import '../widgets/bait_variant_list_input.dart';
 import '../widgets/image_input.dart';
 import '../widgets/input_controller.dart';
-import '../widgets/list_picker_input.dart';
 import '../widgets/radio_input.dart';
 import '../widgets/text_input.dart';
 import 'form_page.dart';
 import 'image_picker_page.dart';
-import 'manageable_list_page.dart';
 
 class SaveBaitPage extends StatefulWidget {
   final Bait? oldBait;
@@ -88,32 +85,11 @@ class _SaveBaitPageState extends State<SaveBaitPage> {
   }
 
   Widget _buildCategory() {
-    return EntityListenerBuilder(
-      managers: [_baitCategoryManager],
-      builder: (context) {
-        var baitCategory =
-            _baitCategoryManager.entity(_baitCategoryController.value);
-        return ListPickerInput(
-          title: Strings.of(context).saveBaitPageCategoryLabel,
-          value: baitCategory?.name,
-          onTap: () {
-            push(
-              context,
-              BaitCategoryListPage(
-                pickerSettings:
-                    ManageableListPagePickerSettings<BaitCategory>.single(
-                  onPicked: (context, category) {
-                    setState(
-                        () => _baitCategoryController.value = category?.id);
-                    return true;
-                  },
-                  initialValue: baitCategory,
-                ),
-              ),
-            );
-          },
-        );
-      },
+    return EntityPickerInput<BaitCategory>.single(
+      manager: _baitCategoryManager,
+      controller: _baitCategoryController,
+      title: Strings.of(context).saveBaitPageCategoryLabel,
+      listPage: (settings) => BaitCategoryListPage(pickerSettings: settings),
     );
   }
 

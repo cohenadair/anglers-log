@@ -36,6 +36,47 @@ void main() {
     fishingSpotManager = FishingSpotManager(appManager.app);
   });
 
+  testWidgets("displayName with name", (tester) async {
+    expect(
+      fishingSpotManager.displayName(
+        await buildContext(tester),
+        FishingSpot()
+          ..id = randomId()
+          ..name = "Test Name"
+          ..lat = 0.0
+          ..lng = 0.0,
+      ),
+      "Test Name",
+    );
+  });
+
+  testWidgets("displayName without name", (tester) async {
+    expect(
+      fishingSpotManager.displayName(
+        await buildContext(tester),
+        FishingSpot()
+          ..id = randomId()
+          ..lat = 0.0
+          ..lng = 0.0,
+      ),
+      "Lat: 0.000000, Lng: 0.000000",
+    );
+  });
+
+  testWidgets("displayName without labels", (tester) async {
+    expect(
+      fishingSpotManager.displayName(
+        await buildContext(tester),
+        FishingSpot()
+          ..id = randomId()
+          ..lat = 0.0
+          ..lng = 0.0,
+        includeLatLngLabels: false,
+      ),
+      "0.000000, 0.000000",
+    );
+  });
+
   test("Fishing spot within radius", () async {
     // Null cases.
     var fishingSpot = fishingSpotManager.withinRadius(const LatLng(0, 0), 20);

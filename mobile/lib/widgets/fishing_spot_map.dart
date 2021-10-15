@@ -282,8 +282,9 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
     if (_hasActiveSymbol) {
       if (_fishingSpotManager.entityExists(_activeSymbol!.fishingSpot.id)) {
         // Showing active fishing spot.
-        name = _activeSymbol!.fishingSpot.displayName(
+        name = _fishingSpotManager.displayName(
           context,
+          _activeSymbol!.fishingSpot,
           includeLatLngLabels: false,
         );
       } else {

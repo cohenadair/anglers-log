@@ -105,6 +105,12 @@ const insetsHorizontalDefaultVerticalSmall = EdgeInsets.only(
   bottom: paddingSmall,
 );
 
+const insetsHorizontalDefaultBottomSmall = EdgeInsets.only(
+  left: paddingDefault,
+  right: paddingDefault,
+  bottom: paddingSmall,
+);
+
 const insetsHorizontalDefaultVerticalWidget = EdgeInsets.only(
   left: paddingDefault,
   right: paddingDefault,

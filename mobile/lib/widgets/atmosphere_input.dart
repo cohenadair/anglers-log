@@ -33,13 +33,11 @@ import 'widget.dart';
 
 class AtmosphereInput extends StatelessWidget {
   final AtmosphereFetcher fetcher;
-  final EdgeInsets? padding;
   final InputController<Atmosphere> controller;
 
   const AtmosphereInput({
     required this.fetcher,
     required this.controller,
-    this.padding,
   });
 
   @override
@@ -70,7 +68,7 @@ class AtmosphereInput extends StatelessWidget {
         }
 
         var firstChild = Text(
-          Strings.of(context).catchFieldAtmosphere,
+          Strings.of(context).inputAtmosphere,
           style: stylePrimary(context),
         );
 
@@ -267,7 +265,7 @@ class __AtmosphereInputPageState extends State<_AtmosphereInputPage> {
   @override
   Widget build(BuildContext context) {
     return EditableFormPage(
-      title: Text(Strings.of(context).catchFieldAtmosphere),
+      title: Text(Strings.of(context).inputAtmosphere),
       header: NoneFormHeader(controller: widget.controller),
       showSaveButton: false,
       allowCustomEntities: false,
@@ -319,7 +317,7 @@ class __AtmosphereInputPageState extends State<_AtmosphereInputPage> {
 
   Widget _buildTemperature() {
     return Padding(
-      padding: insetsHorizontalDefaultVerticalSmall,
+      padding: insetsHorizontalDefaultBottomSmall,
       child: MultiMeasurementInput(
         spec: _airTemperatureInputState,
         controller: _temperatureController,

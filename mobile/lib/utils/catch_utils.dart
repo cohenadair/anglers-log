@@ -117,7 +117,7 @@ List<Field> allCatchFields(BuildContext context) {
     ),
     Field(
       id: catchFieldIdAtmosphere,
-      name: (context) => Strings.of(context).catchFieldAtmosphere,
+      name: (context) => Strings.of(context).inputAtmosphere,
       controller: InputController<Atmosphere>(),
     ),
     Field(

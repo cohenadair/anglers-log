@@ -76,6 +76,7 @@ Map<String, Map<String, String>> get englishStrings => {
         "input_passwordLabel": "Password",
         "input_passwordInvalidLength":
             "Password length must be greater than 6 characters",
+        "input_atmosphere": "Atmosphere and Weather",
         "addAnythingPage_catch": "Catch",
         "addAnythingPage_trip": "Trip",
         "catchListPage_menuLabel": "Catches",
@@ -91,7 +92,6 @@ Map<String, Map<String, String>> get englishStrings => {
         "catchPage_quantityLabel": "Quantity: %s",
         "saveCatchPage_newTitle": "New Catch",
         "saveCatchPage_editTitle": "Edit Catch",
-        "catchField_atmosphere": "Atmosphere and Weather",
         "catchField_tide": "Tide",
         "catchField_dateTime": "Date and Time",
         "catchField_date": "Date",
