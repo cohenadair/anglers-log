@@ -37,16 +37,25 @@ class FishingSpotManager extends ImageEntityManager<FishingSpot> {
   @override
   String displayName(BuildContext context, FishingSpot entity, {
     bool includeLatLngLabels = true,
+    bool includeBodyOfWater = false,
   }) {
-    if (isNotEmpty(entity.name)) {
-      return entity.name;
+    var name = entity.name;
+    if (isEmpty(name)) {
+      name = formatLatLng(
+        context: context,
+        lat: entity.lat,
+        lng: entity.lng,
+        includeLabels: includeLatLngLabels,
+      );
     }
-    return formatLatLng(
-      context: context,
-      lat: entity.lat,
-      lng: entity.lng,
-      includeLabels: includeLatLngLabels,
-    );
+
+    var bodyOfWaterName = "";
+    var bodyOfWater = _bodyOfWaterManager.entity(entity.bodyOfWaterId);
+    if (includeBodyOfWater && bodyOfWater != null) {
+      bodyOfWaterName = "(${bodyOfWater.name})";
+    }
+
+    return "$name $bodyOfWaterName";
   }
 
   @override

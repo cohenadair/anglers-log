@@ -529,7 +529,7 @@ const Trip_EntityCatches$json = const {
   '1': 'EntityCatches',
   '2': const [
     const {'1': 'entity_id', '3': 1, '4': 1, '5': 11, '6': '.anglerslog.Id', '10': 'entityId'},
-    const {'1': 'number_of_catches', '3': 2, '4': 1, '5': 13, '10': 'numberOfCatches'},
+    const {'1': 'value', '3': 2, '4': 1, '5': 13, '10': 'value'},
   ],
 };
 
@@ -538,12 +538,12 @@ const Trip_BaitCatches$json = const {
   '1': 'BaitCatches',
   '2': const [
     const {'1': 'attachment', '3': 1, '4': 1, '5': 11, '6': '.anglerslog.BaitAttachment', '10': 'attachment'},
-    const {'1': 'number_of_catches', '3': 2, '4': 1, '5': 13, '10': 'numberOfCatches'},
+    const {'1': 'value', '3': 2, '4': 1, '5': 13, '10': 'value'},
   ],
 };
 
 /// Descriptor for `Trip`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List tripDescriptor = $convert.base64Decode('CgRUcmlwEh4KAmlkGAEgASgLMg4uYW5nbGVyc2xvZy5JZFICaWQSEgoEbmFtZRgCIAEoCVIEbmFtZRInCg9zdGFydF90aW1lc3RhbXAYAyABKARSDnN0YXJ0VGltZXN0YW1wEiMKDWVuZF90aW1lc3RhbXAYBCABKARSDGVuZFRpbWVzdGFtcBIfCgtpbWFnZV9uYW1lcxgFIAMoCVIKaW1hZ2VOYW1lcxIrCgljYXRjaF9pZHMYBiADKAsyDi5hbmdsZXJzbG9nLklkUghjYXRjaElkcxI5ChFib2R5X29mX3dhdGVyX2lkcxgHIAMoCzIOLmFuZ2xlcnNsb2cuSWRSDmJvZHlPZldhdGVySWRzElAKFGZpc2hpbmdfc3BvdF9jYXRjaGVzGAggAygLMh4uYW5nbGVyc2xvZy5UcmlwLkVudGl0eUNhdGNoZXNSEmZpc2hpbmdTcG90Q2F0Y2hlcxJFCg5hbmdsZXJfY2F0Y2hlcxgJIAMoCzIeLmFuZ2xlcnNsb2cuVHJpcC5FbnRpdHlDYXRjaGVzUg1hbmdsZXJDYXRjaGVzEkcKD3NwZWNpZXNfY2F0Y2hlcxgKIAMoCzIeLmFuZ2xlcnNsb2cuVHJpcC5FbnRpdHlDYXRjaGVzUg5zcGVjaWVzQ2F0Y2hlcxI/CgxiYWl0X2NhdGNoZXMYCyADKAsyHC5hbmdsZXJzbG9nLlRyaXAuQmFpdENhdGNoZXNSC2JhaXRDYXRjaGVzEk8KFGN1c3RvbV9lbnRpdHlfdmFsdWVzGAwgAygLMh0uYW5nbGVyc2xvZy5DdXN0b21FbnRpdHlWYWx1ZVISY3VzdG9tRW50aXR5VmFsdWVzEhQKBW5vdGVzGA0gASgJUgVub3RlcxIfCgt3YXNfc2t1bmtlZBgOIAEoCFIKd2FzU2t1bmtlZBI2CgphdG1vc3BoZXJlGA8gASgLMhYuYW5nbGVyc2xvZy5BdG1vc3BoZXJlUgphdG1vc3BoZXJlGmgKDUVudGl0eUNhdGNoZXMSKwoJZW50aXR5X2lkGAEgASgLMg4uYW5nbGVyc2xvZy5JZFIIZW50aXR5SWQSKgoRbnVtYmVyX29mX2NhdGNoZXMYAiABKA1SD251bWJlck9mQ2F0Y2hlcxp1CgtCYWl0Q2F0Y2hlcxI6CgphdHRhY2htZW50GAEgASgLMhouYW5nbGVyc2xvZy5CYWl0QXR0YWNobWVudFIKYXR0YWNobWVudBIqChFudW1iZXJfb2ZfY2F0Y2hlcxgCIAEoDVIPbnVtYmVyT2ZDYXRjaGVz');
+final $typed_data.Uint8List tripDescriptor = $convert.base64Decode('CgRUcmlwEh4KAmlkGAEgASgLMg4uYW5nbGVyc2xvZy5JZFICaWQSEgoEbmFtZRgCIAEoCVIEbmFtZRInCg9zdGFydF90aW1lc3RhbXAYAyABKARSDnN0YXJ0VGltZXN0YW1wEiMKDWVuZF90aW1lc3RhbXAYBCABKARSDGVuZFRpbWVzdGFtcBIfCgtpbWFnZV9uYW1lcxgFIAMoCVIKaW1hZ2VOYW1lcxIrCgljYXRjaF9pZHMYBiADKAsyDi5hbmdsZXJzbG9nLklkUghjYXRjaElkcxI5ChFib2R5X29mX3dhdGVyX2lkcxgHIAMoCzIOLmFuZ2xlcnNsb2cuSWRSDmJvZHlPZldhdGVySWRzElAKFGZpc2hpbmdfc3BvdF9jYXRjaGVzGAggAygLMh4uYW5nbGVyc2xvZy5UcmlwLkVudGl0eUNhdGNoZXNSEmZpc2hpbmdTcG90Q2F0Y2hlcxJFCg5hbmdsZXJfY2F0Y2hlcxgJIAMoCzIeLmFuZ2xlcnNsb2cuVHJpcC5FbnRpdHlDYXRjaGVzUg1hbmdsZXJDYXRjaGVzEkcKD3NwZWNpZXNfY2F0Y2hlcxgKIAMoCzIeLmFuZ2xlcnNsb2cuVHJpcC5FbnRpdHlDYXRjaGVzUg5zcGVjaWVzQ2F0Y2hlcxI/CgxiYWl0X2NhdGNoZXMYCyADKAsyHC5hbmdsZXJzbG9nLlRyaXAuQmFpdENhdGNoZXNSC2JhaXRDYXRjaGVzEk8KFGN1c3RvbV9lbnRpdHlfdmFsdWVzGAwgAygLMh0uYW5nbGVyc2xvZy5DdXN0b21FbnRpdHlWYWx1ZVISY3VzdG9tRW50aXR5VmFsdWVzEhQKBW5vdGVzGA0gASgJUgVub3RlcxIfCgt3YXNfc2t1bmtlZBgOIAEoCFIKd2FzU2t1bmtlZBI2CgphdG1vc3BoZXJlGA8gASgLMhYuYW5nbGVyc2xvZy5BdG1vc3BoZXJlUgphdG1vc3BoZXJlGlIKDUVudGl0eUNhdGNoZXMSKwoJZW50aXR5X2lkGAEgASgLMg4uYW5nbGVyc2xvZy5JZFIIZW50aXR5SWQSFAoFdmFsdWUYAiABKA1SBXZhbHVlGl8KC0JhaXRDYXRjaGVzEjoKCmF0dGFjaG1lbnQYASABKAsyGi5hbmdsZXJzbG9nLkJhaXRBdHRhY2htZW50UgphdHRhY2htZW50EhQKBXZhbHVlGAIgASgNUgV2YWx1ZQ==');
 @$core.Deprecated('Use measurementDescriptor instead')
 const Measurement$json = const {
   '1': 'Measurement',

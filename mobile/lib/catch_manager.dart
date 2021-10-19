@@ -58,7 +58,7 @@ class CatchManager extends EntityManager<Catch> {
   String displayName(BuildContext context, Catch entity) {
     var species = _speciesManager.entity(entity.speciesId);
     var timeString = formatTimestamp(context, entity.timestamp.toInt());
-    return species == null ? timeString : species.name;
+    return species == null ? timeString : "${species.name} ($timeString)";
   }
 
   @override

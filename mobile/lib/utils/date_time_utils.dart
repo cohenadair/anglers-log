@@ -192,15 +192,26 @@ String formatTimeMillis(BuildContext context, Int64 millis) {
 ///   - Monday at 2:35 PM
 ///   - Jan. 8 at 2:35 PM
 ///   - Dec. 8, 2018 at 2:35 PM
-String formatDateTime(BuildContext context, DateTime dateTime) {
+String formatDateTime(
+  BuildContext context,
+  DateTime dateTime, {
+  bool abbreviated = false,
+}) {
   return format(Strings.of(context).dateTimeFormat, [
-    formatDateAsRecent(context, dateTime),
+    formatDateAsRecent(context, dateTime, abbreviated: abbreviated),
     formatTimeOfDay(context, TimeOfDay.fromDateTime(dateTime)),
   ]);
 }
 
-String formatDateTimeRange(BuildContext context, DateTime start, DateTime end) {
-  return "${formatDateTime(context, start)} - ${formatDateTime(context, end)}";
+String formatDateTimeRange(
+  BuildContext context,
+  DateTime start,
+  DateTime end, {
+  bool abbreviated = false,
+}) {
+  var startStr = formatDateTime(context, start, abbreviated: abbreviated);
+  var endStr = formatDateTime(context, end, abbreviated: abbreviated);
+  return "$startStr - $endStr";
 }
 
 String formatTimestamp(BuildContext context, int timestamp) {
@@ -229,7 +240,11 @@ String timestampToSearchString(BuildContext context, int timestamp) {
 ///   - Monday
 ///   - Jan. 8
 ///   - Dec. 8, 2018
-String formatDateAsRecent(BuildContext context, DateTime dateTime) {
+String formatDateAsRecent(
+  BuildContext context,
+  DateTime dateTime, {
+  bool abbreviated = false,
+}) {
   final now = AppManager.of(context).timeManager.currentDateTime;
 
   if (isSameDate(dateTime, now)) {
@@ -240,7 +255,7 @@ String formatDateAsRecent(BuildContext context, DateTime dateTime) {
     return Strings.of(context).yesterday;
   } else if (isWithinOneWeek(dateTime, now)) {
     // 2 days ago to 6 days ago.
-    return DateFormat("EEEE").format(dateTime);
+    return DateFormat(abbreviated ? "E" : "EEEE").format(dateTime);
   } else if (isSameYear(dateTime, now)) {
     // Same year.
     return DateFormat(monthDayFormat).format(dateTime);

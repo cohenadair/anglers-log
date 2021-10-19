@@ -23,12 +23,8 @@ import '../widgets/widget.dart';
 class BaitListPage extends StatefulWidget {
   final BaitListPagePickerSettings? pickerSettings;
 
-  const BaitListPage() : pickerSettings = null;
-
-  /// To create a picker, use [BaitPickerInput].
-  const BaitListPage._picker({
-    this.pickerSettings,
-  });
+  /// To create a picker, consider using [BaitPickerInput].
+  const BaitListPage({this.pickerSettings});
 
   @override
   _BaitListPageState createState() => _BaitListPageState();
@@ -278,7 +274,7 @@ class BaitPickerInput extends StatelessWidget {
 
     push(
       context,
-      BaitListPage._picker(
+      BaitListPage(
         pickerSettings: BaitListPagePickerSettings(
           onPicked: (context, attachments) {
             if (isAllEmpty && attachments.containsAll(allValues)) {

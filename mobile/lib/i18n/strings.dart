@@ -194,6 +194,8 @@ class Strings {
 
   String get saveTripPageCatches => _string("saveTripPage_catches");
 
+  String get saveTripPageCatchesDesc => _string("saveTripPage_catchesDesc");
+
   String get saveTripPageNoCatches => _string("saveTripPage_noCatches");
 
   String get saveTripPageBodiesOfWater => _string("saveTripPage_bodiesOfWater");
@@ -201,7 +203,17 @@ class Strings {
   String get saveTripPageNoBodiesOfWater =>
       _string("saveTripPage_noBodiesOfWater");
 
-  String get tripPageSkunked => _string("tripPage_skunked");
+  String get saveTripPageSpeciesCatches =>
+      _string("saveTripPage_speciesCatches");
+
+  String get saveTripPageFishingSpotCatches =>
+      _string("saveTripPage_fishingSpotCatches");
+
+  String get saveTripPageAnglerCatches => _string("saveTripPage_anglerCatches");
+
+  String get saveTripPageBaitCatches => _string("saveTripPage_baitCatches");
+
+  String get saveTripPageSkunked => _string("saveTripPage_skunked");
 
   String get catchListPageMenuLabel => _string("catchListPage_menuLabel");
 

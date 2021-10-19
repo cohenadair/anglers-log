@@ -156,7 +156,11 @@ abstract class EntityManager<T extends GeneratedMessage>
     return false;
   }
 
-  Set<Id> idSet([Iterable<Id>? ids]) => list(ids).map((e) => id(e)).toSet();
+  Set<Id> idSet({
+    Iterable<T> entities = const [],
+    Iterable<Id>? ids,
+  }) =>
+      (entities.isEmpty ? list(ids) : entities).map((e) => id(e)).toSet();
 
   List<T> list([Iterable<Id>? ids]) {
     if (ids == null || ids.isEmpty) {

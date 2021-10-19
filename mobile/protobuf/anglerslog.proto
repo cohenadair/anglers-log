@@ -323,12 +323,12 @@ message WaterClarity {
 message Trip {
   message EntityCatches {
     Id entity_id = 1;
-    uint32 number_of_catches = 2;
+    uint32 value = 2;
   }
 
   message BaitCatches {
     BaitAttachment attachment = 1;
-    uint32 number_of_catches = 2;
+    uint32 value = 2;
   }
 
   Id id = 1;

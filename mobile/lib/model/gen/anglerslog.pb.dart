@@ -2157,21 +2157,21 @@ class WaterClarity extends $pb.GeneratedMessage {
 class Trip_EntityCatches extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'Trip.EntityCatches', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'anglerslog'), createEmptyInstance: create)
     ..aOM<Id>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'entityId', subBuilder: Id.create)
-    ..a<$core.int>(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'numberOfCatches', $pb.PbFieldType.OU3)
+    ..a<$core.int>(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'value', $pb.PbFieldType.OU3)
     ..hasRequiredFields = false
   ;
 
   Trip_EntityCatches._() : super();
   factory Trip_EntityCatches({
     Id? entityId,
-    $core.int? numberOfCatches,
+    $core.int? value,
   }) {
     final _result = create();
     if (entityId != null) {
       _result.entityId = entityId;
     }
-    if (numberOfCatches != null) {
-      _result.numberOfCatches = numberOfCatches;
+    if (value != null) {
+      _result.value = value;
     }
     return _result;
   }
@@ -2208,33 +2208,33 @@ class Trip_EntityCatches extends $pb.GeneratedMessage {
   Id ensureEntityId() => $_ensure(0);
 
   @$pb.TagNumber(2)
-  $core.int get numberOfCatches => $_getIZ(1);
+  $core.int get value => $_getIZ(1);
   @$pb.TagNumber(2)
-  set numberOfCatches($core.int v) { $_setUnsignedInt32(1, v); }
+  set value($core.int v) { $_setUnsignedInt32(1, v); }
   @$pb.TagNumber(2)
-  $core.bool hasNumberOfCatches() => $_has(1);
+  $core.bool hasValue() => $_has(1);
   @$pb.TagNumber(2)
-  void clearNumberOfCatches() => clearField(2);
+  void clearValue() => clearField(2);
 }
 
 class Trip_BaitCatches extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'Trip.BaitCatches', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'anglerslog'), createEmptyInstance: create)
     ..aOM<BaitAttachment>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'attachment', subBuilder: BaitAttachment.create)
-    ..a<$core.int>(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'numberOfCatches', $pb.PbFieldType.OU3)
+    ..a<$core.int>(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'value', $pb.PbFieldType.OU3)
     ..hasRequiredFields = false
   ;
 
   Trip_BaitCatches._() : super();
   factory Trip_BaitCatches({
     BaitAttachment? attachment,
-    $core.int? numberOfCatches,
+    $core.int? value,
   }) {
     final _result = create();
     if (attachment != null) {
       _result.attachment = attachment;
     }
-    if (numberOfCatches != null) {
-      _result.numberOfCatches = numberOfCatches;
+    if (value != null) {
+      _result.value = value;
     }
     return _result;
   }
@@ -2271,13 +2271,13 @@ class Trip_BaitCatches extends $pb.GeneratedMessage {
   BaitAttachment ensureAttachment() => $_ensure(0);
 
   @$pb.TagNumber(2)
-  $core.int get numberOfCatches => $_getIZ(1);
+  $core.int get value => $_getIZ(1);
   @$pb.TagNumber(2)
-  set numberOfCatches($core.int v) { $_setUnsignedInt32(1, v); }
+  set value($core.int v) { $_setUnsignedInt32(1, v); }
   @$pb.TagNumber(2)
-  $core.bool hasNumberOfCatches() => $_has(1);
+  $core.bool hasValue() => $_has(1);
   @$pb.TagNumber(2)
-  void clearNumberOfCatches() => clearField(2);
+  void clearValue() => clearField(2);
 }
 
 class Trip extends $pb.GeneratedMessage {

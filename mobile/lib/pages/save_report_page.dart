@@ -183,18 +183,20 @@ class _SaveReportPageState extends State<SaveReportPage> {
     // "Empty" lists will include all entities in reports, so don't actually
     // include every entity in the report object.
     _anglersController.value =
-        anglerIds.isEmpty ? {} : _anglerManager.idSet(anglerIds);
-    _fishingSpotsController.value =
-        fishingSpotIds.isEmpty ? {} : _fishingSpotManager.idSet(fishingSpotIds);
-    _bodiesOfWaterController.value =
-        bodyOfWaterIds.isEmpty ? {} : _bodyOfWaterManager.idSet(bodyOfWaterIds);
+        anglerIds.isEmpty ? {} : _anglerManager.idSet(ids: anglerIds);
+    _fishingSpotsController.value = fishingSpotIds.isEmpty
+        ? {}
+        : _fishingSpotManager.idSet(ids: fishingSpotIds);
+    _bodiesOfWaterController.value = bodyOfWaterIds.isEmpty
+        ? {}
+        : _bodyOfWaterManager.idSet(ids: bodyOfWaterIds);
     _methodsController.value =
-        methodIds.isEmpty ? {} : _methodManager.idSet(methodIds);
+        methodIds.isEmpty ? {} : _methodManager.idSet(ids: methodIds);
     _speciesController.value =
-        speciesIds.isEmpty ? {} : _speciesManager.idSet(speciesIds);
+        speciesIds.isEmpty ? {} : _speciesManager.idSet(ids: speciesIds);
     _waterClaritiesController.value = waterClarityIds.isEmpty
         ? {}
-        : _waterClarityManager.idSet(waterClarityIds);
+        : _waterClarityManager.idSet(ids: waterClarityIds);
   }
 
   @override

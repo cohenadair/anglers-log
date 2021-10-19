@@ -55,7 +55,7 @@ class TripManager extends NamedEntityManager<Trip> {
       return name(entity);
     }
     return formatDateTimeRange(
-        context, entity.startDateTime, entity.endDateTime);
+        context, entity.startDateTime, entity.endDateTime, abbreviated: true);
   }
 
   @override
@@ -96,7 +96,7 @@ class TripManager extends NamedEntityManager<Trip> {
             context) ||
         (trip.hasWasSkunked() &&
             containsTrimmedLowerCase(
-                Strings.of(context).tripPageSkunked, filter!)) ||
+                Strings.of(context).saveTripPageSkunked, filter!)) ||
         (trip.hasNotes() && containsTrimmedLowerCase(trip.notes, filter!)) ||
         (trip.hasAtmosphere() &&
             trip.atmosphere.matchesFilter(context, filter)) ||
