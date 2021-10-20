@@ -108,4 +108,22 @@ class TripManager extends NamedEntityManager<Trip> {
     return format(Strings.of(context).tripListPageDeleteMessage,
         [displayName(context, trip)]);
   }
+
+  int numberOfCatches(Trip trip) {
+    var result = 0;
+
+    for (var id in trip.catchIds) {
+      var cat = _catchManager.entity(id);
+      if (cat == null) {
+        continue;
+      }
+      result += cat.hasQuantity() ? cat.quantity : 1;
+    }
+
+    for (var speciesCatch in trip.speciesCatches) {
+      result += speciesCatch.value;
+    }
+
+    return result;
+  }
 }

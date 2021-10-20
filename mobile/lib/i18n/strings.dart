@@ -117,6 +117,10 @@ class Strings {
 
   String get devName => _string("devName");
 
+  String get numberOfCatches => _string("numberOfCatches");
+
+  String get numberOfCatchesSingular => _string("numberOfCatchesSingular");
+
   String get unknownSpecies => _string("unknownSpecies");
 
   String get fieldTypeNumber => _string("fieldType_number");
@@ -401,12 +405,6 @@ class Strings {
   String get baitListPageVariantsLabel => _string("baitListPage_variantsLabel");
 
   String get baitListPageVariantLabel => _string("baitListPage_variantLabel");
-
-  String get baitListPageNumberOfCatches =>
-      _string("baitListPage_numberOfCatches");
-
-  String get baitListPageNumberOfCatchesSingular =>
-      _string("baitListPage_numberOfCatchesSingular");
 
   String get reportListPageConfirmDelete =>
       _string("reportListPage_confirmDelete");

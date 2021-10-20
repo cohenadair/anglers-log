@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mobile/utils/catch_utils.dart';
 
 import '../bait_category_manager.dart';
 import '../bait_manager.dart';
@@ -121,13 +122,6 @@ class _BaitListPageState extends State<BaitListPage> {
       );
     }
 
-    var numberOfCatches = _baitManager.numberOfCatches(bait.id);
-    var subtitle = numberOfCatches == 1
-        ? format(Strings.of(context).baitListPageNumberOfCatchesSingular,
-            [numberOfCatches])
-        : format(
-            Strings.of(context).baitListPageNumberOfCatches, [numberOfCatches]);
-
     var variantLabel = bait.variants.length == 1
         ? Strings.of(context).baitListPageVariantLabel
         : Strings.of(context).baitListPageVariantsLabel;
@@ -137,7 +131,8 @@ class _BaitListPageState extends State<BaitListPage> {
       child: ManageableListImageItem(
         imageName: bait.hasImageName() ? bait.imageName : null,
         title: bait.name,
-        subtitle: subtitle,
+        subtitle: formatNumberOfCatches(
+            context, _baitManager.numberOfCatches(bait.id)),
         trailing: MinChip(format(variantLabel, [bait.variants.length])),
       ),
     );

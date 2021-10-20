@@ -269,3 +269,9 @@ bool catchFilterMatchesTide(BuildContext context, String filter, Catch cat) {
   return isNotEmpty(searchString) &&
       containsTrimmedLowerCase(searchString!, filter);
 }
+
+String formatNumberOfCatches(BuildContext context, int numberOfCatches) {
+  return numberOfCatches == 1
+      ? format(Strings.of(context).numberOfCatchesSingular, [numberOfCatches])
+      : format(Strings.of(context).numberOfCatches, [numberOfCatches]);
+}
