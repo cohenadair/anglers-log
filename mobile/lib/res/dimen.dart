@@ -117,6 +117,12 @@ const insetsHorizontalDefaultBottomWidget = EdgeInsets.only(
   bottom: paddingWidget,
 );
 
+const insetsHorizontalDefaultTopWidget = EdgeInsets.only(
+  left: paddingDefault,
+  right: paddingDefault,
+  top: paddingWidget,
+);
+
 const insetsHorizontalDefaultVerticalWidget = EdgeInsets.only(
   left: paddingDefault,
   right: paddingDefault,

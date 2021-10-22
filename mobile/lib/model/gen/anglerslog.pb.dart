@@ -2154,15 +2154,15 @@ class WaterClarity extends $pb.GeneratedMessage {
   void clearName() => clearField(2);
 }
 
-class Trip_EntityCatches extends $pb.GeneratedMessage {
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'Trip.EntityCatches', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'anglerslog'), createEmptyInstance: create)
+class Trip_CatchesPerEntity extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'Trip.CatchesPerEntity', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'anglerslog'), createEmptyInstance: create)
     ..aOM<Id>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'entityId', subBuilder: Id.create)
     ..a<$core.int>(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'value', $pb.PbFieldType.OU3)
     ..hasRequiredFields = false
   ;
 
-  Trip_EntityCatches._() : super();
-  factory Trip_EntityCatches({
+  Trip_CatchesPerEntity._() : super();
+  factory Trip_CatchesPerEntity({
     Id? entityId,
     $core.int? value,
   }) {
@@ -2175,26 +2175,26 @@ class Trip_EntityCatches extends $pb.GeneratedMessage {
     }
     return _result;
   }
-  factory Trip_EntityCatches.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
-  factory Trip_EntityCatches.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  factory Trip_CatchesPerEntity.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory Trip_CatchesPerEntity.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
   @$core.Deprecated(
   'Using this can add significant overhead to your binary. '
   'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
   'Will be removed in next major version')
-  Trip_EntityCatches clone() => Trip_EntityCatches()..mergeFromMessage(this);
+  Trip_CatchesPerEntity clone() => Trip_CatchesPerEntity()..mergeFromMessage(this);
   @$core.Deprecated(
   'Using this can add significant overhead to your binary. '
   'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
   'Will be removed in next major version')
-  Trip_EntityCatches copyWith(void Function(Trip_EntityCatches) updates) => super.copyWith((message) => updates(message as Trip_EntityCatches)) as Trip_EntityCatches; // ignore: deprecated_member_use
+  Trip_CatchesPerEntity copyWith(void Function(Trip_CatchesPerEntity) updates) => super.copyWith((message) => updates(message as Trip_CatchesPerEntity)) as Trip_CatchesPerEntity; // ignore: deprecated_member_use
   $pb.BuilderInfo get info_ => _i;
   @$core.pragma('dart2js:noInline')
-  static Trip_EntityCatches create() => Trip_EntityCatches._();
-  Trip_EntityCatches createEmptyInstance() => create();
-  static $pb.PbList<Trip_EntityCatches> createRepeated() => $pb.PbList<Trip_EntityCatches>();
+  static Trip_CatchesPerEntity create() => Trip_CatchesPerEntity._();
+  Trip_CatchesPerEntity createEmptyInstance() => create();
+  static $pb.PbList<Trip_CatchesPerEntity> createRepeated() => $pb.PbList<Trip_CatchesPerEntity>();
   @$core.pragma('dart2js:noInline')
-  static Trip_EntityCatches getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<Trip_EntityCatches>(create);
-  static Trip_EntityCatches? _defaultInstance;
+  static Trip_CatchesPerEntity getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<Trip_CatchesPerEntity>(create);
+  static Trip_CatchesPerEntity? _defaultInstance;
 
   @$pb.TagNumber(1)
   Id get entityId => $_getN(0);
@@ -2217,15 +2217,15 @@ class Trip_EntityCatches extends $pb.GeneratedMessage {
   void clearValue() => clearField(2);
 }
 
-class Trip_BaitCatches extends $pb.GeneratedMessage {
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'Trip.BaitCatches', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'anglerslog'), createEmptyInstance: create)
+class Trip_CatchesPerBait extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'Trip.CatchesPerBait', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'anglerslog'), createEmptyInstance: create)
     ..aOM<BaitAttachment>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'attachment', subBuilder: BaitAttachment.create)
     ..a<$core.int>(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'value', $pb.PbFieldType.OU3)
     ..hasRequiredFields = false
   ;
 
-  Trip_BaitCatches._() : super();
-  factory Trip_BaitCatches({
+  Trip_CatchesPerBait._() : super();
+  factory Trip_CatchesPerBait({
     BaitAttachment? attachment,
     $core.int? value,
   }) {
@@ -2238,26 +2238,26 @@ class Trip_BaitCatches extends $pb.GeneratedMessage {
     }
     return _result;
   }
-  factory Trip_BaitCatches.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
-  factory Trip_BaitCatches.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  factory Trip_CatchesPerBait.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory Trip_CatchesPerBait.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
   @$core.Deprecated(
   'Using this can add significant overhead to your binary. '
   'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
   'Will be removed in next major version')
-  Trip_BaitCatches clone() => Trip_BaitCatches()..mergeFromMessage(this);
+  Trip_CatchesPerBait clone() => Trip_CatchesPerBait()..mergeFromMessage(this);
   @$core.Deprecated(
   'Using this can add significant overhead to your binary. '
   'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
   'Will be removed in next major version')
-  Trip_BaitCatches copyWith(void Function(Trip_BaitCatches) updates) => super.copyWith((message) => updates(message as Trip_BaitCatches)) as Trip_BaitCatches; // ignore: deprecated_member_use
+  Trip_CatchesPerBait copyWith(void Function(Trip_CatchesPerBait) updates) => super.copyWith((message) => updates(message as Trip_CatchesPerBait)) as Trip_CatchesPerBait; // ignore: deprecated_member_use
   $pb.BuilderInfo get info_ => _i;
   @$core.pragma('dart2js:noInline')
-  static Trip_BaitCatches create() => Trip_BaitCatches._();
-  Trip_BaitCatches createEmptyInstance() => create();
-  static $pb.PbList<Trip_BaitCatches> createRepeated() => $pb.PbList<Trip_BaitCatches>();
+  static Trip_CatchesPerBait create() => Trip_CatchesPerBait._();
+  Trip_CatchesPerBait createEmptyInstance() => create();
+  static $pb.PbList<Trip_CatchesPerBait> createRepeated() => $pb.PbList<Trip_CatchesPerBait>();
   @$core.pragma('dart2js:noInline')
-  static Trip_BaitCatches getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<Trip_BaitCatches>(create);
-  static Trip_BaitCatches? _defaultInstance;
+  static Trip_CatchesPerBait getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<Trip_CatchesPerBait>(create);
+  static Trip_CatchesPerBait? _defaultInstance;
 
   @$pb.TagNumber(1)
   BaitAttachment get attachment => $_getN(0);
@@ -2289,14 +2289,13 @@ class Trip extends $pb.GeneratedMessage {
     ..pPS(5, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'imageNames')
     ..pc<Id>(6, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'catchIds', $pb.PbFieldType.PM, subBuilder: Id.create)
     ..pc<Id>(7, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'bodyOfWaterIds', $pb.PbFieldType.PM, subBuilder: Id.create)
-    ..pc<Trip_EntityCatches>(8, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'fishingSpotCatches', $pb.PbFieldType.PM, subBuilder: Trip_EntityCatches.create)
-    ..pc<Trip_EntityCatches>(9, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'anglerCatches', $pb.PbFieldType.PM, subBuilder: Trip_EntityCatches.create)
-    ..pc<Trip_EntityCatches>(10, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'speciesCatches', $pb.PbFieldType.PM, subBuilder: Trip_EntityCatches.create)
-    ..pc<Trip_BaitCatches>(11, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'baitCatches', $pb.PbFieldType.PM, subBuilder: Trip_BaitCatches.create)
+    ..pc<Trip_CatchesPerEntity>(8, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'catchesPerFishingSpot', $pb.PbFieldType.PM, subBuilder: Trip_CatchesPerEntity.create)
+    ..pc<Trip_CatchesPerEntity>(9, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'catchesPerAngler', $pb.PbFieldType.PM, subBuilder: Trip_CatchesPerEntity.create)
+    ..pc<Trip_CatchesPerEntity>(10, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'catchesPerSpecies', $pb.PbFieldType.PM, subBuilder: Trip_CatchesPerEntity.create)
+    ..pc<Trip_CatchesPerBait>(11, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'catchesPerBait', $pb.PbFieldType.PM, subBuilder: Trip_CatchesPerBait.create)
     ..pc<CustomEntityValue>(12, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'customEntityValues', $pb.PbFieldType.PM, subBuilder: CustomEntityValue.create)
     ..aOS(13, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'notes')
-    ..aOB(14, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'wasSkunked')
-    ..aOM<Atmosphere>(15, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'atmosphere', subBuilder: Atmosphere.create)
+    ..aOM<Atmosphere>(14, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'atmosphere', subBuilder: Atmosphere.create)
     ..hasRequiredFields = false
   ;
 
@@ -2309,13 +2308,12 @@ class Trip extends $pb.GeneratedMessage {
     $core.Iterable<$core.String>? imageNames,
     $core.Iterable<Id>? catchIds,
     $core.Iterable<Id>? bodyOfWaterIds,
-    $core.Iterable<Trip_EntityCatches>? fishingSpotCatches,
-    $core.Iterable<Trip_EntityCatches>? anglerCatches,
-    $core.Iterable<Trip_EntityCatches>? speciesCatches,
-    $core.Iterable<Trip_BaitCatches>? baitCatches,
+    $core.Iterable<Trip_CatchesPerEntity>? catchesPerFishingSpot,
+    $core.Iterable<Trip_CatchesPerEntity>? catchesPerAngler,
+    $core.Iterable<Trip_CatchesPerEntity>? catchesPerSpecies,
+    $core.Iterable<Trip_CatchesPerBait>? catchesPerBait,
     $core.Iterable<CustomEntityValue>? customEntityValues,
     $core.String? notes,
-    $core.bool? wasSkunked,
     Atmosphere? atmosphere,
   }) {
     final _result = create();
@@ -2340,26 +2338,23 @@ class Trip extends $pb.GeneratedMessage {
     if (bodyOfWaterIds != null) {
       _result.bodyOfWaterIds.addAll(bodyOfWaterIds);
     }
-    if (fishingSpotCatches != null) {
-      _result.fishingSpotCatches.addAll(fishingSpotCatches);
+    if (catchesPerFishingSpot != null) {
+      _result.catchesPerFishingSpot.addAll(catchesPerFishingSpot);
     }
-    if (anglerCatches != null) {
-      _result.anglerCatches.addAll(anglerCatches);
+    if (catchesPerAngler != null) {
+      _result.catchesPerAngler.addAll(catchesPerAngler);
     }
-    if (speciesCatches != null) {
-      _result.speciesCatches.addAll(speciesCatches);
+    if (catchesPerSpecies != null) {
+      _result.catchesPerSpecies.addAll(catchesPerSpecies);
     }
-    if (baitCatches != null) {
-      _result.baitCatches.addAll(baitCatches);
+    if (catchesPerBait != null) {
+      _result.catchesPerBait.addAll(catchesPerBait);
     }
     if (customEntityValues != null) {
       _result.customEntityValues.addAll(customEntityValues);
     }
     if (notes != null) {
       _result.notes = notes;
-    }
-    if (wasSkunked != null) {
-      _result.wasSkunked = wasSkunked;
     }
     if (atmosphere != null) {
       _result.atmosphere = atmosphere;
@@ -2435,16 +2430,16 @@ class Trip extends $pb.GeneratedMessage {
   $core.List<Id> get bodyOfWaterIds => $_getList(6);
 
   @$pb.TagNumber(8)
-  $core.List<Trip_EntityCatches> get fishingSpotCatches => $_getList(7);
+  $core.List<Trip_CatchesPerEntity> get catchesPerFishingSpot => $_getList(7);
 
   @$pb.TagNumber(9)
-  $core.List<Trip_EntityCatches> get anglerCatches => $_getList(8);
+  $core.List<Trip_CatchesPerEntity> get catchesPerAngler => $_getList(8);
 
   @$pb.TagNumber(10)
-  $core.List<Trip_EntityCatches> get speciesCatches => $_getList(9);
+  $core.List<Trip_CatchesPerEntity> get catchesPerSpecies => $_getList(9);
 
   @$pb.TagNumber(11)
-  $core.List<Trip_BaitCatches> get baitCatches => $_getList(10);
+  $core.List<Trip_CatchesPerBait> get catchesPerBait => $_getList(10);
 
   @$pb.TagNumber(12)
   $core.List<CustomEntityValue> get customEntityValues => $_getList(11);
@@ -2459,24 +2454,15 @@ class Trip extends $pb.GeneratedMessage {
   void clearNotes() => clearField(13);
 
   @$pb.TagNumber(14)
-  $core.bool get wasSkunked => $_getBF(13);
+  Atmosphere get atmosphere => $_getN(13);
   @$pb.TagNumber(14)
-  set wasSkunked($core.bool v) { $_setBool(13, v); }
+  set atmosphere(Atmosphere v) { setField(14, v); }
   @$pb.TagNumber(14)
-  $core.bool hasWasSkunked() => $_has(13);
+  $core.bool hasAtmosphere() => $_has(13);
   @$pb.TagNumber(14)
-  void clearWasSkunked() => clearField(14);
-
-  @$pb.TagNumber(15)
-  Atmosphere get atmosphere => $_getN(14);
-  @$pb.TagNumber(15)
-  set atmosphere(Atmosphere v) { setField(15, v); }
-  @$pb.TagNumber(15)
-  $core.bool hasAtmosphere() => $_has(14);
-  @$pb.TagNumber(15)
-  void clearAtmosphere() => clearField(15);
-  @$pb.TagNumber(15)
-  Atmosphere ensureAtmosphere() => $_ensure(14);
+  void clearAtmosphere() => clearField(14);
+  @$pb.TagNumber(14)
+  Atmosphere ensureAtmosphere() => $_ensure(13);
 }
 
 class Measurement extends $pb.GeneratedMessage {

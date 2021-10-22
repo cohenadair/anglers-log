@@ -36,8 +36,8 @@ class QuantityPickerInput<PickerType extends GeneratedMessage, InputType>
     required this.title,
     required this.delegate,
     this.pickerTitle,
-  }) : _log = Log(
-            "QuantityPickerInput<${PickerType.runtimeType}, ${InputType.runtimeType}>");
+  }) : _log = Log("QuantityPickerInput<${PickerType.runtimeType}, "
+            "${InputType.runtimeType}>");
 
   SetInputController<InputType> get _controller => delegate.controller;
 
@@ -188,91 +188,92 @@ abstract class QuantityPickerInputDelegate<PickerType extends GeneratedMessage,
 
 @immutable
 class EntityQuantityPickerInputDelegate<T extends GeneratedMessage>
-    extends QuantityPickerInputDelegate<T, Trip_EntityCatches> {
+    extends QuantityPickerInputDelegate<T, Trip_CatchesPerEntity> {
   final EntityManager<T> manager;
   final Widget Function(ManageableListPagePickerSettings<T>) listPageBuilder;
 
-  final SetInputController<Trip_EntityCatches> _controller;
+  final SetInputController<Trip_CatchesPerEntity> _controller;
 
   EntityQuantityPickerInputDelegate({
     required this.manager,
-    required SetInputController<Trip_EntityCatches> controller,
+    required SetInputController<Trip_CatchesPerEntity> controller,
     required this.listPageBuilder,
   }) : _controller = controller;
 
   @override
-  SetInputController<Trip_EntityCatches> get controller => _controller;
+  SetInputController<Trip_CatchesPerEntity> get controller => _controller;
 
   @override
-  Trip_EntityCatches newInputItem(T pickerItem) =>
-      Trip_EntityCatches(entityId: manager.id(pickerItem));
+  Trip_CatchesPerEntity newInputItem(T pickerItem) =>
+      Trip_CatchesPerEntity(entityId: manager.id(pickerItem));
 
   @override
-  Trip_EntityCatches? existingInputItem(T pickerItem) => controller.value
+  Trip_CatchesPerEntity? existingInputItem(T pickerItem) => controller.value
       .firstWhereOrNull((e) => e.entityId == manager.id(pickerItem));
 
   @override
   String? inputTypeEntityDisplayName(
-          BuildContext context, Trip_EntityCatches item) =>
+          BuildContext context, Trip_CatchesPerEntity item) =>
       manager.displayName(context, manager.entity(item.entityId)!);
 
   @override
-  bool inputTypeEntityExists(Trip_EntityCatches item) =>
+  bool inputTypeEntityExists(Trip_CatchesPerEntity item) =>
       manager.entityExists(item.entityId);
 
   @override
-  bool inputTypeHasValue(Trip_EntityCatches item) => item.hasValue();
+  bool inputTypeHasValue(Trip_CatchesPerEntity item) => item.hasValue();
 
   @override
-  int inputTypeValue(Trip_EntityCatches item) => item.value;
+  int inputTypeValue(Trip_CatchesPerEntity item) => item.value;
 
   @override
   Widget pickerPage(ManageableListPagePickerSettings<T> pickerSettings) =>
       listPageBuilder(pickerSettings);
 
   @override
-  Set<T> get pickerTypeInitialValues =>
-      manager.list(controller.value.map((e) => e.entityId)).toSet();
+  Set<T> get pickerTypeInitialValues => controller.value.isEmpty
+      ? {}
+      : manager.list(controller.value.map((e) => e.entityId)).toSet();
 
   @override
-  void updateValue(Trip_EntityCatches item, int value) => item.value = value;
+  void updateValue(Trip_CatchesPerEntity item, int value) => item.value = value;
 
   @override
-  void clearValue(Trip_EntityCatches item) => item.clearValue();
+  void clearValue(Trip_CatchesPerEntity item) => item.clearValue();
 }
 
 @immutable
 class BaitQuantityPickerInputDelegate
-    extends QuantityPickerInputDelegate<BaitAttachment, Trip_BaitCatches> {
+    extends QuantityPickerInputDelegate<BaitAttachment, Trip_CatchesPerBait> {
   final BaitManager baitManager;
 
-  final SetInputController<Trip_BaitCatches> _controller;
+  final SetInputController<Trip_CatchesPerBait> _controller;
 
   BaitQuantityPickerInputDelegate({
     required this.baitManager,
-    required SetInputController<Trip_BaitCatches> controller,
+    required SetInputController<Trip_CatchesPerBait> controller,
   }) : _controller = controller;
 
   @override
-  SetInputController<Trip_BaitCatches> get controller => _controller;
+  SetInputController<Trip_CatchesPerBait> get controller => _controller;
 
   @override
-  Trip_BaitCatches newInputItem(BaitAttachment pickerItem) =>
-      Trip_BaitCatches(attachment: pickerItem);
+  Trip_CatchesPerBait newInputItem(BaitAttachment pickerItem) =>
+      Trip_CatchesPerBait(attachment: pickerItem);
 
   @override
-  Trip_BaitCatches? existingInputItem(BaitAttachment pickerItem) =>
+  Trip_CatchesPerBait? existingInputItem(BaitAttachment pickerItem) =>
       controller.value.firstWhereOrNull((e) => e.attachment == pickerItem);
 
   @override
   String? inputTypeEntityDisplayName(
     BuildContext context,
-    Trip_BaitCatches item,
+    Trip_CatchesPerBait item,
   ) =>
       baitManager.attachmentDisplayValue(item.attachment, context);
 
   @override
-  bool inputTypeEntityExists(Trip_BaitCatches item) {
+  bool inputTypeEntityExists(Trip_CatchesPerBait item) {
     if (item.attachment.hasVariantId()) {
       return baitManager.variantFromAttachment(item.attachment) != null;
     }
@@ -280,10 +281,10 @@ class BaitQuantityPickerInputDelegate
   }
 
   @override
-  bool inputTypeHasValue(Trip_BaitCatches item) => item.hasValue();
+  bool inputTypeHasValue(Trip_CatchesPerBait item) => item.hasValue();
 
   @override
-  int inputTypeValue(Trip_BaitCatches item) => item.value;
+  int inputTypeValue(Trip_CatchesPerBait item) => item.value;
 
   @override
   Widget pickerPage(
@@ -302,17 +303,17 @@ class BaitQuantityPickerInputDelegate
       controller.value.map((e) => e.attachment).toSet();
 
   @override
-  void updateValue(Trip_BaitCatches item, int value) => item.value = value;
+  void updateValue(Trip_CatchesPerBait item, int value) => item.value = value;
 
   @override
-  void clearValue(Trip_BaitCatches item) => item.clearValue();
+  void clearValue(Trip_CatchesPerBait item) => item.clearValue();
 }
 
 class FishingSpotQuantityPickerInputDelegate
     extends EntityQuantityPickerInputDelegate<FishingSpot> {
   FishingSpotQuantityPickerInputDelegate({
     required FishingSpotManager manager,
-    required SetInputController<Trip_EntityCatches> controller,
+    required SetInputController<Trip_CatchesPerEntity> controller,
   }) : super(
           manager: manager,
           controller: controller,
@@ -328,7 +329,7 @@ class FishingSpotQuantityPickerInputDelegate
   @override
   String inputTypeEntityDisplayName(
     BuildContext context,
-    Trip_EntityCatches item,
+    Trip_CatchesPerEntity item,
   ) {
     return _fishingSpotManager.displayName(
       context,

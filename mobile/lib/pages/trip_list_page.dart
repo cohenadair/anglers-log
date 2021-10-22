@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:mobile/res/style.dart';
 import 'package:mobile/utils/catch_utils.dart';
-import 'package:mobile/utils/date_time_utils.dart';
 import 'package:quiver/strings.dart';
 
 import '../i18n/strings.dart';
@@ -51,12 +51,7 @@ class TripListPage extends StatelessWidget {
 
   ManageableListPageItemModel _buildListItem(
       BuildContext context, TripManager tripManager, Trip trip) {
-    var date = formatDateTimeRange(
-      context,
-      trip.startDateTime,
-      trip.endDateTime,
-      abbreviated: true,
-    );
+    var date = trip.elapsedDisplayValue(context);
 
     String? title;
     String? subtitle;
@@ -67,13 +62,23 @@ class TripListPage extends StatelessWidget {
       title = date;
     }
 
+    var images = tripManager.allImageNames(trip);
+
+    var numberOfCatches = tripManager.numberOfCatches(trip);
+    var subtitle2 = formatNumberOfCatches(context, numberOfCatches);
+    var subtitle2Style = styleSuccess;
+    if (numberOfCatches <= 0) {
+      subtitle2 = Strings.of(context).tripSkunked;
+      subtitle2Style = styleError;
+    }
+
     return ManageableListPageItemModel(
       child: ManageableListImageItem(
-        imageName: trip.imageNames.isNotEmpty ? trip.imageNames.first : null,
+        imageName: images.isNotEmpty ? images.first : null,
         title: title,
         subtitle: subtitle,
-        subtitle2:
-            formatNumberOfCatches(context, tripManager.numberOfCatches(trip)),
+        subtitle2: subtitle2,
+        subtitle2Style: subtitle2Style,
       ),
     );
   }

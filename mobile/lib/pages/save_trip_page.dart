@@ -60,16 +60,15 @@ class _SaveTripPageState extends State<SaveTripPage> {
   static final _idCatches = Id(uuid: "0806fcc4-5d77-44b4-85e2-ebc066f37e12");
   static final _idBodiesOfWater =
       Id(uuid: "45c91a90-62d1-47fe-b360-c5494a265ef6");
-  static final _idFishingSpotCatches =
+  static final _idCatchesPerFishingSpot =
       Id(uuid: "70d19321-1cc7-4842-b7e4-252ce79f18d0");
-  static final _idAnglerCatches =
+  static final _idCatchesPerAngler =
       Id(uuid: "20288727-76f3-49fc-a975-0d740931e3a4");
-  static final _idSpeciesCatches =
+  static final _idCatchesPerSpecies =
       Id(uuid: "d7864201-af18-464a-8815-571aa6f82f8c");
-  static final _idBaitCatches =
+  static final _idCatchesPerBait =
       Id(uuid: "ad35c21c-13cb-486b-812d-6315d0bf5004");
   static final _idNotes = Id(uuid: "3d3bc3c9-e316-49fe-8427-ae344dffe38e");
-  static final _idWasSkunked = Id(uuid: "f976b2b5-e5e8-441e-9c72-e66ca234d744");
   static final _idAtmosphere = Id(uuid: "b7f6ad7f-e1b8-4e15-b29c-688429787dd9");
 
   final _log = const Log("SaveTripPage");
@@ -128,24 +127,21 @@ class _SaveTripPageState extends State<SaveTripPage> {
   TextInputController get _notesController =>
       _fields[_idNotes]!.controller as TextInputController;
 
-  BoolInputController get _wasSkunkedController =>
-      _fields[_idWasSkunked]!.controller as BoolInputController;
+  SetInputController<Trip_CatchesPerEntity> get _speciesCatchesController =>
+      _fields[_idCatchesPerSpecies]!.controller
+          as SetInputController<Trip_CatchesPerEntity>;
 
-  SetInputController<Trip_EntityCatches> get _speciesCatchesController =>
-      _fields[_idSpeciesCatches]!.controller
-          as SetInputController<Trip_EntityCatches>;
+  SetInputController<Trip_CatchesPerEntity> get _anglerCatchesController =>
+      _fields[_idCatchesPerAngler]!.controller
+          as SetInputController<Trip_CatchesPerEntity>;
 
-  SetInputController<Trip_EntityCatches> get _anglerCatchesController =>
-      _fields[_idAnglerCatches]!.controller
-          as SetInputController<Trip_EntityCatches>;
+  SetInputController<Trip_CatchesPerEntity> get _fishingSpotCatchesController =>
+      _fields[_idCatchesPerFishingSpot]!.controller
+          as SetInputController<Trip_CatchesPerEntity>;
 
-  SetInputController<Trip_EntityCatches> get _fishingSpotCatchesController =>
-      _fields[_idFishingSpotCatches]!.controller
-          as SetInputController<Trip_EntityCatches>;
-
-  SetInputController<Trip_BaitCatches> get _baitCatchesController =>
-      _fields[_idBaitCatches]!.controller
-          as SetInputController<Trip_BaitCatches>;
+  SetInputController<Trip_CatchesPerBait> get _baitCatchesController =>
+      _fields[_idCatchesPerBait]!.controller
+          as SetInputController<Trip_CatchesPerBait>;
 
   @override
   void initState() {
@@ -177,12 +173,6 @@ class _SaveTripPageState extends State<SaveTripPage> {
       controller: TextInputController(),
     );
 
-    _fields[_idWasSkunked] = Field(
-      id: _idWasSkunked,
-      name: (context) => Strings.of(context).saveTripPageSkunked,
-      controller: BoolInputController(),
-    );
-
     _fields[_idImages] = Field(
       id: _idImages,
       name: (context) => Strings.of(context).inputPhotosLabel,
@@ -195,28 +185,28 @@ class _SaveTripPageState extends State<SaveTripPage> {
       controller: InputController<Atmosphere>(),
     );
 
-    _fields[_idAnglerCatches] = Field(
-      id: _idAnglerCatches,
-      name: (context) => Strings.of(context).saveTripPageAnglerCatches,
-      controller: SetInputController<Trip_EntityCatches>(),
+    _fields[_idCatchesPerAngler] = Field(
+      id: _idCatchesPerAngler,
+      name: (context) => Strings.of(context).tripCatchesPerAngler,
+      controller: SetInputController<Trip_CatchesPerEntity>(),
     );
 
-    _fields[_idBaitCatches] = Field(
-      id: _idBaitCatches,
-      name: (context) => Strings.of(context).saveTripPageBaitCatches,
-      controller: SetInputController<Trip_BaitCatches>(),
+    _fields[_idCatchesPerBait] = Field(
+      id: _idCatchesPerBait,
+      name: (context) => Strings.of(context).tripCatchesPerBait,
+      controller: SetInputController<Trip_CatchesPerBait>(),
     );
 
-    _fields[_idFishingSpotCatches] = Field(
-      id: _idFishingSpotCatches,
-      name: (context) => Strings.of(context).saveTripPageFishingSpotCatches,
-      controller: SetInputController<Trip_EntityCatches>(),
+    _fields[_idCatchesPerFishingSpot] = Field(
+      id: _idCatchesPerFishingSpot,
+      name: (context) => Strings.of(context).tripCatchesPerFishingSpot,
+      controller: SetInputController<Trip_CatchesPerEntity>(),
     );
 
-    _fields[_idSpeciesCatches] = Field(
-      id: _idSpeciesCatches,
-      name: (context) => Strings.of(context).saveTripPageSpeciesCatches,
-      controller: SetInputController<Trip_EntityCatches>(),
+    _fields[_idCatchesPerSpecies] = Field(
+      id: _idCatchesPerSpecies,
+      name: (context) => Strings.of(context).tripCatchesPerSpecies,
+      controller: SetInputController<Trip_CatchesPerEntity>(),
     );
 
     _fields[_idCatches] = Field(
@@ -240,13 +230,12 @@ class _SaveTripPageState extends State<SaveTripPage> {
       _bodiesOfWaterController.value = _oldTrip!.bodyOfWaterIds.toSet();
       _atmosphereController.value =
           _oldTrip!.hasAtmosphere() ? _oldTrip!.atmosphere : null;
-      _wasSkunkedController.value = _oldTrip!.wasSkunked;
       _notesController.value = _oldTrip!.hasNotes() ? _oldTrip!.notes : null;
-      _speciesCatchesController.value = _oldTrip!.speciesCatches.toSet();
-      _anglerCatchesController.value = _oldTrip!.anglerCatches.toSet();
+      _speciesCatchesController.value = _oldTrip!.catchesPerSpecies.toSet();
+      _anglerCatchesController.value = _oldTrip!.catchesPerAngler.toSet();
       _fishingSpotCatchesController.value =
-          _oldTrip!.fishingSpotCatches.toSet();
-      _baitCatchesController.value = _oldTrip!.baitCatches.toSet();
+          _oldTrip!.catchesPerFishingSpot.toSet();
+      _baitCatchesController.value = _oldTrip!.catchesPerBait.toSet();
       _customEntityValues = _oldTrip!.customEntityValues;
     }
   }
@@ -278,22 +267,20 @@ class _SaveTripPageState extends State<SaveTripPage> {
       return _buildName();
     } else if (id == _idImages) {
       return _buildImages();
-    } else if (id == _idFishingSpotCatches) {
-      return _buildFishingSpotCatches();
-    } else if (id == _idAnglerCatches) {
-      return _buildAnglerCatches();
-    } else if (id == _idBaitCatches) {
-      return _buildBaitCatches();
-    } else if (id == _idSpeciesCatches) {
-      return _buildSpeciesCatches();
+    } else if (id == _idCatchesPerFishingSpot) {
+      return _buildCatchesPerFishingSpot();
+    } else if (id == _idCatchesPerAngler) {
+      return _buildCatchesPerAngler();
+    } else if (id == _idCatchesPerBait) {
+      return _buildCatchesPerBait();
+    } else if (id == _idCatchesPerSpecies) {
+      return _buildCatchesPerSpecies();
     } else if (id == _idNotes) {
       return _buildNotes();
     } else if (id == _idCatches) {
       return _buildCatches();
     } else if (id == _idBodiesOfWater) {
       return _buildBodiesOfWater();
-    } else if (id == _idWasSkunked) {
-      return _buildSkunked();
     } else if (id == _idAtmosphere) {
       return _buildAtmosphere();
     } else {
@@ -341,9 +328,9 @@ class _SaveTripPageState extends State<SaveTripPage> {
     );
   }
 
-  Widget _buildFishingSpotCatches() {
-    return QuantityPickerInput<FishingSpot, Trip_EntityCatches>(
-      title: Strings.of(context).saveTripPageFishingSpotCatches,
+  Widget _buildCatchesPerFishingSpot() {
+    return QuantityPickerInput<FishingSpot, Trip_CatchesPerEntity>(
+      title: Strings.of(context).tripCatchesPerFishingSpot,
       pickerTitle: Strings.of(context).pickerTitleFishingSpots,
       delegate: FishingSpotQuantityPickerInputDelegate(
         manager: _fishingSpotManager,
@@ -352,9 +339,9 @@ class _SaveTripPageState extends State<SaveTripPage> {
     );
   }
 
-  Widget _buildAnglerCatches() {
-    return QuantityPickerInput<Angler, Trip_EntityCatches>(
-      title: Strings.of(context).saveTripPageAnglerCatches,
+  Widget _buildCatchesPerAngler() {
+    return QuantityPickerInput<Angler, Trip_CatchesPerEntity>(
+      title: Strings.of(context).tripCatchesPerAngler,
       pickerTitle: Strings.of(context).pickerTitleAnglers,
       delegate: EntityQuantityPickerInputDelegate<Angler>(
         manager: _anglerManager,
@@ -364,9 +351,9 @@ class _SaveTripPageState extends State<SaveTripPage> {
     );
   }
 
-  Widget _buildBaitCatches() {
+  Widget _buildCatchesPerBait() {
     return QuantityPickerInput(
-      title: Strings.of(context).saveTripPageBaitCatches,
+      title: Strings.of(context).tripCatchesPerBait,
       delegate: BaitQuantityPickerInputDelegate(
         baitManager: _baitManager,
         controller: _baitCatchesController,
@@ -374,9 +361,9 @@ class _SaveTripPageState extends State<SaveTripPage> {
     );
   }
 
-  Widget _buildSpeciesCatches() {
-    return QuantityPickerInput<Species, Trip_EntityCatches>(
-      title: Strings.of(context).saveTripPageSpeciesCatches,
+  Widget _buildCatchesPerSpecies() {
+    return QuantityPickerInput<Species, Trip_CatchesPerEntity>(
+      title: Strings.of(context).tripCatchesPerSpecies,
       pickerTitle: Strings.of(context).pickerTitleSpecies,
       delegate: EntityQuantityPickerInputDelegate<Species>(
         manager: _speciesManager,
@@ -422,14 +409,6 @@ class _SaveTripPageState extends State<SaveTripPage> {
     );
   }
 
-  Widget _buildSkunked() {
-    return CheckboxInput(
-      label: Strings.of(context).saveTripPageSkunked,
-      value: _wasSkunkedController.value,
-      onChanged: (checked) => _wasSkunkedController.value = checked,
-    );
-  }
-
   Widget _buildAtmosphere() {
     // Use the first location we know about.
     var latLng = _locationMonitor.currentLocation;
@@ -467,27 +446,17 @@ class _SaveTripPageState extends State<SaveTripPage> {
       id: _oldTrip?.id ?? randomId(),
       startTimestamp: Int64(_startTimestampController.value),
       endTimestamp: Int64(_endTimestampController.value),
-      speciesCatches: _speciesCatchesController.value,
-      anglerCatches: _anglerCatchesController.value,
-      fishingSpotCatches: _fishingSpotCatchesController.value,
-      baitCatches: _baitCatchesController.value,
+      catchIds: _catchesController.value,
+      bodyOfWaterIds: _bodiesOfWaterController.value,
+      catchesPerSpecies: _speciesCatchesController.value,
+      catchesPerAngler: _anglerCatchesController.value,
+      catchesPerFishingSpot: _fishingSpotCatchesController.value,
+      catchesPerBait: _baitCatchesController.value,
       customEntityValues: entityValuesFromMap(customFieldValueMap),
     );
 
     if (isNotEmpty(_nameController.value)) {
       newTrip.name = _nameController.value!;
-    }
-
-    if (_catchesController.value.isNotEmpty) {
-      newTrip.catchIds.addAll(_catchesController.value);
-    } else {
-      newTrip.catchIds.clear();
-    }
-
-    if (_bodiesOfWaterController.value.isNotEmpty) {
-      newTrip.bodyOfWaterIds.addAll(_bodiesOfWaterController.value);
-    } else {
-      newTrip.bodyOfWaterIds.clear();
     }
 
     if (_atmosphereController.hasValue) {
@@ -501,12 +470,6 @@ class _SaveTripPageState extends State<SaveTripPage> {
 
     if (isNotEmpty(_notesController.value)) {
       newTrip.notes = _notesController.value!;
-    }
-
-    // If the user cares about (i.e. the field is showing) whether or not they
-    // were skunked, always set it.
-    if (_fields[_idWasSkunked] != null && _fields[_idWasSkunked]!.isShowing) {
-      newTrip.wasSkunked = _wasSkunkedController.value;
     }
 
     return true;
@@ -532,6 +495,12 @@ class _DateTimeAllDayPickerState extends State<_DateTimeAllDayPicker> {
   bool _isAllDay = false;
 
   @override
+  void initState() {
+    super.initState();
+    _isAllDay = widget.controller.timeInMillis == 0;
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Row(
       children: [
@@ -540,12 +509,12 @@ class _DateTimeAllDayPickerState extends State<_DateTimeAllDayPicker> {
             datePicker: DatePicker(
               context,
               controller: widget.controller,
-              label: Strings.of(context).saveTripPageStartDate,
+              label: widget.dateLabel,
             ),
             timePicker: TimePicker(
               context,
               controller: widget.controller,
-              label: Strings.of(context).saveTripPageStartDate,
+              label: widget.timeLabel,
               enabled: !_isAllDay,
             ),
           ),

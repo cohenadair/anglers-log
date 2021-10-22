@@ -512,21 +512,20 @@ const Trip$json = const {
     const {'1': 'image_names', '3': 5, '4': 3, '5': 9, '10': 'imageNames'},
     const {'1': 'catch_ids', '3': 6, '4': 3, '5': 11, '6': '.anglerslog.Id', '10': 'catchIds'},
     const {'1': 'body_of_water_ids', '3': 7, '4': 3, '5': 11, '6': '.anglerslog.Id', '10': 'bodyOfWaterIds'},
-    const {'1': 'fishing_spot_catches', '3': 8, '4': 3, '5': 11, '6': '.anglerslog.Trip.EntityCatches', '10': 'fishingSpotCatches'},
-    const {'1': 'angler_catches', '3': 9, '4': 3, '5': 11, '6': '.anglerslog.Trip.EntityCatches', '10': 'anglerCatches'},
-    const {'1': 'species_catches', '3': 10, '4': 3, '5': 11, '6': '.anglerslog.Trip.EntityCatches', '10': 'speciesCatches'},
-    const {'1': 'bait_catches', '3': 11, '4': 3, '5': 11, '6': '.anglerslog.Trip.BaitCatches', '10': 'baitCatches'},
+    const {'1': 'catches_per_fishing_spot', '3': 8, '4': 3, '5': 11, '6': '.anglerslog.Trip.CatchesPerEntity', '10': 'catchesPerFishingSpot'},
+    const {'1': 'catches_per_angler', '3': 9, '4': 3, '5': 11, '6': '.anglerslog.Trip.CatchesPerEntity', '10': 'catchesPerAngler'},
+    const {'1': 'catches_per_species', '3': 10, '4': 3, '5': 11, '6': '.anglerslog.Trip.CatchesPerEntity', '10': 'catchesPerSpecies'},
+    const {'1': 'catches_per_bait', '3': 11, '4': 3, '5': 11, '6': '.anglerslog.Trip.CatchesPerBait', '10': 'catchesPerBait'},
     const {'1': 'custom_entity_values', '3': 12, '4': 3, '5': 11, '6': '.anglerslog.CustomEntityValue', '10': 'customEntityValues'},
     const {'1': 'notes', '3': 13, '4': 1, '5': 9, '10': 'notes'},
-    const {'1': 'was_skunked', '3': 14, '4': 1, '5': 8, '10': 'wasSkunked'},
-    const {'1': 'atmosphere', '3': 15, '4': 1, '5': 11, '6': '.anglerslog.Atmosphere', '10': 'atmosphere'},
+    const {'1': 'atmosphere', '3': 14, '4': 1, '5': 11, '6': '.anglerslog.Atmosphere', '10': 'atmosphere'},
   ],
-  '3': const [Trip_EntityCatches$json, Trip_BaitCatches$json],
+  '3': const [Trip_CatchesPerEntity$json, Trip_CatchesPerBait$json],
 };
 
 @$core.Deprecated('Use tripDescriptor instead')
-const Trip_EntityCatches$json = const {
-  '1': 'EntityCatches',
+const Trip_CatchesPerEntity$json = const {
+  '1': 'CatchesPerEntity',
   '2': const [
     const {'1': 'entity_id', '3': 1, '4': 1, '5': 11, '6': '.anglerslog.Id', '10': 'entityId'},
     const {'1': 'value', '3': 2, '4': 1, '5': 13, '10': 'value'},
@@ -534,8 +533,8 @@ const Trip_EntityCatches$json = const {
 };
 
 @$core.Deprecated('Use tripDescriptor instead')
-const Trip_BaitCatches$json = const {
-  '1': 'BaitCatches',
+const Trip_CatchesPerBait$json = const {
+  '1': 'CatchesPerBait',
   '2': const [
     const {'1': 'attachment', '3': 1, '4': 1, '5': 11, '6': '.anglerslog.BaitAttachment', '10': 'attachment'},
     const {'1': 'value', '3': 2, '4': 1, '5': 13, '10': 'value'},
@@ -543,7 +542,7 @@ const Trip_BaitCatches$json = const {
 };
 
 /// Descriptor for `Trip`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List tripDescriptor = $convert.base64Decode('CgRUcmlwEh4KAmlkGAEgASgLMg4uYW5nbGVyc2xvZy5JZFICaWQSEgoEbmFtZRgCIAEoCVIEbmFtZRInCg9zdGFydF90aW1lc3RhbXAYAyABKARSDnN0YXJ0VGltZXN0YW1wEiMKDWVuZF90aW1lc3RhbXAYBCABKARSDGVuZFRpbWVzdGFtcBIfCgtpbWFnZV9uYW1lcxgFIAMoCVIKaW1hZ2VOYW1lcxIrCgljYXRjaF9pZHMYBiADKAsyDi5hbmdsZXJzbG9nLklkUghjYXRjaElkcxI5ChFib2R5X29mX3dhdGVyX2lkcxgHIAMoCzIOLmFuZ2xlcnNsb2cuSWRSDmJvZHlPZldhdGVySWRzElAKFGZpc2hpbmdfc3BvdF9jYXRjaGVzGAggAygLMh4uYW5nbGVyc2xvZy5UcmlwLkVudGl0eUNhdGNoZXNSEmZpc2hpbmdTcG90Q2F0Y2hlcxJFCg5hbmdsZXJfY2F0Y2hlcxgJIAMoCzIeLmFuZ2xlcnNsb2cuVHJpcC5FbnRpdHlDYXRjaGVzUg1hbmdsZXJDYXRjaGVzEkcKD3NwZWNpZXNfY2F0Y2hlcxgKIAMoCzIeLmFuZ2xlcnNsb2cuVHJpcC5FbnRpdHlDYXRjaGVzUg5zcGVjaWVzQ2F0Y2hlcxI/CgxiYWl0X2NhdGNoZXMYCyADKAsyHC5hbmdsZXJzbG9nLlRyaXAuQmFpdENhdGNoZXNSC2JhaXRDYXRjaGVzEk8KFGN1c3RvbV9lbnRpdHlfdmFsdWVzGAwgAygLMh0uYW5nbGVyc2xvZy5DdXN0b21FbnRpdHlWYWx1ZVISY3VzdG9tRW50aXR5VmFsdWVzEhQKBW5vdGVzGA0gASgJUgVub3RlcxIfCgt3YXNfc2t1bmtlZBgOIAEoCFIKd2FzU2t1bmtlZBI2CgphdG1vc3BoZXJlGA8gASgLMhYuYW5nbGVyc2xvZy5BdG1vc3BoZXJlUgphdG1vc3BoZXJlGlIKDUVudGl0eUNhdGNoZXMSKwoJZW50aXR5X2lkGAEgASgLMg4uYW5nbGVyc2xvZy5JZFIIZW50aXR5SWQSFAoFdmFsdWUYAiABKA1SBXZhbHVlGl8KC0JhaXRDYXRjaGVzEjoKCmF0dGFjaG1lbnQYASABKAsyGi5hbmdsZXJzbG9nLkJhaXRBdHRhY2htZW50UgphdHRhY2htZW50EhQKBXZhbHVlGAIgASgNUgV2YWx1ZQ==');
+final $typed_data.Uint8List tripDescriptor = $convert.base64Decode('CgRUcmlwEh4KAmlkGAEgASgLMg4uYW5nbGVyc2xvZy5JZFICaWQSEgoEbmFtZRgCIAEoCVIEbmFtZRInCg9zdGFydF90aW1lc3RhbXAYAyABKARSDnN0YXJ0VGltZXN0YW1wEiMKDWVuZF90aW1lc3RhbXAYBCABKARSDGVuZFRpbWVzdGFtcBIfCgtpbWFnZV9uYW1lcxgFIAMoCVIKaW1hZ2VOYW1lcxIrCgljYXRjaF9pZHMYBiADKAsyDi5hbmdsZXJzbG9nLklkUghjYXRjaElkcxI5ChFib2R5X29mX3dhdGVyX2lkcxgHIAMoCzIOLmFuZ2xlcnNsb2cuSWRSDmJvZHlPZldhdGVySWRzEloKGGNhdGNoZXNfcGVyX2Zpc2hpbmdfc3BvdBgIIAMoCzIhLmFuZ2xlcnNsb2cuVHJpcC5DYXRjaGVzUGVyRW50aXR5UhVjYXRjaGVzUGVyRmlzaGluZ1Nwb3QSTwoSY2F0Y2hlc19wZXJfYW5nbGVyGAkgAygLMiEuYW5nbGVyc2xvZy5UcmlwLkNhdGNoZXNQZXJFbnRpdHlSEGNhdGNoZXNQZXJBbmdsZXISUQoTY2F0Y2hlc19wZXJfc3BlY2llcxgKIAMoCzIhLmFuZ2xlcnNsb2cuVHJpcC5DYXRjaGVzUGVyRW50aXR5UhFjYXRjaGVzUGVyU3BlY2llcxJJChBjYXRjaGVzX3Blcl9iYWl0GAsgAygLMh8uYW5nbGVyc2xvZy5UcmlwLkNhdGNoZXNQZXJCYWl0Ug5jYXRjaGVzUGVyQmFpdBJPChRjdXN0b21fZW50aXR5X3ZhbHVlcxgMIAMoCzIdLmFuZ2xlcnNsb2cuQ3VzdG9tRW50aXR5VmFsdWVSEmN1c3RvbUVudGl0eVZhbHVlcxIUCgVub3RlcxgNIAEoCVIFbm90ZXMSNgoKYXRtb3NwaGVyZRgOIAEoCzIWLmFuZ2xlcnNsb2cuQXRtb3NwaGVyZVIKYXRtb3NwaGVyZRpVChBDYXRjaGVzUGVyRW50aXR5EisKCWVudGl0eV9pZBgBIAEoCzIOLmFuZ2xlcnNsb2cuSWRSCGVudGl0eUlkEhQKBXZhbHVlGAIgASgNUgV2YWx1ZRpiCg5DYXRjaGVzUGVyQmFpdBI6CgphdHRhY2htZW50GAEgASgLMhouYW5nbGVyc2xvZy5CYWl0QXR0YWNobWVudFIKYXR0YWNobWVudBIUCgV2YWx1ZRgCIAEoDVIFdmFsdWU=');
 @$core.Deprecated('Use measurementDescriptor instead')
 const Measurement$json = const {
   '1': 'Measurement',

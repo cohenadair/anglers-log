@@ -494,6 +494,8 @@ class ManageableListImageItem extends StatelessWidget {
   final String? subtitle3;
   final Widget? trailing;
 
+  final TextStyle? subtitle2Style;
+
   /// See [Photo.showFullOnTap].
   final bool showFullImageOnTap;
 
@@ -505,6 +507,7 @@ class ManageableListImageItem extends StatelessWidget {
     this.title,
     this.subtitle,
     this.subtitle2,
+    this.subtitle2Style,
     this.subtitle3,
     this.trailing,
     this.showPlaceholder = true,
@@ -543,7 +546,7 @@ class ManageableListImageItem extends StatelessWidget {
               ),
               SingleLineText(
                 subtitle2,
-                style: styleSubtitle(context),
+                style: styleSubtitle(context).merge(subtitle2Style),
               ),
               isEmpty(subtitle3)
                   ? Empty()

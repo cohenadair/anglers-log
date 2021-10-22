@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:mobile/widgets/widget.dart';
 import 'package:quiver/strings.dart';
 
+import '../bait_manager.dart';
+import '../fishing_spot_manager.dart';
 import '../i18n/strings.dart';
 import '../model/gen/anglerslog.pb.dart';
-import '../pages/image_picker_page.dart';
+import '../species_manager.dart';
 import '../time_manager.dart';
 import '../widgets/field.dart';
 import '../widgets/input_controller.dart';
@@ -274,4 +277,40 @@ String formatNumberOfCatches(BuildContext context, int numberOfCatches) {
   return numberOfCatches == 1
       ? format(Strings.of(context).numberOfCatchesSingular, [numberOfCatches])
       : format(Strings.of(context).numberOfCatches, [numberOfCatches]);
+}
+
+class CatchListItemModel {
+  late final String? imageName;
+  late final String title;
+  late final String? subtitle;
+  late final String? subtitle2;
+  late final Widget trailing;
+
+  CatchListItemModel(BuildContext context, Catch cat) {
+    var baitManager = BaitManager.of(context);
+    var fishingSpotManager = FishingSpotManager.of(context);
+    var speciesManager = SpeciesManager.of(context);
+
+    String? subtitle2;
+
+    var fishingSpot = fishingSpotManager.entity(cat.fishingSpotId);
+    if (fishingSpot != null && isNotEmpty(fishingSpot.name)) {
+      // Use fishing spot name as subtitle if available.
+      subtitle2 = fishingSpot.name;
+    } else if (cat.baits.isNotEmpty) {
+      // Fallback on bait as a subtitle.
+      var formattedName =
+          baitManager.formatNameWithCategory(cat.baits.first.baitId);
+      if (isNotEmpty(formattedName)) {
+        subtitle2 = formattedName!;
+      }
+    }
+
+    imageName = cat.imageNames.isNotEmpty ? cat.imageNames.first : null;
+    title = speciesManager.entity(cat.speciesId)?.name ??
+        Strings.of(context).unknownSpecies;
+    subtitle = formatTimestamp(context, cat.timestamp.toInt());
+    trailing = CatchFavoriteStar(cat);
+    this.subtitle2 = subtitle2;
+  }
 }

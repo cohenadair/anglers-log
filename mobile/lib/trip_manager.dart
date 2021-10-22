@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:mobile/angler_manager.dart';
 import 'package:mobile/bait_manager.dart';
 import 'package:mobile/catch_manager.dart';
-import 'package:mobile/utils/date_time_utils.dart';
 import 'package:provider/provider.dart';
 import 'package:quiver/strings.dart';
 
@@ -54,8 +53,7 @@ class TripManager extends NamedEntityManager<Trip> {
     if (isNotEmpty(name(entity))) {
       return name(entity);
     }
-    return formatDateTimeRange(
-        context, entity.startDateTime, entity.endDateTime, abbreviated: true);
+    return entity.elapsedDisplayValue(context);
   }
 
   @override
@@ -84,19 +82,17 @@ class TripManager extends NamedEntityManager<Trip> {
     return super.matchesFilter(trip.id, filter) ||
         _catchManager.idsMatchesFilter(trip.catchIds, filter) ||
         _speciesManager.idsMatchesFilter(
-            trip.speciesCatches.map((e) => e.entityId).toList(), filter) ||
+            trip.catchesPerSpecies.map((e) => e.entityId).toList(), filter) ||
         _fishingSpotManager.idsMatchesFilter(
-            trip.fishingSpotCatches.map((e) => e.entityId).toList(), filter) ||
+            trip.catchesPerFishingSpot.map((e) => e.entityId).toList(),
+            filter) ||
         _anglerManager.idsMatchesFilter(
-            trip.anglerCatches.map((e) => e.entityId).toList(), filter) ||
+            trip.catchesPerAngler.map((e) => e.entityId).toList(), filter) ||
         context == null ||
         _baitManager.attachmentsMatchesFilter(
-            trip.baitCatches.map((e) => e.attachment).toList(),
+            trip.catchesPerBait.map((e) => e.attachment).toList(),
             filter,
             context) ||
-        (trip.hasWasSkunked() &&
-            containsTrimmedLowerCase(
-                Strings.of(context).saveTripPageSkunked, filter!)) ||
         (trip.hasNotes() && containsTrimmedLowerCase(trip.notes, filter!)) ||
         (trip.hasAtmosphere() &&
             trip.atmosphere.matchesFilter(context, filter)) ||
@@ -110,20 +106,22 @@ class TripManager extends NamedEntityManager<Trip> {
   }
 
   int numberOfCatches(Trip trip) {
-    var result = 0;
-
-    for (var id in trip.catchIds) {
-      var cat = _catchManager.entity(id);
-      if (cat == null) {
-        continue;
-      }
-      result += cat.hasQuantity() ? cat.quantity : 1;
-    }
-
-    for (var speciesCatch in trip.speciesCatches) {
-      result += speciesCatch.value;
-    }
-
-    return result;
+    var catchQuantity = trip.catchIds.fold<int>(0, (prev, e) {
+      var cat = _catchManager.entity(e);
+      return prev + (cat == null ? 0 : (cat.hasQuantity() ? cat.quantity : 1));
+    });
+    var speciesQuantity =
+        trip.catchesPerSpecies.fold<int>(0, (prev, e) => prev + e.value);
+    return catchQuantity + speciesQuantity;
   }
+
+  /// Returns all trip and catch photos associated with the given trip.
+  List<String> allImageNames(Trip trip) {
+    return List.of(trip.imageNames)
+      ..addAll(trip.catchIds
+          .expand((e) => _catchManager.entity(e)?.imageNames ?? []));
+  }
+
+  bool isCatchInTrip(Id id) =>
+      list().where((e) => e.catchIds.contains(id)).isNotEmpty;
 }

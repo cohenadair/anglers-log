@@ -321,12 +321,12 @@ message WaterClarity {
 }
 
 message Trip {
-  message EntityCatches {
+  message CatchesPerEntity {
     Id entity_id = 1;
     uint32 value = 2;
   }
 
-  message BaitCatches {
+  message CatchesPerBait {
     BaitAttachment attachment = 1;
     uint32 value = 2;
   }
@@ -338,14 +338,13 @@ message Trip {
   repeated string image_names = 5;
   repeated Id catch_ids = 6;
   repeated Id body_of_water_ids = 7;
-  repeated EntityCatches fishing_spot_catches = 8;
-  repeated EntityCatches angler_catches = 9;
-  repeated EntityCatches species_catches = 10;
-  repeated BaitCatches bait_catches = 11;
+  repeated CatchesPerEntity catches_per_fishing_spot = 8;
+  repeated CatchesPerEntity catches_per_angler = 9;
+  repeated CatchesPerEntity catches_per_species = 10;
+  repeated CatchesPerBait catches_per_bait = 11;
   repeated CustomEntityValue custom_entity_values = 12;
   string notes = 13;
-  bool was_skunked = 14;
-  Atmosphere atmosphere = 15;
+  Atmosphere atmosphere = 14;
 }
 
 message Measurement {

@@ -248,7 +248,11 @@ class _EditableFormPageState extends State<EditableFormPage> {
     var customField = _customEntityManager.entity(id);
     if (customField != null) {
       return Padding(
-        padding: insetsHorizontalDefault,
+        // Boolean fields use a CheckboxInput, which uses ListItem, which always
+        // has padding included.
+        padding: customField.type == CustomEntity_Type.boolean
+            ? insetsZero
+            : insetsHorizontalDefault,
         child: inputTypeWidget(
           context,
           type: customField.type,

@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:mobile/trip_manager.dart';
 import 'package:provider/provider.dart';
 import 'package:quiver/strings.dart';
 
@@ -42,6 +43,8 @@ class CatchManager extends EntityManager<Catch> {
   SpeciesManager get _speciesManager => appManager.speciesManager;
 
   TimeManager get _timeManager => appManager.timeManager;
+
+  TripManager get _tripManager => appManager.tripManager;
 
   WaterClarityManager get _waterClarityManager =>
       appManager.waterClarityManager;
@@ -377,7 +380,12 @@ class CatchManager extends EntityManager<Catch> {
       name = "${species.name} ($timeString)";
     }
 
-    return format(Strings.of(context).catchPageDeleteMessage, [name]);
+    return format(
+      _tripManager.isCatchInTrip(cat.id)
+          ? Strings.of(context).catchPageDeleteWithTripMessage
+          : Strings.of(context).catchPageDeleteMessage,
+      [name],
+    );
   }
 
   /// Returns the total number of [CustomEntityValue] objects associated with

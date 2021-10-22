@@ -17,14 +17,16 @@ void main() {
   });
 
   testWidgets("Empty input", (tester) async {
-    await tester.pumpWidget(
-        Testable((_) => const CustomEntityValues([]), appManager: appManager));
+    await tester.pumpWidget(Testable(
+      (_) => const CustomEntityValues(values: []),
+      appManager: appManager,
+    ));
     expect(find.byType(Empty), findsOneWidget);
   });
 
   testWidgets("Value ID doesn't exist in manager", (tester) async {
     await tester.pumpWidget(Testable(
-      (_) => CustomEntityValues([
+      (_) => CustomEntityValues(values: [
         CustomEntityValue()..customEntityId = randomId(),
       ]),
       appManager: appManager,
@@ -55,7 +57,7 @@ void main() {
     );
 
     await tester.pumpWidget(Testable(
-      (_) => CustomEntityValues([
+      (_) => CustomEntityValues(values: [
         CustomEntityValue()
           ..customEntityId = id1
           ..value = "Test 1",
@@ -91,12 +93,12 @@ void main() {
     var context = await pumpContext(
       tester,
       (_) => CustomEntityValues(
-        [
+        values: [
           CustomEntityValue()
             ..customEntityId = id1
             ..value = "Test 1",
         ],
-        isCondensed: true,
+        isSingleLine: true,
       ),
       appManager: appManager,
     );

@@ -89,6 +89,8 @@ Map<String, Map<String, String>> get englishStrings => {
             "You haven't yet added any catches. Tap the %s button to begin.",
         "catchPage_deleteMessage":
             "Are you sure you want to delete catch %s? This cannot be undone.",
+        "catchPage_deleteWithTripMessage":
+            "%s is associated with a trip; Are you sure you want to delete it? This cannot be undone.",
         "catchPage_released": "Released",
         "catchPage_kept": "Kept",
         "catchPage_quantityLabel": "Quantity: %s",
@@ -282,11 +284,11 @@ Map<String, Map<String, String>> get englishStrings => {
         "saveTripPage_noCatches": "No catches",
         "saveTripPage_bodiesOfWater": "Bodies Of Water",
         "saveTripPage_noBodiesOfWater": "No bodies of water",
-        "saveTripPage_speciesCatches": "Catches Per Species",
-        "saveTripPage_fishingSpotCatches": "Catches Per Fishing Spot",
-        "saveTripPage_anglerCatches": "Catches Per Angler",
-        "saveTripPage_baitCatches": "Catches Per Bait",
-        "saveTripPage_skunked": "Skunked",
+        "trip_catchesPerSpecies": "Catches Per Species",
+        "trip_catchesPerFishingSpot": "Catches Per Fishing Spot",
+        "trip_catchesPerAngler": "Catches Per Angler",
+        "trip_catchesPerBait": "Catches Per Bait",
+        "trip_skunked": "Skunked",
         "settingsPage_title": "Settings",
         "settingsPage_fetchAtmosphereTitle":
             "Auto-fetch atmosphere and weather",
@@ -457,6 +459,7 @@ Map<String, Map<String, String>> get englishStrings => {
         "minutesFormat": "%sm",
         "secondsFormat": "%ss",
         "dateTimeFormat": "%s at %s",
+        "dateRangeFormat": "%s to %s",
         "dateDurationFormat": "%s (%s)",
         "onboardingJourney_welcomeTitle": "Welcome",
         "onboardingJourney_startDescription":

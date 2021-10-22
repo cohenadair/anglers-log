@@ -207,17 +207,15 @@ class Strings {
   String get saveTripPageNoBodiesOfWater =>
       _string("saveTripPage_noBodiesOfWater");
 
-  String get saveTripPageSpeciesCatches =>
-      _string("saveTripPage_speciesCatches");
+  String get tripCatchesPerSpecies => _string("trip_catchesPerSpecies");
 
-  String get saveTripPageFishingSpotCatches =>
-      _string("saveTripPage_fishingSpotCatches");
+  String get tripCatchesPerFishingSpot => _string("trip_catchesPerFishingSpot");
 
-  String get saveTripPageAnglerCatches => _string("saveTripPage_anglerCatches");
+  String get tripCatchesPerAngler => _string("trip_catchesPerAngler");
 
-  String get saveTripPageBaitCatches => _string("saveTripPage_baitCatches");
+  String get tripCatchesPerBait => _string("trip_catchesPerBait");
 
-  String get saveTripPageSkunked => _string("saveTripPage_skunked");
+  String get tripSkunked => _string("trip_skunked");
 
   String get catchListPageMenuLabel => _string("catchListPage_menuLabel");
 
@@ -232,6 +230,9 @@ class Strings {
       _string("catchListPage_emptyListDescription");
 
   String get catchPageDeleteMessage => _string("catchPage_deleteMessage");
+
+  String get catchPageDeleteWithTripMessage =>
+      _string("catchPage_deleteWithTripMessage");
 
   String get catchPageReleased => _string("catchPage_released");
 
@@ -953,6 +954,8 @@ class Strings {
   String get secondsFormat => _string("secondsFormat");
 
   String get dateTimeFormat => _string("dateTimeFormat");
+
+  String get dateRangeFormat => _string("dateRangeFormat");
 
   String get dateDurationFormat => _string("dateDurationFormat");
 

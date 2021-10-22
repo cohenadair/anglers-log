@@ -196,22 +196,23 @@ String formatDateTime(
   BuildContext context,
   DateTime dateTime, {
   bool abbreviated = false,
+  bool excludeMidnight = false,
 }) {
-  return format(Strings.of(context).dateTimeFormat, [
-    formatDateAsRecent(context, dateTime, abbreviated: abbreviated),
-    formatTimeOfDay(context, TimeOfDay.fromDateTime(dateTime)),
-  ]);
-}
+  var recentDate = formatDateAsRecent(
+    context,
+    dateTime,
+    abbreviated: abbreviated,
+  );
 
-String formatDateTimeRange(
-  BuildContext context,
-  DateTime start,
-  DateTime end, {
-  bool abbreviated = false,
-}) {
-  var startStr = formatDateTime(context, start, abbreviated: abbreviated);
-  var endStr = formatDateTime(context, end, abbreviated: abbreviated);
-  return "$startStr - $endStr";
+  var time = TimeOfDay.fromDateTime(dateTime);
+  if (excludeMidnight && time.hour == 0 && time.minute == 0) {
+    return recentDate;
+  }
+
+  return format(Strings.of(context).dateTimeFormat, [
+    recentDate,
+    formatTimeOfDay(context, time),
+  ]);
 }
 
 String formatTimestamp(BuildContext context, int timestamp) {
@@ -352,4 +353,12 @@ String formatDuration({
   }
 
   return result;
+}
+
+extension DateTimes on DateTime {
+  bool get isMidnight => hour == 0 && minute == 0;
+}
+
+extension TimeOfDays on TimeOfDay {
+  bool get isMidnight => hour == 0 && minute == 0;
 }

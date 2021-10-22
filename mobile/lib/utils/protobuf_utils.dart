@@ -1493,4 +1493,22 @@ extension Trips on Trip {
 
   DateTime get endDateTime =>
       DateTime.fromMillisecondsSinceEpoch(endTimestamp.toInt());
+
+  String elapsedDisplayValue(BuildContext context) {
+    var startStr = formatDateTime(
+      context,
+      startDateTime,
+      abbreviated: !startDateTime.isMidnight,
+      excludeMidnight: true,
+    );
+
+    var endStr = formatDateTime(
+      context,
+      endDateTime,
+      abbreviated: !endDateTime.isMidnight,
+      excludeMidnight: true,
+    );
+
+    return format(Strings.of(context).dateRangeFormat, [startStr, endStr]);
+  }
 }
