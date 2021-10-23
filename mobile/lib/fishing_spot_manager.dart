@@ -35,7 +35,9 @@ class FishingSpotManager extends ImageEntityManager<FishingSpot> {
   /// Returns [name] if it is not empty, otherwise returns the
   /// spot's coordinates as a string in the format provided by [formatLatLng].
   @override
-  String displayName(BuildContext context, FishingSpot entity, {
+  String displayName(
+    BuildContext context,
+    FishingSpot entity, {
     bool includeLatLngLabels = true,
     bool includeBodyOfWater = false,
   }) {
@@ -94,6 +96,13 @@ class FishingSpotManager extends ImageEntityManager<FishingSpot> {
     }
 
     return namedSpots..addAll(otherSpots);
+  }
+
+  FishingSpot? namedWithBodyOfWater(String? name, Id? bodyOfWaterId) {
+    return super.named(name, andCondition: (fishingSpot) {
+      return bodyOfWaterId == null ||
+          fishingSpot.bodyOfWaterId == bodyOfWaterId;
+    });
   }
 
   /// Returns the closest [FishingSpot] within [meters] of [latLng], or null if

@@ -314,3 +314,5 @@ class CatchListItemModel {
     this.subtitle2 = subtitle2;
   }
 }
+
+int catchQuantity(Catch cat) => cat.hasQuantity() ? cat.quantity : 1;

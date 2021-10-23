@@ -4,9 +4,14 @@ import 'dart:typed_data';
 import 'dart:ui';
 
 import 'package:archive/archive.dart';
+import 'package:collection/collection.dart' show IterableExtension;
 import 'package:fixnum/fixnum.dart';
 import 'package:intl/intl.dart';
+import 'package:mobile/body_of_water_manager.dart';
+import 'package:mobile/trip_manager.dart';
+import 'package:mobile/utils/catch_utils.dart';
 import 'package:path/path.dart';
+import 'package:protobuf/protobuf.dart';
 import 'package:quiver/strings.dart';
 
 import '../angler_manager.dart';
@@ -15,6 +20,7 @@ import '../bait_category_manager.dart';
 import '../bait_manager.dart';
 import '../catch_manager.dart';
 import '../channels/migration_channel.dart';
+import '../entity_manager.dart';
 import '../fishing_spot_manager.dart';
 import '../log.dart';
 import '../method_manager.dart';
@@ -23,7 +29,6 @@ import '../species_manager.dart';
 import '../user_preference_manager.dart';
 import '../utils/number_utils.dart';
 import '../utils/protobuf_utils.dart';
-import '../utils/string_utils.dart';
 import '../water_clarity_manager.dart';
 import '../wrappers/io_wrapper.dart';
 import '../wrappers/path_provider_wrapper.dart';
@@ -45,9 +50,11 @@ class LegacyImporter {
   static const _keyBaits = "baits";
   static const _keyBaitType = "baitType";
   static const _keyBaitUsed = "baitUsed";
+  static const _keyCatches = "catches";
   static const _keyColor = "color";
   static const _keyCoordinates = "coordinates";
   static const _keyDate = "date";
+  static const _keyEndDate = "endDate";
   static const _keyEntries = "entries";
   static const _keyFishingSpot = "fishingSpot";
   static const _keyFishingSpots = "fishingSpots";
@@ -75,7 +82,9 @@ class LegacyImporter {
   static const _keySkyConditions = "skyConditions";
   static const _keySize = "size";
   static const _keySpecies = "species";
+  static const _keyStartDate = "startDate";
   static const _keyTemperature = "temperature";
+  static const _keyTrips = "trips";
   static const _keyUserDefines = "userDefines";
   static const _keyWaterClarities = "waterClarities";
   static const _keyWaterClarity = "waterClarity";
@@ -83,10 +92,6 @@ class LegacyImporter {
   static const _keyWaterTemperature = "waterTemperature";
   static const _keyWeatherData = "weatherData";
   static const _keyWindSpeed = "windSpeed";
-
-  /// Format of how fishing spot names are imported. The first argument is the
-  /// location name, the second argument is the fishing spot name.
-  static const _nameFormatFishingSpot = "%s - %s";
 
   final _log = const Log("LegacyImporter");
 
@@ -122,6 +127,8 @@ class LegacyImporter {
 
   BaitManager get _baitManager => _appManager.baitManager;
 
+  BodyOfWaterManager get _bodyOfWaterManager => _appManager.bodyOfWaterManager;
+
   CatchManager get _catchManager => _appManager.catchManager;
 
   FishingSpotManager get _fishingSpotManager => _appManager.fishingSpotManager;
@@ -129,6 +136,8 @@ class LegacyImporter {
   MethodManager get _methodManager => _appManager.methodManager;
 
   SpeciesManager get _speciesManager => _appManager.speciesManager;
+
+  TripManager get _tripManager => _appManager.tripManager;
 
   UserPreferenceManager get _userPreferenceManager =>
       _appManager.userPreferenceManager;
@@ -282,9 +291,10 @@ class LegacyImporter {
     await _importSpecies(species);
     await _importWaterClarities(waterClarities);
 
-    // Catches are always imported last since they reference most other
-    // entities.
+    // Catches and trips are always imported last since they reference most
+    // other entities.
     await _importCatches(_json[_keyJournal][_keyEntries]);
+    await _importTrips(_json[_keyJournal][_keyTrips]);
 
     // Cleanup old images.
     for (var tmpImg in _images.values) {
@@ -412,12 +422,18 @@ class LegacyImporter {
       var locationMap = location as Map<String, dynamic>;
       var locationName = locationMap[_keyName];
 
+      BodyOfWater? bodyOfWater;
+      if (isNotEmpty(locationName)) {
+        bodyOfWater = BodyOfWater(
+          id: _parseJsonId(locationMap[_keyId]),
+          name: locationName,
+        );
+        _bodyOfWaterManager.addOrUpdate(bodyOfWater);
+      }
+
       for (var fishingSpot in locationMap[_keyFishingSpots]) {
         var fishingSpotMap = fishingSpot as Map<String, dynamic>;
-        var fishingSpotName = format(
-          _nameFormatFishingSpot,
-          [locationName, fishingSpotMap[_keyName]],
-        );
+        var fishingSpotName = fishingSpotMap[_keyName];
 
         var coordinatesMap =
             fishingSpotMap[_keyCoordinates] as Map<String, dynamic>;
@@ -443,9 +459,13 @@ class LegacyImporter {
         }
 
         var newFishingSpot = FishingSpot()
-          ..id = randomId()
+          ..id = _parseJsonId(fishingSpotMap[_keyId])
           ..lat = lat
           ..lng = lng;
+
+        if (bodyOfWater != null) {
+          newFishingSpot.bodyOfWaterId = bodyOfWater.id;
+        }
 
         if (isNotEmpty(fishingSpotName)) {
           newFishingSpot.name = fishingSpotName;
@@ -521,8 +541,9 @@ class LegacyImporter {
         _log.w("Bait (${map[_keyBaitUsed]}) not found");
       }
 
-      var fishingSpot = _fishingSpotManager.named(format(
-          _nameFormatFishingSpot, [map[_keyLocation], map[_keyFishingSpot]]));
+      var bodyOfWater = _bodyOfWaterManager.named(map[_keyLocation]);
+      var fishingSpot = _fishingSpotManager.namedWithBodyOfWater(
+          map[_keyFishingSpot], bodyOfWater?.id);
       if (fishingSpot == null && isNotEmpty(map[_keyFishingSpot])) {
         _log.w("Fishing spot (${map[_keyFishingSpot]}) not found");
       }
@@ -564,7 +585,7 @@ class LegacyImporter {
       }
 
       var cat = Catch()
-        ..id = randomId()
+        ..id = _parseJsonId(map[_keyId])
         ..timestamp = Int64(dateTime.millisecondsSinceEpoch);
 
       if (bait != null) {
@@ -657,6 +678,123 @@ class LegacyImporter {
         // Images were already compressed by legacy Anglers' Log versions.
         compressImages: false,
       );
+    }
+  }
+
+  Future<void> _importTrips(List<dynamic>? trips) async {
+    if (trips == null || trips.isEmpty) {
+      return;
+    }
+
+    for (var item in trips) {
+      var map = item as Map<String, dynamic>;
+      var trip = Trip(id: _parseJsonId(map[_keyId]));
+
+      String? name = map[_keyName];
+      if (isNotEmpty(name)) {
+        trip.name = name!;
+      }
+
+      int? startMs = map[_keyStartDate];
+      trip.startTimestamp =
+          Int64(startMs ?? DateTime.now().millisecondsSinceEpoch);
+
+      int? endMs = map[_keyEndDate];
+      trip.endTimestamp = Int64(endMs ?? DateTime.now().millisecondsSinceEpoch);
+
+      String? notes = map[_keyNotes];
+      if (isNotEmpty(notes)) {
+        trip.notes = notes!;
+      }
+
+      var catchIds = map[_keyCatches];
+      for (var idString in catchIds) {
+        var id = safeParseId(idString);
+        if (id == null) {
+          continue;
+        }
+        trip.catchIds.add(id);
+      }
+
+      // Fetch all catches for this trip so we can fill in the new "catches per
+      // entity" fields.
+      var catches = <Catch>[];
+      if (trip.catchIds.isNotEmpty) {
+        catches = _catchManager.list(trip.catchIds);
+      }
+
+      for (var cat in catches) {
+        // After importing, catches will only ever have a single bait
+        // attachment.
+        if (cat.baits.isNotEmpty) {
+          var existing = trip.catchesPerBait
+              .firstWhereOrNull((e) => e.attachment == cat.baits.first);
+          if (existing == null) {
+            trip.catchesPerBait.add(Trip_CatchesPerBait(
+              attachment: cat.baits.first,
+              value: catchQuantity(cat),
+            ));
+          } else {
+            existing.value += catchQuantity(cat);
+          }
+        }
+
+        _incCatchesPerEntity(
+            _speciesManager, cat.speciesId, trip.catchesPerSpecies, cat);
+        _incCatchesPerEntity(_fishingSpotManager, cat.fishingSpotId,
+            trip.catchesPerFishingSpot, cat);
+      }
+
+      var bodyOfWaterIds = map[_keyLocations];
+      for (var idString in bodyOfWaterIds) {
+        var bodyOfWater = _bodyOfWaterManager.entity(_parseJsonId(idString));
+        if (bodyOfWater == null) {
+          _log.w("Body of water not found: $idString");
+          continue;
+        }
+        trip.bodyOfWaterIds.add(bodyOfWater.id);
+      }
+
+      var anglerIds = map[_keyAnglers];
+      for (var idString in anglerIds) {
+        var angler = _anglerManager.entity(safeParseId(idString));
+        if (angler == null) {
+          _log.w("Angler not found: $idString");
+          continue;
+        }
+
+        // Angler cannot be attached to a catch in the legacy app, so don't
+        // both iterating catches here.
+        trip.catchesPerAngler.add(Trip_CatchesPerEntity(
+          entityId: angler.id,
+          value: 0,
+        ));
+      }
+
+      await _tripManager.addOrUpdate(trip);
+    }
+  }
+
+  void _incCatchesPerEntity<T extends GeneratedMessage>(
+    EntityManager<T> manager,
+    Id? entityId,
+    List<Trip_CatchesPerEntity> catchesPerEntity,
+    Catch cat,
+  ) {
+    var entity = manager.entity(entityId);
+    if (entity == null) {
+      return;
+    }
+
+    var existing = catchesPerEntity
+        .firstWhereOrNull((e) => e.entityId == manager.id(entity));
+    if (existing == null) {
+      catchesPerEntity.add(Trip_CatchesPerEntity(
+        entityId: manager.id(entity),
+        value: catchQuantity(cat),
+      ));
+    } else {
+      existing.value += catchQuantity(cat);
     }
   }
 

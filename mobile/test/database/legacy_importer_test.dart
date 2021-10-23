@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:mobile/angler_manager.dart';
 import 'package:mobile/bait_category_manager.dart';
 import 'package:mobile/bait_manager.dart';
+import 'package:mobile/body_of_water_manager.dart';
 import 'package:mobile/catch_manager.dart';
 import 'package:mobile/channels/migration_channel.dart';
 import 'package:mobile/database/legacy_importer.dart';
@@ -12,6 +13,7 @@ import 'package:mobile/fishing_spot_manager.dart';
 import 'package:mobile/method_manager.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
 import 'package:mobile/species_manager.dart';
+import 'package:mobile/trip_manager.dart';
 import 'package:mobile/water_clarity_manager.dart';
 import 'package:mockito/mockito.dart';
 import 'package:path/path.dart' as path;
@@ -31,10 +33,12 @@ void main() {
   late AnglerManager anglerManager;
   late BaitCategoryManager baitCategoryManager;
   late BaitManager baitManager;
+  late BodyOfWaterManager bodyOfWaterManager;
   late CatchManager catchManager;
   late FishingSpotManager fishingSpotManager;
   late MethodManager methodManager;
   late SpeciesManager speciesManager;
+  late TripManager tripManager;
   late WaterClarityManager waterClarityManager;
 
   var tmpPath = "test/resources/legacy_importer/tmp";
@@ -72,6 +76,9 @@ void main() {
     baitManager = BaitManager(appManager.app);
     when(appManager.app.baitManager).thenReturn(baitManager);
 
+    bodyOfWaterManager = BodyOfWaterManager(appManager.app);
+    when(appManager.app.bodyOfWaterManager).thenReturn(bodyOfWaterManager);
+
     fishingSpotManager = FishingSpotManager(appManager.app);
     when(appManager.app.fishingSpotManager).thenReturn(fishingSpotManager);
 
@@ -83,6 +90,9 @@ void main() {
 
     speciesManager = SpeciesManager(appManager.app);
     when(appManager.app.speciesManager).thenReturn(speciesManager);
+
+    tripManager = TripManager(appManager.app);
+    when(appManager.app.tripManager).thenReturn(tripManager);
 
     waterClarityManager = WaterClarityManager(appManager.app);
     when(appManager.app.waterClarityManager).thenReturn(waterClarityManager);
@@ -132,6 +142,11 @@ void main() {
       expect(species.id, isNotNull);
       expect(species.id.uuid, isNotEmpty);
     }
+
+    for (var bodyOfWater in bodyOfWaterManager.list()) {
+      expect(bodyOfWater.id, isNotNull);
+      expect(bodyOfWater.id.uuid, isNotEmpty);
+    }
   }
 
   group("Error cases", () {
@@ -170,6 +185,7 @@ void main() {
     // be added here.
     expect(baitCategoryManager.entityCount, 0);
     expect(baitManager.entityCount, 87);
+    expect(bodyOfWaterManager.entityCount, 30);
     expect(catchManager.entityCount, 167);
     expect(fishingSpotManager.entityCount, 94);
     expect(methodManager.entityCount, 22);
@@ -284,6 +300,7 @@ void main() {
     expect(anglerManager.entityCount, 4);
     expect(baitCategoryManager.entityCount, 3);
     expect(baitManager.entityCount, 72);
+    expect(bodyOfWaterManager.entityCount, 25);
     expect(catchManager.entityCount, 133);
     expect(fishingSpotManager.entityCount, 75);
     expect(methodManager.entityCount, 19);
@@ -428,7 +445,7 @@ void main() {
     expect(baitManager.entity(catches[0].baits.first.baitId)!.name, "Corn");
     expect(catches[0].hasFishingSpotId(), isTrue);
     expect(fishingSpotManager.entity(catches[0].fishingSpotId)!.name,
-        "Tennessee River - Sequoyah Hills Park");
+        "Sequoyah Hills Park");
     expect(catches[0].methodIds.length, 2);
     expect(catches[0].wasCatchAndRelease, isTrue);
     expect(catches[0].hasIsFavorite(), isFalse);
@@ -474,9 +491,14 @@ void main() {
     var fishingSpots = fishingSpotManager.list();
     expect(fishingSpots, isNotNull);
     expect(fishingSpots.length, 1);
-    expect(fishingSpots.first.name, "Tennessee River - Sequoyah Hills Park");
+    expect(fishingSpots.first.name, "Sequoyah Hills Park");
     expect(fishingSpots.first.lat, 35.928575);
     expect(fishingSpots.first.lng, -83.974535);
+    expect(fishingSpots.first.hasBodyOfWaterId(), isTrue);
+
+    var bodiesOfWater = bodyOfWaterManager.list();
+    expect(bodiesOfWater.length, 1);
+    expect(bodiesOfWater.first.name, "Tennessee River");
   });
 
   test("Import iOS baits", () async {
@@ -575,8 +597,8 @@ void main() {
     expect(baitManager.entity(catches[0].baits.first.baitId)!.name,
         "Rapala F-7 - Brown Trout");
     expect(catches[0].hasFishingSpotId(), isTrue);
-    expect(fishingSpotManager.entity(catches[0].fishingSpotId)!.name,
-        "Bow River - Sewer Run");
+    expect(
+        fishingSpotManager.entity(catches[0].fishingSpotId)!.name, "Sewer Run");
     expect(catches[0].methodIds.length, 3);
     expect(catches[0].hasWasCatchAndRelease(), isFalse);
     expect(catches[0].hasIsFavorite(), isFalse);
@@ -615,9 +637,14 @@ void main() {
     var fishingSpots = fishingSpotManager.list();
     expect(fishingSpots, isNotNull);
     expect(fishingSpots.length, 1);
-    expect(fishingSpots.first.name, "Bow River - Sewer Run");
+    expect(fishingSpots.first.name, "Sewer Run");
     expect(fishingSpots.first.lat, 50.943077);
     expect(fishingSpots.first.lng, -114.013481);
+    expect(fishingSpots.first.hasBodyOfWaterId(), isTrue);
+
+    var bodiesOfWater = bodyOfWaterManager.list();
+    expect(bodiesOfWater.length, 1);
+    expect(bodiesOfWater.first.name, "Bow River");
   });
 
   test("Import Android baits", () async {
@@ -865,6 +892,171 @@ void main() {
       verify(imagesDir.deleteSync()).called(1);
       verify(databaseDir.deleteSync(recursive: true)).called(1);
       expect(called, isTrue);
+    });
+  });
+
+  group("Importing Android trips", () {
+    test("Empty", () async {
+      var file = File("test/resources/backups/legacy_android_entities.zip");
+      await LegacyImporter(appManager.app, file).start();
+      expect(tripManager.entityCount, 0);
+    });
+
+    test("Null", () async {
+      var file = File("test/resources/backups/legacy_android_null_trips.zip");
+      await LegacyImporter(appManager.app, file).start();
+      expect(tripManager.entityCount, 0);
+    });
+
+    test("Bad catch ID", () async {
+      var file = File("test/resources/backups/legacy_android_bad_catch_id.zip");
+      await LegacyImporter(appManager.app, file).start();
+
+      var trips = tripManager.list();
+      expect(trips.length, 1);
+
+      expect(trips[0].catchIds, isEmpty);
+    });
+
+    test("Fishing spot not found", () async {
+      var mockFishingSpotManager = MockFishingSpotManager();
+      when(mockFishingSpotManager.addOrUpdate(any))
+          .thenAnswer((_) => Future.value(true));
+      when(mockFishingSpotManager.namedWithBodyOfWater(any, any))
+          .thenReturn(null);
+      when(mockFishingSpotManager.entity(any)).thenReturn(null);
+
+      when(appManager.app.fishingSpotManager)
+          .thenReturn(mockFishingSpotManager);
+
+      var file = File("test/resources/backups/legacy_android_trips.zip");
+      await LegacyImporter(appManager.app, file).start();
+
+      expect(tripManager.entityCount, 6);
+      for (var trip in tripManager.list()) {
+        expect(trip.catchesPerFishingSpot, isEmpty);
+      }
+    });
+
+    test("Angler not found", () async {
+      var mockAnglerManager = MockAnglerManager();
+      when(mockAnglerManager.addOrUpdate(any))
+          .thenAnswer((_) => Future.value(true));
+      when(mockAnglerManager.named(any)).thenReturn(null);
+      when(mockAnglerManager.entity(any)).thenReturn(null);
+
+      when(appManager.app.anglerManager).thenReturn(mockAnglerManager);
+
+      var file = File("test/resources/backups/legacy_android_trips.zip");
+      await LegacyImporter(appManager.app, file).start();
+
+      expect(tripManager.entityCount, 6);
+      for (var trip in tripManager.list()) {
+        expect(trip.catchesPerAngler, isEmpty);
+      }
+    });
+
+    test("Body of water not found", () async {
+      var mockBodyOfWaterManager = MockBodyOfWaterManager();
+      when(mockBodyOfWaterManager.addOrUpdate(any))
+          .thenAnswer((_) => Future.value(true));
+      when(mockBodyOfWaterManager.named(any)).thenReturn(null);
+      when(mockBodyOfWaterManager.entity(any)).thenReturn(null);
+
+      when(appManager.app.bodyOfWaterManager)
+          .thenReturn(mockBodyOfWaterManager);
+
+      var file = File("test/resources/backups/legacy_android_trips.zip");
+      await LegacyImporter(appManager.app, file).start();
+
+      expect(tripManager.entityCount, 6);
+      for (var trip in tripManager.list()) {
+        expect(trip.bodyOfWaterIds, isEmpty);
+      }
+    });
+
+    test("Real archive", () async {
+      var file = File("test/resources/backups/legacy_android_trips.zip");
+      await LegacyImporter(appManager.app, file).start();
+
+      var trips = tripManager.list();
+      expect(trips.length, 6);
+
+      expect(trips[0].hasName(), isFalse);
+      expect(trips[0].id.uuid, "b780e09b-4f49-4234-8b72-eb6f5af7950c");
+      expect(trips[0].startTimestamp.toInt(), 1634994545263);
+      expect(trips[0].endTimestamp.toInt(), 1634994545263);
+      expect(trips[0].notes, "Test notes");
+      expect(trips[0].catchIds, isEmpty);
+      expect(trips[0].bodyOfWaterIds, isEmpty);
+      expect(trips[0].catchesPerFishingSpot, isEmpty);
+      expect(trips[0].catchesPerSpecies, isEmpty);
+      expect(trips[0].catchesPerAngler, isEmpty);
+      expect(trips[0].catchesPerBait, isEmpty);
+
+      expect(trips[1].hasName(), isFalse);
+      expect(trips[1].id.uuid, "2745b7bc-6dc9-4374-97f6-c1a658e58cbc");
+      expect(trips[1].startTimestamp.toInt(), 1634994539341);
+      expect(trips[1].endTimestamp.toInt(), 1634994539341);
+      expect(trips[1].hasNotes(), isFalse);
+      expect(trips[1].catchIds, isEmpty);
+      expect(trips[1].bodyOfWaterIds, isEmpty);
+      expect(trips[1].catchesPerFishingSpot, isEmpty);
+      expect(trips[1].catchesPerSpecies, isEmpty);
+      expect(trips[1].catchesPerAngler.length, 1);
+      expect(trips[1].catchesPerBait, isEmpty);
+
+      expect(trips[2].hasName(), isFalse);
+      expect(trips[2].id.uuid, "9f946bb9-9cf6-4f92-ac13-459f7258a481");
+      expect(trips[2].startTimestamp.toInt(), 1634994531574);
+      expect(trips[2].endTimestamp.toInt(), 1634994531574);
+      expect(trips[1].hasNotes(), isFalse);
+      expect(trips[2].catchIds, isEmpty);
+      expect(trips[2].bodyOfWaterIds.length, 1);
+      expect(trips[2].catchesPerFishingSpot, isEmpty);
+      expect(trips[2].catchesPerSpecies, isEmpty);
+      expect(trips[2].catchesPerAngler, isEmpty);
+      expect(trips[2].catchesPerBait, isEmpty);
+
+      expect(trips[3].hasName(), isFalse);
+      expect(trips[3].id.uuid, "9202107d-f70d-4eb6-9e39-cf92a06fb9e8");
+      expect(trips[3].startTimestamp.toInt(), 1634994521794);
+      expect(trips[3].endTimestamp.toInt(), 1634994521794);
+      expect(trips[3].hasNotes(), isFalse);
+      expect(trips[3].catchIds.length, 1);
+      expect(trips[3].bodyOfWaterIds, isEmpty);
+      expect(trips[3].catchesPerFishingSpot.length, 1);
+      expect(trips[3].catchesPerSpecies.length, 1);
+      expect(trips[3].catchesPerAngler, isEmpty);
+      expect(trips[3].catchesPerBait.length, 1);
+
+      expect(trips[4].hasName(), isFalse);
+      expect(trips[4].id.uuid, "c2b35154-4cd1-46a4-a8ca-acf8ad61dcaa");
+      expect(trips[4].startTimestamp.toInt(), 1634994510186);
+      expect(trips[4].endTimestamp.toInt(), 1634994510186);
+      expect(trips[4].hasNotes(), isFalse);
+      expect(trips[4].catchIds, isEmpty);
+      expect(trips[4].bodyOfWaterIds, isEmpty);
+      expect(trips[4].catchesPerFishingSpot, isEmpty);
+      expect(trips[4].catchesPerSpecies, isEmpty);
+      expect(trips[4].catchesPerAngler, isEmpty);
+      expect(trips[4].catchesPerBait, isEmpty);
+
+      expect(trips[5].name, "Test Trip");
+      expect(trips[5].id.uuid, "6d63c1f3-e529-4f70-ad74-4246af54d4a8");
+      expect(trips[5].startTimestamp.toInt(), 1618233553796);
+      expect(trips[5].endTimestamp.toInt(), 1618492747306);
+      expect(trips[5].notes, "A test note");
+      expect(trips[5].catchIds.length, 3);
+      expect(trips[5].bodyOfWaterIds.length, 2);
+      expect(trips[5].catchesPerFishingSpot.length, 3);
+      expect(trips[5].catchesPerSpecies.length, 2);
+      expect(trips[5].catchesPerSpecies[0].value, 2);
+      expect(trips[5].catchesPerSpecies[1].value, 1);
+      expect(trips[5].catchesPerAngler.length, 2);
+      expect(trips[5].catchesPerBait.length, 2);
+      expect(trips[5].catchesPerBait[0].value, 2);
+      expect(trips[5].catchesPerBait[1].value, 1);
     });
   });
 }

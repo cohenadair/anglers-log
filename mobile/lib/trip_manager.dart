@@ -15,6 +15,7 @@ import 'image_manager.dart';
 import 'model/gen/anglerslog.pb.dart';
 import 'named_entity_manager.dart';
 import 'species_manager.dart';
+import 'utils/catch_utils.dart';
 import 'utils/protobuf_utils.dart';
 import 'utils/string_utils.dart';
 
@@ -106,13 +107,13 @@ class TripManager extends NamedEntityManager<Trip> {
   }
 
   int numberOfCatches(Trip trip) {
-    var catchQuantity = trip.catchIds.fold<int>(0, (prev, e) {
+    var quantity = trip.catchIds.fold<int>(0, (prev, e) {
       var cat = _catchManager.entity(e);
-      return prev + (cat == null ? 0 : (cat.hasQuantity() ? cat.quantity : 1));
+      return prev + (cat == null ? 0 : catchQuantity(cat));
     });
     var speciesQuantity =
         trip.catchesPerSpecies.fold<int>(0, (prev, e) => prev + e.value);
-    return catchQuantity + speciesQuantity;
+    return quantity + speciesQuantity;
   }
 
   /// Returns all trip and catch photos associated with the given trip.
