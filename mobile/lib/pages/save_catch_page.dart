@@ -109,6 +109,10 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
   late final MultiMeasurementInputSpec _lengthInputState;
   late final MultiMeasurementInputSpec _weightInputState;
 
+  // Used to persist the user-selected season value, when the catch's timestamp
+  // changes.
+  bool _overwriteSeasonCalculation = false;
+
   List<CustomEntityValue> _customEntityValues = [];
   StreamSubscription<void>? _userPreferenceSubscription;
 
@@ -205,6 +209,12 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
     for (var field in allCatchFields(context)) {
       _fields[field.id] = field;
     }
+
+    // Need to set this here (rather than exclusively in EditableFormPage) so
+    // the auto-fetch atmosphere method is invoked correctly.
+    _fields[catchFieldIdAtmosphere]!.isShowing = _userPreferenceManager
+            .catchFieldIds.isEmpty ||
+        _userPreferenceManager.catchFieldIds.contains(catchFieldIdAtmosphere);
 
     _waterDepthInputState = MultiMeasurementInputSpec.waterDepth(context);
     _waterTemperatureInputState =
@@ -512,7 +522,10 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
           valueDisplayName: _seasonController.value?.displayName(context),
           noneItem: Season.season_none,
           itemBuilder: Seasons.pickerItems,
-          onPicked: (value) => setState(() => _seasonController.value = value),
+          onPicked: (value) => setState(() {
+            _overwriteSeasonCalculation = true;
+            _seasonController.value = value;
+          }),
         );
       },
     );
@@ -572,7 +585,8 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
       manager: _speciesManager,
       controller: _speciesController,
       title: Strings.of(context).catchFieldSpecies,
-      listPage: (settings) => SpeciesListPage(pickerSettings: settings.copyWith(
+      listPage: (settings) => SpeciesListPage(
+          pickerSettings: settings.copyWith(
         isRequired: true,
       )),
     );
@@ -704,7 +718,7 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
   }
 
   void _calculateSeasonIfNeeded() {
-    if (!_fields[_idSeason]!.isShowing) {
+    if (!_fields[_idSeason]!.isShowing || _overwriteSeasonCalculation) {
       return;
     }
 

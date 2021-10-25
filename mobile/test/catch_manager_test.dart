@@ -1970,6 +1970,8 @@ void main() {
 
   group("deleteMessage", () {
     testWidgets("No species", (tester) async {
+      when(appManager.tripManager.isCatchInTrip(any)).thenReturn(false);
+
       var cat = Catch()
         ..id = randomId()
         ..timestamp = Int64(DateTime(2020, 9, 25).millisecondsSinceEpoch);
@@ -1985,6 +1987,8 @@ void main() {
     });
 
     testWidgets("With species", (tester) async {
+      when(appManager.tripManager.isCatchInTrip(any)).thenReturn(false);
+
       var species = Species()
         ..id = randomId()
         ..name = "Steelhead";

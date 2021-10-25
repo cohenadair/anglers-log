@@ -127,7 +127,7 @@ void main() {
       appManager: appManager,
     ));
 
-    await tapAndSettle(tester, find.text("Atmosphere & Weather"));
+    await tapAndSettle(tester, find.text("Atmosphere and Weather"));
 
     expect(find.text("None"), findsOneWidget);
     expect(find.text("Air Temperature"), findsOneWidget);
@@ -156,7 +156,7 @@ void main() {
       appManager: appManager,
     ));
 
-    await tapAndSettle(tester, find.text("Atmosphere & Weather"));
+    await tapAndSettle(tester, find.text("Atmosphere and Weather"));
 
     expect(find.text("None"), findsOneWidget);
     expect(find.text("Air Temperature"), findsOneWidget);

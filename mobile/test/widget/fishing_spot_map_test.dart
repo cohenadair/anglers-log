@@ -32,6 +32,12 @@ void main() {
     when(appManager.fishingSpotManager.entityExists(any)).thenReturn(true);
     when(appManager.fishingSpotManager.list()).thenReturn([]);
     when(appManager.fishingSpotManager.withinRadius(any)).thenReturn(null);
+    when(appManager.fishingSpotManager.displayName(
+      any,
+      any,
+      includeLatLngLabels: anyNamed("includeLatLngLabels"),
+      includeBodyOfWater: anyNamed("includeBodyOfWater"),
+    )).thenAnswer((invocation) => invocation.positionalArguments[1].name);
 
     when(appManager.locationMonitor.currentLocation).thenReturn(null);
 

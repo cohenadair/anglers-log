@@ -40,12 +40,19 @@ void main() {
     appManager = StubbedAppManager();
     mapController = StubbedMapController();
 
+    when(appManager.anglerManager.entityExists(any)).thenReturn(false);
+    when(appManager.anglerManager.displayName(any, any))
+        .thenAnswer((invocation) => invocation.positionalArguments[1].name);
+
     when(appManager.authManager.stream).thenAnswer((_) => const Stream.empty());
 
     when(appManager.baitManager.attachmentsDisplayValues(any, any))
         .thenReturn([]);
 
     when(appManager.baitCategoryManager.listSortedByName()).thenReturn([]);
+    when(appManager.baitCategoryManager.entityExists(any)).thenReturn(false);
+
+    when(appManager.bodyOfWaterManager.entityExists(any)).thenReturn(false);
 
     when(appManager.catchManager.addOrUpdate(
       any,
@@ -57,11 +64,21 @@ void main() {
 
     when(appManager.fishingSpotManager.entityExists(any))
         .thenAnswer((invocation) => invocation.positionalArguments[0] != null);
+    when(appManager.fishingSpotManager.displayName(
+      any,
+      any,
+      includeLatLngLabels: anyNamed("includeLatLngLabels"),
+      includeBodyOfWater: anyNamed("includeBodyOfWater"),
+    )).thenAnswer((invocation) => invocation.positionalArguments[1].name);
 
     when(appManager.localDatabaseManager.insertOrReplace(any, any))
         .thenAnswer((_) => Future.value(true));
 
     when(appManager.locationMonitor.currentLocation).thenReturn(null);
+
+    when(appManager.methodManager.entityExists(any)).thenReturn(false);
+    when(appManager.methodManager.displayName(any, any))
+        .thenAnswer((invocation) => invocation.positionalArguments[1].name);
 
     when(appManager.propertiesManager.visualCrossingApiKey).thenReturn("");
     when(appManager.propertiesManager.mapboxApiKey).thenReturn("");
@@ -92,10 +109,18 @@ void main() {
     when(appManager.userPreferenceManager.stream)
         .thenAnswer((_) => const Stream.empty());
 
+    when(appManager.speciesManager.entityExists(any)).thenReturn(false);
+    when(appManager.speciesManager.displayName(any, any))
+        .thenAnswer((invocation) => invocation.positionalArguments[1].name);
+
     when(appManager.subscriptionManager.stream)
         .thenAnswer((_) => const Stream.empty());
     when(appManager.subscriptionManager.isPro).thenReturn(false);
     when(appManager.subscriptionManager.isFree).thenReturn(true);
+
+    when(appManager.waterClarityManager.entityExists(any)).thenReturn(false);
+    when(appManager.waterClarityManager.displayName(any, any))
+        .thenAnswer((invocation) => invocation.positionalArguments[1].name);
 
     appManager.stubCurrentTime(DateTime(2020, 2, 1, 10, 30));
   });
@@ -141,6 +166,7 @@ void main() {
         ..id = randomId()
         ..name = "Steelhead";
       when(appManager.speciesManager.entity(species.id)).thenReturn(species);
+      when(appManager.speciesManager.entityExists(any)).thenReturn(true);
 
       var fishingSpot = FishingSpot()
         ..id = randomId()
@@ -232,16 +258,19 @@ void main() {
         ..id = randomId()
         ..name = "Steelhead";
       when(appManager.speciesManager.entity(any)).thenReturn(species);
+      when(appManager.speciesManager.entityExists(any)).thenReturn(true);
 
       var angler = Angler()
         ..id = randomId()
         ..name = "Cohen";
       when(appManager.anglerManager.entity(any)).thenReturn(angler);
+      when(appManager.anglerManager.entityExists(any)).thenReturn(true);
 
       var clarity = WaterClarity()
         ..id = randomId()
         ..name = "Clear";
       when(appManager.waterClarityManager.entity(any)).thenReturn(clarity);
+      when(appManager.waterClarityManager.entityExists(any)).thenReturn(true);
 
       var method0 = Method()
         ..id = randomId()
@@ -391,6 +420,7 @@ void main() {
         ..id = randomId()
         ..name = "Steelhead";
       when(appManager.speciesManager.entity(any)).thenReturn(species);
+      when(appManager.speciesManager.entityExists(any)).thenReturn(true);
 
       var cat = Catch()
         ..id = randomId()
@@ -419,7 +449,7 @@ void main() {
       expect(find.byType(FishingSpotDetails), findsNothing);
       expect(findCheckbox(tester, "Favorite")!.checked, isFalse);
       expect(findCheckbox(tester, "Catch and Release")!.checked, isFalse);
-      expect(find.text("Atmosphere & Weather"), findsOneWidget);
+      expect(find.text("Atmosphere and Weather"), findsOneWidget);
 
       expect(
         findFirstWithText<TextInput>(tester, "Water Depth").controller?.value,
@@ -478,16 +508,19 @@ void main() {
         ..id = randomId()
         ..name = "Steelhead";
       when(appManager.speciesManager.entity(any)).thenReturn(species);
+      when(appManager.speciesManager.entityExists(any)).thenReturn(true);
 
       var angler = Angler()
         ..id = randomId()
         ..name = "Cohen";
       when(appManager.anglerManager.entity(any)).thenReturn(angler);
+      when(appManager.anglerManager.entityExists(any)).thenReturn(true);
 
       var clarity = WaterClarity()
         ..id = randomId()
         ..name = "Clear";
       when(appManager.waterClarityManager.entity(any)).thenReturn(clarity);
+      when(appManager.waterClarityManager.entityExists(any)).thenReturn(true);
 
       var method0 = Method()
         ..id = randomId()
@@ -628,6 +661,7 @@ void main() {
         ..id = randomId()
         ..name = "Steelhead";
       when(appManager.speciesManager.entity(any)).thenReturn(species);
+      when(appManager.speciesManager.entityExists(any)).thenReturn(true);
 
       var cat = Catch()
         ..id = randomId()
@@ -662,6 +696,7 @@ void main() {
         ..id = randomId()
         ..name = "Steelhead";
       when(appManager.speciesManager.entity(species.id)).thenReturn(species);
+      when(appManager.speciesManager.entityExists(any)).thenReturn(true);
 
       var fishingSpot = FishingSpot()
         ..id = randomId()
@@ -701,7 +736,7 @@ void main() {
       expect(find.byType(Image), findsNothing);
       expect(findCheckbox(tester, "Favorite")!.checked, isFalse);
       expect(findCheckbox(tester, "Catch and Release")!.checked, isFalse);
-      expect(find.text("Atmosphere & Weather"), findsOneWidget);
+      expect(find.text("Atmosphere and Weather"), findsOneWidget);
 
       expect(
         findFirstWithText<TextInput>(tester, "Water Depth").controller?.value,
@@ -780,13 +815,15 @@ void main() {
     });
 
     testWidgets("Saving after selecting all optional fields", (tester) async {
+      var angler = Angler()
+        ..id = randomId()
+        ..name = "Cohen";
       when(appManager.anglerManager
               .listSortedByName(filter: anyNamed("filter")))
-          .thenReturn([
-        Angler()
-          ..id = randomId()
-          ..name = "Cohen",
-      ]);
+          .thenReturn([angler]);
+      when(appManager.anglerManager.entityExists(any)).thenReturn(true);
+      when(appManager.anglerManager.entity(any)).thenReturn(angler);
+      when(appManager.anglerManager.id(any)).thenReturn(angler.id);
 
       var bait = Bait()
         ..id = randomId()
@@ -801,13 +838,15 @@ void main() {
           .thenReturn(BaitVariant(id: randomId(), baseId: bait.id));
       when(appManager.baitManager.numberOfCatches(any)).thenReturn(0);
 
+      var waterClarity = WaterClarity()
+        ..id = randomId()
+        ..name = "Clear";
       when(appManager.waterClarityManager
               .listSortedByName(filter: anyNamed("filter")))
-          .thenReturn([
-        WaterClarity()
-          ..id = randomId()
-          ..name = "Clear",
-      ]);
+          .thenReturn([waterClarity]);
+      when(appManager.waterClarityManager.entityExists(any)).thenReturn(true);
+      when(appManager.waterClarityManager.entity(any)).thenReturn(waterClarity);
+      when(appManager.waterClarityManager.id(any)).thenReturn(waterClarity.id);
 
       var methods = [
         Method()
@@ -821,6 +860,8 @@ void main() {
               .listSortedByName(filter: anyNamed("filter")))
           .thenReturn(methods);
       when(appManager.methodManager.list(any)).thenReturn(methods);
+      when(appManager.methodManager.id(any))
+          .thenAnswer((invocation) => invocation.positionalArguments.first.id);
 
       var speciesId = randomId();
       var fishingSpotId = randomId();
@@ -874,8 +915,8 @@ void main() {
           tester, findListItemCheckbox(tester, "Catch and Release"));
 
       // Set atmosphere.
-      await tester.ensureVisible(find.text("Atmosphere & Weather"));
-      await tapAndSettle(tester, find.text("Atmosphere & Weather"));
+      await tester.ensureVisible(find.text("Atmosphere and Weather"));
+      await tapAndSettle(tester, find.text("Atmosphere and Weather"));
       await enterTextAndSettle(
           tester, find.widgetWithText(TextField, "Air Temperature"), "58");
       await tapAndSettle(tester, find.byType(BackButtonIcon));
@@ -956,6 +997,8 @@ void main() {
       ..id = randomId()
       ..name = "Steelhead";
     when(appManager.speciesManager.entity(species.id)).thenReturn(species);
+    when(appManager.speciesManager.entityExists(any)).thenReturn(true);
+
     var fishingSpot = FishingSpot()
       ..id = randomId()
       ..name = "Spot A";
@@ -1242,6 +1285,7 @@ void main() {
       ..id = randomId()
       ..name = "Steelhead";
     when(appManager.speciesManager.entity(species.id)).thenReturn(species);
+    when(appManager.speciesManager.entityExists(any)).thenReturn(true);
 
     var fishingSpot = FishingSpot()
       ..id = randomId()
@@ -1276,6 +1320,7 @@ void main() {
       ..id = randomId()
       ..name = "Steelhead";
     when(appManager.speciesManager.entity(species.id)).thenReturn(species);
+    when(appManager.speciesManager.entityExists(any)).thenReturn(true);
 
     var fishingSpot1 = FishingSpot()
       ..id = randomId()

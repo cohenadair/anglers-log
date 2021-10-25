@@ -100,14 +100,26 @@ void main() {
   setUp(() {
     appManager = StubbedAppManager();
 
-    when(appManager.anglerManager.name(any))
-        .thenAnswer((invocation) => invocation.positionalArguments.first.name);
+    when(appManager.anglerManager.displayName(any, any))
+        .thenAnswer((invocation) => invocation.positionalArguments[1].name);
+    when(appManager.anglerManager.id(any))
+        .thenAnswer((invocation) => invocation.positionalArguments[0].id);
+    when(appManager.anglerManager.idSet(
+      entities: anyNamed("entities"),
+      ids: anyNamed("ids"),
+    )).thenReturn(anglerList.map((e) => e.id).toSet());
     when(appManager.anglerManager.list(any)).thenReturn(anglerList);
     when(appManager.anglerManager.listSortedByName(filter: anyNamed("filter")))
         .thenReturn(anglerList);
 
-    when(appManager.baitCategoryManager.name(any))
-        .thenAnswer((invocation) => invocation.positionalArguments.first.name);
+    when(appManager.baitCategoryManager.displayName(any, any))
+        .thenAnswer((invocation) => invocation.positionalArguments[1].name);
+    when(appManager.baitCategoryManager.id(any))
+        .thenAnswer((invocation) => invocation.positionalArguments[0].id);
+    when(appManager.baitCategoryManager.idSet(
+      entities: anyNamed("entities"),
+      ids: anyNamed("ids"),
+    )).thenReturn({});
     when(appManager.baitCategoryManager.listSortedByName()).thenReturn([]);
 
     when(appManager.baitManager.name(any))
@@ -131,8 +143,14 @@ void main() {
         .thenReturn(baitAttachmentList);
     when(appManager.baitManager.numberOfCatches(any)).thenReturn(0);
 
-    when(appManager.bodyOfWaterManager.name(any))
-        .thenAnswer((invocation) => invocation.positionalArguments.first.name);
+    when(appManager.bodyOfWaterManager.displayName(any, any))
+        .thenAnswer((invocation) => invocation.positionalArguments[1].name);
+    when(appManager.bodyOfWaterManager.id(any))
+        .thenAnswer((invocation) => invocation.positionalArguments[0].id);
+    when(appManager.bodyOfWaterManager.idSet(
+      entities: anyNamed("entities"),
+      ids: anyNamed("ids"),
+    )).thenReturn(bodyOfWaterList.map((e) => e.id).toSet());
     when(appManager.bodyOfWaterManager.list(any)).thenReturn(bodyOfWaterList);
     when(appManager.bodyOfWaterManager
             .listSortedByName(filter: anyNamed("filter")))
@@ -149,23 +167,43 @@ void main() {
     )).thenAnswer((_) => Future.value(false));
     when(appManager.reportManager.nameExists(any)).thenReturn(false);
 
-    when(appManager.fishingSpotManager.name(any))
-        .thenAnswer((invocation) => invocation.positionalArguments.first.name);
+    when(appManager.fishingSpotManager.displayName(
+      any,
+      any,
+      includeBodyOfWater: anyNamed("includeBodyOfWater"),
+      includeLatLngLabels: anyNamed("includeLatLngLabels"),
+    )).thenAnswer((invocation) => invocation.positionalArguments[1].name);
     when(appManager.fishingSpotManager.list(any)).thenReturn(fishingSpotList);
     when(appManager.fishingSpotManager.filteredList(any))
         .thenReturn(fishingSpotList);
     when(appManager.fishingSpotManager
             .listSortedByName(filter: anyNamed("filter")))
         .thenReturn(fishingSpotList);
+    when(appManager.fishingSpotManager.idSet(
+      entities: anyNamed("entities"),
+      ids: anyNamed("ids"),
+    )).thenReturn(fishingSpotList.map((e) => e.id).toSet());
 
-    when(appManager.methodManager.name(any))
-        .thenAnswer((invocation) => invocation.positionalArguments.first.name);
+    when(appManager.methodManager.displayName(any, any))
+        .thenAnswer((invocation) => invocation.positionalArguments[1].name);
+    when(appManager.methodManager.id(any))
+        .thenAnswer((invocation) => invocation.positionalArguments[0].id);
+    when(appManager.methodManager.idSet(
+      entities: anyNamed("entities"),
+      ids: anyNamed("ids"),
+    )).thenReturn(methodList.map((e) => e.id).toSet());
     when(appManager.methodManager.list(any)).thenReturn(methodList);
     when(appManager.methodManager.listSortedByName(filter: anyNamed("filter")))
         .thenReturn(methodList);
 
-    when(appManager.speciesManager.name(any))
-        .thenAnswer((invocation) => invocation.positionalArguments.first.name);
+    when(appManager.speciesManager.displayName(any, any))
+        .thenAnswer((invocation) => invocation.positionalArguments[1].name);
+    when(appManager.speciesManager.id(any))
+        .thenAnswer((invocation) => invocation.positionalArguments[0].id);
+    when(appManager.speciesManager.idSet(
+      entities: anyNamed("entities"),
+      ids: anyNamed("ids"),
+    )).thenReturn(speciesList.map((e) => e.id).toSet());
     when(appManager.speciesManager.list(any)).thenReturn(speciesList);
     when(appManager.speciesManager.listSortedByName(filter: anyNamed("filter")))
         .thenReturn(speciesList);
@@ -191,8 +229,14 @@ void main() {
     when(appManager.userPreferenceManager.catchFieldIds).thenReturn([]);
     when(appManager.userPreferenceManager.atmosphereFieldIds).thenReturn([]);
 
-    when(appManager.waterClarityManager.name(any))
-        .thenAnswer((invocation) => invocation.positionalArguments.first.name);
+    when(appManager.waterClarityManager.displayName(any, any))
+        .thenAnswer((invocation) => invocation.positionalArguments[1].name);
+    when(appManager.waterClarityManager.id(any))
+        .thenAnswer((invocation) => invocation.positionalArguments[0].id);
+    when(appManager.waterClarityManager.idSet(
+      entities: anyNamed("entities"),
+      ids: anyNamed("ids"),
+    )).thenReturn(waterClarityList.map((e) => e.id).toSet());
     when(appManager.waterClarityManager.list(any)).thenReturn(waterClarityList);
     when(appManager.waterClarityManager
             .listSortedByName(filter: anyNamed("filter")))
@@ -645,14 +689,14 @@ void main() {
     await selectItems(tester, "All species", ["All", "Catfish"]);
     await selectItems(tester, "All baits", ["All", "Spoon"]);
 
+    await tester.ensureVisible(find.text("All fishing methods"));
+    await selectItems(tester, "All fishing methods", ["All", "Casting"]);
+
     await tester.ensureVisible(find.text("All fishing spots"));
     await selectItems(tester, "All fishing spots", ["All", "B"]);
 
     await tester.ensureVisible(find.text("All bodies of water"));
     await selectItems(tester, "All bodies of water", ["All", "Lake Huron"]);
-
-    await tester.ensureVisible(find.text("All fishing methods"));
-    await selectItems(tester, "All fishing methods", ["All", "Casting"]);
 
     await tester.ensureVisible(find.text("All times of day"));
     await selectItems(tester, "All times of day", ["All", "Afternoon"]);

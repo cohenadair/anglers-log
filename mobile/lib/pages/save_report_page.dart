@@ -6,7 +6,6 @@ import 'package:quiver/strings.dart';
 
 import '../angler_manager.dart';
 import '../body_of_water_manager.dart';
-import '../entity_manager.dart';
 import '../fishing_spot_manager.dart';
 import '../i18n/strings.dart';
 import '../method_manager.dart';
@@ -452,12 +451,11 @@ class _SaveReportPageState extends State<SaveReportPage> {
       manager: _anglerManager,
       controller: _anglersController,
       emptyValue: Strings.of(context).saveReportPageAllAnglers,
+      isEmptyAll: true,
       isHidden: hideCatchField(catchFieldIdAngler),
       listPage: (pickerSettings) => AnglerListPage(
         pickerSettings: pickerSettings,
       ),
-      onPicked: (ids) =>
-          _updatePickedEntities(ids, _anglerManager, _anglersController),
     );
   }
 
@@ -466,12 +464,11 @@ class _SaveReportPageState extends State<SaveReportPage> {
       manager: _speciesManager,
       controller: _speciesController,
       emptyValue: Strings.of(context).saveReportPageAllSpecies,
+      isEmptyAll: true,
       isHidden: hideCatchField(catchFieldIdSpecies),
       listPage: (pickerSettings) => SpeciesListPage(
         pickerSettings: pickerSettings,
       ),
-      onPicked: (ids) =>
-          _updatePickedEntities(ids, _speciesManager, _speciesController),
     );
   }
 
@@ -492,12 +489,11 @@ class _SaveReportPageState extends State<SaveReportPage> {
       manager: _bodyOfWaterManager,
       controller: _bodiesOfWaterController,
       emptyValue: Strings.of(context).saveReportPageAllBodiesOfWater,
+      isEmptyAll: true,
       isHidden: hideCatchField(catchFieldIdFishingSpot),
       listPage: (pickerSettings) => BodyOfWaterListPage(
         pickerSettings: pickerSettings,
       ),
-      onPicked: (ids) => _updatePickedEntities(
-          ids, _bodyOfWaterManager, _bodiesOfWaterController),
     );
   }
 
@@ -509,11 +505,16 @@ class _SaveReportPageState extends State<SaveReportPage> {
       controller: _fishingSpotsController,
       emptyValue: Strings.of(context).saveReportPageAllFishingSpots,
       isHidden: hideCatchField(catchFieldIdFishingSpot),
+      displayNameOverride: (fishingSpot) => _fishingSpotManager
+          .displayName(context, fishingSpot, includeBodyOfWater: true),
       customListPage: FishingSpotListPage(
         pickerSettings: FishingSpotListPagePickerSettings(
           onPicked: (context, fishingSpots) {
-            _updatePickedEntities(fishingSpots.map((e) => e.id).toSet(),
-                _methodManager, _methodsController);
+            // Treat an empty controller value as "include all", so we're
+            // not including 100s of objects in a protobuf collection.
+            var ids = fishingSpots.map((e) => e.id).toSet();
+            setState(() => _fishingSpotsController.value =
+                ids.containsAll(_fishingSpotManager.idSet()) ? {} : ids);
             return true;
           },
           initialValues: _fishingSpotsController.value.isEmpty
@@ -529,14 +530,13 @@ class _SaveReportPageState extends State<SaveReportPage> {
       manager: _methodManager,
       controller: _methodsController,
       emptyValue: Strings.of(context).saveReportPageAllMethods,
+      isEmptyAll: true,
       isHidden: hideCatchField(catchFieldIdMethods),
       listPage: (pickerSettings) {
         return MethodListPage(
           pickerSettings: pickerSettings,
         );
       },
-      onPicked: (ids) =>
-          _updatePickedEntities(ids, _methodManager, _methodsController),
     );
   }
 
@@ -662,14 +662,13 @@ class _SaveReportPageState extends State<SaveReportPage> {
       manager: _waterClarityManager,
       controller: _waterClaritiesController,
       emptyValue: Strings.of(context).saveReportPageAllWaterClarities,
+      isEmptyAll: true,
       isHidden: hideCatchField(catchFieldIdWaterClarity),
       listPage: (pickerSettings) {
         return WaterClarityListPage(
           pickerSettings: pickerSettings,
         );
       },
-      onPicked: (ids) => _updatePickedEntities(
-          ids, _waterClarityManager, _waterClaritiesController),
     );
   }
 
@@ -715,14 +714,6 @@ class _SaveReportPageState extends State<SaveReportPage> {
         );
       },
     );
-  }
-
-  void _updatePickedEntities(Set<Id> pickedIds, EntityManager manager,
-      SetInputController<Id> controller) {
-    // Treat an empty controller value as "include all", so we're
-    // not including 100s of objects in a protobuf collection.
-    setState(() => controller.value =
-        pickedIds.containsAll(manager.idSet()) ? {} : pickedIds);
   }
 
   FutureOr<bool> _save(BuildContext context) {

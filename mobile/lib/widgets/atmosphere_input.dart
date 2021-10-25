@@ -236,13 +236,6 @@ class __AtmosphereInputPageState extends State<_AtmosphereInputPage> {
       controller: TimestampInputController(_timeManager),
     );
 
-    // Only show fields that the user is interested in.
-    var showingFieldIds = _userPreferenceManager.atmosphereFieldIds;
-    for (var field in _fields.values) {
-      field.isShowing =
-          showingFieldIds.isEmpty || showingFieldIds.contains(field.id);
-    }
-
     if (widget.controller.value != null) {
       _updateFromAtmosphere(widget.controller.value!);
     }
@@ -285,6 +278,7 @@ class __AtmosphereInputPageState extends State<_AtmosphereInputPage> {
       },
       onRefresh: _fetch,
       overflowOptions: [FormPageOverflowOption.manageUnits(context)],
+      trackedFieldIds: _userPreferenceManager.atmosphereFieldIds,
     );
   }
 

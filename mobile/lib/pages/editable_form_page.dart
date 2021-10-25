@@ -91,7 +91,7 @@ class EditableFormPage extends StatefulWidget {
     this.title,
     this.header,
     this.fields = const {},
-    this.trackedFieldIds = const[],
+    this.trackedFieldIds = const [],
     this.customEntityIds = const [],
     this.customEntityValues = const [],
     this.allowCustomEntities = true,
@@ -162,8 +162,9 @@ class _EditableFormPageState extends State<EditableFormPage> {
 
     // Only include fields being tracked by the user.
     for (var field in _fields.values) {
-      field.isShowing = widget.trackedFieldIds.isEmpty ||
-          widget.trackedFieldIds.contains(field.id);
+      field.isShowing = field.isShowing &&
+          (widget.trackedFieldIds.isEmpty ||
+              widget.trackedFieldIds.contains(field.id));
     }
   }
 

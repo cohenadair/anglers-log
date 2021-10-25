@@ -54,10 +54,10 @@ class FishingSpotManager extends ImageEntityManager<FishingSpot> {
     var bodyOfWaterName = "";
     var bodyOfWater = _bodyOfWaterManager.entity(entity.bodyOfWaterId);
     if (includeBodyOfWater && bodyOfWater != null) {
-      bodyOfWaterName = "(${bodyOfWater.name})";
+      bodyOfWaterName = " (${bodyOfWater.name})";
     }
 
-    return "$name $bodyOfWaterName";
+    return "$name$bodyOfWaterName";
   }
 
   @override

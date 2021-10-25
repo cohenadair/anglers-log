@@ -26,6 +26,14 @@ class EntityPickerInput<T extends GeneratedMessage> extends StatelessWidget {
   /// fishing spots. In these cases a definitive type T does not work.
   final Widget? customListPage;
 
+  /// A function that returns the display name of [T]. If null (default),
+  /// [manager.displayName(BuildContext, T)] is called.
+  final String Function(T)? displayNameOverride;
+
+  /// When true, an empty controller value is treated as "all" and all
+  /// entities will be selected when the picker page is opened.
+  final bool isEmptyAll;
+
   /// Called when items are picked. If this value is not null, the
   /// [InputController] value associated with this widget will _not_ be updated.
   /// If this value _is_ null, the controller's value is automatically updated.
@@ -52,15 +60,25 @@ class EntityPickerInput<T extends GeneratedMessage> extends StatelessWidget {
     this.listPage,
     void Function(Set<Id>)? onPicked,
     this.customListPage,
+    this.isEmptyAll = false,
+    this.displayNameOverride,
   }) : assert(isNotEmpty(emptyValue)) {
     _onPicked = onPicked;
-    _updateControllerValue = (ids) => controller.value = ids;
     _emptyValue = emptyValue;
     _isMulti = true;
+    _multiController = controller;
+
+    _updateControllerValue = (ids) {
+      if (isEmptyAll && ids.containsAll(manager.idSet())) {
+        controller.clear();
+      } else {
+        controller.value = ids;
+      }
+    };
+
     _fetchValues = () => controller.value.isNotEmpty
         ? manager.list(controller.value).toSet()
         : <T>{};
-    _multiController = controller;
   }
 
   EntityPickerInput.single({
@@ -71,7 +89,8 @@ class EntityPickerInput<T extends GeneratedMessage> extends StatelessWidget {
     this.listPage,
     this.customListPage,
     void Function(Id?)? onPicked,
-  }) {
+    this.displayNameOverride,
+  }) : isEmptyAll = false {
     Id? firstOrNull(Set<Id> ids) => ids.isEmpty ? null : ids.first;
 
     _onPicked = onPicked == null ? null : (ids) => onPicked(firstOrNull(ids));
@@ -107,8 +126,11 @@ class EntityPickerInput<T extends GeneratedMessage> extends StatelessWidget {
           builder: (_, __, ___) {
             // Fetch latest values from the database.
             var values = _fetchValues();
-            var displayValues =
-                values.map((e) => manager.displayName(context, e)).toSet();
+            var displayValues = values
+                .map((e) =>
+                    displayNameOverride?.call(e) ??
+                    manager.displayName(context, e))
+                .toSet();
 
             if (_isMulti) {
               return MultiListPickerInput(
@@ -145,7 +167,8 @@ class EntityPickerInput<T extends GeneratedMessage> extends StatelessWidget {
 
           return true;
         },
-        initialValues: values,
+        initialValues:
+            isEmptyAll && values.isEmpty ? manager.list().toSet() : values,
         isMulti: _isMulti,
       ),
     );

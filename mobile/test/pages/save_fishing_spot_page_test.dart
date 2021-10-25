@@ -18,14 +18,19 @@ void main() {
   setUp(() {
     appManager = StubbedAppManager();
 
+    var bodyOfWater = BodyOfWater(
+      id: randomId(),
+      name: "Lake Huron",
+    );
     when(appManager.bodyOfWaterManager.listSortedByName(
       filter: anyNamed("filter"),
-    )).thenReturn([
-      BodyOfWater(
-        id: randomId(),
-        name: "Lake Huron",
-      ),
-    ]);
+    )).thenReturn([bodyOfWater]);
+    when(appManager.bodyOfWaterManager.entity(any)).thenReturn(bodyOfWater);
+    when(appManager.bodyOfWaterManager.entityExists(any)).thenReturn(true);
+    when(appManager.bodyOfWaterManager.displayName(any, any))
+        .thenReturn("Lake Huron");
+    when(appManager.bodyOfWaterManager.id(any))
+        .thenAnswer((invocation) => invocation.positionalArguments.first.id);
 
     when(appManager.fishingSpotManager.addOrUpdate(
       any,
@@ -163,6 +168,8 @@ void main() {
   });
 
   testWidgets("Editing with no optional values set", (tester) async {
+    when(appManager.bodyOfWaterManager.entityExists(any)).thenReturn(false);
+
     await tester.pumpWidget(Testable(
       (_) => SaveFishingSpotPage.edit(FishingSpot()),
       appManager: appManager,

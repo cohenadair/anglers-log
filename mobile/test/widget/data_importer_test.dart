@@ -35,6 +35,10 @@ void main() {
     )).thenAnswer((_) => Future.value(true));
     when(appManager.baitManager.named(any)).thenReturn(null);
 
+    when(appManager.bodyOfWaterManager.addOrUpdate(any))
+        .thenAnswer((_) => Future.value(true));
+    when(appManager.bodyOfWaterManager.named(any)).thenReturn(null);
+
     when(appManager.catchManager.addOrUpdate(
       any,
       imageFiles: anyNamed("imageFiles"),
@@ -44,7 +48,8 @@ void main() {
 
     when(appManager.fishingSpotManager.addOrUpdate(any))
         .thenAnswer((_) => Future.value(true));
-    when(appManager.fishingSpotManager.named(any)).thenReturn(null);
+    when(appManager.fishingSpotManager.namedWithBodyOfWater(any, any))
+        .thenReturn(null);
 
     when(appManager.filePickerWrapper.pickFiles(
       type: anyNamed("type"),

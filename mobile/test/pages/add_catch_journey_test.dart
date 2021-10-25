@@ -98,6 +98,7 @@ void main() {
         ..id = randomId()
         ..name = "Steelhead"
     ]);
+    when(appManager.speciesManager.entityExists(any)).thenReturn(true);
 
     when(appManager.subscriptionManager.isFree).thenReturn(false);
   });

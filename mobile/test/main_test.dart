@@ -147,6 +147,9 @@ void main() {
     when(appManager.customEntityManager.entityExists(any)).thenReturn(false);
     when(appManager.baitManager.attachmentsDisplayValues(any, any))
         .thenReturn([]);
+    when(appManager.anglerManager.entityExists(any)).thenReturn(false);
+    when(appManager.speciesManager.entityExists(any)).thenReturn(false);
+    when(appManager.waterClarityManager.entityExists(any)).thenReturn(false);
 
     await tester.pumpWidget(AnglersLog(appManager.app));
 
