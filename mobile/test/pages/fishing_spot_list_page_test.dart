@@ -37,6 +37,8 @@ void main() {
 
     when(appManager.fishingSpotManager.filteredList(any))
         .thenReturn(fishingSpots);
+    when(appManager.fishingSpotManager.displayName(any, any))
+        .thenAnswer((invocation) => invocation.positionalArguments[1].name);
   });
 
   testWidgets("Not picking has null picker settings", (tester) async {

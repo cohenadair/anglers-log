@@ -12,6 +12,8 @@ void main() {
   setUp(() {
     appManager = StubbedAppManager();
 
+    when(appManager.anglerManager.entityExists(any)).thenReturn(false);
+
     when(appManager.baitManager.attachmentsDisplayValues(any, any))
         .thenReturn([]);
 
@@ -21,6 +23,8 @@ void main() {
     when(appManager.locationMonitor.currentLocation).thenReturn(null);
 
     when(appManager.subscriptionManager.isFree).thenReturn(false);
+
+    when(appManager.speciesManager.entityExists(any)).thenReturn(false);
 
     when(appManager.userPreferenceManager.catchCustomEntityIds).thenReturn([]);
     when(appManager.userPreferenceManager.catchFieldIds).thenReturn([]);
@@ -36,6 +40,8 @@ void main() {
         .thenReturn(false);
     when(appManager.userPreferenceManager.stream)
         .thenAnswer((_) => const Stream.empty());
+
+    when(appManager.waterClarityManager.entityExists(any)).thenReturn(false);
   });
 
   testWidgets("Menu hiding/showing", (tester) async {

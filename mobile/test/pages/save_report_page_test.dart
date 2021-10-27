@@ -183,6 +183,8 @@ void main() {
       entities: anyNamed("entities"),
       ids: anyNamed("ids"),
     )).thenReturn(fishingSpotList.map((e) => e.id).toSet());
+    when(appManager.fishingSpotManager.id(any))
+        .thenAnswer((invocation) => invocation.positionalArguments[0].id);
 
     when(appManager.methodManager.displayName(any, any))
         .thenAnswer((invocation) => invocation.positionalArguments[1].name);

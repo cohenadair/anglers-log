@@ -26,6 +26,8 @@ void main() {
     appManager = StubbedAppManager();
     mapController = StubbedMapController();
 
+    when(appManager.anglerManager.entityExists(any)).thenReturn(false);
+
     when(appManager.baitManager.attachmentsDisplayValues(any, any))
         .thenReturn([]);
 
@@ -92,15 +94,19 @@ void main() {
     when(appManager.userPreferenceManager.stream)
         .thenAnswer((_) => const Stream.empty());
 
+    var species = Species()
+      ..id = randomId()
+      ..name = "Steelhead";
     when(appManager.speciesManager.listSortedByName(filter: anyNamed("filter")))
-        .thenReturn([
-      Species()
-        ..id = randomId()
-        ..name = "Steelhead"
-    ]);
+        .thenReturn([species]);
     when(appManager.speciesManager.entityExists(any)).thenReturn(true);
+    when(appManager.speciesManager.entity(any)).thenReturn(species);
+    when(appManager.speciesManager.displayName(any, any))
+        .thenAnswer((invocation) => invocation.positionalArguments[1].name);
 
     when(appManager.subscriptionManager.isFree).thenReturn(false);
+
+    when(appManager.waterClarityManager.entityExists(any)).thenReturn(false);
   });
 
   testWidgets("Picked image uses location data to fetch existing fishing spot",

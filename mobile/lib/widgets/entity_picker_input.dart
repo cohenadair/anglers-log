@@ -22,9 +22,15 @@ class EntityPickerInput<T extends GeneratedMessage> extends StatelessWidget {
   final Widget Function(ManageableListPagePickerSettings<T>)? listPage;
 
   /// Used for when a picker page can have multiple entities displayed, such
-  /// as a FishingSpotListPage, which shows bodies of water as well as
+  /// as a [FishingSpotListPage], which shows bodies of water as well as
   /// fishing spots. In these cases a definitive type T does not work.
-  final Widget? customListPage;
+  ///
+  /// The passed in function is the default on picked function that updates
+  /// the input's controller value.
+  ///
+  /// The passed in [Set<T>] is the initial values of the picker.
+  final Widget Function(bool Function(BuildContext, Set<T>), Set<T>)?
+      customListPage;
 
   /// A function that returns the display name of [T]. If null (default),
   /// [manager.displayName(BuildContext, T)] is called.
@@ -153,25 +159,30 @@ class EntityPickerInput<T extends GeneratedMessage> extends StatelessWidget {
   }
 
   void showPickerPage(BuildContext context, Set<T> values) {
-    var pickerPage = customListPage;
+    var initialValues =
+        isEmptyAll && values.isEmpty ? manager.list().toSet() : values;
+    var pickerPage = customListPage?.call(_defaultOnPicked, initialValues);
+
     pickerPage ??= listPage!(
       ManageableListPagePickerSettings<T>(
-        onPicked: (context, entities) {
-          var pickedIds = entities.map((e) => manager.id(e)).toSet();
-
-          if (_onPicked == null) {
-            _updateControllerValue(pickedIds);
-          } else {
-            _onPicked!.call(pickedIds);
-          }
-
-          return true;
-        },
-        initialValues:
-            isEmptyAll && values.isEmpty ? manager.list().toSet() : values,
+        onPicked: _defaultOnPicked,
+        initialValues: initialValues,
         isMulti: _isMulti,
       ),
     );
+
     push(context, pickerPage);
+  }
+
+  bool _defaultOnPicked(BuildContext context, Set<T> pickedValues) {
+    var pickedIds = pickedValues.map((e) => manager.id(e)).toSet();
+
+    if (_onPicked == null) {
+      _updateControllerValue(pickedIds);
+    } else {
+      _onPicked!.call(pickedIds);
+    }
+
+    return true;
   }
 }

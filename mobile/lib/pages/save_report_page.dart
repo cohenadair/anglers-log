@@ -498,28 +498,18 @@ class _SaveReportPageState extends State<SaveReportPage> {
   }
 
   Widget _buildFishingSpotsPicker() {
-    var allFishingSpots = _fishingSpotManager.list().toSet();
-
     return EntityPickerInput<FishingSpot>.multi(
       manager: _fishingSpotManager,
       controller: _fishingSpotsController,
       emptyValue: Strings.of(context).saveReportPageAllFishingSpots,
+      isEmptyAll: true,
       isHidden: hideCatchField(catchFieldIdFishingSpot),
       displayNameOverride: (fishingSpot) => _fishingSpotManager
           .displayName(context, fishingSpot, includeBodyOfWater: true),
-      customListPage: FishingSpotListPage(
+      customListPage: (onPicked, initialValues) => FishingSpotListPage(
         pickerSettings: FishingSpotListPagePickerSettings(
-          onPicked: (context, fishingSpots) {
-            // Treat an empty controller value as "include all", so we're
-            // not including 100s of objects in a protobuf collection.
-            var ids = fishingSpots.map((e) => e.id).toSet();
-            setState(() => _fishingSpotsController.value =
-                ids.containsAll(_fishingSpotManager.idSet()) ? {} : ids);
-            return true;
-          },
-          initialValues: _fishingSpotsController.value.isEmpty
-              ? allFishingSpots
-              : _fishingSpotManager.list(_fishingSpotsController.value).toSet(),
+          onPicked: onPicked,
+          initialValues: initialValues,
         ),
       ),
     );
