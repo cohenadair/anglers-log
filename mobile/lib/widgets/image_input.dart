@@ -101,7 +101,7 @@ class SingleImageInput extends StatefulWidget {
 }
 
 class _SingleImageInputState extends State<SingleImageInput> {
-  final _multiController = ListInputController<PickedImage>();
+  final _multiController = ImagesInputController();
   late final VoidCallback _multiControllerListener;
 
   @override

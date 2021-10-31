@@ -2,12 +2,14 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
+import 'package:mobile/pages/image_picker_page.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mobile/utils/validator.dart';
 import 'package:mobile/widgets/input_controller.dart';
 import 'package:mobile/widgets/widget.dart';
 import 'package:mockito/mockito.dart';
 
+import '../mocks/mocks.dart';
 import '../mocks/mocks.mocks.dart';
 import '../mocks/stubbed_app_manager.dart';
 import '../test_utils.dart';
@@ -54,6 +56,13 @@ void main() {
   });
 
   group("ListInputController", () {
+    test(
+      "Use ImagesInputController instead of ListInputController<PickedImage>",
+      () {
+        expect(() => ListInputController<PickedImage>(), throwsAssertionError);
+      },
+    );
+
     test("Getter returns empty List", () {
       expect(ListInputController<Id>().value.isEmpty, isTrue);
     });
@@ -410,6 +419,23 @@ void main() {
       );
 
       expect(controller.isSet, isTrue);
+    });
+  });
+
+  group("ImagesInputController", () {
+    test("originalFiles", () {
+      var controller = ImagesInputController();
+      controller.value = [
+        PickedImage(
+          originalFile: MockFile(),
+        ),
+        PickedImage(
+          originalFile: MockFile(),
+        ),
+        PickedImage(),
+      ];
+
+      expect(controller.originalFiles.length, 2);
     });
   });
 }

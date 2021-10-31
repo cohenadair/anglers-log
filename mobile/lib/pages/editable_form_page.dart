@@ -22,6 +22,10 @@ class EditableFormPage extends StatefulWidget {
   /// A unique ID to [Field] map of all valid fields for the form.
   final Map<Id, Field> fields;
 
+  /// A list of field IDs being tracked by the user. Used to hide/show fields
+  /// accordingly.
+  final List<Id> trackedFieldIds;
+
   /// A list of all [CustomEntity] objects associated with this form. These will
   /// each have their own input widget, and their initial values are determined
   /// by [customEntityValues].
@@ -87,6 +91,7 @@ class EditableFormPage extends StatefulWidget {
     this.title,
     this.header,
     this.fields = const {},
+    this.trackedFieldIds = const [],
     this.customEntityIds = const [],
     this.customEntityValues = const [],
     this.allowCustomEntities = true,
@@ -154,6 +159,13 @@ class _EditableFormPageState extends State<EditableFormPage> {
             valueForCustomEntityType(entity.type, value);
       }
     }
+
+    // Only include fields being tracked by the user.
+    for (var field in _fields.values) {
+      field.isShowing = field.isShowing &&
+          (widget.trackedFieldIds.isEmpty ||
+              widget.trackedFieldIds.contains(field.id));
+    }
   }
 
   @override
@@ -215,7 +227,6 @@ class _EditableFormPageState extends State<EditableFormPage> {
 
     return Padding(
       padding: const EdgeInsets.only(
-        top: paddingWidget,
         bottom: paddingWidgetSmall,
       ),
       child: child,
@@ -238,7 +249,11 @@ class _EditableFormPageState extends State<EditableFormPage> {
     var customField = _customEntityManager.entity(id);
     if (customField != null) {
       return Padding(
-        padding: insetsHorizontalDefault,
+        // Boolean fields use a CheckboxInput, which uses ListItem, which always
+        // has padding included.
+        padding: customField.type == CustomEntity_Type.boolean
+            ? insetsZero
+            : insetsHorizontalDefault,
         child: inputTypeWidget(
           context,
           type: customField.type,

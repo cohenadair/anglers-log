@@ -8,31 +8,43 @@ import '../model/gen/anglerslog.pb.dart';
 import '../pages/manageable_list_page.dart';
 import '../pages/save_fishing_spot_page.dart';
 import '../res/style.dart';
-import '../utils/protobuf_utils.dart';
 import '../utils/sectioned_list_model.dart';
 import '../utils/string_utils.dart';
 import '../widgets/widget.dart';
 
-class FishingSpotListPage extends StatelessWidget {
+class FishingSpotListPage extends StatefulWidget {
   final FishingSpotListPagePickerSettings? pickerSettings;
 
   const FishingSpotListPage({
     this.pickerSettings,
   });
 
-  bool get _isPicking => pickerSettings != null;
+  @override
+  State<FishingSpotListPage> createState() => _FishingSpotListPageState();
+}
+
+class _FishingSpotListPageState extends State<FishingSpotListPage> {
+  late _FishingSpotListPageModel _model;
+
+  BodyOfWaterManager get _bodyOfWaterManager => BodyOfWaterManager.of(context);
+
+  FishingSpotManager get _fishingSpotManager => FishingSpotManager.of(context);
+
+  bool get _isPicking => widget.pickerSettings != null;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _model = _FishingSpotListPageModel(
+      bodyOfWaterManager: _bodyOfWaterManager,
+      fishingSpotManager: _fishingSpotManager,
+      itemBuilder: _buildFishingSpotItem,
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
-    var bodyOfWaterManager = BodyOfWaterManager.of(context);
-    var fishingSpotManager = FishingSpotManager.of(context);
-
-    var model = _FishingSpotListPageModel(
-      bodyOfWaterManager: bodyOfWaterManager,
-      fishingSpotManager: fishingSpotManager,
-      itemBuilder: _buildFishingSpotItem,
-    );
-
     return ManageableListPage<dynamic>(
       titleBuilder: (items) => Text(
         format(
@@ -41,17 +53,17 @@ class FishingSpotListPage extends StatelessWidget {
         ),
       ),
       forceCenterTitle: !_isPicking,
-      itemBuilder: model.buildItemModel,
+      itemBuilder: _model.buildItemModel,
       searchDelegate: ManageableListPageSearchDelegate(
         hint: Strings.of(context).fishingSpotListPageSearchHint,
       ),
-      pickerSettings: _manageableListPagePickerSettings(context, model),
+      pickerSettings: _manageableListPagePickerSettings(context, _model),
       itemManager: ManageableListPageItemManager<dynamic>(
         listenerManagers: [
-          bodyOfWaterManager,
-          fishingSpotManager,
+          _bodyOfWaterManager,
+          _fishingSpotManager,
         ],
-        loadItems: (query) => model.buildModel(context, query),
+        loadItems: (query) => _model.buildModel(context, query),
         emptyItemsSettings: ManageableListPageEmptyListSettings(
           icon: Icons.place,
           title: Strings.of(context).fishingSpotListPageEmptyListTitle,
@@ -59,9 +71,9 @@ class FishingSpotListPage extends StatelessWidget {
               Strings.of(context).fishingSpotListPageEmptyListDescription,
         ),
         deleteWidget: (context, fishingSpot) =>
-            Text(fishingSpotManager.deleteMessage(context, fishingSpot)),
+            Text(_fishingSpotManager.deleteMessage(context, fishingSpot)),
         deleteItem: (context, fishingSpot) =>
-            fishingSpotManager.delete(fishingSpot.id),
+            _fishingSpotManager.delete(fishingSpot.id),
         editPageBuilder: (fishingSpot) => SaveFishingSpotPage.edit(fishingSpot),
       ),
     );
@@ -76,14 +88,14 @@ class FishingSpotListPage extends StatelessWidget {
     return ManageableListPagePickerSettings<dynamic>(
       onPicked: (context, fishingSpots) {
         fishingSpots.removeWhere((e) => e is! FishingSpot);
-        return pickerSettings!.onPicked(context,
+        return widget.pickerSettings!.onPicked(context,
             fishingSpots.map<FishingSpot>((e) => e as FishingSpot).toSet());
       },
       containsAll: (fishingSpots) => fishingSpots.containsAll(model.items),
       title: Text(Strings.of(context).pickerTitleFishingSpot),
       multiTitle: Text(Strings.of(context).pickerTitleFishingSpots),
-      isMulti: pickerSettings!.isMulti,
-      initialValues: pickerSettings!.initialValues,
+      isMulti: widget.pickerSettings!.isMulti,
+      initialValues: widget.pickerSettings!.initialValues,
     );
   }
 
@@ -173,7 +185,7 @@ class _FishingSpotListPageModel
 
   @override
   String itemName(BuildContext context, FishingSpot item) =>
-      item.displayName(context);
+      fishingSpotManager.displayName(context, item);
 
   @override
   BodyOfWater noSectionHeader(BuildContext context) {

@@ -20,6 +20,8 @@ void main() {
   setUp(() {
     appManager = StubbedAppManager();
 
+    when(appManager.anglerManager.entityExists(any)).thenReturn(false);
+
     when(appManager.baitManager.attachmentsDisplayValues(any, any))
         .thenReturn([]);
 
@@ -48,6 +50,10 @@ void main() {
         .thenAnswer((_) => Future.value(true));
 
     when(appManager.subscriptionManager.isFree).thenReturn(false);
+
+    when(appManager.speciesManager.entityExists(any)).thenReturn(false);
+
+    when(appManager.waterClarityManager.entityExists(any)).thenReturn(false);
 
     var dir = MockDirectory();
     when(dir.listSync()).thenReturn([]);

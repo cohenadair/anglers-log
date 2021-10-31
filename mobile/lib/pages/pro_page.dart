@@ -185,7 +185,7 @@ class _ProPageState extends State<ProPage> {
             children: [
               Text(
                 format(priceText, [sub.price]),
-                style: styleSubtitle(context).copyWith(
+                style: stylePrimary(context).copyWith(
                   fontWeight: fontWeightBold,
                 ),
               ),

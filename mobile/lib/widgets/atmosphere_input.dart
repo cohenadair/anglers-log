@@ -33,13 +33,11 @@ import 'widget.dart';
 
 class AtmosphereInput extends StatelessWidget {
   final AtmosphereFetcher fetcher;
-  final EdgeInsets? padding;
   final InputController<Atmosphere> controller;
 
   const AtmosphereInput({
     required this.fetcher,
     required this.controller,
-    this.padding,
   });
 
   @override
@@ -70,7 +68,7 @@ class AtmosphereInput extends StatelessWidget {
         }
 
         var firstChild = Text(
-          Strings.of(context).catchFieldAtmosphere,
+          Strings.of(context).inputAtmosphere,
           style: stylePrimary(context),
         );
 
@@ -238,13 +236,6 @@ class __AtmosphereInputPageState extends State<_AtmosphereInputPage> {
       controller: TimestampInputController(_timeManager),
     );
 
-    // Only show fields that the user is interested in.
-    var showingFieldIds = _userPreferenceManager.atmosphereFieldIds;
-    for (var field in _fields.values) {
-      field.isShowing =
-          showingFieldIds.isEmpty || showingFieldIds.contains(field.id);
-    }
-
     if (widget.controller.value != null) {
       _updateFromAtmosphere(widget.controller.value!);
     }
@@ -267,7 +258,7 @@ class __AtmosphereInputPageState extends State<_AtmosphereInputPage> {
   @override
   Widget build(BuildContext context) {
     return EditableFormPage(
-      title: Text(Strings.of(context).catchFieldAtmosphere),
+      title: Text(Strings.of(context).inputAtmosphere),
       header: NoneFormHeader(controller: widget.controller),
       showSaveButton: false,
       allowCustomEntities: false,
@@ -287,6 +278,7 @@ class __AtmosphereInputPageState extends State<_AtmosphereInputPage> {
       },
       onRefresh: _fetch,
       overflowOptions: [FormPageOverflowOption.manageUnits(context)],
+      trackedFieldIds: _userPreferenceManager.atmosphereFieldIds,
     );
   }
 
@@ -319,7 +311,7 @@ class __AtmosphereInputPageState extends State<_AtmosphereInputPage> {
 
   Widget _buildTemperature() {
     return Padding(
-      padding: insetsHorizontalDefaultVerticalSmall,
+      padding: insetsHorizontalDefaultBottomSmall,
       child: MultiMeasurementInput(
         spec: _airTemperatureInputState,
         controller: _temperatureController,

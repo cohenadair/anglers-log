@@ -32,6 +32,8 @@ void main() {
     when(appManager.baitManager.variantDisplayValue(any, any))
         .thenAnswer((invocation) => invocation.positionalArguments.first.color);
 
+    when(appManager.baitCategoryManager.entityExists(any)).thenReturn(false);
+
     when(appManager.customEntityManager.entityExists(any)).thenReturn(false);
 
     when(appManager.localDatabaseManager.insertOrReplace(any, any))
@@ -86,6 +88,12 @@ void main() {
         .thenReturn([baitCategory]);
     when(appManager.baitCategoryManager.entity(baitCategory.id))
         .thenReturn(baitCategory);
+    when(appManager.baitCategoryManager.id(baitCategory))
+        .thenReturn(baitCategory.id);
+    when(appManager.baitCategoryManager.entityExists(baitCategory.id))
+        .thenReturn(true);
+    when(appManager.baitCategoryManager.displayName(any, baitCategory))
+        .thenReturn(baitCategory.name);
 
     await tester.pumpWidget(Testable(
       (_) => const SaveBaitPage(),
@@ -133,6 +141,11 @@ void main() {
       ]);
 
     when(appManager.baitCategoryManager.entity(any)).thenReturn(baitCategory);
+    when(appManager.baitCategoryManager.entityExists(baitCategory.id))
+        .thenReturn(true);
+    when(appManager.baitCategoryManager.displayName(any, baitCategory))
+        .thenReturn(baitCategory.name);
+
     when(appManager.baitManager.duplicate(any)).thenReturn(false);
 
     await stubImage(appManager, tester, "flutter_logo.png");
@@ -196,6 +209,11 @@ void main() {
       ..baitCategoryId = categoryId;
 
     when(appManager.baitCategoryManager.entity(any)).thenReturn(baitCategory);
+    when(appManager.baitCategoryManager.entityExists(baitCategory.id))
+        .thenReturn(true);
+    when(appManager.baitCategoryManager.displayName(any, baitCategory))
+        .thenReturn(baitCategory.name);
+
     when(appManager.baitManager.duplicate(any)).thenReturn(true);
 
     await tester.pumpWidget(Testable(

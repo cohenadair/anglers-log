@@ -268,7 +268,8 @@ class _StatsPageState extends State<StatsPage> {
       viewAllDescription:
           Strings.of(context).reportSummaryCatchesPerFishingSpotDescription,
       filters: _filters(includeDateRange: !_isComparing),
-      labelBuilder: (fishingSpot) => fishingSpot.displayName(context),
+      labelBuilder: (fishingSpot) =>
+          _fishingSpotManager.displayName(context, fishingSpot),
       series: _models
           .map((model) =>
               Series<FishingSpot>(model.catchesPerFishingSpot, model.dateRange))
@@ -400,7 +401,8 @@ class _StatsPageState extends State<StatsPage> {
         includeSpecies: false,
         includeDateRange: !_isComparing,
       )..add(_currentSpecies!.name),
-      labelBuilder: (fishingSpot) => fishingSpot.displayName(context),
+      labelBuilder: (fishingSpot) =>
+          _fishingSpotManager.displayName(context, fishingSpot),
       series: _models
           .map((model) => Series<FishingSpot>(
               model.fishingSpotsPerSpecies(_currentSpecies), model.dateRange))

@@ -117,6 +117,10 @@ class Strings {
 
   String get devName => _string("devName");
 
+  String get numberOfCatches => _string("numberOfCatches");
+
+  String get numberOfCatchesSingular => _string("numberOfCatchesSingular");
+
   String get unknownSpecies => _string("unknownSpecies");
 
   String get fieldTypeNumber => _string("fieldType_number");
@@ -154,6 +158,8 @@ class Strings {
   String get inputPasswordInvalidLength =>
       _string("input_passwordInvalidLength");
 
+  String get inputAtmosphere => _string("input_atmosphere");
+
   String get addAnythingPageCatch => _string("addAnythingPage_catch");
 
   String get addAnythingPageTrip => _string("addAnythingPage_trip");
@@ -161,6 +167,55 @@ class Strings {
   String get tripListPageMenuLabel => _string("tripListPage_menuLabel");
 
   String get tripListPageTitle => _string("tripListPage_title");
+
+  String get tripListPageSearchHint => _string("tripListPage_searchHint");
+
+  String get tripListPageEmptyListTitle =>
+      _string("tripListPage_emptyListTitle");
+
+  String get tripListPageEmptyListDescription =>
+      _string("tripListPage_emptyListDescription");
+
+  String get tripListPageDeleteMessage => _string("tripListPage_deleteMessage");
+
+  String get saveTripPageEditTitle => _string("saveTripPage_editTitle");
+
+  String get saveTripPageNewTitle => _string("saveTripPage_newTitle");
+
+  String get saveTripPageStartDate => _string("saveTripPage_startDate");
+
+  String get saveTripPageStartTime => _string("saveTripPage_startTime");
+
+  String get saveTripPageStartDateTime => _string("saveTripPage_startDateTime");
+
+  String get saveTripPageEndDate => _string("saveTripPage_endDate");
+
+  String get saveTripPageEndTime => _string("saveTripPage_endTime");
+
+  String get saveTripPageEndDateTime => _string("saveTripPage_endDateTime");
+
+  String get saveTripPageAllDay => _string("saveTripPage_allDay");
+
+  String get saveTripPageCatches => _string("saveTripPage_catches");
+
+  String get saveTripPageCatchesDesc => _string("saveTripPage_catchesDesc");
+
+  String get saveTripPageNoCatches => _string("saveTripPage_noCatches");
+
+  String get saveTripPageBodiesOfWater => _string("saveTripPage_bodiesOfWater");
+
+  String get saveTripPageNoBodiesOfWater =>
+      _string("saveTripPage_noBodiesOfWater");
+
+  String get tripCatchesPerSpecies => _string("trip_catchesPerSpecies");
+
+  String get tripCatchesPerFishingSpot => _string("trip_catchesPerFishingSpot");
+
+  String get tripCatchesPerAngler => _string("trip_catchesPerAngler");
+
+  String get tripCatchesPerBait => _string("trip_catchesPerBait");
+
+  String get tripSkunked => _string("trip_skunked");
 
   String get catchListPageMenuLabel => _string("catchListPage_menuLabel");
 
@@ -176,6 +231,9 @@ class Strings {
 
   String get catchPageDeleteMessage => _string("catchPage_deleteMessage");
 
+  String get catchPageDeleteWithTripMessage =>
+      _string("catchPage_deleteWithTripMessage");
+
   String get catchPageReleased => _string("catchPage_released");
 
   String get catchPageKept => _string("catchPage_kept");
@@ -185,8 +243,6 @@ class Strings {
   String get saveCatchPageNewTitle => _string("saveCatchPage_newTitle");
 
   String get saveCatchPageEditTitle => _string("saveCatchPage_editTitle");
-
-  String get catchFieldAtmosphere => _string("catchField_atmosphere");
 
   String get catchFieldTide => _string("catchField_tide");
 
@@ -350,12 +406,6 @@ class Strings {
   String get baitListPageVariantsLabel => _string("baitListPage_variantsLabel");
 
   String get baitListPageVariantLabel => _string("baitListPage_variantLabel");
-
-  String get baitListPageNumberOfCatches =>
-      _string("baitListPage_numberOfCatches");
-
-  String get baitListPageNumberOfCatchesSingular =>
-      _string("baitListPage_numberOfCatchesSingular");
 
   String get reportListPageConfirmDelete =>
       _string("reportListPage_confirmDelete");
@@ -905,6 +955,8 @@ class Strings {
 
   String get dateTimeFormat => _string("dateTimeFormat");
 
+  String get dateRangeFormat => _string("dateRangeFormat");
+
   String get dateDurationFormat => _string("dateDurationFormat");
 
   String get onboardingJourneyWelcomeTitle =>
@@ -1357,6 +1409,8 @@ class Strings {
   String get pickerTitleBodyOfWater => _string("pickerTitle_bodyOfWater");
 
   String get pickerTitleBodiesOfWater => _string("pickerTitle_bodiesOfWater");
+
+  String get pickerTitleCatches => _string("pickerTitle_catches");
 
   String get keywordsTemperatureMetric => _string("keywords_temperatureMetric");
 

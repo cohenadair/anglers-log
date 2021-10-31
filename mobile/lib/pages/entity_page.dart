@@ -88,20 +88,11 @@ class _EntityPageState extends State<EntityPage> {
   Widget build(BuildContext context) {
     var children = List<Widget>.of(widget.children);
     if (widget.customEntityValues.isNotEmpty) {
-      children.addAll([
-        Padding(
-          padding: insetsVerticalWidget,
-          child: HeadingDivider(Strings.of(context).customFields),
-        ),
-        Padding(
-          padding: const EdgeInsets.only(
-            left: paddingDefault,
-            right: paddingDefault,
-            bottom: paddingSmall,
-          ),
-          child: CustomEntityValues(widget.customEntityValues),
-        ),
-      ]);
+      children.add(CustomEntityValues(
+        title: Strings.of(context).customFields,
+        padding: insetsBottomWidgetSmall,
+        values: widget.customEntityValues,
+      ));
     } else {
       children.add(const VerticalSpace(paddingWidget));
     }

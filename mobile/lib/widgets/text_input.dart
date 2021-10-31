@@ -114,6 +114,7 @@ class TextInput extends StatefulWidget {
     String? label,
     String? suffixText,
     String? requiredText,
+    String? hintText,
     required NumberInputController? controller,
     bool enabled = true,
     bool autofocus = false,
@@ -127,6 +128,7 @@ class TextInput extends StatefulWidget {
           initialValue: initialValue?.toString(),
           label: label,
           suffixText: suffixText,
+          hintText: hintText,
           controller: controller,
           keyboardType:
               TextInputType.numberWithOptions(signed: signed, decimal: decimal),

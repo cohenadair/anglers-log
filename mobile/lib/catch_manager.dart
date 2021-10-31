@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:mobile/trip_manager.dart';
 import 'package:provider/provider.dart';
 import 'package:quiver/strings.dart';
 
@@ -43,6 +44,8 @@ class CatchManager extends EntityManager<Catch> {
 
   TimeManager get _timeManager => appManager.timeManager;
 
+  TripManager get _tripManager => appManager.tripManager;
+
   WaterClarityManager get _waterClarityManager =>
       appManager.waterClarityManager;
 
@@ -53,6 +56,18 @@ class CatchManager extends EntityManager<Catch> {
 
   @override
   Id id(Catch entity) => entity.id;
+
+  @override
+  String displayName(BuildContext context, Catch entity) {
+    var species = _speciesManager.entity(entity.speciesId);
+    var timeString = formatTimestamp(context, entity.timestamp.toInt());
+
+    if (species == null) {
+      return timeString;
+    } else {
+      return "${_speciesManager.displayName(context, species)} ($timeString)";
+    }
+  }
 
   @override
   bool matchesFilter(Id id, String? filter, [BuildContext? context]) {
@@ -361,16 +376,12 @@ class CatchManager extends EntityManager<Catch> {
   }
 
   String deleteMessage(BuildContext context, Catch cat) {
-    var species = _speciesManager.entity(cat.speciesId);
-    var timeString = formatTimestamp(context, cat.timestamp.toInt());
-    String name;
-    if (species == null) {
-      name = "($timeString)";
-    } else {
-      name = "${species.name} ($timeString)";
-    }
-
-    return format(Strings.of(context).catchPageDeleteMessage, [name]);
+    return format(
+      _tripManager.isCatchIdInTrip(cat.id)
+          ? Strings.of(context).catchPageDeleteWithTripMessage
+          : Strings.of(context).catchPageDeleteMessage,
+      [displayName(context, cat)],
+    );
   }
 
   /// Returns the total number of [CustomEntityValue] objects associated with

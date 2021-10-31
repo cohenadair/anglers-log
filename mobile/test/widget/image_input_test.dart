@@ -39,7 +39,7 @@ void main() {
   });
 
   testWidgets("Controller updated when images picked", (tester) async {
-    var controller = ListInputController<PickedImage>();
+    var controller = ImagesInputController();
     await pumpContext(
       tester,
       (_) => ImageInput(
@@ -69,7 +69,7 @@ void main() {
     await pumpContext(
       tester,
       (_) => ImageInput(
-        controller: ListInputController<PickedImage>(),
+        controller: ImagesInputController(),
         initialImageNames: const [],
       ),
       appManager: appManager,
@@ -89,7 +89,7 @@ void main() {
       size: anyNamed("size"),
     )).thenAnswer((_) => Future.value({}));
 
-    var controller = ListInputController<PickedImage>();
+    var controller = ImagesInputController();
     await pumpContext(
       tester,
       (_) => ImageInput(

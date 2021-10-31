@@ -1,0 +1,125 @@
+import 'package:fixnum/fixnum.dart';
+import 'package:flutter_test/flutter_test.dart';
+import 'package:mobile/model/gen/anglerslog.pb.dart';
+import 'package:mobile/pages/trip_list_page.dart';
+import 'package:mobile/res/style.dart';
+import 'package:mobile/utils/protobuf_utils.dart';
+import 'package:mobile/widgets/list_item.dart';
+import 'package:mockito/mockito.dart';
+
+import '../mocks/stubbed_app_manager.dart';
+import '../test_utils.dart';
+
+void main() {
+  late StubbedAppManager appManager;
+
+  Trip defaultTrip() {
+    return Trip(
+      id: randomId(),
+      startTimestamp: Int64(DateTime(2020, 1, 1).millisecondsSinceEpoch),
+      endTimestamp: Int64(DateTime(2020, 2, 1).millisecondsSinceEpoch),
+    );
+  }
+
+  setUp(() {
+    appManager = StubbedAppManager();
+
+    when(appManager.tripManager.allImageNames(any)).thenReturn([]);
+    when(appManager.tripManager.numberOfCatches(any)).thenReturn(0);
+  });
+
+  testWidgets("Trip with name", (tester) async {
+    when(appManager.tripManager.listSortedByName(filter: anyNamed("filter")))
+        .thenReturn([defaultTrip()..name = "Test Trip"]);
+
+    var context = await pumpContext(
+      tester,
+      (_) => TripListPage(),
+      appManager: appManager,
+    );
+
+    expect(find.primaryText(context, text: "Test Trip"), findsOneWidget);
+  });
+
+  testWidgets("Trip without name", (tester) async {
+    when(appManager.tripManager.listSortedByName(filter: anyNamed("filter")))
+        .thenReturn([defaultTrip()]);
+
+    var context = await pumpContext(
+      tester,
+      (_) => TripListPage(),
+      appManager: appManager,
+    );
+
+    expect(
+      find.primaryText(context, text: "Jan 1, 2020 to Feb 1, 2020"),
+      findsOneWidget,
+    );
+  });
+
+  testWidgets("Trip without catches", (tester) async {
+    when(appManager.tripManager.listSortedByName(filter: anyNamed("filter")))
+        .thenReturn([defaultTrip()]);
+    when(appManager.tripManager.numberOfCatches(any)).thenReturn(0);
+
+    await pumpContext(
+      tester,
+      (_) => TripListPage(),
+      appManager: appManager,
+    );
+    expect(
+      findFirst<ManageableListImageItem>(tester).subtitle2Style,
+      styleError,
+    );
+    expect(find.text("Skunked"), findsOneWidget);
+  });
+
+  testWidgets("Trip with catches", (tester) async {
+    when(appManager.tripManager.listSortedByName(filter: anyNamed("filter")))
+        .thenReturn([defaultTrip()]);
+    when(appManager.tripManager.numberOfCatches(any)).thenReturn(5);
+
+    await pumpContext(
+      tester,
+      (_) => TripListPage(),
+      appManager: appManager,
+    );
+    expect(
+      findFirst<ManageableListImageItem>(tester).subtitle2Style,
+      styleSuccess,
+    );
+    expect(find.text("5 Catches"), findsOneWidget);
+  });
+
+  testWidgets("Trip without images", (tester) async {
+    when(appManager.tripManager.listSortedByName(filter: anyNamed("filter")))
+        .thenReturn([defaultTrip()]);
+    when(appManager.tripManager.allImageNames(any)).thenReturn([]);
+
+    await pumpContext(
+      tester,
+      (_) => TripListPage(),
+      appManager: appManager,
+    );
+    expect(
+      findFirst<ManageableListImageItem>(tester).imageName,
+      isNull,
+    );
+  });
+
+  testWidgets("Trip with images", (tester) async {
+    when(appManager.tripManager.listSortedByName(filter: anyNamed("filter")))
+        .thenReturn([defaultTrip()]);
+    when(appManager.tripManager.allImageNames(any)).thenReturn(["test.png"]);
+
+    await pumpContext(
+      tester,
+      (_) => TripListPage(),
+      appManager: appManager,
+    );
+    expect(
+      findFirst<ManageableListImageItem>(tester).imageName,
+      isNotNull,
+    );
+  });
+}

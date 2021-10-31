@@ -138,7 +138,7 @@ class _BaitVariantPageState extends State<BaitVariantPage> {
   }
 
   Widget _buildCustomEntityValues() {
-    return CustomEntityValues(_variant.customEntityValues);
+    return CustomEntityValues(values: _variant.customEntityValues);
   }
 
   Widget _buildDescription() {

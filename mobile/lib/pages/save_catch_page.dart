@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:fixnum/fixnum.dart';
 import 'package:flutter/material.dart';
+import 'package:mobile/widgets/entity_picker_input.dart';
 import 'package:quiver/strings.dart';
 
 import '../angler_manager.dart';
@@ -36,7 +37,6 @@ import '../widgets/image_input.dart';
 import '../widgets/input_controller.dart';
 import '../widgets/list_item.dart';
 import '../widgets/list_picker_input.dart';
-import '../widgets/multi_list_picker_input.dart';
 import '../widgets/multi_measurement_input.dart';
 import '../widgets/text_input.dart';
 import '../widgets/tide_input.dart';
@@ -44,7 +44,6 @@ import '../widgets/widget.dart';
 import 'angler_list_page.dart';
 import 'bait_list_page.dart';
 import 'form_page.dart';
-import 'manageable_list_page.dart';
 import 'method_list_page.dart';
 import 'water_clarity_list_page.dart';
 
@@ -110,6 +109,10 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
   late final MultiMeasurementInputSpec _lengthInputState;
   late final MultiMeasurementInputSpec _weightInputState;
 
+  // Used to persist the user-selected season value, when the catch's timestamp
+  // changes.
+  bool _overwriteSeasonCalculation = false;
+
   List<CustomEntityValue> _customEntityValues = [];
   StreamSubscription<void>? _userPreferenceSubscription;
 
@@ -148,8 +151,8 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
   IdInputController get _speciesController =>
       _fields[_idSpecies]!.controller as IdInputController;
 
-  ListInputController<PickedImage> get _imagesController =>
-      _fields[_idImages]!.controller as ListInputController<PickedImage>;
+  ImagesInputController get _imagesController =>
+      _fields[_idImages]!.controller as ImagesInputController;
 
   InputController<FishingSpot> get _fishingSpotController =>
       _fields[_idFishingSpot]!.controller as InputController<FishingSpot>;
@@ -203,13 +206,15 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
   void initState() {
     super.initState();
 
-    var showingFieldIds = _userPreferenceManager.catchFieldIds;
     for (var field in allCatchFields(context)) {
       _fields[field.id] = field;
-      // By default, show all fields.
-      _fields[field.id]!.isShowing =
-          showingFieldIds.isEmpty || showingFieldIds.contains(field.id);
     }
+
+    // Need to set this here (rather than exclusively in EditableFormPage) so
+    // the auto-fetch atmosphere method is invoked correctly.
+    _fields[catchFieldIdAtmosphere]!.isShowing = _userPreferenceManager
+            .catchFieldIds.isEmpty ||
+        _userPreferenceManager.catchFieldIds.contains(catchFieldIdAtmosphere);
 
     _waterDepthInputState = MultiMeasurementInputSpec.waterDepth(context);
     _waterTemperatureInputState =
@@ -290,6 +295,7 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
       runSpacing: 0,
       padding: insetsZero,
       fields: _fields,
+      trackedFieldIds: _userPreferenceManager.catchFieldIds,
       customEntityIds: _userPreferenceManager.catchCustomEntityIds,
       customEntityValues: _customEntityValues,
       onBuildField: _buildField,
@@ -380,62 +386,20 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
   }
 
   Widget _buildAngler() {
-    return EntityListenerBuilder(
-      managers: [
-        _anglerManager,
-      ],
-      builder: (context) {
-        var angler = _anglerManager.entity(_anglerController.value);
-        return ListPickerInput(
-          title: Strings.of(context).catchFieldAnglerLabel,
-          value: angler?.name,
-          onTap: () {
-            push(
-              context,
-              AnglerListPage(
-                pickerSettings: ManageableListPagePickerSettings<Angler>.single(
-                  onPicked: (context, angler) {
-                    setState(() => _anglerController.value = angler?.id);
-                    return true;
-                  },
-                  initialValue: angler,
-                ),
-              ),
-            );
-          },
-        );
-      },
+    return EntityPickerInput<Angler>.single(
+      manager: _anglerManager,
+      controller: _anglerController,
+      title: Strings.of(context).catchFieldAnglerLabel,
+      listPage: (settings) => AnglerListPage(pickerSettings: settings),
     );
   }
 
   Widget _buildWaterClarity() {
-    return EntityListenerBuilder(
-      managers: [
-        _waterClarityManager,
-      ],
-      builder: (context) {
-        var clarity =
-            _waterClarityManager.entity(_waterClarityController.value);
-        return ListPickerInput(
-          title: Strings.of(context).catchFieldWaterClarityLabel,
-          value: clarity?.name,
-          onTap: () {
-            push(
-              context,
-              WaterClarityListPage(
-                pickerSettings:
-                    ManageableListPagePickerSettings<WaterClarity>.single(
-                  onPicked: (context, clarity) {
-                    setState(() => _waterClarityController.value = clarity?.id);
-                    return true;
-                  },
-                  initialValue: clarity,
-                ),
-              ),
-            );
-          },
-        );
-      },
+    return EntityPickerInput<WaterClarity>.single(
+      manager: _waterClarityManager,
+      controller: _waterClarityController,
+      title: Strings.of(context).catchFieldWaterClarityLabel,
+      listPage: (settings) => WaterClarityListPage(pickerSettings: settings),
     );
   }
 
@@ -514,50 +478,20 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
   Widget _buildAtmosphere() {
     return AtmosphereInput(
       fetcher: newAtmosphereFetcher(),
-      padding: insetsDefault,
       controller: _atmosphereController,
     );
   }
 
   Widget _buildTide() {
-    return TideInput(
-      controller: _tideController,
-    );
+    return TideInput(controller: _tideController);
   }
 
   Widget _buildMethods() {
-    return EntityListenerBuilder(
-      managers: [
-        _methodManager,
-      ],
-      builder: (context) {
-        var values = _methodsController.value.isNotEmpty
-            ? _methodManager.list(_methodsController.value)
-            : <Method>[];
-
-        return MultiListPickerInput(
-          padding: insetsHorizontalDefaultVerticalWidget,
-          values: values.map((method) => method.name).toSet(),
-          emptyValue: (context) => Strings.of(context).catchFieldNoMethods,
-          onTap: () {
-            push(
-              context,
-              MethodListPage(
-                pickerSettings: ManageableListPagePickerSettings<Method>(
-                  onPicked: (context, methods) {
-                    setState(() {
-                      _methodsController.value =
-                          methods.map((m) => m.id).toSet();
-                    });
-                    return true;
-                  },
-                  initialValues: values.toSet(),
-                ),
-              ),
-            );
-          },
-        );
-      },
+    return EntityPickerInput<Method>.multi(
+      manager: _methodManager,
+      controller: _methodsController,
+      emptyValue: Strings.of(context).catchFieldNoMethods,
+      listPage: (settings) => MethodListPage(pickerSettings: settings),
     );
   }
 
@@ -588,7 +522,10 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
           valueDisplayName: _seasonController.value?.displayName(context),
           noneItem: Season.season_none,
           itemBuilder: Seasons.pickerItems,
-          onPicked: (value) => setState(() => _seasonController.value = value),
+          onPicked: (value) => setState(() {
+            _overwriteSeasonCalculation = true;
+            _seasonController.value = value;
+          }),
         );
       },
     );
@@ -644,33 +581,14 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
   }
 
   Widget _buildSpecies() {
-    return EntityListenerBuilder(
-      managers: [
-        _speciesManager,
-      ],
-      builder: (context) {
-        var species = _speciesManager.entity(_speciesController.value);
-        return ListPickerInput(
-          title: Strings.of(context).catchFieldSpecies,
-          value: species?.name,
-          onTap: () {
-            push(
-              context,
-              SpeciesListPage(
-                pickerSettings:
-                    ManageableListPagePickerSettings<Species>.single(
-                  onPicked: (context, species) {
-                    setState(() => _speciesController.value = species?.id);
-                    return true;
-                  },
-                  initialValue: species,
-                  isRequired: true,
-                ),
-              ),
-            );
-          },
-        );
-      },
+    return EntityPickerInput<Species>.single(
+      manager: _speciesManager,
+      controller: _speciesController,
+      title: Strings.of(context).catchFieldSpecies,
+      listPage: (settings) => SpeciesListPage(
+          pickerSettings: settings.copyWith(
+        isRequired: true,
+      )),
     );
   }
 
@@ -777,10 +695,7 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
 
     _catchManager.addOrUpdate(
       cat,
-      imageFiles: _imagesController.value
-          .where((img) => img.originalFile != null)
-          .map((img) => img.originalFile!)
-          .toList(),
+      imageFiles: _imagesController.originalFiles,
     );
 
     if (widget.popOverride != null) {
@@ -803,7 +718,7 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
   }
 
   void _calculateSeasonIfNeeded() {
-    if (!_fields[_idSeason]!.isShowing) {
+    if (!_fields[_idSeason]!.isShowing || _overwriteSeasonCalculation) {
       return;
     }
 

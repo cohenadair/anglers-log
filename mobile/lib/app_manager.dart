@@ -177,7 +177,7 @@ class AppManager {
   }
 
   TripManager get tripManager {
-    _tripManager ??= TripManager();
+    _tripManager ??= TripManager(this);
     return _tripManager!;
   }
 

@@ -801,4 +801,4 @@ class Report_Type extends $pb.ProtobufEnum {
   const Report_Type._($core.int v, $core.String n) : super(v, n);
 }
 
-// ignore_for_file: constant_identifier_names,lines_longer_than_80_chars,directives_ordering,prefer_mixin,implementation_imports
+// ignore_for_file: undefined_named_parameter,constant_identifier_names

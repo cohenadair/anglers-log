@@ -190,12 +190,28 @@ String formatTimeMillis(BuildContext context, Int64 millis) {
 ///   - Today at 2:35 PM
 ///   - Yesterday at 2:35 PM
 ///   - Monday at 2:35 PM
-///   - Jan. 8 at 2:35 PM
-///   - Dec. 8, 2018 at 2:35 PM
-String formatDateTime(BuildContext context, DateTime dateTime) {
+///   - Jan 8 at 2:35 PM
+///   - Dec 8, 2018 at 2:35 PM
+String formatDateTime(
+  BuildContext context,
+  DateTime dateTime, {
+  bool abbreviated = false,
+  bool excludeMidnight = false,
+}) {
+  var recentDate = formatDateAsRecent(
+    context,
+    dateTime,
+    abbreviated: abbreviated,
+  );
+
+  var time = TimeOfDay.fromDateTime(dateTime);
+  if (excludeMidnight && time.hour == 0 && time.minute == 0) {
+    return recentDate;
+  }
+
   return format(Strings.of(context).dateTimeFormat, [
-    formatDateAsRecent(context, dateTime),
-    formatTimeOfDay(context, TimeOfDay.fromDateTime(dateTime)),
+    recentDate,
+    formatTimeOfDay(context, time),
   ]);
 }
 
@@ -225,7 +241,11 @@ String timestampToSearchString(BuildContext context, int timestamp) {
 ///   - Monday
 ///   - Jan. 8
 ///   - Dec. 8, 2018
-String formatDateAsRecent(BuildContext context, DateTime dateTime) {
+String formatDateAsRecent(
+  BuildContext context,
+  DateTime dateTime, {
+  bool abbreviated = false,
+}) {
   final now = AppManager.of(context).timeManager.currentDateTime;
 
   if (isSameDate(dateTime, now)) {
@@ -236,7 +256,7 @@ String formatDateAsRecent(BuildContext context, DateTime dateTime) {
     return Strings.of(context).yesterday;
   } else if (isWithinOneWeek(dateTime, now)) {
     // 2 days ago to 6 days ago.
-    return DateFormat("EEEE").format(dateTime);
+    return DateFormat(abbreviated ? "E" : "EEEE").format(dateTime);
   } else if (isSameYear(dateTime, now)) {
     // Same year.
     return DateFormat(monthDayFormat).format(dateTime);
@@ -333,4 +353,12 @@ String formatDuration({
   }
 
   return result;
+}
+
+extension DateTimes on DateTime {
+  bool get isMidnight => hour == 0 && minute == 0;
+}
+
+extension TimeOfDays on TimeOfDay {
+  bool get isMidnight => hour == 0 && minute == 0;
 }

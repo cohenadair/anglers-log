@@ -10,7 +10,6 @@ import '../utils/animated_list_model.dart';
 import '../utils/page_utils.dart';
 import 'animated_list_transition.dart';
 import 'bait_variant_list_item.dart';
-import 'button.dart';
 import 'checkbox_input.dart';
 import 'input_controller.dart';
 import 'widget.dart';
@@ -95,27 +94,26 @@ class _BaitVariantListInputState extends State<BaitVariantListInput> {
 
   @override
   Widget build(BuildContext context) {
-    Widget headerTrailing = Empty();
-    if (widget.isEditing) {
-      headerTrailing = MinimumIconButton(
-        icon: Icons.add,
-        onTap: () {
-          present(
-            context,
-            SaveBaitVariantPage(onSave: _onAddOrUpdate),
-          );
-        },
-      );
-    }
-
     Widget header = Empty();
     if (widget.showHeader) {
+      var title = Strings.of(context).saveBaitPageVariants;
+      var divider = HeadingDivider(title);
+
+      if (widget.isEditing) {
+        divider = HeadingDivider.withAddButton(
+          title,
+          onTap: () {
+            present(
+              context,
+              SaveBaitVariantPage(onSave: _onAddOrUpdate),
+            );
+          },
+        );
+      }
+
       header = Padding(
         padding: insetsBottomWidget,
-        child: HeadingDivider(
-          Strings.of(context).saveBaitPageVariants,
-          trailing: headerTrailing,
-        ),
+        child: divider,
       );
     }
 

@@ -7,6 +7,7 @@ import '../res/color.dart';
 import '../res/dimen.dart';
 import '../res/style.dart';
 import '../widgets/text.dart';
+import 'button.dart';
 import 'input_controller.dart';
 import 'list_item.dart';
 
@@ -46,6 +47,15 @@ class HeadingDivider extends StatelessWidget {
     this.showDivider = true,
     this.trailing,
   });
+
+  HeadingDivider.withAddButton(
+    this.text, {
+    required VoidCallback onTap,
+    this.showDivider = true,
+  }) : trailing = MinimumIconButton(
+          icon: Icons.add,
+          onTap: onTap,
+        );
 
   @override
   Widget build(BuildContext context) {

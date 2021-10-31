@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mobile/widgets/label_value_list.dart';
 
 import '../custom_entity_manager.dart';
 import '../model/gen/anglerslog.pb.dart';
@@ -10,12 +11,16 @@ import '../widgets/widget.dart';
 /// A widget that displays a list of [LabelValue] widgets backed by
 /// [CustomEntityValue] objects.
 class CustomEntityValues extends StatelessWidget {
+  final String? title;
   final List<CustomEntityValue> values;
-  final bool isCondensed;
+  final bool isSingleLine;
+  final EdgeInsets? padding;
 
-  const CustomEntityValues(
-    this.values, {
-    this.isCondensed = false,
+  const CustomEntityValues({
+    this.title,
+    this.values = const [],
+    this.isSingleLine = false,
+    this.padding,
   });
 
   @override
@@ -26,30 +31,32 @@ class CustomEntityValues extends StatelessWidget {
 
     var entityManager = CustomEntityManager.of(context);
 
-    if (isCondensed) {
+    if (isSingleLine) {
       return _buildCondensed(context, entityManager);
     }
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: values
-          .map((value) => _buildExpandedItem(context, entityManager, value))
-          .toList(),
+    return LabelValueList(
+      title: title,
+      items: _labelValueItems(context, entityManager),
+      padding: padding,
     );
   }
 
-  Widget _buildExpandedItem(BuildContext context,
-      CustomEntityManager entityManager, CustomEntityValue entityValue) {
-    var entity = entityManager.entity(entityValue.customEntityId);
-    if (entity == null) {
-      return Empty();
+  List<LabelValueListItem> _labelValueItems(
+      BuildContext context, CustomEntityManager entityManager) {
+    var result = <LabelValueListItem>[];
+    for (var entityValue in values) {
+      var entity = entityManager.entity(entityValue.customEntityId);
+      if (entity == null) {
+        continue;
+      }
+
+      dynamic value =
+          valueForCustomEntityType(entity.type, entityValue, context);
+      result.add(LabelValueListItem(entity.name, value.toString()));
     }
 
-    dynamic value = valueForCustomEntityType(entity.type, entityValue, context);
-    return LabelValue(
-      label: entity.name,
-      value: value,
-    );
+    return result;
   }
 
   Widget _buildCondensed(

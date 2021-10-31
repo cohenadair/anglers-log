@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:mobile/pages/image_picker_page.dart';
 import 'package:quiver/strings.dart';
 
 import '../log.dart';
@@ -17,9 +20,9 @@ class InputController<T> extends ValueNotifier<T?> {
 
   InputController({T? value}) : super(value) {
     assert(!(T == Id) || this is IdInputController,
-        "Use IdInputController instead>");
+        "Use IdInputController instead");
     assert(!(T.toString().contains("Set")) || this is SetInputController,
-        "Use SetInputController<T> instead>");
+        "Use SetInputController<T> instead");
     assert(!(T.toString().contains("List")) || this is ListInputController,
         "Use ListInputController<T> instead");
     assert(
@@ -62,11 +65,23 @@ class SetInputController<T> extends InputController<Set<T>> {
 /// An [InputController] subclass for a [List], where the value of the
 /// controller cannot be null. Instead of null, an empty [List] is used.
 class ListInputController<T> extends InputController<List<T>> {
+  ListInputController({List<T>? value}) : super(value: value) {
+    assert(!(T == PickedImage) || this is ImagesInputController,
+        "Use ImagesInputController instead");
+  }
+
   @override
   List<T> get value => super.value ?? [];
 
   @override
   set value(List<T>? newValue) => super.value = newValue ?? [];
+}
+
+class ImagesInputController extends ListInputController<PickedImage> {
+  List<File> get originalFiles => value
+      .where((img) => img.originalFile != null)
+      .map((img) => img.originalFile!)
+      .toList();
 }
 
 /// An [InputController] subclass for a [bool], where the value of the

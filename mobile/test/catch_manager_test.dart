@@ -1968,40 +1968,68 @@ void main() {
     ]);
   });
 
-  group("deleteMessage", () {
-    testWidgets("No species", (tester) async {
-      var cat = Catch()
-        ..id = randomId()
-        ..timestamp = Int64(DateTime(2020, 9, 25).millisecondsSinceEpoch);
+  testWidgets("deleteMessage no trip", (tester) async {
+    when(speciesManager.entity(any)).thenReturn(Species(id: randomId()));
+    when(speciesManager.displayName(any, any)).thenReturn("Rainbow Trout");
 
-      when(appManager.timeManager.currentDateTime)
-          .thenReturn(DateTime(2020, 9, 25));
-      var context = await buildContext(tester, appManager: appManager);
-      expect(
-        catchManager.deleteMessage(context, cat),
-        "Are you sure you want to delete catch (Today at 12:00 AM)? "
-        "This cannot be undone.",
-      );
-    });
+    when(appManager.tripManager.isCatchIdInTrip(any)).thenReturn(false);
 
-    testWidgets("With species", (tester) async {
-      var species = Species()
-        ..id = randomId()
-        ..name = "Steelhead";
-      var cat = Catch()
-        ..id = randomId()
-        ..timestamp = Int64(DateTime(2020, 9, 25).millisecondsSinceEpoch)
-        ..speciesId = species.id;
+    var context = await buildContext(tester, appManager: appManager);
+    var cat = Catch()
+      ..id = randomId()
+      ..timestamp = Int64(DateTime(2020, 9, 25).millisecondsSinceEpoch);
 
-      when(speciesManager.entity(any)).thenReturn(species);
-      when(appManager.timeManager.currentDateTime)
-          .thenReturn(DateTime(2020, 9, 25));
-      var context = await buildContext(tester, appManager: appManager);
-      expect(
-        catchManager.deleteMessage(context, cat),
-        "Are you sure you want to delete catch Steelhead (Today at 12:00 AM)? "
-        "This cannot be undone.",
-      );
-    });
+    expect(
+      catchManager.deleteMessage(context, cat),
+      "Are you sure you want to delete catch Rainbow Trout (Sep 25, 2020 at 12:00 AM)? This cannot be undone.",
+    );
+  });
+
+  testWidgets("deleteMessage with trip", (tester) async {
+    when(speciesManager.entity(any)).thenReturn(Species(id: randomId()));
+    when(speciesManager.displayName(any, any)).thenReturn("Rainbow Trout");
+
+    when(appManager.tripManager.isCatchIdInTrip(any)).thenReturn(true);
+
+    var context = await buildContext(tester, appManager: appManager);
+    var cat = Catch()
+      ..id = randomId()
+      ..timestamp = Int64(DateTime(2020, 9, 25).millisecondsSinceEpoch);
+
+    expect(
+      catchManager.deleteMessage(context, cat),
+      "Rainbow Trout (Sep 25, 2020 at 12:00 AM) is associated with a trip; Are you sure you want to delete it? This cannot be undone.",
+    );
+  });
+
+  testWidgets("displayName without species", (tester) async {
+    when(speciesManager.entity(any)).thenReturn(null);
+    var context = await buildContext(tester, appManager: appManager);
+
+    var displayName = catchManager.displayName(
+      context,
+      Catch(
+        id: randomId(),
+        timestamp: Int64(DateTime(2020, 10, 26, 15, 30).millisecondsSinceEpoch),
+      ),
+    );
+
+    expect(displayName, "Oct 26, 2020 at 3:30 PM");
+  });
+
+  testWidgets("displayName with species", (tester) async {
+    when(speciesManager.entity(any)).thenReturn(Species(id: randomId()));
+    when(speciesManager.displayName(any, any)).thenReturn("Rainbow Trout");
+    var context = await buildContext(tester, appManager: appManager);
+
+    var displayName = catchManager.displayName(
+      context,
+      Catch(
+        id: randomId(),
+        timestamp: Int64(DateTime(2020, 10, 26, 15, 30).millisecondsSinceEpoch),
+      ),
+    );
+
+    expect(displayName, "Rainbow Trout (Oct 26, 2020 at 3:30 PM)");
   });
 }

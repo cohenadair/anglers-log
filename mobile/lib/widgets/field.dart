@@ -67,7 +67,8 @@ class Field {
 
   Field.fake({
     required Widget Function(BuildContext) builder,
-  })  : id = randomId(),
+    Id? id,
+  })  : id = id ?? randomId(),
         controller = InputController(),
         name = null,
         description = null,

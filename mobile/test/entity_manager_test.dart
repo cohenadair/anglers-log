@@ -1,6 +1,7 @@
 import 'dart:typed_data';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/app_manager.dart';
 import 'package:mobile/entity_manager.dart';
@@ -27,6 +28,9 @@ class TestEntityManager extends EntityManager<Species> {
 
   @override
   Id id(Species species) => species.id;
+
+  @override
+  String displayName(BuildContext context, Species entity) => entity.name;
 
   @override
   bool matchesFilter(Id id, String? filter) => matchesFilterResult;
@@ -450,20 +454,69 @@ void main() {
     ];
 
     expect(
-        entityManager.numberOf<Catch>(
-            anglerId0, catches, (cat) => cat.anglerId == anglerId0),
-        2);
+      entityManager.numberOf<Catch>(
+          anglerId0, catches, (cat) => cat.anglerId == anglerId0),
+      2,
+    );
     expect(
-        entityManager.numberOf<Catch>(
-            anglerId1, catches, (cat) => cat.anglerId == anglerId1),
-        1);
+      entityManager.numberOf<Catch>(
+          anglerId1, catches, (cat) => cat.anglerId == anglerId1),
+      1,
+    );
     expect(
-        entityManager.numberOf<Catch>(
-            anglerId2, catches, (cat) => cat.anglerId == anglerId2),
-        1);
+      entityManager.numberOf<Catch>(
+          anglerId2, catches, (cat) => cat.anglerId == anglerId2),
+      1,
+    );
     expect(
-        entityManager.numberOf<Catch>(
-            anglerId3, catches, (cat) => cat.anglerId == anglerId3),
-        1);
+      entityManager.numberOf<Catch>(
+          anglerId3, catches, (cat) => cat.anglerId == anglerId3),
+      1,
+    );
+  });
+
+  test("idsMatchesFilter returns true", () {
+    entityManager.matchesFilterResult = true;
+    expect(
+      entityManager.idsMatchesFilter([randomId(), randomId()], "Any"),
+      isTrue,
+    );
+  });
+
+  test("idsMatchesFilter returns false", () {
+    entityManager.matchesFilterResult = false;
+    expect(
+      entityManager.idsMatchesFilter([randomId(), randomId()], "Any"),
+      isFalse,
+    );
+  });
+
+  test("idSet with empty input returns all IDs", () async {
+    await entityManager.addOrUpdate(Species(id: randomId(), name: "Test 1"));
+    await entityManager.addOrUpdate(Species(id: randomId(), name: "Test 2"));
+
+    expect(entityManager.idSet().length, 2);
+  });
+
+  test("idSet with input returns only input IDs", () async {
+    var ids = [
+      randomId(),
+      randomId(),
+    ];
+    await entityManager.addOrUpdate(Species(id: ids[0], name: "Test 1"));
+    await entityManager.addOrUpdate(Species(id: ids[1], name: "Test 2"));
+
+    expect(entityManager.idSet(ids: [ids[0]]).length, 1);
+  });
+
+  test("idSet with input returns only input entities", () async {
+    var entities = [
+      Species(id: randomId(), name: "Test 1"),
+      Species(id: randomId(), name: "Test 2")
+    ];
+    await entityManager.addOrUpdate(entities[0]);
+    await entityManager.addOrUpdate(entities[1]);
+
+    expect(entityManager.idSet(entities: [entities[0]]).length, 1);
   });
 }

@@ -60,8 +60,8 @@ class BaitVariantListItem extends StatelessWidget {
             style: stylePrimary(context),
           ),
           CustomEntityValues(
-            variant.customEntityValues,
-            isCondensed: true,
+            values: variant.customEntityValues,
+            isSingleLine: true,
           ),
           // Only show a separate description line if the description isn't
           // already present in the title.

@@ -45,7 +45,7 @@ void main() {
     entityManager = TestNamedEntityManager(appManager.app);
   });
 
-  test("Entity named and name exists", () async {
+  test("nameExists", () async {
     await entityManager.addOrUpdate(Species()
       ..id = randomId()
       ..name = "Bass");
@@ -61,6 +61,26 @@ void main() {
     expect(entityManager.nameExists("  Catfish"), true);
     expect(entityManager.nameExists("  catfish "), true);
     expect(entityManager.nameExists("perch"), false);
+  });
+
+  test("named with andCondition", () async {
+    var id = randomId();
+
+    await entityManager.addOrUpdate(Species()
+      ..id = id
+      ..name = "Bass");
+
+    expect(
+      entityManager.named("Bass", andCondition: (species) => species.id == id),
+      isNotNull,
+    );
+    expect(
+      entityManager.named(
+        "Bass",
+        andCondition: (species) => species.id == randomId(),
+      ),
+      isNull,
+    );
   });
 
   test("nameComparator", () async {

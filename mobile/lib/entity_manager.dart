@@ -59,6 +59,9 @@ abstract class EntityManager<T extends GeneratedMessage>
 
   Id id(T entity);
 
+  /// Returns a value for [T] to be displayed to the user.
+  String displayName(BuildContext context, T entity);
+
   bool matchesFilter(Id id, String? filter);
 
   /// Parses a Protobuf byte representation of T.
@@ -143,6 +146,23 @@ abstract class EntityManager<T extends GeneratedMessage>
       appManager.localDatabaseManager;
 
   String get _collectionPath => "${authManager.firestoreDocPath}/$tableName";
+
+  bool idsMatchesFilter(List<Id> ids, String? filter) {
+    for (var id in ids) {
+      if (matchesFilter(id, filter)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  /// Returns a [Set] of entity [Id] objects. If [ids] is not empty, the IDs
+  /// returned are guaranteed to exist in the database.
+  Set<Id> idSet({
+    Iterable<T> entities = const [],
+    Iterable<Id>? ids,
+  }) =>
+      (entities.isEmpty ? list(ids) : entities).map((e) => id(e)).toSet();
 
   List<T> list([Iterable<Id>? ids]) {
     if (ids == null || ids.isEmpty) {

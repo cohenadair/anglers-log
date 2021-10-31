@@ -218,8 +218,40 @@ void main() {
     expect(formatDateAsRecent(context, DateTime(2020, 9, 24)), "Today");
     expect(formatDateAsRecent(context, DateTime(2020, 9, 23)), "Yesterday");
     expect(formatDateAsRecent(context, DateTime(2020, 9, 22)), "Tuesday");
+    expect(
+      formatDateAsRecent(
+        context,
+        DateTime(2020, 9, 22),
+        abbreviated: true,
+      ),
+      "Tue",
+    );
     expect(formatDateAsRecent(context, DateTime(2020, 8, 22)), "Aug 22");
     expect(formatDateAsRecent(context, DateTime(2019, 8, 22)), "Aug 22, 2019");
+  });
+
+  testWidgets("formatDateTime exclude midnight", (tester) async {
+    var appManager = StubbedAppManager();
+    when(appManager.timeManager.currentDateTime)
+        .thenReturn(DateTime(2020, 9, 24));
+    var context = await buildContext(tester, appManager: appManager);
+
+    expect(
+      formatDateTime(
+        context,
+        DateTime(2020, 8, 22),
+        excludeMidnight: false,
+      ),
+      "Aug 22 at 12:00 AM",
+    );
+    expect(
+      formatDateTime(
+        context,
+        DateTime(2020, 8, 22),
+        excludeMidnight: true,
+      ),
+      "Aug 22",
+    );
   });
 
   group("Format duration", () {

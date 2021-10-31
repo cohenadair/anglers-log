@@ -32,6 +32,34 @@ class FishingSpotManager extends ImageEntityManager<FishingSpot> {
   @override
   String name(FishingSpot entity) => entity.name;
 
+  /// Returns [name] if it is not empty, otherwise returns the
+  /// spot's coordinates as a string in the format provided by [formatLatLng].
+  @override
+  String displayName(
+    BuildContext context,
+    FishingSpot entity, {
+    bool includeLatLngLabels = true,
+    bool includeBodyOfWater = false,
+  }) {
+    var name = entity.name;
+    if (isEmpty(name)) {
+      name = formatLatLng(
+        context: context,
+        lat: entity.lat,
+        lng: entity.lng,
+        includeLabels: includeLatLngLabels,
+      );
+    }
+
+    var bodyOfWaterName = "";
+    var bodyOfWater = _bodyOfWaterManager.entity(entity.bodyOfWaterId);
+    if (includeBodyOfWater && bodyOfWater != null) {
+      bodyOfWaterName = " (${bodyOfWater.name})";
+    }
+
+    return "$name$bodyOfWaterName";
+  }
+
   @override
   String get tableName => "fishing_spot";
 
@@ -68,6 +96,15 @@ class FishingSpotManager extends ImageEntityManager<FishingSpot> {
     }
 
     return namedSpots..addAll(otherSpots);
+  }
+
+  /// Returns the [FishingSpot] with the given [name] and associated
+  /// [BodyOfWater] with [bodyOfWaterId] or null if one does not exist.
+  FishingSpot? namedWithBodyOfWater(String? name, Id? bodyOfWaterId) {
+    return super.named(name, andCondition: (fishingSpot) {
+      return bodyOfWaterId == null ||
+          fishingSpot.bodyOfWaterId == bodyOfWaterId;
+    });
   }
 
   /// Returns the closest [FishingSpot] within [meters] of [latLng], or null if

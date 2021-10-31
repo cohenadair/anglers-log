@@ -1,4 +1,5 @@
 import 'package:collection/collection.dart' show IterableExtension;
+import 'package:flutter/material.dart';
 import 'package:protobuf/protobuf.dart';
 import 'package:quiver/strings.dart';
 
@@ -23,6 +24,9 @@ abstract class NamedEntityManager<T extends GeneratedMessage>
   }
 
   @override
+  String displayName(BuildContext context, T entity) => name(entity);
+
+  @override
   bool matchesFilter(Id id, String? filter) {
     if (isEmpty(filter)) {
       return true;
@@ -36,15 +40,21 @@ abstract class NamedEntityManager<T extends GeneratedMessage>
     return containsTrimmedLowerCase(name(entity), filter!);
   }
 
-  bool nameExists(String name) {
-    return named(name) != null;
-  }
+  bool nameExists(String name) => named(name) != null;
 
-  T? named(String? name) {
+  /// Returns the entity with the given name, or null if one doesn't exist.
+  /// [andCondition] is invoked for each value in [entities] and must evaluate
+  /// to true for a non-null result.
+  T? named(
+    String? name, {
+    bool Function(T)? andCondition,
+  }) {
     if (isEmpty(name)) {
       return null;
     }
-    return entities.values
-        .firstWhereOrNull((e) => equalsTrimmedIgnoreCase(name!, this.name(e)));
+    return entities.values.firstWhereOrNull((e) {
+      return equalsTrimmedIgnoreCase(name!, this.name(e)) &&
+          (andCondition?.call(e) ?? true);
+    });
   }
 }

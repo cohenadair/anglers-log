@@ -25,7 +25,7 @@ class PurchasesWrapper {
   Future<PurchaserInfo> purchasePackage(Package package) =>
       Purchases.purchasePackage(package);
 
-  Future<PurchaserInfo> reset() => Purchases.logOut();
+  Future<PurchaserInfo> logOut() => Purchases.logOut();
 
   Future<PurchaserInfo> restoreTransactions() =>
       Purchases.restoreTransactions();

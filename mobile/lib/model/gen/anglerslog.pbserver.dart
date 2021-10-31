@@ -7,4 +7,4 @@
 
 export 'anglerslog.pb.dart';
 
-// ignore_for_file: constant_identifier_names,lines_longer_than_80_chars,directives_ordering,prefer_mixin,implementation_imports
+// ignore_for_file: undefined_named_parameter,constant_identifier_names

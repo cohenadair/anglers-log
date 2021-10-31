@@ -87,7 +87,7 @@ void main() {
     );
 
     expect(find.text("Required"), findsNWidgets(2));
-    expect(find.text("Date & Time"), findsOneWidget);
+    expect(find.text("Date and Time"), findsOneWidget);
     expect(find.text("Species"), findsOneWidget);
     expect(find.text("Photos"), findsOneWidget);
     expect(find.text("Bait"), findsOneWidget);

@@ -179,6 +179,7 @@ class AuthManager {
     await _appManager.fishingSpotManager.initialize();
     await _appManager.methodManager.initialize();
     await _appManager.waterClarityManager.initialize();
+    await _appManager.tripManager.initialize();
 
     // Ensure everything is initialized before managing any image state.
     await _appManager.imageManager.initialize();

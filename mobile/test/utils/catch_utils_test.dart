@@ -2,6 +2,7 @@ import 'package:fixnum/fixnum.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
 import 'package:mobile/utils/catch_utils.dart';
+import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mockito/mockito.dart';
 
 import '../mocks/stubbed_app_manager.dart';
@@ -307,52 +308,10 @@ void main() {
 
   testWidgets("catchFilterMatchesAtmosphere", (tester) async {
     var context = await buildContext(tester);
-
-    // Without atmosphere.
-    var cat = Catch();
+    var cat =
+        Catch(atmosphere: Atmosphere(skyConditions: [SkyCondition.clear]));
     expect(catchFilterMatchesAtmosphere(context, "", cat), isFalse);
-
-    // With atmosphere.
-    cat = Catch(
-      atmosphere: Atmosphere(
-        temperature: Measurement(
-          unit: Unit.fahrenheit,
-          value: 58,
-        ),
-        skyConditions: [SkyCondition.cloudy],
-        windSpeed: Measurement(
-          unit: Unit.kilometers_per_hour,
-          value: 6.5,
-        ),
-        windDirection: Direction.north,
-        pressure: Measurement(
-          unit: Unit.pounds_per_square_inch,
-          value: 1000,
-        ),
-        humidity: Measurement(
-          unit: Unit.percent,
-          value: 50,
-        ),
-        visibility: Measurement(
-          unit: Unit.miles,
-          value: 10,
-        ),
-        moonPhase: MoonPhase.full,
-        sunriseTimestamp: Int64(10000),
-        sunsetTimestamp: Int64(15000),
-      ),
-    );
-    expect(catchFilterMatchesAtmosphere(context, "58", cat), isTrue);
-    expect(catchFilterMatchesAtmosphere(context, "6.5", cat), isTrue);
-    expect(catchFilterMatchesAtmosphere(context, "1000", cat), isTrue);
-    expect(catchFilterMatchesAtmosphere(context, "50", cat), isTrue);
-    expect(catchFilterMatchesAtmosphere(context, "10", cat), isTrue);
-    expect(catchFilterMatchesAtmosphere(context, "full", cat), isTrue);
-    expect(catchFilterMatchesAtmosphere(context, "sunrise", cat), isTrue);
-    expect(catchFilterMatchesAtmosphere(context, "sunset", cat), isTrue);
-    expect(catchFilterMatchesAtmosphere(context, "500", cat), isFalse);
-    expect(catchFilterMatchesAtmosphere(context, "37", cat), isFalse);
-    expect(catchFilterMatchesAtmosphere(context, "nothing", cat), isFalse);
+    expect(catchFilterMatchesAtmosphere(context, "Clear", cat), isTrue);
   });
 
   testWidgets("catchFilterMatchesTide", (tester) async {
@@ -379,5 +338,123 @@ void main() {
     expect(catchFilterMatchesTide(context, "tide", cat), isTrue);
     expect(catchFilterMatchesTide(context, "22", cat), isFalse);
     expect(catchFilterMatchesTide(context, "out", cat), isFalse);
+  });
+
+  testWidgets("formatNumberOfCatches singular", (tester) async {
+    var context = await buildContext(tester);
+    expect(formatNumberOfCatches(context, 1), "1 Catch");
+  });
+
+  testWidgets("formatNumberOfCatches plural", (tester) async {
+    var context = await buildContext(tester);
+    expect(formatNumberOfCatches(context, 5), "5 Catches");
+  });
+
+  testWidgets("Fishing spot name as second subtitle", (tester) async {
+    var appManager = StubbedAppManager();
+    when(appManager.fishingSpotManager.entity(any)).thenReturn(FishingSpot(
+      name: "Spot 1",
+    ));
+
+    expect(
+      CatchListItemModel(
+        await buildContext(tester, appManager: appManager),
+        Catch(fishingSpotId: randomId()),
+      ).subtitle2,
+      "Spot 1",
+    );
+  });
+
+  testWidgets("Bait as second subtitle", (tester) async {
+    var appManager = StubbedAppManager();
+    when(appManager.fishingSpotManager.entity(any)).thenReturn(null);
+    when(appManager.baitManager.formatNameWithCategory(any)).thenReturn("Bait");
+
+    expect(
+      CatchListItemModel(
+        await buildContext(tester, appManager: appManager),
+        Catch(baits: [BaitAttachment(baitId: randomId())]),
+      ).subtitle2,
+      "Bait",
+    );
+  });
+
+  testWidgets("No second subtitle", (tester) async {
+    var appManager = StubbedAppManager();
+    when(appManager.fishingSpotManager.entity(any)).thenReturn(null);
+    when(appManager.baitManager.formatNameWithCategory(any)).thenReturn(null);
+
+    expect(
+      CatchListItemModel(
+        await buildContext(tester, appManager: appManager),
+        Catch(baits: [BaitAttachment(baitId: randomId())]),
+      ).subtitle2,
+      isNull,
+    );
+  });
+
+  testWidgets("Null image name", (tester) async {
+    var appManager = StubbedAppManager();
+    when(appManager.fishingSpotManager.entity(any)).thenReturn(null);
+    when(appManager.baitManager.formatNameWithCategory(any)).thenReturn(null);
+
+    expect(
+      CatchListItemModel(
+        await buildContext(tester, appManager: appManager),
+        Catch(imageNames: []),
+      ).imageName,
+      isNull,
+    );
+  });
+
+  testWidgets("Non-null image name", (tester) async {
+    var appManager = StubbedAppManager();
+    when(appManager.fishingSpotManager.entity(any)).thenReturn(null);
+    when(appManager.baitManager.formatNameWithCategory(any)).thenReturn(null);
+
+    expect(
+      CatchListItemModel(
+        await buildContext(tester, appManager: appManager),
+        Catch(imageNames: ["1.png"]),
+      ).imageName,
+      "1.png",
+    );
+  });
+
+  testWidgets("Valid species", (tester) async {
+    var appManager = StubbedAppManager();
+    when(appManager.fishingSpotManager.entity(any)).thenReturn(null);
+    when(appManager.baitManager.formatNameWithCategory(any)).thenReturn(null);
+    when(appManager.speciesManager.entity(any)).thenReturn(Species(
+      name: "Trout",
+    ));
+
+    expect(
+      CatchListItemModel(
+        await buildContext(tester, appManager: appManager),
+        Catch(speciesId: randomId()),
+      ).title,
+      "Trout",
+    );
+  });
+
+  testWidgets("Unknown species", (tester) async {
+    var appManager = StubbedAppManager();
+    when(appManager.fishingSpotManager.entity(any)).thenReturn(null);
+    when(appManager.baitManager.formatNameWithCategory(any)).thenReturn(null);
+    when(appManager.speciesManager.entity(any)).thenReturn(null);
+
+    expect(
+      CatchListItemModel(
+        await buildContext(tester, appManager: appManager),
+        Catch(speciesId: randomId()),
+      ).title,
+      "Unknown Species",
+    );
+  });
+
+  test("catchQuantity", () {
+    expect(catchQuantity(Catch()), 1);
+    expect(catchQuantity(Catch(quantity: 5)), 5);
   });
 }

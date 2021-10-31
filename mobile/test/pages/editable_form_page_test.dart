@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
 import 'package:mobile/pages/editable_form_page.dart';
+import 'package:mobile/res/dimen.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mobile/widgets/checkbox_input.dart';
 import 'package:mobile/widgets/input_controller.dart';
@@ -220,7 +221,7 @@ void main() {
     var customEntity = CustomEntity()
       ..id = randomId()
       ..name = "Custom Field 1"
-      ..type = CustomEntity_Type.text;
+      ..type = CustomEntity_Type.boolean;
     when(appManager.customEntityManager.list()).thenReturn([
       customEntity,
     ]);
@@ -248,7 +249,18 @@ void main() {
     await tapAndSettle(tester, find.byType(CloseButton));
 
     expect(called, isTrue);
-    expect(find.widgetWithText(TextField, "Custom Field 1"), findsOneWidget);
+    expect(
+      find.widgetWithText(CheckboxInput, "Custom Field 1"),
+      findsOneWidget,
+    );
+
+    var padding = tester.widget<Padding>(find
+        .ancestor(
+          of: find.byType(CheckboxInput),
+          matching: find.byType(Padding),
+        )
+        .first);
+    expect(padding.padding, insetsZero);
   });
 
   testWidgets("Callback invoked with correct values", (tester) async {
@@ -431,5 +443,108 @@ void main() {
 
     expect(find.byType(HeadingNoteDivider), findsNothing);
     expect(find.byType(HeadingDivider), findsNothing);
+  });
+
+  testWidgets("All fields show if trackedFieldIds is empty", (tester) async {
+    var id0 = randomId();
+    var id1 = randomId();
+    var id2 = randomId();
+
+    await pumpContext(
+      tester,
+      (_) => EditableFormPage(
+        fields: {
+          id0: Field(
+            id: id0,
+            controller: InputController(),
+          ),
+          id1: Field(
+            id: id1,
+            controller: InputController(),
+          ),
+          id2: Field(
+            id: id2,
+            controller: InputController(),
+          ),
+        },
+        onBuildField: (id) => Text(id.toString()),
+        trackedFieldIds: const [],
+      ),
+      appManager: appManager,
+    );
+
+    expect(find.text(id0.toString()), findsOneWidget);
+    expect(find.text(id1.toString()), findsOneWidget);
+    expect(find.text(id2.toString()), findsOneWidget);
+  });
+
+  testWidgets("Only fields trackedFieldIds are shown", (tester) async {
+    var id0 = randomId();
+    var id1 = randomId();
+    var id2 = randomId();
+
+    await pumpContext(
+      tester,
+      (_) => EditableFormPage(
+        fields: {
+          id0: Field(
+            id: id0,
+            controller: InputController(),
+          ),
+          id1: Field(
+            id: id1,
+            controller: InputController(),
+          ),
+          id2: Field(
+            id: id2,
+            controller: InputController(),
+          ),
+        },
+        onBuildField: (id) => Text(id.toString()),
+        trackedFieldIds: [
+          id1,
+          id2,
+        ],
+      ),
+      appManager: appManager,
+    );
+
+    expect(find.text(id0.toString()), findsNothing);
+    expect(find.text(id1.toString()), findsOneWidget);
+    expect(find.text(id2.toString()), findsOneWidget);
+  });
+
+  testWidgets("Field.isShowing=false hides fields", (tester) async {
+    var id0 = randomId();
+    var id1 = randomId();
+    var id2 = randomId();
+
+    await pumpContext(
+      tester,
+      (_) => EditableFormPage(
+        fields: {
+          id0: Field(
+            id: id0,
+            controller: InputController(),
+            isShowing: false,
+          ),
+          id1: Field(
+            id: id1,
+            controller: InputController(),
+          ),
+          id2: Field(
+            id: id2,
+            controller: InputController(),
+          ),
+        },
+        onBuildField: (id) => Text(id.toString()),
+        trackedFieldIds: const [],
+      ),
+      appManager: appManager,
+    );
+
+    expect(find.text(id0.toString()), findsNothing);
+    expect(find.text(id1.toString()), findsOneWidget);
+    expect(find.text(id2.toString()), findsOneWidget);
   });
 }

@@ -3,25 +3,22 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:mapbox_gl/mapbox_gl.dart';
+import 'package:mobile/widgets/entity_picker_input.dart';
 import 'package:quiver/strings.dart';
 
 import '../body_of_water_manager.dart';
-import '../entity_manager.dart';
 import '../fishing_spot_manager.dart';
 import '../i18n/strings.dart';
 import '../model/gen/anglerslog.pb.dart';
 import '../pages/form_page.dart';
 import '../res/dimen.dart';
-import '../utils/page_utils.dart';
 import '../utils/protobuf_utils.dart';
 import '../widgets/image_input.dart';
 import '../widgets/input_controller.dart';
-import '../widgets/list_picker_input.dart';
 import '../widgets/text_input.dart';
 import '../widgets/widget.dart';
 import 'body_of_water_list_page.dart';
 import 'image_picker_page.dart';
-import 'manageable_list_page.dart';
 
 class SaveFishingSpotPage extends StatefulWidget {
   final FishingSpot? oldFishingSpot;
@@ -101,32 +98,11 @@ class _SaveFishingSpotPageState extends State<SaveFishingSpotPage> {
   }
 
   Widget _buildBodyOfWater() {
-    return EntityListenerBuilder(
-      managers: [_bodyOfWaterManager],
-      builder: (context) {
-        var bodyOfWater =
-            _bodyOfWaterManager.entity(_bodyOfWaterController.value);
-        return ListPickerInput(
-          title: Strings.of(context).saveFishingSpotPageBodyOfWaterLabel,
-          value: bodyOfWater?.name,
-          onTap: () {
-            push(
-              context,
-              BodyOfWaterListPage(
-                pickerSettings:
-                    ManageableListPagePickerSettings<BodyOfWater>.single(
-                  onPicked: (context, bodyOfWater) {
-                    setState(
-                        () => _bodyOfWaterController.value = bodyOfWater?.id);
-                    return true;
-                  },
-                  initialValue: bodyOfWater,
-                ),
-              ),
-            );
-          },
-        );
-      },
+    return EntityPickerInput<BodyOfWater>.single(
+      manager: _bodyOfWaterManager,
+      controller: _bodyOfWaterController,
+      title: Strings.of(context).saveFishingSpotPageBodyOfWaterLabel,
+      listPage: (settings) => BodyOfWaterListPage(pickerSettings: settings),
     );
   }
 

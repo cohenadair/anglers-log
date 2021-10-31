@@ -3243,6 +3243,483 @@ class WaterClarity extends $pb.GeneratedMessage {
   void clearName() => clearField(2);
 }
 
+class Trip_CatchesPerEntity extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      const $core.bool.fromEnvironment('protobuf.omit_message_names')
+          ? ''
+          : 'Trip.CatchesPerEntity',
+      package: const $pb.PackageName(
+          const $core.bool.fromEnvironment('protobuf.omit_message_names')
+              ? ''
+              : 'anglerslog'),
+      createEmptyInstance: create)
+    ..aOM<Id>(
+        1,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'entityId',
+        subBuilder: Id.create)
+    ..a<$core.int>(
+        2,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'value',
+        $pb.PbFieldType.OU3)
+    ..hasRequiredFields = false;
+
+  Trip_CatchesPerEntity._() : super();
+  factory Trip_CatchesPerEntity({
+    Id? entityId,
+    $core.int? value,
+  }) {
+    final _result = create();
+    if (entityId != null) {
+      _result.entityId = entityId;
+    }
+    if (value != null) {
+      _result.value = value;
+    }
+    return _result;
+  }
+  factory Trip_CatchesPerEntity.fromBuffer($core.List<$core.int> i,
+          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(i, r);
+  factory Trip_CatchesPerEntity.fromJson($core.String i,
+          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(i, r);
+  @$core.Deprecated('Using this can add significant overhead to your binary. '
+      'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+      'Will be removed in next major version')
+  Trip_CatchesPerEntity clone() =>
+      Trip_CatchesPerEntity()..mergeFromMessage(this);
+  @$core.Deprecated('Using this can add significant overhead to your binary. '
+      'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+      'Will be removed in next major version')
+  Trip_CatchesPerEntity copyWith(
+          void Function(Trip_CatchesPerEntity) updates) =>
+      super.copyWith((message) => updates(message as Trip_CatchesPerEntity))
+          as Trip_CatchesPerEntity; // ignore: deprecated_member_use
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static Trip_CatchesPerEntity create() => Trip_CatchesPerEntity._();
+  Trip_CatchesPerEntity createEmptyInstance() => create();
+  static $pb.PbList<Trip_CatchesPerEntity> createRepeated() =>
+      $pb.PbList<Trip_CatchesPerEntity>();
+  @$core.pragma('dart2js:noInline')
+  static Trip_CatchesPerEntity getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<Trip_CatchesPerEntity>(create);
+  static Trip_CatchesPerEntity? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  Id get entityId => $_getN(0);
+  @$pb.TagNumber(1)
+  set entityId(Id v) {
+    setField(1, v);
+  }
+
+  @$pb.TagNumber(1)
+  $core.bool hasEntityId() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearEntityId() => clearField(1);
+  @$pb.TagNumber(1)
+  Id ensureEntityId() => $_ensure(0);
+
+  @$pb.TagNumber(2)
+  $core.int get value => $_getIZ(1);
+  @$pb.TagNumber(2)
+  set value($core.int v) {
+    $_setUnsignedInt32(1, v);
+  }
+
+  @$pb.TagNumber(2)
+  $core.bool hasValue() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearValue() => clearField(2);
+}
+
+class Trip_CatchesPerBait extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      const $core.bool.fromEnvironment('protobuf.omit_message_names')
+          ? ''
+          : 'Trip.CatchesPerBait',
+      package: const $pb.PackageName(
+          const $core.bool.fromEnvironment('protobuf.omit_message_names')
+              ? ''
+              : 'anglerslog'),
+      createEmptyInstance: create)
+    ..aOM<BaitAttachment>(
+        1,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'attachment',
+        subBuilder: BaitAttachment.create)
+    ..a<$core.int>(
+        2,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'value',
+        $pb.PbFieldType.OU3)
+    ..hasRequiredFields = false;
+
+  Trip_CatchesPerBait._() : super();
+  factory Trip_CatchesPerBait({
+    BaitAttachment? attachment,
+    $core.int? value,
+  }) {
+    final _result = create();
+    if (attachment != null) {
+      _result.attachment = attachment;
+    }
+    if (value != null) {
+      _result.value = value;
+    }
+    return _result;
+  }
+  factory Trip_CatchesPerBait.fromBuffer($core.List<$core.int> i,
+          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(i, r);
+  factory Trip_CatchesPerBait.fromJson($core.String i,
+          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(i, r);
+  @$core.Deprecated('Using this can add significant overhead to your binary. '
+      'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+      'Will be removed in next major version')
+  Trip_CatchesPerBait clone() => Trip_CatchesPerBait()..mergeFromMessage(this);
+  @$core.Deprecated('Using this can add significant overhead to your binary. '
+      'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+      'Will be removed in next major version')
+  Trip_CatchesPerBait copyWith(void Function(Trip_CatchesPerBait) updates) =>
+      super.copyWith((message) => updates(message as Trip_CatchesPerBait))
+          as Trip_CatchesPerBait; // ignore: deprecated_member_use
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static Trip_CatchesPerBait create() => Trip_CatchesPerBait._();
+  Trip_CatchesPerBait createEmptyInstance() => create();
+  static $pb.PbList<Trip_CatchesPerBait> createRepeated() =>
+      $pb.PbList<Trip_CatchesPerBait>();
+  @$core.pragma('dart2js:noInline')
+  static Trip_CatchesPerBait getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<Trip_CatchesPerBait>(create);
+  static Trip_CatchesPerBait? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  BaitAttachment get attachment => $_getN(0);
+  @$pb.TagNumber(1)
+  set attachment(BaitAttachment v) {
+    setField(1, v);
+  }
+
+  @$pb.TagNumber(1)
+  $core.bool hasAttachment() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearAttachment() => clearField(1);
+  @$pb.TagNumber(1)
+  BaitAttachment ensureAttachment() => $_ensure(0);
+
+  @$pb.TagNumber(2)
+  $core.int get value => $_getIZ(1);
+  @$pb.TagNumber(2)
+  set value($core.int v) {
+    $_setUnsignedInt32(1, v);
+  }
+
+  @$pb.TagNumber(2)
+  $core.bool hasValue() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearValue() => clearField(2);
+}
+
+class Trip extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      const $core.bool.fromEnvironment('protobuf.omit_message_names')
+          ? ''
+          : 'Trip',
+      package: const $pb.PackageName(
+          const $core.bool.fromEnvironment('protobuf.omit_message_names')
+              ? ''
+              : 'anglerslog'),
+      createEmptyInstance: create)
+    ..aOM<Id>(
+        1,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'id',
+        subBuilder: Id.create)
+    ..aOS(
+        2,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'name')
+    ..a<$fixnum.Int64>(
+        3,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'startTimestamp',
+        $pb.PbFieldType.OU6,
+        defaultOrMaker: $fixnum.Int64.ZERO)
+    ..a<$fixnum.Int64>(
+        4,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'endTimestamp',
+        $pb.PbFieldType.OU6,
+        defaultOrMaker: $fixnum.Int64.ZERO)
+    ..pPS(
+        5,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'imageNames')
+    ..pc<Id>(
+        6,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'catchIds',
+        $pb.PbFieldType.PM,
+        subBuilder: Id.create)
+    ..pc<Id>(
+        7,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'bodyOfWaterIds',
+        $pb.PbFieldType.PM,
+        subBuilder: Id.create)
+    ..pc<Trip_CatchesPerEntity>(
+        8,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'catchesPerFishingSpot',
+        $pb.PbFieldType.PM,
+        subBuilder: Trip_CatchesPerEntity.create)
+    ..pc<Trip_CatchesPerEntity>(
+        9,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'catchesPerAngler',
+        $pb.PbFieldType.PM,
+        subBuilder: Trip_CatchesPerEntity.create)
+    ..pc<Trip_CatchesPerEntity>(
+        10,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'catchesPerSpecies',
+        $pb.PbFieldType.PM,
+        subBuilder: Trip_CatchesPerEntity.create)
+    ..pc<Trip_CatchesPerBait>(
+        11,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'catchesPerBait',
+        $pb.PbFieldType.PM,
+        subBuilder: Trip_CatchesPerBait.create)
+    ..pc<CustomEntityValue>(
+        12,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'customEntityValues',
+        $pb.PbFieldType.PM,
+        subBuilder: CustomEntityValue.create)
+    ..aOS(
+        13,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'notes')
+    ..aOM<Atmosphere>(
+        14,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'atmosphere',
+        subBuilder: Atmosphere.create)
+    ..hasRequiredFields = false;
+
+  Trip._() : super();
+  factory Trip({
+    Id? id,
+    $core.String? name,
+    $fixnum.Int64? startTimestamp,
+    $fixnum.Int64? endTimestamp,
+    $core.Iterable<$core.String>? imageNames,
+    $core.Iterable<Id>? catchIds,
+    $core.Iterable<Id>? bodyOfWaterIds,
+    $core.Iterable<Trip_CatchesPerEntity>? catchesPerFishingSpot,
+    $core.Iterable<Trip_CatchesPerEntity>? catchesPerAngler,
+    $core.Iterable<Trip_CatchesPerEntity>? catchesPerSpecies,
+    $core.Iterable<Trip_CatchesPerBait>? catchesPerBait,
+    $core.Iterable<CustomEntityValue>? customEntityValues,
+    $core.String? notes,
+    Atmosphere? atmosphere,
+  }) {
+    final _result = create();
+    if (id != null) {
+      _result.id = id;
+    }
+    if (name != null) {
+      _result.name = name;
+    }
+    if (startTimestamp != null) {
+      _result.startTimestamp = startTimestamp;
+    }
+    if (endTimestamp != null) {
+      _result.endTimestamp = endTimestamp;
+    }
+    if (imageNames != null) {
+      _result.imageNames.addAll(imageNames);
+    }
+    if (catchIds != null) {
+      _result.catchIds.addAll(catchIds);
+    }
+    if (bodyOfWaterIds != null) {
+      _result.bodyOfWaterIds.addAll(bodyOfWaterIds);
+    }
+    if (catchesPerFishingSpot != null) {
+      _result.catchesPerFishingSpot.addAll(catchesPerFishingSpot);
+    }
+    if (catchesPerAngler != null) {
+      _result.catchesPerAngler.addAll(catchesPerAngler);
+    }
+    if (catchesPerSpecies != null) {
+      _result.catchesPerSpecies.addAll(catchesPerSpecies);
+    }
+    if (catchesPerBait != null) {
+      _result.catchesPerBait.addAll(catchesPerBait);
+    }
+    if (customEntityValues != null) {
+      _result.customEntityValues.addAll(customEntityValues);
+    }
+    if (notes != null) {
+      _result.notes = notes;
+    }
+    if (atmosphere != null) {
+      _result.atmosphere = atmosphere;
+    }
+    return _result;
+  }
+  factory Trip.fromBuffer($core.List<$core.int> i,
+          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(i, r);
+  factory Trip.fromJson($core.String i,
+          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(i, r);
+  @$core.Deprecated('Using this can add significant overhead to your binary. '
+      'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+      'Will be removed in next major version')
+  Trip clone() => Trip()..mergeFromMessage(this);
+  @$core.Deprecated('Using this can add significant overhead to your binary. '
+      'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+      'Will be removed in next major version')
+  Trip copyWith(void Function(Trip) updates) =>
+      super.copyWith((message) => updates(message as Trip))
+          as Trip; // ignore: deprecated_member_use
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static Trip create() => Trip._();
+  Trip createEmptyInstance() => create();
+  static $pb.PbList<Trip> createRepeated() => $pb.PbList<Trip>();
+  @$core.pragma('dart2js:noInline')
+  static Trip getDefault() =>
+      _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<Trip>(create);
+  static Trip? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  Id get id => $_getN(0);
+  @$pb.TagNumber(1)
+  set id(Id v) {
+    setField(1, v);
+  }
+
+  @$pb.TagNumber(1)
+  $core.bool hasId() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearId() => clearField(1);
+  @$pb.TagNumber(1)
+  Id ensureId() => $_ensure(0);
+
+  @$pb.TagNumber(2)
+  $core.String get name => $_getSZ(1);
+  @$pb.TagNumber(2)
+  set name($core.String v) {
+    $_setString(1, v);
+  }
+
+  @$pb.TagNumber(2)
+  $core.bool hasName() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearName() => clearField(2);
+
+  @$pb.TagNumber(3)
+  $fixnum.Int64 get startTimestamp => $_getI64(2);
+  @$pb.TagNumber(3)
+  set startTimestamp($fixnum.Int64 v) {
+    $_setInt64(2, v);
+  }
+
+  @$pb.TagNumber(3)
+  $core.bool hasStartTimestamp() => $_has(2);
+  @$pb.TagNumber(3)
+  void clearStartTimestamp() => clearField(3);
+
+  @$pb.TagNumber(4)
+  $fixnum.Int64 get endTimestamp => $_getI64(3);
+  @$pb.TagNumber(4)
+  set endTimestamp($fixnum.Int64 v) {
+    $_setInt64(3, v);
+  }
+
+  @$pb.TagNumber(4)
+  $core.bool hasEndTimestamp() => $_has(3);
+  @$pb.TagNumber(4)
+  void clearEndTimestamp() => clearField(4);
+
+  @$pb.TagNumber(5)
+  $core.List<$core.String> get imageNames => $_getList(4);
+
+  @$pb.TagNumber(6)
+  $core.List<Id> get catchIds => $_getList(5);
+
+  @$pb.TagNumber(7)
+  $core.List<Id> get bodyOfWaterIds => $_getList(6);
+
+  @$pb.TagNumber(8)
+  $core.List<Trip_CatchesPerEntity> get catchesPerFishingSpot => $_getList(7);
+
+  @$pb.TagNumber(9)
+  $core.List<Trip_CatchesPerEntity> get catchesPerAngler => $_getList(8);
+
+  @$pb.TagNumber(10)
+  $core.List<Trip_CatchesPerEntity> get catchesPerSpecies => $_getList(9);
+
+  @$pb.TagNumber(11)
+  $core.List<Trip_CatchesPerBait> get catchesPerBait => $_getList(10);
+
+  @$pb.TagNumber(12)
+  $core.List<CustomEntityValue> get customEntityValues => $_getList(11);
+
+  @$pb.TagNumber(13)
+  $core.String get notes => $_getSZ(12);
+  @$pb.TagNumber(13)
+  set notes($core.String v) {
+    $_setString(12, v);
+  }
+
+  @$pb.TagNumber(13)
+  $core.bool hasNotes() => $_has(12);
+  @$pb.TagNumber(13)
+  void clearNotes() => clearField(13);
+
+  @$pb.TagNumber(14)
+  Atmosphere get atmosphere => $_getN(13);
+  @$pb.TagNumber(14)
+  set atmosphere(Atmosphere v) {
+    setField(14, v);
+  }
+
+  @$pb.TagNumber(14)
+  $core.bool hasAtmosphere() => $_has(13);
+  @$pb.TagNumber(14)
+  void clearAtmosphere() => clearField(14);
+  @$pb.TagNumber(14)
+  Atmosphere ensureAtmosphere() => $_ensure(13);
+}
+
 class Measurement extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(
       const $core.bool.fromEnvironment('protobuf.omit_message_names')
@@ -3572,4 +4049,4 @@ class Tide extends $pb.GeneratedMessage {
   void clearHighTimestamp() => clearField(3);
 }
 
-// ignore_for_file: constant_identifier_names,lines_longer_than_80_chars,directives_ordering,prefer_mixin,implementation_imports
+// ignore_for_file: undefined_named_parameter,constant_identifier_names

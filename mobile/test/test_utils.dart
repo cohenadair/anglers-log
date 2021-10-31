@@ -341,4 +341,8 @@ extension CommonFindersExt on CommonFinders {
   }) {
     return textStyle(text, styleDisabled(context));
   }
+
+  Finder errorText(String text) => textStyle(text, styleError);
+
+  Finder successText(String text) => textStyle(text, styleSuccess);
 }

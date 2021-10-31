@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:mobile/widgets/widget.dart';
 import 'package:quiver/strings.dart';
 
+import '../bait_manager.dart';
+import '../fishing_spot_manager.dart';
 import '../i18n/strings.dart';
 import '../model/gen/anglerslog.pb.dart';
-import '../pages/image_picker_page.dart';
+import '../species_manager.dart';
 import '../time_manager.dart';
 import '../widgets/field.dart';
 import '../widgets/input_controller.dart';
@@ -80,7 +83,7 @@ List<Field> allCatchFields(BuildContext context) {
     Field(
       id: catchFieldIdImages,
       name: (context) => Strings.of(context).catchFieldImages,
-      controller: ListInputController<PickedImage>(),
+      controller: ImagesInputController(),
     ),
     Field(
       id: catchFieldIdFishingSpot,
@@ -117,7 +120,7 @@ List<Field> allCatchFields(BuildContext context) {
     ),
     Field(
       id: catchFieldIdAtmosphere,
-      name: (context) => Strings.of(context).catchFieldAtmosphere,
+      name: (context) => Strings.of(context).inputAtmosphere,
       controller: InputController<Atmosphere>(),
     ),
     Field(
@@ -257,58 +260,7 @@ bool catchFilterMatchesAtmosphere(
   if (!cat.hasAtmosphere()) {
     return false;
   }
-
-  var atmosphere = cat.atmosphere;
-  var searchString = "";
-
-  if (atmosphere.hasTemperature()) {
-    searchString += " ${atmosphere.temperature.displayValue(context)}";
-    searchString += " ${atmosphere.temperature.filterString(context)}";
-  }
-
-  if (atmosphere.hasWindSpeed()) {
-    searchString += " ${atmosphere.windSpeed.displayValue(context)}";
-    searchString += " ${atmosphere.windSpeed.filterString(context)}";
-  }
-
-  if (atmosphere.hasPressure()) {
-    searchString += " ${atmosphere.pressure.displayValue(context)}";
-    searchString += " ${atmosphere.pressure.filterString(context)}";
-  }
-
-  if (atmosphere.hasVisibility()) {
-    searchString += " ${atmosphere.visibility.displayValue(context)}";
-    searchString += " ${atmosphere.visibility.filterString(context)}";
-  }
-
-  if (atmosphere.skyConditions.isNotEmpty) {
-    searchString += " ${atmosphere.skyConditions.join(" ")}";
-  }
-
-  if (atmosphere.hasWindDirection()) {
-    searchString += " ${atmosphere.windDirection.filterString(context)}";
-    searchString += " ${Strings.of(context).keywordsWindDirection}";
-  }
-
-  if (atmosphere.hasHumidity()) {
-    searchString += " ${atmosphere.humidity.filterString(context)}";
-    searchString += " ${Strings.of(context).keywordsAirHumidity}";
-  }
-
-  if (atmosphere.hasMoonPhase()) {
-    searchString += " ${atmosphere.moonPhase.displayName(context)}";
-    searchString += " ${Strings.of(context).keywordsMoon}";
-  }
-
-  if (atmosphere.hasSunsetTimestamp()) {
-    searchString += " ${Strings.of(context).keywordsSunset}";
-  }
-
-  if (atmosphere.hasSunriseTimestamp()) {
-    searchString += " ${Strings.of(context).keywordsSunrise}";
-  }
-
-  return containsTrimmedLowerCase(searchString, filter);
+  return cat.atmosphere.matchesFilter(context, filter);
 }
 
 bool catchFilterMatchesTide(BuildContext context, String filter, Catch cat) {
@@ -320,3 +272,47 @@ bool catchFilterMatchesTide(BuildContext context, String filter, Catch cat) {
   return isNotEmpty(searchString) &&
       containsTrimmedLowerCase(searchString!, filter);
 }
+
+String formatNumberOfCatches(BuildContext context, int numberOfCatches) {
+  return numberOfCatches == 1
+      ? format(Strings.of(context).numberOfCatchesSingular, [numberOfCatches])
+      : format(Strings.of(context).numberOfCatches, [numberOfCatches]);
+}
+
+class CatchListItemModel {
+  late final String? imageName;
+  late final String title;
+  late final String? subtitle;
+  late final String? subtitle2;
+  late final Widget trailing;
+
+  CatchListItemModel(BuildContext context, Catch cat) {
+    var baitManager = BaitManager.of(context);
+    var fishingSpotManager = FishingSpotManager.of(context);
+    var speciesManager = SpeciesManager.of(context);
+
+    String? subtitle2;
+
+    var fishingSpot = fishingSpotManager.entity(cat.fishingSpotId);
+    if (fishingSpot != null && isNotEmpty(fishingSpot.name)) {
+      // Use fishing spot name as subtitle if available.
+      subtitle2 = fishingSpot.name;
+    } else if (cat.baits.isNotEmpty) {
+      // Fallback on bait as a subtitle.
+      var formattedName =
+          baitManager.formatNameWithCategory(cat.baits.first.baitId);
+      if (isNotEmpty(formattedName)) {
+        subtitle2 = formattedName!;
+      }
+    }
+
+    imageName = cat.imageNames.isNotEmpty ? cat.imageNames.first : null;
+    title = speciesManager.entity(cat.speciesId)?.name ??
+        Strings.of(context).unknownSpecies;
+    subtitle = formatTimestamp(context, cat.timestamp.toInt());
+    trailing = CatchFavoriteStar(cat);
+    this.subtitle2 = subtitle2;
+  }
+}
+
+int catchQuantity(Catch cat) => cat.hasQuantity() ? cat.quantity : 1;

@@ -13,9 +13,11 @@ class UserPreferenceManager extends PreferenceManager {
 
   static const _keyBaitVariantCustomIds = "bait_variant_custom_ids";
   static const _keyCatchCustomEntityIds = "catch_custom_entity_ids";
+  static const _keyTripCustomEntityIds = "trip_custom_entity_ids";
   static const _keyAtmosphereFieldIds = "atmosphere_field_ids";
   static const _keyBaitVariantFieldIds = "bait_variant_field_ids";
   static const _keyCatchFieldIds = "catch_field_ids";
+  static const _keyTripFieldIds = "trip_field_ids";
   static const _keyCatchLengthSystem = "catch_length_system";
   static const _keyCatchWeightSystem = "catch_weight_system";
   static const _keyWaterDepthSystem = "water_depth_system";
@@ -69,6 +71,11 @@ class UserPreferenceManager extends PreferenceManager {
 
   List<Id> get catchCustomEntityIds => idList(_keyCatchCustomEntityIds);
 
+  Future<void> setTripCustomEntityIds(List<Id> ids) =>
+      putIdList(_keyTripCustomEntityIds, ids);
+
+  List<Id> get tripCustomEntityIds => idList(_keyTripCustomEntityIds);
+
   Future<void> setAtmosphereFieldIds(List<Id> ids) =>
       putIdList(_keyAtmosphereFieldIds, ids);
 
@@ -83,6 +90,11 @@ class UserPreferenceManager extends PreferenceManager {
       putIdList(_keyCatchFieldIds, ids);
 
   List<Id> get catchFieldIds => idList(_keyCatchFieldIds);
+
+  Future<void> setTripFieldIds(List<Id> ids) =>
+      putIdList(_keyTripFieldIds, ids);
+
+  List<Id> get tripFieldIds => idList(_keyTripFieldIds);
 
   Future<void> setCatchLengthSystem(MeasurementSystem? system) =>
       put(_keyCatchLengthSystem, system?.value);
