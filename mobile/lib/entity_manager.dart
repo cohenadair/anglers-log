@@ -156,6 +156,8 @@ abstract class EntityManager<T extends GeneratedMessage>
     return false;
   }
 
+  /// Returns a [Set] of entity [Id] objects. If [ids] is not empty, the IDs
+  /// returned are guaranteed to exist in the database.
   Set<Id> idSet({
     Iterable<T> entities = const [],
     Iterable<Id>? ids,

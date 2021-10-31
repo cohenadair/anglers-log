@@ -98,6 +98,8 @@ class FishingSpotManager extends ImageEntityManager<FishingSpot> {
     return namedSpots..addAll(otherSpots);
   }
 
+  /// Returns the [FishingSpot] with the given [name] and associated
+  /// [BodyOfWater] with [bodyOfWaterId] or null if one does not exist.
   FishingSpot? namedWithBodyOfWater(String? name, Id? bodyOfWaterId) {
     return super.named(name, andCondition: (fishingSpot) {
       return bodyOfWaterId == null ||

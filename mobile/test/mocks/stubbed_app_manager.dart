@@ -171,6 +171,12 @@ class StubbedAppManager {
     )).thenReturn(SimpleEntityListener());
     when(speciesManager.entity(any)).thenReturn(null);
 
+    when(tripManager.addSimpleListener(
+      onAdd: anyNamed("onAdd"),
+      onUpdate: anyNamed("onUpdate"),
+      onDelete: anyNamed("onDelete"),
+    )).thenReturn(SimpleEntityListener());
+
     when(waterClarityManager.addSimpleListener(
       onAdd: anyNamed("onAdd"),
       onUpdate: anyNamed("onUpdate"),

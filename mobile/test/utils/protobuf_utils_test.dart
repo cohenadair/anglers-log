@@ -1382,4 +1382,48 @@ void main() {
       );
     });
   });
+
+  group("Atmospheres", () {
+    testWidgets("catchFilterMatchesAtmosphere", (tester) async {
+      var context = await buildContext(tester);
+      var atmosphere = Atmosphere(
+        temperature: Measurement(
+          unit: Unit.fahrenheit,
+          value: 58,
+        ),
+        skyConditions: [SkyCondition.cloudy],
+        windSpeed: Measurement(
+          unit: Unit.kilometers_per_hour,
+          value: 6.5,
+        ),
+        windDirection: Direction.north,
+        pressure: Measurement(
+          unit: Unit.pounds_per_square_inch,
+          value: 1000,
+        ),
+        humidity: Measurement(
+          unit: Unit.percent,
+          value: 50,
+        ),
+        visibility: Measurement(
+          unit: Unit.miles,
+          value: 10,
+        ),
+        moonPhase: MoonPhase.full,
+        sunriseTimestamp: Int64(10000),
+        sunsetTimestamp: Int64(15000),
+      );
+      expect(atmosphere.matchesFilter(context, "58"), isTrue);
+      expect(atmosphere.matchesFilter(context, "6.5"), isTrue);
+      expect(atmosphere.matchesFilter(context, "1000"), isTrue);
+      expect(atmosphere.matchesFilter(context, "50"), isTrue);
+      expect(atmosphere.matchesFilter(context, "10"), isTrue);
+      expect(atmosphere.matchesFilter(context, "full"), isTrue);
+      expect(atmosphere.matchesFilter(context, "sunrise"), isTrue);
+      expect(atmosphere.matchesFilter(context, "sunset"), isTrue);
+      expect(atmosphere.matchesFilter(context, "500"), isFalse);
+      expect(atmosphere.matchesFilter(context, "37"), isFalse);
+      expect(atmosphere.matchesFilter(context, "nothing"), isFalse);
+    });
+  });
 }

@@ -293,116 +293,244 @@ void main() {
     expect(fishingSpotManager.matchesFilter(id, "bad", context), isFalse);
   });
 
-  group("deleteMessage", () {
-    testWidgets("Singular", (tester) async {
-      var fishingSpot = FishingSpot()
+  testWidgets("deleteMessage singular", (tester) async {
+    var fishingSpot = FishingSpot()
+      ..id = randomId()
+      ..name = "A";
+
+    when(catchManager.list()).thenReturn([
+      Catch()
         ..id = randomId()
-        ..name = "A";
+        ..timestamp = Int64(0)
+        ..speciesId = randomId()
+        ..fishingSpotId = fishingSpot.id,
+    ]);
 
-      when(catchManager.list()).thenReturn([
-        Catch()
-          ..id = randomId()
-          ..timestamp = Int64(0)
-          ..speciesId = randomId()
-          ..fishingSpotId = fishingSpot.id,
-      ]);
+    var context = await buildContext(tester);
+    expect(
+      fishingSpotManager.deleteMessage(context, fishingSpot),
+      "A is associated with 1 catch; are you sure you want to delete it?"
+      " This cannot be undone.",
+    );
+  });
 
-      var context = await buildContext(tester);
-      expect(
-        fishingSpotManager.deleteMessage(context, fishingSpot),
-        "A is associated with 1 catch; are you sure you want to delete it?"
-        " This cannot be undone.",
-      );
-    });
+  testWidgets("deleteMessage plural zero", (tester) async {
+    var fishingSpot = FishingSpot()
+      ..id = randomId()
+      ..name = "A";
 
-    testWidgets("Plural zero", (tester) async {
-      var fishingSpot = FishingSpot()
+    when(catchManager.list()).thenReturn([]);
+
+    var context = await buildContext(tester);
+    expect(
+      fishingSpotManager.deleteMessage(context, fishingSpot),
+      "A is associated with 0 catches; are you sure you want to delete it?"
+      " This cannot be undone.",
+    );
+  });
+
+  testWidgets("Delete message plural none zero", (tester) async {
+    var fishingSpot = FishingSpot()
+      ..id = randomId()
+      ..name = "A";
+
+    when(catchManager.list()).thenReturn([
+      Catch()
         ..id = randomId()
-        ..name = "A";
-
-      when(catchManager.list()).thenReturn([]);
-
-      var context = await buildContext(tester);
-      expect(
-        fishingSpotManager.deleteMessage(context, fishingSpot),
-        "A is associated with 0 catches; are you sure you want to delete it?"
-        " This cannot be undone.",
-      );
-    });
-
-    testWidgets("Plural none zero", (tester) async {
-      var fishingSpot = FishingSpot()
+        ..timestamp = Int64(0)
+        ..speciesId = randomId()
+        ..fishingSpotId = fishingSpot.id,
+      Catch()
         ..id = randomId()
-        ..name = "A";
+        ..timestamp = Int64(5)
+        ..speciesId = randomId()
+        ..fishingSpotId = fishingSpot.id,
+    ]);
 
-      when(catchManager.list()).thenReturn([
-        Catch()
-          ..id = randomId()
-          ..timestamp = Int64(0)
-          ..speciesId = randomId()
-          ..fishingSpotId = fishingSpot.id,
-        Catch()
-          ..id = randomId()
-          ..timestamp = Int64(5)
-          ..speciesId = randomId()
-          ..fishingSpotId = fishingSpot.id,
-      ]);
+    var context = await buildContext(tester);
+    expect(
+      fishingSpotManager.deleteMessage(context, fishingSpot),
+      "A is associated with 2 catches; are you sure you want to delete it?"
+      " This cannot be undone.",
+    );
+  });
 
-      var context = await buildContext(tester);
-      expect(
-        fishingSpotManager.deleteMessage(context, fishingSpot),
-        "A is associated with 2 catches; are you sure you want to delete it?"
-        " This cannot be undone.",
-      );
-    });
+  testWidgets("deleteMessage without a name singular", (tester) async {
+    var fishingSpot = FishingSpot()
+      ..id = randomId()
+      ..lat = 0.000006
+      ..lng = 0.000007;
 
-    testWidgets("Without a name singular", (tester) async {
-      var fishingSpot = FishingSpot()
+    when(catchManager.list()).thenReturn([
+      Catch()
         ..id = randomId()
-        ..lat = 0.000006
-        ..lng = 0.000007;
+        ..timestamp = Int64(0)
+        ..speciesId = randomId()
+        ..fishingSpotId = fishingSpot.id,
+    ]);
 
-      when(catchManager.list()).thenReturn([
-        Catch()
-          ..id = randomId()
-          ..timestamp = Int64(0)
-          ..speciesId = randomId()
-          ..fishingSpotId = fishingSpot.id,
-      ]);
+    var context = await buildContext(tester);
+    expect(
+      fishingSpotManager.deleteMessage(context, fishingSpot),
+      "This fishing spot is associated with 1 catch; are you sure you "
+      "want to delete it? This cannot be undone.",
+    );
+  });
 
-      var context = await buildContext(tester);
-      expect(
-        fishingSpotManager.deleteMessage(context, fishingSpot),
-        "This fishing spot is associated with 1 catch; are you sure you "
-        "want to delete it? This cannot be undone.",
-      );
-    });
+  testWidgets("deleteMessage without a name plural", (tester) async {
+    var fishingSpot = FishingSpot()
+      ..id = randomId()
+      ..lat = 0.000006
+      ..lng = 0.000007;
 
-    testWidgets("Without a name plural", (tester) async {
-      var fishingSpot = FishingSpot()
+    when(catchManager.list()).thenReturn([
+      Catch()
         ..id = randomId()
-        ..lat = 0.000006
-        ..lng = 0.000007;
+        ..timestamp = Int64(0)
+        ..speciesId = randomId()
+        ..fishingSpotId = fishingSpot.id,
+      Catch()
+        ..id = randomId()
+        ..timestamp = Int64(5)
+        ..speciesId = randomId()
+        ..fishingSpotId = fishingSpot.id,
+    ]);
 
-      when(catchManager.list()).thenReturn([
-        Catch()
-          ..id = randomId()
-          ..timestamp = Int64(0)
-          ..speciesId = randomId()
-          ..fishingSpotId = fishingSpot.id,
-        Catch()
-          ..id = randomId()
-          ..timestamp = Int64(5)
-          ..speciesId = randomId()
-          ..fishingSpotId = fishingSpot.id,
-      ]);
+    var context = await buildContext(tester);
+    expect(
+      fishingSpotManager.deleteMessage(context, fishingSpot),
+      "This fishing spot is associated with 2 catches; are you sure you "
+      "want to delete it? This cannot be undone.",
+    );
+  });
 
-      var context = await buildContext(tester);
-      expect(
-        fishingSpotManager.deleteMessage(context, fishingSpot),
-        "This fishing spot is associated with 2 catches; are you sure you "
-        "want to delete it? This cannot be undone.",
-      );
-    });
+  testWidgets("displayName empty name", (tester) async {
+    when(appManager.bodyOfWaterManager.entity(any)).thenReturn(null);
+    var context = await buildContext(tester);
+
+    expect(
+      fishingSpotManager.displayName(
+        context,
+        FishingSpot(
+          id: randomId(),
+          lat: 2,
+          lng: 3,
+        ),
+      ),
+      "Lat: 2.000000, Lng: 3.000000",
+    );
+  });
+
+  testWidgets("displayName with name; no body of water", (tester) async {
+    when(appManager.bodyOfWaterManager.entity(any)).thenReturn(null);
+    var context = await buildContext(tester);
+
+    expect(
+      fishingSpotManager.displayName(
+        context,
+        FishingSpot(
+          id: randomId(),
+          name: "Test 1",
+          lat: 2,
+          lng: 3,
+        ),
+      ),
+      "Test 1",
+    );
+  });
+
+  testWidgets(
+      "displayName with name and body of water, includeBodyOfWater=false",
+      (tester) async {
+    when(appManager.bodyOfWaterManager.entity(any)).thenReturn(BodyOfWater(
+      id: randomId(),
+      name: "BOW 1",
+    ));
+    var context = await buildContext(tester);
+
+    expect(
+      fishingSpotManager.displayName(
+        context,
+        FishingSpot(
+          id: randomId(),
+          name: "Test 1",
+          lat: 2,
+          lng: 3,
+        ),
+        includeBodyOfWater: false,
+      ),
+      "Test 1",
+    );
+  });
+
+  testWidgets(
+      "displayName with name and body of water, includeBodyOfWater=true",
+      (tester) async {
+    when(appManager.bodyOfWaterManager.entity(any)).thenReturn(BodyOfWater(
+      id: randomId(),
+      name: "BOW 1",
+    ));
+    var context = await buildContext(tester);
+
+    expect(
+      fishingSpotManager.displayName(
+        context,
+        FishingSpot(
+          id: randomId(),
+          name: "Test 1",
+          lat: 2,
+          lng: 3,
+        ),
+        includeBodyOfWater: true,
+      ),
+      "Test 1 (BOW 1)",
+    );
+  });
+
+  testWidgets(
+      "displayName with no name and body of water, includeBodyOfWater=true",
+      (tester) async {
+    when(appManager.bodyOfWaterManager.entity(any)).thenReturn(BodyOfWater(
+      id: randomId(),
+      name: "BOW 1",
+    ));
+    var context = await buildContext(tester);
+
+    expect(
+      fishingSpotManager.displayName(
+        context,
+        FishingSpot(
+          id: randomId(),
+          lat: 2,
+          lng: 3,
+        ),
+        includeBodyOfWater: true,
+      ),
+      "Lat: 2.000000, Lng: 3.000000 (BOW 1)",
+    );
+  });
+
+  test("namedWithBodyOfWater", () async {
+    var fishingSpot = FishingSpot(
+      id: randomId(),
+      bodyOfWaterId: randomId(),
+      name: "Test 1",
+    );
+
+    await fishingSpotManager.addOrUpdate(fishingSpot);
+
+    expect(
+      fishingSpotManager.namedWithBodyOfWater(
+          "Test 1", fishingSpot.bodyOfWaterId),
+      isNotNull,
+    );
+    expect(
+      fishingSpotManager.namedWithBodyOfWater("Test 1", randomId()),
+      isNull,
+    );
+    expect(
+      fishingSpotManager.namedWithBodyOfWater("Test 1", null),
+      isNotNull,
+    );
   });
 }

@@ -190,8 +190,8 @@ String formatTimeMillis(BuildContext context, Int64 millis) {
 ///   - Today at 2:35 PM
 ///   - Yesterday at 2:35 PM
 ///   - Monday at 2:35 PM
-///   - Jan. 8 at 2:35 PM
-///   - Dec. 8, 2018 at 2:35 PM
+///   - Jan 8 at 2:35 PM
+///   - Dec 8, 2018 at 2:35 PM
 String formatDateTime(
   BuildContext context,
   DateTime dateTime, {

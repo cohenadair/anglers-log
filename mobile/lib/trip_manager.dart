@@ -123,6 +123,6 @@ class TripManager extends NamedEntityManager<Trip> {
           .expand((e) => _catchManager.entity(e)?.imageNames ?? []));
   }
 
-  bool isCatchInTrip(Id id) =>
+  bool isCatchIdInTrip(Id id) =>
       list().where((e) => e.catchIds.contains(id)).isNotEmpty;
 }

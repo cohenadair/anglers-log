@@ -24,18 +24,16 @@ import 'widget.dart';
 /// value to each item.
 class QuantityPickerInput<PickerType extends GeneratedMessage, InputType>
     extends StatelessWidget {
-  static const textInputWidth = 50.0;
+  static const _textInputWidth = 50.0;
 
   final Log _log;
   final String title;
-  final String? pickerTitle;
 
   final QuantityPickerInputDelegate<PickerType, InputType> delegate;
 
   QuantityPickerInput({
     required this.title,
     required this.delegate,
-    this.pickerTitle,
   }) : _log = Log("QuantityPickerInput<${PickerType.runtimeType}, "
             "${InputType.runtimeType}>");
 
@@ -66,7 +64,9 @@ class QuantityPickerInput<PickerType extends GeneratedMessage, InputType>
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            _controller.value.isEmpty ? Empty() : const MinDivider(),
+            _controller.value.isEmpty
+                ? Empty()
+                : const MinDivider(),
             ListItem(
               title: Text(
                 title,
@@ -100,7 +100,7 @@ class QuantityPickerInput<PickerType extends GeneratedMessage, InputType>
         Text(label!, style: stylePrimary(context)),
         const Spacer(),
         SizedBox(
-          width: textInputWidth,
+          width: _textInputWidth,
           child: TextInput.number(
             context,
             controller: numberController,
@@ -132,7 +132,6 @@ class QuantityPickerInput<PickerType extends GeneratedMessage, InputType>
   Widget _buildPickerPage(BuildContext context) {
     return delegate.pickerPage(
       ManageableListPagePickerSettings<PickerType>(
-        multiTitle: isEmpty(pickerTitle) ? null : Text(pickerTitle!),
         initialValues: delegate.pickerTypeInitialValues,
         onPicked: (context, entities) {
           var newValue = <InputType>{};

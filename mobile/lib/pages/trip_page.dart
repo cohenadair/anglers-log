@@ -215,7 +215,8 @@ class TripPage extends StatelessWidget {
         alignment: Alignment.centerLeft,
         child: Container(
           decoration: BoxDecoration(
-            borderRadius: const BorderRadius.all(Radius.circular(_skunkedBorderRadius)),
+            borderRadius:
+                const BorderRadius.all(Radius.circular(_skunkedBorderRadius)),
             border: Border.all(color: Colors.red, width: _skunkedBorderWidth),
           ),
           child: Padding(
@@ -235,8 +236,10 @@ class TripPage extends StatelessWidget {
   Iterable<LabelValueListItem> _defaultLabelValueListItems(BuildContext context,
       EntityManager manager, List<Trip_CatchesPerEntity> catchesPerEntity) {
     return catchesPerEntity.where((e) => manager.entityExists(e.entityId)).map(
-        (e) => LabelValueListItem(
+          (e) => LabelValueListItem(
             manager.displayName(context, manager.entity(e.entityId)!),
-            e.value.toString()));
+            e.value.toString(),
+          ),
+        );
   }
 }

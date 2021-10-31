@@ -19,6 +19,7 @@ import 'package:mobile/bait_category_manager.dart';
 import 'package:mobile/bait_manager.dart';
 import 'package:mobile/body_of_water_manager.dart';
 import 'package:mobile/catch_manager.dart';
+import 'package:mobile/model/gen/anglerslog.pb.dart';
 import 'package:mobile/report_manager.dart';
 import 'package:mobile/custom_entity_manager.dart';
 import 'package:mobile/database/legacy_importer.dart';
@@ -37,6 +38,7 @@ import 'package:mobile/time_manager.dart';
 import 'package:mobile/trip_manager.dart';
 import 'package:mobile/utils/validator.dart';
 import 'package:mobile/water_clarity_manager.dart';
+import 'package:mobile/widgets/quantity_picker_input.dart';
 import 'package:mobile/wrappers/file_picker_wrapper.dart';
 import 'package:mobile/wrappers/firebase_auth_wrapper.dart';
 import 'package:mobile/wrappers/firebase_storage_wrapper.dart';
@@ -65,6 +67,9 @@ import 'mocks.mocks.dart';
 
 // TODO: Remove generation - https://github.com/dart-lang/mockito/issues/347
 
+Trip_CatchesPerEntity newInputItemShim(dynamic pickerItem) =>
+    Trip_CatchesPerEntity();
+
 @GenerateMocks([AnglerManager])
 @GenerateMocks([AppManager])
 @GenerateMocks([AppPreferenceManager])
@@ -75,7 +80,6 @@ import 'mocks.mocks.dart';
 @GenerateMocks([BodyOfWaterManager])
 @GenerateMocks([CatchManager])
 @GenerateMocks([CustomEntityManager])
-@GenerateMocks([ReportManager])
 @GenerateMocks([FishingSpotManager])
 @GenerateMocks([ImageManager])
 @GenerateMocks([LocalDatabaseManager])
@@ -83,6 +87,7 @@ import 'mocks.mocks.dart';
 @GenerateMocks([MethodManager])
 @GenerateMocks([PreferenceManager])
 @GenerateMocks([PropertiesManager])
+@GenerateMocks([ReportManager])
 @GenerateMocks([SpeciesManager])
 @GenerateMocks([SubscriptionManager])
 @GenerateMocks([TimeManager])
@@ -132,6 +137,11 @@ import 'mocks.mocks.dart';
 @GenerateMocks([Package])
 @GenerateMocks([Product])
 @GenerateMocks([PurchaserInfo])
+@GenerateMocks([], customMocks: [MockSpec<QuantityPickerInputDelegate>(
+  fallbackGenerators: {
+    #newInputItem: newInputItemShim,
+  },
+)])
 @GenerateMocks([QuerySnapshot])
 @GenerateMocks([Reference])
 @GenerateMocks([Response])

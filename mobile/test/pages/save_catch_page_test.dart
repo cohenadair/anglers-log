@@ -17,6 +17,7 @@ import 'package:mobile/species_manager.dart';
 import 'package:mobile/utils/catch_utils.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mobile/water_clarity_manager.dart';
+import 'package:mobile/widgets/atmosphere_input.dart';
 import 'package:mobile/widgets/button.dart';
 import 'package:mobile/widgets/date_time_picker.dart';
 import 'package:mobile/widgets/fishing_spot_details.dart';
@@ -1020,6 +1021,49 @@ void main() {
     expect(find.byType(ImagePicker), findsNothing);
   });
 
+  testWidgets("Atmosphere shown if preferences is empty", (tester) async {
+    when(appManager.userPreferenceManager.catchFieldIds).thenReturn([]);
+
+    await tester.pumpWidget(Testable(
+      (_) => SaveCatchPage(
+        speciesId: randomId(),
+      ),
+      appManager: appManager,
+    ));
+
+    expect(find.byType(AtmosphereInput), findsOneWidget);
+  });
+
+  testWidgets("Atmosphere shown if in preferences", (tester) async {
+    when(appManager.userPreferenceManager.catchFieldIds).thenReturn([
+      catchFieldIdAtmosphere,
+    ]);
+
+    await tester.pumpWidget(Testable(
+      (_) => SaveCatchPage(
+        speciesId: randomId(),
+      ),
+      appManager: appManager,
+    ));
+
+    expect(find.byType(AtmosphereInput), findsOneWidget);
+  });
+
+  testWidgets("Atmosphere hidden", (tester) async {
+    when(appManager.userPreferenceManager.catchFieldIds).thenReturn([
+      catchFieldIdSpecies,
+    ]);
+
+    await tester.pumpWidget(Testable(
+      (_) => SaveCatchPage(
+        speciesId: randomId(),
+      ),
+      appManager: appManager,
+    ));
+
+    expect(find.byType(AtmosphereInput), findsNothing);
+  });
+
   /// https://github.com/cohenadair/anglers-log/issues/462
   testWidgets("Updates to selected species updates state", (tester) async {
     var species = Species()
@@ -1375,6 +1419,51 @@ void main() {
     await tapAndSettle(tester, find.text("Spot B"));
     await tapAndSettle(tester, find.byType(BackButton));
 
+    expect(find.text("Summer"), findsOneWidget);
+  });
+
+  testWidgets("Season not updates automatically if picked by user",
+      (tester) async {
+    var species = Species()
+      ..id = randomId()
+      ..name = "Steelhead";
+    when(appManager.speciesManager.entity(species.id)).thenReturn(species);
+    when(appManager.speciesManager.entityExists(any)).thenReturn(true);
+
+    var fishingSpot = FishingSpot()
+      ..id = randomId()
+      ..name = "Spot A"
+      ..lat = 13
+      ..lng = 45;
+    when(appManager.fishingSpotManager.entity(fishingSpot.id))
+        .thenReturn(fishingSpot);
+
+    await tester.pumpWidget(Testable(
+      (_) => SaveCatchPage(
+        speciesId: species.id,
+        fishingSpot: fishingSpot,
+      ),
+      appManager: appManager,
+    ));
+
+    expect(find.text("Feb 1, 2020"), findsOneWidget);
+    expect(find.text("Winter"), findsOneWidget);
+
+    // Manually pick a season.
+    await tapAndSettle(tester, find.text("Winter"));
+    await tapAndSettle(tester, find.text("Summer"));
+    expect(find.text("Winter"), findsNothing);
+    expect(find.text("Summer"), findsOneWidget);
+
+    // Change the date.
+    await tapAndSettle(tester, find.text("Date"));
+    await tapAndSettle(tester, find.byIcon(Icons.edit));
+    await enterTextAndSettle(
+        tester, find.widgetWithText(TextField, "02/01/2020"), "03/01/2020");
+    await tapAndSettle(tester, find.text("OK"));
+
+    // Verify that the season wasn't recalculated.
+    expect(find.text("Spring"), findsNothing);
     expect(find.text("Summer"), findsOneWidget);
   });
 

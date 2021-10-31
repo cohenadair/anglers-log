@@ -40,12 +40,10 @@ abstract class NamedEntityManager<T extends GeneratedMessage>
     return containsTrimmedLowerCase(name(entity), filter!);
   }
 
-  bool nameExists(String name) {
-    return named(name) != null;
-  }
+  bool nameExists(String name) => named(name) != null;
 
   /// Returns the entity with the given name, or null if one doesn't exist.
-  /// [orCondition] is invoked for each value in [entities] and must evaluate
+  /// [andCondition] is invoked for each value in [entities] and must evaluate
   /// to true for a non-null result.
   T? named(
     String? name, {

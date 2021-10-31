@@ -836,6 +836,105 @@ void main() {
     expect(find.text("A Title"), findsOneWidget);
   });
 
+  testWidgets("Additional title padding null when title is null",
+      (tester) async {
+    await tester.pumpWidget(
+      Testable(
+        (_) => ManageableListPage<String>(
+          itemManager: defaultItemManager,
+          itemBuilder: defaultItemBuilder,
+          titleBuilder: null,
+          forceCenterTitle: false,
+          itemsHaveThumbnail: true,
+        ),
+      ),
+    );
+
+    var padding = find.byWidgetPredicate((widget) =>
+        widget is Padding &&
+        widget.padding == const EdgeInsets.only(left: 8.0));
+    expect(padding, findsNothing);
+  });
+
+  testWidgets("Additional title padding null when title is not Text",
+      (tester) async {
+    await tester.pumpWidget(
+      Testable(
+        (_) => ManageableListPage<String>(
+          itemManager: defaultItemManager,
+          itemBuilder: defaultItemBuilder,
+          titleBuilder: (_) => const Icon(Icons.add),
+          forceCenterTitle: false,
+          itemsHaveThumbnail: true,
+        ),
+      ),
+    );
+
+    var padding = find.byWidgetPredicate((widget) =>
+        widget is Padding &&
+        widget.padding == const EdgeInsets.only(left: 8.0));
+    expect(padding, findsNothing);
+  });
+
+  testWidgets("Additional title padding null when forceCenterTitle=true",
+      (tester) async {
+    await tester.pumpWidget(
+      Testable(
+        (_) => ManageableListPage<String>(
+          itemManager: defaultItemManager,
+          itemBuilder: defaultItemBuilder,
+          titleBuilder: (_) => const Text("A Title"),
+          forceCenterTitle: true,
+          itemsHaveThumbnail: true,
+        ),
+      ),
+    );
+
+    var padding = find.byWidgetPredicate((widget) =>
+        widget is Padding &&
+        widget.padding == const EdgeInsets.only(left: 8.0));
+    expect(padding, findsNothing);
+  });
+
+  testWidgets("Additional title padding null when thumbnails aren't used",
+      (tester) async {
+    await tester.pumpWidget(
+      Testable(
+        (_) => ManageableListPage<String>(
+          itemManager: defaultItemManager,
+          itemBuilder: defaultItemBuilder,
+          titleBuilder: (_) => const Text("A Title"),
+          forceCenterTitle: true,
+          itemsHaveThumbnail: false,
+        ),
+      ),
+    );
+
+    var padding = find.byWidgetPredicate((widget) =>
+        widget is Padding &&
+        widget.padding == const EdgeInsets.only(left: 8.0));
+    expect(padding, findsNothing);
+  });
+
+  testWidgets("Additional title padding is shown", (tester) async {
+    await tester.pumpWidget(
+      Testable(
+        (_) => ManageableListPage<String>(
+          itemManager: defaultItemManager,
+          itemBuilder: defaultItemBuilder,
+          titleBuilder: (_) => const Text("A Title"),
+          forceCenterTitle: false,
+          itemsHaveThumbnail: true,
+        ),
+      ),
+    );
+
+    var padding = find.byWidgetPredicate((widget) =>
+        widget is Padding &&
+        widget.padding == const EdgeInsets.only(left: 8.0));
+    expect(padding, findsOneWidget);
+  });
+
   testWidgets("Non-editable, non-selectable list item", (tester) async {
     await tester.pumpWidget(
       Testable(

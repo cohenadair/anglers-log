@@ -61,7 +61,12 @@ class CatchManager extends EntityManager<Catch> {
   String displayName(BuildContext context, Catch entity) {
     var species = _speciesManager.entity(entity.speciesId);
     var timeString = formatTimestamp(context, entity.timestamp.toInt());
-    return species == null ? timeString : "${species.name} ($timeString)";
+
+    if (species == null) {
+      return timeString;
+    } else {
+      return "${_speciesManager.displayName(context, species)} ($timeString)";
+    }
   }
 
   @override
@@ -371,20 +376,11 @@ class CatchManager extends EntityManager<Catch> {
   }
 
   String deleteMessage(BuildContext context, Catch cat) {
-    var species = _speciesManager.entity(cat.speciesId);
-    var timeString = formatTimestamp(context, cat.timestamp.toInt());
-    String name;
-    if (species == null) {
-      name = "($timeString)";
-    } else {
-      name = "${species.name} ($timeString)";
-    }
-
     return format(
-      _tripManager.isCatchInTrip(cat.id)
+      _tripManager.isCatchIdInTrip(cat.id)
           ? Strings.of(context).catchPageDeleteWithTripMessage
           : Strings.of(context).catchPageDeleteMessage,
-      [name],
+      [displayName(context, cat)],
     );
   }
 

@@ -331,7 +331,6 @@ class _SaveTripPageState extends State<SaveTripPage> {
   Widget _buildCatchesPerFishingSpot() {
     return QuantityPickerInput<FishingSpot, Trip_CatchesPerEntity>(
       title: Strings.of(context).tripCatchesPerFishingSpot,
-      pickerTitle: Strings.of(context).pickerTitleFishingSpots,
       delegate: FishingSpotQuantityPickerInputDelegate(
         manager: _fishingSpotManager,
         controller: _fishingSpotCatchesController,
@@ -342,7 +341,6 @@ class _SaveTripPageState extends State<SaveTripPage> {
   Widget _buildCatchesPerAngler() {
     return QuantityPickerInput<Angler, Trip_CatchesPerEntity>(
       title: Strings.of(context).tripCatchesPerAngler,
-      pickerTitle: Strings.of(context).pickerTitleAnglers,
       delegate: EntityQuantityPickerInputDelegate<Angler>(
         manager: _anglerManager,
         controller: _anglerCatchesController,
@@ -364,7 +362,6 @@ class _SaveTripPageState extends State<SaveTripPage> {
   Widget _buildCatchesPerSpecies() {
     return QuantityPickerInput<Species, Trip_CatchesPerEntity>(
       title: Strings.of(context).tripCatchesPerSpecies,
-      pickerTitle: Strings.of(context).pickerTitleSpecies,
       delegate: EntityQuantityPickerInputDelegate<Species>(
         manager: _speciesManager,
         controller: _speciesCatchesController,
@@ -463,14 +460,14 @@ class _SaveTripPageState extends State<SaveTripPage> {
       newTrip.atmosphere = _atmosphereController.value!;
     }
 
+    if (isNotEmpty(_notesController.value)) {
+      newTrip.notes = _notesController.value!;
+    }
+
     _tripManager.addOrUpdate(
       newTrip,
       imageFiles: _imagesController.originalFiles,
     );
-
-    if (isNotEmpty(_notesController.value)) {
-      newTrip.notes = _notesController.value!;
-    }
 
     return true;
   }
