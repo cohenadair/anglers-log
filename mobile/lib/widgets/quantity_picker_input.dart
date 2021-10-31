@@ -64,9 +64,7 @@ class QuantityPickerInput<PickerType extends GeneratedMessage, InputType>
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            _controller.value.isEmpty
-                ? Empty()
-                : const MinDivider(),
+            _controller.value.isEmpty ? Empty() : const MinDivider(),
             ListItem(
               title: Text(
                 title,

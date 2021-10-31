@@ -157,9 +157,8 @@ class EntityPickerInput<T extends GeneratedMessage> extends StatelessWidget {
   }
 
   void showPickerPage(BuildContext context, Set<T> values) {
-    var initialValues = isEmptyAll && values.isEmpty
-        ? manager.list().toSet()
-        : values;
+    var initialValues =
+        isEmptyAll && values.isEmpty ? manager.list().toSet() : values;
     var pickerPage = customListPage?.call(_defaultOnPicked, initialValues);
 
     pickerPage ??= listPage!(

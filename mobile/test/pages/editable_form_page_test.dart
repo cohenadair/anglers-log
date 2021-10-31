@@ -254,10 +254,12 @@ void main() {
       findsOneWidget,
     );
 
-    var padding = tester.widget<Padding>(find.ancestor(
-      of: find.byType(CheckboxInput),
-      matching: find.byType(Padding),
-    ).first);
+    var padding = tester.widget<Padding>(find
+        .ancestor(
+          of: find.byType(CheckboxInput),
+          matching: find.byType(Padding),
+        )
+        .first);
     expect(padding.padding, insetsZero);
   });
 

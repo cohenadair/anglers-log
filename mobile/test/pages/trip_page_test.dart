@@ -163,7 +163,7 @@ void main() {
       var attachment = invocation.positionalArguments[0];
       var bait = baits.firstWhereOrNull((e) => e.id == attachment?.baitId);
       var variant =
-      bait?.variants.firstWhereOrNull((e) => e.id == attachment.variantId);
+          bait?.variants.firstWhereOrNull((e) => e.id == attachment.variantId);
       if (bait == null && variant == null) {
         return null;
       } else if (bait == null) {
@@ -181,11 +181,10 @@ void main() {
 
     when(appManager.catchManager.list(any)).thenReturn(catches);
     when(appManager.catchManager.displayName(any, any)).thenAnswer(
-            (invocation) => formatTimestamp(invocation.positionalArguments[0],
+        (invocation) => formatTimestamp(invocation.positionalArguments[0],
             invocation.positionalArguments[1].timestamp.toInt()));
-    when(appManager.catchManager.entity(any)).thenAnswer((invocation) =>
-        catches.firstWhereOrNull(
-            (e) => e.id == invocation.positionalArguments.first));
+    when(appManager.catchManager.entity(any)).thenAnswer((invocation) => catches
+        .firstWhereOrNull((e) => e.id == invocation.positionalArguments.first));
 
     when(appManager.customEntityManager.entityExists(any)).thenReturn(false);
 

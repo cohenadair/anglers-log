@@ -137,11 +137,13 @@ Trip_CatchesPerEntity newInputItemShim(dynamic pickerItem) =>
 @GenerateMocks([Package])
 @GenerateMocks([Product])
 @GenerateMocks([PurchaserInfo])
-@GenerateMocks([], customMocks: [MockSpec<QuantityPickerInputDelegate>(
-  fallbackGenerators: {
-    #newInputItem: newInputItemShim,
-  },
-)])
+@GenerateMocks([], customMocks: [
+  MockSpec<QuantityPickerInputDelegate>(
+    fallbackGenerators: {
+      #newInputItem: newInputItemShim,
+    },
+  )
+])
 @GenerateMocks([QuerySnapshot])
 @GenerateMocks([Reference])
 @GenerateMocks([Response])

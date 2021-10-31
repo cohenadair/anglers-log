@@ -245,7 +245,7 @@ extension Atmospheres on Atmosphere {
     }
 
     return containsTrimmedLowerCase(searchString, filter!);
-  }  
+  }
 }
 
 extension Baits on Bait {
