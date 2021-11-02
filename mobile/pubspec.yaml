@@ -37,10 +37,7 @@ dependencies:
   package_info_plus: ^1.3.0         # https://pub.dev/packages/package_info_plus (Flutter)
   path: ^1.8.0                      # https://pub.dev/packages/path (Dart)
   path_provider: ^2.0.5             # https://pub.dev/packages/path_provider (Flutter)
-
-  # Can't update until https://github.com/Baseflow/flutter-permission-handler/issues/669 is fixed.
-  permission_handler: ^6.1.3        # https://pub.dev/packages/permission_handler (verified)
-  
+  permission_handler: ^8.2.5        # https://pub.dev/packages/permission_handler (verified)
   photo_manager: ^1.3.6             # https://pub.dev/packages/photo_manager (verified)
   protobuf: ^2.0.0                  # https://pub.dev/packages/protobuf (Dart)
   provider: ^6.0.1                  # https://pub.dev/packages/provider (verified)
