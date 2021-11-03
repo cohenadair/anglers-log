@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:mobile/res/dimen.dart';
 import 'package:quiver/strings.dart';
 
 import '../custom_entity_manager.dart';
@@ -73,20 +74,28 @@ class _SaveCustomEntityPageState extends State<SaveCustomEntityPage> {
       title: _editing
           ? Text(Strings.of(context).saveCustomEntityPageEditTitle)
           : Text(Strings.of(context).saveCustomEntityPageNewTitle),
+      padding: insetsZero,
       fieldBuilder: (context) => [
-        TextInput.name(
-          context,
-          controller: _nameController,
-          autofocus: true,
-          textInputAction: TextInputAction.next,
-          // Trigger "Save" button state refresh.
-          onChanged: (_) => setState(() {}),
+        Padding(
+          padding: insetsHorizontalDefault,
+          child: TextInput.name(
+            context,
+            controller: _nameController,
+            autofocus: true,
+            textInputAction: TextInputAction.next,
+            // Trigger "Save" button state refresh.
+            onChanged: (_) => setState(() {}),
+          ),
         ),
-        TextInput.description(
-          context,
-          controller: _descriptionController,
+        Padding(
+          padding: insetsHorizontalDefault,
+          child: TextInput.description(
+            context,
+            controller: _descriptionController,
+          ),
         ),
         RadioInput(
+          padding: insetsHorizontalDefault,
           initialSelectedIndex:
               CustomEntity_Type.values.indexOf(_dataTypeController.value!),
           optionCount: CustomEntity_Type.values.length,
