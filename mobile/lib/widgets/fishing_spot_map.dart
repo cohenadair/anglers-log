@@ -139,6 +139,7 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
   var _currentStyle = _mapStyleNormal;
   bool _showHelp = false;
   bool _myLocationEnabled = true;
+  bool _didUpdateMapType = false;
   bool _isSetup = false;
   bool _isTelemetryEnabled = true;
 
@@ -165,7 +166,8 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
 
   bool get _isStatic => widget._isStatic;
 
-  bool get _isDroppedPin => !_isStatic &&
+  bool get _isDroppedPin =>
+      !_isStatic &&
       !_fishingSpotManager.entityExists(_activeSymbol?.fishingSpot.id);
 
   FishingSpot? get _activeFishingSpot => _activeSymbol?.fishingSpot;
@@ -263,7 +265,7 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
               target: _offsetLatLng(start),
               zoom: start.latitude == 0 ? 0 : _zoomDefault,
             ),
-            onMapCreated: (controller) => _mapController = controller,
+            onMapCreated: _onMapCreated,
             onMapLongClick: (_, latLng) => _dropPin(latLng),
             onStyleLoadedCallback: _onMapStyleLoaded,
             compassEnabled: false,
@@ -371,7 +373,10 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
               if (newStyle == _currentStyle) {
                 return;
               }
-              setState(() => _currentStyle = newStyle ?? _mapStyleNormal);
+              setState(() {
+                _didUpdateMapType = true;
+                _currentStyle = newStyle ?? _mapStyleNormal;
+              });
             },
           ),
         );
@@ -568,16 +573,36 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
     );
   }
 
-  Future<void> _onMapStyleLoaded() async {
-    // TODO: Some map settings are cleared when a new map style is loaded, so we
-    //  reset the map as a workaround. For more details:
+  void _onMapCreated(MapboxMapController controller) {
+    _mapController = controller;
+
+    // TODO: It isn't recommended to add symbols in this callback; however,
+    //  there's a bug that prevents _onMapStyleLoaded from be called on iOS,
+    //  so as a workaround, we do it here. When this issue is fixed,
+    //  _didUpdateMapType is no longer necessary. More details:
+    //  https://github.com/tobrun/flutter-mapbox-gl/pull/690
+    _setupMap();
+  }
+
+  void _onMapStyleLoaded() {
+    if (!_didUpdateMapType) {
+      return;
+    }
+    _setupMap();
+    _didUpdateMapType = false;
+  }
+
+  void _setupMap() {
+    // TODO: Some map settings are cleared when a new map style is loaded, so
+    //  we reset the map as a workaround. For more details:
     //  https://github.com/tobrun/flutter-mapbox-gl/issues/349
     _mapController.onSymbolTapped.remove(_onSymbolTapped);
     _mapController.onSymbolTapped.add(_onSymbolTapped);
     _mapController.setSymbolIconAllowOverlap(true);
-    _isTelemetryEnabled = await _mapController.getTelemetryEnabled();
-
-    await _updateSymbols();
+    _mapController
+        .getTelemetryEnabled()
+        .then((value) => _isTelemetryEnabled = value);
+    _updateSymbols();
 
     // If the map has already been setup, it means a new map style was selected
     // by the user. In this case, reselect the active fishing spot.

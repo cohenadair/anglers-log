@@ -1117,6 +1117,11 @@ void main() {
 
     verify(appManager.urlLauncherWrapper.launch(any)).called(1);
   });
+
+  testWidgets("Map setup is only invoked once", (tester) async {
+    await pumpMap(tester, FishingSpotMap());
+    verify(mapController.value.setSymbolIconAllowOverlap(any)).called(1);
+  });
 }
 
 class _DidUpdateWidgetTester extends StatefulWidget {

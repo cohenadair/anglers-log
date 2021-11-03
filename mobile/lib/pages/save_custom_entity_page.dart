@@ -104,7 +104,7 @@ class _SaveCustomEntityPageState extends State<SaveCustomEntityPage> {
           onSelect: (i) => setState(() {
             _dataTypeController.value = CustomEntity_Type.values[i];
           }),
-        )
+        ),
       ],
       onSave: _save,
       isInputValid: _nameController.isValid(context),
