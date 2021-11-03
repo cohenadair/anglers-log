@@ -165,7 +165,7 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
 
   bool get _isStatic => widget._isStatic;
 
-  bool get _isDroppedPin =>
+  bool get _isDroppedPin => !_isStatic &&
       !_fishingSpotManager.entityExists(_activeSymbol?.fishingSpot.id);
 
   FishingSpot? get _activeFishingSpot => _activeSymbol?.fishingSpot;
@@ -266,6 +266,7 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
             onMapCreated: (controller) => _mapController = controller,
             onMapLongClick: (_, latLng) => _dropPin(latLng),
             onStyleLoadedCallback: _onMapStyleLoaded,
+            compassEnabled: false,
           ),
         );
       },

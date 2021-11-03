@@ -1069,6 +1069,19 @@ void main() {
     expect(find.text("Spot 1"), findsOneWidget);
   });
 
+  testWidgets("Static picker hides dropped pin text", (tester) async {
+    var fishingSpot1 = FishingSpot(
+      id: randomId(),
+      lat: 1,
+      lng: 2,
+    );
+    when(appManager.fishingSpotManager.list()).thenReturn([fishingSpot1]);
+    when(appManager.fishingSpotManager.entityExists(any)).thenReturn(false);
+
+    await pumpMap(tester, StaticFishingSpotMap(fishingSpot1));
+    expect(find.text("Dropped Pin"), findsNothing);
+  });
+
   testWidgets("Attribution icon shows bottom sheet", (tester) async {
     when(appManager.ioWrapper.isAndroid).thenReturn(true);
 
