@@ -116,7 +116,7 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
       "mapbox://styles/cohenadair/ckt1m613b127t17qqf3mmw47h";
   static const _pinActive = "active-pin";
   static const _pinInactive = "inactive-pin";
-  static const _pinSize = 1.5;
+  static const _pinSize = 1.25;
   static const _zoomDefault = 13.0;
 
   /// An arbitrary value used to calculate how much to offset the map's position
