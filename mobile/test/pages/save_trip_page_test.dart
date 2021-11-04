@@ -238,7 +238,6 @@ void main() {
             .addOrUpdate(any, imageFiles: anyNamed("imageFiles")))
         .thenAnswer((invocation) => Future.value(true));
 
-    when(appManager.userPreferenceManager.tripCustomEntityIds).thenReturn([]);
     when(appManager.userPreferenceManager.tripFieldIds).thenReturn([]);
   });
 
@@ -337,17 +336,6 @@ void main() {
     expect(fetcher.latLng, isNotNull);
     expect(fetcher.latLng!.latitude, 3);
     expect(fetcher.latLng!.longitude, 4);
-  });
-
-  testWidgets("Saving updates preferences", (tester) async {
-    await tester.pumpWidget(Testable(
-      (_) => const SaveTripPage(),
-      appManager: appManager,
-    ));
-
-    await tapAndSettle(tester, find.text("SAVE"));
-    verify(appManager.userPreferenceManager.setTripCustomEntityIds(any))
-        .called(1);
   });
 
   testWidgets("Saving edits updates existing trip", (tester) async {

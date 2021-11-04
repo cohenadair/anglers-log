@@ -85,9 +85,7 @@ void main() {
     when(appManager.propertiesManager.mapboxApiKey).thenReturn("");
 
     when(appManager.userPreferenceManager.atmosphereFieldIds).thenReturn([]);
-    when(appManager.userPreferenceManager.baitVariantCustomIds).thenReturn([]);
     when(appManager.userPreferenceManager.baitVariantFieldIds).thenReturn([]);
-    when(appManager.userPreferenceManager.catchCustomEntityIds).thenReturn([]);
     when(appManager.userPreferenceManager.catchFieldIds).thenReturn([]);
     when(appManager.userPreferenceManager.waterDepthSystem)
         .thenReturn(MeasurementSystem.imperial_whole);
@@ -240,8 +238,14 @@ void main() {
         ..type = CustomEntity_Type.text;
       when(appManager.customEntityManager.entity(customEntity.id))
           .thenReturn(customEntity);
-      when(appManager.userPreferenceManager.catchCustomEntityIds)
-          .thenReturn([customEntity.id]);
+
+      var fieldIds =
+          allCatchFields(await buildContext(tester, appManager: appManager))
+              .map((e) => e.id);
+      when(appManager.userPreferenceManager.catchFieldIds).thenReturn([
+        customEntity.id,
+        ...fieldIds,
+      ]);
 
       var bait = Bait()
         ..id = randomId()
@@ -490,8 +494,14 @@ void main() {
         ..type = CustomEntity_Type.text;
       when(appManager.customEntityManager.entity(customEntity.id))
           .thenReturn(customEntity);
-      when(appManager.userPreferenceManager.catchCustomEntityIds)
-          .thenReturn([customEntity.id]);
+
+      var fieldIds =
+          allCatchFields(await buildContext(tester, appManager: appManager))
+              .map((e) => e.id);
+      when(appManager.userPreferenceManager.catchFieldIds).thenReturn([
+        customEntity.id,
+        ...fieldIds,
+      ]);
 
       var bait = Bait()
         ..id = randomId()

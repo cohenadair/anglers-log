@@ -61,7 +61,7 @@ void main() {
 
     await tester.pumpWidget(Testable(
       (_) => EditableFormPage(
-        customEntityIds: [
+        trackedFieldIds: [
           customEntity.id,
         ],
       ),
@@ -418,7 +418,7 @@ void main() {
       (_) => EditableFormPage(
         fields: const {},
         onBuildField: (id) => Text(id.toString()),
-        customEntityIds: [
+        trackedFieldIds: [
           custom1.id,
         ],
         isEditable: false,
@@ -431,6 +431,8 @@ void main() {
   });
 
   testWidgets("No custom fields hides header", (tester) async {
+    when(appManager.customEntityManager.entityExists(any)).thenReturn(false);
+
     await pumpContext(
       tester,
       (_) => EditableFormPage(

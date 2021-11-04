@@ -41,7 +41,7 @@ class TestPreferenceManager extends PreferenceManager {
 
   List<Id> get testIdList => idList("test_id_list");
 
-  set testIdList(List<Id>? value) => putIdList("test_id_list", value);
+  set testIdList(List<Id>? value) => putIdCollection("test_id_list", value);
 
   Id? get testId => id("test_id");
 

@@ -163,8 +163,8 @@ abstract class PreferenceManager extends DataSourceFacilitator {
   }
 
   @protected
-  Future<void> putIdList(String key, List<Id>? value) {
-    if (listEquals(idList(key), value)) {
+  Future<void> putIdCollection(String key, Iterable<Id>? value) {
+    if (setEquals(idList(key).toSet(), value?.toSet())) {
       return Future.value();
     }
 

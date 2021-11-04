@@ -127,7 +127,6 @@ void main() {
     // Stub an initialization method taking some time.
     when(appManager.firebaseWrapper.initializeApp()).thenAnswer(
         (_) => Future.delayed(const Duration(milliseconds: 50), () => true));
-    when(appManager.userPreferenceManager.catchCustomEntityIds).thenReturn([]);
     when(appManager.userPreferenceManager.didOnboard).thenReturn(false);
     when(appManager.authManager.state).thenReturn(AuthState.loggedIn);
     when(appManager.permissionHandlerWrapper.isLocationGranted)

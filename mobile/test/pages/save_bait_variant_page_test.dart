@@ -18,7 +18,6 @@ void main() {
     when(appManager.customEntityManager.entityExists(any)).thenReturn(false);
 
     when(appManager.userPreferenceManager.baitVariantFieldIds).thenReturn([]);
-    when(appManager.userPreferenceManager.baitVariantCustomIds).thenReturn([]);
     when(appManager.userPreferenceManager.waterDepthSystem)
         .thenReturn(MeasurementSystem.metric);
   });
@@ -62,7 +61,13 @@ void main() {
 
   testWidgets("Editing with all fields set", (tester) async {
     var customEntityId = randomId();
-    when(appManager.userPreferenceManager.baitVariantCustomIds).thenReturn([
+    when(appManager.userPreferenceManager.baitVariantFieldIds).thenReturn([
+      Id()..uuid = "8b803b47-f3e1-4233-bb4b-f25e3ea48694",
+      Id()..uuid = "749c62ee-2d91-47cc-8b59-d5fce1d4048a",
+      Id()..uuid = "69feaeb1-4cb3-4858-a652-22d7a9a6cb97",
+      Id()..uuid = "69fbdc83-a6b5-4e54-8e76-8fbd024618b1",
+      Id()..uuid = "45e31486-af4b-48e4-8e3e-741a1df903ac",
+      Id()..uuid = "3115c29d-b919-41e5-b19f-ec877e134dbe",
       customEntityId,
     ]);
     when(appManager.customEntityManager.entityExists(customEntityId))
@@ -169,7 +174,7 @@ void main() {
 
   testWidgets("Save button updates when custom value changes", (tester) async {
     var customEntityId = randomId();
-    when(appManager.userPreferenceManager.baitVariantCustomIds).thenReturn([
+    when(appManager.userPreferenceManager.baitVariantFieldIds).thenReturn([
       customEntityId,
     ]);
     when(appManager.customEntityManager.entityExists(customEntityId))

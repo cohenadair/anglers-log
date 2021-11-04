@@ -23,21 +23,23 @@ class EditableFormPage extends StatefulWidget {
   final Map<Id, Field> fields;
 
   /// A list of field IDs being tracked by the user. Used to hide/show fields
-  /// accordingly.
+  /// accordingly. This value should include custom entity IDs.
   final List<Id> trackedFieldIds;
-
-  /// A list of all [CustomEntity] objects associated with this form. These will
-  /// each have their own input widget, and their initial values are determined
-  /// by [customEntityValues].
-  final List<Id> customEntityIds;
 
   /// A list of [CustomEntityValue] objects associated with custom fields.
   final List<CustomEntityValue> customEntityValues;
 
   /// When true, users can add custom entities to the form. When false,
-  /// [customEntityIds] and [customEntityValues] are ignored. Defaults to
-  /// true.
+  /// [customEntityValues] are ignored. Defaults to true.
   final bool allowCustomEntities;
+
+  /// When true, adds [VerticalSpace] above the custom field header widget.
+  /// This is used to show separation between custom fields and regular fields.
+  /// This should only be set to false when the last field doesn't already
+  /// include padding.
+  ///
+  /// Defaults to true.
+  final bool showTopCustomFieldPadding;
 
   /// Called when a custom field changes.
   ///
@@ -92,9 +94,9 @@ class EditableFormPage extends StatefulWidget {
     this.header,
     this.fields = const {},
     this.trackedFieldIds = const [],
-    this.customEntityIds = const [],
     this.customEntityValues = const [],
     this.allowCustomEntities = true,
+    this.showTopCustomFieldPadding = true,
     this.onCustomFieldChanged,
     this.onBuildField,
     this.onAddFields,
@@ -114,18 +116,16 @@ class EditableFormPage extends StatefulWidget {
 }
 
 class _EditableFormPageState extends State<EditableFormPage> {
-  /// Options that are shown in the form, but not necessarily filled out.
+  /// All possible fields of the form. These fields may or may not be showing.
   final Map<Id, Field> _fields = {};
 
   CustomEntityManager get _customEntityManager =>
       CustomEntityManager.of(context);
 
-  Map<Id, Field> get _allInputFields => widget.fields;
-
   @override
   void initState() {
     super.initState();
-    _fields.addAll(_allInputFields);
+    _fields.addAll(widget.fields);
 
     if (widget.allowCustomEntities) {
       // Add a fake Field for custom fields separator.
@@ -133,7 +133,7 @@ class _EditableFormPageState extends State<EditableFormPage> {
       _fields[customField.id] = customField;
 
       // Add custom fields.
-      for (var id in widget.customEntityIds) {
+      for (var id in widget.trackedFieldIds) {
         var customEntity = _customEntityManager.entity(id);
         if (customEntity != null) {
           _fields[id] = Field.fromCustomEntity(customEntity);
@@ -160,7 +160,8 @@ class _EditableFormPageState extends State<EditableFormPage> {
       }
     }
 
-    // Only include fields being tracked by the user.
+    // Only include fields being tracked by the user. Honor the existing
+    // isShowing value in case it was set by the parent widget.
     for (var field in _fields.values) {
       field.isShowing = field.isShowing &&
           (widget.trackedFieldIds.isEmpty ||
@@ -219,14 +220,15 @@ class _EditableFormPageState extends State<EditableFormPage> {
         note: Strings.of(context).formPageManageFieldsNote,
         noteIcon: FormPage.moreMenuIcon,
       );
-    } else if (widget.customEntityIds.isNotEmpty) {
+    } else if (_hasCustomField()) {
       child = HeadingDivider(Strings.of(context).customFields);
     } else {
       return Empty();
     }
 
     return Padding(
-      padding: const EdgeInsets.only(
+      padding: EdgeInsets.only(
+        top: widget.showTopCustomFieldPadding ? paddingWidget : 0.0,
         bottom: paddingWidgetSmall,
       ),
       child: child,
@@ -300,6 +302,12 @@ class _EditableFormPageState extends State<EditableFormPage> {
       }
     });
   }
+
+  /// Returns true if the form has a custom field showing.
+  bool _hasCustomField() =>
+      _fields.values
+          .firstWhereOrNull((e) => _customEntityManager.entityExists(e.id)) !=
+      null;
 
   Map<Id, dynamic> _customFieldValues() {
     var customFieldValues = <Id, dynamic>{};

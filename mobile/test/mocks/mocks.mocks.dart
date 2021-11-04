@@ -2611,8 +2611,8 @@ class MockPreferenceManager extends _i1.Mock implements _i62.PreferenceManager {
   _i8.Id? id(String? key) =>
       (super.noSuchMethod(Invocation.method(#id, [key])) as _i8.Id?);
   @override
-  _i9.Future<void> putIdList(String? key, List<_i8.Id>? value) =>
-      (super.noSuchMethod(Invocation.method(#putIdList, [key, value]),
+  _i9.Future<void> putIdCollection(String? key, Iterable<_i8.Id>? value) =>
+      (super.noSuchMethod(Invocation.method(#putIdCollection, [key, value]),
           returnValue: Future<void>.value(),
           returnValueForMissingStub: Future<void>.value()) as _i9.Future<void>);
   @override
@@ -3356,18 +3356,6 @@ class MockUserPreferenceManager extends _i1.Mock
       (super.noSuchMethod(Invocation.getter(#shouldUseFirestore),
           returnValue: false) as bool);
   @override
-  List<_i8.Id> get baitVariantCustomIds =>
-      (super.noSuchMethod(Invocation.getter(#baitVariantCustomIds),
-          returnValue: <_i8.Id>[]) as List<_i8.Id>);
-  @override
-  List<_i8.Id> get catchCustomEntityIds =>
-      (super.noSuchMethod(Invocation.getter(#catchCustomEntityIds),
-          returnValue: <_i8.Id>[]) as List<_i8.Id>);
-  @override
-  List<_i8.Id> get tripCustomEntityIds =>
-      (super.noSuchMethod(Invocation.getter(#tripCustomEntityIds),
-          returnValue: <_i8.Id>[]) as List<_i8.Id>);
-  @override
   List<_i8.Id> get atmosphereFieldIds =>
       (super.noSuchMethod(Invocation.getter(#atmosphereFieldIds),
           returnValue: <_i8.Id>[]) as List<_i8.Id>);
@@ -3434,21 +3422,6 @@ class MockUserPreferenceManager extends _i1.Mock
   void onUpgradeToPro() =>
       super.noSuchMethod(Invocation.method(#onUpgradeToPro, []),
           returnValueForMissingStub: null);
-  @override
-  _i9.Future<void> setBaitVariantCustomIds(List<_i8.Id>? ids) =>
-      (super.noSuchMethod(Invocation.method(#setBaitVariantCustomIds, [ids]),
-          returnValue: Future<void>.value(),
-          returnValueForMissingStub: Future<void>.value()) as _i9.Future<void>);
-  @override
-  _i9.Future<void> setCatchCustomEntityIds(List<_i8.Id>? ids) =>
-      (super.noSuchMethod(Invocation.method(#setCatchCustomEntityIds, [ids]),
-          returnValue: Future<void>.value(),
-          returnValueForMissingStub: Future<void>.value()) as _i9.Future<void>);
-  @override
-  _i9.Future<void> setTripCustomEntityIds(List<_i8.Id>? ids) =>
-      (super.noSuchMethod(Invocation.method(#setTripCustomEntityIds, [ids]),
-          returnValue: Future<void>.value(),
-          returnValueForMissingStub: Future<void>.value()) as _i9.Future<void>);
   @override
   _i9.Future<void> setAtmosphereFieldIds(List<_i8.Id>? ids) =>
       (super.noSuchMethod(Invocation.method(#setAtmosphereFieldIds, [ids]),
@@ -3574,8 +3547,8 @@ class MockUserPreferenceManager extends _i1.Mock
   _i8.Id? id(String? key) =>
       (super.noSuchMethod(Invocation.method(#id, [key])) as _i8.Id?);
   @override
-  _i9.Future<void> putIdList(String? key, List<_i8.Id>? value) =>
-      (super.noSuchMethod(Invocation.method(#putIdList, [key, value]),
+  _i9.Future<void> putIdCollection(String? key, Iterable<_i8.Id>? value) =>
+      (super.noSuchMethod(Invocation.method(#putIdCollection, [key, value]),
           returnValue: Future<void>.value(),
           returnValueForMissingStub: Future<void>.value()) as _i9.Future<void>);
   @override

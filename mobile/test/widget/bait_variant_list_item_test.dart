@@ -25,7 +25,6 @@ void main() {
     when(appManager.userPreferenceManager.waterDepthSystem)
         .thenReturn(MeasurementSystem.metric);
     when(appManager.userPreferenceManager.baitVariantFieldIds).thenReturn([]);
-    when(appManager.userPreferenceManager.baitVariantCustomIds).thenReturn([]);
   });
 
   testWidgets("Tapping while editing shows SaveBaitVariantPage",

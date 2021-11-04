@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'app_manager.dart';
-import 'custom_entity_manager.dart';
-import 'entity_manager.dart';
 import 'model/gen/anglerslog.pb.dart';
 import 'preference_manager.dart';
 
@@ -11,9 +9,6 @@ class UserPreferenceManager extends PreferenceManager {
   static UserPreferenceManager of(BuildContext context) =>
       Provider.of<AppManager>(context, listen: false).userPreferenceManager;
 
-  static const _keyBaitVariantCustomIds = "bait_variant_custom_ids";
-  static const _keyCatchCustomEntityIds = "catch_custom_entity_ids";
-  static const _keyTripCustomEntityIds = "trip_custom_entity_ids";
   static const _keyAtmosphereFieldIds = "atmosphere_field_ids";
   static const _keyBaitVariantFieldIds = "bait_variant_field_ids";
   static const _keyCatchFieldIds = "catch_field_ids";
@@ -35,13 +30,7 @@ class UserPreferenceManager extends PreferenceManager {
 
   static const _keySelectedReportId = "selected_report_id";
 
-  UserPreferenceManager(AppManager appManager) : super(appManager) {
-    _customEntityManager
-        .addListener(SimpleEntityListener(onDelete: _onDeleteCustomEntity));
-  }
-
-  CustomEntityManager get _customEntityManager =>
-      appManager.customEntityManager;
+  UserPreferenceManager(AppManager appManager) : super(appManager);
 
   @override
   String get tableName => "user_preference";
@@ -61,38 +50,23 @@ class UserPreferenceManager extends PreferenceManager {
     // regardless of subscription status.
   }
 
-  Future<void> setBaitVariantCustomIds(List<Id> ids) =>
-      putIdList(_keyBaitVariantCustomIds, ids);
-
-  List<Id> get baitVariantCustomIds => idList(_keyBaitVariantCustomIds);
-
-  Future<void> setCatchCustomEntityIds(List<Id> ids) =>
-      putIdList(_keyCatchCustomEntityIds, ids);
-
-  List<Id> get catchCustomEntityIds => idList(_keyCatchCustomEntityIds);
-
-  Future<void> setTripCustomEntityIds(List<Id> ids) =>
-      putIdList(_keyTripCustomEntityIds, ids);
-
-  List<Id> get tripCustomEntityIds => idList(_keyTripCustomEntityIds);
-
   Future<void> setAtmosphereFieldIds(List<Id> ids) =>
-      putIdList(_keyAtmosphereFieldIds, ids);
+      putIdCollection(_keyAtmosphereFieldIds, ids);
 
   List<Id> get atmosphereFieldIds => idList(_keyAtmosphereFieldIds);
 
   Future<void> setBaitVariantFieldIds(List<Id> ids) =>
-      putIdList(_keyBaitVariantFieldIds, ids);
+      putIdCollection(_keyBaitVariantFieldIds, ids);
 
   List<Id> get baitVariantFieldIds => idList(_keyBaitVariantFieldIds);
 
   Future<void> setCatchFieldIds(List<Id> ids) =>
-      putIdList(_keyCatchFieldIds, ids);
+      putIdCollection(_keyCatchFieldIds, ids);
 
   List<Id> get catchFieldIds => idList(_keyCatchFieldIds);
 
   Future<void> setTripFieldIds(List<Id> ids) =>
-      putIdList(_keyTripFieldIds, ids);
+      putIdCollection(_keyTripFieldIds, ids);
 
   List<Id> get tripFieldIds => idList(_keyTripFieldIds);
 
@@ -172,9 +146,4 @@ class UserPreferenceManager extends PreferenceManager {
   /// Returns true if the user has been configured as pro. This will override
   /// any in-app purchase setting and can only be set in the Firebase console.
   bool get isPro => preferences[_keyIsPro] ?? false;
-
-  Future<void> _onDeleteCustomEntity(CustomEntity entity) async {
-    await setBaitVariantCustomIds(baitVariantCustomIds..remove(entity.id));
-    await setCatchCustomEntityIds(catchCustomEntityIds..remove(entity.id));
-  }
 }

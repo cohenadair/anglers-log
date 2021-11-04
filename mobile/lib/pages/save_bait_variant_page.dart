@@ -47,8 +47,6 @@ class _SaveBaitVariantPageState extends State<SaveBaitVariantPage> {
   static final _idDescription = Id()
     ..uuid = "3115c29d-b919-41e5-b19f-ec877e134dbe";
 
-  static final _idFake = randomId();
-
   final _log = const Log("SaveBaitVariantPage");
 
   final Map<Id, Field> _fields = {};
@@ -122,12 +120,6 @@ class _SaveBaitVariantPageState extends State<SaveBaitVariantPage> {
       controller: TextInputController(),
     );
 
-    // Added space before custom fields.
-    _fields[_idFake] = Field.fake(
-      id: _idFake,
-      builder: (context) => const VerticalSpace(paddingWidget),
-    );
-
     if (_isEditing) {
       _colorController.value =
           _oldBaitVariant!.hasColor() ? _oldBaitVariant!.color : null;
@@ -158,7 +150,6 @@ class _SaveBaitVariantPageState extends State<SaveBaitVariantPage> {
       padding: insetsZero,
       fields: _fields,
       trackedFieldIds: _userPreferenceManager.baitVariantFieldIds,
-      customEntityIds: _userPreferenceManager.baitVariantCustomIds,
       customEntityValues: _customEntityValues,
       onCustomFieldChanged: (map) {
         _customEntityValues = entityValuesFromMap(map);
@@ -324,9 +315,6 @@ class _SaveBaitVariantPageState extends State<SaveBaitVariantPage> {
   }
 
   FutureOr<bool> _save(Map<Id, dynamic> customFieldValueMap) {
-    _userPreferenceManager
-        .setBaitVariantCustomIds(customFieldValueMap.keys.toList());
-
     var newVariant = _variantFromControllers();
     if (newVariant != null) {
       widget.onSave?.call(newVariant);

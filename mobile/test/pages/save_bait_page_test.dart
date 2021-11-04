@@ -39,7 +39,6 @@ void main() {
     when(appManager.localDatabaseManager.insertOrReplace(any, any))
         .thenAnswer((_) => Future.value(true));
 
-    when(appManager.userPreferenceManager.baitVariantCustomIds).thenReturn([]);
     when(appManager.userPreferenceManager.baitVariantFieldIds).thenReturn([]);
     when(appManager.userPreferenceManager.waterDepthSystem)
         .thenReturn(MeasurementSystem.metric);

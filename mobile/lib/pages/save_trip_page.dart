@@ -249,8 +249,9 @@ class _SaveTripPageState extends State<SaveTripPage> {
       padding: insetsZero,
       runSpacing: 0,
       fields: _fields,
-      customEntityIds: _userPreferenceManager.tripCustomEntityIds,
+      trackedFieldIds: _userPreferenceManager.tripFieldIds,
       customEntityValues: _customEntityValues,
+      showTopCustomFieldPadding: false,
       onBuildField: _buildField,
       onAddFields: (ids) =>
           _userPreferenceManager.setTripFieldIds(ids.toList()),
@@ -435,9 +436,6 @@ class _SaveTripPageState extends State<SaveTripPage> {
   }
 
   FutureOr<bool> _save(Map<Id, dynamic> customFieldValueMap) {
-    _userPreferenceManager
-        .setTripCustomEntityIds(customFieldValueMap.keys.toList());
-
     // imageNames is set in _tripManager.addOrUpdate.
     var newTrip = Trip(
       id: _oldTrip?.id ?? randomId(),

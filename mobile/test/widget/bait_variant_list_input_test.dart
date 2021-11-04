@@ -25,7 +25,6 @@ void main() {
     when(appManager.userPreferenceManager.waterDepthSystem)
         .thenReturn(MeasurementSystem.metric);
     when(appManager.userPreferenceManager.baitVariantFieldIds).thenReturn([]);
-    when(appManager.userPreferenceManager.baitVariantCustomIds).thenReturn([]);
   });
 
   testWidgets("Items reset when controller value changes", (tester) async {

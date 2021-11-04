@@ -31,7 +31,6 @@ void main() {
         .thenAnswer((_) => Future.value(null));
     when(appManager.locationMonitor.currentLocation).thenReturn(null);
 
-    when(appManager.userPreferenceManager.catchCustomEntityIds).thenReturn([]);
     when(appManager.userPreferenceManager.catchFieldIds).thenReturn([]);
     when(appManager.userPreferenceManager.waterDepthSystem)
         .thenReturn(MeasurementSystem.metric);

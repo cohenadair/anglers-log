@@ -296,7 +296,6 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
       padding: insetsZero,
       fields: _fields,
       trackedFieldIds: _userPreferenceManager.catchFieldIds,
-      customEntityIds: _userPreferenceManager.catchCustomEntityIds,
       customEntityValues: _customEntityValues,
       onBuildField: _buildField,
       onAddFields: (ids) =>
@@ -600,9 +599,6 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
   }
 
   FutureOr<bool> _save(Map<Id, dynamic> customFieldValueMap) {
-    _userPreferenceManager
-        .setCatchCustomEntityIds(customFieldValueMap.keys.toList());
-
     // imageNames is set in _catchManager.addOrUpdate
     var cat = Catch()
       ..id = _oldCatch?.id ?? randomId()
