@@ -107,6 +107,7 @@ void main() {
         .thenReturn(MeasurementSystem.imperial_decimal);
     when(appManager.userPreferenceManager.stream)
         .thenAnswer((_) => const Stream.empty());
+    when(appManager.userPreferenceManager.mapType).thenReturn(null);
 
     when(appManager.speciesManager.entityExists(any)).thenReturn(false);
     when(appManager.speciesManager.displayName(any, any))

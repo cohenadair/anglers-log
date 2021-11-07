@@ -29,6 +29,7 @@ class UserPreferenceManager extends PreferenceManager {
   static const _keyIsPro = "is_pro";
 
   static const _keySelectedReportId = "selected_report_id";
+  static const _keyMapType = "map_type";
 
   UserPreferenceManager(AppManager appManager) : super(appManager);
 
@@ -142,6 +143,10 @@ class UserPreferenceManager extends PreferenceManager {
   Future<void> setSelectedReportId(Id? id) => putId(_keySelectedReportId, id);
 
   Id? get selectedReportId => id(_keySelectedReportId);
+
+  Future<void> setMapType(String? type) => put(_keyMapType, type);
+
+  String? get mapType => preferences[_keyMapType];
 
   /// Returns true if the user has been configured as pro. This will override
   /// any in-app purchase setting and can only be set in the Firebase console.

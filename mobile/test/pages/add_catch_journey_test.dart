@@ -92,6 +92,7 @@ void main() {
         .thenReturn(false);
     when(appManager.userPreferenceManager.stream)
         .thenAnswer((_) => const Stream.empty());
+    when(appManager.userPreferenceManager.mapType).thenReturn(null);
 
     var species = Species()
       ..id = randomId()

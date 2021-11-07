@@ -56,6 +56,7 @@ void main() {
     when(appManager.userPreferenceManager.selectedReportId).thenReturn(null);
     when(appManager.userPreferenceManager.setSelectedReportId(any))
         .thenAnswer((_) => Future.value());
+    when(appManager.userPreferenceManager.mapType).thenReturn(null);
   });
 
   testWidgets("Tapping nav item opens page", (tester) async {

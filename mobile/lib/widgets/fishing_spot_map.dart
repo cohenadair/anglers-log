@@ -6,6 +6,8 @@ import 'package:collection/collection.dart' show IterableExtension;
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:mapbox_gl/mapbox_gl.dart';
+import 'package:mobile/user_preference_manager.dart';
+import 'package:quiver/core.dart';
 import 'package:quiver/strings.dart';
 
 import '../entity_manager.dart';
@@ -110,10 +112,6 @@ class FishingSpotMap extends StatefulWidget {
 }
 
 class _FishingSpotMapState extends State<FishingSpotMap> {
-  static const _mapStyleNormal =
-      "mapbox://styles/cohenadair/ckt1zqb8d1h1p17pglx4pmz4y";
-  static const _mapStyleSatellite =
-      "mapbox://styles/cohenadair/ckt1m613b127t17qqf3mmw47h";
   static const _pinActive = "active-pin";
   static const _pinInactive = "inactive-pin";
   static const _pinSize = 1.25;
@@ -129,11 +127,11 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
   late final Future<bool> _mapFuture;
 
   late MapboxMapController _mapController;
+  late _MapType _mapType;
 
   Symbol? _activeSymbol;
   Timer? _hideHelpTimer;
 
-  var _currentStyle = _mapStyleNormal;
   bool _showHelp = false;
   bool _myLocationEnabled = true;
   bool _didUpdateMapType = false;
@@ -155,6 +153,9 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
 
   PropertiesManager get _propertiesManager => PropertiesManager.of(context);
 
+  UserPreferenceManager get _userPreferenceManager =>
+      UserPreferenceManager.of(context);
+
   FishingSpotMapPickerSettings? get _pickerSettings => widget.pickerSettings;
 
   bool get _hasActiveSymbol => _activeSymbol != null;
@@ -173,6 +174,8 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
   void initState() {
     super.initState();
 
+    _mapType =
+        _MapType.fromId(_userPreferenceManager.mapType) ?? _MapType.normal;
     _myLocationEnabled = !_isStatic && _locationMonitor.currentLocation != null;
     _mapFuture = Future.delayed(const Duration(milliseconds: 300), () => true);
 
@@ -258,7 +261,7 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
             attributionButtonMargins: const Point(0, -1000),
             logoViewMargins: const Point(0, -1000),
             myLocationEnabled: _myLocationEnabled,
-            styleString: _currentStyle,
+            styleString: _mapType.url,
             initialCameraPosition: CameraPosition(
               target: start,
               zoom: start.latitude == 0 ? 0 : _zoomDefault,
@@ -361,19 +364,20 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
       onPressed: () {
         showBottomSheetPicker(
           context,
-          (context) => BottomSheetPicker<String>(
-            currentValue: _currentStyle,
+          (context) => BottomSheetPicker<_MapType>(
+            currentValue: _mapType,
             items: {
-              Strings.of(context).mapPageMapTypeNormal: _mapStyleNormal,
-              Strings.of(context).mapPageMapTypeSatellite: _mapStyleSatellite,
+              Strings.of(context).mapPageMapTypeNormal: _MapType.normal,
+              Strings.of(context).mapPageMapTypeSatellite: _MapType.satellite,
             },
-            onPicked: (newStyle) {
-              if (newStyle == _currentStyle) {
+            onPicked: (newType) {
+              if (newType == _mapType) {
                 return;
               }
               setState(() {
                 _didUpdateMapType = true;
-                _currentStyle = newStyle ?? _mapStyleNormal;
+                _mapType = newType ?? _MapType.normal;
+                _userPreferenceManager.setMapType(_mapType.id);
               });
             },
           ),
@@ -561,7 +565,7 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
 
   Widget _buildAttribution() {
     return MapboxAttribution(
-      logoColor: _currentStyle == _mapStyleNormal ? Colors.black : Colors.white,
+      logoColor: _mapType == _MapType.normal ? Colors.black : Colors.white,
       isTelemetryEnabled: _isTelemetryEnabled,
       onTelemetryToggled: (enabled) async {
         await _mapController.setTelemetryEnabled(enabled);
@@ -846,20 +850,6 @@ class StaticFishingSpotMap extends StatelessWidget {
   }
 }
 
-extension _Symbols on Symbol {
-  static const _keyFishingSpot = "fishing_spot";
-
-  static Map<dynamic, dynamic> fishingSpotData(FishingSpot fishingSpot) {
-    return {
-      _keyFishingSpot: fishingSpot,
-    };
-  }
-
-  FishingSpot get fishingSpot => data![_keyFishingSpot] as FishingSpot;
-
-  LatLng get latLng => options.geometry!;
-}
-
 class MapboxAttribution extends StatelessWidget {
   static const _urlMapbox = "https://www.mapbox.com/about/maps/";
   static const _urlOpenStreetMap = "http://www.openstreetmap.org/copyright";
@@ -923,4 +913,50 @@ class MapboxAttribution extends StatelessWidget {
       ),
     );
   }
+}
+
+class _MapType {
+  static _MapType? fromId(String? id) =>
+      _allTypes.firstWhereOrNull((e) => e.id == id);
+
+  static const normal = _MapType._(
+    "normal",
+    "mapbox://styles/cohenadair/ckt1zqb8d1h1p17pglx4pmz4y",
+  );
+
+  static const satellite = _MapType._(
+    "satellite",
+    "mapbox://styles/cohenadair/ckt1m613b127t17qqf3mmw47h",
+  );
+
+  static const _allTypes = [
+    normal,
+    satellite,
+  ];
+
+  final String id;
+  final String url;
+
+  const _MapType._(this.id, this.url);
+
+  @override
+  bool operator ==(Object other) =>
+      other is _MapType && other.id == id && other.url == url;
+
+  @override
+  int get hashCode => hash2(id, url);
+}
+
+extension _Symbols on Symbol {
+  static const _keyFishingSpot = "fishing_spot";
+
+  static Map<dynamic, dynamic> fishingSpotData(FishingSpot fishingSpot) {
+    return {
+      _keyFishingSpot: fishingSpot,
+    };
+  }
+
+  FishingSpot get fishingSpot => data![_keyFishingSpot] as FishingSpot;
+
+  LatLng get latLng => options.geometry!;
 }

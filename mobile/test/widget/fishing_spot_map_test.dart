@@ -42,6 +42,10 @@ void main() {
     when(appManager.locationMonitor.currentLocation).thenReturn(null);
 
     when(appManager.propertiesManager.mapboxApiKey).thenReturn("");
+
+    when(appManager.userPreferenceManager.setMapType(any))
+        .thenAnswer((_) => Future.value());
+    when(appManager.userPreferenceManager.mapType).thenReturn(null);
   });
 
   MapboxMap findMap(WidgetTester tester) =>
@@ -474,6 +478,7 @@ void main() {
 
     expect(findMap(tester).styleString!.contains(satellite), isTrue);
     expect(find.text("Spot 1"), findsNWidgets(2));
+    verify(appManager.userPreferenceManager.setMapType(any)).called(1);
   });
 
   testWidgets("Selecting same map style does not update state", (tester) async {
@@ -492,6 +497,7 @@ void main() {
     await tapAndSettle(tester, find.text("Normal"));
 
     expect(findMap(tester).styleString!.contains(normal), isTrue);
+    verifyNever(appManager.userPreferenceManager.setMapType(any));
   });
 
   testWidgets("Current location button hidden", (tester) async {

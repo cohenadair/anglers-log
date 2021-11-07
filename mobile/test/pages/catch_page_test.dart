@@ -38,6 +38,8 @@ void main() {
     when(appManager.speciesManager.entity(any)).thenReturn(Species()
       ..id = randomId()
       ..name = "Steelhead");
+
+    when(appManager.userPreferenceManager.mapType).thenReturn(null);
   });
 
   testWidgets("No period renders empty", (tester) async {

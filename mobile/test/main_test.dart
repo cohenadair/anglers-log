@@ -64,6 +64,7 @@ void main() {
         .thenReturn(false);
     when(appManager.userPreferenceManager.stream)
         .thenAnswer((_) => const Stream.empty());
+    when(appManager.userPreferenceManager.mapType).thenReturn(null);
 
     var channel = MockMethodChannel();
     when(channel.invokeMethod(any)).thenAnswer((_) => Future.value(null));
