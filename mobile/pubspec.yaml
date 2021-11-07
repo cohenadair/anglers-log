@@ -26,14 +26,14 @@ dependencies:
   file_picker: ^4.1.3               # https://pub.dev/packages/file_picker (verified)
   firebase_auth: ^3.1.3             # https://pub.dev/packages/firebase_auth (Google)
   firebase_core: ^1.7.0             # https://pub.dev/packages/firebase_core (Google)
-  firebase_storage: ^10.0.5          # https://pub.dev/packages/firebase_storage (Google)
+  firebase_storage: ^10.0.5         # https://pub.dev/packages/firebase_storage (Google)
   flutter_image_compress: 1.1.0     # https://pub.dev/packages/flutter_image_compress
   flutter_svg: ^0.22.0              # https://pub.dev/packages/flutter_svg (verified)
   geolocator: ^7.7.0                # https://pub.dev/packages/geolocator (verified)
   http: ^0.13.4                     # https://pub.dev/packages/http (Dart)
   image_picker: ^0.8.4+2            # https://pub.dev/packages/image_picker (Flutter)
   intl: ^0.17.0                     # https://pub.dev/packages/intl (Dart)
-  mapbox_gl: ^0.12.0                # https://pub.dev/packages/mapbox_gl
+  mapbox_gl: ^0.13.0                # https://pub.dev/packages/mapbox_gl (unofficial)
   package_info_plus: ^1.3.0         # https://pub.dev/packages/package_info_plus (Flutter)
   path: ^1.8.0                      # https://pub.dev/packages/path (Dart)
   path_provider: ^2.0.5             # https://pub.dev/packages/path_provider (Flutter)
@@ -47,12 +47,6 @@ dependencies:
   sqflite: ^2.0.0+4                 # https://pub.dev/packages/sqflite (verified)
   url_launcher: ^6.0.12             # https://pub.dev/packages/url_launcher (Flutter)
   uuid: ^3.0.5                      # https://pub.dev/packages/uuid (verified)
-
-dependency_overrides:
-  # TODO: Remove when null-safety is released.
-  mapbox_gl:
-    git:
-      url: https://github.com/tobrun/flutter-mapbox-gl.git
 
 dev_dependencies:
   build_runner: ^2.1.4

@@ -119,13 +119,10 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
   static const _pinSize = 1.25;
   static const _zoomDefault = 13.0;
 
-  /// An arbitrary value used to calculate how much to offset the map's position
-  /// based on the size of the fishing spot widget being shown.
-  static const _fishingSpotDetailOffsetFactor = 0.00004117647059;
-
   static const _log = Log("FishingSpotMap");
 
   final _fishingSpotKey = GlobalKey();
+  final _mapKey = GlobalKey();
 
   // Wait for navigation animations to finish before loading the map. This
   // allows for a smooth animation.
@@ -254,6 +251,7 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
         return IgnorePointer(
           ignoring: _isStatic,
           child: MapboxMap(
+            key: _mapKey,
             accessToken: _propertiesManager.mapboxApiKey,
             // Hide default attribution views, so we can show our own and
             // position them easier.
@@ -262,7 +260,7 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
             myLocationEnabled: _myLocationEnabled,
             styleString: _currentStyle,
             initialCameraPosition: CameraPosition(
-              target: _offsetLatLng(start),
+              target: start,
               zoom: start.latitude == 0 ? 0 : _zoomDefault,
             ),
             onMapCreated: _onMapCreated,
@@ -573,7 +571,7 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
     );
   }
 
-  void _onMapCreated(MapboxMapController controller) {
+  Future<void> _onMapCreated(MapboxMapController controller) async {
     _mapController = controller;
 
     // TODO: It isn't recommended to add symbols in this callback; however,
@@ -581,7 +579,24 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
     //  so as a workaround, we do it here. When this issue is fixed,
     //  _didUpdateMapType is no longer necessary. More details:
     //  https://github.com/tobrun/flutter-mapbox-gl/pull/690
-    _setupMap();
+    await _setupMap();
+
+    // For a static map, move the map slightly so the fishing spot symbol is
+    // centered vertically between the top of the map and the top of the
+    // fishing spot details.
+    if (_isStatic &&
+        _fishingSpotKey.currentContext != null &&
+        _mapKey.currentContext != null) {
+      var fishingSpotBox =
+          _fishingSpotKey.currentContext!.findRenderObject() as RenderBox;
+      var mapBox = _mapKey.currentContext!.findRenderObject() as RenderBox;
+      var symbolY = mapBox.size.height -
+          ((mapBox.size.height - fishingSpotBox.size.height) / 2);
+      var symbolX = mapBox.size.width / 2;
+
+      var offsetLatLng = await _mapController.toLatLng(Point(symbolX, symbolY));
+      await _moveMap(offsetLatLng, animate: false);
+    }
   }
 
   void _onMapStyleLoaded() {
@@ -592,7 +607,7 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
     _didUpdateMapType = false;
   }
 
-  void _setupMap() {
+  Future<void> _setupMap() async {
     // TODO: Some map settings are cleared when a new map style is loaded, so
     //  we reset the map as a workaround. For more details:
     //  https://github.com/tobrun/flutter-mapbox-gl/issues/349
@@ -602,7 +617,10 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
     _mapController
         .getTelemetryEnabled()
         .then((value) => _isTelemetryEnabled = value);
-    _updateSymbols();
+
+    // Need to wait for symbols to be updated so the correct symbol exists
+    // when we go to select the active fishing spot when one exists.
+    await _updateSymbols();
 
     // If the map has already been setup, it means a new map style was selected
     // by the user. In this case, reselect the active fishing spot.
@@ -631,7 +649,7 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
         continue;
       }
 
-      options.add(_createSymbolOptions(fishingSpot));
+      options.add(_createSymbolOptions(fishingSpot, isActive: _isStatic));
       data.add(_Symbols.fishingSpotData(fishingSpot));
     }
 
@@ -729,7 +747,10 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
           const SymbolOptions(iconImage: _pinActive),
         );
 
-        _moveMap(newActiveSymbol.latLng, animate: animateMapMovement);
+        // A static map is already at the correct position.
+        if (!_isStatic) {
+          _moveMap(newActiveSymbol.latLng, animate: animateMapMovement);
+        }
       }
     }
 
@@ -763,30 +784,16 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
     _dropPin(_locationMonitor.currentLocation ?? const LatLng(0, 0));
   }
 
-  /// Offsets [latLng] to account for the height of the fishing spot widget.
-  /// This should only be used when setting the map position, not when creating
-  /// [Symbol] instances.
-  LatLng _offsetLatLng(LatLng latLng) {
-    var offset = 0.0;
-    if (_fishingSpotKey.currentContext != null) {
-      var fishingSpotBox =
-          _fishingSpotKey.currentContext!.findRenderObject() as RenderBox;
-      offset = fishingSpotBox.size.height * _fishingSpotDetailOffsetFactor;
-    }
-
-    return LatLng(latLng.latitude - offset, latLng.longitude);
-  }
-
-  void _moveMap(LatLng latLng, {bool animate = true}) {
+  Future<void> _moveMap(LatLng latLng, {bool animate = true}) async {
     var update = CameraUpdate.newCameraPosition(CameraPosition(
-      target: _offsetLatLng(latLng),
+      target: latLng,
       zoom: _zoomDefault,
     ));
 
     if (animate) {
-      _mapController.animateCamera(update);
+      await _mapController.animateCamera(update);
     } else {
-      _mapController.moveCamera(update);
+      await _mapController.moveCamera(update);
     }
   }
 }
@@ -827,16 +834,12 @@ class StaticFishingSpotMap extends StatelessWidget {
     return HorizontalSafeArea(
       child: Container(
         padding: padding,
-        height: _mapHeight,
-        child: Stack(
-          children: [
-            ClipRRect(
-              borderRadius: const BorderRadius.all(
-                Radius.circular(floatingCornerRadius),
-              ),
-              child: FishingSpotMap._static(fishingSpot),
-            ),
-          ],
+        height: StaticFishingSpotMap._mapHeight,
+        child: ClipRRect(
+          borderRadius: const BorderRadius.all(
+            Radius.circular(floatingCornerRadius),
+          ),
+          child: FishingSpotMap._static(fishingSpot),
         ),
       ),
     );

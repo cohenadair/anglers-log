@@ -19,6 +19,8 @@ class StubbedMapController {
         .thenAnswer((_) => Future.value());
     when(value.setTelemetryEnabled(any)).thenAnswer((_) => Future.value());
     when(value.getTelemetryEnabled()).thenAnswer((_) => Future.value(false));
+    when(value.toLatLng(any))
+        .thenAnswer((_) => Future.value(const LatLng(0, 0)));
 
     when(value.clearSymbols()).thenAnswer((_) {
       _symbols.clear();
