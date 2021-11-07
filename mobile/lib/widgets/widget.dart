@@ -453,7 +453,7 @@ class WatermarkLogo extends StatelessWidget {
         child: Icon(
           icon,
           size: _size,
-          color: color ?? Colors.grey.shade400,
+          color: color ?? Theme.of(context).primaryColor,
         ),
       ),
     );
