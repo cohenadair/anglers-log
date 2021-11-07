@@ -18,6 +18,7 @@ import '../widgets/widget.dart';
 import 'angler_list_page.dart';
 import 'body_of_water_list_page.dart';
 import 'method_list_page.dart';
+import 'pro_page.dart';
 import 'scroll_page.dart';
 import 'water_clarity_list_page.dart';
 
@@ -107,6 +108,13 @@ class MorePage extends StatelessWidget {
           icon: Icons.cloud_download,
           title: Strings.of(context).importPageMoreTitle,
           page: ImportPage(),
+          presentPage: true,
+        ),
+        _buildPageItem(
+          context,
+          icon: Icons.stars,
+          title: Strings.of(context).morePagePro,
+          page: ProPage(),
           presentPage: true,
         ),
         const MinDivider(),

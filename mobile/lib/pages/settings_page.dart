@@ -41,8 +41,6 @@ class _SettingsPageState extends State<SettingsPage> {
           const MinDivider(),
           _buildUnits(context),
           const MinDivider(),
-          _buildPro(context),
-          const MinDivider(),
           _buildLogout(context),
         ],
       ),
@@ -77,14 +75,6 @@ class _SettingsPageState extends State<SettingsPage> {
       leading: const Icon(CustomIcons.ruler),
       trailing: RightChevronIcon(),
       onTap: () => push(context, UnitsPage()),
-    );
-  }
-
-  Widget _buildPro(BuildContext context) {
-    return ListItem(
-      title: Text(Strings.of(context).morePagePro),
-      leading: const Icon(Icons.stars),
-      onTap: () => present(context, ProPage()),
     );
   }
 
