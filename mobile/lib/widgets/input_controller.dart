@@ -299,6 +299,11 @@ class MultiMeasurementInputController
   final NumberInputController mainController;
   final NumberInputController fractionController;
 
+  /// The number of decimal places to show for the controller. Note that
+  /// regardless of this value, the main value will be rounded if the main
+  /// measurement system is [MeasurementSystem.imperial_whole].
+  final int? mainValueDecimalPlaces;
+
   Unit _mainUnit;
   Unit? _fractionUnit;
 
@@ -310,6 +315,7 @@ class MultiMeasurementInputController
     MeasurementSystem? system,
     required Unit mainUnit,
     Unit? fractionUnit,
+    this.mainValueDecimalPlaces,
   })  : mainController = mainController ?? NumberInputController(),
         fractionController = fractionController ?? NumberInputController(),
         _system = system ?? MeasurementSystem.imperial_whole,
@@ -393,7 +399,8 @@ class MultiMeasurementInputController
 
   /// Rounds values to a reasonable value for displaying to the user.
   void _round() {
-    mainController.value = mainController.doubleValue?.displayValue;
+    mainController.value =
+        mainController.doubleValue?.displayValue(mainValueDecimalPlaces);
 
     // Round to whole number if using imperial_whole system.
     if (mainController.hasDoubleValue &&

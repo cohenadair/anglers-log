@@ -409,7 +409,7 @@ void main() {
       expect(find.text("3"), findsOneWidget);
       expect(find.text("Cloudy"), findsOneWidget);
       expect(find.text("58\u00B0F"), findsOneWidget);
-      expect(find.text("6.5 km/h"), findsOneWidget);
+      expect(find.text("7 km/h"), findsOneWidget);
       expect(find.text("N"), findsOneWidget);
       expect(find.text("1000 psi"), findsOneWidget);
       expect(find.text("10 mi"), findsOneWidget);

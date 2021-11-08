@@ -218,6 +218,15 @@ void main() {
     when(appManager.tripManager.deleteMessage(any, any)).thenReturn("Delete");
     when(appManager.tripManager.allImageNames(any)).thenReturn([]);
     when(appManager.tripManager.numberOfCatches(any)).thenReturn(1);
+
+    when(appManager.userPreferenceManager.airTemperatureSystem)
+        .thenReturn(MeasurementSystem.metric);
+    when(appManager.userPreferenceManager.airVisibilitySystem)
+        .thenReturn(MeasurementSystem.metric);
+    when(appManager.userPreferenceManager.airPressureSystem)
+        .thenReturn(MeasurementSystem.metric);
+    when(appManager.userPreferenceManager.windSpeedSystem)
+        .thenReturn(MeasurementSystem.metric);
   });
 
   testWidgets("All fields are shown", (tester) async {

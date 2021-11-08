@@ -239,6 +239,14 @@ void main() {
         .thenAnswer((invocation) => Future.value(true));
 
     when(appManager.userPreferenceManager.tripFieldIds).thenReturn([]);
+    when(appManager.userPreferenceManager.airTemperatureSystem)
+        .thenReturn(MeasurementSystem.metric);
+    when(appManager.userPreferenceManager.airVisibilitySystem)
+        .thenReturn(MeasurementSystem.metric);
+    when(appManager.userPreferenceManager.airPressureSystem)
+        .thenReturn(MeasurementSystem.metric);
+    when(appManager.userPreferenceManager.windSpeedSystem)
+        .thenReturn(MeasurementSystem.metric);
   });
 
   testWidgets("Editing shows old values", (tester) async {

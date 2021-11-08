@@ -321,16 +321,16 @@ extension MeasurementSystems on MeasurementSystem {
 }
 
 extension Measurements on Measurement {
-  String displayValue(BuildContext context) {
+  String displayValue(BuildContext context, [int? decimalPlaces]) {
     var unitString = "";
     if (hasUnit()) {
       unitString = "${unit.hasPreSpace ? " " : ""}"
           "${unit.shorthandDisplayName(context)}";
     }
-    return "$stringValue$unitString";
+    return "${stringValue(decimalPlaces)}$unitString";
   }
 
-  String get stringValue => value.displayValue;
+  String stringValue([int? decimalPlaces]) => value.displayValue(decimalPlaces);
 
   String filterString(BuildContext context) =>
       "${displayValue(context)} ${unit.filterString(context)}";
@@ -387,7 +387,7 @@ extension MultiMeasurements on MultiMeasurement {
         mainValue.unit == Unit.inches &&
         fraction != Fraction.zero) {
       var unit = mainValue.unit.shorthandDisplayName(context);
-      return "${mainValue.stringValue} ${fraction.symbol} $unit";
+      return "${mainValue.stringValue()} ${fraction.symbol} $unit";
     }
 
     var isFractionSet = hasFractionValue() &&

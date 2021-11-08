@@ -16,15 +16,18 @@ void main() {
 
   test("displayValue", () {
     // Whole number.
-    expect(10.toDouble().displayValue, "10");
+    expect(10.toDouble().displayValue(), "10");
 
     // Floating number.
-    expect(10.58694.displayValue, "10.59");
+    expect(10.58694.displayValue(), "10.59");
 
     // Whole floating number.
-    expect(10.0.displayValue, "10");
+    expect(10.0.displayValue(), "10");
 
     // Trailing 0.
-    expect(10.50.displayValue, "10.5");
+    expect(10.50.displayValue(), "10.5");
+
+    // Set decimal places.
+    expect(10.5556.displayValue(3), "10.556");
   });
 }

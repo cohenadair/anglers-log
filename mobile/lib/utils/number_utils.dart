@@ -49,12 +49,13 @@ extension Doubles on double {
 
   int? roundIfWhole() => isWhole ? round() : null;
 
-  String get displayValue {
-    if (isWhole) {
+  /// Returns a display value for the double. [decimalPlaces] defaults to 2.
+  String displayValue([int? decimalPlaces]) {
+    if (isWhole || (decimalPlaces != null && decimalPlaces <= 0)) {
       return round().toString();
     }
 
-    var fixed = toStringAsFixed(2);
+    var fixed = toStringAsFixed(decimalPlaces ?? 2);
     if (fixed[fixed.length - 1] == "0") {
       fixed = fixed.substring(0, fixed.length - 1);
     }

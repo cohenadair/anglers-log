@@ -3,10 +3,27 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
 import 'package:mobile/widgets/atmosphere_wrap.dart';
+import 'package:mockito/mockito.dart';
 
+import '../mocks/stubbed_app_manager.dart';
 import '../test_utils.dart';
 
 void main() {
+  late StubbedAppManager appManager;
+
+  setUp(() {
+    appManager = StubbedAppManager();
+
+    when(appManager.userPreferenceManager.airTemperatureSystem)
+        .thenReturn(MeasurementSystem.metric);
+    when(appManager.userPreferenceManager.airVisibilitySystem)
+        .thenReturn(MeasurementSystem.metric);
+    when(appManager.userPreferenceManager.airPressureSystem)
+        .thenReturn(MeasurementSystem.metric);
+    when(appManager.userPreferenceManager.windSpeedSystem)
+        .thenReturn(MeasurementSystem.metric);
+  });
+
   Atmosphere defaultAtmosphere() {
     return Atmosphere(
       temperature: Measurement(
@@ -38,12 +55,14 @@ void main() {
   }
 
   testWidgets("Shows all items", (tester) async {
-    await tester
-        .pumpWidget(Testable((_) => AtmosphereWrap(defaultAtmosphere())));
+    await tester.pumpWidget(Testable(
+      (_) => AtmosphereWrap(defaultAtmosphere()),
+      appManager: appManager,
+    ));
 
     expect(find.text("15\u00B0C"), findsOneWidget);
     expect(find.text("Cloudy, Drizzle"), findsOneWidget);
-    expect(find.text("6.5 km/h"), findsOneWidget);
+    expect(find.text("7 km/h"), findsOneWidget);
     expect(find.text("N"), findsOneWidget);
     expect(find.text("1000 MB"), findsOneWidget);
     expect(find.text("10 km"), findsOneWidget);
@@ -54,7 +73,10 @@ void main() {
   });
 
   testWidgets("Shows no items", (tester) async {
-    await tester.pumpWidget(Testable((_) => AtmosphereWrap(Atmosphere())));
+    await tester.pumpWidget(Testable(
+      (_) => AtmosphereWrap(Atmosphere()),
+      appManager: appManager,
+    ));
 
     expect(find.byType(Icon), findsNothing);
     expect(find.byType(Text), findsNothing);
@@ -70,6 +92,7 @@ void main() {
           ),
         ),
       ),
+      appManager: appManager,
     ));
 
     expect(find.byType(Text), findsOneWidget);
@@ -86,6 +109,7 @@ void main() {
           ),
         ),
       ),
+      appManager: appManager,
     ));
 
     expect(find.byType(Text), findsNWidgets(2));
@@ -104,6 +128,7 @@ void main() {
           windDirection: Direction.north,
         ),
       ),
+      appManager: appManager,
     ));
 
     expect(find.byType(Text), findsNWidgets(2));

@@ -137,12 +137,16 @@ class MultiMeasurementInputSpec {
   /// The title of the input. Renders as the title of the "main" [TextInput].
   final LocalizedString? title;
 
+  /// See [MultiMeasurementInputController.mainValueDecimalPlaces].
+  final int? mainValueDecimalPlaces;
+
   MultiMeasurementInputSpec._({
     required this.imperial,
     required this.metric,
     this.fraction,
     this.system,
     this.title,
+    this.mainValueDecimalPlaces,
   });
 
   MultiMeasurementInputSpec.length(BuildContext context)
@@ -189,6 +193,7 @@ class MultiMeasurementInputSpec {
           metric: Unit.kilometers_per_hour,
           system: UserPreferenceManager.of(context).windSpeedSystem,
           title: (context) => Strings.of(context).atmosphereInputWindSpeed,
+          mainValueDecimalPlaces: 0,
         );
 
   MultiMeasurementInputSpec.airTemperature(BuildContext context)
@@ -197,6 +202,7 @@ class MultiMeasurementInputSpec {
           metric: Unit.celsius,
           system: UserPreferenceManager.of(context).airTemperatureSystem,
           title: (context) => Strings.of(context).atmosphereInputAirTemperature,
+          mainValueDecimalPlaces: 0,
         );
 
   MultiMeasurementInputSpec.airPressure(BuildContext context)
@@ -206,6 +212,7 @@ class MultiMeasurementInputSpec {
           system: UserPreferenceManager.of(context).airPressureSystem,
           title: (context) =>
               Strings.of(context).atmosphereInputAtmosphericPressure,
+          mainValueDecimalPlaces: 0,
         );
 
   MultiMeasurementInputSpec.airVisibility(BuildContext context)
@@ -214,6 +221,7 @@ class MultiMeasurementInputSpec {
           metric: Unit.kilometers,
           system: UserPreferenceManager.of(context).airVisibilitySystem,
           title: (context) => Strings.of(context).atmosphereInputAirVisibility,
+          mainValueDecimalPlaces: 0,
         );
 
   MultiMeasurementInputSpec.airHumidity(BuildContext context)
@@ -221,6 +229,7 @@ class MultiMeasurementInputSpec {
           imperial: Unit.percent,
           metric: Unit.percent,
           title: (context) => Strings.of(context).atmosphereInputAirHumidity,
+          mainValueDecimalPlaces: 0,
         );
 
   MultiMeasurementInputController newInputController({
@@ -233,6 +242,7 @@ class MultiMeasurementInputSpec {
       fractionUnit: fraction,
       mainController: mainController,
       fractionController: fractionController,
+      mainValueDecimalPlaces: mainValueDecimalPlaces,
     );
   }
 }
