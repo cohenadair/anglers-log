@@ -293,8 +293,7 @@ class _BaitListPageModel extends SectionedListModel<BaitCategory, Bait> {
 
   final BaitCategoryManager baitCategoryManager;
   final BaitManager baitManager;
-  final ManageableListPageItemModel Function(BuildContext context, Bait)
-      itemBuilder;
+  final ManageableListPageItemModel Function(BuildContext, Bait) itemBuilder;
 
   _BaitListPageModel({
     required this.baitCategoryManager,

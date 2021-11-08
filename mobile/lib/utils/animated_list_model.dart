@@ -108,7 +108,7 @@ class AnimatedListModel<T, StateType extends State<StatefulWidget>> {
       }
     }
 
-    // Lastly, update the value of any items that weren't added or removed so
+    // Update the value of any items that weren't added or removed so
     // the list shows the most up to date data.
     for (var i = 0; i < _items.length; i++) {
       var indexInNewItems = indexOfEntityIdOrOther(newItems, _items[i]);
@@ -116,6 +116,11 @@ class AnimatedListModel<T, StateType extends State<StatefulWidget>> {
         _items[i] = newItems[indexInNewItems];
       }
     }
+
+    // Reset items to newItems so order is maintained. All work done prior
+    // (inserting and deleting) was so changes are animated. Once this is done,
+    // it's safe to replace the model value.
+    _items.replaceRange(0, _items.length, newItems);
 
     controller?.value = _items;
   }

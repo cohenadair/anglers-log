@@ -159,6 +159,47 @@ void main() {
     expect(controller.value[3].name, "Perch");
     expect(controller.value[4].name, "Carp");
   });
+
+  test("Updating order of items", () {
+    var bassId = randomId();
+    var perchId = randomId();
+    var pikeId = randomId();
+    var walleyeId = randomId();
+
+    var oldItems = <Species>[
+      Species(id: bassId, name: "Bass"),
+      Species(id: pikeId, name: "Pike"),
+      Species(id: walleyeId, name: "Walleye"),
+      Species(id: perchId, name: "Perch"),
+    ];
+
+    var controller = ListInputController<Species>();
+    var model = AnimatedListModel<Species, AnimatedListState>(
+      listKey: key,
+      controller: controller,
+      initialItems: oldItems,
+      removedItemBuilder: (_, __, ___) => Empty(),
+    );
+
+    var newItems = <Species>[
+      Species(id: perchId, name: "Perch"),
+      Species(id: pikeId, name: "Pike"),
+      Species(id: bassId, name: "Bass"),
+      Species(id: walleyeId, name: "Walleye"),
+    ];
+    model.resetItems(newItems);
+
+    expect(model.length, 4);
+    expect(model[0].name, "Perch");
+    expect(model[1].name, "Pike");
+    expect(model[2].name, "Bass");
+    expect(model[3].name, "Walleye");
+    expect(controller.value.length, 4);
+    expect(controller.value[0].name, "Perch");
+    expect(controller.value[1].name, "Pike");
+    expect(controller.value[2].name, "Bass");
+    expect(controller.value[3].name, "Walleye");
+  });
 }
 
 class _TestStatefulWidget extends StatefulWidget {
