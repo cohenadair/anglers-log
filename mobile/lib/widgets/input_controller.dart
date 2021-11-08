@@ -55,16 +55,27 @@ class InputController<T> extends ValueNotifier<T?> {
 /// An [InputController] subclass for a [Set], where the value of the controller
 /// cannot be null. Instead of null, an empty [Set] is used.
 class SetInputController<T> extends InputController<Set<T>> {
+  final _log = Log("SetInputController<${T.runtimeType}>");
+
   @override
   Set<T> get value => super.value ?? {};
 
   @override
   set value(Set<T>? newValue) => super.value = newValue ?? {};
+
+  @override
+  bool get hasValue {
+    _log.w(
+        "hasValue will always return true; did you mean to use value.isEmpty?");
+    return super.hasValue;
+  }
 }
 
 /// An [InputController] subclass for a [List], where the value of the
 /// controller cannot be null. Instead of null, an empty [List] is used.
 class ListInputController<T> extends InputController<List<T>> {
+  final _log = Log("ListInputController<${T.runtimeType}>");
+
   ListInputController({List<T>? value}) : super(value: value) {
     assert(!(T == PickedImage) || this is ImagesInputController,
         "Use ImagesInputController instead");
@@ -75,6 +86,13 @@ class ListInputController<T> extends InputController<List<T>> {
 
   @override
   set value(List<T>? newValue) => super.value = newValue ?? [];
+
+  @override
+  bool get hasValue {
+    _log.w(
+        "hasValue will always return true; did you mean to use value.isEmpty?");
+    return super.hasValue;
+  }
 }
 
 class ImagesInputController extends ListInputController<PickedImage> {

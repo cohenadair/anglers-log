@@ -531,7 +531,7 @@ class __AtmosphereInputPageState extends State<_AtmosphereInputPage> {
       isSet = true;
     }
 
-    if (_skyConditionController.hasValue) {
+    if (_skyConditionController.value.isNotEmpty) {
       result.skyConditions.addAll(_skyConditionController.value);
       isSet = true;
     }
