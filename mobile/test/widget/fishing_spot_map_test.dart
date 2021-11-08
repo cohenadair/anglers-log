@@ -1104,6 +1104,24 @@ void main() {
     verifyNever(mapController.value.animateCamera(any));
   });
 
+  testWidgets("WillPopScope is included in widget tree", (tester) async {
+    await pumpMap(tester, FishingSpotMap());
+    expect(find.byType(WillPopScope), findsOneWidget);
+  });
+
+  testWidgets("WillPopScope is not included in widget tree", (tester) async {
+    var fishingSpot1 = FishingSpot(
+      id: randomId(),
+      lat: 1,
+      lng: 2,
+    );
+    when(appManager.fishingSpotManager.list()).thenReturn([fishingSpot1]);
+    when(appManager.fishingSpotManager.entityExists(any)).thenReturn(false);
+
+    await pumpMap(tester, StaticFishingSpotMap(fishingSpot1));
+    expect(find.byType(WillPopScope), findsNothing);
+  });
+
   testWidgets("Attribution icon shows bottom sheet", (tester) async {
     when(appManager.ioWrapper.isAndroid).thenReturn(true);
 

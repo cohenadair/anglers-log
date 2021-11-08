@@ -3,6 +3,7 @@ import 'dart:io';
 import 'dart:math';
 
 import 'package:collection/collection.dart' show IterableExtension;
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:mapbox_gl/mapbox_gl.dart';
@@ -207,38 +208,46 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
 
   @override
   Widget build(BuildContext context) {
+    var map = EntityListenerBuilder(
+      managers: [_fishingSpotManager],
+      onAnyChange: _updateSymbols,
+      builder: (context) {
+        var stack = Stack(children: [
+          _buildMap(),
+          ...widget.children,
+          _buildNoSelectionMapAttribution(),
+          _buildFishingSpot(),
+          SafeArea(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                _buildSearchBar(),
+                _buildMapStyleButton(),
+                _buildCurrentLocationButton(),
+                _buildZoomExtentsButton(),
+                _buildHelpButton(),
+                _buildHelp(),
+              ],
+            ),
+          ),
+        ]);
+
+        return widget.isPage ? Scaffold(body: stack) : stack;
+      },
+    );
+
+    if (_isStatic) {
+      return map;
+    }
+
+    // WillPopScope overrides the default "swipe to go back" behavior on iOS.
+    // Only allow this behavior use it when we're not showing a static map.
     return WillPopScope(
       onWillPop: () {
         _pickerSettings?.controller.value = _activeSymbol?.fishingSpot;
         return Future.value(true);
       },
-      child: EntityListenerBuilder(
-        managers: [_fishingSpotManager],
-        onAnyChange: _updateSymbols,
-        builder: (context) {
-          var stack = Stack(children: [
-            _buildMap(),
-            ...widget.children,
-            _buildNoSelectionMapAttribution(),
-            _buildFishingSpot(),
-            SafeArea(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  _buildSearchBar(),
-                  _buildMapStyleButton(),
-                  _buildCurrentLocationButton(),
-                  _buildZoomExtentsButton(),
-                  _buildHelpButton(),
-                  _buildHelp(),
-                ],
-              ),
-            ),
-          ]);
-
-          return widget.isPage ? Scaffold(body: stack) : stack;
-        },
-      ),
+      child: map,
     );
   }
 
@@ -252,7 +261,7 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
             const LatLng(0, 0);
 
         return IgnorePointer(
-          ignoring: _isStatic,
+          ignoring: false,
           child: MapboxMap(
             key: _mapKey,
             accessToken: _propertiesManager.mapboxApiKey,
