@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:quiver/strings.dart';
 
 import '../i18n/strings.dart';
@@ -461,13 +462,17 @@ class WatermarkLogo extends StatelessWidget {
 }
 
 class TransparentAppBar extends AppBar {
-  TransparentAppBar(BuildContext context)
-      : super(
+  TransparentAppBar(
+    BuildContext context, {
+    Widget? leading,
+  }) : super(
           backgroundColor: Colors.transparent,
           elevation: 0.0,
-          leading: CloseButton(
-            color: Theme.of(context).primaryColor,
-          ),
+          leading: leading ??
+              CloseButton(
+                color: Theme.of(context).primaryColor,
+              ),
+          systemOverlayStyle: SystemUiOverlayStyle.dark,
         );
 }
 

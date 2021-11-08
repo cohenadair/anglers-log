@@ -26,9 +26,8 @@ class OnboardingPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ScrollPage(
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0.0,
+      appBar: TransparentAppBar(
+        context,
         leading: Empty(),
       ),
       padding: padding,
