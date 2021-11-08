@@ -182,7 +182,7 @@ class MinimumIconButton extends StatelessWidget {
       padding: insetsZero,
       width: size,
       height: size,
-      child: GestureDetector(
+      child: InkWell(
         onTap: onTap,
         child: Icon(
           icon,
