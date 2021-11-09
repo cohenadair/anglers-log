@@ -316,6 +316,10 @@ class CalculatedReport {
       }
 
       for (var baitAttachment in cat.baits) {
+        if (!_baitManager.entityExists(baitAttachment.baitId)) {
+          continue;
+        }
+
         _catchesPerBait.putIfAbsent(baitAttachment, () => 0);
         _catchesPerBait[baitAttachment] = _catchesPerBait[baitAttachment]! + 1;
         _baitsPerSpecies.inc(species, baitAttachment);
