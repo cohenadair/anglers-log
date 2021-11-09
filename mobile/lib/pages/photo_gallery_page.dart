@@ -42,30 +42,35 @@ class _PhotoGalleryPageState extends State<PhotoGalleryPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      extendBodyBehindAppBar: true,
-      body: Stack(
-        children: [
-          PageView.builder(
-            controller: _controller,
-            physics: _scrollPhysics,
-            itemCount: widget.fileNames.length,
-            itemBuilder: (context, i) => Container(
-              color: Colors.black,
-              child: Center(
-                child: InteractiveViewer(
-                  minScale: _minScale,
-                  maxScale: _maxScale,
-                  onInteractionEnd: _onInteractionEnd,
-                  transformationController: _transformationController,
-                  clipBehavior: Clip.none,
-                  child: Photo(fileName: widget.fileNames[i]),
+    return Dismissible(
+      key: GlobalKey(),
+      direction: DismissDirection.down,
+      onDismissed: (_) => Navigator.of(context).pop(),
+      child: Scaffold(
+        extendBodyBehindAppBar: true,
+        body: Stack(
+          children: [
+            PageView.builder(
+              controller: _controller,
+              physics: _scrollPhysics,
+              itemCount: widget.fileNames.length,
+              itemBuilder: (context, i) => Container(
+                color: Colors.black,
+                child: Center(
+                  child: InteractiveViewer(
+                    minScale: _minScale,
+                    maxScale: _maxScale,
+                    onInteractionEnd: _onInteractionEnd,
+                    transformationController: _transformationController,
+                    clipBehavior: Clip.none,
+                    child: Photo(fileName: widget.fileNames[i]),
+                  ),
                 ),
               ),
             ),
-          ),
-          const SafeArea(child: FloatingButton.close()),
-        ],
+            const SafeArea(child: FloatingButton.close()),
+          ],
+        ),
       ),
     );
   }
