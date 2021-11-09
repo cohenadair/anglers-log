@@ -24,8 +24,6 @@ class _PhotoGalleryPageState extends State<PhotoGalleryPage> {
   final _transformationController = TransformationController();
   late PageController _controller;
 
-  ScrollPhysics? _scrollPhysics;
-
   @override
   void initState() {
     super.initState();
@@ -42,17 +40,19 @@ class _PhotoGalleryPageState extends State<PhotoGalleryPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Dismissible(
-      key: GlobalKey(),
-      direction: DismissDirection.down,
-      onDismissed: (_) => Navigator.of(context).pop(),
+    return GestureDetector(
+      // Don't allow swipe to dismiss when zoomed in on photo.
+      onVerticalDragEnd:
+          _isDismissible ? (_) => Navigator.of(context).pop() : null,
       child: Scaffold(
         extendBodyBehindAppBar: true,
         body: Stack(
           children: [
             PageView.builder(
               controller: _controller,
-              physics: _scrollPhysics,
+              // Don't allow page view navigation when zoomed in on photo.
+              physics:
+                  _isDismissible ? null : const NeverScrollableScrollPhysics(),
               itemCount: widget.fileNames.length,
               itemBuilder: (context, i) => Container(
                 color: Colors.black,
@@ -60,7 +60,7 @@ class _PhotoGalleryPageState extends State<PhotoGalleryPage> {
                   child: InteractiveViewer(
                     minScale: _minScale,
                     maxScale: _maxScale,
-                    onInteractionEnd: _onInteractionEnd,
+                    onInteractionEnd: (_) => setState(() {}),
                     transformationController: _transformationController,
                     clipBehavior: Clip.none,
                     child: Photo(fileName: widget.fileNames[i]),
@@ -75,13 +75,6 @@ class _PhotoGalleryPageState extends State<PhotoGalleryPage> {
     );
   }
 
-  void _onInteractionEnd(ScaleEndDetails details) {
-    // Don't allow scrolling in the PageView if the image is zoomed in. This is
-    // required for panning to work property.
-    setState(() {
-      _scrollPhysics = _transformationController.value.getMaxScaleOnAxis() > 1
-          ? const NeverScrollableScrollPhysics()
-          : null;
-    });
-  }
+  bool get _isDismissible =>
+      _transformationController.value.getMaxScaleOnAxis() <= 1;
 }
