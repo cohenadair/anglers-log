@@ -11,6 +11,6 @@
 #import "XYPieChart.h"
 #import "CMAEntry.h"
 
-@interface CMAStatisticsViewController : UIViewController <XYPieChartDataSource, XYPieChartDelegate, ADBannerViewDelegate, UITableViewDataSource, UITableViewDelegate>
+@interface CMAStatisticsViewController : UIViewController <XYPieChartDataSource, XYPieChartDelegate, UITableViewDataSource, UITableViewDelegate>
 
 @end

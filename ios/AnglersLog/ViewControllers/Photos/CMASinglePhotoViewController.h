@@ -9,7 +9,7 @@
 #import <iAd/iAd.h>
 #import <UIKit/UIKit.h>
 
-@interface CMASinglePhotoViewController : UIViewController <UICollectionViewDelegateFlowLayout, UICollectionViewDataSource, UICollectionViewDelegate, ADBannerViewDelegate>
+@interface CMASinglePhotoViewController : UIViewController <UICollectionViewDelegateFlowLayout, UICollectionViewDataSource, UICollectionViewDelegate>
 
 @property (strong, nonatomic)NSArray *imagesArray;
 @property (strong, nonatomic)NSIndexPath *startingImageIndexPath;

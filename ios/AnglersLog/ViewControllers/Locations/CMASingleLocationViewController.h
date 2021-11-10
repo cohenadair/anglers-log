@@ -12,7 +12,7 @@
 #import "CMALocation.h"
 #import "CMAConstants.h"
 
-@interface CMASingleLocationViewController : UITableViewController <MKMapViewDelegate, ADBannerViewDelegate>
+@interface CMASingleLocationViewController : UITableViewController <MKMapViewDelegate>
 
 @property (nonatomic)CMAViewControllerID previousViewID;
 @property (strong, nonatomic)CMALocation *location;

@@ -146,7 +146,6 @@
 		AC45E332230B400000D9A06B /* QBVideoIndicatorView.m in Sources */ = {isa = PBXBuildFile; fileRef = AC45E31E230B3FFF00D9A06B /* QBVideoIndicatorView.m */; };
 		AC45E333230B400000D9A06B /* QBSlomoIconView.m in Sources */ = {isa = PBXBuildFile; fileRef = AC45E31F230B3FFF00D9A06B /* QBSlomoIconView.m */; };
 		AC45E334230B400000D9A06B /* QBImagePicker.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AC45E321230B3FFF00D9A06B /* QBImagePicker.storyboard */; };
-		AC45E335230B400000D9A06B /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = AC45E326230B400000D9A06B /* Info.plist */; };
 		AC45E336230B400000D9A06B /* QBCheckmarkView.m in Sources */ = {isa = PBXBuildFile; fileRef = AC45E327230B400000D9A06B /* QBCheckmarkView.m */; };
 		AC45E338230B400F00D9A06B /* en.lproj in Resources */ = {isa = PBXBuildFile; fileRef = AC45E337230B400F00D9A06B /* en.lproj */; };
 		AC58D56C1FED50CC00C5EC3E /* Entries.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AC58D56B1FED50CC00C5EC3E /* Entries.storyboard */; };
@@ -1157,7 +1156,6 @@
 				AC6115CE1FEE06100052BFE5 /* SingleBait.storyboard in Resources */,
 				0D8F846E1A6EC2C300AABAEA /* stats.png in Resources */,
 				0DBC36181D7E2BA50016B898 /* spinner.jpg in Resources */,
-				AC45E335230B400000D9A06B /* Info.plist in Resources */,
 				AC6115CC1FEE01E30052BFE5 /* placeholder_circle@1x.png in Resources */,
 				0D8F84611A6EC2C300AABAEA /* instagram@2x.png in Resources */,
 				0D81E4581C8F404300974ED3 /* circle_icon@3x.png in Resources */,
