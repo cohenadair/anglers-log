@@ -1589,6 +1589,16 @@ class Strings {
 
   String get mapAttributionTelemetryDescription =>
       _string("mapAttribution_telemetryDescription");
+
+  String get welcomeTitle => _string("welcome_title");
+
+  String get welcomeChanges => _string("welcome_changes");
+
+  String get welcomeChangelogLink1 => _string("welcome_changelog_link1");
+
+  String get welcomeChangelogLink2 => _string("welcome_changelog_link2");
+
+  String get welcomeNext => _string("welcome_next");
 }
 
 class StringsDelegate extends LocalizationsDelegate<Strings> {

@@ -767,5 +767,12 @@ Map<String, Map<String, String>> get englishStrings => {
         "mapAttribution_telemetryTitle": "Mapbox Telemetry",
         "mapAttribution_telemetryDescription":
             "Help make OpenStreetMap and Mapbox maps better by contributing anonymous usage data.",
+        "welcome_title": "Welcome to Anglers' Log 2.0",
+        "welcome_changes":
+            "A lot has changed: a facelift, a new stats system, backup and sync, and much more!",
+        "welcome_changelog_link1": "For a detailed list changes, please visit ",
+        "welcome_changelog_link2": "anglerslog.ca.",
+        "welcome_next":
+            "After creating an account, your log will be migrated to the new system and you will be taken through a few onboarding steps.",
       },
     };

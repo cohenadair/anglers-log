@@ -80,10 +80,11 @@ class SubscriptionManager {
     _purchasesWrapper
         .addPurchaserInfoUpdateListener(_setStateFromPurchaserInfo);
 
-    _authManager.stream.listen((_) {
+    _authManager.stream.listen((_) async {
       if (_authManager.state == AuthState.loggedIn) {
         _purchasesWrapper.logIn(_authManager.userId!);
-      } else if (_authManager.state == AuthState.loggedOut) {
+      } else if (_authManager.state == AuthState.loggedOut &&
+          !(await _purchasesWrapper.isAnonymous)) {
         _purchasesWrapper.logOut();
       }
     });

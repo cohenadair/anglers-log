@@ -20,10 +20,10 @@ void main() {
 
   testWidgets("Button disabled when input is invalid", (tester) async {
     await tester.pumpWidget(Testable(
-      (_) => LoginPage(),
+      (_) => const LoginPage(isUpdatingFromLegacy: false),
       appManager: appManager,
     ));
-    expect(findFirst<Button>(tester).onPressed, isNull);
+    expect(findFirstWithText<Button>(tester, "LOGIN").onPressed, isNull);
 
     await tester.enterText(
         find.widgetWithText(TextInput, "Email"), "test@test.com");
@@ -31,12 +31,12 @@ void main() {
         find.widgetWithText(TextInput, "Password"), "123456");
     await tester.pump();
 
-    expect(findFirst<Button>(tester).onPressed, isNotNull);
+    expect(findFirstWithText<Button>(tester, "LOGIN").onPressed, isNotNull);
   });
 
   testWidgets("Loading indicator is shown correctly", (tester) async {
     await tester.pumpWidget(Testable(
-      (_) => LoginPage(),
+      (_) => const LoginPage(isUpdatingFromLegacy: false),
       appManager: appManager,
     ));
 
@@ -59,7 +59,7 @@ void main() {
 
   testWidgets("Error message is shown correctly", (tester) async {
     await tester.pumpWidget(Testable(
-      (_) => LoginPage(),
+      (_) => const LoginPage(isUpdatingFromLegacy: false),
       appManager: appManager,
     ));
 
@@ -88,7 +88,7 @@ void main() {
             const Duration(milliseconds: 50), () => AuthError.wrongPassword));
 
     await tester.pumpWidget(Testable(
-      (_) => LoginPage(),
+      (_) => const LoginPage(isUpdatingFromLegacy: false),
       appManager: appManager,
     ));
 
@@ -115,7 +115,7 @@ void main() {
 
   testWidgets("Switching modes", (tester) async {
     await tester.pumpWidget(Testable(
-      (_) => LoginPage(),
+      (_) => const LoginPage(isUpdatingFromLegacy: false),
       appManager: appManager,
     ));
 
@@ -151,7 +151,7 @@ void main() {
 
   testWidgets("Login updates state to loading", (tester) async {
     await tester.pumpWidget(Testable(
-      (_) => LoginPage(),
+      (_) => const LoginPage(isUpdatingFromLegacy: false),
       appManager: appManager,
     ));
 
@@ -174,7 +174,7 @@ void main() {
 
   testWidgets("Sign up updates state to loading", (tester) async {
     await tester.pumpWidget(Testable(
-      (_) => LoginPage(),
+      (_) => const LoginPage(isUpdatingFromLegacy: false),
       appManager: appManager,
     ));
 
@@ -205,10 +205,28 @@ void main() {
         .thenReturn("test@test.com");
 
     await tester.pumpWidget(Testable(
-      (_) => LoginPage(),
+      (_) => const LoginPage(isUpdatingFromLegacy: false),
       appManager: appManager,
     ));
 
     expect(find.text("test@test.com"), findsOneWidget);
+  });
+
+  testWidgets("Updating from legacy shows welcome text", (tester) async {
+    await tester.pumpWidget(Testable(
+      (_) => const LoginPage(isUpdatingFromLegacy: true),
+      appManager: appManager,
+    ));
+
+    // Welcome widgets.
+    expect(find.text("Welcome to Anglers' Log 2.0"), findsOneWidget);
+    expect(find.widgetWithText(Button, "CONTINUE"), findsOneWidget);
+
+    await tester.tap(find.widgetWithText(Button, "CONTINUE"));
+    await tester.pump(const Duration(milliseconds: 250));
+
+    expect(find.text("Welcome to Anglers' Log 2.0"), findsNothing);
+    expect(find.text("Anglers' Log"), findsOneWidget);
+    expect(find.widgetWithText(Button, "SIGN UP"), findsOneWidget);
   });
 }

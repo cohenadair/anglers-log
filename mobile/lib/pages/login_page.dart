@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mobile/wrappers/url_launcher_wrapper.dart';
 
 import '../app_preference_manager.dart';
 import '../auth_manager.dart';
@@ -17,27 +18,37 @@ import '../widgets/widget.dart';
 import 'scroll_page.dart';
 
 class LoginPage extends StatefulWidget {
+  final bool isUpdatingFromLegacy;
+
+  const LoginPage({
+    required this.isUpdatingFromLegacy,
+  });
+
   @override
   State<StatefulWidget> createState() => _LoginPageState();
 }
 
 class _LoginPageState extends State<LoginPage> {
+  static const _urlChangelog = "https://anglerslog.ca/changelog";
   static const _logoSize = 200.0;
 
   final _formKey = GlobalKey<FormState>();
   final _emailController = EmailInputController(required: true);
   final _passwordController = PasswordInputController();
 
-  _Mode _mode = _Mode._loggingIn;
+  _Mode _mode = _Mode.loggingIn;
   AuthError? _error;
   bool _isLoading = false;
+  bool _isUpdatingFromLegacy = false;
 
   AppPreferenceManager get _appPreferenceManager =>
       AppPreferenceManager.of(context);
 
   AuthManager get _authManager => AuthManager.of(context);
 
-  bool get _isLoggingIn => _mode == _Mode._loggingIn;
+  UrlLauncherWrapper get _urlLauncherWrapper => UrlLauncherWrapper.of(context);
+
+  bool get _isLoggingIn => _mode == _Mode.loggingIn;
 
   FormState get _formState {
     assert(_formKey.currentState != null);
@@ -48,6 +59,8 @@ class _LoginPageState extends State<LoginPage> {
   void initState() {
     super.initState();
     _emailController.value = _appPreferenceManager.lastLoggedInEmail;
+    _isUpdatingFromLegacy = widget.isUpdatingFromLegacy;
+    _mode = _isUpdatingFromLegacy ? _Mode.signingUp : _Mode.loggingIn;
   }
 
   @override
@@ -66,36 +79,88 @@ class _LoginPageState extends State<LoginPage> {
                 size: _logoSize,
               ),
               const VerticalSpace(paddingWidget),
-              TitleLabel(Strings.of(context).appName),
-              const VerticalSpace(paddingWidget),
-              TextInput.email(
-                context,
-                controller: _emailController,
-                onChanged: _clearError,
-                textInputAction: TextInputAction.next,
-              ),
-              const VerticalSpace(paddingWidgetTiny),
-              TextInput.password(
-                context,
-                controller: _passwordController,
-                onChanged: _clearError,
-                onSubmitted: _handleLoginOrSignUp(),
-              ),
-              _buildErrorRow(),
-              const VerticalSpace(paddingWidget),
-              Button(
-                text: _mode.buttonText(context),
-                onPressed: _handleLoginOrSignUp(),
+              TitleLabel(
+                _isUpdatingFromLegacy
+                    ? Strings.of(context).welcomeTitle
+                    : Strings.of(context).appName,
+                align: TextAlign.center,
               ),
               const VerticalSpace(paddingWidget),
-              _buildInfoRow(),
-              const VerticalSpace(paddingWidget),
-              AnimatedVisibility(
-                child: const Loading(isCentered: false),
-                visible: _isLoading,
-              ),
+              _buildFormItems(),
             ],
           ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildFormItems() {
+    return AnimatedCrossFade(
+      firstChild: _buildWelcomeItems(),
+      secondChild: _buildLoginSignupItems(),
+      crossFadeState: _isUpdatingFromLegacy
+          ? CrossFadeState.showFirst
+          : CrossFadeState.showSecond,
+      duration: defaultAnimationDuration,
+    );
+  }
+
+  Widget _buildWelcomeItems() {
+    return Column(
+      children: [
+        const VerticalSpace(paddingDefault),
+        Text(
+          Strings.of(context).welcomeChanges,
+          style: stylePrimary(context),
+        ),
+        const VerticalSpace(paddingDefault),
+        QuestionAnswerLink(
+          question: Strings.of(context).welcomeChangelogLink1,
+          actionText: Strings.of(context).welcomeChangelogLink2,
+          action: () => _urlLauncherWrapper.launch(_urlChangelog),
+        ),
+        const VerticalSpace(paddingDefault),
+        Text(
+          Strings.of(context).welcomeNext,
+          style: stylePrimary(context),
+        ),
+        const VerticalSpace(paddingDefaultDouble),
+        Button(
+          text: Strings.of(context).continueString,
+          onPressed: () => setState(() => _isUpdatingFromLegacy = false),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildLoginSignupItems() {
+    return Column(
+      children: [
+        TextInput.email(
+          context,
+          controller: _emailController,
+          onChanged: _clearError,
+          textInputAction: TextInputAction.next,
+        ),
+        const VerticalSpace(paddingWidgetTiny),
+        TextInput.password(
+          context,
+          controller: _passwordController,
+          onChanged: _clearError,
+          onSubmitted: _handleLoginOrSignUp(),
+        ),
+        _buildErrorRow(),
+        const VerticalSpace(paddingWidget),
+        Button(
+          text: _mode.buttonText(context),
+          onPressed: _handleLoginOrSignUp(),
+        ),
+        const VerticalSpace(paddingWidget),
+        _buildInfoRow(),
+        const VerticalSpace(paddingWidget),
+        AnimatedVisibility(
+          child: const Loading(isCentered: false),
+          visible: _isLoading,
         ),
       ],
     );
@@ -152,9 +217,9 @@ class _LoginPageState extends State<LoginPage> {
   void _toggleMode() {
     setState(() {
       if (_isLoggingIn) {
-        _mode = _Mode._signingUp;
+        _mode = _Mode.signingUp;
       } else {
-        _mode = _Mode._loggingIn;
+        _mode = _Mode.loggingIn;
         _formState.reset();
       }
 
@@ -234,14 +299,14 @@ class _LoginPageState extends State<LoginPage> {
 }
 
 class _Mode {
-  static final _loggingIn = _Mode(
+  static final loggingIn = _Mode(
     title: (context) => Strings.of(context).loginPageLoginTitle,
     buttonText: (context) => Strings.of(context).loginPageLoginButtonText,
     questionText: (context) => Strings.of(context).loginPageLoginQuestionText,
     actionText: (context) => Strings.of(context).loginPageLoginActionText,
   );
 
-  static final _signingUp = _Mode(
+  static final signingUp = _Mode(
     title: (context) => Strings.of(context).loginPageSignUpTitle,
     buttonText: (context) => Strings.of(context).loginPageSignUpButtonText,
     questionText: (context) => Strings.of(context).loginPageSignUpQuestionText,

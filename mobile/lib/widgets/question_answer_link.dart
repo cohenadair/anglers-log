@@ -25,14 +25,14 @@ class QuestionAnswerLink extends StatelessWidget {
       text: TextSpan(children: [
         TextSpan(
           text: question,
-          style: const TextStyle(
-            color: Colors.black,
+          style: stylePrimary(context).copyWith(
+            color: Theme.of(context).textTheme.bodyText2!.color,
           ),
         ),
         const TextSpan(text: " "),
         TextSpan(
           text: actionText,
-          style: styleHyperlink,
+          style: stylePrimary(context).merge(styleHyperlink),
           recognizer: TapGestureRecognizer()..onTap = action,
         )
       ]),

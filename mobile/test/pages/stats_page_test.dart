@@ -203,6 +203,7 @@ void main() {
     when(appManager.baitManager.list()).thenReturn(baitMap.values.toList());
     when(appManager.baitManager.entity(any))
         .thenAnswer((invocation) => baitMap[invocation.positionalArguments[0]]);
+    when(appManager.baitManager.entityExists(any)).thenReturn(true);
     when(appManager.baitManager.nameComparator)
         .thenReturn((lhs, rhs) => quiver.compareIgnoreCase(lhs.name, rhs.name));
     when(appManager.baitManager.attachmentComparator)

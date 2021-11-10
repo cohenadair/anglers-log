@@ -4457,6 +4457,10 @@ class MockPurchasesWrapper extends _i1.Mock implements _i40.PurchasesWrapper {
   }
 
   @override
+  _i9.Future<bool> get isAnonymous =>
+      (super.noSuchMethod(Invocation.getter(#isAnonymous),
+          returnValue: Future<bool>.value(false)) as _i9.Future<bool>);
+  @override
   void addPurchaserInfoUpdateListener(
           dynamic Function(_i53.PurchaserInfo)? listener) =>
       super.noSuchMethod(

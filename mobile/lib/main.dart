@@ -36,8 +36,11 @@ class _AnglersLogState extends State<AnglersLog> {
   var _wasLoggedOut = false;
 
   AppManager get _app => widget.appManager;
+
   AuthManager get _authManager => _app.authManager;
+
   ServicesWrapper get _services => _app.servicesWrapper;
+
   UserPreferenceManager get _userPreferencesManager =>
       _app.userPreferenceManager;
 
@@ -117,11 +120,11 @@ class _AnglersLogState extends State<AnglersLog> {
             break;
           case AuthState.loggedOut:
             _wasLoggedOut = true;
-            child = LoginPage();
+            child = LoginPage(isUpdatingFromLegacy: _isUpdatingFromLegacy);
             break;
           case AuthState.initializing:
             if (_wasLoggedOut) {
-              child = LoginPage();
+              child = LoginPage(isUpdatingFromLegacy: _isUpdatingFromLegacy);
             } else {
               child = LandingPage();
             }
@@ -155,4 +158,6 @@ class _AnglersLogState extends State<AnglersLog> {
 
     return true;
   }
+
+  bool get _isUpdatingFromLegacy => _legacyJsonResult != null;
 }

@@ -25,6 +25,8 @@ class PurchasesWrapper {
   Future<PurchaserInfo> purchasePackage(Package package) =>
       Purchases.purchasePackage(package);
 
+  Future<bool> get isAnonymous => Purchases.isAnonymous;
+
   Future<PurchaserInfo> logOut() => Purchases.logOut();
 
   Future<PurchaserInfo> restoreTransactions() =>

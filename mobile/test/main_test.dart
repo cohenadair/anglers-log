@@ -201,6 +201,7 @@ void main() {
     await tester.pump();
 
     expect(find.byType(LoginPage), findsOneWidget);
+    expect(findFirst<LoginPage>(tester).isUpdatingFromLegacy, isFalse);
   });
 
   testWidgets("LoginPage shown while waiting to login", (tester) async {
@@ -290,5 +291,28 @@ void main() {
     verify(appManager.servicesWrapper.methodChannel(any)).called(1);
     var onboardingJourney = findFirst<OnboardingJourney>(tester);
     expect(onboardingJourney.legacyJsonResult, isNotNull);
+  });
+
+  testWidgets("_isUpdatingFromLegacy is true", (tester) async {
+    // Stub an initialization method taking some time.
+    when(appManager.firebaseWrapper.initializeApp()).thenAnswer(
+        (_) => Future.delayed(const Duration(milliseconds: 50), () => true));
+    when(appManager.authManager.state).thenReturn(AuthState.loggedOut);
+    when(appManager.authManager.userId).thenReturn(null);
+    when(appManager.userPreferenceManager.didOnboard).thenReturn(false);
+
+    var channel = MockMethodChannel();
+    when(channel.invokeMethod(any)).thenAnswer((_) => Future.value({
+          "db": "test/db",
+        }));
+    when(appManager.servicesWrapper.methodChannel(any)).thenReturn(channel);
+
+    await tester.pumpWidget(AnglersLog(appManager.app));
+
+    // Wait for delayed initialization + AnimatedSwitcher.
+    await tester.pump(const Duration(milliseconds: 210));
+
+    expect(find.byType(LoginPage), findsOneWidget);
+    expect(findFirst<LoginPage>(tester).isUpdatingFromLegacy, isTrue);
   });
 }

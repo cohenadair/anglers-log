@@ -327,6 +327,7 @@ void main() {
     when(baitManager.entity(any))
         .thenAnswer((invocation) => baitMap[invocation.positionalArguments[0]]);
     when(baitManager.attachmentComparator).thenReturn((lhs, rhs) => 0);
+    when(baitManager.entityExists(any)).thenReturn(true);
 
     bodyOfWaterManager = appManager.bodyOfWaterManager;
     when(bodyOfWaterManager.name(any))

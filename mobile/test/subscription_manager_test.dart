@@ -51,6 +51,8 @@ void main() {
     var controller = VoidStreamController();
     when(appManager.authManager.stream).thenAnswer((_) => controller.stream);
     when(appManager.authManager.state).thenReturn(AuthState.loggedOut);
+    when(appManager.purchasesWrapper.isAnonymous)
+        .thenAnswer((_) => Future.value(false));
 
     await subscriptionManager.initialize();
 
