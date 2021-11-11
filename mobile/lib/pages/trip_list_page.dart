@@ -66,10 +66,10 @@ class TripListPage extends StatelessWidget {
 
     var numberOfCatches = tripManager.numberOfCatches(trip);
     var subtitle2 = formatNumberOfCatches(context, numberOfCatches);
-    var subtitle2Style = styleSuccess;
+    var subtitle2Style = styleSuccess(context);
     if (numberOfCatches <= 0) {
       subtitle2 = Strings.of(context).tripSkunked;
-      subtitle2Style = styleError;
+      subtitle2Style = styleError(context);
     }
 
     return ManageableListPageItemModel(
@@ -78,7 +78,8 @@ class TripListPage extends StatelessWidget {
         title: title,
         subtitle: subtitle,
         subtitle2: subtitle2,
-        subtitle2Style: subtitle2Style,
+        subtitle2Style:
+            subtitle2Style.copyWith(fontSize: styleSubtitle(context).fontSize),
       ),
     );
   }

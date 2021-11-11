@@ -32,7 +32,7 @@ class QuestionAnswerLink extends StatelessWidget {
         const TextSpan(text: " "),
         TextSpan(
           text: actionText,
-          style: stylePrimary(context).merge(styleHyperlink),
+          style: styleHyperlink(context),
           recognizer: TapGestureRecognizer()..onTap = action,
         )
       ]),

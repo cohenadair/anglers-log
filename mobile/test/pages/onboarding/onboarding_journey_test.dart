@@ -22,6 +22,8 @@ void main() {
 
     when(appManager.anglerManager.entityExists(any)).thenReturn(false);
 
+    when(appManager.authManager.isUserVerified).thenReturn(true);
+
     when(appManager.baitManager.attachmentsDisplayValues(any, any))
         .thenReturn([]);
 

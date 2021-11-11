@@ -105,7 +105,7 @@ class _FeedbackPageState extends State<FeedbackPage> {
                 padding: insetsTopDefault,
                 child: Text(
                   widget.warningMessage!,
-                  style: styleWarning,
+                  style: styleWarning(context),
                 ),
               )
             : Empty(),

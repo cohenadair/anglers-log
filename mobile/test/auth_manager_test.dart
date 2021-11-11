@@ -104,6 +104,7 @@ void main() {
     // On login.
     var user = MockUser();
     when(user.uid).thenReturn("UID");
+    when(user.emailVerified).thenReturn(true);
 
     var callbackStates = <AuthState>[];
     // Initializing state until all managers have been initialized.

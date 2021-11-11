@@ -23,6 +23,7 @@ class UserPreferenceManager extends PreferenceManager {
   static const _keyWindSpeedSystem = "wind_speed_system";
   static const _keyAutoFetchAtmosphere = "auto_fetch_atmosphere";
 
+  static const _keyVerificationEmailSendAt = "verification_email_sent_at";
   static const _keyRateTimerStartedAt = "rate_timer_started_at";
   static const _keyDidRateApp = "did_rate_app";
   static const _keyDidOnboard = "did_onboard";
@@ -124,6 +125,11 @@ class UserPreferenceManager extends PreferenceManager {
       put(_keyAutoFetchAtmosphere, autoFetch);
 
   bool get autoFetchAtmosphere => preferences[_keyAutoFetchAtmosphere] ?? false;
+
+  Future<void> setVerificationEmailSentAt(int? timestamp) =>
+      put(_keyVerificationEmailSendAt, timestamp);
+
+  int? get verificationEmailSentAt => preferences[_keyVerificationEmailSendAt];
 
   Future<void> setRateTimerStartedAt(int? timestamp) =>
       put(_keyRateTimerStartedAt, timestamp);

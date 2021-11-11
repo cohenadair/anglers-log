@@ -152,7 +152,6 @@ Trip_CatchesPerEntity newInputItemShim(dynamic pickerItem) =>
 @GenerateMocks([UploadTask])
 @GenerateMocks([User])
 @GenerateMocks([UserCredential])
-
 // @GenerateMocks interprets AuthError as a class and tries to call
 // AuthError?.value, which throws a compile time error.
 class MockAuthManager extends Mock implements AuthManager {
@@ -168,6 +167,11 @@ class MockAuthManager extends Mock implements AuthManager {
   @override
   Stream<void> get stream => (super.noSuchMethod(Invocation.getter(#stream),
       returnValue: MockStream<void>()) as Stream<void>);
+
+  @override
+  bool get isUserVerified =>
+      (super.noSuchMethod(Invocation.getter(#isUserVerified), returnValue: true)
+          as bool);
 
   @override
   Future<void> initialize() =>

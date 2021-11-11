@@ -1599,6 +1599,19 @@ class Strings {
   String get welcomeChangelogLink2 => _string("welcome_changelog_link2");
 
   String get welcomeNext => _string("welcome_next");
+
+  String get emailVerificationDesc1 => _string("emailVerification_desc1");
+
+  String get emailVerificationDesc2 => _string("emailVerification_desc2");
+
+  String get emailVerificationSendAgain =>
+      _string("emailVerification_sendAgain");
+
+  String get emailVerificationSignOut => _string("emailVerification_signOut");
+
+  String get emailVerificationError => _string("emailVerification_error");
+
+  String get emailVerificationSent => _string("emailVerification_sent");
 }
 
 class StringsDelegate extends LocalizationsDelegate<Strings> {

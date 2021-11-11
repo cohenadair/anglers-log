@@ -29,38 +29,32 @@ const TextStyle styleTitleAlert = TextStyle(
   color: Colors.black,
 );
 
-const TextStyle styleHyperlink = TextStyle(
-  color: Colors.blue,
-  decoration: TextDecoration.underline,
-);
+TextStyle styleHyperlink(BuildContext context) =>
+    stylePrimary(context).copyWith(
+      color: Colors.blue,
+      decoration: TextDecoration.underline,
+    );
 
-const TextStyle styleError = TextStyle(
-  color: Colors.red,
-);
+TextStyle styleError(BuildContext context) =>
+    stylePrimary(context).copyWith(color: Colors.red);
 
-const TextStyle styleWarning = TextStyle(
-  color: Colors.orange,
-);
+TextStyle styleWarning(BuildContext context) =>
+    stylePrimary(context).copyWith(color: Colors.orange);
 
-const TextStyle styleSuccess = TextStyle(
-  color: Colors.green,
-);
+TextStyle styleSuccess(BuildContext context) =>
+    stylePrimary(context).copyWith(color: Colors.green);
 
 /// For displaying on dark backgrounds.
-const TextStyle styleLight = TextStyle(
-  color: Colors.white,
-);
+TextStyle styleLight(BuildContext context) =>
+    stylePrimary(context).copyWith(color: Colors.white);
 
 const TextStyle styleSubtext = TextStyle(
   fontSize: 11.0,
   fontStyle: FontStyle.italic,
 );
 
-TextStyle styleNote(BuildContext context) {
-  return Theme.of(context).textTheme.subtitle1!.copyWith(
-        fontStyle: FontStyle.italic,
-      );
-}
+TextStyle styleNote(BuildContext context) =>
+    stylePrimary(context).copyWith(fontStyle: FontStyle.italic);
 
 TextStyle stylePrimary(
   BuildContext context, {
@@ -73,15 +67,11 @@ TextStyle stylePrimary(
       );
 }
 
-TextStyle styleSecondary(BuildContext context) {
-  return stylePrimary(context).copyWith(
-    color: Colors.black54,
-  );
-}
+TextStyle styleSecondary(BuildContext context) =>
+    stylePrimary(context).copyWith(color: Colors.black54);
 
-TextStyle styleDisabled(BuildContext context) {
-  return TextStyle(color: Theme.of(context).disabledColor);
-}
+TextStyle styleDisabled(BuildContext context) =>
+    stylePrimary(context, enabled: false);
 
 TextStyle styleSubtitle(
   BuildContext context, {

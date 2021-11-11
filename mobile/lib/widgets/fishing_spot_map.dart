@@ -497,7 +497,7 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
         _isPicking
             ? Strings.of(context).fishingSpotPickerPageHint
             : Strings.of(context).fishingSpotMapAddSpotHelp,
-        style: styleLight,
+        style: styleLight(context),
       ),
     );
   }
@@ -906,7 +906,7 @@ class MapboxAttribution extends StatelessWidget {
       title: IoWrapper.of(context).isAndroid
           ? Strings.of(context).mapAttributionTitleAndroid
           : Strings.of(context).mapAttributionTitleApple,
-      itemStyle: styleHyperlink,
+      itemStyle: styleHyperlink(context),
       items: {
         Strings.of(context).mapAttributionMapbox: _urlMapbox,
         Strings.of(context).mapAttributionOpenStreetMap: _urlOpenStreetMap,

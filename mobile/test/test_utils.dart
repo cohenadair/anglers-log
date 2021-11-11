@@ -342,7 +342,17 @@ extension CommonFindersExt on CommonFinders {
     return textStyle(text, styleDisabled(context));
   }
 
-  Finder errorText(String text) => textStyle(text, styleError);
+  Finder errorText(
+    BuildContext context, {
+    String? text,
+  }) {
+    return textStyle(text, styleError(context));
+  }
 
-  Finder successText(String text) => textStyle(text, styleSuccess);
+  Finder successText(
+    BuildContext context, {
+    String? text,
+  }) {
+    return textStyle(text, styleSuccess(context));
+  }
 }

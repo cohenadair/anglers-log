@@ -80,15 +80,16 @@ class _SettingsPageState extends State<SettingsPage> {
 
   Widget _buildLogout(BuildContext context) {
     var authManager = AuthManager.of(context);
+    var errorStyle = styleError(context);
 
     return ListItem(
       title: Text(
         Strings.of(context).settingsPageLogout,
-        style: styleError,
+        style: errorStyle,
       ),
       leading: Icon(
         Icons.logout,
-        color: styleError.color,
+        color: errorStyle.color,
       ),
       onTap: () {
         _log.d("Logging out of ${authManager.userEmail}");

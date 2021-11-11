@@ -175,7 +175,7 @@ class _LoginPageState extends State<LoginPage> {
       padding: insetsTopDefault,
       child: Text(
         _authErrorToUserString(_error!),
-        style: styleError,
+        style: styleError(context),
         textAlign: TextAlign.center,
         overflow: TextOverflow.visible,
       ),
