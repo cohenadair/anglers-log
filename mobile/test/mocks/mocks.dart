@@ -152,7 +152,6 @@ Trip_CatchesPerEntity newInputItemShim(dynamic pickerItem) =>
 @GenerateMocks([UploadTask])
 @GenerateMocks([User])
 @GenerateMocks([UserCredential])
-
 // @GenerateMocks interprets AuthError as a class and tries to call
 // AuthError?.value, which throws a compile time error.
 class MockAuthManager extends Mock implements AuthManager {
@@ -170,6 +169,11 @@ class MockAuthManager extends Mock implements AuthManager {
       returnValue: MockStream<void>()) as Stream<void>);
 
   @override
+  bool get isUserVerified =>
+      (super.noSuchMethod(Invocation.getter(#isUserVerified), returnValue: true)
+          as bool);
+
+  @override
   Future<void> initialize() =>
       super.noSuchMethod(Invocation.method(#initialize, []),
           returnValue: Future.value(null)) as Future<void>;
@@ -180,9 +184,19 @@ class MockAuthManager extends Mock implements AuthManager {
           returnValue: Future.value(null)) as Future<AuthError?>;
 
   @override
+  Future<void> reloadUser() =>
+      super.noSuchMethod(Invocation.method(#reloadUser, []),
+          returnValue: Future.value(null)) as Future<void>;
+
+  @override
   Future<void> sendResetPasswordEmail(String? email) =>
       super.noSuchMethod(Invocation.method(#sendResetPasswordEmail, [email]),
           returnValue: Future.value(null)) as Future<void>;
+
+  @override
+  Future<bool> sendVerificationEmail(int? msBetweenSends) => super.noSuchMethod(
+      Invocation.method(#sendVerificationEmail, [msBetweenSends]),
+      returnValue: Future.value(false)) as Future<bool>;
 
   @override
   Future<AuthError?> signUp(String? email, String? password) =>

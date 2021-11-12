@@ -59,8 +59,9 @@ class ScrollPage extends StatelessWidget {
         ),
       ),
       // Ensures view is scrollable, even when items don't exceed screen size.
-      physics: const AlwaysScrollableScrollPhysics(),
-      // Ensures items are cut off when over-scrolling on iOS. This only
+      // This only applies when a persistent footer isn't being used.
+      physics: footer.isEmpty ? const AlwaysScrollableScrollPhysics() : null,
+      // Ensures items are not cut off when over-scrolling on iOS. This only
       // applies when a persistent footer isn't being used.
       clipBehavior: footer.isEmpty ? Clip.none : Clip.hardEdge,
     );

@@ -774,5 +774,13 @@ Map<String, Map<String, String>> get englishStrings => {
         "welcome_changelog_link2": "anglerslog.ca.",
         "welcome_next":
             "After creating an account, your log will be migrated to the new system and you will be taken through a few onboarding steps.",
+        "emailVerification_desc1": "A verification email has been sent to %s.",
+        "emailVerification_desc2":
+            "After your email has been verified, you can return to this page and continue.",
+        "emailVerification_sendAgain": "Send Again",
+        "emailVerification_signOut": "Login with a different email.",
+        "emailVerification_error":
+            "Your email has not yet been verified. Clicking the link verifies you are the owner of the email associated with this account.",
+        "emailVerification_sent": "Email sent!",
       },
     };

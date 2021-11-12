@@ -3489,6 +3489,11 @@ class MockUserPreferenceManager extends _i1.Mock
           returnValue: Future<void>.value(),
           returnValueForMissingStub: Future<void>.value()) as _i9.Future<void>);
   @override
+  _i9.Future<void> setVerificationEmailSentAt(int? timestamp) => (super
+      .noSuchMethod(Invocation.method(#setVerificationEmailSentAt, [timestamp]),
+          returnValue: Future<void>.value(),
+          returnValueForMissingStub: Future<void>.value()) as _i9.Future<void>);
+  @override
   _i9.Future<void> setRateTimerStartedAt(int? timestamp) => (super.noSuchMethod(
       Invocation.method(#setRateTimerStartedAt, [timestamp]),
       returnValue: Future<void>.value(),

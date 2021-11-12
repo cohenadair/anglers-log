@@ -137,4 +137,41 @@ void main() {
       isNotNull,
     );
   });
+
+  testWidgets("Empty footer has always scroll physics", (tester) async {
+    await pumpContext(
+      tester,
+      (_) => const ScrollPage(
+        children: [
+          Text("Test"),
+        ],
+      ),
+    );
+    expect(
+      tester
+          .widget<SingleChildScrollView>(find.byType(SingleChildScrollView))
+          .physics,
+      isNotNull,
+    );
+  });
+
+  testWidgets("Non-empty footer has no scroll physics", (tester) async {
+    await pumpContext(
+      tester,
+      (_) => const ScrollPage(
+        children: [
+          Text("Test"),
+        ],
+        footer: [
+          Text("A"),
+        ],
+      ),
+    );
+    expect(
+      tester
+          .widget<SingleChildScrollView>(find.byType(SingleChildScrollView))
+          .physics,
+      isNull,
+    );
+  });
 }

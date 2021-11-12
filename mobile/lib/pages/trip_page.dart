@@ -223,7 +223,7 @@ class TripPage extends StatelessWidget {
             padding: insetsSmall,
             child: Text(
               Strings.of(context).tripSkunked.toUpperCase(),
-              style: styleError.copyWith(
+              style: styleError(context).copyWith(
                 fontSize: _skunkedFontSize,
               ),
             ),

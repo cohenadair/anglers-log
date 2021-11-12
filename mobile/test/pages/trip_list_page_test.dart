@@ -1,4 +1,5 @@
 import 'package:fixnum/fixnum.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
 import 'package:mobile/pages/trip_list_page.dart';
@@ -68,8 +69,8 @@ void main() {
       appManager: appManager,
     );
     expect(
-      findFirst<ManageableListImageItem>(tester).subtitle2Style,
-      styleError,
+      findFirst<ManageableListImageItem>(tester).subtitle2Style!.color,
+      Colors.red,
     );
     expect(find.text("Skunked"), findsOneWidget);
   });
@@ -85,8 +86,8 @@ void main() {
       appManager: appManager,
     );
     expect(
-      findFirst<ManageableListImageItem>(tester).subtitle2Style,
-      styleSuccess,
+      findFirst<ManageableListImageItem>(tester).subtitle2Style!.color,
+      Colors.green,
     );
     expect(find.text("5 Catches"), findsOneWidget);
   });

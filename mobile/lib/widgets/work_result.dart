@@ -11,7 +11,7 @@ class WorkResult extends StatelessWidget {
 
   final String description;
 
-  final TextStyle _style;
+  final TextStyle Function(BuildContext) _style;
   final IconData _icon;
 
   const WorkResult.success(this.description)
@@ -24,17 +24,19 @@ class WorkResult extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var style = _style(context);
+
     return Column(
       children: [
         Icon(
           _icon,
-          color: _style.color,
+          color: style.color,
           size: _iconSize,
         ),
         const VerticalSpace(paddingWidgetSmall),
         Text(
           description,
-          style: _style,
+          style: style,
           textAlign: TextAlign.center,
         ),
       ],

@@ -29,6 +29,7 @@ void main() {
     when(appManager.authManager.initialize())
         .thenAnswer((_) => Future.value(null));
     when(appManager.authManager.userId).thenReturn(const Uuid().v4());
+    when(appManager.authManager.isUserVerified).thenReturn(true);
     when(appManager.authManager.stream).thenAnswer((_) => const Stream.empty());
 
     when(appManager.reportManager.entityExists(any)).thenReturn(false);
