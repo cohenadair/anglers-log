@@ -16,6 +16,11 @@ void main() {
   setUp(() {
     appManager = StubbedAppManager();
 
+    when(appManager.userPreferenceManager.verificationEmailSentAt)
+        .thenReturn(0);
+    when(appManager.userPreferenceManager.setVerificationEmailSentAt(any))
+        .thenAnswer((_) => Future.value());
+
     authManager = AuthManager(appManager.app);
   });
 
@@ -115,5 +120,33 @@ void main() {
     expect(callbackStates.length, 2);
     expect(callbackStates.first, AuthState.initializing);
     expect(callbackStates.last, AuthState.loggedIn);
+  });
+
+  test("sendVerificationEmail returns true if already verified", () async {
+    var user = MockUser();
+    when(user.uid).thenReturn("UID");
+    when(user.emailVerified).thenReturn(true);
+    when(appManager.firebaseAuthWrapper.currentUser).thenReturn(user);
+    await authManager.reloadUser();
+
+    expect(await authManager.sendVerificationEmail(0), isTrue);
+    verifyNever(appManager.userPreferenceManager.verificationEmailSentAt);
+  });
+
+  test("sendVerificationEmail returns false email was recently sent", () async {
+    when(appManager.userPreferenceManager.verificationEmailSentAt)
+        .thenReturn(0);
+    when(appManager.timeManager.msSinceEpoch).thenReturn(60000);
+    expect(await authManager.sendVerificationEmail(61000), isFalse);
+  });
+
+  test("sendVerificationEmail returns true when email is sent", () async {
+    when(appManager.userPreferenceManager.verificationEmailSentAt)
+        .thenReturn(0);
+    when(appManager.timeManager.msSinceEpoch).thenReturn(60000);
+
+    expect(await authManager.sendVerificationEmail(59000), isTrue);
+    verify(appManager.userPreferenceManager.setVerificationEmailSentAt(any))
+        .called(1);
   });
 }
