@@ -25,7 +25,7 @@ class _MainPageState extends State<MainPage> {
   late EntityListener<Catch> _catchManagerListener;
 
   int _currentBarItem = 1; // Default to the "Catches" tab.
-  late List<_BarItemData> _navItems;
+  late List<_BarItemModel> _navItems;
 
   NavigatorState get _currentNavState {
     assert(_navItems[_currentBarItem].page?.navigatorKey.currentState != null);
@@ -37,7 +37,7 @@ class _MainPageState extends State<MainPage> {
     super.initState();
 
     _navItems = [
-      _BarItemData(
+      _BarItemModel(
         page: _NavigatorPage(
           navigatorKey: GlobalKey<NavigatorState>(),
           builder: (context) => FishingSpotMap(),
@@ -45,7 +45,7 @@ class _MainPageState extends State<MainPage> {
         icon: Icons.map,
         titleBuilder: (context) => Strings.of(context).mapPageMenuLabel,
       ),
-      _BarItemData(
+      _BarItemModel(
         page: _NavigatorPage(
           navigatorKey: GlobalKey<NavigatorState>(),
           builder: (context) => const CatchListPage(),
@@ -53,12 +53,12 @@ class _MainPageState extends State<MainPage> {
         icon: CustomIcons.catches,
         titleBuilder: (context) => Strings.of(context).catchListPageMenuLabel,
       ),
-      _BarItemData(
+      _BarItemModel(
         icon: Icons.add_box_rounded,
         titleBuilder: (context) => Strings.of(context).add,
         onTapOverride: () => fade(context, AddAnythingPage(), opaque: false),
       ),
-      _BarItemData(
+      _BarItemModel(
         page: _NavigatorPage(
           navigatorKey: GlobalKey<NavigatorState>(),
           builder: (context) => StatsPage(),
@@ -66,7 +66,7 @@ class _MainPageState extends State<MainPage> {
         icon: Icons.show_chart,
         titleBuilder: (context) => Strings.of(context).statsPageMenuTitle,
       ),
-      _BarItemData(
+      _BarItemModel(
         page: _NavigatorPage(
           navigatorKey: GlobalKey<NavigatorState>(),
           builder: (context) => const MorePage(),
@@ -134,7 +134,7 @@ class _MainPageState extends State<MainPage> {
   }
 }
 
-class _BarItemData {
+class _BarItemModel {
   final _NavigatorPage? page;
   final LocalizedString titleBuilder;
   final IconData icon;
@@ -143,7 +143,7 @@ class _BarItemData {
   /// [Widget].
   final VoidCallback? onTapOverride;
 
-  _BarItemData({
+  _BarItemModel({
     this.page,
     required this.titleBuilder,
     required this.icon,

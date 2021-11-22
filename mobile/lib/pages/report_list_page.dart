@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:mobile/utils/protobuf_utils.dart';
 
 import '../i18n/strings.dart';
 import '../log.dart';
 import '../model/gen/anglerslog.pb.dart';
-import '../model/overview_report.dart';
 import '../pages/manageable_list_page.dart';
 import '../pages/save_report_page.dart';
 import '../report_manager.dart';
@@ -56,15 +56,15 @@ class ReportListPage extends StatelessWidget {
   }
 
   ManageableListPageItemModel _buildItem(BuildContext context, dynamic item) {
+    var reportManager = ReportManager.of(context);
+
     if (item is Report) {
       return ManageableListPageItemModel(
-        child: Text(item.name, style: stylePrimary(context)),
-        editable: true,
-      );
-    } else if (item is OverviewReport) {
-      return ManageableListPageItemModel(
-        child: Text(item.title(context), style: stylePrimary(context)),
-        editable: false,
+        child: Text(
+          reportManager.displayName(context, item),
+          style: stylePrimary(context),
+        ),
+        isEditable: item.isCustom,
       );
     } else if (item == HeadingNoteDivider) {
       return ManageableListPageItemModel(
@@ -75,25 +75,26 @@ class ReportListPage extends StatelessWidget {
           noteIcon: Icons.add,
           padding: insetsBottomWidgetSmall,
         ),
-        editable: false,
-        selectable: false,
+        isEditable: false,
+        isSelectable: false,
       );
     } else {
       _log.w("Unknown item type: $item");
 
       return ManageableListPageItemModel(
         child: Empty(),
-        editable: false,
-        selectable: false,
+        isEditable: false,
+        isSelectable: false,
       );
     }
   }
 
-  List<dynamic> _loadItems(BuildContext context) {
+  List _loadItems(BuildContext context) {
+    var reportManager = ReportManager.of(context);
     return [
-      OverviewReport(),
+      ...reportManager.defaultReports,
       HeadingNoteDivider,
-      ...ReportManager.of(context).listSortedByName(),
+      ...reportManager.listSortedByName(),
     ];
   }
 }

@@ -127,7 +127,7 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
   // allows for a smooth animation.
   late final Future<bool> _mapFuture;
 
-  late MapboxMapController _mapController;
+  MapboxMapController? _mapController;
   late _MapType _mapType;
 
   Symbol? _activeSymbol;
@@ -203,7 +203,7 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
   void dispose() {
     super.dispose();
     _hideHelpTimer?.cancel();
-    _mapController.onSymbolTapped.remove(_onSymbolTapped);
+    _mapController?.onSymbolTapped.remove(_onSymbolTapped);
   }
 
   @override
@@ -461,7 +461,7 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
         if (bounds == null) {
           return;
         }
-        _mapController.animateCamera(CameraUpdate.newLatLngBounds(
+        _mapController?.animateCamera(CameraUpdate.newLatLngBounds(
           bounds,
           left: paddingDefaultDouble,
           right: paddingDefaultDouble,
@@ -577,8 +577,9 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
       logoColor: _mapType == _MapType.normal ? Colors.black : Colors.white,
       isTelemetryEnabled: _isTelemetryEnabled,
       onTelemetryToggled: (enabled) async {
-        await _mapController.setTelemetryEnabled(enabled);
-        _isTelemetryEnabled = await _mapController.getTelemetryEnabled();
+        await _mapController?.setTelemetryEnabled(enabled);
+        _isTelemetryEnabled =
+            await _mapController?.getTelemetryEnabled() ?? false;
         setState(() {});
       },
     );
@@ -607,8 +608,11 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
           ((mapBox.size.height - fishingSpotBox.size.height) / 2);
       var symbolX = mapBox.size.width / 2;
 
-      var offsetLatLng = await _mapController.toLatLng(Point(symbolX, symbolY));
-      await _moveMap(offsetLatLng, animate: false);
+      var offsetLatLng =
+          await _mapController?.toLatLng(Point(symbolX, symbolY));
+      if (offsetLatLng != null) {
+        await _moveMap(offsetLatLng, animate: false);
+      }
     }
   }
 
@@ -624,11 +628,11 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
     // TODO: Some map settings are cleared when a new map style is loaded, so
     //  we reset the map as a workaround. For more details:
     //  https://github.com/tobrun/flutter-mapbox-gl/issues/349
-    _mapController.onSymbolTapped.remove(_onSymbolTapped);
-    _mapController.onSymbolTapped.add(_onSymbolTapped);
-    _mapController.setSymbolIconAllowOverlap(true);
+    _mapController?.onSymbolTapped.remove(_onSymbolTapped);
+    _mapController?.onSymbolTapped.add(_onSymbolTapped);
+    _mapController?.setSymbolIconAllowOverlap(true);
     _mapController
-        .getTelemetryEnabled()
+        ?.getTelemetryEnabled()
         .then((value) => _isTelemetryEnabled = value);
 
     // Need to wait for symbols to be updated so the correct symbol exists
@@ -650,7 +654,8 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
   }
 
   Future<void> _updateSymbols() async {
-    _mapController.clearSymbols();
+    // Map is still loading, exit early.
+    _mapController?.clearSymbols();
 
     var options = <SymbolOptions>[];
     var data = <Map<dynamic, dynamic>>[];
@@ -666,7 +671,7 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
       data.add(_Symbols.fishingSpotData(fishingSpot));
     }
 
-    var symbols = await _mapController.addSymbols(options, data);
+    var symbols = await _mapController?.addSymbols(options, data) ?? [];
 
     // Reset the active symbol to one of the newly created symbols.
     if (_hasActiveSymbol) {
@@ -688,7 +693,7 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
         ..id = randomId()
         ..lat = latLng.latitude
         ..lng = latLng.longitude;
-      await _mapController.addSymbol(
+      await _mapController?.addSymbol(
         _createSymbolOptions(
           fishingSpot,
           isActive: true,
@@ -726,12 +731,12 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
     if (_isDroppedPin) {
       // Remove the current dropped pin, if one exists.
       if (_hasActiveSymbol) {
-        await _mapController.removeSymbol(_activeSymbol!);
+        await _mapController?.removeSymbol(_activeSymbol!);
       }
       newActiveSymbol = null;
     } else if (_hasActiveSymbol) {
       // Mark the active symbol as inactive.
-      await _mapController.updateSymbol(
+      await _mapController?.updateSymbol(
         _activeSymbol!,
         const SymbolOptions(iconImage: _pinInactive),
       );
@@ -748,14 +753,14 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
       }
     } else {
       // Find the symbol associated with the given fishing spot.
-      newActiveSymbol = _mapController.symbols
+      newActiveSymbol = _mapController?.symbols
           .firstWhereOrNull((s) => s.fishingSpot.id == fishingSpot.id);
 
       if (newActiveSymbol == null) {
         _log.e("Couldn't find symbol associated with fishing spot");
       } else {
         // Update map.
-        await _mapController.updateSymbol(
+        await _mapController?.updateSymbol(
           newActiveSymbol,
           const SymbolOptions(iconImage: _pinActive),
         );
@@ -804,9 +809,9 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
     ));
 
     if (animate) {
-      await _mapController.animateCamera(update);
+      await _mapController?.animateCamera(update);
     } else {
-      await _mapController.moveCamera(update);
+      await _mapController?.moveCamera(update);
     }
   }
 }

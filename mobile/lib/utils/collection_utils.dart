@@ -1,3 +1,5 @@
+import 'package:collection/collection.dart' show IterableExtension;
+
 /// Returns a sorted version of the given map. If [comparator] is null, the
 /// result will be sorted by value, largest to smallest.
 Map<T, int> sortedMap<T>(Map<T, int> map,
@@ -36,4 +38,11 @@ T? valueOf<T>(List<T> values, int index) {
     return null;
   }
   return values[index];
+}
+
+Set<T> singleSet<T>(T? item) => item == null ? {} : {item};
+
+extension Iterables on Iterable {
+  bool containsWhere<T>(bool Function(T) comparator) =>
+      firstWhereOrNull((e) => comparator(e as T)) != null;
 }

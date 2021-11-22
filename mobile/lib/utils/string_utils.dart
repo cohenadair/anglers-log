@@ -3,6 +3,9 @@ import 'package:quiver/strings.dart';
 
 import '../i18n/strings.dart';
 
+int Function(String, String) get ignoreCaseAlphabeticalComparator =>
+    (lhs, rhs) => compareIgnoreCase(lhs, rhs);
+
 /// A trimmed, case-insensitive string comparison.
 bool equalsTrimmedIgnoreCase(String? s1, String? s2) =>
     equalsIgnoreCase(s1?.trim(), s2?.trim());

@@ -268,8 +268,23 @@ message Species {
 
 message Report {
   enum Type {
+    // Custom report types.
     summary = 0;
     comparison = 1;
+
+    // Default report types.
+    catch_summary = 2;
+    species_summary = 3;
+    fishing_spot_summary = 4;
+    bait_summary = 5;
+    moon_phase_summary = 6;
+    tide_summary = 7;
+    angler_summary = 8;
+    body_of_water_summary = 9;
+    method_summary = 10;
+    period_summary = 11;
+    season_summary = 12;
+    water_clarity_summary = 13;
   }
 
   Id id = 1;

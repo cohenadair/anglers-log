@@ -2690,6 +2690,14 @@ class MockReportManager extends _i1.Mock implements _i22.ReportManager {
       (super.noSuchMethod(Invocation.getter(#tableName), returnValue: '')
           as String);
   @override
+  List<_i8.Report> get defaultReports =>
+      (super.noSuchMethod(Invocation.getter(#defaultReports),
+          returnValue: <_i8.Report>[]) as List<_i8.Report>);
+  @override
+  _i8.Report get defaultReport =>
+      (super.noSuchMethod(Invocation.getter(#defaultReport),
+          returnValue: _FakeReport_50()) as _i8.Report);
+  @override
   int Function(_i8.Report, _i8.Report) get nameComparator =>
       (super.noSuchMethod(Invocation.getter(#nameComparator),
               returnValue: (_i8.Report __p0, _i8.Report __p1) => 0)
@@ -2747,26 +2755,13 @@ class MockReportManager extends _i1.Mock implements _i22.ReportManager {
       (super.noSuchMethod(Invocation.method(#name, [entity]), returnValue: '')
           as String);
   @override
-  void removeAttachedBaits(_i8.Report? report, _i8.Id? baitId) => super
-      .noSuchMethod(Invocation.method(#removeAttachedBaits, [report, baitId]),
-          returnValueForMissingStub: null);
-  @override
-  bool removeFishingSpot(_i8.Report? report, _i8.FishingSpot? fishingSpot) =>
-      (super.noSuchMethod(
-          Invocation.method(#removeFishingSpot, [report, fishingSpot]),
-          returnValue: false) as bool);
-  @override
-  bool removeSpecies(_i8.Report? report, _i8.Species? species) =>
-      (super.noSuchMethod(Invocation.method(#removeSpecies, [report, species]),
-          returnValue: false) as bool);
+  String displayName(_i44.BuildContext? context, _i8.Report? entity) =>
+      (super.noSuchMethod(Invocation.method(#displayName, [context, entity]),
+          returnValue: '') as String);
   @override
   List<_i8.Report> listSortedByName({String? filter}) => (super.noSuchMethod(
       Invocation.method(#listSortedByName, [], {#filter: filter}),
       returnValue: <_i8.Report>[]) as List<_i8.Report>);
-  @override
-  String displayName(_i44.BuildContext? context, _i8.Report? entity) =>
-      (super.noSuchMethod(Invocation.method(#displayName, [context, entity]),
-          returnValue: '') as String);
   @override
   bool matchesFilter(_i8.Id? id, String? filter) =>
       (super.noSuchMethod(Invocation.method(#matchesFilter, [id, filter]),

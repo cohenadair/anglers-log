@@ -343,7 +343,7 @@ void main() {
 
   testWidgets("If current report is deleted, falls back to overview",
       (tester) async {
-    var comparisonReportManager = ReportManager(appManager.app);
+    var comparisonReportManager = CustomReportManager(appManager.app);
     when(appManager.app.reportManager).thenReturn(comparisonReportManager);
     var reportId = randomId();
     await comparisonReportManager.addOrUpdate(Report()
@@ -371,7 +371,7 @@ void main() {
   });
 
   testWidgets("If current report is updated, state is updated", (tester) async {
-    var comparisonReportManager = ReportManager(appManager.app);
+    var comparisonReportManager = CustomReportManager(appManager.app);
     when(appManager.app.reportManager).thenReturn(comparisonReportManager);
     var reportId = randomId();
     await comparisonReportManager.addOrUpdate(Report()
@@ -409,7 +409,7 @@ void main() {
 
   testWidgets("If non-current report is deleted, report stays the same",
       (tester) async {
-    var reportManager = ReportManager(appManager.app);
+    var reportManager = CustomReportManager(appManager.app);
     when(appManager.app.reportManager).thenReturn(reportManager);
     var comparisonId = randomId();
     await reportManager.addOrUpdate(Report()

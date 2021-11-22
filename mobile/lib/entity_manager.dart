@@ -3,6 +3,7 @@ import 'dart:typed_data';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:mobile/catch_manager.dart';
 import 'package:protobuf/protobuf.dart';
 import 'package:quiver/strings.dart';
 
@@ -193,6 +194,8 @@ abstract class EntityManager<T extends GeneratedMessage>
   }
 
   int get entityCount => entities.length;
+
+  bool get hasEntities => entities.isNotEmpty;
 
   T? entity(Id? id) => entities[id];
 

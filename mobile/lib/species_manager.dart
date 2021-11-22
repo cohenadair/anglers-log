@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'app_manager.dart';
+import 'catch_field_entity_manager.dart';
 import 'catch_manager.dart';
 import 'model/gen/anglerslog.pb.dart';
-import 'named_entity_manager.dart';
 
-class SpeciesManager extends NamedEntityManager<Species> {
+class SpeciesManager extends CatchFieldEntityManager<Species> {
   static SpeciesManager of(BuildContext context) =>
       Provider.of<AppManager>(context, listen: false).speciesManager;
 
@@ -19,6 +19,9 @@ class SpeciesManager extends NamedEntityManager<Species> {
 
   @override
   Id id(Species entity) => entity.id;
+
+  @override
+  List<Id> idFromCatch(Catch cat) => [cat.speciesId];
 
   @override
   String name(Species entity) => entity.name;
@@ -38,7 +41,4 @@ class SpeciesManager extends NamedEntityManager<Species> {
     }
     return super.delete(entityId, notify: notify);
   }
-
-  int numberOfCatches(Id? speciesId) => numberOf<Catch>(
-      speciesId, _catchManager.list(), (cat) => cat.speciesId == speciesId);
 }

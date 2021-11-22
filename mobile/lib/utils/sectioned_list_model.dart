@@ -84,8 +84,8 @@ abstract class SectionedListModel<Header, Item> {
       BuildContext context, dynamic item) {
     if (item is Header) {
       return ManageableListPageItemModel(
-        editable: false,
-        selectable: false,
+        isEditable: false,
+        isSelectable: false,
         child: Padding(
           padding: insetsBottomWidget,
           child: HeadingDivider(

@@ -19,8 +19,6 @@ class FishingSpotManager extends ImageEntityManager<FishingSpot> {
 
   BodyOfWaterManager get _bodyOfWaterManager => appManager.bodyOfWaterManager;
 
-  CatchManager get _catchManager => appManager.catchManager;
-
   FishingSpotManager(AppManager app) : super(app);
 
   @override
@@ -28,6 +26,9 @@ class FishingSpotManager extends ImageEntityManager<FishingSpot> {
 
   @override
   Id id(FishingSpot entity) => entity.id;
+
+  @override
+  List<Id> idFromCatch(Catch cat) => [cat.fishingSpotId];
 
   @override
   String name(FishingSpot entity) => entity.name;
@@ -146,9 +147,6 @@ class FishingSpotManager extends ImageEntityManager<FishingSpot> {
     return entities.values.firstWhereOrNull((fishingSpot) =>
         fishingSpot.lat == rhs.lat && fishingSpot.lng == rhs.lng);
   }
-
-  int numberOfCatches(Id? fishingSpotId) => numberOf<Catch>(fishingSpotId,
-      _catchManager.list(), (cat) => cat.fishingSpotId == fishingSpotId);
 
   String deleteMessage(BuildContext context, FishingSpot fishingSpot) {
     var numOfCatches = numberOfCatches(fishingSpot.id);

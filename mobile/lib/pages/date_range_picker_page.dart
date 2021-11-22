@@ -66,7 +66,7 @@ class _DateRangePickerPageState extends State<DateRangePickerPage> {
         _buildItem(context, DateRange_Period.last12Months),
         PickerPageItem.divider(),
         PickerPageItem<DateRange>(
-          popsOnPicked: false,
+          isFinishedOnTap: false,
           title: _customDateRange.displayName(context),
           onTap: () => _onTapCustom(context),
           value: _customDateRange,

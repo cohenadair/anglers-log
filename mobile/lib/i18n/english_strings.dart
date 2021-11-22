@@ -230,8 +230,19 @@ Map<String, Map<String, String>> get englishStrings => {
             "You haven't yet added any water clarities. Tap the %s button to begin.",
         "statsPage_menuTitle": "Stats",
         "statsPage_title": "Stats",
-        "statsPage_reportOverview": "Overview",
         "statsPage_newReport": "New Report",
+        "statsPage_speciesSummary": "Species Summary",
+        "statsPage_catchSummary": "Catch Summary",
+        "statsPage_anglerSummary": "Angler Summary",
+        "statsPage_baitSummary": "Bait Summary",
+        "statsPage_bodyOfWaterSummary": "Body Of Water Summary",
+        "statsPage_fishingSpotSummary": "Fishing Spot Summary",
+        "statsPage_methodSummary": "Fishing Method Summary",
+        "statsPage_moonPhaseSummary": "Moon Phase Summary",
+        "statsPage_periodSummary": "Time Of Day Summary",
+        "statsPage_seasonSummary": "Season Summary",
+        "statsPage_tideSummary": "Tide Summary",
+        "statsPage_waterClaritySummary": "Water Clarity Summary",
         "reportView_noCatches": "No catches found",
         "reportView_noCatchesDescription":
             "No catches found in the selected date range.",
@@ -242,23 +253,50 @@ Map<String, Map<String, String>> get englishStrings => {
         "reportSummary_perSpecies": "Per species",
         "reportSummary_perFishingSpot": "Per fishing spot",
         "reportSummary_perBait": "Per bait",
+        "reportSummary_perAngler": "Per angler",
+        "reportSummary_perBodyOfWater": "Per body of water",
+        "reportSummary_perMethod": "Per method",
+        "reportSummary_perMoonPhase": "Per moon phase",
+        "reportSummary_perPeriod": "Per period",
+        "reportSummary_perSeason": "Per season",
+        "reportSummary_perTideType": "Per tide",
+        "reportSummary_perWaterClarity": "Per water clarity",
         "reportSummary_sinceLastCatch": "Since last catch",
         "reportSummary_numberOfCatches": "Number of catches",
         "reportSummary_filters": "Filters",
         "reportSummary_viewSpecies": "View all species",
-        "reportSummary_catchesPerSpeciesDescription":
+        "reportSummary_perSpeciesDescription":
             "Viewing number of catches per species.",
         "reportSummary_viewFishingSpots": "View all fishing spots",
-        "reportSummary_catchesPerFishingSpotDescription":
+        "reportSummary_perFishingSpotDescription":
             "Viewing number of catches per fishing spot.",
         "reportSummary_viewBaits": "View all baits",
-        "reportSummary_catchesPerBaitDescription":
+        "reportSummary_perBaitDescription":
             "Viewing number of catches per bait.",
-        "reportSummary_speciesTitle": "Species Summary",
-        "reportSummary_baitsPerSpeciesDescription":
-            "Viewing number of catches per species per bait.",
-        "reportSummary_fishingSpotsPerSpeciesDescription":
-            "Viewing number of catches per species per fishing spot.",
+        "reportSummary_viewMoonPhases": "View all moon phases",
+        "reportSummary_perMoonPhaseDescription":
+            "Viewing number of catches per moon phase.",
+        "reportSummary_viewTides": "View all tide types",
+        "reportSummary_perTideDescription":
+            "Viewing number of catches per tide type.",
+        "reportSummary_viewAnglers": "View all anglers",
+        "reportSummary_perAnglerDescription":
+            "Viewing number of catches per angler.",
+        "reportSummary_viewBodiesOfWater": "View all bodies of water",
+        "reportSummary_perBodyOfWaterDescription":
+            "Viewing number of catches per body of water.",
+        "reportSummary_viewMethods": "View all fishing methods",
+        "reportSummary_perMethodDescription":
+            "Viewing number of catches per fishing method.",
+        "reportSummary_viewPeriods": "View all times of day",
+        "reportSummary_perPeriodDescription":
+            "Viewing number of catches per time of day.",
+        "reportSummary_viewSeasons": "View all seasons",
+        "reportSummary_perSeasonDescription":
+            "Viewing number of catches per season.",
+        "reportSummary_viewWaterClarities": "View all water clarities",
+        "reportSummary_perWaterClarityDescription":
+            "Viewing number of catches per water clarity.",
         "morePage_title": "More",
         "morePage_rateApp": "Rate Anglers' Log",
         "morePage_pro": "Anglers' Log Pro",

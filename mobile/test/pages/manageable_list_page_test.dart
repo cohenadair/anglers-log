@@ -949,8 +949,8 @@ void main() {
             if (item == "Smallmouth Bass") {
               return const ManageableListPageItemModel(
                 child: Text("Smallmouth Bass"),
-                editable: false,
-                selectable: false,
+                isEditable: false,
+                isSelectable: false,
               );
             }
 
@@ -980,7 +980,7 @@ void main() {
           if (item == "Smallmouth Bass") {
             return const ManageableListPageItemModel(
               child: Text("Smallmouth Bass"),
-              editable: false,
+              isEditable: false,
             );
           }
 
@@ -1042,7 +1042,7 @@ void main() {
           if (item == "Smallmouth Bass") {
             return const ManageableListPageItemModel(
               child: Text("Smallmouth Bass"),
-              editable: false,
+              isEditable: false,
             );
           }
 

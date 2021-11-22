@@ -605,6 +605,11 @@ extension Periods on Period {
     );
   }
 
+  static int Function(Period, Period) nameComparator(BuildContext context) {
+    return (lhs, rhs) => ignoreCaseAlphabeticalComparator(
+        lhs.displayName(context), rhs.displayName(context));
+  }
+
   String displayName(BuildContext context) {
     switch (this) {
       case Period.period_all:
@@ -668,6 +673,11 @@ extension Seasons on Season {
       (context, season) => season.displayName(context),
       sort: false,
     );
+  }
+
+  static int Function(Season, Season) nameComparator(BuildContext context) {
+    return (lhs, rhs) => ignoreCaseAlphabeticalComparator(
+        lhs.displayName(context), rhs.displayName(context));
   }
 
   String displayName(BuildContext context) {
@@ -1086,6 +1096,12 @@ extension MoonPhases on MoonPhase {
     }
   }
 
+  static int Function(MoonPhase, MoonPhase) nameComparator(
+      BuildContext context) {
+    return (lhs, rhs) => ignoreCaseAlphabeticalComparator(
+        lhs.displayName(context), rhs.displayName(context));
+  }
+
   String displayName(BuildContext context) {
     switch (this) {
       case MoonPhase.moon_phase_all:
@@ -1235,6 +1251,45 @@ extension Directions on Direction {
     }
     throw ArgumentError("Invalid input: $this");
   }
+}
+
+extension Reports on Report {
+  String? displayName(BuildContext context) {
+    switch (type) {
+      case Report_Type.angler_summary:
+        return Strings.of(context).statsPageAnglerSummary;
+      case Report_Type.bait_summary:
+        return Strings.of(context).statsPageBaitSummary;
+      case Report_Type.body_of_water_summary:
+        return Strings.of(context).statsPageBodyOfWaterSummary;
+      case Report_Type.catch_summary:
+        return Strings.of(context).statsPageCatchSummary;
+      case Report_Type.fishing_spot_summary:
+        return Strings.of(context).statsPageFishingSpotSummary;
+      case Report_Type.method_summary:
+        return Strings.of(context).statsPageMethodSummary;
+      case Report_Type.moon_phase_summary:
+        return Strings.of(context).statsPageMoonPhaseSummary;
+      case Report_Type.period_summary:
+        return Strings.of(context).statsPagePeriodSummary;
+      case Report_Type.season_summary:
+        return Strings.of(context).statsPageSeasonSummary;
+      case Report_Type.species_summary:
+        return Strings.of(context).statsPageSpeciesSummary;
+      case Report_Type.tide_summary:
+        return Strings.of(context).statsPageTideSummary;
+      case Report_Type.water_clarity_summary:
+        return Strings.of(context).statsPageWaterClaritySummary;
+      case Report_Type.comparison:
+      case Report_Type.summary:
+        return null;
+    }
+
+    throw ArgumentError("Invalid report type: $type");
+  }
+
+  bool get isCustom =>
+      type == Report_Type.comparison || type == Report_Type.summary;
 }
 
 extension SkyConditions on SkyCondition {
@@ -1397,6 +1452,11 @@ extension TideTypes on TideType {
       (context, type) => type.displayName(context),
       sort: false,
     );
+  }
+
+  static int Function(TideType, TideType) nameComparator(BuildContext context) {
+    return (lhs, rhs) => ignoreCaseAlphabeticalComparator(
+        lhs.displayName(context), rhs.displayName(context));
   }
 
   String displayName(BuildContext context) {

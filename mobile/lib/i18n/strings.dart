@@ -543,9 +543,34 @@ class Strings {
 
   String get statsPageTitle => _string("statsPage_title");
 
-  String get statsPageReportOverview => _string("statsPage_reportOverview");
-
   String get statsPageNewReport => _string("statsPage_newReport");
+
+  String get statsPageSpeciesSummary => _string("statsPage_speciesSummary");
+
+  String get statsPageCatchSummary => _string("statsPage_catchSummary");
+
+  String get statsPageAnglerSummary => _string("statsPage_anglerSummary");
+
+  String get statsPageBaitSummary => _string("statsPage_baitSummary");
+
+  String get statsPageBodyOfWaterSummary =>
+      _string("statsPage_bodyOfWaterSummary");
+
+  String get statsPageFishingSpotSummary =>
+      _string("statsPage_fishingSpotSummary");
+
+  String get statsPageMethodSummary => _string("statsPage_methodSummary");
+
+  String get statsPageMoonPhaseSummary => _string("statsPage_moonPhaseSummary");
+
+  String get statsPagePeriodSummary => _string("statsPage_periodSummary");
+
+  String get statsPageSeasonSummary => _string("statsPage_seasonSummary");
+
+  String get statsPageTideSummary => _string("statsPage_tideSummary");
+
+  String get statsPageWaterClaritySummary =>
+      _string("statsPage_waterClaritySummary");
 
   String get reportViewNoCatches => _string("reportView_noCatches");
 
@@ -566,6 +591,24 @@ class Strings {
 
   String get reportSummaryPerBait => _string("reportSummary_perBait");
 
+  String get reportSummaryPerAngler => _string("reportSummary_perAngler");
+
+  String get reportSummaryPerBodyOfWater =>
+      _string("reportSummary_perBodyOfWater");
+
+  String get reportSummaryPerMethod => _string("reportSummary_perMethod");
+
+  String get reportSummaryPerMoonPhase => _string("reportSummary_perMoonPhase");
+
+  String get reportSummaryPerPeriod => _string("reportSummary_perPeriod");
+
+  String get reportSummaryPerSeason => _string("reportSummary_perSeason");
+
+  String get reportSummaryPerTideType => _string("reportSummary_perTideType");
+
+  String get reportSummaryPerWaterClarity =>
+      _string("reportSummary_perWaterClarity");
+
   String get reportSummarySinceLastCatch =>
       _string("reportSummary_sinceLastCatch");
 
@@ -576,27 +619,64 @@ class Strings {
 
   String get reportSummaryViewSpecies => _string("reportSummary_viewSpecies");
 
-  String get reportSummaryCatchesPerSpeciesDescription =>
-      _string("reportSummary_catchesPerSpeciesDescription");
+  String get reportSummaryPerSpeciesDescription =>
+      _string("reportSummary_perSpeciesDescription");
 
   String get reportSummaryViewFishingSpots =>
       _string("reportSummary_viewFishingSpots");
 
-  String get reportSummaryCatchesPerFishingSpotDescription =>
-      _string("reportSummary_catchesPerFishingSpotDescription");
+  String get reportSummaryPerFishingSpotDescription =>
+      _string("reportSummary_perFishingSpotDescription");
 
   String get reportSummaryViewBaits => _string("reportSummary_viewBaits");
 
-  String get reportSummaryCatchesPerBaitDescription =>
-      _string("reportSummary_catchesPerBaitDescription");
+  String get reportSummaryPerBaitDescription =>
+      _string("reportSummary_perBaitDescription");
+
+  String get reportSummaryViewMoonPhases =>
+      _string("reportSummary_viewMoonPhases");
+
+  String get reportSummaryPerMoonPhaseDescription =>
+      _string("reportSummary_perMoonPhaseDescription");
+
+  String get reportSummaryViewTides => _string("reportSummary_viewTides");
+
+  String get reportSummaryPerTideDescription =>
+      _string("reportSummary_perTideDescription");
+
+  String get reportSummaryViewAnglers => _string("reportSummary_viewAnglers");
+
+  String get reportSummaryPerAnglerDescription =>
+      _string("reportSummary_perAnglerDescription");
+
+  String get reportSummaryViewBodiesOfWater =>
+      _string("reportSummary_viewBodiesOfWater");
+
+  String get reportSummaryPerBodyOfWaterDescription =>
+      _string("reportSummary_perBodyOfWaterDescription");
+
+  String get reportSummaryViewMethods => _string("reportSummary_viewMethods");
+
+  String get reportSummaryPerMethodDescription =>
+      _string("reportSummary_perMethodDescription");
+
+  String get reportSummaryViewPeriods => _string("reportSummary_viewPeriods");
+
+  String get reportSummaryPerPeriodDescription =>
+      _string("reportSummary_perPeriodDescription");
+
+  String get reportSummaryViewSeasons => _string("reportSummary_viewSeasons");
+
+  String get reportSummaryPerSeasonDescription =>
+      _string("reportSummary_perSeasonDescription");
+
+  String get reportSummaryViewWaterClarities =>
+      _string("reportSummary_viewWaterClarities");
+
+  String get reportSummaryPerWaterClarityDescription =>
+      _string("reportSummary_perWaterClarityDescription");
 
   String get reportSummarySpeciesTitle => _string("reportSummary_speciesTitle");
-
-  String get reportSummaryBaitsPerSpeciesDescription =>
-      _string("reportSummary_baitsPerSpeciesDescription");
-
-  String get reportSummaryFishingSpotsPerSpeciesDescription =>
-      _string("reportSummary_fishingSpotsPerSpeciesDescription");
 
   String get morePageTitle => _string("morePage_title");
 

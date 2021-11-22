@@ -15,7 +15,7 @@ void main() {
 
   late MockEntityListener<Report> reportListener;
 
-  late ReportManager reportManager;
+  late CustomReportManager reportManager;
   late SpeciesManager speciesManager;
   late BaitManager baitManager;
   late FishingSpotManager fishingSpotManager;
@@ -51,7 +51,7 @@ void main() {
     reportListener = MockEntityListener<Report>();
     when(reportListener.onAdd).thenReturn((_) {});
 
-    reportManager = ReportManager(appManager.app);
+    reportManager = CustomReportManager(appManager.app);
     reportManager.addListener(reportListener);
   });
 

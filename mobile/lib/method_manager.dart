@@ -2,17 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'app_manager.dart';
-import 'catch_manager.dart';
+import 'catch_field_entity_manager.dart';
 import 'i18n/strings.dart';
 import 'model/gen/anglerslog.pb.dart';
-import 'named_entity_manager.dart';
 import 'utils/string_utils.dart';
 
-class MethodManager extends NamedEntityManager<Method> {
+class MethodManager extends CatchFieldEntityManager<Method> {
   static MethodManager of(BuildContext context) =>
       Provider.of<AppManager>(context, listen: false).methodManager;
-
-  CatchManager get _catchManager => appManager.catchManager;
 
   MethodManager(AppManager app) : super(app);
 
@@ -23,13 +20,13 @@ class MethodManager extends NamedEntityManager<Method> {
   Id id(Method entity) => entity.id;
 
   @override
+  List<Id> idFromCatch(Catch cat) => cat.methodIds;
+
+  @override
   String name(Method entity) => entity.name;
 
   @override
   String get tableName => "method";
-
-  int numberOfCatches(Id? methodId) => numberOf<Catch>(methodId,
-      _catchManager.list(), (cat) => cat.methodIds.contains(methodId));
 
   String deleteMessage(BuildContext context, Method method) {
     var numOfCatches = numberOfCatches(method.id);

@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:mobile/utils/atmosphere_utils.dart';
 import 'package:provider/provider.dart';
 
 import 'app_manager.dart';
 import 'model/gen/anglerslog.pb.dart';
 import 'preference_manager.dart';
+import 'utils/catch_utils.dart';
 
 class UserPreferenceManager extends PreferenceManager {
   static UserPreferenceManager of(BuildContext context) =>
@@ -157,4 +159,35 @@ class UserPreferenceManager extends PreferenceManager {
   /// Returns true if the user has been configured as pro. This will override
   /// any in-app purchase setting and can only be set in the Firebase console.
   bool get isPro => preferences[_keyIsPro] ?? false;
+
+  bool _isTrackingAtmosphereField(Id fieldId) =>
+      atmosphereFieldIds.isEmpty || atmosphereFieldIds.contains(fieldId);
+
+  bool get isTrackingMoonPhases =>
+      _isTrackingAtmosphereField(atmosphereFieldIdMoonPhase);
+
+  bool _isTrackingCatchField(Id fieldId) =>
+      catchFieldIds.isEmpty || catchFieldIds.contains(fieldId);
+
+  bool get isTrackingAnglers => _isTrackingCatchField(catchFieldIdAngler);
+
+  bool get isTrackingBaits => _isTrackingCatchField(catchFieldIdBait);
+
+  bool get isTrackingFishingSpots =>
+      _isTrackingCatchField(catchFieldIdFishingSpot);
+
+  bool get isTrackingImages => _isTrackingCatchField(catchFieldIdImages);
+
+  bool get isTrackingSpecies => _isTrackingCatchField(catchFieldIdSpecies);
+
+  bool get isTrackingMethods => _isTrackingCatchField(catchFieldIdMethods);
+
+  bool get isTrackingSeasons => _isTrackingCatchField(catchFieldIdSeason);
+
+  bool get isTrackingTides => _isTrackingCatchField(catchFieldIdTide);
+
+  bool get isTrackingPeriods => _isTrackingCatchField(catchFieldIdPeriod);
+
+  bool get isTrackingWaterClarities =>
+      _isTrackingCatchField(catchFieldIdWaterClarity);
 }

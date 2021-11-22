@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/utils/catch_utils.dart';
+import 'package:mobile/utils/collection_utils.dart';
 
 import '../bait_category_manager.dart';
 import '../bait_manager.dart';
@@ -109,15 +110,9 @@ class _BaitListPageState extends State<BaitListPage> {
         bait.variants,
         showHeader: false,
         isCondensed: true,
-        onCheckboxChanged: (variant, isChecked) {
-          setState(() {
-            if (isChecked) {
-              _selectedVariants.add(variant);
-            } else {
-              _selectedVariants.remove(variant);
-            }
-          });
-        },
+        onCheckboxChanged:
+            _pickerSettings.isMulti ? _onVariantCheckboxChanged : null,
+        onPicked: _pickerSettings.isMulti ? null : _onVariantPicked,
         selectedItems: _selectedVariants,
       );
     }
@@ -136,6 +131,21 @@ class _BaitListPageState extends State<BaitListPage> {
         trailing: MinChip(format(variantLabel, [bait.variants.length])),
       ),
     );
+  }
+
+  void _onVariantCheckboxChanged(BaitVariant variant, bool isChecked) {
+    setState(() {
+      if (isChecked) {
+        _selectedVariants.add(variant);
+      } else {
+        _selectedVariants.remove(variant);
+      }
+    });
+  }
+
+  void _onVariantPicked(BaitVariant variant) {
+    _pickerSettings.onPicked(context, {variant.toAttachment()});
+    Navigator.of(context).pop();
   }
 
   void _onPickedAll(bool isChecked) {
@@ -169,7 +179,10 @@ class _BaitListPageState extends State<BaitListPage> {
     // Note that BaitVariant picking is handled exclusively in this widget.
     var initialValues = <Bait>{};
     for (var attachment in _pickerSettings.initialValues) {
-      if (attachment.hasVariantId()) {
+      if (attachment.hasVariantId() &&
+          (_pickerSettings.isMulti ||
+              _selectedVariants.containsWhere<BaitVariant>(
+                  (e) => e.id == attachment.variantId))) {
         continue;
       }
 
@@ -180,11 +193,18 @@ class _BaitListPageState extends State<BaitListPage> {
     }
 
     return ManageableListPagePickerSettings<dynamic>(
+      // Invoked when a Bait is tapped, _not_ when a BaitVariant is tapped.
       onPicked: (context, items) {
-        var attachments = <BaitAttachment>{};
-        attachments.addAll(_noVariantBaits(items).map((e) => e.toAttachment()));
-        attachments.addAll(_selectedVariants.map((e) => e.toAttachment()));
-        return _pickerSettings.onPicked(context, attachments);
+        if (_pickerSettings.isMulti) {
+          var attachments = <BaitAttachment>{};
+          attachments
+              .addAll(_noVariantBaits(items).map((e) => e.toAttachment()));
+          attachments.addAll(_selectedVariants.map((e) => e.toAttachment()));
+          return _pickerSettings.onPicked(context, attachments);
+        } else {
+          return _pickerSettings
+              .onPicked(context, {(items.first as Bait).toAttachment()});
+        }
       },
       onPickedAll: (isChecked) => setState(() => _onPickedAll(isChecked)),
       containsAll: (selectedItems) {
@@ -200,6 +220,8 @@ class _BaitListPageState extends State<BaitListPage> {
       title: Text(Strings.of(context).pickerTitleBait),
       multiTitle: Text(Strings.of(context).pickerTitleBaits),
       initialValues: initialValues,
+      isRequired: _pickerSettings.isRequired,
+      isMulti: _pickerSettings.isMulti,
     );
   }
 
@@ -217,11 +239,22 @@ class _BaitListPageState extends State<BaitListPage> {
 class BaitListPagePickerSettings {
   final bool Function(BuildContext, Set<BaitAttachment>) onPicked;
   final Set<BaitAttachment> initialValues;
+  final bool isRequired;
+  final bool isMulti;
 
   BaitListPagePickerSettings({
     required this.onPicked,
     required this.initialValues,
+    this.isRequired = false,
+    this.isMulti = true,
   });
+
+  BaitListPagePickerSettings.fromManageableList(
+      ManageableListPagePickerSettings<BaitAttachment> settings)
+      : onPicked = settings.onPicked,
+        initialValues = settings.initialValues,
+        isRequired = settings.isRequired,
+        isMulti = settings.isMulti;
 }
 
 class BaitPickerInput extends StatelessWidget {

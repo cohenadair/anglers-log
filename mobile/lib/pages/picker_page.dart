@@ -184,7 +184,7 @@ class _PickerPageState<T> extends State<PickerPage<T>> {
           if (item.enabled) {
             if (item.onTap != null) {
               onTap = item.onTap;
-            } else if (item.popsOnPicked && !widget.multiSelect) {
+            } else if (item.isFinishedOnTap && !widget.multiSelect) {
               onTap = () => _listItemTapped(item);
             }
           }
@@ -258,12 +258,12 @@ class PickerPageItem<T> {
   final String? subtitle;
   final bool enabled;
 
-  /// True if the (single item) picker should be popped off the navigation stack
+  /// True if the (single item) picker should invoke the finishing callback
   /// when this item is tapped. Defaults to true.
-  final bool popsOnPicked;
+  final bool isFinishedOnTap;
 
   /// A custom on tapped event for the [PickerPageItem]. If this value is
-  /// non-null, [popsOnPicked] is ignored.
+  /// non-null, [isFinishedOnTap] is ignored.
   final VoidCallback? onTap;
 
   final IconData? noteIcon;
@@ -281,7 +281,7 @@ class PickerPageItem<T> {
       : title = null,
         subtitle = null,
         enabled = false,
-        popsOnPicked = false,
+        isFinishedOnTap = false,
         onTap = null,
         isMultiNone = false,
         noteIcon = null,
@@ -293,7 +293,7 @@ class PickerPageItem<T> {
   PickerPageItem.heading(this.title)
       : subtitle = null,
         enabled = false,
-        popsOnPicked = false,
+        isFinishedOnTap = false,
         onTap = null,
         isMultiNone = false,
         noteIcon = null,
@@ -310,7 +310,7 @@ class PickerPageItem<T> {
     this.noteIcon,
   })  : subtitle = null,
         enabled = false,
-        popsOnPicked = false,
+        isFinishedOnTap = false,
         onTap = null,
         isMultiNone = false,
         _value = null,
@@ -323,7 +323,7 @@ class PickerPageItem<T> {
     this.subtitle,
     required T value,
     this.enabled = true,
-    this.popsOnPicked = true,
+    this.isFinishedOnTap = true,
     this.onTap,
     this.isMultiNone = false,
   })  : noteIcon = null,

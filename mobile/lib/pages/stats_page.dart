@@ -1,38 +1,36 @@
-import 'package:collection/collection.dart' show IterableExtension;
 import 'package:flutter/material.dart';
+import 'package:mobile/angler_manager.dart';
+import 'package:mobile/bait_manager.dart';
+import 'package:mobile/body_of_water_manager.dart';
+import 'package:mobile/fishing_spot_manager.dart';
+import 'package:mobile/method_manager.dart';
+import 'package:mobile/pages/fishing_spot_list_page.dart';
+import 'package:mobile/pages/method_list_page.dart';
+import 'package:mobile/pages/water_clarity_list_page.dart';
+import 'package:mobile/utils/collection_utils.dart';
+import 'package:mobile/utils/protobuf_utils.dart';
+import 'package:mobile/water_clarity_manager.dart';
+import 'package:mobile/widgets/catch_summary.dart';
 import 'package:quiver/strings.dart';
 
-import '../bait_manager.dart';
-import '../catch_manager.dart';
 import '../entity_manager.dart';
-import '../fishing_spot_manager.dart';
 import '../i18n/strings.dart';
 import '../log.dart';
-import '../model/calculated_report.dart';
 import '../model/gen/anglerslog.pb.dart';
-import '../model/overview_report.dart';
 import '../pages/report_list_page.dart';
 import '../report_manager.dart';
 import '../res/dimen.dart';
 import '../res/gen/custom_icons.dart';
-import '../res/style.dart';
 import '../species_manager.dart';
 import '../user_preference_manager.dart';
-import '../utils/date_time_utils.dart';
 import '../utils/page_utils.dart';
-import '../utils/protobuf_utils.dart';
-import '../utils/string_utils.dart';
-import '../widgets/chart.dart';
-import '../widgets/date_range_picker_input.dart';
 import '../widgets/empty_list_placeholder.dart';
-import '../widgets/fishing_spot_map.dart';
-import '../widgets/list_item.dart';
-import '../widgets/list_picker_input.dart';
 import '../widgets/widget.dart';
-import 'bait_page.dart';
-import 'bait_variant_page.dart';
-import 'catch_list_page.dart';
+import 'angler_list_page.dart';
+import 'bait_list_page.dart';
+import 'body_of_water_list_page.dart';
 import 'manageable_list_page.dart';
+import 'picker_page.dart';
 import 'species_list_page.dart';
 
 class StatsPage extends StatefulWidget {
@@ -43,65 +41,47 @@ class StatsPage extends StatefulWidget {
 class _StatsPageState extends State<StatsPage> {
   static const _log = Log("StatsPage");
 
-  final List<CalculatedReport> _models = [];
-
-  /// The currently selected date range for viewing an [OverviewReport].
-  var _currentOverviewDateRange = DateRange(period: DateRange_Period.allDates);
-
   /// The currently selected report from the app bar dropdown menu.
-  dynamic _currentReport;
-
-  // TODO: Figure something out so this isn't nullable.
-  /// The currently selected species in the species summary.
-  Species? _currentSpecies;
-
-  BaitManager get _baitManager => BaitManager.of(context);
-
-  CatchManager get _catchManager => CatchManager.of(context);
+  late Report _report;
 
   ReportManager get _reportManager => ReportManager.of(context);
 
+  AnglerManager get _anglerManager => AnglerManager.of(context);
+
+  BaitManager get _baitManager => BaitManager.of(context);
+
+  BodyOfWaterManager get _bodyOfWaterManager => BodyOfWaterManager.of(context);
+
   FishingSpotManager get _fishingSpotManager => FishingSpotManager.of(context);
+
+  MethodManager get _methodManager => MethodManager.of(context);
 
   SpeciesManager get _speciesManager => SpeciesManager.of(context);
 
   UserPreferenceManager get _userPreferencesManager =>
       UserPreferenceManager.of(context);
 
-  bool get _isComparing => _models.length > 1;
-
-  bool get _hasCatches => _meets((model) => model.totalCatches > 0);
-
-  bool get _hasCatchesPerFishingSpot =>
-      _meets((model) => model.catchesPerFishingSpot.isNotEmpty);
-
-  bool get _hasCatchesPerBait =>
-      _meets((model) => model.catchesPerBait.isNotEmpty);
-
-  bool get _hasBaitsPerSpecies =>
-      _meets((model) => model.baitsPerSpecies(_currentSpecies).isNotEmpty);
-
-  bool get _hasFishingSpotsPerSpecies => _meets(
-      (model) => model.fishingSpotsPerSpecies(_currentSpecies).isNotEmpty);
+  WaterClarityManager get _waterClarityManager =>
+      WaterClarityManager.of(context);
 
   @override
   void initState() {
     super.initState();
-    _updateCurrentReport(_userPreferencesManager.selectedReportId);
+
+    // Set a default.
+    _report = _reportManager.defaultReport;
+
+    // Load previously selected report.
+    _updateCurrentReport(
+        _userPreferencesManager.selectedReportId ?? _report.id);
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: EntityListenerBuilder(
-        managers: [
-          _catchManager,
-          _baitManager,
-          _fishingSpotManager,
-          _reportManager,
-          _speciesManager,
-        ],
-        onAnyChange: () => _updateCurrentReport(_currentReport.id),
+        managers: [_reportManager],
+        onAnyChange: () => _updateCurrentReport(_report.id),
         builder: (context) {
           return CustomScrollView(
             slivers: [
@@ -127,14 +107,12 @@ class _StatsPageState extends State<StatsPage> {
           ReportListPage(
             pickerSettings: ManageableListPagePickerSettings<dynamic>.single(
               onPicked: (context, report) {
-                if (report != _currentReport) {
-                  setState(() {
-                    _updateCurrentReport(report.id);
-                  });
+                if (report != _report) {
+                  setState(() => _updateCurrentReport(report.id));
                 }
                 return true;
               },
-              initialValue: _currentReport,
+              initialValue: _report,
             ),
           ),
         );
@@ -144,11 +122,7 @@ class _StatsPageState extends State<StatsPage> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(
-              _currentReport is OverviewReport
-                  ? _currentReport.title(context)
-                  : _currentReport.name,
-            ),
+            Text(_reportManager.displayName(context, _report)),
             DropdownIcon(),
           ],
         ),
@@ -158,20 +132,11 @@ class _StatsPageState extends State<StatsPage> {
 
   Widget _buildHeader() {
     Widget child = Empty();
-    if (_currentReport is OverviewReport) {
-      child = DateRangePickerInput(
-        initialDateRange: _currentOverviewDateRange,
-        onPicked: (dateRange) => setState(() {
-          _currentOverviewDateRange = dateRange;
-          _updateCurrentReport(_currentReport.id);
-        }),
-      );
-    } else if (_currentReport is Report &&
-        isNotEmpty(_currentReport.description)) {
+    if (isNotEmpty(_report.description)) {
       child = Padding(
         padding: insetsDefault,
         child: Text(
-          _currentReport.description!,
+          _report.description,
           overflow: TextOverflow.visible,
         ),
       );
@@ -189,36 +154,10 @@ class _StatsPageState extends State<StatsPage> {
   }
 
   Widget _buildContent() {
-    // Do not load widgets unless there are catches in the current report.
-    var children = <Widget>[];
-    if (_hasCatches) {
-      children = [
-        Padding(
-          padding: insetsDefault,
-          child: Text(
-            Strings.of(context).reportSummaryCatchTitle,
-            style: styleListHeading(context),
-          ),
-        ),
-        _buildViewCatches(),
-        _buildSinceLastCatch(),
-        _buildCatchesPerSpecies(),
-        _buildCatchesPerFishingSpot(),
-        _buildCatchesPerBait(),
-        HeadingDivider(Strings.of(context).reportSummarySpeciesTitle),
-        const VerticalSpace(paddingWidget),
-        _buildSpeciesPicker(),
-        _buildViewCatchesPerSpecies(),
-        _buildFishingSpotsPerSpecies(),
-        _buildBaitsPerSpecies(),
-      ];
-    }
-
+    Widget? child = _buildReport();
     return SliverVisibility(
-      visible: _hasCatches,
-      sliver: SliverList(
-        delegate: SliverChildListDelegate(children),
-      ),
+      visible: child != null,
+      sliver: SliverToBoxAdapter(child: child ?? Empty()),
       replacementSliver: SliverFillRemaining(
         fillOverscroll: true,
         hasScrollBody: false,
@@ -226,7 +165,7 @@ class _StatsPageState extends State<StatsPage> {
           child: EmptyListPlaceholder.static(
             icon: CustomIcons.catches,
             title: Strings.of(context).reportViewNoCatches,
-            description: _currentReport is OverviewReport
+            description: _report.type == Report_Type.catch_summary
                 ? Strings.of(context).reportViewNoCatchesDescription
                 : Strings.of(context).reportViewNoCatchesReportDescription,
           ),
@@ -235,332 +174,335 @@ class _StatsPageState extends State<StatsPage> {
     );
   }
 
-  Widget _buildCatchesPerSpecies() {
-    return ExpandableChart<Species>(
-      title: Strings.of(context).reportSummaryPerSpecies,
-      viewAllTitle: Strings.of(context).reportSummaryViewSpecies,
-      viewAllDescription:
-          Strings.of(context).reportSummaryCatchesPerSpeciesDescription,
-      filters: _filters(includeDateRange: !_isComparing),
-      labelBuilder: (species) => species.name,
-      series: _models
-          .map((model) =>
-              Series<Species>(model.catchesPerSpecies, model.dateRange))
-          .toList(),
-      rowDetailsPage: (species, dateRange) => CatchListPage(
-        enableAdding: false,
-        dateRange: dateRange,
-        baits: _models.first.baits,
-        fishingSpotIds: _models.first.fishingSpotIds,
-        speciesIds: {species.id},
-      ),
-    );
-  }
-
-  Widget _buildCatchesPerFishingSpot() {
-    if (!_hasCatchesPerFishingSpot) {
-      return Empty();
+  Widget? _buildReport() {
+    var report = _reportManager.entity(_report.id);
+    if (report == null) {
+      _log.w("Report ${_report.id} not found");
+      return null;
     }
 
-    return ExpandableChart<FishingSpot>(
-      title: Strings.of(context).reportSummaryPerFishingSpot,
-      viewAllTitle: Strings.of(context).reportSummaryViewFishingSpots,
-      viewAllDescription:
-          Strings.of(context).reportSummaryCatchesPerFishingSpotDescription,
-      filters: _filters(includeDateRange: !_isComparing),
-      labelBuilder: (fishingSpot) =>
-          _fishingSpotManager.displayName(context, fishingSpot),
-      series: _models
-          .map((model) =>
-              Series<FishingSpot>(model.catchesPerFishingSpot, model.dateRange))
-          .toList(),
-      rowDetailsPage: (fishingSpot, dateRange) => CatchListPage(
-        enableAdding: false,
-        dateRange: dateRange,
-        baits: _models.first.baits,
-        fishingSpotIds: {fishingSpot.id},
-        speciesIds: _models.first.speciesIds,
-      ),
-    );
-  }
-
-  Widget _buildCatchesPerBait() {
-    if (!_hasCatchesPerBait) {
-      return Empty();
-    }
-
-    return ExpandableChart<BaitAttachment>(
-      title: Strings.of(context).reportSummaryPerBait,
-      viewAllTitle: Strings.of(context).reportSummaryViewBaits,
-      viewAllDescription:
-          Strings.of(context).reportSummaryCatchesPerBaitDescription,
-      filters: _filters(includeDateRange: !_isComparing),
-      labelBuilder: _attachmentDisplayValue,
-      series: _models
-          .map((model) =>
-              Series<BaitAttachment>(model.catchesPerBait, model.dateRange))
-          .toList(),
-      rowDetailsPage: (baitAttachment, dateRange) => CatchListPage(
-        enableAdding: false,
-        dateRange: dateRange,
-        baits: {baitAttachment},
-        fishingSpotIds: _models.first.fishingSpotIds,
-        speciesIds: _models.first.speciesIds,
-      ),
-    );
-  }
-
-  Widget _buildSinceLastCatch() {
-    if (!_hasCatches || _isComparing || !_models.first.containsNow) {
-      return Empty();
-    }
-
-    return ListItem(
-      title: Text(Strings.of(context).reportSummarySinceLastCatch),
-      trailing: Text(
-        formatDuration(
-          context: context,
-          millisecondsDuration: _models.first.msSinceLastCatch,
-          includesSeconds: false,
-          condensed: true,
-        ),
-        style: styleSecondary(context),
-      ),
-    );
-  }
-
-  Widget _buildSpeciesPicker() {
-    return ListPickerInput(
-      value: _currentSpecies!.name,
-      onTap: () {
-        push(
-          context,
-          SpeciesListPage(
-            pickerSettings: ManageableListPagePickerSettings<Species>.single(
-              onPicked: (context, species) {
-                setState(() => _currentSpecies = species);
-                return true;
-              },
-              isRequired: true,
-              initialValue: _currentSpecies,
-            ),
+    switch (report.type) {
+      case Report_Type.summary:
+        return CatchSummary<Catch>.static(
+          report: _createCustomReport(report, [report.fromDateRange]),
+        );
+      case Report_Type.comparison:
+        return CatchSummary<Catch>.static(
+          report: _createCustomReport(
+            report,
+            [report.fromDateRange, report.toDateRange],
+            includeZeros: true,
           ),
         );
-      },
-    );
-  }
-
-  Widget _buildBaitsPerSpecies() {
-    if (!_hasBaitsPerSpecies) {
-      return Empty();
-    }
-
-    return ExpandableChart<BaitAttachment>(
-      title: Strings.of(context).reportSummaryPerBait,
-      viewAllTitle: Strings.of(context).reportSummaryViewBaits,
-      viewAllDescription:
-          Strings.of(context).reportSummaryBaitsPerSpeciesDescription,
-      filters: _filters(
-        includeSpecies: false,
-        includeDateRange: !_isComparing,
-      )..add(_currentSpecies!.name),
-      labelBuilder: _attachmentDisplayValue,
-      series: _models
-          .map((model) => Series<BaitAttachment>(
-              model.baitsPerSpecies(_currentSpecies), model.dateRange))
-          .toList(),
-      rowDetailsPage: (attachment, _) {
-        assert(_baitManager.entityExists(attachment.baitId),
-            "Cannot create a chart with a Bait that doesn't exist");
-
-        var bait = _baitManager.entity(attachment.baitId)!;
-
-        if (attachment.hasVariantId()) {
-          var variant = _baitManager.variant(bait, attachment.variantId);
-          if (variant != null) {
-            return BaitVariantPage(variant);
-          }
-        }
-
-        return BaitPage(bait, static: true);
-      },
-    );
-  }
-
-  Widget _buildFishingSpotsPerSpecies() {
-    if (!_hasFishingSpotsPerSpecies) {
-      return Empty();
-    }
-
-    return ExpandableChart<FishingSpot>(
-      title: Strings.of(context).reportSummaryPerFishingSpot,
-      viewAllTitle: Strings.of(context).reportSummaryViewFishingSpots,
-      viewAllDescription:
-          Strings.of(context).reportSummaryFishingSpotsPerSpeciesDescription,
-      filters: _filters(
-        includeSpecies: false,
-        includeDateRange: !_isComparing,
-      )..add(_currentSpecies!.name),
-      labelBuilder: (fishingSpot) =>
-          _fishingSpotManager.displayName(context, fishingSpot),
-      series: _models
-          .map((model) => Series<FishingSpot>(
-              model.fishingSpotsPerSpecies(_currentSpecies), model.dateRange))
-          .toList(),
-      rowDetailsPage: (fishingSpot, _) => FishingSpotMap.selected(fishingSpot),
-    );
-  }
-
-  Widget _buildViewCatches() {
-    return Column(
-      children: _models
-          .map((model) =>
-              _buildViewCatchesRow(model.allCatchIds, model.dateRange))
-          .toList(),
-    );
-  }
-
-  Widget _buildViewCatchesPerSpecies() {
-    return Column(
-      children: _models.map((model) {
-        var catchIds = <Id>{};
-        if (_currentSpecies != null &&
-            model.catchIdsPerSpecies[_currentSpecies!] != null) {
-          catchIds = model.catchIdsPerSpecies[_currentSpecies!]!;
-        }
-        return _buildViewCatchesRow(
-          catchIds,
-          model.dateRange,
+      case Report_Type.catch_summary:
+        return CatchSummary<Catch>(
+          reportBuilder: (dateRange, _) => CatchSummaryReport<Catch>(
+            context: context,
+          ),
         );
-      }).toList(),
+      case Report_Type.species_summary:
+        return _buildSpeciesSummary();
+      case Report_Type.angler_summary:
+        return _buildAnglerSummary();
+      case Report_Type.bait_summary:
+        return _buildBaitSummary();
+      case Report_Type.body_of_water_summary:
+        return _buildBodyOfWaterSummary();
+      case Report_Type.fishing_spot_summary:
+        return _buildFishingSpotSummary();
+      case Report_Type.method_summary:
+        return _buildMethodSummary();
+      case Report_Type.moon_phase_summary:
+        return _buildMoonPhaseSummary();
+      case Report_Type.period_summary:
+        return _buildPeriodSummary();
+      case Report_Type.season_summary:
+        return _buildSeasonSummary();
+      case Report_Type.tide_summary:
+        return _buildTideSummary();
+      case Report_Type.water_clarity_summary:
+        return _buildWaterClaritySummary();
+    }
+  }
+
+  Widget? _buildSpeciesSummary() {
+    if (!_speciesManager.hasEntities ||
+        !_userPreferencesManager.isTrackingSpecies) {
+      return null;
+    }
+
+    return CatchSummary<Species>(
+      reportBuilder: (dateRange, species) => CatchSummaryReport<Species>(
+        context: context,
+        ranges: [dateRange],
+        speciesIds: singleSet<Id>(species?.id),
+      ),
+      picker: CatchSummaryPicker<Species>(
+        initialValue: _speciesManager.list().first,
+        pickerBuilder: (settings) => SpeciesListPage(pickerSettings: settings),
+        nameBuilder: (context, species) =>
+            _speciesManager.displayName(context, species),
+      ),
     );
   }
 
-  Widget _buildViewCatchesRow(Set<Id> catchIds, DateRange dateRange) {
-    if (catchIds.isEmpty) {
-      return ListItem(
-        title: Text(Strings.of(context).reportSummaryNumberOfCatches),
-        subtitle: Text(dateRange.displayName(context)),
-        trailing: Text("0", style: styleSecondary(context)),
-      );
+  Widget? _buildAnglerSummary() {
+    if (!_anglerManager.hasEntities ||
+        !_userPreferencesManager.isTrackingAnglers) {
+      return null;
     }
 
-    return ListItem(
-      title: Text(format(
-          Strings.of(context).reportSummaryViewCatches, [catchIds.length])),
-      subtitle: Text(dateRange.displayName(context)),
-      onTap: () => push(
-        context,
-        CatchListPage(
-          enableAdding: false,
-          catchIds: catchIds,
-        ),
+    return CatchSummary<Angler>(
+      reportBuilder: (dateRange, angler) => CatchSummaryReport<Angler>(
+        context: context,
+        ranges: [dateRange],
+        anglerIds: singleSet<Id>(angler?.id),
       ),
-      trailing: RightChevronIcon(),
+      picker: CatchSummaryPicker<Angler>(
+        initialValue: _anglerManager.list().first,
+        pickerBuilder: (settings) => AnglerListPage(pickerSettings: settings),
+        nameBuilder: (context, species) =>
+            _anglerManager.displayName(context, species),
+      ),
+    );
+  }
+
+  Widget? _buildBaitSummary() {
+    if (!_baitManager.hasEntities || !_userPreferencesManager.isTrackingBaits) {
+      return null;
+    }
+
+    return CatchSummary<BaitAttachment>(
+      reportBuilder: (range, attachment) => CatchSummaryReport<BaitAttachment>(
+        context: context,
+        ranges: [range],
+        baits: singleSet<BaitAttachment>(attachment),
+      ),
+      picker: CatchSummaryPicker<BaitAttachment>(
+        initialValue: _baitManager.list().first.toAttachment(),
+        pickerBuilder: (settings) => BaitListPage(
+          pickerSettings:
+              BaitListPagePickerSettings.fromManageableList(settings),
+        ),
+        // The fact that this is called at all means the attachment exists
+        // and attachmentDisplayValue will return a non-null value.
+        nameBuilder: (context, attachment) =>
+            _baitManager.attachmentDisplayValue(attachment, context)!,
+      ),
+    );
+  }
+
+  Widget? _buildBodyOfWaterSummary() {
+    if (!_bodyOfWaterManager.hasEntities) {
+      return null;
+    }
+
+    return CatchSummary<BodyOfWater>(
+      reportBuilder: (dateRange, bodyOfWater) =>
+          CatchSummaryReport<BodyOfWater>(
+        context: context,
+        ranges: [dateRange],
+        bodyOfWaterIds: singleSet<Id>(bodyOfWater?.id),
+      ),
+      picker: CatchSummaryPicker<BodyOfWater>(
+        initialValue: _bodyOfWaterManager.list().first,
+        pickerBuilder: (settings) =>
+            BodyOfWaterListPage(pickerSettings: settings),
+        nameBuilder: (context, bodyOfWater) =>
+            _bodyOfWaterManager.displayName(context, bodyOfWater),
+      ),
+    );
+  }
+
+  Widget? _buildFishingSpotSummary() {
+    if (!_fishingSpotManager.hasEntities ||
+        !_userPreferencesManager.isTrackingFishingSpots) {
+      return null;
+    }
+
+    return CatchSummary<FishingSpot>(
+      reportBuilder: (dateRange, fishingSpot) =>
+          CatchSummaryReport<FishingSpot>(
+        context: context,
+        ranges: [dateRange],
+        fishingSpotIds: singleSet<Id>(fishingSpot?.id),
+      ),
+      picker: CatchSummaryPicker<FishingSpot>(
+        initialValue: _fishingSpotManager.list().first,
+        pickerBuilder: (settings) => FishingSpotListPage(
+            pickerSettings:
+                FishingSpotListPagePickerSettings.fromManageableList(settings)),
+        nameBuilder: (context, fishingSpot) =>
+            _fishingSpotManager.displayName(context, fishingSpot),
+      ),
+    );
+  }
+
+  Widget? _buildMethodSummary() {
+    if (!_methodManager.hasEntities ||
+        !_userPreferencesManager.isTrackingMethods) {
+      return null;
+    }
+
+    return CatchSummary<Method>(
+      reportBuilder: (dateRange, method) => CatchSummaryReport<Method>(
+        context: context,
+        ranges: [dateRange],
+        methodIds: singleSet<Id>(method?.id),
+      ),
+      picker: CatchSummaryPicker<Method>(
+        initialValue: _methodManager.list().first,
+        pickerBuilder: (settings) => MethodListPage(pickerSettings: settings),
+        nameBuilder: (context, method) =>
+            _methodManager.displayName(context, method),
+      ),
+    );
+  }
+
+  Widget? _buildMoonPhaseSummary() {
+    if (!_userPreferencesManager.isTrackingMoonPhases) {
+      return null;
+    }
+
+    return CatchSummary<MoonPhase>(
+      reportBuilder: (dateRange, moonPhase) => CatchSummaryReport<MoonPhase>(
+        context: context,
+        ranges: [dateRange],
+        moonPhases: singleSet<MoonPhase>(moonPhase),
+      ),
+      picker: CatchSummaryPicker<MoonPhase>(
+        initialValue: MoonPhases.selectable().first,
+        pickerBuilder: (settings) => _buildEnumPickerPage(
+          settings,
+          Strings.of(context).pickerTitleMoonPhase,
+          MoonPhases.pickerItems(context),
+        ),
+        nameBuilder: (context, moonPhase) => moonPhase.displayName(context),
+      ),
+    );
+  }
+
+  Widget? _buildPeriodSummary() {
+    if (!_userPreferencesManager.isTrackingPeriods) {
+      return null;
+    }
+
+    return CatchSummary<Period>(
+      reportBuilder: (dateRange, period) => CatchSummaryReport<Period>(
+        context: context,
+        ranges: [dateRange],
+        periods: singleSet<Period>(period),
+      ),
+      picker: CatchSummaryPicker<Period>(
+        initialValue: Periods.selectable().first,
+        pickerBuilder: (settings) => _buildEnumPickerPage(
+          settings,
+          Strings.of(context).pickerTitleTimeOfDay,
+          Periods.pickerItems(context),
+        ),
+        nameBuilder: (context, period) => period.displayName(context),
+      ),
+    );
+  }
+
+  Widget? _buildSeasonSummary() {
+    if (!_userPreferencesManager.isTrackingSeasons) {
+      return null;
+    }
+
+    return CatchSummary<Season>(
+      reportBuilder: (dateRange, season) => CatchSummaryReport<Season>(
+        context: context,
+        ranges: [dateRange],
+        seasons: singleSet<Season>(season),
+      ),
+      picker: CatchSummaryPicker<Season>(
+        initialValue: Seasons.selectable().first,
+        pickerBuilder: (settings) => _buildEnumPickerPage(
+          settings,
+          Strings.of(context).pickerTitleSeason,
+          Seasons.pickerItems(context),
+        ),
+        nameBuilder: (context, season) => season.displayName(context),
+      ),
+    );
+  }
+
+  Widget? _buildTideSummary() {
+    if (!_userPreferencesManager.isTrackingTides) {
+      return null;
+    }
+
+    return CatchSummary<TideType>(
+      reportBuilder: (dateRange, tide) => CatchSummaryReport<TideType>(
+        context: context,
+        ranges: [dateRange],
+        tideTypes: singleSet<TideType>(tide),
+      ),
+      picker: CatchSummaryPicker<TideType>(
+        initialValue: TideTypes.selectable().first,
+        pickerBuilder: (settings) => _buildEnumPickerPage(
+          settings,
+          Strings.of(context).pickerTitleTide,
+          TideTypes.pickerItems(context),
+        ),
+        nameBuilder: (context, tide) => tide.displayName(context),
+      ),
+    );
+  }
+
+  Widget? _buildWaterClaritySummary() {
+    if (!_waterClarityManager.hasEntities ||
+        !_userPreferencesManager.isTrackingWaterClarities) {
+      return null;
+    }
+
+    return CatchSummary<WaterClarity>(
+      reportBuilder: (dateRange, clarity) => CatchSummaryReport<WaterClarity>(
+        context: context,
+        ranges: [dateRange],
+        waterClarityIds: singleSet<Id>(clarity?.id),
+      ),
+      picker: CatchSummaryPicker<WaterClarity>(
+        initialValue: _waterClarityManager.list().first,
+        pickerBuilder: (settings) =>
+            WaterClarityListPage(pickerSettings: settings),
+        nameBuilder: (context, clarity) =>
+            _waterClarityManager.displayName(context, clarity),
+      ),
+    );
+  }
+
+  Widget _buildEnumPickerPage<T>(ManageableListPagePickerSettings<T> settings,
+      String title, List<PickerPageItem<T>> pickerItems) {
+    return PickerPage<T>.single(
+      title: Text(title),
+      initialValue: settings.initialValues.first,
+      itemBuilder: () => pickerItems,
+      onFinishedPicking: (context, pickedItem) {
+        settings.onPicked(context, {pickedItem});
+        Navigator.of(context).pop();
+      },
     );
   }
 
   void _updateCurrentReport(Id? newReportId) {
-    // If the current report no longer exists, show an overview.
-    if (!_reportManager.entityExists(newReportId)) {
-      _currentReport = OverviewReport();
-    } else {
-      // Always retrieve the latest report from the database. If the report was
-      // edited, we'll need the latest data.
-      _currentReport = _reportManager.entity(newReportId);
-    }
-
-    _userPreferencesManager.setSelectedReportId(_currentReport.id);
-    _models.clear();
-
-    if (_currentReport is OverviewReport) {
-      _models.add(_createOverviewModel());
-    } else if (_currentReport is Report) {
-      _models.addAll(_currentReport.type == Report_Type.comparison
-          ? _createComparisonModels()
-          : _createSummaryModel());
-    } else {
-      _log.w("Invalid report type: ${_currentReport.runtimeType}");
-    }
-
-    if (_currentSpecies == null) {
-      // By default, show the species with the most catches.
-      Id? maxId;
-      var maxValue = 0;
-      for (var model in _models) {
-        for (var entry in model.catchesPerSpecies.entries) {
-          if (entry.value >= maxValue) {
-            maxId = entry.key.id;
-            maxValue = entry.value;
-          }
-        }
-      }
-
-      if (maxId != null) {
-        _currentSpecies = _speciesManager.entity(maxId);
-      }
-    } else {
-      // Get updated species from the database.
-      _currentSpecies = _speciesManager.entity(_currentSpecies!.id);
-    }
+    _report =
+        _reportManager.entity(newReportId) ?? _reportManager.defaultReport;
+    _userPreferencesManager.setSelectedReportId(_report.id);
   }
 
-  CalculatedReport _createOverviewModel() {
-    return CalculatedReport(
-      context: context,
-      range: _currentOverviewDateRange,
-    );
-  }
-
-  List<CalculatedReport> _createSummaryModel() {
-    var report = _reportManager.entity(_currentReport.id)!;
-
-    return [
-      _createReportModel(
-        context,
-        report,
-        report.fromDateRange,
-        sortOrder: CalculatedReportSortOrder.largestToSmallest,
-      )
-    ];
-  }
-
-  List<CalculatedReport> _createComparisonModels() {
-    var report = _reportManager.entity(_currentReport.id)!;
-
-    var fromModel = _createReportModel(
-      context,
-      report,
-      report.fromDateRange,
-      includeZeros: true,
-    );
-    var toModel = _createReportModel(
-      context,
-      report,
-      report.toDateRange,
-      includeZeros: true,
-    );
-    fromModel.removeZerosComparedTo(toModel);
-
-    return [
-      fromModel,
-      toModel,
-    ];
-  }
-
-  CalculatedReport _createReportModel(
-    BuildContext context,
+  CatchSummaryReport<Catch> _createCustomReport(
     Report report,
-    DateRange dateRange, {
+    Iterable<DateRange> dateRanges, {
     bool includeZeros = false,
-    CalculatedReportSortOrder sortOrder =
-        CalculatedReportSortOrder.alphabetical,
+    CatchSummarySortOrder sortOrder = CatchSummarySortOrder.alphabetical,
   }) {
-    return CalculatedReport(
+    return CatchSummaryReport(
       context: context,
       includeZeros: includeZeros,
       sortOrder: sortOrder,
-      range: dateRange,
+      ranges: dateRanges,
       isCatchAndReleaseOnly: report.isCatchAndReleaseOnly,
       isFavoritesOnly: report.isFavoritesOnly,
       anglerIds: report.anglerIds.toSet(),
@@ -595,30 +537,5 @@ class _StatsPageState extends State<StatsPage> {
       windSpeedFilter:
           report.hasWindSpeedFilter() ? report.windSpeedFilter : null,
     );
-  }
-
-  Set<String> _filters({
-    bool includeSpecies = true,
-    bool includeDateRange = true,
-  }) {
-    return _models.fold<Set<String>>({}, (previousValue, model) {
-      return previousValue
-        ..addAll(
-          model.filters(
-            includeSpecies: includeSpecies,
-            includeDateRange: includeDateRange,
-          ),
-        );
-    });
-  }
-
-  bool _meets(bool Function(CalculatedReport model) condition) {
-    return _models.firstWhereOrNull((model) => condition(model)) != null;
-  }
-
-  String _attachmentDisplayValue(BaitAttachment attachment) {
-    var value = _baitManager.attachmentDisplayValue(attachment, context);
-    assert(isNotEmpty(value), "Cannot display a bait that doesn't exist");
-    return value!;
   }
 }
