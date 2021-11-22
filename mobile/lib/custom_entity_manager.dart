@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:mobile/named_entity_manager.dart';
 import 'package:provider/provider.dart';
 
 import 'app_manager.dart';
-import 'catch_field_entity_manager.dart';
 import 'model/gen/anglerslog.pb.dart';
 import 'utils/protobuf_utils.dart';
 import 'utils/string_utils.dart';
 
-class CustomEntityManager extends CatchFieldEntityManager<CustomEntity> {
+class CustomEntityManager extends NamedEntityManager<CustomEntity> {
   static CustomEntityManager of(BuildContext context) =>
       Provider.of<AppManager>(context, listen: false).customEntityManager;
 
@@ -19,10 +19,6 @@ class CustomEntityManager extends CatchFieldEntityManager<CustomEntity> {
 
   @override
   Id id(CustomEntity entity) => entity.id;
-
-  @override
-  List<Id> idFromCatch(Catch cat) => cat.customEntityValues
-      .fold<List<Id>>([], (prev, value) => prev..add(value.customEntityId));
 
   @override
   String name(CustomEntity entity) => entity.name;

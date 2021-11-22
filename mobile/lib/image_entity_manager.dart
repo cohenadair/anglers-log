@@ -3,11 +3,11 @@ import 'dart:io';
 import 'package:protobuf/protobuf.dart';
 
 import 'app_manager.dart';
-import 'catch_field_entity_manager.dart';
 import 'image_manager.dart';
+import 'named_entity_manager.dart';
 
 abstract class ImageEntityManager<T extends GeneratedMessage>
-    extends CatchFieldEntityManager<T> {
+    extends NamedEntityManager<T> {
   void setImageName(T entity, String imageName);
 
   void clearImageName(T entity);

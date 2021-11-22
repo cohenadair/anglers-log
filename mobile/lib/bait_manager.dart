@@ -39,10 +39,6 @@ class BaitManager extends ImageEntityManager<Bait> {
   Id id(Bait entity) => entity.id;
 
   @override
-  List<Id> idFromCatch(Catch cat) => cat.baits
-      .fold<List<Id>>([], (prev, attachment) => prev..add(attachment.baitId));
-
-  @override
   String name(Bait entity) => entity.name;
 
   @override
@@ -117,6 +113,12 @@ class BaitManager extends ImageEntityManager<Bait> {
         list().where((lhs) => clearId(lhs) == rhsCopy && lhs.id != rhs.id);
 
     return filteredList.isNotEmpty;
+  }
+
+  /// Returns the number of [Catch] objects associated with the given [Bait] ID.
+  int numberOfCatches(Id? baitId) {
+    return numberOf<Catch>(baitId, _catchManager.list(),
+        (cat) => cat.baits.where((e) => e.baitId == baitId).isNotEmpty);
   }
 
   /// Returns the number of [Catch] objects associated with the given

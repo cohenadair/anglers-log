@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:mobile/named_entity_manager.dart';
 import 'package:provider/provider.dart';
 
 import 'app_manager.dart';
 import 'bait_manager.dart';
-import 'catch_field_entity_manager.dart';
 import 'i18n/strings.dart';
 import 'model/gen/anglerslog.pb.dart';
 import 'utils/string_utils.dart';
 
-class BaitCategoryManager extends CatchFieldEntityManager<BaitCategory> {
+class BaitCategoryManager extends NamedEntityManager<BaitCategory> {
   static BaitCategoryManager of(BuildContext context) =>
       Provider.of<AppManager>(context, listen: false).baitCategoryManager;
 
@@ -22,23 +22,6 @@ class BaitCategoryManager extends CatchFieldEntityManager<BaitCategory> {
 
   @override
   Id id(BaitCategory entity) => entity.id;
-
-  @override
-  List<Id> idFromCatch(Catch cat) {
-    var result = <Id>[];
-
-    for (var attachment in cat.baits) {
-      var bait = _baitManager.entity(attachment.baitId);
-      if (bait == null) {
-        continue;
-      }
-      if (bait.hasBaitCategoryId()) {
-        result.add(bait.baitCategoryId);
-      }
-    }
-
-    return result;
-  }
 
   @override
   String name(BaitCategory entity) => entity.name;

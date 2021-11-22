@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:mobile/named_entity_manager.dart';
 import 'package:provider/provider.dart';
 
 import 'app_manager.dart';
-import 'catch_field_entity_manager.dart';
 import 'fishing_spot_manager.dart';
 import 'i18n/strings.dart';
 import 'model/gen/anglerslog.pb.dart';
 import 'utils/string_utils.dart';
 
-class BodyOfWaterManager extends CatchFieldEntityManager<BodyOfWater> {
+class BodyOfWaterManager extends NamedEntityManager<BodyOfWater> {
   static BodyOfWaterManager of(BuildContext context) =>
       Provider.of<AppManager>(context, listen: false).bodyOfWaterManager;
 
@@ -21,20 +21,6 @@ class BodyOfWaterManager extends CatchFieldEntityManager<BodyOfWater> {
 
   @override
   Id id(BodyOfWater entity) => entity.id;
-
-  @override
-  List<Id> idFromCatch(Catch cat) {
-    var fishingSpot = _fishingSpotManager.entity(cat.fishingSpotId);
-    if (fishingSpot == null) {
-      return [];
-    }
-
-    if (fishingSpot.hasBodyOfWaterId()) {
-      return [fishingSpot.bodyOfWaterId];
-    }
-
-    return [];
-  }
 
   @override
   String name(BodyOfWater entity) => entity.name;
