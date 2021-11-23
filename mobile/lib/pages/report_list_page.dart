@@ -78,6 +78,12 @@ class ReportListPage extends StatelessWidget {
         isEditable: false,
         isSelectable: false,
       );
+    } else if (item == MinDivider) {
+      return const ManageableListPageItemModel(
+        child: MinDivider(),
+        isEditable: false,
+        isSelectable: false,
+      );
     } else {
       _log.w("Unknown item type: $item");
 
@@ -91,8 +97,21 @@ class ReportListPage extends StatelessWidget {
 
   List _loadItems(BuildContext context) {
     var reportManager = ReportManager.of(context);
+
+    var section1 = [Report_Type.personal_bests];
+    var section2 = [
+      Report_Type.catch_summary,
+      Report_Type.species_summary,
+      Report_Type.trip_summary
+    ];
+
     return [
-      ...reportManager.defaultReports,
+      ...reportManager.defaultReports.where((e) => section1.contains(e.type)),
+      MinDivider,
+      ...reportManager.defaultReports.where((e) => section2.contains(e.type)),
+      MinDivider,
+      ...reportManager.defaultReports.where(
+          (e) => !section1.contains(e.type) && !section2.contains(e.type)),
       HeadingNoteDivider,
       ...reportManager.listSortedByName(),
     ];

@@ -572,6 +572,10 @@ class Strings {
   String get statsPageWaterClaritySummary =>
       _string("statsPage_waterClaritySummary");
 
+  String get statsPagePersonalBests => _string("statsPage_waterPersonalBests");
+
+  String get statsPageTripSummary => _string("statsPage_tripSummary");
+
   String get reportViewNoCatches => _string("reportView_noCatches");
 
   String get reportViewNoCatchesDescription =>

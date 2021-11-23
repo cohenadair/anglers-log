@@ -364,6 +364,8 @@ class Report_Type extends $pb.ProtobufEnum {
   static const Report_Type period_summary = Report_Type._(11, const $core.bool.fromEnvironment('protobuf.omit_enum_names') ? '' : 'period_summary');
   static const Report_Type season_summary = Report_Type._(12, const $core.bool.fromEnvironment('protobuf.omit_enum_names') ? '' : 'season_summary');
   static const Report_Type water_clarity_summary = Report_Type._(13, const $core.bool.fromEnvironment('protobuf.omit_enum_names') ? '' : 'water_clarity_summary');
+  static const Report_Type trip_summary = Report_Type._(14, const $core.bool.fromEnvironment('protobuf.omit_enum_names') ? '' : 'trip_summary');
+  static const Report_Type personal_bests = Report_Type._(15, const $core.bool.fromEnvironment('protobuf.omit_enum_names') ? '' : 'personal_bests');
 
   static const $core.List<Report_Type> values = <Report_Type> [
     summary,
@@ -380,6 +382,8 @@ class Report_Type extends $pb.ProtobufEnum {
     period_summary,
     season_summary,
     water_clarity_summary,
+    trip_summary,
+    personal_bests,
   ];
 
   static final $core.Map<$core.int, Report_Type> _byValue = $pb.ProtobufEnum.initByValue(values);

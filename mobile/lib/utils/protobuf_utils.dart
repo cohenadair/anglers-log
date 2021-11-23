@@ -1280,6 +1280,10 @@ extension Reports on Report {
         return Strings.of(context).statsPageTideSummary;
       case Report_Type.water_clarity_summary:
         return Strings.of(context).statsPageWaterClaritySummary;
+      case Report_Type.personal_bests:
+        return Strings.of(context).statsPagePersonalBests;
+      case Report_Type.trip_summary:
+        return Strings.of(context).statsPageTripSummary;
       case Report_Type.comparison:
       case Report_Type.summary:
         return null;

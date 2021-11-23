@@ -14,8 +14,12 @@ class ReportManager extends NamedEntityManager<Report> {
 
   /// IDs for default report types. These IDs should not change as they are
   /// stored in preferences to persist the user's last selected report.
-  static final _idCatchOverview =
+  static final _idPersonalBests =
+      Id(uuid: "e364edbe-fee9-4f75-a6a6-92f1a840e157");
+  static final _idCatchSummary =
       Id(uuid: "fbcc462b-139e-4a8e-9955-d0fb97071d58");
+  static final _idTripSummary =
+      Id(uuid: "78201e1d-800b-4c3b-9b62-22082d15cafa");
   static final _idAnglerSummary =
       Id(uuid: "e8d419fc-8545-4bac-9010-641279515b27");
   static final _idBaitSummary =
@@ -67,7 +71,9 @@ class ReportManager extends NamedEntityManager<Report> {
   /// Returns a list of default, static, reports for the user.
   List<Report> get defaultReports {
     var result = [
-      Report(id: _idCatchOverview, type: Report_Type.catch_summary),
+      Report(id: _idPersonalBests, type: Report_Type.personal_bests),
+      Report(id: _idCatchSummary, type: Report_Type.catch_summary),
+      Report(id: _idTripSummary, type: Report_Type.trip_summary),
     ];
 
     if (_userPreferenceManager.isTrackingSpecies) {

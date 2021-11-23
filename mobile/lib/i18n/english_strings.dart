@@ -243,6 +243,8 @@ Map<String, Map<String, String>> get englishStrings => {
         "statsPage_seasonSummary": "Season Summary",
         "statsPage_tideSummary": "Tide Summary",
         "statsPage_waterClaritySummary": "Water Clarity Summary",
+        "statsPage_waterPersonalBests": "Personal Bests",
+        "statsPage_tripSummary": "Trip Summary",
         "reportView_noCatches": "No catches found",
         "reportView_noCatchesDescription":
             "No catches found in the selected date range.",

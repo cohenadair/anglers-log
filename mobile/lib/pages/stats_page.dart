@@ -11,6 +11,8 @@ import 'package:mobile/utils/collection_utils.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mobile/water_clarity_manager.dart';
 import 'package:mobile/widgets/catch_summary.dart';
+import 'package:mobile/widgets/personal_bests_report.dart';
+import 'package:mobile/widgets/trip_summary.dart';
 import 'package:quiver/strings.dart';
 
 import '../entity_manager.dart';
@@ -222,6 +224,10 @@ class _StatsPageState extends State<StatsPage> {
         return _buildTideSummary();
       case Report_Type.water_clarity_summary:
         return _buildWaterClaritySummary();
+      case Report_Type.personal_bests:
+        return PersonalBestsReport();
+      case Report_Type.trip_summary:
+        return TripSummary();
     }
   }
 

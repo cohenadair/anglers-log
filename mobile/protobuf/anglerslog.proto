@@ -285,6 +285,8 @@ message Report {
     period_summary = 11;
     season_summary = 12;
     water_clarity_summary = 13;
+    trip_summary = 14;
+    personal_bests = 15;
   }
 
   Id id = 1;
