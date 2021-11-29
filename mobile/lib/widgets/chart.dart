@@ -196,12 +196,12 @@ class _ChartState<T> extends State<Chart<T>> {
     }
     return Padding(
       padding: widget.padding.copyWith(
-        top: paddingWidgetSmall,
-        bottom: paddingWidgetSmall,
+        top: paddingSmall,
+        bottom: paddingSmall,
       ),
       child: Wrap(
-        spacing: paddingWidget,
-        runSpacing: paddingWidgetTiny,
+        spacing: paddingDefault,
+        runSpacing: paddingTiny,
         children: widget.series
             .map(
               (series) => Row(
@@ -212,7 +212,7 @@ class _ChartState<T> extends State<Chart<T>> {
                     height: _legendIndicatorSize,
                     color: series._color,
                   ),
-                  const HorizontalSpace(paddingWidgetSmall),
+                  const HorizontalSpace(paddingSmall),
                   Text(series.dateRange.displayName(context)),
                 ],
               ),
@@ -247,7 +247,7 @@ class _ChartState<T> extends State<Chart<T>> {
 
         // Add space between series rows.
         children.add(
-            VerticalSpace(series == _displayData.last ? 0 : paddingWidgetTiny));
+            VerticalSpace(series == _displayData.last ? 0 : paddingTiny));
       }
 
       // Add space between rows.
@@ -302,7 +302,7 @@ class _ChartState<T> extends State<Chart<T>> {
             ),
           ),
           Padding(
-            padding: insetsHorizontalWidgetTiny,
+            padding: insetsHorizontalTiny,
             child: Text(
               "${widget.labelBuilder(item)} ($value)",
               overflow: TextOverflow.ellipsis,
@@ -317,7 +317,7 @@ class _ChartState<T> extends State<Chart<T>> {
     if (widget.showAll ||
         isEmpty(widget.viewAllTitle) ||
         _maxRowCount <= _condensedRowCount) {
-      return const VerticalSpace(paddingWidgetSmall);
+      return const VerticalSpace(paddingSmall);
     }
 
     assert(isNotEmpty(widget.chartPageDescription),
@@ -419,7 +419,7 @@ class _ChartPage<T> extends StatelessWidget {
       padding: const EdgeInsets.only(
         left: paddingDefault,
         right: paddingDefault,
-        bottom: paddingWidget,
+        bottom: paddingDefault,
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -428,7 +428,7 @@ class _ChartPage<T> extends StatelessWidget {
             Strings.of(context).reportSummaryFilters,
             style: styleListHeading(context),
           ),
-          const VerticalSpace(paddingWidget),
+          const VerticalSpace(paddingDefault),
           ChipWrap(filters),
         ],
       ),

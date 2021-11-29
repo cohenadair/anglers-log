@@ -10,7 +10,7 @@ enum TestEnum {
 void main() {
   test("Default sortedMap", () {
     expect(
-      sortedMap<String>({
+      sortedIntMap<String>({
         "0": 200,
         "6": 5678,
         "3": 1000,
@@ -40,7 +40,7 @@ void main() {
     };
 
     expect(
-      sortedMap<String>(map, (lhs, rhs) => map[lhs]!.compareTo(map[rhs]!))
+      sortedIntMap<String>(map, (lhs, rhs) => map[lhs]!.compareTo(map[rhs]!))
           .values,
       {
         "1": 100,

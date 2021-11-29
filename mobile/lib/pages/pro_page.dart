@@ -58,21 +58,21 @@ class _ProPageState extends State<ProPage> {
           Strings.of(context).proPageUpgradeTitle,
           style: styleTitle2,
         ),
-        const VerticalSpace(paddingWidgetSmall),
-        TitleLabel(Strings.of(context).proPageProTitle),
-        const VerticalSpace(paddingWidgetSmall),
+        const VerticalSpace(paddingSmall),
+        TitleLabel.style1(Strings.of(context).proPageProTitle),
+        const VerticalSpace(paddingSmall),
         const Icon(Icons.stars),
-        const VerticalSpace(paddingWidgetDouble),
+        const VerticalSpace(paddingXL),
         _buildFeatureRow(Strings.of(context).proPageBackup),
-        const VerticalSpace(paddingWidget),
+        const VerticalSpace(paddingDefault),
         _buildFeatureRow(Strings.of(context).proPageSync),
-        const VerticalSpace(paddingWidget),
+        const VerticalSpace(paddingDefault),
         _buildFeatureRow(Strings.of(context).proPageAtmosphere),
-        const VerticalSpace(paddingWidget),
+        const VerticalSpace(paddingDefault),
         _buildFeatureRow(Strings.of(context).proPageReports),
-        const VerticalSpace(paddingWidget),
+        const VerticalSpace(paddingDefault),
         _buildFeatureRow(Strings.of(context).proPageCustomFields),
-        const VerticalSpace(paddingWidgetDouble),
+        const VerticalSpace(paddingXL),
         _buildSubscriptionState(),
       ],
     );
@@ -88,7 +88,7 @@ class _ProPageState extends State<ProPage> {
             overflow: TextOverflow.visible,
           ),
         ),
-        const HorizontalSpace(paddingWidget),
+        const HorizontalSpace(paddingDefault),
         const Icon(
           Icons.check_circle_outline,
           color: Colors.green,
@@ -155,7 +155,7 @@ class _ProPageState extends State<ProPage> {
           ),
         ),
         Padding(
-          padding: insetsTopWidget,
+          padding: insetsTopDefault,
           child: QuestionAnswerLink(
             question: Strings.of(context).proPageRestoreQuestion,
             actionText: Strings.of(context).proPageRestoreAction,
@@ -179,7 +179,7 @@ class _ProPageState extends State<ProPage> {
     return Expanded(
       child: ElevatedButton(
         child: Padding(
-          padding: insetsVerticalWidgetSmall,
+          padding: insetsVerticalSmall,
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [

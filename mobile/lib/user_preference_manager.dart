@@ -180,6 +180,10 @@ class UserPreferenceManager extends PreferenceManager {
 
   bool get isTrackingSpecies => _isTrackingCatchField(catchFieldIdSpecies);
 
+  bool get isTrackingLength => _isTrackingCatchField(catchFieldIdLength);
+
+  bool get isTrackingWeight => _isTrackingCatchField(catchFieldIdWeight);
+
   bool get isTrackingMethods => _isTrackingCatchField(catchFieldIdMethods);
 
   bool get isTrackingSeasons => _isTrackingCatchField(catchFieldIdSeason);

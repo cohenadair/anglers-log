@@ -92,38 +92,7 @@ TextStyle styleListHeading(BuildContext context) {
 const List<BoxShadow> boxShadowDefault = [
   BoxShadow(
     color: Colors.grey,
-    blurRadius: 5.0,
+    blurRadius: 1.0,
+    offset: Offset(0, 1.0),
   ),
 ];
-
-const List<BoxShadow> boxShadowSmallBottom = [
-  BoxShadow(
-    color: Colors.grey,
-    blurRadius: 2.0,
-    offset: Offset(0, 2.0),
-  ),
-];
-
-/// A [BoxDecoration] wrapper that should be used for any "floating" widgets
-/// used throughout the app.
-class FloatingBoxDecoration extends BoxDecoration {
-  final bool elevated;
-
-  const FloatingBoxDecoration.rectangle({
-    this.elevated = true,
-  }) : super(
-          color: Colors.white,
-          boxShadow: elevated ? boxShadowSmallBottom : null,
-          borderRadius: const BorderRadius.all(
-            Radius.circular(floatingCornerRadius),
-          ),
-        );
-
-  const FloatingBoxDecoration.circle({
-    this.elevated = true,
-  }) : super(
-          color: Colors.white,
-          boxShadow: elevated ? boxShadowSmallBottom : null,
-          shape: BoxShape.circle,
-        );
-}

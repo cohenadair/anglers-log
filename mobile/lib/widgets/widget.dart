@@ -12,6 +12,8 @@ import 'button.dart';
 import 'input_controller.dart';
 import 'list_item.dart';
 
+const anglersIcon = Icons.person;
+const bottomBarAddButtonIcon = Icons.add_box_rounded;
 const defaultAnimationDuration = Duration(milliseconds: 150);
 
 class Empty extends StatelessWidget {
@@ -66,7 +68,7 @@ class HeadingDivider extends StatelessWidget {
         showDivider ? const MinDivider() : Empty(),
         Padding(
           padding: const EdgeInsets.only(
-            top: paddingWidget,
+            top: paddingDefault,
             left: paddingDefault,
             right: paddingDefault,
           ),
@@ -118,7 +120,7 @@ class HeadingNoteDivider extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Padding(
-            padding: insetsBottomWidgetSmall,
+            padding: insetsBottomSmall,
             child: HeadingDivider(title),
           ),
           _buildNote(),
@@ -136,7 +138,7 @@ class HeadingNoteDivider extends StatelessWidget {
               padding: const EdgeInsets.only(
                 left: paddingDefault,
                 right: paddingDefault,
-                top: paddingWidget,
+                top: paddingDefault,
               ),
               child: SafeArea(
                 top: false,
@@ -188,7 +190,7 @@ class Loading extends StatelessWidget {
               isCentered ? MainAxisAlignment.center : MainAxisAlignment.start,
           children: [
             indicator,
-            const VerticalSpace(paddingWidget),
+            const VerticalSpace(paddingDefault),
             isEmpty(label) ? Empty() : Text(label!),
           ],
         ),
@@ -396,8 +398,8 @@ class ChipWrap extends StatelessWidget {
     }
 
     return Wrap(
-      spacing: paddingWidgetSmall,
-      runSpacing: paddingWidgetSmall,
+      spacing: paddingSmall,
+      runSpacing: paddingSmall,
       children: items.map((item) => MinChip(item)).toList(),
     );
   }
@@ -434,6 +436,23 @@ class HorizontalSafeArea extends StatelessWidget {
   }
 }
 
+class HorizontalSliverSafeArea extends StatelessWidget {
+  final Widget sliver;
+
+  const HorizontalSliverSafeArea({
+    required this.sliver,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return SliverSafeArea(
+      top: false,
+      bottom: false,
+      sliver: sliver,
+    );
+  }
+}
+
 class WatermarkLogo extends StatelessWidget {
   static const _size = 150.0;
 
@@ -449,7 +468,7 @@ class WatermarkLogo extends StatelessWidget {
   Widget build(BuildContext context) {
     return ClipOval(
       child: Container(
-        padding: insetsDefaultDouble,
+        padding: insetsXL,
         color: Colors.grey.shade200,
         child: Icon(
           icon,
@@ -494,7 +513,7 @@ class CatchFavoriteStar extends StatelessWidget {
     }
 
     return Padding(
-      padding: insetsLeftWidget,
+      padding: insetsLeftDefault,
       child: Icon(
         Icons.star,
         size: large ? _largeSize : null,

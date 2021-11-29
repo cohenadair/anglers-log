@@ -127,7 +127,7 @@ class _CatchPageState extends State<CatchPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              TitleLabel(
+              TitleLabel.style1(
                 _speciesManager.entity(_catch.speciesId)?.name ??
                     Strings.of(context).unknownSpecies,
                 overflow: TextOverflow.visible,
@@ -210,7 +210,7 @@ class _CatchPageState extends State<CatchPage> {
     }
 
     return ListItem(
-      leading: const Icon(Icons.person),
+      leading: const Icon(anglersIcon),
       title: Text(angler.name),
     );
   }

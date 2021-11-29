@@ -87,7 +87,7 @@ class TripPage extends StatelessWidget {
     }
 
     return Padding(
-      padding: insetsVerticalWidget,
+      padding: insetsVerticalDefault,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -97,7 +97,7 @@ class TripPage extends StatelessWidget {
                   padding: insetsHorizontalDefault,
                   child: Text(subtitle!, style: styleListHeading(context)),
                 ),
-          TitleLabel(title),
+          TitleLabel.style1(title),
           isEmpty(trip.notes)
               ? Empty()
               : Padding(
@@ -116,7 +116,7 @@ class TripPage extends StatelessWidget {
 
     var bodyOfWaterManager = BodyOfWaterManager.of(context);
     return Padding(
-      padding: insetsHorizontalDefaultBottomWidget,
+      padding: insetsHorizontalDefaultBottomDefault,
       child: ChipWrap(bodyOfWaterManager
           .list(trip.bodyOfWaterIds)
           .map((e) => bodyOfWaterManager.displayName(context, e))
@@ -162,7 +162,7 @@ class TripPage extends StatelessWidget {
   Widget _buildCatchesPerAngler(BuildContext context, Trip trip) {
     return LabelValueList(
       title: Strings.of(context).tripCatchesPerAngler,
-      padding: insetsBottomWidgetSmall,
+      padding: insetsBottomSmall,
       items: _defaultLabelValueListItems(
           context, AnglerManager.of(context), trip.catchesPerAngler),
     );
@@ -171,7 +171,7 @@ class TripPage extends StatelessWidget {
   Widget _buildCatchesPerSpecies(BuildContext context, Trip trip) {
     return LabelValueList(
       title: Strings.of(context).tripCatchesPerSpecies,
-      padding: insetsBottomWidgetSmall,
+      padding: insetsBottomSmall,
       items: _defaultLabelValueListItems(
           context, SpeciesManager.of(context), trip.catchesPerSpecies),
     );
@@ -190,7 +190,7 @@ class TripPage extends StatelessWidget {
 
     return LabelValueList(
       title: Strings.of(context).tripCatchesPerBait,
-      padding: insetsBottomWidgetSmall,
+      padding: insetsBottomSmall,
       items: items,
     );
   }
@@ -198,7 +198,7 @@ class TripPage extends StatelessWidget {
   Widget _buildCatchesPerFishingSpot(BuildContext context, Trip trip) {
     return LabelValueList(
       title: Strings.of(context).tripCatchesPerFishingSpot,
-      padding: insetsBottomWidgetSmall,
+      padding: insetsBottomSmall,
       items: _defaultLabelValueListItems(
           context, FishingSpotManager.of(context), trip.catchesPerFishingSpot),
     );
@@ -210,7 +210,7 @@ class TripPage extends StatelessWidget {
     }
 
     return Padding(
-      padding: insetsHorizontalDefaultTopWidget,
+      padding: insetsHorizontalDefaultTopDefault,
       child: Align(
         alignment: Alignment.centerLeft,
         child: Container(

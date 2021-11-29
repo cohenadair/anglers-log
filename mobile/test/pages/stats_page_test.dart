@@ -217,7 +217,7 @@ void main() {
       return result;
     });
 
-    when(appManager.catchManager.catchesSortedByTimestamp(
+    when(appManager.catchManager.catches(
       any,
       dateRange: anyNamed("dateRange"),
       baits: anyNamed("baits"),
@@ -272,7 +272,7 @@ void main() {
   });
 
   void _stubCatchesByTimestamp([List<Catch>? catches]) {
-    when(appManager.catchManager.catchesSortedByTimestamp(
+    when(appManager.catchManager.catches(
       any,
       dateRange: anyNamed("dateRange"),
       baits: anyNamed("baits"),
@@ -906,7 +906,7 @@ void main() {
       when(appManager.reportManager.entity(report.id)).thenReturn(report);
       when(appManager.reportManager.entityExists(any)).thenReturn(true);
 
-      when(appManager.catchManager.catchesSortedByTimestamp(
+      when(appManager.catchManager.catches(
         any,
         dateRange: anyNamed("dateRange"),
         baits: anyNamed("baits"),

@@ -136,7 +136,7 @@ void main() {
     when(appManager.permissionHandlerWrapper.requestLocation())
         .thenAnswer((_) => Future.value(false));
     when(appManager.fishingSpotManager.list()).thenReturn([]);
-    when(appManager.catchManager.catchesSortedByTimestamp(
+    when(appManager.catchManager.catches(
       any,
       filter: anyNamed("filter"),
       dateRange: anyNamed("dateRange"),
@@ -173,7 +173,7 @@ void main() {
     when(appManager.authManager.state).thenReturn(AuthState.loggedIn);
     when(appManager.userPreferenceManager.didOnboard).thenReturn(true);
     when(appManager.fishingSpotManager.list()).thenReturn([]);
-    when(appManager.catchManager.catchesSortedByTimestamp(
+    when(appManager.catchManager.catches(
       any,
       filter: anyNamed("filter"),
       dateRange: anyNamed("dateRange"),
@@ -211,7 +211,7 @@ void main() {
     when(appManager.authManager.state).thenReturn(AuthState.loggedOut);
     when(appManager.userPreferenceManager.didOnboard).thenReturn(true);
     when(appManager.fishingSpotManager.list()).thenReturn([]);
-    when(appManager.catchManager.catchesSortedByTimestamp(
+    when(appManager.catchManager.catches(
       any,
       filter: anyNamed("filter"),
       dateRange: anyNamed("dateRange"),
@@ -246,7 +246,7 @@ void main() {
     when(appManager.authManager.state).thenReturn(AuthState.initializing);
     when(appManager.userPreferenceManager.didOnboard).thenReturn(true);
     when(appManager.fishingSpotManager.list()).thenReturn([]);
-    when(appManager.catchManager.catchesSortedByTimestamp(
+    when(appManager.catchManager.catches(
       any,
       filter: anyNamed("filter"),
       dateRange: anyNamed("dateRange"),

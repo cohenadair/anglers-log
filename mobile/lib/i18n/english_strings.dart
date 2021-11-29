@@ -61,6 +61,8 @@ Map<String, Map<String, String>> get englishStrings => {
         "numberOfCatches": "%s Catches",
         "numberOfCatchesSingular": "%s Catch",
         "unknownSpecies": "Unknown Species",
+        "viewDetails": "View Details",
+        "viewAll": "View All",
         "fieldType_number": "Number",
         "fieldType_boolean": "Checkbox",
         "fieldType_text": "Text",
@@ -84,9 +86,13 @@ Map<String, Map<String, String>> get englishStrings => {
         "catchListPage_menuLabel": "Catches",
         "catchListPage_title": "Catches (%s)",
         "catchListPage_searchHint": "Search catches",
-        "catchListPage_emptyListTitle": "No catches",
+        "catchListPage_emptyListTitle": "No Catches",
         "catchListPage_emptyListDescription":
             "You haven't yet added any catches. Tap the %s button to begin.",
+        "catchListItem_length": "Length: %s",
+        "catchListItem_noLength": "Length: -",
+        "catchListItem_weight": "Weight: %s",
+        "catchListItem_noWeight": "Weight: -",
         "catchPage_deleteMessage":
             "Are you sure you want to delete catch %s? This cannot be undone.",
         "catchPage_deleteWithTripMessage":
@@ -150,7 +156,7 @@ Map<String, Map<String, String>> get englishStrings => {
         "saveReportPage_allTideTypes": "All tides",
         "photosPage_menuLabel": "Photos",
         "photosPage_title": "Photos (%s)",
-        "photosPage_emptyTitle": "No photos",
+        "photosPage_emptyTitle": "No Photos",
         "photosPage_emptyDescription":
             "All photos attached to catches will be displayed here. To add a catch, tap the %s icon.",
         "baitListPage_menuLabel": "Baits",
@@ -161,7 +167,7 @@ Map<String, Map<String, String>> get englishStrings => {
             "%s is associated with %s catches; are you sure you want to delete it? This cannot be undone.",
         "baitListPage_deleteMessageSingular":
             "%s is associated with %s catch; are you sure you want to delete it? This cannot be undone.",
-        "baitListPage_emptyListTitle": "No baits",
+        "baitListPage_emptyListTitle": "No Baits",
         "baitListPage_emptyListDescription":
             "You haven't yet added any baits. Tap the %s button to begin.",
         "baitListPage_variantsLabel": "%s Variants",
@@ -186,7 +192,7 @@ Map<String, Map<String, String>> get englishStrings => {
         "baitCategoryListPage_deleteMessageSingular":
             "%s is associated with %s bait; are you sure you want to delete it? This cannot be undone.",
         "baitCategoryListPage_searchHint": "Search bait categories",
-        "baitCategoryListPage_emptyListTitle": "No bait categories",
+        "baitCategoryListPage_emptyListTitle": "No Bait Categories",
         "baitCategoryListPage_emptyListDescription":
             "You haven't yet added any bait categories. Tap the %s button to begin.",
         "saveAnglerPage_newTitle": "New Angler",
@@ -199,7 +205,7 @@ Map<String, Map<String, String>> get englishStrings => {
         "anglerListPage_deleteMessageSingular":
             "%s is associated with %s catch; are you sure you want to delete them? This cannot be undone.",
         "anglerListPage_searchHint": "Search anglers",
-        "anglerListPage_emptyListTitle": "No anglers",
+        "anglerListPage_emptyListTitle": "No Anglers",
         "anglerListPage_emptyListDescription":
             "You haven't yet added any anglers. Tap the %s button to begin.",
         "saveMethodPage_newTitle": "New Fishing Method",
@@ -212,7 +218,7 @@ Map<String, Map<String, String>> get englishStrings => {
         "methodListPage_deleteMessageSingular":
             "%s is associated with %s catch; are you sure you want to delete it? This cannot be undone.",
         "methodListPage_searchHint": "Search fishing methods",
-        "methodListPage_emptyListTitle": "No fishing methods",
+        "methodListPage_emptyListTitle": "No Fishing Methods",
         "methodListPage_emptyListDescription":
             "You haven't yet added any fishing methods. Tap the %s button to begin.",
         "saveWaterClarityPage_newTitle": "New Water Clarity",
@@ -225,7 +231,7 @@ Map<String, Map<String, String>> get englishStrings => {
         "waterClarityListPage_deleteMessageSingular":
             "%s is associated with %s catch; are you sure you want to delete it? This cannot be undone.",
         "waterClarityListPage_searchHint": "Search water clarities",
-        "waterClarityListPage_emptyListTitle": "No water clarities",
+        "waterClarityListPage_emptyListTitle": "No Water Clarities",
         "waterClarityListPage_emptyListDescription":
             "You haven't yet added any water clarities. Tap the %s button to begin.",
         "statsPage_menuTitle": "Stats",
@@ -245,6 +251,18 @@ Map<String, Map<String, String>> get englishStrings => {
         "statsPage_waterClaritySummary": "Water Clarity Summary",
         "statsPage_waterPersonalBests": "Personal Bests",
         "statsPage_tripSummary": "Trip Summary",
+        "personalBests_trip": "Best Trip",
+        "personalBests_longest": "Longest",
+        "personalBests_heaviest": "Heaviest",
+        "personalBests_speciesByLength": "Species By Length",
+        "personalBests_speciesByLengthLabel": "Longest",
+        "personalBests_speciesByWeight": "Species By Weight",
+        "personalBests_speciesByWeightLabel": "Heaviest",
+        "personalBests_showAllSpecies": "Show all species",
+        "personalBests_Average": "Average",
+        "reportView_emptyLog": "Empty Log",
+        "reportView_emptyLogDescription":
+            "You haven't yet added any catches. To add a catch, tap the %s icon.",
         "reportView_noCatches": "No catches found",
         "reportView_noCatchesDescription":
             "No catches found in the selected date range.",
@@ -305,7 +323,7 @@ Map<String, Map<String, String>> get englishStrings => {
         "tripListPage_menuLabel": "Trips",
         "tripListPage_title": "Trips (%s)",
         "tripListPage_searchHint": "Search trips",
-        "tripListPage_emptyListTitle": "No trips",
+        "tripListPage_emptyListTitle": "No Trips",
         "tripListPage_emptyListDescription":
             "You haven't yet added any trips. Tap the %s button to begin.",
         "tripListPage_deleteMessage":
@@ -393,7 +411,7 @@ Map<String, Map<String, String>> get englishStrings => {
         "customEntityListPage_delete":
             "The custom field %s will no longer be associated with catches (%s) or baits (%s), are you sure you want to delete it? This cannot be undone.",
         "customEntityListPage_searchHint": "Search fields",
-        "customEntityListPage_emptyListTitle": "No custom fields",
+        "customEntityListPage_emptyListTitle": "No Custom Fields",
         "customEntityListPage_emptyListDescription":
             "You haven't yet added any custom fields. Tap the %s button to begin.",
         "imagePickerPage_noPhotosFoundTitle": "No photos found",
@@ -427,14 +445,14 @@ Map<String, Map<String, String>> get englishStrings => {
         "speciesListPage_catchDeleteErrorPlural":
             "%s is associated with %s catches and cannot be deleted.",
         "speciesListPage_searchHint": "Search species",
-        "speciesListPage_emptyListTitle": "No species",
+        "speciesListPage_emptyListTitle": "No Species",
         "speciesListPage_emptyListDescription":
             "You haven't yet added any species. Tap the %s button to begin.",
         "fishingSpotPickerPage_hint":
             "Long press the map to pick exact coordinates, or select an existing fishing spot.",
         "fishingSpotListPage_title": "Fishing Spots (%s)",
         "fishingSpotListPage_searchHint": "Search fishing spots",
-        "fishingSpotListPage_emptyListTitle": "No fishing spots",
+        "fishingSpotListPage_emptyListTitle": "No Fishing Spots",
         "fishingSpotListPage_emptyListDescription":
             "To add a fishing spot, tap on the map and save the dropped pin.",
         "fishingSpotListPage_noBodyOfWater": "No Body Of Water",
@@ -792,7 +810,7 @@ Map<String, Map<String, String>> get englishStrings => {
         "bodyOfWaterListPage_menuLabel": "Bodies Of Water",
         "bodyOfWaterListPage_title": "Bodies Of Water (%s)",
         "bodyOfWaterListPage_searchHint": "Search bodies of water",
-        "bodyOfWaterListPage_emptyListTitle": "No bodies of water",
+        "bodyOfWaterListPage_emptyListTitle": "No Bodies Of Water",
         "bodyOfWaterListPage_emptyListDescription":
             "You haven't yet added any bodies of water. Tap the %s button to begin.",
         "saveBodyOfWaterPage_newTitle": "New Body Of Water",

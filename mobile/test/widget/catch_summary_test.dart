@@ -379,7 +379,7 @@ void main() {
   });
 
   void _stubCatchesByTimestamp(BuildContext context, [List<Catch>? catches]) {
-    when(catchManager.catchesSortedByTimestamp(
+    when(catchManager.catches(
       context,
       dateRange: anyNamed("dateRange"),
       isFavoritesOnly: anyNamed("isFavoritesOnly"),

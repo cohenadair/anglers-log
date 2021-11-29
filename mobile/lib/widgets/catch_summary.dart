@@ -52,16 +52,11 @@ class CatchSummary<T> extends StatefulWidget {
   final bool isStatic;
 
   const CatchSummary({
+    Key? key,
     required this.reportBuilder,
     this.picker,
     this.isStatic = false,
-  });
-
-  CatchSummary.static({
-    required CatchSummaryReport<T> report,
-    this.picker,
-  })  : reportBuilder = ((_, __) => report),
-        isStatic = true;
+  }) : super(key: key);
 
   @override
   State<CatchSummary<T>> createState() => _CatchSummaryState<T>();
@@ -101,10 +96,14 @@ class _CatchSummaryState<T> extends State<CatchSummary<T>> {
   Widget build(BuildContext context) {
     return EntityListenerBuilder(
       managers: [
-        _catchManager,
+        _anglerManager,
         _baitManager,
+        _bodyOfWaterManager,
+        _catchManager,
         _fishingSpotManager,
+        _methodManager,
         _speciesManager,
+        _waterClarityManager,
       ],
       onAnyChange: _refreshReport,
       builder: (context) => Column(
@@ -433,7 +432,7 @@ class _CatchSummaryState<T> extends State<CatchSummary<T>> {
   }) {
     return CatchListPage(
       enableAdding: false,
-      catches: _catchManager.catchesSortedByTimestamp(
+      catches: _catchManager.catches(
         context,
         dateRange: dateRange,
         anglerIds: anglerIds ?? _report.anglerIds,
@@ -693,7 +692,7 @@ class CatchSummaryReport<T> {
         dateRanges.firstWhereOrNull((e) => e.endDate(now) == now) != null;
 
     for (var dateRange in dateRanges) {
-      var catches = _catchManager.catchesSortedByTimestamp(
+      var catches = _catchManager.catches(
         context,
         dateRange: dateRange,
         isCatchAndReleaseOnly: isCatchAndReleaseOnly,
@@ -1003,35 +1002,35 @@ class _CatchSummaryReportModel<T> {
   void _sortCollections(CatchSummarySortOrder sortOrder) {
     switch (sortOrder) {
       case CatchSummarySortOrder.alphabetical:
-        _perAngler = sortedMap(_perAngler, _anglerManager.nameComparator);
-        _perBait = sortedMap(_perBait, _baitManager.attachmentComparator);
+        _perAngler = sortedIntMap(_perAngler, _anglerManager.nameComparator);
+        _perBait = sortedIntMap(_perBait, _baitManager.attachmentComparator);
         _perBodyOfWater =
-            sortedMap(_perBodyOfWater, _bodyOfWaterManager.nameComparator);
+            sortedIntMap(_perBodyOfWater, _bodyOfWaterManager.nameComparator);
         _perFishingSpot =
-            sortedMap(_perFishingSpot, _fishingSpotManager.nameComparator);
-        _perMethod = sortedMap(_perMethod, _methodManager.nameComparator);
+            sortedIntMap(_perFishingSpot, _fishingSpotManager.nameComparator);
+        _perMethod = sortedIntMap(_perMethod, _methodManager.nameComparator);
         _perMoonPhase =
-            sortedMap(_perMoonPhase, MoonPhases.nameComparator(context));
-        _perPeriod = sortedMap(_perPeriod, Periods.nameComparator(context));
-        _perSeason = sortedMap(_perSeason, Seasons.nameComparator(context));
-        _perSpecies = sortedMap(_perSpecies, _speciesManager.nameComparator);
+            sortedIntMap(_perMoonPhase, MoonPhases.nameComparator(context));
+        _perPeriod = sortedIntMap(_perPeriod, Periods.nameComparator(context));
+        _perSeason = sortedIntMap(_perSeason, Seasons.nameComparator(context));
+        _perSpecies = sortedIntMap(_perSpecies, _speciesManager.nameComparator);
         _perTideType =
-            sortedMap(_perTideType, TideTypes.nameComparator(context));
+            sortedIntMap(_perTideType, TideTypes.nameComparator(context));
         _perWaterClarity =
-            sortedMap(_perWaterClarity, _waterClarityManager.nameComparator);
+            sortedIntMap(_perWaterClarity, _waterClarityManager.nameComparator);
         break;
       case CatchSummarySortOrder.largestToSmallest:
-        _perAngler = sortedMap(_perAngler);
-        _perBait = sortedMap(_perBait);
-        _perBodyOfWater = sortedMap(_perBodyOfWater);
-        _perFishingSpot = sortedMap(_perFishingSpot);
-        _perMethod = sortedMap(_perMethod);
-        _perMoonPhase = sortedMap(_perMoonPhase);
-        _perPeriod = sortedMap(_perPeriod);
-        _perSeason = sortedMap(_perSeason);
-        _perSpecies = sortedMap(_perSpecies);
-        _perTideType = sortedMap(_perTideType);
-        _perWaterClarity = sortedMap(_perWaterClarity);
+        _perAngler = sortedIntMap(_perAngler);
+        _perBait = sortedIntMap(_perBait);
+        _perBodyOfWater = sortedIntMap(_perBodyOfWater);
+        _perFishingSpot = sortedIntMap(_perFishingSpot);
+        _perMethod = sortedIntMap(_perMethod);
+        _perMoonPhase = sortedIntMap(_perMoonPhase);
+        _perPeriod = sortedIntMap(_perPeriod);
+        _perSeason = sortedIntMap(_perSeason);
+        _perSpecies = sortedIntMap(_perSpecies);
+        _perTideType = sortedIntMap(_perTideType);
+        _perWaterClarity = sortedIntMap(_perWaterClarity);
         break;
     }
   }

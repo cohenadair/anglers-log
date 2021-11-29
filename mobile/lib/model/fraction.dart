@@ -22,23 +22,21 @@ class Fraction {
   static Fraction fromValue(double? value) {
     if (value == null || value <= 0) {
       return zero;
-    } else if (value == eighth.value) {
-      return eighth;
-    } else if (value == quarter.value) {
-      return quarter;
-    } else if (value == threeEighths.value) {
-      return threeEighths;
-    } else if (value == half.value) {
-      return half;
-    } else if (value == fiveEights.value) {
-      return fiveEights;
-    } else if (value == threeQuarters.value) {
-      return threeQuarters;
-    } else if (value == sevenEighths.value) {
-      return sevenEighths;
-    } else {
-      return zero;
     }
+
+    var result = zero;
+
+    for (var fraction in all) {
+      if (value == fraction.value) {
+        return fraction;
+      }
+
+      if ((value - fraction.value).abs() < result.value) {
+        result = fraction;
+      }
+    }
+
+    return result;
   }
 
   final String symbol;

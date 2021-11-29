@@ -352,38 +352,10 @@ class DateRange_Period extends $pb.ProtobufEnum {
 class Report_Type extends $pb.ProtobufEnum {
   static const Report_Type summary = Report_Type._(0, const $core.bool.fromEnvironment('protobuf.omit_enum_names') ? '' : 'summary');
   static const Report_Type comparison = Report_Type._(1, const $core.bool.fromEnvironment('protobuf.omit_enum_names') ? '' : 'comparison');
-  static const Report_Type catch_summary = Report_Type._(2, const $core.bool.fromEnvironment('protobuf.omit_enum_names') ? '' : 'catch_summary');
-  static const Report_Type species_summary = Report_Type._(3, const $core.bool.fromEnvironment('protobuf.omit_enum_names') ? '' : 'species_summary');
-  static const Report_Type fishing_spot_summary = Report_Type._(4, const $core.bool.fromEnvironment('protobuf.omit_enum_names') ? '' : 'fishing_spot_summary');
-  static const Report_Type bait_summary = Report_Type._(5, const $core.bool.fromEnvironment('protobuf.omit_enum_names') ? '' : 'bait_summary');
-  static const Report_Type moon_phase_summary = Report_Type._(6, const $core.bool.fromEnvironment('protobuf.omit_enum_names') ? '' : 'moon_phase_summary');
-  static const Report_Type tide_summary = Report_Type._(7, const $core.bool.fromEnvironment('protobuf.omit_enum_names') ? '' : 'tide_summary');
-  static const Report_Type angler_summary = Report_Type._(8, const $core.bool.fromEnvironment('protobuf.omit_enum_names') ? '' : 'angler_summary');
-  static const Report_Type body_of_water_summary = Report_Type._(9, const $core.bool.fromEnvironment('protobuf.omit_enum_names') ? '' : 'body_of_water_summary');
-  static const Report_Type method_summary = Report_Type._(10, const $core.bool.fromEnvironment('protobuf.omit_enum_names') ? '' : 'method_summary');
-  static const Report_Type period_summary = Report_Type._(11, const $core.bool.fromEnvironment('protobuf.omit_enum_names') ? '' : 'period_summary');
-  static const Report_Type season_summary = Report_Type._(12, const $core.bool.fromEnvironment('protobuf.omit_enum_names') ? '' : 'season_summary');
-  static const Report_Type water_clarity_summary = Report_Type._(13, const $core.bool.fromEnvironment('protobuf.omit_enum_names') ? '' : 'water_clarity_summary');
-  static const Report_Type trip_summary = Report_Type._(14, const $core.bool.fromEnvironment('protobuf.omit_enum_names') ? '' : 'trip_summary');
-  static const Report_Type personal_bests = Report_Type._(15, const $core.bool.fromEnvironment('protobuf.omit_enum_names') ? '' : 'personal_bests');
 
   static const $core.List<Report_Type> values = <Report_Type> [
     summary,
     comparison,
-    catch_summary,
-    species_summary,
-    fishing_spot_summary,
-    bait_summary,
-    moon_phase_summary,
-    tide_summary,
-    angler_summary,
-    body_of_water_summary,
-    method_summary,
-    period_summary,
-    season_summary,
-    water_clarity_summary,
-    trip_summary,
-    personal_bests,
   ];
 
   static final $core.Map<$core.int, Report_Type> _byValue = $pb.ProtobufEnum.initByValue(values);

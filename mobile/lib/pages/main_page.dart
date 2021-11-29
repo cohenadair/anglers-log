@@ -54,7 +54,7 @@ class _MainPageState extends State<MainPage> {
         titleBuilder: (context) => Strings.of(context).catchListPageMenuLabel,
       ),
       _BarItemModel(
-        icon: Icons.add_box_rounded,
+        icon: bottomBarAddButtonIcon,
         titleBuilder: (context) => Strings.of(context).add,
         onTapOverride: () => fade(context, AddAnythingPage(), opaque: false),
       ),

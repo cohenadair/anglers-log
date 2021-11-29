@@ -44,7 +44,7 @@ class MorePage extends StatelessWidget {
       children: [
         _buildPageItem(
           context,
-          icon: Icons.person,
+          icon: anglersIcon,
           title: Strings.of(context).anglerListPageMenuTitle,
           page: const AnglerListPage(),
         ),

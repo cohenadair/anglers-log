@@ -292,7 +292,7 @@ class _SaveTripPageState extends State<SaveTripPage> {
 
   Widget _buildStartTime() {
     return Padding(
-      padding: insetsVerticalWidgetSmall,
+      padding: insetsVerticalSmall,
       child: _DateTimeAllDayPicker(
         controller: _startTimestampController,
         dateLabel: Strings.of(context).saveTripPageStartDate,
@@ -303,7 +303,7 @@ class _SaveTripPageState extends State<SaveTripPage> {
 
   Widget _buildEndTime() {
     return Padding(
-      padding: insetsVerticalWidgetSmall,
+      padding: insetsVerticalSmall,
       child: _DateTimeAllDayPicker(
         controller: _endTimestampController,
         dateLabel: Strings.of(context).saveTripPageEndDate,
@@ -374,7 +374,7 @@ class _SaveTripPageState extends State<SaveTripPage> {
 
   Widget _buildNotes() {
     return Padding(
-      padding: insetsHorizontalDefaultBottomWidget,
+      padding: insetsHorizontalDefaultBottomDefault,
       child: TextInput.description(
         context,
         title: Strings.of(context).inputNotesLabel,
@@ -517,7 +517,7 @@ class _DateTimeAllDayPickerState extends State<_DateTimeAllDayPicker> {
         Row(
           children: [
             Text(Strings.of(context).saveTripPageAllDay),
-            const HorizontalSpace(paddingWidgetSmall),
+            const HorizontalSpace(paddingSmall),
             PaddedCheckbox(
               checked: _isAllDay,
               onChanged: (checked) => setState(() {

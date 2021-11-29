@@ -123,7 +123,7 @@ class _BaitVariantListInputState extends State<BaitVariantListInput> {
       }
 
       header = Padding(
-        padding: insetsBottomWidget,
+        padding: insetsBottomDefault,
         child: divider,
       );
     }

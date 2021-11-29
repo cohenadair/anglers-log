@@ -123,6 +123,10 @@ class Strings {
 
   String get unknownSpecies => _string("unknownSpecies");
 
+  String get viewDetails => _string("viewDetails");
+
+  String get viewAll => _string("viewAll");
+
   String get fieldTypeNumber => _string("fieldType_number");
 
   String get fieldTypeBoolean => _string("fieldType_boolean");
@@ -228,6 +232,14 @@ class Strings {
 
   String get catchListPageEmptyListDescription =>
       _string("catchListPage_emptyListDescription");
+
+  String get catchListItemLength => _string("catchListItem_length");
+
+  String get catchListItemNoLength => _string("catchListItem_noLength");
+
+  String get catchListItemWeight => _string("catchListItem_weight");
+
+  String get catchListItemNoWeight => _string("catchListItem_noWeight");
 
   String get catchPageDeleteMessage => _string("catchPage_deleteMessage");
 
@@ -575,6 +587,34 @@ class Strings {
   String get statsPagePersonalBests => _string("statsPage_waterPersonalBests");
 
   String get statsPageTripSummary => _string("statsPage_tripSummary");
+
+  String get personalBestsTrip => _string("personalBests_trip");
+
+  String get personalBestsLongest => _string("personalBests_longest");
+
+  String get personalBestsHeaviest => _string("personalBests_heaviest");
+
+  String get personalBestsSpeciesByLength =>
+      _string("personalBests_speciesByLength");
+
+  String get personalBestsSpeciesByLengthLabel =>
+      _string("personalBests_speciesByLengthLabel");
+
+  String get personalBestsSpeciesByWeight =>
+      _string("personalBests_speciesByWeight");
+
+  String get personalBestsSpeciesByWeightLabel =>
+      _string("personalBests_speciesByWeightLabel");
+
+  String get personalBestsShowAllSpecies =>
+      _string("personalBests_showAllSpecies");
+
+  String get personalBestsAverage => _string("personalBests_Average");
+
+  String get reportViewEmptyLog => _string("reportView_emptyLog");
+
+  String get reportViewEmptyLogDescription =>
+      _string("reportView_emptyLogDescription");
 
   String get reportViewNoCatches => _string("reportView_noCatches");
 

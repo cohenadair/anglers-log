@@ -311,7 +311,7 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
     if (_isPicking) {
       if (_pickerSettings!.onNext != null) {
         trailing = Padding(
-          padding: insetsRightWidgetSmall,
+          padding: insetsRightSmall,
           child: ActionButton(
             condensed: true,
             text: Strings.of(context).next,
@@ -463,10 +463,10 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
         }
         _mapController?.animateCamera(CameraUpdate.newLatLngBounds(
           bounds,
-          left: paddingDefaultDouble,
-          right: paddingDefaultDouble,
-          top: paddingDefaultDouble,
-          bottom: paddingDefaultDouble,
+          left: paddingXL,
+          right: paddingXL,
+          top: paddingXL,
+          bottom: paddingXL,
         ));
       },
     );
@@ -518,7 +518,7 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
     Widget details = Empty();
     if (fishingSpot != null) {
       details = Padding(
-        padding: insetsTopWidgetSmall,
+        padding: insetsTopSmall,
         child: FishingSpotDetails(
           fishingSpot,
           containerKey: _fishingSpotKey,

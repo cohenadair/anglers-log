@@ -87,7 +87,7 @@ abstract class SectionedListModel<Header, Item> {
         isEditable: false,
         isSelectable: false,
         child: Padding(
-          padding: insetsBottomWidget,
+          padding: insetsBottomDefault,
           child: HeadingDivider(
             headerName(item),
             showDivider: _firstHeader == null || item != _firstHeader,

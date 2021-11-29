@@ -90,7 +90,7 @@ class ImagePicker extends StatelessWidget {
     }
 
     return Container(
-      padding: insetsTopWidgetSmall,
+      padding: insetsTopSmall,
       constraints: const BoxConstraints(maxHeight: galleryMaxThumbSize),
       child: ListView.separated(
         physics: isEnabled ? null : const NeverScrollableScrollPhysics(),

@@ -228,8 +228,8 @@ class _EditableFormPageState extends State<EditableFormPage> {
 
     return Padding(
       padding: EdgeInsets.only(
-        top: widget.showTopCustomFieldPadding ? paddingWidget : 0.0,
-        bottom: paddingWidgetSmall,
+        top: widget.showTopCustomFieldPadding ? paddingDefault : 0.0,
+        bottom: paddingSmall,
       ),
       child: child,
     );

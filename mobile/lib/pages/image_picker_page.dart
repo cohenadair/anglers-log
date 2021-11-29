@@ -541,7 +541,7 @@ class _ImagePickerPageState extends State<ImagePickerPage> {
                     Strings.of(context).imagePickerPageNoPermissionMessage,
                 scrollable: false,
               ),
-              const VerticalSpace(paddingWidget),
+              const VerticalSpace(paddingDefault),
               Button(
                 text: Strings.of(context).imagePickerPageOpenSettings,
                 onPressed: () => _permissionHandlerWrapper.openSettings(),

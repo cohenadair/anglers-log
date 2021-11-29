@@ -97,7 +97,7 @@ class _BaitVariantPageState extends State<BaitVariantPage> {
           style: styleListHeading(context),
         ),
       ),
-      subtitle: TitleLabel(
+      subtitle: TitleLabel.style1(
         name!,
         overflow: TextOverflow.visible,
       ),

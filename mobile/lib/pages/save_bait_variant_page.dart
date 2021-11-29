@@ -226,7 +226,7 @@ class _SaveBaitVariantPageState extends State<SaveBaitVariantPage> {
         right: paddingDefault,
         // Need a little extra padding here to make up for the lack of max
         // length label.
-        bottom: paddingWidgetLarge,
+        bottom: paddingLarge,
       ),
       child: MultiMeasurementInput(
         spec: MultiMeasurementInputSpec.waterDepth(
@@ -246,7 +246,7 @@ class _SaveBaitVariantPageState extends State<SaveBaitVariantPage> {
         right: paddingDefault,
         // Need a little extra padding here to make up for the lack of max
         // length label.
-        bottom: paddingWidgetLarge,
+        bottom: paddingLarge,
       ),
       child: MultiMeasurementInput(
         spec: MultiMeasurementInputSpec.waterDepth(

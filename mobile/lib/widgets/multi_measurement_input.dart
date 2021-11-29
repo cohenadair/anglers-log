@@ -114,9 +114,9 @@ class MultiMeasurementInput extends StatelessWidget {
           Expanded(child: wholeInput),
           imperialFractionInput == null
               ? Empty()
-              : const HorizontalSpace(paddingWidget),
+              : const HorizontalSpace(paddingDefault),
           imperialFractionInput ?? Empty(),
-          inchesLabel == null ? Empty() : const HorizontalSpace(paddingWidget),
+          inchesLabel == null ? Empty() : const HorizontalSpace(paddingDefault),
           inchesLabel ?? Empty(),
         ],
       ),

@@ -355,7 +355,7 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
   Widget _buildTimestamp() {
     return Padding(
       padding: const EdgeInsets.only(
-        bottom: paddingWidgetSmall,
+        bottom: paddingSmall,
       ),
       child: DateTimePicker(
         datePicker: DatePicker(

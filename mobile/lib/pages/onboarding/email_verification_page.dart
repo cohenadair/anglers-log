@@ -40,9 +40,9 @@ class _EmailVerificationPageState extends State<EmailVerificationPage> {
       showBackButton: false,
       children: [
         const WatermarkLogo(icon: Icons.mail),
-        const VerticalSpace(paddingWidget),
+        const VerticalSpace(paddingDefault),
         _buildDescription(),
-        const VerticalSpace(paddingWidget),
+        const VerticalSpace(paddingDefault),
         Button(
           text: Strings.of(context).emailVerificationSendAgain,
           onPressed: () {
@@ -50,7 +50,7 @@ class _EmailVerificationPageState extends State<EmailVerificationPage> {
             _resendVerificationEmail();
           },
         ),
-        const VerticalSpace(paddingWidgetDouble),
+        const VerticalSpace(paddingXL),
         GestureDetector(
           onTap: () => _authManager.logout(),
           child: Text(
@@ -58,9 +58,9 @@ class _EmailVerificationPageState extends State<EmailVerificationPage> {
             style: styleHyperlink(context),
           ),
         ),
-        const VerticalSpace(paddingWidgetDouble),
+        const VerticalSpace(paddingXL),
         _buildFeedback(),
-        const VerticalSpace(paddingWidget),
+        const VerticalSpace(paddingDefault),
       ],
     );
   }
@@ -75,7 +75,7 @@ class _EmailVerificationPageState extends State<EmailVerificationPage> {
                 [_authManager.userEmail]),
             style: stylePrimary(context),
           ),
-          const VerticalSpace(paddingWidget),
+          const VerticalSpace(paddingDefault),
           Text(
             format(Strings.of(context).emailVerificationDesc2,
                 [_authManager.userEmail]),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mobile/widgets/widget.dart';
 
 import '../catch_manager.dart';
 import '../entity_manager.dart';
@@ -53,7 +54,7 @@ class PhotosPage extends StatelessWidget {
                           title: Strings.of(context).photosPageEmptyTitle,
                           description:
                               Strings.of(context).photosPageEmptyDescription,
-                          descriptionIcon: Icons.add_box_rounded,
+                          descriptionIcon: bottomBarAddButtonIcon,
                         ),
                       ),
                     ),

@@ -26,7 +26,7 @@ class DetailInput extends StatelessWidget {
   Widget build(BuildContext context) {
     var items = List.of(children)
       ..add(Padding(
-        padding: insetsLeftWidgetSmall,
+        padding: insetsLeftSmall,
         child: RightChevronIcon(),
       ));
 

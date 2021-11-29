@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
+import 'package:mobile/utils/report_utils.dart';
 
 import '../i18n/strings.dart';
 import '../log.dart';
@@ -73,7 +74,7 @@ class ReportListPage extends StatelessWidget {
           title: Strings.of(context).reportListPageReportTitle,
           note: Strings.of(context).reportListPageReportAddNote,
           noteIcon: Icons.add,
-          padding: insetsBottomWidgetSmall,
+          padding: insetsBottomSmall,
         ),
         isEditable: false,
         isSelectable: false,
@@ -98,20 +99,20 @@ class ReportListPage extends StatelessWidget {
   List _loadItems(BuildContext context) {
     var reportManager = ReportManager.of(context);
 
-    var section1 = [Report_Type.personal_bests];
+    var section1 = [reportIdPersonalBests];
     var section2 = [
-      Report_Type.catch_summary,
-      Report_Type.species_summary,
-      Report_Type.trip_summary
+      reportIdCatchSummary,
+      reportIdSpeciesSummary,
+      reportIdTripSummary,
     ];
 
     return [
-      ...reportManager.defaultReports.where((e) => section1.contains(e.type)),
+      ...reportManager.defaultReports.where((e) => section1.contains(e.id)),
       MinDivider,
-      ...reportManager.defaultReports.where((e) => section2.contains(e.type)),
+      ...reportManager.defaultReports.where((e) => section2.contains(e.id)),
       MinDivider,
-      ...reportManager.defaultReports.where(
-          (e) => !section1.contains(e.type) && !section2.contains(e.type)),
+      ...reportManager.defaultReports
+          .where((e) => !section1.contains(e.id) && !section2.contains(e.id)),
       HeadingNoteDivider,
       ...reportManager.listSortedByName(),
     ];

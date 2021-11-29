@@ -17,7 +17,7 @@ void main() {
 
     when(appManager.baitManager.formatNameWithCategory(any)).thenReturn(null);
 
-    when(appManager.catchManager.catchesSortedByTimestamp(
+    when(appManager.catchManager.catches(
       any,
       filter: anyNamed("filter"),
       dateRange: anyNamed("dateRange"),

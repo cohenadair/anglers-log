@@ -285,7 +285,7 @@ class BaitPickerInput extends StatelessWidget {
         return ValueListenableBuilder<Set<BaitAttachment>?>(
           valueListenable: controller,
           builder: (context, _, __) => MultiListPickerInput(
-            padding: insetsHorizontalDefaultVerticalWidget,
+            padding: insetsDefault,
             values: baitManager
                 .attachmentsDisplayValues(controller.value, context)
                 .toSet(),

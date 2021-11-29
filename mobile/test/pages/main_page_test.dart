@@ -28,7 +28,7 @@ void main() {
 
     when(appManager.catchManager.imageNamesSortedByTimestamp(any))
         .thenReturn([]);
-    when(appManager.catchManager.catchesSortedByTimestamp(
+    when(appManager.catchManager.catches(
       any,
       filter: anyNamed("filter"),
       dateRange: anyNamed("dateRange"),

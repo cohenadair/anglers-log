@@ -35,7 +35,7 @@ class IconList extends StatelessWidget {
             color: Theme.of(context).disabledColor,
           ),
         ),
-        const HorizontalSpace(paddingWidgetDouble),
+        const HorizontalSpace(paddingXL),
         Expanded(
           child: Text(
             value,

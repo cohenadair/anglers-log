@@ -11,7 +11,6 @@ import '../model/gen/anglerslog.pb.dart';
 import '../pages/add_catch_journey.dart';
 import '../pages/save_fishing_spot_page.dart';
 import '../res/dimen.dart';
-import '../res/style.dart';
 import '../utils/dialog_utils.dart';
 import '../utils/page_utils.dart';
 import '../utils/protobuf_utils.dart';
@@ -21,6 +20,7 @@ import '../wrappers/io_wrapper.dart';
 import '../wrappers/url_launcher_wrapper.dart';
 import 'bottom_sheet_picker.dart';
 import 'button.dart';
+import 'floating_container.dart';
 import 'list_item.dart';
 import 'widget.dart';
 
@@ -116,9 +116,8 @@ class FishingSpotDetails extends StatelessWidget {
       );
     }
 
-    return Container(
+    return FloatingContainer(
       key: containerKey,
-      decoration: const FloatingBoxDecoration.rectangle(),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
@@ -173,7 +172,7 @@ class _FishingSpotActions extends StatelessWidget {
       child: ListView.separated(
         padding: insetsHorizontalDefault,
         scrollDirection: Axis.horizontal,
-        separatorBuilder: (_, i) => const HorizontalSpace(paddingWidgetSmall),
+        separatorBuilder: (_, i) => const HorizontalSpace(paddingSmall),
         itemBuilder: (context, i) => children[i],
         itemCount: children.length,
       ),

@@ -1526,7 +1526,7 @@ class MockCatchManager extends _i1.Mock implements _i15.CatchManager {
           Invocation.method(#matchesFilter, [id, filter, context]),
           returnValue: false) as bool);
   @override
-  List<_i8.Catch> catchesSortedByTimestamp(_i44.BuildContext? context,
+  List<_i8.Catch> catches(_i44.BuildContext? context,
           {String? filter,
           _i8.DateRange? dateRange,
           bool? isCatchAndReleaseOnly = false,

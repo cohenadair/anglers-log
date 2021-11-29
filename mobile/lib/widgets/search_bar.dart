@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:quiver/strings.dart';
 
 import '../res/dimen.dart';
-import '../res/style.dart';
 import '../widgets/widget.dart';
+import 'floating_container.dart';
 
 class SearchBar extends StatefulWidget {
   static const height = 40.0;
@@ -53,6 +53,7 @@ class _SearchBarState extends State<SearchBar> {
   late VoidCallback _onFocusChanged;
 
   bool get _isInput => widget.delegate.searchBarType == SearchBarType.input;
+
   bool get focused => _focusNode.hasFocus;
 
   @override
@@ -113,44 +114,35 @@ class _SearchBarState extends State<SearchBar> {
     }
 
     return SafeArea(
-      child: Container(
+      child: FloatingContainer(
         height: SearchBar.height,
         margin: widget.margin,
-        decoration: FloatingBoxDecoration.rectangle(elevated: widget.elevated),
-        // Wrap InkWell in a Material widget so the fill animation is shown
-        // on top of the parent Container widget.
-        child: Material(
-          color: Colors.transparent,
-          child: InkWell(
-            onTap: widget.delegate.onTap(),
-            borderRadius: BorderRadius.circular(floatingCornerRadius),
-            child: Row(
-              children: <Widget>[
-                leading,
-                Expanded(
-                  // Use IgnorePointer instead of CupertinoTextField.enabled so
-                  // the background doesn't change when disabled.
-                  child: IgnorePointer(
-                    ignoring: !_isInput,
-                    child: CupertinoTextField(
-                      padding: insetsZero,
-                      decoration: null,
-                      onChanged: widget.delegate.onTextChanged,
-                      placeholder: widget.hint,
-                      placeholderStyle: Theme.of(context)
-                          .textTheme
-                          .subtitle1!
-                          .copyWith(color: Theme.of(context).disabledColor),
-                      controller: _controller,
-                      focusNode: _focusNode,
-                      cursorColor: Theme.of(context).primaryColor,
-                    ),
-                  ),
+        onTap: widget.delegate.onTap(),
+        child: Row(
+          children: <Widget>[
+            leading,
+            Expanded(
+              // Use IgnorePointer instead of CupertinoTextField.enabled so
+              // the background doesn't change when disabled.
+              child: IgnorePointer(
+                ignoring: !_isInput,
+                child: CupertinoTextField(
+                  padding: insetsZero,
+                  decoration: null,
+                  onChanged: widget.delegate.onTextChanged,
+                  placeholder: widget.hint,
+                  placeholderStyle: Theme.of(context)
+                      .textTheme
+                      .subtitle1!
+                      .copyWith(color: Theme.of(context).disabledColor),
+                  controller: _controller,
+                  focusNode: _focusNode,
+                  cursorColor: Theme.of(context).primaryColor,
                 ),
-                trailing,
-              ],
+              ),
             ),
-          ),
+            trailing,
+          ],
         ),
       ),
     );

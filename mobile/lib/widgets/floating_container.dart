@@ -1,75 +1,71 @@
 import 'package:flutter/material.dart';
-import 'package:quiver/strings.dart';
 
 import '../res/dimen.dart';
 import '../res/style.dart';
-import '../widgets/list_item.dart';
-import '../widgets/widget.dart';
 
-/// A floating container aligned to the bottom of its container. This widget
-/// is meant to be used at the bottom of a map, or to appear floating above a
-/// background widget.
-///
-/// The [title] and [subtitle] widgets are embedded in a [ListItem] widget, and
-/// will include a [RightChevronIcon] on the right when [onTap] is not null.
-///
-/// Addition widgets in [children] will be rendered under the [ListItem].
+/// A floating container resembling a [Card], with our own style.
 class FloatingContainer extends StatelessWidget {
-  final String? title;
-  final String? subtitle;
+  final Widget? child;
   final EdgeInsets? margin;
-  final Alignment? alignment;
+  final EdgeInsets? padding;
+  final double? width;
+  final double? height;
   final VoidCallback? onTap;
+  final bool isCircle;
 
-  /// Rendered below [title] and [subtitle].
-  final List<Widget> children;
+  /// If true, the [Container.decoration] is null. This is useful for animating
+  /// between two [FloatingContainer] when the widget beneath changes color.
+  final bool isTransparent;
 
-  FloatingContainer({
-    this.title,
-    this.subtitle,
+  const FloatingContainer({
+    Key? key,
+    this.child,
     this.margin,
-    this.alignment,
+    this.padding,
+    this.width,
+    this.height,
     this.onTap,
-    this.children = const [],
-  }) : assert(isNotEmpty(title) || isNotEmpty(subtitle));
-
-  bool get _tapEnabled => onTap != null;
+    this.isCircle = false,
+    this.isTransparent = false,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    String? title;
-    String? subtitle;
-    if (isNotEmpty(this.title)) {
-      title = this.title;
-      subtitle = this.subtitle;
-    } else if (isNotEmpty(this.subtitle)) {
-      title = this.subtitle;
+    var child = this.child;
+    if (onTap != null) {
+      child = InkWell(
+        borderRadius: BorderRadius.circular(floatingCornerRadius),
+        onTap: onTap,
+        child: child,
+      );
     }
 
-    return Align(
-      alignment: alignment ?? Alignment.bottomCenter,
-      child: Container(
-        margin: margin ?? insetsDefault,
-        decoration: const FloatingBoxDecoration.rectangle(),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Material(
-              clipBehavior: Clip.antiAlias,
-              borderRadius:
-                  const BorderRadius.all(Radius.circular(floatingCornerRadius)),
-              color: Colors.transparent,
-              child: ImageListItem(
-                title: title,
-                subtitle: subtitle,
-                onTap: onTap,
-                trailing: _tapEnabled ? RightChevronIcon() : null,
-                showPlaceholder: false,
-              ),
-            ),
-            ...children,
-          ],
-        ),
+    var decoration = const BoxDecoration(
+      color: Colors.white,
+      boxShadow: boxShadowDefault,
+    );
+
+    if (isCircle) {
+      decoration = decoration.copyWith(shape: BoxShape.circle);
+    } else {
+      decoration = decoration.copyWith(
+        borderRadius:
+            const BorderRadius.all(Radius.circular(floatingCornerRadius)),
+      );
+    }
+
+    return Container(
+      margin: margin,
+      padding: padding,
+      width: width,
+      height: height,
+      decoration: isTransparent ? null : decoration,
+      clipBehavior: isTransparent ? Clip.none : Clip.antiAlias,
+      // Wrap the child in a Material widget so fill animation is shown
+      // on top of the parent Container widget when children are tapped.
+      child: Material(
+        color: Colors.transparent,
+        child: child,
       ),
     );
   }

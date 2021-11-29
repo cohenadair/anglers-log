@@ -33,7 +33,7 @@ class WorkResult extends StatelessWidget {
           color: style.color,
           size: _iconSize,
         ),
-        const VerticalSpace(paddingWidgetSmall),
+        const VerticalSpace(paddingSmall),
         Text(
           description,
           style: style,

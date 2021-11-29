@@ -62,7 +62,7 @@ class LabelValue extends StatelessWidget {
     }
 
     return Padding(
-      padding: padding ?? insetsHorizontalDefaultVerticalWidget,
+      padding: padding ?? insetsDefault,
       child: child,
     );
   }

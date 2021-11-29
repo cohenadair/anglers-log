@@ -677,7 +677,7 @@ class _SaveReportPageState extends State<SaveReportPage> {
     }
 
     return MultiListPickerInput(
-      padding: insetsHorizontalDefaultVerticalWidget,
+      padding: insetsDefault,
       values:
           controller.value.map((item) => nameForItem(context, item)).toSet(),
       emptyValue: (context) => emptyValue,

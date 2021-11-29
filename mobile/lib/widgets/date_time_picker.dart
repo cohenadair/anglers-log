@@ -36,7 +36,7 @@ class DateTimePicker extends StatelessWidget {
                 child: Padding(
                   padding: const EdgeInsets.only(
                     left: paddingDefault,
-                    right: paddingWidget,
+                    right: paddingDefault,
                   ),
                   child: datePicker,
                 ),

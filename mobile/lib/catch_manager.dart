@@ -23,6 +23,12 @@ import 'utils/protobuf_utils.dart';
 import 'utils/string_utils.dart';
 import 'water_clarity_manager.dart';
 
+enum CatchSortOrder {
+  newestToOldest,
+  longestToShortest,
+  heaviestToLightest,
+}
+
 class CatchManager extends EntityManager<Catch> {
   static CatchManager of(BuildContext context) =>
       Provider.of<AppManager>(context, listen: false).catchManager;
@@ -105,9 +111,9 @@ class CatchManager extends EntityManager<Catch> {
   @override
   String get tableName => "catch";
 
-  /// Returns all catches, sorted from newest to oldest.
-  List<Catch> catchesSortedByTimestamp(
+  List<Catch> catches(
     BuildContext context, {
+    CatchSortOrder sortOrder = CatchSortOrder.newestToOldest,
     String? filter,
     DateRange? dateRange,
     bool isCatchAndReleaseOnly = false,
@@ -169,7 +175,18 @@ class CatchManager extends EntityManager<Catch> {
       windSpeedFilter: windSpeedFilter,
     ));
 
-    result.sort((lhs, rhs) => rhs.timestamp.compareTo(lhs.timestamp));
+    switch (sortOrder) {
+      case CatchSortOrder.newestToOldest:
+        result.sort((lhs, rhs) => rhs.timestamp.compareTo(lhs.timestamp));
+        break;
+      case CatchSortOrder.longestToShortest:
+        result.sort((lhs, rhs) => rhs.length.compareTo(lhs.length));
+        break;
+      case CatchSortOrder.heaviestToLightest:
+        result.sort((lhs, rhs) => rhs.weight.compareTo(lhs.weight));
+        break;
+    }
+
     return result;
   }
 
@@ -347,7 +364,7 @@ class CatchManager extends EntityManager<Catch> {
   /// Returns all image names from [Catch] objects, where the [Catch] objects
   /// are sorted by timestamp.
   List<String> imageNamesSortedByTimestamp(BuildContext context) {
-    return catchesSortedByTimestamp(context)
+    return catches(context)
         .expand((cat) => cat.imageNames)
         .toList();
   }

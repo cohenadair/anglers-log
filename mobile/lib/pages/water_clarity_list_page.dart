@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mobile/res/gen/custom_icons.dart';
 
 import '../i18n/strings.dart';
 import '../model/gen/anglerslog.pb.dart';
@@ -39,7 +40,7 @@ class WaterClarityListPage extends StatelessWidget {
         loadItems: (query) =>
             waterClarityManager.listSortedByName(filter: query),
         emptyItemsSettings: ManageableListPageEmptyListSettings(
-          icon: Icons.person,
+          icon: CustomIcons.waterClarities,
           title: Strings.of(context).waterClarityListPageEmptyListTitle,
           description:
               Strings.of(context).waterClarityListPageEmptyListDescription,

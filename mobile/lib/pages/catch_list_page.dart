@@ -27,10 +27,13 @@ class CatchListPage extends StatelessWidget {
   /// See [ManageableListPage.pickerSettings].
   final ManageableListPagePickerSettings<Catch>? pickerSettings;
 
+  final CatchListItemModelSubtitleType? subtitleType;
+
   const CatchListPage({
     this.enableAdding = true,
     this.catches = const [],
     this.pickerSettings,
+    this.subtitleType,
   });
 
   @override
@@ -63,7 +66,7 @@ class CatchListPage extends StatelessWidget {
           speciesManager,
         ],
         loadItems: (query) => catches.isEmpty
-            ? catchManager.catchesSortedByTimestamp(context, filter: query)
+            ? catchManager.catches(context, filter: query)
             : catches,
         emptyItemsSettings: ManageableListPageEmptyListSettings(
           icon: CustomIcons.catches,
@@ -81,7 +84,7 @@ class CatchListPage extends StatelessWidget {
   }
 
   ManageableListPageItemModel _buildListItem(BuildContext context, Catch cat) {
-    var model = CatchListItemModel(context, cat);
+    var model = CatchListItemModel(context, cat, subtitleType);
     return ManageableListPageItemModel(
       child: ManageableListImageItem(
         imageName: model.imageName,
