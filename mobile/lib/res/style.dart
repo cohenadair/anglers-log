@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../res/dimen.dart';
-
 const FontWeight fontWeightBold = FontWeight.w500;
 
 const TextStyle styleHeading = TextStyle(

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mobile/widgets/widget.dart';
 
 import '../i18n/strings.dart';
 import '../method_manager.dart';
@@ -36,7 +37,7 @@ class MethodListPage extends StatelessWidget {
         listenerManagers: [methodManager],
         loadItems: (query) => methodManager.listSortedByName(filter: query),
         emptyItemsSettings: ManageableListPageEmptyListSettings(
-          icon: Icons.list,
+          icon: iconMethod,
           title: Strings.of(context).methodListPageEmptyListTitle,
           description: Strings.of(context).methodListPageEmptyListDescription,
         ),

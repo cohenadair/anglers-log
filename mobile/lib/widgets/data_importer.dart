@@ -141,7 +141,7 @@ class _DataImporterState extends State<DataImporter> {
     return Padding(
       padding: insetsTopDefault,
       child: AnimatedSwitcher(
-        duration: defaultAnimationDuration,
+        duration: animDurationDefault,
         child: Column(
           key: ValueKey<_RenderState>(_renderState),
           children: children,

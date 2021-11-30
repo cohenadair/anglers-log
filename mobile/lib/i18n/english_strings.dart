@@ -170,6 +170,8 @@ Map<String, Map<String, String>> get englishStrings => {
         "baitListPage_emptyListTitle": "No Baits",
         "baitListPage_emptyListDescription":
             "You haven't yet added any baits. Tap the %s button to begin.",
+        "baitsSummary_empty":
+            "When baits are added to your log, a summary of their catches will be shown here.",
         "baitListPage_variantsLabel": "%s Variants",
         "baitListPage_variantLabel": "%s Variant",
         "saveBaitPage_newTitle": "New Bait",
@@ -208,6 +210,8 @@ Map<String, Map<String, String>> get englishStrings => {
         "anglerListPage_emptyListTitle": "No Anglers",
         "anglerListPage_emptyListDescription":
             "You haven't yet added any anglers. Tap the %s button to begin.",
+        "anglersSummary_empty":
+            "When anglers are added to your log, a summary of their catches will be shown here.",
         "saveMethodPage_newTitle": "New Fishing Method",
         "saveMethodPage_editTitle": "Edit Fishing Method",
         "saveMethodPage_existsMessage": "Fishing method already exists",
@@ -221,6 +225,8 @@ Map<String, Map<String, String>> get englishStrings => {
         "methodListPage_emptyListTitle": "No Fishing Methods",
         "methodListPage_emptyListDescription":
             "You haven't yet added any fishing methods. Tap the %s button to begin.",
+        "methodSummary_empty":
+            "When fishing methods are added to your log, a summary of their catches will be shown here.",
         "saveWaterClarityPage_newTitle": "New Water Clarity",
         "saveWaterClarityPage_editTitle": "Edit Water Clarity",
         "saveWaterClarityPage_existsMessage": "Water Clarity already exists",
@@ -234,6 +240,8 @@ Map<String, Map<String, String>> get englishStrings => {
         "waterClarityListPage_emptyListTitle": "No Water Clarities",
         "waterClarityListPage_emptyListDescription":
             "You haven't yet added any water clarities. Tap the %s button to begin.",
+        "waterClaritiesSummary_empty":
+            "When water clarities are added to your log, a summary of their catches will be shown here.",
         "statsPage_menuTitle": "Stats",
         "statsPage_title": "Stats",
         "statsPage_newReport": "New Report",
@@ -259,7 +267,10 @@ Map<String, Map<String, String>> get englishStrings => {
         "personalBests_speciesByWeight": "Species By Weight",
         "personalBests_speciesByWeightLabel": "Heaviest",
         "personalBests_showAllSpecies": "Show all species",
-        "personalBests_Average": "Average",
+        "personalBests_average": "Average",
+        "personalBests_noDataTitle": "No Data",
+        "personalBests_noDataDescription":
+            "Cannot determine your personal bests for the selected date range. Ensure you’ve added a trip, or added a catch with a length or weight value.",
         "reportView_emptyLog": "Empty Log",
         "reportView_emptyLogDescription":
             "You haven't yet added any catches. To add a catch, tap the %s icon.",
@@ -455,6 +466,8 @@ Map<String, Map<String, String>> get englishStrings => {
         "fishingSpotListPage_emptyListTitle": "No Fishing Spots",
         "fishingSpotListPage_emptyListDescription":
             "To add a fishing spot, tap on the map and save the dropped pin.",
+        "fishingSpotsSummary_empty":
+            "When fishing spots are added to your log, a summary of their catches will be shown here.",
         "fishingSpotListPage_noBodyOfWater": "No Body Of Water",
         "fishingSpotMap_locationPermissionTitle": "Location Access",
         "fishingSpotMap_locationPermissionDescription":
@@ -813,6 +826,8 @@ Map<String, Map<String, String>> get englishStrings => {
         "bodyOfWaterListPage_emptyListTitle": "No Bodies Of Water",
         "bodyOfWaterListPage_emptyListDescription":
             "You haven't yet added any bodies of water. Tap the %s button to begin.",
+        "bodiesOfWaterSummary_empty":
+            "When bodies of water are added to your log, a summary of their catches will be shown here.",
         "saveBodyOfWaterPage_newTitle": "New Body Of Water",
         "saveBodyOfWaterPage_editTitle": "Edit Body Of Water",
         "saveBodyOfWaterPage_existsMessage": "Body of water already exists",

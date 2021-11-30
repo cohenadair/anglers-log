@@ -81,7 +81,7 @@ class AtmosphereInput extends StatelessWidget {
 
         return AnimatedCrossFade(
           crossFadeState: state,
-          duration: defaultAnimationDuration,
+          duration: animDurationDefault,
           firstChild: firstChild,
           secondChild: secondChild,
         );

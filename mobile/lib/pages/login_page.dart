@@ -101,7 +101,7 @@ class _LoginPageState extends State<LoginPage> {
       crossFadeState: _isUpdatingFromLegacy
           ? CrossFadeState.showFirst
           : CrossFadeState.showSecond,
-      duration: defaultAnimationDuration,
+      duration: animDurationDefault,
     );
   }
 

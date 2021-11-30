@@ -110,7 +110,7 @@ class _ProPageState extends State<ProPage> {
         future: _subscriptionsFuture,
         builder: (context, snapshot) {
           return AnimatedSwitcher(
-            duration: defaultAnimationDuration,
+            duration: animDurationDefault,
             child: snapshot.connectionState != ConnectionState.done
                 ? const Loading()
                 : _buildSubscriptionOptions(snapshot.data),
@@ -120,7 +120,7 @@ class _ProPageState extends State<ProPage> {
     }
 
     return AnimatedSwitcher(
-      duration: defaultAnimationDuration,
+      duration: animDurationDefault,
       child: child,
     );
   }

@@ -170,7 +170,7 @@ class __NumberFilterPageState extends State<_NumberFilterPage> {
     }
 
     return AnimatedSwitcher(
-      duration: defaultAnimationDuration,
+      duration: animDurationDefault,
       child: child,
     );
   }
@@ -188,7 +188,7 @@ class __NumberFilterPageState extends State<_NumberFilterPage> {
     }
 
     return AnimatedSwitcher(
-      duration: defaultAnimationDuration,
+      duration: animDurationDefault,
       child: child,
     );
   }

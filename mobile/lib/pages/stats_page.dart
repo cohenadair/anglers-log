@@ -89,7 +89,10 @@ class _StatsPageState extends State<StatsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: EntityListenerBuilder(
-        managers: [_reportManager],
+        managers: [
+          _reportManager,
+          _catchManager,
+        ],
         onAnyChange: () => _updateCurrentReport(_report.id),
         builder: (context) {
           return CustomScrollView(
@@ -165,7 +168,7 @@ class _StatsPageState extends State<StatsPage> {
           icon: CustomIcons.catches,
           title: Strings.of(context).reportViewEmptyLog,
           description: Strings.of(context).reportViewEmptyLogDescription,
-          descriptionIcon: bottomBarAddButtonIcon,
+          descriptionIcon: iconBottomBarAdd,
         ),
       );
     }
@@ -241,8 +244,9 @@ class _StatsPageState extends State<StatsPage> {
   }
 
   Widget _buildCatchSummary() {
+    // Note: isEmpty parameter isn't needed here since this widget will never
+    // get built if there are no catches in the log.
     return _buildEntityCatchSummary<Catch>(
-      isEmpty: !_catchManager.hasEntities,
       reportBuilder: (dateRange, _) => CatchSummaryReport<Catch>(
         context: context,
         ranges: [dateRange],
@@ -251,8 +255,10 @@ class _StatsPageState extends State<StatsPage> {
   }
 
   Widget _buildSpeciesSummary() {
+    // Note: isEmpty parameter isn't needed here since this widget will never
+    // get built if there are no catches in the log. If there are catches in
+    // the log, there will be at least one species.
     return _buildEntityCatchSummary<Species>(
-      isEmpty: !_speciesManager.hasEntities,
       reportBuilder: (dateRange, species) => CatchSummaryReport<Species>(
         context: context,
         ranges: [dateRange],
@@ -281,6 +287,11 @@ class _StatsPageState extends State<StatsPage> {
         nameBuilder: (context, species) =>
             _anglerManager.displayName(context, species),
       ),
+      emptyWidget: EmptyListPlaceholder.static(
+        icon: iconAngler,
+        title: Strings.of(context).anglerListPageEmptyListTitle,
+        description: Strings.of(context).anglersSummaryEmpty,
+      ),
     );
   }
 
@@ -303,6 +314,11 @@ class _StatsPageState extends State<StatsPage> {
         nameBuilder: (context, attachment) =>
             _baitManager.attachmentDisplayValue(attachment, context)!,
       ),
+      emptyWidget: EmptyListPlaceholder.static(
+        icon: iconBait,
+        title: Strings.of(context).baitListPageEmptyListTitle,
+        description: Strings.of(context).baitsSummaryEmpty,
+      ),
     );
   }
 
@@ -321,6 +337,11 @@ class _StatsPageState extends State<StatsPage> {
             BodyOfWaterListPage(pickerSettings: settings),
         nameBuilder: (context, bodyOfWater) =>
             _bodyOfWaterManager.displayName(context, bodyOfWater),
+      ),
+      emptyWidget: EmptyListPlaceholder.static(
+        icon: iconBodyOfWater,
+        title: Strings.of(context).bodyOfWaterListPageEmptyListTitle,
+        description: Strings.of(context).bodiesOfWaterSummaryEmpty,
       ),
     );
   }
@@ -342,6 +363,11 @@ class _StatsPageState extends State<StatsPage> {
         nameBuilder: (context, fishingSpot) =>
             _fishingSpotManager.displayName(context, fishingSpot),
       ),
+      emptyWidget: EmptyListPlaceholder.static(
+        icon: iconFishingSpot,
+        title: Strings.of(context).fishingSpotListPageEmptyListTitle,
+        description: Strings.of(context).fishingSpotsSummaryEmpty,
+      ),
     );
   }
 
@@ -358,6 +384,11 @@ class _StatsPageState extends State<StatsPage> {
         pickerBuilder: (settings) => MethodListPage(pickerSettings: settings),
         nameBuilder: (context, method) =>
             _methodManager.displayName(context, method),
+      ),
+      emptyWidget: EmptyListPlaceholder.static(
+        icon: iconMethod,
+        title: Strings.of(context).methodListPageEmptyListTitle,
+        description: Strings.of(context).methodSummaryEmpty,
       ),
     );
   }
@@ -453,24 +484,25 @@ class _StatsPageState extends State<StatsPage> {
         nameBuilder: (context, clarity) =>
             _waterClarityManager.displayName(context, clarity),
       ),
+      emptyWidget: EmptyListPlaceholder.static(
+        icon: iconWaterClarity,
+        title: Strings.of(context).waterClarityListPageEmptyListTitle,
+        description: Strings.of(context).waterClaritiesSummaryEmpty,
+      ),
     );
   }
 
   Widget _buildEntityCatchSummary<T>({
     required CatchSummaryReport<T> Function(DateRange, T?) reportBuilder,
+    EmptyListPlaceholder? emptyWidget,
     bool isEmpty = false,
     bool isStatic = false,
     CatchSummaryPicker<T>? picker,
   }) {
+    assert(!isEmpty || emptyWidget != null);
+
     if (isEmpty) {
-      // TODO: Need real widget
-      return Center(
-        child: EmptyListPlaceholder.static(
-          icon: anglersIcon,
-          title: "No Anglers",
-          description: "You haven't yet added any anglers.",
-        ),
-      );
+      return Center(child: emptyWidget);
     }
 
     return CatchSummary<T>(

@@ -198,7 +198,7 @@ class _EntityPageState extends State<EntityPage> {
 
   Widget _buildBackButton() {
     return AnimatedSwitcher(
-      duration: defaultAnimationDuration,
+      duration: animDurationDefault,
       child: FloatingButton.back(
         key: ValueKey<bool>(_isImageShowing),
         padding: insetsTopSmall,
@@ -213,7 +213,7 @@ class _EntityPageState extends State<EntityPage> {
     }
 
     return AnimatedSwitcher(
-      duration: defaultAnimationDuration,
+      duration: animDurationDefault,
       child: FloatingButton(
         key: ValueKey<bool>(_isImageShowing),
         icon: _isImageShowing ? Icons.edit : null,
@@ -235,7 +235,7 @@ class _EntityPageState extends State<EntityPage> {
     }
 
     return AnimatedSwitcher(
-      duration: defaultAnimationDuration,
+      duration: animDurationDefault,
       child: FloatingButton.icon(
         key: ValueKey<bool>(_isImageShowing),
         icon: Icons.delete,

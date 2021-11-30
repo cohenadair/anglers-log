@@ -65,7 +65,7 @@ class _FishingSpotListPageState extends State<FishingSpotListPage> {
         ],
         loadItems: (query) => _model.buildModel(context, query),
         emptyItemsSettings: ManageableListPageEmptyListSettings(
-          icon: Icons.place,
+          icon: iconFishingSpot,
           title: Strings.of(context).fishingSpotListPageEmptyListTitle,
           description:
               Strings.of(context).fishingSpotListPageEmptyListDescription,

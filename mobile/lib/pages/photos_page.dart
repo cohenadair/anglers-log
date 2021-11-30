@@ -54,7 +54,7 @@ class PhotosPage extends StatelessWidget {
                           title: Strings.of(context).photosPageEmptyTitle,
                           description:
                               Strings.of(context).photosPageEmptyDescription,
-                          descriptionIcon: bottomBarAddButtonIcon,
+                          descriptionIcon: iconBottomBarAdd,
                         ),
                       ),
                     ),

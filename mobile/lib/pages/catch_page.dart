@@ -210,7 +210,7 @@ class _CatchPageState extends State<CatchPage> {
     }
 
     return ListItem(
-      leading: const Icon(anglersIcon),
+      leading: const Icon(iconAngler),
       title: Text(angler.name),
     );
   }
@@ -272,7 +272,7 @@ class _CatchPageState extends State<CatchPage> {
       padding: insetsDefault,
       child: IconList(
         values: values,
-        icon: CustomIcons.waterClarities,
+        icon: iconWaterClarity,
       ),
     );
   }

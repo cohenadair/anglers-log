@@ -584,7 +584,7 @@ class _RowEndsCrossFade extends StatelessWidget {
   Widget build(BuildContext context) {
     return AnimatedCrossFade(
       crossFadeState: state,
-      duration: defaultAnimationDuration,
+      duration: animDurationDefault,
       firstChild: _buildChildContainer(firstChild),
       secondChild: _buildChildContainer(secondChild),
       // A custom layout builder is used here to remove "jarring" result when

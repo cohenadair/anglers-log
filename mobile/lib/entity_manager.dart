@@ -3,7 +3,6 @@ import 'dart:typed_data';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:mobile/catch_manager.dart';
 import 'package:protobuf/protobuf.dart';
 import 'package:quiver/strings.dart';
 

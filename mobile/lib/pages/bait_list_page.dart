@@ -86,7 +86,7 @@ class _BaitListPageState extends State<BaitListPage> {
         ],
         loadItems: (filter) => _model.buildModel(context, filter),
         emptyItemsSettings: ManageableListPageEmptyListSettings(
-          icon: Icons.bug_report,
+          icon: iconBait,
           title: Strings.of(context).baitListPageEmptyListTitle,
           description: Strings.of(context).baitListPageEmptyListDescription,
         ),

@@ -415,6 +415,8 @@ class Strings {
   String get baitListPageEmptyListDescription =>
       _string("baitListPage_emptyListDescription");
 
+  String get baitsSummaryEmpty => _string("baitsSummary_empty");
+
   String get baitListPageVariantsLabel => _string("baitListPage_variantsLabel");
 
   String get baitListPageVariantLabel => _string("baitListPage_variantLabel");
@@ -497,6 +499,8 @@ class Strings {
   String get anglerListPageEmptyListDescription =>
       _string("anglerListPage_emptyListDescription");
 
+  String get anglersSummaryEmpty => _string("anglersSummary_empty");
+
   String get saveMethodPageNewTitle => _string("saveMethodPage_newTitle");
 
   String get saveMethodPageEditTitle => _string("saveMethodPage_editTitle");
@@ -521,6 +525,8 @@ class Strings {
 
   String get methodListPageEmptyListDescription =>
       _string("methodListPage_emptyListDescription");
+
+  String get methodSummaryEmpty => _string("methodSummary_empty");
 
   String get saveWaterClarityPageNewTitle =>
       _string("saveWaterClarityPage_newTitle");
@@ -550,6 +556,9 @@ class Strings {
 
   String get waterClarityListPageEmptyListDescription =>
       _string("waterClarityListPage_emptyListDescription");
+
+  String get waterClaritiesSummaryEmpty =>
+      _string("waterClaritiesSummary_empty");
 
   String get statsPageMenuTitle => _string("statsPage_menuTitle");
 
@@ -609,7 +618,12 @@ class Strings {
   String get personalBestsShowAllSpecies =>
       _string("personalBests_showAllSpecies");
 
-  String get personalBestsAverage => _string("personalBests_Average");
+  String get personalBestsAverage => _string("personalBests_average");
+
+  String get personalBestsNoDataTitle => _string("personalBests_noDataTitle");
+
+  String get personalBestsNoDataDescription =>
+      _string("personalBests_noDataDescription");
 
   String get reportViewEmptyLog => _string("reportView_emptyLog");
 
@@ -937,6 +951,8 @@ class Strings {
 
   String get fishingSpotListPageEmptyListDescription =>
       _string("fishingSpotListPage_emptyListDescription");
+
+  String get fishingSpotsSummaryEmpty => _string("fishingSpotsSummary_empty");
 
   String get fishingSpotListPageNoBodyOfWater =>
       _string("fishingSpotListPage_noBodyOfWater");
@@ -1683,6 +1699,8 @@ class Strings {
 
   String get bodyOfWaterListPageEmptyListDescription =>
       _string("bodyOfWaterListPage_emptyListDescription");
+
+  String get bodiesOfWaterSummaryEmpty => _string("bodiesOfWaterSummary_empty");
 
   String get saveBodyOfWaterPageNewTitle =>
       _string("saveBodyOfWaterPage_newTitle");

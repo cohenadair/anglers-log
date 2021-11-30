@@ -105,7 +105,7 @@ class _EmailVerificationPageState extends State<EmailVerificationPage> {
     }
 
     return AnimatedSwitcher(
-      duration: defaultAnimationDuration,
+      duration: animDurationDefault,
       child: Padding(
         padding: insetsHorizontalDefault,
         child: child,

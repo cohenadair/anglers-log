@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:mobile/res/gen/custom_icons.dart';
 import 'package:quiver/strings.dart';
 
 import '../i18n/strings.dart';
@@ -12,9 +13,15 @@ import 'button.dart';
 import 'input_controller.dart';
 import 'list_item.dart';
 
-const anglersIcon = Icons.person;
-const bottomBarAddButtonIcon = Icons.add_box_rounded;
-const defaultAnimationDuration = Duration(milliseconds: 150);
+const iconAngler = Icons.person;
+const iconBait = Icons.bug_report;
+const iconBodyOfWater = Icons.water;
+const iconBottomBarAdd = Icons.add_box_rounded;
+const iconFishingSpot = Icons.place;
+const iconMethod = Icons.list;
+const iconWaterClarity = CustomIcons.waterClarities;
+
+const animDurationDefault = Duration(milliseconds: 150);
 
 class Empty extends StatelessWidget {
   @override
@@ -131,7 +138,7 @@ class HeadingNoteDivider extends StatelessWidget {
 
   Widget _buildNote() {
     return AnimatedSwitcher(
-      duration: defaultAnimationDuration,
+      duration: animDurationDefault,
       child: hideNote
           ? Empty()
           : Padding(
@@ -314,7 +321,7 @@ class AnimatedVisibility extends StatelessWidget {
   Widget build(BuildContext context) {
     return AnimatedOpacity(
       opacity: visible ? 1.0 : 0.0,
-      duration: defaultAnimationDuration,
+      duration: animDurationDefault,
       child: child,
     );
   }

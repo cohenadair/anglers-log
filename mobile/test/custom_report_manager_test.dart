@@ -1,6 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/bait_manager.dart';
-import 'package:mobile/report_manager.dart';
 import 'package:mobile/fishing_spot_manager.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
 import 'package:mobile/species_manager.dart';

@@ -78,11 +78,14 @@ class _PersonalBestsReportState extends State<PersonalBestsReport> {
   List<Widget> _buildReportViews() {
     if (!_model.hasData) {
       return [
-        const EmptyListPlaceholder.static(
-          title: "No catches",
-          description: "No catches were made during the selected time period.",
-          icon: CustomIcons.catches,
-          padding: insetsHorizontalDefaultVerticalXL,
+        Expanded(
+          child: Center(
+            child: EmptyListPlaceholder.static(
+              title: Strings.of(context).personalBestsNoDataTitle,
+              description: Strings.of(context).personalBestsNoDataDescription,
+              icon: CustomIcons.catches,
+            ),
+          ),
         ),
       ];
     }
@@ -568,8 +571,8 @@ class _MeasurementPerSpecies extends StatelessWidget {
   }
 
   Widget _buildShowAllRow(BuildContext context) {
-    if (maxRows == null) {
-      return Empty();
+    if (maxRows == null || map.length <= maxRows!) {
+      return const VerticalSpace(paddingDefault);
     }
 
     return ListItem(

@@ -451,7 +451,7 @@ class _ImagePickerPageState extends State<ImagePickerPage> {
               }
 
               return AnimatedSwitcher(
-                duration: defaultAnimationDuration,
+                duration: animDurationDefault,
                 child: child,
               );
             },

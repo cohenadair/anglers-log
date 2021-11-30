@@ -44,7 +44,7 @@ class MorePage extends StatelessWidget {
       children: [
         _buildPageItem(
           context,
-          icon: anglersIcon,
+          icon: iconAngler,
           title: Strings.of(context).anglerListPageMenuTitle,
           page: const AnglerListPage(),
         ),
@@ -56,13 +56,13 @@ class MorePage extends StatelessWidget {
         ),
         _buildPageItem(
           context,
-          icon: Icons.bug_report,
+          icon: iconBait,
           title: Strings.of(context).baitListPageMenuLabel,
           page: const BaitListPage(),
         ),
         _buildPageItem(
           context,
-          icon: Icons.water,
+          icon: iconBodyOfWater,
           title: Strings.of(context).bodyOfWaterListPageMenuLabel,
           page: const BodyOfWaterListPage(),
         ),
@@ -74,7 +74,7 @@ class MorePage extends StatelessWidget {
         ),
         _buildPageItem(
           context,
-          icon: Icons.list,
+          icon: iconMethod,
           title: Strings.of(context).methodListPageMenuTitle,
           page: const MethodListPage(),
         ),
@@ -98,7 +98,7 @@ class MorePage extends StatelessWidget {
         ),
         _buildPageItem(
           context,
-          icon: CustomIcons.waterClarities,
+          icon: iconWaterClarity,
           title: Strings.of(context).waterClarityListPageMenuTitle,
           page: const WaterClarityListPage(),
         ),
