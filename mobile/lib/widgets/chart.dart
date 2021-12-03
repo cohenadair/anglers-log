@@ -1,4 +1,4 @@
-import 'dart:math';
+import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 import 'package:mobile/utils/color_utils.dart';
@@ -137,7 +137,7 @@ class Chart<T> extends StatefulWidget {
     for (Series series in series) {
       assert(series.length == seriesLen,
           "All data lengths in series must be equal");
-      Color color = colors[Random().nextInt(colors.length)];
+      Color color = colors[math.Random().nextInt(colors.length)];
       colors.remove(color);
       series._color = color.withOpacity(_rowColorOpacity);
     }
@@ -194,8 +194,7 @@ class _ChartState<T> extends State<Chart<T>> {
     }
     return Padding(
       padding: widget.padding.copyWith(
-        top: paddingSmall,
-        bottom: paddingSmall,
+        bottom: paddingDefault,
       ),
       child: Wrap(
         spacing: paddingDefault,
@@ -206,9 +205,13 @@ class _ChartState<T> extends State<Chart<T>> {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Container(
+                    decoration: BoxDecoration(
+                      borderRadius: const BorderRadius.all(
+                          Radius.circular(4)),
+                      color: series._color,
+                    ),
                     width: _legendIndicatorSize,
                     height: _legendIndicatorSize,
-                    color: series._color,
                   ),
                   const HorizontalSpace(paddingSmall),
                   Text(series.dateRange.displayName(context)),
@@ -244,8 +247,8 @@ class _ChartState<T> extends State<Chart<T>> {
         );
 
         // Add space between series rows.
-        children.add(
-            VerticalSpace(series == _displayData.last ? 0 : paddingTiny));
+        children
+            .add(VerticalSpace(series == _displayData.last ? 0 : paddingTiny));
       }
 
       // Add space between rows.
@@ -264,10 +267,9 @@ class _ChartState<T> extends State<Chart<T>> {
 
   Widget _buildChartRow(double maxWidth, double maxValue, T item,
       Series<T> series, int? value, Color color) {
-    if (maxValue <= 0) {
-      _log.w("Can't create a chart row with maxValue = 0");
-      return Empty();
-    }
+    // Set a minimum max value of 1 so if the series values are 0, and "empty"
+    // row will still show.
+    maxValue = math.max(maxValue, 1);
 
     // Value can be null here if, for example, item A exists in one series but
     // not another.

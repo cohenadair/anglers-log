@@ -1055,6 +1055,8 @@ class Strings {
 
   String get analysisDurationCustom => _string("analysisDuration_custom");
 
+  String get yearsFormat => _string("yearsFormat");
+
   String get daysFormat => _string("daysFormat");
 
   String get hoursFormat => _string("hoursFormat");

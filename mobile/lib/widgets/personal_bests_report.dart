@@ -332,19 +332,21 @@ class _PersonalBest extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const VerticalSpace(paddingDefault),
-                  Row(
-                    children: [
-                      TitleLabel.style2(title),
-                      MinChip(chipText),
-                    ],
-                  ),
-                  const VerticalSpace(paddingSmall),
-                  _buildDetails(context),
-                ],
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const VerticalSpace(paddingDefault),
+                    Row(
+                      children: [
+                        TitleLabel.style2(title),
+                        MinChip(chipText),
+                      ],
+                    ),
+                    const VerticalSpace(paddingSmall),
+                    _buildDetails(context),
+                  ],
+                ),
               ),
               Padding(
                 padding: insetsHorizontalDefault,
@@ -390,6 +392,7 @@ class _PersonalBest extends StatelessWidget {
               : Text(
                   secondarySubtitle!,
                   style: styleSecondary(context),
+                  overflow: TextOverflow.ellipsis,
                 ),
         ],
       ),

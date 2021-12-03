@@ -357,8 +357,11 @@ class _CatchSummaryState<T> extends State<CatchSummary<T>> {
       viewAllDescription:
           Strings.of(context).reportSummaryPerFishingSpotDescription,
       series: _report.toSeries<FishingSpot>((model) => model.perFishingSpot),
-      labelBuilder: (entity) =>
-          _fishingSpotManager.displayName(context, entity),
+      labelBuilder: (entity) => _fishingSpotManager.displayName(
+        context,
+        entity,
+        includeBodyOfWater: true,
+      ),
       catchListBuilder: (entity, dateRange) => _buildCatchList(
         dateRange,
         fishingSpotIds: {entity.id},
@@ -832,7 +835,6 @@ class CatchSummaryReport<T> {
         context: context,
         dateRange: dateRange,
         catches: catches,
-        fillWithZeros: isComparing,
       ));
 
       if (catches.isEmpty || isComparing) {
@@ -843,46 +845,6 @@ class CatchSummaryReport<T> {
       lastCatch = catches.first;
       msSinceLastCatch =
           _timeManager.msSinceEpoch - lastCatch!.timestamp.toInt();
-    }
-
-    _removeZerosIfNeeded();
-  }
-
-  /// Removes data from [_models] if all values for a given entity is 0.
-  void _removeZerosIfNeeded() {
-    if (!isComparing) {
-      return;
-    }
-
-    _removeEntityZeros<Angler>(_anglerManager.list(), (m) => m.perAngler);
-    _removeEntityZeros<BaitAttachment>(
-        _baitManager.attachmentList(), (m) => m.perBait);
-    _removeEntityZeros<BodyOfWater>(
-        _bodyOfWaterManager.list(), (m) => m.perBodyOfWater);
-    _removeEntityZeros<FishingSpot>(
-        _fishingSpotManager.list(), (m) => m.perFishingSpot);
-    _removeEntityZeros<Method>(_methodManager.list(), (m) => m.perMethod);
-    _removeEntityZeros<MoonPhase>(
-        MoonPhases.selectable(), (m) => m.perMoonPhase);
-    _removeEntityZeros<Season>(Seasons.selectable(), (m) => m.perSeason);
-    _removeEntityZeros<Species>(_speciesManager.list(), (m) => m.perSpecies);
-    _removeEntityZeros<TideType>(TideTypes.selectable(), (m) => m.perTideType);
-    _removeEntityZeros<WaterClarity>(
-        _waterClarityManager.list(), (m) => m.perWaterClarity);
-  }
-
-  void _removeEntityZeros<E>(Iterable<E> entities,
-      Map<E, int> Function(_CatchSummaryReportModel) perEntity) {
-    for (var entity in entities) {
-      var isAllZero = false;
-      for (var model in _models) {
-        isAllZero &= perEntity(model)[entity] == 0;
-      }
-      if (isAllZero) {
-        for (var model in _models) {
-          perEntity(model).remove(entity);
-        }
-      }
     }
   }
 
@@ -993,13 +955,9 @@ class _CatchSummaryReportModel<T> {
     required this.context,
     required this.dateRange,
     Iterable<Catch> catches = const [],
-    bool fillWithZeros = false,
     CatchSummarySortOrder sortOrder = CatchSummarySortOrder.largestToSmallest,
   }) {
-    if (fillWithZeros) {
-      _fillCollectionsWithZeros();
-    }
-
+    _fillCollectionsWithZeros();
     _fillCollections(catches);
     _sortCollections(sortOrder);
   }

@@ -11,27 +11,44 @@ const monthDayFormat = "MMM d";
 const monthDayYearFormat = "MMM d, yyyy";
 const monthDayYearFormatFull = "MMMM d, yyyy";
 
-enum DurationUnit { days, hours, minutes }
+/// Units of duration, ordered smallest to largest.
+enum DurationUnit {
+  minutes,
+  hours,
+  days,
+  years,
+}
 
 /// A representation of a [Duration] object meant to be shown to the user. Units
 /// are split by largest possible. For example, the hours property is the
 /// number of hours in the duration, minus the number of days.
 class DisplayDuration {
   final Duration _duration;
+  final bool _includesYears;
   final bool _includesDays;
   final bool _includesHours;
   final bool _includesMinutes;
 
   DisplayDuration(
     this._duration, {
+    bool includesYears = true,
     bool includesDays = true,
     bool includesHours = true,
     bool includesMinutes = true,
-  })  : _includesDays = includesDays,
+  })  : _includesYears = includesYears,
+        _includesDays = includesDays,
         _includesHours = includesHours,
         _includesMinutes = includesMinutes;
 
-  int get days => _duration.inDays;
+  int get years => _duration.inYears;
+
+  int get days {
+    if (_includesYears) {
+      return _duration.inDays.remainder(Durations.daysPerYear);
+    } else {
+      return _duration.inDays;
+    }
+  }
 
   int get hours {
     if (_includesDays) {
@@ -269,10 +286,11 @@ String formatDateAsRecent(
 /// Returns formatted text to display the duration, in the format Dd Hh Mm Ss.
 ///
 /// Example:
-///   - 0d 5h 30m 0s
+///   - 1y 50d 5h 30m 0s
 String formatDuration({
   required BuildContext context,
   required int millisecondsDuration,
+  bool includesYears = true,
   bool includesDays = true,
   bool includesHours = true,
   bool includesMinutes = true,
@@ -297,13 +315,17 @@ String formatDuration({
   ///
   /// This is primarily meant for use with a user-preference where the
   /// [DurationUnit] is read from [SharedPreferences].
-  DurationUnit largestDurationUnit = DurationUnit.days,
+  DurationUnit largestDurationUnit = DurationUnit.years,
 }) {
-  includesDays = includesDays && largestDurationUnit == DurationUnit.days;
-  includesHours = includesHours && largestDurationUnit != DurationUnit.minutes;
+  includesYears = includesYears && largestDurationUnit == DurationUnit.years;
+  includesDays =
+      includesDays && largestDurationUnit.index >= DurationUnit.days.index;
+  includesHours =
+      includesHours && largestDurationUnit.index >= DurationUnit.hours.index;
 
   var duration = DisplayDuration(
     Duration(milliseconds: millisecondsDuration),
+    includesYears: includesYears,
     includesDays: includesDays,
     includesHours: includesHours,
     includesMinutes: includesMinutes,
@@ -323,6 +345,11 @@ String formatDuration({
     return include &&
         (!condensed || value > 0) &&
         (numberOfQuantities == null || numberIncluded < numberOfQuantities);
+  }
+
+  if (shouldAdd(duration.years, include: includesYears)) {
+    result += format(Strings.of(context).yearsFormat, [duration.years]);
+    numberIncluded++;
   }
 
   if (shouldAdd(duration.days, include: includesDays)) {
@@ -362,4 +389,13 @@ extension DateTimes on DateTime {
 
 extension TimeOfDays on TimeOfDay {
   bool get isMidnight => hour == 0 && minute == 0;
+}
+
+extension Durations on Duration {
+  static const int daysPerYear = 365;
+  static const int microsecondsPerYear =
+      Duration.microsecondsPerDay * Durations.daysPerYear;
+
+  /// The number of years spanned by this duration.
+  int get inYears => inMicroseconds ~/ microsecondsPerYear;
 }
