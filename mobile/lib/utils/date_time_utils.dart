@@ -281,13 +281,14 @@ String formatDuration({
   /// If `true`, values equal to 0 will not be included.
   bool condensed = false,
 
-  /// If `true`, only the largest 2 quantities will be shown.
+  /// When set, only the largest value quantities will be shown. Null (default)
+  /// will show all quantities.
   ///
   /// Examples:
-  ///   - 1d 12h
-  ///   - 12h 30m
-  ///   - 30m 45s
-  bool showHighestTwoOnly = false,
+  ///   - Value of 2 will show 1d 12h
+  ///   - Value of 1 will show 12h
+  ///   - Value of null will show 1d 12h 30m 45s
+  int? numberOfQuantities,
 
   /// The largest [DurationUnit] to use. For example, if equal to
   /// [DurationUnit.hours], 2 days and 3 hours will be formatted as `51h`
@@ -321,7 +322,7 @@ String formatDuration({
   bool shouldAdd(int value, {required bool include}) {
     return include &&
         (!condensed || value > 0) &&
-        (!showHighestTwoOnly || numberIncluded < 2);
+        (numberOfQuantities == null || numberIncluded < numberOfQuantities);
   }
 
   if (shouldAdd(duration.days, include: includesDays)) {

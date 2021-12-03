@@ -367,8 +367,8 @@ class _BaitAttachmentListItem extends StatelessWidget {
       onTap = () => push(context, BaitPage(bait));
     } else {
       subtitle = baitManager.variantDisplayValue(
-        variant,
         context,
+        variant,
         includeCustomValues: true,
       );
       onTap = () {

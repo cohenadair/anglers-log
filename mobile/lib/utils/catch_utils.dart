@@ -72,7 +72,7 @@ List<Field> allCatchFields(BuildContext context) {
     Field(
       id: catchFieldIdSpecies,
       isRemovable: false,
-      name: (context) => Strings.of(context).catchFieldSpecies,
+      name: (context) => Strings.of(context).entityNameSpecies,
       controller: IdInputController(),
     ),
     Field(
@@ -113,7 +113,7 @@ List<Field> allCatchFields(BuildContext context) {
     ),
     Field(
       id: catchFieldIdMethods,
-      name: (context) => Strings.of(context).catchFieldMethodsLabel,
+      name: (context) => Strings.of(context).entityNameFishingMethods,
       description: (context) =>
           Strings.of(context).catchFieldMethodsDescription,
       controller: SetInputController<Id>(),

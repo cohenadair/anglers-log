@@ -89,7 +89,7 @@ class _EntityPageState extends State<EntityPage> {
     var children = List<Widget>.of(widget.children);
     if (widget.customEntityValues.isNotEmpty) {
       children.add(CustomEntityValues(
-        title: Strings.of(context).customFields,
+        title: Strings.of(context).entityNameCustomFields,
         padding: insetsBottomSmall,
         values: widget.customEntityValues,
       ));

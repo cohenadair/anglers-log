@@ -181,8 +181,8 @@ class _BaitListPageState extends State<BaitListPage> {
     for (var attachment in _pickerSettings.initialValues) {
       if (attachment.hasVariantId() &&
           (_pickerSettings.isMulti ||
-              _selectedVariants.containsWhere<BaitVariant>(
-                  (e) => e.id == attachment.variantId))) {
+              _selectedVariants
+                  .containsWhere((e) => e.id == attachment.variantId))) {
         continue;
       }
 
@@ -287,7 +287,7 @@ class BaitPickerInput extends StatelessWidget {
           builder: (context, _, __) => MultiListPickerInput(
             padding: insetsDefault,
             values: baitManager
-                .attachmentsDisplayValues(controller.value, context)
+                .attachmentsDisplayValues(context, controller.value)
                 .toSet(),
             emptyValue: emptyValue,
             onTap: () => _showBaitListPage(context, baitManager),

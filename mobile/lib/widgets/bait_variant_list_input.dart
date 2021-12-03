@@ -1,5 +1,6 @@
 import 'package:collection/collection.dart' show IterableExtension;
 import 'package:flutter/material.dart';
+import 'package:mobile/utils/collection_utils.dart';
 import 'package:quiver/collection.dart';
 
 import '../i18n/strings.dart';
@@ -171,7 +172,7 @@ class _BaitVariantListInputState extends State<BaitVariantListInput> {
   }
 
   void _onAddOrUpdate(BaitVariant variant) {
-    if (_items.items.firstWhereOrNull((e) => variant == e) != null) {
+    if (_items.items.containsWhere((e) => variant == e)) {
       return;
     }
 

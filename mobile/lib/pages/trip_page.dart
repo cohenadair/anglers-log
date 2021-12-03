@@ -181,7 +181,7 @@ class TripPage extends StatelessWidget {
     var items = <LabelValueListItem>[];
     for (var catches in trip.catchesPerBait) {
       var displayName = BaitManager.of(context)
-          .attachmentDisplayValue(catches.attachment, context);
+          .attachmentDisplayValue(context, catches.attachment);
       if (isEmpty(displayName)) {
         continue;
       }

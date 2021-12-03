@@ -49,7 +49,7 @@ class BaitVariantListItem extends StatelessWidget {
       onTap = () => push(context, BaitVariantPage(variant));
     }
 
-    var title = baitManager.variantDisplayValue(variant, context);
+    var title = baitManager.variantDisplayValue(context, variant);
 
     return ManageableListItem(
       child: Column(

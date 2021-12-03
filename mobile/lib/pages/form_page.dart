@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:collection/collection.dart' show IterableExtension;
 import 'package:flutter/material.dart';
+import 'package:mobile/utils/collection_utils.dart';
 
 import '../custom_entity_manager.dart';
 import '../entity_manager.dart';
@@ -439,12 +440,12 @@ class _SelectionPageState extends State<_SelectionPage> {
 
     if (widget.allowCustomFields) {
       // Add custom field separator/title.
-      result.add(PickerPageItem.heading(Strings.of(context).customFields));
+      result.add(
+          PickerPageItem.heading(Strings.of(context).entityNameCustomFields));
 
       // Add customs fields that aren't already part of the form.
       for (var entity in customEntityManager.list()) {
-        if (customFields.firstWhereOrNull((field) => field.id == entity.id) ==
-            null) {
+        if (!customFields.containsWhere((field) => field.id == entity.id)) {
           customFields.add(Field.fromCustomEntity(entity));
         }
       }

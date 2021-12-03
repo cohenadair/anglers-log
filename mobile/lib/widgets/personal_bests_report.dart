@@ -303,7 +303,7 @@ class _PersonalBestsSpeciesModel {
 }
 
 class _PersonalBest extends StatelessWidget {
-  static const _imageHeight = 200.0;
+  static const _imageHeight = 230.0;
 
   final String title;
   final String chipText;
@@ -323,35 +323,38 @@ class _PersonalBest extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        _buildPhoto(),
-        ListItem(
-          padding: insetsZero,
-          title: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+    return InkWell(
+      onTap: onTap,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          _buildPhoto(),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const VerticalSpace(paddingDefault),
-              Row(
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  TitleLabel.style2(title),
-                  MinChip(chipText),
+                  const VerticalSpace(paddingDefault),
+                  Row(
+                    children: [
+                      TitleLabel.style2(title),
+                      MinChip(chipText),
+                    ],
+                  ),
+                  const VerticalSpace(paddingSmall),
+                  _buildDetails(context),
                 ],
               ),
-              const VerticalSpace(paddingSmall),
-              _buildDetails(context),
-              const VerticalSpace(paddingDefault),
+              Padding(
+                padding: insetsHorizontalDefault,
+                child: RightChevronIcon(),
+              ),
             ],
           ),
-          trailing: Padding(
-            padding: insetsRightDefault,
-            child: RightChevronIcon(),
-          ),
-          onTap: onTap,
-        ),
-        const VerticalSpace(paddingDefault),
-      ],
+          const VerticalSpace(paddingDefault),
+        ],
+      ),
     );
   }
 
@@ -360,12 +363,17 @@ class _PersonalBest extends StatelessWidget {
       return Empty();
     }
 
-    return SizedBox(
+    return Container(
+      padding: insetsHorizontalDefaultTopDefault,
       width: double.infinity,
       height: _imageHeight,
-      child: Photo(
-        fileName: imageName,
-        showFullOnTap: true,
+      child: ClipRRect(
+        child: Photo(
+          fileName: imageName,
+          showFullOnTap: true,
+        ),
+        borderRadius:
+            const BorderRadius.all(Radius.circular(floatingCornerRadius)),
       ),
     );
   }
@@ -438,6 +446,7 @@ class _MeasurementPerSpecies extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+        const VerticalSpace(paddingDefault),
         isEmpty(title) ? Empty() : TitleLabel.style2(title!),
         Table(
           defaultVerticalAlignment: TableCellVerticalAlignment.middle,
@@ -470,7 +479,6 @@ class _MeasurementPerSpecies extends StatelessWidget {
           ],
         ),
         _buildShowAllRow(context),
-        const VerticalSpace(paddingDefault),
       ],
     );
   }
@@ -612,7 +620,6 @@ class _MeasurementPerSpeciesPage extends StatelessWidget {
       appBar: AppBar(
         title: isEmpty(title) ? Empty() : Text(title!),
       ),
-      padding: insetsVerticalSmall,
       children: [
         _MeasurementPerSpecies(
           measurementTitle: measurementTitle,

@@ -583,7 +583,7 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
     return EntityPickerInput<Species>.single(
       manager: _speciesManager,
       controller: _speciesController,
-      title: Strings.of(context).catchFieldSpecies,
+      title: Strings.of(context).entityNameSpecies,
       listPage: (settings) => SpeciesListPage(
           pickerSettings: settings.copyWith(
         isRequired: true,

@@ -51,7 +51,7 @@ class _MainPageState extends State<MainPage> {
           builder: (context) => const CatchListPage(),
         ),
         icon: CustomIcons.catches,
-        titleBuilder: (context) => Strings.of(context).catchListPageMenuLabel,
+        titleBuilder: (context) => Strings.of(context).entityNameCatches,
       ),
       _BarItemModel(
         icon: iconBottomBarAdd,

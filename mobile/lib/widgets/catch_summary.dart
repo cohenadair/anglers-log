@@ -1,8 +1,11 @@
-import 'package:collection/collection.dart' show IterableExtension;
 import 'package:flutter/material.dart';
 import 'package:mobile/entity_manager.dart';
+import 'package:mobile/pages/catch_page.dart';
 import 'package:mobile/pages/manageable_list_page.dart';
+import 'package:mobile/res/dimen.dart';
+import 'package:mobile/utils/color_utils.dart';
 import 'package:mobile/utils/page_utils.dart';
+import 'package:mobile/widgets/text.dart';
 import 'package:protobuf/protobuf.dart';
 
 import '../angler_manager.dart';
@@ -30,9 +33,7 @@ import 'package:quiver/strings.dart';
 
 import 'chart.dart';
 import 'date_range_picker_input.dart';
-import 'list_item.dart';
 import 'list_picker_input.dart';
-import 'view_catches_list.dart';
 import 'widget.dart';
 
 enum CatchSummarySortOrder {
@@ -63,6 +64,8 @@ class CatchSummary<T> extends StatefulWidget {
 }
 
 class _CatchSummaryState<T> extends State<CatchSummary<T>> {
+  static const _tileHeight = 175.0;
+
   late CatchSummaryReport<T> _report;
   T? _entity;
 
@@ -110,19 +113,22 @@ class _CatchSummaryState<T> extends State<CatchSummary<T>> {
         children: [
           _buildDateRangePicker(),
           _buildEntityPicker(),
-          _buildViewCatches(),
-          _buildSinceLastCatch(context),
-          _buildCatchesPerSpecies(context),
-          _buildCatchesPerFishingSpot(context),
-          _buildCatchesPerBait(context),
-          _buildCatchesPerMoonPhase(context),
-          _buildCatchesPerTideType(context),
-          _buildCatchesPerAngler(context),
-          _buildCatchesPerBodyOfWater(context),
-          _buildCatchesPerMethod(context),
-          _buildCatchesPerPeriod(context),
-          _buildCatchesPerSeason(context),
-          _buildCatchesPerWaterClarity(context),
+          const MinDivider(),
+          const VerticalSpace(paddingDefault),
+          _buildCatchesTiles(),
+          const VerticalSpace(paddingDefault),
+          _buildCatchesPerSpecies(),
+          _buildCatchesPerFishingSpot(),
+          _buildCatchesPerBait(),
+          _buildCatchesPerMoonPhase(),
+          _buildCatchesPerTideType(),
+          _buildCatchesPerAngler(),
+          _buildCatchesPerBodyOfWater(),
+          _buildCatchesPerMethod(),
+          _buildCatchesPerPeriod(),
+          _buildCatchesPerSeason(),
+          _buildCatchesPerWaterClarity(),
+          const VerticalSpace(paddingDefault),
         ],
       ),
     );
@@ -174,244 +180,355 @@ class _CatchSummaryState<T> extends State<CatchSummary<T>> {
     );
   }
 
-  Widget _buildViewCatches() {
-    return ViewCatchesList(
-        _models.map((e) => ViewCatchesListModel(e.catchIds, e.dateRange)));
-  }
-
-  Widget _buildSinceLastCatch(BuildContext context) {
-    if (!_report.hasCatches || _report.isComparing || !_report.containsNow) {
-      return Empty();
+  Widget _buildCatchesTiles() {
+    var right = _buildRightTile();
+    if (right == null) {
+      right = Empty();
+    } else {
+      right = Flexible(
+        flex: 1,
+        child: Padding(
+          padding: insetsHorizontalDefault.copyWith(
+            left: paddingSmall,
+          ),
+          child: _buildRightTile(),
+        ),
+      );
     }
 
-    return ListItem(
-      title: Text(Strings.of(context).reportSummarySinceLastCatch),
-      trailing: Text(
-        formatDuration(
-          context: context,
-          millisecondsDuration: _report.msSinceLastCatch,
-          includesSeconds: false,
-          condensed: true,
+    return Row(
+      mainAxisSize: MainAxisSize.max,
+      children: [
+        Flexible(
+          flex: 1,
+          child: Padding(
+            padding: insetsHorizontalDefault.copyWith(
+              right: paddingSmall,
+            ),
+            child: _buildCatchesTile(_models.first),
+          ),
         ),
-        style: styleSecondary(context),
+        right,
+      ],
+    );
+  }
+
+  Widget _buildTile({
+    required String quantity,
+    required String title,
+    DateRange? dateRange,
+    VoidCallback? onTap,
+  }) {
+    return InkWell(
+      onTap: onTap,
+      child: Container(
+        height: _tileHeight,
+        width: double.infinity,
+        padding: const EdgeInsets.only(
+          top: paddingSmall,
+          bottom: paddingDefault,
+        ),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(floatingCornerRadius),
+          color: randomAccentColor(),
+        ),
+        child: Center(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              TitleLabel.style1(quantity),
+              TitleLabel.style2(
+                title,
+                align: TextAlign.center,
+              ),
+              dateRange == null ? Empty() : const VerticalSpace(paddingSmall),
+              dateRange == null
+                  ? Empty()
+                  : Text(
+                      dateRange.displayName(context),
+                      style: stylePrimary(context),
+                    ),
+            ],
+          ),
+        ),
       ),
     );
   }
 
-  Widget _buildCatchesPerSpecies(BuildContext context) {
+  Widget _buildCatchesTile(_CatchSummaryReportModel model) {
+    var quantity = model.catchIds.length;
+    return _buildTile(
+      quantity: quantity.toString(),
+      title: quantity == 1
+          ? Strings.of(context).entityNameCatch
+          : Strings.of(context).entityNameCatches,
+      dateRange: model.dateRange,
+      onTap: quantity <= 0
+          ? null
+          : () => push(
+                context,
+                _buildCatchList(
+                  model.dateRange,
+                  catchIds: model.catchIds,
+                ),
+              ),
+    );
+  }
+
+  Widget? _buildRightTile() {
+    if (_report.isComparing) {
+      // Show the number of catches in the second model.
+      return _buildCatchesTile(_models.last);
+    } else if (_report.containsNow) {
+      // If we're not comparing, and the current date contains now (such as
+      // "this year"), show the time since the last catch was made.
+      return _buildTile(
+        quantity: formatDuration(
+          context: context,
+          millisecondsDuration: _report.msSinceLastCatch,
+          condensed: true,
+          numberOfQuantities: 1,
+        ),
+        title: Strings.of(context).reportSummarySinceLastCatch,
+        onTap: _report.hasLastCatch
+            ? () => push(context, CatchPage(_report.lastCatch!))
+            : null,
+      );
+    }
+
+    return null;
+  }
+
+  Widget _buildCatchesPerEntity<E>({
+    required String title,
+    required String viewAllTitle,
+    required String viewAllDescription,
+    required List<Series<E>> series,
+    required Widget Function(E, DateRange) catchListBuilder,
+    required String Function(E) labelBuilder,
+  }) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const VerticalSpace(paddingDefault),
+        TitleLabel.style2(title),
+        const VerticalSpace(paddingDefault),
+        Chart<E>(
+          series: series,
+          padding: insetsHorizontalDefaultBottomSmall,
+          viewAllTitle: viewAllTitle,
+          chartPageDescription: viewAllDescription,
+          chartPageFilters: _report.filters(),
+          onTapRow: (entity, dateRange) =>
+              push(context, catchListBuilder(entity, dateRange)),
+          labelBuilder: labelBuilder,
+        ),
+      ],
+    );
+  }
+
+  Widget _buildCatchesPerSpecies() {
     if (!_report.hasPerSpecies) {
       return Empty();
     }
 
-    return ExpandableChart<Species>(
+    return _buildCatchesPerEntity<Species>(
       title: Strings.of(context).reportSummaryPerSpecies,
       viewAllTitle: Strings.of(context).reportSummaryViewSpecies,
       viewAllDescription:
           Strings.of(context).reportSummaryPerSpeciesDescription,
-      filters: _report.filters(),
-      labelBuilder: (species) => species.name,
       series: _report.toSeries<Species>((model) => model.perSpecies),
-      rowDetailsPage: (species, dateRange) => _buildCatchList(
+      labelBuilder: (entity) => _speciesManager.displayName(context, entity),
+      catchListBuilder: (entity, dateRange) => _buildCatchList(
         dateRange,
-        speciesIds: {species.id},
+        speciesIds: {entity.id},
       ),
     );
   }
 
-  Widget _buildCatchesPerFishingSpot(BuildContext context) {
+  Widget _buildCatchesPerFishingSpot() {
     if (!_report.hasPerFishingSpot) {
       return Empty();
     }
 
-    return ExpandableChart<FishingSpot>(
+    return _buildCatchesPerEntity<FishingSpot>(
       title: Strings.of(context).reportSummaryPerFishingSpot,
       viewAllTitle: Strings.of(context).reportSummaryViewFishingSpots,
       viewAllDescription:
           Strings.of(context).reportSummaryPerFishingSpotDescription,
-      filters: _report.filters(),
-      labelBuilder: (fishingSpot) =>
-          FishingSpotManager.of(context).displayName(context, fishingSpot),
       series: _report.toSeries<FishingSpot>((model) => model.perFishingSpot),
-      rowDetailsPage: (fishingSpot, dateRange) => _buildCatchList(
+      labelBuilder: (entity) =>
+          _fishingSpotManager.displayName(context, entity),
+      catchListBuilder: (entity, dateRange) => _buildCatchList(
         dateRange,
-        fishingSpotIds: {fishingSpot.id},
+        fishingSpotIds: {entity.id},
       ),
     );
   }
 
-  Widget _buildCatchesPerBait(BuildContext context) {
+  Widget _buildCatchesPerBait() {
     if (!_report.hasPerBait) {
       return Empty();
     }
 
-    return ExpandableChart<BaitAttachment>(
+    return _buildCatchesPerEntity<BaitAttachment>(
       title: Strings.of(context).reportSummaryPerBait,
       viewAllTitle: Strings.of(context).reportSummaryViewBaits,
       viewAllDescription: Strings.of(context).reportSummaryPerBaitDescription,
-      filters: _report.filters(),
-      labelBuilder: (attachment) =>
-          _attachmentDisplayValue(context, attachment),
       series: _report.toSeries<BaitAttachment>((model) => model.perBait),
-      rowDetailsPage: (baitAttachment, dateRange) => _buildCatchList(
+      labelBuilder: (entity) => _attachmentDisplayValue(entity),
+      catchListBuilder: (entity, dateRange) => _buildCatchList(
         dateRange,
-        baitAttachments: {baitAttachment},
+        baitAttachments: {entity},
       ),
     );
   }
 
-  Widget _buildCatchesPerMoonPhase(BuildContext context) {
+  Widget _buildCatchesPerMoonPhase() {
     if (!_report.hasPerMoonPhase) {
       return Empty();
     }
 
-    return ExpandableChart<MoonPhase>(
+    return _buildCatchesPerEntity<MoonPhase>(
       title: Strings.of(context).reportSummaryPerMoonPhase,
       viewAllTitle: Strings.of(context).reportSummaryViewMoonPhases,
       viewAllDescription:
           Strings.of(context).reportSummaryPerMoonPhaseDescription,
-      filters: _report.filters(),
-      labelBuilder: (moonPhase) => moonPhase.displayName(context),
       series: _report.toSeries<MoonPhase>((model) => model.perMoonPhase),
-      rowDetailsPage: (moonPhase, dateRange) => _buildCatchList(
+      labelBuilder: (entity) => entity.displayName(context),
+      catchListBuilder: (entity, dateRange) => _buildCatchList(
         dateRange,
-        moonPhases: {moonPhase},
+        moonPhases: {entity},
       ),
     );
   }
 
-  Widget _buildCatchesPerTideType(BuildContext context) {
+  Widget _buildCatchesPerTideType() {
     if (!_report.hasPerTideType) {
       return Empty();
     }
 
-    return ExpandableChart<TideType>(
+    return _buildCatchesPerEntity<TideType>(
       title: Strings.of(context).reportSummaryPerTideType,
       viewAllTitle: Strings.of(context).reportSummaryViewTides,
       viewAllDescription: Strings.of(context).reportSummaryPerTideDescription,
-      filters: _report.filters(),
-      labelBuilder: (tideType) => tideType.displayName(context),
       series: _report.toSeries<TideType>((model) => model.perTideType),
-      rowDetailsPage: (tideType, dateRange) => _buildCatchList(
+      labelBuilder: (entity) => entity.displayName(context),
+      catchListBuilder: (entity, dateRange) => _buildCatchList(
         dateRange,
-        tideTypes: {tideType},
+        tideTypes: {entity},
       ),
     );
   }
 
-  Widget _buildCatchesPerAngler(BuildContext context) {
+  Widget _buildCatchesPerAngler() {
     if (!_report.hasPerAngler) {
       return Empty();
     }
 
-    return ExpandableChart<Angler>(
+    return _buildCatchesPerEntity<Angler>(
       title: Strings.of(context).reportSummaryPerAngler,
       viewAllTitle: Strings.of(context).reportSummaryViewAnglers,
       viewAllDescription: Strings.of(context).reportSummaryPerAnglerDescription,
-      filters: _report.filters(),
-      labelBuilder: (angler) => _anglerManager.displayName(context, angler),
       series: _report.toSeries<Angler>((model) => model.perAngler),
-      rowDetailsPage: (angler, dateRange) => _buildCatchList(
+      labelBuilder: (entity) => _anglerManager.displayName(context, entity),
+      catchListBuilder: (entity, dateRange) => _buildCatchList(
         dateRange,
-        anglerIds: {angler.id},
+        anglerIds: {entity.id},
       ),
     );
   }
 
-  Widget _buildCatchesPerBodyOfWater(BuildContext context) {
+  Widget _buildCatchesPerBodyOfWater() {
     if (!_report.hasPerBodyOfWater) {
       return Empty();
     }
 
-    return ExpandableChart<BodyOfWater>(
+    return _buildCatchesPerEntity<BodyOfWater>(
       title: Strings.of(context).reportSummaryPerBodyOfWater,
       viewAllTitle: Strings.of(context).reportSummaryViewBodiesOfWater,
       viewAllDescription:
           Strings.of(context).reportSummaryPerBodyOfWaterDescription,
-      filters: _report.filters(),
-      labelBuilder: (bodyOfWater) =>
-          _bodyOfWaterManager.displayName(context, bodyOfWater),
       series: _report.toSeries<BodyOfWater>((model) => model.perBodyOfWater),
-      rowDetailsPage: (bodyOfWater, dateRange) => _buildCatchList(
+      labelBuilder: (entity) =>
+          _bodyOfWaterManager.displayName(context, entity),
+      catchListBuilder: (entity, dateRange) => _buildCatchList(
         dateRange,
-        bodyOfWaterIds: {bodyOfWater.id},
+        bodyOfWaterIds: {entity.id},
       ),
     );
   }
 
-  Widget _buildCatchesPerMethod(BuildContext context) {
+  Widget _buildCatchesPerMethod() {
     if (!_report.hasPerMethod) {
       return Empty();
     }
 
-    return ExpandableChart<Method>(
+    return _buildCatchesPerEntity<Method>(
       title: Strings.of(context).reportSummaryPerMethod,
       viewAllTitle: Strings.of(context).reportSummaryViewMethods,
       viewAllDescription: Strings.of(context).reportSummaryPerMethodDescription,
-      filters: _report.filters(),
-      labelBuilder: (method) => _methodManager.displayName(context, method),
       series: _report.toSeries<Method>((model) => model.perMethod),
-      rowDetailsPage: (method, dateRange) => _buildCatchList(
+      labelBuilder: (entity) => _methodManager.displayName(context, entity),
+      catchListBuilder: (entity, dateRange) => _buildCatchList(
         dateRange,
-        methodIds: {method.id},
+        methodIds: {entity.id},
       ),
     );
   }
 
-  Widget _buildCatchesPerPeriod(BuildContext context) {
+  Widget _buildCatchesPerPeriod() {
     if (!_report.hasPerPeriod) {
       return Empty();
     }
 
-    return ExpandableChart<Period>(
+    return _buildCatchesPerEntity<Period>(
       title: Strings.of(context).reportSummaryPerPeriod,
       viewAllTitle: Strings.of(context).reportSummaryViewPeriods,
       viewAllDescription: Strings.of(context).reportSummaryPerPeriodDescription,
-      filters: _report.filters(),
-      labelBuilder: (period) => period.displayName(context),
       series: _report.toSeries<Period>((model) => model.perPeriod),
-      rowDetailsPage: (period, dateRange) => _buildCatchList(
+      labelBuilder: (entity) => entity.displayName(context),
+      catchListBuilder: (entity, dateRange) => _buildCatchList(
         dateRange,
-        periods: {period},
+        periods: {entity},
       ),
     );
   }
 
-  Widget _buildCatchesPerSeason(BuildContext context) {
+  Widget _buildCatchesPerSeason() {
     if (!_report.hasPerSeason) {
       return Empty();
     }
 
-    return ExpandableChart<Season>(
+    return _buildCatchesPerEntity<Season>(
       title: Strings.of(context).reportSummaryPerSeason,
       viewAllTitle: Strings.of(context).reportSummaryViewSeasons,
       viewAllDescription: Strings.of(context).reportSummaryPerSeasonDescription,
-      filters: _report.filters(),
-      labelBuilder: (moonPhase) => moonPhase.displayName(context),
       series: _report.toSeries<Season>((model) => model.perSeason),
-      rowDetailsPage: (season, dateRange) => _buildCatchList(
+      labelBuilder: (entity) => entity.displayName(context),
+      catchListBuilder: (entity, dateRange) => _buildCatchList(
         dateRange,
-        seasons: {season},
+        seasons: {entity},
       ),
     );
   }
 
-  Widget _buildCatchesPerWaterClarity(BuildContext context) {
+  Widget _buildCatchesPerWaterClarity() {
     if (!_report.hasPerWaterClarity) {
       return Empty();
     }
 
-    return ExpandableChart<WaterClarity>(
+    return _buildCatchesPerEntity<WaterClarity>(
       title: Strings.of(context).reportSummaryPerWaterClarity,
       viewAllTitle: Strings.of(context).reportSummaryViewWaterClarities,
       viewAllDescription:
           Strings.of(context).reportSummaryPerWaterClarityDescription,
-      filters: _report.filters(),
-      labelBuilder: (waterClarity) =>
-          _waterClarityManager.displayName(context, waterClarity),
       series: _report.toSeries<WaterClarity>((model) => model.perWaterClarity),
-      rowDetailsPage: (waterClarity, dateRange) => _buildCatchList(
+      labelBuilder: (entity) =>
+          _waterClarityManager.displayName(context, entity),
+      catchListBuilder: (entity, dateRange) => _buildCatchList(
         dateRange,
-        waterClarityIds: {waterClarity.id},
+        waterClarityIds: {entity.id},
       ),
     );
   }
@@ -421,6 +538,7 @@ class _CatchSummaryState<T> extends State<CatchSummary<T>> {
     Set<Id>? anglerIds,
     Set<BaitAttachment>? baitAttachments,
     Set<Id>? bodyOfWaterIds,
+    Set<Id>? catchIds,
     Set<Id>? fishingSpotIds,
     Set<Id>? methodIds,
     Set<MoonPhase>? moonPhases,
@@ -438,6 +556,7 @@ class _CatchSummaryState<T> extends State<CatchSummary<T>> {
         anglerIds: anglerIds ?? _report.anglerIds,
         baits: baitAttachments ?? _report.baits,
         bodyOfWaterIds: bodyOfWaterIds ?? _report.bodyOfWaterIds,
+        catchIds: catchIds ?? const {},
         fishingSpotIds: fishingSpotIds ?? _report.fishingSpotIds,
         methodIds: methodIds ?? _report.methodIds,
         moonPhases: moonPhases ?? _report.moonPhases,
@@ -450,10 +569,8 @@ class _CatchSummaryState<T> extends State<CatchSummary<T>> {
     );
   }
 
-  String _attachmentDisplayValue(
-      BuildContext context, BaitAttachment attachment) {
-    var value =
-        BaitManager.of(context).attachmentDisplayValue(attachment, context);
+  String _attachmentDisplayValue(BaitAttachment attachment) {
+    var value = _baitManager.attachmentDisplayValue(context, attachment);
     assert(isNotEmpty(value), "Cannot display a bait that doesn't exist");
     return value!;
   }
@@ -486,9 +603,6 @@ class CatchSummaryReport<T> {
   final List<DateRange> dateRanges = [
     DateRange(period: DateRange_Period.allDates),
   ];
-
-  /// When true, calculated collections include 0 quantities. Defaults to false.
-  final bool includeZeros;
 
   /// When set, data is only included in this report if associated with these
   /// [Angler] IDs.
@@ -583,10 +697,12 @@ class CatchSummaryReport<T> {
   final NumberFilter? windSpeedFilter;
 
   final List<_CatchSummaryReportModel<T>> _models = [];
-  int _msSinceLastCatch = 0;
+
+  int msSinceLastCatch = 0;
+  Catch? lastCatch;
 
   /// True if the date range of the report includes "now"; false otherwise.
-  bool _containsNow = true;
+  late final bool containsNow;
 
   AnglerManager get _anglerManager => AnglerManager.of(context);
 
@@ -609,51 +725,42 @@ class CatchSummaryReport<T> {
 
   Iterable<_CatchSummaryReportModel<T>> get models => List.of(_models);
 
-  int get msSinceLastCatch => _msSinceLastCatch;
+  bool get hasLastCatch => lastCatch != null;
 
-  bool get containsNow => _containsNow;
+  bool get hasCatches => _models.containsWhere((e) => e.catchIds.isNotEmpty);
 
-  bool get hasCatches =>
-      _models.firstWhereOrNull((e) => e.catchIds.isNotEmpty) != null;
+  bool get hasPerAngler => _models.containsWhere((e) => e.perAngler.isNotEmpty);
 
-  bool get hasPerAngler =>
-      _models.firstWhereOrNull((e) => e.perAngler.isNotEmpty) != null;
-
-  bool get hasPerBait =>
-      _models.firstWhereOrNull((e) => e.perBait.isNotEmpty) != null;
+  bool get hasPerBait => _models.containsWhere((e) => e.perBait.isNotEmpty);
 
   bool get hasPerBodyOfWater =>
-      _models.firstWhereOrNull((e) => e.perBodyOfWater.isNotEmpty) != null;
+      _models.containsWhere((e) => e.perBodyOfWater.isNotEmpty);
 
-  bool get hasPerMethod =>
-      _models.firstWhereOrNull((e) => e.perMethod.isNotEmpty) != null;
+  bool get hasPerMethod => _models.containsWhere((e) => e.perMethod.isNotEmpty);
 
   bool get hasPerFishingSpot =>
-      _models.firstWhereOrNull((e) => e.perFishingSpot.isNotEmpty) != null;
+      _models.containsWhere((e) => e.perFishingSpot.isNotEmpty);
 
   bool get hasPerMoonPhase =>
-      _models.firstWhereOrNull((e) => e.perMoonPhase.isNotEmpty) != null;
+      _models.containsWhere((e) => e.perMoonPhase.isNotEmpty);
 
-  bool get hasPerSeason =>
-      _models.firstWhereOrNull((e) => e.perSeason.isNotEmpty) != null;
+  bool get hasPerSeason => _models.containsWhere((e) => e.perSeason.isNotEmpty);
 
   bool get hasPerSpecies =>
-      _models.firstWhereOrNull((e) => e.perSpecies.isNotEmpty) != null;
+      _models.containsWhere((e) => e.perSpecies.isNotEmpty);
 
   bool get hasPerTideType =>
-      _models.firstWhereOrNull((e) => e.perTideType.isNotEmpty) != null;
+      _models.containsWhere((e) => e.perTideType.isNotEmpty);
 
-  bool get hasPerPeriod =>
-      _models.firstWhereOrNull((e) => e.perPeriod.isNotEmpty) != null;
+  bool get hasPerPeriod => _models.containsWhere((e) => e.perPeriod.isNotEmpty);
 
   bool get hasPerWaterClarity =>
-      _models.firstWhereOrNull((e) => e.perWaterClarity.isNotEmpty) != null;
+      _models.containsWhere((e) => e.perWaterClarity.isNotEmpty);
 
-  bool get isComparing => _models.length > 1;
+  bool get isComparing => dateRanges.length > 1;
 
   CatchSummaryReport({
     required this.context,
-    this.includeZeros = false,
     this.sortOrder = CatchSummarySortOrder.largestToSmallest,
     this.anglerIds = const {},
     this.baits = const {},
@@ -688,8 +795,7 @@ class CatchSummaryReport<T> {
     }
 
     var now = _timeManager.currentDateTime;
-    _containsNow =
-        dateRanges.firstWhereOrNull((e) => e.endDate(now) == now) != null;
+    containsNow = dateRanges.containsWhere((e) => e.endDate(now) == now);
 
     for (var dateRange in dateRanges) {
       var catches = _catchManager.catches(
@@ -726,17 +832,56 @@ class CatchSummaryReport<T> {
         context: context,
         dateRange: dateRange,
         catches: catches,
-        fillWithZeros: includeZeros,
+        fillWithZeros: isComparing,
       ));
 
-      if (catches.isEmpty) {
+      if (catches.isEmpty || isComparing) {
         continue;
       }
 
-      var sinceLast =
-          _timeManager.msSinceEpoch - catches.first.timestamp.toInt();
-      if (sinceLast < _msSinceLastCatch || _msSinceLastCatch == 0) {
-        _msSinceLastCatch = sinceLast;
+      // Initialize properties that only apply when not comparing.
+      lastCatch = catches.first;
+      msSinceLastCatch =
+          _timeManager.msSinceEpoch - lastCatch!.timestamp.toInt();
+    }
+
+    _removeZerosIfNeeded();
+  }
+
+  /// Removes data from [_models] if all values for a given entity is 0.
+  void _removeZerosIfNeeded() {
+    if (!isComparing) {
+      return;
+    }
+
+    _removeEntityZeros<Angler>(_anglerManager.list(), (m) => m.perAngler);
+    _removeEntityZeros<BaitAttachment>(
+        _baitManager.attachmentList(), (m) => m.perBait);
+    _removeEntityZeros<BodyOfWater>(
+        _bodyOfWaterManager.list(), (m) => m.perBodyOfWater);
+    _removeEntityZeros<FishingSpot>(
+        _fishingSpotManager.list(), (m) => m.perFishingSpot);
+    _removeEntityZeros<Method>(_methodManager.list(), (m) => m.perMethod);
+    _removeEntityZeros<MoonPhase>(
+        MoonPhases.selectable(), (m) => m.perMoonPhase);
+    _removeEntityZeros<Season>(Seasons.selectable(), (m) => m.perSeason);
+    _removeEntityZeros<Species>(_speciesManager.list(), (m) => m.perSpecies);
+    _removeEntityZeros<TideType>(TideTypes.selectable(), (m) => m.perTideType);
+    _removeEntityZeros<WaterClarity>(
+        _waterClarityManager.list(), (m) => m.perWaterClarity);
+  }
+
+  void _removeEntityZeros<E>(Iterable<E> entities,
+      Map<E, int> Function(_CatchSummaryReportModel) perEntity) {
+    for (var entity in entities) {
+      var isAllZero = false;
+      for (var model in _models) {
+        isAllZero &= perEntity(model)[entity] == 0;
+      }
+      if (isAllZero) {
+        for (var model in _models) {
+          perEntity(model).remove(entity);
+        }
       }
     }
   }
@@ -768,7 +913,7 @@ class CatchSummaryReport<T> {
       result.add(Strings.of(context).saveReportPageFavorites);
     }
 
-    result.addAll(_baitManager.attachmentsDisplayValues(baits, context));
+    result.addAll(_baitManager.attachmentsDisplayValues(context, baits));
     _addFilters<FishingSpot>(_fishingSpotManager, fishingSpotIds, result);
     _addFilters<BodyOfWater>(_bodyOfWaterManager, bodyOfWaterIds, result);
     _addFilters<Angler>(_anglerManager, anglerIds, result);
@@ -831,18 +976,18 @@ class _CatchSummaryReportModel<T> {
   final BuildContext context;
   final DateRange dateRange;
 
-  final Set<Id> _catchIds = {};
-  Map<Angler, int> _perAngler = {};
-  Map<BaitAttachment, int> _perBait = {};
-  Map<BodyOfWater, int> _perBodyOfWater = {};
-  Map<Method, int> _perMethod = {};
-  Map<FishingSpot, int> _perFishingSpot = {};
-  Map<MoonPhase, int> _perMoonPhase = {};
-  Map<Period, int> _perPeriod = {};
-  Map<Season, int> _perSeason = {};
-  Map<Species, int> _perSpecies = {};
-  Map<TideType, int> _perTideType = {};
-  Map<WaterClarity, int> _perWaterClarity = {};
+  final Set<Id> catchIds = {};
+  final Map<Angler, int> perAngler = {};
+  final Map<BaitAttachment, int> perBait = {};
+  final Map<BodyOfWater, int> perBodyOfWater = {};
+  final Map<Method, int> perMethod = {};
+  final Map<FishingSpot, int> perFishingSpot = {};
+  final Map<MoonPhase, int> perMoonPhase = {};
+  final Map<Period, int> perPeriod = {};
+  final Map<Season, int> perSeason = {};
+  final Map<Species, int> perSpecies = {};
+  final Map<TideType, int> perTideType = {};
+  final Map<WaterClarity, int> perWaterClarity = {};
 
   _CatchSummaryReportModel({
     required this.context,
@@ -877,56 +1022,32 @@ class _CatchSummaryReportModel<T> {
   WaterClarityManager get _waterClarityManager =>
       WaterClarityManager.of(context);
 
-  Set<Id> get catchIds => Set.of(_catchIds);
-
-  Map<Angler, int> get perAngler => Map.of(_perAngler);
-
-  Map<BaitAttachment, int> get perBait => Map.of(_perBait);
-
-  Map<BodyOfWater, int> get perBodyOfWater => Map.of(_perBodyOfWater);
-
-  Map<Method, int> get perMethod => Map.of(_perMethod);
-
-  Map<FishingSpot, int> get perFishingSpot => Map.of(_perFishingSpot);
-
-  Map<MoonPhase, int> get perMoonPhase => Map.of(_perMoonPhase);
-
-  Map<Period, int> get perPeriod => Map.of(_perPeriod);
-
-  Map<Season, int> get perSeason => Map.of(_perSeason);
-
-  Map<Species, int> get perSpecies => Map.of(_perSpecies);
-
-  Map<TideType, int> get perTideType => Map.of(_perTideType);
-
-  Map<WaterClarity, int> get perWaterClarity => Map.of(_perWaterClarity);
-
   void _fillCollectionsWithZeros() {
     if (_includeBaits) {
       for (var bait in _baitManager.list()) {
         if (bait.variants.isEmpty) {
-          _perBait.putIfAbsent(bait.toAttachment(), () => 0);
+          perBait.putIfAbsent(bait.toAttachment(), () => 0);
         } else {
           for (var variant in bait.variants) {
-            _perBait.putIfAbsent(variant.toAttachment(), () => 0);
+            perBait.putIfAbsent(variant.toAttachment(), () => 0);
           }
         }
       }
     }
 
-    _fillWithZeros(_includeAnglers, _anglerManager.list(), _perAngler);
+    _fillWithZeros(_includeAnglers, _anglerManager.list(), perAngler);
     _fillWithZeros(
-        _includeBodiesOfWater, _bodyOfWaterManager.list(), _perBodyOfWater);
-    _fillWithZeros(_includeMethods, _methodManager.list(), _perMethod);
+        _includeBodiesOfWater, _bodyOfWaterManager.list(), perBodyOfWater);
+    _fillWithZeros(_includeMethods, _methodManager.list(), perMethod);
     _fillWithZeros(
-        _includeFishingSpots, _fishingSpotManager.list(), _perFishingSpot);
-    _fillWithZeros(_includeMoonPhases, MoonPhases.selectable(), _perMoonPhase);
-    _fillWithZeros(_includePeriods, Periods.selectable(), _perPeriod);
-    _fillWithZeros(_includeSeasons, Seasons.selectable(), _perSeason);
-    _fillWithZeros(_includeSpecies, _speciesManager.list(), _perSpecies);
-    _fillWithZeros(_includeTides, TideTypes.selectable(), _perTideType);
+        _includeFishingSpots, _fishingSpotManager.list(), perFishingSpot);
+    _fillWithZeros(_includeMoonPhases, MoonPhases.selectable(), perMoonPhase);
+    _fillWithZeros(_includePeriods, Periods.selectable(), perPeriod);
+    _fillWithZeros(_includeSeasons, Seasons.selectable(), perSeason);
+    _fillWithZeros(_includeSpecies, _speciesManager.list(), perSpecies);
+    _fillWithZeros(_includeTideTypes, TideTypes.selectable(), perTideType);
     _fillWithZeros(
-        _includeWaterClarities, _waterClarityManager.list(), _perWaterClarity);
+        _includeWaterClarities, _waterClarityManager.list(), perWaterClarity);
   }
 
   void _fillWithZeros<E>(bool include, Iterable<E> all, Map<E, int> sink) {
@@ -940,51 +1061,51 @@ class _CatchSummaryReportModel<T> {
 
   void _fillCollections(Iterable<Catch> catches) {
     for (var cat in catches) {
-      _catchIds.add(cat.id);
+      catchIds.add(cat.id);
 
-      _inc(_includeAnglers, _anglerManager.entity(cat.anglerId), _perAngler);
+      _inc(_includeAnglers, _anglerManager.entity(cat.anglerId), perAngler);
 
       for (var attachment in cat.baits) {
         _inc(_includeBaits && _baitManager.entityExists(attachment.baitId),
-            attachment, _perBait);
+            attachment, perBait);
       }
 
       _inc(
         _includeBodiesOfWater,
         _bodyOfWaterManager.entity(
             _fishingSpotManager.entity(cat.fishingSpotId)?.bodyOfWaterId),
-        _perBodyOfWater,
+        perBodyOfWater,
       );
 
       _inc(_includeFishingSpots, _fishingSpotManager.entity(cat.fishingSpotId),
-          _perFishingSpot);
+          perFishingSpot);
 
       for (var methodId in cat.methodIds) {
-        _inc(_includeMethods, _methodManager.entity(methodId), _perMethod);
+        _inc(_includeMethods, _methodManager.entity(methodId), perMethod);
       }
 
       if (cat.hasAtmosphere() && cat.atmosphere.hasMoonPhase()) {
         _inc(_includeMoonPhases,
-            MoonPhase.valueOf(cat.atmosphere.moonPhase.value), _perMoonPhase);
+            MoonPhase.valueOf(cat.atmosphere.moonPhase.value), perMoonPhase);
       }
 
       if (cat.hasPeriod()) {
-        _inc(_includePeriods, Period.valueOf(cat.period.value), _perPeriod);
+        _inc(_includePeriods, Period.valueOf(cat.period.value), perPeriod);
       }
 
       if (cat.hasSeason()) {
-        _inc(_includeSeasons, Season.valueOf(cat.season.value), _perSeason);
+        _inc(_includeSeasons, Season.valueOf(cat.season.value), perSeason);
       }
 
-      _inc(_includeSpecies, _speciesManager.entity(cat.speciesId), _perSpecies);
+      _inc(_includeSpecies, _speciesManager.entity(cat.speciesId), perSpecies);
 
       if (cat.hasTide() && cat.tide.hasType()) {
-        _inc(
-            _includeTides, TideType.valueOf(cat.tide.type.value), _perTideType);
+        _inc(_includeTideTypes, TideType.valueOf(cat.tide.type.value),
+            perTideType);
       }
 
       _inc(_includeWaterClarities,
-          _waterClarityManager.entity(cat.waterClarityId), _perWaterClarity);
+          _waterClarityManager.entity(cat.waterClarityId), perWaterClarity);
     }
   }
 
@@ -1002,69 +1123,31 @@ class _CatchSummaryReportModel<T> {
   void _sortCollections(CatchSummarySortOrder sortOrder) {
     switch (sortOrder) {
       case CatchSummarySortOrder.alphabetical:
-        _perAngler = sortedIntMap(_perAngler, _anglerManager.nameComparator);
-        _perBait = sortedIntMap(_perBait, _baitManager.attachmentComparator);
-        _perBodyOfWater =
-            sortedIntMap(_perBodyOfWater, _bodyOfWaterManager.nameComparator);
-        _perFishingSpot =
-            sortedIntMap(_perFishingSpot, _fishingSpotManager.nameComparator);
-        _perMethod = sortedIntMap(_perMethod, _methodManager.nameComparator);
-        _perMoonPhase =
-            sortedIntMap(_perMoonPhase, MoonPhases.nameComparator(context));
-        _perPeriod = sortedIntMap(_perPeriod, Periods.nameComparator(context));
-        _perSeason = sortedIntMap(_perSeason, Seasons.nameComparator(context));
-        _perSpecies = sortedIntMap(_perSpecies, _speciesManager.nameComparator);
-        _perTideType =
-            sortedIntMap(_perTideType, TideTypes.nameComparator(context));
-        _perWaterClarity =
-            sortedIntMap(_perWaterClarity, _waterClarityManager.nameComparator);
+        sortIntMap(perAngler, _anglerManager.nameComparator);
+        sortIntMap(perBait, _baitManager.attachmentComparator);
+        sortIntMap(perBodyOfWater, _bodyOfWaterManager.nameComparator);
+        sortIntMap(perFishingSpot, _fishingSpotManager.nameComparator);
+        sortIntMap(perMethod, _methodManager.nameComparator);
+        sortIntMap(perMoonPhase, MoonPhases.nameComparator(context));
+        sortIntMap(perPeriod, Periods.nameComparator(context));
+        sortIntMap(perSeason, Seasons.nameComparator(context));
+        sortIntMap(perSpecies, _speciesManager.nameComparator);
+        sortIntMap(perTideType, TideTypes.nameComparator(context));
+        sortIntMap(perWaterClarity, _waterClarityManager.nameComparator);
         break;
       case CatchSummarySortOrder.largestToSmallest:
-        _perAngler = sortedIntMap(_perAngler);
-        _perBait = sortedIntMap(_perBait);
-        _perBodyOfWater = sortedIntMap(_perBodyOfWater);
-        _perFishingSpot = sortedIntMap(_perFishingSpot);
-        _perMethod = sortedIntMap(_perMethod);
-        _perMoonPhase = sortedIntMap(_perMoonPhase);
-        _perPeriod = sortedIntMap(_perPeriod);
-        _perSeason = sortedIntMap(_perSeason);
-        _perSpecies = sortedIntMap(_perSpecies);
-        _perTideType = sortedIntMap(_perTideType);
-        _perWaterClarity = sortedIntMap(_perWaterClarity);
+        sortIntMap(perAngler);
+        sortIntMap(perBait);
+        sortIntMap(perBodyOfWater);
+        sortIntMap(perFishingSpot);
+        sortIntMap(perMethod);
+        sortIntMap(perMoonPhase);
+        sortIntMap(perPeriod);
+        sortIntMap(perSeason);
+        sortIntMap(perSpecies);
+        sortIntMap(perTideType);
+        sortIntMap(perWaterClarity);
         break;
-    }
-  }
-
-  /// Removes data if this model and [other] both have 0 values for a given
-  /// data point. Data is removed from both this and [other].
-  void removeZerosComparedTo(_CatchSummaryReportModel other) {
-    _removeZeros(_perAngler, other._perAngler);
-    _removeZeros(_perBait, other._perBait);
-    _removeZeros(_perBodyOfWater, other._perBodyOfWater);
-    _removeZeros(_perFishingSpot, other._perFishingSpot);
-    _removeZeros(_perMethod, other._perMethod);
-    _removeZeros(_perMoonPhase, other._perMoonPhase);
-    _removeZeros(_perSeason, other._perPeriod);
-    _removeZeros(_perSpecies, other._perSpecies);
-    _removeZeros(_perTideType, other._perTideType);
-    _removeZeros(_perWaterClarity, other._perWaterClarity);
-  }
-
-  void _removeZeros<E>(Map<E, int>? map1, Map<E, int>? map2) {
-    if (map1 == null || map2 == null) {
-      return;
-    }
-
-    var keys = map1.keys.toList();
-    for (var key in keys) {
-      if (!map1.containsKey(key) || !map2.containsKey(key)) {
-        continue;
-      }
-
-      if (map1[key] == 0 && map2[key] == 0) {
-        map1.remove(key);
-        map2.remove(key);
-      }
     }
   }
 
@@ -1091,7 +1174,8 @@ class _CatchSummaryReportModel<T> {
   bool get _includeSpecies =>
       T != Species && _userPreferenceManager.isTrackingSpecies;
 
-  bool get _includeTides => T != Tide && _userPreferenceManager.isTrackingTides;
+  bool get _includeTideTypes =>
+      T != TideType && _userPreferenceManager.isTrackingTides;
 
   bool get _includePeriods =>
       T != Period && _userPreferenceManager.isTrackingPeriods;

@@ -20,6 +20,12 @@ Map<T, U> sortedMap<T, U>(
   return sortedMap;
 }
 
+void sortIntMap<T>(Map<T, int> map, [int Function(T lhs, T rhs)? comparator]) {
+  var newMap = sortedIntMap<T>(map, comparator);
+  map.clear();
+  map.addAll(newMap);
+}
+
 /// Returns a sub-map of [map], of the first [numberOfElements]. If
 /// [numberOfElements] is null, [map] is returned.
 Map<T, int> firstElements<T>(Map<T, int> map, {int? numberOfElements}) {
@@ -47,7 +53,7 @@ T? valueOf<T>(List<T> values, int index) {
 
 Set<T> singleSet<T>(T? item) => item == null ? {} : {item};
 
-extension Iterables on Iterable {
-  bool containsWhere<T>(bool Function(T) comparator) =>
-      firstWhereOrNull((e) => comparator(e as T)) != null;
+extension Iterables<T> on Iterable<T> {
+  bool containsWhere(bool Function(T) comparator) =>
+      firstWhereOrNull((e) => comparator(e)) != null;
 }

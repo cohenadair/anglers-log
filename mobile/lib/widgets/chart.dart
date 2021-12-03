@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:mobile/utils/color_utils.dart';
 import 'package:quiver/iterables.dart';
 import 'package:quiver/strings.dart';
 
@@ -131,10 +132,7 @@ class Chart<T> extends StatefulWidget {
                     isNotEmpty(chartPageDescription)),
             "showAll is false; viewAllTitle is required"),
         assert(series.isNotEmpty) {
-    var colors = List.of(Colors.primaries)
-      ..remove(Colors.brown)
-      ..remove(Colors.blueGrey);
-
+    var colors = accentColors();
     var seriesLen = series.first.length;
     for (Series series in series) {
       assert(series.length == seriesLen,

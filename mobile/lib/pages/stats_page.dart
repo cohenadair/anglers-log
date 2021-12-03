@@ -237,7 +237,6 @@ class _StatsPageState extends State<StatsPage> {
       reportBuilder: (_, __) => _createCustomReport(
         _report,
         [_report.fromDateRange, _report.toDateRange],
-        includeZeros: true,
       ),
       isStatic: true,
     );
@@ -312,7 +311,7 @@ class _StatsPageState extends State<StatsPage> {
         // The fact that this is called at all means the attachment exists
         // and attachmentDisplayValue will return a non-null value.
         nameBuilder: (context, attachment) =>
-            _baitManager.attachmentDisplayValue(attachment, context)!,
+            _baitManager.attachmentDisplayValue(context, attachment)!,
       ),
       emptyWidget: EmptyListPlaceholder.static(
         icon: iconBait,
@@ -539,12 +538,10 @@ class _StatsPageState extends State<StatsPage> {
   CatchSummaryReport<Catch> _createCustomReport(
     Report report,
     Iterable<DateRange> dateRanges, {
-    bool includeZeros = false,
     CatchSummarySortOrder sortOrder = CatchSummarySortOrder.alphabetical,
   }) {
     return CatchSummaryReport(
       context: context,
-      includeZeros: includeZeros,
       sortOrder: sortOrder,
       ranges: dateRanges,
       isCatchAndReleaseOnly: report.isCatchAndReleaseOnly,

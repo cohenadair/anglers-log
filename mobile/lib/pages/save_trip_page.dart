@@ -211,14 +211,14 @@ class _SaveTripPageState extends State<SaveTripPage> {
 
     _fields[_idCatches] = Field(
       id: _idCatches,
-      name: (context) => Strings.of(context).saveTripPageCatches,
+      name: (context) => Strings.of(context).entityNameCatches,
       description: (context) => Strings.of(context).saveTripPageCatchesDesc,
       controller: SetInputController<Id>(),
     );
 
     _fields[_idBodiesOfWater] = Field(
       id: _idBodiesOfWater,
-      name: (context) => Strings.of(context).saveTripPageBodiesOfWater,
+      name: (context) => Strings.of(context).entityNameBodiesOfWater,
       controller: SetInputController<Id>(),
     );
 
