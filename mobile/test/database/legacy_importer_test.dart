@@ -740,7 +740,7 @@ void main() {
 
     expect(
       catchManager
-          .filteredCatches(await buildContext(tester), isFavoritesOnly: true)
+          .catches(await buildContext(tester), isFavoritesOnly: true)
           .length,
       3,
     );

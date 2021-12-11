@@ -504,7 +504,7 @@ void main() {
         formatDuration(
           context: context,
           millisecondsDuration: ms,
-          showHighestTwoOnly: true,
+          numberOfQuantities: 2,
         ),
         "2d 5h",
       );
@@ -520,7 +520,7 @@ void main() {
           context: context,
           millisecondsDuration: ms,
           condensed: true,
-          showHighestTwoOnly: true,
+          numberOfQuantities: 2,
         ),
         "5h 45m",
       );
@@ -535,7 +535,7 @@ void main() {
           context: context,
           millisecondsDuration: ms,
           condensed: true,
-          showHighestTwoOnly: true,
+          numberOfQuantities: 2,
         ),
         "45m 30s",
       );
@@ -549,7 +549,7 @@ void main() {
           context: context,
           millisecondsDuration: ms,
           condensed: true,
-          showHighestTwoOnly: true,
+          numberOfQuantities: 2,
         ),
         "30s",
       );

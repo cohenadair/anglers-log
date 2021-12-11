@@ -6,6 +6,7 @@ import 'package:mobile/pages/bait_page.dart';
 import 'package:mobile/pages/bait_variant_page.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
 import 'package:mobile/pages/stats_page.dart';
+import 'package:mobile/report_manager.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mobile/widgets/chart.dart';
 import 'package:mobile/widgets/list_item.dart';
@@ -342,7 +343,7 @@ void main() {
 
   testWidgets("If current report is deleted, falls back to overview",
       (tester) async {
-    var comparisonReportManager = CustomReportManager(appManager.app);
+    var comparisonReportManager = ReportManager(appManager.app);
     when(appManager.app.reportManager).thenReturn(comparisonReportManager);
     var reportId = randomId();
     await comparisonReportManager.addOrUpdate(Report()
@@ -370,7 +371,7 @@ void main() {
   });
 
   testWidgets("If current report is updated, state is updated", (tester) async {
-    var comparisonReportManager = CustomReportManager(appManager.app);
+    var comparisonReportManager = ReportManager(appManager.app);
     when(appManager.app.reportManager).thenReturn(comparisonReportManager);
     var reportId = randomId();
     await comparisonReportManager.addOrUpdate(Report()
@@ -408,7 +409,7 @@ void main() {
 
   testWidgets("If non-current report is deleted, report stays the same",
       (tester) async {
-    var reportManager = CustomReportManager(appManager.app);
+    var reportManager = ReportManager(appManager.app);
     when(appManager.app.reportManager).thenReturn(reportManager);
     var comparisonId = randomId();
     await reportManager.addOrUpdate(Report()

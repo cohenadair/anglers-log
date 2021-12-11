@@ -116,7 +116,7 @@ Trip_CatchesPerEntity newInputItemShim(dynamic pickerItem) =>
 @GenerateMocks([Batch])
 @GenerateMocks([], customMocks: [MockSpec<CollectionReference>()])
 @GenerateMocks([Completer])
-@GenerateMocks([DatabaseExecutor])
+@GenerateMocks([Database])
 @GenerateMocks([Directory])
 @GenerateMocks([DocumentChange])
 @GenerateMocks([], customMocks: [MockSpec<DocumentReference>()])

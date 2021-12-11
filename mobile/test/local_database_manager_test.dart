@@ -12,13 +12,13 @@ import 'mocks/stubbed_app_manager.dart';
 
 void main() {
   late StubbedAppManager appManager;
-  late MockDatabaseExecutor database;
+  late MockDatabase database;
 
   late LocalDatabaseManager databaseManager;
 
   setUp(() async {
     appManager = StubbedAppManager();
-    database = MockDatabaseExecutor();
+    database = MockDatabase();
 
     when(appManager.authManager.state).thenReturn(AuthState.initializing);
     when(appManager.authManager.userId).thenReturn("ID");

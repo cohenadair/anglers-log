@@ -699,7 +699,7 @@ void main() {
   testWidgets("attachmentDisplayValue bait doesn't exist", (tester) async {
     var context = await buildContext(tester);
     expect(
-      baitManager.attachmentDisplayValue(BaitAttachment(), context),
+      baitManager.attachmentDisplayValue(context, BaitAttachment()),
       isNull,
     );
   });
@@ -714,11 +714,11 @@ void main() {
 
     expect(
       baitManager.attachmentDisplayValue(
+        context,
         BaitAttachment(
           baitId: baitId,
           variantId: randomId(),
         ),
-        context,
       ),
       "Test",
     );
@@ -745,11 +745,11 @@ void main() {
 
     expect(
       baitManager.attachmentDisplayValue(
+        context,
         BaitAttachment(
           baitId: baitId,
           variantId: variantId,
         ),
-        context,
       ),
       "Test (Blue)",
     );
@@ -798,6 +798,7 @@ void main() {
 
     expect(
       baitManager.attachmentsDisplayValues(
+        context,
         [
           BaitAttachment(
             baitId: baitId0,
@@ -812,7 +813,6 @@ void main() {
             variantId: randomId(),
           ),
         ],
-        context,
       ),
       [
         "Test (Blue)",
@@ -843,7 +843,7 @@ void main() {
     );
 
     expect(
-      baitManager.variantDisplayValue(variant, context),
+      baitManager.variantDisplayValue(context, variant),
       "Red, AB123, Small, 5 m - 10 m",
     );
   });
@@ -861,7 +861,7 @@ void main() {
     );
 
     expect(
-      baitManager.variantDisplayValue(variant, context),
+      baitManager.variantDisplayValue(context, variant),
       "\u2265 5 m",
     );
   });
@@ -879,7 +879,7 @@ void main() {
     );
 
     expect(
-      baitManager.variantDisplayValue(variant, context),
+      baitManager.variantDisplayValue(context, variant),
       "\u2264 5 m",
     );
   });
@@ -896,8 +896,8 @@ void main() {
 
     expect(
       baitManager.variantDisplayValue(
-        variant,
         context,
+        variant,
         includeCustomValues: true,
       ),
       "Red, Tag: 12, Label: Value",
@@ -916,8 +916,8 @@ void main() {
 
     expect(
       baitManager.variantDisplayValue(
-        variant,
         context,
+        variant,
         includeCustomValues: false,
       ),
       "Red",
@@ -933,7 +933,7 @@ void main() {
       description: "Test description.",
     );
     expect(
-      baitManager.variantDisplayValue(variant, context),
+      baitManager.variantDisplayValue(context, variant),
       "Test description.",
     );
   });
@@ -948,7 +948,7 @@ void main() {
       description: "Test description.",
     );
     expect(
-      baitManager.variantDisplayValue(variant, context),
+      baitManager.variantDisplayValue(context, variant),
       "Red",
     );
   });
