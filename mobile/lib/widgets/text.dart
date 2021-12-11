@@ -81,6 +81,7 @@ class TitleLabel extends StatelessWidget {
   final String text;
   final TextAlign? align;
   final TextOverflow? overflow;
+  final int? maxLines;
 
   final TextStyle _style;
   final double _offset;
@@ -89,6 +90,7 @@ class TitleLabel extends StatelessWidget {
     this.text, {
     this.align,
     this.overflow,
+    this.maxLines,
   })  : _style = styleTitle1,
         _offset = 2.0;
 
@@ -96,6 +98,7 @@ class TitleLabel extends StatelessWidget {
     this.text, {
     this.align,
     this.overflow,
+    this.maxLines,
   })  : _style = styleTitle2,
         _offset = 1.0;
 
@@ -114,6 +117,7 @@ class TitleLabel extends StatelessWidget {
         style: _style,
         textAlign: align,
         overflow: overflow,
+        maxLines: maxLines,
       ),
     );
   }

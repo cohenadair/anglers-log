@@ -82,30 +82,37 @@ class CatchManager extends EntityManager<Catch> {
       return false;
     }
 
-    return filter == null ||
+    if (filter == null ||
         isEmpty(filter) ||
         _speciesManager.matchesFilter(cat.speciesId, filter) ||
         _fishingSpotManager.matchesFilter(cat.fishingSpotId, filter) ||
         _anglerManager.matchesFilter(cat.anglerId, filter) ||
         _methodManager.idsMatchFilter(cat.methodIds, filter) ||
-        _waterClarityManager.matchesFilter(cat.waterClarityId, filter) ||
-        context == null ||
-        _baitManager.attachmentsMatchesFilter(cat.baits, filter, context) ||
-        catchFilterMatchesPeriod(context, filter, cat) ||
-        catchFilterMatchesSeason(context, filter, cat) ||
-        catchFilterMatchesFavorite(context, filter, cat) ||
-        catchFilterMatchesCatchAndRelease(context, filter, cat) ||
-        catchFilterMatchesTimestamp(context, filter, cat) ||
-        catchFilterMatchesWaterDepth(context, filter, cat) ||
-        catchFilterMatchesWaterTemperature(context, filter, cat) ||
-        catchFilterMatchesLength(context, filter, cat) ||
-        catchFilterMatchesWeight(context, filter, cat) ||
-        catchFilterMatchesQuantity(context, filter, cat) ||
-        catchFilterMatchesNotes(context, filter, cat) ||
-        catchFilterMatchesAtmosphere(context, filter, cat) ||
-        catchFilterMatchesTide(context, filter, cat) ||
-        filterMatchesEntityValues(
-            cat.customEntityValues, filter, _customEntityManager);
+        _waterClarityManager.matchesFilter(cat.waterClarityId, filter)) {
+      return true;
+    }
+
+    if (context != null) {
+      return _baitManager.attachmentsMatchesFilter(
+              cat.baits, filter, context) ||
+          catchFilterMatchesPeriod(context, filter, cat) ||
+          catchFilterMatchesSeason(context, filter, cat) ||
+          catchFilterMatchesFavorite(context, filter, cat) ||
+          catchFilterMatchesCatchAndRelease(context, filter, cat) ||
+          catchFilterMatchesTimestamp(context, filter, cat) ||
+          catchFilterMatchesWaterDepth(context, filter, cat) ||
+          catchFilterMatchesWaterTemperature(context, filter, cat) ||
+          catchFilterMatchesLength(context, filter, cat) ||
+          catchFilterMatchesWeight(context, filter, cat) ||
+          catchFilterMatchesQuantity(context, filter, cat) ||
+          catchFilterMatchesNotes(context, filter, cat) ||
+          catchFilterMatchesAtmosphere(context, filter, cat) ||
+          catchFilterMatchesTide(context, filter, cat) ||
+          filterMatchesEntityValues(
+              cat.customEntityValues, filter, _customEntityManager);
+    }
+
+    return false;
   }
 
   @override
@@ -143,7 +150,7 @@ class CatchManager extends EntityManager<Catch> {
     NumberFilter? airVisibilityFilter,
     NumberFilter? windSpeedFilter,
   }) {
-    var result = List.of(filteredCatches(
+    var result = List.of(_filteredCatches(
       context,
       filter: filter,
       dateRange: dateRange,
@@ -190,7 +197,7 @@ class CatchManager extends EntityManager<Catch> {
     return result;
   }
 
-  List<Catch> filteredCatches(
+  List<Catch> _filteredCatches(
     BuildContext context, {
     String? filter,
     DateRange? dateRange,
@@ -364,9 +371,7 @@ class CatchManager extends EntityManager<Catch> {
   /// Returns all image names from [Catch] objects, where the [Catch] objects
   /// are sorted by timestamp.
   List<String> imageNamesSortedByTimestamp(BuildContext context) {
-    return catches(context)
-        .expand((cat) => cat.imageNames)
-        .toList();
+    return catches(context).expand((cat) => cat.imageNames).toList();
   }
 
   @override

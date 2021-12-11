@@ -44,7 +44,7 @@ dependencies:
   purchases_flutter: ^3.4.5         # https://pub.dev/packages/purchases_flutter (verified)
   quiver: ^3.0.1                    # https://pub.dev/packages/quiver (Google)
   shared_preferences: ^2.0.8        # https://pub.dev/packages/shared_preferences (Flutter)
-  sqflite: ^2.0.0+4                 # https://pub.dev/packages/sqflite (verified)
+  sqflite: ^2.0.1                   # https://pub.dev/packages/sqflite (verified)
   url_launcher: ^6.0.12             # https://pub.dev/packages/url_launcher (Flutter)
   uuid: ^3.0.5                      # https://pub.dev/packages/uuid (verified)
 

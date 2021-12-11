@@ -213,20 +213,18 @@ class AuthManager {
     // before managers that upload data to Firebase.
     await _appManager.userPreferenceManager.initialize();
 
-    // First initialize managers that are dependents of other managers.
-    await _appManager.speciesManager.initialize();
-
     await _appManager.anglerManager.initialize();
     await _appManager.baitCategoryManager.initialize();
     await _appManager.baitManager.initialize();
     await _appManager.bodyOfWaterManager.initialize();
     await _appManager.catchManager.initialize();
     await _appManager.customEntityManager.initialize();
-    await _appManager.reportManager.initialize();
     await _appManager.fishingSpotManager.initialize();
     await _appManager.methodManager.initialize();
-    await _appManager.waterClarityManager.initialize();
+    await _appManager.reportManager.initialize();
+    await _appManager.speciesManager.initialize();
     await _appManager.tripManager.initialize();
+    await _appManager.waterClarityManager.initialize();
 
     // Ensure everything is initialized before managing any image state.
     await _appManager.imageManager.initialize();

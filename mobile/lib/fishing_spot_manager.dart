@@ -83,11 +83,14 @@ class FishingSpotManager extends ImageEntityManager<FishingSpot> {
   }
 
   @override
-  List<FishingSpot> listSortedByName({String? filter}) {
+  List<FishingSpot> listSortedByName({
+    String? filter,
+    Iterable<Id> ids = const [],
+  }) {
     var namedSpots = <FishingSpot>[];
     var otherSpots = <FishingSpot>[];
 
-    for (var fishingSpot in super.listSortedByName(filter: filter)) {
+    for (var fishingSpot in super.listSortedByName(filter: filter, ids: ids)) {
       if (isEmpty(fishingSpot.name)) {
         otherSpots.add(fishingSpot);
       } else {

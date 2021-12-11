@@ -3,7 +3,6 @@ import 'package:mobile/entity_manager.dart';
 import 'package:mobile/pages/catch_page.dart';
 import 'package:mobile/pages/manageable_list_page.dart';
 import 'package:mobile/res/dimen.dart';
-import 'package:mobile/utils/color_utils.dart';
 import 'package:mobile/utils/page_utils.dart';
 import 'package:mobile/widgets/text.dart';
 import 'package:protobuf/protobuf.dart';
@@ -27,13 +26,12 @@ import 'package:mobile/fishing_spot_manager.dart';
 import 'package:mobile/i18n/strings.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
 import 'package:mobile/pages/catch_list_page.dart';
-import 'package:mobile/res/style.dart';
-import 'package:mobile/utils/date_time_utils.dart';
 import 'package:quiver/strings.dart';
 
 import 'chart.dart';
 import 'date_range_picker_input.dart';
 import 'list_picker_input.dart';
+import 'tile.dart';
 import 'widget.dart';
 
 enum CatchSummarySortOrder {
@@ -64,8 +62,6 @@ class CatchSummary<T> extends StatefulWidget {
 }
 
 class _CatchSummaryState<T> extends State<CatchSummary<T>> {
-  static const _tileHeight = 175.0;
-
   late CatchSummaryReport<T> _report;
   T? _entity;
 
@@ -181,88 +177,29 @@ class _CatchSummaryState<T> extends State<CatchSummary<T>> {
   }
 
   Widget _buildCatchesTiles() {
-    var right = _buildRightTile();
-    if (right == null) {
-      right = Empty();
-    } else {
-      right = Flexible(
-        flex: 1,
-        child: Padding(
-          padding: insetsHorizontalDefault.copyWith(
-            left: paddingSmall,
-          ),
-          child: _buildRightTile(),
-        ),
-      );
+    var items = [
+      _buildCatchesTileItem(_models.first),
+    ];
+
+    var rightItem = _buildRightTileItem();
+    if (rightItem != null) {
+      items.add(rightItem);
     }
 
-    return Row(
-      mainAxisSize: MainAxisSize.max,
-      children: [
-        Flexible(
-          flex: 1,
-          child: Padding(
-            padding: insetsHorizontalDefault.copyWith(
-              right: paddingSmall,
-            ),
-            child: _buildCatchesTile(_models.first),
-          ),
-        ),
-        right,
-      ],
+    return TileRow(
+      padding: insetsHorizontalDefault,
+      items: items,
     );
   }
 
-  Widget _buildTile({
-    required String quantity,
-    required String title,
-    DateRange? dateRange,
-    VoidCallback? onTap,
-  }) {
-    return InkWell(
-      onTap: onTap,
-      child: Container(
-        height: _tileHeight,
-        width: double.infinity,
-        padding: const EdgeInsets.only(
-          top: paddingSmall,
-          bottom: paddingDefault,
-        ),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(floatingCornerRadius),
-          color: randomAccentColor(),
-        ),
-        child: Center(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              TitleLabel.style1(quantity),
-              TitleLabel.style2(
-                title,
-                align: TextAlign.center,
-              ),
-              dateRange == null ? Empty() : const VerticalSpace(paddingSmall),
-              dateRange == null
-                  ? Empty()
-                  : Text(
-                      dateRange.displayName(context),
-                      style: stylePrimary(context),
-                    ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildCatchesTile(_CatchSummaryReportModel model) {
+  TileItem _buildCatchesTileItem(_CatchSummaryReportModel model) {
     var quantity = model.catchIds.length;
-    return _buildTile(
-      quantity: quantity.toString(),
-      title: quantity == 1
+    return TileItem(
+      title: quantity.toString(),
+      subtitle: quantity == 1
           ? Strings.of(context).entityNameCatch
           : Strings.of(context).entityNameCatches,
-      dateRange: model.dateRange,
+      subtitle2: model.dateRange.displayName(context),
       onTap: quantity <= 0
           ? null
           : () => push(
@@ -275,21 +212,17 @@ class _CatchSummaryState<T> extends State<CatchSummary<T>> {
     );
   }
 
-  Widget? _buildRightTile() {
+  TileItem? _buildRightTileItem() {
     if (_report.isComparing) {
       // Show the number of catches in the second model.
-      return _buildCatchesTile(_models.last);
+      return _buildCatchesTileItem(_models.last);
     } else if (_report.containsNow) {
       // If we're not comparing, and the current date contains now (such as
       // "this year"), show the time since the last catch was made.
-      return _buildTile(
-        quantity: formatDuration(
-          context: context,
-          millisecondsDuration: _report.msSinceLastCatch,
-          condensed: true,
-          numberOfQuantities: 1,
-        ),
-        title: Strings.of(context).reportSummarySinceLastCatch,
+      return TileItem.duration(
+        context,
+        msDuration: _report.msSinceLastCatch,
+        subtitle: Strings.of(context).reportSummarySinceLastCatch,
         onTap: _report.hasLastCatch
             ? () => push(context, CatchPage(_report.lastCatch!))
             : null,
@@ -701,8 +634,8 @@ class CatchSummaryReport<T> {
 
   final List<_CatchSummaryReportModel<T>> _models = [];
 
-  int msSinceLastCatch = 0;
-  Catch? lastCatch;
+  int _msSinceLastCatch = 0;
+  Catch? _lastCatch;
 
   /// True if the date range of the report includes "now"; false otherwise.
   late final bool containsNow;
@@ -728,7 +661,9 @@ class CatchSummaryReport<T> {
 
   Iterable<_CatchSummaryReportModel<T>> get models => List.of(_models);
 
-  bool get hasLastCatch => lastCatch != null;
+  Catch? get lastCatch => _lastCatch?.deepCopy();
+
+  bool get hasLastCatch => _lastCatch != null;
 
   bool get hasCatches => _models.containsWhere((e) => e.catchIds.isNotEmpty);
 
@@ -761,6 +696,8 @@ class CatchSummaryReport<T> {
       _models.containsWhere((e) => e.perWaterClarity.isNotEmpty);
 
   bool get isComparing => dateRanges.length > 1;
+
+  int get msSinceLastCatch => _msSinceLastCatch;
 
   CatchSummaryReport({
     required this.context,
@@ -842,9 +779,9 @@ class CatchSummaryReport<T> {
       }
 
       // Initialize properties that only apply when not comparing.
-      lastCatch = catches.first;
-      msSinceLastCatch =
-          _timeManager.msSinceEpoch - lastCatch!.timestamp.toInt();
+      _lastCatch = catches.first;
+      _msSinceLastCatch =
+          _timeManager.msSinceEpoch - _lastCatch!.timestamp.toInt();
     }
   }
 

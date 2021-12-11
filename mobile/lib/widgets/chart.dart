@@ -148,8 +148,6 @@ class Chart<T> extends StatefulWidget {
 }
 
 class _ChartState<T> extends State<Chart<T>> {
-  static const _log = Log("MyChart");
-
   static const _legendIndicatorSize = 15.0;
   static const _rowHeight = 20.0;
   static const _rowCornerRadius = 5.0;

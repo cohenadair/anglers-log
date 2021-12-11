@@ -320,15 +320,17 @@ class CatchListItemModel {
         break;
       case CatchListItemModelSubtitleType.length:
         subtitle2 = cat.length.displayValue(
-            context,
-            Strings.of(context).catchListItemLength,
-            Strings.of(context).catchListItemNoLength);
+          context,
+          resultFormat: Strings.of(context).catchListItemLength,
+          ifZero: Strings.of(context).catchListItemNoLength,
+        );
         break;
       case CatchListItemModelSubtitleType.weight:
         subtitle2 = cat.weight.displayValue(
-            context,
-            Strings.of(context).catchListItemWeight,
-            Strings.of(context).catchListItemNoWeight);
+          context,
+          resultFormat: Strings.of(context).catchListItemWeight,
+          ifZero: Strings.of(context).catchListItemNoWeight,
+        );
         break;
     }
 

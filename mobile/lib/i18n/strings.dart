@@ -567,8 +567,6 @@ class Strings {
 
   String get statsPagePersonalBests => _string("statsPage_waterPersonalBests");
 
-  String get statsPageTripSummary => _string("statsPage_tripSummary");
-
   String get personalBestsTrip => _string("personalBests_trip");
 
   String get personalBestsLongest => _string("personalBests_longest");
@@ -1742,9 +1740,40 @@ class Strings {
 
   String get entityNameSpecies => _string("entityName_species");
 
+  String get entityNameTrip => _string("entityName_trip");
+
   String get entityNameTrips => _string("entityName_trips");
 
   String get entityNameWaterClarities => _string("entityName_waterClarities");
+
+  String get tripSummaryTitle => _string("tripSummary_title");
+
+  String get tripSummaryTotalTripTime => _string("tripSummary_totalTripTime");
+
+  String get tripSummaryLongestTrip => _string("tripSummary_longestTrip");
+
+  String get tripSummarySinceLastTrip => _string("tripSummary_sinceLastTrip");
+
+  String get tripSummaryAverageTripTime =>
+      _string("tripSummary_averageTripTime");
+
+  String get tripSummaryAverageTimeBetweenTrips =>
+      _string("tripSummary_averageTimeBetweenTrips");
+
+  String get tripSummaryAverageTimeBetweenCatches =>
+      _string("tripSummary_averageTimeBetweenCatches");
+
+  String get tripSummaryCatchesPerTrip => _string("tripSummary_catchesPerTrip");
+
+  String get tripSummaryCatchesPerHour => _string("tripSummary_catchesPerHour");
+
+  String get tripSummaryWeightPerTrip => _string("tripSummary_weightPerTrip");
+
+  String get tripSummaryBestWeight => _string("tripSummary_bestWeight");
+
+  String get tripSummaryLengthPerTrip => _string("tripSummary_lengthPerTrip");
+
+  String get tripSummaryBestLength => _string("tripSummary_bestLength");
 }
 
 class StringsDelegate extends LocalizationsDelegate<Strings> {

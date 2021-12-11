@@ -321,6 +321,10 @@ extension MeasurementSystems on MeasurementSystem {
   bool get isMetric => this == MeasurementSystem.metric;
 
   bool get isImperialWhole => this == MeasurementSystem.imperial_whole;
+
+  Unit get lengthUnit => isMetric ? Unit.centimeters : Unit.inches;
+
+  Unit get weightUnit => isMetric ? Unit.kilograms : Unit.pounds;
 }
 
 extension Measurements on Measurement {
@@ -397,6 +401,15 @@ extension MultiMeasurements on MultiMeasurement {
         : unit.toMultiMeasurement(values.reduce(math.max));
   }
 
+  /// Returns a [MultiMeasurement] object representing the total value of
+  /// [measurements] in the given unit.
+  static MultiMeasurement? sum(List<MultiMeasurement> measurements, Unit unit) {
+    var values = _decimalValues(measurements, unit);
+    return values.isEmpty
+        ? null
+        : unit.toMultiMeasurement(values.reduce((total, e) => total += e));
+  }
+
   /// Converts a collection of [MultiMeasurement] objects to a double, in
   /// [unit].
   static Iterable<double> _decimalValues(
@@ -427,8 +440,12 @@ extension MultiMeasurements on MultiMeasurement {
   ///
   /// If [ifZero] is not empty, [ifZero] is returned if the calculated result
   /// == "0".
-  String displayValue(BuildContext context,
-      [String? resultFormat, String? ifZero]) {
+  String displayValue(
+    BuildContext context, {
+    String? resultFormat,
+    String? ifZero,
+    bool includeFraction = true,
+  }) {
     // Inches require a different format than other measurements due to the
     // fraction not having its own unit. The different format only applies
     // when a fraction is set.
@@ -440,7 +457,8 @@ extension MultiMeasurements on MultiMeasurement {
       return "${mainValue.stringValue()} ${fraction.symbol} $unit";
     }
 
-    var isFractionSet = hasFractionValue() &&
+    var isFractionSet = includeFraction &&
+        hasFractionValue() &&
         fractionValue.hasValue() &&
         fractionValue.value > 0;
     var result = mainValue.displayValue(context) +
@@ -958,7 +976,8 @@ extension Units on Unit {
       case Unit.miles:
       case Unit.kilometers:
       case Unit.percent:
-        _log.w("Unit.toDecimal called with non-decimal unit: $this");
+        // None of these units need to be converted to a decimal value; return
+        // the raw value.
         return value;
     }
     throw ArgumentError("Invalid input: $this");
@@ -1418,7 +1437,7 @@ extension Reports on Report {
     } else if (id == reportIdPersonalBests) {
       return Strings.of(context).statsPagePersonalBests;
     } else if (id == reportIdTripSummary) {
-      return Strings.of(context).statsPageTripSummary;
+      return Strings.of(context).tripSummaryTitle;
     } else {
       return null;
     }
@@ -1684,6 +1703,8 @@ extension Tides on Tide {
 }
 
 extension Trips on Trip {
+  int get duration => endTimestamp.toInt() - startTimestamp.toInt();
+
   DateTime get startDateTime =>
       DateTime.fromMillisecondsSinceEpoch(startTimestamp.toInt());
 

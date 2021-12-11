@@ -48,6 +48,8 @@ class StatsPage extends StatefulWidget {
 class _StatsPageState extends State<StatsPage> {
   static const _log = Log("StatsPage");
 
+  final _scrollController = ScrollController();
+
   /// The currently selected report from the app bar dropdown menu.
   late Report _report;
 
@@ -96,6 +98,7 @@ class _StatsPageState extends State<StatsPage> {
         onAnyChange: () => _updateCurrentReport(_report.id),
         builder: (context) {
           return CustomScrollView(
+            controller: _scrollController,
             slivers: [
               SliverAppBar(
                 title: _buildReportDropdown(),
@@ -120,7 +123,11 @@ class _StatsPageState extends State<StatsPage> {
             pickerSettings: ManageableListPagePickerSettings<dynamic>.single(
               onPicked: (context, report) {
                 if (report != _report) {
-                  setState(() => _updateCurrentReport(report.id));
+                  setState(() {
+                    // Reset scrolling to the top of the page.
+                    _scrollController.jumpTo(0.0);
+                    _updateCurrentReport(report.id);
+                  });
                 }
                 return true;
               },

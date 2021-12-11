@@ -77,50 +77,59 @@ class UserPreferenceManager extends PreferenceManager {
   Future<void> setCatchLengthSystem(MeasurementSystem? system) =>
       put(_keyCatchLengthSystem, system?.value);
 
-  MeasurementSystem? get catchLengthSystem =>
-      MeasurementSystem.valueOf(preferences[_keyCatchLengthSystem] ?? -1);
+  MeasurementSystem get catchLengthSystem =>
+      MeasurementSystem.valueOf(preferences[_keyCatchLengthSystem] ?? -1) ??
+      MeasurementSystem.metric;
 
   Future<void> setCatchWeightSystem(MeasurementSystem? system) =>
       put(_keyCatchWeightSystem, system?.value);
 
-  MeasurementSystem? get catchWeightSystem =>
-      MeasurementSystem.valueOf(preferences[_keyCatchWeightSystem] ?? -1);
+  MeasurementSystem get catchWeightSystem =>
+      MeasurementSystem.valueOf(preferences[_keyCatchWeightSystem] ?? -1) ??
+      MeasurementSystem.metric;
 
   Future<void> setWaterDepthSystem(MeasurementSystem? system) =>
       put(_keyWaterDepthSystem, system?.value);
 
-  MeasurementSystem? get waterDepthSystem =>
-      MeasurementSystem.valueOf(preferences[_keyWaterDepthSystem] ?? -1);
+  MeasurementSystem get waterDepthSystem =>
+      MeasurementSystem.valueOf(preferences[_keyWaterDepthSystem] ?? -1) ??
+      MeasurementSystem.metric;
 
   Future<void> setWaterTemperatureSystem(MeasurementSystem? system) =>
       put(_keyWaterTemperatureSystem, system?.value);
 
-  MeasurementSystem? get waterTemperatureSystem =>
-      MeasurementSystem.valueOf(preferences[_keyWaterTemperatureSystem] ?? -1);
+  MeasurementSystem get waterTemperatureSystem =>
+      MeasurementSystem.valueOf(
+          preferences[_keyWaterTemperatureSystem] ?? -1) ??
+      MeasurementSystem.metric;
 
   Future<void> setAirTemperatureSystem(MeasurementSystem? system) =>
       put(_keyAirTemperatureSystem, system?.value);
 
-  MeasurementSystem? get airTemperatureSystem =>
-      MeasurementSystem.valueOf(preferences[_keyAirTemperatureSystem] ?? -1);
+  MeasurementSystem get airTemperatureSystem =>
+      MeasurementSystem.valueOf(preferences[_keyAirTemperatureSystem] ?? -1) ??
+      MeasurementSystem.metric;
 
   Future<void> setAirPressureSystem(MeasurementSystem? system) =>
       put(_keyAirPressureSystem, system?.value);
 
-  MeasurementSystem? get airPressureSystem =>
-      MeasurementSystem.valueOf(preferences[_keyAirPressureSystem] ?? -1);
+  MeasurementSystem get airPressureSystem =>
+      MeasurementSystem.valueOf(preferences[_keyAirPressureSystem] ?? -1) ??
+      MeasurementSystem.metric;
 
   Future<void> setAirVisibilitySystem(MeasurementSystem? system) =>
       put(_keyAirVisibilitySystem, system?.value);
 
-  MeasurementSystem? get airVisibilitySystem =>
-      MeasurementSystem.valueOf(preferences[_keyAirVisibilitySystem] ?? -1);
+  MeasurementSystem get airVisibilitySystem =>
+      MeasurementSystem.valueOf(preferences[_keyAirVisibilitySystem] ?? -1) ??
+      MeasurementSystem.metric;
 
   Future<void> setWindSpeedSystem(MeasurementSystem? system) =>
       put(_keyWindSpeedSystem, system?.value);
 
-  MeasurementSystem? get windSpeedSystem =>
-      MeasurementSystem.valueOf(preferences[_keyWindSpeedSystem] ?? -1);
+  MeasurementSystem get windSpeedSystem =>
+      MeasurementSystem.valueOf(preferences[_keyWindSpeedSystem] ?? -1) ??
+      MeasurementSystem.metric;
 
   // ignore: avoid_positional_boolean_parameters
   Future<void> setAutoFetchAtmosphere(bool autoFetch) =>

@@ -89,14 +89,15 @@ abstract class DataSourceFacilitator {
   bool get shouldUseFirestore => subscriptionManager.isPro && enableFirestore;
 
   Future<void> initialize() async {
-    _log.d("Initializing "
+    if (shouldUseFirestore) {
+      await _initializeFirestore();
+    } else {
+      await initializeLocalData();
+    }
+
+    _log.d("Initialized "
         "user=${subscriptionManager.isPro ? "pro" : "free"}; "
         "firestore=$enableFirestore");
-    if (shouldUseFirestore) {
-      return _initializeFirestore();
-    } else {
-      return initializeLocalData();
-    }
   }
 
   Future<void> _initializeFirestore() async {

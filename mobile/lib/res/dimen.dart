@@ -108,6 +108,11 @@ const insetsHorizontalDefaultTopDefault = EdgeInsets.only(
   top: paddingDefault,
 );
 
+EdgeInsets insetsVertical(double padding) => EdgeInsets.only(
+      top: padding,
+      bottom: padding,
+    );
+
 const iconSizeLarge = 32.0;
 const iconSizeDefault = 24.0;
 

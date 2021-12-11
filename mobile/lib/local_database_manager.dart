@@ -20,7 +20,7 @@ class LocalDatabaseManager {
   final _log = const Log("DataManager");
   final AppManager _appManager;
 
-  late DatabaseExecutor _database;
+  late Database _database;
 
   LocalDatabaseManager(this._appManager);
 
@@ -29,7 +29,7 @@ class LocalDatabaseManager {
   IoWrapper get _ioWrapper => _appManager.ioWrapper;
 
   Future<void> initialize({
-    DatabaseExecutor? database,
+    Database? database,
   }) async {
     assert(_authManager.state == AuthState.initializing,
         "Can only initialize while AuthManager is initializing");
@@ -49,11 +49,18 @@ class LocalDatabaseManager {
   }
 
   /// Returns `true` if values were successfully added or replaced.
-  Future<bool> insertOrReplace(
-      String tableName, Map<String, dynamic> values) async {
-    return await _database.insert(tableName, values,
-            conflictAlgorithm: ConflictAlgorithm.replace) >
-        0;
+  Future<bool> insertOrReplace(String tableName, Map<String, dynamic> values,
+      [Batch? batch]) async {
+    var conflict = ConflictAlgorithm.replace;
+
+    if (batch == null) {
+      return await _database.insert(tableName, values,
+              conflictAlgorithm: conflict) >
+          0;
+    } else {
+      batch.insert(tableName, values, conflictAlgorithm: conflict);
+      return true;
+    }
   }
 
   /// Returns `true` if at least one row was removed.
@@ -79,21 +86,26 @@ class LocalDatabaseManager {
   }
 
   /// Deletes a given [Entity] from the given [tableName].
-  Future<bool> deleteEntity(Id entityId, String tableName) async {
+  Future<bool> deleteEntity(Id entityId, String tableName,
+      [Batch? batch]) async {
     // For details on the hex requirement, see
     // https://github.com/tekartik/sqflite/issues/608.
     var id = entityId.uint8List;
-    if (await delete(
-      tableName,
-      where: _ioWrapper.isAndroid ? "hex(id) = ?" : "id = ?",
-      whereArgs: [_ioWrapper.isAndroid ? hex(id) : id],
-    )) {
-      return true;
-    } else {
-      _log.e("Failed to delete $tableName(${entityId.uuid.toString()})"
-          " from database");
+    var where = _ioWrapper.isAndroid ? "hex(id) = ?" : "id = ?";
+    var whereArgs = [_ioWrapper.isAndroid ? hex(id) : id];
+
+    if (batch == null) {
+      if (await delete(tableName, where: where, whereArgs: whereArgs)) {
+        return true;
+      } else {
+        _log.e("Failed to delete $tableName(${entityId.uuid.toString()})"
+            " from database");
+        return false;
+      }
     }
-    return false;
+
+    batch.delete(tableName, where: where, whereArgs: whereArgs);
+    return true;
   }
 
   Future<List<Map<String, dynamic>>> fetchAll(String tableName) async {
@@ -108,6 +120,14 @@ class LocalDatabaseManager {
       for (var row in newRows) {
         batch.insert(tableName, row);
       }
+    });
+  }
+
+  Future<void> commitTransaction(void Function(Batch) updateBatch) async {
+    await _database.transaction((txn) async {
+      var batch = txn.batch();
+      updateBatch(batch);
+      await batch.commit(noResult: true);
     });
   }
 }

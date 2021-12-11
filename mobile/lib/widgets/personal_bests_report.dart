@@ -202,9 +202,8 @@ class _PersonalBestsReportState extends State<PersonalBestsReport> {
     );
   }
 
-  void _refreshModel() {
-    _model = _PersonalBestsReportModel(context, _dateRange);
-  }
+  void _refreshModel() =>
+      _model = _PersonalBestsReportModel(context, _dateRange);
 }
 
 class _PersonalBestsReportModel {
@@ -223,13 +222,8 @@ class _PersonalBestsReportModel {
     var tripManager = TripManager.of(context);
     var userPreferenceManager = UserPreferenceManager.of(context);
 
-    var lengthSystem =
-        userPreferenceManager.catchLengthSystem ?? MeasurementSystem.metric;
-    var lengthUnit = lengthSystem.isMetric ? Unit.centimeters : Unit.inches;
-
-    var weightSystem =
-        userPreferenceManager.catchWeightSystem ?? MeasurementSystem.metric;
-    var weightUnit = weightSystem.isMetric ? Unit.kilograms : Unit.pounds;
+    var lengthUnit = userPreferenceManager.catchLengthSystem.lengthUnit;
+    var weightUnit = userPreferenceManager.catchWeightSystem.weightUnit;
 
     for (var cat in catchManager.catches(
       context,
@@ -498,9 +492,6 @@ class _MeasurementPerSpecies extends StatelessWidget {
       var species = entry.key;
       void onTap() => onTapSpeciesRow(species);
 
-      // Need to wrap each item in an InkWell so the entire row is clickable.
-      // There is currently no support for tapping, or adding an InkWell to
-      // an entire TableRow.
       result.add(TableRow(
         children: [
           _buildInkWellCell(
@@ -572,7 +563,9 @@ class _MeasurementPerSpecies extends StatelessWidget {
     required EdgeInsets padding,
     VoidCallback? onTap,
   }) {
-    return InkWell(
+    // TableRowInkWell expands the InkWell to the entire table row, rather than
+    // just the cell.
+    return TableRowInkWell(
       child: Padding(
         padding: padding,
         child: child,

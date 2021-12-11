@@ -391,7 +391,22 @@ class _SaveTripPageState extends State<SaveTripPage> {
       isHidden: !_fields[_idCatches]!.isShowing,
       listPage: (pickerSettings) =>
           CatchListPage(pickerSettings: pickerSettings),
-      onPicked: (ids) => setState(() => _catchesController.value = ids),
+      onPicked: (ids) => setState(() {
+        _catchesController.value = ids;
+
+        if (ids.isNotEmpty) {
+          var catches = _catchManager.catches(
+            context,
+            sortOrder: CatchSortOrder.newestToOldest,
+            catchIds: ids,
+          );
+
+          // Automatically update trip start and end time based on picked
+          // catches.
+          _startTimestampController.value = catches.last.timestamp.toInt();
+          _endTimestampController.value = catches.first.timestamp.toInt();
+        }
+      }),
     );
   }
 

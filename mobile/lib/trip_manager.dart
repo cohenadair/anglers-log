@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:mobile/angler_manager.dart';
 import 'package:mobile/bait_manager.dart';
 import 'package:mobile/catch_manager.dart';
+import 'package:mobile/time_manager.dart';
 import 'package:provider/provider.dart';
 import 'package:quiver/strings.dart';
 
@@ -40,6 +41,8 @@ class TripManager extends NamedEntityManager<Trip> {
 
   SpeciesManager get _speciesManager => appManager.speciesManager;
 
+  TimeManager get _timeManager => appManager.timeManager;
+
   @override
   Trip entityFromBytes(List<int> bytes) => Trip.fromBuffer(bytes);
 
@@ -59,6 +62,35 @@ class TripManager extends NamedEntityManager<Trip> {
 
   @override
   String get tableName => "trip";
+
+  List<Trip> trips(
+    BuildContext context, {
+    String? filter,
+    DateRange? dateRange,
+    Iterable<Id> tripIds = const {},
+  }) {
+    List<Trip> trips;
+    if (isEmpty(filter) && dateRange == null && tripIds.isEmpty) {
+      trips = entities.values.toList();
+    } else {
+      trips = list(tripIds).where((trip) {
+        var valid = true;
+        valid &= dateRange == null ||
+            dateRange.contains(
+                trip.startTimestamp.toInt(), _timeManager.currentDateTime);
+
+        if (!valid) {
+          return false;
+        }
+
+        var matches = matchesFilter(trip.id, filter, context);
+        return matches;
+      }).toList();
+    }
+
+    trips.sort((lhs, rhs) => rhs.startTimestamp.compareTo(lhs.startTimestamp));
+    return trips;
+  }
 
   @override
   Future<bool> addOrUpdate(
@@ -80,7 +112,7 @@ class TripManager extends NamedEntityManager<Trip> {
       return false;
     }
 
-    return super.matchesFilter(trip.id, filter) ||
+    if (super.matchesFilter(trip.id, filter) ||
         _catchManager.idsMatchesFilter(trip.catchIds, filter) ||
         _speciesManager.idsMatchesFilter(
             trip.catchesPerSpecies.map((e) => e.entityId).toList(), filter) ||
@@ -88,17 +120,23 @@ class TripManager extends NamedEntityManager<Trip> {
             trip.catchesPerFishingSpot.map((e) => e.entityId).toList(),
             filter) ||
         _anglerManager.idsMatchesFilter(
-            trip.catchesPerAngler.map((e) => e.entityId).toList(), filter) ||
-        context == null ||
-        _baitManager.attachmentsMatchesFilter(
-            trip.catchesPerBait.map((e) => e.attachment).toList(),
-            filter,
-            context) ||
-        (trip.hasNotes() && containsTrimmedLowerCase(trip.notes, filter!)) ||
-        (trip.hasAtmosphere() &&
-            trip.atmosphere.matchesFilter(context, filter)) ||
-        filterMatchesEntityValues(
-            trip.customEntityValues, filter, _customEntityManager);
+            trip.catchesPerAngler.map((e) => e.entityId).toList(), filter)) {
+      return true;
+    }
+
+    if (context != null) {
+      return _baitManager.attachmentsMatchesFilter(
+              trip.catchesPerBait.map((e) => e.attachment).toList(),
+              filter,
+              context) ||
+          (trip.hasNotes() && containsTrimmedLowerCase(trip.notes, filter!)) ||
+          (trip.hasAtmosphere() &&
+              trip.atmosphere.matchesFilter(context, filter)) ||
+          filterMatchesEntityValues(
+              trip.customEntityValues, filter, _customEntityManager);
+    }
+
+    return false;
   }
 
   String deleteMessage(BuildContext context, Trip trip) {

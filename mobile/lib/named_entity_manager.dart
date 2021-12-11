@@ -20,8 +20,11 @@ abstract class NamedEntityManager<T extends GeneratedMessage>
   int Function(T, T) get nameComparator =>
       (lhs, rhs) => ignoreCaseAlphabeticalComparator(name(lhs), name(rhs));
 
-  List<T> listSortedByName({String? filter}) {
-    var result = List<T>.from(filteredList(filter));
+  List<T> listSortedByName({
+    String? filter,
+    Iterable<Id> ids = const [],
+  }) {
+    var result = List<T>.from(filteredList(filter, ids));
     result.sort(nameComparator);
     return result;
   }

@@ -5,6 +5,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:protobuf/protobuf.dart';
 import 'package:quiver/strings.dart';
+import 'package:sqflite/sqflite.dart';
 
 import 'app_manager.dart';
 import 'data_source_facilitator.dart';
@@ -96,38 +97,61 @@ abstract class EntityManager<T extends GeneratedMessage>
 
   @override
   StreamSubscription<dynamic> initializeFirestore(Completer completer) {
-    return firestore.collection(_collectionPath).snapshots().listen((snapshot) {
-      for (var change in snapshot.docChanges) {
-        var bytes = change.doc.data()![_columnBytes] ?? [];
-        var entity =
-            bytes.isNotEmpty ? entityFromBytes(List<int>.from(bytes)) : null;
-        if (entity == null) {
-          _log.d("Couldn't parse bytes: ${change.doc.data()}");
-          continue;
-        }
+    return firestore
+        .collection(_collectionPath)
+        .snapshots()
+        .listen((snapshot) async {
+      await localDatabaseManager.commitTransaction((batch) async =>
+          await _processFirestoreChanges(batch, snapshot.docChanges));
 
-        // Data has been processed by Firestore, update it locally.
-        var id = this.id(entity);
-        var notify = !_firebaseSkipNotifyIds.contains(id);
-
-        if (change.type == DocumentChangeType.added ||
-            change.type == DocumentChangeType.modified) {
-          _log.d("Doc change: ${change.type}; notify=$notify");
-          _addOrUpdateLocal(entity, notify: notify);
-        } else if (change.type == DocumentChangeType.removed) {
-          _log.d("Doc change: delete; notify=$notify");
-          _deleteLocal(id, notify: notify);
-        } else {
-          _log.w("Unknown Firestore document change type: $change");
-        }
-
-        _firebaseSkipNotifyIds.remove(id);
-      }
-
+      // Consider initialization done once all document changes have been
+      // processed.
       if (!completer.isCompleted) {
         completer.complete();
       }
     });
+  }
+
+  Future<void> _processFirestoreChanges(
+      Batch batch, List<DocumentChange<Map<String, dynamic>>> changes) async {
+    var logMap = {
+      DocumentChangeType.added: 0,
+      DocumentChangeType.modified: 0,
+      DocumentChangeType.removed: 0,
+    };
+
+    for (var change in changes) {
+      var bytes = change.doc.data()![_columnBytes] ?? [];
+      var entity =
+          bytes.isNotEmpty ? entityFromBytes(List<int>.from(bytes)) : null;
+      if (entity == null) {
+        _log.d("Couldn't parse bytes: ${change.doc.data()}");
+        continue;
+      }
+
+      // Data has been processed by Firestore, update it locally.
+      var id = this.id(entity);
+      var notify = !_firebaseSkipNotifyIds.contains(id);
+
+      logMap[change.type] = logMap[change.type]! + 1;
+
+      switch (change.type) {
+        case DocumentChangeType.added:
+        // Fallthrough
+        case DocumentChangeType.modified:
+          await _addOrUpdateLocal(entity, notify: notify, batch: batch);
+          break;
+        case DocumentChangeType.removed:
+          await _deleteLocal(id, notify: notify, batch: batch);
+          break;
+      }
+
+      _firebaseSkipNotifyIds.remove(id);
+    }
+
+    _log.d("Doc added=${logMap[DocumentChangeType.added]}; "
+        "modified=${logMap[DocumentChangeType.modified]}; "
+        "removed=${logMap[DocumentChangeType.removed]}");
   }
 
   @override
@@ -160,22 +184,22 @@ abstract class EntityManager<T extends GeneratedMessage>
   /// returned are guaranteed to exist in the database.
   Set<Id> idSet({
     Iterable<T> entities = const [],
-    Iterable<Id>? ids,
+    Iterable<Id> ids = const [],
   }) =>
       (entities.isEmpty ? list(ids) : entities).map((e) => id(e)).toSet();
 
-  List<T> list([Iterable<Id>? ids]) {
-    if (ids == null || ids.isEmpty) {
+  List<T> list([Iterable<Id> ids = const []]) {
+    if (ids.isEmpty) {
       return List.unmodifiable(entities.values);
     }
     return entities.values.where((e) => ids.contains(id(e))).toList();
   }
 
-  List<T> filteredList(String? filter) {
+  List<T> filteredList(String? filter, [Iterable<Id> ids = const []]) {
     if (isEmpty(filter)) {
-      return list();
+      return list(ids);
     }
-    return list().where((e) => matchesFilter(id(e), filter)).toList();
+    return list(ids).where((e) => matchesFilter(id(e), filter)).toList();
   }
 
   /// Returns true of any entity in [ids] matches [filter]. Returns false if
@@ -235,6 +259,7 @@ abstract class EntityManager<T extends GeneratedMessage>
   Future<bool> _addOrUpdateLocal(
     T entity, {
     bool notify = true,
+    Batch? batch,
   }) async {
     var id = this.id(entity);
     var map = {
@@ -242,7 +267,7 @@ abstract class EntityManager<T extends GeneratedMessage>
       _columnBytes: entity.writeToBuffer(),
     };
 
-    if (await localDatabaseManager.insertOrReplace(tableName, map)) {
+    if (await localDatabaseManager.insertOrReplace(tableName, map, batch)) {
       var updated = entities.containsKey(id);
       entities[id] = entity;
       if (notify) {
@@ -289,9 +314,10 @@ abstract class EntityManager<T extends GeneratedMessage>
   Future<void> _deleteLocal(
     Id entityId, {
     bool notify = true,
+    Batch? batch,
   }) async {
     if (entityExists(entityId) &&
-        await localDatabaseManager.deleteEntity(entityId, tableName)) {
+        await localDatabaseManager.deleteEntity(entityId, tableName, batch)) {
       _log.d("Deleted locally");
       _deleteMemory(entityId, notify: notify);
     }
@@ -390,7 +416,7 @@ class EntityListenerBuilder extends StatefulWidget {
   final void Function(dynamic)? onUpdate;
 
   /// Invoked on add, delete, or update, in addition to [onAdd], [onDelete],
-  /// [onUpdate]. Invoked _before_ the call to [setState].
+  /// [onUpdate]. Invoked _inside_ the call to [setState].
   final VoidCallback? onAnyChange;
 
   /// If false, the widget is not rebuilt when data is deleted. This is useful
@@ -452,10 +478,5 @@ class _EntityListenerBuilderState extends State<EntityListenerBuilder> {
   @override
   Widget build(BuildContext context) => widget.builder(context);
 
-  void _onAnyChange() {
-    // Callbacks are called outside of setState below because it's likely the
-    // callbacks already call setState for the parent widget.
-    widget.onAnyChange?.call();
-    setState(() {});
-  }
+  void _onAnyChange() => setState(() => widget.onAnyChange?.call());
 }
