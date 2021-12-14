@@ -32,7 +32,11 @@ void main() {
     when(appManager.authManager.isUserVerified).thenReturn(true);
     when(appManager.authManager.stream).thenAnswer((_) => const Stream.empty());
 
+    when(appManager.catchManager.hasEntities).thenReturn(false);
+
     when(appManager.reportManager.entityExists(any)).thenReturn(false);
+    when(appManager.reportManager.defaultReport).thenReturn(Report());
+    when(appManager.reportManager.displayName(any, any)).thenReturn("Test");
 
     when(appManager.locationMonitor.currentLocation).thenReturn(null);
 

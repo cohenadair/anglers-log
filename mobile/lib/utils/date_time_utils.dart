@@ -353,6 +353,7 @@ String formatDuration({
   }
 
   if (shouldAdd(duration.days, include: includesDays)) {
+    maybeAddSpace();
     result += format(Strings.of(context).daysFormat, [duration.days]);
     numberIncluded++;
   }

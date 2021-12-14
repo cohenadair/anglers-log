@@ -18,7 +18,7 @@ void main() {
     appManager = StubbedAppManager();
 
     when(appManager.baitManager.variantDisplayValue(any, any))
-        .thenAnswer((invocation) => invocation.positionalArguments.first.color);
+        .thenAnswer((invocation) => invocation.positionalArguments[1].color);
 
     when(appManager.customEntityManager.entityExists(any)).thenReturn(false);
 

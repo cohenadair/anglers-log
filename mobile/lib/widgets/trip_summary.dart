@@ -289,7 +289,10 @@ class _TripSummaryReport {
     var tripLengths = <MultiMeasurement>[];
 
     Trip? prevTrip;
-    for (var trip in tripManager.trips(context, dateRange: dateRange)) {
+    for (var trip in tripManager.trips(
+      context: context,
+      dateRange: dateRange,
+    )) {
       var duration = trip.duration;
 
       if (prevTrip != null) {

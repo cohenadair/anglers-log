@@ -131,7 +131,7 @@ void main() {
     verifyNever(appManager.baitManager.idsMatchesFilter(any, any));
   });
 
-  test("matchesFilter true for null BuildContext", () async {
+  test("matchesFilter false for null BuildContext", () async {
     when(appManager.catchManager.idsMatchesFilter(any, any)).thenReturn(false);
     when(appManager.speciesManager.idsMatchesFilter(any, any))
         .thenReturn(false);
@@ -142,7 +142,7 @@ void main() {
     var trip = defaultTrip();
     await tripManager.addOrUpdate(trip);
 
-    expect(tripManager.matchesFilter(trip.id, "Bad filter", null), isTrue);
+    expect(tripManager.matchesFilter(trip.id, "Bad filter", null), isFalse);
     verifyNever(appManager.baitManager.idsMatchesFilter(any, any));
   });
 

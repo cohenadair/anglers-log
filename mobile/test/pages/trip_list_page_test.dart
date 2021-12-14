@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
 import 'package:mobile/pages/trip_list_page.dart';
-import 'package:mobile/res/style.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mobile/widgets/list_item.dart';
 import 'package:mockito/mockito.dart';
@@ -30,12 +29,15 @@ void main() {
   });
 
   testWidgets("Trip with name", (tester) async {
-    when(appManager.tripManager.listSortedByName(filter: anyNamed("filter")))
-        .thenReturn([defaultTrip()..name = "Test Trip"]);
+    when(appManager.tripManager.trips(
+      context: anyNamed("context"),
+      filter: anyNamed("filter"),
+      tripIds: anyNamed("tripIds"),
+    )).thenReturn([defaultTrip()..name = "Test Trip"]);
 
     var context = await pumpContext(
       tester,
-      (_) => TripListPage(),
+      (_) => const TripListPage(),
       appManager: appManager,
     );
 
@@ -43,12 +45,15 @@ void main() {
   });
 
   testWidgets("Trip without name", (tester) async {
-    when(appManager.tripManager.listSortedByName(filter: anyNamed("filter")))
-        .thenReturn([defaultTrip()]);
+    when(appManager.tripManager.trips(
+      context: anyNamed("context"),
+      filter: anyNamed("filter"),
+      tripIds: anyNamed("tripIds"),
+    )).thenReturn([defaultTrip()]);
 
     var context = await pumpContext(
       tester,
-      (_) => TripListPage(),
+      (_) => const TripListPage(),
       appManager: appManager,
     );
 
@@ -59,13 +64,16 @@ void main() {
   });
 
   testWidgets("Trip without catches", (tester) async {
-    when(appManager.tripManager.listSortedByName(filter: anyNamed("filter")))
-        .thenReturn([defaultTrip()]);
+    when(appManager.tripManager.trips(
+      context: anyNamed("context"),
+      filter: anyNamed("filter"),
+      tripIds: anyNamed("tripIds"),
+    )).thenReturn([defaultTrip()]);
     when(appManager.tripManager.numberOfCatches(any)).thenReturn(0);
 
     await pumpContext(
       tester,
-      (_) => TripListPage(),
+      (_) => const TripListPage(),
       appManager: appManager,
     );
     expect(
@@ -76,13 +84,16 @@ void main() {
   });
 
   testWidgets("Trip with catches", (tester) async {
-    when(appManager.tripManager.listSortedByName(filter: anyNamed("filter")))
-        .thenReturn([defaultTrip()]);
+    when(appManager.tripManager.trips(
+      context: anyNamed("context"),
+      filter: anyNamed("filter"),
+      tripIds: anyNamed("tripIds"),
+    )).thenReturn([defaultTrip()]);
     when(appManager.tripManager.numberOfCatches(any)).thenReturn(5);
 
     await pumpContext(
       tester,
-      (_) => TripListPage(),
+      (_) => const TripListPage(),
       appManager: appManager,
     );
     expect(
@@ -93,13 +104,16 @@ void main() {
   });
 
   testWidgets("Trip without images", (tester) async {
-    when(appManager.tripManager.listSortedByName(filter: anyNamed("filter")))
-        .thenReturn([defaultTrip()]);
+    when(appManager.tripManager.trips(
+      context: anyNamed("context"),
+      filter: anyNamed("filter"),
+      tripIds: anyNamed("tripIds"),
+    )).thenReturn([defaultTrip()]);
     when(appManager.tripManager.allImageNames(any)).thenReturn([]);
 
     await pumpContext(
       tester,
-      (_) => TripListPage(),
+      (_) => const TripListPage(),
       appManager: appManager,
     );
     expect(
@@ -109,13 +123,16 @@ void main() {
   });
 
   testWidgets("Trip with images", (tester) async {
-    when(appManager.tripManager.listSortedByName(filter: anyNamed("filter")))
-        .thenReturn([defaultTrip()]);
+    when(appManager.tripManager.trips(
+      context: anyNamed("context"),
+      filter: anyNamed("filter"),
+      tripIds: anyNamed("tripIds"),
+    )).thenReturn([defaultTrip()]);
     when(appManager.tripManager.allImageNames(any)).thenReturn(["test.png"]);
 
     await pumpContext(
       tester,
-      (_) => TripListPage(),
+      (_) => const TripListPage(),
       appManager: appManager,
     );
     expect(

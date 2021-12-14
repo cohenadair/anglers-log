@@ -122,28 +122,6 @@ void main() {
   });
 
   group("Chart rows", () {
-    testWidgets("Series max value 0 shows empty rows", (tester) async {
-      var series1 = Series<Species>({
-        Species()..name = "Bass": 0,
-      }, DateRange(period: DateRange_Period.last7Days));
-
-      var series2 = Series<Species>({
-        Species()..name = "Bass": 0,
-      }, DateRange(period: DateRange_Period.lastMonth));
-
-      await tester.pumpWidget(
-        Testable(
-          (_) => Chart(
-            series: [series1, series2],
-            labelBuilder: (dynamic _) => "",
-            viewAllTitle: "Title",
-            chartPageDescription: "A description.",
-          ),
-        ),
-      );
-      expect(find.byType(Empty), findsNWidgets(2));
-    });
-
     testWidgets("Row with non-null onTap action", (tester) async {
       var appManager = StubbedAppManager();
       when(appManager.timeManager.currentDateTime).thenReturn(DateTime.now());

@@ -263,7 +263,7 @@ void main() {
           context: context,
           millisecondsDuration: 0,
         ),
-        "0d 0h 0m 0s",
+        "0y 0d 0h 0m 0s",
       );
 
       expect(
@@ -291,7 +291,7 @@ void main() {
           context: context,
           millisecondsDuration: ms,
         ),
-        "2d 5h 45m 30s",
+        "0y 2d 5h 45m 30s",
       );
 
       expect(
@@ -316,7 +316,7 @@ void main() {
           context: context,
           millisecondsDuration: ms,
         ),
-        "2d 0h 0m 0s",
+        "0y 2d 0h 0m 0s",
       );
 
       expect(
@@ -341,7 +341,7 @@ void main() {
           context: context,
           millisecondsDuration: ms,
         ),
-        "0d 10h 0m 0s",
+        "0y 0d 10h 0m 0s",
       );
 
       expect(
@@ -366,7 +366,7 @@ void main() {
           context: context,
           millisecondsDuration: ms,
         ),
-        "0d 0h 20m 0s",
+        "0y 0d 0h 20m 0s",
       );
 
       expect(
@@ -391,7 +391,7 @@ void main() {
           context: context,
           millisecondsDuration: ms,
         ),
-        "0d 0h 0m 50s",
+        "0y 0d 0h 0m 50s",
       );
 
       expect(
@@ -420,7 +420,7 @@ void main() {
           millisecondsDuration: ms,
           includesDays: false,
         ),
-        "53h 45m 30s",
+        "0y 53h 45m 30s",
       );
     });
 
@@ -438,6 +438,7 @@ void main() {
         formatDuration(
           context: context,
           millisecondsDuration: ms,
+          includesYears: false,
           includesDays: false,
           includesHours: false,
         ),
@@ -459,6 +460,7 @@ void main() {
         formatDuration(
           context: context,
           millisecondsDuration: ms,
+          includesYears: false,
           includesDays: false,
           includesHours: false,
           includesMinutes: false,
@@ -481,6 +483,7 @@ void main() {
         formatDuration(
           context: context,
           millisecondsDuration: ms,
+          includesYears: false,
           includesDays: false,
           includesHours: false,
           includesMinutes: false,
@@ -506,7 +509,7 @@ void main() {
           millisecondsDuration: ms,
           numberOfQuantities: 2,
         ),
-        "2d 5h",
+        "0y 2d",
       );
 
       ms = const Duration(

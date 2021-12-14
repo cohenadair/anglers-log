@@ -56,10 +56,12 @@ void main() {
     when(appManager.authManager.firestoreDocPath).thenReturn("");
     when(appManager.authManager.stream).thenAnswer((_) => const Stream.empty());
 
-    when(appManager.localDatabaseManager.insertOrReplace(any, any))
+    when(appManager.localDatabaseManager.insertOrReplace(any, any, any))
         .thenAnswer((realInvocation) => Future.value(true));
-    when(appManager.localDatabaseManager.deleteEntity(any, any))
+    when(appManager.localDatabaseManager.deleteEntity(any, any, any))
         .thenAnswer((_) => Future.value(true));
+    when(appManager.localDatabaseManager.commitTransaction(any)).thenAnswer(
+        (invocation) => invocation.positionalArguments.first(MockBatch()));
 
     when(appManager.subscriptionManager.stream)
         .thenAnswer((_) => const Stream.empty());
@@ -187,25 +189,29 @@ void main() {
     });
     when(docChange.type).thenReturn(DocumentChangeType.added);
     listener(snapshot);
-    verify(docChange.type).called(2);
-    verify(appManager.localDatabaseManager.insertOrReplace(any, any)).called(1);
+    verify(docChange.type).called(3);
+    verify(appManager.localDatabaseManager.insertOrReplace(any, any, any))
+        .called(1);
 
     // Document updated.
     when(docChange.type).thenReturn(DocumentChangeType.modified);
     listener(snapshot);
     verify(docChange.type).called(3);
-    verify(appManager.localDatabaseManager.insertOrReplace(any, any)).called(1);
+    verify(appManager.localDatabaseManager.insertOrReplace(any, any, any))
+        .called(1);
 
     // Document deleted.
     entityManager.firestoreEnabled = false;
     await entityManager.addOrUpdate(species);
-    verify(appManager.localDatabaseManager.insertOrReplace(any, any)).called(1);
+    verify(appManager.localDatabaseManager.insertOrReplace(any, any, any))
+        .called(1);
 
     when(docChange.type).thenReturn(DocumentChangeType.removed);
     listener(snapshot);
     verify(docChange.type).called(3);
-    verifyNever(appManager.localDatabaseManager.insertOrReplace(any, any));
-    verify(appManager.localDatabaseManager.deleteEntity(any, any)).called(1);
+    verifyNever(appManager.localDatabaseManager.insertOrReplace(any, any, any));
+    verify(appManager.localDatabaseManager.deleteEntity(any, any, any))
+        .called(1);
   });
 
   test("Test add or update local", () async {
@@ -294,7 +300,7 @@ void main() {
   });
 
   test("Delete locally", () async {
-    when(appManager.localDatabaseManager.deleteEntity(any, any))
+    when(appManager.localDatabaseManager.deleteEntity(any, any, any))
         .thenAnswer((_) => Future.value(true));
     when(appManager.subscriptionManager.stream)
         .thenAnswer((_) => const Stream.empty());

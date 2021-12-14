@@ -93,6 +93,9 @@ void main() {
     when(appManager.userPreferenceManager.stream)
         .thenAnswer((_) => const Stream.empty());
     when(appManager.userPreferenceManager.mapType).thenReturn(null);
+    when(appManager.userPreferenceManager.isTrackingImages).thenReturn(true);
+    when(appManager.userPreferenceManager.isTrackingFishingSpots)
+        .thenReturn(true);
 
     var species = Species()
       ..id = randomId()
@@ -218,11 +221,13 @@ void main() {
   testWidgets("Fishing spot is skipped when not tracking fishing spots",
       (tester) async {
     when(appManager.fishingSpotManager.entityExists(any)).thenReturn(false);
-
     when(appManager.userPreferenceManager.catchFieldIds).thenReturn([
       catchFieldIdTimestamp,
       catchFieldIdSpecies,
     ]);
+    when(appManager.userPreferenceManager.isTrackingFishingSpots)
+        .thenReturn(false);
+    when(appManager.userPreferenceManager.isTrackingImages).thenReturn(false);
 
     await tester.pumpWidget(Testable(
       (_) => const AddCatchJourney(),
@@ -299,6 +304,7 @@ void main() {
       catchFieldIdTimestamp,
       catchFieldIdSpecies,
     ]);
+    when(appManager.userPreferenceManager.isTrackingImages).thenReturn(false);
 
     await tester.pumpWidget(Testable(
       (_) => const AddCatchJourney(),

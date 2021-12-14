@@ -40,7 +40,7 @@ class TripListPage extends StatelessWidget {
           tripManager,
         ],
         loadItems: (query) => tripManager.trips(
-          context,
+          context: context,
           filter: query,
           tripIds: ids,
         ),

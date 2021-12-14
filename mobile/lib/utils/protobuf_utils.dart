@@ -1443,8 +1443,7 @@ extension Reports on Report {
     }
   }
 
-  bool get isCustom =>
-      type == Report_Type.comparison || type == Report_Type.summary;
+  bool get isCustom => hasType();
 }
 
 extension SkyConditions on SkyCondition {

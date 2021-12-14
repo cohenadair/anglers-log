@@ -406,17 +406,24 @@ class EntityListenerBuilder extends StatefulWidget {
   final List<EntityManager<GeneratedMessage>> managers;
   final Widget Function(BuildContext) builder;
 
-  /// Called when an item is added to an [EntityManager] in [managers].
+  /// Called when an item is added to an [EntityManager] in [managers]. Invoked
+  /// _inside_ the call to [setState]. As such, [onAdd] should not return a
+  /// [Future].
   final void Function(dynamic)? onAdd;
 
   /// Called when an item is deleted from an [EntityManager] in [managers].
+  /// Invoked _inside_ the call to [setState]. As such, [onDelete] should not
+  /// return a [Future].
   final void Function(dynamic)? onDelete;
 
   /// Called when an item is updated by an [EntityManager] in [managers].
+  /// Invoked _inside_ the call to [setState]. As such, [onUpdate] should not
+  /// return a [Future].
   final void Function(dynamic)? onUpdate;
 
   /// Invoked on add, delete, or update, in addition to [onAdd], [onDelete],
-  /// [onUpdate]. Invoked _inside_ the call to [setState].
+  /// [onUpdate]. Invoked _inside_ the call to [setState]. As such,
+  /// [onAnyChange] should not return a [Future].
   final VoidCallback? onAnyChange;
 
   /// If false, the widget is not rebuilt when data is deleted. This is useful
@@ -448,20 +455,22 @@ class _EntityListenerBuilderState extends State<EntityListenerBuilder> {
 
     for (var manager in widget.managers) {
       _listeners.add(manager.addSimpleListener(
-        onAdd: (entity) {
+        onAdd: (entity) => setState(() {
           widget.onAdd?.call(entity);
-          _onAnyChange();
-        },
+          widget.onAnyChange?.call();
+        }),
         onDelete: widget.onDeleteEnabled
             ? (entity) {
-                widget.onDelete?.call(entity);
-                _onAnyChange();
+                setState(() {
+                  widget.onDelete?.call(entity);
+                  widget.onAnyChange?.call();
+                });
               }
             : null,
-        onUpdate: (entity) {
+        onUpdate: (entity) => setState(() {
           widget.onUpdate?.call(entity);
-          _onAnyChange();
-        },
+          widget.onAnyChange?.call();
+        }),
       ));
     }
   }
@@ -477,6 +486,4 @@ class _EntityListenerBuilderState extends State<EntityListenerBuilder> {
 
   @override
   Widget build(BuildContext context) => widget.builder(context);
-
-  void _onAnyChange() => setState(() => widget.onAnyChange?.call());
 }

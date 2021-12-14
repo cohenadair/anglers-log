@@ -160,7 +160,7 @@ void main() {
     });
     when(appManager.baitManager.attachmentDisplayValue(any, any))
         .thenAnswer((invocation) {
-      var attachment = invocation.positionalArguments[0];
+      var attachment = invocation.positionalArguments[1];
       var bait = baits.firstWhereOrNull((e) => e.id == attachment?.baitId);
       var variant =
           bait?.variants.firstWhereOrNull((e) => e.id == attachment.variantId);

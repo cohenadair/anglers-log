@@ -63,8 +63,8 @@ class TripManager extends NamedEntityManager<Trip> {
   @override
   String get tableName => "trip";
 
-  List<Trip> trips(
-    BuildContext context, {
+  List<Trip> trips({
+    BuildContext? context,
     String? filter,
     DateRange? dateRange,
     Iterable<Id> tripIds = const {},

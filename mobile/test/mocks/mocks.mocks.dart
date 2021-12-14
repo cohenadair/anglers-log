@@ -3285,13 +3285,18 @@ class MockTripManager extends _i1.Mock implements _i25.TripManager {
       (super.noSuchMethod(Invocation.method(#displayName, [context, entity]),
           returnValue: '') as String);
   @override
-  List<_i8.Trip> trips(_i44.BuildContext? context,
-          {String? filter,
+  List<_i8.Trip> trips(
+          {_i44.BuildContext? context,
+          String? filter,
           _i8.DateRange? dateRange,
           Iterable<_i8.Id>? tripIds = const {}}) =>
       (super.noSuchMethod(
-          Invocation.method(#trips, [context],
-              {#filter: filter, #dateRange: dateRange, #tripIds: tripIds}),
+          Invocation.method(#trips, [], {
+            #context: context,
+            #filter: filter,
+            #dateRange: dateRange,
+            #tripIds: tripIds
+          }),
           returnValue: <_i8.Trip>[]) as List<_i8.Trip>);
   @override
   _i9.Future<bool> addOrUpdate(_i8.Trip? entity,
