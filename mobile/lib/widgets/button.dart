@@ -124,24 +124,6 @@ class ActionButton extends StatelessWidget {
   }
 }
 
-class PlainButton extends StatelessWidget {
-  final String text;
-  final VoidCallback? onPressed;
-
-  const PlainButton(
-    this.text, {
-    this.onPressed,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return TextButton(
-      child: Text(text.toUpperCase()),
-      onPressed: onPressed,
-    );
-  }
-}
-
 /// An [ActionChip] wrapper.
 class ChipButton extends StatelessWidget {
   final double iconSize = 20.0;

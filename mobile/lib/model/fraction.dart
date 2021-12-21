@@ -19,19 +19,24 @@ class Fraction {
     sevenEighths,
   ];
 
-  static Fraction fromValue(double? value) {
-    if (value == null || value <= 0) {
+  static Fraction fromValue(double? input) {
+    if (input == null || input <= 0) {
       return zero;
     }
 
     var result = zero;
+    var largestDifference = double.infinity;
 
     for (var fraction in all) {
-      if (value == fraction.value) {
+      var value = fraction.value;
+
+      if (input == value) {
         return fraction;
       }
 
-      if ((value - fraction.value).abs() < result.value) {
+      var difference = (value - input).abs();
+      if (difference < largestDifference) {
+        largestDifference = difference;
         result = fraction;
       }
     }

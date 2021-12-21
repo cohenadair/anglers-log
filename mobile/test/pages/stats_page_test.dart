@@ -1,10 +1,14 @@
 import 'package:fixnum/fixnum.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
 import 'package:mobile/pages/stats_page.dart';
 import 'package:mobile/report_manager.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mobile/utils/report_utils.dart';
+import 'package:mobile/widgets/catch_summary.dart';
+import 'package:mobile/widgets/personal_bests_report.dart';
+import 'package:mobile/widgets/trip_summary.dart';
 import 'package:mockito/mockito.dart';
 import 'package:quiver/strings.dart' as quiver;
 
@@ -124,7 +128,7 @@ void main() {
       ),
   };
 
-  var _catches = <Catch>[
+  var catches = <Catch>[
     Catch()
       ..id = catchId0
       ..timestamp = Int64(10)
@@ -192,6 +196,8 @@ void main() {
 
     when(appManager.authManager.stream).thenAnswer((_) => const Stream.empty());
 
+    when(appManager.anglerManager.list()).thenReturn([]);
+
     when(appManager.baitManager.name(any))
         .thenAnswer((invocation) => invocation.positionalArguments.first.name);
     when(appManager.baitManager.list()).thenReturn(baitMap.values.toList());
@@ -210,6 +216,11 @@ void main() {
       }
       return result;
     });
+    when(appManager.baitManager.attachmentDisplayValue(any, any)).thenAnswer(
+        (invocation) =>
+            baitMap[invocation.positionalArguments[1].baitId]!.name);
+
+    when(appManager.bodyOfWaterManager.list()).thenReturn([]);
 
     when(appManager.catchManager.catches(
       any,
@@ -218,7 +229,7 @@ void main() {
       fishingSpotIds: anyNamed("fishingSpotIds"),
       speciesIds: anyNamed("speciesIds"),
     )).thenReturn([]);
-    when(appManager.catchManager.list()).thenReturn(_catches);
+    when(appManager.catchManager.list()).thenReturn(catches);
     when(appManager.catchManager.hasEntities).thenReturn(false);
 
     when(appManager.reportManager.list()).thenReturn([]);
@@ -233,11 +244,9 @@ void main() {
         .thenReturn(Report(id: reportIdPersonalBests));
     when(appManager.reportManager.displayName(any, any))
         .thenAnswer((invocation) {
-      var id = invocation.positionalArguments[1].id;
-      if (id == reportIdPersonalBests) {
-        return "Overview";
-      }
-      return invocation.positionalArguments[1].name;
+      var context = invocation.positionalArguments[0] as BuildContext;
+      var report = invocation.positionalArguments[1] as Report;
+      return report.displayName(context) ?? report.name;
     });
 
     when(appManager.localDatabaseManager.deleteEntity(any, any))
@@ -253,6 +262,10 @@ void main() {
         (invocation) => fishingSpotMap[invocation.positionalArguments[0]]);
     when(appManager.fishingSpotManager.nameComparator)
         .thenReturn((lhs, rhs) => quiver.compareIgnoreCase(lhs.name, rhs.name));
+    when(appManager.fishingSpotManager.displayName(any, any))
+        .thenAnswer((invocation) => invocation.positionalArguments[1].name);
+
+    when(appManager.methodManager.list()).thenReturn([]);
 
     when(appManager.speciesManager.name(any))
         .thenAnswer((invocation) => invocation.positionalArguments.first.name);
@@ -262,8 +275,12 @@ void main() {
         .thenReturn(speciesMap.values.toList());
     when(appManager.speciesManager.entity(any)).thenAnswer(
         (invocation) => speciesMap[invocation.positionalArguments[0]]);
+    when(appManager.speciesManager.entityExists(any)).thenAnswer(
+        (invocation) => speciesMap[invocation.positionalArguments[0]] != null);
     when(appManager.speciesManager.nameComparator)
         .thenReturn((lhs, rhs) => quiver.compareIgnoreCase(lhs.name, rhs.name));
+    when(appManager.speciesManager.displayName(any, any))
+        .thenAnswer((invocation) => invocation.positionalArguments[1].name);
 
     when(appManager.subscriptionManager.stream)
         .thenAnswer((_) => const Stream.empty());
@@ -273,6 +290,16 @@ void main() {
         .thenReturn(DateTime.fromMillisecondsSinceEpoch(105000));
     when(appManager.timeManager.msSinceEpoch).thenReturn(
         DateTime.fromMillisecondsSinceEpoch(105000).millisecondsSinceEpoch);
+
+    when(appManager.tripManager.list()).thenReturn([]);
+    when(appManager.tripManager.trips(
+      context: anyNamed("context"),
+      filter: anyNamed("filter"),
+      dateRange: anyNamed("dateRange"),
+      tripIds: anyNamed("tripIds"),
+    )).thenReturn([]);
+
+    when(appManager.waterClarityManager.list()).thenReturn([]);
 
     when(appManager.userPreferenceManager.selectedReportId).thenReturn(null);
     when(appManager.userPreferenceManager.setSelectedReportId(any))
@@ -290,78 +317,149 @@ void main() {
     when(appManager.userPreferenceManager.isTrackingTides).thenReturn(false);
     when(appManager.userPreferenceManager.isTrackingWaterClarities)
         .thenReturn(false);
+    when(appManager.userPreferenceManager.waterDepthSystem)
+        .thenReturn(MeasurementSystem.metric);
+    when(appManager.userPreferenceManager.waterTemperatureSystem)
+        .thenReturn(MeasurementSystem.metric);
+    when(appManager.userPreferenceManager.catchLengthSystem)
+        .thenReturn(MeasurementSystem.metric);
+    when(appManager.userPreferenceManager.catchWeightSystem)
+        .thenReturn(MeasurementSystem.metric);
+    when(appManager.userPreferenceManager.catchWeightSystem)
+        .thenReturn(MeasurementSystem.metric);
+    when(appManager.userPreferenceManager.airTemperatureSystem)
+        .thenReturn(MeasurementSystem.metric);
+    when(appManager.userPreferenceManager.airVisibilitySystem)
+        .thenReturn(MeasurementSystem.metric);
+    when(appManager.userPreferenceManager.airPressureSystem)
+        .thenReturn(MeasurementSystem.metric);
+    when(appManager.userPreferenceManager.windSpeedSystem)
+        .thenReturn(MeasurementSystem.metric);
   });
 
-  void _stubCatchesByTimestamp([List<Catch>? catches]) {
+  void stubCatchesByTimestamp([List<Catch>? overrideCatches]) {
+    var newCatches = overrideCatches ?? catches;
     when(appManager.catchManager.catches(
       any,
       dateRange: anyNamed("dateRange"),
+      isCatchAndReleaseOnly: anyNamed("isCatchAndReleaseOnly"),
+      isFavoritesOnly: anyNamed("isFavoritesOnly"),
+      anglerIds: anyNamed("anglerIds"),
       baits: anyNamed("baits"),
       fishingSpotIds: anyNamed("fishingSpotIds"),
+      bodyOfWaterIds: anyNamed("bodyOfWaterIds"),
+      methodIds: anyNamed("methodIds"),
       speciesIds: anyNamed("speciesIds"),
+      waterClarityIds: anyNamed("waterClarityIds"),
+      periods: anyNamed("periods"),
+      seasons: anyNamed("seasons"),
+      windDirections: anyNamed("windDirections"),
+      skyConditions: anyNamed("skyConditions"),
+      moonPhases: anyNamed("moonPhases"),
+      tideTypes: anyNamed("tideTypes"),
+      waterDepthFilter: anyNamed("waterDepthFilter"),
+      waterTemperatureFilter: anyNamed("waterTemperatureFilter"),
+      lengthFilter: anyNamed("lengthFilter"),
+      weightFilter: anyNamed("weightFilter"),
+      quantityFilter: anyNamed("quantityFilter"),
+      airTemperatureFilter: anyNamed("airTemperatureFilter"),
+      airPressureFilter: anyNamed("airPressureFilter"),
+      airHumidityFilter: anyNamed("airHumidityFilter"),
+      airVisibilityFilter: anyNamed("airVisibilityFilter"),
+      windSpeedFilter: anyNamed("windSpeedFilter"),
     )).thenReturn(
-      (catches ?? _catches)
-        ..sort((lhs, rhs) => rhs.timestamp.compareTo(lhs.timestamp)),
+      newCatches..sort((lhs, rhs) => rhs.timestamp.compareTo(lhs.timestamp)),
+    );
+    when(appManager.catchManager.hasEntities).thenReturn(newCatches.isNotEmpty);
+  }
+
+  void stubSingleReport(Report report) {
+    when(appManager.reportManager.list()).thenReturn([report]);
+    when(appManager.reportManager.listSortedByName()).thenReturn([report]);
+    when(appManager.reportManager.entityExists(report.id)).thenReturn(true);
+    when(appManager.reportManager.entity(report.id)).thenReturn(report);
+  }
+
+  void verifyReportSelection(
+    WidgetTester tester,
+    Id reportId,
+    String reportName, {
+    bool isVisible = true,
+  }) async {
+    stubCatchesByTimestamp();
+    stubSingleReport(Report(id: reportId));
+
+    await tester.pumpWidget(Testable(
+      (_) => StatsPage(),
+      appManager: appManager,
+    ));
+
+    await tapAndSettle(tester, find.text("Personal Bests"));
+    await tapAndSettle(tester, find.text(reportName));
+
+    expect(
+      find.byKey(ValueKey(reportId)),
+      isVisible ? findsOneWidget : findsNothing,
     );
   }
 
   testWidgets("Selecting summary shows summary", (tester) async {
-    var report = Report()
-      ..id = randomId()
-      ..name = "Summary"
-      ..description = "A description"
-      ..type = Report_Type.summary;
-    when(appManager.reportManager.list()).thenReturn([report]);
-    when(appManager.reportManager.listSortedByName()).thenReturn([report]);
-    when(appManager.reportManager.entityExists(report.id)).thenReturn(true);
-    when(appManager.reportManager.entity(report.id)).thenReturn(report);
+    stubCatchesByTimestamp();
+    stubSingleReport(
+      Report()
+        ..id = randomId()
+        ..name = "Summary"
+        ..description = "A description"
+        ..type = Report_Type.summary,
+    );
 
     await tester.pumpWidget(Testable(
       (_) => StatsPage(),
       appManager: appManager,
     ));
 
-    await tapAndSettle(tester, find.text("Overview"));
+    await tapAndSettle(tester, find.text("Personal Bests"));
     await tapAndSettle(tester, find.text("Summary"));
 
     expect(find.text("Summary"), findsOneWidget);
     expect(find.text("A description"), findsOneWidget);
-    expect(find.text("Overview"), findsNothing);
+    expect(find.text("Personal Bests"), findsNothing);
   });
 
   testWidgets("Selecting comparison shows comparison", (tester) async {
-    var report = Report()
-      ..id = randomId()
-      ..name = "Comparison"
-      ..description = "A description"
-      ..type = Report_Type.comparison;
-    when(appManager.reportManager.list()).thenReturn([report]);
-    when(appManager.reportManager.listSortedByName()).thenReturn([report]);
-    when(appManager.reportManager.entityExists(report.id)).thenReturn(true);
-    when(appManager.reportManager.entity(report.id)).thenReturn(report);
+    stubCatchesByTimestamp();
+    stubSingleReport(
+      Report()
+        ..id = randomId()
+        ..name = "Comparison"
+        ..description = "A description"
+        ..type = Report_Type.comparison,
+    );
 
     await tester.pumpWidget(Testable(
       (_) => StatsPage(),
       appManager: appManager,
     ));
 
-    await tapAndSettle(tester, find.text("Overview"));
+    await tapAndSettle(tester, find.text("Personal Bests"));
     await tapAndSettle(tester, find.text("Comparison"));
 
     expect(find.text("Comparison"), findsOneWidget);
     expect(find.text("A description"), findsOneWidget);
-    expect(find.text("Overview"), findsNothing);
+    expect(find.text("Personal Bests"), findsNothing);
   });
 
-  testWidgets("If current report is deleted, falls back to overview",
+  testWidgets("If current report is deleted, falls back to default",
       (tester) async {
-    var comparisonReportManager = ReportManager(appManager.app);
-    when(appManager.app.reportManager).thenReturn(comparisonReportManager);
+    var reportManager = ReportManager(appManager.app);
+    when(appManager.app.reportManager).thenReturn(reportManager);
     var reportId = randomId();
-    await comparisonReportManager.addOrUpdate(Report()
-      ..id = reportId
-      ..name = "Comparison"
-      ..type = Report_Type.comparison);
+    await reportManager.addOrUpdate(
+      Report()
+        ..id = reportId
+        ..name = "Comparison"
+        ..type = Report_Type.comparison,
+    );
 
     await tester.pumpWidget(Testable(
       (_) => StatsPage(),
@@ -375,7 +473,7 @@ void main() {
     expect(find.text("Comparison"), findsOneWidget);
 
     // Simulate deleting the report.
-    await comparisonReportManager.delete(reportId);
+    await reportManager.delete(reportId);
 
     // Wait for listeners to be invoked.
     await tester.pumpAndSettle(const Duration(milliseconds: 250));
@@ -387,11 +485,13 @@ void main() {
     var comparisonReportManager = ReportManager(appManager.app);
     when(appManager.app.reportManager).thenReturn(comparisonReportManager);
     var reportId = randomId();
-    await comparisonReportManager.addOrUpdate(Report()
-      ..id = reportId
-      ..name = "Comparison"
-      ..description = "Test description."
-      ..type = Report_Type.comparison);
+    await comparisonReportManager.addOrUpdate(
+      Report()
+        ..id = reportId
+        ..name = "Comparison"
+        ..description = "Test description."
+        ..type = Report_Type.comparison,
+    );
 
     await tester.pumpWidget(Testable(
       (_) => StatsPage(),
@@ -450,5 +550,256 @@ void main() {
     // Wait for listeners to be invoked.
     await tester.pumpAndSettle(const Duration(milliseconds: 250));
     expect(find.text("Comparison"), findsOneWidget);
+  });
+
+  testWidgets("No rebuild when the same report is picked", (tester) async {
+    stubSingleReport(
+      Report()
+        ..id = randomId()
+        ..name = "Summary"
+        ..description = "A description"
+        ..type = Report_Type.summary,
+    );
+
+    await tester.pumpWidget(Testable(
+      (_) => StatsPage(),
+      appManager: appManager,
+    ));
+
+    verify(appManager.reportManager.entity(any)).called(1);
+
+    // Different report rebuilds widget.
+    await tapAndSettle(tester, find.text("Personal Bests"));
+    await tapAndSettle(tester, find.text("Summary"));
+    verify(appManager.reportManager.entity(any)).called(1);
+
+    // Same report does not rebuild.
+    await tapAndSettle(tester, find.text("Summary"));
+    await tapAndSettle(tester, find.text("Summary"));
+    verifyNever(appManager.reportManager.entity(any));
+  });
+
+  testWidgets("Description header is hidden", (tester) async {
+    await tester.pumpWidget(Testable(
+      (_) => StatsPage(),
+      appManager: appManager,
+    ));
+
+    // Slivers that aren't visible aren't rendered, so verify the box adapter
+    // containing the description is not rendered.
+    expect(find.byType(SliverToBoxAdapter), findsNothing);
+  });
+
+  testWidgets("No catches shows empty watermark", (tester) async {
+    await tester.pumpWidget(Testable(
+      (_) => StatsPage(),
+      appManager: appManager,
+    ));
+    expect(find.text("Empty Log"), findsOneWidget);
+  });
+
+  testWidgets("Greater than 0 catches shows current report", (tester) async {
+    stubCatchesByTimestamp();
+    await tester.pumpWidget(Testable(
+      (_) => StatsPage(),
+      appManager: appManager,
+    ));
+    expect(find.text("Empty Log"), findsNothing);
+    expect(find.text("All dates"), findsOneWidget);
+  });
+
+  testWidgets("Catch summary is shown", (tester) async {
+    verifyReportSelection(tester, reportIdCatchSummary, "Catch Summary");
+  });
+
+  testWidgets("Species summary is shown", (tester) async {
+    verifyReportSelection(tester, reportIdSpeciesSummary, "Species Summary");
+  });
+
+  testWidgets("Angler summary is shown", (tester) async {
+    when(appManager.anglerManager.hasEntities).thenReturn(true);
+    verifyReportSelection(tester, reportIdAnglerSummary, "Angler Summary");
+  });
+
+  testWidgets("Angler summary is empty", (tester) async {
+    when(appManager.anglerManager.hasEntities).thenReturn(false);
+    verifyReportSelection(tester, reportIdAnglerSummary, "Angler Summary",
+        isVisible: false);
+  });
+
+  testWidgets("Bait summary is shown", (tester) async {
+    when(appManager.baitManager.hasEntities).thenReturn(true);
+    verifyReportSelection(tester, reportIdBaitSummary, "Bait Summary");
+  });
+
+  testWidgets("Bait summary is empty", (tester) async {
+    when(appManager.baitManager.hasEntities).thenReturn(false);
+    verifyReportSelection(tester, reportIdBaitSummary, "Bait Summary",
+        isVisible: false);
+  });
+
+  testWidgets("Body of water summary is shown", (tester) async {
+    when(appManager.bodyOfWaterManager.hasEntities).thenReturn(true);
+    verifyReportSelection(
+        tester, reportIdBodyOfWaterSummary, "Body Of Water Summary");
+  });
+
+  testWidgets("Body of water summary is empty", (tester) async {
+    when(appManager.bodyOfWaterManager.hasEntities).thenReturn(false);
+    verifyReportSelection(
+        tester, reportIdBodyOfWaterSummary, "Body Of Water Summary",
+        isVisible: false);
+  });
+
+  testWidgets("Fishing spot summary is shown", (tester) async {
+    when(appManager.fishingSpotManager.hasEntities).thenReturn(true);
+    verifyReportSelection(
+        tester, reportIdFishingSpotSummary, "Fishing Spot Summary");
+  });
+
+  testWidgets("Fishing spot summary is empty", (tester) async {
+    when(appManager.fishingSpotManager.hasEntities).thenReturn(false);
+    verifyReportSelection(
+        tester, reportIdFishingSpotSummary, "Fishing Spot Summary",
+        isVisible: false);
+  });
+
+  testWidgets("Fishing method summary is shown", (tester) async {
+    when(appManager.methodManager.hasEntities).thenReturn(true);
+    verifyReportSelection(
+        tester, reportIdMethodSummary, "Fishing Method Summary");
+  });
+
+  testWidgets("Fishing method summary is empty", (tester) async {
+    when(appManager.methodManager.hasEntities).thenReturn(false);
+    verifyReportSelection(
+        tester, reportIdMethodSummary, "Fishing Method Summary",
+        isVisible: false);
+  });
+
+  testWidgets("Moon phase summary is shown", (tester) async {
+    verifyReportSelection(
+        tester, reportIdMoonPhaseSummary, "Moon Phase Summary");
+  });
+
+  testWidgets("Period summary is shown", (tester) async {
+    verifyReportSelection(tester, reportIdPeriodSummary, "Time Of Day Summary");
+  });
+
+  testWidgets("Season summary is shown", (tester) async {
+    verifyReportSelection(tester, reportIdSeasonSummary, "Season Summary");
+  });
+
+  testWidgets("Tide type summary is shown", (tester) async {
+    verifyReportSelection(tester, reportIdTideTypeSummary, "Tide Summary");
+  });
+
+  testWidgets("Water clarity summary is shown", (tester) async {
+    when(appManager.waterClarityManager.hasEntities).thenReturn(true);
+    verifyReportSelection(
+        tester, reportIdWaterClaritySummary, "Water Clarity Summary");
+  });
+
+  testWidgets("Water clarity summary is empty", (tester) async {
+    when(appManager.waterClarityManager.hasEntities).thenReturn(false);
+    verifyReportSelection(
+        tester, reportIdWaterClaritySummary, "Water Clarity Summary",
+        isVisible: false);
+  });
+
+  testWidgets("Personal bests is shown", (tester) async {
+    stubCatchesByTimestamp();
+
+    await tester.pumpWidget(Testable(
+      (_) => StatsPage(),
+      appManager: appManager,
+    ));
+
+    expect(find.byType(PersonalBestsReport), findsOneWidget);
+  });
+
+  testWidgets("Trip summary is shown", (tester) async {
+    stubCatchesByTimestamp();
+    stubSingleReport(Report(id: reportIdTripSummary));
+
+    await tester.pumpWidget(Testable(
+      (_) => StatsPage(),
+      appManager: appManager,
+    ));
+
+    await tapAndSettle(tester, find.text("Personal Bests"));
+    await tapAndSettle(tester, find.text("Trip Summary"));
+
+    expect(find.byType(TripSummary), findsOneWidget);
+  });
+
+  testWidgets("CatchSummaryReport with all filter types", (tester) async {
+    stubCatchesByTimestamp();
+    stubSingleReport(Report(
+      id: randomId(),
+      name: "Test Summary",
+      type: Report_Type.summary,
+      waterDepthFilter: NumberFilter(),
+      waterTemperatureFilter: NumberFilter(),
+      lengthFilter: NumberFilter(),
+      weightFilter: NumberFilter(),
+      quantityFilter: NumberFilter(),
+      airTemperatureFilter: NumberFilter(),
+      airPressureFilter: NumberFilter(),
+      airHumidityFilter: NumberFilter(),
+      airVisibilityFilter: NumberFilter(),
+      windSpeedFilter: NumberFilter(),
+    ));
+
+    await tester.pumpWidget(Testable(
+      (_) => StatsPage(),
+      appManager: appManager,
+    ));
+
+    await tapAndSettle(tester, find.text("Personal Bests"));
+    await tapAndSettle(tester, find.text("Test Summary"));
+
+    var summary = findFirst<CatchSummary<Catch>>(tester)
+        .reportBuilder(DateRange(period: DateRange_Period.allDates), null);
+    expect(summary.waterDepthFilter, isNotNull);
+    expect(summary.waterTemperatureFilter, isNotNull);
+    expect(summary.lengthFilter, isNotNull);
+    expect(summary.weightFilter, isNotNull);
+    expect(summary.quantityFilter, isNotNull);
+    expect(summary.airTemperatureFilter, isNotNull);
+    expect(summary.airPressureFilter, isNotNull);
+    expect(summary.airHumidityFilter, isNotNull);
+    expect(summary.airVisibilityFilter, isNotNull);
+    expect(summary.windSpeedFilter, isNotNull);
+  });
+
+  testWidgets("CatchSummaryReport with no filter types", (tester) async {
+    stubCatchesByTimestamp();
+    stubSingleReport(Report(
+      id: randomId(),
+      name: "Test Summary",
+      type: Report_Type.summary,
+    ));
+
+    await tester.pumpWidget(Testable(
+      (_) => StatsPage(),
+      appManager: appManager,
+    ));
+
+    await tapAndSettle(tester, find.text("Personal Bests"));
+    await tapAndSettle(tester, find.text("Test Summary"));
+
+    var summary = findFirst<CatchSummary<Catch>>(tester)
+        .reportBuilder(DateRange(period: DateRange_Period.allDates), null);
+    expect(summary.waterDepthFilter, isNull);
+    expect(summary.waterTemperatureFilter, isNull);
+    expect(summary.lengthFilter, isNull);
+    expect(summary.weightFilter, isNull);
+    expect(summary.quantityFilter, isNull);
+    expect(summary.airTemperatureFilter, isNull);
+    expect(summary.airPressureFilter, isNull);
+    expect(summary.airHumidityFilter, isNull);
+    expect(summary.airVisibilityFilter, isNull);
+    expect(summary.windSpeedFilter, isNull);
   });
 }

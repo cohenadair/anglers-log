@@ -235,6 +235,11 @@ List<T> findType<T>(
       .toList();
 }
 
+Future<void> ensureVisibleAndSettle(WidgetTester tester, Finder finder) async {
+  await tester.ensureVisible(finder);
+  await tester.pumpAndSettle();
+}
+
 Future<void> tapAndSettle(WidgetTester tester, Finder finder,
     [int? durationMillis]) async {
   await tester.tap(finder);

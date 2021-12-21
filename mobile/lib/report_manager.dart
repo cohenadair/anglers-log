@@ -38,7 +38,8 @@ class ReportManager extends NamedEntityManager<Report> {
   Report? entity(Id? id) =>
       defaultReports.firstWhereOrNull((e) => e.id == id) ?? super.entity(id);
 
-  /// Returns a list of default, static, reports for the user.
+  /// Returns a list of default, static, reports for the user. These reports
+  /// are _not_ included in the underlying entity model.
   List<Report> get defaultReports {
     var result = [
       Report(id: reportIdPersonalBests),

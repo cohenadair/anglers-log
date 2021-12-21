@@ -218,12 +218,8 @@ class TimeLabel extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return EnabledLabel(
-      _format(context),
+      formatTimeOfDay(context, time),
       enabled: enabled,
     );
-  }
-
-  String _format(BuildContext context) {
-    return formatTimeOfDay(context, time);
   }
 }

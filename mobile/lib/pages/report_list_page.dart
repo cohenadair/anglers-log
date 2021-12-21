@@ -67,21 +67,15 @@ class ReportListPage extends StatelessWidget {
         ),
         isEditable: item.isCustom,
       );
-    } else if (item == HeadingNoteDivider) {
+    } else if (item is HeadingNoteDivider) {
       return ManageableListPageItemModel(
-        child: HeadingNoteDivider(
-          hideNote: ReportManager.of(context).list().isNotEmpty,
-          title: Strings.of(context).reportListPageReportTitle,
-          note: Strings.of(context).reportListPageReportAddNote,
-          noteIcon: Icons.add,
-          padding: insetsBottomSmall,
-        ),
+        child: item,
         isEditable: false,
         isSelectable: false,
       );
-    } else if (item == MinDivider) {
-      return const ManageableListPageItemModel(
-        child: MinDivider(),
+    } else if (item is MinDivider) {
+      return ManageableListPageItemModel(
+        child: item,
         isEditable: false,
         isSelectable: false,
       );
@@ -96,7 +90,7 @@ class ReportListPage extends StatelessWidget {
     }
   }
 
-  List _loadItems(BuildContext context) {
+  List<dynamic> _loadItems(BuildContext context) {
     var reportManager = ReportManager.of(context);
 
     var section1 = [reportIdPersonalBests];
@@ -106,15 +100,41 @@ class ReportListPage extends StatelessWidget {
       reportIdTripSummary,
     ];
 
-    return [
-      ...reportManager.defaultReports.where((e) => section1.contains(e.id)),
-      MinDivider,
-      ...reportManager.defaultReports.where((e) => section2.contains(e.id)),
-      MinDivider,
-      ...reportManager.defaultReports
-          .where((e) => !section1.contains(e.id) && !section2.contains(e.id)),
-      HeadingNoteDivider,
-      ...reportManager.listSortedByName(),
-    ];
+    var result = [];
+    var defaultReports = reportManager.defaultReports;
+
+    var section1Reports = defaultReports.where((e) => section1.contains(e.id));
+    if (section1Reports.isNotEmpty) {
+      result.addAll(section1Reports);
+    }
+
+    var section2Reports = defaultReports.where((e) => section2.contains(e.id));
+    if (section2Reports.isNotEmpty) {
+      if (section1Reports.isNotEmpty) {
+        result.add(const MinDivider());
+      }
+      result.addAll(section2Reports);
+    }
+
+    var remainingReports = defaultReports
+        .where((e) => !section1.contains(e.id) && !section2.contains(e.id));
+    if (remainingReports.isNotEmpty) {
+      if (section2Reports.isNotEmpty) {
+        result.add(const MinDivider());
+      }
+      result.addAll(remainingReports);
+    }
+
+    result.add(HeadingNoteDivider(
+      hideNote: ReportManager.of(context).list().isNotEmpty,
+      hideDivider: result.isEmpty,
+      title: Strings.of(context).reportListPageReportTitle,
+      note: Strings.of(context).reportListPageReportAddNote,
+      noteIcon: Icons.add,
+      padding: insetsBottomSmall,
+    ));
+    result.addAll(reportManager.listSortedByName());
+
+    return result;
   }
 }

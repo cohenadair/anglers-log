@@ -6,7 +6,6 @@ import 'package:quiver/iterables.dart';
 import 'package:quiver/strings.dart';
 
 import '../i18n/strings.dart';
-import '../log.dart';
 import '../model/gen/anglerslog.pb.dart';
 import '../res/dimen.dart';
 import '../res/style.dart';
@@ -133,10 +132,7 @@ class Chart<T> extends StatefulWidget {
             "showAll is false; viewAllTitle is required"),
         assert(series.isNotEmpty) {
     var colors = accentColors();
-    var seriesLen = series.first.length;
     for (Series series in series) {
-      assert(series.length == seriesLen,
-          "All data lengths in series must be equal");
       Color color = colors[math.Random().nextInt(colors.length)];
       colors.remove(color);
       series._color = color.withOpacity(_rowColorOpacity);
@@ -149,6 +145,7 @@ class Chart<T> extends StatefulWidget {
 
 class _ChartState<T> extends State<Chart<T>> {
   static const _legendIndicatorSize = 15.0;
+  static const _legendRadius = 4.0;
   static const _rowHeight = 20.0;
   static const _rowCornerRadius = 5.0;
   static const _condensedRowCount = 3;
@@ -205,7 +202,7 @@ class _ChartState<T> extends State<Chart<T>> {
                   Container(
                     decoration: BoxDecoration(
                       borderRadius: const BorderRadius.all(
-                          Radius.circular(4)),
+                          Radius.circular(_legendRadius)),
                       color: series._color,
                     ),
                     width: _legendIndicatorSize,

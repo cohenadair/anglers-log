@@ -8,6 +8,7 @@ import 'package:mobile/pages/bait_list_page.dart';
 import 'package:mobile/pages/manageable_list_page.dart';
 import 'package:mobile/res/gen/custom_icons.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
+import 'package:mobile/widgets/bait_variant_list_input.dart';
 import 'package:mobile/widgets/checkbox_input.dart';
 import 'package:mobile/widgets/input_controller.dart';
 import 'package:mobile/widgets/widget.dart';
@@ -213,203 +214,354 @@ void main() {
     expect(find.text("0 Variants"), findsNWidgets(3));
   });
 
-  group("BaitPickerInput", () {
-    testWidgets("Initial values are selected", (tester) async {
-      var controller = SetInputController<BaitAttachment>();
-      controller.value = {
-        BaitAttachment(
-          baitId: baitId0,
-          variantId: variantId0,
-        ),
-        BaitAttachment(
-          baitId: baitId1,
-        ),
-      };
+  testWidgets("Initial values are selected", (tester) async {
+    var controller = SetInputController<BaitAttachment>();
+    controller.value = {
+      BaitAttachment(
+        baitId: baitId0,
+        variantId: variantId0,
+      ),
+      BaitAttachment(
+        baitId: baitId1,
+      ),
+    };
 
-      await tester.pumpWidget(Testable(
-        (_) => BaitPickerInput(
-          controller: controller,
-          emptyValue: (_) => "",
-        ),
-        appManager: appManager,
-      ));
+    await tester.pumpWidget(Testable(
+      (_) => BaitPickerInput(
+        controller: controller,
+        emptyValue: (_) => "",
+      ),
+      appManager: appManager,
+    ));
 
-      // Verify chips are shown.
-      expect(find.text("Live - Threadfin Shad"), findsOneWidget);
-      expect(find.text("Live - Bullhead Minnow (Silver)"), findsOneWidget);
+    // Verify chips are shown.
+    expect(find.text("Live - Threadfin Shad"), findsOneWidget);
+    expect(find.text("Live - Bullhead Minnow (Silver)"), findsOneWidget);
 
-      await tapAndSettle(tester, find.text("Live - Threadfin Shad"));
-      expect(find.byType(BaitListPage), findsOneWidget);
+    await tapAndSettle(tester, find.text("Live - Threadfin Shad"));
+    expect(find.byType(BaitListPage), findsOneWidget);
 
-      var baitCheckbox = tester.widget<PaddedCheckbox>(
-        findManageableListItemCheckbox(
-          tester,
-          "Threadfin Shad",
-          skipOffstage: false,
-        ),
-      );
-      expect(baitCheckbox.checked, isTrue);
-
-      var variantCheckbox = tester.widget<PaddedCheckbox>(
-        findManageableListItemCheckbox(
-          tester,
-          "Silver",
-          skipOffstage: false,
-        ),
-      );
-      expect(variantCheckbox.checked, isTrue);
-
-      var flatfishCheckbox = tester.widget<PaddedCheckbox>(
-        findManageableListItemCheckbox(
-          tester,
-          "Skunk Flatfish",
-          skipOffstage: false,
-        ),
-      );
-      expect(flatfishCheckbox.checked, isFalse);
-    });
-
-    testWidgets("Variants are added/removed from selected values",
-        (tester) async {
-      var controller = SetInputController<BaitAttachment>();
-
-      await tester.pumpWidget(Testable(
-        (_) => BaitPickerInput(
-          controller: controller,
-          emptyValue: (_) => "No baits",
-        ),
-        appManager: appManager,
-      ));
-
-      // Select variant.
-      await tapAndSettle(tester, find.text("No baits"));
-      await tapAndSettle(
+    var baitCheckbox = tester.widget<PaddedCheckbox>(
+      findManageableListItemCheckbox(
         tester,
-        findManageableListItemCheckbox(
-          tester,
-          "Silver",
-          skipOffstage: false,
-        ),
-      );
-      await tapAndSettle(tester, find.byType(BackButton));
-      expect(controller.value.length, 1);
-      expect(controller.value.last.variantId, variantId0);
+        "Threadfin Shad",
+        skipOffstage: false,
+      ),
+    );
+    expect(baitCheckbox.checked, isTrue);
 
-      // De-select variant.
-      await tapAndSettle(tester, find.text("Live - Bullhead Minnow (Silver)"));
-      await tapAndSettle(
+    var variantCheckbox = tester.widget<PaddedCheckbox>(
+      findManageableListItemCheckbox(
         tester,
-        findManageableListItemCheckbox(
-          tester,
-          "Silver",
-          skipOffstage: false,
+        "Silver",
+        skipOffstage: false,
+      ),
+    );
+    expect(variantCheckbox.checked, isTrue);
+
+    var flatfishCheckbox = tester.widget<PaddedCheckbox>(
+      findManageableListItemCheckbox(
+        tester,
+        "Skunk Flatfish",
+        skipOffstage: false,
+      ),
+    );
+    expect(flatfishCheckbox.checked, isFalse);
+  });
+
+  testWidgets("Variants are added/removed from selected values",
+      (tester) async {
+    var controller = SetInputController<BaitAttachment>();
+
+    await tester.pumpWidget(Testable(
+      (_) => BaitPickerInput(
+        controller: controller,
+        emptyValue: (_) => "No baits",
+      ),
+      appManager: appManager,
+    ));
+
+    // Select variant.
+    await tapAndSettle(tester, find.text("No baits"));
+    await tapAndSettle(
+      tester,
+      findManageableListItemCheckbox(
+        tester,
+        "Silver",
+        skipOffstage: false,
+      ),
+    );
+    await tapAndSettle(tester, find.byType(BackButton));
+    expect(controller.value.length, 1);
+    expect(controller.value.last.variantId, variantId0);
+
+    // De-select variant.
+    await tapAndSettle(tester, find.text("Live - Bullhead Minnow (Silver)"));
+    await tapAndSettle(
+      tester,
+      findManageableListItemCheckbox(
+        tester,
+        "Silver",
+        skipOffstage: false,
+      ),
+    );
+    await tapAndSettle(tester, find.byType(BackButton));
+    expect(controller.value.isEmpty, isTrue);
+  });
+
+  testWidgets("Selecting all with isAllEmpty = false, sets controller",
+      (tester) async {
+    var controller = SetInputController<BaitAttachment>();
+
+    await tester.pumpWidget(Testable(
+      (_) => BaitPickerInput(
+        controller: controller,
+        emptyValue: (_) => "No baits",
+        isAllEmpty: false,
+      ),
+      appManager: appManager,
+    ));
+
+    await tapAndSettle(tester, find.text("No baits"));
+    await tapAndSettle(tester, findManageableListItemCheckbox(tester, "All"));
+    await tapAndSettle(tester, find.byType(BackButton));
+
+    expect(controller.value.length, 5);
+    expect(controller.value.where((e) => e.hasVariantId()).length, 2);
+  });
+
+  testWidgets("Selecting all with isAllEmpty = true, clears controller",
+      (tester) async {
+    var controller = SetInputController<BaitAttachment>();
+
+    await tester.pumpWidget(Testable(
+      (_) => BaitPickerInput(
+        controller: controller,
+        emptyValue: (_) => "No baits",
+        isAllEmpty: true,
+      ),
+      appManager: appManager,
+    ));
+
+    await tapAndSettle(tester, find.text("No baits"));
+
+    // Verify all items are selected, and do not change. In this case,
+    // controller should be cleared.
+    var allCheckbox = tester
+        .widget<PaddedCheckbox>(findManageableListItemCheckbox(tester, "All"));
+    expect(allCheckbox.checked, isTrue);
+
+    await tapAndSettle(tester, find.byType(BackButton));
+
+    expect(controller.value.isEmpty, isTrue);
+  });
+
+  testWidgets("De-selecting all clears controller", (tester) async {
+    var controller = SetInputController<BaitAttachment>();
+
+    await tester.pumpWidget(Testable(
+      (_) => BaitPickerInput(
+        controller: controller,
+        emptyValue: (_) => "No baits",
+        isAllEmpty: false,
+      ),
+      appManager: appManager,
+    ));
+
+    // Select all.
+    await tapAndSettle(tester, find.text("No baits"));
+    await tapAndSettle(tester, findManageableListItemCheckbox(tester, "All"));
+    await tapAndSettle(tester, find.byType(BackButton));
+    expect(controller.value.length, 5);
+
+    // De-select all.
+    await tapAndSettle(tester, find.byType(BaitPickerInput));
+    await tapAndSettle(tester, findManageableListItemCheckbox(tester, "All"));
+    await tapAndSettle(tester, find.byType(BackButton));
+    expect(controller.value.isEmpty, isTrue);
+    expect(find.text("No baits"), findsOneWidget);
+  });
+
+  testWidgets("Only bait objects without variants are passed to picker",
+      (tester) async {
+    var controller = SetInputController<BaitAttachment>();
+    controller.value = {
+      BaitAttachment(
+        baitId: baitId0,
+        variantId: variantId0,
+      ),
+      BaitAttachment(
+        baitId: baitId1,
+      ),
+    };
+
+    await tester.pumpWidget(Testable(
+      (_) => BaitPickerInput(
+        controller: controller,
+        emptyValue: (_) => "No baits",
+      ),
+      appManager: appManager,
+    ));
+
+    await tapAndSettle(tester, find.text("Live - Threadfin Shad"));
+
+    var pickerPage =
+        tester.widget<ManageableListPage>(find.byType(ManageableListPage));
+    expect(pickerPage.pickerSettings, isNotNull);
+    expect(pickerPage.pickerSettings!.initialValues.length, 1);
+    expect(pickerPage.pickerSettings!.initialValues.first is Bait, isTrue);
+  });
+
+  testWidgets("Single picker picks variant", (tester) async {
+    Set<BaitAttachment> pickedAttachments = {};
+
+    await tester.pumpWidget(Testable(
+      (_) => BaitListPage(
+        pickerSettings: BaitListPagePickerSettings(
+          onPicked: (_, attachments) {
+            pickedAttachments = attachments;
+            return true;
+          },
+          initialValues: {
+            BaitAttachment(
+              baitId: baitId0,
+              variantId: variantId0,
+            ),
+          },
+          isMulti: false,
         ),
-      );
-      await tapAndSettle(tester, find.byType(BackButton));
-      expect(controller.value.isEmpty, isTrue);
-    });
+      ),
+      appManager: appManager,
+    ));
 
-    testWidgets("Selecting all with isAllEmpty = false, sets controller",
-        (tester) async {
-      var controller = SetInputController<BaitAttachment>();
+    // There's only one BaitVariantListInput that has a checkmark, since only
+    // one initial value is set.
+    var variantListFinder = find.ancestor(
+      of: find.byIcon(Icons.check),
+      matching: find.byType(BaitVariantListInput),
+    );
+    expect(variantListFinder, findsOneWidget);
 
-      await tester.pumpWidget(Testable(
-        (_) => BaitPickerInput(
-          controller: controller,
-          emptyValue: (_) => "No baits",
-          isAllEmpty: false,
+    var variantList = tester.widget<BaitVariantListInput>(variantListFinder);
+    expect(variantList.onCheckboxChanged, isNull);
+    expect(variantList.onPicked, isNotNull);
+
+    await tapAndSettle(tester, find.text("Silver"));
+
+    expect(pickedAttachments.length, 1);
+    expect(pickedAttachments.first.baitId, baitId0);
+    expect(pickedAttachments.first.variantId, variantId0);
+    expect(find.byType(BaitListPage), findsNothing); // Page was popped.
+  });
+
+  testWidgets("Single picker picks bait", (tester) async {
+    Set<BaitAttachment> pickedAttachments = {};
+
+    await tester.pumpWidget(Testable(
+      (_) => BaitListPage(
+        pickerSettings: BaitListPagePickerSettings(
+          onPicked: (_, attachments) {
+            pickedAttachments = attachments;
+            return true;
+          },
+          initialValues: {},
+          isMulti: false,
         ),
-        appManager: appManager,
-      ));
+      ),
+      appManager: appManager,
+    ));
 
-      await tapAndSettle(tester, find.text("No baits"));
-      await tapAndSettle(tester, findManageableListItemCheckbox(tester, "All"));
-      await tapAndSettle(tester, find.byType(BackButton));
+    var shadText = find.text("Threadfin Shad", skipOffstage: false);
+    await ensureVisibleAndSettle(tester, shadText);
+    await tapAndSettle(tester, shadText);
 
-      expect(controller.value.length, 5);
-      expect(controller.value.where((e) => e.hasVariantId()).length, 2);
-    });
+    expect(pickedAttachments.length, 1);
+    expect(pickedAttachments.first.baitId, baitId1);
+    expect(pickedAttachments.first.hasVariantId(), isFalse);
+    expect(find.byType(BaitListPage), findsNothing); // Page was popped.
+  });
 
-    testWidgets("Selecting all with isAllEmpty = true, clears controller",
-        (tester) async {
-      var controller = SetInputController<BaitAttachment>();
+  testWidgets("Multi picker picks bait and variants", (tester) async {
+    var controller = SetInputController<BaitAttachment>();
+    controller.value = {
+      BaitAttachment(
+        baitId: baitId0,
+        variantId: variantId0,
+      ),
+    };
 
-      await tester.pumpWidget(Testable(
-        (_) => BaitPickerInput(
-          controller: controller,
-          emptyValue: (_) => "No baits",
-          isAllEmpty: true,
+    await tester.pumpWidget(Testable(
+      (_) => BaitPickerInput(
+        controller: controller,
+        emptyValue: (_) => "No baits",
+      ),
+      appManager: appManager,
+    ));
+
+    await tapAndSettle(tester, find.text("Live - Bullhead Minnow (Silver)"));
+
+    var variantList = findFirst<BaitVariantListInput>(tester);
+    expect(variantList.onCheckboxChanged, isNotNull);
+    expect(variantList.onPicked, isNull);
+
+    // Uncheck selected variant.
+    await tapAndSettle(
+        tester, findManageableListItemCheckbox(tester, "Silver"));
+
+    // Select a bait and a different variant.
+    var shadCheckbox = findManageableListItemCheckbox(
+      tester,
+      "Threadfin Shad",
+      skipOffstage: false,
+    );
+    await ensureVisibleAndSettle(tester, shadCheckbox);
+    await tapAndSettle(tester, shadCheckbox);
+    await tapAndSettle(
+        tester, findManageableListItemCheckbox(tester, "Brown Trout"));
+
+    // Trigger onPicked callback.
+    findFirst<WillPopScope>(tester).onWillPop!.call();
+    await tester.pumpAndSettle();
+
+    expect(controller.value.length, 2);
+    expect(controller.value.first.baitId, baitId1);
+    expect(controller.value.first.hasVariantId(), isFalse);
+    expect(controller.value.last.baitId, baitId4);
+    expect(controller.value.last.variantId, variantId1);
+    expect(find.byType(BaitListPage), findsNothing); // Page was popped.
+  });
+
+  testWidgets("Single picker selected variant not passed to ManageableListPage",
+      (tester) async {
+    var controller = SetInputController<BaitAttachment>();
+    controller.value = {
+      BaitAttachment(
+        baitId: baitId0,
+        variantId: variantId0,
+      ),
+    };
+
+    await tester.pumpWidget(Testable(
+      (_) => BaitListPage(
+        pickerSettings: BaitListPagePickerSettings(
+          onPicked: (_, __) => true,
+          initialValues: {
+            BaitAttachment(
+              baitId: baitId0,
+              variantId: variantId0,
+            ),
+          },
+          isMulti: false,
         ),
-        appManager: appManager,
-      ));
+      ),
+      appManager: appManager,
+    ));
 
-      await tapAndSettle(tester, find.text("No baits"));
-
-      // Verify all items are selected, and do not change. In this case,
-      // controller should be cleared.
-      var allCheckbox = tester.widget<PaddedCheckbox>(
-          findManageableListItemCheckbox(tester, "All"));
-      expect(allCheckbox.checked, isTrue);
-
-      await tapAndSettle(tester, find.byType(BackButton));
-
-      expect(controller.value.isEmpty, isTrue);
-    });
-
-    testWidgets("De-selecting all clears controller", (tester) async {
-      var controller = SetInputController<BaitAttachment>();
-
-      await tester.pumpWidget(Testable(
-        (_) => BaitPickerInput(
-          controller: controller,
-          emptyValue: (_) => "No baits",
-          isAllEmpty: false,
-        ),
-        appManager: appManager,
-      ));
-
-      // Select all.
-      await tapAndSettle(tester, find.text("No baits"));
-      await tapAndSettle(tester, findManageableListItemCheckbox(tester, "All"));
-      await tapAndSettle(tester, find.byType(BackButton));
-      expect(controller.value.length, 5);
-
-      // De-select all.
-      await tapAndSettle(tester, find.byType(BaitPickerInput));
-      await tapAndSettle(tester, findManageableListItemCheckbox(tester, "All"));
-      await tapAndSettle(tester, find.byType(BackButton));
-      expect(controller.value.isEmpty, isTrue);
-      expect(find.text("No baits"), findsOneWidget);
-    });
-
-    testWidgets("Only bait objects without variants are passed to picker",
-        (tester) async {
-      var controller = SetInputController<BaitAttachment>();
-      controller.value = {
-        BaitAttachment(
-          baitId: baitId0,
-          variantId: variantId0,
-        ),
-        BaitAttachment(
-          baitId: baitId1,
-        ),
-      };
-
-      await tester.pumpWidget(Testable(
-        (_) => BaitPickerInput(
-          controller: controller,
-          emptyValue: (_) => "No baits",
-        ),
-        appManager: appManager,
-      ));
-
-      await tapAndSettle(tester, find.text("Live - Threadfin Shad"));
-
-      var pickerPage =
-          tester.widget<ManageableListPage>(find.byType(ManageableListPage));
-      expect(pickerPage.pickerSettings, isNotNull);
-      expect(pickerPage.pickerSettings!.initialValues.length, 1);
-      expect(pickerPage.pickerSettings!.initialValues.first is Bait, isTrue);
-    });
+    // Verify that the only initial value (that has a variant) is not passed
+    // to the ManageableListPage.
+    var pickerPage =
+        tester.widget<ManageableListPage>(find.byType(ManageableListPage));
+    expect(pickerPage.pickerSettings, isNotNull);
+    expect(pickerPage.pickerSettings!.initialValues, isEmpty);
   });
 }

@@ -105,6 +105,7 @@ class HeadingDivider extends StatelessWidget {
 /// A [HeadingDivider] widget with an optional [IconLabel].
 class HeadingNoteDivider extends StatelessWidget {
   final bool hideNote;
+  final bool hideDivider;
   final String title;
   final String? note;
   final IconData? noteIcon;
@@ -112,6 +113,7 @@ class HeadingNoteDivider extends StatelessWidget {
 
   HeadingNoteDivider({
     this.hideNote = true,
+    this.hideDivider = false,
     required this.title,
     required this.note,
     required this.noteIcon,
@@ -128,7 +130,10 @@ class HeadingNoteDivider extends StatelessWidget {
         children: [
           Padding(
             padding: insetsBottomSmall,
-            child: HeadingDivider(title),
+            child: HeadingDivider(
+              title,
+              showDivider: !hideDivider,
+            ),
           ),
           _buildNote(),
         ],

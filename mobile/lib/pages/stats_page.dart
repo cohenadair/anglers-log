@@ -17,7 +17,6 @@ import 'package:mobile/utils/report_utils.dart';
 import 'package:mobile/water_clarity_manager.dart';
 import 'package:mobile/widgets/catch_summary.dart';
 import 'package:mobile/widgets/empty_list_placeholder.dart';
-import 'package:mobile/widgets/floating_container.dart';
 import 'package:mobile/widgets/personal_bests_report.dart';
 import 'package:mobile/widgets/trip_summary.dart';
 import 'package:quiver/strings.dart';
@@ -152,8 +151,7 @@ class _StatsPageState extends State<StatsPage> {
   Widget _buildHeader() {
     Widget child = Empty();
     if (isNotEmpty(_report.description)) {
-      child = FloatingContainer(
-        margin: insetsHorizontalDefaultTopDefault,
+      child = Padding(
         padding: insetsDefault,
         child: Text(
           _report.description,
@@ -226,6 +224,7 @@ class _StatsPageState extends State<StatsPage> {
     } else if (_report.id == reportIdTripSummary) {
       return TripSummary();
     } else {
+      // Included for safety, but can't actually happen.
       _log.e("Unknown report ID: ${_report.id}");
       return Empty();
     }

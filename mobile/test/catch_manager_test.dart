@@ -108,6 +108,12 @@ void main() {
     expect(catches.length, 1);
   });
 
+  testWidgets("Filtering with null context returns false", (tester) async {
+    var cat = Catch(id: randomId());
+    await catchManager.addOrUpdate(cat);
+    expect(catchManager.matchesFilter(cat.id, "Test", null), isFalse);
+  });
+
   testWidgets("Filtering by search query; bait", (tester) async {
     var baitManager = MockBaitManager();
     when(appManager.app.baitManager).thenReturn(baitManager);
@@ -1912,6 +1918,123 @@ void main() {
       baits: {baitAttachment0},
     );
     expect(catches.isEmpty, true);
+  });
+
+  testWidgets("Catches sorted newest to oldest", (tester) async {
+    await catchManager.addOrUpdate(Catch(
+      id: randomId(),
+      timestamp: Int64(10000),
+    ));
+
+    await catchManager.addOrUpdate(Catch(
+      id: randomId(),
+      timestamp: Int64(15000),
+    ));
+
+    await catchManager.addOrUpdate(Catch(
+      id: randomId(),
+      timestamp: Int64(12500),
+    ));
+
+    var context = await buildContext(tester);
+    var catches = catchManager.catches(
+      context,
+      sortOrder: CatchSortOrder.newestToOldest,
+    );
+    expect(catches.length, 3);
+    expect(catches[0].timestamp, Int64(15000));
+    expect(catches[1].timestamp, Int64(12500));
+    expect(catches[2].timestamp, Int64(10000));
+  });
+
+  testWidgets("Catches sorted longest to shortest", (tester) async {
+    await catchManager.addOrUpdate(Catch(
+      id: randomId(),
+      length: MultiMeasurement(
+        system: MeasurementSystem.metric,
+        mainValue: Measurement(
+          unit: Unit.centimeters,
+          value: 45,
+        ),
+      ),
+    ));
+
+    await catchManager.addOrUpdate(Catch(
+      id: randomId(),
+      length: MultiMeasurement(
+        system: MeasurementSystem.metric,
+        mainValue: Measurement(
+          unit: Unit.centimeters,
+          value: 75,
+        ),
+      ),
+    ));
+
+    await catchManager.addOrUpdate(Catch(
+      id: randomId(),
+      length: MultiMeasurement(
+        system: MeasurementSystem.metric,
+        mainValue: Measurement(
+          unit: Unit.centimeters,
+          value: 60,
+        ),
+      ),
+    ));
+
+    var context = await buildContext(tester);
+    var catches = catchManager.catches(
+      context,
+      sortOrder: CatchSortOrder.longestToShortest,
+    );
+    expect(catches.length, 3);
+    expect(catches[0].length.mainValue.value, 75);
+    expect(catches[1].length.mainValue.value, 60);
+    expect(catches[2].length.mainValue.value, 45);
+  });
+
+  testWidgets("Catches sorted heaviest to lightest", (tester) async {
+    await catchManager.addOrUpdate(Catch(
+      id: randomId(),
+      weight: MultiMeasurement(
+        system: MeasurementSystem.metric,
+        mainValue: Measurement(
+          unit: Unit.kilograms,
+          value: 45,
+        ),
+      ),
+    ));
+
+    await catchManager.addOrUpdate(Catch(
+      id: randomId(),
+      weight: MultiMeasurement(
+        system: MeasurementSystem.metric,
+        mainValue: Measurement(
+          unit: Unit.kilograms,
+          value: 75,
+        ),
+      ),
+    ));
+
+    await catchManager.addOrUpdate(Catch(
+      id: randomId(),
+      weight: MultiMeasurement(
+        system: MeasurementSystem.metric,
+        mainValue: Measurement(
+          unit: Unit.kilograms,
+          value: 60,
+        ),
+      ),
+    ));
+
+    var context = await buildContext(tester);
+    var catches = catchManager.catches(
+      context,
+      sortOrder: CatchSortOrder.heaviestToLightest,
+    );
+    expect(catches.length, 3);
+    expect(catches[0].weight.mainValue.value, 75);
+    expect(catches[1].weight.mainValue.value, 60);
+    expect(catches[2].weight.mainValue.value, 45);
   });
 
   testWidgets("imageNamesSortedByTimestamp", (tester) async {

@@ -699,6 +699,7 @@ class CatchSummaryReport<T> {
 
   int get msSinceLastCatch => _msSinceLastCatch;
 
+  // TODO: All these properties could be replaced by protobuf Report object
   CatchSummaryReport({
     required this.context,
     this.sortOrder = CatchSummarySortOrder.largestToSmallest,

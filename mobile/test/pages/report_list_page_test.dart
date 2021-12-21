@@ -10,6 +10,7 @@ import 'package:mobile/utils/report_utils.dart';
 import 'package:mobile/widgets/button.dart';
 import 'package:mobile/widgets/list_item.dart';
 import 'package:mobile/widgets/text.dart';
+import 'package:mobile/widgets/widget.dart';
 import 'package:mockito/mockito.dart';
 
 import '../mocks/stubbed_app_manager.dart';
@@ -298,5 +299,57 @@ void main() {
     when(appManager.subscriptionManager.isPro).thenReturn(true);
     await tapAndSettle(tester, find.byIcon(Icons.add));
     expect(find.byType(SaveReportPage), findsOneWidget);
+  });
+
+  testWidgets("Dividers are rendered", (tester) async {
+    await tester.pumpWidget(Testable(
+      (_) => ReportListPage(
+        pickerSettings: ManageableListPagePickerSettings.single(
+          onPicked: (_, __) => true,
+          isRequired: true,
+        ),
+      ),
+      appManager: appManager,
+    ));
+
+    expect(find.byType(MinDivider), findsNWidgets(2));
+    expect(find.byType(HeadingNoteDivider), findsOneWidget);
+  });
+
+  testWidgets("All reports are rendered", (tester) async {
+    when(appManager.reportManager.defaultReports).thenReturn([
+      Report(id: reportIdPersonalBests),
+      Report(id: reportIdCatchSummary),
+      Report(id: reportIdTripSummary),
+      Report(id: reportIdFishingSpotSummary),
+      Report(id: reportIdAnglerSummary),
+    ]);
+
+    await tester.pumpWidget(Testable(
+      (_) => ReportListPage(
+        pickerSettings: ManageableListPagePickerSettings.single(
+          onPicked: (_, __) => true,
+          isRequired: true,
+        ),
+      ),
+      appManager: appManager,
+    ));
+
+    var items =
+        findFirst<ManageableListPage>(tester).itemManager.loadItems(null);
+    expect(items.length, 12);
+
+    expect(items[0].id, reportIdPersonalBests);
+    expect(items[1] is MinDivider, isTrue);
+    expect(items[2].id, reportIdCatchSummary);
+    expect(items[3].id, reportIdTripSummary);
+    expect(items[4] is MinDivider, isTrue);
+    expect(items[5].id, reportIdFishingSpotSummary);
+    expect(items[6].id, reportIdAnglerSummary);
+    expect(items[7] is HeadingNoteDivider, isTrue);
+    expect(items[8].name, "Comparison 1");
+    expect(items[9].name, "Comparison 2");
+    expect(items[10].name, "Summary 1");
+    expect(items[11].name, "Summary 2");
   });
 }

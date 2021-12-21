@@ -113,4 +113,39 @@ void main() {
     // 1 widget for the timestamp subtitle on one row.
     expect(find.subtitleText(context), findsOneWidget);
   });
+
+  testWidgets("Empty input invokes CatchManager.catches", (tester) async {
+    await tester.pumpWidget(Testable(
+      (_) => const CatchListPage(catches: []),
+      appManager: appManager,
+    ));
+    verify(appManager.catchManager.catches(
+      any,
+      filter: anyNamed("filter"),
+      dateRange: anyNamed("dateRange"),
+      catchIds: anyNamed("catchIds"),
+      speciesIds: anyNamed("speciesIds"),
+      fishingSpotIds: anyNamed("fishingSpotIds"),
+      baits: anyNamed("baits"),
+    )).called(1);
+  });
+
+  testWidgets("Non-empty input does not invoke CatchManager.catches",
+      (tester) async {
+    await tester.pumpWidget(Testable(
+      (_) => CatchListPage(catches: [
+        Catch(id: randomId()),
+      ]),
+      appManager: appManager,
+    ));
+    verifyNever(appManager.catchManager.catches(
+      any,
+      filter: anyNamed("filter"),
+      dateRange: anyNamed("dateRange"),
+      catchIds: anyNamed("catchIds"),
+      speciesIds: anyNamed("speciesIds"),
+      fishingSpotIds: anyNamed("fishingSpotIds"),
+      baits: anyNamed("baits"),
+    ));
+  });
 }
