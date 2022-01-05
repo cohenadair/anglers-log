@@ -39,7 +39,8 @@ enum CatchSummarySortOrder {
   largestToSmallest,
 }
 
-/// A widget that shows a summary of the catches determined by [report].
+/// A widget that shows a summary of the catches determined by [report]. This
+/// widget should always be rendered inside a [Scrollable] widget.
 class CatchSummary<T> extends StatefulWidget {
   final CatchSummaryReport<T> Function(DateRange, T?) reportBuilder;
 
@@ -161,7 +162,7 @@ class _CatchSummaryState<T> extends State<CatchSummary<T>> {
               initialValue: _entity,
               isRequired: true,
               onPicked: (context, entity) {
-                if (entity != null && entity != _entity) {
+                if (entity != _entity) {
                   setState(() {
                     _entity = entity;
                     _refreshReport();
@@ -699,7 +700,6 @@ class CatchSummaryReport<T> {
 
   int get msSinceLastCatch => _msSinceLastCatch;
 
-  // TODO: All these properties could be replaced by protobuf Report object
   CatchSummaryReport({
     required this.context,
     this.sortOrder = CatchSummarySortOrder.largestToSmallest,
@@ -806,11 +806,11 @@ class CatchSummaryReport<T> {
     }
 
     if (isCatchAndReleaseOnly) {
-      result.add(Strings.of(context).saveReportPageCatchAndRelease);
+      result.add(Strings.of(context).saveReportPageCatchAndReleaseFilter);
     }
 
     if (isFavoritesOnly) {
-      result.add(Strings.of(context).saveReportPageFavorites);
+      result.add(Strings.of(context).saveReportPageFavoritesFilter);
     }
 
     result.addAll(_baitManager.attachmentsDisplayValues(context, baits));

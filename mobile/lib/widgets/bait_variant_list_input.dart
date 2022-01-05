@@ -1,4 +1,3 @@
-import 'package:collection/collection.dart' show IterableExtension;
 import 'package:flutter/material.dart';
 import 'package:mobile/utils/collection_utils.dart';
 import 'package:quiver/collection.dart';

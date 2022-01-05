@@ -2,17 +2,16 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 
-List<Color> accentColors([List<Color>? exclude]) {
+List<Color> accentColors() {
   var primaries = List.of(Colors.primaries)
     ..remove(Colors.brown)
-    ..remove(Colors.blueGrey)
-    ..removeWhere((e) => exclude?.contains(e) ?? false);
+    ..remove(Colors.blueGrey);
 
   // Use opacity to flatten the color a little bit.
   return primaries.map((e) => e.withOpacity(0.65)).toList();
 }
 
-Color randomAccentColor([List<Color>? exclude]) {
-  var colors = accentColors(exclude);
+Color randomAccentColor() {
+  var colors = accentColors();
   return colors[Random().nextInt(colors.length)];
 }

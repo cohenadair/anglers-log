@@ -6,6 +6,7 @@ Map<String, Map<String, String>> get englishStrings => {
         "catchField_favoriteDescription":
             "Whether a catch was one of your favorites.",
         "saveReportPage_favorites": "Favorites Only",
+        "saveReportPage_favoritesFilter": "Favorites only",
         "unitsPage_catchLengthCentimeters": "Centimeters (%s)",
         "unitsPage_waterDepthMeters": "Meters (%s)",
         "unitsPage_airVisibilityKilometers": "Kilometers (%s)",
@@ -16,7 +17,8 @@ Map<String, Map<String, String>> get englishStrings => {
         "catchField_favorite": "Favourite",
         "catchField_favoriteDescription":
             "Whether a catch was one of your favourites.",
-        "saveReportPage_favorites": "Favourites",
+        "saveReportPage_favorites": "Favourites Only",
+        "saveReportPage_favoritesFilter": "Favourites only",
         "unitsPage_catchLengthCentimeters": "Centimetres (%s)",
         "unitsPage_waterDepthMeters": "Metres (%s)",
         "unitsPage_airVisibilityKilometers": "Kilometres (%s)",
@@ -145,6 +147,7 @@ Map<String, Map<String, String>> get englishStrings => {
         "saveReportPage_allFishingSpots": "All fishing spots",
         "saveReportPage_allMethods": "All fishing methods",
         "saveReportPage_catchAndRelease": "Catch and Release Only",
+        "saveReportPage_catchAndReleaseFilter": "Catch and release only",
         "saveReportPage_allWindDirections": "All wind directions",
         "saveReportPage_allSkyConditions": "All sky conditions",
         "saveReportPage_allMoonPhases": "All moon phases",

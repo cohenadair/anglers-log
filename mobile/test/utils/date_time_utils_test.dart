@@ -278,7 +278,7 @@ void main() {
 
     testWidgets("All units", (tester) async {
       var ms = const Duration(
-        days: 2,
+        days: 385,
         hours: 5,
         minutes: 45,
         seconds: 30,
@@ -291,7 +291,7 @@ void main() {
           context: context,
           millisecondsDuration: ms,
         ),
-        "0y 2d 5h 45m 30s",
+        "1y 20d 5h 45m 30s",
       );
 
       expect(
@@ -300,7 +300,33 @@ void main() {
           millisecondsDuration: ms,
           condensed: true,
         ),
-        "2d 5h 45m 30s",
+        "1y 20d 5h 45m 30s",
+      );
+    });
+
+    testWidgets("Years only", (tester) async {
+      var ms = const Duration(
+        days: 385,
+      ).inMilliseconds;
+
+      var context = await buildContext(tester);
+
+      expect(
+        formatDuration(
+          context: context,
+          millisecondsDuration: ms,
+        ),
+        "1y 20d 0h 0m 0s",
+      );
+
+      expect(
+        formatDuration(
+          context: context,
+          millisecondsDuration: ms,
+          condensed: true,
+          numberOfQuantities: 1,
+        ),
+        "1y",
       );
     });
 

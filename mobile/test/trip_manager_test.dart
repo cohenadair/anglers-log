@@ -12,6 +12,27 @@ void main() {
   late StubbedAppManager appManager;
   late TripManager tripManager;
 
+  var trips = [
+    Trip(
+      id: randomId(),
+      name: "Trip 1",
+      startTimestamp: Int64(DateTime(2020, 1, 1, 9).millisecondsSinceEpoch),
+      endTimestamp: Int64(DateTime(2020, 1, 3, 17).millisecondsSinceEpoch),
+    ),
+    Trip(
+      id: randomId(),
+      name: "Trip 2",
+      startTimestamp: Int64(DateTime(2020, 1, 10, 8).millisecondsSinceEpoch),
+      endTimestamp: Int64(DateTime(2020, 1, 15, 18).millisecondsSinceEpoch),
+    ),
+    Trip(
+      id: randomId(),
+      name: "Trip 3",
+      startTimestamp: Int64(DateTime(2020, 1, 20, 8).millisecondsSinceEpoch),
+      endTimestamp: Int64(DateTime(2020, 1, 23, 18).millisecondsSinceEpoch),
+    ),
+  ];
+
   Trip defaultTrip() {
     return Trip(
       id: randomId(),
@@ -19,6 +40,12 @@ void main() {
       startTimestamp: Int64(DateTime(2020, 1, 1, 9).millisecondsSinceEpoch),
       endTimestamp: Int64(DateTime(2020, 1, 3, 17).millisecondsSinceEpoch),
     );
+  }
+
+  Future<void> stubDefaultTrips() async {
+    for (var trip in trips) {
+      await tripManager.addOrUpdate(trip);
+    }
   }
 
   setUp(() {
@@ -66,6 +93,65 @@ void main() {
       ),
       "Jan 1, 2020 at 9:00 AM to Jan 3, 2020 at 5:00 PM",
     );
+  });
+
+  test("trips with no filters", () async {
+    await stubDefaultTrips();
+    expect(tripManager.trips().length, 3);
+  });
+
+  test("trips that fall within a given date range", () async {
+    await stubDefaultTrips();
+
+    var trips = tripManager.trips(
+      dateRange: DateRange(
+        startTimestamp: Int64(DateTime(2020, 1, 9, 8).millisecondsSinceEpoch),
+        endTimestamp: Int64(DateTime(2020, 1, 11, 8).millisecondsSinceEpoch),
+      ),
+    );
+
+    expect(trips.length, 1);
+    expect(trips[0].name, "Trip 2");
+  });
+
+  test("trips that don't fall within a given date range", () async {
+    await stubDefaultTrips();
+
+    var trips = tripManager.trips(
+      dateRange: DateRange(
+        startTimestamp: Int64(DateTime(2021, 1, 9, 8).millisecondsSinceEpoch),
+        endTimestamp: Int64(DateTime(2021, 1, 11, 8).millisecondsSinceEpoch),
+      ),
+    );
+
+    expect(trips, isEmpty);
+  });
+
+  test("trips that match a string filter", () async {
+    when(appManager.catchManager.idsMatchesFilter(any, any)).thenReturn(false);
+    when(appManager.speciesManager.idsMatchesFilter(any, any))
+        .thenReturn(false);
+    when(appManager.fishingSpotManager.idsMatchesFilter(any, any))
+        .thenReturn(false);
+    when(appManager.anglerManager.idsMatchesFilter(any, any)).thenReturn(false);
+
+    await stubDefaultTrips();
+
+    var trips = tripManager.trips(filter: "3");
+    expect(trips.length, 1);
+    expect(trips[0].name, "Trip 3");
+  });
+
+  test("trips returns empty with valid filters", () async {
+    when(appManager.catchManager.idsMatchesFilter(any, any)).thenReturn(false);
+    when(appManager.speciesManager.idsMatchesFilter(any, any))
+        .thenReturn(false);
+    when(appManager.fishingSpotManager.idsMatchesFilter(any, any))
+        .thenReturn(false);
+    when(appManager.anglerManager.idsMatchesFilter(any, any)).thenReturn(false);
+
+    await stubDefaultTrips();
+    expect(tripManager.trips(filter: "4"), isEmpty);
   });
 
   test("matchesFilter returns false if Trip is null", () {

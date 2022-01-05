@@ -439,7 +439,7 @@ extension MultiMeasurements on MultiMeasurement {
   /// This method assumes [resultFormat] has one %s replacement.
   ///
   /// If [ifZero] is not empty, [ifZero] is returned if the calculated result
-  /// == "0".
+  /// == "0" (i.e. an empty protobuf object, or object without a unit).
   String displayValue(
     BuildContext context, {
     String? resultFormat,
@@ -899,11 +899,12 @@ extension Units on Unit {
       case Unit.inches:
       case Unit.pounds:
       case Unit.ounces:
+        return MeasurementSystem.imperial_whole;
       case Unit.fahrenheit:
       case Unit.miles_per_hour:
       case Unit.miles:
       case Unit.pounds_per_square_inch:
-        return MeasurementSystem.imperial_whole;
+        return MeasurementSystem.imperial_decimal;
       case Unit.meters:
       case Unit.centimeters:
       case Unit.kilograms:
@@ -1058,7 +1059,7 @@ extension Units on Unit {
       // Pounds to kilograms.
       case Unit.kilograms:
         return value * 0.453592;
-      // kilograms to pounds.
+      // Kilograms to pounds.
       case Unit.pounds:
         return value * 2.20462;
       default:

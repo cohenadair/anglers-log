@@ -290,7 +290,7 @@ class _ChartState<T> extends State<Chart<T>> {
             height: _rowHeight,
             width: value.toDouble() /
                 maxValue *
-                (maxWidth - widget.padding.left - widget.padding.right),
+                (maxWidth - widget.padding.left - widget.padding.right).abs(),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(_rowCornerRadius),
               color: color,

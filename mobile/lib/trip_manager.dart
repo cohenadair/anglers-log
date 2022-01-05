@@ -74,12 +74,9 @@ class TripManager extends NamedEntityManager<Trip> {
       trips = entities.values.toList();
     } else {
       trips = list(tripIds).where((trip) {
-        var valid = true;
-        valid &= dateRange == null ||
-            dateRange.contains(
-                trip.startTimestamp.toInt(), _timeManager.currentDateTime);
-
-        if (!valid) {
+        if (dateRange != null &&
+            !dateRange.contains(
+                trip.startTimestamp.toInt(), _timeManager.currentDateTime)) {
           return false;
         }
 

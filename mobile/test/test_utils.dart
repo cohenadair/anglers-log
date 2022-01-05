@@ -32,6 +32,8 @@ class NoFirestoreUserPreferenceManager extends UserPreferenceManager {
 
   @override
   bool get shouldUseFirestore => false;
+
+  dynamic preference(String key) => preferences[key];
 }
 
 /// A widget that wraps a child in default localizations.
@@ -359,5 +361,12 @@ extension CommonFindersExt on CommonFinders {
     String? text,
   }) {
     return textStyle(text, styleSuccess(context));
+  }
+
+  Finder substring(String substring) {
+    return byWidgetPredicate((widget) =>
+        widget is Text &&
+        widget.data != null &&
+        widget.data!.contains(substring));
   }
 }

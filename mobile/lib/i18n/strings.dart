@@ -357,7 +357,13 @@ class Strings {
   String get saveReportPageCatchAndRelease =>
       _string("saveReportPage_catchAndRelease");
 
+  String get saveReportPageCatchAndReleaseFilter =>
+      _string("saveReportPage_catchAndReleaseFilter");
+
   String get saveReportPageFavorites => _string("saveReportPage_favorites");
+
+  String get saveReportPageFavoritesFilter =>
+      _string("saveReportPage_favoritesFilter");
 
   String get saveReportPageAllWindDirections =>
       _string("saveReportPage_allWindDirections");
