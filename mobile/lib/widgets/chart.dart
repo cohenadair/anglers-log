@@ -262,7 +262,7 @@ class _ChartState<T> extends State<Chart<T>> {
 
   Widget _buildChartRow(double maxWidth, double maxValue, T item,
       Series<T> series, int? value, Color color) {
-    // Set a minimum max value of 1 so if the series values are 0, and "empty"
+    // Set a minimum max value of 1 so if the series values are 0, an "empty"
     // row will still show.
     maxValue = math.max(maxValue, 1);
 

@@ -893,11 +893,10 @@ class _CatchSummaryReportModel<T> {
     required this.context,
     required this.dateRange,
     Iterable<Catch> catches = const [],
-    CatchSummarySortOrder sortOrder = CatchSummarySortOrder.largestToSmallest,
   }) {
     _fillCollectionsWithZeros();
     _fillCollections(catches);
-    _sortCollections(sortOrder);
+    _sortCollections();
   }
 
   AnglerManager get _anglerManager => AnglerManager.of(context);
@@ -1016,35 +1015,18 @@ class _CatchSummaryReportModel<T> {
     }
   }
 
-  void _sortCollections(CatchSummarySortOrder sortOrder) {
-    switch (sortOrder) {
-      case CatchSummarySortOrder.alphabetical:
-        sortIntMap(perAngler, _anglerManager.nameComparator);
-        sortIntMap(perBait, _baitManager.attachmentComparator);
-        sortIntMap(perBodyOfWater, _bodyOfWaterManager.nameComparator);
-        sortIntMap(perFishingSpot, _fishingSpotManager.nameComparator);
-        sortIntMap(perMethod, _methodManager.nameComparator);
-        sortIntMap(perMoonPhase, MoonPhases.nameComparator(context));
-        sortIntMap(perPeriod, Periods.nameComparator(context));
-        sortIntMap(perSeason, Seasons.nameComparator(context));
-        sortIntMap(perSpecies, _speciesManager.nameComparator);
-        sortIntMap(perTideType, TideTypes.nameComparator(context));
-        sortIntMap(perWaterClarity, _waterClarityManager.nameComparator);
-        break;
-      case CatchSummarySortOrder.largestToSmallest:
-        sortIntMap(perAngler);
-        sortIntMap(perBait);
-        sortIntMap(perBodyOfWater);
-        sortIntMap(perFishingSpot);
-        sortIntMap(perMethod);
-        sortIntMap(perMoonPhase);
-        sortIntMap(perPeriod);
-        sortIntMap(perSeason);
-        sortIntMap(perSpecies);
-        sortIntMap(perTideType);
-        sortIntMap(perWaterClarity);
-        break;
-    }
+  void _sortCollections() {
+    sortIntMap(perAngler);
+    sortIntMap(perBait);
+    sortIntMap(perBodyOfWater);
+    sortIntMap(perFishingSpot);
+    sortIntMap(perMethod);
+    sortIntMap(perMoonPhase);
+    sortIntMap(perPeriod);
+    sortIntMap(perSeason);
+    sortIntMap(perSpecies);
+    sortIntMap(perTideType);
+    sortIntMap(perWaterClarity);
   }
 
   bool get _includeAnglers =>

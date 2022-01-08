@@ -29,7 +29,7 @@ void main() {
   late MockMethodManager methodManager;
   late MockSpeciesManager speciesManager;
   late MockWaterClarityManager waterClarityManager;
-  
+
   late List<Catch> catches;
 
   var anglerId0 = randomId();
@@ -250,91 +250,93 @@ void main() {
       ..name = "1 Foot",
   };
 
-  List<Catch> resetCatches() => catches = [
-    Catch()
-      ..id = catchId0
-      ..timestamp = Int64(10)
-      ..speciesId = speciesId3
-      ..fishingSpotId = fishingSpotId1
-      ..baits.add(baitAttachment0)
-      ..waterClarityId = clarityId2
-      ..anglerId = anglerId0
-      ..isFavorite = true
-      ..tide = Tide(type: TideType.high),
-    Catch()
-      ..id = catchId1
-      ..timestamp = Int64(5000)
-      ..speciesId = speciesId4
-      ..fishingSpotId = fishingSpotId3
-      ..baits.add(baitAttachment4)
-      ..anglerId = anglerId1
-      ..tide = Tide(type: TideType.incoming),
-    Catch()
-      ..id = catchId2
-      ..timestamp = Int64(100)
-      ..speciesId = speciesId0
-      ..fishingSpotId = fishingSpotId4
-      ..baits.add(baitAttachment0)
-      ..anglerId = anglerId1
-      ..isFavorite = true
-      ..season = Season.winter,
-    Catch()
-      ..id = catchId3
-      ..timestamp = Int64(900)
-      ..speciesId = speciesId1
-      ..fishingSpotId = fishingSpotId0
-      ..waterClarityId = clarityId4
-      ..baits.add(baitAttachment1)
-      ..period = Period.morning
-      ..season = Season.autumn,
-    Catch()
-      ..id = catchId4
-      ..timestamp = Int64(78000)
-      ..speciesId = speciesId4
-      ..fishingSpotId = fishingSpotId1
-      ..baits.add(baitAttachment0)
-      ..waterClarityId = clarityId3
-      ..period = Period.afternoon,
-    Catch()
-      ..id = catchId5
-      ..timestamp = Int64(100000)
-      ..speciesId = speciesId3
-      ..fishingSpotId = fishingSpotId1
-      ..baits.add(baitAttachment2)
-      ..atmosphere = Atmosphere(
-        moonPhase: MoonPhase.new_,
-      ),
-    Catch()
-      ..id = catchId6
-      ..timestamp = Int64(800)
-      ..speciesId = speciesId1
-      ..fishingSpotId = fishingSpotId2
-      ..baits.add(baitAttachment1)
-      ..atmosphere = Atmosphere(
-        moonPhase: MoonPhase.first_quarter,
-      ),
-    Catch()
-      ..id = catchId7
-      ..timestamp = Int64(70)
-      ..speciesId = speciesId1
-      ..fishingSpotId = fishingSpotId1
-      ..baits.add(baitAttachment0)
-      ..isFavorite = true,
-    Catch()
-      ..id = catchId8
-      ..timestamp = Int64(15)
-      ..speciesId = speciesId1
-      ..fishingSpotId = fishingSpotId1
-      ..baits.add(baitAttachment1)
-      ..methodIds.addAll([methodId0, methodId1]),
-    Catch()
-      ..id = catchId9
-      ..timestamp = Int64(6000)
-      ..speciesId = speciesId4
-      ..fishingSpotId = fishingSpotId1
-      ..baits.add(baitAttachment0)
-      ..methodIds.add(methodId0),
-  ];
+  void resetCatches() {
+    catches = [
+      Catch()
+        ..id = catchId0
+        ..timestamp = Int64(10)
+        ..speciesId = speciesId3
+        ..fishingSpotId = fishingSpotId1
+        ..baits.add(baitAttachment0)
+        ..waterClarityId = clarityId2
+        ..anglerId = anglerId0
+        ..isFavorite = true
+        ..tide = Tide(type: TideType.high),
+      Catch()
+        ..id = catchId1
+        ..timestamp = Int64(5000)
+        ..speciesId = speciesId4
+        ..fishingSpotId = fishingSpotId3
+        ..baits.add(baitAttachment4)
+        ..anglerId = anglerId1
+        ..tide = Tide(type: TideType.incoming),
+      Catch()
+        ..id = catchId2
+        ..timestamp = Int64(100)
+        ..speciesId = speciesId0
+        ..fishingSpotId = fishingSpotId4
+        ..baits.add(baitAttachment0)
+        ..anglerId = anglerId1
+        ..isFavorite = true
+        ..season = Season.winter,
+      Catch()
+        ..id = catchId3
+        ..timestamp = Int64(900)
+        ..speciesId = speciesId1
+        ..fishingSpotId = fishingSpotId0
+        ..waterClarityId = clarityId4
+        ..baits.add(baitAttachment1)
+        ..period = Period.morning
+        ..season = Season.autumn,
+      Catch()
+        ..id = catchId4
+        ..timestamp = Int64(78000)
+        ..speciesId = speciesId4
+        ..fishingSpotId = fishingSpotId1
+        ..baits.add(baitAttachment0)
+        ..waterClarityId = clarityId3
+        ..period = Period.afternoon,
+      Catch()
+        ..id = catchId5
+        ..timestamp = Int64(100000)
+        ..speciesId = speciesId3
+        ..fishingSpotId = fishingSpotId1
+        ..baits.add(baitAttachment2)
+        ..atmosphere = Atmosphere(
+          moonPhase: MoonPhase.new_,
+        ),
+      Catch()
+        ..id = catchId6
+        ..timestamp = Int64(800)
+        ..speciesId = speciesId1
+        ..fishingSpotId = fishingSpotId2
+        ..baits.add(baitAttachment1)
+        ..atmosphere = Atmosphere(
+          moonPhase: MoonPhase.first_quarter,
+        ),
+      Catch()
+        ..id = catchId7
+        ..timestamp = Int64(70)
+        ..speciesId = speciesId1
+        ..fishingSpotId = fishingSpotId1
+        ..baits.add(baitAttachment0)
+        ..isFavorite = true,
+      Catch()
+        ..id = catchId8
+        ..timestamp = Int64(15)
+        ..speciesId = speciesId1
+        ..fishingSpotId = fishingSpotId1
+        ..baits.add(baitAttachment1)
+        ..methodIds.addAll([methodId0, methodId1]),
+      Catch()
+        ..id = catchId9
+        ..timestamp = Int64(6000)
+        ..speciesId = speciesId4
+        ..fishingSpotId = fishingSpotId1
+        ..baits.add(baitAttachment0)
+        ..methodIds.add(methodId0),
+    ];
+  }
 
   void stubCatchesByTimestamp([List<Catch>? catchesOverride]) {
     when(catchManager.catches(
@@ -1040,6 +1042,30 @@ void main() {
     );
     var filters = report.filters(includeSpecies: false);
     expect(filters.isEmpty, isTrue);
+  });
+
+  testWidgets("CatchSummaryReport filters includes number filters",
+      (tester) async {
+    var report = CatchSummaryReport(
+      context: await buildContext(tester, appManager: appManager),
+      ranges: [
+        DateRange(period: DateRange_Period.lastWeek),
+        DateRange(period: DateRange_Period.thisWeek),
+      ],
+      lengthFilter: NumberFilter(
+        boundary: NumberBoundary.equal_to,
+        from: MultiMeasurement(
+          system: MeasurementSystem.metric,
+          mainValue: Measurement(
+            unit: Unit.centimeters,
+            value: 25,
+          ),
+        ),
+      ),
+    );
+    var filters = report.filters(includeSpecies: false);
+    expect(filters.length, 1);
+    expect(filters.first, "Length: = 25 cm");
   });
 
   testWidgets("CatchSummaryReport filters skip null entities", (tester) async {

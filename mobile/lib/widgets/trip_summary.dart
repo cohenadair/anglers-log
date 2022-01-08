@@ -16,12 +16,16 @@ import 'package:mobile/widgets/widget.dart';
 import '../entity_manager.dart';
 import 'date_range_picker_input.dart';
 
+/// A summary of a user's trips. This widget should always be rendered within
+/// a [Scrollable] widget.
 class TripSummary extends StatefulWidget {
   @override
   State<TripSummary> createState() => _TripSummaryState();
 }
 
 class _TripSummaryState extends State<TripSummary> {
+  static const _rowHeight = 150.0;
+
   late _TripSummaryReport _report;
   var _dateRange = DateRange(period: DateRange_Period.allDates);
 
@@ -51,15 +55,12 @@ class _TripSummaryState extends State<TripSummary> {
           _buildTotalRow(),
           const VerticalSpace(paddingDefault),
           _buildLongestAndLastRow(),
-          const VerticalSpace(paddingDefault),
           _buildAveragesRow(),
           const VerticalSpace(paddingDefault),
           _buildCatchesRow(),
           const VerticalSpace(paddingDefault),
           _buildWeightRow(),
-          const VerticalSpace(paddingDefault),
           _buildLengthRow(),
-          const VerticalSpace(paddingDefault),
         ],
       ),
     );
@@ -131,16 +132,19 @@ class _TripSummaryState extends State<TripSummary> {
       return Empty();
     }
 
-    return TileRow(
-      padding: insetsHorizontalDefault,
-      items: children,
+    return Padding(
+      padding: insetsBottomDefault,
+      child: TileRow(
+        padding: insetsHorizontalDefault,
+        items: children,
+      ),
     );
   }
 
   Widget _buildAveragesRow() {
     return TileRow(
       padding: insetsHorizontalDefault,
-      height: 150.0,
+      height: _rowHeight,
       items: [
         TileItem.condensedDuration(
           context,
@@ -183,27 +187,28 @@ class _TripSummaryState extends State<TripSummary> {
       return Empty();
     }
 
-    return TileRow(
-      padding: insetsHorizontalDefault,
-      items: [
-        TileItem(
-          title: _report.averageWeightPerTrip?.displayValue(
-            context,
-            includeFraction: false,
+    return Padding(
+      padding: insetsBottomDefault,
+      child: TileRow(
+        padding: insetsHorizontalDefault,
+        items: [
+          TileItem(
+            title: _report.averageWeightPerTrip?.displayValue(
+              context,
+              includeFraction: false,
+            ),
+            subtitle: Strings.of(context).tripSummaryWeightPerTrip,
           ),
-          subtitle: Strings.of(context).tripSummaryWeightPerTrip,
-        ),
-        TileItem(
-          title: _report.mostWeightInSingleTrip?.displayValue(
-            context,
-            includeFraction: false,
+          TileItem(
+            title: _report.mostWeightInSingleTrip?.displayValue(
+              context,
+              includeFraction: false,
+            ),
+            subtitle: Strings.of(context).tripSummaryBestWeight,
+            onTap: () => push(context, TripPage(_report.mostWeightTrip!)),
           ),
-          subtitle: Strings.of(context).tripSummaryBestWeight,
-          onTap: _report.mostWeightTrip == null
-              ? null
-              : () => push(context, TripPage(_report.mostWeightTrip!)),
-        ),
-      ],
+        ],
+      ),
     );
   }
 
@@ -213,27 +218,28 @@ class _TripSummaryState extends State<TripSummary> {
       return Empty();
     }
 
-    return TileRow(
-      padding: insetsHorizontalDefault,
-      items: [
-        TileItem(
-          title: _report.averageLengthPerTrip?.displayValue(
-            context,
-            includeFraction: false,
+    return Padding(
+      padding: insetsBottomDefault,
+      child: TileRow(
+        padding: insetsHorizontalDefault,
+        items: [
+          TileItem(
+            title: _report.averageLengthPerTrip?.displayValue(
+              context,
+              includeFraction: false,
+            ),
+            subtitle: Strings.of(context).tripSummaryLengthPerTrip,
           ),
-          subtitle: Strings.of(context).tripSummaryLengthPerTrip,
-        ),
-        TileItem(
-          title: _report.mostLengthInSingleTrip?.displayValue(
-            context,
-            includeFraction: false,
+          TileItem(
+            title: _report.mostLengthInSingleTrip?.displayValue(
+              context,
+              includeFraction: false,
+            ),
+            subtitle: Strings.of(context).tripSummaryBestLength,
+            onTap: () => push(context, TripPage(_report.mostLengthTrip!)),
           ),
-          subtitle: Strings.of(context).tripSummaryBestLength,
-          onTap: _report.mostLengthTrip == null
-              ? null
-              : () => push(context, TripPage(_report.mostLengthTrip!)),
-        ),
-      ],
+        ],
+      ),
     );
   }
 
@@ -245,8 +251,6 @@ class _TripSummaryReport {
   final DateRange dateRange;
 
   var trips = <Trip>[];
-
-  var numberOfTrips = 0;
   var totalMs = 0;
 
   Trip? longestTrip;
@@ -269,6 +273,8 @@ class _TripSummaryReport {
   MultiMeasurement? mostLengthInSingleTrip;
   Trip? mostLengthTrip;
 
+  int get numberOfTrips => trips.length;
+
   _TripSummaryReport(this.context, this.dateRange) {
     var catchManager = CatchManager.of(context);
     var timeManager = TimeManager.of(context);
@@ -288,18 +294,19 @@ class _TripSummaryReport {
     var tripWeights = <MultiMeasurement>[];
     var tripLengths = <MultiMeasurement>[];
 
-    Trip? prevTrip;
-    for (var trip in tripManager.trips(
+    trips = tripManager.trips(
       context: context,
       dateRange: dateRange,
-    )) {
+    );
+
+    Trip? prevTrip;
+    for (var trip in trips) {
       var duration = trip.duration;
 
       if (prevTrip != null) {
         msBetweenTrips += (prevTrip.endTimestamp - trip.startTimestamp).toInt();
       }
 
-      numberOfTrips += 1;
       totalMs += duration;
       lastTrip ??= trip;
 

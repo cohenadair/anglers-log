@@ -29,6 +29,9 @@ import 'date_range_picker_input.dart';
 import 'empty_list_placeholder.dart';
 import 'list_item.dart';
 
+/// A widget that shows a summary of the user's personal best catches and trips.
+/// This widget should always be rendered inside a [SliverFillRemaining] widget,
+/// otherwise, an exception will be thrown if there is no data to display.
 class PersonalBestsReport extends StatefulWidget {
   @override
   State<PersonalBestsReport> createState() => _PersonalBestsReportState();
@@ -410,7 +413,7 @@ class _BiggestCatch extends StatelessWidget {
       title: title,
       chipText: chipText,
       subtitle: species == null
-          ? Strings.of(context).unknown
+          ? Strings.of(context).unknownSpecies
           : speciesManager.displayName(context, species),
       secondarySubtitle: formatTimestamp(context, cat.timestamp.toInt()),
       imageName: cat.imageNames.firstOrNull,
@@ -485,10 +488,6 @@ class _MeasurementPerSpecies extends StatelessWidget {
     var speciesManager = SpeciesManager.of(context);
 
     for (var entry in map.entries) {
-      if (entry.value._allMeasurements.isEmpty) {
-        continue;
-      }
-
       var species = entry.key;
       void onTap() => onTapSpeciesRow(species);
 
