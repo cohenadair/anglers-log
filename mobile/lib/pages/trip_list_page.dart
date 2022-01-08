@@ -14,6 +14,12 @@ import 'save_trip_page.dart';
 import 'trip_page.dart';
 
 class TripListPage extends StatelessWidget {
+  final Iterable<Id> ids;
+
+  const TripListPage({
+    this.ids = const [],
+  });
+
   @override
   Widget build(BuildContext context) {
     var tripManager = TripManager.of(context);
@@ -33,7 +39,11 @@ class TripListPage extends StatelessWidget {
         listenerManagers: [
           tripManager,
         ],
-        loadItems: (query) => tripManager.listSortedByName(filter: query),
+        loadItems: (query) => tripManager.trips(
+          context: context,
+          filter: query,
+          tripIds: ids,
+        ),
         emptyItemsSettings: ManageableListPageEmptyListSettings(
           icon: Icons.public,
           title: Strings.of(context).tripListPageEmptyListTitle,

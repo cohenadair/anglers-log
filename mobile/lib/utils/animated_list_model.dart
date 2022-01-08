@@ -50,14 +50,13 @@ class AnimatedListModel<T, StateType extends State<StatefulWidget>> {
 
   bool get isNotEmpty => _items.isNotEmpty;
 
-  void insert(int index, T item,
-      [Duration duration = defaultAnimationDuration]) {
+  void insert(int index, T item, [Duration duration = animDurationDefault]) {
     _items.insert(index, item);
     _animatedList?.insertItem(index, duration: duration);
     controller?.value = _items;
   }
 
-  T? removeAt(int index, [Duration duration = defaultAnimationDuration]) {
+  T? removeAt(int index, [Duration duration = animDurationDefault]) {
     // Don't attempt to remove an item if it isn't in the underlying data model.
     // This can happen in specialized situations, such as when a bait category
     // isn't shown in a bait list because there are no baits associated with

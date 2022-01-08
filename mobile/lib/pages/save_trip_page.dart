@@ -211,14 +211,14 @@ class _SaveTripPageState extends State<SaveTripPage> {
 
     _fields[_idCatches] = Field(
       id: _idCatches,
-      name: (context) => Strings.of(context).saveTripPageCatches,
+      name: (context) => Strings.of(context).entityNameCatches,
       description: (context) => Strings.of(context).saveTripPageCatchesDesc,
       controller: SetInputController<Id>(),
     );
 
     _fields[_idBodiesOfWater] = Field(
       id: _idBodiesOfWater,
-      name: (context) => Strings.of(context).saveTripPageBodiesOfWater,
+      name: (context) => Strings.of(context).entityNameBodiesOfWater,
       controller: SetInputController<Id>(),
     );
 
@@ -292,7 +292,7 @@ class _SaveTripPageState extends State<SaveTripPage> {
 
   Widget _buildStartTime() {
     return Padding(
-      padding: insetsVerticalWidgetSmall,
+      padding: insetsVerticalSmall,
       child: _DateTimeAllDayPicker(
         controller: _startTimestampController,
         dateLabel: Strings.of(context).saveTripPageStartDate,
@@ -303,7 +303,7 @@ class _SaveTripPageState extends State<SaveTripPage> {
 
   Widget _buildEndTime() {
     return Padding(
-      padding: insetsVerticalWidgetSmall,
+      padding: insetsVerticalSmall,
       child: _DateTimeAllDayPicker(
         controller: _endTimestampController,
         dateLabel: Strings.of(context).saveTripPageEndDate,
@@ -374,7 +374,7 @@ class _SaveTripPageState extends State<SaveTripPage> {
 
   Widget _buildNotes() {
     return Padding(
-      padding: insetsHorizontalDefaultBottomWidget,
+      padding: insetsHorizontalDefaultBottomDefault,
       child: TextInput.description(
         context,
         title: Strings.of(context).inputNotesLabel,
@@ -391,7 +391,22 @@ class _SaveTripPageState extends State<SaveTripPage> {
       isHidden: !_fields[_idCatches]!.isShowing,
       listPage: (pickerSettings) =>
           CatchListPage(pickerSettings: pickerSettings),
-      onPicked: (ids) => setState(() => _catchesController.value = ids),
+      onPicked: (ids) => setState(() {
+        _catchesController.value = ids;
+
+        if (ids.isNotEmpty) {
+          var catches = _catchManager.catches(
+            context,
+            sortOrder: CatchSortOrder.newestToOldest,
+            catchIds: ids,
+          );
+
+          // Automatically update trip start and end time based on picked
+          // catches.
+          _startTimestampController.value = catches.last.timestamp.toInt();
+          _endTimestampController.value = catches.first.timestamp.toInt();
+        }
+      }),
     );
   }
 
@@ -517,7 +532,7 @@ class _DateTimeAllDayPickerState extends State<_DateTimeAllDayPicker> {
         Row(
           children: [
             Text(Strings.of(context).saveTripPageAllDay),
-            const HorizontalSpace(paddingWidgetSmall),
+            const HorizontalSpace(paddingSmall),
             PaddedCheckbox(
               checked: _isAllDay,
               onChanged: (checked) => setState(() {

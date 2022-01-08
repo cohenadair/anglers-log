@@ -267,7 +267,7 @@ class BaitQuantityPickerInputDelegate
     BuildContext context,
     Trip_CatchesPerBait item,
   ) =>
-      baitManager.attachmentDisplayValue(item.attachment, context);
+      baitManager.attachmentDisplayValue(context, item.attachment);
 
   @override
   bool inputTypeEntityExists(Trip_CatchesPerBait item) {

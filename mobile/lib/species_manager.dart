@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:mobile/named_entity_manager.dart';
 import 'package:provider/provider.dart';
 
 import 'app_manager.dart';
 import 'catch_manager.dart';
 import 'model/gen/anglerslog.pb.dart';
-import 'named_entity_manager.dart';
 
 class SpeciesManager extends NamedEntityManager<Species> {
   static SpeciesManager of(BuildContext context) =>

@@ -373,8 +373,8 @@ class _UnitSelector extends StatelessWidget {
           padding: const EdgeInsets.only(
             left: paddingDefault,
             right: paddingDefault,
-            bottom: paddingWidgetSmall,
-            top: paddingWidgetTiny,
+            bottom: paddingSmall,
+            top: paddingTiny,
           ),
           initialSelectedIndex:
               max(0, options.indexWhere((o) => o.value.system == initialValue)),

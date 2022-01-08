@@ -1,8 +1,11 @@
+import "dart:math" as math;
 import 'dart:typed_data';
 
+import 'package:collection/collection.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:intl/intl.dart';
 import 'package:mapbox_gl/mapbox_gl.dart';
+import 'package:mobile/utils/report_utils.dart';
 import 'package:protobuf/protobuf.dart';
 import 'package:quiver/strings.dart';
 import 'package:uuid/uuid.dart';
@@ -318,6 +321,10 @@ extension MeasurementSystems on MeasurementSystem {
   bool get isMetric => this == MeasurementSystem.metric;
 
   bool get isImperialWhole => this == MeasurementSystem.imperial_whole;
+
+  Unit get lengthUnit => isMetric ? Unit.centimeters : Unit.inches;
+
+  Unit get weightUnit => isMetric ? Unit.kilograms : Unit.pounds;
 }
 
 extension Measurements on Measurement {
@@ -376,9 +383,69 @@ extension MultiMeasurements on MultiMeasurement {
     );
   }
 
+  /// Returns a [MultiMeasurement] object representing the average of
+  /// [measurements] in the given unit. All items in [measurements] that aren't
+  /// of the same unit will be converted.
+  static MultiMeasurement? average(
+      List<MultiMeasurement> measurements, Unit unit) {
+    var values = _decimalValues(measurements, unit);
+    return values.isEmpty ? null : unit.toMultiMeasurement(values.average);
+  }
+
+  /// Returns a [MultiMeasurement] object representing the maximum value of
+  /// [measurements] in the given unit.
+  static MultiMeasurement? max(List<MultiMeasurement> measurements, Unit unit) {
+    var values = _decimalValues(measurements, unit);
+    return values.isEmpty
+        ? null
+        : unit.toMultiMeasurement(values.reduce(math.max));
+  }
+
+  /// Returns a [MultiMeasurement] object representing the total value of
+  /// [measurements] in the given unit.
+  static MultiMeasurement? sum(List<MultiMeasurement> measurements, Unit unit) {
+    var values = _decimalValues(measurements, unit);
+    return values.isEmpty
+        ? null
+        : unit.toMultiMeasurement(values.reduce((total, e) => total += e));
+  }
+
+  /// Converts a collection of [MultiMeasurement] objects to a double, in
+  /// [unit].
+  static Iterable<double> _decimalValues(
+      Iterable<MultiMeasurement> measurements, Unit unit) {
+    if (measurements.isEmpty) {
+      return [];
+    }
+
+    // Convert all values into decimals of the correct unit.
+    var values = <double>[];
+    for (var measurement in measurements) {
+      var value = measurement._toDecimalIfNeeded();
+      if (value.hasMainValue() && value.mainValue.hasValue()) {
+        values
+            .add(unit.convertFrom(value.mainValue.unit, value.mainValue.value));
+      }
+    }
+
+    return values;
+  }
+
   bool get isSet => hasMainValue() || hasFractionValue();
 
-  String displayValue(BuildContext context) {
+  /// Returns the user-visible value for the [MultiMeasurement].
+  ///
+  /// If [resultFormat] is not empty, it is returned with the value inserted.
+  /// This method assumes [resultFormat] has one %s replacement.
+  ///
+  /// If [ifZero] is not empty, [ifZero] is returned if the calculated result
+  /// == "0" (i.e. an empty protobuf object, or object without a unit).
+  String displayValue(
+    BuildContext context, {
+    String? resultFormat,
+    String? ifZero,
+    bool includeFraction = true,
+  }) {
     // Inches require a different format than other measurements due to the
     // fraction not having its own unit. The different format only applies
     // when a fraction is set.
@@ -390,11 +457,22 @@ extension MultiMeasurements on MultiMeasurement {
       return "${mainValue.stringValue()} ${fraction.symbol} $unit";
     }
 
-    var isFractionSet = hasFractionValue() &&
+    var isFractionSet = includeFraction &&
+        hasFractionValue() &&
         fractionValue.hasValue() &&
         fractionValue.value > 0;
-    return mainValue.displayValue(context) +
+    var result = mainValue.displayValue(context) +
         (isFractionSet ? " ${fractionValue.displayValue(context)}" : "");
+
+    if (isNotEmpty(ifZero) && result == "0") {
+      return ifZero!;
+    }
+
+    if (isNotEmpty(resultFormat)) {
+      return format(resultFormat!, [result]);
+    }
+
+    return result;
   }
 
   String filterString(BuildContext context) {
@@ -451,6 +529,16 @@ extension MultiMeasurements on MultiMeasurement {
     }
 
     return result;
+  }
+
+  int compareTo(MultiMeasurement other) {
+    if (this < other) {
+      return -1;
+    } else if (this == other) {
+      return 0;
+    } else {
+      return 1;
+    }
   }
 
   bool operator <(MultiMeasurement other) {
@@ -605,6 +693,11 @@ extension Periods on Period {
     );
   }
 
+  static int Function(Period, Period) nameComparator(BuildContext context) {
+    return (lhs, rhs) => ignoreCaseAlphabeticalComparator(
+        lhs.displayName(context), rhs.displayName(context));
+  }
+
   String displayName(BuildContext context) {
     switch (this) {
       case Period.period_all:
@@ -668,6 +761,11 @@ extension Seasons on Season {
       (context, season) => season.displayName(context),
       sort: false,
     );
+  }
+
+  static int Function(Season, Season) nameComparator(BuildContext context) {
+    return (lhs, rhs) => ignoreCaseAlphabeticalComparator(
+        lhs.displayName(context), rhs.displayName(context));
   }
 
   String displayName(BuildContext context) {
@@ -801,11 +899,12 @@ extension Units on Unit {
       case Unit.inches:
       case Unit.pounds:
       case Unit.ounces:
+        return MeasurementSystem.imperial_whole;
       case Unit.fahrenheit:
       case Unit.miles_per_hour:
       case Unit.miles:
       case Unit.pounds_per_square_inch:
-        return MeasurementSystem.imperial_whole;
+        return MeasurementSystem.imperial_decimal;
       case Unit.meters:
       case Unit.centimeters:
       case Unit.kilograms:
@@ -878,14 +977,58 @@ extension Units on Unit {
       case Unit.miles:
       case Unit.kilometers:
       case Unit.percent:
-        _log.w("Unit.toDecimal called with non-decimal unit: $this");
+        // None of these units need to be converted to a decimal value; return
+        // the raw value.
         return value;
     }
     throw ArgumentError("Invalid input: $this");
   }
 
-  /// Converts [value] to this [Unit]. [Unit] must be the [oppositeUnit] of
-  /// the caller, otherwise [value] is returned unchanged.
+  /// Returns a [MultiMeasurement] instance for this [Unit] with the given
+  /// value. If a fractional unit exists for this [Unit], it will be used, and
+  /// the resulting [MultiMeasurement.fractionValue] will be set.
+  MultiMeasurement toMultiMeasurement(double value) {
+    var result = MultiMeasurement(system: measurementSystem);
+
+    // Imperial whole is the only whole value that may have fractional values
+    // (feet/inches, and pounds/ounces, for example).
+    if (measurementSystem == MeasurementSystem.imperial_whole) {
+      var avgWhole = value.floorToDouble();
+      result.mainValue = Measurement(
+        unit: this,
+        value: avgWhole,
+      );
+
+      var fractionalUnit = this.fractionalUnit;
+      if (this == Unit.inches) {
+        result.fractionValue = Measurement(
+          value: Fraction.fromValue(value % avgWhole).value,
+        );
+      } else if (fractionalUnit == null) {
+        _log.e("Unit doesn't have a fractional unit: $this");
+      } else if (fractionalUnit == Unit.ounces) {
+        result.fractionValue = Measurement(
+          unit: fractionalUnit,
+          value: ((value % avgWhole) * _ouncesPerPound).roundToDouble(),
+        );
+      } else if (fractionalUnit == Unit.inches) {
+        result.fractionValue = Measurement(
+          unit: fractionalUnit,
+          value: ((value % avgWhole) * _inchesPerFoot).roundToDouble(),
+        );
+      }
+    } else {
+      result.mainValue = Measurement(
+        unit: this,
+        value: value,
+      );
+    }
+
+    return result;
+  }
+
+  /// Converts [value] to this [Unit]. The given [Unit] must be the
+  /// [oppositeUnit] of the caller, otherwise [value] is returned unchanged.
   double convertFrom(Unit unit, double value) {
     if (unit == this) {
       return value;
@@ -907,9 +1050,32 @@ extension Units on Unit {
       // Millibars to pounds per square inch.
       case Unit.pounds_per_square_inch:
         return value * 0.0145038;
+      // Inches to centimeters.
+      case Unit.centimeters:
+        return value * 2.54;
+      // Centimeters to inches.
+      case Unit.inches:
+        return value * 0.393701;
+      // Pounds to kilograms.
+      case Unit.kilograms:
+        return value * 0.453592;
+      // Kilograms to pounds.
+      case Unit.pounds:
+        return value * 2.20462;
       default:
         _log.w("Unsupported conversion for $this");
         return value;
+    }
+  }
+
+  Unit? get fractionalUnit {
+    switch (this) {
+      case Unit.feet:
+        return Unit.inches;
+      case Unit.pounds:
+        return Unit.ounces;
+      default:
+        return null;
     }
   }
 }
@@ -1086,6 +1252,12 @@ extension MoonPhases on MoonPhase {
     }
   }
 
+  static int Function(MoonPhase, MoonPhase) nameComparator(
+      BuildContext context) {
+    return (lhs, rhs) => ignoreCaseAlphabeticalComparator(
+        lhs.displayName(context), rhs.displayName(context));
+  }
+
   String displayName(BuildContext context) {
     switch (this) {
       case MoonPhase.moon_phase_all:
@@ -1235,6 +1407,44 @@ extension Directions on Direction {
     }
     throw ArgumentError("Invalid input: $this");
   }
+}
+
+extension Reports on Report {
+  String? displayName(BuildContext context) {
+    if (id == reportIdCatchSummary) {
+      return Strings.of(context).statsPageCatchSummary;
+    } else if (id == reportIdSpeciesSummary) {
+      return Strings.of(context).statsPageSpeciesSummary;
+    } else if (id == reportIdAnglerSummary) {
+      return Strings.of(context).statsPageAnglerSummary;
+    } else if (id == reportIdBaitSummary) {
+      return Strings.of(context).statsPageBaitSummary;
+    } else if (id == reportIdBodyOfWaterSummary) {
+      return Strings.of(context).statsPageBodyOfWaterSummary;
+    } else if (id == reportIdFishingSpotSummary) {
+      return Strings.of(context).statsPageFishingSpotSummary;
+    } else if (id == reportIdMethodSummary) {
+      return Strings.of(context).statsPageMethodSummary;
+    } else if (id == reportIdMoonPhaseSummary) {
+      return Strings.of(context).statsPageMoonPhaseSummary;
+    } else if (id == reportIdPeriodSummary) {
+      return Strings.of(context).statsPagePeriodSummary;
+    } else if (id == reportIdSeasonSummary) {
+      return Strings.of(context).statsPageSeasonSummary;
+    } else if (id == reportIdTideTypeSummary) {
+      return Strings.of(context).statsPageTideSummary;
+    } else if (id == reportIdWaterClaritySummary) {
+      return Strings.of(context).statsPageWaterClaritySummary;
+    } else if (id == reportIdPersonalBests) {
+      return Strings.of(context).statsPagePersonalBests;
+    } else if (id == reportIdTripSummary) {
+      return Strings.of(context).tripSummaryTitle;
+    } else {
+      return null;
+    }
+  }
+
+  bool get isCustom => hasType();
 }
 
 extension SkyConditions on SkyCondition {
@@ -1399,6 +1609,11 @@ extension TideTypes on TideType {
     );
   }
 
+  static int Function(TideType, TideType) nameComparator(BuildContext context) {
+    return (lhs, rhs) => ignoreCaseAlphabeticalComparator(
+        lhs.displayName(context), rhs.displayName(context));
+  }
+
   String displayName(BuildContext context) {
     switch (this) {
       case TideType.tide_type_none:
@@ -1488,6 +1703,8 @@ extension Tides on Tide {
 }
 
 extension Trips on Trip {
+  int get duration => endTimestamp.toInt() - startTimestamp.toInt();
+
   DateTime get startDateTime =>
       DateTime.fromMillisecondsSinceEpoch(startTimestamp.toInt());
 

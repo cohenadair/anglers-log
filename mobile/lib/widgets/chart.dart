@@ -1,11 +1,11 @@
-import 'dart:math';
+import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
+import 'package:mobile/utils/color_utils.dart';
 import 'package:quiver/iterables.dart';
 import 'package:quiver/strings.dart';
 
 import '../i18n/strings.dart';
-import '../log.dart';
 import '../model/gen/anglerslog.pb.dart';
 import '../res/dimen.dart';
 import '../res/style.dart';
@@ -131,15 +131,12 @@ class Chart<T> extends StatefulWidget {
                     isNotEmpty(chartPageDescription)),
             "showAll is false; viewAllTitle is required"),
         assert(series.isNotEmpty) {
-    var colors = List.of(Colors.primaries)
-      ..remove(Colors.brown)
-      ..remove(Colors.blueGrey);
-
+    var colors = accentColors();
     var seriesLen = series.first.length;
     for (Series series in series) {
       assert(series.length == seriesLen,
           "All data lengths in series must be equal");
-      Color color = colors[Random().nextInt(colors.length)];
+      Color color = colors[math.Random().nextInt(colors.length)];
       colors.remove(color);
       series._color = color.withOpacity(_rowColorOpacity);
     }
@@ -150,9 +147,8 @@ class Chart<T> extends StatefulWidget {
 }
 
 class _ChartState<T> extends State<Chart<T>> {
-  static const _log = Log("MyChart");
-
   static const _legendIndicatorSize = 15.0;
+  static const _legendRadius = 4.0;
   static const _rowHeight = 20.0;
   static const _rowCornerRadius = 5.0;
   static const _condensedRowCount = 3;
@@ -196,23 +192,26 @@ class _ChartState<T> extends State<Chart<T>> {
     }
     return Padding(
       padding: widget.padding.copyWith(
-        top: paddingWidgetSmall,
-        bottom: paddingWidgetSmall,
+        bottom: paddingDefault,
       ),
       child: Wrap(
-        spacing: paddingWidget,
-        runSpacing: paddingWidgetTiny,
+        spacing: paddingDefault,
+        runSpacing: paddingTiny,
         children: widget.series
             .map(
               (series) => Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Container(
+                    decoration: BoxDecoration(
+                      borderRadius: const BorderRadius.all(
+                          Radius.circular(_legendRadius)),
+                      color: series._color,
+                    ),
                     width: _legendIndicatorSize,
                     height: _legendIndicatorSize,
-                    color: series._color,
                   ),
-                  const HorizontalSpace(paddingWidgetSmall),
+                  const HorizontalSpace(paddingSmall),
                   Text(series.dateRange.displayName(context)),
                 ],
               ),
@@ -246,8 +245,8 @@ class _ChartState<T> extends State<Chart<T>> {
         );
 
         // Add space between series rows.
-        children.add(
-            VerticalSpace(series == _displayData.last ? 0 : paddingWidgetTiny));
+        children
+            .add(VerticalSpace(series == _displayData.last ? 0 : paddingTiny));
       }
 
       // Add space between rows.
@@ -266,10 +265,9 @@ class _ChartState<T> extends State<Chart<T>> {
 
   Widget _buildChartRow(double maxWidth, double maxValue, T item,
       Series<T> series, int? value, Color color) {
-    if (maxValue <= 0) {
-      _log.w("Can't create a chart row with maxValue = 0");
-      return Empty();
-    }
+    // Set a minimum max value of 1 so if the series values are 0, an "empty"
+    // row will still show.
+    maxValue = math.max(maxValue, 1);
 
     // Value can be null here if, for example, item A exists in one series but
     // not another.
@@ -295,14 +293,14 @@ class _ChartState<T> extends State<Chart<T>> {
             height: _rowHeight,
             width: value.toDouble() /
                 maxValue *
-                (maxWidth - widget.padding.left - widget.padding.right),
+                (maxWidth - widget.padding.left - widget.padding.right).abs(),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(_rowCornerRadius),
               color: color,
             ),
           ),
           Padding(
-            padding: insetsHorizontalWidgetTiny,
+            padding: insetsHorizontalTiny,
             child: Text(
               "${widget.labelBuilder(item)} ($value)",
               overflow: TextOverflow.ellipsis,
@@ -317,7 +315,7 @@ class _ChartState<T> extends State<Chart<T>> {
     if (widget.showAll ||
         isEmpty(widget.viewAllTitle) ||
         _maxRowCount <= _condensedRowCount) {
-      return const VerticalSpace(paddingWidgetSmall);
+      return const VerticalSpace(paddingSmall);
     }
 
     assert(isNotEmpty(widget.chartPageDescription),
@@ -419,7 +417,7 @@ class _ChartPage<T> extends StatelessWidget {
       padding: const EdgeInsets.only(
         left: paddingDefault,
         right: paddingDefault,
-        bottom: paddingWidget,
+        bottom: paddingDefault,
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -428,7 +426,7 @@ class _ChartPage<T> extends StatelessWidget {
             Strings.of(context).reportSummaryFilters,
             style: styleListHeading(context),
           ),
-          const VerticalSpace(paddingWidget),
+          const VerticalSpace(paddingDefault),
           ChipWrap(filters),
         ],
       ),

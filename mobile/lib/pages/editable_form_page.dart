@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:collection/collection.dart' show IterableExtension;
 import 'package:flutter/material.dart';
+import 'package:mobile/utils/collection_utils.dart';
 
 import '../custom_entity_manager.dart';
 import '../i18n/strings.dart';
@@ -216,20 +217,20 @@ class _EditableFormPageState extends State<EditableFormPage> {
 
       child = HeadingNoteDivider(
         hideNote: visibleField != null,
-        title: Strings.of(context).customFields,
+        title: Strings.of(context).entityNameCustomFields,
         note: Strings.of(context).formPageManageFieldsNote,
         noteIcon: FormPage.moreMenuIcon,
       );
     } else if (_hasCustomField()) {
-      child = HeadingDivider(Strings.of(context).customFields);
+      child = HeadingDivider(Strings.of(context).entityNameCustomFields);
     } else {
       return Empty();
     }
 
     return Padding(
       padding: EdgeInsets.only(
-        top: widget.showTopCustomFieldPadding ? paddingWidget : 0.0,
-        bottom: paddingWidgetSmall,
+        top: widget.showTopCustomFieldPadding ? paddingDefault : 0.0,
+        bottom: paddingSmall,
       ),
       child: child,
     );
@@ -304,10 +305,8 @@ class _EditableFormPageState extends State<EditableFormPage> {
   }
 
   /// Returns true if the form has a custom field showing.
-  bool _hasCustomField() =>
-      _fields.values
-          .firstWhereOrNull((e) => _customEntityManager.entityExists(e.id)) !=
-      null;
+  bool _hasCustomField() => _fields.values
+      .containsWhere((e) => _customEntityManager.entityExists(e.id));
 
   Map<Id, dynamic> _customFieldValues() {
     var customFieldValues = <Id, dynamic>{};

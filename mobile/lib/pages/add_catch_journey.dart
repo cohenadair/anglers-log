@@ -8,7 +8,6 @@ import '../pages/image_picker_page.dart';
 import '../pages/save_catch_page.dart';
 import '../pages/species_list_page.dart';
 import '../user_preference_manager.dart';
-import '../utils/catch_utils.dart';
 import '../utils/protobuf_utils.dart';
 import '../widgets/fishing_spot_map.dart';
 import '../widgets/input_controller.dart';
@@ -53,7 +52,7 @@ class _AddCatchJourneyState extends State<AddCatchJourney> {
   @override
   Widget build(BuildContext context) {
     var initialRoute = _rootRoute;
-    if (!_isTrackingImages()) {
+    if (!_userPreferencesManager.isTrackingImages) {
       initialRoute = _pickSpeciesRoute;
     }
 
@@ -76,7 +75,8 @@ class _AddCatchJourneyState extends State<AddCatchJourney> {
                 //
                 // Only do this if the user is interested in tracking fishing
                 // spots.
-                if (_isTrackingFishingSpots() && !_isFishingSpotPrePicked) {
+                if (_userPreferencesManager.isTrackingFishingSpots &&
+                    !_isFishingSpotPrePicked) {
                   for (var image in _images) {
                     if (image.position == null) {
                       continue;
@@ -114,7 +114,7 @@ class _AddCatchJourneyState extends State<AddCatchJourney> {
                   // the fishing spot picker page.
                   if (_fishingSpotManager
                           .entityExists(_fishingSpotController.value?.id) ||
-                      !_isTrackingFishingSpots()) {
+                      !_userPreferencesManager.isTrackingFishingSpots) {
                     Navigator.of(context).pushNamed(_saveCatchRoute);
                   } else {
                     Navigator.of(context).pushNamed(_pickFishingSpotRoute);
@@ -165,16 +165,5 @@ class _AddCatchJourneyState extends State<AddCatchJourney> {
       icon: const Icon(Icons.close),
       onPressed: () => Navigator.of(context, rootNavigator: true).pop(),
     );
-  }
-
-  bool _isTrackingImages() {
-    var catchFieldIds = _userPreferencesManager.catchFieldIds;
-    return catchFieldIds.isEmpty || catchFieldIds.contains(catchFieldIdImages);
-  }
-
-  bool _isTrackingFishingSpots() {
-    var catchFieldIds = _userPreferencesManager.catchFieldIds;
-    return catchFieldIds.isEmpty ||
-        catchFieldIds.contains(catchFieldIdFishingSpot);
   }
 }

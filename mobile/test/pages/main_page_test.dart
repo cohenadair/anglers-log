@@ -28,7 +28,7 @@ void main() {
 
     when(appManager.catchManager.imageNamesSortedByTimestamp(any))
         .thenReturn([]);
-    when(appManager.catchManager.catchesSortedByTimestamp(
+    when(appManager.catchManager.catches(
       any,
       filter: anyNamed("filter"),
       dateRange: anyNamed("dateRange"),
@@ -37,8 +37,11 @@ void main() {
       fishingSpotIds: anyNamed("fishingSpotIds"),
       baits: anyNamed("baits"),
     )).thenReturn([]);
+    when(appManager.catchManager.hasEntities).thenReturn(false);
 
     when(appManager.reportManager.entityExists(any)).thenReturn(false);
+    when(appManager.reportManager.defaultReport).thenReturn(Report());
+    when(appManager.reportManager.displayName(any, any)).thenReturn("Test");
 
     when(appManager.fishingSpotManager.list()).thenReturn([]);
     when(appManager.fishingSpotManager.entityExists(any)).thenReturn(false);

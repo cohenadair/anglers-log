@@ -263,7 +263,7 @@ void main() {
           context: context,
           millisecondsDuration: 0,
         ),
-        "0d 0h 0m 0s",
+        "0y 0d 0h 0m 0s",
       );
 
       expect(
@@ -278,7 +278,7 @@ void main() {
 
     testWidgets("All units", (tester) async {
       var ms = const Duration(
-        days: 2,
+        days: 385,
         hours: 5,
         minutes: 45,
         seconds: 30,
@@ -291,7 +291,7 @@ void main() {
           context: context,
           millisecondsDuration: ms,
         ),
-        "2d 5h 45m 30s",
+        "1y 20d 5h 45m 30s",
       );
 
       expect(
@@ -300,7 +300,33 @@ void main() {
           millisecondsDuration: ms,
           condensed: true,
         ),
-        "2d 5h 45m 30s",
+        "1y 20d 5h 45m 30s",
+      );
+    });
+
+    testWidgets("Years only", (tester) async {
+      var ms = const Duration(
+        days: 385,
+      ).inMilliseconds;
+
+      var context = await buildContext(tester);
+
+      expect(
+        formatDuration(
+          context: context,
+          millisecondsDuration: ms,
+        ),
+        "1y 20d 0h 0m 0s",
+      );
+
+      expect(
+        formatDuration(
+          context: context,
+          millisecondsDuration: ms,
+          condensed: true,
+          numberOfQuantities: 1,
+        ),
+        "1y",
       );
     });
 
@@ -316,7 +342,7 @@ void main() {
           context: context,
           millisecondsDuration: ms,
         ),
-        "2d 0h 0m 0s",
+        "0y 2d 0h 0m 0s",
       );
 
       expect(
@@ -341,7 +367,7 @@ void main() {
           context: context,
           millisecondsDuration: ms,
         ),
-        "0d 10h 0m 0s",
+        "0y 0d 10h 0m 0s",
       );
 
       expect(
@@ -366,7 +392,7 @@ void main() {
           context: context,
           millisecondsDuration: ms,
         ),
-        "0d 0h 20m 0s",
+        "0y 0d 0h 20m 0s",
       );
 
       expect(
@@ -391,7 +417,7 @@ void main() {
           context: context,
           millisecondsDuration: ms,
         ),
-        "0d 0h 0m 50s",
+        "0y 0d 0h 0m 50s",
       );
 
       expect(
@@ -420,7 +446,7 @@ void main() {
           millisecondsDuration: ms,
           includesDays: false,
         ),
-        "53h 45m 30s",
+        "0y 53h 45m 30s",
       );
     });
 
@@ -438,6 +464,7 @@ void main() {
         formatDuration(
           context: context,
           millisecondsDuration: ms,
+          includesYears: false,
           includesDays: false,
           includesHours: false,
         ),
@@ -459,6 +486,7 @@ void main() {
         formatDuration(
           context: context,
           millisecondsDuration: ms,
+          includesYears: false,
           includesDays: false,
           includesHours: false,
           includesMinutes: false,
@@ -481,6 +509,7 @@ void main() {
         formatDuration(
           context: context,
           millisecondsDuration: ms,
+          includesYears: false,
           includesDays: false,
           includesHours: false,
           includesMinutes: false,
@@ -504,9 +533,9 @@ void main() {
         formatDuration(
           context: context,
           millisecondsDuration: ms,
-          showHighestTwoOnly: true,
+          numberOfQuantities: 2,
         ),
-        "2d 5h",
+        "0y 2d",
       );
 
       ms = const Duration(
@@ -520,7 +549,7 @@ void main() {
           context: context,
           millisecondsDuration: ms,
           condensed: true,
-          showHighestTwoOnly: true,
+          numberOfQuantities: 2,
         ),
         "5h 45m",
       );
@@ -535,7 +564,7 @@ void main() {
           context: context,
           millisecondsDuration: ms,
           condensed: true,
-          showHighestTwoOnly: true,
+          numberOfQuantities: 2,
         ),
         "45m 30s",
       );
@@ -549,7 +578,7 @@ void main() {
           context: context,
           millisecondsDuration: ms,
           condensed: true,
-          showHighestTwoOnly: true,
+          numberOfQuantities: 2,
         ),
         "30s",
       );

@@ -32,18 +32,6 @@ void main() {
         .thenReturn(MeasurementSystem.metric);
   });
 
-  testWidgets("Unit initial index is 0 of preferences is null", (tester) async {
-    when(appManager.userPreferenceManager.catchLengthSystem).thenReturn(null);
-
-    await tester.pumpWidget(Testable(
-      (_) => UnitsPage(),
-      appManager: appManager,
-    ));
-
-    var radioInput = findSiblingOfText<RadioInput>(tester, Column, "Length");
-    expect(radioInput.initialSelectedIndex, 0);
-  });
-
   testWidgets("Initial index when preferences is not null", (tester) async {
     when(appManager.userPreferenceManager.catchLengthSystem)
         .thenReturn(MeasurementSystem.imperial_decimal);

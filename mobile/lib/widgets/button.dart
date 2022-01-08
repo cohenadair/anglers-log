@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:mobile/widgets/floating_container.dart';
 import 'package:quiver/strings.dart';
 
 import '../i18n/strings.dart';
@@ -218,9 +219,7 @@ class FloatingButton extends StatelessWidget {
 
   final VoidCallback? onPressed;
 
-  /// If true, the "floating" part of the button will be transparent. This is
-  /// useful for animating between two [FloatingButton] when the widget
-  /// beneath changes color.
+  /// See [FloatingContainer.isTransparent].
   ///
   /// If [text] is not empty, and [transparentBackground] is true, consider
   /// using an [ActionButton] instead.
@@ -296,7 +295,7 @@ class FloatingButton extends StatelessWidget {
       } else {
         // The iOS back button icon is not centered, so add some padding.
         circleChild = const Padding(
-          padding: insetsLeftWidgetSmall,
+          padding: insetsLeftSmall,
           child: Icon(
             Icons.arrow_back_ios,
             color: Colors.black,
@@ -317,12 +316,11 @@ class FloatingButton extends StatelessWidget {
       padding: padding ?? insetsDefault,
       child: Column(
         children: [
-          Container(
-            decoration: transparentBackground
-                ? null
-                : const FloatingBoxDecoration.circle(),
+          FloatingContainer(
             width: _fabSize,
             height: _fabSize,
+            isCircle: true,
+            isTransparent: transparentBackground,
             child: RawMaterialButton(
               child: circleChild,
               shape: const CircleBorder(),

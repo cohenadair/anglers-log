@@ -366,7 +366,7 @@ class _ManageableListPageState<T> extends State<ManageableListPage<T>> {
       BuildContext context, T itemValue, Animation<double> animation) {
     var item = widget.itemBuilder(context, itemValue);
 
-    if (!item.editable && !item.selectable) {
+    if (!item.isEditable && !item.isSelectable) {
       // If this item can't be edited or selected, return it; we don't want
       // to use a ManageableListItem.
       return item.child;
@@ -393,12 +393,14 @@ class _ManageableListPageState<T> extends State<ManageableListPage<T>> {
       trailing = _isItemSelected(itemValue) ? const Icon(_iconCheck) : null;
     }
 
-    // For now, don't allow selecting items with a grandchild.
-    if (_isPicking && item.grandchild != null) {
+    // For now, only allow selecting items with a grandchild in a single picker.
+    // This allows users to select the entire item (including grandchildren),
+    // such as in BaitListPage.
+    if (_isPicking && item.grandchild != null && _isPickingMulti) {
       trailing = Empty();
     }
 
-    var canEdit = _isEditing && item.editable;
+    var canEdit = _isEditing && item.isEditable;
     var enabled = !_isEditing || canEdit;
 
     VoidCallback? onTap;
@@ -610,9 +612,9 @@ class ManageableListPageSearchDelegate {
 class ManageableListPageItemModel {
   /// True if this item can be edited; false otherwise. This may be false for
   /// section headers or dividers. Defaults to true.
-  final bool editable;
+  final bool isEditable;
 
-  final bool selectable;
+  final bool isSelectable;
 
   /// The child of item. [Padding] is added automatically, as is a trailing
   /// [RightChevronIcon] or [CheckBox] depending on the situation. This
@@ -624,8 +626,8 @@ class ManageableListPageItemModel {
   const ManageableListPageItemModel({
     required this.child,
     this.grandchild,
-    this.editable = true,
-    this.selectable = true,
+    this.isEditable = true,
+    this.isSelectable = true,
   });
 }
 

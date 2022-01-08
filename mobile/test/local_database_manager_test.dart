@@ -12,13 +12,13 @@ import 'mocks/stubbed_app_manager.dart';
 
 void main() {
   late StubbedAppManager appManager;
-  late MockDatabaseExecutor database;
+  late MockDatabase database;
 
   late LocalDatabaseManager databaseManager;
 
   setUp(() async {
     appManager = StubbedAppManager();
-    database = MockDatabaseExecutor();
+    database = MockDatabase();
 
     when(appManager.authManager.state).thenReturn(AuthState.initializing);
     when(appManager.authManager.userId).thenReturn("ID");
@@ -27,6 +27,99 @@ void main() {
     await databaseManager.initialize(
       database: database,
     );
+  });
+
+  test("insertOrReplace single", () async {
+    when(database.insert(
+      any,
+      any,
+      conflictAlgorithm: anyNamed("conflictAlgorithm"),
+    )).thenAnswer((_) => Future.value(1));
+
+    expect(await databaseManager.insertOrReplace("Any", {}), isTrue);
+    verify(database.insert(
+      any,
+      any,
+      conflictAlgorithm: anyNamed("conflictAlgorithm"),
+    )).called(1);
+  });
+
+  test("insertOrReplace batch", () async {
+    var batch = MockBatch();
+    when(batch.insert(
+      any,
+      any,
+      conflictAlgorithm: anyNamed("conflictAlgorithm"),
+    )).thenAnswer((_) => Future.value(null));
+
+    expect(await databaseManager.insertOrReplace("Any", {}, batch), isTrue);
+
+    verifyNever(database.insert(
+      any,
+      any,
+      conflictAlgorithm: anyNamed("conflictAlgorithm"),
+    ));
+
+    verify(batch.insert(
+      any,
+      any,
+      conflictAlgorithm: anyNamed("conflictAlgorithm"),
+    )).called(1);
+  });
+
+  test("deleteEntity single success", () async {
+    when(appManager.ioWrapper.isAndroid).thenReturn(true);
+
+    when(database.delete(
+      any,
+      where: anyNamed("where"),
+      whereArgs: anyNamed("whereArgs"),
+    )).thenAnswer((_) => Future.value(1));
+
+    expect(await databaseManager.deleteEntity(randomId(), "Any"), isTrue);
+    verify(database.delete(
+      any,
+      where: anyNamed("where"),
+      whereArgs: anyNamed("whereArgs"),
+    )).called(1);
+  });
+
+  test("deleteEntity single failure", () async {
+    when(appManager.ioWrapper.isAndroid).thenReturn(true);
+
+    when(database.delete(
+      any,
+      where: anyNamed("where"),
+      whereArgs: anyNamed("whereArgs"),
+    )).thenAnswer((_) => Future.value(0));
+
+    expect(await databaseManager.deleteEntity(randomId(), "Any"), isFalse);
+    verify(database.delete(
+      any,
+      where: anyNamed("where"),
+      whereArgs: anyNamed("whereArgs"),
+    )).called(1);
+  });
+
+  test("deleteEntity batch", () async {
+    when(appManager.ioWrapper.isAndroid).thenReturn(true);
+
+    var batch = MockBatch();
+    when(batch.delete(
+      any,
+      where: anyNamed("where"),
+      whereArgs: anyNamed("whereArgs"),
+    )).thenAnswer((_) => Future.value(1));
+
+    expect(
+      await databaseManager.deleteEntity(randomId(), "Any", batch),
+      isTrue,
+    );
+    verifyNever(database.delete(
+      any,
+      where: anyNamed("where"),
+      whereArgs: anyNamed("whereArgs"),
+    ));
   });
 
   test("Hex functions used for Android delete queries", () async {

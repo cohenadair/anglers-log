@@ -54,7 +54,7 @@ class _RadioInputState extends State<RadioInput> {
                   padding: const EdgeInsets.only(
                     left: paddingDefault,
                     right: paddingDefault,
-                    bottom: paddingWidgetSmall,
+                    bottom: paddingSmall,
                   ),
                   child: Text(
                     widget.title!,
@@ -81,19 +81,19 @@ class _RadioInputState extends State<RadioInput> {
         padding: EdgeInsets.only(
           left: widget.padding?.left ?? 0,
           right: widget.padding?.right ?? 0,
-          top: paddingWidgetSmall,
-          bottom: paddingWidgetSmall,
+          top: paddingSmall,
+          bottom: paddingSmall,
         ),
         child: HorizontalSafeArea(
           child: Row(
             children: [
               AnimatedSwitcher(
-                duration: defaultAnimationDuration,
+                duration: animDurationDefault,
                 child: Icon(icon, key: ValueKey(selected)),
               ),
               Expanded(
                 child: Padding(
-                  padding: const EdgeInsets.only(left: paddingWidgetDouble),
+                  padding: const EdgeInsets.only(left: paddingXL),
                   child: Text(
                     widget.optionBuilder(context, index),
                     style: stylePrimary(context),

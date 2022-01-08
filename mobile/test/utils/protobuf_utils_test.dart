@@ -401,6 +401,67 @@ void main() {
       expect(measurement.displayValue(context), "10 lbs 8 oz");
     });
 
+    testWidgets("displayValue excludes fraction", (tester) async {
+      var context = await buildContext(tester);
+
+      var measurement = MultiMeasurement(
+        system: MeasurementSystem.imperial_whole,
+        mainValue: Measurement(
+          unit: Unit.pounds,
+          value: 10,
+        ),
+        fractionValue: Measurement(
+          unit: Unit.ounces,
+          value: 8,
+        ),
+      );
+
+      expect(
+        measurement.displayValue(context, includeFraction: false),
+        "10 lbs",
+      );
+    });
+
+    testWidgets("displayValue ifZero is returned", (tester) async {
+      var context = await buildContext(tester);
+
+      var measurement = MultiMeasurement(
+        system: MeasurementSystem.imperial_whole,
+        mainValue: Measurement(
+          value: 0,
+        ),
+      );
+
+      expect(
+        measurement.displayValue(
+          context,
+          ifZero: "Zero",
+        ),
+        "Zero",
+      );
+    });
+
+    testWidgets("displayValue resultFormat is returned", (tester) async {
+      var context = await buildContext(tester);
+
+      var measurement = MultiMeasurement(
+        system: MeasurementSystem.imperial_whole,
+        mainValue: Measurement(
+          unit: Unit.pounds,
+          value: 10,
+        ),
+      );
+
+      expect(
+        measurement.displayValue(
+          context,
+          includeFraction: false,
+          resultFormat: "Value: %s",
+        ),
+        "Value: 10 lbs",
+      );
+    });
+
     test("from with null system", () {
       var measurement = MultiMeasurements.from(
         Measurement(
@@ -506,6 +567,54 @@ void main() {
       expect(measurement.filterString(context), isNotEmpty);
       expect(measurement.filterString(context).contains("lbs"), isTrue);
       expect(measurement.filterString(context).contains("km"), isTrue);
+    });
+
+    test("compareTo returns -1", () {
+      var measurement1 = MultiMeasurement(
+        mainValue: Measurement(
+          unit: Unit.pounds,
+          value: 8,
+        ),
+      );
+      var measurement2 = MultiMeasurement(
+        mainValue: Measurement(
+          unit: Unit.pounds,
+          value: 10,
+        ),
+      );
+      expect(measurement1.compareTo(measurement2), -1);
+    });
+
+    testWidgets("compareTo returns 0", (tester) async {
+      var measurement1 = MultiMeasurement(
+        mainValue: Measurement(
+          unit: Unit.pounds,
+          value: 10,
+        ),
+      );
+      var measurement2 = MultiMeasurement(
+        mainValue: Measurement(
+          unit: Unit.pounds,
+          value: 10,
+        ),
+      );
+      expect(measurement1.compareTo(measurement2), 0);
+    });
+
+    testWidgets("compareTo returns 1", (tester) async {
+      var measurement1 = MultiMeasurement(
+        mainValue: Measurement(
+          unit: Unit.pounds,
+          value: 12,
+        ),
+      );
+      var measurement2 = MultiMeasurement(
+        mainValue: Measurement(
+          unit: Unit.pounds,
+          value: 10,
+        ),
+      );
+      expect(measurement1.compareTo(measurement2), 1);
     });
 
     test("Comparing equals", () {
@@ -665,6 +774,136 @@ void main() {
       expect(smaller <= larger, isTrue);
       expect(smaller > larger, isFalse);
       expect(smaller >= larger, isFalse);
+    });
+
+    test("average returns null when input is empty", () {
+      expect(MultiMeasurements.average([], Unit.kilograms), isNull);
+    });
+
+    test("average returns correct result", () {
+      expect(
+        MultiMeasurements.average(
+          [
+            MultiMeasurement(
+              system: MeasurementSystem.metric,
+              mainValue: Measurement(
+                unit: Unit.kilograms,
+                value: 10,
+              ),
+            ),
+            MultiMeasurement(
+              system: MeasurementSystem.metric,
+              mainValue: Measurement(
+                unit: Unit.kilograms,
+                value: 30,
+              ),
+            ),
+            MultiMeasurement(
+              system: MeasurementSystem.metric,
+              mainValue: Measurement(
+                unit: Unit.kilograms,
+                value: 20,
+              ),
+            ),
+          ],
+          Unit.pounds,
+        ),
+        MultiMeasurement(
+          system: MeasurementSystem.imperial_whole,
+          mainValue: Measurement(
+            unit: Unit.pounds,
+            value: 44.0,
+          ),
+          fractionValue: Measurement(
+            unit: Unit.ounces,
+            value: 1.0,
+          ),
+        ),
+      );
+    });
+
+    test("max returns null when input is empty", () {
+      expect(MultiMeasurements.max([], Unit.kilograms), isNull);
+    });
+
+    test("max returns correct result", () {
+      expect(
+        MultiMeasurements.max(
+          [
+            MultiMeasurement(
+              system: MeasurementSystem.metric,
+              mainValue: Measurement(
+                unit: Unit.kilograms,
+                value: 10,
+              ),
+            ),
+            MultiMeasurement(
+              system: MeasurementSystem.metric,
+              mainValue: Measurement(
+                unit: Unit.kilograms,
+                value: 30,
+              ),
+            ),
+            MultiMeasurement(
+              system: MeasurementSystem.metric,
+              mainValue: Measurement(
+                unit: Unit.kilograms,
+                value: 20,
+              ),
+            ),
+          ],
+          Unit.kilograms,
+        ),
+        MultiMeasurement(
+          system: MeasurementSystem.metric,
+          mainValue: Measurement(
+            unit: Unit.kilograms,
+            value: 30,
+          ),
+        ),
+      );
+    });
+
+    test("sum returns null when input is empty", () {
+      expect(MultiMeasurements.sum([], Unit.kilograms), isNull);
+    });
+
+    test("sum returns correct result", () {
+      expect(
+        MultiMeasurements.sum(
+          [
+            MultiMeasurement(
+              system: MeasurementSystem.metric,
+              mainValue: Measurement(
+                unit: Unit.kilograms,
+                value: 10,
+              ),
+            ),
+            MultiMeasurement(
+              system: MeasurementSystem.metric,
+              mainValue: Measurement(
+                unit: Unit.kilograms,
+                value: 30,
+              ),
+            ),
+            MultiMeasurement(
+              system: MeasurementSystem.metric,
+              mainValue: Measurement(
+                unit: Unit.kilograms,
+                value: 20,
+              ),
+            ),
+          ],
+          Unit.kilograms,
+        ),
+        MultiMeasurement(
+          system: MeasurementSystem.metric,
+          mainValue: Measurement(
+            unit: Unit.kilograms,
+            value: 60,
+          ),
+        ),
+      );
     });
   });
 
@@ -1155,6 +1394,82 @@ void main() {
   });
 
   group("Units", () {
+    test("toMultiMeasurement imperial whole inches", () {
+      expect(
+        Unit.inches.toMultiMeasurement(50.5),
+        MultiMeasurement(
+          system: MeasurementSystem.imperial_whole,
+          mainValue: Measurement(
+            unit: Unit.inches,
+            value: 50,
+          ),
+          fractionValue: Measurement(
+            value: 0.5,
+          ),
+        ),
+      );
+    });
+
+    test("toMultiMeasurement imperial whole no fraction unit", () {
+      expect(
+        Unit.ounces.toMultiMeasurement(50.5),
+        MultiMeasurement(
+          system: MeasurementSystem.imperial_whole,
+          mainValue: Measurement(
+            unit: Unit.ounces,
+            value: 50,
+          ),
+        ),
+      );
+    });
+
+    test("toMultiMeasurement imperial whole fraction ounces", () {
+      expect(
+        Unit.pounds.toMultiMeasurement(50.5),
+        MultiMeasurement(
+          system: MeasurementSystem.imperial_whole,
+          mainValue: Measurement(
+            unit: Unit.pounds,
+            value: 50,
+          ),
+          fractionValue: Measurement(
+            unit: Unit.ounces,
+            value: 8,
+          ),
+        ),
+      );
+    });
+
+    test("toMultiMeasurement imperial whole fraction inches", () {
+      expect(
+        Unit.feet.toMultiMeasurement(50.5),
+        MultiMeasurement(
+          system: MeasurementSystem.imperial_whole,
+          mainValue: Measurement(
+            unit: Unit.feet,
+            value: 50,
+          ),
+          fractionValue: Measurement(
+            unit: Unit.inches,
+            value: 6,
+          ),
+        ),
+      );
+    });
+
+    test("toMultiMeasurement non-imperial whole", () {
+      expect(
+        Unit.meters.toMultiMeasurement(50.5),
+        MultiMeasurement(
+          system: MeasurementSystem.metric,
+          mainValue: Measurement(
+            unit: Unit.meters,
+            value: 50.5,
+          ),
+        ),
+      );
+    });
+
     test("convertFrom with the same unit", () {
       expect(Unit.kilometers.convertFrom(Unit.kilometers, 10), 10);
     });
@@ -1165,6 +1480,37 @@ void main() {
 
     test("convertFrom with unsupported unit", () {
       expect(Unit.meters.convertFrom(Unit.kilometers, 10), 10);
+    });
+
+    test("Fahrenheit to celsius", () {
+      expect(Unit.celsius.convertFrom(Unit.fahrenheit, 32), 0);
+    });
+
+    test("Miles to kilometers", () {
+      expect(Unit.kilometers.convertFrom(Unit.miles, 1), 1.609344);
+    });
+
+    test("Millibars to pounds per square inch", () {
+      expect(
+        Unit.pounds_per_square_inch.convertFrom(Unit.millibars, 1),
+        0.0145038,
+      );
+    });
+
+    test("Inches to centimeters", () {
+      expect(Unit.centimeters.convertFrom(Unit.inches, 1), 2.54);
+    });
+
+    test("Centimeters to inches", () {
+      expect(Unit.inches.convertFrom(Unit.centimeters, 2.54).round(), 1);
+    });
+
+    test("Pounds to kilograms", () {
+      expect(Unit.kilograms.convertFrom(Unit.pounds, 1), 0.453592);
+    });
+
+    test("Kilograms to pounds", () {
+      expect(Unit.pounds.convertFrom(Unit.kilograms, 0.453592).round(), 1);
     });
   });
 

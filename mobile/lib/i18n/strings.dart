@@ -105,8 +105,6 @@ class Strings {
 
   String get more => _string("more");
 
-  String get customFields => _string("customFields");
-
   String get na => _string("na");
 
   String get finish => _string("finish");
@@ -122,6 +120,10 @@ class Strings {
   String get numberOfCatchesSingular => _string("numberOfCatchesSingular");
 
   String get unknownSpecies => _string("unknownSpecies");
+
+  String get viewDetails => _string("viewDetails");
+
+  String get viewAll => _string("viewAll");
 
   String get fieldTypeNumber => _string("fieldType_number");
 
@@ -164,8 +166,6 @@ class Strings {
 
   String get addAnythingPageTrip => _string("addAnythingPage_trip");
 
-  String get tripListPageMenuLabel => _string("tripListPage_menuLabel");
-
   String get tripListPageTitle => _string("tripListPage_title");
 
   String get tripListPageSearchHint => _string("tripListPage_searchHint");
@@ -196,13 +196,9 @@ class Strings {
 
   String get saveTripPageAllDay => _string("saveTripPage_allDay");
 
-  String get saveTripPageCatches => _string("saveTripPage_catches");
-
   String get saveTripPageCatchesDesc => _string("saveTripPage_catchesDesc");
 
   String get saveTripPageNoCatches => _string("saveTripPage_noCatches");
-
-  String get saveTripPageBodiesOfWater => _string("saveTripPage_bodiesOfWater");
 
   String get saveTripPageNoBodiesOfWater =>
       _string("saveTripPage_noBodiesOfWater");
@@ -217,8 +213,6 @@ class Strings {
 
   String get tripSkunked => _string("trip_skunked");
 
-  String get catchListPageMenuLabel => _string("catchListPage_menuLabel");
-
   String get catchListPageTitle => _string("catchListPage_title");
 
   String get catchListPageSearchHint => _string("catchListPage_searchHint");
@@ -228,6 +222,14 @@ class Strings {
 
   String get catchListPageEmptyListDescription =>
       _string("catchListPage_emptyListDescription");
+
+  String get catchListItemLength => _string("catchListItem_length");
+
+  String get catchListItemNoLength => _string("catchListItem_noLength");
+
+  String get catchListItemWeight => _string("catchListItem_weight");
+
+  String get catchListItemNoWeight => _string("catchListItem_noWeight");
 
   String get catchPageDeleteMessage => _string("catchPage_deleteMessage");
 
@@ -272,8 +274,6 @@ class Strings {
   String get catchFieldSeasonDescription =>
       _string("catchField_seasonDescription");
 
-  String get catchFieldSpecies => _string("catchField_species");
-
   String get catchFieldImages => _string("catchField_images");
 
   String get catchFieldFishingSpot => _string("catchField_fishingSpot");
@@ -284,8 +284,6 @@ class Strings {
   String get catchFieldBaitLabel => _string("catchField_bait");
 
   String get catchFieldAnglerLabel => _string("catchField_angler");
-
-  String get catchFieldMethodsLabel => _string("catchField_methods");
 
   String get catchFieldMethodsDescription =>
       _string("catchField_methodsDescription");
@@ -344,8 +342,6 @@ class Strings {
   String get saveReportPageAllWaterClarities =>
       _string("saveReportPage_allWaterClarities");
 
-  String get saveReportPageSpecies => _string("saveReportPage_species");
-
   String get saveReportPageAllSpecies => _string("saveReportPage_allSpecies");
 
   String get saveReportPageAllBaits => _string("saveReportPage_allBaits");
@@ -361,7 +357,13 @@ class Strings {
   String get saveReportPageCatchAndRelease =>
       _string("saveReportPage_catchAndRelease");
 
+  String get saveReportPageCatchAndReleaseFilter =>
+      _string("saveReportPage_catchAndReleaseFilter");
+
   String get saveReportPageFavorites => _string("saveReportPage_favorites");
+
+  String get saveReportPageFavoritesFilter =>
+      _string("saveReportPage_favoritesFilter");
 
   String get saveReportPageAllWindDirections =>
       _string("saveReportPage_allWindDirections");
@@ -384,8 +386,6 @@ class Strings {
   String get photosPageEmptyDescription =>
       _string("photosPage_emptyDescription");
 
-  String get baitListPageMenuLabel => _string("baitListPage_menuLabel");
-
   String get baitListPageTitle => _string("baitListPage_title");
 
   String get baitListPageOtherCategory => _string("baitListPage_otherCategory");
@@ -402,6 +402,8 @@ class Strings {
 
   String get baitListPageEmptyListDescription =>
       _string("baitListPage_emptyListDescription");
+
+  String get baitsSummaryEmpty => _string("baitsSummary_empty");
 
   String get baitListPageVariantsLabel => _string("baitListPage_variantsLabel");
 
@@ -440,9 +442,6 @@ class Strings {
   String get saveBaitCategoryPageExistsMessage =>
       _string("saveBaitCategoryPage_existsMessage");
 
-  String get baitCategoryListPageMenuTitle =>
-      _string("baitCategoryListPage_menuTitle");
-
   String get baitCategoryListPageTitle => _string("baitCategoryListPage_title");
 
   String get baitCategoryListPageDeleteMessage =>
@@ -467,8 +466,6 @@ class Strings {
   String get saveAnglerPageExistsMessage =>
       _string("saveAnglerPage_existsMessage");
 
-  String get anglerListPageMenuTitle => _string("anglerListPage_menuTitle");
-
   String get anglerListPageTitle => _string("anglerListPage_title");
 
   String get anglerListPageDeleteMessage =>
@@ -485,14 +482,14 @@ class Strings {
   String get anglerListPageEmptyListDescription =>
       _string("anglerListPage_emptyListDescription");
 
+  String get anglersSummaryEmpty => _string("anglersSummary_empty");
+
   String get saveMethodPageNewTitle => _string("saveMethodPage_newTitle");
 
   String get saveMethodPageEditTitle => _string("saveMethodPage_editTitle");
 
   String get saveMethodPageExistsMessage =>
       _string("saveMethodPage_existsMessage");
-
-  String get methodListPageMenuTitle => _string("methodListPage_menuTitle");
 
   String get methodListPageTitle => _string("methodListPage_title");
 
@@ -510,6 +507,8 @@ class Strings {
   String get methodListPageEmptyListDescription =>
       _string("methodListPage_emptyListDescription");
 
+  String get methodSummaryEmpty => _string("methodSummary_empty");
+
   String get saveWaterClarityPageNewTitle =>
       _string("saveWaterClarityPage_newTitle");
 
@@ -518,9 +517,6 @@ class Strings {
 
   String get saveWaterClarityPageExistsMessage =>
       _string("saveWaterClarityPage_existsMessage");
-
-  String get waterClarityListPageMenuTitle =>
-      _string("waterClarityListPage_menuTitle");
 
   String get waterClarityListPageTitle => _string("waterClarityListPage_title");
 
@@ -539,13 +535,76 @@ class Strings {
   String get waterClarityListPageEmptyListDescription =>
       _string("waterClarityListPage_emptyListDescription");
 
+  String get waterClaritiesSummaryEmpty =>
+      _string("waterClaritiesSummary_empty");
+
   String get statsPageMenuTitle => _string("statsPage_menuTitle");
 
   String get statsPageTitle => _string("statsPage_title");
 
-  String get statsPageReportOverview => _string("statsPage_reportOverview");
-
   String get statsPageNewReport => _string("statsPage_newReport");
+
+  String get statsPageSpeciesSummary => _string("statsPage_speciesSummary");
+
+  String get statsPageCatchSummary => _string("statsPage_catchSummary");
+
+  String get statsPageAnglerSummary => _string("statsPage_anglerSummary");
+
+  String get statsPageBaitSummary => _string("statsPage_baitSummary");
+
+  String get statsPageBodyOfWaterSummary =>
+      _string("statsPage_bodyOfWaterSummary");
+
+  String get statsPageFishingSpotSummary =>
+      _string("statsPage_fishingSpotSummary");
+
+  String get statsPageMethodSummary => _string("statsPage_methodSummary");
+
+  String get statsPageMoonPhaseSummary => _string("statsPage_moonPhaseSummary");
+
+  String get statsPagePeriodSummary => _string("statsPage_periodSummary");
+
+  String get statsPageSeasonSummary => _string("statsPage_seasonSummary");
+
+  String get statsPageTideSummary => _string("statsPage_tideSummary");
+
+  String get statsPageWaterClaritySummary =>
+      _string("statsPage_waterClaritySummary");
+
+  String get statsPagePersonalBests => _string("statsPage_waterPersonalBests");
+
+  String get personalBestsTrip => _string("personalBests_trip");
+
+  String get personalBestsLongest => _string("personalBests_longest");
+
+  String get personalBestsHeaviest => _string("personalBests_heaviest");
+
+  String get personalBestsSpeciesByLength =>
+      _string("personalBests_speciesByLength");
+
+  String get personalBestsSpeciesByLengthLabel =>
+      _string("personalBests_speciesByLengthLabel");
+
+  String get personalBestsSpeciesByWeight =>
+      _string("personalBests_speciesByWeight");
+
+  String get personalBestsSpeciesByWeightLabel =>
+      _string("personalBests_speciesByWeightLabel");
+
+  String get personalBestsShowAllSpecies =>
+      _string("personalBests_showAllSpecies");
+
+  String get personalBestsAverage => _string("personalBests_average");
+
+  String get personalBestsNoDataTitle => _string("personalBests_noDataTitle");
+
+  String get personalBestsNoDataDescription =>
+      _string("personalBests_noDataDescription");
+
+  String get reportViewEmptyLog => _string("reportView_emptyLog");
+
+  String get reportViewEmptyLogDescription =>
+      _string("reportView_emptyLogDescription");
 
   String get reportViewNoCatches => _string("reportView_noCatches");
 
@@ -566,6 +625,24 @@ class Strings {
 
   String get reportSummaryPerBait => _string("reportSummary_perBait");
 
+  String get reportSummaryPerAngler => _string("reportSummary_perAngler");
+
+  String get reportSummaryPerBodyOfWater =>
+      _string("reportSummary_perBodyOfWater");
+
+  String get reportSummaryPerMethod => _string("reportSummary_perMethod");
+
+  String get reportSummaryPerMoonPhase => _string("reportSummary_perMoonPhase");
+
+  String get reportSummaryPerPeriod => _string("reportSummary_perPeriod");
+
+  String get reportSummaryPerSeason => _string("reportSummary_perSeason");
+
+  String get reportSummaryPerTideType => _string("reportSummary_perTideType");
+
+  String get reportSummaryPerWaterClarity =>
+      _string("reportSummary_perWaterClarity");
+
   String get reportSummarySinceLastCatch =>
       _string("reportSummary_sinceLastCatch");
 
@@ -576,27 +653,64 @@ class Strings {
 
   String get reportSummaryViewSpecies => _string("reportSummary_viewSpecies");
 
-  String get reportSummaryCatchesPerSpeciesDescription =>
-      _string("reportSummary_catchesPerSpeciesDescription");
+  String get reportSummaryPerSpeciesDescription =>
+      _string("reportSummary_perSpeciesDescription");
 
   String get reportSummaryViewFishingSpots =>
       _string("reportSummary_viewFishingSpots");
 
-  String get reportSummaryCatchesPerFishingSpotDescription =>
-      _string("reportSummary_catchesPerFishingSpotDescription");
+  String get reportSummaryPerFishingSpotDescription =>
+      _string("reportSummary_perFishingSpotDescription");
 
   String get reportSummaryViewBaits => _string("reportSummary_viewBaits");
 
-  String get reportSummaryCatchesPerBaitDescription =>
-      _string("reportSummary_catchesPerBaitDescription");
+  String get reportSummaryPerBaitDescription =>
+      _string("reportSummary_perBaitDescription");
+
+  String get reportSummaryViewMoonPhases =>
+      _string("reportSummary_viewMoonPhases");
+
+  String get reportSummaryPerMoonPhaseDescription =>
+      _string("reportSummary_perMoonPhaseDescription");
+
+  String get reportSummaryViewTides => _string("reportSummary_viewTides");
+
+  String get reportSummaryPerTideDescription =>
+      _string("reportSummary_perTideDescription");
+
+  String get reportSummaryViewAnglers => _string("reportSummary_viewAnglers");
+
+  String get reportSummaryPerAnglerDescription =>
+      _string("reportSummary_perAnglerDescription");
+
+  String get reportSummaryViewBodiesOfWater =>
+      _string("reportSummary_viewBodiesOfWater");
+
+  String get reportSummaryPerBodyOfWaterDescription =>
+      _string("reportSummary_perBodyOfWaterDescription");
+
+  String get reportSummaryViewMethods => _string("reportSummary_viewMethods");
+
+  String get reportSummaryPerMethodDescription =>
+      _string("reportSummary_perMethodDescription");
+
+  String get reportSummaryViewPeriods => _string("reportSummary_viewPeriods");
+
+  String get reportSummaryPerPeriodDescription =>
+      _string("reportSummary_perPeriodDescription");
+
+  String get reportSummaryViewSeasons => _string("reportSummary_viewSeasons");
+
+  String get reportSummaryPerSeasonDescription =>
+      _string("reportSummary_perSeasonDescription");
+
+  String get reportSummaryViewWaterClarities =>
+      _string("reportSummary_viewWaterClarities");
+
+  String get reportSummaryPerWaterClarityDescription =>
+      _string("reportSummary_perWaterClarityDescription");
 
   String get reportSummarySpeciesTitle => _string("reportSummary_speciesTitle");
-
-  String get reportSummaryBaitsPerSpeciesDescription =>
-      _string("reportSummary_baitsPerSpeciesDescription");
-
-  String get reportSummaryFishingSpotsPerSpeciesDescription =>
-      _string("reportSummary_fishingSpotsPerSpeciesDescription");
 
   String get morePageTitle => _string("morePage_title");
 
@@ -780,8 +894,6 @@ class Strings {
   String get saveSpeciesPageExistsError =>
       _string("saveSpeciesPage_existsError");
 
-  String get speciesListPageMenuTitle => _string("speciesListPage_menuTitle");
-
   String get speciesListPageTitle => _string("speciesListPage_title");
 
   String get speciesListPageConfirmDelete =>
@@ -813,6 +925,8 @@ class Strings {
 
   String get fishingSpotListPageEmptyListDescription =>
       _string("fishingSpotListPage_emptyListDescription");
+
+  String get fishingSpotsSummaryEmpty => _string("fishingSpotsSummary_empty");
 
   String get fishingSpotListPageNoBodyOfWater =>
       _string("fishingSpotListPage_noBodyOfWater");
@@ -944,6 +1058,8 @@ class Strings {
       _string("analysisDuration_last12Months");
 
   String get analysisDurationCustom => _string("analysisDuration_custom");
+
+  String get yearsFormat => _string("yearsFormat");
 
   String get daysFormat => _string("daysFormat");
 
@@ -1546,9 +1662,6 @@ class Strings {
   String get bodyOfWaterListPageDeleteMessageSingular =>
       _string("bodyOfWaterListPage_deleteMessageSingular");
 
-  String get bodyOfWaterListPageMenuLabel =>
-      _string("bodyOfWaterListPage_menuLabel");
-
   String get bodyOfWaterListPageTitle => _string("bodyOfWaterListPage_title");
 
   String get bodyOfWaterListPageSearchHint =>
@@ -1559,6 +1672,8 @@ class Strings {
 
   String get bodyOfWaterListPageEmptyListDescription =>
       _string("bodyOfWaterListPage_emptyListDescription");
+
+  String get bodiesOfWaterSummaryEmpty => _string("bodiesOfWaterSummary_empty");
 
   String get saveBodyOfWaterPageNewTitle =>
       _string("saveBodyOfWaterPage_newTitle");
@@ -1612,6 +1727,59 @@ class Strings {
   String get emailVerificationError => _string("emailVerification_error");
 
   String get emailVerificationSent => _string("emailVerification_sent");
+
+  String get entityNameAnglers => _string("entityName_anglers");
+
+  String get entityNameBaitCategories => _string("entityName_baitCategories");
+
+  String get entityNameBaits => _string("entityName_baits");
+
+  String get entityNameBodiesOfWater => _string("entityName_bodiesOfWater");
+
+  String get entityNameCatch => _string("entityName_catch");
+
+  String get entityNameCatches => _string("entityName_catches");
+
+  String get entityNameCustomFields => _string("entityName_customFields");
+
+  String get entityNameFishingMethods => _string("entityName_fishingMethods");
+
+  String get entityNameSpecies => _string("entityName_species");
+
+  String get entityNameTrip => _string("entityName_trip");
+
+  String get entityNameTrips => _string("entityName_trips");
+
+  String get entityNameWaterClarities => _string("entityName_waterClarities");
+
+  String get tripSummaryTitle => _string("tripSummary_title");
+
+  String get tripSummaryTotalTripTime => _string("tripSummary_totalTripTime");
+
+  String get tripSummaryLongestTrip => _string("tripSummary_longestTrip");
+
+  String get tripSummarySinceLastTrip => _string("tripSummary_sinceLastTrip");
+
+  String get tripSummaryAverageTripTime =>
+      _string("tripSummary_averageTripTime");
+
+  String get tripSummaryAverageTimeBetweenTrips =>
+      _string("tripSummary_averageTimeBetweenTrips");
+
+  String get tripSummaryAverageTimeBetweenCatches =>
+      _string("tripSummary_averageTimeBetweenCatches");
+
+  String get tripSummaryCatchesPerTrip => _string("tripSummary_catchesPerTrip");
+
+  String get tripSummaryCatchesPerHour => _string("tripSummary_catchesPerHour");
+
+  String get tripSummaryWeightPerTrip => _string("tripSummary_weightPerTrip");
+
+  String get tripSummaryBestWeight => _string("tripSummary_bestWeight");
+
+  String get tripSummaryLengthPerTrip => _string("tripSummary_lengthPerTrip");
+
+  String get tripSummaryBestLength => _string("tripSummary_bestLength");
 }
 
 class StringsDelegate extends LocalizationsDelegate<Strings> {

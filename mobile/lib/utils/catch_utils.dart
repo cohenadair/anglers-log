@@ -72,7 +72,7 @@ List<Field> allCatchFields(BuildContext context) {
     Field(
       id: catchFieldIdSpecies,
       isRemovable: false,
-      name: (context) => Strings.of(context).catchFieldSpecies,
+      name: (context) => Strings.of(context).entityNameSpecies,
       controller: IdInputController(),
     ),
     Field(
@@ -113,7 +113,7 @@ List<Field> allCatchFields(BuildContext context) {
     ),
     Field(
       id: catchFieldIdMethods,
-      name: (context) => Strings.of(context).catchFieldMethodsLabel,
+      name: (context) => Strings.of(context).entityNameFishingMethods,
       description: (context) =>
           Strings.of(context).catchFieldMethodsDescription,
       controller: SetInputController<Id>(),
@@ -279,6 +279,13 @@ String formatNumberOfCatches(BuildContext context, int numberOfCatches) {
       : format(Strings.of(context).numberOfCatches, [numberOfCatches]);
 }
 
+/// The catch field to show as the second subtitle in a [CatchListItemModel].
+enum CatchListItemModelSubtitleType {
+  fishingSpotThenBait, // Fishing spot with bait fallback (default).
+  length,
+  weight,
+}
+
 class CatchListItemModel {
   late final String? imageName;
   late final String title;
@@ -286,24 +293,45 @@ class CatchListItemModel {
   late final String? subtitle2;
   late final Widget trailing;
 
-  CatchListItemModel(BuildContext context, Catch cat) {
+  CatchListItemModel(BuildContext context, Catch cat,
+      [CatchListItemModelSubtitleType? subtitleType]) {
     var baitManager = BaitManager.of(context);
     var fishingSpotManager = FishingSpotManager.of(context);
     var speciesManager = SpeciesManager.of(context);
 
     String? subtitle2;
+    subtitleType =
+        subtitleType ?? CatchListItemModelSubtitleType.fishingSpotThenBait;
 
-    var fishingSpot = fishingSpotManager.entity(cat.fishingSpotId);
-    if (fishingSpot != null && isNotEmpty(fishingSpot.name)) {
-      // Use fishing spot name as subtitle if available.
-      subtitle2 = fishingSpot.name;
-    } else if (cat.baits.isNotEmpty) {
-      // Fallback on bait as a subtitle.
-      var formattedName =
-          baitManager.formatNameWithCategory(cat.baits.first.baitId);
-      if (isNotEmpty(formattedName)) {
-        subtitle2 = formattedName!;
-      }
+    switch (subtitleType) {
+      case CatchListItemModelSubtitleType.fishingSpotThenBait:
+        var fishingSpot = fishingSpotManager.entity(cat.fishingSpotId);
+        if (fishingSpot != null && isNotEmpty(fishingSpot.name)) {
+          // Use fishing spot name as subtitle if available.
+          subtitle2 = fishingSpot.name;
+        } else if (cat.baits.isNotEmpty) {
+          // Fallback on bait as a subtitle.
+          var formattedName =
+              baitManager.formatNameWithCategory(cat.baits.first.baitId);
+          if (isNotEmpty(formattedName)) {
+            subtitle2 = formattedName!;
+          }
+        }
+        break;
+      case CatchListItemModelSubtitleType.length:
+        subtitle2 = cat.length.displayValue(
+          context,
+          resultFormat: Strings.of(context).catchListItemLength,
+          ifZero: Strings.of(context).catchListItemNoLength,
+        );
+        break;
+      case CatchListItemModelSubtitleType.weight:
+        subtitle2 = cat.weight.displayValue(
+          context,
+          resultFormat: Strings.of(context).catchListItemWeight,
+          ifZero: Strings.of(context).catchListItemNoWeight,
+        );
+        break;
     }
 
     imageName = cat.imageNames.isNotEmpty ? cat.imageNames.first : null;

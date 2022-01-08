@@ -78,14 +78,14 @@ class _LoginPageState extends State<LoginPage> {
                 CustomIcons.catches,
                 size: _logoSize,
               ),
-              const VerticalSpace(paddingWidget),
-              TitleLabel(
+              const VerticalSpace(paddingDefault),
+              TitleLabel.style1(
                 _isUpdatingFromLegacy
                     ? Strings.of(context).welcomeTitle
                     : Strings.of(context).appName,
                 align: TextAlign.center,
               ),
-              const VerticalSpace(paddingWidget),
+              const VerticalSpace(paddingDefault),
               _buildFormItems(),
             ],
           ),
@@ -101,7 +101,7 @@ class _LoginPageState extends State<LoginPage> {
       crossFadeState: _isUpdatingFromLegacy
           ? CrossFadeState.showFirst
           : CrossFadeState.showSecond,
-      duration: defaultAnimationDuration,
+      duration: animDurationDefault,
     );
   }
 
@@ -124,7 +124,7 @@ class _LoginPageState extends State<LoginPage> {
           Strings.of(context).welcomeNext,
           style: stylePrimary(context),
         ),
-        const VerticalSpace(paddingDefaultDouble),
+        const VerticalSpace(paddingXL),
         Button(
           text: Strings.of(context).continueString,
           onPressed: () => setState(() => _isUpdatingFromLegacy = false),
@@ -142,7 +142,7 @@ class _LoginPageState extends State<LoginPage> {
           onChanged: _clearError,
           textInputAction: TextInputAction.next,
         ),
-        const VerticalSpace(paddingWidgetTiny),
+        const VerticalSpace(paddingTiny),
         TextInput.password(
           context,
           controller: _passwordController,
@@ -150,14 +150,14 @@ class _LoginPageState extends State<LoginPage> {
           onSubmitted: _handleLoginOrSignUp(),
         ),
         _buildErrorRow(),
-        const VerticalSpace(paddingWidget),
+        const VerticalSpace(paddingDefault),
         Button(
           text: _mode.buttonText(context),
           onPressed: _handleLoginOrSignUp(),
         ),
-        const VerticalSpace(paddingWidget),
+        const VerticalSpace(paddingDefault),
         _buildInfoRow(),
-        const VerticalSpace(paddingWidget),
+        const VerticalSpace(paddingDefault),
         AnimatedVisibility(
           child: const Loading(isCentered: false),
           visible: _isLoading,

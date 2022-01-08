@@ -284,6 +284,8 @@ class TimestampInputController extends InputController<int> {
     }
     date = DateTime.fromMillisecondsSinceEpoch(timestamp);
     time = TimeOfDay.fromDateTime(date);
+
+    super.value = timestamp;
   }
 
   @override

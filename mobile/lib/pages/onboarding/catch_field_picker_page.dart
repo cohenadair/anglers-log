@@ -52,7 +52,7 @@ class _CatchFieldPickerPageState extends State<CatchFieldPickerPage> {
             icon: CustomIcons.catches,
           ),
         ),
-        const VerticalSpace(paddingWidget),
+        const VerticalSpace(paddingDefault),
         Padding(
           padding: insetsHorizontalDefault,
           child: Text(
@@ -62,7 +62,7 @@ class _CatchFieldPickerPageState extends State<CatchFieldPickerPage> {
             style: stylePrimary(context),
           ),
         ),
-        const VerticalSpace(paddingWidget),
+        const VerticalSpace(paddingDefault),
         ..._buildFieldOptions(),
       ],
     );

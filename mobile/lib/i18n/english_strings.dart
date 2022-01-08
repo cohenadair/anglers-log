@@ -6,6 +6,7 @@ Map<String, Map<String, String>> get englishStrings => {
         "catchField_favoriteDescription":
             "Whether a catch was one of your favorites.",
         "saveReportPage_favorites": "Favorites Only",
+        "saveReportPage_favoritesFilter": "Favorites only",
         "unitsPage_catchLengthCentimeters": "Centimeters (%s)",
         "unitsPage_waterDepthMeters": "Meters (%s)",
         "unitsPage_airVisibilityKilometers": "Kilometers (%s)",
@@ -16,7 +17,8 @@ Map<String, Map<String, String>> get englishStrings => {
         "catchField_favorite": "Favourite",
         "catchField_favoriteDescription":
             "Whether a catch was one of your favourites.",
-        "saveReportPage_favorites": "Favourites",
+        "saveReportPage_favorites": "Favourites Only",
+        "saveReportPage_favoritesFilter": "Favourites only",
         "unitsPage_catchLengthCentimeters": "Centimetres (%s)",
         "unitsPage_waterDepthMeters": "Metres (%s)",
         "unitsPage_airVisibilityKilometers": "Kilometres (%s)",
@@ -52,7 +54,6 @@ Map<String, Map<String, String>> get englishStrings => {
         "latLng_noLabels": "%s, %s",
         "add": "Add",
         "more": "More",
-        "customFields": "Custom Fields",
         "na": "N/A",
         "finish": "Finish",
         "by": "by",
@@ -61,6 +62,8 @@ Map<String, Map<String, String>> get englishStrings => {
         "numberOfCatches": "%s Catches",
         "numberOfCatchesSingular": "%s Catch",
         "unknownSpecies": "Unknown Species",
+        "viewDetails": "View Details",
+        "viewAll": "View All",
         "fieldType_number": "Number",
         "fieldType_boolean": "Checkbox",
         "fieldType_text": "Text",
@@ -81,12 +84,15 @@ Map<String, Map<String, String>> get englishStrings => {
         "input_atmosphere": "Atmosphere and Weather",
         "addAnythingPage_catch": "Catch",
         "addAnythingPage_trip": "Trip",
-        "catchListPage_menuLabel": "Catches",
         "catchListPage_title": "Catches (%s)",
         "catchListPage_searchHint": "Search catches",
-        "catchListPage_emptyListTitle": "No catches",
+        "catchListPage_emptyListTitle": "No Catches",
         "catchListPage_emptyListDescription":
             "You haven't yet added any catches. Tap the %s button to begin.",
+        "catchListItem_length": "Length: %s",
+        "catchListItem_noLength": "Length: -",
+        "catchListItem_weight": "Weight: %s",
+        "catchListItem_noWeight": "Weight: -",
         "catchPage_deleteMessage":
             "Are you sure you want to delete catch %s? This cannot be undone.",
         "catchPage_deleteWithTripMessage":
@@ -104,14 +110,12 @@ Map<String, Map<String, String>> get englishStrings => {
         "catchField_periodDescription": "Such as dawn, morning, dusk, etc.",
         "catchField_season": "Season",
         "catchField_seasonDescription": "Winter, spring, summer, or autumn.",
-        "catchField_species": "Species",
         "catchField_images": "Photos",
         "catchField_fishingSpot": "Fishing Spot",
         "catchField_fishingSpotDescription":
             "Coordinates of where a catch was made.",
         "catchField_bait": "Bait",
         "catchField_angler": "Angler",
-        "catchField_methods": "Fishing Methods",
         "catchField_methodsDescription": "The way in which a catch was made.",
         "catchField_noMethods": "No fishing methods",
         "catchField_noBaits": "No baits",
@@ -137,23 +141,22 @@ Map<String, Map<String, String>> get englishStrings => {
         "saveReportPage_endDateRangeLabel": "To",
         "saveReportPage_allAnglers": "All anglers",
         "saveReportPage_allWaterClarities": "All water clarities",
-        "saveReportPage_species": "Species",
         "saveReportPage_allSpecies": "All species",
         "saveReportPage_allBaits": "All baits",
         "saveReportPage_allBodiesOfWater": "All bodies of water",
         "saveReportPage_allFishingSpots": "All fishing spots",
         "saveReportPage_allMethods": "All fishing methods",
         "saveReportPage_catchAndRelease": "Catch and Release Only",
+        "saveReportPage_catchAndReleaseFilter": "Catch and release only",
         "saveReportPage_allWindDirections": "All wind directions",
         "saveReportPage_allSkyConditions": "All sky conditions",
         "saveReportPage_allMoonPhases": "All moon phases",
         "saveReportPage_allTideTypes": "All tides",
         "photosPage_menuLabel": "Photos",
         "photosPage_title": "Photos (%s)",
-        "photosPage_emptyTitle": "No photos",
+        "photosPage_emptyTitle": "No Photos",
         "photosPage_emptyDescription":
             "All photos attached to catches will be displayed here. To add a catch, tap the %s icon.",
-        "baitListPage_menuLabel": "Baits",
         "baitListPage_title": "Baits (%s)",
         "baitListPage_otherCategory": "No Category",
         "baitListPage_searchHint": "Search baits",
@@ -161,9 +164,11 @@ Map<String, Map<String, String>> get englishStrings => {
             "%s is associated with %s catches; are you sure you want to delete it? This cannot be undone.",
         "baitListPage_deleteMessageSingular":
             "%s is associated with %s catch; are you sure you want to delete it? This cannot be undone.",
-        "baitListPage_emptyListTitle": "No baits",
+        "baitListPage_emptyListTitle": "No Baits",
         "baitListPage_emptyListDescription":
             "You haven't yet added any baits. Tap the %s button to begin.",
+        "baitsSummary_empty":
+            "When baits are added to your log, a summary of their catches will be shown here.",
         "baitListPage_variantsLabel": "%s Variants",
         "baitListPage_variantLabel": "%s Variant",
         "saveBaitPage_newTitle": "New Bait",
@@ -179,59 +184,88 @@ Map<String, Map<String, String>> get englishStrings => {
         "saveBaitCategoryPage_newTitle": "New Bait Category",
         "saveBaitCategoryPage_editTitle": "Edit Bait Category",
         "saveBaitCategoryPage_existsMessage": "Bait category already exists",
-        "baitCategoryListPage_menuTitle": "Bait Categories",
         "baitCategoryListPage_title": "Bait Categories (%s)",
         "baitCategoryListPage_deleteMessage":
             "%s is associated with %s baits; are you sure you want to delete it? This cannot be undone.",
         "baitCategoryListPage_deleteMessageSingular":
             "%s is associated with %s bait; are you sure you want to delete it? This cannot be undone.",
         "baitCategoryListPage_searchHint": "Search bait categories",
-        "baitCategoryListPage_emptyListTitle": "No bait categories",
+        "baitCategoryListPage_emptyListTitle": "No Bait Categories",
         "baitCategoryListPage_emptyListDescription":
             "You haven't yet added any bait categories. Tap the %s button to begin.",
         "saveAnglerPage_newTitle": "New Angler",
         "saveAnglerPage_editTitle": "Edit Angler",
         "saveAnglerPage_existsMessage": "Angler already exists",
-        "anglerListPage_menuTitle": "Anglers",
         "anglerListPage_title": "Anglers (%s)",
         "anglerListPage_deleteMessage":
             "%s is associated with %s catches; are you sure you want to delete them? This cannot be undone.",
         "anglerListPage_deleteMessageSingular":
             "%s is associated with %s catch; are you sure you want to delete them? This cannot be undone.",
         "anglerListPage_searchHint": "Search anglers",
-        "anglerListPage_emptyListTitle": "No anglers",
+        "anglerListPage_emptyListTitle": "No Anglers",
         "anglerListPage_emptyListDescription":
             "You haven't yet added any anglers. Tap the %s button to begin.",
+        "anglersSummary_empty":
+            "When anglers are added to your log, a summary of their catches will be shown here.",
         "saveMethodPage_newTitle": "New Fishing Method",
         "saveMethodPage_editTitle": "Edit Fishing Method",
         "saveMethodPage_existsMessage": "Fishing method already exists",
-        "methodListPage_menuTitle": "Fishing Methods",
         "methodListPage_title": "Fishing Methods (%s)",
         "methodListPage_deleteMessage":
             "%s is associated with %s catches; are you sure you want to delete it? This cannot be undone.",
         "methodListPage_deleteMessageSingular":
             "%s is associated with %s catch; are you sure you want to delete it? This cannot be undone.",
         "methodListPage_searchHint": "Search fishing methods",
-        "methodListPage_emptyListTitle": "No fishing methods",
+        "methodListPage_emptyListTitle": "No Fishing Methods",
         "methodListPage_emptyListDescription":
             "You haven't yet added any fishing methods. Tap the %s button to begin.",
+        "methodSummary_empty":
+            "When fishing methods are added to your log, a summary of their catches will be shown here.",
         "saveWaterClarityPage_newTitle": "New Water Clarity",
         "saveWaterClarityPage_editTitle": "Edit Water Clarity",
         "saveWaterClarityPage_existsMessage": "Water Clarity already exists",
-        "waterClarityListPage_menuTitle": "Water Clarities",
         "waterClarityListPage_title": "Water Clarities (%s)",
         "waterClarityListPage_deleteMessage":
             "%s is associated with %s catches; are you sure you want to delete it? This cannot be undone.",
         "waterClarityListPage_deleteMessageSingular":
             "%s is associated with %s catch; are you sure you want to delete it? This cannot be undone.",
         "waterClarityListPage_searchHint": "Search water clarities",
-        "waterClarityListPage_emptyListTitle": "No water clarities",
+        "waterClarityListPage_emptyListTitle": "No Water Clarities",
         "waterClarityListPage_emptyListDescription":
             "You haven't yet added any water clarities. Tap the %s button to begin.",
+        "waterClaritiesSummary_empty":
+            "When water clarities are added to your log, a summary of their catches will be shown here.",
         "statsPage_menuTitle": "Stats",
         "statsPage_title": "Stats",
-        "statsPage_reportOverview": "Overview",
         "statsPage_newReport": "New Report",
+        "statsPage_speciesSummary": "Species Summary",
+        "statsPage_catchSummary": "Catch Summary",
+        "statsPage_anglerSummary": "Angler Summary",
+        "statsPage_baitSummary": "Bait Summary",
+        "statsPage_bodyOfWaterSummary": "Body Of Water Summary",
+        "statsPage_fishingSpotSummary": "Fishing Spot Summary",
+        "statsPage_methodSummary": "Fishing Method Summary",
+        "statsPage_moonPhaseSummary": "Moon Phase Summary",
+        "statsPage_periodSummary": "Time Of Day Summary",
+        "statsPage_seasonSummary": "Season Summary",
+        "statsPage_tideSummary": "Tide Summary",
+        "statsPage_waterClaritySummary": "Water Clarity Summary",
+        "statsPage_waterPersonalBests": "Personal Bests",
+        "personalBests_trip": "Best Trip",
+        "personalBests_longest": "Longest",
+        "personalBests_heaviest": "Heaviest",
+        "personalBests_speciesByLength": "Species By Length",
+        "personalBests_speciesByLengthLabel": "Longest",
+        "personalBests_speciesByWeight": "Species By Weight",
+        "personalBests_speciesByWeightLabel": "Heaviest",
+        "personalBests_showAllSpecies": "View all species",
+        "personalBests_average": "Average",
+        "personalBests_noDataTitle": "No Data",
+        "personalBests_noDataDescription":
+            "Cannot determine your personal bests for the selected date range. Ensure you’ve added a trip, or added a catch with a length or weight value.",
+        "reportView_emptyLog": "Empty Log",
+        "reportView_emptyLogDescription":
+            "You haven't yet added any catches. To add a catch, tap the %s icon.",
         "reportView_noCatches": "No catches found",
         "reportView_noCatchesDescription":
             "No catches found in the selected date range.",
@@ -239,33 +273,59 @@ Map<String, Map<String, String>> get englishStrings => {
             "No catches found in the selected report's date range.",
         "reportSummary_viewCatches": "View catches (%s)",
         "reportSummary_catchTitle": "Catch Summary",
-        "reportSummary_perSpecies": "Per species",
-        "reportSummary_perFishingSpot": "Per fishing spot",
-        "reportSummary_perBait": "Per bait",
-        "reportSummary_sinceLastCatch": "Since last catch",
+        "reportSummary_perSpecies": "Per Species",
+        "reportSummary_perFishingSpot": "Per Fishing Spot",
+        "reportSummary_perBait": "Per Bait",
+        "reportSummary_perAngler": "Per Angler",
+        "reportSummary_perBodyOfWater": "Per Body Of Water",
+        "reportSummary_perMethod": "Per Fishing Method",
+        "reportSummary_perMoonPhase": "Per Moon Phase",
+        "reportSummary_perPeriod": "Per Time Of Day",
+        "reportSummary_perSeason": "Per Season",
+        "reportSummary_perTideType": "Per Tide",
+        "reportSummary_perWaterClarity": "Per Water Clarity",
+        "reportSummary_sinceLastCatch": "Since Last Catch",
         "reportSummary_numberOfCatches": "Number of catches",
         "reportSummary_filters": "Filters",
         "reportSummary_viewSpecies": "View all species",
-        "reportSummary_catchesPerSpeciesDescription":
+        "reportSummary_perSpeciesDescription":
             "Viewing number of catches per species.",
         "reportSummary_viewFishingSpots": "View all fishing spots",
-        "reportSummary_catchesPerFishingSpotDescription":
+        "reportSummary_perFishingSpotDescription":
             "Viewing number of catches per fishing spot.",
         "reportSummary_viewBaits": "View all baits",
-        "reportSummary_catchesPerBaitDescription":
+        "reportSummary_perBaitDescription":
             "Viewing number of catches per bait.",
-        "reportSummary_speciesTitle": "Species Summary",
-        "reportSummary_baitsPerSpeciesDescription":
-            "Viewing number of catches per species per bait.",
-        "reportSummary_fishingSpotsPerSpeciesDescription":
-            "Viewing number of catches per species per fishing spot.",
+        "reportSummary_viewMoonPhases": "View all moon phases",
+        "reportSummary_perMoonPhaseDescription":
+            "Viewing number of catches per moon phase.",
+        "reportSummary_viewTides": "View all tide types",
+        "reportSummary_perTideDescription":
+            "Viewing number of catches per tide type.",
+        "reportSummary_viewAnglers": "View all anglers",
+        "reportSummary_perAnglerDescription":
+            "Viewing number of catches per angler.",
+        "reportSummary_viewBodiesOfWater": "View all bodies of water",
+        "reportSummary_perBodyOfWaterDescription":
+            "Viewing number of catches per body of water.",
+        "reportSummary_viewMethods": "View all fishing methods",
+        "reportSummary_perMethodDescription":
+            "Viewing number of catches per fishing method.",
+        "reportSummary_viewPeriods": "View all times of day",
+        "reportSummary_perPeriodDescription":
+            "Viewing number of catches per time of day.",
+        "reportSummary_viewSeasons": "View all seasons",
+        "reportSummary_perSeasonDescription":
+            "Viewing number of catches per season.",
+        "reportSummary_viewWaterClarities": "View all water clarities",
+        "reportSummary_perWaterClarityDescription":
+            "Viewing number of catches per water clarity.",
         "morePage_title": "More",
         "morePage_rateApp": "Rate Anglers' Log",
         "morePage_pro": "Anglers' Log Pro",
-        "tripListPage_menuLabel": "Trips",
         "tripListPage_title": "Trips (%s)",
         "tripListPage_searchHint": "Search trips",
-        "tripListPage_emptyListTitle": "No trips",
+        "tripListPage_emptyListTitle": "No Trips",
         "tripListPage_emptyListDescription":
             "You haven't yet added any trips. Tap the %s button to begin.",
         "tripListPage_deleteMessage":
@@ -279,10 +339,8 @@ Map<String, Map<String, String>> get englishStrings => {
         "saveTripPage_endTime": "End Time",
         "saveTripPage_endDateTime": "End Date and Time",
         "saveTripPage_allDay": "All Day",
-        "saveTripPage_catches": "Catches",
         "saveTripPage_catchesDesc": "Trophies logged on this trip.",
         "saveTripPage_noCatches": "No catches",
-        "saveTripPage_bodiesOfWater": "Bodies Of Water",
         "saveTripPage_noBodiesOfWater": "No bodies of water",
         "trip_catchesPerSpecies": "Catches Per Species",
         "trip_catchesPerFishingSpot": "Catches Per Fishing Spot",
@@ -353,7 +411,7 @@ Map<String, Map<String, String>> get englishStrings => {
         "customEntityListPage_delete":
             "The custom field %s will no longer be associated with catches (%s) or baits (%s), are you sure you want to delete it? This cannot be undone.",
         "customEntityListPage_searchHint": "Search fields",
-        "customEntityListPage_emptyListTitle": "No custom fields",
+        "customEntityListPage_emptyListTitle": "No Custom Fields",
         "customEntityListPage_emptyListDescription":
             "You haven't yet added any custom fields. Tap the %s button to begin.",
         "imagePickerPage_noPhotosFoundTitle": "No photos found",
@@ -378,7 +436,6 @@ Map<String, Map<String, String>> get englishStrings => {
         "saveSpeciesPage_newTitle": "New Species",
         "saveSpeciesPage_editTitle": "Edit Species",
         "saveSpeciesPage_existsError": "Species already exists",
-        "speciesListPage_menuTitle": "Species",
         "speciesListPage_title": "Species (%s)",
         "speciesListPage_confirmDelete":
             "%s is associated with 0 catches; are you sure you want to delete it? This cannot be undone.",
@@ -387,16 +444,18 @@ Map<String, Map<String, String>> get englishStrings => {
         "speciesListPage_catchDeleteErrorPlural":
             "%s is associated with %s catches and cannot be deleted.",
         "speciesListPage_searchHint": "Search species",
-        "speciesListPage_emptyListTitle": "No species",
+        "speciesListPage_emptyListTitle": "No Species",
         "speciesListPage_emptyListDescription":
             "You haven't yet added any species. Tap the %s button to begin.",
         "fishingSpotPickerPage_hint":
             "Long press the map to pick exact coordinates, or select an existing fishing spot.",
         "fishingSpotListPage_title": "Fishing Spots (%s)",
         "fishingSpotListPage_searchHint": "Search fishing spots",
-        "fishingSpotListPage_emptyListTitle": "No fishing spots",
+        "fishingSpotListPage_emptyListTitle": "No Fishing Spots",
         "fishingSpotListPage_emptyListDescription":
             "To add a fishing spot, tap on the map and save the dropped pin.",
+        "fishingSpotsSummary_empty":
+            "When fishing spots are added to your log, a summary of their catches will be shown here.",
         "fishingSpotListPage_noBodyOfWater": "No Body Of Water",
         "fishingSpotMap_locationPermissionTitle": "Location Access",
         "fishingSpotMap_locationPermissionDescription":
@@ -454,6 +513,7 @@ Map<String, Map<String, String>> get englishStrings => {
         "analysisDuration_last60Days": "Last 60 days",
         "analysisDuration_last12Months": "Last 12 months",
         "analysisDuration_custom": "Custom",
+        "yearsFormat": "%sy",
         "daysFormat": "%sd",
         "hoursFormat": "%sh",
         "minutesFormat": "%sm",
@@ -749,12 +809,13 @@ Map<String, Map<String, String>> get englishStrings => {
             "%s is associated with %s fishing spots; are you sure you want to delete it? This cannot be undone.",
         "bodyOfWaterListPage_deleteMessageSingular":
             "%s is associated with %s fishing spot; are you sure you want to delete it? This cannot be undone.",
-        "bodyOfWaterListPage_menuLabel": "Bodies Of Water",
         "bodyOfWaterListPage_title": "Bodies Of Water (%s)",
         "bodyOfWaterListPage_searchHint": "Search bodies of water",
-        "bodyOfWaterListPage_emptyListTitle": "No bodies of water",
+        "bodyOfWaterListPage_emptyListTitle": "No Bodies Of Water",
         "bodyOfWaterListPage_emptyListDescription":
             "You haven't yet added any bodies of water. Tap the %s button to begin.",
+        "bodiesOfWaterSummary_empty":
+            "When bodies of water are added to your log, a summary of their catches will be shown here.",
         "saveBodyOfWaterPage_newTitle": "New Body Of Water",
         "saveBodyOfWaterPage_editTitle": "Edit Body Of Water",
         "saveBodyOfWaterPage_existsMessage": "Body of water already exists",
@@ -782,5 +843,30 @@ Map<String, Map<String, String>> get englishStrings => {
         "emailVerification_error":
             "Your email has not yet been verified. Clicking the link verifies you are the owner of the email associated with this account.",
         "emailVerification_sent": "Email sent!",
+        "entityName_anglers": "Anglers",
+        "entityName_baitCategories": "Bait Categories",
+        "entityName_baits": "Baits",
+        "entityName_bodiesOfWater": "Bodies Of Water",
+        "entityName_catch": "Catch",
+        "entityName_catches": "Catches",
+        "entityName_customFields": "Custom Fields",
+        "entityName_fishingMethods": "Fishing Methods",
+        "entityName_species": "Species",
+        "entityName_trip": "Trip",
+        "entityName_trips": "Trips",
+        "entityName_waterClarities": "Water Clarities",
+        "tripSummary_title": "Trip Summary",
+        "tripSummary_totalTripTime": "Total Trip Time",
+        "tripSummary_longestTrip": "Longest Trip",
+        "tripSummary_sinceLastTrip": "Since Last Trip",
+        "tripSummary_averageTripTime": "Average Trip Time",
+        "tripSummary_averageTimeBetweenTrips": "Between Trips",
+        "tripSummary_averageTimeBetweenCatches": "Between Catches",
+        "tripSummary_catchesPerTrip": "Catches Per Trip",
+        "tripSummary_catchesPerHour": "Catches Per Hour",
+        "tripSummary_weightPerTrip": "Weight Per Trip",
+        "tripSummary_bestWeight": "Best Weight",
+        "tripSummary_lengthPerTrip": "Length Per Trip",
+        "tripSummary_bestLength": "Best Length",
       },
     };

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:mobile/res/gen/custom_icons.dart';
 import 'package:quiver/strings.dart';
 
 import '../i18n/strings.dart';
@@ -12,7 +13,15 @@ import 'button.dart';
 import 'input_controller.dart';
 import 'list_item.dart';
 
-const defaultAnimationDuration = Duration(milliseconds: 150);
+const iconAngler = Icons.person;
+const iconBait = Icons.bug_report;
+const iconBodyOfWater = Icons.water;
+const iconBottomBarAdd = Icons.add_box_rounded;
+const iconFishingSpot = Icons.place;
+const iconMethod = Icons.list;
+const iconWaterClarity = CustomIcons.waterClarities;
+
+const animDurationDefault = Duration(milliseconds: 150);
 
 class Empty extends StatelessWidget {
   @override
@@ -66,7 +75,7 @@ class HeadingDivider extends StatelessWidget {
         showDivider ? const MinDivider() : Empty(),
         Padding(
           padding: const EdgeInsets.only(
-            top: paddingWidget,
+            top: paddingDefault,
             left: paddingDefault,
             right: paddingDefault,
           ),
@@ -96,6 +105,7 @@ class HeadingDivider extends StatelessWidget {
 /// A [HeadingDivider] widget with an optional [IconLabel].
 class HeadingNoteDivider extends StatelessWidget {
   final bool hideNote;
+  final bool hideDivider;
   final String title;
   final String? note;
   final IconData? noteIcon;
@@ -103,6 +113,7 @@ class HeadingNoteDivider extends StatelessWidget {
 
   HeadingNoteDivider({
     this.hideNote = true,
+    this.hideDivider = false,
     required this.title,
     required this.note,
     required this.noteIcon,
@@ -118,8 +129,11 @@ class HeadingNoteDivider extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Padding(
-            padding: insetsBottomWidgetSmall,
-            child: HeadingDivider(title),
+            padding: insetsBottomSmall,
+            child: HeadingDivider(
+              title,
+              showDivider: !hideDivider,
+            ),
           ),
           _buildNote(),
         ],
@@ -129,14 +143,14 @@ class HeadingNoteDivider extends StatelessWidget {
 
   Widget _buildNote() {
     return AnimatedSwitcher(
-      duration: defaultAnimationDuration,
+      duration: animDurationDefault,
       child: hideNote
           ? Empty()
           : Padding(
               padding: const EdgeInsets.only(
                 left: paddingDefault,
                 right: paddingDefault,
-                top: paddingWidget,
+                top: paddingDefault,
               ),
               child: SafeArea(
                 top: false,
@@ -188,7 +202,7 @@ class Loading extends StatelessWidget {
               isCentered ? MainAxisAlignment.center : MainAxisAlignment.start,
           children: [
             indicator,
-            const VerticalSpace(paddingWidget),
+            const VerticalSpace(paddingDefault),
             isEmpty(label) ? Empty() : Text(label!),
           ],
         ),
@@ -312,7 +326,7 @@ class AnimatedVisibility extends StatelessWidget {
   Widget build(BuildContext context) {
     return AnimatedOpacity(
       opacity: visible ? 1.0 : 0.0,
-      duration: defaultAnimationDuration,
+      duration: animDurationDefault,
       child: child,
     );
   }
@@ -396,8 +410,8 @@ class ChipWrap extends StatelessWidget {
     }
 
     return Wrap(
-      spacing: paddingWidgetSmall,
-      runSpacing: paddingWidgetSmall,
+      spacing: paddingSmall,
+      runSpacing: paddingSmall,
       children: items.map((item) => MinChip(item)).toList(),
     );
   }
@@ -434,6 +448,23 @@ class HorizontalSafeArea extends StatelessWidget {
   }
 }
 
+class HorizontalSliverSafeArea extends StatelessWidget {
+  final Widget sliver;
+
+  const HorizontalSliverSafeArea({
+    required this.sliver,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return SliverSafeArea(
+      top: false,
+      bottom: false,
+      sliver: sliver,
+    );
+  }
+}
+
 class WatermarkLogo extends StatelessWidget {
   static const _size = 150.0;
 
@@ -449,7 +480,7 @@ class WatermarkLogo extends StatelessWidget {
   Widget build(BuildContext context) {
     return ClipOval(
       child: Container(
-        padding: insetsDefaultDouble,
+        padding: insetsXL,
         color: Colors.grey.shade200,
         child: Icon(
           icon,
@@ -494,7 +525,7 @@ class CatchFavoriteStar extends StatelessWidget {
     }
 
     return Padding(
-      padding: insetsLeftWidget,
+      padding: insetsLeftDefault,
       child: Icon(
         Icons.star,
         size: large ? _largeSize : null,

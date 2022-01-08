@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:mobile/utils/atmosphere_utils.dart';
 import 'package:provider/provider.dart';
 
 import 'app_manager.dart';
 import 'model/gen/anglerslog.pb.dart';
 import 'preference_manager.dart';
+import 'utils/catch_utils.dart';
 
 class UserPreferenceManager extends PreferenceManager {
   static UserPreferenceManager of(BuildContext context) =>
@@ -75,50 +77,58 @@ class UserPreferenceManager extends PreferenceManager {
   Future<void> setCatchLengthSystem(MeasurementSystem? system) =>
       put(_keyCatchLengthSystem, system?.value);
 
-  MeasurementSystem? get catchLengthSystem =>
-      MeasurementSystem.valueOf(preferences[_keyCatchLengthSystem] ?? -1);
+  MeasurementSystem get catchLengthSystem =>
+      MeasurementSystem.valueOf(preferences[_keyCatchLengthSystem] ??
+          MeasurementSystem.imperial_whole.value)!;
 
   Future<void> setCatchWeightSystem(MeasurementSystem? system) =>
       put(_keyCatchWeightSystem, system?.value);
 
-  MeasurementSystem? get catchWeightSystem =>
-      MeasurementSystem.valueOf(preferences[_keyCatchWeightSystem] ?? -1);
+  MeasurementSystem get catchWeightSystem =>
+      MeasurementSystem.valueOf(preferences[_keyCatchWeightSystem] ??
+          MeasurementSystem.imperial_whole.value)!;
 
   Future<void> setWaterDepthSystem(MeasurementSystem? system) =>
       put(_keyWaterDepthSystem, system?.value);
 
-  MeasurementSystem? get waterDepthSystem =>
-      MeasurementSystem.valueOf(preferences[_keyWaterDepthSystem] ?? -1);
+  MeasurementSystem get waterDepthSystem =>
+      MeasurementSystem.valueOf(preferences[_keyWaterDepthSystem] ??
+          MeasurementSystem.imperial_whole.value)!;
 
   Future<void> setWaterTemperatureSystem(MeasurementSystem? system) =>
       put(_keyWaterTemperatureSystem, system?.value);
 
-  MeasurementSystem? get waterTemperatureSystem =>
-      MeasurementSystem.valueOf(preferences[_keyWaterTemperatureSystem] ?? -1);
+  MeasurementSystem get waterTemperatureSystem =>
+      MeasurementSystem.valueOf(preferences[_keyWaterTemperatureSystem] ??
+          MeasurementSystem.imperial_whole.value)!;
 
   Future<void> setAirTemperatureSystem(MeasurementSystem? system) =>
       put(_keyAirTemperatureSystem, system?.value);
 
-  MeasurementSystem? get airTemperatureSystem =>
-      MeasurementSystem.valueOf(preferences[_keyAirTemperatureSystem] ?? -1);
+  MeasurementSystem get airTemperatureSystem =>
+      MeasurementSystem.valueOf(preferences[_keyAirTemperatureSystem] ??
+          MeasurementSystem.imperial_whole.value)!;
 
   Future<void> setAirPressureSystem(MeasurementSystem? system) =>
       put(_keyAirPressureSystem, system?.value);
 
-  MeasurementSystem? get airPressureSystem =>
-      MeasurementSystem.valueOf(preferences[_keyAirPressureSystem] ?? -1);
+  MeasurementSystem get airPressureSystem =>
+      MeasurementSystem.valueOf(preferences[_keyAirPressureSystem] ??
+          MeasurementSystem.imperial_whole.value)!;
 
   Future<void> setAirVisibilitySystem(MeasurementSystem? system) =>
       put(_keyAirVisibilitySystem, system?.value);
 
-  MeasurementSystem? get airVisibilitySystem =>
-      MeasurementSystem.valueOf(preferences[_keyAirVisibilitySystem] ?? -1);
+  MeasurementSystem get airVisibilitySystem =>
+      MeasurementSystem.valueOf(preferences[_keyAirVisibilitySystem] ??
+          MeasurementSystem.imperial_whole.value)!;
 
   Future<void> setWindSpeedSystem(MeasurementSystem? system) =>
       put(_keyWindSpeedSystem, system?.value);
 
-  MeasurementSystem? get windSpeedSystem =>
-      MeasurementSystem.valueOf(preferences[_keyWindSpeedSystem] ?? -1);
+  MeasurementSystem get windSpeedSystem =>
+      MeasurementSystem.valueOf(preferences[_keyWindSpeedSystem] ??
+          MeasurementSystem.imperial_whole.value)!;
 
   // ignore: avoid_positional_boolean_parameters
   Future<void> setAutoFetchAtmosphere(bool autoFetch) =>
@@ -157,4 +167,39 @@ class UserPreferenceManager extends PreferenceManager {
   /// Returns true if the user has been configured as pro. This will override
   /// any in-app purchase setting and can only be set in the Firebase console.
   bool get isPro => preferences[_keyIsPro] ?? false;
+
+  bool _isTrackingAtmosphereField(Id fieldId) =>
+      atmosphereFieldIds.isEmpty || atmosphereFieldIds.contains(fieldId);
+
+  bool get isTrackingMoonPhases =>
+      _isTrackingAtmosphereField(atmosphereFieldIdMoonPhase);
+
+  bool _isTrackingCatchField(Id fieldId) =>
+      catchFieldIds.isEmpty || catchFieldIds.contains(fieldId);
+
+  bool get isTrackingAnglers => _isTrackingCatchField(catchFieldIdAngler);
+
+  bool get isTrackingBaits => _isTrackingCatchField(catchFieldIdBait);
+
+  bool get isTrackingFishingSpots =>
+      _isTrackingCatchField(catchFieldIdFishingSpot);
+
+  bool get isTrackingImages => _isTrackingCatchField(catchFieldIdImages);
+
+  bool get isTrackingSpecies => _isTrackingCatchField(catchFieldIdSpecies);
+
+  bool get isTrackingLength => _isTrackingCatchField(catchFieldIdLength);
+
+  bool get isTrackingWeight => _isTrackingCatchField(catchFieldIdWeight);
+
+  bool get isTrackingMethods => _isTrackingCatchField(catchFieldIdMethods);
+
+  bool get isTrackingSeasons => _isTrackingCatchField(catchFieldIdSeason);
+
+  bool get isTrackingTides => _isTrackingCatchField(catchFieldIdTide);
+
+  bool get isTrackingPeriods => _isTrackingCatchField(catchFieldIdPeriod);
+
+  bool get isTrackingWaterClarities =>
+      _isTrackingCatchField(catchFieldIdWaterClarity);
 }

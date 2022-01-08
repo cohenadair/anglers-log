@@ -23,15 +23,15 @@ class LocationPermissionPage extends StatelessWidget {
       onPressedNextButton: onNext,
       nextButtonEnabled: false,
       children: [
-        const VerticalSpace(paddingWidget),
+        const VerticalSpace(paddingDefault),
         const WatermarkLogo(icon: Icons.location_on),
-        const VerticalSpace(paddingWidgetDouble),
-        TitleLabel(
+        const VerticalSpace(paddingXL),
+        TitleLabel.style1(
           Strings.of(context).onboardingJourneyLocationAccessTitle,
           overflow: TextOverflow.visible,
           align: TextAlign.center,
         ),
-        const VerticalSpace(paddingWidget),
+        const VerticalSpace(paddingDefault),
         Padding(
           padding: insetsHorizontalDefault,
           child: Text(
@@ -41,7 +41,7 @@ class LocationPermissionPage extends StatelessWidget {
             style: stylePrimary(context),
           ),
         ),
-        const VerticalSpace(paddingWidget),
+        const VerticalSpace(paddingDefault),
         Align(
           child: Button(
             text: Strings.of(context).onboardingJourneyLocationAccessButton,
@@ -54,7 +54,7 @@ class LocationPermissionPage extends StatelessWidget {
             },
           ),
         ),
-        const VerticalSpace(paddingWidget),
+        const VerticalSpace(paddingDefault),
       ],
     );
   }

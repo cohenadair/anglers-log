@@ -111,8 +111,8 @@ class __TideInputPageState extends State<_TideInputPage> {
 
     return RadioInput(
       padding: const EdgeInsets.only(
-        top: paddingWidgetSmall,
-        bottom: paddingWidgetSmall,
+        top: paddingSmall,
+        bottom: paddingSmall,
         left: paddingDefault,
         right: paddingDefault,
       ),
@@ -129,7 +129,7 @@ class __TideInputPageState extends State<_TideInputPage> {
       padding: const EdgeInsets.only(
         left: paddingDefault,
         right: paddingDefault,
-        bottom: paddingWidget,
+        bottom: paddingDefault,
       ),
       label: Strings.of(context).tideInputLowTimeLabel,
       controller: _lowTideController,
@@ -143,7 +143,7 @@ class __TideInputPageState extends State<_TideInputPage> {
       padding: const EdgeInsets.only(
         left: paddingDefault,
         right: paddingDefault,
-        bottom: paddingWidget,
+        bottom: paddingDefault,
       ),
       label: Strings.of(context).tideInputHighTimeLabel,
       controller: _highTideController,

@@ -19,26 +19,29 @@ class Fraction {
     sevenEighths,
   ];
 
-  static Fraction fromValue(double? value) {
-    if (value == null || value <= 0) {
-      return zero;
-    } else if (value == eighth.value) {
-      return eighth;
-    } else if (value == quarter.value) {
-      return quarter;
-    } else if (value == threeEighths.value) {
-      return threeEighths;
-    } else if (value == half.value) {
-      return half;
-    } else if (value == fiveEights.value) {
-      return fiveEights;
-    } else if (value == threeQuarters.value) {
-      return threeQuarters;
-    } else if (value == sevenEighths.value) {
-      return sevenEighths;
-    } else {
+  static Fraction fromValue(double? input) {
+    if (input == null || input <= 0) {
       return zero;
     }
+
+    var result = zero;
+    var largestDifference = double.infinity;
+
+    for (var fraction in all) {
+      var value = fraction.value;
+
+      if (input == value) {
+        return fraction;
+      }
+
+      var difference = (value - input).abs();
+      if (difference < largestDifference) {
+        largestDifference = difference;
+        result = fraction;
+      }
+    }
+
+    return result;
   }
 
   final String symbol;

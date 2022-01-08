@@ -1,97 +1,81 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mobile/res/dimen.dart';
 import 'package:mobile/widgets/floating_container.dart';
-import 'package:mobile/widgets/list_item.dart';
-import 'package:mobile/widgets/widget.dart';
 
 import '../test_utils.dart';
 
 void main() {
-  testWidgets("Default margins", (tester) async {
-    await tester.pumpWidget(
-      Testable(
-        (_) => FloatingContainer(
-          title: "Test",
-        ),
-      ),
-    );
-    expect(findFirst<Container>(tester).margin, insetsDefault);
-  });
-
-  testWidgets("Custom margins", (tester) async {
-    await tester.pumpWidget(
-      Testable(
-        (_) => FloatingContainer(
-          title: "Test",
-          margin: const EdgeInsets.all(37),
-        ),
-      ),
-    );
-    expect(findFirst<Container>(tester).margin, const EdgeInsets.all(37));
-  });
-
-  testWidgets("Tap enabled", (tester) async {
-    var tapped = false;
-    await tester.pumpWidget(
-      Testable(
-        (_) => FloatingContainer(
-          title: "Test",
-          onTap: () => tapped = true,
-        ),
-      ),
-    );
-    await tester.tap(find.text("Test"));
-    await tester.pumpAndSettle();
-
-    expect(tapped, isTrue);
-    expect(find.byType(RightChevronIcon), findsOneWidget);
-    expect(findFirst<ImageListItem>(tester).trailing!, isNotNull);
-  });
-
-  testWidgets("Tap disabled", (tester) async {
-    await tester.pumpWidget(
-      Testable(
-        (_) => FloatingContainer(
-          title: "Test",
-        ),
-      ),
-    );
-    expect(find.byType(RightChevronIcon), findsNothing);
-    expect(findFirst<ImageListItem>(tester).trailing, isNull);
-  });
-
-  testWidgets("Title/subtitle cannot both be empty", (tester) async {
-    await tester.pumpWidget(Testable((_) => FloatingContainer()));
-    expect(tester.takeException(), isAssertionError);
-  });
-
-  testWidgets("No title shows subtitle as title", (tester) async {
-    var context = await pumpContext(
+  testWidgets("onTap includes InkWell", (tester) async {
+    await pumpContext(
       tester,
       (_) => FloatingContainer(
-        subtitle: "Subtitle",
+        child: const SizedBox(width: 100, height: 100),
+        onTap: () {},
       ),
     );
-    expect(find.primaryText(context, text: "Subtitle"), findsOneWidget);
+    expect(find.byType(InkWell), findsOneWidget);
   });
 
-  testWidgets("Children are added", (tester) async {
-    await tester.pumpWidget(
-      Testable(
-        (_) => FloatingContainer(
-          title: "Title",
-          subtitle: "Subtitle",
-          children: const [
-            Text("Child 1"),
-            Text("Child 2"),
-            Text("Child 3"),
-          ],
-        ),
+  testWidgets("Null onTap doesn't includes InkWell", (tester) async {
+    await pumpContext(
+      tester,
+      (_) => const FloatingContainer(
+        child: SizedBox(width: 100, height: 100),
+        onTap: null,
       ),
     );
-    expect(find.text("Child 1"), findsOneWidget);
-    expect(find.text("Child 2"), findsOneWidget);
-    expect(find.text("Child 3"), findsOneWidget);
+    expect(find.byType(InkWell), findsNothing);
+  });
+
+  testWidgets("Circle", (tester) async {
+    await pumpContext(
+      tester,
+      (_) => const FloatingContainer(
+        child: SizedBox(width: 100, height: 100),
+        isCircle: true,
+      ),
+    );
+    expect(
+      (findFirst<Container>(tester).decoration as BoxDecoration).shape,
+      BoxShape.circle,
+    );
+  });
+
+  testWidgets("Rectangle", (tester) async {
+    await pumpContext(
+      tester,
+      (_) => const FloatingContainer(
+        child: SizedBox(width: 100, height: 100),
+        isCircle: false,
+      ),
+    );
+    expect(
+      (findFirst<Container>(tester).decoration as BoxDecoration).shape,
+      BoxShape.rectangle,
+    );
+  });
+
+  testWidgets("Transparent", (tester) async {
+    await pumpContext(
+      tester,
+      (_) => const FloatingContainer(
+        child: SizedBox(width: 100, height: 100),
+        isTransparent: true,
+      ),
+    );
+    expect(findFirst<Container>(tester).decoration, isNull);
+    expect(findFirst<Container>(tester).clipBehavior, Clip.none);
+  });
+
+  testWidgets("Opaque", (tester) async {
+    await pumpContext(
+      tester,
+      (_) => const FloatingContainer(
+        child: SizedBox(width: 100, height: 100),
+        isTransparent: false,
+      ),
+    );
+    expect(findFirst<Container>(tester).decoration, isNotNull);
+    expect(findFirst<Container>(tester).clipBehavior, Clip.antiAlias);
   });
 }

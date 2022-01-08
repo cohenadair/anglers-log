@@ -16,7 +16,7 @@ class BaitVariantListItem extends StatelessWidget {
   final Widget? trailing;
   final bool isEditing;
   final bool isCondensed;
-  final bool isPicking;
+  final void Function(BaitVariant)? onPicked;
   final VoidCallback? onDelete;
   final void Function(BaitVariant)? onSave;
 
@@ -25,7 +25,7 @@ class BaitVariantListItem extends StatelessWidget {
     this.trailing,
     this.isEditing = false,
     this.isCondensed = false,
-    this.isPicking = false,
+    this.onPicked,
     this.onDelete,
     this.onSave,
   });
@@ -49,7 +49,7 @@ class BaitVariantListItem extends StatelessWidget {
       onTap = () => push(context, BaitVariantPage(variant));
     }
 
-    var title = baitManager.variantDisplayValue(variant, context);
+    var title = baitManager.variantDisplayValue(context, variant);
 
     return ManageableListItem(
       child: Column(
@@ -72,12 +72,14 @@ class BaitVariantListItem extends StatelessWidget {
         ],
       ),
       editing: isEditing,
-      onTap: isPicking ? null : onTap,
+      onTap: () => _isPicking ? onPicked!.call(variant) : onTap(),
       deleteMessageBuilder: (context) =>
           Text(baitManager.deleteVariantMessage(context, variant)),
       onConfirmDelete: onDelete ?? () {},
       isCondensed: isCondensed,
-      trailing: trailing ?? RightChevronIcon(),
+      trailing: trailing ?? (_isPicking ? null : RightChevronIcon()),
     );
   }
+
+  bool get _isPicking => onPicked != null;
 }

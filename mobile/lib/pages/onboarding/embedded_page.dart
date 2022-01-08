@@ -46,7 +46,7 @@ class EmbeddedPage extends StatelessWidget {
 
     return Container(
       decoration: const BoxDecoration(
-        boxShadow: boxShadowSmallBottom,
+        boxShadow: boxShadowDefault,
         borderRadius: BorderRadius.all(Radius.circular(floatingCornerRadius)),
       ),
       width: _width,

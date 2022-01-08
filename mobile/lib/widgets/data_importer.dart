@@ -69,19 +69,19 @@ class _DataImporterState extends State<DataImporter> {
             icon: widget.watermarkIcon,
           ),
         ),
-        const VerticalSpace(paddingWidget),
-        TitleLabel(
+        const VerticalSpace(paddingDefault),
+        TitleLabel.style1(
           widget.titleText,
           overflow: TextOverflow.visible,
           align: TextAlign.center,
         ),
-        const VerticalSpace(paddingWidget),
+        const VerticalSpace(paddingDefault),
         Text(
           widget.descriptionText,
           style: Theme.of(context).textTheme.subtitle1,
           textAlign: TextAlign.center,
         ),
-        const VerticalSpace(paddingWidget),
+        const VerticalSpace(paddingDefault),
         _buildStartButton(),
         _buildFeedbackWidgets(),
       ],
@@ -122,7 +122,7 @@ class _DataImporterState extends State<DataImporter> {
         break;
       case _RenderState.error:
         children.add(WorkResult.error(widget.errorText));
-        children.add(const VerticalSpace(paddingWidget));
+        children.add(const VerticalSpace(paddingDefault));
         children.add(Button(
           text: Strings.of(context).importPageSendReport,
           onPressed: () => present(
@@ -139,9 +139,9 @@ class _DataImporterState extends State<DataImporter> {
     }
 
     return Padding(
-      padding: insetsTopWidget,
+      padding: insetsTopDefault,
       child: AnimatedSwitcher(
-        duration: defaultAnimationDuration,
+        duration: animDurationDefault,
         child: Column(
           key: ValueKey<_RenderState>(_renderState),
           children: children,

@@ -58,19 +58,18 @@ void main() {
     expect(find.byType(BaitVariantPage), findsOneWidget);
   });
 
-  testWidgets("Tapping while picking is a no-op", (tester) async {
+  testWidgets("onPicked is invoked", (tester) async {
+    var invoked = false;
     await pumpContext(
       tester,
       (_) => BaitVariantListItem(
         BaitVariant(),
-        isPicking: true,
+        onPicked: (_) => invoked = true,
       ),
       appManager: appManager,
     );
-
     await tapAndSettle(tester, find.text("Test Variant"));
-    expect(find.byType(SaveBaitVariantPage), findsNothing);
-    expect(find.byType(BaitVariantPage), findsNothing);
+    expect(invoked, isTrue);
   });
 
   testWidgets("Null trailing widget shows RightChevronIcon", (tester) async {

@@ -1,5 +1,5 @@
-import 'package:collection/collection.dart' show IterableExtension;
 import 'package:flutter/material.dart';
+import 'package:mobile/utils/collection_utils.dart';
 import 'package:quiver/collection.dart';
 
 import '../i18n/strings.dart';
@@ -32,6 +32,13 @@ class BaitVariantListInput extends StatefulWidget {
   /// of each item in the list.
   final void Function(BaitVariant, bool)? onCheckboxChanged;
 
+  /// Used for a single item picker. When non-null:
+  ///   - This function is invoked when an item in the list is tapped.
+  ///   - A [PaddedCheckbox] is _not_ rendered as the trailing widget.
+  ///   - A checkmark icon _is_ rendered as the trailing widget if the item
+  ///     is present in [selectedItems].
+  final void Function(BaitVariant)? onPicked;
+
   /// The items that are selected in the list. This field is ignored if
   /// [onCheckboxChanged] is null.
   final Set<BaitVariant> selectedItems;
@@ -39,12 +46,14 @@ class BaitVariantListInput extends StatefulWidget {
   const BaitVariantListInput({
     required this.controller,
     this.onCheckboxChanged,
+    this.onPicked,
     this.padding,
     this.isEditing = true,
     this.isCondensed = false,
     this.showHeader = true,
     this.selectedItems = const {},
-  });
+  }) : assert(onCheckboxChanged == null || onPicked == null,
+            "Can't have a single and multi picker simultaneously");
 
   BaitVariantListInput.static(
     List<BaitVariant> items, {
@@ -52,6 +61,7 @@ class BaitVariantListInput extends StatefulWidget {
     bool isCondensed = false,
     EdgeInsets? padding,
     void Function(BaitVariant, bool)? onCheckboxChanged,
+    void Function(BaitVariant)? onPicked,
     Set<BaitVariant> selectedItems = const {},
   }) : this(
           controller: ListInputController<BaitVariant>()..value = items,
@@ -60,6 +70,7 @@ class BaitVariantListInput extends StatefulWidget {
           showHeader: showHeader,
           padding: padding,
           onCheckboxChanged: onCheckboxChanged,
+          onPicked: onPicked,
           selectedItems: selectedItems,
         );
 
@@ -112,7 +123,7 @@ class _BaitVariantListInputState extends State<BaitVariantListInput> {
       }
 
       header = Padding(
-        padding: insetsBottomWidget,
+        padding: insetsBottomDefault,
         child: divider,
       );
     }
@@ -140,6 +151,9 @@ class _BaitVariantListInputState extends State<BaitVariantListInput> {
         onChanged: (isChecked) => widget.onCheckboxChanged!(variant, isChecked),
         checked: widget.selectedItems.contains(variant),
       );
+    } else if (widget.onPicked != null &&
+        widget.selectedItems.contains(variant)) {
+      trailing = const Icon(Icons.check);
     }
 
     return AnimatedListTransition(
@@ -149,7 +163,7 @@ class _BaitVariantListInputState extends State<BaitVariantListInput> {
         trailing: trailing,
         isEditing: widget.isEditing,
         isCondensed: widget.isCondensed,
-        isPicking: widget.onCheckboxChanged != null,
+        onPicked: widget.onPicked,
         onDelete: () => _items.remove(variant),
         onSave: _onAddOrUpdate,
       ),
@@ -157,7 +171,7 @@ class _BaitVariantListInputState extends State<BaitVariantListInput> {
   }
 
   void _onAddOrUpdate(BaitVariant variant) {
-    if (_items.items.firstWhereOrNull((e) => variant == e) != null) {
+    if (_items.items.containsWhere((e) => variant == e)) {
       return;
     }
 

@@ -89,12 +89,12 @@ class _EntityPageState extends State<EntityPage> {
     var children = List<Widget>.of(widget.children);
     if (widget.customEntityValues.isNotEmpty) {
       children.add(CustomEntityValues(
-        title: Strings.of(context).customFields,
-        padding: insetsBottomWidgetSmall,
+        title: Strings.of(context).entityNameCustomFields,
+        padding: insetsBottomSmall,
         values: widget.customEntityValues,
       ));
     } else {
-      children.add(const VerticalSpace(paddingWidget));
+      children.add(const VerticalSpace(paddingDefault));
     }
 
     return Scaffold(
@@ -153,7 +153,7 @@ class _EntityPageState extends State<EntityPage> {
 
         if (i < imageNames.length - 1) {
           carousel.add(const SizedBox(
-            width: paddingWidgetSmall,
+            width: paddingSmall,
             height: 0,
           ));
         }
@@ -198,10 +198,10 @@ class _EntityPageState extends State<EntityPage> {
 
   Widget _buildBackButton() {
     return AnimatedSwitcher(
-      duration: defaultAnimationDuration,
+      duration: animDurationDefault,
       child: FloatingButton.back(
         key: ValueKey<bool>(_isImageShowing),
-        padding: insetsTopWidgetSmall,
+        padding: insetsTopSmall,
         transparentBackground: !_isImageShowing,
       ),
     );
@@ -213,15 +213,15 @@ class _EntityPageState extends State<EntityPage> {
     }
 
     return AnimatedSwitcher(
-      duration: defaultAnimationDuration,
+      duration: animDurationDefault,
       child: FloatingButton(
         key: ValueKey<bool>(_isImageShowing),
         icon: _isImageShowing ? Icons.edit : null,
         text: _isImageShowing ? null : Strings.of(context).edit,
         padding: const EdgeInsets.only(
-          left: paddingWidget,
-          right: paddingWidget,
-          top: paddingWidgetSmall,
+          left: paddingDefault,
+          right: paddingDefault,
+          top: paddingSmall,
         ),
         transparentBackground: !_isImageShowing,
         onPressed: widget.onEdit,
@@ -235,13 +235,13 @@ class _EntityPageState extends State<EntityPage> {
     }
 
     return AnimatedSwitcher(
-      duration: defaultAnimationDuration,
+      duration: animDurationDefault,
       child: FloatingButton.icon(
         key: ValueKey<bool>(_isImageShowing),
         icon: Icons.delete,
         padding: const EdgeInsets.only(
-          right: paddingWidgetSmall,
-          top: paddingWidgetSmall,
+          right: paddingSmall,
+          top: paddingSmall,
         ),
         transparentBackground: !_isImageShowing,
         onPressed: () {

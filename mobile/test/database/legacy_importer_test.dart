@@ -432,7 +432,7 @@ void main() {
     await LegacyImporter(appManager.app, file).start();
 
     var context = await buildContext(tester);
-    var catches = catchManager.catchesSortedByTimestamp(context);
+    var catches = catchManager.catches(context);
 
     expect(catches, isNotNull);
     expect(catches.length, 4);
@@ -569,7 +569,7 @@ void main() {
 
     var context = await buildContext(tester);
 
-    var catches = catchManager.catchesSortedByTimestamp(context);
+    var catches = catchManager.catches(context);
     expect(catches, isNotNull);
     expect(catches.length, 2);
 
@@ -740,7 +740,7 @@ void main() {
 
     expect(
       catchManager
-          .filteredCatches(await buildContext(tester), isFavoritesOnly: true)
+          .catches(await buildContext(tester), isFavoritesOnly: true)
           .length,
       3,
     );
@@ -767,7 +767,7 @@ void main() {
 
     var context = await buildContext(tester);
 
-    var catches = catchManager.catchesSortedByTimestamp(context);
+    var catches = catchManager.catches(context);
     expect(catches, isNotNull);
     expect(catches.length, 2);
 

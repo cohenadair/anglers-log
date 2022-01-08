@@ -42,6 +42,7 @@ class ListItem extends StatelessWidget {
       title = DefaultTextStyle(
         style: stylePrimary(context, enabled: enabled),
         child: title,
+        overflow: TextOverflow.ellipsis,
       );
     }
 
@@ -50,6 +51,7 @@ class ListItem extends StatelessWidget {
       subtitle = DefaultTextStyle(
         style: styleSubtitle(context, enabled: enabled),
         child: subtitle,
+        overflow: TextOverflow.ellipsis,
       );
     }
 
@@ -70,9 +72,7 @@ class ListItem extends StatelessWidget {
           child: Row(
             children: [
               leading ?? Empty(),
-              leading == null
-                  ? Empty()
-                  : const HorizontalSpace(paddingWidgetDouble),
+              leading == null ? Empty() : const HorizontalSpace(paddingXL),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -82,7 +82,9 @@ class ListItem extends StatelessWidget {
                   ],
                 ),
               ),
-              trailing == null ? Empty() : const HorizontalSpace(paddingWidget),
+              trailing == null
+                  ? Empty()
+                  : const HorizontalSpace(paddingDefault),
               trailing ?? Empty(),
             ],
           ),
@@ -469,7 +471,7 @@ class ManageableListGrandchild extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.only(
         left: paddingDefault + paddingDefault,
-        bottom: paddingWidget,
+        bottom: paddingDefault,
       ),
       child: Container(
         decoration: BoxDecoration(
@@ -519,7 +521,7 @@ class ManageableListImageItem extends StatelessWidget {
     var trailing = this.trailing;
     if (trailing != null) {
       trailing = Padding(
-        padding: insetsLeftWidget,
+        padding: insetsLeftDefault,
         child: trailing,
       );
     }
@@ -530,7 +532,7 @@ class ManageableListImageItem extends StatelessWidget {
           imageName,
           showPlaceholder: showPlaceholder,
           showFullOnTap: showFullImageOnTap,
-          padding: insetsRightWidget,
+          padding: insetsRightDefault,
         ),
         Expanded(
           child: Column(
@@ -582,7 +584,7 @@ class _RowEndsCrossFade extends StatelessWidget {
   Widget build(BuildContext context) {
     return AnimatedCrossFade(
       crossFadeState: state,
-      duration: defaultAnimationDuration,
+      duration: animDurationDefault,
       firstChild: _buildChildContainer(firstChild),
       secondChild: _buildChildContainer(secondChild),
       // A custom layout builder is used here to remove "jarring" result when

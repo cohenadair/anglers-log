@@ -212,7 +212,7 @@ class BaitManager extends ImageEntityManager<Bait> {
   ///   - Minnow (Size: Small)
   ///   - Live - Minnow (Size: Small)
   String? attachmentDisplayValue(
-      BaitAttachment attachment, BuildContext context) {
+      BuildContext context, BaitAttachment attachment) {
     var bait = entity(attachment.baitId);
     if (bait == null) {
       return null;
@@ -225,8 +225,8 @@ class BaitManager extends ImageEntityManager<Bait> {
       return formattedBait;
     } else {
       return "$formattedBait (${variantDisplayValue(
-        variant,
         context,
+        variant,
         includeCustomValues: true,
       )})";
     }
@@ -237,11 +237,11 @@ class BaitManager extends ImageEntityManager<Bait> {
   ///
   /// Calls [attachmentDisplayValue] for each [BaitAttachment].
   List<String> attachmentsDisplayValues(
-      Iterable<BaitAttachment> attachments, BuildContext context) {
+      BuildContext context, Iterable<BaitAttachment> attachments) {
     var result = <String>[];
 
     for (var attachment in attachments) {
-      var displayValue = attachmentDisplayValue(attachment, context);
+      var displayValue = attachmentDisplayValue(context, attachment);
       if (isEmpty(displayValue)) {
         continue;
       }
@@ -256,8 +256,8 @@ class BaitManager extends ImageEntityManager<Bait> {
   /// using [formatList]. [BaitVariant.description] is only included if it is
   /// the only field set. We do this to ensure the result isn't too long.
   String variantDisplayValue(
-    BaitVariant variant,
-    BuildContext context, {
+    BuildContext context,
+    BaitVariant variant, {
     bool includeCustomValues = false,
   }) {
     var values = <String>[];

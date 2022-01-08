@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mapbox_gl/mapbox_gl.dart';
+import 'package:mobile/fishing_spot_manager.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
 import 'package:mobile/pages/fishing_spot_list_page.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
@@ -945,6 +946,40 @@ void main() {
 
     var symbolOptions = result.captured.first as SymbolOptions;
     expect(symbolOptions.iconImage, "active-pin");
+  });
+
+  testWidgets("Editing selected spot updates fishing spot widget",
+      (tester) async {
+    when(appManager.authManager.stream).thenAnswer((_) => const Stream.empty());
+    when(appManager.subscriptionManager.stream)
+        .thenAnswer((_) => const Stream.empty());
+    when(appManager.subscriptionManager.isPro).thenReturn(false);
+    when(appManager.localDatabaseManager.insertOrReplace(any, any))
+        .thenAnswer((_) => Future.value(true));
+    when(appManager.bodyOfWaterManager.entityExists(any)).thenReturn(false);
+
+    // Use real FishingSpotManager to trigger update callbacks.
+    var fishingSpotManager = FishingSpotManager(appManager.app);
+    when(appManager.app.fishingSpotManager).thenReturn(fishingSpotManager);
+    fishingSpotManager.addOrUpdate(FishingSpot(
+      id: randomId(),
+      name: "Spot 1",
+      lat: 1,
+      lng: 2,
+    ));
+
+    await pumpMap(tester, FishingSpotMap());
+    await tapAndSettle(tester, find.byType(SearchBar));
+    await tapAndSettle(tester, find.text("Spot 1"));
+    expect(find.text("Spot 1"), findsNWidgets(2));
+
+    // Edit the fishing spot.
+    await tapAndSettle(tester, find.text("Edit"));
+    await enterTextAndSettle(tester, find.text("Spot 1"), "Spot 2");
+    await tapAndSettle(tester, find.text("SAVE"));
+
+    // Confirm edits were made.
+    expect(find.text("Spot 2"), findsNWidgets(2));
   });
 
   testWidgets("Setting up picker is no-op when not picking", (tester) async {

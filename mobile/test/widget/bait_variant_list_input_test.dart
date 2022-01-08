@@ -18,13 +18,23 @@ void main() {
     appManager = StubbedAppManager();
 
     when(appManager.baitManager.variantDisplayValue(any, any))
-        .thenAnswer((invocation) => invocation.positionalArguments.first.color);
+        .thenAnswer((invocation) => invocation.positionalArguments[1].color);
 
     when(appManager.customEntityManager.entityExists(any)).thenReturn(false);
 
     when(appManager.userPreferenceManager.waterDepthSystem)
         .thenReturn(MeasurementSystem.metric);
     when(appManager.userPreferenceManager.baitVariantFieldIds).thenReturn([]);
+  });
+
+  test("Invalid input", () {
+    expect(
+        () => BaitVariantListInput(
+              controller: ListInputController(),
+              onCheckboxChanged: (_, __) {},
+              onPicked: (_) {},
+            ),
+        throwsAssertionError);
   });
 
   testWidgets("Items reset when controller value changes", (tester) async {
@@ -156,6 +166,49 @@ void main() {
     );
 
     expect(find.byType(PaddedCheckbox), findsNothing);
+  });
+
+  testWidgets("Checked icon is showing for single picker", (tester) async {
+    var controller = ListInputController<BaitVariant>();
+    controller.value = [
+      BaitVariant(
+        id: randomId(),
+        color: "Red",
+      ),
+    ];
+
+    await pumpContext(
+      tester,
+      (_) => BaitVariantListInput(
+        controller: controller,
+        onPicked: (_) {},
+        selectedItems: {controller.value.first},
+      ),
+      appManager: appManager,
+    );
+
+    expect(find.byIcon(Icons.check), findsOneWidget);
+  });
+
+  testWidgets("Checked icon is hidden for single picker", (tester) async {
+    var controller = ListInputController<BaitVariant>();
+    controller.value = [
+      BaitVariant(
+        id: randomId(),
+        color: "Red",
+      ),
+    ];
+
+    await pumpContext(
+      tester,
+      (_) => BaitVariantListInput(
+        controller: controller,
+        onPicked: (_) {},
+      ),
+      appManager: appManager,
+    );
+
+    expect(find.byIcon(Icons.check), findsNothing);
   });
 
   testWidgets("Adding duplicate variant is a no-op", (tester) async {

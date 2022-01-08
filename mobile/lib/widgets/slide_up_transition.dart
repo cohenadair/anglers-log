@@ -35,7 +35,7 @@ class _SlideUpTransitionState extends State<SlideUpTransition>
 
     _controller = AnimationController(
       vsync: this,
-      duration: defaultAnimationDuration,
+      duration: animDurationDefault,
     );
 
     _animationStatusListener = (status) {

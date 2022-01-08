@@ -98,7 +98,7 @@ class _SaveBaitPageState extends State<SaveBaitPage> {
       padding: const EdgeInsets.only(
         left: paddingDefault,
         right: paddingDefault,
-        bottom: paddingWidgetSmall,
+        bottom: paddingSmall,
       ),
       child: TextInput.name(
         context,

@@ -26,4 +26,10 @@ void main() {
     expect(parseBoolFromInt("0"), false);
     expect(parseBoolFromInt("1"), true);
   });
+
+  test("ignoreCaseAlphabeticalComparator", () {
+    var strings = ["C", "A", "Z", "O", "R", "E"];
+    strings.sort(ignoreCaseAlphabeticalComparator);
+    expect(strings, ["A", "C", "E", "O", "R", "Z"]);
+  });
 }

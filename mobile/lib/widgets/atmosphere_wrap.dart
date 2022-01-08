@@ -105,8 +105,8 @@ class AtmosphereWrap extends StatelessWidget {
     }
 
     return Wrap(
-      spacing: paddingWidget,
-      runSpacing: paddingWidget,
+      spacing: paddingDefault,
+      runSpacing: paddingDefault,
       children: children,
     );
   }

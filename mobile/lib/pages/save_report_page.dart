@@ -298,7 +298,7 @@ class _SaveReportPageState extends State<SaveReportPage> {
 
   Widget _buildStartDateRange() {
     return AnimatedSwitcher(
-      duration: defaultAnimationDuration,
+      duration: animDurationDefault,
       child: _isSummary
           ? _startDateRangePicker(_keySummaryStart, null)
           : _startDateRangePicker(_keyComparisonStart,
@@ -407,7 +407,7 @@ class _SaveReportPageState extends State<SaveReportPage> {
 
   Widget _buildEndDateRange() {
     return AnimatedSwitcher(
-      duration: defaultAnimationDuration,
+      duration: animDurationDefault,
       child: _isSummary
           ? Empty()
           : DateRangePickerInput(
@@ -677,7 +677,7 @@ class _SaveReportPageState extends State<SaveReportPage> {
     }
 
     return MultiListPickerInput(
-      padding: insetsHorizontalDefaultVerticalWidget,
+      padding: insetsDefault,
       values:
           controller.value.map((item) => nameForItem(context, item)).toSet(),
       emptyValue: (context) => emptyValue,

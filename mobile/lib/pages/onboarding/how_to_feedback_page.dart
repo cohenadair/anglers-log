@@ -53,20 +53,20 @@ class _HowToFeedbackPageState extends State<HowToFeedbackPage> {
       nextButtonText: Strings.of(context).finish,
       onPressedNextButton: widget.onNext,
       children: <Widget>[
-        const VerticalSpace(paddingWidget),
-        TitleLabel(
+        const VerticalSpace(paddingDefault),
+        TitleLabel.style1(
           Strings.of(context).onboardingJourneyHowToFeedbackTitle,
           overflow: TextOverflow.visible,
           align: TextAlign.center,
         ),
-        const VerticalSpace(paddingWidgetDouble),
+        const VerticalSpace(paddingXL),
         EmbeddedPage(
           showBackButton: false,
           childBuilder: (context) => MorePage(
             feedbackKey: _feedbackKey,
           ),
         ),
-        const VerticalSpace(paddingWidgetDouble),
+        const VerticalSpace(paddingXL),
         Padding(
           padding: insetsHorizontalDefault,
           child: Text(
@@ -76,7 +76,7 @@ class _HowToFeedbackPageState extends State<HowToFeedbackPage> {
             style: stylePrimary(context),
           ),
         ),
-        const VerticalSpace(paddingWidget),
+        const VerticalSpace(paddingDefault),
       ],
     );
   }

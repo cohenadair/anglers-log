@@ -81,7 +81,7 @@ class AtmosphereInput extends StatelessWidget {
 
         return AnimatedCrossFade(
           crossFadeState: state,
-          duration: defaultAnimationDuration,
+          duration: animDurationDefault,
           firstChild: firstChild,
           secondChild: secondChild,
         );
@@ -322,7 +322,7 @@ class __AtmosphereInputPageState extends State<_AtmosphereInputPage> {
 
   Widget _buildSkyConditions() {
     return MultiListPickerInput(
-      padding: insetsHorizontalDefaultVerticalWidget,
+      padding: insetsDefault,
       values: _skyConditionController.value
           .map((c) => c.displayName(context))
           .toSet(),
@@ -434,7 +434,7 @@ class __AtmosphereInputPageState extends State<_AtmosphereInputPage> {
       padding: const EdgeInsets.only(
         left: paddingDefault,
         right: paddingDefault,
-        bottom: paddingWidget,
+        bottom: paddingDefault,
       ),
       label: Strings.of(context).atmosphereInputTimeOfSunrise,
       controller: _sunriseController,
@@ -448,7 +448,7 @@ class __AtmosphereInputPageState extends State<_AtmosphereInputPage> {
       padding: const EdgeInsets.only(
         left: paddingDefault,
         right: paddingDefault,
-        bottom: paddingWidget,
+        bottom: paddingDefault,
       ),
       label: Strings.of(context).atmosphereInputTimeOfSunset,
       controller: _sunsetController,

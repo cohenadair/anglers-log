@@ -85,7 +85,7 @@ class ListPickerInput extends StatelessWidget {
           isEmpty(title) ? value! : title!,
           style: stylePrimary(context),
         ),
-        const HorizontalSpace(paddingWidget),
+        const HorizontalSpace(paddingDefault),
         Expanded(
           // If there's no title widget, the value widget will render at
           // the start of the row.

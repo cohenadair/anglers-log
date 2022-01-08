@@ -56,20 +56,20 @@ class _HowToManageFieldsPageState extends State<HowToManageFieldsPage> {
     return OnboardingPage(
       onPressedNextButton: widget.onNext,
       children: <Widget>[
-        const VerticalSpace(paddingWidget),
-        TitleLabel(
+        const VerticalSpace(paddingDefault),
+        TitleLabel.style1(
           Strings.of(context).onboardingJourneyManageFieldsTitle,
           overflow: TextOverflow.visible,
           align: TextAlign.center,
         ),
-        const VerticalSpace(paddingWidgetDouble),
+        const VerticalSpace(paddingXL),
         EmbeddedPage(
           childBuilder: (context) => SaveCatchPage(
             speciesId: randomId(),
             popupMenuKey: _popupMenuKey,
           ),
         ),
-        const VerticalSpace(paddingWidgetDouble),
+        const VerticalSpace(paddingXL),
         Padding(
           padding: insetsHorizontalDefault,
           child: Text(
@@ -79,7 +79,7 @@ class _HowToManageFieldsPageState extends State<HowToManageFieldsPage> {
             style: stylePrimary(context),
           ),
         ),
-        const VerticalSpace(paddingWidget),
+        const VerticalSpace(paddingDefault),
       ],
     );
   }

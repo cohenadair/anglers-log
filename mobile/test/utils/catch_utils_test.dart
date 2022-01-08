@@ -453,6 +453,54 @@ void main() {
     );
   });
 
+  testWidgets("CatchListItemModelSubtitleType.length", (tester) async {
+    var appManager = StubbedAppManager();
+    when(appManager.fishingSpotManager.entity(any)).thenReturn(null);
+    when(appManager.baitManager.formatNameWithCategory(any)).thenReturn(null);
+    when(appManager.speciesManager.entity(any)).thenReturn(null);
+
+    expect(
+      CatchListItemModel(
+        await buildContext(tester, appManager: appManager),
+        Catch(
+          length: MultiMeasurement(
+            system: MeasurementSystem.metric,
+            mainValue: Measurement(
+              unit: Unit.centimeters,
+              value: 10,
+            ),
+          ),
+        ),
+        CatchListItemModelSubtitleType.length,
+      ).subtitle2,
+      "Length: 10 cm",
+    );
+  });
+
+  testWidgets("CatchListItemModelSubtitleType.weight", (tester) async {
+    var appManager = StubbedAppManager();
+    when(appManager.fishingSpotManager.entity(any)).thenReturn(null);
+    when(appManager.baitManager.formatNameWithCategory(any)).thenReturn(null);
+    when(appManager.speciesManager.entity(any)).thenReturn(null);
+
+    expect(
+      CatchListItemModel(
+        await buildContext(tester, appManager: appManager),
+        Catch(
+          weight: MultiMeasurement(
+            system: MeasurementSystem.metric,
+            mainValue: Measurement(
+              unit: Unit.kilograms,
+              value: 3,
+            ),
+          ),
+        ),
+        CatchListItemModelSubtitleType.weight,
+      ).subtitle2,
+      "Weight: 3 kg",
+    );
+  });
+
   test("catchQuantity", () {
     expect(catchQuantity(Catch()), 1);
     expect(catchQuantity(Catch(quantity: 5)), 5);

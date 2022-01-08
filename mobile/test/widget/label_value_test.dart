@@ -56,7 +56,7 @@ void main() {
     );
     expect(
       findFirst<Padding>(tester).padding,
-      insetsHorizontalDefaultVerticalWidget,
+      insetsDefault,
     );
   });
 }

@@ -1,5 +1,6 @@
 import 'package:collection/src/iterable_extensions.dart';
 import 'package:fixnum/fixnum.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mapbox_gl/mapbox_gl.dart';
@@ -181,7 +182,7 @@ void main() {
     });
     when(appManager.baitManager.attachmentDisplayValue(any, any))
         .thenAnswer((invocation) {
-      var attachment = invocation.positionalArguments[0];
+      var attachment = invocation.positionalArguments[1];
       var bait = baits.firstWhereOrNull((e) => e.id == attachment?.baitId);
       var variant =
           bait?.variants.firstWhereOrNull((e) => e.id == attachment.variantId);
@@ -219,13 +220,6 @@ void main() {
     )).thenAnswer((invocation) => invocation.positionalArguments[1].name);
 
     when(appManager.locationMonitor.currentLocation).thenReturn(null);
-
-    when(appManager.speciesManager.entityExists(species[0].id))
-        .thenReturn(true);
-    when(appManager.speciesManager.entity(species[0].id))
-        .thenReturn(species[0]);
-    when(appManager.speciesManager.displayName(any, any))
-        .thenAnswer((invocation) => invocation.positionalArguments[1].name);
 
     when(appManager.speciesManager.entityExists(species[0].id))
         .thenReturn(true);
@@ -453,5 +447,98 @@ void main() {
         DateTime.fromMillisecondsSinceEpoch(newTrip.endTimestamp.toInt());
     expect(endTimestamp.hour, 0);
     expect(endTimestamp.minute, 0);
+  });
+
+  testWidgets("Time is updated when catches are picked", (tester) async {
+    when(appManager.timeManager.currentDateTime)
+        .thenReturn(DateTime.fromMillisecondsSinceEpoch(
+      150000000000, // Thursday, October 3, 1974 2:40:00 AM GMT
+      isUtc: true,
+    ));
+
+    var catches = [
+      Catch(
+        id: randomId(),
+        timestamp: Int64(DateTime(2020, 1, 1, 5).millisecondsSinceEpoch),
+      ),
+      Catch(
+        id: randomId(),
+        timestamp: Int64(DateTime(2020, 2, 1, 8).millisecondsSinceEpoch),
+      ),
+      Catch(
+        id: randomId(),
+        timestamp: Int64(DateTime(2020, 3, 1, 15).millisecondsSinceEpoch),
+      ),
+    ];
+    when(appManager.catchManager.catches(
+      any,
+      filter: anyNamed("filter"),
+      sortOrder: anyNamed("sortOrder"),
+      catchIds: anyNamed("catchIds"),
+    )).thenReturn(catches);
+    when(appManager.catchManager.id(any))
+        .thenAnswer((invocation) => invocation.positionalArguments.first.id);
+
+    await tester.pumpWidget(Testable(
+      (_) => const SaveTripPage(),
+      appManager: appManager,
+    ));
+
+    expect(find.text("Oct 3, 1974"), findsNWidgets(2));
+    expect(find.text("2:40 AM"), findsNWidgets(2));
+
+    await ensureVisibleAndSettle(tester, find.text("No catches"));
+    await tapAndSettle(tester, find.text("No catches"));
+    await tapAndSettle(tester, findManageableListItemCheckbox(tester, "All"));
+    await tapAndSettle(tester, find.byType(BackButton));
+
+    expect(find.text("Jan 1, 2020"), findsOneWidget);
+    expect(find.text("Mar 1, 2020"), findsOneWidget);
+    expect(find.text("5:00 AM"), findsOneWidget);
+    expect(find.text("3:00 PM"), findsOneWidget);
+  });
+
+  testWidgets("Time is not updated if catches picked is empty", (tester) async {
+    when(appManager.timeManager.currentDateTime)
+        .thenReturn(DateTime.fromMillisecondsSinceEpoch(
+      150000000000, // Thursday, October 3, 1974 2:40:00 AM GMT
+      isUtc: true,
+    ));
+
+    var catches = [
+      Catch(
+        id: randomId(),
+        timestamp: Int64(DateTime(2020, 1, 1, 5).millisecondsSinceEpoch),
+      ),
+      Catch(
+        id: randomId(),
+        timestamp: Int64(DateTime(2020, 2, 1, 8).millisecondsSinceEpoch),
+      ),
+      Catch(
+        id: randomId(),
+        timestamp: Int64(DateTime(2020, 3, 1, 15).millisecondsSinceEpoch),
+      ),
+    ];
+    when(appManager.catchManager.catches(
+      any,
+      filter: anyNamed("filter"),
+    )).thenReturn(catches);
+    when(appManager.catchManager.id(any))
+        .thenAnswer((invocation) => invocation.positionalArguments.first.id);
+
+    await tester.pumpWidget(Testable(
+      (_) => const SaveTripPage(),
+      appManager: appManager,
+    ));
+
+    expect(find.text("Oct 3, 1974"), findsNWidgets(2));
+    expect(find.text("2:40 AM"), findsNWidgets(2));
+
+    await ensureVisibleAndSettle(tester, find.text("No catches"));
+    await tapAndSettle(tester, find.text("No catches"));
+    await tapAndSettle(tester, find.byType(BackButton));
+
+    expect(find.text("Oct 3, 1974"), findsNWidgets(2));
+    expect(find.text("2:40 AM"), findsNWidgets(2));
   });
 }

@@ -14,11 +14,17 @@ abstract class NamedEntityManager<T extends GeneratedMessage>
 
   NamedEntityManager(AppManager app) : super(app);
 
-  int Function(T, T) get nameComparator =>
-      (lhs, rhs) => compareIgnoreCase(name(lhs), name(rhs));
+  int Function(T, T) displayNameComparator(BuildContext context) =>
+      (lhs, rhs) => ignoreCaseAlphabeticalComparator(name(lhs), name(rhs));
 
-  List<T> listSortedByName({String? filter}) {
-    var result = List<T>.from(filteredList(filter));
+  int Function(T, T) get nameComparator =>
+      (lhs, rhs) => ignoreCaseAlphabeticalComparator(name(lhs), name(rhs));
+
+  List<T> listSortedByName({
+    String? filter,
+    Iterable<Id> ids = const [],
+  }) {
+    var result = List<T>.from(filteredList(filter, ids));
     result.sort(nameComparator);
     return result;
   }

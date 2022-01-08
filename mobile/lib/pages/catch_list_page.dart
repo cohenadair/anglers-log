@@ -20,40 +20,20 @@ class CatchListPage extends StatelessWidget {
   /// If false, catches cannot be added. Defaults to true.
   final bool enableAdding;
 
-  /// If not-null, shows only the catches within [dateRange].
-  final DateRange? dateRange;
-
-  /// If set, shows only the catches whose ID is included in [catchIds].
-  final Set<Id> catchIds;
-
-  /// If set, shows only the catches whose species is included in [speciesIds].
-  final Set<Id> speciesIds;
-
-  /// If set, shows only the catches whose fishingSpot is included in
-  /// [fishingSpotIds].
-  final Set<Id> fishingSpotIds;
-
-  /// If set, shows only the catches whose bait is included in [baits].
-  final Set<BaitAttachment> baits;
+  /// When not empty, only these [Catch] objects are shown in the list. If
+  /// empty, all catches are shown.
+  final List<Catch> catches;
 
   /// See [ManageableListPage.pickerSettings].
   final ManageableListPagePickerSettings<Catch>? pickerSettings;
 
-  bool get filtered =>
-      dateRange != null ||
-      catchIds.isNotEmpty ||
-      speciesIds.isNotEmpty ||
-      fishingSpotIds.isNotEmpty ||
-      baits.isNotEmpty;
+  final CatchListItemModelSubtitleType? subtitleType;
 
   const CatchListPage({
     this.enableAdding = true,
-    this.dateRange,
-    this.catchIds = const {},
-    this.baits = const {},
-    this.fishingSpotIds = const {},
-    this.speciesIds = const {},
+    this.catches = const [],
     this.pickerSettings,
+    this.subtitleType,
   });
 
   @override
@@ -85,15 +65,9 @@ class CatchListPage extends StatelessWidget {
           fishingSpotManager,
           speciesManager,
         ],
-        loadItems: (query) => catchManager.catchesSortedByTimestamp(
-          context,
-          filter: query,
-          dateRange: dateRange,
-          catchIds: catchIds,
-          speciesIds: speciesIds,
-          fishingSpotIds: fishingSpotIds,
-          baits: baits,
-        ),
+        loadItems: (query) => catches.isEmpty
+            ? catchManager.catches(context, filter: query)
+            : catches,
         emptyItemsSettings: ManageableListPageEmptyListSettings(
           icon: CustomIcons.catches,
           title: Strings.of(context).catchListPageEmptyListTitle,
@@ -110,7 +84,7 @@ class CatchListPage extends StatelessWidget {
   }
 
   ManageableListPageItemModel _buildListItem(BuildContext context, Catch cat) {
-    var model = CatchListItemModel(context, cat);
+    var model = CatchListItemModel(context, cat, subtitleType);
     return ManageableListPageItemModel(
       child: ManageableListImageItem(
         imageName: model.imageName,

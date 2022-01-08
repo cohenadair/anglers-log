@@ -65,7 +65,7 @@ class _FishingSpotListPageState extends State<FishingSpotListPage> {
         ],
         loadItems: (query) => _model.buildModel(context, query),
         emptyItemsSettings: ManageableListPageEmptyListSettings(
-          icon: Icons.place,
+          icon: iconFishingSpot,
           title: Strings.of(context).fishingSpotListPageEmptyListTitle,
           description:
               Strings.of(context).fishingSpotListPageEmptyListDescription,
@@ -95,6 +95,7 @@ class _FishingSpotListPageState extends State<FishingSpotListPage> {
       title: Text(Strings.of(context).pickerTitleFishingSpot),
       multiTitle: Text(Strings.of(context).pickerTitleFishingSpots),
       isMulti: widget.pickerSettings!.isMulti,
+      isRequired: widget.pickerSettings!.isRequired,
       initialValues: widget.pickerSettings!.initialValues,
     );
   }
@@ -128,11 +129,13 @@ class FishingSpotListPagePickerSettings {
   final bool Function(BuildContext, Set<FishingSpot>) onPicked;
   final Set<FishingSpot> initialValues;
   final bool isMulti;
+  final bool isRequired;
 
   FishingSpotListPagePickerSettings({
     required this.onPicked,
     this.initialValues = const {},
     this.isMulti = true,
+    this.isRequired = false,
   });
 
   FishingSpotListPagePickerSettings.single({
@@ -145,6 +148,13 @@ class FishingSpotListPagePickerSettings {
               initialValue == null ? <FishingSpot>{} : {initialValue},
           isMulti: false,
         );
+
+  FishingSpotListPagePickerSettings.fromManageableList(
+      ManageableListPagePickerSettings<FishingSpot> settings)
+      : onPicked = settings.onPicked,
+        initialValues = settings.initialValues,
+        isRequired = settings.isRequired,
+        isMulti = settings.isMulti;
 }
 
 class _FishingSpotListPageModel

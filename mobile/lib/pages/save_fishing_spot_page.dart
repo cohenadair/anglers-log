@@ -88,9 +88,9 @@ class _SaveFishingSpotPageState extends State<SaveFishingSpotPage> {
       fieldBuilder: (context) => [
         _buildBodyOfWater(),
         _buildImage(),
-        const VerticalSpace(paddingWidgetSmall),
+        const VerticalSpace(paddingSmall),
         _buildName(),
-        const VerticalSpace(paddingWidgetSmall),
+        const VerticalSpace(paddingSmall),
         _buildNotes(),
       ],
       isInputValid: true,

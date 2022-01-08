@@ -132,7 +132,7 @@ class _AnglersLogState extends State<AnglersLog> {
         }
 
         return AnimatedSwitcher(
-          duration: defaultAnimationDuration,
+          duration: animDurationDefault,
           child: child,
         );
       },

@@ -30,7 +30,7 @@ void main() {
     )).thenAnswer((_) => Future.value(false));
     when(appManager.baitManager.duplicate(any)).thenReturn(false);
     when(appManager.baitManager.variantDisplayValue(any, any))
-        .thenAnswer((invocation) => invocation.positionalArguments.first.color);
+        .thenAnswer((invocation) => invocation.positionalArguments[1].color);
 
     when(appManager.baitCategoryManager.entityExists(any)).thenReturn(false);
 

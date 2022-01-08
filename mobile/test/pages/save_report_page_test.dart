@@ -133,7 +133,7 @@ void main() {
     when(appManager.baitManager.attachmentsDisplayValues(any, any))
         .thenAnswer((invocation) {
       var result = <String>[];
-      for (var attachment in invocation.positionalArguments.first) {
+      for (var attachment in invocation.positionalArguments[1]) {
         result.add(baitList.firstWhere((e) => e.id == attachment.baitId).name);
       }
       return result;

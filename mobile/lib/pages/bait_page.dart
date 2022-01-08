@@ -91,8 +91,8 @@ class _BaitPageState extends State<BaitPage> {
 
   Widget _buildTitle() {
     return Padding(
-      padding: insetsBottomWidget,
-      child: TitleLabel(
+      padding: insetsBottomDefault,
+      child: TitleLabel.style1(
         _bait.name,
         overflow: TextOverflow.visible,
       ),
@@ -110,7 +110,7 @@ class _BaitPageState extends State<BaitPage> {
         padding: const EdgeInsets.only(
           left: paddingDefault,
           right: paddingDefault,
-          bottom: paddingWidget,
+          bottom: paddingDefault,
         ),
         child: MinChip(_bait.type.displayName(context)),
       ),

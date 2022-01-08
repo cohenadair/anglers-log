@@ -32,7 +32,11 @@ void main() {
     when(appManager.authManager.isUserVerified).thenReturn(true);
     when(appManager.authManager.stream).thenAnswer((_) => const Stream.empty());
 
+    when(appManager.catchManager.hasEntities).thenReturn(false);
+
     when(appManager.reportManager.entityExists(any)).thenReturn(false);
+    when(appManager.reportManager.defaultReport).thenReturn(Report());
+    when(appManager.reportManager.displayName(any, any)).thenReturn("Test");
 
     when(appManager.locationMonitor.currentLocation).thenReturn(null);
 
@@ -136,7 +140,7 @@ void main() {
     when(appManager.permissionHandlerWrapper.requestLocation())
         .thenAnswer((_) => Future.value(false));
     when(appManager.fishingSpotManager.list()).thenReturn([]);
-    when(appManager.catchManager.catchesSortedByTimestamp(
+    when(appManager.catchManager.catches(
       any,
       filter: anyNamed("filter"),
       dateRange: anyNamed("dateRange"),
@@ -173,7 +177,7 @@ void main() {
     when(appManager.authManager.state).thenReturn(AuthState.loggedIn);
     when(appManager.userPreferenceManager.didOnboard).thenReturn(true);
     when(appManager.fishingSpotManager.list()).thenReturn([]);
-    when(appManager.catchManager.catchesSortedByTimestamp(
+    when(appManager.catchManager.catches(
       any,
       filter: anyNamed("filter"),
       dateRange: anyNamed("dateRange"),
@@ -211,7 +215,7 @@ void main() {
     when(appManager.authManager.state).thenReturn(AuthState.loggedOut);
     when(appManager.userPreferenceManager.didOnboard).thenReturn(true);
     when(appManager.fishingSpotManager.list()).thenReturn([]);
-    when(appManager.catchManager.catchesSortedByTimestamp(
+    when(appManager.catchManager.catches(
       any,
       filter: anyNamed("filter"),
       dateRange: anyNamed("dateRange"),
@@ -246,7 +250,7 @@ void main() {
     when(appManager.authManager.state).thenReturn(AuthState.initializing);
     when(appManager.userPreferenceManager.didOnboard).thenReturn(true);
     when(appManager.fishingSpotManager.list()).thenReturn([]);
-    when(appManager.catchManager.catchesSortedByTimestamp(
+    when(appManager.catchManager.catches(
       any,
       filter: anyNamed("filter"),
       dateRange: anyNamed("dateRange"),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mobile/widgets/widget.dart';
 
 import '../angler_manager.dart';
 import '../i18n/strings.dart';
@@ -37,7 +38,7 @@ class AnglerListPage extends StatelessWidget {
         listenerManagers: [anglerManager],
         loadItems: (query) => anglerManager.listSortedByName(filter: query),
         emptyItemsSettings: ManageableListPageEmptyListSettings(
-          icon: Icons.person,
+          icon: iconAngler,
           title: Strings.of(context).anglerListPageEmptyListTitle,
           description: Strings.of(context).anglerListPageEmptyListDescription,
         ),

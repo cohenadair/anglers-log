@@ -138,7 +138,7 @@ class EntityPickerInput<T extends GeneratedMessage> extends StatelessWidget {
 
             if (_isMulti) {
               return MultiListPickerInput(
-                padding: insetsHorizontalDefaultVerticalWidget,
+                padding: insetsDefault,
                 values: displayValues,
                 emptyValue: (context) => _emptyValue!,
                 onTap: () => showPickerPage(context, values),

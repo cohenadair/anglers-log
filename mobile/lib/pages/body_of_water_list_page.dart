@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mobile/widgets/widget.dart';
 
 import '../body_of_water_manager.dart';
 import '../i18n/strings.dart';
@@ -38,7 +39,7 @@ class BodyOfWaterListPage extends StatelessWidget {
         loadItems: (query) =>
             bodyOfWaterManager.listSortedByName(filter: query),
         emptyItemsSettings: ManageableListPageEmptyListSettings(
-          icon: Icons.water,
+          icon: iconBodyOfWater,
           title: Strings.of(context).bodyOfWaterListPageEmptyListTitle,
           description:
               Strings.of(context).bodyOfWaterListPageEmptyListDescription,

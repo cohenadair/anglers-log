@@ -6,9 +6,11 @@ import 'package:mobile/pages/pro_page.dart';
 import 'package:mobile/pages/report_list_page.dart';
 import 'package:mobile/pages/save_report_page.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
+import 'package:mobile/utils/report_utils.dart';
 import 'package:mobile/widgets/button.dart';
 import 'package:mobile/widgets/list_item.dart';
 import 'package:mobile/widgets/text.dart';
+import 'package:mobile/widgets/widget.dart';
 import 'package:mockito/mockito.dart';
 
 import '../mocks/stubbed_app_manager.dart';
@@ -59,6 +61,23 @@ void main() {
         .thenReturn([...comparisons, ...summaries]);
     when(appManager.reportManager.listSortedByName())
         .thenReturn([...comparisons, ...summaries]);
+    when(appManager.reportManager.defaultReports).thenReturn([
+      Report(id: reportIdPersonalBests),
+      Report(id: reportIdCatchSummary),
+      Report(id: reportIdTripSummary),
+    ]);
+    when(appManager.reportManager.displayName(any, any))
+        .thenAnswer((invocation) {
+      var id = invocation.positionalArguments[1].id;
+      if (id == reportIdPersonalBests) {
+        return "Personal Bests";
+      } else if (id == reportIdCatchSummary) {
+        return "Catch Summary";
+      } else if (id == reportIdTripSummary) {
+        return "Trip Summary";
+      }
+      return invocation.positionalArguments[1].name;
+    });
 
     when(appManager.userPreferenceManager.waterDepthSystem)
         .thenReturn(MeasurementSystem.metric);
@@ -134,7 +153,9 @@ void main() {
       appManager: appManager,
     ));
 
-    expect(find.text("Overview"), findsOneWidget);
+    expect(find.text("Catch Summary"), findsOneWidget);
+    expect(find.text("Trip Summary"), findsOneWidget);
+    expect(find.text("Personal Bests"), findsOneWidget);
     expect(find.text("Custom Reports"), findsOneWidget);
     expect(find.text("Comparison 1"), findsOneWidget);
     expect(find.text("Comparison 2"), findsOneWidget);
@@ -168,7 +189,7 @@ void main() {
     verify(appManager.reportManager.delete(comparisons.first.id)).called(1);
   });
 
-  testWidgets("Overview report cannot be deleted", (tester) async {
+  testWidgets("Default reports cannot be deleted", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => ReportListPage(
         pickerSettings: ManageableListPagePickerSettings.single(
@@ -182,7 +203,7 @@ void main() {
 
     var crossFade = tester.firstWidget<AnimatedCrossFade>(
       find.descendant(
-        of: find.widgetWithText(ManageableListItem, "Overview"),
+        of: find.widgetWithText(ManageableListItem, "Catch Summary"),
         matching: find.byType(AnimatedCrossFade),
       ),
     );
@@ -223,22 +244,30 @@ void main() {
     );
     expect(
       (textWidgets.at(0).evaluate().single.widget as Text).data,
-      "Overview",
+      "Personal Bests",
     );
     expect(
       (textWidgets.at(2).evaluate().single.widget as Text).data,
-      "Comparison 1",
+      "Catch Summary",
     );
     expect(
       (textWidgets.at(4).evaluate().single.widget as Text).data,
-      "Comparison 2",
+      "Trip Summary",
     );
     expect(
       (textWidgets.at(6).evaluate().single.widget as Text).data,
-      "Summary 1",
+      "Comparison 1",
     );
     expect(
       (textWidgets.at(8).evaluate().single.widget as Text).data,
+      "Comparison 2",
+    );
+    expect(
+      (textWidgets.at(10).evaluate().single.widget as Text).data,
+      "Summary 1",
+    );
+    expect(
+      (textWidgets.at(12).evaluate().single.widget as Text).data,
       "Summary 2",
     );
   });
@@ -270,5 +299,57 @@ void main() {
     when(appManager.subscriptionManager.isPro).thenReturn(true);
     await tapAndSettle(tester, find.byIcon(Icons.add));
     expect(find.byType(SaveReportPage), findsOneWidget);
+  });
+
+  testWidgets("Dividers are rendered", (tester) async {
+    await tester.pumpWidget(Testable(
+      (_) => ReportListPage(
+        pickerSettings: ManageableListPagePickerSettings.single(
+          onPicked: (_, __) => true,
+          isRequired: true,
+        ),
+      ),
+      appManager: appManager,
+    ));
+
+    expect(find.byType(MinDivider), findsNWidgets(2));
+    expect(find.byType(HeadingNoteDivider), findsOneWidget);
+  });
+
+  testWidgets("All reports are rendered", (tester) async {
+    when(appManager.reportManager.defaultReports).thenReturn([
+      Report(id: reportIdPersonalBests),
+      Report(id: reportIdCatchSummary),
+      Report(id: reportIdTripSummary),
+      Report(id: reportIdFishingSpotSummary),
+      Report(id: reportIdAnglerSummary),
+    ]);
+
+    await tester.pumpWidget(Testable(
+      (_) => ReportListPage(
+        pickerSettings: ManageableListPagePickerSettings.single(
+          onPicked: (_, __) => true,
+          isRequired: true,
+        ),
+      ),
+      appManager: appManager,
+    ));
+
+    var items =
+        findFirst<ManageableListPage>(tester).itemManager.loadItems(null);
+    expect(items.length, 12);
+
+    expect(items[0].id, reportIdPersonalBests);
+    expect(items[1] is MinDivider, isTrue);
+    expect(items[2].id, reportIdCatchSummary);
+    expect(items[3].id, reportIdTripSummary);
+    expect(items[4] is MinDivider, isTrue);
+    expect(items[5].id, reportIdFishingSpotSummary);
+    expect(items[6].id, reportIdAnglerSummary);
+    expect(items[7] is HeadingNoteDivider, isTrue);
+    expect(items[8].name, "Comparison 1");
+    expect(items[9].name, "Comparison 2");
+    expect(items[10].name, "Summary 1");
+    expect(items[11].name, "Summary 2");
   });
 }
