@@ -1410,6 +1410,33 @@ void main() {
       );
     });
 
+    testWidgets("toMultiMeasurement for inches < 0", (tester) async {
+      expect(
+        Unit.inches
+            .toMultiMeasurement(0.5)
+            .displayValue(await buildContext(tester)),
+        "0 \u00BD in",
+      );
+    });
+
+    testWidgets("toMultiMeasurement for pounds < 0", (tester) async {
+      expect(
+        Unit.pounds
+            .toMultiMeasurement(0.5)
+            .displayValue(await buildContext(tester)),
+        "0 lbs 8 oz",
+      );
+    });
+
+    testWidgets("toMultiMeasurement for feet < 0", (tester) async {
+      expect(
+        Unit.feet
+            .toMultiMeasurement(0.5)
+            .displayValue(await buildContext(tester)),
+        "0 ft 6 in",
+      );
+    });
+
     test("toMultiMeasurement imperial whole no fraction unit", () {
       expect(
         Unit.ounces.toMultiMeasurement(50.5),

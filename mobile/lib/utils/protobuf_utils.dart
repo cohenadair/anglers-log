@@ -526,6 +526,7 @@ extension MultiMeasurements on MultiMeasurement {
     if (result.hasFractionValue() && result.fractionValue.hasValue()) {
       result.mainValue.value = result.mainValue.value +
           result.fractionValue.unit.toDecimal(result.fractionValue.value);
+      result.clearFractionValue();
     }
 
     return result;
@@ -999,22 +1000,23 @@ extension Units on Unit {
         value: avgWhole,
       );
 
+      var modDivisor = math.max(1, avgWhole);
       var fractionalUnit = this.fractionalUnit;
       if (this == Unit.inches) {
         result.fractionValue = Measurement(
-          value: Fraction.fromValue(value % avgWhole).value,
+          value: Fraction.fromValue(value % modDivisor).value,
         );
       } else if (fractionalUnit == null) {
         _log.e("Unit doesn't have a fractional unit: $this");
       } else if (fractionalUnit == Unit.ounces) {
         result.fractionValue = Measurement(
           unit: fractionalUnit,
-          value: ((value % avgWhole) * _ouncesPerPound).roundToDouble(),
+          value: ((value % modDivisor) * _ouncesPerPound).roundToDouble(),
         );
       } else if (fractionalUnit == Unit.inches) {
         result.fractionValue = Measurement(
           unit: fractionalUnit,
-          value: ((value % avgWhole) * _inchesPerFoot).roundToDouble(),
+          value: ((value % modDivisor) * _inchesPerFoot).roundToDouble(),
         );
       }
     } else {
