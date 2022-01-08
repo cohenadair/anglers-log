@@ -1395,64 +1395,79 @@ void main() {
 
   group("Units", () {
     test("toMultiMeasurement imperial whole inches", () {
-      expect(Unit.inches.toMultiMeasurement(50.5), MultiMeasurement(
-        system: MeasurementSystem.imperial_whole,
-        mainValue: Measurement(
-          unit: Unit.inches,
-          value: 50,
+      expect(
+        Unit.inches.toMultiMeasurement(50.5),
+        MultiMeasurement(
+          system: MeasurementSystem.imperial_whole,
+          mainValue: Measurement(
+            unit: Unit.inches,
+            value: 50,
+          ),
+          fractionValue: Measurement(
+            value: 0.5,
+          ),
         ),
-        fractionValue: Measurement(
-          value: 0.5,
-        ),
-      ));
+      );
     });
 
     test("toMultiMeasurement imperial whole no fraction unit", () {
-      expect(Unit.ounces.toMultiMeasurement(50.5), MultiMeasurement(
-        system: MeasurementSystem.imperial_whole,
-        mainValue: Measurement(
-          unit: Unit.ounces,
-          value: 50,
+      expect(
+        Unit.ounces.toMultiMeasurement(50.5),
+        MultiMeasurement(
+          system: MeasurementSystem.imperial_whole,
+          mainValue: Measurement(
+            unit: Unit.ounces,
+            value: 50,
+          ),
         ),
-      ));
+      );
     });
 
     test("toMultiMeasurement imperial whole fraction ounces", () {
-      expect(Unit.pounds.toMultiMeasurement(50.5), MultiMeasurement(
-        system: MeasurementSystem.imperial_whole,
-        mainValue: Measurement(
-          unit: Unit.pounds,
-          value: 50,
+      expect(
+        Unit.pounds.toMultiMeasurement(50.5),
+        MultiMeasurement(
+          system: MeasurementSystem.imperial_whole,
+          mainValue: Measurement(
+            unit: Unit.pounds,
+            value: 50,
+          ),
+          fractionValue: Measurement(
+            unit: Unit.ounces,
+            value: 8,
+          ),
         ),
-        fractionValue: Measurement(
-          unit: Unit.ounces,
-          value: 8,
-        ),
-      ));
+      );
     });
 
     test("toMultiMeasurement imperial whole fraction inches", () {
-      expect(Unit.feet.toMultiMeasurement(50.5), MultiMeasurement(
-        system: MeasurementSystem.imperial_whole,
-        mainValue: Measurement(
-          unit: Unit.feet,
-          value: 50,
+      expect(
+        Unit.feet.toMultiMeasurement(50.5),
+        MultiMeasurement(
+          system: MeasurementSystem.imperial_whole,
+          mainValue: Measurement(
+            unit: Unit.feet,
+            value: 50,
+          ),
+          fractionValue: Measurement(
+            unit: Unit.inches,
+            value: 6,
+          ),
         ),
-        fractionValue: Measurement(
-          unit: Unit.inches,
-          value: 6,
-        ),
-      ));
+      );
     });
 
     test("toMultiMeasurement non-imperial whole", () {
-      expect(Unit.meters.toMultiMeasurement(50.5), MultiMeasurement(
-        system: MeasurementSystem.metric,
-        mainValue: Measurement(
-          unit: Unit.meters,
-          value: 50.5,
+      expect(
+        Unit.meters.toMultiMeasurement(50.5),
+        MultiMeasurement(
+          system: MeasurementSystem.metric,
+          mainValue: Measurement(
+            unit: Unit.meters,
+            value: 50.5,
+          ),
         ),
-      ));
+      );
     });
 
     test("convertFrom with the same unit", () {

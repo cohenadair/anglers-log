@@ -50,8 +50,7 @@ class AnimatedListModel<T, StateType extends State<StatefulWidget>> {
 
   bool get isNotEmpty => _items.isNotEmpty;
 
-  void insert(int index, T item,
-      [Duration duration = animDurationDefault]) {
+  void insert(int index, T item, [Duration duration = animDurationDefault]) {
     _items.insert(index, item);
     _animatedList?.insertItem(index, duration: duration);
     controller?.value = _items;
