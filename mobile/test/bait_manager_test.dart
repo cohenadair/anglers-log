@@ -22,8 +22,6 @@ void main() {
   setUp(() {
     appManager = StubbedAppManager();
 
-    when(appManager.authManager.stream).thenAnswer((_) => const Stream.empty());
-
     catchManager = appManager.catchManager;
 
     customEntityManager = appManager.customEntityManager;

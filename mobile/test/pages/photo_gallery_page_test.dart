@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/pages/photo_gallery_page.dart';
 import 'package:mobile/widgets/photo.dart';

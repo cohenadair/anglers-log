@@ -1,13 +1,9 @@
 import 'package:flutter/material.dart';
 
-import '../auth_manager.dart';
 import '../i18n/strings.dart';
-import '../log.dart';
 import '../res/gen/custom_icons.dart';
-import '../res/style.dart';
 import '../subscription_manager.dart';
 import '../user_preference_manager.dart';
-import '../utils/dialog_utils.dart';
 import '../utils/page_utils.dart';
 import '../widgets/checkbox_input.dart';
 import '../widgets/list_item.dart';
@@ -21,8 +17,6 @@ class SettingsPage extends StatefulWidget {
 }
 
 class _SettingsPageState extends State<SettingsPage> {
-  static const _log = Log("SettingsPage");
-
   SubscriptionManager get _subscriptionManager =>
       SubscriptionManager.of(context);
 
@@ -40,8 +34,6 @@ class _SettingsPageState extends State<SettingsPage> {
           _buildFetchAtmosphere(context),
           const MinDivider(),
           _buildUnits(context),
-          const MinDivider(),
-          _buildLogout(context),
         ],
       ),
     );
@@ -75,32 +67,6 @@ class _SettingsPageState extends State<SettingsPage> {
       leading: const Icon(CustomIcons.ruler),
       trailing: RightChevronIcon(),
       onTap: () => push(context, UnitsPage()),
-    );
-  }
-
-  Widget _buildLogout(BuildContext context) {
-    var authManager = AuthManager.of(context);
-    var errorStyle = styleError(context);
-
-    return ListItem(
-      title: Text(
-        Strings.of(context).settingsPageLogout,
-        style: errorStyle,
-      ),
-      leading: Icon(
-        Icons.logout,
-        color: errorStyle.color,
-      ),
-      onTap: () {
-        _log.d("Logging out of ${authManager.userEmail}");
-
-        showConfirmYesDialog(
-          context: context,
-          description:
-              Text(Strings.of(context).settingsPageLogoutConfirmMessage),
-          onConfirm: () async => AuthManager.of(context).logout(),
-        );
-      },
     );
   }
 }

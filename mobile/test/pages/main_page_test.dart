@@ -20,8 +20,6 @@ void main() {
     appManager = StubbedAppManager();
     mapController = StubbedMapController();
 
-    when(appManager.authManager.stream).thenAnswer((_) => const Stream.empty());
-
     when(appManager.baitCategoryManager.listSortedByName(
       filter: anyNamed("filter"),
     )).thenReturn([]);

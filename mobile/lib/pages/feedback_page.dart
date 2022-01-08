@@ -5,7 +5,6 @@ import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:quiver/strings.dart';
 
-import '../auth_manager.dart';
 import '../i18n/strings.dart';
 import '../log.dart';
 import '../pages/form_page.dart';
@@ -61,8 +60,6 @@ class _FeedbackPageState extends State<FeedbackPage> {
 
   var _isSending = false;
 
-  AuthManager get _authManager => AuthManager.of(context);
-
   HttpWrapper get _http => HttpWrapper.of(context);
 
   IoWrapper get _io => IoWrapper.of(context);
@@ -88,7 +85,6 @@ class _FeedbackPageState extends State<FeedbackPage> {
     );
 
     _typeController.value = _FeedbackType.bug;
-    _emailController.value = _authManager.userEmail;
   }
 
   @override

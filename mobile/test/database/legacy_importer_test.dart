@@ -47,8 +47,6 @@ void main() {
   setUp(() {
     appManager = StubbedAppManager();
 
-    when(appManager.authManager.stream).thenAnswer((_) => const Stream.empty());
-
     dataManager = appManager.localDatabaseManager;
     when(dataManager.insertOrReplace(any, any))
         .thenAnswer((_) => Future.value(true));

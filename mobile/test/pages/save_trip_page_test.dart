@@ -1,7 +1,6 @@
 import 'package:collection/src/iterable_extensions.dart';
 import 'package:fixnum/fixnum.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mapbox_gl/mapbox_gl.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';

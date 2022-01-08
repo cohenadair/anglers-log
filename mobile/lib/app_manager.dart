@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'angler_manager.dart';
-import 'app_preference_manager.dart';
-import 'auth_manager.dart';
 import 'bait_category_manager.dart';
 import 'bait_manager.dart';
 import 'body_of_water_manager.dart';
@@ -23,10 +21,6 @@ import 'trip_manager.dart';
 import 'user_preference_manager.dart';
 import 'water_clarity_manager.dart';
 import 'wrappers/file_picker_wrapper.dart';
-import 'wrappers/firebase_auth_wrapper.dart';
-import 'wrappers/firebase_storage_wrapper.dart';
-import 'wrappers/firebase_wrapper.dart';
-import 'wrappers/firestore_wrapper.dart';
 import 'wrappers/http_wrapper.dart';
 import 'wrappers/image_compress_wrapper.dart';
 import 'wrappers/image_picker_wrapper.dart';
@@ -46,8 +40,6 @@ class AppManager {
 
   // Internal dependencies.
   AnglerManager? _anglerManager;
-  AppPreferenceManager? _appPreferenceManager;
-  AuthManager? _authManager;
   BaitCategoryManager? _baitCategoryManager;
   BaitManager? _baitManager;
   BodyOfWaterManager? _bodyOfWaterManager;
@@ -69,10 +61,6 @@ class AppManager {
 
   // External dependency wrappers.
   FilePickerWrapper? _filePickerWrapper;
-  FirebaseAuthWrapper? _firebaseAuthWrapper;
-  FirebaseStorageWrapper? _firebaseStorageWrapper;
-  FirebaseWrapper? _firebaseWrapper;
-  FirestoreWrapper? _firestoreWrapper;
   HttpWrapper? _httpWrapper;
   ImageCompressWrapper? _imageCompressWrapper;
   ImagePickerWrapper? _imagePickerWrapper;
@@ -89,16 +77,6 @@ class AppManager {
   AnglerManager get anglerManager {
     _anglerManager ??= AnglerManager(this);
     return _anglerManager!;
-  }
-
-  AppPreferenceManager get appPreferenceManager {
-    _appPreferenceManager ??= AppPreferenceManager(this);
-    return _appPreferenceManager!;
-  }
-
-  AuthManager get authManager {
-    _authManager ??= AuthManager(this);
-    return _authManager!;
   }
 
   BaitCategoryManager get baitCategoryManager {
@@ -194,26 +172,6 @@ class AppManager {
   FilePickerWrapper get filePickerWrapper {
     _filePickerWrapper ??= FilePickerWrapper();
     return _filePickerWrapper!;
-  }
-
-  FirebaseAuthWrapper get firebaseAuthWrapper {
-    _firebaseAuthWrapper ??= FirebaseAuthWrapper();
-    return _firebaseAuthWrapper!;
-  }
-
-  FirebaseStorageWrapper get firebaseStorageWrapper {
-    _firebaseStorageWrapper ??= FirebaseStorageWrapper();
-    return _firebaseStorageWrapper!;
-  }
-
-  FirebaseWrapper get firebaseWrapper {
-    _firebaseWrapper ??= FirebaseWrapper();
-    return _firebaseWrapper!;
-  }
-
-  FirestoreWrapper get firestoreWrapper {
-    _firestoreWrapper ??= FirestoreWrapper();
-    return _firestoreWrapper!;
   }
 
   HttpWrapper get httpWrapper {

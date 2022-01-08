@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:fixnum/fixnum.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:http/http.dart';
@@ -14,6 +13,7 @@ import 'package:mobile/model/gen/anglerslog.pb.dart';
 import 'package:mobile/pages/image_picker_page.dart';
 import 'package:mobile/pages/save_catch_page.dart';
 import 'package:mobile/species_manager.dart';
+import 'package:mobile/user_preference_manager.dart';
 import 'package:mobile/utils/catch_utils.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mobile/water_clarity_manager.dart';
@@ -44,8 +44,6 @@ void main() {
     when(appManager.anglerManager.entityExists(any)).thenReturn(false);
     when(appManager.anglerManager.displayName(any, any))
         .thenAnswer((invocation) => invocation.positionalArguments[1].name);
-
-    when(appManager.authManager.stream).thenAnswer((_) => const Stream.empty());
 
     when(appManager.baitManager.attachmentsDisplayValues(any, any))
         .thenReturn([]);
@@ -1625,7 +1623,7 @@ void main() {
     when(appManager.localDatabaseManager.fetchAll(any))
         .thenAnswer((_) => Future.value([]));
 
-    var preferenceManager = NoFirestoreUserPreferenceManager(appManager.app);
+    var preferenceManager = UserPreferenceManager(appManager.app);
     await preferenceManager.initialize();
 
     await preferenceManager.setWaterDepthSystem(MeasurementSystem.metric);

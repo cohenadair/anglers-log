@@ -2,9 +2,6 @@ import 'dart:async';
 import 'dart:io';
 import 'dart:typed_data';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:http/http.dart';
@@ -12,9 +9,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:mapbox_gl/mapbox_gl.dart' as map;
 import 'package:mobile/angler_manager.dart';
 import 'package:mobile/app_manager.dart';
-import 'package:mobile/app_preference_manager.dart';
 import 'package:mobile/atmosphere_fetcher.dart';
-import 'package:mobile/auth_manager.dart';
 import 'package:mobile/bait_category_manager.dart';
 import 'package:mobile/bait_manager.dart';
 import 'package:mobile/body_of_water_manager.dart';
@@ -40,10 +35,6 @@ import 'package:mobile/utils/validator.dart';
 import 'package:mobile/water_clarity_manager.dart';
 import 'package:mobile/widgets/quantity_picker_input.dart';
 import 'package:mobile/wrappers/file_picker_wrapper.dart';
-import 'package:mobile/wrappers/firebase_auth_wrapper.dart';
-import 'package:mobile/wrappers/firebase_storage_wrapper.dart';
-import 'package:mobile/wrappers/firebase_wrapper.dart';
-import 'package:mobile/wrappers/firestore_wrapper.dart';
 import 'package:mobile/wrappers/http_wrapper.dart';
 import 'package:mobile/wrappers/image_compress_wrapper.dart';
 import 'package:mobile/wrappers/image_picker_wrapper.dart';
@@ -59,7 +50,6 @@ import 'package:mobile/wrappers/url_launcher_wrapper.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:photo_manager/photo_manager.dart';
-import 'package:purchases_flutter/object_wrappers.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
 import 'package:sqflite/sqflite.dart';
 
@@ -72,7 +62,6 @@ Trip_CatchesPerEntity newInputItemShim(dynamic pickerItem) =>
 
 @GenerateMocks([AnglerManager])
 @GenerateMocks([AppManager])
-@GenerateMocks([AppPreferenceManager])
 @GenerateMocks([], customMocks: [MockSpec<map.ArgumentCallbacks>()])
 @GenerateMocks([AtmosphereFetcher])
 @GenerateMocks([BaitCategoryManager])
@@ -95,10 +84,6 @@ Trip_CatchesPerEntity newInputItemShim(dynamic pickerItem) =>
 @GenerateMocks([UserPreferenceManager])
 @GenerateMocks([WaterClarityManager])
 @GenerateMocks([FilePickerWrapper])
-@GenerateMocks([FirebaseAuthWrapper])
-@GenerateMocks([FirebaseStorageWrapper])
-@GenerateMocks([FirebaseWrapper])
-@GenerateMocks([FirestoreWrapper])
 @GenerateMocks([], customMocks: [MockSpec<GlobalKey>()])
 @GenerateMocks([HttpWrapper])
 @GenerateMocks([ImageCompressWrapper])
@@ -114,19 +99,13 @@ Trip_CatchesPerEntity newInputItemShim(dynamic pickerItem) =>
 @GenerateMocks([UrlLauncherWrapper])
 @GenerateMocks([AssetPathEntity])
 @GenerateMocks([Batch])
-@GenerateMocks([], customMocks: [MockSpec<CollectionReference>()])
 @GenerateMocks([Completer])
 @GenerateMocks([Database])
 @GenerateMocks([Directory])
-@GenerateMocks([DocumentChange])
-@GenerateMocks([], customMocks: [MockSpec<DocumentReference>()])
-@GenerateMocks([DocumentSnapshot])
-@GenerateMocks([DownloadTask])
 @GenerateMocks([EntitlementInfo])
 @GenerateMocks([EntitlementInfos])
 @GenerateMocks([], customMocks: [MockSpec<EntityListener>()])
 @GenerateMocks([FileSystemEntity])
-@GenerateMocks([FullMetadata])
 @GenerateMocks([LegacyImporter])
 @GenerateMocks([LogInResult])
 @GenerateMocks([MethodChannel])
@@ -144,65 +123,8 @@ Trip_CatchesPerEntity newInputItemShim(dynamic pickerItem) =>
     },
   )
 ])
-@GenerateMocks([QuerySnapshot])
-@GenerateMocks([Reference])
 @GenerateMocks([Response])
 @GenerateMocks([], customMocks: [MockSpec<StreamSubscription>()])
-@GenerateMocks([TaskSnapshot])
-@GenerateMocks([UploadTask])
-@GenerateMocks([User])
-@GenerateMocks([UserCredential])
-// @GenerateMocks interprets AuthError as a class and tries to call
-// AuthError?.value, which throws a compile time error.
-class MockAuthManager extends Mock implements AuthManager {
-  @override
-  String get firestoreDocPath =>
-      (super.noSuchMethod(Invocation.getter(#firestoreDocPath), returnValue: "")
-          as String);
-
-  @override
-  AuthState get state => (super.noSuchMethod(Invocation.getter(#state),
-      returnValue: AuthState.unknown) as AuthState);
-
-  @override
-  Stream<void> get stream => (super.noSuchMethod(Invocation.getter(#stream),
-      returnValue: MockStream<void>()) as Stream<void>);
-
-  @override
-  bool get isUserVerified =>
-      (super.noSuchMethod(Invocation.getter(#isUserVerified), returnValue: true)
-          as bool);
-
-  @override
-  Future<void> initialize() =>
-      super.noSuchMethod(Invocation.method(#initialize, []),
-          returnValue: Future.value(null)) as Future<void>;
-
-  @override
-  Future<AuthError?> login(String? email, String? password) =>
-      super.noSuchMethod(Invocation.method(#login, [email, password]),
-          returnValue: Future.value(null)) as Future<AuthError?>;
-
-  @override
-  Future<void> reloadUser() =>
-      super.noSuchMethod(Invocation.method(#reloadUser, []),
-          returnValue: Future.value(null)) as Future<void>;
-
-  @override
-  Future<void> sendResetPasswordEmail(String? email) =>
-      super.noSuchMethod(Invocation.method(#sendResetPasswordEmail, [email]),
-          returnValue: Future.value(null)) as Future<void>;
-
-  @override
-  Future<bool> sendVerificationEmail(int? msBetweenSends) => super.noSuchMethod(
-      Invocation.method(#sendVerificationEmail, [msBetweenSends]),
-      returnValue: Future.value(false)) as Future<bool>;
-
-  @override
-  Future<AuthError?> signUp(String? email, String? password) =>
-      super.noSuchMethod(Invocation.method(#signUp, [email, password]),
-          returnValue: Future.value(null)) as Future<AuthError?>;
-}
 
 // @GenerateMocks can't generate mock because of an internal type used in API.
 class MockFile extends Mock implements File {

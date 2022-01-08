@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
 import 'package:mobile/pages/pro_page.dart';
+import 'package:mobile/user_preference_manager.dart';
 import 'package:mobile/utils/atmosphere_utils.dart';
 import 'package:mobile/widgets/atmosphere_input.dart';
 import 'package:mobile/widgets/atmosphere_wrap.dart';
@@ -22,8 +23,6 @@ void main() {
 
   setUp(() {
     appManager = StubbedAppManager();
-
-    when(appManager.authManager.stream).thenAnswer((_) => const Stream.empty());
 
     when(appManager.localDatabaseManager.fetchAll(any))
         .thenAnswer((_) => Future.value([]));
@@ -400,7 +399,7 @@ void main() {
   });
 
   testWidgets("Updating units updates widgets", (tester) async {
-    var preferenceManager = NoFirestoreUserPreferenceManager(appManager.app);
+    var preferenceManager = UserPreferenceManager(appManager.app);
     await preferenceManager.initialize();
 
     await preferenceManager.setAirTemperatureSystem(MeasurementSystem.metric);

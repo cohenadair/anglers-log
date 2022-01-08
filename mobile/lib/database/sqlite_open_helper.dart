@@ -126,8 +126,8 @@ const int _version = 6;
 Future<String> _databasePath(String userId) async =>
     join(await getDatabasesPath(), "2.0", userId, _name);
 
-Future<Database> openDb(String userId) async {
-  var path = await _databasePath(userId);
+Future<Database> openDb(String databaseName) async {
+  var path = await _databasePath(databaseName);
 
   if (await File(path).exists()) {
     _log.d("Database exists: $path");

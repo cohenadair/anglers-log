@@ -950,7 +950,6 @@ void main() {
 
   testWidgets("Editing selected spot updates fishing spot widget",
       (tester) async {
-    when(appManager.authManager.stream).thenAnswer((_) => const Stream.empty());
     when(appManager.subscriptionManager.stream)
         .thenAnswer((_) => const Stream.empty());
     when(appManager.subscriptionManager.isPro).thenReturn(false);

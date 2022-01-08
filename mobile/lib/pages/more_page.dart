@@ -94,7 +94,7 @@ class MorePage extends StatelessWidget {
           context,
           icon: Icons.public,
           title: Strings.of(context).entityNameTrips,
-          page: TripListPage(),
+          page: const TripListPage(),
         ),
         _buildPageItem(
           context,

@@ -2,22 +2,16 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
-import 'package:quiver/strings.dart';
 
 import 'app_manager.dart';
-import 'data_source_facilitator.dart';
 import 'local_database_manager.dart';
 import 'log.dart';
 import 'model/gen/anglerslog.pb.dart';
 import 'utils/protobuf_utils.dart';
 import 'utils/void_stream_controller.dart';
-import 'wrappers/firestore_wrapper.dart';
 
-/// An abstract class for managing a collection of preferences. This class has
-/// the capability to sync with Cloud Firestore, if the subclass is setup to
-/// do so.
-abstract class PreferenceManager extends DataSourceFacilitator {
+/// An abstract class for managing a collection of preferences.
+abstract class PreferenceManager {
   static const _keyId = "id";
   static const _keyValue = "value";
 
@@ -25,62 +19,27 @@ abstract class PreferenceManager extends DataSourceFacilitator {
   String get tableName;
 
   @protected
-  String? get firestoreDocPath;
-
-  @protected
   final Map<String, dynamic> preferences = {};
 
   final _controller = VoidStreamController();
+  final AppManager _appManager;
 
   late Log _log;
 
-  PreferenceManager(AppManager appManager) : super(appManager) {
+  PreferenceManager(this._appManager) {
     _log = Log("PreferenceManager($runtimeType)");
   }
 
   /// A [Stream] that fires events when any preference updates.
   Stream<void> get stream => _controller.stream;
 
-  @protected
-  FirestoreWrapper get firestore => appManager.firestoreWrapper;
-
   LocalDatabaseManager get localDatabaseManager =>
-      appManager.localDatabaseManager;
+      _appManager.localDatabaseManager;
 
-  @override
-  Future<void> initializeLocalData() async {
+  Future<void> initialize() async {
     for (var row in (await localDatabaseManager.fetchAll(tableName))) {
       preferences[row[_keyId]!] = jsonDecode(row[_keyValue]);
     }
-  }
-
-  @override
-  void clearMemory() {
-    preferences.clear();
-  }
-
-  @override
-  StreamSubscription? initializeFirestore(Completer completer) {
-    assert(isNotEmpty(firestoreDocPath));
-
-    return firestore.doc(firestoreDocPath!).snapshots().listen((snapshot) {
-      var data = snapshot.data();
-      if (data != null) {
-        // Completely replace local data with the Firestore document. For
-        // preferences, Firestore is always the source of truth.
-        for (var key in List.of(preferences.keys)) {
-          putLocal(key, null);
-        }
-
-        for (var entry in data.entries) {
-          putLocal(entry.key, entry.value);
-        }
-      }
-
-      if (!completer.isCompleted) {
-        completer.complete();
-      }
-    });
   }
 
   @protected
@@ -93,12 +52,7 @@ abstract class PreferenceManager extends DataSourceFacilitator {
     }
 
     _log.d("Setting key=$key, value=$value");
-
-    if (shouldUseFirestore) {
-      await _putFirebase(key, value);
-    } else {
-      putLocal(key, value);
-    }
+    putLocal(key, value);
 
     _controller.notify();
   }
@@ -115,21 +69,6 @@ abstract class PreferenceManager extends DataSourceFacilitator {
         _keyValue: jsonEncode(value),
       });
       preferences[key] = value;
-    }
-  }
-
-  Future<void> _putFirebase(String key, dynamic value) async {
-    assert(isNotEmpty(firestoreDocPath));
-
-    var map = {
-      key: value,
-    };
-    var doc = firestore.doc(firestoreDocPath!);
-
-    if ((await doc.get()).exists) {
-      await doc.update(map);
-    } else {
-      await doc.set(map);
     }
   }
 

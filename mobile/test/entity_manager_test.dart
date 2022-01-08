@@ -1,6 +1,5 @@
 import 'dart:typed_data';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/app_manager.dart';
@@ -10,18 +9,13 @@ import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mockito/mockito.dart';
 import 'package:protobuf/protobuf.dart';
 
-import 'mocks/mocks.dart';
 import 'mocks/mocks.mocks.dart';
 import 'mocks/stubbed_app_manager.dart';
 
 class TestEntityManager extends EntityManager<Species> {
-  bool firestoreEnabled = true;
   bool matchesFilterResult = true;
 
   TestEntityManager(AppManager app) : super(app);
-
-  @override
-  bool get enableFirestore => firestoreEnabled;
 
   @override
   Species entityFromBytes(List<int> bytes) => Species.fromBuffer(bytes);
@@ -50,11 +44,6 @@ void main() {
 
   setUp(() async {
     appManager = StubbedAppManager();
-
-    when(appManager.appPreferenceManager.lastLoggedInEmail).thenReturn("");
-
-    when(appManager.authManager.firestoreDocPath).thenReturn("");
-    when(appManager.authManager.stream).thenAnswer((_) => const Stream.empty());
 
     when(appManager.localDatabaseManager.insertOrReplace(any, any, any))
         .thenAnswer((realInvocation) => Future.value(true));
@@ -99,119 +88,6 @@ void main() {
     );
     await entityManager.initialize();
     expect(entityManager.entityCount, 3);
-  });
-
-  test("Test clear local data", () async {
-    when(appManager.localDatabaseManager.insertOrReplace(any, any))
-        .thenAnswer((_) => Future.value(true));
-
-    // Add.
-    var speciesId0 = randomId();
-    var speciesId1 = randomId();
-
-    await entityManager.addOrUpdate(Species()
-      ..id = speciesId0
-      ..name = "Bluegill");
-    await entityManager.addOrUpdate(Species()
-      ..id = speciesId1
-      ..name = "Catfish");
-    expect(entityManager.entityCount, 2);
-
-    entityManager.clearMemory();
-    verifyNever(appManager.localDatabaseManager.deleteEntity(any, any));
-    verifyNever(appManager.firestoreWrapper.collection(any));
-    expect(entityManager.entityCount, 0);
-  });
-
-  test("Test initialize Firestore", () async {
-    when(appManager.subscriptionManager.isPro).thenReturn(true);
-
-    var snapshot = MockQuerySnapshot<Map<String, dynamic>>();
-    when(snapshot.docChanges).thenReturn([]);
-
-    // Mimic Firebase's behaviour by invoking listener immediately.
-    var stream = MockStream<MockQuerySnapshot<Map<String, dynamic>>>();
-    when(stream.listen(any)).thenAnswer(((invocation) {
-      invocation.positionalArguments.first(snapshot);
-      return MockStreamSubscription<MockQuerySnapshot<Map<String, dynamic>>>();
-    }));
-
-    var collection = MockCollectionReference<Map<String, dynamic>>();
-    when(collection.snapshots()).thenAnswer((_) => stream);
-
-    when(appManager.firestoreWrapper.collection(any)).thenReturn(collection);
-
-    // Setup Firestore listener.
-    await entityManager.initialize();
-    verify(snapshot.docChanges).called(1);
-
-    // In this test, we assume Firestore listeners work as expected, and we
-    // capture the listener function passed to snapshots().listen and invoke it
-    // manually.
-    var result = verify(stream.listen(captureAny));
-    result.called(1);
-
-    var listener = result.captured.first;
-
-    // No changes.
-    listener(snapshot);
-    verify(snapshot.docChanges).called(1);
-
-    // Bytes can't be parsed.
-    var docSnapshot = MockDocumentSnapshot<Map<String, dynamic>>();
-    when(docSnapshot.data()).thenReturn({});
-    var docChange = MockDocumentChange<Map<String, dynamic>>();
-    when(docChange.doc).thenReturn(docSnapshot);
-    when(snapshot.docChanges).thenReturn([
-      docChange,
-    ]);
-    listener(snapshot);
-    verifyNever(docChange.type);
-
-    when(docSnapshot.data()).thenReturn({
-      "bytes": [],
-    });
-    listener(snapshot);
-    verifyNever(docChange.type);
-
-    when(docSnapshot.data()).thenReturn({
-      "bytes": null,
-    });
-    listener(snapshot);
-    verifyNever(docChange.type);
-
-    // Document added.
-    var species = Species()
-      ..id = randomId()
-      ..name = "Steelhead";
-    when(docSnapshot.data()).thenReturn({
-      "bytes": species.writeToBuffer(),
-    });
-    when(docChange.type).thenReturn(DocumentChangeType.added);
-    listener(snapshot);
-    verify(docChange.type).called(3);
-    verify(appManager.localDatabaseManager.insertOrReplace(any, any, any))
-        .called(1);
-
-    // Document updated.
-    when(docChange.type).thenReturn(DocumentChangeType.modified);
-    listener(snapshot);
-    verify(docChange.type).called(3);
-    verify(appManager.localDatabaseManager.insertOrReplace(any, any, any))
-        .called(1);
-
-    // Document deleted.
-    entityManager.firestoreEnabled = false;
-    await entityManager.addOrUpdate(species);
-    verify(appManager.localDatabaseManager.insertOrReplace(any, any, any))
-        .called(1);
-
-    when(docChange.type).thenReturn(DocumentChangeType.removed);
-    listener(snapshot);
-    verify(docChange.type).called(3);
-    verifyNever(appManager.localDatabaseManager.insertOrReplace(any, any, any));
-    verify(appManager.localDatabaseManager.deleteEntity(any, any, any))
-        .called(1);
   });
 
   test("Test add or update local", () async {
@@ -265,38 +141,6 @@ void main() {
     expect(entityManager.entity(speciesId1)!.name, "Catfish");
     verifyNever(listener.onAdd);
     verifyNever(listener.onUpdate);
-  });
-
-  test("Add or update Firestore", () async {
-    var collection = MockCollectionReference<Map<String, dynamic>>();
-    var doc = MockDocumentReference<Map<String, dynamic>>();
-    when(collection.doc(any)).thenReturn(doc);
-    when(appManager.firestoreWrapper.collection(any)).thenReturn(collection);
-    when(appManager.subscriptionManager.isPro).thenReturn(true);
-
-    await entityManager.addOrUpdate(Species()
-      ..id = randomId()
-      ..name = "Steelhead");
-    await entityManager.addOrUpdate(Species()
-      ..id = randomId()
-      ..name = "Catfish");
-
-    verify(appManager.firestoreWrapper.collection(any)).called(2);
-  });
-
-  test("Delete from Firestore", () async {
-    when(appManager.subscriptionManager.stream)
-        .thenAnswer((_) => const Stream.empty());
-    when(appManager.subscriptionManager.isPro).thenReturn(false);
-
-    await entityManager.addOrUpdate(Species()
-      ..id = randomId()
-      ..name = "Steelhead");
-    await entityManager.addOrUpdate(Species()
-      ..id = randomId()
-      ..name = "Catfish");
-
-    expect(entityManager.entityCount, 2);
   });
 
   test("Delete locally", () async {

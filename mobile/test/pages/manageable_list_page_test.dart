@@ -41,8 +41,6 @@ void main() {
     // EntityManagerListener is needed.
     appManager = StubbedAppManager();
 
-    when(appManager.authManager.stream).thenAnswer((_) => const Stream.empty());
-
     when(appManager.catchManager.list()).thenReturn([]);
     when(appManager.catchManager.existsWith(speciesId: anyNamed("speciesId")))
         .thenReturn(false);

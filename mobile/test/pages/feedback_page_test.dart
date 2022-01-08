@@ -232,15 +232,4 @@ void main() {
     await tester.pumpAndSettle();
     expect(find.text("SEND"), findsNothing);
   });
-
-  testWidgets("Email is filled when present", (tester) async {
-    when(appManager.authManager.userEmail).thenReturn("test@test.com");
-
-    await tester.pumpWidget(Testable(
-      (_) => const FeedbackPage(),
-      appManager: appManager,
-    ));
-
-    expect(find.widgetWithText(TextInput, "test@test.com"), findsOneWidget);
-  });
 }

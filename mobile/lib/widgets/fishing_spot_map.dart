@@ -3,7 +3,6 @@ import 'dart:io';
 import 'dart:math';
 
 import 'package:collection/collection.dart' show IterableExtension;
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:mapbox_gl/mapbox_gl.dart';

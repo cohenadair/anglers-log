@@ -19,8 +19,6 @@ void main() {
   setUp(() async {
     appManager = StubbedAppManager();
 
-    when(appManager.authManager.stream).thenAnswer((_) => const Stream.empty());
-
     catchManager = appManager.catchManager;
 
     dataManager = appManager.localDatabaseManager;

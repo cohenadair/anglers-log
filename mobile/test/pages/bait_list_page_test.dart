@@ -79,8 +79,6 @@ void main() {
   setUp(() async {
     appManager = StubbedAppManager();
 
-    when(appManager.authManager.stream).thenAnswer((_) => const Stream.empty());
-
     when(appManager.baitCategoryManager.listSortedByName())
         .thenReturn(baitCategories);
     when(appManager.baitCategoryManager.matchesFilter(any, any))

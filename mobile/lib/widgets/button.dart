@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile/widgets/floating_container.dart';
 import 'package:quiver/strings.dart';

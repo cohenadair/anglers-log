@@ -39,21 +39,6 @@ class UserPreferenceManager extends PreferenceManager {
   @override
   String get tableName => "user_preference";
 
-  @override
-  String get firestoreDocPath => authManager.firestoreDocPath;
-
-  @override
-  bool get enableFirestore => true;
-
-  @override
-  bool get shouldUseFirestore => true;
-
-  @override
-  void onUpgradeToPro() {
-    // Nothing to do. User preferences are always stored on the cloud,
-    // regardless of subscription status.
-  }
-
   Future<void> setAtmosphereFieldIds(List<Id> ids) =>
       putIdCollection(_keyAtmosphereFieldIds, ids);
 

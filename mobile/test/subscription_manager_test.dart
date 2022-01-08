@@ -1,10 +1,6 @@
-import 'dart:async';
-
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mobile/auth_manager.dart';
 import 'package:mobile/subscription_manager.dart';
-import 'package:mobile/utils/void_stream_controller.dart';
 import 'package:mockito/mockito.dart';
 
 import 'mocks/mocks.mocks.dart';
@@ -18,9 +14,6 @@ void main() {
   setUp(() {
     appManager = StubbedAppManager();
 
-    when(appManager.authManager.userId).thenReturn("");
-    when(appManager.authManager.stream).thenAnswer((_) => const Stream.empty());
-
     when(appManager.propertiesManager.revenueCatApiKey).thenReturn("");
 
     when(appManager.purchasesWrapper.logIn(any))
@@ -31,36 +24,6 @@ void main() {
     when(appManager.userPreferenceManager.isPro).thenReturn(false);
 
     subscriptionManager = SubscriptionManager(appManager.app);
-  });
-
-  test("RevenueCat user identified on login", () async {
-    var controller = VoidStreamController();
-    when(appManager.authManager.stream).thenAnswer((_) => controller.stream);
-    when(appManager.authManager.state).thenReturn(AuthState.loggedIn);
-
-    await subscriptionManager.initialize();
-
-    controller.notify();
-    await Future.delayed(const Duration(milliseconds: 50));
-
-    verify(appManager.purchasesWrapper.logIn(any)).called(1);
-    verifyNever(appManager.purchasesWrapper.logOut());
-  });
-
-  test("RevenueCat user reset on logout", () async {
-    var controller = VoidStreamController();
-    when(appManager.authManager.stream).thenAnswer((_) => controller.stream);
-    when(appManager.authManager.state).thenReturn(AuthState.loggedOut);
-    when(appManager.purchasesWrapper.isAnonymous)
-        .thenAnswer((_) => Future.value(false));
-
-    await subscriptionManager.initialize();
-
-    controller.notify();
-    await Future.delayed(const Duration(milliseconds: 50));
-
-    verifyNever(appManager.purchasesWrapper.logIn(any));
-    verify(appManager.purchasesWrapper.logOut()).called(1);
   });
 
   test("Successful restore error sets state to pro", () async {

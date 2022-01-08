@@ -9,8 +9,6 @@ class StubbedAppManager {
   MockAppManager app = MockAppManager();
 
   MockAnglerManager anglerManager = MockAnglerManager();
-  MockAppPreferenceManager appPreferenceManager = MockAppPreferenceManager();
-  MockAuthManager authManager = MockAuthManager();
   MockBaitCategoryManager baitCategoryManager = MockBaitCategoryManager();
   MockBaitManager baitManager = MockBaitManager();
   MockBodyOfWaterManager bodyOfWaterManager = MockBodyOfWaterManager();
@@ -31,11 +29,6 @@ class StubbedAppManager {
   MockWaterClarityManager waterClarityManager = MockWaterClarityManager();
 
   MockFilePickerWrapper filePickerWrapper = MockFilePickerWrapper();
-  MockFirebaseAuthWrapper firebaseAuthWrapper = MockFirebaseAuthWrapper();
-  MockFirebaseStorageWrapper firebaseStorageWrapper =
-      MockFirebaseStorageWrapper();
-  MockFirebaseWrapper firebaseWrapper = MockFirebaseWrapper();
-  MockFirestoreWrapper firestoreWrapper = MockFirestoreWrapper();
   MockHttpWrapper httpWrapper = MockHttpWrapper();
   MockImageCompressWrapper imageCompressWrapper = MockImageCompressWrapper();
   MockImagePickerWrapper imagePickerWrapper = MockImagePickerWrapper();
@@ -53,8 +46,6 @@ class StubbedAppManager {
 
   StubbedAppManager() {
     when(app.anglerManager).thenReturn(anglerManager);
-    when(app.appPreferenceManager).thenReturn(appPreferenceManager);
-    when(app.authManager).thenReturn(authManager);
     when(app.baitCategoryManager).thenReturn(baitCategoryManager);
     when(app.baitManager).thenReturn(baitManager);
     when(app.bodyOfWaterManager).thenReturn(bodyOfWaterManager);
@@ -74,10 +65,6 @@ class StubbedAppManager {
     when(app.userPreferenceManager).thenReturn(userPreferenceManager);
     when(app.waterClarityManager).thenReturn(waterClarityManager);
     when(app.filePickerWrapper).thenReturn(filePickerWrapper);
-    when(app.firebaseAuthWrapper).thenReturn(firebaseAuthWrapper);
-    when(app.firebaseStorageWrapper).thenReturn(firebaseStorageWrapper);
-    when(app.firebaseWrapper).thenReturn(firebaseWrapper);
-    when(app.firestoreWrapper).thenReturn(firestoreWrapper);
     when(app.httpWrapper).thenReturn(httpWrapper);
     when(app.imageCompressWrapper).thenReturn(imageCompressWrapper);
     when(app.imagePickerWrapper).thenReturn(imagePickerWrapper);

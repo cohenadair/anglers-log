@@ -1,18 +1,14 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
 
 import 'app_manager.dart';
-import 'auth_manager.dart';
 import 'channels/migration_channel.dart';
 import 'i18n/strings.dart';
 import 'pages/landing_page.dart';
-import 'pages/login_page.dart';
 import 'pages/main_page.dart';
 import 'pages/onboarding/onboarding_journey.dart';
 import 'user_preference_manager.dart';
-import 'widgets/widget.dart';
 import 'wrappers/services_wrapper.dart';
 
 void main() {
@@ -32,17 +28,12 @@ class _AnglersLogState extends State<AnglersLog> {
   late Future<bool> _appInitializedFuture;
   LegacyJsonResult? _legacyJsonResult;
 
-  /// Used for showing the correct transition widget when logging in.
-  var _wasLoggedOut = false;
+  AppManager get _appManager => widget.appManager;
 
-  AppManager get _app => widget.appManager;
-
-  AuthManager get _authManager => _app.authManager;
-
-  ServicesWrapper get _services => _app.servicesWrapper;
+  ServicesWrapper get _services => _appManager.servicesWrapper;
 
   UserPreferenceManager get _userPreferencesManager =>
-      _app.userPreferenceManager;
+      _appManager.userPreferenceManager;
 
   @override
   void initState() {
@@ -55,7 +46,7 @@ class _AnglersLogState extends State<AnglersLog> {
   @override
   Widget build(BuildContext context) {
     return Provider<AppManager>.value(
-      value: _app,
+      value: _appManager,
       child: MaterialApp(
         onGenerateTitle: (context) => Strings.of(context).appName,
         theme: ThemeData(
@@ -73,8 +64,16 @@ class _AnglersLogState extends State<AnglersLog> {
           builder: (context, snapshot) {
             if (snapshot.hasError || !snapshot.hasData) {
               return LandingPage();
+            } else if (_userPreferencesManager.didOnboard) {
+              return MainPage();
+            } else {
+              return OnboardingJourney(
+                legacyJsonResult: _legacyJsonResult,
+                onFinished: () => _userPreferencesManager
+                    .setDidOnboard(true)
+                    .then((value) => setState(() {})),
+              );
             }
-            return _authStreamBuilder();
           },
         ),
         debugShowCheckedModeBanner: false,
@@ -92,62 +91,35 @@ class _AnglersLogState extends State<AnglersLog> {
     );
   }
 
-  /// Returns a widget that listens for authentication changes.
-  Widget _authStreamBuilder() {
-    return StreamBuilder<void>(
-      stream: _authManager.stream,
-      builder: (context, _) {
-        Widget? child;
-        switch (_authManager.state) {
-          case AuthState.unknown:
-            child = LandingPage();
-            break;
-          case AuthState.loggedIn:
-            if (_userPreferencesManager.didOnboard) {
-              child = MainPage();
-            } else {
-              child = OnboardingJourney(
-                legacyJsonResult: _legacyJsonResult,
-                // Clear legacy result when migration has completed. This
-                // prevents the migration page from showing when switching
-                // users (see issue #502).
-                onFinishedMigration: () => _legacyJsonResult = null,
-                onFinished: () => setState(() {
-                  _userPreferencesManager.setDidOnboard(true);
-                }),
-              );
-            }
-            break;
-          case AuthState.loggedOut:
-            _wasLoggedOut = true;
-            child = LoginPage(isUpdatingFromLegacy: _isUpdatingFromLegacy);
-            break;
-          case AuthState.initializing:
-            if (_wasLoggedOut) {
-              child = LoginPage(isUpdatingFromLegacy: _isUpdatingFromLegacy);
-            } else {
-              child = LandingPage();
-            }
-            break;
-        }
-
-        return AnimatedSwitcher(
-          duration: animDurationDefault,
-          child: child,
-        );
-      },
-    );
-  }
-
   Future<bool> _initialize() async {
-    // Initialize managers that don't depend on authentication status.
-    await _app.appPreferenceManager.initialize();
-    await _app.firebaseWrapper.initializeApp();
-    await _app.locationMonitor.initialize();
-    await _app.propertiesManager.initialize();
-    await _app.subscriptionManager.initialize();
+    // Managers that don't depend on anything.
+    await _appManager.locationMonitor.initialize();
+    await _appManager.propertiesManager.initialize();
+    await _appManager.subscriptionManager.initialize();
 
-    await _app.authManager.initialize();
+    // Need to initialize the local database before anything else, since all
+    // entity managers depend on the local database.
+    await _appManager.localDatabaseManager.initialize();
+
+    // UserPreferenceManager includes "pro" override and needs to be initialized
+    // before managers that upload data to Firebase.
+    await _appManager.userPreferenceManager.initialize();
+
+    await _appManager.anglerManager.initialize();
+    await _appManager.baitCategoryManager.initialize();
+    await _appManager.baitManager.initialize();
+    await _appManager.bodyOfWaterManager.initialize();
+    await _appManager.catchManager.initialize();
+    await _appManager.customEntityManager.initialize();
+    await _appManager.fishingSpotManager.initialize();
+    await _appManager.methodManager.initialize();
+    await _appManager.reportManager.initialize();
+    await _appManager.speciesManager.initialize();
+    await _appManager.tripManager.initialize();
+    await _appManager.waterClarityManager.initialize();
+
+    // Ensure everything is initialized before managing any image state.
+    await _appManager.imageManager.initialize();
 
     // If the user hasn't yet onboarded, see if there is any legacy data to
     // migrate. We do this here to allow for a smoother transition between the
@@ -158,6 +130,4 @@ class _AnglersLogState extends State<AnglersLog> {
 
     return true;
   }
-
-  bool get _isUpdatingFromLegacy => _legacyJsonResult != null;
 }

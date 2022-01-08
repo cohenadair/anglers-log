@@ -1,7 +1,6 @@
 import 'dart:io';
 import 'dart:typed_data';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:crypto/crypto.dart';
 import 'package:flutter/material.dart';
 import 'package:path/path.dart';
@@ -10,10 +9,7 @@ import 'package:quiver/collection.dart';
 import 'package:quiver/strings.dart';
 
 import 'app_manager.dart';
-import 'auth_manager.dart';
 import 'log.dart';
-import 'subscription_manager.dart';
-import 'wrappers/firebase_storage_wrapper.dart';
 import 'wrappers/image_compress_wrapper.dart';
 import 'wrappers/io_wrapper.dart';
 import 'wrappers/path_provider_wrapper.dart';
@@ -41,14 +37,6 @@ class ImageManager {
   late String _imagePath;
   late String _cachePath;
 
-  AuthManager get _authManager => _appManager.authManager;
-
-  SubscriptionManager get _subscriptionManager =>
-      _appManager.subscriptionManager;
-
-  FirebaseStorageWrapper get _firebaseStorageWrapper =>
-      _appManager.firebaseStorageWrapper;
-
   ImageCompressWrapper get _imageCompressWrapper =>
       _appManager.imageCompressWrapper;
 
@@ -57,9 +45,7 @@ class ImageManager {
   PathProviderWrapper get _pathProviderWrapper =>
       _appManager.pathProviderWrapper;
 
-  ImageManager(this._appManager) {
-    _subscriptionManager.stream.listen((_) => _onSubscriptionStreamUpdate());
-  }
+  ImageManager(this._appManager);
 
   Future<void> initialize() async {
     var imagesPath = await _pathProviderWrapper.appDocumentsPath;
@@ -76,9 +62,6 @@ class ImageManager {
   File _imageFile(String imageName) =>
       _ioWrapper.file("$_imagePath/$imageName");
 
-  String _firebaseStoragePath(String fileName) =>
-      "${_authManager.userId}/$fileName";
-
   /// Returns encoded image data with the given [fileName] at the given [size].
   /// If an image of [size] does not exist in the cache, the full image is
   /// returned.
@@ -92,21 +75,6 @@ class ImageManager {
     }
 
     var file = _imageFile(fileName);
-
-    // Download the image if it doesn't exist.
-    if (!(await file.exists()) && _subscriptionManager.isPro) {
-      try {
-        _log.d("Local file not found, downloading...");
-
-        await _firebaseStorageWrapper
-            .ref(_firebaseStoragePath(fileName))
-            .writeToFile(file);
-
-        _log.d("Download complete");
-      } on FirebaseException catch (e) {
-        _log.e("Error downloading image: $e");
-      }
-    }
 
     // Return the correct thumbnail if it exists.
     var thumb = await _thumbnail(context, fileName, size);
@@ -161,32 +129,6 @@ class ImageManager {
 
   void _addToCache(String fileName) {
     _thumbnails.putIfAbsent(fileName, () => _CachedThumbnail(fileName));
-  }
-
-  Future<void> _upload(FileSystemEntity image) async {
-    if (!_subscriptionManager.isPro) {
-      _log.d("User isn't pro, skipping image upload");
-      return;
-    }
-
-    var imageName = basename(image.path);
-
-    if (!image.existsSync()) {
-      _log.d("Can't upload file that doesn't exist: $imageName");
-      return;
-    }
-
-    try {
-      _log.d("Uploading image $imageName...");
-
-      await _firebaseStorageWrapper
-          .ref(_firebaseStoragePath(imageName))
-          .putFile(image as File);
-
-      _log.d("Upload complete");
-    } on FirebaseException catch (e) {
-      _log.e("Error uploading image: $e");
-    }
   }
 
   /// Returns a list of file names that were saved to disk.
@@ -244,7 +186,6 @@ class ImageManager {
 
       result.add(fileName);
       _addToCache(fileName);
-      _upload(newFile);
     }
 
     return result;
@@ -351,32 +292,6 @@ class ImageManager {
     }
 
     return cachedImage.thumbnail(size);
-  }
-
-  /// Uploads to Firebase any local images that don't exist in Firebase.
-  void _onSubscriptionStreamUpdate() {
-    if (_subscriptionManager.isFree) {
-      return;
-    }
-
-    _log.d("User is pro, checking for images that need to be uploaded...");
-
-    _ioWrapper.directory(_imagePath).list().forEach((file) async {
-      var fileName = basename(file.path);
-
-      // Firebase storage doesn't have an "exists" method, so getMetadata is
-      // used, which will throw an exception if the file doesn't exist.
-      try {
-        await _firebaseStorageWrapper
-            .ref(_firebaseStoragePath(fileName))
-            .getMetadata();
-      } on FirebaseException catch (_) {
-        // Note that although this exception is caught, the Android stacktrace
-        // is still printed to the console. The logs can be safely ignored.
-        _log.d("File doesn't exist in the cloud: $fileName");
-        _upload(file);
-      }
-    });
   }
 }
 

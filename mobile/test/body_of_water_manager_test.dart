@@ -17,8 +17,6 @@ void main() {
   setUp(() {
     appManager = StubbedAppManager();
 
-    when(appManager.authManager.stream).thenAnswer((_) => const Stream.empty());
-
     fishingSpotManager = appManager.fishingSpotManager;
 
     when(appManager.subscriptionManager.stream)

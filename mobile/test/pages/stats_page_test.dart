@@ -194,8 +194,6 @@ void main() {
   setUp(() {
     appManager = StubbedAppManager();
 
-    when(appManager.authManager.stream).thenAnswer((_) => const Stream.empty());
-
     when(appManager.anglerManager.list()).thenReturn([]);
 
     when(appManager.baitManager.name(any))

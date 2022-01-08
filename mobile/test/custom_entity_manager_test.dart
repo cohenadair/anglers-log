@@ -1,7 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/custom_entity_manager.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
-import 'package:mobile/model/gen/anglerslog.pbenum.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mockito/mockito.dart';
 
@@ -14,8 +13,6 @@ void main() {
 
   setUp(() {
     appManager = StubbedAppManager();
-
-    when(appManager.authManager.stream).thenAnswer((_) => const Stream.empty());
 
     when(appManager.localDatabaseManager.insertOrReplace(any, any))
         .thenAnswer((_) => Future.value(true));

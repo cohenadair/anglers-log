@@ -37,8 +37,6 @@ void main() {
   setUp(() async {
     appManager = StubbedAppManager();
 
-    when(appManager.authManager.stream).thenAnswer((_) => const Stream.empty());
-
     when(appManager.catchManager.existsWith(speciesId: anyNamed("speciesId")))
         .thenReturn(false);
     when(appManager.catchManager.list()).thenReturn([]);

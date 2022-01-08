@@ -7,7 +7,6 @@ import 'package:provider/provider.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
 
 import 'app_manager.dart';
-import 'auth_manager.dart';
 import 'log.dart';
 import 'properties_manager.dart';
 import 'user_preference_manager.dart';
@@ -51,8 +50,6 @@ class SubscriptionManager {
 
   SubscriptionManager(this._appManager);
 
-  AuthManager get _authManager => _appManager.authManager;
-
   PropertiesManager get _propertiesManager => _appManager.propertiesManager;
 
   PurchasesWrapper get _purchasesWrapper => _appManager.purchasesWrapper;
@@ -79,15 +76,6 @@ class SubscriptionManager {
     // Setup purchase state listener.
     _purchasesWrapper
         .addPurchaserInfoUpdateListener(_setStateFromPurchaserInfo);
-
-    _authManager.stream.listen((_) async {
-      if (_authManager.state == AuthState.loggedIn) {
-        _purchasesWrapper.logIn(_authManager.userId!);
-      } else if (_authManager.state == AuthState.loggedOut &&
-          !(await _purchasesWrapper.isAnonymous)) {
-        _purchasesWrapper.logOut();
-      }
-    });
   }
 
   Future<void> purchaseSubscription(Subscription sub) async {

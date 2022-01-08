@@ -2,7 +2,6 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/channels/migration_channel.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
 import 'package:mobile/pages/onboarding/catch_field_picker_page.dart';
-import 'package:mobile/pages/onboarding/email_verification_page.dart';
 import 'package:mobile/pages/onboarding/how_to_feedback_page.dart';
 import 'package:mobile/pages/onboarding/how_to_manage_fields_page.dart';
 import 'package:mobile/pages/onboarding/location_permission_page.dart';
@@ -22,8 +21,6 @@ void main() {
     appManager = StubbedAppManager();
 
     when(appManager.anglerManager.entityExists(any)).thenReturn(false);
-
-    when(appManager.authManager.isUserVerified).thenReturn(true);
 
     when(appManager.baitManager.attachmentsDisplayValues(any, any))
         .thenReturn([]);
@@ -100,8 +97,6 @@ void main() {
   });
 
   testWidgets("Navigation", (tester) async {
-    when(appManager.authManager.isUserVerified).thenReturn(false);
-    when(appManager.authManager.reloadUser()).thenAnswer((_) => Future.value());
     when(appManager.permissionHandlerWrapper.isLocationGranted)
         .thenAnswer((_) => Future.value(false));
 
@@ -120,8 +115,6 @@ void main() {
       ),
     );
 
-    expect(find.byType(EmailVerificationPage), findsOneWidget);
-    when(appManager.authManager.isUserVerified).thenReturn(true);
     await tapAndSettle(tester, find.text("NEXT"));
 
     expect(find.byType(MigrationPage), findsOneWidget);
@@ -159,25 +152,6 @@ void main() {
         appManager: appManager,
       ),
     );
-    expect(find.byType(CatchFieldPickerPage), findsOneWidget);
-  });
-
-  testWidgets("Email verification page shown", (tester) async {
-    // This scenario is tested in the "Navigation" test.
-  });
-
-  testWidgets("Email verification page skipped", (tester) async {
-    when(appManager.authManager.isUserVerified).thenReturn(true);
-
-    await tester.pumpWidget(
-      Testable(
-        (_) => OnboardingJourney(
-          onFinished: () {},
-        ),
-        appManager: appManager,
-      ),
-    );
-
     expect(find.byType(CatchFieldPickerPage), findsOneWidget);
   });
 }

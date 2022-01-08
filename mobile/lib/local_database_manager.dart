@@ -6,7 +6,6 @@ import 'package:sqflite/sqflite.dart';
 import 'package:sqflite/utils/utils.dart';
 
 import 'app_manager.dart';
-import 'auth_manager.dart';
 import 'database/sqlite_open_helper.dart';
 import 'log.dart';
 import 'model/gen/anglerslog.pb.dart';
@@ -17,6 +16,7 @@ class LocalDatabaseManager {
   static LocalDatabaseManager of(BuildContext context) =>
       Provider.of<AppManager>(context, listen: false).localDatabaseManager;
 
+  final _dbName = "anglers_log.db";
   final _log = const Log("DataManager");
   final AppManager _appManager;
 
@@ -24,16 +24,12 @@ class LocalDatabaseManager {
 
   LocalDatabaseManager(this._appManager);
 
-  AuthManager get _authManager => _appManager.authManager;
-
   IoWrapper get _ioWrapper => _appManager.ioWrapper;
 
   Future<void> initialize({
     Database? database,
   }) async {
-    assert(_authManager.state == AuthState.initializing,
-        "Can only initialize while AuthManager is initializing");
-    _database = database ?? (await openDb(_authManager.userId!));
+    _database = database ?? (await openDb(_dbName));
   }
 
   /// Commits a batch of SQL statements. See [Batch].

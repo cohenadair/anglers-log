@@ -1,7 +1,4 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:mobile/auth_manager.dart';
-import 'package:mobile/pages/onboarding/email_verification_page.dart';
 
 import '../../app_manager.dart';
 import '../../channels/migration_channel.dart';
@@ -41,8 +38,6 @@ class _OnboardingJourneyState extends State<OnboardingJourney> {
 
   AppManager get _appManager => AppManager.of(context);
 
-  AuthManager get _authManager => AuthManager.of(context);
-
   PermissionHandlerWrapper get _permissionHandlerWrapper =>
       PermissionHandlerWrapper.of(context);
 
@@ -52,11 +47,7 @@ class _OnboardingJourneyState extends State<OnboardingJourney> {
       onGenerateRoute: (routeSettings) {
         var name = routeSettings.name;
         if (name == _routeRoot) {
-          if (_authManager.isUserVerified) {
-            return _buildMigrateOrCatchFields();
-          } else {
-            return _buildEmailVerificationRoute();
-          }
+          return _buildMigrateOrCatchFields();
         } else if (name == _routeMigrateOrCatchFields) {
           return _buildMigrateOrCatchFields();
         } else if (name == _routeCatchFields) {
@@ -105,15 +96,6 @@ class _OnboardingJourneyState extends State<OnboardingJourney> {
     return MaterialPageRoute(
       builder: (context) => CatchFieldPickerPage(
         onNext: () => Navigator.of(context).pushNamed(_routeManageFields),
-      ),
-    );
-  }
-
-  Route _buildEmailVerificationRoute() {
-    return MaterialPageRoute(
-      builder: (context) => EmailVerificationPage(
-        onNext: () =>
-            Navigator.of(context).pushNamed(_routeMigrateOrCatchFields),
       ),
     );
   }

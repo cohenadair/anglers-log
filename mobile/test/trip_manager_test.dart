@@ -51,8 +51,6 @@ void main() {
   setUp(() {
     appManager = StubbedAppManager();
 
-    when(appManager.authManager.stream).thenAnswer((_) => const Stream.empty());
-
     when(appManager.imageManager.save(any, compress: anyNamed("compress")))
         .thenAnswer((_) => Future.value([]));
 

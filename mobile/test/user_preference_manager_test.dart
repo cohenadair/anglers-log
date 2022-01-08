@@ -1,20 +1,25 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mobile/app_manager.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
+import 'package:mobile/user_preference_manager.dart';
 import 'package:mobile/utils/atmosphere_utils.dart';
 import 'package:mobile/utils/catch_utils.dart';
 import 'package:mockito/mockito.dart';
 
 import 'mocks/stubbed_app_manager.dart';
-import 'test_utils.dart';
+
+class TestUserPreferenceManager extends UserPreferenceManager {
+  TestUserPreferenceManager(AppManager appManager) : super(appManager);
+
+  dynamic preference(String key) => preferences[key];
+}
 
 void main() {
   late StubbedAppManager appManager;
-  late NoFirestoreUserPreferenceManager userPreferenceManager;
+  late TestUserPreferenceManager userPreferenceManager;
 
   setUp(() {
     appManager = StubbedAppManager();
-
-    when(appManager.authManager.stream).thenAnswer((_) => const Stream.empty());
 
     when(appManager.localDatabaseManager.insertOrReplace(any, any))
         .thenAnswer((_) => Future.value(true));
@@ -22,7 +27,7 @@ void main() {
     when(appManager.subscriptionManager.stream)
         .thenAnswer((_) => const Stream.empty());
 
-    userPreferenceManager = NoFirestoreUserPreferenceManager(appManager.app);
+    userPreferenceManager = TestUserPreferenceManager(appManager.app);
   });
 
   test("catchLengthSystem defaults to imperial", () {

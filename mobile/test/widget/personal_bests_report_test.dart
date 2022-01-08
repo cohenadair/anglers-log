@@ -207,8 +207,6 @@ void main() {
     resetCatches();
     resetTrips();
 
-    when(appManager.authManager.stream).thenAnswer((_) => const Stream.empty());
-
     when(appManager.catchManager.catches(
       any,
       dateRange: anyNamed("dateRange"),

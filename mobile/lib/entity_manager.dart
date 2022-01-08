@@ -1,19 +1,16 @@
 import 'dart:async';
 import 'dart:typed_data';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:protobuf/protobuf.dart';
 import 'package:quiver/strings.dart';
 import 'package:sqflite/sqflite.dart';
 
 import 'app_manager.dart';
-import 'data_source_facilitator.dart';
 import 'local_database_manager.dart';
 import 'log.dart';
 import 'model/gen/anglerslog.pb.dart';
 import 'utils/protobuf_utils.dart';
-import 'wrappers/firestore_wrapper.dart';
 
 class EntityListener<T> {
   /// Invoked with the instance of T that was added.
@@ -50,8 +47,7 @@ class SimpleEntityListener<T> extends EntityListener<T> {
 /// Free users. Pro users' data is funnelled through Cloud Firestore before
 /// updating the local data and notifying listeners. Free users' data, on the
 /// other hand, goes directly to local storage.
-abstract class EntityManager<T extends GeneratedMessage>
-    extends DataSourceFacilitator {
+abstract class EntityManager<T extends GeneratedMessage> {
   static const _columnId = "id";
   static const _columnBytes = "bytes";
 
@@ -71,105 +67,23 @@ abstract class EntityManager<T extends GeneratedMessage>
   final _log = Log("EntityManager<$T>");
   final Set<EntityListener<T>> _listeners = {};
 
-  /// Stores [Id]s for which notify actions should be skipped. Used to bridge
-  /// the gap between updates and Firestore listeners.
-  final List<Id> _firebaseSkipNotifyIds = [];
-
   @protected
   final Map<Id, T> entities = {};
 
-  EntityManager(AppManager appManager) : super(appManager);
+  @protected
+  final AppManager appManager;
 
-  @override
-  bool get enableFirestore => true;
+  EntityManager(this.appManager);
 
-  @override
-  Future<void> initializeLocalData() async {
+  Future<void> initialize() async {
     for (var e in (await _fetchAll())) {
       entities[id(e)] = e;
     }
   }
 
-  @override
-  void clearMemory() {
-    entities.clear();
-  }
-
-  @override
-  StreamSubscription<dynamic> initializeFirestore(Completer completer) {
-    return firestore
-        .collection(_collectionPath)
-        .snapshots()
-        .listen((snapshot) async {
-      await localDatabaseManager.commitTransaction((batch) async =>
-          await _processFirestoreChanges(batch, snapshot.docChanges));
-
-      // Consider initialization done once all document changes have been
-      // processed.
-      if (!completer.isCompleted) {
-        completer.complete();
-      }
-    });
-  }
-
-  Future<void> _processFirestoreChanges(
-      Batch batch, List<DocumentChange<Map<String, dynamic>>> changes) async {
-    var logMap = {
-      DocumentChangeType.added: 0,
-      DocumentChangeType.modified: 0,
-      DocumentChangeType.removed: 0,
-    };
-
-    for (var change in changes) {
-      var bytes = change.doc.data()![_columnBytes] ?? [];
-      var entity =
-          bytes.isNotEmpty ? entityFromBytes(List<int>.from(bytes)) : null;
-      if (entity == null) {
-        _log.d("Couldn't parse bytes: ${change.doc.data()}");
-        continue;
-      }
-
-      // Data has been processed by Firestore, update it locally.
-      var id = this.id(entity);
-      var notify = !_firebaseSkipNotifyIds.contains(id);
-
-      logMap[change.type] = logMap[change.type]! + 1;
-
-      switch (change.type) {
-        case DocumentChangeType.added:
-        // Fallthrough
-        case DocumentChangeType.modified:
-          await _addOrUpdateLocal(entity, notify: notify, batch: batch);
-          break;
-        case DocumentChangeType.removed:
-          await _deleteLocal(id, notify: notify, batch: batch);
-          break;
-      }
-
-      _firebaseSkipNotifyIds.remove(id);
-    }
-
-    _log.d("Doc added=${logMap[DocumentChangeType.added]}; "
-        "modified=${logMap[DocumentChangeType.modified]}; "
-        "removed=${logMap[DocumentChangeType.removed]}");
-  }
-
-  @override
-  void onUpgradeToPro() {
-    // Since initializeFirestore has already been called, all data has been
-    // downloaded. All that's left to do is upload all local entities.
-    //
-    // No need to notify; these entities are already in the local database.
-    list().forEach((entity) => _addOrUpdateFirestore(entity, notify: false));
-  }
-
-  FirestoreWrapper get firestore => appManager.firestoreWrapper;
-
   @protected
   LocalDatabaseManager get localDatabaseManager =>
       appManager.localDatabaseManager;
-
-  String get _collectionPath => "${authManager.firestoreDocPath}/$tableName";
 
   bool idsMatchesFilter(List<Id> ids, String? filter) {
     for (var id in ids) {
@@ -228,30 +142,8 @@ abstract class EntityManager<T extends GeneratedMessage>
     T entity, {
     bool notify = true,
   }) async {
-    if (shouldUseFirestore) {
-      _log.d("addOrUpdate Firestore");
-      return _addOrUpdateFirestore(entity, notify: notify);
-    } else {
-      _log.d("addOrUpdate locally");
-      return _addOrUpdateLocal(entity, notify: notify);
-    }
-  }
-
-  Future<bool> _addOrUpdateFirestore(
-    T entity, {
-    bool notify = true,
-  }) async {
-    var id = this.id(entity);
-
-    if (!notify) {
-      _firebaseSkipNotifyIds.add(id);
-    }
-
-    await firestore.collection(_collectionPath).doc(id.uuid.toString()).set({
-      _columnBytes: entity.writeToBuffer(),
-    });
-
-    return true;
+    _log.d("addOrUpdate locally");
+    return _addOrUpdateLocal(entity, notify: notify);
   }
 
   /// Adds or updates the given entity. If [notify] is false (default true),
@@ -289,26 +181,8 @@ abstract class EntityManager<T extends GeneratedMessage>
     Id entityId, {
     bool notify = true,
   }) async {
-    if (shouldUseFirestore) {
-      await _deleteFirestore(entityId, notify: notify);
-    } else {
-      await _deleteLocal(entityId, notify: notify);
-    }
+    await _deleteLocal(entityId, notify: notify);
     return true;
-  }
-
-  Future<void> _deleteFirestore(
-    Id entityId, {
-    bool notify = true,
-  }) async {
-    if (!notify) {
-      _firebaseSkipNotifyIds.add(entityId);
-    }
-
-    await firestore
-        .collection(_collectionPath)
-        .doc(entityId.uuid.toString())
-        .delete();
   }
 
   Future<void> _deleteLocal(
