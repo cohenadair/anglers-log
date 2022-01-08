@@ -132,7 +132,10 @@ class Chart<T> extends StatefulWidget {
             "showAll is false; viewAllTitle is required"),
         assert(series.isNotEmpty) {
     var colors = accentColors();
+    var seriesLen = series.first.length;
     for (Series series in series) {
+      assert(series.length == seriesLen,
+          "All data lengths in series must be equal");
       Color color = colors[math.Random().nextInt(colors.length)];
       colors.remove(color);
       series._color = color.withOpacity(_rowColorOpacity);
