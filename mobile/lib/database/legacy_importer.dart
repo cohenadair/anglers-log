@@ -589,7 +589,11 @@ class LegacyImporter {
         ..timestamp = Int64(dateTime.millisecondsSinceEpoch);
 
       if (bait != null) {
-        cat.baits.add(bait.toAttachment());
+        // A maximum of 1 variant can be created when importing baits. If this
+        // catch's bait has a variant, use it.
+        cat.baits.add(bait.variants.isNotEmpty
+            ? bait.variants.first.toAttachment()
+            : bait.toAttachment());
       }
 
       if (fishingSpot != null) {

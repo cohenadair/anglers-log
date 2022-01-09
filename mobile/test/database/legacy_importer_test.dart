@@ -441,6 +441,7 @@ void main() {
     expect(speciesManager.entity(catches[0].speciesId)!.name, "Carp - Common");
     expect(catches[0].baits, isNotEmpty);
     expect(baitManager.entity(catches[0].baits.first.baitId)!.name, "Corn");
+    expect(catches[0].baits.first.hasVariantId(), isTrue);
     expect(catches[0].hasFishingSpotId(), isTrue);
     expect(fishingSpotManager.entity(catches[0].fishingSpotId)!.name,
         "Sequoyah Hills Park");
@@ -594,6 +595,7 @@ void main() {
     expect(catches[0].baits, isNotEmpty);
     expect(baitManager.entity(catches[0].baits.first.baitId)!.name,
         "Rapala F-7 - Brown Trout");
+    expect(catches[0].baits.first.hasVariantId(), isTrue);
     expect(catches[0].hasFishingSpotId(), isTrue);
     expect(
         fishingSpotManager.entity(catches[0].fishingSpotId)!.name, "Sewer Run");
