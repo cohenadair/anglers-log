@@ -16,7 +16,6 @@ class LocalDatabaseManager {
   static LocalDatabaseManager of(BuildContext context) =>
       Provider.of<AppManager>(context, listen: false).localDatabaseManager;
 
-  final _dbName = "anglers_log.db";
   final _log = const Log("DataManager");
   final AppManager _appManager;
 
@@ -29,7 +28,7 @@ class LocalDatabaseManager {
   Future<void> initialize({
     Database? database,
   }) async {
-    _database = database ?? (await openDb(_dbName));
+    _database = database ?? (await openDb());
   }
 
   /// Commits a batch of SQL statements. See [Batch].

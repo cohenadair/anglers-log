@@ -123,11 +123,11 @@ final List<List<String>> _schema = [
 
 const int _version = 6;
 
-Future<String> _databasePath(String userId) async =>
-    join(await getDatabasesPath(), "2.0", userId, _name);
+Future<String> _databasePath() async =>
+    join(await getDatabasesPath(), "2.0", _name);
 
-Future<Database> openDb(String databaseName) async {
-  var path = await _databasePath(databaseName);
+Future<Database> openDb() async {
+  var path = await _databasePath();
 
   if (await File(path).exists()) {
     _log.d("Database exists: $path");
