@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:mobile/wrappers/google_sign_in_wrapper.dart';
 import 'package:provider/provider.dart';
 
 import 'angler_manager.dart';
+import 'backup_and_restore_manager.dart';
 import 'bait_category_manager.dart';
 import 'bait_manager.dart';
 import 'body_of_water_manager.dart';
@@ -40,6 +42,7 @@ class AppManager {
 
   // Internal dependencies.
   AnglerManager? _anglerManager;
+  BackupAndRestoreManager? _backupAndRestoreManager;
   BaitCategoryManager? _baitCategoryManager;
   BaitManager? _baitManager;
   BodyOfWaterManager? _bodyOfWaterManager;
@@ -61,6 +64,7 @@ class AppManager {
 
   // External dependency wrappers.
   FilePickerWrapper? _filePickerWrapper;
+  GoogleSignInWrapper? _googleSignInWrapper;
   HttpWrapper? _httpWrapper;
   ImageCompressWrapper? _imageCompressWrapper;
   ImagePickerWrapper? _imagePickerWrapper;
@@ -77,6 +81,11 @@ class AppManager {
   AnglerManager get anglerManager {
     _anglerManager ??= AnglerManager(this);
     return _anglerManager!;
+  }
+
+  BackupAndRestoreManager get backupAndRestoreManager {
+    _backupAndRestoreManager ??= BackupAndRestoreManager(this);
+    return _backupAndRestoreManager!;
   }
 
   BaitCategoryManager get baitCategoryManager {
@@ -174,6 +183,11 @@ class AppManager {
     return _filePickerWrapper!;
   }
 
+  GoogleSignInWrapper get googleSignInWrapper {
+    _googleSignInWrapper ??= GoogleSignInWrapper();
+    return _googleSignInWrapper!;
+  }
+
   HttpWrapper get httpWrapper {
     _httpWrapper ??= HttpWrapper();
     return _httpWrapper!;
@@ -232,5 +246,48 @@ class AppManager {
   UrlLauncherWrapper get urlLauncherWrapper {
     _urlLauncherWrapper ??= UrlLauncherWrapper();
     return _urlLauncherWrapper!;
+  }
+
+  /// Initializes this [AppManager] instance. If [isStartup] is true, all
+  /// managers and monitors are initialized; otherwise, only database dependent
+  /// managers and monitors are initialized.
+  Future<void> initialize({bool isStartup = true}) async {
+    // Managers that don't depend on anything.
+    if (isStartup) {
+      await locationMonitor.initialize();
+      await propertiesManager.initialize();
+      await subscriptionManager.initialize();
+    }
+
+    // Need to initialize the local database before anything else, since all
+    // entity managers depend on the local database.
+    await localDatabaseManager.initialize();
+
+    // UserPreferenceManager includes "pro" override and needs to be initialized
+    // before managers that upload data to Firebase.
+    await userPreferenceManager.initialize();
+
+    // Depends on UserPreferenceManager.
+    if (isStartup) {
+      await backupAndRestoreManager.initialize();
+    }
+
+    await anglerManager.initialize();
+    await baitCategoryManager.initialize();
+    await baitManager.initialize();
+    await bodyOfWaterManager.initialize();
+    await catchManager.initialize();
+    await customEntityManager.initialize();
+    await fishingSpotManager.initialize();
+    await methodManager.initialize();
+    await reportManager.initialize();
+    await speciesManager.initialize();
+    await tripManager.initialize();
+    await waterClarityManager.initialize();
+
+    // Ensure everything is initialized before managing any image state.
+    if (isStartup) {
+      await imageManager.initialize();
+    }
   }
 }

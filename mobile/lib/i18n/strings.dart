@@ -985,6 +985,8 @@ class Strings {
 
   String get feedbackPageSending => _string("feedbackPage_sending");
 
+  String get backupPageMoreTitle => _string("backupPage_MoreTitle");
+
   String get importPageMoreTitle => _string("importPage_moreTitle");
 
   String get importPageTitle => _string("importPage_title");

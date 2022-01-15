@@ -1943,7 +1943,7 @@ class MockLocationMonitor extends _i1.Mock implements _i14.LocationMonitor {
       (super.noSuchMethod(Invocation.getter(#distanceFilterMeters),
           returnValue: 0) as int);
   @override
-  _i2.AppManager get appManager =>
+  _i2.AppManager get _appManager =>
       (super.noSuchMethod(Invocation.getter(#appManager),
           returnValue: _FakeAppManager_0()) as _i2.AppManager);
   @override

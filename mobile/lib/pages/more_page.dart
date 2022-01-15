@@ -16,6 +16,7 @@ import '../utils/store_utils.dart';
 import '../widgets/list_item.dart';
 import '../widgets/widget.dart';
 import 'angler_list_page.dart';
+import 'backup_page.dart';
 import 'body_of_water_list_page.dart';
 import 'method_list_page.dart';
 import 'pro_page.dart';
@@ -103,6 +104,13 @@ class MorePage extends StatelessWidget {
           page: const WaterClarityListPage(),
         ),
         const MinDivider(),
+        _buildPageItem(
+          context,
+          icon: Icons.cloud_upload,
+          title: Strings.of(context).backupPageMoreTitle,
+          page: BackupPage(),
+          presentPage: true,
+        ),
         _buildPageItem(
           context,
           icon: Icons.cloud_download,

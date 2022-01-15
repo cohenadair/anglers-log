@@ -474,10 +474,11 @@ Map<String, Map<String, String>> get englishStrings => {
         "feedbackPage_connectionError":
             "No internet connection. Please check your connection and try again.",
         "feedbackPage_sending": "Sending feedback...",
-        "importPage_moreTitle": "Import",
-        "importPage_title": "Import Data",
+        "backupPage_MoreTitle": "Backup and Restore",
+        "importPage_moreTitle": "Legacy Import",
+        "importPage_title": "Legacy Import",
         "importPage_description":
-            "Importing data you previously exported using Anglers' Log will be added to your existing log data and may take several minutes.",
+            "Importing data you previously exported using an older version of Anglers' Log will add to your existing log data.\n\nThe import process may take several minutes.",
         "importPage_importingImages": "Copying images...",
         "importPage_importingData": "Copying fishing data...",
         "importPage_success": "Successfully imported data!",

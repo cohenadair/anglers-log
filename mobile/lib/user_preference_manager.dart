@@ -29,6 +29,8 @@ class UserPreferenceManager extends PreferenceManager {
   static const _keyRateTimerStartedAt = "rate_timer_started_at";
   static const _keyDidRateApp = "did_rate_app";
   static const _keyDidOnboard = "did_onboard";
+  static const _keyDidSetupBackup = "did_setup_backup";
+  static const _keyLastBackupAt = "last_backup_at";
   static const _keyIsPro = "is_pro";
 
   static const _keySelectedReportId = "selected_report_id";
@@ -140,6 +142,17 @@ class UserPreferenceManager extends PreferenceManager {
   Future<void> setDidOnboard(bool onboarded) => put(_keyDidOnboard, onboarded);
 
   bool get didOnboard => preferences[_keyDidOnboard] ?? false;
+
+  // ignore: avoid_positional_boolean_parameters
+  Future<void> setDidSetupBackup(bool setupBackup) =>
+      put(_keyDidSetupBackup, setupBackup);
+
+  bool get didSetupBackup => preferences[_keyDidSetupBackup] ?? false;
+
+  Future<void> setLastBackupAt(int lastBackupAt) =>
+      put(_keyLastBackupAt, lastBackupAt);
+
+  int? get lastBackupAt => preferences[_keyLastBackupAt];
 
   Future<void> setSelectedReportId(Id? id) => putId(_keySelectedReportId, id);
 

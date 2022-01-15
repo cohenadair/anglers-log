@@ -22,7 +22,7 @@ class ImportPage extends StatelessWidget {
           loadingText: Strings.of(context).importPageImportingData,
           successText: Strings.of(context).importPageSuccess,
           feedbackPageTitle: Strings.of(context).importPageErrorTitle,
-        )
+        ),
       ],
     );
   }

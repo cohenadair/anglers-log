@@ -30,7 +30,7 @@ class _AnglersLogState extends State<AnglersLog> {
 
   AppManager get _appManager => widget.appManager;
 
-  ServicesWrapper get _services => _appManager.servicesWrapper;
+  ServicesWrapper get _servicesWrapper => _appManager.servicesWrapper;
 
   UserPreferenceManager get _userPreferencesManager =>
       _appManager.userPreferenceManager;
@@ -92,40 +92,13 @@ class _AnglersLogState extends State<AnglersLog> {
   }
 
   Future<bool> _initialize() async {
-    // Managers that don't depend on anything.
-    await _appManager.locationMonitor.initialize();
-    await _appManager.propertiesManager.initialize();
-    await _appManager.subscriptionManager.initialize();
-
-    // Need to initialize the local database before anything else, since all
-    // entity managers depend on the local database.
-    await _appManager.localDatabaseManager.initialize();
-
-    // UserPreferenceManager includes "pro" override and needs to be initialized
-    // before managers that upload data to Firebase.
-    await _appManager.userPreferenceManager.initialize();
-
-    await _appManager.anglerManager.initialize();
-    await _appManager.baitCategoryManager.initialize();
-    await _appManager.baitManager.initialize();
-    await _appManager.bodyOfWaterManager.initialize();
-    await _appManager.catchManager.initialize();
-    await _appManager.customEntityManager.initialize();
-    await _appManager.fishingSpotManager.initialize();
-    await _appManager.methodManager.initialize();
-    await _appManager.reportManager.initialize();
-    await _appManager.speciesManager.initialize();
-    await _appManager.tripManager.initialize();
-    await _appManager.waterClarityManager.initialize();
-
-    // Ensure everything is initialized before managing any image state.
-    await _appManager.imageManager.initialize();
+    await _appManager.initialize();
 
     // If the user hasn't yet onboarded, see if there is any legacy data to
     // migrate. We do this here to allow for a smoother transition between the
     // login page and onboarding journey.
     if (!_userPreferencesManager.didOnboard) {
-      _legacyJsonResult = await legacyJson(_services);
+      _legacyJsonResult = await legacyJson(_servicesWrapper);
     }
 
     return true;

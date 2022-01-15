@@ -77,7 +77,7 @@ class _MainPageState extends State<MainPage> {
     ];
 
     _catchManager = CatchManager.of(context);
-    _catchManagerListener = SimpleEntityListener<Catch>(
+    _catchManagerListener = EntityListener<Catch>(
       onAdd: (_) => showRateDialogIfNeeded(context),
     );
     _catchManager.addListener(_catchManagerListener);

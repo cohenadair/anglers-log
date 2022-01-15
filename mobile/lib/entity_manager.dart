@@ -22,23 +22,15 @@ class EntityListener<T> {
   /// Invoked with the instance of T that were updated.
   void Function(T)? onUpdate;
 
+  /// Invoked when entities are reset, such as after restoring from a backup.
+  void Function()? onReset;
+
   EntityListener({
     this.onAdd,
     this.onDelete,
     this.onUpdate,
+    this.onReset,
   });
-}
-
-class SimpleEntityListener<T> extends EntityListener<T> {
-  SimpleEntityListener({
-    void Function(T entity)? onAdd,
-    void Function(T entity)? onDelete,
-    void Function(T entity)? onUpdate,
-  }) : super(
-          onAdd: onAdd ?? (_) {},
-          onDelete: onDelete ?? (_) {},
-          onUpdate: onUpdate ?? (_) {},
-        );
 }
 
 /// An abstract class for managing a collection of [Entity] objects.
@@ -76,9 +68,11 @@ abstract class EntityManager<T extends GeneratedMessage> {
   EntityManager(this.appManager);
 
   Future<void> initialize() async {
+    entities.clear();
     for (var e in (await _fetchAll())) {
       entities[id(e)] = e;
     }
+    _notifyOnReset();
   }
 
   @protected
@@ -261,15 +255,23 @@ abstract class EntityManager<T extends GeneratedMessage> {
     _notify((listener) => listener.onUpdate?.call(entity));
   }
 
-  SimpleEntityListener<T> addSimpleListener({
+  void _notifyOnReset() {
+    _notify((listener) => listener.onReset?.call());
+  }
+
+  // Required to create a listener of type T, so EntityListenerBuilder doesn't
+  // need to have a generic parameter.
+  EntityListener<T> addTypedListener({
     void Function(T entity)? onAdd,
     void Function(T entity)? onDelete,
     void Function(T entity)? onUpdate,
+    void Function()? onReset,
   }) {
-    var listener = SimpleEntityListener<T>(
+    var listener = EntityListener<T>(
       onAdd: onAdd,
       onDelete: onDelete,
       onUpdate: onUpdate,
+      onReset: onReset,
     );
     addListener(listener);
     return listener;
@@ -296,9 +298,18 @@ class EntityListenerBuilder extends StatefulWidget {
   final void Function(dynamic)? onUpdate;
 
   /// Invoked on add, delete, or update, in addition to [onAdd], [onDelete],
-  /// [onUpdate]. Invoked _inside_ the call to [setState]. As such,
-  /// [onAnyChange] should not return a [Future].
+  /// [onUpdate]. Also invoked when data is reset. Invoked _inside_ the call
+  /// to [setState]. As such, [onAnyChange] should not return a [Future].
   final VoidCallback? onAnyChange;
+
+  /// When true, [setState] is invoked when [onAdd], [onDelete], or
+  /// [onAnyChange] is invoked. If false, [setState] is not invoked, and it is
+  /// the responsibility of the caller to invoke [setState]. Default to true.
+  ///
+  /// This exists for cases where async work needs to be done when data changes.
+  /// Calls to [setState] cannot return futures, and must be done after the
+  /// async work has finished.
+  final bool changesUpdatesState;
 
   /// If false, the widget is not rebuilt when data is deleted. This is useful
   /// when we need to pop an item from a [Navigator] when data is deleted
@@ -314,6 +325,7 @@ class EntityListenerBuilder extends StatefulWidget {
     this.onDeleteEnabled = true,
     this.onUpdate,
     this.onAnyChange,
+    this.changesUpdatesState = true,
   });
 
   @override
@@ -328,23 +340,11 @@ class _EntityListenerBuilderState extends State<EntityListenerBuilder> {
     super.initState();
 
     for (var manager in widget.managers) {
-      _listeners.add(manager.addSimpleListener(
-        onAdd: (entity) => setState(() {
-          widget.onAdd?.call(entity);
-          widget.onAnyChange?.call();
-        }),
-        onDelete: widget.onDeleteEnabled
-            ? (entity) {
-                setState(() {
-                  widget.onDelete?.call(entity);
-                  widget.onAnyChange?.call();
-                });
-              }
-            : null,
-        onUpdate: (entity) => setState(() {
-          widget.onUpdate?.call(entity);
-          widget.onAnyChange?.call();
-        }),
+      _listeners.add(manager.addTypedListener(
+        onAdd: _onAdd,
+        onDelete: _onDelete,
+        onUpdate: _onUpdate,
+        onReset: _onReset,
       ));
     }
   }
@@ -360,4 +360,41 @@ class _EntityListenerBuilderState extends State<EntityListenerBuilder> {
 
   @override
   Widget build(BuildContext context) => widget.builder(context);
+
+  void _onAdd(dynamic entity) {
+    _notify(() {
+      widget.onAdd?.call(entity);
+      widget.onAnyChange?.call();
+    });
+  }
+
+  void _onDelete(dynamic entity) {
+    if (!widget.onDeleteEnabled) {
+      return;
+    }
+
+    _notify(() {
+      widget.onDelete?.call(entity);
+      widget.onAnyChange?.call();
+    });
+  }
+
+  void _onUpdate(dynamic entity) {
+    _notify(() {
+      widget.onUpdate?.call(entity);
+      widget.onAnyChange?.call();
+    });
+  }
+
+  void _onReset() {
+    _notify(() => widget.onAnyChange?.call());
+  }
+
+  void _notify(VoidCallback callback) {
+    if (widget.changesUpdatesState) {
+      setState(() => callback());
+    } else {
+      callback();
+    }
+  }
 }
