@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:io' as io;
 
-import 'package:collection/collection.dart' show IterableExtension;
 import 'package:extension_google_sign_in_as_googleapis_auth/extension_google_sign_in_as_googleapis_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -61,9 +60,8 @@ class BackupAndRestoreManager {
   static BackupAndRestoreManager of(BuildContext context) =>
       Provider.of<AppManager>(context, listen: false).backupAndRestoreManager;
 
-  static const _folderName = "AnglersLogBackup";
   static const _databaseName = "anglerslog.db";
-  static const _mimeTypeFolder = "application/vnd.google-apps.folder";
+  static const _appDataFolderName = "appDataFolder";
 
   // Maximum size per
   // https://developers.google.com/drive/api/v3/reference/files/list.
@@ -139,7 +137,8 @@ class BackupAndRestoreManager {
       return;
     }
 
-    _googleSignIn = _googleSignInWrapper.newInstance([DriveApi.driveScope]);
+    _googleSignIn =
+        _googleSignInWrapper.newInstance([DriveApi.driveAppdataScope]);
 
     try {
       _currentUser =
@@ -235,7 +234,7 @@ class BackupAndRestoreManager {
       _log.d("Creating database file");
 
       await drive.files.create(
-        newDriveDatabaseFile..parents = [backupFiles.folderId],
+        newDriveDatabaseFile..parents = [_appDataFolderName],
         uploadMedia: databaseMedia,
       );
     } else {
@@ -263,7 +262,7 @@ class BackupAndRestoreManager {
       await drive.files.create(
         File(
           name: basename(image),
-          parents: [backupFiles.folderId],
+          parents: [_appDataFolderName],
         ),
         uploadMedia: Media(localFile.openRead(), localFile.lengthSync()),
       );
@@ -334,40 +333,6 @@ class BackupAndRestoreManager {
     DriveApi drive, {
     required bool backup,
   }) async {
-    // Fetch backup folder.
-    var folders = await drive.files.list(
-      q: "mimeType = '$_mimeTypeFolder' "
-          "and name = '$_folderName' "
-          "and trashed = false",
-    );
-
-    // Exit early if we're trying to restore and the backup folder doesn't
-    // exist.
-    if (!backup && (folders.files == null || folders.files!.isEmpty)) {
-      _notifyError(BackupAndRestoreProgress(
-          BackupAndRestoreProgressEnum.folderNotFound));
-      return null;
-    }
-
-    if (backup) {
-      _notifyProgress(BackupAndRestoreProgress(
-          BackupAndRestoreProgressEnum.creatingFolder));
-    }
-
-    // Fetched folders should only ever have one value. If not, use the first.
-    // If the folder doesn't exist, create it.
-    var folderId = folders.files?.firstOrNull?.id ??
-        (await drive.files.create(File()
-              ..name = _folderName
-              ..mimeType = _mimeTypeFolder))
-            .id;
-
-    if (folderId == null) {
-      _notifyError(BackupAndRestoreProgress(
-          BackupAndRestoreProgressEnum.createFolderError));
-      return null;
-    }
-
     var images = <File>[];
     String? databaseId;
 
@@ -375,11 +340,9 @@ class BackupAndRestoreManager {
     while (true) {
       var fileList = await drive.files.list(
         $fields: "files(id,name),nextPageToken",
+        spaces: _appDataFolderName,
         pageToken: nextPageToken,
         pageSize: _filesFetchSize,
-        q: "'$folderId' in parents "
-            "and trashed = false "
-            "and name != ''",
       );
 
       nextPageToken = fileList.nextPageToken;
@@ -397,7 +360,7 @@ class BackupAndRestoreManager {
       }
     }
 
-    return _BackupFiles(folderId, databaseId, images);
+    return _BackupFiles(databaseId, images);
   }
 
   Future<void> _downloadAndWriteFile(
@@ -424,12 +387,10 @@ class BackupAndRestoreManager {
 }
 
 class _BackupFiles {
-  final String folderId;
-
   /// Can be null if the database hasn't yet been backed up.
   final String? databaseId;
 
   final List<File> images;
 
-  _BackupFiles(this.folderId, this.databaseId, this.images);
+  _BackupFiles(this.databaseId, this.images);
 }
