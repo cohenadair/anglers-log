@@ -40,7 +40,6 @@ class BackupPage extends StatelessWidget {
         ProCheckboxInput(
           padding: insetsZero,
           label: Strings.of(context).backupPageAutoTitle,
-          description: Strings.of(context).backupPageAutoDescription,
           value: userPreferenceManager.autoBackup,
           onSetValue: (checked) => userPreferenceManager.setAutoBackup(checked),
         ),

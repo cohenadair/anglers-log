@@ -12,7 +12,7 @@ import 'widget.dart';
 
 class ProCheckboxInput extends StatefulWidget {
   final String label;
-  final String description;
+  final String? description;
   final bool value;
   final Widget? leading;
   final EdgeInsets? padding;
@@ -20,7 +20,7 @@ class ProCheckboxInput extends StatefulWidget {
 
   const ProCheckboxInput({
     required this.label,
-    required this.description,
+    this.description,
     required this.value,
     this.leading,
     this.padding,

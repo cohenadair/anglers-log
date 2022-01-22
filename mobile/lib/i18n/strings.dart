@@ -1789,8 +1789,6 @@ class Strings {
 
   String get backupPageAutoTitle => _string("backupPage_autoTitle");
 
-  String get backupPageAutoDescription => _string("backupPage_autoDescription");
-
   String get backupPageLastBackupLabel => _string("backupPage_lastBackupLabel");
 
   String get backupPageLastBackupNever => _string("backupPage_lastBackupNever");

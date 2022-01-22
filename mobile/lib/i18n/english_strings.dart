@@ -874,7 +874,6 @@ Map<String, Map<String, String>> get englishStrings => {
         "backupPage_action": "Backup Now",
         "backupPage_errorTitle": "Backup Error",
         "backupPage_autoTitle": "Automatically Backup",
-        "backupPage_autoDescription": "Each time your log data changes.",
         "backupPage_lastBackupLabel": "Last Backup",
         "backupPage_lastBackupNever": "Never",
         "restorePage_title": "Restore",

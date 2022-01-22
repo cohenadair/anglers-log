@@ -267,11 +267,6 @@ class AppManager {
     // before managers that upload data to Firebase.
     await userPreferenceManager.initialize();
 
-    // Depends on UserPreferenceManager.
-    if (isStartup) {
-      await backupRestoreManager.initialize();
-    }
-
     await anglerManager.initialize();
     await baitCategoryManager.initialize();
     await baitManager.initialize();
@@ -285,8 +280,8 @@ class AppManager {
     await tripManager.initialize();
     await waterClarityManager.initialize();
 
-    // Ensure everything is initialized before managing any image state.
     if (isStartup) {
+      await backupRestoreManager.initialize();
       await imageManager.initialize();
     }
   }

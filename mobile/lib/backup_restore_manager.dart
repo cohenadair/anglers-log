@@ -5,7 +5,10 @@ import 'package:extension_google_sign_in_as_googleapis_auth/extension_google_sig
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:googleapis/drive/v3.dart';
+import 'package:mobile/catch_manager.dart';
+import 'package:mobile/entity_manager.dart';
 import 'package:mobile/image_manager.dart';
+import 'package:mobile/subscription_manager.dart';
 import 'package:mobile/user_preference_manager.dart';
 import 'package:mobile/utils/number_utils.dart';
 import 'package:path/path.dart';
@@ -14,6 +17,7 @@ import 'package:provider/provider.dart';
 import 'app_manager.dart';
 import 'local_database_manager.dart';
 import 'log.dart';
+import 'model/gen/anglerslog.pb.dart';
 import 'time_manager.dart';
 import 'wrappers/google_sign_in_wrapper.dart';
 import 'wrappers/io_wrapper.dart';
@@ -69,6 +73,9 @@ class BackupRestoreManager {
   // https://developers.google.com/drive/api/v3/reference/files/list.
   static const _filesFetchSize = 1000;
 
+  /// Rate limit how often automatic backups are made.
+  static const _autoBackupInterval = Duration.millisecondsPerMinute * 5;
+
   final _log = const Log("BackupManager");
   final _authController = StreamController<BackupRestoreAuthState>.broadcast();
   final _progressController =
@@ -76,11 +83,16 @@ class BackupRestoreManager {
 
   final AppManager _appManager;
 
+  // Keep reference to a listener so it isn't added multiple times.
+  late final EntityListener<Catch> _catchManagerListener;
+
   /// True if a backup or restore is in progress; false otherwise.
   var _isInProgress = false;
 
   GoogleSignIn? _googleSignIn;
   GoogleSignInAccount? _currentUser;
+
+  CatchManager get _catchManager => _appManager.catchManager;
 
   GoogleSignInWrapper get _googleSignInWrapper =>
       _appManager.googleSignInWrapper;
@@ -92,12 +104,21 @@ class BackupRestoreManager {
   LocalDatabaseManager get _localDatabaseManager =>
       _appManager.localDatabaseManager;
 
+  SubscriptionManager get _subscriptionManager =>
+      _appManager.subscriptionManager;
+
   TimeManager get _timeManager => _appManager.timeManager;
 
   UserPreferenceManager get _userPreferenceManager =>
       _appManager.userPreferenceManager;
 
-  BackupRestoreManager(this._appManager);
+  BackupRestoreManager(this._appManager) {
+    _catchManagerListener = EntityListener<Catch>(
+      onAdd: (_) => _autoBackupIfNeeded(),
+      onDelete: (_) => _autoBackupIfNeeded(),
+      onUpdate: (_) => _autoBackupIfNeeded(),
+    );
+  }
 
   /// A [Stream] that fires events when a user's authentication changes.
   Stream<BackupRestoreAuthState> get authStream => _authController.stream;
@@ -118,7 +139,7 @@ class BackupRestoreManager {
   Future<void> initialize() async {
     _userPreferenceManager.stream.listen((_) {
       if (_userPreferenceManager.didSetupBackup) {
-        _authenticateUser();
+        _authenticateAndSetupAutoBackup();
       } else {
         _disconnectAccount();
       }
@@ -130,7 +151,12 @@ class BackupRestoreManager {
     }
 
     _log.d("Authenticating user for data backup and restore");
+    await _authenticateAndSetupAutoBackup();
+  }
+
+  Future<void> _authenticateAndSetupAutoBackup() async {
     await _authenticateUser();
+    _catchManager.addListener(_catchManagerListener);
   }
 
   Future<void> _authenticateUser() async {
@@ -167,6 +193,24 @@ class BackupRestoreManager {
     _currentUser = await _googleSignIn?.disconnect();
     _authController.add(BackupRestoreAuthState.signedOut);
     _userPreferenceManager.setUserEmail(null);
+  }
+
+  Future<void> _autoBackupIfNeeded() async {
+    if (_subscriptionManager.isFree ||
+        !isSignedIn ||
+        !_userPreferenceManager.autoBackup ||
+        !(await _ioWrapper.isConnected())) {
+      return;
+    }
+
+    var lastBackupAt = _userPreferenceManager.lastBackupAt;
+    if (lastBackupAt != null &&
+        _timeManager.msSinceEpoch - lastBackupAt < _autoBackupInterval) {
+      _log.d("Last backup was < interval, skipping...");
+      return;
+    }
+
+    await backup();
   }
 
   Future<void> backup() async {
