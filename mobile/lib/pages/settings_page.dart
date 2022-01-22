@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mobile/pages/import_page.dart';
 
 import '../i18n/strings.dart';
 import '../res/gen/custom_icons.dart';
@@ -34,6 +35,8 @@ class _SettingsPageState extends State<SettingsPage> {
           _buildFetchAtmosphere(context),
           const MinDivider(),
           _buildUnits(context),
+          const MinDivider(),
+          _buildLegacyImport(context),
         ],
       ),
     );
@@ -44,6 +47,7 @@ class _SettingsPageState extends State<SettingsPage> {
       label: Strings.of(context).settingsPageFetchAtmosphereTitle,
       description: Strings.of(context).settingsPageFetchAtmosphereDescription,
       value: _userPreferenceManager.autoFetchAtmosphere,
+      leading: const Icon(Icons.air),
       onChanged: (checked) {
         if (_subscriptionManager.isPro && checked) {
           _userPreferenceManager.setAutoFetchAtmosphere(true);
@@ -67,6 +71,14 @@ class _SettingsPageState extends State<SettingsPage> {
       leading: const Icon(CustomIcons.ruler),
       trailing: RightChevronIcon(),
       onTap: () => push(context, UnitsPage()),
+    );
+  }
+
+  Widget _buildLegacyImport(BuildContext context) {
+    return ListItem(
+      leading: const Icon(Icons.cloud_download),
+      title: Text(Strings.of(context).importPageMoreTitle),
+      onTap: () => present(context, ImportPage()),
     );
   }
 }

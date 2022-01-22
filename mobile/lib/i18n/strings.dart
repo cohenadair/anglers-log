@@ -985,8 +985,6 @@ class Strings {
 
   String get feedbackPageSending => _string("feedbackPage_sending");
 
-  String get backupPageMoreTitle => _string("backupPage_MoreTitle");
-
   String get importPageMoreTitle => _string("importPage_moreTitle");
 
   String get importPageTitle => _string("importPage_title");
@@ -1000,8 +998,6 @@ class Strings {
   String get importPageSuccess => _string("importPage_success");
 
   String get importPageError => _string("importPage_error");
-
-  String get importPageSendReport => _string("importPage_sendReport");
 
   String get importPageErrorWarningMessage =>
       _string("importPage_errorWarningMessage");
@@ -1782,6 +1778,34 @@ class Strings {
   String get tripSummaryLengthPerTrip => _string("tripSummary_lengthPerTrip");
 
   String get tripSummaryBestLength => _string("tripSummary_bestLength");
+
+  String get backupPageTitle => _string("backupPage_title");
+
+  String get backupPageDescription => _string("backupPage_description");
+
+  String get backupPageAction => _string("backupPage_action");
+
+  String get backupPageErrorTitle => _string("backupPage_errorTitle");
+
+  String get restorePageTitle => _string("restorePage_title");
+
+  String get restorePageDescription => _string("restorePage_description");
+
+  String get restorePageAction => _string("restorePage_action");
+
+  String get restorePageErrorTitle => _string("restorePage_errorTitle");
+
+  String get cloudAuthSignOut => _string("cloudAuth_signOut");
+
+  String get cloudAuthSignedInAs => _string("cloudAuth_signedInAs");
+
+  String get cloudAuthSignInWithGoogle => _string("cloudAuth_signInWithGoogle");
+
+  String get cloudAuthDescription => _string("cloudAuth_description");
+
+  String get cloudAuthError => _string("cloudAuth_error");
+
+  String get asyncFeedbackSendReport => _string("asyncFeedback_sendReport");
 }
 
 class StringsDelegate extends LocalizationsDelegate<Strings> {

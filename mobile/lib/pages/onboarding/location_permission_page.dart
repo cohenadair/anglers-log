@@ -24,12 +24,9 @@ class LocationPermissionPage extends StatelessWidget {
       nextButtonEnabled: false,
       children: [
         const VerticalSpace(paddingDefault),
-        const WatermarkLogo(icon: Icons.location_on),
-        const VerticalSpace(paddingXL),
-        TitleLabel.style1(
-          Strings.of(context).onboardingJourneyLocationAccessTitle,
-          overflow: TextOverflow.visible,
-          align: TextAlign.center,
+        WatermarkLogo(
+          icon: Icons.location_on,
+          title: Strings.of(context).onboardingJourneyLocationAccessTitle,
         ),
         const VerticalSpace(paddingDefault),
         Padding(

@@ -18,13 +18,13 @@ import 'time_manager.dart';
 import 'wrappers/google_sign_in_wrapper.dart';
 import 'wrappers/io_wrapper.dart';
 
-enum BackupAndRestoreAuthState {
+enum BackupRestoreAuthState {
   signedOut,
   signedIn,
   error,
 }
 
-enum BackupAndRestoreProgressEnum {
+enum BackupRestoreProgressEnum {
   // Errors
   authClientError,
   createFolderError,
@@ -44,21 +44,21 @@ enum BackupAndRestoreProgressEnum {
   finished,
 }
 
-class BackupAndRestoreProgress {
-  final BackupAndRestoreProgressEnum value;
+class BackupRestoreProgress {
+  final BackupRestoreProgressEnum value;
   final Object? apiError;
   final int? percentage;
 
-  BackupAndRestoreProgress(
+  BackupRestoreProgress(
     this.value, {
     this.apiError,
     this.percentage,
   });
 }
 
-class BackupAndRestoreManager {
-  static BackupAndRestoreManager of(BuildContext context) =>
-      Provider.of<AppManager>(context, listen: false).backupAndRestoreManager;
+class BackupRestoreManager {
+  static BackupRestoreManager of(BuildContext context) =>
+      Provider.of<AppManager>(context, listen: false).backupRestoreManager;
 
   static const _databaseName = "anglerslog.db";
   static const _appDataFolderName = "appDataFolder";
@@ -68,10 +68,9 @@ class BackupAndRestoreManager {
   static const _filesFetchSize = 1000;
 
   final _log = const Log("BackupManager");
-  final _authController =
-      StreamController<BackupAndRestoreAuthState>.broadcast();
+  final _authController = StreamController<BackupRestoreAuthState>.broadcast();
   final _progressController =
-      StreamController<BackupAndRestoreProgress>.broadcast();
+      StreamController<BackupRestoreProgress>.broadcast();
 
   final AppManager _appManager;
 
@@ -96,14 +95,14 @@ class BackupAndRestoreManager {
   UserPreferenceManager get _userPreferenceManager =>
       _appManager.userPreferenceManager;
 
-  BackupAndRestoreManager(this._appManager);
+  BackupRestoreManager(this._appManager);
 
   /// A [Stream] that fires events when a user's authentication changes.
-  Stream<BackupAndRestoreAuthState> get authStream => _authController.stream;
+  Stream<BackupRestoreAuthState> get authStream => _authController.stream;
 
   /// A [Stream] that fires events when the progress of a backup or restore
   /// changes.
-  Stream<BackupAndRestoreProgress> get progressStream =>
+  Stream<BackupRestoreProgress> get progressStream =>
       _progressController.stream;
 
   GoogleSignInAccount? get currentUser => _currentUser;
@@ -147,14 +146,14 @@ class BackupAndRestoreManager {
       _log.d("Current user: ${_currentUser?.email}");
     } catch (error) {
       _log.e("Sign in error: $error");
-      _authController.add(BackupAndRestoreAuthState.error);
+      _authController.add(BackupRestoreAuthState.error);
     }
 
     if (_currentUser == null) {
       // Sign in failed.
       _userPreferenceManager.setDidSetupBackup(false);
     } else {
-      _authController.add(BackupAndRestoreAuthState.signedIn);
+      _authController.add(BackupRestoreAuthState.signedIn);
     }
   }
 
@@ -163,7 +162,7 @@ class BackupAndRestoreManager {
       return;
     }
     _currentUser = await _googleSignIn?.disconnect();
-    _authController.add(BackupAndRestoreAuthState.signedOut);
+    _authController.add(BackupRestoreAuthState.signedOut);
   }
 
   Future<void> backup() async {
@@ -180,18 +179,18 @@ class BackupAndRestoreManager {
     }
 
     try {
-      _notifyProgress(BackupAndRestoreProgress(
-          BackupAndRestoreProgressEnum.authenticating));
+      _notifyProgress(
+          BackupRestoreProgress(BackupRestoreProgressEnum.authenticating));
 
       var authClient = await _googleSignIn?.authenticatedClient();
       if (authClient == null) {
-        _notifyError(BackupAndRestoreProgress(
-            BackupAndRestoreProgressEnum.authClientError));
+        _notifyError(
+            BackupRestoreProgress(BackupRestoreProgressEnum.authClientError));
         return;
       }
 
       _notifyProgress(
-          BackupAndRestoreProgress(BackupAndRestoreProgressEnum.fetchingFiles));
+          BackupRestoreProgress(BackupRestoreProgressEnum.fetchingFiles));
 
       var drive = DriveApi(authClient);
       if (backup) {
@@ -202,8 +201,8 @@ class BackupAndRestoreManager {
     } catch (error) {
       _log.e("Unknown backup or restore error: $error");
 
-      _notifyError(BackupAndRestoreProgress(
-        BackupAndRestoreProgressEnum.apiRequestError,
+      _notifyError(BackupRestoreProgress(
+        BackupRestoreProgressEnum.apiRequestError,
         apiError: error,
       ));
     }
@@ -227,8 +226,8 @@ class BackupAndRestoreManager {
     var newDriveDatabaseFile = File(name: _databaseName);
     var databaseMedia = Media(db.openRead(), db.lengthSync());
 
-    _notifyProgress(BackupAndRestoreProgress(
-        BackupAndRestoreProgressEnum.backingUpDatabase));
+    _notifyProgress(
+        BackupRestoreProgress(BackupRestoreProgressEnum.backingUpDatabase));
 
     if (backupFiles.databaseId == null) {
       _log.d("Creating database file");
@@ -252,8 +251,8 @@ class BackupAndRestoreManager {
 
     var numberOfImagesUploaded = 0;
     for (var image in imageFiles) {
-      _notifyProgress(BackupAndRestoreProgress(
-        BackupAndRestoreProgressEnum.backingUpImages,
+      _notifyProgress(BackupRestoreProgress(
+        BackupRestoreProgressEnum.backingUpImages,
         percentage: percent(numberOfImagesUploaded, imageFiles.length),
       ));
 
@@ -273,8 +272,7 @@ class BackupAndRestoreManager {
 
     _userPreferenceManager.setLastBackupAt(_timeManager.msSinceEpoch);
 
-    _notifyProgress(
-        BackupAndRestoreProgress(BackupAndRestoreProgressEnum.finished));
+    _notifyProgress(BackupRestoreProgress(BackupRestoreProgressEnum.finished));
   }
 
   Future<void> _restore(DriveApi drive) async {
@@ -284,13 +282,13 @@ class BackupAndRestoreManager {
     }
 
     if (backupFiles.databaseId == null) {
-      _notifyError(BackupAndRestoreProgress(
-          BackupAndRestoreProgressEnum.databaseFileNotFound));
+      _notifyError(BackupRestoreProgress(
+          BackupRestoreProgressEnum.databaseFileNotFound));
       return;
     }
 
-    _notifyProgress(BackupAndRestoreProgress(
-        BackupAndRestoreProgressEnum.restoringDatabase));
+    _notifyProgress(
+        BackupRestoreProgress(BackupRestoreProgressEnum.restoringDatabase));
 
     // Download the database file first. If there's an error with this file,
     // there's no point in downloading images.
@@ -299,8 +297,8 @@ class BackupAndRestoreManager {
 
     var numberOfImagesDownloaded = 0;
     for (var file in backupFiles.images) {
-      _notifyProgress(BackupAndRestoreProgress(
-        BackupAndRestoreProgressEnum.restoringImages,
+      _notifyProgress(BackupRestoreProgress(
+        BackupRestoreProgressEnum.restoringImages,
         percentage:
             percent(numberOfImagesDownloaded, backupFiles.images.length),
       ));
@@ -315,16 +313,17 @@ class BackupAndRestoreManager {
 
       _log.d("Downloading image: ${file.name}");
       await _downloadAndWriteFile(drive, file.id!, imageFile);
+
+      numberOfImagesDownloaded++;
     }
 
     _notifyProgress(
-        BackupAndRestoreProgress(BackupAndRestoreProgressEnum.reloadingData));
+        BackupRestoreProgress(BackupRestoreProgressEnum.reloadingData));
 
     // Reinitializing AppManager will reload data from the new database.
     await _appManager.initialize(isStartup: false);
 
-    _notifyProgress(
-        BackupAndRestoreProgress(BackupAndRestoreProgressEnum.finished));
+    _notifyProgress(BackupRestoreProgress(BackupRestoreProgressEnum.finished));
   }
 
   /// Fetches files on the user's Google Drive using pagination, filtered by
@@ -373,7 +372,7 @@ class BackupAndRestoreManager {
   }
 
   void _notifyProgress(
-    BackupAndRestoreProgress progress, {
+    BackupRestoreProgress progress, {
     bool killProcess = false,
   }) {
     if (killProcess) {
@@ -382,7 +381,7 @@ class BackupAndRestoreManager {
     _progressController.add(progress);
   }
 
-  void _notifyError(BackupAndRestoreProgress error) =>
+  void _notifyError(BackupRestoreProgress error) =>
       _notifyProgress(error, killProcess: true);
 }
 

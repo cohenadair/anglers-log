@@ -10,6 +10,7 @@ class ScrollPage extends StatelessWidget {
   final List<Widget> footer;
 
   final EdgeInsets padding;
+  final CrossAxisAlignment crossAxisAlignment;
 
   /// See [Scaffold.extendBodyBehindAppBar].
   final bool extendBodyBehindAppBar;
@@ -31,6 +32,7 @@ class ScrollPage extends StatelessWidget {
     this.children = const [],
     this.footer = const [],
     this.padding = insetsZero,
+    this.crossAxisAlignment = CrossAxisAlignment.center,
     this.extendBodyBehindAppBar = true,
     this.enableHorizontalSafeArea = true,
     this.centerContent = false,
@@ -51,6 +53,7 @@ class ScrollPage extends StatelessWidget {
         left: enableHorizontalSafeArea,
         right: enableHorizontalSafeArea,
         child: Column(
+          crossAxisAlignment: crossAxisAlignment,
           children: [
             VerticalSpace(padding.top),
             ...children,

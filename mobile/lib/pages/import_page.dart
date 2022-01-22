@@ -12,7 +12,7 @@ class ImportPage extends StatelessWidget {
     return ScrollPage(
       appBar: TransparentAppBar(context),
       extendBodyBehindAppBar: true,
-      padding: insetsDefault,
+      padding: insetsHorizontalDefaultBottomDefault,
       children: [
         DataImporter(
           watermarkIcon: Icons.cloud_download,

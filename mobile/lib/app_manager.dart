@@ -3,7 +3,7 @@ import 'package:mobile/wrappers/google_sign_in_wrapper.dart';
 import 'package:provider/provider.dart';
 
 import 'angler_manager.dart';
-import 'backup_and_restore_manager.dart';
+import 'backup_restore_manager.dart';
 import 'bait_category_manager.dart';
 import 'bait_manager.dart';
 import 'body_of_water_manager.dart';
@@ -42,7 +42,7 @@ class AppManager {
 
   // Internal dependencies.
   AnglerManager? _anglerManager;
-  BackupAndRestoreManager? _backupAndRestoreManager;
+  BackupRestoreManager? _backupRestoreManager;
   BaitCategoryManager? _baitCategoryManager;
   BaitManager? _baitManager;
   BodyOfWaterManager? _bodyOfWaterManager;
@@ -83,9 +83,9 @@ class AppManager {
     return _anglerManager!;
   }
 
-  BackupAndRestoreManager get backupAndRestoreManager {
-    _backupAndRestoreManager ??= BackupAndRestoreManager(this);
-    return _backupAndRestoreManager!;
+  BackupRestoreManager get backupRestoreManager {
+    _backupRestoreManager ??= BackupRestoreManager(this);
+    return _backupRestoreManager!;
   }
 
   BaitCategoryManager get baitCategoryManager {
@@ -269,7 +269,7 @@ class AppManager {
 
     // Depends on UserPreferenceManager.
     if (isStartup) {
-      await backupAndRestoreManager.initialize();
+      await backupRestoreManager.initialize();
     }
 
     await anglerManager.initialize();

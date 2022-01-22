@@ -100,7 +100,8 @@ class _ProPageState extends State<ProPage> {
     if (_isPendingTransaction) {
       child = const Loading();
     } else if (_subscriptionManager.isPro) {
-      child = WorkResult.success(Strings.of(context).proPageUpgradeSuccess);
+      child = WorkResult.success(
+          description: Strings.of(context).proPageUpgradeSuccess);
     } else {
       child = FutureBuilder<Subscriptions?>(
         future: _subscriptionsFuture,
@@ -123,7 +124,8 @@ class _ProPageState extends State<ProPage> {
 
   Widget _buildSubscriptionOptions(Subscriptions? subscriptions) {
     if (subscriptions == null) {
-      return WorkResult.error(Strings.of(context).proPageFetchError);
+      return WorkResult.error(
+          description: Strings.of(context).proPageFetchError);
     }
 
     return Column(

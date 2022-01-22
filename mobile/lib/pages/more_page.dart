@@ -5,7 +5,6 @@ import '../pages/bait_category_list_page.dart';
 import '../pages/bait_list_page.dart';
 import '../pages/custom_entity_list_page.dart';
 import '../pages/feedback_page.dart';
-import '../pages/import_page.dart';
 import '../pages/photos_page.dart';
 import '../pages/settings_page.dart';
 import '../pages/species_list_page.dart';
@@ -16,8 +15,9 @@ import '../utils/store_utils.dart';
 import '../widgets/list_item.dart';
 import '../widgets/widget.dart';
 import 'angler_list_page.dart';
-import 'backup_page.dart';
+import 'backup_restore_page.dart';
 import 'body_of_water_list_page.dart';
+import 'import_page.dart';
 import 'method_list_page.dart';
 import 'pro_page.dart';
 import 'scroll_page.dart';
@@ -106,18 +106,19 @@ class MorePage extends StatelessWidget {
         const MinDivider(),
         _buildPageItem(
           context,
-          icon: Icons.cloud_upload,
-          title: Strings.of(context).backupPageMoreTitle,
+          icon: BackupPage.icon,
+          title: Strings.of(context).backupPageTitle,
           page: BackupPage(),
           presentPage: true,
         ),
         _buildPageItem(
           context,
-          icon: Icons.cloud_download,
-          title: Strings.of(context).importPageMoreTitle,
-          page: ImportPage(),
+          icon: RestorePage.icon,
+          title: Strings.of(context).restorePageTitle,
+          page: RestorePage(),
           presentPage: true,
         ),
+        const MinDivider(),
         _buildPageItem(
           context,
           icon: Icons.stars,
@@ -125,7 +126,6 @@ class MorePage extends StatelessWidget {
           page: ProPage(),
           presentPage: true,
         ),
-        const MinDivider(),
         ..._buildRateAndFeedbackItems(context),
         _buildPageItem(
           context,

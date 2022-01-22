@@ -12,6 +12,7 @@ class CheckboxInput extends StatelessWidget {
   final String? description;
   final bool value;
   final bool enabled;
+  final Widget? leading;
   final void Function(bool)? onChanged;
 
   CheckboxInput({
@@ -19,6 +20,7 @@ class CheckboxInput extends StatelessWidget {
     this.description,
     this.value = false,
     this.enabled = true,
+    this.leading,
     this.onChanged,
   }) : assert(isNotEmpty(label));
 
@@ -36,6 +38,7 @@ class CheckboxInput extends StatelessWidget {
     return ListItem(
       title: enabled ? Text(label) : DisabledLabel(label),
       subtitle: descriptionWidget,
+      leading: leading,
       trailing: PaddedCheckbox(
         checked: value,
         enabled: enabled,

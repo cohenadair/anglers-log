@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:quiver/strings.dart';
 import '../res/dimen.dart';
 import '../res/style.dart';
 
@@ -9,22 +10,36 @@ import 'widget.dart';
 class WorkResult extends StatelessWidget {
   static const _iconSize = 40.0;
 
-  final String description;
+  final String? description;
 
   final TextStyle Function(BuildContext) _style;
   final IconData _icon;
 
-  const WorkResult.success(this.description)
-      : _style = styleSuccess,
+  const WorkResult.success({
+    this.description,
+  })  : _style = styleSuccess,
         _icon = Icons.check_circle;
 
-  const WorkResult.error(this.description)
-      : _style = styleError,
+  const WorkResult.error({
+    this.description,
+  })  : _style = styleError,
         _icon = Icons.error;
 
   @override
   Widget build(BuildContext context) {
     var style = _style(context);
+
+    Widget descriptionWidget = Empty();
+    if (isNotEmpty(description)) {
+      descriptionWidget = Padding(
+        padding: insetsTopSmall,
+        child: Text(
+          description!,
+          style: style,
+          textAlign: TextAlign.center,
+        ),
+      );
+    }
 
     return Column(
       children: [
@@ -33,12 +48,7 @@ class WorkResult extends StatelessWidget {
           color: style.color,
           size: _iconSize,
         ),
-        const VerticalSpace(paddingSmall),
-        Text(
-          description,
-          style: style,
-          textAlign: TextAlign.center,
-        ),
+        descriptionWidget,
       ],
     );
   }
