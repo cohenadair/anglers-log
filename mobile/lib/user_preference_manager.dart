@@ -25,13 +25,14 @@ class UserPreferenceManager extends PreferenceManager {
   static const _keyWindSpeedSystem = "wind_speed_system";
   static const _keyAutoFetchAtmosphere = "auto_fetch_atmosphere";
 
-  static const _keyVerificationEmailSendAt = "verification_email_sent_at";
   static const _keyRateTimerStartedAt = "rate_timer_started_at";
   static const _keyDidRateApp = "did_rate_app";
   static const _keyDidOnboard = "did_onboard";
   static const _keyDidSetupBackup = "did_setup_backup";
   static const _keyLastBackupAt = "last_backup_at";
-  static const _keyIsPro = "is_pro";
+  static const _keyAutoBackup = "auto_backup";
+  static const _keyUserEmail = "user_email";
+  static const _keyUserName = "user_name";
 
   static const _keySelectedReportId = "selected_report_id";
   static const _keyMapType = "map_type";
@@ -123,11 +124,6 @@ class UserPreferenceManager extends PreferenceManager {
 
   bool get autoFetchAtmosphere => preferences[_keyAutoFetchAtmosphere] ?? false;
 
-  Future<void> setVerificationEmailSentAt(int? timestamp) =>
-      put(_keyVerificationEmailSendAt, timestamp);
-
-  int? get verificationEmailSentAt => preferences[_keyVerificationEmailSendAt];
-
   Future<void> setRateTimerStartedAt(int? timestamp) =>
       put(_keyRateTimerStartedAt, timestamp);
 
@@ -154,6 +150,11 @@ class UserPreferenceManager extends PreferenceManager {
 
   int? get lastBackupAt => preferences[_keyLastBackupAt];
 
+  // ignore: avoid_positional_boolean_parameters
+  Future<void> setAutoBackup(bool auto) => put(_keyAutoBackup, auto);
+
+  bool get autoBackup => preferences[_keyAutoBackup] ?? false;
+
   Future<void> setSelectedReportId(Id? id) => putId(_keySelectedReportId, id);
 
   Id? get selectedReportId => id(_keySelectedReportId);
@@ -162,9 +163,13 @@ class UserPreferenceManager extends PreferenceManager {
 
   String? get mapType => preferences[_keyMapType];
 
-  /// Returns true if the user has been configured as pro. This will override
-  /// any in-app purchase setting and can only be set in the Firebase console.
-  bool get isPro => preferences[_keyIsPro] ?? false;
+  Future<void> setUserEmail(String? email) => put(_keyUserEmail, email);
+
+  String? get userEmail => preferences[_keyUserEmail];
+
+  Future<void> setUserName(String? name) => put(_keyUserName, name);
+
+  String? get userName => preferences[_keyUserName];
 
   bool _isTrackingAtmosphereField(Id fieldId) =>
       atmosphereFieldIds.isEmpty || atmosphereFieldIds.contains(fieldId);

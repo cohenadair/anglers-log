@@ -43,11 +43,7 @@ class _ProPageState extends State<ProPage> {
   Widget build(BuildContext context) {
     return ScrollPage(
       appBar: TransparentAppBar(context),
-      padding: const EdgeInsets.only(
-        left: paddingDefault,
-        right: paddingDefault,
-        bottom: paddingDefault,
-      ),
+      padding: insetsHorizontalDefaultBottomDefault,
       extendBodyBehindAppBar: true,
       children: [
         const Icon(
@@ -63,6 +59,8 @@ class _ProPageState extends State<ProPage> {
         const VerticalSpace(paddingSmall),
         const Icon(Icons.stars),
         const VerticalSpace(paddingXL),
+        _buildFeatureRow(Strings.of(context).proPageBackup),
+        const VerticalSpace(paddingDefault),
         _buildFeatureRow(Strings.of(context).proPageAtmosphere),
         const VerticalSpace(paddingDefault),
         _buildFeatureRow(Strings.of(context).proPageReports),

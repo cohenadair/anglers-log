@@ -54,6 +54,8 @@ class BackupRestoreProgress {
     this.apiError,
     this.percentage,
   });
+
+  String get percentageString => percentage == null ? "" : "($percentage%)";
 }
 
 class BackupRestoreManager {
@@ -154,6 +156,7 @@ class BackupRestoreManager {
       _userPreferenceManager.setDidSetupBackup(false);
     } else {
       _authController.add(BackupRestoreAuthState.signedIn);
+      _userPreferenceManager.setUserEmail(_currentUser!.email);
     }
   }
 
@@ -163,6 +166,7 @@ class BackupRestoreManager {
     }
     _currentUser = await _googleSignIn?.disconnect();
     _authController.add(BackupRestoreAuthState.signedOut);
+    _userPreferenceManager.setUserEmail(null);
   }
 
   Future<void> backup() async {

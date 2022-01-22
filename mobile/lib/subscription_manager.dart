@@ -54,14 +54,9 @@ class SubscriptionManager {
 
   PurchasesWrapper get _purchasesWrapper => _appManager.purchasesWrapper;
 
-  UserPreferenceManager get _userPreferenceManager =>
-      _appManager.userPreferenceManager;
+  bool get isFree => _state == SubscriptionState.free;
 
-  bool get isFree =>
-      !_userPreferenceManager.isPro && _state == SubscriptionState.free;
-
-  bool get isPro =>
-      _userPreferenceManager.isPro || _state == SubscriptionState.pro;
+  bool get isPro => _state == SubscriptionState.pro;
 
   /// A [Stream] that fires events when [state] updates. Listeners should
   /// access the [state] property directly, as it will always have a valid

@@ -7,8 +7,13 @@ import 'package:mobile/pages/feedback_page.dart';
 import 'package:mobile/pages/scroll_page.dart';
 import 'package:mobile/res/dimen.dart';
 import 'package:mobile/res/style.dart';
+import 'package:mobile/user_preference_manager.dart';
+import 'package:mobile/utils/date_time_utils.dart';
+import 'package:mobile/utils/string_utils.dart';
 import 'package:mobile/widgets/async_feedback.dart';
+import 'package:mobile/widgets/checkbox_input.dart';
 import 'package:mobile/widgets/cloud_auth.dart';
+import 'package:mobile/widgets/label_value.dart';
 import 'package:mobile/widgets/widget.dart';
 
 class BackupPage extends StatelessWidget {
@@ -22,7 +27,38 @@ class BackupPage extends StatelessWidget {
       actionLabel: Strings.of(context).backupPageAction,
       description: Strings.of(context).backupPageDescription,
       icon: icon,
+      extra: _buildBackupDetails(context),
       onTapAction: BackupRestoreManager.of(context).backup,
+    );
+  }
+
+  Widget _buildBackupDetails(BuildContext context) {
+    var userPreferenceManager = UserPreferenceManager.of(context);
+
+    return Column(
+      children: [
+        ProCheckboxInput(
+          padding: insetsZero,
+          label: Strings.of(context).backupPageAutoTitle,
+          description: Strings.of(context).backupPageAutoDescription,
+          value: userPreferenceManager.autoBackup,
+          onSetValue: (checked) => userPreferenceManager.setAutoBackup(checked),
+        ),
+        const VerticalSpace(paddingDefault),
+        StreamBuilder(
+          stream: userPreferenceManager.stream,
+          builder: (context, _) {
+            var lastBackupAt = userPreferenceManager.lastBackupAt;
+            return LabelValue(
+              padding: insetsZero,
+              label: Strings.of(context).backupPageLastBackupLabel,
+              value: lastBackupAt == null
+                  ? Strings.of(context).backupPageLastBackupNever
+                  : formatTimestamp(context, lastBackupAt),
+            );
+          },
+        ),
+      ],
     );
   }
 }
@@ -50,6 +86,10 @@ class _BackupRestorePage extends StatefulWidget {
   final String actionLabel;
   final String description;
   final IconData icon;
+
+  /// Rendered before the description.
+  final Widget? extra;
+
   final VoidCallback onTapAction;
 
   const _BackupRestorePage({
@@ -59,6 +99,7 @@ class _BackupRestorePage extends StatefulWidget {
     required this.actionLabel,
     required this.description,
     required this.icon,
+    this.extra,
     required this.onTapAction,
   });
 
@@ -135,11 +176,20 @@ class _BackupRestorePageState extends State<_BackupRestorePage> {
   }
 
   Widget _buildActionWidget() {
+    Widget extra = Empty();
+    if (widget.extra != null) {
+      extra = Padding(
+        padding: insetsBottomDefault,
+        child: widget.extra,
+      );
+    }
+
     return Padding(
       padding: insetsDefault,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          extra,
           Text(
             widget.description,
             style: stylePrimary(context),
@@ -172,72 +222,72 @@ class _BackupRestorePageState extends State<_BackupRestorePage> {
       case BackupRestoreProgressEnum.authClientError:
         _progressState = AsyncFeedbackState.error;
         _progressError = progress.value.toString();
-        _progressDescription = "Authentication error, please try again later.";
+        _progressDescription = Strings.of(context).backupRestoreAuthError;
         break;
       case BackupRestoreProgressEnum.createFolderError:
         _progressState = AsyncFeedbackState.error;
         _progressError = progress.value.toString();
         _progressDescription =
-            "Failed to create backup folder, please try again later.";
+            Strings.of(context).backupRestoreCreateFolderError;
         break;
       case BackupRestoreProgressEnum.folderNotFound:
         _progressState = AsyncFeedbackState.error;
         _progressError = progress.value.toString();
-        _progressDescription =
-            "Backup folder not found. You must backup your data before it can be restored.";
+        _progressDescription = Strings.of(context).backupRestoreFolderNotFound;
         break;
       case BackupRestoreProgressEnum.apiRequestError:
         _progressState = AsyncFeedbackState.error;
         _progressError =
             progress.apiError?.toString() ?? progress.value.toString();
-        _progressDescription =
-            "Unknown error, please send Anglers' Log a report for investigation.";
+        _progressDescription = Strings.of(context).backupRestoreApiRequestError;
         break;
       case BackupRestoreProgressEnum.databaseFileNotFound:
         _progressState = AsyncFeedbackState.error;
         _progressError = progress.value.toString();
         _progressDescription =
-            "Backup data file not found. You must backup your data before it can be restored.";
+            Strings.of(context).backupRestoreDatabaseNotFound;
         break;
       case BackupRestoreProgressEnum.authenticating:
         _progressState = AsyncFeedbackState.loading;
-        _progressDescription = "Authenticating...";
+        _progressDescription = Strings.of(context).backupRestoreAuthenticating;
         break;
       case BackupRestoreProgressEnum.fetchingFiles:
         _progressState = AsyncFeedbackState.loading;
-        _progressDescription = "Fetching data...";
+        _progressDescription = Strings.of(context).backupRestoreFetchingFiles;
         break;
       case BackupRestoreProgressEnum.creatingFolder:
         _progressState = AsyncFeedbackState.loading;
-        _progressDescription = "Creating backup folder...";
+        _progressDescription = Strings.of(context).backupRestoreCreatingFolder;
         break;
       case BackupRestoreProgressEnum.backingUpDatabase:
         _progressState = AsyncFeedbackState.loading;
-        _progressDescription = "Backing up database...";
+        _progressDescription =
+            Strings.of(context).backupRestoreBackingUpDatabase;
         break;
       case BackupRestoreProgressEnum.backingUpImages:
         _progressState = AsyncFeedbackState.loading;
-        _progressDescription = "Backing up images "
-            "${progress.percentage == null ? "" : "(${progress.percentage}%)"}"
-            "...";
+        _progressDescription = format(
+            Strings.of(context).backupRestoreBackingUpImages,
+            [progress.percentageString]);
         break;
       case BackupRestoreProgressEnum.restoringDatabase:
         _progressState = AsyncFeedbackState.loading;
-        _progressDescription = "Downloading database...";
+        _progressDescription =
+            Strings.of(context).backupRestoreDownloadingDatabase;
         break;
       case BackupRestoreProgressEnum.restoringImages:
         _progressState = AsyncFeedbackState.loading;
-        _progressDescription = "Downloading images "
-            "${progress.percentage == null ? "" : "(${progress.percentage}%)"}"
-            "...";
+        _progressDescription = format(
+            Strings.of(context).backupRestoreDownloadingImages,
+            [progress.percentageString]);
         break;
       case BackupRestoreProgressEnum.reloadingData:
         _progressState = AsyncFeedbackState.loading;
-        _progressDescription = "Reloading data...";
+        _progressDescription = Strings.of(context).backupRestoreReloadingData;
         break;
       case BackupRestoreProgressEnum.finished:
         _progressState = AsyncFeedbackState.success;
-        _progressDescription = "Success!";
+        _progressDescription = Strings.of(context).backupRestoreSuccess;
         break;
     }
   }

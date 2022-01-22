@@ -571,7 +571,7 @@ Map<String, Map<String, String>> get englishStrings => {
             "Instructions on how to reset your password have been sent to %s",
         "proPage_upgradeTitle": "Upgrade to Anglers' Log",
         "proPage_proTitle": "Pro",
-        "proPage_backup": "Automatically backup all your data to the cloud",
+        "proPage_backup": "Automatic backup and restore with Google Drive\u2122",
         "proPage_atmosphere": "Fetch atmosphere and weather data",
         "proPage_sync": "Sync data across all your devices",
         "proPage_reports": "Create custom reports and filters",
@@ -873,11 +873,34 @@ Map<String, Map<String, String>> get englishStrings => {
             "Your data is copied to a private folder in your Google Drive\u2122 and is not shared publicly.\n\nThe backup process may take several minutes.",
         "backupPage_action": "Backup Now",
         "backupPage_errorTitle": "Backup Error",
+        "backupPage_autoTitle": "Automatically Backup",
+        "backupPage_autoDescription": "Each time your log data changes.",
+        "backupPage_lastBackupLabel": "Last Backup",
+        "backupPage_lastBackupNever": "Never",
         "restorePage_title": "Restore",
         "restorePage_description":
             "Restoring data completely replaces your existing log with the data stored in Google Drive\u2122. If there is no data, your log remains unchanged.\n\nThe restore process may take several minutes.",
         "restorePage_action": "Restore Now",
         "restorePage_errorTitle": "Restore Error",
+        "backupRestore_authError":
+            "Authentication error, please try again later.",
+        "backupRestore_createFolderError":
+            "Failed to create backup folder, please try again later.",
+        "backupRestore_folderNotFound":
+            "Backup folder not found. You must backup your data before it can be restored.",
+        "backupRestore_apiRequestError":
+            "Unknown error, please send Anglers' Log a report for investigation.",
+        "backupRestore_databaseNotFound":
+            "Backup data file not found. You must backup your data before it can be restored.",
+        "backupRestore_authenticating": "Authenticating...",
+        "backupRestore_fetchingFiles": "Fetching data...",
+        "backupRestore_creatingFolder": "Creating backup folder...",
+        "backupRestore_backingUpDatabase": "Backing up database...",
+        "backupRestore_backingUpImages": "Backing up images %s...",
+        "backupRestore_downloadingDatabase": "Downloading database...",
+        "backupRestore_downloadingImages": "Downloading images %s...",
+        "backupRestore_reloadingData": "Reloading data...",
+        "backupRestore_success": "Success!",
         "cloudAuth_signOut": "Sign out",
         "cloudAuth_signedInAs": "Signed in as",
         "cloudAuth_signInWithGoogle": "Sign in with Google",
