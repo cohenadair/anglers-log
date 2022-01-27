@@ -60,6 +60,26 @@ class Testable extends StatelessWidget {
   }
 }
 
+/// A test widget that allows testing of [child.dispose] by invoking
+/// [DisposableTesterState.removeChild].
+class DisposableTester extends StatefulWidget {
+  final Widget child;
+
+  const DisposableTester({required this.child});
+
+  @override
+  DisposableTesterState createState() => DisposableTesterState();
+}
+
+class DisposableTesterState extends State<DisposableTester> {
+  bool _showChild = true;
+
+  void removeChild() => setState(() => _showChild = false);
+
+  @override
+  Widget build(BuildContext context) => _showChild ? widget.child : Empty();
+}
+
 void setCanvasSize(WidgetTester tester, Size size) {
   tester.binding.window.physicalSizeTestValue = size;
   tester.binding.window.devicePixelRatioTestValue = 1.0;

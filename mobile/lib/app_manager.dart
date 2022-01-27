@@ -22,6 +22,7 @@ import 'time_manager.dart';
 import 'trip_manager.dart';
 import 'user_preference_manager.dart';
 import 'water_clarity_manager.dart';
+import 'wrappers/drive_api_wrapper.dart';
 import 'wrappers/file_picker_wrapper.dart';
 import 'wrappers/http_wrapper.dart';
 import 'wrappers/image_compress_wrapper.dart';
@@ -63,6 +64,7 @@ class AppManager {
   WaterClarityManager? _waterClarityManager;
 
   // External dependency wrappers.
+  DriveApiWrapper? _driveApiWrapper;
   FilePickerWrapper? _filePickerWrapper;
   GoogleSignInWrapper? _googleSignInWrapper;
   HttpWrapper? _httpWrapper;
@@ -178,6 +180,11 @@ class AppManager {
     return _waterClarityManager!;
   }
 
+  DriveApiWrapper get driveApiWrapper {
+    _driveApiWrapper ??= DriveApiWrapper();
+    return _driveApiWrapper!;
+  }
+
   FilePickerWrapper get filePickerWrapper {
     _filePickerWrapper ??= FilePickerWrapper();
     return _filePickerWrapper!;
@@ -280,6 +287,7 @@ class AppManager {
     await tripManager.initialize();
     await waterClarityManager.initialize();
 
+    // Managers that depend on other managers.
     if (isStartup) {
       await backupRestoreManager.initialize();
       await imageManager.initialize();

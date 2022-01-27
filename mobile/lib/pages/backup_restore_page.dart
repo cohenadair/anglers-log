@@ -110,7 +110,6 @@ class _BackupRestorePageState extends State<_BackupRestorePage> {
   late final StreamSubscription _authSubscription;
   late final StreamSubscription _progressSubscription;
 
-  var _inProgress = false;
   var _progressState = AsyncFeedbackState.none;
   String? _progressDescription;
   String? _progressError;
@@ -121,16 +120,11 @@ class _BackupRestorePageState extends State<_BackupRestorePage> {
   @override
   void initState() {
     super.initState();
+
     _authSubscription =
         _backupRestoreManager.authStream.listen((authState) => setState(() {}));
-
-    _progressSubscription =
-        _backupRestoreManager.progressStream.listen((progress) {
-      setState(() {
-        _inProgress = progress.value != BackupRestoreProgressEnum.finished;
-        _updateProgressState(progress);
-      });
-    });
+    _progressSubscription = _backupRestoreManager.progressStream
+        .listen((progress) => setState(() => _updateProgressState(progress)));
   }
 
   @override
@@ -148,7 +142,9 @@ class _BackupRestorePageState extends State<_BackupRestorePage> {
         leading: IconButton(
           icon: const Icon(Icons.close),
           color: Theme.of(context).primaryColor,
-          onPressed: _inProgress ? null : Navigator.of(context).pop,
+          onPressed: _backupRestoreManager.isInProgress
+              ? null
+              : Navigator.of(context).pop,
         ),
       ),
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -199,7 +195,8 @@ class _BackupRestorePageState extends State<_BackupRestorePage> {
               state: _progressState,
               description: _progressDescription,
               actionText: widget.actionLabel,
-              action: _backupRestoreManager.isSignedIn ? _performAction : null,
+              action:
+                  _backupRestoreManager.isSignedIn ? widget.onTapAction : null,
               feedbackPage: FeedbackPage(
                 title: widget.errorPageTitle,
                 error: _progressError,
@@ -210,10 +207,6 @@ class _BackupRestorePageState extends State<_BackupRestorePage> {
         ],
       ),
     );
-  }
-
-  void _performAction() {
-    widget.onTapAction();
   }
 
   void _updateProgressState(BackupRestoreProgress progress) {

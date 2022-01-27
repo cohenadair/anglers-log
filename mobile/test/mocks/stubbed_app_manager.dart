@@ -9,6 +9,7 @@ class StubbedAppManager {
   MockAppManager app = MockAppManager();
 
   MockAnglerManager anglerManager = MockAnglerManager();
+  MockBackupRestoreManager backupRestoreManager = MockBackupRestoreManager();
   MockBaitCategoryManager baitCategoryManager = MockBaitCategoryManager();
   MockBaitManager baitManager = MockBaitManager();
   MockBodyOfWaterManager bodyOfWaterManager = MockBodyOfWaterManager();
@@ -28,7 +29,9 @@ class StubbedAppManager {
   MockUserPreferenceManager userPreferenceManager = MockUserPreferenceManager();
   MockWaterClarityManager waterClarityManager = MockWaterClarityManager();
 
+  MockDriveApiWrapper driveApiWrapper = MockDriveApiWrapper();
   MockFilePickerWrapper filePickerWrapper = MockFilePickerWrapper();
+  MockGoogleSignInWrapper googleSignInWrapper = MockGoogleSignInWrapper();
   MockHttpWrapper httpWrapper = MockHttpWrapper();
   MockImageCompressWrapper imageCompressWrapper = MockImageCompressWrapper();
   MockImagePickerWrapper imagePickerWrapper = MockImagePickerWrapper();
@@ -46,6 +49,7 @@ class StubbedAppManager {
 
   StubbedAppManager() {
     when(app.anglerManager).thenReturn(anglerManager);
+    when(app.backupRestoreManager).thenReturn(backupRestoreManager);
     when(app.baitCategoryManager).thenReturn(baitCategoryManager);
     when(app.baitManager).thenReturn(baitManager);
     when(app.bodyOfWaterManager).thenReturn(bodyOfWaterManager);
@@ -64,7 +68,9 @@ class StubbedAppManager {
     when(app.tripManager).thenReturn(tripManager);
     when(app.userPreferenceManager).thenReturn(userPreferenceManager);
     when(app.waterClarityManager).thenReturn(waterClarityManager);
+    when(app.driveApiWrapper).thenReturn(driveApiWrapper);
     when(app.filePickerWrapper).thenReturn(filePickerWrapper);
+    when(app.googleSignInWrapper).thenReturn(googleSignInWrapper);
     when(app.httpWrapper).thenReturn(httpWrapper);
     when(app.imageCompressWrapper).thenReturn(imageCompressWrapper);
     when(app.imagePickerWrapper).thenReturn(imagePickerWrapper);
@@ -82,93 +88,105 @@ class StubbedAppManager {
     stubCurrentTime(DateTime.now());
 
     // Setup default listener stubs on EntityListener classes, since
-    // addSimpleListener is called often in tests, but rarely actually used.
-    when(anglerManager.addSimpleListener(
+    // addTypedListener is called often in tests, but rarely actually used.
+    when(anglerManager.addTypedListener(
       onAdd: anyNamed("onAdd"),
       onUpdate: anyNamed("onUpdate"),
       onDelete: anyNamed("onDelete"),
-    )).thenReturn(SimpleEntityListener());
+      onReset: anyNamed("onReset"),
+    )).thenReturn(EntityListener());
 
     // TODO: Don't stub these by default; lead to unnecessary investigations on
     //  failed tests.
     when(anglerManager.entity(any)).thenReturn(null);
 
-    when(baitCategoryManager.addSimpleListener(
+    when(baitCategoryManager.addTypedListener(
       onAdd: anyNamed("onAdd"),
       onUpdate: anyNamed("onUpdate"),
       onDelete: anyNamed("onDelete"),
-    )).thenReturn(SimpleEntityListener());
+      onReset: anyNamed("onReset"),
+    )).thenReturn(EntityListener());
     when(baitCategoryManager.entity(any)).thenReturn(null);
 
-    when(baitManager.addSimpleListener(
+    when(baitManager.addTypedListener(
       onAdd: anyNamed("onAdd"),
       onUpdate: anyNamed("onUpdate"),
       onDelete: anyNamed("onDelete"),
-    )).thenReturn(SimpleEntityListener());
+      onReset: anyNamed("onReset"),
+    )).thenReturn(EntityListener());
     when(baitManager.entity(any)).thenReturn(null);
     when(baitManager.list(any)).thenReturn([]);
 
-    when(bodyOfWaterManager.addSimpleListener(
+    when(bodyOfWaterManager.addTypedListener(
       onAdd: anyNamed("onAdd"),
       onUpdate: anyNamed("onUpdate"),
       onDelete: anyNamed("onDelete"),
-    )).thenReturn(SimpleEntityListener());
+      onReset: anyNamed("onReset"),
+    )).thenReturn(EntityListener());
     when(bodyOfWaterManager.entity(any)).thenReturn(null);
     when(bodyOfWaterManager.list(any)).thenReturn([]);
 
-    when(catchManager.addSimpleListener(
+    when(catchManager.addTypedListener(
       onAdd: anyNamed("onAdd"),
       onUpdate: anyNamed("onUpdate"),
       onDelete: anyNamed("onDelete"),
-    )).thenReturn(SimpleEntityListener());
+      onReset: anyNamed("onReset"),
+    )).thenReturn(EntityListener());
     when(catchManager.entity(any)).thenReturn(null);
 
-    when(customEntityManager.addSimpleListener(
+    when(customEntityManager.addTypedListener(
       onAdd: anyNamed("onAdd"),
       onUpdate: anyNamed("onUpdate"),
       onDelete: anyNamed("onDelete"),
-    )).thenReturn(SimpleEntityListener());
+      onReset: anyNamed("onReset"),
+    )).thenReturn(EntityListener());
     when(customEntityManager.entity(any)).thenReturn(null);
 
-    when(fishingSpotManager.addSimpleListener(
+    when(fishingSpotManager.addTypedListener(
       onAdd: anyNamed("onAdd"),
       onUpdate: anyNamed("onUpdate"),
       onDelete: anyNamed("onDelete"),
-    )).thenReturn(SimpleEntityListener());
+      onReset: anyNamed("onReset"),
+    )).thenReturn(EntityListener());
     when(fishingSpotManager.entity(any)).thenReturn(null);
 
-    when(methodManager.addSimpleListener(
+    when(methodManager.addTypedListener(
       onAdd: anyNamed("onAdd"),
       onUpdate: anyNamed("onUpdate"),
       onDelete: anyNamed("onDelete"),
-    )).thenReturn(SimpleEntityListener());
+      onReset: anyNamed("onReset"),
+    )).thenReturn(EntityListener());
     when(methodManager.entity(any)).thenReturn(null);
 
-    when(reportManager.addSimpleListener(
+    when(reportManager.addTypedListener(
       onAdd: anyNamed("onAdd"),
       onUpdate: anyNamed("onUpdate"),
       onDelete: anyNamed("onDelete"),
-    )).thenReturn(SimpleEntityListener());
+      onReset: anyNamed("onReset"),
+    )).thenReturn(EntityListener());
     when(reportManager.entity(any)).thenReturn(null);
 
-    when(speciesManager.addSimpleListener(
+    when(speciesManager.addTypedListener(
       onAdd: anyNamed("onAdd"),
       onUpdate: anyNamed("onUpdate"),
       onDelete: anyNamed("onDelete"),
-    )).thenReturn(SimpleEntityListener());
+      onReset: anyNamed("onReset"),
+    )).thenReturn(EntityListener());
     when(speciesManager.entity(any)).thenReturn(null);
 
-    when(tripManager.addSimpleListener(
+    when(tripManager.addTypedListener(
       onAdd: anyNamed("onAdd"),
       onUpdate: anyNamed("onUpdate"),
       onDelete: anyNamed("onDelete"),
-    )).thenReturn(SimpleEntityListener());
+      onReset: anyNamed("onReset"),
+    )).thenReturn(EntityListener());
 
-    when(waterClarityManager.addSimpleListener(
+    when(waterClarityManager.addTypedListener(
       onAdd: anyNamed("onAdd"),
       onUpdate: anyNamed("onUpdate"),
       onDelete: anyNamed("onDelete"),
-    )).thenReturn(SimpleEntityListener());
+      onReset: anyNamed("onReset"),
+    )).thenReturn(EntityListener());
     when(waterClarityManager.entity(any)).thenReturn(null);
   }
 

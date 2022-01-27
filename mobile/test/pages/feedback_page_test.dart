@@ -32,6 +32,9 @@ void main() {
     );
     when(appManager.propertiesManager.feedbackTemplate)
         .thenReturn("%s%s%s%s%s%s%s%s");
+
+    when(appManager.userPreferenceManager.userName).thenReturn(null);
+    when(appManager.userPreferenceManager.userEmail).thenReturn(null);
   });
 
   testWidgets("Message required for non-errors", (tester) async {
@@ -231,5 +234,68 @@ void main() {
 
     await tester.pumpAndSettle();
     expect(find.text("SEND"), findsNothing);
+
+    verify(appManager.userPreferenceManager.setUserName(any)).called(1);
+    verify(appManager.userPreferenceManager.setUserEmail(any)).called(1);
+  });
+
+  testWidgets("Name and email are pre-populated", (tester) async {
+    when(appManager.userPreferenceManager.userName).thenReturn("Cohen Adair");
+    when(appManager.userPreferenceManager.userEmail)
+        .thenReturn("test@test.com");
+
+    await pumpContext(
+      tester,
+      (_) => const FeedbackPage(),
+      appManager: appManager,
+    );
+
+    expect(find.text("Cohen Adair"), findsOneWidget);
+    expect(find.text("test@test.com"), findsOneWidget);
+  });
+
+  testWidgets("Name is focused on startup", (tester) async {
+    when(appManager.userPreferenceManager.userName).thenReturn(null);
+    when(appManager.userPreferenceManager.userEmail).thenReturn(null);
+
+    await pumpContext(
+      tester,
+      (_) => const FeedbackPage(),
+      appManager: appManager,
+    );
+
+    expect(findFirstWithText<TextInput>(tester, "Name").autofocus, isTrue);
+    expect(findFirstWithText<TextInput>(tester, "Email").autofocus, isFalse);
+    expect(findFirstWithText<TextInput>(tester, "Message").autofocus, isFalse);
+  });
+
+  testWidgets("Email is focused on startup", (tester) async {
+    when(appManager.userPreferenceManager.userName).thenReturn("Cohen Adair");
+
+    await pumpContext(
+      tester,
+      (_) => const FeedbackPage(),
+      appManager: appManager,
+    );
+
+    expect(findFirstWithText<TextInput>(tester, "Name").autofocus, isFalse);
+    expect(findFirstWithText<TextInput>(tester, "Email").autofocus, isTrue);
+    expect(findFirstWithText<TextInput>(tester, "Message").autofocus, isFalse);
+  });
+
+  testWidgets("Message is focused on startup", (tester) async {
+    when(appManager.userPreferenceManager.userName).thenReturn("Cohen Adair");
+    when(appManager.userPreferenceManager.userEmail)
+        .thenReturn("test@test.com");
+
+    await pumpContext(
+      tester,
+      (_) => const FeedbackPage(),
+      appManager: appManager,
+    );
+
+    expect(findFirstWithText<TextInput>(tester, "Name").autofocus, isFalse);
+    expect(findFirstWithText<TextInput>(tester, "Email").autofocus, isFalse);
+    expect(findFirstWithText<TextInput>(tester, "Message").autofocus, isTrue);
   });
 }

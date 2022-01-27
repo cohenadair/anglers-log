@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:io' as io;
 
-import 'package:extension_google_sign_in_as_googleapis_auth/extension_google_sign_in_as_googleapis_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:googleapis/drive/v3.dart';
@@ -11,6 +10,7 @@ import 'package:mobile/image_manager.dart';
 import 'package:mobile/subscription_manager.dart';
 import 'package:mobile/user_preference_manager.dart';
 import 'package:mobile/utils/number_utils.dart';
+import 'package:mobile/wrappers/drive_api_wrapper.dart';
 import 'package:path/path.dart';
 import 'package:provider/provider.dart';
 
@@ -59,7 +59,7 @@ class BackupRestoreProgress {
     this.percentage,
   });
 
-  String get percentageString => percentage == null ? "" : "($percentage%)";
+  String get percentageString => percentage == null ? "" : " ($percentage%)";
 }
 
 class BackupRestoreManager {
@@ -93,6 +93,8 @@ class BackupRestoreManager {
   GoogleSignInAccount? _currentUser;
 
   CatchManager get _catchManager => _appManager.catchManager;
+
+  DriveApiWrapper get _driveApiWrapper => _appManager.driveApiWrapper;
 
   GoogleSignInWrapper get _googleSignInWrapper =>
       _appManager.googleSignInWrapper;
@@ -227,10 +229,13 @@ class BackupRestoreManager {
     }
 
     try {
+      _isInProgress = true;
+
       _notifyProgress(
           BackupRestoreProgress(BackupRestoreProgressEnum.authenticating));
 
-      var authClient = await _googleSignIn?.authenticatedClient();
+      var authClient =
+          await _googleSignInWrapper.authenticatedClient(_googleSignIn);
       if (authClient == null) {
         _notifyError(
             BackupRestoreProgress(BackupRestoreProgressEnum.authClientError));
@@ -240,7 +245,7 @@ class BackupRestoreManager {
       _notifyProgress(
           BackupRestoreProgress(BackupRestoreProgressEnum.fetchingFiles));
 
-      var drive = DriveApi(authClient);
+      var drive = _driveApiWrapper.newInstance(authClient);
       if (backup) {
         return await _backup(drive);
       } else {
@@ -258,10 +263,6 @@ class BackupRestoreManager {
 
   Future<void> _backup(DriveApi drive) async {
     var backupFiles = await _fetchFiles(drive, backup: true);
-    if (backupFiles == null) {
-      return;
-    }
-
     var imageFiles = await _imageManager.imageFiles;
 
     // Remove images that are already backed up.
@@ -325,10 +326,6 @@ class BackupRestoreManager {
 
   Future<void> _restore(DriveApi drive) async {
     var backupFiles = await _fetchFiles(drive, backup: false);
-    if (backupFiles == null) {
-      return;
-    }
-
     if (backupFiles.databaseId == null) {
       _notifyError(BackupRestoreProgress(
           BackupRestoreProgressEnum.databaseFileNotFound));
@@ -376,7 +373,7 @@ class BackupRestoreManager {
 
   /// Fetches files on the user's Google Drive using pagination, filtered by
   /// only what we need.
-  Future<_BackupFiles?> _fetchFiles(
+  Future<_BackupFiles> _fetchFiles(
     DriveApi drive, {
     required bool backup,
   }) async {

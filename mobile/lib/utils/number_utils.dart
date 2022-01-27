@@ -44,8 +44,10 @@ int? intFromDynamic(dynamic value) {
   return null;
 }
 
-int percent(int numerator, int denominator) =>
-    (numerator / denominator * 100).round();
+int percent(int numerator, int denominator) {
+  assert(denominator > 0);
+  return (numerator / denominator * 100).round();
+}
 
 extension Doubles on double {
   bool get isWhole => this % 1 == 0;

@@ -31,8 +31,6 @@ class CustomIcons {
       IconData(0xe803, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData ruler =
       IconData(0xe804, fontFamily: _kFontFam, fontPackage: _kFontPkg);
-  static const IconData cloudSync =
-      IconData(0xe805, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData sunrise =
       IconData(0xe806, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData sunset =

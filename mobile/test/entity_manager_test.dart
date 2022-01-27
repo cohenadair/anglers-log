@@ -8,11 +8,16 @@ import 'package:mobile/model/gen/anglerslog.pb.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mockito/mockito.dart';
 import 'package:protobuf/protobuf.dart';
+import 'package:mobile/widgets/widget.dart';
 
 import 'mocks/mocks.mocks.dart';
 import 'mocks/stubbed_app_manager.dart';
+import 'test_utils.dart';
 
 class TestEntityManager extends EntityManager<Species> {
+  int addListenerCalls = 0;
+  int removeListenerCalls = 0;
+
   bool matchesFilterResult = true;
 
   TestEntityManager(AppManager app) : super(app);
@@ -36,6 +41,18 @@ class TestEntityManager extends EntityManager<Species> {
   int numberOf<T extends GeneratedMessage>(
           Id? id, List<T> items, bool Function(T) matches) =>
       super.numberOf<T>(id, items, matches);
+
+  @override
+  void addListener(EntityListener<Species> listener) {
+    addListenerCalls++;
+    super.addListener(listener);
+  }
+
+  @override
+  void removeListener(EntityListener<Species> listener) {
+    removeListenerCalls++;
+    super.removeListener(listener);
+  }
 }
 
 void main() {
@@ -368,5 +385,122 @@ void main() {
     await entityManager.addOrUpdate(entities[1]);
 
     expect(entityManager.idSet(entities: [entities[0]]).length, 1);
+  });
+
+  testWidgets("EntityListenerBuilder listeners are managed", (tester) async {
+    await pumpContext(
+      tester,
+      (_) => DisposableTester(
+        child: EntityListenerBuilder(
+          managers: [entityManager],
+          builder: (_) => Empty(),
+        ),
+      ),
+    );
+
+    expect(entityManager.addListenerCalls, 1);
+
+    var state =
+        tester.firstState<DisposableTesterState>(find.byType(DisposableTester));
+    state.removeChild();
+    await tester.pumpAndSettle();
+
+    expect(entityManager.removeListenerCalls, 1);
+  });
+
+  testWidgets("EntityListenerBuilder onDeleteEnabled is false", (tester) async {
+    bool onDeleteInvoked = false;
+    await pumpContext(
+      tester,
+      (_) => EntityListenerBuilder(
+        managers: [entityManager],
+        builder: (_) => Empty(),
+        onDelete: (_) => onDeleteInvoked = true,
+        onDeleteEnabled: false,
+      ),
+    );
+
+    when(appManager.localDatabaseManager.deleteEntity(any, any))
+        .thenAnswer((_) => Future.value(true));
+
+    var speciesId0 = randomId();
+    await entityManager.addOrUpdate(Species()
+      ..id = speciesId0
+      ..name = "Bluegill");
+
+    expect(await entityManager.delete(speciesId0, notify: true), isTrue);
+    expect(onDeleteInvoked, isFalse);
+  });
+
+  testWidgets("EntityListenerBuilder onDeleteEnabled is true", (tester) async {
+    bool onDeleteInvoked = false;
+    await pumpContext(
+      tester,
+      (_) => EntityListenerBuilder(
+        managers: [entityManager],
+        builder: (_) => Empty(),
+        onDelete: (_) => onDeleteInvoked = true,
+        onDeleteEnabled: true,
+      ),
+    );
+
+    when(appManager.localDatabaseManager.deleteEntity(any, any))
+        .thenAnswer((_) => Future.value(true));
+
+    var speciesId0 = randomId();
+    await entityManager.addOrUpdate(Species()
+      ..id = speciesId0
+      ..name = "Bluegill");
+
+    expect(await entityManager.delete(speciesId0, notify: true), isTrue);
+    expect(onDeleteInvoked, isTrue);
+  });
+
+  testWidgets("EntityListenerBuilder changesUpdatesState is false",
+      (tester) async {
+    int builderCallCount = 0;
+    await pumpContext(
+      tester,
+      (_) => EntityListenerBuilder(
+        managers: [entityManager],
+        changesUpdatesState: false,
+        builder: (_) {
+          builderCallCount++;
+          return Empty();
+        },
+      ),
+    );
+    builderCallCount = 0; // Reset after initial build.
+
+    await entityManager.addOrUpdate(Species()
+      ..id = randomId()
+      ..name = "Bluegill");
+    await tester.pumpAndSettle();
+
+    expect(builderCallCount, 0);
+  });
+
+  testWidgets("EntityListenerBuilder changesUpdatesState is true",
+      (tester) async {
+    int builderCallCount = 0;
+    await pumpContext(
+      tester,
+      (_) => EntityListenerBuilder(
+        managers: [entityManager],
+        changesUpdatesState: true,
+        builder: (_) {
+          builderCallCount++;
+          return Empty();
+        },
+      ),
+    );
+    builderCallCount = 0; // Reset after initial build.
+
+    await entityManager.addOrUpdate(Species()
+      ..id = randomId()
+      ..name = "Bluegill");
+    await tester.pumpAndSettle();
+
+    expect(builderCallCount, 1);
   });
 }

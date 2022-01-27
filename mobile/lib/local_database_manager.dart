@@ -33,7 +33,7 @@ class LocalDatabaseManager {
     // a late variable has been initialized, and null isn't a valid value for
     // _database.
     if (_initialized) {
-      _database.close();
+      await _database.close();
     }
     _database = database ?? (await openDb());
     _initialized = true;
