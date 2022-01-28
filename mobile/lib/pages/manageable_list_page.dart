@@ -156,7 +156,7 @@ class _ManageableListPageState<T> extends State<ManageableListPage<T>> {
       onAdd: _onEntityAdded,
       onDelete: _onEntityDeleted,
       onUpdate: _onEntityUpdated,
-      onAnyChange: _syncAnimatedList,
+      onReset: _syncAnimatedList,
     );
   }
 

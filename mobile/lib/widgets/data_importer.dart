@@ -84,7 +84,7 @@ class _DataImporterState extends State<DataImporter> {
     if (_progressState != AsyncFeedbackState.loading &&
         widget.importer == null) {
       action = _chooseFile;
-    } else if (_progressState == AsyncFeedbackState.loading &&
+    } else if (_progressState == AsyncFeedbackState.none &&
         widget.importer != null) {
       action = () => _startImport(widget.importer!);
     }

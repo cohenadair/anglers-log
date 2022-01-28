@@ -297,6 +297,9 @@ class EntityListenerBuilder extends StatefulWidget {
   /// return a [Future].
   final void Function(dynamic)? onUpdate;
 
+  /// Called when this [EntityManager] items are completely reset.
+  final void Function()? onReset;
+
   /// Invoked on add, delete, or update, in addition to [onAdd], [onDelete],
   /// [onUpdate]. Also invoked when data is reset. Invoked _inside_ the call
   /// to [setState]. As such, [onAnyChange] should not return a [Future].
@@ -324,6 +327,7 @@ class EntityListenerBuilder extends StatefulWidget {
     this.onDelete,
     this.onDeleteEnabled = true,
     this.onUpdate,
+    this.onReset,
     this.onAnyChange,
     this.changesUpdatesState = true,
   });
@@ -387,7 +391,10 @@ class _EntityListenerBuilderState extends State<EntityListenerBuilder> {
   }
 
   void _onReset() {
-    _notify(() => widget.onAnyChange?.call());
+    _notify(() {
+      widget.onReset?.call();
+      widget.onAnyChange?.call();
+    });
   }
 
   void _notify(VoidCallback callback) {

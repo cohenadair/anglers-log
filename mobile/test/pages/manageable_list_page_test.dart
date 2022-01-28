@@ -49,6 +49,8 @@ void main() {
         .thenAnswer((_) => Future.value(true));
     when(appManager.localDatabaseManager.deleteEntity(any, any))
         .thenAnswer((_) => Future.value(true));
+    when(appManager.localDatabaseManager.fetchAll(any))
+        .thenAnswer((_) => Future.value([]));
 
     when(appManager.subscriptionManager.stream)
         .thenAnswer((_) => const Stream.empty());
@@ -1462,19 +1464,21 @@ void main() {
     // Trigger add.
     await speciesManager.addOrUpdate(species);
     expect(loadCount, 1);
-    expect(find.byType(ManageableListItem), findsNWidgets(4));
     loadCount = 0;
 
     // Trigger delete.
     await speciesManager.delete(species.id);
     expect(loadCount, 1);
-    expect(find.byType(ManageableListItem), findsNWidgets(4));
     loadCount = 0;
 
     // Trigger update.
     await speciesManager.addOrUpdate(species..name = "Test 2");
     expect(loadCount, 1);
-    expect(find.byType(ManageableListItem), findsNWidgets(4));
+    loadCount = 0;
+
+    // Trigger reset.
+    await speciesManager.initialize();
+    expect(loadCount, 1);
   });
 
   testWidgets("Test item reconciliation", (tester) async {
