@@ -322,6 +322,7 @@ class BackupRestoreManager {
     _userPreferenceManager.setLastBackupAt(_timeManager.msSinceEpoch);
 
     _notifyProgress(BackupRestoreProgress(BackupRestoreProgressEnum.finished));
+    _isInProgress = false;
   }
 
   Future<void> _restore(DriveApi drive) async {
@@ -369,6 +370,7 @@ class BackupRestoreManager {
     await _appManager.initialize(isStartup: false);
 
     _notifyProgress(BackupRestoreProgress(BackupRestoreProgressEnum.finished));
+    _isInProgress = false;
   }
 
   /// Fetches files on the user's Google Drive using pagination, filtered by

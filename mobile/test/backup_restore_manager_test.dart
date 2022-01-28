@@ -483,6 +483,7 @@ void main() {
         .called(1);
 
     verify(appManager.userPreferenceManager.setLastBackupAt(any)).called(1);
+    expect(backupRestoreManager.isInProgress, isFalse);
   });
 
   test("Backup with creating database file", () async {
@@ -589,6 +590,7 @@ void main() {
     expect(createResult.captured[2], "3");
 
     verify(appManager.app.initialize(isStartup: false)).called(1);
+    expect(backupRestoreManager.isInProgress, isFalse);
   });
 
   test("Fetch files in multiple batches", () async {
