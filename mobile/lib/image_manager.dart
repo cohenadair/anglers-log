@@ -63,7 +63,8 @@ class ImageManager {
 
   /// Returns a list of paths to all full images stored by Anglers' Log.
   Future<List<String>> get imageFiles {
-    return _ioWrapper.directory(_imagePath)
+    return _ioWrapper
+        .directory(_imagePath)
         .list()
         .where((e) => extension(e.path) == imgExtension)
         .map((e) => e.path)
@@ -267,8 +268,8 @@ class ImageManager {
         }
 
         await thumbnail.writeAsBytes(
-          await _compress(context, imageFile(fileName),
-              _thumbnailCompressionQuality, size),
+          await _compress(
+              context, imageFile(fileName), _thumbnailCompressionQuality, size),
           flush: true,
         );
       } on FileSystemException catch (e) {
