@@ -37,6 +37,7 @@ abstract class PreferenceManager {
       _appManager.localDatabaseManager;
 
   Future<void> initialize() async {
+    preferences.clear();
     for (var row in (await localDatabaseManager.fetchAll(tableName))) {
       preferences[row[_keyId]!] = jsonDecode(row[_keyValue]);
     }

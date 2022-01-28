@@ -1,5 +1,5 @@
+import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/utils/number_utils.dart';
-import 'package:test/test.dart';
 
 void main() {
   test("isWhole", () {
@@ -29,5 +29,13 @@ void main() {
 
     // Set decimal places.
     expect(10.5556.displayValue(3), "10.556");
+  });
+
+  test("percent", () {
+    expect(percent(50, 200), 25);
+    expect(percent(0, 200), 0);
+    expect(percent(200, 200), 100);
+    expect(percent(100, 50), 200);
+    expect(() => percent(200, 0), throwsAssertionError);
   });
 }

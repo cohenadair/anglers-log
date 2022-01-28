@@ -20,6 +20,7 @@ class LocalDatabaseManager {
   final AppManager _appManager;
 
   late Database _database;
+  var _initialized = false;
 
   LocalDatabaseManager(this._appManager);
 
@@ -28,8 +29,17 @@ class LocalDatabaseManager {
   Future<void> initialize({
     Database? database,
   }) async {
+    // Use an initialized flag here because Dart doesn't have a way to check if
+    // a late variable has been initialized, and null isn't a valid value for
+    // _database.
+    if (_initialized) {
+      await _database.close();
+    }
     _database = database ?? (await openDb());
+    _initialized = true;
   }
+
+  String databasePath() => _database.path;
 
   /// Commits a batch of SQL statements. See [Batch].
   Future<List<dynamic>> commitBatch(void Function(Batch) execute) async {

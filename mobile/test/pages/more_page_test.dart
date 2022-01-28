@@ -32,6 +32,9 @@ void main() {
   });
 
   testWidgets("Page is presented", (tester) async {
+    when(appManager.userPreferenceManager.userName).thenReturn(null);
+    when(appManager.userPreferenceManager.userEmail).thenReturn(null);
+
     await tester.pumpWidget(Testable(
       (_) => const MorePage(),
       appManager: appManager,

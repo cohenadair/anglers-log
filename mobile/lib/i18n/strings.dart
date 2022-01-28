@@ -999,8 +999,6 @@ class Strings {
 
   String get importPageError => _string("importPage_error");
 
-  String get importPageSendReport => _string("importPage_sendReport");
-
   String get importPageErrorWarningMessage =>
       _string("importPage_errorWarningMessage");
 
@@ -1780,6 +1778,80 @@ class Strings {
   String get tripSummaryLengthPerTrip => _string("tripSummary_lengthPerTrip");
 
   String get tripSummaryBestLength => _string("tripSummary_bestLength");
+
+  String get backupPageTitle => _string("backupPage_title");
+
+  String get backupPageDescription => _string("backupPage_description");
+
+  String get backupPageAction => _string("backupPage_action");
+
+  String get backupPageErrorTitle => _string("backupPage_errorTitle");
+
+  String get backupPageAutoTitle => _string("backupPage_autoTitle");
+
+  String get backupPageLastBackupLabel => _string("backupPage_lastBackupLabel");
+
+  String get backupPageLastBackupNever => _string("backupPage_lastBackupNever");
+
+  String get restorePageTitle => _string("restorePage_title");
+
+  String get restorePageDescription => _string("restorePage_description");
+
+  String get restorePageAction => _string("restorePage_action");
+
+  String get restorePageErrorTitle => _string("restorePage_errorTitle");
+
+  String get backupRestoreAuthError => _string("backupRestore_authError");
+
+  String get backupRestoreCreateFolderError =>
+      _string("backupRestore_createFolderError");
+
+  String get backupRestoreFolderNotFound =>
+      _string("backupRestore_folderNotFound");
+
+  String get backupRestoreApiRequestError =>
+      _string("backupRestore_apiRequestError");
+
+  String get backupRestoreDatabaseNotFound =>
+      _string("backupRestore_databaseNotFound");
+
+  String get backupRestoreAuthenticating =>
+      _string("backupRestore_authenticating");
+
+  String get backupRestoreFetchingFiles =>
+      _string("backupRestore_fetchingFiles");
+
+  String get backupRestoreCreatingFolder =>
+      _string("backupRestore_creatingFolder");
+
+  String get backupRestoreBackingUpDatabase =>
+      _string("backupRestore_backingUpDatabase");
+
+  String get backupRestoreBackingUpImages =>
+      _string("backupRestore_backingUpImages");
+
+  String get backupRestoreDownloadingDatabase =>
+      _string("backupRestore_downloadingDatabase");
+
+  String get backupRestoreDownloadingImages =>
+      _string("backupRestore_downloadingImages");
+
+  String get backupRestoreReloadingData =>
+      _string("backupRestore_reloadingData");
+
+  String get backupRestoreSuccess => _string("backupRestore_success");
+
+  String get cloudAuthSignOut => _string("cloudAuth_signOut");
+
+  String get cloudAuthSignedInAs => _string("cloudAuth_signedInAs");
+
+  String get cloudAuthSignInWithGoogle => _string("cloudAuth_signInWithGoogle");
+
+  String get cloudAuthDescription => _string("cloudAuth_description");
+
+  String get cloudAuthError => _string("cloudAuth_error");
+
+  String get asyncFeedbackSendReport => _string("asyncFeedback_sendReport");
 }
 
 class StringsDelegate extends LocalizationsDelegate<Strings> {

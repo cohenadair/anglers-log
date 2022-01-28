@@ -474,16 +474,16 @@ Map<String, Map<String, String>> get englishStrings => {
         "feedbackPage_connectionError":
             "No internet connection. Please check your connection and try again.",
         "feedbackPage_sending": "Sending feedback...",
-        "importPage_moreTitle": "Import",
-        "importPage_title": "Import Data",
+        "backupPage_MoreTitle": "Backup and Restore",
+        "importPage_moreTitle": "Legacy Import",
+        "importPage_title": "Legacy Import",
         "importPage_description":
-            "Importing data you previously exported using Anglers' Log will be added to your existing log data and may take several minutes.",
+            "Legacy import requires you to choose a backup file (.zip) that you created with an older version of Anglers' Log. Imported legacy data is added to your existing log.\n\nThe import process may take several minutes.",
         "importPage_importingImages": "Copying images...",
         "importPage_importingData": "Copying fishing data...",
         "importPage_success": "Successfully imported data!",
         "importPage_error":
             "There was an error importing your data. If the backup file you chose was created using Anglers' Log, please send it to us for investigation.",
-        "importPage_sendReport": "Send Report",
         "importPage_errorWarningMessage":
             "Pressing send will send Anglers' Log all your fishing data (excluding photos). Your data will not be shared outside the Anglers' Log organization.",
         "importPage_errorTitle": "Import Error",
@@ -571,7 +571,8 @@ Map<String, Map<String, String>> get englishStrings => {
             "Instructions on how to reset your password have been sent to %s",
         "proPage_upgradeTitle": "Upgrade to Anglers' Log",
         "proPage_proTitle": "Pro",
-        "proPage_backup": "Automatically backup all your data to the cloud",
+        "proPage_backup":
+            "Automatic backup and restore with Google Drive\u2122",
         "proPage_atmosphere": "Fetch atmosphere and weather data",
         "proPage_sync": "Sync data across all your devices",
         "proPage_reports": "Create custom reports and filters",
@@ -868,5 +869,44 @@ Map<String, Map<String, String>> get englishStrings => {
         "tripSummary_bestWeight": "Best Weight",
         "tripSummary_lengthPerTrip": "Length Per Trip",
         "tripSummary_bestLength": "Best Length",
+        "backupPage_title": "Backup",
+        "backupPage_description":
+            "Your data is copied to a private folder in your Google Drive\u2122 and is not shared publicly.\n\nThe backup process may take several minutes.",
+        "backupPage_action": "Backup Now",
+        "backupPage_errorTitle": "Backup Error",
+        "backupPage_autoTitle": "Automatically Backup",
+        "backupPage_lastBackupLabel": "Last Backup",
+        "backupPage_lastBackupNever": "Never",
+        "restorePage_title": "Restore",
+        "restorePage_description":
+            "Restoring data completely replaces your existing log with the data stored in Google Drive\u2122. If there is no data, your log remains unchanged.\n\nThe restore process may take several minutes.",
+        "restorePage_action": "Restore Now",
+        "restorePage_errorTitle": "Restore Error",
+        "backupRestore_authError":
+            "Authentication error, please try again later.",
+        "backupRestore_createFolderError":
+            "Failed to create backup folder, please try again later.",
+        "backupRestore_folderNotFound":
+            "Backup folder not found. You must backup your data before it can be restored.",
+        "backupRestore_apiRequestError":
+            "Unknown error, please send Anglers' Log a report for investigation.",
+        "backupRestore_databaseNotFound":
+            "Backup data file not found. You must backup your data before it can be restored.",
+        "backupRestore_authenticating": "Authenticating...",
+        "backupRestore_fetchingFiles": "Fetching data...",
+        "backupRestore_creatingFolder": "Creating backup folder...",
+        "backupRestore_backingUpDatabase": "Backing up database...",
+        "backupRestore_backingUpImages": "Backing up images%s...",
+        "backupRestore_downloadingDatabase": "Downloading database...",
+        "backupRestore_downloadingImages": "Downloading images%s...",
+        "backupRestore_reloadingData": "Reloading data...",
+        "backupRestore_success": "Success!",
+        "cloudAuth_signOut": "Sign out",
+        "cloudAuth_signedInAs": "Signed in as",
+        "cloudAuth_signInWithGoogle": "Sign in with Google",
+        "cloudAuth_description":
+            "To continue, you must sign in to your Google\u2122 account. Data is saved to a private Google Drive\u2122 folder and can only be accessed by Anglers' Log.",
+        "cloudAuth_error": "Error signing in, please try again later.",
+        "asyncFeedback_sendReport": "Send Report",
       },
     };

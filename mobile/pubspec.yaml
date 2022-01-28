@@ -22,10 +22,16 @@ dependencies:
   collection: ^1.15.0               # https://pub.dev/packages/collection (Dart)
   crypto: ^3.0.1                    # https://pub.dev/packages/crypto (Dart)
   device_info_plus: ^2.0.2          # https://pub.dev/packages/device_info (Flutter)
+
+  # https://pub.dev/packages/extension_google_sign_in_as_googleapis_auth (Google)
+  extension_google_sign_in_as_googleapis_auth: ^2.0.4
+
   file_picker: ^4.1.3               # https://pub.dev/packages/file_picker (verified)
   flutter_image_compress: 1.1.0     # https://pub.dev/packages/flutter_image_compress
   flutter_svg: ^0.22.0              # https://pub.dev/packages/flutter_svg (verified)
   geolocator: ^7.7.0                # https://pub.dev/packages/geolocator (verified)
+  googleapis: ^7.0.0                # https://pub.dev/packages/googleapis (Google)
+  google_sign_in: ^5.2.1            # https://pub.dev/packages/google_sign_in (Flutter)
   http: ^0.13.4                     # https://pub.dev/packages/http (Dart)
   image_picker: ^0.8.4+2            # https://pub.dev/packages/image_picker (Flutter)
   intl: ^0.17.0                     # https://pub.dev/packages/intl (Dart)
@@ -72,6 +78,7 @@ flutter:
 
   assets:
     - assets/feedback_template
+    - assets/google-logo.svg
     - assets/mapbox-logo.svg
     - assets/sensitive.properties
 
@@ -90,6 +97,11 @@ flutter:
     - family: CustomIcons
       fonts:
         - asset: fonts/CustomIcons.ttf
+
+    - family: RobotoMedium
+      fonts:
+        - asset: fonts/Roboto-Medium.ttf
+
   #   - family: Schyler
   #     fonts:
   #       - asset: fonts/Schyler-Regular.ttf
@@ -101,5 +113,5 @@ flutter:
   #       - asset: fonts/TrajanPro_Bold.ttf
   #         weight: 700
   #
-  # For details regarding fonts from package dependencies, 
+  # For details regarding fonts from package dependencies,
   # see https://flutter.io/custom-fonts/#from-packages

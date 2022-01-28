@@ -3,6 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mobile/widgets/input_controller.dart';
+import 'package:mobile/widgets/text.dart';
 import 'package:mobile/widgets/widget.dart';
 
 import '../test_utils.dart';
@@ -275,5 +276,26 @@ void main() {
       await tapAndSettle(tester, find.text("None"));
       expect(controller.hasValue, isFalse);
     });
+  });
+
+  testWidgets("WatermarkLogo with title", (tester) async {
+    await pumpContext(
+      tester,
+      (_) => const WatermarkLogo(
+        icon: Icons.add,
+        title: "Title",
+      ),
+    );
+    expect(find.byType(TitleLabel), findsOneWidget);
+  });
+
+  testWidgets("WatermarkLogo without title", (tester) async {
+    await pumpContext(
+      tester,
+      (_) => const WatermarkLogo(
+        icon: Icons.add,
+      ),
+    );
+    expect(find.byType(TitleLabel), findsNothing);
   });
 }

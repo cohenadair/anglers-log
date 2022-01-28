@@ -14,15 +14,15 @@ class LocationMonitor {
   final _log = const Log("LocationMonitor");
   final distanceFilterMeters = 20;
 
-  final AppManager appManager;
+  final AppManager _appManager;
 
   Position? _lastKnownPosition;
   bool _initialized = false;
 
   PermissionHandlerWrapper get _permissionHandler =>
-      appManager.permissionHandlerWrapper;
+      _appManager.permissionHandlerWrapper;
 
-  LocationMonitor(this.appManager);
+  LocationMonitor(this._appManager);
 
   Future<void> initialize() async {
     if (_initialized || !(await _permissionHandler.isLocationGranted)) {

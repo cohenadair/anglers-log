@@ -209,7 +209,8 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
   Widget build(BuildContext context) {
     var map = EntityListenerBuilder(
       managers: [_fishingSpotManager],
-      onAnyChange: () => _updateSymbols(invokeSetState: false),
+      changesUpdatesState: false,
+      onAnyChange: _updateSymbols,
       builder: (context) {
         var stack = Stack(children: [
           _buildMap(),
@@ -652,7 +653,7 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
     return _selectFishingSpot(symbol.fishingSpot, animateMapMovement: true);
   }
 
-  Future<void> _updateSymbols({bool invokeSetState = true}) async {
+  Future<void> _updateSymbols() async {
     // Map is still loading, exit early.
     _mapController?.clearSymbols();
 
@@ -677,10 +678,7 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
       _activeSymbol = symbols.firstWhereOrNull(
           (s) => s.fishingSpot.id == _activeSymbol!.fishingSpot.id);
       if (_hasActiveSymbol) {
-        _selectFishingSpot(
-          _activeSymbol!.fishingSpot,
-          invokeSetState: invokeSetState,
-        );
+        _selectFishingSpot(_activeSymbol!.fishingSpot);
       }
     }
   }
@@ -725,7 +723,6 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
     // When true and fishingSpot == null, the current fishing spot widget is
     // animated out of view.
     bool dismissIfNull = false,
-    bool invokeSetState = true,
   }) async {
     var newActiveSymbol = _activeSymbol;
     var newIsDismissingFishingSpot = _isDismissingFishingSpot;
@@ -781,11 +778,7 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
       _oldFishingSpot = newOldFishingSpot;
     }
 
-    if (invokeSetState) {
-      setState(updateFields);
-    } else {
-      updateFields();
-    }
+    setState(updateFields);
   }
 
   void _setupPicker() {

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:mobile/wrappers/google_sign_in_wrapper.dart';
 import 'package:provider/provider.dart';
 
 import 'angler_manager.dart';
+import 'backup_restore_manager.dart';
 import 'bait_category_manager.dart';
 import 'bait_manager.dart';
 import 'body_of_water_manager.dart';
@@ -20,6 +22,7 @@ import 'time_manager.dart';
 import 'trip_manager.dart';
 import 'user_preference_manager.dart';
 import 'water_clarity_manager.dart';
+import 'wrappers/drive_api_wrapper.dart';
 import 'wrappers/file_picker_wrapper.dart';
 import 'wrappers/http_wrapper.dart';
 import 'wrappers/image_compress_wrapper.dart';
@@ -40,6 +43,7 @@ class AppManager {
 
   // Internal dependencies.
   AnglerManager? _anglerManager;
+  BackupRestoreManager? _backupRestoreManager;
   BaitCategoryManager? _baitCategoryManager;
   BaitManager? _baitManager;
   BodyOfWaterManager? _bodyOfWaterManager;
@@ -60,7 +64,9 @@ class AppManager {
   WaterClarityManager? _waterClarityManager;
 
   // External dependency wrappers.
+  DriveApiWrapper? _driveApiWrapper;
   FilePickerWrapper? _filePickerWrapper;
+  GoogleSignInWrapper? _googleSignInWrapper;
   HttpWrapper? _httpWrapper;
   ImageCompressWrapper? _imageCompressWrapper;
   ImagePickerWrapper? _imagePickerWrapper;
@@ -77,6 +83,11 @@ class AppManager {
   AnglerManager get anglerManager {
     _anglerManager ??= AnglerManager(this);
     return _anglerManager!;
+  }
+
+  BackupRestoreManager get backupRestoreManager {
+    _backupRestoreManager ??= BackupRestoreManager(this);
+    return _backupRestoreManager!;
   }
 
   BaitCategoryManager get baitCategoryManager {
@@ -169,9 +180,19 @@ class AppManager {
     return _waterClarityManager!;
   }
 
+  DriveApiWrapper get driveApiWrapper {
+    _driveApiWrapper ??= DriveApiWrapper();
+    return _driveApiWrapper!;
+  }
+
   FilePickerWrapper get filePickerWrapper {
     _filePickerWrapper ??= FilePickerWrapper();
     return _filePickerWrapper!;
+  }
+
+  GoogleSignInWrapper get googleSignInWrapper {
+    _googleSignInWrapper ??= GoogleSignInWrapper();
+    return _googleSignInWrapper!;
   }
 
   HttpWrapper get httpWrapper {
@@ -232,5 +253,44 @@ class AppManager {
   UrlLauncherWrapper get urlLauncherWrapper {
     _urlLauncherWrapper ??= UrlLauncherWrapper();
     return _urlLauncherWrapper!;
+  }
+
+  /// Initializes this [AppManager] instance. If [isStartup] is true, all
+  /// managers and monitors are initialized; otherwise, only database dependent
+  /// managers and monitors are initialized.
+  Future<void> initialize({bool isStartup = true}) async {
+    // Managers that don't depend on anything.
+    if (isStartup) {
+      await locationMonitor.initialize();
+      await propertiesManager.initialize();
+      await subscriptionManager.initialize();
+    }
+
+    // Need to initialize the local database before anything else, since all
+    // entity managers depend on the local database.
+    await localDatabaseManager.initialize();
+
+    // UserPreferenceManager includes "pro" override and needs to be initialized
+    // before managers that upload data to Firebase.
+    await userPreferenceManager.initialize();
+
+    await anglerManager.initialize();
+    await baitCategoryManager.initialize();
+    await baitManager.initialize();
+    await bodyOfWaterManager.initialize();
+    await catchManager.initialize();
+    await customEntityManager.initialize();
+    await fishingSpotManager.initialize();
+    await methodManager.initialize();
+    await reportManager.initialize();
+    await speciesManager.initialize();
+    await tripManager.initialize();
+    await waterClarityManager.initialize();
+
+    // Managers that depend on other managers.
+    if (isStartup) {
+      await backupRestoreManager.initialize();
+      await imageManager.initialize();
+    }
   }
 }

@@ -1,15 +1,20 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:googleapis_auth/googleapis_auth.dart';
+import 'package:googleapis/drive/v3.dart' as drive;
 import 'package:http/http.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mapbox_gl/mapbox_gl.dart' as map;
 import 'package:mobile/angler_manager.dart';
 import 'package:mobile/app_manager.dart';
 import 'package:mobile/atmosphere_fetcher.dart';
+import 'package:mobile/backup_restore_manager.dart';
 import 'package:mobile/bait_category_manager.dart';
 import 'package:mobile/bait_manager.dart';
 import 'package:mobile/body_of_water_manager.dart';
@@ -34,7 +39,9 @@ import 'package:mobile/trip_manager.dart';
 import 'package:mobile/utils/validator.dart';
 import 'package:mobile/water_clarity_manager.dart';
 import 'package:mobile/widgets/quantity_picker_input.dart';
+import 'package:mobile/wrappers/drive_api_wrapper.dart';
 import 'package:mobile/wrappers/file_picker_wrapper.dart';
+import 'package:mobile/wrappers/google_sign_in_wrapper.dart';
 import 'package:mobile/wrappers/http_wrapper.dart';
 import 'package:mobile/wrappers/image_compress_wrapper.dart';
 import 'package:mobile/wrappers/image_picker_wrapper.dart';
@@ -64,13 +71,22 @@ Trip_CatchesPerEntity newInputItemShim(dynamic pickerItem) =>
 @GenerateMocks([AppManager])
 @GenerateMocks([], customMocks: [MockSpec<map.ArgumentCallbacks>()])
 @GenerateMocks([AtmosphereFetcher])
+@GenerateMocks([AuthClient])
+@GenerateMocks([BackupRestoreManager])
 @GenerateMocks([BaitCategoryManager])
 @GenerateMocks([BaitManager])
 @GenerateMocks([BodyOfWaterManager])
 @GenerateMocks([CatchManager])
 @GenerateMocks([CustomEntityManager])
+@GenerateMocks([drive.DriveApi])
+@GenerateMocks([drive.FileList])
+@GenerateMocks([drive.FilesResource])
+@GenerateMocks([DriveApiWrapper])
 @GenerateMocks([FishingSpotManager])
+@GenerateMocks([GoogleSignIn])
+@GenerateMocks([GoogleSignInAccount])
 @GenerateMocks([ImageManager])
+@GenerateMocks([IOSink])
 @GenerateMocks([LocalDatabaseManager])
 @GenerateMocks([LocationMonitor])
 @GenerateMocks([MethodManager])
@@ -85,6 +101,7 @@ Trip_CatchesPerEntity newInputItemShim(dynamic pickerItem) =>
 @GenerateMocks([WaterClarityManager])
 @GenerateMocks([FilePickerWrapper])
 @GenerateMocks([], customMocks: [MockSpec<GlobalKey>()])
+@GenerateMocks([GoogleSignInWrapper])
 @GenerateMocks([HttpWrapper])
 @GenerateMocks([ImageCompressWrapper])
 @GenerateMocks([IoWrapper])
@@ -125,7 +142,6 @@ Trip_CatchesPerEntity newInputItemShim(dynamic pickerItem) =>
 ])
 @GenerateMocks([Response])
 @GenerateMocks([], customMocks: [MockSpec<StreamSubscription>()])
-
 // @GenerateMocks can't generate mock because of an internal type used in API.
 class MockFile extends Mock implements File {
   @override
@@ -144,6 +160,32 @@ class MockFile extends Mock implements File {
   Future<Uint8List> readAsBytes() => (super.noSuchMethod(
       Invocation.method(#readAsBytes, []),
       returnValue: Future.value(Uint8List.fromList([]))) as Future<Uint8List>);
+
+  @override
+  Stream<Uint8List> openRead([int? start, int? end]) => (super.noSuchMethod(
+      Invocation.method(#openRead, [
+        start,
+        end,
+      ]),
+      returnValue: Stream.value(Uint8List.fromList([]))) as Stream<Uint8List>);
+
+  @override
+  int lengthSync() =>
+      (super.noSuchMethod(Invocation.method(#lengthSync, []), returnValue: 0)
+          as int);
+
+  @override
+  IOSink openWrite({
+    FileMode mode = FileMode.write,
+    Encoding encoding = utf8,
+  }) =>
+      super.noSuchMethod(
+        Invocation.method(#openWrite, [], {
+          #mode: mode,
+          #encoding: encoding,
+        }),
+        returnValue: IOSink(StreamController()),
+      );
 
   @override
   Future<File> writeAsBytes(

@@ -470,24 +470,43 @@ class WatermarkLogo extends StatelessWidget {
 
   final IconData icon;
   final Color? color;
+  final String? title;
 
   const WatermarkLogo({
     required this.icon,
     this.color,
+    this.title,
   });
 
   @override
   Widget build(BuildContext context) {
-    return ClipOval(
-      child: Container(
-        padding: insetsXL,
-        color: Colors.grey.shade200,
-        child: Icon(
-          icon,
-          size: _size,
-          color: color ?? Theme.of(context).primaryColor,
+    Widget titleWidget = Empty();
+    if (isNotEmpty(title)) {
+      titleWidget = Padding(
+        padding: insetsTopDefault,
+        child: TitleLabel.style1(
+          title!,
+          overflow: TextOverflow.visible,
+          align: TextAlign.center,
         ),
-      ),
+      );
+    }
+
+    return Column(
+      children: [
+        ClipOval(
+          child: Container(
+            padding: insetsXL,
+            color: Colors.grey.shade200,
+            child: Icon(
+              icon,
+              size: _size,
+              color: color ?? Theme.of(context).primaryColor,
+            ),
+          ),
+        ),
+        titleWidget,
+      ],
     );
   }
 }

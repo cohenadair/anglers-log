@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:mobile/pages/import_page.dart';
 
 import '../i18n/strings.dart';
 import '../res/gen/custom_icons.dart';
-import '../subscription_manager.dart';
 import '../user_preference_manager.dart';
 import '../utils/page_utils.dart';
 import '../widgets/checkbox_input.dart';
 import '../widgets/list_item.dart';
 import '../widgets/widget.dart';
-import 'pro_page.dart';
 import 'units_page.dart';
 
 class SettingsPage extends StatefulWidget {
@@ -17,9 +16,6 @@ class SettingsPage extends StatefulWidget {
 }
 
 class _SettingsPageState extends State<SettingsPage> {
-  SubscriptionManager get _subscriptionManager =>
-      SubscriptionManager.of(context);
-
   UserPreferenceManager get _userPreferenceManager =>
       UserPreferenceManager.of(context);
 
@@ -34,30 +30,21 @@ class _SettingsPageState extends State<SettingsPage> {
           _buildFetchAtmosphere(context),
           const MinDivider(),
           _buildUnits(context),
+          const MinDivider(),
+          _buildLegacyImport(context),
         ],
       ),
     );
   }
 
   Widget _buildFetchAtmosphere(BuildContext context) {
-    return CheckboxInput(
+    return ProCheckboxInput(
       label: Strings.of(context).settingsPageFetchAtmosphereTitle,
       description: Strings.of(context).settingsPageFetchAtmosphereDescription,
       value: _userPreferenceManager.autoFetchAtmosphere,
-      onChanged: (checked) {
-        if (_subscriptionManager.isPro && checked) {
-          _userPreferenceManager.setAutoFetchAtmosphere(true);
-        } else if (checked) {
-          // "Uncheck" checkbox, since automatically refreshing data is
-          // a pro feature.
-          setState(() {
-            _userPreferenceManager.setAutoFetchAtmosphere(false);
-          });
-          present(context, ProPage());
-        } else {
-          _userPreferenceManager.setAutoFetchAtmosphere(false);
-        }
-      },
+      leading: const Icon(Icons.air),
+      onSetValue: (checked) =>
+          _userPreferenceManager.setAutoFetchAtmosphere(checked),
     );
   }
 
@@ -67,6 +54,14 @@ class _SettingsPageState extends State<SettingsPage> {
       leading: const Icon(CustomIcons.ruler),
       trailing: RightChevronIcon(),
       onTap: () => push(context, UnitsPage()),
+    );
+  }
+
+  Widget _buildLegacyImport(BuildContext context) {
+    return ListItem(
+      leading: const Icon(Icons.cloud_download),
+      title: Text(Strings.of(context).importPageMoreTitle),
+      onTap: () => present(context, ImportPage()),
     );
   }
 }

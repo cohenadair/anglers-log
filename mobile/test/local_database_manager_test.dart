@@ -25,6 +25,13 @@ void main() {
     );
   });
 
+  test("initialize closes DB if already open", () async {
+    await databaseManager.initialize(
+      database: database,
+    );
+    verify(database.close()).called(1);
+  });
+
   test("insertOrReplace single", () async {
     when(database.insert(
       any,

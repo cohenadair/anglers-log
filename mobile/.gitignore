@@ -1,4 +1,5 @@
 # Firebase
+**/android/app/google-services.json
 **/android/app/src/dev/google-services.json
 **/android/app/src/prod/google-services.json
 **/ios/Runner/Firebase/Dev/GoogleService-Info.plist

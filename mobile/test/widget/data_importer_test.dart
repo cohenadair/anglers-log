@@ -218,6 +218,9 @@ void main() {
   });
 
   testWidgets("Feedback button shows feedback page", (tester) async {
+    when(appManager.userPreferenceManager.userName).thenReturn(null);
+    when(appManager.userPreferenceManager.userEmail).thenReturn(null);
+
     when(appManager.filePickerWrapper.pickFiles(
       type: anyNamed("type"),
       allowedExtensions: anyNamed("allowedExtensions"),

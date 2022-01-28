@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/material.dart';
+import 'package:mobile/user_preference_manager.dart';
 import 'package:quiver/strings.dart';
 
 import '../i18n/strings.dart';
@@ -68,6 +69,9 @@ class _FeedbackPageState extends State<FeedbackPage> {
 
   PropertiesManager get _propertiesManager => PropertiesManager.of(context);
 
+  UserPreferenceManager get _userPreferenceManager =>
+      UserPreferenceManager.of(context);
+
   bool get _error => isNotEmpty(widget.error);
 
   _FeedbackType get _typeValue {
@@ -85,6 +89,8 @@ class _FeedbackPageState extends State<FeedbackPage> {
     );
 
     _typeController.value = _FeedbackType.bug;
+    _nameController.value = _userPreferenceManager.userName;
+    _emailController.value = _userPreferenceManager.userEmail;
   }
 
   @override
@@ -108,13 +114,15 @@ class _FeedbackPageState extends State<FeedbackPage> {
         TextInput.name(
           context,
           controller: _nameController,
-          autofocus: true,
+          autofocus: isEmpty(_nameController.value),
           textInputAction: TextInputAction.next,
         ),
         TextInput.email(
           context,
           controller: _emailController,
           textInputAction: TextInputAction.next,
+          autofocus: isNotEmpty(_nameController.value) &&
+              isEmpty(_emailController.value),
           onSubmitted: () => FocusScope.of(context).requestFocus(_messageNode),
           // To update "Send" button state.
           onChanged: (_) => setState(() {}),
@@ -136,6 +144,8 @@ class _FeedbackPageState extends State<FeedbackPage> {
           capitalization: TextCapitalization.sentences,
           maxLength: null,
           focusNode: _messageNode,
+          autofocus: isNotEmpty(_nameController.value) &&
+              isNotEmpty(_emailController.value),
           // To update "Send" button state.
           onChanged: (_) => setState(() {}),
         ),
@@ -246,6 +256,8 @@ class _FeedbackPageState extends State<FeedbackPage> {
       return false;
     }
 
+    _userPreferenceManager.setUserName(_nameController.value);
+    _userPreferenceManager.setUserEmail(_emailController.value);
     return true;
   }
 }

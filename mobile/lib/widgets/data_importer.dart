@@ -9,12 +9,9 @@ import '../i18n/strings.dart';
 import '../pages/feedback_page.dart';
 import '../pages/scroll_page.dart';
 import '../res/dimen.dart';
-import '../utils/page_utils.dart';
 import '../wrappers/file_picker_wrapper.dart';
-import 'button.dart';
-import 'text.dart';
+import 'async_feedback.dart';
 import 'widget.dart';
-import 'work_result.dart';
 
 /// A widget that manages importing legacy data. This widget should be embedded
 /// in a [ScrollPage].
@@ -52,7 +49,7 @@ class DataImporter extends StatefulWidget {
 }
 
 class _DataImporterState extends State<DataImporter> {
-  _RenderState _renderState = _RenderState.none;
+  var _progressState = AsyncFeedbackState.none;
   LegacyImporterError? _importError;
   String? _importErrorDescription;
 
@@ -64,16 +61,11 @@ class _DataImporterState extends State<DataImporter> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Align(
+        Center(
           child: WatermarkLogo(
             icon: widget.watermarkIcon,
+            title: widget.titleText,
           ),
-        ),
-        const VerticalSpace(paddingDefault),
-        TitleLabel.style1(
-          widget.titleText,
-          overflow: TextOverflow.visible,
-          align: TextAlign.center,
         ),
         const VerticalSpace(paddingDefault),
         Text(
@@ -82,69 +74,34 @@ class _DataImporterState extends State<DataImporter> {
           textAlign: TextAlign.center,
         ),
         const VerticalSpace(paddingDefault),
-        _buildStartButton(),
         _buildFeedbackWidgets(),
       ],
     );
   }
 
-  Widget _buildStartButton() {
-    VoidCallback? onPressed;
-    if (_renderState != _RenderState.loading && widget.importer == null) {
-      onPressed = _chooseFile;
-    } else if (_renderState == _RenderState.none && widget.importer != null) {
-      onPressed = () => _startImport(widget.importer!);
+  Widget _buildFeedbackWidgets() {
+    VoidCallback? action;
+    if (_progressState != AsyncFeedbackState.loading &&
+        widget.importer == null) {
+      action = _chooseFile;
+    } else if (_progressState == AsyncFeedbackState.none &&
+        widget.importer != null) {
+      action = () => _startImport(widget.importer!);
     }
 
-    return Align(
-      child: Button(
-        text: widget.importer == null
+    return Center(
+      child: AsyncFeedback(
+        state: _progressState,
+        description: widget.loadingText,
+        actionText: widget.importer == null
             ? Strings.of(context).dataImporterChooseFile
             : Strings.of(context).dataImporterStart,
-        onPressed: onPressed,
-      ),
-    );
-  }
-
-  Widget _buildFeedbackWidgets() {
-    var children = <Widget>[];
-
-    switch (_renderState) {
-      case _RenderState.none:
-        return Empty();
-      case _RenderState.loading:
-        children.add(Loading(
-          label: widget.loadingText,
-        ));
-        break;
-      case _RenderState.success:
-        children.add(WorkResult.success(widget.successText));
-        break;
-      case _RenderState.error:
-        children.add(WorkResult.error(widget.errorText));
-        children.add(const VerticalSpace(paddingDefault));
-        children.add(Button(
-          text: Strings.of(context).importPageSendReport,
-          onPressed: () => present(
-            context,
-            FeedbackPage(
-              title: widget.feedbackPageTitle,
-              error: _importError.toString(),
-              warningMessage: Strings.of(context).importPageErrorWarningMessage,
-              attachment: _importErrorDescription,
-            ),
-          ),
-        ));
-        break;
-    }
-
-    return Padding(
-      padding: insetsTopDefault,
-      child: AnimatedSwitcher(
-        duration: animDurationDefault,
-        child: Column(
-          key: ValueKey<_RenderState>(_renderState),
-          children: children,
+        action: action,
+        feedbackPage: FeedbackPage(
+          title: widget.feedbackPageTitle,
+          error: _importError.toString(),
+          warningMessage: Strings.of(context).importPageErrorWarningMessage,
+          attachment: _importErrorDescription,
         ),
       ),
     );
@@ -157,7 +114,7 @@ class _DataImporterState extends State<DataImporter> {
     );
 
     if (pickerResult == null) {
-      _updateImportState(_RenderState.none);
+      _updateImportState(AsyncFeedbackState.none);
       return;
     }
 
@@ -166,29 +123,20 @@ class _DataImporterState extends State<DataImporter> {
   }
 
   void _startImport(LegacyImporter importer) {
-    _updateImportState(_RenderState.loading);
+    _updateImportState(AsyncFeedbackState.loading);
 
     importer.start().then((_) {
       widget.onFinish?.call(true);
-      _updateImportState(_RenderState.success);
+      _updateImportState(AsyncFeedbackState.success);
     }).catchError((error, stacktrace) {
       _importError = error;
       _importErrorDescription = stacktrace.toString();
-      _updateImportState(_RenderState.error);
+      _updateImportState(AsyncFeedbackState.error);
       widget.onFinish?.call(false);
     }, test: (error) => error is LegacyImporterError);
   }
 
-  void _updateImportState(_RenderState state) {
-    setState(() {
-      _renderState = state;
-    });
+  void _updateImportState(AsyncFeedbackState state) {
+    setState(() => _progressState = state);
   }
-}
-
-enum _RenderState {
-  none,
-  loading,
-  error,
-  success,
 }

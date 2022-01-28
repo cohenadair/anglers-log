@@ -18,6 +18,8 @@ class ImageManager {
   static ImageManager of(BuildContext context) =>
       Provider.of<AppManager>(context, listen: false).imageManager;
 
+  static const imgExtension = ".jpg";
+
   static const _dirNameImages = "2.0/images";
   static const _dirNameThumbs = "2.0/thumbs";
 
@@ -59,8 +61,17 @@ class ImageManager {
     await _ioWrapper.directory(_cachePath).create(recursive: true);
   }
 
-  File _imageFile(String imageName) =>
-      _ioWrapper.file("$_imagePath/$imageName");
+  /// Returns a list of paths to all full images stored by Anglers' Log.
+  Future<List<String>> get imageFiles {
+    return _ioWrapper
+        .directory(_imagePath)
+        .list()
+        .where((e) => extension(e.path) == imgExtension)
+        .map((e) => e.path)
+        .toList();
+  }
+
+  File imageFile(String name) => _ioWrapper.file("$_imagePath/$name");
 
   /// Returns encoded image data with the given [fileName] at the given [size].
   /// If an image of [size] does not exist in the cache, the full image is
@@ -74,7 +85,7 @@ class ImageManager {
       return null;
     }
 
-    var file = _imageFile(fileName);
+    var file = imageFile(fileName);
 
     // Return the correct thumbnail if it exists.
     var thumb = await _thumbnail(context, fileName, size);
@@ -117,7 +128,7 @@ class ImageManager {
       );
 
       if (bytes != null) {
-        result[_imageFile(fileName)] = bytes;
+        result[imageFile(fileName)] = bytes;
       } else {
         _log.e("Image $fileName doesn't exist in cache, and couldn't be "
             "created");
@@ -169,8 +180,8 @@ class ImageManager {
       }
 
       var digest = md5.convert(jpgBytes);
-      var fileName = "${digest.toString()}.jpg";
-      var newFile = _imageFile(fileName);
+      var fileName = "${digest.toString()}$imgExtension";
+      var newFile = imageFile(fileName);
 
       if (await newFile.exists()) {
         _log.d("Using existing file");
@@ -249,16 +260,16 @@ class ImageManager {
       }
 
       try {
-        var imageFile = _imageFile(fileName);
+        var file = imageFile(fileName);
 
-        if (!(await imageFile.exists())) {
+        if (!(await file.exists())) {
           _log.d("Can't create thumbnail from file that doesn't exist");
           return null;
         }
 
         await thumbnail.writeAsBytes(
-          await _compress(context, _imageFile(fileName),
-              _thumbnailCompressionQuality, size),
+          await _compress(
+              context, imageFile(fileName), _thumbnailCompressionQuality, size),
           flush: true,
         );
       } on FileSystemException catch (e) {
