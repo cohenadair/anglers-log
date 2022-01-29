@@ -5,6 +5,7 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:googleapis_auth/googleapis_auth.dart';
 import 'package:googleapis/drive/v3.dart' as drive;
@@ -41,6 +42,7 @@ import 'package:mobile/water_clarity_manager.dart';
 import 'package:mobile/widgets/quantity_picker_input.dart';
 import 'package:mobile/wrappers/drive_api_wrapper.dart';
 import 'package:mobile/wrappers/file_picker_wrapper.dart';
+import 'package:mobile/wrappers/google_mobile_ads_wrapper.dart';
 import 'package:mobile/wrappers/google_sign_in_wrapper.dart';
 import 'package:mobile/wrappers/http_wrapper.dart';
 import 'package:mobile/wrappers/image_compress_wrapper.dart';
@@ -75,6 +77,7 @@ Trip_CatchesPerEntity newInputItemShim(dynamic pickerItem) =>
 @GenerateMocks([BackupRestoreManager])
 @GenerateMocks([BaitCategoryManager])
 @GenerateMocks([BaitManager])
+@GenerateMocks([BannerAd])
 @GenerateMocks([BodyOfWaterManager])
 @GenerateMocks([CatchManager])
 @GenerateMocks([CustomEntityManager])
@@ -83,6 +86,7 @@ Trip_CatchesPerEntity newInputItemShim(dynamic pickerItem) =>
 @GenerateMocks([drive.FilesResource])
 @GenerateMocks([DriveApiWrapper])
 @GenerateMocks([FishingSpotManager])
+@GenerateMocks([GoogleMobileAdsWrapper])
 @GenerateMocks([GoogleSignIn])
 @GenerateMocks([GoogleSignInAccount])
 @GenerateMocks([ImageManager])

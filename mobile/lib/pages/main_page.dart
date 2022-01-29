@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mobile/widgets/ad_banner_widget.dart';
 
 import '../catch_manager.dart';
 import '../entity_manager.dart';
@@ -98,9 +99,17 @@ class _MainPageState extends State<MainPage> {
       child: Scaffold(
         // An IndexedStack is an easy way to persist state when switching
         // between pages.
-        body: IndexedStack(
-          index: _currentBarItem,
-          children: _navItems.map((data) => data.page ?? Empty()).toList(),
+        body: Column(
+          children: [
+            Expanded(
+              child: IndexedStack(
+                index: _currentBarItem,
+                children:
+                    _navItems.map((data) => data.page ?? Empty()).toList(),
+              ),
+            ),
+            AdBannerWidget(),
+          ],
         ),
         bottomNavigationBar: BottomNavigationBar(
           currentIndex: _currentBarItem,
@@ -151,7 +160,7 @@ class _BarItemModel {
   }) : assert(page != null || onTapOverride != null);
 }
 
-// TODO: Popping multiple pages had bad animation - https://github.com/flutter/flutter/issues/59990#issuecomment-697328406
+// TODO: Popping multiple pages has bad animation - https://github.com/flutter/flutter/issues/59990#issuecomment-697328406
 
 /// A page with its own [Navigator]. Meant to be used in combination with a
 /// [BottomNavigationBar] to persist back stack state when switching between

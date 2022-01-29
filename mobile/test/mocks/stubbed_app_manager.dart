@@ -31,6 +31,8 @@ class StubbedAppManager {
 
   MockDriveApiWrapper driveApiWrapper = MockDriveApiWrapper();
   MockFilePickerWrapper filePickerWrapper = MockFilePickerWrapper();
+  MockGoogleMobileAdsWrapper googleMobileAdsWrapper =
+      MockGoogleMobileAdsWrapper();
   MockGoogleSignInWrapper googleSignInWrapper = MockGoogleSignInWrapper();
   MockHttpWrapper httpWrapper = MockHttpWrapper();
   MockImageCompressWrapper imageCompressWrapper = MockImageCompressWrapper();
@@ -70,6 +72,7 @@ class StubbedAppManager {
     when(app.waterClarityManager).thenReturn(waterClarityManager);
     when(app.driveApiWrapper).thenReturn(driveApiWrapper);
     when(app.filePickerWrapper).thenReturn(filePickerWrapper);
+    when(app.googleMobileAdsWrapper).thenReturn(googleMobileAdsWrapper);
     when(app.googleSignInWrapper).thenReturn(googleSignInWrapper);
     when(app.httpWrapper).thenReturn(httpWrapper);
     when(app.imageCompressWrapper).thenReturn(imageCompressWrapper);

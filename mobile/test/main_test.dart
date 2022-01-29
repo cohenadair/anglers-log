@@ -32,6 +32,9 @@ void main() {
     when(appManager.propertiesManager.mapboxApiKey).thenReturn("");
 
     when(appManager.subscriptionManager.isFree).thenReturn(false);
+    when(appManager.subscriptionManager.isPro).thenReturn(true);
+    when(appManager.subscriptionManager.stream)
+        .thenAnswer((_) => const Stream.empty());
 
     when(appManager.userPreferenceManager.didOnboard).thenReturn(true);
     when(appManager.userPreferenceManager.catchFieldIds).thenReturn([]);

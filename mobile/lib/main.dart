@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:provider/provider.dart';
 
 import 'app_manager.dart';
@@ -12,6 +13,9 @@ import 'user_preference_manager.dart';
 import 'wrappers/services_wrapper.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  MobileAds.instance.initialize();
+
   runApp(AnglersLog(AppManager()));
 }
 

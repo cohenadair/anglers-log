@@ -50,7 +50,7 @@ void main() {
 
     when(appManager.subscriptionManager.stream)
         .thenAnswer((_) => const Stream.empty());
-    when(appManager.subscriptionManager.isPro).thenReturn(false);
+    when(appManager.subscriptionManager.isPro).thenReturn(true);
 
     when(appManager.timeManager.currentDateTime).thenReturn(DateTime.now());
 
