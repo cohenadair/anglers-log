@@ -134,7 +134,6 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
 
   bool _showHelp = false;
   bool _myLocationEnabled = true;
-  bool _didUpdateMapType = false;
   bool _isSetup = false;
   bool _isTelemetryEnabled = true;
 
@@ -277,7 +276,7 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
             ),
             onMapCreated: _onMapCreated,
             onMapLongClick: (_, latLng) => _dropPin(latLng),
-            onStyleLoadedCallback: _onMapStyleLoaded,
+            onStyleLoadedCallback: _setupMap,
             compassEnabled: false,
           ),
         );
@@ -384,7 +383,6 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
                 return;
               }
               setState(() {
-                _didUpdateMapType = true;
                 _mapType = newType ?? _MapType.normal;
                 _userPreferenceManager.setMapType(_mapType.id);
               });
@@ -588,13 +586,6 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
   Future<void> _onMapCreated(MapboxMapController controller) async {
     _mapController = controller;
 
-    // TODO: It isn't recommended to add symbols in this callback; however,
-    //  there's a bug that prevents _onMapStyleLoaded from be called on iOS,
-    //  so as a workaround, we do it here. When this issue is fixed,
-    //  _didUpdateMapType is no longer necessary. More details:
-    //  https://github.com/tobrun/flutter-mapbox-gl/pull/690
-    await _setupMap();
-
     // For a static map, move the map slightly so the fishing spot symbol is
     // centered vertically between the top of the map and the top of the
     // fishing spot details.
@@ -614,14 +605,6 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
         await _moveMap(offsetLatLng, animate: false);
       }
     }
-  }
-
-  void _onMapStyleLoaded() {
-    if (!_didUpdateMapType) {
-      return;
-    }
-    _setupMap();
-    _didUpdateMapType = false;
   }
 
   Future<void> _setupMap() async {

@@ -4343,6 +4343,11 @@ class MockMapboxMapController extends _i1.Mock
               returnValue: _FakeArgumentCallbacks_82<_i50.Fill>())
           as _i50.ArgumentCallbacks<_i50.Fill>);
   @override
+  List<_i50.OnFeatureTappedCallback> get onFeatureTapped =>
+      (super.noSuchMethod(Invocation.getter(#onFeatureTapped),
+              returnValue: <_i50.OnFeatureTappedCallback>[])
+          as List<_i50.OnFeatureTappedCallback>);
+  @override
   _i50.ArgumentCallbacks<_i50.Symbol> get onInfoWindowTapped =>
       (super.noSuchMethod(Invocation.getter(#onInfoWindowTapped),
               returnValue: _FakeArgumentCallbacks_82<_i50.Symbol>())
@@ -4394,6 +4399,92 @@ class MockMapboxMapController extends _i1.Mock
   _i58.Future<bool?> moveCamera(_i50.CameraUpdate? cameraUpdate) =>
       (super.noSuchMethod(Invocation.method(#moveCamera, [cameraUpdate]),
           returnValue: Future<bool?>.value()) as _i58.Future<bool?>);
+  @override
+  _i58.Future<void> addGeoJsonSource(
+          String? sourceId, Map<String, dynamic>? geojson,
+          {String? promoteId}) =>
+      (super.noSuchMethod(
+          Invocation.method(
+              #addGeoJsonSource, [sourceId, geojson], {#promoteId: promoteId}),
+          returnValue: Future<void>.value(),
+          returnValueForMissingStub:
+              Future<void>.value()) as _i58.Future<void>);
+  @override
+  _i58.Future<void> setGeoJsonSource(
+          String? sourceId, Map<String, dynamic>? geojson) =>
+      (super.noSuchMethod(
+              Invocation.method(#setGeoJsonSource, [sourceId, geojson]),
+              returnValue: Future<void>.value(),
+              returnValueForMissingStub: Future<void>.value())
+          as _i58.Future<void>);
+  @override
+  _i58.Future<void> addSymbolLayer(String? sourceId, String? layerId,
+          _i50.SymbolLayerProperties? properties,
+          {String? belowLayerId, String? sourceLayer}) =>
+      (super.noSuchMethod(
+              Invocation.method(
+                  #addSymbolLayer,
+                  [sourceId, layerId, properties],
+                  {#belowLayerId: belowLayerId, #sourceLayer: sourceLayer}),
+              returnValue: Future<void>.value(),
+              returnValueForMissingStub: Future<void>.value())
+          as _i58.Future<void>);
+  @override
+  _i58.Future<void> addLineLayer(String? sourceId, String? layerId,
+          _i50.LineLayerProperties? properties,
+          {String? belowLayerId, String? sourceLayer}) =>
+      (super.noSuchMethod(
+              Invocation.method(#addLineLayer, [sourceId, layerId, properties],
+                  {#belowLayerId: belowLayerId, #sourceLayer: sourceLayer}),
+              returnValue: Future<void>.value(),
+              returnValueForMissingStub: Future<void>.value())
+          as _i58.Future<void>);
+  @override
+  _i58.Future<void> addFillLayer(String? sourceId, String? layerId,
+          _i50.FillLayerProperties? properties,
+          {String? belowLayerId, String? sourceLayer}) =>
+      (super.noSuchMethod(
+              Invocation.method(#addFillLayer, [sourceId, layerId, properties],
+                  {#belowLayerId: belowLayerId, #sourceLayer: sourceLayer}),
+              returnValue: Future<void>.value(),
+              returnValueForMissingStub: Future<void>.value())
+          as _i58.Future<void>);
+  @override
+  _i58.Future<void> addCircleLayer(String? sourceId, String? layerId,
+          _i50.CircleLayerProperties? properties,
+          {String? belowLayerId, String? sourceLayer}) =>
+      (super.noSuchMethod(
+              Invocation.method(
+                  #addCircleLayer,
+                  [sourceId, layerId, properties],
+                  {#belowLayerId: belowLayerId, #sourceLayer: sourceLayer}),
+              returnValue: Future<void>.value(),
+              returnValueForMissingStub: Future<void>.value())
+          as _i58.Future<void>);
+  @override
+  _i58.Future<void> addRasterLayer(String? sourceId, String? layerId,
+          _i50.RasterLayerProperties? properties,
+          {String? belowLayerId, String? sourceLayer}) =>
+      (super.noSuchMethod(
+              Invocation.method(
+                  #addRasterLayer,
+                  [sourceId, layerId, properties],
+                  {#belowLayerId: belowLayerId, #sourceLayer: sourceLayer}),
+              returnValue: Future<void>.value(),
+              returnValueForMissingStub: Future<void>.value())
+          as _i58.Future<void>);
+  @override
+  _i58.Future<void> addHillshadeLayer(String? sourceId, String? layerId,
+          _i50.HillshadeLayerProperties? properties,
+          {String? belowLayerId, String? sourceLayer}) =>
+      (super.noSuchMethod(
+              Invocation.method(
+                  #addHillshadeLayer,
+                  [sourceId, layerId, properties],
+                  {#belowLayerId: belowLayerId, #sourceLayer: sourceLayer}),
+              returnValue: Future<void>.value(),
+              returnValueForMissingStub: Future<void>.value())
+          as _i58.Future<void>);
   @override
   _i58.Future<void> updateMyLocationTrackingMode(
           _i50.MyLocationTrackingMode? myLocationTrackingMode) =>
@@ -4661,24 +4752,37 @@ class MockMapboxMapController extends _i1.Mock
               returnValueForMissingStub: Future<void>.value())
       as _i58.Future<void>);
   @override
-  _i58.Future<void> addLayer(String? imageLayerId, String? imageSourceId) =>
+  _i58.Future<void> removeSource(String? sourceId) => (super.noSuchMethod(
+      Invocation.method(#removeSource, [sourceId]),
+      returnValue: Future<void>.value(),
+      returnValueForMissingStub: Future<void>.value()) as _i58.Future<void>);
+  @override
+  _i58.Future<void> addImageLayer(String? layerId, String? imageSourceId) =>
       (super.noSuchMethod(
-              Invocation.method(#addLayer, [imageLayerId, imageSourceId]),
+              Invocation.method(#addImageLayer, [layerId, imageSourceId]),
+              returnValue: Future<void>.value(),
+              returnValueForMissingStub: Future<void>.value())
+          as _i58.Future<void>);
+  @override
+  _i58.Future<void> addImageLayerBelow(
+          String? layerId, String? sourceId, String? imageSourceId) =>
+      (super.noSuchMethod(
+              Invocation.method(
+                  #addImageLayerBelow, [layerId, sourceId, imageSourceId]),
               returnValue: Future<void>.value(),
               returnValueForMissingStub: Future<void>.value())
           as _i58.Future<void>);
   @override
   _i58.Future<void> addLayerBelow(
-          String? imageLayerId, String? imageSourceId, String? belowLayerId) =>
+          String? layerId, String? sourceId, String? imageSourceId) =>
       (super.noSuchMethod(
-              Invocation.method(
-                  #addLayerBelow, [imageLayerId, imageSourceId, belowLayerId]),
-              returnValue: Future<void>.value(),
-              returnValueForMissingStub: Future<void>.value())
-          as _i58.Future<void>);
+          Invocation.method(#addLayerBelow, [layerId, sourceId, imageSourceId]),
+          returnValue: Future<void>.value(),
+          returnValueForMissingStub:
+              Future<void>.value()) as _i58.Future<void>);
   @override
-  _i58.Future<void> removeLayer(String? imageLayerId) => (super.noSuchMethod(
-      Invocation.method(#removeLayer, [imageLayerId]),
+  _i58.Future<void> removeLayer(String? layerId) => (super.noSuchMethod(
+      Invocation.method(#removeLayer, [layerId]),
       returnValue: Future<void>.value(),
       returnValueForMissingStub: Future<void>.value()) as _i58.Future<void>);
   @override
@@ -4703,6 +4807,35 @@ class MockMapboxMapController extends _i1.Mock
       .noSuchMethod(Invocation.method(#getMetersPerPixelAtLatitude, [latitude]),
           returnValue: Future<double>.value(0.0)) as _i58.Future<double>);
   @override
+  _i58.Future<void> addSource(
+          String? sourceid, _i50.SourceProperties? properties) =>
+      (super.noSuchMethod(Invocation.method(#addSource, [sourceid, properties]),
+              returnValue: Future<void>.value(),
+              returnValueForMissingStub: Future<void>.value())
+          as _i58.Future<void>);
+  @override
+  _i58.Future<void> addLayer(
+          String? sourceId, String? layerId, _i50.LayerProperties? properties,
+          {String? belowLayerId,
+          bool? enableInteraction = true,
+          String? sourceLayer}) =>
+      (super.noSuchMethod(
+              Invocation.method(#addLayer, [
+                sourceId,
+                layerId,
+                properties
+              ], {
+                #belowLayerId: belowLayerId,
+                #enableInteraction: enableInteraction,
+                #sourceLayer: sourceLayer
+              }),
+              returnValue: Future<void>.value(),
+              returnValueForMissingStub: Future<void>.value())
+          as _i58.Future<void>);
+  @override
+  void dispose() => super.noSuchMethod(Invocation.method(#dispose, []),
+      returnValueForMissingStub: null);
+  @override
   void addListener(_i69.VoidCallback? listener) =>
       super.noSuchMethod(Invocation.method(#addListener, [listener]),
           returnValueForMissingStub: null);
@@ -4710,9 +4843,6 @@ class MockMapboxMapController extends _i1.Mock
   void removeListener(_i69.VoidCallback? listener) =>
       super.noSuchMethod(Invocation.method(#removeListener, [listener]),
           returnValueForMissingStub: null);
-  @override
-  void dispose() => super.noSuchMethod(Invocation.method(#dispose, []),
-      returnValueForMissingStub: null);
   @override
   void notifyListeners() =>
       super.noSuchMethod(Invocation.method(#notifyListeners, []),
