@@ -147,13 +147,21 @@ void main() {
 
   testWidgets("Start button starts migration", (tester) async {
     var importer = MockLegacyImporter();
-    when(importer.start()).thenAnswer((_) => Future.value());
+    when(importer.start())
+        .thenAnswer((_) => Future.delayed(const Duration(milliseconds: 50)));
 
     await tester.pumpWidget(Testable(
       (_) => defaultImporter(importer: importer),
       appManager: appManager,
     ));
-    await tapAndSettle(tester, find.text("START"));
+    await tester.tap(find.text("START"));
+
+    // Pump once so we can verify the loading description is shown.
+    await tester.pump();
+    expect(find.text("Loading"), findsOneWidget);
+
+    // Finish import.
+    await tester.pumpAndSettle();
 
     verifyNever(appManager.filePickerWrapper.pickFiles(
       type: anyNamed("type"),
@@ -215,6 +223,7 @@ void main() {
     await tapAndSettle(tester, find.text("CHOOSE FILE"));
 
     expect(find.byIcon(Icons.error), findsOneWidget);
+    expect(find.text("Error"), findsOneWidget);
   });
 
   testWidgets("Feedback button shows feedback page", (tester) async {
@@ -270,6 +279,7 @@ void main() {
     await tapAndSettle(tester, find.text("CHOOSE FILE"));
 
     expect(find.byIcon(Icons.check_circle), findsOneWidget);
+    expect(find.text("Success"), findsOneWidget);
   });
 
   testWidgets("onFinish called when import is successful", (tester) async {

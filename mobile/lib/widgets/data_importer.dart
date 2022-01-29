@@ -89,10 +89,26 @@ class _DataImporterState extends State<DataImporter> {
       action = () => _startImport(widget.importer!);
     }
 
+    String? description;
+    switch (_progressState) {
+      case AsyncFeedbackState.none:
+        // Nothing to do.
+        break;
+      case AsyncFeedbackState.loading:
+        description = widget.loadingText;
+        break;
+      case AsyncFeedbackState.error:
+        description = widget.errorText;
+        break;
+      case AsyncFeedbackState.success:
+        description = widget.successText;
+        break;
+    }
+
     return Center(
       child: AsyncFeedback(
         state: _progressState,
-        description: widget.loadingText,
+        description: description,
         actionText: widget.importer == null
             ? Strings.of(context).dataImporterChooseFile
             : Strings.of(context).dataImporterStart,
