@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/widgets/ad_banner_widget.dart';
+import 'package:mobile/widgets/our_bottom_sheet.dart';
 
 import '../catch_manager.dart';
 import '../entity_manager.dart';
@@ -8,12 +9,10 @@ import '../model/gen/anglerslog.pb.dart';
 import '../pages/catch_list_page.dart';
 import '../pages/more_page.dart';
 import '../pages/stats_page.dart';
-import '../res/gen/custom_icons.dart';
 import '../utils/dialog_utils.dart';
-import '../utils/page_utils.dart';
 import '../widgets/fishing_spot_map.dart';
 import '../widgets/widget.dart';
-import 'add_anything_page.dart';
+import '../widgets/add_anything_bottom_sheet.dart';
 
 class MainPage extends StatefulWidget {
   @override
@@ -51,13 +50,14 @@ class _MainPageState extends State<MainPage> {
           navigatorKey: GlobalKey<NavigatorState>(),
           builder: (context) => const CatchListPage(),
         ),
-        icon: CustomIcons.catches,
+        icon: iconCatch,
         titleBuilder: (context) => Strings.of(context).entityNameCatches,
       ),
       _BarItemModel(
         icon: iconBottomBarAdd,
         titleBuilder: (context) => Strings.of(context).add,
-        onTapOverride: () => fade(context, AddAnythingPage(), opaque: false),
+        onTapOverride: () => showOurBottomSheet(
+            context, (context) => const AddAnythingBottomSheet()),
       ),
       _BarItemModel(
         page: _NavigatorPage(

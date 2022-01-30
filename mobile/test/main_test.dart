@@ -36,6 +36,14 @@ void main() {
     when(appManager.subscriptionManager.stream)
         .thenAnswer((_) => const Stream.empty());
 
+    when(appManager.userPreferenceManager.isTrackingSpecies).thenReturn(true);
+    when(appManager.userPreferenceManager.isTrackingAnglers).thenReturn(true);
+    when(appManager.userPreferenceManager.isTrackingBaits).thenReturn(true);
+    when(appManager.userPreferenceManager.isTrackingFishingSpots)
+        .thenReturn(true);
+    when(appManager.userPreferenceManager.isTrackingMethods).thenReturn(true);
+    when(appManager.userPreferenceManager.isTrackingWaterClarities)
+        .thenReturn(true);
     when(appManager.userPreferenceManager.didOnboard).thenReturn(true);
     when(appManager.userPreferenceManager.catchFieldIds).thenReturn([]);
     when(appManager.userPreferenceManager.selectedReportId).thenReturn(null);

@@ -2,12 +2,34 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/pages/onboarding/how_to_feedback_page.dart';
 import 'package:mobile/widgets/list_item.dart';
+import 'package:mockito/mockito.dart';
 
+import '../../mocks/stubbed_app_manager.dart';
 import '../../test_utils.dart';
 
 void main() {
+  late StubbedAppManager appManager;
+
+  setUp(() {
+    appManager = StubbedAppManager();
+
+    when(appManager.userPreferenceManager.isTrackingSpecies).thenReturn(true);
+    when(appManager.userPreferenceManager.isTrackingAnglers).thenReturn(true);
+    when(appManager.userPreferenceManager.isTrackingBaits).thenReturn(true);
+    when(appManager.userPreferenceManager.isTrackingFishingSpots)
+        .thenReturn(true);
+    when(appManager.userPreferenceManager.isTrackingMethods).thenReturn(true);
+    when(appManager.userPreferenceManager.isTrackingWaterClarities)
+        .thenReturn(true);
+    when(appManager.userPreferenceManager.stream)
+        .thenAnswer((_) => const Stream.empty());
+  });
+
   testWidgets("Feedback and rate scrolling", (tester) async {
-    await tester.pumpWidget(Testable((_) => const HowToFeedbackPage()));
+    await tester.pumpWidget(Testable(
+      (_) => const HowToFeedbackPage(),
+      appManager: appManager,
+    ));
 
     var scrollable = Scrollable.of((tester
             .firstWidget(find.widgetWithText(ListItem, "Send Feedback"))

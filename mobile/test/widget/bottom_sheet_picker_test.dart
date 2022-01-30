@@ -91,22 +91,6 @@ void main() {
     expect(find.text("Option 3"), findsOneWidget);
   });
 
-  testWidgets("Title is shown", (tester) async {
-    await tester.pumpWidget(
-      Testable(
-        (_) => const BottomSheetPicker<String>(
-          title: "Title",
-        ),
-      ),
-    );
-    expect(find.headingSmallText(text: "Title"), findsOneWidget);
-  });
-
-  testWidgets("Title is hidden", (tester) async {
-    await tester.pumpWidget(Testable((_) => const BottomSheetPicker<String>()));
-    expect(find.byType(Text), findsNothing);
-  });
-
   testWidgets("Footer is shown", (tester) async {
     await tester.pumpWidget(
       Testable(

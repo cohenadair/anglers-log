@@ -36,7 +36,7 @@ void main() {
 
   testWidgets("CustomEntity description rendered correctly", (tester) async {
     await tester.pumpWidget(Testable(
-      (_) => CustomEntityListPage(),
+      (_) => const CustomEntityListPage(),
       appManager: appManager,
     ));
     expect(find.text("How deep the water is, in feet."), findsOneWidget);

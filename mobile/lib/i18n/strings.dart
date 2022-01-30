@@ -162,10 +162,6 @@ class Strings {
 
   String get inputAtmosphere => _string("input_atmosphere");
 
-  String get addAnythingPageCatch => _string("addAnythingPage_catch");
-
-  String get addAnythingPageTrip => _string("addAnythingPage_trip");
-
   String get tripListPageTitle => _string("tripListPage_title");
 
   String get tripListPageSearchHint => _string("tripListPage_searchHint");
@@ -1728,11 +1724,19 @@ class Strings {
 
   String get entityNameAnglers => _string("entityName_anglers");
 
+  String get entityNameAngler => _string("entityName_angler");
+
   String get entityNameBaitCategories => _string("entityName_baitCategories");
+
+  String get entityNameBaitCategory => _string("entityName_baitCategory");
 
   String get entityNameBaits => _string("entityName_baits");
 
+  String get entityNameBait => _string("entityName_bait");
+
   String get entityNameBodiesOfWater => _string("entityName_bodiesOfWater");
+
+  String get entityNameBodyOfWater => _string("entityName_bodyOfWater");
 
   String get entityNameCatch => _string("entityName_catch");
 
@@ -1740,7 +1744,11 @@ class Strings {
 
   String get entityNameCustomFields => _string("entityName_customFields");
 
+  String get entityNameCustomField => _string("entityName_customField");
+
   String get entityNameFishingMethods => _string("entityName_fishingMethods");
+
+  String get entityNameFishingMethod => _string("entityName_fishingMethod");
 
   String get entityNameSpecies => _string("entityName_species");
 
@@ -1749,6 +1757,8 @@ class Strings {
   String get entityNameTrips => _string("entityName_trips");
 
   String get entityNameWaterClarities => _string("entityName_waterClarities");
+
+  String get entityNameWaterClarity => _string("entityName_waterClarity");
 
   String get tripSummaryTitle => _string("tripSummary_title");
 
@@ -1852,6 +1862,8 @@ class Strings {
   String get cloudAuthError => _string("cloudAuth_error");
 
   String get asyncFeedbackSendReport => _string("asyncFeedback_sendReport");
+
+  String get addAnythingTitle => _string("addAnything_title");
 }
 
 class StringsDelegate extends LocalizationsDelegate<Strings> {

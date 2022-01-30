@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:mapbox_gl/mapbox_gl.dart';
 import 'package:mobile/user_preference_manager.dart';
+import 'package:mobile/widgets/our_bottom_sheet.dart';
 import 'package:quiver/core.dart';
 import 'package:quiver/strings.dart';
 
@@ -370,7 +371,7 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
     return FloatingButton.icon(
       icon: Icons.layers,
       onPressed: () {
-        showBottomSheetPicker(
+        showOurBottomSheet(
           context,
           (context) => BottomSheetPicker<_MapType>(
             currentValue: _mapType,
@@ -882,7 +883,7 @@ class MapboxAttribution extends StatelessWidget {
         ),
         MinimumIconButton(
           icon: Icons.info_outline,
-          onTap: () => showBottomSheetPicker(
+          onTap: () => showOurBottomSheet(
             context,
             _buildPicker,
           ),

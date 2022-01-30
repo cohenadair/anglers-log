@@ -1,27 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:mobile/user_preference_manager.dart';
+import 'package:mobile/utils/entity_utils.dart';
 
 import '../i18n/strings.dart';
-import '../pages/bait_category_list_page.dart';
-import '../pages/bait_list_page.dart';
-import '../pages/custom_entity_list_page.dart';
 import '../pages/feedback_page.dart';
 import '../pages/photos_page.dart';
 import '../pages/settings_page.dart';
-import '../pages/species_list_page.dart';
-import '../pages/trip_list_page.dart';
-import '../res/gen/custom_icons.dart';
 import '../utils/page_utils.dart';
 import '../utils/store_utils.dart';
 import '../widgets/list_item.dart';
 import '../widgets/widget.dart';
-import 'angler_list_page.dart';
 import 'backup_restore_page.dart';
-import 'body_of_water_list_page.dart';
-import 'import_page.dart';
-import 'method_list_page.dart';
 import 'pro_page.dart';
 import 'scroll_page.dart';
-import 'water_clarity_list_page.dart';
 
 class MorePage extends StatelessWidget {
   /// A [GlobalKey] for the feedback row. Used for scrolling to the feedback
@@ -37,103 +28,69 @@ class MorePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ScrollPage(
-      appBar: AppBar(
-        title: Text(Strings.of(context).morePageTitle),
-        centerTitle: true,
-      ),
-      children: [
-        _buildPageItem(
-          context,
-          icon: iconAngler,
-          title: Strings.of(context).entityNameAnglers,
-          page: const AnglerListPage(),
-        ),
-        _buildPageItem(
-          context,
-          icon: CustomIcons.baitCategories,
-          title: Strings.of(context).entityNameBaitCategories,
-          page: const BaitCategoryListPage(),
-        ),
-        _buildPageItem(
-          context,
-          icon: iconBait,
-          title: Strings.of(context).entityNameBaits,
-          page: const BaitListPage(),
-        ),
-        _buildPageItem(
-          context,
-          icon: iconBodyOfWater,
-          title: Strings.of(context).entityNameBodiesOfWater,
-          page: const BodyOfWaterListPage(),
-        ),
-        _buildPageItem(
-          context,
-          icon: Icons.build,
-          title: Strings.of(context).entityNameCustomFields,
-          page: CustomEntityListPage(),
-        ),
-        _buildPageItem(
-          context,
-          icon: iconMethod,
-          title: Strings.of(context).entityNameFishingMethods,
-          page: const MethodListPage(),
-        ),
-        _buildPageItem(
-          context,
-          icon: Icons.photo_library,
-          title: Strings.of(context).photosPageMenuLabel,
-          page: PhotosPage(),
-        ),
-        _buildPageItem(
-          context,
-          icon: CustomIcons.species,
-          title: Strings.of(context).entityNameSpecies,
-          page: const SpeciesListPage(),
-        ),
-        _buildPageItem(
-          context,
-          icon: Icons.public,
-          title: Strings.of(context).entityNameTrips,
-          page: const TripListPage(),
-        ),
-        _buildPageItem(
-          context,
-          icon: iconWaterClarity,
-          title: Strings.of(context).entityNameWaterClarities,
-          page: const WaterClarityListPage(),
-        ),
-        const MinDivider(),
-        _buildPageItem(
-          context,
-          icon: BackupPage.icon,
-          title: Strings.of(context).backupPageTitle,
-          page: BackupPage(),
-          presentPage: true,
-        ),
-        _buildPageItem(
-          context,
-          icon: RestorePage.icon,
-          title: Strings.of(context).restorePageTitle,
-          page: RestorePage(),
-          presentPage: true,
-        ),
-        const MinDivider(),
-        _buildPageItem(
-          context,
-          icon: Icons.stars,
-          title: Strings.of(context).morePagePro,
-          page: ProPage(),
-          presentPage: true,
-        ),
-        ..._buildRateAndFeedbackItems(context),
-        _buildPageItem(
-          context,
-          icon: Icons.settings,
-          title: Strings.of(context).settingsPageTitle,
-          page: SettingsPage(),
-        ),
-      ],
+    return StreamBuilder<void>(
+      // Listen for entity tracking changes.
+      stream: UserPreferenceManager.of(context).stream,
+      builder: (context, snapshot) {
+        return ScrollPage(
+          appBar: AppBar(
+            title: Text(Strings.of(context).morePageTitle),
+            centerTitle: true,
+          ),
+          children: [
+            ...allEntitySpecs.map((spec) {
+              if (spec == catchesEntitySpec) {
+                // Catches is shown in bottom navigation.
+                return Empty();
+              }
+              return _buildPageItem(
+                context,
+                icon: spec.icon,
+                title: spec.pluralName(context),
+                page: spec.listPageBuilder(context),
+                isVisible: spec.isTracked(context),
+              );
+            }).toList(),
+            const MinDivider(),
+            _buildPageItem(
+              context,
+              icon: Icons.photo_library,
+              title: Strings.of(context).photosPageMenuLabel,
+              page: PhotosPage(),
+            ),
+            const MinDivider(),
+            _buildPageItem(
+              context,
+              icon: BackupPage.icon,
+              title: Strings.of(context).backupPageTitle,
+              page: BackupPage(),
+              presentPage: true,
+            ),
+            _buildPageItem(
+              context,
+              icon: RestorePage.icon,
+              title: Strings.of(context).restorePageTitle,
+              page: RestorePage(),
+              presentPage: true,
+            ),
+            const MinDivider(),
+            _buildPageItem(
+              context,
+              icon: Icons.stars,
+              title: Strings.of(context).morePagePro,
+              page: ProPage(),
+              presentPage: true,
+            ),
+            ..._buildRateAndFeedbackItems(context),
+            _buildPageItem(
+              context,
+              icon: Icons.settings,
+              title: Strings.of(context).settingsPageTitle,
+              page: SettingsPage(),
+            ),
+          ],
+        );
+      },
     );
   }
 
@@ -195,7 +152,12 @@ class MorePage extends StatelessWidget {
     Widget? page,
     VoidCallback? onTap,
     bool presentPage = false,
+    bool isVisible = true,
   }) {
+    if (!isVisible) {
+      return Empty();
+    }
+
     assert(page != null || onTap != null);
 
     return ListItem(

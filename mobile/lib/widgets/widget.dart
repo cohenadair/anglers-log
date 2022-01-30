@@ -15,10 +15,15 @@ import 'list_item.dart';
 
 const iconAngler = Icons.person;
 const iconBait = Icons.bug_report;
+const iconBaitCategories = CustomIcons.baitCategories;
 const iconBodyOfWater = Icons.water;
 const iconBottomBarAdd = Icons.add_box_rounded;
+const iconCatch = CustomIcons.catches;
+const iconCustomField = Icons.build;
 const iconFishingSpot = Icons.place;
 const iconMethod = Icons.list;
+const iconSpecies = CustomIcons.species;
+const iconTrip = Icons.public;
 const iconWaterClarity = CustomIcons.waterClarities;
 
 const animDurationDefault = Duration(milliseconds: 150);

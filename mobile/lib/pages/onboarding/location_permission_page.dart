@@ -5,7 +5,6 @@ import '../../location_monitor.dart';
 import '../../res/dimen.dart';
 import '../../res/style.dart';
 import '../../widgets/button.dart';
-import '../../widgets/text.dart';
 import '../../widgets/widget.dart';
 import '../../wrappers/permission_handler_wrapper.dart';
 import 'onboarding_page.dart';

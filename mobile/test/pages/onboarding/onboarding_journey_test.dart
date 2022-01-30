@@ -31,6 +31,14 @@ void main() {
         .thenAnswer((_) => Future.value(null));
     when(appManager.locationMonitor.currentLocation).thenReturn(null);
 
+    when(appManager.userPreferenceManager.isTrackingSpecies).thenReturn(true);
+    when(appManager.userPreferenceManager.isTrackingAnglers).thenReturn(true);
+    when(appManager.userPreferenceManager.isTrackingBaits).thenReturn(true);
+    when(appManager.userPreferenceManager.isTrackingFishingSpots)
+        .thenReturn(true);
+    when(appManager.userPreferenceManager.isTrackingMethods).thenReturn(true);
+    when(appManager.userPreferenceManager.isTrackingWaterClarities)
+        .thenReturn(true);
     when(appManager.userPreferenceManager.catchFieldIds).thenReturn([]);
     when(appManager.userPreferenceManager.waterDepthSystem)
         .thenReturn(MeasurementSystem.metric);

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/catch_manager.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
-import 'package:mobile/pages/add_anything_page.dart';
+import 'package:mobile/widgets/add_anything_bottom_sheet.dart';
 import 'package:mobile/pages/main_page.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mockito/mockito.dart';
@@ -54,10 +54,20 @@ void main() {
 
     when(appManager.timeManager.currentDateTime).thenReturn(DateTime.now());
 
+    when(appManager.userPreferenceManager.isTrackingSpecies).thenReturn(true);
+    when(appManager.userPreferenceManager.isTrackingAnglers).thenReturn(true);
+    when(appManager.userPreferenceManager.isTrackingBaits).thenReturn(true);
+    when(appManager.userPreferenceManager.isTrackingFishingSpots)
+        .thenReturn(true);
+    when(appManager.userPreferenceManager.isTrackingMethods).thenReturn(true);
+    when(appManager.userPreferenceManager.isTrackingWaterClarities)
+        .thenReturn(true);
     when(appManager.userPreferenceManager.selectedReportId).thenReturn(null);
     when(appManager.userPreferenceManager.setSelectedReportId(any))
         .thenAnswer((_) => Future.value());
     when(appManager.userPreferenceManager.mapType).thenReturn(null);
+    when(appManager.userPreferenceManager.stream)
+        .thenAnswer((_) => const Stream.empty());
   });
 
   testWidgets("Tapping nav item opens page", (tester) async {
@@ -87,7 +97,7 @@ void main() {
     await tapAndSettle(tester, find.text("Add"));
     // Indexed stack should stay at the same index.
     expect(findFirst<IndexedStack>(tester).index, 4);
-    expect(find.byType(AddAnythingPage), findsOneWidget);
+    expect(find.byType(AddAnythingBottomSheet), findsOneWidget);
   });
 
   testWidgets("Navigation state is persisted when switching tabs",

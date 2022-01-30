@@ -1,20 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:quiver/strings.dart';
 
-import '../res/dimen.dart';
-import '../res/style.dart';
+import 'our_bottom_sheet.dart';
 import 'list_item.dart';
 import 'widget.dart';
-
-Future<void> showBottomSheetPicker(
-    BuildContext context, BottomSheetPicker Function(BuildContext) builder) {
-  return showModalBottomSheet<void>(
-    isScrollControlled: true,
-    useRootNavigator: true,
-    context: context,
-    builder: builder,
-  );
-}
 
 class BottomSheetPicker<T> extends StatelessWidget {
   final void Function(T?)? onPicked;
@@ -35,32 +23,12 @@ class BottomSheetPicker<T> extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Widget titleWidget = Empty();
-    if (isNotEmpty(title)) {
-      titleWidget = Padding(
-        padding: insetsDefault,
-        child: Text(
-          title!,
-          style: styleHeadingSmall,
-        ),
-      );
-    }
-
-    return SafeArea(
-      bottom: true,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Align(
-            alignment: Alignment.center,
-            child: SwipeChip(),
-          ),
-          titleWidget,
-          ...items.keys.map((key) => _buildItem(context, key, items[key])),
-          footer ?? Empty()
-        ],
-      ),
+    return OurBottomSheet(
+      title: title,
+      children: [
+        ...items.keys.map((key) => _buildItem(context, key, items[key])),
+        footer ?? Empty()
+      ],
     );
   }
 

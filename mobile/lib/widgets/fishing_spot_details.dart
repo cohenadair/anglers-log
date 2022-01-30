@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:mobile/widgets/our_bottom_sheet.dart';
 import 'package:quiver/strings.dart';
 
 import '../body_of_water_manager.dart';
@@ -310,7 +311,7 @@ class _FishingSpotActions extends StatelessWidget {
     } else {
       // There are multiple options, give the user a choice.
       String? url;
-      await showBottomSheetPicker(
+      await showOurBottomSheet(
         context,
         (context) => BottomSheetPicker<String>(
           onPicked: (pickedUrl) => url = pickedUrl,

@@ -17,6 +17,17 @@ void main() {
     when(appManager.baitCategoryManager.listSortedByName(
       filter: anyNamed("filter"),
     )).thenReturn([]);
+
+    when(appManager.userPreferenceManager.isTrackingSpecies).thenReturn(true);
+    when(appManager.userPreferenceManager.isTrackingAnglers).thenReturn(true);
+    when(appManager.userPreferenceManager.isTrackingBaits).thenReturn(true);
+    when(appManager.userPreferenceManager.isTrackingFishingSpots)
+        .thenReturn(true);
+    when(appManager.userPreferenceManager.isTrackingMethods).thenReturn(true);
+    when(appManager.userPreferenceManager.isTrackingWaterClarities)
+        .thenReturn(true);
+    when(appManager.userPreferenceManager.stream)
+        .thenAnswer((_) => const Stream.empty());
   });
 
   testWidgets("Page is pushed", (tester) async {
@@ -82,5 +93,17 @@ void main() {
 
     expect(find.widgetWithText(Container, "Rate Anglers' Log"), findsOneWidget);
     expect(find.widgetWithText(Container, "Send Feedback"), findsOneWidget);
+  });
+
+  testWidgets("Menu item is hidden", (tester) async {
+    when(appManager.userPreferenceManager.isTrackingBaits).thenReturn(false);
+
+    await tester.pumpWidget(Testable(
+      (_) => const MorePage(),
+      appManager: appManager,
+    ));
+
+    expect(find.text("Baits"), findsNothing);
+    expect(find.text("Bait Categories"), findsNothing);
   });
 }

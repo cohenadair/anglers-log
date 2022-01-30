@@ -15,6 +15,8 @@ import '../widgets/widget.dart';
 import 'pro_page.dart';
 
 class CustomEntityListPage extends StatelessWidget {
+  const CustomEntityListPage();
+
   @override
   Widget build(BuildContext context) {
     var baitManager = BaitManager.of(context);

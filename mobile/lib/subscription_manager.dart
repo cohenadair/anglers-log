@@ -9,7 +9,6 @@ import 'package:purchases_flutter/purchases_flutter.dart';
 import 'app_manager.dart';
 import 'log.dart';
 import 'properties_manager.dart';
-import 'user_preference_manager.dart';
 import 'utils/void_stream_controller.dart';
 import 'wrappers/purchases_wrapper.dart';
 
