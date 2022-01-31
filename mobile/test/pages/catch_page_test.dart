@@ -10,6 +10,7 @@ import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mobile/widgets/atmosphere_wrap.dart';
 import 'package:mobile/widgets/fishing_spot_map.dart';
 import 'package:mobile/widgets/list_item.dart';
+import 'package:mobile/widgets/static_fishing_spot_map.dart';
 import 'package:mobile/widgets/widget.dart';
 import 'package:mockito/mockito.dart';
 
@@ -19,11 +20,9 @@ import '../test_utils.dart';
 
 void main() {
   late StubbedAppManager appManager;
-  late StubbedMapController mapController;
 
   setUp(() {
     appManager = StubbedAppManager();
-    mapController = StubbedMapController();
 
     when(appManager.catchManager.deleteMessage(any, any)).thenReturn("Delete");
     when(appManager.catchManager.entity(any)).thenReturn(Catch()
@@ -153,11 +152,8 @@ void main() {
       (_) => CatchPage(Catch()),
       appManager: appManager,
     ));
-    // Wait for map timer to finish.
-    await tester.pumpAndSettle(const Duration(milliseconds: 300));
-    await mapController.finishLoading(tester);
 
-    expect(find.byType(FishingSpotMap), findsOneWidget);
+    expect(find.byType(StaticFishingSpotMap), findsOneWidget);
   });
 
   testWidgets("No angler renders empty", (tester) async {

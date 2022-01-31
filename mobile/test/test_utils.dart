@@ -109,6 +109,7 @@ Future<BuildContext> pumpContext(
   WidgetTester tester,
   Widget Function(BuildContext) builder, {
   StubbedAppManager? appManager,
+  MediaQueryData mediaQueryData = const MediaQueryData(),
 }) async {
   late BuildContext context;
   await tester.pumpWidget(
@@ -118,6 +119,7 @@ Future<BuildContext> pumpContext(
         return builder(context);
       },
       appManager: appManager,
+      mediaQueryData: mediaQueryData,
     ),
   );
   return context;

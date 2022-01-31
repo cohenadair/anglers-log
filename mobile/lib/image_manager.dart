@@ -147,10 +147,6 @@ class ImageManager {
   /// Compresses the given image files, converts them to JPG format, and saves
   /// them to the app's sandbox if the file doesn't already exit.
   ///
-  /// This method will update the database such that the given entity ID will
-  /// only be associated with the given image files. Any previous associations
-  /// will be overridden.
-  ///
   /// Files are named by the image's MD5 hash value to ensure uniqueness, and so
   /// that the same image isn't saved multiple times.
   Future<List<String>> save(
@@ -183,16 +179,8 @@ class ImageManager {
       var fileName = "${digest.toString()}$imgExtension";
       var newFile = imageFile(fileName);
 
-      if (await newFile.exists()) {
-        _log.d("Using existing file");
-      } else {
-        _log.d("New file doesn't exist, copying to ${newFile.path}");
-        try {
-          await newFile.writeAsBytes(jpgBytes, flush: true);
-        } on FileSystemException catch (e) {
-          _log.e("Error copying image to ${newFile.path}: $e}");
-          continue;
-        }
+      if (!await _writeBytes(jpgBytes, newFile)) {
+        continue;
       }
 
       result.add(fileName);
@@ -200,6 +188,32 @@ class ImageManager {
     }
 
     return result;
+  }
+
+  /// Saves a file as-is. No renaming to MD5 hash, no compression, no conversion
+  /// to JPG. This can be used to save images downloaded from the web, such as
+  /// a static map image.
+  ///
+  /// Returns true if the file is saved; false otherwise.
+  Future<bool> saveImageBytes(Uint8List bytes, String imageName) async {
+    return _writeBytes(bytes, imageFile(imageName));
+  }
+
+  Future<bool> _writeBytes(List<int> bytes, File toFile) async {
+    if (await toFile.exists()) {
+      _log.d("File already exists, skipping save");
+      return true;
+    }
+
+    _log.d("Saving image to ${toFile.path}");
+
+    try {
+      await toFile.writeAsBytes(bytes, flush: true);
+      return true;
+    } on FileSystemException catch (e) {
+      _log.e("Error saving image to ${toFile.path}: $e}");
+      return false;
+    }
   }
 
   Future<Uint8List> _compress(

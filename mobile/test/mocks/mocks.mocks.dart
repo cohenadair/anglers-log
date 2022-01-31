@@ -2635,6 +2635,11 @@ class MockImageManager extends _i1.Mock implements _i14.ImageManager {
               returnValue: Future<List<String>>.value(<String>[]))
           as _i58.Future<List<String>>);
   @override
+  _i58.Future<bool> saveImageBytes(_i63.Uint8List? bytes, String? imageName) =>
+      (super.noSuchMethod(
+          Invocation.method(#saveImageBytes, [bytes, imageName]),
+          returnValue: Future<bool>.value(false)) as _i58.Future<bool>);
+  @override
   String toString() => super.toString();
 }
 

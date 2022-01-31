@@ -4,11 +4,9 @@ import 'dart:math';
 
 import 'package:collection/collection.dart' show IterableExtension;
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:mapbox_gl/mapbox_gl.dart';
 import 'package:mobile/user_preference_manager.dart';
 import 'package:mobile/widgets/our_bottom_sheet.dart';
-import 'package:quiver/core.dart';
 import 'package:quiver/strings.dart';
 
 import '../entity_manager.dart';
@@ -29,13 +27,11 @@ import '../utils/snackbar_utils.dart';
 import '../widgets/button.dart';
 import '../widgets/search_bar.dart';
 import '../widgets/widget.dart';
-import '../wrappers/io_wrapper.dart';
 import '../wrappers/permission_handler_wrapper.dart';
-import '../wrappers/url_launcher_wrapper.dart';
 import 'bottom_sheet_picker.dart';
-import 'checkbox_input.dart';
 import 'fishing_spot_details.dart';
 import 'input_controller.dart';
+import 'mapbox_attribution.dart';
 import 'slide_up_transition.dart';
 
 /// A [GoogleMap] wrapper that listens and responds to [FishingSpot] changes.
@@ -59,8 +55,6 @@ class FishingSpotMap extends StatefulWidget {
   /// When true, the map is placed inside a [Scaffold].
   final bool isPage;
 
-  final bool _isStatic;
-
   // ignore: prefer_const_constructors_in_immutables
   FishingSpotMap({
     this.pickerSettings,
@@ -72,22 +66,7 @@ class FishingSpotMap extends StatefulWidget {
     this.showFishingSpotActionButtons = true,
     this.children = const [],
     this.isPage = true,
-  }) : _isStatic = false;
-
-  /// A fishing spot widget, not embedded in a page. This constructor should be
-  /// used inside a sized box. This constructor should not be used directly.
-  /// Instead, use [StaticFishingSpotMap].
-  FishingSpotMap._static(FishingSpot fishingSpot)
-      : pickerSettings = FishingSpotMapPickerSettings._static(fishingSpot),
-        showSearchBar = false,
-        showMyLocationButton = false,
-        showZoomExtentsButton = false,
-        showMapTypeButton = false,
-        showHelpButton = false,
-        showFishingSpotActionButtons = false,
-        children = const [],
-        isPage = false,
-        _isStatic = true;
+  });
 
   /// A fishing spot page, with [fishingSpot] already selected.
   FishingSpotMap.selected(FishingSpot fishingSpot)
@@ -105,8 +84,7 @@ class FishingSpotMap extends StatefulWidget {
             ),
           )
         ],
-        isPage = true,
-        _isStatic = false;
+        isPage = true;
 
   @override
   _FishingSpotMapState createState() => _FishingSpotMapState();
@@ -128,7 +106,7 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
   late final Future<bool> _mapFuture;
 
   MapboxMapController? _mapController;
-  late _MapType _mapType;
+  late MapType _mapType;
 
   Symbol? _activeSymbol;
   Timer? _hideHelpTimer;
@@ -162,10 +140,7 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
 
   bool get _isPicking => _pickerSettings != null;
 
-  bool get _isStatic => widget._isStatic;
-
   bool get _isDroppedPin =>
-      !_isStatic &&
       !_fishingSpotManager.entityExists(_activeSymbol?.fishingSpot.id);
 
   FishingSpot? get _activeFishingSpot => _activeSymbol?.fishingSpot;
@@ -174,9 +149,8 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
   void initState() {
     super.initState();
 
-    _mapType =
-        _MapType.fromId(_userPreferenceManager.mapType) ?? _MapType.normal;
-    _myLocationEnabled = !_isStatic && _locationMonitor.currentLocation != null;
+    _mapType = MapType.fromContext(context);
+    _myLocationEnabled = _locationMonitor.currentLocation != null;
     _mapFuture = Future.delayed(const Duration(milliseconds: 300), () => true);
 
     // Refresh state so Mapbox attribution padding is updated. This needs to be
@@ -236,10 +210,6 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
       },
     );
 
-    if (_isStatic) {
-      return map;
-    }
-
     // WillPopScope overrides the default "swipe to go back" behavior on iOS.
     // Only allow this behavior use it when we're not showing a static map.
     return WillPopScope(
@@ -275,7 +245,7 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
               target: start,
               zoom: start.latitude == 0 ? 0 : _zoomDefault,
             ),
-            onMapCreated: _onMapCreated,
+            onMapCreated: (controller) => _mapController = controller,
             onMapLongClick: (_, latLng) => _dropPin(latLng),
             onStyleLoadedCallback: _setupMap,
             compassEnabled: false,
@@ -373,18 +343,18 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
       onPressed: () {
         showOurBottomSheet(
           context,
-          (context) => BottomSheetPicker<_MapType>(
+          (context) => BottomSheetPicker<MapType>(
             currentValue: _mapType,
             items: {
-              Strings.of(context).mapPageMapTypeNormal: _MapType.normal,
-              Strings.of(context).mapPageMapTypeSatellite: _MapType.satellite,
+              Strings.of(context).mapPageMapTypeNormal: MapType.normal,
+              Strings.of(context).mapPageMapTypeSatellite: MapType.satellite,
             },
             onPicked: (newType) {
               if (newType == _mapType) {
                 return;
               }
               setState(() {
-                _mapType = newType ?? _MapType.normal;
+                _mapType = newType ?? MapType.normal;
                 _userPreferenceManager.setMapType(_mapType.id);
               });
             },
@@ -546,10 +516,6 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
       ),
     );
 
-    if (_isStatic) {
-      return container;
-    }
-
     return SafeArea(
       child: SlideUpTransition(
         isVisible: !_isDismissingFishingSpot && fishingSpot != null,
@@ -573,39 +539,17 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
 
   Widget _buildAttribution() {
     return MapboxAttribution(
-      logoColor: _mapType == _MapType.normal ? Colors.black : Colors.white,
-      isTelemetryEnabled: _isTelemetryEnabled,
-      onTelemetryToggled: (enabled) async {
-        await _mapController?.setTelemetryEnabled(enabled);
-        _isTelemetryEnabled =
-            await _mapController?.getTelemetryEnabled() ?? false;
-        setState(() {});
-      },
+      mapType: _mapType,
+      telemetry: MapboxTelemetry(
+        isEnabled: _isTelemetryEnabled,
+        onTogged: (enabled) async {
+          await _mapController?.setTelemetryEnabled(enabled);
+          _isTelemetryEnabled =
+              await _mapController?.getTelemetryEnabled() ?? false;
+          setState(() {});
+        },
+      ),
     );
-  }
-
-  Future<void> _onMapCreated(MapboxMapController controller) async {
-    _mapController = controller;
-
-    // For a static map, move the map slightly so the fishing spot symbol is
-    // centered vertically between the top of the map and the top of the
-    // fishing spot details.
-    if (_isStatic &&
-        _fishingSpotKey.currentContext != null &&
-        _mapKey.currentContext != null) {
-      var fishingSpotBox =
-          _fishingSpotKey.currentContext!.findRenderObject() as RenderBox;
-      var mapBox = _mapKey.currentContext!.findRenderObject() as RenderBox;
-      var symbolY = mapBox.size.height -
-          ((mapBox.size.height - fishingSpotBox.size.height) / 2);
-      var symbolX = mapBox.size.width / 2;
-
-      var offsetLatLng =
-          await _mapController?.toLatLng(Point(symbolX, symbolY));
-      if (offsetLatLng != null) {
-        await _moveMap(offsetLatLng, animate: false);
-      }
-    }
   }
 
   Future<void> _setupMap() async {
@@ -647,11 +591,7 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
     // Iterate all fishing spots, creating SymbolOptions and data maps so all
     // symbols can be added with one call to the platform channel.
     for (var fishingSpot in _fishingSpotManager.list()) {
-      if (_isStatic && _pickerSettings?.controller.value != fishingSpot) {
-        continue;
-      }
-
-      options.add(_createSymbolOptions(fishingSpot, isActive: _isStatic));
+      options.add(_createSymbolOptions(fishingSpot));
       data.add(_Symbols.fishingSpotData(fishingSpot));
     }
 
@@ -749,10 +689,7 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
           const SymbolOptions(iconImage: _pinActive),
         );
 
-        // A static map is already at the correct position.
-        if (!_isStatic) {
-          _moveMap(newActiveSymbol.latLng, animate: animateMapMovement);
-        }
+        _moveMap(newActiveSymbol.latLng, animate: animateMapMovement);
       }
     }
 
@@ -817,134 +754,6 @@ class FishingSpotMapPickerSettings {
       : this(
           controller: InputController<FishingSpot>()..value = fishingSpot,
         );
-}
-
-/// A widget that displays [FishingSpot] details on a small map.
-class StaticFishingSpotMap extends StatelessWidget {
-  static const _mapHeight = 300.0;
-
-  final FishingSpot fishingSpot;
-  final EdgeInsets? padding;
-  final VoidCallback? onTap;
-
-  const StaticFishingSpotMap(
-    this.fishingSpot, {
-    this.padding,
-    this.onTap,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return HorizontalSafeArea(
-      child: Container(
-        padding: padding,
-        height: StaticFishingSpotMap._mapHeight,
-        child: ClipRRect(
-          borderRadius: const BorderRadius.all(
-            Radius.circular(floatingCornerRadius),
-          ),
-          child: FishingSpotMap._static(fishingSpot),
-        ),
-      ),
-    );
-  }
-}
-
-class MapboxAttribution extends StatelessWidget {
-  static const _urlMapbox = "https://www.mapbox.com/about/maps/";
-  static const _urlOpenStreetMap = "http://www.openstreetmap.org/copyright";
-  static const _urlImproveThisMap = "https://www.mapbox.com/map-feedback/";
-  static const _urlMaxar = "https://www.maxar.com/";
-
-  static const _size = Size(85, 20);
-
-  final Color logoColor;
-  final void Function(bool) onTelemetryToggled;
-  final bool isTelemetryEnabled;
-
-  const MapboxAttribution({
-    required this.logoColor,
-    required this.onTelemetryToggled,
-    required this.isTelemetryEnabled,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        SizedBox(
-          width: _size.width,
-          height: _size.height,
-          child: SvgPicture.asset(
-            "assets/mapbox-logo.svg",
-            color: logoColor,
-          ),
-        ),
-        MinimumIconButton(
-          icon: Icons.info_outline,
-          onTap: () => showOurBottomSheet(
-            context,
-            _buildPicker,
-          ),
-        ),
-      ],
-    );
-  }
-
-  BottomSheetPicker _buildPicker(BuildContext context) {
-    return BottomSheetPicker<String>(
-      title: IoWrapper.of(context).isAndroid
-          ? Strings.of(context).mapAttributionTitleAndroid
-          : Strings.of(context).mapAttributionTitleApple,
-      itemStyle: styleHyperlink(context),
-      items: {
-        Strings.of(context).mapAttributionMapbox: _urlMapbox,
-        Strings.of(context).mapAttributionOpenStreetMap: _urlOpenStreetMap,
-        Strings.of(context).mapAttributionImproveThisMap: _urlImproveThisMap,
-        Strings.of(context).mapAttributionMaxar: _urlMaxar,
-      },
-      onPicked: (url) => UrlLauncherWrapper.of(context).launch(url!),
-      footer: CheckboxInput(
-        label: Strings.of(context).mapAttributionTelemetryTitle,
-        description: Strings.of(context).mapAttributionTelemetryDescription,
-        value: isTelemetryEnabled,
-        onChanged: onTelemetryToggled,
-      ),
-    );
-  }
-}
-
-class _MapType {
-  static _MapType? fromId(String? id) =>
-      _allTypes.firstWhereOrNull((e) => e.id == id);
-
-  static const normal = _MapType._(
-    "normal",
-    "mapbox://styles/cohenadair/ckt1zqb8d1h1p17pglx4pmz4y",
-  );
-
-  static const satellite = _MapType._(
-    "satellite",
-    "mapbox://styles/cohenadair/ckt1m613b127t17qqf3mmw47h",
-  );
-
-  static const _allTypes = [
-    normal,
-    satellite,
-  ];
-
-  final String id;
-  final String url;
-
-  const _MapType._(this.id, this.url);
-
-  @override
-  bool operator ==(Object other) =>
-      other is _MapType && other.id == id && other.url == url;
-
-  @override
-  int get hashCode => hash2(id, url);
 }
 
 extension _Symbols on Symbol {

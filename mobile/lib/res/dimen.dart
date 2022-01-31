@@ -119,6 +119,8 @@ const iconSizeDefault = 24.0;
 const checkboxSizeDefault = 24.0;
 
 const floatingCornerRadius = 10.0;
+const defaultBorderRadius =
+    BorderRadius.all(Radius.circular(floatingCornerRadius));
 
 const galleryMaxThumbSize = 120.0;
 const gallerySpacing = 2.0;

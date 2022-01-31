@@ -47,6 +47,11 @@ class FishingSpotDetails extends StatelessWidget {
   /// When true, the action buttons at the bottom are hidden. Defaults to false.
   final bool showActionButtons;
 
+  /// When true, a [RightChevronIcon] is rendered on the right of the widget,
+  /// regardless of the value of [onTap]. This value only applies when
+  /// [isListItem] is true.
+  final bool showRightChevron;
+
   /// The [Key] for the details [Container]. This value is ignored when
   /// [isListItem] is true.
   final Key? containerKey;
@@ -58,6 +63,7 @@ class FishingSpotDetails extends StatelessWidget {
     this.isListItem = false,
     this.isPicking = false,
     this.showActionButtons = false,
+    this.showRightChevron = false,
     this.onTap,
   });
 
@@ -102,7 +108,9 @@ class FishingSpotDetails extends StatelessWidget {
       showPlaceholder: false,
       showFullImageOnTap: true,
       onTap: isListItem ? onTap : null,
-      trailing: isListItem && onTap != null ? RightChevronIcon() : null,
+      trailing: isListItem && (onTap != null || showRightChevron)
+          ? RightChevronIcon()
+          : null,
     );
 
     if (isListItem) {

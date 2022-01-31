@@ -1,8 +1,64 @@
 import 'dart:math';
 
+import 'package:collection/collection.dart' show IterableExtension;
+import 'package:flutter/material.dart';
 import 'package:mapbox_gl/mapbox_gl.dart';
+import 'package:mobile/user_preference_manager.dart';
+import 'package:quiver/core.dart';
 
 import '../model/gen/anglerslog.pb.dart';
+
+class MapType {
+  static MapType fromContext(BuildContext context) =>
+      MapType.fromId(UserPreferenceManager.of(context).mapType) ??
+      MapType.normal;
+
+  static MapType? fromId(String? id) =>
+      _allTypes.firstWhereOrNull((e) => e.id == id);
+
+  static const normal = MapType._(
+    "normal",
+    "ckt1zqb8d1h1p17pglx4pmz4y",
+    "ckz1rne34000o14p36fu4of1y",
+    "mapbox://styles/cohenadair/",
+  );
+
+  static const satellite = MapType._(
+    "satellite",
+    "ckt1m613b127t17qqf3mmw47h",
+    "ckz1rts30002y15pq6t19lygy",
+    "mapbox://styles/cohenadair/",
+  );
+
+  static const _allTypes = [
+    normal,
+    satellite,
+  ];
+
+  final String id;
+
+  /// Mapbox ID for general map use.
+  final String mapboxId;
+
+  /// Mapbox ID for static map use.
+  final String mapboxStaticId;
+
+  final String _url;
+
+  const MapType._(this.id, this.mapboxId, this.mapboxStaticId, this._url);
+
+  String get url => "$_url$mapboxId";
+
+  @override
+  bool operator ==(Object other) =>
+      other is MapType &&
+      other.id == id &&
+      other.mapboxId == other.mapboxId &&
+      other._url == _url;
+
+  @override
+  int get hashCode => hash3(id, mapboxId, _url);
+}
 
 /// Returns an approximate distance, in meters, between the given [LatLng]
 /// objects.

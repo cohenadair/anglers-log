@@ -78,6 +78,7 @@ flutter:
   uses-material-design: true
 
   assets:
+    - assets/active-pin.svg
     - assets/feedback_template
     - assets/google-logo.svg
     - assets/mapbox-logo.svg

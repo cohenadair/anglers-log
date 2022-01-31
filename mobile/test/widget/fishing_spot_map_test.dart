@@ -11,7 +11,6 @@ import 'package:mobile/widgets/fishing_spot_details.dart';
 import 'package:mobile/widgets/fishing_spot_map.dart';
 import 'package:mobile/widgets/input_controller.dart';
 import 'package:mobile/widgets/search_bar.dart';
-import 'package:mobile/widgets/slide_up_transition.dart';
 import 'package:mobile/widgets/widget.dart';
 import 'package:mockito/mockito.dart';
 
@@ -62,21 +61,6 @@ void main() {
     await tester.pumpAndSettle(const Duration(milliseconds: 300));
     await mapController.finishLoading(tester);
   }
-
-  testWidgets("My location disabled for static map", (tester) async {
-    await pumpMap(
-      tester,
-      StaticFishingSpotMap(
-        FishingSpot(
-          id: randomId(),
-          lat: 1.23456,
-          lng: 6.54321,
-        ),
-      ),
-    );
-
-    expect(findMap(tester).myLocationEnabled, isFalse);
-  });
 
   testWidgets("My location disabled if current location is null",
       (tester) async {
@@ -136,21 +120,6 @@ void main() {
   testWidgets("Scaffold rendered when widget is a page", (tester) async {
     await pumpMap(tester, FishingSpotMap());
     expect(find.byType(Scaffold), findsOneWidget);
-  });
-
-  testWidgets("Scaffold not rendered when widget is not a page",
-      (tester) async {
-    await pumpMap(
-      tester,
-      StaticFishingSpotMap(
-        FishingSpot(
-          name: "Spot 1",
-          lat: 1,
-          lng: 2,
-        ),
-      ),
-    );
-    expect(find.byType(Scaffold), findsNothing);
   });
 
   testWidgets("Start position is active symbol", (tester) async {
@@ -695,46 +664,6 @@ void main() {
     );
   });
 
-  testWidgets("Static doesn't animate", (tester) async {
-    await pumpMap(
-      tester,
-      StaticFishingSpotMap(
-        FishingSpot(
-          id: randomId(),
-          lat: 1.23456,
-          lng: 6.54321,
-        ),
-      ),
-    );
-
-    expect(find.byType(SlideUpTransition), findsNothing);
-  });
-
-  testWidgets("White attribution logo", (tester) async {
-    await pumpMap(tester, FishingSpotMap());
-
-    await tapAndSettle(tester, find.byIcon(Icons.layers));
-    await tapAndSettle(tester, find.text("Satellite"));
-
-    expect(
-      tester
-          .widget<MapboxAttribution>(find.byType(MapboxAttribution).first)
-          .logoColor,
-      Colors.white,
-    );
-  });
-
-  testWidgets("Black attribution logo", (tester) async {
-    await pumpMap(tester, FishingSpotMap());
-
-    expect(
-      tester
-          .widget<MapboxAttribution>(find.byType(MapboxAttribution).first)
-          .logoColor,
-      Colors.black,
-    );
-  });
-
   testWidgets("Mapbox telemetry toggled", (tester) async {
     when(appManager.ioWrapper.isAndroid).thenReturn(false);
 
@@ -1096,102 +1025,6 @@ void main() {
     verify(mapController.value.moveCamera(any)).called(1);
   });
 
-  testWidgets("Static picker settings sets controller value", (tester) async {
-    var fishingSpot1 = FishingSpot(
-      id: randomId(),
-      name: "Spot 1",
-      lat: 1,
-      lng: 2,
-    );
-    when(appManager.fishingSpotManager.list()).thenReturn([fishingSpot1]);
-
-    await pumpMap(tester, StaticFishingSpotMap(fishingSpot1));
-    expect(find.text("Spot 1"), findsOneWidget);
-  });
-
-  testWidgets("Static picker hides dropped pin text", (tester) async {
-    var fishingSpot1 = FishingSpot(
-      id: randomId(),
-      lat: 1,
-      lng: 2,
-    );
-    when(appManager.fishingSpotManager.list()).thenReturn([fishingSpot1]);
-    when(appManager.fishingSpotManager.entityExists(any)).thenReturn(false);
-
-    await pumpMap(tester, StaticFishingSpotMap(fishingSpot1));
-    expect(find.text("Dropped Pin"), findsNothing);
-  });
-
-  testWidgets("Static map offsets position; moves map only once",
-      (tester) async {
-    var fishingSpot1 = FishingSpot(
-      id: randomId(),
-      lat: 1,
-      lng: 2,
-    );
-    when(appManager.fishingSpotManager.list()).thenReturn([fishingSpot1]);
-    when(appManager.fishingSpotManager.entityExists(any)).thenReturn(false);
-
-    await pumpMap(tester, StaticFishingSpotMap(fishingSpot1));
-    verify(mapController.value.toLatLng(any)).called(1);
-    verify(mapController.value.moveCamera(any)).called(1);
-    verifyNever(mapController.value.animateCamera(any));
-  });
-
-  testWidgets("WillPopScope is included in widget tree", (tester) async {
-    await pumpMap(tester, FishingSpotMap());
-    expect(find.byType(WillPopScope), findsOneWidget);
-  });
-
-  testWidgets("WillPopScope is not included in widget tree", (tester) async {
-    var fishingSpot1 = FishingSpot(
-      id: randomId(),
-      lat: 1,
-      lng: 2,
-    );
-    when(appManager.fishingSpotManager.list()).thenReturn([fishingSpot1]);
-    when(appManager.fishingSpotManager.entityExists(any)).thenReturn(false);
-
-    await pumpMap(tester, StaticFishingSpotMap(fishingSpot1));
-    expect(find.byType(WillPopScope), findsNothing);
-  });
-
-  testWidgets("Attribution icon shows bottom sheet", (tester) async {
-    when(appManager.ioWrapper.isAndroid).thenReturn(true);
-
-    await pumpMap(tester, FishingSpotMap());
-    await tapAndSettle(tester, find.byIcon(Icons.info_outline).first);
-    expect(find.text("Mapbox Maps SDK for Android"), findsOneWidget);
-  });
-
-  testWidgets("Attribution iOS title", (tester) async {
-    when(appManager.ioWrapper.isAndroid).thenReturn(false);
-
-    await pumpMap(tester, FishingSpotMap());
-    await tapAndSettle(tester, find.byIcon(Icons.info_outline).first);
-    expect(find.text("Mapbox Maps SDK for iOS"), findsOneWidget);
-  });
-
-  testWidgets("Attribution Android title", (tester) async {
-    when(appManager.ioWrapper.isAndroid).thenReturn(true);
-
-    await pumpMap(tester, FishingSpotMap());
-    await tapAndSettle(tester, find.byIcon(Icons.info_outline).first);
-    expect(find.text("Mapbox Maps SDK for Android"), findsOneWidget);
-  });
-
-  testWidgets("Attribution URL launched", (tester) async {
-    when(appManager.ioWrapper.isAndroid).thenReturn(true);
-    when(appManager.urlLauncherWrapper.launch(any))
-        .thenAnswer((_) => Future.value(true));
-
-    await pumpMap(tester, FishingSpotMap());
-    await tapAndSettle(tester, find.byIcon(Icons.info_outline).first);
-    await tapAndSettle(tester, find.text("Improve This Map"));
-
-    verify(appManager.urlLauncherWrapper.launch(any)).called(1);
-  });
-
   testWidgets("Map setup is only invoked once", (tester) async {
     await pumpMap(tester, FishingSpotMap());
     verify(mapController.value.setSymbolIconAllowOverlap(any)).called(1);
@@ -1216,7 +1049,11 @@ class __DidUpdateWidgetTesterState extends State<_DidUpdateWidgetTester> {
           text: "Test",
           onPressed: () => setState(() {}),
         ),
-        StaticFishingSpotMap(widget.controller.value!),
+        SizedBox(
+          width: 500,
+          height: 500,
+          child: FishingSpotMap.selected(widget.controller.value!),
+        ),
       ],
     );
   }

@@ -293,4 +293,25 @@ void main() {
     expect(images.first, "image.jpg");
     verifyNever(appManager.imageCompressWrapper.compress(any, any, any));
   });
+
+  test("Writing file that already exists exits early", () async {
+    var img0 = MockFile();
+    when(img0.path).thenReturn("$_imagePath/2.0/images/image.jpg");
+    when(img0.exists()).thenAnswer((_) => Future.value(true));
+    when(appManager.ioWrapper.file(any)).thenReturn(img0);
+
+    await imageManager.saveImageBytes(Uint8List(0), "dummy");
+    verifyNever(img0.writeAsBytes(any, flush: anyNamed("flush")));
+  });
+
+  test("Writing file throws exception", () async {
+    var img0 = MockFile();
+    when(img0.path).thenReturn("$_imagePath/2.0/images/image.jpg");
+    when(img0.exists()).thenAnswer((_) => Future.value(false));
+    when(img0.writeAsBytes(any, flush: anyNamed("flush")))
+        .thenThrow(const FileSystemException());
+    when(appManager.ioWrapper.file(any)).thenReturn(img0);
+
+    expect(await imageManager.saveImageBytes(Uint8List(0), "dummy"), isFalse);
+  });
 }

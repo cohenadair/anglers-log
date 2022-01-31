@@ -371,8 +371,7 @@ class _PersonalBest extends StatelessWidget {
           fileName: imageName,
           showFullOnTap: true,
         ),
-        borderRadius:
-            const BorderRadius.all(Radius.circular(floatingCornerRadius)),
+        borderRadius: defaultBorderRadius,
       ),
     );
   }

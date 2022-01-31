@@ -542,4 +542,36 @@ void main() {
 
     expect(find.byType(SnackBar), findsOneWidget);
   });
+
+  testWidgets("Shows chevron even if onTap is null", (tester) async {
+    await tester.pumpWidget(Testable(
+      (_) => Scaffold(
+        body: FishingSpotDetails(
+          FishingSpot(lat: 1.23456, lng: 6.54321),
+          showRightChevron: true,
+          isListItem: true,
+          onTap: null,
+        ),
+      ),
+      appManager: appManager,
+    ));
+
+    expect(find.byType(RightChevronIcon), findsOneWidget);
+  });
+
+  testWidgets("Hides chevron if isListItem is false", (tester) async {
+    await tester.pumpWidget(Testable(
+      (_) => Scaffold(
+        body: FishingSpotDetails(
+          FishingSpot(lat: 1.23456, lng: 6.54321),
+          showRightChevron: true,
+          isListItem: false,
+          onTap: null,
+        ),
+      ),
+      appManager: appManager,
+    ));
+
+    expect(find.byType(RightChevronIcon), findsNothing);
+  });
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mobile/widgets/static_fishing_spot_map.dart';
 import 'package:quiver/strings.dart';
 
 import '../angler_manager.dart';
@@ -24,7 +25,6 @@ import '../utils/protobuf_utils.dart';
 import '../utils/string_utils.dart';
 import '../water_clarity_manager.dart';
 import '../widgets/atmosphere_wrap.dart';
-import '../widgets/fishing_spot_map.dart';
 import '../widgets/icon_list.dart';
 import '../widgets/list_item.dart';
 import '../widgets/text.dart';
