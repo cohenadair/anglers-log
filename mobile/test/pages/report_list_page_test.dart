@@ -338,16 +338,19 @@ void main() {
     expect(items.length, 12);
 
     expect(items[0].id, reportIdPersonalBests);
-    expect(items[1] is MinDivider, isTrue);
+    // items[1] is a MinDivider verified below.
     expect(items[2].id, reportIdCatchSummary);
     expect(items[3].id, reportIdTripSummary);
-    expect(items[4] is MinDivider, isTrue);
+    // items[4] is a MinDivider verified below.
     expect(items[5].id, reportIdFishingSpotSummary);
     expect(items[6].id, reportIdAnglerSummary);
-    expect(items[7] is HeadingNoteDivider, isTrue);
+    // items[7] is a HeadingNoteDivider verified below.
     expect(items[8].name, "Comparison 1");
     expect(items[9].name, "Comparison 2");
     expect(items[10].name, "Summary 1");
     expect(items[11].name, "Summary 2");
+
+    expect(find.byType(MinDivider), findsNWidgets(3));
+    expect(find.byType(HeadingNoteDivider), findsOneWidget);
   });
 }

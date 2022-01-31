@@ -67,15 +67,22 @@ class ReportListPage extends StatelessWidget {
         ),
         isEditable: item.isCustom,
       );
-    } else if (item is HeadingNoteDivider) {
+    } else if (item == _ItemType.headingNoteDivider) {
       return ManageableListPageItemModel(
-        child: item,
+        child: HeadingNoteDivider(
+          hideNote: reportManager.list().isNotEmpty,
+          hideDivider: reportManager.defaultReports.isEmpty,
+          title: Strings.of(context).reportListPageReportTitle,
+          note: Strings.of(context).reportListPageReportAddNote,
+          noteIcon: Icons.add,
+          padding: insetsBottomSmall,
+        ),
         isEditable: false,
         isSelectable: false,
       );
-    } else if (item is MinDivider) {
-      return ManageableListPageItemModel(
-        child: item,
+    } else if (item == _ItemType.divider) {
+      return const ManageableListPageItemModel(
+        child: MinDivider(),
         isEditable: false,
         isSelectable: false,
       );
@@ -111,7 +118,7 @@ class ReportListPage extends StatelessWidget {
     var section2Reports = defaultReports.where((e) => section2.contains(e.id));
     if (section2Reports.isNotEmpty) {
       if (section1Reports.isNotEmpty) {
-        result.add(const MinDivider());
+        result.add(_ItemType.divider);
       }
       result.addAll(section2Reports);
     }
@@ -120,21 +127,17 @@ class ReportListPage extends StatelessWidget {
         .where((e) => !section1.contains(e.id) && !section2.contains(e.id));
     if (remainingReports.isNotEmpty) {
       if (section2Reports.isNotEmpty) {
-        result.add(const MinDivider());
+        result.add(_ItemType.divider);
       }
       result.addAll(remainingReports);
     }
 
-    result.add(HeadingNoteDivider(
-      hideNote: ReportManager.of(context).list().isNotEmpty,
-      hideDivider: result.isEmpty,
-      title: Strings.of(context).reportListPageReportTitle,
-      note: Strings.of(context).reportListPageReportAddNote,
-      noteIcon: Icons.add,
-      padding: insetsBottomSmall,
-    ));
+    result.add(_ItemType.headingNoteDivider);
     result.addAll(reportManager.listSortedByName());
 
     return result;
   }
 }
+
+/// Helper for non-[Report] types to be shown in the list.
+enum _ItemType { divider, headingNoteDivider }

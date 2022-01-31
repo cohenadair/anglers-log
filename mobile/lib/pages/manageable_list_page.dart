@@ -653,8 +653,14 @@ class ManageableListPageEmptyListSettings {
 /// when instantiating [ManageableListPage].
 class ManageableListPageItemManager<T> {
   /// Invoked when the widget tree needs to be rebuilt. Required so data is
-  /// almost the most up to date from the database. The passed in [String] is
+  /// always the most up to date from the database. The passed in [String] is
   /// the text in the [SearchBar].
+  ///
+  /// Depending on context, it's possible non-model items are returned from this
+  /// function, such as in [ReportListPage]. It's important to note that these
+  /// non-model objects cannot be of type [Widget], otherwise they will not get
+  /// rebuilt on entity changes. Instead, use a unique identifier, and return
+  /// the widget in [ManageableListPage.itemBuilder].
   final List<T> Function(String?) loadItems;
 
   /// Settings used to populate a widget when [loadItems] returns an empty list.
