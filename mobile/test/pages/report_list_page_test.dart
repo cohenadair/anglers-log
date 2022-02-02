@@ -9,6 +9,7 @@ import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mobile/utils/report_utils.dart';
 import 'package:mobile/widgets/button.dart';
 import 'package:mobile/widgets/list_item.dart';
+import 'package:mobile/widgets/pro_blur.dart';
 import 'package:mobile/widgets/text.dart';
 import 'package:mobile/widgets/widget.dart';
 import 'package:mockito/mockito.dart';
@@ -51,7 +52,8 @@ void main() {
 
     when(appManager.subscriptionManager.stream)
         .thenAnswer((_) => const Stream.empty());
-    when(appManager.subscriptionManager.isPro).thenReturn(false);
+    when(appManager.subscriptionManager.isPro).thenReturn(true);
+    when(appManager.subscriptionManager.isFree).thenReturn(false);
 
     when(appManager.baitManager.list()).thenReturn([]);
 
@@ -352,5 +354,25 @@ void main() {
 
     expect(find.byType(MinDivider), findsNWidgets(3));
     expect(find.byType(HeadingNoteDivider), findsOneWidget);
+  });
+
+  testWidgets("Blurred reports are shown", (tester) async {
+    when(appManager.subscriptionManager.isFree).thenReturn(true);
+    when(appManager.reportManager.defaultReports).thenReturn([
+      Report(id: reportIdPersonalBests),
+      Report(id: reportIdCatchSummary),
+    ]);
+
+    await tester.pumpWidget(Testable(
+      (_) => ReportListPage(
+        pickerSettings: ManageableListPagePickerSettings.single(
+          onPicked: (_, __) => true,
+          isRequired: true,
+        ),
+      ),
+      appManager: appManager,
+    ));
+
+    expect(find.byType(ProBlur), findsOneWidget);
   });
 }

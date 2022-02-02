@@ -282,7 +282,8 @@ void main() {
 
     when(appManager.subscriptionManager.stream)
         .thenAnswer((_) => const Stream.empty());
-    when(appManager.subscriptionManager.isPro).thenReturn(false);
+    when(appManager.subscriptionManager.isPro).thenReturn(true);
+    when(appManager.subscriptionManager.isFree).thenReturn(false);
 
     when(appManager.timeManager.currentDateTime)
         .thenReturn(DateTime.fromMillisecondsSinceEpoch(105000));

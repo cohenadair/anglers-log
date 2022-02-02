@@ -346,8 +346,7 @@ Map<String, Map<String, String>> get englishStrings => {
         "trip_catchesPerBait": "Catches Per Bait",
         "trip_skunked": "Skunked",
         "settingsPage_title": "Settings",
-        "settingsPage_fetchAtmosphereTitle":
-            "Auto-fetch atmosphere and weather",
+        "settingsPage_fetchAtmosphereTitle": "Auto-fetch weather",
         "settingsPage_fetchAtmosphereDescription":
             "Automatically fetch atmosphere and weather data when adding new catches.",
         "settingsPage_logout": "Logout",
@@ -401,6 +400,8 @@ Map<String, Map<String, String>> get englishStrings => {
         "formPage_addCustomFieldNote":
             "To add a custom field, tap the %s icon.",
         "formPage_manageFieldsNote": "To manage fields, tap the %s icon.",
+        "formPage_manageFieldsProDescription":
+            "You must be an Anglers' Log Pro subscriber to use custom fields.",
         "formPage_manageUnits": "Manage Units",
         "saveCustomEntityPage_newTitle": "New Field",
         "saveCustomEntityPage_editTitle": "Edit Field",
@@ -431,6 +432,8 @@ Map<String, Map<String, String>> get englishStrings => {
         "reportListPage_reportTitle": "Custom Reports",
         "reportListPage_reportAddNote":
             "To add a custom report, tap the %s icon.",
+        "reportListPage_reportsProDescription":
+            "You must be an Anglers' Log Pro subscriber to view custom reports.",
         "saveSpeciesPage_newTitle": "New Species",
         "saveSpeciesPage_editTitle": "Edit Species",
         "saveSpeciesPage_existsError": "Species already exists",
@@ -914,5 +917,6 @@ Map<String, Map<String, String>> get englishStrings => {
         "cloudAuth_error": "Error signing in, please try again later.",
         "asyncFeedback_sendReport": "Send Report",
         "addAnything_title": "Add New",
+        "proBlur_upgradeButton": "Upgrade",
       },
     };

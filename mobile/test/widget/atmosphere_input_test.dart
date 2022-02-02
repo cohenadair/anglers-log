@@ -24,6 +24,8 @@ void main() {
   setUp(() {
     appManager = StubbedAppManager();
 
+    when(appManager.customEntityManager.entityExists(any)).thenReturn(false);
+
     when(appManager.localDatabaseManager.fetchAll(any))
         .thenAnswer((_) => Future.value([]));
     when(appManager.localDatabaseManager.insertOrReplace(any, any))

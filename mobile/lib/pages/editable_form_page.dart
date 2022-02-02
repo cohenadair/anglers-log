@@ -1,8 +1,8 @@
 import 'dart:async';
 
-import 'package:collection/collection.dart' show IterableExtension;
 import 'package:flutter/material.dart';
 import 'package:mobile/utils/collection_utils.dart';
+import 'package:mobile/widgets/pro_blur.dart';
 
 import '../custom_entity_manager.dart';
 import '../i18n/strings.dart';
@@ -130,7 +130,7 @@ class _EditableFormPageState extends State<EditableFormPage> {
 
     if (widget.allowCustomEntities) {
       // Add a fake Field for custom fields separator.
-      var customField = Field.fake(builder: _buildCustomFieldHeader);
+      var customField = Field.fake(builder: _buildCustomFieldsSection);
       _fields[customField.id] = customField;
 
       // Add custom fields.
@@ -209,49 +209,61 @@ class _EditableFormPageState extends State<EditableFormPage> {
     );
   }
 
-  Widget _buildCustomFieldHeader(BuildContext context) {
-    Widget child;
+  Widget _inputWidget(Id id) {
+    assert(_fields.containsKey(id));
+    var field = _fields[id]!;
+
+    // Add custom field section.
+    if (field.isFake) {
+      return field.fakeBuilder!(context);
+    }
+
+    // If the field isn't showing, or is a custom field, skip it. Custom fields
+    // are created separately.
+    if (!field.isShowing || _customEntityManager.entityExists(id)) {
+      return Empty();
+    }
+
+    return widget.onBuildField?.call(id) ?? Empty();
+  }
+
+  Widget _buildCustomFieldsSection(BuildContext context) {
+    Widget header;
     if (widget.isEditable) {
-      var visibleField = _fields.values.firstWhereOrNull((field) =>
+      var hasVisibleField = _fields.values.containsWhere((field) =>
           _customEntityManager.entityExists(field.id) && field.isShowing);
 
-      child = HeadingNoteDivider(
-        hideNote: visibleField != null,
+      header = HeadingNoteDivider(
+        hideNote: hasVisibleField,
         title: Strings.of(context).entityNameCustomFields,
         note: Strings.of(context).formPageManageFieldsNote,
         noteIcon: FormPage.moreMenuIcon,
       );
     } else if (_hasCustomField()) {
-      child = HeadingDivider(Strings.of(context).entityNameCustomFields);
+      header = HeadingDivider(Strings.of(context).entityNameCustomFields);
     } else {
+      // The form is not editable and there are no custom fields; there's
+      // nothing to show.
       return Empty();
     }
 
-    return Padding(
+    header = Padding(
       padding: EdgeInsets.only(
         top: widget.showTopCustomFieldPadding ? paddingDefault : 0.0,
         bottom: paddingSmall,
       ),
-      child: child,
+      child: header,
     );
-  }
 
-  Widget _inputWidget(Id id) {
-    assert(_fields.containsKey(id));
-    var field = _fields[id]!;
+    var children = <Widget>[];
 
-    // Add custom fields divider.
-    if (field.isFake) {
-      return field.fakeBuilder!(context);
-    }
+    for (var field in _fields.values) {
+      var customField = _customEntityManager.entity(field.id);
+      if (customField == null || !field.isShowing) {
+        continue;
+      }
 
-    if (!field.isShowing) {
-      return Empty();
-    }
-
-    var customField = _customEntityManager.entity(id);
-    if (customField != null) {
-      return Padding(
+      children.add(Padding(
         // Boolean fields use a CheckboxInput, which uses ListItem, which always
         // has padding included.
         padding: customField.type == CustomEntity_Type.boolean
@@ -268,10 +280,20 @@ class _EditableFormPageState extends State<EditableFormPage> {
           },
           onTextFieldChanged: (newValue) => _onCustomFieldChanged(),
         ),
+      ));
+    }
+
+    Widget blur = Empty();
+    if (children.isNotEmpty) {
+      blur = ProBlur(
+        description: Strings.of(context).formPageManageFieldsProDescription,
+        proWidget: Column(
+          children: children,
+        ),
       );
     }
 
-    return widget.onBuildField?.call(id) ?? Empty();
+    return Column(children: [header, blur]);
   }
 
   void _onCustomFieldChanged() {

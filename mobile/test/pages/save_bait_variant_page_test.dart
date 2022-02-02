@@ -17,6 +17,10 @@ void main() {
 
     when(appManager.customEntityManager.entityExists(any)).thenReturn(false);
 
+    when(appManager.subscriptionManager.stream)
+        .thenAnswer((_) => const Stream.empty());
+    when(appManager.subscriptionManager.isFree).thenReturn(false);
+
     when(appManager.userPreferenceManager.baitVariantFieldIds).thenReturn([]);
     when(appManager.userPreferenceManager.waterDepthSystem)
         .thenReturn(MeasurementSystem.metric);

@@ -413,6 +413,9 @@ class Strings {
   String get reportListPageReportAddNote =>
       _string("reportListPage_reportAddNote");
 
+  String get reportListPageReportsProDescription =>
+      _string("reportListPage_reportsProDescription");
+
   String get saveBaitPageNewTitle => _string("saveBaitPage_newTitle");
 
   String get saveBaitPageEditTitle => _string("saveBaitPage_editTitle");
@@ -844,6 +847,9 @@ class Strings {
       _string("formPage_addCustomFieldNote");
 
   String get formPageManageFieldsNote => _string("formPage_manageFieldsNote");
+
+  String get formPageManageFieldsProDescription =>
+      _string("formPage_manageFieldsProDescription");
 
   String get formPageManageUnits => _string("formPage_manageUnits");
 
@@ -1864,6 +1870,8 @@ class Strings {
   String get asyncFeedbackSendReport => _string("asyncFeedback_sendReport");
 
   String get addAnythingTitle => _string("addAnything_title");
+
+  String get proBlurUpgradeButton => _string("proBlur_upgradeButton");
 }
 
 class StringsDelegate extends LocalizationsDelegate<Strings> {

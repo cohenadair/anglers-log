@@ -8,6 +8,7 @@ import 'package:mobile/widgets/checkbox_input.dart';
 import 'package:mobile/widgets/input_controller.dart';
 import 'package:mobile/widgets/field.dart';
 import 'package:mobile/widgets/list_item.dart';
+import 'package:mobile/widgets/pro_blur.dart';
 import 'package:mobile/widgets/text.dart';
 import 'package:mobile/widgets/widget.dart';
 import 'package:mockito/mockito.dart';
@@ -20,8 +21,14 @@ void main() {
 
   setUp(() {
     appManager = StubbedAppManager();
+
     when(appManager.customEntityManager.list()).thenReturn([]);
-    when(appManager.customEntityManager.entityExists(any)).thenReturn(true);
+    when(appManager.customEntityManager.entityExists(any)).thenReturn(false);
+
+    when(appManager.subscriptionManager.stream)
+        .thenAnswer((_) => const Stream.empty());
+    when(appManager.subscriptionManager.isFree).thenReturn(false);
+    when(appManager.subscriptionManager.isPro).thenReturn(true);
   });
 
   testWidgets("Custom fields hidden", (tester) async {
@@ -53,11 +60,14 @@ void main() {
   });
 
   testWidgets("Custom fields without values", (tester) async {
+    var customEntityId = randomId();
     var customEntity = CustomEntity()
-      ..id = randomId()
+      ..id = customEntityId
       ..name = "Custom Field 1"
       ..type = CustomEntity_Type.text;
     when(appManager.customEntityManager.entity(any)).thenReturn(customEntity);
+    when(appManager.customEntityManager.entityExists(customEntityId))
+        .thenReturn(true);
 
     await tester.pumpWidget(Testable(
       (_) => EditableFormPage(
@@ -67,24 +77,33 @@ void main() {
       ),
       appManager: appManager,
     ));
+
     expect(find.byType(IconLabel), findsNothing);
     expect(find.widgetWithText(TextField, "Custom Field 1"), findsOneWidget);
+    expect(find.byType(ProBlur), findsOneWidget);
   });
 
   testWidgets("CustomEntityValue that doesn't exist in fields is still added",
       (tester) async {
+    var customEntityId = randomId();
     when(appManager.customEntityManager.entity(any)).thenReturn(
       CustomEntity()
-        ..id = randomId()
+        ..id = customEntityId
         ..name = "Custom Field 1"
         ..type = CustomEntity_Type.text,
     );
+    when(appManager.customEntityManager.entityExists(customEntityId))
+        .thenReturn(true);
+
     await tester.pumpWidget(Testable(
       (_) => EditableFormPage(
         customEntityValues: [
           CustomEntityValue()
-            ..customEntityId = randomId()
+            ..customEntityId = customEntityId
             ..value = "Test",
+        ],
+        trackedFieldIds: [
+          customEntityId,
         ],
       ),
       appManager: appManager,
@@ -218,14 +237,18 @@ void main() {
 
   testWidgets("Adding a new custom field updates state and shows field",
       (tester) async {
+    var customEntityId = randomId();
     var customEntity = CustomEntity()
-      ..id = randomId()
+      ..id = customEntityId
       ..name = "Custom Field 1"
       ..type = CustomEntity_Type.boolean;
     when(appManager.customEntityManager.list()).thenReturn([
       customEntity,
     ]);
-    when(appManager.customEntityManager.entity(any)).thenReturn(customEntity);
+    when(appManager.customEntityManager.entity(customEntityId))
+        .thenReturn(customEntity);
+    when(appManager.customEntityManager.entityExists(customEntityId))
+        .thenReturn(true);
 
     var called = false;
     await tester.pumpWidget(Testable(
@@ -264,19 +287,27 @@ void main() {
   });
 
   testWidgets("Callback invoked with correct values", (tester) async {
-    Map<Id, dynamic>? onSaveMap;
+    var customEntityId = randomId();
     when(appManager.customEntityManager.entity(any)).thenReturn(
       CustomEntity()
-        ..id = randomId()
+        ..id = customEntityId
         ..name = "Custom Field 1"
         ..type = CustomEntity_Type.text,
     );
+    when(appManager.customEntityManager.entityExists(customEntityId))
+        .thenReturn(true);
+
+    Map<Id, dynamic>? onSaveMap;
+
     await tester.pumpWidget(Testable(
       (_) => EditableFormPage(
         customEntityValues: [
           CustomEntityValue()
-            ..customEntityId = randomId()
+            ..customEntityId = customEntityId
             ..value = "Test",
+        ],
+        trackedFieldIds: [
+          customEntityId,
         ],
         onSave: (result) {
           onSaveMap = result;
@@ -311,6 +342,10 @@ void main() {
 
     when(appManager.customEntityManager.entity(custom1.id)).thenReturn(custom1);
     when(appManager.customEntityManager.entity(custom2.id)).thenReturn(custom2);
+    when(appManager.customEntityManager.entityExists(custom1.id))
+        .thenReturn(true);
+    when(appManager.customEntityManager.entityExists(custom2.id))
+        .thenReturn(true);
 
     var id1 = randomId();
     var id2 = randomId();
@@ -372,6 +407,8 @@ void main() {
       ..name = "Custom Field"
       ..type = CustomEntity_Type.boolean;
     when(appManager.customEntityManager.entity(custom1.id)).thenReturn(custom1);
+    when(appManager.customEntityManager.entityExists(custom1.id))
+        .thenReturn(true);
 
     var invoked = false;
     await pumpContext(
@@ -412,6 +449,8 @@ void main() {
       ..name = "Custom Field"
       ..type = CustomEntity_Type.text;
     when(appManager.customEntityManager.entity(custom1.id)).thenReturn(custom1);
+    when(appManager.customEntityManager.entityExists(custom1.id))
+        .thenReturn(true);
 
     await pumpContext(
       tester,

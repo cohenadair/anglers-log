@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mobile/utils/report_utils.dart';
+import 'package:mobile/widgets/list_item.dart';
+import 'package:mobile/widgets/pro_blur.dart';
 
 import '../i18n/strings.dart';
-import '../log.dart';
 import '../model/gen/anglerslog.pb.dart';
 import '../pages/manageable_list_page.dart';
 import '../pages/save_report_page.dart';
@@ -16,8 +17,6 @@ import '../widgets/widget.dart';
 import 'pro_page.dart';
 
 class ReportListPage extends StatelessWidget {
-  static const _log = Log("ReportListPage");
-
   /// The generic type is dynamic here because different kinds of report
   /// objects are rendered in the list.
   final ManageableListPagePickerSettings<dynamic> pickerSettings;
@@ -68,37 +67,65 @@ class ReportListPage extends StatelessWidget {
         isEditable: item.isCustom,
       );
     } else if (item == _ItemType.headingNoteDivider) {
-      return ManageableListPageItemModel(
-        child: HeadingNoteDivider(
-          hideNote: reportManager.list().isNotEmpty,
-          hideDivider: reportManager.defaultReports.isEmpty,
-          title: Strings.of(context).reportListPageReportTitle,
-          note: Strings.of(context).reportListPageReportAddNote,
-          noteIcon: Icons.add,
-          padding: insetsBottomSmall,
-        ),
-        isEditable: false,
-        isSelectable: false,
-      );
+      return _buildImmutableItem(context, _buildCustomReportsHeader(context));
     } else if (item == _ItemType.divider) {
-      return const ManageableListPageItemModel(
-        child: MinDivider(),
-        isEditable: false,
-        isSelectable: false,
-      );
+      return _buildImmutableItem(context, const MinDivider());
+    } else if (item == _ItemType.blurredReports) {
+      return _buildImmutableItem(context, _buildBlurredReports(context));
     } else {
-      _log.w("Unknown item type: $item");
-
-      return ManageableListPageItemModel(
-        child: Empty(),
-        isEditable: false,
-        isSelectable: false,
-      );
+      assert(false, "Unknown item type: $item");
+      return _buildImmutableItem(context, Empty());
     }
+  }
+
+  Widget _buildCustomReportsHeader(BuildContext context) {
+    var reportManager = ReportManager.of(context);
+
+    return HeadingNoteDivider(
+      hideNote: reportManager.list().isNotEmpty,
+      hideDivider: reportManager.defaultReports.isEmpty,
+      title: Strings.of(context).reportListPageReportTitle,
+      note: Strings.of(context).reportListPageReportAddNote,
+      noteIcon: Icons.add,
+      padding: insetsBottomSmall,
+    );
+  }
+
+  Widget _buildBlurredReports(BuildContext context) {
+    var reportManager = ReportManager.of(context);
+
+    return Padding(
+      padding: insetsBottomDefault,
+      child: Column(
+        children: [
+          _buildCustomReportsHeader(context),
+          ProBlur(
+            description:
+                Strings.of(context).reportListPageReportsProDescription,
+            proWidget: Column(
+              children: reportManager
+                  .listSortedByName()
+                  .map((e) => ListItem(title: Text(e.name)))
+                  .toList(),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  ManageableListPageItemModel _buildImmutableItem(
+      BuildContext context, Widget child) {
+    return ManageableListPageItemModel(
+      child: child,
+      isEditable: false,
+      isSelectable: false,
+    );
   }
 
   List<dynamic> _loadItems(BuildContext context) {
     var reportManager = ReportManager.of(context);
+    var subscriptionManager = SubscriptionManager.of(context);
 
     var section1 = [reportIdPersonalBests];
     var section2 = [
@@ -132,12 +159,20 @@ class ReportListPage extends StatelessWidget {
       result.addAll(remainingReports);
     }
 
-    result.add(_ItemType.headingNoteDivider);
-    result.addAll(reportManager.listSortedByName());
+    if (subscriptionManager.isFree) {
+      result.add(_ItemType.blurredReports);
+    } else {
+      result.add(_ItemType.headingNoteDivider);
+      result.addAll(reportManager.listSortedByName());
+    }
 
     return result;
   }
 }
 
 /// Helper for non-[Report] types to be shown in the list.
-enum _ItemType { divider, headingNoteDivider }
+enum _ItemType {
+  divider,
+  headingNoteDivider,
+  blurredReports,
+}
