@@ -52,7 +52,7 @@ class ProBlur extends StatelessWidget {
         ),
         child: Container(
           color: Colors.black.withOpacity(0),
-          child: Empty(),
+          child: const Empty(),
         ),
       ),
     );

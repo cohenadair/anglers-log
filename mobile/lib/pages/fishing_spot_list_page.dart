@@ -118,7 +118,7 @@ class _FishingSpotListPageState extends State<FishingSpotListPage> {
           ),
           isNotEmpty(fishingSpot.name)
               ? Text(latLngString, style: styleSubtitle(context))
-              : Empty(),
+              : const Empty(),
         ],
       ),
     );

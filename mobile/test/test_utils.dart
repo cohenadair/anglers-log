@@ -77,7 +77,8 @@ class DisposableTesterState extends State<DisposableTester> {
   void removeChild() => setState(() => _showChild = false);
 
   @override
-  Widget build(BuildContext context) => _showChild ? widget.child : Empty();
+  Widget build(BuildContext context) =>
+      _showChild ? widget.child : const Empty();
 }
 
 void setCanvasSize(WidgetTester tester, Size size) {
@@ -94,7 +95,7 @@ Future<BuildContext> buildContext(
   await tester.pumpWidget(Testable(
     (buildContext) {
       context = buildContext;
-      return Empty();
+      return const Empty();
     },
     mediaQueryData: MediaQueryData(
       devicePixelRatio: 1.0,

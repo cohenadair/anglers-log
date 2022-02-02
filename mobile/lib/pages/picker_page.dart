@@ -111,7 +111,7 @@ class _PickerPageState<T> extends State<PickerPage<T>> {
         appBar: AppBar(
           title: widget.title,
           actions: [
-            widget.action == null ? Empty() : widget.action!,
+            widget.action == null ? const Empty() : widget.action!,
           ],
         ),
         body: _buildListView(context),

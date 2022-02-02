@@ -29,6 +29,8 @@ const iconWaterClarity = CustomIcons.waterClarities;
 const animDurationDefault = Duration(milliseconds: 150);
 
 class Empty extends StatelessWidget {
+  const Empty();
+
   @override
   Widget build(BuildContext context) {
     return const SizedBox();
@@ -77,7 +79,7 @@ class HeadingDivider extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        showDivider ? const MinDivider() : Empty(),
+        showDivider ? const MinDivider() : const Empty(),
         Padding(
           padding: const EdgeInsets.only(
             top: paddingDefault,
@@ -97,7 +99,7 @@ class HeadingDivider extends StatelessWidget {
                     style: styleListHeading(context),
                   ),
                 ),
-                trailing ?? Empty(),
+                trailing ?? const Empty(),
               ],
             ),
           ),
@@ -150,7 +152,7 @@ class HeadingNoteDivider extends StatelessWidget {
     return AnimatedSwitcher(
       duration: animDurationDefault,
       child: hideNote
-          ? Empty()
+          ? const Empty()
           : Padding(
               padding: const EdgeInsets.only(
                 left: paddingDefault,
@@ -208,7 +210,7 @@ class Loading extends StatelessWidget {
           children: [
             indicator,
             const VerticalSpace(paddingDefault),
-            isEmpty(label) ? Empty() : Text(label!),
+            isEmpty(label) ? const Empty() : Text(label!),
           ],
         ),
       );
@@ -354,7 +356,7 @@ class EmptyFutureBuilder<T> extends StatelessWidget {
       future: future,
       builder: (context, snapshot) {
         if (!snapshot.hasData) {
-          return Empty();
+          return const Empty();
         }
         return builder(context, snapshot.data);
       },
@@ -411,7 +413,7 @@ class ChipWrap extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (items.isEmpty) {
-      return Empty();
+      return const Empty();
     }
 
     return Wrap(
@@ -485,7 +487,7 @@ class WatermarkLogo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Widget titleWidget = Empty();
+    Widget titleWidget = const Empty();
     if (isNotEmpty(title)) {
       titleWidget = Padding(
         padding: insetsTopDefault,
@@ -545,7 +547,7 @@ class CatchFavoriteStar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (!cat.hasIsFavorite() || !cat.isFavorite) {
-      return Empty();
+      return const Empty();
     }
 
     return Padding(

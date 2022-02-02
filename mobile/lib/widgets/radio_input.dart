@@ -49,7 +49,7 @@ class _RadioInputState extends State<RadioInput> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           isEmpty(widget.title)
-              ? Empty()
+              ? const Empty()
               : Padding(
                   padding: const EdgeInsets.only(
                     left: paddingDefault,

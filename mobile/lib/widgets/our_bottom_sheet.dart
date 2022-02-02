@@ -25,7 +25,7 @@ class OurBottomSheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Widget titleWidget = Empty();
+    Widget titleWidget = const Empty();
     if (isNotEmpty(title)) {
       titleWidget = Padding(
         padding: insetsDefault,

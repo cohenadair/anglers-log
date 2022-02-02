@@ -92,7 +92,7 @@ class _SearchBarState extends State<SearchBar> {
           child: const Icon(Icons.search, color: Colors.black),
         );
 
-    Widget trailing = Empty();
+    Widget trailing = const Empty();
     if (widget.trailing != null) {
       trailing = widget.trailing!;
     } else if (_isInput) {

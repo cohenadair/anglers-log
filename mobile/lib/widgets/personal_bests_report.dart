@@ -115,7 +115,7 @@ class _PersonalBestsReportState extends State<PersonalBestsReport> {
   Widget _buildLongestCatch() {
     if (!_userPreferenceManager.isTrackingLength ||
         _model.longestCatch == null) {
-      return Empty();
+      return const Empty();
     }
 
     return _BiggestCatch(
@@ -128,7 +128,7 @@ class _PersonalBestsReportState extends State<PersonalBestsReport> {
   Widget _buildHeaviestCatch() {
     if (!_userPreferenceManager.isTrackingWeight ||
         _model.heaviestCatch == null) {
-      return Empty();
+      return const Empty();
     }
 
     return _BiggestCatch(
@@ -140,7 +140,7 @@ class _PersonalBestsReportState extends State<PersonalBestsReport> {
 
   Widget _buildTrip() {
     if (_model.bestTrip == null) {
-      return Empty();
+      return const Empty();
     }
 
     var trip = _model.bestTrip!;
@@ -359,7 +359,7 @@ class _PersonalBest extends StatelessWidget {
 
   Widget _buildPhoto() {
     if (isEmpty(imageName)) {
-      return Empty();
+      return const Empty();
     }
 
     return Container(
@@ -384,7 +384,7 @@ class _PersonalBest extends StatelessWidget {
         children: [
           Text(subtitle, style: stylePrimary(context)),
           isEmpty(secondarySubtitle)
-              ? Empty()
+              ? const Empty()
               : Text(
                   secondarySubtitle!,
                   style: styleSecondary(context),
@@ -439,14 +439,14 @@ class _MeasurementPerSpecies extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (map.isEmpty) {
-      return Empty();
+      return const Empty();
     }
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         const VerticalSpace(paddingDefault),
-        isEmpty(title) ? Empty() : TitleLabel.style2(title!),
+        isEmpty(title) ? const Empty() : TitleLabel.style2(title!),
         Table(
           defaultVerticalAlignment: TableCellVerticalAlignment.middle,
           columnWidths: const <int, TableColumnWidth>{
@@ -612,7 +612,7 @@ class _MeasurementPerSpeciesPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return ScrollPage(
       appBar: AppBar(
-        title: isEmpty(title) ? Empty() : Text(title!),
+        title: isEmpty(title) ? const Empty() : Text(title!),
       ),
       children: [
         _MeasurementPerSpecies(

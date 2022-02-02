@@ -435,7 +435,7 @@ void main() {
       tester,
       (_) => EditableFormPage(
         fields: const {},
-        onBuildField: (_) => Empty(),
+        onBuildField: (_) => const Empty(),
         isEditable: true,
       ),
       appManager: appManager,

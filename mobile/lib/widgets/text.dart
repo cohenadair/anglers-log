@@ -19,7 +19,7 @@ class SingleLineText extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (isEmpty(text)) {
-      return Empty();
+      return const Empty();
     }
 
     return Text(

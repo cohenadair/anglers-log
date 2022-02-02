@@ -92,14 +92,14 @@ class TripPage extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           isEmpty(subtitle)
-              ? Empty()
+              ? const Empty()
               : Padding(
                   padding: insetsHorizontalDefault,
                   child: Text(subtitle!, style: styleListHeading(context)),
                 ),
           TitleLabel.style1(title),
           isEmpty(trip.notes)
-              ? Empty()
+              ? const Empty()
               : Padding(
                   padding: insetsHorizontalDefault,
                   child: Text(trip.notes, style: styleSecondary(context)),
@@ -111,7 +111,7 @@ class TripPage extends StatelessWidget {
 
   Widget _buildBodiesOfWater(BuildContext context, Trip trip) {
     if (trip.bodyOfWaterIds.isEmpty) {
-      return Empty();
+      return const Empty();
     }
 
     var bodyOfWaterManager = BodyOfWaterManager.of(context);
@@ -126,14 +126,14 @@ class TripPage extends StatelessWidget {
 
   Widget _buildCatches(BuildContext context, Trip trip) {
     if (trip.catchIds.isEmpty) {
-      return Empty();
+      return const Empty();
     }
 
     return Column(
       children: trip.catchIds.map((e) {
         var cat = CatchManager.of(context).entity(e);
         if (cat == null) {
-          return Empty();
+          return const Empty();
         }
 
         var model = CatchListItemModel(context, cat);
@@ -150,7 +150,7 @@ class TripPage extends StatelessWidget {
 
   Widget _buildAtmosphere(BuildContext context, Trip trip) {
     if (!trip.hasAtmosphere()) {
-      return Empty();
+      return const Empty();
     }
 
     return Padding(
@@ -206,7 +206,7 @@ class TripPage extends StatelessWidget {
 
   Widget _buildSkunked(BuildContext context, Trip trip) {
     if (TripManager.of(context).numberOfCatches(trip) > 0) {
-      return Empty();
+      return const Empty();
     }
 
     return Padding(

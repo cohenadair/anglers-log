@@ -16,7 +16,7 @@ class Tile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Widget title = Empty();
+    Widget title = const Empty();
     if (isNotEmpty(item.title)) {
       title = TitleLabel.style1(
         item.title!,
@@ -24,7 +24,7 @@ class Tile extends StatelessWidget {
       );
     }
 
-    Widget subtitle1 = Empty();
+    Widget subtitle1 = const Empty();
     if (isNotEmpty(item.subtitle)) {
       subtitle1 = Padding(
         padding: insetsHorizontalSmall,
@@ -37,7 +37,7 @@ class Tile extends StatelessWidget {
       );
     }
 
-    Widget subtitle2 = Empty();
+    Widget subtitle2 = const Empty();
     if (isNotEmpty(item.subtitle2)) {
       subtitle2 = Padding(
         padding: insetsSmall,

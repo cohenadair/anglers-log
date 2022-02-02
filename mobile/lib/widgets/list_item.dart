@@ -71,21 +71,23 @@ class ListItem extends StatelessWidget {
           padding: padding ?? insetsDefault,
           child: Row(
             children: [
-              leading ?? Empty(),
-              leading == null ? Empty() : const HorizontalSpace(paddingXL),
+              leading ?? const Empty(),
+              leading == null
+                  ? const Empty()
+                  : const HorizontalSpace(paddingXL),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    title ?? Empty(),
-                    subtitle ?? Empty(),
+                    title ?? const Empty(),
+                    subtitle ?? const Empty(),
                   ],
                 ),
               ),
               trailing == null
-                  ? Empty()
+                  ? const Empty()
                   : const HorizontalSpace(paddingDefault),
-              trailing ?? Empty(),
+              trailing ?? const Empty(),
             ],
           ),
         ),
@@ -394,7 +396,7 @@ class ManageableListItem extends StatelessWidget {
                   _buildTrailing(context),
                 ],
               ),
-              grandchild ?? Empty(),
+              grandchild ?? const Empty(),
             ],
           ),
         ),
@@ -421,7 +423,7 @@ class ManageableListItem extends StatelessWidget {
           },
         ),
       ),
-      secondChild: Empty(),
+      secondChild: const Empty(),
     );
   }
 
@@ -438,7 +440,7 @@ class ManageableListItem extends StatelessWidget {
     if (trailing == null || trailing is Empty) {
       // We don't want to show additional padding if there's no trailing
       // widget, or the trailing widget is already empty.
-      trailingWidget = Empty();
+      trailingWidget = const Empty();
     } else {
       trailingWidget = Padding(
         padding: insetsRightDefault,
@@ -551,7 +553,7 @@ class ManageableListImageItem extends StatelessWidget {
                 style: styleSubtitle(context).merge(subtitle2Style),
               ),
               isEmpty(subtitle3)
-                  ? Empty()
+                  ? const Empty()
                   : Text(
                       subtitle3!,
                       style: styleSubtitle(context),
@@ -559,7 +561,7 @@ class ManageableListImageItem extends StatelessWidget {
             ],
           ),
         ),
-        trailing ?? Empty(),
+        trailing ?? const Empty(),
       ],
     );
   }

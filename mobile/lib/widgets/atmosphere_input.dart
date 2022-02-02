@@ -74,7 +74,7 @@ class AtmosphereInput extends StatelessWidget {
 
         Widget secondChild;
         if (atmosphere == null) {
-          secondChild = Empty();
+          secondChild = const Empty();
         } else {
           secondChild = AtmosphereWrap(atmosphere);
         }
@@ -305,7 +305,7 @@ class __AtmosphereInputPageState extends State<_AtmosphereInputPage> {
       return _buildSunset();
     } else {
       _log.e("Unknown input key: $id");
-      return Empty();
+      return const Empty();
     }
   }
 

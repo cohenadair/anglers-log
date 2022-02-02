@@ -179,7 +179,7 @@ class _SaveBaitVariantPageState extends State<SaveBaitVariantPage> {
       return _buildDescription();
     } else {
       _log.e("Unknown input key: $id");
-      return Empty();
+      return const Empty();
     }
   }
 

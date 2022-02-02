@@ -172,7 +172,7 @@ class _CatchPageState extends State<CatchPage> {
 
   Widget _buildBaits() {
     if (_catch.baits.isEmpty) {
-      return Empty();
+      return const Empty();
     }
 
     return Column(
@@ -183,7 +183,7 @@ class _CatchPageState extends State<CatchPage> {
   Widget _buildFishingSpot() {
     var fishingSpot = _fishingSpotManager.entity(_catch.fishingSpotId);
     if (fishingSpot == null) {
-      return Empty();
+      return const Empty();
     }
 
     return StaticFishingSpotMap(
@@ -194,7 +194,7 @@ class _CatchPageState extends State<CatchPage> {
 
   Widget _buildAtmosphere() {
     if (!_catch.hasAtmosphere()) {
-      return Empty();
+      return const Empty();
     }
 
     return Padding(
@@ -206,7 +206,7 @@ class _CatchPageState extends State<CatchPage> {
   Widget _buildAngler() {
     var angler = _anglerManager.entity(_catch.anglerId);
     if (angler == null) {
-      return Empty();
+      return const Empty();
     }
 
     return ListItem(
@@ -217,7 +217,7 @@ class _CatchPageState extends State<CatchPage> {
 
   Widget _buildCatchAndRelease() {
     if (!_catch.hasWasCatchAndRelease()) {
-      return Empty();
+      return const Empty();
     }
 
     if (_catch.wasCatchAndRelease) {
@@ -255,7 +255,7 @@ class _CatchPageState extends State<CatchPage> {
     }
 
     if (waterValues.isEmpty && isEmpty(tide)) {
-      return Empty();
+      return const Empty();
     }
 
     var values = <String>[];
@@ -289,7 +289,7 @@ class _CatchPageState extends State<CatchPage> {
     }
 
     if (values.isEmpty) {
-      return Empty();
+      return const Empty();
     }
 
     return ListItem(
@@ -311,7 +311,7 @@ class _CatchPageState extends State<CatchPage> {
     }
 
     if (values.isEmpty) {
-      return Empty();
+      return const Empty();
     }
 
     return Padding(
@@ -325,13 +325,13 @@ class _CatchPageState extends State<CatchPage> {
 
   Widget _buildMethods() {
     if (_catch.methodIds.isEmpty) {
-      return Empty();
+      return const Empty();
     }
 
     var methodNames =
         _methodManager.list(_catch.methodIds).map((m) => m.name).toSet();
     if (methodNames.isEmpty) {
-      return Empty();
+      return const Empty();
     }
 
     return ListItem(title: ChipWrap(methodNames));
@@ -349,14 +349,14 @@ class _BaitAttachmentListItem extends StatelessWidget {
 
     var bait = baitManager.entity(attachment.baitId);
     if (bait == null) {
-      return Empty();
+      return const Empty();
     }
 
     // If the variant attached to this attachment no longer exists, do not
     // show anything.
     var variant = baitManager.variant(bait, attachment.variantId);
     if (attachment.hasVariantId() && variant == null) {
-      return Empty();
+      return const Empty();
     }
 
     var title = baitManager.formatNameWithCategory(bait.id)!;

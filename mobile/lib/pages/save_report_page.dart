@@ -319,7 +319,7 @@ class _SaveReportPageState extends State<SaveReportPage> {
 
   Widget _buildCatchAndReleaseOnly() {
     if (hideCatchField(catchFieldIdCatchAndRelease)) {
-      return Empty();
+      return const Empty();
     }
 
     return CheckboxInput(
@@ -331,7 +331,7 @@ class _SaveReportPageState extends State<SaveReportPage> {
 
   Widget _buildFavoritesOnly() {
     if (hideCatchField(catchFieldIdFavorite)) {
-      return Empty();
+      return const Empty();
     }
 
     return CheckboxInput(
@@ -343,7 +343,7 @@ class _SaveReportPageState extends State<SaveReportPage> {
 
   Widget _buildWaterDepth() {
     if (hideCatchField(catchFieldIdWaterDepth)) {
-      return Empty();
+      return const Empty();
     }
 
     return NumberFilterInput(
@@ -356,7 +356,7 @@ class _SaveReportPageState extends State<SaveReportPage> {
 
   Widget _buildWaterTemperature() {
     if (hideCatchField(catchFieldIdWaterTemperature)) {
-      return Empty();
+      return const Empty();
     }
 
     return NumberFilterInput(
@@ -369,7 +369,7 @@ class _SaveReportPageState extends State<SaveReportPage> {
 
   Widget _buildLength() {
     if (hideCatchField(catchFieldIdLength)) {
-      return Empty();
+      return const Empty();
     }
 
     return NumberFilterInput(
@@ -382,7 +382,7 @@ class _SaveReportPageState extends State<SaveReportPage> {
 
   Widget _buildWeight() {
     if (hideCatchField(catchFieldIdWeight)) {
-      return Empty();
+      return const Empty();
     }
 
     return NumberFilterInput(
@@ -395,7 +395,7 @@ class _SaveReportPageState extends State<SaveReportPage> {
 
   Widget _buildQuantity() {
     if (hideCatchField(catchFieldIdQuantity)) {
-      return Empty();
+      return const Empty();
     }
 
     return NumberFilterInput(
@@ -409,7 +409,7 @@ class _SaveReportPageState extends State<SaveReportPage> {
     return AnimatedSwitcher(
       duration: animDurationDefault,
       child: _isSummary
-          ? Empty()
+          ? const Empty()
           : DateRangePickerInput(
               title: Strings.of(context).saveReportPageEndDateRangeLabel,
               initialDateRange: _toDateRangeController.value,
@@ -474,7 +474,7 @@ class _SaveReportPageState extends State<SaveReportPage> {
 
   Widget _buildBaitsPicker() {
     if (hideCatchField(catchFieldIdBait)) {
-      return Empty();
+      return const Empty();
     }
 
     return BaitPickerInput(
@@ -532,7 +532,7 @@ class _SaveReportPageState extends State<SaveReportPage> {
 
   Widget _buildAirTemperature() {
     if (hideAtmosphereField(atmosphereFieldIdTemperature)) {
-      return Empty();
+      return const Empty();
     }
 
     return NumberFilterInput(
@@ -545,7 +545,7 @@ class _SaveReportPageState extends State<SaveReportPage> {
 
   Widget _buildAirPressure() {
     if (hideAtmosphereField(atmosphereFieldIdPressure)) {
-      return Empty();
+      return const Empty();
     }
 
     return NumberFilterInput(
@@ -558,7 +558,7 @@ class _SaveReportPageState extends State<SaveReportPage> {
 
   Widget _buildAirHumidity() {
     if (hideAtmosphereField(atmosphereFieldIdHumidity)) {
-      return Empty();
+      return const Empty();
     }
 
     return NumberFilterInput(
@@ -571,7 +571,7 @@ class _SaveReportPageState extends State<SaveReportPage> {
 
   Widget _buildAirVisibility() {
     if (hideAtmosphereField(atmosphereFieldIdVisibility)) {
-      return Empty();
+      return const Empty();
     }
 
     return NumberFilterInput(
@@ -584,7 +584,7 @@ class _SaveReportPageState extends State<SaveReportPage> {
 
   Widget _buildWindSpeed() {
     if (hideAtmosphereField(atmosphereFieldIdWindSpeed)) {
-      return Empty();
+      return const Empty();
     }
 
     return NumberFilterInput(
@@ -673,7 +673,7 @@ class _SaveReportPageState extends State<SaveReportPage> {
     required bool isHidden,
   }) {
     if (isHidden) {
-      return Empty();
+      return const Empty();
     }
 
     return MultiListPickerInput(

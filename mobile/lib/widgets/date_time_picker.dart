@@ -56,7 +56,7 @@ class DateTimePicker extends StatelessWidget {
           ],
         ),
         helper == null
-            ? Empty()
+            ? const Empty()
             : Padding(
                 padding: insetsTopSmall,
                 child: helper,

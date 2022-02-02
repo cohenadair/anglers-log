@@ -266,7 +266,7 @@ class _ImagePickerPageState extends State<ImagePickerPage> {
 
   Widget _buildSourceDropdown() {
     return DropdownButton<_ImagePickerSource>(
-      underline: Empty(),
+      underline: const Empty(),
       icon: DropdownIcon(),
       value: _currentSource,
       items: [
@@ -310,7 +310,7 @@ class _ImagePickerPageState extends State<ImagePickerPage> {
 
   Widget _buildDoneButton() {
     if (!widget.allowsMultipleSelection) {
-      return Empty();
+      return const Empty();
     }
 
     var enabled = !widget.requiresPick ||
@@ -375,7 +375,7 @@ class _ImagePickerPageState extends State<ImagePickerPage> {
                           style: stylePrimary(context),
                         ),
                       )
-                    : Empty(),
+                    : const Empty(),
                 ActionButton(
                   text: Strings.of(context).clear,
                   onPressed: () {

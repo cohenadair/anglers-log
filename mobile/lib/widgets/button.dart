@@ -339,7 +339,7 @@ class FloatingButton extends StatelessWidget {
                     style: styleHeadingSmall,
                   ),
                 )
-              : Empty(),
+              : const Empty(),
         ],
       ),
     );

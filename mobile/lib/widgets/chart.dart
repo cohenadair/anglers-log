@@ -188,7 +188,7 @@ class _ChartState<T> extends State<Chart<T>> {
 
   Widget _buildLegend() {
     if (widget.series.length <= 1) {
-      return Empty();
+      return const Empty();
     }
     return Padding(
       padding: widget.padding.copyWith(
@@ -410,7 +410,7 @@ class _ChartPage<T> extends StatelessWidget {
 
   Widget _buildFilters(BuildContext context) {
     if (filters.isEmpty) {
-      return Empty();
+      return const Empty();
     }
 
     return Padding(

@@ -113,7 +113,7 @@ class _PhotoState extends State<Photo> {
         var h = widget.height;
         var hasSize = w != null && h != null;
 
-        Widget child = Empty();
+        Widget child = const Empty();
         if (image == null && widget.showPlaceholder) {
           // Use a default icon placeholder if a size was specified, otherwise
           // use an empty widget.
@@ -133,7 +133,7 @@ class _PhotoState extends State<Photo> {
                     color: Colors.white,
                   ),
                 )
-              : Empty();
+              : const Empty();
         } else if (image != null) {
           child = Image.memory(
             image,

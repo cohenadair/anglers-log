@@ -94,7 +94,7 @@ class CheckboxInput extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Widget descriptionWidget = Empty();
+    Widget descriptionWidget = const Empty();
     if (isNotEmpty(description)) {
       descriptionWidget = Text(
         description!,

@@ -33,7 +33,7 @@ class CustomEntityListPage extends StatelessWidget {
           children: [
             Text(entity.name, style: stylePrimary(context)),
             isEmpty(entity.description)
-                ? Empty()
+                ? const Empty()
                 : Text(entity.description, style: styleSubtitle(context)),
           ],
         ),

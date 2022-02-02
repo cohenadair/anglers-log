@@ -60,7 +60,7 @@ class AdBannerWidgetState extends State<AdBannerWidget> {
   @override
   Widget build(BuildContext context) {
     if (_ad == null || !_isLoaded) {
-      return Empty();
+      return const Empty();
     }
 
     return Container(

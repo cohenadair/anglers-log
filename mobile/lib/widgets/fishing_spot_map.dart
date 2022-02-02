@@ -258,7 +258,7 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
   Widget _buildSearchBar() {
     if (!widget.showSearchBar) {
       // Row so it extends across the page.
-      return Row(children: [Empty()]);
+      return Row(children: [const Empty()]);
     }
 
     String? name;
@@ -335,7 +335,7 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
 
   Widget _buildMapStyleButton() {
     if (!widget.showMapTypeButton) {
-      return Empty();
+      return const Empty();
     }
 
     return FloatingButton.icon(
@@ -366,7 +366,7 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
 
   Widget _buildCurrentLocationButton() {
     if (!widget.showMyLocationButton) {
-      return Empty();
+      return const Empty();
     }
 
     return FloatingButton.icon(
@@ -415,7 +415,7 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
 
   Widget _buildZoomExtentsButton() {
     if (!widget.showZoomExtentsButton) {
-      return Empty();
+      return const Empty();
     }
 
     return FloatingButton.icon(
@@ -443,7 +443,7 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
 
   Widget _buildHelpButton() {
     if (!widget.showHelpButton) {
-      return Empty();
+      return const Empty();
     }
 
     return FloatingButton.icon(
@@ -484,7 +484,7 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
       fishingSpot = _pickerSettings?.controller.value;
     }
 
-    Widget details = Empty();
+    Widget details = const Empty();
     if (fishingSpot != null) {
       details = Padding(
         padding: insetsTopSmall,

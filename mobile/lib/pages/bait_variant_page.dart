@@ -74,7 +74,7 @@ class _BaitVariantPageState extends State<BaitVariantPage> {
   Widget _buildBase() {
     var name = _baitManager.formatNameWithCategory(_variant.baseId);
     if (isEmpty(name)) {
-      return Empty();
+      return const Empty();
     }
 
     VoidCallback? onTap;
@@ -108,7 +108,7 @@ class _BaitVariantPageState extends State<BaitVariantPage> {
 
   Widget _buildLabelValue(String label, String? value) {
     if (isEmpty(value)) {
-      return Empty();
+      return const Empty();
     }
 
     return LabelValue(

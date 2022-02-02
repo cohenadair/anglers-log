@@ -134,7 +134,7 @@ class _Item extends StatelessWidget {
           overflow: TextOverflow.visible,
         ),
         isEmpty(subtitle)
-            ? Empty()
+            ? const Empty()
             : Text(
                 subtitle!,
                 textAlign: TextAlign.center,

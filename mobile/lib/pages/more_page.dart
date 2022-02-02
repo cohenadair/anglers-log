@@ -41,7 +41,7 @@ class MorePage extends StatelessWidget {
             ...allEntitySpecs.map((spec) {
               if (spec == catchesEntitySpec) {
                 // Catches is shown in bottom navigation.
-                return Empty();
+                return const Empty();
               }
               return _buildPageItem(
                 context,
@@ -155,7 +155,7 @@ class MorePage extends StatelessWidget {
     bool isVisible = true,
   }) {
     if (!isVisible) {
-      return Empty();
+      return const Empty();
     }
 
     assert(page != null || onTap != null);

@@ -129,7 +129,7 @@ class _TripSummaryState extends State<TripSummary> {
     }
 
     if (children.isEmpty) {
-      return Empty();
+      return const Empty();
     }
 
     return Padding(
@@ -184,7 +184,7 @@ class _TripSummaryState extends State<TripSummary> {
   Widget _buildWeightRow() {
     if (_report.averageWeightPerTrip == null ||
         _report.mostWeightInSingleTrip == null) {
-      return Empty();
+      return const Empty();
     }
 
     return Padding(
@@ -215,7 +215,7 @@ class _TripSummaryState extends State<TripSummary> {
   Widget _buildLengthRow() {
     if (_report.averageLengthPerTrip == null ||
         _report.mostLengthInSingleTrip == null) {
-      return Empty();
+      return const Empty();
     }
 
     return Padding(

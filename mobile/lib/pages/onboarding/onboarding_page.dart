@@ -28,7 +28,7 @@ class OnboardingPage extends StatelessWidget {
     return ScrollPage(
       appBar: TransparentAppBar(
         context,
-        leading: Empty(),
+        leading: const Empty(),
       ),
       padding: padding,
       footer: _buildFooter(context),
@@ -53,7 +53,7 @@ class OnboardingPage extends StatelessWidget {
 
   Widget _buildBackButton(BuildContext context) {
     if (!showBackButton) {
-      return Empty();
+      return const Empty();
     }
 
     return IconButton(

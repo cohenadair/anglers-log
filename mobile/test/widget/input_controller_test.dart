@@ -315,7 +315,7 @@ void main() {
             valueListenable: controller,
             builder: (context, _, __) {
               callCount += 1;
-              return Empty();
+              return const Empty();
             },
           ),
         ),
@@ -344,7 +344,7 @@ void main() {
             valueListenable: controller,
             builder: (context, _, __) {
               callCount += 1;
-              return Empty();
+              return const Empty();
             },
           ),
         ),

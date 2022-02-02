@@ -393,7 +393,7 @@ void main() {
       (_) => DisposableTester(
         child: EntityListenerBuilder(
           managers: [entityManager],
-          builder: (_) => Empty(),
+          builder: (_) => const Empty(),
         ),
       ),
     );
@@ -414,7 +414,7 @@ void main() {
       tester,
       (_) => EntityListenerBuilder(
         managers: [entityManager],
-        builder: (_) => Empty(),
+        builder: (_) => const Empty(),
         onDelete: (_) => onDeleteInvoked = true,
         onDeleteEnabled: false,
       ),
@@ -438,7 +438,7 @@ void main() {
       tester,
       (_) => EntityListenerBuilder(
         managers: [entityManager],
-        builder: (_) => Empty(),
+        builder: (_) => const Empty(),
         onDelete: (_) => onDeleteInvoked = true,
         onDeleteEnabled: true,
       ),
@@ -466,7 +466,7 @@ void main() {
         changesUpdatesState: false,
         builder: (_) {
           builderCallCount++;
-          return Empty();
+          return const Empty();
         },
       ),
     );
@@ -490,7 +490,7 @@ void main() {
         changesUpdatesState: true,
         builder: (_) {
           builderCallCount++;
-          return Empty();
+          return const Empty();
         },
       ),
     );

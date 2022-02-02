@@ -30,7 +30,7 @@ class EmbeddedPage extends StatelessWidget {
         settings: const RouteSettings(
           name: _routeRoot,
         ),
-        builder: (_) => Empty(),
+        builder: (_) => const Empty(),
       ));
     }
     routes.add(MaterialPageRoute(

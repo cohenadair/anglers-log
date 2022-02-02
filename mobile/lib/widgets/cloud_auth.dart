@@ -64,7 +64,7 @@ class _CloudAuthState extends State<CloudAuth> {
   }
 
   Widget _buildSignInWidget(Key key) {
-    Widget errorText = Empty();
+    Widget errorText = const Empty();
     if (_authState == BackupRestoreAuthState.error) {
       errorText = Padding(
         padding: insetsTopDefault,

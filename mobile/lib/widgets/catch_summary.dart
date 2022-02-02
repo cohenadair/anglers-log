@@ -135,7 +135,7 @@ class _CatchSummaryState<T> extends State<CatchSummary<T>> {
 
   Widget _buildDateRangePicker() {
     if (widget.isStatic) {
-      return Empty();
+      return const Empty();
     }
 
     return DateRangePickerInput(
@@ -149,7 +149,7 @@ class _CatchSummaryState<T> extends State<CatchSummary<T>> {
 
   Widget _buildEntityPicker() {
     if (widget.picker == null || _entity == null) {
-      return Empty();
+      return const Empty();
     }
 
     return ListPickerInput(
@@ -263,7 +263,7 @@ class _CatchSummaryState<T> extends State<CatchSummary<T>> {
 
   Widget _buildCatchesPerSpecies() {
     if (!_report.hasPerSpecies) {
-      return Empty();
+      return const Empty();
     }
 
     return _buildCatchesPerEntity<Species>(
@@ -282,7 +282,7 @@ class _CatchSummaryState<T> extends State<CatchSummary<T>> {
 
   Widget _buildCatchesPerFishingSpot() {
     if (!_report.hasPerFishingSpot) {
-      return Empty();
+      return const Empty();
     }
 
     return _buildCatchesPerEntity<FishingSpot>(
@@ -305,7 +305,7 @@ class _CatchSummaryState<T> extends State<CatchSummary<T>> {
 
   Widget _buildCatchesPerBait() {
     if (!_report.hasPerBait) {
-      return Empty();
+      return const Empty();
     }
 
     return _buildCatchesPerEntity<BaitAttachment>(
@@ -323,7 +323,7 @@ class _CatchSummaryState<T> extends State<CatchSummary<T>> {
 
   Widget _buildCatchesPerMoonPhase() {
     if (!_report.hasPerMoonPhase) {
-      return Empty();
+      return const Empty();
     }
 
     return _buildCatchesPerEntity<MoonPhase>(
@@ -342,7 +342,7 @@ class _CatchSummaryState<T> extends State<CatchSummary<T>> {
 
   Widget _buildCatchesPerTideType() {
     if (!_report.hasPerTideType) {
-      return Empty();
+      return const Empty();
     }
 
     return _buildCatchesPerEntity<TideType>(
@@ -360,7 +360,7 @@ class _CatchSummaryState<T> extends State<CatchSummary<T>> {
 
   Widget _buildCatchesPerAngler() {
     if (!_report.hasPerAngler) {
-      return Empty();
+      return const Empty();
     }
 
     return _buildCatchesPerEntity<Angler>(
@@ -378,7 +378,7 @@ class _CatchSummaryState<T> extends State<CatchSummary<T>> {
 
   Widget _buildCatchesPerBodyOfWater() {
     if (!_report.hasPerBodyOfWater) {
-      return Empty();
+      return const Empty();
     }
 
     return _buildCatchesPerEntity<BodyOfWater>(
@@ -398,7 +398,7 @@ class _CatchSummaryState<T> extends State<CatchSummary<T>> {
 
   Widget _buildCatchesPerMethod() {
     if (!_report.hasPerMethod) {
-      return Empty();
+      return const Empty();
     }
 
     return _buildCatchesPerEntity<Method>(
@@ -416,7 +416,7 @@ class _CatchSummaryState<T> extends State<CatchSummary<T>> {
 
   Widget _buildCatchesPerPeriod() {
     if (!_report.hasPerPeriod) {
-      return Empty();
+      return const Empty();
     }
 
     return _buildCatchesPerEntity<Period>(
@@ -434,7 +434,7 @@ class _CatchSummaryState<T> extends State<CatchSummary<T>> {
 
   Widget _buildCatchesPerSeason() {
     if (!_report.hasPerSeason) {
-      return Empty();
+      return const Empty();
     }
 
     return _buildCatchesPerEntity<Season>(
@@ -452,7 +452,7 @@ class _CatchSummaryState<T> extends State<CatchSummary<T>> {
 
   Widget _buildCatchesPerWaterClarity() {
     if (!_report.hasPerWaterClarity) {
-      return Empty();
+      return const Empty();
     }
 
     return _buildCatchesPerEntity<WaterClarity>(

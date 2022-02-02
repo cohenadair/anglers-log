@@ -348,7 +348,7 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
       return _buildTide();
     } else {
       _log.e("Unknown input key: $id");
-      return Empty();
+      return const Empty();
     }
   }
 

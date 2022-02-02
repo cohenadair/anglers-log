@@ -171,7 +171,7 @@ class _BackupRestorePageState extends State<_BackupRestorePage> {
   }
 
   Widget _buildActionWidget() {
-    Widget extra = Empty();
+    Widget extra = const Empty();
     if (widget.extra != null) {
       extra = Padding(
         padding: insetsBottomDefault,

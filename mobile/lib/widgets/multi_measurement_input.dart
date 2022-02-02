@@ -112,11 +112,13 @@ class MultiMeasurementInput extends StatelessWidget {
         children: [
           Expanded(child: wholeInput),
           imperialFractionInput == null
-              ? Empty()
+              ? const Empty()
               : const HorizontalSpace(paddingDefault),
-          imperialFractionInput ?? Empty(),
-          inchesLabel == null ? Empty() : const HorizontalSpace(paddingDefault),
-          inchesLabel ?? Empty(),
+          imperialFractionInput ?? const Empty(),
+          inchesLabel == null
+              ? const Empty()
+              : const HorizontalSpace(paddingDefault),
+          inchesLabel ?? const Empty(),
         ],
       ),
     );
@@ -271,7 +273,7 @@ class __InchesDropdownInputState extends State<_InchesDropdownInput> {
   @override
   Widget build(BuildContext context) {
     return DropdownButton<Fraction>(
-      underline: Empty(),
+      underline: const Empty(),
       value: _value,
       items: Fraction.all
           .map((f) =>

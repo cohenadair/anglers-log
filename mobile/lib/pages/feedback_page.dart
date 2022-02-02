@@ -110,7 +110,7 @@ class _FeedbackPageState extends State<FeedbackPage> {
                   style: styleWarning(context),
                 ),
               )
-            : Empty(),
+            : const Empty(),
         TextInput.name(
           context,
           controller: _nameController,
@@ -128,7 +128,7 @@ class _FeedbackPageState extends State<FeedbackPage> {
           onChanged: (_) => setState(() {}),
         ),
         _error
-            ? Empty()
+            ? const Empty()
             : RadioInput(
                 initialSelectedIndex: _FeedbackType.values.indexOf(_typeValue),
                 optionCount: _FeedbackType.values.length,

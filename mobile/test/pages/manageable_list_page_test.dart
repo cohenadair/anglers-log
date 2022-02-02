@@ -301,8 +301,8 @@ void main() {
             loadItems: loadItems,
             deleteWidget: deleteWidget,
             deleteItem: deleteItem,
-            addPageBuilder: () => Empty(),
-            editPageBuilder: (_) => Empty(),
+            addPageBuilder: () => const Empty(),
+            editPageBuilder: (_) => const Empty(),
           ),
           itemBuilder: defaultItemBuilder,
           pickerSettings: ManageableListPagePickerSettings<String>(
@@ -340,7 +340,7 @@ void main() {
             loadItems: loadItems,
             deleteWidget: deleteWidget,
             deleteItem: deleteItem,
-            addPageBuilder: () => Empty(),
+            addPageBuilder: () => const Empty(),
           ),
           itemBuilder: defaultItemBuilder,
           pickerSettings: ManageableListPagePickerSettings<String>(
@@ -364,7 +364,7 @@ void main() {
             loadItems: loadItems,
             deleteWidget: deleteWidget,
             deleteItem: deleteItem,
-            editPageBuilder: (_) => Empty(),
+            editPageBuilder: (_) => const Empty(),
           ),
           itemBuilder: defaultItemBuilder,
           pickerSettings: ManageableListPagePickerSettings<String>(
@@ -389,7 +389,7 @@ void main() {
             deleteWidget: deleteWidget,
             deleteItem: deleteItem,
             addPageBuilder: () => const SaveNamePage(title: Text("New Name")),
-            editPageBuilder: (_) => Empty(),
+            editPageBuilder: (_) => const Empty(),
           ),
           itemBuilder: defaultItemBuilder,
           pickerSettings: ManageableListPagePickerSettings<String>(
@@ -431,7 +431,7 @@ void main() {
             loadItems: loadItems,
             deleteWidget: deleteWidget,
             deleteItem: deleteItem,
-            detailPageBuilder: (_) => Empty(),
+            detailPageBuilder: (_) => const Empty(),
           ),
           itemBuilder: defaultItemBuilder,
           pickerSettings: ManageableListPagePickerSettings<String>(
@@ -682,7 +682,7 @@ void main() {
           itemManager: ManageableListPageItemManager<String>(
             loadItems: (_) => [],
             deleteItem: (_, __) {},
-            deleteWidget: (_, __) => Empty(),
+            deleteWidget: (_, __) => const Empty(),
           ),
           itemBuilder: (_, __) => ManageableListPageItemModel(child: Empty()),
           pickerSettings: ManageableListPagePickerSettings<String>(
@@ -969,7 +969,7 @@ void main() {
             loadItems: loadItems,
             deleteWidget: deleteWidget,
             deleteItem: deleteItem,
-            detailPageBuilder: (_) => Empty(),
+            detailPageBuilder: (_) => const Empty(),
           ),
           itemBuilder: (_, item) {
             if (item == "Smallmouth Bass") {
@@ -998,9 +998,9 @@ void main() {
           loadItems: loadItems,
           deleteWidget: deleteWidget,
           deleteItem: deleteItem,
-          addPageBuilder: () => Empty(),
-          editPageBuilder: (_) => Empty(),
-          detailPageBuilder: (_) => Empty(),
+          addPageBuilder: () => const Empty(),
+          editPageBuilder: (_) => const Empty(),
+          detailPageBuilder: (_) => const Empty(),
         ),
         itemBuilder: (_, item) {
           if (item == "Smallmouth Bass") {
@@ -1061,8 +1061,8 @@ void main() {
           loadItems: loadItems,
           deleteWidget: deleteWidget,
           deleteItem: deleteItem,
-          addPageBuilder: () => Empty(),
-          editPageBuilder: (_) => Empty(),
+          addPageBuilder: () => const Empty(),
+          editPageBuilder: (_) => const Empty(),
         ),
         itemBuilder: (_, item) {
           if (item == "Smallmouth Bass") {
@@ -1091,7 +1091,7 @@ void main() {
             loadItems: loadItems,
             deleteWidget: deleteWidget,
             deleteItem: (_, item) => deletedItem = item,
-            editPageBuilder: (_) => Empty(),
+            editPageBuilder: (_) => const Empty(),
           ),
           itemBuilder: defaultItemBuilder,
         ),
@@ -1124,7 +1124,7 @@ void main() {
               deletedItem = item;
               return true;
             },
-            editPageBuilder: (_) => Empty(),
+            editPageBuilder: (_) => const Empty(),
           ),
           itemBuilder: defaultItemBuilder,
         ),
@@ -1155,7 +1155,7 @@ void main() {
             deleteItem: deleteItem,
             editPageBuilder: (_) {
               invoked = true;
-              return Empty();
+              return const Empty();
             },
           ),
           itemBuilder: defaultItemBuilder,
@@ -1181,7 +1181,7 @@ void main() {
             deleteItem: deleteItem,
             detailPageBuilder: (_) {
               invoked = true;
-              return Empty();
+              return const Empty();
             },
           ),
           itemBuilder: defaultItemBuilder,
@@ -1203,7 +1203,7 @@ void main() {
             loadItems: loadItems,
             deleteWidget: deleteWidget,
             deleteItem: deleteItem,
-            detailPageBuilder: (_) => Empty(),
+            detailPageBuilder: (_) => const Empty(),
           ),
           itemBuilder: defaultItemBuilder,
         ),
@@ -1262,7 +1262,7 @@ void main() {
             loadItems: loadItems,
             deleteWidget: deleteWidget,
             deleteItem: deleteItem,
-            detailPageBuilder: (_) => Empty(),
+            detailPageBuilder: (_) => const Empty(),
             emptyItemsSettings: ManageableListPageEmptyListSettings(
               title: "Test",
               description: "Description",
@@ -1291,7 +1291,7 @@ void main() {
             loadItems: loadItems,
             deleteWidget: deleteWidget,
             deleteItem: deleteItem,
-            detailPageBuilder: (_) => Empty(),
+            detailPageBuilder: (_) => const Empty(),
             emptyItemsSettings: ManageableListPageEmptyListSettings(
               title: "Test",
               description: "Description",
@@ -1319,7 +1319,7 @@ void main() {
             loadItems: loadItems,
             deleteWidget: deleteWidget,
             deleteItem: deleteItem,
-            detailPageBuilder: (_) => Empty(),
+            detailPageBuilder: (_) => const Empty(),
             emptyItemsSettings: ManageableListPageEmptyListSettings(
               title: "Test",
               description: "Description",
@@ -1348,8 +1348,8 @@ void main() {
             loadItems: loadItems,
             deleteWidget: deleteWidget,
             deleteItem: deleteItem,
-            detailPageBuilder: (_) => Empty(),
-            editPageBuilder: (_) => Empty(),
+            detailPageBuilder: (_) => const Empty(),
+            editPageBuilder: (_) => const Empty(),
           ),
           itemBuilder: defaultItemBuilder,
         ),
@@ -1444,8 +1444,8 @@ void main() {
             },
             deleteWidget: deleteWidget,
             deleteItem: deleteItem,
-            detailPageBuilder: (_) => Empty(),
-            editPageBuilder: (_) => Empty(),
+            detailPageBuilder: (_) => const Empty(),
+            editPageBuilder: (_) => const Empty(),
           ),
           itemBuilder: defaultItemBuilder,
         ),
@@ -1492,10 +1492,10 @@ void main() {
               speciesManager,
             ],
             loadItems: (query) => items,
-            deleteWidget: (_, __) => Empty(),
+            deleteWidget: (_, __) => const Empty(),
             deleteItem: (_, __) {},
-            detailPageBuilder: (_) => Empty(),
-            editPageBuilder: (_) => Empty(),
+            detailPageBuilder: (_) => const Empty(),
+            editPageBuilder: (_) => const Empty(),
             emptyItemsSettings: ManageableListPageEmptyListSettings(
               title: "Empty",
               description: "The list is empty",

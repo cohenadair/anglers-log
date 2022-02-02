@@ -90,7 +90,7 @@ class ListPickerInput extends StatelessWidget {
           // If there's no title widget, the value widget will render at
           // the start of the row.
           child: isEmpty(title)
-              ? Empty()
+              ? const Empty()
               : Text(
                   isEmpty(value)
                       ? Strings.of(context).inputNotSelected

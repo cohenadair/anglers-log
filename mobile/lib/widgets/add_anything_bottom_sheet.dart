@@ -34,7 +34,7 @@ class AddAnythingBottomSheet extends StatelessWidget {
 
   Widget _buildItem(BuildContext context, EntitySpec spec) {
     if (!spec.isTracked(context)) {
-      return Empty();
+      return const Empty();
     }
 
     var subscriptionManager = SubscriptionManager.of(context);

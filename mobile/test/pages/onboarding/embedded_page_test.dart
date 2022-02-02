@@ -13,7 +13,7 @@ void main() {
           showBackButton: false,
           childBuilder: (_) => Scaffold(
             appBar: AppBar(),
-            body: Empty(),
+            body: const Empty(),
           ),
         ),
       ),
@@ -28,7 +28,7 @@ void main() {
           showBackButton: true,
           childBuilder: (_) => Scaffold(
             appBar: AppBar(),
-            body: Empty(),
+            body: const Empty(),
           ),
         ),
       ),

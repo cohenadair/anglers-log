@@ -62,7 +62,7 @@ class EmptyListPlaceholder extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Widget descriptionWidget = Empty();
+    Widget descriptionWidget = const Empty();
     if (isNotEmpty(description)) {
       var overflow = TextOverflow.visible;
       var align = TextAlign.center;

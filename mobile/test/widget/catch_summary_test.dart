@@ -538,7 +538,7 @@ void main() {
         reportBuilder: (_, __) => CatchSummaryReport(context: context),
         isStatic: true,
         picker: CatchSummaryPicker(
-          pickerBuilder: (settings) => Empty(),
+          pickerBuilder: (settings) => const Empty(),
           nameBuilder: (context, cat) => "Test",
           initialValue: null,
         ),

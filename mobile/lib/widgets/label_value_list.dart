@@ -19,10 +19,10 @@ class LabelValueList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (items.isEmpty) {
-      return Empty();
+      return const Empty();
     }
 
-    Widget titleWidget = Empty();
+    Widget titleWidget = const Empty();
     if (isNotEmpty(title)) {
       titleWidget = Padding(
         padding: insetsBottomDefault,

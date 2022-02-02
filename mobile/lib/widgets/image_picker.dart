@@ -86,7 +86,7 @@ class ImagePicker extends StatelessWidget {
 
   Widget _buildThumbnails() {
     if (currentImages.isEmpty) {
-      return Empty();
+      return const Empty();
     }
 
     return Container(

@@ -161,7 +161,7 @@ class __NumberFilterPageState extends State<_NumberFilterPage> {
 
     Widget child;
     if (_boundaryController.value == NumberBoundary.number_boundary_any) {
-      child = Empty();
+      child = const Empty();
     } else if (widget.inputSpec == null) {
       child = _buildPlainInput(label, _fromNumberController,
           onChanged: () => _toNumberController.validate(context));
@@ -180,7 +180,7 @@ class __NumberFilterPageState extends State<_NumberFilterPage> {
 
     Widget child;
     if (_boundaryController.value != NumberBoundary.range) {
-      child = Empty();
+      child = const Empty();
     } else if (widget.inputSpec == null) {
       child = _buildPlainInput(label, _toNumberController);
     } else {

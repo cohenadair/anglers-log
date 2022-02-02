@@ -26,7 +26,7 @@ class CustomEntityValues extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (values.isEmpty) {
-      return Empty();
+      return const Empty();
     }
 
     var entityManager = CustomEntityManager.of(context);

@@ -55,7 +55,7 @@ class AsyncFeedback extends StatelessWidget {
 
     switch (state) {
       case AsyncFeedbackState.none:
-        return Empty();
+        return const Empty();
       case AsyncFeedbackState.loading:
         children.add(Loading(label: description));
         break;

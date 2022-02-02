@@ -166,7 +166,7 @@ class _ManageableListPageState<T> extends State<ManageableListPage<T>> {
       _isEditing = false;
     }
 
-    Widget emptyWidget = Empty();
+    Widget emptyWidget = const Empty();
     if (widget.itemManager.emptyItemsSettings != null &&
         (widget.searchDelegate == null ||
             (isEmpty(_searchText) && _animatedList.isEmpty))) {
@@ -398,7 +398,7 @@ class _ManageableListPageState<T> extends State<ManageableListPage<T>> {
     // This allows users to select the entire item (including grandchildren),
     // such as in BaitListPage.
     if (_isPicking && item.grandchild != null && _isPickingMulti) {
-      trailing = Empty();
+      trailing = const Empty();
     }
 
     var canEdit = _isEditing && item.isEditable;

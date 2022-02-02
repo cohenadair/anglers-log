@@ -149,7 +149,7 @@ class _StatsPageState extends State<StatsPage> {
   }
 
   Widget _buildHeader() {
-    Widget child = Empty();
+    Widget child = const Empty();
     if (isNotEmpty(_report.description)) {
       child = Padding(
         padding: insetsDefault,
@@ -226,7 +226,7 @@ class _StatsPageState extends State<StatsPage> {
     } else {
       // Included for safety, but can't actually happen.
       _log.e("Unknown report ID: ${_report.id}");
-      return Empty();
+      return const Empty();
     }
   }
 

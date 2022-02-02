@@ -221,10 +221,10 @@ class _EditableFormPageState extends State<EditableFormPage> {
     // If the field isn't showing, or is a custom field, skip it. Custom fields
     // are created separately.
     if (!field.isShowing || _customEntityManager.entityExists(id)) {
-      return Empty();
+      return const Empty();
     }
 
-    return widget.onBuildField?.call(id) ?? Empty();
+    return widget.onBuildField?.call(id) ?? const Empty();
   }
 
   Widget _buildCustomFieldsSection(BuildContext context) {
@@ -244,7 +244,7 @@ class _EditableFormPageState extends State<EditableFormPage> {
     } else {
       // The form is not editable and there are no custom fields; there's
       // nothing to show.
-      return Empty();
+      return const Empty();
     }
 
     header = Padding(
@@ -283,7 +283,7 @@ class _EditableFormPageState extends State<EditableFormPage> {
       ));
     }
 
-    Widget blur = Empty();
+    Widget blur = const Empty();
     if (children.isNotEmpty) {
       blur = ProBlur(
         description: Strings.of(context).formPageManageFieldsProDescription,

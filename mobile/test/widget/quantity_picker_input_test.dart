@@ -226,7 +226,7 @@ void main() {
       var delegate = EntityQuantityPickerInputDelegate<Species>(
         manager: appManager.speciesManager,
         controller: SetInputController<Trip_CatchesPerEntity>(),
-        listPageBuilder: (_) => Empty(),
+        listPageBuilder: (_) => const Empty(),
       );
       expect(delegate.pickerTypeInitialValues, isEmpty);
     });
@@ -243,7 +243,7 @@ void main() {
               value: 5,
             ),
           },
-        listPageBuilder: (_) => Empty(),
+        listPageBuilder: (_) => const Empty(),
       );
 
       expect(delegate.pickerTypeInitialValues, isEmpty);

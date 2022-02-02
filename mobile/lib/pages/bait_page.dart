@@ -80,7 +80,7 @@ class _BaitPageState extends State<BaitPage> {
   Widget _buildBaitCategory() {
     var baitCategory = _baitCategoryManager.entity(_bait.baitCategoryId);
     if (baitCategory == null) {
-      return Empty();
+      return const Empty();
     }
 
     return Padding(
@@ -101,7 +101,7 @@ class _BaitPageState extends State<BaitPage> {
 
   Widget _buildType() {
     if (!_bait.hasType()) {
-      return Empty();
+      return const Empty();
     }
 
     return Align(
@@ -119,7 +119,7 @@ class _BaitPageState extends State<BaitPage> {
 
   Widget _buildVariants() {
     if (_bait.variants.isEmpty) {
-      return Empty();
+      return const Empty();
     }
 
     return BaitVariantListInput.static(_bait.variants);

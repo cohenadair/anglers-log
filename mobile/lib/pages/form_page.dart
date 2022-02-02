@@ -208,7 +208,7 @@ class _FormPageState extends State<FormPage> {
           Builder(
             builder: (context) {
               if (!widget.showSaveButton) {
-                return Empty();
+                return const Empty();
               }
 
               // An AnimatedSwitcher is not used here because the different
@@ -260,7 +260,7 @@ class _FormPageState extends State<FormPage> {
 
   Widget _buildOverflowMenu() {
     if (!widget.isEditable && widget.overflowOptions.isEmpty) {
-      return Empty();
+      return const Empty();
     }
 
     var options = <FormPageOverflowOption>[];

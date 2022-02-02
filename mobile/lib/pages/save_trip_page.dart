@@ -286,7 +286,7 @@ class _SaveTripPageState extends State<SaveTripPage> {
       return _buildAtmosphere();
     } else {
       _log.e("Unknown input key: $id");
-      return Empty();
+      return const Empty();
     }
   }
 

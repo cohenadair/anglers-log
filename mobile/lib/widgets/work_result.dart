@@ -29,7 +29,7 @@ class WorkResult extends StatelessWidget {
   Widget build(BuildContext context) {
     var style = _style(context);
 
-    Widget descriptionWidget = Empty();
+    Widget descriptionWidget = const Empty();
     if (isNotEmpty(description)) {
       descriptionWidget = Padding(
         padding: insetsTopSmall,

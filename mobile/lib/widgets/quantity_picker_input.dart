@@ -44,7 +44,7 @@ class QuantityPickerInput<PickerType extends GeneratedMessage, InputType>
     return ValueListenableBuilder(
       valueListenable: _controller,
       builder: (_, __, ___) {
-        Widget content = Empty();
+        Widget content = const Empty();
         if (_controller.value.isNotEmpty) {
           content = Padding(
             padding: const EdgeInsets.only(
@@ -64,7 +64,7 @@ class QuantityPickerInput<PickerType extends GeneratedMessage, InputType>
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            _controller.value.isEmpty ? Empty() : const MinDivider(),
+            _controller.value.isEmpty ? const Empty() : const MinDivider(),
             ListItem(
               title: Text(
                 title,
@@ -90,7 +90,7 @@ class QuantityPickerInput<PickerType extends GeneratedMessage, InputType>
     var label = _buildInputLabel(context, item);
     if (isEmpty(label)) {
       _log.e("Input label cannot be empty. Item: $item");
-      return Empty();
+      return const Empty();
     }
 
     return Row(

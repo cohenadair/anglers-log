@@ -209,7 +209,7 @@ class _EntityPageState extends State<EntityPage> {
 
   Widget _buildEditButton() {
     if (widget.static) {
-      return Empty();
+      return const Empty();
     }
 
     return AnimatedSwitcher(
@@ -231,7 +231,7 @@ class _EntityPageState extends State<EntityPage> {
 
   Widget _buildDeleteButton() {
     if (widget.static) {
-      return Empty();
+      return const Empty();
     }
 
     return AnimatedSwitcher(

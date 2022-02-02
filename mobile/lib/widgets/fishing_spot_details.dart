@@ -117,7 +117,7 @@ class FishingSpotDetails extends StatelessWidget {
       return listItem;
     }
 
-    Widget actionButtons = Empty();
+    Widget actionButtons = const Empty();
     if (showActionButtons) {
       actionButtons = _FishingSpotActions(
         fishingSpot,
@@ -171,7 +171,7 @@ class _FishingSpotActions extends StatelessWidget {
     children.removeWhere((e) => e is Empty);
 
     if (children.isEmpty) {
-      return Empty();
+      return const Empty();
     }
 
     return Container(
@@ -190,7 +190,7 @@ class _FishingSpotActions extends StatelessWidget {
 
   Widget _buildSave(BuildContext context) {
     if (_fishingSpotExists(context) || isPicking) {
-      return Empty();
+      return const Empty();
     }
 
     return ChipButton(
@@ -207,7 +207,7 @@ class _FishingSpotActions extends StatelessWidget {
 
   Widget _buildAdd(BuildContext context) {
     if (!_fishingSpotExists(context) || isPicking) {
-      return Empty();
+      return const Empty();
     }
 
     return ChipButton(
@@ -224,7 +224,7 @@ class _FishingSpotActions extends StatelessWidget {
 
   Widget _buildEdit(BuildContext context) {
     if (!_fishingSpotExists(context) && !isPicking) {
-      return Empty();
+      return const Empty();
     }
 
     return ChipButton(
@@ -239,7 +239,7 @@ class _FishingSpotActions extends StatelessWidget {
 
   Widget _buildDelete(BuildContext context) {
     if (!_fishingSpotExists(context)) {
-      return Empty();
+      return const Empty();
     }
 
     var fishingSpotManager = FishingSpotManager.of(context);
@@ -259,7 +259,7 @@ class _FishingSpotActions extends StatelessWidget {
 
   Widget _buildDirections(BuildContext context) {
     if (isPicking) {
-      return Empty();
+      return const Empty();
     }
 
     return ChipButton(

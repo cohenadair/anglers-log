@@ -105,7 +105,7 @@ class _BaitVariantListInputState extends State<BaitVariantListInput> {
 
   @override
   Widget build(BuildContext context) {
-    Widget header = Empty();
+    Widget header = const Empty();
     if (widget.showHeader) {
       var title = Strings.of(context).saveBaitPageVariants;
       var divider = HeadingDivider(title);

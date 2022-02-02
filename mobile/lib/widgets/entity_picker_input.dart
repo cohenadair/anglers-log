@@ -112,7 +112,7 @@ class EntityPickerInput<T extends GeneratedMessage> extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (isHidden) {
-      return Empty();
+      return const Empty();
     }
 
     return EntityListenerBuilder(
