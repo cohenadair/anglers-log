@@ -18,7 +18,6 @@ import '../model/gen/anglerslog.pb.dart';
 import '../pages/fishing_spot_list_page.dart';
 import '../properties_manager.dart';
 import '../res/dimen.dart';
-import '../res/style.dart';
 import '../utils/dialog_utils.dart';
 import '../utils/map_utils.dart';
 import '../utils/page_utils.dart';
@@ -44,7 +43,6 @@ class FishingSpotMap extends StatefulWidget {
   final bool showMyLocationButton;
   final bool showZoomExtentsButton;
   final bool showMapTypeButton;
-  final bool showHelpButton;
   final bool showFishingSpotActionButtons;
 
   /// Widgets placed in the map's stack, between the actual map, and the search
@@ -62,7 +60,6 @@ class FishingSpotMap extends StatefulWidget {
     this.showMyLocationButton = true,
     this.showZoomExtentsButton = true,
     this.showMapTypeButton = true,
-    this.showHelpButton = true,
     this.showFishingSpotActionButtons = true,
     this.children = const [],
     this.isPage = true,
@@ -75,7 +72,6 @@ class FishingSpotMap extends StatefulWidget {
         showMyLocationButton = true,
         showZoomExtentsButton = true,
         showMapTypeButton = true,
-        showHelpButton = false,
         showFishingSpotActionButtons = true,
         children = [
           const SafeArea(
@@ -109,9 +105,7 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
   late MapType _mapType;
 
   Symbol? _activeSymbol;
-  Timer? _hideHelpTimer;
 
-  bool _showHelp = false;
   bool _myLocationEnabled = true;
   bool _isSetup = false;
   bool _isTelemetryEnabled = true;
@@ -175,7 +169,6 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
   @override
   void dispose() {
     super.dispose();
-    _hideHelpTimer?.cancel();
     _mapController?.onSymbolTapped.remove(_onSymbolTapped);
   }
 
@@ -199,8 +192,6 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
                 _buildMapStyleButton(),
                 _buildCurrentLocationButton(),
                 _buildZoomExtentsButton(),
-                _buildHelpButton(),
-                _buildHelp(),
               ],
             ),
           ),
@@ -258,7 +249,7 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
   Widget _buildSearchBar() {
     if (!widget.showSearchBar) {
       // Row so it extends across the page.
-      return Row(children: [const Empty()]);
+      return Row(children: const [Empty()]);
     }
 
     String? name;
@@ -438,36 +429,6 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
           bottom: paddingXL,
         ));
       },
-    );
-  }
-
-  Widget _buildHelpButton() {
-    if (!widget.showHelpButton) {
-      return const Empty();
-    }
-
-    return FloatingButton.icon(
-      padding: const EdgeInsets.only(
-        left: paddingDefault,
-        right: paddingDefault,
-        bottom: paddingDefault,
-      ),
-      icon: Icons.help,
-      pushed: _showHelp,
-      onPressed: () => setState(() => _showHelp = !_showHelp),
-    );
-  }
-
-  Widget _buildHelp() {
-    return HelpTooltip(
-      margin: insetsHorizontalDefault,
-      showing: _showHelp,
-      child: Text(
-        _isPicking
-            ? Strings.of(context).fishingSpotPickerPageHint
-            : Strings.of(context).fishingSpotMapAddSpotHelp,
-        style: styleLight(context),
-      ),
     );
   }
 

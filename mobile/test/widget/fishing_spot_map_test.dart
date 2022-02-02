@@ -615,55 +615,6 @@ void main() {
     verify(mapController.value.animateCamera(any)).called(1);
   });
 
-  testWidgets("Help button is hidden", (tester) async {
-    await pumpMap(
-      tester,
-      FishingSpotMap(
-        showHelpButton: false,
-      ),
-    );
-    expect(find.byIcon(Icons.help), findsNothing);
-    expect(
-        tester.widget<HelpTooltip>(find.byType(HelpTooltip)).showing, isFalse);
-  });
-
-  testWidgets("Help button shows help widget; picking", (tester) async {
-    await pumpMap(
-      tester,
-      FishingSpotMap(
-        showHelpButton: true,
-        pickerSettings: FishingSpotMapPickerSettings(
-          controller: InputController<FishingSpot>(),
-        ),
-      ),
-    );
-
-    await tapAndSettle(tester, find.byIcon(Icons.help));
-    expect(tester.widget<HelpTooltip>(find.byType(HelpTooltip)).showing, true);
-    expect(
-      find.text("Long press the map to pick exact coordinates, or select an "
-          "existing fishing spot."),
-      findsOneWidget,
-    );
-  });
-
-  testWidgets("No selected spot shows empty", (tester) async {
-    await pumpMap(
-      tester,
-      FishingSpotMap(
-        showHelpButton: true,
-      ),
-    );
-
-    await tapAndSettle(tester, find.byIcon(Icons.help));
-    expect(tester.widget<HelpTooltip>(find.byType(HelpTooltip)).showing, true);
-    expect(
-      find.text("Long press anywhere on the map to drop a pin and add a "
-          "fishing spot."),
-      findsOneWidget,
-    );
-  });
-
   testWidgets("Mapbox telemetry toggled", (tester) async {
     when(appManager.ioWrapper.isAndroid).thenReturn(false);
 

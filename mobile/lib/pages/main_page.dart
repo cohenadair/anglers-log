@@ -104,8 +104,9 @@ class _MainPageState extends State<MainPage> {
             Expanded(
               child: IndexedStack(
                 index: _currentBarItem,
-                children:
-                    _navItems.map((data) => data.page ?? Empty()).toList(),
+                children: _navItems
+                    .map((data) => data.page ?? const Empty())
+                    .toList(),
               ),
             ),
             AdBannerWidget(),
