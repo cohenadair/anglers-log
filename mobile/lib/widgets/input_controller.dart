@@ -272,6 +272,8 @@ class TimestampInputController extends InputController<int> {
 
   DateTime get dateTime => DateTime.fromMillisecondsSinceEpoch(value);
 
+  bool get isMidnight => timeInMillis == 0;
+
   @override
   int get value => combine(date, time).millisecondsSinceEpoch;
 

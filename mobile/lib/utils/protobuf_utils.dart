@@ -2,6 +2,7 @@ import "dart:math" as math;
 import 'dart:typed_data';
 
 import 'package:collection/collection.dart';
+import 'package:fixnum/fixnum.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:intl/intl.dart';
 import 'package:mapbox_gl/mapbox_gl.dart';
@@ -1730,4 +1731,8 @@ extension Trips on Trip {
 
     return format(Strings.of(context).dateRangeFormat, [startStr, endStr]);
   }
+}
+
+extension Int64s on Int64 {
+  DateTime toDateTime() => DateTime.fromMillisecondsSinceEpoch(toInt());
 }

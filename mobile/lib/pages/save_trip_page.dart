@@ -402,9 +402,19 @@ class _SaveTripPageState extends State<SaveTripPage> {
           );
 
           // Automatically update trip start and end time based on picked
-          // catches.
-          _startTimestampController.value = catches.last.timestamp.toInt();
-          _endTimestampController.value = catches.first.timestamp.toInt();
+          // catches. Do no update time if "All day" checkboxes are checked.
+          if (_startTimestampController.isMidnight) {
+            _startTimestampController.date =
+                catches.last.timestamp.toDateTime();
+          } else {
+            _startTimestampController.value = catches.last.timestamp.toInt();
+          }
+
+          if (_endTimestampController.isMidnight) {
+            _endTimestampController.date = catches.first.timestamp.toDateTime();
+          } else {
+            _endTimestampController.value = catches.first.timestamp.toInt();
+          }
         }
       }),
     );
@@ -507,7 +517,7 @@ class _DateTimeAllDayPickerState extends State<_DateTimeAllDayPicker> {
   @override
   void initState() {
     super.initState();
-    _isAllDay = widget.controller.timeInMillis == 0;
+    _isAllDay = widget.controller.isMidnight;
   }
 
   @override
