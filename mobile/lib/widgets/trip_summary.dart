@@ -29,8 +29,6 @@ class _TripSummaryState extends State<TripSummary> {
   late _TripSummaryReport _report;
   var _dateRange = DateRange(period: DateRange_Period.allDates);
 
-  CatchManager get _catchManager => CatchManager.of(context);
-
   TripManager get _tripManager => TripManager.of(context);
 
   @override
@@ -40,10 +38,15 @@ class _TripSummaryState extends State<TripSummary> {
   }
 
   @override
+  void didUpdateWidget(TripSummary oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    _refreshReport();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return EntityListenerBuilder(
       managers: [
-        _catchManager,
         _tripManager,
       ],
       onAnyChange: _refreshReport,

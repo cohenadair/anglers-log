@@ -279,6 +279,11 @@ abstract class EntityManager<T extends GeneratedMessage> {
 }
 
 class EntityListenerBuilder extends StatefulWidget {
+  /// A list of [Stream]s that this widget will listen to, in addition to
+  /// [managers]. When events are added to a stream, [onAnyChange] is invoked,
+  /// and [setState] if [changesUpdatesState] is true.
+  final List<Stream> streams;
+
   final List<EntityManager<GeneratedMessage>> managers;
   final Widget Function(BuildContext) builder;
 
@@ -323,6 +328,7 @@ class EntityListenerBuilder extends StatefulWidget {
   const EntityListenerBuilder({
     required this.managers,
     required this.builder,
+    this.streams = const [],
     this.onAdd,
     this.onDelete,
     this.onDeleteEnabled = true,
@@ -338,6 +344,7 @@ class EntityListenerBuilder extends StatefulWidget {
 
 class _EntityListenerBuilderState extends State<EntityListenerBuilder> {
   final List<EntityListener<GeneratedMessage>> _listeners = [];
+  final List<StreamSubscription> _streamSubscriptions = [];
 
   @override
   void initState() {
@@ -351,6 +358,11 @@ class _EntityListenerBuilderState extends State<EntityListenerBuilder> {
         onReset: _onReset,
       ));
     }
+
+    for (var stream in widget.streams) {
+      _streamSubscriptions
+          .add(stream.listen((_) => _notify(widget.onAnyChange)));
+    }
   }
 
   @override
@@ -359,6 +371,10 @@ class _EntityListenerBuilderState extends State<EntityListenerBuilder> {
 
     for (var i = 0; i < _listeners.length; i++) {
       widget.managers[i].removeListener(_listeners[i]);
+    }
+
+    for (var subscription in _streamSubscriptions) {
+      subscription.cancel();
     }
   }
 
@@ -397,11 +413,11 @@ class _EntityListenerBuilderState extends State<EntityListenerBuilder> {
     });
   }
 
-  void _notify(VoidCallback callback) {
+  void _notify(VoidCallback? callback) {
     if (widget.changesUpdatesState) {
-      setState(() => callback());
+      setState(() => callback?.call());
     } else {
-      callback();
+      callback?.call();
     }
   }
 }

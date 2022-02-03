@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:typed_data';
 
 import 'package:flutter/src/widgets/framework.dart';
@@ -10,6 +11,7 @@ import 'package:mockito/mockito.dart';
 import 'package:protobuf/protobuf.dart';
 import 'package:mobile/widgets/widget.dart';
 
+import 'mocks/mocks.dart';
 import 'mocks/mocks.mocks.dart';
 import 'mocks/stubbed_app_manager.dart';
 import 'test_utils.dart';
@@ -385,6 +387,64 @@ void main() {
     await entityManager.addOrUpdate(entities[1]);
 
     expect(entityManager.idSet(entities: [entities[0]]).length, 1);
+  });
+
+  testWidgets("Stream listeners are managed", (tester) async {
+    var subscription1 = MockStreamSubscription();
+    when(subscription1.cancel()).thenAnswer((_) => Future.value(null));
+    var stream1 = MockStream();
+    when(stream1.listen(any)).thenReturn(subscription1);
+
+    var subscription2 = MockStreamSubscription();
+    when(subscription2.cancel()).thenAnswer((_) => Future.value(null));
+    var stream2 = MockStream();
+    when(stream2.listen(any)).thenReturn(subscription2);
+
+    await pumpContext(
+      tester,
+      (_) => DisposableTester(
+        child: EntityListenerBuilder(
+          managers: const [],
+          streams: [stream1, stream2],
+          builder: (_) => const Empty(),
+        ),
+      ),
+    );
+
+    verify(stream1.listen(any)).called(1);
+    verify(stream2.listen(any)).called(1);
+
+    var state =
+        tester.firstState<DisposableTesterState>(find.byType(DisposableTester));
+    state.removeChild();
+    await tester.pumpAndSettle();
+
+    verify(subscription1.cancel()).called(1);
+    verify(subscription2.cancel()).called(1);
+  });
+
+  testWidgets("Stream listeners are notified", (tester) async {
+    var controller = StreamController<void>.broadcast(sync: true);
+
+    var builderCalls = 0;
+    await pumpContext(
+      tester,
+      (_) => EntityListenerBuilder(
+        managers: const [],
+        streams: [controller.stream],
+        builder: (_) {
+          builderCalls++;
+          return const Empty();
+        },
+      ),
+    );
+
+    expect(builderCalls, 1);
+
+    controller.add(null);
+    await tester.pumpAndSettle();
+
+    expect(builderCalls, 2);
   });
 
   testWidgets("EntityListenerBuilder listeners are managed", (tester) async {

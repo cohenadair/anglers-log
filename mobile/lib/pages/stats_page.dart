@@ -94,6 +94,9 @@ class _StatsPageState extends State<StatsPage> {
           _reportManager,
           _catchManager,
         ],
+        streams: [
+          _userPreferencesManager.stream,
+        ],
         onAnyChange: () => _updateCurrentReport(_report.id),
         builder: (context) {
           return CustomScrollView(

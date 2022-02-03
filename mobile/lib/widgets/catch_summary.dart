@@ -93,13 +93,18 @@ class _CatchSummaryState<T> extends State<CatchSummary<T>> {
   }
 
   @override
+  void didUpdateWidget(CatchSummary<T> oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    _refreshReport();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return EntityListenerBuilder(
       managers: [
         _anglerManager,
         _baitManager,
         _bodyOfWaterManager,
-        _catchManager,
         _fishingSpotManager,
         _methodManager,
         _speciesManager,

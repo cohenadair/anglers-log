@@ -60,10 +60,15 @@ class _PersonalBestsReportState extends State<PersonalBestsReport> {
   }
 
   @override
+  void didUpdateWidget(PersonalBestsReport oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    _refreshModel();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return EntityListenerBuilder(
       managers: [
-        _catchManager,
         _speciesManager,
         _tripManager,
       ],
@@ -458,7 +463,7 @@ class _MeasurementPerSpecies extends StatelessWidget {
           children: <TableRow>[
             TableRow(
               children: [
-                TableCell(child: Empty()),
+                const TableCell(child: Empty()),
                 _buildRightCell(
                   context: context,
                   text: measurementTitle,
@@ -471,7 +476,7 @@ class _MeasurementPerSpecies extends StatelessWidget {
                   isBold: true,
                   padding: insetsSmall,
                 ),
-                TableCell(child: Empty()),
+                const TableCell(child: Empty()),
               ],
             ),
             ..._buildSpeciesRows(context),

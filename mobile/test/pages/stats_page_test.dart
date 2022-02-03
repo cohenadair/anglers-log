@@ -300,6 +300,8 @@ void main() {
 
     when(appManager.waterClarityManager.list()).thenReturn([]);
 
+    when(appManager.userPreferenceManager.stream)
+        .thenAnswer((_) => const Stream.empty());
     when(appManager.userPreferenceManager.selectedReportId).thenReturn(null);
     when(appManager.userPreferenceManager.setSelectedReportId(any))
         .thenAnswer((_) => Future.value());
