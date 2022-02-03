@@ -259,6 +259,8 @@ class _EntityPageState extends State<EntityPage> {
   }
 
   bool _calculateIsImageShowing() {
+    _isImageShowing = _hasImages;
+
     if (!_hasImages) {
       return false;
     }
