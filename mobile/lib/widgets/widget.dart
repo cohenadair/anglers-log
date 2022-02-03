@@ -37,6 +37,28 @@ class Empty extends StatelessWidget {
   }
 }
 
+class EmptyOr extends StatelessWidget {
+  final Widget Function(BuildContext) childBuilder;
+
+  /// Padding wrapped around the widget returned by [childBuilder].
+  final EdgeInsets? padding;
+
+  final bool isShowing;
+
+  const EmptyOr({
+    this.isShowing = true,
+    required this.childBuilder,
+    this.padding,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return isShowing
+        ? Padding(padding: padding ?? insetsZero, child: childBuilder(context))
+        : const Empty();
+  }
+}
+
 class MinDivider extends StatelessWidget {
   final Color? color;
 

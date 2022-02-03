@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
+import 'package:mobile/res/dimen.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mobile/widgets/input_controller.dart';
 import 'package:mobile/widgets/text.dart';
@@ -297,5 +298,48 @@ void main() {
       ),
     );
     expect(find.byType(TitleLabel), findsNothing);
+  });
+
+  testWidgets("EmptyOr shows child", (tester) async {
+    await pumpContext(
+      tester,
+      (_) => EmptyOr(
+        isShowing: true,
+        childBuilder: (_) => const Text("Test"),
+      ),
+    );
+    expect(find.text("Test"), findsOneWidget);
+  });
+
+  testWidgets("EmptyOr hides child", (tester) async {
+    await pumpContext(
+      tester,
+      (_) => EmptyOr(
+        isShowing: false,
+        childBuilder: (_) => const Text("Test"),
+      ),
+    );
+    expect(find.text("Test"), findsNothing);
+  });
+
+  testWidgets("EmptyOr default padding", (tester) async {
+    await pumpContext(
+      tester,
+      (_) => EmptyOr(
+        childBuilder: (_) => const Text("Test"),
+      ),
+    );
+    expect(findFirst<Padding>(tester).padding, insetsZero);
+  });
+
+  testWidgets("EmptyOr custom padding", (tester) async {
+    await pumpContext(
+      tester,
+      (_) => EmptyOr(
+        padding: insetsDefault,
+        childBuilder: (_) => const Text("Test"),
+      ),
+    );
+    expect(findFirst<Padding>(tester).padding, insetsDefault);
   });
 }

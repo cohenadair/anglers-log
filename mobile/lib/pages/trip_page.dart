@@ -76,34 +76,29 @@ class TripPage extends StatelessWidget {
   }
 
   Widget _buildHeader(BuildContext context, Trip trip) {
-    var title = trip.name;
-    String? subtitle;
-    var elapsed = trip.elapsedDisplayValue(context);
-
-    if (isEmpty(title)) {
-      title = elapsed;
-    } else {
-      subtitle = elapsed;
-    }
+    var subtitle = trip.elapsedDisplayValue(context);
 
     return Padding(
       padding: insetsVerticalDefault,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          isEmpty(subtitle)
-              ? const Empty()
-              : Padding(
-                  padding: insetsHorizontalDefault,
-                  child: Text(subtitle!, style: styleListHeading(context)),
-                ),
-          TitleLabel.style1(title),
-          isEmpty(trip.notes)
-              ? const Empty()
-              : Padding(
-                  padding: insetsHorizontalDefault,
-                  child: Text(trip.notes, style: styleSecondary(context)),
-                ),
+          EmptyOr(
+            isShowing: isNotEmpty(subtitle),
+            childBuilder: (context) =>
+                Text(subtitle, style: styleListHeading(context)),
+            padding: insetsHorizontalDefault,
+          ),
+          EmptyOr(
+            isShowing: isNotEmpty(trip.name),
+            childBuilder: (context) => TitleLabel.style1(trip.name),
+          ),
+          EmptyOr(
+            isShowing: isNotEmpty(trip.notes),
+            childBuilder: (context) =>
+                Text(trip.notes, style: styleSecondary(context)),
+            padding: insetsHorizontalDefault,
+          ),
         ],
       ),
     );

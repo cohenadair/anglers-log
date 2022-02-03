@@ -274,41 +274,6 @@ void main() {
     expect(find.text("Passed In Trip"), findsOneWidget);
   });
 
-  testWidgets("No name shows time as title, and no subtitle", (tester) async {
-    when(appManager.tripManager.entity(any)).thenReturn(null);
-
-    await pumpContext(
-      tester,
-      (_) => TripPage(defaultTrip()..clearName()),
-      appManager: appManager,
-    );
-
-    expect(
-      find.widgetWithText(
-          TitleLabel, "Jan 1, 2020 at 9:00 AM to Jan 3, 2020 at 5:00 PM"),
-      findsOneWidget,
-    );
-  });
-
-  testWidgets("No notes shows empty", (tester) async {
-    when(appManager.tripManager.entity(any)).thenReturn(null);
-
-    await pumpContext(
-      tester,
-      (_) => TripPage(defaultTrip()..clearNotes()),
-      appManager: appManager,
-    );
-
-    var headerColumn = tester.widget<Column>(find
-        .ancestor(
-          of: find.byType(TitleLabel),
-          matching: find.byType(Column),
-        )
-        .first);
-    expect(headerColumn.children.length, 3);
-    expect(headerColumn.children[2] is Empty, isTrue);
-  });
-
   testWidgets("Bodies of water hidden", (tester) async {
     when(appManager.tripManager.entity(any)).thenReturn(null);
 
