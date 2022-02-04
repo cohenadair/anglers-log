@@ -151,6 +151,36 @@ void main() {
       expect(tapped, isTrue);
     });
 
+    testWidgets("Row with non-null onTap, but value of 0 is disabled",
+        (tester) async {
+      var appManager = StubbedAppManager();
+      when(appManager.timeManager.currentDateTime).thenReturn(DateTime.now());
+
+      var series = Series<Species>({
+        Species()..name = "Bass": 0,
+      }, DateRange(period: DateRange_Period.lastMonth));
+
+      var tapped = false;
+      await tester.pumpWidget(Testable(
+        (_) => Chart(
+          series: [series],
+          labelBuilder: (dynamic species) => species.name,
+          viewAllTitle: "Title",
+          chartPageDescription: "A description.",
+          onTapRow: (dynamic _, __) => tapped = true,
+        ),
+        mediaQueryData: const MediaQueryData(
+          // Chart row widths are based on screen size. Need to give a screen
+          // size to tap.
+          size: Size(500, 500),
+        ),
+        appManager: appManager,
+      ));
+      expect(find.byType(InkWell), findsOneWidget);
+      await tester.tap(find.byType(InkWell));
+      expect(tapped, isFalse);
+    });
+
     testWidgets("Normal series data rows", (tester) async {
       var series1 = Series<Species>({
         Species()..name = "Bass": 10,
