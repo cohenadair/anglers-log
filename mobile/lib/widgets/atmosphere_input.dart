@@ -475,8 +475,10 @@ class __AtmosphereInputPageState extends State<_AtmosphereInputPage> {
 
   void _updateFromAtmosphere(Atmosphere atmosphere) {
     if (atmosphere.hasTemperature()) {
-      _temperatureController.value = MultiMeasurements.from(
-          atmosphere.temperature, _userPreferenceManager.airTemperatureSystem);
+      _windSpeedController.value = MultiMeasurement(
+        system: _userPreferenceManager.airTemperatureSystem,
+        mainValue: atmosphere.temperature,
+      );
     }
 
     if (atmosphere.skyConditions.isNotEmpty) {
@@ -488,23 +490,30 @@ class __AtmosphereInputPageState extends State<_AtmosphereInputPage> {
     }
 
     if (atmosphere.hasWindSpeed()) {
-      _windSpeedController.value = MultiMeasurements.from(
-          atmosphere.windSpeed, _userPreferenceManager.windSpeedSystem);
+      _windSpeedController.value = MultiMeasurement(
+        system: _userPreferenceManager.windSpeedSystem,
+        mainValue: atmosphere.windSpeed,
+      );
     }
 
     if (atmosphere.hasPressure()) {
-      _pressureController.value = MultiMeasurements.from(
-          atmosphere.pressure, _userPreferenceManager.airPressureSystem);
+      _pressureController.value = MultiMeasurement(
+        system: _userPreferenceManager.airPressureSystem,
+        mainValue: atmosphere.pressure,
+      );
     }
 
     if (atmosphere.hasVisibility()) {
-      _visibilityController.value = MultiMeasurements.from(
-          atmosphere.visibility, _userPreferenceManager.airVisibilitySystem);
+      _visibilityController.value = MultiMeasurement(
+        system: _userPreferenceManager.airVisibilitySystem,
+        mainValue: atmosphere.visibility,
+      );
     }
 
     if (atmosphere.hasHumidity()) {
-      _humidityController.value =
-          MultiMeasurements.from(atmosphere.humidity, null);
+      _humidityController.value = MultiMeasurement(
+        mainValue: atmosphere.humidity,
+      );
     }
 
     if (atmosphere.hasMoonPhase()) {

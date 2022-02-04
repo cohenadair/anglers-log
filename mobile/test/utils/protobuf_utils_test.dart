@@ -281,24 +281,6 @@ void main() {
       expect(measurement.displayValue(context), "10\u00B0F");
     });
 
-    test("toSystem", () {
-      // No change in system.
-      var measurement = Measurement(
-        unit: Unit.pounds,
-        value: 10,
-      );
-      expect(
-          measurement, measurement.toSystem(MeasurementSystem.imperial_whole));
-
-      // Change system.
-      measurement = Measurement(
-        unit: Unit.pounds,
-        value: 10,
-      ).toSystem(MeasurementSystem.metric);
-      expect(measurement.unit, Unit.kilograms);
-      expect(measurement.value, 10);
-    });
-
     test("Comparing different units returns false", () {
       var pounds = Measurement(
         unit: Unit.pounds,
@@ -333,6 +315,18 @@ void main() {
   });
 
   group("MultiMeasurements", () {
+    testWidgets("displayValue for imperial_decimal", (tester) async {
+      var context = await buildContext(tester);
+      var measurement = MultiMeasurement(
+        system: MeasurementSystem.imperial_decimal,
+        mainValue: Measurement(
+          unit: Unit.inches,
+          value: 10.5,
+        ),
+      );
+      expect(measurement.displayValue(context), "10.5 in");
+    });
+
     testWidgets("displayValue for inches", (tester) async {
       var context = await buildContext(tester);
 
@@ -460,67 +454,6 @@ void main() {
         ),
         "Value: 10 lbs",
       );
-    });
-
-    test("from with null system", () {
-      var measurement = MultiMeasurements.from(
-        Measurement(
-          unit: Unit.pounds,
-          value: 10,
-        ),
-        null,
-      );
-      expect(measurement.system, MeasurementSystem.imperial_whole);
-      expect(measurement.mainValue.unit, Unit.pounds);
-      expect(measurement.mainValue.value, 10);
-    });
-
-    test("from with non-null system", () {
-      var measurement = MultiMeasurements.from(
-        Measurement(
-          unit: Unit.pounds,
-          value: 10,
-        ),
-        MeasurementSystem.metric,
-      );
-      expect(measurement.system, MeasurementSystem.metric);
-      expect(measurement.mainValue.unit, Unit.pounds);
-      expect(measurement.mainValue.value, 10);
-    });
-
-    test("toSystem", () {
-      // No change in system.
-      var measurement = MultiMeasurement(
-        system: MeasurementSystem.imperial_whole,
-        mainValue: Measurement(
-          unit: Unit.feet,
-          value: 10,
-        ),
-        fractionValue: Measurement(
-          unit: Unit.ounces,
-          value: 5,
-        ),
-      );
-      expect(
-          measurement, measurement.toSystem(MeasurementSystem.imperial_whole));
-
-      // Change system.
-      measurement = measurement = MultiMeasurement(
-        system: MeasurementSystem.imperial_whole,
-        mainValue: Measurement(
-          unit: Unit.feet,
-          value: 10,
-        ),
-        fractionValue: Measurement(
-          unit: Unit.inches,
-          value: 5,
-        ),
-      ).toSystem(MeasurementSystem.metric);
-      expect(measurement.system, MeasurementSystem.metric);
-      expect(measurement.mainValue.unit, Unit.meters);
-      expect(measurement.mainValue.value, 10);
-      expect(measurement.fractionValue.unit, Unit.centimeters);
-      expect(measurement.fractionValue.value, 5);
     });
 
     testWidgets("filterString with no values", (tester) async {
@@ -777,7 +710,10 @@ void main() {
     });
 
     test("average returns null when input is empty", () {
-      expect(MultiMeasurements.average([], Unit.kilograms), isNull);
+      expect(
+          MultiMeasurements.average(
+              [], MeasurementSystem.metric, Unit.kilograms),
+          isNull);
     });
 
     test("average returns correct result", () {
@@ -806,6 +742,7 @@ void main() {
               ),
             ),
           ],
+          MeasurementSystem.imperial_whole,
           Unit.pounds,
         ),
         MultiMeasurement(
@@ -823,7 +760,9 @@ void main() {
     });
 
     test("max returns null when input is empty", () {
-      expect(MultiMeasurements.max([], Unit.kilograms), isNull);
+      expect(
+          MultiMeasurements.max([], MeasurementSystem.metric, Unit.kilograms),
+          isNull);
     });
 
     test("max returns correct result", () {
@@ -852,6 +791,7 @@ void main() {
               ),
             ),
           ],
+          MeasurementSystem.metric,
           Unit.kilograms,
         ),
         MultiMeasurement(
@@ -865,7 +805,9 @@ void main() {
     });
 
     test("sum returns null when input is empty", () {
-      expect(MultiMeasurements.sum([], Unit.kilograms), isNull);
+      expect(
+          MultiMeasurements.sum([], MeasurementSystem.metric, Unit.kilograms),
+          isNull);
     });
 
     test("sum returns correct result", () {
@@ -894,6 +836,7 @@ void main() {
               ),
             ),
           ],
+          MeasurementSystem.metric,
           Unit.kilograms,
         ),
         MultiMeasurement(
@@ -1079,7 +1022,11 @@ void main() {
           ),
         ),
       );
-      expect(filter.containsMeasurement(Measurement(value: 13)), isFalse);
+      expect(
+        filter.containsMeasurement(
+            Measurement(value: 13), MeasurementSystem.metric),
+        isFalse,
+      );
     });
 
     test("containsInt", () {
@@ -1396,7 +1343,7 @@ void main() {
   group("Units", () {
     test("toMultiMeasurement imperial whole inches", () {
       expect(
-        Unit.inches.toMultiMeasurement(50.5),
+        Unit.inches.toMultiMeasurement(50.5, MeasurementSystem.imperial_whole),
         MultiMeasurement(
           system: MeasurementSystem.imperial_whole,
           mainValue: Measurement(
@@ -1413,7 +1360,7 @@ void main() {
     testWidgets("toMultiMeasurement for inches < 0", (tester) async {
       expect(
         Unit.inches
-            .toMultiMeasurement(0.5)
+            .toMultiMeasurement(0.5, MeasurementSystem.imperial_whole)
             .displayValue(await buildContext(tester)),
         "0 \u00BD in",
       );
@@ -1422,7 +1369,7 @@ void main() {
     testWidgets("toMultiMeasurement for pounds < 0", (tester) async {
       expect(
         Unit.pounds
-            .toMultiMeasurement(0.5)
+            .toMultiMeasurement(0.5, MeasurementSystem.imperial_whole)
             .displayValue(await buildContext(tester)),
         "0 lbs 8 oz",
       );
@@ -1431,7 +1378,7 @@ void main() {
     testWidgets("toMultiMeasurement for feet < 0", (tester) async {
       expect(
         Unit.feet
-            .toMultiMeasurement(0.5)
+            .toMultiMeasurement(0.5, MeasurementSystem.imperial_whole)
             .displayValue(await buildContext(tester)),
         "0 ft 6 in",
       );
@@ -1439,7 +1386,7 @@ void main() {
 
     test("toMultiMeasurement imperial whole no fraction unit", () {
       expect(
-        Unit.ounces.toMultiMeasurement(50.5),
+        Unit.ounces.toMultiMeasurement(50.5, MeasurementSystem.imperial_whole),
         MultiMeasurement(
           system: MeasurementSystem.imperial_whole,
           mainValue: Measurement(
@@ -1452,7 +1399,7 @@ void main() {
 
     test("toMultiMeasurement imperial whole fraction ounces", () {
       expect(
-        Unit.pounds.toMultiMeasurement(50.5),
+        Unit.pounds.toMultiMeasurement(50.5, MeasurementSystem.imperial_whole),
         MultiMeasurement(
           system: MeasurementSystem.imperial_whole,
           mainValue: Measurement(
@@ -1469,7 +1416,7 @@ void main() {
 
     test("toMultiMeasurement imperial whole fraction inches", () {
       expect(
-        Unit.feet.toMultiMeasurement(50.5),
+        Unit.feet.toMultiMeasurement(50.5, MeasurementSystem.imperial_whole),
         MultiMeasurement(
           system: MeasurementSystem.imperial_whole,
           mainValue: Measurement(
@@ -1486,7 +1433,7 @@ void main() {
 
     test("toMultiMeasurement non-imperial whole", () {
       expect(
-        Unit.meters.toMultiMeasurement(50.5),
+        Unit.meters.toMultiMeasurement(50.5, MeasurementSystem.metric),
         MultiMeasurement(
           system: MeasurementSystem.metric,
           mainValue: Measurement(

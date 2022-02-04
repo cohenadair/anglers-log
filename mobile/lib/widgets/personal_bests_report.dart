@@ -230,8 +230,8 @@ class _PersonalBestsReportModel {
     var tripManager = TripManager.of(context);
     var userPreferenceManager = UserPreferenceManager.of(context);
 
-    var lengthUnit = userPreferenceManager.catchLengthSystem.lengthUnit;
-    var weightUnit = userPreferenceManager.catchWeightSystem.weightUnit;
+    var lengthSystem = userPreferenceManager.catchLengthSystem;
+    var weightSystem = userPreferenceManager.catchWeightSystem;
 
     for (var cat in catchManager.catches(
       context,
@@ -252,13 +252,19 @@ class _PersonalBestsReportModel {
 
         if (cat.hasLength()) {
           lengthBySpecies.putIfAbsent(
-              species, () => _PersonalBestsSpeciesModel(lengthUnit));
+            species,
+            () => _PersonalBestsSpeciesModel(
+                lengthSystem, lengthSystem.lengthUnit),
+          );
           lengthBySpecies[species]!.addMeasurement(cat.length);
         }
 
         if (cat.hasWeight()) {
           weightBySpecies.putIfAbsent(
-              species, () => _PersonalBestsSpeciesModel(weightUnit));
+            species,
+            () => _PersonalBestsSpeciesModel(
+                weightSystem, weightSystem.weightUnit),
+          );
           weightBySpecies[species]!.addMeasurement(cat.weight);
         }
       }
@@ -290,16 +296,17 @@ class _PersonalBestsReportModel {
 }
 
 class _PersonalBestsSpeciesModel {
+  final MeasurementSystem system;
   final Unit unit;
   final List<MultiMeasurement> _allMeasurements = [];
 
-  _PersonalBestsSpeciesModel(this.unit);
+  _PersonalBestsSpeciesModel(this.system, this.unit);
 
   MultiMeasurement? get personalBest =>
-      MultiMeasurements.max(_allMeasurements, unit);
+      MultiMeasurements.max(_allMeasurements, system, unit);
 
   MultiMeasurement? get average =>
-      MultiMeasurements.average(_allMeasurements, unit);
+      MultiMeasurements.average(_allMeasurements, system, unit);
 
   void addMeasurement(MultiMeasurement value) => _allMeasurements.add(value);
 }

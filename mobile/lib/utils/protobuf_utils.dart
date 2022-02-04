@@ -343,17 +343,6 @@ extension Measurements on Measurement {
   String filterString(BuildContext context) =>
       "${displayValue(context)} ${unit.filterString(context)}";
 
-  /// Updates [unit] to the new system. This method _does not_ convert values
-  /// between units.
-  Measurement toSystem(MeasurementSystem system) {
-    if (unit.measurementSystem != system) {
-      return copyAndUpdate<Measurement>((updates) {
-        updates.unit = unit.oppositeUnit;
-      });
-    }
-    return deepCopy();
-  }
-
   bool _unitsMatch(Measurement other) {
     if (hasUnit() && other.hasUnit() && unit != other.unit) {
       _log.w("Can't compare different units: $unit vs. ${other.unit}");
@@ -376,39 +365,36 @@ extension Measurements on Measurement {
 }
 
 extension MultiMeasurements on MultiMeasurement {
-  static MultiMeasurement from(
-      Measurement measurement, MeasurementSystem? userPreferenceSystem) {
-    return MultiMeasurement(
-      system: userPreferenceSystem ?? measurement.unit.measurementSystem,
-      mainValue: measurement,
-    );
-  }
-
   /// Returns a [MultiMeasurement] object representing the average of
   /// [measurements] in the given unit. All items in [measurements] that aren't
   /// of the same unit will be converted.
-  static MultiMeasurement? average(
-      List<MultiMeasurement> measurements, Unit unit) {
-    var values = _decimalValues(measurements, unit);
-    return values.isEmpty ? null : unit.toMultiMeasurement(values.average);
-  }
-
-  /// Returns a [MultiMeasurement] object representing the maximum value of
-  /// [measurements] in the given unit.
-  static MultiMeasurement? max(List<MultiMeasurement> measurements, Unit unit) {
+  static MultiMeasurement? average(List<MultiMeasurement> measurements,
+      MeasurementSystem system, Unit unit) {
     var values = _decimalValues(measurements, unit);
     return values.isEmpty
         ? null
-        : unit.toMultiMeasurement(values.reduce(math.max));
+        : unit.toMultiMeasurement(values.average, system);
+  }
+
+  /// Returns a [MultiMeasurement] object representing the maximum value of
+  /// [measurements] in the given unit and system.
+  static MultiMeasurement? max(List<MultiMeasurement> measurements,
+      MeasurementSystem system, Unit unit) {
+    var values = _decimalValues(measurements, unit);
+    return values.isEmpty
+        ? null
+        : unit.toMultiMeasurement(values.reduce(math.max), system);
   }
 
   /// Returns a [MultiMeasurement] object representing the total value of
   /// [measurements] in the given unit.
-  static MultiMeasurement? sum(List<MultiMeasurement> measurements, Unit unit) {
+  static MultiMeasurement? sum(List<MultiMeasurement> measurements,
+      MeasurementSystem system, Unit unit) {
     var values = _decimalValues(measurements, unit);
     return values.isEmpty
         ? null
-        : unit.toMultiMeasurement(values.reduce((total, e) => total += e));
+        : unit.toMultiMeasurement(
+            values.reduce((total, e) => total += e), system);
   }
 
   /// Converts a collection of [MultiMeasurement] objects to a double, in
@@ -485,17 +471,6 @@ extension MultiMeasurements on MultiMeasurement {
       result += " ${fractionValue.filterString(context)}";
     }
     return result.trim();
-  }
-
-  /// Updates [mainValue] and [fractionValue] to the new system.
-  /// This method _does not_ convert values between units.
-  MultiMeasurement toSystem(MeasurementSystem newSystem) {
-    return copyAndUpdate<MultiMeasurement>((updates) {
-      updates
-        ..system = newSystem
-        ..mainValue = mainValue.toSystem(newSystem)
-        ..fractionValue = fractionValue.toSystem(newSystem);
-    });
   }
 
   bool _compare(
@@ -658,11 +633,11 @@ extension NumberFilters on NumberFilter {
     return false;
   }
 
-  bool containsMeasurement(Measurement measurement) {
+  bool containsMeasurement(Measurement measurement, MeasurementSystem? system) {
     var multiMeasurement = MultiMeasurement();
 
-    if (measurement.hasUnit()) {
-      multiMeasurement.system = measurement.unit.measurementSystem;
+    if (system != null) {
+      multiMeasurement.system = system;
     }
 
     if (measurement.hasValue()) {
@@ -673,9 +648,7 @@ extension NumberFilters on NumberFilter {
   }
 
   bool containsInt(int value) {
-    return containsMeasurement(Measurement(
-      value: value.toDouble(),
-    ));
+    return containsMeasurement(Measurement(value: value.toDouble()), null);
   }
 }
 
@@ -895,33 +868,6 @@ extension Units on Unit {
     throw ArgumentError("Invalid input: $this");
   }
 
-  MeasurementSystem get measurementSystem {
-    switch (this) {
-      case Unit.feet:
-      case Unit.inches:
-      case Unit.pounds:
-      case Unit.ounces:
-        return MeasurementSystem.imperial_whole;
-      case Unit.fahrenheit:
-      case Unit.miles_per_hour:
-      case Unit.miles:
-      case Unit.pounds_per_square_inch:
-        return MeasurementSystem.imperial_decimal;
-      case Unit.meters:
-      case Unit.centimeters:
-      case Unit.kilograms:
-      case Unit.celsius:
-      case Unit.kilometers_per_hour:
-      case Unit.kilometers:
-      case Unit.millibars:
-        return MeasurementSystem.metric;
-      // Units that don't have an associated system will use metric.
-      case Unit.percent:
-        return MeasurementSystem.metric;
-    }
-    throw ArgumentError("Invalid input: $this");
-  }
-
   Unit get oppositeUnit {
     switch (this) {
       case Unit.feet:
@@ -989,12 +935,12 @@ extension Units on Unit {
   /// Returns a [MultiMeasurement] instance for this [Unit] with the given
   /// value. If a fractional unit exists for this [Unit], it will be used, and
   /// the resulting [MultiMeasurement.fractionValue] will be set.
-  MultiMeasurement toMultiMeasurement(double value) {
-    var result = MultiMeasurement(system: measurementSystem);
+  MultiMeasurement toMultiMeasurement(double value, MeasurementSystem system) {
+    var result = MultiMeasurement(system: system);
 
     // Imperial whole is the only whole value that may have fractional values
     // (feet/inches, and pounds/ounces, for example).
-    if (measurementSystem == MeasurementSystem.imperial_whole) {
+    if (system == MeasurementSystem.imperial_whole) {
       var avgWhole = value.floorToDouble();
       result.mainValue = Measurement(
         unit: this,

@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:mobile/trip_manager.dart';
+import 'package:mobile/user_preference_manager.dart';
 import 'package:provider/provider.dart';
 import 'package:quiver/strings.dart';
 
@@ -51,6 +52,9 @@ class CatchManager extends EntityManager<Catch> {
   TimeManager get _timeManager => appManager.timeManager;
 
   TripManager get _tripManager => appManager.tripManager;
+
+  UserPreferenceManager get _userPreferenceManager =>
+      appManager.userPreferenceManager;
 
   WaterClarityManager get _waterClarityManager =>
       appManager.waterClarityManager;
@@ -278,11 +282,12 @@ class CatchManager extends EntityManager<Catch> {
 
     bool isNumberFilterMeasurementValid(
       NumberFilter? filter,
-      Measurement measurement, {
+      Measurement measurement,
+      MeasurementSystem? system, {
       required bool hasValue,
     }) {
       return filter == null ||
-          (hasValue && filter.containsMeasurement(measurement));
+          (hasValue && filter.containsMeasurement(measurement, system));
     }
 
     bool isNumberFilterIntValid(
@@ -345,19 +350,21 @@ class CatchManager extends EntityManager<Catch> {
       valid &= isNumberFilterIntValid(quantityFilter, cat.quantity,
           hasValue: cat.hasQuantity());
       valid &= isNumberFilterMeasurementValid(
-          airTemperatureFilter, cat.atmosphere.temperature,
+          airTemperatureFilter,
+          cat.atmosphere.temperature,
+          _userPreferenceManager.airTemperatureSystem,
           hasValue: cat.hasAtmosphere() && cat.atmosphere.hasTemperature());
-      valid &= isNumberFilterMeasurementValid(
-          airPressureFilter, cat.atmosphere.pressure,
+      valid &= isNumberFilterMeasurementValid(airPressureFilter,
+          cat.atmosphere.pressure, _userPreferenceManager.airPressureSystem,
           hasValue: cat.hasAtmosphere() && cat.atmosphere.hasPressure());
       valid &= isNumberFilterMeasurementValid(
-          airHumidityFilter, cat.atmosphere.humidity,
+          airHumidityFilter, cat.atmosphere.humidity, null,
           hasValue: cat.hasAtmosphere() && cat.atmosphere.hasHumidity());
-      valid &= isNumberFilterMeasurementValid(
-          airVisibilityFilter, cat.atmosphere.visibility,
+      valid &= isNumberFilterMeasurementValid(airVisibilityFilter,
+          cat.atmosphere.visibility, _userPreferenceManager.airVisibilitySystem,
           hasValue: cat.hasAtmosphere() && cat.atmosphere.hasVisibility());
-      valid &= isNumberFilterMeasurementValid(
-          windSpeedFilter, cat.atmosphere.windSpeed,
+      valid &= isNumberFilterMeasurementValid(windSpeedFilter,
+          cat.atmosphere.windSpeed, _userPreferenceManager.windSpeedSystem,
           hasValue: cat.hasAtmosphere() && cat.atmosphere.hasWindSpeed());
 
       if (!valid) {

@@ -284,8 +284,8 @@ class _TripSummaryReport {
     var tripManager = TripManager.of(context);
     var userPreferenceManager = UserPreferenceManager.of(context);
 
-    var weightUnit = userPreferenceManager.catchWeightSystem.weightUnit;
-    var lengthUnit = userPreferenceManager.catchLengthSystem.lengthUnit;
+    var weightSystem = userPreferenceManager.catchWeightSystem;
+    var lengthSystem = userPreferenceManager.catchLengthSystem;
 
     var now = timeManager.currentDateTime;
     containsNow = dateRange.endDate(now) == now;
@@ -350,17 +350,20 @@ class _TripSummaryReport {
 
         msBetweenCatchesPerTrip += msBetweenCatches / catches.length - 1;
 
-        var avgWeight = MultiMeasurements.average(weights, weightUnit);
+        var avgWeight = MultiMeasurements.average(
+            weights, weightSystem, weightSystem.weightUnit);
         if (avgWeight != null) {
           tripWeights.add(avgWeight);
         }
 
-        var avgLength = MultiMeasurements.average(lengths, lengthUnit);
+        var avgLength = MultiMeasurements.average(
+            lengths, lengthSystem, lengthSystem.lengthUnit);
         if (avgLength != null) {
           tripLengths.add(avgLength);
         }
 
-        var totalWeight = MultiMeasurements.sum(weights, weightUnit);
+        var totalWeight = MultiMeasurements.sum(
+            weights, weightSystem, weightSystem.weightUnit);
         if (totalWeight != null &&
             (mostWeightInSingleTrip == null ||
                 totalWeight > mostWeightInSingleTrip!)) {
@@ -368,7 +371,8 @@ class _TripSummaryReport {
           mostWeightTrip = trip;
         }
 
-        var totalLength = MultiMeasurements.sum(lengths, lengthUnit);
+        var totalLength = MultiMeasurements.sum(
+            lengths, lengthSystem, lengthSystem.lengthUnit);
         if (totalLength != null &&
             (mostLengthInSingleTrip == null ||
                 totalLength > mostLengthInSingleTrip!)) {
@@ -394,7 +398,9 @@ class _TripSummaryReport {
           (msBetweenCatchesPerTrip / numberOfTrips).round();
     }
 
-    averageWeightPerTrip = MultiMeasurements.average(tripWeights, weightUnit);
-    averageLengthPerTrip = MultiMeasurements.average(tripLengths, lengthUnit);
+    averageWeightPerTrip = MultiMeasurements.average(
+        tripWeights, weightSystem, weightSystem.weightUnit);
+    averageLengthPerTrip = MultiMeasurements.average(
+        tripLengths, lengthSystem, lengthSystem.lengthUnit);
   }
 }
