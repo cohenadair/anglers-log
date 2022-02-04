@@ -198,7 +198,6 @@ class _ManageableListPageState<T> extends State<ManageableListPage<T>> {
               forceElevated: true,
               floating: true,
               pinned: false,
-              snap: true,
               title: _buildTitle(),
               actions: _buildActions(_animatedList.items),
               expandedHeight: _hasSearch ? _appBarExpandedHeight : 0.0,
