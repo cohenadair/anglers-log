@@ -379,10 +379,7 @@ class _PersonalBest extends StatelessWidget {
       width: double.infinity,
       height: _imageHeight,
       child: ClipRRect(
-        child: Photo(
-          fileName: imageName,
-          showFullOnTap: true,
-        ),
+        child: Photo(fileName: imageName),
         borderRadius: defaultBorderRadius,
       ),
     );
