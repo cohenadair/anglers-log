@@ -17,10 +17,10 @@ class PropertiesManager {
   final String _keyRevenueCatApiKey = "revenueCat.apiKey";
   final String _keyVisualCrossing = "visualCrossing.apiKey";
   final String _keyMapbox = "mapbox.apiKey";
-  final String _keyAdUnitIdAndroidDebug = "addUnitId.android.debug";
-  final String _keyAdUnitIdAppleDebug = "addUnitId.ios.debug";
-  final String _keyAdUnitIdAndroidRelease = "addUnitId.android.release";
-  final String _keyAdUnitIdAppleRelease = "addUnitId.ios.release";
+  final String _keyAdUnitIdAndroidDebug = "adUnitId.android.debug";
+  final String _keyAdUnitIdAppleDebug = "adUnitId.ios.debug";
+  final String _keyAdUnitIdAndroidRelease = "adUnitId.android.release";
+  final String _keyAdUnitIdAppleRelease = "adUnitId.ios.release";
 
   final String _path = "assets/sensitive.properties";
   final String _feedbackTemplatePath = "assets/feedback_template";
