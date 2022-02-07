@@ -242,6 +242,45 @@ void main() {
       // View all
       expect(find.text("View all"), findsOneWidget);
     });
+
+    testWidgets("fullPageSeries is used", (tester) async {
+      var series1 = Series<Species>({
+        Species()..name = "Bass": 10,
+        Species()..name = "Catfish": 3,
+        Species()..name = "Skipjack": 17,
+        Species()..name = "Pike": 30,
+      }, DateRange(period: DateRange_Period.lastYear));
+
+      var series2 = Series<Species>({
+        Species()..name = "Bass": 12,
+        Species()..name = "Catfish": 5,
+        Species()..name = "Skipjack": 13,
+        Species()..name = "Pike": 15,
+      }, DateRange(period: DateRange_Period.thisYear));
+
+      await tester.pumpWidget(
+        Testable(
+          (_) => ListView(
+            children: [
+              Chart<Species>(
+                series: [series1],
+                fullPageSeries: [series2],
+                labelBuilder: (species) => species.name,
+                viewAllTitle: "View all",
+                chartPageDescription: "A description.",
+              ),
+            ],
+          ),
+        ),
+      );
+
+      await tapAndSettle(tester, find.text("View all"));
+
+      expect(find.text("Bass (12)"), findsOneWidget);
+      expect(find.text("Catfish (5)"), findsOneWidget);
+      expect(find.text("Skipjack (13)"), findsOneWidget);
+      expect(find.text("Pike (15)"), findsOneWidget);
+    });
   });
 
   group("View all row", () {

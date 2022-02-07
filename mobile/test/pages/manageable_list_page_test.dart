@@ -684,7 +684,8 @@ void main() {
             deleteItem: (_, __) {},
             deleteWidget: (_, __) => const Empty(),
           ),
-          itemBuilder: (_, __) => ManageableListPageItemModel(child: Empty()),
+          itemBuilder: (_, __) =>
+              const ManageableListPageItemModel(child: Empty()),
           pickerSettings: ManageableListPagePickerSettings<String>(
             onPicked: (context, items) => false,
           ),

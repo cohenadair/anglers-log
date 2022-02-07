@@ -15,7 +15,6 @@ import 'package:mobile/widgets/widget.dart';
 import 'package:mockito/mockito.dart';
 
 import '../mocks/stubbed_app_manager.dart';
-import '../mocks/stubbed_map_controller.dart';
 import '../test_utils.dart';
 
 void main() {

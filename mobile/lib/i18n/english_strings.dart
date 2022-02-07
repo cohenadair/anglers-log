@@ -318,6 +318,14 @@ Map<String, Map<String, String>> get englishStrings => {
         "reportSummary_viewWaterClarities": "View all water clarities",
         "reportSummary_perWaterClarityDescription":
             "Viewing number of catches per water clarity.",
+        "reportSummary_perHour": "Per Hour",
+        "reportSummary_viewAllHours": "View all hours",
+        "reportSummary_viewAllHoursDescription":
+            "Viewing number of catches for each hour in the day.",
+        "reportSummary_perMonth": "Per Month",
+        "reportSummary_viewAllMonths": "View all months",
+        "reportSummary_viewAllMonthsDescription":
+            "Viewing number of catches for each month in the year.",
         "morePage_title": "More",
         "morePage_rateApp": "Rate Anglers' Log",
         "morePage_pro": "Anglers' Log Pro",

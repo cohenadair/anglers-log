@@ -197,6 +197,20 @@ void main() {
     );
   });
 
+  testWidgets("formatHourRange", (tester) async {
+    // 11-midnight
+    expect(
+      formatHourRange(await buildContext(tester), 23, 24),
+      "11:00 PM to 12:00 AM",
+    );
+
+    // Other
+    expect(
+      formatHourRange(await buildContext(tester), 8, 10),
+      "8:00 AM to 10:00 AM",
+    );
+  });
+
   testWidgets("timestampToSearchString", (tester) async {
     var appManager = StubbedAppManager();
     when(appManager.timeManager.currentDateTime)

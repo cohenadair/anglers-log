@@ -93,6 +93,9 @@ class Chart<T> extends StatefulWidget {
   /// elements must have equal data lengths.
   final List<Series<T>> series;
 
+  /// The data shown in the full page chart. If null, [series] is shown.
+  final List<Series<T>>? fullPageSeries;
+
   /// The title for the "view all" [ListItem] shown when there are more chart
   /// rows to see.
   final String? viewAllTitle;
@@ -118,6 +121,7 @@ class Chart<T> extends StatefulWidget {
   Chart({
     required this.series,
     required this.labelBuilder,
+    this.fullPageSeries,
     this.padding = insetsZero,
     this.viewAllTitle,
     this.chartPageDescription,
@@ -327,7 +331,7 @@ class _ChartState<T> extends State<Chart<T>> {
       onTap: () => push(
         context,
         _ChartPage<T>(
-          series: widget.series,
+          series: widget.fullPageSeries ?? widget.series,
           description: widget.chartPageDescription!,
           filters: widget.chartPageFilters,
           labelBuilder: widget.labelBuilder,

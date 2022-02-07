@@ -709,6 +709,21 @@ class Strings {
   String get reportSummaryPerWaterClarityDescription =>
       _string("reportSummary_perWaterClarityDescription");
 
+  String get reportSummaryPerHour => _string("reportSummary_perHour");
+
+  String get reportSummaryViewAllHours => _string("reportSummary_viewAllHours");
+
+  String get reportSummaryViewAllHoursDescription =>
+      _string("reportSummary_viewAllHoursDescription");
+
+  String get reportSummaryPerMonth => _string("reportSummary_perMonth");
+
+  String get reportSummaryViewAllMonths =>
+      _string("reportSummary_viewAllMonths");
+
+  String get reportSummaryViewAllMonthsDescription =>
+      _string("reportSummary_viewAllMonthsDescription");
+
   String get reportSummarySpeciesTitle => _string("reportSummary_speciesTitle");
 
   String get morePageTitle => _string("morePage_title");

@@ -7,6 +7,7 @@ import '../app_manager.dart';
 import '../i18n/strings.dart';
 import '../utils/string_utils.dart';
 
+const monthFormat = "MMMM";
 const monthDayFormat = "MMM d";
 const monthDayYearFormat = "MMM d, yyyy";
 const monthDayYearFormatFull = "MMMM d, yyyy";
@@ -191,6 +192,23 @@ String formatTimeOfDay(BuildContext context, TimeOfDay time) {
     time,
     alwaysUse24HourFormat: MediaQuery.of(context).alwaysUse24HourFormat,
   );
+}
+
+/// Returns a formatted hour range for the give [startHour] and [endHour].
+///
+/// Example:
+///   8:00 AM to 9:00 AM, or
+///   15:00 to 16:00
+String formatHourRange(BuildContext context, int startHour, int endHour) {
+  if (endHour == Duration.hoursPerDay) {
+    endHour = 0;
+  }
+
+  var start = TimeOfDay(hour: startHour, minute: 0);
+  var end = TimeOfDay(hour: endHour, minute: 0);
+
+  return format(Strings.of(context).dateRangeFormat,
+      [formatTimeOfDay(context, start), formatTimeOfDay(context, end)]);
 }
 
 String formatTimeMillis(BuildContext context, Int64 millis) {
@@ -393,6 +411,7 @@ extension TimeOfDays on TimeOfDay {
 }
 
 extension Durations on Duration {
+  static const int monthsPerYear = 12;
   static const int daysPerYear = 365;
   static const int microsecondsPerYear =
       Duration.microsecondsPerDay * Durations.daysPerYear;

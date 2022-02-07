@@ -8,6 +8,12 @@ Map<T, int> sortedIntMap<T>(Map<T, int> map,
       map, comparator ?? ((lhs, rhs) => map[rhs]!.compareTo(map[lhs]!)));
 }
 
+/// Returns a sorted version of [map] by the map's keys using the default
+/// implementation of [int.compareTo] (smallest to largest).
+Map<int, int> sortedMapByIntKey(Map<int, int> map) {
+  return sortedIntMap<int>(map, (lhs, rhs) => lhs.compareTo(rhs));
+}
+
 Map<T, U> sortedMap<T, U>(
     Map<T, U> map, int Function(T lhs, T rhs) comparator) {
   var sortedKeys = map.keys.toList()..sort(comparator);

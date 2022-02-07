@@ -45,7 +45,7 @@ class _CatchFieldPickerPageState extends State<CatchFieldPickerPage> {
       showBackButton: false,
       onPressedNextButton: widget.onNext == null ? null : _onPressedNext,
       children: <Widget>[
-        SafeArea(child: Empty()),
+        const SafeArea(child: Empty()),
         const Padding(
           padding: insetsHorizontalDefault,
           child: WatermarkLogo(

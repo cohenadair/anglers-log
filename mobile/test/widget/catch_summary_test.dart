@@ -700,6 +700,37 @@ void main() {
     expect(find.byType(CatchPage), findsNothing);
   });
 
+  testWidgets("Catches per hour shows 24 rows", (tester) async {
+    await pumpCatchSummary(
+      tester,
+      (context) => CatchSummary<Catch>(
+        reportBuilder: (_, __) => CatchSummaryReport(context: context),
+      ),
+    );
+    expect(find.text("Per Hour"), findsOneWidget);
+
+    await tapAndSettle(tester, find.text("View all hours"));
+
+    // 25 - 24 for each row, 1 for the back button.
+    expect(find.byType(InkWell), findsNWidgets(25));
+  });
+
+  testWidgets("Catches per month shows 12 rows", (tester) async {
+    await pumpCatchSummary(
+      tester,
+      (context) => CatchSummary<Catch>(
+        reportBuilder: (_, __) => CatchSummaryReport(context: context),
+      ),
+    );
+    expect(find.text("Per Month"), findsOneWidget);
+
+    await ensureVisibleAndSettle(tester, find.text("View all months"));
+    await tapAndSettle(tester, find.text("View all months"));
+
+    // 13 - 12 for each row, 1 for the back button.
+    expect(find.byType(InkWell), findsNWidgets(13));
+  });
+
   testWidgets("Catches per species shown", (tester) async {
     when(appManager.userPreferenceManager.isTrackingSpecies).thenReturn(true);
     await pumpCatchSummary(
@@ -1086,8 +1117,8 @@ void main() {
         reportBuilder: (_, __) => CatchSummaryReport(context: context),
       ),
     );
-    // There are 11 charts, each with 3 items, and all values should equal 0.
-    expect(find.substring("(0)"), findsNWidgets(33));
+    // There are 13 charts, each with 3 items, and all values should equal 0.
+    expect(find.substring("(0)"), findsNWidgets(39));
   });
 
   testWidgets("Model filled with zeros skips entities that aren't tracked",
@@ -1103,9 +1134,9 @@ void main() {
       ),
     );
 
-    // There are 11 charts total, minus seasons and tides, each with 3 items,
+    // There are 13 charts total, minus seasons and tides, each with 3 items,
     // and all values should equal 0.
-    expect(find.substring("(0)"), findsNWidgets(27));
+    expect(find.substring("(0)"), findsNWidgets(33));
   });
 
   testWidgets("Model increment entities skips entities that aren't tracked",

@@ -1868,6 +1868,72 @@ void main() {
     expect(catches.length, 2);
   });
 
+  testWidgets("Filtering by hour", (tester) async {
+    await catchManager.addOrUpdate(Catch(
+      id: randomId(),
+      timestamp: Int64(DateTime(0, 0, 0, 5).millisecondsSinceEpoch),
+    ));
+    await catchManager.addOrUpdate(Catch(
+      id: randomId(),
+      timestamp: Int64(DateTime(0, 0, 0, 10).millisecondsSinceEpoch),
+    ));
+    await catchManager.addOrUpdate(Catch(
+      id: randomId(),
+      timestamp: Int64(DateTime(0, 0, 0, 8).millisecondsSinceEpoch),
+    ));
+    await catchManager.addOrUpdate(Catch(
+      id: randomId(),
+      timestamp: Int64(DateTime(0, 0, 0, 5).millisecondsSinceEpoch),
+    ));
+
+    var context = await buildContext(tester, appManager: appManager);
+
+    // No filter.
+    var catches = catchManager.catches(context);
+    expect(catches.length, 4);
+
+    // No catches.
+    catches = catchManager.catches(context, hour: 15);
+    expect(catches.length, 0);
+
+    // Some catches.
+    catches = catchManager.catches(context, hour: 5);
+    expect(catches.length, 2);
+  });
+
+  testWidgets("Filtering by month", (tester) async {
+    await catchManager.addOrUpdate(Catch(
+      id: randomId(),
+      timestamp: Int64(DateTime(2020, 3, 1, 5).millisecondsSinceEpoch),
+    ));
+    await catchManager.addOrUpdate(Catch(
+      id: randomId(),
+      timestamp: Int64(DateTime(2020, 5, 1, 10).millisecondsSinceEpoch),
+    ));
+    await catchManager.addOrUpdate(Catch(
+      id: randomId(),
+      timestamp: Int64(DateTime(2020, 3, 1, 8).millisecondsSinceEpoch),
+    ));
+    await catchManager.addOrUpdate(Catch(
+      id: randomId(),
+      timestamp: Int64(DateTime(2020, 8, 1, 5).millisecondsSinceEpoch),
+    ));
+
+    var context = await buildContext(tester, appManager: appManager);
+
+    // No filter.
+    var catches = catchManager.catches(context);
+    expect(catches.length, 4);
+
+    // No catches.
+    catches = catchManager.catches(context, month: 12);
+    expect(catches.length, 0);
+
+    // Some catches.
+    catches = catchManager.catches(context, month: 3);
+    expect(catches.length, 2);
+  });
+
   testWidgets("Filtering by multiple things", (tester) async {
     when(dataManager.insertOrReplace(any, any))
         .thenAnswer((_) => Future.value(true));

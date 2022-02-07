@@ -1601,7 +1601,9 @@ class MockCatchManager extends _i1.Mock implements _i11.CatchManager {
           _i4.NumberFilter? airPressureFilter,
           _i4.NumberFilter? airHumidityFilter,
           _i4.NumberFilter? airVisibilityFilter,
-          _i4.NumberFilter? windSpeedFilter}) =>
+          _i4.NumberFilter? windSpeedFilter,
+          int? hour,
+          int? month}) =>
       (super.noSuchMethod(
           Invocation.method(#catches, [
             context
@@ -1634,7 +1636,9 @@ class MockCatchManager extends _i1.Mock implements _i11.CatchManager {
             #airPressureFilter: airPressureFilter,
             #airHumidityFilter: airHumidityFilter,
             #airVisibilityFilter: airVisibilityFilter,
-            #windSpeedFilter: windSpeedFilter
+            #windSpeedFilter: windSpeedFilter,
+            #hour: hour,
+            #month: month
           }),
           returnValue: <_i4.Catch>[]) as List<_i4.Catch>);
   @override

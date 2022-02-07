@@ -153,6 +153,8 @@ class CatchManager extends EntityManager<Catch> {
     NumberFilter? airHumidityFilter,
     NumberFilter? airVisibilityFilter,
     NumberFilter? windSpeedFilter,
+    int? hour,
+    int? month,
   }) {
     var result = List.of(_filteredCatches(
       context,
@@ -184,6 +186,8 @@ class CatchManager extends EntityManager<Catch> {
       airHumidityFilter: airHumidityFilter,
       airVisibilityFilter: airVisibilityFilter,
       windSpeedFilter: windSpeedFilter,
+      hour: hour,
+      month: month,
     ));
 
     switch (sortOrder) {
@@ -231,6 +235,8 @@ class CatchManager extends EntityManager<Catch> {
     NumberFilter? airHumidityFilter,
     NumberFilter? airVisibilityFilter,
     NumberFilter? windSpeedFilter,
+    int? hour,
+    int? month,
   }) {
     if (isEmpty(filter) &&
         dateRange == null &&
@@ -259,7 +265,9 @@ class CatchManager extends EntityManager<Catch> {
         airPressureFilter == null &&
         airHumidityFilter == null &&
         airVisibilityFilter == null &&
-        windSpeedFilter == null) {
+        windSpeedFilter == null &&
+        hour == null &&
+        month == null) {
       return entities.values.toList();
     }
 
@@ -366,6 +374,8 @@ class CatchManager extends EntityManager<Catch> {
       valid &= isNumberFilterMeasurementValid(windSpeedFilter,
           cat.atmosphere.windSpeed, _userPreferenceManager.windSpeedSystem,
           hasValue: cat.hasAtmosphere() && cat.atmosphere.hasWindSpeed());
+      valid &= hour == null || cat.timestamp.toDateTime().hour == hour;
+      valid &= month == null || cat.timestamp.toDateTime().month == month;
 
       if (!valid) {
         return false;

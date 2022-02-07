@@ -74,7 +74,7 @@ class ReportListPage extends StatelessWidget {
       return _buildImmutableItem(context, _buildBlurredReports(context));
     } else {
       assert(false, "Unknown item type: $item");
-      return _buildImmutableItem(context, Empty());
+      return _buildImmutableItem(context, const Empty());
     }
   }
 

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:mobile/entity_manager.dart';
 import 'package:mobile/pages/catch_page.dart';
 import 'package:mobile/pages/manageable_list_page.dart';
@@ -19,6 +20,7 @@ import '../species_manager.dart';
 import '../time_manager.dart';
 import '../user_preference_manager.dart';
 import '../utils/collection_utils.dart';
+import '../utils/date_time_utils.dart';
 import '../utils/protobuf_utils.dart';
 import '../utils/string_utils.dart';
 import '../water_clarity_manager.dart';
@@ -119,6 +121,8 @@ class _CatchSummaryState<T> extends State<CatchSummary<T>> {
           const VerticalSpace(paddingDefault),
           _buildCatchesTiles(),
           const VerticalSpace(paddingDefault),
+          _buildCatchesPerHour(),
+          _buildCatchesPerMonth(),
           _buildCatchesPerSpecies(),
           _buildCatchesPerFishingSpot(),
           _buildCatchesPerBait(),
@@ -243,6 +247,7 @@ class _CatchSummaryState<T> extends State<CatchSummary<T>> {
     required String viewAllTitle,
     required String viewAllDescription,
     required List<Series<E>> series,
+    List<Series<E>>? fullPageSeries,
     required Widget Function(E, DateRange) catchListBuilder,
     required String Function(E) labelBuilder,
   }) {
@@ -254,6 +259,7 @@ class _CatchSummaryState<T> extends State<CatchSummary<T>> {
         const VerticalSpace(paddingDefault),
         Chart<E>(
           series: series,
+          fullPageSeries: fullPageSeries,
           padding: insetsHorizontalDefaultBottomSmall,
           viewAllTitle: viewAllTitle,
           chartPageDescription: viewAllDescription,
@@ -263,6 +269,41 @@ class _CatchSummaryState<T> extends State<CatchSummary<T>> {
           labelBuilder: labelBuilder,
         ),
       ],
+    );
+  }
+
+  Widget _buildCatchesPerHour() {
+    return _buildCatchesPerEntity<int>(
+      title: Strings.of(context).reportSummaryPerHour,
+      viewAllTitle: Strings.of(context).reportSummaryViewAllHours,
+      viewAllDescription:
+          Strings.of(context).reportSummaryViewAllHoursDescription,
+      series: _report.toSeries<int>((model) => model.perHour),
+      fullPageSeries:
+          _report.toSeries<int>((model) => sortedMapByIntKey(model.perHour)),
+      labelBuilder: (hour) => formatHourRange(context, hour, hour + 1),
+      catchListBuilder: (hour, dateRange) => _buildCatchList(
+        dateRange,
+        hour: hour,
+      ),
+    );
+  }
+
+  Widget _buildCatchesPerMonth() {
+    return _buildCatchesPerEntity<int>(
+      title: Strings.of(context).reportSummaryPerMonth,
+      viewAllTitle: Strings.of(context).reportSummaryViewAllMonths,
+      viewAllDescription:
+          Strings.of(context).reportSummaryViewAllMonthsDescription,
+      series: _report.toSeries<int>((model) => model.perMonth),
+      fullPageSeries:
+          _report.toSeries<int>((model) => sortedMapByIntKey(model.perMonth)),
+      labelBuilder: (month) =>
+          DateFormat(monthFormat).format(DateTime(0, month)),
+      catchListBuilder: (month, dateRange) => _buildCatchList(
+        dateRange,
+        month: month,
+      ),
     );
   }
 
@@ -489,6 +530,8 @@ class _CatchSummaryState<T> extends State<CatchSummary<T>> {
     Set<Id>? speciesIds,
     Set<TideType>? tideTypes,
     Set<Id>? waterClarityIds,
+    int? hour,
+    int? month,
   }) {
     return CatchListPage(
       enableAdding: false,
@@ -507,6 +550,8 @@ class _CatchSummaryState<T> extends State<CatchSummary<T>> {
         speciesIds: speciesIds ?? _report.speciesIds,
         tideTypes: tideTypes ?? _report.tideTypes,
         waterClarityIds: waterClarityIds ?? _report.waterClarityIds,
+        hour: hour,
+        month: month,
       ),
     );
   }
@@ -882,6 +927,8 @@ class _CatchSummaryReportModel<T> {
   final DateRange dateRange;
 
   final Set<Id> catchIds = {};
+  final Map<int, int> perHour = {};
+  final Map<int, int> perMonth = {};
   final Map<Angler, int> perAngler = {};
   final Map<BaitAttachment, int> perBait = {};
   final Map<BodyOfWater, int> perBodyOfWater = {};
@@ -935,6 +982,12 @@ class _CatchSummaryReportModel<T> {
       }
     }
 
+    _fillWithZeros(true,
+        List<int>.generate(Duration.hoursPerDay, (i) => i), perHour);
+    _fillWithZeros(
+        true,
+        List<int>.generate(Durations.monthsPerYear - 1, (i) => i + 1),
+        perMonth);
     _fillWithZeros(_includeAnglers, _anglerManager.list(), perAngler);
     _fillWithZeros(
         _includeBodiesOfWater, _bodyOfWaterManager.list(), perBodyOfWater);
@@ -962,6 +1015,10 @@ class _CatchSummaryReportModel<T> {
   void _fillCollections(Iterable<Catch> catches) {
     for (var cat in catches) {
       catchIds.add(cat.id);
+
+      var dateTime = cat.timestamp.toDateTime();
+      _inc(true, dateTime.hour, perHour);
+      _inc(true, dateTime.month, perMonth);
 
       _inc(_includeAnglers, _anglerManager.entity(cat.anglerId), perAngler);
 
@@ -1021,6 +1078,8 @@ class _CatchSummaryReportModel<T> {
   }
 
   void _sortCollections() {
+    sortIntMap(perHour);
+    sortIntMap(perMonth);
     sortIntMap(perAngler);
     sortIntMap(perBait);
     sortIntMap(perBodyOfWater);
