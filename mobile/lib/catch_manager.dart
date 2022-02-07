@@ -306,6 +306,29 @@ class CatchManager extends EntityManager<Catch> {
       return filter == null || (hasValue && filter.containsInt(value));
     }
 
+    // Returns true if the given catch has a bait attachment that intersects
+    // with the input attachments. If the input attachments do not have a
+    // variant (i.e. it represents a "parent" bait), this method will return
+    // true if one of the catch's bait attachments have the same bait ID,
+    // regardless of whether it also has a variant ID.
+    bool areBaitsValid(Catch cat) {
+      if (baits.isEmpty) {
+        return true;
+      }
+
+      for (var bait in baits) {
+        for (var attachment in cat.baits) {
+          if (bait.baitId == attachment.baitId &&
+              (!bait.hasVariantId() ||
+                  bait.variantId == attachment.variantId)) {
+            return true;
+          }
+        }
+      }
+
+      return false;
+    }
+
     return entities.values.where((cat) {
       var valid = true;
       valid &= dateRange == null ||
@@ -313,8 +336,7 @@ class CatchManager extends EntityManager<Catch> {
               cat.timestamp.toInt(), _timeManager.currentDateTime);
       valid &=
           isSetValid<Id>(anglerIds, cat.anglerId, hasValue: cat.hasAnglerId());
-      valid &=
-          baits.isEmpty || baits.intersection(cat.baits.toSet()).isNotEmpty;
+      valid &= areBaitsValid(cat);
       valid &= isSetValid<Id>(catchIds, cat.id, hasValue: cat.hasId());
       valid &= isSetValid<Id>(fishingSpotIds, cat.fishingSpotId,
           hasValue: cat.hasFishingSpotId());

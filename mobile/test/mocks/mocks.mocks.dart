@@ -1161,10 +1161,12 @@ class MockBaitManager extends _i1.Mock implements _i9.BaitManager {
           as _i4.BaitVariant?);
   @override
   String? attachmentDisplayValue(
-          _i46.BuildContext? context, _i4.BaitAttachment? attachment) =>
-      (super.noSuchMethod(
-              Invocation.method(#attachmentDisplayValue, [context, attachment]))
-          as String?);
+          _i46.BuildContext? context, _i4.BaitAttachment? attachment,
+          {bool? showAllVariantsLabel = false}) =>
+      (super.noSuchMethod(Invocation.method(
+          #attachmentDisplayValue,
+          [context, attachment],
+          {#showAllVariantsLabel: showAllVariantsLabel})) as String?);
   @override
   List<String> attachmentsDisplayValues(_i46.BuildContext? context,
           Iterable<_i4.BaitAttachment>? attachments) =>

@@ -551,6 +551,9 @@ class Strings {
 
   String get statsPageBaitSummary => _string("statsPage_baitSummary");
 
+  String get statsPageBaitVariantAllLabel =>
+      _string("statsPage_baitVariantAllLabel");
+
   String get statsPageBodyOfWaterSummary =>
       _string("statsPage_bodyOfWaterSummary");
 

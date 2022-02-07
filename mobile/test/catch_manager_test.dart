@@ -884,6 +884,49 @@ void main() {
     expect(catches.isEmpty, true);
   });
 
+  testWidgets("Filtering by parent bait includes variants", (tester) async {
+    when(dataManager.insertOrReplace(any, any))
+        .thenAnswer((_) => Future.value(true));
+
+    var baitId = randomId();
+    var variantId = randomId();
+
+    var baitAttachment0 = BaitAttachment(baitId: baitId, variantId: variantId);
+    var baitAttachment1 = BaitAttachment(baitId: baitId);
+
+    await catchManager.addOrUpdate(Catch(
+      id: randomId(),
+      baits: [baitAttachment0],
+    ));
+    await catchManager.addOrUpdate(Catch(
+      id: randomId(),
+      baits: [baitAttachment1],
+    ));
+
+    var context = await buildContext(tester, appManager: appManager);
+
+    // Verify catch is returned when the bait attachment has a variant.
+    var catches = catchManager.catches(
+      context,
+      baits: {baitAttachment0},
+    );
+    expect(catches.length, 1);
+
+    // Verify catches are returned when the bait doesn't have a variant.
+    catches = catchManager.catches(
+      context,
+      baits: {baitAttachment1},
+    );
+    expect(catches.length, 2);
+
+    // Verify catches are returned when no bait is passed in.
+    catches = catchManager.catches(
+      context,
+      dateRange: DateRange(period: DateRange_Period.allDates),
+    );
+    expect(catches.length, 2);
+  });
+
   testWidgets("Filtering by catch", (tester) async {
     when(dataManager.insertOrReplace(any, any))
         .thenAnswer((_) => Future.value(true));

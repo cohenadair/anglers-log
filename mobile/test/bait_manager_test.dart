@@ -722,6 +722,28 @@ void main() {
     );
   });
 
+  testWidgets("attachmentDisplayValue showAllVariantsLabel is true",
+      (tester) async {
+    var context = await buildContext(tester);
+    var baitId = randomId();
+    await baitManager.addOrUpdate(Bait(
+      id: baitId,
+      name: "Test",
+    ));
+
+    expect(
+      baitManager.attachmentDisplayValue(
+        context,
+        BaitAttachment(
+          baitId: baitId,
+          variantId: randomId(),
+        ),
+        showAllVariantsLabel: true,
+      ),
+      "Test (All Variants)",
+    );
+  });
+
   testWidgets("attachmentDisplayValue variant exists", (tester) async {
     when(appManager.customEntityManager.customValuesDisplayValue(any, any))
         .thenReturn("");

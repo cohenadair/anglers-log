@@ -982,8 +982,8 @@ class _CatchSummaryReportModel<T> {
       }
     }
 
-    _fillWithZeros(true,
-        List<int>.generate(Duration.hoursPerDay, (i) => i), perHour);
+    _fillWithZeros(
+        true, List<int>.generate(Duration.hoursPerDay, (i) => i), perHour);
     _fillWithZeros(
         true,
         List<int>.generate(Durations.monthsPerYear - 1, (i) => i + 1),

@@ -240,6 +240,7 @@ Map<String, Map<String, String>> get englishStrings => {
         "statsPage_catchSummary": "Catch Summary",
         "statsPage_anglerSummary": "Angler Summary",
         "statsPage_baitSummary": "Bait Summary",
+        "statsPage_baitVariantAllLabel": "%s (All Variants)",
         "statsPage_bodyOfWaterSummary": "Body Of Water Summary",
         "statsPage_fishingSpotSummary": "Fishing Spot Summary",
         "statsPage_methodSummary": "Fishing Method Summary",

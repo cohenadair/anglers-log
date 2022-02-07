@@ -214,9 +214,12 @@ void main() {
       }
       return result;
     });
-    when(appManager.baitManager.attachmentDisplayValue(any, any)).thenAnswer(
-        (invocation) =>
-            baitMap[invocation.positionalArguments[1].baitId]!.name);
+    when(appManager.baitManager.attachmentDisplayValue(
+      any,
+      any,
+      showAllVariantsLabel: anyNamed("showAllVariantsLabel"),
+    )).thenAnswer((invocation) =>
+        baitMap[invocation.positionalArguments[1].baitId]!.name);
 
     when(appManager.bodyOfWaterManager.list()).thenReturn([]);
 

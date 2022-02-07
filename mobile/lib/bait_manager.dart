@@ -211,8 +211,14 @@ class BaitManager extends ImageEntityManager<Bait> {
   ///   - Live - Minnow
   ///   - Minnow (Size: Small)
   ///   - Live - Minnow (Size: Small)
+  ///
+  /// If [showAllVariantsLabel] is true, and [attachment] has a valid variant:
+  ///   - Big O (All Variants)
   String? attachmentDisplayValue(
-      BuildContext context, BaitAttachment attachment) {
+    BuildContext context,
+    BaitAttachment attachment, {
+    bool showAllVariantsLabel = false,
+  }) {
     var bait = entity(attachment.baitId);
     if (bait == null) {
       return null;
@@ -222,7 +228,12 @@ class BaitManager extends ImageEntityManager<Bait> {
     var variant = variantFromAttachment(attachment);
 
     if (variant == null) {
-      return formattedBait;
+      if (showAllVariantsLabel) {
+        return format(
+            Strings.of(context).statsPageBaitVariantAllLabel, [formattedBait]);
+      } else {
+        return formattedBait;
+      }
     } else {
       return "$formattedBait (${variantDisplayValue(
         context,
