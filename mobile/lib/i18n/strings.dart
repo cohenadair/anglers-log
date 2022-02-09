@@ -53,6 +53,8 @@ class Strings {
 
   String get appName => _string("appName");
 
+  String get hashtag => _string("hashtag");
+
   String get rateDialogTitle => _string("rateDialog_title");
 
   String get rateDialogDescription => _string("rateDialog_description");

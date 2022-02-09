@@ -27,6 +27,7 @@ Map<String, Map<String, String>> get englishStrings => {
       },
       "default": {
         "appName": "Anglers' Log",
+        "hashtag": "#AnglersLogApp",
         "rateDialog_title": "Rate Anglers' Log",
         "rateDialog_description":
             "Please take a moment to write a review of Anglers' Log. All feedback is greatly appreciated!",

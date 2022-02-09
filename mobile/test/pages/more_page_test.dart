@@ -28,6 +28,11 @@ void main() {
         .thenReturn(true);
     when(appManager.userPreferenceManager.stream)
         .thenAnswer((_) => const Stream.empty());
+
+    when(appManager.urlLauncherWrapper.canLaunch(any))
+        .thenAnswer((_) => Future.value(true));
+    when(appManager.urlLauncherWrapper.launch(any))
+        .thenAnswer((_) => Future.value(true));
   });
 
   testWidgets("Page is pushed", (tester) async {
@@ -105,5 +110,39 @@ void main() {
 
     expect(find.text("Baits"), findsNothing);
     expect(find.text("Bait Categories"), findsNothing);
+  });
+
+  testWidgets("Hashtag item opens app URL", (tester) async {
+    when(appManager.urlLauncherWrapper.canLaunch(any))
+        .thenAnswer((_) => Future.value(true));
+
+    await tester.pumpWidget(Testable(
+      (_) => const MorePage(),
+      appManager: appManager,
+    ));
+
+    await ensureVisibleAndSettle(tester, find.text("#AnglersLogApp").first);
+    await tapAndSettle(tester, find.text("#AnglersLogApp").first);
+
+    var result = verify(appManager.urlLauncherWrapper.launch(captureAny));
+    result.called(1);
+    expect(result.captured.first.contains("instagram://"), isTrue);
+  });
+
+  testWidgets("Hashtag item opens web URL", (tester) async {
+    when(appManager.urlLauncherWrapper.canLaunch(any))
+        .thenAnswer((_) => Future.value(false));
+
+    await tester.pumpWidget(Testable(
+      (_) => const MorePage(),
+      appManager: appManager,
+    ));
+
+    await ensureVisibleAndSettle(tester, find.text("#AnglersLogApp").first);
+    await tapAndSettle(tester, find.text("#AnglersLogApp").first);
+
+    var result = verify(appManager.urlLauncherWrapper.launch(captureAny));
+    result.called(1);
+    expect(result.captured.first.contains("https://www.instagram.com"), isTrue);
   });
 }

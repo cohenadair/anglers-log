@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:mobile/res/gen/custom_icons.dart';
 import 'package:mobile/user_preference_manager.dart';
 import 'package:mobile/utils/entity_utils.dart';
+import 'package:mobile/wrappers/url_launcher_wrapper.dart';
 
 import '../i18n/strings.dart';
 import '../pages/feedback_page.dart';
@@ -15,6 +17,14 @@ import 'pro_page.dart';
 import 'scroll_page.dart';
 
 class MorePage extends StatelessWidget {
+  static const _instagramWebUrl =
+      "https://www.instagram.com/explore/tags/anglerslogapp/?hl=en";
+  static const _instagramAppUrl = "instagram://tag?name=anglerslogapp";
+  static const _twitterWebUrl =
+      "https://twitter.com/search?f=realtime&q=%23anglerslogapp&src=typd&lang=en";
+  static const _twitterAppUrl = "twitter://search?query=%23anglerslogapp";
+  static const _twitterColor = Color.fromRGBO(29, 155, 240, 100);
+
   /// A [GlobalKey] for the feedback row. Used for scrolling to the feedback
   /// row when onboarding users.
   ///
@@ -82,6 +92,19 @@ class MorePage extends StatelessWidget {
               presentPage: true,
             ),
             ..._buildRateAndFeedbackItems(context),
+            _buildHashtagItem(
+              context,
+              icon: CustomIcons.instagram,
+              appUrl: _instagramAppUrl,
+              webUrl: _instagramWebUrl,
+            ),
+            _buildHashtagItem(
+              context,
+              icon: CustomIcons.twitter,
+              iconColor: _twitterColor,
+              appUrl: _twitterAppUrl,
+              webUrl: _twitterWebUrl,
+            ),
             _buildPageItem(
               context,
               icon: Icons.settings,
@@ -142,6 +165,30 @@ class MorePage extends StatelessWidget {
         child: feedbackItem,
       ),
     ];
+  }
+
+  Widget _buildHashtagItem(
+    BuildContext context, {
+    required IconData icon,
+    Color? iconColor,
+    required String appUrl,
+    required String webUrl,
+  }) {
+    return ListItem(
+      title: Text(Strings.of(context).hashtag),
+      leading: Icon(
+        icon,
+        color: iconColor,
+      ),
+      onTap: () async {
+        var urlLauncher = UrlLauncherWrapper.of(context);
+        if (await urlLauncher.canLaunch(appUrl)) {
+          urlLauncher.launch(appUrl);
+        } else {
+          urlLauncher.launch(webUrl);
+        }
+      },
+    );
   }
 
   Widget _buildPageItem(
