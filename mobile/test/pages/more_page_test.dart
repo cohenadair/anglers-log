@@ -18,6 +18,8 @@ void main() {
       filter: anyNamed("filter"),
     )).thenReturn([]);
 
+    when(appManager.ioWrapper.isAndroid).thenReturn(false);
+
     when(appManager.userPreferenceManager.isTrackingSpecies).thenReturn(true);
     when(appManager.userPreferenceManager.isTrackingAnglers).thenReturn(true);
     when(appManager.userPreferenceManager.isTrackingBaits).thenReturn(true);
@@ -144,5 +146,13 @@ void main() {
     var result = verify(appManager.urlLauncherWrapper.launch(captureAny));
     result.called(1);
     expect(result.captured.first.contains("https://www.instagram.com"), isTrue);
+  });
+
+  testWidgets("Trailing widget is shown", (tester) async {
+    await tester.pumpWidget(Testable(
+      (_) => const MorePage(),
+      appManager: appManager,
+    ));
+    expect(find.byIcon(Icons.open_in_new), findsNWidgets(3));
   });
 }

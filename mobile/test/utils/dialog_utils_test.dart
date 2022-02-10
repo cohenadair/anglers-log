@@ -12,6 +12,7 @@ void main() {
 
   setUp(() {
     appManager = StubbedAppManager();
+    when(appManager.ioWrapper.isAndroid).thenReturn(false);
   });
 
   group("Rate dialog", () {

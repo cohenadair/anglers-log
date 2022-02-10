@@ -751,6 +751,10 @@ class Strings {
 
   String get morePagePro => _string("morePage_pro");
 
+  String get morePageRateErrorApple => _string("morePage_rateErrorApple");
+
+  String get morePageRateErrorAndroid => _string("morePage_rateErrorAndroid");
+
   String get settingsPageTitle => _string("settingsPage_title");
 
   String get settingsPageLogout => _string("settingsPage_logout");

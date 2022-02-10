@@ -121,6 +121,7 @@ class MorePage extends StatelessWidget {
     var rateItem = _buildPageItem(
       context,
       icon: Icons.star,
+      trailing: const Icon(Icons.open_in_new),
       title: Strings.of(context).morePageRateApp,
       onTap: () => launchStore(context),
     );
@@ -180,6 +181,7 @@ class MorePage extends StatelessWidget {
         icon,
         color: iconColor,
       ),
+      trailing: const Icon(Icons.open_in_new),
       onTap: () async {
         var urlLauncher = UrlLauncherWrapper.of(context);
         if (await urlLauncher.canLaunch(appUrl)) {
@@ -197,6 +199,7 @@ class MorePage extends StatelessWidget {
     required IconData icon,
     required String title,
     Widget? page,
+    Widget? trailing,
     VoidCallback? onTap,
     bool presentPage = false,
     bool isVisible = true,
@@ -211,7 +214,7 @@ class MorePage extends StatelessWidget {
       key: key,
       title: Text(title),
       leading: Icon(icon),
-      trailing: presentPage || onTap != null ? null : RightChevronIcon(),
+      trailing: presentPage || onTap != null ? trailing : RightChevronIcon(),
       onTap: () {
         if (onTap != null) {
           onTap();

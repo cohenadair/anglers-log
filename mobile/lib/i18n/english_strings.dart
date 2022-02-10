@@ -338,6 +338,8 @@ Map<String, Map<String, String>> get englishStrings => {
         "morePage_title": "More",
         "morePage_rateApp": "Rate Anglers' Log",
         "morePage_pro": "Anglers' Log Pro",
+        "morePage_rateErrorApple": "Device does not have App Store installed.",
+        "morePage_rateErrorAndroid": "Device has no web browser app installed.",
         "tripListPage_title": "Trips (%s)",
         "tripListPage_searchHint": "Search trips",
         "tripListPage_emptyListTitle": "No Trips",
