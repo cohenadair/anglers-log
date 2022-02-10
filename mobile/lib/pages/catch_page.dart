@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mobile/utils/share_utils.dart';
 import 'package:mobile/widgets/static_fishing_spot_map.dart';
 import 'package:quiver/strings.dart';
 
@@ -94,6 +95,7 @@ class _CatchPageState extends State<CatchPage> {
           padding: insetsZero,
           onEdit: () => present(context, SaveCatchPage.edit(_catch)),
           onDelete: () => _catchManager.delete(_catch.id),
+          onShare: _onShare,
           deleteMessage: _catchManager.deleteMessage(context, _catch),
           imageNames: _catch.imageNames,
           children: <Widget>[
@@ -128,8 +130,7 @@ class _CatchPageState extends State<CatchPage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               TitleLabel.style1(
-                _speciesManager.entity(_catch.speciesId)?.name ??
-                    Strings.of(context).unknownSpecies,
+                _speciesName ?? Strings.of(context).unknownSpecies,
                 overflow: TextOverflow.visible,
               ),
               Padding(
@@ -336,6 +337,50 @@ class _CatchPageState extends State<CatchPage> {
 
     return ListItem(title: ChipWrap(methodNames));
   }
+
+  void _onShare() {
+    var shareText = _speciesName ?? "";
+
+    if (_catch.hasLength()) {
+      shareText += newLineOrEmpty(shareText);
+      shareText += format(
+        Strings.of(context).shareLength,
+        [_catch.length.displayValue(context)],
+      );
+    }
+
+    if (_catch.hasWeight()) {
+      shareText += newLineOrEmpty(shareText);
+      shareText += format(
+        Strings.of(context).shareWeight,
+        [_catch.weight.displayValue(context)],
+      );
+    }
+
+    if (_catch.baits.isNotEmpty) {
+      if (_catch.baits.length == 1) {
+        shareText += newLineOrEmpty(shareText);
+        shareText += format(
+          Strings.of(context).shareBait,
+          [_baitManager.attachmentDisplayValue(context, _catch.baits[0])],
+        );
+      } else {
+        shareText += newLineOrEmpty(shareText);
+        shareText += format(
+          Strings.of(context).shareBaits,
+          [
+            _baitManager
+                .attachmentsDisplayValues(context, _catch.baits)
+                .join(", ")
+          ],
+        );
+      }
+    }
+
+    share(context, _catch.imageNames, text: shareText);
+  }
+
+  String? get _speciesName => _speciesManager.entity(_catch.speciesId)?.name;
 }
 
 class _BaitAttachmentListItem extends StatelessWidget {

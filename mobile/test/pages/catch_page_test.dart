@@ -31,6 +31,8 @@ void main() {
 
     when(appManager.fishingSpotManager.list(any)).thenReturn([]);
 
+    when(appManager.ioWrapper.isAndroid).thenReturn(false);
+
     when(appManager.propertiesManager.mapboxApiKey).thenReturn("");
 
     when(appManager.speciesManager.entity(any)).thenReturn(Species()
@@ -379,6 +381,209 @@ void main() {
     ));
 
     expect(find.text("Test"), findsNWidgets(2));
+  });
+
+  testWidgets("Share text is empty", (tester) async {
+    when(appManager.speciesManager.entity(any)).thenReturn(null);
+    when(appManager.catchManager.entity(any)).thenReturn(Catch(
+      id: randomId(),
+      timestamp: Int64(DateTime(2020, 1, 1, 15, 30).millisecondsSinceEpoch),
+      speciesId: randomId(),
+    ));
+    when(appManager.sharePlusWrapper.share(any))
+        .thenAnswer((_) => Future.value(null));
+
+    await pumpContext(
+      tester,
+      (_) => CatchPage(Catch()),
+      appManager: appManager,
+    );
+
+    await tapAndSettle(tester, find.byIcon(Icons.ios_share));
+
+    var result = verify(appManager.sharePlusWrapper.share(captureAny));
+    result.called(1);
+
+    var text = result.captured.first as String;
+    expect(text, "Shared with #AnglersLogApp for iOS.");
+  });
+
+  testWidgets("Share text includes species, length and weight", (tester) async {
+    when(appManager.speciesManager.entity(any)).thenReturn(Species(
+      name: "Smallmouth Bass",
+    ));
+    when(appManager.catchManager.entity(any)).thenReturn(Catch(
+      id: randomId(),
+      timestamp: Int64(DateTime(2020, 1, 1, 15, 30).millisecondsSinceEpoch),
+      speciesId: randomId(),
+      length: MultiMeasurement(
+        system: MeasurementSystem.metric,
+        mainValue: Measurement(
+          unit: Unit.centimeters,
+          value: 30,
+        ),
+      ),
+      weight: MultiMeasurement(
+        system: MeasurementSystem.imperial_whole,
+        mainValue: Measurement(
+          unit: Unit.pounds,
+          value: 2,
+        ),
+        fractionValue: Measurement(
+          unit: Unit.ounces,
+          value: 3,
+        ),
+      ),
+    ));
+    when(appManager.sharePlusWrapper.share(any))
+        .thenAnswer((_) => Future.value(null));
+
+    await pumpContext(
+      tester,
+      (_) => CatchPage(Catch()),
+      appManager: appManager,
+    );
+
+    await tapAndSettle(tester, find.byIcon(Icons.ios_share));
+
+    var result = verify(appManager.sharePlusWrapper.share(captureAny));
+    result.called(1);
+
+    var text = result.captured.first as String;
+    expect(
+      text,
+      "Smallmouth Bass\n"
+      "Length: 30 cm\n"
+      "Weight: 2 lbs 3 oz\n\n"
+      "Shared with #AnglersLogApp for iOS.",
+    );
+  });
+
+  testWidgets("Share text includes a single bait", (tester) async {
+    when(appManager.speciesManager.entity(any)).thenReturn(null);
+    when(appManager.catchManager.entity(any)).thenReturn(Catch(
+      id: randomId(),
+      timestamp: Int64(DateTime(2020, 1, 1, 15, 30).millisecondsSinceEpoch),
+      speciesId: randomId(),
+      baits: [
+        BaitAttachment(baitId: randomId()),
+      ],
+    ));
+    when(appManager.baitManager.attachmentDisplayValue(any, any))
+        .thenReturn("Bait Attachment");
+    when(appManager.sharePlusWrapper.share(any))
+        .thenAnswer((_) => Future.value(null));
+
+    await pumpContext(
+      tester,
+      (_) => CatchPage(Catch()),
+      appManager: appManager,
+    );
+
+    await tapAndSettle(tester, find.byIcon(Icons.ios_share));
+
+    var result = verify(appManager.sharePlusWrapper.share(captureAny));
+    result.called(1);
+
+    var text = result.captured.first as String;
+    expect(
+      text,
+      "Bait: Bait Attachment\n\n"
+      "Shared with #AnglersLogApp for iOS.",
+    );
+  });
+
+  testWidgets("Share text includes a multiple baits", (tester) async {
+    when(appManager.speciesManager.entity(any)).thenReturn(null);
+    when(appManager.catchManager.entity(any)).thenReturn(Catch(
+      id: randomId(),
+      timestamp: Int64(DateTime(2020, 1, 1, 15, 30).millisecondsSinceEpoch),
+      speciesId: randomId(),
+      baits: [
+        BaitAttachment(baitId: randomId()),
+        BaitAttachment(baitId: randomId()),
+      ],
+    ));
+    when(appManager.baitManager.attachmentsDisplayValues(any, any))
+        .thenReturn(["Bait Attachment", "Bait Attachment"]);
+    when(appManager.sharePlusWrapper.share(any))
+        .thenAnswer((_) => Future.value(null));
+
+    await pumpContext(
+      tester,
+      (_) => CatchPage(Catch()),
+      appManager: appManager,
+    );
+
+    await tapAndSettle(tester, find.byIcon(Icons.ios_share));
+
+    var result = verify(appManager.sharePlusWrapper.share(captureAny));
+    result.called(1);
+
+    var text = result.captured.first as String;
+    expect(
+      text,
+      "Baits: Bait Attachment, Bait Attachment\n\n"
+      "Shared with #AnglersLogApp for iOS.",
+    );
+  });
+
+  testWidgets("Share text includes everything", (tester) async {
+    when(appManager.speciesManager.entity(any)).thenReturn(Species(
+      name: "Smallmouth Bass",
+    ));
+    when(appManager.catchManager.entity(any)).thenReturn(Catch(
+      id: randomId(),
+      timestamp: Int64(DateTime(2020, 1, 1, 15, 30).millisecondsSinceEpoch),
+      speciesId: randomId(),
+      length: MultiMeasurement(
+        system: MeasurementSystem.metric,
+        mainValue: Measurement(
+          unit: Unit.centimeters,
+          value: 30,
+        ),
+      ),
+      weight: MultiMeasurement(
+        system: MeasurementSystem.imperial_whole,
+        mainValue: Measurement(
+          unit: Unit.pounds,
+          value: 2,
+        ),
+        fractionValue: Measurement(
+          unit: Unit.ounces,
+          value: 3,
+        ),
+      ),
+      baits: [
+        BaitAttachment(baitId: randomId()),
+        BaitAttachment(baitId: randomId()),
+      ],
+    ));
+    when(appManager.baitManager.attachmentsDisplayValues(any, any))
+        .thenReturn(["Bait Attachment", "Bait Attachment"]);
+    when(appManager.sharePlusWrapper.share(any))
+        .thenAnswer((_) => Future.value(null));
+
+    await pumpContext(
+      tester,
+      (_) => CatchPage(Catch()),
+      appManager: appManager,
+    );
+
+    await tapAndSettle(tester, find.byIcon(Icons.ios_share));
+
+    var result = verify(appManager.sharePlusWrapper.share(captureAny));
+    result.called(1);
+
+    var text = result.captured.first as String;
+    expect(
+      text,
+      "Smallmouth Bass\n"
+      "Length: 30 cm\n"
+      "Weight: 2 lbs 3 oz\n"
+      "Baits: Bait Attachment, Bait Attachment\n\n"
+      "Shared with #AnglersLogApp for iOS.",
+    );
   });
 
   group("Water fields", () {

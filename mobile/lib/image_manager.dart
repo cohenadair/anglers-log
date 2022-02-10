@@ -71,7 +71,12 @@ class ImageManager {
         .toList();
   }
 
-  File imageFile(String name) => _ioWrapper.file("$_imagePath/$name");
+  String imagePath(String name) => "$_imagePath/$name";
+
+  List<String> imagePaths(List<String> names) =>
+      names.map((e) => imagePath(e)).toList();
+
+  File imageFile(String name) => _ioWrapper.file(imagePath(name));
 
   /// Returns encoded image data with the given [fileName] at the given [size].
   /// If an image of [size] does not exist in the cache, the full image is

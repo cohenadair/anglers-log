@@ -17,7 +17,7 @@ import '../widgets/widget.dart';
 class BaitPage extends StatefulWidget {
   final Bait bait;
 
-  /// See [EntityPage.static].
+  /// See [EntityPage.isStatic].
   final bool static;
 
   const BaitPage(
@@ -61,7 +61,7 @@ class _BaitPageState extends State<BaitPage> {
             top: paddingDefault,
             bottom: paddingDefault,
           ),
-          static: widget.static,
+          isStatic: widget.static,
           onEdit: () => present(context, SaveBaitPage.edit(_bait)),
           onDelete: () => _baitManager.delete(_bait.id),
           deleteMessage: _baitManager.deleteMessage(context, _bait),

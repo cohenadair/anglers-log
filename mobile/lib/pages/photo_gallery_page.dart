@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:mobile/image_manager.dart';
+import 'package:mobile/utils/share_utils.dart';
+import 'package:mobile/widgets/widget.dart';
+import 'package:mobile/wrappers/share_plus_wrapper.dart';
 
 import '../widgets/button.dart';
 import '../widgets/photo.dart';
@@ -23,13 +27,19 @@ class _PhotoGalleryPageState extends State<PhotoGalleryPage> {
 
   final _transformationController = TransformationController();
   late PageController _controller;
+  late String _currentImageName;
+
+  ImageManager get _imageManager => ImageManager.of(context);
+
+  SharePlusWrapper get _shareWrapper => SharePlusWrapper.of(context);
 
   @override
   void initState() {
     super.initState();
-    _controller = PageController(
-      initialPage: widget.fileNames.indexOf(widget.initialFileName),
-    );
+
+    var initialIndex = widget.fileNames.indexOf(widget.initialFileName);
+    _controller = PageController(initialPage: initialIndex);
+    _currentImageName = widget.fileNames[initialIndex];
   }
 
   @override
@@ -54,21 +64,36 @@ class _PhotoGalleryPageState extends State<PhotoGalleryPage> {
               physics:
                   _isDismissible ? null : const NeverScrollableScrollPhysics(),
               itemCount: widget.fileNames.length,
-              itemBuilder: (context, i) => Container(
-                color: Colors.black,
-                child: Center(
-                  child: InteractiveViewer(
-                    minScale: _minScale,
-                    maxScale: _maxScale,
-                    onInteractionEnd: (_) => setState(() {}),
-                    transformationController: _transformationController,
-                    clipBehavior: Clip.none,
-                    child: Photo(fileName: widget.fileNames[i]),
+              itemBuilder: (context, i) {
+                _currentImageName = widget.fileNames[i];
+
+                return Container(
+                  color: Colors.black,
+                  child: Center(
+                    child: InteractiveViewer(
+                      minScale: _minScale,
+                      maxScale: _maxScale,
+                      onInteractionEnd: (_) => setState(() {}),
+                      transformationController: _transformationController,
+                      clipBehavior: Clip.none,
+                      child: Photo(fileName: _currentImageName),
+                    ),
                   ),
-                ),
+                );
+              },
+            ),
+            SafeArea(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const FloatingButton.close(),
+                  FloatingButton.icon(
+                    icon: shareIconData(context),
+                    onPressed: () => share(context, [_currentImageName]),
+                  ),
+                ],
               ),
             ),
-            const SafeArea(child: FloatingButton.close()),
           ],
         ),
       ),

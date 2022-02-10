@@ -199,6 +199,8 @@ void main() {
       includeLatLngLabels: anyNamed("includeLatLngLabels"),
     )).thenAnswer((invocation) => invocation.positionalArguments[1].name);
 
+    when(appManager.ioWrapper.isAndroid).thenReturn(false);
+
     when(appManager.locationMonitor.currentLocation).thenReturn(null);
 
     when(appManager.speciesManager.entityExists(species[0].id))
@@ -360,5 +362,50 @@ void main() {
     );
 
     expect(find.text("SKUNKED"), findsOneWidget);
+  });
+
+  testWidgets("Share text without name", (tester) async {
+    when(appManager.tripManager.entity(any))
+        .thenReturn(defaultTrip()..clearName());
+    when(appManager.sharePlusWrapper.share(any))
+        .thenAnswer((_) => Future.value(null));
+    when(appManager.tripManager.numberOfCatches(any)).thenReturn(5);
+
+    await pumpContext(tester, (_) => TripPage(Trip()), appManager: appManager);
+    await tapAndSettle(tester, find.byIcon(Icons.ios_share));
+
+    var result = verify(appManager.sharePlusWrapper.share(captureAny));
+    result.called(1);
+
+    var text = result.captured.first as String;
+    expect(
+      text,
+      "Jan 1, 2020 at 9:00 AM to Jan 3, 2020 at 5:00 PM\n"
+      "Catches: 5\n\n"
+      "Shared with #AnglersLogApp for iOS.",
+    );
+  });
+
+  testWidgets("Share text with name", (tester) async {
+    when(appManager.tripManager.entity(any)).thenReturn(defaultTrip());
+    when(appManager.sharePlusWrapper.share(any))
+        .thenAnswer((_) => Future.value(null));
+    when(appManager.tripManager.numberOfCatches(any)).thenReturn(5);
+    when(appManager.tripManager.name(any)).thenReturn("Test Trip");
+
+    await pumpContext(tester, (_) => TripPage(Trip()), appManager: appManager);
+    await tapAndSettle(tester, find.byIcon(Icons.ios_share));
+
+    var result = verify(appManager.sharePlusWrapper.share(captureAny));
+    result.called(1);
+
+    var text = result.captured.first as String;
+    expect(
+      text,
+      "Test Trip\n"
+      "Jan 1, 2020 at 9:00 AM to Jan 3, 2020 at 5:00 PM\n"
+      "Catches: 5\n\n"
+      "Shared with #AnglersLogApp for iOS.",
+    );
   });
 }

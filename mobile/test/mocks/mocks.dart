@@ -54,6 +54,7 @@ import 'package:mobile/wrappers/path_provider_wrapper.dart';
 import 'package:mobile/wrappers/permission_handler_wrapper.dart';
 import 'package:mobile/wrappers/photo_manager_wrapper.dart';
 import 'package:mobile/wrappers/services_wrapper.dart';
+import 'package:mobile/wrappers/share_plus_wrapper.dart';
 import 'package:mobile/wrappers/shared_preferences_wrapper.dart';
 import 'package:mobile/wrappers/url_launcher_wrapper.dart';
 import 'package:mockito/annotations.dart';
@@ -117,6 +118,7 @@ Trip_CatchesPerEntity newInputItemShim(dynamic pickerItem) =>
 @GenerateMocks([PurchasesWrapper])
 @GenerateMocks([ServicesWrapper])
 @GenerateMocks([SharedPreferencesWrapper])
+@GenerateMocks([SharePlusWrapper])
 @GenerateMocks([UrlLauncherWrapper])
 @GenerateMocks([AssetPathEntity])
 @GenerateMocks([Batch])

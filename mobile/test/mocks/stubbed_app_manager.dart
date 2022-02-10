@@ -47,6 +47,7 @@ class StubbedAppManager {
   MockServicesWrapper servicesWrapper = MockServicesWrapper();
   MockSharedPreferencesWrapper sharedPreferencesWrapper =
       MockSharedPreferencesWrapper();
+  MockSharePlusWrapper sharePlusWrapper = MockSharePlusWrapper();
   MockUrlLauncherWrapper urlLauncherWrapper = MockUrlLauncherWrapper();
 
   StubbedAppManager() {
@@ -84,6 +85,7 @@ class StubbedAppManager {
     when(app.photoManagerWrapper).thenReturn(photoManagerWrapper);
     when(app.purchasesWrapper).thenReturn(purchasesWrapper);
     when(app.sharedPreferencesWrapper).thenReturn(sharedPreferencesWrapper);
+    when(app.sharePlusWrapper).thenReturn(sharePlusWrapper);
     when(app.servicesWrapper).thenReturn(servicesWrapper);
     when(app.urlLauncherWrapper).thenReturn(urlLauncherWrapper);
 

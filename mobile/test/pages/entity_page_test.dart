@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
 import 'package:mobile/pages/entity_page.dart';
+import 'package:mobile/res/dimen.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mobile/widgets/button.dart';
 import 'package:mobile/widgets/list_item.dart';
@@ -27,7 +28,7 @@ void main() {
       await tester.pumpWidget(Testable(
         (_) => EntityPage(
           children: const [],
-          static: true,
+          isStatic: true,
         ),
       ));
       expect(find.byType(PageView), findsNothing);
@@ -51,7 +52,7 @@ void main() {
               "apple_logo.png"
             ],
             children: const [],
-            static: true,
+            isStatic: true,
           );
         },
         appManager: appManager,
@@ -112,7 +113,7 @@ void main() {
             "flutter_logo.png",
           ],
           children: const [],
-          static: true,
+          isStatic: true,
         ),
         appManager: appManager,
         mediaQueryData: const MediaQueryData(
@@ -135,7 +136,7 @@ void main() {
     await tester.pumpWidget(Testable(
       (_) => EntityPage(
         children: const [],
-        static: true,
+        isStatic: true,
       ),
     ));
     expect(find.text("Custom Fields"), findsNothing);
@@ -157,7 +158,7 @@ void main() {
             ..customEntityId = customEntityId
             ..value = "Test Value",
         ],
-        static: true,
+        isStatic: true,
       ),
       appManager: appManager,
     ));
@@ -173,7 +174,7 @@ void main() {
       Testable(
         (_) => EntityPage(
           children: const [],
-          static: true,
+          isStatic: true,
         ),
       ),
     );
@@ -194,7 +195,7 @@ void main() {
       Testable(
         (_) => EntityPage(
           children: const [],
-          static: true,
+          isStatic: true,
           imageNames: const [
             "apple_logo.png",
           ],
@@ -277,7 +278,7 @@ void main() {
             Text("Child 1"),
             Text("Child 2"),
           ],
-          static: true,
+          isStatic: true,
         ),
       ),
     );
@@ -345,5 +346,52 @@ void main() {
         .forEach((button) {
       expect(button.transparentBackground, isTrue);
     });
+  });
+
+  testWidgets("Null onShare hides share button", (tester) async {
+    await pumpContext(
+      tester,
+      (_) => EntityPage(
+        children: const [],
+        onShare: null,
+        onEdit: () {},
+        onDelete: () {},
+        deleteMessage: "Delete",
+      ),
+      appManager: appManager,
+    );
+
+    // Back, edit, and delete buttons. Share button is hidden.
+    expect(find.byType(FloatingButton), findsNWidgets(3));
+
+    var deleteButton = findFirstWithIcon<FloatingButton>(tester, Icons.delete);
+    expect(deleteButton.padding!.right, paddingSmall);
+
+    expect(find.byIcon(Icons.ios_share), findsNothing);
+    expect(find.byIcon(Icons.share), findsNothing);
+  });
+
+  testWidgets("Non-null onShare shows share button", (tester) async {
+    when(appManager.ioWrapper.isAndroid).thenReturn(false);
+
+    await pumpContext(
+      tester,
+      (_) => EntityPage(
+        children: const [],
+        onShare: () {},
+        onEdit: () {},
+        onDelete: () {},
+        deleteMessage: "Delete",
+      ),
+      appManager: appManager,
+    );
+
+    // Back, edit, delete, and share buttons.
+    expect(find.byType(FloatingButton), findsNWidgets(4));
+
+    var deleteButton = findFirstWithIcon<FloatingButton>(tester, Icons.delete);
+    expect(deleteButton.padding!.right, paddingDefault);
+
+    expect(find.byIcon(Icons.ios_share), findsOneWidget);
   });
 }

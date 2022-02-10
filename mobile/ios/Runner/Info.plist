@@ -30,6 +30,8 @@
 		<string>comgooglemaps</string>
 		<string>waze</string>
 		<string>https</string>
+        <string>instagram</string>
+        <string>twitter</string>
 	</array>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>

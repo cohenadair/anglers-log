@@ -11,6 +11,7 @@ void main() {
 
   setUp(() {
     appManager = StubbedAppManager();
+    when(appManager.ioWrapper.isAndroid).thenReturn(false);
   });
 
   testWidgets("Initial page", (tester) async {

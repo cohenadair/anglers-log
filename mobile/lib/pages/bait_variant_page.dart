@@ -55,7 +55,7 @@ class _BaitVariantPageState extends State<BaitVariantPage> {
             : _baitManager.variant(_bait!, widget.variant.id) ?? widget.variant;
 
         return EntityPage(
-          static: true,
+          isStatic: true,
           padding: insetsZero,
           children: [
             _buildBase(),

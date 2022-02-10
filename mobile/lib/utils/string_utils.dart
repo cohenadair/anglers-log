@@ -52,3 +52,5 @@ bool parseBoolFromInt(String str) {
     return intBool == 1 ? true : false;
   }
 }
+
+String newLineOrEmpty(String input) => input.isEmpty ? "" : "\n";

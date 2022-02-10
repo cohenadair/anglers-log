@@ -28,6 +28,13 @@ Map<String, Map<String, String>> get englishStrings => {
       "default": {
         "appName": "Anglers' Log",
         "hashtag": "#AnglersLogApp",
+        "share_textAndroid": "Shared with #AnglersLogApp for Android.",
+        "share_textApple": "Shared with #AnglersLogApp for iOS.",
+        "share_length": "Length: %s",
+        "share_weight": "Weight: %s",
+        "share_bait": "Bait: %s",
+        "share_baits": "Baits: %s",
+        "share_catches": "Catches: %s",
         "rateDialog_title": "Rate Anglers' Log",
         "rateDialog_description":
             "Please take a moment to write a review of Anglers' Log. All feedback is greatly appreciated!",

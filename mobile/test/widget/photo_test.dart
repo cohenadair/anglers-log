@@ -14,6 +14,7 @@ void main() {
 
   setUp(() {
     appManager = StubbedAppManager();
+    when(appManager.ioWrapper.isAndroid).thenReturn(false);
   });
 
   testWidgets("Invalid image shows placeholder", (tester) async {

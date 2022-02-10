@@ -9,6 +9,8 @@ import 'package:mobile/pages/catch_page.dart';
 import 'package:mobile/res/style.dart';
 import 'package:mobile/trip_manager.dart';
 import 'package:mobile/utils/catch_utils.dart';
+import 'package:mobile/utils/share_utils.dart';
+import 'package:mobile/utils/string_utils.dart';
 import 'package:mobile/widgets/atmosphere_wrap.dart';
 import 'package:mobile/widgets/label_value_list.dart';
 import 'package:mobile/widgets/list_item.dart';
@@ -57,6 +59,7 @@ class TripPage extends StatelessWidget {
           padding: insetsZero,
           onEdit: () => present(context, SaveTripPage.edit(trip)),
           onDelete: () => tripManager.delete(trip.id),
+          onShare: () => _onShare(context, trip),
           deleteMessage: tripManager.deleteMessage(context, trip),
           imageNames: tripManager.allImageNames(trip),
           children: <Widget>[
@@ -236,5 +239,23 @@ class TripPage extends StatelessWidget {
             e.value.toString(),
           ),
         );
+  }
+
+  void _onShare(BuildContext context, Trip trip) {
+    var tripManager = TripManager.of(context);
+    var shareText = "";
+
+    if (trip.hasName()) {
+      shareText += tripManager.name(trip);
+    }
+
+    shareText += newLineOrEmpty(shareText);
+    shareText += trip.elapsedDisplayValue(context);
+
+    shareText += newLineOrEmpty(shareText);
+    shareText += format(
+        Strings.of(context).shareCatches, [tripManager.numberOfCatches(trip)]);
+
+    share(context, tripManager.allImageNames(trip), text: shareText);
   }
 }

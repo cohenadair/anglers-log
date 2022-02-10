@@ -32,4 +32,9 @@ void main() {
     strings.sort(ignoreCaseAlphabeticalComparator);
     expect(strings, ["A", "C", "E", "O", "R", "Z"]);
   });
+
+  test("newLineOrEmpty", () {
+    expect(newLineOrEmpty(""), "");
+    expect(newLineOrEmpty("Test"), "\n");
+  });
 }

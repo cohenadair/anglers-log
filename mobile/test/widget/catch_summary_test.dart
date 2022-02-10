@@ -493,6 +493,8 @@ void main() {
 
     when(appManager.propertiesManager.mapboxApiKey).thenReturn("KEY");
 
+    when(appManager.ioWrapper.isAndroid).thenReturn(false);
+
     stubCatchesByTimestamp();
   });
 

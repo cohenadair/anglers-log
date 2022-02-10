@@ -55,6 +55,20 @@ class Strings {
 
   String get hashtag => _string("hashtag");
 
+  String get shareTextAndroid => _string("share_textAndroid");
+
+  String get shareTextApple => _string("share_textApple");
+
+  String get shareLength => _string("share_length");
+
+  String get shareWeight => _string("share_weight");
+
+  String get shareBait => _string("share_bait");
+
+  String get shareBaits => _string("share_baits");
+
+  String get shareCatches => _string("share_catches");
+
   String get rateDialogTitle => _string("rateDialog_title");
 
   String get rateDialogDescription => _string("rateDialog_description");

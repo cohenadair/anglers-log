@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mobile/utils/share_utils.dart';
 import 'package:quiver/strings.dart';
 
 import '../i18n/strings.dart';
@@ -19,10 +20,15 @@ class EntityPage extends StatefulWidget {
   final String? deleteMessage;
   final VoidCallback? onEdit;
   final VoidCallback? onDelete;
+
+  /// When non-null, a share button is shown in the app bar that allows users
+  /// to share this entity.
+  final VoidCallback? onShare;
+
   final EdgeInsets padding;
 
   /// When true, the underlying [Entity] cannot be modified.
-  final bool static;
+  final bool isStatic;
 
   final List<CustomEntityValue> customEntityValues;
 
@@ -33,10 +39,11 @@ class EntityPage extends StatefulWidget {
     this.deleteMessage,
     this.onEdit,
     this.onDelete,
+    this.onShare,
     this.padding = insetsDefault,
-    this.static = false,
-  })  : assert(static || (isNotEmpty(deleteMessage) && onEdit != null)),
-        assert(static || onDelete != null);
+    this.isStatic = false,
+  })  : assert(isStatic || (isNotEmpty(deleteMessage) && onEdit != null)),
+        assert(isStatic || onDelete != null);
 
   @override
   _EntityPageState createState() => _EntityPageState();
@@ -81,7 +88,7 @@ class _EntityPageState extends State<EntityPage> {
   @override
   void didUpdateWidget(EntityPage oldWidget) {
     super.didUpdateWidget(oldWidget);
-    _calculateIsImageShowing();
+    _isImageShowing = _calculateIsImageShowing();
   }
 
   @override
@@ -106,6 +113,7 @@ class _EntityPageState extends State<EntityPage> {
             actions: [
               _buildEditButton(),
               _buildDeleteButton(),
+              _buildShareButton(),
             ],
             flexibleSpace: FlexibleSpaceBar(
               background: _hasImages ? _buildImages() : null,
@@ -208,7 +216,7 @@ class _EntityPageState extends State<EntityPage> {
   }
 
   Widget _buildEditButton() {
-    if (widget.static) {
+    if (widget.isStatic) {
       return const Empty();
     }
 
@@ -230,7 +238,7 @@ class _EntityPageState extends State<EntityPage> {
   }
 
   Widget _buildDeleteButton() {
-    if (widget.static) {
+    if (widget.isStatic) {
       return const Empty();
     }
 
@@ -239,8 +247,8 @@ class _EntityPageState extends State<EntityPage> {
       child: FloatingButton.icon(
         key: ValueKey<bool>(_isImageShowing),
         icon: Icons.delete,
-        padding: const EdgeInsets.only(
-          right: paddingSmall,
+        padding: EdgeInsets.only(
+          right: widget.onShare == null ? paddingSmall : paddingDefault,
           top: paddingSmall,
         ),
         transparentBackground: !_isImageShowing,
@@ -258,9 +266,27 @@ class _EntityPageState extends State<EntityPage> {
     );
   }
 
-  bool _calculateIsImageShowing() {
-    _isImageShowing = _hasImages;
+  Widget _buildShareButton() {
+    if (widget.onShare == null) {
+      return const Empty();
+    }
 
+    return AnimatedSwitcher(
+      duration: animDurationDefault,
+      child: FloatingButton(
+        key: ValueKey<bool>(_isImageShowing),
+        icon: shareIconData(context),
+        padding: const EdgeInsets.only(
+          right: paddingSmall,
+          top: paddingSmall,
+        ),
+        transparentBackground: !_isImageShowing,
+        onPressed: widget.onShare,
+      ),
+    );
+  }
+
+  bool _calculateIsImageShowing() {
     if (!_hasImages) {
       return false;
     }

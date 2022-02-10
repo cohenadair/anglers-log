@@ -169,6 +169,8 @@ void main() {
         .thenReturn(MeasurementSystem.metric);
     when(appManager.userPreferenceManager.catchWeightSystem)
         .thenReturn(MeasurementSystem.metric);
+
+    when(appManager.ioWrapper.isAndroid).thenReturn(false);
   });
 
   Future<BuildContext> pumpSummary(WidgetTester tester) {
