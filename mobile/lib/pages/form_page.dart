@@ -400,7 +400,7 @@ class _SelectionPageState extends State<_SelectionPage> {
         if (_subscriptionManager.isPro) {
           present(context, const SaveCustomEntityPage());
         } else {
-          present(context, ProPage());
+          present(context, const ProPage());
         }
       },
     );

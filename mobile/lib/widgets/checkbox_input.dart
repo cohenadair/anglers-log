@@ -57,7 +57,7 @@ class _ProCheckboxInputState extends State<ProCheckboxInput> {
         } else if (checked) {
           // Uncheck, since user isn't Pro.
           _setIsChecked(false);
-          present(context, ProPage());
+          present(context, const ProPage());
         } else {
           _setIsChecked(false);
         }

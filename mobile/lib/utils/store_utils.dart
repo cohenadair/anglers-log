@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/cupertino.dart';
 import 'package:mobile/i18n/strings.dart';
 import 'package:mobile/wrappers/io_wrapper.dart';

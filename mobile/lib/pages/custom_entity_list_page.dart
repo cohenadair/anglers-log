@@ -65,7 +65,7 @@ class CustomEntityListPage extends StatelessWidget {
             await customEntityManager.delete(entity.id),
         addPageBuilder: () => subscriptionManager.isPro
             ? const SaveCustomEntityPage()
-            : ProPage(),
+            : const ProPage(),
         editPageBuilder: (entity) => SaveCustomEntityPage.edit(entity),
       ),
     );

@@ -88,7 +88,7 @@ class MorePage extends StatelessWidget {
               context,
               icon: Icons.stars,
               title: Strings.of(context).morePagePro,
-              page: ProPage(),
+              page: const ProPage(),
               presentPage: true,
             ),
             ..._buildRateAndFeedbackItems(context),

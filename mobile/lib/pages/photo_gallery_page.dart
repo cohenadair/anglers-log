@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:mobile/image_manager.dart';
 import 'package:mobile/utils/share_utils.dart';
-import 'package:mobile/widgets/widget.dart';
-import 'package:mobile/wrappers/share_plus_wrapper.dart';
 
 import '../widgets/button.dart';
 import '../widgets/photo.dart';
@@ -28,10 +25,6 @@ class _PhotoGalleryPageState extends State<PhotoGalleryPage> {
   final _transformationController = TransformationController();
   late PageController _controller;
   late String _currentImageName;
-
-  ImageManager get _imageManager => ImageManager.of(context);
-
-  SharePlusWrapper get _shareWrapper => SharePlusWrapper.of(context);
 
   @override
   void initState() {

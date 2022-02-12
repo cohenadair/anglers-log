@@ -71,7 +71,7 @@ class ProBlur extends StatelessWidget {
         const VerticalSpace(paddingDefault),
         Button(
           text: Strings.of(context).proBlurUpgradeButton,
-          onPressed: () => present(context, ProPage()),
+          onPressed: () => present(context, const ProPage()),
         ),
       ],
     );

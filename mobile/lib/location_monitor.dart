@@ -31,7 +31,9 @@ class LocationMonitor {
 
     _lastKnownPosition = await Geolocator.getLastKnownPosition();
     var stream = Geolocator.getPositionStream(
-      distanceFilter: distanceFilterMeters,
+      locationSettings: LocationSettings(
+        distanceFilter: distanceFilterMeters,
+      ),
     );
     stream.listen((position) {
       _lastKnownPosition = position;

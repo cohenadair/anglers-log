@@ -44,8 +44,9 @@ class ReportListPage extends StatelessWidget {
           ),
         ),
         deleteItem: (_, item) => reportManager.delete(item.id),
-        addPageBuilder: () =>
-            subscriptionManager.isPro ? const SaveReportPage() : ProPage(),
+        addPageBuilder: () => subscriptionManager.isPro
+            ? const SaveReportPage()
+            : const ProPage(),
         editPageBuilder: (report) => SaveReportPage.edit(report),
       ),
       pickerSettings: pickerSettings.copyWith(

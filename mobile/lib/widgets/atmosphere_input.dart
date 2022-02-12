@@ -458,7 +458,7 @@ class __AtmosphereInputPageState extends State<_AtmosphereInputPage> {
 
   Future<void> _fetch() async {
     if (_subscriptionManager.isFree) {
-      present(context, ProPage());
+      present(context, const ProPage());
       return;
     }
 
