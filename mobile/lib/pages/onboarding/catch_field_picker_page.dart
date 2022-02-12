@@ -33,7 +33,6 @@ class _CatchFieldPickerPageState extends State<CatchFieldPickerPage> {
     super.initState();
 
     _selectedFields = allCatchFields(context)
-        .where((field) => !field.isRemovable)
         .map((field) => field.id)
         .toList();
   }

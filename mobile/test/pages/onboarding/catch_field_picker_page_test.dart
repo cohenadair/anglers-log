@@ -74,8 +74,8 @@ void main() {
 
     var result =
         verify(appManager.userPreferenceManager.setCatchFieldIds(captureAny));
-    // 2 required + 1 selected
-    expect((result.captured.first as List).length, 3);
+    // 20 pre-selected, minus 1 that was deselected
+    expect((result.captured.first as List).length, 19);
   });
 
   testWidgets("Item shows correct content", (tester) async {
