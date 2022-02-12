@@ -105,6 +105,7 @@ class MorePage extends StatelessWidget {
               appUrl: _twitterAppUrl,
               webUrl: _twitterWebUrl,
             ),
+            const MinDivider(),
             _buildPageItem(
               context,
               icon: Icons.settings,
@@ -136,7 +137,7 @@ class MorePage extends StatelessWidget {
     );
 
     if (feedbackKey == null) {
-      return [rateItem, feedbackItem];
+      return [feedbackItem, rateItem];
     }
 
     var borderSide = const BorderSide(
