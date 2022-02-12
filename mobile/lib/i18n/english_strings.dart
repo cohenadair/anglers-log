@@ -365,11 +365,12 @@ Map<String, Map<String, String>> get englishStrings => {
         "trip_catchesPerBait": "Catches Per Bait",
         "trip_skunked": "Skunked",
         "settingsPage_title": "Settings",
-        "settingsPage_fetchAtmosphereTitle": "Auto-fetch weather",
+        "settingsPage_fetchAtmosphereTitle": "Auto-fetch Weather",
         "settingsPage_fetchAtmosphereDescription":
             "Automatically fetch atmosphere and weather data when adding new catches.",
         "settingsPage_logout": "Logout",
         "settingsPage_logoutConfirmMessage": "Are you sure you want to logout?",
+        "settingsPage_about": "About, Terms, and Privacy",
         "unitsPage_title": "Measurement Units",
         "unitsPage_catchLengthFractionalInches": "Fractional inches (%s)",
         "unitsPage_catchLengthInches": "Inches (%s)",
@@ -939,5 +940,7 @@ Map<String, Map<String, String>> get englishStrings => {
         "asyncFeedback_sendReport": "Send Report",
         "addAnything_title": "Add New",
         "proBlur_upgradeButton": "Upgrade",
+        "aboutPage_version": "Version",
+        "aboutPage_privacy": "Privacy Policy",
       },
     };

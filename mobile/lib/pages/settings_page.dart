@@ -8,6 +8,7 @@ import '../utils/page_utils.dart';
 import '../widgets/checkbox_input.dart';
 import '../widgets/list_item.dart';
 import '../widgets/widget.dart';
+import 'about_page.dart';
 import 'units_page.dart';
 
 class SettingsPage extends StatefulWidget {
@@ -28,10 +29,10 @@ class _SettingsPageState extends State<SettingsPage> {
       body: ListView(
         children: <Widget>[
           _buildFetchAtmosphere(context),
-          const MinDivider(),
           _buildUnits(context),
-          const MinDivider(),
           _buildLegacyImport(context),
+          const MinDivider(),
+          _buildAbout(),
         ],
       ),
     );
@@ -62,6 +63,15 @@ class _SettingsPageState extends State<SettingsPage> {
       leading: const Icon(Icons.cloud_download),
       title: Text(Strings.of(context).importPageMoreTitle),
       onTap: () => present(context, ImportPage()),
+    );
+  }
+
+  Widget _buildAbout() {
+    return ListItem(
+      title: Text(Strings.of(context).settingsPageAbout),
+      leading: const Icon(CustomIcons.catches),
+      trailing: RightChevronIcon(),
+      onTap: () => push(context, const AboutPage()),
     );
   }
 }

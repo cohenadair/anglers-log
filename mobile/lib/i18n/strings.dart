@@ -768,6 +768,8 @@ class Strings {
   String get settingsPageFetchAtmosphereDescription =>
       _string("settingsPage_fetchAtmosphereDescription");
 
+  String get settingsPageAbout => _string("settingsPage_about");
+
   String get unitsPageTitle => _string("unitsPage_title");
 
   String get unitsPageCatchLengthCentimeters =>
@@ -1914,6 +1916,10 @@ class Strings {
   String get addAnythingTitle => _string("addAnything_title");
 
   String get proBlurUpgradeButton => _string("proBlur_upgradeButton");
+
+  String get aboutPageVersion => _string("aboutPage_version");
+
+  String get aboutPagePrivacy => _string("aboutPage_privacy");
 }
 
 class StringsDelegate extends LocalizationsDelegate<Strings> {
