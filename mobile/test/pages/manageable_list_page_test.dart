@@ -365,6 +365,8 @@ void main() {
             deleteWidget: deleteWidget,
             deleteItem: deleteItem,
             editPageBuilder: (_) => const Empty(),
+            addPageBuilder: null,
+            onAddButtonPressed: null,
           ),
           itemBuilder: defaultItemBuilder,
           pickerSettings: ManageableListPagePickerSettings<String>(
@@ -1589,5 +1591,25 @@ void main() {
     expect(find.text("Bass"), findsNothing);
     expect(find.text("Smallmouth"), findsNothing);
     expect(find.byType(WatermarkLogo), findsOneWidget);
+  });
+
+  testWidgets("onAddButtonPressed invoked", (tester) async {
+    var invoked = false;
+    await tester.pumpWidget(
+      Testable(
+        (_) => ManageableListPage<String>(
+          itemManager: ManageableListPageItemManager<String>(
+            loadItems: loadItems,
+            deleteWidget: deleteWidget,
+            deleteItem: deleteItem,
+            onAddButtonPressed: () => invoked = true,
+          ),
+          itemBuilder: defaultItemBuilder,
+        ),
+      ),
+    );
+
+    await tapAndSettle(tester, find.byIcon(Icons.add));
+    expect(invoked, isTrue);
   });
 }

@@ -4,9 +4,9 @@ import 'package:mobile/res/style.dart';
 import 'package:mobile/widgets/widget.dart';
 import 'package:quiver/strings.dart';
 
-Future<void> showOurBottomSheet(
+Future<T?> showOurBottomSheet<T>(
     BuildContext context, Widget Function(BuildContext) builder) {
-  return showModalBottomSheet<void>(
+  return showModalBottomSheet<T?>(
     isScrollControlled: true,
     useRootNavigator: true,
     context: context,

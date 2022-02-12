@@ -3,6 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/utils/date_time_utils.dart';
 import 'package:mockito/mockito.dart';
 
+import '../mocks/mocks.mocks.dart';
 import '../mocks/stubbed_app_manager.dart';
 import '../test_utils.dart';
 
@@ -626,5 +627,57 @@ void main() {
         "3225m 30s",
       );
     });
+  });
+
+  testWidgets("isFrequencyTimerReady timer is null", (tester) async {
+    var timeManager = MockTimeManager();
+    when(timeManager.msSinceEpoch).thenReturn(0);
+
+    var invoked = false;
+    expect(
+      isFrequencyTimerReady(
+        timeManager: timeManager,
+        timerStartedAt: null,
+        setTimer: (_) => invoked = true,
+        frequency: 1000,
+      ),
+      isFalse,
+    );
+
+    expect(invoked, isTrue);
+    verify(timeManager.msSinceEpoch).called(1);
+  });
+
+  testWidgets("isFrequencyTimerReady not enough time has passed",
+      (tester) async {
+    var timeManager = MockTimeManager();
+    when(timeManager.msSinceEpoch).thenReturn(1500);
+
+    expect(
+      isFrequencyTimerReady(
+        timeManager: timeManager,
+        timerStartedAt: 1000,
+        setTimer: (_) {},
+        frequency: 1000,
+      ),
+      isFalse,
+    );
+
+    verify(timeManager.msSinceEpoch).called(1);
+  });
+
+  testWidgets("isFrequencyTimerReady returns true", (tester) async {
+    var timeManager = MockTimeManager();
+    when(timeManager.msSinceEpoch).thenReturn(10000);
+
+    expect(
+      isFrequencyTimerReady(
+        timeManager: timeManager,
+        timerStartedAt: 1000,
+        setTimer: (_) {},
+        frequency: 1000,
+      ),
+      isTrue,
+    );
   });
 }

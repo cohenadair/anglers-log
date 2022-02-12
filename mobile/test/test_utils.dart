@@ -8,6 +8,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/app_manager.dart';
 import 'package:mobile/i18n/strings.dart';
 import 'package:mobile/res/style.dart';
+import 'package:mobile/widgets/button.dart';
 import 'package:mobile/widgets/checkbox_input.dart';
 import 'package:mobile/widgets/list_item.dart';
 import 'package:mobile/widgets/widget.dart';
@@ -147,6 +148,19 @@ MockStream<T> createMockStreamWithSubscription<T>() {
   var streamSubscription = MockStreamSubscription<T>();
   when(stream.listen(any)).thenReturn(streamSubscription);
   return stream;
+}
+
+Future<void> showPresentedWidget(WidgetTester tester,
+    StubbedAppManager appManager, void Function(BuildContext) showSheet) async {
+  await pumpContext(
+    tester,
+    (context) => Button(
+      text: "Test",
+      onPressed: () => showSheet(context),
+    ),
+    appManager: appManager,
+  );
+  await tapAndSettle(tester, find.text("TEST"));
 }
 
 T findFirst<T>(WidgetTester tester) => tester.firstWidget(find.byType(T)) as T;

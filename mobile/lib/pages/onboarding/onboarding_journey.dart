@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:mobile/i18n/strings.dart';
+import 'package:mobile/pages/onboarding/onboarding_pro_page.dart';
+import 'package:mobile/subscription_manager.dart';
 
 import '../../app_manager.dart';
 import '../../channels/migration_channel.dart';
@@ -33,6 +36,7 @@ class _OnboardingJourneyState extends State<OnboardingJourney> {
   static const _routeManageFields = "manage_fields";
   static const _routeLocationPermission = "location_permission";
   static const _routeFeedback = "feedback";
+  static const _routePro = "pro";
 
   static const _log = Log("OnboardingJourney");
 
@@ -40,6 +44,9 @@ class _OnboardingJourneyState extends State<OnboardingJourney> {
 
   PermissionHandlerWrapper get _permissionHandlerWrapper =>
       PermissionHandlerWrapper.of(context);
+
+  SubscriptionManager get _subscriptionManager =>
+      SubscriptionManager.of(context);
 
   @override
   Widget build(BuildContext context) {
@@ -70,6 +77,21 @@ class _OnboardingJourneyState extends State<OnboardingJourney> {
         } else if (name == _routeFeedback) {
           return MaterialPageRoute(
             builder: (context) => HowToFeedbackPage(
+              nextLabel: _subscriptionManager.isFree
+                  ? Strings.of(context).next
+                  : Strings.of(context).finish,
+              onNext: () {
+                if (_subscriptionManager.isFree) {
+                  Navigator.of(context).pushNamed(_routePro);
+                } else {
+                  widget.onFinished();
+                }
+              },
+            ),
+          );
+        } else if (name == _routePro) {
+          return MaterialPageRoute(
+            builder: (context) => OnboardingProPage(
               onNext: widget.onFinished,
             ),
           );

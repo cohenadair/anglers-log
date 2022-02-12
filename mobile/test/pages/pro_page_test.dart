@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/pages/pro_page.dart';
+import 'package:mobile/pages/scroll_page.dart';
 import 'package:mobile/subscription_manager.dart';
 import 'package:mobile/widgets/widget.dart';
 import 'package:mockito/mockito.dart';
@@ -49,7 +50,7 @@ void main() {
     );
 
     await tester.pumpWidget(Testable(
-      (_) => ProPage(),
+      (_) => const ProPage(),
       appManager: appManager,
     ));
 
@@ -77,7 +78,7 @@ void main() {
         (_) => Future.delayed(const Duration(milliseconds: 50), () {}));
 
     await tester.pumpWidget(Testable(
-      (_) => ProPage(),
+      (_) => const ProPage(),
       appManager: appManager,
     ));
 
@@ -102,7 +103,7 @@ void main() {
     when(appManager.subscriptionManager.isPro).thenReturn(true);
 
     await tester.pumpWidget(Testable(
-      (_) => ProPage(),
+      (_) => const ProPage(),
       appManager: appManager,
     ));
 
@@ -115,7 +116,7 @@ void main() {
         .thenAnswer((_) => Future.value(null));
 
     await tester.pumpWidget(Testable(
-      (_) => ProPage(),
+      (_) => const ProPage(),
       appManager: appManager,
     ));
 
@@ -143,7 +144,7 @@ void main() {
             () => RestoreSubscriptionResult.success));
 
     await tester.pumpWidget(Testable(
-      (_) => ProPage(),
+      (_) => const ProPage(),
       appManager: appManager,
     ));
 
@@ -181,7 +182,7 @@ void main() {
             () => RestoreSubscriptionResult.noSubscriptionsFound));
 
     await tester.pumpWidget(Testable(
-      (_) => ProPage(),
+      (_) => const ProPage(),
       appManager: appManager,
     ));
 
@@ -223,7 +224,7 @@ void main() {
             () => RestoreSubscriptionResult.noSubscriptionsFound));
 
     await tester.pumpWidget(Testable(
-      (_) => ProPage(),
+      (_) => const ProPage(),
       appManager: appManager,
     ));
 
@@ -265,7 +266,7 @@ void main() {
             () => RestoreSubscriptionResult.error));
 
     await tester.pumpWidget(Testable(
-      (_) => ProPage(),
+      (_) => const ProPage(),
       appManager: appManager,
     ));
 
@@ -289,5 +290,25 @@ void main() {
           "connected to the internet and try again."),
       findsOneWidget,
     );
+  });
+
+  testWidgets("Embedded in scroll view", (tester) async {
+    await pumpContext(
+      tester,
+      (_) => const ProPage(isEmbeddedInScrollPage: true),
+      appManager: appManager,
+    );
+
+    expect(find.byType(ScrollPage), findsOneWidget);
+  });
+
+  testWidgets("Not embedded in scroll view", (tester) async {
+    await pumpContext(
+      tester,
+      (_) => const ProPage(isEmbeddedInScrollPage: false),
+      appManager: appManager,
+    );
+
+    expect(find.byType(ScrollPage), findsNothing);
   });
 }

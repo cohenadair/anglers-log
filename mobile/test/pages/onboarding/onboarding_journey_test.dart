@@ -7,6 +7,7 @@ import 'package:mobile/pages/onboarding/how_to_manage_fields_page.dart';
 import 'package:mobile/pages/onboarding/location_permission_page.dart';
 import 'package:mobile/pages/onboarding/migration_page.dart';
 import 'package:mobile/pages/onboarding/onboarding_journey.dart';
+import 'package:mobile/pages/onboarding/onboarding_pro_page.dart';
 import 'package:mobile/widgets/button.dart';
 import 'package:mockito/mockito.dart';
 
@@ -161,5 +162,40 @@ void main() {
       ),
     );
     expect(find.byType(CatchFieldPickerPage), findsOneWidget);
+  });
+
+  testWidgets("ProPage shown", (tester) async {
+    when(appManager.subscriptionManager.isFree).thenReturn(true);
+    when(appManager.subscriptionManager.isPro).thenReturn(false);
+    when(appManager.subscriptionManager.subscriptions())
+        .thenAnswer((_) => Future.value(null));
+
+    when(appManager.permissionHandlerWrapper.isLocationGranted)
+        .thenAnswer((_) => Future.value(true));
+
+    var finished = false;
+    await tester.pumpWidget(
+      Testable(
+        (_) => OnboardingJourney(
+          onFinished: () => finished = true,
+          legacyJsonResult: null,
+        ),
+        appManager: appManager,
+      ),
+    );
+
+    expect(find.byType(CatchFieldPickerPage), findsOneWidget);
+    await tapAndSettle(tester, find.text("NEXT"));
+
+    expect(find.byType(HowToManageFieldsPage), findsOneWidget);
+    await tapAndSettle(tester, find.text("NEXT"));
+
+    expect(find.byType(HowToFeedbackPage), findsOneWidget);
+    await tapAndSettle(tester, find.text("NEXT"));
+
+    expect(find.byType(OnboardingProPage), findsOneWidget);
+    await tapAndSettle(tester, find.text("NOT NOW"));
+
+    expect(finished, isTrue);
   });
 }

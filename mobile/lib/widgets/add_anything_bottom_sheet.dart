@@ -1,23 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/i18n/strings.dart';
-import 'package:mobile/pages/pro_page.dart';
-import 'package:mobile/subscription_manager.dart';
 import 'package:mobile/utils/entity_utils.dart';
 import 'package:mobile/widgets/our_bottom_sheet.dart';
 import 'package:mobile/widgets/widget.dart';
 
 import '../res/dimen.dart';
-import '../utils/page_utils.dart';
 
-/// A widget that shows a grid of everything the user can add to their log. An
-/// [AddAnythingBottomSheet] is meant to be shown inside a bottom sheet using
-/// [showOurBottomSheet].
-class AddAnythingBottomSheet extends StatelessWidget {
+/// Shows a bottom sheet widget with a grid of everything the user can add to
+/// their log. The returned [EntitySpec] object represents the item that was
+/// picked, or null if no item was picked.
+Future<EntitySpec?> showAddAnythingBottomSheet(BuildContext context) {
+  return showOurBottomSheet<EntitySpec?>(
+    context,
+    (context) => const _AddAnythingBottomSheet(),
+  );
+}
+
+class _AddAnythingBottomSheet extends StatelessWidget {
   // The smallest width each item can be such that all text remains on 2 lines
   // (in English).
   static const _itemSize = 61.0;
 
-  const AddAnythingBottomSheet();
+  const _AddAnythingBottomSheet();
 
   @override
   Widget build(BuildContext context) {
@@ -37,18 +41,8 @@ class AddAnythingBottomSheet extends StatelessWidget {
       return const Empty();
     }
 
-    var subscriptionManager = SubscriptionManager.of(context);
-
     return InkWell(
-      onTap: () {
-        Navigator.of(context).pop();
-        present(
-          context,
-          spec.isProOnly && subscriptionManager.isFree
-              ? ProPage()
-              : spec.savePageBuilder(context),
-        );
-      },
+      onTap: () => Navigator.of(context).pop(spec),
       child: Padding(
         padding: insetsDefault,
         child: SizedBox(

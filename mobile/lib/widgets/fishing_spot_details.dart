@@ -213,12 +213,8 @@ class _FishingSpotActions extends StatelessWidget {
     return ChipButton(
       label: Strings.of(context).mapPageAddCatch,
       icon: Icons.add,
-      onPressed: () => present(
-        context,
-        AddCatchJourney(
-          fishingSpot: fishingSpot,
-        ),
-      ),
+      onPressed: () =>
+          AddCatchJourney.presentIn(context, fishingSpot: fishingSpot),
     );
   }
 

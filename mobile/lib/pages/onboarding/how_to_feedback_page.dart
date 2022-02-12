@@ -14,9 +14,11 @@ import 'onboarding_page.dart';
 
 class HowToFeedbackPage extends StatefulWidget {
   final VoidCallback? onNext;
+  final String nextLabel;
 
   const HowToFeedbackPage({
     this.onNext,
+    required this.nextLabel,
   });
 
   @override
@@ -50,7 +52,7 @@ class _HowToFeedbackPageState extends State<HowToFeedbackPage> {
   @override
   Widget build(BuildContext context) {
     return OnboardingPage(
-      nextButtonText: Strings.of(context).finish,
+      nextButtonText: widget.nextLabel,
       onPressedNextButton: widget.onNext,
       children: <Widget>[
         const VerticalSpace(paddingDefault),

@@ -57,8 +57,6 @@ void main() {
           .thenReturn((Duration.millisecondsPerDay * (365 / 4) + 10).toInt());
 
       await tapAndSettle(tester, find.byType(Button));
-
-      verify(appManager.userPreferenceManager.rateTimerStartedAt).called(2);
       expect(find.byType(AlertDialog), findsNothing);
     });
 
@@ -101,7 +99,6 @@ void main() {
 
       await tapAndSettle(tester, find.byType(Button));
 
-      verify(appManager.userPreferenceManager.rateTimerStartedAt).called(2);
       expect(find.byType(AlertDialog), findsOneWidget);
 
       when(appManager.urlLauncherWrapper.canLaunch(any))
@@ -115,7 +112,6 @@ void main() {
       when(appManager.userPreferenceManager.didRateApp).thenReturn(true);
       await tapAndSettle(tester, find.byType(Button));
 
-      verifyNever(appManager.userPreferenceManager.rateTimerStartedAt);
       expect(find.byType(AlertDialog), findsNothing);
     });
 
@@ -139,7 +135,6 @@ void main() {
 
       await tapAndSettle(tester, find.byType(Button));
 
-      verify(appManager.userPreferenceManager.rateTimerStartedAt).called(2);
       expect(find.byType(AlertDialog), findsOneWidget);
 
       await tapAndSettle(tester, find.text("LATER"));

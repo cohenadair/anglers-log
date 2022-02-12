@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/pages/onboarding/onboarding_page.dart';
 import 'package:mobile/widgets/button.dart';
+import 'package:mobile/widgets/widget.dart';
 
 import '../../test_utils.dart';
 
@@ -72,5 +73,23 @@ void main() {
       ),
     );
     expect(find.byType(BackButtonIcon), findsOneWidget);
+  });
+
+  testWidgets("App bar is shown", (tester) async {
+    await tester.pumpWidget(
+      Testable(
+        (_) => const OnboardingPage(showAppBar: true),
+      ),
+    );
+    expect(find.byType(TransparentAppBar), findsOneWidget);
+  });
+
+  testWidgets("App bar is hidden", (tester) async {
+    await tester.pumpWidget(
+      Testable(
+        (_) => const OnboardingPage(showAppBar: false),
+      ),
+    );
+    expect(find.byType(TransparentAppBar), findsNothing);
   });
 }

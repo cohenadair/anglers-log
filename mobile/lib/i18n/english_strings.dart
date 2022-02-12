@@ -559,6 +559,7 @@ Map<String, Map<String, String>> get englishStrings => {
         "onboardingJourney_howToFeedbackTitle": "Send Feedback",
         "onboardingJourney_howToFeedbackDescription":
             "Report a problem, suggest a feature, or send us feedback anytime. We'd love to hear from you!",
+        "onboardingJourney_notNow": "Not Now",
         "emptyListPlaceholder_noResultsTitle": "No results found",
         "emptyListPlaceholder_noResultsDescription":
             "Please adjust your search filter to find what you're looking for.",

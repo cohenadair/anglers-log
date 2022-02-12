@@ -12,6 +12,7 @@ class OnboardingPage extends StatelessWidget {
   final String? nextButtonText;
   final bool nextButtonEnabled;
   final bool showBackButton;
+  final bool showAppBar;
   final VoidCallback? onPressedNextButton;
 
   const OnboardingPage({
@@ -20,16 +21,19 @@ class OnboardingPage extends StatelessWidget {
     this.nextButtonText,
     this.nextButtonEnabled = true,
     this.showBackButton = true,
+    this.showAppBar = true,
     this.onPressedNextButton,
   });
 
   @override
   Widget build(BuildContext context) {
     return ScrollPage(
-      appBar: TransparentAppBar(
-        context,
-        leading: const Empty(),
-      ),
+      appBar: showAppBar
+          ? TransparentAppBar(
+              context,
+              leading: const Empty(),
+            )
+          : null,
       padding: padding,
       footer: _buildFooter(context),
       children: children,

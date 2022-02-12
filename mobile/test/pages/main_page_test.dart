@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/catch_manager.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
-import 'package:mobile/widgets/add_anything_bottom_sheet.dart';
 import 'package:mobile/pages/main_page.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mockito/mockito.dart';
@@ -97,7 +96,7 @@ void main() {
     await tapAndSettle(tester, find.text("Add"));
     // Indexed stack should stay at the same index.
     expect(findFirst<IndexedStack>(tester).index, 4);
-    expect(find.byType(AddAnythingBottomSheet), findsOneWidget);
+    expect(find.text("Add New"), findsOneWidget);
   });
 
   testWidgets("Navigation state is persisted when switching tabs",
@@ -136,44 +135,5 @@ void main() {
 
     await tapAndSettle(tester, find.byIcon(Icons.more_horiz));
     expect(find.text("Bait Categories (0)"), findsNothing);
-  });
-
-  testWidgets("Rate dialog shown when catches updated", (tester) async {
-    when(appManager.baitManager.formatNameWithCategory(any)).thenReturn("");
-
-    var species = Species()
-      ..id = randomId()
-      ..name = "Bass";
-    when(appManager.speciesManager.entity(any)).thenReturn(species);
-
-    var catchManager = CatchManager(appManager.app);
-    when(appManager.app.catchManager).thenReturn(catchManager);
-
-    await tester.pumpWidget(Testable(
-      (_) => MainPage(),
-      appManager: appManager,
-    ));
-    // Let map timers settle.
-    await tester.pumpAndSettle(const Duration(milliseconds: 300));
-    await mapController.finishLoading(tester);
-
-    var quarterDuration = Duration.millisecondsPerDay * (365 / 4);
-    when(appManager.timeManager.msSinceEpoch)
-        .thenReturn((quarterDuration + 10).toInt());
-    when(appManager.userPreferenceManager.didRateApp).thenReturn(false);
-    when(appManager.userPreferenceManager.rateTimerStartedAt).thenReturn(0);
-    when(appManager.imageManager.save(any, compress: anyNamed("compress")))
-        .thenAnswer((_) => Future.value([]));
-    when(appManager.localDatabaseManager.insertOrReplace(any, any))
-        .thenAnswer((_) => Future.value(true));
-
-    catchManager.addOrUpdate(Catch()
-      ..id = randomId()
-      ..timestamp = Int64(DateTime.now().millisecondsSinceEpoch)
-      ..speciesId = species.id);
-
-    await tester.pumpAndSettle();
-
-    expect(find.byType(AlertDialog), findsOneWidget);
   });
 }

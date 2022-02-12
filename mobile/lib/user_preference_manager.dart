@@ -26,6 +26,7 @@ class UserPreferenceManager extends PreferenceManager {
   static const _keyAutoFetchAtmosphere = "auto_fetch_atmosphere";
 
   static const _keyRateTimerStartedAt = "rate_timer_started_at";
+  static const _keyProTimerStartedAt = "pro_timer_started_at";
   static const _keyDidRateApp = "did_rate_app";
   static const _keyDidOnboard = "did_onboard";
   static const _keyDidSetupBackup = "did_setup_backup";
@@ -128,6 +129,11 @@ class UserPreferenceManager extends PreferenceManager {
       put(_keyRateTimerStartedAt, timestamp);
 
   int? get rateTimerStartedAt => preferences[_keyRateTimerStartedAt];
+
+  Future<void> setProTimerStartedAt(int? timestamp) =>
+      put(_keyProTimerStartedAt, timestamp);
+
+  int? get proTimerStartedAt => preferences[_keyProTimerStartedAt];
 
   // ignore: avoid_positional_boolean_parameters
   Future<void> setDidRateApp(bool rated) => put(_keyDidRateApp, rated);

@@ -5,6 +5,7 @@ import 'package:quiver/time.dart';
 
 import '../app_manager.dart';
 import '../i18n/strings.dart';
+import '../time_manager.dart';
 import '../utils/string_utils.dart';
 
 const monthFormat = "MMMM";
@@ -400,6 +401,27 @@ String formatDuration({
   }
 
   return result;
+}
+
+bool isFrequencyTimerReady({
+  required TimeManager timeManager,
+  required int? timerStartedAt,
+  required void Function(int?) setTimer,
+  required int frequency,
+}) {
+  // If the timer hasn't started yet, start it now and exit early. This prevents
+  // the handler from being called prematurely.
+  if (timerStartedAt == null) {
+    setTimer(timeManager.msSinceEpoch);
+    return false;
+  }
+
+  // If enough time hasn't passed, exit early.
+  if (timeManager.msSinceEpoch - timerStartedAt <= frequency) {
+    return false;
+  }
+
+  return true;
 }
 
 extension DateTimes on DateTime {

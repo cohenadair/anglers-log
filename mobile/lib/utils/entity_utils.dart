@@ -8,19 +8,24 @@ import 'package:mobile/pages/body_of_water_list_page.dart';
 import 'package:mobile/pages/catch_list_page.dart';
 import 'package:mobile/pages/custom_entity_list_page.dart';
 import 'package:mobile/pages/method_list_page.dart';
+import 'package:mobile/pages/pro_page.dart';
 import 'package:mobile/pages/save_angler_page.dart';
 import 'package:mobile/pages/save_bait_category_page.dart';
 import 'package:mobile/pages/save_bait_page.dart';
 import 'package:mobile/pages/save_body_of_water_page.dart';
 import 'package:mobile/pages/save_custom_entity_page.dart';
 import 'package:mobile/pages/save_method_page.dart';
+import 'package:mobile/pages/save_species_page.dart';
 import 'package:mobile/pages/save_trip_page.dart';
 import 'package:mobile/pages/save_water_clarity_page.dart';
 import 'package:mobile/pages/species_list_page.dart';
 import 'package:mobile/pages/trip_list_page.dart';
 import 'package:mobile/pages/water_clarity_list_page.dart';
+import 'package:mobile/subscription_manager.dart';
 import 'package:mobile/user_preference_manager.dart';
 import 'package:mobile/widgets/widget.dart';
+
+import 'page_utils.dart';
 
 @immutable
 class EntitySpec {
@@ -28,18 +33,16 @@ class EntitySpec {
   final String Function(BuildContext) singularName;
   final String Function(BuildContext) pluralName;
   final Widget Function(BuildContext) listPageBuilder;
-  final Widget Function(BuildContext) savePageBuilder;
+  final void Function(BuildContext) presentSavePage;
   final bool Function(BuildContext) isTracked;
-  final bool isProOnly;
 
   const EntitySpec({
     required this.singularName,
     required this.pluralName,
     required this.icon,
     required this.listPageBuilder,
-    required this.savePageBuilder,
+    required this.presentSavePage,
     required this.isTracked,
-    this.isProOnly = false,
   });
 }
 
@@ -61,7 +64,8 @@ var anglersEntitySpec = EntitySpec(
   pluralName: (context) => Strings.of(context).entityNameAnglers,
   icon: iconAngler,
   listPageBuilder: (_) => const AnglerListPage(),
-  savePageBuilder: (_) => const SaveAnglerPage(),
+  presentSavePage: (context) =>
+      _presentSavePage(context, false, const SaveAnglerPage()),
   isTracked: (context) => UserPreferenceManager.of(context).isTrackingAnglers,
 );
 
@@ -70,7 +74,8 @@ var baitCategoriesEntitySpec = EntitySpec(
   pluralName: (context) => Strings.of(context).entityNameBaitCategories,
   icon: iconBaitCategories,
   listPageBuilder: (_) => const BaitCategoryListPage(),
-  savePageBuilder: (_) => const SaveBaitCategoryPage(),
+  presentSavePage: (context) =>
+      _presentSavePage(context, false, const SaveBaitCategoryPage()),
   isTracked: (context) => UserPreferenceManager.of(context).isTrackingBaits,
 );
 
@@ -79,7 +84,8 @@ var baitsEntitySpec = EntitySpec(
   pluralName: (context) => Strings.of(context).entityNameBaits,
   icon: iconBait,
   listPageBuilder: (_) => const BaitListPage(),
-  savePageBuilder: (_) => const SaveBaitPage(),
+  presentSavePage: (context) =>
+      _presentSavePage(context, false, const SaveBaitPage()),
   isTracked: (context) => UserPreferenceManager.of(context).isTrackingBaits,
 );
 
@@ -88,7 +94,8 @@ var bodiesOfWaterEntitySpec = EntitySpec(
   pluralName: (context) => Strings.of(context).entityNameBodiesOfWater,
   icon: iconBodyOfWater,
   listPageBuilder: (_) => const BodyOfWaterListPage(),
-  savePageBuilder: (_) => const SaveBodyOfWaterPage(),
+  presentSavePage: (context) =>
+      _presentSavePage(context, false, const SaveBodyOfWaterPage()),
   isTracked: (context) =>
       UserPreferenceManager.of(context).isTrackingFishingSpots,
 );
@@ -98,7 +105,7 @@ var catchesEntitySpec = EntitySpec(
   pluralName: (context) => Strings.of(context).entityNameCatches,
   icon: iconCatch,
   listPageBuilder: (_) => const CatchListPage(),
-  savePageBuilder: (_) => const AddCatchJourney(),
+  presentSavePage: (context) => AddCatchJourney.presentIn(context),
   isTracked: (context) =>
       UserPreferenceManager.of(context).isTrackingFishingSpots,
 );
@@ -108,9 +115,9 @@ var customFieldsEntitySpec = EntitySpec(
   pluralName: (context) => Strings.of(context).entityNameCustomFields,
   icon: iconCustomField,
   listPageBuilder: (_) => const CustomEntityListPage(),
-  savePageBuilder: (_) => const SaveCustomEntityPage(),
+  presentSavePage: (context) =>
+      _presentSavePage(context, true, const SaveCustomEntityPage()),
   isTracked: (_) => true,
-  isProOnly: true,
 );
 
 var fishingMethodsEntitySpec = EntitySpec(
@@ -118,7 +125,8 @@ var fishingMethodsEntitySpec = EntitySpec(
   pluralName: (context) => Strings.of(context).entityNameFishingMethods,
   icon: iconMethod,
   listPageBuilder: (_) => const MethodListPage(),
-  savePageBuilder: (_) => const SaveMethodPage(),
+  presentSavePage: (context) =>
+      _presentSavePage(context, false, const SaveMethodPage()),
   isTracked: (context) => UserPreferenceManager.of(context).isTrackingMethods,
 );
 
@@ -127,7 +135,8 @@ var speciesEntitySpec = EntitySpec(
   pluralName: (context) => Strings.of(context).entityNameSpecies,
   icon: iconSpecies,
   listPageBuilder: (_) => const SpeciesListPage(),
-  savePageBuilder: (_) => const SpeciesListPage(),
+  presentSavePage: (context) =>
+      _presentSavePage(context, false, const SaveSpeciesPage()),
   isTracked: (context) => UserPreferenceManager.of(context).isTrackingSpecies,
 );
 
@@ -136,7 +145,8 @@ var tripsEntitySpec = EntitySpec(
   pluralName: (context) => Strings.of(context).entityNameTrips,
   icon: iconTrip,
   listPageBuilder: (_) => const TripListPage(),
-  savePageBuilder: (_) => const SaveTripPage(),
+  presentSavePage: (context) =>
+      _presentSavePage(context, false, const SaveTripPage()),
   isTracked: (_) => true,
 );
 
@@ -145,7 +155,17 @@ var waterClaritiesEntitySpec = EntitySpec(
   pluralName: (context) => Strings.of(context).entityNameWaterClarities,
   icon: iconWaterClarity,
   listPageBuilder: (_) => const WaterClarityListPage(),
-  savePageBuilder: (_) => const SaveWaterClarityPage(),
+  presentSavePage: (context) =>
+      _presentSavePage(context, false, const SaveWaterClarityPage()),
   isTracked: (context) =>
       UserPreferenceManager.of(context).isTrackingWaterClarities,
 );
+
+void _presentSavePage(BuildContext context, bool isPro, Widget savePage) {
+  present(
+    context,
+    isPro && SubscriptionManager.of(context).isFree
+        ? const ProPage()
+        : savePage,
+  );
+}

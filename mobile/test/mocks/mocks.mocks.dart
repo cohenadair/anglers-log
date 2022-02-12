@@ -3946,6 +3946,11 @@ class MockUserPreferenceManager extends _i1.Mock
               returnValueForMissingStub: Future<void>.value())
       as _i59.Future<void>);
   @override
+  _i59.Future<void> setProTimerStartedAt(int? timestamp) => (super.noSuchMethod(
+      Invocation.method(#setProTimerStartedAt, [timestamp]),
+      returnValue: Future<void>.value(),
+      returnValueForMissingStub: Future<void>.value()) as _i59.Future<void>);
+  @override
   _i59.Future<void> setDidRateApp(bool? rated) => (super.noSuchMethod(
       Invocation.method(#setDidRateApp, [rated]),
       returnValue: Future<void>.value(),

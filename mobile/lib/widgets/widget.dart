@@ -544,12 +544,14 @@ class TransparentAppBar extends AppBar {
   TransparentAppBar(
     BuildContext context, {
     Widget? leading,
+    VoidCallback? onCloseOverride,
   }) : super(
           backgroundColor: Colors.transparent,
           elevation: 0.0,
           leading: leading ??
               CloseButton(
                 color: Theme.of(context).primaryColor,
+                onPressed: onCloseOverride,
               ),
           systemOverlayStyle: SystemUiOverlayStyle.dark,
         );

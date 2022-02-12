@@ -1,15 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/widgets/ad_banner_widget.dart';
-import 'package:mobile/widgets/our_bottom_sheet.dart';
 
-import '../catch_manager.dart';
-import '../entity_manager.dart';
 import '../i18n/strings.dart';
-import '../model/gen/anglerslog.pb.dart';
 import '../pages/catch_list_page.dart';
 import '../pages/more_page.dart';
 import '../pages/stats_page.dart';
-import '../utils/dialog_utils.dart';
 import '../widgets/fishing_spot_map.dart';
 import '../widgets/widget.dart';
 import '../widgets/add_anything_bottom_sheet.dart';
@@ -20,10 +15,6 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
-  // Need to stash a reference here so listeners can be removed when disposed.
-  late CatchManager _catchManager;
-  late EntityListener<Catch> _catchManagerListener;
-
   int _currentBarItem = 1; // Default to the "Catches" tab.
   late List<_BarItemModel> _navItems;
 
@@ -56,8 +47,8 @@ class _MainPageState extends State<MainPage> {
       _BarItemModel(
         icon: iconBottomBarAdd,
         titleBuilder: (context) => Strings.of(context).add,
-        onTapOverride: () => showOurBottomSheet(
-            context, (context) => const AddAnythingBottomSheet()),
+        onTapOverride: () => showAddAnythingBottomSheet(context)
+            .then((spec) => spec?.presentSavePage(context)),
       ),
       _BarItemModel(
         page: _NavigatorPage(
@@ -76,18 +67,6 @@ class _MainPageState extends State<MainPage> {
         titleBuilder: (context) => Strings.of(context).morePageTitle,
       ),
     ];
-
-    _catchManager = CatchManager.of(context);
-    _catchManagerListener = EntityListener<Catch>(
-      onAdd: (_) => showRateDialogIfNeeded(context),
-    );
-    _catchManager.addListener(_catchManagerListener);
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    _catchManager.removeListener(_catchManagerListener);
   }
 
   @override

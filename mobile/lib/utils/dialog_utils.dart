@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mobile/utils/date_time_utils.dart';
 import 'package:quiver/strings.dart';
 
 import '../i18n/strings.dart';
@@ -111,27 +112,24 @@ void showCancelDialog(
   );
 }
 
-void showRateDialogIfNeeded(BuildContext context) {
+/// Returns true of the dialog asking the user to rate the app is shown; false
+/// otherwise.
+bool showRateDialogIfNeeded(BuildContext context) {
   var preferences = UserPreferenceManager.of(context);
   var timeManager = TimeManager.of(context);
 
   // Exit early if the user has already rated the app.
   if (preferences.didRateApp) {
-    return;
+    return false;
   }
 
-  // If the timer hasn't started yet, start it and exit early so the user isn't
-  // prompted to rate the app the first time it's opened.
-  if (preferences.rateTimerStartedAt == null) {
-    preferences.setRateTimerStartedAt(timeManager.msSinceEpoch);
-    return;
-  }
-
-  // If enough time hasn't passed, exit early.
-  var rateAlertFrequency = Duration.millisecondsPerDay * (365 / 4);
-  if (timeManager.msSinceEpoch - preferences.rateTimerStartedAt! <=
-      rateAlertFrequency) {
-    return;
+  if (!isFrequencyTimerReady(
+    timeManager: timeManager,
+    timerStartedAt: preferences.rateTimerStartedAt,
+    setTimer: preferences.setRateTimerStartedAt,
+    frequency: (Duration.millisecondsPerDay * (365 / 4)).round(),
+  )) {
+    return false;
   }
 
   showDialog(
@@ -160,6 +158,8 @@ void showRateDialogIfNeeded(BuildContext context) {
       ],
     ),
   );
+
+  return true;
 }
 
 void _showDestructiveDialog({

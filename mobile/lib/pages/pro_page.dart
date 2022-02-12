@@ -16,6 +16,14 @@ import '../wrappers/io_wrapper.dart';
 import 'scroll_page.dart';
 
 class ProPage extends StatefulWidget {
+  final VoidCallback? onCloseOverride;
+  final bool isEmbeddedInScrollPage;
+
+  const ProPage({
+    this.onCloseOverride,
+    this.isEmbeddedInScrollPage = true,
+  });
+
   @override
   _ProPageState createState() => _ProPageState();
 }
@@ -41,37 +49,46 @@ class _ProPageState extends State<ProPage> {
 
   @override
   Widget build(BuildContext context) {
-    return ScrollPage(
-      appBar: TransparentAppBar(context),
-      padding: insetsHorizontalDefaultBottomDefault,
-      extendBodyBehindAppBar: true,
-      children: [
-        const Icon(
-          CustomIcons.catches,
-          size: _logoHeight,
+    var children = [
+      const Icon(
+        CustomIcons.catches,
+        size: _logoHeight,
+      ),
+      Text(
+        Strings.of(context).proPageUpgradeTitle,
+        style: styleTitle2,
+      ),
+      const VerticalSpace(paddingSmall),
+      TitleLabel.style1(Strings.of(context).proPageProTitle),
+      const VerticalSpace(paddingSmall),
+      const Icon(Icons.stars),
+      const VerticalSpace(paddingXL),
+      _buildFeatureRow(Strings.of(context).proPageAdFree),
+      const VerticalSpace(paddingDefault),
+      _buildFeatureRow(Strings.of(context).proPageBackup),
+      const VerticalSpace(paddingDefault),
+      _buildFeatureRow(Strings.of(context).proPageAtmosphere),
+      const VerticalSpace(paddingDefault),
+      _buildFeatureRow(Strings.of(context).proPageReports),
+      const VerticalSpace(paddingDefault),
+      _buildFeatureRow(Strings.of(context).proPageCustomFields),
+      const VerticalSpace(paddingXL),
+      _buildSubscriptionState(),
+    ];
+
+    if (widget.isEmbeddedInScrollPage) {
+      return ScrollPage(
+        appBar: TransparentAppBar(
+          context,
+          onCloseOverride: widget.onCloseOverride,
         ),
-        Text(
-          Strings.of(context).proPageUpgradeTitle,
-          style: styleTitle2,
-        ),
-        const VerticalSpace(paddingSmall),
-        TitleLabel.style1(Strings.of(context).proPageProTitle),
-        const VerticalSpace(paddingSmall),
-        const Icon(Icons.stars),
-        const VerticalSpace(paddingXL),
-        _buildFeatureRow(Strings.of(context).proPageAdFree),
-        const VerticalSpace(paddingDefault),
-        _buildFeatureRow(Strings.of(context).proPageBackup),
-        const VerticalSpace(paddingDefault),
-        _buildFeatureRow(Strings.of(context).proPageAtmosphere),
-        const VerticalSpace(paddingDefault),
-        _buildFeatureRow(Strings.of(context).proPageReports),
-        const VerticalSpace(paddingDefault),
-        _buildFeatureRow(Strings.of(context).proPageCustomFields),
-        const VerticalSpace(paddingXL),
-        _buildSubscriptionState(),
-      ],
-    );
+        padding: insetsHorizontalDefaultBottomDefault,
+        extendBodyBehindAppBar: true,
+        children: children,
+      );
+    } else {
+      return Column(children: children);
+    }
   }
 
   Widget _buildFeatureRow(String description) {

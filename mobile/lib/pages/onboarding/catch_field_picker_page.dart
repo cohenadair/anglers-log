@@ -32,9 +32,7 @@ class _CatchFieldPickerPageState extends State<CatchFieldPickerPage> {
   void initState() {
     super.initState();
 
-    _selectedFields = allCatchFields(context)
-        .map((field) => field.id)
-        .toList();
+    _selectedFields = allCatchFields(context).map((field) => field.id).toList();
   }
 
   @override

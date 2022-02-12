@@ -76,7 +76,8 @@ class CatchListPage extends StatelessWidget {
         deleteWidget: (context, cat) =>
             Text(catchManager.deleteMessage(context, cat)),
         deleteItem: (context, cat) => catchManager.delete(cat.id),
-        addPageBuilder: enableAdding ? () => const AddCatchJourney() : null,
+        onAddButtonPressed:
+            enableAdding ? () => AddCatchJourney.presentIn(context) : null,
         detailPageBuilder: (cat) => CatchPage(cat),
         editPageBuilder: (cat) => SaveCatchPage.edit(cat),
       ),

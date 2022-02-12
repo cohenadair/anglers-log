@@ -110,7 +110,9 @@ class _ManageableListPageState<T> extends State<ManageableListPage<T>> {
 
   bool get _isEditable => widget.itemManager.editPageBuilder != null;
 
-  bool get _isAddable => widget.itemManager.addPageBuilder != null;
+  bool get _isAddable =>
+      widget.itemManager.addPageBuilder != null ||
+      widget.itemManager.onAddButtonPressed != null;
 
   /// If picking an option isn't required, show a "None" option.
   bool get _showClearOption =>
@@ -322,7 +324,8 @@ class _ManageableListPageState<T> extends State<ManageableListPage<T>> {
     if (_isAddable) {
       result.add(IconButton(
         icon: const Icon(_iconAdd),
-        onPressed: () => present(context, widget.itemManager.addPageBuilder!()),
+        onPressed: widget.itemManager.onAddButtonPressed ??
+            () => present(context, widget.itemManager.addPageBuilder!()),
       ));
     }
 
@@ -680,6 +683,11 @@ class ManageableListPageItemManager<T> {
   /// function is presented in the current navigator.
   final Widget Function()? addPageBuilder;
 
+  /// Invoked when the "Add" button is pressed. When non-null, [addPageBuilder]
+  /// is ignored. Used to override the default behaviour of presenting the
+  /// widget returned by [addPageBuilder].
+  final VoidCallback? onAddButtonPressed;
+
   /// If non-null, will rebuild the [ManageableListPage] when one
   /// of the [EntityManager] objects is notified of updates. In most cases,
   /// this [List] will only have one value.
@@ -703,6 +711,7 @@ class ManageableListPageItemManager<T> {
     required this.deleteItem,
     this.emptyItemsSettings,
     this.addPageBuilder,
+    this.onAddButtonPressed,
     this.listenerManagers = const [],
     this.editPageBuilder,
     this.detailPageBuilder,

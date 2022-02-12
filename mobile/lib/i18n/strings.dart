@@ -1151,6 +1151,8 @@ class Strings {
   String get onboardingJourneyHowToFeedbackDescription =>
       _string("onboardingJourney_howToFeedbackDescription");
 
+  String get onboardingJourneyNotNow => _string("onboardingJourney_notNow");
+
   String get emptyListPlaceholderNoResultsTitle =>
       _string("emptyListPlaceholder_noResultsTitle");
 
