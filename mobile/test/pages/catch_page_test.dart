@@ -193,7 +193,7 @@ void main() {
     await tester.pumpAndSettle(const Duration(milliseconds: 300));
     await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
-    expect(find.byIcon(iconWaterClarity), findsNothing);
+    expect(find.byIcon(CustomIcons.waterClarities), findsNothing);
   });
 
   testWidgets("Angler renders", (tester) async {
@@ -208,7 +208,7 @@ void main() {
     await tester.pumpAndSettle(const Duration(milliseconds: 300));
     await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
-    expect(find.byIcon(iconWaterClarity), findsOneWidget);
+    expect(find.byIcon(CustomIcons.waterClarities), findsOneWidget);
   });
 
   testWidgets("No methods renders empty", (tester) async {
@@ -597,7 +597,7 @@ void main() {
       await tester.pumpAndSettle(const Duration(milliseconds: 300));
       await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
-      expect(find.byIcon(iconWaterClarity), findsNothing);
+      expect(find.byIcon(CustomIcons.waterClarities), findsNothing);
     });
 
     testWidgets("Water clarity", (tester) async {
@@ -617,7 +617,7 @@ void main() {
       await tester.pumpAndSettle(const Duration(milliseconds: 300));
       await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
-      expect(find.byIcon(iconWaterClarity), findsOneWidget);
+      expect(find.byIcon(CustomIcons.waterClarities), findsOneWidget);
       expect(find.text("Chocolate Milk"), findsOneWidget);
     });
 
@@ -640,7 +640,7 @@ void main() {
       await tester.pumpAndSettle(const Duration(milliseconds: 300));
       await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
-      expect(find.byIcon(iconWaterClarity), findsOneWidget);
+      expect(find.byIcon(CustomIcons.waterClarities), findsOneWidget);
       expect(find.text("50\u00B0C"), findsOneWidget);
     });
 
@@ -663,7 +663,7 @@ void main() {
       await tester.pumpAndSettle(const Duration(milliseconds: 300));
       await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
-      expect(find.byIcon(iconWaterClarity), findsOneWidget);
+      expect(find.byIcon(CustomIcons.waterClarities), findsOneWidget);
       expect(find.text("50 ft"), findsOneWidget);
     });
 
@@ -679,7 +679,7 @@ void main() {
       await tester.pumpAndSettle(const Duration(milliseconds: 300));
       await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
-      expect(find.byIcon(iconWaterClarity), findsOneWidget);
+      expect(find.byIcon(CustomIcons.waterClarities), findsOneWidget);
       expect(find.text("Outgoing Tide"), findsOneWidget);
     });
 

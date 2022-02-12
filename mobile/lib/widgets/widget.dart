@@ -24,7 +24,7 @@ const iconFishingSpot = Icons.place;
 const iconMethod = Icons.list;
 const iconSpecies = CustomIcons.species;
 const iconTrip = Icons.public;
-const iconWaterClarity = Icons.water_drop;
+const iconWaterClarity = CustomIcons.waterClarities;
 
 const animDurationDefault = Duration(milliseconds: 150);
 
