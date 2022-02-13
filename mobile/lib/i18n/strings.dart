@@ -9,6 +9,13 @@ import '../i18n/english_strings.dart';
 typedef LocalizedString = String Function(BuildContext);
 
 class Strings {
+  static const List<Locale> supportedLocales = [
+    Locale("en", "US"),
+    Locale("en", "CA"),
+    Locale("en", "GB"),
+    Locale("en", "AU"),
+  ];
+
   static const List<String> _supportedLanguages = ["en"];
 
   static Map<String, Map<String, Map<String, String>>> get _values => {

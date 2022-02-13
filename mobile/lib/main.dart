@@ -87,10 +87,7 @@ class _AnglersLogState extends State<AnglersLog> {
           GlobalMaterialLocalizations.delegate,
           GlobalWidgetsLocalizations.delegate,
         ],
-        supportedLocales: const [
-          Locale('en', 'US'),
-          Locale('en', 'CA'),
-        ],
+        supportedLocales: Strings.supportedLocales,
       ),
     );
   }

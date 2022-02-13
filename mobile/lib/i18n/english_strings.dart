@@ -1,5 +1,18 @@
 // ignore_for_file: lines_longer_than_80_chars
 
+Map<String, String> get _nonUsStrings => {
+      "catchField_favorite": "Favourite",
+      "catchField_favoriteDescription":
+          "Whether a catch was one of your favourites.",
+      "saveReportPage_favorites": "Favourites Only",
+      "saveReportPage_favoritesFilter": "Favourites only",
+      "unitsPage_catchLengthCentimeters": "Centimetres (%s)",
+      "unitsPage_waterDepthMeters": "Metres (%s)",
+      "unitsPage_airVisibilityKilometers": "Kilometres (%s)",
+      "unitsPage_windSpeedKilometers": "Kilometres per hour (%s)",
+      "input_colorLabel": "Colour",
+    };
+
 Map<String, Map<String, String>> get englishStrings => {
       "US": {
         "catchField_favorite": "Favorite",
@@ -13,18 +26,9 @@ Map<String, Map<String, String>> get englishStrings => {
         "unitsPage_windSpeedKilometers": "Kilometers per hour (%s)",
         "input_colorLabel": "Color",
       },
-      "CA": {
-        "catchField_favorite": "Favourite",
-        "catchField_favoriteDescription":
-            "Whether a catch was one of your favourites.",
-        "saveReportPage_favorites": "Favourites Only",
-        "saveReportPage_favoritesFilter": "Favourites only",
-        "unitsPage_catchLengthCentimeters": "Centimetres (%s)",
-        "unitsPage_waterDepthMeters": "Metres (%s)",
-        "unitsPage_airVisibilityKilometers": "Kilometres (%s)",
-        "unitsPage_windSpeedKilometers": "Kilometres per hour (%s)",
-        "input_colorLabel": "Colour",
-      },
+      "CA": _nonUsStrings,
+      "GB": _nonUsStrings,
+      "AU": _nonUsStrings,
       "default": {
         "appName": "Anglers' Log",
         "hashtag": "#AnglersLogApp",
