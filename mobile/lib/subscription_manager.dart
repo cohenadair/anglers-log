@@ -34,7 +34,7 @@ class SubscriptionManager {
   static SubscriptionManager of(BuildContext context) =>
       Provider.of<AppManager>(context, listen: false).subscriptionManager;
 
-  static const _debugPurchases = false;
+  static const _debugPurchases = true;
   static const _idProEntitlement = "pro";
 
   static const _trialDaysYearly = 14;
@@ -67,9 +67,16 @@ class SubscriptionManager {
     await _purchasesWrapper.setup(_propertiesManager.revenueCatApiKey);
     _purchasesWrapper.setDebugEnabled(_debugPurchases);
 
-    // Setup purchase state listener.
+    // Setup purchase state listener and initial state.
     _purchasesWrapper
         .addPurchaserInfoUpdateListener(_setStateFromPurchaserInfo);
+
+    // Set current state.
+    try {
+      _setStateFromPurchaserInfo(await _purchasesWrapper.getPurchaserInfo());
+    } on PlatformException catch (e) {
+      _log.e("Purchase info error: ${e.message}");
+    }
   }
 
   Future<void> purchaseSubscription(Subscription sub) async {
@@ -127,9 +134,10 @@ class SubscriptionManager {
   }
 
   void _setStateFromPurchaserInfo(PurchaserInfo purchaserInfo) {
-    _setState(purchaserInfo.entitlements.all[_idProEntitlement]!.isActive
-        ? SubscriptionState.pro
-        : SubscriptionState.free);
+    _setState(
+        purchaserInfo.entitlements.all[_idProEntitlement]?.isActive ?? false
+            ? SubscriptionState.pro
+            : SubscriptionState.free);
   }
 }
 
