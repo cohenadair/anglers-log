@@ -195,6 +195,7 @@ class _ManageableListPageState<T> extends State<ManageableListPage<T>> {
       child: Scaffold(
         extendBodyBehindAppBar: true,
         body: CustomScrollView(
+          keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
           slivers: [
             SliverAppBar(
               forceElevated: true,

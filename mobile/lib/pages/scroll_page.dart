@@ -67,6 +67,7 @@ class ScrollPage extends StatelessWidget {
       // Ensures items are not cut off when over-scrolling on iOS. This only
       // applies when a persistent footer isn't being used.
       clipBehavior: footer.isEmpty ? Clip.none : Clip.hardEdge,
+      keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
     );
 
     if (centerContent) {
