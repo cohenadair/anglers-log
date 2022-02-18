@@ -11,6 +11,10 @@ Map<String, String> get _nonUsStrings => {
       "unitsPage_airVisibilityKilometers": "Kilometres (%s)",
       "unitsPage_windSpeedKilometers": "Kilometres per hour (%s)",
       "input_colorLabel": "Colour",
+      "proPage_disclosureApple":
+          "Cancel anytime. Billing starts after the free trial period ends. The free trial period is only valid for new subscribers. Subscriptions automatically renew unless cancelled at least 24 hours before the end of the current subscription period. All subscriptions can be managed through the App Store. Any unused portion of the free trial will be forfeited when a subscription is purchased.",
+      "proPage_disclosureAndroid":
+          "Cancel anytime. Billing starts after the free trial period ends. The free trial period is only valid for new subscribers. Subscriptions automatically renew unless cancelled at least 24 hours before the end of the current subscription period. All subscriptions can be managed through the Google Play Store. Any unused portion of the free trial will be forfeited when a subscription is purchased.",
     };
 
 Map<String, Map<String, String>> get englishStrings => {
@@ -25,6 +29,10 @@ Map<String, Map<String, String>> get englishStrings => {
         "unitsPage_airVisibilityKilometers": "Kilometers (%s)",
         "unitsPage_windSpeedKilometers": "Kilometers per hour (%s)",
         "input_colorLabel": "Color",
+        "proPage_disclosureApple":
+            "Cancel anytime. Billing starts after the free trial period ends. The free trial period is only valid for new subscribers. Subscriptions automatically renew unless canceled at least 24 hours before the end of the current subscription period. All subscriptions can be managed through the App Store. Any unused portion of the free trial will be forfeited when a subscription is purchased.",
+        "proPage_disclosureAndroid":
+            "Cancel anytime. Billing starts after the free trial period ends. The free trial period is only valid for new subscribers. Subscriptions automatically renew unless canceled at least 24 hours before the end of the current subscription period. All subscriptions can be managed through the Google Play Store. Any unused portion of the free trial will be forfeited when a subscription is purchased.",
       },
       "CA": _nonUsStrings,
       "GB": _nonUsStrings,

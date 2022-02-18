@@ -1261,6 +1261,10 @@ class Strings {
 
   String get proPageRestoreError => _string("proPage_restoreError");
 
+  String get proPageDisclosureApple => _string("proPage_disclosureApple");
+
+  String get proPageDisclosureAndroid => _string("proPage_disclosureAndroid");
+
   String get periodDawn => _string("period_dawn");
 
   String get periodMorning => _string("period_morning");

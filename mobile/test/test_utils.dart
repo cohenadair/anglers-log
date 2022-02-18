@@ -383,10 +383,13 @@ extension CommonFindersExt on CommonFinders {
     return textStyle(text, styleSuccess(context));
   }
 
-  Finder substring(String substring) {
-    return byWidgetPredicate((widget) =>
-        widget is Text &&
-        widget.data != null &&
-        widget.data!.contains(substring));
+  Finder substring(String substring, {bool skipOffstage = true}) {
+    return byWidgetPredicate(
+      (widget) =>
+          widget is Text &&
+          widget.data != null &&
+          widget.data!.contains(substring),
+      skipOffstage: skipOffstage,
+    );
   }
 }

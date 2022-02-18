@@ -50,6 +50,7 @@ class _ProPageState extends State<ProPage> {
   @override
   Widget build(BuildContext context) {
     var children = [
+      const VerticalSpace(paddingDefault),
       const Icon(
         CustomIcons.catches,
         size: _logoHeight,
@@ -78,13 +79,21 @@ class _ProPageState extends State<ProPage> {
 
     if (widget.isEmbeddedInScrollPage) {
       return ScrollPage(
-        appBar: TransparentAppBar(
-          context,
-          onCloseOverride: widget.onCloseOverride,
-        ),
-        padding: insetsHorizontalDefaultBottomDefault,
-        extendBodyBehindAppBar: true,
-        children: children,
+        children: [
+          Stack(
+            children: [
+              Padding(
+                padding: insetsTiny,
+                child:
+                    CloseButton(onPressed: () => Navigator.of(context).pop()),
+              ),
+              Padding(
+                padding: insetsHorizontalDefaultBottomDefault,
+                child: Column(children: children),
+              ),
+            ],
+          ),
+        ],
       );
     } else {
       return Column(children: children);
@@ -169,13 +178,18 @@ class _ProPageState extends State<ProPage> {
             ],
           ),
         ),
-        Padding(
-          padding: insetsTopDefault,
-          child: QuestionAnswerLink(
-            question: Strings.of(context).proPageRestoreQuestion,
-            actionText: Strings.of(context).proPageRestoreAction,
-            action: _restoreSubscription,
-          ),
+        const VerticalSpace(paddingDefault),
+        QuestionAnswerLink(
+          question: Strings.of(context).proPageRestoreQuestion,
+          actionText: Strings.of(context).proPageRestoreAction,
+          action: _restoreSubscription,
+        ),
+        const VerticalSpace(paddingDefault),
+        Text(
+          _ioWrapper.isAndroid
+              ? Strings.of(context).proPageDisclosureAndroid
+              : Strings.of(context).proPageDisclosureApple,
+          style: styleSubtext,
         ),
       ],
     );

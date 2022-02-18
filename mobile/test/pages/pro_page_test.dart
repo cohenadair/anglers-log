@@ -18,6 +18,8 @@ void main() {
   setUp(() {
     appManager = StubbedAppManager();
 
+    when(appManager.ioWrapper.isAndroid).thenReturn(true);
+
     when(appManager.subscriptionManager.stream)
         .thenAnswer((_) => const Stream.empty());
     when(appManager.subscriptionManager.isPro).thenReturn(false);
@@ -310,5 +312,35 @@ void main() {
     );
 
     expect(find.byType(ScrollPage), findsNothing);
+  });
+
+  testWidgets("Android disclosure is shown", (tester) async {
+    when(appManager.ioWrapper.isAndroid).thenReturn(true);
+
+    await pumpContext(
+      tester,
+      (_) => const ProPage(),
+      appManager: appManager,
+    );
+    // Wait for subscriptions future to finish.
+    await tester.pumpAndSettle(const Duration(milliseconds: 50));
+
+    expect(find.substring("Google Play Store"), findsOneWidget);
+    expect(find.substring("App Store"), findsNothing);
+  });
+
+  testWidgets("Apple disclosure is shown", (tester) async {
+    when(appManager.ioWrapper.isAndroid).thenReturn(false);
+
+    await pumpContext(
+      tester,
+      (_) => const ProPage(),
+      appManager: appManager,
+    );
+    // Wait for subscriptions future to finish.
+    await tester.pumpAndSettle(const Duration(milliseconds: 50));
+
+    expect(find.substring("Google Play Store"), findsNothing);
+    expect(find.substring("App Store"), findsOneWidget);
   });
 }
