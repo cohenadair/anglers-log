@@ -165,6 +165,8 @@ void main() {
   });
 
   testWidgets("ProPage shown", (tester) async {
+    when(appManager.subscriptionManager.stream)
+        .thenAnswer((_) => const Stream.empty());
     when(appManager.subscriptionManager.isFree).thenReturn(true);
     when(appManager.subscriptionManager.isPro).thenReturn(false);
     when(appManager.subscriptionManager.subscriptions())
