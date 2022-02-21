@@ -350,18 +350,24 @@ void main() {
     expect(formatNumberOfCatches(context, 5), "5 Catches");
   });
 
-  testWidgets("Fishing spot name as second subtitle", (tester) async {
+  testWidgets("Fishing spot as second subtitle", (tester) async {
     var appManager = StubbedAppManager();
     when(appManager.fishingSpotManager.entity(any)).thenReturn(FishingSpot(
       name: "Spot 1",
     ));
+    when(appManager.fishingSpotManager.displayName(
+      any,
+      any,
+      useLatLngFallback: anyNamed("useLatLngFallback"),
+      includeBodyOfWater: anyNamed("includeBodyOfWater"),
+    )).thenReturn("Fishing Spot Display Name");
 
     expect(
       CatchListItemModel(
         await buildContext(tester, appManager: appManager),
         Catch(fishingSpotId: randomId()),
       ).subtitle2,
-      "Spot 1",
+      "Fishing Spot Display Name",
     );
   });
 
@@ -384,7 +390,7 @@ void main() {
     var appManager = StubbedAppManager();
     when(appManager.fishingSpotManager.entity(any)).thenReturn(null);
     when(appManager.baitManager.attachmentDisplayValue(any, any))
-        .thenReturn(null);
+        .thenReturn("");
 
     expect(
       CatchListItemModel(

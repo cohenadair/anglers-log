@@ -15,7 +15,8 @@ void main() {
   setUp(() {
     appManager = StubbedAppManager();
 
-    when(appManager.baitManager.formatNameWithCategory(any)).thenReturn(null);
+    when(appManager.baitManager.attachmentDisplayValue(any, any))
+        .thenReturn(null);
 
     when(appManager.catchManager.catches(
       any,
@@ -63,6 +64,12 @@ void main() {
       ..name = "Baskets"
       ..lat = 1.234567
       ..lng = 7.654321);
+    when(appManager.fishingSpotManager.displayName(
+      any,
+      any,
+      useLatLngFallback: anyNamed("useLatLngFallback"),
+      includeBodyOfWater: anyNamed("includeBodyOfWater"),
+    )).thenReturn("Baskets");
     await tester.pumpWidget(Testable(
       (_) => const CatchListPage(),
       appManager: appManager,
@@ -75,7 +82,7 @@ void main() {
     when(appManager.baitManager.entity(any)).thenReturn(Bait()
       ..id = randomId()
       ..name = "Roe Bag");
-    when(appManager.baitManager.formatNameWithCategory(any))
+    when(appManager.baitManager.attachmentDisplayValue(any, any))
         .thenReturn("Roe Bag");
     await tester.pumpWidget(Testable(
       (_) => const CatchListPage(),
@@ -85,16 +92,19 @@ void main() {
     expect(find.text("Roe Bag"), findsOneWidget);
   });
 
-  testWidgets("Fishing spot without name uses bait as subtitle",
+  testWidgets("Fishing spot without display name uses bait as subtitle",
       (tester) async {
-    when(appManager.fishingSpotManager.entity(any)).thenReturn(FishingSpot()
-      ..id = randomId()
-      ..lat = 1.234567
-      ..lng = 7.654321);
+    when(appManager.fishingSpotManager.entity(any)).thenReturn(FishingSpot());
+    when(appManager.fishingSpotManager.displayName(
+      any,
+      any,
+      useLatLngFallback: anyNamed("useLatLngFallback"),
+      includeBodyOfWater: anyNamed("includeBodyOfWater"),
+    )).thenReturn("");
     when(appManager.baitManager.entity(any)).thenReturn(Bait()
       ..id = randomId()
       ..name = "Roe Bag");
-    when(appManager.baitManager.formatNameWithCategory(any))
+    when(appManager.baitManager.attachmentDisplayValue(any, any))
         .thenReturn("Roe Bag");
     await tester.pumpWidget(Testable(
       (_) => const CatchListPage(),

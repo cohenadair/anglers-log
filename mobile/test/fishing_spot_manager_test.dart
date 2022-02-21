@@ -508,6 +508,28 @@ void main() {
     );
   });
 
+  testWidgets("displayName with only body of water", (tester) async {
+    when(appManager.bodyOfWaterManager.entity(any)).thenReturn(BodyOfWater(
+      id: randomId(),
+      name: "BOW 1",
+    ));
+    var context = await buildContext(tester);
+
+    expect(
+      fishingSpotManager.displayName(
+        context,
+        FishingSpot(
+          id: randomId(),
+          lat: 2,
+          lng: 3,
+        ),
+        includeBodyOfWater: true,
+        useLatLngFallback: false,
+      ),
+      "BOW 1",
+    );
+  });
+
   test("namedWithBodyOfWater", () async {
     var fishingSpot = FishingSpot(
       id: randomId(),

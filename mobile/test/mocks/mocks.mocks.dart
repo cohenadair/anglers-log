@@ -2315,13 +2315,15 @@ class MockFishingSpotManager extends _i1.Mock
           as String);
   @override
   String displayName(_i48.BuildContext? context, _i4.FishingSpot? entity,
-          {bool? includeLatLngLabels = true,
+          {bool? useLatLngFallback = true,
+          bool? includeLatLngLabels = true,
           bool? includeBodyOfWater = false}) =>
       (super.noSuchMethod(
           Invocation.method(#displayName, [
             context,
             entity
           ], {
+            #useLatLngFallback: useLatLngFallback,
             #includeLatLngLabels: includeLatLngLabels,
             #includeBodyOfWater: includeBodyOfWater
           }),

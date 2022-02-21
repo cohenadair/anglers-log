@@ -38,11 +38,12 @@ class FishingSpotManager extends ImageEntityManager<FishingSpot> {
   String displayName(
     BuildContext context,
     FishingSpot entity, {
+    bool useLatLngFallback = true,
     bool includeLatLngLabels = true,
     bool includeBodyOfWater = false,
   }) {
     var name = entity.name;
-    if (isEmpty(name)) {
+    if (isEmpty(name) && useLatLngFallback) {
       name = formatLatLng(
         context: context,
         lat: entity.lat,
@@ -54,7 +55,8 @@ class FishingSpotManager extends ImageEntityManager<FishingSpot> {
     var bodyOfWaterName = "";
     var bodyOfWater = _bodyOfWaterManager.entity(entity.bodyOfWaterId);
     if (includeBodyOfWater && bodyOfWater != null) {
-      bodyOfWaterName = " (${bodyOfWater.name})";
+      bodyOfWaterName =
+          isEmpty(name) ? bodyOfWater.name : " (${bodyOfWater.name})";
     }
 
     return "$name$bodyOfWaterName";

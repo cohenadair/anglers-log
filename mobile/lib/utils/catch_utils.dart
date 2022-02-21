@@ -306,10 +306,17 @@ class CatchListItemModel {
     switch (subtitleType) {
       case CatchListItemModelSubtitleType.fishingSpotThenBait:
         var fishingSpot = fishingSpotManager.entity(cat.fishingSpotId);
-        if (fishingSpot != null && isNotEmpty(fishingSpot.name)) {
+        if (fishingSpot != null) {
           // Use fishing spot name as subtitle if available.
-          subtitle2 = fishingSpot.name;
-        } else if (cat.baits.isNotEmpty) {
+          subtitle2 = fishingSpotManager.displayName(
+            context,
+            fishingSpot,
+            useLatLngFallback: false,
+            includeBodyOfWater: true,
+          );
+        }
+
+        if (isEmpty(subtitle2) && cat.baits.isNotEmpty) {
           // Fallback on bait as a subtitle.
           var formattedName =
               baitManager.attachmentDisplayValue(context, cat.baits.first);
@@ -317,6 +324,7 @@ class CatchListItemModel {
             subtitle2 = formattedName!;
           }
         }
+
         break;
       case CatchListItemModelSubtitleType.length:
         subtitle2 = cat.length.displayValue(
@@ -339,7 +347,7 @@ class CatchListItemModel {
         Strings.of(context).unknownSpecies;
     subtitle = formatTimestamp(context, cat.timestamp.toInt());
     trailing = CatchFavoriteStar(cat);
-    this.subtitle2 = subtitle2;
+    this.subtitle2 = isEmpty(subtitle2) ? null : subtitle2;
   }
 }
 
