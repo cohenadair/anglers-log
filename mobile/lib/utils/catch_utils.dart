@@ -312,7 +312,7 @@ class CatchListItemModel {
         } else if (cat.baits.isNotEmpty) {
           // Fallback on bait as a subtitle.
           var formattedName =
-              baitManager.formatNameWithCategory(cat.baits.first.baitId);
+              baitManager.attachmentDisplayValue(context, cat.baits.first);
           if (isNotEmpty(formattedName)) {
             subtitle2 = formattedName!;
           }

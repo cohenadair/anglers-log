@@ -368,7 +368,8 @@ void main() {
   testWidgets("Bait as second subtitle", (tester) async {
     var appManager = StubbedAppManager();
     when(appManager.fishingSpotManager.entity(any)).thenReturn(null);
-    when(appManager.baitManager.formatNameWithCategory(any)).thenReturn("Bait");
+    when(appManager.baitManager.attachmentDisplayValue(any, any))
+        .thenReturn("Bait");
 
     expect(
       CatchListItemModel(
@@ -382,7 +383,8 @@ void main() {
   testWidgets("No second subtitle", (tester) async {
     var appManager = StubbedAppManager();
     when(appManager.fishingSpotManager.entity(any)).thenReturn(null);
-    when(appManager.baitManager.formatNameWithCategory(any)).thenReturn(null);
+    when(appManager.baitManager.attachmentDisplayValue(any, any))
+        .thenReturn(null);
 
     expect(
       CatchListItemModel(
