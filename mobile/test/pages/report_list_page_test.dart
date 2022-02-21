@@ -362,6 +362,7 @@ void main() {
       Report(id: reportIdPersonalBests),
       Report(id: reportIdCatchSummary),
     ]);
+    when(appManager.reportManager.entityCount).thenReturn(1);
 
     await tester.pumpWidget(Testable(
       (_) => ReportListPage(
@@ -374,5 +375,27 @@ void main() {
     ));
 
     expect(find.byType(ProBlur), findsOneWidget);
+  });
+
+  testWidgets("Blurred reports hidden if there are no custom reports",
+      (tester) async {
+    when(appManager.subscriptionManager.isFree).thenReturn(true);
+    when(appManager.reportManager.defaultReports).thenReturn([
+      Report(id: reportIdPersonalBests),
+      Report(id: reportIdCatchSummary),
+    ]);
+    when(appManager.reportManager.entityCount).thenReturn(0);
+
+    await tester.pumpWidget(Testable(
+      (_) => ReportListPage(
+        pickerSettings: ManageableListPagePickerSettings.single(
+          onPicked: (_, __) => true,
+          isRequired: true,
+        ),
+      ),
+      appManager: appManager,
+    ));
+
+    expect(find.byType(ProBlur), findsNothing);
   });
 }

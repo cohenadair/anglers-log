@@ -160,7 +160,7 @@ class ReportListPage extends StatelessWidget {
       result.addAll(remainingReports);
     }
 
-    if (subscriptionManager.isFree) {
+    if (subscriptionManager.isFree && reportManager.entityCount > 0) {
       result.add(_ItemType.blurredReports);
     } else {
       result.add(_ItemType.headingNoteDivider);
