@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:fixnum/fixnum.dart';
+import 'package:http/http.dart';
 import 'package:mapbox_gl/mapbox_gl.dart';
 import 'package:quiver/strings.dart';
 
@@ -178,7 +179,14 @@ class AtmosphereFetcher {
       params,
     );
 
-    var response = await _http.get(uri);
+    Response? response;
+    try {
+      response = await _http.get(uri);
+    } catch (error) {
+      // This can happen if there's no network connection.
+      _log.e("Error in HTTP request: $error");
+      return null;
+    }
 
     if (response.statusCode != HttpStatus.ok) {
       _log.e("Error fetching data: ${response.statusCode}, query=$uri");

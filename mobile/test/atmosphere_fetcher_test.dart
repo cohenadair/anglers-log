@@ -52,6 +52,14 @@ void main() {
     expect(await fetcher.fetch(), isNull);
   });
 
+  test("HTTP request throws exception", () async {
+    when(appManager.httpWrapper.get(any))
+        .thenThrow(const SocketException("Test error"));
+
+    var fetcher = AtmosphereFetcher(appManager.app, 0, const LatLng(0, 0));
+    expect(await fetcher.fetch(), isNull);
+  });
+
   test("Request includes no fields", () async {
     when(appManager.httpWrapper.get(any))
         .thenAnswer((_) => Future.value(Response("", HttpStatus.badGateway)));
