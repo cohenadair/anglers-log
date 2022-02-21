@@ -475,7 +475,7 @@ class __AtmosphereInputPageState extends State<_AtmosphereInputPage> {
 
   void _updateFromAtmosphere(Atmosphere atmosphere) {
     if (atmosphere.hasTemperature()) {
-      _windSpeedController.value = MultiMeasurement(
+      _temperatureController.value = MultiMeasurement(
         system: _userPreferenceManager.airTemperatureSystem,
         mainValue: atmosphere.temperature,
       );

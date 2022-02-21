@@ -8,6 +8,7 @@ import 'package:mobile/utils/atmosphere_utils.dart';
 import 'package:mobile/widgets/atmosphere_input.dart';
 import 'package:mobile/widgets/atmosphere_wrap.dart';
 import 'package:mobile/widgets/input_controller.dart';
+import 'package:mobile/widgets/text_input.dart';
 import 'package:mobile/widgets/widget.dart';
 import 'package:mockito/mockito.dart';
 
@@ -396,8 +397,23 @@ void main() {
     await tester.drag(find.byType(RefreshIndicator), const Offset(0, 300));
     await tester.pumpAndSettle();
 
+    // Verify value is set correctly.
     expect(controller.hasValue, isTrue);
     expect(controller.value, newAtmosphere);
+
+    // Verify expected UI elements are showing.
+    expect(find.widgetWithText(TextInput, "20"), findsOneWidget);
+    expect(find.text("Cloudy"), findsOneWidget);
+    expect(find.text("Drizzle"), findsOneWidget);
+    expect(find.text("Clear"), findsOneWidget);
+    expect(find.widgetWithText(TextInput, "9"), findsOneWidget);
+    expect(find.text("NE"), findsOneWidget);
+    expect(find.widgetWithText(TextInput, "1200"), findsOneWidget);
+    expect(find.widgetWithText(TextInput, "60"), findsOneWidget);
+    expect(find.widgetWithText(TextInput, "12"), findsOneWidget);
+    expect(find.text("New"), findsOneWidget);
+    expect(find.text("9:00 AM"), findsOneWidget);
+    expect(find.text("3:00 PM"), findsOneWidget);
   });
 
   testWidgets("Updating units updates widgets", (tester) async {
