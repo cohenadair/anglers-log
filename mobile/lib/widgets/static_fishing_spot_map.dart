@@ -37,7 +37,7 @@ class _StaticFishingSpotMapState extends State<StaticFishingSpotMap> {
   // parameter, but support for larger scales isn't available yet.
   static const _maxImagePixels = 1280.0;
   static const _mapHeight = 200.0;
-  static const _mapZoom = 16;
+  static const _mapZoom = 11;
   static const _pinSize = 25.0;
   static const _mapboxBaseUrl = "https://api.mapbox.com/styles/v1/cohenadair";
 
