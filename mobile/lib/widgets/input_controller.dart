@@ -93,6 +93,10 @@ class ListInputController<T> extends InputController<List<T>> {
         "hasValue will always return true; did you mean to use value.isEmpty?");
     return super.hasValue;
   }
+
+  void addAll(Iterable<T> items) => value = List.of(value)..addAll(items);
+
+  void remove(T item) => value = List.of(value)..remove(item);
 }
 
 class ImagesInputController extends ListInputController<PickedImage> {

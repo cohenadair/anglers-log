@@ -46,11 +46,20 @@ class _ImageInputState extends State<ImageInput> {
         return ImagePicker(
           initialImages: _controller.value,
           isMulti: widget.isMulti,
-          onImagesPicked: (pickedImage) {
+          onImagesPicked: (pickedImages) {
             setState(() {
-              _controller.value = pickedImage;
-              _imagesFuture = Future.value(_controller.value);
+              if (widget.isMulti) {
+                _controller.addAll(pickedImages);
+              } else {
+                _controller.value = pickedImages;
+              }
             });
+
+            _imagesFuture = Future.value(_controller.value);
+          },
+          onImageDeleted: (image) {
+            setState(() => _controller.remove(image));
+            _imagesFuture = Future.value(_controller.value);
           },
         );
       },

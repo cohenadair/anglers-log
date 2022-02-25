@@ -94,7 +94,7 @@ Map<String, Map<String, String>> get englishStrings => {
         "input_notesLabel": "Notes",
         "input_invalidNumber": "Invalid number input",
         "input_photoLabel": "Photo",
-        "input_photosLabel": "Photos",
+        "input_photosLabel": "Add Photos",
         "input_notSelected": "Not Selected",
         "input_emailLabel": "Email",
         "input_invalidEmail": "Invalid email format",
@@ -445,6 +445,8 @@ Map<String, Map<String, String>> get englishStrings => {
         "customEntityListPage_emptyListTitle": "No Custom Fields",
         "customEntityListPage_emptyListDescription":
             "You haven't yet added any custom fields. Tap the %s button to begin.",
+        "imagePicker_confirmDelete":
+            "Are you sure you want to delete this photo?",
         "imagePickerPage_noPhotosFoundTitle": "No photos found",
         "imagePickerPage_noPhotosFound":
             "Try changing the photo source from the dropdown above.",
@@ -459,6 +461,10 @@ Map<String, Map<String, String>> get englishStrings => {
         "imagePickerPage_noPermissionMessage":
             "To add photos, you must grant Anglers' Log permission to access your photo library. To do so, open your device settings.\n\nAlternatively, you can change the photos source from the dropdown menu above.",
         "imagePickerPage_openSettings": "Open Settings",
+        "imagePickerPage_imageDownloadError":
+            "Failed to attach photo. Please ensure you are connected to the internet and try again.",
+        "imagePickerPage_imagesDownloadError":
+            "Failed to attach one or more photos. Please ensure you are connected to the internet and try again.",
         "reportListPage_confirmDelete":
             "Are you sure you want to delete report %s? This cannot be undone.",
         "reportListPage_reportTitle": "Custom Reports",

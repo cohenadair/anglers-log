@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/res/dimen.dart';
 import 'package:mobile/widgets/button.dart';
+import 'package:mobile/widgets/floating_container.dart';
 import 'package:mobile/widgets/widget.dart';
 
 import '../test_utils.dart';
@@ -296,6 +297,18 @@ void main() {
       );
       expect(findFirst<Container>(tester).decoration, isNull);
       expect(findFirst<RawMaterialButton>(tester).fillColor, isNull);
+    });
+
+    testWidgets("Custom size", (tester) async {
+      await tester.pumpWidget(
+        Testable(
+          (_) => const FloatingButton.smallIcon(
+            icon: Icons.delete,
+          ),
+        ),
+      );
+      expect(findFirst<FloatingContainer>(tester).width, 24.0);
+      expect(findFirst<FloatingContainer>(tester).height, 24.0);
     });
   });
 }

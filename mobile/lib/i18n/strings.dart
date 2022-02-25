@@ -900,6 +900,8 @@ class Strings {
 
   String get formPageManageUnits => _string("formPage_manageUnits");
 
+  String get imagePickerConfirmDelete => _string("imagePicker_confirmDelete");
+
   String get imagePickerPageNoPhotosFoundTitle =>
       _string("imagePickerPage_noPhotosFoundTitle");
 
@@ -935,6 +937,12 @@ class Strings {
 
   String get imagePickerPageOpenSettings =>
       _string("imagePickerPage_openSettings");
+
+  String get imagePickerPageImageDownloadError =>
+      _string("imagePickerPage_imageDownloadError");
+
+  String get imagePickerPageImagesDownloadError =>
+      _string("imagePickerPage_imagesDownloadError");
 
   String get saveSpeciesPageNewTitle => _string("saveSpeciesPage_newTitle");
 

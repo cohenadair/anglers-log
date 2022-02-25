@@ -256,6 +256,7 @@ class MockAssetEntity extends AssetEntity {
   final LatLng? latLngAsync;
 
   int latLngAsyncCalls = 0;
+  Future<File?>? originFileStub;
 
   MockAssetEntity({
     required this.fileName,
@@ -287,7 +288,7 @@ class MockAssetEntity extends AssetEntity {
 
   @override
   Future<File?> get originFile =>
-      Future.value(File("test/resources/$fileName"));
+      originFileStub ?? Future.value(File("test/resources/$fileName"));
 }
 
 void main() {}

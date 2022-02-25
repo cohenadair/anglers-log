@@ -4,8 +4,10 @@ import '../i18n/strings.dart';
 import '../pages/image_picker_page.dart';
 import '../res/dimen.dart';
 import '../res/style.dart';
+import '../utils/dialog_utils.dart';
 import '../utils/page_utils.dart';
 import '../widgets/widget.dart';
+import 'button.dart';
 
 /// An input widget that allows selection of one or more photos, as well as
 /// taking a photo from the device's camera.
@@ -17,25 +19,15 @@ class ImagePicker extends StatelessWidget {
   final bool isMulti;
   final List<PickedImage> currentImages;
   final void Function(List<PickedImage>) onImagesPicked;
+  final void Function(PickedImage) onImageDeleted;
 
   const ImagePicker({
     required this.onImagesPicked,
+    required this.onImageDeleted,
     this.isEnabled = true,
     this.isMulti = true,
     List<PickedImage> initialImages = const [],
   }) : currentImages = initialImages;
-
-  ImagePicker.single({
-    bool enabled = true,
-    PickedImage? initialImage,
-    required Function(PickedImage?) onImagePicked,
-  }) : this(
-          isEnabled: enabled,
-          isMulti: false,
-          initialImages: initialImage == null ? [] : [initialImage],
-          onImagesPicked: (images) =>
-              onImagePicked(images.isNotEmpty ? images.first : null),
-        );
 
   @override
   Widget build(BuildContext context) {
@@ -48,7 +40,6 @@ class ImagePicker extends StatelessWidget {
                   context,
                   ImagePickerPage(
                     allowsMultipleSelection: isMulti,
-                    initialImages: currentImages,
                     onImagesPicked: (_, images) => onImagesPicked(images),
                   ),
                 );
@@ -108,9 +99,7 @@ class ImagePicker extends StatelessWidget {
             ),
             width: galleryMaxThumbSize + leftPadding + rightPadding,
             child: ClipRRect(
-              child: image.thumbData == null
-                  ? Image.file(image.originalFile!, fit: BoxFit.cover)
-                  : Image.memory(image.thumbData!, fit: BoxFit.cover),
+              child: _buildImage(context, image),
               borderRadius: const BorderRadius.all(
                 Radius.circular(floatingCornerRadius),
               ),
@@ -119,6 +108,31 @@ class ImagePicker extends StatelessWidget {
         },
         separatorBuilder: (context, i) => Container(width: gallerySpacing),
       ),
+    );
+  }
+
+  Widget _buildImage(BuildContext context, PickedImage image) {
+    return Stack(
+      fit: StackFit.expand,
+      children: [
+        image.thumbData == null
+            ? Image.file(image.originalFile!, fit: BoxFit.cover)
+            : Image.memory(image.thumbData!, fit: BoxFit.cover),
+        Align(
+          alignment: Alignment.topRight,
+          child: FloatingButton.smallIcon(
+            padding: insetsSmall,
+            icon: Icons.close,
+            onPressed: () {
+              showDeleteDialog(
+                context: context,
+                description: Text(Strings.of(context).imagePickerConfirmDelete),
+                onDelete: () => onImageDeleted(image),
+              );
+            },
+          ),
+        ),
+      ],
     );
   }
 }

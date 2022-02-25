@@ -15,6 +15,7 @@ import '../log.dart';
 import '../res/dimen.dart';
 import '../res/gen/custom_icons.dart';
 import '../res/style.dart';
+import '../utils/snackbar_utils.dart';
 import '../utils/string_utils.dart';
 import '../widgets/button.dart';
 import '../widgets/empty_list_placeholder.dart';
@@ -52,6 +53,13 @@ class PickedImage {
     this.position,
     this.dateTime,
   });
+
+  @override
+  String toString() => "originalFile=${originalFile?.path}; "
+      "originalFileId=$originalFileId; "
+      "thumbData=${thumbData?.length}; "
+      "position=$position; "
+      "dateTime=$dateTime";
 }
 
 /// [ImagePickerPage] is a custom image picking widget that allows the user to
@@ -76,22 +84,33 @@ class PickedImage {
 /// [ImagePickerPage] uses the image_picker plugin for taking photos with the
 /// device camera.
 /// - https://pub.dev/packages/image_picker
+///
+/// [ImagePickerPage] should never handle initially selected images for the
+/// following reasons:
+/// - The photo grid is paginated so there's no way to link initial images to
+///   images on page X, unless the user scrolls to them.
+/// - When editing entities, such as trips, [PickedImage.originalFileId] will
+///   always be null because they were not picked from the gallery; they were
+///   attached from the app.
+/// There's no known way to solve both problems in a user-friendly way.
 class ImagePickerPage extends StatefulWidget {
+  /// Invoked when the user presses the back button, and all images have been
+  /// loaded from the device's gallery.
   final void Function(BuildContext context, List<PickedImage>) onImagesPicked;
+
   final bool allowsMultipleSelection;
 
-  /// A list of images to be selected when the page opens.
-  final List<PickedImage> initialImages;
-
-  /// Optional custom text for the "Done" button.
-  final String? doneButtonText;
+  /// Optional custom text for the trailing [AppBar] action. If null (default),
+  /// no button is rendered, and [onImagesPicked] is invoked when the user
+  /// presses the back button.
+  final String? actionText;
 
   /// If true, pops the navigation stack when images are picked. Defaults to
   /// true.
   final bool popsOnFinish;
 
-  /// If true, an image must be picked for the "Done" button to be enabled.
-  /// Defaults to true.
+  /// If true, an image must be picked for the [actionText] button to be
+  /// enabled. Defaults to true.
   final bool requiresPick;
 
   /// A [Widget] to override the default [AppBar] leading behaviour.
@@ -100,8 +119,7 @@ class ImagePickerPage extends StatefulWidget {
   const ImagePickerPage({
     required this.onImagesPicked,
     this.allowsMultipleSelection = true,
-    this.initialImages = const [],
-    this.doneButtonText,
+    this.actionText,
     this.popsOnFinish = true,
     this.requiresPick = true,
     this.appBarLeading,
@@ -149,6 +167,7 @@ class _ImagePickerPageState extends State<ImagePickerPage> {
   int _currentPage = 0;
 
   bool _isLoadingPage = false;
+  bool _isLoadingGalleryImages = false;
 
   /// Cache thumbnail futures so they're not recreated each time the widget
   /// tree is rebuilt.
@@ -156,10 +175,6 @@ class _ImagePickerPageState extends State<ImagePickerPage> {
 
   final Set<int> _selectedIndexes = {};
   _ImagePickerSource _currentSource = _ImagePickerSource.gallery;
-
-  /// Images that are initially selected. Elements of this array are removed
-  /// as that element is loaded into the picker.
-  late List<PickedImage> _initialImages;
 
   late Future<bool> _isPermissionGrantedFuture;
 
@@ -175,18 +190,16 @@ class _ImagePickerPageState extends State<ImagePickerPage> {
   @override
   void initState() {
     super.initState();
-
-    _initialImages = List.of(widget.initialImages);
     _isPermissionGrantedFuture = _permissionHandlerWrapper.requestPhotos();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    var child = Scaffold(
       appBar: AppBar(
         title: _buildSourceDropdown(),
         actions: [
-          _buildDoneButton(),
+          _buildAction(),
         ],
         leading: widget.appBarLeading,
       ),
@@ -243,17 +256,6 @@ class _ImagePickerPageState extends State<ImagePickerPage> {
                     _isLoadingPage = oldLength == _assets.length;
                   }
 
-                  for (var i = 0; i < _assets.length; i++) {
-                    for (var image in _initialImages.reversed) {
-                      if (image.originalFileId != null &&
-                          image.originalFileId == _assets.elementAt(i).id) {
-                        _selectedIndexes.add(i);
-                        _initialImages.remove(image);
-                        break;
-                      }
-                    }
-                  }
-
                   return _buildImageGrid();
                 },
               );
@@ -261,6 +263,17 @@ class _ImagePickerPageState extends State<ImagePickerPage> {
           );
         },
       ),
+    );
+
+    return WillPopScope(
+      onWillPop: () {
+        _finishPickingImagesFromGallery();
+
+        // Always return false here. The page will be popped manually after
+        // picked images are fetched.
+        return Future.value(false);
+      },
+      child: child,
     );
   }
 
@@ -308,27 +321,23 @@ class _ImagePickerPageState extends State<ImagePickerPage> {
     );
   }
 
-  Widget _buildDoneButton() {
-    if (!widget.allowsMultipleSelection) {
+  Widget _buildAction() {
+    if (_isLoadingGalleryImages) {
+      return const Loading.appBar();
+    }
+
+    if (!widget.allowsMultipleSelection || isEmpty(widget.actionText)) {
       return const Empty();
     }
 
-    var enabled = !widget.requiresPick ||
-        _selectedIndexes.isNotEmpty ||
-        widget.initialImages.isNotEmpty;
+    VoidCallback? onPressed;
+    if (!widget.requiresPick || _selectedIndexes.isNotEmpty) {
+      onPressed = () => _finishPickingImagesFromGallery();
+    }
 
     return ActionButton(
-      text: widget.doneButtonText ?? Strings.of(context).done,
-      onPressed: enabled
-          ? () async {
-              var result = <PickedImage>[];
-              for (var i in _selectedIndexes) {
-                result.add(await _pickedImageFromAsset(_assets.elementAt(i)));
-              }
-
-              _pop(result);
-            }
-          : null,
+      text: widget.actionText,
+      onPressed: onPressed,
     );
   }
 
@@ -380,9 +389,10 @@ class _ImagePickerPageState extends State<ImagePickerPage> {
                   text: Strings.of(context).clear,
                   onPressed: () {
                     setState(() {
+                      _isLoadingGalleryImages = false;
                       _selectedIndexes.clear();
                       if (!widget.allowsMultipleSelection) {
-                        _pop([]);
+                        _pop([], showError: false);
                       }
                     });
                   },
@@ -481,7 +491,7 @@ class _ImagePickerPageState extends State<ImagePickerPage> {
 
   Widget _buildThumbnail(Uint8List data, int index, bool selected) {
     return GestureDetector(
-      onTap: () async {
+      onTap: () {
         if (widget.allowsMultipleSelection) {
           setState(() {
             if (selected) {
@@ -491,10 +501,7 @@ class _ImagePickerPageState extends State<ImagePickerPage> {
             }
           });
         } else {
-          _pop([
-            await _pickedImageFromAsset(_assets.elementAt(index),
-                thumbData: data)
-          ]);
+          _finishPickingImageFromGallery(data, index);
         }
       },
       child: Opacity(
@@ -556,7 +563,7 @@ class _ImagePickerPageState extends State<ImagePickerPage> {
   void _openCamera() async {
     var image = await _imagePicker.pickImage(ImageSource.camera);
     if (image != null) {
-      _pop([PickedImage(originalFile: File(image.path))]);
+      _pop([PickedImage(originalFile: File(image.path))], showError: false);
     }
   }
 
@@ -581,18 +588,77 @@ class _ImagePickerPageState extends State<ImagePickerPage> {
       return;
     }
 
-    _pop(images.map((image) => PickedImage(originalFile: image)).toList());
+    _pop(
+      images.map((image) => PickedImage(originalFile: image)).toList(),
+      showError: false,
+    );
   }
 
-  void _pop(List<PickedImage> results) {
+  Future<void> _finishPickingImageFromGallery(Uint8List data, int index) async {
+    setState(() => _isLoadingGalleryImages = true);
+
+    var pickedImage = await _pickedImageFromAsset(
+      _assets.elementAt(index),
+      thumbData: data,
+    );
+
+    if (pickedImage == null) {
+      _pop([], showError: true);
+    } else {
+      _pop([pickedImage], showError: false);
+    }
+  }
+
+  Future<void> _finishPickingImagesFromGallery() async {
+    setState(() => _isLoadingGalleryImages = true);
+
+    var showError = false;
+
+    // Copy the list to prevent concurrent modification exceptions due to user
+    // action, such as clearing the selected images or scrolling.
+    var result = <PickedImage>[];
+    for (var i in List.of(_selectedIndexes)) {
+      var pickedImage = await _pickedImageFromAsset(_assets.elementAt(i));
+      if (pickedImage == null) {
+        showError = true;
+      } else {
+        result.add(pickedImage);
+      }
+    }
+
+    _pop(result, showError: showError);
+  }
+
+  void _pop(
+    List<PickedImage> results, {
+    required bool showError,
+  }) {
     widget.onImagesPicked(context, results);
 
     if (widget.popsOnFinish) {
       Navigator.pop(context);
+    } else {
+      // Ensure that if the user comes back to this page, the loading widget
+      // isn't still shown.
+      setState(() => _isLoadingGalleryImages = false);
+    }
+
+    if (showError) {
+      // Show error in a post frame callback so the SnackBar animation is
+      // correct. This must be done after the navigation, plus any setState
+      // calls from onImagesPicked.
+      WidgetsBinding.instance?.addPostFrameCallback((_) {
+        showErrorSnackBar(
+          context,
+          widget.allowsMultipleSelection
+              ? Strings.of(context).imagePickerPageImagesDownloadError
+              : Strings.of(context).imagePickerPageImageDownloadError,
+        );
+      });
     }
   }
 
-  Future<PickedImage> _pickedImageFromAsset(
+  Future<PickedImage?> _pickedImageFromAsset(
     AssetEntity entity, {
     Uint8List? thumbData,
   }) async {
@@ -610,8 +676,17 @@ class _ImagePickerPageState extends State<ImagePickerPage> {
       }
     }
 
+    // If there is no origin file to copy to Anglers' Log sandbox, there's no
+    // point in using it. This should be propagated to the UI to inform the
+    // user of an error. This can happen if the full image doesn't exist on the
+    // phone. For example, if it is in iCloud.
+    var originFile = await entity.originFile;
+    if (originFile == null) {
+      return null;
+    }
+
     return PickedImage(
-      originalFile: await entity.originFile,
+      originalFile: originFile,
       originalFileId: entity.id,
       thumbData: thumbData ?? await entity.thumbData,
       position: position,

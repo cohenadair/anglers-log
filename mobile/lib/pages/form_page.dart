@@ -216,14 +216,7 @@ class _FormPageState extends State<FormPage> {
               // animation to appear "jarring" where as a complete replace of
               // the widget looks nicer.
               if (widget.showLoadingOverSave) {
-                return const Loading(
-                  padding: EdgeInsets.only(
-                    right: paddingDefault,
-                    top: paddingDefault,
-                  ),
-                  isCentered: true,
-                  color: Colors.black,
-                );
+                return const Loading.appBar();
               }
 
               return ActionButton(

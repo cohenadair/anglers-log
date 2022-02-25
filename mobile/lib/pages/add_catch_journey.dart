@@ -101,7 +101,7 @@ class _AddCatchJourneyState extends State<AddCatchJourney> {
           return MaterialPageRoute(
             settings: routeSettings,
             builder: (context) => ImagePickerPage(
-              doneButtonText: Strings.of(context).next,
+              actionText: Strings.of(context).next,
               requiresPick: false,
               popsOnFinish: false,
               onImagesPicked: (context, images) {

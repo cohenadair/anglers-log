@@ -58,11 +58,42 @@ void main() {
 
     expect(find.byType(ImagePickerPage), findsOneWidget);
     await tapAndSettle(tester, find.byType(Image).first);
-    await tapAndSettle(tester, find.text("DONE"));
+    await tapAndSettle(tester, find.byType(BackButton));
 
     expect(find.byType(Image), findsOneWidget);
     expect(find.byType(ImagePickerPage), findsNothing);
     expect(controller.value.length, 1);
+  });
+
+  testWidgets("Controller updated when images deleted", (tester) async {
+    var controller = ImagesInputController();
+    await pumpContext(
+      tester,
+      (_) => ImageInput(
+        controller: controller,
+      ),
+      appManager: appManager,
+    );
+    // Wait for futures.
+    await tester.pumpAndSettle(const Duration(milliseconds: 50));
+
+    await tapAndSettle(tester, find.byType(ImagePicker));
+
+    // Wait for futures.
+    await tester.pumpAndSettle(const Duration(milliseconds: 50));
+
+    expect(find.byType(ImagePickerPage), findsOneWidget);
+    await tapAndSettle(tester, find.byType(Image).first);
+    await tapAndSettle(tester, find.byType(BackButton));
+
+    expect(find.byType(Image), findsOneWidget);
+    expect(find.byType(ImagePickerPage), findsNothing);
+    expect(controller.value.length, 1);
+
+    // Delete photo.
+    await tapAndSettle(tester, find.byIcon(Icons.close));
+    await tapAndSettle(tester, find.text("DELETE"));
+    expect(controller.value.isEmpty, isTrue);
   });
 
   testWidgets("No initial images", (tester) async {

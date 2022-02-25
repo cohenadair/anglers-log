@@ -213,6 +213,17 @@ class Loading extends StatelessWidget {
     this.color,
   });
 
+  /// A [Loading] widget to be used in an [AppBar].
+  const Loading.appBar()
+      : this(
+          padding: const EdgeInsets.only(
+            right: paddingDefault,
+            top: paddingDefault,
+          ),
+          isCentered: true,
+          color: Colors.black,
+        );
+
   @override
   Widget build(BuildContext context) {
     var indicator = SizedBox.fromSize(

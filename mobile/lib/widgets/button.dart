@@ -201,7 +201,9 @@ class MinimumIconButton extends StatelessWidget {
 /// purposes. [FloatingButton] is a more lightweight solution that can be used
 /// anywhere.
 class FloatingButton extends StatelessWidget {
-  static const double _fabSize = 40.0;
+  static const double _sizeSmallButton = 24.0;
+  static const double _sizeSmallIcon = 16.0;
+  static const double _sizeDefault = 40.0;
 
   final EdgeInsets? padding;
 
@@ -209,12 +211,18 @@ class FloatingButton extends StatelessWidget {
   /// must not be empty.
   final IconData? icon;
 
+  /// The size of the icon inside the button. Defaults to null.
+  final double? iconSize;
+
   /// The text shown inside the "floating" part of the button. If null, [icon]
   /// must not be null.
   final String? text;
 
   /// A label shown below the "floating" part of the button.
   final String? label;
+
+  /// The size of the overall button. Defaults to null.
+  final double? size;
 
   final VoidCallback? onPressed;
 
@@ -244,6 +252,8 @@ class FloatingButton extends StatelessWidget {
             (icon != null && isEmpty(text))),
         _isBackButton = false,
         _isCloseButton = false,
+        iconSize = null,
+        size = null,
         super(key: key);
 
   const FloatingButton.icon({
@@ -257,6 +267,23 @@ class FloatingButton extends StatelessWidget {
   })  : _isBackButton = false,
         _isCloseButton = false,
         text = null,
+        iconSize = null,
+        size = null,
+        super(key: key);
+
+  const FloatingButton.smallIcon({
+    Key? key,
+    this.padding,
+    required this.icon,
+    this.onPressed,
+    this.label,
+    this.pushed = false,
+    this.transparentBackground = false,
+  })  : _isBackButton = false,
+        _isCloseButton = false,
+        text = null,
+        iconSize = _sizeSmallIcon,
+        size = _sizeSmallButton,
         super(key: key);
 
   const FloatingButton.back({
@@ -269,7 +296,9 @@ class FloatingButton extends StatelessWidget {
         label = null,
         pushed = false,
         icon = null,
+        iconSize = null,
         text = null,
+        size = null,
         super(key: key);
 
   const FloatingButton.close({
@@ -282,7 +311,9 @@ class FloatingButton extends StatelessWidget {
         label = null,
         pushed = false,
         icon = null,
+        iconSize = null,
         text = null,
+        size = null,
         super(key: key);
 
   @override
@@ -290,14 +321,15 @@ class FloatingButton extends StatelessWidget {
     Widget circleChild;
     if (_isBackButton) {
       if (Theme.of(context).platform == TargetPlatform.android) {
-        circleChild = const Icon(Icons.arrow_back);
+        circleChild = Icon(Icons.arrow_back, size: iconSize);
       } else {
         // The iOS back button icon is not centered, so add some padding.
-        circleChild = const Padding(
+        circleChild = Padding(
           padding: insetsLeftSmall,
           child: Icon(
             Icons.arrow_back_ios,
             color: Colors.black,
+            size: iconSize,
           ),
         );
       }
@@ -307,6 +339,7 @@ class FloatingButton extends StatelessWidget {
       circleChild = Icon(
         _isCloseButton ? Icons.close : icon,
         color: Colors.black,
+        size: iconSize,
       );
     }
 
@@ -316,8 +349,8 @@ class FloatingButton extends StatelessWidget {
       child: Column(
         children: [
           FloatingContainer(
-            width: _fabSize,
-            height: _fabSize,
+            width: size ?? _sizeDefault,
+            height: size ?? _sizeDefault,
             isCircle: true,
             isTransparent: transparentBackground,
             child: RawMaterialButton(

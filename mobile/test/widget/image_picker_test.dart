@@ -26,7 +26,8 @@ void main() {
   testWidgets("Enabled", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => ImagePicker(
-        onImagesPicked: (_) => {},
+        onImagesPicked: (_) {},
+        onImageDeleted: (_) {},
       ),
       appManager: appManager,
     ));
@@ -41,7 +42,8 @@ void main() {
     await tester.pumpWidget(
       Testable(
         (_) => ImagePicker(
-          onImagesPicked: (_) => {},
+          onImagesPicked: (_) {},
+          onImageDeleted: (_) {},
           isEnabled: false,
         ),
       ),
@@ -56,24 +58,27 @@ void main() {
   testWidgets("Single selection", (tester) async {
     await tester.pumpWidget(
       Testable(
-        (_) => ImagePicker.single(
-          onImagePicked: (_) => {},
+        (_) => ImagePicker(
+          onImagesPicked: (_) {},
+          onImageDeleted: (_) {},
+          isMulti: false,
         ),
       ),
     );
     expect(find.text("Photo"), findsOneWidget);
-    expect(find.text("Photos"), findsNothing);
+    expect(find.text("Add Photos"), findsNothing);
   });
 
   testWidgets("Multiple selection", (tester) async {
     await tester.pumpWidget(
       Testable(
         (_) => ImagePicker(
-          onImagesPicked: (_) => {},
+          onImagesPicked: (_) {},
+          onImageDeleted: (_) {},
         ),
       ),
     );
-    expect(find.text("Photos"), findsOneWidget);
+    expect(find.text("Add Photos"), findsOneWidget);
     expect(find.text("Photo"), findsNothing);
   });
 
@@ -81,7 +86,8 @@ void main() {
     await tester.pumpWidget(
       Testable(
         (_) => ImagePicker(
-          onImagesPicked: (_) => {},
+          onImagesPicked: (_) {},
+          onImageDeleted: (_) {},
         ),
       ),
     );
@@ -93,7 +99,8 @@ void main() {
     await tester.pumpWidget(
       Testable(
         (_) => ImagePicker(
-          onImagesPicked: (_) => {},
+          onImagesPicked: (_) {},
+          onImageDeleted: (_) {},
           initialImages: [
             PickedImage(originalFile: File("test/resources/flutter_logo.png")),
             PickedImage(originalFile: File("test/resources/flutter_logo.png")),
@@ -110,7 +117,8 @@ void main() {
     await tester.pumpWidget(
       Testable(
         (_) => ImagePicker(
-          onImagesPicked: (_) => {},
+          onImagesPicked: (_) {},
+          onImageDeleted: (_) {},
           initialImages: [
             PickedImage(originalFile: File("test/resources/flutter_logo.png")),
             PickedImage(originalFile: File("test/resources/flutter_logo.png")),
@@ -128,7 +136,8 @@ void main() {
     await tester.pumpWidget(
       Testable(
         (_) => ImagePicker(
-          onImagesPicked: (_) => {},
+          onImagesPicked: (_) {},
+          onImageDeleted: (_) {},
           initialImages: [
             PickedImage(originalFile: File("test/resources/flutter_logo.png")),
           ],
@@ -143,7 +152,8 @@ void main() {
     await tester.pumpWidget(
       Testable(
         (_) => ImagePicker(
-          onImagesPicked: (_) => {},
+          onImagesPicked: (_) {},
+          onImageDeleted: (_) {},
           initialImages: [
             PickedImage(
               thumbData:
@@ -155,5 +165,29 @@ void main() {
     );
 
     expect(find.byType(Image), findsOneWidget);
+  });
+
+  testWidgets("onImageDeleted callback invoked", (tester) async {
+    bool invoked = false;
+
+    await tester.pumpWidget(
+      Testable(
+        (_) => ImagePicker(
+          onImagesPicked: (_) {},
+          onImageDeleted: (_) => invoked = true,
+          initialImages: [
+            PickedImage(
+              thumbData:
+                  File("test/resources/flutter_logo.png").readAsBytesSync(),
+            ),
+          ],
+        ),
+      ),
+    );
+
+    // Delete photo.
+    await tapAndSettle(tester, find.byIcon(Icons.close));
+    await tapAndSettle(tester, find.text("DELETE"));
+    expect(invoked, isTrue);
   });
 }
