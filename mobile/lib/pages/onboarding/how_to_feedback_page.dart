@@ -30,6 +30,9 @@ class _HowToFeedbackPageState extends State<HowToFeedbackPage> {
   static const _scrollToTopAfter = Duration(seconds: 2, milliseconds: 500);
   static const _scrollToFeedbackAfter = Duration(seconds: 1);
 
+  // Align the scrolled content to the center of the viewport.
+  static const _scrollAlignment = 0.5;
+
   static const _log = Log("HowToFeedbackPage");
 
   final _feedbackKey = GlobalKey();
@@ -90,6 +93,7 @@ class _HowToFeedbackPageState extends State<HowToFeedbackPage> {
     Scrollable.ensureVisible(
       _feedbackKey.currentContext!,
       duration: _scrollAnimDuration,
+      alignment: _scrollAlignment,
     );
     _isFeedbackShowing = true;
     _scrollTimer = Timer(_scrollToTopAfter, _jumpToTop);

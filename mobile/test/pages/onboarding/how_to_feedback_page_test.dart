@@ -32,7 +32,10 @@ void main() {
     ));
 
     var scrollable = Scrollable.of((tester
-            .firstWidget(find.widgetWithText(ListItem, "Send Feedback"))
+            .firstWidget(find.ancestor(
+              of: find.widgetWithText(ListItem, "Send Feedback"),
+              matching: find.byType(Container),
+            ))
             .key as GlobalKey)
         .currentContext!)!;
     expect(scrollable.widget.controller!.offset, 0.0);

@@ -24,6 +24,7 @@ class MorePage extends StatelessWidget {
       "https://twitter.com/search?f=realtime&q=%23anglerslogapp&src=typd&lang=en";
   static const _twitterAppUrl = "twitter://search?query=%23anglerslogapp";
   static const _twitterColor = Color.fromRGBO(29, 155, 240, 100);
+  static const _feedbackBorderWidth = 1.0;
 
   /// A [GlobalKey] for the feedback row. Used for scrolling to the feedback
   /// row when onboarding users.
@@ -91,7 +92,7 @@ class MorePage extends StatelessWidget {
               page: const ProPage(),
               presentPage: true,
             ),
-            ..._buildRateAndFeedbackItems(context),
+            _buildRateAndFeedbackItems(context),
             _buildHashtagItem(
               context,
               icon: CustomIcons.instagram,
@@ -118,7 +119,7 @@ class MorePage extends StatelessWidget {
     );
   }
 
-  List<Widget> _buildRateAndFeedbackItems(BuildContext context) {
+  Widget _buildRateAndFeedbackItems(BuildContext context) {
     var rateItem = _buildPageItem(
       context,
       icon: Icons.star,
@@ -129,44 +130,33 @@ class MorePage extends StatelessWidget {
 
     var feedbackItem = _buildPageItem(
       context,
-      key: feedbackKey,
       icon: Icons.feedback,
       title: Strings.of(context).feedbackPageTitle,
       page: const FeedbackPage(),
       presentPage: true,
     );
 
-    if (feedbackKey == null) {
-      return [feedbackItem, rateItem];
-    }
-
-    var borderSide = const BorderSide(
-      width: 1.0,
-      color: Colors.green,
+    var column = Column(
+      children: [
+        rateItem,
+        feedbackItem,
+      ],
     );
 
-    return [
-      Container(
-        decoration: BoxDecoration(
-          border: Border(
-            left: borderSide,
-            top: borderSide,
-            right: borderSide,
-          ),
+    if (feedbackKey == null) {
+      return column;
+    }
+
+    return Container(
+      key: feedbackKey,
+      decoration: BoxDecoration(
+        border: Border.all(
+          width: _feedbackBorderWidth,
+          color: Colors.green,
         ),
-        child: rateItem,
       ),
-      Container(
-        decoration: BoxDecoration(
-          border: Border(
-            left: borderSide,
-            bottom: borderSide,
-            right: borderSide,
-          ),
-        ),
-        child: feedbackItem,
-      ),
-    ];
+      child: column,
+    );
   }
 
   Widget _buildHashtagItem(
