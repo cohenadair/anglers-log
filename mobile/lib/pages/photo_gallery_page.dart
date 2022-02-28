@@ -21,6 +21,7 @@ class PhotoGalleryPage extends StatefulWidget {
 class _PhotoGalleryPageState extends State<PhotoGalleryPage> {
   static const _minScale = 1.0;
   static const _maxScale = 5.0;
+  static const _swipeDownVelocity = 500.0;
 
   final _transformationController = TransformationController();
   late PageController _controller;
@@ -45,8 +46,14 @@ class _PhotoGalleryPageState extends State<PhotoGalleryPage> {
   Widget build(BuildContext context) {
     return GestureDetector(
       // Don't allow swipe to dismiss when zoomed in on photo.
-      onVerticalDragEnd:
-          _isDismissible ? (_) => Navigator.of(context).pop() : null,
+      onVerticalDragEnd: _isDismissible
+          ? (details) {
+              if (details.primaryVelocity != null &&
+                  details.primaryVelocity! > _swipeDownVelocity) {
+                Navigator.of(context).pop();
+              }
+            }
+          : null,
       child: Scaffold(
         extendBodyBehindAppBar: true,
         body: Stack(

@@ -1,5 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/pages/photo_gallery_page.dart';
+import 'package:mobile/utils/page_utils.dart';
+import 'package:mobile/widgets/button.dart';
 import 'package:mobile/widgets/photo.dart';
 import 'package:mockito/mockito.dart';
 
@@ -152,5 +154,44 @@ void main() {
       fileName: "anglers_log_logo.png",
       size: anyNamed("size"),
     )).called(1);
+  });
+
+  testWidgets("Swiping down dismisses page", (tester) async {
+    await stubImage(appManager, tester, "flutter_logo.png");
+
+    await tester.pumpWidget(Testable(
+      (context) => Button(
+        text: "TEST",
+        onPressed: () => push(
+          context,
+          PhotoGalleryPage(
+            fileNames: const [
+              "flutter_logo.png",
+            ],
+            initialFileName: "flutter_logo.png",
+          ),
+        ),
+      ),
+      appManager: appManager,
+    ));
+    // Let image future settle.
+    await tester.pumpAndSettle(const Duration(milliseconds: 250));
+
+    // Show the page.
+    await tapAndSettle(tester, find.text("TEST"));
+    expect(find.byType(PhotoGalleryPage), findsOneWidget);
+
+    // Swipe down without enough velocity.
+    await tester.fling(find.byType(PhotoGalleryPage), const Offset(0, 300), 50);
+    await tester.pumpAndSettle(const Duration(milliseconds: 250));
+
+    expect(find.byType(PhotoGalleryPage), findsOneWidget);
+
+    // Swipe down with enough velocity.
+    await tester.fling(
+        find.byType(PhotoGalleryPage), const Offset(0, 300), 800);
+    await tester.pumpAndSettle(const Duration(milliseconds: 250));
+
+    expect(find.byType(PhotoGalleryPage), findsNothing);
   });
 }
