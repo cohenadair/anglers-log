@@ -30,8 +30,10 @@ void main() {
         ),
       ),
     );
+    when(appManager.subscriptionManager.userId)
+        .thenAnswer((_) => Future.value("USER-ID"));
     when(appManager.propertiesManager.feedbackTemplate)
-        .thenReturn("%s%s%s%s%s%s%s%s");
+        .thenReturn("%s%s%s%%s%ss%s%s%s%s");
 
     when(appManager.userPreferenceManager.userName).thenReturn(null);
     when(appManager.userPreferenceManager.userEmail).thenReturn(null);

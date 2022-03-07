@@ -62,6 +62,9 @@ class SubscriptionManager {
   /// value, unlike the [AsyncSnapshot] passed to the listener function.
   Stream<void> get stream => _controller.stream;
 
+  Future<String> get userId async =>
+      (await _purchasesWrapper.getPurchaserInfo()).originalAppUserId;
+
   Future<void> initialize() async {
     // Setup RevenueCat.
     await _purchasesWrapper.setup(_propertiesManager.revenueCatApiKey);

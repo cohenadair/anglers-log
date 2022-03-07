@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/material.dart';
+import 'package:mobile/subscription_manager.dart';
 import 'package:mobile/user_preference_manager.dart';
 import 'package:quiver/strings.dart';
 
@@ -68,6 +69,9 @@ class _FeedbackPageState extends State<FeedbackPage> {
   PackageInfoWrapper get _packageInfo => PackageInfoWrapper.of(context);
 
   PropertiesManager get _propertiesManager => PropertiesManager.of(context);
+
+  SubscriptionManager get _subscriptionManager =>
+      SubscriptionManager.of(context);
 
   UserPreferenceManager get _userPreferenceManager =>
       UserPreferenceManager.of(context);
@@ -186,16 +190,19 @@ class _FeedbackPageState extends State<FeedbackPage> {
     var appVersion = (await _packageInfo.fromPlatform()).version;
     String? osVersion;
     String? deviceModel;
+    String? deviceId;
 
     var deviceInfo = DeviceInfoPlugin();
     if (Platform.isIOS) {
       var info = await deviceInfo.iosInfo;
       osVersion = "${info.systemName} (${info.systemVersion})";
       deviceModel = info.utsname.machine;
+      deviceId = info.identifierForVendor;
     } else if (Platform.isAndroid) {
       var info = await deviceInfo.androidInfo;
       osVersion = "Android (${info.version.sdkInt})";
       deviceModel = info.model;
+      deviceId = info.androidId;
     }
 
     // API data, per https://sendgrid.com/docs/api-reference/.
@@ -221,6 +228,8 @@ class _FeedbackPageState extends State<FeedbackPage> {
             appVersion,
             isNotEmpty(osVersion) ? osVersion : "Unknown",
             isNotEmpty(deviceModel) ? deviceModel : "Unknown",
+            isNotEmpty(deviceId) ? deviceId : "Unknown",
+            await _subscriptionManager.userId,
             type,
             _error ? widget.error : "N/A",
             isNotEmpty(name) ? name : "Unknown",

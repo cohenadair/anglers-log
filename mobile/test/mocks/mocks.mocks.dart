@@ -3466,6 +3466,10 @@ class MockSubscriptionManager extends _i1.Mock
       (super.noSuchMethod(Invocation.getter(#stream),
           returnValue: Stream<void>.empty()) as _i60.Stream<void>);
   @override
+  _i60.Future<String> get userId =>
+      (super.noSuchMethod(Invocation.getter(#userId),
+          returnValue: Future<String>.value('')) as _i60.Future<String>);
+  @override
   _i60.Future<void> initialize() => (super.noSuchMethod(
       Invocation.method(#initialize, []),
       returnValue: Future<void>.value(),

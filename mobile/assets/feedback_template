@@ -1,7 +1,9 @@
 App version: %s
 OS version: %s
 Device: %s
-Type: %s
+Device ID: %s
+RevenueCat ID: %s
+Feedback type: %s
 
 Error: %s
 
