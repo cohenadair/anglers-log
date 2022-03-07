@@ -697,6 +697,9 @@ extension Periods on Period {
 }
 
 extension Seasons on Season {
+  /// Returns a [Season] from the given date and latitude. The Meteorological
+  /// definition is used to calculate seasons:
+  ///   - https://en.wikipedia.org/wiki/Season#Meteorological
   static Season? from(DateTime dateTime, double? lat) {
     if (lat == null) {
       return null;
