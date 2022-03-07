@@ -9,7 +9,7 @@ import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mobile/utils/report_utils.dart';
 import 'package:mobile/widgets/button.dart';
 import 'package:mobile/widgets/list_item.dart';
-import 'package:mobile/widgets/pro_blur.dart';
+import 'package:mobile/widgets/pro_overlay.dart';
 import 'package:mobile/widgets/text.dart';
 import 'package:mobile/widgets/widget.dart';
 import 'package:mockito/mockito.dart';
@@ -374,7 +374,7 @@ void main() {
       appManager: appManager,
     ));
 
-    expect(find.byType(ProBlur), findsOneWidget);
+    expect(find.byType(ProOverlay), findsOneWidget);
   });
 
   testWidgets("Blurred reports hidden if there are no custom reports",
@@ -396,6 +396,6 @@ void main() {
       appManager: appManager,
     ));
 
-    expect(find.byType(ProBlur), findsNothing);
+    expect(find.byType(ProOverlay), findsNothing);
   });
 }

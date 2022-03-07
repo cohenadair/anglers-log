@@ -231,6 +231,8 @@ void main() {
 
   group("Editing", () {
     testWidgets("All fields set correctly", (tester) async {
+      when(appManager.subscriptionManager.isFree).thenReturn(false);
+
       var customEntity = CustomEntity()
         ..id = randomId()
         ..name = "Color"

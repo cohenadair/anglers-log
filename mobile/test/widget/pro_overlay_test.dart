@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/pages/pro_page.dart';
-import 'package:mobile/widgets/pro_blur.dart';
+import 'package:mobile/widgets/pro_overlay.dart';
 import 'package:mockito/mockito.dart';
 
 import '../mocks/stubbed_app_manager.dart';
@@ -31,7 +31,7 @@ void main() {
 
     await pumpContext(
       tester,
-      (_) => const ProBlur(
+      (_) => const ProOverlay(
         proWidget: Text("Pro Widget"),
         description: "Test description.",
       ),
@@ -39,15 +39,15 @@ void main() {
     );
 
     // Starts as free.
-    expect(find.byType(Stack), findsOneWidget);
-    expect(find.text("Pro Widget"), findsOneWidget);
+    expect(find.text("UPGRADE"), findsOneWidget);
+    expect(find.text("Pro Widget"), findsNothing);
 
     // Upgrade to pro.
     when(appManager.subscriptionManager.isFree).thenReturn(false);
     controller.add(null);
     await tester.pumpAndSettle();
 
-    expect(find.byType(Stack), findsNothing);
+    expect(find.text("UPGRADE"), findsNothing);
     expect(find.text("Pro Widget"), findsOneWidget);
 
     // Downgrade back to free.
@@ -55,8 +55,8 @@ void main() {
     controller.add(null);
     await tester.pumpAndSettle();
 
-    expect(find.byType(Stack), findsOneWidget);
-    expect(find.text("Pro Widget"), findsOneWidget);
+    expect(find.text("UPGRADE"), findsOneWidget);
+    expect(find.text("Pro Widget"), findsNothing);
   });
 
   testWidgets("Button opens pro page", (tester) async {
@@ -64,7 +64,7 @@ void main() {
 
     await pumpContext(
       tester,
-      (_) => const ProBlur(
+      (_) => const ProOverlay(
         proWidget: Text("Pro Widget"),
         description: "Test description.",
       ),

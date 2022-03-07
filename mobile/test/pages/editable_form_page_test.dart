@@ -8,7 +8,7 @@ import 'package:mobile/widgets/checkbox_input.dart';
 import 'package:mobile/widgets/input_controller.dart';
 import 'package:mobile/widgets/field.dart';
 import 'package:mobile/widgets/list_item.dart';
-import 'package:mobile/widgets/pro_blur.dart';
+import 'package:mobile/widgets/pro_overlay.dart';
 import 'package:mobile/widgets/text.dart';
 import 'package:mobile/widgets/widget.dart';
 import 'package:mockito/mockito.dart';
@@ -80,7 +80,7 @@ void main() {
 
     expect(find.byType(IconLabel), findsNothing);
     expect(find.widgetWithText(TextField, "Custom Field 1"), findsOneWidget);
-    expect(find.byType(ProBlur), findsOneWidget);
+    expect(find.byType(ProOverlay), findsOneWidget);
   });
 
   testWidgets("CustomEntityValue that doesn't exist in fields is still added",

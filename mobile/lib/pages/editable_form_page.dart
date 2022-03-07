@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:mobile/utils/collection_utils.dart';
-import 'package:mobile/widgets/pro_blur.dart';
+import 'package:mobile/widgets/pro_overlay.dart';
 
 import '../custom_entity_manager.dart';
 import '../i18n/strings.dart';
@@ -285,7 +285,7 @@ class _EditableFormPageState extends State<EditableFormPage> {
 
     Widget blur = const Empty();
     if (children.isNotEmpty) {
-      blur = ProBlur(
+      blur = ProOverlay(
         description: Strings.of(context).formPageManageFieldsProDescription,
         proWidget: Column(
           children: children,

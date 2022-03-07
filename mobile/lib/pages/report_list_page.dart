@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mobile/utils/report_utils.dart';
 import 'package:mobile/widgets/list_item.dart';
-import 'package:mobile/widgets/pro_blur.dart';
+import 'package:mobile/widgets/pro_overlay.dart';
 
 import '../i18n/strings.dart';
 import '../model/gen/anglerslog.pb.dart';
@@ -100,7 +100,7 @@ class ReportListPage extends StatelessWidget {
       child: Column(
         children: [
           _buildCustomReportsHeader(context),
-          ProBlur(
+          ProOverlay(
             description:
                 Strings.of(context).reportListPageReportsProDescription,
             proWidget: Column(
