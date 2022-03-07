@@ -28,8 +28,10 @@ void main() {
     ];
     allAlbum = MockAssetPathEntity();
     when(allAlbum.assetCount).thenReturn(mockAssets.length);
-    when(allAlbum.getAssetListPaged(any, any))
-        .thenAnswer((_) => Future.value(mockAssets));
+    when(allAlbum.getAssetListPaged(
+      page: anyNamed("page"),
+      size: anyNamed("size"),
+    )).thenAnswer((_) => Future.value(mockAssets));
     when(appManager.imagePickerWrapper.pickImage(any))
         .thenAnswer((_) => Future.value(null));
     when(appManager.photoManagerWrapper.getAllAssetPathEntity(any))

@@ -250,6 +250,7 @@ class MockStream<T> extends Mock implements Stream<T> {
 // Mockito can't stub the == operator, which makes it impossible to use mocks
 // created with Mockito in a Set.
 // https://github.com/dart-lang/mockito/issues/365
+// ignore: must_be_immutable
 class MockAssetEntity extends AssetEntity {
   final String fileName;
   final DateTime? dateTime;
@@ -277,7 +278,7 @@ class MockAssetEntity extends AssetEntity {
   DateTime get createDateTime => dateTime ?? DateTime.now();
 
   @override
-  Future<Uint8List?> get thumbData =>
+  Future<Uint8List?> get thumbnailData =>
       Future.value(File("test/resources/$fileName").readAsBytesSync());
 
   @override

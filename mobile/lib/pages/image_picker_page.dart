@@ -437,7 +437,7 @@ class _ImagePickerPageState extends State<ImagePickerPage> {
         itemBuilder: (context, i) {
           var future = _thumbnailFutures[i];
           if (future == null) {
-            future = _assets.elementAt(i).thumbData;
+            future = _assets.elementAt(i).thumbnailData;
             _thumbnailFutures[i] = future;
           }
 
@@ -667,7 +667,7 @@ class _ImagePickerPageState extends State<ImagePickerPage> {
     maps.LatLng? position;
 
     if (_coordinatesAreValid(lat, lng)) {
-      position = maps.LatLng(lat, lng);
+      position = maps.LatLng(lat!, lng!);
     } else {
       // Coordinates are invalid, attempt to retrieve from OS.
       var latLng = await entity.latlngAsync();
@@ -688,7 +688,7 @@ class _ImagePickerPageState extends State<ImagePickerPage> {
     return PickedImage(
       originalFile: originFile,
       originalFileId: entity.id,
-      thumbData: thumbData ?? await entity.thumbData,
+      thumbData: thumbData ?? await entity.thumbnailData,
       position: position,
       dateTime: entity.createDateTime,
     );
@@ -714,7 +714,9 @@ class _ImagePickerPageState extends State<ImagePickerPage> {
       return;
     }
 
-    _assetsFuture = _galleryAsset!
-        .getAssetListPaged(_currentPage++, _approxThumbsOnScreen() * 2);
+    _assetsFuture = _galleryAsset!.getAssetListPaged(
+      page: _currentPage++,
+      size: _approxThumbsOnScreen() * 2,
+    );
   }
 }

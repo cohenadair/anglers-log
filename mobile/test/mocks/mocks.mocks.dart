@@ -334,52 +334,55 @@ class _FakeLogInResult_95 extends _i1.Fake implements _i55.LogInResult {}
 
 class _FakeMethodChannel_96 extends _i1.Fake implements _i56.MethodChannel {}
 
-class _FakeFilterOptionGroup_97 extends _i1.Fake
+class _FakeRequestType_97 extends _i1.Fake implements _i57.RequestType {}
+
+class _FakeFilterOptionGroup_98 extends _i1.Fake
     implements _i57.FilterOptionGroup {}
 
-class _FakeRequestType_98 extends _i1.Fake implements _i57.RequestType {}
+class _FakeAssetPathEntity_99 extends _i1.Fake implements _i57.AssetPathEntity {
+}
 
-class _FakeBatch_99 extends _i1.Fake implements _i58.Batch {}
+class _FakeBatch_100 extends _i1.Fake implements _i58.Batch {}
 
-class _FakeUri_100 extends _i1.Fake implements Uri {}
+class _FakeUri_101 extends _i1.Fake implements Uri {}
 
-class _FakeFileStat_101 extends _i1.Fake implements _i50.FileStat {}
+class _FakeFileStat_102 extends _i1.Fake implements _i50.FileStat {}
 
-class _FakeFileSystemEntity_102 extends _i1.Fake
+class _FakeFileSystemEntity_103 extends _i1.Fake
     implements _i50.FileSystemEntity {}
 
-class _Fake$EntitlementInfoCopyWith_103<$Res> extends _i1.Fake
+class _Fake$EntitlementInfoCopyWith_104<$Res> extends _i1.Fake
     implements _i55.$EntitlementInfoCopyWith<$Res> {}
 
-class _Fake$EntitlementInfosCopyWith_104<$Res> extends _i1.Fake
+class _Fake$EntitlementInfosCopyWith_105<$Res> extends _i1.Fake
     implements _i55.$EntitlementInfosCopyWith<$Res> {}
 
-class _FakeMethodCodec_105 extends _i1.Fake implements _i56.MethodCodec {}
+class _FakeMethodCodec_106 extends _i1.Fake implements _i56.MethodCodec {}
 
-class _FakeBinaryMessenger_106 extends _i1.Fake
+class _FakeBinaryMessenger_107 extends _i1.Fake
     implements _i56.BinaryMessenger {}
 
-class _Fake$OfferingCopyWith_107<$Res> extends _i1.Fake
+class _Fake$OfferingCopyWith_108<$Res> extends _i1.Fake
     implements _i55.$OfferingCopyWith<$Res> {}
 
-class _Fake$OfferingsCopyWith_108<$Res> extends _i1.Fake
+class _Fake$OfferingsCopyWith_109<$Res> extends _i1.Fake
     implements _i55.$OfferingsCopyWith<$Res> {}
 
-class _FakeProduct_109 extends _i1.Fake implements _i55.Product {}
+class _FakeProduct_110 extends _i1.Fake implements _i55.Product {}
 
-class _Fake$PackageCopyWith_110<$Res> extends _i1.Fake
+class _Fake$PackageCopyWith_111<$Res> extends _i1.Fake
     implements _i55.$PackageCopyWith<$Res> {}
 
-class _Fake$ProductCopyWith_111<$Res> extends _i1.Fake
+class _Fake$ProductCopyWith_112<$Res> extends _i1.Fake
     implements _i55.$ProductCopyWith<$Res> {}
 
-class _FakeEntitlementInfos_112 extends _i1.Fake
+class _FakeEntitlementInfos_113 extends _i1.Fake
     implements _i55.EntitlementInfos {}
 
-class _Fake$PurchaserInfoCopyWith_113<$Res> extends _i1.Fake
+class _Fake$PurchaserInfoCopyWith_114<$Res> extends _i1.Fake
     implements _i55.$PurchaserInfoCopyWith<$Res> {}
 
-class _FakeSetInputController_114<T> extends _i1.Fake
+class _FakeSetInputController_115<T> extends _i1.Fake
     implements _i59.SetInputController<T> {}
 
 /// A class which mocks [AnglerManager].
@@ -5085,6 +5088,7 @@ class MockUrlLauncherWrapper extends _i1.Mock
 /// A class which mocks [AssetPathEntity].
 ///
 /// See the documentation for Mockito's code generation for more information.
+// ignore: must_be_immutable
 class MockAssetPathEntity extends _i1.Mock implements _i57.AssetPathEntity {
   MockAssetPathEntity() {
     _i1.throwOnMissingStub(this);
@@ -5094,86 +5098,43 @@ class MockAssetPathEntity extends _i1.Mock implements _i57.AssetPathEntity {
   String get id =>
       (super.noSuchMethod(Invocation.getter(#id), returnValue: '') as String);
   @override
-  set id(String? _id) => super.noSuchMethod(Invocation.setter(#id, _id),
-      returnValueForMissingStub: null);
-  @override
   String get name =>
       (super.noSuchMethod(Invocation.getter(#name), returnValue: '') as String);
-  @override
-  set name(String? _name) => super.noSuchMethod(Invocation.setter(#name, _name),
-      returnValueForMissingStub: null);
   @override
   int get assetCount =>
       (super.noSuchMethod(Invocation.getter(#assetCount), returnValue: 0)
           as int);
   @override
-  set assetCount(int? _assetCount) =>
-      super.noSuchMethod(Invocation.setter(#assetCount, _assetCount),
-          returnValueForMissingStub: null);
-  @override
   int get albumType =>
       (super.noSuchMethod(Invocation.getter(#albumType), returnValue: 0)
           as int);
   @override
-  set albumType(int? _albumType) =>
-      super.noSuchMethod(Invocation.setter(#albumType, _albumType),
-          returnValueForMissingStub: null);
-  @override
-  _i57.FilterOptionGroup get filterOption =>
-      (super.noSuchMethod(Invocation.getter(#filterOption),
-          returnValue: _FakeFilterOptionGroup_97()) as _i57.FilterOptionGroup);
-  @override
-  set filterOption(_i57.FilterOptionGroup? _filterOption) =>
-      super.noSuchMethod(Invocation.setter(#filterOption, _filterOption),
-          returnValueForMissingStub: null);
-  @override
-  set lastModified(DateTime? _lastModified) =>
-      super.noSuchMethod(Invocation.setter(#lastModified, _lastModified),
-          returnValueForMissingStub: null);
+  _i57.RequestType get type => (super.noSuchMethod(Invocation.getter(#type),
+      returnValue: _FakeRequestType_97()) as _i57.RequestType);
   @override
   bool get isAll =>
       (super.noSuchMethod(Invocation.getter(#isAll), returnValue: false)
           as bool);
   @override
-  set isAll(bool? _isAll) =>
-      super.noSuchMethod(Invocation.setter(#isAll, _isAll),
-          returnValueForMissingStub: null);
+  _i57.FilterOptionGroup get filterOption =>
+      (super.noSuchMethod(Invocation.getter(#filterOption),
+          returnValue: _FakeFilterOptionGroup_98()) as _i57.FilterOptionGroup);
   @override
-  _i57.RequestType get type => (super.noSuchMethod(Invocation.getter(#type),
-      returnValue: _FakeRequestType_98()) as _i57.RequestType);
-  @override
-  set type(_i57.RequestType? type) =>
-      super.noSuchMethod(Invocation.setter(#type, type),
-          returnValueForMissingStub: null);
-  @override
-  int get typeInt =>
-      (super.noSuchMethod(Invocation.getter(#typeInt), returnValue: 0) as int);
-  @override
-  set typeInt(int? typeInt) =>
-      super.noSuchMethod(Invocation.setter(#typeInt, typeInt),
-          returnValueForMissingStub: null);
-  @override
-  _i60.Future<List<_i57.AssetEntity>> get assetList =>
-      (super.noSuchMethod(Invocation.getter(#assetList),
-              returnValue:
-                  Future<List<_i57.AssetEntity>>.value(<_i57.AssetEntity>[]))
-          as _i60.Future<List<_i57.AssetEntity>>);
-  @override
-  _i60.Future<void> refreshPathProperties({bool? maxDateTimeToNow = true}) =>
+  _i60.Future<_i57.AssetPathEntity> obtainForNewProperties(
+          {bool? maxDateTimeToNow = true}) =>
       (super.noSuchMethod(
-              Invocation.method(#refreshPathProperties, [],
+              Invocation.method(#obtainForNewProperties, [],
                   {#maxDateTimeToNow: maxDateTimeToNow}),
-              returnValue: Future<void>.value(),
-              returnValueForMissingStub: Future<void>.value())
-          as _i60.Future<void>);
+              returnValue:
+                  Future<_i57.AssetPathEntity>.value(_FakeAssetPathEntity_99()))
+          as _i60.Future<_i57.AssetPathEntity>);
   @override
   _i60.Future<List<_i57.AssetEntity>> getAssetListPaged(
-          int? page, int? pageSize) =>
+          {int? page, int? size}) =>
       (super.noSuchMethod(
-              Invocation.method(#getAssetListPaged, [page, pageSize]),
-              returnValue:
-                  Future<List<_i57.AssetEntity>>.value(<_i57.AssetEntity>[]))
-          as _i60.Future<List<_i57.AssetEntity>>);
+          Invocation.method(#getAssetListPaged, [], {#page: page, #size: size}),
+          returnValue: Future<List<_i57.AssetEntity>>.value(
+              <_i57.AssetEntity>[])) as _i60.Future<List<_i57.AssetEntity>>);
   @override
   _i60.Future<List<_i57.AssetEntity>> getAssetListRange(
           {int? start, int? end}) =>
@@ -5187,6 +5148,36 @@ class MockAssetPathEntity extends _i1.Mock implements _i57.AssetPathEntity {
               returnValue: Future<List<_i57.AssetPathEntity>>.value(
                   <_i57.AssetPathEntity>[]))
           as _i60.Future<List<_i57.AssetPathEntity>>);
+  @override
+  _i60.Future<_i57.AssetPathEntity?> fetchPathProperties(
+          {_i57.FilterOptionGroup? filterOptionGroup}) =>
+      (super.noSuchMethod(
+              Invocation.method(#fetchPathProperties, [],
+                  {#filterOptionGroup: filterOptionGroup}),
+              returnValue: Future<_i57.AssetPathEntity?>.value())
+          as _i60.Future<_i57.AssetPathEntity?>);
+  @override
+  _i57.AssetPathEntity copyWith(
+          {String? id,
+          String? name,
+          int? assetCount,
+          int? albumType = 1,
+          DateTime? lastModified,
+          _i57.RequestType? type,
+          bool? isAll,
+          _i57.FilterOptionGroup? filterOption}) =>
+      (super.noSuchMethod(
+          Invocation.method(#copyWith, [], {
+            #id: id,
+            #name: name,
+            #assetCount: assetCount,
+            #albumType: albumType,
+            #lastModified: lastModified,
+            #type: type,
+            #isAll: isAll,
+            #filterOption: filterOption
+          }),
+          returnValue: _FakeAssetPathEntity_99()) as _i57.AssetPathEntity);
 }
 
 /// A class which mocks [Batch].
@@ -5452,7 +5443,7 @@ class MockDatabase extends _i1.Mock implements _i58.Database {
           returnValue: Future<int>.value(0)) as _i60.Future<int>);
   @override
   _i58.Batch batch() => (super.noSuchMethod(Invocation.method(#batch, []),
-      returnValue: _FakeBatch_99()) as _i58.Batch);
+      returnValue: _FakeBatch_100()) as _i58.Batch);
 }
 
 /// A class which mocks [Directory].
@@ -5468,7 +5459,7 @@ class MockDirectory extends _i1.Mock implements _i50.Directory {
       (super.noSuchMethod(Invocation.getter(#path), returnValue: '') as String);
   @override
   Uri get uri =>
-      (super.noSuchMethod(Invocation.getter(#uri), returnValue: _FakeUri_100())
+      (super.noSuchMethod(Invocation.getter(#uri), returnValue: _FakeUri_101())
           as Uri);
   @override
   _i50.Directory get absolute =>
@@ -5542,17 +5533,17 @@ class MockDirectory extends _i1.Mock implements _i50.Directory {
   @override
   _i60.Future<_i50.FileStat> stat() =>
       (super.noSuchMethod(Invocation.method(#stat, []),
-              returnValue: Future<_i50.FileStat>.value(_FakeFileStat_101()))
+              returnValue: Future<_i50.FileStat>.value(_FakeFileStat_102()))
           as _i60.Future<_i50.FileStat>);
   @override
   _i50.FileStat statSync() =>
       (super.noSuchMethod(Invocation.method(#statSync, []),
-          returnValue: _FakeFileStat_101()) as _i50.FileStat);
+          returnValue: _FakeFileStat_102()) as _i50.FileStat);
   @override
   _i60.Future<_i50.FileSystemEntity> delete({bool? recursive = false}) => (super
           .noSuchMethod(Invocation.method(#delete, [], {#recursive: recursive}),
               returnValue: Future<_i50.FileSystemEntity>.value(
-                  _FakeFileSystemEntity_102()))
+                  _FakeFileSystemEntity_103()))
       as _i60.Future<_i50.FileSystemEntity>);
   @override
   void deleteSync({bool? recursive = false}) => super.noSuchMethod(
@@ -5619,7 +5610,7 @@ class MockEntitlementInfo extends _i1.Mock implements _i55.EntitlementInfo {
   _i55.$EntitlementInfoCopyWith<_i55.EntitlementInfo> get copyWith =>
       (super.noSuchMethod(Invocation.getter(#copyWith),
               returnValue:
-                  _Fake$EntitlementInfoCopyWith_103<_i55.EntitlementInfo>())
+                  _Fake$EntitlementInfoCopyWith_104<_i55.EntitlementInfo>())
           as _i55.$EntitlementInfoCopyWith<_i55.EntitlementInfo>);
   @override
   Map<String, dynamic> toJson() =>
@@ -5649,7 +5640,7 @@ class MockEntitlementInfos extends _i1.Mock implements _i55.EntitlementInfos {
   _i55.$EntitlementInfosCopyWith<_i55.EntitlementInfos> get copyWith =>
       (super.noSuchMethod(Invocation.getter(#copyWith),
               returnValue:
-                  _Fake$EntitlementInfosCopyWith_104<_i55.EntitlementInfos>())
+                  _Fake$EntitlementInfosCopyWith_105<_i55.EntitlementInfos>())
           as _i55.$EntitlementInfosCopyWith<_i55.EntitlementInfos>);
   @override
   Map<String, dynamic> toJson() =>
@@ -5696,7 +5687,7 @@ class MockFileSystemEntity extends _i1.Mock implements _i50.FileSystemEntity {
       (super.noSuchMethod(Invocation.getter(#path), returnValue: '') as String);
   @override
   Uri get uri =>
-      (super.noSuchMethod(Invocation.getter(#uri), returnValue: _FakeUri_100())
+      (super.noSuchMethod(Invocation.getter(#uri), returnValue: _FakeUri_101())
           as Uri);
   @override
   bool get isAbsolute =>
@@ -5705,7 +5696,7 @@ class MockFileSystemEntity extends _i1.Mock implements _i50.FileSystemEntity {
   @override
   _i50.FileSystemEntity get absolute =>
       (super.noSuchMethod(Invocation.getter(#absolute),
-          returnValue: _FakeFileSystemEntity_102()) as _i50.FileSystemEntity);
+          returnValue: _FakeFileSystemEntity_103()) as _i50.FileSystemEntity);
   @override
   _i50.Directory get parent => (super.noSuchMethod(Invocation.getter(#parent),
       returnValue: _FakeDirectory_83()) as _i50.Directory);
@@ -5720,12 +5711,12 @@ class MockFileSystemEntity extends _i1.Mock implements _i50.FileSystemEntity {
   _i60.Future<_i50.FileSystemEntity> rename(String? newPath) =>
       (super.noSuchMethod(Invocation.method(#rename, [newPath]),
               returnValue: Future<_i50.FileSystemEntity>.value(
-                  _FakeFileSystemEntity_102()))
+                  _FakeFileSystemEntity_103()))
           as _i60.Future<_i50.FileSystemEntity>);
   @override
   _i50.FileSystemEntity renameSync(String? newPath) =>
       (super.noSuchMethod(Invocation.method(#renameSync, [newPath]),
-          returnValue: _FakeFileSystemEntity_102()) as _i50.FileSystemEntity);
+          returnValue: _FakeFileSystemEntity_103()) as _i50.FileSystemEntity);
   @override
   _i60.Future<String> resolveSymbolicLinks() =>
       (super.noSuchMethod(Invocation.method(#resolveSymbolicLinks, []),
@@ -5737,17 +5728,17 @@ class MockFileSystemEntity extends _i1.Mock implements _i50.FileSystemEntity {
   @override
   _i60.Future<_i50.FileStat> stat() =>
       (super.noSuchMethod(Invocation.method(#stat, []),
-              returnValue: Future<_i50.FileStat>.value(_FakeFileStat_101()))
+              returnValue: Future<_i50.FileStat>.value(_FakeFileStat_102()))
           as _i60.Future<_i50.FileStat>);
   @override
   _i50.FileStat statSync() =>
       (super.noSuchMethod(Invocation.method(#statSync, []),
-          returnValue: _FakeFileStat_101()) as _i50.FileStat);
+          returnValue: _FakeFileStat_102()) as _i50.FileStat);
   @override
   _i60.Future<_i50.FileSystemEntity> delete({bool? recursive = false}) => (super
           .noSuchMethod(Invocation.method(#delete, [], {#recursive: recursive}),
               returnValue: Future<_i50.FileSystemEntity>.value(
-                  _FakeFileSystemEntity_102()))
+                  _FakeFileSystemEntity_103()))
       as _i60.Future<_i50.FileSystemEntity>);
   @override
   void deleteSync({bool? recursive = false}) => super.noSuchMethod(
@@ -5809,11 +5800,11 @@ class MockMethodChannel extends _i1.Mock implements _i56.MethodChannel {
       (super.noSuchMethod(Invocation.getter(#name), returnValue: '') as String);
   @override
   _i56.MethodCodec get codec => (super.noSuchMethod(Invocation.getter(#codec),
-      returnValue: _FakeMethodCodec_105()) as _i56.MethodCodec);
+      returnValue: _FakeMethodCodec_106()) as _i56.MethodCodec);
   @override
   _i56.BinaryMessenger get binaryMessenger =>
       (super.noSuchMethod(Invocation.getter(#binaryMessenger),
-          returnValue: _FakeBinaryMessenger_106()) as _i56.BinaryMessenger);
+          returnValue: _FakeBinaryMessenger_107()) as _i56.BinaryMessenger);
   @override
   _i60.Future<T?> invokeMethod<T>(String? method, [dynamic arguments]) =>
       (super.noSuchMethod(Invocation.method(#invokeMethod, [method, arguments]),
@@ -5915,7 +5906,7 @@ class MockOffering extends _i1.Mock implements _i55.Offering {
   @override
   _i55.$OfferingCopyWith<_i55.Offering> get copyWith =>
       (super.noSuchMethod(Invocation.getter(#copyWith),
-              returnValue: _Fake$OfferingCopyWith_107<_i55.Offering>())
+              returnValue: _Fake$OfferingCopyWith_108<_i55.Offering>())
           as _i55.$OfferingCopyWith<_i55.Offering>);
   @override
   _i55.Package? getPackage(String? identifier) =>
@@ -5942,7 +5933,7 @@ class MockOfferings extends _i1.Mock implements _i55.Offerings {
   @override
   _i55.$OfferingsCopyWith<_i55.Offerings> get copyWith =>
       (super.noSuchMethod(Invocation.getter(#copyWith),
-              returnValue: _Fake$OfferingsCopyWith_108<_i55.Offerings>())
+              returnValue: _Fake$OfferingsCopyWith_109<_i55.Offerings>())
           as _i55.$OfferingsCopyWith<_i55.Offerings>);
   @override
   _i55.Offering? getOffering(String? identifier) =>
@@ -5972,7 +5963,7 @@ class MockPackage extends _i1.Mock implements _i55.Package {
           returnValue: _i55.PackageType.unknown) as _i55.PackageType);
   @override
   _i55.Product get product => (super.noSuchMethod(Invocation.getter(#product),
-      returnValue: _FakeProduct_109()) as _i55.Product);
+      returnValue: _FakeProduct_110()) as _i55.Product);
   @override
   String get offeringIdentifier => (super
           .noSuchMethod(Invocation.getter(#offeringIdentifier), returnValue: '')
@@ -5980,7 +5971,7 @@ class MockPackage extends _i1.Mock implements _i55.Package {
   @override
   _i55.$PackageCopyWith<_i55.Package> get copyWith =>
       (super.noSuchMethod(Invocation.getter(#copyWith),
-              returnValue: _Fake$PackageCopyWith_110<_i55.Package>())
+              returnValue: _Fake$PackageCopyWith_111<_i55.Package>())
           as _i55.$PackageCopyWith<_i55.Package>);
   @override
   Map<String, dynamic> toJson() =>
@@ -6023,7 +6014,7 @@ class MockProduct extends _i1.Mock implements _i55.Product {
   @override
   _i55.$ProductCopyWith<_i55.Product> get copyWith =>
       (super.noSuchMethod(Invocation.getter(#copyWith),
-              returnValue: _Fake$ProductCopyWith_111<_i55.Product>())
+              returnValue: _Fake$ProductCopyWith_112<_i55.Product>())
           as _i55.$ProductCopyWith<_i55.Product>);
   @override
   Map<String, dynamic> toJson() =>
@@ -6042,7 +6033,7 @@ class MockPurchaserInfo extends _i1.Mock implements _i55.PurchaserInfo {
   @override
   _i55.EntitlementInfos get entitlements =>
       (super.noSuchMethod(Invocation.getter(#entitlements),
-          returnValue: _FakeEntitlementInfos_112()) as _i55.EntitlementInfos);
+          returnValue: _FakeEntitlementInfos_113()) as _i55.EntitlementInfos);
   @override
   Map<String, String> get allPurchaseDates =>
       (super.noSuchMethod(Invocation.getter(#allPurchaseDates),
@@ -6079,7 +6070,7 @@ class MockPurchaserInfo extends _i1.Mock implements _i55.PurchaserInfo {
   _i55.$PurchaserInfoCopyWith<_i55.PurchaserInfo> get copyWith =>
       (super.noSuchMethod(Invocation.getter(#copyWith),
               returnValue:
-                  _Fake$PurchaserInfoCopyWith_113<_i55.PurchaserInfo>())
+                  _Fake$PurchaserInfoCopyWith_114<_i55.PurchaserInfo>())
           as _i55.$PurchaserInfoCopyWith<_i55.PurchaserInfo>);
   @override
   Map<String, dynamic> toJson() =>
@@ -6101,7 +6092,7 @@ class MockQuantityPickerInputDelegate<PickerType extends _i61.GeneratedMessage,
   @override
   _i59.SetInputController<InputType> get controller =>
       (super.noSuchMethod(Invocation.getter(#controller),
-              returnValue: _FakeSetInputController_114<InputType>())
+              returnValue: _FakeSetInputController_115<InputType>())
           as _i59.SetInputController<InputType>);
   @override
   Set<PickerType> get pickerTypeInitialValues =>

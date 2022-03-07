@@ -34,8 +34,10 @@ void main() {
     ];
     allAlbum = MockAssetPathEntity();
     when(allAlbum.assetCount).thenReturn(mockAssets.length);
-    when(allAlbum.getAssetListPaged(any, any))
-        .thenAnswer((_) => Future.value(mockAssets));
+    when(allAlbum.getAssetListPaged(
+      page: anyNamed("page"),
+      size: anyNamed("size"),
+    )).thenAnswer((_) => Future.value(mockAssets));
     when(appManager.imagePickerWrapper.pickImage(any))
         .thenAnswer((_) => Future.value(null));
     when(appManager.photoManagerWrapper.getAllAssetPathEntity(any))
@@ -389,8 +391,10 @@ void main() {
       latLngAsync: null,
       latLngLegacy: null,
     );
-    when(allAlbum.getAssetListPaged(any, any))
-        .thenAnswer((_) => Future.value([entity]));
+    when(allAlbum.getAssetListPaged(
+      page: anyNamed("page"),
+      size: anyNamed("size"),
+    )).thenAnswer((_) => Future.value([entity]));
 
     PickedImage? result;
     await tester.pumpWidget(Testable(
@@ -412,8 +416,10 @@ void main() {
       latLngAsync: null,
       latLngLegacy: const LatLng(latitude: 0.654321, longitude: 0.123456),
     );
-    when(allAlbum.getAssetListPaged(any, any))
-        .thenAnswer((_) => Future.value([entity]));
+    when(allAlbum.getAssetListPaged(
+      page: anyNamed("page"),
+      size: anyNamed("size"),
+    )).thenAnswer((_) => Future.value([entity]));
 
     PickedImage? result;
     await tester.pumpWidget(Testable(
@@ -435,8 +441,10 @@ void main() {
       latLngAsync: const LatLng(latitude: 0.654321, longitude: 0.123456),
       latLngLegacy: null,
     );
-    when(allAlbum.getAssetListPaged(any, any))
-        .thenAnswer((_) => Future.value([entity]));
+    when(allAlbum.getAssetListPaged(
+      page: anyNamed("page"),
+      size: anyNamed("size"),
+    )).thenAnswer((_) => Future.value([entity]));
 
     PickedImage? result;
     await tester.pumpWidget(Testable(
@@ -543,7 +551,10 @@ void main() {
     await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
     // Verify initial load.
-    verify(allAlbum.getAssetListPaged(0, any)).called(1);
+    verify(allAlbum.getAssetListPaged(
+      page: 0,
+      size: anyNamed("size"),
+    )).called(1);
 
     // Stub new images.
     mockAssets = [
@@ -571,7 +582,10 @@ void main() {
     await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
     // Verify another page load.
-    verify(allAlbum.getAssetListPaged(1, any)).called(1);
+    verify(allAlbum.getAssetListPaged(
+      page: 1,
+      size: anyNamed("size"),
+    )).called(1);
 
     // Stub new images.
     mockAssets = [
@@ -599,7 +613,10 @@ void main() {
     await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
     // Verify another page load.
-    verify(allAlbum.getAssetListPaged(2, any)).called(1);
+    verify(allAlbum.getAssetListPaged(
+      page: 2,
+      size: anyNamed("size"),
+    )).called(1);
   });
 
   testWidgets("Loading widget shows in AppBar, then cleared", (tester) async {
