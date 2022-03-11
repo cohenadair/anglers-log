@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/pages/image_picker_page.dart';
@@ -184,7 +182,7 @@ void main() {
     await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
     // Stub image.
-    var image = await stubImage(appManager, tester, "flutter_logo.png");
+    await stubImage(appManager, tester, "flutter_logo.png");
     initialImage = "flutter_logo.png";
 
     await tapAndSettle(tester, find.text("DID UPDATE WIDGET BUTTON"), 50);

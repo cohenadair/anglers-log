@@ -78,7 +78,7 @@ class SubscriptionManager {
     try {
       _setStateFromPurchaserInfo(await _purchasesWrapper.getPurchaserInfo());
     } on PlatformException catch (e) {
-      _log.e("Purchase info error: ${e.message}");
+      _log.e(StackTrace.current, "Purchase info error: ${e.message}");
     }
   }
 
@@ -91,7 +91,7 @@ class SubscriptionManager {
     } on PlatformException catch (e) {
       if (PurchasesErrorHelper.getErrorCode(e) !=
           PurchasesErrorCode.purchaseCancelledError) {
-        _log.e("Purchase error: ${e.message}");
+        _log.e(StackTrace.current, "Purchase error: ${e.message}");
       }
     }
   }
@@ -103,7 +103,7 @@ class SubscriptionManager {
           ? RestoreSubscriptionResult.noSubscriptionsFound
           : RestoreSubscriptionResult.success;
     } on PlatformException catch (e) {
-      _log.e("Purchase restore error: ${e.message}");
+      _log.e(StackTrace.current, "Purchase restore error: ${e.message}");
       return RestoreSubscriptionResult.error;
     }
   }
@@ -112,12 +112,12 @@ class SubscriptionManager {
     var offerings = await _purchasesWrapper.getOfferings();
 
     if (offerings.current == null) {
-      _log.e("Current offering is null");
+      _log.e(StackTrace.current, "Current offering is null");
       return null;
     }
 
     if (offerings.current!.availablePackages.isEmpty) {
-      _log.e("Current offering has no available packages");
+      _log.e(StackTrace.current, "Current offering has no available packages");
       return null;
     }
 

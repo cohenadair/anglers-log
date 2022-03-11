@@ -178,7 +178,7 @@ class _SaveBaitVariantPageState extends State<SaveBaitVariantPage> {
     } else if (id == _idDescription) {
       return _buildDescription();
     } else {
-      _log.e("Unknown input key: $id");
+      _log.e(StackTrace.current, "Unknown input key: $id");
       return const Empty();
     }
   }

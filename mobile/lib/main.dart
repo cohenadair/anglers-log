@@ -1,3 +1,11 @@
+import 'dart:async';
+import 'dart:io';
+import 'dart:isolate';
+
+import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
@@ -13,10 +21,50 @@ import 'user_preference_manager.dart';
 import 'wrappers/services_wrapper.dart';
 
 void main() {
-  WidgetsFlutterBinding.ensureInitialized();
-  MobileAds.instance.initialize();
+  void killReleaseApp() {
+    if (kReleaseMode) {
+      exit(1);
+    }
+  }
 
-  runApp(AnglersLog(AppManager()));
+  runZonedGuarded<Future<void>>(() async {
+    WidgetsFlutterBinding.ensureInitialized();
+
+    // Ads.
+    await MobileAds.instance.initialize();
+
+    // Firebase.
+    await Firebase.initializeApp();
+
+    // Analytics.
+    await FirebaseAnalytics.instance
+        .setAnalyticsCollectionEnabled(kReleaseMode);
+
+    // Crashlytics. See https://firebase.flutter.dev/docs/crashlytics/usage for
+    // error handling guidelines.
+    await FirebaseCrashlytics.instance
+        .setCrashlyticsCollectionEnabled(kReleaseMode);
+
+    // Catch Flutter errors.
+    FlutterError.onError = (details) {
+      FlutterError.presentError(details);
+      FirebaseCrashlytics.instance.recordFlutterError(details);
+      killReleaseApp();
+    };
+
+    // Catch non-Flutter errors.
+    Isolate.current.addErrorListener(RawReceivePort((pair) async {
+      await FirebaseCrashlytics.instance
+          .recordError(pair.first, pair.last, fatal: true);
+      killReleaseApp();
+    }).sendPort);
+
+    runApp(AnglersLog(AppManager()));
+  }, (error, stack) {
+    // Catch zoned errors (i.e. calls to platform channels).
+    FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
+    killReleaseApp();
+  });
 }
 
 class AnglersLog extends StatefulWidget {

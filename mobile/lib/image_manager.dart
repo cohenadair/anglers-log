@@ -135,7 +135,9 @@ class ImageManager {
       if (bytes != null) {
         result[imageFile(fileName)] = bytes;
       } else {
-        _log.e("Image $fileName doesn't exist in cache, and couldn't be "
+        _log.e(
+            StackTrace.current,
+            "Image $fileName doesn't exist in cache, and couldn't be "
             "created");
       }
     }
@@ -216,7 +218,7 @@ class ImageManager {
       await toFile.writeAsBytes(bytes, flush: true);
       return true;
     } on FileSystemException catch (e) {
-      _log.e("Error saving image to ${toFile.path}: $e}");
+      _log.e(StackTrace.current, "Error saving image to ${toFile.path}: $e}");
       return false;
     }
   }
@@ -236,7 +238,9 @@ class ImageManager {
         intBytes = bytes;
       }
     } else {
-      _log.e("Attempting to compress file that doesn't exist: "
+      _log.e(
+          StackTrace.current,
+          "Attempting to compress file that doesn't exist: "
           "${source.path}");
     }
 
@@ -292,7 +296,8 @@ class ImageManager {
           flush: true,
         );
       } on FileSystemException catch (e) {
-        _log.e("Error writing thumbnail to ${thumbnail.path}: $e}");
+        _log.e(StackTrace.current,
+            "Error writing thumbnail to ${thumbnail.path}: $e}");
         return null;
       }
 

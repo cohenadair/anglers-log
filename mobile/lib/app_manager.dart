@@ -25,7 +25,6 @@ import 'user_preference_manager.dart';
 import 'water_clarity_manager.dart';
 import 'wrappers/drive_api_wrapper.dart';
 import 'wrappers/file_picker_wrapper.dart';
-import 'wrappers/firebase_wrapper.dart';
 import 'wrappers/http_wrapper.dart';
 import 'wrappers/image_compress_wrapper.dart';
 import 'wrappers/image_picker_wrapper.dart';
@@ -69,7 +68,6 @@ class AppManager {
   // External dependency wrappers.
   DriveApiWrapper? _driveApiWrapper;
   FilePickerWrapper? _filePickerWrapper;
-  FirebaseWrapper? _firebaseWrapper;
   GoogleMobileAdsWrapper? _googleMobileAdsWrapper;
   GoogleSignInWrapper? _googleSignInWrapper;
   HttpWrapper? _httpWrapper;
@@ -196,11 +194,6 @@ class AppManager {
     return _filePickerWrapper!;
   }
 
-  FirebaseWrapper get firebaseWrapper {
-    _firebaseWrapper ??= FirebaseWrapper();
-    return _firebaseWrapper!;
-  }
-
   GoogleMobileAdsWrapper get googleMobileAdsWrapper {
     _googleMobileAdsWrapper ??= GoogleMobileAdsWrapper();
     return _googleMobileAdsWrapper!;
@@ -280,8 +273,6 @@ class AppManager {
   /// managers and monitors are initialized; otherwise, only database dependent
   /// managers and monitors are initialized.
   Future<void> initialize({bool isStartup = true}) async {
-    await firebaseWrapper.initializeAll();
-
     // Managers that don't depend on anything.
     if (isStartup) {
       await locationMonitor.initialize();

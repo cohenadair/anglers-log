@@ -347,7 +347,7 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
     } else if (id == _idTide) {
       return _buildTide();
     } else {
-      _log.e("Unknown input key: $id");
+      _log.e(StackTrace.current, "Unknown input key: $id");
       return const Empty();
     }
   }

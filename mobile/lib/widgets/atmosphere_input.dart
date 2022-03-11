@@ -304,7 +304,7 @@ class __AtmosphereInputPageState extends State<_AtmosphereInputPage> {
     } else if (id == _idSunsetTimestamp) {
       return _buildSunset();
     } else {
-      _log.e("Unknown input key: $id");
+      _log.e(StackTrace.current, "Unknown input key: $id");
       return const Empty();
     }
   }

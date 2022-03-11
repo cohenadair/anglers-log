@@ -228,7 +228,7 @@ class _StatsPageState extends State<StatsPage> {
       return TripSummary();
     } else {
       // Included for safety, but can't actually happen.
-      _log.e("Unknown report ID: ${_report.id}");
+      _log.e(StackTrace.current, "Unknown report ID: ${_report.id}");
       return const Empty();
     }
   }

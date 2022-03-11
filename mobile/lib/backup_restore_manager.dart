@@ -175,7 +175,7 @@ class BackupRestoreManager {
               await _googleSignIn?.signIn();
       _log.d("Current user: ${_currentUser?.email}");
     } catch (error) {
-      _log.e("Sign in error: $error");
+      _log.e(StackTrace.current, "Sign in error: $error");
       _authController.add(BackupRestoreAuthState.error);
     }
 
@@ -252,7 +252,7 @@ class BackupRestoreManager {
         return await _restore(drive);
       }
     } catch (error) {
-      _log.e("Unknown backup or restore error: $error");
+      _log.e(StackTrace.current, "Unknown backup or restore error: $error");
 
       _notifyError(BackupRestoreProgress(
         BackupRestoreProgressEnum.apiRequestError,

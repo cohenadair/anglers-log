@@ -178,7 +178,9 @@ class _StaticFishingSpotMapState extends State<StaticFishingSpotMap> {
 
     var response = await _httpWrapper.get(Uri.parse(path));
     if (response.statusCode != HttpStatus.ok) {
-      _log.e("Error fetching image: ${response.statusCode}: ${response.body},"
+      _log.e(
+          StackTrace.current,
+          "Error fetching image: ${response.statusCode}: ${response.body},"
           " query=$path");
       return null;
     }

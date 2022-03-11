@@ -74,9 +74,6 @@ void main() {
     var channel = MockMethodChannel();
     when(channel.invokeMethod(any)).thenAnswer((_) => Future.value(null));
     when(appManager.servicesWrapper.methodChannel(any)).thenReturn(channel);
-
-    when(appManager.firebaseWrapper.initializeAll())
-        .thenAnswer((_) => Future.value(null));
   });
 
   testWidgets("LandingPage is shown until app initializes", (tester) async {

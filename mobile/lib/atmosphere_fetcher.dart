@@ -184,12 +184,13 @@ class AtmosphereFetcher {
       response = await _http.get(uri);
     } catch (error) {
       // This can happen if there's no network connection.
-      _log.e("Error in HTTP request: $error");
+      _log.w("Error in HTTP request: $error");
       return null;
     }
 
     if (response.statusCode != HttpStatus.ok) {
-      _log.e("Error fetching data: ${response.statusCode}, query=$uri");
+      _log.e(StackTrace.current,
+          "Error fetching data: ${response.statusCode}, query=$uri");
       return null;
     }
 
@@ -203,19 +204,22 @@ class AtmosphereFetcher {
     }
 
     if (!_isValidJsonMap(json)) {
-      _log.e("Response body is a non-JSON format: ${response.body}");
+      _log.e(StackTrace.current,
+          "Response body is a non-JSON format: ${response.body}");
       return null;
     }
 
     var daysList = json["days"];
     if (daysList == null || daysList is! List) {
-      _log.e("Response body has invalid \"days\" key: ${response.body}");
+      _log.e(StackTrace.current,
+          "Response body has invalid \"days\" key: ${response.body}");
       return null;
     }
 
     var daysJson = daysList.first;
     if (!_isValidJsonMap(daysJson)) {
-      _log.e("Response body has invalid \"days\" key: ${response.body}");
+      _log.e(StackTrace.current,
+          "Response body has invalid \"days\" key: ${response.body}");
       return null;
     }
 

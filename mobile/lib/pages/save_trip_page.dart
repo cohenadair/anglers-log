@@ -286,7 +286,7 @@ class _SaveTripPageState extends State<SaveTripPage> {
     } else if (id == _idAtmosphere) {
       return _buildAtmosphere();
     } else {
-      _log.e("Unknown input key: $id");
+      _log.e(StackTrace.current, "Unknown input key: $id");
       return const Empty();
     }
   }

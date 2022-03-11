@@ -61,9 +61,6 @@ class TestAppManager extends AppManager {
 
   @override
   MockImageManager imageManager = MockImageManager();
-
-  @override
-  MockFirebaseWrapper firebaseWrapper = MockFirebaseWrapper();
 }
 
 void main() {
@@ -107,8 +104,6 @@ void main() {
     when(appManager.backupRestoreManager.initialize())
         .thenAnswer((_) => Future.value());
     when(appManager.imageManager.initialize())
-        .thenAnswer((_) => Future.value());
-    when(appManager.firebaseWrapper.initializeAll())
         .thenAnswer((_) => Future.value());
   });
 

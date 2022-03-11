@@ -103,7 +103,9 @@ class LocalDatabaseManager {
       if (await delete(tableName, where: where, whereArgs: whereArgs)) {
         return true;
       } else {
-        _log.e("Failed to delete $tableName(${entityId.uuid.toString()})"
+        _log.e(
+            StackTrace.current,
+            "Failed to delete $tableName(${entityId.uuid.toString()})"
             " from database");
         return false;
       }

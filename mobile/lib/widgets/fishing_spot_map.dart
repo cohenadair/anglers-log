@@ -642,7 +642,8 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
           .firstWhereOrNull((s) => s.fishingSpot.id == fishingSpot.id);
 
       if (newActiveSymbol == null) {
-        _log.e("Couldn't find symbol associated with fishing spot");
+        _log.e(StackTrace.current,
+            "Couldn't find symbol associated with fishing spot");
       } else {
         // Update map.
         await _mapController?.updateSymbol(

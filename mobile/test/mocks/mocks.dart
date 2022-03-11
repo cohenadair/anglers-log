@@ -42,7 +42,6 @@ import 'package:mobile/water_clarity_manager.dart';
 import 'package:mobile/widgets/quantity_picker_input.dart';
 import 'package:mobile/wrappers/drive_api_wrapper.dart';
 import 'package:mobile/wrappers/file_picker_wrapper.dart';
-import 'package:mobile/wrappers/firebase_wrapper.dart';
 import 'package:mobile/wrappers/google_mobile_ads_wrapper.dart';
 import 'package:mobile/wrappers/google_sign_in_wrapper.dart';
 import 'package:mobile/wrappers/http_wrapper.dart';
@@ -88,7 +87,6 @@ Trip_CatchesPerEntity newInputItemShim(dynamic pickerItem) =>
 @GenerateMocks([drive.FilesResource])
 @GenerateMocks([DriveApiWrapper])
 @GenerateMocks([FishingSpotManager])
-@GenerateMocks([FirebaseWrapper])
 @GenerateMocks([GoogleMobileAdsWrapper])
 @GenerateMocks([GoogleSignIn])
 @GenerateMocks([GoogleSignInAccount])

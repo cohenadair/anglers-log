@@ -89,7 +89,7 @@ class QuantityPickerInput<PickerType extends GeneratedMessage, InputType>
 
     var label = _buildInputLabel(context, item);
     if (isEmpty(label)) {
-      _log.e("Input label cannot be empty. Item: $item");
+      _log.e(StackTrace.current, "Input label cannot be empty. Item: $item");
       return const Empty();
     }
 

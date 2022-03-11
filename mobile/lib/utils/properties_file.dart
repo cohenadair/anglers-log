@@ -23,7 +23,7 @@ class PropertiesFile {
         }
       });
     } on Exception catch (e) {
-      _log.e("Error loading properties file: $e");
+      _log.e(StackTrace.current, "Error loading properties file: $e");
     }
   }
 

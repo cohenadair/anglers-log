@@ -965,7 +965,8 @@ extension Units on Unit {
           value: Fraction.fromValue(value % modDivisor).value,
         );
       } else if (fractionalUnit == null) {
-        _log.e("Unit doesn't have a fractional unit: $this");
+        _log.e(
+            StackTrace.current, "Unit doesn't have a fractional unit: $this");
       } else if (fractionalUnit == Unit.ounces) {
         result.fractionValue = Measurement(
           unit: fractionalUnit,
