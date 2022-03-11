@@ -159,7 +159,7 @@ class _PersonalBestsReportState extends State<PersonalBestsReport> {
       secondarySubtitle: isNotEmpty(_tripManager.name(trip))
           ? trip.elapsedDisplayValue(context)
           : null,
-      imageName: _tripManager.allImageNames(trip).firstOrNull,
+      imageName: trip.imageNames.firstOrNull,
       onTap: () => push(context, TripPage(trip)),
     );
   }

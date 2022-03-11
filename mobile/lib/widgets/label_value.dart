@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mobile/widgets/widget.dart';
 import 'package:quiver/strings.dart';
 
 import '../res/dimen.dart';
@@ -55,7 +56,8 @@ class LabelValue extends StatelessWidget {
       child = Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          title,
+          Expanded(child: title),
+          const HorizontalSpace(paddingDefault),
           subtitle,
         ],
       );

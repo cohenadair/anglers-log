@@ -75,6 +75,7 @@ class _SaveTripPageState extends State<SaveTripPage> {
   final Map<Id, Field> _fields = {};
 
   List<CustomEntityValue> _customEntityValues = [];
+  List<String> _catchImages = [];
 
   Trip? get _oldTrip => widget.oldTrip;
 
@@ -147,6 +148,19 @@ class _SaveTripPageState extends State<SaveTripPage> {
   void initState() {
     super.initState();
 
+    _fields[_idCatches] = Field(
+      id: _idCatches,
+      name: (context) => Strings.of(context).entityNameCatches,
+      description: (context) => Strings.of(context).saveTripPageCatchesDesc,
+      controller: SetInputController<Id>(),
+    );
+
+    _fields[_idBodiesOfWater] = Field(
+      id: _idBodiesOfWater,
+      name: (context) => Strings.of(context).entityNameBodiesOfWater,
+      controller: SetInputController<Id>(),
+    );
+
     _fields[_idStartTimestamp] = Field(
       id: _idStartTimestamp,
       isRemovable: false,
@@ -207,19 +221,6 @@ class _SaveTripPageState extends State<SaveTripPage> {
       id: _idCatchesPerSpecies,
       name: (context) => Strings.of(context).tripCatchesPerSpecies,
       controller: SetInputController<Trip_CatchesPerEntity>(),
-    );
-
-    _fields[_idCatches] = Field(
-      id: _idCatches,
-      name: (context) => Strings.of(context).entityNameCatches,
-      description: (context) => Strings.of(context).saveTripPageCatchesDesc,
-      controller: SetInputController<Id>(),
-    );
-
-    _fields[_idBodiesOfWater] = Field(
-      id: _idBodiesOfWater,
-      name: (context) => Strings.of(context).entityNameBodiesOfWater,
-      controller: SetInputController<Id>(),
     );
 
     if (_isEditing) {
@@ -323,8 +324,12 @@ class _SaveTripPageState extends State<SaveTripPage> {
   }
 
   Widget _buildImages() {
+    // Convert to and from a Set to ensure all duplicates are removed.
+    var images = Set<String>.of(_oldTrip?.imageNames ?? [])
+      ..addAll(_catchImages);
+
     return ImageInput(
-      initialImageNames: _oldTrip?.imageNames ?? [],
+      initialImageNames: images.toList(),
       controller: _imagesController,
     );
   }
@@ -401,20 +406,10 @@ class _SaveTripPageState extends State<SaveTripPage> {
             catchIds: ids,
           );
 
-          // Automatically update trip start and end time based on picked
-          // catches. Do no update time if "All day" checkboxes are checked.
-          if (_startTimestampController.isMidnight) {
-            _startTimestampController.date =
-                catches.last.timestamp.toDateTime();
-          } else {
-            _startTimestampController.value = catches.last.timestamp.toInt();
-          }
-
-          if (_endTimestampController.isMidnight) {
-            _endTimestampController.date = catches.first.timestamp.toDateTime();
-          } else {
-            _endTimestampController.value = catches.first.timestamp.toInt();
-          }
+          _updateTimestampControllers(catches);
+          _updateCatchesPerEntityControllers(catches);
+          _updateBodiesOfWaterController(catches);
+          _updateCatchImages(catches);
         }
       }),
     );
@@ -458,6 +453,87 @@ class _SaveTripPageState extends State<SaveTripPage> {
       fetcher: fetcher,
       controller: _atmosphereController,
     );
+  }
+
+  /// Update date and time values based on picked catches. This will not update
+  /// the time if "All day" checkboxes are checked. This will overwrite any
+  /// changes the user made to the time.
+  void _updateTimestampControllers(List<Catch> catches) {
+    if (_startTimestampController.isMidnight) {
+      _startTimestampController.date = catches.last.timestamp.toDateTime();
+    } else {
+      _startTimestampController.value = catches.last.timestamp.toInt();
+    }
+
+    if (_endTimestampController.isMidnight) {
+      _endTimestampController.date = catches.first.timestamp.toDateTime();
+    } else {
+      _endTimestampController.value = catches.first.timestamp.toInt();
+    }
+  }
+
+  /// Updates "Catches Per Entity" values based on the given catches.
+  /// This will overwrite any changes the user made to the catches per entity
+  /// values.
+  void _updateCatchesPerEntityControllers(List<Catch> catches) {
+    var catchesPerAngler = <Trip_CatchesPerEntity>[];
+    var catchesPerBait = <Trip_CatchesPerBait>[];
+    var catchesPerFishingSpot = <Trip_CatchesPerEntity>[];
+    var catchesPerSpecies = <Trip_CatchesPerEntity>[];
+
+    for (var cat in catches) {
+      if (_fields[_idCatchesPerAngler]!.isShowing) {
+        Trips.incCatchesPerEntity(catchesPerAngler, cat.anglerId, cat);
+      }
+
+      if (_fields[_idCatchesPerFishingSpot]!.isShowing) {
+        Trips.incCatchesPerEntity(
+            catchesPerFishingSpot, cat.fishingSpotId, cat);
+      }
+
+      if (_fields[_idCatchesPerSpecies]!.isShowing) {
+        Trips.incCatchesPerEntity(catchesPerSpecies, cat.speciesId, cat);
+      }
+
+      if (_fields[_idCatchesPerBait]!.isShowing) {
+        Trips.incCatchesPerBait(catchesPerBait, cat);
+      }
+    }
+
+    _anglerCatchesController.value = catchesPerAngler.toSet();
+    _baitCatchesController.value = catchesPerBait.toSet();
+    _fishingSpotCatchesController.value = catchesPerFishingSpot.toSet();
+    _speciesCatchesController.value = catchesPerSpecies.toSet();
+  }
+
+  /// Updates body of water values based on the given catches. This will
+  /// overwrite any changes the user made to the bodies of water values.
+  void _updateBodiesOfWaterController(List<Catch> catches) {
+    if (!_fields[_idBodiesOfWater]!.isShowing) {
+      return;
+    }
+
+    var bowIds = <Id>{};
+
+    for (var cat in catches) {
+      var bowId = _fishingSpotManager.entity(cat.fishingSpotId)?.bodyOfWaterId;
+      if (Ids.isValid(bowId)) {
+        bowIds.add(bowId!);
+      }
+    }
+
+    if (bowIds.isNotEmpty) {
+      _bodiesOfWaterController.value = bowIds;
+    }
+  }
+
+  void _updateCatchImages(List<Catch> catches) {
+    if (!_fields[_idImages]!.isShowing) {
+      return;
+    }
+
+    _catchImages = catches.fold<List<String>>(
+        <String>[], (prev, cat) => prev..addAll(cat.imageNames));
   }
 
   FutureOr<bool> _save(Map<Id, dynamic> customFieldValueMap) {

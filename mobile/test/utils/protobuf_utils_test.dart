@@ -63,6 +63,11 @@ void main() {
       expect(map[Id()..uuid = String.fromCharCodes(uuid2.codeUnits)], 15);
       expect(map[randomId()], isNull);
     });
+
+    test("isValid", () {
+      expect(Ids.isValid(Id(uuid: "")), isFalse);
+      expect(Ids.isValid(randomId()), isTrue);
+    });
   });
 
   group("entityValuesCount", () {
@@ -1744,6 +1749,80 @@ void main() {
       expect(atmosphere.matchesFilter(context, "500"), isFalse);
       expect(atmosphere.matchesFilter(context, "37"), isFalse);
       expect(atmosphere.matchesFilter(context, "nothing"), isFalse);
+    });
+  });
+
+  group("Trips", () {
+    test("incCatchesPerEntity early exit if ID isn't valid", () {
+      var catchesPerEntity = <Trip_CatchesPerEntity>[];
+      Trips.incCatchesPerEntity(catchesPerEntity, Id(uuid: ""), Catch());
+      expect(catchesPerEntity, isEmpty);
+    });
+
+    test("incCatchesPerEntity existing is null", () {
+      var catchesPerEntity = <Trip_CatchesPerEntity>[];
+      Trips.incCatchesPerEntity(catchesPerEntity, randomId(), Catch());
+      expect(catchesPerEntity.length, 1);
+      expect(catchesPerEntity.first.value, 1);
+    });
+
+    test("incCatchesPerEntity existing is not null", () {
+      var id = randomId();
+      var catchesPerEntity = <Trip_CatchesPerEntity>[
+        Trip_CatchesPerEntity(
+          entityId: id,
+          value: 5,
+        ),
+      ];
+      Trips.incCatchesPerEntity(catchesPerEntity, id, Catch());
+      expect(catchesPerEntity.length, 1);
+      expect(catchesPerEntity.first.value, 6);
+    });
+
+    test("incCatchesPerBait early exit if baits are empty", () {
+      var catchesPerBait = <Trip_CatchesPerBait>[];
+      Trips.incCatchesPerBait(catchesPerBait, Catch());
+      expect(catchesPerBait, isEmpty);
+    });
+
+    test("incCatchesPerBait existing is null", () {
+      var catchesPerBait = <Trip_CatchesPerBait>[];
+      Trips.incCatchesPerBait(
+        catchesPerBait,
+        Catch(
+          baits: [
+            BaitAttachment(baitId: randomId()),
+            BaitAttachment(baitId: randomId()),
+          ],
+        ),
+      );
+      expect(catchesPerBait.length, 2);
+      expect(catchesPerBait.first.value, 1);
+      expect(catchesPerBait.last.value, 1);
+    });
+
+    test("incCatchesPerBait existing is not null", () {
+      var attachment1 = BaitAttachment(baitId: randomId());
+      var attachment2 = BaitAttachment(baitId: randomId());
+      var catchesPerBait = <Trip_CatchesPerBait>[
+        Trip_CatchesPerBait(
+          attachment: attachment1,
+          value: 3,
+        ),
+        Trip_CatchesPerBait(
+          attachment: attachment2,
+          value: 5,
+        ),
+      ];
+      Trips.incCatchesPerBait(
+        catchesPerBait,
+        Catch(
+          baits: [attachment2, attachment1],
+        ),
+      );
+      expect(catchesPerBait.length, 2);
+      expect(catchesPerBait.first.value, 4);
+      expect(catchesPerBait.last.value, 6);
     });
   });
 }

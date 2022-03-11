@@ -218,7 +218,6 @@ void main() {
         .thenAnswer((invocation) => invocation.positionalArguments[1].name);
 
     when(appManager.tripManager.deleteMessage(any, any)).thenReturn("Delete");
-    when(appManager.tripManager.allImageNames(any)).thenReturn([]);
     when(appManager.tripManager.numberOfCatches(any)).thenReturn(1);
 
     when(appManager.userPreferenceManager.airTemperatureSystem)

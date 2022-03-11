@@ -39,6 +39,15 @@ class _ImageInputState extends State<ImageInput> {
   }
 
   @override
+  void didUpdateWidget(ImageInput oldWidget) {
+    super.didUpdateWidget(oldWidget);
+
+    if (oldWidget.initialImageNames != widget.initialImageNames) {
+      _imagesFuture = _fetchInitialImage();
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     return EmptyFutureBuilder<List<PickedImage>>(
       future: _imagesFuture,

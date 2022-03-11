@@ -5,7 +5,6 @@ import 'package:mobile/fishing_spot_manager.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
 import 'package:mobile/pages/fishing_spot_list_page.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
-import 'package:mobile/widgets/button.dart';
 import 'package:mobile/widgets/checkbox_input.dart';
 import 'package:mobile/widgets/fishing_spot_details.dart';
 import 'package:mobile/widgets/fishing_spot_map.dart';
@@ -88,11 +87,21 @@ void main() {
     var controller = InputController<FishingSpot>();
     controller.value = fishingSpot1;
 
-    await pumpMap(tester, _DidUpdateWidgetTester(controller));
+    await pumpMap(
+      tester,
+      DidUpdateWidgetTester<InputController<FishingSpot>>(
+        controller,
+        (context, controller) => SizedBox(
+          width: 500,
+          height: 500,
+          child: FishingSpotMap.selected(controller.value!),
+        ),
+      ),
+    );
     expect(find.text("Spot 1"), findsOneWidget);
 
     controller.value = fishingSpot2;
-    await tapAndSettle(tester, find.text("TEST"));
+    await tapAndSettle(tester, find.text("DID UPDATE WIDGET BUTTON"));
 
     expect(find.text("Spot 2"), findsOneWidget);
   });
@@ -980,32 +989,4 @@ void main() {
     await pumpMap(tester, FishingSpotMap());
     verify(mapController.value.setSymbolIconAllowOverlap(any)).called(1);
   });
-}
-
-class _DidUpdateWidgetTester extends StatefulWidget {
-  final InputController<FishingSpot> controller;
-
-  const _DidUpdateWidgetTester(this.controller);
-
-  @override
-  __DidUpdateWidgetTesterState createState() => __DidUpdateWidgetTesterState();
-}
-
-class __DidUpdateWidgetTesterState extends State<_DidUpdateWidgetTester> {
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Button(
-          text: "Test",
-          onPressed: () => setState(() {}),
-        ),
-        SizedBox(
-          width: 500,
-          height: 500,
-          child: FishingSpotMap.selected(widget.controller.value!),
-        ),
-      ],
-    );
-  }
 }

@@ -82,6 +82,32 @@ class DisposableTesterState extends State<DisposableTester> {
       _showChild ? widget.child : const Empty();
 }
 
+class DidUpdateWidgetTester<T> extends StatefulWidget {
+  final T controller;
+  final Widget Function(BuildContext, T) childBuilder;
+
+  const DidUpdateWidgetTester(this.controller, this.childBuilder);
+
+  @override
+  _DidUpdateWidgetTesterState<T> createState() =>
+      _DidUpdateWidgetTesterState<T>();
+}
+
+class _DidUpdateWidgetTesterState<T> extends State<DidUpdateWidgetTester<T>> {
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Button(
+          text: "DID UPDATE WIDGET BUTTON",
+          onPressed: () => setState(() {}),
+        ),
+        widget.childBuilder(context, widget.controller),
+      ],
+    );
+  }
+}
+
 void setCanvasSize(WidgetTester tester, Size size) {
   tester.binding.window.physicalSizeTestValue = size;
   tester.binding.window.devicePixelRatioTestValue = 1.0;
@@ -285,8 +311,11 @@ Future<void> enterTextFieldAndSettle(
 }
 
 Future<Uint8List?> stubImage(
-    StubbedAppManager appManager, WidgetTester tester, String name,
-    {bool anyName = false}) async {
+  StubbedAppManager appManager,
+  WidgetTester tester,
+  String name, {
+  bool anyName = false,
+}) async {
   File? file;
   Uint8List? image;
   // runAsync is required here because readAsBytes does real async
@@ -309,6 +338,36 @@ Future<Uint8List?> stubImage(
   )).thenAnswer((_) => Future.value({file!: image!}));
 
   return image;
+}
+
+Future<List<Uint8List>> stubImages(
+  StubbedAppManager appManager,
+  WidgetTester tester,
+  List<String> names,
+) async {
+  var files = <File>[];
+  var images = <Uint8List>[];
+
+  // runAsync is required here because readAsBytes does real async
+  // work and can't be used with pump().
+  await tester.runAsync(() async {
+    for (var name in names) {
+      var file = File("test/resources/$name");
+      files.add(file);
+      images.add(await file.readAsBytes());
+    }
+  });
+
+  when(appManager.imageManager.images(
+    any,
+    imageNames: anyNamed("imageNames"),
+    size: anyNamed("size"),
+  )).thenAnswer((invocation) {
+    var length = invocation.namedArguments[const Symbol("imageNames")].length;
+    return Future.value({for (var i = 0; i < length; i++) files[i]: images[i]});
+  });
+
+  return images;
 }
 
 extension CommonFindersExt on CommonFinders {

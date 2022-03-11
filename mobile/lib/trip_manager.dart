@@ -142,20 +142,17 @@ class TripManager extends NamedEntityManager<Trip> {
   }
 
   int numberOfCatches(Trip trip) {
-    var quantity = trip.catchIds.fold<int>(0, (prev, e) {
-      var cat = _catchManager.entity(e);
-      return prev + (cat == null ? 0 : catchQuantity(cat));
-    });
-    var speciesQuantity =
-        trip.catchesPerSpecies.fold<int>(0, (prev, e) => prev + e.value);
-    return quantity + speciesQuantity;
-  }
-
-  /// Returns all trip and catch photos associated with the given trip.
-  List<String> allImageNames(Trip trip) {
-    return List.of(trip.imageNames)
-      ..addAll(trip.catchIds
-          .expand((e) => _catchManager.entity(e)?.imageNames ?? []));
+    if (trip.catchesPerSpecies.isEmpty) {
+      // If catchesPerSpecies is not set, add up attached catch quantities.
+      return trip.catchIds.fold<int>(0, (prev, e) {
+        var cat = _catchManager.entity(e);
+        return prev + (cat == null ? 0 : catchQuantity(cat));
+      });
+    } else {
+      // Don't need to include attached catch quantities here because they are
+      // automatically added to catchesPerSpecies when the trip is created.
+      return trip.catchesPerSpecies.fold<int>(0, (prev, e) => prev + e.value);
+    }
   }
 
   bool isCatchIdInTrip(Id id) =>

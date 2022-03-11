@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile/res/style.dart';
 import 'package:mobile/utils/catch_utils.dart';
@@ -72,8 +73,6 @@ class TripListPage extends StatelessWidget {
       title = date;
     }
 
-    var images = tripManager.allImageNames(trip);
-
     var numberOfCatches = tripManager.numberOfCatches(trip);
     var subtitle2 = formatNumberOfCatches(context, numberOfCatches);
     var subtitle2Style = styleSuccess(context);
@@ -84,7 +83,7 @@ class TripListPage extends StatelessWidget {
 
     return ManageableListPageItemModel(
       child: ManageableListImageItem(
-        imageName: images.isNotEmpty ? images.first : null,
+        imageName: trip.imageNames.firstOrNull,
         title: title,
         subtitle: subtitle,
         subtitle2: subtitle2,

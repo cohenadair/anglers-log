@@ -158,7 +158,6 @@ void main() {
         .thenReturn(trips.map((e) => e.id).toSet());
     when(appManager.tripManager.numberOfCatches(any)).thenAnswer(
         (invocation) => invocation.positionalArguments[0].catchIds.length);
-    when(appManager.tripManager.allImageNames(any)).thenReturn([]);
     when(appManager.tripManager.entity(any)).thenReturn(Trip());
     when(appManager.tripManager.deleteMessage(any, any)).thenReturn("Delete");
 

@@ -1,8 +1,10 @@
+import 'dart:io';
+
 import 'package:collection/src/iterable_extensions.dart';
 import 'package:fixnum/fixnum.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mapbox_gl/mapbox_gl.dart';
+import 'package:mapbox_gl/mapbox_gl.dart' as map;
 import 'package:mobile/model/gen/anglerslog.pb.dart';
 import 'package:mobile/pages/save_trip_page.dart';
 import 'package:mobile/utils/date_time_utils.dart';
@@ -200,6 +202,14 @@ void main() {
     when(appManager.bodyOfWaterManager.displayName(any, any))
         .thenAnswer((invocation) => invocation.positionalArguments[1].name);
 
+    when(appManager.catchManager.catches(
+      any,
+      filter: anyNamed("filter"),
+      sortOrder: anyNamed("sortOrder"),
+      catchIds: anyNamed("catchIds"),
+    )).thenReturn(catches);
+    when(appManager.catchManager.id(any))
+        .thenAnswer((invocation) => invocation.positionalArguments.first.id);
     when(appManager.catchManager.list(any)).thenReturn(catches);
     when(appManager.catchManager.displayName(any, any)).thenAnswer(
         (invocation) => formatTimestamp(invocation.positionalArguments[0],
@@ -297,7 +307,7 @@ void main() {
 
   testWidgets("Atmosphere fetcher uses current location", (tester) async {
     when(appManager.locationMonitor.currentLocation)
-        .thenReturn(const LatLng(1, 2));
+        .thenReturn(const map.LatLng(1, 2));
 
     await tester.pumpWidget(Testable(
       (_) => SaveTripPage.edit(defaultTrip()),
@@ -446,6 +456,434 @@ void main() {
         DateTime.fromMillisecondsSinceEpoch(newTrip.endTimestamp.toInt());
     expect(endTimestamp.hour, 0);
     expect(endTimestamp.minute, 0);
+  });
+
+  testWidgets("Per entity not updated on picked if not showing",
+      (tester) async {
+    when(appManager.userPreferenceManager.tripFieldIds).thenReturn([
+      Id(uuid: "0f012ca1-aae3-4aec-86e2-d85479eb6d66"), // Start
+      Id(uuid: "c6afa4ff-add6-4a01-b69a-ba6f9b456c85"), // End
+      Id(uuid: "d9a83fa6-926d-474d-8ddf-8d0e044d2ea4"), // Name
+      Id(uuid: "0806fcc4-5d77-44b4-85e2-ebc066f37e12"), // Catches
+    ]);
+
+    var catches = [
+      Catch(
+        id: randomId(),
+        timestamp: Int64(DateTime(2020, 1, 1, 5).millisecondsSinceEpoch),
+        anglerId: randomId(),
+        fishingSpotId: randomId(),
+        speciesId: randomId(),
+        baits: [BaitAttachment(baitId: randomId())],
+      ),
+    ];
+    when(appManager.catchManager.catches(
+      any,
+      filter: anyNamed("filter"),
+      sortOrder: anyNamed("sortOrder"),
+      catchIds: anyNamed("catchIds"),
+    )).thenReturn(catches);
+
+    await tester.pumpWidget(Testable(
+      (_) => const SaveTripPage(),
+      appManager: appManager,
+    ));
+
+    // Select a catch to trigger auto updates.
+    await tapAndSettle(tester, find.text("No catches"));
+    await tapAndSettle(tester, find.byType(PaddedCheckbox).first);
+    await tapAndSettle(tester, find.byType(BackButton));
+
+    // Save changes, and verify per entities aren't set.
+    await tapAndSettle(tester, find.text("SAVE"));
+
+    var result = verify(appManager.tripManager
+        .addOrUpdate(captureAny, imageFiles: anyNamed("imageFiles")));
+    result.called(1);
+
+    var trip = result.captured.first as Trip;
+    expect(trip.catchesPerAngler.isEmpty, isTrue);
+    expect(trip.catchesPerFishingSpot.isEmpty, isTrue);
+    expect(trip.catchesPerSpecies.isEmpty, isTrue);
+    expect(trip.catchesPerBait.isEmpty, isTrue);
+  });
+
+  testWidgets("Per entity updated on picked", (tester) async {
+    when(appManager.anglerManager.entityExists(any)).thenReturn(true);
+    when(appManager.anglerManager.entity(any))
+        .thenReturn(Angler(id: randomId()));
+    when(appManager.anglerManager.displayName(any, any)).thenReturn("Me");
+
+    when(appManager.baitManager.entityExists(any)).thenReturn(true);
+    when(appManager.baitManager.entity(any)).thenReturn(Bait(id: randomId()));
+    when(appManager.baitManager.displayName(any, any)).thenReturn("Bait");
+
+    when(appManager.fishingSpotManager.entityExists(any)).thenReturn(true);
+    when(appManager.fishingSpotManager.entity(any))
+        .thenReturn(FishingSpot(id: randomId()));
+    when(appManager.fishingSpotManager.displayName(
+      any,
+      any,
+      useLatLngFallback: anyNamed("useLatLngFallback"),
+      includeBodyOfWater: anyNamed("includeBodyOfWater"),
+    )).thenReturn("Spot");
+
+    when(appManager.speciesManager.entityExists(any)).thenReturn(true);
+    when(appManager.speciesManager.entity(any))
+        .thenReturn(Species(id: randomId()));
+    when(appManager.speciesManager.displayName(any, any)).thenReturn("Species");
+
+    // Empty result shows all fields.
+    when(appManager.userPreferenceManager.tripFieldIds).thenReturn([]);
+
+    var catches = [
+      Catch(
+        id: randomId(),
+        timestamp: Int64(DateTime(2020, 1, 1, 5).millisecondsSinceEpoch),
+        anglerId: randomId(),
+        fishingSpotId: randomId(),
+        speciesId: randomId(),
+        baits: [BaitAttachment(baitId: randomId())],
+      ),
+    ];
+    when(appManager.catchManager.catches(
+      any,
+      filter: anyNamed("filter"),
+      sortOrder: anyNamed("sortOrder"),
+      catchIds: anyNamed("catchIds"),
+    )).thenReturn(catches);
+
+    await tester.pumpWidget(Testable(
+      (_) => const SaveTripPage(),
+      appManager: appManager,
+    ));
+
+    // Select a catch to trigger auto updates.
+    await tapAndSettle(tester, find.text("No catches"));
+    await tapAndSettle(tester, find.byType(PaddedCheckbox).first);
+    await tapAndSettle(tester, find.byType(BackButton));
+
+    // Save changes, and verify per entities are set.
+    await tapAndSettle(tester, find.text("SAVE"));
+
+    var result = verify(appManager.tripManager
+        .addOrUpdate(captureAny, imageFiles: anyNamed("imageFiles")));
+    result.called(1);
+
+    var trip = result.captured.first as Trip;
+    expect(trip.catchesPerAngler.isNotEmpty, isTrue);
+    expect(trip.catchesPerFishingSpot.isNotEmpty, isTrue);
+    expect(trip.catchesPerSpecies.isNotEmpty, isTrue);
+    expect(trip.catchesPerBait.isNotEmpty, isTrue);
+  });
+
+  testWidgets("Bodies of water not updated on picked if not showing",
+      (tester) async {
+    when(appManager.fishingSpotManager.entity(any)).thenReturn(FishingSpot(
+      id: randomId(),
+      bodyOfWaterId: randomId(),
+    ));
+    when(appManager.fishingSpotManager.displayName(
+      any,
+      any,
+      useLatLngFallback: anyNamed("useLatLngFallback"),
+      includeBodyOfWater: anyNamed("includeBodyOfWater"),
+    )).thenReturn("Spot");
+
+    when(appManager.userPreferenceManager.tripFieldIds).thenReturn([
+      Id(uuid: "0f012ca1-aae3-4aec-86e2-d85479eb6d66"), // Start
+      Id(uuid: "c6afa4ff-add6-4a01-b69a-ba6f9b456c85"), // End
+      Id(uuid: "d9a83fa6-926d-474d-8ddf-8d0e044d2ea4"), // Name
+      Id(uuid: "0806fcc4-5d77-44b4-85e2-ebc066f37e12"), // Catches
+    ]);
+
+    var catches = [
+      Catch(
+        id: randomId(),
+        timestamp: Int64(DateTime(2020, 1, 1, 5).millisecondsSinceEpoch),
+        anglerId: randomId(),
+        fishingSpotId: randomId(),
+        speciesId: randomId(),
+        baits: [BaitAttachment(baitId: randomId())],
+      ),
+    ];
+    when(appManager.catchManager.catches(
+      any,
+      filter: anyNamed("filter"),
+      sortOrder: anyNamed("sortOrder"),
+      catchIds: anyNamed("catchIds"),
+    )).thenReturn(catches);
+
+    await tester.pumpWidget(Testable(
+      (_) => const SaveTripPage(),
+      appManager: appManager,
+    ));
+
+    // Select a catch to trigger auto updates.
+    await tapAndSettle(tester, find.text("No catches"));
+    await tapAndSettle(tester, find.byType(PaddedCheckbox).first);
+    await tapAndSettle(tester, find.byType(BackButton));
+
+    // Save changes, and verify per species aren't set.
+    await tapAndSettle(tester, find.text("SAVE"));
+
+    var result = verify(appManager.tripManager
+        .addOrUpdate(captureAny, imageFiles: anyNamed("imageFiles")));
+    result.called(1);
+
+    var trip = result.captured.first as Trip;
+    expect(trip.bodyOfWaterIds.isEmpty, isTrue);
+  });
+
+  testWidgets("Bodies of water updated on picked", (tester) async {
+    var id1 = randomId();
+    var id2 = randomId();
+    var invalidBowId = Id(uuid: "");
+    var validBowId = randomId();
+
+    when(appManager.fishingSpotManager.entityExists(any)).thenReturn(true);
+    when(appManager.fishingSpotManager.entity(id1)).thenReturn(FishingSpot(
+      id: randomId(),
+      bodyOfWaterId: invalidBowId,
+    ));
+    when(appManager.fishingSpotManager.entity(id2)).thenReturn(FishingSpot(
+      id: randomId(),
+      bodyOfWaterId: validBowId,
+    ));
+    when(appManager.fishingSpotManager.displayName(
+      any,
+      any,
+      useLatLngFallback: anyNamed("useLatLngFallback"),
+      includeBodyOfWater: anyNamed("includeBodyOfWater"),
+    )).thenReturn("Spot");
+
+    // Empty result shows all fields.
+    when(appManager.userPreferenceManager.tripFieldIds).thenReturn([]);
+
+    var catches = [
+      Catch(
+        id: randomId(),
+        fishingSpotId: id1,
+      ),
+      Catch(
+        id: randomId(),
+        fishingSpotId: id2,
+      ),
+    ];
+    when(appManager.catchManager.catches(
+      any,
+      filter: anyNamed("filter"),
+      sortOrder: anyNamed("sortOrder"),
+      catchIds: anyNamed("catchIds"),
+    )).thenReturn(catches);
+
+    await tester.pumpWidget(Testable(
+      (_) => const SaveTripPage(),
+      appManager: appManager,
+    ));
+
+    // Select a catch to trigger auto updates.
+    await tapAndSettle(tester, find.text("No catches"));
+    await tapAndSettle(tester, find.byType(PaddedCheckbox).first);
+    await tapAndSettle(tester, find.byType(BackButton));
+
+    // Save changes, and verify per species aren't set.
+    await tapAndSettle(tester, find.text("SAVE"));
+
+    var result = verify(appManager.tripManager
+        .addOrUpdate(captureAny, imageFiles: anyNamed("imageFiles")));
+    result.called(1);
+
+    var trip = result.captured.first as Trip;
+    expect(trip.bodyOfWaterIds.length, 1);
+  });
+
+  testWidgets("Calculated bodies of water doesn't update when empty",
+      (tester) async {
+    var id1 = randomId();
+    var id2 = randomId();
+    var invalidBowId1 = Id(uuid: "");
+    var invalidBowId2 = Id(uuid: "");
+
+    when(appManager.fishingSpotManager.entityExists(any)).thenReturn(true);
+    when(appManager.fishingSpotManager.entity(id1)).thenReturn(FishingSpot(
+      id: randomId(),
+      bodyOfWaterId: invalidBowId1,
+    ));
+    when(appManager.fishingSpotManager.entity(id2)).thenReturn(FishingSpot(
+      id: randomId(),
+      bodyOfWaterId: invalidBowId2,
+    ));
+    when(appManager.fishingSpotManager.displayName(
+      any,
+      any,
+      useLatLngFallback: anyNamed("useLatLngFallback"),
+      includeBodyOfWater: anyNamed("includeBodyOfWater"),
+    )).thenReturn("Spot");
+
+    // Empty result shows all fields.
+    when(appManager.userPreferenceManager.tripFieldIds).thenReturn([]);
+
+    var catches = [
+      Catch(
+        id: randomId(),
+        fishingSpotId: id1,
+      ),
+      Catch(
+        id: randomId(),
+        fishingSpotId: id2,
+      ),
+    ];
+    when(appManager.catchManager.catches(
+      any,
+      filter: anyNamed("filter"),
+      sortOrder: anyNamed("sortOrder"),
+      catchIds: anyNamed("catchIds"),
+    )).thenReturn(catches);
+
+    await tester.pumpWidget(Testable(
+      (_) => const SaveTripPage(),
+      appManager: appManager,
+    ));
+
+    // Select a catch to trigger auto updates.
+    await tapAndSettle(tester, find.text("No catches"));
+    await tapAndSettle(tester, find.byType(PaddedCheckbox).first);
+    await tapAndSettle(tester, find.byType(BackButton));
+
+    // Save changes, and verify per species aren't set.
+    await tapAndSettle(tester, find.text("SAVE"));
+
+    var result = verify(appManager.tripManager
+        .addOrUpdate(captureAny, imageFiles: anyNamed("imageFiles")));
+    result.called(1);
+
+    var trip = result.captured.first as Trip;
+    expect(trip.bodyOfWaterIds.isEmpty, isTrue);
+  });
+
+  testWidgets("Catch images not updated on picked if not showing",
+      (tester) async {
+    when(appManager.userPreferenceManager.tripFieldIds).thenReturn([
+      Id(uuid: "0f012ca1-aae3-4aec-86e2-d85479eb6d66"), // Start
+      Id(uuid: "c6afa4ff-add6-4a01-b69a-ba6f9b456c85"), // End
+      Id(uuid: "d9a83fa6-926d-474d-8ddf-8d0e044d2ea4"), // Name
+      Id(uuid: "0806fcc4-5d77-44b4-85e2-ebc066f37e12"), // Catches
+    ]);
+
+    await stubImages(appManager, tester, [
+      "flutter_logo.png",
+      "anglers_log_logo.png",
+      "android_logo.png",
+    ]);
+
+    // Setup catches and editing trip to have the same photo so we can verify
+    // duplicate photos are displayed, nor added to the trip.
+    var trip = defaultTrip()
+      ..catchIds.clear()
+      ..imageNames.add("flutter_logo.png");
+
+    var catches = [
+      Catch(
+        id: randomId(),
+        timestamp: Int64(DateTime(2020, 1, 1, 5).millisecondsSinceEpoch),
+        imageNames: [
+          "flutter_logo.png",
+          "anglers_log_logo.png",
+          "android_logo.png",
+        ],
+      ),
+    ];
+    when(appManager.catchManager.catches(
+      any,
+      filter: anyNamed("filter"),
+      sortOrder: anyNamed("sortOrder"),
+      catchIds: anyNamed("catchIds"),
+    )).thenReturn(catches);
+
+    await tester.pumpWidget(Testable(
+      (_) => SaveTripPage.edit(trip),
+      appManager: appManager,
+    ));
+    await tester.pumpAndSettle(const Duration(milliseconds: 50));
+
+    // We aren't tracking images, nothing should be shown.
+    expect(find.byType(Image), findsNothing);
+
+    await tapAndSettle(tester, find.text("No catches"));
+    await tapAndSettle(tester, find.byType(PaddedCheckbox).first);
+    await tapAndSettle(tester, find.byType(BackButton));
+    await tester.pumpAndSettle(const Duration(milliseconds: 50));
+
+    // The two new photos should not be shown since we aren't tracking photos.
+    expect(find.byType(Image), findsNothing);
+
+    await tapAndSettle(tester, find.text("SAVE"));
+
+    var result = verify(appManager.tripManager
+        .addOrUpdate(any, imageFiles: captureAnyNamed("imageFiles")));
+    result.called(1);
+
+    var images = result.captured.first as List<File>;
+    expect(images.isEmpty, isTrue);
+  });
+
+  testWidgets("Catch images updated on picked", (tester) async {
+    await stubImages(appManager, tester, [
+      "flutter_logo.png",
+      "anglers_log_logo.png",
+      "android_logo.png",
+    ]);
+
+    // Setup catches and editing trip to have the same photo so we can verify
+    // duplicate photos are displayed, nor added to the trip.
+    var trip = defaultTrip()
+      ..catchIds.clear()
+      ..imageNames.add("flutter_logo.png");
+
+    var catches = [
+      Catch(
+        id: randomId(),
+        timestamp: Int64(DateTime(2020, 1, 1, 5).millisecondsSinceEpoch),
+        imageNames: [
+          "flutter_logo.png",
+          "anglers_log_logo.png",
+          "android_logo.png",
+        ],
+      ),
+    ];
+    when(appManager.catchManager.catches(
+      any,
+      filter: anyNamed("filter"),
+      sortOrder: anyNamed("sortOrder"),
+      catchIds: anyNamed("catchIds"),
+    )).thenReturn(catches);
+
+    await tester.pumpWidget(Testable(
+      (_) => SaveTripPage.edit(trip),
+      appManager: appManager,
+    ));
+    await tester.pumpAndSettle(const Duration(milliseconds: 50));
+
+    // Until catches are selected, only old trip photos are shown.
+    expect(find.byType(Image), findsOneWidget);
+
+    await tapAndSettle(tester, find.text("No catches"));
+    await tapAndSettle(tester, find.byType(PaddedCheckbox).first);
+    await tapAndSettle(tester, find.byType(BackButton));
+    await tester.pumpAndSettle(const Duration(milliseconds: 50));
+
+    // The two new photos should be shown. The one duplicate should not.
+    expect(find.byType(Image), findsNWidgets(3));
+
+    await tapAndSettle(tester, find.text("SAVE"));
+
+    var result = verify(appManager.tripManager
+        .addOrUpdate(any, imageFiles: captureAnyNamed("imageFiles")));
+    result.called(1);
+
+    var images = result.captured.first as List<File>;
+    expect(images.length, 3);
   });
 
   testWidgets("Time is updated when catches are picked", (tester) async {

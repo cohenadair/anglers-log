@@ -3604,10 +3604,6 @@ class MockTripManager extends _i1.Mock implements _i22.TripManager {
       (super.noSuchMethod(Invocation.method(#numberOfCatches, [trip]),
           returnValue: 0) as int);
   @override
-  List<String> allImageNames(_i4.Trip? trip) =>
-      (super.noSuchMethod(Invocation.method(#allImageNames, [trip]),
-          returnValue: <String>[]) as List<String>);
-  @override
   bool isCatchIdInTrip(_i4.Id? id) =>
       (super.noSuchMethod(Invocation.method(#isCatchIdInTrip, [id]),
           returnValue: false) as bool);

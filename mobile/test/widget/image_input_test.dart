@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/pages/image_picker_page.dart';
@@ -162,5 +164,31 @@ void main() {
     expect(find.byType(Image), findsOneWidget);
     expect(find.byType(ImagePickerPage), findsNothing);
     expect(controller.hasValue, isTrue);
+  });
+
+  testWidgets("didUpdateWidget updates images future", (tester) async {
+    String? initialImage;
+    var controller = InputController<PickedImage>();
+    await pumpContext(
+      tester,
+      (_) => DidUpdateWidgetTester<InputController<PickedImage>>(
+        controller,
+        (context, controller) => SingleImageInput(
+          controller: controller,
+          initialImageName: initialImage,
+        ),
+      ),
+      appManager: appManager,
+    );
+    // Wait for futures.
+    await tester.pumpAndSettle(const Duration(milliseconds: 50));
+
+    // Stub image.
+    var image = await stubImage(appManager, tester, "flutter_logo.png");
+    initialImage = "flutter_logo.png";
+
+    await tapAndSettle(tester, find.text("DID UPDATE WIDGET BUTTON"), 50);
+    await tester.pumpAndSettle(const Duration(milliseconds: 50));
+    expect(find.byType(Image), findsOneWidget);
   });
 }

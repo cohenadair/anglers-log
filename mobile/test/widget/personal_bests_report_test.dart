@@ -237,7 +237,6 @@ void main() {
         .thenAnswer((invocation) => invocation.positionalArguments[1].name);
     when(appManager.tripManager.name(any))
         .thenAnswer((invocation) => invocation.positionalArguments[0].name);
-    when(appManager.tripManager.allImageNames(any)).thenReturn([]);
 
     when(appManager.userPreferenceManager.catchLengthSystem)
         .thenReturn(MeasurementSystem.metric);

@@ -61,7 +61,7 @@ class TripPage extends StatelessWidget {
           onDelete: () => tripManager.delete(trip.id),
           onShare: () => _onShare(context, trip),
           deleteMessage: tripManager.deleteMessage(context, trip),
-          imageNames: tripManager.allImageNames(trip),
+          imageNames: trip.imageNames,
           children: <Widget>[
             _buildSkunked(context, trip),
             _buildHeader(context, trip),
@@ -194,11 +194,21 @@ class TripPage extends StatelessWidget {
   }
 
   Widget _buildCatchesPerFishingSpot(BuildContext context, Trip trip) {
+    var fishingSpotManager = FishingSpotManager.of(context);
+
     return LabelValueList(
       title: Strings.of(context).tripCatchesPerFishingSpot,
       padding: insetsBottomSmall,
       items: _defaultLabelValueListItems(
-          context, FishingSpotManager.of(context), trip.catchesPerFishingSpot),
+        context,
+        fishingSpotManager,
+        trip.catchesPerFishingSpot,
+        labelBuilder: (entityId) => fishingSpotManager.displayName(
+          context,
+          fishingSpotManager.entity(entityId)!,
+          includeBodyOfWater: true,
+        ),
+      ),
     );
   }
 
@@ -231,14 +241,21 @@ class TripPage extends StatelessWidget {
     );
   }
 
-  Iterable<LabelValueListItem> _defaultLabelValueListItems(BuildContext context,
-      EntityManager manager, List<Trip_CatchesPerEntity> catchesPerEntity) {
+  Iterable<LabelValueListItem> _defaultLabelValueListItems(
+    BuildContext context,
+    EntityManager manager,
+    List<Trip_CatchesPerEntity> catchesPerEntity, {
+    String Function(Id entityId)? labelBuilder,
+  }) {
     return catchesPerEntity.where((e) => manager.entityExists(e.entityId)).map(
-          (e) => LabelValueListItem(
-            manager.displayName(context, manager.entity(e.entityId)!),
-            e.value.toString(),
-          ),
+      (e) {
+        return LabelValueListItem(
+          labelBuilder?.call(e.entityId) ??
+              manager.displayName(context, manager.entity(e.entityId)!),
+          e.value.toString(),
         );
+      },
+    );
   }
 
   void _onShare(BuildContext context, Trip trip) {
@@ -256,6 +273,6 @@ class TripPage extends StatelessWidget {
     shareText += format(
         Strings.of(context).shareCatches, [tripManager.numberOfCatches(trip)]);
 
-    share(context, tripManager.allImageNames(trip), text: shareText);
+    share(context, trip.imageNames, text: shareText);
   }
 }

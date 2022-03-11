@@ -340,7 +340,22 @@ void main() {
     expect(tripManager.numberOfCatches(trip), 10);
   });
 
-  test("numberOfCatches with catches and species", () {
+  test("numberOfCatches with catchesPerSpecies set", () {
+    var trip = defaultTrip()
+      ..catchesPerSpecies.addAll([
+        Trip_CatchesPerEntity(
+          entityId: randomId(),
+          value: 5,
+        ),
+        Trip_CatchesPerEntity(
+          entityId: randomId(),
+          value: 5,
+        ),
+      ]);
+    expect(tripManager.numberOfCatches(trip), 10);
+  });
+
+  test("numberOfCatches with attached catches", () {
     var catchId0 = randomId();
     var catchId1 = randomId();
     var catchId2 = randomId();
@@ -354,78 +369,8 @@ void main() {
     ));
     when(appManager.catchManager.entity(catchId2)).thenReturn(null);
 
-    var trip = defaultTrip()
-      ..catchIds.addAll([catchId0, catchId1, catchId2])
-      ..catchesPerSpecies.addAll([
-        Trip_CatchesPerEntity(
-          entityId: randomId(),
-          value: 5,
-        ),
-        Trip_CatchesPerEntity(
-          entityId: randomId(),
-          value: 5,
-        ),
-      ]);
-    expect(tripManager.numberOfCatches(trip), 25);
-  });
-
-  test("allImageNames empty result", () {
-    expect(tripManager.allImageNames(defaultTrip()), isEmpty);
-  });
-
-  test("allImageNames with trip names", () {
-    expect(
-      tripManager
-          .allImageNames(defaultTrip()..imageNames.addAll(["1.png", "2.png"]))
-          .length,
-      2,
-    );
-  });
-
-  test("allImageNames with catch image names", () {
-    var catchId0 = randomId();
-    var catchId1 = randomId();
-    var catchId2 = randomId();
-    when(appManager.catchManager.entity(catchId0)).thenReturn(Catch(
-      id: catchId0,
-      imageNames: ["1.png", "2.png"],
-    ));
-    when(appManager.catchManager.entity(catchId1)).thenReturn(Catch(
-      id: catchId1,
-      imageNames: ["3.png", "4.png"],
-    ));
-    when(appManager.catchManager.entity(catchId2)).thenReturn(null);
-
-    expect(
-      tripManager
-          .allImageNames(defaultTrip()..catchIds.addAll([catchId0, catchId1]))
-          .length,
-      4,
-    );
-  });
-
-  test("allImageNames with catch and trip image names", () {
-    var catchId0 = randomId();
-    var catchId1 = randomId();
-    var catchId2 = randomId();
-    when(appManager.catchManager.entity(catchId0)).thenReturn(Catch(
-      id: catchId0,
-      imageNames: ["1.png", "2.png"],
-    ));
-    when(appManager.catchManager.entity(catchId1)).thenReturn(Catch(
-      id: catchId1,
-      imageNames: ["3.png", "4.png"],
-    ));
-    when(appManager.catchManager.entity(catchId2)).thenReturn(null);
-
-    expect(
-      tripManager
-          .allImageNames(defaultTrip()
-            ..catchIds.addAll([catchId0, catchId1])
-            ..imageNames.addAll(["5.png", "6.png"]))
-          .length,
-      6,
-    );
+    var trip = defaultTrip()..catchIds.addAll([catchId0, catchId1, catchId2]);
+    expect(tripManager.numberOfCatches(trip), 15);
   });
 
   testWidgets("isCatchInTrip", (tester) async {

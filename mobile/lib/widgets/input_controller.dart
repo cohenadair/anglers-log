@@ -415,7 +415,7 @@ class MultiMeasurementInputController
     }
 
     // Update entire value here so listeners are notified.
-    value = value.copyAndUpdate<MultiMeasurement>((updates) {
+    value = value.immutableCopyAndUpdate<MultiMeasurement>((updates) {
       updates.system = newSystem;
     });
   }

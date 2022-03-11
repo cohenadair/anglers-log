@@ -4,14 +4,11 @@ import 'dart:typed_data';
 import 'dart:ui';
 
 import 'package:archive/archive.dart';
-import 'package:collection/collection.dart' show IterableExtension;
 import 'package:fixnum/fixnum.dart';
 import 'package:intl/intl.dart';
 import 'package:mobile/body_of_water_manager.dart';
 import 'package:mobile/trip_manager.dart';
-import 'package:mobile/utils/catch_utils.dart';
 import 'package:path/path.dart';
-import 'package:protobuf/protobuf.dart';
 import 'package:quiver/strings.dart';
 
 import '../angler_manager.dart';
@@ -20,7 +17,6 @@ import '../bait_category_manager.dart';
 import '../bait_manager.dart';
 import '../catch_manager.dart';
 import '../channels/migration_channel.dart';
-import '../entity_manager.dart';
 import '../fishing_spot_manager.dart';
 import '../log.dart';
 import '../method_manager.dart';
@@ -728,25 +724,9 @@ class LegacyImporter {
       }
 
       for (var cat in catches) {
-        // After importing, catches will only ever have a single bait
-        // attachment.
-        if (cat.baits.isNotEmpty) {
-          var existing = trip.catchesPerBait
-              .firstWhereOrNull((e) => e.attachment == cat.baits.first);
-          if (existing == null) {
-            trip.catchesPerBait.add(Trip_CatchesPerBait(
-              attachment: cat.baits.first,
-              value: catchQuantity(cat),
-            ));
-          } else {
-            existing.value += catchQuantity(cat);
-          }
-        }
-
-        _incCatchesPerEntity(
-            _speciesManager, cat.speciesId, trip.catchesPerSpecies, cat);
-        _incCatchesPerEntity(_fishingSpotManager, cat.fishingSpotId,
-            trip.catchesPerFishingSpot, cat);
+        Trips.incCatchesPerBait(trip.catchesPerBait, cat);
+        trip.incCatchesPerSpecies(cat);
+        trip.incCatchesPerFishingSpot(cat);
       }
 
       var bodyOfWaterIds = map[_keyLocations];
@@ -768,7 +748,7 @@ class LegacyImporter {
         }
 
         // Angler cannot be attached to a catch in the legacy app, so don't
-        // both iterating catches here.
+        // bother iterating catches here.
         trip.catchesPerAngler.add(Trip_CatchesPerEntity(
           entityId: angler.id,
           value: 0,
@@ -776,29 +756,6 @@ class LegacyImporter {
       }
 
       await _tripManager.addOrUpdate(trip);
-    }
-  }
-
-  void _incCatchesPerEntity<T extends GeneratedMessage>(
-    EntityManager<T> manager,
-    Id? entityId,
-    List<Trip_CatchesPerEntity> catchesPerEntity,
-    Catch cat,
-  ) {
-    var entity = manager.entity(entityId);
-    if (entity == null) {
-      return;
-    }
-
-    var existing = catchesPerEntity
-        .firstWhereOrNull((e) => e.entityId == manager.id(entity));
-    if (existing == null) {
-      catchesPerEntity.add(Trip_CatchesPerEntity(
-        entityId: manager.id(entity),
-        value: catchQuantity(cat),
-      ));
-    } else {
-      existing.value += catchQuantity(cat);
     }
   }
 

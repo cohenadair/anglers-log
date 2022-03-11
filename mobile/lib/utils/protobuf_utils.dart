@@ -19,6 +19,7 @@ import '../model/gen/anglerslog.pb.dart';
 import '../pages/picker_page.dart';
 import '../time_manager.dart';
 import '../utils/string_utils.dart';
+import 'catch_utils.dart';
 import 'date_time_utils.dart';
 import 'number_utils.dart';
 
@@ -291,6 +292,10 @@ extension BaitVariants on BaitVariant {
 }
 
 extension Ids on Id {
+  static bool isValid(Id? id) => id != null && isNotEmpty(id.uuid);
+
+  static bool isNotValid(Id? id) => !isValid(id);
+
   List<int> get bytes => Uuid.parse(uuid);
 
   Uint8List get uint8List => Uint8List.fromList(bytes);
@@ -301,9 +306,12 @@ extension FishingSpots on FishingSpot {
 }
 
 extension GeneratedMessages on GeneratedMessage {
-  T copyAndUpdate<T extends GeneratedMessage>(void Function(T) updates) {
-    return (deepCopy().freeze() as T).rebuild(updates);
+  T immutableCopyAndUpdate<T extends GeneratedMessage>(
+      void Function(T)? updates) {
+    return (deepCopy().freeze() as T).rebuild(updates ?? (_) {});
   }
+
+  T immutableCopy<T extends GeneratedMessage>() => immutableCopyAndUpdate(null);
 }
 
 extension MeasurementSystems on MeasurementSystem {
@@ -1679,6 +1687,62 @@ extension Trips on Trip {
     );
 
     return format(Strings.of(context).dateRangeFormat, [startStr, endStr]);
+  }
+
+  /// Increments the value of [entityId] in [perEntity] by [catchQuantity]. If
+  /// [entityId] does not exist in [perEntity], a new [Trip_CatchesPerEntity]
+  /// is added.
+  static void incCatchesPerEntity(
+    List<Trip_CatchesPerEntity> perEntity,
+    Id entityId,
+    Catch cat,
+  ) {
+    if (Ids.isNotValid(entityId)) {
+      return;
+    }
+
+    var existing = perEntity.firstWhereOrNull((e) => e.entityId == entityId);
+
+    if (existing == null) {
+      perEntity.add(Trip_CatchesPerEntity(
+        entityId: entityId,
+        value: catchQuantity(cat),
+      ));
+    } else {
+      existing.value += catchQuantity(cat);
+    }
+  }
+
+  void incCatchesPerAngler(Catch cat) =>
+      incCatchesPerEntity(catchesPerAngler, cat.anglerId, cat);
+
+  void incCatchesPerFishingSpot(Catch cat) =>
+      incCatchesPerEntity(catchesPerFishingSpot, cat.fishingSpotId, cat);
+
+  void incCatchesPerSpecies(Catch cat) =>
+      incCatchesPerEntity(catchesPerSpecies, cat.speciesId, cat);
+
+  /// Increments the values of a catch's baits in [perBait] by [catchQuantity].
+  /// If the bait does not exist in [perBait], a new [Trip_CatchesPerBait] is
+  /// added.
+  static void incCatchesPerBait(List<Trip_CatchesPerBait> perBait, Catch cat) {
+    if (cat.baits.isEmpty) {
+      return;
+    }
+
+    for (var attachment in cat.baits) {
+      var existing =
+          perBait.firstWhereOrNull((e) => e.attachment == attachment);
+
+      if (existing == null) {
+        perBait.add(Trip_CatchesPerBait(
+          attachment: attachment,
+          value: catchQuantity(cat),
+        ));
+      } else {
+        existing.value += catchQuantity(cat);
+      }
+    }
   }
 }
 

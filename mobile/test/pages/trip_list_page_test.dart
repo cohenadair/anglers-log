@@ -23,8 +23,6 @@ void main() {
 
   setUp(() {
     appManager = StubbedAppManager();
-
-    when(appManager.tripManager.allImageNames(any)).thenReturn([]);
     when(appManager.tripManager.numberOfCatches(any)).thenReturn(0);
   });
 
@@ -108,8 +106,7 @@ void main() {
       context: anyNamed("context"),
       filter: anyNamed("filter"),
       tripIds: anyNamed("tripIds"),
-    )).thenReturn([defaultTrip()]);
-    when(appManager.tripManager.allImageNames(any)).thenReturn([]);
+    )).thenReturn([defaultTrip()..imageNames.clear()]);
 
     await pumpContext(
       tester,
@@ -127,8 +124,7 @@ void main() {
       context: anyNamed("context"),
       filter: anyNamed("filter"),
       tripIds: anyNamed("tripIds"),
-    )).thenReturn([defaultTrip()]);
-    when(appManager.tripManager.allImageNames(any)).thenReturn(["test.png"]);
+    )).thenReturn([defaultTrip()..imageNames.add("test.png")]);
 
     await pumpContext(
       tester,
