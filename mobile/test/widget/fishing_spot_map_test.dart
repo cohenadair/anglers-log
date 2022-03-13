@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mapbox_gl/mapbox_gl.dart';
+import 'package:mobile/entity_manager.dart';
 import 'package:mobile/fishing_spot_manager.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
 import 'package:mobile/pages/fishing_spot_list_page.dart';
@@ -120,7 +121,7 @@ void main() {
     );
 
     expect(controller.hasValue, isFalse);
-    expect(find.text("Dropped Pin"), findsNWidgets(2));
+    expect(find.text("New Fishing Spot"), findsNWidgets(2));
 
     await tapAndSettle(tester, find.byType(BackButton));
     expect(controller.hasValue, isTrue);
@@ -244,7 +245,7 @@ void main() {
     );
 
     // Text shows in the search bar and bottom container.
-    expect(find.text("Dropped Pin"), findsNWidgets(2));
+    expect(find.text("New Fishing Spot"), findsNWidgets(2));
   });
 
   testWidgets("Existing fishing spot is set to controller value",
@@ -541,7 +542,7 @@ void main() {
     );
 
     await tapAndSettle(tester, find.byIcon(Icons.my_location));
-    expect(find.text("Dropped Pin"), findsNWidgets(2));
+    expect(find.text("New Fishing Spot"), findsNWidgets(2));
   });
 
   testWidgets("Current location button clears fishing spot when not picking",
@@ -724,7 +725,7 @@ void main() {
     );
 
     // Verify pin is dropped.
-    expect(find.text("Dropped Pin"), findsNWidgets(2));
+    expect(find.text("New Fishing Spot"), findsNWidgets(2));
     expect(mapController.symbolCount, 3); // 2 spots, 1 dropped pin
 
     // Select an existing spot.
@@ -917,7 +918,7 @@ void main() {
       ),
     );
 
-    expect(find.text("Dropped Pin"), findsNWidgets(2));
+    expect(find.text("New Fishing Spot"), findsNWidgets(2));
   });
 
   testWidgets("Setting up picker drops pin at current location",
@@ -935,7 +936,7 @@ void main() {
       ),
     );
 
-    expect(find.text("Dropped Pin"), findsNWidgets(2));
+    expect(find.text("New Fishing Spot"), findsNWidgets(2));
     expect(find.text("Lat: 1.000000, Lng: 2.000000"), findsOneWidget);
   });
 
@@ -952,7 +953,7 @@ void main() {
       ),
     );
 
-    expect(find.text("Dropped Pin"), findsNWidgets(2));
+    expect(find.text("New Fishing Spot"), findsNWidgets(2));
     expect(find.text("Lat: 0.000000, Lng: 0.000000"), findsOneWidget);
   });
 
@@ -988,5 +989,140 @@ void main() {
   testWidgets("Map setup is only invoked once", (tester) async {
     await pumpMap(tester, FishingSpotMap());
     verify(mapController.value.setSymbolIconAllowOverlap(any)).called(1);
+  });
+
+  testWidgets("No-op when camera moves and no dropped pin", (tester) async {
+    await pumpMap(tester, FishingSpotMap());
+    await mapController.finishLoading(tester);
+
+    var mapboxMap = findFirst<MapboxMap>(tester);
+    mapboxMap.onCameraIdle!();
+    verifyNever(mapController.value.cameraPosition);
+  });
+
+  testWidgets("Pin updated on camera idle", (tester) async {
+    when(appManager.fishingSpotManager.entityExists(any)).thenReturn(false);
+    when(mapController.value.cameraPosition)
+        .thenReturn(const CameraPosition(target: LatLng(0, 0)));
+
+    await pumpMap(tester, FishingSpotMap());
+    await mapController.finishLoading(tester);
+
+    await tapAndSettle(tester, find.byIcon(Icons.add), 200);
+    expect(find.byType(FishingSpotDetails), findsOneWidget);
+    verify(mapController.value.cameraPosition).called(1);
+
+    var mapboxMap = findFirst<MapboxMap>(tester);
+    mapboxMap.onCameraIdle!();
+    await tester.pumpAndSettle(const Duration(milliseconds: 50));
+
+    verify(mapController.value.cameraPosition).called(1);
+  });
+
+  testWidgets("Target hidden when map is idle", (tester) async {
+    await pumpMap(tester, FishingSpotMap());
+    await mapController.finishLoading(tester);
+    expect(find.byIcon(Icons.gps_not_fixed), findsNothing);
+  });
+
+  testWidgets("Target hidden when no active dropped pin", (tester) async {
+    VoidCallback? listener;
+    when(mapController.value.addListener(any)).thenAnswer((invocation) {
+      listener = invocation.positionalArguments.first;
+    });
+
+    await pumpMap(tester, FishingSpotMap());
+    await mapController.finishLoading(tester);
+
+    // Manually invoke controller update listener to trigger _updateTarget.
+    expect(listener, isNotNull);
+    listener!();
+
+    verifyNever(mapController.value.isCameraMoving);
+    expect(find.byIcon(Icons.gps_not_fixed), findsNothing);
+  });
+
+  testWidgets("Target is shown when map is movin", (tester) async {
+    when(appManager.fishingSpotManager.entityExists(any)).thenReturn(false);
+
+    when(mapController.value.isCameraMoving).thenReturn(true);
+    when(mapController.value.cameraPosition)
+        .thenReturn(const CameraPosition(target: LatLng(0, 0)));
+
+    VoidCallback? listener;
+    when(mapController.value.addListener(any)).thenAnswer((invocation) {
+      listener = invocation.positionalArguments.first;
+    });
+
+    await pumpMap(tester, FishingSpotMap());
+    await mapController.finishLoading(tester);
+
+    // Add a pin.
+    await tapAndSettle(tester, find.byIcon(Icons.add), 200);
+    expect(find.byType(FishingSpotDetails), findsOneWidget);
+    verify(mapController.value.cameraPosition).called(1);
+
+    // Manually invoke controller update listener to trigger _updateTarget.
+    expect(listener, isNotNull);
+    listener!();
+    await tester.pumpAndSettle(const Duration(milliseconds: 50));
+
+    verify(mapController.value.isCameraMoving).called(1);
+    expect(find.byIcon(Icons.gps_not_fixed), findsOneWidget);
+  });
+
+  testWidgets("Fishing spot is deselected when deleted", (tester) async {
+    var fishingSpot = FishingSpot(
+      id: randomId(),
+      name: "Spot 1",
+      lat: 1,
+      lng: 2,
+    );
+    when(appManager.fishingSpotManager.filteredList(any, any))
+        .thenReturn([fishingSpot]);
+    when(appManager.fishingSpotManager.list()).thenReturn([fishingSpot]);
+    when(appManager.fishingSpotManager.entityExists(any)).thenReturn(true);
+
+    await pumpMap(tester, FishingSpotMap());
+    await mapController.finishLoading(tester);
+
+    // Select an existing fishing spot.
+    await tapAndSettle(tester, find.byType(SearchBar));
+    await tapAndSettle(tester, find.text("Spot 1"), 200);
+    expect(find.byType(FishingSpotDetails), findsOneWidget);
+
+    // Stub FishingSpotManager so the selected spot no longer exists.
+    when(appManager.fishingSpotManager.filteredList(any, any)).thenReturn([]);
+    when(appManager.fishingSpotManager.list()).thenReturn([]);
+    when(appManager.fishingSpotManager.entityExists(any)).thenReturn(false);
+
+    // Force call entity listener builder.
+    findFirst<EntityListenerBuilder>(tester).onAnyChange!();
+    await tester.pumpAndSettle(const Duration(milliseconds: 200));
+
+    expect(find.text("Spot 1"), findsNothing);
+    expect(find.byType(FishingSpotDetails), findsNothing);
+  });
+
+  testWidgets("Pin not updated if map controller target is null",
+      (tester) async {
+    when(mapController.value.cameraPosition).thenReturn(null);
+
+    await pumpMap(tester, FishingSpotMap());
+    await mapController.finishLoading(tester);
+
+    await tapAndSettle(tester, find.byIcon(Icons.add), 200);
+    expect(find.byType(FishingSpotDetails), findsNothing);
+  });
+
+  testWidgets("Tapping add button drops a pin", (tester) async {
+    when(mapController.value.cameraPosition)
+        .thenReturn(const CameraPosition(target: LatLng(0, 0)));
+
+    await pumpMap(tester, FishingSpotMap());
+    await mapController.finishLoading(tester);
+
+    await tapAndSettle(tester, find.byIcon(Icons.add), 200);
+    expect(find.byType(FishingSpotDetails), findsOneWidget);
   });
 }

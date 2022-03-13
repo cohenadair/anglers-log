@@ -114,3 +114,6 @@ LatLngBounds? mapBounds(Iterable<FishingSpot> fishingSpots) {
     northeast: LatLng(mostEastLat, mostNorthLng),
   );
 }
+
+Color mapIconColor(MapType mapType) =>
+    mapType == MapType.normal ? Colors.black : Colors.white;

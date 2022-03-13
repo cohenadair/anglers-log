@@ -410,7 +410,7 @@ Map<String, Map<String, String>> get englishStrings => {
             "This fishing spot is associated with %s catch; are you sure you want to delete it? This cannot be undone.",
         "mapPage_addCatch": "Add Catch",
         "mapPage_searchHint": "Search fishing spots",
-        "mapPage_droppedPin": "Dropped Pin",
+        "mapPage_droppedPin": "New Fishing Spot",
         "mapPage_mapTypeNormal": "Normal",
         "mapPage_mapTypeSatellite": "Satellite",
         "mapPage_mapTypeTerrain": "Terrain",
@@ -959,5 +959,6 @@ Map<String, Map<String, String>> get englishStrings => {
         "proBlur_upgradeButton": "Upgrade",
         "aboutPage_version": "Version",
         "aboutPage_privacy": "Privacy Policy",
+        "fishingSpotDetails_addDetails": "Add Details",
       },
     };

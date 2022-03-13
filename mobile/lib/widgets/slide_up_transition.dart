@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../widgets/widget.dart';
+import 'widget.dart';
 
 /// This widget animates in from the bottom and is dismissed, by setting the
 /// [isVisible] property to `false`.
@@ -43,6 +43,7 @@ class _SlideUpTransitionState extends State<SlideUpTransition>
         widget.onDismissed?.call();
       }
     };
+    _controller.addStatusListener(_animationStatusListener);
 
     _offset = Tween<Offset>(
       begin: const Offset(0.0, 1.0),
@@ -55,19 +56,6 @@ class _SlideUpTransitionState extends State<SlideUpTransition>
     _controller.removeStatusListener(_animationStatusListener);
     _controller.dispose();
     super.dispose();
-  }
-
-  @override
-  void didUpdateWidget(SlideUpTransition oldWidget) {
-    super.didUpdateWidget(oldWidget);
-
-    if (oldWidget.isVisible != widget.isVisible) {
-      if (widget.isVisible) {
-        _controller.removeStatusListener(_animationStatusListener);
-      } else {
-        _controller.addStatusListener(_animationStatusListener);
-      }
-    }
   }
 
   @override

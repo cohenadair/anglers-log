@@ -14,7 +14,6 @@ import '../pages/save_fishing_spot_page.dart';
 import '../res/dimen.dart';
 import '../utils/dialog_utils.dart';
 import '../utils/page_utils.dart';
-import '../utils/protobuf_utils.dart';
 import '../utils/snackbar_utils.dart';
 import '../utils/string_utils.dart';
 import '../wrappers/io_wrapper.dart';
@@ -30,8 +29,8 @@ import 'widget.dart';
 class FishingSpotDetails extends StatelessWidget {
   final FishingSpot fishingSpot;
 
-  /// When true, a "Dropped Pin" text is shown as the title.
-  final bool isDroppedPin;
+  /// When true, a "New Fishing Spot" text is shown as the title.
+  final bool isNewFishingSpot;
 
   /// When true, displays [fishingSpot] details in a list item. When true,
   /// [showActionButtons] is ignored and action buttons are never shown. Also
@@ -59,7 +58,7 @@ class FishingSpotDetails extends StatelessWidget {
   const FishingSpotDetails(
     this.fishingSpot, {
     this.containerKey,
-    this.isDroppedPin = false,
+    this.isNewFishingSpot = false,
     this.isListItem = false,
     this.isPicking = false,
     this.showActionButtons = false,
@@ -83,7 +82,7 @@ class FishingSpotDetails extends StatelessWidget {
       subtitle = bodyOfWater;
     } else if (isNotEmpty(bodyOfWater)) {
       title = bodyOfWater;
-    } else if (isDroppedPin) {
+    } else if (isNewFishingSpot) {
       title = Strings.of(context).mapPageDroppedPin;
     }
 
@@ -162,9 +161,9 @@ class _FishingSpotActions extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var children = [
+      _buildAddCatch(context),
       _buildSave(context),
-      _buildAdd(context),
-      _buildEdit(context),
+      _buildSaveDetails(context),
       _buildDelete(context),
       _buildDirections(context),
     ];
@@ -196,16 +195,22 @@ class _FishingSpotActions extends StatelessWidget {
     return ChipButton(
       label: Strings.of(context).save,
       icon: Icons.save,
-      onPressed: () => present(
-        context,
-        SaveFishingSpotPage(
-          latLng: fishingSpot.latLng,
-        ),
-      ),
+      onPressed: () => FishingSpotManager.of(context).addOrUpdate(fishingSpot),
     );
   }
 
-  Widget _buildAdd(BuildContext context) {
+  Widget _buildSaveDetails(BuildContext context) {
+    var isEditing = _fishingSpotExists(context);
+    return ChipButton(
+      label: isEditing
+          ? Strings.of(context).edit
+          : Strings.of(context).fishingSpotDetailsAddDetails,
+      icon: isEditing ? Icons.edit : Icons.add,
+      onPressed: () => present(context, SaveFishingSpotPage.edit(fishingSpot)),
+    );
+  }
+
+  Widget _buildAddCatch(BuildContext context) {
     if (!_fishingSpotExists(context) || isPicking) {
       return const Empty();
     }
@@ -215,21 +220,6 @@ class _FishingSpotActions extends StatelessWidget {
       icon: Icons.add,
       onPressed: () =>
           AddCatchJourney.presentIn(context, fishingSpot: fishingSpot),
-    );
-  }
-
-  Widget _buildEdit(BuildContext context) {
-    if (!_fishingSpotExists(context) && !isPicking) {
-      return const Empty();
-    }
-
-    return ChipButton(
-      label: Strings.of(context).edit,
-      icon: Icons.edit,
-      onPressed: () => present(
-        context,
-        SaveFishingSpotPage.edit(fishingSpot),
-      ),
     );
   }
 

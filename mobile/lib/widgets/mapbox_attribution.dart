@@ -50,7 +50,7 @@ class MapboxAttribution extends StatelessWidget {
           height: _size.height,
           child: SvgPicture.asset(
             "assets/mapbox-logo.svg",
-            color: mapType == MapType.normal ? Colors.black : Colors.white,
+            color: mapIconColor(mapType),
           ),
         ),
         MinimumIconButton(

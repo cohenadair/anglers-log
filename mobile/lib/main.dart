@@ -1,12 +1,14 @@
 import 'dart:async';
 import 'dart:io';
 import 'dart:isolate';
+import 'dart:math';
 
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:provider/provider.dart';
@@ -58,6 +60,14 @@ void main() {
           .recordError(pair.first, pair.last, fatal: true);
       killReleaseApp();
     }).sendPort);
+
+    // Restrict orientation to portrait for devices with a small width. A width
+    // of 740 is less than the smallest iPad, and most Android tablets.
+    var size = MediaQueryData.fromWindow(WidgetsBinding.instance!.window).size;
+    if (min(size.width, size.height) < 740) {
+      await SystemChrome.setPreferredOrientations(
+          [DeviceOrientation.portraitUp]);
+    }
 
     runApp(AnglersLog(AppManager()));
   }, (error, stack) {

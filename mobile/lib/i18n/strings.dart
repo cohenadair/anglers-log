@@ -1939,6 +1939,9 @@ class Strings {
   String get aboutPageVersion => _string("aboutPage_version");
 
   String get aboutPagePrivacy => _string("aboutPage_privacy");
+
+  String get fishingSpotDetailsAddDetails =>
+      _string("fishingSpotDetails_addDetails");
 }
 
 class StringsDelegate extends LocalizationsDelegate<Strings> {

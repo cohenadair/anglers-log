@@ -96,6 +96,7 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
 
   final _fishingSpotKey = GlobalKey();
   final _mapKey = GlobalKey();
+  final _isTargetShowingNotifier = ValueNotifier<bool>(false);
 
   // Wait for navigation animations to finish before loading the map. This
   // allows for a smooth animation.
@@ -131,6 +132,8 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
   FishingSpotMapPickerSettings? get _pickerSettings => widget.pickerSettings;
 
   bool get _hasActiveSymbol => _activeSymbol != null;
+
+  bool get _hasActiveDroppedPin => _hasActiveSymbol && _isDroppedPin;
 
   bool get _isPicking => _pickerSettings != null;
 
@@ -182,6 +185,7 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
         var stack = Stack(children: [
           _buildMap(),
           ...widget.children,
+          _buildNewFishingSpotTarget(),
           _buildNoSelectionMapAttribution(),
           _buildFishingSpot(),
           SafeArea(
@@ -192,6 +196,7 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
                 _buildMapStyleButton(),
                 _buildCurrentLocationButton(),
                 _buildZoomExtentsButton(),
+                _buildAddButton(),
               ],
             ),
           ),
@@ -236,9 +241,17 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
               target: start,
               zoom: start.latitude == 0 ? 0 : _zoomDefault,
             ),
-            onMapCreated: (controller) => _mapController = controller,
-            onMapLongClick: (_, latLng) => _dropPin(latLng),
+            onMapCreated: (controller) {
+              _mapController = controller;
+              _mapController?.addListener(_updateTarget);
+            },
             onStyleLoadedCallback: _setupMap,
+            onCameraIdle: () {
+              if (_hasActiveDroppedPin) {
+                _updateDroppedPin();
+              }
+            },
+            trackCameraPosition: true,
             compassEnabled: false,
           ),
         );
@@ -432,6 +445,18 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
     );
   }
 
+  Widget _buildAddButton() {
+    return FloatingButton.icon(
+      padding: const EdgeInsets.only(
+        left: paddingDefault,
+        right: paddingDefault,
+        bottom: paddingDefault,
+      ),
+      icon: Icons.add,
+      onPressed: _updateDroppedPin,
+    );
+  }
+
   Widget _buildFishingSpot() {
     var fishingSpot = _activeFishingSpot;
     if (_isDismissingFishingSpot && _oldFishingSpot != null) {
@@ -452,7 +477,7 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
         child: FishingSpotDetails(
           fishingSpot,
           containerKey: _fishingSpotKey,
-          isDroppedPin: _isDroppedPin,
+          isNewFishingSpot: _isDroppedPin,
           isPicking: _isPicking,
           showActionButtons: widget.showFishingSpotActionButtons,
         ),
@@ -483,6 +508,24 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
         onDismissed: () => _selectFishingSpot(null),
         child: container,
       ),
+    );
+  }
+
+  Widget _buildNewFishingSpotTarget() {
+    return ValueListenableBuilder<bool>(
+      valueListenable: _isTargetShowingNotifier,
+      builder: (_, isShowing, __) {
+        if (!isShowing) {
+          return const Empty();
+        }
+
+        return Center(
+          child: Icon(
+            Icons.gps_not_fixed,
+            color: mapIconColor(_mapType),
+          ),
+        );
+      },
     );
   }
 
@@ -564,7 +607,36 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
           (s) => s.fishingSpot.id == _activeSymbol!.fishingSpot.id);
       if (_hasActiveSymbol) {
         _selectFishingSpot(_activeSymbol!.fishingSpot);
+      } else {
+        // Ensure we deselect the active fishing spot if it was deleted.
+        _selectFishingSpot(null);
       }
+    }
+  }
+
+  void _updateDroppedPin() {
+    var latLng = _mapController?.cameraPosition?.target;
+    if (latLng == null) {
+      _log.w("Can't update dropped pin with null position");
+      return;
+    }
+
+    _isTargetShowingNotifier.value = false;
+    _dropPin(latLng);
+  }
+
+  void _updateTarget() {
+    if (!_hasActiveDroppedPin) {
+      return;
+    }
+
+    var isMoving = _mapController?.isCameraMoving;
+    if (isMoving == null) {
+      return;
+    }
+
+    if (isMoving != _isTargetShowingNotifier.value) {
+      _isTargetShowingNotifier.value = isMoving;
     }
   }
 
@@ -655,13 +727,11 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
       }
     }
 
-    updateFields() {
+    setState(() {
       _activeSymbol = newActiveSymbol;
       _isDismissingFishingSpot = newIsDismissingFishingSpot;
       _oldFishingSpot = newOldFishingSpot;
-    }
-
-    setState(updateFields);
+    });
   }
 
   void _setupPicker() {

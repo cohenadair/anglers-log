@@ -16,35 +16,6 @@ void main() {
     when(appManager.ioWrapper.isAndroid).thenReturn(true);
   });
 
-  testWidgets("White attribution logo", (tester) async {
-    await pumpContext(
-      tester,
-      (_) => const MapboxAttribution(mapType: MapType.satellite),
-      appManager: appManager,
-    );
-
-    // Can't access SvgPicture color directly, so compare with ColorFilter
-    // string value.
-    expect(
-      findFirst<SvgPicture>(tester).colorFilter.toString(),
-      "ColorFilter.mode(Color(0xffffffff), BlendMode.srcIn)",
-    );
-  });
-
-  testWidgets("Black attribution logo", (tester) async {
-    await pumpContext(
-      tester,
-      (_) => const MapboxAttribution(mapType: MapType.normal),
-      appManager: appManager,
-    );
-    // Can't access SvgPicture color directly, so compare with ColorFilter
-    // string value.
-    expect(
-      findFirst<SvgPicture>(tester).colorFilter.toString(),
-      "ColorFilter.mode(Color(0xff000000), BlendMode.srcIn)",
-    );
-  });
-
   testWidgets("Attribution Android title", (tester) async {
     when(appManager.ioWrapper.isAndroid).thenReturn(true);
 

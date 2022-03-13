@@ -90,7 +90,7 @@ void main() {
     expect(listItem.subtitle3, isEmpty);
   });
 
-  testWidgets("Dropped pin", (tester) async {
+  testWidgets("New Fishing Spot", (tester) async {
     when(appManager.bodyOfWaterManager.entity(any)).thenReturn(null);
 
     await tester.pumpWidget(Testable(
@@ -99,13 +99,13 @@ void main() {
           lat: 1.23456,
           lng: 6.54321,
         ),
-        isDroppedPin: true,
+        isNewFishingSpot: true,
       ),
       appManager: appManager,
     ));
 
     var listItem = findFirst<ImageListItem>(tester);
-    expect(listItem.title, "Dropped Pin");
+    expect(listItem.title, "New Fishing Spot");
     expect(listItem.subtitle, isNull);
     expect(listItem.subtitle2, "Lat: 1.234560, Lng: 6.543210");
     expect(listItem.subtitle3, isEmpty);
@@ -344,9 +344,8 @@ void main() {
     expect(find.widgetWithText(ChipButton, "Edit"), findsNothing);
   });
 
-  testWidgets("Edit action shows when spot doesn't exist, but is picking",
-      (tester) async {
-    when(appManager.fishingSpotManager.entityExists(any)).thenReturn(false);
+  testWidgets("Save details button in edit mode", (tester) async {
+    when(appManager.fishingSpotManager.entityExists(any)).thenReturn(true);
 
     await tester.pumpWidget(Testable(
       (_) => FishingSpotDetails(
@@ -358,6 +357,23 @@ void main() {
     ));
 
     expect(find.widgetWithText(ChipButton, "Edit"), findsOneWidget);
+    expect(find.byIcon(Icons.edit), findsOneWidget);
+  });
+
+  testWidgets("Save details button in add mode", (tester) async {
+    when(appManager.fishingSpotManager.entityExists(any)).thenReturn(false);
+
+    await tester.pumpWidget(Testable(
+      (_) => FishingSpotDetails(
+        FishingSpot(lat: 1.23456, lng: 6.54321),
+        showActionButtons: true,
+        isPicking: true,
+      ),
+      appManager: appManager,
+    ));
+
+    expect(find.widgetWithText(ChipButton, "Add Details"), findsOneWidget);
+    expect(find.byIcon(Icons.add), findsOneWidget);
   });
 
   testWidgets("Delete action hidden if spot doesn't exist", (tester) async {

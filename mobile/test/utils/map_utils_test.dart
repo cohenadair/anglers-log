@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:mapbox_gl/mapbox_gl.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
 import 'package:mobile/utils/map_utils.dart';
@@ -38,6 +39,16 @@ void main() {
       })!;
       expect(bounds.southwest, const LatLng(-45.0, -75.0));
       expect(bounds.northeast, const LatLng(89, 150));
+    });
+  });
+
+  group("mapIconColor", () {
+    test("White icon", () {
+      expect(mapIconColor(MapType.satellite), Colors.white);
+    });
+
+    test("Black icon", () {
+      expect(mapIconColor(MapType.normal), Colors.black);
     });
   });
 }
