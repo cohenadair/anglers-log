@@ -18,6 +18,7 @@ import '../model/gen/anglerslog.pb.dart';
 import '../pages/fishing_spot_list_page.dart';
 import '../properties_manager.dart';
 import '../res/dimen.dart';
+import '../res/gen/custom_icons.dart';
 import '../utils/dialog_utils.dart';
 import '../utils/map_utils.dart';
 import '../utils/page_utils.dart';
@@ -403,15 +404,18 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
           showErrorSnackBar(
               context, Strings.of(context).mapPageErrorGettingLocation);
         } else {
-          _moveMap(currentLocation);
           setState(() {
             _myLocationEnabled = true;
-            if (_isPicking) {
-              _dropPin(currentLocation);
-            } else {
-              _selectFishingSpot(null, dismissIfNull: true);
-            }
           });
+
+          if (_isPicking) {
+            await _dropPin(currentLocation);
+          } else {
+            await _selectFishingSpot(null, dismissIfNull: true);
+          }
+
+          // Move map after pin changes so widgets are hidden/shown correctly.
+          _moveMap(currentLocation, zoomToDefault: true);
         }
       },
     );
@@ -429,11 +433,16 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
         bottom: paddingDefault,
       ),
       icon: Icons.zoom_out_map,
-      onPressed: () {
+      onPressed: () async {
         var bounds = mapBounds(_fishingSpotManager.list());
         if (bounds == null) {
           return;
         }
+
+        await _selectFishingSpot(null, dismissIfNull: true);
+
+        // Move map after updating fishing spot so widgets are hidden/shown
+        // correctly.
         _mapController?.animateCamera(CameraUpdate.newLatLngBounds(
           bounds,
           left: paddingXL,
@@ -515,14 +524,13 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
     return ValueListenableBuilder<bool>(
       valueListenable: _isTargetShowingNotifier,
       builder: (_, isShowing, __) {
-        if (!isShowing) {
-          return const Empty();
-        }
-
-        return Center(
-          child: Icon(
-            Icons.gps_not_fixed,
-            color: mapIconColor(_mapType),
+        return AnimatedVisibility(
+          visible: isShowing,
+          child: Center(
+            child: Icon(
+              CustomIcons.mapTarget,
+              color: mapIconColor(_mapType),
+            ),
           ),
         );
       },
@@ -704,7 +712,7 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
 
       if (dismissIfNull) {
         newOldFishingSpot = _activeSymbol?.fishingSpot;
-        newIsDismissingFishingSpot = true;
+        newIsDismissingFishingSpot = newOldFishingSpot != null;
       } else {
         newIsDismissingFishingSpot = false;
       }
@@ -723,7 +731,11 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
           const SymbolOptions(iconImage: _pinActive),
         );
 
-        _moveMap(newActiveSymbol.latLng, animate: animateMapMovement);
+        _moveMap(
+          newActiveSymbol.latLng,
+          animate: animateMapMovement,
+          zoomToDefault: false,
+        );
       }
     }
 
@@ -757,10 +769,19 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
     _dropPin(_locationMonitor.currentLocation ?? const LatLng(0, 0));
   }
 
-  Future<void> _moveMap(LatLng latLng, {bool animate = true}) async {
+  Future<void> _moveMap(
+    LatLng latLng, {
+    bool animate = true,
+    bool zoomToDefault = false,
+  }) async {
+    var zoom = _mapController?.cameraPosition?.zoom;
+    if (zoom == null || zoomToDefault) {
+      zoom = _zoomDefault;
+    }
+
     var update = CameraUpdate.newCameraPosition(CameraPosition(
       target: latLng,
-      zoom: _zoomDefault,
+      zoom: zoom,
     ));
 
     if (animate) {

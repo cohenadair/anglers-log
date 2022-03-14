@@ -5,6 +5,7 @@ import 'package:mobile/entity_manager.dart';
 import 'package:mobile/fishing_spot_manager.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
 import 'package:mobile/pages/fishing_spot_list_page.dart';
+import 'package:mobile/res/gen/custom_icons.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mobile/widgets/checkbox_input.dart';
 import 'package:mobile/widgets/fishing_spot_details.dart';
@@ -46,6 +47,9 @@ void main() {
     when(appManager.userPreferenceManager.setMapType(any))
         .thenAnswer((_) => Future.value());
     when(appManager.userPreferenceManager.mapType).thenReturn(null);
+
+    when(mapController.value.cameraPosition)
+        .thenReturn(const CameraPosition(target: LatLng(0, 0)));
   });
 
   MapboxMap findMap(WidgetTester tester) =>
@@ -1002,27 +1006,33 @@ void main() {
 
   testWidgets("Pin updated on camera idle", (tester) async {
     when(appManager.fishingSpotManager.entityExists(any)).thenReturn(false);
-    when(mapController.value.cameraPosition)
-        .thenReturn(const CameraPosition(target: LatLng(0, 0)));
 
     await pumpMap(tester, FishingSpotMap());
     await mapController.finishLoading(tester);
 
     await tapAndSettle(tester, find.byIcon(Icons.add), 200);
     expect(find.byType(FishingSpotDetails), findsOneWidget);
-    verify(mapController.value.cameraPosition).called(1);
+
+    // Called once to add the spot, and once to move the map.
+    verify(mapController.value.cameraPosition).called(2);
 
     var mapboxMap = findFirst<MapboxMap>(tester);
     mapboxMap.onCameraIdle!();
     await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
-    verify(mapController.value.cameraPosition).called(1);
+    // Called once to update the spot, and once to move the map.
+    verify(mapController.value.cameraPosition).called(2);
   });
 
   testWidgets("Target hidden when map is idle", (tester) async {
     await pumpMap(tester, FishingSpotMap());
     await mapController.finishLoading(tester);
-    expect(find.byIcon(Icons.gps_not_fixed), findsNothing);
+
+    expect(
+      findFirstWithIcon<AnimatedVisibility>(tester, CustomIcons.mapTarget)
+          .visible,
+      isFalse,
+    );
   });
 
   testWidgets("Target hidden when no active dropped pin", (tester) async {
@@ -1039,15 +1049,17 @@ void main() {
     listener!();
 
     verifyNever(mapController.value.isCameraMoving);
-    expect(find.byIcon(Icons.gps_not_fixed), findsNothing);
+    expect(
+      findFirstWithIcon<AnimatedVisibility>(tester, CustomIcons.mapTarget)
+          .visible,
+      isFalse,
+    );
   });
 
   testWidgets("Target is shown when map is movin", (tester) async {
     when(appManager.fishingSpotManager.entityExists(any)).thenReturn(false);
 
     when(mapController.value.isCameraMoving).thenReturn(true);
-    when(mapController.value.cameraPosition)
-        .thenReturn(const CameraPosition(target: LatLng(0, 0)));
 
     VoidCallback? listener;
     when(mapController.value.addListener(any)).thenAnswer((invocation) {
@@ -1060,7 +1072,9 @@ void main() {
     // Add a pin.
     await tapAndSettle(tester, find.byIcon(Icons.add), 200);
     expect(find.byType(FishingSpotDetails), findsOneWidget);
-    verify(mapController.value.cameraPosition).called(1);
+
+    // Called once to add the spot, and once to move the map.
+    verify(mapController.value.cameraPosition).called(2);
 
     // Manually invoke controller update listener to trigger _updateTarget.
     expect(listener, isNotNull);
@@ -1068,7 +1082,11 @@ void main() {
     await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
     verify(mapController.value.isCameraMoving).called(1);
-    expect(find.byIcon(Icons.gps_not_fixed), findsOneWidget);
+    expect(
+      findFirstWithIcon<AnimatedVisibility>(tester, CustomIcons.mapTarget)
+          .visible,
+      isTrue,
+    );
   });
 
   testWidgets("Fishing spot is deselected when deleted", (tester) async {
@@ -1116,13 +1134,29 @@ void main() {
   });
 
   testWidgets("Tapping add button drops a pin", (tester) async {
-    when(mapController.value.cameraPosition)
-        .thenReturn(const CameraPosition(target: LatLng(0, 0)));
-
     await pumpMap(tester, FishingSpotMap());
     await mapController.finishLoading(tester);
 
     await tapAndSettle(tester, find.byIcon(Icons.add), 200);
     expect(find.byType(FishingSpotDetails), findsOneWidget);
+  });
+
+  testWidgets("Move map zooms to default", (tester) async {
+    when(appManager.permissionHandlerWrapper.requestLocation())
+        .thenAnswer((_) => Future.value(true));
+
+    when(appManager.locationMonitor.currentLocation)
+        .thenReturn(const LatLng(0, 0));
+
+    await pumpMap(tester, FishingSpotMap());
+    await mapController.finishLoading(tester);
+
+    await tapAndSettle(tester, find.byIcon(Icons.my_location), 200);
+
+    var result = verify(mapController.value.animateCamera(captureAny));
+    result.called(1);
+
+    var update = result.captured.first as CameraUpdate;
+    expect(update.toJson()[1]["zoom"], 13.0);
   });
 }

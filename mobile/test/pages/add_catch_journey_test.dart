@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mapbox_gl/mapbox_gl.dart' as map;
 import 'package:mobile/model/gen/anglerslog.pb.dart';
 import 'package:mobile/pages/add_catch_journey.dart';
 import 'package:mobile/pages/image_picker_page.dart';
@@ -127,6 +128,9 @@ void main() {
     when(appManager.subscriptionManager.isFree).thenReturn(false);
 
     when(appManager.waterClarityManager.entityExists(any)).thenReturn(false);
+
+    when(mapController.value.cameraPosition)
+        .thenReturn(const map.CameraPosition(target: map.LatLng(0, 0)));
   });
 
   testWidgets("Picked image uses location data to fetch existing fishing spot",

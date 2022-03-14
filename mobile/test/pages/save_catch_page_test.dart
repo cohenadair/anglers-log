@@ -120,6 +120,9 @@ void main() {
     when(appManager.waterClarityManager.displayName(any, any))
         .thenAnswer((invocation) => invocation.positionalArguments[1].name);
 
+    when(mapController.value.cameraPosition)
+        .thenReturn(const CameraPosition(target: LatLng(0, 0)));
+
     appManager.stubCurrentTime(DateTime(2020, 2, 1, 10, 30));
   });
 
