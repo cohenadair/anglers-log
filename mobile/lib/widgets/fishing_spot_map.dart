@@ -6,6 +6,7 @@ import 'package:collection/collection.dart' show IterableExtension;
 import 'package:flutter/material.dart';
 import 'package:mapbox_gl/mapbox_gl.dart';
 import 'package:mobile/user_preference_manager.dart';
+import 'package:mobile/utils/collection_utils.dart';
 import 'package:mobile/widgets/our_bottom_sheet.dart';
 import 'package:quiver/strings.dart';
 
@@ -594,22 +595,32 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
   }
 
   Future<void> _updateSymbols() async {
-    // Map is still loading, exit early.
-    _mapController?.clearSymbols();
+    // Update and remove symbols.
+    var symbolsToRemove = <Symbol>[];
+    for (var symbol in _mapController?.symbols ?? <Symbol>{}) {
+      var spot = _fishingSpotManager.entity(symbol.fishingSpot.id);
+      if (spot == null) {
+        symbolsToRemove.add(symbol);
+      } else {
+        symbol.fishingSpot = spot;
+      }
+    }
+    await _mapController?.removeSymbols(symbolsToRemove);
 
-    var options = <SymbolOptions>[];
-    var data = <Map<dynamic, dynamic>>[];
+    // Add new symbols for fishing spots that don't already have one.
+    var spotsWithoutSymbols = _fishingSpotManager.list().whereNot((spot) =>
+        _mapController?.symbols
+            .containsWhere((symbol) => symbol.fishingSpot.id == spot.id) ??
+        true);
 
-    // Iterate all fishing spots, creating SymbolOptions and data maps so all
-    // symbols can be added with one call to the platform channel.
-    for (var fishingSpot in _fishingSpotManager.list()) {
-      options.add(_createSymbolOptions(fishingSpot));
-      data.add(_Symbols.fishingSpotData(fishingSpot));
+    // TODO: Why does addSymbols reset rather than append symbols?
+    for (var fishingSpot in spotsWithoutSymbols) {
+      await _mapController?.addSymbol(_createSymbolOptions(fishingSpot),
+          _Symbols.fishingSpotData(fishingSpot));
     }
 
-    var symbols = await _mapController?.addSymbols(options, data) ?? [];
-
     // Reset the active symbol to one of the newly created symbols.
+    var symbols = _mapController?.symbols ?? <Symbol>[];
     if (_hasActiveSymbol) {
       _activeSymbol = symbols.firstWhereOrNull(
           (s) => s.fishingSpot.id == _activeSymbol!.fishingSpot.id);
@@ -703,7 +714,12 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
       // Mark the active symbol as inactive.
       await _mapController?.updateSymbol(
         _activeSymbol!,
-        const SymbolOptions(iconImage: _pinInactive),
+        SymbolOptions(
+          // If the active symbol didn't change, keep the same icon.
+          iconImage: _activeSymbol?.fishingSpot.id == fishingSpot?.id
+              ? _pinActive
+              : _pinInactive,
+        ),
       );
     }
 
@@ -819,6 +835,9 @@ extension _Symbols on Symbol {
   }
 
   FishingSpot get fishingSpot => data![_keyFishingSpot] as FishingSpot;
+
+  set fishingSpot(FishingSpot fishingSpot) =>
+      data![_keyFishingSpot] = fishingSpot;
 
   LatLng get latLng => options.geometry!;
 }
