@@ -228,34 +228,31 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
             _locationMonitor.currentLocation ??
             const LatLng(0, 0);
 
-        return IgnorePointer(
-          ignoring: false,
-          child: MapboxMap(
-            key: _mapKey,
-            accessToken: _propertiesManager.mapboxApiKey,
-            // Hide default attribution views, so we can show our own and
-            // position them easier.
-            attributionButtonMargins: const Point(0, -1000),
-            logoViewMargins: const Point(0, -1000),
-            myLocationEnabled: _myLocationEnabled,
-            styleString: _mapType.url,
-            initialCameraPosition: CameraPosition(
-              target: start,
-              zoom: start.latitude == 0 ? 0 : _zoomDefault,
-            ),
-            onMapCreated: (controller) {
-              _mapController = controller;
-              _mapController?.addListener(_updateTarget);
-            },
-            onStyleLoadedCallback: _setupMap,
-            onCameraIdle: () {
-              if (_hasActiveDroppedPin) {
-                _updateDroppedPin();
-              }
-            },
-            trackCameraPosition: true,
-            compassEnabled: false,
+        return MapboxMap(
+          key: _mapKey,
+          accessToken: _propertiesManager.mapboxApiKey,
+          // Hide default attribution views, so we can show our own and
+          // position them easier.
+          attributionButtonMargins: const Point(0, -1000),
+          logoViewMargins: const Point(0, -1000),
+          myLocationEnabled: _myLocationEnabled,
+          styleString: _mapType.url,
+          initialCameraPosition: CameraPosition(
+            target: start,
+            zoom: start.latitude == 0 ? 0 : _zoomDefault,
           ),
+          onMapCreated: (controller) {
+            _mapController = controller;
+            _mapController?.addListener(_updateTarget);
+          },
+          onStyleLoadedCallback: _setupMap,
+          onCameraIdle: () {
+            if (_hasActiveDroppedPin) {
+              _updateDroppedPin();
+            }
+          },
+          trackCameraPosition: true,
+          compassEnabled: false,
         );
       },
     );
@@ -790,6 +787,11 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
     bool animate = true,
     bool zoomToDefault = false,
   }) async {
+    // The map is already at the desired position, no need to do anything.
+    if (_mapController?.cameraPosition?.target == latLng) {
+      return;
+    }
+
     var zoom = _mapController?.cameraPosition?.zoom;
     if (zoom == null || zoomToDefault) {
       zoom = _zoomDefault;

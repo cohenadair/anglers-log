@@ -1141,7 +1141,7 @@ void main() {
     expect(find.byType(FishingSpotDetails), findsOneWidget);
   });
 
-  testWidgets("Move map zooms to default", (tester) async {
+  testWidgets("Move map exits early if already at position", (tester) async {
     when(appManager.permissionHandlerWrapper.requestLocation())
         .thenAnswer((_) => Future.value(true));
 
@@ -1151,6 +1151,20 @@ void main() {
     await pumpMap(tester, FishingSpotMap());
     await mapController.finishLoading(tester);
 
+    await tapAndSettle(tester, find.byIcon(Icons.my_location), 200);
+    verifyNever(mapController.value.animateCamera(captureAny));
+  });
+
+  testWidgets("Move map zooms to default", (tester) async {
+    when(appManager.permissionHandlerWrapper.requestLocation())
+        .thenAnswer((_) => Future.value(true));
+
+    await pumpMap(tester, FishingSpotMap());
+    await mapController.finishLoading(tester);
+
+    // Default position is 0, 0. Set something else so the map actually moves.
+    when(appManager.locationMonitor.currentLocation)
+        .thenReturn(const LatLng(1, 1));
     await tapAndSettle(tester, find.byIcon(Icons.my_location), 200);
 
     var result = verify(mapController.value.animateCamera(captureAny));
