@@ -273,6 +273,13 @@ class _ProPageState extends State<ProPage> {
   }
 
   void _setIsPendingTransaction(bool pending) {
+    // Check mounted here, since ProPage can be dismissed before
+    // purchaseSubscription has completed. If this happens, the setState call
+    // below throws an exception.
+    if (!mounted) {
+      return;
+    }
+
     setState(() {
       _isPendingTransaction = pending;
     });
