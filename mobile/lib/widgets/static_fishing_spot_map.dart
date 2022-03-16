@@ -20,12 +20,10 @@ import 'fishing_spot_map.dart';
 class StaticFishingSpotMap extends StatefulWidget {
   final FishingSpot fishingSpot;
   final EdgeInsets? padding;
-  final VoidCallback? onTap;
 
   const StaticFishingSpotMap(
     this.fishingSpot, {
     this.padding,
-    this.onTap,
   });
 
   @override

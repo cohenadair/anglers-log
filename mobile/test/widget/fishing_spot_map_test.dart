@@ -459,9 +459,11 @@ void main() {
     // Manually invoke the style loaded callback so the previous fishing spot
     // is selected again.
     findMap(tester).onStyleLoadedCallback!();
+    await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
     expect(findMap(tester).styleString!.contains(satellite), isTrue);
     expect(find.text("Spot 1"), findsNWidgets(2));
+    expect(mapController.symbolCount, 1);
     verify(appManager.userPreferenceManager.setMapType(any)).called(1);
   });
 
@@ -781,7 +783,7 @@ void main() {
     // Verify spot is active.
     expect(find.text("Spot 1"), findsNWidgets(2));
     expect(mapController.symbolCount, 2); // 2 spots
-    verify(mapController.value.updateSymbol(captureAny, captureAny)).called(1);
+    verify(mapController.value.updateSymbol(any, any)).called(2);
 
     // Select a new spot.
     await tapAndSettle(tester, find.byType(SearchBar));
@@ -790,7 +792,7 @@ void main() {
     await tapAndSettle(tester, find.text("Spot 2"));
     expect(find.text("Spot 2"), findsNWidgets(2));
 
-    verify(mapController.value.updateSymbol(captureAny, captureAny)).called(2);
+    verify(mapController.value.updateSymbol(any, any)).called(2);
   });
 
   testWidgets("Selecting spot that does not exist is a no-op", (tester) async {
@@ -877,7 +879,27 @@ void main() {
 
   testWidgets("Setting up picker is no-op when not picking", (tester) async {
     await pumpMap(tester, FishingSpotMap());
-    verifyNever(appManager.fishingSpotManager.entityExists(any));
+    verifyNever(appManager.fishingSpotManager.withinRadius(any));
+  });
+
+  testWidgets("Setting up picker is no-op spot is already active", (tester) async {
+    var fishingSpot = FishingSpot(
+      id: randomId(),
+      name: "Spot 2",
+      lat: 1,
+      lng: 2,
+    );
+    when(appManager.fishingSpotManager.list()).thenReturn([fishingSpot]);
+
+    var controller = InputController<FishingSpot>();
+    controller.value = fishingSpot;
+    await pumpMap(
+      tester,
+      FishingSpotMap(
+        pickerSettings: FishingSpotMapPickerSettings(controller: controller),
+      ),
+    );
+    verifyNever(appManager.fishingSpotManager.withinRadius(any));
   });
 
   testWidgets("Setting up picker selects controller value", (tester) async {

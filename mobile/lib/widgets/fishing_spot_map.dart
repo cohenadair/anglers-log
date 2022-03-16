@@ -110,8 +110,8 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
   Symbol? _activeSymbol;
 
   bool _myLocationEnabled = true;
-  bool _isSetup = false;
   bool _isTelemetryEnabled = true;
+  bool _didChangeMapType = false;
 
   // Displayed while dismissing the fishing spot container.
   FishingSpot? _oldFishingSpot;
@@ -165,9 +165,7 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
     // is picked for a catch, and then that catch is saved.
     if (oldWidget.pickerSettings?.controller.value !=
         _pickerSettings?.controller.value) {
-      _updateSymbols().then(
-        (_) => _selectFishingSpot(_pickerSettings?.controller.value),
-      );
+      _updateSymbols(selectedFishingSpot: _pickerSettings?.controller.value);
     }
   }
 
@@ -175,6 +173,7 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
   void dispose() {
     super.dispose();
     _mapController?.onSymbolTapped.remove(_onSymbolTapped);
+    _mapController?.removeListener(_updateTarget);
   }
 
   @override
@@ -182,7 +181,8 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
     var map = EntityListenerBuilder(
       managers: [_fishingSpotManager],
       changesUpdatesState: false,
-      onAnyChange: _updateSymbols,
+      onAnyChange: () =>
+          _updateSymbols(selectedFishingSpot: _activeFishingSpot),
       builder: (context) {
         var stack = Stack(children: [
           _buildMap(),
@@ -359,6 +359,7 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
               setState(() {
                 _mapType = newType ?? MapType.normal;
                 _userPreferenceManager.setMapType(_mapType.id);
+                _didChangeMapType = true;
               });
             },
           ),
@@ -472,10 +473,8 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
 
     // If the map isn't yet setup, but there's a picked spot, use that for
     // rendering. This allows us to calculate the padding for Mapbox
-    // attributions.
-    if (fishingSpot == null && !_isSetup) {
-      fishingSpot = _pickerSettings?.controller.value;
-    }
+    // attributions, and shows a smoother transition when selecting a symbol.
+    fishingSpot ??= _pickerSettings?.controller.value;
 
     Widget details = const Empty();
     if (fishingSpot != null) {
@@ -572,27 +571,26 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
     _mapController
         ?.getTelemetryEnabled()
         .then((value) => _isTelemetryEnabled = value);
-
-    // Need to wait for symbols to be updated so the correct symbol exists
-    // when we go to select the active fishing spot when one exists.
-    await _updateSymbols();
-
-    // If the map has already been setup, it means a new map style was selected
-    // by the user. In this case, reselect the active fishing spot.
-    if (_isSetup) {
-      _selectFishingSpot(_activeFishingSpot);
-    } else {
-      _setupPicker();
-      _isSetup = true;
+    if (_didChangeMapType) {
+      await _mapController?.clearSymbols();
+      _didChangeMapType = false;
     }
+
+    await _updateSymbols(
+      selectedFishingSpot:
+          _activeFishingSpot ?? _pickerSettings?.controller.value,
+    );
+    _setupPickerIfNeeded();
   }
 
   Future<void> _onSymbolTapped(Symbol symbol) async {
     return _selectFishingSpot(symbol.fishingSpot, animateMapMovement: true);
   }
 
-  Future<void> _updateSymbols() async {
-    // Update and remove symbols.
+  Future<void> _updateSymbols({
+    required FishingSpot? selectedFishingSpot,
+  }) async {
+    // Update and remove symbols, syncing them with FishingSpotManager.
     var symbolsToRemove = <Symbol>[];
     for (var symbol in _mapController?.symbols ?? <Symbol>{}) {
       var spot = _fishingSpotManager.entity(symbol.fishingSpot.id);
@@ -604,29 +602,39 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
     }
     await _mapController?.removeSymbols(symbolsToRemove);
 
-    // Add new symbols for fishing spots that don't already have one.
+    // Add symbols for new fishing spots.
     var spotsWithoutSymbols = _fishingSpotManager.list().whereNot((spot) =>
         _mapController?.symbols
             .containsWhere((symbol) => symbol.fishingSpot.id == spot.id) ??
         true);
 
-    // TODO: Why does addSymbols reset rather than append symbols?
+    // Iterate all fishing spots without symbols, creating SymbolOptions and
+    // data maps so all symbols can be added with one call to the platform
+    // channel. A separate call to addSymbol for each symbol is far too slow.
+    var options = <SymbolOptions>[];
+    var data = <Map<dynamic, dynamic>>[];
     for (var fishingSpot in spotsWithoutSymbols) {
-      await _mapController?.addSymbol(_createSymbolOptions(fishingSpot),
-          _Symbols.fishingSpotData(fishingSpot));
+      options.add(_createSymbolOptions(
+        fishingSpot,
+        isActive: selectedFishingSpot?.id == fishingSpot.id,
+      ));
+      data.add(_Symbols.fishingSpotData(fishingSpot));
     }
+    await _mapController?.addSymbols(options, data) ?? [];
 
-    // Reset the active symbol to one of the newly created symbols.
-    var symbols = _mapController?.symbols ?? <Symbol>[];
+    // Now that symbols are updated, select the passed in fishing spot.
+    FishingSpot? activeFishingSpot = _mapController?.symbols
+        .firstWhereOrNull((s) => s.fishingSpot.id == selectedFishingSpot?.id)
+        ?.fishingSpot;
+
+    // Reset the active symbol to one of the updated symbols.
+    _activeSymbol = _mapController?.symbols
+        .firstWhereOrNull((s) => s.fishingSpot.id == activeFishingSpot?.id);
     if (_hasActiveSymbol) {
-      _activeSymbol = symbols.firstWhereOrNull(
-          (s) => s.fishingSpot.id == _activeSymbol!.fishingSpot.id);
-      if (_hasActiveSymbol) {
-        _selectFishingSpot(_activeSymbol!.fishingSpot);
-      } else {
-        // Ensure we deselect the active fishing spot if it was deleted.
-        _selectFishingSpot(null);
-      }
+      _selectFishingSpot(_activeSymbol!.fishingSpot);
+    } else {
+      // Ensure we deselect the active fishing spot if it was deleted.
+      _selectFishingSpot(null);
     }
   }
 
@@ -759,20 +767,15 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
     });
   }
 
-  void _setupPicker() {
-    if (!_isPicking) {
+  void _setupPickerIfNeeded() {
+    if (!_isPicking || _hasActiveSymbol) {
       return;
     }
 
-    // Select the current fishing spot if it exists in the database.
+    // If the picked spot isn't already selected, it means it doesn't exist,
+    // so drop a pin. Note that _dropPin checks for existing fishing spots that
+    // are close by.
     var selectedValue = _pickerSettings?.controller.value;
-    if (_fishingSpotManager.entityExists(selectedValue?.id)) {
-      _selectFishingSpot(_pickerSettings?.controller.value);
-      return;
-    }
-
-    // If the picked spot doesn't exist, drop a pin. Note that _dropPin
-    // checks for existing fishing spots that are close by.
     if (selectedValue != null) {
       _dropPin(selectedValue.latLng);
       return;

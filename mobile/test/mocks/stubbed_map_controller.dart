@@ -28,7 +28,6 @@ class StubbedMapController {
     });
 
     when(value.addSymbols(any, any)).thenAnswer((invocation) {
-      _symbols.clear();
       var options = invocation.positionalArguments[0];
       for (var i = 0; i < options.length; i++) {
         _symbols.add(
