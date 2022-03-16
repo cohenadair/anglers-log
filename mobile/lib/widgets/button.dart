@@ -321,7 +321,11 @@ class FloatingButton extends StatelessWidget {
     Widget circleChild;
     if (_isBackButton) {
       if (Theme.of(context).platform == TargetPlatform.android) {
-        circleChild = Icon(Icons.arrow_back, size: iconSize);
+        circleChild = Icon(
+          Icons.arrow_back,
+          color: Colors.black,
+          size: iconSize,
+        );
       } else {
         // The iOS back button icon is not centered, so add some padding.
         circleChild = Padding(
