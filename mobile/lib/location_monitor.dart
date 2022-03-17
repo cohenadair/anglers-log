@@ -30,14 +30,20 @@ class LocationMonitor {
     }
 
     _lastKnownPosition = await Geolocator.getLastKnownPosition();
-    var stream = Geolocator.getPositionStream(
+
+    Geolocator.getPositionStream(
       locationSettings: LocationSettings(
         distanceFilter: distanceFilterMeters,
       ),
-    );
-    stream.listen((position) {
+    ).listen((position) {
       _lastKnownPosition = position;
       _log.d("Received location update $currentLocation");
+    }).onError((error, _) {
+      // Don't crash the app if there's a location error. This can happen
+      // occasionally when the app is in the background, and background modes
+      // aren't correctly setup on iOS. Since we don't currently use background
+      // locations, simply log an error.
+      _log.d("Location stream error: $error");
     });
 
     _initialized = true;
