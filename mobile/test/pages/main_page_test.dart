@@ -33,6 +33,8 @@ void main() {
     )).thenReturn([]);
     when(appManager.catchManager.hasEntities).thenReturn(false);
 
+    when(appManager.ioWrapper.isAndroid).thenReturn(false);
+
     when(appManager.reportManager.entityExists(any)).thenReturn(false);
     when(appManager.reportManager.defaultReport).thenReturn(Report());
     when(appManager.reportManager.displayName(any, any)).thenReturn("Test");

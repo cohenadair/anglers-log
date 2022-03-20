@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
 
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
@@ -72,6 +73,8 @@ Trip_CatchesPerEntity newInputItemShim(dynamic pickerItem) =>
     Trip_CatchesPerEntity();
 
 @GenerateMocks([AnglerManager])
+@GenerateMocks([AndroidBuildVersion])
+@GenerateMocks([AndroidDeviceInfo])
 @GenerateMocks([AppManager])
 @GenerateMocks([], customMocks: [MockSpec<map.ArgumentCallbacks>()])
 @GenerateMocks([AtmosphereFetcher])

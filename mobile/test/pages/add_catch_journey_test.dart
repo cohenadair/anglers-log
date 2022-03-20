@@ -52,6 +52,8 @@ void main() {
 
     when(appManager.customEntityManager.entityExists(any)).thenReturn(false);
 
+    when(appManager.ioWrapper.isAndroid).thenReturn(false);
+
     when(appManager.fishingSpotManager.list()).thenReturn([]);
     when(appManager.fishingSpotManager.listSortedByName()).thenReturn([]);
     when(appManager.fishingSpotManager.withinRadius(any, any)).thenReturn(null);

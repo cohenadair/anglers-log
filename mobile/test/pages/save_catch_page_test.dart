@@ -61,6 +61,8 @@ void main() {
     when(appManager.customEntityManager.list()).thenReturn([]);
     when(appManager.customEntityManager.entityExists(any)).thenReturn(false);
 
+    when(appManager.ioWrapper.isAndroid).thenReturn(false);
+
     when(appManager.fishingSpotManager.entityExists(any))
         .thenAnswer((invocation) => invocation.positionalArguments[0] != null);
     when(appManager.fishingSpotManager.displayName(

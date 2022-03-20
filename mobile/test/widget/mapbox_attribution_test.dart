@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/utils/map_utils.dart';
 import 'package:mobile/widgets/mapbox_attribution.dart';
