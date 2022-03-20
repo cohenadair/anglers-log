@@ -1,10 +1,10 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile/subscription_manager.dart';
 import 'package:mobile/user_preference_manager.dart';
+import 'package:mobile/wrappers/device_info_wrapper.dart';
 import 'package:quiver/strings.dart';
 
 import '../i18n/strings.dart';
@@ -63,6 +63,8 @@ class _FeedbackPageState extends State<FeedbackPage> {
   var _isSending = false;
 
   HttpWrapper get _http => HttpWrapper.of(context);
+
+  DeviceInfoWrapper get _deviceInfoWrapper => DeviceInfoWrapper.of(context);
 
   IoWrapper get _io => IoWrapper.of(context);
 
@@ -192,14 +194,13 @@ class _FeedbackPageState extends State<FeedbackPage> {
     String? deviceModel;
     String? deviceId;
 
-    var deviceInfo = DeviceInfoPlugin();
     if (Platform.isIOS) {
-      var info = await deviceInfo.iosInfo;
+      var info = await _deviceInfoWrapper.iosInfo;
       osVersion = "${info.systemName} (${info.systemVersion})";
       deviceModel = info.utsname.machine;
       deviceId = info.identifierForVendor;
     } else if (Platform.isAndroid) {
-      var info = await deviceInfo.androidInfo;
+      var info = await _deviceInfoWrapper.androidInfo;
       osVersion = "Android (${info.version.sdkInt})";
       deviceModel = info.model;
       deviceId = info.androidId;

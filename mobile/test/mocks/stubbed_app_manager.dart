@@ -29,6 +29,7 @@ class StubbedAppManager {
   MockUserPreferenceManager userPreferenceManager = MockUserPreferenceManager();
   MockWaterClarityManager waterClarityManager = MockWaterClarityManager();
 
+  MockDeviceInfoWrapper deviceInfoWrapper = MockDeviceInfoWrapper();
   MockDriveApiWrapper driveApiWrapper = MockDriveApiWrapper();
   MockFilePickerWrapper filePickerWrapper = MockFilePickerWrapper();
   MockGoogleMobileAdsWrapper googleMobileAdsWrapper =
@@ -71,6 +72,7 @@ class StubbedAppManager {
     when(app.tripManager).thenReturn(tripManager);
     when(app.userPreferenceManager).thenReturn(userPreferenceManager);
     when(app.waterClarityManager).thenReturn(waterClarityManager);
+    when(app.deviceInfoWrapper).thenReturn(deviceInfoWrapper);
     when(app.driveApiWrapper).thenReturn(driveApiWrapper);
     when(app.filePickerWrapper).thenReturn(filePickerWrapper);
     when(app.googleMobileAdsWrapper).thenReturn(googleMobileAdsWrapper);
