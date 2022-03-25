@@ -1065,15 +1065,29 @@ class Strings {
 
   String get dataImporterStart => _string("dataImporter_start");
 
+  String get migrationPageMoreTitle => _string("migrationPage_moreTitle");
+
   String get migrationPageTitle => _string("migrationPage_title");
 
+  String get onboardingMigrationPageDescription =>
+      _string("onboardingMigrationPage_description");
+
   String get migrationPageDescription => _string("migrationPage_description");
+
+  String get onboardingMigrationPageError =>
+      _string("onboardingMigrationPage_error");
 
   String get migrationPageError => _string("migrationPage_error");
 
   String get migrationPageLoading => _string("migrationPage_loading");
 
   String get migrationPageSuccess => _string("migrationPage_success");
+
+  String get migrationPageNothingToDoDescription =>
+      _string("migrationPage_nothingToDoDescription");
+
+  String get migrationPageNothingToDoSuccess =>
+      _string("migrationPage_nothingToDoSuccess");
 
   String get migrationPageFeedbackTitle =>
       _string("migrationPage_feedbackTitle");

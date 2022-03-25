@@ -97,7 +97,7 @@ class AdBannerWidgetState extends State<AdBannerWidget> {
           _isLoaded = true;
         }),
         onAdFailedToLoad: (ad, error) {
-          _log.e(StackTrace.current, "Error loading banner: $error");
+          _log.w("Error loading banner: $error");
           ad.dispose();
         },
       ),

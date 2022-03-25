@@ -6,20 +6,21 @@ import '../../res/dimen.dart';
 import '../../widgets/data_importer.dart';
 import 'onboarding_page.dart';
 
-class MigrationPage extends StatefulWidget {
+class OnboardingMigrationPage extends StatefulWidget {
   final LegacyImporter importer;
   final VoidCallback? onNext;
 
-  const MigrationPage({
+  const OnboardingMigrationPage({
     required this.importer,
     this.onNext,
   });
 
   @override
-  _MigrationPageState createState() => _MigrationPageState();
+  _OnboardingMigrationPageState createState() =>
+      _OnboardingMigrationPageState();
 }
 
-class _MigrationPageState extends State<MigrationPage> {
+class _OnboardingMigrationPageState extends State<OnboardingMigrationPage> {
   var _nextEnabled = false;
 
   @override
@@ -34,8 +35,9 @@ class _MigrationPageState extends State<MigrationPage> {
           importer: widget.importer,
           watermarkIcon: Icons.sync,
           titleText: Strings.of(context).migrationPageTitle,
-          descriptionText: Strings.of(context).migrationPageDescription,
-          errorText: Strings.of(context).migrationPageError,
+          descriptionText:
+              Strings.of(context).onboardingMigrationPageDescription,
+          errorText: Strings.of(context).onboardingMigrationPageError,
           loadingText: Strings.of(context).migrationPageLoading,
           successText: Strings.of(context).migrationPageSuccess,
           feedbackPageTitle: Strings.of(context).migrationPageFeedbackTitle,

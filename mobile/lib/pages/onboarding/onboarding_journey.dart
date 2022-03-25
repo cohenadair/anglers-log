@@ -12,7 +12,7 @@ import 'catch_field_picker_page.dart';
 import 'how_to_feedback_page.dart';
 import 'how_to_manage_fields_page.dart';
 import 'location_permission_page.dart';
-import 'migration_page.dart';
+import 'onboarding_migration_page.dart';
 
 class OnboardingJourney extends StatefulWidget {
   final LegacyJsonResult? legacyJsonResult;
@@ -106,7 +106,7 @@ class _OnboardingJourneyState extends State<OnboardingJourney> {
 
   Route _buildMigrationPageRoute(LegacyJsonResult legacyJsonResult) {
     return MaterialPageRoute(
-      builder: (context) => MigrationPage(
+      builder: (context) => OnboardingMigrationPage(
         importer: LegacyImporter.migrate(
             _appManager, legacyJsonResult, widget.onFinishedMigration),
         onNext: () => Navigator.of(context).pushNamed(_routeCatchFields),

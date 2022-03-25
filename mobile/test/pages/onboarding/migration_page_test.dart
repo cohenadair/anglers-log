@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mobile/pages/onboarding/migration_page.dart';
+import 'package:mobile/pages/onboarding/onboarding_migration_page.dart';
 import 'package:mobile/widgets/button.dart';
 import 'package:mockito/mockito.dart';
 
@@ -12,7 +12,7 @@ void main() {
     when(importer.start()).thenAnswer((_) => Future.value());
 
     await tester.pumpWidget(Testable(
-      (_) => MigrationPage(
+      (_) => OnboardingMigrationPage(
         importer: importer,
         onNext: () {},
       ),

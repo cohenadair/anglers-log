@@ -5,7 +5,7 @@ import 'package:mobile/pages/onboarding/catch_field_picker_page.dart';
 import 'package:mobile/pages/onboarding/how_to_feedback_page.dart';
 import 'package:mobile/pages/onboarding/how_to_manage_fields_page.dart';
 import 'package:mobile/pages/onboarding/location_permission_page.dart';
-import 'package:mobile/pages/onboarding/migration_page.dart';
+import 'package:mobile/pages/onboarding/onboarding_migration_page.dart';
 import 'package:mobile/pages/onboarding/onboarding_journey.dart';
 import 'package:mobile/pages/onboarding/onboarding_pro_page.dart';
 import 'package:mobile/widgets/button.dart';
@@ -89,7 +89,7 @@ void main() {
       ),
     );
 
-    expect(find.byType(MigrationPage), findsOneWidget);
+    expect(find.byType(OnboardingMigrationPage), findsOneWidget);
     await tapAndSettle(tester, find.text("START"));
     await tapAndSettle(tester, find.text("NEXT"));
 
@@ -126,7 +126,7 @@ void main() {
 
     await tapAndSettle(tester, find.text("NEXT"));
 
-    expect(find.byType(MigrationPage), findsOneWidget);
+    expect(find.byType(OnboardingMigrationPage), findsOneWidget);
     await tapAndSettle(tester, find.text("START"));
     await tapAndSettle(tester, find.text("NEXT"));
 

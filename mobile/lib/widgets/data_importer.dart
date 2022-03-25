@@ -29,6 +29,7 @@ class DataImporter extends StatefulWidget {
   final String errorText;
   final String successText;
   final String feedbackPageTitle;
+  final AsyncFeedbackState? initialState;
 
   final void Function(bool success)? onFinish;
 
@@ -41,6 +42,7 @@ class DataImporter extends StatefulWidget {
     required this.errorText,
     required this.successText,
     required this.feedbackPageTitle,
+    this.initialState,
     this.onFinish,
   });
 
@@ -49,13 +51,21 @@ class DataImporter extends StatefulWidget {
 }
 
 class _DataImporterState extends State<DataImporter> {
-  var _progressState = AsyncFeedbackState.none;
+  late AsyncFeedbackState _progressState;
+
   String? _importError;
   String? _importErrorDescription;
 
   AppManager get _appManager => AppManager.of(context);
 
   FilePickerWrapper get _filePickerWrapper => _appManager.filePickerWrapper;
+
+
+  @override
+  void initState() {
+    super.initState();
+    _progressState = widget.initialState ?? AsyncFeedbackState.none;
+  }
 
   @override
   Widget build(BuildContext context) {
