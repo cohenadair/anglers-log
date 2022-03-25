@@ -430,19 +430,11 @@ class LegacyImporter {
         var coordinatesMap =
             fishingSpotMap[_keyCoordinates] as Map<String, dynamic>;
 
-        // iOS backed up coordinates as strings, while Android was doubles.
-        double? lat;
-        double? lng;
-        if (coordinatesMap[_keyLongitude] is double) {
-          lng = coordinatesMap[_keyLongitude];
-        } else {
-          lng = double.tryParse(coordinatesMap[_keyLongitude]);
-        }
-        if (coordinatesMap[_keyLatitude] is double) {
-          lat = coordinatesMap[_keyLatitude];
-        } else {
-          lat = double.tryParse(coordinatesMap[_keyLatitude]);
-        }
+        // iOS backed up coordinates as strings, while Android was doubles or
+        // ints. Convert everything to a string and try to parse it to cover
+        // all cases.
+        double? lat = double.tryParse(coordinatesMap[_keyLatitude].toString());
+        double? lng = double.tryParse(coordinatesMap[_keyLongitude].toString());
 
         if (lat == null || lng == null) {
           _log.w("Invalid coordinates: ${coordinatesMap[_keyLongitude]}, "
