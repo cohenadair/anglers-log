@@ -60,7 +60,6 @@ class _DataImporterState extends State<DataImporter> {
 
   FilePickerWrapper get _filePickerWrapper => _appManager.filePickerWrapper;
 
-
   @override
   void initState() {
     super.initState();

@@ -540,8 +540,10 @@ Map<String, Map<String, String>> get englishStrings => {
             "There was an unexpected error while migrating your data to Anglers' Log 2.0. Please send us the error report and we will investigate as soon as possible. Note that none of your old data has been lost. Please revisit this page to retry data migration after the issue has been resolved.",
         "migrationPage_loading": "Migrating data to Anglers' Log 2.0...",
         "migrationPage_success": "Successfully migrated data!",
-        "migrationPage_nothingToDoDescription": "Data migration is the process of converting legacy data from old versions of Anglers' Log into the data format used by new versions.",
-        "migrationPage_nothingToDoSuccess": "You have no legacy data to migrate!",
+        "migrationPage_nothingToDoDescription":
+            "Data migration is the process of converting legacy data from old versions of Anglers' Log into the data format used by new versions.",
+        "migrationPage_nothingToDoSuccess":
+            "You have no legacy data to migrate!",
         "migrationPage_feedbackTitle": "Migration Error",
         "angler_nameLabel": "Angler",
         "analysisDuration_allDates": "All dates",
