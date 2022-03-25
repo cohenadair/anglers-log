@@ -146,6 +146,8 @@ class LegacyImporter {
 
   String get _jsonString => jsonEncode(_json);
 
+  LegacyJsonResult? get legacyJsonResult => _legacyJsonResult;
+
   Future<void> start() async {
     if (_legacyJsonResult == null) {
       await _startArchive();
@@ -156,14 +158,8 @@ class LegacyImporter {
   }
 
   Future<void> _startMigration() async {
-    // If there was an error in the platform channel, end the future
-    // immediately.
-    if (_legacyJsonResult!.errorCode != null) {
-      return Future.error(
-          _legacyJsonResult!.errorCode!,
-          StackTrace.fromString(
-              _legacyJsonResult!.errorDescription ?? "Unknown"));
-    }
+    // Don't allow migration to start if the legacy result has an error.
+    assert(!_legacyJsonResult!.hasError);
 
     _json = _legacyJsonResult!.json ?? {};
 

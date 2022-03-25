@@ -38,6 +38,8 @@ class LegacyJsonResult {
   /// If there's an old database file, there's data to migrate.
   bool get hasLegacyData => isNotEmpty(databasePath);
 
+  bool get hasError => errorCode != null;
+
   @override
   String toString() => "{"
       "databasePath=$databasePath, "

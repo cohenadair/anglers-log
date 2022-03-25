@@ -50,7 +50,7 @@ class DataImporter extends StatefulWidget {
 
 class _DataImporterState extends State<DataImporter> {
   var _progressState = AsyncFeedbackState.none;
-  LegacyImporterError? _importError;
+  String? _importError;
   String? _importErrorDescription;
 
   AppManager get _appManager => AppManager.of(context);
@@ -141,18 +141,30 @@ class _DataImporterState extends State<DataImporter> {
   void _startImport(LegacyImporter importer) {
     _updateImportState(AsyncFeedbackState.loading);
 
+    // Check to see if there's already been an error. If so, show the error and
+    // don't start the importer.
+    var legacyResult = widget.importer?.legacyJsonResult;
+    if (legacyResult != null && legacyResult.hasError) {
+      _handleError(legacyResult.errorCode, legacyResult.errorDescription);
+      return;
+    }
+
     importer.start().then((_) {
       widget.onFinish?.call(true);
       _updateImportState(AsyncFeedbackState.success);
     }).catchError((error, stacktrace) {
-      _importError = error;
-      _importErrorDescription = stacktrace.toString();
-      _updateImportState(AsyncFeedbackState.error);
-      widget.onFinish?.call(false);
+      _handleError(error.toString(), stacktrace.toString());
     }, test: (error) => error is LegacyImporterError);
   }
 
   void _updateImportState(AsyncFeedbackState state) {
     setState(() => _progressState = state);
+  }
+
+  void _handleError(dynamic error, dynamic stacktrace) {
+    _importError = error?.toString() ?? "Unknown error";
+    _importErrorDescription = stacktrace?.toString() ?? "Unknown stacktrace";
+    _updateImportState(AsyncFeedbackState.error);
+    widget.onFinish?.call(false);
   }
 }
