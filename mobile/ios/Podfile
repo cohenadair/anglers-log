@@ -31,6 +31,8 @@ flutter_ios_podfile_setup
 
 target 'Runner' do
   flutter_install_all_ios_pods File.dirname(File.realpath(__FILE__))
+  # Required until https://github.com/zhangao0086/DKImagePickerController has made a new release.
+  pod 'DKImagePickerController/PhotoGallery', :git => 'https://github.com/miguelpruivo/DKImagePickerController.git'
 end
 
 post_install do |installer|
