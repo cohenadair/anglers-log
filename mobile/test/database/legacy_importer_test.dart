@@ -841,15 +841,17 @@ void main() {
   });
 
   group("Migration", () {
-    test("Error from platform channel", () async {
+    test("Error from platform channel throws assertion", () async {
       var importer = LegacyImporter.migrate(
-          appManager.app,
-          LegacyJsonResult(
-            errorCode: LegacyJsonErrorCode.missingData,
-          ));
+        appManager.app,
+        LegacyJsonResult(
+          errorCode: LegacyJsonErrorCode.missingData,
+        ),
+      );
+
       await importer.start().catchError(expectAsync1((dynamic error) {
         expect(error, isNotNull);
-        expect(error, equals(LegacyJsonErrorCode.missingData));
+        expect(error is AssertionError, isTrue);
       }));
     });
 

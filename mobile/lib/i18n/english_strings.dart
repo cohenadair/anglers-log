@@ -533,7 +533,7 @@ Map<String, Map<String, String>> get englishStrings => {
         "onboardingMigrationPage_description":
             "This is your first time opening Anglers' Log since updating to 2.0. Click the button below to start the data migration process.",
         "migrationPage_description":
-            "You have legacy data that needs to be migrated Anglers' Log 2.0. Click the button below to start the data migration process.",
+            "You have legacy data that needs to be migrated to Anglers' Log 2.0. Click the button below to begin.",
         "onboardingMigrationPage_error":
             "There was an unexpected error while migrating your data to Anglers' Log 2.0. Please send us the error report and we will investigate as soon as possible. Note that none of your data has been lost. Please visit the Settings page to retry data migration after the issue has been resolved.",
         "migrationPage_error":
