@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mobile/channels/migration_channel.dart';
 import 'package:mobile/database/legacy_importer.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
 import 'package:mobile/pages/feedback_page.dart';
@@ -145,8 +146,26 @@ void main() {
         findFirstWithText<Button>(tester, "CHOOSE FILE").onPressed, isNotNull);
   });
 
+  testWidgets("Show legacy json result error immediately", (tester) async {
+    var importer = MockLegacyImporter();
+    when(importer.legacyJsonResult).thenReturn(LegacyJsonResult(
+      errorCode: LegacyJsonErrorCode.invalidJson,
+      errorDescription: "E",
+    ));
+
+    await tester.pumpWidget(Testable(
+      (_) => defaultImporter(importer: importer),
+      appManager: appManager,
+    ));
+    await tapAndSettle(tester, find.text("START"));
+
+    expect(find.text("Error"), findsOneWidget);
+    verifyNever(importer.start());
+  });
+
   testWidgets("Start button starts migration", (tester) async {
     var importer = MockLegacyImporter();
+    when(importer.legacyJsonResult).thenReturn(LegacyJsonResult());
     when(importer.start())
         .thenAnswer((_) => Future.delayed(const Duration(milliseconds: 50)));
 
@@ -172,6 +191,7 @@ void main() {
 
   testWidgets("Start button disabled when migration finishes", (tester) async {
     var importer = MockLegacyImporter();
+    when(importer.legacyJsonResult).thenReturn(LegacyJsonResult());
     when(importer.start()).thenAnswer((_) => Future.value());
 
     await tester.pumpWidget(Testable(
@@ -284,6 +304,7 @@ void main() {
 
   testWidgets("onFinish called when import is successful", (tester) async {
     var importer = MockLegacyImporter();
+    when(importer.legacyJsonResult).thenReturn(LegacyJsonResult());
     when(importer.start()).thenAnswer((_) => Future.value());
 
     var called = false;
@@ -306,6 +327,7 @@ void main() {
 
   testWidgets("onFinish called when import is unsuccessful", (tester) async {
     var importer = MockLegacyImporter();
+    when(importer.legacyJsonResult).thenReturn(LegacyJsonResult());
     when(importer.start()).thenAnswer((_) =>
         Future.error(LegacyImporterError.missingJournal, StackTrace.empty));
 

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/pages/import_page.dart';
+import 'package:mobile/pages/migration_page.dart';
 
 import '../i18n/strings.dart';
 import '../res/gen/custom_icons.dart';
@@ -31,6 +32,7 @@ class _SettingsPageState extends State<SettingsPage> {
           _buildFetchAtmosphere(context),
           _buildUnits(context),
           _buildLegacyImport(context),
+          _buildLegacyMigration(context),
           const MinDivider(),
           _buildAbout(),
         ],
@@ -63,6 +65,14 @@ class _SettingsPageState extends State<SettingsPage> {
       leading: const Icon(Icons.cloud_download),
       title: Text(Strings.of(context).importPageMoreTitle),
       onTap: () => present(context, ImportPage()),
+    );
+  }
+
+  Widget _buildLegacyMigration(BuildContext context) {
+    return ListItem(
+      leading: const Icon(Icons.sync),
+      title: Text(Strings.of(context).migrationPageMoreTitle),
+      onTap: () => present(context, MigrationPage()),
     );
   }
 

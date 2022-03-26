@@ -48,29 +48,16 @@
 
 #pragma mark - Writing
 
-- (NSString *)escapeQuotesInString:(NSString *)aString {
-    NSMutableString *str = [aString mutableCopy];
-    NSMutableArray *quotePositions = [NSMutableArray array];
+- (NSString *)escapeString:(NSString *)aString {
+    NSData *json = [NSJSONSerialization dataWithJSONObject:@[aString] options:0 error:nil];
+    NSString *jsonString = [[NSString alloc] initWithData:json encoding:NSUTF8StringEncoding];
     
-    // check for the " character
-    for (int i = 0; i < str.length; i++)
-        if ([str characterAtIndex:i] == '"')
-            [quotePositions addObject:[NSNumber numberWithInt:i]];
-    
-    // insert a \ where necessary
-    for (int i = 0; i < [quotePositions count]; i++)
-        [str insertString:@"\\" atIndex:[[quotePositions objectAtIndex:i] integerValue] + i];
-    
-    return str;
+    // Remove [] and "" from the beginning and end of encoded string.
+    return [[jsonString substringToIndex:[jsonString length] - 2] substringFromIndex:2];
 }
 
 // does not add new line; adds tabs
 - (void)writeString:(NSString *)aString {
-    NSMutableString *tabs = [NSMutableString string];
-    for (int i = 0; i < self.currentTab; i++)
-        [tabs appendString:@"\t"];
-    
-    aString = [tabs stringByAppendingString:aString];
     [self.outString appendString:aString];
 }
 
@@ -80,7 +67,7 @@
     if (aString == nil)
         aString = @"";
     else
-        aString = [self escapeQuotesInString:aString];
+        aString = [self escapeString:aString];
     
     [self writeString:[NSString stringWithFormat:@"\"%@\": \"%@\"", aKey, aString]];
     if (comma)
@@ -110,14 +97,14 @@
 - (void)writeKeyValueData:(NSString *)aKey andData:(NSData *)data andComma:(BOOL)comma {
     NSString *valueString = @"";
     if (data != nil) {
-        valueString = [data base64EncodedStringWithOptions:NSDataBase64EncodingEndLineWithCarriageReturn];
+        valueString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
     }
     [self writeKeyValueString:aKey andString:valueString andComma:comma];
 }
 
 // adds new line
 - (void)writeKey:(NSString *)aKey withOpenToken:(NSString *)anOpenToken {
-    [self writeString:[NSString stringWithFormat:@"\"%@\": %@\n", aKey, anOpenToken]];
+    [self writeString:[NSString stringWithFormat:@"\"%@\": %@", aKey, anOpenToken]];
     [self tabIn];
 }
 
@@ -163,7 +150,7 @@
 
 // adds new line
 - (void)writeOpen {
-    [self writeString:@"{\n"];
+    [self writeString:@"{"];
     [self tabIn];
 }
 
@@ -174,7 +161,6 @@
 
 // does not add tabs
 - (void)writeNewLine {
-    [self.outString appendString:@"\n"];
 }
 
 - (void)tabIn {

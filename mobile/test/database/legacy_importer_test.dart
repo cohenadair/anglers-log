@@ -14,6 +14,7 @@ import 'package:mobile/method_manager.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
 import 'package:mobile/species_manager.dart';
 import 'package:mobile/trip_manager.dart';
+import 'package:mobile/utils/number_utils.dart';
 import 'package:mobile/water_clarity_manager.dart';
 import 'package:mockito/mockito.dart';
 import 'package:path/path.dart' as path;
@@ -743,6 +744,17 @@ void main() {
     expect(clarities.last.name, "Tea Stained");
   });
 
+  test("Import Android Rick (0 lat/lng values)", () async {
+    var file = File("test/resources/backups/rick.zip");
+    await LegacyImporter(appManager.app, file).start();
+
+    var fishingSpots = fishingSpotManager.list();
+    expect(fishingSpots.where((spot) => spot.lat == 0), isNotEmpty);
+    expect(fishingSpots.where((spot) => spot.lng == 0), isNotEmpty);
+    expect(fishingSpots.where((spot) => !spot.lat.isWhole), isNotEmpty);
+    expect(fishingSpots.where((spot) => !spot.lng.isWhole), isNotEmpty);
+  });
+
   testWidgets("Import Android favorite catches", (tester) async {
     var file = File("test/resources/backups/legacy_android_real.zip");
     await LegacyImporter(appManager.app, file).start();
@@ -829,15 +841,17 @@ void main() {
   });
 
   group("Migration", () {
-    test("Error from platform channel", () async {
+    test("Error from platform channel throws assertion", () async {
       var importer = LegacyImporter.migrate(
-          appManager.app,
-          LegacyJsonResult(
-            errorCode: LegacyJsonErrorCode.missingData,
-          ));
+        appManager.app,
+        LegacyJsonResult(
+          errorCode: LegacyJsonErrorCode.missingData,
+        ),
+      );
+
       await importer.start().catchError(expectAsync1((dynamic error) {
         expect(error, isNotNull);
-        expect(error, equals(LegacyJsonErrorCode.missingData));
+        expect(error is AssertionError, isTrue);
       }));
     });
 

@@ -146,6 +146,8 @@ class LegacyImporter {
 
   String get _jsonString => jsonEncode(_json);
 
+  LegacyJsonResult? get legacyJsonResult => _legacyJsonResult;
+
   Future<void> start() async {
     if (_legacyJsonResult == null) {
       await _startArchive();
@@ -156,14 +158,8 @@ class LegacyImporter {
   }
 
   Future<void> _startMigration() async {
-    // If there was an error in the platform channel, end the future
-    // immediately.
-    if (_legacyJsonResult!.errorCode != null) {
-      return Future.error(
-          _legacyJsonResult!.errorCode!,
-          StackTrace.fromString(
-              _legacyJsonResult!.errorDescription ?? "Unknown"));
-    }
+    // Don't allow migration to start if the legacy result has an error.
+    assert(!_legacyJsonResult!.hasError);
 
     _json = _legacyJsonResult!.json ?? {};
 
@@ -434,19 +430,11 @@ class LegacyImporter {
         var coordinatesMap =
             fishingSpotMap[_keyCoordinates] as Map<String, dynamic>;
 
-        // iOS backed up coordinates as strings, while Android was doubles.
-        double? lat;
-        double? lng;
-        if (coordinatesMap[_keyLongitude] is double) {
-          lng = coordinatesMap[_keyLongitude];
-        } else {
-          lng = double.tryParse(coordinatesMap[_keyLongitude]);
-        }
-        if (coordinatesMap[_keyLatitude] is double) {
-          lat = coordinatesMap[_keyLatitude];
-        } else {
-          lat = double.tryParse(coordinatesMap[_keyLatitude]);
-        }
+        // iOS backed up coordinates as strings, while Android was doubles or
+        // ints. Convert everything to a string and try to parse it to cover
+        // all cases.
+        double? lat = double.tryParse(coordinatesMap[_keyLatitude].toString());
+        double? lng = double.tryParse(coordinatesMap[_keyLongitude].toString());
 
         if (lat == null || lng == null) {
           _log.w("Invalid coordinates: ${coordinatesMap[_keyLongitude]}, "
