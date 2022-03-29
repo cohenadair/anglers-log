@@ -191,6 +191,9 @@ Future<void> showPresentedWidget(WidgetTester tester,
 
 T findFirst<T>(WidgetTester tester) => tester.firstWidget(find.byType(T)) as T;
 
+T findLast<T>(WidgetTester tester) =>
+    tester.widgetList(find.byType(T)).last as T;
+
 /// Different from [Finder.widgetWithText] in that it works for widgets with
 /// generic arguments.
 T findFirstWithText<T>(WidgetTester tester, String text) =>

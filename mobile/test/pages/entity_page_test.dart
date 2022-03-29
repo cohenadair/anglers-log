@@ -79,11 +79,12 @@ void main() {
           Colors.white.withOpacity(0.5));
       expect(((carouselDots[3] as Container).decoration as BoxDecoration).color,
           Colors.white.withOpacity(0.5));
-      expect(find.byType(Photo), findsOneWidget);
+      expect(find.byType(Photo), findsNWidgets(2));
       expect(findFirst<Photo>(tester).fileName, "flutter_logo.png");
+      expect(findLast<Photo>(tester).fileName, "flutter_logo.png");
 
       // Swipe to the next image.
-      await tester.fling(find.byType(Photo), const Offset(-300, 0), 800);
+      await tester.fling(find.byType(Photo).first, const Offset(-300, 0), 800);
       await tester.pumpAndSettle(const Duration(milliseconds: 250));
       await tester.pumpAndSettle();
 

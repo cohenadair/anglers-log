@@ -18,13 +18,13 @@ import 'package:mobile/utils/collection_utils.dart';
 import 'package:mobile/utils/date_time_utils.dart';
 import 'package:mobile/utils/page_utils.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
-import 'package:mobile/widgets/photo.dart';
 import 'package:mobile/widgets/text.dart';
 import 'package:mobile/widgets/widget.dart';
 import 'package:quiver/strings.dart';
 
 import '../entity_manager.dart';
 import '../time_manager.dart';
+import 'blurred_background_photo.dart';
 import 'date_range_picker_input.dart';
 import 'empty_list_placeholder.dart';
 import 'list_item.dart';
@@ -374,14 +374,11 @@ class _PersonalBest extends StatelessWidget {
       return const Empty();
     }
 
-    return Container(
-      padding: insetsHorizontalDefaultTopDefault,
-      width: double.infinity,
+    return BlurredBackgroundPhoto(
+      imageName: imageName!,
       height: _imageHeight,
-      child: ClipRRect(
-        child: Photo(fileName: imageName),
-        borderRadius: defaultBorderRadius,
-      ),
+      padding: insetsHorizontalDefaultTopDefault,
+      borderRadius: defaultBorderRadius,
     );
   }
 

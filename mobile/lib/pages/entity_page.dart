@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/utils/share_utils.dart';
+import 'package:mobile/widgets/blurred_background_photo.dart';
 import 'package:quiver/strings.dart';
 
 import '../i18n/strings.dart';
@@ -8,7 +9,6 @@ import '../res/dimen.dart';
 import '../utils/dialog_utils.dart';
 import '../widgets/button.dart';
 import '../widgets/custom_entity_values.dart';
-import '../widgets/photo.dart';
 import '../widgets/widget.dart';
 
 /// A page for displaying details of an [Entity]. This page includes a delete
@@ -176,10 +176,8 @@ class _EntityPageState extends State<EntityPage> {
           children: [
             ...imageNames
                 .map(
-                  (fileName) => Photo(
-                    fileName: fileName,
-                    width: MediaQuery.of(context).size.width,
-                    // Top padding adds status bar/safe area padding.
+                  (fileName) => BlurredBackgroundPhoto(
+                    imageName: fileName,
                     height: MediaQuery.of(context).padding.top + _imageHeight,
                     galleryImages: imageNames,
                   ),
