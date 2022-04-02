@@ -510,15 +510,17 @@ class LegacyImporter {
     for (var item in catches) {
       var map = item as Map<String, dynamic>;
 
+      // DateFormat requires AM/PM, am/pm throws an exception.
+      var dateString = (map[_keyDate] as String).toUpperCase();
+
       // iOS and Android backed up dates differently.
-      String dateString = map[_keyDate];
       String dateFormat;
       if (dateString.contains(".")) {
         dateFormat = "M-d-y_h-m_a_s.S";
       } else {
         dateFormat = "M-d-y_h-m_a";
       }
-      var dateTime = DateFormat(dateFormat).parse(map[_keyDate]);
+      var dateTime = DateFormat(dateFormat).parse(dateString);
 
       var bait = _baitManager.named(map[_keyBaitUsed]);
       if (bait == null && isNotEmpty(map[_keyBaitUsed])) {

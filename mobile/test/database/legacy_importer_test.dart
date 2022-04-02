@@ -493,6 +493,20 @@ void main() {
     expect(methodManager.entityCount, 2);
   });
 
+  testWidgets("Import iOS catches with lowercase 'AM' time", (tester) async {
+    var file = File("test/resources/backups/legacy_ios_lowercase_am.zip");
+    await LegacyImporter(appManager.app, file).start();
+
+    var context = await buildContext(tester);
+    var catches = catchManager.catches(context);
+
+    expect(catches, isNotNull);
+    expect(catches.length, 1);
+
+    expect(catches[0].timestamp.toInt(),
+        DateTime(2021, 10, 2, 6, 10).millisecondsSinceEpoch);
+  });
+
   test("Import iOS locations", () async {
     var file = File("test/resources/backups/legacy_ios_entities.zip");
     await LegacyImporter(appManager.app, file).start();
