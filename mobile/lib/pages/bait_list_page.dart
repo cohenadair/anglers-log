@@ -369,6 +369,6 @@ class _BaitListPageModel extends SectionedListModel<BaitCategory, Bait> {
   Id get noSectionHeaderId => _noCategoryId;
 
   @override
-  List<BaitCategory> get sectionHeaders =>
-      baitCategoryManager.listSortedByName();
+  List<BaitCategory> sectionHeaders(BuildContext context) =>
+      baitCategoryManager.listSortedByDisplayName(context);
 }

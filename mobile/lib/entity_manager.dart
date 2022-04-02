@@ -51,6 +51,15 @@ abstract class EntityManager<T extends GeneratedMessage> {
   /// Returns a value for [T] to be displayed to the user.
   String displayName(BuildContext context, T entity);
 
+  /// Returns a [String] value of the entity with [id] to be displayed to
+  /// the user, or null, if no such entity exists.
+  String? displayNameFromId(BuildContext context, Id? id) {
+    if (!entityExists(id)) {
+      return null;
+    }
+    return displayName(context, entity(id)!);
+  }
+
   bool matchesFilter(Id id, String? filter);
 
   /// Parses a Protobuf byte representation of T.

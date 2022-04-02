@@ -32,7 +32,7 @@ void main() {
     appManager = StubbedAppManager();
 
     when(appManager.bodyOfWaterManager
-            .listSortedByName(filter: anyNamed("filter")))
+            .listSortedByDisplayName(any, filter: anyNamed("filter")))
         .thenReturn([]);
 
     when(appManager.fishingSpotManager.filteredList(any))

@@ -202,7 +202,7 @@ void main() {
     when(appManager.baitManager.entity(any))
         .thenAnswer((invocation) => baitMap[invocation.positionalArguments[0]]);
     when(appManager.baitManager.entityExists(any)).thenReturn(true);
-    when(appManager.baitManager.nameComparator)
+    when(appManager.baitManager.displayNameComparator(any))
         .thenReturn((lhs, rhs) => quiver.compareIgnoreCase(lhs.name, rhs.name));
     when(appManager.baitManager.attachmentComparator)
         .thenReturn((lhs, rhs) => 0);
@@ -234,9 +234,9 @@ void main() {
     when(appManager.catchManager.hasEntities).thenReturn(false);
 
     when(appManager.reportManager.list()).thenReturn([]);
-    when(appManager.reportManager.listSortedByName()).thenReturn([]);
+    when(appManager.reportManager.listSortedByDisplayName(any)).thenReturn([]);
     when(appManager.reportManager.entityExists(any)).thenReturn(false);
-    when(appManager.reportManager.nameComparator)
+    when(appManager.reportManager.displayNameComparator(any))
         .thenReturn((lhs, rhs) => quiver.compareIgnoreCase(lhs.name, rhs.name));
     when(appManager.reportManager.defaultReports).thenReturn([
       Report(id: reportIdPersonalBests),
@@ -261,7 +261,7 @@ void main() {
         .thenReturn(fishingSpotMap.values.toList());
     when(appManager.fishingSpotManager.entity(any)).thenAnswer(
         (invocation) => fishingSpotMap[invocation.positionalArguments[0]]);
-    when(appManager.fishingSpotManager.nameComparator)
+    when(appManager.fishingSpotManager.displayNameComparator(any))
         .thenReturn((lhs, rhs) => quiver.compareIgnoreCase(lhs.name, rhs.name));
     when(appManager.fishingSpotManager.displayName(any, any))
         .thenAnswer((invocation) => invocation.positionalArguments[1].name);
@@ -272,13 +272,14 @@ void main() {
         .thenAnswer((invocation) => invocation.positionalArguments.first.name);
     when(appManager.speciesManager.list())
         .thenReturn(speciesMap.values.toList());
-    when(appManager.speciesManager.listSortedByName(filter: anyNamed("filter")))
+    when(appManager.speciesManager
+            .listSortedByDisplayName(any, filter: anyNamed("filter")))
         .thenReturn(speciesMap.values.toList());
     when(appManager.speciesManager.entity(any)).thenAnswer(
         (invocation) => speciesMap[invocation.positionalArguments[0]]);
     when(appManager.speciesManager.entityExists(any)).thenAnswer(
         (invocation) => speciesMap[invocation.positionalArguments[0]] != null);
-    when(appManager.speciesManager.nameComparator)
+    when(appManager.speciesManager.displayNameComparator(any))
         .thenReturn((lhs, rhs) => quiver.compareIgnoreCase(lhs.name, rhs.name));
     when(appManager.speciesManager.displayName(any, any))
         .thenAnswer((invocation) => invocation.positionalArguments[1].name);
@@ -379,7 +380,8 @@ void main() {
 
   void stubSingleReport(Report report) {
     when(appManager.reportManager.list()).thenReturn([report]);
-    when(appManager.reportManager.listSortedByName()).thenReturn([report]);
+    when(appManager.reportManager.listSortedByDisplayName(any))
+        .thenReturn([report]);
     when(appManager.reportManager.entityExists(report.id)).thenReturn(true);
     when(appManager.reportManager.entity(report.id)).thenReturn(report);
   }

@@ -42,24 +42,36 @@ class FishingSpotManager extends ImageEntityManager<FishingSpot> {
     bool includeLatLngLabels = true,
     bool includeBodyOfWater = false,
   }) {
-    var name = entity.name;
-    if (isEmpty(name) && useLatLngFallback) {
-      name = formatLatLng(
-        context: context,
-        lat: entity.lat,
-        lng: entity.lng,
-        includeLabels: includeLatLngLabels,
-      );
+    var spotName = name(entity);
+    var bodyOfWaterName =
+        _bodyOfWaterManager.displayNameFromId(context, entity.bodyOfWaterId);
+
+    // Name and body of water are both set, body of water is included
+    if (isNotEmpty(spotName) &&
+        isNotEmpty(bodyOfWaterName) &&
+        includeBodyOfWater) {
+      return "$spotName ($bodyOfWaterName)";
     }
 
-    var bodyOfWaterName = "";
-    var bodyOfWater = _bodyOfWaterManager.entity(entity.bodyOfWaterId);
-    if (includeBodyOfWater && bodyOfWater != null) {
-      bodyOfWaterName =
-          isEmpty(name) ? bodyOfWater.name : " (${bodyOfWater.name})";
+    String? result = spotName;
+    if (isEmpty(result) && includeBodyOfWater) {
+      result = bodyOfWaterName;
     }
 
-    return "$name$bodyOfWaterName";
+    var latLng = formatLatLng(
+      context: context,
+      lat: entity.lat,
+      lng: entity.lng,
+      includeLabels: includeLatLngLabels,
+    );
+
+    // Neither name nor body of water is set, use coordinates.
+    if (isEmpty(result) && useLatLngFallback) {
+      return latLng;
+    }
+
+    // Either name or body of water is set, not both.
+    return result ?? "";
   }
 
   @override
@@ -85,14 +97,16 @@ class FishingSpotManager extends ImageEntityManager<FishingSpot> {
   }
 
   @override
-  List<FishingSpot> listSortedByName({
+  List<FishingSpot> listSortedByDisplayName(
+    BuildContext context, {
     String? filter,
     Iterable<Id> ids = const [],
   }) {
     var namedSpots = <FishingSpot>[];
     var otherSpots = <FishingSpot>[];
 
-    for (var fishingSpot in super.listSortedByName(filter: filter, ids: ids)) {
+    for (var fishingSpot
+        in super.listSortedByDisplayName(context, filter: filter, ids: ids)) {
       if (isEmpty(fishingSpot.name)) {
         otherSpots.add(fishingSpot);
       } else {

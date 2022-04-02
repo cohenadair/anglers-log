@@ -22,7 +22,7 @@ void main() {
   setUp(() {
     appManager = StubbedAppManager();
 
-    when(appManager.speciesManager.listSortedByName()).thenReturn([
+    when(appManager.speciesManager.listSortedByDisplayName(any)).thenReturn([
       Species(id: randomId(), name: "Trout"),
       Species(id: randomId(), name: "Catfish"),
       Species(id: randomId(), name: "Bass"),

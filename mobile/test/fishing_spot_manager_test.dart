@@ -34,47 +34,6 @@ void main() {
     fishingSpotManager = FishingSpotManager(appManager.app);
   });
 
-  testWidgets("displayName with name", (tester) async {
-    expect(
-      fishingSpotManager.displayName(
-        await buildContext(tester),
-        FishingSpot()
-          ..id = randomId()
-          ..name = "Test Name"
-          ..lat = 0.0
-          ..lng = 0.0,
-      ),
-      "Test Name",
-    );
-  });
-
-  testWidgets("displayName without name", (tester) async {
-    expect(
-      fishingSpotManager.displayName(
-        await buildContext(tester),
-        FishingSpot()
-          ..id = randomId()
-          ..lat = 0.0
-          ..lng = 0.0,
-      ),
-      "Lat: 0.000000, Lng: 0.000000",
-    );
-  });
-
-  testWidgets("displayName without labels", (tester) async {
-    expect(
-      fishingSpotManager.displayName(
-        await buildContext(tester),
-        FishingSpot()
-          ..id = randomId()
-          ..lat = 0.0
-          ..lng = 0.0,
-        includeLatLngLabels: false,
-      ),
-      "0.000000, 0.000000",
-    );
-  });
-
   test("Fishing spot within radius", () async {
     // Null cases.
     var fishingSpot = fishingSpotManager.withinRadius(const LatLng(0, 0), 20);
@@ -194,7 +153,10 @@ void main() {
     expect(fishingSpotManager.numberOfCatches(fishingSpotId4), 1);
   });
 
-  test("listSortedByName includes names first", () async {
+  testWidgets("listSortedByName includes names first", (tester) async {
+    when(appManager.bodyOfWaterManager.displayNameFromId(any, any))
+        .thenReturn(null);
+
     await fishingSpotManager.addOrUpdate(
       FishingSpot()
         ..id = randomId()
@@ -216,7 +178,8 @@ void main() {
         ..lng = -80.240337,
     );
 
-    var sortedSpots = fishingSpotManager.listSortedByName();
+    var context = await buildContext(tester);
+    var sortedSpots = fishingSpotManager.listSortedByDisplayName(context);
     expect(sortedSpots[0].name, "Balloon");
     expect(sortedSpots[1].name, "Zebra");
     expect(sortedSpots[2].hasName(), isFalse);
@@ -402,132 +365,92 @@ void main() {
     );
   });
 
-  testWidgets("displayName empty name", (tester) async {
-    when(appManager.bodyOfWaterManager.entity(any)).thenReturn(null);
-    var context = await buildContext(tester);
-
-    expect(
-      fishingSpotManager.displayName(
-        context,
-        FishingSpot(
-          id: randomId(),
-          lat: 2,
-          lng: 3,
-        ),
+  testWidgets("displayName with spot, body of water; includeBodyOfWater = true",
+      (tester) async {
+    when(appManager.bodyOfWaterManager.displayNameFromId(any, any))
+        .thenReturn("Lake Huron");
+    var context = await buildContext(tester, appManager: appManager);
+    var displayName = fishingSpotManager.displayName(
+      context,
+      FishingSpot(
+        name: "River Mouth",
+        bodyOfWaterId: randomId(),
       ),
-      "Lat: 2.000000, Lng: 3.000000",
+      includeBodyOfWater: true,
     );
-  });
-
-  testWidgets("displayName with name; no body of water", (tester) async {
-    when(appManager.bodyOfWaterManager.entity(any)).thenReturn(null);
-    var context = await buildContext(tester);
-
-    expect(
-      fishingSpotManager.displayName(
-        context,
-        FishingSpot(
-          id: randomId(),
-          name: "Test 1",
-          lat: 2,
-          lng: 3,
-        ),
-      ),
-      "Test 1",
-    );
+    expect(displayName, "River Mouth (Lake Huron)");
   });
 
   testWidgets(
-      "displayName with name and body of water, includeBodyOfWater=false",
+      "displayName with spot, body of water; includeBodyOfWater = false",
       (tester) async {
-    when(appManager.bodyOfWaterManager.entity(any)).thenReturn(BodyOfWater(
-      id: randomId(),
-      name: "BOW 1",
-    ));
-    var context = await buildContext(tester);
-
-    expect(
-      fishingSpotManager.displayName(
-        context,
-        FishingSpot(
-          id: randomId(),
-          name: "Test 1",
-          lat: 2,
-          lng: 3,
-        ),
-        includeBodyOfWater: false,
+    when(appManager.bodyOfWaterManager.displayNameFromId(any, any))
+        .thenReturn("Lake Huron");
+    var context = await buildContext(tester, appManager: appManager);
+    var displayName = fishingSpotManager.displayName(
+      context,
+      FishingSpot(
+        name: "River Mouth",
+        bodyOfWaterId: randomId(),
       ),
-      "Test 1",
+      includeBodyOfWater: false,
     );
+    expect(displayName, "River Mouth");
   });
 
   testWidgets(
-      "displayName with name and body of water, includeBodyOfWater=true",
+      "displayName with empty spot, non-empty body of water; includeBodyOfWater = true",
       (tester) async {
-    when(appManager.bodyOfWaterManager.entity(any)).thenReturn(BodyOfWater(
-      id: randomId(),
-      name: "BOW 1",
-    ));
-    var context = await buildContext(tester);
-
-    expect(
-      fishingSpotManager.displayName(
-        context,
-        FishingSpot(
-          id: randomId(),
-          name: "Test 1",
-          lat: 2,
-          lng: 3,
-        ),
-        includeBodyOfWater: true,
+    when(appManager.bodyOfWaterManager.displayNameFromId(any, any))
+        .thenReturn("Lake Huron");
+    var context = await buildContext(tester, appManager: appManager);
+    var displayName = fishingSpotManager.displayName(
+      context,
+      FishingSpot(
+        bodyOfWaterId: randomId(),
+        lat: 1,
+        lng: 2,
       ),
-      "Test 1 (BOW 1)",
+      includeBodyOfWater: true,
     );
+    expect(displayName, "Lake Huron");
   });
 
   testWidgets(
-      "displayName with no name and body of water, includeBodyOfWater=true",
+      "displayName with empty spot, non-empty body of water; includeBodyOfWater = false",
       (tester) async {
-    when(appManager.bodyOfWaterManager.entity(any)).thenReturn(BodyOfWater(
-      id: randomId(),
-      name: "BOW 1",
-    ));
-    var context = await buildContext(tester);
-
-    expect(
-      fishingSpotManager.displayName(
-        context,
-        FishingSpot(
-          id: randomId(),
-          lat: 2,
-          lng: 3,
-        ),
-        includeBodyOfWater: true,
+    when(appManager.bodyOfWaterManager.displayNameFromId(any, any))
+        .thenReturn("Lake Huron");
+    var context = await buildContext(tester, appManager: appManager);
+    var displayName = fishingSpotManager.displayName(
+      context,
+      FishingSpot(
+        bodyOfWaterId: randomId(),
+        lat: 1,
+        lng: 2,
       ),
-      "Lat: 2.000000, Lng: 3.000000 (BOW 1)",
+      includeBodyOfWater: false,
+      useLatLngFallback: true,
     );
+    expect(displayName, "Lat: 1.000000, Lng: 2.000000");
   });
 
-  testWidgets("displayName with only body of water", (tester) async {
-    when(appManager.bodyOfWaterManager.entity(any)).thenReturn(BodyOfWater(
-      id: randomId(),
-      name: "BOW 1",
-    ));
-    var context = await buildContext(tester);
-
-    expect(
-      fishingSpotManager.displayName(
-        context,
-        FishingSpot(
-          id: randomId(),
-          lat: 2,
-          lng: 3,
-        ),
-        includeBodyOfWater: true,
-        useLatLngFallback: false,
+  testWidgets("displayName coordinates only; useLatLngFallback = false",
+      (tester) async {
+    when(appManager.bodyOfWaterManager.displayNameFromId(any, any))
+        .thenReturn("Lake Huron");
+    var context = await buildContext(tester, appManager: appManager);
+    var displayName = fishingSpotManager.displayName(
+      context,
+      FishingSpot(
+        bodyOfWaterId: randomId(),
+        lat: 1,
+        lng: 2,
       ),
-      "BOW 1",
+      includeBodyOfWater: false,
+      useLatLngFallback: false,
     );
+    expect(displayName, isEmpty);
   });
 
   test("namedWithBodyOfWater", () async {

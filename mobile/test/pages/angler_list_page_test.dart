@@ -24,7 +24,8 @@ void main() {
   setUp(() {
     appManager = StubbedAppManager();
 
-    when(appManager.anglerManager.listSortedByName(
+    when(appManager.anglerManager.listSortedByDisplayName(
+      any,
       filter: anyNamed("filter"),
     )).thenReturn(anglers);
   });
@@ -57,7 +58,8 @@ void main() {
     ));
     expect(find.text("Anglers (2)"), findsOneWidget);
 
-    when(appManager.anglerManager.listSortedByName(
+    when(appManager.anglerManager.listSortedByDisplayName(
+      any,
       filter: anyNamed("filter"),
     )).thenReturn([anglers[0]]);
 

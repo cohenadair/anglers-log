@@ -209,5 +209,6 @@ class _FishingSpotListPageModel
   Id get noSectionHeaderId => _noBodyOfWaterId;
 
   @override
-  List<BodyOfWater> get sectionHeaders => bodyOfWaterManager.listSortedByName();
+  List<BodyOfWater> sectionHeaders(BuildContext context) =>
+      bodyOfWaterManager.listSortedByDisplayName(context);
 }

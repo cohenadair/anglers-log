@@ -24,7 +24,8 @@ void main() {
   setUp(() {
     appManager = StubbedAppManager();
 
-    when(appManager.baitCategoryManager.listSortedByName(
+    when(appManager.baitCategoryManager.listSortedByDisplayName(
+      any,
       filter: anyNamed("filter"),
     )).thenReturn(baitCategories);
   });
@@ -57,7 +58,8 @@ void main() {
     ));
     expect(find.text("Bait Categories (2)"), findsOneWidget);
 
-    when(appManager.baitCategoryManager.listSortedByName(
+    when(appManager.baitCategoryManager.listSortedByDisplayName(
+      any,
       filter: anyNamed("filter"),
     )).thenReturn([baitCategories[0]]);
 

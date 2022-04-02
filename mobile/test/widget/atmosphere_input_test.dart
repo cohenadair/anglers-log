@@ -2,9 +2,12 @@ import 'package:fixnum/fixnum.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
+import 'package:mobile/pages/form_page.dart';
 import 'package:mobile/pages/pro_page.dart';
+import 'package:mobile/pages/settings_page.dart';
 import 'package:mobile/user_preference_manager.dart';
 import 'package:mobile/utils/atmosphere_utils.dart';
+import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mobile/widgets/atmosphere_input.dart';
 import 'package:mobile/widgets/atmosphere_wrap.dart';
 import 'package:mobile/widgets/input_controller.dart';
@@ -39,6 +42,8 @@ void main() {
     when(appManager.subscriptionManager.isPro).thenReturn(false);
     when(appManager.subscriptionManager.isFree).thenReturn(true);
 
+    when(appManager.userPreferenceManager.autoFetchAtmosphere)
+        .thenReturn(false);
     when(appManager.userPreferenceManager.atmosphereFieldIds).thenReturn([]);
     when(appManager.userPreferenceManager.airTemperatureSystem)
         .thenReturn(MeasurementSystem.metric);
@@ -52,6 +57,8 @@ void main() {
         .thenAnswer((_) => const Stream.empty());
 
     fetcher = MockAtmosphereFetcher();
+    when(fetcher.timestamp).thenReturn(10000);
+
     controller = InputController<Atmosphere>();
   });
 
@@ -322,8 +329,7 @@ void main() {
         .thenAnswer((_) => Future.value(null));
 
     await tapAndSettle(tester, find.byIcon(Icons.chevron_right));
-    await tester.drag(find.byType(RefreshIndicator), const Offset(0, 300));
-    await tester.pumpAndSettle();
+    await tapAndSettle(tester, find.text("FETCH"));
 
     expect(find.byType(ProPage), findsOneWidget);
   });
@@ -341,8 +347,7 @@ void main() {
     ));
 
     await tapAndSettle(tester, find.byIcon(Icons.chevron_right));
-    await tester.drag(find.byType(RefreshIndicator), const Offset(0, 300));
-    await tester.pumpAndSettle();
+    await tapAndSettle(tester, find.text("FETCH"));
 
     expect(find.byType(SnackBar), findsOneWidget);
   });
@@ -394,8 +399,7 @@ void main() {
     );
 
     await tapAndSettle(tester, find.byIcon(Icons.chevron_right));
-    await tester.drag(find.byType(RefreshIndicator), const Offset(0, 300));
-    await tester.pumpAndSettle();
+    await tapAndSettle(tester, find.text("FETCH"));
 
     // Verify value is set correctly.
     expect(controller.hasValue, isTrue);
@@ -456,5 +460,64 @@ void main() {
     expect(find.text("\u00B0F"), findsOneWidget);
     expect(find.text("mi"), findsOneWidget);
     expect(find.text("mph"), findsOneWidget);
+  });
+
+  testWidgets("Null fishing spot shows 'Current Location'", (tester) async {
+    controller.value = defaultAtmosphere();
+
+    await tester.pumpWidget(Testable(
+      (_) => AtmosphereInput(
+        fetcher: fetcher,
+        controller: controller,
+        fishingSpot: null,
+      ),
+      appManager: appManager,
+    ));
+    await tapAndSettle(tester, find.byIcon(Icons.chevron_right));
+
+    expect(find.text("Current Location"), findsOneWidget);
+  });
+
+  testWidgets("Fishing spot display name shown", (tester) async {
+    when(appManager.fishingSpotManager.displayName(
+      any,
+      any,
+      useLatLngFallback: anyNamed("useLatLngFallback"),
+      includeLatLngLabels: anyNamed("includeLatLngLabels"),
+      includeBodyOfWater: anyNamed("includeBodyOfWater"),
+    )).thenReturn("Fishing Spot Name");
+
+    controller.value = defaultAtmosphere();
+
+    await tester.pumpWidget(Testable(
+      (_) => AtmosphereInput(
+        fetcher: fetcher,
+        controller: controller,
+        fishingSpot: FishingSpot(id: randomId()),
+      ),
+      appManager: appManager,
+    ));
+    await tapAndSettle(tester, find.byIcon(Icons.chevron_right));
+
+    expect(find.text("Current Location"), findsNothing);
+    expect(find.text("Fishing Spot Name"), findsOneWidget);
+  });
+
+  testWidgets("Auto-fetch menu item opens Settings", (tester) async {
+    controller.value = defaultAtmosphere();
+
+    await tester.pumpWidget(Testable(
+      (_) => AtmosphereInput(
+        fetcher: fetcher,
+        controller: controller,
+      ),
+      appManager: appManager,
+    ));
+
+    await tapAndSettle(tester, find.byIcon(Icons.chevron_right));
+    await tapAndSettle(tester, find.byIcon(FormPage.moreMenuIcon));
+    await tapAndSettle(tester, find.text("Auto-fetch"));
+
+    expect(find.byType(SettingsPage), findsOneWidget);
   });
 }

@@ -55,7 +55,8 @@ void main() {
     when(appManager.ioWrapper.isAndroid).thenReturn(false);
 
     when(appManager.fishingSpotManager.list()).thenReturn([]);
-    when(appManager.fishingSpotManager.listSortedByName()).thenReturn([]);
+    when(appManager.fishingSpotManager.listSortedByDisplayName(any))
+        .thenReturn([]);
     when(appManager.fishingSpotManager.withinRadius(any, any)).thenReturn(null);
     when(appManager.fishingSpotManager.addOrUpdate(any))
         .thenAnswer((_) => Future.value(false));
@@ -120,7 +121,8 @@ void main() {
     var species = Species()
       ..id = randomId()
       ..name = "Steelhead";
-    when(appManager.speciesManager.listSortedByName(filter: anyNamed("filter")))
+    when(appManager.speciesManager
+            .listSortedByDisplayName(any, filter: anyNamed("filter")))
         .thenReturn([species]);
     when(appManager.speciesManager.entityExists(any)).thenReturn(true);
     when(appManager.speciesManager.entity(any)).thenReturn(species);

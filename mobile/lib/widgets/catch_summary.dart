@@ -908,7 +908,7 @@ class CatchSummaryReport<T> {
     result.addAll(
       ids
           .where((id) => manager.entity(id) != null)
-          .map((id) => manager.name(manager.entity(id)!)),
+          .map((id) => manager.displayName(context, manager.entity(id)!)),
     );
   }
 

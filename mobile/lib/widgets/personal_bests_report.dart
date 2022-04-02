@@ -270,8 +270,10 @@ class _PersonalBestsReportModel {
       }
     }
 
-    lengthBySpecies = sortedMap(lengthBySpecies, speciesManager.nameComparator);
-    weightBySpecies = sortedMap(weightBySpecies, speciesManager.nameComparator);
+    lengthBySpecies = sortedMap(
+        lengthBySpecies, speciesManager.displayNameComparator(context));
+    weightBySpecies = sortedMap(
+        weightBySpecies, speciesManager.displayNameComparator(context));
 
     for (var trip in tripManager.list()) {
       if (!range.contains(

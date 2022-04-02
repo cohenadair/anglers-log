@@ -135,5 +135,5 @@ class _TestModel extends SectionedListModel<BaitCategory, Bait> {
   Id get noSectionHeaderId => _noCategoryId;
 
   @override
-  List<BaitCategory> get sectionHeaders => _baitCategories;
+  List<BaitCategory> sectionHeaders(BuildContext context) => _baitCategories;
 }

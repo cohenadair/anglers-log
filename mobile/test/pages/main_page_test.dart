@@ -16,7 +16,8 @@ void main() {
     appManager = StubbedAppManager();
     mapController = StubbedMapController();
 
-    when(appManager.baitCategoryManager.listSortedByName(
+    when(appManager.baitCategoryManager.listSortedByDisplayName(
+      any,
       filter: anyNamed("filter"),
     )).thenReturn([]);
 

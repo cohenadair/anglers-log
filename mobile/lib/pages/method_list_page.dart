@@ -35,7 +35,8 @@ class MethodListPage extends StatelessWidget {
       ),
       itemManager: ManageableListPageItemManager<Method>(
         listenerManagers: [methodManager],
-        loadItems: (query) => methodManager.listSortedByName(filter: query),
+        loadItems: (query) =>
+            methodManager.listSortedByDisplayName(context, filter: query),
         emptyItemsSettings: ManageableListPageEmptyListSettings(
           icon: iconMethod,
           title: Strings.of(context).methodListPageEmptyListTitle,

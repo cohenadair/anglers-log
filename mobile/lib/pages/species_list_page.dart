@@ -44,7 +44,8 @@ class SpeciesListPage extends StatelessWidget {
       ),
       itemManager: ManageableListPageItemManager<Species>(
         listenerManagers: [speciesManager],
-        loadItems: (query) => speciesManager.listSortedByName(filter: query),
+        loadItems: (query) =>
+            speciesManager.listSortedByDisplayName(context, filter: query),
         emptyItemsSettings: ManageableListPageEmptyListSettings(
           icon: iconSpecies,
           title: Strings.of(context).speciesListPageEmptyListTitle,

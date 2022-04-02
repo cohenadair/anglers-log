@@ -79,7 +79,7 @@ void main() {
   setUp(() async {
     appManager = StubbedAppManager();
 
-    when(appManager.baitCategoryManager.listSortedByName())
+    when(appManager.baitCategoryManager.listSortedByDisplayName(any))
         .thenReturn(baitCategories);
     when(appManager.baitCategoryManager.matchesFilter(any, any))
         .thenReturn(false);

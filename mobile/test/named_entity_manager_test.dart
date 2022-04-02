@@ -7,6 +7,7 @@ import 'package:mockito/mockito.dart';
 
 import 'mocks/mocks.mocks.dart';
 import 'mocks/stubbed_app_manager.dart';
+import 'test_utils.dart';
 
 class TestNamedEntityManager extends NamedEntityManager<Species> {
   TestNamedEntityManager(AppManager app) : super(app);
@@ -81,7 +82,7 @@ void main() {
     );
   });
 
-  test("nameComparator", () async {
+  testWidgets("nameComparator", (tester) async {
     var species = [
       Species()
         ..id = randomId()
@@ -97,7 +98,8 @@ void main() {
         ..name = "Flathead Catfish",
     ];
 
-    species.sort(entityManager.nameComparator);
+    species
+        .sort(entityManager.displayNameComparator(await buildContext(tester)));
     expect(species[0].name, "Blue Catfish");
     expect(species[1].name, "Flathead Catfish");
     expect(species[2].name, "Largemouth Bass");

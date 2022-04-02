@@ -215,7 +215,7 @@ void main() {
     when(appManager.localDatabaseManager.insertOrReplace(any, any))
         .thenAnswer((_) => Future.value(true));
 
-    when(appManager.speciesManager.nameComparator).thenReturn(
+    when(appManager.speciesManager.displayNameComparator(any)).thenReturn(
         (lhs, rhs) => ignoreCaseAlphabeticalComparator(lhs.name, rhs.name));
     when(appManager.speciesManager.entityExists(any)).thenAnswer((invocation) =>
         species.containsWhere(

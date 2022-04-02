@@ -37,7 +37,7 @@ class BaitCategoryListPage extends StatelessWidget {
       itemManager: ManageableListPageItemManager<BaitCategory>(
         listenerManagers: [baitCategoryManager],
         loadItems: (query) =>
-            baitCategoryManager.listSortedByName(filter: query),
+            baitCategoryManager.listSortedByDisplayName(context, filter: query),
         emptyItemsSettings: ManageableListPageEmptyListSettings(
           icon: iconBaitCategories,
           title: Strings.of(context).baitCategoryListPageEmptyListTitle,

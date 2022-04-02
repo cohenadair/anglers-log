@@ -28,7 +28,8 @@ void main() {
     appManager = StubbedAppManager();
     mapController = StubbedMapController();
 
-    when(appManager.bodyOfWaterManager.listSortedByName()).thenReturn([]);
+    when(appManager.bodyOfWaterManager.listSortedByDisplayName(any))
+        .thenReturn([]);
 
     when(appManager.fishingSpotManager.entityExists(any)).thenReturn(true);
     when(appManager.fishingSpotManager.list()).thenReturn([]);
@@ -854,6 +855,8 @@ void main() {
     when(appManager.localDatabaseManager.insertOrReplace(any, any))
         .thenAnswer((_) => Future.value(true));
     when(appManager.bodyOfWaterManager.entityExists(any)).thenReturn(false);
+    when(appManager.bodyOfWaterManager.displayNameFromId(any, any))
+        .thenReturn(null);
 
     // Use real FishingSpotManager to trigger update callbacks.
     var fishingSpotManager = FishingSpotManager(appManager.app);

@@ -109,7 +109,8 @@ void main() {
       ids: anyNamed("ids"),
     )).thenReturn(anglerList.map((e) => e.id).toSet());
     when(appManager.anglerManager.list(any)).thenReturn(anglerList);
-    when(appManager.anglerManager.listSortedByName(filter: anyNamed("filter")))
+    when(appManager.anglerManager
+            .listSortedByDisplayName(any, filter: anyNamed("filter")))
         .thenReturn(anglerList);
 
     when(appManager.baitCategoryManager.displayName(any, any))
@@ -120,14 +121,16 @@ void main() {
       entities: anyNamed("entities"),
       ids: anyNamed("ids"),
     )).thenReturn({});
-    when(appManager.baitCategoryManager.listSortedByName()).thenReturn([]);
+    when(appManager.baitCategoryManager.listSortedByDisplayName(any))
+        .thenReturn([]);
 
     when(appManager.baitManager.name(any))
         .thenAnswer((invocation) => invocation.positionalArguments.first.name);
     when(appManager.baitManager.entity(any)).thenAnswer((invocation) => baitList
         .firstWhereOrNull((e) => e.id == invocation.positionalArguments.first));
     when(appManager.baitManager.list(any)).thenReturn(baitList);
-    when(appManager.baitManager.listSortedByName(filter: anyNamed("filter")))
+    when(appManager.baitManager
+            .listSortedByDisplayName(any, filter: anyNamed("filter")))
         .thenReturn(baitList);
     when(appManager.baitManager.filteredList(any)).thenReturn(baitList);
     when(appManager.baitManager.attachmentsDisplayValues(any, any))
@@ -153,7 +156,7 @@ void main() {
     )).thenReturn(bodyOfWaterList.map((e) => e.id).toSet());
     when(appManager.bodyOfWaterManager.list(any)).thenReturn(bodyOfWaterList);
     when(appManager.bodyOfWaterManager
-            .listSortedByName(filter: anyNamed("filter")))
+            .listSortedByDisplayName(any, filter: anyNamed("filter")))
         .thenReturn(bodyOfWaterList);
 
     // Sunday, September 13, 2020 12:26:40 PM GMT
@@ -177,7 +180,7 @@ void main() {
     when(appManager.fishingSpotManager.filteredList(any))
         .thenReturn(fishingSpotList);
     when(appManager.fishingSpotManager
-            .listSortedByName(filter: anyNamed("filter")))
+            .listSortedByDisplayName(any, filter: anyNamed("filter")))
         .thenReturn(fishingSpotList);
     when(appManager.fishingSpotManager.idSet(
       entities: anyNamed("entities"),
@@ -195,7 +198,8 @@ void main() {
       ids: anyNamed("ids"),
     )).thenReturn(methodList.map((e) => e.id).toSet());
     when(appManager.methodManager.list(any)).thenReturn(methodList);
-    when(appManager.methodManager.listSortedByName(filter: anyNamed("filter")))
+    when(appManager.methodManager
+            .listSortedByDisplayName(any, filter: anyNamed("filter")))
         .thenReturn(methodList);
 
     when(appManager.speciesManager.displayName(any, any))
@@ -207,7 +211,8 @@ void main() {
       ids: anyNamed("ids"),
     )).thenReturn(speciesList.map((e) => e.id).toSet());
     when(appManager.speciesManager.list(any)).thenReturn(speciesList);
-    when(appManager.speciesManager.listSortedByName(filter: anyNamed("filter")))
+    when(appManager.speciesManager
+            .listSortedByDisplayName(any, filter: anyNamed("filter")))
         .thenReturn(speciesList);
 
     when(appManager.userPreferenceManager.waterDepthSystem)
@@ -241,7 +246,7 @@ void main() {
     )).thenReturn(waterClarityList.map((e) => e.id).toSet());
     when(appManager.waterClarityManager.list(any)).thenReturn(waterClarityList);
     when(appManager.waterClarityManager
-            .listSortedByName(filter: anyNamed("filter")))
+            .listSortedByDisplayName(any, filter: anyNamed("filter")))
         .thenReturn(waterClarityList);
   });
 

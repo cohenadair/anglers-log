@@ -37,7 +37,7 @@ class BodyOfWaterListPage extends StatelessWidget {
       itemManager: ManageableListPageItemManager<BodyOfWater>(
         listenerManagers: [bodyOfWaterManager],
         loadItems: (query) =>
-            bodyOfWaterManager.listSortedByName(filter: query),
+            bodyOfWaterManager.listSortedByDisplayName(context, filter: query),
         emptyItemsSettings: ManageableListPageEmptyListSettings(
           icon: iconBodyOfWater,
           title: Strings.of(context).bodyOfWaterListPageEmptyListTitle,

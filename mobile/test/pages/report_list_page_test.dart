@@ -59,7 +59,7 @@ void main() {
 
     when(appManager.reportManager.list())
         .thenReturn([...comparisons, ...summaries]);
-    when(appManager.reportManager.listSortedByName())
+    when(appManager.reportManager.listSortedByDisplayName(any))
         .thenReturn([...comparisons, ...summaries]);
     when(appManager.reportManager.defaultReports).thenReturn([
       Report(id: reportIdPersonalBests),

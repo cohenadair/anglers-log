@@ -24,7 +24,8 @@ void main() {
   setUp(() {
     appManager = StubbedAppManager();
 
-    when(appManager.speciesManager.listSortedByName(filter: anyNamed("filter")))
+    when(appManager.speciesManager
+            .listSortedByDisplayName(any, filter: anyNamed("filter")))
         .thenReturn(species);
     when(appManager.speciesManager.list(any)).thenReturn(species);
     when(appManager.speciesManager.entityCount).thenReturn(0);

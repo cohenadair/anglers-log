@@ -10,22 +10,23 @@ import 'utils/string_utils.dart';
 
 abstract class NamedEntityManager<T extends GeneratedMessage>
     extends EntityManager<T> {
+  /// Return the Protobuf name for the given entity, [T].
+  @protected
   String name(T entity);
 
   NamedEntityManager(AppManager app) : super(app);
 
   int Function(T, T) displayNameComparator(BuildContext context) =>
-      (lhs, rhs) => ignoreCaseAlphabeticalComparator(name(lhs), name(rhs));
+      (lhs, rhs) => ignoreCaseAlphabeticalComparator(
+          displayName(context, lhs), displayName(context, rhs));
 
-  int Function(T, T) get nameComparator =>
-      (lhs, rhs) => ignoreCaseAlphabeticalComparator(name(lhs), name(rhs));
-
-  List<T> listSortedByName({
+  List<T> listSortedByDisplayName(
+    BuildContext context, {
     String? filter,
     Iterable<Id> ids = const [],
   }) {
     var result = List<T>.from(filteredList(filter, ids));
-    result.sort(nameComparator);
+    result.sort(displayNameComparator(context));
     return result;
   }
 

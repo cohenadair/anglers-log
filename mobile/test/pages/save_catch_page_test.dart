@@ -48,7 +48,8 @@ void main() {
     when(appManager.baitManager.attachmentsDisplayValues(any, any))
         .thenReturn([]);
 
-    when(appManager.baitCategoryManager.listSortedByName()).thenReturn([]);
+    when(appManager.baitCategoryManager.listSortedByDisplayName(any))
+        .thenReturn([]);
     when(appManager.baitCategoryManager.entityExists(any)).thenReturn(false);
 
     when(appManager.bodyOfWaterManager.entityExists(any)).thenReturn(false);
@@ -836,7 +837,7 @@ void main() {
         ..id = randomId()
         ..name = "Cohen";
       when(appManager.anglerManager
-              .listSortedByName(filter: anyNamed("filter")))
+              .listSortedByDisplayName(any, filter: anyNamed("filter")))
           .thenReturn([angler]);
       when(appManager.anglerManager.entityExists(any)).thenReturn(true);
       when(appManager.anglerManager.entity(any)).thenReturn(angler);
@@ -859,7 +860,7 @@ void main() {
         ..id = randomId()
         ..name = "Clear";
       when(appManager.waterClarityManager
-              .listSortedByName(filter: anyNamed("filter")))
+              .listSortedByDisplayName(any, filter: anyNamed("filter")))
           .thenReturn([waterClarity]);
       when(appManager.waterClarityManager.entityExists(any)).thenReturn(true);
       when(appManager.waterClarityManager.entity(any)).thenReturn(waterClarity);
@@ -874,7 +875,7 @@ void main() {
           ..name = "Kayak",
       ];
       when(appManager.methodManager
-              .listSortedByName(filter: anyNamed("filter")))
+              .listSortedByDisplayName(any, filter: anyNamed("filter")))
           .thenReturn(methods);
       when(appManager.methodManager.list(any)).thenReturn(methods);
       when(appManager.methodManager.id(any))
@@ -1153,6 +1154,9 @@ void main() {
 
   /// https://github.com/cohenadair/anglers-log/issues/467
   testWidgets("Updates to selected fishing spot updates state", (tester) async {
+    when(appManager.bodyOfWaterManager.displayNameFromId(any, any))
+        .thenReturn(null);
+
     var fishingSpot = FishingSpot()
       ..id = randomId()
       ..name = "A";
@@ -1402,13 +1406,13 @@ void main() {
     when(appManager.fishingSpotManager.filteredList(any))
         .thenReturn([fishingSpot1, fishingSpot2]);
     when(appManager.fishingSpotManager
-            .listSortedByName(filter: anyNamed("filter")))
+            .listSortedByDisplayName(any, filter: anyNamed("filter")))
         .thenReturn([fishingSpot1, fishingSpot2]);
     when(appManager.fishingSpotManager.addOrUpdate(any))
         .thenAnswer((_) => Future.value(true));
 
     when(appManager.bodyOfWaterManager
-            .listSortedByName(filter: anyNamed("filter")))
+            .listSortedByDisplayName(any, filter: anyNamed("filter")))
         .thenReturn([]);
 
     await tester.pumpWidget(Testable(
@@ -1548,7 +1552,14 @@ void main() {
       appManager: appManager,
     ));
 
+    // Check AtmosphereInput data.
+    await ensureVisibleAndSettle(tester, find.byType(AtmosphereInput));
+    await tapAndSettle(tester, find.byType(AtmosphereInput));
+    expect(find.text("Today at 3:30 PM"), findsOneWidget);
+    await tapAndSettle(tester, find.byType(BackButton));
+
     // Select a different date.
+    await ensureVisibleAndSettle(tester, find.byType(DatePicker));
     await tapAndSettle(tester, find.byType(DatePicker));
     await tapAndSettle(tester, find.text("2"));
     await tapAndSettle(tester, find.text("OK"));
@@ -1563,6 +1574,12 @@ void main() {
     // Once on load, once when the date is changed, once when the time is
     // changed.
     verify(appManager.httpWrapper.get(any)).called(3);
+
+    // Check AtmosphereInput data.
+    await ensureVisibleAndSettle(tester, find.byType(AtmosphereInput));
+    await tapAndSettle(tester, find.byType(AtmosphereInput));
+    expect(find.text("Thursday at 9:30 PM"), findsOneWidget);
+    await tapAndSettle(tester, find.byType(BackButton));
   });
 
   testWidgets("Atmosphere not fetched for free users", (tester) async {
@@ -1733,5 +1750,58 @@ void main() {
     // Save and verify.
     await tapAndSettle(tester, find.text("SAVE"));
     verifyNever(appManager.fishingSpotManager.addOrUpdate(any));
+  });
+
+  testWidgets("Picking fishing spot updates atmosphere input", (tester) async {
+    var fishingSpot = FishingSpot(
+      id: randomId(),
+      name: "Name",
+      lat: 1.23456,
+      lng: 6.54321,
+    );
+
+    when(appManager.fishingSpotManager.entity(any)).thenReturn(fishingSpot);
+    when(appManager.fishingSpotManager.entityExists(any)).thenReturn(true);
+    when(appManager.fishingSpotManager.list()).thenReturn([
+      fishingSpot,
+    ]);
+    when(appManager.fishingSpotManager.withinRadius(any)).thenReturn(null);
+
+    await tester.pumpWidget(Testable(
+      (_) => SaveCatchPage(
+        speciesId: randomId(),
+      ),
+      appManager: appManager,
+    ));
+
+    expect(find.byType(FishingSpotDetails), findsOneWidget);
+
+    // Check AtmosphereInput data.
+    await ensureVisibleAndSettle(tester, find.byType(AtmosphereInput));
+    await tapAndSettle(tester, find.byType(AtmosphereInput));
+    expect(find.text("Current Location"), findsOneWidget);
+    await tapAndSettle(tester, find.byType(BackButton));
+
+    // Pick a fishing spot.
+    await ensureVisibleAndSettle(tester, find.text("Name"));
+    await tapAndSettle(tester, find.text("Name"));
+    await tester.pumpAndSettle(const Duration(milliseconds: 300));
+    await mapController.finishLoading(tester);
+    await tapAndSettle(tester, find.byType(BackButton));
+
+    // Re-check AtmosphereInput data.
+    when(appManager.fishingSpotManager.displayName(
+      any,
+      any,
+      useLatLngFallback: anyNamed("useLatLngFallback"),
+      includeLatLngLabels: anyNamed("includeLatLngLabels"),
+      includeBodyOfWater: anyNamed("includeBodyOfWater"),
+    )).thenReturn("Lat: 1.234560, Lng: 6.543210");
+    await ensureVisibleAndSettle(tester, find.byType(AtmosphereInput));
+    await tapAndSettle(tester, find.byType(AtmosphereInput));
+    expect(find.text("Lat: 1.234560, Lng: 6.543210"), findsOneWidget);
+
+    // Dispose of AtmosphereInput.
+    await tapAndSettle(tester, find.byType(BackButton));
   });
 }

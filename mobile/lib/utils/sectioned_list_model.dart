@@ -6,7 +6,7 @@ import '../res/dimen.dart';
 import '../widgets/widget.dart';
 
 abstract class SectionedListModel<Header, Item> {
-  List<Header> get sectionHeaders;
+  List<Header> sectionHeaders(BuildContext context);
 
   Header noSectionHeader(BuildContext context);
 
@@ -41,7 +41,7 @@ abstract class SectionedListModel<Header, Item> {
   List<dynamic> buildModel(BuildContext context, String? query) {
     var result = <dynamic>[];
 
-    var headers = List.from(sectionHeaders);
+    var headers = List.from(sectionHeaders(context));
     _items = filteredItemList(query);
 
     // Add a section for items that aren't associated with another section.

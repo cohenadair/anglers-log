@@ -657,14 +657,14 @@ void main() {
     expect(bodiesOfWater.first.name, "Bow River");
   });
 
-  test("Import Android baits", () async {
+  testWidgets("Import Android baits", (tester) async {
     var file = File("test/resources/backups/legacy_android_entities.zip");
     await LegacyImporter(appManager.app, file).start();
 
     // Note that imageName is tested in the tests that import photos. In this
     // test, photos are not included in the test .zip file.
 
-    var baits = baitManager.listSortedByName();
+    var baits = baitManager.listSortedByDisplayName(await buildContext(tester));
     expect(baits, isNotNull);
     expect(baits.length, 2);
 

@@ -38,7 +38,7 @@ class WaterClarityListPage extends StatelessWidget {
       itemManager: ManageableListPageItemManager<WaterClarity>(
         listenerManagers: [waterClarityManager],
         loadItems: (query) =>
-            waterClarityManager.listSortedByName(filter: query),
+            waterClarityManager.listSortedByDisplayName(context, filter: query),
         emptyItemsSettings: ManageableListPageEmptyListSettings(
           icon: iconWaterClarity,
           title: Strings.of(context).waterClarityListPageEmptyListTitle,

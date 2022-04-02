@@ -3,6 +3,9 @@ import 'dart:async';
 import 'package:fixnum/fixnum.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:mobile/fishing_spot_manager.dart';
+import 'package:mobile/utils/date_time_utils.dart';
+import 'package:mobile/widgets/list_item.dart';
 
 import '../atmosphere_fetcher.dart';
 import '../i18n/strings.dart';
@@ -12,6 +15,7 @@ import '../pages/editable_form_page.dart';
 import '../pages/form_page.dart';
 import '../pages/picker_page.dart';
 import '../pages/pro_page.dart';
+import '../pages/settings_page.dart';
 import '../res/dimen.dart';
 import '../res/style.dart';
 import '../subscription_manager.dart';
@@ -22,6 +26,7 @@ import '../utils/page_utils.dart';
 import '../utils/protobuf_utils.dart';
 import '../utils/snackbar_utils.dart';
 import 'atmosphere_wrap.dart';
+import 'button.dart';
 import 'date_time_picker.dart';
 import 'detail_input.dart';
 import 'field.dart';
@@ -34,10 +39,12 @@ import 'widget.dart';
 class AtmosphereInput extends StatelessWidget {
   final AtmosphereFetcher fetcher;
   final InputController<Atmosphere> controller;
+  final FishingSpot? fishingSpot;
 
   const AtmosphereInput({
     required this.fetcher,
     required this.controller,
+    this.fishingSpot,
   });
 
   @override
@@ -48,6 +55,7 @@ class AtmosphereInput extends StatelessWidget {
         _AtmosphereInputPage(
           fetcher: fetcher,
           controller: controller,
+          fishingSpot: fishingSpot,
         ),
       ),
       children: [
@@ -93,10 +101,12 @@ class AtmosphereInput extends StatelessWidget {
 class _AtmosphereInputPage extends StatefulWidget {
   final AtmosphereFetcher fetcher;
   final InputController<Atmosphere> controller;
+  final FishingSpot? fishingSpot;
 
   const _AtmosphereInputPage({
     required this.fetcher,
     required this.controller,
+    required this.fishingSpot,
   });
 
   @override
@@ -126,6 +136,8 @@ class __AtmosphereInputPageState extends State<_AtmosphereInputPage> {
   late final MultiMeasurementInputSpec _windSpeedInputState;
 
   StreamSubscription<void>? _userPreferenceSubscription;
+
+  FishingSpotManager get _fishingSpotManager => FishingSpotManager.of(context);
 
   TimeManager get _timeManager => TimeManager.of(context);
 
@@ -259,7 +271,7 @@ class __AtmosphereInputPageState extends State<_AtmosphereInputPage> {
   Widget build(BuildContext context) {
     return EditableFormPage(
       title: Text(Strings.of(context).inputAtmosphere),
-      header: NoneFormHeader(controller: widget.controller),
+      header: _buildHeader(),
       showSaveButton: false,
       allowCustomEntities: false,
       padding: insetsZero,
@@ -276,9 +288,46 @@ class __AtmosphereInputPageState extends State<_AtmosphereInputPage> {
         }
         _updateFromControllers();
       },
-      onRefresh: _fetch,
-      overflowOptions: [FormPageOverflowOption.manageUnits(context)],
+      overflowOptions: [
+        FormPageOverflowOption.manageUnits(context),
+        FormPageOverflowOption(Strings.of(context).atmosphereInputAutoFetch,
+            () => present(context, SettingsPage())),
+      ],
       trackedFieldIds: _userPreferenceManager.atmosphereFieldIds,
+    );
+  }
+
+  Widget _buildHeader() {
+    String location = Strings.of(context).atmosphereInputCurrentLocation;
+    if (widget.fishingSpot != null) {
+      location = _fishingSpotManager.displayName(
+        context,
+        widget.fishingSpot!,
+        useLatLngFallback: true,
+        includeLatLngLabels: true,
+        includeBodyOfWater: true,
+      );
+    }
+
+    return Column(
+      children: [
+        ListItem(
+          title: Text(
+            location,
+            style: stylePrimary(context),
+          ),
+          subtitle: Text(
+            formatTimestamp(context, widget.fetcher.timestamp),
+            style: stylePrimary(context),
+          ),
+          trailing: Button(
+            text: Strings.of(context).atmosphereInputFetch,
+            onPressed: _fetch,
+          ),
+        ),
+        const MinDivider(),
+        NoneFormHeader(controller: widget.controller),
+      ],
     );
   }
 

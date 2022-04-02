@@ -24,7 +24,8 @@ void main() {
   setUp(() {
     appManager = StubbedAppManager();
 
-    when(appManager.methodManager.listSortedByName(
+    when(appManager.methodManager.listSortedByDisplayName(
+      any,
       filter: anyNamed("filter"),
     )).thenReturn(methods);
   });
@@ -56,7 +57,8 @@ void main() {
     ));
     expect(find.text("Fishing Methods (2)"), findsOneWidget);
 
-    when(appManager.methodManager.listSortedByName(
+    when(appManager.methodManager.listSortedByDisplayName(
+      any,
       filter: anyNamed("filter"),
     )).thenReturn([methods[0]]);
 

@@ -405,11 +405,6 @@ class MockAnglerManager extends _i1.Mock implements _i7.AnglerManager {
       (super.noSuchMethod(Invocation.getter(#tableName), returnValue: '')
           as String);
   @override
-  int Function(_i4.Angler, _i4.Angler) get nameComparator =>
-      (super.noSuchMethod(Invocation.getter(#nameComparator),
-              returnValue: (_i4.Angler __p0, _i4.Angler __p1) => 0)
-          as int Function(_i4.Angler, _i4.Angler));
-  @override
   Map<_i4.Id, _i4.Angler> get entities =>
       (super.noSuchMethod(Invocation.getter(#entities),
           returnValue: <_i4.Id, _i4.Angler>{}) as Map<_i4.Id, _i4.Angler>);
@@ -456,11 +451,11 @@ class MockAnglerManager extends _i1.Mock implements _i7.AnglerManager {
               returnValue: (_i4.Angler __p0, _i4.Angler __p1) => 0)
           as int Function(_i4.Angler, _i4.Angler));
   @override
-  List<_i4.Angler> listSortedByName(
+  List<_i4.Angler> listSortedByDisplayName(_i49.BuildContext? context,
           {String? filter, Iterable<_i4.Id>? ids = const []}) =>
       (super.noSuchMethod(
-          Invocation.method(
-              #listSortedByName, [], {#filter: filter, #ids: ids}),
+          Invocation.method(#listSortedByDisplayName, [context],
+              {#filter: filter, #ids: ids}),
           returnValue: <_i4.Angler>[]) as List<_i4.Angler>);
   @override
   String displayName(_i49.BuildContext? context, _i4.Angler? entity) =>
@@ -474,6 +469,10 @@ class MockAnglerManager extends _i1.Mock implements _i7.AnglerManager {
   bool nameExists(String? name) =>
       (super.noSuchMethod(Invocation.method(#nameExists, [name]),
           returnValue: false) as bool);
+  @override
+  String? displayNameFromId(_i49.BuildContext? context, _i4.Id? id) =>
+      (super.noSuchMethod(Invocation.method(#displayNameFromId, [context, id]))
+          as String?);
   @override
   _i61.Future<void> initialize() => (super.noSuchMethod(
       Invocation.method(#initialize, []),
@@ -983,11 +982,6 @@ class MockBaitCategoryManager extends _i1.Mock
       (super.noSuchMethod(Invocation.getter(#tableName), returnValue: '')
           as String);
   @override
-  int Function(_i4.BaitCategory, _i4.BaitCategory) get nameComparator =>
-      (super.noSuchMethod(Invocation.getter(#nameComparator),
-              returnValue: (_i4.BaitCategory __p0, _i4.BaitCategory __p1) => 0)
-          as int Function(_i4.BaitCategory, _i4.BaitCategory));
-  @override
   Map<_i4.Id, _i4.BaitCategory> get entities =>
       (super.noSuchMethod(Invocation.getter(#entities),
               returnValue: <_i4.Id, _i4.BaitCategory>{})
@@ -1037,11 +1031,11 @@ class MockBaitCategoryManager extends _i1.Mock
               returnValue: (_i4.BaitCategory __p0, _i4.BaitCategory __p1) => 0)
           as int Function(_i4.BaitCategory, _i4.BaitCategory));
   @override
-  List<_i4.BaitCategory> listSortedByName(
+  List<_i4.BaitCategory> listSortedByDisplayName(_i49.BuildContext? context,
           {String? filter, Iterable<_i4.Id>? ids = const []}) =>
       (super.noSuchMethod(
-          Invocation.method(
-              #listSortedByName, [], {#filter: filter, #ids: ids}),
+          Invocation.method(#listSortedByDisplayName, [context],
+              {#filter: filter, #ids: ids}),
           returnValue: <_i4.BaitCategory>[]) as List<_i4.BaitCategory>);
   @override
   String displayName(_i49.BuildContext? context, _i4.BaitCategory? entity) =>
@@ -1055,6 +1049,10 @@ class MockBaitCategoryManager extends _i1.Mock
   bool nameExists(String? name) =>
       (super.noSuchMethod(Invocation.method(#nameExists, [name]),
           returnValue: false) as bool);
+  @override
+  String? displayNameFromId(_i49.BuildContext? context, _i4.Id? id) =>
+      (super.noSuchMethod(Invocation.method(#displayNameFromId, [context, id]))
+          as String?);
   @override
   _i61.Future<void> initialize() => (super.noSuchMethod(
       Invocation.method(#initialize, []),
@@ -1158,11 +1156,6 @@ class MockBaitManager extends _i1.Mock implements _i10.BaitManager {
           (super.noSuchMethod(Invocation.getter(#attachmentComparator),
               returnValue: (_i4.BaitAttachment __p0, _i4.BaitAttachment __p1) =>
                   0) as int Function(_i4.BaitAttachment, _i4.BaitAttachment));
-  @override
-  int Function(_i4.Bait, _i4.Bait) get nameComparator =>
-      (super.noSuchMethod(Invocation.getter(#nameComparator),
-              returnValue: (_i4.Bait __p0, _i4.Bait __p1) => 0)
-          as int Function(_i4.Bait, _i4.Bait));
   @override
   Map<_i4.Id, _i4.Bait> get entities =>
       (super.noSuchMethod(Invocation.getter(#entities),
@@ -1298,11 +1291,11 @@ class MockBaitManager extends _i1.Mock implements _i10.BaitManager {
               returnValue: (_i4.Bait __p0, _i4.Bait __p1) => 0)
           as int Function(_i4.Bait, _i4.Bait));
   @override
-  List<_i4.Bait> listSortedByName(
+  List<_i4.Bait> listSortedByDisplayName(_i49.BuildContext? context,
           {String? filter, Iterable<_i4.Id>? ids = const []}) =>
       (super.noSuchMethod(
-          Invocation.method(
-              #listSortedByName, [], {#filter: filter, #ids: ids}),
+          Invocation.method(#listSortedByDisplayName, [context],
+              {#filter: filter, #ids: ids}),
           returnValue: <_i4.Bait>[]) as List<_i4.Bait>);
   @override
   String displayName(_i49.BuildContext? context, _i4.Bait? entity) =>
@@ -1312,6 +1305,10 @@ class MockBaitManager extends _i1.Mock implements _i10.BaitManager {
   bool nameExists(String? name) =>
       (super.noSuchMethod(Invocation.method(#nameExists, [name]),
           returnValue: false) as bool);
+  @override
+  String? displayNameFromId(_i49.BuildContext? context, _i4.Id? id) =>
+      (super.noSuchMethod(Invocation.method(#displayNameFromId, [context, id]))
+          as String?);
   @override
   _i61.Future<void> initialize() => (super.noSuchMethod(
       Invocation.method(#initialize, []),
@@ -1446,11 +1443,6 @@ class MockBodyOfWaterManager extends _i1.Mock
       (super.noSuchMethod(Invocation.getter(#tableName), returnValue: '')
           as String);
   @override
-  int Function(_i4.BodyOfWater, _i4.BodyOfWater) get nameComparator =>
-      (super.noSuchMethod(Invocation.getter(#nameComparator),
-              returnValue: (_i4.BodyOfWater __p0, _i4.BodyOfWater __p1) => 0)
-          as int Function(_i4.BodyOfWater, _i4.BodyOfWater));
-  @override
   Map<_i4.Id, _i4.BodyOfWater> get entities =>
       (super.noSuchMethod(Invocation.getter(#entities),
               returnValue: <_i4.Id, _i4.BodyOfWater>{})
@@ -1500,11 +1492,11 @@ class MockBodyOfWaterManager extends _i1.Mock
               returnValue: (_i4.BodyOfWater __p0, _i4.BodyOfWater __p1) => 0)
           as int Function(_i4.BodyOfWater, _i4.BodyOfWater));
   @override
-  List<_i4.BodyOfWater> listSortedByName(
+  List<_i4.BodyOfWater> listSortedByDisplayName(_i49.BuildContext? context,
           {String? filter, Iterable<_i4.Id>? ids = const []}) =>
       (super.noSuchMethod(
-          Invocation.method(
-              #listSortedByName, [], {#filter: filter, #ids: ids}),
+          Invocation.method(#listSortedByDisplayName, [context],
+              {#filter: filter, #ids: ids}),
           returnValue: <_i4.BodyOfWater>[]) as List<_i4.BodyOfWater>);
   @override
   String displayName(_i49.BuildContext? context, _i4.BodyOfWater? entity) =>
@@ -1518,6 +1510,10 @@ class MockBodyOfWaterManager extends _i1.Mock
   bool nameExists(String? name) =>
       (super.noSuchMethod(Invocation.method(#nameExists, [name]),
           returnValue: false) as bool);
+  @override
+  String? displayNameFromId(_i49.BuildContext? context, _i4.Id? id) =>
+      (super.noSuchMethod(Invocation.method(#displayNameFromId, [context, id]))
+          as String?);
   @override
   _i61.Future<void> initialize() => (super.noSuchMethod(
       Invocation.method(#initialize, []),
@@ -1754,6 +1750,10 @@ class MockCatchManager extends _i1.Mock implements _i12.CatchManager {
       Invocation.method(#numberOfCustomEntityValues, [customEntityId]),
       returnValue: 0) as int);
   @override
+  String? displayNameFromId(_i49.BuildContext? context, _i4.Id? id) =>
+      (super.noSuchMethod(Invocation.method(#displayNameFromId, [context, id]))
+          as String?);
+  @override
   _i61.Future<void> initialize() => (super.noSuchMethod(
       Invocation.method(#initialize, []),
       returnValue: Future<void>.value(),
@@ -1846,11 +1846,6 @@ class MockCustomEntityManager extends _i1.Mock
       (super.noSuchMethod(Invocation.getter(#tableName), returnValue: '')
           as String);
   @override
-  int Function(_i4.CustomEntity, _i4.CustomEntity) get nameComparator =>
-      (super.noSuchMethod(Invocation.getter(#nameComparator),
-              returnValue: (_i4.CustomEntity __p0, _i4.CustomEntity __p1) => 0)
-          as int Function(_i4.CustomEntity, _i4.CustomEntity));
-  @override
   Map<_i4.Id, _i4.CustomEntity> get entities =>
       (super.noSuchMethod(Invocation.getter(#entities),
               returnValue: <_i4.Id, _i4.CustomEntity>{})
@@ -1896,11 +1891,11 @@ class MockCustomEntityManager extends _i1.Mock
               returnValue: (_i4.CustomEntity __p0, _i4.CustomEntity __p1) => 0)
           as int Function(_i4.CustomEntity, _i4.CustomEntity));
   @override
-  List<_i4.CustomEntity> listSortedByName(
+  List<_i4.CustomEntity> listSortedByDisplayName(_i49.BuildContext? context,
           {String? filter, Iterable<_i4.Id>? ids = const []}) =>
       (super.noSuchMethod(
-          Invocation.method(
-              #listSortedByName, [], {#filter: filter, #ids: ids}),
+          Invocation.method(#listSortedByDisplayName, [context],
+              {#filter: filter, #ids: ids}),
           returnValue: <_i4.CustomEntity>[]) as List<_i4.CustomEntity>);
   @override
   String displayName(_i49.BuildContext? context, _i4.CustomEntity? entity) =>
@@ -1914,6 +1909,10 @@ class MockCustomEntityManager extends _i1.Mock
   bool nameExists(String? name) =>
       (super.noSuchMethod(Invocation.method(#nameExists, [name]),
           returnValue: false) as bool);
+  @override
+  String? displayNameFromId(_i49.BuildContext? context, _i4.Id? id) =>
+      (super.noSuchMethod(Invocation.method(#displayNameFromId, [context, id]))
+          as String?);
   @override
   _i61.Future<void> initialize() => (super.noSuchMethod(
       Invocation.method(#initialize, []),
@@ -2338,11 +2337,6 @@ class MockFishingSpotManager extends _i1.Mock
       (super.noSuchMethod(Invocation.getter(#tableName), returnValue: '')
           as String);
   @override
-  int Function(_i4.FishingSpot, _i4.FishingSpot) get nameComparator =>
-      (super.noSuchMethod(Invocation.getter(#nameComparator),
-              returnValue: (_i4.FishingSpot __p0, _i4.FishingSpot __p1) => 0)
-          as int Function(_i4.FishingSpot, _i4.FishingSpot));
-  @override
   Map<_i4.Id, _i4.FishingSpot> get entities =>
       (super.noSuchMethod(Invocation.getter(#entities),
               returnValue: <_i4.Id, _i4.FishingSpot>{})
@@ -2405,11 +2399,11 @@ class MockFishingSpotManager extends _i1.Mock
           Invocation.method(#matchesFilter, [id, filter, context]),
           returnValue: false) as bool);
   @override
-  List<_i4.FishingSpot> listSortedByName(
+  List<_i4.FishingSpot> listSortedByDisplayName(_i49.BuildContext? context,
           {String? filter, Iterable<_i4.Id>? ids = const []}) =>
       (super.noSuchMethod(
-          Invocation.method(
-              #listSortedByName, [], {#filter: filter, #ids: ids}),
+          Invocation.method(#listSortedByDisplayName, [context],
+              {#filter: filter, #ids: ids}),
           returnValue: <_i4.FishingSpot>[]) as List<_i4.FishingSpot>);
   @override
   _i4.FishingSpot? withinRadius(_i53.LatLng? latLng, [int? meters = 30]) =>
@@ -2449,6 +2443,10 @@ class MockFishingSpotManager extends _i1.Mock
   bool nameExists(String? name) =>
       (super.noSuchMethod(Invocation.method(#nameExists, [name]),
           returnValue: false) as bool);
+  @override
+  String? displayNameFromId(_i49.BuildContext? context, _i4.Id? id) =>
+      (super.noSuchMethod(Invocation.method(#displayNameFromId, [context, id]))
+          as String?);
   @override
   _i61.Future<void> initialize() => (super.noSuchMethod(
       Invocation.method(#initialize, []),
@@ -2890,11 +2888,6 @@ class MockMethodManager extends _i1.Mock implements _i17.MethodManager {
       (super.noSuchMethod(Invocation.getter(#tableName), returnValue: '')
           as String);
   @override
-  int Function(_i4.Method, _i4.Method) get nameComparator =>
-      (super.noSuchMethod(Invocation.getter(#nameComparator),
-              returnValue: (_i4.Method __p0, _i4.Method __p1) => 0)
-          as int Function(_i4.Method, _i4.Method));
-  @override
   Map<_i4.Id, _i4.Method> get entities =>
       (super.noSuchMethod(Invocation.getter(#entities),
           returnValue: <_i4.Id, _i4.Method>{}) as Map<_i4.Id, _i4.Method>);
@@ -2941,11 +2934,11 @@ class MockMethodManager extends _i1.Mock implements _i17.MethodManager {
               returnValue: (_i4.Method __p0, _i4.Method __p1) => 0)
           as int Function(_i4.Method, _i4.Method));
   @override
-  List<_i4.Method> listSortedByName(
+  List<_i4.Method> listSortedByDisplayName(_i49.BuildContext? context,
           {String? filter, Iterable<_i4.Id>? ids = const []}) =>
       (super.noSuchMethod(
-          Invocation.method(
-              #listSortedByName, [], {#filter: filter, #ids: ids}),
+          Invocation.method(#listSortedByDisplayName, [context],
+              {#filter: filter, #ids: ids}),
           returnValue: <_i4.Method>[]) as List<_i4.Method>);
   @override
   String displayName(_i49.BuildContext? context, _i4.Method? entity) =>
@@ -2959,6 +2952,10 @@ class MockMethodManager extends _i1.Mock implements _i17.MethodManager {
   bool nameExists(String? name) =>
       (super.noSuchMethod(Invocation.method(#nameExists, [name]),
           returnValue: false) as bool);
+  @override
+  String? displayNameFromId(_i49.BuildContext? context, _i4.Id? id) =>
+      (super.noSuchMethod(Invocation.method(#displayNameFromId, [context, id]))
+          as String?);
   @override
   _i61.Future<void> initialize() => (super.noSuchMethod(
       Invocation.method(#initialize, []),
@@ -3181,11 +3178,6 @@ class MockReportManager extends _i1.Mock implements _i19.ReportManager {
       (super.noSuchMethod(Invocation.getter(#defaultReport),
           returnValue: _FakeReport_76()) as _i4.Report);
   @override
-  int Function(_i4.Report, _i4.Report) get nameComparator =>
-      (super.noSuchMethod(Invocation.getter(#nameComparator),
-              returnValue: (_i4.Report __p0, _i4.Report __p1) => 0)
-          as int Function(_i4.Report, _i4.Report));
-  @override
   Map<_i4.Id, _i4.Report> get entities =>
       (super.noSuchMethod(Invocation.getter(#entities),
           returnValue: <_i4.Id, _i4.Report>{}) as Map<_i4.Id, _i4.Report>);
@@ -3228,11 +3220,11 @@ class MockReportManager extends _i1.Mock implements _i19.ReportManager {
               returnValue: (_i4.Report __p0, _i4.Report __p1) => 0)
           as int Function(_i4.Report, _i4.Report));
   @override
-  List<_i4.Report> listSortedByName(
+  List<_i4.Report> listSortedByDisplayName(_i49.BuildContext? context,
           {String? filter, Iterable<_i4.Id>? ids = const []}) =>
       (super.noSuchMethod(
-          Invocation.method(
-              #listSortedByName, [], {#filter: filter, #ids: ids}),
+          Invocation.method(#listSortedByDisplayName, [context],
+              {#filter: filter, #ids: ids}),
           returnValue: <_i4.Report>[]) as List<_i4.Report>);
   @override
   bool matchesFilter(_i4.Id? id, String? filter) =>
@@ -3242,6 +3234,10 @@ class MockReportManager extends _i1.Mock implements _i19.ReportManager {
   bool nameExists(String? name) =>
       (super.noSuchMethod(Invocation.method(#nameExists, [name]),
           returnValue: false) as bool);
+  @override
+  String? displayNameFromId(_i49.BuildContext? context, _i4.Id? id) =>
+      (super.noSuchMethod(Invocation.method(#displayNameFromId, [context, id]))
+          as String?);
   @override
   _i61.Future<void> initialize() => (super.noSuchMethod(
       Invocation.method(#initialize, []),
@@ -3339,11 +3335,6 @@ class MockSpeciesManager extends _i1.Mock implements _i20.SpeciesManager {
       (super.noSuchMethod(Invocation.getter(#tableName), returnValue: '')
           as String);
   @override
-  int Function(_i4.Species, _i4.Species) get nameComparator =>
-      (super.noSuchMethod(Invocation.getter(#nameComparator),
-              returnValue: (_i4.Species __p0, _i4.Species __p1) => 0)
-          as int Function(_i4.Species, _i4.Species));
-  @override
   Map<_i4.Id, _i4.Species> get entities =>
       (super.noSuchMethod(Invocation.getter(#entities),
           returnValue: <_i4.Id, _i4.Species>{}) as Map<_i4.Id, _i4.Species>);
@@ -3390,11 +3381,11 @@ class MockSpeciesManager extends _i1.Mock implements _i20.SpeciesManager {
               returnValue: (_i4.Species __p0, _i4.Species __p1) => 0)
           as int Function(_i4.Species, _i4.Species));
   @override
-  List<_i4.Species> listSortedByName(
+  List<_i4.Species> listSortedByDisplayName(_i49.BuildContext? context,
           {String? filter, Iterable<_i4.Id>? ids = const []}) =>
       (super.noSuchMethod(
-          Invocation.method(
-              #listSortedByName, [], {#filter: filter, #ids: ids}),
+          Invocation.method(#listSortedByDisplayName, [context],
+              {#filter: filter, #ids: ids}),
           returnValue: <_i4.Species>[]) as List<_i4.Species>);
   @override
   String displayName(_i49.BuildContext? context, _i4.Species? entity) =>
@@ -3408,6 +3399,10 @@ class MockSpeciesManager extends _i1.Mock implements _i20.SpeciesManager {
   bool nameExists(String? name) =>
       (super.noSuchMethod(Invocation.method(#nameExists, [name]),
           returnValue: false) as bool);
+  @override
+  String? displayNameFromId(_i49.BuildContext? context, _i4.Id? id) =>
+      (super.noSuchMethod(Invocation.method(#displayNameFromId, [context, id]))
+          as String?);
   @override
   _i61.Future<void> initialize() => (super.noSuchMethod(
       Invocation.method(#initialize, []),
@@ -3572,11 +3567,6 @@ class MockTripManager extends _i1.Mock implements _i23.TripManager {
       (super.noSuchMethod(Invocation.getter(#tableName), returnValue: '')
           as String);
   @override
-  int Function(_i4.Trip, _i4.Trip) get nameComparator =>
-      (super.noSuchMethod(Invocation.getter(#nameComparator),
-              returnValue: (_i4.Trip __p0, _i4.Trip __p1) => 0)
-          as int Function(_i4.Trip, _i4.Trip));
-  @override
   Map<_i4.Id, _i4.Trip> get entities =>
       (super.noSuchMethod(Invocation.getter(#entities),
           returnValue: <_i4.Id, _i4.Trip>{}) as Map<_i4.Id, _i4.Trip>);
@@ -3658,16 +3648,20 @@ class MockTripManager extends _i1.Mock implements _i23.TripManager {
               returnValue: (_i4.Trip __p0, _i4.Trip __p1) => 0)
           as int Function(_i4.Trip, _i4.Trip));
   @override
-  List<_i4.Trip> listSortedByName(
+  List<_i4.Trip> listSortedByDisplayName(_i49.BuildContext? context,
           {String? filter, Iterable<_i4.Id>? ids = const []}) =>
       (super.noSuchMethod(
-          Invocation.method(
-              #listSortedByName, [], {#filter: filter, #ids: ids}),
+          Invocation.method(#listSortedByDisplayName, [context],
+              {#filter: filter, #ids: ids}),
           returnValue: <_i4.Trip>[]) as List<_i4.Trip>);
   @override
   bool nameExists(String? name) =>
       (super.noSuchMethod(Invocation.method(#nameExists, [name]),
           returnValue: false) as bool);
+  @override
+  String? displayNameFromId(_i49.BuildContext? context, _i4.Id? id) =>
+      (super.noSuchMethod(Invocation.method(#displayNameFromId, [context, id]))
+          as String?);
   @override
   _i61.Future<void> initialize() => (super.noSuchMethod(
       Invocation.method(#initialize, []),
@@ -4081,11 +4075,6 @@ class MockWaterClarityManager extends _i1.Mock
       (super.noSuchMethod(Invocation.getter(#tableName), returnValue: '')
           as String);
   @override
-  int Function(_i4.WaterClarity, _i4.WaterClarity) get nameComparator =>
-      (super.noSuchMethod(Invocation.getter(#nameComparator),
-              returnValue: (_i4.WaterClarity __p0, _i4.WaterClarity __p1) => 0)
-          as int Function(_i4.WaterClarity, _i4.WaterClarity));
-  @override
   Map<_i4.Id, _i4.WaterClarity> get entities =>
       (super.noSuchMethod(Invocation.getter(#entities),
               returnValue: <_i4.Id, _i4.WaterClarity>{})
@@ -4133,11 +4122,11 @@ class MockWaterClarityManager extends _i1.Mock
               returnValue: (_i4.WaterClarity __p0, _i4.WaterClarity __p1) => 0)
           as int Function(_i4.WaterClarity, _i4.WaterClarity));
   @override
-  List<_i4.WaterClarity> listSortedByName(
+  List<_i4.WaterClarity> listSortedByDisplayName(_i49.BuildContext? context,
           {String? filter, Iterable<_i4.Id>? ids = const []}) =>
       (super.noSuchMethod(
-          Invocation.method(
-              #listSortedByName, [], {#filter: filter, #ids: ids}),
+          Invocation.method(#listSortedByDisplayName, [context],
+              {#filter: filter, #ids: ids}),
           returnValue: <_i4.WaterClarity>[]) as List<_i4.WaterClarity>);
   @override
   String displayName(_i49.BuildContext? context, _i4.WaterClarity? entity) =>
@@ -4151,6 +4140,10 @@ class MockWaterClarityManager extends _i1.Mock
   bool nameExists(String? name) =>
       (super.noSuchMethod(Invocation.method(#nameExists, [name]),
           returnValue: false) as bool);
+  @override
+  String? displayNameFromId(_i49.BuildContext? context, _i4.Id? id) =>
+      (super.noSuchMethod(Invocation.method(#displayNameFromId, [context, id]))
+          as String?);
   @override
   _i61.Future<void> initialize() => (super.noSuchMethod(
       Invocation.method(#initialize, []),

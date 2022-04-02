@@ -30,7 +30,7 @@ void main() {
     appManager = StubbedAppManager();
 
     when(appManager.customEntityManager
-            .listSortedByName(filter: anyNamed("filter")))
+            .listSortedByDisplayName(any, filter: anyNamed("filter")))
         .thenReturn(entities);
   });
 

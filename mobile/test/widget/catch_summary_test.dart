@@ -442,7 +442,7 @@ void main() {
     when(fishingSpotManager.list()).thenReturn(fishingSpotMap.values.toList());
     when(fishingSpotManager.entity(any)).thenAnswer(
         (invocation) => fishingSpotMap[invocation.positionalArguments[0]]);
-    when(fishingSpotManager.nameComparator)
+    when(fishingSpotManager.displayNameComparator(any))
         .thenReturn((lhs, rhs) => compareIgnoreCase(lhs.name, rhs.name));
 
     methodManager = appManager.methodManager;
@@ -460,11 +460,12 @@ void main() {
     when(speciesManager.displayName(any, any))
         .thenAnswer((invocation) => invocation.positionalArguments[1].name);
     when(speciesManager.list()).thenReturn(speciesMap.values.toList());
-    when(speciesManager.listSortedByName(filter: anyNamed("filter")))
+    when(speciesManager.listSortedByDisplayName(any,
+            filter: anyNamed("filter")))
         .thenReturn(speciesMap.values.toList());
     when(speciesManager.entity(any)).thenAnswer(
         (invocation) => speciesMap[invocation.positionalArguments[0]]);
-    when(speciesManager.nameComparator)
+    when(speciesManager.displayNameComparator(any))
         .thenReturn((lhs, rhs) => compareIgnoreCase(lhs.name, rhs.name));
 
     waterClarityManager = appManager.waterClarityManager;

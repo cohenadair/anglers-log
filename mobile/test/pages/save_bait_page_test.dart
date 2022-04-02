@@ -81,7 +81,7 @@ void main() {
       ..name = "Lure";
 
     when(appManager.baitCategoryManager
-            .listSortedByName(filter: anyNamed("filter")))
+            .listSortedByDisplayName(any, filter: anyNamed("filter")))
         .thenReturn([baitCategory]);
     when(appManager.baitCategoryManager.entity(baitCategory.id))
         .thenReturn(baitCategory);

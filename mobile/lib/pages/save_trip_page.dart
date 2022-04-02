@@ -430,13 +430,14 @@ class _SaveTripPageState extends State<SaveTripPage> {
   Widget _buildAtmosphere() {
     // Use the first location we know about.
     var latLng = _locationMonitor.currentLocation;
+    FishingSpot? fishingSpot;
     for (var id in _catchesController.value) {
       var cat = _catchManager.entity(id);
       if (cat == null || !cat.hasFishingSpotId()) {
         continue;
       }
 
-      var fishingSpot = _fishingSpotManager.entity(cat.fishingSpotId);
+      fishingSpot = _fishingSpotManager.entity(cat.fishingSpotId);
       if (fishingSpot != null) {
         latLng = fishingSpot.latLng;
         break;
@@ -452,6 +453,7 @@ class _SaveTripPageState extends State<SaveTripPage> {
     return AtmosphereInput(
       fetcher: fetcher,
       controller: _atmosphereController,
+      fishingSpot: fishingSpot,
     );
   }
 

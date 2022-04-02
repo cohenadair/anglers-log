@@ -22,7 +22,8 @@ void main() {
       id: randomId(),
       name: "Lake Huron",
     );
-    when(appManager.bodyOfWaterManager.listSortedByName(
+    when(appManager.bodyOfWaterManager.listSortedByDisplayName(
+      any,
       filter: anyNamed("filter"),
     )).thenReturn([bodyOfWater]);
     when(appManager.bodyOfWaterManager.entity(any)).thenReturn(bodyOfWater);

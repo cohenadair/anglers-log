@@ -36,7 +36,8 @@ class AnglerListPage extends StatelessWidget {
       ),
       itemManager: ManageableListPageItemManager<Angler>(
         listenerManagers: [anglerManager],
-        loadItems: (query) => anglerManager.listSortedByName(filter: query),
+        loadItems: (query) =>
+            anglerManager.listSortedByDisplayName(context, filter: query),
         emptyItemsSettings: ManageableListPageEmptyListSettings(
           icon: iconAngler,
           title: Strings.of(context).anglerListPageEmptyListTitle,

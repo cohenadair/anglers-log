@@ -563,4 +563,29 @@ void main() {
 
     expect(builderCallCount, 1);
   });
+
+  testWidgets("displayNameFromId entity doesn't exist", (tester) async {
+    var context = await buildContext(tester);
+    expect(
+      entityManager.displayNameFromId(context, randomId()),
+      isNull,
+    );
+    expect(
+      entityManager.displayNameFromId(context, null),
+      isNull,
+    );
+  });
+
+  testWidgets("displayNameFromId entity exists", (tester) async {
+    var id = randomId();
+    await entityManager.addOrUpdate(Species(
+      id: id,
+      name: "Bluegill",
+    ));
+
+    expect(
+      entityManager.displayNameFromId(await buildContext(tester), id),
+      "Bluegill",
+    );
+  });
 }

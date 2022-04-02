@@ -1451,6 +1451,13 @@ class Strings {
 
   String get moonPhaseChip => _string("moonPhase_chip");
 
+  String get atmosphereInputCurrentLocation =>
+      _string("atmosphereInput_currentLocation");
+
+  String get atmosphereInputFetch => _string("atmosphereInput_fetch");
+
+  String get atmosphereInputAutoFetch => _string("atmosphereInput_autoFetch");
+
   String get atmosphereInputTemperature =>
       _string("atmosphereInput_temperature");
 

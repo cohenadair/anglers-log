@@ -371,7 +371,11 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
           context,
           controller: _timestampController,
           label: Strings.of(context).catchFieldTime,
-          onChange: (_) => _fetchAtmosphereIfNeeded(),
+          onChange: (_) {
+            _fetchAtmosphereIfNeeded();
+            // Rebuild widget tree, updating any inputs that depend on time.
+            setState(() {});
+          },
         ),
       ),
     );
@@ -475,9 +479,15 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
   }
 
   Widget _buildAtmosphere() {
-    return AtmosphereInput(
-      fetcher: newAtmosphereFetcher(),
-      controller: _atmosphereController,
+    return ValueListenableBuilder<FishingSpot?>(
+      valueListenable: _fishingSpotController,
+      builder: (context, fishingSpot, _) {
+        return AtmosphereInput(
+          fetcher: newAtmosphereFetcher(),
+          controller: _atmosphereController,
+          fishingSpot: fishingSpot,
+        );
+      },
     );
   }
 

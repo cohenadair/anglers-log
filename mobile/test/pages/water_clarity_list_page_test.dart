@@ -24,7 +24,8 @@ void main() {
   setUp(() {
     appManager = StubbedAppManager();
 
-    when(appManager.waterClarityManager.listSortedByName(
+    when(appManager.waterClarityManager.listSortedByDisplayName(
+      any,
       filter: anyNamed("filter"),
     )).thenReturn(clarities);
   });
@@ -56,7 +57,8 @@ void main() {
     ));
     expect(find.text("Water Clarities (2)"), findsOneWidget);
 
-    when(appManager.waterClarityManager.listSortedByName(
+    when(appManager.waterClarityManager.listSortedByDisplayName(
+      any,
       filter: anyNamed("filter"),
     )).thenReturn([clarities[0]]);
 

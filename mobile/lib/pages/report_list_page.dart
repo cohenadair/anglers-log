@@ -105,7 +105,7 @@ class ReportListPage extends StatelessWidget {
                 Strings.of(context).reportListPageReportsProDescription,
             proWidget: Column(
               children: reportManager
-                  .listSortedByName()
+                  .listSortedByDisplayName(context)
                   .map((e) => ListItem(title: Text(e.name)))
                   .toList(),
             ),
@@ -164,7 +164,7 @@ class ReportListPage extends StatelessWidget {
       result.add(_ItemType.blurredReports);
     } else {
       result.add(_ItemType.headingNoteDivider);
-      result.addAll(reportManager.listSortedByName());
+      result.addAll(reportManager.listSortedByDisplayName(context));
     }
 
     return result;
