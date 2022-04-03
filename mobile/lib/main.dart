@@ -87,6 +87,9 @@ class AnglersLog extends StatefulWidget {
 }
 
 class _AnglersLogState extends State<AnglersLog> {
+  static const _minTextScale = 1.0;
+  static const _maxTextScale = 1.35;
+
   late Future<bool> _appInitializedFuture;
   LegacyJsonResult? _legacyJsonResult;
 
@@ -124,18 +127,31 @@ class _AnglersLogState extends State<AnglersLog> {
         home: FutureBuilder<bool>(
           future: _appInitializedFuture,
           builder: (context, snapshot) {
+            Widget child;
+
             if (snapshot.hasError || !snapshot.hasData) {
-              return LandingPage();
+              child = LandingPage();
             } else if (_userPreferencesManager.didOnboard) {
-              return MainPage();
+              child = MainPage();
             } else {
-              return OnboardingJourney(
+              child = OnboardingJourney(
                 legacyJsonResult: _legacyJsonResult,
                 onFinished: () => _userPreferencesManager
                     .setDidOnboard(true)
                     .then((value) => setState(() {})),
               );
             }
+
+            return MediaQuery(
+              // Don't allow font sizes too large. After 1.35, the app starts to
+              // look very bad.
+              data: MediaQuery.of(context).copyWith(
+                textScaleFactor: MediaQuery.of(context)
+                    .textScaleFactor
+                    .clamp(_minTextScale, _maxTextScale),
+              ),
+              child: child,
+            );
           },
         ),
         debugShowCheckedModeBanner: false,

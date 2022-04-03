@@ -20,6 +20,7 @@ class _AddAnythingBottomSheet extends StatelessWidget {
   // The smallest width each item can be such that all text remains on 2 lines
   // (in English).
   static const _itemSize = 61.0;
+  static const _itemTitleMaxLines = 2;
 
   const _AddAnythingBottomSheet();
 
@@ -66,6 +67,8 @@ class _AddAnythingBottomSheet extends StatelessWidget {
                 child: Text(
                   spec.singularName(context),
                   textAlign: TextAlign.center,
+                  maxLines: _itemTitleMaxLines,
+                  overflow: TextOverflow.ellipsis,
                 ),
               ),
             ],
