@@ -104,11 +104,11 @@ class _SaveTripPageState extends State<SaveTripPage> {
   UserPreferenceManager get _userPreferenceManager =>
       UserPreferenceManager.of(context);
 
-  TimestampInputController get _startTimestampController =>
-      _fields[_idStartTimestamp]!.controller as TimestampInputController;
+  CurrentTimestampInputController get _startTimestampController =>
+      _fields[_idStartTimestamp]!.controller as CurrentTimestampInputController;
 
-  TimestampInputController get _endTimestampController =>
-      _fields[_idEndTimestamp]!.controller as TimestampInputController;
+  CurrentTimestampInputController get _endTimestampController =>
+      _fields[_idEndTimestamp]!.controller as CurrentTimestampInputController;
 
   TextInputController get _nameController =>
       _fields[_idName]!.controller as TextInputController;
@@ -165,14 +165,14 @@ class _SaveTripPageState extends State<SaveTripPage> {
       id: _idStartTimestamp,
       isRemovable: false,
       name: (context) => Strings.of(context).saveTripPageStartDateTime,
-      controller: TimestampInputController(_timeManager),
+      controller: CurrentTimestampInputController(_timeManager),
     );
 
     _fields[_idEndTimestamp] = Field(
       id: _idEndTimestamp,
       isRemovable: false,
       name: (context) => Strings.of(context).saveTripPageEndDateTime,
-      controller: TimestampInputController(_timeManager),
+      controller: CurrentTimestampInputController(_timeManager),
     );
 
     _fields[_idName] = Field(

@@ -19,7 +19,6 @@ import '../pages/settings_page.dart';
 import '../res/dimen.dart';
 import '../res/style.dart';
 import '../subscription_manager.dart';
-import '../time_manager.dart';
 import '../user_preference_manager.dart';
 import '../utils/atmosphere_utils.dart';
 import '../utils/page_utils.dart';
@@ -139,8 +138,6 @@ class __AtmosphereInputPageState extends State<_AtmosphereInputPage> {
 
   FishingSpotManager get _fishingSpotManager => FishingSpotManager.of(context);
 
-  TimeManager get _timeManager => TimeManager.of(context);
-
   SubscriptionManager get _subscriptionManager =>
       SubscriptionManager.of(context);
 
@@ -239,13 +236,13 @@ class __AtmosphereInputPageState extends State<_AtmosphereInputPage> {
     _fields[_idSunriseTimestamp] = Field(
       id: _idSunriseTimestamp,
       name: (context) => Strings.of(context).atmosphereInputTimeOfSunrise,
-      controller: TimestampInputController(_timeManager),
+      controller: TimestampInputController(),
     );
 
     _fields[_idSunsetTimestamp] = Field(
       id: _idSunsetTimestamp,
       name: (context) => Strings.of(context).atmosphereInputTimeOfSunset,
-      controller: TimestampInputController(_timeManager),
+      controller: TimestampInputController(),
     );
 
     if (widget.controller.value != null) {
@@ -625,12 +622,12 @@ class __AtmosphereInputPageState extends State<_AtmosphereInputPage> {
     }
 
     if (_sunriseController.hasValue) {
-      result.sunriseTimestamp = Int64(_sunriseController.value);
+      result.sunriseTimestamp = Int64(_sunriseController.value!);
       isSet = true;
     }
 
     if (_sunsetController.hasValue) {
-      result.sunsetTimestamp = Int64(_sunsetController.value);
+      result.sunsetTimestamp = Int64(_sunsetController.value!);
       isSet = true;
     }
 

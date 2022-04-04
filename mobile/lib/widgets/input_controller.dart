@@ -231,9 +231,15 @@ class PasswordInputController extends TextInputController {
 }
 
 /// A [TimestampInputController] value is always in milliseconds since Epoch
-/// local time.
-class TimestampInputController extends InputController<int> {
-  final TimeManager timeManager;
+/// local time, or null. If [timeManager] is non-null, all nullable methods
+/// are guaranteed to return a non-null value.
+///
+/// For a controller that defaults to the current date and time, see
+/// [CurrentTimestampInputController].
+class TimestampInputController extends InputController<int?> {
+  /// When non-null, the [TimestampInputController] defaults to the current
+  /// time.
+  final TimeManager? timeManager;
 
   /// The date component of the controller.
   DateTime? _date;
@@ -241,8 +247,8 @@ class TimestampInputController extends InputController<int> {
   /// The time component of the controller.
   TimeOfDay? _time;
 
-  TimestampInputController(
-    this.timeManager, {
+  TimestampInputController({
+    this.timeManager,
     DateTime? date,
     TimeOfDay? time,
   })  : _date = date,
@@ -250,36 +256,60 @@ class TimestampInputController extends InputController<int> {
 
   /// Returns only the date portion of the controller's value. The time
   /// properties of the returned [DateTime] are all 0. If the controller's
-  /// [_date] property is null, the current date is returned.
-  DateTime get date {
+  /// [_date] property is null and [timeManager] is null, null is returned.
+  /// If [timeManager] is not null, the current [DateTime] is returned.
+  DateTime? get date {
     if (_date != null) {
       return _date!;
     }
-    var now = timeManager.currentDateTime;
+
+    if (timeManager == null) {
+      return null;
+    }
+
+    var now = timeManager!.currentDateTime;
     return DateTime(now.year, now.month, now.day);
   }
 
   set date(DateTime? value) => _date = value;
 
-  int get timeInMillis {
+  int? get timeInMillis {
     var timeValue = time;
+    if (timeValue == null) {
+      return null;
+    }
     return timeValue.hour * Duration.millisecondsPerHour +
         timeValue.minute * Duration.millisecondsPerMinute;
   }
 
   /// Returns the controller's [TimeOfDay] value. If the controller's
-  /// [_time] property is null, the current time is returned.
-  TimeOfDay get time =>
-      _time ?? TimeOfDay.fromDateTime(timeManager.currentDateTime);
+  /// [_time] property is null and [timeManager] is null, null is returned.
+  /// If [timeManager] is not null, the current [TimeOfDay] is returned.
+  TimeOfDay? get time {
+    if (_time != null) {
+      return _time!;
+    }
+
+    if (timeManager == null) {
+      return null;
+    }
+
+    return TimeOfDay.fromDateTime(timeManager!.currentDateTime);
+  }
 
   set time(TimeOfDay? value) => _time = value;
 
-  DateTime get dateTime => DateTime.fromMillisecondsSinceEpoch(value);
+  DateTime? get dateTime {
+    var timestamp = value;
+    return timestamp == null
+        ? null
+        : DateTime.fromMillisecondsSinceEpoch(timestamp);
+  }
 
   bool get isMidnight => timeInMillis == 0;
 
   @override
-  int get value => combine(date, time).millisecondsSinceEpoch;
+  int? get value => combine(date, time)?.millisecondsSinceEpoch;
 
   @override
   set value(int? timestamp) {
@@ -289,7 +319,7 @@ class TimestampInputController extends InputController<int> {
       return;
     }
     date = DateTime.fromMillisecondsSinceEpoch(timestamp);
-    time = TimeOfDay.fromDateTime(date);
+    time = TimeOfDay.fromDateTime(date!);
 
     super.value = timestamp;
   }
@@ -302,7 +332,28 @@ class TimestampInputController extends InputController<int> {
   }
 
   @override
-  bool get hasValue => _date != null || _time != null;
+  bool get hasValue => value != null;
+}
+
+/// A [TimestampInputController] that defaults to the current date and time.
+class CurrentTimestampInputController extends TimestampInputController {
+  CurrentTimestampInputController(TimeManager timeManager)
+      : super(timeManager: timeManager);
+
+  @override
+  DateTime get date => super.date!;
+
+  @override
+  int? get timeInMillis => super.timeInMillis!;
+
+  @override
+  TimeOfDay get time => super.time!;
+
+  @override
+  DateTime get dateTime => super.dateTime!;
+
+  @override
+  int get value => super.value!;
 }
 
 class NumberFilterInputController extends InputController<NumberFilter> {

@@ -139,8 +139,8 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
 
   Catch? get _oldCatch => widget.oldCatch;
 
-  TimestampInputController get _timestampController =>
-      _fields[_idTimestamp]!.controller as TimestampInputController;
+  CurrentTimestampInputController get _timestampController =>
+      _fields[_idTimestamp]!.controller as CurrentTimestampInputController;
 
   InputController<Period> get _periodController =>
       _fields[_idPeriod]!.controller as InputController<Period>;

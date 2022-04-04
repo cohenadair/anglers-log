@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mobile/time_manager.dart';
 import 'package:quiver/strings.dart';
 
 import '../res/dimen.dart';
@@ -85,15 +86,19 @@ class DatePicker extends FormField<DateTime> {
               enabled: enabled,
               type: _PickerType(
                 value: () {
-                  return DateLabel(
-                    controller.date,
-                    enabled: enabled,
-                  );
+                  if (controller.hasValue) {
+                    return DateLabel(
+                      controller.date!,
+                      enabled: enabled,
+                    );
+                  }
+                  return const Empty();
                 },
                 openPicker: () {
                   showDatePicker(
                     context: state.context,
-                    initialDate: controller.date,
+                    initialDate: controller.date ??
+                        TimeManager.of(context).currentDateTime,
                     // Weird requirement of showDatePicker, but essentially
                     // let the user pick any date.
                     firstDate: DateTime(1900),
@@ -134,15 +139,19 @@ class TimePicker extends FormField<TimeOfDay> {
               padding: padding,
               type: _PickerType(
                 value: () {
-                  return TimeLabel(
-                    controller.time,
-                    enabled: enabled,
-                  );
+                  if (controller.hasValue) {
+                    return TimeLabel(
+                      controller.time!,
+                      enabled: enabled,
+                    );
+                  }
+                  return const Empty();
                 },
                 openPicker: () {
                   showTimePicker(
                     context: state.context,
-                    initialTime: controller.time,
+                    initialTime:
+                        controller.time ?? TimeManager.of(context).currentTime,
                   ).then((time) {
                     if (time == null) {
                       return;

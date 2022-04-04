@@ -135,9 +135,20 @@ bool isWithinOneWeek(DateTime a, DateTime b) {
 ///
 /// Due to the lack of granularity in [TimeOfDay], the seconds and milliseconds
 /// value of the result are that of the given [DateTime].
-DateTime combine(DateTime dateTime, TimeOfDay timeOfDay) {
-  return DateTime(dateTime.year, dateTime.month, dateTime.day, timeOfDay.hour,
-      timeOfDay.minute, dateTime.second, dateTime.millisecond);
+DateTime? combine(DateTime? dateTime, TimeOfDay? timeOfDay) {
+  if (dateTime == null && timeOfDay == null) {
+    return null;
+  }
+
+  return DateTime(
+    dateTime?.year ?? 0,
+    dateTime?.month ?? 1,
+    dateTime?.day ?? 1,
+    timeOfDay?.hour ?? 0,
+    timeOfDay?.minute ?? 0,
+    dateTime?.second ?? 0,
+    dateTime?.millisecond ?? 0,
+  );
 }
 
 /// Returns a new [DateTime] object, with time properties more granular than

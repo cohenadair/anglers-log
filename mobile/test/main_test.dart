@@ -73,6 +73,9 @@ void main() {
         .thenAnswer((_) => const Stream.empty());
     when(appManager.userPreferenceManager.mapType).thenReturn(null);
 
+    when(appManager.timeManager.currentDateTime)
+        .thenReturn(DateTime(2020, 1, 1));
+
     var channel = MockMethodChannel();
     when(channel.invokeMethod(any)).thenAnswer((_) => Future.value(null));
     when(appManager.servicesWrapper.methodChannel(any)).thenReturn(channel);

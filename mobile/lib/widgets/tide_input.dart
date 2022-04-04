@@ -63,8 +63,6 @@ class __TideInputPageState extends State<_TideInputPage> {
   late TimestampInputController _lowTideController;
   late TimestampInputController _highTideController;
 
-  TimeManager get _timeManager => TimeManager.of(context);
-
   InputController<Tide> get controller => widget.controller;
 
   bool get hasValue => controller.hasValue;
@@ -75,8 +73,8 @@ class __TideInputPageState extends State<_TideInputPage> {
   void initState() {
     super.initState();
 
-    _lowTideController = TimestampInputController(_timeManager);
-    _highTideController = TimestampInputController(_timeManager);
+    _lowTideController = TimestampInputController();
+    _highTideController = TimestampInputController();
 
     if (hasValue) {
       _lowTideController.value =
@@ -158,11 +156,11 @@ class __TideInputPageState extends State<_TideInputPage> {
       }
 
       if (_lowTideController.hasValue) {
-        newTide.lowTimestamp = Int64(_lowTideController.value);
+        newTide.lowTimestamp = Int64(_lowTideController.value!);
       }
 
       if (_highTideController.hasValue) {
-        newTide.highTimestamp = Int64(_highTideController.value);
+        newTide.highTimestamp = Int64(_highTideController.value!);
       }
     }
 

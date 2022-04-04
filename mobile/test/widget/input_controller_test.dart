@@ -116,15 +116,53 @@ void main() {
 
   group("TimestampInputController", () {
     test("Null input", () {
-      var controller =
-          TimestampInputController(StubbedAppManager().timeManager);
-      expect(controller.date, isNotNull);
-      expect(controller.time, isNotNull);
+      var controller = TimestampInputController();
+      expect(controller.date, isNull);
+      expect(controller.time, isNull);
+      expect(controller.timeInMillis, isNull);
+      expect(controller.dateTime, isNull);
+      expect(controller.isMidnight, isFalse);
+      expect(controller.value, isNull);
+      expect(controller.hasValue, isFalse);
     });
 
     test("Non-null input", () {
       var controller = TimestampInputController(
-        StubbedAppManager().timeManager,
+        date: DateTime(2020, 1, 15),
+        time: const TimeOfDay(hour: 15, minute: 30),
+      );
+      expect(controller.value,
+          DateTime(2020, 1, 15, 15, 30).millisecondsSinceEpoch);
+      expect(controller.dateTime, isNotNull);
+    });
+
+    test("Set to non-null", () {
+      var controller = TimestampInputController();
+      var timestamp = DateTime(2020, 1, 15, 15, 30).millisecondsSinceEpoch;
+      controller.value = timestamp;
+      expect(controller.value, timestamp);
+    });
+
+    test("Set to null", () {
+      var controller = TimestampInputController();
+      controller.value = null;
+      expect(controller.value, isNull);
+    });
+  });
+
+  group("CurrentTimestampInputController", () {
+    test("Null input", () {
+      var controller = TimestampInputController(
+          timeManager: StubbedAppManager().timeManager);
+      expect(controller.date, isNotNull);
+      expect(controller.time, isNotNull);
+      expect(controller.timeInMillis, isNotNull);
+      expect(controller.dateTime, isNotNull);
+    });
+
+    test("Non-null input", () {
+      var controller = TimestampInputController(
+        timeManager: StubbedAppManager().timeManager,
         date: DateTime(2020, 1, 15),
         time: const TimeOfDay(hour: 15, minute: 30),
       );
@@ -133,16 +171,16 @@ void main() {
     });
 
     test("Set to non-null", () {
-      var controller =
-          TimestampInputController(StubbedAppManager().timeManager);
+      var controller = TimestampInputController(
+          timeManager: StubbedAppManager().timeManager);
       var timestamp = DateTime(2020, 1, 15, 15, 30).millisecondsSinceEpoch;
       controller.value = timestamp;
       expect(controller.value, timestamp);
     });
 
     test("Set to null", () {
-      var controller =
-          TimestampInputController(StubbedAppManager().timeManager);
+      var controller = TimestampInputController(
+          timeManager: StubbedAppManager().timeManager);
       controller.value = null;
       expect(controller.value, isNotNull);
     });

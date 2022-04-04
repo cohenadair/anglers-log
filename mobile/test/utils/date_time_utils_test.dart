@@ -161,6 +161,10 @@ void main() {
   });
 
   test("combine", () {
+    expect(combine(null, null), isNull);
+    expect(combine(null, const TimeOfDay(hour: 5, minute: 5)), isNotNull);
+    expect(combine(DateTime(2020), null), isNotNull);
+
     expect(
       combine(DateTime(2020, 10, 26, 15, 30, 20, 1000),
           const TimeOfDay(hour: 16, minute: 45)),

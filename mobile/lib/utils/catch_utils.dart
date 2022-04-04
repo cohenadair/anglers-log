@@ -55,7 +55,7 @@ List<Field> allCatchFields(BuildContext context) {
       id: catchFieldIdTimestamp,
       isRemovable: false,
       name: (context) => Strings.of(context).catchFieldDateTime,
-      controller: TimestampInputController(TimeManager.of(context)),
+      controller: CurrentTimestampInputController(TimeManager.of(context)),
     ),
     Field(
       id: catchFieldIdPeriod,
