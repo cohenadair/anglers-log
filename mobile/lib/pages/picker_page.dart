@@ -9,6 +9,8 @@ import '../widgets/text.dart';
 import '../widgets/widget.dart';
 import 'manageable_list_page.dart';
 
+// TODO: #676 - Refactor to use a "static" ManageableListPage.
+
 /// A generic picker page for selecting a single or multiple items from a list.
 ///
 /// Note that a [Set] is used to determine which items are selected, and as
