@@ -8,6 +8,7 @@ import 'package:fixnum/fixnum.dart';
 import 'package:intl/intl.dart';
 import 'package:mobile/body_of_water_manager.dart';
 import 'package:mobile/trip_manager.dart';
+import 'package:mobile/utils/date_time_utils.dart';
 import 'package:path/path.dart';
 import 'package:quiver/strings.dart';
 
@@ -22,6 +23,7 @@ import '../log.dart';
 import '../method_manager.dart';
 import '../model/gen/anglerslog.pb.dart';
 import '../species_manager.dart';
+import '../time_manager.dart';
 import '../user_preference_manager.dart';
 import '../utils/number_utils.dart';
 import '../utils/protobuf_utils.dart';
@@ -132,6 +134,8 @@ class LegacyImporter {
   MethodManager get _methodManager => _appManager.methodManager;
 
   SpeciesManager get _speciesManager => _appManager.speciesManager;
+
+  TimeManager get _timeManager => _appManager.timeManager;
 
   TripManager get _tripManager => _appManager.tripManager;
 
@@ -685,12 +689,14 @@ class LegacyImporter {
         trip.name = name!;
       }
 
+      var now = _timeManager.currentDateTime;
+      trip.timeZone = now.locationName;
+
       int? startMs = map[_keyStartDate];
-      trip.startTimestamp =
-          Int64(startMs ?? DateTime.now().millisecondsSinceEpoch);
+      trip.startTimestamp = Int64(startMs ?? now.millisecondsSinceEpoch);
 
       int? endMs = map[_keyEndDate];
-      trip.endTimestamp = Int64(endMs ?? DateTime.now().millisecondsSinceEpoch);
+      trip.endTimestamp = Int64(endMs ?? now.millisecondsSinceEpoch);
 
       String? notes = map[_keyNotes];
       if (isNotEmpty(notes)) {

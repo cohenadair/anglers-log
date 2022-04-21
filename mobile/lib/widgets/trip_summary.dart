@@ -288,7 +288,7 @@ class _TripSummaryReport {
     var lengthSystem = userPreferenceManager.catchLengthSystem;
 
     var now = timeManager.currentDateTime;
-    containsNow = dateRange.endDate(now) == now;
+    containsNow = dateRange.endDate(context, now) == now;
 
     var totalCatches = 0;
     var totalCatchesPerHour = 0.0;

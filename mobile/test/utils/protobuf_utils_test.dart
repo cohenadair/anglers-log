@@ -4,6 +4,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mockito/mockito.dart';
+import 'package:timezone/timezone.dart';
 import 'package:uuid/uuid.dart';
 
 import '../mocks/mocks.mocks.dart';
@@ -1048,299 +1049,337 @@ void main() {
   });
 
   group("DateRanges", () {
-    assertStatsDateRange({
+    assertStatsDateRange(
+      WidgetTester tester, {
       required DateRange dateRange,
-      required DateTime now,
-      required DateTime expectedStart,
-      DateTime? expectedEnd,
-    }) {
-      expect(dateRange.startDate(now), equals(expectedStart));
-      expect(dateRange.endDate(now), equals(expectedEnd ?? now));
+      required TZDateTime now,
+      required TZDateTime expectedStart,
+      TZDateTime? expectedEnd,
+    }) async {
+      var context = await buildContext(tester);
+      dateRange.timeZone = "America/New_York";
+      expect(dateRange.startDate(context, now), equals(expectedStart));
+      expect(dateRange.endDate(context, now), equals(expectedEnd ?? now));
     }
 
-    test("Today", () {
-      assertStatsDateRange(
+    testWidgets("Today", (tester) async {
+      await assertStatsDateRange(
+        tester,
         dateRange: DateRange(period: DateRange_Period.today),
-        now: DateTime(2019, 1, 15, 15, 30),
-        expectedStart: DateTime(2019, 1, 15),
+        now: dateTime(2019, 1, 15, 15, 30),
+        expectedStart: dateTime(2019, 1, 15),
       );
     });
 
-    test("Yesterday", () {
-      assertStatsDateRange(
+    testWidgets("Yesterday", (tester) async {
+      await assertStatsDateRange(
+        tester,
         dateRange: DateRange(period: DateRange_Period.yesterday),
-        now: DateTime(2019, 1, 15, 15, 30),
-        expectedStart: DateTime(2019, 1, 14),
-        expectedEnd: DateTime(2019, 1, 15),
+        now: dateTime(2019, 1, 15, 15, 30),
+        expectedStart: dateTime(2019, 1, 14),
+        expectedEnd: dateTime(2019, 1, 15),
       );
     });
 
-    test("This week - year overlap", () {
-      assertStatsDateRange(
+    testWidgets("This week - year overlap", (tester) async {
+      await assertStatsDateRange(
+        tester,
         dateRange: DateRange(period: DateRange_Period.thisWeek),
-        now: DateTime(2019, 1, 3, 15, 30),
-        expectedStart: DateTime(2018, 12, 31, 0, 0, 0),
+        now: dateTime(2019, 1, 3, 15, 30),
+        expectedStart: dateTime(2018, 12, 31, 0, 0, 0),
       );
     });
 
-    test("This week - within the same month", () {
-      assertStatsDateRange(
+    testWidgets("This week - within the same month", (tester) async {
+      await assertStatsDateRange(
+        tester,
         dateRange: DateRange(period: DateRange_Period.thisWeek),
-        now: DateTime(2019, 2, 13, 15, 30),
-        expectedStart: DateTime(2019, 2, 11, 0, 0, 0),
+        now: dateTime(2019, 2, 13, 15, 30),
+        expectedStart: dateTime(2019, 2, 11, 0, 0, 0),
       );
     });
 
-    test("This week - same day as week start", () {
-      assertStatsDateRange(
+    testWidgets("This week - same day as week start", (tester) async {
+      await assertStatsDateRange(
+        tester,
         dateRange: DateRange(period: DateRange_Period.thisWeek),
-        now: DateTime(2019, 2, 4, 15, 30),
-        expectedStart: DateTime(2019, 2, 4, 0, 0, 0),
+        now: dateTime(2019, 2, 4, 15, 30),
+        expectedStart: dateTime(2019, 2, 4, 0, 0, 0),
       );
     });
 
-    test("This week - daylight savings change", () {
-      assertStatsDateRange(
+    testWidgets("This week - daylight savings change", (tester) async {
+      await assertStatsDateRange(
+        tester,
         dateRange: DateRange(period: DateRange_Period.thisWeek),
-        now: DateTime(2019, 3, 10, 15, 30),
-        expectedStart: DateTime(2019, 3, 4, 0, 0, 0),
+        now: dateTime(2019, 3, 10, 15, 30),
+        expectedStart: dateTime(2019, 3, 4, 0, 0, 0),
       );
     });
 
-    test("This month - first day", () {
-      assertStatsDateRange(
+    testWidgets("This month - first day", (tester) async {
+      await assertStatsDateRange(
+        tester,
         dateRange: DateRange(period: DateRange_Period.thisMonth),
-        now: DateTime(2019, 2, 1, 15, 30),
-        expectedStart: DateTime(2019, 2, 1, 0, 0, 0),
+        now: dateTime(2019, 2, 1, 15, 30),
+        expectedStart: dateTime(2019, 2, 1, 0, 0, 0),
       );
     });
 
-    test("This month - last day", () {
-      assertStatsDateRange(
+    testWidgets("This month - last day", (tester) async {
+      await assertStatsDateRange(
+        tester,
         dateRange: DateRange(period: DateRange_Period.thisMonth),
-        now: DateTime(2019, 3, 31, 15, 30),
-        expectedStart: DateTime(2019, 3, 1, 0, 0, 0),
+        now: dateTime(2019, 3, 31, 15, 30),
+        expectedStart: dateTime(2019, 3, 1, 0, 0, 0),
       );
 
-      assertStatsDateRange(
+      await assertStatsDateRange(
+        tester,
         dateRange: DateRange(period: DateRange_Period.thisMonth),
-        now: DateTime(2019, 2, 28, 15, 30),
-        expectedStart: DateTime(2019, 2, 1, 0, 0, 0),
+        now: dateTime(2019, 2, 28, 15, 30),
+        expectedStart: dateTime(2019, 2, 1, 0, 0, 0),
       );
 
-      assertStatsDateRange(
+      await assertStatsDateRange(
+        tester,
         dateRange: DateRange(period: DateRange_Period.thisMonth),
-        now: DateTime(2019, 4, 30, 15, 30),
-        expectedStart: DateTime(2019, 4, 1, 0, 0, 0),
-      );
-    });
-
-    test("This month - somewhere in the middle", () {
-      assertStatsDateRange(
-        dateRange: DateRange(period: DateRange_Period.thisMonth),
-        now: DateTime(2019, 5, 17, 15, 30),
-        expectedStart: DateTime(2019, 5, 1, 0, 0, 0),
+        now: dateTime(2019, 4, 30, 15, 30),
+        expectedStart: dateTime(2019, 4, 1, 0, 0, 0),
       );
     });
 
-    test("This month - daylight savings change", () {
-      assertStatsDateRange(
+    testWidgets("This month - somewhere in the middle", (tester) async {
+      await assertStatsDateRange(
+        tester,
         dateRange: DateRange(period: DateRange_Period.thisMonth),
-        now: DateTime(2019, 3, 13, 15, 30),
-        expectedStart: DateTime(2019, 3, 1, 0, 0, 0),
+        now: dateTime(2019, 5, 17, 15, 30),
+        expectedStart: dateTime(2019, 5, 1, 0, 0, 0),
       );
     });
 
-    test("This year - first day", () {
-      assertStatsDateRange(
+    testWidgets("This month - daylight savings change", (tester) async {
+      await assertStatsDateRange(
+        tester,
+        dateRange: DateRange(period: DateRange_Period.thisMonth),
+        now: dateTime(2019, 3, 13, 15, 30),
+        expectedStart: dateTime(2019, 3, 1, 0, 0, 0),
+      );
+    });
+
+    testWidgets("This year - first day", (tester) async {
+      await assertStatsDateRange(
+        tester,
         dateRange: DateRange(period: DateRange_Period.thisYear),
-        now: DateTime(2019, 1, 1, 15, 30),
-        expectedStart: DateTime(2019, 1, 1, 0, 0, 0),
+        now: dateTime(2019, 1, 1, 15, 30),
+        expectedStart: dateTime(2019, 1, 1, 0, 0, 0),
       );
     });
 
-    test("This year - last day", () {
-      assertStatsDateRange(
+    testWidgets("This year - last day", (tester) async {
+      await assertStatsDateRange(
+        tester,
         dateRange: DateRange(period: DateRange_Period.thisYear),
-        now: DateTime(2019, 12, 31, 15, 30),
-        expectedStart: DateTime(2019, 1, 1, 0, 0, 0),
+        now: dateTime(2019, 12, 31, 15, 30),
+        expectedStart: dateTime(2019, 1, 1, 0, 0, 0),
       );
     });
 
-    test("This year - somewhere in the middle", () {
-      assertStatsDateRange(
+    testWidgets("This year - somewhere in the middle", (tester) async {
+      await assertStatsDateRange(
+        tester,
         dateRange: DateRange(period: DateRange_Period.thisYear),
-        now: DateTime(2019, 5, 17, 15, 30),
-        expectedStart: DateTime(2019, 1, 1, 0, 0, 0),
+        now: dateTime(2019, 5, 17, 15, 30),
+        expectedStart: dateTime(2019, 1, 1, 0, 0, 0),
       );
     });
 
-    test("This year - daylight savings change", () {
-      assertStatsDateRange(
+    testWidgets("This year - daylight savings change", (tester) async {
+      await assertStatsDateRange(
+        tester,
         dateRange: DateRange(period: DateRange_Period.thisYear),
-        now: DateTime(2019, 3, 13, 15, 30),
-        expectedStart: DateTime(2019, 1, 1, 0, 0, 0),
+        now: dateTime(2019, 3, 13, 15, 30),
+        expectedStart: dateTime(2019, 1, 1, 0, 0, 0),
       );
     });
 
-    test("Last week - year overlap", () {
-      assertStatsDateRange(
+    testWidgets("Last week - year overlap", (tester) async {
+      await assertStatsDateRange(
+        tester,
         dateRange: DateRange(period: DateRange_Period.lastWeek),
-        now: DateTime(2019, 1, 3, 15, 30),
-        expectedStart: DateTime(2018, 12, 24, 0, 0, 0),
-        expectedEnd: DateTime(2018, 12, 31, 0, 0, 0),
+        now: dateTime(2019, 1, 3, 15, 30),
+        expectedStart: dateTime(2018, 12, 24, 0, 0, 0),
+        expectedEnd: dateTime(2018, 12, 31, 0, 0, 0),
       );
     });
 
-    test("Last week - within the same month", () {
-      assertStatsDateRange(
+    testWidgets("Last week - within the same month", (tester) async {
+      await assertStatsDateRange(
+        tester,
         dateRange: DateRange(period: DateRange_Period.lastWeek),
-        now: DateTime(2019, 2, 13, 15, 30),
-        expectedStart: DateTime(2019, 2, 4, 0, 0, 0),
-        expectedEnd: DateTime(2019, 2, 11, 0, 0, 0),
+        now: dateTime(2019, 2, 13, 15, 30),
+        expectedStart: dateTime(2019, 2, 4, 0, 0, 0),
+        expectedEnd: dateTime(2019, 2, 11, 0, 0, 0),
       );
     });
 
-    test("Last week - same day as week start", () {
-      assertStatsDateRange(
+    testWidgets("Last week - same day as week start", (tester) async {
+      await assertStatsDateRange(
+        tester,
         dateRange: DateRange(period: DateRange_Period.lastWeek),
-        now: DateTime(2019, 2, 4, 15, 30),
-        expectedStart: DateTime(2019, 1, 28, 0, 0, 0),
-        expectedEnd: DateTime(2019, 2, 4, 0, 0, 0),
+        now: dateTime(2019, 2, 4, 15, 30),
+        expectedStart: dateTime(2019, 1, 28, 0, 0, 0),
+        expectedEnd: dateTime(2019, 2, 4, 0, 0, 0),
       );
     });
 
-    test("Last week - daylight savings change", () {
-      assertStatsDateRange(
+    testWidgets("Last week - daylight savings change", (tester) async {
+      await assertStatsDateRange(
+        tester,
         dateRange: DateRange(period: DateRange_Period.lastWeek),
-        now: DateTime(2019, 3, 13, 15, 30),
-        expectedStart: DateTime(2019, 3, 3, 23, 0, 0),
-        expectedEnd: DateTime(2019, 3, 11, 0, 0, 0),
+        now: dateTime(2019, 3, 13, 15, 30),
+        expectedStart: dateTime(2019, 3, 3, 23, 0, 0),
+        expectedEnd: dateTime(2019, 3, 11, 0, 0, 0),
       );
     });
 
-    test("Last month - year overlap", () {
-      assertStatsDateRange(
+    testWidgets("Last month - year overlap", (tester) async {
+      await assertStatsDateRange(
+        tester,
         dateRange: DateRange(period: DateRange_Period.lastMonth),
-        now: DateTime(2019, 1, 3, 15, 30),
-        expectedStart: DateTime(2018, 12, 1, 0, 0, 0),
-        expectedEnd: DateTime(2019, 1, 1, 0, 0, 0),
+        now: dateTime(2019, 1, 3, 15, 30),
+        expectedStart: dateTime(2018, 12, 1, 0, 0, 0),
+        expectedEnd: dateTime(2019, 1, 1, 0, 0, 0),
       );
     });
 
-    test("Last month - within same year", () {
-      assertStatsDateRange(
+    testWidgets("Last month - within same year", (tester) async {
+      await assertStatsDateRange(
+        tester,
         dateRange: DateRange(period: DateRange_Period.lastMonth),
-        now: DateTime(2019, 2, 4, 15, 30),
-        expectedStart: DateTime(2019, 1, 1, 0, 0, 0),
-        expectedEnd: DateTime(2019, 2, 1, 0, 0, 0),
+        now: dateTime(2019, 2, 4, 15, 30),
+        expectedStart: dateTime(2019, 1, 1, 0, 0, 0),
+        expectedEnd: dateTime(2019, 2, 1, 0, 0, 0),
       );
     });
 
-    test("Last month - daylight savings change", () {
-      assertStatsDateRange(
+    testWidgets("Last month - daylight savings change", (tester) async {
+      await assertStatsDateRange(
+        tester,
         dateRange: DateRange(period: DateRange_Period.lastMonth),
-        now: DateTime(2019, 3, 13, 15, 30),
-        expectedStart: DateTime(2019, 2, 1, 0, 0, 0),
-        expectedEnd: DateTime(2019, 3, 1, 0, 0, 0),
+        now: dateTime(2019, 3, 13, 15, 30),
+        expectedStart: dateTime(2019, 2, 1, 0, 0, 0),
+        expectedEnd: dateTime(2019, 3, 1, 0, 0, 0),
       );
     });
 
-    test("Last year - normal case", () {
-      assertStatsDateRange(
+    testWidgets("Last year - normal case", (tester) async {
+      await assertStatsDateRange(
+        tester,
         dateRange: DateRange(period: DateRange_Period.lastYear),
-        now: DateTime(2019, 12, 26, 15, 30),
-        expectedStart: DateTime(2018, 1, 1, 0, 0, 0),
-        expectedEnd: DateTime(2019, 1, 1, 0, 0, 0),
+        now: dateTime(2019, 12, 26, 15, 30),
+        expectedStart: dateTime(2018, 1, 1, 0, 0, 0),
+        expectedEnd: dateTime(2019, 1, 1, 0, 0, 0),
       );
     });
 
-    test("Last year - daylight savings change", () {
-      assertStatsDateRange(
+    testWidgets("Last year - daylight savings change", (tester) async {
+      await assertStatsDateRange(
+        tester,
         dateRange: DateRange(period: DateRange_Period.lastYear),
-        now: DateTime(2019, 3, 13, 15, 30),
-        expectedStart: DateTime(2018, 1, 1, 0, 0, 0),
-        expectedEnd: DateTime(2019, 1, 1, 0, 0, 0),
+        now: dateTime(2019, 3, 13, 15, 30),
+        expectedStart: dateTime(2018, 1, 1, 0, 0, 0),
+        expectedEnd: dateTime(2019, 1, 1, 0, 0, 0),
       );
     });
 
-    test("Last 7 days - normal case", () {
-      assertStatsDateRange(
+    testWidgets("Last 7 days - normal case", (tester) async {
+      await assertStatsDateRange(
+        tester,
         dateRange: DateRange(period: DateRange_Period.last7Days),
-        now: DateTime(2019, 2, 20, 15, 30),
-        expectedStart: DateTime(2019, 2, 13, 15, 30, 0),
+        now: dateTime(2019, 2, 20, 15, 30),
+        expectedStart: dateTime(2019, 2, 13, 15, 30, 0),
       );
     });
 
-    test("Last 7 days - daylight savings change", () {
-      assertStatsDateRange(
+    testWidgets("Last 7 days - daylight savings change", (tester) async {
+      await assertStatsDateRange(
+        tester,
         dateRange: DateRange(period: DateRange_Period.last7Days),
-        now: DateTime(2019, 3, 13, 15, 30),
-        expectedStart: DateTime(2019, 3, 6, 14, 30, 0),
+        now: dateTime(2019, 3, 13, 15, 30),
+        expectedStart: dateTime(2019, 3, 6, 14, 30, 0),
       );
     });
 
-    test("Last 14 days - normal case", () {
-      assertStatsDateRange(
+    testWidgets("Last 14 days - normal case", (tester) async {
+      await assertStatsDateRange(
+        tester,
         dateRange: DateRange(period: DateRange_Period.last14Days),
-        now: DateTime(2019, 2, 20, 15, 30),
-        expectedStart: DateTime(2019, 2, 6, 15, 30, 0),
+        now: dateTime(2019, 2, 20, 15, 30),
+        expectedStart: dateTime(2019, 2, 6, 15, 30, 0),
       );
     });
 
-    test("Last 14 days - daylight savings change", () {
-      assertStatsDateRange(
+    testWidgets("Last 14 days - daylight savings change", (tester) async {
+      await assertStatsDateRange(
+        tester,
         dateRange: DateRange(period: DateRange_Period.last14Days),
-        now: DateTime(2019, 3, 13, 15, 30),
-        expectedStart: DateTime(2019, 2, 27, 14, 30, 0),
+        now: dateTime(2019, 3, 13, 15, 30),
+        expectedStart: dateTime(2019, 2, 27, 14, 30, 0),
       );
     });
 
-    test("Last 30 days - normal case", () {
-      assertStatsDateRange(
+    testWidgets("Last 30 days - normal case", (tester) async {
+      await assertStatsDateRange(
+        tester,
         dateRange: DateRange(period: DateRange_Period.last30Days),
-        now: DateTime(2019, 2, 20, 15, 30),
-        expectedStart: DateTime(2019, 1, 21, 15, 30, 0),
+        now: dateTime(2019, 2, 20, 15, 30),
+        expectedStart: dateTime(2019, 1, 21, 15, 30, 0),
       );
     });
 
-    test("Last 30 days - daylight savings change", () {
-      assertStatsDateRange(
+    testWidgets("Last 30 days - daylight savings change", (tester) async {
+      await assertStatsDateRange(
+        tester,
         dateRange: DateRange(period: DateRange_Period.last30Days),
-        now: DateTime(2019, 3, 13, 15, 30),
-        expectedStart: DateTime(2019, 2, 11, 14, 30, 0),
+        now: dateTime(2019, 3, 13, 15, 30),
+        expectedStart: dateTime(2019, 2, 11, 14, 30, 0),
       );
     });
 
-    test("Last 60 days - normal case", () {
-      assertStatsDateRange(
+    testWidgets("Last 60 days - normal case", (tester) async {
+      await assertStatsDateRange(
+        tester,
         dateRange: DateRange(period: DateRange_Period.last60Days),
-        now: DateTime(2019, 2, 20, 15, 30),
-        expectedStart: DateTime(2018, 12, 22, 15, 30, 0),
+        now: dateTime(2019, 2, 20, 15, 30),
+        expectedStart: dateTime(2018, 12, 22, 15, 30, 0),
       );
     });
 
-    test("Last 60 days - daylight savings change", () {
-      assertStatsDateRange(
+    testWidgets("Last 60 days - daylight savings change", (tester) async {
+      await assertStatsDateRange(
+        tester,
         dateRange: DateRange(period: DateRange_Period.last60Days),
-        now: DateTime(2019, 3, 13, 15, 30),
-        expectedStart: DateTime(2019, 1, 12, 14, 30, 0),
+        now: dateTime(2019, 3, 13, 15, 30),
+        expectedStart: dateTime(2019, 1, 12, 14, 30, 0),
       );
     });
 
-    test("Last 12 months - normal case", () {
-      assertStatsDateRange(
+    testWidgets("Last 12 months - normal case", (tester) async {
+      await assertStatsDateRange(
+        tester,
         dateRange: DateRange(period: DateRange_Period.last12Months),
-        now: DateTime(2019, 2, 20, 15, 30),
-        expectedStart: DateTime(2018, 2, 20, 15, 30),
+        now: dateTime(2019, 2, 20, 15, 30),
+        expectedStart: dateTime(2018, 2, 20, 15, 30),
       );
     });
 
-    test("Last 12 months - daylight savings change", () {
-      assertStatsDateRange(
+    testWidgets("Last 12 months - daylight savings change", (tester) async {
+      await assertStatsDateRange(
+        tester,
         dateRange: DateRange(period: DateRange_Period.last12Months),
-        now: DateTime(2019, 3, 13, 15, 30),
-        expectedStart: DateTime(2018, 3, 13, 15, 30),
+        now: dateTime(2019, 3, 13, 15, 30),
+        expectedStart: dateTime(2018, 3, 13, 15, 30),
       );
     });
   });

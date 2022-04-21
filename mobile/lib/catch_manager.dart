@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:mobile/time_manager.dart';
 import 'package:mobile/trip_manager.dart';
 import 'package:mobile/user_preference_manager.dart';
 import 'package:provider/provider.dart';
@@ -17,9 +18,7 @@ import 'image_manager.dart';
 import 'method_manager.dart';
 import 'model/gen/anglerslog.pb.dart';
 import 'species_manager.dart';
-import 'time_manager.dart';
 import 'utils/catch_utils.dart';
-import 'utils/date_time_utils.dart';
 import 'utils/protobuf_utils.dart';
 import 'utils/string_utils.dart';
 import 'water_clarity_manager.dart';
@@ -49,8 +48,6 @@ class CatchManager extends EntityManager<Catch> {
 
   SpeciesManager get _speciesManager => appManager.speciesManager;
 
-  TimeManager get _timeManager => appManager.timeManager;
-
   TripManager get _tripManager => appManager.tripManager;
 
   UserPreferenceManager get _userPreferenceManager =>
@@ -70,7 +67,7 @@ class CatchManager extends EntityManager<Catch> {
   @override
   String displayName(BuildContext context, Catch entity) {
     var species = _speciesManager.entity(entity.speciesId);
-    var timeString = formatTimestamp(context, entity.timestamp.toInt());
+    var timeString = entity.displayTimestamp(context);
 
     if (species == null) {
       return timeString;
@@ -329,11 +326,13 @@ class CatchManager extends EntityManager<Catch> {
       return false;
     }
 
+    var timeManager = TimeManager.of(context);
+
     return entities.values.where((cat) {
       var valid = true;
       valid &= dateRange == null ||
           dateRange.contains(
-              cat.timestamp.toInt(), _timeManager.currentDateTime);
+              context, cat.timestamp.toInt(), timeManager.now(cat.timeZone));
       valid &=
           isSetValid<Id>(anglerIds, cat.anglerId, hasValue: cat.hasAnglerId());
       valid &= areBaitsValid(cat);
@@ -396,8 +395,10 @@ class CatchManager extends EntityManager<Catch> {
       valid &= isNumberFilterMeasurementValid(windSpeedFilter,
           cat.atmosphere.windSpeed, _userPreferenceManager.windSpeedSystem,
           hasValue: cat.hasAtmosphere() && cat.atmosphere.hasWindSpeed());
-      valid &= hour == null || cat.timestamp.toDateTime().hour == hour;
-      valid &= month == null || cat.timestamp.toDateTime().month == month;
+
+      var dateTime = timeManager.dateTime(cat.timestamp.toInt(), cat.timeZone);
+      valid &= hour == null || dateTime.hour == hour;
+      valid &= month == null || dateTime.month == month;
 
       if (!valid) {
         return false;

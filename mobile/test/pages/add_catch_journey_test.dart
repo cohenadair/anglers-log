@@ -73,19 +73,19 @@ void main() {
         fileName: "android_logo.png",
         latLngLegacy: const LatLng(latitude: 1.234567, longitude: 7.654321),
         latLngAsync: const LatLng(latitude: 1.234567, longitude: 7.654321),
-        dateTime: DateTime(2020, 4, 1),
+        dateTime: dateTime(2020, 4, 1),
       ),
       createMockAssetEntity(
         fileName: "anglers_log_logo.png",
-        dateTime: DateTime(2020, 3, 1),
+        dateTime: dateTime(2020, 3, 1),
       ),
       createMockAssetEntity(
         fileName: "apple_logo.png",
-        dateTime: DateTime(2020, 2, 1),
+        dateTime: dateTime(2020, 2, 1),
       ),
       createMockAssetEntity(
         fileName: "flutter_logo.png",
-        dateTime: DateTime(2020, 1, 1),
+        dateTime: dateTime(2020, 1, 1),
       ),
     ];
     allAlbum = MockAssetPathEntity();
@@ -358,7 +358,7 @@ void main() {
     when(appManager.userPreferenceManager.setRateTimerStartedAt(any))
         .thenAnswer((_) => Future.value(null));
 
-    when(appManager.timeManager.msSinceEpoch)
+    when(appManager.timeManager.currentTimestamp)
         .thenReturn((Duration.millisecondsPerDay * (365 / 4) + 1500).round());
 
     await walkJourney(tester);
@@ -376,7 +376,7 @@ void main() {
     when(appManager.userPreferenceManager.setProTimerStartedAt(any))
         .thenAnswer((_) => Future.value(null));
 
-    when(appManager.timeManager.msSinceEpoch)
+    when(appManager.timeManager.currentTimestamp)
         .thenReturn((Duration.millisecondsPerDay * 7 + 1500).round());
 
     await walkJourney(tester);
@@ -403,7 +403,7 @@ void main() {
     when(appManager.userPreferenceManager.didRateApp).thenReturn(true);
     when(appManager.userPreferenceManager.proTimerStartedAt).thenReturn(1000);
 
-    when(appManager.timeManager.msSinceEpoch)
+    when(appManager.timeManager.currentTimestamp)
         .thenReturn((Duration.millisecondsPerDay * 7 - 1500).round());
 
     await walkJourney(tester);

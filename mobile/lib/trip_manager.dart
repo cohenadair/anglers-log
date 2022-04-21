@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:mobile/angler_manager.dart';
 import 'package:mobile/bait_manager.dart';
 import 'package:mobile/catch_manager.dart';
-import 'package:mobile/time_manager.dart';
 import 'package:provider/provider.dart';
 import 'package:quiver/strings.dart';
 
@@ -16,6 +15,7 @@ import 'image_manager.dart';
 import 'model/gen/anglerslog.pb.dart';
 import 'named_entity_manager.dart';
 import 'species_manager.dart';
+import 'time_manager.dart';
 import 'utils/catch_utils.dart';
 import 'utils/protobuf_utils.dart';
 import 'utils/string_utils.dart';
@@ -40,8 +40,6 @@ class TripManager extends NamedEntityManager<Trip> {
   ImageManager get _imageManager => appManager.imageManager;
 
   SpeciesManager get _speciesManager => appManager.speciesManager;
-
-  TimeManager get _timeManager => appManager.timeManager;
 
   @override
   Trip entityFromBytes(List<int> bytes) => Trip.fromBuffer(bytes);
@@ -75,8 +73,9 @@ class TripManager extends NamedEntityManager<Trip> {
     } else {
       trips = list(tripIds).where((trip) {
         if (dateRange != null &&
-            !dateRange.contains(
-                trip.startTimestamp.toInt(), _timeManager.currentDateTime)) {
+            context != null &&
+            !dateRange.contains(context, trip.startTimestamp.toInt(),
+                TimeManager.of(context).now(trip.timeZone))) {
           return false;
         }
 

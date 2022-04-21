@@ -70,15 +70,15 @@ void main() {
     return [
       Catch(
         id: randomId(),
-        timestamp: Int64(DateTime(2020, 1, 1).millisecondsSinceEpoch),
+        timestamp: Int64(dateTime(2020, 1, 1).millisecondsSinceEpoch),
       ),
       Catch(
         id: randomId(),
-        timestamp: Int64(DateTime(2020, 2, 1).millisecondsSinceEpoch),
+        timestamp: Int64(dateTime(2020, 2, 1).millisecondsSinceEpoch),
       ),
       Catch(
         id: randomId(),
-        timestamp: Int64(DateTime(2020, 3, 1).millisecondsSinceEpoch),
+        timestamp: Int64(dateTime(2020, 3, 1).millisecondsSinceEpoch),
       ),
     ];
   }
@@ -98,8 +98,8 @@ void main() {
   Trip defaultTrip() {
     return Trip(
       id: randomId(),
-      startTimestamp: Int64(DateTime(2020, 1, 1, 9).millisecondsSinceEpoch),
-      endTimestamp: Int64(DateTime(2020, 1, 3, 17).millisecondsSinceEpoch),
+      startTimestamp: Int64(dateTime(2020, 1, 1, 9).millisecondsSinceEpoch),
+      endTimestamp: Int64(dateTime(2020, 1, 3, 17).millisecondsSinceEpoch),
       name: "Test Trip",
       catchIds: [catches[0].id, catches[2].id],
       bodyOfWaterIds: [bodiesOfWater[2].id],
@@ -182,7 +182,7 @@ void main() {
     when(appManager.catchManager.list(any)).thenReturn(catches);
     when(appManager.catchManager.displayName(any, any)).thenAnswer(
         (invocation) => formatTimestamp(invocation.positionalArguments[0],
-            invocation.positionalArguments[1].timestamp.toInt()));
+            invocation.positionalArguments[1].timestamp.toInt(), null));
     when(appManager.catchManager.entity(any)).thenAnswer((invocation) => catches
         .firstWhereOrNull((e) => e.id == invocation.positionalArguments.first));
 

@@ -282,6 +282,7 @@ class AppManager {
   Future<void> initialize({bool isStartup = true}) async {
     // Managers that don't depend on anything.
     if (isStartup) {
+      await timeManager.initialize();
       await locationMonitor.initialize();
       await propertiesManager.initialize();
       await subscriptionManager.initialize();

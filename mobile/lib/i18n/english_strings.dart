@@ -798,6 +798,7 @@ Map<String, Map<String, String>> get englishStrings => {
         "pickerTitle_bodyOfWater": "Select Body Of Water",
         "pickerTitle_bodiesOfWater": "Select Bodies Of Water",
         "pickerTitle_catches": "Select Catches",
+        "pickerTitle_timeZone": "Select Time Zone",
         "keywords_temperatureMetric": "celsius temperature degrees c",
         "keywords_temperatureImperial": "fahrenheit temperature degrees f",
         "keywords_speedMetric": "kilometers per hour speed wind",
@@ -972,5 +973,7 @@ Map<String, Map<String, String>> get englishStrings => {
         "aboutPage_version": "Version",
         "aboutPage_privacy": "Privacy Policy",
         "fishingSpotDetails_addDetails": "Add Details",
+        "timeZoneInput_label": "Time Zone",
+        "timeZoneInput_searchHint": "Search time zones",
       },
     };

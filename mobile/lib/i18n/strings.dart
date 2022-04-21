@@ -1612,6 +1612,8 @@ class Strings {
 
   String get pickerTitleCatches => _string("pickerTitle_catches");
 
+  String get pickerTitleTimeZone => _string("pickerTitle_timeZone");
+
   String get keywordsTemperatureMetric => _string("keywords_temperatureMetric");
 
   String get keywordsTemperatureImperial =>
@@ -1963,6 +1965,10 @@ class Strings {
 
   String get fishingSpotDetailsAddDetails =>
       _string("fishingSpotDetails_addDetails");
+
+  String get timeZoneInputLabel => _string("timeZoneInput_label");
+
+  String get timeZoneInputSearchHint => _string("timeZoneInput_searchHint");
 }
 
 class StringsDelegate extends LocalizationsDelegate<Strings> {

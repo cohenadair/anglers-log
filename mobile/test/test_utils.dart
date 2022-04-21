@@ -8,6 +8,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/app_manager.dart';
 import 'package:mobile/i18n/strings.dart';
 import 'package:mobile/res/style.dart';
+import 'package:mobile/utils/date_time_utils.dart';
 import 'package:mobile/widgets/button.dart';
 import 'package:mobile/widgets/checkbox_input.dart';
 import 'package:mobile/widgets/list_item.dart';
@@ -15,6 +16,7 @@ import 'package:mobile/widgets/widget.dart';
 import 'package:mockito/mockito.dart';
 import 'package:photo_manager/photo_manager.dart';
 import 'package:provider/provider.dart';
+import 'package:timezone/timezone.dart';
 
 import 'mocks/mocks.dart';
 import 'mocks/mocks.mocks.dart';
@@ -151,6 +153,33 @@ Future<BuildContext> pumpContext(
     ),
   );
   return context;
+}
+
+TZDateTime dateTime(
+  int year, [
+  int month = 1,
+  int day = 1,
+  int hour = 0,
+  int minute = 0,
+  int second = 1,
+  int millisecond = 0,
+  int microsecond = 0,
+]) {
+  return TZDateTime(getLocation("America/New_York"), year, month, day, hour,
+      minute, second, millisecond);
+}
+
+TZDateTime now() {
+  return TZDateTime.now(getLocation("America/New_York"));
+}
+
+TZDateTime dateTimestamp(int timestamp, {bool isUtc = false}) {
+  if (isUtc) {
+    return TZDateTimes.utc(ms: timestamp);
+  } else {
+    return TZDateTime.fromMillisecondsSinceEpoch(
+        getLocation("America/New_York"), timestamp);
+  }
 }
 
 MockAssetEntity createMockAssetEntity({

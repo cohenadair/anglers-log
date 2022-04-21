@@ -57,7 +57,7 @@ void main() {
         .thenAnswer((_) => const Stream.empty());
 
     fetcher = MockAtmosphereFetcher();
-    when(fetcher.timestamp).thenReturn(10000);
+    when(fetcher.dateTime).thenReturn(dateTimestamp(10000));
 
     controller = InputController<Atmosphere>();
   });

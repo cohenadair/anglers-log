@@ -16,8 +16,8 @@ void main() {
   Trip defaultTrip() {
     return Trip(
       id: randomId(),
-      startTimestamp: Int64(DateTime(2020, 1, 1).millisecondsSinceEpoch),
-      endTimestamp: Int64(DateTime(2020, 2, 1).millisecondsSinceEpoch),
+      startTimestamp: Int64(dateTime(2020, 1, 1).millisecondsSinceEpoch),
+      endTimestamp: Int64(dateTime(2020, 2, 1).millisecondsSinceEpoch),
     );
   }
 

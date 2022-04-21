@@ -32,6 +32,7 @@ dependencies:
   firebase_core: ^1.12.0            # https://pub.dev/packages/firebase_core (Google)
   firebase_crashlytics: ^2.6.1      # https://pub.dev/packages/firebase_crashlytics (Google)
   flutter_image_compress: 1.1.0     # https://pub.dev/packages/flutter_image_compress
+  flutter_native_timezone: ^2.0.0   # https://pub.dev/packages/flutter_native_timezone
   flutter_svg: ^1.0.3               # https://pub.dev/packages/flutter_svg (verified)
   geolocator: ^8.2.0                # https://pub.dev/packages/geolocator (verified)
   googleapis: ^7.0.0                # https://pub.dev/packages/googleapis (Google)
@@ -59,6 +60,7 @@ dependencies:
   shared_preferences: ^2.0.13       # https://pub.dev/packages/shared_preferences (Flutter)
   share_plus: ^3.0.4                # https://pub.dev/packages/share_plus (Flutter Community)
   sqflite: ^2.0.2                   # https://pub.dev/packages/sqflite (verified)
+  timezone: ^0.8.0                  # https://pub.dev/packages/timezone
   url_launcher: ^6.0.20             # https://pub.dev/packages/url_launcher (Flutter)
   uuid: ^3.0.5                      # https://pub.dev/packages/uuid (verified)
 
@@ -94,6 +96,8 @@ flutter:
     - assets/google-logo.svg
     - assets/mapbox-logo.svg
     - assets/sensitive.properties
+
+    - packages/timezone/data/latest.tzf
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.io/assets-and-images/#resolution-aware.

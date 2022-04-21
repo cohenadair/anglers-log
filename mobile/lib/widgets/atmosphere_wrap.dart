@@ -6,7 +6,6 @@ import '../model/gen/anglerslog.pb.dart';
 import '../res/dimen.dart';
 import '../res/gen/custom_icons.dart';
 import '../res/style.dart';
-import '../utils/date_time_utils.dart';
 import '../utils/protobuf_utils.dart';
 import 'multi_measurement_input.dart';
 import 'widget.dart';
@@ -83,7 +82,7 @@ class AtmosphereWrap extends StatelessWidget {
     if (atmosphere.hasSunriseTimestamp()) {
       children.add(_Item(
         icon: CustomIcons.sunrise,
-        title: formatTimeMillis(context, atmosphere.sunriseTimestamp),
+        title: atmosphere.displaySunriseTimestamp(context),
         subtitle: Strings.of(context).atmosphereInputSunrise,
       ));
     }
@@ -91,7 +90,7 @@ class AtmosphereWrap extends StatelessWidget {
     if (atmosphere.hasSunsetTimestamp()) {
       children.add(_Item(
         icon: CustomIcons.sunset,
-        title: formatTimeMillis(context, atmosphere.sunsetTimestamp),
+        title: atmosphere.displaySunsetTimestamp(context),
         subtitle: Strings.of(context).atmosphereInputSunset,
       ));
     }

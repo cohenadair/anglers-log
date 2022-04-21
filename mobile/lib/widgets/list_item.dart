@@ -341,8 +341,7 @@ class ManageableListItem extends StatelessWidget {
     this.editing = false,
     this.enabled = true,
     this.isCondensed = false,
-  }) : assert(onTapDeleteButton != null ||
-            (deleteMessageBuilder != null && onConfirmDelete != null));
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -405,6 +404,11 @@ class ManageableListItem extends StatelessWidget {
   }
 
   Widget _buildDeleteIcon(BuildContext context) {
+    if (onTapDeleteButton == null &&
+        (deleteMessageBuilder == null || onConfirmDelete == null)) {
+      return const Empty();
+    }
+
     return _RowEndsCrossFade(
       state: editing ? CrossFadeState.showFirst : CrossFadeState.showSecond,
       firstChild: Padding(

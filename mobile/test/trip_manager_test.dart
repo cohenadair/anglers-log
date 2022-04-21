@@ -16,20 +16,20 @@ void main() {
     Trip(
       id: randomId(),
       name: "Trip 1",
-      startTimestamp: Int64(DateTime(2020, 1, 1, 9).millisecondsSinceEpoch),
-      endTimestamp: Int64(DateTime(2020, 1, 3, 17).millisecondsSinceEpoch),
+      startTimestamp: Int64(dateTime(2020, 1, 1, 9).millisecondsSinceEpoch),
+      endTimestamp: Int64(dateTime(2020, 1, 3, 17).millisecondsSinceEpoch),
     ),
     Trip(
       id: randomId(),
       name: "Trip 2",
-      startTimestamp: Int64(DateTime(2020, 1, 10, 8).millisecondsSinceEpoch),
-      endTimestamp: Int64(DateTime(2020, 1, 15, 18).millisecondsSinceEpoch),
+      startTimestamp: Int64(dateTime(2020, 1, 10, 8).millisecondsSinceEpoch),
+      endTimestamp: Int64(dateTime(2020, 1, 15, 18).millisecondsSinceEpoch),
     ),
     Trip(
       id: randomId(),
       name: "Trip 3",
-      startTimestamp: Int64(DateTime(2020, 1, 20, 8).millisecondsSinceEpoch),
-      endTimestamp: Int64(DateTime(2020, 1, 23, 18).millisecondsSinceEpoch),
+      startTimestamp: Int64(dateTime(2020, 1, 20, 8).millisecondsSinceEpoch),
+      endTimestamp: Int64(dateTime(2020, 1, 23, 18).millisecondsSinceEpoch),
     ),
   ];
 
@@ -37,8 +37,8 @@ void main() {
     return Trip(
       id: randomId(),
       name: "Trip Name",
-      startTimestamp: Int64(DateTime(2020, 1, 1, 9).millisecondsSinceEpoch),
-      endTimestamp: Int64(DateTime(2020, 1, 3, 17).millisecondsSinceEpoch),
+      startTimestamp: Int64(dateTime(2020, 1, 1, 9).millisecondsSinceEpoch),
+      endTimestamp: Int64(dateTime(2020, 1, 3, 17).millisecondsSinceEpoch),
     );
   }
 
@@ -71,8 +71,8 @@ void main() {
         context,
         Trip(
           name: "Trip Name",
-          startTimestamp: Int64(DateTime(2020, 1, 1, 9).millisecondsSinceEpoch),
-          endTimestamp: Int64(DateTime(2020, 1, 3, 17).millisecondsSinceEpoch),
+          startTimestamp: Int64(dateTime(2020, 1, 1, 9).millisecondsSinceEpoch),
+          endTimestamp: Int64(dateTime(2020, 1, 3, 17).millisecondsSinceEpoch),
         ),
       ),
       "Trip Name",
@@ -85,8 +85,8 @@ void main() {
       tripManager.displayName(
         context,
         Trip(
-          startTimestamp: Int64(DateTime(2020, 1, 1, 9).millisecondsSinceEpoch),
-          endTimestamp: Int64(DateTime(2020, 1, 3, 17).millisecondsSinceEpoch),
+          startTimestamp: Int64(dateTime(2020, 1, 1, 9).millisecondsSinceEpoch),
+          endTimestamp: Int64(dateTime(2020, 1, 3, 17).millisecondsSinceEpoch),
         ),
       ),
       "Jan 1, 2020 at 9:00 AM to Jan 3, 2020 at 5:00 PM",
@@ -103,8 +103,8 @@ void main() {
 
     var trips = tripManager.trips(
       dateRange: DateRange(
-        startTimestamp: Int64(DateTime(2020, 1, 9, 8).millisecondsSinceEpoch),
-        endTimestamp: Int64(DateTime(2020, 1, 11, 8).millisecondsSinceEpoch),
+        startTimestamp: Int64(dateTime(2020, 1, 9, 8).millisecondsSinceEpoch),
+        endTimestamp: Int64(dateTime(2020, 1, 11, 8).millisecondsSinceEpoch),
       ),
     );
 
@@ -117,8 +117,8 @@ void main() {
 
     var trips = tripManager.trips(
       dateRange: DateRange(
-        startTimestamp: Int64(DateTime(2021, 1, 9, 8).millisecondsSinceEpoch),
-        endTimestamp: Int64(DateTime(2021, 1, 11, 8).millisecondsSinceEpoch),
+        startTimestamp: Int64(dateTime(2021, 1, 9, 8).millisecondsSinceEpoch),
+        endTimestamp: Int64(dateTime(2021, 1, 11, 8).millisecondsSinceEpoch),
       ),
     );
 

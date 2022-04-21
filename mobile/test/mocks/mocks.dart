@@ -65,6 +65,7 @@ import 'package:photo_manager/photo_manager.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
 import 'package:sqflite/sqflite.dart';
 
+import '../test_utils.dart';
 import 'mocks.mocks.dart';
 
 // TODO: Remove generation - https://github.com/dart-lang/mockito/issues/347
@@ -278,7 +279,7 @@ class MockAssetEntity extends AssetEntity {
         );
 
   @override
-  DateTime get createDateTime => dateTime ?? DateTime.now();
+  DateTime get createDateTime => dateTime ?? now();
 
   @override
   Future<Uint8List?> get thumbnailData =>

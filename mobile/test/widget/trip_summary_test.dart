@@ -145,13 +145,14 @@ void main() {
       filter: anyNamed("filter"),
       tripIds: anyNamed("tripIds"),
     )).thenAnswer((invocation) {
+      var context = invocation.namedArguments[const Symbol("context")];
       var dateRangeArg = invocation.namedArguments[const Symbol("dateRange")];
       var dateRange = dateRangeArg == null
           ? DateRange(period: DateRange_Period.allDates)
           : dateRangeArg as DateRange;
       return trips
-          .where((e) => dateRange.contains(
-              e.startTimestamp.toInt(), appManager.timeManager.currentDateTime))
+          .where((e) => dateRange.contains(context, e.startTimestamp.toInt(),
+              appManager.timeManager.currentDateTime))
           .toList();
     });
     when(appManager.tripManager.idSet(entities: anyNamed("entities")))
@@ -162,7 +163,7 @@ void main() {
     when(appManager.tripManager.deleteMessage(any, any)).thenReturn("Delete");
 
     when(appManager.timeManager.currentDateTime)
-        .thenReturn(DateTime.fromMillisecondsSinceEpoch(1641397060000));
+        .thenReturn(dateTimestamp(1641397060000));
 
     when(appManager.userPreferenceManager.catchLengthSystem)
         .thenReturn(MeasurementSystem.metric);

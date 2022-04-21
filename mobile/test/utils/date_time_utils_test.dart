@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/utils/date_time_utils.dart';
 import 'package:mockito/mockito.dart';
+import 'package:timezone/data/latest.dart';
+import 'package:timezone/timezone.dart';
 
 import '../mocks/mocks.mocks.dart';
 import '../mocks/stubbed_app_manager.dart';
@@ -32,32 +34,32 @@ void main() {
   });
 
   group("isInFutureWithMinuteAccuracy", () {
-    var now = DateTime(2015, 5, 15, 12, 30, 45, 10000);
+    var now = dateTime(2015, 5, 15, 12, 30, 45, 10000);
 
     test("Value should be in the past", () {
       expect(
         isInFutureWithMinuteAccuracy(
-            DateTime(2014, 6, 16, 13, 31, 46, 10001), now),
+            dateTime(2014, 6, 16, 13, 31, 46, 10001), now),
         isFalse,
       );
       expect(
         isInFutureWithMinuteAccuracy(
-            DateTime(2015, 4, 16, 13, 31, 46, 10001), now),
+            dateTime(2015, 4, 16, 13, 31, 46, 10001), now),
         isFalse,
       );
       expect(
         isInFutureWithMinuteAccuracy(
-            DateTime(2015, 5, 14, 13, 31, 46, 10001), now),
+            dateTime(2015, 5, 14, 13, 31, 46, 10001), now),
         isFalse,
       );
       expect(
         isInFutureWithMinuteAccuracy(
-            DateTime(2015, 5, 15, 11, 31, 46, 10001), now),
+            dateTime(2015, 5, 15, 11, 31, 46, 10001), now),
         isFalse,
       );
       expect(
         isInFutureWithMinuteAccuracy(
-            DateTime(2015, 5, 15, 12, 29, 46, 10001), now),
+            dateTime(2015, 5, 15, 12, 29, 46, 10001), now),
         isFalse,
       );
     });
@@ -65,22 +67,22 @@ void main() {
     test("Value should be in the future", () {
       expect(
         isInFutureWithMinuteAccuracy(
-            DateTime(2016, 4, 14, 11, 29, 44, 9999), now),
+            dateTime(2016, 4, 14, 11, 29, 44, 9999), now),
         isTrue,
       );
       expect(
         isInFutureWithMinuteAccuracy(
-            DateTime(2015, 6, 14, 11, 29, 44, 9999), now),
+            dateTime(2015, 6, 14, 11, 29, 44, 9999), now),
         isTrue,
       );
       expect(
         isInFutureWithMinuteAccuracy(
-            DateTime(2015, 5, 16, 11, 29, 44, 9999), now),
+            dateTime(2015, 5, 16, 11, 29, 44, 9999), now),
         isTrue,
       );
       expect(
         isInFutureWithMinuteAccuracy(
-            DateTime(2015, 5, 15, 13, 29, 44, 9999), now),
+            dateTime(2015, 5, 15, 13, 29, 44, 9999), now),
         isTrue,
       );
     });
@@ -89,54 +91,54 @@ void main() {
       // Equal, since seconds and milliseconds aren't considered.
       expect(
         isInFutureWithMinuteAccuracy(
-            DateTime(2015, 5, 15, 12, 30, 44, 10001), now),
+            dateTime(2015, 5, 15, 12, 30, 44, 10001), now),
         isFalse,
       );
       expect(
         isInFutureWithMinuteAccuracy(
-            DateTime(2015, 5, 15, 12, 30, 45, 9999), now),
+            dateTime(2015, 5, 15, 12, 30, 45, 9999), now),
         isFalse,
       );
       expect(
         isInFutureWithMinuteAccuracy(
-            DateTime(2015, 5, 15, 12, 30, 44, 9999), now),
+            dateTime(2015, 5, 15, 12, 30, 44, 9999), now),
         isFalse,
       );
     });
   });
 
   group("isInFutureWithDayAccuracy", () {
-    var now = DateTime(2015, 5, 15, 12, 30, 45, 10000);
+    var now = dateTime(2015, 5, 15, 12, 30, 45, 10000);
 
     test("Value should be in the past", () {
       expect(
         isInFutureWithDayAccuracy(
-            DateTime(2014, 6, 16, 13, 31, 46, 10001), now),
+            dateTime(2014, 6, 16, 13, 31, 46, 10001), now),
         isFalse,
       );
       expect(
         isInFutureWithDayAccuracy(
-            DateTime(2015, 4, 16, 13, 31, 46, 10001), now),
+            dateTime(2015, 4, 16, 13, 31, 46, 10001), now),
         isFalse,
       );
       expect(
         isInFutureWithDayAccuracy(
-            DateTime(2015, 5, 14, 13, 31, 46, 10001), now),
+            dateTime(2015, 5, 14, 13, 31, 46, 10001), now),
         isFalse,
       );
     });
 
     test("Value should be in the future", () {
       expect(
-        isInFutureWithDayAccuracy(DateTime(2016, 4, 14, 11, 29, 44, 9999), now),
+        isInFutureWithDayAccuracy(dateTime(2016, 4, 14, 11, 29, 44, 9999), now),
         isTrue,
       );
       expect(
-        isInFutureWithDayAccuracy(DateTime(2015, 6, 14, 11, 29, 44, 9999), now),
+        isInFutureWithDayAccuracy(dateTime(2015, 6, 14, 11, 29, 44, 9999), now),
         isTrue,
       );
       expect(
-        isInFutureWithDayAccuracy(DateTime(2015, 5, 16, 11, 29, 44, 9999), now),
+        isInFutureWithDayAccuracy(dateTime(2015, 5, 16, 11, 29, 44, 9999), now),
         isTrue,
       );
     });
@@ -145,48 +147,50 @@ void main() {
       // Equal, since seconds and milliseconds aren't considered.
       expect(
         isInFutureWithDayAccuracy(
-            DateTime(2015, 5, 15, 11, 31, 46, 10001), now),
+            dateTime(2015, 5, 15, 11, 31, 46, 10001), now),
         isFalse,
       );
       expect(
         isInFutureWithDayAccuracy(
-            DateTime(2015, 5, 15, 12, 29, 46, 10001), now),
+            dateTime(2015, 5, 15, 12, 29, 46, 10001), now),
         isFalse,
       );
       expect(
-        isInFutureWithDayAccuracy(DateTime(2015, 5, 15, 13, 29, 44, 9999), now),
+        isInFutureWithDayAccuracy(dateTime(2015, 5, 15, 13, 29, 44, 9999), now),
         isFalse,
       );
     });
   });
 
-  test("combine", () {
-    expect(combine(null, null), isNull);
-    expect(combine(null, const TimeOfDay(hour: 5, minute: 5)), isNotNull);
-    expect(combine(DateTime(2020), null), isNotNull);
+  testWidgets("combine", (tester) async {
+    var context = await buildContext(tester);
+    expect(combine(context, null, null), isNull);
+    expect(
+        combine(context, null, const TimeOfDay(hour: 5, minute: 5)), isNotNull);
+    expect(combine(context, dateTime(2020), null), isNotNull);
 
     expect(
-      combine(DateTime(2020, 10, 26, 15, 30, 20, 1000),
+      combine(context, dateTime(2020, 10, 26, 15, 30, 20, 1000),
           const TimeOfDay(hour: 16, minute: 45)),
-      DateTime(2020, 10, 26, 16, 45, 20, 1000),
+      dateTime(2020, 10, 26, 16, 45, 20, 1000),
     );
   });
 
   test("dateTimeToDayAccuracy", () {
-    expect(dateTimeToDayAccuracy(DateTime(2020, 10, 26, 15, 30, 20, 1000)),
-        DateTime(2020, 10, 26, 0, 0, 0, 0));
+    expect(dateTimeToDayAccuracy(dateTime(2020, 10, 26, 15, 30, 20, 1000)),
+        dateTime(2020, 10, 26, 0, 0, 0, 0));
   });
 
   test("getStartOfWeek", () {
-    expect(startOfWeek(DateTime(2020, 9, 24)), DateTime(2020, 9, 21));
+    expect(startOfWeek(dateTime(2020, 9, 24)), dateTime(2020, 9, 21));
   });
 
   test("weekOfYear", () {
-    expect(weekOfYear(DateTime(2020, 2, 15)), 7);
+    expect(weekOfYear(dateTime(2020, 2, 15)), 7);
   });
 
   test("dayOfYear", () {
-    expect(dayOfYear(DateTime(2020, 2, 15)), 46);
+    expect(dayOfYear(dateTime(2020, 2, 15)), 46);
   });
 
   testWidgets("formatTimeOfDay", (tester) async {
@@ -219,11 +223,12 @@ void main() {
   testWidgets("timestampToSearchString", (tester) async {
     var appManager = StubbedAppManager();
     when(appManager.timeManager.currentDateTime)
-        .thenReturn(DateTime(2020, 9, 24));
+        .thenReturn(dateTime(2020, 9, 24));
     expect(
       timestampToSearchString(
           await buildContext(tester, appManager: appManager),
-          DateTime(2020, 9, 24).millisecondsSinceEpoch),
+          dateTime(2020, 9, 24).millisecondsSinceEpoch,
+          null),
       "Today at 12:00 AM September 24, 2020",
     );
   });
@@ -231,34 +236,54 @@ void main() {
   testWidgets("formatDateAsRecent", (tester) async {
     var appManager = StubbedAppManager();
     when(appManager.timeManager.currentDateTime)
-        .thenReturn(DateTime(2020, 9, 24));
+        .thenReturn(dateTime(2020, 9, 24));
     var context = await buildContext(tester, appManager: appManager);
 
-    expect(formatDateAsRecent(context, DateTime(2020, 9, 24)), "Today");
-    expect(formatDateAsRecent(context, DateTime(2020, 9, 23)), "Yesterday");
-    expect(formatDateAsRecent(context, DateTime(2020, 9, 22)), "Tuesday");
+    expect(
+      formatDateAsRecent(
+          context, TZDateTime(getLocation("America/New_York"), 2020, 9, 24)),
+      "Today",
+    );
+    expect(
+      formatDateAsRecent(
+          context, TZDateTime(getLocation("America/New_York"), 2020, 9, 23)),
+      "Yesterday",
+    );
+    expect(
+      formatDateAsRecent(
+          context, TZDateTime(getLocation("America/New_York"), 2020, 9, 22)),
+      "Tuesday",
+    );
     expect(
       formatDateAsRecent(
         context,
-        DateTime(2020, 9, 22),
+        TZDateTime(getLocation("America/New_York"), 2020, 9, 22),
         abbreviated: true,
       ),
       "Tue",
     );
-    expect(formatDateAsRecent(context, DateTime(2020, 8, 22)), "Aug 22");
-    expect(formatDateAsRecent(context, DateTime(2019, 8, 22)), "Aug 22, 2019");
+    expect(
+      formatDateAsRecent(
+          context, TZDateTime(getLocation("America/New_York"), 2020, 8, 22)),
+      "Aug 22",
+    );
+    expect(
+      formatDateAsRecent(
+          context, TZDateTime(getLocation("America/New_York"), 2019, 8, 22)),
+      "Aug 22, 2019",
+    );
   });
 
   testWidgets("formatDateTime exclude midnight", (tester) async {
     var appManager = StubbedAppManager();
     when(appManager.timeManager.currentDateTime)
-        .thenReturn(DateTime(2020, 9, 24));
+        .thenReturn(dateTime(2020, 9, 24));
     var context = await buildContext(tester, appManager: appManager);
 
     expect(
       formatDateTime(
         context,
-        DateTime(2020, 8, 22),
+        TZDateTime(getLocation("America/New_York"), 2020, 8, 22),
         excludeMidnight: false,
       ),
       "Aug 22 at 12:00 AM",
@@ -266,7 +291,7 @@ void main() {
     expect(
       formatDateTime(
         context,
-        DateTime(2020, 8, 22),
+        TZDateTime(getLocation("America/New_York"), 2020, 8, 22),
         excludeMidnight: true,
       ),
       "Aug 22",
@@ -635,7 +660,7 @@ void main() {
 
   testWidgets("isFrequencyTimerReady timer is null", (tester) async {
     var timeManager = MockTimeManager();
-    when(timeManager.msSinceEpoch).thenReturn(0);
+    when(timeManager.currentTimestamp).thenReturn(0);
 
     var invoked = false;
     expect(
@@ -649,13 +674,13 @@ void main() {
     );
 
     expect(invoked, isTrue);
-    verify(timeManager.msSinceEpoch).called(1);
+    verify(timeManager.currentTimestamp).called(1);
   });
 
   testWidgets("isFrequencyTimerReady not enough time has passed",
       (tester) async {
     var timeManager = MockTimeManager();
-    when(timeManager.msSinceEpoch).thenReturn(1500);
+    when(timeManager.currentTimestamp).thenReturn(1500);
 
     expect(
       isFrequencyTimerReady(
@@ -667,12 +692,12 @@ void main() {
       isFalse,
     );
 
-    verify(timeManager.msSinceEpoch).called(1);
+    verify(timeManager.currentTimestamp).called(1);
   });
 
   testWidgets("isFrequencyTimerReady returns true", (tester) async {
     var timeManager = MockTimeManager();
-    when(timeManager.msSinceEpoch).thenReturn(10000);
+    when(timeManager.currentTimestamp).thenReturn(10000);
 
     expect(
       isFrequencyTimerReady(
@@ -683,5 +708,19 @@ void main() {
       ),
       isTrue,
     );
+  });
+
+  testWidgets("formatDateTimeTz", (tester) async {
+    initializeTimeZones();
+
+    var context = await buildContext(tester);
+    var pst =
+        TZDateTime(getLocation("America/Los_Angeles"), 2022, 1, 15, 3, 30);
+    var cst = TZDateTime(getLocation("America/Chicago"), 2022, 1, 15, 3, 30);
+    var est = TZDateTime(getLocation("America/New_York"), 2022, 1, 15, 3, 30);
+
+    print("PST: ${formatDateTime(context, pst)}");
+    print("CST: ${formatDateTime(context, cst)}");
+    print("EST: ${formatDateTime(context, est)}");
   });
 }

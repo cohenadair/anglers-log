@@ -92,8 +92,8 @@ class _DateRangePickerPageState extends State<DateRangePickerPage> {
     var pickedRange = await showDateRangePicker(
       context: context,
       initialDateRange: DateTimeRange(
-        start: _customDateRange.startDate(now),
-        end: _customDateRange.endDate(now),
+        start: _customDateRange.startDate(context, now),
+        end: _customDateRange.endDate(context, now),
       ),
       firstDate: DateTime.fromMillisecondsSinceEpoch(0),
       lastDate: now,

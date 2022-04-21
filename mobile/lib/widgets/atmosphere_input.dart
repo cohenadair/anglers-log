@@ -115,6 +115,10 @@ class _AtmosphereInputPage extends StatefulWidget {
 class __AtmosphereInputPageState extends State<_AtmosphereInputPage> {
   static const _log = Log("AtmosphereInputPage");
 
+  // Note that the input fields do not include a time zone picker. This is
+  // because atmosphere is always included in entities that have their own
+  // time zone. As such, the atmosphere's time zone is set to that of the
+  // parent entity.
   static final _idTemperature = atmosphereFieldIdTemperature;
   static final _idWindSpeed = atmosphereFieldIdWindSpeed;
   static final _idWindDirection = atmosphereFieldIdWindDirection;
@@ -168,11 +172,11 @@ class __AtmosphereInputPageState extends State<_AtmosphereInputPage> {
   InputController<MoonPhase> get _moonPhaseController =>
       _fields[_idMoonPhase]!.controller as InputController<MoonPhase>;
 
-  TimestampInputController get _sunriseController =>
-      _fields[_idSunriseTimestamp]!.controller as TimestampInputController;
+  DateTimeInputController get _sunriseController =>
+      _fields[_idSunriseTimestamp]!.controller as DateTimeInputController;
 
-  TimestampInputController get _sunsetController =>
-      _fields[_idSunsetTimestamp]!.controller as TimestampInputController;
+  DateTimeInputController get _sunsetController =>
+      _fields[_idSunsetTimestamp]!.controller as DateTimeInputController;
 
   @override
   void initState() {
@@ -236,13 +240,13 @@ class __AtmosphereInputPageState extends State<_AtmosphereInputPage> {
     _fields[_idSunriseTimestamp] = Field(
       id: _idSunriseTimestamp,
       name: (context) => Strings.of(context).atmosphereInputTimeOfSunrise,
-      controller: TimestampInputController(),
+      controller: DateTimeInputController(context),
     );
 
     _fields[_idSunsetTimestamp] = Field(
       id: _idSunsetTimestamp,
       name: (context) => Strings.of(context).atmosphereInputTimeOfSunset,
-      controller: TimestampInputController(),
+      controller: DateTimeInputController(context),
     );
 
     if (widget.controller.value != null) {
@@ -314,7 +318,7 @@ class __AtmosphereInputPageState extends State<_AtmosphereInputPage> {
             style: stylePrimary(context),
           ),
           subtitle: Text(
-            formatTimestamp(context, widget.fetcher.timestamp),
+            formatDateTime(context, widget.fetcher.dateTime),
             style: stylePrimary(context),
           ),
           trailing: Button(
@@ -567,11 +571,11 @@ class __AtmosphereInputPageState extends State<_AtmosphereInputPage> {
     }
 
     if (atmosphere.hasSunriseTimestamp()) {
-      _sunriseController.value = atmosphere.sunriseTimestamp.toInt();
+      _sunriseController.value = atmosphere.sunriseDateTime(context);
     }
 
     if (atmosphere.hasSunsetTimestamp()) {
-      _sunsetController.value = atmosphere.sunsetTimestamp.toInt();
+      _sunsetController.value = atmosphere.sunsetDateTime(context);
     }
 
     widget.controller.value = atmosphere;
@@ -622,12 +626,12 @@ class __AtmosphereInputPageState extends State<_AtmosphereInputPage> {
     }
 
     if (_sunriseController.hasValue) {
-      result.sunriseTimestamp = Int64(_sunriseController.value!);
+      result.sunriseTimestamp = Int64(_sunriseController.timestamp!);
       isSet = true;
     }
 
     if (_sunsetController.hasValue) {
-      result.sunsetTimestamp = Int64(_sunsetController.value!);
+      result.sunsetTimestamp = Int64(_sunsetController.timestamp!);
       isSet = true;
     }
 

@@ -126,7 +126,7 @@ void main() {
     when(mapController.value.cameraPosition)
         .thenReturn(const CameraPosition(target: LatLng(0, 0)));
 
-    appManager.stubCurrentTime(DateTime(2020, 2, 1, 10, 30));
+    appManager.stubCurrentTime(dateTime(2020, 2, 1, 10, 30));
   });
 
   group("From journey", () {
@@ -137,7 +137,7 @@ void main() {
           images: [
             PickedImage(
               originalFile: File("test/resources/flutter_logo.png"),
-              dateTime: DateTime(2020, 1, 1, 15, 30),
+              dateTime: dateTime(2020, 1, 1, 15, 30),
             ),
           ],
         ),
@@ -185,7 +185,7 @@ void main() {
           images: [
             PickedImage(
               originalFile: File("test/resources/flutter_logo.png"),
-              dateTime: DateTime(2020, 1, 1, 15, 30),
+              dateTime: dateTime(2020, 1, 1, 15, 30),
             ),
           ],
           speciesId: species.id,
@@ -220,7 +220,7 @@ void main() {
           images: [
             PickedImage(
               originalFile: File("test/resources/flutter_logo.png"),
-              dateTime: DateTime(2020, 1, 1, 15, 30),
+              dateTime: dateTime(2020, 1, 1, 15, 30),
             ),
           ],
           speciesId: randomId(),
@@ -294,7 +294,7 @@ void main() {
 
       var cat = Catch()
         ..id = randomId()
-        ..timestamp = Int64(DateTime(2020, 1, 1, 15, 30).millisecondsSinceEpoch)
+        ..timestamp = Int64(dateTime(2020, 1, 1, 15, 30).millisecondsSinceEpoch)
         ..baits.add(BaitAttachment(baitId: bait.id))
         ..fishingSpotId = fishingSpot.id
         ..speciesId = species.id
@@ -436,7 +436,7 @@ void main() {
 
       var cat = Catch()
         ..id = randomId()
-        ..timestamp = Int64(DateTime(2020, 1, 1, 15, 30).millisecondsSinceEpoch)
+        ..timestamp = Int64(dateTime(2020, 1, 1, 15, 30).millisecondsSinceEpoch)
         ..speciesId = species.id;
 
       await tester.pumpWidget(Testable(
@@ -550,7 +550,7 @@ void main() {
 
       var cat = Catch()
         ..id = randomId()
-        ..timestamp = Int64(DateTime(2020, 1, 1, 15, 30).millisecondsSinceEpoch)
+        ..timestamp = Int64(dateTime(2020, 1, 1, 15, 30).millisecondsSinceEpoch)
         ..baits.add(BaitAttachment(baitId: bait.id))
         ..fishingSpotId = fishingSpot.id
         ..speciesId = species.id
@@ -683,7 +683,7 @@ void main() {
 
       var cat = Catch()
         ..id = randomId()
-        ..timestamp = Int64(DateTime(2020, 1, 1, 15, 30).millisecondsSinceEpoch)
+        ..timestamp = Int64(dateTime(2020, 1, 1, 15, 30).millisecondsSinceEpoch)
         ..speciesId = species.id
         ..imageNames.add("flutter_logo.png");
 
@@ -808,7 +808,7 @@ void main() {
       Catch cat = result.captured.first;
       expect(cat, isNotNull);
       expect(cat.timestamp.toInt(),
-          DateTime(2020, 2, 1, 10, 30).millisecondsSinceEpoch);
+          dateTime(2020, 2, 1, 10, 30).millisecondsSinceEpoch);
       expect(cat.speciesId, speciesId);
       expect(cat.fishingSpotId, fishingSpotId);
       expect(cat.baits, isEmpty);
@@ -958,7 +958,7 @@ void main() {
       Catch cat = result.captured.first;
       expect(cat, isNotNull);
       expect(cat.timestamp.toInt(),
-          DateTime(2020, 2, 1, 10, 30).millisecondsSinceEpoch);
+          dateTime(2020, 2, 1, 10, 30).millisecondsSinceEpoch);
       expect(cat.speciesId, speciesId);
       expect(cat.fishingSpotId, fishingSpotId);
       expect(cat.imageNames, isEmpty);
@@ -994,7 +994,7 @@ void main() {
   testWidgets("Edit title", (tester) async {
     var cat = Catch()
       ..id = randomId()
-      ..timestamp = Int64(DateTime(2020, 1, 1, 15, 30).millisecondsSinceEpoch)
+      ..timestamp = Int64(dateTime(2020, 1, 1, 15, 30).millisecondsSinceEpoch)
       ..speciesId = randomId();
 
     await tester.pumpWidget(Testable(
@@ -1537,7 +1537,7 @@ void main() {
   testWidgets("Atmosphere automatically fetched after changing date and time",
       (tester) async {
     when(appManager.timeManager.currentDateTime)
-        .thenReturn(DateTime(2020, 1, 1, 15, 30));
+        .thenReturn(dateTime(2020, 1, 1, 15, 30));
     when(appManager.subscriptionManager.isFree).thenReturn(false);
     when(appManager.userPreferenceManager.autoFetchAtmosphere).thenReturn(true);
     when(appManager.locationMonitor.currentLocation)
@@ -1803,5 +1803,9 @@ void main() {
 
     // Dispose of AtmosphereInput.
     await tapAndSettle(tester, find.byType(BackButton));
+  });
+
+  testWidgets("Time zone set to current if not tracking", (tester) async {
+    // TODO
   });
 }

@@ -27,7 +27,7 @@ import '../test_utils.dart';
 void main() {
   late StubbedAppManager appManager;
 
-  var now = DateTime.fromMillisecondsSinceEpoch(1600000000000);
+  var now = dateTimestamp(1600000000000);
 
   var anglerList = <Angler>[
     Angler()
@@ -916,7 +916,8 @@ void main() {
   testWidgets("Add report with custom date ranges", (tester) async {
     late DateRange fromDateRange;
     late DateRange toDateRange;
-    await tester.pumpWidget(Testable(
+    var context = await pumpContext(
+      tester,
       (context) {
         // Custom DisplayDateRange default to "this month".
         fromDateRange = DateRange(period: DateRange_Period.thisMonth);
@@ -924,7 +925,7 @@ void main() {
         return const SaveReportPage();
       },
       appManager: appManager,
-    ));
+    );
 
     await enterTextAndSettle(
         tester, find.widgetWithText(TextField, "Name"), "Report Name");
@@ -954,11 +955,14 @@ void main() {
     expect(report.hasFromDateRange(), isTrue);
     expect(report.fromDateRange.period, DateRange_Period.custom);
     expect(report.fromDateRange.startTimestamp.toInt(),
-        fromDateRange.startMs(now));
-    expect(report.fromDateRange.endTimestamp.toInt(), fromDateRange.endMs(now));
+        fromDateRange.startMs(context, now));
+    expect(report.fromDateRange.endTimestamp.toInt(),
+        fromDateRange.endMs(context, now));
     expect(report.toDateRange.period, DateRange_Period.custom);
-    expect(report.toDateRange.startTimestamp.toInt(), toDateRange.startMs(now));
-    expect(report.toDateRange.endTimestamp.toInt(), toDateRange.endMs(now));
+    expect(report.toDateRange.startTimestamp.toInt(),
+        toDateRange.startMs(context, now));
+    expect(report.toDateRange.endTimestamp.toInt(),
+        toDateRange.endMs(context, now));
     expect(report.anglerIds, isEmpty);
     expect(report.baits, isEmpty);
     expect(report.speciesIds, isEmpty);

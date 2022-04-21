@@ -446,7 +446,7 @@ void main() {
     expect(catches.length, 4);
 
     expect(catches[0].timestamp.toInt(),
-        DateTime(2019, 8, 13, 0, 44).millisecondsSinceEpoch);
+        dateTime(2019, 8, 13, 0, 44).millisecondsSinceEpoch);
     expect(catches[0].hasFishingSpotId(), isTrue);
     expect(speciesManager.entity(catches[0].speciesId)!.name, "Carp - Common");
     expect(catches[0].baits, isNotEmpty);
@@ -478,13 +478,13 @@ void main() {
     expect(measuredCatch.weight.fractionValue.unit, Unit.ounces);
 
     expect(catches[1].timestamp.toInt(),
-        DateTime(2019, 8, 12, 12, 44).millisecondsSinceEpoch);
+        dateTime(2019, 8, 12, 12, 44).millisecondsSinceEpoch);
     expect(catches[1].hasWasCatchAndRelease(), isFalse);
     expect(catches[2].timestamp.toInt(),
-        DateTime(2019, 8, 11, 8, 44).millisecondsSinceEpoch);
+        dateTime(2019, 8, 11, 8, 44).millisecondsSinceEpoch);
     expect(catches[2].hasWasCatchAndRelease(), isFalse);
     expect(catches[3].timestamp.toInt(),
-        DateTime(2019, 8, 10, 20, 44).millisecondsSinceEpoch);
+        dateTime(2019, 8, 10, 20, 44).millisecondsSinceEpoch);
     expect(catches[3].wasCatchAndRelease, isTrue);
     expect(catches[3].hasWaterClarityId(), isFalse);
 
@@ -504,7 +504,7 @@ void main() {
     expect(catches.length, 1);
 
     expect(catches[0].timestamp.toInt(),
-        DateTime(2021, 10, 2, 6, 10).millisecondsSinceEpoch);
+        dateTime(2021, 10, 2, 6, 10).millisecondsSinceEpoch);
   });
 
   test("Import iOS locations", () async {
@@ -612,7 +612,7 @@ void main() {
     expect(catches.length, 1);
 
     expect(catches[0].timestamp.toInt(),
-        DateTime(2017, 10, 11, 17, 19, 19, 420).millisecondsSinceEpoch);
+        dateTime(2017, 10, 11, 17, 19, 19, 420).millisecondsSinceEpoch);
     expect(catches[0].hasFishingSpotId(), isTrue);
     expect(
         speciesManager.entity(catches[0].speciesId)!.name, "Trout - Rainbow");

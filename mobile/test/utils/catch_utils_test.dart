@@ -117,7 +117,7 @@ void main() {
     expect(catchFilterMatchesTimestamp(context, "", cat), isFalse);
 
     // With timestamp.
-    cat = Catch(timestamp: Int64(DateTime(2021, 1, 15).millisecondsSinceEpoch));
+    cat = Catch(timestamp: Int64(dateTime(2021, 1, 15).millisecondsSinceEpoch));
     expect(catchFilterMatchesTimestamp(context, "JanuAry", cat), isTrue);
     expect(catchFilterMatchesTimestamp(context, " january", cat), isTrue);
     expect(catchFilterMatchesTimestamp(context, "15", cat), isTrue);

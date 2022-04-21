@@ -7,6 +7,7 @@ import 'package:mobile/model/gen/anglerslog.pb.dart';
 import 'package:mobile/utils/atmosphere_utils.dart';
 import 'package:mockito/mockito.dart';
 import 'package:test/test.dart';
+import 'package:timezone/timezone.dart';
 
 import 'mocks/mocks.mocks.dart';
 import 'mocks/stubbed_app_manager.dart';
@@ -40,7 +41,8 @@ void main() {
     when(appManager.httpWrapper.get(any))
         .thenAnswer((_) => Future.value(response));
 
-    var fetcher = AtmosphereFetcher(appManager.app, 0, const LatLng(0, 0));
+    var fetcher = AtmosphereFetcher(appManager.app,
+        TZDateTime(getLocation("America/New_York"), 0), const LatLng(0, 0));
 
     var atmosphere = await fetcher.fetch();
     expect(atmosphere, isNotNull);
@@ -48,7 +50,8 @@ void main() {
   }
 
   test("Null latLng returns null", () async {
-    var fetcher = AtmosphereFetcher(appManager.app, 0, null);
+    var fetcher = AtmosphereFetcher(
+        appManager.app, TZDateTime(getLocation("America/New_York"), 0), null);
     expect(await fetcher.fetch(), isNull);
   });
 
@@ -56,7 +59,8 @@ void main() {
     when(appManager.httpWrapper.get(any))
         .thenThrow(const SocketException("Test error"));
 
-    var fetcher = AtmosphereFetcher(appManager.app, 0, const LatLng(0, 0));
+    var fetcher = AtmosphereFetcher(appManager.app,
+        TZDateTime(getLocation("America/New_York"), 0), const LatLng(0, 0));
     expect(await fetcher.fetch(), isNull);
   });
 
@@ -64,7 +68,8 @@ void main() {
     when(appManager.httpWrapper.get(any))
         .thenAnswer((_) => Future.value(Response("", HttpStatus.badGateway)));
 
-    var fetcher = AtmosphereFetcher(appManager.app, 0, const LatLng(0, 0));
+    var fetcher = AtmosphereFetcher(appManager.app,
+        TZDateTime(getLocation("America/New_York"), 0), const LatLng(0, 0));
     expect(await fetcher.fetch(), isNull);
 
     var result = verify(appManager.httpWrapper.get(captureAny));
@@ -90,7 +95,8 @@ void main() {
     when(appManager.httpWrapper.get(any))
         .thenAnswer((_) => Future.value(Response("", HttpStatus.badGateway)));
 
-    var fetcher = AtmosphereFetcher(appManager.app, 0, const LatLng(0, 0));
+    var fetcher = AtmosphereFetcher(appManager.app,
+        TZDateTime(getLocation("America/New_York"), 0), const LatLng(0, 0));
     expect(await fetcher.fetch(), isNull);
 
     var result = verify(appManager.httpWrapper.get(captureAny));
@@ -110,7 +116,8 @@ void main() {
     when(appManager.httpWrapper.get(any))
         .thenAnswer((_) => Future.value(response));
 
-    var fetcher = AtmosphereFetcher(appManager.app, 0, const LatLng(0, 0));
+    var fetcher = AtmosphereFetcher(appManager.app,
+        TZDateTime(getLocation("America/New_York"), 0), const LatLng(0, 0));
     expect(await fetcher.fetch(), isNull);
     verifyNever(response.body);
   });
@@ -122,7 +129,8 @@ void main() {
     when(appManager.httpWrapper.get(any))
         .thenAnswer((_) => Future.value(response));
 
-    var fetcher = AtmosphereFetcher(appManager.app, 0, const LatLng(0, 0));
+    var fetcher = AtmosphereFetcher(appManager.app,
+        TZDateTime(getLocation("America/New_York"), 0), const LatLng(0, 0));
     expect(await fetcher.fetch(), isNull);
   });
 
@@ -134,7 +142,8 @@ void main() {
 
     // Null.
     when(response.body).thenReturn("{\"days\":null}");
-    var fetcher = AtmosphereFetcher(appManager.app, 0, const LatLng(0, 0));
+    var fetcher = AtmosphereFetcher(appManager.app,
+        TZDateTime(getLocation("America/New_York"), 0), const LatLng(0, 0));
     expect(await fetcher.fetch(), isNull);
 
     // Not a list.
@@ -197,7 +206,8 @@ void main() {
     when(appManager.httpWrapper.get(any))
         .thenAnswer((_) => Future.value(response));
 
-    var fetcher = AtmosphereFetcher(appManager.app, 0, const LatLng(0, 0));
+    var fetcher = AtmosphereFetcher(appManager.app,
+        TZDateTime(getLocation("America/New_York"), 0), const LatLng(0, 0));
 
     var atmosphere = await fetcher.fetch();
     expect(atmosphere, isNotNull);
@@ -237,7 +247,8 @@ void main() {
     when(appManager.httpWrapper.get(any))
         .thenAnswer((_) => Future.value(response));
 
-    var fetcher = AtmosphereFetcher(appManager.app, 0, const LatLng(0, 0));
+    var fetcher = AtmosphereFetcher(appManager.app,
+        TZDateTime(getLocation("America/New_York"), 0), const LatLng(0, 0));
 
     var atmosphere = await fetcher.fetch();
     expect(atmosphere, isNotNull);

@@ -20,7 +20,6 @@ import '../res/dimen.dart';
 import '../res/gen/custom_icons.dart';
 import '../res/style.dart';
 import '../species_manager.dart';
-import '../utils/date_time_utils.dart';
 import '../utils/page_utils.dart';
 import '../utils/protobuf_utils.dart';
 import '../utils/string_utils.dart';
@@ -152,7 +151,7 @@ class _CatchPageState extends State<CatchPage> {
   }
 
   String _formatTimeFields() {
-    var result = formatTimestamp(context, _catch.timestamp.toInt());
+    var result = _catch.displayTimestamp(context);
 
     if (!_catch.hasPeriod() && !_catch.hasSeason()) {
       return result;

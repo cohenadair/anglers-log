@@ -2,13 +2,13 @@ import "dart:math" as math;
 import 'dart:typed_data';
 
 import 'package:collection/collection.dart';
-import 'package:fixnum/fixnum.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:intl/intl.dart';
 import 'package:mapbox_gl/mapbox_gl.dart';
 import 'package:mobile/utils/report_utils.dart';
 import 'package:protobuf/protobuf.dart';
 import 'package:quiver/strings.dart';
+import 'package:timezone/timezone.dart';
 import 'package:uuid/uuid.dart';
 
 import '../custom_entity_manager.dart';
@@ -195,6 +195,18 @@ List<PickerPageItem<T>> _pickerItems<T>(
 }
 
 extension Atmospheres on Atmosphere {
+  TZDateTime sunriseDateTime(BuildContext context) =>
+      TimeManager.of(context).dateTime(sunriseTimestamp.toInt(), timeZone);
+
+  TZDateTime sunsetDateTime(BuildContext context) =>
+      TimeManager.of(context).dateTime(sunsetTimestamp.toInt(), timeZone);
+
+  String displaySunriseTimestamp(BuildContext context) =>
+      formatTimeMillis(context, sunriseTimestamp, timeZone);
+
+  String displaySunsetTimestamp(BuildContext context) =>
+      formatTimeMillis(context, sunsetTimestamp, timeZone);
+
   bool matchesFilter(BuildContext context, String? filter) {
     if (isEmpty(filter)) {
       return false;
@@ -289,6 +301,17 @@ extension BaitVariants on BaitVariant {
       return null;
     }
   }
+}
+
+extension Catches on Catch {
+  TZDateTime dateTime(BuildContext context) =>
+      TimeManager.of(context).dateTime(timestamp.toInt(), timeZone);
+
+  String displayTimestamp(BuildContext context) =>
+      formatTimestamp(context, timestamp.toInt(), timeZone);
+
+  String dateTimeSearchString(BuildContext context) =>
+      timestampToSearchString(context, timestamp.toInt(), timeZone);
 }
 
 extension Ids on Id {
@@ -708,7 +731,7 @@ extension Seasons on Season {
   /// Returns a [Season] from the given date and latitude. The Meteorological
   /// definition is used to calculate seasons:
   ///   - https://en.wikipedia.org/wiki/Season#Meteorological
-  static Season? from(DateTime dateTime, double? lat) {
+  static Season? from(TZDateTime dateTime, double? lat) {
     if (lat == null) {
       return null;
     }
@@ -1042,20 +1065,27 @@ extension Units on Unit {
 }
 
 extension DateRanges on DateRange {
-  int startMs(DateTime now) => startDate(now).millisecondsSinceEpoch;
+  int startMs(BuildContext context, TZDateTime now) =>
+      startDate(context, now).millisecondsSinceEpoch;
 
-  int endMs(DateTime now) => endDate(now).millisecondsSinceEpoch;
+  int endMs(BuildContext context, TZDateTime now) =>
+      endDate(context, now).millisecondsSinceEpoch;
 
-  int durationMs(DateTime now) => endMs(now) - startMs(now);
+  int durationMs(BuildContext context, TZDateTime now) =>
+      endMs(context, now) - startMs(context, now);
 
-  DateTime startDate(DateTime now) {
+  TZDateTime startDate(BuildContext context, TZDateTime now) {
+    var timeManager = TimeManager.of(context);
+
     if (hasStartTimestamp()) {
-      return DateTime.fromMillisecondsSinceEpoch(startTimestamp.toInt());
+      return timeManager.dateTime(startTimestamp.toInt(), timeZone);
     }
+
+    var now = timeManager.now(timeZone);
 
     switch (period) {
       case DateRange_Period.allDates:
-        return DateTime.fromMicrosecondsSinceEpoch(0);
+        return timeManager.dateTime(0, timeZone);
       case DateRange_Period.today:
         return dateTimeToDayAccuracy(now);
       case DateRange_Period.yesterday:
@@ -1077,9 +1107,9 @@ extension DateRanges on DateRange {
           month = DateTime.december;
           year -= 1;
         }
-        return DateTime(year, month);
+        return TZDateTime(now.location, year, month);
       case DateRange_Period.lastYear:
-        return DateTime(now.year - 1);
+        return TZDateTime(now.location, now.year - 1);
       case DateRange_Period.last7Days:
         return now.subtract(const Duration(days: 7));
       case DateRange_Period.last14Days:
@@ -1094,9 +1124,9 @@ extension DateRanges on DateRange {
     throw ArgumentError("Invalid input: $period");
   }
 
-  DateTime endDate(DateTime now) {
+  TZDateTime endDate(BuildContext context, TZDateTime now) {
     if (hasEndTimestamp()) {
-      return DateTime.fromMillisecondsSinceEpoch(endTimestamp.toInt());
+      return TimeManager.of(context).dateTime(endTimestamp.toInt(), timeZone);
     }
 
     switch (period) {
@@ -1125,12 +1155,12 @@ extension DateRanges on DateRange {
   }
 
   String displayName(BuildContext context) {
-    var now = TimeManager.of(context).currentDateTime;
+    var now = TimeManager.of(context).now(timeZone);
 
     if (hasStartTimestamp() && hasEndTimestamp()) {
       var formatter = DateFormat(monthDayYearFormat);
-      return "${formatter.format(startDate(now))} - "
-          "${formatter.format(endDate(now))}";
+      return "${formatter.format(startDate(context, now))} - "
+          "${formatter.format(endDate(context, now))}";
     }
 
     switch (period) {
@@ -1168,8 +1198,8 @@ extension DateRanges on DateRange {
     throw ArgumentError("Invalid input: $period");
   }
 
-  bool contains(int timestamp, DateTime now) =>
-      timestamp >= startMs(now) && timestamp <= endMs(now);
+  bool contains(BuildContext context, int timestamp, TZDateTime now) =>
+      timestamp >= startMs(context, now) && timestamp <= endMs(context, now);
 }
 
 extension MoonPhases on MoonPhase {
@@ -1617,6 +1647,12 @@ extension TideTypes on TideType {
 }
 
 extension Tides on Tide {
+  TZDateTime lowDateTime(BuildContext context) =>
+      TimeManager.of(context).dateTime(lowTimestamp.toInt(), timeZone);
+
+  TZDateTime highDateTime(BuildContext context) =>
+      TimeManager.of(context).dateTime(highTimestamp.toInt(), timeZone);
+
   String? displayValue(BuildContext context, {bool useChipName = false}) {
     if (!hasType() && !hasLowTimestamp() && !hasHighTimestamp()) {
       return null;
@@ -1640,7 +1676,7 @@ extension Tides on Tide {
 
       if (hasLowTimestamp()) {
         result += format(Strings.of(context).tideInputLowTimeValue, [
-          formatTimeMillis(context, lowTimestamp),
+          formatTimeMillis(context, lowTimestamp, timeZone),
         ]);
 
         if (hasHighTimestamp()) {
@@ -1650,7 +1686,7 @@ extension Tides on Tide {
 
       if (hasHighTimestamp()) {
         result += format(Strings.of(context).tideInputHighTimeValue, [
-          formatTimeMillis(context, highTimestamp),
+          formatTimeMillis(context, highTimestamp, timeZone),
         ]);
       }
 
@@ -1666,13 +1702,16 @@ extension Tides on Tide {
 extension Trips on Trip {
   int get duration => endTimestamp.toInt() - startTimestamp.toInt();
 
-  DateTime get startDateTime =>
-      DateTime.fromMillisecondsSinceEpoch(startTimestamp.toInt());
+  TZDateTime startDateTime(BuildContext context) =>
+      TimeManager.of(context).dateTime(startTimestamp.toInt(), timeZone);
 
-  DateTime get endDateTime =>
-      DateTime.fromMillisecondsSinceEpoch(endTimestamp.toInt());
+  TZDateTime endDateTime(BuildContext context) =>
+      TimeManager.of(context).dateTime(endTimestamp.toInt(), timeZone);
 
   String elapsedDisplayValue(BuildContext context) {
+    var startDateTime = this.startDateTime(context);
+    var endDateTime = this.endDateTime(context);
+
     var startStr = formatDateTime(
       context,
       startDateTime,
@@ -1745,8 +1784,4 @@ extension Trips on Trip {
       }
     }
   }
-}
-
-extension Int64s on Int64 {
-  DateTime toDateTime() => DateTime.fromMillisecondsSinceEpoch(toInt());
 }

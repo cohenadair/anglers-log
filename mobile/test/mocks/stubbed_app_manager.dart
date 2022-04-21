@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/entity_manager.dart';
+import 'package:mobile/time_manager.dart';
+import 'package:mobile/utils/date_time_utils.dart';
 import 'package:mockito/mockito.dart';
+import 'package:timezone/data/latest.dart';
+import 'package:timezone/timezone.dart';
 
 import 'mocks.dart';
 import 'mocks.mocks.dart';
@@ -91,8 +95,8 @@ class StubbedAppManager {
     when(app.servicesWrapper).thenReturn(servicesWrapper);
     when(app.urlLauncherWrapper).thenReturn(urlLauncherWrapper);
 
-    // Default to the current time.
-    stubCurrentTime(DateTime.now());
+    // Default to the current time and time zone.
+    stubCurrentTime(TZDateTimes.utc());
 
     // Setup default listener stubs on EntityListener classes, since
     // addTypedListener is called often in tests, but rarely actually used.
@@ -197,9 +201,14 @@ class StubbedAppManager {
     when(waterClarityManager.entity(any)).thenReturn(null);
   }
 
-  void stubCurrentTime(DateTime now) {
+  void stubCurrentTime(TZDateTime now) {
     when(timeManager.currentDateTime).thenReturn(now);
     when(timeManager.currentTime).thenReturn(TimeOfDay.fromDateTime(now));
-    when(timeManager.msSinceEpoch).thenReturn(now.millisecondsSinceEpoch);
+    when(timeManager.currentTimestamp).thenReturn(now.millisecondsSinceEpoch);
+
+    initializeTimeZones();
+    when(timeManager.currentLocation)
+        .thenReturn(TimeZoneLocation.fromName("America/New_York"));
+    when(timeManager.currentTimeZone).thenReturn("America/New_York");
   }
 }

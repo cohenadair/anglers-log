@@ -10,7 +10,6 @@ import 'package:mockito/mockito.dart';
 
 import '../mocks/mocks.dart';
 import '../mocks/mocks.mocks.dart';
-import '../mocks/stubbed_app_manager.dart';
 import '../test_utils.dart';
 
 void main() {
@@ -115,72 +114,66 @@ void main() {
   });
 
   group("TimestampInputController", () {
-    test("Null input", () {
-      var controller = TimestampInputController();
+    testWidgets("Null input", (tester) async {
+      var controller = DateTimeInputController(await buildContext(tester));
       expect(controller.date, isNull);
       expect(controller.time, isNull);
-      expect(controller.timeInMillis, isNull);
-      expect(controller.dateTime, isNull);
       expect(controller.isMidnight, isFalse);
       expect(controller.value, isNull);
       expect(controller.hasValue, isFalse);
     });
 
-    test("Non-null input", () {
-      var controller = TimestampInputController(
-        date: DateTime(2020, 1, 15),
-        time: const TimeOfDay(hour: 15, minute: 30),
+    testWidgets("Non-null input", (tester) async {
+      var controller = DateTimeInputController(
+        await buildContext(tester),
+        value: dateTime(2020, 1, 15, 15, 30),
       );
       expect(controller.value,
-          DateTime(2020, 1, 15, 15, 30).millisecondsSinceEpoch);
-      expect(controller.dateTime, isNotNull);
+          dateTime(2020, 1, 15, 15, 30).millisecondsSinceEpoch);
     });
 
-    test("Set to non-null", () {
-      var controller = TimestampInputController();
-      var timestamp = DateTime(2020, 1, 15, 15, 30).millisecondsSinceEpoch;
-      controller.value = timestamp;
-      expect(controller.value, timestamp);
+    testWidgets("Set to non-null", (tester) async {
+      var controller = DateTimeInputController(await buildContext(tester));
+      var value = dateTime(2020, 1, 15, 15, 30);
+      controller.value = value;
+      expect(controller.timestamp, value.millisecondsSinceEpoch);
     });
 
-    test("Set to null", () {
-      var controller = TimestampInputController();
+    testWidgets("Set to null", (tester) async {
+      var controller = DateTimeInputController(
+        await buildContext(tester),
+      );
       controller.value = null;
       expect(controller.value, isNull);
     });
   });
 
   group("CurrentTimestampInputController", () {
-    test("Null input", () {
-      var controller = TimestampInputController(
-          timeManager: StubbedAppManager().timeManager);
+    testWidgets("Null input", (tester) async {
+      var controller = DateTimeInputController(await buildContext(tester));
       expect(controller.date, isNotNull);
       expect(controller.time, isNotNull);
-      expect(controller.timeInMillis, isNotNull);
-      expect(controller.dateTime, isNotNull);
+      expect(controller.value, isNotNull);
     });
 
-    test("Non-null input", () {
-      var controller = TimestampInputController(
-        timeManager: StubbedAppManager().timeManager,
-        date: DateTime(2020, 1, 15),
-        time: const TimeOfDay(hour: 15, minute: 30),
+    testWidgets("Non-null input", (tester) async {
+      var controller = DateTimeInputController(
+        await buildContext(tester),
+        value: dateTime(2020, 1, 15, 15, 30),
       );
       expect(controller.value,
-          DateTime(2020, 1, 15, 15, 30).millisecondsSinceEpoch);
+          dateTime(2020, 1, 15, 15, 30).millisecondsSinceEpoch);
     });
 
-    test("Set to non-null", () {
-      var controller = TimestampInputController(
-          timeManager: StubbedAppManager().timeManager);
-      var timestamp = DateTime(2020, 1, 15, 15, 30).millisecondsSinceEpoch;
-      controller.value = timestamp;
-      expect(controller.value, timestamp);
+    testWidgets("Set to non-null", (tester) async {
+      var controller = DateTimeInputController(await buildContext(tester));
+      var value = dateTime(2020, 1, 15, 15, 30);
+      controller.value = value;
+      expect(controller.timestamp, value.millisecondsSinceEpoch);
     });
 
-    test("Set to null", () {
-      var controller = TimestampInputController(
-          timeManager: StubbedAppManager().timeManager);
+    testWidgets("Set to null", (tester) async {
+      var controller = DateTimeInputController(await buildContext(tester));
       controller.value = null;
       expect(controller.value, isNotNull);
     });

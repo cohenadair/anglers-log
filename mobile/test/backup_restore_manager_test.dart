@@ -12,6 +12,7 @@ import 'package:test/test.dart';
 import 'mocks/mocks.dart';
 import 'mocks/mocks.mocks.dart';
 import 'mocks/stubbed_app_manager.dart';
+import 'test_utils.dart';
 
 void main() {
   late StubbedAppManager appManager;
@@ -383,7 +384,7 @@ void main() {
         .thenAnswer((_) => Future.value(true));
     when(appManager.googleSignInWrapper.authenticatedClient(any))
         .thenAnswer((_) => Future.value(null));
-    appManager.stubCurrentTime(DateTime.fromMillisecondsSinceEpoch(100000000));
+    appManager.stubCurrentTime(dateTimestamp(100000000));
 
     await backupRestoreManager.initialize();
 
@@ -392,7 +393,7 @@ void main() {
     await untilCalled(appManager.ioWrapper.isConnected());
 
     verify(appManager.userPreferenceManager.lastBackupAt).called(1);
-    verify(appManager.timeManager.msSinceEpoch).called(1);
+    verify(appManager.timeManager.currentTimestamp).called(1);
     verifyNever(appManager.googleSignInWrapper.authenticatedClient(any));
   });
 
@@ -408,7 +409,7 @@ void main() {
         .thenAnswer((_) => Future.value(true));
     when(appManager.googleSignInWrapper.authenticatedClient(any))
         .thenAnswer((_) => Future.value(null));
-    appManager.stubCurrentTime(DateTime.fromMillisecondsSinceEpoch(100000000));
+    appManager.stubCurrentTime(dateTimestamp(100000000));
 
     await backupRestoreManager.initialize();
 

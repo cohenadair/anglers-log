@@ -426,9 +426,9 @@ void main() {
     when(catchManager.deleteMessage(any, any)).thenReturn("Delete");
 
     when(appManager.timeManager.currentDateTime)
-        .thenReturn(DateTime.fromMillisecondsSinceEpoch(105000));
-    when(appManager.timeManager.msSinceEpoch).thenReturn(
-        DateTime.fromMillisecondsSinceEpoch(105000).millisecondsSinceEpoch);
+        .thenReturn(dateTimestamp(105000));
+    when(appManager.timeManager.currentTimestamp)
+        .thenReturn(dateTimestamp(105000).millisecondsSinceEpoch);
 
     fishingSpotManager = appManager.fishingSpotManager;
     when(fishingSpotManager.name(any))

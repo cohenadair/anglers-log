@@ -15,7 +15,6 @@ import 'package:mobile/trip_manager.dart';
 import 'package:mobile/user_preference_manager.dart';
 import 'package:mobile/utils/catch_utils.dart';
 import 'package:mobile/utils/collection_utils.dart';
-import 'package:mobile/utils/date_time_utils.dart';
 import 'package:mobile/utils/page_utils.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mobile/widgets/text.dart';
@@ -276,8 +275,8 @@ class _PersonalBestsReportModel {
         weightBySpecies, speciesManager.displayNameComparator(context));
 
     for (var trip in tripManager.list()) {
-      if (!range.contains(
-          trip.startTimestamp.toInt(), timeManager.currentDateTime)) {
+      if (!range.contains(context, trip.startTimestamp.toInt(),
+          timeManager.now(trip.timeZone))) {
         continue;
       }
 
@@ -422,7 +421,7 @@ class _BiggestCatch extends StatelessWidget {
       subtitle: species == null
           ? Strings.of(context).unknownSpecies
           : speciesManager.displayName(context, species),
-      secondarySubtitle: formatTimestamp(context, cat.timestamp.toInt()),
+      secondarySubtitle: cat.displayTimestamp(context),
       imageName: cat.imageNames.firstOrNull,
       onTap: () => push(context, CatchPage(cat)),
     );

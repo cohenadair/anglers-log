@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:mobile/pages/image_picker_page.dart';
 import 'package:quiver/strings.dart';
+import 'package:timezone/timezone.dart';
 
 import '../log.dart';
 import '../model/gen/anglerslog.pb.dart';
@@ -230,98 +231,51 @@ class PasswordInputController extends TextInputController {
         );
 }
 
-/// A [TimestampInputController] value is always in milliseconds since Epoch
-/// local time, or null. If [timeManager] is non-null, all nullable methods
-/// are guaranteed to return a non-null value.
-///
-/// For a controller that defaults to the current date and time, see
-/// [CurrentTimestampInputController].
-class TimestampInputController extends InputController<int?> {
-  /// When non-null, the [TimestampInputController] defaults to the current
-  /// time.
-  final TimeManager? timeManager;
+/// A controller for picking a date and time. Both the [date] and [time] fields
+/// default to null. For a controller that defaults to the current date and
+/// time, see [CurrentDateTimeInputController].
+class DateTimeInputController extends InputController<TZDateTime?> {
+  final BuildContext context;
 
-  /// The date component of the controller.
-  DateTime? _date;
+  /// The date component of the controller. Defaults to null.
+  TZDateTime? date;
 
-  /// The time component of the controller.
-  TimeOfDay? _time;
+  /// The time component of the controller. Defaults to null.
+  TimeOfDay? time;
 
-  TimestampInputController({
-    this.timeManager,
-    DateTime? date,
-    TimeOfDay? time,
-  })  : _date = date,
-        _time = time;
-
-  /// Returns only the date portion of the controller's value. The time
-  /// properties of the returned [DateTime] are all 0. If the controller's
-  /// [_date] property is null and [timeManager] is null, null is returned.
-  /// If [timeManager] is not null, the current [DateTime] is returned.
-  DateTime? get date {
-    if (_date != null) {
-      return _date!;
-    }
-
-    if (timeManager == null) {
-      return null;
-    }
-
-    var now = timeManager!.currentDateTime;
-    return DateTime(now.year, now.month, now.day);
+  DateTimeInputController(
+    this.context, {
+    TZDateTime? value,
+  }) {
+    this.value = value;
   }
 
-  set date(DateTime? value) => _date = value;
-
-  int? get timeInMillis {
-    var timeValue = time;
-    if (timeValue == null) {
-      return null;
-    }
-    return timeValue.hour * Duration.millisecondsPerHour +
-        timeValue.minute * Duration.millisecondsPerMinute;
-  }
-
-  /// Returns the controller's [TimeOfDay] value. If the controller's
-  /// [_time] property is null and [timeManager] is null, null is returned.
-  /// If [timeManager] is not null, the current [TimeOfDay] is returned.
-  TimeOfDay? get time {
-    if (_time != null) {
-      return _time!;
-    }
-
-    if (timeManager == null) {
-      return null;
-    }
-
-    return TimeOfDay.fromDateTime(timeManager!.currentDateTime);
-  }
-
-  set time(TimeOfDay? value) => _time = value;
-
-  DateTime? get dateTime {
-    var timestamp = value;
-    return timestamp == null
-        ? null
-        : DateTime.fromMillisecondsSinceEpoch(timestamp);
-  }
-
-  bool get isMidnight => timeInMillis == 0;
-
-  @override
-  int? get value => combine(date, time)?.millisecondsSinceEpoch;
-
-  @override
-  set value(int? timestamp) {
-    if (timestamp == null) {
-      date = null;
-      time = null;
+  /// Sets the time zone of the controller. If [date] is null, this method
+  /// does nothing.
+  set timeZone(String timeZone) {
+    var date = this.date;
+    if (date == null) {
       return;
     }
-    date = DateTime.fromMillisecondsSinceEpoch(timestamp);
-    time = TimeOfDay.fromDateTime(date!);
+    this.date = dateTimeToDayAccuracy(date, timeZone);
+  }
 
-    super.value = timestamp;
+  bool get isMidnight =>
+      time == null ? false : (time!.hour == 0 && time!.minute == 0);
+
+  @override
+  TZDateTime? get value => combine(context, date, time);
+
+  @override
+  set value(TZDateTime? dateTime) {
+    if (dateTime == null) {
+      clear();
+      return;
+    }
+    date = dateTimeToDayAccuracy(dateTime);
+    time = TimeOfDay.fromDateTime(dateTime);
+
+    super.value = value;
   }
 
   @override
@@ -333,27 +287,42 @@ class TimestampInputController extends InputController<int?> {
 
   @override
   bool get hasValue => value != null;
+
+  int? get timestamp => value?.millisecondsSinceEpoch;
 }
 
-/// A [TimestampInputController] that defaults to the current date and time.
-class CurrentTimestampInputController extends TimestampInputController {
-  CurrentTimestampInputController(TimeManager timeManager)
-      : super(timeManager: timeManager);
+/// A [DateTimeInputController] that defaults to the current date and time.
+class CurrentDateTimeInputController extends DateTimeInputController {
+  CurrentDateTimeInputController(BuildContext context)
+      : super(
+          context,
+          value: TimeManager.of(context).currentDateTime,
+        );
 
   @override
-  DateTime get date => super.date!;
-
-  @override
-  int? get timeInMillis => super.timeInMillis!;
+  TZDateTime get date => super.date!;
 
   @override
   TimeOfDay get time => super.time!;
 
   @override
-  DateTime get dateTime => super.dateTime!;
+  TZDateTime get value => super.value!;
 
   @override
-  int get value => super.value!;
+  int get timestamp => super.timestamp!;
+}
+
+class TimeZoneInputController extends InputController<String> {
+  final BuildContext context;
+
+  TimeManager get _timeManager => TimeManager.of(context);
+
+  TimeZoneInputController(this.context);
+
+  /// If the current value is empty, always returns the current time zone.
+  @override
+  String get value =>
+      isEmpty(super.value) ? _timeManager.currentLocation.name : super.value!;
 }
 
 class NumberFilterInputController extends InputController<NumberFilter> {
