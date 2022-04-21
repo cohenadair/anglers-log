@@ -16,6 +16,7 @@ import 'package:provider/provider.dart';
 import 'app_manager.dart';
 import 'channels/migration_channel.dart';
 import 'i18n/strings.dart';
+import 'log.dart';
 import 'pages/landing_page.dart';
 import 'pages/main_page.dart';
 import 'pages/onboarding/onboarding_journey.dart';
@@ -23,6 +24,8 @@ import 'user_preference_manager.dart';
 import 'wrappers/services_wrapper.dart';
 
 void main() {
+  const _log = Log("main");
+
   void killReleaseApp() {
     if (kReleaseMode) {
       exit(1);
@@ -51,6 +54,7 @@ void main() {
     FlutterError.onError = (details) {
       FlutterError.presentError(details);
       FirebaseCrashlytics.instance.recordFlutterError(details);
+      _log.d("Flutter error: $details");
       killReleaseApp();
     };
 
@@ -58,6 +62,7 @@ void main() {
     Isolate.current.addErrorListener(RawReceivePort((pair) async {
       await FirebaseCrashlytics.instance
           .recordError(pair.first, pair.last, fatal: true);
+      _log.d("Isolate error: ${pair.last}");
       killReleaseApp();
     }).sendPort);
 
@@ -73,6 +78,7 @@ void main() {
   }, (error, stack) {
     // Catch zoned errors (i.e. calls to platform channels).
     FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
+    _log.d("Zoned error: $stack");
     killReleaseApp();
   });
 }
