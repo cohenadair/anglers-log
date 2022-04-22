@@ -269,7 +269,8 @@ class DateTimeInputController extends InputController<TZDateTime?> {
   @override
   set value(TZDateTime? dateTime) {
     if (dateTime == null) {
-      clear();
+      date = null;
+      time = null;
       return;
     }
     date = dateTimeToDayAccuracy(dateTime);
