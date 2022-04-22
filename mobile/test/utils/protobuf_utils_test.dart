@@ -461,6 +461,17 @@ void main() {
       );
     });
 
+    testWidgets("displayValue with no mainValue", (tester) async {
+      var measurement = MultiMeasurement(
+        system: MeasurementSystem.imperial_whole,
+        fractionValue: Measurement(
+          unit: Unit.ounces,
+          value: 8,
+        ),
+      );
+      expect(measurement.displayValue(await buildContext(tester)), "8 oz");
+    });
+
     testWidgets("filterString with no values", (tester) async {
       var measurement = MultiMeasurement();
       expect(measurement.filterString(await buildContext(tester)), isEmpty);

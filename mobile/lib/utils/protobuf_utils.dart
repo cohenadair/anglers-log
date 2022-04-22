@@ -452,12 +452,18 @@ extension MultiMeasurements on MultiMeasurement {
       return "${mainValue.stringValue()} ${fraction.symbol} $unit";
     }
 
-    var isFractionSet = includeFraction &&
+    var result = "";
+    if (hasMainValue()) {
+      result += mainValue.displayValue(context);
+    }
+
+    if (includeFraction &&
         hasFractionValue() &&
         fractionValue.hasValue() &&
-        fractionValue.value > 0;
-    var result = mainValue.displayValue(context) +
-        (isFractionSet ? " ${fractionValue.displayValue(context)}" : "");
+        fractionValue.value > 0) {
+      result +=
+          "${hasMainValue() ? " " : ""}${fractionValue.displayValue(context)}";
+    }
 
     if (isNotEmpty(ifZero) && result == "0") {
       return ifZero!;
