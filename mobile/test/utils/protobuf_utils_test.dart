@@ -714,6 +714,24 @@ void main() {
       expect(smaller >= larger, isFalse);
     });
 
+    test("Compare without main values", () {
+      var smaller = MultiMeasurement(
+        system: MeasurementSystem.imperial_whole,
+        fractionValue: Measurement(
+          unit: Unit.ounces,
+          value: 5,
+        ),
+      );
+      var larger = MultiMeasurement(
+        system: MeasurementSystem.imperial_whole,
+        fractionValue: Measurement(
+          unit: Unit.ounces,
+          value: 8,
+        ),
+      );
+      expect(smaller < larger, isTrue);
+    });
+
     test("average returns null when input is empty", () {
       expect(
           MultiMeasurements.average(
@@ -804,6 +822,81 @@ void main() {
           mainValue: Measurement(
             unit: Unit.kilograms,
             value: 30,
+          ),
+        ),
+      );
+    });
+
+    test("max returns correct value after conversion", () {
+      expect(
+        MultiMeasurements.max(
+          [
+            MultiMeasurement(
+              system: MeasurementSystem.metric,
+              mainValue: Measurement(
+                unit: Unit.kilograms,
+                value: 10,
+              ),
+            ),
+            MultiMeasurement(
+              system: MeasurementSystem.metric,
+              mainValue: Measurement(
+                unit: Unit.kilograms,
+                value: 30,
+              ),
+            ),
+            MultiMeasurement(
+              system: MeasurementSystem.imperial_whole,
+              mainValue: Measurement(
+                unit: Unit.pounds,
+                value: 200,
+              ),
+            ),
+          ],
+          MeasurementSystem.metric,
+          Unit.kilograms,
+        ),
+        MultiMeasurement(
+          system: MeasurementSystem.metric,
+          mainValue: Measurement(
+            unit: Unit.kilograms,
+            value: 90.7184,
+          ),
+        ),
+      );
+    });
+
+    test("max when measurements have no main value", () {
+      expect(
+        MultiMeasurements.max(
+          [
+            MultiMeasurement(
+              system: MeasurementSystem.imperial_whole,
+              fractionValue: Measurement(
+                unit: Unit.ounces,
+                value: 10,
+              ),
+            ),
+            MultiMeasurement(
+              system: MeasurementSystem.metric,
+              mainValue: Measurement(
+                unit: Unit.kilograms,
+                value: 0,
+              ),
+            ),
+          ],
+          MeasurementSystem.imperial_whole,
+          Unit.pounds,
+        ),
+        MultiMeasurement(
+          system: MeasurementSystem.imperial_whole,
+          mainValue: Measurement(
+            unit: Unit.pounds,
+            value: 0,
+          ),
+          fractionValue: Measurement(
+            unit: Unit.ounces,
+            value: 10,
           ),
         ),
       );

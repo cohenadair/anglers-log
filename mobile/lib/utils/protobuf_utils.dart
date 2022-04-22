@@ -508,6 +508,16 @@ extension MultiMeasurements on MultiMeasurement {
     result.system = MeasurementSystem.imperial_decimal;
 
     if (result.hasFractionValue() && result.fractionValue.hasValue()) {
+      // Protobuf default values are immutable. Ensure a mutable version is
+      // available, and has the correct unit.
+      if (!result.hasMainValue()) {
+        result.mainValue = Measurement();
+        var mainUnit = result.fractionValue.unit.mainUnit;
+        if (mainUnit != null) {
+          result.mainValue.unit = mainUnit;
+        }
+      }
+
       result.mainValue.value = result.mainValue.value +
           result.fractionValue.unit.toDecimal(result.fractionValue.value);
       result.clearFractionValue();
@@ -1035,6 +1045,17 @@ extension Units on Unit {
         return Unit.inches;
       case Unit.pounds:
         return Unit.ounces;
+      default:
+        return null;
+    }
+  }
+
+  Unit? get mainUnit {
+    switch (this) {
+      case Unit.inches:
+        return Unit.feet;
+      case Unit.ounces:
+        return Unit.pounds;
       default:
         return null;
     }
