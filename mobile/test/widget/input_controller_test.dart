@@ -10,6 +10,7 @@ import 'package:mockito/mockito.dart';
 
 import '../mocks/mocks.dart';
 import '../mocks/mocks.mocks.dart';
+import '../mocks/stubbed_app_manager.dart';
 import '../test_utils.dart';
 
 void main() {
