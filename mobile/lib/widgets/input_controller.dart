@@ -1,7 +1,10 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:mobile/pages/image_picker_page.dart';
+import 'package:mobile/user_preference_manager.dart';
+import 'package:mobile/widgets/multi_measurement_input.dart';
 import 'package:quiver/strings.dart';
 import 'package:timezone/timezone.dart';
 
@@ -343,31 +346,44 @@ class MultiMeasurementInputController
     extends InputController<MultiMeasurement> {
   static const _log = Log("MultiMeasurementInputController");
 
+  final BuildContext context;
   final NumberInputController mainController;
   final NumberInputController fractionController;
+  final MultiMeasurementInputSpec spec;
 
-  /// The number of decimal places to show for the controller. Note that
-  /// regardless of this value, the main value will be rounded if the main
-  /// measurement system is [MeasurementSystem.imperial_whole].
-  final int? mainValueDecimalPlaces;
+  // Values that override the controller's MultiMeasurementInputSpec. These
+  // values will be non-null when the controller's value is explicitly set, such
+  // as when editing an entity.
+  MeasurementSystem? _systemOverride;
+  Unit? _mainUnitOverride;
+  Unit? _fractionUnitOverride;
 
-  Unit _mainUnit;
-  Unit? _fractionUnit;
-
-  MeasurementSystem _system;
+  late StreamSubscription<void> preferenceSubscription;
 
   MultiMeasurementInputController({
+    required this.context,
+    required this.spec,
     NumberInputController? mainController,
     NumberInputController? fractionController,
-    MeasurementSystem? system,
-    required Unit mainUnit,
-    Unit? fractionUnit,
-    this.mainValueDecimalPlaces,
   })  : mainController = mainController ?? NumberInputController(),
-        fractionController = fractionController ?? NumberInputController(),
-        _system = system ?? MeasurementSystem.imperial_whole,
-        _mainUnit = mainUnit,
-        _fractionUnit = fractionUnit;
+        fractionController = fractionController ?? NumberInputController() {
+    // If a user's preferences (i.e. measurement units) changes, reset the
+    // current value so listeners are notified.
+    //
+    // Set super.value directly here because the overridden value setter sets
+    // system/unit override values, and we only want to do that when the value
+    // is explicitly set to another MultiMeasurement, not "reset" to the exact
+    // same value.
+    preferenceSubscription = UserPreferenceManager.of(context)
+        .stream
+        .listen((_) => super.value = value);
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    preferenceSubscription.cancel();
+  }
 
   @override
   bool get hasValue {
@@ -380,26 +396,27 @@ class MultiMeasurementInputController
     if (newValue == null) {
       mainController.clear();
       fractionController.clear();
+      super.value = null;
     } else {
       if (newValue.hasSystem()) {
-        _system = newValue.system;
+        _systemOverride = newValue.system;
       }
 
       mainController.doubleValue =
           newValue.mainValue.hasValue() ? newValue.mainValue.value : null;
       if (newValue.mainValue.hasUnit()) {
-        _mainUnit = newValue.mainValue.unit;
+        _mainUnitOverride = newValue.mainValue.unit;
       }
 
       fractionController.doubleValue = newValue.fractionValue.hasValue()
           ? newValue.fractionValue.value
           : null;
-      _fractionUnit =
+      _fractionUnitOverride =
           newValue.fractionValue.hasUnit() ? newValue.fractionValue.unit : null;
-    }
 
-    _round();
-    super.value = value;
+      _round();
+      super.value = value;
+    }
   }
 
   @override
@@ -413,7 +430,9 @@ class MultiMeasurementInputController
       );
     }
 
-    if (fractionController.hasDoubleValue) {
+    // Only record fraction values if the system is imperial whole.
+    if (result.system == MeasurementSystem.imperial_whole &&
+        fractionController.hasDoubleValue) {
       var measurement = Measurement(
         value: fractionController.doubleValue,
       );
@@ -430,24 +449,13 @@ class MultiMeasurementInputController
 
   MeasurementSystem get system => _system;
 
-  set system(MeasurementSystem? newSystem) {
-    if (newSystem == null || newSystem == _system) {
-      return;
-    }
-
-    // Update entire value here so listeners are notified.
-    value = value.immutableCopyAndUpdate<MultiMeasurement>((updates) {
-      updates.system = newSystem;
-    });
-  }
-
   /// Returns true if a numerical value in [value] is set to a non-null value.
   bool get isSet => value.isSet;
 
   /// Rounds values to a reasonable value for displaying to the user.
   void _round() {
     mainController.value =
-        mainController.doubleValue?.displayValue(mainValueDecimalPlaces);
+        mainController.doubleValue?.displayValue(spec.mainValueDecimalPlaces);
 
     // Round to whole number if using imperial_whole system.
     if (mainController.hasDoubleValue &&
@@ -471,4 +479,15 @@ class MultiMeasurementInputController
           fractionController.doubleValue?.round().toString();
     }
   }
+
+  MeasurementSystem get _system =>
+      _systemOverride ??
+      spec.system?.call(context) ??
+      MeasurementSystem.imperial_whole;
+
+  Unit get _mainUnit =>
+      _mainUnitOverride ??
+      (_system.isMetric ? spec.metricUnit : spec.imperialUnit);
+
+  Unit? get _fractionUnit => _fractionUnitOverride ?? spec.fractionUnit;
 }

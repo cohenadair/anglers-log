@@ -24,6 +24,8 @@ void main() {
     when(appManager.userPreferenceManager.baitVariantFieldIds).thenReturn([]);
     when(appManager.userPreferenceManager.waterDepthSystem)
         .thenReturn(MeasurementSystem.metric);
+    when(appManager.userPreferenceManager.stream)
+        .thenAnswer((_) => const Stream.empty());
   });
 
   testWidgets("Only tracked fields are shown", (tester) async {

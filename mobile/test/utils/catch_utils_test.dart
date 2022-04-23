@@ -20,6 +20,8 @@ void main() {
         .thenReturn(MeasurementSystem.imperial_whole);
     when(appManager.userPreferenceManager.catchWeightSystem)
         .thenReturn(MeasurementSystem.imperial_whole);
+    when(appManager.userPreferenceManager.stream)
+        .thenAnswer((_) => const Stream.empty());
 
     var fields = allCatchFieldsSorted(
         await buildContext(tester, appManager: appManager));

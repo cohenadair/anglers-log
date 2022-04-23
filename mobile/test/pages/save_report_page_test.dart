@@ -235,6 +235,8 @@ void main() {
         .thenReturn(MeasurementSystem.metric);
     when(appManager.userPreferenceManager.catchFieldIds).thenReturn([]);
     when(appManager.userPreferenceManager.atmosphereFieldIds).thenReturn([]);
+    when(appManager.userPreferenceManager.stream)
+        .thenAnswer((_) => const Stream.empty());
 
     when(appManager.waterClarityManager.displayName(any, any))
         .thenAnswer((invocation) => invocation.positionalArguments[1].name);

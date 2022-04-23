@@ -376,7 +376,8 @@ extension Measurements on Measurement {
 
   bool _unitsMatch(Measurement other) {
     if (hasUnit() && other.hasUnit() && unit != other.unit) {
-      _log.w("Can't compare different units: $unit vs. ${other.unit}");
+      // This can legitimately happen if the user creates entities, then changes
+      // units later.
       return false;
     }
     return true;
@@ -475,12 +476,18 @@ extension MultiMeasurements on MultiMeasurement {
       return "${mainValue.stringValue()} ${fraction.symbol} $unit";
     }
 
-    var isFractionSet = includeFraction &&
+    var result = "";
+    if (hasMainValue()) {
+      result += mainValue.displayValue(context);
+    }
+
+    if (includeFraction &&
         hasFractionValue() &&
         fractionValue.hasValue() &&
-        fractionValue.value > 0;
-    var result = mainValue.displayValue(context) +
-        (isFractionSet ? " ${fractionValue.displayValue(context)}" : "");
+        fractionValue.value > 0) {
+      result +=
+          "${hasMainValue() ? " " : ""}${fractionValue.displayValue(context)}";
+    }
 
     if (isNotEmpty(ifZero) && result == "0") {
       return ifZero!;

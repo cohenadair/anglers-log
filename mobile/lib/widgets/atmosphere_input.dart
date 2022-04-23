@@ -252,14 +252,6 @@ class __AtmosphereInputPageState extends State<_AtmosphereInputPage> {
     if (widget.controller.value != null) {
       _updateFromAtmosphere(widget.controller.value!);
     }
-
-    _userPreferenceSubscription = _userPreferenceManager.stream.listen((_) {
-      _temperatureController.system =
-          _userPreferenceManager.airTemperatureSystem;
-      _windSpeedController.system = _userPreferenceManager.windSpeedSystem;
-      _pressureController.system = _userPreferenceManager.airPressureSystem;
-      _visibilityController.system = _userPreferenceManager.airVisibilitySystem;
-    });
   }
 
   @override

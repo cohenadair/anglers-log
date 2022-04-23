@@ -5,7 +5,7 @@ import 'package:mobile/pages/image_picker_page.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mobile/utils/validator.dart';
 import 'package:mobile/widgets/input_controller.dart';
-import 'package:mobile/widgets/widget.dart';
+import 'package:mobile/widgets/multi_measurement_input.dart';
 import 'package:mockito/mockito.dart';
 
 import '../mocks/mocks.dart';
@@ -13,6 +13,17 @@ import '../mocks/mocks.mocks.dart';
 import '../test_utils.dart';
 
 void main() {
+  late StubbedAppManager appManager;
+
+  setUp(() {
+    appManager = StubbedAppManager();
+
+    when(appManager.userPreferenceManager.catchWeightSystem)
+        .thenReturn(MeasurementSystem.metric);
+    when(appManager.userPreferenceManager.stream)
+        .thenAnswer((_) => const Stream.empty());
+  });
+
   test("Use IdInputController instead of InputController<Id>", () {
     expect(() => InputController<Id>(), throwsAssertionError);
     expect(() => InputController<Set<Id>>(), throwsAssertionError);
@@ -224,9 +235,11 @@ void main() {
   });
 
   group("MultiMeasurementInputController", () {
-    test("Setting value to null", () {
+    testWidgets("Setting value to null", (tester) async {
+      var context = await buildContext(tester, appManager: appManager);
       var controller = MultiMeasurementInputController(
-        mainUnit: Unit.kilometers,
+        context: context,
+        spec: MultiMeasurementInputSpec.weight(context),
       );
       controller.mainController.intValue = 50;
       controller.fractionController.intValue = 60;
@@ -235,13 +248,10 @@ void main() {
       expect(
         controller.value,
         MultiMeasurement(
-          system: MeasurementSystem.imperial_whole,
+          system: MeasurementSystem.metric,
           mainValue: Measurement(
-            unit: Unit.kilometers,
+            unit: Unit.kilograms,
             value: 50,
-          ),
-          fractionValue: Measurement(
-            value: 60,
           ),
         ),
       );
@@ -252,17 +262,22 @@ void main() {
       expect(controller.isSet, isFalse);
     });
 
-    test("Setting value updates controllers", () {
+    testWidgets("Setting value updates controllers and overrides system/units",
+        (tester) async {
+      var context = await buildContext(tester, appManager: appManager);
       var controller = MultiMeasurementInputController(
-        mainUnit: Unit.kilometers,
+        context: context,
+        spec: MultiMeasurementInputSpec.weight(context),
       );
 
       controller.value = MultiMeasurement(
         system: MeasurementSystem.imperial_whole,
         mainValue: Measurement(
+          unit: Unit.pounds,
           value: 50,
         ),
         fractionValue: Measurement(
+          unit: Unit.ounces,
           value: 60,
         ),
       );
@@ -271,11 +286,20 @@ void main() {
       expect(controller.mainController.intValue, 50);
       expect(controller.fractionController.hasDoubleValue, isTrue);
       expect(controller.fractionController.doubleValue, 60);
+
+      var value = controller.value;
+      expect(value.system, MeasurementSystem.imperial_whole);
+      expect(value.mainValue.value, 50);
+      expect(value.mainValue.unit, Unit.pounds);
+      expect(value.fractionValue.value, 60);
+      expect(value.fractionValue.unit, Unit.ounces);
     });
 
-    test("Setting value without a main value", () {
+    testWidgets("Setting value without a main value", (tester) async {
+      var context = await buildContext(tester, appManager: appManager);
       var controller = MultiMeasurementInputController(
-        mainUnit: Unit.kilometers,
+        context: context,
+        spec: MultiMeasurementInputSpec.weight(context),
       );
 
       controller.value = MultiMeasurement(
@@ -292,9 +316,11 @@ void main() {
       expect(controller.value.fractionValue.value, 60);
     });
 
-    test("Setting value without a fraction value", () {
+    testWidgets("Setting value without a fraction value", (tester) async {
+      var context = await buildContext(tester, appManager: appManager);
       var controller = MultiMeasurementInputController(
-        mainUnit: Unit.kilometers,
+        context: context,
+        spec: MultiMeasurementInputSpec.weight(context),
       );
 
       controller.value = MultiMeasurement(
@@ -308,9 +334,11 @@ void main() {
       expect(controller.value.hasFractionValue(), isFalse);
     });
 
-    test("Setting value without a fraction unit", () {
+    testWidgets("Setting value without a main unit", (tester) async {
+      var context = await buildContext(tester, appManager: appManager);
       var controller = MultiMeasurementInputController(
-        mainUnit: Unit.kilometers,
+        context: context,
+        spec: MultiMeasurementInputSpec.weight(context),
       );
 
       controller.value = MultiMeasurement(
@@ -322,88 +350,78 @@ void main() {
 
       expect(controller.value.hasMainValue(), isFalse);
       expect(controller.value.hasFractionValue(), isTrue);
-      expect(controller.value.fractionValue.hasUnit(), isFalse);
       expect(controller.value.fractionValue.value, 60);
     });
 
-    testWidgets("Setting system updates and rounds existing value",
+    testWidgets("Setting non-imperial whole value drops fraction",
         (tester) async {
+      var context = await buildContext(tester, appManager: appManager);
       var controller = MultiMeasurementInputController(
-        mainUnit: Unit.kilometers,
+        context: context,
+        spec: MultiMeasurementInputSpec.weight(context),
       );
+      controller.mainController.intValue = 50;
+      controller.fractionController.intValue = 60;
 
-      controller.value = MultiMeasurement(
-        system: MeasurementSystem.imperial_decimal,
-        mainValue: Measurement(
-          value: 60.256485,
-        ),
-      );
-
-      var callCount = 0;
-      await tester.pumpWidget(
-        Testable(
-          (_) => ValueListenableBuilder<MultiMeasurement?>(
-            valueListenable: controller,
-            builder: (context, _, __) {
-              callCount += 1;
-              return const Empty();
-            },
+      expect(controller.value, isNotNull);
+      expect(
+        controller.value,
+        MultiMeasurement(
+          system: MeasurementSystem.metric,
+          mainValue: Measurement(
+            unit: Unit.kilograms,
+            value: 50,
           ),
         ),
       );
-      expect(callCount, 1);
-
-      controller.system = MeasurementSystem.metric;
-      await tester.pumpAndSettle();
-
-      expect(controller.value.mainValue.value, 60.26);
-      expect(controller.value.system, MeasurementSystem.metric);
-      expect(controller.system, MeasurementSystem.metric);
-      expect(callCount, 2);
     });
 
-    testWidgets("Setting system no-ops", (tester) async {
-      var controller = MultiMeasurementInputController(
-        system: MeasurementSystem.imperial_decimal,
-        mainUnit: Unit.kilometers,
-      );
+    testWidgets("Setting imperial whole value keeps fraction", (tester) async {
+      when(appManager.userPreferenceManager.catchWeightSystem)
+          .thenReturn(MeasurementSystem.imperial_whole);
 
-      var callCount = 0;
-      await tester.pumpWidget(
-        Testable(
-          (_) => ValueListenableBuilder<MultiMeasurement?>(
-            valueListenable: controller,
-            builder: (context, _, __) {
-              callCount += 1;
-              return const Empty();
-            },
+      var context = await buildContext(tester, appManager: appManager);
+      var controller = MultiMeasurementInputController(
+        context: context,
+        spec: MultiMeasurementInputSpec.weight(context),
+      );
+      controller.mainController.intValue = 50;
+      controller.fractionController.intValue = 60;
+
+      expect(controller.value, isNotNull);
+      expect(
+        controller.value,
+        MultiMeasurement(
+          system: MeasurementSystem.imperial_whole,
+          mainValue: Measurement(
+            unit: Unit.pounds,
+            value: 50,
+          ),
+          fractionValue: Measurement(
+            unit: Unit.ounces,
+            value: 60,
           ),
         ),
       );
-      expect(callCount, 1);
-
-      controller.system = null;
-      await tester.pumpAndSettle();
-      expect(callCount, 1);
-
-      controller.system = MeasurementSystem.imperial_decimal;
-      await tester.pumpAndSettle();
-      expect(callCount, 1);
     });
 
-    test("Rounding", () {
+    testWidgets("Rounding", (tester) async {
+      var context = await buildContext(tester, appManager: appManager);
       var controller = MultiMeasurementInputController(
-        mainUnit: Unit.kilometers,
+        context: context,
+        spec: MultiMeasurementInputSpec.weight(context),
       );
 
       controller.value = MultiMeasurement(
         system: MeasurementSystem.imperial_whole,
         // Rounded to 60.0.
         mainValue: Measurement(
+          unit: Unit.feet,
           value: 60.256485,
         ),
         // Not rounded.
         fractionValue: Measurement(
+          unit: Unit.inches,
           value: 0.75,
         ),
       );
@@ -434,9 +452,11 @@ void main() {
       expect(controller.value.fractionValue.value, 11);
     });
 
-    test("isSet", () {
+    testWidgets("isSet", (tester) async {
+      var context = await buildContext(tester, appManager: appManager);
       var controller = MultiMeasurementInputController(
-        mainUnit: Unit.kilometers,
+        context: context,
+        spec: MultiMeasurementInputSpec.weight(context),
       );
       expect(controller.isSet, isFalse);
 
@@ -449,6 +469,119 @@ void main() {
       );
 
       expect(controller.isSet, isTrue);
+    });
+
+    testWidgets("_system returns override", (tester) async {
+      var context = await buildContext(tester, appManager: appManager);
+      var controller = MultiMeasurementInputController(
+        context: context,
+        spec: MultiMeasurementInputSpec.weight(context),
+      );
+      controller.value = MultiMeasurement(
+        system: MeasurementSystem.imperial_whole,
+        fractionValue: Measurement(
+          unit: Unit.kilometers,
+          value: 10.75,
+        ),
+      );
+      expect(controller.value.system, MeasurementSystem.imperial_whole);
+    });
+
+    testWidgets("_system returns spec value", (tester) async {
+      when(appManager.userPreferenceManager.catchWeightSystem)
+          .thenReturn(MeasurementSystem.metric);
+
+      var context = await buildContext(tester, appManager: appManager);
+      var controller = MultiMeasurementInputController(
+        context: context,
+        spec: MultiMeasurementInputSpec.weight(context),
+      );
+
+      expect(controller.value.system, MeasurementSystem.metric);
+    });
+
+    testWidgets("_system returns default", (tester) async {
+      var context = await buildContext(tester, appManager: appManager);
+      var controller = MultiMeasurementInputController(
+        context: context,
+        spec: MultiMeasurementInputSpec.airHumidity(context),
+      );
+
+      expect(controller.value.system, MeasurementSystem.imperial_whole);
+    });
+
+    testWidgets("_mainUnit returns override", (tester) async {
+      var context = await buildContext(tester, appManager: appManager);
+      var controller = MultiMeasurementInputController(
+        context: context,
+        spec: MultiMeasurementInputSpec.weight(context),
+      );
+      controller.value = MultiMeasurement(
+        system: MeasurementSystem.imperial_whole,
+        mainValue: Measurement(
+          unit: Unit.kilometers,
+          value: 10.75,
+        ),
+      );
+      expect(controller.value.mainValue.unit, Unit.kilometers);
+    });
+
+    testWidgets("_mainUnit returns metric", (tester) async {
+      when(appManager.userPreferenceManager.catchWeightSystem)
+          .thenReturn(MeasurementSystem.metric);
+
+      var context = await buildContext(tester, appManager: appManager);
+      var controller = MultiMeasurementInputController(
+        context: context,
+        spec: MultiMeasurementInputSpec.weight(context),
+      );
+
+      controller.mainController.doubleValue = 10;
+      expect(controller.value.mainValue.unit, Unit.kilograms);
+    });
+
+    testWidgets("_mainUnit returns imperial", (tester) async {
+      when(appManager.userPreferenceManager.catchWeightSystem)
+          .thenReturn(MeasurementSystem.imperial_whole);
+
+      var context = await buildContext(tester, appManager: appManager);
+      var controller = MultiMeasurementInputController(
+        context: context,
+        spec: MultiMeasurementInputSpec.weight(context),
+      );
+
+      controller.mainController.doubleValue = 10;
+      expect(controller.value.mainValue.unit, Unit.pounds);
+    });
+
+    testWidgets("_fractionUnit returns override", (tester) async {
+      var context = await buildContext(tester, appManager: appManager);
+      var controller = MultiMeasurementInputController(
+        context: context,
+        spec: MultiMeasurementInputSpec.weight(context),
+      );
+      controller.value = MultiMeasurement(
+        system: MeasurementSystem.imperial_whole,
+        fractionValue: Measurement(
+          unit: Unit.inches,
+          value: 10.75,
+        ),
+      );
+      expect(controller.value.fractionValue.unit, Unit.inches);
+    });
+
+    testWidgets("_fractionUnit returns spec", (tester) async {
+      when(appManager.userPreferenceManager.catchWeightSystem)
+          .thenReturn(MeasurementSystem.imperial_whole);
+
+      var context = await buildContext(tester, appManager: appManager);
+      var controller = MultiMeasurementInputController(
+        context: context,
+        spec: MultiMeasurementInputSpec.weight(context),
+      );
+
+      controller.fractionController.doubleValue = 10;
+      expect(controller.value.fractionValue.unit, Unit.ounces);
     });
   });
 

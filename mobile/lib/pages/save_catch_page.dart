@@ -275,14 +275,6 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
       _fetchAtmosphereIfNeeded();
     }
 
-    _userPreferenceSubscription = _userPreferenceManager.stream.listen((_) {
-      _waterDepthController.system = _userPreferenceManager.waterDepthSystem;
-      _waterTemperatureController.system =
-          _userPreferenceManager.waterTemperatureSystem;
-      _lengthController.system = _userPreferenceManager.catchLengthSystem;
-      _weightController.system = _userPreferenceManager.catchWeightSystem;
-    });
-
     _timeZoneController.addListener(
         () => _timestampController.timeZone = _timeZoneController.value);
   }

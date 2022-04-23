@@ -24,6 +24,8 @@ void main() {
         .thenReturn(MeasurementSystem.metric);
     when(appManager.userPreferenceManager.waterTemperatureSystem)
         .thenReturn(MeasurementSystem.metric);
+    when(appManager.userPreferenceManager.stream)
+        .thenAnswer((_) => const Stream.empty());
   });
 
   testWidgets("Round initial double mainValue with decimal system",
