@@ -353,7 +353,8 @@ extension Measurements on Measurement {
 
   bool _unitsMatch(Measurement other) {
     if (hasUnit() && other.hasUnit() && unit != other.unit) {
-      _log.w("Can't compare different units: $unit vs. ${other.unit}");
+      // This can legitimately happen if the user creates entities, then changes
+      // units later.
       return false;
     }
     return true;
