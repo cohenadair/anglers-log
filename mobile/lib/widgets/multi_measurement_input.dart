@@ -51,10 +51,11 @@ class MultiMeasurementInput extends StatelessWidget {
   }
 
   Widget _buildInput(BuildContext context) {
-    var imperialWholeSuffix = _isImperialWhole && spec.imperial == Unit.inches
-        ? null
-        : spec.imperial.shorthandDisplayName(context);
-    var metricSuffix = spec.metric.shorthandDisplayName(context);
+    var imperialWholeSuffix =
+        _isImperialWhole && spec.imperialUnit == Unit.inches
+            ? null
+            : spec.imperialUnit.shorthandDisplayName(context);
+    var metricSuffix = spec.metricUnit.shorthandDisplayName(context);
 
     var wholeInput = TextInput.number(
       context,
@@ -72,7 +73,7 @@ class MultiMeasurementInput extends StatelessWidget {
     Widget? imperialFractionInput;
     Widget? inchesLabel;
     if (_isImperialWhole) {
-      if (spec.imperial == Unit.inches) {
+      if (spec.imperialUnit == Unit.inches) {
         imperialFractionInput = SizedBox(
           width: _inchesDropdownWidth,
           child: _InchesDropdownInput(
@@ -88,13 +89,13 @@ class MultiMeasurementInput extends StatelessWidget {
           Unit.inches.shorthandDisplayName(context),
           style: styleSecondary(context),
         );
-      } else if (spec.fraction != null) {
+      } else if (spec.fractionUnit != null) {
         imperialFractionInput = Expanded(
           child: TextInput.number(
             context,
             // Keeps text field underline aligned with wholeInput.
             label: "",
-            suffixText: spec.fraction?.shorthandDisplayName(context),
+            suffixText: spec.fractionUnit?.shorthandDisplayName(context),
             controller: controller.fractionController,
             decimal: false,
             signed: false,
@@ -126,25 +127,29 @@ class MultiMeasurementInput extends StatelessWidget {
 }
 
 class MultiMeasurementInputSpec {
-  final Unit imperial;
-  final Unit metric;
+  final BuildContext context;
+  final Unit imperialUnit;
+  final Unit metricUnit;
 
   /// The fractional unit of the imperial system value, such as inches. If null,
   /// a fractional input will not be rendered at all.
-  final Unit? fraction;
+  final Unit? fractionUnit;
 
-  final MeasurementSystem? system;
+  final MeasurementSystem? Function(BuildContext)? system;
 
   /// The title of the input. Renders as the title of the "main" [TextInput].
   final LocalizedString? title;
 
-  /// See [MultiMeasurementInputController.mainValueDecimalPlaces].
+  /// The number of decimal places to show to the user for the main value. Note
+  /// that regardless of this value, the main value will be rounded if the main
+  /// measurement system is [MeasurementSystem.imperial_whole].
   final int? mainValueDecimalPlaces;
 
-  MultiMeasurementInputSpec._({
-    required this.imperial,
-    required this.metric,
-    this.fraction,
+  MultiMeasurementInputSpec._(
+    this.context, {
+    required this.imperialUnit,
+    required this.metricUnit,
+    this.fractionUnit,
     this.system,
     this.title,
     this.mainValueDecimalPlaces,
@@ -152,18 +157,22 @@ class MultiMeasurementInputSpec {
 
   MultiMeasurementInputSpec.length(BuildContext context)
       : this._(
-          imperial: Unit.inches,
-          metric: Unit.centimeters,
-          system: UserPreferenceManager.of(context).catchLengthSystem,
+          context,
+          imperialUnit: Unit.inches,
+          metricUnit: Unit.centimeters,
+          system: (context) =>
+              UserPreferenceManager.of(context).catchLengthSystem,
           title: (context) => Strings.of(context).catchFieldLengthLabel,
         );
 
   MultiMeasurementInputSpec.weight(BuildContext context)
       : this._(
-          imperial: Unit.pounds,
-          metric: Unit.kilograms,
-          fraction: Unit.ounces,
-          system: UserPreferenceManager.of(context).catchWeightSystem,
+          context,
+          imperialUnit: Unit.pounds,
+          metricUnit: Unit.kilograms,
+          fractionUnit: Unit.ounces,
+          system: (context) =>
+              UserPreferenceManager.of(context).catchWeightSystem,
           title: (context) => Strings.of(context).catchFieldWeightLabel,
         );
 
@@ -171,46 +180,56 @@ class MultiMeasurementInputSpec {
     BuildContext context, {
     String? title,
   }) : this._(
-          imperial: Unit.feet,
-          metric: Unit.meters,
-          fraction: Unit.inches,
-          system: UserPreferenceManager.of(context).waterDepthSystem,
+          context,
+          imperialUnit: Unit.feet,
+          metricUnit: Unit.meters,
+          fractionUnit: Unit.inches,
+          system: (context) =>
+              UserPreferenceManager.of(context).waterDepthSystem,
           title: (context) =>
               title ?? Strings.of(context).catchFieldWaterDepthLabel,
         );
 
   MultiMeasurementInputSpec.waterTemperature(BuildContext context)
       : this._(
-          imperial: Unit.fahrenheit,
-          metric: Unit.celsius,
-          system: UserPreferenceManager.of(context).waterTemperatureSystem,
+          context,
+          imperialUnit: Unit.fahrenheit,
+          metricUnit: Unit.celsius,
+          system: (context) =>
+              UserPreferenceManager.of(context).waterTemperatureSystem,
           title: (context) =>
               Strings.of(context).catchFieldWaterTemperatureLabel,
         );
 
   MultiMeasurementInputSpec.windSpeed(BuildContext context)
       : this._(
-          imperial: Unit.miles_per_hour,
-          metric: Unit.kilometers_per_hour,
-          system: UserPreferenceManager.of(context).windSpeedSystem,
+          context,
+          imperialUnit: Unit.miles_per_hour,
+          metricUnit: Unit.kilometers_per_hour,
+          system: (context) =>
+              UserPreferenceManager.of(context).windSpeedSystem,
           title: (context) => Strings.of(context).atmosphereInputWindSpeed,
           mainValueDecimalPlaces: 0,
         );
 
   MultiMeasurementInputSpec.airTemperature(BuildContext context)
       : this._(
-          imperial: Unit.fahrenheit,
-          metric: Unit.celsius,
-          system: UserPreferenceManager.of(context).airTemperatureSystem,
+          context,
+          imperialUnit: Unit.fahrenheit,
+          metricUnit: Unit.celsius,
+          system: (context) =>
+              UserPreferenceManager.of(context).airTemperatureSystem,
           title: (context) => Strings.of(context).atmosphereInputAirTemperature,
           mainValueDecimalPlaces: 0,
         );
 
   MultiMeasurementInputSpec.airPressure(BuildContext context)
       : this._(
-          imperial: Unit.pounds_per_square_inch,
-          metric: Unit.millibars,
-          system: UserPreferenceManager.of(context).airPressureSystem,
+          context,
+          imperialUnit: Unit.pounds_per_square_inch,
+          metricUnit: Unit.millibars,
+          system: (context) =>
+              UserPreferenceManager.of(context).airPressureSystem,
           title: (context) =>
               Strings.of(context).atmosphereInputAtmosphericPressure,
           mainValueDecimalPlaces: 0,
@@ -218,17 +237,20 @@ class MultiMeasurementInputSpec {
 
   MultiMeasurementInputSpec.airVisibility(BuildContext context)
       : this._(
-          imperial: Unit.miles,
-          metric: Unit.kilometers,
-          system: UserPreferenceManager.of(context).airVisibilitySystem,
+          context,
+          imperialUnit: Unit.miles,
+          metricUnit: Unit.kilometers,
+          system: (context) =>
+              UserPreferenceManager.of(context).airVisibilitySystem,
           title: (context) => Strings.of(context).atmosphereInputAirVisibility,
           mainValueDecimalPlaces: 0,
         );
 
   MultiMeasurementInputSpec.airHumidity(BuildContext context)
       : this._(
-          imperial: Unit.percent,
-          metric: Unit.percent,
+          context,
+          imperialUnit: Unit.percent,
+          metricUnit: Unit.percent,
           title: (context) => Strings.of(context).atmosphereInputAirHumidity,
           mainValueDecimalPlaces: 0,
         );
@@ -238,12 +260,10 @@ class MultiMeasurementInputSpec {
     NumberInputController? fractionController,
   }) {
     return MultiMeasurementInputController(
-      system: system,
-      mainUnit: system == null || !system!.isMetric ? imperial : metric,
-      fractionUnit: fraction,
+      context: context,
+      spec: this,
       mainController: mainController,
       fractionController: fractionController,
-      mainValueDecimalPlaces: mainValueDecimalPlaces,
     );
   }
 }

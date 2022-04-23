@@ -40,6 +40,8 @@ void main() {
     when(appManager.userPreferenceManager.baitVariantFieldIds).thenReturn([]);
     when(appManager.userPreferenceManager.waterDepthSystem)
         .thenReturn(MeasurementSystem.metric);
+    when(appManager.userPreferenceManager.stream)
+        .thenAnswer((_) => const Stream.empty());
 
     when(appManager.subscriptionManager.stream)
         .thenAnswer((_) => const Stream.empty());

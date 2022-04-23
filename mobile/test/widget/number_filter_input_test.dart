@@ -18,6 +18,8 @@ void main() {
 
     when(appManager.userPreferenceManager.waterDepthSystem)
         .thenReturn(MeasurementSystem.metric);
+    when(appManager.userPreferenceManager.stream)
+        .thenAnswer((_) => const Stream.empty());
   });
 
   testWidgets("Any is pre-selected", (tester) async {
