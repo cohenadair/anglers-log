@@ -429,7 +429,7 @@ class _SaveReportPageState extends State<SaveReportPage> {
   }
 
   Widget _buildTimeZone() {
-    return TimeZoneInput(_timeZoneController);
+    return TimeZoneInput(controller: _timeZoneController);
   }
 
   Widget _buildPeriodsPicker() {

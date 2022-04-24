@@ -327,7 +327,7 @@ class _SaveTripPageState extends State<SaveTripPage> {
     );
   }
 
-  Widget _buildTimeZone() => TimeZoneInput(_timeZoneController);
+  Widget _buildTimeZone() => TimeZoneInput(controller: _timeZoneController);
 
   Widget _buildName() {
     return Padding(

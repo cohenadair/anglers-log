@@ -13,8 +13,9 @@ import 'widget.dart';
 
 class TimeZoneInput extends StatelessWidget {
   final InputController<String> controller;
+  final VoidCallback? onPicked;
 
-  const TimeZoneInput(this.controller);
+  const TimeZoneInput({required this.controller, this.onPicked});
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +26,13 @@ class TimeZoneInput extends StatelessWidget {
         value: isEmpty(timeZone)
             ? null
             : TimeZoneLocation.fromName(timeZone!).displayName,
-        onTap: () => push(context, _TimeZonePickerPage(controller)),
+        onTap: () => push(
+          context,
+          _TimeZonePickerPage(
+            controller: controller,
+            onPicked: onPicked,
+          ),
+        ),
       ),
     );
   }
@@ -33,8 +40,9 @@ class TimeZoneInput extends StatelessWidget {
 
 class _TimeZonePickerPage extends StatefulWidget {
   final InputController<String> controller;
+  final VoidCallback? onPicked;
 
-  const _TimeZonePickerPage(this.controller);
+  const _TimeZonePickerPage({required this.controller, this.onPicked});
 
   @override
   State<_TimeZonePickerPage> createState() => _TimeZonePickerPageState();
@@ -72,6 +80,7 @@ class _TimeZonePickerPageState extends State<_TimeZonePickerPage> {
           } else {
             widget.controller.value = loc.name;
           }
+          widget.onPicked?.call();
           return true;
         },
       ),

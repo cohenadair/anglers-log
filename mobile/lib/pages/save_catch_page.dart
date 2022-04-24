@@ -117,7 +117,6 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
   bool _overwriteSeasonCalculation = false;
 
   List<CustomEntityValue> _customEntityValues = [];
-  StreamSubscription<void>? _userPreferenceSubscription;
 
   AnglerManager get _anglerManager => AnglerManager.of(context);
 
@@ -274,16 +273,6 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
       _calculateSeasonIfNeeded();
       _fetchAtmosphereIfNeeded();
     }
-
-    _timeZoneController.addListener(
-        () => _timestampController.timeZone = _timeZoneController.value);
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    _userPreferenceSubscription?.cancel();
-    _timeZoneController.dispose();
   }
 
   @override
@@ -384,7 +373,10 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
     );
   }
 
-  Widget _buildTimeZone() => TimeZoneInput(_timeZoneController);
+  Widget _buildTimeZone() => TimeZoneInput(
+    controller: _timeZoneController,
+    onPicked: () => _timestampController.timeZone = _timeZoneController.value,
+  );
 
   Widget _buildBaits() {
     return BaitPickerInput(

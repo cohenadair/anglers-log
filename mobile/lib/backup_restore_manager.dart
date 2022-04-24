@@ -212,7 +212,7 @@ class BackupRestoreManager {
       return;
     }
 
-    // await backup();
+    await backup();
   }
 
   Future<void> backup() async {

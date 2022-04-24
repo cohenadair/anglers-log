@@ -138,8 +138,6 @@ class __AtmosphereInputPageState extends State<_AtmosphereInputPage> {
   late final MultiMeasurementInputSpec _airHumidityInputState;
   late final MultiMeasurementInputSpec _windSpeedInputState;
 
-  StreamSubscription<void>? _userPreferenceSubscription;
-
   FishingSpotManager get _fishingSpotManager => FishingSpotManager.of(context);
 
   SubscriptionManager get _subscriptionManager =>
@@ -252,12 +250,6 @@ class __AtmosphereInputPageState extends State<_AtmosphereInputPage> {
     if (widget.controller.value != null) {
       _updateFromAtmosphere(widget.controller.value!);
     }
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    _userPreferenceSubscription?.cancel();
   }
 
   @override
