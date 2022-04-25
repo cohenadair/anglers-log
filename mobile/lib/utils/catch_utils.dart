@@ -60,6 +60,7 @@ List<Field> allCatchFields(BuildContext context) {
     Field(
       id: catchFieldIdTimeZone,
       name: (context) => Strings.of(context).timeZoneInputLabel,
+      description: (context) => Strings.of(context).timeZoneInputDescription,
       controller: TimeZoneInputController(context),
     ),
     Field(

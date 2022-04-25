@@ -1968,6 +1968,8 @@ class Strings {
 
   String get timeZoneInputLabel => _string("timeZoneInput_label");
 
+  String get timeZoneInputDescription => _string("timeZoneInput_description");
+
   String get timeZoneInputSearchHint => _string("timeZoneInput_searchHint");
 }
 

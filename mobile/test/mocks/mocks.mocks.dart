@@ -516,6 +516,13 @@ class MockAnglerManager extends _i1.Mock implements _i7.AnglerManager {
           Invocation.method(#addOrUpdate, [entity], {#notify: notify}),
           returnValue: Future<bool>.value(false)) as _i62.Future<bool>);
   @override
+  _i62.Future<int> updateAll(
+          {bool Function(_i4.Angler)? where,
+          _i62.Future<void> Function(_i4.Angler)? apply}) =>
+      (super.noSuchMethod(
+          Invocation.method(#updateAll, [], {#where: where, #apply: apply}),
+          returnValue: Future<int>.value(0)) as _i62.Future<int>);
+  @override
   _i62.Future<bool> delete(_i4.Id? entityId, {bool? notify = true}) => (super
       .noSuchMethod(Invocation.method(#delete, [entityId], {#notify: notify}),
           returnValue: Future<bool>.value(false)) as _i62.Future<bool>);
@@ -1097,6 +1104,13 @@ class MockBaitCategoryManager extends _i1.Mock
           Invocation.method(#addOrUpdate, [entity], {#notify: notify}),
           returnValue: Future<bool>.value(false)) as _i62.Future<bool>);
   @override
+  _i62.Future<int> updateAll(
+          {bool Function(_i4.BaitCategory)? where,
+          _i62.Future<void> Function(_i4.BaitCategory)? apply}) =>
+      (super.noSuchMethod(
+          Invocation.method(#updateAll, [], {#where: where, #apply: apply}),
+          returnValue: Future<int>.value(0)) as _i62.Future<int>);
+  @override
   _i62.Future<bool> delete(_i4.Id? entityId, {bool? notify = true}) => (super
       .noSuchMethod(Invocation.method(#delete, [entityId], {#notify: notify}),
           returnValue: Future<bool>.value(false)) as _i62.Future<bool>);
@@ -1347,6 +1361,13 @@ class MockBaitManager extends _i1.Mock implements _i10.BaitManager {
       (super.noSuchMethod(Invocation.method(#entityExists, [id]),
           returnValue: false) as bool);
   @override
+  _i62.Future<int> updateAll(
+          {bool Function(_i4.Bait)? where,
+          _i62.Future<void> Function(_i4.Bait)? apply}) =>
+      (super.noSuchMethod(
+          Invocation.method(#updateAll, [], {#where: where, #apply: apply}),
+          returnValue: Future<int>.value(0)) as _i62.Future<int>);
+  @override
   _i62.Future<bool> delete(_i4.Id? entityId, {bool? notify = true}) => (super
       .noSuchMethod(Invocation.method(#delete, [entityId], {#notify: notify}),
           returnValue: Future<bool>.value(false)) as _i62.Future<bool>);
@@ -1558,6 +1579,13 @@ class MockBodyOfWaterManager extends _i1.Mock
           Invocation.method(#addOrUpdate, [entity], {#notify: notify}),
           returnValue: Future<bool>.value(false)) as _i62.Future<bool>);
   @override
+  _i62.Future<int> updateAll(
+          {bool Function(_i4.BodyOfWater)? where,
+          _i62.Future<void> Function(_i4.BodyOfWater)? apply}) =>
+      (super.noSuchMethod(
+          Invocation.method(#updateAll, [], {#where: where, #apply: apply}),
+          returnValue: Future<int>.value(0)) as _i62.Future<int>);
+  @override
   _i62.Future<bool> delete(_i4.Id? entityId, {bool? notify = true}) => (super
       .noSuchMethod(Invocation.method(#delete, [entityId], {#notify: notify}),
           returnValue: Future<bool>.value(false)) as _i62.Future<bool>);
@@ -1635,6 +1663,11 @@ class MockCatchManager extends _i1.Mock implements _i12.CatchManager {
   bool get hasEntities =>
       (super.noSuchMethod(Invocation.getter(#hasEntities), returnValue: false)
           as bool);
+  @override
+  _i62.Future<void> initialize() => (super.noSuchMethod(
+      Invocation.method(#initialize, []),
+      returnValue: Future<void>.value(),
+      returnValueForMissingStub: Future<void>.value()) as _i62.Future<void>);
   @override
   _i4.Catch entityFromBytes(List<int>? bytes) =>
       (super.noSuchMethod(Invocation.method(#entityFromBytes, [bytes]),
@@ -1731,14 +1764,16 @@ class MockCatchManager extends _i1.Mock implements _i12.CatchManager {
   _i62.Future<bool> addOrUpdate(_i4.Catch? entity,
           {List<_i52.File>? imageFiles = const [],
           bool? compressImages = true,
-          bool? notify = true}) =>
+          bool? notify = true,
+          bool? setImages = true}) =>
       (super.noSuchMethod(
           Invocation.method(#addOrUpdate, [
             entity
           ], {
             #imageFiles: imageFiles,
             #compressImages: compressImages,
-            #notify: notify
+            #notify: notify,
+            #setImages: setImages
           }),
           returnValue: Future<bool>.value(false)) as _i62.Future<bool>);
   @override
@@ -1757,11 +1792,6 @@ class MockCatchManager extends _i1.Mock implements _i12.CatchManager {
   String? displayNameFromId(_i50.BuildContext? context, _i4.Id? id) =>
       (super.noSuchMethod(Invocation.method(#displayNameFromId, [context, id]))
           as String?);
-  @override
-  _i62.Future<void> initialize() => (super.noSuchMethod(
-      Invocation.method(#initialize, []),
-      returnValue: Future<void>.value(),
-      returnValueForMissingStub: Future<void>.value()) as _i62.Future<void>);
   @override
   bool idsMatchesFilter(List<_i4.Id>? ids, String? filter) =>
       (super.noSuchMethod(Invocation.method(#idsMatchesFilter, [ids, filter]),
@@ -1790,6 +1820,13 @@ class MockCatchManager extends _i1.Mock implements _i12.CatchManager {
   bool entityExists(_i4.Id? id) =>
       (super.noSuchMethod(Invocation.method(#entityExists, [id]),
           returnValue: false) as bool);
+  @override
+  _i62.Future<int> updateAll(
+          {bool Function(_i4.Catch)? where,
+          _i62.Future<void> Function(_i4.Catch)? apply}) =>
+      (super.noSuchMethod(
+          Invocation.method(#updateAll, [], {#where: where, #apply: apply}),
+          returnValue: Future<int>.value(0)) as _i62.Future<int>);
   @override
   _i62.Future<bool> delete(_i4.Id? entityId, {bool? notify = true}) => (super
       .noSuchMethod(Invocation.method(#delete, [entityId], {#notify: notify}),
@@ -1956,6 +1993,13 @@ class MockCustomEntityManager extends _i1.Mock
       (super.noSuchMethod(
           Invocation.method(#addOrUpdate, [entity], {#notify: notify}),
           returnValue: Future<bool>.value(false)) as _i62.Future<bool>);
+  @override
+  _i62.Future<int> updateAll(
+          {bool Function(_i4.CustomEntity)? where,
+          _i62.Future<void> Function(_i4.CustomEntity)? apply}) =>
+      (super.noSuchMethod(
+          Invocation.method(#updateAll, [], {#where: where, #apply: apply}),
+          returnValue: Future<int>.value(0)) as _i62.Future<int>);
   @override
   _i62.Future<bool> delete(_i4.Id? entityId, {bool? notify = true}) => (super
       .noSuchMethod(Invocation.method(#delete, [entityId], {#notify: notify}),
@@ -2485,6 +2529,13 @@ class MockFishingSpotManager extends _i1.Mock
       (super.noSuchMethod(Invocation.method(#entityExists, [id]),
           returnValue: false) as bool);
   @override
+  _i62.Future<int> updateAll(
+          {bool Function(_i4.FishingSpot)? where,
+          _i62.Future<void> Function(_i4.FishingSpot)? apply}) =>
+      (super.noSuchMethod(
+          Invocation.method(#updateAll, [], {#where: where, #apply: apply}),
+          returnValue: Future<int>.value(0)) as _i62.Future<int>);
+  @override
   _i62.Future<bool> delete(_i4.Id? entityId, {bool? notify = true}) => (super
       .noSuchMethod(Invocation.method(#delete, [entityId], {#notify: notify}),
           returnValue: Future<bool>.value(false)) as _i62.Future<bool>);
@@ -2999,6 +3050,13 @@ class MockMethodManager extends _i1.Mock implements _i17.MethodManager {
           Invocation.method(#addOrUpdate, [entity], {#notify: notify}),
           returnValue: Future<bool>.value(false)) as _i62.Future<bool>);
   @override
+  _i62.Future<int> updateAll(
+          {bool Function(_i4.Method)? where,
+          _i62.Future<void> Function(_i4.Method)? apply}) =>
+      (super.noSuchMethod(
+          Invocation.method(#updateAll, [], {#where: where, #apply: apply}),
+          returnValue: Future<int>.value(0)) as _i62.Future<int>);
+  @override
   _i62.Future<bool> delete(_i4.Id? entityId, {bool? notify = true}) => (super
       .noSuchMethod(Invocation.method(#delete, [entityId], {#notify: notify}),
           returnValue: Future<bool>.value(false)) as _i62.Future<bool>);
@@ -3202,6 +3260,11 @@ class MockReportManager extends _i1.Mock implements _i19.ReportManager {
       (super.noSuchMethod(Invocation.getter(#hasEntities), returnValue: false)
           as bool);
   @override
+  _i62.Future<void> initialize() => (super.noSuchMethod(
+      Invocation.method(#initialize, []),
+      returnValue: Future<void>.value(),
+      returnValueForMissingStub: Future<void>.value()) as _i62.Future<void>);
+  @override
   _i4.Report entityFromBytes(List<int>? bytes) =>
       (super.noSuchMethod(Invocation.method(#entityFromBytes, [bytes]),
           returnValue: _FakeReport_77()) as _i4.Report);
@@ -3243,11 +3306,6 @@ class MockReportManager extends _i1.Mock implements _i19.ReportManager {
       (super.noSuchMethod(Invocation.method(#displayNameFromId, [context, id]))
           as String?);
   @override
-  _i62.Future<void> initialize() => (super.noSuchMethod(
-      Invocation.method(#initialize, []),
-      returnValue: Future<void>.value(),
-      returnValueForMissingStub: Future<void>.value()) as _i62.Future<void>);
-  @override
   bool idsMatchesFilter(List<_i4.Id>? ids, String? filter) =>
       (super.noSuchMethod(Invocation.method(#idsMatchesFilter, [ids, filter]),
           returnValue: false) as bool);
@@ -3280,6 +3338,13 @@ class MockReportManager extends _i1.Mock implements _i19.ReportManager {
       (super.noSuchMethod(
           Invocation.method(#addOrUpdate, [entity], {#notify: notify}),
           returnValue: Future<bool>.value(false)) as _i62.Future<bool>);
+  @override
+  _i62.Future<int> updateAll(
+          {bool Function(_i4.Report)? where,
+          _i62.Future<void> Function(_i4.Report)? apply}) =>
+      (super.noSuchMethod(
+          Invocation.method(#updateAll, [], {#where: where, #apply: apply}),
+          returnValue: Future<int>.value(0)) as _i62.Future<int>);
   @override
   _i62.Future<bool> delete(_i4.Id? entityId, {bool? notify = true}) => (super
       .noSuchMethod(Invocation.method(#delete, [entityId], {#notify: notify}),
@@ -3445,6 +3510,13 @@ class MockSpeciesManager extends _i1.Mock implements _i20.SpeciesManager {
       (super.noSuchMethod(
           Invocation.method(#addOrUpdate, [entity], {#notify: notify}),
           returnValue: Future<bool>.value(false)) as _i62.Future<bool>);
+  @override
+  _i62.Future<int> updateAll(
+          {bool Function(_i4.Species)? where,
+          _i62.Future<void> Function(_i4.Species)? apply}) =>
+      (super.noSuchMethod(
+          Invocation.method(#updateAll, [], {#where: where, #apply: apply}),
+          returnValue: Future<int>.value(0)) as _i62.Future<int>);
   @override
   int numberOf<E extends _i63.GeneratedMessage>(
           _i4.Id? id, List<E>? items, bool Function(E)? matches) =>
@@ -3619,6 +3691,11 @@ class MockTripManager extends _i1.Mock implements _i23.TripManager {
       (super.noSuchMethod(Invocation.getter(#hasEntities), returnValue: false)
           as bool);
   @override
+  _i62.Future<void> initialize() => (super.noSuchMethod(
+      Invocation.method(#initialize, []),
+      returnValue: Future<void>.value(),
+      returnValueForMissingStub: Future<void>.value()) as _i62.Future<void>);
+  @override
   _i4.Trip entityFromBytes(List<int>? bytes) =>
       (super.noSuchMethod(Invocation.method(#entityFromBytes, [bytes]),
           returnValue: _FakeTrip_81()) as _i4.Trip);
@@ -3650,10 +3727,17 @@ class MockTripManager extends _i1.Mock implements _i23.TripManager {
           returnValue: <_i4.Trip>[]) as List<_i4.Trip>);
   @override
   _i62.Future<bool> addOrUpdate(_i4.Trip? entity,
-          {List<_i52.File>? imageFiles = const [], bool? notify = true}) =>
+          {List<_i52.File>? imageFiles = const [],
+          bool? notify = true,
+          bool? setImages = true}) =>
       (super.noSuchMethod(
-          Invocation.method(#addOrUpdate, [entity],
-              {#imageFiles: imageFiles, #notify: notify}),
+          Invocation.method(#addOrUpdate, [
+            entity
+          ], {
+            #imageFiles: imageFiles,
+            #notify: notify,
+            #setImages: setImages
+          }),
           returnValue: Future<bool>.value(false)) as _i62.Future<bool>);
   @override
   bool matchesFilter(_i4.Id? id, String? filter,
@@ -3695,11 +3779,6 @@ class MockTripManager extends _i1.Mock implements _i23.TripManager {
       (super.noSuchMethod(Invocation.method(#displayNameFromId, [context, id]))
           as String?);
   @override
-  _i62.Future<void> initialize() => (super.noSuchMethod(
-      Invocation.method(#initialize, []),
-      returnValue: Future<void>.value(),
-      returnValueForMissingStub: Future<void>.value()) as _i62.Future<void>);
-  @override
   bool idsMatchesFilter(List<_i4.Id>? ids, String? filter) =>
       (super.noSuchMethod(Invocation.method(#idsMatchesFilter, [ids, filter]),
           returnValue: false) as bool);
@@ -3727,6 +3806,13 @@ class MockTripManager extends _i1.Mock implements _i23.TripManager {
   bool entityExists(_i4.Id? id) =>
       (super.noSuchMethod(Invocation.method(#entityExists, [id]),
           returnValue: false) as bool);
+  @override
+  _i62.Future<int> updateAll(
+          {bool Function(_i4.Trip)? where,
+          _i62.Future<void> Function(_i4.Trip)? apply}) =>
+      (super.noSuchMethod(
+          Invocation.method(#updateAll, [], {#where: where, #apply: apply}),
+          returnValue: Future<int>.value(0)) as _i62.Future<int>);
   @override
   _i62.Future<bool> delete(_i4.Id? entityId, {bool? notify = true}) => (super
       .noSuchMethod(Invocation.method(#delete, [entityId], {#notify: notify}),
@@ -4215,6 +4301,13 @@ class MockWaterClarityManager extends _i1.Mock
       (super.noSuchMethod(
           Invocation.method(#addOrUpdate, [entity], {#notify: notify}),
           returnValue: Future<bool>.value(false)) as _i62.Future<bool>);
+  @override
+  _i62.Future<int> updateAll(
+          {bool Function(_i4.WaterClarity)? where,
+          _i62.Future<void> Function(_i4.WaterClarity)? apply}) =>
+      (super.noSuchMethod(
+          Invocation.method(#updateAll, [], {#where: where, #apply: apply}),
+          returnValue: Future<int>.value(0)) as _i62.Future<int>);
   @override
   _i62.Future<bool> delete(_i4.Id? entityId, {bool? notify = true}) => (super
       .noSuchMethod(Invocation.method(#delete, [entityId], {#notify: notify}),

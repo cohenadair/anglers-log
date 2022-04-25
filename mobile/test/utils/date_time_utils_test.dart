@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/utils/date_time_utils.dart';
 import 'package:mockito/mockito.dart';
-import 'package:timezone/data/latest.dart';
 import 'package:timezone/timezone.dart';
 
 import '../mocks/mocks.mocks.dart';
@@ -708,19 +707,5 @@ void main() {
       ),
       isTrue,
     );
-  });
-
-  testWidgets("formatDateTimeTz", (tester) async {
-    initializeTimeZones();
-
-    var context = await buildContext(tester);
-    var pst =
-        TZDateTime(getLocation("America/Los_Angeles"), 2022, 1, 15, 3, 30);
-    var cst = TZDateTime(getLocation("America/Chicago"), 2022, 1, 15, 3, 30);
-    var est = TZDateTime(getLocation("America/New_York"), 2022, 1, 15, 3, 30);
-
-    print("PST: ${formatDateTime(context, pst)}");
-    print("CST: ${formatDateTime(context, cst)}");
-    print("EST: ${formatDateTime(context, est)}");
   });
 }

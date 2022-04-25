@@ -15,6 +15,7 @@ import 'entity_manager.dart';
 import 'fishing_spot_manager.dart';
 import 'i18n/strings.dart';
 import 'image_manager.dart';
+import 'log.dart';
 import 'method_manager.dart';
 import 'model/gen/anglerslog.pb.dart';
 import 'species_manager.dart';
@@ -33,6 +34,10 @@ class CatchManager extends EntityManager<Catch> {
   static CatchManager of(BuildContext context) =>
       Provider.of<AppManager>(context, listen: false).catchManager;
 
+  final _log = const Log("CatchManager");
+
+  CatchManager(AppManager app) : super(app);
+
   AnglerManager get _anglerManager => appManager.anglerManager;
 
   BaitManager get _baitManager => appManager.baitManager;
@@ -48,6 +53,8 @@ class CatchManager extends EntityManager<Catch> {
 
   SpeciesManager get _speciesManager => appManager.speciesManager;
 
+  TimeManager get _timeManager => appManager.timeManager;
+
   TripManager get _tripManager => appManager.tripManager;
 
   UserPreferenceManager get _userPreferenceManager =>
@@ -56,7 +63,21 @@ class CatchManager extends EntityManager<Catch> {
   WaterClarityManager get _waterClarityManager =>
       appManager.waterClarityManager;
 
-  CatchManager(AppManager app) : super(app);
+  @override
+  Future<void> initialize() async {
+    await super.initialize();
+
+    // TODO: Remove (#683)
+    var numberOfChanges = await updateAll(
+      where: (cat) => !cat.hasTimeZone(),
+      apply: (cat) => addOrUpdate(
+        cat..timeZone = _timeManager.currentTimeZone,
+        setImages: false,
+        notify: false,
+      ),
+    );
+    _log.d("Added time zones to $numberOfChanges catches");
+  }
 
   @override
   Catch entityFromBytes(List<int> bytes) => Catch.fromBuffer(bytes);
@@ -420,10 +441,13 @@ class CatchManager extends EntityManager<Catch> {
     List<File> imageFiles = const [],
     bool compressImages = true,
     bool notify = true,
+    bool setImages = true,
   }) async {
-    entity.imageNames.clear();
-    entity.imageNames
-        .addAll(await _imageManager.save(imageFiles, compress: compressImages));
+    if (setImages) {
+      entity.imageNames.clear();
+      entity.imageNames.addAll(
+          await _imageManager.save(imageFiles, compress: compressImages));
+    }
 
     return super.addOrUpdate(entity, notify: notify);
   }

@@ -12,6 +12,7 @@ import 'custom_entity_manager.dart';
 import 'fishing_spot_manager.dart';
 import 'i18n/strings.dart';
 import 'image_manager.dart';
+import 'log.dart';
 import 'model/gen/anglerslog.pb.dart';
 import 'named_entity_manager.dart';
 import 'species_manager.dart';
@@ -23,6 +24,8 @@ import 'utils/string_utils.dart';
 class TripManager extends NamedEntityManager<Trip> {
   static TripManager of(BuildContext context) =>
       Provider.of<AppManager>(context, listen: false).tripManager;
+
+  final _log = const Log("TripManager");
 
   TripManager(AppManager app) : super(app);
 
@@ -40,6 +43,24 @@ class TripManager extends NamedEntityManager<Trip> {
   ImageManager get _imageManager => appManager.imageManager;
 
   SpeciesManager get _speciesManager => appManager.speciesManager;
+
+  TimeManager get _timeManager => appManager.timeManager;
+
+  @override
+  Future<void> initialize() async {
+    await super.initialize();
+
+    // TODO: Remove (#683)
+    var numberOfChanges = await updateAll(
+      where: (trip) => !trip.hasTimeZone(),
+      apply: (trip) => addOrUpdate(
+        trip..timeZone = _timeManager.currentTimeZone,
+        setImages: false,
+        notify: false,
+      ),
+    );
+    _log.d("Added time zones to $numberOfChanges trips");
+  }
 
   @override
   Trip entityFromBytes(List<int> bytes) => Trip.fromBuffer(bytes);
@@ -93,10 +114,13 @@ class TripManager extends NamedEntityManager<Trip> {
     Trip entity, {
     List<File> imageFiles = const [],
     bool notify = true,
+    bool setImages = true,
   }) async {
-    entity.imageNames.clear();
-    entity.imageNames
-        .addAll(await _imageManager.save(imageFiles, compress: true));
+    if (setImages) {
+      entity.imageNames.clear();
+      entity.imageNames
+          .addAll(await _imageManager.save(imageFiles, compress: true));
+    }
 
     return super.addOrUpdate(entity, notify: notify);
   }

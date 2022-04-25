@@ -974,6 +974,7 @@ Map<String, Map<String, String>> get englishStrings => {
         "aboutPage_privacy": "Privacy Policy",
         "fishingSpotDetails_addDetails": "Add Details",
         "timeZoneInput_label": "Time Zone",
+        "timeZoneInput_description": "Defaults to your current time zone.",
         "timeZoneInput_searchHint": "Search time zones",
       },
     };

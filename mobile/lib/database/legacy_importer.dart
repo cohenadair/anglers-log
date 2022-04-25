@@ -666,6 +666,9 @@ class LegacyImporter {
         cat.atmosphere = _parseWeatherData(weather);
       }
 
+      // Set default properties not tracked in the legacy app.
+      cat.timeZone = _timeManager.currentTimeZone;
+
       await _catchManager.addOrUpdate(
         cat,
         imageFiles: images,
@@ -750,6 +753,9 @@ class LegacyImporter {
           value: 0,
         ));
       }
+
+      // Set default properties not tracked in the legacy app.
+      trip.timeZone = _timeManager.currentTimeZone;
 
       await _tripManager.addOrUpdate(trip);
     }

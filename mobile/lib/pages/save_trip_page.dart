@@ -183,6 +183,7 @@ class _SaveTripPageState extends State<SaveTripPage> {
     _fields[_idTimeZone] = Field(
       id: _idTimeZone,
       name: (context) => Strings.of(context).timeZoneInputLabel,
+      description: (context) => Strings.of(context).timeZoneInputDescription,
       controller: TimeZoneInputController(context),
     );
 

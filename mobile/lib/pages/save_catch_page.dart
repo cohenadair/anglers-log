@@ -373,10 +373,12 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
     );
   }
 
-  Widget _buildTimeZone() => TimeZoneInput(
-    controller: _timeZoneController,
-    onPicked: () => _timestampController.timeZone = _timeZoneController.value,
-  );
+  Widget _buildTimeZone() {
+    return TimeZoneInput(
+      controller: _timeZoneController,
+      onPicked: () => _timestampController.timeZone = _timeZoneController.value,
+    );
+  }
 
   Widget _buildBaits() {
     return BaitPickerInput(

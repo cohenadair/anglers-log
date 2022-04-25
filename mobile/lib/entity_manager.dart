@@ -178,6 +178,28 @@ abstract class EntityManager<T extends GeneratedMessage> {
     return false;
   }
 
+  /// Applies changes to the list of entities that satisfy [where]. Normally,
+  /// [apply] will call some version of [addOrUpdate].
+  ///
+  /// For updating a single entity, use [addOrUpdate] directly.
+  @protected
+  Future<int> updateAll({
+    required bool Function(T) where,
+    required Future<void> Function(T entity) apply,
+  }) async {
+    var result = 0;
+
+    for (var entity in list()) {
+      if (!where(entity)) {
+        continue;
+      }
+      result++;
+      await apply(entity);
+    }
+
+    return result;
+  }
+
   /// Deletes entity with [ID], if one exists. If [notify] is false (default
   /// true), listeners are not notified.
   Future<bool> delete(
