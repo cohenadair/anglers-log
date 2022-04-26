@@ -396,24 +396,7 @@ class MultiMeasurementInputController
     NumberInputController? mainController,
     NumberInputController? fractionController,
   })  : mainController = mainController ?? NumberInputController(),
-        fractionController = fractionController ?? NumberInputController() {
-    // If a user's preferences (i.e. measurement units) changes, reset the
-    // current value so listeners are notified.
-    //
-    // Set super.value directly here because the overridden value setter sets
-    // system/unit override values, and we only want to do that when the value
-    // is explicitly set to another MultiMeasurement, not "reset" to the exact
-    // same value.
-    preferenceSubscription = UserPreferenceManager.of(context)
-        .stream
-        .listen((_) => super.value = value);
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    preferenceSubscription.cancel();
-  }
+        fractionController = fractionController ?? NumberInputController();
 
   @override
   bool get hasValue {

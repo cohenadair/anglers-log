@@ -44,9 +44,12 @@ class MultiMeasurementInput extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ValueListenableBuilder<MultiMeasurement?>(
-      valueListenable: controller,
-      builder: (context, _, __) => _buildInput(context),
+    return StreamBuilder<void>(
+      stream: UserPreferenceManager.of(context).stream,
+      builder: (context, _) => ValueListenableBuilder<MultiMeasurement?>(
+        valueListenable: controller,
+        builder: (context, _, __) => _buildInput(context),
+      ),
     );
   }
 
