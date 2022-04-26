@@ -95,10 +95,12 @@ void main() {
       (tester) async {
     await catchManager.addOrUpdate(Catch()
       ..id = randomId()
-      ..timestamp = Int64(dateTime(2020, 1, 1).millisecondsSinceEpoch));
+      ..timestamp = Int64(dateTime(2020, 1, 1).millisecondsSinceEpoch)
+      ..timeZone = "America/New_York");
     await catchManager.addOrUpdate(Catch()
       ..id = randomId()
-      ..timestamp = Int64(dateTime(2020, 4, 4).millisecondsSinceEpoch));
+      ..timestamp = Int64(dateTime(2020, 4, 4).millisecondsSinceEpoch)
+      ..timeZone = "America/New_York");
 
     var context = await buildContext(tester, appManager: appManager);
 

@@ -3,6 +3,7 @@ import 'package:mobile/entity_manager.dart';
 import 'package:mobile/time_manager.dart';
 import 'package:mobile/utils/date_time_utils.dart';
 import 'package:mockito/mockito.dart';
+import 'package:quiver/strings.dart';
 import 'package:timezone/data/latest.dart';
 import 'package:timezone/timezone.dart';
 
@@ -96,7 +97,7 @@ class StubbedAppManager {
     when(app.urlLauncherWrapper).thenReturn(urlLauncherWrapper);
 
     // Default to the current time and time zone.
-    stubCurrentTime(TZDateTimes.utc());
+    stubCurrentTime(DateTime.now());
 
     // Setup default listener stubs on EntityListener classes, since
     // addTypedListener is called often in tests, but rarely actually used.
@@ -201,14 +202,27 @@ class StubbedAppManager {
     when(waterClarityManager.entity(any)).thenReturn(null);
   }
 
-  void stubCurrentTime(TZDateTime now) {
-    when(timeManager.currentDateTime).thenReturn(now);
-    when(timeManager.currentTime).thenReturn(TimeOfDay.fromDateTime(now));
-    when(timeManager.currentTimestamp).thenReturn(now.millisecondsSinceEpoch);
-
+  void stubCurrentTime(DateTime now) {
     initializeTimeZones();
+
+    var defaultLocation = "America/New_York";
+    var tzNow = TZDateTime.now(getLocation(defaultLocation));
+    when(timeManager.currentDateTime).thenReturn(tzNow);
+    when(timeManager.currentTime).thenReturn(TimeOfDay.fromDateTime(tzNow));
+    when(timeManager.currentTimestamp).thenReturn(tzNow.millisecondsSinceEpoch);
+
     when(timeManager.currentLocation)
-        .thenReturn(TimeZoneLocation.fromName("America/New_York"));
-    when(timeManager.currentTimeZone).thenReturn("America/New_York");
+        .thenReturn(TimeZoneLocation.fromName(defaultLocation));
+    when(timeManager.currentTimeZone).thenReturn(defaultLocation);
+    when(timeManager.dateTime(any, any)).thenAnswer((invocation) {
+      String? timeZone = invocation.positionalArguments.length == 2
+          ? invocation.positionalArguments[1]
+          : null;
+      if (isEmpty(timeZone)) {
+        timeZone = defaultLocation;
+      }
+      return TZDateTime.fromMillisecondsSinceEpoch(
+          getLocation(timeZone!), invocation.positionalArguments[1]);
+    });
   }
 }
