@@ -94,14 +94,17 @@ void main() {
       Catch(
         id: randomId(),
         timestamp: Int64(dateTime(2020, 1, 1).millisecondsSinceEpoch),
+        timeZone: defaultTimeZone,
       ),
       Catch(
         id: randomId(),
         timestamp: Int64(dateTime(2020, 2, 1).millisecondsSinceEpoch),
+        timeZone: defaultTimeZone,
       ),
       Catch(
         id: randomId(),
         timestamp: Int64(dateTime(2020, 3, 1).millisecondsSinceEpoch),
+        timeZone: defaultTimeZone,
       ),
     ];
   }
@@ -123,6 +126,7 @@ void main() {
       id: randomId(),
       startTimestamp: Int64(dateTime(2020, 1, 1, 9).millisecondsSinceEpoch),
       endTimestamp: Int64(dateTime(2020, 1, 3, 17).millisecondsSinceEpoch),
+      timeZone: defaultTimeZone,
       name: "Test Trip",
       catchIds: [catches[0].id, catches[2].id],
       bodyOfWaterIds: [bodiesOfWater[2].id],
@@ -250,6 +254,8 @@ void main() {
         .thenReturn(MeasurementSystem.metric);
     when(appManager.userPreferenceManager.windSpeedSystem)
         .thenReturn(MeasurementSystem.metric);
+
+    appManager.stubCurrentTime(dateTime(2021, 2, 1, 10, 30));
   });
 
   testWidgets("Editing shows old values", (tester) async {
@@ -885,23 +891,23 @@ void main() {
   });
 
   testWidgets("Time is updated when catches are picked", (tester) async {
-    when(appManager.timeManager.currentDateTime).thenReturn(dateTimestamp(
-      150000000000, // Thursday, October 3, 1974 2:40:00 AM GMT
-      isUtc: true,
-    ));
+    appManager.stubCurrentTime(dateTime(2020, 1, 1, 3, 30));
 
     var catches = [
       Catch(
         id: randomId(),
         timestamp: Int64(dateTime(2020, 1, 1, 5).millisecondsSinceEpoch),
+        timeZone: defaultTimeZone,
       ),
       Catch(
         id: randomId(),
         timestamp: Int64(dateTime(2020, 2, 1, 8).millisecondsSinceEpoch),
+        timeZone: defaultTimeZone,
       ),
       Catch(
         id: randomId(),
         timestamp: Int64(dateTime(2020, 3, 1, 15).millisecondsSinceEpoch),
+        timeZone: defaultTimeZone,
       ),
     ];
     when(appManager.catchManager.catches(
@@ -918,8 +924,8 @@ void main() {
       appManager: appManager,
     ));
 
-    expect(find.text("Oct 3, 1974"), findsNWidgets(2));
-    expect(find.text("2:40 AM"), findsNWidgets(2));
+    expect(find.text("Jan 1, 2020"), findsNWidgets(2));
+    expect(find.text("3:30 AM"), findsNWidgets(2));
 
     await ensureVisibleAndSettle(tester, find.text("No catches"));
     await tapAndSettle(tester, find.text("No catches"));
@@ -933,10 +939,7 @@ void main() {
   });
 
   testWidgets("Time is not updated if catches picked is empty", (tester) async {
-    when(appManager.timeManager.currentDateTime).thenReturn(dateTimestamp(
-      150000000000, // Thursday, October 3, 1974 2:40:00 AM GMT
-      isUtc: true,
-    ));
+    appManager.stubCurrentTime(dateTime(2020, 1, 1, 3, 30));
 
     var catches = [
       Catch(
@@ -964,23 +967,20 @@ void main() {
       appManager: appManager,
     ));
 
-    expect(find.text("Oct 3, 1974"), findsNWidgets(2));
-    expect(find.text("2:40 AM"), findsNWidgets(2));
+    expect(find.text("Jan 1, 2020"), findsNWidgets(2));
+    expect(find.text("3:30 AM"), findsNWidgets(2));
 
     await ensureVisibleAndSettle(tester, find.text("No catches"));
     await tapAndSettle(tester, find.text("No catches"));
     await tapAndSettle(tester, find.byType(BackButton));
 
-    expect(find.text("Oct 3, 1974"), findsNWidgets(2));
-    expect(find.text("2:40 AM"), findsNWidgets(2));
+    expect(find.text("Jan 1, 2020"), findsNWidgets(2));
+    expect(find.text("3:30 AM"), findsNWidgets(2));
   });
 
   testWidgets("Only date is updated when catches picked and all-day is checked",
       (tester) async {
-    when(appManager.timeManager.currentDateTime).thenReturn(dateTimestamp(
-      150000000000, // Thursday, October 3, 1974 2:40:00 AM GMT
-      isUtc: true,
-    ));
+    appManager.stubCurrentTime(dateTime(2020, 1, 1, 3, 30));
 
     var catches = [
       Catch(
@@ -1010,8 +1010,8 @@ void main() {
       appManager: appManager,
     ));
 
-    expect(find.text("Oct 3, 1974"), findsNWidgets(2));
-    expect(find.text("2:40 AM"), findsNWidgets(2));
+    expect(find.text("Jan 1, 2020"), findsNWidgets(2));
+    expect(find.text("3:30 AM"), findsNWidgets(2));
 
     await tapAndSettle(tester, find.byType(Checkbox).first);
     await tapAndSettle(tester, find.byType(Checkbox).last);

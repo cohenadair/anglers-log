@@ -217,7 +217,7 @@ class AtmosphereFetcher {
     var currentConditionsJson = json["currentConditions"];
     if (!_isValidJsonMap(currentConditionsJson)) {
       _log.e(StackTrace.current,
-          "Response body has invalid \"days\" key: ${response.body}");
+          "Body has invalid \"currentConditions\" key: ${response.body}");
       return null;
     }
 

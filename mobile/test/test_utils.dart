@@ -16,6 +16,7 @@ import 'package:mobile/widgets/widget.dart';
 import 'package:mockito/mockito.dart';
 import 'package:photo_manager/photo_manager.dart';
 import 'package:provider/provider.dart';
+import 'package:timezone/data/latest_all.dart';
 import 'package:timezone/timezone.dart';
 
 import 'mocks/mocks.dart';
@@ -155,6 +156,8 @@ Future<BuildContext> pumpContext(
   return context;
 }
 
+String get defaultTimeZone => "America/New_York";
+
 TZDateTime dateTime(
   int year, [
   int month = 1,
@@ -165,12 +168,12 @@ TZDateTime dateTime(
   int millisecond = 0,
   int microsecond = 0,
 ]) {
-  return TZDateTime(getLocation("America/New_York"), year, month, day, hour,
+  return TZDateTime(getLocation(defaultTimeZone), year, month, day, hour,
       minute, second, millisecond);
 }
 
 TZDateTime now() {
-  return TZDateTime.now(getLocation("America/New_York"));
+  return TZDateTime.now(getLocation(defaultTimeZone));
 }
 
 TZDateTime dateTimestamp(int timestamp, {bool isUtc = false}) {
@@ -178,7 +181,7 @@ TZDateTime dateTimestamp(int timestamp, {bool isUtc = false}) {
     return TZDateTimes.utc(ms: timestamp);
   } else {
     return TZDateTime.fromMillisecondsSinceEpoch(
-        getLocation("America/New_York"), timestamp);
+        getLocation(defaultTimeZone), timestamp);
   }
 }
 

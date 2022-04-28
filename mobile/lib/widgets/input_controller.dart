@@ -276,7 +276,7 @@ class DateTimeInputController extends InputController<TZDateTime?> {
       time = null;
       return;
     }
-    date = dateTimeToDayAccuracy(dateTime);
+    date = dateTimeToDayAccuracy(dateTime, dateTime.locationName);
     time = TimeOfDay.fromDateTime(dateTime);
 
     super.value = value;

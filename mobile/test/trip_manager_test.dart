@@ -12,26 +12,28 @@ void main() {
   late StubbedAppManager appManager;
   late TripManager tripManager;
 
-  var trips = [
-    Trip(
-      id: randomId(),
-      name: "Trip 1",
-      startTimestamp: Int64(dateTime(2020, 1, 1, 9).millisecondsSinceEpoch),
-      endTimestamp: Int64(dateTime(2020, 1, 3, 17).millisecondsSinceEpoch),
-    ),
-    Trip(
-      id: randomId(),
-      name: "Trip 2",
-      startTimestamp: Int64(dateTime(2020, 1, 10, 8).millisecondsSinceEpoch),
-      endTimestamp: Int64(dateTime(2020, 1, 15, 18).millisecondsSinceEpoch),
-    ),
-    Trip(
-      id: randomId(),
-      name: "Trip 3",
-      startTimestamp: Int64(dateTime(2020, 1, 20, 8).millisecondsSinceEpoch),
-      endTimestamp: Int64(dateTime(2020, 1, 23, 18).millisecondsSinceEpoch),
-    ),
-  ];
+  List<Trip> trips() => [
+        Trip(
+          id: randomId(),
+          name: "Trip 1",
+          startTimestamp: Int64(dateTime(2020, 1, 1, 9).millisecondsSinceEpoch),
+          endTimestamp: Int64(dateTime(2020, 1, 3, 17).millisecondsSinceEpoch),
+        ),
+        Trip(
+          id: randomId(),
+          name: "Trip 2",
+          startTimestamp:
+              Int64(dateTime(2020, 1, 10, 8).millisecondsSinceEpoch),
+          endTimestamp: Int64(dateTime(2020, 1, 15, 18).millisecondsSinceEpoch),
+        ),
+        Trip(
+          id: randomId(),
+          name: "Trip 3",
+          startTimestamp:
+              Int64(dateTime(2020, 1, 20, 8).millisecondsSinceEpoch),
+          endTimestamp: Int64(dateTime(2020, 1, 23, 18).millisecondsSinceEpoch),
+        ),
+      ];
 
   Trip defaultTrip() {
     return Trip(
@@ -43,7 +45,7 @@ void main() {
   }
 
   Future<void> stubDefaultTrips() async {
-    for (var trip in trips) {
+    for (var trip in trips()) {
       await tripManager.addOrUpdate(trip);
     }
   }
@@ -98,10 +100,11 @@ void main() {
     expect(tripManager.trips().length, 3);
   });
 
-  test("trips that fall within a given date range", () async {
+  testWidgets("trips that fall within a given date range", (tester) async {
     await stubDefaultTrips();
 
     var trips = tripManager.trips(
+      context: await buildContext(tester),
       dateRange: DateRange(
         startTimestamp: Int64(dateTime(2020, 1, 9, 8).millisecondsSinceEpoch),
         endTimestamp: Int64(dateTime(2020, 1, 11, 8).millisecondsSinceEpoch),
@@ -112,10 +115,12 @@ void main() {
     expect(trips[0].name, "Trip 2");
   });
 
-  test("trips that don't fall within a given date range", () async {
+  testWidgets("trips that don't fall within a given date range",
+      (tester) async {
     await stubDefaultTrips();
 
     var trips = tripManager.trips(
+      context: await buildContext(tester),
       dateRange: DateRange(
         startTimestamp: Int64(dateTime(2021, 1, 9, 8).millisecondsSinceEpoch),
         endTimestamp: Int64(dateTime(2021, 1, 11, 8).millisecondsSinceEpoch),

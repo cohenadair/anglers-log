@@ -3656,6 +3656,10 @@ class MockTimeManager extends _i1.Mock implements _i22.TimeManager {
   _i44.TZDateTime now(String? timeZone) =>
       (super.noSuchMethod(Invocation.method(#now, [timeZone]),
           returnValue: _FakeTZDateTime_43()) as _i44.TZDateTime);
+  @override
+  _i44.TZDateTime toTZDateTime(DateTime? dateTime) =>
+      (super.noSuchMethod(Invocation.method(#toTZDateTime, [dateTime]),
+          returnValue: _FakeTZDateTime_43()) as _i44.TZDateTime);
 }
 
 /// A class which mocks [TripManager].

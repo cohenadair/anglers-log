@@ -1161,7 +1161,7 @@ void main() {
       TZDateTime? expectedEnd,
     }) async {
       var context = await buildContext(tester);
-      dateRange.timeZone = "America/New_York";
+      dateRange.timeZone = defaultTimeZone;
       expect(dateRange.startDate(context, now), equals(expectedStart));
       expect(dateRange.endDate(context, now), equals(expectedEnd ?? now));
     }

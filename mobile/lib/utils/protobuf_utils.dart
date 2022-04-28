@@ -1109,8 +1109,6 @@ extension DateRanges on DateRange {
       return timeManager.dateTime(startTimestamp.toInt(), timeZone);
     }
 
-    var now = timeManager.now(timeZone);
-
     switch (period) {
       case DateRange_Period.allDates:
         return timeManager.dateTime(0, timeZone);

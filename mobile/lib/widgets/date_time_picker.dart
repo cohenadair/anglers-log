@@ -96,10 +96,11 @@ class DatePicker extends FormField<TZDateTime> {
                   return const Empty();
                 },
                 openPicker: () {
+                  var timeManager = TimeManager.of(context);
+
                   showDatePicker(
                     context: state.context,
-                    initialDate: controller.date ??
-                        TimeManager.of(context).currentDateTime,
+                    initialDate: controller.date ?? timeManager.currentDateTime,
                     // Weird requirement of showDatePicker, but essentially
                     // let the user pick any date.
                     firstDate: DateTime(1900),
@@ -108,7 +109,7 @@ class DatePicker extends FormField<TZDateTime> {
                     if (dateTime == null) {
                       return;
                     }
-                    var newValue = TZDateTime.from(dateTime, UTC);
+                    var newValue = timeManager.toTZDateTime(dateTime);
                     controller.date = newValue;
                     state.didChange(newValue);
                     onChange?.call(newValue);

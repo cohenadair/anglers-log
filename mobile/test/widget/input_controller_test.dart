@@ -141,7 +141,7 @@ void main() {
         value: dateTime(2020, 1, 15, 15, 30),
       );
       expect(controller.value,
-          dateTime(2020, 1, 15, 15, 30).millisecondsSinceEpoch);
+          dateTime(2020, 1, 15, 15, 30));
     });
 
     testWidgets("Set to non-null", (tester) async {
@@ -161,20 +161,13 @@ void main() {
   });
 
   group("CurrentTimestampInputController", () {
-    testWidgets("Null input", (tester) async {
-      var controller = DateTimeInputController(await buildContext(tester));
-      expect(controller.date, isNotNull);
-      expect(controller.time, isNotNull);
-      expect(controller.value, isNotNull);
-    });
-
     testWidgets("Non-null input", (tester) async {
       var controller = DateTimeInputController(
         await buildContext(tester),
         value: dateTime(2020, 1, 15, 15, 30),
       );
       expect(controller.value,
-          dateTime(2020, 1, 15, 15, 30).millisecondsSinceEpoch);
+          dateTime(2020, 1, 15, 15, 30));
     });
 
     testWidgets("Set to non-null", (tester) async {
@@ -186,8 +179,10 @@ void main() {
 
     testWidgets("Set to null", (tester) async {
       var controller = DateTimeInputController(await buildContext(tester));
-      controller.value = null;
+      controller.value = dateTime(2020, 1, 15, 15, 30);
       expect(controller.value, isNotNull);
+      controller.value = null;
+      expect(controller.value, isNull);
     });
   });
 

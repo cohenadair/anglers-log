@@ -23,12 +23,14 @@ void main() {
           datePicker: DatePicker(
             context,
             label: "Date Picker",
-            controller: DateTimeInputController(context),
+            controller: DateTimeInputController(context)
+              ..value = dateTime(2020, 1, 1),
           ),
           timePicker: TimePicker(
             context,
             label: "Time Picker",
-            controller: DateTimeInputController(context),
+            controller: DateTimeInputController(context)
+              ..value = dateTime(2020, 1, 1, 15, 30),
           ),
           helper: const Text("A helping message"),
         ),
@@ -45,12 +47,14 @@ void main() {
           datePicker: DatePicker(
             context,
             label: "Date Picker",
-            controller: DateTimeInputController(context),
+            controller: DateTimeInputController(context)
+              ..value = dateTime(2020, 1, 1),
           ),
           timePicker: TimePicker(
             context,
             label: "Time Picker",
-            controller: DateTimeInputController(context),
+            controller: DateTimeInputController(context)
+              ..value = dateTime(2020, 1, 1, 15, 30),
           ),
         ),
         appManager: appManager,
@@ -131,7 +135,7 @@ void main() {
       expect(changed, isTrue);
       expect(find.text("Jan 26, 2020"), findsOneWidget);
       expect(controller.value, isNotNull);
-      expect(controller.value, dateTime(2020, 1, 26).millisecondsSinceEpoch);
+      expect(controller.value, dateTime(2020, 1, 26));
     });
 
     testWidgets("DatePicker null controller value shows empty", (tester) async {

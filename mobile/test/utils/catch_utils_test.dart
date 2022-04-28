@@ -41,10 +41,11 @@ void main() {
     expect(fields[13].id, catchFieldIdSpecies);
     expect(fields[14].id, catchFieldIdTide);
     expect(fields[15].id, catchFieldIdPeriod);
-    expect(fields[16].id, catchFieldIdWaterClarity);
-    expect(fields[17].id, catchFieldIdWaterDepth);
-    expect(fields[18].id, catchFieldIdWaterTemperature);
-    expect(fields[19].id, catchFieldIdWeight);
+    expect(fields[16].id, catchFieldIdTimeZone);
+    expect(fields[17].id, catchFieldIdWaterClarity);
+    expect(fields[18].id, catchFieldIdWaterDepth);
+    expect(fields[19].id, catchFieldIdWaterTemperature);
+    expect(fields[20].id, catchFieldIdWeight);
   });
 
   testWidgets("catchFilterMatchesPeriod", (tester) async {

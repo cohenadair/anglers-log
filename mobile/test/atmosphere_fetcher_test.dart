@@ -11,6 +11,7 @@ import 'package:timezone/timezone.dart';
 
 import 'mocks/mocks.mocks.dart';
 import 'mocks/stubbed_app_manager.dart';
+import 'test_utils.dart';
 
 void main() {
   late StubbedAppManager appManager;
@@ -37,12 +38,13 @@ void main() {
       String field, bool Function(Atmosphere) hasValue) async {
     var response = MockResponse();
     when(response.statusCode).thenReturn(HttpStatus.ok);
-    when(response.body).thenReturn("{\"days\":[{\"$field\": \"wrong\"}]}");
+    when(response.body)
+        .thenReturn("{\"currentConditions\":{\"$field\": \"wrong\"}}");
     when(appManager.httpWrapper.get(any))
         .thenAnswer((_) => Future.value(response));
 
-    var fetcher = AtmosphereFetcher(appManager.app,
-        TZDateTime(getLocation("America/New_York"), 0), const LatLng(0, 0));
+    var fetcher =
+        AtmosphereFetcher(appManager.app, dateTime(0), const LatLng(0, 0));
 
     var atmosphere = await fetcher.fetch();
     expect(atmosphere, isNotNull);
@@ -50,8 +52,7 @@ void main() {
   }
 
   test("Null latLng returns null", () async {
-    var fetcher = AtmosphereFetcher(
-        appManager.app, TZDateTime(getLocation("America/New_York"), 0), null);
+    var fetcher = AtmosphereFetcher(appManager.app, dateTime(0), null);
     expect(await fetcher.fetch(), isNull);
   });
 
@@ -59,8 +60,8 @@ void main() {
     when(appManager.httpWrapper.get(any))
         .thenThrow(const SocketException("Test error"));
 
-    var fetcher = AtmosphereFetcher(appManager.app,
-        TZDateTime(getLocation("America/New_York"), 0), const LatLng(0, 0));
+    var fetcher =
+        AtmosphereFetcher(appManager.app, dateTime(0), const LatLng(0, 0));
     expect(await fetcher.fetch(), isNull);
   });
 
@@ -68,8 +69,8 @@ void main() {
     when(appManager.httpWrapper.get(any))
         .thenAnswer((_) => Future.value(Response("", HttpStatus.badGateway)));
 
-    var fetcher = AtmosphereFetcher(appManager.app,
-        TZDateTime(getLocation("America/New_York"), 0), const LatLng(0, 0));
+    var fetcher =
+        AtmosphereFetcher(appManager.app, dateTime(0), const LatLng(0, 0));
     expect(await fetcher.fetch(), isNull);
 
     var result = verify(appManager.httpWrapper.get(captureAny));
@@ -95,8 +96,8 @@ void main() {
     when(appManager.httpWrapper.get(any))
         .thenAnswer((_) => Future.value(Response("", HttpStatus.badGateway)));
 
-    var fetcher = AtmosphereFetcher(appManager.app,
-        TZDateTime(getLocation("America/New_York"), 0), const LatLng(0, 0));
+    var fetcher =
+        AtmosphereFetcher(appManager.app, dateTime(0), const LatLng(0, 0));
     expect(await fetcher.fetch(), isNull);
 
     var result = verify(appManager.httpWrapper.get(captureAny));
@@ -116,8 +117,8 @@ void main() {
     when(appManager.httpWrapper.get(any))
         .thenAnswer((_) => Future.value(response));
 
-    var fetcher = AtmosphereFetcher(appManager.app,
-        TZDateTime(getLocation("America/New_York"), 0), const LatLng(0, 0));
+    var fetcher =
+        AtmosphereFetcher(appManager.app, dateTime(0), const LatLng(0, 0));
     expect(await fetcher.fetch(), isNull);
     verifyNever(response.body);
   });
@@ -129,25 +130,21 @@ void main() {
     when(appManager.httpWrapper.get(any))
         .thenAnswer((_) => Future.value(response));
 
-    var fetcher = AtmosphereFetcher(appManager.app,
-        TZDateTime(getLocation("America/New_York"), 0), const LatLng(0, 0));
+    var fetcher =
+        AtmosphereFetcher(appManager.app, dateTime(0), const LatLng(0, 0));
     expect(await fetcher.fetch(), isNull);
   });
 
-  test("Response invalid 'days' key", () async {
+  test("Response invalid 'currentConditions' key", () async {
     var response = MockResponse();
     when(response.statusCode).thenReturn(HttpStatus.ok);
     when(appManager.httpWrapper.get(any))
         .thenAnswer((_) => Future.value(response));
 
     // Null.
-    when(response.body).thenReturn("{\"days\":null}");
-    var fetcher = AtmosphereFetcher(appManager.app,
-        TZDateTime(getLocation("America/New_York"), 0), const LatLng(0, 0));
-    expect(await fetcher.fetch(), isNull);
-
-    // Not a list.
-    when(response.body).thenReturn("{\"days\":{}}");
+    when(response.body).thenReturn("{\"currentConditions\":null}");
+    var fetcher =
+        AtmosphereFetcher(appManager.app, dateTime(0), const LatLng(0, 0));
     expect(await fetcher.fetch(), isNull);
   });
 
@@ -206,25 +203,25 @@ void main() {
     when(appManager.httpWrapper.get(any))
         .thenAnswer((_) => Future.value(response));
 
-    var fetcher = AtmosphereFetcher(appManager.app,
-        TZDateTime(getLocation("America/New_York"), 0), const LatLng(0, 0));
+    var fetcher =
+        AtmosphereFetcher(appManager.app, dateTime(0), const LatLng(0, 0));
 
     var atmosphere = await fetcher.fetch();
     expect(atmosphere, isNotNull);
-    expect(atmosphere!.temperature.value, 77.9);
+    expect(atmosphere!.temperature.value, 74.0);
     expect(atmosphere.temperature.unit, Unit.fahrenheit);
-    expect(atmosphere.humidity.value, 79.0);
-    expect(atmosphere.windSpeed.value, 12.1);
+    expect(atmosphere.humidity.value, 90.0);
+    expect(atmosphere.windSpeed.value, 4.7);
     expect(atmosphere.windSpeed.unit, Unit.miles_per_hour);
-    expect(atmosphere.windDirection, Direction.east);
-    expect(atmosphere.pressure.value, 1021.9);
+    expect(atmosphere.windDirection, Direction.north);
+    expect(atmosphere.pressure.value, 1022.5);
     expect(atmosphere.pressure.unit, Unit.millibars);
     expect(atmosphere.visibility.value, 9.9);
     expect(atmosphere.visibility.unit, Unit.miles);
     expect(atmosphere.sunriseTimestamp.toInt(), 1624962142000); // ms
     expect(atmosphere.sunsetTimestamp.toInt(), 1625014586000); // ms
     expect(atmosphere.moonPhase, MoonPhase.waning_gibbous);
-    expect(atmosphere.skyConditions, [SkyCondition.rain, SkyCondition.cloudy]);
+    expect(atmosphere.skyConditions, [SkyCondition.cloudy]);
   });
 
   test("API value is converted to user preference units", () async {
@@ -247,24 +244,24 @@ void main() {
     when(appManager.httpWrapper.get(any))
         .thenAnswer((_) => Future.value(response));
 
-    var fetcher = AtmosphereFetcher(appManager.app,
-        TZDateTime(getLocation("America/New_York"), 0), const LatLng(0, 0));
+    var fetcher =
+        AtmosphereFetcher(appManager.app, dateTime(0), const LatLng(0, 0));
 
     var atmosphere = await fetcher.fetch();
     expect(atmosphere, isNotNull);
-    expect(atmosphere!.temperature.value, 78);
+    expect(atmosphere!.temperature.value, 74);
     expect(atmosphere.temperature.unit, Unit.fahrenheit);
-    expect(atmosphere.humidity.value, 79.0);
-    expect(atmosphere.windSpeed.value, 19.4730624);
+    expect(atmosphere.humidity.value, 90.0);
+    expect(atmosphere.windSpeed.value, 7.563916800000001);
     expect(atmosphere.windSpeed.unit, Unit.kilometers_per_hour);
-    expect(atmosphere.windDirection, Direction.east);
-    expect(atmosphere.pressure.value, 14.821433220000001);
+    expect(atmosphere.windDirection, Direction.north);
+    expect(atmosphere.pressure.value, 14.8301355);
     expect(atmosphere.pressure.unit, Unit.pounds_per_square_inch);
     expect(atmosphere.visibility.value, 15.932505600000002);
     expect(atmosphere.visibility.unit, Unit.kilometers);
     expect(atmosphere.sunriseTimestamp.toInt(), 1624962142000); // ms
     expect(atmosphere.sunsetTimestamp.toInt(), 1625014586000); // ms
     expect(atmosphere.moonPhase, MoonPhase.waning_gibbous);
-    expect(atmosphere.skyConditions, [SkyCondition.rain, SkyCondition.cloudy]);
+    expect(atmosphere.skyConditions, [SkyCondition.cloudy]);
   });
 }

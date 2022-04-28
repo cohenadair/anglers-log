@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/entity_manager.dart';
 import 'package:mobile/time_manager.dart';
-import 'package:mobile/utils/date_time_utils.dart';
 import 'package:mockito/mockito.dart';
 import 'package:quiver/strings.dart';
 import 'package:timezone/data/latest.dart';
 import 'package:timezone/timezone.dart';
 
+import '../test_utils.dart';
 import 'mocks.dart';
 import 'mocks.mocks.dart';
 
@@ -205,24 +205,27 @@ class StubbedAppManager {
   void stubCurrentTime(DateTime now) {
     initializeTimeZones();
 
-    var defaultLocation = "America/New_York";
-    var tzNow = TZDateTime.now(getLocation(defaultLocation));
+    var defaultLocation = getLocation(defaultTimeZone);
+    var tzNow = TZDateTime.from(now, defaultLocation);
+    when(timeManager.now(any)).thenReturn(tzNow);
     when(timeManager.currentDateTime).thenReturn(tzNow);
     when(timeManager.currentTime).thenReturn(TimeOfDay.fromDateTime(tzNow));
     when(timeManager.currentTimestamp).thenReturn(tzNow.millisecondsSinceEpoch);
 
     when(timeManager.currentLocation)
-        .thenReturn(TimeZoneLocation.fromName(defaultLocation));
-    when(timeManager.currentTimeZone).thenReturn(defaultLocation);
+        .thenReturn(TimeZoneLocation.fromName(defaultTimeZone));
+    when(timeManager.currentTimeZone).thenReturn(defaultTimeZone);
     when(timeManager.dateTime(any, any)).thenAnswer((invocation) {
       String? timeZone = invocation.positionalArguments.length == 2
           ? invocation.positionalArguments[1]
           : null;
       if (isEmpty(timeZone)) {
-        timeZone = defaultLocation;
+        timeZone = defaultTimeZone;
       }
       return TZDateTime.fromMillisecondsSinceEpoch(
-          getLocation(timeZone!), invocation.positionalArguments[1]);
+          getLocation(timeZone!), invocation.positionalArguments[0]);
     });
+    when(timeManager.toTZDateTime(any)).thenAnswer((invocation) =>
+        TZDateTime.from(invocation.positionalArguments.first, defaultLocation));
   }
 }

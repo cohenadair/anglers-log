@@ -20,6 +20,7 @@ import 'package:mobile/widgets/date_range_picker_input.dart';
 import 'package:mobile/widgets/list_item.dart';
 import 'package:mobile/widgets/text_input.dart';
 import 'package:mockito/mockito.dart';
+import 'package:timezone/timezone.dart';
 
 import '../mocks/stubbed_app_manager.dart';
 import '../test_utils.dart';
@@ -27,7 +28,8 @@ import '../test_utils.dart';
 void main() {
   late StubbedAppManager appManager;
 
-  var now = dateTimestamp(1600000000000);
+  // Sunday, September 13, 2020 12:26:40 PM GMT
+  TZDateTime now() => dateTimestamp(1600000000000);
 
   var anglerList = <Angler>[
     Angler()
@@ -159,8 +161,7 @@ void main() {
             .listSortedByDisplayName(any, filter: anyNamed("filter")))
         .thenReturn(bodyOfWaterList);
 
-    // Sunday, September 13, 2020 12:26:40 PM GMT
-    when(appManager.timeManager.currentDateTime).thenReturn(now);
+    appManager.stubCurrentTime(now());
 
     when(appManager.reportManager.addOrUpdate(any))
         .thenAnswer((_) => Future.value(false));
@@ -916,14 +917,28 @@ void main() {
   });
 
   testWidgets("Add report with custom date ranges", (tester) async {
-    late DateRange fromDateRange;
-    late DateRange toDateRange;
-    var context = await pumpContext(
+    late int expectedFromStartMs;
+    late int expectedFromEndMs;
+    late int expectedToStartMs;
+    late int expectedToEndMs;
+    await pumpContext(
       tester,
       (context) {
         // Custom DisplayDateRange default to "this month".
-        fromDateRange = DateRange(period: DateRange_Period.thisMonth);
-        toDateRange = DateRange(period: DateRange_Period.thisMonth);
+        var fromDateRange = DateRange(
+          period: DateRange_Period.thisMonth,
+          timeZone: defaultTimeZone,
+        );
+        expectedFromStartMs = fromDateRange.startMs(context, now());
+        expectedFromEndMs = fromDateRange.endMs(context, now());
+
+        var toDateRange = DateRange(
+          period: DateRange_Period.thisMonth,
+          timeZone: defaultTimeZone,
+        );
+        expectedToStartMs = toDateRange.startMs(context, now());
+        expectedToEndMs = toDateRange.endMs(context, now());
+
         return const SaveReportPage();
       },
       appManager: appManager,
@@ -956,15 +971,11 @@ void main() {
     expect(report.name, "Report Name");
     expect(report.hasFromDateRange(), isTrue);
     expect(report.fromDateRange.period, DateRange_Period.custom);
-    expect(report.fromDateRange.startTimestamp.toInt(),
-        fromDateRange.startMs(context, now));
-    expect(report.fromDateRange.endTimestamp.toInt(),
-        fromDateRange.endMs(context, now));
+    expect(report.fromDateRange.startTimestamp.toInt(), expectedFromStartMs);
+    expect(report.fromDateRange.endTimestamp.toInt(), expectedFromEndMs);
     expect(report.toDateRange.period, DateRange_Period.custom);
-    expect(report.toDateRange.startTimestamp.toInt(),
-        toDateRange.startMs(context, now));
-    expect(report.toDateRange.endTimestamp.toInt(),
-        toDateRange.endMs(context, now));
+    expect(report.toDateRange.startTimestamp.toInt(), expectedToStartMs);
+    expect(report.toDateRange.endTimestamp.toInt(), expectedToEndMs);
     expect(report.anglerIds, isEmpty);
     expect(report.baits, isEmpty);
     expect(report.speciesIds, isEmpty);
@@ -1061,8 +1072,14 @@ void main() {
       ..id = randomId()
       ..name = "Report Name"
       ..description = "Report description"
-      ..fromDateRange = DateRange(period: DateRange_Period.yesterday)
-      ..toDateRange = DateRange(period: DateRange_Period.today)
+      ..fromDateRange = DateRange(
+        period: DateRange_Period.yesterday,
+        timeZone: defaultTimeZone,
+      )
+      ..toDateRange = DateRange(
+        period: DateRange_Period.today,
+        timeZone: defaultTimeZone,
+      )
       ..isFavoritesOnly = true
       ..type = Report_Type.comparison
       ..waterDepthFilter = NumberFilter(
@@ -1108,7 +1125,8 @@ void main() {
       ..quantityFilter = NumberFilter(
         boundary: NumberBoundary.less_than,
         from: MultiMeasurement(mainValue: Measurement(value: 50)),
-      );
+      )
+      ..timeZone = defaultTimeZone;
     report.anglerIds.addAll(anglerList.map((e) => e.id));
     report.baits.addAll(baitList.map((e) => BaitAttachment(baitId: e.id)));
     report.fishingSpotIds.addAll(fishingSpotList.map((e) => e.id));

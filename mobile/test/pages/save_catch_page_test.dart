@@ -501,6 +501,8 @@ void main() {
         ..type = CustomEntity_Type.text;
       when(appManager.customEntityManager.entity(customEntity.id))
           .thenReturn(customEntity);
+      when(appManager.customEntityManager.entityExists(customEntity.id))
+          .thenReturn(true);
 
       var fieldIds =
           allCatchFields(await buildContext(tester, appManager: appManager))
@@ -551,6 +553,7 @@ void main() {
       var cat = Catch()
         ..id = randomId()
         ..timestamp = Int64(dateTime(2020, 1, 1, 15, 30).millisecondsSinceEpoch)
+        ..timeZone = defaultTimeZone
         ..baits.add(BaitAttachment(baitId: bait.id))
         ..fishingSpotId = fishingSpot.id
         ..speciesId = species.id

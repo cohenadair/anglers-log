@@ -74,6 +74,10 @@ class TimeManager {
     }
     return TZDateTime.now(getLocation(timeZone!));
   }
+
+  TZDateTime toTZDateTime(DateTime dateTime) {
+    return TZDateTime.from(dateTime, currentLocation.value);
+  }
 }
 
 @immutable

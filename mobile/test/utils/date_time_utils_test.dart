@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/utils/date_time_utils.dart';
 import 'package:mockito/mockito.dart';
+import 'package:timezone/data/latest.dart';
 import 'package:timezone/timezone.dart';
 
 import '../mocks/mocks.mocks.dart';
@@ -9,6 +10,10 @@ import '../mocks/stubbed_app_manager.dart';
 import '../test_utils.dart';
 
 void main() {
+  setUp(() {
+    initializeTimeZones();
+  });
+
   test("isLater", () {
     expect(
       isLater(const TimeOfDay(hour: 10, minute: 30),
@@ -33,32 +38,32 @@ void main() {
   });
 
   group("isInFutureWithMinuteAccuracy", () {
-    var now = dateTime(2015, 5, 15, 12, 30, 45, 10000);
+    TZDateTime now() => dateTime(2015, 5, 15, 12, 30, 45, 10000);
 
     test("Value should be in the past", () {
       expect(
         isInFutureWithMinuteAccuracy(
-            dateTime(2014, 6, 16, 13, 31, 46, 10001), now),
+            dateTime(2014, 6, 16, 13, 31, 46, 10001), now()),
         isFalse,
       );
       expect(
         isInFutureWithMinuteAccuracy(
-            dateTime(2015, 4, 16, 13, 31, 46, 10001), now),
+            dateTime(2015, 4, 16, 13, 31, 46, 10001), now()),
         isFalse,
       );
       expect(
         isInFutureWithMinuteAccuracy(
-            dateTime(2015, 5, 14, 13, 31, 46, 10001), now),
+            dateTime(2015, 5, 14, 13, 31, 46, 10001), now()),
         isFalse,
       );
       expect(
         isInFutureWithMinuteAccuracy(
-            dateTime(2015, 5, 15, 11, 31, 46, 10001), now),
+            dateTime(2015, 5, 15, 11, 31, 46, 10001), now()),
         isFalse,
       );
       expect(
         isInFutureWithMinuteAccuracy(
-            dateTime(2015, 5, 15, 12, 29, 46, 10001), now),
+            dateTime(2015, 5, 15, 12, 29, 46, 10001), now()),
         isFalse,
       );
     });
@@ -66,22 +71,22 @@ void main() {
     test("Value should be in the future", () {
       expect(
         isInFutureWithMinuteAccuracy(
-            dateTime(2016, 4, 14, 11, 29, 44, 9999), now),
+            dateTime(2016, 4, 14, 11, 29, 44, 9999), now()),
         isTrue,
       );
       expect(
         isInFutureWithMinuteAccuracy(
-            dateTime(2015, 6, 14, 11, 29, 44, 9999), now),
+            dateTime(2015, 6, 14, 11, 29, 44, 9999), now()),
         isTrue,
       );
       expect(
         isInFutureWithMinuteAccuracy(
-            dateTime(2015, 5, 16, 11, 29, 44, 9999), now),
+            dateTime(2015, 5, 16, 11, 29, 44, 9999), now()),
         isTrue,
       );
       expect(
         isInFutureWithMinuteAccuracy(
-            dateTime(2015, 5, 15, 13, 29, 44, 9999), now),
+            dateTime(2015, 5, 15, 13, 29, 44, 9999), now()),
         isTrue,
       );
     });
@@ -90,54 +95,57 @@ void main() {
       // Equal, since seconds and milliseconds aren't considered.
       expect(
         isInFutureWithMinuteAccuracy(
-            dateTime(2015, 5, 15, 12, 30, 44, 10001), now),
+            dateTime(2015, 5, 15, 12, 30, 44, 10001), now()),
         isFalse,
       );
       expect(
         isInFutureWithMinuteAccuracy(
-            dateTime(2015, 5, 15, 12, 30, 45, 9999), now),
+            dateTime(2015, 5, 15, 12, 30, 45, 9999), now()),
         isFalse,
       );
       expect(
         isInFutureWithMinuteAccuracy(
-            dateTime(2015, 5, 15, 12, 30, 44, 9999), now),
+            dateTime(2015, 5, 15, 12, 30, 44, 9999), now()),
         isFalse,
       );
     });
   });
 
   group("isInFutureWithDayAccuracy", () {
-    var now = dateTime(2015, 5, 15, 12, 30, 45, 10000);
+    TZDateTime now() => dateTime(2015, 5, 15, 12, 30, 45, 10000);
 
     test("Value should be in the past", () {
       expect(
         isInFutureWithDayAccuracy(
-            dateTime(2014, 6, 16, 13, 31, 46, 10001), now),
+            dateTime(2014, 6, 16, 13, 31, 46, 10001), now()),
         isFalse,
       );
       expect(
         isInFutureWithDayAccuracy(
-            dateTime(2015, 4, 16, 13, 31, 46, 10001), now),
+            dateTime(2015, 4, 16, 13, 31, 46, 10001), now()),
         isFalse,
       );
       expect(
         isInFutureWithDayAccuracy(
-            dateTime(2015, 5, 14, 13, 31, 46, 10001), now),
+            dateTime(2015, 5, 14, 13, 31, 46, 10001), now()),
         isFalse,
       );
     });
 
     test("Value should be in the future", () {
       expect(
-        isInFutureWithDayAccuracy(dateTime(2016, 4, 14, 11, 29, 44, 9999), now),
+        isInFutureWithDayAccuracy(
+            dateTime(2016, 4, 14, 11, 29, 44, 9999), now()),
         isTrue,
       );
       expect(
-        isInFutureWithDayAccuracy(dateTime(2015, 6, 14, 11, 29, 44, 9999), now),
+        isInFutureWithDayAccuracy(
+            dateTime(2015, 6, 14, 11, 29, 44, 9999), now()),
         isTrue,
       );
       expect(
-        isInFutureWithDayAccuracy(dateTime(2015, 5, 16, 11, 29, 44, 9999), now),
+        isInFutureWithDayAccuracy(
+            dateTime(2015, 5, 16, 11, 29, 44, 9999), now()),
         isTrue,
       );
     });
@@ -146,16 +154,17 @@ void main() {
       // Equal, since seconds and milliseconds aren't considered.
       expect(
         isInFutureWithDayAccuracy(
-            dateTime(2015, 5, 15, 11, 31, 46, 10001), now),
+            dateTime(2015, 5, 15, 11, 31, 46, 10001), now()),
         isFalse,
       );
       expect(
         isInFutureWithDayAccuracy(
-            dateTime(2015, 5, 15, 12, 29, 46, 10001), now),
+            dateTime(2015, 5, 15, 12, 29, 46, 10001), now()),
         isFalse,
       );
       expect(
-        isInFutureWithDayAccuracy(dateTime(2015, 5, 15, 13, 29, 44, 9999), now),
+        isInFutureWithDayAccuracy(
+            dateTime(2015, 5, 15, 13, 29, 44, 9999), now()),
         isFalse,
       );
     });
