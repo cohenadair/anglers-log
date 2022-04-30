@@ -194,8 +194,9 @@ void main() {
     );
     expect(numberUpdated, 2);
 
-    var species = List.of(entityManager.list())..sort(
-        (lhs, rhs) => ignoreCaseAlphabeticalComparator(lhs.name, rhs.name));
+    var species = List.of(entityManager.list())
+      ..sort(
+          (lhs, rhs) => ignoreCaseAlphabeticalComparator(lhs.name, rhs.name));
     expect(species[0].name, "Bluegill");
     expect(species[1].name, "Largemouth Bass 2");
     expect(species[2].name, "Smallmouth Bass 2");
