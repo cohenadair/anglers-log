@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/entity_manager.dart';
+import 'package:mobile/time_manager.dart';
 import 'package:mockito/mockito.dart';
+import 'package:quiver/strings.dart';
+import 'package:timezone/data/latest.dart';
+import 'package:timezone/timezone.dart';
 
+import '../test_utils.dart';
 import 'mocks.dart';
 import 'mocks.mocks.dart';
 
@@ -39,6 +44,7 @@ class StubbedAppManager {
   MockImageCompressWrapper imageCompressWrapper = MockImageCompressWrapper();
   MockImagePickerWrapper imagePickerWrapper = MockImagePickerWrapper();
   MockIoWrapper ioWrapper = MockIoWrapper();
+  MockNativeTimeZoneWrapper timeZoneWrapper = MockNativeTimeZoneWrapper();
   MockPackageInfoWrapper packageInfoWrapper = MockPackageInfoWrapper();
   MockPathProviderWrapper pathProviderWrapper = MockPathProviderWrapper();
   MockPermissionHandlerWrapper permissionHandlerWrapper =
@@ -81,6 +87,7 @@ class StubbedAppManager {
     when(app.imageCompressWrapper).thenReturn(imageCompressWrapper);
     when(app.imagePickerWrapper).thenReturn(imagePickerWrapper);
     when(app.ioWrapper).thenReturn(ioWrapper);
+    when(app.nativeTimeZoneWrapper).thenReturn(timeZoneWrapper);
     when(app.packageInfoWrapper).thenReturn(packageInfoWrapper);
     when(app.pathProviderWrapper).thenReturn(pathProviderWrapper);
     when(app.permissionHandlerWrapper).thenReturn(permissionHandlerWrapper);
@@ -91,7 +98,7 @@ class StubbedAppManager {
     when(app.servicesWrapper).thenReturn(servicesWrapper);
     when(app.urlLauncherWrapper).thenReturn(urlLauncherWrapper);
 
-    // Default to the current time.
+    // Default to the current time and time zone.
     stubCurrentTime(DateTime.now());
 
     // Setup default listener stubs on EntityListener classes, since
@@ -198,8 +205,29 @@ class StubbedAppManager {
   }
 
   void stubCurrentTime(DateTime now) {
-    when(timeManager.currentDateTime).thenReturn(now);
-    when(timeManager.currentTime).thenReturn(TimeOfDay.fromDateTime(now));
-    when(timeManager.msSinceEpoch).thenReturn(now.millisecondsSinceEpoch);
+    initializeTimeZones();
+
+    var defaultLocation = getLocation(defaultTimeZone);
+    var tzNow = TZDateTime.from(now, defaultLocation);
+    when(timeManager.now(any)).thenReturn(tzNow);
+    when(timeManager.currentDateTime).thenReturn(tzNow);
+    when(timeManager.currentTime).thenReturn(TimeOfDay.fromDateTime(tzNow));
+    when(timeManager.currentTimestamp).thenReturn(tzNow.millisecondsSinceEpoch);
+
+    when(timeManager.currentLocation)
+        .thenReturn(TimeZoneLocation.fromName(defaultTimeZone));
+    when(timeManager.currentTimeZone).thenReturn(defaultTimeZone);
+    when(timeManager.dateTime(any, any)).thenAnswer((invocation) {
+      String? timeZone = invocation.positionalArguments.length == 2
+          ? invocation.positionalArguments[1]
+          : null;
+      if (isEmpty(timeZone)) {
+        timeZone = defaultTimeZone;
+      }
+      return TZDateTime.fromMillisecondsSinceEpoch(
+          getLocation(timeZone!), invocation.positionalArguments[0]);
+    });
+    when(timeManager.toTZDateTime(any)).thenAnswer((invocation) =>
+        TZDateTime.from(invocation.positionalArguments.first, defaultLocation));
   }
 }

@@ -51,7 +51,7 @@ void main() {
         .thenAnswer((_) => const Stream.empty());
     when(appManager.subscriptionManager.isPro).thenReturn(true);
 
-    when(appManager.timeManager.currentDateTime).thenReturn(DateTime.now());
+    when(appManager.timeManager.currentDateTime).thenReturn(now());
 
     when(appManager.userPreferenceManager.isTrackingSpecies).thenReturn(true);
     when(appManager.userPreferenceManager.isTrackingAnglers).thenReturn(true);

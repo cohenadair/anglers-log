@@ -13,7 +13,6 @@ import 'package:mobile/pages/catch_list_page.dart';
 import 'package:mobile/pages/editable_form_page.dart';
 import 'package:mobile/res/dimen.dart';
 import 'package:mobile/species_manager.dart';
-import 'package:mobile/time_manager.dart';
 import 'package:mobile/trip_manager.dart';
 import 'package:mobile/user_preference_manager.dart';
 import 'package:mobile/widgets/atmosphere_input.dart';
@@ -31,9 +30,11 @@ import '../atmosphere_fetcher.dart';
 import '../i18n/strings.dart';
 import '../log.dart';
 import '../model/gen/anglerslog.pb.dart';
+import '../time_manager.dart';
 import '../utils/protobuf_utils.dart';
 import '../widgets/input_controller.dart';
 import '../widgets/text_input.dart';
+import '../widgets/time_zone_input.dart';
 import 'angler_list_page.dart';
 import 'species_list_page.dart';
 
@@ -55,6 +56,7 @@ class _SaveTripPageState extends State<SaveTripPage> {
       Id(uuid: "0f012ca1-aae3-4aec-86e2-d85479eb6d66");
   static final _idEndTimestamp =
       Id(uuid: "c6afa4ff-add6-4a01-b69a-ba6f9b456c85");
+  static final _idTimeZone = Id(uuid: "205933d4-27f5-4917-ae92-08366a469963");
   static final _idName = Id(uuid: "d9a83fa6-926d-474d-8ddf-8d0e044d2ea4");
   static final _idImages = Id(uuid: "8c593cbb-4782-49c7-b540-0c22d8175b3f");
   static final _idCatches = Id(uuid: "0806fcc4-5d77-44b4-85e2-ebc066f37e12");
@@ -104,11 +106,14 @@ class _SaveTripPageState extends State<SaveTripPage> {
   UserPreferenceManager get _userPreferenceManager =>
       UserPreferenceManager.of(context);
 
-  CurrentTimestampInputController get _startTimestampController =>
-      _fields[_idStartTimestamp]!.controller as CurrentTimestampInputController;
+  CurrentDateTimeInputController get _startTimestampController =>
+      _fields[_idStartTimestamp]!.controller as CurrentDateTimeInputController;
 
-  CurrentTimestampInputController get _endTimestampController =>
-      _fields[_idEndTimestamp]!.controller as CurrentTimestampInputController;
+  CurrentDateTimeInputController get _endTimestampController =>
+      _fields[_idEndTimestamp]!.controller as CurrentDateTimeInputController;
+
+  TimeZoneInputController get _timeZoneController =>
+      _fields[_idTimeZone]!.controller as TimeZoneInputController;
 
   TextInputController get _nameController =>
       _fields[_idName]!.controller as TextInputController;
@@ -165,14 +170,21 @@ class _SaveTripPageState extends State<SaveTripPage> {
       id: _idStartTimestamp,
       isRemovable: false,
       name: (context) => Strings.of(context).saveTripPageStartDateTime,
-      controller: CurrentTimestampInputController(_timeManager),
+      controller: CurrentDateTimeInputController(context),
     );
 
     _fields[_idEndTimestamp] = Field(
       id: _idEndTimestamp,
       isRemovable: false,
       name: (context) => Strings.of(context).saveTripPageEndDateTime,
-      controller: CurrentTimestampInputController(_timeManager),
+      controller: CurrentDateTimeInputController(context),
+    );
+
+    _fields[_idTimeZone] = Field(
+      id: _idTimeZone,
+      name: (context) => Strings.of(context).timeZoneInputLabel,
+      description: (context) => Strings.of(context).timeZoneInputDescription,
+      controller: TimeZoneInputController(context),
     );
 
     _fields[_idName] = Field(
@@ -224,8 +236,9 @@ class _SaveTripPageState extends State<SaveTripPage> {
     );
 
     if (_isEditing) {
-      _startTimestampController.value = _oldTrip!.startTimestamp.toInt();
-      _endTimestampController.value = _oldTrip!.endTimestamp.toInt();
+      _startTimestampController.value = _oldTrip!.startDateTime(context);
+      _endTimestampController.value = _oldTrip!.endDateTime(context);
+      _timeZoneController.value = _oldTrip!.timeZone;
       _nameController.value = _oldTrip!.hasName() ? _oldTrip!.name : null;
       _catchesController.value = _oldTrip!.catchIds.toSet();
       _bodiesOfWaterController.value = _oldTrip!.bodyOfWaterIds.toSet();
@@ -265,6 +278,8 @@ class _SaveTripPageState extends State<SaveTripPage> {
       return _buildStartTime();
     } else if (id == _idEndTimestamp) {
       return _buildEndTime();
+    } else if (id == _idTimeZone) {
+      return _buildTimeZone();
     } else if (id == _idName) {
       return _buildName();
     } else if (id == _idImages) {
@@ -310,6 +325,16 @@ class _SaveTripPageState extends State<SaveTripPage> {
         dateLabel: Strings.of(context).saveTripPageEndDate,
         timeLabel: Strings.of(context).saveTripPageEndDate,
       ),
+    );
+  }
+
+  Widget _buildTimeZone() {
+    return TimeZoneInput(
+      controller: _timeZoneController,
+      onPicked: () {
+        _startTimestampController.timeZone = _timeZoneController.value;
+        _endTimestampController.timeZone = _timeZoneController.value;
+      },
     );
   }
 
@@ -445,13 +470,16 @@ class _SaveTripPageState extends State<SaveTripPage> {
     }
 
     // Use the timestamp in the middle of the start and end times.
-    var time =
-        ((_endTimestampController.value + _startTimestampController.value) / 2)
-            .round();
-    var fetcher = AtmosphereFetcher(_appManager, time, latLng);
+    var startMs = _startTimestampController.timestamp;
+    var endMs = _endTimestampController.timestamp;
+    var time = ((endMs + startMs) / 2).round();
 
     return AtmosphereInput(
-      fetcher: fetcher,
+      fetcher: AtmosphereFetcher(
+        _appManager,
+        _timeManager.dateTime(time, _timeZoneController.value),
+        latLng,
+      ),
       controller: _atmosphereController,
       fishingSpot: fishingSpot,
     );
@@ -461,16 +489,18 @@ class _SaveTripPageState extends State<SaveTripPage> {
   /// the time if "All day" checkboxes are checked. This will overwrite any
   /// changes the user made to the time.
   void _updateTimestampControllers(List<Catch> catches) {
+    var startDateTime = catches.last.dateTime(context);
     if (_startTimestampController.isMidnight) {
-      _startTimestampController.date = catches.last.timestamp.toDateTime();
+      _startTimestampController.date = startDateTime;
     } else {
-      _startTimestampController.value = catches.last.timestamp.toInt();
+      _startTimestampController.value = startDateTime;
     }
 
+    var endDateTime = catches.first.dateTime(context);
     if (_endTimestampController.isMidnight) {
-      _endTimestampController.date = catches.first.timestamp.toDateTime();
+      _endTimestampController.date = endDateTime;
     } else {
-      _endTimestampController.value = catches.first.timestamp.toInt();
+      _endTimestampController.value = endDateTime;
     }
   }
 
@@ -542,8 +572,9 @@ class _SaveTripPageState extends State<SaveTripPage> {
     // imageNames is set in _tripManager.addOrUpdate.
     var newTrip = Trip(
       id: _oldTrip?.id ?? randomId(),
-      startTimestamp: Int64(_startTimestampController.value),
-      endTimestamp: Int64(_endTimestampController.value),
+      startTimestamp: Int64(_startTimestampController.timestamp),
+      endTimestamp: Int64(_endTimestampController.timestamp),
+      timeZone: _timeZoneController.value,
       catchIds: _catchesController.value,
       bodyOfWaterIds: _bodiesOfWaterController.value,
       catchesPerSpecies: _speciesCatchesController.value,
@@ -559,6 +590,7 @@ class _SaveTripPageState extends State<SaveTripPage> {
 
     if (_atmosphereController.hasValue) {
       newTrip.atmosphere = _atmosphereController.value!;
+      newTrip.atmosphere.timeZone = newTrip.timeZone;
     }
 
     if (isNotEmpty(_notesController.value)) {
@@ -575,7 +607,7 @@ class _SaveTripPageState extends State<SaveTripPage> {
 }
 
 class _DateTimeAllDayPicker extends StatefulWidget {
-  final TimestampInputController controller;
+  final DateTimeInputController controller;
   final String dateLabel;
   final String timeLabel;
 

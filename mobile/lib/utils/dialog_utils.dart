@@ -145,7 +145,7 @@ bool showRateDialogIfNeeded(BuildContext context) {
           name: Strings.of(context).rateDialogLater,
           onTap: () =>
               // Reset timer to prompt them again later.
-              preferences.setRateTimerStartedAt(timeManager.msSinceEpoch),
+              preferences.setRateTimerStartedAt(timeManager.currentTimestamp),
         ),
         _buildDialogButton(
           context: context,

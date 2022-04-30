@@ -26,7 +26,7 @@ void main() {
     when(appManager.catchManager.deleteMessage(any, any)).thenReturn("Delete");
     when(appManager.catchManager.entity(any)).thenReturn(Catch()
       ..id = randomId()
-      ..timestamp = Int64(DateTime(2020, 1, 1, 15, 30).millisecondsSinceEpoch)
+      ..timestamp = Int64(dateTime(2020, 1, 1, 15, 30).millisecondsSinceEpoch)
       ..speciesId = randomId());
 
     when(appManager.fishingSpotManager.list(any)).thenReturn([]);
@@ -56,7 +56,7 @@ void main() {
   testWidgets("Period renders with timestamp", (tester) async {
     when(appManager.catchManager.entity(any)).thenReturn(Catch()
       ..id = randomId()
-      ..timestamp = Int64(DateTime(2020, 1, 1, 15, 30).millisecondsSinceEpoch)
+      ..timestamp = Int64(dateTime(2020, 1, 1, 15, 30).millisecondsSinceEpoch)
       ..speciesId = randomId()
       ..period = Period.afternoon);
 
@@ -84,7 +84,7 @@ void main() {
   testWidgets("Season renders with timestamp", (tester) async {
     when(appManager.catchManager.entity(any)).thenReturn(Catch()
       ..id = randomId()
-      ..timestamp = Int64(DateTime(2020, 1, 1, 15, 30).millisecondsSinceEpoch)
+      ..timestamp = Int64(dateTime(2020, 1, 1, 15, 30).millisecondsSinceEpoch)
       ..speciesId = randomId()
       ..season = Season.autumn);
 
@@ -101,7 +101,7 @@ void main() {
   testWidgets("Period and season renders with timestamp", (tester) async {
     when(appManager.catchManager.entity(any)).thenReturn(Catch()
       ..id = randomId()
-      ..timestamp = Int64(DateTime(2020, 1, 1, 15, 30).millisecondsSinceEpoch)
+      ..timestamp = Int64(dateTime(2020, 1, 1, 15, 30).millisecondsSinceEpoch)
       ..speciesId = randomId()
       ..period = Period.morning
       ..season = Season.autumn);
@@ -226,7 +226,7 @@ void main() {
   testWidgets("Fishing methods render", (tester) async {
     when(appManager.catchManager.entity(any)).thenReturn(Catch()
       ..id = randomId()
-      ..timestamp = Int64(DateTime(2020, 1, 1, 15, 30).millisecondsSinceEpoch)
+      ..timestamp = Int64(dateTime(2020, 1, 1, 15, 30).millisecondsSinceEpoch)
       ..speciesId = randomId()
       ..methodIds.add(randomId()));
     when(appManager.methodManager.list(any)).thenReturn([
@@ -254,7 +254,7 @@ void main() {
       (tester) async {
     when(appManager.catchManager.entity(any)).thenReturn(Catch()
       ..id = randomId()
-      ..timestamp = Int64(DateTime(2020, 1, 1, 15, 30).millisecondsSinceEpoch)
+      ..timestamp = Int64(dateTime(2020, 1, 1, 15, 30).millisecondsSinceEpoch)
       ..speciesId = randomId()
       ..methodIds.add(randomId()));
     when(appManager.methodManager.list(any)).thenReturn([]);
@@ -285,7 +285,7 @@ void main() {
   testWidgets("Catch and release is true", (tester) async {
     when(appManager.catchManager.entity(any)).thenReturn(Catch()
       ..id = randomId()
-      ..timestamp = Int64(DateTime(2020, 1, 1, 15, 30).millisecondsSinceEpoch)
+      ..timestamp = Int64(dateTime(2020, 1, 1, 15, 30).millisecondsSinceEpoch)
       ..speciesId = randomId()
       ..wasCatchAndRelease = true);
     await tester.pumpWidget(Testable(
@@ -303,7 +303,7 @@ void main() {
   testWidgets("Catch and release is false", (tester) async {
     when(appManager.catchManager.entity(any)).thenReturn(Catch()
       ..id = randomId()
-      ..timestamp = Int64(DateTime(2020, 1, 1, 15, 30).millisecondsSinceEpoch)
+      ..timestamp = Int64(dateTime(2020, 1, 1, 15, 30).millisecondsSinceEpoch)
       ..speciesId = randomId()
       ..wasCatchAndRelease = false);
     await tester.pumpWidget(Testable(
@@ -333,7 +333,7 @@ void main() {
   testWidgets("Atmosphere renders", (tester) async {
     when(appManager.catchManager.entity(any)).thenReturn(Catch()
       ..id = randomId()
-      ..timestamp = Int64(DateTime(2020, 1, 1, 15, 30).millisecondsSinceEpoch)
+      ..timestamp = Int64(dateTime(2020, 1, 1, 15, 30).millisecondsSinceEpoch)
       ..atmosphere = Atmosphere(
         humidity: Measurement(
           unit: Unit.percent,
@@ -358,7 +358,7 @@ void main() {
 
     when(appManager.catchManager.entity(any)).thenReturn(Catch()
       ..id = randomId()
-      ..timestamp = Int64(DateTime(2020, 1, 1, 15, 30).millisecondsSinceEpoch)
+      ..timestamp = Int64(dateTime(2020, 1, 1, 15, 30).millisecondsSinceEpoch)
       ..baits.addAll([
         BaitAttachment(baitId: baitId0),
         BaitAttachment(baitId: baitId1),
@@ -387,7 +387,7 @@ void main() {
     when(appManager.speciesManager.entity(any)).thenReturn(null);
     when(appManager.catchManager.entity(any)).thenReturn(Catch(
       id: randomId(),
-      timestamp: Int64(DateTime(2020, 1, 1, 15, 30).millisecondsSinceEpoch),
+      timestamp: Int64(dateTime(2020, 1, 1, 15, 30).millisecondsSinceEpoch),
       speciesId: randomId(),
     ));
     when(appManager.sharePlusWrapper.share(any))
@@ -414,7 +414,7 @@ void main() {
     ));
     when(appManager.catchManager.entity(any)).thenReturn(Catch(
       id: randomId(),
-      timestamp: Int64(DateTime(2020, 1, 1, 15, 30).millisecondsSinceEpoch),
+      timestamp: Int64(dateTime(2020, 1, 1, 15, 30).millisecondsSinceEpoch),
       speciesId: randomId(),
       length: MultiMeasurement(
         system: MeasurementSystem.metric,
@@ -463,7 +463,7 @@ void main() {
     when(appManager.speciesManager.entity(any)).thenReturn(null);
     when(appManager.catchManager.entity(any)).thenReturn(Catch(
       id: randomId(),
-      timestamp: Int64(DateTime(2020, 1, 1, 15, 30).millisecondsSinceEpoch),
+      timestamp: Int64(dateTime(2020, 1, 1, 15, 30).millisecondsSinceEpoch),
       speciesId: randomId(),
       baits: [
         BaitAttachment(baitId: randomId()),
@@ -497,7 +497,7 @@ void main() {
     when(appManager.speciesManager.entity(any)).thenReturn(null);
     when(appManager.catchManager.entity(any)).thenReturn(Catch(
       id: randomId(),
-      timestamp: Int64(DateTime(2020, 1, 1, 15, 30).millisecondsSinceEpoch),
+      timestamp: Int64(dateTime(2020, 1, 1, 15, 30).millisecondsSinceEpoch),
       speciesId: randomId(),
       baits: [
         BaitAttachment(baitId: randomId()),
@@ -534,7 +534,7 @@ void main() {
     ));
     when(appManager.catchManager.entity(any)).thenReturn(Catch(
       id: randomId(),
-      timestamp: Int64(DateTime(2020, 1, 1, 15, 30).millisecondsSinceEpoch),
+      timestamp: Int64(dateTime(2020, 1, 1, 15, 30).millisecondsSinceEpoch),
       speciesId: randomId(),
       length: MultiMeasurement(
         system: MeasurementSystem.metric,
@@ -916,7 +916,7 @@ void main() {
 
       when(appManager.catchManager.entity(any)).thenReturn(Catch()
         ..id = randomId()
-        ..timestamp = Int64(DateTime(2020, 1, 1, 15, 30).millisecondsSinceEpoch)
+        ..timestamp = Int64(dateTime(2020, 1, 1, 15, 30).millisecondsSinceEpoch)
         ..baits.addAll([
           BaitAttachment(baitId: baitId0),
           BaitAttachment(baitId: baitId1),
@@ -945,7 +945,7 @@ void main() {
 
       when(appManager.catchManager.entity(any)).thenReturn(Catch()
         ..id = randomId()
-        ..timestamp = Int64(DateTime(2020, 1, 1, 15, 30).millisecondsSinceEpoch)
+        ..timestamp = Int64(dateTime(2020, 1, 1, 15, 30).millisecondsSinceEpoch)
         ..baits.addAll([
           BaitAttachment(baitId: baitId0, variantId: randomId()),
           BaitAttachment(baitId: baitId1),
@@ -974,7 +974,7 @@ void main() {
     testWidgets("Tapping variant shows variant page", (tester) async {
       when(appManager.catchManager.entity(any)).thenReturn(Catch()
         ..id = randomId()
-        ..timestamp = Int64(DateTime(2020, 1, 1, 15, 30).millisecondsSinceEpoch)
+        ..timestamp = Int64(dateTime(2020, 1, 1, 15, 30).millisecondsSinceEpoch)
         ..baits.addAll([
           BaitAttachment(baitId: randomId(), variantId: randomId()),
         ]));
@@ -1005,7 +1005,7 @@ void main() {
     testWidgets("Tapping bait shows bait page", (tester) async {
       when(appManager.catchManager.entity(any)).thenReturn(Catch()
         ..id = randomId()
-        ..timestamp = Int64(DateTime(2020, 1, 1, 15, 30).millisecondsSinceEpoch)
+        ..timestamp = Int64(dateTime(2020, 1, 1, 15, 30).millisecondsSinceEpoch)
         ..baits.addAll([
           BaitAttachment(baitId: randomId()),
         ]));
@@ -1030,7 +1030,7 @@ void main() {
     testWidgets("Image passed to ImageListItem", (tester) async {
       when(appManager.catchManager.entity(any)).thenReturn(Catch()
         ..id = randomId()
-        ..timestamp = Int64(DateTime(2020, 1, 1, 15, 30).millisecondsSinceEpoch)
+        ..timestamp = Int64(dateTime(2020, 1, 1, 15, 30).millisecondsSinceEpoch)
         ..baits.addAll([
           BaitAttachment(baitId: randomId()),
         ]));
@@ -1055,7 +1055,7 @@ void main() {
     testWidgets("Null image passed to ImageListItem", (tester) async {
       when(appManager.catchManager.entity(any)).thenReturn(Catch()
         ..id = randomId()
-        ..timestamp = Int64(DateTime(2020, 1, 1, 15, 30).millisecondsSinceEpoch)
+        ..timestamp = Int64(dateTime(2020, 1, 1, 15, 30).millisecondsSinceEpoch)
         ..baits.addAll([
           BaitAttachment(baitId: randomId()),
         ]));

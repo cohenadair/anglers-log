@@ -45,7 +45,8 @@ class AddCatchJourney extends StatefulWidget {
             setTimer: userPreferenceManager.setProTimerStartedAt,
             frequency: Duration.millisecondsPerDay * 7,
           )) {
-        userPreferenceManager.setProTimerStartedAt(timeManager.msSinceEpoch);
+        userPreferenceManager
+            .setProTimerStartedAt(timeManager.currentTimestamp);
         present(context, const ProPage());
         return;
       }

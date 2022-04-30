@@ -49,6 +49,7 @@ import 'package:mobile/wrappers/google_sign_in_wrapper.dart';
 import 'package:mobile/wrappers/http_wrapper.dart';
 import 'package:mobile/wrappers/image_compress_wrapper.dart';
 import 'package:mobile/wrappers/image_picker_wrapper.dart';
+import 'package:mobile/wrappers/native_time_zone_wrapper.dart';
 import 'package:mobile/wrappers/purchases_wrapper.dart';
 import 'package:mobile/wrappers/io_wrapper.dart';
 import 'package:mobile/wrappers/package_info_wrapper.dart';
@@ -65,6 +66,7 @@ import 'package:photo_manager/photo_manager.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
 import 'package:sqflite/sqflite.dart';
 
+import '../test_utils.dart';
 import 'mocks.mocks.dart';
 
 // TODO: Remove generation - https://github.com/dart-lang/mockito/issues/347
@@ -105,6 +107,7 @@ Trip_CatchesPerEntity newInputItemShim(dynamic pickerItem) =>
 @GenerateMocks([SpeciesManager])
 @GenerateMocks([SubscriptionManager])
 @GenerateMocks([TimeManager])
+@GenerateMocks([TimeZoneLocation])
 @GenerateMocks([TripManager])
 @GenerateMocks([UserPreferenceManager])
 @GenerateMocks([WaterClarityManager])
@@ -115,6 +118,7 @@ Trip_CatchesPerEntity newInputItemShim(dynamic pickerItem) =>
 @GenerateMocks([HttpWrapper])
 @GenerateMocks([ImageCompressWrapper])
 @GenerateMocks([IoWrapper])
+@GenerateMocks([NativeTimeZoneWrapper])
 @GenerateMocks([map.MapboxMapController])
 @GenerateMocks([PackageInfoWrapper])
 @GenerateMocks([PathProviderWrapper])
@@ -278,7 +282,7 @@ class MockAssetEntity extends AssetEntity {
         );
 
   @override
-  DateTime get createDateTime => dateTime ?? DateTime.now();
+  DateTime get createDateTime => dateTime ?? now();
 
   @override
   Future<Uint8List?> get thumbnailData =>

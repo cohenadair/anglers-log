@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/time_manager.dart';
 import 'package:quiver/strings.dart';
+import 'package:timezone/timezone.dart';
 
 import '../res/dimen.dart';
 import '../widgets/text.dart';
@@ -67,13 +68,13 @@ class DateTimePicker extends StatelessWidget {
   }
 }
 
-class DatePicker extends FormField<DateTime> {
+class DatePicker extends FormField<TZDateTime> {
   DatePicker(
     BuildContext context, {
     required String label,
-    required TimestampInputController controller,
-    void Function(DateTime)? onChange,
-    FormFieldValidator<DateTime>? validator,
+    required DateTimeInputController controller,
+    void Function(TZDateTime)? onChange,
+    FormFieldValidator<TZDateTime>? validator,
     bool enabled = true,
   })  : assert(isNotEmpty(label)),
         super(
@@ -95,10 +96,11 @@ class DatePicker extends FormField<DateTime> {
                   return const Empty();
                 },
                 openPicker: () {
+                  var timeManager = TimeManager.of(context);
+
                   showDatePicker(
                     context: state.context,
-                    initialDate: controller.date ??
-                        TimeManager.of(context).currentDateTime,
+                    initialDate: controller.date ?? timeManager.currentDateTime,
                     // Weird requirement of showDatePicker, but essentially
                     // let the user pick any date.
                     firstDate: DateTime(1900),
@@ -107,9 +109,10 @@ class DatePicker extends FormField<DateTime> {
                     if (dateTime == null) {
                       return;
                     }
-                    controller.date = dateTime;
-                    state.didChange(dateTime);
-                    onChange?.call(dateTime);
+                    var newValue = timeManager.toTZDateTime(dateTime);
+                    controller.date = newValue;
+                    state.didChange(newValue);
+                    onChange?.call(newValue);
                   });
                 },
               ),
@@ -122,7 +125,7 @@ class TimePicker extends FormField<TimeOfDay> {
   TimePicker(
     BuildContext context, {
     required String label,
-    required TimestampInputController controller,
+    required DateTimeInputController controller,
     Function(TimeOfDay)? onChange,
     FormFieldValidator<TimeOfDay>? validator,
     bool enabled = true,

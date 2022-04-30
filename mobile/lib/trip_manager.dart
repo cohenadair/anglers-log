@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:mobile/angler_manager.dart';
 import 'package:mobile/bait_manager.dart';
 import 'package:mobile/catch_manager.dart';
-import 'package:mobile/time_manager.dart';
 import 'package:provider/provider.dart';
 import 'package:quiver/strings.dart';
 
@@ -13,9 +12,11 @@ import 'custom_entity_manager.dart';
 import 'fishing_spot_manager.dart';
 import 'i18n/strings.dart';
 import 'image_manager.dart';
+import 'log.dart';
 import 'model/gen/anglerslog.pb.dart';
 import 'named_entity_manager.dart';
 import 'species_manager.dart';
+import 'time_manager.dart';
 import 'utils/catch_utils.dart';
 import 'utils/protobuf_utils.dart';
 import 'utils/string_utils.dart';
@@ -23,6 +24,8 @@ import 'utils/string_utils.dart';
 class TripManager extends NamedEntityManager<Trip> {
   static TripManager of(BuildContext context) =>
       Provider.of<AppManager>(context, listen: false).tripManager;
+
+  final _log = const Log("TripManager");
 
   TripManager(AppManager app) : super(app);
 
@@ -42,6 +45,22 @@ class TripManager extends NamedEntityManager<Trip> {
   SpeciesManager get _speciesManager => appManager.speciesManager;
 
   TimeManager get _timeManager => appManager.timeManager;
+
+  @override
+  Future<void> initialize() async {
+    await super.initialize();
+
+    // TODO: Remove (#683)
+    var numberOfChanges = await updateAll(
+      where: (trip) => !trip.hasTimeZone(),
+      apply: (trip) => addOrUpdate(
+        trip..timeZone = _timeManager.currentTimeZone,
+        setImages: false,
+        notify: false,
+      ),
+    );
+    _log.d("Added time zones to $numberOfChanges trips");
+  }
 
   @override
   Trip entityFromBytes(List<int> bytes) => Trip.fromBuffer(bytes);
@@ -75,8 +94,9 @@ class TripManager extends NamedEntityManager<Trip> {
     } else {
       trips = list(tripIds).where((trip) {
         if (dateRange != null &&
-            !dateRange.contains(
-                trip.startTimestamp.toInt(), _timeManager.currentDateTime)) {
+            context != null &&
+            !dateRange.contains(context, trip.startTimestamp.toInt(),
+                TimeManager.of(context).now(trip.timeZone))) {
           return false;
         }
 
@@ -94,10 +114,13 @@ class TripManager extends NamedEntityManager<Trip> {
     Trip entity, {
     List<File> imageFiles = const [],
     bool notify = true,
+    bool setImages = true,
   }) async {
-    entity.imageNames.clear();
-    entity.imageNames
-        .addAll(await _imageManager.save(imageFiles, compress: true));
+    if (setImages) {
+      entity.imageNames.clear();
+      entity.imageNames
+          .addAll(await _imageManager.save(imageFiles, compress: true));
+    }
 
     return super.addOrUpdate(entity, notify: notify);
   }

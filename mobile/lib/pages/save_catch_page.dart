@@ -1,8 +1,10 @@
 import 'dart:async';
 
+import 'package:collection/collection.dart' show IterableExtension;
 import 'package:fixnum/fixnum.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile/widgets/entity_picker_input.dart';
+import 'package:mobile/widgets/time_zone_input.dart';
 import 'package:quiver/strings.dart';
 
 import '../angler_manager.dart';
@@ -96,6 +98,7 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
   static final _idSpecies = catchFieldIdSpecies;
   static final _idTide = catchFieldIdTide;
   static final _idTimestamp = catchFieldIdTimestamp;
+  static final _idTimeZone = catchFieldIdTimeZone;
   static final _idWaterClarity = catchFieldIdWaterClarity;
   static final _idWaterDepth = catchFieldIdWaterDepth;
   static final _idWaterTemperature = catchFieldIdWaterTemperature;
@@ -114,9 +117,10 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
   bool _overwriteSeasonCalculation = false;
 
   List<CustomEntityValue> _customEntityValues = [];
-  StreamSubscription<void>? _userPreferenceSubscription;
 
   AnglerManager get _anglerManager => AnglerManager.of(context);
+
+  AppManager get _appManager => AppManager.of(context);
 
   CatchManager get _catchManager => CatchManager.of(context);
 
@@ -139,8 +143,11 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
 
   Catch? get _oldCatch => widget.oldCatch;
 
-  CurrentTimestampInputController get _timestampController =>
-      _fields[_idTimestamp]!.controller as CurrentTimestampInputController;
+  CurrentDateTimeInputController get _timestampController =>
+      _fields[_idTimestamp]!.controller as CurrentDateTimeInputController;
+
+  TimeZoneInputController get _timeZoneController =>
+      _fields[_idTimeZone]!.controller as TimeZoneInputController;
 
   InputController<Period> get _periodController =>
       _fields[_idPeriod]!.controller as InputController<Period>;
@@ -223,7 +230,8 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
     _weightInputState = MultiMeasurementInputSpec.weight(context);
 
     if (_editing) {
-      _timestampController.value = _oldCatch!.timestamp.toInt();
+      _timestampController.value = _oldCatch!.dateTime(context);
+      _timeZoneController.value = _oldCatch!.timeZone;
       _periodController.value =
           _oldCatch!.hasPeriod() ? _oldCatch!.period : null;
       _seasonController.value =
@@ -254,12 +262,8 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
       _tideController.value = _oldCatch!.hasTide() ? _oldCatch!.tide : null;
       _customEntityValues = _oldCatch!.customEntityValues;
     } else {
-      if (widget.images.isNotEmpty) {
-        var image = widget.images.first;
-        if (image.dateTime != null) {
-          _timestampController.date = image.dateTime;
-          _timestampController.time = TimeOfDay.fromDateTime(image.dateTime!);
-        }
+      if (widget.images.firstOrNull?.dateTime != null) {
+        _timestampController.value = widget.images.first.dateTime;
       }
       _speciesController.value = widget.speciesId;
       _imagesController.value = widget.images;
@@ -269,12 +273,6 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
       _calculateSeasonIfNeeded();
       _fetchAtmosphereIfNeeded();
     }
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    _userPreferenceSubscription?.cancel();
   }
 
   @override
@@ -300,6 +298,8 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
   Widget _buildField(Id id) {
     if (id == _idTimestamp) {
       return _buildTimestamp();
+    } else if (id == _idTimeZone) {
+      return _buildTimeZone();
     } else if (id == _idImages) {
       return _buildImages();
     } else if (id == _idSpecies) {
@@ -370,6 +370,13 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
           },
         ),
       ),
+    );
+  }
+
+  Widget _buildTimeZone() {
+    return TimeZoneInput(
+      controller: _timeZoneController,
+      onPicked: () => _timestampController.timeZone = _timeZoneController.value,
     );
   }
 
@@ -604,7 +611,8 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
     // imageNames is set in _catchManager.addOrUpdate
     var cat = Catch()
       ..id = _oldCatch?.id ?? randomId()
-      ..timestamp = Int64(_timestampController.value)
+      ..timestamp = Int64(_timestampController.timestamp)
+      ..timeZone = _timeZoneController.value
       ..speciesId = _speciesController.value!
       ..customEntityValues.addAll(entityValuesFromMap(customFieldValueMap));
 
@@ -685,10 +693,12 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
 
     if (_atmosphereController.hasValue) {
       cat.atmosphere = _atmosphereController.value!;
+      cat.atmosphere.timeZone = cat.timeZone;
     }
 
     if (_tideController.hasValue) {
       cat.tide = _tideController.value!;
+      cat.tide.timeZone = cat.timeZone;
     }
 
     await _catchManager.addOrUpdate(
@@ -722,13 +732,16 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
 
     var spot = _fishingSpotController.value;
     _seasonController.value =
-        Seasons.from(_timestampController.dateTime, spot?.lat);
+        Seasons.from(_timestampController.value, spot?.lat);
   }
 
   AtmosphereFetcher newAtmosphereFetcher() {
     var fishingSpot = _fishingSpotController.value;
-    return AtmosphereFetcher(AppManager.of(context), _timestampController.value,
-        fishingSpot?.latLng ?? _locationMonitor.currentLocation);
+    return AtmosphereFetcher(
+      _appManager,
+      _timestampController.value,
+      fishingSpot?.latLng ?? _locationMonitor.currentLocation,
+    );
   }
 
   void _fetchAtmosphereIfNeeded() {

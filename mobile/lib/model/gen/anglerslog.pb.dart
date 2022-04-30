@@ -160,6 +160,11 @@ class Atmosphere extends $pb.GeneratedMessage {
             : 'sunsetTimestamp',
         $pb.PbFieldType.OU6,
         defaultOrMaker: $fixnum.Int64.ZERO)
+    ..aOS(
+        11,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'timeZone')
     ..hasRequiredFields = false;
 
   Atmosphere._() : super();
@@ -174,6 +179,7 @@ class Atmosphere extends $pb.GeneratedMessage {
     MoonPhase? moonPhase,
     $fixnum.Int64? sunriseTimestamp,
     $fixnum.Int64? sunsetTimestamp,
+    $core.String? timeZone,
   }) {
     final _result = create();
     if (temperature != null) {
@@ -205,6 +211,9 @@ class Atmosphere extends $pb.GeneratedMessage {
     }
     if (sunsetTimestamp != null) {
       _result.sunsetTimestamp = sunsetTimestamp;
+    }
+    if (timeZone != null) {
+      _result.timeZone = timeZone;
     }
     return _result;
   }
@@ -354,6 +363,18 @@ class Atmosphere extends $pb.GeneratedMessage {
   $core.bool hasSunsetTimestamp() => $_has(9);
   @$pb.TagNumber(10)
   void clearSunsetTimestamp() => clearField(10);
+
+  @$pb.TagNumber(11)
+  $core.String get timeZone => $_getSZ(10);
+  @$pb.TagNumber(11)
+  set timeZone($core.String v) {
+    $_setString(10, v);
+  }
+
+  @$pb.TagNumber(11)
+  $core.bool hasTimeZone() => $_has(10);
+  @$pb.TagNumber(11)
+  void clearTimeZone() => clearField(11);
 }
 
 class CustomEntity extends $pb.GeneratedMessage {
@@ -1330,6 +1351,11 @@ class Catch extends $pb.GeneratedMessage {
             ? ''
             : 'tide',
         subBuilder: Tide.create)
+    ..aOS(
+        23,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'timeZone')
     ..hasRequiredFields = false;
 
   Catch._() : super();
@@ -1356,6 +1382,7 @@ class Catch extends $pb.GeneratedMessage {
     $core.String? notes,
     Atmosphere? atmosphere,
     Tide? tide,
+    $core.String? timeZone,
   }) {
     final _result = create();
     if (id != null) {
@@ -1423,6 +1450,9 @@ class Catch extends $pb.GeneratedMessage {
     }
     if (tide != null) {
       _result.tide = tide;
+    }
+    if (timeZone != null) {
+      _result.timeZone = timeZone;
     }
     return _result;
   }
@@ -1701,6 +1731,18 @@ class Catch extends $pb.GeneratedMessage {
   void clearTide() => clearField(22);
   @$pb.TagNumber(22)
   Tide ensureTide() => $_ensure(21);
+
+  @$pb.TagNumber(23)
+  $core.String get timeZone => $_getSZ(22);
+  @$pb.TagNumber(23)
+  set timeZone($core.String v) {
+    $_setString(22, v);
+  }
+
+  @$pb.TagNumber(23)
+  $core.bool hasTimeZone() => $_has(22);
+  @$pb.TagNumber(23)
+  void clearTimeZone() => clearField(23);
 }
 
 class DateRange extends $pb.GeneratedMessage {
@@ -1736,6 +1778,11 @@ class DateRange extends $pb.GeneratedMessage {
             : 'endTimestamp',
         $pb.PbFieldType.OU6,
         defaultOrMaker: $fixnum.Int64.ZERO)
+    ..aOS(
+        23,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'timeZone')
     ..hasRequiredFields = false;
 
   DateRange._() : super();
@@ -1743,6 +1790,7 @@ class DateRange extends $pb.GeneratedMessage {
     DateRange_Period? period,
     $fixnum.Int64? startTimestamp,
     $fixnum.Int64? endTimestamp,
+    $core.String? timeZone,
   }) {
     final _result = create();
     if (period != null) {
@@ -1753,6 +1801,9 @@ class DateRange extends $pb.GeneratedMessage {
     }
     if (endTimestamp != null) {
       _result.endTimestamp = endTimestamp;
+    }
+    if (timeZone != null) {
+      _result.timeZone = timeZone;
     }
     return _result;
   }
@@ -1817,6 +1868,18 @@ class DateRange extends $pb.GeneratedMessage {
   $core.bool hasEndTimestamp() => $_has(2);
   @$pb.TagNumber(3)
   void clearEndTimestamp() => clearField(3);
+
+  @$pb.TagNumber(23)
+  $core.String get timeZone => $_getSZ(3);
+  @$pb.TagNumber(23)
+  set timeZone($core.String v) {
+    $_setString(3, v);
+  }
+
+  @$pb.TagNumber(23)
+  $core.bool hasTimeZone() => $_has(3);
+  @$pb.TagNumber(23)
+  void clearTimeZone() => clearField(23);
 }
 
 class BodyOfWater extends $pb.GeneratedMessage {
@@ -2532,6 +2595,11 @@ class Report extends $pb.GeneratedMessage {
             : 'bodyOfWaterIds',
         $pb.PbFieldType.PM,
         subBuilder: Id.create)
+    ..aOS(
+        32,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'timeZone')
     ..hasRequiredFields = false;
 
   Report._() : super();
@@ -2567,6 +2635,7 @@ class Report extends $pb.GeneratedMessage {
     $core.Iterable<MoonPhase>? moonPhases,
     $core.Iterable<TideType>? tideTypes,
     $core.Iterable<Id>? bodyOfWaterIds,
+    $core.String? timeZone,
   }) {
     final _result = create();
     if (id != null) {
@@ -2661,6 +2730,9 @@ class Report extends $pb.GeneratedMessage {
     }
     if (bodyOfWaterIds != null) {
       _result.bodyOfWaterIds.addAll(bodyOfWaterIds);
+    }
+    if (timeZone != null) {
+      _result.timeZone = timeZone;
     }
     return _result;
   }
@@ -2970,6 +3042,18 @@ class Report extends $pb.GeneratedMessage {
 
   @$pb.TagNumber(31)
   $core.List<Id> get bodyOfWaterIds => $_getList(30);
+
+  @$pb.TagNumber(32)
+  $core.String get timeZone => $_getSZ(31);
+  @$pb.TagNumber(32)
+  set timeZone($core.String v) {
+    $_setString(31, v);
+  }
+
+  @$pb.TagNumber(32)
+  $core.bool hasTimeZone() => $_has(31);
+  @$pb.TagNumber(32)
+  void clearTimeZone() => clearField(32);
 }
 
 class Angler extends $pb.GeneratedMessage {
@@ -3529,6 +3613,11 @@ class Trip extends $pb.GeneratedMessage {
             ? ''
             : 'atmosphere',
         subBuilder: Atmosphere.create)
+    ..aOS(
+        15,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'timeZone')
     ..hasRequiredFields = false;
 
   Trip._() : super();
@@ -3547,6 +3636,7 @@ class Trip extends $pb.GeneratedMessage {
     $core.Iterable<CustomEntityValue>? customEntityValues,
     $core.String? notes,
     Atmosphere? atmosphere,
+    $core.String? timeZone,
   }) {
     final _result = create();
     if (id != null) {
@@ -3590,6 +3680,9 @@ class Trip extends $pb.GeneratedMessage {
     }
     if (atmosphere != null) {
       _result.atmosphere = atmosphere;
+    }
+    if (timeZone != null) {
+      _result.timeZone = timeZone;
     }
     return _result;
   }
@@ -3718,6 +3811,18 @@ class Trip extends $pb.GeneratedMessage {
   void clearAtmosphere() => clearField(14);
   @$pb.TagNumber(14)
   Atmosphere ensureAtmosphere() => $_ensure(13);
+
+  @$pb.TagNumber(15)
+  $core.String get timeZone => $_getSZ(14);
+  @$pb.TagNumber(15)
+  set timeZone($core.String v) {
+    $_setString(14, v);
+  }
+
+  @$pb.TagNumber(15)
+  $core.bool hasTimeZone() => $_has(14);
+  @$pb.TagNumber(15)
+  void clearTimeZone() => clearField(15);
 }
 
 class Measurement extends $pb.GeneratedMessage {
@@ -3966,6 +4071,11 @@ class Tide extends $pb.GeneratedMessage {
             : 'highTimestamp',
         $pb.PbFieldType.OU6,
         defaultOrMaker: $fixnum.Int64.ZERO)
+    ..aOS(
+        4,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'timeZone')
     ..hasRequiredFields = false;
 
   Tide._() : super();
@@ -3973,6 +4083,7 @@ class Tide extends $pb.GeneratedMessage {
     TideType? type,
     $fixnum.Int64? lowTimestamp,
     $fixnum.Int64? highTimestamp,
+    $core.String? timeZone,
   }) {
     final _result = create();
     if (type != null) {
@@ -3983,6 +4094,9 @@ class Tide extends $pb.GeneratedMessage {
     }
     if (highTimestamp != null) {
       _result.highTimestamp = highTimestamp;
+    }
+    if (timeZone != null) {
+      _result.timeZone = timeZone;
     }
     return _result;
   }
@@ -4047,6 +4161,18 @@ class Tide extends $pb.GeneratedMessage {
   $core.bool hasHighTimestamp() => $_has(2);
   @$pb.TagNumber(3)
   void clearHighTimestamp() => clearField(3);
+
+  @$pb.TagNumber(4)
+  $core.String get timeZone => $_getSZ(3);
+  @$pb.TagNumber(4)
+  set timeZone($core.String v) {
+    $_setString(3, v);
+  }
+
+  @$pb.TagNumber(4)
+  $core.bool hasTimeZone() => $_has(3);
+  @$pb.TagNumber(4)
+  void clearTimeZone() => clearField(4);
 }
 
 // ignore_for_file: undefined_named_parameter,constant_identifier_names

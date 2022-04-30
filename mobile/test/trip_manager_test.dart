@@ -12,38 +12,40 @@ void main() {
   late StubbedAppManager appManager;
   late TripManager tripManager;
 
-  var trips = [
-    Trip(
-      id: randomId(),
-      name: "Trip 1",
-      startTimestamp: Int64(DateTime(2020, 1, 1, 9).millisecondsSinceEpoch),
-      endTimestamp: Int64(DateTime(2020, 1, 3, 17).millisecondsSinceEpoch),
-    ),
-    Trip(
-      id: randomId(),
-      name: "Trip 2",
-      startTimestamp: Int64(DateTime(2020, 1, 10, 8).millisecondsSinceEpoch),
-      endTimestamp: Int64(DateTime(2020, 1, 15, 18).millisecondsSinceEpoch),
-    ),
-    Trip(
-      id: randomId(),
-      name: "Trip 3",
-      startTimestamp: Int64(DateTime(2020, 1, 20, 8).millisecondsSinceEpoch),
-      endTimestamp: Int64(DateTime(2020, 1, 23, 18).millisecondsSinceEpoch),
-    ),
-  ];
+  List<Trip> trips() => [
+        Trip(
+          id: randomId(),
+          name: "Trip 1",
+          startTimestamp: Int64(dateTime(2020, 1, 1, 9).millisecondsSinceEpoch),
+          endTimestamp: Int64(dateTime(2020, 1, 3, 17).millisecondsSinceEpoch),
+        ),
+        Trip(
+          id: randomId(),
+          name: "Trip 2",
+          startTimestamp:
+              Int64(dateTime(2020, 1, 10, 8).millisecondsSinceEpoch),
+          endTimestamp: Int64(dateTime(2020, 1, 15, 18).millisecondsSinceEpoch),
+        ),
+        Trip(
+          id: randomId(),
+          name: "Trip 3",
+          startTimestamp:
+              Int64(dateTime(2020, 1, 20, 8).millisecondsSinceEpoch),
+          endTimestamp: Int64(dateTime(2020, 1, 23, 18).millisecondsSinceEpoch),
+        ),
+      ];
 
   Trip defaultTrip() {
     return Trip(
       id: randomId(),
       name: "Trip Name",
-      startTimestamp: Int64(DateTime(2020, 1, 1, 9).millisecondsSinceEpoch),
-      endTimestamp: Int64(DateTime(2020, 1, 3, 17).millisecondsSinceEpoch),
+      startTimestamp: Int64(dateTime(2020, 1, 1, 9).millisecondsSinceEpoch),
+      endTimestamp: Int64(dateTime(2020, 1, 3, 17).millisecondsSinceEpoch),
     );
   }
 
   Future<void> stubDefaultTrips() async {
-    for (var trip in trips) {
+    for (var trip in trips()) {
       await tripManager.addOrUpdate(trip);
     }
   }
@@ -71,8 +73,8 @@ void main() {
         context,
         Trip(
           name: "Trip Name",
-          startTimestamp: Int64(DateTime(2020, 1, 1, 9).millisecondsSinceEpoch),
-          endTimestamp: Int64(DateTime(2020, 1, 3, 17).millisecondsSinceEpoch),
+          startTimestamp: Int64(dateTime(2020, 1, 1, 9).millisecondsSinceEpoch),
+          endTimestamp: Int64(dateTime(2020, 1, 3, 17).millisecondsSinceEpoch),
         ),
       ),
       "Trip Name",
@@ -85,8 +87,8 @@ void main() {
       tripManager.displayName(
         context,
         Trip(
-          startTimestamp: Int64(DateTime(2020, 1, 1, 9).millisecondsSinceEpoch),
-          endTimestamp: Int64(DateTime(2020, 1, 3, 17).millisecondsSinceEpoch),
+          startTimestamp: Int64(dateTime(2020, 1, 1, 9).millisecondsSinceEpoch),
+          endTimestamp: Int64(dateTime(2020, 1, 3, 17).millisecondsSinceEpoch),
         ),
       ),
       "Jan 1, 2020 at 9:00 AM to Jan 3, 2020 at 5:00 PM",
@@ -98,13 +100,14 @@ void main() {
     expect(tripManager.trips().length, 3);
   });
 
-  test("trips that fall within a given date range", () async {
+  testWidgets("trips that fall within a given date range", (tester) async {
     await stubDefaultTrips();
 
     var trips = tripManager.trips(
+      context: await buildContext(tester),
       dateRange: DateRange(
-        startTimestamp: Int64(DateTime(2020, 1, 9, 8).millisecondsSinceEpoch),
-        endTimestamp: Int64(DateTime(2020, 1, 11, 8).millisecondsSinceEpoch),
+        startTimestamp: Int64(dateTime(2020, 1, 9, 8).millisecondsSinceEpoch),
+        endTimestamp: Int64(dateTime(2020, 1, 11, 8).millisecondsSinceEpoch),
       ),
     );
 
@@ -112,13 +115,15 @@ void main() {
     expect(trips[0].name, "Trip 2");
   });
 
-  test("trips that don't fall within a given date range", () async {
+  testWidgets("trips that don't fall within a given date range",
+      (tester) async {
     await stubDefaultTrips();
 
     var trips = tripManager.trips(
+      context: await buildContext(tester),
       dateRange: DateRange(
-        startTimestamp: Int64(DateTime(2021, 1, 9, 8).millisecondsSinceEpoch),
-        endTimestamp: Int64(DateTime(2021, 1, 11, 8).millisecondsSinceEpoch),
+        startTimestamp: Int64(dateTime(2021, 1, 9, 8).millisecondsSinceEpoch),
+        endTimestamp: Int64(dateTime(2021, 1, 11, 8).millisecondsSinceEpoch),
       ),
     );
 
@@ -381,5 +386,68 @@ void main() {
 
     expect(tripManager.isCatchIdInTrip(catchId0), isTrue);
     expect(tripManager.isCatchIdInTrip(randomId()), isFalse);
+  });
+
+  test("initialize updates trip time zones", () async {
+    var tripId1 = randomId();
+    var tripId2 = randomId();
+    var tripId3 = randomId();
+    when(appManager.localDatabaseManager.fetchAll(any)).thenAnswer((_) {
+      return Future.value([
+        {
+          "id": tripId1.uint8List,
+          "bytes": Trip(
+            id: tripId1,
+          ).writeToBuffer(),
+        },
+        {
+          "id": tripId2.uint8List,
+          "bytes": Trip(
+            id: tripId2,
+            timeZone: defaultTimeZone,
+          ).writeToBuffer(),
+        },
+        {
+          "id": tripId3.uint8List,
+          "bytes": Trip(
+            id: tripId3,
+          ).writeToBuffer(),
+        },
+      ]);
+    });
+    when(appManager.timeManager.currentTimeZone).thenReturn("America/Chicago");
+
+    await tripManager.initialize();
+
+    var reports = tripManager.list();
+    expect(reports.length, 3);
+    expect(reports[0].timeZone, "America/Chicago");
+    expect(reports[1].timeZone, "America/New_York");
+    expect(reports[2].timeZone, "America/Chicago");
+
+    verify(appManager.localDatabaseManager.insertOrReplace(any, any, any))
+        .called(2);
+  });
+
+  test("addOrUpdate, setImages=false", () async {
+    await tripManager.addOrUpdate(
+      Trip()..id = randomId(),
+      setImages: false,
+    );
+    verifyNever(
+        appManager.imageManager.save(any, compress: anyNamed("compress")));
+    verify(appManager.localDatabaseManager.insertOrReplace(any, any, any))
+        .called(1);
+  });
+
+  test("addOrUpdate, setImages=true", () async {
+    await tripManager.addOrUpdate(
+      Trip()..id = randomId(),
+      setImages: true,
+    );
+    verify(appManager.imageManager.save(any, compress: anyNamed("compress")))
+        .called(1);
+    verify(appManager.localDatabaseManager.insertOrReplace(any, any, any))
+        .called(1);
   });
 }

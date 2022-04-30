@@ -7,8 +7,10 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:mapbox_gl/mapbox_gl.dart' as maps;
 import 'package:image_picker/image_picker.dart';
+import 'package:mobile/time_manager.dart';
 import 'package:photo_manager/photo_manager.dart';
 import 'package:quiver/strings.dart';
+import 'package:timezone/timezone.dart';
 
 import '../i18n/strings.dart';
 import '../log.dart';
@@ -43,8 +45,8 @@ class PickedImage {
   /// The location the image was taken, or null if unknown.
   final maps.LatLng? position;
 
-  /// The date and time the photo was taken, or null if unknown.
-  final DateTime? dateTime;
+  /// The UTC date time the photo was taken, or null if unknown.
+  final TZDateTime? dateTime;
 
   PickedImage({
     this.originalFile,
@@ -186,6 +188,8 @@ class _ImagePickerPageState extends State<ImagePickerPage> {
       PermissionHandlerWrapper.of(context);
 
   PhotoManagerWrapper get _photoManager => PhotoManagerWrapper.of(context);
+
+  TimeManager get _timeManager => TimeManager.of(context);
 
   @override
   void initState() {
@@ -690,7 +694,7 @@ class _ImagePickerPageState extends State<ImagePickerPage> {
       originalFileId: entity.id,
       thumbData: thumbData ?? await entity.thumbnailData,
       position: position,
-      dateTime: entity.createDateTime,
+      dateTime: _timeManager.toTZDateTime(entity.createDateTime),
     );
   }
 

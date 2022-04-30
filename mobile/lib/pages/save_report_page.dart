@@ -31,6 +31,7 @@ import '../widgets/multi_measurement_input.dart';
 import '../widgets/number_filter_input.dart';
 import '../widgets/radio_input.dart';
 import '../widgets/text_input.dart';
+import '../widgets/time_zone_input.dart';
 import '../widgets/widget.dart';
 import 'angler_list_page.dart';
 import 'bait_list_page.dart';
@@ -55,6 +56,7 @@ class _SaveReportPageState extends State<SaveReportPage> {
   static const Key _keyComparisonStart = ValueKey(1);
 
   late final TextInputController _nameController;
+  late final TimeZoneInputController _timeZoneController;
   final _descriptionController = TextInputController();
   final _typeController = InputController<Report_Type>();
   final _fromDateRangeController = InputController<DateRange>();
@@ -124,6 +126,8 @@ class _SaveReportPageState extends State<SaveReportPage> {
       ),
     );
 
+    _timeZoneController = TimeZoneInputController(context);
+
     if (_isEditing) {
       _nameController.value = _oldReport!.name;
       _descriptionController.value = _oldReport!.description;
@@ -132,6 +136,7 @@ class _SaveReportPageState extends State<SaveReportPage> {
       if (_isComparison) {
         _toDateRangeController.value = _oldReport!.toDateRange;
       }
+      _timeZoneController.value = _oldReport!.timeZone;
       _catchAndReleaseOnlyController.value = _oldReport!.isCatchAndReleaseOnly;
       _favoritesOnlyController.value = _oldReport!.isFavoritesOnly;
       _periodsController.value = _oldReport!.periods.toSet();
@@ -213,6 +218,7 @@ class _SaveReportPageState extends State<SaveReportPage> {
         _buildType(),
         _buildStartDateRange(),
         _buildEndDateRange(),
+        _buildTimeZone(),
         _buildCatchAndReleaseOnly(),
         _buildFavoritesOnly(),
         _buildWaterDepth(),
@@ -418,6 +424,13 @@ class _SaveReportPageState extends State<SaveReportPage> {
               }),
             ),
     );
+  }
+
+  Widget _buildTimeZone() {
+    if (hideCatchField(catchFieldIdTimeZone)) {
+      return const Empty();
+    }
+    return TimeZoneInput(controller: _timeZoneController);
   }
 
   Widget _buildPeriodsPicker() {
@@ -711,6 +724,7 @@ class _SaveReportPageState extends State<SaveReportPage> {
       ..id = _oldReport?.id ?? randomId()
       ..name = _nameController.value!
       ..type = _typeController.value!
+      ..timeZone = _timeZoneController.value
       ..periods.addAll(_periodsController.value)
       ..seasons.addAll(_seasonsController.value)
       ..anglerIds.addAll(_anglersController.value)
@@ -739,10 +753,12 @@ class _SaveReportPageState extends State<SaveReportPage> {
 
     if (_fromDateRangeController.hasValue) {
       report.fromDateRange = _fromDateRangeController.value!;
+      report.fromDateRange.timeZone = report.timeZone;
     }
 
     if (_toDateRangeController.hasValue) {
       report.toDateRange = _toDateRangeController.value!;
+      report.toDateRange.timeZone = report.timeZone;
     }
 
     if (_waterDepthController.shouldAddToReport) {

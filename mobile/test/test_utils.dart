@@ -15,6 +15,7 @@ import 'package:mobile/widgets/widget.dart';
 import 'package:mockito/mockito.dart';
 import 'package:photo_manager/photo_manager.dart';
 import 'package:provider/provider.dart';
+import 'package:timezone/timezone.dart';
 
 import 'mocks/mocks.dart';
 import 'mocks/mocks.mocks.dart';
@@ -151,6 +152,31 @@ Future<BuildContext> pumpContext(
     ),
   );
   return context;
+}
+
+String get defaultTimeZone => "America/New_York";
+
+TZDateTime dateTime(
+  int year, [
+  int month = 1,
+  int day = 1,
+  int hour = 0,
+  int minute = 0,
+  int second = 0,
+  int millisecond = 0,
+  int microsecond = 0,
+]) {
+  return TZDateTime(getLocation(defaultTimeZone), year, month, day, hour,
+      minute, second, millisecond);
+}
+
+TZDateTime now() {
+  return TZDateTime.now(getLocation(defaultTimeZone));
+}
+
+TZDateTime dateTimestamp(int timestamp) {
+  return TZDateTime.fromMillisecondsSinceEpoch(
+      getLocation(defaultTimeZone), timestamp);
 }
 
 MockAssetEntity createMockAssetEntity({

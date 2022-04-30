@@ -7,11 +7,9 @@ import '../fishing_spot_manager.dart';
 import '../i18n/strings.dart';
 import '../model/gen/anglerslog.pb.dart';
 import '../species_manager.dart';
-import '../time_manager.dart';
 import '../widgets/field.dart';
 import '../widgets/input_controller.dart';
 import '../widgets/multi_measurement_input.dart';
-import 'date_time_utils.dart';
 import 'protobuf_utils.dart';
 import 'string_utils.dart';
 
@@ -27,6 +25,8 @@ final catchFieldIdMethods = Id()..uuid = "b494335f-a9fb-4c1b-b4ec-40658645ef12";
 final catchFieldIdSpecies = Id()..uuid = "7c4a5178-4e3b-4b97-ac69-b4a5439c4d94";
 final catchFieldIdTimestamp = Id()
   ..uuid = "dbe382be-b219-4703-af11-a8ce16a191b7";
+final catchFieldIdTimeZone = Id()
+  ..uuid = "5d037f4b-0f24-4e4d-94a5-55130a729f1e";
 final catchFieldIdFavorite = Id()
   ..uuid = "a12f6861-475f-475a-af29-c4fc6fe0a0bc";
 final catchFieldIdCatchAndRelease = Id()
@@ -55,7 +55,13 @@ List<Field> allCatchFields(BuildContext context) {
       id: catchFieldIdTimestamp,
       isRemovable: false,
       name: (context) => Strings.of(context).catchFieldDateTime,
-      controller: CurrentTimestampInputController(TimeManager.of(context)),
+      controller: CurrentDateTimeInputController(context),
+    ),
+    Field(
+      id: catchFieldIdTimeZone,
+      name: (context) => Strings.of(context).timeZoneInputLabel,
+      description: (context) => Strings.of(context).timeZoneInputDescription,
+      controller: TimeZoneInputController(context),
     ),
     Field(
       id: catchFieldIdPeriod,
@@ -207,8 +213,7 @@ bool catchFilterMatchesCatchAndRelease(
 bool catchFilterMatchesTimestamp(
     BuildContext context, String filter, Catch cat) {
   return cat.hasTimestamp() &&
-      containsTrimmedLowerCase(
-          timestampToSearchString(context, cat.timestamp.toInt()), filter);
+      containsTrimmedLowerCase(cat.dateTimeSearchString(context), filter);
 }
 
 bool _catchFilterMatchesMultiMeasurement(BuildContext context,
@@ -345,7 +350,7 @@ class CatchListItemModel {
     imageName = cat.imageNames.isNotEmpty ? cat.imageNames.first : null;
     title = speciesManager.entity(cat.speciesId)?.name ??
         Strings.of(context).unknownSpecies;
-    subtitle = formatTimestamp(context, cat.timestamp.toInt());
+    subtitle = cat.displayTimestamp(context);
     trailing = CatchFavoriteStar(cat);
     this.subtitle2 = isEmpty(subtitle2) ? null : subtitle2;
   }

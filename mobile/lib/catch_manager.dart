@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:mobile/time_manager.dart';
 import 'package:mobile/trip_manager.dart';
 import 'package:mobile/user_preference_manager.dart';
 import 'package:provider/provider.dart';
@@ -14,12 +15,11 @@ import 'entity_manager.dart';
 import 'fishing_spot_manager.dart';
 import 'i18n/strings.dart';
 import 'image_manager.dart';
+import 'log.dart';
 import 'method_manager.dart';
 import 'model/gen/anglerslog.pb.dart';
 import 'species_manager.dart';
-import 'time_manager.dart';
 import 'utils/catch_utils.dart';
-import 'utils/date_time_utils.dart';
 import 'utils/protobuf_utils.dart';
 import 'utils/string_utils.dart';
 import 'water_clarity_manager.dart';
@@ -33,6 +33,10 @@ enum CatchSortOrder {
 class CatchManager extends EntityManager<Catch> {
   static CatchManager of(BuildContext context) =>
       Provider.of<AppManager>(context, listen: false).catchManager;
+
+  final _log = const Log("CatchManager");
+
+  CatchManager(AppManager app) : super(app);
 
   AnglerManager get _anglerManager => appManager.anglerManager;
 
@@ -59,7 +63,21 @@ class CatchManager extends EntityManager<Catch> {
   WaterClarityManager get _waterClarityManager =>
       appManager.waterClarityManager;
 
-  CatchManager(AppManager app) : super(app);
+  @override
+  Future<void> initialize() async {
+    await super.initialize();
+
+    // TODO: Remove (#683)
+    var numberOfChanges = await updateAll(
+      where: (cat) => !cat.hasTimeZone(),
+      apply: (cat) async => await addOrUpdate(
+        cat..timeZone = _timeManager.currentTimeZone,
+        setImages: false,
+        notify: false,
+      ),
+    );
+    _log.d("Added time zones to $numberOfChanges catches");
+  }
 
   @override
   Catch entityFromBytes(List<int> bytes) => Catch.fromBuffer(bytes);
@@ -70,7 +88,7 @@ class CatchManager extends EntityManager<Catch> {
   @override
   String displayName(BuildContext context, Catch entity) {
     var species = _speciesManager.entity(entity.speciesId);
-    var timeString = formatTimestamp(context, entity.timestamp.toInt());
+    var timeString = entity.displayTimestamp(context);
 
     if (species == null) {
       return timeString;
@@ -329,11 +347,13 @@ class CatchManager extends EntityManager<Catch> {
       return false;
     }
 
+    var timeManager = TimeManager.of(context);
+
     return entities.values.where((cat) {
       var valid = true;
       valid &= dateRange == null ||
           dateRange.contains(
-              cat.timestamp.toInt(), _timeManager.currentDateTime);
+              context, cat.timestamp.toInt(), timeManager.now(cat.timeZone));
       valid &=
           isSetValid<Id>(anglerIds, cat.anglerId, hasValue: cat.hasAnglerId());
       valid &= areBaitsValid(cat);
@@ -396,8 +416,10 @@ class CatchManager extends EntityManager<Catch> {
       valid &= isNumberFilterMeasurementValid(windSpeedFilter,
           cat.atmosphere.windSpeed, _userPreferenceManager.windSpeedSystem,
           hasValue: cat.hasAtmosphere() && cat.atmosphere.hasWindSpeed());
-      valid &= hour == null || cat.timestamp.toDateTime().hour == hour;
-      valid &= month == null || cat.timestamp.toDateTime().month == month;
+
+      var dateTime = timeManager.dateTime(cat.timestamp.toInt(), cat.timeZone);
+      valid &= hour == null || dateTime.hour == hour;
+      valid &= month == null || dateTime.month == month;
 
       if (!valid) {
         return false;
@@ -419,10 +441,13 @@ class CatchManager extends EntityManager<Catch> {
     List<File> imageFiles = const [],
     bool compressImages = true,
     bool notify = true,
+    bool setImages = true,
   }) async {
-    entity.imageNames.clear();
-    entity.imageNames
-        .addAll(await _imageManager.save(imageFiles, compress: compressImages));
+    if (setImages) {
+      entity.imageNames.clear();
+      entity.imageNames.addAll(
+          await _imageManager.save(imageFiles, compress: compressImages));
+    }
 
     return super.addOrUpdate(entity, notify: notify);
   }

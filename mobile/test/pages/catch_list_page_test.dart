@@ -29,7 +29,7 @@ void main() {
     )).thenReturn([
       Catch()
         ..id = randomId()
-        ..timestamp = Int64(DateTime(2020, 1, 1).millisecondsSinceEpoch)
+        ..timestamp = Int64(dateTime(2020, 1, 1).millisecondsSinceEpoch)
         ..baits.add(BaitAttachment(baitId: randomId())),
     ]);
 

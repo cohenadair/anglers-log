@@ -1,11 +1,13 @@
 import 'package:collection/collection.dart' show IterableExtension;
 import 'package:flutter/material.dart';
+import 'package:mobile/time_manager.dart';
 import 'package:mobile/user_preference_manager.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mobile/utils/report_utils.dart';
 import 'package:provider/provider.dart';
 
 import 'app_manager.dart';
+import 'log.dart';
 import 'model/gen/anglerslog.pb.dart';
 import 'named_entity_manager.dart';
 
@@ -13,10 +15,29 @@ class ReportManager extends NamedEntityManager<Report> {
   static ReportManager of(BuildContext context) =>
       Provider.of<AppManager>(context, listen: false).reportManager;
 
+  final _log = const Log("ReportManager");
+
+  ReportManager(AppManager app) : super(app);
+
+  TimeManager get _timeManager => appManager.timeManager;
+
   UserPreferenceManager get _userPreferenceManager =>
       appManager.userPreferenceManager;
 
-  ReportManager(AppManager app) : super(app);
+  @override
+  Future<void> initialize() async {
+    await super.initialize();
+
+    // TODO: Remove (#683)
+    var numberOfChanges = await updateAll(
+      where: (report) => !report.hasTimeZone(),
+      apply: (report) => addOrUpdate(
+        report..timeZone = _timeManager.currentTimeZone,
+        notify: false,
+      ),
+    );
+    _log.d("Added time zones to $numberOfChanges reports");
+  }
 
   @override
   Report entityFromBytes(List<int> bytes) => Report.fromBuffer(bytes);

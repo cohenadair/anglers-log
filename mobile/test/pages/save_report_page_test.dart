@@ -20,14 +20,17 @@ import 'package:mobile/widgets/date_range_picker_input.dart';
 import 'package:mobile/widgets/list_item.dart';
 import 'package:mobile/widgets/text_input.dart';
 import 'package:mockito/mockito.dart';
+import 'package:timezone/timezone.dart';
 
+import '../mocks/mocks.mocks.dart';
 import '../mocks/stubbed_app_manager.dart';
 import '../test_utils.dart';
 
 void main() {
   late StubbedAppManager appManager;
 
-  var now = DateTime.fromMillisecondsSinceEpoch(1600000000000);
+  // Sunday, September 13, 2020 12:26:40 PM GMT
+  TZDateTime now() => dateTimestamp(1600000000000);
 
   var anglerList = <Angler>[
     Angler()
@@ -159,8 +162,7 @@ void main() {
             .listSortedByDisplayName(any, filter: anyNamed("filter")))
         .thenReturn(bodyOfWaterList);
 
-    // Sunday, September 13, 2020 12:26:40 PM GMT
-    when(appManager.timeManager.currentDateTime).thenReturn(now);
+    appManager.stubCurrentTime(now());
 
     when(appManager.reportManager.addOrUpdate(any))
         .thenAnswer((_) => Future.value(false));
@@ -250,6 +252,14 @@ void main() {
     when(appManager.waterClarityManager
             .listSortedByDisplayName(any, filter: anyNamed("filter")))
         .thenReturn(waterClarityList);
+
+    var timeZoneLocation = MockTimeZoneLocation();
+    when(timeZoneLocation.displayNameUtc).thenReturn("America/New York");
+    when(timeZoneLocation.name).thenReturn("America/New_York");
+    when(appManager.timeManager.filteredLocations(
+      any,
+      exclude: anyNamed("exclude"),
+    )).thenReturn([timeZoneLocation]);
   });
 
   Future<void> selectItems(tester, String startText, List<String> items) async {
@@ -694,6 +704,8 @@ void main() {
     await tapAndSettle(tester, find.text("Last month"));
     await tapAndSettle(tester, find.text("To"));
     await tapAndSettle(tester, find.text("This month"));
+    await tapAndSettle(tester, find.text("Time Zone"));
+    await tapAndSettle(tester, find.text("America/New York"));
     await selectItems(tester, "All anglers", ["All", "Cohen"]);
     await selectItems(tester, "All species", ["All", "Catfish"]);
     await selectItems(tester, "All baits", ["All", "Spoon"]);
@@ -813,6 +825,7 @@ void main() {
       ),
       findsOneWidget,
     );
+    expect(find.text("America/New York"), findsOneWidget);
     expect(find.text("Catfish"), findsOneWidget);
     expect(find.text("B"), findsOneWidget);
     expect(find.text("Spoon"), findsOneWidget);
@@ -897,7 +910,9 @@ void main() {
     expect(report.name, "Report Name");
     expect(report.hasFromDateRange(), isTrue);
     expect(report.fromDateRange.period, DateRange_Period.lastMonth);
+    expect(report.fromDateRange.timeZone, defaultTimeZone);
     expect(report.hasToDateRange(), isFalse);
+    expect(report.timeZone, defaultTimeZone);
     expect(report.anglerIds.isEmpty, isTrue);
     expect(report.baits.isEmpty, isTrue);
     expect(report.speciesIds.isEmpty, isTrue);
@@ -916,17 +931,32 @@ void main() {
   });
 
   testWidgets("Add report with custom date ranges", (tester) async {
-    late DateRange fromDateRange;
-    late DateRange toDateRange;
-    await tester.pumpWidget(Testable(
+    late int expectedFromStartMs;
+    late int expectedFromEndMs;
+    late int expectedToStartMs;
+    late int expectedToEndMs;
+    await pumpContext(
+      tester,
       (context) {
         // Custom DisplayDateRange default to "this month".
-        fromDateRange = DateRange(period: DateRange_Period.thisMonth);
-        toDateRange = DateRange(period: DateRange_Period.thisMonth);
+        var fromDateRange = DateRange(
+          period: DateRange_Period.thisMonth,
+          timeZone: defaultTimeZone,
+        );
+        expectedFromStartMs = fromDateRange.startMs(context, now());
+        expectedFromEndMs = fromDateRange.endMs(context, now());
+
+        var toDateRange = DateRange(
+          period: DateRange_Period.thisMonth,
+          timeZone: defaultTimeZone,
+        );
+        expectedToStartMs = toDateRange.startMs(context, now());
+        expectedToEndMs = toDateRange.endMs(context, now());
+
         return const SaveReportPage();
       },
       appManager: appManager,
-    ));
+    );
 
     await enterTextAndSettle(
         tester, find.widgetWithText(TextField, "Name"), "Report Name");
@@ -955,12 +985,14 @@ void main() {
     expect(report.name, "Report Name");
     expect(report.hasFromDateRange(), isTrue);
     expect(report.fromDateRange.period, DateRange_Period.custom);
-    expect(report.fromDateRange.startTimestamp.toInt(),
-        fromDateRange.startMs(now));
-    expect(report.fromDateRange.endTimestamp.toInt(), fromDateRange.endMs(now));
+    expect(report.fromDateRange.startTimestamp.toInt(), expectedFromStartMs);
+    expect(report.fromDateRange.endTimestamp.toInt(), expectedFromEndMs);
+    expect(report.fromDateRange.timeZone, defaultTimeZone);
     expect(report.toDateRange.period, DateRange_Period.custom);
-    expect(report.toDateRange.startTimestamp.toInt(), toDateRange.startMs(now));
-    expect(report.toDateRange.endTimestamp.toInt(), toDateRange.endMs(now));
+    expect(report.toDateRange.startTimestamp.toInt(), expectedToStartMs);
+    expect(report.toDateRange.endTimestamp.toInt(), expectedToEndMs);
+    expect(report.toDateRange.timeZone, defaultTimeZone);
+    expect(report.timeZone, defaultTimeZone);
     expect(report.anglerIds, isEmpty);
     expect(report.baits, isEmpty);
     expect(report.speciesIds, isEmpty);
@@ -1057,8 +1089,15 @@ void main() {
       ..id = randomId()
       ..name = "Report Name"
       ..description = "Report description"
-      ..fromDateRange = DateRange(period: DateRange_Period.yesterday)
-      ..toDateRange = DateRange(period: DateRange_Period.today)
+      ..fromDateRange = DateRange(
+        period: DateRange_Period.yesterday,
+        timeZone: "America/Chicago",
+      )
+      ..toDateRange = DateRange(
+        period: DateRange_Period.today,
+        timeZone: "America/Chicago",
+      )
+      ..timeZone = "America/Chicago"
       ..isFavoritesOnly = true
       ..type = Report_Type.comparison
       ..waterDepthFilter = NumberFilter(
@@ -1139,6 +1178,7 @@ void main() {
       ),
       findsOneWidget,
     );
+    expect(find.text("America/Chicago"), findsOneWidget);
     expect(find.text("Cohen"), findsOneWidget);
     expect(find.text("Someone"), findsOneWidget);
     expect(find.text("Rapala"), findsOneWidget);
@@ -1531,5 +1571,16 @@ void main() {
       appManager: appManager,
     ));
     expect(find.text("All water clarities"), findsNothing);
+  });
+
+  testWidgets("Time zone hidden when not tracked", (tester) async {
+    await tester.pumpWidget(Testable(
+      (context) {
+        stubCatchFields(context, catchFieldIdTimeZone);
+        return const SaveReportPage();
+      },
+      appManager: appManager,
+    ));
+    expect(find.text("Time Zone"), findsNothing);
   });
 }

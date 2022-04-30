@@ -4,7 +4,9 @@ import 'dart:io';
 import 'package:fixnum/fixnum.dart';
 import 'package:http/http.dart';
 import 'package:mapbox_gl/mapbox_gl.dart';
+import 'package:mobile/utils/date_time_utils.dart';
 import 'package:quiver/strings.dart';
+import 'package:timezone/timezone.dart';
 
 import 'app_manager.dart';
 import 'log.dart';
@@ -25,7 +27,7 @@ class AtmosphereFetcher {
   final _log = const Log("AtmosphereFetcher");
 
   final AppManager appManager;
-  final int timestamp;
+  final TZDateTime dateTime;
   final LatLng? latLng;
 
   HttpWrapper get _http => appManager.httpWrapper;
@@ -35,7 +37,7 @@ class AtmosphereFetcher {
   UserPreferenceManager get _userPreferenceManager =>
       appManager.userPreferenceManager;
 
-  AtmosphereFetcher(this.appManager, this.timestamp, this.latLng);
+  AtmosphereFetcher(this.appManager, this.dateTime, this.latLng);
 
   Future<Atmosphere?> fetch() async {
     if (latLng == null) {
@@ -158,6 +160,8 @@ class AtmosphereFetcher {
       result.moonPhase = MoonPhases.fromDouble(moon);
     }
 
+    result.timeZone = dateTime.locationName;
+
     return result;
   }
 
@@ -174,7 +178,8 @@ class AtmosphereFetcher {
       format(_path, [
         latLng!.latitude,
         latLng!.longitude,
-        (timestamp / Duration.millisecondsPerSecond).round(),
+        (dateTime.millisecondsSinceEpoch / Duration.millisecondsPerSecond)
+            .round(),
       ]),
       params,
     );
@@ -209,21 +214,14 @@ class AtmosphereFetcher {
       return null;
     }
 
-    var daysList = json["days"];
-    if (daysList == null || daysList is! List) {
+    var currentConditionsJson = json["currentConditions"];
+    if (!_isValidJsonMap(currentConditionsJson)) {
       _log.e(StackTrace.current,
-          "Response body has invalid \"days\" key: ${response.body}");
+          "Body has invalid \"currentConditions\" key: ${response.body}");
       return null;
     }
 
-    var daysJson = daysList.first;
-    if (!_isValidJsonMap(daysJson)) {
-      _log.e(StackTrace.current,
-          "Response body has invalid \"days\" key: ${response.body}");
-      return null;
-    }
-
-    return daysJson;
+    return currentConditionsJson;
   }
 
   bool _isValidJsonMap(dynamic possibleJson) =>

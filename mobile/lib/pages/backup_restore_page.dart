@@ -7,6 +7,7 @@ import 'package:mobile/pages/feedback_page.dart';
 import 'package:mobile/pages/scroll_page.dart';
 import 'package:mobile/res/dimen.dart';
 import 'package:mobile/res/style.dart';
+import 'package:mobile/time_manager.dart';
 import 'package:mobile/user_preference_manager.dart';
 import 'package:mobile/utils/date_time_utils.dart';
 import 'package:mobile/utils/string_utils.dart';
@@ -33,6 +34,7 @@ class BackupPage extends StatelessWidget {
   }
 
   Widget _buildBackupDetails(BuildContext context) {
+    var timeManager = TimeManager.of(context);
     var userPreferenceManager = UserPreferenceManager.of(context);
 
     return Column(
@@ -53,7 +55,8 @@ class BackupPage extends StatelessWidget {
               label: Strings.of(context).backupPageLastBackupLabel,
               value: lastBackupAt == null
                   ? Strings.of(context).backupPageLastBackupNever
-                  : formatTimestamp(context, lastBackupAt),
+                  : formatTimestamp(
+                      context, lastBackupAt, timeManager.currentTimeZone),
             );
           },
         ),

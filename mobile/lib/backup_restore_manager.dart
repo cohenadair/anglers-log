@@ -207,7 +207,7 @@ class BackupRestoreManager {
 
     var lastBackupAt = _userPreferenceManager.lastBackupAt;
     if (lastBackupAt != null &&
-        _timeManager.msSinceEpoch - lastBackupAt < _autoBackupInterval) {
+        _timeManager.currentTimestamp - lastBackupAt < _autoBackupInterval) {
       _log.d("Last backup was < interval, skipping...");
       return;
     }
@@ -319,7 +319,7 @@ class BackupRestoreManager {
       numberOfImagesUploaded++;
     }
 
-    _userPreferenceManager.setLastBackupAt(_timeManager.msSinceEpoch);
+    _userPreferenceManager.setLastBackupAt(_timeManager.currentTimestamp);
 
     _notifyProgress(BackupRestoreProgress(BackupRestoreProgressEnum.finished));
     _isInProgress = false;

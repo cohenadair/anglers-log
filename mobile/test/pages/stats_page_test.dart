@@ -290,9 +290,9 @@ void main() {
     when(appManager.subscriptionManager.isFree).thenReturn(false);
 
     when(appManager.timeManager.currentDateTime)
-        .thenReturn(DateTime.fromMillisecondsSinceEpoch(105000));
-    when(appManager.timeManager.msSinceEpoch).thenReturn(
-        DateTime.fromMillisecondsSinceEpoch(105000).millisecondsSinceEpoch);
+        .thenReturn(dateTimestamp(105000));
+    when(appManager.timeManager.currentTimestamp)
+        .thenReturn(dateTimestamp(105000).millisecondsSinceEpoch);
 
     when(appManager.tripManager.list()).thenReturn([]);
     when(appManager.tripManager.trips(

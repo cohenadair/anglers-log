@@ -130,6 +130,7 @@ message Atmosphere {
   MoonPhase moon_phase = 8;
   uint64 sunrise_timestamp = 9;
   uint64 sunset_timestamp = 10;
+  string time_zone = 11;
 }
 
 message CustomEntity {
@@ -212,6 +213,7 @@ message Catch {
   string notes = 20;
   Atmosphere atmosphere = 21;
   Tide tide = 22;
+  string time_zone = 23;
 }
 
 message DateRange {
@@ -238,6 +240,8 @@ message DateRange {
   // Should only be set for Period.custom.
   uint64 start_timestamp = 2;
   uint64 end_timestamp = 3;
+
+  string time_zone = 23;
 }
 
 message BodyOfWater {
@@ -303,6 +307,7 @@ message Report {
   repeated MoonPhase moon_phases = 29;
   repeated TideType tide_types = 30;
   repeated Id body_of_water_ids = 31;
+  string time_zone = 32;
 }
 
 message Angler {
@@ -345,6 +350,7 @@ message Trip {
   repeated CustomEntityValue custom_entity_values = 12;
   string notes = 13;
   Atmosphere atmosphere = 14;
+  string time_zone = 15;
 }
 
 message Measurement {
@@ -365,4 +371,5 @@ message Tide {
   TideType type = 1;
   uint64 low_timestamp = 2;
   uint64 high_timestamp = 3;
+  string time_zone = 4;
 }

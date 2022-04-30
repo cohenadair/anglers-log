@@ -5,7 +5,6 @@ import '../i18n/strings.dart';
 import '../model/gen/anglerslog.pb.dart';
 import '../pages/form_page.dart';
 import '../res/dimen.dart';
-import '../time_manager.dart';
 import '../utils/page_utils.dart';
 import '../utils/protobuf_utils.dart';
 import 'date_time_picker.dart';
@@ -60,8 +59,8 @@ class _TideInputPage extends StatefulWidget {
 }
 
 class __TideInputPageState extends State<_TideInputPage> {
-  late TimestampInputController _lowTideController;
-  late TimestampInputController _highTideController;
+  late DateTimeInputController _lowTideController;
+  late DateTimeInputController _highTideController;
 
   InputController<Tide> get controller => widget.controller;
 
@@ -73,14 +72,14 @@ class __TideInputPageState extends State<_TideInputPage> {
   void initState() {
     super.initState();
 
-    _lowTideController = TimestampInputController();
-    _highTideController = TimestampInputController();
+    _lowTideController = DateTimeInputController(context);
+    _highTideController = DateTimeInputController(context);
 
     if (hasValue) {
       _lowTideController.value =
-          value!.hasLowTimestamp() ? value!.lowTimestamp.toInt() : null;
+          value!.hasLowTimestamp() ? value!.lowDateTime(context) : null;
       _highTideController.value =
-          value!.hasHighTimestamp() ? value!.highTimestamp.toInt() : null;
+          value!.hasHighTimestamp() ? value!.highDateTime(context) : null;
     }
   }
 
@@ -156,11 +155,11 @@ class __TideInputPageState extends State<_TideInputPage> {
       }
 
       if (_lowTideController.hasValue) {
-        newTide.lowTimestamp = Int64(_lowTideController.value!);
+        newTide.lowTimestamp = Int64(_lowTideController.timestamp!);
       }
 
       if (_highTideController.hasValue) {
-        newTide.highTimestamp = Int64(_highTideController.value!);
+        newTide.highTimestamp = Int64(_highTideController.timestamp!);
       }
     }
 

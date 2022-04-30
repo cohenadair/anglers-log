@@ -56,7 +56,7 @@ void main() {
 
   testWidgets("BackupPage shows last backup as a valid time", (tester) async {
     when(appManager.userPreferenceManager.lastBackupAt)
-        .thenReturn(DateTime(2020, 1, 1).millisecondsSinceEpoch);
+        .thenReturn(dateTime(2020, 1, 1).millisecondsSinceEpoch);
     await pumpContext(tester, (_) => BackupPage(), appManager: appManager);
     expect(find.text("Jan 1, 2020 at 12:00 AM"), findsOneWidget);
   });

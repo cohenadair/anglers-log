@@ -420,13 +420,19 @@ class _ManageableListPageState<T> extends State<ManageableListPage<T>> {
       }
     }
 
+    var canDelete = widget.itemManager.deleteWidget != null &&
+        widget.itemManager.deleteItem != null;
+
     var listItem = ManageableListItem(
       child: item.child,
       editing: canEdit,
       enabled: enabled,
-      deleteMessageBuilder: (context) =>
-          widget.itemManager.deleteWidget(context, itemValue),
-      onConfirmDelete: () => widget.itemManager.deleteItem(context, itemValue),
+      deleteMessageBuilder: canDelete
+          ? (context) => widget.itemManager.deleteWidget!(context, itemValue)
+          : null,
+      onConfirmDelete: canDelete
+          ? () => widget.itemManager.deleteItem!(context, itemValue)
+          : null,
       onTap: onTap,
       onTapDeleteButton: widget.itemManager.onTapDeleteButton == null
           ? null
@@ -518,6 +524,9 @@ typedef PickerContainsAllCallback<T> = bool Function(Set<T> selectedItems);
 
 /// A convenience class for storing the properties related to when a
 /// [ManageableListPage] is being used to pick items from a list.
+///
+/// Note that [T] must be of the same type as the associated
+/// [ManageableListPage].
 class ManageableListPagePickerSettings<T> {
   /// The title of the picker page when picking a single item.
   final Widget? title;
@@ -671,11 +680,15 @@ class ManageableListPageItemManager<T> {
 
   /// The [Widget] to display is a delete confirmation dialog. This should be
   /// some kind of [Text] widget.
-  final Widget Function(BuildContext, T) deleteWidget;
+  ///
+  /// If null, items cannot be deleted.
+  final Widget Function(BuildContext, T)? deleteWidget;
 
   /// Invoked when the user confirms the delete operation. This method should
   /// actually delete the item [T] from the database.
-  final void Function(BuildContext, T) deleteItem;
+  ///
+  /// If null, items cannot be deleted.
+  final void Function(BuildContext, T)? deleteItem;
 
   /// See [ManageableListItem.onTapDeleteButton].
   final bool Function(T)? onTapDeleteButton;
@@ -708,8 +721,8 @@ class ManageableListPageItemManager<T> {
 
   ManageableListPageItemManager({
     required this.loadItems,
-    required this.deleteWidget,
-    required this.deleteItem,
+    this.deleteWidget,
+    this.deleteItem,
     this.emptyItemsSettings,
     this.addPageBuilder,
     this.onAddButtonPressed,

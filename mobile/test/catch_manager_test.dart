@@ -76,6 +76,74 @@ void main() {
     catchManager = CatchManager(appManager.app);
   });
 
+  test("initialize updates catch time zones", () async {
+    var catchId1 = randomId();
+    var catchId2 = randomId();
+    var catchId3 = randomId();
+    when(appManager.localDatabaseManager.fetchAll(any)).thenAnswer((_) {
+      return Future.value([
+        {
+          "id": catchId1.uint8List,
+          "bytes": Catch(
+            id: catchId1,
+            timestamp: Int64(10),
+          ).writeToBuffer(),
+        },
+        {
+          "id": catchId2.uint8List,
+          "bytes": Catch(
+            id: catchId2,
+            timestamp: Int64(15),
+            timeZone: defaultTimeZone,
+          ).writeToBuffer(),
+        },
+        {
+          "id": catchId3.uint8List,
+          "bytes": Catch(
+            id: catchId3,
+            timestamp: Int64(20),
+          ).writeToBuffer(),
+        },
+      ]);
+    });
+    when(appManager.timeManager.currentTimeZone).thenReturn("America/Chicago");
+
+    await catchManager.initialize();
+
+    var catches = catchManager.list();
+    expect(catches.length, 3);
+    expect(catches[0].timeZone, "America/Chicago");
+    expect(catches[1].timeZone, "America/New_York");
+    expect(catches[2].timeZone, "America/Chicago");
+
+    verifyNever(
+        appManager.imageManager.save(any, compress: anyNamed("compress")));
+    verify(appManager.localDatabaseManager.insertOrReplace(any, any, any))
+        .called(2);
+  });
+
+  test("addOrUpdate, setImages=false", () async {
+    await catchManager.addOrUpdate(
+      Catch()..id = randomId(),
+      setImages: false,
+    );
+    verifyNever(
+        appManager.imageManager.save(any, compress: anyNamed("compress")));
+    verify(appManager.localDatabaseManager.insertOrReplace(any, any, any))
+        .called(1);
+  });
+
+  test("addOrUpdate, setImages=true", () async {
+    await catchManager.addOrUpdate(
+      Catch()..id = randomId(),
+      setImages: true,
+    );
+    verify(appManager.imageManager.save(any, compress: anyNamed("compress")))
+        .called(1);
+    verify(appManager.localDatabaseManager.insertOrReplace(any, any, any))
+        .called(1);
+  });
+
   test("matchesFilter catch doesn't exist", () {
     expect(catchManager.matchesFilter(randomId(), "Test"), isFalse);
     verifyNever(speciesManager.matchesFilter(any, any));
@@ -95,10 +163,12 @@ void main() {
       (tester) async {
     await catchManager.addOrUpdate(Catch()
       ..id = randomId()
-      ..timestamp = Int64(DateTime(2020, 1, 1).millisecondsSinceEpoch));
+      ..timestamp = Int64(dateTime(2020, 1, 1).millisecondsSinceEpoch)
+      ..timeZone = "America/New_York");
     await catchManager.addOrUpdate(Catch()
       ..id = randomId()
-      ..timestamp = Int64(DateTime(2020, 4, 4).millisecondsSinceEpoch));
+      ..timestamp = Int64(dateTime(2020, 4, 4).millisecondsSinceEpoch)
+      ..timeZone = "America/New_York");
 
     var context = await buildContext(tester, appManager: appManager);
 
@@ -544,19 +614,19 @@ void main() {
 
     await catchManager.addOrUpdate(Catch()
       ..id = randomId()
-      ..timestamp = Int64(DateTime(2020, 1, 1).millisecondsSinceEpoch)
+      ..timestamp = Int64(dateTime(2020, 1, 1).millisecondsSinceEpoch)
       ..anglerId = anglerId0);
     await catchManager.addOrUpdate(Catch()
       ..id = randomId()
-      ..timestamp = Int64(DateTime(2020, 2, 2).millisecondsSinceEpoch)
+      ..timestamp = Int64(dateTime(2020, 2, 2).millisecondsSinceEpoch)
       ..anglerId = anglerId1);
     await catchManager.addOrUpdate(Catch()
       ..id = randomId()
-      ..timestamp = Int64(DateTime(2020, 2, 2).millisecondsSinceEpoch)
+      ..timestamp = Int64(dateTime(2020, 2, 2).millisecondsSinceEpoch)
       ..anglerId = anglerId1);
     await catchManager.addOrUpdate(Catch()
       ..id = randomId()
-      ..timestamp = Int64(DateTime(2020, 4, 4).millisecondsSinceEpoch)
+      ..timestamp = Int64(dateTime(2020, 4, 4).millisecondsSinceEpoch)
       ..anglerId = anglerId2);
 
     var context = await buildContext(tester, appManager: appManager);
@@ -592,19 +662,19 @@ void main() {
 
     await catchManager.addOrUpdate(Catch()
       ..id = randomId()
-      ..timestamp = Int64(DateTime(2020, 1, 1).millisecondsSinceEpoch)
+      ..timestamp = Int64(dateTime(2020, 1, 1).millisecondsSinceEpoch)
       ..waterClarityId = clarityId0);
     await catchManager.addOrUpdate(Catch()
       ..id = randomId()
-      ..timestamp = Int64(DateTime(2020, 2, 2).millisecondsSinceEpoch)
+      ..timestamp = Int64(dateTime(2020, 2, 2).millisecondsSinceEpoch)
       ..waterClarityId = clarityId1);
     await catchManager.addOrUpdate(Catch()
       ..id = randomId()
-      ..timestamp = Int64(DateTime(2020, 2, 2).millisecondsSinceEpoch)
+      ..timestamp = Int64(dateTime(2020, 2, 2).millisecondsSinceEpoch)
       ..waterClarityId = clarityId1);
     await catchManager.addOrUpdate(Catch()
       ..id = randomId()
-      ..timestamp = Int64(DateTime(2020, 4, 4).millisecondsSinceEpoch)
+      ..timestamp = Int64(dateTime(2020, 4, 4).millisecondsSinceEpoch)
       ..waterClarityId = clarityId2);
 
     var context = await buildContext(tester, appManager: appManager);
@@ -640,19 +710,19 @@ void main() {
 
     await catchManager.addOrUpdate(Catch()
       ..id = randomId()
-      ..timestamp = Int64(DateTime(2020, 1, 1).millisecondsSinceEpoch)
+      ..timestamp = Int64(dateTime(2020, 1, 1).millisecondsSinceEpoch)
       ..speciesId = speciesId0);
     await catchManager.addOrUpdate(Catch()
       ..id = randomId()
-      ..timestamp = Int64(DateTime(2020, 2, 2).millisecondsSinceEpoch)
+      ..timestamp = Int64(dateTime(2020, 2, 2).millisecondsSinceEpoch)
       ..speciesId = speciesId1);
     await catchManager.addOrUpdate(Catch()
       ..id = randomId()
-      ..timestamp = Int64(DateTime(2020, 2, 2).millisecondsSinceEpoch)
+      ..timestamp = Int64(dateTime(2020, 2, 2).millisecondsSinceEpoch)
       ..speciesId = speciesId1);
     await catchManager.addOrUpdate(Catch()
       ..id = randomId()
-      ..timestamp = Int64(DateTime(2020, 4, 4).millisecondsSinceEpoch)
+      ..timestamp = Int64(dateTime(2020, 4, 4).millisecondsSinceEpoch)
       ..speciesId = speciesId2);
 
     var context = await buildContext(tester, appManager: appManager);
@@ -968,19 +1038,19 @@ void main() {
 
     await catchManager.addOrUpdate(Catch()
       ..id = randomId()
-      ..timestamp = Int64(DateTime(2020, 1, 1).millisecondsSinceEpoch)
+      ..timestamp = Int64(dateTime(2020, 1, 1).millisecondsSinceEpoch)
       ..methodIds.add(methodId0));
     await catchManager.addOrUpdate(Catch()
       ..id = randomId()
-      ..timestamp = Int64(DateTime(2020, 2, 2).millisecondsSinceEpoch)
+      ..timestamp = Int64(dateTime(2020, 2, 2).millisecondsSinceEpoch)
       ..methodIds.add(methodId1));
     await catchManager.addOrUpdate(Catch()
       ..id = randomId()
-      ..timestamp = Int64(DateTime(2020, 2, 2).millisecondsSinceEpoch)
+      ..timestamp = Int64(dateTime(2020, 2, 2).millisecondsSinceEpoch)
       ..methodIds.add(methodId1));
     await catchManager.addOrUpdate(Catch()
       ..id = randomId()
-      ..timestamp = Int64(DateTime(2020, 4, 4).millisecondsSinceEpoch)
+      ..timestamp = Int64(dateTime(2020, 4, 4).millisecondsSinceEpoch)
       ..methodIds.add(methodId2));
 
     var context = await buildContext(tester, appManager: appManager);
@@ -1012,23 +1082,23 @@ void main() {
 
     await catchManager.addOrUpdate(Catch()
       ..id = randomId()
-      ..timestamp = Int64(DateTime(2020, 1, 1).millisecondsSinceEpoch)
+      ..timestamp = Int64(dateTime(2020, 1, 1).millisecondsSinceEpoch)
       ..period = Period.dawn);
     await catchManager.addOrUpdate(Catch()
       ..id = randomId()
-      ..timestamp = Int64(DateTime(2020, 2, 2).millisecondsSinceEpoch)
+      ..timestamp = Int64(dateTime(2020, 2, 2).millisecondsSinceEpoch)
       ..period = Period.afternoon);
     await catchManager.addOrUpdate(Catch()
       ..id = randomId()
-      ..timestamp = Int64(DateTime(2020, 2, 2).millisecondsSinceEpoch)
+      ..timestamp = Int64(dateTime(2020, 2, 2).millisecondsSinceEpoch)
       ..period = Period.dawn);
     await catchManager.addOrUpdate(Catch()
       ..id = randomId()
-      ..timestamp = Int64(DateTime(2020, 4, 4).millisecondsSinceEpoch)
+      ..timestamp = Int64(dateTime(2020, 4, 4).millisecondsSinceEpoch)
       ..period = Period.dusk);
     await catchManager.addOrUpdate(Catch()
       ..id = randomId()
-      ..timestamp = Int64(DateTime(2020, 4, 4).millisecondsSinceEpoch));
+      ..timestamp = Int64(dateTime(2020, 4, 4).millisecondsSinceEpoch));
 
     var context = await buildContext(tester, appManager: appManager);
     var catches = catchManager.catches(
@@ -1059,19 +1129,19 @@ void main() {
 
     await catchManager.addOrUpdate(Catch()
       ..id = randomId()
-      ..timestamp = Int64(DateTime(2020, 1, 1).millisecondsSinceEpoch)
+      ..timestamp = Int64(dateTime(2020, 1, 1).millisecondsSinceEpoch)
       ..season = Season.winter);
     await catchManager.addOrUpdate(Catch()
       ..id = randomId()
-      ..timestamp = Int64(DateTime(2020, 2, 2).millisecondsSinceEpoch)
+      ..timestamp = Int64(dateTime(2020, 2, 2).millisecondsSinceEpoch)
       ..season = Season.spring);
     await catchManager.addOrUpdate(Catch()
       ..id = randomId()
-      ..timestamp = Int64(DateTime(2020, 2, 2).millisecondsSinceEpoch)
+      ..timestamp = Int64(dateTime(2020, 2, 2).millisecondsSinceEpoch)
       ..season = Season.summer);
     await catchManager.addOrUpdate(Catch()
       ..id = randomId()
-      ..timestamp = Int64(DateTime(2020, 4, 4).millisecondsSinceEpoch));
+      ..timestamp = Int64(dateTime(2020, 4, 4).millisecondsSinceEpoch));
 
     var context = await buildContext(tester, appManager: appManager);
     var catches = catchManager.catches(
@@ -1102,19 +1172,19 @@ void main() {
 
     await catchManager.addOrUpdate(Catch()
       ..id = randomId()
-      ..timestamp = Int64(DateTime(2020, 1, 1).millisecondsSinceEpoch)
+      ..timestamp = Int64(dateTime(2020, 1, 1).millisecondsSinceEpoch)
       ..atmosphere = Atmosphere(windDirection: Direction.east));
     await catchManager.addOrUpdate(Catch()
       ..id = randomId()
-      ..timestamp = Int64(DateTime(2020, 2, 2).millisecondsSinceEpoch)
+      ..timestamp = Int64(dateTime(2020, 2, 2).millisecondsSinceEpoch)
       ..atmosphere = Atmosphere(windDirection: Direction.west));
     await catchManager.addOrUpdate(Catch()
       ..id = randomId()
-      ..timestamp = Int64(DateTime(2020, 2, 2).millisecondsSinceEpoch)
+      ..timestamp = Int64(dateTime(2020, 2, 2).millisecondsSinceEpoch)
       ..atmosphere = Atmosphere(windDirection: Direction.north));
     await catchManager.addOrUpdate(Catch()
       ..id = randomId()
-      ..timestamp = Int64(DateTime(2020, 4, 4).millisecondsSinceEpoch));
+      ..timestamp = Int64(dateTime(2020, 4, 4).millisecondsSinceEpoch));
 
     var context = await buildContext(tester, appManager: appManager);
     var catches = catchManager.catches(
@@ -1145,20 +1215,20 @@ void main() {
 
     await catchManager.addOrUpdate(Catch()
       ..id = randomId()
-      ..timestamp = Int64(DateTime(2020, 1, 1).millisecondsSinceEpoch)
+      ..timestamp = Int64(dateTime(2020, 1, 1).millisecondsSinceEpoch)
       ..atmosphere = Atmosphere(skyConditions: [SkyCondition.rain]));
     await catchManager.addOrUpdate(Catch()
       ..id = randomId()
-      ..timestamp = Int64(DateTime(2020, 2, 2).millisecondsSinceEpoch)
+      ..timestamp = Int64(dateTime(2020, 2, 2).millisecondsSinceEpoch)
       ..atmosphere =
           Atmosphere(skyConditions: [SkyCondition.snow, SkyCondition.clear]));
     await catchManager.addOrUpdate(Catch()
       ..id = randomId()
-      ..timestamp = Int64(DateTime(2020, 2, 2).millisecondsSinceEpoch)
+      ..timestamp = Int64(dateTime(2020, 2, 2).millisecondsSinceEpoch)
       ..atmosphere = Atmosphere(skyConditions: [SkyCondition.fog]));
     await catchManager.addOrUpdate(Catch()
       ..id = randomId()
-      ..timestamp = Int64(DateTime(2020, 4, 4).millisecondsSinceEpoch));
+      ..timestamp = Int64(dateTime(2020, 4, 4).millisecondsSinceEpoch));
 
     var context = await buildContext(tester, appManager: appManager);
     var catches = catchManager.catches(
@@ -1189,19 +1259,19 @@ void main() {
 
     await catchManager.addOrUpdate(Catch()
       ..id = randomId()
-      ..timestamp = Int64(DateTime(2020, 1, 1).millisecondsSinceEpoch)
+      ..timestamp = Int64(dateTime(2020, 1, 1).millisecondsSinceEpoch)
       ..atmosphere = Atmosphere(moonPhase: MoonPhase.full));
     await catchManager.addOrUpdate(Catch()
       ..id = randomId()
-      ..timestamp = Int64(DateTime(2020, 2, 2).millisecondsSinceEpoch)
+      ..timestamp = Int64(dateTime(2020, 2, 2).millisecondsSinceEpoch)
       ..atmosphere = Atmosphere(moonPhase: MoonPhase.waning_crescent));
     await catchManager.addOrUpdate(Catch()
       ..id = randomId()
-      ..timestamp = Int64(DateTime(2020, 2, 2).millisecondsSinceEpoch)
+      ..timestamp = Int64(dateTime(2020, 2, 2).millisecondsSinceEpoch)
       ..atmosphere = Atmosphere(moonPhase: MoonPhase.new_));
     await catchManager.addOrUpdate(Catch()
       ..id = randomId()
-      ..timestamp = Int64(DateTime(2020, 4, 4).millisecondsSinceEpoch));
+      ..timestamp = Int64(dateTime(2020, 4, 4).millisecondsSinceEpoch));
 
     var context = await buildContext(tester, appManager: appManager);
     var catches = catchManager.catches(
@@ -1232,19 +1302,19 @@ void main() {
 
     await catchManager.addOrUpdate(Catch()
       ..id = randomId()
-      ..timestamp = Int64(DateTime(2020, 1, 1).millisecondsSinceEpoch)
+      ..timestamp = Int64(dateTime(2020, 1, 1).millisecondsSinceEpoch)
       ..tide = Tide(type: TideType.high));
     await catchManager.addOrUpdate(Catch()
       ..id = randomId()
-      ..timestamp = Int64(DateTime(2020, 2, 2).millisecondsSinceEpoch)
+      ..timestamp = Int64(dateTime(2020, 2, 2).millisecondsSinceEpoch)
       ..tide = Tide(type: TideType.outgoing));
     await catchManager.addOrUpdate(Catch()
       ..id = randomId()
-      ..timestamp = Int64(DateTime(2020, 2, 2).millisecondsSinceEpoch)
+      ..timestamp = Int64(dateTime(2020, 2, 2).millisecondsSinceEpoch)
       ..tide = Tide(type: TideType.slack));
     await catchManager.addOrUpdate(Catch()
       ..id = randomId()
-      ..timestamp = Int64(DateTime(2020, 4, 4).millisecondsSinceEpoch));
+      ..timestamp = Int64(dateTime(2020, 4, 4).millisecondsSinceEpoch));
 
     var context = await buildContext(tester, appManager: appManager);
     var catches = catchManager.catches(
@@ -1275,18 +1345,18 @@ void main() {
 
     await catchManager.addOrUpdate(Catch()
       ..id = randomId()
-      ..timestamp = Int64(DateTime(2020, 1, 1).millisecondsSinceEpoch)
+      ..timestamp = Int64(dateTime(2020, 1, 1).millisecondsSinceEpoch)
       ..isFavorite = true);
     await catchManager.addOrUpdate(Catch()
       ..id = randomId()
-      ..timestamp = Int64(DateTime(2020, 2, 2).millisecondsSinceEpoch));
+      ..timestamp = Int64(dateTime(2020, 2, 2).millisecondsSinceEpoch));
     await catchManager.addOrUpdate(Catch()
       ..id = randomId()
-      ..timestamp = Int64(DateTime(2020, 2, 2).millisecondsSinceEpoch)
+      ..timestamp = Int64(dateTime(2020, 2, 2).millisecondsSinceEpoch)
       ..isFavorite = true);
     await catchManager.addOrUpdate(Catch()
       ..id = randomId()
-      ..timestamp = Int64(DateTime(2020, 4, 4).millisecondsSinceEpoch)
+      ..timestamp = Int64(dateTime(2020, 4, 4).millisecondsSinceEpoch)
       ..isFavorite = true);
 
     var context = await buildContext(tester, appManager: appManager);
@@ -1305,18 +1375,18 @@ void main() {
 
     await catchManager.addOrUpdate(Catch()
       ..id = randomId()
-      ..timestamp = Int64(DateTime(2020, 1, 1).millisecondsSinceEpoch)
+      ..timestamp = Int64(dateTime(2020, 1, 1).millisecondsSinceEpoch)
       ..wasCatchAndRelease = true);
     await catchManager.addOrUpdate(Catch()
       ..id = randomId()
-      ..timestamp = Int64(DateTime(2020, 2, 2).millisecondsSinceEpoch));
+      ..timestamp = Int64(dateTime(2020, 2, 2).millisecondsSinceEpoch));
     await catchManager.addOrUpdate(Catch()
       ..id = randomId()
-      ..timestamp = Int64(DateTime(2020, 2, 2).millisecondsSinceEpoch)
+      ..timestamp = Int64(dateTime(2020, 2, 2).millisecondsSinceEpoch)
       ..wasCatchAndRelease = true);
     await catchManager.addOrUpdate(Catch()
       ..id = randomId()
-      ..timestamp = Int64(DateTime(2020, 4, 4).millisecondsSinceEpoch)
+      ..timestamp = Int64(dateTime(2020, 4, 4).millisecondsSinceEpoch)
       ..wasCatchAndRelease = true);
 
     var context = await buildContext(tester, appManager: appManager);
@@ -1914,19 +1984,19 @@ void main() {
   testWidgets("Filtering by hour", (tester) async {
     await catchManager.addOrUpdate(Catch(
       id: randomId(),
-      timestamp: Int64(DateTime(0, 0, 0, 5).millisecondsSinceEpoch),
+      timestamp: Int64(dateTime(0, 0, 0, 5).millisecondsSinceEpoch),
     ));
     await catchManager.addOrUpdate(Catch(
       id: randomId(),
-      timestamp: Int64(DateTime(0, 0, 0, 10).millisecondsSinceEpoch),
+      timestamp: Int64(dateTime(0, 0, 0, 10).millisecondsSinceEpoch),
     ));
     await catchManager.addOrUpdate(Catch(
       id: randomId(),
-      timestamp: Int64(DateTime(0, 0, 0, 8).millisecondsSinceEpoch),
+      timestamp: Int64(dateTime(0, 0, 0, 8).millisecondsSinceEpoch),
     ));
     await catchManager.addOrUpdate(Catch(
       id: randomId(),
-      timestamp: Int64(DateTime(0, 0, 0, 5).millisecondsSinceEpoch),
+      timestamp: Int64(dateTime(0, 0, 0, 5).millisecondsSinceEpoch),
     ));
 
     var context = await buildContext(tester, appManager: appManager);
@@ -1947,19 +2017,19 @@ void main() {
   testWidgets("Filtering by month", (tester) async {
     await catchManager.addOrUpdate(Catch(
       id: randomId(),
-      timestamp: Int64(DateTime(2020, 3, 1, 5).millisecondsSinceEpoch),
+      timestamp: Int64(dateTime(2020, 3, 1, 5).millisecondsSinceEpoch),
     ));
     await catchManager.addOrUpdate(Catch(
       id: randomId(),
-      timestamp: Int64(DateTime(2020, 5, 1, 10).millisecondsSinceEpoch),
+      timestamp: Int64(dateTime(2020, 5, 1, 10).millisecondsSinceEpoch),
     ));
     await catchManager.addOrUpdate(Catch(
       id: randomId(),
-      timestamp: Int64(DateTime(2020, 3, 1, 8).millisecondsSinceEpoch),
+      timestamp: Int64(dateTime(2020, 3, 1, 8).millisecondsSinceEpoch),
     ));
     await catchManager.addOrUpdate(Catch(
       id: randomId(),
-      timestamp: Int64(DateTime(2020, 8, 1, 5).millisecondsSinceEpoch),
+      timestamp: Int64(dateTime(2020, 8, 1, 5).millisecondsSinceEpoch),
     ));
 
     var context = await buildContext(tester, appManager: appManager);
@@ -2195,7 +2265,7 @@ void main() {
     var context = await buildContext(tester, appManager: appManager);
     var cat = Catch()
       ..id = randomId()
-      ..timestamp = Int64(DateTime(2020, 9, 25).millisecondsSinceEpoch);
+      ..timestamp = Int64(dateTime(2020, 9, 25).millisecondsSinceEpoch);
 
     expect(
       catchManager.deleteMessage(context, cat),
@@ -2212,7 +2282,7 @@ void main() {
     var context = await buildContext(tester, appManager: appManager);
     var cat = Catch()
       ..id = randomId()
-      ..timestamp = Int64(DateTime(2020, 9, 25).millisecondsSinceEpoch);
+      ..timestamp = Int64(dateTime(2020, 9, 25).millisecondsSinceEpoch);
 
     expect(
       catchManager.deleteMessage(context, cat),
@@ -2228,7 +2298,7 @@ void main() {
       context,
       Catch(
         id: randomId(),
-        timestamp: Int64(DateTime(2020, 10, 26, 15, 30).millisecondsSinceEpoch),
+        timestamp: Int64(dateTime(2020, 10, 26, 15, 30).millisecondsSinceEpoch),
       ),
     );
 
@@ -2244,7 +2314,7 @@ void main() {
       context,
       Catch(
         id: randomId(),
-        timestamp: Int64(DateTime(2020, 10, 26, 15, 30).millisecondsSinceEpoch),
+        timestamp: Int64(dateTime(2020, 10, 26, 15, 30).millisecondsSinceEpoch),
       ),
     );
 

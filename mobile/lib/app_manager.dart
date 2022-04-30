@@ -30,6 +30,7 @@ import 'wrappers/http_wrapper.dart';
 import 'wrappers/image_compress_wrapper.dart';
 import 'wrappers/image_picker_wrapper.dart';
 import 'wrappers/io_wrapper.dart';
+import 'wrappers/native_time_zone_wrapper.dart';
 import 'wrappers/package_info_wrapper.dart';
 import 'wrappers/path_provider_wrapper.dart';
 import 'wrappers/permission_handler_wrapper.dart';
@@ -76,6 +77,7 @@ class AppManager {
   ImageCompressWrapper? _imageCompressWrapper;
   ImagePickerWrapper? _imagePickerWrapper;
   IoWrapper? _ioWrapper;
+  NativeTimeZoneWrapper? _nativeTimeZoneWrapper;
   PackageInfoWrapper? _packageInfoWrapper;
   PathProviderWrapper? _pathProviderWrapper;
   PermissionHandlerWrapper? _permissionHandlerWrapper;
@@ -167,7 +169,7 @@ class AppManager {
   }
 
   TimeManager get timeManager {
-    _timeManager ??= TimeManager();
+    _timeManager ??= TimeManager(this);
     return _timeManager!;
   }
 
@@ -231,6 +233,11 @@ class AppManager {
     return _ioWrapper!;
   }
 
+  NativeTimeZoneWrapper get nativeTimeZoneWrapper {
+    _nativeTimeZoneWrapper ??= NativeTimeZoneWrapper();
+    return _nativeTimeZoneWrapper!;
+  }
+
   PackageInfoWrapper get packageInfoWrapper {
     _packageInfoWrapper ??= PackageInfoWrapper();
     return _packageInfoWrapper!;
@@ -282,6 +289,7 @@ class AppManager {
   Future<void> initialize({bool isStartup = true}) async {
     // Managers that don't depend on anything.
     if (isStartup) {
+      await timeManager.initialize();
       await locationMonitor.initialize();
       await propertiesManager.initialize();
       await subscriptionManager.initialize();

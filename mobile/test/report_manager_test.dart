@@ -98,4 +98,45 @@ void main() {
     stubTrackingEntities(false);
     expect(reportManager.defaultReports.length, 3);
   });
+
+  test("initialize updates report time zones", () async {
+    var reportId1 = randomId();
+    var reportId2 = randomId();
+    var reportId3 = randomId();
+    when(appManager.localDatabaseManager.fetchAll(any)).thenAnswer((_) {
+      return Future.value([
+        {
+          "id": reportId1.uint8List,
+          "bytes": Report(
+            id: reportId1,
+          ).writeToBuffer(),
+        },
+        {
+          "id": reportId2.uint8List,
+          "bytes": Report(
+            id: reportId2,
+            timeZone: defaultTimeZone,
+          ).writeToBuffer(),
+        },
+        {
+          "id": reportId3.uint8List,
+          "bytes": Report(
+            id: reportId3,
+          ).writeToBuffer(),
+        },
+      ]);
+    });
+    when(appManager.timeManager.currentTimeZone).thenReturn("America/Chicago");
+
+    await reportManager.initialize();
+
+    var reports = reportManager.list();
+    expect(reports.length, 3);
+    expect(reports[0].timeZone, "America/Chicago");
+    expect(reports[1].timeZone, "America/New_York");
+    expect(reports[2].timeZone, "America/Chicago");
+
+    verify(appManager.localDatabaseManager.insertOrReplace(any, any, any))
+        .called(2);
+  });
 }

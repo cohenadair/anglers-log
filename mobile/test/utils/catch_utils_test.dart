@@ -41,10 +41,11 @@ void main() {
     expect(fields[13].id, catchFieldIdSpecies);
     expect(fields[14].id, catchFieldIdTide);
     expect(fields[15].id, catchFieldIdPeriod);
-    expect(fields[16].id, catchFieldIdWaterClarity);
-    expect(fields[17].id, catchFieldIdWaterDepth);
-    expect(fields[18].id, catchFieldIdWaterTemperature);
-    expect(fields[19].id, catchFieldIdWeight);
+    expect(fields[16].id, catchFieldIdTimeZone);
+    expect(fields[17].id, catchFieldIdWaterClarity);
+    expect(fields[18].id, catchFieldIdWaterDepth);
+    expect(fields[19].id, catchFieldIdWaterTemperature);
+    expect(fields[20].id, catchFieldIdWeight);
   });
 
   testWidgets("catchFilterMatchesPeriod", (tester) async {
@@ -119,7 +120,7 @@ void main() {
     expect(catchFilterMatchesTimestamp(context, "", cat), isFalse);
 
     // With timestamp.
-    cat = Catch(timestamp: Int64(DateTime(2021, 1, 15).millisecondsSinceEpoch));
+    cat = Catch(timestamp: Int64(dateTime(2021, 1, 15).millisecondsSinceEpoch));
     expect(catchFilterMatchesTimestamp(context, "JanuAry", cat), isTrue);
     expect(catchFilterMatchesTimestamp(context, " january", cat), isTrue);
     expect(catchFilterMatchesTimestamp(context, "15", cat), isTrue);

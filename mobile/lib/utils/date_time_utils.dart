@@ -1,7 +1,9 @@
 import 'package:fixnum/fixnum.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:quiver/strings.dart';
 import 'package:quiver/time.dart';
+import 'package:timezone/timezone.dart';
 
 import '../app_manager.dart';
 import '../i18n/strings.dart';
@@ -75,21 +77,26 @@ class DisplayDuration {
       return _duration.inSeconds;
     }
   }
+
+  /// Formats the hours and minutes of the [DisplayDuration]. For example,
+  /// 05:30.
+  String formatHoursMinutes() =>
+      "${hours.toString().padLeft(2, "0")}:${minutes.toString().padLeft(2, "0")}";
 }
 
-bool isSameYear(DateTime a, DateTime b) {
+bool isSameYear(TZDateTime a, TZDateTime b) {
   return a.year == b.year;
 }
 
-bool isSameMonth(DateTime a, DateTime b) {
+bool isSameMonth(TZDateTime a, TZDateTime b) {
   return a.month == b.month;
 }
 
-bool isSameDay(DateTime a, DateTime b) {
+bool isSameDay(TZDateTime a, TZDateTime b) {
   return a.day == b.day;
 }
 
-bool isSameTimeOfDay(DateTime a, DateTime b) {
+bool isSameTimeOfDay(TZDateTime a, TZDateTime b) {
   return TimeOfDay.fromDateTime(a) == TimeOfDay.fromDateTime(b);
 }
 
@@ -98,49 +105,51 @@ bool isLater(TimeOfDay a, TimeOfDay b) {
   return a.hour > b.hour || (a.hour == b.hour && a.minute > b.minute);
 }
 
-/// Returns `true` if the given [DateTime] comes after `now`, to minute
+/// Returns `true` if the given [TZDateTime] comes after `now`, to minute
 /// accuracy.
-bool isInFutureWithMinuteAccuracy(DateTime dateTime, DateTime now) {
+bool isInFutureWithMinuteAccuracy(TZDateTime dateTime, TZDateTime now) {
   var newDateTime = dateTimeToMinuteAccuracy(dateTime);
   var newNow = dateTimeToMinuteAccuracy(now);
   return newDateTime.isAfter(newNow);
 }
 
-/// Returns `true` if the given [DateTime] comes after `now`, to day
+/// Returns `true` if the given [TZDateTime] comes after `now`, to day
 /// accuracy.
-bool isInFutureWithDayAccuracy(DateTime dateTime, DateTime now) {
+bool isInFutureWithDayAccuracy(TZDateTime dateTime, TZDateTime now) {
   var newDateTime = dateTimeToDayAccuracy(dateTime);
   var newNow = dateTimeToDayAccuracy(now);
   return newDateTime.isAfter(newNow);
 }
 
-/// Returns true if the given DateTime objects are equal. Compares
+/// Returns true if the given [TZDateTime] objects are equal. Compares
 /// only year, month, and day.
-bool isSameDate(DateTime a, DateTime b) {
+bool isSameDate(TZDateTime a, TZDateTime b) {
   return isSameYear(a, b) && isSameMonth(a, b) && isSameDay(a, b);
 }
 
-bool isYesterday(DateTime today, DateTime yesterday) {
+bool isYesterday(TZDateTime today, TZDateTime yesterday) {
   return isSameDate(yesterday, today.subtract(aDay));
 }
 
-/// Returns true of the  given DateTime objects are within one week of one
+/// Returns true of the  given TZDateTime objects are within one week of one
 /// another.
-bool isWithinOneWeek(DateTime a, DateTime b) {
+bool isWithinOneWeek(TZDateTime a, TZDateTime b) {
   return a.difference(b).inMilliseconds.abs() <= aWeek.inMilliseconds;
 }
 
-/// Returns a [DateTime] object with the given [DateTime] and [TimeOfDay]
+/// Returns a [TZDateTime] object with the given [TZDateTime] and [TimeOfDay]
 /// combined.  Accurate to the millisecond.
 ///
 /// Due to the lack of granularity in [TimeOfDay], the seconds and milliseconds
-/// value of the result are that of the given [DateTime].
-DateTime? combine(DateTime? dateTime, TimeOfDay? timeOfDay) {
+/// value of the result are that of the given [TZDateTime].
+TZDateTime? combine(
+    BuildContext context, TZDateTime? dateTime, TimeOfDay? timeOfDay) {
   if (dateTime == null && timeOfDay == null) {
     return null;
   }
 
-  return DateTime(
+  return TZDateTime(
+    dateTime?.location ?? TimeManager.of(context).currentLocation.value,
     dateTime?.year ?? 0,
     dateTime?.month ?? 1,
     dateTime?.day ?? 1,
@@ -151,45 +160,50 @@ DateTime? combine(DateTime? dateTime, TimeOfDay? timeOfDay) {
   );
 }
 
-/// Returns a new [DateTime] object, with time properties more granular than
+/// Returns a new [TZDateTime] object, with time properties more granular than
 /// minutes set to 0.
-DateTime dateTimeToMinuteAccuracy(DateTime dateTime) {
-  return DateTime(dateTime.year, dateTime.month, dateTime.day, dateTime.hour,
-      dateTime.minute);
+TZDateTime dateTimeToMinuteAccuracy(TZDateTime dateTime) {
+  return TZDateTime(dateTime.location, dateTime.year, dateTime.month,
+      dateTime.day, dateTime.hour, dateTime.minute);
 }
 
-/// Returns a new [DateTime] object, with time properties more granular than
+/// Returns a new [TZDateTime] object, with time properties more granular than
 /// day set to 0.
-DateTime dateTimeToDayAccuracy(DateTime dateTime) {
-  return DateTime(dateTime.year, dateTime.month, dateTime.day);
+TZDateTime dateTimeToDayAccuracy(TZDateTime dateTime, [String? timeZone]) {
+  return TZDateTime(
+    isEmpty(timeZone) ? dateTime.location : getLocation(timeZone!),
+    dateTime.year,
+    dateTime.month,
+    dateTime.day,
+  );
 }
 
-/// Returns a [DateTime] representing the start of the week to which `now`
+/// Returns a [TZDateTime] representing the start of the week to which `now`
 /// belongs.
-DateTime startOfWeek(DateTime now) {
+TZDateTime startOfWeek(TZDateTime now) {
   return dateTimeToDayAccuracy(now).subtract(Duration(days: now.weekday - 1));
 }
 
-/// Returns a [DateTime] representing the start of the month to which `now`
+/// Returns a [TZDateTime] representing the start of the month to which `now`
 /// belongs.
-DateTime startOfMonth(DateTime now) {
-  return DateTime(now.year, now.month);
+TZDateTime startOfMonth(TZDateTime now) {
+  return TZDateTime(now.location, now.year, now.month);
 }
 
-/// Returns a [DateTime] representing the start of the year to which `now`
+/// Returns a [TZDateTime] representing the start of the year to which `now`
 /// belongs.
-DateTime startOfYear(DateTime now) {
-  return DateTime(now.year);
+TZDateTime startOfYear(TZDateTime now) {
+  return TZDateTime(now.location, now.year);
 }
 
 /// Calculates week number from a date as per
 /// https://en.wikipedia.org/wiki/ISO_week_date#Calculation.
-int weekOfYear(DateTime date) {
+int weekOfYear(TZDateTime date) {
   return ((dayOfYear(date) - date.weekday + 10) / DateTime.daysPerWeek).floor();
 }
 
-/// Returns the day of the year for the given [DateTime]. For example, 185.
-int dayOfYear(DateTime date) {
+/// Returns the day of the year for the given [TZDateTime]. For example, 185.
+int dayOfYear(TZDateTime date) {
   return int.parse(DateFormat("D").format(date));
 }
 
@@ -223,14 +237,15 @@ String formatHourRange(BuildContext context, int startHour, int endHour) {
       [formatTimeOfDay(context, start), formatTimeOfDay(context, end)]);
 }
 
-String formatTimeMillis(BuildContext context, Int64 millis) {
+String formatTimeMillis(BuildContext context, Int64 millis, String? timeZone) {
   return formatTimeOfDay(
-      context,
-      TimeOfDay.fromDateTime(
-          DateTime.fromMillisecondsSinceEpoch(millis.toInt())));
+    context,
+    TimeOfDay.fromDateTime(
+        TimeManager.of(context).dateTime(millis.toInt(), timeZone)),
+  );
 }
 
-/// Returns a formatted [DateTime] to be displayed to the user. Includes date
+/// Returns a formatted [TZDateTime] to be displayed to the user. Includes date
 /// and time.
 ///
 /// Examples:
@@ -241,7 +256,7 @@ String formatTimeMillis(BuildContext context, Int64 millis) {
 ///   - Dec 8, 2018 at 2:35 PM
 String formatDateTime(
   BuildContext context,
-  DateTime dateTime, {
+  TZDateTime dateTime, {
   bool abbreviated = false,
   bool excludeMidnight = false,
 }) {
@@ -262,9 +277,11 @@ String formatDateTime(
   ]);
 }
 
-String formatTimestamp(BuildContext context, int timestamp) {
+String formatTimestamp(BuildContext context, int timestamp, String? timeZone) {
   return formatDateTime(
-      context, DateTime.fromMillisecondsSinceEpoch(timestamp));
+    context,
+    TimeManager.of(context).dateTime(timestamp, timeZone),
+  );
 }
 
 /// Returns a [Timestamp] as a searchable [String]. This value should not be
@@ -273,13 +290,14 @@ String formatTimestamp(BuildContext context, int timestamp) {
 ///
 /// The value returned is just a concatenation of different ways of representing
 /// a date and time.
-String timestampToSearchString(BuildContext context, int timestamp) {
-  var dateTime = DateTime.fromMillisecondsSinceEpoch(timestamp);
+String timestampToSearchString(
+    BuildContext context, int timestamp, String? timeZone) {
+  var dateTime = TimeManager.of(context).dateTime(timestamp, timeZone);
   return "${formatDateTime(context, dateTime)} "
       "${DateFormat(monthDayYearFormatFull).format(dateTime)}";
 }
 
-/// Returns a formatted [DateTime] to be displayed to the user. Includes
+/// Returns a formatted [TZDateTime] to be displayed to the user. Includes
 /// date only.
 ///
 /// Examples:
@@ -290,7 +308,7 @@ String timestampToSearchString(BuildContext context, int timestamp) {
 ///   - Dec. 8, 2018
 String formatDateAsRecent(
   BuildContext context,
-  DateTime dateTime, {
+  TZDateTime dateTime, {
   bool abbreviated = false,
 }) {
   final now = AppManager.of(context).timeManager.currentDateTime;
@@ -423,19 +441,21 @@ bool isFrequencyTimerReady({
   // If the timer hasn't started yet, start it now and exit early. This prevents
   // the handler from being called prematurely.
   if (timerStartedAt == null) {
-    setTimer(timeManager.msSinceEpoch);
+    setTimer(timeManager.currentTimestamp);
     return false;
   }
 
   // If enough time hasn't passed, exit early.
-  if (timeManager.msSinceEpoch - timerStartedAt <= frequency) {
+  if (timeManager.currentTimestamp - timerStartedAt <= frequency) {
     return false;
   }
 
   return true;
 }
 
-extension DateTimes on DateTime {
+extension TZDateTimes on TZDateTime {
+  String get locationName => location.name;
+
   bool get isMidnight => hour == 0 && minute == 0;
 }
 

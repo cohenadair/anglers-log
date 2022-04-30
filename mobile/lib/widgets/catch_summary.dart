@@ -786,7 +786,8 @@ class CatchSummaryReport<T> {
     }
 
     var now = _timeManager.currentDateTime;
-    containsNow = dateRanges.containsWhere((e) => e.endDate(now) == now);
+    containsNow =
+        dateRanges.containsWhere((e) => e.endDate(context, now) == now);
 
     for (var dateRange in dateRanges) {
       var catches = _catchManager.catches(
@@ -832,7 +833,7 @@ class CatchSummaryReport<T> {
       // Initialize properties that only apply when not comparing.
       _lastCatch = catches.first;
       _msSinceLastCatch =
-          _timeManager.msSinceEpoch - _lastCatch!.timestamp.toInt();
+          _timeManager.currentTimestamp - _lastCatch!.timestamp.toInt();
     }
   }
 
@@ -963,6 +964,8 @@ class _CatchSummaryReportModel<T> {
 
   SpeciesManager get _speciesManager => SpeciesManager.of(context);
 
+  TimeManager get _timeManager => TimeManager.of(context);
+
   UserPreferenceManager get _userPreferenceManager =>
       UserPreferenceManager.of(context);
 
@@ -1016,7 +1019,7 @@ class _CatchSummaryReportModel<T> {
     for (var cat in catches) {
       catchIds.add(cat.id);
 
-      var dateTime = cat.timestamp.toDateTime();
+      var dateTime = _timeManager.dateTime(cat.timestamp.toInt(), cat.timeZone);
       _inc(true, dateTime.hour, perHour);
       _inc(true, dateTime.month, perMonth);
 

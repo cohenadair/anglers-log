@@ -14,6 +14,7 @@ import 'package:mobile/widgets/checkbox_input.dart';
 import 'package:mobile/widgets/text.dart';
 import 'package:mockito/mockito.dart';
 
+import '../mocks/mocks.mocks.dart';
 import '../mocks/stubbed_app_manager.dart';
 import '../test_utils.dart';
 
@@ -93,15 +94,18 @@ void main() {
     return [
       Catch(
         id: randomId(),
-        timestamp: Int64(DateTime(2020, 1, 1).millisecondsSinceEpoch),
+        timestamp: Int64(dateTime(2020, 1, 1).millisecondsSinceEpoch),
+        timeZone: defaultTimeZone,
       ),
       Catch(
         id: randomId(),
-        timestamp: Int64(DateTime(2020, 2, 1).millisecondsSinceEpoch),
+        timestamp: Int64(dateTime(2020, 2, 1).millisecondsSinceEpoch),
+        timeZone: defaultTimeZone,
       ),
       Catch(
         id: randomId(),
-        timestamp: Int64(DateTime(2020, 3, 1).millisecondsSinceEpoch),
+        timestamp: Int64(dateTime(2020, 3, 1).millisecondsSinceEpoch),
+        timeZone: defaultTimeZone,
       ),
     ];
   }
@@ -121,8 +125,9 @@ void main() {
   Trip defaultTrip() {
     return Trip(
       id: randomId(),
-      startTimestamp: Int64(DateTime(2020, 1, 1, 9).millisecondsSinceEpoch),
-      endTimestamp: Int64(DateTime(2020, 1, 3, 17).millisecondsSinceEpoch),
+      startTimestamp: Int64(dateTime(2020, 1, 1, 9).millisecondsSinceEpoch),
+      endTimestamp: Int64(dateTime(2020, 1, 3, 17).millisecondsSinceEpoch),
+      timeZone: defaultTimeZone,
       name: "Test Trip",
       catchIds: [catches[0].id, catches[2].id],
       bodyOfWaterIds: [bodiesOfWater[2].id],
@@ -213,7 +218,7 @@ void main() {
     when(appManager.catchManager.list(any)).thenReturn(catches);
     when(appManager.catchManager.displayName(any, any)).thenAnswer(
         (invocation) => formatTimestamp(invocation.positionalArguments[0],
-            invocation.positionalArguments[1].timestamp.toInt()));
+            invocation.positionalArguments[1].timestamp.toInt(), null));
 
     when(appManager.customEntityManager.entityExists(any)).thenReturn(false);
 
@@ -250,6 +255,16 @@ void main() {
         .thenReturn(MeasurementSystem.metric);
     when(appManager.userPreferenceManager.windSpeedSystem)
         .thenReturn(MeasurementSystem.metric);
+
+    appManager.stubCurrentTime(dateTime(2021, 2, 1, 10, 30));
+
+    var timeZoneLocation = MockTimeZoneLocation();
+    when(timeZoneLocation.displayNameUtc).thenReturn("America/New York");
+    when(timeZoneLocation.name).thenReturn("America/New_York");
+    when(appManager.timeManager.filteredLocations(
+      any,
+      exclude: anyNamed("exclude"),
+    )).thenReturn([timeZoneLocation]);
   });
 
   testWidgets("Editing shows old values", (tester) async {
@@ -271,6 +286,7 @@ void main() {
     expect(find.text("9:00 AM"), findsOneWidget);
     expect(find.text("Jan 3, 2020"), findsOneWidget);
     expect(find.text("5:00 PM"), findsOneWidget);
+    expect(find.text("America/New York"), findsOneWidget);
     expect(find.text("Test Trip"), findsOneWidget);
     expect(find.text("Test notes for a test trip."), findsOneWidget);
     expect(find.text("Cloudy"), findsOneWidget);
@@ -389,6 +405,7 @@ void main() {
     expect(newTrip.hasId(), isTrue);
     expect(newTrip.hasStartTimestamp(), isTrue);
     expect(newTrip.hasEndTimestamp(), isTrue);
+    expect(newTrip.hasTimeZone(), isTrue);
     expect(newTrip.catchIds, isEmpty);
     expect(newTrip.bodyOfWaterIds, isEmpty);
     expect(newTrip.catchesPerSpecies, isEmpty);
@@ -404,8 +421,8 @@ void main() {
   testWidgets("All Day checkboxes are checked on initial build",
       (tester) async {
     var trip = defaultTrip()
-      ..startTimestamp = Int64(DateTime(2020, 1, 1).millisecondsSinceEpoch)
-      ..endTimestamp = Int64(DateTime(2020, 1, 1).millisecondsSinceEpoch);
+      ..startTimestamp = Int64(dateTime(2020, 1, 1).millisecondsSinceEpoch)
+      ..endTimestamp = Int64(dateTime(2020, 1, 1).millisecondsSinceEpoch);
 
     await tester.pumpWidget(Testable(
       (_) => SaveTripPage.edit(trip),
@@ -447,13 +464,11 @@ void main() {
     var newTrip = result.captured.first as Trip;
     expect(newTrip, isNotNull);
 
-    var startTimestamp =
-        DateTime.fromMillisecondsSinceEpoch(newTrip.startTimestamp.toInt());
+    var startTimestamp = dateTimestamp(newTrip.startTimestamp.toInt());
     expect(startTimestamp.hour, 0);
     expect(startTimestamp.minute, 0);
 
-    var endTimestamp =
-        DateTime.fromMillisecondsSinceEpoch(newTrip.endTimestamp.toInt());
+    var endTimestamp = dateTimestamp(newTrip.endTimestamp.toInt());
     expect(endTimestamp.hour, 0);
     expect(endTimestamp.minute, 0);
   });
@@ -470,7 +485,7 @@ void main() {
     var catches = [
       Catch(
         id: randomId(),
-        timestamp: Int64(DateTime(2020, 1, 1, 5).millisecondsSinceEpoch),
+        timestamp: Int64(dateTime(2020, 1, 1, 5).millisecondsSinceEpoch),
         anglerId: randomId(),
         fishingSpotId: randomId(),
         speciesId: randomId(),
@@ -539,7 +554,7 @@ void main() {
     var catches = [
       Catch(
         id: randomId(),
-        timestamp: Int64(DateTime(2020, 1, 1, 5).millisecondsSinceEpoch),
+        timestamp: Int64(dateTime(2020, 1, 1, 5).millisecondsSinceEpoch),
         anglerId: randomId(),
         fishingSpotId: randomId(),
         speciesId: randomId(),
@@ -600,7 +615,7 @@ void main() {
     var catches = [
       Catch(
         id: randomId(),
-        timestamp: Int64(DateTime(2020, 1, 1, 5).millisecondsSinceEpoch),
+        timestamp: Int64(dateTime(2020, 1, 1, 5).millisecondsSinceEpoch),
         anglerId: randomId(),
         fishingSpotId: randomId(),
         speciesId: randomId(),
@@ -786,7 +801,7 @@ void main() {
     var catches = [
       Catch(
         id: randomId(),
-        timestamp: Int64(DateTime(2020, 1, 1, 5).millisecondsSinceEpoch),
+        timestamp: Int64(dateTime(2020, 1, 1, 5).millisecondsSinceEpoch),
         imageNames: [
           "flutter_logo.png",
           "anglers_log_logo.png",
@@ -844,7 +859,7 @@ void main() {
     var catches = [
       Catch(
         id: randomId(),
-        timestamp: Int64(DateTime(2020, 1, 1, 5).millisecondsSinceEpoch),
+        timestamp: Int64(dateTime(2020, 1, 1, 5).millisecondsSinceEpoch),
         imageNames: [
           "flutter_logo.png",
           "anglers_log_logo.png",
@@ -887,24 +902,23 @@ void main() {
   });
 
   testWidgets("Time is updated when catches are picked", (tester) async {
-    when(appManager.timeManager.currentDateTime)
-        .thenReturn(DateTime.fromMillisecondsSinceEpoch(
-      150000000000, // Thursday, October 3, 1974 2:40:00 AM GMT
-      isUtc: true,
-    ));
+    appManager.stubCurrentTime(dateTime(2020, 1, 1, 3, 30));
 
     var catches = [
       Catch(
         id: randomId(),
-        timestamp: Int64(DateTime(2020, 1, 1, 5).millisecondsSinceEpoch),
+        timestamp: Int64(dateTime(2020, 1, 1, 5).millisecondsSinceEpoch),
+        timeZone: defaultTimeZone,
       ),
       Catch(
         id: randomId(),
-        timestamp: Int64(DateTime(2020, 2, 1, 8).millisecondsSinceEpoch),
+        timestamp: Int64(dateTime(2020, 2, 1, 8).millisecondsSinceEpoch),
+        timeZone: defaultTimeZone,
       ),
       Catch(
         id: randomId(),
-        timestamp: Int64(DateTime(2020, 3, 1, 15).millisecondsSinceEpoch),
+        timestamp: Int64(dateTime(2020, 3, 1, 15).millisecondsSinceEpoch),
+        timeZone: defaultTimeZone,
       ),
     ];
     when(appManager.catchManager.catches(
@@ -921,8 +935,8 @@ void main() {
       appManager: appManager,
     ));
 
-    expect(find.text("Oct 3, 1974"), findsNWidgets(2));
-    expect(find.text("2:40 AM"), findsNWidgets(2));
+    expect(find.text("Jan 1, 2020"), findsNWidgets(2));
+    expect(find.text("3:30 AM"), findsNWidgets(2));
 
     await ensureVisibleAndSettle(tester, find.text("No catches"));
     await tapAndSettle(tester, find.text("No catches"));
@@ -936,24 +950,20 @@ void main() {
   });
 
   testWidgets("Time is not updated if catches picked is empty", (tester) async {
-    when(appManager.timeManager.currentDateTime)
-        .thenReturn(DateTime.fromMillisecondsSinceEpoch(
-      150000000000, // Thursday, October 3, 1974 2:40:00 AM GMT
-      isUtc: true,
-    ));
+    appManager.stubCurrentTime(dateTime(2020, 1, 1, 3, 30));
 
     var catches = [
       Catch(
         id: randomId(),
-        timestamp: Int64(DateTime(2020, 1, 1, 5).millisecondsSinceEpoch),
+        timestamp: Int64(dateTime(2020, 1, 1, 5).millisecondsSinceEpoch),
       ),
       Catch(
         id: randomId(),
-        timestamp: Int64(DateTime(2020, 2, 1, 8).millisecondsSinceEpoch),
+        timestamp: Int64(dateTime(2020, 2, 1, 8).millisecondsSinceEpoch),
       ),
       Catch(
         id: randomId(),
-        timestamp: Int64(DateTime(2020, 3, 1, 15).millisecondsSinceEpoch),
+        timestamp: Int64(dateTime(2020, 3, 1, 15).millisecondsSinceEpoch),
       ),
     ];
     when(appManager.catchManager.catches(
@@ -968,37 +978,33 @@ void main() {
       appManager: appManager,
     ));
 
-    expect(find.text("Oct 3, 1974"), findsNWidgets(2));
-    expect(find.text("2:40 AM"), findsNWidgets(2));
+    expect(find.text("Jan 1, 2020"), findsNWidgets(2));
+    expect(find.text("3:30 AM"), findsNWidgets(2));
 
     await ensureVisibleAndSettle(tester, find.text("No catches"));
     await tapAndSettle(tester, find.text("No catches"));
     await tapAndSettle(tester, find.byType(BackButton));
 
-    expect(find.text("Oct 3, 1974"), findsNWidgets(2));
-    expect(find.text("2:40 AM"), findsNWidgets(2));
+    expect(find.text("Jan 1, 2020"), findsNWidgets(2));
+    expect(find.text("3:30 AM"), findsNWidgets(2));
   });
 
   testWidgets("Only date is updated when catches picked and all-day is checked",
       (tester) async {
-    when(appManager.timeManager.currentDateTime)
-        .thenReturn(DateTime.fromMillisecondsSinceEpoch(
-      150000000000, // Thursday, October 3, 1974 2:40:00 AM GMT
-      isUtc: true,
-    ));
+    appManager.stubCurrentTime(dateTime(2020, 1, 1, 3, 30));
 
     var catches = [
       Catch(
         id: randomId(),
-        timestamp: Int64(DateTime(2020, 1, 1, 5).millisecondsSinceEpoch),
+        timestamp: Int64(dateTime(2020, 1, 1, 5).millisecondsSinceEpoch),
       ),
       Catch(
         id: randomId(),
-        timestamp: Int64(DateTime(2020, 2, 1, 8).millisecondsSinceEpoch),
+        timestamp: Int64(dateTime(2020, 2, 1, 8).millisecondsSinceEpoch),
       ),
       Catch(
         id: randomId(),
-        timestamp: Int64(DateTime(2020, 3, 1, 15).millisecondsSinceEpoch),
+        timestamp: Int64(dateTime(2020, 3, 1, 15).millisecondsSinceEpoch),
       ),
     ];
     when(appManager.catchManager.catches(
@@ -1015,8 +1021,8 @@ void main() {
       appManager: appManager,
     ));
 
-    expect(find.text("Oct 3, 1974"), findsNWidgets(2));
-    expect(find.text("2:40 AM"), findsNWidgets(2));
+    expect(find.text("Jan 1, 2020"), findsNWidgets(2));
+    expect(find.text("3:30 AM"), findsNWidgets(2));
 
     await tapAndSettle(tester, find.byType(Checkbox).first);
     await tapAndSettle(tester, find.byType(Checkbox).last);
