@@ -693,7 +693,6 @@ class LegacyImporter {
       }
 
       var now = _timeManager.currentDateTime;
-      trip.timeZone = now.locationName;
 
       int? startMs = map[_keyStartDate];
       trip.startTimestamp = Int64(startMs ?? now.millisecondsSinceEpoch);
@@ -755,7 +754,7 @@ class LegacyImporter {
       }
 
       // Set default properties not tracked in the legacy app.
-      trip.timeZone = _timeManager.currentTimeZone;
+      trip.timeZone = now.locationName;
 
       await _tripManager.addOrUpdate(trip);
     }

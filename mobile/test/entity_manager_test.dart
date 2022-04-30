@@ -7,6 +7,7 @@ import 'package:mobile/app_manager.dart';
 import 'package:mobile/entity_manager.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
+import 'package:mobile/utils/string_utils.dart';
 import 'package:mockito/mockito.dart';
 import 'package:protobuf/protobuf.dart';
 import 'package:mobile/widgets/widget.dart';
@@ -38,6 +39,14 @@ class TestEntityManager extends EntityManager<Species> {
 
   @override
   String get tableName => "species";
+
+  @override
+  Future<int> updateAll({
+    required bool Function(Species) where,
+    required Future<void> Function(Species entity) apply,
+  }) {
+    return super.updateAll(where: where, apply: apply);
+  }
 
   @override
   int numberOf<T extends GeneratedMessage>(
@@ -160,6 +169,36 @@ void main() {
     expect(entityManager.entity(speciesId1)!.name, "Catfish");
     verifyNever(listener.onAdd);
     verifyNever(listener.onUpdate);
+  });
+
+  test("updateAll", () async {
+    await entityManager.addOrUpdate(Species(
+      id: randomId(),
+      name: "Bluegill",
+    ));
+    await entityManager.addOrUpdate(Species(
+      id: randomId(),
+      name: "Largemouth Bass",
+    ));
+    await entityManager.addOrUpdate(Species(
+      id: randomId(),
+      name: "Smallmouth Bass",
+    ));
+    expect(entityManager.entityCount, 3);
+
+    var numberUpdated = await entityManager.updateAll(
+      where: (species) => species.name.contains("Bass"),
+      apply: (species) async => await entityManager.addOrUpdate(
+        species..name = species.name += " 2",
+      ),
+    );
+    expect(numberUpdated, 2);
+
+    var species = List.of(entityManager.list())..sort(
+        (lhs, rhs) => ignoreCaseAlphabeticalComparator(lhs.name, rhs.name));
+    expect(species[0].name, "Bluegill");
+    expect(species[1].name, "Largemouth Bass 2");
+    expect(species[2].name, "Smallmouth Bass 2");
   });
 
   test("Delete locally", () async {

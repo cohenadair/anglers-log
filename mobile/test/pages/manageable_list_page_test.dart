@@ -1612,4 +1612,40 @@ void main() {
     await tapAndSettle(tester, find.byIcon(Icons.add));
     expect(invoked, isTrue);
   });
+
+  testWidgets("Delete functionality disabled", (tester) async {
+    await pumpContext(
+      tester,
+      (_) => ManageableListPage<String>(
+        itemManager: ManageableListPageItemManager<String>(
+          loadItems: loadItems,
+        ),
+        itemBuilder: defaultItemBuilder,
+      ),
+      appManager: appManager,
+    );
+
+    var listItem = findFirst<ManageableListItem>(tester);
+    expect(listItem.deleteMessageBuilder, isNull);
+    expect(listItem.onConfirmDelete, isNull);
+  });
+
+  testWidgets("Delete functionality enabled", (tester) async {
+    await pumpContext(
+      tester,
+      (_) => ManageableListPage<String>(
+        itemManager: ManageableListPageItemManager<String>(
+          loadItems: loadItems,
+          deleteWidget: deleteWidget,
+          deleteItem: deleteItem,
+        ),
+        itemBuilder: defaultItemBuilder,
+      ),
+      appManager: appManager,
+    );
+
+    var listItem = findFirst<ManageableListItem>(tester);
+    expect(listItem.deleteMessageBuilder, isNotNull);
+    expect(listItem.onConfirmDelete, isNotNull);
+  });
 }

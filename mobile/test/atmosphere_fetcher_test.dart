@@ -7,7 +7,6 @@ import 'package:mobile/model/gen/anglerslog.pb.dart';
 import 'package:mobile/utils/atmosphere_utils.dart';
 import 'package:mockito/mockito.dart';
 import 'package:test/test.dart';
-import 'package:timezone/timezone.dart';
 
 import 'mocks/mocks.mocks.dart';
 import 'mocks/stubbed_app_manager.dart';
@@ -222,6 +221,7 @@ void main() {
     expect(atmosphere.sunsetTimestamp.toInt(), 1625014586000); // ms
     expect(atmosphere.moonPhase, MoonPhase.waning_gibbous);
     expect(atmosphere.skyConditions, [SkyCondition.cloudy]);
+    expect(atmosphere.timeZone, defaultTimeZone);
   });
 
   test("API value is converted to user preference units", () async {
@@ -263,5 +263,6 @@ void main() {
     expect(atmosphere.sunsetTimestamp.toInt(), 1625014586000); // ms
     expect(atmosphere.moonPhase, MoonPhase.waning_gibbous);
     expect(atmosphere.skyConditions, [SkyCondition.cloudy]);
+    expect(atmosphere.timeZone, defaultTimeZone);
   });
 }

@@ -49,6 +49,7 @@ import 'package:mobile/wrappers/google_sign_in_wrapper.dart';
 import 'package:mobile/wrappers/http_wrapper.dart';
 import 'package:mobile/wrappers/image_compress_wrapper.dart';
 import 'package:mobile/wrappers/image_picker_wrapper.dart';
+import 'package:mobile/wrappers/native_time_zone_wrapper.dart';
 import 'package:mobile/wrappers/purchases_wrapper.dart';
 import 'package:mobile/wrappers/io_wrapper.dart';
 import 'package:mobile/wrappers/package_info_wrapper.dart';
@@ -106,6 +107,7 @@ Trip_CatchesPerEntity newInputItemShim(dynamic pickerItem) =>
 @GenerateMocks([SpeciesManager])
 @GenerateMocks([SubscriptionManager])
 @GenerateMocks([TimeManager])
+@GenerateMocks([TimeZoneLocation])
 @GenerateMocks([TripManager])
 @GenerateMocks([UserPreferenceManager])
 @GenerateMocks([WaterClarityManager])
@@ -116,6 +118,7 @@ Trip_CatchesPerEntity newInputItemShim(dynamic pickerItem) =>
 @GenerateMocks([HttpWrapper])
 @GenerateMocks([ImageCompressWrapper])
 @GenerateMocks([IoWrapper])
+@GenerateMocks([NativeTimeZoneWrapper])
 @GenerateMocks([map.MapboxMapController])
 @GenerateMocks([PackageInfoWrapper])
 @GenerateMocks([PathProviderWrapper])

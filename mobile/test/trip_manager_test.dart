@@ -387,4 +387,67 @@ void main() {
     expect(tripManager.isCatchIdInTrip(catchId0), isTrue);
     expect(tripManager.isCatchIdInTrip(randomId()), isFalse);
   });
+
+  test("initialize updates trip time zones", () async {
+    var tripId1 = randomId();
+    var tripId2 = randomId();
+    var tripId3 = randomId();
+    when(appManager.localDatabaseManager.fetchAll(any)).thenAnswer((_) {
+      return Future.value([
+        {
+          "id": tripId1.uint8List,
+          "bytes": Trip(
+            id: tripId1,
+          ).writeToBuffer(),
+        },
+        {
+          "id": tripId2.uint8List,
+          "bytes": Trip(
+            id: tripId2,
+            timeZone: defaultTimeZone,
+          ).writeToBuffer(),
+        },
+        {
+          "id": tripId3.uint8List,
+          "bytes": Trip(
+            id: tripId3,
+          ).writeToBuffer(),
+        },
+      ]);
+    });
+    when(appManager.timeManager.currentTimeZone).thenReturn("America/Chicago");
+
+    await tripManager.initialize();
+
+    var reports = tripManager.list();
+    expect(reports.length, 3);
+    expect(reports[0].timeZone, "America/Chicago");
+    expect(reports[1].timeZone, "America/New_York");
+    expect(reports[2].timeZone, "America/Chicago");
+
+    verify(appManager.localDatabaseManager.insertOrReplace(any, any, any))
+        .called(2);
+  });
+
+  test("addOrUpdate, setImages=false", () async {
+    await tripManager.addOrUpdate(
+      Trip()..id = randomId(),
+      setImages: false,
+    );
+    verifyNever(
+        appManager.imageManager.save(any, compress: anyNamed("compress")));
+    verify(appManager.localDatabaseManager.insertOrReplace(any, any, any))
+        .called(1);
+  });
+
+  test("addOrUpdate, setImages=true", () async {
+    await tripManager.addOrUpdate(
+      Trip()..id = randomId(),
+      setImages: true,
+    );
+    verify(appManager.imageManager.save(any, compress: anyNamed("compress")))
+        .called(1);
+    verify(appManager.localDatabaseManager.insertOrReplace(any, any, any))
+        .called(1);
+  });
 }

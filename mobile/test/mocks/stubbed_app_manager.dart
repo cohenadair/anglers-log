@@ -44,6 +44,7 @@ class StubbedAppManager {
   MockImageCompressWrapper imageCompressWrapper = MockImageCompressWrapper();
   MockImagePickerWrapper imagePickerWrapper = MockImagePickerWrapper();
   MockIoWrapper ioWrapper = MockIoWrapper();
+  MockNativeTimeZoneWrapper timeZoneWrapper = MockNativeTimeZoneWrapper();
   MockPackageInfoWrapper packageInfoWrapper = MockPackageInfoWrapper();
   MockPathProviderWrapper pathProviderWrapper = MockPathProviderWrapper();
   MockPermissionHandlerWrapper permissionHandlerWrapper =
@@ -86,6 +87,7 @@ class StubbedAppManager {
     when(app.imageCompressWrapper).thenReturn(imageCompressWrapper);
     when(app.imagePickerWrapper).thenReturn(imagePickerWrapper);
     when(app.ioWrapper).thenReturn(ioWrapper);
+    when(app.nativeTimeZoneWrapper).thenReturn(timeZoneWrapper);
     when(app.packageInfoWrapper).thenReturn(packageInfoWrapper);
     when(app.pathProviderWrapper).thenReturn(pathProviderWrapper);
     when(app.permissionHandlerWrapper).thenReturn(permissionHandlerWrapper);

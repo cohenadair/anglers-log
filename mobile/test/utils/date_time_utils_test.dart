@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mobile/time_manager.dart';
 import 'package:mobile/utils/date_time_utils.dart';
 import 'package:mockito/mockito.dart';
 import 'package:timezone/data/latest.dart';
@@ -12,6 +13,23 @@ import '../test_utils.dart';
 void main() {
   setUp(() {
     initializeTimeZones();
+  });
+
+  test("DisplayDuration formatHoursMinutes", () {
+    expect(
+      DisplayDuration(const Duration(
+        milliseconds: 5 * Duration.millisecondsPerHour +
+            5 * Duration.millisecondsPerMinute,
+      )).formatHoursMinutes(),
+      "05:05",
+    );
+    expect(
+      DisplayDuration(const Duration(
+        milliseconds: 15 * Duration.millisecondsPerHour +
+            15 * Duration.millisecondsPerMinute,
+      )).formatHoursMinutes(),
+      "15:15",
+    );
   });
 
   test("isLater", () {
@@ -171,6 +189,11 @@ void main() {
   });
 
   testWidgets("combine", (tester) async {
+    initializeTimeZones();
+    var appManager = StubbedAppManager();
+    when(appManager.timeManager.currentLocation)
+        .thenReturn(TimeZoneLocation.fromName("America/New_York"));
+
     var context = await buildContext(tester);
     expect(combine(context, null, null), isNull);
     expect(
@@ -182,11 +205,26 @@ void main() {
           const TimeOfDay(hour: 16, minute: 45)),
       dateTime(2020, 10, 26, 16, 45, 20, 1000),
     );
+
+    var actual = combine(context, null, const TimeOfDay(hour: 16, minute: 45));
+    var expected = dateTime(0, 1, 1, 16, 45);
+    expect(actual, expected);
+    expect(actual!.locationName, "America/New_York");
   });
 
   test("dateTimeToDayAccuracy", () {
     expect(dateTimeToDayAccuracy(dateTime(2020, 10, 26, 15, 30, 20, 1000)),
         dateTime(2020, 10, 26, 0, 0, 0, 0));
+
+    initializeTimeZones();
+
+    expect(
+      dateTimeToDayAccuracy(
+        dateTime(2020, 10, 26, 15, 30, 20, 1000),
+        "America/Chicago",
+      ),
+      TZDateTime(getLocation("America/Chicago"), 2020, 10, 26, 0, 0, 0, 0),
+    );
   });
 
   test("getStartOfWeek", () {

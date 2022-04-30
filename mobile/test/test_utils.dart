@@ -176,13 +176,9 @@ TZDateTime now() {
   return TZDateTime.now(getLocation(defaultTimeZone));
 }
 
-TZDateTime dateTimestamp(int timestamp, {bool isUtc = false}) {
-  if (isUtc) {
-    return TZDateTimes.utc(ms: timestamp);
-  } else {
-    return TZDateTime.fromMillisecondsSinceEpoch(
-        getLocation(defaultTimeZone), timestamp);
-  }
+TZDateTime dateTimestamp(int timestamp) {
+  return TZDateTime.fromMillisecondsSinceEpoch(
+      getLocation(defaultTimeZone), timestamp);
 }
 
 MockAssetEntity createMockAssetEntity({

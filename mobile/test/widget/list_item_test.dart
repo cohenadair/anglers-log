@@ -183,6 +183,35 @@ void main() {
       expect(confirmed, isTrue);
     });
 
+    testWidgets("Delete disabled when message builder is null", (tester) async {
+      await pumpContext(
+        tester,
+        (_) => ManageableListItem(
+          child: const Text("Child"),
+          onTapDeleteButton: null,
+          deleteMessageBuilder: null,
+          onConfirmDelete: () => {},
+          editing: true,
+        ),
+      );
+      expect(find.byIcon(Icons.delete), findsNothing);
+    });
+
+    testWidgets("Delete disabled when delete confirmation is null",
+        (tester) async {
+      await pumpContext(
+        tester,
+        (_) => ManageableListItem(
+          child: const Text("Child"),
+          onTapDeleteButton: null,
+          deleteMessageBuilder: (_) => const Text("A delete message."),
+          onConfirmDelete: null,
+          editing: true,
+        ),
+      );
+      expect(find.byIcon(Icons.delete), findsNothing);
+    });
+
     testWidgets("Custom onTapDeleteButton", (tester) async {
       var tapped = false;
       await tester.pumpWidget(

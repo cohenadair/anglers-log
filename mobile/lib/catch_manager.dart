@@ -70,7 +70,7 @@ class CatchManager extends EntityManager<Catch> {
     // TODO: Remove (#683)
     var numberOfChanges = await updateAll(
       where: (cat) => !cat.hasTimeZone(),
-      apply: (cat) => addOrUpdate(
+      apply: (cat) async => await addOrUpdate(
         cat..timeZone = _timeManager.currentTimeZone,
         setImages: false,
         notify: false,

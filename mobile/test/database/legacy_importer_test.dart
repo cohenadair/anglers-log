@@ -447,6 +447,7 @@ void main() {
 
     expect(catches[0].timestamp.toInt(),
         dateTime(2019, 8, 13, 0, 44).millisecondsSinceEpoch);
+    expect(catches[0].hasTimeZone(), isTrue);
     expect(catches[0].hasFishingSpotId(), isTrue);
     expect(speciesManager.entity(catches[0].speciesId)!.name, "Carp - Common");
     expect(catches[0].baits, isNotEmpty);
@@ -479,12 +480,17 @@ void main() {
 
     expect(catches[1].timestamp.toInt(),
         dateTime(2019, 8, 12, 12, 44).millisecondsSinceEpoch);
+    expect(catches[1].hasTimeZone(), isTrue);
     expect(catches[1].hasWasCatchAndRelease(), isFalse);
+
     expect(catches[2].timestamp.toInt(),
         dateTime(2019, 8, 11, 8, 44).millisecondsSinceEpoch);
+    expect(catches[2].hasTimeZone(), isTrue);
     expect(catches[2].hasWasCatchAndRelease(), isFalse);
+
     expect(catches[3].timestamp.toInt(),
         dateTime(2019, 8, 10, 20, 44).millisecondsSinceEpoch);
+    expect(catches[3].hasTimeZone(), isTrue);
     expect(catches[3].wasCatchAndRelease, isTrue);
     expect(catches[3].hasWaterClarityId(), isFalse);
 
@@ -613,6 +619,7 @@ void main() {
 
     expect(catches[0].timestamp.toInt(),
         dateTime(2017, 10, 11, 17, 19, 19, 420).millisecondsSinceEpoch);
+    expect(catches[0].hasTimeZone(), isTrue);
     expect(catches[0].hasFishingSpotId(), isTrue);
     expect(
         speciesManager.entity(catches[0].speciesId)!.name, "Trout - Rainbow");
@@ -887,12 +894,13 @@ void main() {
       when(ioWrapper.file(any)).thenReturn(MockFile());
 
       var importer = LegacyImporter.migrate(
-          appManager.app,
-          LegacyJsonResult(
-            databasePath: "test/database",
-            imagesPath: "test/images",
-            json: {},
-          ));
+        appManager.app,
+        LegacyJsonResult(
+          databasePath: "test/database",
+          imagesPath: "test/images",
+          json: {},
+        ),
+      );
       await importer.start().catchError(expectAsync1((dynamic error) {
         expect(error, equals(LegacyImporterError.missingJournal));
         verify(ioWrapper.file(any)).called(2);
@@ -1023,6 +1031,7 @@ void main() {
       expect(trips[0].id.uuid, "b780e09b-4f49-4234-8b72-eb6f5af7950c");
       expect(trips[0].startTimestamp.toInt(), 1634994545263);
       expect(trips[0].endTimestamp.toInt(), 1634994545263);
+      expect(trips[0].hasTimeZone(), isTrue);
       expect(trips[0].notes, "Test notes");
       expect(trips[0].catchIds, isEmpty);
       expect(trips[0].bodyOfWaterIds, isEmpty);
@@ -1035,6 +1044,7 @@ void main() {
       expect(trips[1].id.uuid, "2745b7bc-6dc9-4374-97f6-c1a658e58cbc");
       expect(trips[1].startTimestamp.toInt(), 1634994539341);
       expect(trips[1].endTimestamp.toInt(), 1634994539341);
+      expect(trips[1].hasTimeZone(), isTrue);
       expect(trips[1].hasNotes(), isFalse);
       expect(trips[1].catchIds, isEmpty);
       expect(trips[1].bodyOfWaterIds, isEmpty);
@@ -1047,7 +1057,8 @@ void main() {
       expect(trips[2].id.uuid, "9f946bb9-9cf6-4f92-ac13-459f7258a481");
       expect(trips[2].startTimestamp.toInt(), 1634994531574);
       expect(trips[2].endTimestamp.toInt(), 1634994531574);
-      expect(trips[1].hasNotes(), isFalse);
+      expect(trips[2].hasTimeZone(), isTrue);
+      expect(trips[2].hasNotes(), isFalse);
       expect(trips[2].catchIds, isEmpty);
       expect(trips[2].bodyOfWaterIds.length, 1);
       expect(trips[2].catchesPerFishingSpot, isEmpty);
@@ -1059,6 +1070,7 @@ void main() {
       expect(trips[3].id.uuid, "9202107d-f70d-4eb6-9e39-cf92a06fb9e8");
       expect(trips[3].startTimestamp.toInt(), 1634994521794);
       expect(trips[3].endTimestamp.toInt(), 1634994521794);
+      expect(trips[3].hasTimeZone(), isTrue);
       expect(trips[3].hasNotes(), isFalse);
       expect(trips[3].catchIds.length, 1);
       expect(trips[3].bodyOfWaterIds, isEmpty);
@@ -1071,6 +1083,7 @@ void main() {
       expect(trips[4].id.uuid, "c2b35154-4cd1-46a4-a8ca-acf8ad61dcaa");
       expect(trips[4].startTimestamp.toInt(), 1634994510186);
       expect(trips[4].endTimestamp.toInt(), 1634994510186);
+      expect(trips[4].hasTimeZone(), isTrue);
       expect(trips[4].hasNotes(), isFalse);
       expect(trips[4].catchIds, isEmpty);
       expect(trips[4].bodyOfWaterIds, isEmpty);
@@ -1083,6 +1096,7 @@ void main() {
       expect(trips[5].id.uuid, "6d63c1f3-e529-4f70-ad74-4246af54d4a8");
       expect(trips[5].startTimestamp.toInt(), 1618233553796);
       expect(trips[5].endTimestamp.toInt(), 1618492747306);
+      expect(trips[5].hasTimeZone(), isTrue);
       expect(trips[5].notes, "A test note");
       expect(trips[5].catchIds.length, 3);
       expect(trips[5].bodyOfWaterIds.length, 2);

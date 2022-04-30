@@ -454,16 +454,6 @@ bool isFrequencyTimerReady({
 }
 
 extension TZDateTimes on TZDateTime {
-  /// Returns the current UTC time if [ms] is null, otherwise returns UTC time
-  /// at [ms] since Epoch.
-  static TZDateTime utc({int? ms}) {
-    if (ms == null) {
-      return TZDateTime.now(UTC);
-    } else {
-      return TZDateTime.fromMillisecondsSinceEpoch(UTC, ms);
-    }
-  }
-
   String get locationName => location.name;
 
   bool get isMidnight => hour == 0 && minute == 0;

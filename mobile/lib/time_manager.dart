@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_native_timezone/flutter_native_timezone.dart';
+import 'package:mobile/wrappers/native_time_zone_wrapper.dart';
 import 'package:provider/provider.dart';
 import 'package:quiver/strings.dart';
 import 'package:timezone/data/latest.dart';
@@ -15,6 +15,12 @@ class TimeManager {
       Provider.of<AppManager>(context, listen: false).timeManager;
 
   final _log = const Log("TimeManager");
+  final AppManager _appManager;
+
+  TimeManager(this._appManager);
+
+  NativeTimeZoneWrapper get _timeZoneWrapper =>
+      _appManager.nativeTimeZoneWrapper;
 
   TZDateTime get currentDateTime => TZDateTime.now(currentLocation.value);
 
@@ -33,16 +39,22 @@ class TimeManager {
     initializeTimeZones();
 
     // Filter out all time zones that aren't available on the current device.
-    var nativeTimeZones = await FlutterNativeTimezone.getAvailableTimezones();
+    var nativeTimeZones = await _timeZoneWrapper.getAvailableTimeZones();
     _availableLocations = timeZoneDatabase.locations.values
         .where((loc) => nativeTimeZones.contains(loc.name))
         .map((loc) => TimeZoneLocation(loc))
-        .toList()
-      ..sort((lhs, rhs) =>
-          lhs.currentTimeZone.offset.compareTo(rhs.currentTimeZone.offset));
+        .toList();
+    _availableLocations.sort((lhs, rhs) {
+      var result =
+          lhs.currentTimeZone.offset.compareTo(rhs.currentTimeZone.offset);
+      if (result == 0) {
+        return lhs.name.compareTo(rhs.name);
+      }
+      return result;
+    });
 
-    _currentLocation = TimeZoneLocation.fromName(
-        await FlutterNativeTimezone.getLocalTimezone());
+    _currentLocation =
+        TimeZoneLocation.fromName(await _timeZoneWrapper.getLocalTimeZone());
 
     _log.d("Available time zone locations: ${_availableLocations.length}");
   }
@@ -68,7 +80,7 @@ class TimeManager {
 
   /// Returns the current [TZDateTime] at the given time zone, or the
   /// current time zone if [timeZone] is invalid.
-  TZDateTime now(String? timeZone) {
+  TZDateTime now([String? timeZone]) {
     if (isEmpty(timeZone)) {
       return currentDateTime;
     }

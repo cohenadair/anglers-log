@@ -14,6 +14,7 @@ import 'package:mobile/widgets/checkbox_input.dart';
 import 'package:mobile/widgets/text.dart';
 import 'package:mockito/mockito.dart';
 
+import '../mocks/mocks.mocks.dart';
 import '../mocks/stubbed_app_manager.dart';
 import '../test_utils.dart';
 
@@ -256,6 +257,14 @@ void main() {
         .thenReturn(MeasurementSystem.metric);
 
     appManager.stubCurrentTime(dateTime(2021, 2, 1, 10, 30));
+
+    var timeZoneLocation = MockTimeZoneLocation();
+    when(timeZoneLocation.displayNameUtc).thenReturn("America/New York");
+    when(timeZoneLocation.name).thenReturn("America/New_York");
+    when(appManager.timeManager.filteredLocations(
+      any,
+      exclude: anyNamed("exclude"),
+    )).thenReturn([timeZoneLocation]);
   });
 
   testWidgets("Editing shows old values", (tester) async {
@@ -277,6 +286,7 @@ void main() {
     expect(find.text("9:00 AM"), findsOneWidget);
     expect(find.text("Jan 3, 2020"), findsOneWidget);
     expect(find.text("5:00 PM"), findsOneWidget);
+    expect(find.text("America/New York"), findsOneWidget);
     expect(find.text("Test Trip"), findsOneWidget);
     expect(find.text("Test notes for a test trip."), findsOneWidget);
     expect(find.text("Cloudy"), findsOneWidget);
@@ -395,6 +405,7 @@ void main() {
     expect(newTrip.hasId(), isTrue);
     expect(newTrip.hasStartTimestamp(), isTrue);
     expect(newTrip.hasEndTimestamp(), isTrue);
+    expect(newTrip.hasTimeZone(), isTrue);
     expect(newTrip.catchIds, isEmpty);
     expect(newTrip.bodyOfWaterIds, isEmpty);
     expect(newTrip.catchesPerSpecies, isEmpty);
@@ -1028,9 +1039,5 @@ void main() {
     expect(find.text("5:00 AM"), findsNothing);
     expect(find.text("3:00 PM"), findsNothing);
     expect(find.text("12:00 AM"), findsNWidgets(2));
-  });
-
-  testWidgets("Time zone set to current if not tracking", (tester) async {
-    // TODO
   });
 }

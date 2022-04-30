@@ -28,7 +28,9 @@ import 'package:mobile/widgets/search_bar.dart';
 import 'package:mobile/widgets/text_input.dart';
 import 'package:mockito/mockito.dart';
 import 'package:path/path.dart';
+import 'package:timezone/timezone.dart';
 
+import '../mocks/mocks.mocks.dart';
 import '../mocks/stubbed_app_manager.dart';
 import '../mocks/stubbed_map_controller.dart';
 import '../test_utils.dart';
@@ -127,6 +129,14 @@ void main() {
         .thenReturn(const CameraPosition(target: LatLng(0, 0)));
 
     appManager.stubCurrentTime(dateTime(2020, 2, 1, 10, 30));
+
+    var timeZoneLocation = MockTimeZoneLocation();
+    when(timeZoneLocation.displayNameUtc).thenReturn("America/New York");
+    when(timeZoneLocation.name).thenReturn("America/New_York");
+    when(appManager.timeManager.filteredLocations(
+      any,
+      exclude: anyNamed("exclude"),
+    )).thenReturn([timeZoneLocation]);
   });
 
   group("From journey", () {
@@ -146,6 +156,7 @@ void main() {
 
       expect(find.text("Jan 1, 2020"), findsOneWidget);
       expect(find.text("3:30 PM"), findsOneWidget);
+      expect(find.text("America/New York"), findsOneWidget);
     });
 
     testWidgets("Images without date sets default date", (tester) async {
@@ -163,6 +174,7 @@ void main() {
 
       expect(find.text("Feb 1, 2020"), findsOneWidget);
       expect(find.text("10:30 AM"), findsOneWidget);
+      expect(find.text("America/New York"), findsOneWidget);
     });
 
     testWidgets("All journey fields set correctly", (tester) async {
@@ -201,6 +213,7 @@ void main() {
 
       expect(find.text("Jan 1, 2020"), findsOneWidget);
       expect(find.text("3:30 PM"), findsOneWidget);
+      expect(find.text("America/New York"), findsOneWidget);
       expect(find.text("Winter"), findsOneWidget);
       expect(find.text("No baits"), findsOneWidget);
 
@@ -294,7 +307,10 @@ void main() {
 
       var cat = Catch()
         ..id = randomId()
-        ..timestamp = Int64(dateTime(2020, 1, 1, 15, 30).millisecondsSinceEpoch)
+        ..timestamp = Int64(
+            TZDateTime(getLocation("America/Chicago"), 2020, 1, 1, 15, 30)
+                .millisecondsSinceEpoch)
+        ..timeZone = "America/Chicago"
         ..baits.add(BaitAttachment(baitId: bait.id))
         ..fishingSpotId = fishingSpot.id
         ..speciesId = species.id
@@ -392,6 +408,7 @@ void main() {
 
       expect(find.text("Jan 1, 2020"), findsOneWidget);
       expect(find.text("3:30 PM"), findsOneWidget);
+      expect(find.text("America/Chicago"), findsOneWidget);
       expect(find.text("Dawn"), findsOneWidget);
       expect(find.text("Summer"), findsOneWidget);
       expect(find.text("Casting"), findsOneWidget);
@@ -446,6 +463,7 @@ void main() {
 
       expect(find.text("Jan 1, 2020"), findsOneWidget);
       expect(find.text("3:30 PM"), findsOneWidget);
+      expect(find.text("America/New York"), findsOneWidget);
       expect(find.text("Species"), findsOneWidget);
       expect(find.text("Steelhead"), findsOneWidget);
       expect(find.text("No baits"), findsOneWidget);
@@ -742,6 +760,7 @@ void main() {
 
       expect(find.text("Feb 1, 2020"), findsOneWidget);
       expect(find.text("10:30 AM"), findsOneWidget);
+      expect(find.text("America/New York"), findsOneWidget);
       expect(find.text("Species"), findsOneWidget);
       expect(find.text("Steelhead"), findsOneWidget);
       expect(find.text("No baits"), findsOneWidget);
@@ -812,6 +831,7 @@ void main() {
       expect(cat, isNotNull);
       expect(cat.timestamp.toInt(),
           dateTime(2020, 2, 1, 10, 30).millisecondsSinceEpoch);
+      expect(cat.timeZone, "America/New_York");
       expect(cat.speciesId, speciesId);
       expect(cat.fishingSpotId, fishingSpotId);
       expect(cat.baits, isEmpty);
@@ -894,6 +914,10 @@ void main() {
         appManager: appManager,
       ));
 
+      // Select time zone.
+      await tapAndSettle(tester, find.text("Time Zone"));
+      await tapAndSettle(tester, find.text("America/New York"));
+
       // Select period.
       await tapAndSettle(tester, find.text("Time Of Day"));
       await tapAndSettle(tester, find.text("Afternoon"));
@@ -962,6 +986,7 @@ void main() {
       expect(cat, isNotNull);
       expect(cat.timestamp.toInt(),
           dateTime(2020, 2, 1, 10, 30).millisecondsSinceEpoch);
+      expect(cat.timeZone, "America/New_York");
       expect(cat.speciesId, speciesId);
       expect(cat.fishingSpotId, fishingSpotId);
       expect(cat.imageNames, isEmpty);
@@ -977,9 +1002,11 @@ void main() {
       expect(cat.isFavorite, isTrue);
       expect(cat.wasCatchAndRelease, isTrue);
       expect(cat.hasAtmosphere(), isTrue);
+      expect(cat.atmosphere.hasTimeZone(), isTrue);
       expect(cat.atmosphere.temperature.value, 58);
       expect(cat.hasTide(), isTrue);
       expect(cat.tide.type, TideType.outgoing);
+      expect(cat.tide.hasTimeZone(), isTrue);
     });
   });
 

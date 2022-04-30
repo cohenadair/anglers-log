@@ -212,7 +212,6 @@ bool catchFilterMatchesCatchAndRelease(
 
 bool catchFilterMatchesTimestamp(
     BuildContext context, String filter, Catch cat) {
-  print(cat.dateTimeSearchString(context));
   return cat.hasTimestamp() &&
       containsTrimmedLowerCase(cat.dateTimeSearchString(context), filter);
 }

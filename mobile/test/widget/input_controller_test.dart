@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
@@ -125,9 +126,12 @@ void main() {
     });
   });
 
-  group("TimestampInputController", () {
+  group("DateTimeInputController", () {
     testWidgets("Null input", (tester) async {
-      var controller = DateTimeInputController(await buildContext(tester));
+      var controller = DateTimeInputController(
+        await buildContext(tester),
+        value: null,
+      );
       expect(controller.date, isNull);
       expect(controller.time, isNull);
       expect(controller.isMidnight, isFalse);
@@ -140,8 +144,7 @@ void main() {
         await buildContext(tester),
         value: dateTime(2020, 1, 15, 15, 30),
       );
-      expect(controller.value,
-          dateTime(2020, 1, 15, 15, 30));
+      expect(controller.value, dateTime(2020, 1, 15, 15, 30));
     });
 
     testWidgets("Set to non-null", (tester) async {
@@ -152,37 +155,55 @@ void main() {
     });
 
     testWidgets("Set to null", (tester) async {
-      var controller = DateTimeInputController(
-        await buildContext(tester),
-      );
+      var controller = DateTimeInputController(await buildContext(tester));
       controller.value = null;
       expect(controller.value, isNull);
     });
-  });
 
-  group("CurrentTimestampInputController", () {
-    testWidgets("Non-null input", (tester) async {
+    testWidgets("Set time zone with a null date", (tester) async {
+      var controller = DateTimeInputController(await buildContext(tester));
+      controller.timeZone = "America/New_York";
+      expect(controller.value, isNull);
+    });
+
+    testWidgets("Set time zone with a non-null date", (tester) async {
       var controller = DateTimeInputController(
         await buildContext(tester),
         value: dateTime(2020, 1, 15, 15, 30),
       );
-      expect(controller.value,
-          dateTime(2020, 1, 15, 15, 30));
+      expect(controller.value!.location.name, defaultTimeZone);
+      controller.timeZone = "America/Chicago";
+      expect(controller.value!.location.name, "America/Chicago");
     });
 
-    testWidgets("Set to non-null", (tester) async {
-      var controller = DateTimeInputController(await buildContext(tester));
-      var value = dateTime(2020, 1, 15, 15, 30);
-      controller.value = value;
-      expect(controller.timestamp, value.millisecondsSinceEpoch);
+    testWidgets("isMidnight returns true", (tester) async {
+      var controller = DateTimeInputController(
+        await buildContext(tester),
+        value: dateTime(2020, 1, 15, 0, 0),
+      );
+      expect(controller.isMidnight, isTrue);
     });
 
-    testWidgets("Set to null", (tester) async {
-      var controller = DateTimeInputController(await buildContext(tester));
-      controller.value = dateTime(2020, 1, 15, 15, 30);
+    testWidgets("isMidnight returns false", (tester) async {
+      var controller = DateTimeInputController(
+        await buildContext(tester),
+        value: dateTime(2020, 1, 15, 0, 30),
+      );
+      expect(controller.isMidnight, isFalse);
+    });
+  });
+
+  group("CurrentDateTimeInputController", () {
+    testWidgets("Always returns non-null values", (tester) async {
+      var appManager = StubbedAppManager();
+      when(appManager.timeManager.currentDateTime).thenReturn(now());
+      var controller = CurrentDateTimeInputController(
+        await buildContext(tester, appManager: appManager),
+      );
+      expect(controller.date, isNotNull);
+      expect(controller.time, isNotNull);
       expect(controller.value, isNotNull);
-      controller.value = null;
-      expect(controller.value, isNull);
+      expect(controller.timestamp, isNotNull);
     });
   });
 

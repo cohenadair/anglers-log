@@ -137,8 +137,6 @@ class _SaveReportPageState extends State<SaveReportPage> {
         _toDateRangeController.value = _oldReport!.toDateRange;
       }
       _timeZoneController.value = _oldReport!.timeZone;
-      _timeZoneController.value =
-          _oldReport!.hasTimeZone() ? _oldReport!.timeZone : null;
       _catchAndReleaseOnlyController.value = _oldReport!.isCatchAndReleaseOnly;
       _favoritesOnlyController.value = _oldReport!.isFavoritesOnly;
       _periodsController.value = _oldReport!.periods.toSet();
@@ -429,6 +427,9 @@ class _SaveReportPageState extends State<SaveReportPage> {
   }
 
   Widget _buildTimeZone() {
+    if (hideCatchField(catchFieldIdTimeZone)) {
+      return const Empty();
+    }
     return TimeZoneInput(controller: _timeZoneController);
   }
 

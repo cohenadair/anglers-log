@@ -76,6 +76,74 @@ void main() {
     catchManager = CatchManager(appManager.app);
   });
 
+  test("initialize updates catch time zones", () async {
+    var catchId1 = randomId();
+    var catchId2 = randomId();
+    var catchId3 = randomId();
+    when(appManager.localDatabaseManager.fetchAll(any)).thenAnswer((_) {
+      return Future.value([
+        {
+          "id": catchId1.uint8List,
+          "bytes": Catch(
+            id: catchId1,
+            timestamp: Int64(10),
+          ).writeToBuffer(),
+        },
+        {
+          "id": catchId2.uint8List,
+          "bytes": Catch(
+            id: catchId2,
+            timestamp: Int64(15),
+            timeZone: defaultTimeZone,
+          ).writeToBuffer(),
+        },
+        {
+          "id": catchId3.uint8List,
+          "bytes": Catch(
+            id: catchId3,
+            timestamp: Int64(20),
+          ).writeToBuffer(),
+        },
+      ]);
+    });
+    when(appManager.timeManager.currentTimeZone).thenReturn("America/Chicago");
+
+    await catchManager.initialize();
+
+    var catches = catchManager.list();
+    expect(catches.length, 3);
+    expect(catches[0].timeZone, "America/Chicago");
+    expect(catches[1].timeZone, "America/New_York");
+    expect(catches[2].timeZone, "America/Chicago");
+
+    verifyNever(
+        appManager.imageManager.save(any, compress: anyNamed("compress")));
+    verify(appManager.localDatabaseManager.insertOrReplace(any, any, any))
+        .called(2);
+  });
+
+  test("addOrUpdate, setImages=false", () async {
+    await catchManager.addOrUpdate(
+      Catch()..id = randomId(),
+      setImages: false,
+    );
+    verifyNever(
+        appManager.imageManager.save(any, compress: anyNamed("compress")));
+    verify(appManager.localDatabaseManager.insertOrReplace(any, any, any))
+        .called(1);
+  });
+
+  test("addOrUpdate, setImages=true", () async {
+    await catchManager.addOrUpdate(
+      Catch()..id = randomId(),
+      setImages: true,
+    );
+    verify(appManager.imageManager.save(any, compress: anyNamed("compress")))
+        .called(1);
+    verify(appManager.localDatabaseManager.insertOrReplace(any, any, any))
+        .called(1);
+  });
+
   test("matchesFilter catch doesn't exist", () {
     expect(catchManager.matchesFilter(randomId(), "Test"), isFalse);
     verifyNever(speciesManager.matchesFilter(any, any));
