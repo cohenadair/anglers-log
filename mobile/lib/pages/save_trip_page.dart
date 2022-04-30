@@ -328,7 +328,15 @@ class _SaveTripPageState extends State<SaveTripPage> {
     );
   }
 
-  Widget _buildTimeZone() => TimeZoneInput(controller: _timeZoneController);
+  Widget _buildTimeZone() {
+    return TimeZoneInput(
+      controller: _timeZoneController,
+      onPicked: () {
+        _startTimestampController.timeZone = _timeZoneController.value;
+        _endTimestampController.timeZone = _timeZoneController.value;
+      },
+    );
+  }
 
   Widget _buildName() {
     return Padding(
