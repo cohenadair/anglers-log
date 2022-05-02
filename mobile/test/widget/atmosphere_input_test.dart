@@ -51,6 +51,8 @@ void main() {
         .thenReturn(MeasurementSystem.metric);
     when(appManager.userPreferenceManager.airPressureSystem)
         .thenReturn(MeasurementSystem.metric);
+    when(appManager.userPreferenceManager.airPressureImperialUnit)
+        .thenReturn(Unit.inch_of_mercury);
     when(appManager.userPreferenceManager.windSpeedSystem)
         .thenReturn(MeasurementSystem.metric);
     when(appManager.userPreferenceManager.stream)
@@ -456,7 +458,7 @@ void main() {
         .setWindSpeedSystem(MeasurementSystem.imperial_decimal);
     await tester.pumpAndSettle();
 
-    expect(find.text("psi"), findsOneWidget);
+    expect(find.text("inHg"), findsOneWidget);
     expect(find.text("\u00B0F"), findsOneWidget);
     expect(find.text("mi"), findsOneWidget);
     expect(find.text("mph"), findsOneWidget);

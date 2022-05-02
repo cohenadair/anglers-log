@@ -436,8 +436,8 @@ class MultiMeasurementInputController
 
   /// Rounds values to a reasonable value for displaying to the user.
   void _round() {
-    mainController.value =
-        mainController.doubleValue?.displayValue(spec.mainValueDecimalPlaces);
+    mainController.value = mainController.doubleValue
+        ?.displayValue(spec.mainValueDecimalPlaces?.call(context));
 
     // Round to whole number if using imperial_whole system.
     if (mainController.hasDoubleValue &&
@@ -469,7 +469,7 @@ class MultiMeasurementInputController
 
   Unit get _mainUnit =>
       _mainUnitOverride ??
-      (_system.isMetric ? spec.metricUnit : spec.imperialUnit);
+      (_system.isMetric ? spec.metricUnit : spec.imperialUnit(context));
 
   Unit? get _fractionUnit => _fractionUnitOverride ?? spec.fractionUnit;
 }

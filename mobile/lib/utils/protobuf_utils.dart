@@ -851,6 +851,8 @@ extension Units on Unit {
         return Strings.of(context).unitKilometers;
       case Unit.percent:
         return Strings.of(context).unitPercent;
+      case Unit.inch_of_mercury:
+        return Strings.of(context).unitInchOfMercury;
     }
     throw ArgumentError("Invalid input: $this");
   }
@@ -889,6 +891,8 @@ extension Units on Unit {
         return Strings.of(context).keywordsAirVisibilityMetric;
       case Unit.percent:
         return Strings.of(context).keywordsPercent;
+      case Unit.inch_of_mercury:
+        return Strings.of(context).keywordsInchOfMercury;
     }
     throw ArgumentError("Invalid input: $this");
   }
@@ -910,6 +914,7 @@ extension Units on Unit {
       case Unit.pounds_per_square_inch:
       case Unit.miles:
       case Unit.kilometers:
+      case Unit.inch_of_mercury:
         return true;
       case Unit.celsius:
       case Unit.fahrenheit:
@@ -919,39 +924,42 @@ extension Units on Unit {
     throw ArgumentError("Invalid input: $this");
   }
 
-  Unit get oppositeUnit {
+  bool canConvertToUnit(Unit unit) {
     switch (this) {
       case Unit.feet:
-        return Unit.meters;
+        return unit == Unit.meters;
       case Unit.inches:
-        return Unit.centimeters;
+        return unit == Unit.centimeters;
       case Unit.pounds:
       case Unit.ounces:
-        return Unit.kilograms;
+        return unit == Unit.kilograms;
       case Unit.fahrenheit:
-        return Unit.celsius;
+        return unit == Unit.celsius;
       case Unit.meters:
-        return Unit.feet;
+        return unit == Unit.feet;
       case Unit.centimeters:
-        return Unit.inches;
+        return unit == Unit.inches;
       case Unit.kilograms:
-        return Unit.pounds;
+        return unit == Unit.ounces || unit == Unit.pounds;
       case Unit.celsius:
-        return Unit.fahrenheit;
+        return unit == Unit.fahrenheit;
       case Unit.miles_per_hour:
-        return Unit.kilometers_per_hour;
+        return unit == Unit.kilometers_per_hour;
       case Unit.kilometers_per_hour:
-        return Unit.miles_per_hour;
+        return unit == Unit.miles_per_hour;
       case Unit.millibars:
-        return Unit.pounds_per_square_inch;
+        return unit == Unit.pounds_per_square_inch ||
+            unit == Unit.inch_of_mercury;
       case Unit.pounds_per_square_inch:
-        return Unit.millibars;
+        return unit == Unit.millibars || unit == Unit.inch_of_mercury;
+      case Unit.inch_of_mercury:
+        return unit == Unit.millibars || unit == Unit.pounds_per_square_inch;
       case Unit.miles:
-        return Unit.kilometers;
+        return unit == Unit.kilometers;
       case Unit.kilometers:
-        return Unit.miles;
+        return unit == Unit.miles;
       case Unit.percent:
-        return Unit.percent;
+        return unit == Unit.percent;
     }
     throw ArgumentError("Invalid input: $this");
   }
@@ -976,6 +984,7 @@ extension Units on Unit {
       case Unit.miles:
       case Unit.kilometers:
       case Unit.percent:
+      case Unit.inch_of_mercury:
         // None of these units need to be converted to a decimal value; return
         // the raw value.
         return value;
@@ -1035,7 +1044,7 @@ extension Units on Unit {
       return value;
     }
 
-    if (unit != oppositeUnit) {
+    if (!canConvertToUnit(unit)) {
       _log.w("Can't convert $unit to $this");
       return value;
     }
@@ -1048,21 +1057,29 @@ extension Units on Unit {
       case Unit.kilometers_per_hour:
       case Unit.kilometers:
         return value * 1.609344;
-      // Millibars to pounds per square inch.
+      // Millibars to pounds per square inch and inch of mercury.
       case Unit.pounds_per_square_inch:
-        return value * 0.0145038;
+        return value * (unit == Unit.millibars ? 0.0145038 : 0.491154);
+      case Unit.inch_of_mercury:
+        return value * (unit == Unit.millibars ? 0.02953 : 2.03602);
+      case Unit.millibars:
+        return value *
+            (unit == Unit.pounds_per_square_inch ? 68.9476 : 33.8639);
       // Inches to centimeters.
       case Unit.centimeters:
         return value * 2.54;
       // Centimeters to inches.
       case Unit.inches:
         return value * 0.393701;
-      // Pounds to kilograms.
+      // Pounds and ounces to kilograms.
       case Unit.kilograms:
-        return value * 0.453592;
+        return value * (unit == Unit.pounds ? 0.453592 : 0.0283495);
       // Kilograms to pounds.
       case Unit.pounds:
         return value * 2.20462;
+      // Kilograms to ounces.
+      case Unit.ounces:
+        return value * 35.274;
       default:
         _log.w("Unsupported conversion for $this");
         return value;

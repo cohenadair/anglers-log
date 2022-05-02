@@ -124,7 +124,7 @@ class AtmosphereFetcher {
         value: pressure,
         system: _userPreferenceManager.airPressureSystem,
         metricUnit: Unit.millibars,
-        imperialUnit: Unit.pounds_per_square_inch,
+        imperialUnit: _userPreferenceManager.airPressureImperialUnit,
         apiUnit: Unit.millibars,
       );
     }

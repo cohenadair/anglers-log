@@ -25,7 +25,8 @@ class AtmosphereWrap extends StatelessWidget {
         title: atmosphere.temperature.displayValue(
           context,
           MultiMeasurementInputSpec.airTemperature(context)
-              .mainValueDecimalPlaces,
+              .mainValueDecimalPlaces
+              ?.call(context),
         ),
         subtitle:
             SkyConditions.displayNameForList(context, atmosphere.skyConditions),
@@ -37,7 +38,9 @@ class AtmosphereWrap extends StatelessWidget {
         icon: Icons.air,
         title: atmosphere.windSpeed.displayValue(
           context,
-          MultiMeasurementInputSpec.windSpeed(context).mainValueDecimalPlaces,
+          MultiMeasurementInputSpec.windSpeed(context)
+              .mainValueDecimalPlaces
+              ?.call(context),
         ),
         subtitle: atmosphere.hasWindDirection()
             ? atmosphere.windDirection.displayName(context)
@@ -50,7 +53,9 @@ class AtmosphereWrap extends StatelessWidget {
         icon: Icons.speed,
         title: atmosphere.pressure.displayValue(
           context,
-          MultiMeasurementInputSpec.airPressure(context).mainValueDecimalPlaces,
+          MultiMeasurementInputSpec.airPressure(context)
+              .mainValueDecimalPlaces
+              ?.call(context),
         ),
         subtitle: Strings.of(context).atmosphereInputPressure,
       ));
@@ -62,7 +67,8 @@ class AtmosphereWrap extends StatelessWidget {
         title: atmosphere.visibility.displayValue(
           context,
           MultiMeasurementInputSpec.airVisibility(context)
-              .mainValueDecimalPlaces,
+              .mainValueDecimalPlaces
+              ?.call(context),
         ),
         subtitle: Strings.of(context).atmosphereInputVisibility,
       ));
@@ -73,7 +79,9 @@ class AtmosphereWrap extends StatelessWidget {
         icon: CustomIcons.humidity,
         title: atmosphere.humidity.displayValue(
           context,
-          MultiMeasurementInputSpec.airHumidity(context).mainValueDecimalPlaces,
+          MultiMeasurementInputSpec.airHumidity(context)
+              .mainValueDecimalPlaces
+              ?.call(context),
         ),
         subtitle: Strings.of(context).atmosphereInputHumidity,
       ));

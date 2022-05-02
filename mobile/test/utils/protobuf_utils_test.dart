@@ -1596,7 +1596,7 @@ void main() {
       expect(Unit.kilometers.convertFrom(Unit.kilometers, 10), 10);
     });
 
-    test("convertFrom with a non-opposite unit", () {
+    test("convertFrom with a non-convertible unit", () {
       expect(Unit.kilometers.convertFrom(Unit.pounds, 10), 10);
     });
 
@@ -1619,12 +1619,49 @@ void main() {
       );
     });
 
+    test("Millibars to inch of mercury", () {
+      expect(Unit.inch_of_mercury.convertFrom(Unit.millibars, 1), 0.02953);
+    });
+
+    test("Pounds per square inch to millibars", () {
+      expect(
+        Unit.millibars.convertFrom(Unit.pounds_per_square_inch, 1),
+        68.9476,
+      );
+    });
+
+    test("Pounds per square inch to inch of mercury", () {
+      expect(
+        Unit.inch_of_mercury.convertFrom(Unit.pounds_per_square_inch, 1),
+        2.03602,
+      );
+    });
+
+    test("Inch of mercury to millibars", () {
+      expect(Unit.millibars.convertFrom(Unit.inch_of_mercury, 1), 33.8639);
+    });
+
+    test("Inch of mercury to pounds per square inch", () {
+      expect(
+        Unit.pounds_per_square_inch.convertFrom(Unit.inch_of_mercury, 1),
+        0.491154,
+      );
+    });
+
     test("Inches to centimeters", () {
       expect(Unit.centimeters.convertFrom(Unit.inches, 1), 2.54);
     });
 
     test("Centimeters to inches", () {
       expect(Unit.inches.convertFrom(Unit.centimeters, 2.54).round(), 1);
+    });
+
+    test("Ounces to kilograms", () {
+      expect(Unit.kilograms.convertFrom(Unit.ounces, 1), 0.0283495);
+    });
+
+    test("Kilograms to ounces", () {
+      expect(Unit.ounces.convertFrom(Unit.kilograms, 1), 35.274);
     });
 
     test("Pounds to kilograms", () {

@@ -21,6 +21,7 @@ class UserPreferenceManager extends PreferenceManager {
   static const _keyWaterTemperatureSystem = "water_temperature_system";
   static const _keyAirTemperatureSystem = "air_temperature_system";
   static const _keyAirPressureSystem = "air_pressure_system";
+  static const _keyAirPressureImperialUnit = "air_pressure_imperial_unit";
   static const _keyAirVisibilitySystem = "air_visibility_system";
   static const _keyWindSpeedSystem = "wind_speed_system";
   static const _keyAutoFetchAtmosphere = "auto_fetch_atmosphere";
@@ -103,7 +104,13 @@ class UserPreferenceManager extends PreferenceManager {
 
   MeasurementSystem get airPressureSystem =>
       MeasurementSystem.valueOf(preferences[_keyAirPressureSystem] ??
-          MeasurementSystem.imperial_whole.value)!;
+          MeasurementSystem.imperial_decimal.value)!;
+
+  Unit get airPressureImperialUnit => Unit.valueOf(
+      preferences[_keyAirPressureImperialUnit] ?? Unit.inch_of_mercury.value)!;
+
+  Future<void> setAirPressureImperialUnit(Unit? unit) =>
+      put(_keyAirPressureImperialUnit, unit?.value);
 
   Future<void> setAirVisibilitySystem(MeasurementSystem? system) =>
       put(_keyAirVisibilitySystem, system?.value);

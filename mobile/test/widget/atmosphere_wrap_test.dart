@@ -20,6 +20,8 @@ void main() {
         .thenReturn(MeasurementSystem.metric);
     when(appManager.userPreferenceManager.airPressureSystem)
         .thenReturn(MeasurementSystem.metric);
+    when(appManager.userPreferenceManager.airPressureImperialUnit)
+        .thenReturn(Unit.inch_of_mercury);
     when(appManager.userPreferenceManager.windSpeedSystem)
         .thenReturn(MeasurementSystem.metric);
   });

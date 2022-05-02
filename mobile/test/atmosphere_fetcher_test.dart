@@ -29,6 +29,8 @@ void main() {
         .thenReturn(MeasurementSystem.imperial_decimal);
     when(appManager.userPreferenceManager.airPressureSystem)
         .thenReturn(MeasurementSystem.metric);
+    when(appManager.userPreferenceManager.airPressureImperialUnit)
+        .thenReturn(Unit.inch_of_mercury);
     when(appManager.userPreferenceManager.windSpeedSystem)
         .thenReturn(MeasurementSystem.imperial_decimal);
   });
@@ -232,6 +234,8 @@ void main() {
         .thenReturn(MeasurementSystem.metric);
     when(appManager.userPreferenceManager.airPressureSystem)
         .thenReturn(MeasurementSystem.imperial_decimal);
+    when(appManager.userPreferenceManager.airPressureImperialUnit)
+        .thenReturn(Unit.pounds_per_square_inch);
     when(appManager.userPreferenceManager.windSpeedSystem)
         .thenReturn(MeasurementSystem.metric);
 

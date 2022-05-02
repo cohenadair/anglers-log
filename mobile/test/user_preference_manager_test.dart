@@ -64,7 +64,13 @@ void main() {
   test("airPressureSystem defaults to imperial", () {
     expect(userPreferenceManager.preference("air_pressure_system"), isNull);
     expect(userPreferenceManager.airPressureSystem,
-        MeasurementSystem.imperial_whole);
+        MeasurementSystem.imperial_decimal);
+  });
+
+  test("airPressureImperialUnit defaults to inHg", () {
+    expect(
+        userPreferenceManager.preference("air_pressure_imperial_unit"), isNull);
+    expect(userPreferenceManager.airPressureImperialUnit, Unit.inch_of_mercury);
   });
 
   test("airVisibilitySystem defaults to imperial", () {

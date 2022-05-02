@@ -109,6 +109,7 @@ enum Unit {
   miles = 13;
   kilometers = 14;
   percent = 15;
+  inch_of_mercury = 16;
 }
 
 // A unique ID. An Id is a wrapper for UUID string representation of protobuf bytes type that can

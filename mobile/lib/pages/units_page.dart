@@ -248,6 +248,16 @@ class UnitsPage extends StatelessWidget {
           value: MultiMeasurement(
             system: MeasurementSystem.imperial_decimal,
             mainValue: Measurement(
+              unit: Unit.inch_of_mercury,
+              value: 29.5,
+            ),
+          ),
+          displayValue: Strings.of(context).unitsPageAirPressureInHg,
+        ),
+        _UnitSelectorOption(
+          value: MultiMeasurement(
+            system: MeasurementSystem.imperial_decimal,
+            mainValue: Measurement(
               unit: Unit.pounds_per_square_inch,
               value: 14.5,
             ),

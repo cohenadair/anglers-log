@@ -822,6 +822,8 @@ class Strings {
   String get unitsPageAirTemperatureCelsius =>
       _string("unitsPage_airTemperatureCelsius");
 
+  String get unitsPageAirPressureInHg => _string("unitsPage_airPressureInHg");
+
   String get unitsPageAirPressurePsi => _string("unitsPage_airPressurePsi");
 
   String get unitsPageAirPressureMillibars =>
@@ -1375,9 +1377,11 @@ class Strings {
 
   String get unitMillibars => _string("unit_millibars");
 
-  String get unitPoundsPerSquareInch => _string("unit_pounds_per_square_inch");
+  String get unitPoundsPerSquareInch => _string("unit_poundsPerSquareInch");
 
   String get unitPercent => _string("unit_percent");
+
+  String get unitInchOfMercury => _string("unit_inchOfMercury");
 
   String get unitMiles => _string("unit_miles");
 
@@ -1657,6 +1661,8 @@ class Strings {
   String get keywordsWeightImperial => _string("keywords_weightImperial");
 
   String get keywordsPercent => _string("keywords_percent");
+
+  String get keywordsInchOfMercury => _string("keywords_inchOfMercury");
 
   String get keywordsNorth => _string("keywords_north");
 

@@ -24,6 +24,8 @@ void main() {
         .thenReturn(MeasurementSystem.metric);
     when(appManager.userPreferenceManager.waterTemperatureSystem)
         .thenReturn(MeasurementSystem.metric);
+    when(appManager.userPreferenceManager.airPressureImperialUnit)
+        .thenReturn(Unit.inch_of_mercury);
     when(appManager.userPreferenceManager.stream)
         .thenAnswer((_) => const Stream.empty());
   });
@@ -242,6 +244,112 @@ void main() {
 
     expect(called, isTrue);
     expect(controller.value.mainValue.value, 12);
+  });
+
+  testWidgets("'main' input allows decimal for metric", (tester) async {
+    await pumpContext(
+      tester,
+      (context) {
+        var spec = MultiMeasurementInputSpec.airPressure(context);
+        var controller = spec.newInputController();
+        controller.value = MultiMeasurement(
+          system: MeasurementSystem.metric,
+          mainValue: Measurement(unit: Unit.millibars),
+        );
+
+        return MultiMeasurementInput(
+          spec: spec,
+          controller: controller,
+        );
+      },
+      appManager: appManager,
+    );
+
+    expect(
+      findFirstWithText<TextInput>(tester, "Atmospheric Pressure")
+          .keyboardType
+          ?.decimal,
+      isTrue,
+    );
+  });
+
+  testWidgets("'main' input allows decimal for imperial decimal",
+      (tester) async {
+    await pumpContext(
+      tester,
+      (context) {
+        var spec = MultiMeasurementInputSpec.weight(context);
+        var controller = spec.newInputController();
+        controller.value = MultiMeasurement(
+          system: MeasurementSystem.imperial_decimal,
+          mainValue: Measurement(unit: Unit.pounds),
+        );
+
+        return MultiMeasurementInput(
+          spec: spec,
+          controller: controller,
+        );
+      },
+      appManager: appManager,
+    );
+
+    expect(
+      findFirstWithText<TextInput>(tester, "Weight").keyboardType?.decimal,
+      isTrue,
+    );
+  });
+
+  testWidgets("'main' input allows decimal for inch of mercury",
+      (tester) async {
+    await pumpContext(
+      tester,
+      (context) {
+        var spec = MultiMeasurementInputSpec.airPressure(context);
+        var controller = spec.newInputController();
+        controller.value = MultiMeasurement(
+          system: MeasurementSystem.imperial_whole,
+          mainValue: Measurement(unit: Unit.inch_of_mercury),
+        );
+
+        return MultiMeasurementInput(
+          spec: spec,
+          controller: controller,
+        );
+      },
+      appManager: appManager,
+    );
+
+    expect(
+      findFirstWithText<TextInput>(tester, "Atmospheric Pressure")
+          .keyboardType
+          ?.decimal,
+      isTrue,
+    );
+  });
+
+  testWidgets("'main' input doesn't allow decimals", (tester) async {
+    await pumpContext(
+      tester,
+      (context) {
+        var spec = MultiMeasurementInputSpec.weight(context);
+        var controller = spec.newInputController();
+        controller.value = MultiMeasurement(
+            system: MeasurementSystem.imperial_whole,
+            mainValue: Measurement(unit: Unit.pounds),
+            fractionValue: Measurement(unit: Unit.ounces));
+
+        return MultiMeasurementInput(
+          spec: spec,
+          controller: controller,
+        );
+      },
+      appManager: appManager,
+    );
+
+    expect(
+      findFirstWithText<TextInput>(tester, "Weight").keyboardType?.decimal,
+      isFalse,
+    );
   });
 
   testWidgets("Fraction text field notifies when changed", (tester) async {

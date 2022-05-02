@@ -588,6 +588,11 @@ class Unit extends $pb.ProtobufEnum {
       const $core.bool.fromEnvironment('protobuf.omit_enum_names')
           ? ''
           : 'percent');
+  static const Unit inch_of_mercury = Unit._(
+      16,
+      const $core.bool.fromEnvironment('protobuf.omit_enum_names')
+          ? ''
+          : 'inch_of_mercury');
 
   static const $core.List<Unit> values = <Unit>[
     feet,
@@ -606,6 +611,7 @@ class Unit extends $pb.ProtobufEnum {
     miles,
     kilometers,
     percent,
+    inch_of_mercury,
   ];
 
   static final $core.Map<$core.int, Unit> _byValue =
