@@ -1,0 +1,178 @@
+/*
+Theme Name: eApp - 5 in 1 App Landing Page
+Theme URI: http://live.envalab.com/html/eapp
+Author: ENVALAB
+Author URI: https://themeforest.net/user/envalab/portfolio
+Description: eApp – Creative App Landing Page HTML5 Templateis collection of App marketing pages which are perfect suit for showcase your App or services smart and flexible way. It's not only for a mobile Apps but also for mobile games showcase or any application website showcase. It's include stunning, powerful and unique landing page templates which are perfect to promoting Apps or web services & made for iOS and Android Apps makers.
+Version: 1.0
+*/
+
+/*----------------------------------
+--------- THEME DEFAULT CSS --------
+----------------------------------*/
+@import url('https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700,900');
+@import url('https://fonts.googleapis.com/css?family=Poppins:400,500,700');
+body {
+    line-height: 23px;
+    font-size: 14px;
+    color: #363843;
+	font-family: 'Poppins', sans-serif;
+    font-weight: 400;
+}
+
+/*----------------------------
+---------- RESET CSS ---------
+----------------------------*/
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-weight: 500;
+	color: #363843;
+	font-family: 'Poppins', sans-serif;
+	line-height: normal;
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p {
+    margin: 0px;
+}
+h1 {
+    font-size: 36px;
+}
+h2 {
+    font-size: 24px;
+}
+h4 {
+    font-size: 18px;
+}
+h5 {
+    font-size: 16px;
+}
+a {
+    transition: 0.4s;
+}
+a,
+a:hover {
+    color: #363843;
+}
+img {
+    max-width: 100%;
+    height: auto;
+}
+iframe {
+    width: 100%;
+    border: none;
+}
+a,
+a:hover,
+a:focus,
+a:active,
+button:focus {
+    text-decoration: none;
+    border: none;
+    outline: 0;
+}
+ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+ol {
+    margin-bottom: 0;
+}
+select:focus,
+select:active {
+    box-shadow: none;
+    border: 0;
+    outline: 0
+}
+input:focus,
+textarea:focus,
+select:focus,
+button:focus {
+    outline: none;
+}
+input[type="text"],
+input[type="email"],
+input[type="url"],
+input[type="tel"],
+input[type="search"],
+input[type="password"],
+input[type="number"],
+textarea {
+    max-width: 100%;
+    padding: 9px 30px;
+    border: none;
+    background: transparent;
+}
+textarea:focus {
+    outline: none !important;
+    box-shadow: none !important;
+}
+.sec-title {
+    text-align: center;
+    max-width: 600px;
+    margin: 0 auto 55px;
+}
+.sec-title h2 {
+    margin-bottom: 20px;
+	text-transform: uppercase;
+}
+.owl-dots {
+    text-align: center;
+    margin-top: 50px;
+}
+.owl-dot {
+    width: 10px;
+    height: 10px;
+    border: 1px solid #03a9f4;
+    border-radius: 10px;
+    display: inline-block;
+    margin: 0 3px;
+}
+.owl-dot.active {
+    background: #03a9f4;
+}
+.display-table {
+    display: table;
+    height: 100%;
+    width: 100%;
+}
+.display-tablecell {
+    display: table-cell;
+    vertical-align: middle;
+}
+.flexbox-center {
+    display: -moz-flex;
+    display: -ms-flex;
+    display: -o-flex;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+}
+
+/* Pre Loader Style */
+.js div#preloader {
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: 988899;
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+    background: #fff url('../img/loader.gif') no-repeat center center;
+}
+/* END of Pre Loader Style */

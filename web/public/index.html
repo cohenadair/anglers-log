@@ -1,107 +1,327 @@
-<html ng-app="anglers-log">
-    <head>
-        <title>Anglers' Log - Fishing Journal</title>
-        <meta name="description" content="Anglers' Log is a mobile application that allows users to track, analyze, and share their catches in the sport of fishing.">
-        <meta name="keywords" content="fish,diary,report,track,book,catch,utility,gallery,share,social,gps,brain,tales,tool,pro,map,free,journal,angler,log,fishing,location,iphone,app,android,mobile,phone">
-        <meta name="author" content="Cohen Adair">
+<!DOCTYPE HTML>
+<html lang="en-US">
+	<head>
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>Anglers' Log - Fishing Journal</title>
+		<!-- Website meta description and keywords -->
+		<meta name="description" content="Anglers' Log is a mobile application that allows users to track, analyze, and share their catches in the sport of fishing.">
+		<meta name="keywords" content="fish,diary,report,track,book,catch,utility,gallery,share,social,gps,brain,tales,tool,pro,map,free,journal,angler,log,fishing,location,iphone,app,android,mobile,phone">
+		<meta name="author" content="Cohen Adair">
         <meta name="robots" content="NOODP">
         <meta name="googlebot" content="NOODP">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-        <link type="image/vnd.microsoft.icon" href="favicon.png" rel="icon">
-        
-		<!-- Bootstrap 3.3.5 -->
-		<link rel="stylesheet" href="lib/bootstrap/css/bootstrap.min.css">
-		<link rel="stylesheet" href="lib/bootstrap/css/bootstrap-theme.min.css">
-
-		<link rel="stylesheet" href="index.css">
-    </head>
-
-    <body ng-controller="AppController as appCtrl">
-        <!-- Header -->
-        <div class="jumbotron">
-            <div class="row text-right nav">
-                <div class="col-md-11 col-sm-12">
-                    <a ng-repeat="nav in appCtrl.navItems" href="#" ng-click="appCtrl.scrollTo(nav.href)">{{nav.name}}</a>
-                </div>
-            </div>
-            
-            <div class="row">
-                <div class="col-md-5 col-md-offset-1 col-sm-6 col header-info">
-                    <h1 class="header-title">{{appCtrl.name}}</h1>
-                    <p class="header-subtitle">{{appCtrl.description}}</p>
-                    <a href="{{appCtrl.appleUrl}}" target="_blank">
-                        <img ng-src="{{appCtrl.appleBadge}}" width="200" height="59" title="App Store">
-                    </a>
-                    <a href="{{appCtrl.androidUrl}}" target="_blank">
-                        <img ng-src="{{appCtrl.playBadge}}" width="200" height="59" title="Google Play Store">
-                    </a>
-
-                    <div class="header-social" ng-include="appCtrl.socialUrl"></div>
-                </div>
-
-                <div class="col-md-4 col-md-offset-1 col-sm-6 col device">
-                    <img ng-src="{{appCtrl.deviceUrl}}" width="384" height="615" title="phones">
-                </div>
-            </div>
-        </div>
-
-        <!-- Content -->
-        <div class="content">
-            <div class="row text-center nav platform-nav">
-                <div class="col-md-11 col-sm-12">
-                    <a ng-repeat="nav in appCtrl.platformNav" ng-class="{active: nav.isActive}" href="#" ng-click="appCtrl.onClickPlatform($index)">{{nav.name}}</a>
-                </div>
-            </div>
-
-            <div ng-repeat="content in appCtrl.contentItems">
-                <!-- Section title -->
-                <div class="page-header">
-                    <h1 ng-attr-id="{{content.id}}">{{content.name}}</h1>
-                </div>
-
-                <!-- Table of contents -->
-                <div class="row table-of-contents" ng-show="content.tableOfContents">
-                    <div class="col-sm-6 table-of-contents-link" ng-repeat="info in content.infoItems" ng-show="appCtrl.shouldShowItem(info)">
-                        <a href="#" ng-click="appCtrl.scrollTo('#'+info.id)">{{info.title}}</a>
+		<!-- Website Favicon -->
+		<link rel="shortcut icon" type="image/x-icon" href="favicon.png" />
+		<!-- Bootstrap CSS -->
+		<link rel="stylesheet" type="text/css" href="assets/css/bootstrap.min.css" media="all" />
+		<!-- Owl carousel CSS -->
+		<link rel="stylesheet" type="text/css" href="assets/css/owl.carousel.css">
+		<!-- Slick nav CSS -->
+		<link rel="stylesheet" type="text/css" href="assets/css/slicknav.min.css" media="all" />
+		<!-- Iconfont CSS -->
+		<link rel="stylesheet" type="text/css" href="assets/css/icofont.css" media="all" />
+		<!-- Lightbox CSS -->
+		<link rel="stylesheet" type="text/css" href="assets/css/lightbox.min.css"/>
+		<!-- Animate CSS -->
+		<link rel="stylesheet" type="text/css" href="assets/css/animate.min.css">
+		<!-- Main CSS -->
+		<link rel="stylesheet" type="text/css" href="style.css" media="all" />
+		<!-- Style CSS -->
+		<link rel="stylesheet" type="text/css" href="assets/css/style-1.css" media="all" />
+		<!-- Responsive CSS -->
+		<link rel="stylesheet" type="text/css" href="assets/css/responsive-1.css" media="all" />
+	</head>
+	<body data-spy="scroll" data-target=".header" data-offset="50">
+		<!-- Page loader -->
+	    <div id="preloader"></div>
+		<!-- header section start -->
+		<header class="header">
+			<div class="container">
+				<div class="row">
+					<div class="col-md-2 col-6">
+					</div>
+					<div class="col-md-10 col-6">
+						<div class="responsive-menu"></div>
+					    <div class="mainmenu">
+                            <ul id="primary-menu">
+                                <li><a class="nav-link active" href="#home">Home</a></li>
+                                <li><a class="nav-link" href="#about">About</a></li>
+                                <li><a class="nav-link" href="#feature">Features</a></li>
+                                <li><a class="nav-link" href="#screenshot">Screenshots</a></li>
+                                <li><a class="nav-link" href="#feedback">User Feedback</a></li>
+                            </ul>
+					    </div>
+					</div>
+				</div>
+			</div>
+		</header><!-- header section end -->
+		<!-- banner section start -->
+		<section class="banner-area" id="home">
+			<div class="container">
+				<div class="row flexbox-center">
+					<div class="col-lg-7">
+						<div class="single-banner">
+							<div class="logo">
+								<img src="assets/img/logo.png" width="100" height="100" alt="logo" />
+							</div>
+							<h1>Anglers' Log</h1>
+							<p>Track, analyze, and share your catches in the sport of fishing.</p>
+							<div class="store-btn">
+								<a target="blank" href="https://itunes.apple.com/CA/app/id959989008">
+									<img src="assets/img/appstore.svg" width="200" height="59" alt="App Store" />
+								</a>
+							</div>
+							<div class="store-btn">
+								<a target="blank" href="https://play.google.com/store/apps/details?id=com.cohenadair.anglerslog">
+									<img src="assets/img/googleplay.png" width="200" height="59" alt="Google Play" />
+								</a>
+							</div>
+							<p class="hashtag">#AnglersLogApp</p>
+						</div>
+					</div>
+					<div class="col-lg-5">
+					    <div class="single-banner text-lg-left text-center">
+							<img src="assets/img/appbox-img-1/banner.png" alt="banner" />
+						</div>
+					</div>
+				</div>
+			</div>
+		</section><!-- banner section end -->
+		<!-- about section start -->
+		<section class="about-area ptb-100" id="about">
+			<div class="container">
+				<div class="row">
+					<div class="col-lg-12">
+					    <div class="sec-title">
+							<h2>About</h2>
+							<p>Anglers' Log is a customizable utility mobile application that allows users to track, analyze, and share their catches in the sport of fishing.  Manage your own catches, species, locations, baits, and more!  Share your trophy catches using your favourite social media site, and analyze your success with the detailed statistics feature.</p>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-lg-4">
+					    <div class="single-about-box">
+							<i class="icofont icofont-ban"></i>
+							<h4>No Login Required</h4>
+							<p>Simply download the app from the App Store or Google Play and start logging catches!</p>
+						</div>
+					</div>
+					<div class="col-lg-4">
+					    <div class="single-about-box">
+							<i class="icofont icofont-lock"></i>
+							<h4>Private Data</h4>
+							<p>All your data is stored locally on the device; it is <b>not</b> uploaded or shared with any backend server.</p>
+						</div>
+					</div>
+					<div class="col-lg-4">
+					    <div class="single-about-box">
+							<i class="icofont icofont-code"></i>
+							<h4>Open Source</h4>
+							<p>Anglers' Log's code is open source and can be viewed on <a target="blank" href="https://github.com/cohenadair/anglers-log">GitHub</a>.</p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section><!-- about section end -->
+		<!-- feature section start -->
+		<section class="feature-area" id="feature">
+			<div class="container">
+				<div class="row flexbox-center">
+					<div class="col-lg-6">
+						<div class="single-feature-box text-lg-left text-center">
+							<img src="assets/img/appbox-img-1/feature.png" alt="feature" />
+						</div>
+					</div>
+					<div class="col-lg-6">
+						<div class="single-feature-box">
+							<h2>Features</h2>
+							<ul>
+								<li>Log catches, trips, baits, fishing spots, and much more</li>
+								<li>View your fishing spots on an interactive world map</li>
+								<li>Analyze your catches with an extensive and detailed statistics feature</li>
+								<li>View a gallery of all your photos</li>
+								<li>Automatically backup to Google Drive&trade;</li>
+								<li>Automatically fetch atmosphere and weather data</li>
+								<li>Add custom fields to your catches, trips, and baits</li>
+								<li>Add custom catch reports and filters</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section><!-- feature section end -->
+		<!-- screenshots section start -->
+		<section class="screenshots-area ptb-80" id="screenshot">
+			<div class="container">
+				<div class="row">
+					<div class="col-lg-12">
+					    <div class="sec-title mb-50">
+							<h2>Screenshots</h2>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-lg-12">
+						<div class="screenshot-area-slider">
+							<div class="screenshot-single-slide">
+								<img src="assets/img/appbox-img-1/screenshot/catch-list.png" alt="screenshot" />
+							</div>
+							<div class="screenshot-single-slide">
+								<img src="assets/img/appbox-img-1/screenshot/catch-details.png" alt="screenshot" />
+							</div>
+							<div class="screenshot-single-slide">
+								<img src="assets/img/appbox-img-1/screenshot/bait-detail.png" alt="screenshot" />
+							</div>
+							<div class="screenshot-single-slide">
+								<img src="assets/img/appbox-img-1/screenshot/map.png" alt="screenshot" />
+							</div>
+							<div class="screenshot-single-slide">
+								<img src="assets/img/appbox-img-1/screenshot/gallery.png" alt="screenshot" />
+							</div>
+							<div class="screenshot-single-slide">
+								<img src="assets/img/appbox-img-1/screenshot/stats-pb.png" alt="screenshot" />
+							</div>
+							<div class="screenshot-single-slide">
+								<img src="assets/img/appbox-img-1/screenshot/stats-summary.png" alt="screenshot" />
+							</div>
+							<div class="screenshot-single-slide">
+								<img src="assets/img/appbox-img-1/screenshot/trip-list.png" alt="screenshot" />
+							</div>
+							<div class="screenshot-single-slide">
+								<img src="assets/img/appbox-img-1/screenshot/trip-detail.png" alt="screenshot" />
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section><!-- screenshots section end -->
+		<!-- feedback section start -->
+		<section class="feedback-area ptb-100" id="feedback">
+			<div class="container">
+				<div class="row">
+					<div class="col-lg-12">
+					    <div class="sec-title mb-30">
+							<h2>User Feedback</h2>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-lg-12">
+					    <div class="author-feedback">
+							<div class="author-single-slide">
+								<h4>Jimmie Roop</h4>
+								<p>Easy to use, and helpful in logging trips and conditions. Love this app!</p>
+								<div class="author-rating">
+									<i class="icofont icofont-star"></i>
+									<i class="icofont icofont-star"></i>
+									<i class="icofont icofont-star"></i>
+									<i class="icofont icofont-star"></i>
+									<i class="icofont icofont-star"></i>
+								</div>
+							</div>
+							<div class="author-single-slide">
+								<h4>Thomas Lozier</h4>
+								<p>The app works great. I've logged over 60 trips and over 200 trout. Very easy to use and helpful when reviewing previous trips. A must for the active angler.</p>
+								<div class="author-rating">
+									<i class="icofont icofont-star"></i>
+									<i class="icofont icofont-star"></i>
+									<i class="icofont icofont-star"></i>
+									<i class="icofont icofont-star"></i>
+									<i class="icofont icofont-star"></i>
+								</div>
+							</div>
+							<div class="author-single-slide">
+								<h4>Erik Van Giesen</h4>
+								<p>Beautiful app. Extensive and in particular the addition of photos and the statistics I think is great.</p>
+								<div class="author-rating">
+									<i class="icofont icofont-star"></i>
+									<i class="icofont icofont-star"></i>
+									<i class="icofont icofont-star"></i>
+									<i class="icofont icofont-star"></i>
+									<i class="icofont icofont-star"></i>
+								</div>
+							</div>
+							<div class="author-single-slide">
+								<h4>Oliver Felix</h4>
+								<p>Personal catch statistics in a nutshell. Functional, well thought out, not overloaded. And runs clean.</p>
+								<div class="author-rating">
+									<i class="icofont icofont-star"></i>
+									<i class="icofont icofont-star"></i>
+									<i class="icofont icofont-star"></i>
+									<i class="icofont icofont-star"></i>
+									<i class="icofont icofont-star"></i>
+								</div>
+							</div>
+							<div class="author-single-slide">
+								<h4>Zach T</h4>
+								<p>I really like the look and feel of Anglers' Log. It has a lot of options that are really helpful that I hadn't thought of. Also, while it does have location as a permission, it still functions without having the permission. Keep up the good work guys and to all you fellow anglers, fish long and prosper.</p>
+								<div class="author-rating">
+									<i class="icofont icofont-star"></i>
+									<i class="icofont icofont-star"></i>
+									<i class="icofont icofont-star"></i>
+									<i class="icofont icofont-star"></i>
+									<i class="icofont icofont-star"></i>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section><!-- feedback section end -->
+		<!-- footer section start -->
+		<footer class="footer">
+			<div class="container">
+				<div class="row">
+                    <div class="col-lg-6">
+                        <div class="footer-content">
+							<p>Copyright &copy; Anglers' Log - All Rights Reserved</p>
+						</div>
                     </div>
-                </div>
-
-                <!-- All content items -->
-                <div ng-attr-id="{{info.id}}" class="panel panel-default" ng-repeat="info in content.infoItems" ng-show="appCtrl.shouldShowItem(info)">
-                    <div class="panel-heading" ng-if="info.title != null">
-                        <h3 class="panel-title">{{info.title}}</h3>
+                    <div class="col-lg-6">
+                        <div class="footer-content">
+							<ul>
+								<li>
+									<a target="blank" href="https://mobile.twitter.com/anglerslog">
+										<img src="assets/img/twitter.png" width="50" height="50">
+									</a>
+								</li>
+								<li>
+									<a target="blank" href="https://www.facebook.com/anglerslog/">
+										<img src="assets/img/facebook.png" width="50" height="50">
+									</a>
+								</li>
+								<li>
+									<a target="blank" href="https://www.instagram.com/anglerslog/?hl=en">
+										<img src="assets/img/instagram.png" width="50" height="50">
+									</a>
+								</li>
+							</ul>
+						</div>
                     </div>
-                    <div class="panel-body" ng-include="info.template"></div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Footer -->
-        <footer class="text-center">
-            <div class="hashtag">#anglerslogapp @anglerslog</div>
-
-            <div class="text-center" ng-include="appCtrl.socialUrl"></div>
-
-            <div class="copyright">
-                Copyright &copy;  
-                <script type="text/javascript">
-                        var currentDate = new Date();
-                        document.write(currentDate.getFullYear());              
-                </script> Anglers' Log<br>
-                <a class="privacy" href="privacy/privacy-policy.html">Privacy Policy</a>
-            </div>
-        </footer>
-
-        <!-- jQuery 1.11.3 -->
-        <script src="lib/jquery/jquery.min.js"></script>
-
-        <!-- Bootstrap 3.3.5 -->
-		<script src="lib/bootstrap/js/bootstrap.min.js"></script>
-
-		<!-- AngularJS 1.4.1 -->
-		<script src="lib/angular/angular.min.js"></script>
-        <script src="lib/angular/angular-sanitize.min.js"></script>
-
-		<script src="home.js"></script>
-    </body>
+				</div>
+			</div>
+		</footer><!-- footer section end -->
+		<a href="#" class="scrolltotop">
+			<i class="icofont icofont-arrow-up" aria-hidden="true"></i>
+		</a>
+		<!-- jquery main JS -->
+		<script src="assets/js/jquery.min.js"></script>
+		<!-- Bootstrap JS -->
+		<script src="assets/js/bootstrap.min.js"></script>
+		<!-- Slick nav JS -->
+		<script src="assets/js/jquery.slicknav.min.js"></script>
+		<!-- owl carousel JS -->
+		<script src="assets/js/owl.carousel.min.js"></script>
+		<!-- EasyPieChart JS -->
+		<script src="assets/js/jquery.easypiechart.min.js"></script>
+		<!-- Lightbox JS -->
+		<script src="assets/js/lightbox.min.js"></script>
+		<!-- WOW JS -->
+		<script src="assets/js/wow-1.3.0.min.js"></script>
+		<!-- Common JS -->
+		<script src="assets/js/common.js"></script>
+		<!-- main JS -->
+		<script src="assets/js/main-1.js"></script>
+	</body>
 </html>
