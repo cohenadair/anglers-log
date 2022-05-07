@@ -52,7 +52,7 @@ public class MigrationChannel {
             }
             
             try {
-                JSONObject legacyJson = JsonExporter.getJson();
+                JSONObject legacyJson = JsonExporter.getJson(activity);
                 json = new HashMap<>();
                 json.put("db", oldDbPath);
                 json.put("img", oldImagesPath);

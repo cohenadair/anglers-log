@@ -776,6 +776,77 @@ void main() {
     expect(fishingSpots.where((spot) => !spot.lng.isWhole), isNotEmpty);
   });
 
+  test("Import Android weather measurement system defaults to global system",
+      () async {
+    var file = File("test/resources/backups/no_weather_system.zip");
+    await LegacyImporter(appManager.app, file).start();
+
+    var result = verify(
+        appManager.userPreferenceManager.setAirPressureSystem(captureAny));
+    result.called(1);
+    expect(result.captured.first, MeasurementSystem.metric);
+
+    result = verify(
+        appManager.userPreferenceManager.setAirTemperatureSystem(captureAny));
+    result.called(1);
+    expect(result.captured.first, MeasurementSystem.metric);
+
+    result = verify(
+        appManager.userPreferenceManager.setAirVisibilitySystem(captureAny));
+    result.called(1);
+    expect(result.captured.first, MeasurementSystem.metric);
+
+    result =
+        verify(appManager.userPreferenceManager.setWindSpeedSystem(captureAny));
+    result.called(1);
+    expect(result.captured.first, MeasurementSystem.metric);
+  });
+
+  test("Import Android weather measurement system metric", () async {
+    var file = File("test/resources/backups/weather_system.zip");
+    await LegacyImporter(appManager.app, file).start();
+
+    var result = verify(
+        appManager.userPreferenceManager.setWaterDepthSystem(captureAny));
+    result.called(1);
+    expect(result.captured.first, MeasurementSystem.imperial_whole);
+
+    result = verify(
+        appManager.userPreferenceManager.setWaterTemperatureSystem(captureAny));
+    result.called(1);
+    expect(result.captured.first, MeasurementSystem.imperial_whole);
+
+    result = verify(
+        appManager.userPreferenceManager.setCatchLengthSystem(captureAny));
+    result.called(1);
+    expect(result.captured.first, MeasurementSystem.imperial_whole);
+
+    result = verify(
+        appManager.userPreferenceManager.setCatchWeightSystem(captureAny));
+    result.called(1);
+    expect(result.captured.first, MeasurementSystem.imperial_whole);
+
+    result = verify(
+        appManager.userPreferenceManager.setAirPressureSystem(captureAny));
+    result.called(1);
+    expect(result.captured.first, MeasurementSystem.metric);
+
+    result = verify(
+        appManager.userPreferenceManager.setAirTemperatureSystem(captureAny));
+    result.called(1);
+    expect(result.captured.first, MeasurementSystem.metric);
+
+    result = verify(
+        appManager.userPreferenceManager.setAirVisibilitySystem(captureAny));
+    result.called(1);
+    expect(result.captured.first, MeasurementSystem.metric);
+
+    result =
+        verify(appManager.userPreferenceManager.setWindSpeedSystem(captureAny));
+    result.called(1);
+    expect(result.captured.first, MeasurementSystem.metric);
+  });
+
   testWidgets("Import Android favorite catches", (tester) async {
     var file = File("test/resources/backups/legacy_android_real.zip");
     await LegacyImporter(appManager.app, file).start();

@@ -13,6 +13,8 @@ public class Json {
     public static final String USER_DEFINES = "userDefines";
     public static final String ENTRIES = "entries";
     public static final String TRIPS = "trips";
+    public static final String MEASUREMENT_SYSTEM = "measurementSystem";
+    public static final String WEATHER_MEASUREMENT_SYSTEM = "weatherMeasurementSystem";
 
     public static final String START_DATE = "startDate";
     public static final String END_DATE = "endDate";

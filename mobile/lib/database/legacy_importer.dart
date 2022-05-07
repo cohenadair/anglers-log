@@ -89,6 +89,7 @@ class LegacyImporter {
   static const _keyWaterDepth = "waterDepth";
   static const _keyWaterTemperature = "waterTemperature";
   static const _keyWeatherData = "weatherData";
+  static const _keyWeatherSystem = "weatherMeasurementSystem";
   static const _keyWindSpeed = "windSpeed";
 
   final _log = const Log("LegacyImporter");
@@ -100,6 +101,7 @@ class LegacyImporter {
   final VoidCallback? _onFinish;
 
   late MeasurementSystem _measurementSystem;
+  late MeasurementSystem _weatherSystem;
   Map<String, dynamic> _json = {};
 
   IoWrapper get _ioWrapper => _appManager.ioWrapper;
@@ -214,21 +216,26 @@ class LegacyImporter {
     }
 
     int? measurementSystem = _json[_keyJournal][_keyMeasurementSystem];
-    if (measurementSystem == 1) {
-      _measurementSystem = MeasurementSystem.metric;
-    } else {
-      // Default to imperial.
-      _measurementSystem = MeasurementSystem.imperial_whole;
-    }
-
+    _measurementSystem = measurementSystem == 1
+        ? MeasurementSystem.metric
+        : MeasurementSystem.imperial_whole;
     _userPreferenceManager.setWaterDepthSystem(_measurementSystem);
     _userPreferenceManager.setWaterTemperatureSystem(_measurementSystem);
     _userPreferenceManager.setCatchLengthSystem(_measurementSystem);
     _userPreferenceManager.setCatchWeightSystem(_measurementSystem);
-    _userPreferenceManager.setAirTemperatureSystem(_measurementSystem);
-    _userPreferenceManager.setAirPressureSystem(_measurementSystem);
-    _userPreferenceManager.setAirVisibilitySystem(_measurementSystem);
-    _userPreferenceManager.setWindSpeedSystem(_measurementSystem);
+
+    int? weatherSystem = _json[_keyJournal][_keyWeatherSystem];
+    if (weatherSystem == null) {
+      _weatherSystem = _measurementSystem;
+    } else {
+      _weatherSystem = weatherSystem == 1
+          ? MeasurementSystem.metric
+          : MeasurementSystem.imperial_whole;
+    }
+    _userPreferenceManager.setAirTemperatureSystem(_weatherSystem);
+    _userPreferenceManager.setAirPressureSystem(_weatherSystem);
+    _userPreferenceManager.setAirVisibilitySystem(_weatherSystem);
+    _userPreferenceManager.setWindSpeedSystem(_weatherSystem);
 
     var userDefinesJson = _json[_keyJournal][_keyUserDefines];
     if (userDefinesJson == null || userDefinesJson is! List) {
@@ -766,7 +773,7 @@ class LegacyImporter {
     var temperature = doubleFromDynamic(weatherData[_keyTemperature]);
     if (temperature != null) {
       atmosphere.temperature = Measurement(
-        unit: _measurementSystem.isMetric ? Unit.celsius : Unit.fahrenheit,
+        unit: _weatherSystem.isMetric ? Unit.celsius : Unit.fahrenheit,
         value: temperature,
       );
     }
@@ -774,7 +781,7 @@ class LegacyImporter {
     var windSpeed = doubleFromDynamic(weatherData[_keyWindSpeed]);
     if (windSpeed != null) {
       atmosphere.windSpeed = Measurement(
-        unit: _measurementSystem.isMetric
+        unit: _weatherSystem.isMetric
             ? Unit.kilometers_per_hour
             : Unit.miles_per_hour,
         value: windSpeed.toDouble(),

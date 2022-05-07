@@ -1,5 +1,8 @@
 package com.cohenadair.mobile.legacy.backup;
 
+import static com.cohenadair.anglerslog.utilities.LogbookPreferences.*;
+
+import android.content.Context;
 import androidx.annotation.NonNull;
 
 import com.cohenadair.mobile.legacy.Logbook;
@@ -30,13 +33,15 @@ public class JsonExporter {
      * Returns a {@link JSONObject} representation of the current {@link Logbook}.
      * @throws JSONException Throws a JSONException if the object could not be  constructed.
      */
-    public static JSONObject getJson() throws JSONException {
+    public static JSONObject getJson(Context context) throws JSONException {
         JSONObject json = new JSONObject();
 
         json.put(Json.NAME, Logbook.getName());
         json.put(Json.TRIPS, getJsonArray(Logbook.getTrips()));
         json.put(Json.ENTRIES, getJsonArray(Logbook.getCatches()));
         json.put(Json.USER_DEFINES, getUserDefinesJson());
+        json.put(Json.MEASUREMENT_SYSTEM, getUnits(context));
+        json.put(Json.WEATHER_MEASUREMENT_SYSTEM, getWeatherUnits(context));
 
         return new JSONObject().put(Json.JOURNAL, json);
     }
