@@ -444,29 +444,23 @@ void main() {
       );
 
       expect(controller.value.mainValue.value, 60);
-      expect(controller.value.fractionValue.value, 0.75);
+      expect(controller.value.fractionValue.value, 1.0);
 
       controller.value = MultiMeasurement(
         system: MeasurementSystem.imperial_whole,
+        // Rounded.
+        mainValue: Measurement(
+          unit: Unit.inches,
+          value: 10.2,
+        ),
         // Not rounded.
         fractionValue: Measurement(
-          unit: Unit.inches,
-          value: 10.75,
+          value: 0.75,
         ),
       );
 
-      expect(controller.value.fractionValue.value, 10.75);
-
-      controller.value = MultiMeasurement(
-        system: MeasurementSystem.imperial_whole,
-        // Fraction values are always rounded to whole numbers.
-        fractionValue: Measurement(
-          unit: Unit.kilometers,
-          value: 10.75,
-        ),
-      );
-
-      expect(controller.value.fractionValue.value, 11);
+      expect(controller.value.mainValue.value, 10);
+      expect(controller.value.fractionValue.value, 0.75);
     });
 
     testWidgets("isSet", (tester) async {

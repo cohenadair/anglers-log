@@ -10,6 +10,7 @@ import 'package:mobile/utils/atmosphere_utils.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mobile/widgets/atmosphere_input.dart';
 import 'package:mobile/widgets/atmosphere_wrap.dart';
+import 'package:mobile/widgets/date_time_picker.dart';
 import 'package:mobile/widgets/input_controller.dart';
 import 'package:mobile/widgets/text_input.dart';
 import 'package:mobile/widgets/widget.dart';
@@ -238,6 +239,7 @@ void main() {
         ),
       ),
       humidity: MultiMeasurement(
+        system: MeasurementSystem.imperial_whole,
         mainValue: Measurement(
           unit: Unit.percent,
           value: 60,
@@ -279,7 +281,7 @@ void main() {
     await tapAndSettle(tester, find.text("Moon Phase"));
     await tapAndSettle(tester, find.text("New"));
 
-    await tester.ensureVisible(find.text("Time of Sunrise"));
+    await ensureVisibleAndSettle(tester, find.text("Time of Sunrise"));
     await tapAndSettle(tester, find.text("Time of Sunrise"));
     await tapAndSettle(tester, find.text("AM"));
     var center = tester
@@ -287,7 +289,7 @@ void main() {
     await tester.tapAt(Offset(center.dx - 10, center.dy));
     await tapAndSettle(tester, find.text("OK"));
 
-    await tester.ensureVisible(find.text("Time of Sunset"));
+    await ensureVisibleAndSettle(tester, find.text("Time of Sunset"));
     await tapAndSettle(tester, find.text("Time of Sunset"));
     await tapAndSettle(tester, find.text("PM"));
     await tester.tapAt(Offset(center.dx + 10, center.dy));

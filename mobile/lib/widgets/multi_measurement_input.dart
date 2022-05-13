@@ -72,7 +72,7 @@ class MultiMeasurementInput extends StatelessWidget {
         ? null
         : imperialUnit.shorthandDisplayName(context);
     var metricSuffix = spec.metricUnit.shorthandDisplayName(context);
-    var decimalPlaces = spec.mainValueDecimalPlaces?.call(context) ?? 0;
+    var decimalPlaces = spec.mainValueDecimalPlaces?.call(context);
     var unitAllowsDecimals =
         _isMetric || _isImperialDecimal || imperialUnit == Unit.inch_of_mercury;
 
@@ -83,7 +83,8 @@ class MultiMeasurementInput extends StatelessWidget {
           ? imperialWholeSuffix
           : metricSuffix,
       controller: controller.mainController,
-      decimal: decimalPlaces > 0 && unitAllowsDecimals,
+      decimal:
+          (decimalPlaces == null || decimalPlaces > 0) && unitAllowsDecimals,
       signed: false,
       showMaxLength: false,
       onChanged: (_) => onChanged?.call(),

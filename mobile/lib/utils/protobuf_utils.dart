@@ -275,7 +275,6 @@ extension Atmospheres on Atmosphere {
 
   void clearDeprecations(UserPreferenceManager userPreferenceManager) {
     if (hasTemperatureDeprecated()) {
-      print("update temp");
       temperature = MultiMeasurement(
         system: userPreferenceManager.airTemperatureSystem,
         mainValue: temperatureDeprecated,
@@ -284,8 +283,7 @@ extension Atmospheres on Atmosphere {
     }
 
     if (hasWindSpeedDeprecated()) {
-      print("update wind");
-      temperature = MultiMeasurement(
+      windSpeed = MultiMeasurement(
         system: userPreferenceManager.windSpeedSystem,
         mainValue: windSpeedDeprecated,
       );
@@ -293,8 +291,7 @@ extension Atmospheres on Atmosphere {
     }
 
     if (hasPressureDeprecated()) {
-      print("update pressure");
-      temperature = MultiMeasurement(
+      pressure = MultiMeasurement(
         system: userPreferenceManager.airPressureSystem,
         mainValue: pressureDeprecated,
       );
@@ -302,16 +299,14 @@ extension Atmospheres on Atmosphere {
     }
 
     if (hasHumidityDeprecated()) {
-      print("update humidity");
-      temperature = MultiMeasurement(
+      humidity = MultiMeasurement(
         mainValue: humidityDeprecated,
       );
       clearHumidityDeprecated();
     }
 
     if (hasVisibilityDeprecated()) {
-      print("update visibility");
-      temperature = MultiMeasurement(
+      visibility = MultiMeasurement(
         system: userPreferenceManager.airVisibilitySystem,
         mainValue: visibilityDeprecated,
       );
@@ -519,6 +514,7 @@ extension MultiMeasurements on MultiMeasurement {
     String? resultFormat,
     String? ifZero,
     bool includeFraction = true,
+    int? mainDecimalPlaces,
   }) {
     String formatResult(String result) {
       if (isNotEmpty(resultFormat)) {
@@ -541,7 +537,7 @@ extension MultiMeasurements on MultiMeasurement {
 
     var result = "";
     if (hasMainValue()) {
-      result += mainValue.displayValue(context);
+      result += mainValue.displayValue(context, mainDecimalPlaces);
     }
 
     if (includeFraction &&

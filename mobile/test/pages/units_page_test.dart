@@ -30,6 +30,8 @@ void main() {
         .thenReturn(MeasurementSystem.metric);
     when(appManager.userPreferenceManager.windSpeedSystem)
         .thenReturn(MeasurementSystem.metric);
+    when(appManager.userPreferenceManager.airPressureImperialUnit)
+        .thenReturn(Unit.millibars);
   });
 
   testWidgets("Initial index when preferences is not null", (tester) async {
