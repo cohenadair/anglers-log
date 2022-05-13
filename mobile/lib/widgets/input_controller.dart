@@ -445,8 +445,8 @@ class MultiMeasurementInputController
       mainController.value = mainController.doubleValue?.round().toString();
     }
 
-    // Only round values if not using inches; inch values are stored as
-    // decimals.
+    // Round all fractional values whose main unit is not inches. Inch fraction
+    // values are stored as decimals.
     //
     // Only round values if a value exists, otherwise the value will be set to
     // 0.0, which is not what we want; we want users to explicitly enter
@@ -455,7 +455,7 @@ class MultiMeasurementInputController
     // Note that fractionController should never have an imperial_decimal
     // unit. Instead, mainController should be used with imperial_decimal.
     if (_fractionUnit != null &&
-        _fractionUnit != Unit.inches &&
+        _mainUnit != Unit.inches &&
         fractionController.hasValue) {
       fractionController.value =
           fractionController.doubleValue?.round().toString();

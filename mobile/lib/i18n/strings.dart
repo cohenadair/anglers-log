@@ -1387,6 +1387,8 @@ class Strings {
 
   String get unitKilometers => _string("unit_kilometers");
 
+  String get unitConvertToValue => _string("unit_convertToValue");
+
   String get numberFilterInputFrom => _string("numberFilterInput_from");
 
   String get numberFilterInputTo => _string("numberFilterInput_to");

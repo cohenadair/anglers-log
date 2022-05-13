@@ -509,10 +509,7 @@ class __AtmosphereInputPageState extends State<_AtmosphereInputPage> {
 
   void _updateFromAtmosphere(Atmosphere atmosphere) {
     if (atmosphere.hasTemperature()) {
-      _temperatureController.value = MultiMeasurement(
-        system: _userPreferenceManager.airTemperatureSystem,
-        mainValue: atmosphere.temperature,
-      );
+      _temperatureController.value = atmosphere.temperature;
     }
 
     if (atmosphere.skyConditions.isNotEmpty) {
@@ -524,30 +521,19 @@ class __AtmosphereInputPageState extends State<_AtmosphereInputPage> {
     }
 
     if (atmosphere.hasWindSpeed()) {
-      _windSpeedController.value = MultiMeasurement(
-        system: _userPreferenceManager.windSpeedSystem,
-        mainValue: atmosphere.windSpeed,
-      );
+      _windSpeedController.value = atmosphere.windSpeed;
     }
 
     if (atmosphere.hasPressure()) {
-      _pressureController.value = MultiMeasurement(
-        system: _userPreferenceManager.airPressureSystem,
-        mainValue: atmosphere.pressure,
-      );
+      _pressureController.value = atmosphere.pressure;
     }
 
     if (atmosphere.hasVisibility()) {
-      _visibilityController.value = MultiMeasurement(
-        system: _userPreferenceManager.airVisibilitySystem,
-        mainValue: atmosphere.visibility,
-      );
+      _visibilityController.value = atmosphere.visibility;
     }
 
     if (atmosphere.hasHumidity()) {
-      _humidityController.value = MultiMeasurement(
-        mainValue: atmosphere.humidity,
-      );
+      _humidityController.value = atmosphere.humidity;
     }
 
     if (atmosphere.hasMoonPhase()) {
@@ -570,7 +556,7 @@ class __AtmosphereInputPageState extends State<_AtmosphereInputPage> {
     var isSet = false;
 
     if (_temperatureController.isSet) {
-      result.temperature = _temperatureController.value.mainValue;
+      result.temperature = _temperatureController.value;
       isSet = true;
     }
 
@@ -585,22 +571,22 @@ class __AtmosphereInputPageState extends State<_AtmosphereInputPage> {
     }
 
     if (_windSpeedController.isSet) {
-      result.windSpeed = _windSpeedController.value.mainValue;
+      result.windSpeed = _windSpeedController.value;
       isSet = true;
     }
 
     if (_pressureController.isSet) {
-      result.pressure = _pressureController.value.mainValue;
+      result.pressure = _pressureController.value;
       isSet = true;
     }
 
     if (_visibilityController.isSet) {
-      result.visibility = _visibilityController.value.mainValue;
+      result.visibility = _visibilityController.value;
       isSet = true;
     }
 
     if (_humidityController.isSet) {
-      result.humidity = _humidityController.value.mainValue;
+      result.humidity = _humidityController.value;
       isSet = true;
     }
 

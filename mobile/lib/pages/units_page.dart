@@ -45,7 +45,7 @@ class UnitsPage extends StatelessWidget {
   Widget _buildCatchLength(BuildContext context) {
     return _UnitSelector(
       title: Strings.of(context).catchFieldLengthLabel,
-      initialValue: UserPreferenceManager.of(context).catchLengthSystem,
+      initialSystem: UserPreferenceManager.of(context).catchLengthSystem,
       options: [
         _UnitSelectorOption(
           value: MultiMeasurement(
@@ -82,7 +82,7 @@ class UnitsPage extends StatelessWidget {
           displayValue: Strings.of(context).unitsPageCatchLengthCentimeters,
         ),
       ],
-      onSelect: (system) =>
+      onSelect: (system, _) =>
           UserPreferenceManager.of(context).setCatchLengthSystem(system),
     );
   }
@@ -90,7 +90,7 @@ class UnitsPage extends StatelessWidget {
   Widget _buildCatchWeight(BuildContext context) {
     return _UnitSelector(
       title: Strings.of(context).catchFieldWeightLabel,
-      initialValue: UserPreferenceManager.of(context).catchWeightSystem,
+      initialSystem: UserPreferenceManager.of(context).catchWeightSystem,
       options: [
         _UnitSelectorOption(
           value: MultiMeasurement(
@@ -127,7 +127,7 @@ class UnitsPage extends StatelessWidget {
           displayValue: Strings.of(context).unitsPageCatchWeightKilograms,
         ),
       ],
-      onSelect: (system) =>
+      onSelect: (system, _) =>
           UserPreferenceManager.of(context).setCatchWeightSystem(system),
     );
   }
@@ -135,11 +135,11 @@ class UnitsPage extends StatelessWidget {
   Widget _buildWaterTemperature(BuildContext context) {
     return _UnitSelector(
       title: Strings.of(context).catchFieldWaterTemperatureLabel,
-      initialValue: UserPreferenceManager.of(context).waterTemperatureSystem,
+      initialSystem: UserPreferenceManager.of(context).waterTemperatureSystem,
       options: [
         _UnitSelectorOption(
           value: MultiMeasurement(
-            system: MeasurementSystem.imperial_whole,
+            system: MeasurementSystem.imperial_decimal,
             mainValue: Measurement(
               unit: Unit.fahrenheit,
               value: 72,
@@ -158,7 +158,7 @@ class UnitsPage extends StatelessWidget {
           displayValue: Strings.of(context).unitsPageWaterTemperatureCelsius,
         ),
       ],
-      onSelect: (system) =>
+      onSelect: (system, _) =>
           UserPreferenceManager.of(context).setWaterTemperatureSystem(system),
     );
   }
@@ -166,7 +166,7 @@ class UnitsPage extends StatelessWidget {
   Widget _buildWaterDepth(BuildContext context) {
     return _UnitSelector(
       title: Strings.of(context).catchFieldWaterDepthLabel,
-      initialValue: UserPreferenceManager.of(context).waterDepthSystem,
+      initialSystem: UserPreferenceManager.of(context).waterDepthSystem,
       options: [
         _UnitSelectorOption(
           value: MultiMeasurement(
@@ -203,7 +203,7 @@ class UnitsPage extends StatelessWidget {
           displayValue: Strings.of(context).unitsPageWaterDepthMeters,
         ),
       ],
-      onSelect: (system) =>
+      onSelect: (system, _) =>
           UserPreferenceManager.of(context).setWaterDepthSystem(system),
     );
   }
@@ -211,11 +211,11 @@ class UnitsPage extends StatelessWidget {
   Widget _buildAirTemperature(BuildContext context) {
     return _UnitSelector(
       title: Strings.of(context).atmosphereInputAirTemperature,
-      initialValue: UserPreferenceManager.of(context).airTemperatureSystem,
+      initialSystem: UserPreferenceManager.of(context).airTemperatureSystem,
       options: [
         _UnitSelectorOption(
           value: MultiMeasurement(
-            system: MeasurementSystem.imperial_whole,
+            system: MeasurementSystem.imperial_decimal,
             mainValue: Measurement(
               unit: Unit.fahrenheit,
               value: 59,
@@ -234,15 +234,18 @@ class UnitsPage extends StatelessWidget {
           displayValue: Strings.of(context).unitsPageAirTemperatureCelsius,
         ),
       ],
-      onSelect: (system) =>
+      onSelect: (system, _) =>
           UserPreferenceManager.of(context).setAirTemperatureSystem(system),
     );
   }
 
   Widget _buildAirPressure(BuildContext context) {
+    var userPreferenceManager = UserPreferenceManager.of(context);
+
     return _UnitSelector(
       title: Strings.of(context).atmosphereInputAtmosphericPressure,
-      initialValue: UserPreferenceManager.of(context).airPressureSystem,
+      initialSystem: userPreferenceManager.airPressureSystem,
+      initialUnit: userPreferenceManager.airPressureImperialUnit,
       options: [
         _UnitSelectorOption(
           value: MultiMeasurement(
@@ -275,15 +278,17 @@ class UnitsPage extends StatelessWidget {
           displayValue: Strings.of(context).unitsPageAirPressureMillibars,
         ),
       ],
-      onSelect: (system) =>
-          UserPreferenceManager.of(context).setAirPressureSystem(system),
+      onSelect: (system, imperialUnit) {
+        userPreferenceManager.setAirPressureSystem(system);
+        userPreferenceManager.setAirPressureImperialUnit(imperialUnit);
+      },
     );
   }
 
   Widget _buildAirVisibility(BuildContext context) {
     return _UnitSelector(
       title: Strings.of(context).atmosphereInputAirVisibility,
-      initialValue: UserPreferenceManager.of(context).airVisibilitySystem,
+      initialSystem: UserPreferenceManager.of(context).airVisibilitySystem,
       options: [
         _UnitSelectorOption(
           value: MultiMeasurement(
@@ -306,7 +311,7 @@ class UnitsPage extends StatelessWidget {
           displayValue: Strings.of(context).unitsPageAirVisibilityKilometers,
         ),
       ],
-      onSelect: (system) =>
+      onSelect: (system, _) =>
           UserPreferenceManager.of(context).setAirVisibilitySystem(system),
     );
   }
@@ -314,7 +319,7 @@ class UnitsPage extends StatelessWidget {
   Widget _buildWindSpeed(BuildContext context) {
     return _UnitSelector(
       title: Strings.of(context).atmosphereInputWindSpeed,
-      initialValue: UserPreferenceManager.of(context).windSpeedSystem,
+      initialSystem: UserPreferenceManager.of(context).windSpeedSystem,
       options: [
         _UnitSelectorOption(
           value: MultiMeasurement(
@@ -337,7 +342,7 @@ class UnitsPage extends StatelessWidget {
           displayValue: Strings.of(context).unitsPageWindSpeedKilometers,
         ),
       ],
-      onSelect: (system) =>
+      onSelect: (system, _) =>
           UserPreferenceManager.of(context).setWindSpeedSystem(system),
     );
   }
@@ -355,14 +360,16 @@ class _UnitSelectorOption {
 
 class _UnitSelector extends StatelessWidget {
   final String title;
-  final MeasurementSystem? initialValue;
+  final MeasurementSystem? initialSystem;
+  final Unit? initialUnit;
   final List<_UnitSelectorOption> options;
-  final void Function(MeasurementSystem)? onSelect;
+  final void Function(MeasurementSystem, Unit? mainUnit)? onSelect;
 
   const _UnitSelector({
     required this.title,
-    required this.initialValue,
+    required this.initialSystem,
     required this.options,
+    this.initialUnit,
     this.onSelect,
   });
 
@@ -385,12 +392,19 @@ class _UnitSelector extends StatelessWidget {
             bottom: paddingSmall,
             top: paddingTiny,
           ),
-          initialSelectedIndex:
-              max(0, options.indexWhere((o) => o.value.system == initialValue)),
+          initialSelectedIndex: max(
+            0,
+            options.indexWhere((o) =>
+                o.value.system == initialSystem &&
+                (initialUnit == null || initialUnit == o.value.mainValue.unit)),
+          ),
           optionCount: options.length,
           optionBuilder: (context, i) => format(options[i].displayValue,
               [options[i].value.displayValue(context)]),
-          onSelect: (i) => onSelect?.call(options[i].value.system),
+          onSelect: (i) => onSelect?.call(
+            options[i].value.system,
+            options[i].value.mainValue.unit,
+          ),
         ),
       ],
     );

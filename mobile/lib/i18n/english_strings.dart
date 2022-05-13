@@ -10,6 +10,7 @@ Map<String, String> get _nonUsStrings => {
       "unitsPage_waterDepthMeters": "Metres (%s)",
       "unitsPage_airVisibilityKilometers": "Kilometres (%s)",
       "unitsPage_windSpeedKilometers": "Kilometres per hour (%s)",
+      "keywords_speedMetric": "kilometers per hour speed wind",
       "input_colorLabel": "Colour",
       "proPage_disclosureApple":
           "Cancel anytime. Billing starts after the free trial period ends. The free trial period is only valid for new subscribers. Subscriptions automatically renew unless cancelled at least 24 hours before the end of the current subscription period. All subscriptions can be managed through the App Store. Any unused portion of the free trial will be forfeited when a subscription is purchased.",
@@ -691,6 +692,7 @@ Map<String, Map<String, String>> get englishStrings => {
         "unit_inchOfMercury": "inHg",
         "unit_miles": "mi",
         "unit_kilometers": "km",
+        "unit_convertToValue": "Convert to %s",
         "numberFilterInput_from": "From",
         "numberFilterInput_to": "To",
         "numberFilterInput_value": "Value",
@@ -803,13 +805,13 @@ Map<String, Map<String, String>> get englishStrings => {
         "pickerTitle_timeZone": "Select Time Zone",
         "keywords_temperatureMetric": "celsius temperature degrees c",
         "keywords_temperatureImperial": "fahrenheit temperature degrees f",
-        "keywords_speedMetric": "kilometers per hour speed wind",
+        "keywords_speedMetric": "kilometers kilometres per hour speed wind",
         "keywords_speedImperial": "miles per hour speed wind",
         "keywords_airPressureMetric": "atmospheric air pressure millibars",
         "keywords_airPressureImperial":
             "atmospheric air pressure pounds per square inch",
         "keywords_airHumidity": "humidity percent moisture",
-        "keywords_airVisibilityMetric": "kilometers visibility",
+        "keywords_airVisibilityMetric": "kilometers kilometres visibility",
         "keywords_airVisibilityImperial": "miles visibility",
         "keywords_percent": "percent",
         "keywords_inchOfMercury":

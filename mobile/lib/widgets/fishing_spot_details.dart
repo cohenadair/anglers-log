@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:mobile/res/dimen.dart';
 import 'package:mobile/widgets/our_bottom_sheet.dart';
 import 'package:quiver/strings.dart';
 
@@ -11,7 +12,6 @@ import '../log.dart';
 import '../model/gen/anglerslog.pb.dart';
 import '../pages/add_catch_journey.dart';
 import '../pages/save_fishing_spot_page.dart';
-import '../res/dimen.dart';
 import '../utils/dialog_utils.dart';
 import '../utils/page_utils.dart';
 import '../utils/snackbar_utils.dart';
@@ -20,6 +20,7 @@ import '../wrappers/io_wrapper.dart';
 import '../wrappers/url_launcher_wrapper.dart';
 import 'bottom_sheet_picker.dart';
 import 'button.dart';
+import 'chip_list.dart';
 import 'floating_container.dart';
 import 'list_item.dart';
 import 'widget.dart';
@@ -141,7 +142,6 @@ class FishingSpotDetails extends StatelessWidget {
 /// [FishingSpot].
 class _FishingSpotActions extends StatelessWidget {
   static const _log = Log("_FishingSpotActions");
-  static const _chipHeight = 32.0;
 
   /// Note that an [Id] is not used here because the [FishingSpot] being shown
   /// hasn't necessarily been added to [FishingSpotManager] yet.
@@ -173,17 +173,10 @@ class _FishingSpotActions extends StatelessWidget {
       return const Empty();
     }
 
-    return Container(
-      // Removes default padding of ActionChip.
-      height: _chipHeight + paddingDefault,
-      padding: insetsBottomDefault,
-      child: ListView.separated(
-        padding: insetsHorizontalDefault,
-        scrollDirection: Axis.horizontal,
-        separatorBuilder: (_, i) => const HorizontalSpace(paddingSmall),
-        itemBuilder: (context, i) => children[i],
-        itemCount: children.length,
-      ),
+    return ChipList(
+      children: children,
+      containerPadding: insetsBottomDefault,
+      listPadding: insetsHorizontalDefault,
     );
   }
 

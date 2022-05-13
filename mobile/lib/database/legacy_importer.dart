@@ -772,19 +772,25 @@ class LegacyImporter {
 
     var temperature = doubleFromDynamic(weatherData[_keyTemperature]);
     if (temperature != null) {
-      atmosphere.temperature = Measurement(
-        unit: _weatherSystem.isMetric ? Unit.celsius : Unit.fahrenheit,
-        value: temperature,
+      atmosphere.temperature = MultiMeasurement(
+        system: _weatherSystem,
+        mainValue: Measurement(
+          unit: _weatherSystem.isMetric ? Unit.celsius : Unit.fahrenheit,
+          value: temperature,
+        ),
       );
     }
 
     var windSpeed = doubleFromDynamic(weatherData[_keyWindSpeed]);
     if (windSpeed != null) {
-      atmosphere.windSpeed = Measurement(
-        unit: _weatherSystem.isMetric
-            ? Unit.kilometers_per_hour
-            : Unit.miles_per_hour,
-        value: windSpeed.toDouble(),
+      atmosphere.windSpeed = MultiMeasurement(
+        system: _weatherSystem,
+        mainValue: Measurement(
+          unit: _weatherSystem.isMetric
+              ? Unit.kilometers_per_hour
+              : Unit.miles_per_hour,
+          value: windSpeed.toDouble(),
+        ),
       );
     }
 

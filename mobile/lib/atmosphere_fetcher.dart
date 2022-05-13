@@ -85,7 +85,7 @@ class AtmosphereFetcher {
 
     var temperature = doubleFromDynamic(json["temp"]);
     if (temperature != null) {
-      result.temperature = _measurement(
+      result.temperature = _multiMeasurement(
         value: temperature,
         system: _userPreferenceManager.airTemperatureSystem,
         metricUnit: Unit.celsius,
@@ -96,15 +96,17 @@ class AtmosphereFetcher {
 
     var humidity = intFromDynamic(json["humidity"]);
     if (humidity != null) {
-      result.humidity = Measurement(
-        unit: Unit.percent,
-        value: humidity.roundToDouble(),
+      result.humidity = MultiMeasurement(
+        mainValue: Measurement(
+          unit: Unit.percent,
+          value: humidity.roundToDouble(),
+        ),
       );
     }
 
     var windSpeed = doubleFromDynamic(json["windspeed"]);
     if (windSpeed != null) {
-      result.windSpeed = _measurement(
+      result.windSpeed = _multiMeasurement(
         value: windSpeed,
         system: _userPreferenceManager.windSpeedSystem,
         metricUnit: Unit.kilometers_per_hour,
@@ -120,7 +122,7 @@ class AtmosphereFetcher {
 
     var pressure = doubleFromDynamic(json["pressure"]);
     if (pressure != null) {
-      result.pressure = _measurement(
+      result.pressure = _multiMeasurement(
         value: pressure,
         system: _userPreferenceManager.airPressureSystem,
         metricUnit: Unit.millibars,
@@ -131,7 +133,7 @@ class AtmosphereFetcher {
 
     var visibility = doubleFromDynamic(json["visibility"]);
     if (visibility != null) {
-      result.visibility = _measurement(
+      result.visibility = _multiMeasurement(
         value: visibility,
         system: _userPreferenceManager.airVisibilitySystem,
         metricUnit: Unit.kilometers,
@@ -227,7 +229,7 @@ class AtmosphereFetcher {
   bool _isValidJsonMap(dynamic possibleJson) =>
       possibleJson != null && possibleJson is Map<String, dynamic>;
 
-  Measurement _measurement({
+  MultiMeasurement _multiMeasurement({
     required double value,
     required MeasurementSystem? system,
     required Unit metricUnit,
@@ -243,9 +245,17 @@ class AtmosphereFetcher {
       convertedValue = convertedValue.roundToDouble();
     }
 
-    return Measurement(
-      unit: unit,
-      value: convertedValue,
+    var result = MultiMeasurement(
+      mainValue: Measurement(
+        unit: unit,
+        value: convertedValue,
+      ),
     );
+
+    if (system != null) {
+      result.system = system;
+    }
+
+    return result;
   }
 }

@@ -335,9 +335,11 @@ void main() {
       ..id = randomId()
       ..timestamp = Int64(dateTime(2020, 1, 1, 15, 30).millisecondsSinceEpoch)
       ..atmosphere = Atmosphere(
-        humidity: Measurement(
-          unit: Unit.percent,
-          value: 50,
+        humidity: MultiMeasurement(
+          mainValue: Measurement(
+            unit: Unit.percent,
+            value: 50,
+          ),
         ),
       ));
 

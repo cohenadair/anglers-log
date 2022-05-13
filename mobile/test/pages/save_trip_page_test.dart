@@ -31,27 +31,41 @@ void main() {
 
   Atmosphere defaultAtmosphere() {
     return Atmosphere(
-      temperature: Measurement(
-        unit: Unit.celsius,
-        value: 15,
+      temperature: MultiMeasurement(
+        system: MeasurementSystem.metric,
+        mainValue: Measurement(
+          unit: Unit.celsius,
+          value: 15,
+        ),
       ),
       skyConditions: [SkyCondition.cloudy],
-      windSpeed: Measurement(
-        unit: Unit.kilometers_per_hour,
-        value: 6.5,
+      windSpeed: MultiMeasurement(
+        system: MeasurementSystem.metric,
+        mainValue: Measurement(
+          unit: Unit.kilometers_per_hour,
+          value: 6.5,
+        ),
       ),
       windDirection: Direction.north,
-      pressure: Measurement(
-        unit: Unit.millibars,
-        value: 1000,
+      pressure: MultiMeasurement(
+        system: MeasurementSystem.metric,
+        mainValue: Measurement(
+          unit: Unit.millibars,
+          value: 1000,
+        ),
       ),
-      humidity: Measurement(
-        unit: Unit.percent,
-        value: 50,
+      humidity: MultiMeasurement(
+        mainValue: Measurement(
+          unit: Unit.percent,
+          value: 50,
+        ),
       ),
-      visibility: Measurement(
-        unit: Unit.kilometers,
-        value: 10,
+      visibility: MultiMeasurement(
+        system: MeasurementSystem.metric,
+        mainValue: Measurement(
+          unit: Unit.kilometers,
+          value: 10,
+        ),
       ),
       moonPhase: MoonPhase.full,
       sunriseTimestamp: Int64(1624348800000),

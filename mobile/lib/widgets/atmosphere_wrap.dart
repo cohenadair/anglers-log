@@ -7,7 +7,6 @@ import '../res/dimen.dart';
 import '../res/gen/custom_icons.dart';
 import '../res/style.dart';
 import '../utils/protobuf_utils.dart';
-import 'multi_measurement_input.dart';
 import 'widget.dart';
 
 class AtmosphereWrap extends StatelessWidget {
@@ -22,12 +21,7 @@ class AtmosphereWrap extends StatelessWidget {
     if (atmosphere.hasTemperature()) {
       children.add(_Item(
         icon: Icons.cloud,
-        title: atmosphere.temperature.displayValue(
-          context,
-          MultiMeasurementInputSpec.airTemperature(context)
-              .mainValueDecimalPlaces
-              ?.call(context),
-        ),
+        title: atmosphere.temperature.displayValue(context),
         subtitle:
             SkyConditions.displayNameForList(context, atmosphere.skyConditions),
       ));
@@ -36,12 +30,7 @@ class AtmosphereWrap extends StatelessWidget {
     if (atmosphere.hasWindSpeed()) {
       children.add(_Item(
         icon: Icons.air,
-        title: atmosphere.windSpeed.displayValue(
-          context,
-          MultiMeasurementInputSpec.windSpeed(context)
-              .mainValueDecimalPlaces
-              ?.call(context),
-        ),
+        title: atmosphere.windSpeed.displayValue(context),
         subtitle: atmosphere.hasWindDirection()
             ? atmosphere.windDirection.displayName(context)
             : Strings.of(context).atmosphereInputWind,
@@ -51,12 +40,7 @@ class AtmosphereWrap extends StatelessWidget {
     if (atmosphere.hasPressure()) {
       children.add(_Item(
         icon: Icons.speed,
-        title: atmosphere.pressure.displayValue(
-          context,
-          MultiMeasurementInputSpec.airPressure(context)
-              .mainValueDecimalPlaces
-              ?.call(context),
-        ),
+        title: atmosphere.pressure.displayValue(context),
         subtitle: Strings.of(context).atmosphereInputPressure,
       ));
     }
@@ -64,12 +48,7 @@ class AtmosphereWrap extends StatelessWidget {
     if (atmosphere.hasVisibility()) {
       children.add(_Item(
         icon: Icons.visibility,
-        title: atmosphere.visibility.displayValue(
-          context,
-          MultiMeasurementInputSpec.airVisibility(context)
-              .mainValueDecimalPlaces
-              ?.call(context),
-        ),
+        title: atmosphere.visibility.displayValue(context),
         subtitle: Strings.of(context).atmosphereInputVisibility,
       ));
     }
@@ -77,12 +56,7 @@ class AtmosphereWrap extends StatelessWidget {
     if (atmosphere.hasHumidity()) {
       children.add(_Item(
         icon: CustomIcons.humidity,
-        title: atmosphere.humidity.displayValue(
-          context,
-          MultiMeasurementInputSpec.airHumidity(context)
-              .mainValueDecimalPlaces
-              ?.call(context),
-        ),
+        title: atmosphere.humidity.displayValue(context),
         subtitle: Strings.of(context).atmosphereInputHumidity,
       ));
     }

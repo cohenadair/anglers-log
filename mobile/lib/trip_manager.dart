@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:mobile/angler_manager.dart';
 import 'package:mobile/bait_manager.dart';
 import 'package:mobile/catch_manager.dart';
+import 'package:mobile/user_preference_manager.dart';
 import 'package:provider/provider.dart';
 import 'package:quiver/strings.dart';
 
@@ -46,6 +47,9 @@ class TripManager extends NamedEntityManager<Trip> {
 
   TimeManager get _timeManager => appManager.timeManager;
 
+  UserPreferenceManager get _userPreferenceManager =>
+      appManager.userPreferenceManager;
+
   @override
   Future<void> initialize() async {
     await super.initialize();
@@ -60,6 +64,18 @@ class TripManager extends NamedEntityManager<Trip> {
       ),
     );
     _log.d("Added time zones to $numberOfChanges trips");
+
+    // TODO: Remove (#696)
+    numberOfChanges = await updateAll(
+      where: (trip) =>
+          trip.hasAtmosphere() && trip.atmosphere.hasDeprecations(),
+      apply: (trip) async => await addOrUpdate(
+        trip..atmosphere.clearDeprecations(_userPreferenceManager),
+        setImages: false,
+        notify: false,
+      ),
+    );
+    _log.d("Updated $numberOfChanges deprecated atmosphere objects");
   }
 
   @override
