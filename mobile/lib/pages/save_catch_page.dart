@@ -607,7 +607,7 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
     );
   }
 
-  FutureOr<bool> _save(Map<Id, dynamic> customFieldValueMap) async {
+  FutureOr<bool> _save(Map<Id, dynamic> customFieldValueMap) {
     // imageNames is set in _catchManager.addOrUpdate
     var cat = Catch()
       ..id = _oldCatch?.id ?? randomId()
@@ -701,7 +701,7 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
       cat.tide.timeZone = cat.timeZone;
     }
 
-    await _catchManager.addOrUpdate(
+    _catchManager.addOrUpdate(
       cat,
       imageFiles: _imagesController.originalFiles,
     );

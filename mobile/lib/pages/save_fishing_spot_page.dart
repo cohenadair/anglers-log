@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:mapbox_gl/mapbox_gl.dart';
 import 'package:mobile/widgets/entity_picker_input.dart';
 import 'package:quiver/strings.dart';
 
@@ -12,7 +11,6 @@ import '../i18n/strings.dart';
 import '../model/gen/anglerslog.pb.dart';
 import '../pages/form_page.dart';
 import '../res/dimen.dart';
-import '../utils/protobuf_utils.dart';
 import '../widgets/image_input.dart';
 import '../widgets/input_controller.dart';
 import '../widgets/text_input.dart';
@@ -21,24 +19,9 @@ import 'body_of_water_list_page.dart';
 import 'image_picker_page.dart';
 
 class SaveFishingSpotPage extends StatefulWidget {
-  final FishingSpot? oldFishingSpot;
+  final FishingSpot oldFishingSpot;
 
-  /// The coordinates of a new fishing spot being added, usually picked from
-  /// a map widget, such as [FishingSpotPickerPage].
-  final LatLng? latLng;
-
-  /// Called asynchronously after [FishingSpot] has been committed to the
-  /// database.
-  final void Function(FishingSpot)? onSave;
-
-  const SaveFishingSpotPage({
-    required this.latLng,
-    this.onSave,
-  }) : oldFishingSpot = null;
-
-  const SaveFishingSpotPage.edit(this.oldFishingSpot)
-      : latLng = null,
-        onSave = null;
+  const SaveFishingSpotPage.edit(this.oldFishingSpot);
 
   @override
   _SaveFishingSpotPageState createState() => _SaveFishingSpotPageState();
@@ -54,35 +37,26 @@ class _SaveFishingSpotPageState extends State<SaveFishingSpotPage> {
 
   FishingSpotManager get _fishingSpotManager => FishingSpotManager.of(context);
 
-  FishingSpot? get _oldFishingSpot => widget.oldFishingSpot;
-
-  bool get _isEditing => _oldFishingSpot != null;
+  FishingSpot get _oldFishingSpot => widget.oldFishingSpot;
 
   @override
   void initState() {
     super.initState();
 
-    if (_isEditing) {
-      _bodyOfWaterController.value = _oldFishingSpot!.hasBodyOfWaterId()
-          ? _oldFishingSpot!.bodyOfWaterId
-          : null;
-      _nameController.value =
-          _oldFishingSpot!.hasName() ? _oldFishingSpot!.name : null;
-      _notesController.value =
-          _oldFishingSpot!.hasNotes() ? _oldFishingSpot!.notes : null;
-    }
+    _bodyOfWaterController.value = _oldFishingSpot.hasBodyOfWaterId()
+        ? _oldFishingSpot.bodyOfWaterId
+        : null;
+    _nameController.value =
+        _oldFishingSpot.hasName() ? _oldFishingSpot.name : null;
+    _notesController.value =
+        _oldFishingSpot.hasNotes() ? _oldFishingSpot.notes : null;
   }
 
   @override
   Widget build(BuildContext context) {
-    var title = Strings.of(context).saveFishingSpotPageNewTitle;
-    if (widget.oldFishingSpot != null) {
-      title = Strings.of(context).saveFishingSpotPageEditTitle;
-    }
-
     return FormPage.immutable(
       runSpacing: 0,
-      title: Text(title),
+      title: Text(Strings.of(context).saveFishingSpotPageEditTitle),
       padding: insetsZero,
       onSave: _onSave,
       fieldBuilder: (context) => [
@@ -119,7 +93,7 @@ class _SaveFishingSpotPageState extends State<SaveFishingSpotPage> {
 
   Widget _buildImage() {
     return SingleImageInput(
-      initialImageName: _oldFishingSpot?.imageName,
+      initialImageName: _oldFishingSpot.imageName,
       controller: _imageController,
     );
   }
@@ -137,9 +111,9 @@ class _SaveFishingSpotPageState extends State<SaveFishingSpotPage> {
 
   FutureOr<bool> _onSave(BuildContext context) async {
     var newFishingSpot = FishingSpot()
-      ..id = _oldFishingSpot?.id ?? randomId()
-      ..lat = _oldFishingSpot?.lat ?? widget.latLng!.latitude
-      ..lng = _oldFishingSpot?.lng ?? widget.latLng!.longitude;
+      ..id = _oldFishingSpot.id
+      ..lat = _oldFishingSpot.lat
+      ..lng = _oldFishingSpot.lng;
 
     if (_bodyOfWaterController.hasValue) {
       newFishingSpot.bodyOfWaterId = _bodyOfWaterController.value!;
@@ -159,12 +133,10 @@ class _SaveFishingSpotPageState extends State<SaveFishingSpotPage> {
       imageFile = _imageController.value!.originalFile!;
     }
 
-    if (await _fishingSpotManager.addOrUpdate(
+    _fishingSpotManager.addOrUpdate(
       newFishingSpot,
       imageFile: imageFile,
-    )) {
-      widget.onSave?.call(newFishingSpot);
-    }
+    );
 
     return true;
   }
