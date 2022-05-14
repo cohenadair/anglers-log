@@ -555,34 +555,6 @@ extension MultiMeasurements on MultiMeasurement {
     return formatResult(result);
   }
 
-  MultiMeasurement asRounded([int? decimalPlaces]) {
-    var result = MultiMeasurement(system: system);
-
-    if (hasMainValue()) {
-      result.mainValue = Measurement(
-        unit: mainValue.unit,
-        // Round to whole number if using imperial_whole system.
-        value: double.parse(mainValue.stringValue(
-            system == MeasurementSystem.imperial_whole ? 0 : decimalPlaces)),
-      );
-    }
-
-    if (hasFractionValue()) {
-      // Round all fractional values whose main unit is not inches. Inch
-      // fraction values are stored as decimals.
-      if (fractionValue.hasUnit() && fractionValue.unit != Unit.inches) {
-        result.fractionValue = Measurement(
-          unit: fractionValue.unit,
-          value: fractionValue.value.roundToDouble(),
-        );
-      } else {
-        result.fractionValue = fractionValue;
-      }
-    }
-
-    return result;
-  }
-
   String filterString(BuildContext context) {
     var result = "";
     if (hasMainValue()) {
@@ -1116,8 +1088,7 @@ extension Units on Unit {
           value: Fraction.fromValue(value % modDivisor).value,
         );
       } else if (fractionalUnit == null) {
-        _log.e(
-            StackTrace.current, "Unit doesn't have a fractional unit: $this");
+        _log.w("Unit doesn't have a fractional unit: $this");
       } else if (fractionalUnit == Unit.ounces) {
         result.fractionValue = Measurement(
           unit: fractionalUnit,

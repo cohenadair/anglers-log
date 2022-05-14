@@ -231,12 +231,12 @@ class AtmosphereFetcher {
 
   MultiMeasurement _multiMeasurement({
     required double value,
-    required MeasurementSystem? system,
+    required MeasurementSystem system,
     required Unit metricUnit,
     required Unit imperialUnit,
     required Unit apiUnit,
   }) {
-    var unit = system == null || system == MeasurementSystem.metric
+    var unit = system == MeasurementSystem.metric
         ? metricUnit
         : imperialUnit;
 
@@ -245,17 +245,12 @@ class AtmosphereFetcher {
       convertedValue = convertedValue.roundToDouble();
     }
 
-    var result = MultiMeasurement(
+    return MultiMeasurement(
+      system: system,
       mainValue: Measurement(
         unit: unit,
         value: convertedValue,
       ),
     );
-
-    if (system != null) {
-      result.system = system;
-    }
-
-    return result;
   }
 }

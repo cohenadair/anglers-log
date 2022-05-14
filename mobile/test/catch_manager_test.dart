@@ -122,6 +122,67 @@ void main() {
         .called(2);
   });
 
+  test("initialize updates catch atmospheres", () async {
+    var catchId1 = randomId();
+    var catchId2 = randomId();
+    var catchId3 = randomId();
+    when(appManager.localDatabaseManager.fetchAll(any)).thenAnswer((_) {
+      return Future.value([
+        {
+          "id": catchId1.uint8List,
+          "bytes": Catch(
+            id: catchId1,
+            timestamp: Int64(10),
+            timeZone: defaultTimeZone,
+            atmosphere: Atmosphere(
+              temperatureDeprecated: Measurement(
+                unit: Unit.celsius,
+                value: 15,
+              ),
+            ),
+          ).writeToBuffer(),
+        },
+        {
+          "id": catchId2.uint8List,
+          "bytes": Catch(
+            id: catchId2,
+            timestamp: Int64(15),
+            timeZone: defaultTimeZone,
+          ).writeToBuffer(),
+        },
+        {
+          "id": catchId3.uint8List,
+          "bytes": Catch(
+            id: catchId3,
+            timestamp: Int64(20),
+            timeZone: defaultTimeZone,
+            atmosphere: Atmosphere(
+              windSpeedDeprecated: Measurement(
+                unit: Unit.kilometers_per_hour,
+                value: 6,
+              ),
+            ),
+          ).writeToBuffer(),
+        },
+      ]);
+    });
+
+    await catchManager.initialize();
+
+    var catches = catchManager.list();
+    expect(catches.length, 3);
+    expect(catches[0].atmosphere.hasTemperatureDeprecated(), isFalse);
+    expect(catches[0].atmosphere.hasTemperature(), isTrue);
+    expect(catches[1].hasAtmosphere(), isFalse);
+    expect(catches[2].atmosphere.hasWindSpeedDeprecated(), isFalse);
+    expect(catches[2].atmosphere.hasWindSpeed(), isTrue);
+
+    verifyNever(
+        appManager.imageManager.save(any, compress: anyNamed("compress")));
+    verify(appManager.localDatabaseManager.insertOrReplace(any, any, any))
+        .called(2);
+  });
+
   test("addOrUpdate, setImages=false", () async {
     await catchManager.addOrUpdate(
       Catch()..id = randomId(),

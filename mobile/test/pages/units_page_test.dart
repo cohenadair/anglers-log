@@ -47,6 +47,22 @@ void main() {
     expect(radioInput.initialSelectedIndex, 1);
   });
 
+  testWidgets("Initial index with system and unit", (tester) async {
+    when(appManager.userPreferenceManager.airPressureSystem)
+        .thenReturn(MeasurementSystem.imperial_decimal);
+    when(appManager.userPreferenceManager.airPressureImperialUnit)
+        .thenReturn(Unit.inch_of_mercury);
+
+    await tester.pumpWidget(Testable(
+      (_) => UnitsPage(),
+      appManager: appManager,
+    ));
+
+    var radioInput =
+        findSiblingOfText<RadioInput>(tester, Column, "Atmospheric Pressure");
+    expect(radioInput.initialSelectedIndex, 0);
+  });
+
   testWidgets("Preferences is updated on selection", (tester) async {
     when(appManager.userPreferenceManager.catchLengthSystem)
         .thenReturn(MeasurementSystem.imperial_whole);
