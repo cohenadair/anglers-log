@@ -141,11 +141,13 @@ class ChipButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ActionChip(
-      avatar: Icon(
-        icon,
-        size: iconSize,
-        color: Colors.black,
-      ),
+      avatar: icon == null
+          ? null
+          : Icon(
+              icon,
+              size: iconSize,
+              color: Colors.black,
+            ),
       label: Text(
         label,
         style: TextStyle(

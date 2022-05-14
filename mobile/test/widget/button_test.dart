@@ -126,6 +126,33 @@ void main() {
       await tester.tap(find.byType(ChipButton));
       expect(pressed, isTrue);
     });
+
+    testWidgets("Without icon", (tester) async {
+      await tester.pumpWidget(
+        Testable(
+          (_) => ChipButton(
+            label: "Test",
+            onPressed: () => {},
+          ),
+        ),
+      );
+      var chip = findFirst<ActionChip>(tester);
+      expect(chip.avatar, isNull);
+    });
+
+    testWidgets("With icon", (tester) async {
+      await tester.pumpWidget(
+        Testable(
+          (_) => ChipButton(
+            label: "Test",
+            icon: Icons.add,
+            onPressed: () => {},
+          ),
+        ),
+      );
+      var chip = findFirst<ActionChip>(tester);
+      expect(chip.avatar, isNotNull);
+    });
   });
 
   group("MinimumIconButton", () {

@@ -94,7 +94,7 @@ class Atmosphere extends $pb.GeneratedMessage {
         1,
         const $core.bool.fromEnvironment('protobuf.omit_field_names')
             ? ''
-            : 'temperature',
+            : 'temperatureDeprecated',
         subBuilder: Measurement.create)
     ..pc<SkyCondition>(
         2,
@@ -108,7 +108,7 @@ class Atmosphere extends $pb.GeneratedMessage {
         3,
         const $core.bool.fromEnvironment('protobuf.omit_field_names')
             ? ''
-            : 'windSpeed',
+            : 'windSpeedDeprecated',
         subBuilder: Measurement.create)
     ..e<Direction>(
         4,
@@ -123,19 +123,19 @@ class Atmosphere extends $pb.GeneratedMessage {
         5,
         const $core.bool.fromEnvironment('protobuf.omit_field_names')
             ? ''
-            : 'pressure',
+            : 'pressureDeprecated',
         subBuilder: Measurement.create)
     ..aOM<Measurement>(
         6,
         const $core.bool.fromEnvironment('protobuf.omit_field_names')
             ? ''
-            : 'humidity',
+            : 'humidityDeprecated',
         subBuilder: Measurement.create)
     ..aOM<Measurement>(
         7,
         const $core.bool.fromEnvironment('protobuf.omit_field_names')
             ? ''
-            : 'visibility',
+            : 'visibilityDeprecated',
         subBuilder: Measurement.create)
     ..e<MoonPhase>(
         8,
@@ -165,43 +165,78 @@ class Atmosphere extends $pb.GeneratedMessage {
         const $core.bool.fromEnvironment('protobuf.omit_field_names')
             ? ''
             : 'timeZone')
+    ..aOM<MultiMeasurement>(
+        12,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'temperature',
+        subBuilder: MultiMeasurement.create)
+    ..aOM<MultiMeasurement>(
+        13,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'windSpeed',
+        subBuilder: MultiMeasurement.create)
+    ..aOM<MultiMeasurement>(
+        14,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'pressure',
+        subBuilder: MultiMeasurement.create)
+    ..aOM<MultiMeasurement>(
+        15,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'humidity',
+        subBuilder: MultiMeasurement.create)
+    ..aOM<MultiMeasurement>(
+        16,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'visibility',
+        subBuilder: MultiMeasurement.create)
     ..hasRequiredFields = false;
 
   Atmosphere._() : super();
   factory Atmosphere({
-    Measurement? temperature,
+    Measurement? temperatureDeprecated,
     $core.Iterable<SkyCondition>? skyConditions,
-    Measurement? windSpeed,
+    Measurement? windSpeedDeprecated,
     Direction? windDirection,
-    Measurement? pressure,
-    Measurement? humidity,
-    Measurement? visibility,
+    Measurement? pressureDeprecated,
+    Measurement? humidityDeprecated,
+    Measurement? visibilityDeprecated,
     MoonPhase? moonPhase,
     $fixnum.Int64? sunriseTimestamp,
     $fixnum.Int64? sunsetTimestamp,
     $core.String? timeZone,
+    MultiMeasurement? temperature,
+    MultiMeasurement? windSpeed,
+    MultiMeasurement? pressure,
+    MultiMeasurement? humidity,
+    MultiMeasurement? visibility,
   }) {
     final _result = create();
-    if (temperature != null) {
-      _result.temperature = temperature;
+    if (temperatureDeprecated != null) {
+      _result.temperatureDeprecated = temperatureDeprecated;
     }
     if (skyConditions != null) {
       _result.skyConditions.addAll(skyConditions);
     }
-    if (windSpeed != null) {
-      _result.windSpeed = windSpeed;
+    if (windSpeedDeprecated != null) {
+      _result.windSpeedDeprecated = windSpeedDeprecated;
     }
     if (windDirection != null) {
       _result.windDirection = windDirection;
     }
-    if (pressure != null) {
-      _result.pressure = pressure;
+    if (pressureDeprecated != null) {
+      _result.pressureDeprecated = pressureDeprecated;
     }
-    if (humidity != null) {
-      _result.humidity = humidity;
+    if (humidityDeprecated != null) {
+      _result.humidityDeprecated = humidityDeprecated;
     }
-    if (visibility != null) {
-      _result.visibility = visibility;
+    if (visibilityDeprecated != null) {
+      _result.visibilityDeprecated = visibilityDeprecated;
     }
     if (moonPhase != null) {
       _result.moonPhase = moonPhase;
@@ -214,6 +249,21 @@ class Atmosphere extends $pb.GeneratedMessage {
     }
     if (timeZone != null) {
       _result.timeZone = timeZone;
+    }
+    if (temperature != null) {
+      _result.temperature = temperature;
+    }
+    if (windSpeed != null) {
+      _result.windSpeed = windSpeed;
+    }
+    if (pressure != null) {
+      _result.pressure = pressure;
+    }
+    if (humidity != null) {
+      _result.humidity = humidity;
+    }
+    if (visibility != null) {
+      _result.visibility = visibility;
     }
     return _result;
   }
@@ -244,35 +294,35 @@ class Atmosphere extends $pb.GeneratedMessage {
   static Atmosphere? _defaultInstance;
 
   @$pb.TagNumber(1)
-  Measurement get temperature => $_getN(0);
+  Measurement get temperatureDeprecated => $_getN(0);
   @$pb.TagNumber(1)
-  set temperature(Measurement v) {
+  set temperatureDeprecated(Measurement v) {
     setField(1, v);
   }
 
   @$pb.TagNumber(1)
-  $core.bool hasTemperature() => $_has(0);
+  $core.bool hasTemperatureDeprecated() => $_has(0);
   @$pb.TagNumber(1)
-  void clearTemperature() => clearField(1);
+  void clearTemperatureDeprecated() => clearField(1);
   @$pb.TagNumber(1)
-  Measurement ensureTemperature() => $_ensure(0);
+  Measurement ensureTemperatureDeprecated() => $_ensure(0);
 
   @$pb.TagNumber(2)
   $core.List<SkyCondition> get skyConditions => $_getList(1);
 
   @$pb.TagNumber(3)
-  Measurement get windSpeed => $_getN(2);
+  Measurement get windSpeedDeprecated => $_getN(2);
   @$pb.TagNumber(3)
-  set windSpeed(Measurement v) {
+  set windSpeedDeprecated(Measurement v) {
     setField(3, v);
   }
 
   @$pb.TagNumber(3)
-  $core.bool hasWindSpeed() => $_has(2);
+  $core.bool hasWindSpeedDeprecated() => $_has(2);
   @$pb.TagNumber(3)
-  void clearWindSpeed() => clearField(3);
+  void clearWindSpeedDeprecated() => clearField(3);
   @$pb.TagNumber(3)
-  Measurement ensureWindSpeed() => $_ensure(2);
+  Measurement ensureWindSpeedDeprecated() => $_ensure(2);
 
   @$pb.TagNumber(4)
   Direction get windDirection => $_getN(3);
@@ -287,46 +337,46 @@ class Atmosphere extends $pb.GeneratedMessage {
   void clearWindDirection() => clearField(4);
 
   @$pb.TagNumber(5)
-  Measurement get pressure => $_getN(4);
+  Measurement get pressureDeprecated => $_getN(4);
   @$pb.TagNumber(5)
-  set pressure(Measurement v) {
+  set pressureDeprecated(Measurement v) {
     setField(5, v);
   }
 
   @$pb.TagNumber(5)
-  $core.bool hasPressure() => $_has(4);
+  $core.bool hasPressureDeprecated() => $_has(4);
   @$pb.TagNumber(5)
-  void clearPressure() => clearField(5);
+  void clearPressureDeprecated() => clearField(5);
   @$pb.TagNumber(5)
-  Measurement ensurePressure() => $_ensure(4);
+  Measurement ensurePressureDeprecated() => $_ensure(4);
 
   @$pb.TagNumber(6)
-  Measurement get humidity => $_getN(5);
+  Measurement get humidityDeprecated => $_getN(5);
   @$pb.TagNumber(6)
-  set humidity(Measurement v) {
+  set humidityDeprecated(Measurement v) {
     setField(6, v);
   }
 
   @$pb.TagNumber(6)
-  $core.bool hasHumidity() => $_has(5);
+  $core.bool hasHumidityDeprecated() => $_has(5);
   @$pb.TagNumber(6)
-  void clearHumidity() => clearField(6);
+  void clearHumidityDeprecated() => clearField(6);
   @$pb.TagNumber(6)
-  Measurement ensureHumidity() => $_ensure(5);
+  Measurement ensureHumidityDeprecated() => $_ensure(5);
 
   @$pb.TagNumber(7)
-  Measurement get visibility => $_getN(6);
+  Measurement get visibilityDeprecated => $_getN(6);
   @$pb.TagNumber(7)
-  set visibility(Measurement v) {
+  set visibilityDeprecated(Measurement v) {
     setField(7, v);
   }
 
   @$pb.TagNumber(7)
-  $core.bool hasVisibility() => $_has(6);
+  $core.bool hasVisibilityDeprecated() => $_has(6);
   @$pb.TagNumber(7)
-  void clearVisibility() => clearField(7);
+  void clearVisibilityDeprecated() => clearField(7);
   @$pb.TagNumber(7)
-  Measurement ensureVisibility() => $_ensure(6);
+  Measurement ensureVisibilityDeprecated() => $_ensure(6);
 
   @$pb.TagNumber(8)
   MoonPhase get moonPhase => $_getN(7);
@@ -375,6 +425,76 @@ class Atmosphere extends $pb.GeneratedMessage {
   $core.bool hasTimeZone() => $_has(10);
   @$pb.TagNumber(11)
   void clearTimeZone() => clearField(11);
+
+  @$pb.TagNumber(12)
+  MultiMeasurement get temperature => $_getN(11);
+  @$pb.TagNumber(12)
+  set temperature(MultiMeasurement v) {
+    setField(12, v);
+  }
+
+  @$pb.TagNumber(12)
+  $core.bool hasTemperature() => $_has(11);
+  @$pb.TagNumber(12)
+  void clearTemperature() => clearField(12);
+  @$pb.TagNumber(12)
+  MultiMeasurement ensureTemperature() => $_ensure(11);
+
+  @$pb.TagNumber(13)
+  MultiMeasurement get windSpeed => $_getN(12);
+  @$pb.TagNumber(13)
+  set windSpeed(MultiMeasurement v) {
+    setField(13, v);
+  }
+
+  @$pb.TagNumber(13)
+  $core.bool hasWindSpeed() => $_has(12);
+  @$pb.TagNumber(13)
+  void clearWindSpeed() => clearField(13);
+  @$pb.TagNumber(13)
+  MultiMeasurement ensureWindSpeed() => $_ensure(12);
+
+  @$pb.TagNumber(14)
+  MultiMeasurement get pressure => $_getN(13);
+  @$pb.TagNumber(14)
+  set pressure(MultiMeasurement v) {
+    setField(14, v);
+  }
+
+  @$pb.TagNumber(14)
+  $core.bool hasPressure() => $_has(13);
+  @$pb.TagNumber(14)
+  void clearPressure() => clearField(14);
+  @$pb.TagNumber(14)
+  MultiMeasurement ensurePressure() => $_ensure(13);
+
+  @$pb.TagNumber(15)
+  MultiMeasurement get humidity => $_getN(14);
+  @$pb.TagNumber(15)
+  set humidity(MultiMeasurement v) {
+    setField(15, v);
+  }
+
+  @$pb.TagNumber(15)
+  $core.bool hasHumidity() => $_has(14);
+  @$pb.TagNumber(15)
+  void clearHumidity() => clearField(15);
+  @$pb.TagNumber(15)
+  MultiMeasurement ensureHumidity() => $_ensure(14);
+
+  @$pb.TagNumber(16)
+  MultiMeasurement get visibility => $_getN(15);
+  @$pb.TagNumber(16)
+  set visibility(MultiMeasurement v) {
+    setField(16, v);
+  }
+
+  @$pb.TagNumber(16)
+  $core.bool hasVisibility() => $_has(15);
+  @$pb.TagNumber(16)
+  void clearVisibility() => clearField(16);
+  @$pb.TagNumber(16)
+  MultiMeasurement ensureVisibility() => $_ensure(15);
 }
 
 class CustomEntity extends $pb.GeneratedMessage {

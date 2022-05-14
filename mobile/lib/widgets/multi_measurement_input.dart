@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:mobile/widgets/button.dart';
+import 'package:mobile/widgets/chip_list.dart';
 
 import '../i18n/strings.dart';
 import '../model/fraction.dart';
@@ -48,7 +50,18 @@ class MultiMeasurementInput extends StatelessWidget {
       stream: UserPreferenceManager.of(context).stream,
       builder: (context, _) => ValueListenableBuilder<MultiMeasurement?>(
         valueListenable: controller,
-        builder: (context, _, __) => _buildInput(context),
+        builder: (context, _, __) => _buildContainer(context),
+      ),
+    );
+  }
+
+  Widget _buildContainer(BuildContext context) {
+    return HorizontalSafeArea(
+      child: Column(
+        children: [
+          _buildInput(context),
+          _buildConversion(context),
+        ],
       ),
     );
   }
@@ -59,6 +72,9 @@ class MultiMeasurementInput extends StatelessWidget {
         ? null
         : imperialUnit.shorthandDisplayName(context);
     var metricSuffix = spec.metricUnit.shorthandDisplayName(context);
+    var decimalPlaces = spec.mainValueDecimalPlaces?.call(context);
+    var unitAllowsDecimals =
+        _isMetric || _isImperialDecimal || imperialUnit == Unit.inch_of_mercury;
 
     var wholeInput = TextInput.number(
       context,
@@ -67,9 +83,8 @@ class MultiMeasurementInput extends StatelessWidget {
           ? imperialWholeSuffix
           : metricSuffix,
       controller: controller.mainController,
-      decimal: _isMetric ||
-          _isImperialDecimal ||
-          imperialUnit == Unit.inch_of_mercury,
+      decimal:
+          (decimalPlaces == null || decimalPlaces > 0) && unitAllowsDecimals,
       signed: false,
       showMaxLength: false,
       onChanged: (_) => onChanged?.call(),
@@ -111,23 +126,83 @@ class MultiMeasurementInput extends StatelessWidget {
       }
     }
 
-    return HorizontalSafeArea(
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.baseline,
-        textBaseline: TextBaseline.alphabetic,
-        children: [
-          Expanded(child: wholeInput),
-          imperialFractionInput == null
-              ? const Empty()
-              : const HorizontalSpace(paddingDefault),
-          imperialFractionInput ?? const Empty(),
-          inchesLabel == null
-              ? const Empty()
-              : const HorizontalSpace(paddingDefault),
-          inchesLabel ?? const Empty(),
-        ],
-      ),
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.baseline,
+      textBaseline: TextBaseline.alphabetic,
+      children: [
+        Expanded(child: wholeInput),
+        imperialFractionInput == null
+            ? const Empty()
+            : const HorizontalSpace(paddingDefault),
+        imperialFractionInput ?? const Empty(),
+        inchesLabel == null
+            ? const Empty()
+            : const HorizontalSpace(paddingDefault),
+        inchesLabel ?? const Empty(),
+      ],
     );
+  }
+
+  Widget _buildConversion(BuildContext context) {
+    var specMeasurement = _specMultiMeasurement(context);
+    if (specMeasurement == null) {
+      return const Empty();
+    }
+
+    return ChipList(
+      children: [
+        _buildConversionChip(context, specMeasurement),
+        _buildConversionChip(
+            context, controller.value.convertUnitsOnly(specMeasurement)),
+      ],
+    );
+  }
+
+  ChipButton _buildConversionChip(
+      BuildContext context, MultiMeasurement newMeasurement) {
+    // Create a new input controller here to ensure that the values shown in the
+    // conversion chip match exactly what will be shown in the text input.
+    var newController = spec.newInputController();
+    newController.value = newMeasurement;
+
+    return ChipButton(
+      label: newController.value.displayValue(
+        context,
+        resultFormat: Strings.of(context).unitConvertToValue,
+        includeFraction: true,
+      ),
+      onPressed: () {
+        controller.value = newMeasurement;
+        onChanged?.call();
+      },
+    );
+  }
+
+  /// Returns a [MultiMeasurement] object for the measurement system in
+  /// [spec]. Returns null if a conversion cannot or should not be made.
+  MultiMeasurement? _specMultiMeasurement(BuildContext context) {
+    if (!controller.isSet) {
+      return null;
+    }
+
+    var specSystem = spec.system?.call(context);
+    if (specSystem == null) {
+      return null;
+    }
+
+    Unit specUnit;
+    if (specSystem.isMetric) {
+      specUnit = spec.metricUnit;
+    } else {
+      specUnit = spec.imperialUnit(context);
+    }
+
+    if (specSystem == controller.system &&
+        specUnit == controller.value.mainValue.unit) {
+      return null;
+    }
+
+    return controller.value.convertToSystem(specSystem, specUnit);
   }
 }
 
@@ -149,7 +224,7 @@ class MultiMeasurementInputSpec {
   /// The number of decimal places to show to the user for the main value. Note
   /// that regardless of this value, the main value will be rounded if the main
   /// measurement system is [MeasurementSystem.imperial_whole].
-  final int? Function(BuildContext)? mainValueDecimalPlaces;
+  final int Function(BuildContext)? mainValueDecimalPlaces;
 
   MultiMeasurementInputSpec._(
     this.context, {

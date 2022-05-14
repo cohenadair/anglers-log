@@ -66,27 +66,41 @@ void main() {
 
   Atmosphere defaultAtmosphere() {
     return Atmosphere(
-      temperature: Measurement(
-        unit: Unit.celsius,
-        value: 15,
+      temperature: MultiMeasurement(
+        system: MeasurementSystem.metric,
+        mainValue: Measurement(
+          unit: Unit.celsius,
+          value: 15,
+        ),
       ),
       skyConditions: [SkyCondition.cloudy, SkyCondition.drizzle],
-      windSpeed: Measurement(
-        unit: Unit.kilometers_per_hour,
-        value: 6.5,
+      windSpeed: MultiMeasurement(
+        system: MeasurementSystem.metric,
+        mainValue: Measurement(
+          unit: Unit.kilometers_per_hour,
+          value: 6.5,
+        ),
       ),
       windDirection: Direction.north,
-      pressure: Measurement(
-        unit: Unit.millibars,
-        value: 1000,
+      pressure: MultiMeasurement(
+        system: MeasurementSystem.metric,
+        mainValue: Measurement(
+          unit: Unit.millibars,
+          value: 1000,
+        ),
       ),
-      humidity: Measurement(
-        unit: Unit.percent,
-        value: 50,
+      humidity: MultiMeasurement(
+        mainValue: Measurement(
+          unit: Unit.percent,
+          value: 50,
+        ),
       ),
-      visibility: Measurement(
-        unit: Unit.kilometers,
-        value: 10,
+      visibility: MultiMeasurement(
+        system: MeasurementSystem.metric,
+        mainValue: Measurement(
+          unit: Unit.kilometers,
+          value: 10,
+        ),
       ),
       moonPhase: MoonPhase.full,
       sunriseTimestamp: Int64(1624348800000),
@@ -196,31 +210,46 @@ void main() {
     await tapAndSettle(tester, find.byIcon(Icons.chevron_right));
 
     var newAtmosphere = Atmosphere(
-      temperature: Measurement(
-        unit: Unit.celsius,
-        value: 20,
+      temperature: MultiMeasurement(
+        system: MeasurementSystem.metric,
+        mainValue: Measurement(
+          unit: Unit.celsius,
+          value: 20,
+        ),
       ),
       skyConditions: [
         SkyCondition.cloudy,
         SkyCondition.drizzle,
         SkyCondition.clear,
       ],
-      windSpeed: Measurement(
-        unit: Unit.kilometers_per_hour,
-        value: 8.5,
+      windSpeed: MultiMeasurement(
+        system: MeasurementSystem.metric,
+        mainValue: Measurement(
+          unit: Unit.kilometers_per_hour,
+          value: 8.5,
+        ),
       ),
       windDirection: Direction.north_east,
-      pressure: Measurement(
-        unit: Unit.millibars,
-        value: 1200,
+      pressure: MultiMeasurement(
+        system: MeasurementSystem.metric,
+        mainValue: Measurement(
+          unit: Unit.millibars,
+          value: 1200,
+        ),
       ),
-      humidity: Measurement(
-        unit: Unit.percent,
-        value: 60,
+      humidity: MultiMeasurement(
+        system: MeasurementSystem.imperial_whole,
+        mainValue: Measurement(
+          unit: Unit.percent,
+          value: 60,
+        ),
       ),
-      visibility: Measurement(
-        unit: Unit.kilometers,
-        value: 12,
+      visibility: MultiMeasurement(
+        system: MeasurementSystem.metric,
+        mainValue: Measurement(
+          unit: Unit.kilometers,
+          value: 12,
+        ),
       ),
       moonPhase: MoonPhase.new_,
       sunriseTimestamp: Int64(1624366800000),
@@ -228,8 +257,8 @@ void main() {
     );
 
     // Set all values to something different.
-    await enterTextFieldAndSettle(
-        tester, "Air Temperature", newAtmosphere.temperature.value.toString());
+    await enterTextFieldAndSettle(tester, "Air Temperature",
+        newAtmosphere.temperature.mainValue.value.toString());
 
     await tapAndSettle(tester, find.text("Cloudy"));
     await tapAndSettle(tester, findListItemCheckbox(tester, "Clear"));
@@ -238,20 +267,20 @@ void main() {
     await tapAndSettle(tester, find.text("Wind Direction"));
     await tapAndSettle(tester, find.text("NE"));
 
-    await enterTextFieldAndSettle(
-        tester, "Wind Speed", newAtmosphere.windSpeed.value.toString());
+    await enterTextFieldAndSettle(tester, "Wind Speed",
+        newAtmosphere.windSpeed.mainValue.value.toString());
     await enterTextFieldAndSettle(tester, "Atmospheric Pressure",
-        newAtmosphere.pressure.value.toString());
-    await enterTextFieldAndSettle(
-        tester, "Air Visibility", newAtmosphere.visibility.value.toString());
-    await enterTextFieldAndSettle(
-        tester, "Air Humidity", newAtmosphere.humidity.value.toString());
+        newAtmosphere.pressure.mainValue.value.toString());
+    await enterTextFieldAndSettle(tester, "Air Visibility",
+        newAtmosphere.visibility.mainValue.value.toString());
+    await enterTextFieldAndSettle(tester, "Air Humidity",
+        newAtmosphere.humidity.mainValue.value.toString());
 
     await tester.ensureVisible(find.text("Moon Phase"));
     await tapAndSettle(tester, find.text("Moon Phase"));
     await tapAndSettle(tester, find.text("New"));
 
-    await tester.ensureVisible(find.text("Time of Sunrise"));
+    await ensureVisibleAndSettle(tester, find.text("Time of Sunrise"));
     await tapAndSettle(tester, find.text("Time of Sunrise"));
     await tapAndSettle(tester, find.text("AM"));
     var center = tester
@@ -259,7 +288,7 @@ void main() {
     await tester.tapAt(Offset(center.dx - 10, center.dy));
     await tapAndSettle(tester, find.text("OK"));
 
-    await tester.ensureVisible(find.text("Time of Sunset"));
+    await ensureVisibleAndSettle(tester, find.text("Time of Sunset"));
     await tapAndSettle(tester, find.text("Time of Sunset"));
     await tapAndSettle(tester, find.text("PM"));
     await tester.tapAt(Offset(center.dx + 10, center.dy));
@@ -356,31 +385,45 @@ void main() {
 
   testWidgets("Successful fetch updates fields and controller", (tester) async {
     var newAtmosphere = Atmosphere(
-      temperature: Measurement(
-        unit: Unit.celsius,
-        value: 20,
+      temperature: MultiMeasurement(
+        system: MeasurementSystem.metric,
+        mainValue: Measurement(
+          unit: Unit.celsius,
+          value: 20,
+        ),
       ),
       skyConditions: [
         SkyCondition.cloudy,
         SkyCondition.drizzle,
         SkyCondition.clear,
       ],
-      windSpeed: Measurement(
-        unit: Unit.kilometers_per_hour,
-        value: 8.5,
+      windSpeed: MultiMeasurement(
+        system: MeasurementSystem.metric,
+        mainValue: Measurement(
+          unit: Unit.kilometers_per_hour,
+          value: 8.5,
+        ),
       ),
       windDirection: Direction.north_east,
-      pressure: Measurement(
-        unit: Unit.millibars,
-        value: 1200,
+      pressure: MultiMeasurement(
+        system: MeasurementSystem.metric,
+        mainValue: Measurement(
+          unit: Unit.millibars,
+          value: 1200,
+        ),
       ),
-      humidity: Measurement(
-        unit: Unit.percent,
-        value: 60,
+      humidity: MultiMeasurement(
+        mainValue: Measurement(
+          unit: Unit.percent,
+          value: 60,
+        ),
       ),
-      visibility: Measurement(
-        unit: Unit.kilometers,
-        value: 12,
+      visibility: MultiMeasurement(
+        system: MeasurementSystem.metric,
+        mainValue: Measurement(
+          unit: Unit.kilometers,
+          value: 12,
+        ),
       ),
       moonPhase: MoonPhase.new_,
       sunriseTimestamp: Int64(1624366800000),

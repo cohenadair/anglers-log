@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/model/fraction.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
+import 'package:mobile/widgets/chip_list.dart';
 import 'package:mobile/widgets/input_controller.dart';
 import 'package:mobile/widgets/multi_measurement_input.dart';
 import 'package:mobile/widgets/text_input.dart';
@@ -490,5 +491,155 @@ void main() {
       MultiMeasurementInputSpec.waterDepth(context).title!(context),
       "Water Depth",
     );
+  });
+
+  testWidgets("Conversion chips hidden for same system", (tester) async {
+    late MultiMeasurementInputSpec spec;
+    late MultiMeasurementInputController controller;
+    await pumpContext(
+      tester,
+      (context) {
+        spec = MultiMeasurementInputSpec.length(context);
+        controller = spec.newInputController();
+        controller.value = MultiMeasurement(
+          system: spec.system?.call(context),
+          mainValue: Measurement(
+            unit: Unit.centimeters,
+            value: 50,
+          ),
+        );
+
+        return MultiMeasurementInput(
+          spec: spec,
+          controller: controller,
+        );
+      },
+      appManager: appManager,
+    );
+    expect(find.byType(ChipList), findsNothing);
+  });
+
+  testWidgets("Conversion chips hidden for null spec system", (tester) async {
+    late MultiMeasurementInputSpec spec;
+    late MultiMeasurementInputController controller;
+    await pumpContext(
+      tester,
+      (context) {
+        spec = MultiMeasurementInputSpec.airHumidity(context);
+        controller = spec.newInputController();
+        controller.value = MultiMeasurement(
+          mainValue: Measurement(
+            unit: Unit.percent,
+            value: 50,
+          ),
+        );
+
+        return MultiMeasurementInput(
+          spec: spec,
+          controller: controller,
+        );
+      },
+      appManager: appManager,
+    );
+    expect(find.byType(ChipList), findsNothing);
+  });
+
+  testWidgets("Conversion chips hidden for different system and no input",
+      (tester) async {
+    when(appManager.userPreferenceManager.catchLengthSystem)
+        .thenReturn(MeasurementSystem.metric);
+
+    late MultiMeasurementInputSpec spec;
+    late MultiMeasurementInputController controller;
+    await pumpContext(
+      tester,
+      (context) {
+        spec = MultiMeasurementInputSpec.length(context);
+        controller = spec.newInputController();
+
+        return MultiMeasurementInput(
+          spec: spec,
+          controller: controller,
+        );
+      },
+      appManager: appManager,
+    );
+    expect(find.byType(ChipList), findsNothing);
+  });
+
+  testWidgets("Conversion metric to imperial", (tester) async {
+    when(appManager.userPreferenceManager.windSpeedSystem)
+        .thenReturn(MeasurementSystem.imperial_whole);
+
+    var invoked = false;
+    late MultiMeasurementInputSpec spec;
+    late MultiMeasurementInputController controller;
+    await pumpContext(
+      tester,
+      (context) {
+        spec = MultiMeasurementInputSpec.windSpeed(context);
+        controller = spec.newInputController();
+        controller.value = MultiMeasurement(
+          system: MeasurementSystem.metric,
+          mainValue: Measurement(
+            unit: Unit.kilometers_per_hour,
+            value: 5,
+          ),
+        );
+
+        return MultiMeasurementInput(
+          spec: spec,
+          controller: controller,
+          onChanged: () => invoked = true,
+        );
+      },
+      appManager: appManager,
+    );
+
+    expect(find.byType(ChipList), findsOneWidget);
+    expect(find.text("Convert to 3 mph"), findsOneWidget);
+    expect(find.text("Convert to 5 mph"), findsOneWidget);
+
+    await tapAndSettle(tester, find.text("Convert to 3 mph"));
+    expect(invoked, isTrue);
+    expect(find.byType(ChipList), findsNothing);
+  });
+
+  testWidgets("Conversion imperial to metric", (tester) async {
+    when(appManager.userPreferenceManager.windSpeedSystem)
+        .thenReturn(MeasurementSystem.metric);
+
+    var invoked = false;
+    late MultiMeasurementInputSpec spec;
+    late MultiMeasurementInputController controller;
+    await pumpContext(
+      tester,
+      (context) {
+        spec = MultiMeasurementInputSpec.windSpeed(context);
+        controller = spec.newInputController();
+        controller.value = MultiMeasurement(
+          system: MeasurementSystem.imperial_whole,
+          mainValue: Measurement(
+            unit: Unit.miles_per_hour,
+            value: 3,
+          ),
+        );
+
+        return MultiMeasurementInput(
+          spec: spec,
+          controller: controller,
+          onChanged: () => invoked = true,
+        );
+      },
+      appManager: appManager,
+    );
+
+    expect(find.byType(ChipList), findsOneWidget);
+    expect(find.text("Convert to 5 km/h"), findsOneWidget);
+    expect(find.text("Convert to 3 km/h"), findsOneWidget);
+
+    await tapAndSettle(tester, find.text("Convert to 5 km/h"));
+    expect(invoked, isTrue);
+    expect(find.byType(ChipList), findsNothing);
   });
 }

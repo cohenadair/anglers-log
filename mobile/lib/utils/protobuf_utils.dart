@@ -18,6 +18,7 @@ import '../model/fraction.dart';
 import '../model/gen/anglerslog.pb.dart';
 import '../pages/picker_page.dart';
 import '../time_manager.dart';
+import '../user_preference_manager.dart';
 import '../utils/string_utils.dart';
 import 'catch_utils.dart';
 import 'date_time_utils.dart';
@@ -263,6 +264,55 @@ extension Atmospheres on Atmosphere {
 
     return containsTrimmedLowerCase(searchString, filter!);
   }
+
+  bool hasDeprecations() {
+    return hasTemperatureDeprecated() ||
+        hasWindSpeedDeprecated() ||
+        hasPressureDeprecated() ||
+        hasHumidityDeprecated() ||
+        hasVisibilityDeprecated();
+  }
+
+  void clearDeprecations(UserPreferenceManager userPreferenceManager) {
+    if (hasTemperatureDeprecated()) {
+      temperature = MultiMeasurement(
+        system: userPreferenceManager.airTemperatureSystem,
+        mainValue: temperatureDeprecated,
+      );
+      clearTemperatureDeprecated();
+    }
+
+    if (hasWindSpeedDeprecated()) {
+      windSpeed = MultiMeasurement(
+        system: userPreferenceManager.windSpeedSystem,
+        mainValue: windSpeedDeprecated,
+      );
+      clearWindSpeedDeprecated();
+    }
+
+    if (hasPressureDeprecated()) {
+      pressure = MultiMeasurement(
+        system: userPreferenceManager.airPressureSystem,
+        mainValue: pressureDeprecated,
+      );
+      clearPressureDeprecated();
+    }
+
+    if (hasHumidityDeprecated()) {
+      humidity = MultiMeasurement(
+        mainValue: humidityDeprecated,
+      );
+      clearHumidityDeprecated();
+    }
+
+    if (hasVisibilityDeprecated()) {
+      visibility = MultiMeasurement(
+        system: userPreferenceManager.airVisibilitySystem,
+        mainValue: visibilityDeprecated,
+      );
+      clearVisibilityDeprecated();
+    }
+  }
 }
 
 extension Baits on Bait {
@@ -464,7 +514,15 @@ extension MultiMeasurements on MultiMeasurement {
     String? resultFormat,
     String? ifZero,
     bool includeFraction = true,
+    int? mainDecimalPlaces,
   }) {
+    String formatResult(String result) {
+      if (isNotEmpty(resultFormat)) {
+        return format(resultFormat!, [result]);
+      }
+      return result;
+    }
+
     // Inches require a different format than other measurements due to the
     // fraction not having its own unit. The different format only applies
     // when a fraction is set.
@@ -473,12 +531,13 @@ extension MultiMeasurements on MultiMeasurement {
         mainValue.unit == Unit.inches &&
         fraction != Fraction.zero) {
       var unit = mainValue.unit.shorthandDisplayName(context);
-      return "${mainValue.stringValue()} ${fraction.symbol} $unit";
+      return formatResult(
+          "${mainValue.stringValue()} ${fraction.symbol} $unit");
     }
 
     var result = "";
     if (hasMainValue()) {
-      result += mainValue.displayValue(context);
+      result += mainValue.displayValue(context, mainDecimalPlaces);
     }
 
     if (includeFraction &&
@@ -490,14 +549,10 @@ extension MultiMeasurements on MultiMeasurement {
     }
 
     if (isNotEmpty(ifZero) && result == "0") {
-      return ifZero!;
+      return formatResult(ifZero!);
     }
 
-    if (isNotEmpty(resultFormat)) {
-      return format(resultFormat!, [result]);
-    }
-
-    return result;
+    return formatResult(result);
   }
 
   String filterString(BuildContext context) {
@@ -509,6 +564,25 @@ extension MultiMeasurements on MultiMeasurement {
       result += " ${fractionValue.filterString(context)}";
     }
     return result.trim();
+  }
+
+  /// Converts this [MultiMeasurement] to the given [MeasurementSystem] with
+  /// [mainUnit]. All values are converted to their target units.
+  MultiMeasurement convertToSystem(MeasurementSystem system, Unit mainUnit) {
+    var decimal = _toDecimalIfNeeded();
+    var converted =
+        mainUnit.convertFrom(decimal.mainValue.unit, decimal.mainValue.value);
+    return mainUnit.toMultiMeasurement(converted, system);
+  }
+
+  /// Converts this [MultiMeasurement] to the given [MultiMeasurement] system
+  /// and units. Values are remained unchanged; however, whole fraction values
+  /// (i.e. ounces) are converted to decimal and added to the main value where
+  /// required.
+  MultiMeasurement convertUnitsOnly(MultiMeasurement fromMeasurement) {
+    var decimal = _toDecimalIfNeeded();
+    return fromMeasurement.mainValue.unit
+        .toMultiMeasurement(decimal.mainValue.value, fromMeasurement.system);
   }
 
   bool _compare(
@@ -1014,8 +1088,7 @@ extension Units on Unit {
           value: Fraction.fromValue(value % modDivisor).value,
         );
       } else if (fractionalUnit == null) {
-        _log.e(
-            StackTrace.current, "Unit doesn't have a fractional unit: $this");
+        _log.w("Unit doesn't have a fractional unit: $this");
       } else if (fractionalUnit == Unit.ounces) {
         result.fractionValue = Measurement(
           unit: fractionalUnit,
@@ -1053,10 +1126,17 @@ extension Units on Unit {
       // Fahrenheit to celsius.
       case Unit.celsius:
         return (value - 32) * (5 / 9);
+      // Celsius to Fahrenheit.
+      case Unit.fahrenheit:
+        return value * (9 / 5) + 32;
       // Miles to kilometers.
       case Unit.kilometers_per_hour:
       case Unit.kilometers:
         return value * 1.609344;
+      // Kilometers to miles
+      case Unit.miles_per_hour:
+      case Unit.miles:
+        return value / 1.609344;
       // Millibars to pounds per square inch and inch of mercury.
       case Unit.pounds_per_square_inch:
         return value * (unit == Unit.millibars ? 0.0145038 : 0.491154);
@@ -1071,6 +1151,12 @@ extension Units on Unit {
       // Centimeters to inches.
       case Unit.inches:
         return value * 0.393701;
+      // Meters to feet.
+      case Unit.meters:
+        return value * 0.3048;
+      // Feet to meters.
+      case Unit.feet:
+        return value * 3.28084;
       // Pounds and ounces to kilograms.
       case Unit.kilograms:
         return value * (unit == Unit.pounds ? 0.453592 : 0.0283495);

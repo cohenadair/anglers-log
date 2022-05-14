@@ -77,6 +77,17 @@ class CatchManager extends EntityManager<Catch> {
       ),
     );
     _log.d("Added time zones to $numberOfChanges catches");
+
+    // TODO: Remove (#696)
+    numberOfChanges = await updateAll(
+      where: (cat) => cat.hasAtmosphere() && cat.atmosphere.hasDeprecations(),
+      apply: (cat) async => await addOrUpdate(
+        cat..atmosphere.clearDeprecations(_userPreferenceManager),
+        setImages: false,
+        notify: false,
+      ),
+    );
+    _log.d("Updated $numberOfChanges deprecated atmosphere objects");
   }
 
   @override
@@ -306,16 +317,6 @@ class CatchManager extends EntityManager<Catch> {
           (hasValue && filter.containsMultiMeasurement(measurement));
     }
 
-    bool isNumberFilterMeasurementValid(
-      NumberFilter? filter,
-      Measurement measurement,
-      MeasurementSystem? system, {
-      required bool hasValue,
-    }) {
-      return filter == null ||
-          (hasValue && filter.containsMeasurement(measurement, system));
-    }
-
     bool isNumberFilterIntValid(
       NumberFilter? filter,
       int value, {
@@ -399,22 +400,20 @@ class CatchManager extends EntityManager<Catch> {
           hasValue: cat.hasWeight());
       valid &= isNumberFilterIntValid(quantityFilter, cat.quantity,
           hasValue: cat.hasQuantity());
-      valid &= isNumberFilterMeasurementValid(
-          airTemperatureFilter,
-          cat.atmosphere.temperature,
-          _userPreferenceManager.airTemperatureSystem,
+      valid &= isNumberFilterMultiMeasurementValid(
+          airTemperatureFilter, cat.atmosphere.temperature,
           hasValue: cat.hasAtmosphere() && cat.atmosphere.hasTemperature());
-      valid &= isNumberFilterMeasurementValid(airPressureFilter,
-          cat.atmosphere.pressure, _userPreferenceManager.airPressureSystem,
+      valid &= isNumberFilterMultiMeasurementValid(
+          airPressureFilter, cat.atmosphere.pressure,
           hasValue: cat.hasAtmosphere() && cat.atmosphere.hasPressure());
-      valid &= isNumberFilterMeasurementValid(
-          airHumidityFilter, cat.atmosphere.humidity, null,
+      valid &= isNumberFilterMultiMeasurementValid(
+          airHumidityFilter, cat.atmosphere.humidity,
           hasValue: cat.hasAtmosphere() && cat.atmosphere.hasHumidity());
-      valid &= isNumberFilterMeasurementValid(airVisibilityFilter,
-          cat.atmosphere.visibility, _userPreferenceManager.airVisibilitySystem,
+      valid &= isNumberFilterMultiMeasurementValid(
+          airVisibilityFilter, cat.atmosphere.visibility,
           hasValue: cat.hasAtmosphere() && cat.atmosphere.hasVisibility());
-      valid &= isNumberFilterMeasurementValid(windSpeedFilter,
-          cat.atmosphere.windSpeed, _userPreferenceManager.windSpeedSystem,
+      valid &= isNumberFilterMultiMeasurementValid(
+          windSpeedFilter, cat.atmosphere.windSpeed,
           hasValue: cat.hasAtmosphere() && cat.atmosphere.hasWindSpeed());
 
       var dateTime = timeManager.dateTime(cat.timestamp.toInt(), cat.timeZone);

@@ -24,7 +24,7 @@ class AtmosphereWrap extends StatelessWidget {
         icon: Icons.cloud,
         title: atmosphere.temperature.displayValue(
           context,
-          MultiMeasurementInputSpec.airTemperature(context)
+          mainDecimalPlaces: MultiMeasurementInputSpec.airTemperature(context)
               .mainValueDecimalPlaces
               ?.call(context),
         ),
@@ -38,7 +38,7 @@ class AtmosphereWrap extends StatelessWidget {
         icon: Icons.air,
         title: atmosphere.windSpeed.displayValue(
           context,
-          MultiMeasurementInputSpec.windSpeed(context)
+          mainDecimalPlaces: MultiMeasurementInputSpec.windSpeed(context)
               .mainValueDecimalPlaces
               ?.call(context),
         ),
@@ -53,7 +53,7 @@ class AtmosphereWrap extends StatelessWidget {
         icon: Icons.speed,
         title: atmosphere.pressure.displayValue(
           context,
-          MultiMeasurementInputSpec.airPressure(context)
+          mainDecimalPlaces: MultiMeasurementInputSpec.airPressure(context)
               .mainValueDecimalPlaces
               ?.call(context),
         ),
@@ -66,7 +66,7 @@ class AtmosphereWrap extends StatelessWidget {
         icon: Icons.visibility,
         title: atmosphere.visibility.displayValue(
           context,
-          MultiMeasurementInputSpec.airVisibility(context)
+          mainDecimalPlaces: MultiMeasurementInputSpec.airVisibility(context)
               .mainValueDecimalPlaces
               ?.call(context),
         ),
@@ -79,7 +79,7 @@ class AtmosphereWrap extends StatelessWidget {
         icon: CustomIcons.humidity,
         title: atmosphere.humidity.displayValue(
           context,
-          MultiMeasurementInputSpec.airHumidity(context)
+          mainDecimalPlaces: MultiMeasurementInputSpec.airHumidity(context)
               .mainValueDecimalPlaces
               ?.call(context),
         ),

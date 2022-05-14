@@ -28,9 +28,12 @@ void main() {
 
   Atmosphere defaultAtmosphere() {
     return Atmosphere(
-      temperature: Measurement(
-        unit: Unit.celsius,
-        value: 15,
+      temperature: MultiMeasurement(
+        system: MeasurementSystem.metric,
+        mainValue: Measurement(
+          unit: Unit.celsius,
+          value: 15,
+        ),
       ),
     );
   }

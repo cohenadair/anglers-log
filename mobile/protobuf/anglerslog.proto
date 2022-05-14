@@ -121,17 +121,22 @@ message Id {
 }
 
 message Atmosphere {
-  Measurement temperature = 1;
+  Measurement temperature_deprecated = 1;
   repeated SkyCondition sky_conditions = 2;
-  Measurement wind_speed = 3;
+  Measurement wind_speed_deprecated = 3;
   Direction wind_direction = 4;
-  Measurement pressure = 5;
-  Measurement humidity = 6;
-  Measurement visibility = 7;
+  Measurement pressure_deprecated = 5;
+  Measurement humidity_deprecated = 6;
+  Measurement visibility_deprecated = 7;
   MoonPhase moon_phase = 8;
   uint64 sunrise_timestamp = 9;
   uint64 sunset_timestamp = 10;
   string time_zone = 11;
+  MultiMeasurement temperature = 12;
+  MultiMeasurement wind_speed = 13;
+  MultiMeasurement pressure = 14;
+  MultiMeasurement humidity = 15;
+  MultiMeasurement visibility = 16;
 }
 
 message CustomEntity {

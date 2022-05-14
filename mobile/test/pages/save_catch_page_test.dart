@@ -361,27 +361,41 @@ void main() {
         ..quantity = 3
         ..notes = "Some test notes."
         ..atmosphere = Atmosphere(
-          temperature: Measurement(
-            unit: Unit.fahrenheit,
-            value: 58,
+          temperature: MultiMeasurement(
+            system: MeasurementSystem.imperial_whole,
+            mainValue: Measurement(
+              unit: Unit.fahrenheit,
+              value: 58,
+            ),
           ),
           skyConditions: [SkyCondition.cloudy],
-          windSpeed: Measurement(
-            unit: Unit.kilometers_per_hour,
-            value: 6.5,
+          windSpeed: MultiMeasurement(
+            system: MeasurementSystem.metric,
+            mainValue: Measurement(
+              unit: Unit.kilometers_per_hour,
+              value: 6.5,
+            ),
           ),
           windDirection: Direction.north,
-          pressure: Measurement(
-            unit: Unit.pounds_per_square_inch,
-            value: 1000,
+          pressure: MultiMeasurement(
+            system: MeasurementSystem.imperial_decimal,
+            mainValue: Measurement(
+              unit: Unit.pounds_per_square_inch,
+              value: 1000,
+            ),
           ),
-          humidity: Measurement(
-            unit: Unit.percent,
-            value: 50,
+          humidity: MultiMeasurement(
+            mainValue: Measurement(
+              unit: Unit.percent,
+              value: 50,
+            ),
           ),
-          visibility: Measurement(
-            unit: Unit.miles,
-            value: 10,
+          visibility: MultiMeasurement(
+            system: MeasurementSystem.imperial_whole,
+            mainValue: Measurement(
+              unit: Unit.miles,
+              value: 10,
+            ),
           ),
           moonPhase: MoonPhase.full,
           sunriseTimestamp: Int64(10000),
@@ -622,27 +636,41 @@ void main() {
         ..quantity = 3
         ..notes = "Some test notes."
         ..atmosphere = Atmosphere(
-          temperature: Measurement(
-            unit: Unit.fahrenheit,
-            value: 58,
+          temperature: MultiMeasurement(
+            system: MeasurementSystem.imperial_whole,
+            mainValue: Measurement(
+              unit: Unit.fahrenheit,
+              value: 58,
+            ),
           ),
           skyConditions: [SkyCondition.cloudy],
-          windSpeed: Measurement(
-            unit: Unit.kilometers_per_hour,
-            value: 6.5,
+          windSpeed: MultiMeasurement(
+            system: MeasurementSystem.metric,
+            mainValue: Measurement(
+              unit: Unit.kilometers_per_hour,
+              value: 6.5,
+            ),
           ),
           windDirection: Direction.north,
-          pressure: Measurement(
-            unit: Unit.pounds_per_square_inch,
-            value: 1000,
+          pressure: MultiMeasurement(
+            system: MeasurementSystem.imperial_decimal,
+            mainValue: Measurement(
+              unit: Unit.pounds_per_square_inch,
+              value: 1000,
+            ),
           ),
-          humidity: Measurement(
-            unit: Unit.percent,
-            value: 50,
+          humidity: MultiMeasurement(
+            mainValue: Measurement(
+              unit: Unit.percent,
+              value: 50,
+            ),
           ),
-          visibility: Measurement(
-            unit: Unit.miles,
-            value: 10,
+          visibility: MultiMeasurement(
+            system: MeasurementSystem.imperial_whole,
+            mainValue: Measurement(
+              unit: Unit.miles,
+              value: 10,
+            ),
           ),
           moonPhase: MoonPhase.full,
           sunriseTimestamp: Int64(10000),
@@ -1005,7 +1033,7 @@ void main() {
       expect(cat.wasCatchAndRelease, isTrue);
       expect(cat.hasAtmosphere(), isTrue);
       expect(cat.atmosphere.hasTimeZone(), isTrue);
-      expect(cat.atmosphere.temperature.value, 58);
+      expect(cat.atmosphere.temperature.mainValue.value, 58);
       expect(cat.hasTide(), isTrue);
       expect(cat.tide.type, TideType.outgoing);
       expect(cat.tide.hasTimeZone(), isTrue);

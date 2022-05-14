@@ -30,6 +30,8 @@ void main() {
         .thenReturn(MeasurementSystem.metric);
     when(appManager.userPreferenceManager.windSpeedSystem)
         .thenReturn(MeasurementSystem.metric);
+    when(appManager.userPreferenceManager.airPressureImperialUnit)
+        .thenReturn(Unit.millibars);
   });
 
   testWidgets("Initial index when preferences is not null", (tester) async {
@@ -43,6 +45,22 @@ void main() {
 
     var radioInput = findSiblingOfText<RadioInput>(tester, Column, "Length");
     expect(radioInput.initialSelectedIndex, 1);
+  });
+
+  testWidgets("Initial index with system and unit", (tester) async {
+    when(appManager.userPreferenceManager.airPressureSystem)
+        .thenReturn(MeasurementSystem.imperial_decimal);
+    when(appManager.userPreferenceManager.airPressureImperialUnit)
+        .thenReturn(Unit.inch_of_mercury);
+
+    await tester.pumpWidget(Testable(
+      (_) => UnitsPage(),
+      appManager: appManager,
+    ));
+
+    var radioInput =
+        findSiblingOfText<RadioInput>(tester, Column, "Atmospheric Pressure");
+    expect(radioInput.initialSelectedIndex, 0);
   });
 
   testWidgets("Preferences is updated on selection", (tester) async {

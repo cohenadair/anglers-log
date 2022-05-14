@@ -209,16 +209,16 @@ void main() {
 
     var atmosphere = await fetcher.fetch();
     expect(atmosphere, isNotNull);
-    expect(atmosphere!.temperature.value, 74.0);
-    expect(atmosphere.temperature.unit, Unit.fahrenheit);
-    expect(atmosphere.humidity.value, 90.0);
-    expect(atmosphere.windSpeed.value, 4.7);
-    expect(atmosphere.windSpeed.unit, Unit.miles_per_hour);
+    expect(atmosphere!.temperature.mainValue.value, 74.0);
+    expect(atmosphere.temperature.mainValue.unit, Unit.fahrenheit);
+    expect(atmosphere.humidity.mainValue.value, 90.0);
+    expect(atmosphere.windSpeed.mainValue.value, 4.7);
+    expect(atmosphere.windSpeed.mainValue.unit, Unit.miles_per_hour);
     expect(atmosphere.windDirection, Direction.north);
-    expect(atmosphere.pressure.value, 1022.5);
-    expect(atmosphere.pressure.unit, Unit.millibars);
-    expect(atmosphere.visibility.value, 9.9);
-    expect(atmosphere.visibility.unit, Unit.miles);
+    expect(atmosphere.pressure.mainValue.value, 1022.5);
+    expect(atmosphere.pressure.mainValue.unit, Unit.millibars);
+    expect(atmosphere.visibility.mainValue.value, 9.9);
+    expect(atmosphere.visibility.mainValue.unit, Unit.miles);
     expect(atmosphere.sunriseTimestamp.toInt(), 1624962142000); // ms
     expect(atmosphere.sunsetTimestamp.toInt(), 1625014586000); // ms
     expect(atmosphere.moonPhase, MoonPhase.waning_gibbous);
@@ -253,16 +253,16 @@ void main() {
 
     var atmosphere = await fetcher.fetch();
     expect(atmosphere, isNotNull);
-    expect(atmosphere!.temperature.value, 74);
-    expect(atmosphere.temperature.unit, Unit.fahrenheit);
-    expect(atmosphere.humidity.value, 90.0);
-    expect(atmosphere.windSpeed.value, 7.563916800000001);
-    expect(atmosphere.windSpeed.unit, Unit.kilometers_per_hour);
+    expect(atmosphere!.temperature.mainValue.value, 74);
+    expect(atmosphere.temperature.mainValue.unit, Unit.fahrenheit);
+    expect(atmosphere.humidity.mainValue.value, 90.0);
+    expect(atmosphere.windSpeed.mainValue.value, 7.563916800000001);
+    expect(atmosphere.windSpeed.mainValue.unit, Unit.kilometers_per_hour);
     expect(atmosphere.windDirection, Direction.north);
-    expect(atmosphere.pressure.value, 14.8301355);
-    expect(atmosphere.pressure.unit, Unit.pounds_per_square_inch);
-    expect(atmosphere.visibility.value, 15.932505600000002);
-    expect(atmosphere.visibility.unit, Unit.kilometers);
+    expect(atmosphere.pressure.mainValue.value, 14.8301355);
+    expect(atmosphere.pressure.mainValue.unit, Unit.pounds_per_square_inch);
+    expect(atmosphere.visibility.mainValue.value, 15.932505600000002);
+    expect(atmosphere.visibility.mainValue.unit, Unit.kilometers);
     expect(atmosphere.sunriseTimestamp.toInt(), 1624962142000); // ms
     expect(atmosphere.sunsetTimestamp.toInt(), 1625014586000); // ms
     expect(atmosphere.moonPhase, MoonPhase.waning_gibbous);

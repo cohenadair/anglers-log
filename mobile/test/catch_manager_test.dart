@@ -122,6 +122,67 @@ void main() {
         .called(2);
   });
 
+  test("initialize updates catch atmospheres", () async {
+    var catchId1 = randomId();
+    var catchId2 = randomId();
+    var catchId3 = randomId();
+    when(appManager.localDatabaseManager.fetchAll(any)).thenAnswer((_) {
+      return Future.value([
+        {
+          "id": catchId1.uint8List,
+          "bytes": Catch(
+            id: catchId1,
+            timestamp: Int64(10),
+            timeZone: defaultTimeZone,
+            atmosphere: Atmosphere(
+              temperatureDeprecated: Measurement(
+                unit: Unit.celsius,
+                value: 15,
+              ),
+            ),
+          ).writeToBuffer(),
+        },
+        {
+          "id": catchId2.uint8List,
+          "bytes": Catch(
+            id: catchId2,
+            timestamp: Int64(15),
+            timeZone: defaultTimeZone,
+          ).writeToBuffer(),
+        },
+        {
+          "id": catchId3.uint8List,
+          "bytes": Catch(
+            id: catchId3,
+            timestamp: Int64(20),
+            timeZone: defaultTimeZone,
+            atmosphere: Atmosphere(
+              windSpeedDeprecated: Measurement(
+                unit: Unit.kilometers_per_hour,
+                value: 6,
+              ),
+            ),
+          ).writeToBuffer(),
+        },
+      ]);
+    });
+
+    await catchManager.initialize();
+
+    var catches = catchManager.list();
+    expect(catches.length, 3);
+    expect(catches[0].atmosphere.hasTemperatureDeprecated(), isFalse);
+    expect(catches[0].atmosphere.hasTemperature(), isTrue);
+    expect(catches[1].hasAtmosphere(), isFalse);
+    expect(catches[2].atmosphere.hasWindSpeedDeprecated(), isFalse);
+    expect(catches[2].atmosphere.hasWindSpeed(), isTrue);
+
+    verifyNever(
+        appManager.imageManager.save(any, compress: anyNamed("compress")));
+    verify(appManager.localDatabaseManager.insertOrReplace(any, any, any))
+        .called(2);
+  });
+
   test("addOrUpdate, setImages=false", () async {
     await catchManager.addOrUpdate(
       Catch()..id = randomId(),
@@ -495,9 +556,12 @@ void main() {
     await catchManager.addOrUpdate(Catch()
       ..id = randomId()
       ..atmosphere = Atmosphere(
-        temperature: Measurement(
-          unit: Unit.fahrenheit,
-          value: 80,
+        temperature: MultiMeasurement(
+          system: MeasurementSystem.imperial_whole,
+          mainValue: Measurement(
+            unit: Unit.fahrenheit,
+            value: 80,
+          ),
         ),
       ));
     await catchManager.addOrUpdate(Catch()..id = randomId());
@@ -515,9 +579,12 @@ void main() {
     await catchManager.addOrUpdate(Catch()
       ..id = randomId()
       ..atmosphere = Atmosphere(
-        pressure: Measurement(
-          unit: Unit.millibars,
-          value: 1000,
+        pressure: MultiMeasurement(
+          system: MeasurementSystem.metric,
+          mainValue: Measurement(
+            unit: Unit.millibars,
+            value: 1000,
+          ),
         ),
       ));
     await catchManager.addOrUpdate(Catch()..id = randomId());
@@ -535,9 +602,11 @@ void main() {
     await catchManager.addOrUpdate(Catch()
       ..id = randomId()
       ..atmosphere = Atmosphere(
-        humidity: Measurement(
-          unit: Unit.percent,
-          value: 50,
+        humidity: MultiMeasurement(
+          mainValue: Measurement(
+            unit: Unit.percent,
+            value: 50,
+          ),
         ),
       ));
     await catchManager.addOrUpdate(Catch()..id = randomId());
@@ -555,9 +624,12 @@ void main() {
     await catchManager.addOrUpdate(Catch()
       ..id = randomId()
       ..atmosphere = Atmosphere(
-        visibility: Measurement(
-          unit: Unit.kilometers,
-          value: 10.5,
+        visibility: MultiMeasurement(
+          system: MeasurementSystem.metric,
+          mainValue: Measurement(
+            unit: Unit.kilometers,
+            value: 10.5,
+          ),
         ),
       ));
     await catchManager.addOrUpdate(Catch()..id = randomId());
@@ -575,9 +647,12 @@ void main() {
     await catchManager.addOrUpdate(Catch()
       ..id = randomId()
       ..atmosphere = Atmosphere(
-        windSpeed: Measurement(
-          unit: Unit.kilometers_per_hour,
-          value: 9,
+        windSpeed: MultiMeasurement(
+          system: MeasurementSystem.metric,
+          mainValue: Measurement(
+            unit: Unit.kilometers_per_hour,
+            value: 9,
+          ),
         ),
       ));
     await catchManager.addOrUpdate(Catch()..id = randomId());
@@ -1692,9 +1767,12 @@ void main() {
     await catchManager.addOrUpdate(Catch()
       ..id = randomId()
       ..atmosphere = Atmosphere(
-        temperature: Measurement(
-          unit: Unit.fahrenheit,
-          value: 80,
+        temperature: MultiMeasurement(
+          system: MeasurementSystem.imperial_whole,
+          mainValue: Measurement(
+            unit: Unit.fahrenheit,
+            value: 80,
+          ),
         ),
       ));
     await catchManager.addOrUpdate(Catch()..id = randomId());
@@ -1702,9 +1780,12 @@ void main() {
     await catchManager.addOrUpdate(Catch()
       ..id = randomId()
       ..atmosphere = Atmosphere(
-        temperature: Measurement(
-          unit: Unit.fahrenheit,
-          value: 60,
+        temperature: MultiMeasurement(
+          system: MeasurementSystem.imperial_whole,
+          mainValue: Measurement(
+            unit: Unit.fahrenheit,
+            value: 60,
+          ),
         ),
       ));
 
@@ -1751,9 +1832,12 @@ void main() {
     await catchManager.addOrUpdate(Catch()
       ..id = randomId()
       ..atmosphere = Atmosphere(
-        pressure: Measurement(
-          unit: Unit.millibars,
-          value: 1000,
+        pressure: MultiMeasurement(
+          system: MeasurementSystem.metric,
+          mainValue: Measurement(
+            unit: Unit.millibars,
+            value: 1000,
+          ),
         ),
       ));
     await catchManager.addOrUpdate(Catch()..id = randomId());
@@ -1761,9 +1845,12 @@ void main() {
     await catchManager.addOrUpdate(Catch()
       ..id = randomId()
       ..atmosphere = Atmosphere(
-        pressure: Measurement(
-          unit: Unit.millibars,
-          value: 1300,
+        pressure: MultiMeasurement(
+          system: MeasurementSystem.metric,
+          mainValue: Measurement(
+            unit: Unit.millibars,
+            value: 1300,
+          ),
         ),
       ));
 
@@ -1810,9 +1897,11 @@ void main() {
     await catchManager.addOrUpdate(Catch()
       ..id = randomId()
       ..atmosphere = Atmosphere(
-        humidity: Measurement(
-          unit: Unit.percent,
-          value: 80,
+        humidity: MultiMeasurement(
+          mainValue: Measurement(
+            unit: Unit.percent,
+            value: 80,
+          ),
         ),
       ));
     await catchManager.addOrUpdate(Catch()..id = randomId());
@@ -1820,9 +1909,11 @@ void main() {
     await catchManager.addOrUpdate(Catch()
       ..id = randomId()
       ..atmosphere = Atmosphere(
-        humidity: Measurement(
-          unit: Unit.percent,
-          value: 30,
+        humidity: MultiMeasurement(
+          mainValue: Measurement(
+            unit: Unit.percent,
+            value: 30,
+          ),
         ),
       ));
 
@@ -1867,9 +1958,12 @@ void main() {
     await catchManager.addOrUpdate(Catch()
       ..id = randomId()
       ..atmosphere = Atmosphere(
-        visibility: Measurement(
-          unit: Unit.miles,
-          value: 10.5,
+        visibility: MultiMeasurement(
+          system: MeasurementSystem.imperial_whole,
+          mainValue: Measurement(
+            unit: Unit.miles,
+            value: 10.5,
+          ),
         ),
       ));
     await catchManager.addOrUpdate(Catch()..id = randomId());
@@ -1877,9 +1971,12 @@ void main() {
     await catchManager.addOrUpdate(Catch()
       ..id = randomId()
       ..atmosphere = Atmosphere(
-        visibility: Measurement(
-          unit: Unit.miles,
-          value: 8,
+        visibility: MultiMeasurement(
+          system: MeasurementSystem.imperial_whole,
+          mainValue: Measurement(
+            unit: Unit.miles,
+            value: 8,
+          ),
         ),
       ));
 
@@ -1926,9 +2023,12 @@ void main() {
     await catchManager.addOrUpdate(Catch()
       ..id = randomId()
       ..atmosphere = Atmosphere(
-        windSpeed: Measurement(
-          unit: Unit.kilometers_per_hour,
-          value: 10.5,
+        windSpeed: MultiMeasurement(
+          system: MeasurementSystem.metric,
+          mainValue: Measurement(
+            unit: Unit.kilometers_per_hour,
+            value: 10.5,
+          ),
         ),
       ));
     await catchManager.addOrUpdate(Catch()..id = randomId());
@@ -1936,9 +2036,12 @@ void main() {
     await catchManager.addOrUpdate(Catch()
       ..id = randomId()
       ..atmosphere = Atmosphere(
-        windSpeed: Measurement(
-          unit: Unit.kilometers_per_hour,
-          value: 5,
+        windSpeed: MultiMeasurement(
+          system: MeasurementSystem.metric,
+          mainValue: Measurement(
+            unit: Unit.kilometers_per_hour,
+            value: 5,
+          ),
         ),
       ));
 

@@ -1,0 +1,3 @@
+main() {
+  // Nothing to test.
+}

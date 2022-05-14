@@ -473,6 +473,23 @@ void main() {
       expect(measurement.displayValue(await buildContext(tester)), "8 oz");
     });
 
+    testWidgets("displayValue with decimal places", (tester) async {
+      var measurement = MultiMeasurement(
+        system: MeasurementSystem.metric,
+        mainValue: Measurement(
+          unit: Unit.kilometers,
+          value: 5.23457,
+        ),
+      );
+      expect(
+        measurement.displayValue(
+          await buildContext(tester),
+          mainDecimalPlaces: 2,
+        ),
+        "5.23 km",
+      );
+    });
+
     testWidgets("filterString with no values", (tester) async {
       var measurement = MultiMeasurement();
       expect(measurement.filterString(await buildContext(tester)), isEmpty);
@@ -957,6 +974,47 @@ void main() {
           ),
         ),
       );
+    });
+
+    test("convertToSystem", () {
+      var measurement = MultiMeasurement(
+        system: MeasurementSystem.metric,
+        mainValue: Measurement(
+          unit: Unit.kilometers,
+          value: 10,
+        ),
+      );
+      var converted = measurement.convertToSystem(
+          MeasurementSystem.imperial_whole, Unit.miles);
+
+      expect(converted.system, MeasurementSystem.imperial_whole);
+      expect(converted.hasMainValue(), isTrue);
+      expect(converted.mainValue.unit, Unit.miles);
+      expect(converted.mainValue.value, 6.0);
+      expect(converted.hasFractionValue(), isFalse);
+    });
+
+    test("convertUnitsOnly", () {
+      var measurement = MultiMeasurement(
+        system: MeasurementSystem.metric,
+        mainValue: Measurement(
+          unit: Unit.kilometers,
+          value: 10,
+        ),
+      );
+      var newMeasurement = measurement.convertUnitsOnly(MultiMeasurement(
+        system: MeasurementSystem.imperial_whole,
+        mainValue: Measurement(
+          unit: Unit.miles,
+          value: 6,
+        ),
+      ));
+
+      expect(newMeasurement.system, MeasurementSystem.imperial_whole);
+      expect(newMeasurement.hasMainValue(), isTrue);
+      expect(newMeasurement.mainValue.unit, Unit.miles);
+      expect(newMeasurement.mainValue.value, 10);
+      expect(newMeasurement.hasFractionValue(), isFalse);
     });
   });
 
@@ -1608,8 +1666,16 @@ void main() {
       expect(Unit.celsius.convertFrom(Unit.fahrenheit, 32), 0);
     });
 
+    test("Celsius to Fahrenheit", () {
+      expect(Unit.fahrenheit.convertFrom(Unit.celsius, 0), 32);
+    });
+
     test("Miles to kilometers", () {
       expect(Unit.kilometers.convertFrom(Unit.miles, 1), 1.609344);
+    });
+
+    test("Kilometers to miles", () {
+      expect(Unit.miles.convertFrom(Unit.kilometers, 1), 0.621371192237334);
     });
 
     test("Millibars to pounds per square inch", () {
@@ -1650,6 +1716,14 @@ void main() {
 
     test("Inches to centimeters", () {
       expect(Unit.centimeters.convertFrom(Unit.inches, 1), 2.54);
+    });
+
+    test("Meters to feet", () {
+      expect(Unit.feet.convertFrom(Unit.meters, 1), 3.28084);
+    });
+
+    test("Feet to meters", () {
+      expect(Unit.meters.convertFrom(Unit.feet, 1), 0.3048);
     });
 
     test("Centimeters to inches", () {
@@ -1892,27 +1966,41 @@ void main() {
     testWidgets("catchFilterMatchesAtmosphere", (tester) async {
       var context = await buildContext(tester);
       var atmosphere = Atmosphere(
-        temperature: Measurement(
-          unit: Unit.fahrenheit,
-          value: 58,
+        temperature: MultiMeasurement(
+          system: MeasurementSystem.imperial_whole,
+          mainValue: Measurement(
+            unit: Unit.fahrenheit,
+            value: 58,
+          ),
         ),
         skyConditions: [SkyCondition.cloudy],
-        windSpeed: Measurement(
-          unit: Unit.kilometers_per_hour,
-          value: 6.5,
+        windSpeed: MultiMeasurement(
+          system: MeasurementSystem.metric,
+          mainValue: Measurement(
+            unit: Unit.kilometers_per_hour,
+            value: 6.5,
+          ),
         ),
         windDirection: Direction.north,
-        pressure: Measurement(
-          unit: Unit.pounds_per_square_inch,
-          value: 1000,
+        pressure: MultiMeasurement(
+          system: MeasurementSystem.imperial_decimal,
+          mainValue: Measurement(
+            unit: Unit.pounds_per_square_inch,
+            value: 1000,
+          ),
         ),
-        humidity: Measurement(
-          unit: Unit.percent,
-          value: 50,
+        humidity: MultiMeasurement(
+          mainValue: Measurement(
+            unit: Unit.percent,
+            value: 50,
+          ),
         ),
-        visibility: Measurement(
-          unit: Unit.miles,
-          value: 10,
+        visibility: MultiMeasurement(
+          system: MeasurementSystem.imperial_whole,
+          mainValue: Measurement(
+            unit: Unit.miles,
+            value: 10,
+          ),
         ),
         moonPhase: MoonPhase.full,
         sunriseTimestamp: Int64(10000),
@@ -1929,6 +2017,91 @@ void main() {
       expect(atmosphere.matchesFilter(context, "500"), isFalse);
       expect(atmosphere.matchesFilter(context, "37"), isFalse);
       expect(atmosphere.matchesFilter(context, "nothing"), isFalse);
+    });
+
+    test("hasDeprecations", () {
+      expect(Atmosphere().hasDeprecations(), isFalse);
+      expect(
+        Atmosphere(
+          temperatureDeprecated: Measurement(),
+        ).hasDeprecations(),
+        isTrue,
+      );
+      expect(
+        Atmosphere(
+          windSpeedDeprecated: Measurement(),
+        ).hasDeprecations(),
+        isTrue,
+      );
+      expect(
+        Atmosphere(
+          pressureDeprecated: Measurement(),
+        ).hasDeprecations(),
+        isTrue,
+      );
+      expect(
+        Atmosphere(
+          humidityDeprecated: Measurement(),
+        ).hasDeprecations(),
+        isTrue,
+      );
+      expect(
+        Atmosphere(
+          visibilityDeprecated: Measurement(),
+        ).hasDeprecations(),
+        isTrue,
+      );
+    });
+
+    test("clearDeprecations", () {
+      var userPreferenceManager = MockUserPreferenceManager();
+      when(userPreferenceManager.airTemperatureSystem)
+          .thenReturn(MeasurementSystem.metric);
+      when(userPreferenceManager.airPressureSystem)
+          .thenReturn(MeasurementSystem.metric);
+      when(userPreferenceManager.airVisibilitySystem)
+          .thenReturn(MeasurementSystem.metric);
+      when(userPreferenceManager.windSpeedSystem)
+          .thenReturn(MeasurementSystem.metric);
+
+      var atmosphere = Atmosphere(
+        temperatureDeprecated: Measurement(
+          unit: Unit.celsius,
+          value: 15,
+        ),
+        windSpeedDeprecated: Measurement(
+          unit: Unit.kilometers_per_hour,
+          value: 6,
+        ),
+        pressureDeprecated: Measurement(
+          unit: Unit.millibars,
+          value: 1000,
+        ),
+        humidityDeprecated: Measurement(
+          unit: Unit.percent,
+          value: 60,
+        ),
+        visibilityDeprecated: Measurement(
+          unit: Unit.kilometers,
+          value: 8,
+        ),
+      )..clearDeprecations(userPreferenceManager);
+
+      expect(atmosphere.hasTemperatureDeprecated(), isFalse);
+      expect(atmosphere.hasTemperature(), isTrue);
+      expect(atmosphere.hasWindSpeedDeprecated(), isFalse);
+      expect(atmosphere.hasWindSpeed(), isTrue);
+      expect(atmosphere.hasPressureDeprecated(), isFalse);
+      expect(atmosphere.hasPressure(), isTrue);
+      expect(atmosphere.hasHumidityDeprecated(), isFalse);
+      expect(atmosphere.hasHumidity(), isTrue);
+      expect(atmosphere.hasVisibilityDeprecated(), isFalse);
+      expect(atmosphere.hasVisibility(), isTrue);
+
+      verify(userPreferenceManager.airTemperatureSystem).called(1);
+      verify(userPreferenceManager.windSpeedSystem).called(1);
+      verify(userPreferenceManager.airPressureSystem).called(1);
+      verify(userPreferenceManager.airVisibilitySystem).called(1);
     });
   });
 

@@ -63,6 +63,15 @@ void main() {
         .thenAnswer((_) => const Stream.empty());
     when(appManager.subscriptionManager.isPro).thenReturn(false);
 
+    when(appManager.userPreferenceManager.airTemperatureSystem)
+        .thenReturn(MeasurementSystem.metric);
+    when(appManager.userPreferenceManager.airPressureSystem)
+        .thenReturn(MeasurementSystem.metric);
+    when(appManager.userPreferenceManager.airVisibilitySystem)
+        .thenReturn(MeasurementSystem.metric);
+    when(appManager.userPreferenceManager.windSpeedSystem)
+        .thenReturn(MeasurementSystem.metric);
+
     tripManager = TripManager(appManager.app);
   });
 
@@ -424,6 +433,62 @@ void main() {
     expect(reports[0].timeZone, "America/Chicago");
     expect(reports[1].timeZone, "America/New_York");
     expect(reports[2].timeZone, "America/Chicago");
+
+    verify(appManager.localDatabaseManager.insertOrReplace(any, any, any))
+        .called(2);
+  });
+
+  test("initialize updates trip atmospheres", () async {
+    var tripId1 = randomId();
+    var tripId2 = randomId();
+    var tripId3 = randomId();
+    when(appManager.localDatabaseManager.fetchAll(any)).thenAnswer((_) {
+      return Future.value([
+        {
+          "id": tripId1.uint8List,
+          "bytes": Trip(
+            id: tripId1,
+            timeZone: defaultTimeZone,
+            atmosphere: Atmosphere(
+              temperatureDeprecated: Measurement(
+                unit: Unit.celsius,
+                value: 15,
+              ),
+            ),
+          ).writeToBuffer(),
+        },
+        {
+          "id": tripId2.uint8List,
+          "bytes": Trip(
+            id: tripId2,
+            timeZone: defaultTimeZone,
+          ).writeToBuffer(),
+        },
+        {
+          "id": tripId3.uint8List,
+          "bytes": Trip(
+            id: tripId3,
+            timeZone: defaultTimeZone,
+            atmosphere: Atmosphere(
+              windSpeedDeprecated: Measurement(
+                unit: Unit.kilometers_per_hour,
+                value: 6,
+              ),
+            ),
+          ).writeToBuffer(),
+        },
+      ]);
+    });
+
+    await tripManager.initialize();
+
+    var trips = tripManager.list();
+    expect(trips.length, 3);
+    expect(trips[0].atmosphere.hasTemperatureDeprecated(), isFalse);
+    expect(trips[0].atmosphere.hasTemperature(), isTrue);
+    expect(trips[1].hasAtmosphere(), isFalse);
+    expect(trips[2].atmosphere.hasWindSpeedDeprecated(), isFalse);
+    expect(trips[2].atmosphere.hasWindSpeed(), isTrue);
 
     verify(appManager.localDatabaseManager.insertOrReplace(any, any, any))
         .called(2);

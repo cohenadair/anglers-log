@@ -263,10 +263,10 @@ void main() {
     expect(
       catchManager.list().firstWhere((cat) =>
           cat.hasAtmosphere() &&
-          cat.atmosphere.temperature.value == 25 &&
-          cat.atmosphere.temperature.unit == Unit.fahrenheit &&
-          cat.atmosphere.windSpeed.value == 8 &&
-          cat.atmosphere.windSpeed.unit == Unit.miles_per_hour &&
+          cat.atmosphere.temperature.mainValue.value == 25 &&
+          cat.atmosphere.temperature.mainValue.unit == Unit.fahrenheit &&
+          cat.atmosphere.windSpeed.mainValue.value == 8 &&
+          cat.atmosphere.windSpeed.mainValue.unit == Unit.miles_per_hour &&
           cat.atmosphere.skyConditions.first == SkyCondition.cloudy),
       isNotNull,
     );
@@ -388,10 +388,10 @@ void main() {
     expect(
       catchManager.list().firstWhere((cat) =>
           cat.hasAtmosphere() &&
-          cat.atmosphere.temperature.value == 68 &&
-          cat.atmosphere.temperature.unit == Unit.fahrenheit &&
-          cat.atmosphere.windSpeed.value == 4 &&
-          cat.atmosphere.windSpeed.unit == Unit.miles_per_hour &&
+          cat.atmosphere.temperature.mainValue.value == 68 &&
+          cat.atmosphere.temperature.mainValue.unit == Unit.fahrenheit &&
+          cat.atmosphere.windSpeed.mainValue.value == 4 &&
+          cat.atmosphere.windSpeed.mainValue.unit == Unit.miles_per_hour &&
           cat.atmosphere.skyConditions.first == SkyCondition.clear),
       isNotNull,
     );
@@ -923,10 +923,10 @@ void main() {
     var cat = catchManager.list().first;
     expect(
       cat.hasAtmosphere() &&
-          cat.atmosphere.temperature.value == 81 &&
-          cat.atmosphere.temperature.unit == Unit.celsius &&
-          cat.atmosphere.windSpeed.value == 0.47 &&
-          cat.atmosphere.windSpeed.unit == Unit.kilometers_per_hour &&
+          cat.atmosphere.temperature.mainValue.value == 81 &&
+          cat.atmosphere.temperature.mainValue.unit == Unit.celsius &&
+          cat.atmosphere.windSpeed.mainValue.value == 0.47 &&
+          cat.atmosphere.windSpeed.mainValue.unit == Unit.kilometers_per_hour &&
           cat.atmosphere.skyConditions.first == SkyCondition.clear,
       isTrue,
     );

@@ -199,12 +199,12 @@ const Atmosphere$json = const {
   '1': 'Atmosphere',
   '2': const [
     const {
-      '1': 'temperature',
+      '1': 'temperature_deprecated',
       '3': 1,
       '4': 1,
       '5': 11,
       '6': '.anglerslog.Measurement',
-      '10': 'temperature'
+      '10': 'temperatureDeprecated'
     },
     const {
       '1': 'sky_conditions',
@@ -215,12 +215,12 @@ const Atmosphere$json = const {
       '10': 'skyConditions'
     },
     const {
-      '1': 'wind_speed',
+      '1': 'wind_speed_deprecated',
       '3': 3,
       '4': 1,
       '5': 11,
       '6': '.anglerslog.Measurement',
-      '10': 'windSpeed'
+      '10': 'windSpeedDeprecated'
     },
     const {
       '1': 'wind_direction',
@@ -231,28 +231,28 @@ const Atmosphere$json = const {
       '10': 'windDirection'
     },
     const {
-      '1': 'pressure',
+      '1': 'pressure_deprecated',
       '3': 5,
       '4': 1,
       '5': 11,
       '6': '.anglerslog.Measurement',
-      '10': 'pressure'
+      '10': 'pressureDeprecated'
     },
     const {
-      '1': 'humidity',
+      '1': 'humidity_deprecated',
       '3': 6,
       '4': 1,
       '5': 11,
       '6': '.anglerslog.Measurement',
-      '10': 'humidity'
+      '10': 'humidityDeprecated'
     },
     const {
-      '1': 'visibility',
+      '1': 'visibility_deprecated',
       '3': 7,
       '4': 1,
       '5': 11,
       '6': '.anglerslog.Measurement',
-      '10': 'visibility'
+      '10': 'visibilityDeprecated'
     },
     const {
       '1': 'moon_phase',
@@ -277,12 +277,52 @@ const Atmosphere$json = const {
       '10': 'sunsetTimestamp'
     },
     const {'1': 'time_zone', '3': 11, '4': 1, '5': 9, '10': 'timeZone'},
+    const {
+      '1': 'temperature',
+      '3': 12,
+      '4': 1,
+      '5': 11,
+      '6': '.anglerslog.MultiMeasurement',
+      '10': 'temperature'
+    },
+    const {
+      '1': 'wind_speed',
+      '3': 13,
+      '4': 1,
+      '5': 11,
+      '6': '.anglerslog.MultiMeasurement',
+      '10': 'windSpeed'
+    },
+    const {
+      '1': 'pressure',
+      '3': 14,
+      '4': 1,
+      '5': 11,
+      '6': '.anglerslog.MultiMeasurement',
+      '10': 'pressure'
+    },
+    const {
+      '1': 'humidity',
+      '3': 15,
+      '4': 1,
+      '5': 11,
+      '6': '.anglerslog.MultiMeasurement',
+      '10': 'humidity'
+    },
+    const {
+      '1': 'visibility',
+      '3': 16,
+      '4': 1,
+      '5': 11,
+      '6': '.anglerslog.MultiMeasurement',
+      '10': 'visibility'
+    },
   ],
 };
 
 /// Descriptor for `Atmosphere`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List atmosphereDescriptor = $convert.base64Decode(
-    'CgpBdG1vc3BoZXJlEjkKC3RlbXBlcmF0dXJlGAEgASgLMhcuYW5nbGVyc2xvZy5NZWFzdXJlbWVudFILdGVtcGVyYXR1cmUSPwoOc2t5X2NvbmRpdGlvbnMYAiADKA4yGC5hbmdsZXJzbG9nLlNreUNvbmRpdGlvblINc2t5Q29uZGl0aW9ucxI2Cgp3aW5kX3NwZWVkGAMgASgLMhcuYW5nbGVyc2xvZy5NZWFzdXJlbWVudFIJd2luZFNwZWVkEjwKDndpbmRfZGlyZWN0aW9uGAQgASgOMhUuYW5nbGVyc2xvZy5EaXJlY3Rpb25SDXdpbmREaXJlY3Rpb24SMwoIcHJlc3N1cmUYBSABKAsyFy5hbmdsZXJzbG9nLk1lYXN1cmVtZW50UghwcmVzc3VyZRIzCghodW1pZGl0eRgGIAEoCzIXLmFuZ2xlcnNsb2cuTWVhc3VyZW1lbnRSCGh1bWlkaXR5EjcKCnZpc2liaWxpdHkYByABKAsyFy5hbmdsZXJzbG9nLk1lYXN1cmVtZW50Ugp2aXNpYmlsaXR5EjQKCm1vb25fcGhhc2UYCCABKA4yFS5hbmdsZXJzbG9nLk1vb25QaGFzZVIJbW9vblBoYXNlEisKEXN1bnJpc2VfdGltZXN0YW1wGAkgASgEUhBzdW5yaXNlVGltZXN0YW1wEikKEHN1bnNldF90aW1lc3RhbXAYCiABKARSD3N1bnNldFRpbWVzdGFtcBIbCgl0aW1lX3pvbmUYCyABKAlSCHRpbWVab25l');
+    'CgpBdG1vc3BoZXJlEk4KFnRlbXBlcmF0dXJlX2RlcHJlY2F0ZWQYASABKAsyFy5hbmdsZXJzbG9nLk1lYXN1cmVtZW50UhV0ZW1wZXJhdHVyZURlcHJlY2F0ZWQSPwoOc2t5X2NvbmRpdGlvbnMYAiADKA4yGC5hbmdsZXJzbG9nLlNreUNvbmRpdGlvblINc2t5Q29uZGl0aW9ucxJLChV3aW5kX3NwZWVkX2RlcHJlY2F0ZWQYAyABKAsyFy5hbmdsZXJzbG9nLk1lYXN1cmVtZW50UhN3aW5kU3BlZWREZXByZWNhdGVkEjwKDndpbmRfZGlyZWN0aW9uGAQgASgOMhUuYW5nbGVyc2xvZy5EaXJlY3Rpb25SDXdpbmREaXJlY3Rpb24SSAoTcHJlc3N1cmVfZGVwcmVjYXRlZBgFIAEoCzIXLmFuZ2xlcnNsb2cuTWVhc3VyZW1lbnRSEnByZXNzdXJlRGVwcmVjYXRlZBJIChNodW1pZGl0eV9kZXByZWNhdGVkGAYgASgLMhcuYW5nbGVyc2xvZy5NZWFzdXJlbWVudFISaHVtaWRpdHlEZXByZWNhdGVkEkwKFXZpc2liaWxpdHlfZGVwcmVjYXRlZBgHIAEoCzIXLmFuZ2xlcnNsb2cuTWVhc3VyZW1lbnRSFHZpc2liaWxpdHlEZXByZWNhdGVkEjQKCm1vb25fcGhhc2UYCCABKA4yFS5hbmdsZXJzbG9nLk1vb25QaGFzZVIJbW9vblBoYXNlEisKEXN1bnJpc2VfdGltZXN0YW1wGAkgASgEUhBzdW5yaXNlVGltZXN0YW1wEikKEHN1bnNldF90aW1lc3RhbXAYCiABKARSD3N1bnNldFRpbWVzdGFtcBIbCgl0aW1lX3pvbmUYCyABKAlSCHRpbWVab25lEj4KC3RlbXBlcmF0dXJlGAwgASgLMhwuYW5nbGVyc2xvZy5NdWx0aU1lYXN1cmVtZW50Ugt0ZW1wZXJhdHVyZRI7Cgp3aW5kX3NwZWVkGA0gASgLMhwuYW5nbGVyc2xvZy5NdWx0aU1lYXN1cmVtZW50Ugl3aW5kU3BlZWQSOAoIcHJlc3N1cmUYDiABKAsyHC5hbmdsZXJzbG9nLk11bHRpTWVhc3VyZW1lbnRSCHByZXNzdXJlEjgKCGh1bWlkaXR5GA8gASgLMhwuYW5nbGVyc2xvZy5NdWx0aU1lYXN1cmVtZW50UghodW1pZGl0eRI8Cgp2aXNpYmlsaXR5GBAgASgLMhwuYW5nbGVyc2xvZy5NdWx0aU1lYXN1cmVtZW50Ugp2aXNpYmlsaXR5');
 @$core.Deprecated('Use customEntityDescriptor instead')
 const CustomEntity$json = const {
   '1': 'CustomEntity',
