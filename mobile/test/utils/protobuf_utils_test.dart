@@ -481,10 +481,13 @@ void main() {
           value: 5.23457,
         ),
       );
-      expect(measurement.displayValue(
-        await buildContext(tester),
-        mainDecimalPlaces: 2,
-      ), "5.23 km");
+      expect(
+        measurement.displayValue(
+          await buildContext(tester),
+          mainDecimalPlaces: 2,
+        ),
+        "5.23 km",
+      );
     });
 
     testWidgets("filterString with no values", (tester) async {
@@ -2018,21 +2021,36 @@ void main() {
 
     test("hasDeprecations", () {
       expect(Atmosphere().hasDeprecations(), isFalse);
-      expect(Atmosphere(
-        temperatureDeprecated: Measurement(),
-      ).hasDeprecations(), isTrue);
-      expect(Atmosphere(
-        windSpeedDeprecated: Measurement(),
-      ).hasDeprecations(), isTrue);
-      expect(Atmosphere(
-        pressureDeprecated: Measurement(),
-      ).hasDeprecations(), isTrue);
-      expect(Atmosphere(
-        humidityDeprecated: Measurement(),
-      ).hasDeprecations(), isTrue);
-      expect(Atmosphere(
-        visibilityDeprecated: Measurement(),
-      ).hasDeprecations(), isTrue);
+      expect(
+        Atmosphere(
+          temperatureDeprecated: Measurement(),
+        ).hasDeprecations(),
+        isTrue,
+      );
+      expect(
+        Atmosphere(
+          windSpeedDeprecated: Measurement(),
+        ).hasDeprecations(),
+        isTrue,
+      );
+      expect(
+        Atmosphere(
+          pressureDeprecated: Measurement(),
+        ).hasDeprecations(),
+        isTrue,
+      );
+      expect(
+        Atmosphere(
+          humidityDeprecated: Measurement(),
+        ).hasDeprecations(),
+        isTrue,
+      );
+      expect(
+        Atmosphere(
+          visibilityDeprecated: Measurement(),
+        ).hasDeprecations(),
+        isTrue,
+      );
     });
 
     test("clearDeprecations", () {

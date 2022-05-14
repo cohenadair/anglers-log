@@ -236,9 +236,7 @@ class AtmosphereFetcher {
     required Unit imperialUnit,
     required Unit apiUnit,
   }) {
-    var unit = system == MeasurementSystem.metric
-        ? metricUnit
-        : imperialUnit;
+    var unit = system == MeasurementSystem.metric ? metricUnit : imperialUnit;
 
     var convertedValue = unit.convertFrom(apiUnit, value);
     if (system == MeasurementSystem.imperial_whole) {
