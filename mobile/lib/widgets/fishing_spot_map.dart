@@ -767,11 +767,16 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
       }
     }
 
-    setState(() {
-      _activeSymbol = newActiveSymbol;
-      _isDismissingFishingSpot = newIsDismissingFishingSpot;
-      _oldFishingSpot = newOldFishingSpot;
-    });
+    // The map may be refreshed while being disposed (for example, as part of
+    // a listener being notified). Ensure it is still mounted before updating
+    // the state.
+    if (mounted) {
+      setState(() {
+        _activeSymbol = newActiveSymbol;
+        _isDismissingFishingSpot = newIsDismissingFishingSpot;
+        _oldFishingSpot = newOldFishingSpot;
+      });
+    }
   }
 
   void _setupPickerIfNeeded() {
