@@ -607,7 +607,7 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
     );
   }
 
-  FutureOr<bool> _save(Map<Id, dynamic> customFieldValueMap) {
+  FutureOr<bool> _save(Map<Id, dynamic> customFieldValueMap) async {
     // imageNames is set in _catchManager.addOrUpdate
     var cat = Catch()
       ..id = _oldCatch?.id ?? randomId()
@@ -624,7 +624,7 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
       // doesn't save any property changes, such as setting a name or body of
       // water.
       if (!_fishingSpotManager.entityExists(cat.fishingSpotId)) {
-        _fishingSpotManager.addOrUpdate(_fishingSpotController.value!);
+        await _fishingSpotManager.addOrUpdate(_fishingSpotController.value!);
       }
     }
 
@@ -701,7 +701,7 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
       cat.tide.timeZone = cat.timeZone;
     }
 
-    _catchManager.addOrUpdate(
+    await _catchManager.addOrUpdate(
       cat,
       imageFiles: _imagesController.originalFiles,
     );

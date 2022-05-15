@@ -374,6 +374,8 @@ class EntityListenerBuilder extends StatefulWidget {
 }
 
 class _EntityListenerBuilderState extends State<EntityListenerBuilder> {
+  final _log = const Log("EntityListener");
+
   final List<EntityListener<GeneratedMessage>> _listeners = [];
   final List<StreamSubscription> _streamSubscriptions = [];
 
@@ -445,6 +447,14 @@ class _EntityListenerBuilderState extends State<EntityListenerBuilder> {
   }
 
   void _notify(VoidCallback? callback) {
+    // Because some callbacks will do async work, it's possible for this
+    // widget to be disposed before the callback is invoked. If this widget
+    // has already been unmounted, there's no need to notify listeners.
+    if (!mounted) {
+      _log.w("No longer mounted, not notifying listeners");
+      return;
+    }
+
     if (widget.changesUpdatesState) {
       setState(() => callback?.call());
     } else {
