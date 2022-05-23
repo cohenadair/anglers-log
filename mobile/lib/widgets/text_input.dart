@@ -10,7 +10,7 @@ class TextInput extends StatefulWidget {
   static const int _inputLimitDefault = 40;
   static const int _inputLimitName = _inputLimitDefault;
   static const int _inputLimitNumber = 10;
-  static const int _inputLimitDescription = 140;
+  static const int _inputLimitDescription = 1000;
   static const int _inputLimitEmail = 64;
 
   final String? initialValue;
