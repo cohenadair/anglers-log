@@ -20,8 +20,8 @@ void main() {
     await pumpContext(
       tester,
       (_) => const FloatingContainer(
-        child: SizedBox(width: 100, height: 100),
         onTap: null,
+        child: SizedBox(width: 100, height: 100),
       ),
     );
     expect(find.byType(InkWell), findsNothing);
@@ -31,8 +31,8 @@ void main() {
     await pumpContext(
       tester,
       (_) => const FloatingContainer(
-        child: SizedBox(width: 100, height: 100),
         isCircle: true,
+        child: SizedBox(width: 100, height: 100),
       ),
     );
     expect(
@@ -45,8 +45,8 @@ void main() {
     await pumpContext(
       tester,
       (_) => const FloatingContainer(
-        child: SizedBox(width: 100, height: 100),
         isCircle: false,
+        child: SizedBox(width: 100, height: 100),
       ),
     );
     expect(
@@ -59,8 +59,8 @@ void main() {
     await pumpContext(
       tester,
       (_) => const FloatingContainer(
-        child: SizedBox(width: 100, height: 100),
         isTransparent: true,
+        child: SizedBox(width: 100, height: 100),
       ),
     );
     expect(findFirst<Container>(tester).decoration, isNull);
@@ -71,8 +71,8 @@ void main() {
     await pumpContext(
       tester,
       (_) => const FloatingContainer(
-        child: SizedBox(width: 100, height: 100),
         isTransparent: false,
+        child: SizedBox(width: 100, height: 100),
       ),
     );
     expect(findFirst<Container>(tester).decoration, isNotNull);

@@ -14,10 +14,10 @@ import 'units_page.dart';
 
 class SettingsPage extends StatefulWidget {
   @override
-  _SettingsPageState createState() => _SettingsPageState();
+  SettingsPageState createState() => SettingsPageState();
 }
 
-class _SettingsPageState extends State<SettingsPage> {
+class SettingsPageState extends State<SettingsPage> {
   UserPreferenceManager get _userPreferenceManager =>
       UserPreferenceManager.of(context);
 

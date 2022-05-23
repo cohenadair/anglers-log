@@ -147,10 +147,10 @@ class Chart<T> extends StatefulWidget {
   }
 
   @override
-  _ChartState<T> createState() => _ChartState<T>();
+  ChartState<T> createState() => ChartState<T>();
 }
 
-class _ChartState<T> extends State<Chart<T>> {
+class ChartState<T> extends State<Chart<T>> {
   static const _legendIndicatorSize = 15.0;
   static const _legendRadius = 4.0;
   static const _rowHeight = 20.0;

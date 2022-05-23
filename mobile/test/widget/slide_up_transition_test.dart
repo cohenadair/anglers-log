@@ -42,9 +42,9 @@ class __TestSlideState extends State<_TestSlide> {
           onPressed: () => setState(() => _isVisible = false),
         ),
         SlideUpTransition(
-          child: const Text("Text"),
           isVisible: _isVisible,
           onDismissed: widget.onDismissed,
+          child: const Text("Text"),
         ),
       ],
     );

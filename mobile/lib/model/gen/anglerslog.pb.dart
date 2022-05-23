@@ -3,7 +3,7 @@
 //  source: anglerslog.proto
 //
 // @dart = 2.12
-// ignore_for_file: annotate_overrides,camel_case_types,unnecessary_const,non_constant_identifier_names,library_prefixes,unused_import,unused_shown_name,return_of_invalid_type,unnecessary_this,prefer_final_fields
+// ignore_for_file: annotate_overrides,camel_case_types,constant_identifier_names,directives_ordering,library_prefixes,non_constant_identifier_names,prefer_final_fields,return_of_invalid_type,unnecessary_const,unnecessary_import,unnecessary_this,unused_import,unused_shown_name
 
 import 'dart:core' as $core;
 
@@ -103,7 +103,8 @@ class Atmosphere extends $pb.GeneratedMessage {
             : 'skyConditions',
         $pb.PbFieldType.PE,
         valueOf: SkyCondition.valueOf,
-        enumValues: SkyCondition.values)
+        enumValues: SkyCondition.values,
+        defaultEnumValue: SkyCondition.sky_condition_all)
     ..aOM<Measurement>(
         3,
         const $core.bool.fromEnvironment('protobuf.omit_field_names')
@@ -2590,7 +2591,8 @@ class Report extends $pb.GeneratedMessage {
             : 'periods',
         $pb.PbFieldType.PE,
         valueOf: Period.valueOf,
-        enumValues: Period.values)
+        enumValues: Period.values,
+        defaultEnumValue: Period.period_all)
     ..aOB(
         13,
         const $core.bool.fromEnvironment('protobuf.omit_field_names')
@@ -2608,7 +2610,8 @@ class Report extends $pb.GeneratedMessage {
             : 'seasons',
         $pb.PbFieldType.PE,
         valueOf: Season.valueOf,
-        enumValues: Season.values)
+        enumValues: Season.values,
+        defaultEnumValue: Season.season_all)
     ..pc<Id>(
         16,
         const $core.bool.fromEnvironment('protobuf.omit_field_names')
@@ -2683,7 +2686,8 @@ class Report extends $pb.GeneratedMessage {
             : 'windDirections',
         $pb.PbFieldType.PE,
         valueOf: Direction.valueOf,
-        enumValues: Direction.values)
+        enumValues: Direction.values,
+        defaultEnumValue: Direction.direction_all)
     ..pc<SkyCondition>(
         28,
         const $core.bool.fromEnvironment('protobuf.omit_field_names')
@@ -2691,7 +2695,8 @@ class Report extends $pb.GeneratedMessage {
             : 'skyConditions',
         $pb.PbFieldType.PE,
         valueOf: SkyCondition.valueOf,
-        enumValues: SkyCondition.values)
+        enumValues: SkyCondition.values,
+        defaultEnumValue: SkyCondition.sky_condition_all)
     ..pc<MoonPhase>(
         29,
         const $core.bool.fromEnvironment('protobuf.omit_field_names')
@@ -2699,7 +2704,8 @@ class Report extends $pb.GeneratedMessage {
             : 'moonPhases',
         $pb.PbFieldType.PE,
         valueOf: MoonPhase.valueOf,
-        enumValues: MoonPhase.values)
+        enumValues: MoonPhase.values,
+        defaultEnumValue: MoonPhase.moon_phase_all)
     ..pc<TideType>(
         30,
         const $core.bool.fromEnvironment('protobuf.omit_field_names')
@@ -2707,7 +2713,8 @@ class Report extends $pb.GeneratedMessage {
             : 'tideTypes',
         $pb.PbFieldType.PE,
         valueOf: TideType.valueOf,
-        enumValues: TideType.values)
+        enumValues: TideType.values,
+        defaultEnumValue: TideType.tide_type_all)
     ..pc<Id>(
         31,
         const $core.bool.fromEnvironment('protobuf.omit_field_names')
@@ -4295,4 +4302,4 @@ class Tide extends $pb.GeneratedMessage {
   void clearTimeZone() => clearField(4);
 }
 
-// ignore_for_file: undefined_named_parameter,constant_identifier_names
+// ignore_for_file: undefined_named_parameter,no_leading_underscores_for_local_identifiers

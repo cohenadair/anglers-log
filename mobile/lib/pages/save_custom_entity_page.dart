@@ -31,10 +31,10 @@ class SaveCustomEntityPage extends StatefulWidget {
   });
 
   @override
-  _SaveCustomEntityPageState createState() => _SaveCustomEntityPageState();
+  SaveCustomEntityPageState createState() => SaveCustomEntityPageState();
 }
 
-class _SaveCustomEntityPageState extends State<SaveCustomEntityPage> {
+class SaveCustomEntityPageState extends State<SaveCustomEntityPage> {
   late final TextInputController _nameController;
   final _descriptionController = TextInputController();
   final _dataTypeController = InputController<CustomEntity_Type>();

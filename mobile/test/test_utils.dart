@@ -90,11 +90,11 @@ class DidUpdateWidgetTester<T> extends StatefulWidget {
   const DidUpdateWidgetTester(this.controller, this.childBuilder);
 
   @override
-  _DidUpdateWidgetTesterState<T> createState() =>
-      _DidUpdateWidgetTesterState<T>();
+  DidUpdateWidgetTesterState<T> createState() =>
+      DidUpdateWidgetTesterState<T>();
 }
 
-class _DidUpdateWidgetTesterState<T> extends State<DidUpdateWidgetTester<T>> {
+class DidUpdateWidgetTesterState<T> extends State<DidUpdateWidgetTester<T>> {
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -355,15 +355,15 @@ Future<Uint8List?> stubImage(
   });
 
   when(appManager.imageManager.image(
-    any,
     fileName: anyName ? anyNamed("fileName") : name,
     size: anyNamed("size"),
+    devicePixelRatio: anyNamed("devicePixelRatio"),
   )).thenAnswer((_) => Future.value(image));
 
   when(appManager.imageManager.images(
-    any,
     imageNames: anyName ? anyNamed("imageNames") : [name],
     size: anyNamed("size"),
+    devicePixelRatio: anyNamed("devicePixelRatio"),
   )).thenAnswer((_) => Future.value({file!: image!}));
 
   return image;
@@ -388,9 +388,9 @@ Future<List<Uint8List>> stubImages(
   });
 
   when(appManager.imageManager.images(
-    any,
     imageNames: anyNamed("imageNames"),
     size: anyNamed("size"),
+    devicePixelRatio: anyNamed("devicePixelRatio"),
   )).thenAnswer((invocation) {
     var length = invocation.namedArguments[const Symbol("imageNames")].length;
     return Future.value({for (var i = 0; i < length; i++) files[i]: images[i]});

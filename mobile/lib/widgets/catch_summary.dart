@@ -140,7 +140,7 @@ class _CatchSummaryState<T> extends State<CatchSummary<T>> {
     );
   }
 
-  Iterable<_CatchSummaryReportModel<T>> get _models => _report.models;
+  Iterable<CatchSummaryReportModel<T>> get _models => _report.models;
 
   Widget _buildDateRangePicker() {
     if (widget.isStatic) {
@@ -162,7 +162,7 @@ class _CatchSummaryState<T> extends State<CatchSummary<T>> {
     }
 
     return ListPickerInput(
-      value: widget.picker!.nameBuilder(context, _entity!),
+      value: widget.picker!.nameBuilder(context, _entity as T),
       onTap: () {
         push(
           context,
@@ -202,7 +202,7 @@ class _CatchSummaryState<T> extends State<CatchSummary<T>> {
     );
   }
 
-  TileItem _buildCatchesTileItem(_CatchSummaryReportModel model) {
+  TileItem _buildCatchesTileItem(CatchSummaryReportModel model) {
     var quantity = model.catchIds.length;
     return TileItem(
       title: quantity.toString(),
@@ -683,7 +683,7 @@ class CatchSummaryReport<T> {
   /// [Catch.atmosphere] falls within this filter.
   final NumberFilter? windSpeedFilter;
 
-  final List<_CatchSummaryReportModel<T>> _models = [];
+  final List<CatchSummaryReportModel<T>> _models = [];
 
   int _msSinceLastCatch = 0;
   Catch? _lastCatch;
@@ -710,7 +710,7 @@ class CatchSummaryReport<T> {
   WaterClarityManager get _waterClarityManager =>
       WaterClarityManager.of(context);
 
-  Iterable<_CatchSummaryReportModel<T>> get models => List.of(_models);
+  Iterable<CatchSummaryReportModel<T>> get models => List.of(_models);
 
   Catch? get lastCatch => _lastCatch?.deepCopy();
 
@@ -820,7 +820,7 @@ class CatchSummaryReport<T> {
         windSpeedFilter: windSpeedFilter,
       );
 
-      _models.add(_CatchSummaryReportModel<T>(
+      _models.add(CatchSummaryReportModel<T>(
         context: context,
         dateRange: dateRange,
         catches: catches,
@@ -838,7 +838,7 @@ class CatchSummaryReport<T> {
   }
 
   List<Series<E>> toSeries<E>(
-      Map<E, int> Function(_CatchSummaryReportModel<T>) perEntity) {
+      Map<E, int> Function(CatchSummaryReportModel<T>) perEntity) {
     return _models
         .map((model) => Series<E>(perEntity(model), model.dateRange))
         .toList();
@@ -923,7 +923,7 @@ class CatchSummaryReport<T> {
   }
 }
 
-class _CatchSummaryReportModel<T> {
+class CatchSummaryReportModel<T> {
   final BuildContext context;
   final DateRange dateRange;
 
@@ -942,7 +942,7 @@ class _CatchSummaryReportModel<T> {
   final Map<TideType, int> perTideType = {};
   final Map<WaterClarity, int> perWaterClarity = {};
 
-  _CatchSummaryReportModel({
+  CatchSummaryReportModel({
     required this.context,
     required this.dateRange,
     Iterable<Catch> catches = const [],

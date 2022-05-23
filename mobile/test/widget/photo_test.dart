@@ -133,9 +133,9 @@ void main() {
 
     expect(
       verify(appManager.imageManager.image(
-        any,
         fileName: anyNamed("fileName"),
         size: captureAnyNamed("size"),
+        devicePixelRatio: anyNamed("devicePixelRatio"),
       )).captured.single,
       50,
     );
@@ -154,9 +154,9 @@ void main() {
 
     expect(
       verify(appManager.imageManager.image(
-        any,
         fileName: anyNamed("fileName"),
         size: captureAnyNamed("size"),
+        devicePixelRatio: anyNamed("devicePixelRatio"),
       )).captured.single,
       50,
     );

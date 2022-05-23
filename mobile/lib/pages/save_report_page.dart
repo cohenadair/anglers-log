@@ -48,10 +48,10 @@ class SaveReportPage extends StatefulWidget {
   const SaveReportPage.edit(this.oldReport) : assert(oldReport != null);
 
   @override
-  _SaveReportPageState createState() => _SaveReportPageState();
+  SaveReportPageState createState() => SaveReportPageState();
 }
 
-class _SaveReportPageState extends State<SaveReportPage> {
+class SaveReportPageState extends State<SaveReportPage> {
   static const Key _keySummaryStart = ValueKey(0);
   static const Key _keyComparisonStart = ValueKey(1);
 

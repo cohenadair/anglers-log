@@ -136,10 +136,10 @@ class ImagePickerPage extends StatefulWidget {
         );
 
   @override
-  _ImagePickerPageState createState() => _ImagePickerPageState();
+  ImagePickerPageState createState() => ImagePickerPageState();
 }
 
-class _ImagePickerPageState extends State<ImagePickerPage> {
+class ImagePickerPageState extends State<ImagePickerPage> {
   static const double _pickedImageOpacity = 0.6;
   static const double _normalImageOpacity = 1.0;
   static const double _selectedPadding = 2.0;
@@ -651,7 +651,7 @@ class _ImagePickerPageState extends State<ImagePickerPage> {
       // Show error in a post frame callback so the SnackBar animation is
       // correct. This must be done after the navigation, plus any setState
       // calls from onImagesPicked.
-      WidgetsBinding.instance?.addPostFrameCallback((_) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
         showErrorSnackBar(
           context,
           widget.allowsMultipleSelection

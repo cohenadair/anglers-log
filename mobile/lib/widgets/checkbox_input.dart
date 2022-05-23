@@ -132,10 +132,10 @@ class PaddedCheckbox extends StatefulWidget {
   });
 
   @override
-  _PaddedCheckboxState createState() => _PaddedCheckboxState();
+  PaddedCheckboxState createState() => PaddedCheckboxState();
 }
 
-class _PaddedCheckboxState extends State<PaddedCheckbox> {
+class PaddedCheckboxState extends State<PaddedCheckbox> {
   late bool _checked;
 
   @override

@@ -41,10 +41,10 @@ import 'species_list_page.dart';
 
 class StatsPage extends StatefulWidget {
   @override
-  _StatsPageState createState() => _StatsPageState();
+  StatsPageState createState() => StatsPageState();
 }
 
-class _StatsPageState extends State<StatsPage> {
+class StatsPageState extends State<StatsPage> {
   static const _log = Log("StatsPage");
 
   final _scrollController = ScrollController();

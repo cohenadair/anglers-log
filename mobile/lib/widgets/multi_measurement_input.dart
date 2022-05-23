@@ -383,7 +383,7 @@ class __InchesDropdownInputState extends State<_InchesDropdownInput> {
       value: _value,
       items: Fraction.all
           .map((f) =>
-              DropdownMenuItem<Fraction>(child: Text(f.symbol), value: f))
+              DropdownMenuItem<Fraction>(value: f, child: Text(f.symbol)))
           .toList(),
       onChanged: (fraction) {
         setState(() => _value = fraction ?? Fraction.zero);

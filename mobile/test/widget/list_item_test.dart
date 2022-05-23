@@ -122,9 +122,9 @@ void main() {
       await tester.pumpWidget(
         Testable(
           (_) => ManageableListItem(
-            child: const Text("Child"),
             editing: true,
             onTapDeleteButton: () => false,
+            child: const Text("Child"),
           ),
         ),
       );
@@ -149,10 +149,10 @@ void main() {
       await tester.pumpWidget(
         Testable(
           (_) => ManageableListItem(
-            child: const Text("Child"),
             deleteMessageBuilder: (_) => const Text("A delete message."),
             onConfirmDelete: () {},
             editing: true,
+            child: const Text("Child"),
           ),
         ),
       );
@@ -167,10 +167,10 @@ void main() {
       await tester.pumpWidget(
         Testable(
           (_) => ManageableListItem(
-            child: const Text("Child"),
             deleteMessageBuilder: (_) => const Text("A delete message."),
             onConfirmDelete: () => confirmed = true,
             editing: true,
+            child: const Text("Child"),
           ),
         ),
       );
@@ -187,11 +187,11 @@ void main() {
       await pumpContext(
         tester,
         (_) => ManageableListItem(
-          child: const Text("Child"),
           onTapDeleteButton: null,
           deleteMessageBuilder: null,
           onConfirmDelete: () => {},
           editing: true,
+          child: const Text("Child"),
         ),
       );
       expect(find.byIcon(Icons.delete), findsNothing);
@@ -202,11 +202,11 @@ void main() {
       await pumpContext(
         tester,
         (_) => ManageableListItem(
-          child: const Text("Child"),
           onTapDeleteButton: null,
           deleteMessageBuilder: (_) => const Text("A delete message."),
           onConfirmDelete: null,
           editing: true,
+          child: const Text("Child"),
         ),
       );
       expect(find.byIcon(Icons.delete), findsNothing);
@@ -217,9 +217,9 @@ void main() {
       await tester.pumpWidget(
         Testable(
           (_) => ManageableListItem(
-            child: const Text("Child"),
             onTapDeleteButton: () => tapped = true,
             editing: true,
+            child: const Text("Child"),
           ),
         ),
       );
@@ -233,10 +233,10 @@ void main() {
       await tester.pumpWidget(
         Testable(
           (_) => ManageableListItem(
-            child: const Text("Child"),
             onTapDeleteButton: () => false,
             editing: true,
             trailing: const Icon(Icons.style),
+            child: const Text("Child"),
           ),
         ),
       );
@@ -255,9 +255,9 @@ void main() {
       await tester.pumpWidget(
         Testable(
           (_) => ManageableListItem(
-            child: const Text("Child"),
             onTapDeleteButton: () => false,
             trailing: const Icon(Icons.style),
+            child: const Text("Child"),
           ),
         ),
       );

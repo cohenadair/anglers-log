@@ -3,7 +3,7 @@
 //  source: anglerslog.proto
 //
 // @dart = 2.12
-// ignore_for_file: annotate_overrides,camel_case_types,unnecessary_const,non_constant_identifier_names,library_prefixes,unused_import,unused_shown_name,return_of_invalid_type,unnecessary_this,prefer_final_fields,deprecated_member_use_from_same_package
+// ignore_for_file: annotate_overrides,camel_case_types,constant_identifier_names,deprecated_member_use_from_same_package,directives_ordering,library_prefixes,non_constant_identifier_names,prefer_final_fields,return_of_invalid_type,unnecessary_const,unnecessary_import,unnecessary_this,unused_import,unused_shown_name
 
 import 'dart:core' as $core;
 import 'dart:convert' as $convert;
@@ -1356,4 +1356,4 @@ const Tide$json = const {
 /// Descriptor for `Tide`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List tideDescriptor = $convert.base64Decode(
     'CgRUaWRlEigKBHR5cGUYASABKA4yFC5hbmdsZXJzbG9nLlRpZGVUeXBlUgR0eXBlEiMKDWxvd190aW1lc3RhbXAYAiABKARSDGxvd1RpbWVzdGFtcBIlCg5oaWdoX3RpbWVzdGFtcBgDIAEoBFINaGlnaFRpbWVzdGFtcBIbCgl0aW1lX3pvbmUYBCABKAlSCHRpbWVab25l');
-// ignore_for_file: undefined_named_parameter,constant_identifier_names
+// ignore_for_file: undefined_named_parameter,no_leading_underscores_for_local_identifiers

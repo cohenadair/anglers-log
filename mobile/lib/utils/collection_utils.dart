@@ -20,7 +20,7 @@ Map<T, U> sortedMap<T, U>(
 
   var sortedMap = <T, U>{};
   for (var key in sortedKeys) {
-    sortedMap[key] = map[key]!;
+    sortedMap[key] = map[key] as U;
   }
 
   return sortedMap;

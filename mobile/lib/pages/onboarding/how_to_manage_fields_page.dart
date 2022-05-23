@@ -20,10 +20,10 @@ class HowToManageFieldsPage extends StatefulWidget {
   });
 
   @override
-  _HowToManageFieldsPageState createState() => _HowToManageFieldsPageState();
+  HowToManageFieldsPageState createState() => HowToManageFieldsPageState();
 }
 
-class _HowToManageFieldsPageState extends State<HowToManageFieldsPage> {
+class HowToManageFieldsPageState extends State<HowToManageFieldsPage> {
   static const _menuTimerDuration = Duration(seconds: 2);
 
   // Allows showing/hiding popup menu programmatically.

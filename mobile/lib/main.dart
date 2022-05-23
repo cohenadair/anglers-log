@@ -24,7 +24,7 @@ import 'user_preference_manager.dart';
 import 'wrappers/services_wrapper.dart';
 
 void main() {
-  const _log = Log("main");
+  const log = Log("main");
 
   void killReleaseApp() {
     if (kReleaseMode) {
@@ -54,7 +54,7 @@ void main() {
     FlutterError.onError = (details) {
       FlutterError.presentError(details);
       FirebaseCrashlytics.instance.recordFlutterError(details);
-      _log.d("Flutter error: $details");
+      log.d("Flutter error: $details");
       killReleaseApp();
     };
 
@@ -62,13 +62,13 @@ void main() {
     Isolate.current.addErrorListener(RawReceivePort((pair) async {
       await FirebaseCrashlytics.instance
           .recordError(pair.first, pair.last, fatal: true);
-      _log.d("Isolate error: ${pair.last}");
+      log.d("Isolate error: ${pair.last}");
       killReleaseApp();
     }).sendPort);
 
     // Restrict orientation to portrait for devices with a small width. A width
     // of 740 is less than the smallest iPad, and most Android tablets.
-    var size = MediaQueryData.fromWindow(WidgetsBinding.instance!.window).size;
+    var size = MediaQueryData.fromWindow(WidgetsBinding.instance.window).size;
     if (min(size.width, size.height) < 740) {
       await SystemChrome.setPreferredOrientations(
           [DeviceOrientation.portraitUp]);
@@ -78,7 +78,7 @@ void main() {
   }, (error, stack) {
     // Catch zoned errors (i.e. calls to platform channels).
     FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
-    _log.d("Zoned error: $stack");
+    log.d("Zoned error: $stack");
     killReleaseApp();
   });
 }
@@ -89,10 +89,10 @@ class AnglersLog extends StatefulWidget {
   const AnglersLog(this.appManager);
 
   @override
-  _AnglersLogState createState() => _AnglersLogState();
+  AnglersLogState createState() => AnglersLogState();
 }
 
-class _AnglersLogState extends State<AnglersLog> {
+class AnglersLogState extends State<AnglersLog> {
   static const _minTextScale = 1.0;
   static const _maxTextScale = 1.35;
 

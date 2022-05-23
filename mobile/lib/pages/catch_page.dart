@@ -37,10 +37,10 @@ class CatchPage extends StatefulWidget {
   const CatchPage(this.cat);
 
   @override
-  _CatchPageState createState() => _CatchPageState();
+  CatchPageState createState() => CatchPageState();
 }
 
-class _CatchPageState extends State<CatchPage> {
+class CatchPageState extends State<CatchPage> {
   AnglerManager get _anglerManager => AnglerManager.of(context);
 
   BaitManager get _baitManager => BaitManager.of(context);

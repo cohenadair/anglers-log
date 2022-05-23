@@ -19,10 +19,10 @@ class SlideUpTransition extends StatefulWidget {
   });
 
   @override
-  _SlideUpTransitionState createState() => _SlideUpTransitionState();
+  SlideUpTransitionState createState() => SlideUpTransitionState();
 }
 
-class _SlideUpTransitionState extends State<SlideUpTransition>
+class SlideUpTransitionState extends State<SlideUpTransition>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<Offset> _offset;

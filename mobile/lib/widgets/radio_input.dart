@@ -26,10 +26,10 @@ class RadioInput extends StatefulWidget {
   });
 
   @override
-  _RadioInputState createState() => _RadioInputState();
+  RadioInputState createState() => RadioInputState();
 }
 
-class _RadioInputState extends State<RadioInput> {
+class RadioInputState extends State<RadioInput> {
   late int? _selectedIndex;
 
   @override

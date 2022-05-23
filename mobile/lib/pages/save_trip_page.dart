@@ -46,10 +46,10 @@ class SaveTripPage extends StatefulWidget {
   const SaveTripPage.edit(this.oldTrip);
 
   @override
-  _SaveTripPageState createState() => _SaveTripPageState();
+  SaveTripPageState createState() => SaveTripPageState();
 }
 
-class _SaveTripPageState extends State<SaveTripPage> {
+class SaveTripPageState extends State<SaveTripPage> {
   // Unique IDs for each field. These are stored in the database and should not
   // be changed.
   static final _idStartTimestamp =

@@ -24,10 +24,10 @@ class SaveFishingSpotPage extends StatefulWidget {
   const SaveFishingSpotPage.edit(this.oldFishingSpot);
 
   @override
-  _SaveFishingSpotPageState createState() => _SaveFishingSpotPageState();
+  SaveFishingSpotPageState createState() => SaveFishingSpotPageState();
 }
 
-class _SaveFishingSpotPageState extends State<SaveFishingSpotPage> {
+class SaveFishingSpotPageState extends State<SaveFishingSpotPage> {
   final _bodyOfWaterController = IdInputController();
   final _nameController = TextInputController();
   final _imageController = InputController<PickedImage>();

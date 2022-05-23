@@ -11,10 +11,10 @@ import '../widgets/add_anything_bottom_sheet.dart';
 
 class MainPage extends StatefulWidget {
   @override
-  _MainPageState createState() => _MainPageState();
+  MainPageState createState() => MainPageState();
 }
 
-class _MainPageState extends State<MainPage> {
+class MainPageState extends State<MainPage> {
   int _currentBarItem = 1; // Default to the "Catches" tab.
   late List<_BarItemModel> _navItems;
 

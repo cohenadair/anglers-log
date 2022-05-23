@@ -202,7 +202,6 @@ Widget _buildDialogButton({
   bool enabled = true,
 }) {
   return TextButton(
-    child: Text(name.toUpperCase()),
     style: TextButton.styleFrom(
       primary: textColor,
     ),
@@ -214,5 +213,6 @@ Widget _buildDialogButton({
             }
           }
         : null,
+    child: Text(name.toUpperCase()),
   );
 }

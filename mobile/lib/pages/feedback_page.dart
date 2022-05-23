@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:mobile/subscription_manager.dart';
 import 'package:mobile/user_preference_manager.dart';
+import 'package:mobile/utils/widget_utils.dart';
 import 'package:mobile/wrappers/device_info_wrapper.dart';
 import 'package:quiver/strings.dart';
 
@@ -46,10 +47,10 @@ class FeedbackPage extends StatefulWidget {
   });
 
   @override
-  _FeedbackPageState createState() => _FeedbackPageState();
+  FeedbackPageState createState() => FeedbackPageState();
 }
 
-class _FeedbackPageState extends State<FeedbackPage> {
+class FeedbackPageState extends State<FeedbackPage> {
   static const _urlSendGrid = "https://api.sendgrid.com/v3/mail/send";
 
   final _log = const Log("FeedbackPage");
@@ -173,16 +174,17 @@ class _FeedbackPageState extends State<FeedbackPage> {
 
   Future<bool> _send(BuildContext context) async {
     if (!await _io.isConnected()) {
-      showErrorSnackBar(
-        context,
-        Strings.of(context).feedbackPageConnectionError,
+      safeUseContext(
+        this,
+        () => showErrorSnackBar(
+          context,
+          Strings.of(context).feedbackPageConnectionError,
+        ),
       );
       return false;
     }
 
-    setState(() {
-      _isSending = true;
-    });
+    safeUseContext(this, () => setState(() => _isSending = true));
 
     var name = _nameController.value;
     var email = _emailController.value;
@@ -255,13 +257,13 @@ class _FeedbackPageState extends State<FeedbackPage> {
       _log.e(
           StackTrace.current, "Error sending feedback: ${response.statusCode}");
 
-      showErrorSnackBar(
-        context,
-        Strings.of(context).feedbackPageErrorSending,
-      );
+      safeUseContext(this, () {
+        showErrorSnackBar(
+          context,
+          Strings.of(context).feedbackPageErrorSending,
+        );
 
-      setState(() {
-        _isSending = false;
+        setState(() => _isSending = false);
       });
 
       return false;

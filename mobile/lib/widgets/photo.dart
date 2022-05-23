@@ -79,19 +79,15 @@ class Photo extends StatefulWidget {
         );
 
   @override
-  _PhotoState createState() => _PhotoState();
+  PhotoState createState() => PhotoState();
 }
 
-class _PhotoState extends State<Photo> {
-  late Future<Uint8List?> _imageFuture;
+class PhotoState extends State<Photo> {
+  Future<Uint8List?>? _imageFuture;
 
   ImageManager get _imageManager => ImageManager.of(context);
 
-  @override
-  void initState() {
-    super.initState();
-    _imageFuture = _decodeImage();
-  }
+  MediaQueryData get _mediaQuery => MediaQuery.of(context);
 
   @override
   void didUpdateWidget(Photo oldWidget) {
@@ -105,6 +101,9 @@ class _PhotoState extends State<Photo> {
 
   @override
   Widget build(BuildContext context) {
+    // Need access to MediaQuery, so initialize future in the build method.
+    _imageFuture ??= _decodeImage();
+
     return FutureBuilder<Uint8List?>(
       future: _imageFuture,
       builder: (context, snapshot) {
@@ -195,7 +194,10 @@ class _PhotoState extends State<Photo> {
         ? null
         : max<double>(widget.width!, widget.height!);
 
-    return await _imageManager.image(context,
-        fileName: widget.fileName!, size: size);
+    return await _imageManager.image(
+      fileName: widget.fileName!,
+      size: size,
+      devicePixelRatio: _mediaQuery.devicePixelRatio,
+    );
   }
 }

@@ -8,7 +8,7 @@ class UrlLauncherWrapper {
   static UrlLauncherWrapper of(BuildContext context) =>
       Provider.of<AppManager>(context, listen: false).urlLauncherWrapper;
 
-  Future<bool> canLaunch(String url) => launcher.canLaunch(url);
+  Future<bool> canLaunch(String url) => launcher.canLaunchUrl(Uri.parse(url));
 
-  Future<bool> launch(String url) => launcher.launch(url);
+  Future<bool> launch(String url) => launcher.launchUrl(Uri.parse(url));
 }

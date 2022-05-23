@@ -28,10 +28,10 @@ class SaveBaitPage extends StatefulWidget {
   const SaveBaitPage.edit(this.oldBait);
 
   @override
-  _SaveBaitPageState createState() => _SaveBaitPageState();
+  SaveBaitPageState createState() => SaveBaitPageState();
 }
 
-class _SaveBaitPageState extends State<SaveBaitPage> {
+class SaveBaitPageState extends State<SaveBaitPage> {
   final _baitCategoryController = IdInputController();
   final _nameController = TextInputController.name();
   final _imageController = InputController<PickedImage>();

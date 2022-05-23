@@ -9,7 +9,6 @@ import 'package:mockito/mockito.dart';
 import 'mocks/mocks.dart';
 import 'mocks/mocks.mocks.dart';
 import 'mocks/stubbed_app_manager.dart';
-import 'test_utils.dart';
 
 const _imagePath = "test/tmp_image";
 const _cachePath = "test/tmp_cache";
@@ -50,10 +49,8 @@ void main() {
   });
 
   testWidgets("Invalid fileName input to image method", (tester) async {
-    var context = await buildContext(tester);
-
     // Empty/null.
-    expect(await imageManager.image(context, fileName: ""), isNull);
+    expect(await imageManager.image(fileName: ""), isNull);
 
     var img = MockFile();
     when(img.exists()).thenAnswer((_) => Future.value(false));
@@ -61,18 +58,12 @@ void main() {
 
     // File doesn't exist.
     expect(
-      await imageManager.image(
-        context,
-        fileName: "file_name",
-        size: null,
-      ),
+      await imageManager.image(fileName: "file_name"),
       isNull,
     );
   });
 
   testWidgets("Error getting thumbnail returns full image", (tester) async {
-    var context = await buildContext(tester);
-
     File img = MockFile();
     when(img.exists()).thenAnswer((_) => Future.value(true));
     when(img.readAsBytes())
@@ -81,7 +72,6 @@ void main() {
 
     // Empty/null.
     var bytes = await imageManager.image(
-      context,
       fileName: "image.jpg",
       size: null, // Will cause _thumbnail method to return null.
     );
@@ -90,8 +80,6 @@ void main() {
   });
 
   testWidgets("Thumbnail cache", (tester) async {
-    var context = await buildContext(tester);
-
     var img = MockFile();
     when(img.path).thenReturn("$_imagePath/2.0/images/image.jpg");
     when(img.exists()).thenAnswer((_) => Future.value(true));
@@ -113,7 +101,6 @@ void main() {
 
     // Cache does not include image; image should be compressed.
     var bytes = await imageManager.image(
-      context,
       fileName: "image.jpg",
       size: 50,
     );
@@ -124,7 +111,6 @@ void main() {
 
     // Cache now includes image in memory, verify the cache version is used.
     bytes = await imageManager.image(
-      context,
       fileName: "image.jpg",
       size: 50,
     );
@@ -139,7 +125,6 @@ void main() {
     when(thumb.exists()).thenAnswer((_) => Future.value(true));
 
     bytes = await imageManager.image(
-      context,
       fileName: "image.jpg",
       size: 50,
     );
@@ -152,8 +137,6 @@ void main() {
 
   testWidgets("Thumbnail can't be created when file doesn't exist",
       (tester) async {
-    var context = await buildContext(tester);
-
     var file = MockFile();
     when(file.exists()).thenAnswer((_) => Future.value(false));
     when(appManager.ioWrapper.file("$_imagePath/2.0/images/image.jpg"))
@@ -165,7 +148,6 @@ void main() {
         .thenReturn(thumb);
 
     await imageManager.image(
-      context,
       fileName: "image.jpg",
       size: 50,
     );
@@ -174,12 +156,9 @@ void main() {
   });
 
   testWidgets("Get images", (tester) async {
-    var context = await buildContext(tester);
-
     // Invalid input.
     expect(
       await imageManager.images(
-        context,
         imageNames: [],
         size: null,
       ),
@@ -201,8 +180,8 @@ void main() {
     when(appManager.ioWrapper.file("$_imagePath/2.0/images/image1.jpg"))
         .thenReturn(img1);
 
-    var images = await imageManager
-        .images(context, imageNames: ["image0.jpg", "image1.jpg"]);
+    var images =
+        await imageManager.images(imageNames: ["image0.jpg", "image1.jpg"]);
     expect(images.length, 1);
 
     // All thumbnails exist (normal case).
@@ -210,16 +189,16 @@ void main() {
     when(img0.readAsBytes())
         .thenAnswer((_) => Future.value(Uint8List.fromList([3, 2, 1])));
 
-    images = await imageManager
-        .images(context, imageNames: ["image0.jpg", "image1.jpg"]);
+    images =
+        await imageManager.images(imageNames: ["image0.jpg", "image1.jpg"]);
     expect(images.length, 2);
 
     // No thumbnails exist.
     when(img0.exists()).thenAnswer((_) => Future.value(false));
     when(img1.exists()).thenAnswer((_) => Future.value(false));
 
-    images = await imageManager
-        .images(context, imageNames: ["image0.jpg", "image1.jpg"]);
+    images =
+        await imageManager.images(imageNames: ["image0.jpg", "image1.jpg"]);
     expect(images.isEmpty, isTrue);
   });
 

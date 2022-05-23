@@ -52,7 +52,6 @@ class _AddAnythingBottomSheet extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               Container(
-                child: Icon(spec.icon, color: Theme.of(context).primaryColor),
                 padding: insetsMedium,
                 decoration: BoxDecoration(
                   color: Colors.transparent,
@@ -61,6 +60,7 @@ class _AddAnythingBottomSheet extends StatelessWidget {
                     color: Colors.black12,
                   ),
                 ),
+                child: Icon(spec.icon, color: Theme.of(context).primaryColor),
               ),
               Padding(
                 padding: insetsTopSmall,

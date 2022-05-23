@@ -26,10 +26,10 @@ class BaitPage extends StatefulWidget {
   });
 
   @override
-  _BaitPageState createState() => _BaitPageState();
+  BaitPageState createState() => BaitPageState();
 }
 
-class _BaitPageState extends State<BaitPage> {
+class BaitPageState extends State<BaitPage> {
   BaitCategoryManager get _baitCategoryManager =>
       BaitCategoryManager.of(context);
 
@@ -65,13 +65,13 @@ class _BaitPageState extends State<BaitPage> {
           onEdit: () => present(context, SaveBaitPage.edit(_bait)),
           onDelete: () => _baitManager.delete(_bait.id),
           deleteMessage: _baitManager.deleteMessage(context, _bait),
+          imageNames: _bait.hasImageName() ? [_bait.imageName] : [],
           children: [
             _buildBaitCategory(),
             _buildTitle(),
             _buildType(),
             _buildVariants(),
           ],
-          imageNames: _bait.hasImageName() ? [_bait.imageName] : [],
         );
       },
     );

@@ -39,9 +39,9 @@ void main() {
 
     expect(find.byType(Photo), findsOneWidget);
     verify(appManager.imageManager.image(
-      any,
       fileName: "apple_logo.png",
       size: anyNamed("size"),
+      devicePixelRatio: anyNamed("devicePixelRatio"),
     )).called(1);
   });
 
@@ -67,9 +67,9 @@ void main() {
     await tester.pumpAndSettle(const Duration(milliseconds: 250));
 
     verify(appManager.imageManager.image(
-      any,
       fileName: "flutter_logo.png",
       size: anyNamed("size"),
+      devicePixelRatio: anyNamed("devicePixelRatio"),
     )).called(1);
 
     // Swipe left.
@@ -78,9 +78,9 @@ void main() {
     await tester.pumpAndSettle(const Duration(milliseconds: 250));
 
     verify(appManager.imageManager.image(
-      any,
       fileName: "anglers_log_logo.png",
       size: anyNamed("size"),
+      devicePixelRatio: anyNamed("devicePixelRatio"),
     )).called(1);
 
     // Swipe back.
@@ -89,9 +89,9 @@ void main() {
     await tester.pumpAndSettle(const Duration(milliseconds: 250));
 
     verify(appManager.imageManager.image(
-      any,
       fileName: "flutter_logo.png",
       size: anyNamed("size"),
+      devicePixelRatio: anyNamed("devicePixelRatio"),
     )).called(1);
   });
 
@@ -118,9 +118,9 @@ void main() {
 
     // Verify correct image is loaded.
     verify(appManager.imageManager.image(
-      any,
       fileName: "flutter_logo.png",
       size: anyNamed("size"),
+      devicePixelRatio: anyNamed("devicePixelRatio"),
     )).called(1);
 
     final center = tester.getCenter(find.byType(Photo));
@@ -150,9 +150,9 @@ void main() {
     //
     //  https://github.com/flutter/flutter/issues/38997
     verify(appManager.imageManager.image(
-      any,
       fileName: "anglers_log_logo.png",
       size: anyNamed("size"),
+      devicePixelRatio: anyNamed("devicePixelRatio"),
     )).called(1);
   });
 

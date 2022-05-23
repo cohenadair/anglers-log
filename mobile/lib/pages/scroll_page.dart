@@ -49,6 +49,13 @@ class ScrollPage extends StatelessWidget {
         top: 0,
         bottom: 0,
       ),
+      // Ensures view is scrollable, even when items don't exceed screen size.
+      // This only applies when a persistent footer isn't being used.
+      physics: footer.isEmpty ? const AlwaysScrollableScrollPhysics() : null,
+      // Ensures items are not cut off when over-scrolling on iOS. This only
+      // applies when a persistent footer isn't being used.
+      clipBehavior: footer.isEmpty ? Clip.none : Clip.hardEdge,
+      keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
       child: SafeArea(
         left: enableHorizontalSafeArea,
         right: enableHorizontalSafeArea,
@@ -61,13 +68,6 @@ class ScrollPage extends StatelessWidget {
           ],
         ),
       ),
-      // Ensures view is scrollable, even when items don't exceed screen size.
-      // This only applies when a persistent footer isn't being used.
-      physics: footer.isEmpty ? const AlwaysScrollableScrollPhysics() : null,
-      // Ensures items are not cut off when over-scrolling on iOS. This only
-      // applies when a persistent footer isn't being used.
-      clipBehavior: footer.isEmpty ? Clip.none : Clip.hardEdge,
-      keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
     );
 
     if (centerContent) {

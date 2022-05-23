@@ -27,8 +27,8 @@ void main() {
     testWidgets("No images", (tester) async {
       await tester.pumpWidget(Testable(
         (_) => EntityPage(
-          children: const [],
           isStatic: true,
+          children: const [],
         ),
       ));
       expect(find.byType(PageView), findsNothing);
@@ -51,8 +51,8 @@ void main() {
               "android_logo.png",
               "apple_logo.png"
             ],
-            children: const [],
             isStatic: true,
+            children: const [],
           );
         },
         appManager: appManager,
@@ -113,8 +113,8 @@ void main() {
           imageNames: const [
             "flutter_logo.png",
           ],
-          children: const [],
           isStatic: true,
+          children: const [],
         ),
         appManager: appManager,
         mediaQueryData: const MediaQueryData(
@@ -136,8 +136,8 @@ void main() {
   testWidgets("No custom entities hide separator", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => EntityPage(
-        children: const [],
         isStatic: true,
+        children: const [],
       ),
     ));
     expect(find.text("Custom Fields"), findsNothing);
@@ -153,13 +153,13 @@ void main() {
     );
     await tester.pumpWidget(Testable(
       (_) => EntityPage(
-        children: const [],
         customEntityValues: [
           CustomEntityValue()
             ..customEntityId = customEntityId
             ..value = "Test Value",
         ],
         isStatic: true,
+        children: const [],
       ),
       appManager: appManager,
     ));
@@ -174,8 +174,8 @@ void main() {
     await tester.pumpWidget(
       Testable(
         (_) => EntityPage(
-          children: const [],
           isStatic: true,
+          children: const [],
         ),
       ),
     );
@@ -187,19 +187,19 @@ void main() {
   testWidgets("Static page does not show edit and delete buttons (with images)",
       (tester) async {
     when(appManager.imageManager.image(
-      any,
       fileName: anyNamed("fileName"),
       size: anyNamed("size"),
+      devicePixelRatio: anyNamed("devicePixelRatio"),
     )).thenAnswer((_) => File("test/resources/apple_logo.png").readAsBytes());
 
     await tester.pumpWidget(
       Testable(
         (_) => EntityPage(
-          children: const [],
           isStatic: true,
           imageNames: const [
             "apple_logo.png",
           ],
+          children: const [],
         ),
         appManager: appManager,
       ),
@@ -213,10 +213,10 @@ void main() {
   testWidgets("Dynamic page shows edit and delete buttons", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => EntityPage(
-        children: const [],
         onEdit: () {},
         onDelete: () {},
         deleteMessage: "Test",
+        children: const [],
       ),
     ));
 
@@ -227,21 +227,21 @@ void main() {
   testWidgets("Dynamic page shows action buttons (with images)",
       (tester) async {
     when(appManager.imageManager.image(
-      any,
       fileName: anyNamed("fileName"),
       size: anyNamed("size"),
+      devicePixelRatio: anyNamed("devicePixelRatio"),
     )).thenAnswer((_) => File("test/resources/apple_logo.png").readAsBytes());
 
     await tester.pumpWidget(
       Testable(
         (_) => EntityPage(
-          children: const [],
           imageNames: const [
             "apple_logo.png",
           ],
           onEdit: () {},
           onDelete: () {},
           deleteMessage: "Test",
+          children: const [],
         ),
         appManager: appManager,
         platform: TargetPlatform.android,
@@ -258,10 +258,10 @@ void main() {
     await tester.pumpWidget(
       Testable(
         (_) => EntityPage(
-          children: const [],
           deleteMessage: "This is a delete message.",
           onDelete: () {},
           onEdit: () {},
+          children: const [],
         ),
       ),
     );
@@ -275,11 +275,11 @@ void main() {
     await tester.pumpWidget(
       Testable(
         (_) => EntityPage(
+          isStatic: true,
           children: const [
             Text("Child 1"),
             Text("Child 2"),
           ],
-          isStatic: true,
         ),
       ),
     );
@@ -353,11 +353,11 @@ void main() {
     await pumpContext(
       tester,
       (_) => EntityPage(
-        children: const [],
         onShare: null,
         onEdit: () {},
         onDelete: () {},
         deleteMessage: "Delete",
+        children: const [],
       ),
       appManager: appManager,
     );
@@ -378,11 +378,11 @@ void main() {
     await pumpContext(
       tester,
       (_) => EntityPage(
-        children: const [],
         onShare: () {},
         onEdit: () {},
         onDelete: () {},
         deleteMessage: "Delete",
+        children: const [],
       ),
       appManager: appManager,
     );

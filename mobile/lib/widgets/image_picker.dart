@@ -99,10 +99,10 @@ class ImagePicker extends StatelessWidget {
             ),
             width: galleryMaxThumbSize + leftPadding + rightPadding,
             child: ClipRRect(
-              child: _buildImage(context, image),
               borderRadius: const BorderRadius.all(
                 Radius.circular(floatingCornerRadius),
               ),
+              child: _buildImage(context, image),
             ),
           );
         },

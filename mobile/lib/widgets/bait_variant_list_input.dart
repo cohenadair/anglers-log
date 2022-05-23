@@ -75,10 +75,10 @@ class BaitVariantListInput extends StatefulWidget {
         );
 
   @override
-  _BaitVariantListInputState createState() => _BaitVariantListInputState();
+  BaitVariantListInputState createState() => BaitVariantListInputState();
 }
 
-class _BaitVariantListInputState extends State<BaitVariantListInput> {
+class BaitVariantListInputState extends State<BaitVariantListInput> {
   final _key = GlobalKey<AnimatedListState>();
   late AnimatedListModel<BaitVariant, AnimatedListState> _items;
 
