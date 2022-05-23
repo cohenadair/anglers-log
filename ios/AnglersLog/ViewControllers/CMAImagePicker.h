@@ -18,6 +18,6 @@
 + (CMAImagePicker *)withViewController:(UIViewController<CMAImagePickerDelegate> *)controller
                      canSelectMultiple:(BOOL)canSelectMultiple;
 
-- (void)present;
+- (void)presentFromView:(UIView *)view;
 
 @end

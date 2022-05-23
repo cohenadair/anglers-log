@@ -354,7 +354,7 @@ public class PhotoUtils {
     @Nullable
     public static File publicPhotoFile(Context context, String fileName) {
         File publicDirectory = new File(
-                Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES),
+                context.getExternalFilesDir(Environment.DIRECTORY_PICTURES),
                 context.getString(R.string.app_photos_dir)
         );
 

@@ -113,7 +113,7 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     if (indexPath.section == kSectionPhoto && indexPath.row == kRowPhoto) {
-        [self.imagePicker present];
+        [self.imagePicker presentFromView:self.cameraImageButton];
         [tableView deselectRowAtIndexPath:indexPath animated:YES];
     }
 }

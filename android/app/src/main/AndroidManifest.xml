@@ -3,7 +3,7 @@
     package="com.cohenadair.anglerslog"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:versionName="@string/version_name"
-    android:versionCode="135">
+    android:versionCode="142">
 
     <uses-feature android:name="android.hardware.camera2" android:required="false"/>
 
@@ -31,6 +31,10 @@
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyAZca9SD3IxK9Nl0dHfbuIT6i6id4OBg0o"/>
+
+        <uses-library
+            android:name="org.apache.http.legacy"
+            android:required="false" />
 
         <activity
             android:name=".activities.MainActivity"

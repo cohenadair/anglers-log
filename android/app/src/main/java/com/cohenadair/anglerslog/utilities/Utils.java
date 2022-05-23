@@ -138,6 +138,10 @@ public class Utils {
      */
     @Nullable
     public static Double doubleFromUserInput(String str) {
+        if (str == null || str.isEmpty()) {
+            return null;
+        }
+
         try {
             return Double.parseDouble(str.replace(',', '.'));
         } catch (NumberFormatException e) {

@@ -54,10 +54,12 @@
     return self;
 }
 
-- (void)presentDocumentPicker {
+- (void)presentDocumentPickerFrom:(UIView *)view {
     UIDocumentMenuViewController *menuController = [UIDocumentMenuViewController.alloc
             initWithDocumentTypes:@[(NSString *)kUTTypeImage] inMode:UIDocumentPickerModeImport];
     menuController.delegate = self;
+    menuController.popoverPresentationController.sourceView = view;
+    menuController.popoverPresentationController.sourceRect = view.bounds;
     
     __weak typeof(self) weakSelf = self;
     
@@ -100,8 +102,8 @@
     [self.viewController presentViewController:imagePicker animated:YES completion:nil];
 }
 
-- (void)present {
-    [self presentDocumentPicker];
+- (void)presentFromView:(UIView *)view {
+    [self presentDocumentPickerFrom:view];
 }
 
 #pragma mark - UIImagePickerControllerDelegate
