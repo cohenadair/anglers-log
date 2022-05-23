@@ -94,7 +94,7 @@ dynamic valueForCustomEntityType(
     case CustomEntity_Type.text:
       return value.value;
     case CustomEntity_Type.boolean:
-      var boolValue = parseBoolFromInt(value.value);
+      var boolValue = compareAsciiLowerCase(value.value, "true") == 0;
       if (context == null) {
         return boolValue;
       } else {

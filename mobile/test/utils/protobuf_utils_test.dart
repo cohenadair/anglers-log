@@ -209,7 +209,7 @@ void main() {
     test("Bool without context", () {
       expect(
         valueForCustomEntityType(
-            CustomEntity_Type.boolean, CustomEntityValue()..value = "1"),
+            CustomEntity_Type.boolean, CustomEntityValue()..value = "true"),
         isTrue,
       );
     });
@@ -217,12 +217,12 @@ void main() {
     testWidgets("Bool with context", (tester) async {
       expect(
         valueForCustomEntityType(CustomEntity_Type.boolean,
-            CustomEntityValue()..value = "1", await buildContext(tester)),
+            CustomEntityValue()..value = "true", await buildContext(tester)),
         "Yes",
       );
       expect(
         valueForCustomEntityType(CustomEntity_Type.boolean,
-            CustomEntityValue()..value = "0", await buildContext(tester)),
+            CustomEntityValue()..value = "false", await buildContext(tester)),
         "No",
       );
     });

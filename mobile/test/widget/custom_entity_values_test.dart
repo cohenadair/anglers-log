@@ -63,7 +63,7 @@ void main() {
           ..value = "Test 1",
         CustomEntityValue()
           ..customEntityId = id2
-          ..value = "1",
+          ..value = "true",
         CustomEntityValue()
           ..customEntityId = id3
           ..value = "150",
