@@ -44,7 +44,6 @@ dependencies:
   image_picker: ^0.8.5+3            # https://pub.dev/packages/image_picker (Flutter)
   intl: ^0.17.0                     # https://pub.dev/packages/intl (Dart)
   mapbox_gl: ^0.16.0                # https://pub.dev/packages/mapbox_gl (unofficial)
-
   package_info_plus: ^1.4.2         # https://pub.dev/packages/package_info_plus (Flutter)
   path: ^1.8.1                      # https://pub.dev/packages/path (Dart)
   path_provider: ^2.0.10            # https://pub.dev/packages/path_provider (Flutter)
