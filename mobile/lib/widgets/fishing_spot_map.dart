@@ -806,8 +806,7 @@ class FishingSpotMapState extends State<FishingSpotMap> {
 
     // Disabling hybrid composition improves performance on Android 9 devices.
     var sdkVersion = (await _deviceInfoWrapper.androidInfo).version.sdkInt;
-    // MapboxMap.useHybridComposition = sdkVersion != null && sdkVersion >= 29;
-    MapboxMap.useHybridComposition = false;
+    MapboxMap.useHybridComposition = sdkVersion != null && sdkVersion >= 29;
   }
 
   Future<void> _moveMap(
