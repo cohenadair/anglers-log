@@ -41,13 +41,7 @@ dependencies:
   http: ^0.13.4                     # https://pub.dev/packages/http (Dart)
   image_picker: ^0.8.4+8            # https://pub.dev/packages/image_picker (Flutter)
   intl: ^0.17.0                     # https://pub.dev/packages/intl (Dart)
-
-#  mapbox_gl: ^0.15.0                # https://pub.dev/packages/mapbox_gl (unofficial)
-  # TODO: Point to master until https://github.com/flutter-mapbox-gl/maps/pull/916/files is
-  #  released.
-  mapbox_gl:
-    git: https://github.com/flutter-mapbox-gl/maps.git
-
+  mapbox_gl: ^0.16.0                # https://pub.dev/packages/mapbox_gl (unofficial)
   package_info_plus: ^1.3.0         # https://pub.dev/packages/package_info_plus (Flutter)
   path: ^1.8.0                      # https://pub.dev/packages/path (Dart)
   path_provider: ^2.0.9             # https://pub.dev/packages/path_provider (Flutter)

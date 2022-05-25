@@ -4713,6 +4713,7 @@ class MockMapboxMapController extends _i1.Mock
           String? sourceLayer,
           double? minzoom,
           double? maxzoom,
+          dynamic filter,
           bool? enableInteraction = true}) =>
       (super.noSuchMethod(
               Invocation.method(#addSymbolLayer, [
@@ -4724,6 +4725,7 @@ class MockMapboxMapController extends _i1.Mock
                 #sourceLayer: sourceLayer,
                 #minzoom: minzoom,
                 #maxzoom: maxzoom,
+                #filter: filter,
                 #enableInteraction: enableInteraction
               }),
               returnValue: Future<void>.value(),
@@ -4736,6 +4738,7 @@ class MockMapboxMapController extends _i1.Mock
           String? sourceLayer,
           double? minzoom,
           double? maxzoom,
+          dynamic filter,
           bool? enableInteraction = true}) =>
       (super.noSuchMethod(
               Invocation.method(#addLineLayer, [
@@ -4747,6 +4750,7 @@ class MockMapboxMapController extends _i1.Mock
                 #sourceLayer: sourceLayer,
                 #minzoom: minzoom,
                 #maxzoom: maxzoom,
+                #filter: filter,
                 #enableInteraction: enableInteraction
               }),
               returnValue: Future<void>.value(),
@@ -4759,6 +4763,7 @@ class MockMapboxMapController extends _i1.Mock
           String? sourceLayer,
           double? minzoom,
           double? maxzoom,
+          dynamic filter,
           bool? enableInteraction = true}) =>
       (super.noSuchMethod(
               Invocation.method(#addFillLayer, [
@@ -4770,6 +4775,7 @@ class MockMapboxMapController extends _i1.Mock
                 #sourceLayer: sourceLayer,
                 #minzoom: minzoom,
                 #maxzoom: maxzoom,
+                #filter: filter,
                 #enableInteraction: enableInteraction
               }),
               returnValue: Future<void>.value(),
@@ -4782,6 +4788,7 @@ class MockMapboxMapController extends _i1.Mock
           String? sourceLayer,
           double? minzoom,
           double? maxzoom,
+          dynamic filter,
           bool? enableInteraction = true}) =>
       (super.noSuchMethod(
               Invocation.method(#addCircleLayer, [
@@ -4793,6 +4800,7 @@ class MockMapboxMapController extends _i1.Mock
                 #sourceLayer: sourceLayer,
                 #minzoom: minzoom,
                 #maxzoom: maxzoom,
+                #filter: filter,
                 #enableInteraction: enableInteraction
               }),
               returnValue: Future<void>.value(),
@@ -5150,6 +5158,12 @@ class MockMapboxMapController extends _i1.Mock
       returnValue: Future<void>.value(),
       returnValueForMissingStub: Future<void>.value()) as _i63.Future<void>);
   @override
+  _i63.Future<void> setFilter(String? layerId, dynamic filter) =>
+      (super.noSuchMethod(Invocation.method(#setFilter, [layerId, filter]),
+              returnValue: Future<void>.value(),
+              returnValueForMissingStub: Future<void>.value())
+          as _i63.Future<void>);
+  @override
   _i63.Future<_i56.Point<num>> toScreenLocation(_i55.LatLng? latLng) =>
       (super.noSuchMethod(Invocation.method(#toScreenLocation, [latLng]),
               returnValue: Future<_i56.Point<num>>.value(_FakePoint_99<num>()))
@@ -5184,7 +5198,8 @@ class MockMapboxMapController extends _i1.Mock
           bool? enableInteraction = true,
           String? sourceLayer,
           double? minzoom,
-          double? maxzoom}) =>
+          double? maxzoom,
+          dynamic filter}) =>
       (super.noSuchMethod(
               Invocation.method(#addLayer, [
                 sourceId,
@@ -5195,7 +5210,8 @@ class MockMapboxMapController extends _i1.Mock
                 #enableInteraction: enableInteraction,
                 #sourceLayer: sourceLayer,
                 #minzoom: minzoom,
-                #maxzoom: maxzoom
+                #maxzoom: maxzoom,
+                #filter: filter
               }),
               returnValue: Future<void>.value(),
               returnValueForMissingStub: Future<void>.value())
