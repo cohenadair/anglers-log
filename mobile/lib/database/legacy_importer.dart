@@ -528,6 +528,10 @@ class LegacyImporter {
       String dateFormat;
       if (dateString.contains(".")) {
         dateFormat = "M-d-y_h-m_a_s.S";
+      } else if (dateString.endsWith("_")) {
+        // iOS 24h times are translated in 24h time, and don't include the "_a"
+        // required by the normal formatter.
+        dateFormat = "M-d-y_h-m";
       } else {
         dateFormat = "M-d-y_h-m_a";
       }
