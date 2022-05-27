@@ -1864,8 +1864,4 @@ void main() {
     // Dispose of AtmosphereInput.
     await tapAndSettle(tester, find.byType(BackButton));
   });
-
-  testWidgets("Time zone set to current if not tracking", (tester) async {
-    // TODO
-  });
 }

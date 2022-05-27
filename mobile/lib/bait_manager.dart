@@ -105,8 +105,7 @@ class BaitManager extends ImageEntityManager<Bait> {
   bool duplicate(Bait rhs) {
     // Copy each bait and clear out the ID. The remaining fields can be compared
     // using the == operator for the copied objects.
-    Bait clearId(Bait b) =>
-        b.immutableCopyAndUpdate<Bait>((updates) => updates.clearId());
+    Bait clearId(Bait b) => (b.toBuilder() as Bait)..clearId();
 
     var rhsCopy = clearId(rhs);
     var filteredList =
