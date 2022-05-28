@@ -58,6 +58,9 @@ void main() {
     when(imageManager.save(any, compress: anyNamed("compress")))
         .thenAnswer((_) => Future.value([]));
 
+    when(appManager.localDatabaseManager.resetDatabase())
+        .thenAnswer((_) => Future.value());
+
     when(appManager.subscriptionManager.stream)
         .thenAnswer((_) => const Stream.empty());
     when(appManager.subscriptionManager.isPro).thenReturn(false);
