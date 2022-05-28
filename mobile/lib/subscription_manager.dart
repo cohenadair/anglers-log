@@ -89,8 +89,9 @@ class SubscriptionManager {
       _setStateFromPurchaserInfo(
           await _purchasesWrapper.purchasePackage(sub.package));
     } on PlatformException catch (e) {
-      if (PurchasesErrorHelper.getErrorCode(e) !=
-          PurchasesErrorCode.purchaseCancelledError) {
+      var code = PurchasesErrorHelper.getErrorCode(e);
+      if (code != PurchasesErrorCode.purchaseCancelledError &&
+          code != PurchasesErrorCode.storeProblemError) {
         _log.e(StackTrace.current, "Purchase error: ${e.message}");
       }
     }
