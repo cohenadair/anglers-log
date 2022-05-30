@@ -1969,6 +1969,8 @@ class Strings {
 
   String get aboutPageVersion => _string("aboutPage_version");
 
+  String get aboutPageEula => _string("aboutPage_eula");
+
   String get aboutPagePrivacy => _string("aboutPage_privacy");
 
   String get fishingSpotDetailsAddDetails =>
