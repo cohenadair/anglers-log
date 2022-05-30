@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mobile/poll_manager.dart';
 import 'package:mobile/wrappers/google_mobile_ads_wrapper.dart';
 import 'package:mobile/wrappers/google_sign_in_wrapper.dart';
 import 'package:provider/provider.dart';
@@ -58,6 +59,7 @@ class AppManager {
   LocalDatabaseManager? _localDatabaseManager;
   LocationMonitor? _locationMonitor;
   MethodManager? _methodManager;
+  PollManager? _pollManager;
   PropertiesManager? _propertiesManager;
   ReportManager? _reportManager;
   SpeciesManager? _speciesManager;
@@ -146,6 +148,11 @@ class AppManager {
   MethodManager get methodManager {
     _methodManager ??= MethodManager(this);
     return _methodManager!;
+  }
+
+  PollManager get pollManager {
+    _pollManager ??= PollManager(this);
+    return _pollManager!;
   }
 
   PropertiesManager get propertiesManager {
@@ -287,12 +294,15 @@ class AppManager {
   /// managers and monitors are initialized; otherwise, only database dependent
   /// managers and monitors are initialized.
   Future<void> initialize({bool isStartup = true}) async {
-    // Managers that don't depend on anything.
+    // Managers that don't need to refresh after startup.
     if (isStartup) {
       await timeManager.initialize();
       await locationMonitor.initialize();
       await propertiesManager.initialize();
       await subscriptionManager.initialize();
+
+      // Depends on PropertiesManager.
+      await pollManager.initialize();
     }
 
     // Need to initialize the local database before anything else, since all

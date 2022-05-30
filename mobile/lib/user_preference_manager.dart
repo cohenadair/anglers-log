@@ -35,6 +35,8 @@ class UserPreferenceManager extends PreferenceManager {
   static const _keyAutoBackup = "auto_backup";
   static const _keyUserEmail = "user_email";
   static const _keyUserName = "user_name";
+  static const _keyFreePollVotedAt = "free_poll_voted_at";
+  static const _keyProPollVotedAt = "pro_poll_voted_at";
 
   static const _keySelectedReportId = "selected_report_id";
   static const _keyMapType = "map_type";
@@ -183,6 +185,16 @@ class UserPreferenceManager extends PreferenceManager {
   Future<void> setUserName(String? name) => put(_keyUserName, name);
 
   String? get userName => preferences[_keyUserName];
+
+  Future<void> setFreePollVotedAt(int? timestamp) =>
+      put(_keyFreePollVotedAt, timestamp);
+
+  int? get freePollVotedAt => preferences[_keyFreePollVotedAt];
+
+  Future<void> setProPollVotedAt(int? timestamp) =>
+      put(_keyProPollVotedAt, timestamp);
+
+  int? get proPollVotedAt => preferences[_keyProPollVotedAt];
 
   bool _isTrackingAtmosphereField(Id fieldId) =>
       atmosphereFieldIds.isEmpty || atmosphereFieldIds.contains(fieldId);

@@ -982,5 +982,13 @@ Map<String, Map<String, String>> get englishStrings => {
         "timeZoneInput_label": "Time Zone",
         "timeZoneInput_description": "Defaults to your current time zone.",
         "timeZoneInput_searchHint": "Search time zones",
+        "pollsPage_title": "Feature Polls",
+        "pollsPage_description": "Vote to determine which features will be added in the next version of Anglers' Log.",
+        "pollsPage_noPollsTitle": "No Polls",
+        "pollsPage_noPollsDescription": "There currently aren't any feature polls. If you'd like to request a feature, please send us feedback!",
+        "pollsPage_sendFeedback": "Send Feedback",
+        "pollsPage_nextFreeFeature": "Next Free Feature",
+        "pollsPage_nextProFeature": "Next Pro Feature",
+        "pollsPage_thankYou": "Thank you for your votes!",
       },
     };

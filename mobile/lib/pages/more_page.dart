@@ -13,6 +13,7 @@ import '../utils/store_utils.dart';
 import '../widgets/list_item.dart';
 import '../widgets/widget.dart';
 import 'backup_restore_page.dart';
+import 'polls_page.dart';
 import 'pro_page.dart';
 import 'scroll_page.dart';
 
@@ -85,6 +86,12 @@ class MorePage extends StatelessWidget {
               presentPage: true,
             ),
             const MinDivider(),
+            _buildPageItem(
+              context,
+              icon: Icons.poll,
+              title: Strings.of(context).pollsPageTitle,
+              page: PollsPage(),
+            ),
             _buildPageItem(
               context,
               icon: Icons.stars,

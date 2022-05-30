@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
@@ -14,6 +13,7 @@ import 'package:mobile/widgets/mapbox_attribution.dart';
 import 'package:mobile/wrappers/http_wrapper.dart';
 
 import '../log.dart';
+import '../utils/network_utils.dart';
 import 'fishing_spot_map.dart';
 
 /// A widget that displays [FishingSpot] details on a small map.
@@ -173,13 +173,8 @@ class _StaticFishingSpotMapState extends State<StaticFishingSpotMap> {
         "?access_token=${_propertiesManager.mapboxApiKey}"
         "&attribution=false"
         "&logo=false";
-
-    var response = await _httpWrapper.get(Uri.parse(path));
-    if (response.statusCode != HttpStatus.ok) {
-      _log.e(
-          StackTrace.current,
-          "Error fetching image: ${response.statusCode}: ${response.body},"
-          " query=$path");
+    var response = await getRest(_httpWrapper, Uri.parse(path));
+    if (response == null) {
       return null;
     }
 

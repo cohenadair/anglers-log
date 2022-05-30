@@ -2,6 +2,7 @@ import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 import 'package:mobile/utils/color_utils.dart';
+import 'package:mobile/widgets/filled_row.dart';
 import 'package:quiver/iterables.dart';
 import 'package:quiver/strings.dart';
 
@@ -157,8 +158,6 @@ class _ChartState<T> extends State<Chart<T>> {
   static const _rowCornerRadius = 5.0;
   static const _condensedRowCount = 3;
 
-  static final Color _emptyBgColor = Colors.grey.withOpacity(0.15);
-
   /// A subset of [widget.series] of size [_condensedRowCount].
   List<Series<T>> _displayData = [];
 
@@ -237,15 +236,13 @@ class _ChartState<T> extends State<Chart<T>> {
       }
     }
 
-    var maxWidth = MediaQuery.of(context).size.width;
-
     // For every unique item in the series, create a child widget.
     var items = _displayData.first.data.keys.toList();
     for (var item in items) {
       for (var series in _displayData) {
         children.add(
-          _buildChartRow(maxWidth, maxValue, item, series, series.data[item],
-              series._color ?? Theme.of(context).primaryColor),
+          _buildChartRow(
+              maxValue, item, series, series.data[item], series._color),
         );
 
         // Add space between series rows.
@@ -259,7 +256,7 @@ class _ChartState<T> extends State<Chart<T>> {
 
     return Container(
       padding: widget.padding,
-      width: maxWidth,
+      width: MediaQuery.of(context).size.width,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: children,
@@ -267,8 +264,8 @@ class _ChartState<T> extends State<Chart<T>> {
     );
   }
 
-  Widget _buildChartRow(double maxWidth, double maxValue, T item,
-      Series<T> series, int? value, Color color) {
+  Widget _buildChartRow(
+      double maxValue, T item, Series<T> series, int? value, Color? color) {
     // Set a minimum max value of 1 so if the series values are 0, an "empty"
     // row will still show.
     maxValue = math.max(maxValue, 1);
@@ -277,41 +274,18 @@ class _ChartState<T> extends State<Chart<T>> {
     // not another.
     value = value ?? 0;
 
-    return InkWell(
-      onTap: widget.onTapRow == null || value <= 0
+    return FilledRow(
+      height: _rowHeight,
+      maxValue: maxValue,
+      value: value,
+      fillColor: color,
+      cornerRadius: _rowCornerRadius,
+      label: widget.labelBuilder(item) ?? "",
+      labelPadding: insetsHorizontalTiny,
+      padding: widget.padding,
+      onTap: value <= 0
           ? null
           : () => widget.onTapRow!.call(item, series.dateRange),
-      child: Stack(
-        clipBehavior: Clip.hardEdge,
-        alignment: Alignment.centerLeft,
-        children: [
-          Container(
-            height: _rowHeight,
-            width: maxWidth,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(_rowCornerRadius),
-              color: _emptyBgColor,
-            ),
-          ),
-          Container(
-            height: _rowHeight,
-            width: value.toDouble() /
-                maxValue *
-                (maxWidth - widget.padding.left - widget.padding.right).abs(),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(_rowCornerRadius),
-              color: color,
-            ),
-          ),
-          Padding(
-            padding: insetsHorizontalTiny,
-            child: Text(
-              "${widget.labelBuilder(item)} ($value)",
-              overflow: TextOverflow.ellipsis,
-            ),
-          ),
-        ],
-      ),
     );
   }
 

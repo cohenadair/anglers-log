@@ -1,8 +1,4 @@
-import 'dart:convert';
-import 'dart:io';
-
 import 'package:fixnum/fixnum.dart';
-import 'package:http/http.dart';
 import 'package:mapbox_gl/mapbox_gl.dart';
 import 'package:mobile/utils/date_time_utils.dart';
 import 'package:quiver/strings.dart';
@@ -14,6 +10,7 @@ import 'model/gen/anglerslog.pb.dart';
 import 'properties_manager.dart';
 import 'user_preference_manager.dart';
 import 'utils/atmosphere_utils.dart';
+import 'utils/network_utils.dart';
 import 'utils/number_utils.dart';
 import 'utils/protobuf_utils.dart';
 import 'utils/string_utils.dart';
@@ -30,7 +27,7 @@ class AtmosphereFetcher {
   final TZDateTime dateTime;
   final LatLng? latLng;
 
-  HttpWrapper get _http => appManager.httpWrapper;
+  HttpWrapper get _httpWrapper => appManager.httpWrapper;
 
   PropertiesManager get _propertiesManager => appManager.propertiesManager;
 
@@ -185,41 +182,15 @@ class AtmosphereFetcher {
       ]),
       params,
     );
-
-    Response? response;
-    try {
-      response = await _http.get(uri);
-    } catch (error) {
-      // This can happen if there's no network connection.
-      _log.w("Error in HTTP request: $error");
-      return null;
-    }
-
-    if (response.statusCode != HttpStatus.ok) {
-      _log.e(StackTrace.current,
-          "Error fetching data: ${response.statusCode}, query=$uri");
-      return null;
-    }
-
-    // Catch any parsing errors as a safety measure. We cannot trust that
-    // the response object will always be a value JSON string.
-    dynamic json;
-    try {
-      json = jsonDecode(response.body);
-    } on Exception {
-      json = null;
-    }
-
-    if (!_isValidJsonMap(json)) {
-      _log.e(StackTrace.current,
-          "Response body is a non-JSON format: ${response.body}");
+    var json = await getRestJson(_httpWrapper, uri);
+    if (json == null) {
       return null;
     }
 
     var currentConditionsJson = json["currentConditions"];
     if (!_isValidJsonMap(currentConditionsJson)) {
       _log.e(StackTrace.current,
-          "Body has invalid \"currentConditions\" key: ${response.body}");
+          "Body has invalid \"currentConditions\" key: $json");
       return null;
     }
 

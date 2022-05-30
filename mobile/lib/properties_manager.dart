@@ -21,6 +21,7 @@ class PropertiesManager {
   final String _keyAdUnitIdAppleDebug = "adUnitId.ios.debug";
   final String _keyAdUnitIdAndroidRelease = "adUnitId.android.release";
   final String _keyAdUnitIdAppleRelease = "adUnitId.ios.release";
+  final String _keyFirebaseSecret = "firebase.secret";
 
   final String _path = "assets/sensitive.properties";
   final String _feedbackTemplatePath = "assets/feedback_template";
@@ -54,6 +55,8 @@ class PropertiesManager {
   String get adUnitIdApple => kDebugMode
       ? _properties.stringForKey(_keyAdUnitIdAppleDebug)
       : _properties.stringForKey(_keyAdUnitIdAppleRelease);
+
+  String get firebaseSecret => _properties.stringForKey(_keyFirebaseSecret);
 
   String get feedbackTemplate => _feedbackTemplate;
 }
