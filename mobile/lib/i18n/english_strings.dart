@@ -977,6 +977,7 @@ Map<String, Map<String, String>> get englishStrings => {
         "addAnything_title": "Add New",
         "proBlur_upgradeButton": "Upgrade",
         "aboutPage_version": "Version",
+        "aboutPage_eula": "Terms of Use (EULA)",
         "aboutPage_privacy": "Privacy Policy",
         "fishingSpotDetails_addDetails": "Add Details",
         "timeZoneInput_label": "Time Zone",

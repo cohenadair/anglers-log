@@ -6367,6 +6367,36 @@ class MockPackage extends _i1.Mock implements _i58.Package {
           returnValue: <String, dynamic>{}) as Map<String, dynamic>);
 }
 
+/// A class which mocks [PackageInfo].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockPackageInfo extends _i1.Mock implements _i57.PackageInfo {
+  MockPackageInfo() {
+    _i1.throwOnMissingStub(this);
+  }
+
+  @override
+  String get appName =>
+      (super.noSuchMethod(Invocation.getter(#appName), returnValue: '')
+          as String);
+  @override
+  String get packageName =>
+      (super.noSuchMethod(Invocation.getter(#packageName), returnValue: '')
+          as String);
+  @override
+  String get version =>
+      (super.noSuchMethod(Invocation.getter(#version), returnValue: '')
+          as String);
+  @override
+  String get buildNumber =>
+      (super.noSuchMethod(Invocation.getter(#buildNumber), returnValue: '')
+          as String);
+  @override
+  String get buildSignature =>
+      (super.noSuchMethod(Invocation.getter(#buildSignature), returnValue: '')
+          as String);
+}
+
 /// A class which mocks [Product].
 ///
 /// See the documentation for Mockito's code generation for more information.
