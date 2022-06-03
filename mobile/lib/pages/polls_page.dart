@@ -29,7 +29,7 @@ class _PollsPageState extends State<PollsPage> {
   @override
   void initState() {
     super.initState();
-    _fetchPollsFuture = _pollManager.fetch();
+    _fetchPollsFuture = _pollManager.fetchPolls();
   }
 
   @override
@@ -65,10 +65,8 @@ class _PollsPageState extends State<PollsPage> {
         _buildIntroText(),
         const VerticalSpace(paddingDefault),
         _buildFreePoll(),
-        const VerticalSpace(paddingDefault),
+        const VerticalSpace(paddingLarge),
         _buildProPoll(),
-        const VerticalSpace(paddingDefault),
-        _buildThankYou(),
         const VerticalSpace(paddingDefault),
       ],
     );
@@ -82,37 +80,29 @@ class _PollsPageState extends State<PollsPage> {
   }
 
   Widget _buildFreePoll() {
+    if (_pollManager.freePoll == null) {
+      return const Empty();
+    }
+
     return _Poll(
       title: Strings.of(context).pollsPageNextFreeFeature,
       optionValues: _pollManager.freePoll?.optionValues ?? {},
       canVote: _pollManager.canVoteFree,
-      onVote: () {
-        // TODO
-      },
+      type: PollType.free,
     );
   }
 
   Widget _buildProPoll() {
+    if (_pollManager.proPoll == null) {
+      return const Empty();
+    }
+
     return _Poll(
       title: Strings.of(context).pollsPageNextProFeature,
       optionValues: _pollManager.proPoll?.optionValues ?? {},
       canVote: _pollManager.canVotePro,
-      onVote: () {
-        // TODO
-      },
+      type: PollType.pro,
     );
-  }
-
-  Widget _buildThankYou() {
-    if (!_pollManager.canVoteFree && !_pollManager.canVotePro) {
-      return Center(
-        child: Text(
-          Strings.of(context).pollsPageThankYou,
-          style: styleSuccess(context),
-        ),
-      );
-    }
-    return const Empty();
   }
 
   Widget _buildPlaceholder() {
@@ -132,17 +122,19 @@ class _PollsPageState extends State<PollsPage> {
   }
 }
 
+enum _VoteState { none, waiting, success, fail }
+
 class _Poll extends StatefulWidget {
   final String title;
   final Map<String, int> optionValues;
   final bool canVote;
-  final VoidCallback? onVote;
+  final PollType type;
 
   const _Poll({
     required this.title,
     required this.optionValues,
     required this.canVote,
-    this.onVote,
+    required this.type,
   });
 
   @override
@@ -153,13 +145,23 @@ class _PollState extends State<_Poll> {
   static const _rowHeight = 35.0;
   static const _rowMaxValue = 100.0; // 100%.
 
-  var _canVote = false;
+  late final Map<String, int> _optionValues;
+  var _voteState = _VoteState.none;
+
+  PollManager get _pollManager => PollManager.of(context);
 
   @override
   void initState() {
     super.initState();
-    _canVote = widget.canVote;
+
+    _optionValues = Map<String, int>.from(widget.optionValues);
+    if (!widget.canVote) {
+      _voteState = _VoteState.success;
+    }
   }
+
+  bool get _canVote =>
+      _voteState != _VoteState.success && _voteState != _VoteState.waiting;
 
   @override
   Widget build(BuildContext context) {
@@ -168,18 +170,20 @@ class _PollState extends State<_Poll> {
       children: [
         Text(widget.title, style: styleListHeading(context)),
         const VerticalSpace(paddingDefault),
-        ...widget.optionValues.keys.map((option) {
-          var total = widget.optionValues.values.toList().sum;
+        ..._optionValues.keys.map((option) {
+          var total = _optionValues.values.toList().sum;
           var value =
-              percent(widget.optionValues[option] ?? 0, total == 0 ? 1 : total);
+              percent(_optionValues[option] ?? 0, total == 0 ? 1 : total);
 
           return Padding(
-            padding: insetsBottomSmall,
+            padding: option == _optionValues.keys.last
+                ? insetsZero
+                : insetsBottomSmall,
             child: FilledRow(
               height: _rowHeight,
               maxValue: _rowMaxValue,
               value: value,
-              showValue: !_canVote,
+              showValue: _voteState == _VoteState.success,
               fillColor: Theme.of(context).primaryColor,
               label: option,
               cornerRadius: _rowHeight / 2,
@@ -189,16 +193,55 @@ class _PollState extends State<_Poll> {
                   value: value.toDouble(),
                 ),
               ).displayValue(context),
-              onTap: _canVote
-                  ? () {
-                      setState(() => _canVote = false);
-                      widget.onVote?.call();
-                    }
-                  : null,
+              onTap: _canVote ? () => _vote(option) : null,
             ),
           );
         }),
+        const VerticalSpace(paddingDefault),
+        _buildResultText(),
       ],
     );
+  }
+
+  Widget _buildResultText() {
+    Widget child;
+    switch (_voteState) {
+      case _VoteState.none:
+        child = const Empty();
+        break;
+      case _VoteState.waiting:
+        child = const Loading();
+        break;
+      case _VoteState.success:
+        child = Text(
+          widget.type == PollType.free
+              ? Strings.of(context).pollsPageThankYouFree
+              : Strings.of(context).pollsPageThankYouPro,
+          style: styleSuccess(context),
+        );
+        break;
+      case _VoteState.fail:
+        child = Text(
+          Strings.of(context).pollsPageError,
+          style: styleError(context),
+        );
+        break;
+    }
+
+    return child;
+  }
+
+  Future<void> _vote(String feature) async {
+    setState(() => _voteState = _VoteState.waiting);
+
+    var didVote = await _pollManager.vote(widget.type, feature);
+    setState(() {
+      if (didVote) {
+        _voteState = _VoteState.success;
+        _optionValues[feature] = _optionValues[feature]! + 1;
+      } else {
+        _voteState = _VoteState.fail;
+      }
+    });
   }
 }

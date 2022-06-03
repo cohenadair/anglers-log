@@ -19,6 +19,15 @@ class HttpWrapper {
     return http.post(url, headers: headers, body: body, encoding: encoding);
   }
 
+  Future<http.Response> put(
+    Uri url, {
+    Map<String, String>? headers,
+    Object? body,
+    Encoding? encoding,
+  }) {
+    return http.put(url, headers: headers, body: body, encoding: encoding);
+  }
+
   Future<http.Response> get(
     Uri url, {
     Map<String, String>? headers,

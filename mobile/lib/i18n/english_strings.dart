@@ -990,6 +990,8 @@ Map<String, Map<String, String>> get englishStrings => {
         "pollsPage_sendFeedback": "Send Feedback",
         "pollsPage_nextFreeFeature": "Next Free Feature",
         "pollsPage_nextProFeature": "Next Pro Feature",
-        "pollsPage_thankYou": "Thank you for your votes!",
+        "pollsPage_thankYouFree": "Thank you for voting in the free feature poll!",
+        "pollsPage_thankYouPro": "Thank you for voting in the pro feature poll!",
+        "pollsPage_error": "There was an error casting your vote. Please try again later.",
       },
     };

@@ -91,7 +91,7 @@ class FilledRow extends StatelessWidget {
         (MediaQuery.of(context).size.width - padding.left - padding.right)
             .abs();
     return AnimatedContainer(
-      duration: animDurationDefault,
+      duration: animDurationSlow,
       width: showValue ? filledWidth : 0,
       child: Container(
         color: fillColor ?? Theme.of(context).primaryColor,

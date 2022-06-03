@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:mobile/poll_manager.dart';
+import 'package:mobile/res/dimen.dart';
 import 'package:mobile/res/gen/custom_icons.dart';
 import 'package:mobile/user_preference_manager.dart';
 import 'package:mobile/utils/entity_utils.dart';
@@ -90,6 +92,7 @@ class MorePage extends StatelessWidget {
               context,
               icon: Icons.poll,
               title: Strings.of(context).pollsPageTitle,
+              showNotificationBadge: PollManager.of(context).canVote,
               page: PollsPage(),
             ),
             _buildPageItem(
@@ -201,6 +204,7 @@ class MorePage extends StatelessWidget {
     VoidCallback? onTap,
     bool presentPage = false,
     bool isVisible = true,
+    bool showNotificationBadge = false,
   }) {
     if (!isVisible) {
       return const Empty();
@@ -212,7 +216,12 @@ class MorePage extends StatelessWidget {
       key: key,
       title: Text(title),
       leading: Icon(icon),
-      trailing: presentPage || onTap != null ? trailing : RightChevronIcon(),
+      trailing: _buildTrailing(
+        presentPage: presentPage,
+        onTap: onTap,
+        showBadge: showNotificationBadge,
+        trailing: trailing,
+      ),
       onTap: () {
         if (onTap != null) {
           onTap();
@@ -225,6 +234,23 @@ class MorePage extends StatelessWidget {
           push(context, page!);
         }
       },
+    );
+  }
+
+  Widget _buildTrailing({
+    required bool presentPage,
+    required VoidCallback? onTap,
+    required bool showBadge,
+    required Widget? trailing,
+  }) {
+    return Row(
+      children: [
+        Badge(isVisible: showBadge),
+        const HorizontalSpace(paddingSmall),
+        presentPage || onTap != null
+            ? (trailing ?? const Empty())
+            : RightChevronIcon(),
+      ],
     );
   }
 }

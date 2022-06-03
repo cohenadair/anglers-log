@@ -1,4 +1,7 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:mobile/time_manager.dart';
 import 'package:mobile/user_preference_manager.dart';
 import 'package:mobile/wrappers/http_wrapper.dart';
 import 'package:provider/provider.dart';
@@ -7,6 +10,8 @@ import 'app_manager.dart';
 import 'log.dart';
 import 'properties_manager.dart';
 import 'utils/network_utils.dart';
+import 'utils/string_utils.dart';
+import 'utils/void_stream_controller.dart';
 
 class PollManager {
   static PollManager of(BuildContext context) =>
@@ -14,8 +19,10 @@ class PollManager {
 
   static const _log = Log("PollManager");
   static const _url = "anglers-log.firebaseio.com";
-  static const _path = "/polls.json";
+  static const _pathPolls = "/polls.json";
+  static const _pathValue = "/polls/%s/options/%s.json";
 
+  final _controller = VoidStreamController();
   final AppManager _appManager;
 
   Poll? freePoll;
@@ -27,28 +34,33 @@ class PollManager {
 
   PropertiesManager get _propertiesManager => _appManager.propertiesManager;
 
+  TimeManager get _timeManager => _appManager.timeManager;
+
   UserPreferenceManager get _userPreferenceManager =>
       _appManager.userPreferenceManager;
 
-  bool get canVoteFree => freePoll != null &&
+  Stream<void> get stream => _controller.stream;
+
+  bool get canVote => canVoteFree || canVotePro;
+
+  bool get canVoteFree =>
+      freePoll != null &&
       (_userPreferenceManager.freePollVotedAt == null ||
           _userPreferenceManager.freePollVotedAt! < freePoll!.updatedAt);
 
-  bool get canVotePro => proPoll != null &&
+  bool get canVotePro =>
+      proPoll != null &&
       (_userPreferenceManager.proPollVotedAt == null ||
           _userPreferenceManager.proPollVotedAt! < proPoll!.updatedAt);
 
   Future<void> initialize() async {
-    await fetch();
+    await fetchPolls();
   }
 
-  Future<void> fetch() async {
+  Future<void> fetchPolls() async {
     var json = await getRestJson(
       _httpWrapper,
-      Uri.https(_url, _path, {
-        "auth": _propertiesManager.firebaseSecret,
-        "timeout": "5s",
-      }),
+      _uri(_pathPolls),
     );
     if (json == null) {
       return;
@@ -88,6 +100,52 @@ class PollManager {
     } catch (error) {
       _log.e(StackTrace.current, "Error parsing poll JSON: $error, raw: $json");
     }
+  }
+
+  Future<bool> vote(PollType type, String feature) async {
+    var result = await _vote(type, feature);
+    _controller.notify();
+    return result;
+  }
+
+  Future<bool> _vote(PollType type, String feature) async {
+    var uri = _uri(format(_pathValue, [type.name, feature]));
+    var response = await getRest(_httpWrapper, uri);
+
+    var value = int.tryParse(response?.body ?? "");
+    if (value == null) {
+      return false;
+    }
+
+    // Increment existing value by 1. It's technically possible for votes to
+    // get lost if multiple people are voting at the exact same time. For now,
+    // let's not worry about it.
+    if (await putRest(_httpWrapper, uri, (value + 1).toString()) == null) {
+      return false;
+    }
+
+    var currentEpoch =
+        _timeManager.currentDateTime.toUtc().millisecondsSinceEpoch;
+    switch (type) {
+      case PollType.unknown:
+        _log.e(StackTrace.current, "Unknown poll type while voting");
+        break;
+      case PollType.free:
+        _userPreferenceManager.setFreePollVotedAt(currentEpoch);
+        break;
+      case PollType.pro:
+        _userPreferenceManager.setProPollVotedAt(currentEpoch);
+        break;
+    }
+
+    return true;
+  }
+
+  Uri _uri(String path) {
+    return Uri.https(_url, path, {
+      "auth": _propertiesManager.firebaseSecret,
+      "timeout": "5s",
+    });
   }
 }
 

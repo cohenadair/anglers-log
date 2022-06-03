@@ -1997,7 +1997,11 @@ class Strings {
 
   String get pollsPageNextProFeature => _string("pollsPage_nextProFeature");
 
-  String get pollsPageThankYou => _string("pollsPage_thankYou");
+  String get pollsPageThankYouFree => _string("pollsPage_thankYouFree");
+
+  String get pollsPageThankYouPro => _string("pollsPage_thankYouPro");
+
+  String get pollsPageError => _string("pollsPage_error");
 }
 
 class StringsDelegate extends LocalizationsDelegate<Strings> {

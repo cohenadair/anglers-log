@@ -8,25 +8,12 @@ import '../wrappers/http_wrapper.dart';
 
 const _log = Log("NetworkUtils");
 
-Future<Response?> getRest(HttpWrapper httpWrapper, Uri uri) async {
-  Response? response;
-  try {
-    response = await httpWrapper.get(uri);
-  } catch (error) {
-    // This can happen if there's no network connection.
-    _log.w("Error in HTTP request: $error");
-    return null;
-  }
+Future<Response?> getRest(HttpWrapper httpWrapper, Uri uri) {
+  return _sendRest(() => httpWrapper.get(uri), uri);
+}
 
-  if (response.statusCode != HttpStatus.ok) {
-    _log.e(
-        StackTrace.current,
-        "Error in REST call: ${response.statusCode}: ${response.body},"
-        " query=$uri");
-    return null;
-  }
-
-  return response;
+Future<Response?> putRest(HttpWrapper httpWrapper, Uri uri, Object? body) {
+  return _sendRest(() => httpWrapper.put(uri, body: body), uri);
 }
 
 Future<Map<String, dynamic>?> getRestJson(
@@ -56,3 +43,25 @@ Future<Map<String, dynamic>?> getRestJson(
 
 bool isValidJsonMap(dynamic possibleJson) =>
     possibleJson != null && possibleJson is Map<String, dynamic>;
+
+Future<Response?> _sendRest(Future<Response> Function() sender, Uri uri) async {
+  Response? response;
+  try {
+    response = await sender();
+  } catch (error) {
+    // This can happen if there's no network connection.
+    _log.w("Error in HTTP request: $error; query=$uri");
+    return null;
+  }
+
+  if (response.statusCode != HttpStatus.ok) {
+    _log.e(
+      StackTrace.current,
+      "Error in REST response: ${response.statusCode}: ${response.body},"
+      " query=$uri",
+    );
+    return null;
+  }
+
+  return response;
+}

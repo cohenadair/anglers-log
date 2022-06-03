@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mobile/poll_manager.dart';
 import 'package:mobile/widgets/ad_banner_widget.dart';
 
 import '../i18n/strings.dart';
@@ -18,6 +19,8 @@ class _MainPageState extends State<MainPage> {
   int _currentBarItem = 1; // Default to the "Catches" tab.
   late List<_BarItemModel> _navItems;
 
+  PollManager get _pollManager => PollManager.of(context);
+
   NavigatorState get _currentNavState {
     assert(_navItems[_currentBarItem].page?.navigatorKey.currentState != null);
     return _navItems[_currentBarItem].page!.navigatorKey.currentState!;
@@ -33,7 +36,7 @@ class _MainPageState extends State<MainPage> {
           navigatorKey: GlobalKey<NavigatorState>(),
           builder: (context) => FishingSpotMap(),
         ),
-        icon: Icons.map,
+        iconBuilder: () => const Icon(Icons.map),
         titleBuilder: (context) => Strings.of(context).mapPageMenuLabel,
       ),
       _BarItemModel(
@@ -41,11 +44,11 @@ class _MainPageState extends State<MainPage> {
           navigatorKey: GlobalKey<NavigatorState>(),
           builder: (context) => const CatchListPage(),
         ),
-        icon: iconCatch,
+        iconBuilder: () => const Icon(iconCatch),
         titleBuilder: (context) => Strings.of(context).entityNameCatches,
       ),
       _BarItemModel(
-        icon: iconBottomBarAdd,
+        iconBuilder: () => const Icon(iconBottomBarAdd),
         titleBuilder: (context) => Strings.of(context).add,
         onTapOverride: () => showAddAnythingBottomSheet(context)
             .then((spec) => spec?.presentSavePage(context)),
@@ -55,7 +58,7 @@ class _MainPageState extends State<MainPage> {
           navigatorKey: GlobalKey<NavigatorState>(),
           builder: (context) => StatsPage(),
         ),
-        icon: Icons.show_chart,
+        iconBuilder: () => const Icon(Icons.show_chart),
         titleBuilder: (context) => Strings.of(context).statsPageMenuTitle,
       ),
       _BarItemModel(
@@ -63,7 +66,7 @@ class _MainPageState extends State<MainPage> {
           navigatorKey: GlobalKey<NavigatorState>(),
           builder: (context) => const MorePage(),
         ),
-        icon: Icons.more_horiz,
+        iconBuilder: _buildMoreIcon,
         titleBuilder: (context) => Strings.of(context).morePageTitle,
       ),
     ];
@@ -97,7 +100,7 @@ class _MainPageState extends State<MainPage> {
           items: _navItems
               .map(
                 (data) => BottomNavigationBarItem(
-                  icon: Icon(data.icon),
+                  icon: data.iconBuilder(),
                   label: data.titleBuilder(context),
                 ),
               )
@@ -121,12 +124,28 @@ class _MainPageState extends State<MainPage> {
       ),
     );
   }
+
+  Widget _buildMoreIcon() {
+    return StreamBuilder<void>(
+      stream: _pollManager.stream,
+      builder: (context, _) => Stack(
+        children: <Widget>[
+          const Icon(Icons.more_horiz),
+          Positioned(
+            top: 0.0,
+            right: 0.0,
+            child: Badge(isVisible: _pollManager.canVote),
+          ),
+        ],
+      ),
+    );
+  }
 }
 
 class _BarItemModel {
   final _NavigatorPage? page;
   final LocalizedString titleBuilder;
-  final IconData icon;
+  final Widget Function() iconBuilder;
 
   /// If set, overrides the default behaviour of showing the associated
   /// [Widget].
@@ -135,7 +154,7 @@ class _BarItemModel {
   _BarItemModel({
     this.page,
     required this.titleBuilder,
-    required this.icon,
+    required this.iconBuilder,
     this.onTapOverride,
   }) : assert(page != null || onTapOverride != null);
 }
