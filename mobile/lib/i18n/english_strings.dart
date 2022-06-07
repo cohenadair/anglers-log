@@ -421,9 +421,9 @@ Map<String, Map<String, String>> get englishStrings => {
             "Unable to retrieve current location. Please try again later.",
         "mapPage_errorOpeningDirections":
             "There are no navigation apps available on this device.",
-        "mapPage_appleMaps": "Apple Maps",
-        "mapPage_googleMaps": "Google Maps",
-        "mapPage_waze": "Waze",
+        "mapPage_appleMaps": "Apple Maps\u2122",
+        "mapPage_googleMaps": "Google Maps\u2122",
+        "mapPage_waze": "Waze\u2122",
         "saveFishingSpotPage_newTitle": "New Fishing Spot",
         "saveFishingSpotPage_editTitle": "Edit Fishing Spot",
         "saveFishingSpotPage_bodyOfWaterLabel": "Body Of Water",

@@ -100,17 +100,14 @@ class FilledRow extends StatelessWidget {
   }
 
   Widget _buildText(BuildContext context) {
-    var valueString = "";
+    var text = label;
     if (showValue) {
-      valueString = "(${valueBuilder?.call() ?? value})";
+      text += " (${valueBuilder?.call() ?? value})";
     }
 
     return Padding(
       padding: labelPadding,
-      child: Text(
-        "$label $valueString",
-        overflow: TextOverflow.ellipsis,
-      ),
+      child: Text(text, overflow: TextOverflow.ellipsis),
     );
   }
 }

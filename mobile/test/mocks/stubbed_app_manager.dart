@@ -25,6 +25,7 @@ class StubbedAppManager {
   MockLocalDatabaseManager localDatabaseManager = MockLocalDatabaseManager();
   MockLocationMonitor locationMonitor = MockLocationMonitor();
   MockMethodManager methodManager = MockMethodManager();
+  MockPollManager pollManager = MockPollManager();
   MockPropertiesManager propertiesManager = MockPropertiesManager();
   MockReportManager reportManager = MockReportManager();
   MockSpeciesManager speciesManager = MockSpeciesManager();
@@ -70,6 +71,7 @@ class StubbedAppManager {
     when(app.localDatabaseManager).thenReturn(localDatabaseManager);
     when(app.locationMonitor).thenReturn(locationMonitor);
     when(app.methodManager).thenReturn(methodManager);
+    when(app.pollManager).thenReturn(pollManager);
     when(app.propertiesManager).thenReturn(propertiesManager);
     when(app.reportManager).thenReturn(reportManager);
     when(app.speciesManager).thenReturn(speciesManager);

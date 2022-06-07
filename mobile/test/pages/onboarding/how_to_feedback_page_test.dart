@@ -13,6 +13,8 @@ void main() {
   setUp(() {
     appManager = StubbedAppManager();
 
+    when(appManager.pollManager.canVote).thenReturn(false);
+
     when(appManager.userPreferenceManager.isTrackingSpecies).thenReturn(true);
     when(appManager.userPreferenceManager.isTrackingAnglers).thenReturn(true);
     when(appManager.userPreferenceManager.isTrackingBaits).thenReturn(true);

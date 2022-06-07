@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
 import 'package:mobile/pages/main_page.dart';
+import 'package:mobile/widgets/widget.dart';
 import 'package:mockito/mockito.dart';
 
 import '../mocks/stubbed_app_manager.dart';
@@ -35,6 +36,9 @@ void main() {
     when(appManager.catchManager.hasEntities).thenReturn(false);
 
     when(appManager.ioWrapper.isAndroid).thenReturn(false);
+
+    when(appManager.pollManager.canVote).thenReturn(false);
+    when(appManager.pollManager.stream).thenAnswer((_) => const Stream.empty());
 
     when(appManager.reportManager.entityExists(any)).thenReturn(false);
     when(appManager.reportManager.defaultReport).thenReturn(Report());
@@ -135,5 +139,41 @@ void main() {
 
     await tapAndSettle(tester, find.byIcon(Icons.more_horiz));
     expect(find.text("Bait Categories (0)"), findsNothing);
+  });
+
+  testWidgets("Poll badge shown", (tester) async {
+    when(appManager.pollManager.canVote).thenReturn(true);
+
+    await tester.pumpWidget(Testable(
+      (_) => MainPage(),
+      appManager: appManager,
+    ));
+    // Let map timers settle.
+    await tester.pumpAndSettle(const Duration(milliseconds: 300));
+    await mapController.finishLoading(tester);
+
+    var badge = tester.widget<Badge>(find.descendant(
+      of: find.byType(BottomNavigationBar),
+      matching: find.byType(Badge),
+    ));
+    expect(badge.isVisible, isTrue);
+  });
+
+  testWidgets("Poll badge hidden", (tester) async {
+    when(appManager.pollManager.canVote).thenReturn(false);
+
+    await tester.pumpWidget(Testable(
+      (_) => MainPage(),
+      appManager: appManager,
+    ));
+    // Let map timers settle.
+    await tester.pumpAndSettle(const Duration(milliseconds: 300));
+    await mapController.finishLoading(tester);
+
+    var badge = tester.widget<Badge>(find.descendant(
+      of: find.byType(BottomNavigationBar),
+      matching: find.byType(Badge),
+    ));
+    expect(badge.isVisible, isFalse);
   });
 }

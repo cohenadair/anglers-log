@@ -58,10 +58,7 @@ class PollManager {
   }
 
   Future<void> fetchPolls() async {
-    var json = await getRestJson(
-      _httpWrapper,
-      _uri(_pathPolls),
-    );
+    var json = await getRestJson(_httpWrapper, _uri(_pathPolls));
     if (json == null) {
       return;
     }
@@ -76,6 +73,11 @@ class PollManager {
           type = PollType.free;
         } else if (jsonPoll == "pro") {
           type = PollType.pro;
+        }
+
+        if (type == PollType.unknown) {
+          _log.e(StackTrace.current, "Unknown poll type: $type");
+          continue;
         }
 
         var options = <String, int>{};
@@ -93,8 +95,6 @@ class PollManager {
           freePoll = poll;
         } else if (type == PollType.pro) {
           proPoll = poll;
-        } else {
-          _log.e(StackTrace.current, "Unknown poll type: $type");
         }
       }
     } catch (error) {
@@ -109,6 +109,11 @@ class PollManager {
   }
 
   Future<bool> _vote(PollType type, String feature) async {
+    if (type == PollType.unknown) {
+      _log.e(StackTrace.current, "Unknown poll type while voting");
+      return false;
+    }
+
     var uri = _uri(format(_pathValue, [type.name, feature]));
     var response = await getRest(_httpWrapper, uri);
 
@@ -127,14 +132,14 @@ class PollManager {
     var currentEpoch =
         _timeManager.currentDateTime.toUtc().millisecondsSinceEpoch;
     switch (type) {
-      case PollType.unknown:
-        _log.e(StackTrace.current, "Unknown poll type while voting");
-        break;
       case PollType.free:
         _userPreferenceManager.setFreePollVotedAt(currentEpoch);
         break;
       case PollType.pro:
         _userPreferenceManager.setProPollVotedAt(currentEpoch);
+        break;
+      case PollType.unknown:
+        // Can't happen; checked at the beginning of this method.
         break;
     }
 
