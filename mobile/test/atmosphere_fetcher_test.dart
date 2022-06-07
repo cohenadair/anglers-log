@@ -112,18 +112,6 @@ void main() {
     );
   });
 
-  test("Bad response status code", () async {
-    var response = MockResponse();
-    when(response.statusCode).thenReturn(HttpStatus.badGateway);
-    when(appManager.httpWrapper.get(any))
-        .thenAnswer((_) => Future.value(response));
-
-    var fetcher =
-        AtmosphereFetcher(appManager.app, dateTime(0), const LatLng(0, 0));
-    expect(await fetcher.fetch(), isNull);
-    verifyNever(response.body);
-  });
-
   test("Response includes invalid JSON", () async {
     var response = MockResponse();
     when(response.statusCode).thenReturn(HttpStatus.ok);

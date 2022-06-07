@@ -22,6 +22,7 @@ import 'package:mobile/bait_manager.dart';
 import 'package:mobile/body_of_water_manager.dart';
 import 'package:mobile/catch_manager.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
+import 'package:mobile/poll_manager.dart';
 import 'package:mobile/report_manager.dart';
 import 'package:mobile/custom_entity_manager.dart';
 import 'package:mobile/database/legacy_importer.dart';
@@ -102,6 +103,7 @@ Trip_CatchesPerEntity newInputItemShim(dynamic pickerItem) =>
 @GenerateMocks([LocalDatabaseManager])
 @GenerateMocks([LocationMonitor])
 @GenerateMocks([MethodManager])
+@GenerateMocks([PollManager])
 @GenerateMocks([PreferenceManager])
 @GenerateMocks([PropertiesManager])
 @GenerateMocks([ReportManager])

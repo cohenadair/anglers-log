@@ -31,6 +31,9 @@ void main() {
 
     when(appManager.locationMonitor.currentLocation).thenReturn(null);
 
+    when(appManager.pollManager.canVote).thenReturn(false);
+    when(appManager.pollManager.stream).thenAnswer((_) => const Stream.empty());
+
     when(appManager.propertiesManager.mapboxApiKey).thenReturn("");
 
     when(appManager.subscriptionManager.isFree).thenReturn(false);

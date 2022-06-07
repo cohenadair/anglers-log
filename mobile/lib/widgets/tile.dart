@@ -53,11 +53,12 @@ class Tile extends StatelessWidget {
 
     return InkWell(
       onTap: item.onTap,
+      borderRadius: defaultBorderRadius,
       child: Container(
         width: double.infinity,
         padding: insetsVertical(paddingXL),
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(floatingCornerRadius),
+          borderRadius: defaultBorderRadius,
           color: randomAccentColor(),
         ),
         child: Center(

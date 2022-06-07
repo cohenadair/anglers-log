@@ -1981,6 +1981,27 @@ class Strings {
   String get timeZoneInputDescription => _string("timeZoneInput_description");
 
   String get timeZoneInputSearchHint => _string("timeZoneInput_searchHint");
+
+  String get pollsPageTitle => _string("pollsPage_title");
+
+  String get pollsPageDescription => _string("pollsPage_description");
+
+  String get pollsPageNoPollsTitle => _string("pollsPage_noPollsTitle");
+
+  String get pollsPageNoPollsDescription =>
+      _string("pollsPage_noPollsDescription");
+
+  String get pollsPageSendFeedback => _string("pollsPage_sendFeedback");
+
+  String get pollsPageNextFreeFeature => _string("pollsPage_nextFreeFeature");
+
+  String get pollsPageNextProFeature => _string("pollsPage_nextProFeature");
+
+  String get pollsPageThankYouFree => _string("pollsPage_thankYouFree");
+
+  String get pollsPageThankYouPro => _string("pollsPage_thankYouPro");
+
+  String get pollsPageError => _string("pollsPage_error");
 }
 
 class StringsDelegate extends LocalizationsDelegate<Strings> {

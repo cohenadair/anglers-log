@@ -32,6 +32,8 @@ void main() {
         .thenAnswer((_) => Future.value(null));
     when(appManager.locationMonitor.currentLocation).thenReturn(null);
 
+    when(appManager.pollManager.canVote).thenReturn(false);
+
     when(appManager.userPreferenceManager.isTrackingSpecies).thenReturn(true);
     when(appManager.userPreferenceManager.isTrackingAnglers).thenReturn(true);
     when(appManager.userPreferenceManager.isTrackingBaits).thenReturn(true);

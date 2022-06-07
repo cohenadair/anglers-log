@@ -30,6 +30,9 @@ class TestAppManager extends AppManager {
   MockMethodManager methodManager = MockMethodManager();
 
   @override
+  MockPollManager pollManager = MockPollManager();
+
+  @override
   MockReportManager reportManager = MockReportManager();
 
   @override
@@ -97,6 +100,8 @@ void main() {
         .thenAnswer((_) => Future.value());
     when(appManager.methodManager.initialize())
         .thenAnswer((_) => Future.value());
+    when(appManager.pollManager.initialize())
+        .thenAnswer((_) => Future.value());
     when(appManager.reportManager.initialize())
         .thenAnswer((_) => Future.value());
     when(appManager.speciesManager.initialize())
@@ -114,6 +119,7 @@ void main() {
   test("Initialize on startup", () async {
     await appManager.initialize(isStartup: true);
     verify(appManager.locationMonitor.initialize()).called(1);
+    verify(appManager.pollManager.initialize()).called(1);
     verify(appManager.propertiesManager.initialize()).called(1);
     verify(appManager.subscriptionManager.initialize()).called(1);
     verify(appManager.backupRestoreManager.initialize()).called(1);
@@ -123,6 +129,7 @@ void main() {
   test("Initialize after startup", () async {
     await appManager.initialize(isStartup: false);
     verifyNever(appManager.locationMonitor.initialize());
+    verifyNever(appManager.pollManager.initialize());
     verifyNever(appManager.propertiesManager.initialize());
     verifyNever(appManager.subscriptionManager.initialize());
     verifyNever(appManager.backupRestoreManager.initialize());
