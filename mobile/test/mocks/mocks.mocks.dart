@@ -1811,6 +1811,10 @@ class MockCatchManager extends _i1.Mock implements _i12.CatchManager {
       Invocation.method(#numberOfCustomEntityValues, [customEntityId]),
       returnValue: 0) as int);
   @override
+  int totalQuantity(Set<_i4.Id>? catchIds) =>
+      (super.noSuchMethod(Invocation.method(#totalQuantity, [catchIds]),
+          returnValue: 0) as int);
+  @override
   String? displayNameFromId(_i52.BuildContext? context, _i4.Id? id) =>
       (super.noSuchMethod(Invocation.method(#displayNameFromId, [context, id]))
           as String?);

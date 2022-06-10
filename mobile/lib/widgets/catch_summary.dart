@@ -203,7 +203,7 @@ class _CatchSummaryState<T> extends State<CatchSummary<T>> {
   }
 
   TileItem _buildCatchesTileItem(_CatchSummaryReportModel model) {
-    var quantity = model.catchIds.length;
+    var quantity = _catchManager.totalQuantity(model.catchIds);
     return TileItem(
       title: quantity.toString(),
       subtitle: quantity == 1
@@ -1057,7 +1057,12 @@ class _CatchSummaryReportModel<T> {
         _inc(_includeSeasons, Season.valueOf(cat.season.value), perSeason);
       }
 
-      _inc(_includeSpecies, _speciesManager.entity(cat.speciesId), perSpecies);
+      _inc(
+        _includeSpecies,
+        _speciesManager.entity(cat.speciesId),
+        perSpecies,
+        quantity: cat.hasQuantity() ? cat.quantity : 1,
+      );
 
       if (cat.hasTide() && cat.tide.hasType()) {
         _inc(_includeTideTypes, TideType.valueOf(cat.tide.type.value),
@@ -1069,14 +1074,19 @@ class _CatchSummaryReportModel<T> {
     }
   }
 
-  void _inc<E>(bool include, E? entity, Map<E, int> sink) {
+  void _inc<E>(
+    bool include,
+    E? entity,
+    Map<E, int> sink, {
+    int quantity = 1,
+  }) {
     if (!include) {
       return;
     }
 
     if (entity != null) {
       sink.putIfAbsent(entity, () => 0);
-      sink[entity] = sink[entity]! + 1;
+      sink[entity] = sink[entity]! + quantity;
     }
   }
 

@@ -260,7 +260,8 @@ void main() {
         ..waterClarityId = clarityId2
         ..anglerId = anglerId0
         ..isFavorite = true
-        ..tide = Tide(type: TideType.high),
+        ..tide = Tide(type: TideType.high)
+        ..quantity = 5,
       Catch()
         ..id = catchId1
         ..timestamp = Int64(5000)
@@ -424,6 +425,7 @@ void main() {
     catchManager = appManager.catchManager;
     when(catchManager.list()).thenReturn(catches);
     when(catchManager.deleteMessage(any, any)).thenReturn("Delete");
+    when(catchManager.totalQuantity(any)).thenReturn(catches.length);
 
     when(appManager.timeManager.currentDateTime)
         .thenReturn(dateTimestamp(105000));
@@ -604,6 +606,7 @@ void main() {
   });
 
   testWidgets("Catches tile with quantity = 1", (tester) async {
+    when(catchManager.totalQuantity(any)).thenReturn(1);
     stubCatchesByTimestamp([Catch(id: randomId())]);
     await pumpCatchSummary(
       tester,
@@ -622,6 +625,7 @@ void main() {
   });
 
   testWidgets("Catches tile with quantity != 1", (tester) async {
+    when(catchManager.totalQuantity(any)).thenReturn(0);
     stubCatchesByTimestamp([]);
     await pumpCatchSummary(
       tester,
@@ -1315,7 +1319,7 @@ void main() {
     expect(find.text("Bluegill (1)"), findsOneWidget);
     expect(find.text("Pike (4)"), findsOneWidget);
     expect(find.text("Catfish (0)"), findsOneWidget);
-    expect(find.text("Bass (2)"), findsOneWidget);
+    expect(find.text("Bass (6)"), findsOneWidget);
     expect(find.text("Steelhead (3)"), findsOneWidget);
     await tapAndSettle(tester, find.byType(BackButton));
 

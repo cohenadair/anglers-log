@@ -2423,4 +2423,34 @@ void main() {
 
     expect(displayName, "Rainbow Trout (Oct 26, 2020 at 3:30 PM)");
   });
+
+  test("totalQuantity returns correct result", () async {
+    var id0 = randomId();
+    var id1 = randomId();
+    var id2 = randomId();
+    var id3 = randomId();
+    var id4 = randomId();
+    await catchManager.addOrUpdate(Catch(
+      id: id0,
+      quantity: 5,
+    ));
+    await catchManager.addOrUpdate(Catch(
+      id: id1,
+    ));
+    await catchManager.addOrUpdate(Catch(
+      id: id2,
+      quantity: 15,
+    ));
+    await catchManager.addOrUpdate(Catch(
+      id: id3,
+      quantity: 10,
+    ));
+    await catchManager.addOrUpdate(Catch(
+      id: id4,
+    ));
+
+    expect(catchManager.totalQuantity({id0, id1, id2, id3, id4}), 32);
+    expect(catchManager.totalQuantity({id1, id4}), 2);
+    expect(catchManager.totalQuantity({id0, id2}), 20);
+  });
 }
