@@ -37,9 +37,9 @@ class UserPreferenceManager extends PreferenceManager {
   static const _keyUserName = "user_name";
   static const _keyFreePollVotedAt = "free_poll_voted_at";
   static const _keyProPollVotedAt = "pro_poll_voted_at";
-
   static const _keySelectedReportId = "selected_report_id";
   static const _keyMapType = "map_type";
+  static const _keyAppVersion = "app_version";
 
   UserPreferenceManager(AppManager appManager) : super(appManager);
 
@@ -177,6 +177,10 @@ class UserPreferenceManager extends PreferenceManager {
   Future<void> setMapType(String? type) => put(_keyMapType, type);
 
   String? get mapType => preferences[_keyMapType];
+
+  Future<void> setAppVersion(String? version) => put(_keyAppVersion, version);
+
+  String? get appVersion => preferences[_keyAppVersion];
 
   Future<void> setUserEmail(String? email) => put(_keyUserEmail, email);
 

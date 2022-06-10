@@ -4258,6 +4258,11 @@ class MockUserPreferenceManager extends _i1.Mock
       returnValue: Future<void>.value(),
       returnValueForMissingStub: Future<void>.value()) as _i64.Future<void>);
   @override
+  _i64.Future<void> setAppVersion(String? version) => (super.noSuchMethod(
+      Invocation.method(#setAppVersion, [version]),
+      returnValue: Future<void>.value(),
+      returnValueForMissingStub: Future<void>.value()) as _i64.Future<void>);
+  @override
   _i64.Future<void> setUserEmail(String? email) => (super.noSuchMethod(
       Invocation.method(#setUserEmail, [email]),
       returnValue: Future<void>.value(),

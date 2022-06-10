@@ -2002,6 +2002,31 @@ class Strings {
   String get pollsPageThankYouPro => _string("pollsPage_thankYouPro");
 
   String get pollsPageError => _string("pollsPage_error");
+
+  String get changeLogPageTitle => _string("changeLogPage_title");
+
+  String get changeLogPagePreviousVersion =>
+      _string("changeLogPage_previousVersion");
+
+  String get changeLog_2022_1 => _string("changeLog_2.0.22_1");
+
+  String get changeLog_2022_2 => _string("changeLog_2.0.22_2");
+
+  String get changeLog_2022_3 => _string("changeLog_2.0.22_3");
+
+  String get changeLog_2022_4 => _string("changeLog_2.0.22_4");
+
+  String get changeLog_2022_5 => _string("changeLog_2.0.22_5");
+
+  String get changeLog_2022_6 => _string("changeLog_2.0.22_6");
+
+  String get changeLog_210_1 => _string("changeLog_2.1.0_1");
+
+  String get changeLog_210_2 => _string("changeLog_2.1.0_2");
+
+  String get changeLog_210_3 => _string("changeLog_2.1.0_3");
+
+  String get changeLog_210_4 => _string("changeLog_2.1.0_4");
 }
 
 class StringsDelegate extends LocalizationsDelegate<Strings> {

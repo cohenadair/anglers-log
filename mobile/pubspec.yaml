@@ -60,6 +60,7 @@ dependencies:
   timezone: ^0.8.0                  # https://pub.dev/packages/timezone
   url_launcher: ^6.0.20             # https://pub.dev/packages/url_launcher (Flutter)
   uuid: ^3.0.5                      # https://pub.dev/packages/uuid (verified)
+  version: ^2.0.0                   # https://pub.dev/packages/version (verified)
 
 dev_dependencies:
   build_runner: ^2.1.7              # https://pub.dev/packages/build_runner (Dart)
