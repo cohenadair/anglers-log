@@ -105,4 +105,37 @@ void main() {
     userPreferenceManager.setCatchFieldIds([catchFieldIdWaterClarity]);
     expect(userPreferenceManager.isTrackingAnglers, isFalse);
   });
+
+  test("Default fishing spot distance", () {
+    expect(
+        userPreferenceManager.fishingSpotDistance,
+        MultiMeasurement(
+          system: MeasurementSystem.imperial_whole,
+          mainValue: Measurement(
+            unit: Unit.feet,
+            value: 100,
+          ),
+        ));
+  });
+
+  test("Non-default fishing spot distance", () {
+    userPreferenceManager.setFishingSpotDistance(MultiMeasurement(
+      system: MeasurementSystem.metric,
+      mainValue: Measurement(
+        unit: Unit.meters,
+        value: 30,
+      ),
+    ));
+    
+    expect(
+      userPreferenceManager.fishingSpotDistance,
+      MultiMeasurement(
+        system: MeasurementSystem.metric,
+        mainValue: Measurement(
+          unit: Unit.meters,
+          value: 30,
+        ),
+      ),
+    );
+  });
 }

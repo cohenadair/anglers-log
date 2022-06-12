@@ -33,7 +33,7 @@ void main() {
 
     when(appManager.fishingSpotManager.entityExists(any)).thenReturn(true);
     when(appManager.fishingSpotManager.list()).thenReturn([]);
-    when(appManager.fishingSpotManager.withinRadius(any)).thenReturn(null);
+    when(appManager.fishingSpotManager.withinPreferenceRadius(any)).thenReturn(null);
     when(appManager.fishingSpotManager.displayName(
       any,
       any,
@@ -685,7 +685,7 @@ void main() {
     when(appManager.fishingSpotManager.entityExists(any)).thenReturn(false);
     when(appManager.fishingSpotManager.entityExists(fishingSpot.id))
         .thenReturn(true);
-    when(appManager.fishingSpotManager.withinRadius(any))
+    when(appManager.fishingSpotManager.withinPreferenceRadius(any))
         .thenReturn(fishingSpot);
 
     await pumpMap(
@@ -884,7 +884,7 @@ void main() {
 
   testWidgets("Setting up picker is no-op when not picking", (tester) async {
     await pumpMap(tester, FishingSpotMap());
-    verifyNever(appManager.fishingSpotManager.withinRadius(any));
+    verifyNever(appManager.fishingSpotManager.withinPreferenceRadius(any));
   });
 
   testWidgets("Setting up picker is no-op spot is already active",
@@ -905,7 +905,7 @@ void main() {
         pickerSettings: FishingSpotMapPickerSettings(controller: controller),
       ),
     );
-    verifyNever(appManager.fishingSpotManager.withinRadius(any));
+    verifyNever(appManager.fishingSpotManager.withinPreferenceRadius(any));
   });
 
   testWidgets("Setting up picker selects controller value", (tester) async {

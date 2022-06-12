@@ -378,15 +378,6 @@ extension FishingSpots on FishingSpot {
   LatLng get latLng => LatLng(lat, lng);
 }
 
-extension GeneratedMessages on GeneratedMessage {
-  T immutableCopyAndUpdate<T extends GeneratedMessage>(
-      void Function(T)? updates) {
-    return (deepCopy().freeze() as T).rebuild(updates ?? (_) {});
-  }
-
-  T immutableCopy<T extends GeneratedMessage>() => immutableCopyAndUpdate(null);
-}
-
 extension MeasurementSystems on MeasurementSystem {
   String displayName(BuildContext context) {
     switch (this) {

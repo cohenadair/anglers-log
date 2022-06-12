@@ -7,7 +7,10 @@ description: Track, analyze, and share your catches in the sport of fishing.
 # Both the version and the builder number may be overridden in flutter
 # build by specifying --build-name and --build-number, respectively.
 # Read more about versioning at semver.org.
-version: 2.0.20+20220523 # Both numbers must be incremented for Android.
+#
+# Both numbers must be incremented for Android. DO NOT add any suffix to the date, such as ".2". The
+# period will be removed on Google Play and builds with lower numbers cannot be uploaded.
+version: 2.1.0+20220612
 publish_to: none
 
 environment:
@@ -59,6 +62,7 @@ dependencies:
   timezone: ^0.8.0                  # https://pub.dev/packages/timezone
   url_launcher: ^6.1.2              # https://pub.dev/packages/url_launcher (Flutter)
   uuid: ^3.0.6                      # https://pub.dev/packages/uuid (verified)
+  version: ^2.0.0                   # https://pub.dev/packages/version (verified)
 
 dev_dependencies:
   build_runner: ^2.1.11             # https://pub.dev/packages/build_runner (Dart)

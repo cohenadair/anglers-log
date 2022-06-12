@@ -67,5 +67,6 @@ void main() {
     expect(controller.value!.type, TideType.high);
     expect(controller.value!.lowTimestamp.toInt(), 1624366800000);
     expect(controller.value!.highTimestamp.toInt(), 1624388400000);
+    expect(controller.value!.isFrozen, isFalse);
   });
 }

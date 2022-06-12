@@ -35,11 +35,22 @@ void main() {
   });
 
   test("Fishing spot within radius", () async {
+    when(appManager.userPreferenceManager.fishingSpotDistance).thenReturn(
+      MultiMeasurement(
+        system: MeasurementSystem.metric,
+        mainValue: Measurement(
+          unit: Unit.meters,
+          value: 20,
+        ),
+      ),
+    );
+
     // Null cases.
-    var fishingSpot = fishingSpotManager.withinRadius(const LatLng(0, 0), 20);
+    var fishingSpot =
+        fishingSpotManager.withinPreferenceRadius(const LatLng(0, 0));
     expect(fishingSpot, isNull);
 
-    fishingSpot = fishingSpotManager.withinRadius(null);
+    fishingSpot = fishingSpotManager.withinPreferenceRadius(null);
     expect(fishingSpot, isNull);
 
     var fishingSpotId0 = randomId();
@@ -54,8 +65,8 @@ void main() {
       ..lat = 35.955348
       ..lng = -84.240310;
     await fishingSpotManager.addOrUpdate(newSpot);
-    fishingSpot = fishingSpotManager.withinRadius(
-        const LatLng(35.955348, -84.240310), 20);
+    fishingSpot = fishingSpotManager.withinPreferenceRadius(
+        const LatLng(35.955348, -84.240310));
     expect(fishingSpot, isNotNull);
     await fishingSpotManager.delete(newSpot.id);
 
@@ -65,8 +76,8 @@ void main() {
       ..lat = 35.953638
       ..lng = -84.241233;
     await fishingSpotManager.addOrUpdate(newSpot);
-    fishingSpot = fishingSpotManager.withinRadius(
-        const LatLng(35.955348, -84.240310), 20);
+    fishingSpot = fishingSpotManager.withinPreferenceRadius(
+        const LatLng(35.955348, -84.240310));
     expect(fishingSpot, isNull);
     await fishingSpotManager.delete(newSpot.id);
 
@@ -84,8 +95,8 @@ void main() {
       ..lat = 35.955335
       ..lng = -84.240300);
 
-    fishingSpot = fishingSpotManager.withinRadius(
-        const LatLng(35.955340, -84.240295), 20);
+    fishingSpot = fishingSpotManager.withinPreferenceRadius(
+        const LatLng(35.955340, -84.240295));
     expect(fishingSpot, isNotNull);
     expect(fishingSpot!.lat, 35.955335);
     expect(fishingSpot.lng, -84.240300);

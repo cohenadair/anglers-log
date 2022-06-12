@@ -143,6 +143,14 @@ Future<Database> openDb() async {
   );
 }
 
+Future<void> deleteDb() async {
+  var file = File(await _databasePath());
+  if (await file.exists()) {
+    _log.d("Deleting database");
+    await file.delete();
+  }
+}
+
 void _onCreateDatabase(Database db, int version) {
   for (var schema in _schema) {
     _executeSchema(db, schema);

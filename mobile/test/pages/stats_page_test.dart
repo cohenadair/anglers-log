@@ -232,6 +232,7 @@ void main() {
     )).thenReturn([]);
     when(appManager.catchManager.list()).thenReturn(catches);
     when(appManager.catchManager.hasEntities).thenReturn(false);
+    when(appManager.catchManager.totalQuantity(any)).thenReturn(catches.length);
 
     when(appManager.reportManager.list()).thenReturn([]);
     when(appManager.reportManager.listSortedByDisplayName(any)).thenReturn([]);

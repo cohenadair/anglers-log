@@ -475,4 +475,13 @@ class CatchManager extends EntityManager<Catch> {
     return entityValuesCount<Catch>(
         list(), customEntityId, (cat) => cat.customEntityValues);
   }
+
+  /// Returns the total number of catches (including the quantity field) in the
+  /// given [Id] set.
+  int totalQuantity(Set<Id> catchIds) {
+    return catchIds.fold<int>(0, (prevValue, id) {
+      var cat = entity(id);
+      return prevValue + ((cat?.hasQuantity() ?? false) ? cat!.quantity : 1);
+    });
+  }
 }

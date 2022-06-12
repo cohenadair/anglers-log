@@ -39,6 +39,15 @@ class LocalDatabaseManager {
     _initialized = true;
   }
 
+  /// Closes and deletes the current database. Then, creates a new one, opens it,
+  /// and reinitializes [AppManager].
+  Future<void> resetDatabase() async {
+    await _database.close();
+    await deleteDb();
+    _database = await openDb();
+    await _appManager.initialize(isStartup: false);
+  }
+
   String databasePath() => _database.path;
 
   /// Commits a batch of SQL statements. See [Batch].

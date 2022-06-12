@@ -453,9 +453,9 @@ void main() {
     ));
 
     await tapAndSettle(tester, find.text("Directions"));
-    expect(find.text("Google Maps"), findsOneWidget);
-    expect(find.text("Apple Maps"), findsOneWidget);
-    expect(find.text("Waze"), findsOneWidget);
+    expect(find.text("Google Maps\u2122"), findsOneWidget);
+    expect(find.text("Apple Maps\u2122"), findsOneWidget);
+    expect(find.text("Waze\u2122"), findsOneWidget);
     expect(find.byType(SnackBar), findsNothing);
   });
 
@@ -471,16 +471,16 @@ void main() {
 
     // Open bottom sheet.
     await tapAndSettle(tester, find.text("Directions"));
-    expect(find.text("Google Maps"), findsOneWidget);
-    expect(find.text("Apple Maps"), findsOneWidget);
-    expect(find.text("Waze"), findsOneWidget);
+    expect(find.text("Google Maps\u2122"), findsOneWidget);
+    expect(find.text("Apple Maps\u2122"), findsOneWidget);
+    expect(find.text("Waze\u2122"), findsOneWidget);
 
     // Dismiss bottom sheet.
-    await tester.fling(find.text("Apple Maps"), const Offset(0, 100), 800);
+    await tester.fling(find.text("Apple Maps\u2122"), const Offset(0, 100), 800);
     await tester.pumpAndSettle(const Duration(milliseconds: 150));
-    expect(find.text("Google Maps"), findsNothing);
-    expect(find.text("Apple Maps"), findsNothing);
-    expect(find.text("Waze"), findsNothing);
+    expect(find.text("Google Maps\u2122"), findsNothing);
+    expect(find.text("Apple Maps\u2122"), findsNothing);
+    expect(find.text("Waze\u2122"), findsNothing);
 
     verifyNever(appManager.urlLauncherWrapper.launch(any));
     expect(find.byType(SnackBar), findsNothing);
@@ -554,7 +554,7 @@ void main() {
     ));
 
     await tapAndSettle(tester, find.text("Directions"));
-    await tapAndSettle(tester, find.text("Apple Maps"));
+    await tapAndSettle(tester, find.text("Apple Maps\u2122"));
 
     expect(find.byType(SnackBar), findsOneWidget);
   });

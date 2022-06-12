@@ -16,10 +16,10 @@ class BlurredBackgroundPhoto extends StatelessWidget {
   final String imageName;
   final double height;
 
-  /// The border radius of the entire container (i.e. the blurred background).
+  /// The border radius of the entire container.
   final BorderRadius? borderRadius;
 
-  /// The outside padding of the entire container (i.e. the blurred background).
+  /// The outside padding of the entire container.
   final EdgeInsets? padding;
 
   /// See [Photo.galleryImages].
@@ -39,6 +39,7 @@ class BlurredBackgroundPhoto extends StatelessWidget {
 
     var imageWidthMax = height * _imageWidthFactor;
     var imageWidth = MediaQuery.of(context).size.width;
+    var photoRadius = BorderRadius.zero;
 
     // The blur filter is an expensive operation, only use it if we need to.
     if (imageWidth > imageWidthMax) {
@@ -55,6 +56,8 @@ class BlurredBackgroundPhoto extends StatelessWidget {
         ),
       );
       imageWidth = imageWidthMax;
+    } else {
+      photoRadius = borderRadius ?? BorderRadius.zero;
     }
 
     return Padding(
@@ -70,11 +73,14 @@ class BlurredBackgroundPhoto extends StatelessWidget {
           children: [
             blurredBackground,
             Center(
-              child: Photo(
-                fileName: imageName,
-                width: imageWidth,
-                height: height,
-                galleryImages: galleryImages,
+              child: ClipRRect(
+                borderRadius: photoRadius,
+                child: Photo(
+                  fileName: imageName,
+                  width: imageWidth,
+                  height: height,
+                  galleryImages: galleryImages,
+                ),
               ),
             )
           ],

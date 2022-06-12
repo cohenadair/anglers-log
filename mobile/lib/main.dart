@@ -11,7 +11,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
+import 'package:mobile/pages/onboarding/change_log_page.dart';
+import 'package:mobile/wrappers/package_info_wrapper.dart';
 import 'package:provider/provider.dart';
+import 'package:quiver/strings.dart';
+import 'package:version/version.dart';
 
 import 'app_manager.dart';
 import 'channels/migration_channel.dart';
@@ -97,9 +101,12 @@ class AnglersLogState extends State<AnglersLog> {
   static const _maxTextScale = 1.35;
 
   late Future<bool> _appInitializedFuture;
+  late _State _state;
   LegacyJsonResult? _legacyJsonResult;
 
   AppManager get _appManager => widget.appManager;
+
+  PackageInfoWrapper get _packageInfoWrapper => _appManager.packageInfoWrapper;
 
   ServicesWrapper get _servicesWrapper => _appManager.servicesWrapper;
 
@@ -137,15 +144,8 @@ class AnglersLogState extends State<AnglersLog> {
 
             if (snapshot.hasError || !snapshot.hasData) {
               child = LandingPage();
-            } else if (_userPreferencesManager.didOnboard) {
-              child = MainPage();
             } else {
-              child = OnboardingJourney(
-                legacyJsonResult: _legacyJsonResult,
-                onFinished: () => _userPreferencesManager
-                    .setDidOnboard(true)
-                    .then((value) => setState(() {})),
-              );
+              child = _buildStartPage();
             }
 
             return MediaQuery(
@@ -172,16 +172,56 @@ class AnglersLogState extends State<AnglersLog> {
     );
   }
 
+  Widget _buildStartPage() {
+    switch (_state) {
+      case _State.mainPage:
+        return MainPage();
+      case _State.onboarding:
+        return OnboardingJourney(
+          legacyJsonResult: _legacyJsonResult,
+          onFinished: () => _userPreferencesManager
+              .setDidOnboard(true)
+              .then((value) => setState(() => _state = _State.mainPage)),
+        );
+      case _State.changeLog:
+        return ChangeLogPage(
+            onTapContinue: () => setState(() => _state = _State.mainPage));
+    }
+  }
+
   Future<bool> _initialize() async {
     await _appManager.initialize();
 
-    // If the user hasn't yet onboarded, see if there is any legacy data to
-    // migrate. We do this here to allow for a smoother transition between the
-    // login page and onboarding journey.
-    if (!_userPreferencesManager.didOnboard) {
+    if (await _shouldShowChangeLog()) {
+      _state = _State.changeLog;
+    } else if (_userPreferencesManager.didOnboard) {
+      _state = _State.mainPage;
+    } else {
+      // If the user hasn't yet onboarded, see if there is any legacy data to
+      // migrate. We do this here to allow for a smoother transition between the
+      // login page and onboarding journey.
       _legacyJsonResult = await legacyJson(_servicesWrapper);
+      _state = _State.onboarding;
     }
 
     return true;
   }
+
+  Future<bool> _shouldShowChangeLog() async {
+    // Never show a change log for brand new users.
+    if (!_userPreferencesManager.didOnboard) {
+      return false;
+    }
+
+    var oldVersion = _userPreferencesManager.appVersion;
+    var newVersion = (await _packageInfoWrapper.fromPlatform()).version;
+    return isEmpty(oldVersion) ||
+        Version.parse(oldVersion) < Version.parse(newVersion);
+  }
+}
+
+enum _State {
+  mainPage,
+  onboarding,
+  changeLog,
 }

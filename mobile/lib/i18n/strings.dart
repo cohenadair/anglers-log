@@ -777,6 +777,12 @@ class Strings {
 
   String get settingsPageAbout => _string("settingsPage_about");
 
+  String get settingsPageFishingSpotDistanceTitle =>
+      _string("settingsPage_fishingSpotDistanceTitle");
+
+  String get settingsPageFishingSpotDistanceDescription =>
+      _string("settingsPage_fishingSpotDistanceDescription");
+
   String get unitsPageTitle => _string("unitsPage_title");
 
   String get unitsPageCatchLengthCentimeters =>
@@ -833,6 +839,10 @@ class Strings {
       _string("unitsPage_airVisibilityMiles");
 
   String get unitsPageWindSpeedMiles => _string("unitsPage_windSpeedMiles");
+
+  String get unitsPageDistanceFeet => _string("unitsPage_distanceFeet");
+
+  String get unitsPageDistanceMeters => _string("unitsPage_distanceMeters");
 
   String get mapPageMenuLabel => _string("mapPage_menuLabel");
 
@@ -1969,6 +1979,8 @@ class Strings {
 
   String get aboutPageVersion => _string("aboutPage_version");
 
+  String get aboutPageEula => _string("aboutPage_eula");
+
   String get aboutPagePrivacy => _string("aboutPage_privacy");
 
   String get fishingSpotDetailsAddDetails =>
@@ -1979,6 +1991,52 @@ class Strings {
   String get timeZoneInputDescription => _string("timeZoneInput_description");
 
   String get timeZoneInputSearchHint => _string("timeZoneInput_searchHint");
+
+  String get pollsPageTitle => _string("pollsPage_title");
+
+  String get pollsPageDescription => _string("pollsPage_description");
+
+  String get pollsPageNoPollsTitle => _string("pollsPage_noPollsTitle");
+
+  String get pollsPageNoPollsDescription =>
+      _string("pollsPage_noPollsDescription");
+
+  String get pollsPageSendFeedback => _string("pollsPage_sendFeedback");
+
+  String get pollsPageNextFreeFeature => _string("pollsPage_nextFreeFeature");
+
+  String get pollsPageNextProFeature => _string("pollsPage_nextProFeature");
+
+  String get pollsPageThankYouFree => _string("pollsPage_thankYouFree");
+
+  String get pollsPageThankYouPro => _string("pollsPage_thankYouPro");
+
+  String get pollsPageError => _string("pollsPage_error");
+
+  String get changeLogPageTitle => _string("changeLogPage_title");
+
+  String get changeLogPagePreviousVersion =>
+      _string("changeLogPage_previousVersion");
+
+  String get changeLog_2022_1 => _string("changeLog_2.0.22_1");
+
+  String get changeLog_2022_2 => _string("changeLog_2.0.22_2");
+
+  String get changeLog_2022_3 => _string("changeLog_2.0.22_3");
+
+  String get changeLog_2022_4 => _string("changeLog_2.0.22_4");
+
+  String get changeLog_2022_5 => _string("changeLog_2.0.22_5");
+
+  String get changeLog_2022_6 => _string("changeLog_2.0.22_6");
+
+  String get changeLog_210_1 => _string("changeLog_2.1.0_1");
+
+  String get changeLog_210_2 => _string("changeLog_2.1.0_2");
+
+  String get changeLog_210_3 => _string("changeLog_2.1.0_3");
+
+  String get changeLog_210_4 => _string("changeLog_2.1.0_4");
 }
 
 class StringsDelegate extends LocalizationsDelegate<Strings> {

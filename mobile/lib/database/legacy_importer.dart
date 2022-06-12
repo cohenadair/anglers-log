@@ -7,6 +7,7 @@ import 'package:archive/archive.dart';
 import 'package:fixnum/fixnum.dart';
 import 'package:intl/intl.dart';
 import 'package:mobile/body_of_water_manager.dart';
+import 'package:mobile/local_database_manager.dart';
 import 'package:mobile/trip_manager.dart';
 import 'package:mobile/utils/date_time_utils.dart';
 import 'package:path/path.dart';
@@ -133,6 +134,9 @@ class LegacyImporter {
 
   FishingSpotManager get _fishingSpotManager => _appManager.fishingSpotManager;
 
+  LocalDatabaseManager get _localDatabaseManager =>
+      _appManager.localDatabaseManager;
+
   MethodManager get _methodManager => _appManager.methodManager;
 
   SpeciesManager get _speciesManager => _appManager.speciesManager;
@@ -176,6 +180,10 @@ class LegacyImporter {
       _images[name] = _ioWrapper.file("${imagesDir.path}/$name");
     }
 
+    // Reset the 2.0 database and start fresh. If for some reason, the migration
+    // was interrupted (for example, a crash), we don't want to create duplicate
+    // data.
+    await _localDatabaseManager.resetDatabase();
     await _import();
 
     // Cleanup old files.
@@ -528,6 +536,10 @@ class LegacyImporter {
       String dateFormat;
       if (dateString.contains(".")) {
         dateFormat = "M-d-y_h-m_a_s.S";
+      } else if (dateString.endsWith("_")) {
+        // iOS 24h times are translated in 24h time, and don't include the "_a"
+        // required by the normal formatter.
+        dateFormat = "M-d-y_h-m";
       } else {
         dateFormat = "M-d-y_h-m_a";
       }

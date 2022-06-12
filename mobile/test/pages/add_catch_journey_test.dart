@@ -57,7 +57,7 @@ void main() {
     when(appManager.fishingSpotManager.list()).thenReturn([]);
     when(appManager.fishingSpotManager.listSortedByDisplayName(any))
         .thenReturn([]);
-    when(appManager.fishingSpotManager.withinRadius(any, any)).thenReturn(null);
+    when(appManager.fishingSpotManager.withinPreferenceRadius(any)).thenReturn(null);
     when(appManager.fishingSpotManager.addOrUpdate(any))
         .thenAnswer((_) => Future.value(false));
 
@@ -148,7 +148,7 @@ void main() {
       ..name = "Spot 1"
       ..lat = 9.876543
       ..lng = 3.456789;
-    when(appManager.fishingSpotManager.withinRadius(any, any))
+    when(appManager.fishingSpotManager.withinPreferenceRadius(any))
         .thenReturn(fishingSpot);
     when(appManager.fishingSpotManager.entity(fishingSpot.id))
         .thenReturn(fishingSpot);
@@ -157,7 +157,7 @@ void main() {
     await tapAndSettle(tester, find.byType(Image).first);
     await tapAndSettle(tester, find.text("NEXT"));
 
-    verify(appManager.fishingSpotManager.withinRadius(any, any)).called(1);
+    verify(appManager.fishingSpotManager.withinPreferenceRadius(any)).called(1);
 
     await tapAndSettle(tester, find.text("Steelhead"));
 
@@ -207,7 +207,7 @@ void main() {
     await tapAndSettle(tester, find.byType(Image).at(1));
     await tapAndSettle(tester, find.text("NEXT"));
 
-    verifyNever(appManager.fishingSpotManager.withinRadius(any, any));
+    verifyNever(appManager.fishingSpotManager.withinPreferenceRadius(any));
 
     await tapAndSettle(tester, find.text("Steelhead"));
     await mapController.finishLoading(tester);
@@ -292,7 +292,7 @@ void main() {
     await tapAndSettle(tester, find.text("Steelhead"));
 
     expect(find.byType(SaveCatchPage), findsOneWidget);
-    verifyNever(appManager.fishingSpotManager.withinRadius(any));
+    verifyNever(appManager.fishingSpotManager.withinPreferenceRadius(any));
   });
 
   testWidgets("Fishing spot is not skipped when preferences is empty",

@@ -27,6 +27,7 @@ const iconTrip = Icons.public;
 const iconWaterClarity = CustomIcons.waterClarities;
 
 const animDurationDefault = Duration(milliseconds: 150);
+const animDurationSlow = Duration(milliseconds: 450);
 
 class Empty extends StatelessWidget {
   const Empty();
@@ -625,6 +626,28 @@ class NoneFormHeader extends StatelessWidget {
           ],
         );
       },
+    );
+  }
+}
+
+class Badge extends StatelessWidget {
+  static const _size = 12.0;
+
+  final bool isVisible;
+
+  const Badge({
+    required this.isVisible,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedVisibility(
+      visible: isVisible,
+      child: const Icon(
+        Icons.brightness_1,
+        size: _size,
+        color: Colors.redAccent,
+      ),
     );
   }
 }

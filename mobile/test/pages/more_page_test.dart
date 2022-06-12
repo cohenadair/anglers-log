@@ -21,6 +21,9 @@ void main() {
 
     when(appManager.ioWrapper.isAndroid).thenReturn(false);
 
+    when(appManager.pollManager.canVote).thenReturn(false);
+    when(appManager.pollManager.stream).thenAnswer((_) => const Stream.empty());
+
     when(appManager.userPreferenceManager.isTrackingSpecies).thenReturn(true);
     when(appManager.userPreferenceManager.isTrackingAnglers).thenReturn(true);
     when(appManager.userPreferenceManager.isTrackingBaits).thenReturn(true);

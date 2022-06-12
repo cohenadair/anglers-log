@@ -227,6 +227,7 @@ class ExpansionListItem extends StatefulWidget {
   final Widget? trailing;
   final Function(bool)? onExpansionChanged;
   final bool toBottomSafeArea;
+  final bool isExpanded;
 
   const ExpansionListItem({
     required this.title,
@@ -234,6 +235,7 @@ class ExpansionListItem extends StatefulWidget {
     this.trailing,
     this.onExpansionChanged,
     this.toBottomSafeArea = false,
+    this.isExpanded = false,
   });
 
   @override
@@ -244,6 +246,12 @@ class ExpansionListItemState extends State<ExpansionListItem> {
   final GlobalKey _key = GlobalKey();
 
   bool _expanded = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _expanded = widget.isExpanded;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -264,6 +272,7 @@ class ExpansionListItemState extends State<ExpansionListItem> {
               key: _key,
               title: widget.title,
               trailing: widget.trailing,
+              initiallyExpanded: widget.isExpanded,
               onExpansionChanged: (expanded) {
                 setState(() {
                   _expanded = expanded;

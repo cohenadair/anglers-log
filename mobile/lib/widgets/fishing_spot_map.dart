@@ -675,7 +675,7 @@ class FishingSpotMapState extends State<FishingSpotMap> {
 
   Future<void> _dropPin(LatLng latLng) async {
     // Select an existing fishing spot if
-    var fishingSpot = _fishingSpotManager.withinRadius(latLng);
+    var fishingSpot = _fishingSpotManager.withinPreferenceRadius(latLng);
 
     if (fishingSpot == null) {
       // Add a new pin to the map.

@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:fixnum/fixnum.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:intl/intl.dart';
 import 'package:mobile/angler_manager.dart';
@@ -56,6 +57,9 @@ void main() {
     when(imageManager.save(any)).thenAnswer((_) => Future.value([]));
     when(imageManager.save(any, compress: anyNamed("compress")))
         .thenAnswer((_) => Future.value([]));
+
+    when(appManager.localDatabaseManager.resetDatabase())
+        .thenAnswer((_) => Future.value());
 
     when(appManager.subscriptionManager.stream)
         .thenAnswer((_) => const Stream.empty());
@@ -581,6 +585,17 @@ void main() {
     expect(clarities.length, 9);
     expect(clarities.first.name, "3 Feet");
     expect(clarities.last.name, "Tea Stained");
+  });
+
+  testWidgets("Import iOS 24h time", (tester) async {
+    var file = File("test/resources/backups/legacy_ios_24h.zip");
+    await LegacyImporter(appManager.app, file).start();
+
+    expect(catchManager.entityCount, greaterThan(0));
+    expect(
+      catchManager.catches(await buildContext(tester)).first.timestamp,
+      Int64(1652216820000),
+    );
   });
 
   testWidgets("Import iOS images", (tester) async {

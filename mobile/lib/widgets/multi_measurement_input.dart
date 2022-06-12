@@ -341,6 +341,18 @@ class MultiMeasurementInputSpec {
           mainValueDecimalPlaces: (_) => 0,
         );
 
+  MultiMeasurementInputSpec.fishingSpotDistance(BuildContext context)
+      : this._(
+          context,
+          imperialUnit: (_) => Unit.feet,
+          metricUnit: Unit.meters,
+          system: (context) =>
+              UserPreferenceManager.of(context).fishingSpotDistance.system,
+          title: (context) =>
+              Strings.of(context).settingsPageFishingSpotDistanceTitle,
+          mainValueDecimalPlaces: (_) => 0,
+        );
+
   MultiMeasurementInputController newInputController({
     NumberInputController? mainController,
     NumberInputController? fractionController,

@@ -55,6 +55,15 @@ void main() {
         .thenReturn(Unit.inch_of_mercury);
     when(appManager.userPreferenceManager.windSpeedSystem)
         .thenReturn(MeasurementSystem.metric);
+    when(appManager.userPreferenceManager.fishingSpotDistance).thenReturn(
+      MultiMeasurement(
+        system: MeasurementSystem.metric,
+        mainValue: Measurement(
+          unit: Unit.meters,
+          value: 20,
+        ),
+      ),
+    );
     when(appManager.userPreferenceManager.stream)
         .thenAnswer((_) => const Stream.empty());
 

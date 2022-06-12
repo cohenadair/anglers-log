@@ -22,6 +22,7 @@ import 'package:mobile/bait_manager.dart';
 import 'package:mobile/body_of_water_manager.dart';
 import 'package:mobile/catch_manager.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
+import 'package:mobile/poll_manager.dart';
 import 'package:mobile/report_manager.dart';
 import 'package:mobile/custom_entity_manager.dart';
 import 'package:mobile/database/legacy_importer.dart';
@@ -62,6 +63,7 @@ import 'package:mobile/wrappers/shared_preferences_wrapper.dart';
 import 'package:mobile/wrappers/url_launcher_wrapper.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:photo_manager/photo_manager.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
 import 'package:sqflite/sqflite.dart';
@@ -101,6 +103,7 @@ Trip_CatchesPerEntity newInputItemShim(dynamic pickerItem) =>
 @GenerateMocks([LocalDatabaseManager])
 @GenerateMocks([LocationMonitor])
 @GenerateMocks([MethodManager])
+@GenerateMocks([PollManager])
 @GenerateMocks([PreferenceManager])
 @GenerateMocks([PropertiesManager])
 @GenerateMocks([ReportManager])
@@ -146,6 +149,7 @@ Trip_CatchesPerEntity newInputItemShim(dynamic pickerItem) =>
 @GenerateMocks([Offering])
 @GenerateMocks([Offerings])
 @GenerateMocks([Package])
+@GenerateMocks([PackageInfo])
 @GenerateMocks([Product])
 @GenerateMocks([PurchaserInfo])
 @GenerateMocks([], customMocks: [

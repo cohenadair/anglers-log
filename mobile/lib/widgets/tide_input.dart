@@ -164,12 +164,13 @@ class __TideInputPageState extends State<_TideInputPage> {
     }
 
     if (hasValue) {
-      controller.value = controller.value!.immutableCopyAndUpdate(applyUpdates);
+      controller.value = controller.value!.toBuilder() as Tide;
     } else if (type != null ||
         _lowTideController.hasValue ||
         _highTideController.hasValue) {
       controller.value = Tide();
-      applyUpdates(controller.value!);
     }
+
+    applyUpdates(controller.value!);
   }
 }

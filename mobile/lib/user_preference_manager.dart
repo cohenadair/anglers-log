@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/utils/atmosphere_utils.dart';
 import 'package:provider/provider.dart';
+import 'package:quiver/strings.dart';
 
 import 'app_manager.dart';
 import 'model/gen/anglerslog.pb.dart';
@@ -25,6 +26,7 @@ class UserPreferenceManager extends PreferenceManager {
   static const _keyAirVisibilitySystem = "air_visibility_system";
   static const _keyWindSpeedSystem = "wind_speed_system";
   static const _keyAutoFetchAtmosphere = "auto_fetch_atmosphere";
+  static const _keyFishingSpotDistance = "fishing_spot_distance";
 
   static const _keyRateTimerStartedAt = "rate_timer_started_at";
   static const _keyProTimerStartedAt = "pro_timer_started_at";
@@ -35,9 +37,11 @@ class UserPreferenceManager extends PreferenceManager {
   static const _keyAutoBackup = "auto_backup";
   static const _keyUserEmail = "user_email";
   static const _keyUserName = "user_name";
-
+  static const _keyFreePollVotedAt = "free_poll_voted_at";
+  static const _keyProPollVotedAt = "pro_poll_voted_at";
   static const _keySelectedReportId = "selected_report_id";
   static const _keyMapType = "map_type";
+  static const _keyAppVersion = "app_version";
 
   UserPreferenceManager(AppManager appManager) : super(appManager);
 
@@ -132,6 +136,23 @@ class UserPreferenceManager extends PreferenceManager {
 
   bool get autoFetchAtmosphere => preferences[_keyAutoFetchAtmosphere] ?? false;
 
+  Future<void> setFishingSpotDistance(MultiMeasurement? distance) =>
+      put(_keyFishingSpotDistance, distance?.writeToJson());
+
+  MultiMeasurement get fishingSpotDistance {
+    var json = preferences[_keyFishingSpotDistance];
+    if (isEmpty(json)) {
+      return MultiMeasurement(
+        system: MeasurementSystem.imperial_whole,
+        mainValue: Measurement(
+          unit: Unit.feet,
+          value: 100,
+        ),
+      );
+    }
+    return MultiMeasurement.fromJson(json);
+  }
+
   Future<void> setRateTimerStartedAt(int? timestamp) =>
       put(_keyRateTimerStartedAt, timestamp);
 
@@ -176,6 +197,10 @@ class UserPreferenceManager extends PreferenceManager {
 
   String? get mapType => preferences[_keyMapType];
 
+  Future<void> setAppVersion(String? version) => put(_keyAppVersion, version);
+
+  String? get appVersion => preferences[_keyAppVersion];
+
   Future<void> setUserEmail(String? email) => put(_keyUserEmail, email);
 
   String? get userEmail => preferences[_keyUserEmail];
@@ -183,6 +208,16 @@ class UserPreferenceManager extends PreferenceManager {
   Future<void> setUserName(String? name) => put(_keyUserName, name);
 
   String? get userName => preferences[_keyUserName];
+
+  Future<void> setFreePollVotedAt(int? timestamp) =>
+      put(_keyFreePollVotedAt, timestamp);
+
+  int? get freePollVotedAt => preferences[_keyFreePollVotedAt];
+
+  Future<void> setProPollVotedAt(int? timestamp) =>
+      put(_keyProPollVotedAt, timestamp);
+
+  int? get proPollVotedAt => preferences[_keyProPollVotedAt];
 
   bool _isTrackingAtmosphereField(Id fieldId) =>
       atmosphereFieldIds.isEmpty || atmosphereFieldIds.contains(fieldId);

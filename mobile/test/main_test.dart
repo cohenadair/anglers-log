@@ -5,8 +5,10 @@ import 'package:mobile/main.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
 import 'package:mobile/pages/landing_page.dart';
 import 'package:mobile/pages/main_page.dart';
+import 'package:mobile/pages/onboarding/change_log_page.dart';
 import 'package:mobile/pages/onboarding/onboarding_journey.dart';
 import 'package:mockito/mockito.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 
 import 'mocks/mocks.mocks.dart';
 import 'mocks/stubbed_app_manager.dart';
@@ -30,6 +32,9 @@ void main() {
     when(appManager.reportManager.displayName(any, any)).thenReturn("Test");
 
     when(appManager.locationMonitor.currentLocation).thenReturn(null);
+
+    when(appManager.pollManager.canVote).thenReturn(false);
+    when(appManager.pollManager.stream).thenAnswer((_) => const Stream.empty());
 
     when(appManager.propertiesManager.mapboxApiKey).thenReturn("");
 
@@ -131,7 +136,7 @@ void main() {
     await tester.pumpWidget(AnglersLog(appManager.app));
 
     // Wait for delayed initialization + AnimatedSwitcher.
-    await tester.pump(const Duration(milliseconds: 210));
+    await tester.pump(const Duration(milliseconds: 250));
 
     expect(find.byType(OnboardingJourney), findsOneWidget);
     expect(find.byType(MainPage), findsNothing);
@@ -143,10 +148,24 @@ void main() {
     await tapAndSettle(tester, find.text("FINISH"));
 
     verify(appManager.userPreferenceManager.setDidOnboard(true)).called(1);
+
+    // Wait for futures to finish..
+    await tester.pump(const Duration(milliseconds: 250));
   });
 
   testWidgets("Main page shown", (tester) async {
     when(appManager.userPreferenceManager.didOnboard).thenReturn(true);
+    when(appManager.userPreferenceManager.appVersion).thenReturn("2.0.0");
+    when(appManager.packageInfoWrapper.fromPlatform()).thenAnswer(
+      (_) => Future.value(
+        PackageInfo(
+          buildNumber: "5",
+          appName: "Test",
+          version: "1.0.0",
+          packageName: "test.com",
+        ),
+      ),
+    );
     when(appManager.fishingSpotManager.list()).thenReturn([]);
     when(appManager.catchManager.catches(
       any,
@@ -174,9 +193,11 @@ void main() {
     when(appManager.userPreferenceManager.didOnboard).thenReturn(false);
 
     var channel = MockMethodChannel();
-    when(channel.invokeMethod(any)).thenAnswer((_) => Future.value({
-          "db": "test/db",
-        }));
+    when(channel.invokeMethod(any)).thenAnswer(
+      (_) => Future.value({
+        "db": "test/db",
+      }),
+    );
     when(appManager.servicesWrapper.methodChannel(any)).thenReturn(channel);
     await tester.pumpWidget(AnglersLog(appManager.app));
 
@@ -186,5 +207,51 @@ void main() {
     verify(appManager.servicesWrapper.methodChannel(any)).called(1);
     var onboardingJourney = findFirst<OnboardingJourney>(tester);
     expect(onboardingJourney.legacyJsonResult, isNotNull);
+  });
+
+  testWidgets("Show change log page with lower old version", (tester) async {
+    when(appManager.userPreferenceManager.didOnboard).thenReturn(true);
+    when(appManager.userPreferenceManager.appVersion).thenReturn("1.0.0");
+    when(appManager.packageInfoWrapper.fromPlatform()).thenAnswer(
+      (_) => Future.value(
+        PackageInfo(
+          buildNumber: "5",
+          appName: "Test",
+          version: "2.0.0",
+          packageName: "test.com",
+        ),
+      ),
+    );
+
+    await tester.pumpWidget(AnglersLog(appManager.app));
+    // Wait for delayed initialization + AnimatedSwitcher.
+    await tester.pump(const Duration(milliseconds: 200));
+
+    expect(find.byType(ChangeLogPage), findsOneWidget);
+    expect(find.byType(OnboardingJourney), findsNothing);
+    expect(find.byType(MainPage), findsNothing);
+  });
+
+  testWidgets("Show change log page with empty old version", (tester) async {
+    when(appManager.userPreferenceManager.didOnboard).thenReturn(true);
+    when(appManager.userPreferenceManager.appVersion).thenReturn(null);
+    when(appManager.packageInfoWrapper.fromPlatform()).thenAnswer(
+          (_) => Future.value(
+        PackageInfo(
+          buildNumber: "5",
+          appName: "Test",
+          version: "2.0.0",
+          packageName: "test.com",
+        ),
+      ),
+    );
+
+    await tester.pumpWidget(AnglersLog(appManager.app));
+    // Wait for delayed initialization + AnimatedSwitcher.
+    await tester.pump(const Duration(milliseconds: 200));
+
+    expect(find.byType(ChangeLogPage), findsOneWidget);
+    expect(find.byType(OnboardingJourney), findsNothing);
+    expect(find.byType(MainPage), findsNothing);
   });
 }

@@ -10,6 +10,7 @@ Map<String, String> get _nonUsStrings => {
       "unitsPage_waterDepthMeters": "Metres (%s)",
       "unitsPage_airVisibilityKilometers": "Kilometres (%s)",
       "unitsPage_windSpeedKilometers": "Kilometres per hour (%s)",
+      "unitsPage_distanceMeters": "Metres (%s)",
       "keywords_speedMetric": "kilometers per hour speed wind",
       "input_colorLabel": "Colour",
       "proPage_disclosureApple":
@@ -29,6 +30,7 @@ Map<String, Map<String, String>> get englishStrings => {
         "unitsPage_waterDepthMeters": "Meters (%s)",
         "unitsPage_airVisibilityKilometers": "Kilometers (%s)",
         "unitsPage_windSpeedKilometers": "Kilometers per hour (%s)",
+        "unitsPage_distanceMeters": "Meters (%s)",
         "input_colorLabel": "Color",
         "proPage_disclosureApple":
             "Cancel anytime. Billing starts after the free trial period ends. The free trial period is only valid for new subscribers. Subscriptions automatically renew unless canceled at least 24 hours before the end of the current subscription period. All subscriptions can be managed through the App Store. Any unused portion of the free trial will be forfeited when a subscription is purchased.",
@@ -384,6 +386,9 @@ Map<String, Map<String, String>> get englishStrings => {
         "settingsPage_logout": "Logout",
         "settingsPage_logoutConfirmMessage": "Are you sure you want to logout?",
         "settingsPage_about": "About, Terms, and Privacy",
+        "settingsPage_fishingSpotDistanceTitle": "Auto-fishing Spot Distance",
+        "settingsPage_fishingSpotDistanceDescription":
+            "The distance within which to automatically pick fishing spots when adding catches.",
         "unitsPage_title": "Measurement Units",
         "unitsPage_catchLengthFractionalInches": "Fractional inches (%s)",
         "unitsPage_catchLengthInches": "Inches (%s)",
@@ -401,6 +406,7 @@ Map<String, Map<String, String>> get englishStrings => {
         "unitsPage_airPressureMillibars": "Millibars (%s)",
         "unitsPage_airVisibilityMiles": "Miles (%s)",
         "unitsPage_windSpeedMiles": "Miles per hour (%s)",
+        "unitsPage_distanceFeet": "Feet (%s)",
         "mapPage_menuLabel": "Map",
         "mapPage_deleteFishingSpot":
             "%s is associated with %s catches; are you sure you want to delete it? This cannot be undone.",
@@ -421,9 +427,9 @@ Map<String, Map<String, String>> get englishStrings => {
             "Unable to retrieve current location. Please try again later.",
         "mapPage_errorOpeningDirections":
             "There are no navigation apps available on this device.",
-        "mapPage_appleMaps": "Apple Maps",
-        "mapPage_googleMaps": "Google Maps",
-        "mapPage_waze": "Waze",
+        "mapPage_appleMaps": "Apple Maps\u2122",
+        "mapPage_googleMaps": "Google Maps\u2122",
+        "mapPage_waze": "Waze\u2122",
         "saveFishingSpotPage_newTitle": "New Fishing Spot",
         "saveFishingSpotPage_editTitle": "Edit Fishing Spot",
         "saveFishingSpotPage_bodyOfWaterLabel": "Body Of Water",
@@ -977,10 +983,45 @@ Map<String, Map<String, String>> get englishStrings => {
         "addAnything_title": "Add New",
         "proBlur_upgradeButton": "Upgrade",
         "aboutPage_version": "Version",
+        "aboutPage_eula": "Terms of Use (EULA)",
         "aboutPage_privacy": "Privacy Policy",
         "fishingSpotDetails_addDetails": "Add Details",
         "timeZoneInput_label": "Time Zone",
         "timeZoneInput_description": "Defaults to your current time zone.",
         "timeZoneInput_searchHint": "Search time zones",
+        "pollsPage_title": "Feature Polls",
+        "pollsPage_description":
+            "Vote to determine which features will be added in the next version of Anglers' Log.",
+        "pollsPage_noPollsTitle": "No Polls",
+        "pollsPage_noPollsDescription":
+            "There currently aren't any feature polls. If you'd like to request a feature, please send us feedback!",
+        "pollsPage_sendFeedback": "Send Feedback",
+        "pollsPage_nextFreeFeature": "Next Free Feature",
+        "pollsPage_nextProFeature": "Next Pro Feature",
+        "pollsPage_thankYouFree":
+            "Thank you for voting in the free feature poll!",
+        "pollsPage_thankYouPro":
+            "Thank you for voting in the pro feature poll!",
+        "pollsPage_error":
+            "There was an error casting your vote. Please try again later.",
+        "changeLogPage_title": "What's New",
+        "changeLogPage_previousVersion": "Your Previous Version",
+        "changeLog_2.0.22_1": "A complete rewrite of Anglers' Log",
+        "changeLog_2.0.22_2": "A fresh and modern look and feel",
+        "changeLog_2.0.22_3":
+            "A completely new, extensive and detailed statistics feature",
+        "changeLog_2.0.22_4":
+            "Detailed atmosphere and weather data, including moon phases and tide",
+        "changeLog_2.0.22_5":
+            "Get more out of Anglers' Log by subscribing to Anglers' Log Pro",
+        "changeLog_2.0.22_6": "Plus many more user-requested features",
+        "changeLog_2.1.0_1":
+            "In More > Feature Polls, you can now vote on what features you want to see next",
+        "changeLog_2.1.0_2":
+            "Fixed issue where personal best photos' corners weren't rounded",
+        "changeLog_2.1.0_3":
+            "Fixed issue where catch quantity values weren't being counted on the Stats page",
+        "changeLog_2.1.0_4":
+            "Automatic fishing spot picking distance is now configurable in Settings",
       },
     };
