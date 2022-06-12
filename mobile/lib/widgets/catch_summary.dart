@@ -1020,14 +1020,23 @@ class _CatchSummaryReportModel<T> {
       catchIds.add(cat.id);
 
       var dateTime = _timeManager.dateTime(cat.timestamp.toInt(), cat.timeZone);
-      _inc(true, dateTime.hour, perHour);
-      _inc(true, dateTime.month, perMonth);
+      _inc(true, dateTime.hour, perHour, cat);
+      _inc(true, dateTime.month, perMonth, cat);
 
-      _inc(_includeAnglers, _anglerManager.entity(cat.anglerId), perAngler);
+      _inc(
+        _includeAnglers,
+        _anglerManager.entity(cat.anglerId),
+        perAngler,
+        cat,
+      );
 
       for (var attachment in cat.baits) {
-        _inc(_includeBaits && _baitManager.entityExists(attachment.baitId),
-            attachment, perBait);
+        _inc(
+          _includeBaits && _baitManager.entityExists(attachment.baitId),
+          attachment,
+          perBait,
+          cat,
+        );
       }
 
       _inc(
@@ -1035,58 +1044,67 @@ class _CatchSummaryReportModel<T> {
         _bodyOfWaterManager.entity(
             _fishingSpotManager.entity(cat.fishingSpotId)?.bodyOfWaterId),
         perBodyOfWater,
+        cat,
       );
 
       _inc(_includeFishingSpots, _fishingSpotManager.entity(cat.fishingSpotId),
-          perFishingSpot);
+          perFishingSpot, cat);
 
       for (var methodId in cat.methodIds) {
-        _inc(_includeMethods, _methodManager.entity(methodId), perMethod);
+        _inc(_includeMethods, _methodManager.entity(methodId), perMethod, cat);
       }
 
       if (cat.hasAtmosphere() && cat.atmosphere.hasMoonPhase()) {
-        _inc(_includeMoonPhases,
-            MoonPhase.valueOf(cat.atmosphere.moonPhase.value), perMoonPhase);
+        _inc(
+          _includeMoonPhases,
+          MoonPhase.valueOf(cat.atmosphere.moonPhase.value),
+          perMoonPhase,
+          cat,
+        );
       }
 
       if (cat.hasPeriod()) {
-        _inc(_includePeriods, Period.valueOf(cat.period.value), perPeriod);
+        _inc(_includePeriods, Period.valueOf(cat.period.value), perPeriod, cat);
       }
 
       if (cat.hasSeason()) {
-        _inc(_includeSeasons, Season.valueOf(cat.season.value), perSeason);
+        _inc(_includeSeasons, Season.valueOf(cat.season.value), perSeason, cat);
       }
 
       _inc(
         _includeSpecies,
         _speciesManager.entity(cat.speciesId),
         perSpecies,
-        quantity: cat.hasQuantity() ? cat.quantity : 1,
+        cat,
       );
 
       if (cat.hasTide() && cat.tide.hasType()) {
         _inc(_includeTideTypes, TideType.valueOf(cat.tide.type.value),
-            perTideType);
+            perTideType, cat);
       }
 
-      _inc(_includeWaterClarities,
-          _waterClarityManager.entity(cat.waterClarityId), perWaterClarity);
+      _inc(
+        _includeWaterClarities,
+        _waterClarityManager.entity(cat.waterClarityId),
+        perWaterClarity,
+        cat,
+      );
     }
   }
 
   void _inc<E>(
     bool include,
     E? entity,
-    Map<E, int> sink, {
-    int quantity = 1,
-  }) {
+    Map<E, int> sink,
+    Catch cat,
+  ) {
     if (!include) {
       return;
     }
 
     if (entity != null) {
       sink.putIfAbsent(entity, () => 0);
-      sink[entity] = sink[entity]! + quantity;
+      sink[entity] = sink[entity]! + (cat.hasQuantity() ? cat.quantity : 1);
     }
   }
 

@@ -261,7 +261,13 @@ void main() {
         ..anglerId = anglerId0
         ..isFavorite = true
         ..tide = Tide(type: TideType.high)
-        ..quantity = 5,
+        ..atmosphere = Atmosphere(
+          moonPhase: MoonPhase.new_,
+        )
+        ..quantity = 5
+        ..methodIds.add(methodId0)
+        ..period = Period.morning
+        ..season = Season.autumn,
       Catch()
         ..id = catchId1
         ..timestamp = Int64(5000)
@@ -1327,7 +1333,7 @@ void main() {
     await tester.ensureVisible(find.text("View all fishing spots"));
     await tapAndSettle(tester, find.text("View all fishing spots"));
     expect(find.text("E (1)"), findsOneWidget);
-    expect(find.text("C (6)"), findsOneWidget);
+    expect(find.text("C (10)"), findsOneWidget);
     expect(find.text("B (1)"), findsOneWidget);
     expect(find.text("D (1)"), findsOneWidget);
     expect(find.text("A (1)"), findsOneWidget);
@@ -1337,7 +1343,7 @@ void main() {
     await tester.ensureVisible(find.text("View all baits"));
     await tapAndSettle(tester, find.text("View all baits"));
     expect(find.text("Attachment (1)"), findsNWidgets(2));
-    expect(find.text("Attachment (5)"), findsOneWidget);
+    expect(find.text("Attachment (9)"), findsOneWidget);
     expect(find.text("Attachment (3)"), findsOneWidget);
     expect(find.text("Attachment (0)"), findsOneWidget);
     await tapAndSettle(tester, find.byType(BackButton));
@@ -1345,7 +1351,7 @@ void main() {
     // Moon phases
     await tester.ensureVisible(find.text("View all moon phases"));
     await tapAndSettle(tester, find.text("View all moon phases"));
-    expect(find.text("New (1)"), findsOneWidget);
+    expect(find.text("New (6)"), findsOneWidget);
     expect(find.text("Waxing Crescent (0)"), findsOneWidget);
     expect(find.text("1st Quarter (1)"), findsOneWidget);
     expect(find.text("Waxing Gibbous (0)"), findsOneWidget);
@@ -1360,7 +1366,7 @@ void main() {
     await tapAndSettle(tester, find.text("View all tide types"));
     expect(find.text("Low (0)"), findsOneWidget);
     expect(find.text("Outgoing (0)"), findsOneWidget);
-    expect(find.text("High (1)"), findsOneWidget);
+    expect(find.text("High (5)"), findsOneWidget);
     expect(find.text("Slack (0)"), findsOneWidget);
     expect(find.text("Incoming (1)"), findsOneWidget);
     await tapAndSettle(tester, find.byType(BackButton));
@@ -1368,7 +1374,7 @@ void main() {
     // Anglers
     await tester.ensureVisible(find.text("View all anglers"));
     await tapAndSettle(tester, find.text("View all anglers"));
-    expect(find.text("Cohen (1)"), findsOneWidget);
+    expect(find.text("Cohen (5)"), findsOneWidget);
     expect(find.text("Eli (2)"), findsOneWidget);
     expect(find.text("Ethan (0)"), findsOneWidget);
     expect(find.text("Tim (0)"), findsOneWidget);
@@ -1379,7 +1385,7 @@ void main() {
     await tester.ensureVisible(find.text("View all bodies of water"));
     await tapAndSettle(tester, find.text("View all bodies of water"));
     expect(find.text("Lake Huron (1)"), findsOneWidget);
-    expect(find.text("Tennessee River (6)"), findsOneWidget);
+    expect(find.text("Tennessee River (10)"), findsOneWidget);
     expect(find.text("Bow River (1)"), findsOneWidget);
     expect(find.text("Nine Mile River (1)"), findsOneWidget);
     expect(find.text("Maitland River (1)"), findsOneWidget);
@@ -1388,7 +1394,7 @@ void main() {
     // Fishing methods
     await tester.ensureVisible(find.text("View all fishing methods"));
     await tapAndSettle(tester, find.text("View all fishing methods"));
-    expect(find.text("Casting (2)"), findsOneWidget);
+    expect(find.text("Casting (7)"), findsOneWidget);
     expect(find.text("Shore (1)"), findsOneWidget);
     expect(find.text("Kayak (0)"), findsOneWidget);
     expect(find.text("Drift (0)"), findsOneWidget);
@@ -1399,7 +1405,7 @@ void main() {
     await tester.ensureVisible(find.text("View all times of day"));
     await tapAndSettle(tester, find.text("View all times of day"));
     expect(find.text("Dawn (0)"), findsOneWidget);
-    expect(find.text("Morning (1)"), findsOneWidget);
+    expect(find.text("Morning (6)"), findsOneWidget);
     expect(find.text("Midday (0)"), findsOneWidget);
     expect(find.text("Afternoon (1)"), findsOneWidget);
     expect(find.text("Dusk (0)"), findsOneWidget);
@@ -1412,7 +1418,7 @@ void main() {
     expect(find.text("Winter (1)"), findsOneWidget);
     expect(find.text("Spring (0)"), findsOneWidget);
     expect(find.text("Summer (0)"), findsOneWidget);
-    expect(find.text("Autumn (1)"), findsOneWidget);
+    expect(find.text("Autumn (6)"), findsOneWidget);
     await tapAndSettle(tester, find.byType(BackButton));
 
     // Water clarities
@@ -1420,7 +1426,7 @@ void main() {
     await tapAndSettle(tester, find.text("View all water clarities"));
     expect(find.text("Clear (0)"), findsOneWidget);
     expect(find.text("Tea Stained (0)"), findsOneWidget);
-    expect(find.text("Chocolate Milk (1)"), findsOneWidget);
+    expect(find.text("Chocolate Milk (5)"), findsOneWidget);
     expect(find.text("Crystal (1)"), findsOneWidget);
     expect(find.text("1 Foot (1)"), findsOneWidget);
     await tapAndSettle(tester, find.byType(BackButton));
