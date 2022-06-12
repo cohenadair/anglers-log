@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/pages/import_page.dart';
 import 'package:mobile/pages/migration_page.dart';
+import 'package:mobile/res/dimen.dart';
+import 'package:mobile/res/style.dart';
+import 'package:mobile/widgets/input_controller.dart';
+import 'package:mobile/widgets/multi_measurement_input.dart';
 
 import '../i18n/strings.dart';
-import '../res/gen/custom_icons.dart';
 import '../user_preference_manager.dart';
 import '../utils/page_utils.dart';
 import '../widgets/checkbox_input.dart';
@@ -31,6 +34,8 @@ class _SettingsPageState extends State<SettingsPage> {
         children: <Widget>[
           _buildFetchAtmosphere(context),
           _buildUnits(context),
+          _buildFishingSpotDistance(context),
+          const MinDivider(),
           _buildLegacyImport(context),
           _buildLegacyMigration(context),
           const MinDivider(),
@@ -45,7 +50,6 @@ class _SettingsPageState extends State<SettingsPage> {
       label: Strings.of(context).settingsPageFetchAtmosphereTitle,
       description: Strings.of(context).settingsPageFetchAtmosphereDescription,
       value: _userPreferenceManager.autoFetchAtmosphere,
-      leading: const Icon(Icons.air),
       onSetValue: (checked) =>
           _userPreferenceManager.setAutoFetchAtmosphere(checked),
     );
@@ -54,15 +58,17 @@ class _SettingsPageState extends State<SettingsPage> {
   Widget _buildUnits(BuildContext context) {
     return ListItem(
       title: Text(Strings.of(context).unitsPageTitle),
-      leading: const Icon(CustomIcons.ruler),
       trailing: RightChevronIcon(),
       onTap: () => push(context, UnitsPage()),
     );
   }
 
+  Widget _buildFishingSpotDistance(BuildContext context) {
+    return _FishingSpotDistanceInput();
+  }
+
   Widget _buildLegacyImport(BuildContext context) {
     return ListItem(
-      leading: const Icon(Icons.cloud_download),
       title: Text(Strings.of(context).importPageMoreTitle),
       onTap: () => present(context, ImportPage()),
     );
@@ -70,7 +76,6 @@ class _SettingsPageState extends State<SettingsPage> {
 
   Widget _buildLegacyMigration(BuildContext context) {
     return ListItem(
-      leading: const Icon(Icons.sync),
       title: Text(Strings.of(context).migrationPageMoreTitle),
       onTap: () => present(context, MigrationPage()),
     );
@@ -79,9 +84,54 @@ class _SettingsPageState extends State<SettingsPage> {
   Widget _buildAbout() {
     return ListItem(
       title: Text(Strings.of(context).settingsPageAbout),
-      leading: const Icon(CustomIcons.catches),
       trailing: RightChevronIcon(),
       onTap: () => push(context, const AboutPage()),
+    );
+  }
+}
+
+class _FishingSpotDistanceInput extends StatefulWidget {
+  @override
+  State<_FishingSpotDistanceInput> createState() =>
+      _FishingSpotDistanceInputState();
+}
+
+class _FishingSpotDistanceInputState extends State<_FishingSpotDistanceInput> {
+  late final MultiMeasurementInputSpec _spec;
+  late final MultiMeasurementInputController _controller;
+
+  UserPreferenceManager get _userPreferenceManager =>
+      UserPreferenceManager.of(context);
+
+  @override
+  void initState() {
+    super.initState();
+    _spec = MultiMeasurementInputSpec.fishingSpotDistance(context);
+    _controller = _spec.newInputController();
+    _controller.value = _userPreferenceManager.fishingSpotDistance;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: insetsHorizontalDefaultBottomDefault,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          MultiMeasurementInput(
+            spec: _spec,
+            controller: _controller,
+            onChanged: () => _userPreferenceManager
+                .setFishingSpotDistance(_controller.value),
+          ),
+          const VerticalSpace(paddingSmall),
+          Text(
+            Strings.of(context).settingsPageFishingSpotDistanceDescription,
+            overflow: TextOverflow.visible,
+            style: styleSubtitle(context),
+          )
+        ],
+      ),
     );
   }
 }

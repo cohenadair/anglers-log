@@ -777,6 +777,12 @@ class Strings {
 
   String get settingsPageAbout => _string("settingsPage_about");
 
+  String get settingsPageFishingSpotDistanceTitle =>
+      _string("settingsPage_fishingSpotDistanceTitle");
+
+  String get settingsPageFishingSpotDistanceDescription =>
+      _string("settingsPage_fishingSpotDistanceDescription");
+
   String get unitsPageTitle => _string("unitsPage_title");
 
   String get unitsPageCatchLengthCentimeters =>
@@ -833,6 +839,10 @@ class Strings {
       _string("unitsPage_airVisibilityMiles");
 
   String get unitsPageWindSpeedMiles => _string("unitsPage_windSpeedMiles");
+
+  String get unitsPageDistanceFeet => _string("unitsPage_distanceFeet");
+
+  String get unitsPageDistanceMeters => _string("unitsPage_distanceMeters");
 
   String get mapPageMenuLabel => _string("mapPage_menuLabel");
 

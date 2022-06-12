@@ -1,6 +1,7 @@
 import 'package:collection/collection.dart' show IterableExtension;
 import 'package:flutter/cupertino.dart';
 import 'package:mapbox_gl/mapbox_gl.dart';
+import 'package:mobile/user_preference_manager.dart';
 import 'package:provider/provider.dart';
 import 'package:quiver/strings.dart';
 
@@ -11,6 +12,7 @@ import 'i18n/strings.dart';
 import 'image_entity_manager.dart';
 import 'model/gen/anglerslog.pb.dart';
 import 'utils/map_utils.dart';
+import 'utils/protobuf_utils.dart';
 import 'utils/string_utils.dart';
 
 class FishingSpotManager extends ImageEntityManager<FishingSpot> {
@@ -20,6 +22,9 @@ class FishingSpotManager extends ImageEntityManager<FishingSpot> {
   BodyOfWaterManager get _bodyOfWaterManager => appManager.bodyOfWaterManager;
 
   CatchManager get _catchManager => appManager.catchManager;
+
+  UserPreferenceManager get _userPreferenceManager =>
+      appManager.userPreferenceManager;
 
   FishingSpotManager(AppManager app) : super(app);
 
@@ -126,12 +131,16 @@ class FishingSpotManager extends ImageEntityManager<FishingSpot> {
     });
   }
 
-  /// Returns the closest [FishingSpot] within [meters] of [latLng], or null if
-  /// one does not exist. [meters] defaults to 30.
-  FishingSpot? withinRadius(LatLng? latLng, [int meters = 30]) {
+  /// Returns the closest [FishingSpot] within a user-set distance.
+  FishingSpot? withinPreferenceRadius(LatLng? latLng) {
     if (latLng == null) {
       return null;
     }
+
+    var meters = _userPreferenceManager.fishingSpotDistance
+        .convertToSystem(MeasurementSystem.metric, Unit.meters)
+        .mainValue
+        .value;
 
     var eligibleFishingSpotsMap = <FishingSpot, double>{};
     for (var fishingSpot in entities.values) {

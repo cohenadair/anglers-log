@@ -32,6 +32,15 @@ void main() {
         .thenReturn(MeasurementSystem.metric);
     when(appManager.userPreferenceManager.airPressureImperialUnit)
         .thenReturn(Unit.millibars);
+    when(appManager.userPreferenceManager.fishingSpotDistance).thenReturn(
+      MultiMeasurement(
+        system: MeasurementSystem.imperial_whole,
+        mainValue: Measurement(
+          unit: Unit.feet,
+          value: 20,
+        ),
+      ),
+    );
   });
 
   testWidgets("Initial index when preferences is not null", (tester) async {
@@ -76,5 +85,24 @@ void main() {
     verify(appManager.userPreferenceManager
             .setCatchLengthSystem(MeasurementSystem.imperial_decimal))
         .called(1);
+  });
+
+  testWidgets("Fishing spot distance is updated on selection", (tester) async {
+    await tester.pumpWidget(Testable(
+      (_) => UnitsPage(),
+      appManager: appManager,
+    ));
+
+    await tester.ensureVisible(find.text("Meters (30 m)"));
+    await tapAndSettle(tester, find.text("Meters (30 m)"));
+
+    var result = verify(
+        appManager.userPreferenceManager.setFishingSpotDistance(captureAny));
+    result.called(1);
+
+    MultiMeasurement value = result.captured.first;
+    expect(value.system, MeasurementSystem.metric);
+    expect(value.mainValue.unit, Unit.meters);
+    expect(value.mainValue.value, 20);
   });
 }

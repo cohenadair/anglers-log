@@ -38,6 +38,8 @@ class UnitsPage extends StatelessWidget {
         _buildAirPressure(context),
         const MinDivider(),
         _buildWindSpeed(context),
+        const MinDivider(),
+        _buildFishingSpotDistance(context),
       ],
     );
   }
@@ -346,6 +348,47 @@ class UnitsPage extends StatelessWidget {
           UserPreferenceManager.of(context).setWindSpeedSystem(system),
     );
   }
+
+  Widget _buildFishingSpotDistance(BuildContext context) {
+    return _UnitSelector(
+      title: Strings.of(context).settingsPageFishingSpotDistanceTitle,
+      initialSystem:
+          UserPreferenceManager.of(context).fishingSpotDistance.system,
+      options: [
+        _UnitSelectorOption(
+          value: MultiMeasurement(
+            system: MeasurementSystem.imperial_whole,
+            mainValue: Measurement(
+              unit: Unit.feet,
+              value: 100,
+            ),
+          ),
+          displayValue: Strings.of(context).unitsPageDistanceFeet,
+        ),
+        _UnitSelectorOption(
+          value: MultiMeasurement(
+            system: MeasurementSystem.metric,
+            mainValue: Measurement(
+              unit: Unit.meters,
+              value: 30,
+            ),
+          ),
+          displayValue: Strings.of(context).unitsPageDistanceMeters,
+        ),
+      ],
+      onSelect: (system, unit) {
+        var userPreferenceManager = UserPreferenceManager.of(context);
+        userPreferenceManager.setFishingSpotDistance(
+          userPreferenceManager.fishingSpotDistance.convertUnitsOnly(
+            MultiMeasurement(
+              system: system,
+              mainValue: Measurement(unit: unit),
+            ),
+          ),
+        );
+      },
+    );
+  }
 }
 
 class _UnitSelectorOption {
@@ -363,7 +406,7 @@ class _UnitSelector extends StatelessWidget {
   final MeasurementSystem? initialSystem;
   final Unit? initialUnit;
   final List<_UnitSelectorOption> options;
-  final void Function(MeasurementSystem, Unit? mainUnit)? onSelect;
+  final void Function(MeasurementSystem, Unit mainUnit)? onSelect;
 
   const _UnitSelector({
     required this.title,

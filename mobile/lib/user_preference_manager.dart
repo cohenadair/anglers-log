@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/utils/atmosphere_utils.dart';
 import 'package:provider/provider.dart';
+import 'package:quiver/strings.dart';
 
 import 'app_manager.dart';
 import 'model/gen/anglerslog.pb.dart';
@@ -25,6 +26,7 @@ class UserPreferenceManager extends PreferenceManager {
   static const _keyAirVisibilitySystem = "air_visibility_system";
   static const _keyWindSpeedSystem = "wind_speed_system";
   static const _keyAutoFetchAtmosphere = "auto_fetch_atmosphere";
+  static const _keyFishingSpotDistance = "fishing_spot_distance";
 
   static const _keyRateTimerStartedAt = "rate_timer_started_at";
   static const _keyProTimerStartedAt = "pro_timer_started_at";
@@ -133,6 +135,23 @@ class UserPreferenceManager extends PreferenceManager {
       put(_keyAutoFetchAtmosphere, autoFetch);
 
   bool get autoFetchAtmosphere => preferences[_keyAutoFetchAtmosphere] ?? false;
+
+  Future<void> setFishingSpotDistance(MultiMeasurement? distance) =>
+      put(_keyFishingSpotDistance, distance?.writeToJson());
+
+  MultiMeasurement get fishingSpotDistance {
+    var json = preferences[_keyFishingSpotDistance];
+    if (isEmpty(json)) {
+      return MultiMeasurement(
+        system: MeasurementSystem.imperial_whole,
+        mainValue: Measurement(
+          unit: Unit.feet,
+          value: 100,
+        ),
+      );
+    }
+    return MultiMeasurement.fromJson(json);
+  }
 
   Future<void> setRateTimerStartedAt(int? timestamp) =>
       put(_keyRateTimerStartedAt, timestamp);
