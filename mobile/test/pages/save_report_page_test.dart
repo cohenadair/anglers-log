@@ -1216,6 +1216,23 @@ void main() {
     expect(result.captured.first, report);
   });
 
+  testWidgets("Editing comparison with no end range does not crash", (tester) async {
+    var report = Report(
+      id: randomId(),
+      name: "Test",
+      type: Report_Type.comparison,
+      fromDateRange: DateRange(period: DateRange_Period.yesterday),
+    );
+
+    await tester.pumpWidget(Testable(
+      (_) => SaveReportPage.edit(report),
+      appManager: appManager,
+    ));
+
+    await tapAndSettle(tester, find.text("SAVE"));
+    expect(find.byType(SaveReportPage), findsNothing);
+  });
+
   /// https://github.com/cohenadair/anglers-log/issues/463
   testWidgets("Editing with empty entity sets shows 'all' chip",
       (tester) async {

@@ -133,7 +133,7 @@ class _SaveReportPageState extends State<SaveReportPage> {
       _descriptionController.value = _oldReport!.description;
       _typeController.value = _oldReport!.type;
       _fromDateRangeController.value = _oldReport!.fromDateRange;
-      if (_isComparison) {
+      if (_oldReport!.hasToDateRange()) {
         _toDateRangeController.value = _oldReport!.toDateRange;
       }
       _timeZoneController.value = _oldReport!.timeZone;
@@ -752,13 +752,15 @@ class _SaveReportPageState extends State<SaveReportPage> {
     }
 
     if (_fromDateRangeController.hasValue) {
-      report.fromDateRange = _fromDateRangeController.value!;
-      report.fromDateRange.timeZone = report.timeZone;
+      report.fromDateRange = (_fromDateRangeController.value!.toBuilder()
+          as DateRange)
+        ..timeZone = report.timeZone;
     }
 
     if (_toDateRangeController.hasValue) {
-      report.toDateRange = _toDateRangeController.value!;
-      report.toDateRange.timeZone = report.timeZone;
+      report.toDateRange = (_toDateRangeController.value!.toBuilder()
+          as DateRange)
+        ..timeZone = report.timeZone;
     }
 
     if (_waterDepthController.shouldAddToReport) {
