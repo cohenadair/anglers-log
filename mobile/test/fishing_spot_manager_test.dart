@@ -65,8 +65,8 @@ void main() {
       ..lat = 35.955348
       ..lng = -84.240310;
     await fishingSpotManager.addOrUpdate(newSpot);
-    fishingSpot = fishingSpotManager.withinPreferenceRadius(
-        const LatLng(35.955348, -84.240310));
+    fishingSpot = fishingSpotManager
+        .withinPreferenceRadius(const LatLng(35.955348, -84.240310));
     expect(fishingSpot, isNotNull);
     await fishingSpotManager.delete(newSpot.id);
 
@@ -76,8 +76,8 @@ void main() {
       ..lat = 35.953638
       ..lng = -84.241233;
     await fishingSpotManager.addOrUpdate(newSpot);
-    fishingSpot = fishingSpotManager.withinPreferenceRadius(
-        const LatLng(35.955348, -84.240310));
+    fishingSpot = fishingSpotManager
+        .withinPreferenceRadius(const LatLng(35.955348, -84.240310));
     expect(fishingSpot, isNull);
     await fishingSpotManager.delete(newSpot.id);
 
@@ -95,8 +95,8 @@ void main() {
       ..lat = 35.955335
       ..lng = -84.240300);
 
-    fishingSpot = fishingSpotManager.withinPreferenceRadius(
-        const LatLng(35.955340, -84.240295));
+    fishingSpot = fishingSpotManager
+        .withinPreferenceRadius(const LatLng(35.955340, -84.240295));
     expect(fishingSpot, isNotNull);
     expect(fishingSpot!.lat, 35.955335);
     expect(fishingSpot.lng, -84.240300);

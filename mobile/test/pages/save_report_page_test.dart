@@ -1216,7 +1216,8 @@ void main() {
     expect(result.captured.first, report);
   });
 
-  testWidgets("Editing comparison with no end range does not crash", (tester) async {
+  testWidgets("Editing comparison with no end range does not crash",
+      (tester) async {
     var report = Report(
       id: randomId(),
       name: "Test",

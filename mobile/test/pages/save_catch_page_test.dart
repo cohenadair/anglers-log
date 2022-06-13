@@ -1750,7 +1750,8 @@ void main() {
     when(appManager.fishingSpotManager.entity(any)).thenReturn(null);
     when(appManager.fishingSpotManager.entityExists(any)).thenReturn(false);
     when(appManager.fishingSpotManager.list()).thenReturn([]);
-    when(appManager.fishingSpotManager.withinPreferenceRadius(any)).thenReturn(null);
+    when(appManager.fishingSpotManager.withinPreferenceRadius(any))
+        .thenReturn(null);
     when(appManager.fishingSpotManager.addOrUpdate(any))
         .thenAnswer((_) => Future.value(true));
 
@@ -1790,7 +1791,8 @@ void main() {
     when(appManager.fishingSpotManager.list()).thenReturn([
       fishingSpot,
     ]);
-    when(appManager.fishingSpotManager.withinPreferenceRadius(any)).thenReturn(null);
+    when(appManager.fishingSpotManager.withinPreferenceRadius(any))
+        .thenReturn(null);
 
     await tester.pumpWidget(Testable(
       (_) => SaveCatchPage(
@@ -1825,7 +1827,8 @@ void main() {
     when(appManager.fishingSpotManager.list()).thenReturn([
       fishingSpot,
     ]);
-    when(appManager.fishingSpotManager.withinPreferenceRadius(any)).thenReturn(null);
+    when(appManager.fishingSpotManager.withinPreferenceRadius(any))
+        .thenReturn(null);
 
     await tester.pumpWidget(Testable(
       (_) => SaveCatchPage(

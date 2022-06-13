@@ -33,7 +33,8 @@ void main() {
 
     when(appManager.fishingSpotManager.entityExists(any)).thenReturn(true);
     when(appManager.fishingSpotManager.list()).thenReturn([]);
-    when(appManager.fishingSpotManager.withinPreferenceRadius(any)).thenReturn(null);
+    when(appManager.fishingSpotManager.withinPreferenceRadius(any))
+        .thenReturn(null);
     when(appManager.fishingSpotManager.displayName(
       any,
       any,

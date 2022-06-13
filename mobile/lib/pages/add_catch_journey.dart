@@ -120,8 +120,8 @@ class _AddCatchJourneyState extends State<AddCatchJourney> {
                       continue;
                     }
 
-                    var existingSpot =
-                        _fishingSpotManager.withinPreferenceRadius(image.position);
+                    var existingSpot = _fishingSpotManager
+                        .withinPreferenceRadius(image.position);
 
                     if (existingSpot == null) {
                       _fishingSpotController.value = FishingSpot()

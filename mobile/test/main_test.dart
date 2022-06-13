@@ -236,7 +236,7 @@ void main() {
     when(appManager.userPreferenceManager.didOnboard).thenReturn(true);
     when(appManager.userPreferenceManager.appVersion).thenReturn(null);
     when(appManager.packageInfoWrapper.fromPlatform()).thenAnswer(
-          (_) => Future.value(
+      (_) => Future.value(
         PackageInfo(
           buildNumber: "5",
           appName: "Test",
