@@ -532,6 +532,13 @@ class LegacyImporter {
       // DateFormat requires AM/PM, am/pm throws an exception.
       var dateString = (map[_keyDate] as String).toUpperCase();
 
+      // iOS has been known to format AM as A.M., which breaks the date
+      // formatter. Remove the periods if there are exactly 2; Android
+      // legitimately uses 1 to separate milliseconds.
+      if (".".allMatches(dateString).length == 2) {
+        dateString = dateString.replaceAll(".", "");
+      }
+
       // iOS and Android backed up dates differently.
       String dateFormat;
       if (dateString.contains(".")) {

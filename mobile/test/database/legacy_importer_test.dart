@@ -598,6 +598,17 @@ void main() {
     );
   });
 
+  testWidgets("Import iOS dotted AM", (tester) async {
+    var file = File("test/resources/backups/legacy_ios_dotted_am.zip");
+    await LegacyImporter(appManager.app, file).start();
+
+    expect(catchManager.entityCount, greaterThan(0));
+    expect(
+      catchManager.catches(await buildContext(tester)).first.timestamp,
+      Int64(1597754340000),
+    );
+  });
+
   testWidgets("Import iOS images", (tester) async {
     var zip = File("test/resources/backups/legacy_ios_photos.zip");
 
