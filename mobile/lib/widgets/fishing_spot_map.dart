@@ -8,8 +8,6 @@ import 'package:mapbox_gl/mapbox_gl.dart';
 import 'package:mobile/user_preference_manager.dart';
 import 'package:mobile/utils/collection_utils.dart';
 import 'package:mobile/widgets/our_bottom_sheet.dart';
-import 'package:mobile/wrappers/device_info_wrapper.dart';
-import 'package:mobile/wrappers/io_wrapper.dart';
 import 'package:quiver/strings.dart';
 
 import '../entity_manager.dart';
@@ -121,11 +119,7 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
   // Used to display old data during animations and async operations.
   bool _isDismissingFishingSpot = false;
 
-  DeviceInfoWrapper get _deviceInfoWrapper => DeviceInfoWrapper.of(context);
-
   FishingSpotManager get _fishingSpotManager => FishingSpotManager.of(context);
-
-  IoWrapper get _ioWrapper => IoWrapper.of(context);
 
   LocationMonitor get _locationMonitor => LocationMonitor.of(context);
 
@@ -157,7 +151,6 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
     _mapType = MapType.fromContext(context);
     _myLocationEnabled = _locationMonitor.currentLocation != null;
     _mapFuture = Future.delayed(const Duration(milliseconds: 300), () => true);
-    _setupHybridComposition();
 
     // Refresh state so Mapbox attribution padding is updated. This needs to be
     // done after the fishing spot widget is rendered.
@@ -795,16 +788,6 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
 
     // If there is no picker value, fallback on the user's current location.
     _dropPin(_locationMonitor.currentLocation ?? const LatLng(0, 0));
-  }
-
-  Future<void> _setupHybridComposition() async {
-    if (!_ioWrapper.isAndroid) {
-      return;
-    }
-
-    // Disabling hybrid composition improves performance on Android 9 devices.
-    var sdkVersion = (await _deviceInfoWrapper.androidInfo).version.sdkInt;
-    MapboxMap.useHybridComposition = sdkVersion != null && sdkVersion >= 29;
   }
 
   Future<void> _moveMap(
