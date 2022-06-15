@@ -336,6 +336,9 @@ class BackupRestoreManager {
     _notifyProgress(
         BackupRestoreProgress(BackupRestoreProgressEnum.restoringDatabase));
 
+    // Ensure database is cleaned up before downloading a new one.
+    await _localDatabaseManager.closeAndDeleteDatabase();
+
     // Download the database file first. If there's an error with this file,
     // there's no point in downloading images.
     await _downloadAndWriteFile(drive, backupFiles.databaseId!,

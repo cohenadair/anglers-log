@@ -22,7 +22,7 @@ void main() {
       appManager: appManager,
     );
 
-    expect(find.text("2.1.0"), findsOneWidget);
+    expect(find.text("2.1.1"), findsOneWidget);
     expect(find.text("2.0.22 (Your Previous Version)"), findsOneWidget);
   });
 
@@ -35,7 +35,7 @@ void main() {
       appManager: appManager,
     );
 
-    expect(find.text("2.1.0"), findsOneWidget);
+    expect(find.text("2.1.1"), findsOneWidget);
     expect(find.text("2.0.22"), findsOneWidget);
   });
 

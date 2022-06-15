@@ -39,11 +39,15 @@ class LocalDatabaseManager {
     _initialized = true;
   }
 
-  /// Closes and deletes the current database. Then, creates a new one, opens it,
-  /// and reinitializes [AppManager].
-  Future<void> resetDatabase() async {
+  Future<void> closeAndDeleteDatabase() async {
     await _database.close();
     await deleteDb();
+  }
+
+  /// Closes and deletes the current database. Then, creates a new one, opens it,
+  /// and re-initializes [AppManager].
+  Future<void> resetDatabase() async {
+    await closeAndDeleteDatabase();
     _database = await openDb();
     await _appManager.initialize(isStartup: false);
   }

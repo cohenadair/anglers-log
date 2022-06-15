@@ -42,6 +42,8 @@ void main() {
       where: anyNamed("where"),
       whereArgs: anyNamed("whereArgs"),
     )).thenAnswer((_) => Future.value(true));
+    when(appManager.localDatabaseManager.closeAndDeleteDatabase())
+        .thenAnswer((_) => Future.value());
 
     when(appManager.userPreferenceManager.didSetupBackup).thenReturn(true);
     when(appManager.userPreferenceManager.stream)

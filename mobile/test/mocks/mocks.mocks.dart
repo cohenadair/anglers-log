@@ -2868,6 +2868,11 @@ class MockLocalDatabaseManager extends _i1.Mock
           returnValueForMissingStub: Future<void>.value()) as _i64
       .Future<void>);
   @override
+  _i64.Future<void> closeAndDeleteDatabase() => (super.noSuchMethod(
+      Invocation.method(#closeAndDeleteDatabase, []),
+      returnValue: Future<void>.value(),
+      returnValueForMissingStub: Future<void>.value()) as _i64.Future<void>);
+  @override
   _i64.Future<void> resetDatabase() => (super.noSuchMethod(
       Invocation.method(#resetDatabase, []),
       returnValue: Future<void>.value(),
