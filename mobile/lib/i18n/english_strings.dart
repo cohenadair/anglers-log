@@ -1023,5 +1023,9 @@ Map<String, Map<String, String>> get englishStrings => {
             "Fixed issue where catch quantity values weren't being counted on the Stats page",
         "changeLog_2.1.0_4":
             "Automatic fishing spot picking distance is now configurable in Settings",
+        "changeLog_2.1.2_1": "Fixed crash while importing legacy data",
+        "changeLog_2.1.2_2": "Fixed crash while editing comparison reports",
+        "changeLog_2.1.2_3": "Fixed map appearing for some users after returning to the foreground",
+        "changeLog_2.1.2_4": "Removed notes input field character limit",
       },
     };

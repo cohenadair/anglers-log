@@ -34,16 +34,32 @@ class ChangeLogPage extends StatelessWidget {
           ),
         ),
         const VerticalSpace(paddingDefault),
+        _build2_1_2(context),
         _build2_1_0(context),
         _build2_0_22(context),
       ],
     );
   }
 
+  Widget _build2_1_2(BuildContext context) {
+    return ExpansionListItem(
+      title: Text(_buildVersionText(context, "2.1.2")),
+      isExpanded: true,
+      children: [
+        _buildChangeList({
+          Strings.of(context).changeLog_212_1,
+          Strings.of(context).changeLog_212_2,
+          Strings.of(context).changeLog_212_3,
+          Strings.of(context).changeLog_212_4,
+        }),
+      ],
+    );
+  }
+
   Widget _build2_1_0(BuildContext context) {
     return ExpansionListItem(
-      title: Text(_buildVersionText(context, "2.1.0")),
-      isExpanded: true,
+      title: Text(_buildVersionText(context, "2.1.1")),
+      isExpanded: false,
       children: [
         _buildChangeList({
           Strings.of(context).changeLog_210_1,
