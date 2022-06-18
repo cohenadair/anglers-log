@@ -18,10 +18,11 @@ import 'mocks/stubbed_app_manager.dart';
 import 'test_utils.dart';
 
 class TestEntityManager extends EntityManager<Species> {
-  int addListenerCalls = 0;
-  int removeListenerCalls = 0;
+  var listenCalls = 0;
 
-  bool matchesFilterResult = true;
+  var matchesFilterResult = true;
+
+  var subs = <StreamSubscription<EntityEvent<Species>>>[];
 
   TestEntityManager(AppManager app) : super(app);
 
@@ -54,15 +55,27 @@ class TestEntityManager extends EntityManager<Species> {
       super.numberOf<T>(id, items, matches);
 
   @override
-  void addListener(EntityListener<Species> listener) {
-    addListenerCalls++;
-    super.addListener(listener);
+  StreamSubscription<EntityEvent<Species>> listen(
+      EntityListener<Species> listener) {
+    listenCalls++;
+    return super.listen(listener);
   }
 
   @override
-  void removeListener(EntityListener<Species> listener) {
-    removeListenerCalls++;
-    super.removeListener(listener);
+  StreamSubscription<EntityEvent<Species>> addTypedListener({
+    void Function(Species entity)? onAdd,
+    void Function(Species entity)? onDelete,
+    void Function(Species entity)? onUpdate,
+    void Function()? onReset,
+  }) {
+    var sub = super.addTypedListener(
+      onAdd: onAdd,
+      onDelete: onDelete,
+      onUpdate: onUpdate,
+      onReset: onReset,
+    );
+    subs.add(sub);
+    return sub;
   }
 }
 
@@ -85,6 +98,15 @@ void main() {
     when(appManager.subscriptionManager.isPro).thenReturn(false);
 
     entityManager = TestEntityManager(appManager.app);
+  });
+
+  test("Invalid EntityEvent input", () {
+    expect(
+      () => EntityEvent<Species>(EntityEventType.add, null),
+      throwsAssertionError,
+    );
+    expect(EntityEvent<Species>(EntityEventType.reset, null), isNotNull);
+    expect(EntityEvent<Species>(EntityEventType.add, Species()), isNotNull);
   });
 
   test("Test initialize local data", () async {
@@ -129,7 +151,7 @@ void main() {
     when(listener.onAdd).thenReturn((_) {});
     when(listener.onDelete).thenReturn((_) {});
     when(listener.onUpdate).thenReturn((_) {});
-    entityManager.addListener(listener);
+    entityManager.listen(listener);
 
     // Add.
     var speciesId0 = randomId();
@@ -143,6 +165,7 @@ void main() {
     );
     expect(entityManager.entityCount, 1);
     expect(entityManager.entity(speciesId0)!.name, "Bluegill");
+    await untilCalled(listener.onAdd);
     verify(listener.onAdd).called(1);
 
     // Update.
@@ -154,6 +177,7 @@ void main() {
     );
     expect(entityManager.entityCount, 1);
     expect(entityManager.entity(speciesId0)!.name, "Bass");
+    await untilCalled(listener.onUpdate);
     verify(listener.onUpdate).called(1);
 
     // No notify.
@@ -167,6 +191,11 @@ void main() {
     );
     expect(entityManager.entityCount, 2);
     expect(entityManager.entity(speciesId1)!.name, "Catfish");
+
+    // Need to use a delayed Future here to verify listener isn't notified.
+    // Since streams are async, without this delay, the following verifies will
+    // pass, even if the listeners were notified.
+    await Future.delayed(const Duration(milliseconds: 50));
     verifyNever(listener.onAdd);
     verifyNever(listener.onUpdate);
   });
@@ -213,7 +242,7 @@ void main() {
     when(listener.onAdd).thenReturn((_) {});
     when(listener.onDelete).thenReturn((_) {});
     when(listener.onUpdate).thenReturn((_) {});
-    entityManager.addListener(listener);
+    entityManager.listen(listener);
 
     var speciesId0 = randomId();
     await entityManager.addOrUpdate(Species()
@@ -222,12 +251,18 @@ void main() {
 
     expect(await entityManager.delete(speciesId0), true);
     expect(entityManager.entityCount, 0);
+    await untilCalled(listener.onDelete);
     verify(listener.onDelete).called(1);
     verify(appManager.localDatabaseManager.deleteEntity(any, any)).called(1);
 
     // If there's nothing to delete, the database shouldn't be queried and the
     // listener shouldn't be called.
     expect(await entityManager.delete(speciesId0), true);
+
+    // Need to use a delayed Future here to verify listener isn't notified.
+    // Since streams are async, without this delay, the following verifies will
+    // pass, even if the listeners were notified.
+    await Future.delayed(const Duration(milliseconds: 50));
     verifyNever(appManager.localDatabaseManager.deleteEntity(any, any));
     verifyNever(listener.onDelete);
   });
@@ -240,7 +275,7 @@ void main() {
     when(listener.onAdd).thenReturn((_) {});
     when(listener.onDelete).thenReturn((_) {});
     when(listener.onUpdate).thenReturn((_) {});
-    entityManager.addListener(listener);
+    entityManager.listen(listener);
 
     var speciesId0 = randomId();
     await entityManager.addOrUpdate(Species()
@@ -251,6 +286,19 @@ void main() {
     expect(entityManager.entityCount, 0);
     verify(appManager.localDatabaseManager.deleteEntity(any, any)).called(1);
     verifyNever(listener.onDelete);
+  });
+
+  test("Test onReset", () async {
+    when(appManager.localDatabaseManager.fetchAll(any))
+        .thenAnswer((_) => Future.value([]));
+
+    var listener = MockEntityListener<Species>();
+    when(listener.onReset).thenReturn(() {});
+    entityManager.listen(listener);
+
+    await entityManager.initialize();
+    await untilCalled(listener.onReset);
+    verify(listener.onReset).called(1);
   });
 
   test("Entity list by ID", () async {
@@ -498,14 +546,16 @@ void main() {
       ),
     );
 
-    expect(entityManager.addListenerCalls, 1);
+    expect(entityManager.listenCalls, 1);
 
     var state =
         tester.firstState<DisposableTesterState>(find.byType(DisposableTester));
     state.removeChild();
     await tester.pumpAndSettle();
 
-    expect(entityManager.removeListenerCalls, 1);
+    for (var sub in entityManager.subs) {
+      expect(sub.isPaused, isFalse);
+    }
   });
 
   testWidgets("EntityListenerBuilder onDeleteEnabled is false", (tester) async {
@@ -529,6 +579,8 @@ void main() {
       ..name = "Bluegill");
 
     expect(await entityManager.delete(speciesId0, notify: true), isTrue);
+
+    await tester.pumpAndSettle(const Duration(milliseconds: 50));
     expect(onDeleteInvoked, isFalse);
   });
 
@@ -553,6 +605,8 @@ void main() {
       ..name = "Bluegill");
 
     expect(await entityManager.delete(speciesId0, notify: true), isTrue);
+
+    await tester.pumpAndSettle(const Duration(milliseconds: 50));
     expect(onDeleteInvoked, isTrue);
   });
 

@@ -52,7 +52,7 @@ void main() {
 
     var updatedBaits = <Bait>[];
     when(baitListener.onUpdate).thenReturn((bait) => updatedBaits.add(bait));
-    baitManager.addListener(baitListener);
+    baitManager.listen(baitListener);
 
     // Add a BaitCategory.
     var baitCategoryId0 = randomId();
@@ -72,6 +72,8 @@ void main() {
       ..id = baitId1
       ..name = "Test Bait 2"
       ..baitCategoryId = baitCategoryId0);
+    await untilCalled(baitListener.onAdd);
+    await untilCalled(baitListener.onAdd);
     verify(baitListener.onAdd).called(2);
     expect(baitManager.entity(baitId0)!.baitCategoryId, baitCategoryId0);
     expect(baitManager.entity(baitId1)!.baitCategoryId, baitCategoryId0);

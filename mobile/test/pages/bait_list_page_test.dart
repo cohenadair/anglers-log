@@ -14,6 +14,7 @@ import 'package:mobile/widgets/input_controller.dart';
 import 'package:mobile/widgets/widget.dart';
 import 'package:mockito/mockito.dart';
 
+import '../mocks/mocks.mocks.dart';
 import '../mocks/stubbed_app_manager.dart';
 import '../test_utils.dart';
 
@@ -86,6 +87,8 @@ void main() {
     when(appManager.baitCategoryManager.entity(any)).thenAnswer((invocation) =>
         baitCategories.firstWhereOrNull(
             (e) => e.id == invocation.positionalArguments.first));
+    when(appManager.baitCategoryManager.listen(any))
+        .thenAnswer((_) => MockStreamSubscription());
 
     when(appManager.catchManager.list()).thenReturn([]);
 

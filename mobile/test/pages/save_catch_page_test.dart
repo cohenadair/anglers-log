@@ -53,6 +53,8 @@ void main() {
     when(appManager.baitCategoryManager.listSortedByDisplayName(any))
         .thenReturn([]);
     when(appManager.baitCategoryManager.entityExists(any)).thenReturn(false);
+    when(appManager.baitCategoryManager.listen(any))
+        .thenAnswer((_) => MockStreamSubscription());
 
     when(appManager.bodyOfWaterManager.entityExists(any)).thenReturn(false);
 

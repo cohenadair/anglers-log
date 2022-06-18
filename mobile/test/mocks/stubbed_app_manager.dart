@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:mobile/entity_manager.dart';
 import 'package:mobile/time_manager.dart';
 import 'package:mockito/mockito.dart';
 import 'package:quiver/strings.dart';
@@ -110,7 +109,7 @@ class StubbedAppManager {
       onUpdate: anyNamed("onUpdate"),
       onDelete: anyNamed("onDelete"),
       onReset: anyNamed("onReset"),
-    )).thenReturn(EntityListener());
+    )).thenReturn(MockStreamSubscription());
 
     // TODO: Don't stub these by default; lead to unnecessary investigations on
     //  failed tests.
@@ -121,7 +120,7 @@ class StubbedAppManager {
       onUpdate: anyNamed("onUpdate"),
       onDelete: anyNamed("onDelete"),
       onReset: anyNamed("onReset"),
-    )).thenReturn(EntityListener());
+    )).thenReturn(MockStreamSubscription());
     when(baitCategoryManager.entity(any)).thenReturn(null);
 
     when(baitManager.addTypedListener(
@@ -129,7 +128,7 @@ class StubbedAppManager {
       onUpdate: anyNamed("onUpdate"),
       onDelete: anyNamed("onDelete"),
       onReset: anyNamed("onReset"),
-    )).thenReturn(EntityListener());
+    )).thenReturn(MockStreamSubscription());
     when(baitManager.entity(any)).thenReturn(null);
     when(baitManager.list(any)).thenReturn([]);
 
@@ -138,7 +137,7 @@ class StubbedAppManager {
       onUpdate: anyNamed("onUpdate"),
       onDelete: anyNamed("onDelete"),
       onReset: anyNamed("onReset"),
-    )).thenReturn(EntityListener());
+    )).thenReturn(MockStreamSubscription());
     when(bodyOfWaterManager.entity(any)).thenReturn(null);
     when(bodyOfWaterManager.list(any)).thenReturn([]);
 
@@ -147,7 +146,7 @@ class StubbedAppManager {
       onUpdate: anyNamed("onUpdate"),
       onDelete: anyNamed("onDelete"),
       onReset: anyNamed("onReset"),
-    )).thenReturn(EntityListener());
+    )).thenReturn(MockStreamSubscription());
     when(catchManager.entity(any)).thenReturn(null);
 
     when(customEntityManager.addTypedListener(
@@ -155,7 +154,7 @@ class StubbedAppManager {
       onUpdate: anyNamed("onUpdate"),
       onDelete: anyNamed("onDelete"),
       onReset: anyNamed("onReset"),
-    )).thenReturn(EntityListener());
+    )).thenReturn(MockStreamSubscription());
     when(customEntityManager.entity(any)).thenReturn(null);
 
     when(fishingSpotManager.addTypedListener(
@@ -163,7 +162,7 @@ class StubbedAppManager {
       onUpdate: anyNamed("onUpdate"),
       onDelete: anyNamed("onDelete"),
       onReset: anyNamed("onReset"),
-    )).thenReturn(EntityListener());
+    )).thenReturn(MockStreamSubscription());
     when(fishingSpotManager.entity(any)).thenReturn(null);
 
     when(methodManager.addTypedListener(
@@ -171,7 +170,7 @@ class StubbedAppManager {
       onUpdate: anyNamed("onUpdate"),
       onDelete: anyNamed("onDelete"),
       onReset: anyNamed("onReset"),
-    )).thenReturn(EntityListener());
+    )).thenReturn(MockStreamSubscription());
     when(methodManager.entity(any)).thenReturn(null);
 
     when(reportManager.addTypedListener(
@@ -179,7 +178,7 @@ class StubbedAppManager {
       onUpdate: anyNamed("onUpdate"),
       onDelete: anyNamed("onDelete"),
       onReset: anyNamed("onReset"),
-    )).thenReturn(EntityListener());
+    )).thenReturn(MockStreamSubscription());
     when(reportManager.entity(any)).thenReturn(null);
 
     when(speciesManager.addTypedListener(
@@ -187,7 +186,7 @@ class StubbedAppManager {
       onUpdate: anyNamed("onUpdate"),
       onDelete: anyNamed("onDelete"),
       onReset: anyNamed("onReset"),
-    )).thenReturn(EntityListener());
+    )).thenReturn(MockStreamSubscription());
     when(speciesManager.entity(any)).thenReturn(null);
 
     when(tripManager.addTypedListener(
@@ -195,14 +194,14 @@ class StubbedAppManager {
       onUpdate: anyNamed("onUpdate"),
       onDelete: anyNamed("onDelete"),
       onReset: anyNamed("onReset"),
-    )).thenReturn(EntityListener());
+    )).thenReturn(MockStreamSubscription());
 
     when(waterClarityManager.addTypedListener(
       onAdd: anyNamed("onAdd"),
       onUpdate: anyNamed("onUpdate"),
       onDelete: anyNamed("onDelete"),
       onReset: anyNamed("onReset"),
-    )).thenReturn(EntityListener());
+    )).thenReturn(MockStreamSubscription());
     when(waterClarityManager.entity(any)).thenReturn(null);
   }
 

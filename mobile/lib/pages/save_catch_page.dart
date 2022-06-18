@@ -701,9 +701,13 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
       cat.tide.timeZone = cat.timeZone;
     }
 
-    await _catchManager.addOrUpdate(
-      cat,
-      imageFiles: _imagesController.originalFiles,
+    await _log.p(
+      "Save",
+      400,
+      () => _catchManager.addOrUpdate(
+        cat,
+        imageFiles: _imagesController.originalFiles,
+      ),
     );
 
     if (widget.popOverride != null) {

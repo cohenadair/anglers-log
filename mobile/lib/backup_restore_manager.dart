@@ -158,7 +158,7 @@ class BackupRestoreManager {
 
   Future<void> _authenticateAndSetupAutoBackup() async {
     await _authenticateUser();
-    _catchManager.addListener(_catchManagerListener);
+    _catchManager.listen(_catchManagerListener);
   }
 
   Future<void> _authenticateUser() async {

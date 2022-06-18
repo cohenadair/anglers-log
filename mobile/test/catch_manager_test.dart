@@ -31,7 +31,8 @@ void main() {
     when(appManager.anglerManager.matchesFilter(any, any)).thenReturn(false);
 
     baitCategoryManager = appManager.baitCategoryManager;
-    when(baitCategoryManager.addListener(any)).thenAnswer((_) {});
+    when(baitCategoryManager.listen(any))
+        .thenAnswer((_) => MockStreamSubscription());
 
     dataManager = appManager.localDatabaseManager;
     when(dataManager.insertOrReplace(any, any))
