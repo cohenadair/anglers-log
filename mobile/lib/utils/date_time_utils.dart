@@ -84,6 +84,17 @@ class DisplayDuration {
       "${hours.toString().padLeft(2, "0")}:${minutes.toString().padLeft(2, "0")}";
 }
 
+TZDateTime dateTime(int timestamp, String timeZone) {
+  assert(isNotEmpty(timeZone));
+  return TZDateTime.fromMillisecondsSinceEpoch(
+      getLocation(timeZone), timestamp);
+}
+
+TZDateTime now(String timeZone) {
+  assert(isNotEmpty(timeZone));
+  return TZDateTime.now(getLocation(timeZone));
+}
+
 bool isSameYear(TZDateTime a, TZDateTime b) {
   return a.year == b.year;
 }

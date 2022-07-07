@@ -177,8 +177,10 @@ class _PersonalBestsReportState extends State<PersonalBestsReport> {
             subtitleType: CatchListItemModelSubtitleType.length,
             catches: _catchManager.catches(
               context,
-              sortOrder: CatchSortOrder.longestToShortest,
-              speciesIds: {species.id},
+              opt: CatchFilterOptions(
+                order: CatchFilterOptions_Order.longest_to_shortest,
+                speciesIds: {species.id},
+              ),
             ),
           ),
         );
@@ -200,8 +202,10 @@ class _PersonalBestsReportState extends State<PersonalBestsReport> {
             subtitleType: CatchListItemModelSubtitleType.weight,
             catches: _catchManager.catches(
               context,
-              sortOrder: CatchSortOrder.heaviestToLightest,
-              speciesIds: {species.id},
+              opt: CatchFilterOptions(
+                order: CatchFilterOptions_Order.heaviest_to_lightest,
+                speciesIds: {species.id},
+              ),
             ),
           ),
         );
@@ -234,7 +238,7 @@ class _PersonalBestsReportModel {
 
     for (var cat in catchManager.catches(
       context,
-      dateRange: range,
+      opt: CatchFilterOptions(dateRanges: [range]),
     )) {
       if (cat.hasLength() &&
           (longestCatch == null || longestCatch!.length < cat.length)) {
@@ -275,7 +279,7 @@ class _PersonalBestsReportModel {
         weightBySpecies, speciesManager.displayNameComparator(context));
 
     for (var trip in tripManager.list()) {
-      if (!range.contains(context, trip.startTimestamp.toInt(),
+      if (!range.contains(trip.startTimestamp.toInt(),
           timeManager.now(trip.timeZone))) {
         continue;
       }

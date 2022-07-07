@@ -7,7 +7,7 @@ import 'package:timezone/timezone.dart';
 
 import 'app_manager.dart';
 import 'log.dart';
-import 'utils/date_time_utils.dart';
+import 'utils/date_time_utils.dart' as date_time_utils;
 import 'utils/string_utils.dart';
 
 class TimeManager {
@@ -74,8 +74,7 @@ class TimeManager {
     if (isEmpty(timeZone)) {
       timeZone = currentTimeZone;
     }
-    return TZDateTime.fromMillisecondsSinceEpoch(
-        getLocation(timeZone!), timestamp);
+    return date_time_utils.dateTime(timestamp, timeZone!);
   }
 
   /// Returns the current [TZDateTime] at the given time zone, or the
@@ -84,7 +83,7 @@ class TimeManager {
     if (isEmpty(timeZone)) {
       return currentDateTime;
     }
-    return TZDateTime.now(getLocation(timeZone!));
+    return date_time_utils.now(timeZone!);
   }
 
   TZDateTime toTZDateTime(DateTime dateTime) {
@@ -113,8 +112,9 @@ class TimeZoneLocation {
     var offset = "UTC";
     if (currentTimeZone.offset != 0) {
       offset += currentTimeZone.offset < 0 ? "-" : "+";
-      offset += DisplayDuration(Duration(milliseconds: currentOffset))
-          .formatHoursMinutes();
+      offset +=
+          date_time_utils.DisplayDuration(Duration(milliseconds: currentOffset))
+              .formatHoursMinutes();
     }
     return offset;
   }

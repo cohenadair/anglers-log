@@ -319,6 +319,25 @@ extension Baits on Bait {
   BaitAttachment toAttachment() => BaitAttachment(baitId: id);
 }
 
+extension BaitAttachments on BaitAttachment {
+  static BaitAttachment fromPbMapKey(String key) {
+    var ids = key.split(".");
+    if (ids.length == 1) {
+      return BaitAttachment(baitId: Id(uuid: ids[0]));
+    } else if (ids.length == 2) {
+      return BaitAttachment(
+        baitId: Id(uuid: ids[0]),
+        variantId: Id(uuid: ids[1]),
+      );
+    }
+
+    _log.w("Invalid protobuf map key: $key");
+    return BaitAttachment();
+  }
+
+  String toPbMapKey() => "${baitId.uuid}.${variantId.uuid}";
+}
+
 extension BaitTypes on Bait_Type {
   String displayName(BuildContext context) {
     switch (this) {
@@ -1187,25 +1206,20 @@ extension Units on Unit {
 }
 
 extension DateRanges on DateRange {
-  int startMs(BuildContext context, TZDateTime now) =>
-      startDate(context, now).millisecondsSinceEpoch;
+  int startMs(TZDateTime now) => startDate(now).millisecondsSinceEpoch;
 
-  int endMs(BuildContext context, TZDateTime now) =>
-      endDate(context, now).millisecondsSinceEpoch;
+  int endMs(TZDateTime now) => endDate(now).millisecondsSinceEpoch;
 
-  int durationMs(BuildContext context, TZDateTime now) =>
-      endMs(context, now) - startMs(context, now);
+  int durationMs(TZDateTime now) => endMs(now) - startMs(now);
 
-  TZDateTime startDate(BuildContext context, TZDateTime now) {
-    var timeManager = TimeManager.of(context);
-
+  TZDateTime startDate(TZDateTime now) {
     if (hasStartTimestamp()) {
-      return timeManager.dateTime(startTimestamp.toInt(), timeZone);
+      return dateTime(startTimestamp.toInt(), timeZone);
     }
 
     switch (period) {
       case DateRange_Period.allDates:
-        return timeManager.dateTime(0, timeZone);
+        return dateTime(0, timeZone);
       case DateRange_Period.today:
         return dateTimeToDayAccuracy(now);
       case DateRange_Period.yesterday:
@@ -1244,9 +1258,9 @@ extension DateRanges on DateRange {
     throw ArgumentError("Invalid input: $period");
   }
 
-  TZDateTime endDate(BuildContext context, TZDateTime now) {
+  TZDateTime endDate(TZDateTime now) {
     if (hasEndTimestamp()) {
-      return TimeManager.of(context).dateTime(endTimestamp.toInt(), timeZone);
+      return dateTime(endTimestamp.toInt(), timeZone);
     }
 
     switch (period) {
@@ -1279,8 +1293,8 @@ extension DateRanges on DateRange {
 
     if (hasStartTimestamp() && hasEndTimestamp()) {
       var formatter = DateFormat(monthDayYearFormat);
-      return "${formatter.format(startDate(context, now))} - "
-          "${formatter.format(endDate(context, now))}";
+      return "${formatter.format(startDate(now))} - "
+          "${formatter.format(endDate(now))}";
     }
 
     switch (period) {
@@ -1318,8 +1332,8 @@ extension DateRanges on DateRange {
     throw ArgumentError("Invalid input: $period");
   }
 
-  bool contains(BuildContext context, int timestamp, TZDateTime now) =>
-      timestamp >= startMs(context, now) && timestamp <= endMs(context, now);
+  bool contains(int timestamp, TZDateTime now) =>
+      timestamp >= startMs(now) && timestamp <= endMs(now);
 }
 
 extension MoonPhases on MoonPhase {

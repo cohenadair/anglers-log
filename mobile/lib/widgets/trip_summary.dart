@@ -288,7 +288,7 @@ class _TripSummaryReport {
     var lengthSystem = userPreferenceManager.catchLengthSystem;
 
     var now = timeManager.currentDateTime;
-    containsNow = dateRange.endDate(context, now) == now;
+    containsNow = dateRange.endDate(now) == now;
 
     var totalCatches = 0;
     var totalCatchesPerHour = 0.0;
@@ -324,8 +324,10 @@ class _TripSummaryReport {
         longestTrip = trip;
       }
 
-      var catches =
-          catchManager.catches(context, catchIds: trip.catchIds.toSet());
+      var catches = catchManager.catches(
+        context,
+        opt: CatchFilterOptions(catchIds: trip.catchIds.toSet()),
+      );
       if (catches.length > 1) {
         var msBetweenCatches = 0.0;
         var weights = <MultiMeasurement>[];

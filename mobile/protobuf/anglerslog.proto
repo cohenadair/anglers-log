@@ -369,8 +369,8 @@ message Measurement {
 // (mainValue) and ounces (fractionValue).
 message MultiMeasurement {
   MeasurementSystem system = 1;
-  Measurement mainValue = 2;
-  Measurement fractionValue = 3;
+  Measurement main_value = 2;
+  Measurement fraction_value = 3;
 }
 
 message Tide {
@@ -378,4 +378,114 @@ message Tide {
   uint64 low_timestamp = 2;
   uint64 high_timestamp = 3;
   string time_zone = 4;
+}
+
+// A message that contains everything needed to filter catches and/or
+// generate reports on a separate dart Isolate.
+message CatchFilterOptions {
+  enum Order {
+    unknown = 0;
+    newest_to_oldest = 1;
+    heaviest_to_lightest = 2;
+    longest_to_shortest = 3;
+  }
+
+  Order order = 1;
+  uint64 current_timestamp = 2;
+  string current_time_zone = 3;
+
+  // Entities that need to be copied since BuildContext (i.e. managers)
+  // can't be accessed in Isolates. Use maps in favor of lists for
+  // efficiency.
+  map<string, Angler> all_anglers = 4;
+  map<string, Bait> all_baits = 5;
+  map<string, BodyOfWater> all_bodies_of_water = 6;
+  map<string, Catch> all_catches = 7;
+  map<string, FishingSpot> all_fishing_spots = 8;
+  map<string, Method> all_methods = 9;
+  map<string, Species> all_species = 10;
+  map<string, WaterClarity> all_water_clarities = 11;
+
+  // All available filters.
+  bool is_catch_and_release_only = 12;
+  bool is_favorites_only = 13;
+  repeated DateRange date_ranges = 14;
+  repeated BaitAttachment baits = 15;
+  repeated Id catch_ids = 16;
+  repeated Id angler_ids = 17;
+  repeated Id fishing_spot_ids = 18;
+  repeated Id body_of_water_ids = 19;
+  repeated Id method_ids = 20;
+  repeated Id species_ids = 21;
+  repeated Id water_clarity_ids = 22;
+  repeated Period periods = 23;
+  repeated Season seasons = 24;
+  repeated Direction wind_directions = 25;
+  repeated SkyCondition sky_conditions = 26;
+  repeated MoonPhase moon_phases = 27;
+  repeated TideType tide_types = 28;
+  NumberFilter water_depth_filter = 29;
+  NumberFilter water_temperature_filter = 30;
+  NumberFilter length_filter = 31;
+  NumberFilter weight_filter = 32;
+  NumberFilter quantity_filter = 33;
+  NumberFilter air_temperature_filter = 34;
+  NumberFilter air_pressure_filter = 35;
+  NumberFilter air_humidity_filter = 36;
+  NumberFilter air_visibility_filter = 37;
+  NumberFilter wind_speed_filter = 38;
+  int32 hour = 39;
+  int32 month = 40;
+
+  // Whether or not each entity is included in a report.
+  // These should be based on user preferences.
+  bool include_anglers = 41;
+  bool include_baits = 42;
+  bool include_bodies_of_water = 43;
+  bool include_methods = 44;
+  bool include_fishing_spots = 45;
+  bool include_moon_phases = 46;
+  bool include_seasons = 47;
+  bool include_species = 48;
+  bool include_tide_types = 49;
+  bool include_periods = 50;
+  bool include_water_clarities = 51;
+}
+
+message CatchReport {
+  repeated CatchReportModel models = 1;
+  uint64 ms_since_last_catch = 2;
+  Catch last_catch = 3;
+
+  // True if one of the date ranges in the report includes the
+  // current time; false otherwise.
+  bool contains_now = 6;
+}
+
+message CatchReportModel {
+  DateRange date_range = 1;
+  repeated Id catch_ids = 2;
+
+  // Hour of day (0-23), and month (1-12) to catch quantity maps.
+  map<int32, int32> per_hour = 3;
+  map<int32, int32> per_month = 4;
+
+  // Enum number to catch quantity maps.
+  map<int32, int32> per_moon_phase = 5;
+  map<int32, int32> per_period = 6;
+  map<int32, int32> per_season = 7;
+  map<int32, int32> per_tide_type = 8;
+
+  // UUID string to catch quantity maps.
+  map<string, int32> per_angler = 9;
+  map<string, int32> per_body_of_water = 10;
+  map<string, int32> per_method = 11;
+  map<string, int32> per_fishing_spot = 12;
+  map<string, int32> per_species = 13;
+  map<string, int32> per_water_clarity = 14;
+
+  // Baits need to work a little different because they are identified
+  // by BaitAttachment, which have a bait ID and variant ID, so the key
+  // in this map is "<bait ID>.<variant ID>"
+  map<string, int32> per_bait = 15;
 }

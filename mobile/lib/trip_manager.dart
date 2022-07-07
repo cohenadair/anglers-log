@@ -111,7 +111,7 @@ class TripManager extends NamedEntityManager<Trip> {
       trips = list(tripIds).where((trip) {
         if (dateRange != null &&
             context != null &&
-            !dateRange.contains(context, trip.startTimestamp.toInt(),
+            !dateRange.contains(trip.startTimestamp.toInt(),
                 TimeManager.of(context).now(trip.timeZone))) {
           return false;
         }
