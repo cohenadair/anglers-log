@@ -223,6 +223,15 @@ class MockFile extends Mock implements File {
         }),
         returnValue: Future.value(File(""))) as Future<File>);
   }
+
+  @override
+  Future<FileSystemEntity> delete({bool recursive = false}) {
+    return (super.noSuchMethod(
+        Invocation.method(#delete, [], {
+          #recursive: recursive,
+        }),
+        returnValue: Future.value(File(""))) as Future<FileSystemEntity>);
+  }
 }
 
 // @GenerateMocks produces a conflict where the wrong PickedFile class is used

@@ -4657,6 +4657,10 @@ class MockIoWrapper extends _i1.Mock implements _i35.IoWrapper {
       (super.noSuchMethod(Invocation.getter(#isIOS), returnValue: false)
           as bool);
   @override
+  bool isFileSync(String? path) =>
+      (super.noSuchMethod(Invocation.method(#isFileSync, [path]),
+          returnValue: false) as bool);
+  @override
   _i54.Directory directory(String? path) =>
       (super.noSuchMethod(Invocation.method(#directory, [path]),
           returnValue: _FakeDirectory_93()) as _i54.Directory);
