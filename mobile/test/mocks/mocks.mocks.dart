@@ -3091,16 +3091,16 @@ class MockPreferenceManager extends _i1.Mock implements _i68.PreferenceManager {
       (super.noSuchMethod(Invocation.getter(#preferences),
           returnValue: <String, dynamic>{}) as Map<String, dynamic>);
   @override
+  _i2.AppManager get appManager =>
+      (super.noSuchMethod(Invocation.getter(#appManager),
+          returnValue: _FakeAppManager_0()) as _i2.AppManager);
+  @override
   String get tableName =>
       (super.noSuchMethod(Invocation.getter(#tableName), returnValue: '')
           as String);
   @override
   _i5.Stream<void> get stream => (super.noSuchMethod(Invocation.getter(#stream),
       returnValue: Stream<void>.empty()) as _i5.Stream<void>);
-  @override
-  _i3.LocalDatabaseManager get localDatabaseManager => (super.noSuchMethod(
-      Invocation.getter(#localDatabaseManager),
-      returnValue: _FakeLocalDatabaseManager_1()) as _i3.LocalDatabaseManager);
   @override
   _i5.Future<void> initialize() =>
       (super.noSuchMethod(Invocation.method(#initialize, []),
@@ -3173,14 +3173,6 @@ class MockPropertiesManager extends _i1.Mock implements _i19.PropertiesManager {
   @override
   String get mapboxApiKey =>
       (super.noSuchMethod(Invocation.getter(#mapboxApiKey), returnValue: '')
-          as String);
-  @override
-  String get placementIdAndroid => (super
-          .noSuchMethod(Invocation.getter(#placementIdAndroid), returnValue: '')
-      as String);
-  @override
-  String get placementIdApple =>
-      (super.noSuchMethod(Invocation.getter(#placementIdApple), returnValue: '')
           as String);
   @override
   String get firebaseSecret =>
@@ -4022,12 +4014,12 @@ class MockUserPreferenceManager extends _i1.Mock
       (super.noSuchMethod(Invocation.getter(#preferences),
           returnValue: <String, dynamic>{}) as Map<String, dynamic>);
   @override
+  _i2.AppManager get appManager =>
+      (super.noSuchMethod(Invocation.getter(#appManager),
+          returnValue: _FakeAppManager_0()) as _i2.AppManager);
+  @override
   _i5.Stream<void> get stream => (super.noSuchMethod(Invocation.getter(#stream),
       returnValue: Stream<void>.empty()) as _i5.Stream<void>);
-  @override
-  _i3.LocalDatabaseManager get localDatabaseManager => (super.noSuchMethod(
-      Invocation.getter(#localDatabaseManager),
-      returnValue: _FakeLocalDatabaseManager_1()) as _i3.LocalDatabaseManager);
   @override
   _i5.Future<void> setAtmosphereFieldIds(List<_i4.Id>? ids) =>
       (super.noSuchMethod(Invocation.method(#setAtmosphereFieldIds, [ids]),
@@ -4151,8 +4143,8 @@ class MockUserPreferenceManager extends _i1.Mock
           returnValue: Future<void>.value(),
           returnValueForMissingStub: Future<void>.value()) as _i5.Future<void>);
   @override
-  _i5.Future<void> setAppVersion(String? version) =>
-      (super.noSuchMethod(Invocation.method(#setAppVersion, [version]),
+  _i5.Future<void> updateAppVersion() =>
+      (super.noSuchMethod(Invocation.method(#updateAppVersion, []),
           returnValue: Future<void>.value(),
           returnValueForMissingStub: Future<void>.value()) as _i5.Future<void>);
   @override

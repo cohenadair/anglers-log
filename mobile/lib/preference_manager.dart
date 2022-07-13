@@ -21,24 +21,26 @@ abstract class PreferenceManager {
   @protected
   final Map<String, dynamic> preferences = {};
 
+  @protected
+  final AppManager appManager;
+
   final _controller = VoidStreamController();
-  final AppManager _appManager;
 
   late Log _log;
 
-  PreferenceManager(this._appManager) {
+  PreferenceManager(this.appManager) {
     _log = Log("PreferenceManager($runtimeType)");
   }
 
   /// A [Stream] that fires events when any preference updates.
   Stream<void> get stream => _controller.stream;
 
-  LocalDatabaseManager get localDatabaseManager =>
-      _appManager.localDatabaseManager;
+  LocalDatabaseManager get _localDatabaseManager =>
+      appManager.localDatabaseManager;
 
   Future<void> initialize() async {
     preferences.clear();
-    for (var row in (await localDatabaseManager.fetchAll(tableName))) {
+    for (var row in (await _localDatabaseManager.fetchAll(tableName))) {
       preferences[row[_keyId]!] = jsonDecode(row[_keyValue]);
     }
   }
@@ -61,11 +63,11 @@ abstract class PreferenceManager {
   @protected
   void putLocal(String key, dynamic value) {
     if (value == null) {
-      localDatabaseManager
+      _localDatabaseManager
           .delete(tableName, where: "$_keyId = ?", whereArgs: [key]);
       preferences.remove(key);
     } else {
-      localDatabaseManager.insertOrReplace(tableName, {
+      _localDatabaseManager.insertOrReplace(tableName, {
         _keyId: key,
         _keyValue: jsonEncode(value),
       });

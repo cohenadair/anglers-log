@@ -175,9 +175,11 @@ class _AnglersLogState extends State<AnglersLog> {
       case _State.onboarding:
         return OnboardingJourney(
           legacyJsonResult: _legacyJsonResult,
-          onFinished: () => _userPreferencesManager
-              .setDidOnboard(true)
-              .then((value) => setState(() => _state = _State.mainPage)),
+          onFinished: () async {
+            await _userPreferencesManager.setDidOnboard(true);
+            await _userPreferencesManager.updateAppVersion();
+            setState(() => _state = _State.mainPage);
+          },
         );
       case _State.changeLog:
         return ChangeLogPage(

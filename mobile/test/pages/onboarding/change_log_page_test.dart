@@ -41,18 +41,8 @@ void main() {
 
   testWidgets("Preferences updated when Continue is pressed", (tester) async {
     when(appManager.userPreferenceManager.appVersion).thenReturn(null);
-    when(appManager.userPreferenceManager.setAppVersion(any))
+    when(appManager.userPreferenceManager.updateAppVersion())
         .thenAnswer((_) => Future.value());
-    when(appManager.packageInfoWrapper.fromPlatform()).thenAnswer(
-      (_) => Future.value(
-        PackageInfo(
-          buildNumber: "5",
-          appName: "Test",
-          version: "2.1.0",
-          packageName: "test.com",
-        ),
-      ),
-    );
 
     var invoked = false;
     await pumpContext(
@@ -63,10 +53,7 @@ void main() {
 
     await tapAndSettle(tester, find.text("CONTINUE"));
 
-    var result =
-        verify(appManager.userPreferenceManager.setAppVersion(captureAny));
-    result.called(1);
-    expect(result.captured.first as String, "2.1.0");
+    verify(appManager.userPreferenceManager.updateAppVersion()).called(1);
     expect(invoked, isTrue);
   });
 }

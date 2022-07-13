@@ -112,6 +112,8 @@ void main() {
     when(appManager.locationMonitor.initialize()).thenAnswer(
         (_) => Future.delayed(const Duration(milliseconds: 50), () => true));
     when(appManager.userPreferenceManager.didOnboard).thenReturn(false);
+    when(appManager.userPreferenceManager.updateAppVersion())
+        .thenAnswer((_) => Future.value());
     when(appManager.permissionHandlerWrapper.isLocationGranted)
         .thenAnswer((_) => Future.value(false));
     when(appManager.permissionHandlerWrapper.requestLocation())

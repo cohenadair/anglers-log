@@ -108,8 +108,7 @@ class ChangeLogPage extends StatelessWidget {
   }
 
   Future<void> _onTapContinue(BuildContext context) async {
-    UserPreferenceManager.of(context).setAppVersion(
-        (await PackageInfoWrapper.of(context).fromPlatform()).version);
+    UserPreferenceManager.of(context).updateAppVersion();
     onTapContinue();
   }
 }
