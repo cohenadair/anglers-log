@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/poll_manager.dart';
-import 'package:mobile/widgets/ad_banner_widget.dart';
 
 import '../i18n/strings.dart';
 import '../pages/catch_list_page.dart';
@@ -81,18 +80,10 @@ class _MainPageState extends State<MainPage> {
       child: Scaffold(
         // An IndexedStack is an easy way to persist state when switching
         // between pages.
-        body: Column(
-          children: [
-            Expanded(
-              child: IndexedStack(
-                index: _currentBarItem,
-                children: _navItems
-                    .map((data) => data.page ?? const Empty())
-                    .toList(),
-              ),
-            ),
-            AdBannerWidget(),
-          ],
+        body: IndexedStack(
+          index: _currentBarItem,
+          children:
+              _navItems.map((data) => data.page ?? const Empty()).toList(),
         ),
         bottomNavigationBar: BottomNavigationBar(
           currentIndex: _currentBarItem,

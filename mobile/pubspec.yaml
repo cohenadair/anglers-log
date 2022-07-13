@@ -10,7 +10,7 @@ description: Track, analyze, and share your catches in the sport of fishing.
 #
 # Both numbers must be incremented for Android. DO NOT add any suffix to the date, such as ".2". The
 # period will be removed on Google Play and builds with lower numbers cannot be uploaded.
-version: 2.1.2+20220615
+version: 2.1.3+20220712
 publish_to: none
 
 environment:
@@ -39,7 +39,6 @@ dependencies:
   flutter_svg: ^1.0.3               # https://pub.dev/packages/flutter_svg (verified)
   geolocator: ^8.2.0                # https://pub.dev/packages/geolocator (verified)
   googleapis: ^7.0.0                # https://pub.dev/packages/googleapis (Google)
-  google_mobile_ads: ^1.1.0         # https://pub.dev/packages/google_mobile_ads/install (Google)
   google_sign_in: ^5.2.3            # https://pub.dev/packages/google_sign_in (Flutter)
   http: ^0.13.4                     # https://pub.dev/packages/http (Dart)
   image_picker: ^0.8.4+8            # https://pub.dev/packages/image_picker (Flutter)

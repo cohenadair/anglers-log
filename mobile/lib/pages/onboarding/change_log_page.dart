@@ -34,6 +34,7 @@ class ChangeLogPage extends StatelessWidget {
           ),
         ),
         const VerticalSpace(paddingDefault),
+        _build2_1_3(context),
         _build2_1_2(context),
         _build2_1_0(context),
         _build2_0_22(context),
@@ -41,10 +42,25 @@ class ChangeLogPage extends StatelessWidget {
     );
   }
 
+  Widget _build2_1_3(BuildContext context) {
+    return ExpansionListItem(
+      title: Text(_buildVersionText(context, "2.1.3")),
+      isExpanded: true,
+      children: [
+        _buildChangeList({
+          Strings.of(context).changeLog_213_1,
+          Strings.of(context).changeLog_213_2,
+          Strings.of(context).changeLog_213_3,
+          Strings.of(context).changeLog_213_4,
+        }),
+      ],
+    );
+  }
+
   Widget _build2_1_2(BuildContext context) {
     return ExpansionListItem(
       title: Text(_buildVersionText(context, "2.1.2")),
-      isExpanded: true,
+      isExpanded: false,
       children: [
         _buildChangeList({
           Strings.of(context).changeLog_212_1,
@@ -108,8 +124,7 @@ class ChangeLogPage extends StatelessWidget {
   }
 
   Future<void> _onTapContinue(BuildContext context) async {
-    UserPreferenceManager.of(context).setAppVersion(
-        (await PackageInfoWrapper.of(context).fromPlatform()).version);
+    UserPreferenceManager.of(context).updateAppVersion();
     onTapContinue();
   }
 }

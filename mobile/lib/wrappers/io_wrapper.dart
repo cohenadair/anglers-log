@@ -9,7 +9,10 @@ class IoWrapper {
   static IoWrapper of(BuildContext context) =>
       Provider.of<AppManager>(context, listen: false).ioWrapper;
 
+  bool isFileSync(String path) => FileSystemEntity.isFileSync(path);
+
   Directory directory(String path) => Directory(path);
+
   File file(String path) => File(path);
 
   Future<bool> isConnected() async {
@@ -18,5 +21,6 @@ class IoWrapper {
   }
 
   bool get isAndroid => Platform.isAndroid;
+
   bool get isIOS => Platform.isIOS;
 }

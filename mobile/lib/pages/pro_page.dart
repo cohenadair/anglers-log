@@ -64,8 +64,6 @@ class _ProPageState extends State<ProPage> {
       const VerticalSpace(paddingSmall),
       const Icon(Icons.stars),
       const VerticalSpace(paddingXL),
-      _buildFeatureRow(Strings.of(context).proPageAdFree),
-      const VerticalSpace(paddingDefault),
       _buildFeatureRow(Strings.of(context).proPageBackup),
       const VerticalSpace(paddingDefault),
       _buildFeatureRow(Strings.of(context).proPageAtmosphere),

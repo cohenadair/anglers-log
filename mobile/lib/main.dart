@@ -10,7 +10,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:mobile/pages/onboarding/change_log_page.dart';
 import 'package:mobile/wrappers/package_info_wrapper.dart';
 import 'package:provider/provider.dart';
@@ -38,9 +37,6 @@ void main() {
 
   runZonedGuarded<Future<void>>(() async {
     WidgetsFlutterBinding.ensureInitialized();
-
-    // Ads.
-    await MobileAds.instance.initialize();
 
     // Firebase.
     await Firebase.initializeApp();
@@ -179,9 +175,11 @@ class _AnglersLogState extends State<AnglersLog> {
       case _State.onboarding:
         return OnboardingJourney(
           legacyJsonResult: _legacyJsonResult,
-          onFinished: () => _userPreferencesManager
-              .setDidOnboard(true)
-              .then((value) => setState(() => _state = _State.mainPage)),
+          onFinished: () async {
+            await _userPreferencesManager.setDidOnboard(true);
+            await _userPreferencesManager.updateAppVersion();
+            setState(() => _state = _State.mainPage);
+          },
         );
       case _State.changeLog:
         return ChangeLogPage(

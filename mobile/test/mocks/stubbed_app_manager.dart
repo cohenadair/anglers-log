@@ -37,8 +37,6 @@ class StubbedAppManager {
   MockDeviceInfoWrapper deviceInfoWrapper = MockDeviceInfoWrapper();
   MockDriveApiWrapper driveApiWrapper = MockDriveApiWrapper();
   MockFilePickerWrapper filePickerWrapper = MockFilePickerWrapper();
-  MockGoogleMobileAdsWrapper googleMobileAdsWrapper =
-      MockGoogleMobileAdsWrapper();
   MockGoogleSignInWrapper googleSignInWrapper = MockGoogleSignInWrapper();
   MockHttpWrapper httpWrapper = MockHttpWrapper();
   MockImageCompressWrapper imageCompressWrapper = MockImageCompressWrapper();
@@ -82,7 +80,6 @@ class StubbedAppManager {
     when(app.deviceInfoWrapper).thenReturn(deviceInfoWrapper);
     when(app.driveApiWrapper).thenReturn(driveApiWrapper);
     when(app.filePickerWrapper).thenReturn(filePickerWrapper);
-    when(app.googleMobileAdsWrapper).thenReturn(googleMobileAdsWrapper);
     when(app.googleSignInWrapper).thenReturn(googleSignInWrapper);
     when(app.httpWrapper).thenReturn(httpWrapper);
     when(app.imageCompressWrapper).thenReturn(imageCompressWrapper);
@@ -205,10 +202,10 @@ class StubbedAppManager {
     when(waterClarityManager.entity(any)).thenReturn(null);
   }
 
-  void stubCurrentTime(DateTime now) {
+  void stubCurrentTime(DateTime now, {String timeZone = defaultTimeZone}) {
     initializeTimeZones();
 
-    var defaultLocation = getLocation(defaultTimeZone);
+    var defaultLocation = getLocation(timeZone);
     var tzNow = TZDateTime.from(now, defaultLocation);
     when(timeManager.now(any)).thenReturn(tzNow);
     when(timeManager.currentDateTime).thenReturn(tzNow);
@@ -216,17 +213,17 @@ class StubbedAppManager {
     when(timeManager.currentTimestamp).thenReturn(tzNow.millisecondsSinceEpoch);
 
     when(timeManager.currentLocation)
-        .thenReturn(TimeZoneLocation.fromName(defaultTimeZone));
-    when(timeManager.currentTimeZone).thenReturn(defaultTimeZone);
+        .thenReturn(TimeZoneLocation.fromName(timeZone));
+    when(timeManager.currentTimeZone).thenReturn(timeZone);
     when(timeManager.dateTime(any, any)).thenAnswer((invocation) {
-      String? timeZone = invocation.positionalArguments.length == 2
+      String? tz = invocation.positionalArguments.length == 2
           ? invocation.positionalArguments[1]
           : null;
-      if (isEmpty(timeZone)) {
-        timeZone = defaultTimeZone;
+      if (isEmpty(tz)) {
+        tz = timeZone;
       }
       return TZDateTime.fromMillisecondsSinceEpoch(
-          getLocation(timeZone!), invocation.positionalArguments[0]);
+          getLocation(tz!), invocation.positionalArguments[0]);
     });
     when(timeManager.toTZDateTime(any)).thenAnswer((invocation) =>
         TZDateTime.from(invocation.positionalArguments.first, defaultLocation));
