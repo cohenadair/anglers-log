@@ -628,7 +628,6 @@ Map<String, Map<String, String>> get englishStrings => {
             "Instructions on how to reset your password have been sent to %s",
         "proPage_upgradeTitle": "Upgrade to Anglers' Log",
         "proPage_proTitle": "Pro",
-        "proPage_adFree": "Ad-free experience",
         "proPage_backup": "Automatic backup with Google Drive\u2122",
         "proPage_atmosphere": "Fetch atmosphere and weather data",
         "proPage_sync": "Sync data across all your devices",

@@ -39,7 +39,6 @@ dependencies:
   flutter_svg: ^1.0.3               # https://pub.dev/packages/flutter_svg (verified)
   geolocator: ^8.2.0                # https://pub.dev/packages/geolocator (verified)
   googleapis: ^7.0.0                # https://pub.dev/packages/googleapis (Google)
-  google_mobile_ads: ^1.1.0         # https://pub.dev/packages/google_mobile_ads/install (Google)
   google_sign_in: ^5.2.3            # https://pub.dev/packages/google_sign_in (Flutter)
   http: ^0.13.4                     # https://pub.dev/packages/http (Dart)
   image_picker: ^0.8.4+8            # https://pub.dev/packages/image_picker (Flutter)

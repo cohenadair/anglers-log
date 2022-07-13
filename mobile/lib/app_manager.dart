@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/poll_manager.dart';
-import 'package:mobile/wrappers/google_mobile_ads_wrapper.dart';
 import 'package:mobile/wrappers/google_sign_in_wrapper.dart';
 import 'package:provider/provider.dart';
 
@@ -73,7 +72,6 @@ class AppManager {
   DeviceInfoWrapper? _deviceInfoWrapper;
   DriveApiWrapper? _driveApiWrapper;
   FilePickerWrapper? _filePickerWrapper;
-  GoogleMobileAdsWrapper? _googleMobileAdsWrapper;
   GoogleSignInWrapper? _googleSignInWrapper;
   HttpWrapper? _httpWrapper;
   ImageCompressWrapper? _imageCompressWrapper;
@@ -208,11 +206,6 @@ class AppManager {
   FilePickerWrapper get filePickerWrapper {
     _filePickerWrapper ??= FilePickerWrapper();
     return _filePickerWrapper!;
-  }
-
-  GoogleMobileAdsWrapper get googleMobileAdsWrapper {
-    _googleMobileAdsWrapper ??= GoogleMobileAdsWrapper();
-    return _googleMobileAdsWrapper!;
   }
 
   GoogleSignInWrapper get googleSignInWrapper {

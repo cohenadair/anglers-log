@@ -1255,8 +1255,6 @@ class Strings {
 
   String get proPageProTitle => _string("proPage_proTitle");
 
-  String get proPageAdFree => _string("proPage_adFree");
-
   String get proPageBackup => _string("proPage_backup");
 
   String get proPageAtmosphere => _string("proPage_atmosphere");
