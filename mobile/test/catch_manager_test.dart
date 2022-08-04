@@ -234,16 +234,16 @@ void main() {
 
     var context = await buildContext(tester, appManager: appManager);
 
-    var catches = catchManager.catches(context, filter: "");
+    var catches = catchManager.catches(context, searchText: "");
     expect(catches.length, 2);
 
-    catches = catchManager.catches(context, filter: "janua");
+    catches = catchManager.catches(context, searchText: "janua");
     expect(catches.length, 1);
 
-    catches = catchManager.catches(context, filter: "april");
+    catches = catchManager.catches(context, searchText: "april");
     expect(catches.length, 1);
 
-    catches = catchManager.catches(context, filter: "4");
+    catches = catchManager.catches(context, searchText: "4");
     expect(catches.length, 1);
   });
 
@@ -266,7 +266,7 @@ void main() {
       ..baits.add(BaitAttachment(baitId: randomId())));
 
     var context = await buildContext(tester, appManager: appManager);
-    expect(catchManager.catches(context, filter: "Bait").length, 2);
+    expect(catchManager.catches(context, searchText: "Bait").length, 2);
   });
 
   testWidgets("Filtering by search query; fishing spot", (tester) async {
@@ -284,7 +284,7 @@ void main() {
       ..fishingSpotId = randomId());
 
     var context = await buildContext(tester, appManager: appManager);
-    expect(catchManager.catches(context, filter: "Spot").length, 2);
+    expect(catchManager.catches(context, searchText: "Spot").length, 2);
   });
 
   testWidgets("Filtering by search query; species", (tester) async {
@@ -300,7 +300,7 @@ void main() {
       ..speciesId = randomId());
 
     var context = await buildContext(tester, appManager: appManager);
-    expect(catchManager.catches(context, filter: "Species").length, 2);
+    expect(catchManager.catches(context, searchText: "Species").length, 2);
   });
 
   testWidgets("Filtering by search query; angler", (tester) async {
@@ -314,7 +314,7 @@ void main() {
       ..anglerId = randomId());
 
     var context = await buildContext(tester, appManager: appManager);
-    expect(catchManager.catches(context, filter: "Angler").length, 2);
+    expect(catchManager.catches(context, searchText: "Angler").length, 2);
   });
 
   testWidgets("Filtering by search query; water clarity", (tester) async {
@@ -329,7 +329,7 @@ void main() {
       ..waterClarityId = randomId());
 
     var context = await buildContext(tester, appManager: appManager);
-    expect(catchManager.catches(context, filter: "Clarity").length, 2);
+    expect(catchManager.catches(context, searchText: "Clarity").length, 2);
   });
 
   testWidgets("Filtering by search query; method", (tester) async {
@@ -343,7 +343,7 @@ void main() {
       ..methodIds.add(randomId()));
 
     var context = await buildContext(tester, appManager: appManager);
-    expect(catchManager.catches(context, filter: "Method").length, 2);
+    expect(catchManager.catches(context, searchText: "Method").length, 2);
   });
 
   testWidgets("Filtering by search query; period", (tester) async {
@@ -356,9 +356,9 @@ void main() {
     await catchManager.addOrUpdate(Catch()..id = randomId());
 
     var context = await buildContext(tester, appManager: appManager);
-    expect(catchManager.catches(context, filter: "NOON").length, 1);
-    expect(catchManager.catches(context, filter: "dawn").length, 1);
-    expect(catchManager.catches(context, filter: "dusk").isEmpty, isTrue);
+    expect(catchManager.catches(context, searchText: "NOON").length, 1);
+    expect(catchManager.catches(context, searchText: "dawn").length, 1);
+    expect(catchManager.catches(context, searchText: "dusk").isEmpty, isTrue);
   });
 
   testWidgets("Filtering by search query; season", (tester) async {
@@ -371,9 +371,9 @@ void main() {
     await catchManager.addOrUpdate(Catch()..id = randomId());
 
     var context = await buildContext(tester, appManager: appManager);
-    expect(catchManager.catches(context, filter: "SPri").length, 1);
-    expect(catchManager.catches(context, filter: "autumn").length, 1);
-    expect(catchManager.catches(context, filter: "fall").isEmpty, isTrue);
+    expect(catchManager.catches(context, searchText: "SPri").length, 1);
+    expect(catchManager.catches(context, searchText: "autumn").length, 1);
+    expect(catchManager.catches(context, searchText: "fall").isEmpty, isTrue);
   });
 
   testWidgets("Filtering by search query; wind direction", (tester) async {
@@ -384,9 +384,9 @@ void main() {
     await catchManager.addOrUpdate(Catch()..id = randomId());
 
     var context = await buildContext(tester, appManager: appManager);
-    expect(catchManager.catches(context, filter: "eas").length, 1);
-    expect(catchManager.catches(context, filter: "east").length, 1);
-    expect(catchManager.catches(context, filter: "west").isEmpty, isTrue);
+    expect(catchManager.catches(context, searchText: "eas").length, 1);
+    expect(catchManager.catches(context, searchText: "east").length, 1);
+    expect(catchManager.catches(context, searchText: "west").isEmpty, isTrue);
   });
 
   testWidgets("Filtering by search query; sky conditions", (tester) async {
@@ -400,9 +400,9 @@ void main() {
     await catchManager.addOrUpdate(Catch()..id = randomId());
 
     var context = await buildContext(tester, appManager: appManager);
-    expect(catchManager.catches(context, filter: "snow").length, 1);
-    expect(catchManager.catches(context, filter: "rain").length, 1);
-    expect(catchManager.catches(context, filter: "fog").isEmpty, isTrue);
+    expect(catchManager.catches(context, searchText: "snow").length, 1);
+    expect(catchManager.catches(context, searchText: "rain").length, 1);
+    expect(catchManager.catches(context, searchText: "fog").isEmpty, isTrue);
   });
 
   testWidgets("Filtering by search query; moon phase", (tester) async {
@@ -415,9 +415,9 @@ void main() {
     await catchManager.addOrUpdate(Catch()..id = randomId());
 
     var context = await buildContext(tester, appManager: appManager);
-    expect(catchManager.catches(context, filter: "quart").length, 2);
-    expect(catchManager.catches(context, filter: "last").length, 1);
-    expect(catchManager.catches(context, filter: "full").isEmpty, isTrue);
+    expect(catchManager.catches(context, searchText: "quart").length, 2);
+    expect(catchManager.catches(context, searchText: "last").length, 1);
+    expect(catchManager.catches(context, searchText: "full").isEmpty, isTrue);
   });
 
   testWidgets("Filtering by search query; tide type", (tester) async {
@@ -430,9 +430,9 @@ void main() {
     await catchManager.addOrUpdate(Catch()..id = randomId());
 
     var context = await buildContext(tester, appManager: appManager);
-    expect(catchManager.catches(context, filter: "out").length, 1);
-    expect(catchManager.catches(context, filter: "tide").length, 2);
-    expect(catchManager.catches(context, filter: "full").isEmpty, isTrue);
+    expect(catchManager.catches(context, searchText: "out").length, 1);
+    expect(catchManager.catches(context, searchText: "tide").length, 2);
+    expect(catchManager.catches(context, searchText: "full").isEmpty, isTrue);
   });
 
   testWidgets("Filtering by search query; favorite", (tester) async {
@@ -443,9 +443,9 @@ void main() {
     await catchManager.addOrUpdate(Catch()..id = randomId());
 
     var context = await buildContext(tester, appManager: appManager);
-    expect(catchManager.catches(context, filter: "favorite").length, 1);
-    expect(catchManager.catches(context, filter: "orite").length, 1);
-    expect(catchManager.catches(context, filter: "dusk").isEmpty, isTrue);
+    expect(catchManager.catches(context, searchText: "favorite").length, 1);
+    expect(catchManager.catches(context, searchText: "orite").length, 1);
+    expect(catchManager.catches(context, searchText: "dusk").isEmpty, isTrue);
   });
 
   testWidgets("Filtering by search query; catch and release", (tester) async {
@@ -456,9 +456,9 @@ void main() {
     await catchManager.addOrUpdate(Catch()..id = randomId());
 
     var context = await buildContext(tester, appManager: appManager);
-    expect(catchManager.catches(context, filter: "release").length, 1);
-    expect(catchManager.catches(context, filter: "kept").length, 1);
-    expect(catchManager.catches(context, filter: "dusk").isEmpty, isTrue);
+    expect(catchManager.catches(context, searchText: "release").length, 1);
+    expect(catchManager.catches(context, searchText: "kept").length, 1);
+    expect(catchManager.catches(context, searchText: "dusk").isEmpty, isTrue);
   });
 
   testWidgets("Filtering by search query; water depth", (tester) async {
@@ -475,9 +475,9 @@ void main() {
     await catchManager.addOrUpdate(Catch()..id = randomId());
 
     var context = await buildContext(tester, appManager: appManager);
-    expect(catchManager.catches(context, filter: "50").length, 1);
-    expect(catchManager.catches(context, filter: "metre").length, 1);
-    expect(catchManager.catches(context, filter: "feet").isEmpty, isTrue);
+    expect(catchManager.catches(context, searchText: "50").length, 1);
+    expect(catchManager.catches(context, searchText: "metre").length, 1);
+    expect(catchManager.catches(context, searchText: "feet").isEmpty, isTrue);
   });
 
   testWidgets("Filtering by search query; water temperature", (tester) async {
@@ -494,10 +494,10 @@ void main() {
     await catchManager.addOrUpdate(Catch()..id = randomId());
 
     var context = await buildContext(tester, appManager: appManager);
-    expect(catchManager.catches(context, filter: "fahren").length, 1);
-    expect(catchManager.catches(context, filter: "10").length, 1);
-    expect(catchManager.catches(context, filter: "degrees").length, 1);
-    expect(catchManager.catches(context, filter: "celsius").isEmpty, isTrue);
+    expect(catchManager.catches(context, searchText: "fahren").length, 1);
+    expect(catchManager.catches(context, searchText: "10").length, 1);
+    expect(catchManager.catches(context, searchText: "degrees").length, 1);
+    expect(catchManager.catches(context, searchText: "celsius").isEmpty, isTrue);
   });
 
   testWidgets("Filtering by search query; length", (tester) async {
@@ -514,10 +514,10 @@ void main() {
     await catchManager.addOrUpdate(Catch()..id = randomId());
 
     var context = await buildContext(tester, appManager: appManager);
-    expect(catchManager.catches(context, filter: "cent").length, 1);
-    expect(catchManager.catches(context, filter: "cm").length, 1);
-    expect(catchManager.catches(context, filter: "inch").isEmpty, isTrue);
-    expect(catchManager.catches(context, filter: "error").isEmpty, isTrue);
+    expect(catchManager.catches(context, searchText: "cent").length, 1);
+    expect(catchManager.catches(context, searchText: "cm").length, 1);
+    expect(catchManager.catches(context, searchText: "inch").isEmpty, isTrue);
+    expect(catchManager.catches(context, searchText: "error").isEmpty, isTrue);
   });
 
   testWidgets("Filtering by search query; weight", (tester) async {
@@ -534,11 +534,11 @@ void main() {
     await catchManager.addOrUpdate(Catch()..id = randomId());
 
     var context = await buildContext(tester, appManager: appManager);
-    expect(catchManager.catches(context, filter: "pounds").length, 1);
-    expect(catchManager.catches(context, filter: "oz").length, 1);
-    expect(catchManager.catches(context, filter: "50").length, 1);
-    expect(catchManager.catches(context, filter: "25").isEmpty, isTrue);
-    expect(catchManager.catches(context, filter: "kilo").isEmpty, isTrue);
+    expect(catchManager.catches(context, searchText: "pounds").length, 1);
+    expect(catchManager.catches(context, searchText: "oz").length, 1);
+    expect(catchManager.catches(context, searchText: "50").length, 1);
+    expect(catchManager.catches(context, searchText: "25").isEmpty, isTrue);
+    expect(catchManager.catches(context, searchText: "kilo").isEmpty, isTrue);
   });
 
   testWidgets("Filtering by search query; quantity", (tester) async {
@@ -549,8 +549,8 @@ void main() {
     await catchManager.addOrUpdate(Catch()..id = randomId());
 
     var context = await buildContext(tester, appManager: appManager);
-    expect(catchManager.catches(context, filter: "10").length, 1);
-    expect(catchManager.catches(context, filter: "err").isEmpty, isTrue);
+    expect(catchManager.catches(context, searchText: "10").length, 1);
+    expect(catchManager.catches(context, searchText: "err").isEmpty, isTrue);
   });
 
   testWidgets("Filtering by search query; air temperature", (tester) async {
@@ -569,11 +569,11 @@ void main() {
     await catchManager.addOrUpdate(Catch()..id = randomId());
 
     var context = await buildContext(tester, appManager: appManager);
-    expect(catchManager.catches(context, filter: "fahre").length, 1);
-    expect(catchManager.catches(context, filter: "f").length, 1);
-    expect(catchManager.catches(context, filter: "80").length, 1);
-    expect(catchManager.catches(context, filter: "30").isEmpty, isTrue);
-    expect(catchManager.catches(context, filter: "celsius").isEmpty, isTrue);
+    expect(catchManager.catches(context, searchText: "fahre").length, 1);
+    expect(catchManager.catches(context, searchText: "f").length, 1);
+    expect(catchManager.catches(context, searchText: "80").length, 1);
+    expect(catchManager.catches(context, searchText: "30").isEmpty, isTrue);
+    expect(catchManager.catches(context, searchText: "celsius").isEmpty, isTrue);
   });
 
   testWidgets("Filtering by search query; air pressure", (tester) async {
@@ -592,11 +592,11 @@ void main() {
     await catchManager.addOrUpdate(Catch()..id = randomId());
 
     var context = await buildContext(tester, appManager: appManager);
-    expect(catchManager.catches(context, filter: "mill").length, 1);
-    expect(catchManager.catches(context, filter: "mb").length, 1);
-    expect(catchManager.catches(context, filter: "1000").length, 1);
-    expect(catchManager.catches(context, filter: "30").isEmpty, isTrue);
-    expect(catchManager.catches(context, filter: "pound").isEmpty, isTrue);
+    expect(catchManager.catches(context, searchText: "mill").length, 1);
+    expect(catchManager.catches(context, searchText: "mb").length, 1);
+    expect(catchManager.catches(context, searchText: "1000").length, 1);
+    expect(catchManager.catches(context, searchText: "30").isEmpty, isTrue);
+    expect(catchManager.catches(context, searchText: "pound").isEmpty, isTrue);
   });
 
   testWidgets("Filtering by search query; air humidity", (tester) async {
@@ -614,11 +614,11 @@ void main() {
     await catchManager.addOrUpdate(Catch()..id = randomId());
 
     var context = await buildContext(tester, appManager: appManager);
-    expect(catchManager.catches(context, filter: "humid").length, 1);
-    expect(catchManager.catches(context, filter: "%").length, 1);
-    expect(catchManager.catches(context, filter: "50").length, 1);
-    expect(catchManager.catches(context, filter: "30").isEmpty, isTrue);
-    expect(catchManager.catches(context, filter: "pound").isEmpty, isTrue);
+    expect(catchManager.catches(context, searchText: "humid").length, 1);
+    expect(catchManager.catches(context, searchText: "%").length, 1);
+    expect(catchManager.catches(context, searchText: "50").length, 1);
+    expect(catchManager.catches(context, searchText: "30").isEmpty, isTrue);
+    expect(catchManager.catches(context, searchText: "pound").isEmpty, isTrue);
   });
 
   testWidgets("Filtering by search query; air visibility", (tester) async {
@@ -637,11 +637,11 @@ void main() {
     await catchManager.addOrUpdate(Catch()..id = randomId());
 
     var context = await buildContext(tester, appManager: appManager);
-    expect(catchManager.catches(context, filter: "kilo").length, 1);
-    expect(catchManager.catches(context, filter: "km").length, 1);
-    expect(catchManager.catches(context, filter: "10.5").length, 1);
-    expect(catchManager.catches(context, filter: "30").isEmpty, isTrue);
-    expect(catchManager.catches(context, filter: "pound").isEmpty, isTrue);
+    expect(catchManager.catches(context, searchText: "kilo").length, 1);
+    expect(catchManager.catches(context, searchText: "km").length, 1);
+    expect(catchManager.catches(context, searchText: "10.5").length, 1);
+    expect(catchManager.catches(context, searchText: "30").isEmpty, isTrue);
+    expect(catchManager.catches(context, searchText: "pound").isEmpty, isTrue);
   });
 
   testWidgets("Filtering by search query; wind speed", (tester) async {
@@ -660,11 +660,11 @@ void main() {
     await catchManager.addOrUpdate(Catch()..id = randomId());
 
     var context = await buildContext(tester, appManager: appManager);
-    expect(catchManager.catches(context, filter: "kilo").length, 1);
-    expect(catchManager.catches(context, filter: "km").length, 1);
-    expect(catchManager.catches(context, filter: "9").length, 1);
-    expect(catchManager.catches(context, filter: "30").isEmpty, isTrue);
-    expect(catchManager.catches(context, filter: "pound").isEmpty, isTrue);
+    expect(catchManager.catches(context, searchText: "kilo").length, 1);
+    expect(catchManager.catches(context, searchText: "km").length, 1);
+    expect(catchManager.catches(context, searchText: "9").length, 1);
+    expect(catchManager.catches(context, searchText: "30").isEmpty, isTrue);
+    expect(catchManager.catches(context, searchText: "pound").isEmpty, isTrue);
   });
 
   testWidgets("Filtering by search query; notes", (tester) async {
@@ -675,9 +675,9 @@ void main() {
     await catchManager.addOrUpdate(Catch()..id = randomId());
 
     var context = await buildContext(tester, appManager: appManager);
-    expect(catchManager.catches(context, filter: "some notes").length, 1);
-    expect(catchManager.catches(context, filter: "the").length, 1);
-    expect(catchManager.catches(context, filter: "bait").isEmpty, isTrue);
+    expect(catchManager.catches(context, searchText: "some notes").length, 1);
+    expect(catchManager.catches(context, searchText: "the").length, 1);
+    expect(catchManager.catches(context, searchText: "bait").isEmpty, isTrue);
   });
 
   testWidgets("Filtering by angler", (tester) async {

@@ -14,6 +14,7 @@ import 'package:mobile/widgets/tile.dart';
 import 'package:mobile/widgets/widget.dart';
 
 import '../entity_manager.dart';
+import '../log.dart';
 import 'date_range_picker_input.dart';
 
 /// A summary of a user's trips. This widget should always be rendered within
@@ -26,6 +27,7 @@ class TripSummary extends StatefulWidget {
 class _TripSummaryState extends State<TripSummary> {
   static const _rowHeight = 150.0;
 
+  final _log = const Log("TripSummary");
   late _TripSummaryReport _report;
   var _dateRange = DateRange(period: DateRange_Period.allDates);
 
@@ -246,7 +248,10 @@ class _TripSummaryState extends State<TripSummary> {
     );
   }
 
-  void _refreshReport() => _report = _TripSummaryReport(context, _dateRange);
+  void _refreshReport() {
+    _report = _log.sync<_TripSummaryReport>(
+        "refreshReport", 150, () => _TripSummaryReport(context, _dateRange));
+  }
 }
 
 class _TripSummaryReport {

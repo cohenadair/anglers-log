@@ -22,6 +22,7 @@ import 'package:mobile/widgets/widget.dart';
 import 'package:quiver/strings.dart';
 
 import '../entity_manager.dart';
+import '../log.dart';
 import '../time_manager.dart';
 import 'blurred_background_photo.dart';
 import 'date_range_picker_input.dart';
@@ -39,6 +40,7 @@ class PersonalBestsReport extends StatefulWidget {
 class _PersonalBestsReportState extends State<PersonalBestsReport> {
   static const _rowsPerSpeciesTable = 5;
 
+  final _log = const Log("PersonalBestsReport");
   var _dateRange = DateRange(period: DateRange_Period.allDates);
 
   late _PersonalBestsReportModel _model;
@@ -213,8 +215,10 @@ class _PersonalBestsReportState extends State<PersonalBestsReport> {
     );
   }
 
-  void _refreshModel() =>
-      _model = _PersonalBestsReportModel(context, _dateRange);
+  void _refreshModel() {
+    _model = _log.sync<_PersonalBestsReportModel>("refreshReport", 150,
+        () => _PersonalBestsReportModel(context, _dateRange));
+  }
 }
 
 class _PersonalBestsReportModel {
@@ -238,7 +242,10 @@ class _PersonalBestsReportModel {
 
     for (var cat in catchManager.catches(
       context,
-      opt: CatchFilterOptions(dateRanges: [range]),
+      opt: CatchFilterOptions(
+        currentTimeZone: timeManager.currentTimeZone,
+        dateRanges: [range],
+      ),
     )) {
       if (cat.hasLength() &&
           (longestCatch == null || longestCatch!.length < cat.length)) {

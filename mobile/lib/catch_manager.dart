@@ -150,23 +150,41 @@ class CatchManager extends EntityManager<Catch> {
 
   List<Catch> catches(
     BuildContext context, {
-    String? filter,
+    String? searchText,
     CatchFilterOptions? opt,
   }) {
-    var catches = opt == null ? entities.values : isolatedFilteredCatches(opt);
-    return catches
-        .where((cat) => matchesFilter(cat.id, filter, context))
+    opt ??= CatchFilterOptions();
+    if (!opt.hasCurrentTimeZone()) {
+      opt.currentTimeZone = _timeManager.currentTimeZone;
+    }
+
+    // Filter options' allCatches should _always_ be equal to all catches
+    // available in CatchManager, so we override it here. This is mostly so
+    // callers of .catches don't need to set the options field directly.
+    opt.allCatches.clear();
+    opt.allCatches.addAll(uuidMap());
+
+    return isolatedFilteredCatches(opt)
+        .where((cat) => matchesFilter(cat.id, searchText, context))
         .toList();
   }
 
   /// A method that filters a list of given catches. This method is static, and
   /// cannot depend on [BuildContext] so it can be run inside [compute] (Isolate).
+  /// It is not, however, required to be run in an isolate.
   ///
   /// Note that at this time, this method _does not_ support localized text
   /// filtering. For searching, use [catches].
-  // TODO: Move to catch_utils.dart
   static Iterable<Catch> isolatedFilteredCatches(CatchFilterOptions opt) {
     assert(isNotEmpty(opt.currentTimeZone));
+
+    // Set a default time zone for any date ranges that don't have one set.
+    for (var dateRange in opt.dateRanges) {
+      if (dateRange.hasTimeZone()) {
+        continue;
+      }
+      dateRange.timeZone = opt.currentTimeZone;
+    }
 
     if (opt.dateRanges.isEmpty &&
         !opt.hasIsCatchAndReleaseOnly() &&
@@ -197,7 +215,7 @@ class CatchManager extends EntityManager<Catch> {
         !opt.hasWindSpeedFilter() &&
         !opt.hasHour() &&
         !opt.hasMonth()) {
-      return opt.allCatches.values;
+      return isolatedSortedCatches(opt.allCatches.values, opt);
     }
 
     bool isSetValid<T>(
@@ -209,20 +227,22 @@ class CatchManager extends EntityManager<Catch> {
     }
 
     bool isNumberFilterMultiMeasurementValid(
-      NumberFilter? filter,
+      bool hasFilter,
+      NumberFilter filter,
       MultiMeasurement measurement, {
       required bool hasValue,
     }) {
-      return filter == null ||
+      return !hasFilter ||
           (hasValue && filter.containsMultiMeasurement(measurement));
     }
 
     bool isNumberFilterIntValid(
-      NumberFilter? filter,
+      bool hasFilter,
+      NumberFilter filter,
       int value, {
       required bool hasValue,
     }) {
-      return filter == null || (hasValue && filter.containsInt(value));
+      return !hasFilter || (hasValue && filter.containsInt(value));
     }
 
     // Returns true if the given catch has a bait attachment that intersects
@@ -285,7 +305,6 @@ class CatchManager extends EntityManager<Catch> {
           hasValue: cat.hasAtmosphere() && cat.atmosphere.hasMoonPhase());
       valid &= isSetValid<TideType>(opt.tideTypes, cat.tide.type,
           hasValue: cat.hasTide() && cat.tide.hasType());
-
       var skyConditionsSet = opt.skyConditions.toSet();
       valid &= skyConditionsSet.isEmpty ||
           (cat.hasAtmosphere() &&
@@ -295,30 +314,37 @@ class CatchManager extends EntityManager<Catch> {
       valid &= !opt.isFavoritesOnly || cat.isFavorite;
       valid &= !opt.isCatchAndReleaseOnly || cat.wasCatchAndRelease;
       valid &= isNumberFilterMultiMeasurementValid(
-          opt.waterDepthFilter, cat.waterDepth,
+          opt.hasWaterDepthFilter(), opt.waterDepthFilter, cat.waterDepth,
           hasValue: cat.hasWaterDepth());
       valid &= isNumberFilterMultiMeasurementValid(
-          opt.waterTemperatureFilter, cat.waterTemperature,
+          opt.hasWaterTemperatureFilter(),
+          opt.waterTemperatureFilter,
+          cat.waterTemperature,
           hasValue: cat.hasWaterTemperature());
-      valid &= isNumberFilterMultiMeasurementValid(opt.lengthFilter, cat.length,
+      valid &= isNumberFilterMultiMeasurementValid(
+          opt.hasLengthFilter(), opt.lengthFilter, cat.length,
           hasValue: cat.hasLength());
-      valid &= isNumberFilterMultiMeasurementValid(opt.weightFilter, cat.weight,
+      valid &= isNumberFilterMultiMeasurementValid(
+          opt.hasWeightFilter(), opt.weightFilter, cat.weight,
           hasValue: cat.hasWeight());
-      valid &= isNumberFilterIntValid(opt.quantityFilter, cat.quantity,
+      valid &= isNumberFilterIntValid(
+          opt.hasQuantityFilter(), opt.quantityFilter, cat.quantity,
           hasValue: cat.hasQuantity());
       valid &= isNumberFilterMultiMeasurementValid(
-          opt.airTemperatureFilter, cat.atmosphere.temperature,
+          opt.hasAirTemperatureFilter(),
+          opt.airTemperatureFilter,
+          cat.atmosphere.temperature,
           hasValue: cat.hasAtmosphere() && cat.atmosphere.hasTemperature());
-      valid &= isNumberFilterMultiMeasurementValid(
+      valid &= isNumberFilterMultiMeasurementValid(opt.hasAirPressureFilter(),
           opt.airPressureFilter, cat.atmosphere.pressure,
           hasValue: cat.hasAtmosphere() && cat.atmosphere.hasPressure());
-      valid &= isNumberFilterMultiMeasurementValid(
+      valid &= isNumberFilterMultiMeasurementValid(opt.hasAirHumidityFilter(),
           opt.airHumidityFilter, cat.atmosphere.humidity,
           hasValue: cat.hasAtmosphere() && cat.atmosphere.hasHumidity());
-      valid &= isNumberFilterMultiMeasurementValid(
+      valid &= isNumberFilterMultiMeasurementValid(opt.hasAirVisibilityFilter(),
           opt.airVisibilityFilter, cat.atmosphere.visibility,
           hasValue: cat.hasAtmosphere() && cat.atmosphere.hasVisibility());
-      valid &= isNumberFilterMultiMeasurementValid(
+      valid &= isNumberFilterMultiMeasurementValid(opt.hasWindSpeedFilter(),
           opt.windSpeedFilter, cat.atmosphere.windSpeed,
           hasValue: cat.hasAtmosphere() && cat.atmosphere.hasWindSpeed());
 
@@ -329,8 +355,21 @@ class CatchManager extends EntityManager<Catch> {
       return valid;
     }).toList();
 
+    return isolatedSortedCatches(result, opt);
+  }
+
+  /// A method that sorts a list of given catches. This method is static, and
+  /// cannot depend on [BuildContext] so it can be run inside [compute] (Isolate).
+  /// It is not, however, required to be run in an isolate.
+  // TODO: Move to catch_utils.dart
+  static Iterable<Catch> isolatedSortedCatches(
+    Iterable<Catch> catches,
+    CatchFilterOptions opt,
+  ) {
+    var result = List.of(catches);
     var sortOrder =
         opt.hasOrder() ? opt.order : CatchFilterOptions_Order.newest_to_oldest;
+
     switch (sortOrder) {
       case CatchFilterOptions_Order.heaviest_to_lightest:
         result.sort((lhs, rhs) => rhs.weight.compareTo(lhs.weight));

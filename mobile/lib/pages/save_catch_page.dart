@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:collection/collection.dart' show IterableExtension;
 import 'package:fixnum/fixnum.dart';
 import 'package:flutter/material.dart';
@@ -718,14 +716,7 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
   }
 
   void _addOrUpdateCatch(Catch cat) {
-    _log.p(
-      "Save",
-      400,
-      () => _catchManager.addOrUpdate(
-        cat,
-        imageFiles: _imagesController.originalFiles,
-      ),
-    );
+    _catchManager.addOrUpdate(cat, imageFiles: _imagesController.originalFiles);
   }
 
   void _pushFishingSpotPicker() {

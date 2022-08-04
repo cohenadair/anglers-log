@@ -26,7 +26,7 @@ void main() {
         .thenReturn([]);
     when(appManager.catchManager.catches(
       any,
-      filter: anyNamed("filter"),
+      searchText: anyNamed("filter"),
       dateRange: anyNamed("dateRange"),
       catchIds: anyNamed("catchIds"),
       speciesIds: anyNamed("speciesIds"),

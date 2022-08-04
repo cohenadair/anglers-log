@@ -348,7 +348,7 @@ void main() {
     when(catchManager.catches(
       any,
       sortOrder: anyNamed("sortOrder"),
-      filter: anyNamed("filter"),
+      searchText: anyNamed("filter"),
       dateRange: anyNamed("dateRange"),
       isCatchAndReleaseOnly: anyNamed("isCatchAndReleaseOnly"),
       isFavoritesOnly: anyNamed("isFavoritesOnly"),

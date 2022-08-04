@@ -223,7 +223,7 @@ void main() {
 
     when(appManager.catchManager.catches(
       any,
-      filter: anyNamed("filter"),
+      searchText: anyNamed("filter"),
       sortOrder: anyNamed("sortOrder"),
       catchIds: anyNamed("catchIds"),
     )).thenReturn(catches);
@@ -510,7 +510,7 @@ void main() {
     ];
     when(appManager.catchManager.catches(
       any,
-      filter: anyNamed("filter"),
+      searchText: anyNamed("filter"),
       sortOrder: anyNamed("sortOrder"),
       catchIds: anyNamed("catchIds"),
     )).thenReturn(catches);
@@ -579,7 +579,7 @@ void main() {
     ];
     when(appManager.catchManager.catches(
       any,
-      filter: anyNamed("filter"),
+      searchText: anyNamed("filter"),
       sortOrder: anyNamed("sortOrder"),
       catchIds: anyNamed("catchIds"),
     )).thenReturn(catches);
@@ -640,7 +640,7 @@ void main() {
     ];
     when(appManager.catchManager.catches(
       any,
-      filter: anyNamed("filter"),
+      searchText: anyNamed("filter"),
       sortOrder: anyNamed("sortOrder"),
       catchIds: anyNamed("catchIds"),
     )).thenReturn(catches);
@@ -703,7 +703,7 @@ void main() {
     ];
     when(appManager.catchManager.catches(
       any,
-      filter: anyNamed("filter"),
+      searchText: anyNamed("filter"),
       sortOrder: anyNamed("sortOrder"),
       catchIds: anyNamed("catchIds"),
     )).thenReturn(catches);
@@ -767,7 +767,7 @@ void main() {
     ];
     when(appManager.catchManager.catches(
       any,
-      filter: anyNamed("filter"),
+      searchText: anyNamed("filter"),
       sortOrder: anyNamed("sortOrder"),
       catchIds: anyNamed("catchIds"),
     )).thenReturn(catches);
@@ -827,7 +827,7 @@ void main() {
     ];
     when(appManager.catchManager.catches(
       any,
-      filter: anyNamed("filter"),
+      searchText: anyNamed("filter"),
       sortOrder: anyNamed("sortOrder"),
       catchIds: anyNamed("catchIds"),
     )).thenReturn(catches);
@@ -885,7 +885,7 @@ void main() {
     ];
     when(appManager.catchManager.catches(
       any,
-      filter: anyNamed("filter"),
+      searchText: anyNamed("filter"),
       sortOrder: anyNamed("sortOrder"),
       catchIds: anyNamed("catchIds"),
     )).thenReturn(catches);
@@ -939,7 +939,7 @@ void main() {
     ];
     when(appManager.catchManager.catches(
       any,
-      filter: anyNamed("filter"),
+      searchText: anyNamed("filter"),
       sortOrder: anyNamed("sortOrder"),
       catchIds: anyNamed("catchIds"),
     )).thenReturn(catches);
@@ -984,7 +984,7 @@ void main() {
     ];
     when(appManager.catchManager.catches(
       any,
-      filter: anyNamed("filter"),
+      searchText: anyNamed("filter"),
     )).thenReturn(catches);
     when(appManager.catchManager.id(any))
         .thenAnswer((invocation) => invocation.positionalArguments.first.id);
@@ -1025,7 +1025,7 @@ void main() {
     ];
     when(appManager.catchManager.catches(
       any,
-      filter: anyNamed("filter"),
+      searchText: anyNamed("filter"),
       sortOrder: anyNamed("sortOrder"),
       catchIds: anyNamed("catchIds"),
     )).thenReturn(catches);

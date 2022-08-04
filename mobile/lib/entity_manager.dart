@@ -184,7 +184,7 @@ abstract class EntityManager<T extends GeneratedMessage> {
       var updated = entities.containsKey(id);
       entities[id] = entity;
 
-      _log.p("Notify", 400, () {
+      _log.async("Notify", 400, () {
         if (!notify) {
           return;
         }

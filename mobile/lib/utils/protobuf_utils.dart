@@ -790,6 +790,10 @@ extension Periods on Period {
         Period.values, [Period.period_none, Period.period_all]);
   }
 
+  static Set<int> selectableValues() {
+    return selectable().map((e) => e.value).toSet();
+  }
+
   static List<PickerPageItem<Period>> pickerItems(BuildContext context) {
     return _pickerItems(
       context,
@@ -861,6 +865,10 @@ extension Seasons on Season {
   static Set<Season> selectable() {
     return _selectable<Season>(
         Season.values, [Season.season_none, Season.season_all]);
+  }
+
+  static Set<int> selectableValues() {
+    return selectable().map((e) => e.value).toSet();
   }
 
   static List<PickerPageItem<Season>> pickerItems(BuildContext context) {
@@ -1342,6 +1350,10 @@ extension MoonPhases on MoonPhase {
         [MoonPhase.moon_phase_none, MoonPhase.moon_phase_all]);
   }
 
+  static Set<int> selectableValues() {
+    return selectable().map((e) => e.value).toSet();
+  }
+
   static List<PickerPageItem<MoonPhase>> pickerItems(BuildContext context) {
     return _pickerItems(
       context,
@@ -1722,6 +1734,10 @@ extension TideTypes on TideType {
   static Set<TideType> selectable() {
     return _selectable<TideType>(
         TideType.values, [TideType.tide_type_none, TideType.tide_type_all]);
+  }
+
+  static Set<int> selectableValues() {
+    return selectable().map((e) => e.value).toSet();
   }
 
   static List<PickerPageItem<TideType>> pickerItems(BuildContext context) {

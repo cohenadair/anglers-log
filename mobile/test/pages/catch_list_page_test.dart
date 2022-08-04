@@ -20,7 +20,7 @@ void main() {
 
     when(appManager.catchManager.catches(
       any,
-      filter: anyNamed("filter"),
+      searchText: anyNamed("filter"),
       dateRange: anyNamed("dateRange"),
       catchIds: anyNamed("catchIds"),
       speciesIds: anyNamed("speciesIds"),
@@ -131,7 +131,7 @@ void main() {
     ));
     verify(appManager.catchManager.catches(
       any,
-      filter: anyNamed("filter"),
+      searchText: anyNamed("filter"),
       dateRange: anyNamed("dateRange"),
       catchIds: anyNamed("catchIds"),
       speciesIds: anyNamed("speciesIds"),
@@ -150,7 +150,7 @@ void main() {
     ));
     verifyNever(appManager.catchManager.catches(
       any,
-      filter: anyNamed("filter"),
+      searchText: anyNamed("filter"),
       dateRange: anyNamed("dateRange"),
       catchIds: anyNamed("catchIds"),
       speciesIds: anyNamed("speciesIds"),

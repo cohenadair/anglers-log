@@ -72,12 +72,9 @@ class LocalDatabaseManager {
     var conflict = ConflictAlgorithm.replace;
 
     if (batch == null) {
-      var result = await _log.p(
-        "Insert",
-        400,
-        () => _database.insert(tableName, values, conflictAlgorithm: conflict),
-      );
-      return result > 0;
+      return (await _database.insert(tableName, values,
+              conflictAlgorithm: conflict)) >
+          0;
     } else {
       batch.insert(tableName, values, conflictAlgorithm: conflict);
       return true;

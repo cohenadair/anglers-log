@@ -1671,9 +1671,10 @@ class MockCatchManager extends _i1.Mock implements _i12.CatchManager {
           returnValue: false) as bool);
   @override
   List<_i4.Catch> catches(_i52.BuildContext? context,
-          {String? filter, _i4.CatchFilterOptions? opt}) =>
+          {String? searchText, _i4.CatchFilterOptions? opt}) =>
       (super.noSuchMethod(
-          Invocation.method(#catches, [context], {#filter: filter, #opt: opt}),
+          Invocation.method(
+              #catches, [context], {#searchText: searchText, #opt: opt}),
           returnValue: <_i4.Catch>[]) as List<_i4.Catch>);
   @override
   List<String> imageNamesSortedByTimestamp(_i52.BuildContext? context) => (super

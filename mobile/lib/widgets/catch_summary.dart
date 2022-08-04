@@ -9,6 +9,7 @@ import 'package:mobile/res/dimen.dart';
 import 'package:mobile/utils/page_utils.dart';
 import 'package:mobile/widgets/text.dart';
 import 'package:protobuf/protobuf.dart';
+import 'package:timezone/data/latest.dart';
 
 import '../angler_manager.dart';
 import '../bait_manager.dart';
@@ -122,7 +123,7 @@ class _CatchSummaryState<T> extends State<CatchSummary<T>> {
         future: _reportFuture,
         builder: (context, snapshot) {
           if (!snapshot.hasData) {
-            return const Empty();
+            return const Loading();
           }
 
           _report = CatchReport.fromBuffer(snapshot.data!);
@@ -481,7 +482,7 @@ class _CatchSummaryState<T> extends State<CatchSummary<T>> {
       series: _report.toSeries<BodyOfWater>(
         (model) => {
           for (var id in model.perBodyOfWater.keys)
-            _bodyOfWaterManager.entity(Id(uuid: id))!: model.perFishingSpot[id]!
+            _bodyOfWaterManager.entity(Id(uuid: id))!: model.perBodyOfWater[id]!
         },
       ),
       labelBuilder: (entity) =>
@@ -881,11 +882,12 @@ extension CatchReportModels on CatchReportModel {
     _fillWithZeros(
         opt.includeFishingSpots, opt.allFishingSpots.keys, perFishingSpot);
     _fillWithZeros(
-        opt.includeMoonPhases, MoonPhases.selectable(), perMoonPhase);
-    _fillWithZeros(opt.includePeriods, Periods.selectable(), perPeriod);
-    _fillWithZeros(opt.includeSeasons, Seasons.selectable(), perSeason);
+        opt.includeMoonPhases, MoonPhases.selectableValues(), perMoonPhase);
+    _fillWithZeros(opt.includePeriods, Periods.selectableValues(), perPeriod);
+    _fillWithZeros(opt.includeSeasons, Seasons.selectableValues(), perSeason);
     _fillWithZeros(opt.includeSpecies, opt.allSpecies.keys, perSpecies);
-    _fillWithZeros(opt.includeTideTypes, TideTypes.selectable(), perTideType);
+    _fillWithZeros(
+        opt.includeTideTypes, TideTypes.selectableValues(), perTideType);
     _fillWithZeros(
         opt.includeWaterClarities, opt.allWaterClarities.keys, perWaterClarity);
   }
@@ -1012,6 +1014,8 @@ extension CatchReportModels on CatchReportModel {
 }
 
 List<int> computeCatchReport(List<int> inputBytes) {
+  initializeTimeZones();
+
   var stopwatch = Stopwatch()..start();
 
   var opt = CatchFilterOptions.fromBuffer(inputBytes);
@@ -1032,7 +1036,8 @@ List<int> computeCatchReport(List<int> inputBytes) {
   }
 
   var bytes = report.writeToBuffer().toList();
-  const Log("computeCatchReport").d("Took ${stopwatch.elapsedMilliseconds}ms");
+  const Log("CatchSummary")
+      .d("computeCatchReport took ${stopwatch.elapsedMilliseconds}ms");
 
   return bytes;
 }

@@ -121,7 +121,7 @@ void main() {
     when(appManager.fishingSpotManager.list()).thenReturn([]);
     when(appManager.catchManager.catches(
       any,
-      filter: anyNamed("filter"),
+      searchText: anyNamed("filter"),
       dateRange: anyNamed("dateRange"),
       catchIds: anyNamed("catchIds"),
       speciesIds: anyNamed("speciesIds"),
@@ -171,7 +171,7 @@ void main() {
     when(appManager.fishingSpotManager.list()).thenReturn([]);
     when(appManager.catchManager.catches(
       any,
-      filter: anyNamed("filter"),
+      searchText: anyNamed("filter"),
       dateRange: anyNamed("dateRange"),
       catchIds: anyNamed("catchIds"),
       speciesIds: anyNamed("speciesIds"),
