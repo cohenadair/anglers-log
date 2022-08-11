@@ -1220,8 +1220,8 @@ void main() {
     }) async {
       var context = await buildContext(tester);
       dateRange.timeZone = defaultTimeZone;
-      expect(dateRange.startDate(context, now), equals(expectedStart));
-      expect(dateRange.endDate(context, now), equals(expectedEnd ?? now));
+      expect(dateRange.startDate(now), equals(expectedStart));
+      expect(dateRange.endDate(now), equals(expectedEnd ?? now));
     }
 
     testWidgets("Today", (tester) async {

@@ -29,6 +29,10 @@ import '../test_utils.dart';
 void main() {
   late StubbedAppManager appManager;
 
+  // Must be set to the time zone within which the tests are run. This is due
+  // to a dependency on Flutter's date and time pickers.
+  const currentTimeZone = "America/Chicago";
+
   // Sunday, September 13, 2020 12:26:40 PM GMT
   TZDateTime now() => TZDateTime.fromMillisecondsSinceEpoch(
       getLocation(currentTimeZone), 1600000000000);
@@ -946,15 +950,15 @@ void main() {
           period: DateRange_Period.thisMonth,
           timeZone: currentTimeZone,
         );
-        expectedFromStartMs = fromDateRange.startMs(context, now());
-        expectedFromEndMs = fromDateRange.endMs(context, now());
+        expectedFromStartMs = fromDateRange.startMs(now());
+        expectedFromEndMs = fromDateRange.endMs(now());
 
         var toDateRange = DateRange(
           period: DateRange_Period.thisMonth,
           timeZone: currentTimeZone,
         );
-        expectedToStartMs = toDateRange.startMs(context, now());
-        expectedToEndMs = toDateRange.endMs(context, now());
+        expectedToStartMs = toDateRange.startMs(now());
+        expectedToEndMs = toDateRange.endMs(now());
 
         return const SaveReportPage();
       },
@@ -988,7 +992,7 @@ void main() {
     expect(report.name, "Report Name");
     expect(report.hasFromDateRange(), isTrue);
     expect(report.fromDateRange.period, DateRange_Period.custom);
-    expect(report.fromDateRange.startTimestamp.toInt(), expectedFromStartMs);
+    expect(report.fromDateRange.startMs(now()), expectedFromStartMs);
     expect(report.fromDateRange.endTimestamp.toInt(), expectedFromEndMs);
     expect(report.fromDateRange.timeZone, currentTimeZone);
     expect(report.toDateRange.period, DateRange_Period.custom);

@@ -6,7 +6,6 @@ import 'package:mobile/pages/stats_page.dart';
 import 'package:mobile/report_manager.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mobile/utils/report_utils.dart';
-import 'package:mobile/widgets/catch_summary.dart';
 import 'package:mobile/widgets/personal_bests_report.dart';
 import 'package:mobile/widgets/trip_summary.dart';
 import 'package:mockito/mockito.dart';
@@ -195,6 +194,7 @@ void main() {
     appManager = StubbedAppManager();
 
     when(appManager.anglerManager.list()).thenReturn([]);
+    when(appManager.anglerManager.uuidMap()).thenReturn({});
 
     when(appManager.baitManager.name(any))
         .thenAnswer((invocation) => invocation.positionalArguments.first.name);
@@ -220,19 +220,21 @@ void main() {
       showAllVariantsLabel: anyNamed("showAllVariantsLabel"),
     )).thenAnswer((invocation) =>
         baitMap[invocation.positionalArguments[1].baitId]!.name);
+    when(appManager.baitManager.uuidMap()).thenReturn(
+        baitMap.map((key, value) => MapEntry(key.uuid, value)));
 
     when(appManager.bodyOfWaterManager.list()).thenReturn([]);
+    when(appManager.bodyOfWaterManager.uuidMap()).thenReturn({});
 
     when(appManager.catchManager.catches(
       any,
-      dateRange: anyNamed("dateRange"),
-      baits: anyNamed("baits"),
-      fishingSpotIds: anyNamed("fishingSpotIds"),
-      speciesIds: anyNamed("speciesIds"),
+      opt: anyNamed("opt"),
     )).thenReturn([]);
     when(appManager.catchManager.list()).thenReturn(catches);
     when(appManager.catchManager.hasEntities).thenReturn(false);
     when(appManager.catchManager.totalQuantity(any)).thenReturn(catches.length);
+    when(appManager.catchManager.uuidMap()).thenReturn(
+        {for (var cat in catches) cat.id.uuid: cat});
 
     when(appManager.reportManager.list()).thenReturn([]);
     when(appManager.reportManager.listSortedByDisplayName(any)).thenReturn([]);
@@ -266,8 +268,11 @@ void main() {
         .thenReturn((lhs, rhs) => quiver.compareIgnoreCase(lhs.name, rhs.name));
     when(appManager.fishingSpotManager.displayName(any, any))
         .thenAnswer((invocation) => invocation.positionalArguments[1].name);
+    when(appManager.fishingSpotManager.uuidMap()).thenReturn(
+        fishingSpotMap.map((key, value) => MapEntry(key.uuid, value)));
 
     when(appManager.methodManager.list()).thenReturn([]);
+    when(appManager.methodManager.uuidMap()).thenReturn({});
 
     when(appManager.speciesManager.name(any))
         .thenAnswer((invocation) => invocation.positionalArguments.first.name);
@@ -284,6 +289,8 @@ void main() {
         .thenReturn((lhs, rhs) => quiver.compareIgnoreCase(lhs.name, rhs.name));
     when(appManager.speciesManager.displayName(any, any))
         .thenAnswer((invocation) => invocation.positionalArguments[1].name);
+    when(appManager.speciesManager.uuidMap()).thenReturn(
+        speciesMap.map((key, value) => MapEntry(key.uuid, value)));
 
     when(appManager.subscriptionManager.stream)
         .thenAnswer((_) => const Stream.empty());
@@ -304,6 +311,7 @@ void main() {
     )).thenReturn([]);
 
     when(appManager.waterClarityManager.list()).thenReturn([]);
+    when(appManager.waterClarityManager.uuidMap()).thenReturn({});
 
     when(appManager.userPreferenceManager.stream)
         .thenAnswer((_) => const Stream.empty());
@@ -341,38 +349,19 @@ void main() {
         .thenReturn(MeasurementSystem.metric);
     when(appManager.userPreferenceManager.windSpeedSystem)
         .thenReturn(MeasurementSystem.metric);
+
+    when(appManager.isolatesWrapper.computeIntList(any, any))
+        .thenAnswer((invocation) {
+      return Future.value(invocation.positionalArguments
+          .first(invocation.positionalArguments[1]));
+    });
   });
 
   void stubCatchesByTimestamp([List<Catch>? overrideCatches]) {
     var newCatches = overrideCatches ?? catches;
     when(appManager.catchManager.catches(
       any,
-      dateRange: anyNamed("dateRange"),
-      isCatchAndReleaseOnly: anyNamed("isCatchAndReleaseOnly"),
-      isFavoritesOnly: anyNamed("isFavoritesOnly"),
-      anglerIds: anyNamed("anglerIds"),
-      baits: anyNamed("baits"),
-      fishingSpotIds: anyNamed("fishingSpotIds"),
-      bodyOfWaterIds: anyNamed("bodyOfWaterIds"),
-      methodIds: anyNamed("methodIds"),
-      speciesIds: anyNamed("speciesIds"),
-      waterClarityIds: anyNamed("waterClarityIds"),
-      periods: anyNamed("periods"),
-      seasons: anyNamed("seasons"),
-      windDirections: anyNamed("windDirections"),
-      skyConditions: anyNamed("skyConditions"),
-      moonPhases: anyNamed("moonPhases"),
-      tideTypes: anyNamed("tideTypes"),
-      waterDepthFilter: anyNamed("waterDepthFilter"),
-      waterTemperatureFilter: anyNamed("waterTemperatureFilter"),
-      lengthFilter: anyNamed("lengthFilter"),
-      weightFilter: anyNamed("weightFilter"),
-      quantityFilter: anyNamed("quantityFilter"),
-      airTemperatureFilter: anyNamed("airTemperatureFilter"),
-      airPressureFilter: anyNamed("airPressureFilter"),
-      airHumidityFilter: anyNamed("airHumidityFilter"),
-      airVisibilityFilter: anyNamed("airVisibilityFilter"),
-      windSpeedFilter: anyNamed("windSpeedFilter"),
+      opt: anyNamed("opt"),
     )).thenReturn(
       newCatches..sort((lhs, rhs) => rhs.timestamp.compareTo(lhs.timestamp)),
     );
@@ -766,18 +755,22 @@ void main() {
     await tapAndSettle(tester, find.text("Personal Bests"));
     await tapAndSettle(tester, find.text("Test Summary"));
 
-    var summary = findFirst<CatchSummary<Catch>>(tester)
-        .reportBuilder(DateRange(period: DateRange_Period.allDates), null);
-    expect(summary.waterDepthFilter, isNotNull);
-    expect(summary.waterTemperatureFilter, isNotNull);
-    expect(summary.lengthFilter, isNotNull);
-    expect(summary.weightFilter, isNotNull);
-    expect(summary.quantityFilter, isNotNull);
-    expect(summary.airTemperatureFilter, isNotNull);
-    expect(summary.airPressureFilter, isNotNull);
-    expect(summary.airHumidityFilter, isNotNull);
-    expect(summary.airVisibilityFilter, isNotNull);
-    expect(summary.windSpeedFilter, isNotNull);
+    var filterOptionsBytes = verify(appManager.isolatesWrapper.computeIntList(
+      any,
+      captureAny,
+    )).captured.first;
+    var filterOptions = CatchFilterOptions.fromBuffer(filterOptionsBytes);
+
+    expect(filterOptions.hasWaterDepthFilter(), isTrue);
+    expect(filterOptions.hasWaterTemperatureFilter(), isTrue);
+    expect(filterOptions.hasLengthFilter(), isTrue);
+    expect(filterOptions.hasWeightFilter(), isTrue);
+    expect(filterOptions.hasQuantityFilter(), isTrue);
+    expect(filterOptions.hasAirTemperatureFilter(), isTrue);
+    expect(filterOptions.hasAirPressureFilter(), isTrue);
+    expect(filterOptions.hasAirHumidityFilter(), isTrue);
+    expect(filterOptions.hasAirVisibilityFilter(), isTrue);
+    expect(filterOptions.hasWindSpeedFilter(), isTrue);
   });
 
   testWidgets("CatchSummaryReport with no filter types", (tester) async {
@@ -796,17 +789,20 @@ void main() {
     await tapAndSettle(tester, find.text("Personal Bests"));
     await tapAndSettle(tester, find.text("Test Summary"));
 
-    var summary = findFirst<CatchSummary<Catch>>(tester)
-        .reportBuilder(DateRange(period: DateRange_Period.allDates), null);
-    expect(summary.waterDepthFilter, isNull);
-    expect(summary.waterTemperatureFilter, isNull);
-    expect(summary.lengthFilter, isNull);
-    expect(summary.weightFilter, isNull);
-    expect(summary.quantityFilter, isNull);
-    expect(summary.airTemperatureFilter, isNull);
-    expect(summary.airPressureFilter, isNull);
-    expect(summary.airHumidityFilter, isNull);
-    expect(summary.airVisibilityFilter, isNull);
-    expect(summary.windSpeedFilter, isNull);
+    var filterOptions = verify(appManager.catchManager.catches(
+      any,
+      opt: captureAnyNamed("opt"),
+    )).captured.first as CatchFilterOptions;
+
+    expect(filterOptions.hasWaterDepthFilter(), isFalse);
+    expect(filterOptions.hasWaterTemperatureFilter(), isFalse);
+    expect(filterOptions.hasLengthFilter(), isFalse);
+    expect(filterOptions.hasWeightFilter(), isFalse);
+    expect(filterOptions.hasQuantityFilter(), isFalse);
+    expect(filterOptions.hasAirTemperatureFilter(), isFalse);
+    expect(filterOptions.hasAirPressureFilter(), isFalse);
+    expect(filterOptions.hasAirHumidityFilter(), isFalse);
+    expect(filterOptions.hasAirVisibilityFilter(), isFalse);
+    expect(filterOptions.hasWindSpeedFilter(), isFalse);
   });
 }

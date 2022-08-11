@@ -36,20 +36,29 @@ class Log {
   T sync<T>(String tag, int msThreshold, T Function() work) {
     var stopwatch = Stopwatch()..start();
     var result = work();
+    _logElapsed(tag, stopwatch, msThreshold);
+    return result;
+  }
 
-    var elapsed = stopwatch.elapsed.inMilliseconds;
+  /// Does [work] and measures performance in milliseconds. If [work] takes
+  /// longer than [msThreshold] to finish, an error message is logged, otherwise
+  /// only a debug message is logged.
+  ///
+  /// The value of [work] is returned. See [sync] to measure synchronous work.
+  Future<T> async<T>(String tag, int msThreshold, Future<T> work) async {
+    var stopwatch = Stopwatch()..start();
+    var result = await work;
+    _logElapsed(tag, stopwatch, msThreshold);
+    return result;
+  }
+
+  void _logElapsed(String tag, Stopwatch watch, int msThreshold) {
+    var elapsed = watch.elapsed.inMilliseconds;
     if (elapsed > msThreshold) {
       e(StackTrace.current, "$tag exceeded threshold: ${elapsed}ms");
     } else {
       d("$tag took ${elapsed}ms");
     }
-
-    return result;
-  }
-
-  FutureOr<T> async<T>(
-      String tag, int msThreshold, FutureOr<T> Function() work) async {
-    return sync(tag, msThreshold, () async => await work());
   }
 
   void _log(String msg, [StackTrace? stackTrace]) {

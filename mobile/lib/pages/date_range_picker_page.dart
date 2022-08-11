@@ -118,6 +118,7 @@ class _DateRangePickerPageState extends State<DateRangePickerPage> {
     widget.onDateRangePicked(DateRange()
       ..period = DateRange_Period.custom
       ..startTimestamp = Int64(pickedRange.start.millisecondsSinceEpoch)
-      ..endTimestamp = Int64(endDate.millisecondsSinceEpoch));
+      ..endTimestamp = Int64(endDate.millisecondsSinceEpoch)
+      ..timeZone = _timeManager.currentTimeZone);
   }
 }

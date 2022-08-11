@@ -150,7 +150,7 @@ class CatchManager extends EntityManager<Catch> {
 
   List<Catch> catches(
     BuildContext context, {
-    String? searchText,
+    String? filter,
     CatchFilterOptions? opt,
   }) {
     opt ??= CatchFilterOptions();
@@ -158,14 +158,26 @@ class CatchManager extends EntityManager<Catch> {
       opt.currentTimeZone = _timeManager.currentTimeZone;
     }
 
-    // Filter options' allCatches should _always_ be equal to all catches
-    // available in CatchManager, so we override it here. This is mostly so
-    // callers of .catches don't need to set the options field directly.
-    opt.allCatches.clear();
-    opt.allCatches.addAll(uuidMap());
+    // Filter options' fields that should _always_ be equal to all entities
+    // are overridden it here. This is mostly so callers of .catches don't need
+    // to set the "all" entity fields directly. Note that right now, not all
+    // fields are required by isolatedFilteredCatches to be set.
+    if (opt.allFishingSpots.isNotEmpty) {
+      _log.w("Fishing spots field unnecessarily set; overriding...");
+    }
+    opt.allFishingSpots
+      ..clear()
+      ..addAll(_fishingSpotManager.uuidMap());
+
+    if (opt.allCatches.isNotEmpty) {
+      _log.w("Catches field unnecessarily set; overriding...");
+    }
+    opt.allCatches
+      ..clear()
+      ..addAll(uuidMap());
 
     return isolatedFilteredCatches(opt)
-        .where((cat) => matchesFilter(cat.id, searchText, context))
+        .where((cat) => matchesFilter(cat.id, filter, context))
         .toList();
   }
 
@@ -276,7 +288,8 @@ class CatchManager extends EntityManager<Catch> {
 
       var valid = true;
       valid &= dateRange == null ||
-          dateRange.contains(cat.timestamp.toInt(), now(timeZone));
+          dateRange.contains(cat.timestamp.toInt(),
+              dateTime(opt.currentTimestamp.toInt(), timeZone));
       valid &= isSetValid<Id>(opt.anglerIds, cat.anglerId,
           hasValue: cat.hasAnglerId());
       valid &= areBaitsValid(cat);

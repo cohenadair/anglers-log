@@ -66,7 +66,7 @@ class CatchListPage extends StatelessWidget {
           speciesManager,
         ],
         loadItems: (query) => catches.isEmpty
-            ? catchManager.catches(context, searchText: query)
+            ? catchManager.catches(context, filter: query)
             : catches,
         emptyItemsSettings: ManageableListPageEmptyListSettings(
           icon: CustomIcons.catches,

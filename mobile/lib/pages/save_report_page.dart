@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:mobile/time_manager.dart';
 import 'package:mobile/widgets/entity_picker_input.dart';
 import 'package:quiver/strings.dart';
 
@@ -99,6 +100,8 @@ class _SaveReportPageState extends State<SaveReportPage> {
 
   SpeciesManager get _speciesManager => SpeciesManager.of(context);
 
+  TimeManager get _timeManager => TimeManager.of(context);
+
   UserPreferenceManager get _userPreferenceManager =>
       UserPreferenceManager.of(context);
 
@@ -166,11 +169,15 @@ class _SaveReportPageState extends State<SaveReportPage> {
       );
     } else {
       _typeController.value = Report_Type.summary;
-      _fromDateRangeController.value =
-          DateRange(period: DateRange_Period.allDates);
+      _fromDateRangeController.value = DateRange(
+        period: DateRange_Period.allDates,
+        timeZone: _timeManager.currentTimeZone,
+      );
       if (_isComparison) {
-        _toDateRangeController.value =
-            DateRange(period: DateRange_Period.allDates);
+        _toDateRangeController.value = DateRange(
+          period: DateRange_Period.allDates,
+          timeZone: _timeManager.currentTimeZone,
+        );
       }
       _initEntitySets();
     }

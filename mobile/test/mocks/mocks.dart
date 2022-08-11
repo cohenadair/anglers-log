@@ -20,7 +20,6 @@ import 'package:mobile/bait_category_manager.dart';
 import 'package:mobile/bait_manager.dart';
 import 'package:mobile/body_of_water_manager.dart';
 import 'package:mobile/catch_manager.dart';
-import 'package:mobile/injected.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
 import 'package:mobile/poll_manager.dart';
 import 'package:mobile/report_manager.dart';
@@ -50,6 +49,7 @@ import 'package:mobile/wrappers/google_sign_in_wrapper.dart';
 import 'package:mobile/wrappers/http_wrapper.dart';
 import 'package:mobile/wrappers/image_compress_wrapper.dart';
 import 'package:mobile/wrappers/image_picker_wrapper.dart';
+import 'package:mobile/wrappers/isolates_wrapper.dart';
 import 'package:mobile/wrappers/native_time_zone_wrapper.dart';
 import 'package:mobile/wrappers/purchases_wrapper.dart';
 import 'package:mobile/wrappers/io_wrapper.dart';
@@ -120,6 +120,7 @@ Trip_CatchesPerEntity newInputItemShim(dynamic pickerItem) =>
 @GenerateMocks([HttpWrapper])
 @GenerateMocks([ImageCompressWrapper])
 @GenerateMocks([IoWrapper])
+@GenerateMocks([IsolatesWrapper])
 @GenerateMocks([NativeTimeZoneWrapper])
 @GenerateMocks([map.MapboxMapController])
 @GenerateMocks([PackageInfoWrapper])

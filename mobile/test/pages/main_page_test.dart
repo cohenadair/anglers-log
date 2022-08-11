@@ -26,12 +26,8 @@ void main() {
         .thenReturn([]);
     when(appManager.catchManager.catches(
       any,
-      searchText: anyNamed("filter"),
-      dateRange: anyNamed("dateRange"),
-      catchIds: anyNamed("catchIds"),
-      speciesIds: anyNamed("speciesIds"),
-      fishingSpotIds: anyNamed("fishingSpotIds"),
-      baits: anyNamed("baits"),
+      filter: anyNamed("filter"),
+      opt: anyNamed("opt"),
     )).thenReturn([]);
     when(appManager.catchManager.hasEntities).thenReturn(false);
 

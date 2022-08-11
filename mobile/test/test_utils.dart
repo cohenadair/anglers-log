@@ -156,10 +156,6 @@ Future<BuildContext> pumpContext(
 
 const defaultTimeZone = "America/New_York";
 
-// TODO: Some tests require use of the time zone within which tests are run.
-//  Need to figure out a way to fix this.
-const currentTimeZone = "America/Chicago";
-
 TZDateTime dateTime(
   int year, [
   int month = 1,

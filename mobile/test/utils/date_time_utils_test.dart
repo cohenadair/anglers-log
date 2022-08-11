@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/time_manager.dart';
-import 'package:mobile/utils/date_time_utils.dart';
+import 'package:mobile/utils/date_time_utils.dart' as date_time_utils;
 import 'package:mockito/mockito.dart';
 import 'package:timezone/data/latest.dart';
 import 'package:timezone/timezone.dart';
@@ -17,14 +17,14 @@ void main() {
 
   test("DisplayDuration formatHoursMinutes", () {
     expect(
-      DisplayDuration(const Duration(
+      date_time_utils.DisplayDuration(const Duration(
         milliseconds: 5 * Duration.millisecondsPerHour +
             5 * Duration.millisecondsPerMinute,
       )).formatHoursMinutes(),
       "05:05",
     );
     expect(
-      DisplayDuration(const Duration(
+      date_time_utils.DisplayDuration(const Duration(
         milliseconds: 15 * Duration.millisecondsPerHour +
             15 * Duration.millisecondsPerMinute,
       )).formatHoursMinutes(),
@@ -34,22 +34,22 @@ void main() {
 
   test("isLater", () {
     expect(
-      isLater(const TimeOfDay(hour: 10, minute: 30),
+      date_time_utils.isLater(const TimeOfDay(hour: 10, minute: 30),
           const TimeOfDay(hour: 8, minute: 30)),
       true,
     );
     expect(
-      isLater(const TimeOfDay(hour: 10, minute: 30),
+      date_time_utils.isLater(const TimeOfDay(hour: 10, minute: 30),
           const TimeOfDay(hour: 10, minute: 30)),
       false,
     );
     expect(
-      isLater(const TimeOfDay(hour: 10, minute: 30),
+      date_time_utils.isLater(const TimeOfDay(hour: 10, minute: 30),
           const TimeOfDay(hour: 10, minute: 45)),
       false,
     );
     expect(
-      isLater(const TimeOfDay(hour: 10, minute: 30),
+      date_time_utils.isLater(const TimeOfDay(hour: 10, minute: 30),
           const TimeOfDay(hour: 10, minute: 15)),
       true,
     );
@@ -60,27 +60,27 @@ void main() {
 
     test("Value should be in the past", () {
       expect(
-        isInFutureWithMinuteAccuracy(
+        date_time_utils.isInFutureWithMinuteAccuracy(
             dateTime(2014, 6, 16, 13, 31, 46, 10001), now()),
         isFalse,
       );
       expect(
-        isInFutureWithMinuteAccuracy(
+        date_time_utils.isInFutureWithMinuteAccuracy(
             dateTime(2015, 4, 16, 13, 31, 46, 10001), now()),
         isFalse,
       );
       expect(
-        isInFutureWithMinuteAccuracy(
+        date_time_utils.isInFutureWithMinuteAccuracy(
             dateTime(2015, 5, 14, 13, 31, 46, 10001), now()),
         isFalse,
       );
       expect(
-        isInFutureWithMinuteAccuracy(
+        date_time_utils.isInFutureWithMinuteAccuracy(
             dateTime(2015, 5, 15, 11, 31, 46, 10001), now()),
         isFalse,
       );
       expect(
-        isInFutureWithMinuteAccuracy(
+        date_time_utils.isInFutureWithMinuteAccuracy(
             dateTime(2015, 5, 15, 12, 29, 46, 10001), now()),
         isFalse,
       );
@@ -88,22 +88,22 @@ void main() {
 
     test("Value should be in the future", () {
       expect(
-        isInFutureWithMinuteAccuracy(
+        date_time_utils.isInFutureWithMinuteAccuracy(
             dateTime(2016, 4, 14, 11, 29, 44, 9999), now()),
         isTrue,
       );
       expect(
-        isInFutureWithMinuteAccuracy(
+        date_time_utils.isInFutureWithMinuteAccuracy(
             dateTime(2015, 6, 14, 11, 29, 44, 9999), now()),
         isTrue,
       );
       expect(
-        isInFutureWithMinuteAccuracy(
+        date_time_utils.isInFutureWithMinuteAccuracy(
             dateTime(2015, 5, 16, 11, 29, 44, 9999), now()),
         isTrue,
       );
       expect(
-        isInFutureWithMinuteAccuracy(
+        date_time_utils.isInFutureWithMinuteAccuracy(
             dateTime(2015, 5, 15, 13, 29, 44, 9999), now()),
         isTrue,
       );
@@ -112,17 +112,17 @@ void main() {
     test("Values are equal, but isInFuture returns false", () {
       // Equal, since seconds and milliseconds aren't considered.
       expect(
-        isInFutureWithMinuteAccuracy(
+        date_time_utils.isInFutureWithMinuteAccuracy(
             dateTime(2015, 5, 15, 12, 30, 44, 10001), now()),
         isFalse,
       );
       expect(
-        isInFutureWithMinuteAccuracy(
+        date_time_utils.isInFutureWithMinuteAccuracy(
             dateTime(2015, 5, 15, 12, 30, 45, 9999), now()),
         isFalse,
       );
       expect(
-        isInFutureWithMinuteAccuracy(
+        date_time_utils.isInFutureWithMinuteAccuracy(
             dateTime(2015, 5, 15, 12, 30, 44, 9999), now()),
         isFalse,
       );
@@ -134,17 +134,17 @@ void main() {
 
     test("Value should be in the past", () {
       expect(
-        isInFutureWithDayAccuracy(
+        date_time_utils.isInFutureWithDayAccuracy(
             dateTime(2014, 6, 16, 13, 31, 46, 10001), now()),
         isFalse,
       );
       expect(
-        isInFutureWithDayAccuracy(
+        date_time_utils.isInFutureWithDayAccuracy(
             dateTime(2015, 4, 16, 13, 31, 46, 10001), now()),
         isFalse,
       );
       expect(
-        isInFutureWithDayAccuracy(
+        date_time_utils.isInFutureWithDayAccuracy(
             dateTime(2015, 5, 14, 13, 31, 46, 10001), now()),
         isFalse,
       );
@@ -152,17 +152,17 @@ void main() {
 
     test("Value should be in the future", () {
       expect(
-        isInFutureWithDayAccuracy(
+        date_time_utils.isInFutureWithDayAccuracy(
             dateTime(2016, 4, 14, 11, 29, 44, 9999), now()),
         isTrue,
       );
       expect(
-        isInFutureWithDayAccuracy(
+        date_time_utils.isInFutureWithDayAccuracy(
             dateTime(2015, 6, 14, 11, 29, 44, 9999), now()),
         isTrue,
       );
       expect(
-        isInFutureWithDayAccuracy(
+        date_time_utils.isInFutureWithDayAccuracy(
             dateTime(2015, 5, 16, 11, 29, 44, 9999), now()),
         isTrue,
       );
@@ -171,17 +171,17 @@ void main() {
     test("Values are equal, but isInFuture returns false", () {
       // Equal, since seconds and milliseconds aren't considered.
       expect(
-        isInFutureWithDayAccuracy(
+        date_time_utils.isInFutureWithDayAccuracy(
             dateTime(2015, 5, 15, 11, 31, 46, 10001), now()),
         isFalse,
       );
       expect(
-        isInFutureWithDayAccuracy(
+        date_time_utils.isInFutureWithDayAccuracy(
             dateTime(2015, 5, 15, 12, 29, 46, 10001), now()),
         isFalse,
       );
       expect(
-        isInFutureWithDayAccuracy(
+        date_time_utils.isInFutureWithDayAccuracy(
             dateTime(2015, 5, 15, 13, 29, 44, 9999), now()),
         isFalse,
       );
@@ -195,31 +195,31 @@ void main() {
         .thenReturn(TimeZoneLocation.fromName("America/New_York"));
 
     var context = await buildContext(tester);
-    expect(combine(context, null, null), isNull);
+    expect(date_time_utils.combine(context, null, null), isNull);
     expect(
-        combine(context, null, const TimeOfDay(hour: 5, minute: 5)), isNotNull);
-    expect(combine(context, dateTime(2020), null), isNotNull);
+        date_time_utils.combine(context, null, const TimeOfDay(hour: 5, minute: 5)), isNotNull);
+    expect(date_time_utils.combine(context, dateTime(2020), null), isNotNull);
 
     expect(
-      combine(context, dateTime(2020, 10, 26, 15, 30, 20, 1000),
+      date_time_utils.combine(context, dateTime(2020, 10, 26, 15, 30, 20, 1000),
           const TimeOfDay(hour: 16, minute: 45)),
       dateTime(2020, 10, 26, 16, 45, 20, 1000),
     );
 
-    var actual = combine(context, null, const TimeOfDay(hour: 16, minute: 45));
+    var actual = date_time_utils.combine(context, null, const TimeOfDay(hour: 16, minute: 45));
     var expected = dateTime(0, 1, 1, 16, 45);
     expect(actual, expected);
     expect(actual!.locationName, "America/New_York");
   });
 
   test("dateTimeToDayAccuracy", () {
-    expect(dateTimeToDayAccuracy(dateTime(2020, 10, 26, 15, 30, 20, 1000)),
+    expect(date_time_utils.dateTimeToDayAccuracy(dateTime(2020, 10, 26, 15, 30, 20, 1000)),
         dateTime(2020, 10, 26, 0, 0, 0, 0));
 
     initializeTimeZones();
 
     expect(
-      dateTimeToDayAccuracy(
+      date_time_utils.dateTimeToDayAccuracy(
         dateTime(2020, 10, 26, 15, 30, 20, 1000),
         "America/Chicago",
       ),
@@ -228,25 +228,25 @@ void main() {
   });
 
   test("getStartOfWeek", () {
-    expect(startOfWeek(dateTime(2020, 9, 24)), dateTime(2020, 9, 21));
+    expect(date_time_utils.startOfWeek(dateTime(2020, 9, 24)), dateTime(2020, 9, 21));
   });
 
   test("weekOfYear", () {
-    expect(weekOfYear(dateTime(2020, 2, 15)), 7);
+    expect(date_time_utils.weekOfYear(dateTime(2020, 2, 15)), 7);
   });
 
   test("dayOfYear", () {
-    expect(dayOfYear(dateTime(2020, 2, 15)), 46);
+    expect(date_time_utils.dayOfYear(dateTime(2020, 2, 15)), 46);
   });
 
   testWidgets("formatTimeOfDay", (tester) async {
     expect(
-      formatTimeOfDay(
+      date_time_utils.formatTimeOfDay(
           await buildContext(tester), const TimeOfDay(hour: 15, minute: 30)),
       "3:30 PM",
     );
     expect(
-      formatTimeOfDay(await buildContext(tester, use24Hour: true),
+      date_time_utils.formatTimeOfDay(await buildContext(tester, use24Hour: true),
           const TimeOfDay(hour: 15, minute: 30)),
       "15:30",
     );
@@ -255,13 +255,13 @@ void main() {
   testWidgets("formatHourRange", (tester) async {
     // 11-midnight
     expect(
-      formatHourRange(await buildContext(tester), 23, 24),
+      date_time_utils.formatHourRange(await buildContext(tester), 23, 24),
       "11:00 PM to 12:00 AM",
     );
 
     // Other
     expect(
-      formatHourRange(await buildContext(tester), 8, 10),
+      date_time_utils.formatHourRange(await buildContext(tester), 8, 10),
       "8:00 AM to 10:00 AM",
     );
   });
@@ -271,7 +271,7 @@ void main() {
     when(appManager.timeManager.currentDateTime)
         .thenReturn(dateTime(2020, 9, 24));
     expect(
-      timestampToSearchString(
+      date_time_utils.timestampToSearchString(
           await buildContext(tester, appManager: appManager),
           dateTime(2020, 9, 24).millisecondsSinceEpoch,
           null),
@@ -286,22 +286,22 @@ void main() {
     var context = await buildContext(tester, appManager: appManager);
 
     expect(
-      formatDateAsRecent(
+      date_time_utils.formatDateAsRecent(
           context, TZDateTime(getLocation("America/New_York"), 2020, 9, 24)),
       "Today",
     );
     expect(
-      formatDateAsRecent(
+      date_time_utils.formatDateAsRecent(
           context, TZDateTime(getLocation("America/New_York"), 2020, 9, 23)),
       "Yesterday",
     );
     expect(
-      formatDateAsRecent(
+      date_time_utils.formatDateAsRecent(
           context, TZDateTime(getLocation("America/New_York"), 2020, 9, 22)),
       "Tuesday",
     );
     expect(
-      formatDateAsRecent(
+      date_time_utils.formatDateAsRecent(
         context,
         TZDateTime(getLocation("America/New_York"), 2020, 9, 22),
         abbreviated: true,
@@ -309,12 +309,12 @@ void main() {
       "Tue",
     );
     expect(
-      formatDateAsRecent(
+      date_time_utils.formatDateAsRecent(
           context, TZDateTime(getLocation("America/New_York"), 2020, 8, 22)),
       "Aug 22",
     );
     expect(
-      formatDateAsRecent(
+      date_time_utils.formatDateAsRecent(
           context, TZDateTime(getLocation("America/New_York"), 2019, 8, 22)),
       "Aug 22, 2019",
     );
@@ -327,7 +327,7 @@ void main() {
     var context = await buildContext(tester, appManager: appManager);
 
     expect(
-      formatDateTime(
+      date_time_utils.formatDateTime(
         context,
         TZDateTime(getLocation("America/New_York"), 2020, 8, 22),
         excludeMidnight: false,
@@ -335,7 +335,7 @@ void main() {
       "Aug 22 at 12:00 AM",
     );
     expect(
-      formatDateTime(
+      date_time_utils.formatDateTime(
         context,
         TZDateTime(getLocation("America/New_York"), 2020, 8, 22),
         excludeMidnight: true,
@@ -349,7 +349,7 @@ void main() {
       var context = await buildContext(tester);
 
       expect(
-        formatDuration(
+        date_time_utils.formatDuration(
           context: context,
           millisecondsDuration: 0,
         ),
@@ -357,7 +357,7 @@ void main() {
       );
 
       expect(
-        formatDuration(
+        date_time_utils.formatDuration(
           context: context,
           millisecondsDuration: 0,
           condensed: true,
@@ -377,7 +377,7 @@ void main() {
       var context = await buildContext(tester);
 
       expect(
-        formatDuration(
+        date_time_utils.formatDuration(
           context: context,
           millisecondsDuration: ms,
         ),
@@ -385,7 +385,7 @@ void main() {
       );
 
       expect(
-        formatDuration(
+        date_time_utils.formatDuration(
           context: context,
           millisecondsDuration: ms,
           condensed: true,
@@ -402,7 +402,7 @@ void main() {
       var context = await buildContext(tester);
 
       expect(
-        formatDuration(
+        date_time_utils.formatDuration(
           context: context,
           millisecondsDuration: ms,
         ),
@@ -410,7 +410,7 @@ void main() {
       );
 
       expect(
-        formatDuration(
+        date_time_utils.formatDuration(
           context: context,
           millisecondsDuration: ms,
           condensed: true,
@@ -428,7 +428,7 @@ void main() {
       var context = await buildContext(tester);
 
       expect(
-        formatDuration(
+        date_time_utils.formatDuration(
           context: context,
           millisecondsDuration: ms,
         ),
@@ -436,7 +436,7 @@ void main() {
       );
 
       expect(
-        formatDuration(
+        date_time_utils.formatDuration(
           context: context,
           millisecondsDuration: ms,
           condensed: true,
@@ -453,7 +453,7 @@ void main() {
       var context = await buildContext(tester);
 
       expect(
-        formatDuration(
+        date_time_utils.formatDuration(
           context: context,
           millisecondsDuration: ms,
         ),
@@ -461,7 +461,7 @@ void main() {
       );
 
       expect(
-        formatDuration(
+        date_time_utils.formatDuration(
           context: context,
           millisecondsDuration: ms,
           condensed: true,
@@ -478,7 +478,7 @@ void main() {
       var context = await buildContext(tester);
 
       expect(
-        formatDuration(
+        date_time_utils.formatDuration(
           context: context,
           millisecondsDuration: ms,
         ),
@@ -486,7 +486,7 @@ void main() {
       );
 
       expect(
-        formatDuration(
+        date_time_utils.formatDuration(
           context: context,
           millisecondsDuration: ms,
           condensed: true,
@@ -503,7 +503,7 @@ void main() {
       var context = await buildContext(tester);
 
       expect(
-        formatDuration(
+        date_time_utils.formatDuration(
           context: context,
           millisecondsDuration: ms,
         ),
@@ -511,7 +511,7 @@ void main() {
       );
 
       expect(
-        formatDuration(
+        date_time_utils.formatDuration(
           context: context,
           millisecondsDuration: ms,
           condensed: true,
@@ -531,7 +531,7 @@ void main() {
       var context = await buildContext(tester);
 
       expect(
-        formatDuration(
+        date_time_utils.formatDuration(
           context: context,
           millisecondsDuration: ms,
           includesDays: false,
@@ -551,7 +551,7 @@ void main() {
       var context = await buildContext(tester);
 
       expect(
-        formatDuration(
+        date_time_utils.formatDuration(
           context: context,
           millisecondsDuration: ms,
           includesYears: false,
@@ -573,7 +573,7 @@ void main() {
       var context = await buildContext(tester);
 
       expect(
-        formatDuration(
+        date_time_utils.formatDuration(
           context: context,
           millisecondsDuration: ms,
           includesYears: false,
@@ -596,7 +596,7 @@ void main() {
       var context = await buildContext(tester);
 
       expect(
-        formatDuration(
+        date_time_utils.formatDuration(
           context: context,
           millisecondsDuration: ms,
           includesYears: false,
@@ -620,7 +620,7 @@ void main() {
       var context = await buildContext(tester);
 
       expect(
-        formatDuration(
+        date_time_utils.formatDuration(
           context: context,
           millisecondsDuration: ms,
           numberOfQuantities: 2,
@@ -635,7 +635,7 @@ void main() {
       ).inMilliseconds;
 
       expect(
-        formatDuration(
+        date_time_utils.formatDuration(
           context: context,
           millisecondsDuration: ms,
           condensed: true,
@@ -650,7 +650,7 @@ void main() {
       ).inMilliseconds;
 
       expect(
-        formatDuration(
+        date_time_utils.formatDuration(
           context: context,
           millisecondsDuration: ms,
           condensed: true,
@@ -664,7 +664,7 @@ void main() {
       ).inMilliseconds;
 
       expect(
-        formatDuration(
+        date_time_utils.formatDuration(
           context: context,
           millisecondsDuration: ms,
           condensed: true,
@@ -685,19 +685,19 @@ void main() {
       var context = await buildContext(tester);
 
       expect(
-        formatDuration(
+        date_time_utils.formatDuration(
           context: context,
           millisecondsDuration: ms,
-          largestDurationUnit: DurationUnit.hours,
+          largestDurationUnit: date_time_utils.DurationUnit.hours,
         ),
         "53h 45m 30s",
       );
 
       expect(
-        formatDuration(
+        date_time_utils.formatDuration(
           context: context,
           millisecondsDuration: ms,
-          largestDurationUnit: DurationUnit.minutes,
+          largestDurationUnit: date_time_utils.DurationUnit.minutes,
         ),
         "3225m 30s",
       );
@@ -710,7 +710,7 @@ void main() {
 
     var invoked = false;
     expect(
-      isFrequencyTimerReady(
+      date_time_utils.isFrequencyTimerReady(
         timeManager: timeManager,
         timerStartedAt: null,
         setTimer: (_) => invoked = true,
@@ -729,7 +729,7 @@ void main() {
     when(timeManager.currentTimestamp).thenReturn(1500);
 
     expect(
-      isFrequencyTimerReady(
+      date_time_utils.isFrequencyTimerReady(
         timeManager: timeManager,
         timerStartedAt: 1000,
         setTimer: (_) {},
@@ -746,7 +746,7 @@ void main() {
     when(timeManager.currentTimestamp).thenReturn(10000);
 
     expect(
-      isFrequencyTimerReady(
+      date_time_utils.isFrequencyTimerReady(
         timeManager: timeManager,
         timerStartedAt: 1000,
         setTimer: (_) {},

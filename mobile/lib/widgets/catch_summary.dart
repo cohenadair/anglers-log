@@ -1,5 +1,4 @@
 import 'package:fixnum/fixnum.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:mobile/entity_manager.dart';
@@ -8,6 +7,7 @@ import 'package:mobile/pages/manageable_list_page.dart';
 import 'package:mobile/res/dimen.dart';
 import 'package:mobile/utils/page_utils.dart';
 import 'package:mobile/widgets/text.dart';
+import 'package:mobile/wrappers/isolates_wrapper.dart';
 import 'package:protobuf/protobuf.dart';
 import 'package:timezone/data/latest.dart';
 
@@ -80,6 +80,8 @@ class _CatchSummaryState<T> extends State<CatchSummary<T>> {
   CatchManager get _catchManager => CatchManager.of(context);
 
   FishingSpotManager get _fishingSpotManager => FishingSpotManager.of(context);
+
+  IsolatesWrapper get _isolatesWrapper => IsolatesWrapper.of(context);
 
   MethodManager get _methodManager => MethodManager.of(context);
 
@@ -668,6 +670,9 @@ class _CatchSummaryState<T> extends State<CatchSummary<T>> {
     opt.allFishingSpots
       ..clear()
       ..addAll(_fishingSpotManager.uuidMap());
+    opt.allMethods
+      ..clear()
+      ..addAll(_methodManager.uuidMap());
     opt.allSpecies
       ..clear()
       ..addAll(_speciesManager.uuidMap());
@@ -698,7 +703,8 @@ class _CatchSummaryState<T> extends State<CatchSummary<T>> {
         T != WaterClarity && _userPreferenceManager.isTrackingWaterClarities;
 
     _reportOptions = opt;
-    _reportFuture = compute(computeCatchReport, opt.writeToBuffer().toList());
+    _reportFuture = _isolatesWrapper.computeIntList(
+        computeCatchReport, opt.writeToBuffer().toList());
   }
 }
 
@@ -849,7 +855,7 @@ extension CatchFilterOptionsExt on CatchFilterOptions {
 extension CatchReportModels on CatchReportModel {
   static CatchReportModel create(
       CatchFilterOptions opt, DateRange dateRange, Iterable<Catch> catches) {
-    return CatchReportModel()
+    return CatchReportModel(dateRange: dateRange)
       .._fillCollectionsWithZeros(opt)
       .._fillCollections(opt, catches)
       .._sortCollections();
@@ -905,36 +911,38 @@ extension CatchReportModels on CatchReportModel {
     for (var cat in catches) {
       catchIds.add(cat.id);
 
-      var dt = dateTime(cat.timestamp.toInt(), cat.timeZone);
+      var dt = dateTime(cat.timestamp.toInt(),
+          cat.hasTimeZone() ? cat.timeZone : opt.currentTimeZone);
       _inc(true, dt.hour, perHour, cat);
       _inc(true, dt.month, perMonth, cat);
 
       _inc<String>(
         opt.includeAnglers,
-        opt.allAnglers[cat.anglerId]?.id.uuid,
+        opt.allAnglers[cat.anglerId.uuid]?.id.uuid,
         perAngler,
         cat,
       );
 
       for (var attachment in cat.baits) {
         _inc<String>(
-          opt.includeBaits && opt.allBaits.containsKey(attachment.baitId),
+          opt.includeBaits && opt.allBaits.containsKey(attachment.baitId.uuid),
           attachment.toPbMapKey(),
           perBait,
           cat,
         );
       }
 
+      var fishingSpot = opt.allFishingSpots[cat.fishingSpotId.uuid];
       _inc<String>(
         opt.includeBodiesOfWater,
-        opt.allBodiesOfWater[opt.allFishingSpots[cat.fishingSpotId]]?.id.uuid,
+        opt.allBodiesOfWater[fishingSpot?.bodyOfWaterId.uuid]?.id.uuid,
         perBodyOfWater,
         cat,
       );
 
       _inc<String>(
         opt.includeFishingSpots,
-        opt.allFishingSpots[cat.fishingSpotId]?.id.uuid,
+        fishingSpot?.id.uuid,
         perFishingSpot,
         cat,
       );
@@ -942,7 +950,7 @@ extension CatchReportModels on CatchReportModel {
       for (var methodId in cat.methodIds) {
         _inc<String>(
           opt.includeMethods,
-          opt.allMethods[methodId]?.id.uuid,
+          opt.allMethods[methodId.uuid]?.id.uuid,
           perMethod,
           cat,
         );
@@ -967,7 +975,7 @@ extension CatchReportModels on CatchReportModel {
 
       _inc(
         opt.includeSpecies,
-        opt.allSpecies[cat.speciesId]?.id.uuid,
+        opt.allSpecies[cat.speciesId.uuid]?.id.uuid,
         perSpecies,
         cat,
       );
@@ -978,7 +986,7 @@ extension CatchReportModels on CatchReportModel {
 
       _inc(
         opt.includeWaterClarities,
-        opt.allWaterClarities[cat.waterClarityId]?.id.uuid,
+        opt.allWaterClarities[cat.waterClarityId.uuid]?.id.uuid,
         perWaterClarity,
         cat,
       );
@@ -1019,11 +1027,19 @@ List<int> computeCatchReport(List<int> inputBytes) {
   var stopwatch = Stopwatch()..start();
 
   var opt = CatchFilterOptions.fromBuffer(inputBytes);
+  assert(opt.hasCurrentTimestamp());
+  assert(opt.hasCurrentTimeZone());
+
+  var now = opt.currentTimestamp.toInt();
   var report = CatchReport();
 
   for (var dateRange in opt.dateRanges) {
     var catches = CatchManager.isolatedFilteredCatches(opt);
     report.models.add(CatchReportModels.create(opt, dateRange, catches));
+    report.containsNow |= dateRange
+            .endDate(dateTime(now, opt.currentTimeZone))
+            .millisecondsSinceEpoch ==
+        now;
 
     if (catches.isEmpty || report.models.length > 1) {
       continue;

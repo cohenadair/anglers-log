@@ -14,10 +14,7 @@ void main() {
 
   setUp(() {
     appManager = StubbedAppManager();
-
-    // TODO: Must be set to time zone within which the tests are run. Fix it.
-    when(appManager.timeManager.currentDateTime)
-        .thenReturn(TZDateTime(getLocation(currentTimeZone), 2020, 1, 1));
+    appManager.stubCurrentTime(DateTime(2020, 1, 1));
   });
 
   testWidgets("Initially set custom date range", (tester) async {
@@ -27,6 +24,7 @@ void main() {
           period: DateRange_Period.custom,
           startTimestamp: Int64(dateTime(2020, 1, 1).millisecondsSinceEpoch),
           endTimestamp: Int64(dateTime(2020, 2, 1).millisecondsSinceEpoch),
+          timeZone: defaultTimeZone,
         ),
         onDateRangePicked: (_) {},
       ),

@@ -29,13 +29,21 @@ class _TripSummaryState extends State<TripSummary> {
 
   final _log = const Log("TripSummary");
   late _TripSummaryReport _report;
-  var _dateRange = DateRange(period: DateRange_Period.allDates);
+  late DateRange _dateRange;
+
+  TimeManager get _timeManager => TimeManager.of(context);
 
   TripManager get _tripManager => TripManager.of(context);
 
   @override
   void initState() {
     super.initState();
+
+    _dateRange = DateRange(
+      timeZone: _timeManager.currentTimeZone,
+      period: DateRange_Period.allDates,
+    );
+
     _refreshReport();
   }
 
@@ -52,32 +60,34 @@ class _TripSummaryState extends State<TripSummary> {
         _tripManager,
       ],
       onAnyChange: _refreshReport,
-      builder: (context) => Column(
-        children: [
-          _buildDateRangePicker(),
-          const MinDivider(),
-          const VerticalSpace(paddingDefault),
-          _buildTotalRow(),
-          const VerticalSpace(paddingDefault),
-          _buildLongestAndLastRow(),
-          _buildAveragesRow(),
-          const VerticalSpace(paddingDefault),
-          _buildCatchesRow(),
-          const VerticalSpace(paddingDefault),
-          _buildWeightRow(),
-          _buildLengthRow(),
-        ],
-      ),
+      builder: (context) =>
+          Column(
+            children: [
+              _buildDateRangePicker(),
+              const MinDivider(),
+              const VerticalSpace(paddingDefault),
+              _buildTotalRow(),
+              const VerticalSpace(paddingDefault),
+              _buildLongestAndLastRow(),
+              _buildAveragesRow(),
+              const VerticalSpace(paddingDefault),
+              _buildCatchesRow(),
+              const VerticalSpace(paddingDefault),
+              _buildWeightRow(),
+              _buildLengthRow(),
+            ],
+          ),
     );
   }
 
   Widget _buildDateRangePicker() {
     return DateRangePickerInput(
       initialDateRange: _dateRange,
-      onPicked: (dateRange) => setState(() {
-        _dateRange = dateRange;
-        _refreshReport();
-      }),
+      onPicked: (dateRange) =>
+          setState(() {
+            _dateRange = dateRange;
+            _refreshReport();
+          }),
     );
   }
 
@@ -88,23 +98,29 @@ class _TripSummaryState extends State<TripSummary> {
         TileItem(
           title: _report.numberOfTrips.toString(),
           subtitle: _report.numberOfTrips == 1
-              ? Strings.of(context).entityNameTrip
-              : Strings.of(context).entityNameTrips,
+              ? Strings
+              .of(context)
+              .entityNameTrip
+              : Strings
+              .of(context)
+              .entityNameTrips,
           onTap: _report.numberOfTrips <= 0
               ? null
               : () {
-                  return push(
-                    context,
-                    TripListPage(
-                      ids: _tripManager.idSet(entities: _report.trips),
-                    ),
-                  );
-                },
+            return push(
+              context,
+              TripListPage(
+                ids: _tripManager.idSet(entities: _report.trips),
+              ),
+            );
+          },
         ),
         TileItem.duration(
           context,
           msDuration: _report.totalMs,
-          subtitle: Strings.of(context).tripSummaryTotalTripTime,
+          subtitle: Strings
+              .of(context)
+              .tripSummaryTotalTripTime,
         ),
       ],
     );
@@ -117,7 +133,9 @@ class _TripSummaryState extends State<TripSummary> {
       children.add(TileItem.duration(
         context,
         msDuration: _report.longestTrip!.duration,
-        subtitle: Strings.of(context).tripSummaryLongestTrip,
+        subtitle: Strings
+            .of(context)
+            .tripSummaryLongestTrip,
         onTap: () => push(context, TripPage(_report.longestTrip!)),
       ));
     }
@@ -126,7 +144,9 @@ class _TripSummaryState extends State<TripSummary> {
       children.add(TileItem.duration(
         context,
         msDuration: _report.msSinceLastTrip,
-        subtitle: Strings.of(context).tripSummarySinceLastTrip,
+        subtitle: Strings
+            .of(context)
+            .tripSummarySinceLastTrip,
         onTap: _report.lastTrip == null
             ? null
             : () => push(context, TripPage(_report.lastTrip!)),
@@ -154,17 +174,23 @@ class _TripSummaryState extends State<TripSummary> {
         TileItem.condensedDuration(
           context,
           msDuration: _report.averageTripMs,
-          subtitle2: Strings.of(context).tripSummaryAverageTripTime,
+          subtitle2: Strings
+              .of(context)
+              .tripSummaryAverageTripTime,
         ),
         TileItem.condensedDuration(
           context,
           msDuration: _report.averageMsBetweenTrips,
-          subtitle2: Strings.of(context).tripSummaryAverageTimeBetweenTrips,
+          subtitle2: Strings
+              .of(context)
+              .tripSummaryAverageTimeBetweenTrips,
         ),
         TileItem.condensedDuration(
           context,
           msDuration: _report.averageMsBetweenCatches,
-          subtitle2: Strings.of(context).tripSummaryAverageTimeBetweenCatches,
+          subtitle2: Strings
+              .of(context)
+              .tripSummaryAverageTimeBetweenCatches,
         ),
       ],
     );
@@ -176,11 +202,15 @@ class _TripSummaryState extends State<TripSummary> {
       items: [
         TileItem(
           title: _report.averageCatchesPerTrip.toStringAsFixed(1),
-          subtitle: Strings.of(context).tripSummaryCatchesPerTrip,
+          subtitle: Strings
+              .of(context)
+              .tripSummaryCatchesPerTrip,
         ),
         TileItem(
           title: _report.averageCatchesPerHour.toStringAsFixed(1),
-          subtitle: Strings.of(context).tripSummaryCatchesPerHour,
+          subtitle: Strings
+              .of(context)
+              .tripSummaryCatchesPerHour,
         ),
       ],
     );
@@ -202,14 +232,18 @@ class _TripSummaryState extends State<TripSummary> {
               context,
               includeFraction: false,
             ),
-            subtitle: Strings.of(context).tripSummaryWeightPerTrip,
+            subtitle: Strings
+                .of(context)
+                .tripSummaryWeightPerTrip,
           ),
           TileItem(
             title: _report.mostWeightInSingleTrip?.displayValue(
               context,
               includeFraction: false,
             ),
-            subtitle: Strings.of(context).tripSummaryBestWeight,
+            subtitle: Strings
+                .of(context)
+                .tripSummaryBestWeight,
             onTap: () => push(context, TripPage(_report.mostWeightTrip!)),
           ),
         ],
@@ -233,14 +267,18 @@ class _TripSummaryState extends State<TripSummary> {
               context,
               includeFraction: false,
             ),
-            subtitle: Strings.of(context).tripSummaryLengthPerTrip,
+            subtitle: Strings
+                .of(context)
+                .tripSummaryLengthPerTrip,
           ),
           TileItem(
             title: _report.mostLengthInSingleTrip?.displayValue(
               context,
               includeFraction: false,
             ),
-            subtitle: Strings.of(context).tripSummaryBestLength,
+            subtitle: Strings
+                .of(context)
+                .tripSummaryBestLength,
             onTap: () => push(context, TripPage(_report.mostLengthTrip!)),
           ),
         ],

@@ -7,7 +7,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mapbox_gl/mapbox_gl.dart' as map;
 import 'package:mobile/model/gen/anglerslog.pb.dart';
 import 'package:mobile/pages/save_trip_page.dart';
-import 'package:mobile/utils/date_time_utils.dart';
+import 'package:mobile/utils/date_time_utils.dart' as date_time_utils;
 import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mobile/widgets/atmosphere_input.dart';
 import 'package:mobile/widgets/checkbox_input.dart';
@@ -223,15 +223,14 @@ void main() {
 
     when(appManager.catchManager.catches(
       any,
-      searchText: anyNamed("filter"),
-      sortOrder: anyNamed("sortOrder"),
-      catchIds: anyNamed("catchIds"),
+      filter: anyNamed("filter"),
+      opt: anyNamed("opt"),
     )).thenReturn(catches);
     when(appManager.catchManager.id(any))
         .thenAnswer((invocation) => invocation.positionalArguments.first.id);
     when(appManager.catchManager.list(any)).thenReturn(catches);
     when(appManager.catchManager.displayName(any, any)).thenAnswer(
-        (invocation) => formatTimestamp(invocation.positionalArguments[0],
+        (invocation) => date_time_utils.formatTimestamp(invocation.positionalArguments[0],
             invocation.positionalArguments[1].timestamp.toInt(), null));
 
     when(appManager.customEntityManager.entityExists(any)).thenReturn(false);
@@ -510,9 +509,8 @@ void main() {
     ];
     when(appManager.catchManager.catches(
       any,
-      searchText: anyNamed("filter"),
-      sortOrder: anyNamed("sortOrder"),
-      catchIds: anyNamed("catchIds"),
+      filter: anyNamed("filter"),
+      opt: anyNamed("opt"),
     )).thenReturn(catches);
 
     await tester.pumpWidget(Testable(
@@ -579,9 +577,8 @@ void main() {
     ];
     when(appManager.catchManager.catches(
       any,
-      searchText: anyNamed("filter"),
-      sortOrder: anyNamed("sortOrder"),
-      catchIds: anyNamed("catchIds"),
+      filter: anyNamed("filter"),
+      opt: anyNamed("opt"),
     )).thenReturn(catches);
 
     await tester.pumpWidget(Testable(
@@ -640,9 +637,8 @@ void main() {
     ];
     when(appManager.catchManager.catches(
       any,
-      searchText: anyNamed("filter"),
-      sortOrder: anyNamed("sortOrder"),
-      catchIds: anyNamed("catchIds"),
+      filter: anyNamed("filter"),
+      opt: anyNamed("opt"),
     )).thenReturn(catches);
 
     await tester.pumpWidget(Testable(
@@ -703,9 +699,8 @@ void main() {
     ];
     when(appManager.catchManager.catches(
       any,
-      searchText: anyNamed("filter"),
-      sortOrder: anyNamed("sortOrder"),
-      catchIds: anyNamed("catchIds"),
+      filter: anyNamed("filter"),
+      opt: anyNamed("opt"),
     )).thenReturn(catches);
 
     await tester.pumpWidget(Testable(
@@ -767,9 +762,8 @@ void main() {
     ];
     when(appManager.catchManager.catches(
       any,
-      searchText: anyNamed("filter"),
-      sortOrder: anyNamed("sortOrder"),
-      catchIds: anyNamed("catchIds"),
+      filter: anyNamed("filter"),
+      opt: anyNamed("opt"),
     )).thenReturn(catches);
 
     await tester.pumpWidget(Testable(
@@ -827,9 +821,8 @@ void main() {
     ];
     when(appManager.catchManager.catches(
       any,
-      searchText: anyNamed("filter"),
-      sortOrder: anyNamed("sortOrder"),
-      catchIds: anyNamed("catchIds"),
+      filter: anyNamed("filter"),
+      opt: anyNamed("opt"),
     )).thenReturn(catches);
 
     await tester.pumpWidget(Testable(
@@ -885,9 +878,8 @@ void main() {
     ];
     when(appManager.catchManager.catches(
       any,
-      searchText: anyNamed("filter"),
-      sortOrder: anyNamed("sortOrder"),
-      catchIds: anyNamed("catchIds"),
+      filter: anyNamed("filter"),
+      opt: anyNamed("opt"),
     )).thenReturn(catches);
 
     await tester.pumpWidget(Testable(
@@ -939,9 +931,8 @@ void main() {
     ];
     when(appManager.catchManager.catches(
       any,
-      searchText: anyNamed("filter"),
-      sortOrder: anyNamed("sortOrder"),
-      catchIds: anyNamed("catchIds"),
+      filter: anyNamed("filter"),
+      opt: anyNamed("opt"),
     )).thenReturn(catches);
     when(appManager.catchManager.id(any))
         .thenAnswer((invocation) => invocation.positionalArguments.first.id);
@@ -984,7 +975,7 @@ void main() {
     ];
     when(appManager.catchManager.catches(
       any,
-      searchText: anyNamed("filter"),
+      filter: anyNamed("filter"),
     )).thenReturn(catches);
     when(appManager.catchManager.id(any))
         .thenAnswer((invocation) => invocation.positionalArguments.first.id);
@@ -1025,9 +1016,8 @@ void main() {
     ];
     when(appManager.catchManager.catches(
       any,
-      searchText: anyNamed("filter"),
-      sortOrder: anyNamed("sortOrder"),
-      catchIds: anyNamed("catchIds"),
+      filter: anyNamed("filter"),
+      opt: anyNamed("opt"),
     )).thenReturn(catches);
     when(appManager.catchManager.id(any))
         .thenAnswer((invocation) => invocation.positionalArguments.first.id);

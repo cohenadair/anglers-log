@@ -216,7 +216,7 @@ class _PersonalBestsReportState extends State<PersonalBestsReport> {
   }
 
   void _refreshModel() {
-    _model = _log.sync<_PersonalBestsReportModel>("refreshReport", 150,
+    _model = _log.sync("refreshReport", 150,
         () => _PersonalBestsReportModel(context, _dateRange));
   }
 }
@@ -239,6 +239,10 @@ class _PersonalBestsReportModel {
 
     var lengthSystem = userPreferenceManager.catchLengthSystem;
     var weightSystem = userPreferenceManager.catchWeightSystem;
+
+    if (!range.hasTimeZone()) {
+      range.timeZone = timeManager.currentTimeZone;
+    }
 
     for (var cat in catchManager.catches(
       context,
