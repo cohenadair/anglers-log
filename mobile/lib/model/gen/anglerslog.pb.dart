@@ -3,7 +3,7 @@
 //  source: anglerslog.proto
 //
 // @dart = 2.12
-// ignore_for_file: annotate_overrides,camel_case_types,unnecessary_const,non_constant_identifier_names,library_prefixes,unused_import,unused_shown_name,return_of_invalid_type,unnecessary_this,prefer_final_fields
+// ignore_for_file: annotate_overrides,camel_case_types,constant_identifier_names,directives_ordering,library_prefixes,non_constant_identifier_names,prefer_final_fields,return_of_invalid_type,unnecessary_const,unnecessary_import,unnecessary_this,unused_import,unused_shown_name
 
 import 'dart:core' as $core;
 
@@ -103,7 +103,8 @@ class Atmosphere extends $pb.GeneratedMessage {
             : 'skyConditions',
         $pb.PbFieldType.PE,
         valueOf: SkyCondition.valueOf,
-        enumValues: SkyCondition.values)
+        enumValues: SkyCondition.values,
+        defaultEnumValue: SkyCondition.sky_condition_all)
     ..aOM<Measurement>(
         3,
         const $core.bool.fromEnvironment('protobuf.omit_field_names')
@@ -2590,7 +2591,8 @@ class Report extends $pb.GeneratedMessage {
             : 'periods',
         $pb.PbFieldType.PE,
         valueOf: Period.valueOf,
-        enumValues: Period.values)
+        enumValues: Period.values,
+        defaultEnumValue: Period.period_all)
     ..aOB(
         13,
         const $core.bool.fromEnvironment('protobuf.omit_field_names')
@@ -2608,7 +2610,8 @@ class Report extends $pb.GeneratedMessage {
             : 'seasons',
         $pb.PbFieldType.PE,
         valueOf: Season.valueOf,
-        enumValues: Season.values)
+        enumValues: Season.values,
+        defaultEnumValue: Season.season_all)
     ..pc<Id>(
         16,
         const $core.bool.fromEnvironment('protobuf.omit_field_names')
@@ -2683,7 +2686,8 @@ class Report extends $pb.GeneratedMessage {
             : 'windDirections',
         $pb.PbFieldType.PE,
         valueOf: Direction.valueOf,
-        enumValues: Direction.values)
+        enumValues: Direction.values,
+        defaultEnumValue: Direction.direction_all)
     ..pc<SkyCondition>(
         28,
         const $core.bool.fromEnvironment('protobuf.omit_field_names')
@@ -2691,7 +2695,8 @@ class Report extends $pb.GeneratedMessage {
             : 'skyConditions',
         $pb.PbFieldType.PE,
         valueOf: SkyCondition.valueOf,
-        enumValues: SkyCondition.values)
+        enumValues: SkyCondition.values,
+        defaultEnumValue: SkyCondition.sky_condition_all)
     ..pc<MoonPhase>(
         29,
         const $core.bool.fromEnvironment('protobuf.omit_field_names')
@@ -2699,7 +2704,8 @@ class Report extends $pb.GeneratedMessage {
             : 'moonPhases',
         $pb.PbFieldType.PE,
         valueOf: MoonPhase.valueOf,
-        enumValues: MoonPhase.values)
+        enumValues: MoonPhase.values,
+        defaultEnumValue: MoonPhase.moon_phase_all)
     ..pc<TideType>(
         30,
         const $core.bool.fromEnvironment('protobuf.omit_field_names')
@@ -2707,7 +2713,8 @@ class Report extends $pb.GeneratedMessage {
             : 'tideTypes',
         $pb.PbFieldType.PE,
         valueOf: TideType.valueOf,
-        enumValues: TideType.values)
+        enumValues: TideType.values,
+        defaultEnumValue: TideType.tide_type_all)
     ..pc<Id>(
         31,
         const $core.bool.fromEnvironment('protobuf.omit_field_names')
@@ -4061,14 +4068,12 @@ class MultiMeasurement extends $pb.GeneratedMessage {
         const $core.bool.fromEnvironment('protobuf.omit_field_names')
             ? ''
             : 'mainValue',
-        protoName: 'mainValue',
         subBuilder: Measurement.create)
     ..aOM<Measurement>(
         3,
         const $core.bool.fromEnvironment('protobuf.omit_field_names')
             ? ''
             : 'fractionValue',
-        protoName: 'fractionValue',
         subBuilder: Measurement.create)
     ..hasRequiredFields = false;
 
@@ -4293,6 +4298,1455 @@ class Tide extends $pb.GeneratedMessage {
   $core.bool hasTimeZone() => $_has(3);
   @$pb.TagNumber(4)
   void clearTimeZone() => clearField(4);
+}
+
+class CatchFilterOptions extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      const $core.bool.fromEnvironment('protobuf.omit_message_names')
+          ? ''
+          : 'CatchFilterOptions',
+      package: const $pb.PackageName(
+          const $core.bool.fromEnvironment('protobuf.omit_message_names')
+              ? ''
+              : 'anglerslog'),
+      createEmptyInstance: create)
+    ..e<CatchFilterOptions_Order>(
+        1,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'order',
+        $pb.PbFieldType.OE,
+        defaultOrMaker: CatchFilterOptions_Order.unknown,
+        valueOf: CatchFilterOptions_Order.valueOf,
+        enumValues: CatchFilterOptions_Order.values)
+    ..a<$fixnum.Int64>(
+        2,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'currentTimestamp',
+        $pb.PbFieldType.OU6,
+        defaultOrMaker: $fixnum.Int64.ZERO)
+    ..aOS(
+        3,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'currentTimeZone')
+    ..m<$core.String, Angler>(
+        4,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'allAnglers',
+        entryClassName: 'CatchFilterOptions.AllAnglersEntry',
+        keyFieldType: $pb.PbFieldType.OS,
+        valueFieldType: $pb.PbFieldType.OM,
+        valueCreator: Angler.create,
+        packageName: const $pb.PackageName('anglerslog'))
+    ..m<$core.String, Bait>(
+        5,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'allBaits',
+        entryClassName: 'CatchFilterOptions.AllBaitsEntry',
+        keyFieldType: $pb.PbFieldType.OS,
+        valueFieldType: $pb.PbFieldType.OM,
+        valueCreator: Bait.create,
+        packageName: const $pb.PackageName('anglerslog'))
+    ..m<$core.String, BodyOfWater>(
+        6,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'allBodiesOfWater',
+        entryClassName: 'CatchFilterOptions.AllBodiesOfWaterEntry',
+        keyFieldType: $pb.PbFieldType.OS,
+        valueFieldType: $pb.PbFieldType.OM,
+        valueCreator: BodyOfWater.create,
+        packageName: const $pb.PackageName('anglerslog'))
+    ..m<$core.String, Catch>(
+        7,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'allCatches',
+        entryClassName: 'CatchFilterOptions.AllCatchesEntry',
+        keyFieldType: $pb.PbFieldType.OS,
+        valueFieldType: $pb.PbFieldType.OM,
+        valueCreator: Catch.create,
+        packageName: const $pb.PackageName('anglerslog'))
+    ..m<$core.String, FishingSpot>(
+        8,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'allFishingSpots',
+        entryClassName: 'CatchFilterOptions.AllFishingSpotsEntry',
+        keyFieldType: $pb.PbFieldType.OS,
+        valueFieldType: $pb.PbFieldType.OM,
+        valueCreator: FishingSpot.create,
+        packageName: const $pb.PackageName('anglerslog'))
+    ..m<$core.String, Method>(
+        9,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'allMethods',
+        entryClassName: 'CatchFilterOptions.AllMethodsEntry',
+        keyFieldType: $pb.PbFieldType.OS,
+        valueFieldType: $pb.PbFieldType.OM,
+        valueCreator: Method.create,
+        packageName: const $pb.PackageName('anglerslog'))
+    ..m<$core.String, Species>(
+        10,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'allSpecies',
+        entryClassName: 'CatchFilterOptions.AllSpeciesEntry',
+        keyFieldType: $pb.PbFieldType.OS,
+        valueFieldType: $pb.PbFieldType.OM,
+        valueCreator: Species.create,
+        packageName: const $pb.PackageName('anglerslog'))
+    ..m<$core.String, WaterClarity>(
+        11,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'allWaterClarities',
+        entryClassName: 'CatchFilterOptions.AllWaterClaritiesEntry',
+        keyFieldType: $pb.PbFieldType.OS,
+        valueFieldType: $pb.PbFieldType.OM,
+        valueCreator: WaterClarity.create,
+        packageName: const $pb.PackageName('anglerslog'))
+    ..aOB(
+        12,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'isCatchAndReleaseOnly')
+    ..aOB(
+        13,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'isFavoritesOnly')
+    ..pc<DateRange>(
+        14,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'dateRanges',
+        $pb.PbFieldType.PM,
+        subBuilder: DateRange.create)
+    ..pc<BaitAttachment>(
+        15,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'baits',
+        $pb.PbFieldType.PM,
+        subBuilder: BaitAttachment.create)
+    ..pc<Id>(
+        16,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'catchIds',
+        $pb.PbFieldType.PM,
+        subBuilder: Id.create)
+    ..pc<Id>(
+        17,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'anglerIds',
+        $pb.PbFieldType.PM,
+        subBuilder: Id.create)
+    ..pc<Id>(
+        18,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'fishingSpotIds',
+        $pb.PbFieldType.PM,
+        subBuilder: Id.create)
+    ..pc<Id>(
+        19,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'bodyOfWaterIds',
+        $pb.PbFieldType.PM,
+        subBuilder: Id.create)
+    ..pc<Id>(
+        20,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'methodIds',
+        $pb.PbFieldType.PM,
+        subBuilder: Id.create)
+    ..pc<Id>(
+        21,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'speciesIds',
+        $pb.PbFieldType.PM,
+        subBuilder: Id.create)
+    ..pc<Id>(
+        22,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'waterClarityIds',
+        $pb.PbFieldType.PM,
+        subBuilder: Id.create)
+    ..pc<Period>(
+        23,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'periods',
+        $pb.PbFieldType.PE,
+        valueOf: Period.valueOf,
+        enumValues: Period.values,
+        defaultEnumValue: Period.period_all)
+    ..pc<Season>(
+        24,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'seasons',
+        $pb.PbFieldType.PE,
+        valueOf: Season.valueOf,
+        enumValues: Season.values,
+        defaultEnumValue: Season.season_all)
+    ..pc<Direction>(
+        25,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'windDirections',
+        $pb.PbFieldType.PE,
+        valueOf: Direction.valueOf,
+        enumValues: Direction.values,
+        defaultEnumValue: Direction.direction_all)
+    ..pc<SkyCondition>(
+        26,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'skyConditions',
+        $pb.PbFieldType.PE,
+        valueOf: SkyCondition.valueOf,
+        enumValues: SkyCondition.values,
+        defaultEnumValue: SkyCondition.sky_condition_all)
+    ..pc<MoonPhase>(
+        27,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'moonPhases',
+        $pb.PbFieldType.PE,
+        valueOf: MoonPhase.valueOf,
+        enumValues: MoonPhase.values,
+        defaultEnumValue: MoonPhase.moon_phase_all)
+    ..pc<TideType>(
+        28,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'tideTypes',
+        $pb.PbFieldType.PE,
+        valueOf: TideType.valueOf,
+        enumValues: TideType.values,
+        defaultEnumValue: TideType.tide_type_all)
+    ..aOM<NumberFilter>(
+        29,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'waterDepthFilter',
+        subBuilder: NumberFilter.create)
+    ..aOM<NumberFilter>(
+        30,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'waterTemperatureFilter',
+        subBuilder: NumberFilter.create)
+    ..aOM<NumberFilter>(
+        31,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'lengthFilter',
+        subBuilder: NumberFilter.create)
+    ..aOM<NumberFilter>(
+        32,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'weightFilter',
+        subBuilder: NumberFilter.create)
+    ..aOM<NumberFilter>(
+        33,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'quantityFilter',
+        subBuilder: NumberFilter.create)
+    ..aOM<NumberFilter>(
+        34,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'airTemperatureFilter',
+        subBuilder: NumberFilter.create)
+    ..aOM<NumberFilter>(
+        35,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'airPressureFilter',
+        subBuilder: NumberFilter.create)
+    ..aOM<NumberFilter>(
+        36,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'airHumidityFilter',
+        subBuilder: NumberFilter.create)
+    ..aOM<NumberFilter>(
+        37,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'airVisibilityFilter',
+        subBuilder: NumberFilter.create)
+    ..aOM<NumberFilter>(
+        38,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'windSpeedFilter',
+        subBuilder: NumberFilter.create)
+    ..a<$core.int>(
+        39,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'hour',
+        $pb.PbFieldType.O3)
+    ..a<$core.int>(
+        40,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'month',
+        $pb.PbFieldType.O3)
+    ..aOB(
+        41,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'includeAnglers')
+    ..aOB(
+        42,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'includeBaits')
+    ..aOB(
+        43,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'includeBodiesOfWater')
+    ..aOB(
+        44,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'includeMethods')
+    ..aOB(
+        45,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'includeFishingSpots')
+    ..aOB(
+        46,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'includeMoonPhases')
+    ..aOB(
+        47,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'includeSeasons')
+    ..aOB(
+        48,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'includeSpecies')
+    ..aOB(
+        49,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'includeTideTypes')
+    ..aOB(
+        50,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'includePeriods')
+    ..aOB(
+        51,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'includeWaterClarities')
+    ..hasRequiredFields = false;
+
+  CatchFilterOptions._() : super();
+  factory CatchFilterOptions({
+    CatchFilterOptions_Order? order,
+    $fixnum.Int64? currentTimestamp,
+    $core.String? currentTimeZone,
+    $core.Map<$core.String, Angler>? allAnglers,
+    $core.Map<$core.String, Bait>? allBaits,
+    $core.Map<$core.String, BodyOfWater>? allBodiesOfWater,
+    $core.Map<$core.String, Catch>? allCatches,
+    $core.Map<$core.String, FishingSpot>? allFishingSpots,
+    $core.Map<$core.String, Method>? allMethods,
+    $core.Map<$core.String, Species>? allSpecies,
+    $core.Map<$core.String, WaterClarity>? allWaterClarities,
+    $core.bool? isCatchAndReleaseOnly,
+    $core.bool? isFavoritesOnly,
+    $core.Iterable<DateRange>? dateRanges,
+    $core.Iterable<BaitAttachment>? baits,
+    $core.Iterable<Id>? catchIds,
+    $core.Iterable<Id>? anglerIds,
+    $core.Iterable<Id>? fishingSpotIds,
+    $core.Iterable<Id>? bodyOfWaterIds,
+    $core.Iterable<Id>? methodIds,
+    $core.Iterable<Id>? speciesIds,
+    $core.Iterable<Id>? waterClarityIds,
+    $core.Iterable<Period>? periods,
+    $core.Iterable<Season>? seasons,
+    $core.Iterable<Direction>? windDirections,
+    $core.Iterable<SkyCondition>? skyConditions,
+    $core.Iterable<MoonPhase>? moonPhases,
+    $core.Iterable<TideType>? tideTypes,
+    NumberFilter? waterDepthFilter,
+    NumberFilter? waterTemperatureFilter,
+    NumberFilter? lengthFilter,
+    NumberFilter? weightFilter,
+    NumberFilter? quantityFilter,
+    NumberFilter? airTemperatureFilter,
+    NumberFilter? airPressureFilter,
+    NumberFilter? airHumidityFilter,
+    NumberFilter? airVisibilityFilter,
+    NumberFilter? windSpeedFilter,
+    $core.int? hour,
+    $core.int? month,
+    $core.bool? includeAnglers,
+    $core.bool? includeBaits,
+    $core.bool? includeBodiesOfWater,
+    $core.bool? includeMethods,
+    $core.bool? includeFishingSpots,
+    $core.bool? includeMoonPhases,
+    $core.bool? includeSeasons,
+    $core.bool? includeSpecies,
+    $core.bool? includeTideTypes,
+    $core.bool? includePeriods,
+    $core.bool? includeWaterClarities,
+  }) {
+    final _result = create();
+    if (order != null) {
+      _result.order = order;
+    }
+    if (currentTimestamp != null) {
+      _result.currentTimestamp = currentTimestamp;
+    }
+    if (currentTimeZone != null) {
+      _result.currentTimeZone = currentTimeZone;
+    }
+    if (allAnglers != null) {
+      _result.allAnglers.addAll(allAnglers);
+    }
+    if (allBaits != null) {
+      _result.allBaits.addAll(allBaits);
+    }
+    if (allBodiesOfWater != null) {
+      _result.allBodiesOfWater.addAll(allBodiesOfWater);
+    }
+    if (allCatches != null) {
+      _result.allCatches.addAll(allCatches);
+    }
+    if (allFishingSpots != null) {
+      _result.allFishingSpots.addAll(allFishingSpots);
+    }
+    if (allMethods != null) {
+      _result.allMethods.addAll(allMethods);
+    }
+    if (allSpecies != null) {
+      _result.allSpecies.addAll(allSpecies);
+    }
+    if (allWaterClarities != null) {
+      _result.allWaterClarities.addAll(allWaterClarities);
+    }
+    if (isCatchAndReleaseOnly != null) {
+      _result.isCatchAndReleaseOnly = isCatchAndReleaseOnly;
+    }
+    if (isFavoritesOnly != null) {
+      _result.isFavoritesOnly = isFavoritesOnly;
+    }
+    if (dateRanges != null) {
+      _result.dateRanges.addAll(dateRanges);
+    }
+    if (baits != null) {
+      _result.baits.addAll(baits);
+    }
+    if (catchIds != null) {
+      _result.catchIds.addAll(catchIds);
+    }
+    if (anglerIds != null) {
+      _result.anglerIds.addAll(anglerIds);
+    }
+    if (fishingSpotIds != null) {
+      _result.fishingSpotIds.addAll(fishingSpotIds);
+    }
+    if (bodyOfWaterIds != null) {
+      _result.bodyOfWaterIds.addAll(bodyOfWaterIds);
+    }
+    if (methodIds != null) {
+      _result.methodIds.addAll(methodIds);
+    }
+    if (speciesIds != null) {
+      _result.speciesIds.addAll(speciesIds);
+    }
+    if (waterClarityIds != null) {
+      _result.waterClarityIds.addAll(waterClarityIds);
+    }
+    if (periods != null) {
+      _result.periods.addAll(periods);
+    }
+    if (seasons != null) {
+      _result.seasons.addAll(seasons);
+    }
+    if (windDirections != null) {
+      _result.windDirections.addAll(windDirections);
+    }
+    if (skyConditions != null) {
+      _result.skyConditions.addAll(skyConditions);
+    }
+    if (moonPhases != null) {
+      _result.moonPhases.addAll(moonPhases);
+    }
+    if (tideTypes != null) {
+      _result.tideTypes.addAll(tideTypes);
+    }
+    if (waterDepthFilter != null) {
+      _result.waterDepthFilter = waterDepthFilter;
+    }
+    if (waterTemperatureFilter != null) {
+      _result.waterTemperatureFilter = waterTemperatureFilter;
+    }
+    if (lengthFilter != null) {
+      _result.lengthFilter = lengthFilter;
+    }
+    if (weightFilter != null) {
+      _result.weightFilter = weightFilter;
+    }
+    if (quantityFilter != null) {
+      _result.quantityFilter = quantityFilter;
+    }
+    if (airTemperatureFilter != null) {
+      _result.airTemperatureFilter = airTemperatureFilter;
+    }
+    if (airPressureFilter != null) {
+      _result.airPressureFilter = airPressureFilter;
+    }
+    if (airHumidityFilter != null) {
+      _result.airHumidityFilter = airHumidityFilter;
+    }
+    if (airVisibilityFilter != null) {
+      _result.airVisibilityFilter = airVisibilityFilter;
+    }
+    if (windSpeedFilter != null) {
+      _result.windSpeedFilter = windSpeedFilter;
+    }
+    if (hour != null) {
+      _result.hour = hour;
+    }
+    if (month != null) {
+      _result.month = month;
+    }
+    if (includeAnglers != null) {
+      _result.includeAnglers = includeAnglers;
+    }
+    if (includeBaits != null) {
+      _result.includeBaits = includeBaits;
+    }
+    if (includeBodiesOfWater != null) {
+      _result.includeBodiesOfWater = includeBodiesOfWater;
+    }
+    if (includeMethods != null) {
+      _result.includeMethods = includeMethods;
+    }
+    if (includeFishingSpots != null) {
+      _result.includeFishingSpots = includeFishingSpots;
+    }
+    if (includeMoonPhases != null) {
+      _result.includeMoonPhases = includeMoonPhases;
+    }
+    if (includeSeasons != null) {
+      _result.includeSeasons = includeSeasons;
+    }
+    if (includeSpecies != null) {
+      _result.includeSpecies = includeSpecies;
+    }
+    if (includeTideTypes != null) {
+      _result.includeTideTypes = includeTideTypes;
+    }
+    if (includePeriods != null) {
+      _result.includePeriods = includePeriods;
+    }
+    if (includeWaterClarities != null) {
+      _result.includeWaterClarities = includeWaterClarities;
+    }
+    return _result;
+  }
+  factory CatchFilterOptions.fromBuffer($core.List<$core.int> i,
+          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(i, r);
+  factory CatchFilterOptions.fromJson($core.String i,
+          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(i, r);
+  @$core.Deprecated('Using this can add significant overhead to your binary. '
+      'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+      'Will be removed in next major version')
+  CatchFilterOptions clone() => CatchFilterOptions()..mergeFromMessage(this);
+  @$core.Deprecated('Using this can add significant overhead to your binary. '
+      'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+      'Will be removed in next major version')
+  CatchFilterOptions copyWith(void Function(CatchFilterOptions) updates) =>
+      super.copyWith((message) => updates(message as CatchFilterOptions))
+          as CatchFilterOptions; // ignore: deprecated_member_use
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static CatchFilterOptions create() => CatchFilterOptions._();
+  CatchFilterOptions createEmptyInstance() => create();
+  static $pb.PbList<CatchFilterOptions> createRepeated() =>
+      $pb.PbList<CatchFilterOptions>();
+  @$core.pragma('dart2js:noInline')
+  static CatchFilterOptions getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<CatchFilterOptions>(create);
+  static CatchFilterOptions? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  CatchFilterOptions_Order get order => $_getN(0);
+  @$pb.TagNumber(1)
+  set order(CatchFilterOptions_Order v) {
+    setField(1, v);
+  }
+
+  @$pb.TagNumber(1)
+  $core.bool hasOrder() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearOrder() => clearField(1);
+
+  @$pb.TagNumber(2)
+  $fixnum.Int64 get currentTimestamp => $_getI64(1);
+  @$pb.TagNumber(2)
+  set currentTimestamp($fixnum.Int64 v) {
+    $_setInt64(1, v);
+  }
+
+  @$pb.TagNumber(2)
+  $core.bool hasCurrentTimestamp() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearCurrentTimestamp() => clearField(2);
+
+  @$pb.TagNumber(3)
+  $core.String get currentTimeZone => $_getSZ(2);
+  @$pb.TagNumber(3)
+  set currentTimeZone($core.String v) {
+    $_setString(2, v);
+  }
+
+  @$pb.TagNumber(3)
+  $core.bool hasCurrentTimeZone() => $_has(2);
+  @$pb.TagNumber(3)
+  void clearCurrentTimeZone() => clearField(3);
+
+  @$pb.TagNumber(4)
+  $core.Map<$core.String, Angler> get allAnglers => $_getMap(3);
+
+  @$pb.TagNumber(5)
+  $core.Map<$core.String, Bait> get allBaits => $_getMap(4);
+
+  @$pb.TagNumber(6)
+  $core.Map<$core.String, BodyOfWater> get allBodiesOfWater => $_getMap(5);
+
+  @$pb.TagNumber(7)
+  $core.Map<$core.String, Catch> get allCatches => $_getMap(6);
+
+  @$pb.TagNumber(8)
+  $core.Map<$core.String, FishingSpot> get allFishingSpots => $_getMap(7);
+
+  @$pb.TagNumber(9)
+  $core.Map<$core.String, Method> get allMethods => $_getMap(8);
+
+  @$pb.TagNumber(10)
+  $core.Map<$core.String, Species> get allSpecies => $_getMap(9);
+
+  @$pb.TagNumber(11)
+  $core.Map<$core.String, WaterClarity> get allWaterClarities => $_getMap(10);
+
+  @$pb.TagNumber(12)
+  $core.bool get isCatchAndReleaseOnly => $_getBF(11);
+  @$pb.TagNumber(12)
+  set isCatchAndReleaseOnly($core.bool v) {
+    $_setBool(11, v);
+  }
+
+  @$pb.TagNumber(12)
+  $core.bool hasIsCatchAndReleaseOnly() => $_has(11);
+  @$pb.TagNumber(12)
+  void clearIsCatchAndReleaseOnly() => clearField(12);
+
+  @$pb.TagNumber(13)
+  $core.bool get isFavoritesOnly => $_getBF(12);
+  @$pb.TagNumber(13)
+  set isFavoritesOnly($core.bool v) {
+    $_setBool(12, v);
+  }
+
+  @$pb.TagNumber(13)
+  $core.bool hasIsFavoritesOnly() => $_has(12);
+  @$pb.TagNumber(13)
+  void clearIsFavoritesOnly() => clearField(13);
+
+  @$pb.TagNumber(14)
+  $core.List<DateRange> get dateRanges => $_getList(13);
+
+  @$pb.TagNumber(15)
+  $core.List<BaitAttachment> get baits => $_getList(14);
+
+  @$pb.TagNumber(16)
+  $core.List<Id> get catchIds => $_getList(15);
+
+  @$pb.TagNumber(17)
+  $core.List<Id> get anglerIds => $_getList(16);
+
+  @$pb.TagNumber(18)
+  $core.List<Id> get fishingSpotIds => $_getList(17);
+
+  @$pb.TagNumber(19)
+  $core.List<Id> get bodyOfWaterIds => $_getList(18);
+
+  @$pb.TagNumber(20)
+  $core.List<Id> get methodIds => $_getList(19);
+
+  @$pb.TagNumber(21)
+  $core.List<Id> get speciesIds => $_getList(20);
+
+  @$pb.TagNumber(22)
+  $core.List<Id> get waterClarityIds => $_getList(21);
+
+  @$pb.TagNumber(23)
+  $core.List<Period> get periods => $_getList(22);
+
+  @$pb.TagNumber(24)
+  $core.List<Season> get seasons => $_getList(23);
+
+  @$pb.TagNumber(25)
+  $core.List<Direction> get windDirections => $_getList(24);
+
+  @$pb.TagNumber(26)
+  $core.List<SkyCondition> get skyConditions => $_getList(25);
+
+  @$pb.TagNumber(27)
+  $core.List<MoonPhase> get moonPhases => $_getList(26);
+
+  @$pb.TagNumber(28)
+  $core.List<TideType> get tideTypes => $_getList(27);
+
+  @$pb.TagNumber(29)
+  NumberFilter get waterDepthFilter => $_getN(28);
+  @$pb.TagNumber(29)
+  set waterDepthFilter(NumberFilter v) {
+    setField(29, v);
+  }
+
+  @$pb.TagNumber(29)
+  $core.bool hasWaterDepthFilter() => $_has(28);
+  @$pb.TagNumber(29)
+  void clearWaterDepthFilter() => clearField(29);
+  @$pb.TagNumber(29)
+  NumberFilter ensureWaterDepthFilter() => $_ensure(28);
+
+  @$pb.TagNumber(30)
+  NumberFilter get waterTemperatureFilter => $_getN(29);
+  @$pb.TagNumber(30)
+  set waterTemperatureFilter(NumberFilter v) {
+    setField(30, v);
+  }
+
+  @$pb.TagNumber(30)
+  $core.bool hasWaterTemperatureFilter() => $_has(29);
+  @$pb.TagNumber(30)
+  void clearWaterTemperatureFilter() => clearField(30);
+  @$pb.TagNumber(30)
+  NumberFilter ensureWaterTemperatureFilter() => $_ensure(29);
+
+  @$pb.TagNumber(31)
+  NumberFilter get lengthFilter => $_getN(30);
+  @$pb.TagNumber(31)
+  set lengthFilter(NumberFilter v) {
+    setField(31, v);
+  }
+
+  @$pb.TagNumber(31)
+  $core.bool hasLengthFilter() => $_has(30);
+  @$pb.TagNumber(31)
+  void clearLengthFilter() => clearField(31);
+  @$pb.TagNumber(31)
+  NumberFilter ensureLengthFilter() => $_ensure(30);
+
+  @$pb.TagNumber(32)
+  NumberFilter get weightFilter => $_getN(31);
+  @$pb.TagNumber(32)
+  set weightFilter(NumberFilter v) {
+    setField(32, v);
+  }
+
+  @$pb.TagNumber(32)
+  $core.bool hasWeightFilter() => $_has(31);
+  @$pb.TagNumber(32)
+  void clearWeightFilter() => clearField(32);
+  @$pb.TagNumber(32)
+  NumberFilter ensureWeightFilter() => $_ensure(31);
+
+  @$pb.TagNumber(33)
+  NumberFilter get quantityFilter => $_getN(32);
+  @$pb.TagNumber(33)
+  set quantityFilter(NumberFilter v) {
+    setField(33, v);
+  }
+
+  @$pb.TagNumber(33)
+  $core.bool hasQuantityFilter() => $_has(32);
+  @$pb.TagNumber(33)
+  void clearQuantityFilter() => clearField(33);
+  @$pb.TagNumber(33)
+  NumberFilter ensureQuantityFilter() => $_ensure(32);
+
+  @$pb.TagNumber(34)
+  NumberFilter get airTemperatureFilter => $_getN(33);
+  @$pb.TagNumber(34)
+  set airTemperatureFilter(NumberFilter v) {
+    setField(34, v);
+  }
+
+  @$pb.TagNumber(34)
+  $core.bool hasAirTemperatureFilter() => $_has(33);
+  @$pb.TagNumber(34)
+  void clearAirTemperatureFilter() => clearField(34);
+  @$pb.TagNumber(34)
+  NumberFilter ensureAirTemperatureFilter() => $_ensure(33);
+
+  @$pb.TagNumber(35)
+  NumberFilter get airPressureFilter => $_getN(34);
+  @$pb.TagNumber(35)
+  set airPressureFilter(NumberFilter v) {
+    setField(35, v);
+  }
+
+  @$pb.TagNumber(35)
+  $core.bool hasAirPressureFilter() => $_has(34);
+  @$pb.TagNumber(35)
+  void clearAirPressureFilter() => clearField(35);
+  @$pb.TagNumber(35)
+  NumberFilter ensureAirPressureFilter() => $_ensure(34);
+
+  @$pb.TagNumber(36)
+  NumberFilter get airHumidityFilter => $_getN(35);
+  @$pb.TagNumber(36)
+  set airHumidityFilter(NumberFilter v) {
+    setField(36, v);
+  }
+
+  @$pb.TagNumber(36)
+  $core.bool hasAirHumidityFilter() => $_has(35);
+  @$pb.TagNumber(36)
+  void clearAirHumidityFilter() => clearField(36);
+  @$pb.TagNumber(36)
+  NumberFilter ensureAirHumidityFilter() => $_ensure(35);
+
+  @$pb.TagNumber(37)
+  NumberFilter get airVisibilityFilter => $_getN(36);
+  @$pb.TagNumber(37)
+  set airVisibilityFilter(NumberFilter v) {
+    setField(37, v);
+  }
+
+  @$pb.TagNumber(37)
+  $core.bool hasAirVisibilityFilter() => $_has(36);
+  @$pb.TagNumber(37)
+  void clearAirVisibilityFilter() => clearField(37);
+  @$pb.TagNumber(37)
+  NumberFilter ensureAirVisibilityFilter() => $_ensure(36);
+
+  @$pb.TagNumber(38)
+  NumberFilter get windSpeedFilter => $_getN(37);
+  @$pb.TagNumber(38)
+  set windSpeedFilter(NumberFilter v) {
+    setField(38, v);
+  }
+
+  @$pb.TagNumber(38)
+  $core.bool hasWindSpeedFilter() => $_has(37);
+  @$pb.TagNumber(38)
+  void clearWindSpeedFilter() => clearField(38);
+  @$pb.TagNumber(38)
+  NumberFilter ensureWindSpeedFilter() => $_ensure(37);
+
+  @$pb.TagNumber(39)
+  $core.int get hour => $_getIZ(38);
+  @$pb.TagNumber(39)
+  set hour($core.int v) {
+    $_setSignedInt32(38, v);
+  }
+
+  @$pb.TagNumber(39)
+  $core.bool hasHour() => $_has(38);
+  @$pb.TagNumber(39)
+  void clearHour() => clearField(39);
+
+  @$pb.TagNumber(40)
+  $core.int get month => $_getIZ(39);
+  @$pb.TagNumber(40)
+  set month($core.int v) {
+    $_setSignedInt32(39, v);
+  }
+
+  @$pb.TagNumber(40)
+  $core.bool hasMonth() => $_has(39);
+  @$pb.TagNumber(40)
+  void clearMonth() => clearField(40);
+
+  @$pb.TagNumber(41)
+  $core.bool get includeAnglers => $_getBF(40);
+  @$pb.TagNumber(41)
+  set includeAnglers($core.bool v) {
+    $_setBool(40, v);
+  }
+
+  @$pb.TagNumber(41)
+  $core.bool hasIncludeAnglers() => $_has(40);
+  @$pb.TagNumber(41)
+  void clearIncludeAnglers() => clearField(41);
+
+  @$pb.TagNumber(42)
+  $core.bool get includeBaits => $_getBF(41);
+  @$pb.TagNumber(42)
+  set includeBaits($core.bool v) {
+    $_setBool(41, v);
+  }
+
+  @$pb.TagNumber(42)
+  $core.bool hasIncludeBaits() => $_has(41);
+  @$pb.TagNumber(42)
+  void clearIncludeBaits() => clearField(42);
+
+  @$pb.TagNumber(43)
+  $core.bool get includeBodiesOfWater => $_getBF(42);
+  @$pb.TagNumber(43)
+  set includeBodiesOfWater($core.bool v) {
+    $_setBool(42, v);
+  }
+
+  @$pb.TagNumber(43)
+  $core.bool hasIncludeBodiesOfWater() => $_has(42);
+  @$pb.TagNumber(43)
+  void clearIncludeBodiesOfWater() => clearField(43);
+
+  @$pb.TagNumber(44)
+  $core.bool get includeMethods => $_getBF(43);
+  @$pb.TagNumber(44)
+  set includeMethods($core.bool v) {
+    $_setBool(43, v);
+  }
+
+  @$pb.TagNumber(44)
+  $core.bool hasIncludeMethods() => $_has(43);
+  @$pb.TagNumber(44)
+  void clearIncludeMethods() => clearField(44);
+
+  @$pb.TagNumber(45)
+  $core.bool get includeFishingSpots => $_getBF(44);
+  @$pb.TagNumber(45)
+  set includeFishingSpots($core.bool v) {
+    $_setBool(44, v);
+  }
+
+  @$pb.TagNumber(45)
+  $core.bool hasIncludeFishingSpots() => $_has(44);
+  @$pb.TagNumber(45)
+  void clearIncludeFishingSpots() => clearField(45);
+
+  @$pb.TagNumber(46)
+  $core.bool get includeMoonPhases => $_getBF(45);
+  @$pb.TagNumber(46)
+  set includeMoonPhases($core.bool v) {
+    $_setBool(45, v);
+  }
+
+  @$pb.TagNumber(46)
+  $core.bool hasIncludeMoonPhases() => $_has(45);
+  @$pb.TagNumber(46)
+  void clearIncludeMoonPhases() => clearField(46);
+
+  @$pb.TagNumber(47)
+  $core.bool get includeSeasons => $_getBF(46);
+  @$pb.TagNumber(47)
+  set includeSeasons($core.bool v) {
+    $_setBool(46, v);
+  }
+
+  @$pb.TagNumber(47)
+  $core.bool hasIncludeSeasons() => $_has(46);
+  @$pb.TagNumber(47)
+  void clearIncludeSeasons() => clearField(47);
+
+  @$pb.TagNumber(48)
+  $core.bool get includeSpecies => $_getBF(47);
+  @$pb.TagNumber(48)
+  set includeSpecies($core.bool v) {
+    $_setBool(47, v);
+  }
+
+  @$pb.TagNumber(48)
+  $core.bool hasIncludeSpecies() => $_has(47);
+  @$pb.TagNumber(48)
+  void clearIncludeSpecies() => clearField(48);
+
+  @$pb.TagNumber(49)
+  $core.bool get includeTideTypes => $_getBF(48);
+  @$pb.TagNumber(49)
+  set includeTideTypes($core.bool v) {
+    $_setBool(48, v);
+  }
+
+  @$pb.TagNumber(49)
+  $core.bool hasIncludeTideTypes() => $_has(48);
+  @$pb.TagNumber(49)
+  void clearIncludeTideTypes() => clearField(49);
+
+  @$pb.TagNumber(50)
+  $core.bool get includePeriods => $_getBF(49);
+  @$pb.TagNumber(50)
+  set includePeriods($core.bool v) {
+    $_setBool(49, v);
+  }
+
+  @$pb.TagNumber(50)
+  $core.bool hasIncludePeriods() => $_has(49);
+  @$pb.TagNumber(50)
+  void clearIncludePeriods() => clearField(50);
+
+  @$pb.TagNumber(51)
+  $core.bool get includeWaterClarities => $_getBF(50);
+  @$pb.TagNumber(51)
+  set includeWaterClarities($core.bool v) {
+    $_setBool(50, v);
+  }
+
+  @$pb.TagNumber(51)
+  $core.bool hasIncludeWaterClarities() => $_has(50);
+  @$pb.TagNumber(51)
+  void clearIncludeWaterClarities() => clearField(51);
+}
+
+class CatchReport extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      const $core.bool.fromEnvironment('protobuf.omit_message_names')
+          ? ''
+          : 'CatchReport',
+      package: const $pb.PackageName(
+          const $core.bool.fromEnvironment('protobuf.omit_message_names')
+              ? ''
+              : 'anglerslog'),
+      createEmptyInstance: create)
+    ..pc<CatchReportModel>(
+        1,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'models',
+        $pb.PbFieldType.PM,
+        subBuilder: CatchReportModel.create)
+    ..a<$fixnum.Int64>(
+        2,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'msSinceLastCatch',
+        $pb.PbFieldType.OU6,
+        defaultOrMaker: $fixnum.Int64.ZERO)
+    ..aOM<Catch>(
+        3,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'lastCatch',
+        subBuilder: Catch.create)
+    ..aOB(
+        6,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'containsNow')
+    ..hasRequiredFields = false;
+
+  CatchReport._() : super();
+  factory CatchReport({
+    $core.Iterable<CatchReportModel>? models,
+    $fixnum.Int64? msSinceLastCatch,
+    Catch? lastCatch,
+    $core.bool? containsNow,
+  }) {
+    final _result = create();
+    if (models != null) {
+      _result.models.addAll(models);
+    }
+    if (msSinceLastCatch != null) {
+      _result.msSinceLastCatch = msSinceLastCatch;
+    }
+    if (lastCatch != null) {
+      _result.lastCatch = lastCatch;
+    }
+    if (containsNow != null) {
+      _result.containsNow = containsNow;
+    }
+    return _result;
+  }
+  factory CatchReport.fromBuffer($core.List<$core.int> i,
+          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(i, r);
+  factory CatchReport.fromJson($core.String i,
+          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(i, r);
+  @$core.Deprecated('Using this can add significant overhead to your binary. '
+      'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+      'Will be removed in next major version')
+  CatchReport clone() => CatchReport()..mergeFromMessage(this);
+  @$core.Deprecated('Using this can add significant overhead to your binary. '
+      'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+      'Will be removed in next major version')
+  CatchReport copyWith(void Function(CatchReport) updates) =>
+      super.copyWith((message) => updates(message as CatchReport))
+          as CatchReport; // ignore: deprecated_member_use
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static CatchReport create() => CatchReport._();
+  CatchReport createEmptyInstance() => create();
+  static $pb.PbList<CatchReport> createRepeated() => $pb.PbList<CatchReport>();
+  @$core.pragma('dart2js:noInline')
+  static CatchReport getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<CatchReport>(create);
+  static CatchReport? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.List<CatchReportModel> get models => $_getList(0);
+
+  @$pb.TagNumber(2)
+  $fixnum.Int64 get msSinceLastCatch => $_getI64(1);
+  @$pb.TagNumber(2)
+  set msSinceLastCatch($fixnum.Int64 v) {
+    $_setInt64(1, v);
+  }
+
+  @$pb.TagNumber(2)
+  $core.bool hasMsSinceLastCatch() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearMsSinceLastCatch() => clearField(2);
+
+  @$pb.TagNumber(3)
+  Catch get lastCatch => $_getN(2);
+  @$pb.TagNumber(3)
+  set lastCatch(Catch v) {
+    setField(3, v);
+  }
+
+  @$pb.TagNumber(3)
+  $core.bool hasLastCatch() => $_has(2);
+  @$pb.TagNumber(3)
+  void clearLastCatch() => clearField(3);
+  @$pb.TagNumber(3)
+  Catch ensureLastCatch() => $_ensure(2);
+
+  @$pb.TagNumber(6)
+  $core.bool get containsNow => $_getBF(3);
+  @$pb.TagNumber(6)
+  set containsNow($core.bool v) {
+    $_setBool(3, v);
+  }
+
+  @$pb.TagNumber(6)
+  $core.bool hasContainsNow() => $_has(3);
+  @$pb.TagNumber(6)
+  void clearContainsNow() => clearField(6);
+}
+
+class CatchReportModel extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      const $core.bool.fromEnvironment('protobuf.omit_message_names')
+          ? ''
+          : 'CatchReportModel',
+      package: const $pb.PackageName(
+          const $core.bool.fromEnvironment('protobuf.omit_message_names')
+              ? ''
+              : 'anglerslog'),
+      createEmptyInstance: create)
+    ..aOM<DateRange>(
+        1,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'dateRange',
+        subBuilder: DateRange.create)
+    ..pc<Id>(
+        2,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'catchIds',
+        $pb.PbFieldType.PM,
+        subBuilder: Id.create)
+    ..m<$core.int, $core.int>(
+        3,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'perHour',
+        entryClassName: 'CatchReportModel.PerHourEntry',
+        keyFieldType: $pb.PbFieldType.O3,
+        valueFieldType: $pb.PbFieldType.O3,
+        packageName: const $pb.PackageName('anglerslog'))
+    ..m<$core.int, $core.int>(
+        4,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'perMonth',
+        entryClassName: 'CatchReportModel.PerMonthEntry',
+        keyFieldType: $pb.PbFieldType.O3,
+        valueFieldType: $pb.PbFieldType.O3,
+        packageName: const $pb.PackageName('anglerslog'))
+    ..m<$core.int, $core.int>(
+        5,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'perMoonPhase',
+        entryClassName: 'CatchReportModel.PerMoonPhaseEntry',
+        keyFieldType: $pb.PbFieldType.O3,
+        valueFieldType: $pb.PbFieldType.O3,
+        packageName: const $pb.PackageName('anglerslog'))
+    ..m<$core.int, $core.int>(
+        6,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'perPeriod',
+        entryClassName: 'CatchReportModel.PerPeriodEntry',
+        keyFieldType: $pb.PbFieldType.O3,
+        valueFieldType: $pb.PbFieldType.O3,
+        packageName: const $pb.PackageName('anglerslog'))
+    ..m<$core.int, $core.int>(
+        7,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'perSeason',
+        entryClassName: 'CatchReportModel.PerSeasonEntry',
+        keyFieldType: $pb.PbFieldType.O3,
+        valueFieldType: $pb.PbFieldType.O3,
+        packageName: const $pb.PackageName('anglerslog'))
+    ..m<$core.int, $core.int>(
+        8,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'perTideType',
+        entryClassName: 'CatchReportModel.PerTideTypeEntry',
+        keyFieldType: $pb.PbFieldType.O3,
+        valueFieldType: $pb.PbFieldType.O3,
+        packageName: const $pb.PackageName('anglerslog'))
+    ..m<$core.String, $core.int>(
+        9,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'perAngler',
+        entryClassName: 'CatchReportModel.PerAnglerEntry',
+        keyFieldType: $pb.PbFieldType.OS,
+        valueFieldType: $pb.PbFieldType.O3,
+        packageName: const $pb.PackageName('anglerslog'))
+    ..m<$core.String, $core.int>(
+        10,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'perBodyOfWater',
+        entryClassName: 'CatchReportModel.PerBodyOfWaterEntry',
+        keyFieldType: $pb.PbFieldType.OS,
+        valueFieldType: $pb.PbFieldType.O3,
+        packageName: const $pb.PackageName('anglerslog'))
+    ..m<$core.String, $core.int>(
+        11,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'perMethod',
+        entryClassName: 'CatchReportModel.PerMethodEntry',
+        keyFieldType: $pb.PbFieldType.OS,
+        valueFieldType: $pb.PbFieldType.O3,
+        packageName: const $pb.PackageName('anglerslog'))
+    ..m<$core.String, $core.int>(
+        12,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'perFishingSpot',
+        entryClassName: 'CatchReportModel.PerFishingSpotEntry',
+        keyFieldType: $pb.PbFieldType.OS,
+        valueFieldType: $pb.PbFieldType.O3,
+        packageName: const $pb.PackageName('anglerslog'))
+    ..m<$core.String, $core.int>(
+        13,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'perSpecies',
+        entryClassName: 'CatchReportModel.PerSpeciesEntry',
+        keyFieldType: $pb.PbFieldType.OS,
+        valueFieldType: $pb.PbFieldType.O3,
+        packageName: const $pb.PackageName('anglerslog'))
+    ..m<$core.String, $core.int>(
+        14,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'perWaterClarity',
+        entryClassName: 'CatchReportModel.PerWaterClarityEntry',
+        keyFieldType: $pb.PbFieldType.OS,
+        valueFieldType: $pb.PbFieldType.O3,
+        packageName: const $pb.PackageName('anglerslog'))
+    ..m<$core.String, $core.int>(
+        15,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'perBait',
+        entryClassName: 'CatchReportModel.PerBaitEntry',
+        keyFieldType: $pb.PbFieldType.OS,
+        valueFieldType: $pb.PbFieldType.O3,
+        packageName: const $pb.PackageName('anglerslog'))
+    ..hasRequiredFields = false;
+
+  CatchReportModel._() : super();
+  factory CatchReportModel({
+    DateRange? dateRange,
+    $core.Iterable<Id>? catchIds,
+    $core.Map<$core.int, $core.int>? perHour,
+    $core.Map<$core.int, $core.int>? perMonth,
+    $core.Map<$core.int, $core.int>? perMoonPhase,
+    $core.Map<$core.int, $core.int>? perPeriod,
+    $core.Map<$core.int, $core.int>? perSeason,
+    $core.Map<$core.int, $core.int>? perTideType,
+    $core.Map<$core.String, $core.int>? perAngler,
+    $core.Map<$core.String, $core.int>? perBodyOfWater,
+    $core.Map<$core.String, $core.int>? perMethod,
+    $core.Map<$core.String, $core.int>? perFishingSpot,
+    $core.Map<$core.String, $core.int>? perSpecies,
+    $core.Map<$core.String, $core.int>? perWaterClarity,
+    $core.Map<$core.String, $core.int>? perBait,
+  }) {
+    final _result = create();
+    if (dateRange != null) {
+      _result.dateRange = dateRange;
+    }
+    if (catchIds != null) {
+      _result.catchIds.addAll(catchIds);
+    }
+    if (perHour != null) {
+      _result.perHour.addAll(perHour);
+    }
+    if (perMonth != null) {
+      _result.perMonth.addAll(perMonth);
+    }
+    if (perMoonPhase != null) {
+      _result.perMoonPhase.addAll(perMoonPhase);
+    }
+    if (perPeriod != null) {
+      _result.perPeriod.addAll(perPeriod);
+    }
+    if (perSeason != null) {
+      _result.perSeason.addAll(perSeason);
+    }
+    if (perTideType != null) {
+      _result.perTideType.addAll(perTideType);
+    }
+    if (perAngler != null) {
+      _result.perAngler.addAll(perAngler);
+    }
+    if (perBodyOfWater != null) {
+      _result.perBodyOfWater.addAll(perBodyOfWater);
+    }
+    if (perMethod != null) {
+      _result.perMethod.addAll(perMethod);
+    }
+    if (perFishingSpot != null) {
+      _result.perFishingSpot.addAll(perFishingSpot);
+    }
+    if (perSpecies != null) {
+      _result.perSpecies.addAll(perSpecies);
+    }
+    if (perWaterClarity != null) {
+      _result.perWaterClarity.addAll(perWaterClarity);
+    }
+    if (perBait != null) {
+      _result.perBait.addAll(perBait);
+    }
+    return _result;
+  }
+  factory CatchReportModel.fromBuffer($core.List<$core.int> i,
+          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(i, r);
+  factory CatchReportModel.fromJson($core.String i,
+          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(i, r);
+  @$core.Deprecated('Using this can add significant overhead to your binary. '
+      'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+      'Will be removed in next major version')
+  CatchReportModel clone() => CatchReportModel()..mergeFromMessage(this);
+  @$core.Deprecated('Using this can add significant overhead to your binary. '
+      'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+      'Will be removed in next major version')
+  CatchReportModel copyWith(void Function(CatchReportModel) updates) =>
+      super.copyWith((message) => updates(message as CatchReportModel))
+          as CatchReportModel; // ignore: deprecated_member_use
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static CatchReportModel create() => CatchReportModel._();
+  CatchReportModel createEmptyInstance() => create();
+  static $pb.PbList<CatchReportModel> createRepeated() =>
+      $pb.PbList<CatchReportModel>();
+  @$core.pragma('dart2js:noInline')
+  static CatchReportModel getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<CatchReportModel>(create);
+  static CatchReportModel? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  DateRange get dateRange => $_getN(0);
+  @$pb.TagNumber(1)
+  set dateRange(DateRange v) {
+    setField(1, v);
+  }
+
+  @$pb.TagNumber(1)
+  $core.bool hasDateRange() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearDateRange() => clearField(1);
+  @$pb.TagNumber(1)
+  DateRange ensureDateRange() => $_ensure(0);
+
+  @$pb.TagNumber(2)
+  $core.List<Id> get catchIds => $_getList(1);
+
+  @$pb.TagNumber(3)
+  $core.Map<$core.int, $core.int> get perHour => $_getMap(2);
+
+  @$pb.TagNumber(4)
+  $core.Map<$core.int, $core.int> get perMonth => $_getMap(3);
+
+  @$pb.TagNumber(5)
+  $core.Map<$core.int, $core.int> get perMoonPhase => $_getMap(4);
+
+  @$pb.TagNumber(6)
+  $core.Map<$core.int, $core.int> get perPeriod => $_getMap(5);
+
+  @$pb.TagNumber(7)
+  $core.Map<$core.int, $core.int> get perSeason => $_getMap(6);
+
+  @$pb.TagNumber(8)
+  $core.Map<$core.int, $core.int> get perTideType => $_getMap(7);
+
+  @$pb.TagNumber(9)
+  $core.Map<$core.String, $core.int> get perAngler => $_getMap(8);
+
+  @$pb.TagNumber(10)
+  $core.Map<$core.String, $core.int> get perBodyOfWater => $_getMap(9);
+
+  @$pb.TagNumber(11)
+  $core.Map<$core.String, $core.int> get perMethod => $_getMap(10);
+
+  @$pb.TagNumber(12)
+  $core.Map<$core.String, $core.int> get perFishingSpot => $_getMap(11);
+
+  @$pb.TagNumber(13)
+  $core.Map<$core.String, $core.int> get perSpecies => $_getMap(12);
+
+  @$pb.TagNumber(14)
+  $core.Map<$core.String, $core.int> get perWaterClarity => $_getMap(13);
+
+  @$pb.TagNumber(15)
+  $core.Map<$core.String, $core.int> get perBait => $_getMap(14);
 }
 
 // ignore_for_file: undefined_named_parameter,constant_identifier_names

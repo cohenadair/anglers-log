@@ -122,11 +122,7 @@ void main() {
     when(appManager.catchManager.catches(
       any,
       filter: anyNamed("filter"),
-      dateRange: anyNamed("dateRange"),
-      catchIds: anyNamed("catchIds"),
-      speciesIds: anyNamed("speciesIds"),
-      fishingSpotIds: anyNamed("fishingSpotIds"),
-      baits: anyNamed("baits"),
+      opt: anyNamed("opt"),
     )).thenReturn([]);
     when(appManager.customEntityManager.entityExists(any)).thenReturn(false);
     when(appManager.baitManager.attachmentsDisplayValues(any, any))
@@ -172,11 +168,7 @@ void main() {
     when(appManager.catchManager.catches(
       any,
       filter: anyNamed("filter"),
-      dateRange: anyNamed("dateRange"),
-      catchIds: anyNamed("catchIds"),
-      speciesIds: anyNamed("speciesIds"),
-      fishingSpotIds: anyNamed("fishingSpotIds"),
-      baits: anyNamed("baits"),
+      opt: anyNamed("opt"),
     )).thenReturn([]);
 
     await tester.pumpWidget(AnglersLog(appManager.app));

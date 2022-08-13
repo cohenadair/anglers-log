@@ -133,10 +133,10 @@ void main() {
 
     when(appManager.catchManager.catches(
       any,
-      catchIds: anyNamed("catchIds"),
+      opt: anyNamed("opt"),
     )).thenAnswer((invocation) => catches
-        .where((e) =>
-            invocation.namedArguments[const Symbol("catchIds")].contains(e.id))
+        .where((e) => invocation.namedArguments[const Symbol("opt")].catchIds
+            .contains(e.id))
         .toList());
 
     when(appManager.tripManager.trips(
@@ -145,14 +145,16 @@ void main() {
       filter: anyNamed("filter"),
       tripIds: anyNamed("tripIds"),
     )).thenAnswer((invocation) {
-      var context = invocation.namedArguments[const Symbol("context")];
       var dateRangeArg = invocation.namedArguments[const Symbol("dateRange")];
       var dateRange = dateRangeArg == null
-          ? DateRange(period: DateRange_Period.allDates)
+          ? DateRange(
+              timeZone: defaultTimeZone,
+              period: DateRange_Period.allDates,
+            )
           : dateRangeArg as DateRange;
       return trips
-          .where((e) => dateRange.contains(context, e.startTimestamp.toInt(),
-              appManager.timeManager.currentDateTime))
+          .where((e) => dateRange.contains(
+              e.startTimestamp.toInt(), appManager.timeManager.currentDateTime))
           .toList();
     });
     when(appManager.tripManager.idSet(entities: anyNamed("entities")))

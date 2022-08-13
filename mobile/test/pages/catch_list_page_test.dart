@@ -21,11 +21,7 @@ void main() {
     when(appManager.catchManager.catches(
       any,
       filter: anyNamed("filter"),
-      dateRange: anyNamed("dateRange"),
-      catchIds: anyNamed("catchIds"),
-      speciesIds: anyNamed("speciesIds"),
-      fishingSpotIds: anyNamed("fishingSpotIds"),
-      baits: anyNamed("baits"),
+      opt: anyNamed("opt"),
     )).thenReturn([
       Catch()
         ..id = randomId()
@@ -132,11 +128,7 @@ void main() {
     verify(appManager.catchManager.catches(
       any,
       filter: anyNamed("filter"),
-      dateRange: anyNamed("dateRange"),
-      catchIds: anyNamed("catchIds"),
-      speciesIds: anyNamed("speciesIds"),
-      fishingSpotIds: anyNamed("fishingSpotIds"),
-      baits: anyNamed("baits"),
+      opt: anyNamed("opt"),
     )).called(1);
   });
 
@@ -151,11 +143,7 @@ void main() {
     verifyNever(appManager.catchManager.catches(
       any,
       filter: anyNamed("filter"),
-      dateRange: anyNamed("dateRange"),
-      catchIds: anyNamed("catchIds"),
-      speciesIds: anyNamed("speciesIds"),
-      fishingSpotIds: anyNamed("fishingSpotIds"),
-      baits: anyNamed("baits"),
+      opt: anyNamed("opt"),
     ));
   });
 }

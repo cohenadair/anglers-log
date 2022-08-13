@@ -877,12 +877,13 @@ void main() {
     var file = File("test/resources/backups/legacy_android_real.zip");
     await LegacyImporter(appManager.app, file).start();
 
-    expect(
-      catchManager
-          .catches(await buildContext(tester), isFavoritesOnly: true)
-          .length,
-      3,
+    var catches = catchManager.catches(
+      await buildContext(tester),
+      opt: CatchFilterOptions(
+        isFavoritesOnly: true,
+      ),
     );
+    expect(catches.length, 3);
 
     var hasIsFavoriteCount = 0;
     for (var cat in catchManager.list()) {

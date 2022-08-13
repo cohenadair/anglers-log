@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:mobile/log.dart';
 import 'package:mockito/mockito.dart';
 import 'package:test/scaffolding.dart';
@@ -17,24 +19,30 @@ void main() {
     log = Log("Test", crashlytics: crashlytics, isDebug: false);
   });
 
-  test("p logs error", () async {
-    await log.p(
-        "TAG", 50, () => Future.delayed(const Duration(milliseconds: 60)));
+  test("sync logs error", () {
+    log.sync("TAG", 50, () => sleep(const Duration(milliseconds: 60)));
+    verify(crashlytics.recordError(any, any, any)).called(1);
+    verifyNever(crashlytics.log(any));
+  });
+
+  test("async logs error", () async {
+    await log.async(
+        "TAG", 50, Future.delayed(const Duration(milliseconds: 60)));
     verify(crashlytics.recordError(any, any, any)).called(1);
     verifyNever(crashlytics.log(any));
   });
 
   test("p logs debug", () async {
-    await log.p(
-        "TAG", 50, () => Future.delayed(const Duration(milliseconds: 40)));
+    await log.async(
+        "TAG", 50, Future.delayed(const Duration(milliseconds: 40)));
     verify(crashlytics.log(any)).called(1);
     verifyNever(crashlytics.recordError(any, any, any));
   });
 
   test("Debug mode doesn't use Crashlytics", () async {
     log = Log("Test", crashlytics: crashlytics, isDebug: true);
-    await log.p(
-        "TAG", 50, () => Future.delayed(const Duration(milliseconds: 40)));
+    await log.async(
+        "TAG", 50, Future.delayed(const Duration(milliseconds: 40)));
     verifyNever(crashlytics.log(any));
     verifyNever(crashlytics.recordError(any, any, any));
   });

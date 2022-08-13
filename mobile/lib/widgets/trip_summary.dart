@@ -14,6 +14,7 @@ import 'package:mobile/widgets/tile.dart';
 import 'package:mobile/widgets/widget.dart';
 
 import '../entity_manager.dart';
+import '../log.dart';
 import 'date_range_picker_input.dart';
 
 /// A summary of a user's trips. This widget should always be rendered within
@@ -26,14 +27,23 @@ class TripSummary extends StatefulWidget {
 class _TripSummaryState extends State<TripSummary> {
   static const _rowHeight = 150.0;
 
+  final _log = const Log("TripSummary");
   late _TripSummaryReport _report;
-  var _dateRange = DateRange(period: DateRange_Period.allDates);
+  late DateRange _dateRange;
+
+  TimeManager get _timeManager => TimeManager.of(context);
 
   TripManager get _tripManager => TripManager.of(context);
 
   @override
   void initState() {
     super.initState();
+
+    _dateRange = DateRange(
+      timeZone: _timeManager.currentTimeZone,
+      period: DateRange_Period.allDates,
+    );
+
     _refreshReport();
   }
 
@@ -246,7 +256,10 @@ class _TripSummaryState extends State<TripSummary> {
     );
   }
 
-  void _refreshReport() => _report = _TripSummaryReport(context, _dateRange);
+  void _refreshReport() {
+    _report = _log.sync<_TripSummaryReport>(
+        "refreshReport", 150, () => _TripSummaryReport(context, _dateRange));
+  }
 }
 
 class _TripSummaryReport {
@@ -288,7 +301,7 @@ class _TripSummaryReport {
     var lengthSystem = userPreferenceManager.catchLengthSystem;
 
     var now = timeManager.currentDateTime;
-    containsNow = dateRange.endDate(context, now) == now;
+    containsNow = dateRange.endDate(now) == now;
 
     var totalCatches = 0;
     var totalCatchesPerHour = 0.0;
@@ -324,8 +337,10 @@ class _TripSummaryReport {
         longestTrip = trip;
       }
 
-      var catches =
-          catchManager.catches(context, catchIds: trip.catchIds.toSet());
+      var catches = catchManager.catches(
+        context,
+        opt: CatchFilterOptions(catchIds: trip.catchIds.toSet()),
+      );
       if (catches.length > 1) {
         var msBetweenCatches = 0.0;
         var weights = <MultiMeasurement>[];

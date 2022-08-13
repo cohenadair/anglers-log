@@ -3,7 +3,7 @@
 //  source: anglerslog.proto
 //
 // @dart = 2.12
-// ignore_for_file: annotate_overrides,camel_case_types,unnecessary_const,non_constant_identifier_names,library_prefixes,unused_import,unused_shown_name,return_of_invalid_type,unnecessary_this,prefer_final_fields
+// ignore_for_file: annotate_overrides,camel_case_types,constant_identifier_names,directives_ordering,library_prefixes,non_constant_identifier_names,prefer_final_fields,return_of_invalid_type,unnecessary_const,unnecessary_import,unnecessary_this,unused_import,unused_shown_name
 
 // ignore_for_file: UNDEFINED_SHOWN_NAME
 import 'dart:core' as $core;
@@ -805,6 +805,46 @@ class Report_Type extends $pb.ProtobufEnum {
   static Report_Type? valueOf($core.int value) => _byValue[value];
 
   const Report_Type._($core.int v, $core.String n) : super(v, n);
+}
+
+class CatchFilterOptions_Order extends $pb.ProtobufEnum {
+  static const CatchFilterOptions_Order unknown = CatchFilterOptions_Order._(
+      0,
+      const $core.bool.fromEnvironment('protobuf.omit_enum_names')
+          ? ''
+          : 'unknown');
+  static const CatchFilterOptions_Order newest_to_oldest =
+      CatchFilterOptions_Order._(
+          1,
+          const $core.bool.fromEnvironment('protobuf.omit_enum_names')
+              ? ''
+              : 'newest_to_oldest');
+  static const CatchFilterOptions_Order heaviest_to_lightest =
+      CatchFilterOptions_Order._(
+          2,
+          const $core.bool.fromEnvironment('protobuf.omit_enum_names')
+              ? ''
+              : 'heaviest_to_lightest');
+  static const CatchFilterOptions_Order longest_to_shortest =
+      CatchFilterOptions_Order._(
+          3,
+          const $core.bool.fromEnvironment('protobuf.omit_enum_names')
+              ? ''
+              : 'longest_to_shortest');
+
+  static const $core.List<CatchFilterOptions_Order> values =
+      <CatchFilterOptions_Order>[
+    unknown,
+    newest_to_oldest,
+    heaviest_to_lightest,
+    longest_to_shortest,
+  ];
+
+  static final $core.Map<$core.int, CatchFilterOptions_Order> _byValue =
+      $pb.ProtobufEnum.initByValue(values);
+  static CatchFilterOptions_Order? valueOf($core.int value) => _byValue[value];
+
+  const CatchFilterOptions_Order._($core.int v, $core.String n) : super(v, n);
 }
 
 // ignore_for_file: undefined_named_parameter,constant_identifier_names

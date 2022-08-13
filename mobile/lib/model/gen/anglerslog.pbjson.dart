@@ -3,7 +3,7 @@
 //  source: anglerslog.proto
 //
 // @dart = 2.12
-// ignore_for_file: annotate_overrides,camel_case_types,unnecessary_const,non_constant_identifier_names,library_prefixes,unused_import,unused_shown_name,return_of_invalid_type,unnecessary_this,prefer_final_fields,deprecated_member_use_from_same_package
+// ignore_for_file: annotate_overrides,camel_case_types,constant_identifier_names,deprecated_member_use_from_same_package,directives_ordering,library_prefixes,non_constant_identifier_names,prefer_final_fields,return_of_invalid_type,unnecessary_const,unnecessary_import,unnecessary_this,unused_import,unused_shown_name
 
 import 'dart:core' as $core;
 import 'dart:convert' as $convert;
@@ -1308,7 +1308,7 @@ const MultiMeasurement$json = const {
       '10': 'system'
     },
     const {
-      '1': 'mainValue',
+      '1': 'main_value',
       '3': 2,
       '4': 1,
       '5': 11,
@@ -1316,7 +1316,7 @@ const MultiMeasurement$json = const {
       '10': 'mainValue'
     },
     const {
-      '1': 'fractionValue',
+      '1': 'fraction_value',
       '3': 3,
       '4': 1,
       '5': 11,
@@ -1328,7 +1328,7 @@ const MultiMeasurement$json = const {
 
 /// Descriptor for `MultiMeasurement`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List multiMeasurementDescriptor = $convert.base64Decode(
-    'ChBNdWx0aU1lYXN1cmVtZW50EjUKBnN5c3RlbRgBIAEoDjIdLmFuZ2xlcnNsb2cuTWVhc3VyZW1lbnRTeXN0ZW1SBnN5c3RlbRI1CgltYWluVmFsdWUYAiABKAsyFy5hbmdsZXJzbG9nLk1lYXN1cmVtZW50UgltYWluVmFsdWUSPQoNZnJhY3Rpb25WYWx1ZRgDIAEoCzIXLmFuZ2xlcnNsb2cuTWVhc3VyZW1lbnRSDWZyYWN0aW9uVmFsdWU=');
+    'ChBNdWx0aU1lYXN1cmVtZW50EjUKBnN5c3RlbRgBIAEoDjIdLmFuZ2xlcnNsb2cuTWVhc3VyZW1lbnRTeXN0ZW1SBnN5c3RlbRI2CgptYWluX3ZhbHVlGAIgASgLMhcuYW5nbGVyc2xvZy5NZWFzdXJlbWVudFIJbWFpblZhbHVlEj4KDmZyYWN0aW9uX3ZhbHVlGAMgASgLMhcuYW5nbGVyc2xvZy5NZWFzdXJlbWVudFINZnJhY3Rpb25WYWx1ZQ==');
 @$core.Deprecated('Use tideDescriptor instead')
 const Tide$json = const {
   '1': 'Tide',
@@ -1356,4 +1356,854 @@ const Tide$json = const {
 /// Descriptor for `Tide`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List tideDescriptor = $convert.base64Decode(
     'CgRUaWRlEigKBHR5cGUYASABKA4yFC5hbmdsZXJzbG9nLlRpZGVUeXBlUgR0eXBlEiMKDWxvd190aW1lc3RhbXAYAiABKARSDGxvd1RpbWVzdGFtcBIlCg5oaWdoX3RpbWVzdGFtcBgDIAEoBFINaGlnaFRpbWVzdGFtcBIbCgl0aW1lX3pvbmUYBCABKAlSCHRpbWVab25l');
+@$core.Deprecated('Use catchFilterOptionsDescriptor instead')
+const CatchFilterOptions$json = const {
+  '1': 'CatchFilterOptions',
+  '2': const [
+    const {
+      '1': 'order',
+      '3': 1,
+      '4': 1,
+      '5': 14,
+      '6': '.anglerslog.CatchFilterOptions.Order',
+      '10': 'order'
+    },
+    const {
+      '1': 'current_timestamp',
+      '3': 2,
+      '4': 1,
+      '5': 4,
+      '10': 'currentTimestamp'
+    },
+    const {
+      '1': 'current_time_zone',
+      '3': 3,
+      '4': 1,
+      '5': 9,
+      '10': 'currentTimeZone'
+    },
+    const {
+      '1': 'all_anglers',
+      '3': 4,
+      '4': 3,
+      '5': 11,
+      '6': '.anglerslog.CatchFilterOptions.AllAnglersEntry',
+      '10': 'allAnglers'
+    },
+    const {
+      '1': 'all_baits',
+      '3': 5,
+      '4': 3,
+      '5': 11,
+      '6': '.anglerslog.CatchFilterOptions.AllBaitsEntry',
+      '10': 'allBaits'
+    },
+    const {
+      '1': 'all_bodies_of_water',
+      '3': 6,
+      '4': 3,
+      '5': 11,
+      '6': '.anglerslog.CatchFilterOptions.AllBodiesOfWaterEntry',
+      '10': 'allBodiesOfWater'
+    },
+    const {
+      '1': 'all_catches',
+      '3': 7,
+      '4': 3,
+      '5': 11,
+      '6': '.anglerslog.CatchFilterOptions.AllCatchesEntry',
+      '10': 'allCatches'
+    },
+    const {
+      '1': 'all_fishing_spots',
+      '3': 8,
+      '4': 3,
+      '5': 11,
+      '6': '.anglerslog.CatchFilterOptions.AllFishingSpotsEntry',
+      '10': 'allFishingSpots'
+    },
+    const {
+      '1': 'all_methods',
+      '3': 9,
+      '4': 3,
+      '5': 11,
+      '6': '.anglerslog.CatchFilterOptions.AllMethodsEntry',
+      '10': 'allMethods'
+    },
+    const {
+      '1': 'all_species',
+      '3': 10,
+      '4': 3,
+      '5': 11,
+      '6': '.anglerslog.CatchFilterOptions.AllSpeciesEntry',
+      '10': 'allSpecies'
+    },
+    const {
+      '1': 'all_water_clarities',
+      '3': 11,
+      '4': 3,
+      '5': 11,
+      '6': '.anglerslog.CatchFilterOptions.AllWaterClaritiesEntry',
+      '10': 'allWaterClarities'
+    },
+    const {
+      '1': 'is_catch_and_release_only',
+      '3': 12,
+      '4': 1,
+      '5': 8,
+      '10': 'isCatchAndReleaseOnly'
+    },
+    const {
+      '1': 'is_favorites_only',
+      '3': 13,
+      '4': 1,
+      '5': 8,
+      '10': 'isFavoritesOnly'
+    },
+    const {
+      '1': 'date_ranges',
+      '3': 14,
+      '4': 3,
+      '5': 11,
+      '6': '.anglerslog.DateRange',
+      '10': 'dateRanges'
+    },
+    const {
+      '1': 'baits',
+      '3': 15,
+      '4': 3,
+      '5': 11,
+      '6': '.anglerslog.BaitAttachment',
+      '10': 'baits'
+    },
+    const {
+      '1': 'catch_ids',
+      '3': 16,
+      '4': 3,
+      '5': 11,
+      '6': '.anglerslog.Id',
+      '10': 'catchIds'
+    },
+    const {
+      '1': 'angler_ids',
+      '3': 17,
+      '4': 3,
+      '5': 11,
+      '6': '.anglerslog.Id',
+      '10': 'anglerIds'
+    },
+    const {
+      '1': 'fishing_spot_ids',
+      '3': 18,
+      '4': 3,
+      '5': 11,
+      '6': '.anglerslog.Id',
+      '10': 'fishingSpotIds'
+    },
+    const {
+      '1': 'body_of_water_ids',
+      '3': 19,
+      '4': 3,
+      '5': 11,
+      '6': '.anglerslog.Id',
+      '10': 'bodyOfWaterIds'
+    },
+    const {
+      '1': 'method_ids',
+      '3': 20,
+      '4': 3,
+      '5': 11,
+      '6': '.anglerslog.Id',
+      '10': 'methodIds'
+    },
+    const {
+      '1': 'species_ids',
+      '3': 21,
+      '4': 3,
+      '5': 11,
+      '6': '.anglerslog.Id',
+      '10': 'speciesIds'
+    },
+    const {
+      '1': 'water_clarity_ids',
+      '3': 22,
+      '4': 3,
+      '5': 11,
+      '6': '.anglerslog.Id',
+      '10': 'waterClarityIds'
+    },
+    const {
+      '1': 'periods',
+      '3': 23,
+      '4': 3,
+      '5': 14,
+      '6': '.anglerslog.Period',
+      '10': 'periods'
+    },
+    const {
+      '1': 'seasons',
+      '3': 24,
+      '4': 3,
+      '5': 14,
+      '6': '.anglerslog.Season',
+      '10': 'seasons'
+    },
+    const {
+      '1': 'wind_directions',
+      '3': 25,
+      '4': 3,
+      '5': 14,
+      '6': '.anglerslog.Direction',
+      '10': 'windDirections'
+    },
+    const {
+      '1': 'sky_conditions',
+      '3': 26,
+      '4': 3,
+      '5': 14,
+      '6': '.anglerslog.SkyCondition',
+      '10': 'skyConditions'
+    },
+    const {
+      '1': 'moon_phases',
+      '3': 27,
+      '4': 3,
+      '5': 14,
+      '6': '.anglerslog.MoonPhase',
+      '10': 'moonPhases'
+    },
+    const {
+      '1': 'tide_types',
+      '3': 28,
+      '4': 3,
+      '5': 14,
+      '6': '.anglerslog.TideType',
+      '10': 'tideTypes'
+    },
+    const {
+      '1': 'water_depth_filter',
+      '3': 29,
+      '4': 1,
+      '5': 11,
+      '6': '.anglerslog.NumberFilter',
+      '10': 'waterDepthFilter'
+    },
+    const {
+      '1': 'water_temperature_filter',
+      '3': 30,
+      '4': 1,
+      '5': 11,
+      '6': '.anglerslog.NumberFilter',
+      '10': 'waterTemperatureFilter'
+    },
+    const {
+      '1': 'length_filter',
+      '3': 31,
+      '4': 1,
+      '5': 11,
+      '6': '.anglerslog.NumberFilter',
+      '10': 'lengthFilter'
+    },
+    const {
+      '1': 'weight_filter',
+      '3': 32,
+      '4': 1,
+      '5': 11,
+      '6': '.anglerslog.NumberFilter',
+      '10': 'weightFilter'
+    },
+    const {
+      '1': 'quantity_filter',
+      '3': 33,
+      '4': 1,
+      '5': 11,
+      '6': '.anglerslog.NumberFilter',
+      '10': 'quantityFilter'
+    },
+    const {
+      '1': 'air_temperature_filter',
+      '3': 34,
+      '4': 1,
+      '5': 11,
+      '6': '.anglerslog.NumberFilter',
+      '10': 'airTemperatureFilter'
+    },
+    const {
+      '1': 'air_pressure_filter',
+      '3': 35,
+      '4': 1,
+      '5': 11,
+      '6': '.anglerslog.NumberFilter',
+      '10': 'airPressureFilter'
+    },
+    const {
+      '1': 'air_humidity_filter',
+      '3': 36,
+      '4': 1,
+      '5': 11,
+      '6': '.anglerslog.NumberFilter',
+      '10': 'airHumidityFilter'
+    },
+    const {
+      '1': 'air_visibility_filter',
+      '3': 37,
+      '4': 1,
+      '5': 11,
+      '6': '.anglerslog.NumberFilter',
+      '10': 'airVisibilityFilter'
+    },
+    const {
+      '1': 'wind_speed_filter',
+      '3': 38,
+      '4': 1,
+      '5': 11,
+      '6': '.anglerslog.NumberFilter',
+      '10': 'windSpeedFilter'
+    },
+    const {'1': 'hour', '3': 39, '4': 1, '5': 5, '10': 'hour'},
+    const {'1': 'month', '3': 40, '4': 1, '5': 5, '10': 'month'},
+    const {
+      '1': 'include_anglers',
+      '3': 41,
+      '4': 1,
+      '5': 8,
+      '10': 'includeAnglers'
+    },
+    const {'1': 'include_baits', '3': 42, '4': 1, '5': 8, '10': 'includeBaits'},
+    const {
+      '1': 'include_bodies_of_water',
+      '3': 43,
+      '4': 1,
+      '5': 8,
+      '10': 'includeBodiesOfWater'
+    },
+    const {
+      '1': 'include_methods',
+      '3': 44,
+      '4': 1,
+      '5': 8,
+      '10': 'includeMethods'
+    },
+    const {
+      '1': 'include_fishing_spots',
+      '3': 45,
+      '4': 1,
+      '5': 8,
+      '10': 'includeFishingSpots'
+    },
+    const {
+      '1': 'include_moon_phases',
+      '3': 46,
+      '4': 1,
+      '5': 8,
+      '10': 'includeMoonPhases'
+    },
+    const {
+      '1': 'include_seasons',
+      '3': 47,
+      '4': 1,
+      '5': 8,
+      '10': 'includeSeasons'
+    },
+    const {
+      '1': 'include_species',
+      '3': 48,
+      '4': 1,
+      '5': 8,
+      '10': 'includeSpecies'
+    },
+    const {
+      '1': 'include_tide_types',
+      '3': 49,
+      '4': 1,
+      '5': 8,
+      '10': 'includeTideTypes'
+    },
+    const {
+      '1': 'include_periods',
+      '3': 50,
+      '4': 1,
+      '5': 8,
+      '10': 'includePeriods'
+    },
+    const {
+      '1': 'include_water_clarities',
+      '3': 51,
+      '4': 1,
+      '5': 8,
+      '10': 'includeWaterClarities'
+    },
+  ],
+  '3': const [
+    CatchFilterOptions_AllAnglersEntry$json,
+    CatchFilterOptions_AllBaitsEntry$json,
+    CatchFilterOptions_AllBodiesOfWaterEntry$json,
+    CatchFilterOptions_AllCatchesEntry$json,
+    CatchFilterOptions_AllFishingSpotsEntry$json,
+    CatchFilterOptions_AllMethodsEntry$json,
+    CatchFilterOptions_AllSpeciesEntry$json,
+    CatchFilterOptions_AllWaterClaritiesEntry$json
+  ],
+  '4': const [CatchFilterOptions_Order$json],
+};
+
+@$core.Deprecated('Use catchFilterOptionsDescriptor instead')
+const CatchFilterOptions_AllAnglersEntry$json = const {
+  '1': 'AllAnglersEntry',
+  '2': const [
+    const {'1': 'key', '3': 1, '4': 1, '5': 9, '10': 'key'},
+    const {
+      '1': 'value',
+      '3': 2,
+      '4': 1,
+      '5': 11,
+      '6': '.anglerslog.Angler',
+      '10': 'value'
+    },
+  ],
+  '7': const {'7': true},
+};
+
+@$core.Deprecated('Use catchFilterOptionsDescriptor instead')
+const CatchFilterOptions_AllBaitsEntry$json = const {
+  '1': 'AllBaitsEntry',
+  '2': const [
+    const {'1': 'key', '3': 1, '4': 1, '5': 9, '10': 'key'},
+    const {
+      '1': 'value',
+      '3': 2,
+      '4': 1,
+      '5': 11,
+      '6': '.anglerslog.Bait',
+      '10': 'value'
+    },
+  ],
+  '7': const {'7': true},
+};
+
+@$core.Deprecated('Use catchFilterOptionsDescriptor instead')
+const CatchFilterOptions_AllBodiesOfWaterEntry$json = const {
+  '1': 'AllBodiesOfWaterEntry',
+  '2': const [
+    const {'1': 'key', '3': 1, '4': 1, '5': 9, '10': 'key'},
+    const {
+      '1': 'value',
+      '3': 2,
+      '4': 1,
+      '5': 11,
+      '6': '.anglerslog.BodyOfWater',
+      '10': 'value'
+    },
+  ],
+  '7': const {'7': true},
+};
+
+@$core.Deprecated('Use catchFilterOptionsDescriptor instead')
+const CatchFilterOptions_AllCatchesEntry$json = const {
+  '1': 'AllCatchesEntry',
+  '2': const [
+    const {'1': 'key', '3': 1, '4': 1, '5': 9, '10': 'key'},
+    const {
+      '1': 'value',
+      '3': 2,
+      '4': 1,
+      '5': 11,
+      '6': '.anglerslog.Catch',
+      '10': 'value'
+    },
+  ],
+  '7': const {'7': true},
+};
+
+@$core.Deprecated('Use catchFilterOptionsDescriptor instead')
+const CatchFilterOptions_AllFishingSpotsEntry$json = const {
+  '1': 'AllFishingSpotsEntry',
+  '2': const [
+    const {'1': 'key', '3': 1, '4': 1, '5': 9, '10': 'key'},
+    const {
+      '1': 'value',
+      '3': 2,
+      '4': 1,
+      '5': 11,
+      '6': '.anglerslog.FishingSpot',
+      '10': 'value'
+    },
+  ],
+  '7': const {'7': true},
+};
+
+@$core.Deprecated('Use catchFilterOptionsDescriptor instead')
+const CatchFilterOptions_AllMethodsEntry$json = const {
+  '1': 'AllMethodsEntry',
+  '2': const [
+    const {'1': 'key', '3': 1, '4': 1, '5': 9, '10': 'key'},
+    const {
+      '1': 'value',
+      '3': 2,
+      '4': 1,
+      '5': 11,
+      '6': '.anglerslog.Method',
+      '10': 'value'
+    },
+  ],
+  '7': const {'7': true},
+};
+
+@$core.Deprecated('Use catchFilterOptionsDescriptor instead')
+const CatchFilterOptions_AllSpeciesEntry$json = const {
+  '1': 'AllSpeciesEntry',
+  '2': const [
+    const {'1': 'key', '3': 1, '4': 1, '5': 9, '10': 'key'},
+    const {
+      '1': 'value',
+      '3': 2,
+      '4': 1,
+      '5': 11,
+      '6': '.anglerslog.Species',
+      '10': 'value'
+    },
+  ],
+  '7': const {'7': true},
+};
+
+@$core.Deprecated('Use catchFilterOptionsDescriptor instead')
+const CatchFilterOptions_AllWaterClaritiesEntry$json = const {
+  '1': 'AllWaterClaritiesEntry',
+  '2': const [
+    const {'1': 'key', '3': 1, '4': 1, '5': 9, '10': 'key'},
+    const {
+      '1': 'value',
+      '3': 2,
+      '4': 1,
+      '5': 11,
+      '6': '.anglerslog.WaterClarity',
+      '10': 'value'
+    },
+  ],
+  '7': const {'7': true},
+};
+
+@$core.Deprecated('Use catchFilterOptionsDescriptor instead')
+const CatchFilterOptions_Order$json = const {
+  '1': 'Order',
+  '2': const [
+    const {'1': 'unknown', '2': 0},
+    const {'1': 'newest_to_oldest', '2': 1},
+    const {'1': 'heaviest_to_lightest', '2': 2},
+    const {'1': 'longest_to_shortest', '2': 3},
+  ],
+};
+
+/// Descriptor for `CatchFilterOptions`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List catchFilterOptionsDescriptor = $convert.base64Decode(
+    'ChJDYXRjaEZpbHRlck9wdGlvbnMSOgoFb3JkZXIYASABKA4yJC5hbmdsZXJzbG9nLkNhdGNoRmlsdGVyT3B0aW9ucy5PcmRlclIFb3JkZXISKwoRY3VycmVudF90aW1lc3RhbXAYAiABKARSEGN1cnJlbnRUaW1lc3RhbXASKgoRY3VycmVudF90aW1lX3pvbmUYAyABKAlSD2N1cnJlbnRUaW1lWm9uZRJPCgthbGxfYW5nbGVycxgEIAMoCzIuLmFuZ2xlcnNsb2cuQ2F0Y2hGaWx0ZXJPcHRpb25zLkFsbEFuZ2xlcnNFbnRyeVIKYWxsQW5nbGVycxJJCglhbGxfYmFpdHMYBSADKAsyLC5hbmdsZXJzbG9nLkNhdGNoRmlsdGVyT3B0aW9ucy5BbGxCYWl0c0VudHJ5UghhbGxCYWl0cxJjChNhbGxfYm9kaWVzX29mX3dhdGVyGAYgAygLMjQuYW5nbGVyc2xvZy5DYXRjaEZpbHRlck9wdGlvbnMuQWxsQm9kaWVzT2ZXYXRlckVudHJ5UhBhbGxCb2RpZXNPZldhdGVyEk8KC2FsbF9jYXRjaGVzGAcgAygLMi4uYW5nbGVyc2xvZy5DYXRjaEZpbHRlck9wdGlvbnMuQWxsQ2F0Y2hlc0VudHJ5UgphbGxDYXRjaGVzEl8KEWFsbF9maXNoaW5nX3Nwb3RzGAggAygLMjMuYW5nbGVyc2xvZy5DYXRjaEZpbHRlck9wdGlvbnMuQWxsRmlzaGluZ1Nwb3RzRW50cnlSD2FsbEZpc2hpbmdTcG90cxJPCgthbGxfbWV0aG9kcxgJIAMoCzIuLmFuZ2xlcnNsb2cuQ2F0Y2hGaWx0ZXJPcHRpb25zLkFsbE1ldGhvZHNFbnRyeVIKYWxsTWV0aG9kcxJPCgthbGxfc3BlY2llcxgKIAMoCzIuLmFuZ2xlcnNsb2cuQ2F0Y2hGaWx0ZXJPcHRpb25zLkFsbFNwZWNpZXNFbnRyeVIKYWxsU3BlY2llcxJlChNhbGxfd2F0ZXJfY2xhcml0aWVzGAsgAygLMjUuYW5nbGVyc2xvZy5DYXRjaEZpbHRlck9wdGlvbnMuQWxsV2F0ZXJDbGFyaXRpZXNFbnRyeVIRYWxsV2F0ZXJDbGFyaXRpZXMSOAoZaXNfY2F0Y2hfYW5kX3JlbGVhc2Vfb25seRgMIAEoCFIVaXNDYXRjaEFuZFJlbGVhc2VPbmx5EioKEWlzX2Zhdm9yaXRlc19vbmx5GA0gASgIUg9pc0Zhdm9yaXRlc09ubHkSNgoLZGF0ZV9yYW5nZXMYDiADKAsyFS5hbmdsZXJzbG9nLkRhdGVSYW5nZVIKZGF0ZVJhbmdlcxIwCgViYWl0cxgPIAMoCzIaLmFuZ2xlcnNsb2cuQmFpdEF0dGFjaG1lbnRSBWJhaXRzEisKCWNhdGNoX2lkcxgQIAMoCzIOLmFuZ2xlcnNsb2cuSWRSCGNhdGNoSWRzEi0KCmFuZ2xlcl9pZHMYESADKAsyDi5hbmdsZXJzbG9nLklkUglhbmdsZXJJZHMSOAoQZmlzaGluZ19zcG90X2lkcxgSIAMoCzIOLmFuZ2xlcnNsb2cuSWRSDmZpc2hpbmdTcG90SWRzEjkKEWJvZHlfb2Zfd2F0ZXJfaWRzGBMgAygLMg4uYW5nbGVyc2xvZy5JZFIOYm9keU9mV2F0ZXJJZHMSLQoKbWV0aG9kX2lkcxgUIAMoCzIOLmFuZ2xlcnNsb2cuSWRSCW1ldGhvZElkcxIvCgtzcGVjaWVzX2lkcxgVIAMoCzIOLmFuZ2xlcnNsb2cuSWRSCnNwZWNpZXNJZHMSOgoRd2F0ZXJfY2xhcml0eV9pZHMYFiADKAsyDi5hbmdsZXJzbG9nLklkUg93YXRlckNsYXJpdHlJZHMSLAoHcGVyaW9kcxgXIAMoDjISLmFuZ2xlcnNsb2cuUGVyaW9kUgdwZXJpb2RzEiwKB3NlYXNvbnMYGCADKA4yEi5hbmdsZXJzbG9nLlNlYXNvblIHc2Vhc29ucxI+Cg93aW5kX2RpcmVjdGlvbnMYGSADKA4yFS5hbmdsZXJzbG9nLkRpcmVjdGlvblIOd2luZERpcmVjdGlvbnMSPwoOc2t5X2NvbmRpdGlvbnMYGiADKA4yGC5hbmdsZXJzbG9nLlNreUNvbmRpdGlvblINc2t5Q29uZGl0aW9ucxI2Cgttb29uX3BoYXNlcxgbIAMoDjIVLmFuZ2xlcnNsb2cuTW9vblBoYXNlUgptb29uUGhhc2VzEjMKCnRpZGVfdHlwZXMYHCADKA4yFC5hbmdsZXJzbG9nLlRpZGVUeXBlUgl0aWRlVHlwZXMSRgoSd2F0ZXJfZGVwdGhfZmlsdGVyGB0gASgLMhguYW5nbGVyc2xvZy5OdW1iZXJGaWx0ZXJSEHdhdGVyRGVwdGhGaWx0ZXISUgoYd2F0ZXJfdGVtcGVyYXR1cmVfZmlsdGVyGB4gASgLMhguYW5nbGVyc2xvZy5OdW1iZXJGaWx0ZXJSFndhdGVyVGVtcGVyYXR1cmVGaWx0ZXISPQoNbGVuZ3RoX2ZpbHRlchgfIAEoCzIYLmFuZ2xlcnNsb2cuTnVtYmVyRmlsdGVyUgxsZW5ndGhGaWx0ZXISPQoNd2VpZ2h0X2ZpbHRlchggIAEoCzIYLmFuZ2xlcnNsb2cuTnVtYmVyRmlsdGVyUgx3ZWlnaHRGaWx0ZXISQQoPcXVhbnRpdHlfZmlsdGVyGCEgASgLMhguYW5nbGVyc2xvZy5OdW1iZXJGaWx0ZXJSDnF1YW50aXR5RmlsdGVyEk4KFmFpcl90ZW1wZXJhdHVyZV9maWx0ZXIYIiABKAsyGC5hbmdsZXJzbG9nLk51bWJlckZpbHRlclIUYWlyVGVtcGVyYXR1cmVGaWx0ZXISSAoTYWlyX3ByZXNzdXJlX2ZpbHRlchgjIAEoCzIYLmFuZ2xlcnNsb2cuTnVtYmVyRmlsdGVyUhFhaXJQcmVzc3VyZUZpbHRlchJIChNhaXJfaHVtaWRpdHlfZmlsdGVyGCQgASgLMhguYW5nbGVyc2xvZy5OdW1iZXJGaWx0ZXJSEWFpckh1bWlkaXR5RmlsdGVyEkwKFWFpcl92aXNpYmlsaXR5X2ZpbHRlchglIAEoCzIYLmFuZ2xlcnNsb2cuTnVtYmVyRmlsdGVyUhNhaXJWaXNpYmlsaXR5RmlsdGVyEkQKEXdpbmRfc3BlZWRfZmlsdGVyGCYgASgLMhguYW5nbGVyc2xvZy5OdW1iZXJGaWx0ZXJSD3dpbmRTcGVlZEZpbHRlchISCgRob3VyGCcgASgFUgRob3VyEhQKBW1vbnRoGCggASgFUgVtb250aBInCg9pbmNsdWRlX2FuZ2xlcnMYKSABKAhSDmluY2x1ZGVBbmdsZXJzEiMKDWluY2x1ZGVfYmFpdHMYKiABKAhSDGluY2x1ZGVCYWl0cxI1ChdpbmNsdWRlX2JvZGllc19vZl93YXRlchgrIAEoCFIUaW5jbHVkZUJvZGllc09mV2F0ZXISJwoPaW5jbHVkZV9tZXRob2RzGCwgASgIUg5pbmNsdWRlTWV0aG9kcxIyChVpbmNsdWRlX2Zpc2hpbmdfc3BvdHMYLSABKAhSE2luY2x1ZGVGaXNoaW5nU3BvdHMSLgoTaW5jbHVkZV9tb29uX3BoYXNlcxguIAEoCFIRaW5jbHVkZU1vb25QaGFzZXMSJwoPaW5jbHVkZV9zZWFzb25zGC8gASgIUg5pbmNsdWRlU2Vhc29ucxInCg9pbmNsdWRlX3NwZWNpZXMYMCABKAhSDmluY2x1ZGVTcGVjaWVzEiwKEmluY2x1ZGVfdGlkZV90eXBlcxgxIAEoCFIQaW5jbHVkZVRpZGVUeXBlcxInCg9pbmNsdWRlX3BlcmlvZHMYMiABKAhSDmluY2x1ZGVQZXJpb2RzEjYKF2luY2x1ZGVfd2F0ZXJfY2xhcml0aWVzGDMgASgIUhVpbmNsdWRlV2F0ZXJDbGFyaXRpZXMaUQoPQWxsQW5nbGVyc0VudHJ5EhAKA2tleRgBIAEoCVIDa2V5EigKBXZhbHVlGAIgASgLMhIuYW5nbGVyc2xvZy5BbmdsZXJSBXZhbHVlOgI4ARpNCg1BbGxCYWl0c0VudHJ5EhAKA2tleRgBIAEoCVIDa2V5EiYKBXZhbHVlGAIgASgLMhAuYW5nbGVyc2xvZy5CYWl0UgV2YWx1ZToCOAEaXAoVQWxsQm9kaWVzT2ZXYXRlckVudHJ5EhAKA2tleRgBIAEoCVIDa2V5Ei0KBXZhbHVlGAIgASgLMhcuYW5nbGVyc2xvZy5Cb2R5T2ZXYXRlclIFdmFsdWU6AjgBGlAKD0FsbENhdGNoZXNFbnRyeRIQCgNrZXkYASABKAlSA2tleRInCgV2YWx1ZRgCIAEoCzIRLmFuZ2xlcnNsb2cuQ2F0Y2hSBXZhbHVlOgI4ARpbChRBbGxGaXNoaW5nU3BvdHNFbnRyeRIQCgNrZXkYASABKAlSA2tleRItCgV2YWx1ZRgCIAEoCzIXLmFuZ2xlcnNsb2cuRmlzaGluZ1Nwb3RSBXZhbHVlOgI4ARpRCg9BbGxNZXRob2RzRW50cnkSEAoDa2V5GAEgASgJUgNrZXkSKAoFdmFsdWUYAiABKAsyEi5hbmdsZXJzbG9nLk1ldGhvZFIFdmFsdWU6AjgBGlIKD0FsbFNwZWNpZXNFbnRyeRIQCgNrZXkYASABKAlSA2tleRIpCgV2YWx1ZRgCIAEoCzITLmFuZ2xlcnNsb2cuU3BlY2llc1IFdmFsdWU6AjgBGl4KFkFsbFdhdGVyQ2xhcml0aWVzRW50cnkSEAoDa2V5GAEgASgJUgNrZXkSLgoFdmFsdWUYAiABKAsyGC5hbmdsZXJzbG9nLldhdGVyQ2xhcml0eVIFdmFsdWU6AjgBIl0KBU9yZGVyEgsKB3Vua25vd24QABIUChBuZXdlc3RfdG9fb2xkZXN0EAESGAoUaGVhdmllc3RfdG9fbGlnaHRlc3QQAhIXChNsb25nZXN0X3RvX3Nob3J0ZXN0EAM=');
+@$core.Deprecated('Use catchReportDescriptor instead')
+const CatchReport$json = const {
+  '1': 'CatchReport',
+  '2': const [
+    const {
+      '1': 'models',
+      '3': 1,
+      '4': 3,
+      '5': 11,
+      '6': '.anglerslog.CatchReportModel',
+      '10': 'models'
+    },
+    const {
+      '1': 'ms_since_last_catch',
+      '3': 2,
+      '4': 1,
+      '5': 4,
+      '10': 'msSinceLastCatch'
+    },
+    const {
+      '1': 'last_catch',
+      '3': 3,
+      '4': 1,
+      '5': 11,
+      '6': '.anglerslog.Catch',
+      '10': 'lastCatch'
+    },
+    const {'1': 'contains_now', '3': 6, '4': 1, '5': 8, '10': 'containsNow'},
+  ],
+};
+
+/// Descriptor for `CatchReport`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List catchReportDescriptor = $convert.base64Decode(
+    'CgtDYXRjaFJlcG9ydBI0CgZtb2RlbHMYASADKAsyHC5hbmdsZXJzbG9nLkNhdGNoUmVwb3J0TW9kZWxSBm1vZGVscxItChNtc19zaW5jZV9sYXN0X2NhdGNoGAIgASgEUhBtc1NpbmNlTGFzdENhdGNoEjAKCmxhc3RfY2F0Y2gYAyABKAsyES5hbmdsZXJzbG9nLkNhdGNoUglsYXN0Q2F0Y2gSIQoMY29udGFpbnNfbm93GAYgASgIUgtjb250YWluc05vdw==');
+@$core.Deprecated('Use catchReportModelDescriptor instead')
+const CatchReportModel$json = const {
+  '1': 'CatchReportModel',
+  '2': const [
+    const {
+      '1': 'date_range',
+      '3': 1,
+      '4': 1,
+      '5': 11,
+      '6': '.anglerslog.DateRange',
+      '10': 'dateRange'
+    },
+    const {
+      '1': 'catch_ids',
+      '3': 2,
+      '4': 3,
+      '5': 11,
+      '6': '.anglerslog.Id',
+      '10': 'catchIds'
+    },
+    const {
+      '1': 'per_hour',
+      '3': 3,
+      '4': 3,
+      '5': 11,
+      '6': '.anglerslog.CatchReportModel.PerHourEntry',
+      '10': 'perHour'
+    },
+    const {
+      '1': 'per_month',
+      '3': 4,
+      '4': 3,
+      '5': 11,
+      '6': '.anglerslog.CatchReportModel.PerMonthEntry',
+      '10': 'perMonth'
+    },
+    const {
+      '1': 'per_moon_phase',
+      '3': 5,
+      '4': 3,
+      '5': 11,
+      '6': '.anglerslog.CatchReportModel.PerMoonPhaseEntry',
+      '10': 'perMoonPhase'
+    },
+    const {
+      '1': 'per_period',
+      '3': 6,
+      '4': 3,
+      '5': 11,
+      '6': '.anglerslog.CatchReportModel.PerPeriodEntry',
+      '10': 'perPeriod'
+    },
+    const {
+      '1': 'per_season',
+      '3': 7,
+      '4': 3,
+      '5': 11,
+      '6': '.anglerslog.CatchReportModel.PerSeasonEntry',
+      '10': 'perSeason'
+    },
+    const {
+      '1': 'per_tide_type',
+      '3': 8,
+      '4': 3,
+      '5': 11,
+      '6': '.anglerslog.CatchReportModel.PerTideTypeEntry',
+      '10': 'perTideType'
+    },
+    const {
+      '1': 'per_angler',
+      '3': 9,
+      '4': 3,
+      '5': 11,
+      '6': '.anglerslog.CatchReportModel.PerAnglerEntry',
+      '10': 'perAngler'
+    },
+    const {
+      '1': 'per_body_of_water',
+      '3': 10,
+      '4': 3,
+      '5': 11,
+      '6': '.anglerslog.CatchReportModel.PerBodyOfWaterEntry',
+      '10': 'perBodyOfWater'
+    },
+    const {
+      '1': 'per_method',
+      '3': 11,
+      '4': 3,
+      '5': 11,
+      '6': '.anglerslog.CatchReportModel.PerMethodEntry',
+      '10': 'perMethod'
+    },
+    const {
+      '1': 'per_fishing_spot',
+      '3': 12,
+      '4': 3,
+      '5': 11,
+      '6': '.anglerslog.CatchReportModel.PerFishingSpotEntry',
+      '10': 'perFishingSpot'
+    },
+    const {
+      '1': 'per_species',
+      '3': 13,
+      '4': 3,
+      '5': 11,
+      '6': '.anglerslog.CatchReportModel.PerSpeciesEntry',
+      '10': 'perSpecies'
+    },
+    const {
+      '1': 'per_water_clarity',
+      '3': 14,
+      '4': 3,
+      '5': 11,
+      '6': '.anglerslog.CatchReportModel.PerWaterClarityEntry',
+      '10': 'perWaterClarity'
+    },
+    const {
+      '1': 'per_bait',
+      '3': 15,
+      '4': 3,
+      '5': 11,
+      '6': '.anglerslog.CatchReportModel.PerBaitEntry',
+      '10': 'perBait'
+    },
+  ],
+  '3': const [
+    CatchReportModel_PerHourEntry$json,
+    CatchReportModel_PerMonthEntry$json,
+    CatchReportModel_PerMoonPhaseEntry$json,
+    CatchReportModel_PerPeriodEntry$json,
+    CatchReportModel_PerSeasonEntry$json,
+    CatchReportModel_PerTideTypeEntry$json,
+    CatchReportModel_PerAnglerEntry$json,
+    CatchReportModel_PerBodyOfWaterEntry$json,
+    CatchReportModel_PerMethodEntry$json,
+    CatchReportModel_PerFishingSpotEntry$json,
+    CatchReportModel_PerSpeciesEntry$json,
+    CatchReportModel_PerWaterClarityEntry$json,
+    CatchReportModel_PerBaitEntry$json
+  ],
+};
+
+@$core.Deprecated('Use catchReportModelDescriptor instead')
+const CatchReportModel_PerHourEntry$json = const {
+  '1': 'PerHourEntry',
+  '2': const [
+    const {'1': 'key', '3': 1, '4': 1, '5': 5, '10': 'key'},
+    const {'1': 'value', '3': 2, '4': 1, '5': 5, '10': 'value'},
+  ],
+  '7': const {'7': true},
+};
+
+@$core.Deprecated('Use catchReportModelDescriptor instead')
+const CatchReportModel_PerMonthEntry$json = const {
+  '1': 'PerMonthEntry',
+  '2': const [
+    const {'1': 'key', '3': 1, '4': 1, '5': 5, '10': 'key'},
+    const {'1': 'value', '3': 2, '4': 1, '5': 5, '10': 'value'},
+  ],
+  '7': const {'7': true},
+};
+
+@$core.Deprecated('Use catchReportModelDescriptor instead')
+const CatchReportModel_PerMoonPhaseEntry$json = const {
+  '1': 'PerMoonPhaseEntry',
+  '2': const [
+    const {'1': 'key', '3': 1, '4': 1, '5': 5, '10': 'key'},
+    const {'1': 'value', '3': 2, '4': 1, '5': 5, '10': 'value'},
+  ],
+  '7': const {'7': true},
+};
+
+@$core.Deprecated('Use catchReportModelDescriptor instead')
+const CatchReportModel_PerPeriodEntry$json = const {
+  '1': 'PerPeriodEntry',
+  '2': const [
+    const {'1': 'key', '3': 1, '4': 1, '5': 5, '10': 'key'},
+    const {'1': 'value', '3': 2, '4': 1, '5': 5, '10': 'value'},
+  ],
+  '7': const {'7': true},
+};
+
+@$core.Deprecated('Use catchReportModelDescriptor instead')
+const CatchReportModel_PerSeasonEntry$json = const {
+  '1': 'PerSeasonEntry',
+  '2': const [
+    const {'1': 'key', '3': 1, '4': 1, '5': 5, '10': 'key'},
+    const {'1': 'value', '3': 2, '4': 1, '5': 5, '10': 'value'},
+  ],
+  '7': const {'7': true},
+};
+
+@$core.Deprecated('Use catchReportModelDescriptor instead')
+const CatchReportModel_PerTideTypeEntry$json = const {
+  '1': 'PerTideTypeEntry',
+  '2': const [
+    const {'1': 'key', '3': 1, '4': 1, '5': 5, '10': 'key'},
+    const {'1': 'value', '3': 2, '4': 1, '5': 5, '10': 'value'},
+  ],
+  '7': const {'7': true},
+};
+
+@$core.Deprecated('Use catchReportModelDescriptor instead')
+const CatchReportModel_PerAnglerEntry$json = const {
+  '1': 'PerAnglerEntry',
+  '2': const [
+    const {'1': 'key', '3': 1, '4': 1, '5': 9, '10': 'key'},
+    const {'1': 'value', '3': 2, '4': 1, '5': 5, '10': 'value'},
+  ],
+  '7': const {'7': true},
+};
+
+@$core.Deprecated('Use catchReportModelDescriptor instead')
+const CatchReportModel_PerBodyOfWaterEntry$json = const {
+  '1': 'PerBodyOfWaterEntry',
+  '2': const [
+    const {'1': 'key', '3': 1, '4': 1, '5': 9, '10': 'key'},
+    const {'1': 'value', '3': 2, '4': 1, '5': 5, '10': 'value'},
+  ],
+  '7': const {'7': true},
+};
+
+@$core.Deprecated('Use catchReportModelDescriptor instead')
+const CatchReportModel_PerMethodEntry$json = const {
+  '1': 'PerMethodEntry',
+  '2': const [
+    const {'1': 'key', '3': 1, '4': 1, '5': 9, '10': 'key'},
+    const {'1': 'value', '3': 2, '4': 1, '5': 5, '10': 'value'},
+  ],
+  '7': const {'7': true},
+};
+
+@$core.Deprecated('Use catchReportModelDescriptor instead')
+const CatchReportModel_PerFishingSpotEntry$json = const {
+  '1': 'PerFishingSpotEntry',
+  '2': const [
+    const {'1': 'key', '3': 1, '4': 1, '5': 9, '10': 'key'},
+    const {'1': 'value', '3': 2, '4': 1, '5': 5, '10': 'value'},
+  ],
+  '7': const {'7': true},
+};
+
+@$core.Deprecated('Use catchReportModelDescriptor instead')
+const CatchReportModel_PerSpeciesEntry$json = const {
+  '1': 'PerSpeciesEntry',
+  '2': const [
+    const {'1': 'key', '3': 1, '4': 1, '5': 9, '10': 'key'},
+    const {'1': 'value', '3': 2, '4': 1, '5': 5, '10': 'value'},
+  ],
+  '7': const {'7': true},
+};
+
+@$core.Deprecated('Use catchReportModelDescriptor instead')
+const CatchReportModel_PerWaterClarityEntry$json = const {
+  '1': 'PerWaterClarityEntry',
+  '2': const [
+    const {'1': 'key', '3': 1, '4': 1, '5': 9, '10': 'key'},
+    const {'1': 'value', '3': 2, '4': 1, '5': 5, '10': 'value'},
+  ],
+  '7': const {'7': true},
+};
+
+@$core.Deprecated('Use catchReportModelDescriptor instead')
+const CatchReportModel_PerBaitEntry$json = const {
+  '1': 'PerBaitEntry',
+  '2': const [
+    const {'1': 'key', '3': 1, '4': 1, '5': 9, '10': 'key'},
+    const {'1': 'value', '3': 2, '4': 1, '5': 5, '10': 'value'},
+  ],
+  '7': const {'7': true},
+};
+
+/// Descriptor for `CatchReportModel`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List catchReportModelDescriptor = $convert.base64Decode(
+    'ChBDYXRjaFJlcG9ydE1vZGVsEjQKCmRhdGVfcmFuZ2UYASABKAsyFS5hbmdsZXJzbG9nLkRhdGVSYW5nZVIJZGF0ZVJhbmdlEisKCWNhdGNoX2lkcxgCIAMoCzIOLmFuZ2xlcnNsb2cuSWRSCGNhdGNoSWRzEkQKCHBlcl9ob3VyGAMgAygLMikuYW5nbGVyc2xvZy5DYXRjaFJlcG9ydE1vZGVsLlBlckhvdXJFbnRyeVIHcGVySG91chJHCglwZXJfbW9udGgYBCADKAsyKi5hbmdsZXJzbG9nLkNhdGNoUmVwb3J0TW9kZWwuUGVyTW9udGhFbnRyeVIIcGVyTW9udGgSVAoOcGVyX21vb25fcGhhc2UYBSADKAsyLi5hbmdsZXJzbG9nLkNhdGNoUmVwb3J0TW9kZWwuUGVyTW9vblBoYXNlRW50cnlSDHBlck1vb25QaGFzZRJKCgpwZXJfcGVyaW9kGAYgAygLMisuYW5nbGVyc2xvZy5DYXRjaFJlcG9ydE1vZGVsLlBlclBlcmlvZEVudHJ5UglwZXJQZXJpb2QSSgoKcGVyX3NlYXNvbhgHIAMoCzIrLmFuZ2xlcnNsb2cuQ2F0Y2hSZXBvcnRNb2RlbC5QZXJTZWFzb25FbnRyeVIJcGVyU2Vhc29uElEKDXBlcl90aWRlX3R5cGUYCCADKAsyLS5hbmdsZXJzbG9nLkNhdGNoUmVwb3J0TW9kZWwuUGVyVGlkZVR5cGVFbnRyeVILcGVyVGlkZVR5cGUSSgoKcGVyX2FuZ2xlchgJIAMoCzIrLmFuZ2xlcnNsb2cuQ2F0Y2hSZXBvcnRNb2RlbC5QZXJBbmdsZXJFbnRyeVIJcGVyQW5nbGVyElsKEXBlcl9ib2R5X29mX3dhdGVyGAogAygLMjAuYW5nbGVyc2xvZy5DYXRjaFJlcG9ydE1vZGVsLlBlckJvZHlPZldhdGVyRW50cnlSDnBlckJvZHlPZldhdGVyEkoKCnBlcl9tZXRob2QYCyADKAsyKy5hbmdsZXJzbG9nLkNhdGNoUmVwb3J0TW9kZWwuUGVyTWV0aG9kRW50cnlSCXBlck1ldGhvZBJaChBwZXJfZmlzaGluZ19zcG90GAwgAygLMjAuYW5nbGVyc2xvZy5DYXRjaFJlcG9ydE1vZGVsLlBlckZpc2hpbmdTcG90RW50cnlSDnBlckZpc2hpbmdTcG90Ek0KC3Blcl9zcGVjaWVzGA0gAygLMiwuYW5nbGVyc2xvZy5DYXRjaFJlcG9ydE1vZGVsLlBlclNwZWNpZXNFbnRyeVIKcGVyU3BlY2llcxJdChFwZXJfd2F0ZXJfY2xhcml0eRgOIAMoCzIxLmFuZ2xlcnNsb2cuQ2F0Y2hSZXBvcnRNb2RlbC5QZXJXYXRlckNsYXJpdHlFbnRyeVIPcGVyV2F0ZXJDbGFyaXR5EkQKCHBlcl9iYWl0GA8gAygLMikuYW5nbGVyc2xvZy5DYXRjaFJlcG9ydE1vZGVsLlBlckJhaXRFbnRyeVIHcGVyQmFpdBo6CgxQZXJIb3VyRW50cnkSEAoDa2V5GAEgASgFUgNrZXkSFAoFdmFsdWUYAiABKAVSBXZhbHVlOgI4ARo7Cg1QZXJNb250aEVudHJ5EhAKA2tleRgBIAEoBVIDa2V5EhQKBXZhbHVlGAIgASgFUgV2YWx1ZToCOAEaPwoRUGVyTW9vblBoYXNlRW50cnkSEAoDa2V5GAEgASgFUgNrZXkSFAoFdmFsdWUYAiABKAVSBXZhbHVlOgI4ARo8Cg5QZXJQZXJpb2RFbnRyeRIQCgNrZXkYASABKAVSA2tleRIUCgV2YWx1ZRgCIAEoBVIFdmFsdWU6AjgBGjwKDlBlclNlYXNvbkVudHJ5EhAKA2tleRgBIAEoBVIDa2V5EhQKBXZhbHVlGAIgASgFUgV2YWx1ZToCOAEaPgoQUGVyVGlkZVR5cGVFbnRyeRIQCgNrZXkYASABKAVSA2tleRIUCgV2YWx1ZRgCIAEoBVIFdmFsdWU6AjgBGjwKDlBlckFuZ2xlckVudHJ5EhAKA2tleRgBIAEoCVIDa2V5EhQKBXZhbHVlGAIgASgFUgV2YWx1ZToCOAEaQQoTUGVyQm9keU9mV2F0ZXJFbnRyeRIQCgNrZXkYASABKAlSA2tleRIUCgV2YWx1ZRgCIAEoBVIFdmFsdWU6AjgBGjwKDlBlck1ldGhvZEVudHJ5EhAKA2tleRgBIAEoCVIDa2V5EhQKBXZhbHVlGAIgASgFUgV2YWx1ZToCOAEaQQoTUGVyRmlzaGluZ1Nwb3RFbnRyeRIQCgNrZXkYASABKAlSA2tleRIUCgV2YWx1ZRgCIAEoBVIFdmFsdWU6AjgBGj0KD1BlclNwZWNpZXNFbnRyeRIQCgNrZXkYASABKAlSA2tleRIUCgV2YWx1ZRgCIAEoBVIFdmFsdWU6AjgBGkIKFFBlcldhdGVyQ2xhcml0eUVudHJ5EhAKA2tleRgBIAEoCVIDa2V5EhQKBXZhbHVlGAIgASgFUgV2YWx1ZToCOAEaOgoMUGVyQmFpdEVudHJ5EhAKA2tleRgBIAEoCVIDa2V5EhQKBXZhbHVlGAIgASgFUgV2YWx1ZToCOAE=');
 // ignore_for_file: undefined_named_parameter,constant_identifier_names

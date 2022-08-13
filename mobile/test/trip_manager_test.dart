@@ -124,6 +124,23 @@ void main() {
     expect(trips[0].name, "Trip 2");
   });
 
+  testWidgets("trips adds default time zone to given DateRange",
+      (tester) async {
+    await stubDefaultTrips();
+
+    var dateRange = DateRange(
+      startTimestamp: Int64(dateTime(2020, 1, 9, 8).millisecondsSinceEpoch),
+      endTimestamp: Int64(dateTime(2020, 1, 11, 8).millisecondsSinceEpoch),
+    );
+    expect(dateRange.hasTimeZone(), isFalse);
+
+    tripManager.trips(
+      context: await buildContext(tester),
+      dateRange: dateRange,
+    );
+    expect(dateRange.hasTimeZone(), isTrue);
+  });
+
   testWidgets("trips that don't fall within a given date range",
       (tester) async {
     await stubDefaultTrips();

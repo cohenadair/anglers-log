@@ -275,6 +275,7 @@ void main() {
     when(fishingSpotManager.matchesFilter(any, any)).thenReturn(true);
     when(fishingSpotManager.entity(any)).thenReturn(null);
     when(fishingSpotManager.entityExists(any)).thenReturn(false);
+    when(fishingSpotManager.uuidMap()).thenReturn({});
 
     await catchManager.addOrUpdate(Catch()
       ..id = randomId()
@@ -708,13 +709,17 @@ void main() {
     var context = await buildContext(tester, appManager: appManager);
     var catches = catchManager.catches(
       context,
-      anglerIds: {anglerId1},
+      opt: CatchFilterOptions(
+        anglerIds: {anglerId1},
+      ),
     );
     expect(catches.length, 2);
 
     catches = catchManager.catches(
       context,
-      anglerIds: {anglerId1, anglerId2},
+      opt: CatchFilterOptions(
+        anglerIds: {anglerId1, anglerId2},
+      ),
     );
     expect(catches.length, 3);
 
@@ -723,7 +728,9 @@ void main() {
 
     catches = catchManager.catches(
       context,
-      anglerIds: {randomId()},
+      opt: CatchFilterOptions(
+        anglerIds: {randomId()},
+      ),
     );
     expect(catches.isEmpty, true);
   });
@@ -756,13 +763,17 @@ void main() {
     var context = await buildContext(tester, appManager: appManager);
     var catches = catchManager.catches(
       context,
-      waterClarityIds: {clarityId1},
+      opt: CatchFilterOptions(
+        waterClarityIds: {clarityId1},
+      ),
     );
     expect(catches.length, 2);
 
     catches = catchManager.catches(
       context,
-      waterClarityIds: {clarityId1, clarityId2},
+      opt: CatchFilterOptions(
+        waterClarityIds: {clarityId1, clarityId2},
+      ),
     );
     expect(catches.length, 3);
 
@@ -771,7 +782,9 @@ void main() {
 
     catches = catchManager.catches(
       context,
-      waterClarityIds: {randomId()},
+      opt: CatchFilterOptions(
+        waterClarityIds: {randomId()},
+      ),
     );
     expect(catches.isEmpty, true);
   });
@@ -804,13 +817,18 @@ void main() {
     var context = await buildContext(tester, appManager: appManager);
     var catches = catchManager.catches(
       context,
-      speciesIds: {speciesId1},
+      opt: CatchFilterOptions(
+        // dateRanges: [DateRange(period: DateRange_Period.allDates)],
+        speciesIds: {speciesId1},
+      ),
     );
     expect(catches.length, 2);
 
     catches = catchManager.catches(
       context,
-      speciesIds: {speciesId1, speciesId2},
+      opt: CatchFilterOptions(
+        speciesIds: {speciesId1, speciesId2},
+      ),
     );
     expect(catches.length, 3);
 
@@ -819,7 +837,9 @@ void main() {
 
     catches = catchManager.catches(
       context,
-      speciesIds: {randomId()},
+      opt: CatchFilterOptions(
+        speciesIds: {randomId()},
+      ),
     );
     expect(catches.isEmpty, true);
   });
@@ -841,10 +861,14 @@ void main() {
     var context = await buildContext(tester, appManager: appManager);
     var catches = catchManager.catches(
       context,
-      dateRange: DateRange(
-        period: DateRange_Period.custom,
-        startTimestamp: Int64(0),
-        endTimestamp: Int64(15000),
+      opt: CatchFilterOptions(
+        dateRanges: [
+          DateRange(
+            period: DateRange_Period.custom,
+            startTimestamp: Int64(0),
+            endTimestamp: Int64(15000),
+          ),
+        ],
       ),
     );
     expect(catches.length, 2);
@@ -854,13 +878,54 @@ void main() {
 
     catches = catchManager.catches(
       context,
-      dateRange: DateRange(
-        period: DateRange_Period.custom,
-        startTimestamp: Int64(20001),
-        endTimestamp: Int64(30000),
+      opt: CatchFilterOptions(
+        dateRanges: [
+          DateRange(
+            period: DateRange_Period.custom,
+            startTimestamp: Int64(20001),
+            endTimestamp: Int64(30000),
+          ),
+        ],
       ),
     );
     expect(catches.isEmpty, true);
+
+    catches = catchManager.catches(
+      context,
+      opt: CatchFilterOptions(
+        currentTimestamp: Int64(40000),
+        dateRanges: [
+          DateRange(period: DateRange_Period.allDates),
+        ],
+      ),
+    );
+    expect(catches.length, 3);
+  });
+
+  testWidgets("Filtering adds time zone to date ranges", (tester) async {
+    var filterOptions = CatchFilterOptions(
+      dateRanges: [
+        DateRange(
+          period: DateRange_Period.custom,
+          startTimestamp: Int64(0),
+          endTimestamp: Int64(15000),
+        ),
+        DateRange(
+          period: DateRange_Period.custom,
+          startTimestamp: Int64(0),
+          endTimestamp: Int64(15000),
+          timeZone: "America/Chicago",
+        ),
+      ],
+    );
+    catchManager.catches(
+      await buildContext(tester, appManager: appManager),
+      opt: filterOptions,
+    );
+
+    // Verify filter options was updated correctly.
+    expect(filterOptions.dateRanges[0].timeZone, defaultTimeZone);
+    expect(filterOptions.dateRanges[1].timeZone, "America/Chicago");
   });
 
   testWidgets("Filtering by fishing spot", (tester) async {
@@ -888,13 +953,17 @@ void main() {
     var context = await buildContext(tester, appManager: appManager);
     var catches = catchManager.catches(
       context,
-      fishingSpotIds: {fishingSpotId0},
+      opt: CatchFilterOptions(
+        fishingSpotIds: {fishingSpotId0},
+      ),
     );
     expect(catches.length, 2);
 
     catches = catchManager.catches(
       context,
-      fishingSpotIds: {fishingSpotId0, fishingSpotId3},
+      opt: CatchFilterOptions(
+        fishingSpotIds: {fishingSpotId0, fishingSpotId3},
+      ),
     );
     expect(catches.length, 3);
 
@@ -903,7 +972,9 @@ void main() {
 
     catches = catchManager.catches(
       context,
-      fishingSpotIds: {fishingSpotId2},
+      opt: CatchFilterOptions(
+        fishingSpotIds: {fishingSpotId2},
+      ),
     );
     expect(catches.isEmpty, true);
   });
@@ -937,36 +1008,35 @@ void main() {
     var fishingSpotManager = MockFishingSpotManager();
     when(appManager.app.fishingSpotManager).thenReturn(fishingSpotManager);
 
-    when(fishingSpotManager.entity(fishingSpotId0)).thenReturn(FishingSpot(
-      id: fishingSpotId0,
-      bodyOfWaterId: bodyOfWaterId0,
-    ));
-
-    when(fishingSpotManager.entity(fishingSpotId1)).thenReturn(FishingSpot(
-      id: fishingSpotId1,
-      bodyOfWaterId: bodyOfWaterId1,
-    ));
-
-    when(fishingSpotManager.entity(fishingSpotId2)).thenReturn(FishingSpot(
-      id: fishingSpotId2,
-      bodyOfWaterId: bodyOfWaterId2,
-    ));
-
-    when(fishingSpotManager.entity(fishingSpotId3))
-        .thenReturn(FishingSpot(id: fishingSpotId3));
-
-    when(fishingSpotManager.entityExists(any)).thenReturn(true);
+    when(fishingSpotManager.uuidMap()).thenReturn({
+      fishingSpotId0.uuid: FishingSpot(
+        id: fishingSpotId0,
+        bodyOfWaterId: bodyOfWaterId0,
+      ),
+      fishingSpotId1.uuid: FishingSpot(
+        id: fishingSpotId1,
+        bodyOfWaterId: bodyOfWaterId1,
+      ),
+      fishingSpotId2.uuid: FishingSpot(
+        id: fishingSpotId2,
+        bodyOfWaterId: bodyOfWaterId2,
+      ),
+    });
 
     var context = await buildContext(tester, appManager: appManager);
     var catches = catchManager.catches(
       context,
-      bodyOfWaterIds: {bodyOfWaterId0},
+      opt: CatchFilterOptions(
+        bodyOfWaterIds: {bodyOfWaterId0},
+      ),
     );
     expect(catches.length, 2);
 
     catches = catchManager.catches(
       context,
-      bodyOfWaterIds: {bodyOfWaterId0, bodyOfWaterId1},
+      opt: CatchFilterOptions(
+        bodyOfWaterIds: {bodyOfWaterId0, bodyOfWaterId1},
+      ),
     );
     expect(catches.length, 3);
 
@@ -975,7 +1045,9 @@ void main() {
 
     catches = catchManager.catches(
       context,
-      bodyOfWaterIds: {randomId()},
+      opt: CatchFilterOptions(
+        bodyOfWaterIds: {randomId()},
+      ),
     );
     expect(catches.isEmpty, isTrue);
   });
@@ -1010,13 +1082,17 @@ void main() {
     var context = await buildContext(tester, appManager: appManager);
     var catches = catchManager.catches(
       context,
-      baits: {baitAttachment0},
+      opt: CatchFilterOptions(
+        baits: {baitAttachment0},
+      ),
     );
     expect(catches.length, 2);
 
     catches = catchManager.catches(
       context,
-      baits: {baitAttachment0, baitAttachment3},
+      opt: CatchFilterOptions(
+        baits: {baitAttachment0, baitAttachment3},
+      ),
     );
     expect(catches.length, 3);
 
@@ -1025,7 +1101,9 @@ void main() {
 
     catches = catchManager.catches(
       context,
-      baits: {baitAttachment2},
+      opt: CatchFilterOptions(
+        baits: {baitAttachment2},
+      ),
     );
     expect(catches.isEmpty, true);
   });
@@ -1054,21 +1132,27 @@ void main() {
     // Verify catch is returned when the bait attachment has a variant.
     var catches = catchManager.catches(
       context,
-      baits: {baitAttachment0},
+      opt: CatchFilterOptions(
+        baits: {baitAttachment0},
+      ),
     );
     expect(catches.length, 1);
 
     // Verify catches are returned when the bait doesn't have a variant.
     catches = catchManager.catches(
       context,
-      baits: {baitAttachment1},
+      opt: CatchFilterOptions(
+        baits: {baitAttachment1},
+      ),
     );
     expect(catches.length, 2);
 
     // Verify catches are returned when no bait is passed in.
     catches = catchManager.catches(
       context,
-      dateRange: DateRange(period: DateRange_Period.allDates),
+      opt: CatchFilterOptions(
+        dateRanges: [DateRange(period: DateRange_Period.allDates)],
+      ),
     );
     expect(catches.length, 2);
   });
@@ -1090,7 +1174,9 @@ void main() {
     var context = await buildContext(tester, appManager: appManager);
     var catches = catchManager.catches(
       context,
-      catchIds: {catchId2, catchId0},
+      opt: CatchFilterOptions(
+        catchIds: {catchId2, catchId0},
+      ),
     );
     expect(catches.length, 2);
 
@@ -1099,7 +1185,9 @@ void main() {
 
     catches = catchManager.catches(
       context,
-      catchIds: {randomId()},
+      opt: CatchFilterOptions(
+        catchIds: {randomId()},
+      ),
     );
     expect(catches.isEmpty, true);
   });
@@ -1132,13 +1220,17 @@ void main() {
     var context = await buildContext(tester, appManager: appManager);
     var catches = catchManager.catches(
       context,
-      methodIds: {methodId1},
+      opt: CatchFilterOptions(
+        methodIds: {methodId1},
+      ),
     );
     expect(catches.length, 2);
 
     catches = catchManager.catches(
       context,
-      methodIds: {methodId1, methodId2},
+      opt: CatchFilterOptions(
+        methodIds: {methodId1, methodId2},
+      ),
     );
     expect(catches.length, 3);
 
@@ -1147,7 +1239,9 @@ void main() {
 
     catches = catchManager.catches(
       context,
-      methodIds: {randomId()},
+      opt: CatchFilterOptions(
+        methodIds: {randomId()},
+      ),
     );
     expect(catches.isEmpty, true);
   });
@@ -1179,13 +1273,17 @@ void main() {
     var context = await buildContext(tester, appManager: appManager);
     var catches = catchManager.catches(
       context,
-      periods: {Period.dusk},
+      opt: CatchFilterOptions(
+        periods: {Period.dusk},
+      ),
     );
     expect(catches.length, 1);
 
     catches = catchManager.catches(
       context,
-      periods: {Period.dusk, Period.afternoon},
+      opt: CatchFilterOptions(
+        periods: {Period.dusk, Period.afternoon},
+      ),
     );
     expect(catches.length, 2);
 
@@ -1194,7 +1292,9 @@ void main() {
 
     catches = catchManager.catches(
       context,
-      periods: {Period.morning},
+      opt: CatchFilterOptions(
+        periods: {Period.morning},
+      ),
     );
     expect(catches.isEmpty, true);
   });
@@ -1222,13 +1322,17 @@ void main() {
     var context = await buildContext(tester, appManager: appManager);
     var catches = catchManager.catches(
       context,
-      seasons: {Season.winter},
+      opt: CatchFilterOptions(
+        seasons: {Season.winter},
+      ),
     );
     expect(catches.length, 1);
 
     catches = catchManager.catches(
       context,
-      seasons: {Season.spring, Season.summer},
+      opt: CatchFilterOptions(
+        seasons: {Season.spring, Season.summer},
+      ),
     );
     expect(catches.length, 2);
 
@@ -1237,7 +1341,9 @@ void main() {
 
     catches = catchManager.catches(
       context,
-      seasons: {Season.autumn},
+      opt: CatchFilterOptions(
+        seasons: {Season.autumn},
+      ),
     );
     expect(catches.isEmpty, true);
   });
@@ -1265,13 +1371,17 @@ void main() {
     var context = await buildContext(tester, appManager: appManager);
     var catches = catchManager.catches(
       context,
-      windDirections: {Direction.east},
+      opt: CatchFilterOptions(
+        windDirections: {Direction.east},
+      ),
     );
     expect(catches.length, 1);
 
     catches = catchManager.catches(
       context,
-      windDirections: {Direction.east, Direction.north},
+      opt: CatchFilterOptions(
+        windDirections: {Direction.east, Direction.north},
+      ),
     );
     expect(catches.length, 2);
 
@@ -1280,7 +1390,9 @@ void main() {
 
     catches = catchManager.catches(
       context,
-      windDirections: {Direction.south},
+      opt: CatchFilterOptions(
+        windDirections: {Direction.south},
+      ),
     );
     expect(catches.isEmpty, true);
   });
@@ -1309,13 +1421,17 @@ void main() {
     var context = await buildContext(tester, appManager: appManager);
     var catches = catchManager.catches(
       context,
-      skyConditions: {SkyCondition.clear},
+      opt: CatchFilterOptions(
+        skyConditions: {SkyCondition.clear},
+      ),
     );
     expect(catches.length, 1);
 
     catches = catchManager.catches(
       context,
-      skyConditions: {SkyCondition.clear, SkyCondition.fog},
+      opt: CatchFilterOptions(
+        skyConditions: {SkyCondition.clear, SkyCondition.fog},
+      ),
     );
     expect(catches.length, 2);
 
@@ -1324,7 +1440,9 @@ void main() {
 
     catches = catchManager.catches(
       context,
-      skyConditions: {SkyCondition.storm},
+      opt: CatchFilterOptions(
+        skyConditions: {SkyCondition.storm},
+      ),
     );
     expect(catches.isEmpty, true);
   });
@@ -1352,13 +1470,17 @@ void main() {
     var context = await buildContext(tester, appManager: appManager);
     var catches = catchManager.catches(
       context,
-      moonPhases: {MoonPhase.full},
+      opt: CatchFilterOptions(
+        moonPhases: {MoonPhase.full},
+      ),
     );
     expect(catches.length, 1);
 
     catches = catchManager.catches(
       context,
-      moonPhases: {MoonPhase.full, MoonPhase.new_},
+      opt: CatchFilterOptions(
+        moonPhases: {MoonPhase.full, MoonPhase.new_},
+      ),
     );
     expect(catches.length, 2);
 
@@ -1367,7 +1489,9 @@ void main() {
 
     catches = catchManager.catches(
       context,
-      moonPhases: {MoonPhase.waxing_gibbous},
+      opt: CatchFilterOptions(
+        moonPhases: {MoonPhase.waxing_gibbous},
+      ),
     );
     expect(catches.isEmpty, true);
   });
@@ -1395,13 +1519,17 @@ void main() {
     var context = await buildContext(tester, appManager: appManager);
     var catches = catchManager.catches(
       context,
-      tideTypes: {TideType.slack},
+      opt: CatchFilterOptions(
+        tideTypes: {TideType.slack},
+      ),
     );
     expect(catches.length, 1);
 
     catches = catchManager.catches(
       context,
-      tideTypes: {TideType.slack, TideType.outgoing},
+      opt: CatchFilterOptions(
+        tideTypes: {TideType.slack, TideType.outgoing},
+      ),
     );
     expect(catches.length, 2);
 
@@ -1410,7 +1538,9 @@ void main() {
 
     catches = catchManager.catches(
       context,
-      tideTypes: {TideType.incoming},
+      opt: CatchFilterOptions(
+        tideTypes: {TideType.incoming},
+      ),
     );
     expect(catches.isEmpty, true);
   });
@@ -1438,7 +1568,9 @@ void main() {
     var context = await buildContext(tester, appManager: appManager);
     var catches = catchManager.catches(
       context,
-      isFavoritesOnly: true,
+      opt: CatchFilterOptions(
+        isFavoritesOnly: true,
+      ),
     );
     expect(catches.length, 3);
 
@@ -1468,7 +1600,9 @@ void main() {
     var context = await buildContext(tester, appManager: appManager);
     var catches = catchManager.catches(
       context,
-      isCatchAndReleaseOnly: true,
+      opt: CatchFilterOptions(
+        isCatchAndReleaseOnly: true,
+      ),
     );
     expect(catches.length, 3);
 
@@ -1506,13 +1640,15 @@ void main() {
     // No catches.
     catches = catchManager.catches(
       context,
-      waterDepthFilter: NumberFilter(
-        boundary: NumberBoundary.less_than,
-        from: MultiMeasurement(
-          system: MeasurementSystem.metric,
-          mainValue: Measurement(
-            unit: Unit.meters,
-            value: 10,
+      opt: CatchFilterOptions(
+        waterDepthFilter: NumberFilter(
+          boundary: NumberBoundary.less_than,
+          from: MultiMeasurement(
+            system: MeasurementSystem.metric,
+            mainValue: Measurement(
+              unit: Unit.meters,
+              value: 10,
+            ),
           ),
         ),
       ),
@@ -1522,13 +1658,15 @@ void main() {
     // Some catches.
     catches = catchManager.catches(
       context,
-      waterDepthFilter: NumberFilter(
-        boundary: NumberBoundary.less_than_or_equal_to,
-        from: MultiMeasurement(
-          system: MeasurementSystem.metric,
-          mainValue: Measurement(
-            unit: Unit.meters,
-            value: 50,
+      opt: CatchFilterOptions(
+        waterDepthFilter: NumberFilter(
+          boundary: NumberBoundary.less_than_or_equal_to,
+          from: MultiMeasurement(
+            system: MeasurementSystem.metric,
+            mainValue: Measurement(
+              unit: Unit.meters,
+              value: 50,
+            ),
           ),
         ),
       ),
@@ -1567,13 +1705,15 @@ void main() {
     // No catches.
     catches = catchManager.catches(
       context,
-      waterTemperatureFilter: NumberFilter(
-        boundary: NumberBoundary.less_than,
-        from: MultiMeasurement(
-          system: MeasurementSystem.metric,
-          mainValue: Measurement(
-            unit: Unit.celsius,
-            value: 10,
+      opt: CatchFilterOptions(
+        waterTemperatureFilter: NumberFilter(
+          boundary: NumberBoundary.less_than,
+          from: MultiMeasurement(
+            system: MeasurementSystem.metric,
+            mainValue: Measurement(
+              unit: Unit.celsius,
+              value: 10,
+            ),
           ),
         ),
       ),
@@ -1583,13 +1723,15 @@ void main() {
     // Some catches.
     catches = catchManager.catches(
       context,
-      waterTemperatureFilter: NumberFilter(
-        boundary: NumberBoundary.less_than_or_equal_to,
-        from: MultiMeasurement(
-          system: MeasurementSystem.metric,
-          mainValue: Measurement(
-            unit: Unit.celsius,
-            value: 50,
+      opt: CatchFilterOptions(
+        waterTemperatureFilter: NumberFilter(
+          boundary: NumberBoundary.less_than_or_equal_to,
+          from: MultiMeasurement(
+            system: MeasurementSystem.metric,
+            mainValue: Measurement(
+              unit: Unit.celsius,
+              value: 50,
+            ),
           ),
         ),
       ),
@@ -1628,13 +1770,15 @@ void main() {
     // No catches.
     catches = catchManager.catches(
       context,
-      lengthFilter: NumberFilter(
-        boundary: NumberBoundary.less_than,
-        from: MultiMeasurement(
-          system: MeasurementSystem.metric,
-          mainValue: Measurement(
-            unit: Unit.centimeters,
-            value: 10,
+      opt: CatchFilterOptions(
+        lengthFilter: NumberFilter(
+          boundary: NumberBoundary.less_than,
+          from: MultiMeasurement(
+            system: MeasurementSystem.metric,
+            mainValue: Measurement(
+              unit: Unit.centimeters,
+              value: 10,
+            ),
           ),
         ),
       ),
@@ -1644,13 +1788,15 @@ void main() {
     // Some catches.
     catches = catchManager.catches(
       context,
-      lengthFilter: NumberFilter(
-        boundary: NumberBoundary.less_than_or_equal_to,
-        from: MultiMeasurement(
-          system: MeasurementSystem.metric,
-          mainValue: Measurement(
-            unit: Unit.centimeters,
-            value: 50,
+      opt: CatchFilterOptions(
+        lengthFilter: NumberFilter(
+          boundary: NumberBoundary.less_than_or_equal_to,
+          from: MultiMeasurement(
+            system: MeasurementSystem.metric,
+            mainValue: Measurement(
+              unit: Unit.centimeters,
+              value: 50,
+            ),
           ),
         ),
       ),
@@ -1689,13 +1835,15 @@ void main() {
     // No catches.
     catches = catchManager.catches(
       context,
-      weightFilter: NumberFilter(
-        boundary: NumberBoundary.less_than,
-        from: MultiMeasurement(
-          system: MeasurementSystem.metric,
-          mainValue: Measurement(
-            unit: Unit.kilograms,
-            value: 10,
+      opt: CatchFilterOptions(
+        weightFilter: NumberFilter(
+          boundary: NumberBoundary.less_than,
+          from: MultiMeasurement(
+            system: MeasurementSystem.metric,
+            mainValue: Measurement(
+              unit: Unit.kilograms,
+              value: 10,
+            ),
           ),
         ),
       ),
@@ -1705,13 +1853,15 @@ void main() {
     // Some catches.
     catches = catchManager.catches(
       context,
-      weightFilter: NumberFilter(
-        boundary: NumberBoundary.less_than_or_equal_to,
-        from: MultiMeasurement(
-          system: MeasurementSystem.metric,
-          mainValue: Measurement(
-            unit: Unit.kilograms,
-            value: 50,
+      opt: CatchFilterOptions(
+        weightFilter: NumberFilter(
+          boundary: NumberBoundary.less_than_or_equal_to,
+          from: MultiMeasurement(
+            system: MeasurementSystem.metric,
+            mainValue: Measurement(
+              unit: Unit.kilograms,
+              value: 50,
+            ),
           ),
         ),
       ),
@@ -1738,11 +1888,13 @@ void main() {
     // No catches.
     catches = catchManager.catches(
       context,
-      quantityFilter: NumberFilter(
-        boundary: NumberBoundary.less_than,
-        from: MultiMeasurement(
-          mainValue: Measurement(
-            value: 10,
+      opt: CatchFilterOptions(
+        quantityFilter: NumberFilter(
+          boundary: NumberBoundary.less_than,
+          from: MultiMeasurement(
+            mainValue: Measurement(
+              value: 10,
+            ),
           ),
         ),
       ),
@@ -1752,11 +1904,13 @@ void main() {
     // Some catches.
     catches = catchManager.catches(
       context,
-      quantityFilter: NumberFilter(
-        boundary: NumberBoundary.less_than_or_equal_to,
-        from: MultiMeasurement(
-          mainValue: Measurement(
-            value: 50,
+      opt: CatchFilterOptions(
+        quantityFilter: NumberFilter(
+          boundary: NumberBoundary.less_than_or_equal_to,
+          from: MultiMeasurement(
+            mainValue: Measurement(
+              value: 50,
+            ),
           ),
         ),
       ),
@@ -1799,13 +1953,15 @@ void main() {
     // No catches.
     catches = catchManager.catches(
       context,
-      airTemperatureFilter: NumberFilter(
-        boundary: NumberBoundary.less_than,
-        from: MultiMeasurement(
-          system: MeasurementSystem.imperial_whole,
-          mainValue: Measurement(
-            unit: Unit.fahrenheit,
-            value: 40,
+      opt: CatchFilterOptions(
+        airTemperatureFilter: NumberFilter(
+          boundary: NumberBoundary.less_than,
+          from: MultiMeasurement(
+            system: MeasurementSystem.imperial_whole,
+            mainValue: Measurement(
+              unit: Unit.fahrenheit,
+              value: 40,
+            ),
           ),
         ),
       ),
@@ -1815,13 +1971,15 @@ void main() {
     // Some catches.
     catches = catchManager.catches(
       context,
-      airTemperatureFilter: NumberFilter(
-        boundary: NumberBoundary.less_than_or_equal_to,
-        from: MultiMeasurement(
-          system: MeasurementSystem.imperial_whole,
-          mainValue: Measurement(
-            unit: Unit.fahrenheit,
-            value: 80,
+      opt: CatchFilterOptions(
+        airTemperatureFilter: NumberFilter(
+          boundary: NumberBoundary.less_than_or_equal_to,
+          from: MultiMeasurement(
+            system: MeasurementSystem.imperial_whole,
+            mainValue: Measurement(
+              unit: Unit.fahrenheit,
+              value: 80,
+            ),
           ),
         ),
       ),
@@ -1864,13 +2022,15 @@ void main() {
     // No catches.
     catches = catchManager.catches(
       context,
-      airPressureFilter: NumberFilter(
-        boundary: NumberBoundary.less_than,
-        from: MultiMeasurement(
-          system: MeasurementSystem.metric,
-          mainValue: Measurement(
-            unit: Unit.millibars,
-            value: 800,
+      opt: CatchFilterOptions(
+        airPressureFilter: NumberFilter(
+          boundary: NumberBoundary.less_than,
+          from: MultiMeasurement(
+            system: MeasurementSystem.metric,
+            mainValue: Measurement(
+              unit: Unit.millibars,
+              value: 800,
+            ),
           ),
         ),
       ),
@@ -1880,13 +2040,15 @@ void main() {
     // Some catches.
     catches = catchManager.catches(
       context,
-      airPressureFilter: NumberFilter(
-        boundary: NumberBoundary.greater_than,
-        from: MultiMeasurement(
-          system: MeasurementSystem.metric,
-          mainValue: Measurement(
-            unit: Unit.millibars,
-            value: 900,
+      opt: CatchFilterOptions(
+        airPressureFilter: NumberFilter(
+          boundary: NumberBoundary.greater_than,
+          from: MultiMeasurement(
+            system: MeasurementSystem.metric,
+            mainValue: Measurement(
+              unit: Unit.millibars,
+              value: 900,
+            ),
           ),
         ),
       ),
@@ -1927,12 +2089,14 @@ void main() {
     // No catches.
     catches = catchManager.catches(
       context,
-      airHumidityFilter: NumberFilter(
-        boundary: NumberBoundary.less_than,
-        from: MultiMeasurement(
-          mainValue: Measurement(
-            unit: Unit.percent,
-            value: 30,
+      opt: CatchFilterOptions(
+        airHumidityFilter: NumberFilter(
+          boundary: NumberBoundary.less_than,
+          from: MultiMeasurement(
+            mainValue: Measurement(
+              unit: Unit.percent,
+              value: 30,
+            ),
           ),
         ),
       ),
@@ -1942,12 +2106,14 @@ void main() {
     // Some catches.
     catches = catchManager.catches(
       context,
-      airHumidityFilter: NumberFilter(
-        boundary: NumberBoundary.greater_than_or_equal_to,
-        from: MultiMeasurement(
-          mainValue: Measurement(
-            unit: Unit.percent,
-            value: 30,
+      opt: CatchFilterOptions(
+        airHumidityFilter: NumberFilter(
+          boundary: NumberBoundary.greater_than_or_equal_to,
+          from: MultiMeasurement(
+            mainValue: Measurement(
+              unit: Unit.percent,
+              value: 30,
+            ),
           ),
         ),
       ),
@@ -1990,13 +2156,15 @@ void main() {
     // No catches.
     catches = catchManager.catches(
       context,
-      airVisibilityFilter: NumberFilter(
-        boundary: NumberBoundary.less_than,
-        from: MultiMeasurement(
-          system: MeasurementSystem.imperial_decimal,
-          mainValue: Measurement(
-            unit: Unit.miles,
-            value: 5.5,
+      opt: CatchFilterOptions(
+        airVisibilityFilter: NumberFilter(
+          boundary: NumberBoundary.less_than,
+          from: MultiMeasurement(
+            system: MeasurementSystem.imperial_decimal,
+            mainValue: Measurement(
+              unit: Unit.miles,
+              value: 5.5,
+            ),
           ),
         ),
       ),
@@ -2006,13 +2174,15 @@ void main() {
     // Some catches.
     catches = catchManager.catches(
       context,
-      airVisibilityFilter: NumberFilter(
-        boundary: NumberBoundary.greater_than,
-        from: MultiMeasurement(
-          system: MeasurementSystem.imperial_decimal,
-          mainValue: Measurement(
-            unit: Unit.miles,
-            value: 5.5,
+      opt: CatchFilterOptions(
+        airVisibilityFilter: NumberFilter(
+          boundary: NumberBoundary.greater_than,
+          from: MultiMeasurement(
+            system: MeasurementSystem.imperial_decimal,
+            mainValue: Measurement(
+              unit: Unit.miles,
+              value: 5.5,
+            ),
           ),
         ),
       ),
@@ -2055,13 +2225,15 @@ void main() {
     // No catches.
     catches = catchManager.catches(
       context,
-      windSpeedFilter: NumberFilter(
-        boundary: NumberBoundary.less_than,
-        from: MultiMeasurement(
-          system: MeasurementSystem.metric,
-          mainValue: Measurement(
-            unit: Unit.kilometers_per_hour,
-            value: 4,
+      opt: CatchFilterOptions(
+        windSpeedFilter: NumberFilter(
+          boundary: NumberBoundary.less_than,
+          from: MultiMeasurement(
+            system: MeasurementSystem.metric,
+            mainValue: Measurement(
+              unit: Unit.kilometers_per_hour,
+              value: 4,
+            ),
           ),
         ),
       ),
@@ -2071,13 +2243,15 @@ void main() {
     // Some catches.
     catches = catchManager.catches(
       context,
-      windSpeedFilter: NumberFilter(
-        boundary: NumberBoundary.greater_than_or_equal_to,
-        from: MultiMeasurement(
-          system: MeasurementSystem.metric,
-          mainValue: Measurement(
-            unit: Unit.kilometers_per_hour,
-            value: 5,
+      opt: CatchFilterOptions(
+        windSpeedFilter: NumberFilter(
+          boundary: NumberBoundary.greater_than_or_equal_to,
+          from: MultiMeasurement(
+            system: MeasurementSystem.metric,
+            mainValue: Measurement(
+              unit: Unit.kilometers_per_hour,
+              value: 5,
+            ),
           ),
         ),
       ),
@@ -2110,11 +2284,11 @@ void main() {
     expect(catches.length, 4);
 
     // No catches.
-    catches = catchManager.catches(context, hour: 15);
+    catches = catchManager.catches(context, opt: CatchFilterOptions(hour: 15));
     expect(catches.length, 0);
 
     // Some catches.
-    catches = catchManager.catches(context, hour: 5);
+    catches = catchManager.catches(context, opt: CatchFilterOptions(hour: 5));
     expect(catches.length, 2);
   });
 
@@ -2143,11 +2317,11 @@ void main() {
     expect(catches.length, 4);
 
     // No catches.
-    catches = catchManager.catches(context, month: 12);
+    catches = catchManager.catches(context, opt: CatchFilterOptions(month: 12));
     expect(catches.length, 0);
 
     // Some catches.
-    catches = catchManager.catches(context, month: 3);
+    catches = catchManager.catches(context, opt: CatchFilterOptions(month: 3));
     expect(catches.length, 2);
   });
 
@@ -2191,10 +2365,12 @@ void main() {
     var context = await buildContext(tester, appManager: appManager);
     var catches = catchManager.catches(
       context,
-      catchIds: {catchId0},
-      speciesIds: {speciesId0},
-      baits: {baitAttachment0},
-      fishingSpotIds: {fishingSpotId0},
+      opt: CatchFilterOptions(
+        catchIds: {catchId0},
+        speciesIds: {speciesId0},
+        baits: {baitAttachment0},
+        fishingSpotIds: {fishingSpotId0},
+      ),
     );
     expect(catches.length, 1);
 
@@ -2203,9 +2379,11 @@ void main() {
 
     catches = catchManager.catches(
       context,
-      catchIds: {catchId0},
-      speciesIds: {randomId()},
-      baits: {baitAttachment0},
+      opt: CatchFilterOptions(
+        catchIds: {catchId0},
+        speciesIds: {randomId()},
+        baits: {baitAttachment0},
+      ),
     );
     expect(catches.isEmpty, true);
   });
@@ -2229,8 +2407,17 @@ void main() {
     var context = await buildContext(tester);
     var catches = catchManager.catches(
       context,
-      sortOrder: CatchSortOrder.newestToOldest,
+      opt: CatchFilterOptions(
+        order: CatchFilterOptions_Order.newest_to_oldest,
+      ),
     );
+    expect(catches.length, 3);
+    expect(catches[0].timestamp, Int64(15000));
+    expect(catches[1].timestamp, Int64(12500));
+    expect(catches[2].timestamp, Int64(10000));
+
+    // Defaults to newest_to_oldest.
+    catches = catchManager.catches(context);
     expect(catches.length, 3);
     expect(catches[0].timestamp, Int64(15000));
     expect(catches[1].timestamp, Int64(12500));
@@ -2274,7 +2461,9 @@ void main() {
     var context = await buildContext(tester);
     var catches = catchManager.catches(
       context,
-      sortOrder: CatchSortOrder.longestToShortest,
+      opt: CatchFilterOptions(
+        order: CatchFilterOptions_Order.longest_to_shortest,
+      ),
     );
     expect(catches.length, 3);
     expect(catches[0].length.mainValue.value, 75);
@@ -2319,12 +2508,82 @@ void main() {
     var context = await buildContext(tester);
     var catches = catchManager.catches(
       context,
-      sortOrder: CatchSortOrder.heaviestToLightest,
+      opt: CatchFilterOptions(
+        order: CatchFilterOptions_Order.heaviest_to_lightest,
+      ),
     );
     expect(catches.length, 3);
     expect(catches[0].weight.mainValue.value, 75);
     expect(catches[1].weight.mainValue.value, 60);
     expect(catches[2].weight.mainValue.value, 45);
+  });
+
+  testWidgets("Catches creates default filter options", (tester) async {
+    // The fact that an assertion error is not thrown means a valid default
+    // CatchFilterOptions was created.
+    var catches = catchManager
+        .catches(await buildContext(tester, appManager: appManager));
+    expect(catches, isNotNull);
+  });
+
+  testWidgets("Catches overrides input fishing spots", (tester) async {
+    when(dataManager.insertOrReplace(any, any))
+        .thenAnswer((_) => Future.value(true));
+    when(appManager.fishingSpotManager.uuidMap()).thenReturn({});
+
+    var fishingSpotId0 = randomId();
+    var bodyOfWaterId0 = randomId();
+
+    await catchManager.addOrUpdate(Catch()
+      ..id = randomId()
+      ..fishingSpotId = fishingSpotId0);
+
+    // With strictly allFishingSpots input below, the number of catches in the
+    // result should be 1; however, when allFishingSpots is overridden, the
+    // number of catches in the result is 0.
+    var context = await buildContext(tester, appManager: appManager);
+    var catches = catchManager.catches(
+      context,
+      opt: CatchFilterOptions(
+        bodyOfWaterIds: {bodyOfWaterId0},
+        allFishingSpots: {
+          fishingSpotId0.uuid: FishingSpot(
+            id: fishingSpotId0,
+            bodyOfWaterId: bodyOfWaterId0,
+            name: "Test",
+          ),
+        },
+      ),
+    );
+    expect(catches.isEmpty, isTrue);
+  });
+
+  testWidgets("Catches overrides input catches", (tester) async {
+    when(dataManager.insertOrReplace(any, any))
+        .thenAnswer((_) => Future.value(true));
+
+    var catchId0 = randomId();
+    var catchId1 = randomId();
+    var catchId2 = randomId();
+
+    await catchManager.addOrUpdate(Catch(id: catchId0));
+    await catchManager.addOrUpdate(Catch(id: catchId1));
+    await catchManager.addOrUpdate(Catch(id: catchId2));
+
+    // With strictly allCatches input below, the number of catches in the
+    // result should be 2; however, when allCatches is overridden, the
+    // number of catches in the result is 3.
+    var context = await buildContext(tester, appManager: appManager);
+    var catches = catchManager.catches(
+      context,
+      opt: CatchFilterOptions(
+        allCatches: {
+          catchId1.uuid: Catch(id: catchId1),
+          catchId2.uuid: Catch(id: catchId2),
+        },
+      ),
+    );
+    expect(catches.length, 3);
   });
 
   testWidgets("imageNamesSortedByTimestamp", (tester) async {
@@ -2450,8 +2709,8 @@ void main() {
       id: id4,
     ));
 
-    expect(catchManager.totalQuantity({id0, id1, id2, id3, id4}), 32);
-    expect(catchManager.totalQuantity({id1, id4}), 2);
-    expect(catchManager.totalQuantity({id0, id2}), 20);
+    expect(catchManager.totalQuantity([id0, id1, id2, id3, id4]), 32);
+    expect(catchManager.totalQuantity([id1, id4]), 2);
+    expect(catchManager.totalQuantity([id0, id2]), 20);
   });
 }

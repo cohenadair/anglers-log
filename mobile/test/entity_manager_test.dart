@@ -477,6 +477,22 @@ void main() {
     expect(entityManager.idSet(entities: [entities[0]]).length, 1);
   });
 
+  test("uuidMap", () async {
+    var id0 = randomId();
+    var id1 = randomId();
+    var entities = [
+      Species(id: id0, name: "Test 1"),
+      Species(id: id1, name: "Test 2")
+    ];
+    await entityManager.addOrUpdate(entities[0]);
+    await entityManager.addOrUpdate(entities[1]);
+
+    expect(entityManager.uuidMap(), {
+      id0.uuid: entities[0],
+      id1.uuid: entities[1],
+    });
+  });
+
   testWidgets("Stream listeners are managed", (tester) async {
     var subscription1 = MockStreamSubscription();
     when(subscription1.cancel()).thenAnswer((_) => Future.value(null));
