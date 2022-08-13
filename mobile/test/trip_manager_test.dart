@@ -124,7 +124,8 @@ void main() {
     expect(trips[0].name, "Trip 2");
   });
 
-  testWidgets("trips adds default time zone to given DateRange", (tester) async {
+  testWidgets("trips adds default time zone to given DateRange",
+      (tester) async {
     await stubDefaultTrips();
 
     var dateRange = DateRange(

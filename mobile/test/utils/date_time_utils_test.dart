@@ -197,7 +197,9 @@ void main() {
     var context = await buildContext(tester);
     expect(date_time_utils.combine(context, null, null), isNull);
     expect(
-        date_time_utils.combine(context, null, const TimeOfDay(hour: 5, minute: 5)), isNotNull);
+        date_time_utils.combine(
+            context, null, const TimeOfDay(hour: 5, minute: 5)),
+        isNotNull);
     expect(date_time_utils.combine(context, dateTime(2020), null), isNotNull);
 
     expect(
@@ -206,14 +208,17 @@ void main() {
       dateTime(2020, 10, 26, 16, 45, 20, 1000),
     );
 
-    var actual = date_time_utils.combine(context, null, const TimeOfDay(hour: 16, minute: 45));
+    var actual = date_time_utils.combine(
+        context, null, const TimeOfDay(hour: 16, minute: 45));
     var expected = dateTime(0, 1, 1, 16, 45);
     expect(actual, expected);
     expect(actual!.locationName, "America/New_York");
   });
 
   test("dateTimeToDayAccuracy", () {
-    expect(date_time_utils.dateTimeToDayAccuracy(dateTime(2020, 10, 26, 15, 30, 20, 1000)),
+    expect(
+        date_time_utils
+            .dateTimeToDayAccuracy(dateTime(2020, 10, 26, 15, 30, 20, 1000)),
         dateTime(2020, 10, 26, 0, 0, 0, 0));
 
     initializeTimeZones();
@@ -228,7 +233,8 @@ void main() {
   });
 
   test("getStartOfWeek", () {
-    expect(date_time_utils.startOfWeek(dateTime(2020, 9, 24)), dateTime(2020, 9, 21));
+    expect(date_time_utils.startOfWeek(dateTime(2020, 9, 24)),
+        dateTime(2020, 9, 21));
   });
 
   test("weekOfYear", () {
@@ -246,7 +252,8 @@ void main() {
       "3:30 PM",
     );
     expect(
-      date_time_utils.formatTimeOfDay(await buildContext(tester, use24Hour: true),
+      date_time_utils.formatTimeOfDay(
+          await buildContext(tester, use24Hour: true),
           const TimeOfDay(hour: 15, minute: 30)),
       "15:30",
     );

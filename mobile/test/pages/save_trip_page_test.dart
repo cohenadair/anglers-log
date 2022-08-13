@@ -230,8 +230,10 @@ void main() {
         .thenAnswer((invocation) => invocation.positionalArguments.first.id);
     when(appManager.catchManager.list(any)).thenReturn(catches);
     when(appManager.catchManager.displayName(any, any)).thenAnswer(
-        (invocation) => date_time_utils.formatTimestamp(invocation.positionalArguments[0],
-            invocation.positionalArguments[1].timestamp.toInt(), null));
+        (invocation) => date_time_utils.formatTimestamp(
+            invocation.positionalArguments[0],
+            invocation.positionalArguments[1].timestamp.toInt(),
+            null));
 
     when(appManager.customEntityManager.entityExists(any)).thenReturn(false);
 

@@ -220,8 +220,8 @@ void main() {
       showAllVariantsLabel: anyNamed("showAllVariantsLabel"),
     )).thenAnswer((invocation) =>
         baitMap[invocation.positionalArguments[1].baitId]!.name);
-    when(appManager.baitManager.uuidMap()).thenReturn(
-        baitMap.map((key, value) => MapEntry(key.uuid, value)));
+    when(appManager.baitManager.uuidMap())
+        .thenReturn(baitMap.map((key, value) => MapEntry(key.uuid, value)));
 
     when(appManager.bodyOfWaterManager.list()).thenReturn([]);
     when(appManager.bodyOfWaterManager.uuidMap()).thenReturn({});
@@ -233,8 +233,8 @@ void main() {
     when(appManager.catchManager.list()).thenReturn(catches);
     when(appManager.catchManager.hasEntities).thenReturn(false);
     when(appManager.catchManager.totalQuantity(any)).thenReturn(catches.length);
-    when(appManager.catchManager.uuidMap()).thenReturn(
-        {for (var cat in catches) cat.id.uuid: cat});
+    when(appManager.catchManager.uuidMap())
+        .thenReturn({for (var cat in catches) cat.id.uuid: cat});
 
     when(appManager.reportManager.list()).thenReturn([]);
     when(appManager.reportManager.listSortedByDisplayName(any)).thenReturn([]);
@@ -289,8 +289,8 @@ void main() {
         .thenReturn((lhs, rhs) => quiver.compareIgnoreCase(lhs.name, rhs.name));
     when(appManager.speciesManager.displayName(any, any))
         .thenAnswer((invocation) => invocation.positionalArguments[1].name);
-    when(appManager.speciesManager.uuidMap()).thenReturn(
-        speciesMap.map((key, value) => MapEntry(key.uuid, value)));
+    when(appManager.speciesManager.uuidMap())
+        .thenReturn(speciesMap.map((key, value) => MapEntry(key.uuid, value)));
 
     when(appManager.subscriptionManager.stream)
         .thenAnswer((_) => const Stream.empty());

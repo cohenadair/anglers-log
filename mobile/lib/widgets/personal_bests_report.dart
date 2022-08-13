@@ -290,8 +290,8 @@ class _PersonalBestsReportModel {
         weightBySpecies, speciesManager.displayNameComparator(context));
 
     for (var trip in tripManager.list()) {
-      if (!range.contains(trip.startTimestamp.toInt(),
-          timeManager.now(trip.timeZone))) {
+      if (!range.contains(
+          trip.startTimestamp.toInt(), timeManager.now(trip.timeZone))) {
         continue;
       }
 

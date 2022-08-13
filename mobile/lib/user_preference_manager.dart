@@ -200,8 +200,8 @@ class UserPreferenceManager extends PreferenceManager {
 
   String? get mapType => preferences[_keyMapType];
 
-  Future<void> updateAppVersion() async => put(_keyAppVersion,
-      (await _packageInfoWrapper.fromPlatform()).version);
+  Future<void> updateAppVersion() async =>
+      put(_keyAppVersion, (await _packageInfoWrapper.fromPlatform()).version);
 
   String? get appVersion => preferences[_keyAppVersion];
 
