@@ -818,6 +818,7 @@ void main() {
     var catches = catchManager.catches(
       context,
       opt: CatchFilterOptions(
+        // dateRanges: [DateRange(period: DateRange_Period.allDates)],
         speciesIds: {speciesId1},
       ),
     );
@@ -888,6 +889,43 @@ void main() {
       ),
     );
     expect(catches.isEmpty, true);
+
+    catches = catchManager.catches(
+      context,
+      opt: CatchFilterOptions(
+        currentTimestamp: Int64(40000),
+        dateRanges: [
+          DateRange(period: DateRange_Period.allDates),
+        ],
+      ),
+    );
+    expect(catches.length, 3);
+  });
+
+  testWidgets("Filtering adds time zone to date ranges", (tester) async {
+    var filterOptions = CatchFilterOptions(
+      dateRanges: [
+        DateRange(
+          period: DateRange_Period.custom,
+          startTimestamp: Int64(0),
+          endTimestamp: Int64(15000),
+        ),
+        DateRange(
+          period: DateRange_Period.custom,
+          startTimestamp: Int64(0),
+          endTimestamp: Int64(15000),
+          timeZone: "America/Chicago",
+        ),
+      ],
+    );
+    catchManager.catches(
+      await buildContext(tester, appManager: appManager),
+      opt: filterOptions,
+    );
+
+    // Verify filter options was updated correctly.
+    expect(filterOptions.dateRanges[0].timeZone, defaultTimeZone);
+    expect(filterOptions.dateRanges[1].timeZone, "America/Chicago");
   });
 
   testWidgets("Filtering by fishing spot", (tester) async {
@@ -2377,6 +2415,13 @@ void main() {
     expect(catches[0].timestamp, Int64(15000));
     expect(catches[1].timestamp, Int64(12500));
     expect(catches[2].timestamp, Int64(10000));
+
+    // Defaults to newest_to_oldest.
+    catches = catchManager.catches(context);
+    expect(catches.length, 3);
+    expect(catches[0].timestamp, Int64(15000));
+    expect(catches[1].timestamp, Int64(12500));
+    expect(catches[2].timestamp, Int64(10000));
   });
 
   testWidgets("Catches sorted longest to shortest", (tester) async {
@@ -2471,6 +2516,74 @@ void main() {
     expect(catches[0].weight.mainValue.value, 75);
     expect(catches[1].weight.mainValue.value, 60);
     expect(catches[2].weight.mainValue.value, 45);
+  });
+
+  testWidgets("Catches creates default filter options", (tester) async {
+    // The fact that an assertion error is not thrown means a valid default
+    // CatchFilterOptions was created.
+    var catches = catchManager
+        .catches(await buildContext(tester, appManager: appManager));
+    expect(catches, isNotNull);
+  });
+
+  testWidgets("Catches overrides input fishing spots", (tester) async {
+    when(dataManager.insertOrReplace(any, any))
+        .thenAnswer((_) => Future.value(true));
+    when(appManager.fishingSpotManager.uuidMap()).thenReturn({});
+
+    var fishingSpotId0 = randomId();
+    var bodyOfWaterId0 = randomId();
+
+    await catchManager.addOrUpdate(Catch()
+      ..id = randomId()
+      ..fishingSpotId = fishingSpotId0);
+
+    // With strictly allFishingSpots input below, the number of catches in the
+    // result should be 1; however, when allFishingSpots is overridden, the
+    // number of catches in the result is 0.
+    var context = await buildContext(tester, appManager: appManager);
+    var catches = catchManager.catches(
+      context,
+      opt: CatchFilterOptions(
+        bodyOfWaterIds: {bodyOfWaterId0},
+        allFishingSpots: {
+          fishingSpotId0.uuid: FishingSpot(
+            id: fishingSpotId0,
+            bodyOfWaterId: bodyOfWaterId0,
+            name: "Test",
+          ),
+        },
+      ),
+    );
+    expect(catches.isEmpty, isTrue);
+  });
+
+  testWidgets("Catches overrides input catches", (tester) async {
+    when(dataManager.insertOrReplace(any, any))
+        .thenAnswer((_) => Future.value(true));
+
+    var catchId0 = randomId();
+    var catchId1 = randomId();
+    var catchId2 = randomId();
+
+    await catchManager.addOrUpdate(Catch(id: catchId0));
+    await catchManager.addOrUpdate(Catch(id: catchId1));
+    await catchManager.addOrUpdate(Catch(id: catchId2));
+
+    // With strictly allCatches input below, the number of catches in the
+    // result should be 2; however, when allCatches is overridden, the
+    // number of catches in the result is 3.
+    var context = await buildContext(tester, appManager: appManager);
+    var catches = catchManager.catches(
+      context,
+      opt: CatchFilterOptions(
+        allCatches: {
+          catchId1.uuid: Catch(id: catchId1),
+          catchId2.uuid: Catch(id: catchId2),
+        },
+      ),
+    );
+    expect(catches.length, 3);
   });
 
   testWidgets("imageNamesSortedByTimestamp", (tester) async {

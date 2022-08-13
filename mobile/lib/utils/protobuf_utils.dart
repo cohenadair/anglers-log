@@ -322,6 +322,13 @@ extension Baits on Bait {
 extension BaitAttachments on BaitAttachment {
   static BaitAttachment fromPbMapKey(String key) {
     var ids = key.split(".");
+    for (var id in ids) {
+      if (safeParseId(id) == null) {
+        _log.w("Invalid protobuf map key: $key");
+        return BaitAttachment();
+      }
+    }
+
     if (ids.length == 1) {
       return BaitAttachment(baitId: Id(uuid: ids[0]));
     } else if (ids.length == 2) {
@@ -335,7 +342,8 @@ extension BaitAttachments on BaitAttachment {
     return BaitAttachment();
   }
 
-  String toPbMapKey() => "${baitId.uuid}.${variantId.uuid}";
+  String toPbMapKey() =>
+      "${baitId.uuid}${hasVariantId() ? ".${variantId.uuid}" : ""}";
 }
 
 extension BaitTypes on Bait_Type {

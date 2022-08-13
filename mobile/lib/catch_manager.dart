@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:collection/collection.dart';
+import 'package:fixnum/fixnum.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile/time_manager.dart';
@@ -154,8 +155,13 @@ class CatchManager extends EntityManager<Catch> {
     CatchFilterOptions? opt,
   }) {
     opt ??= CatchFilterOptions();
+
     if (!opt.hasCurrentTimeZone()) {
       opt.currentTimeZone = _timeManager.currentTimeZone;
+    }
+
+    if (!opt.hasCurrentTimestamp()) {
+      opt.currentTimestamp = Int64(_timeManager.currentTimestamp);
     }
 
     // Filter options' fields that should _always_ be equal to all entities
@@ -189,6 +195,7 @@ class CatchManager extends EntityManager<Catch> {
   /// filtering. For searching, use [catches].
   static Iterable<Catch> isolatedFilteredCatches(CatchFilterOptions opt) {
     assert(isNotEmpty(opt.currentTimeZone));
+    assert(opt.hasCurrentTimestamp());
 
     // Set a default time zone for any date ranges that don't have one set.
     for (var dateRange in opt.dateRanges) {

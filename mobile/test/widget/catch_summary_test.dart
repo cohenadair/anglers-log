@@ -358,12 +358,14 @@ void main() {
 
   Future<void> pumpCatchSummary(
     WidgetTester tester,
-    CatchSummary Function(BuildContext) builder,
-  ) async {
+    CatchSummary Function(BuildContext) builder, {
+    MediaQueryData mediaQueryData = const MediaQueryData(),
+  }) async {
     await pumpContext(
       tester,
       (context) => SingleChildScrollView(child: builder(context)),
       appManager: appManager,
+      mediaQueryData: mediaQueryData,
     );
     // Pump to redraw after summary future completes.
     await tester.pumpAndSettle();
@@ -428,6 +430,7 @@ void main() {
     when(fishingSpotManager.displayName(
       any,
       any,
+      useLatLngFallback: anyNamed("useLatLngFallback"),
       includeBodyOfWater: anyNamed("includeBodyOfWater"),
       includeLatLngLabels: anyNamed("includeLatLngLabels"),
     )).thenAnswer((invocation) => invocation.positionalArguments[1].name);
@@ -502,6 +505,20 @@ void main() {
     });
 
     stubCatchesByTimestamp();
+  });
+
+  testWidgets("Loading is shown until report is generated", (tester) async {
+    await pumpContext(
+      tester,
+      (context) => SingleChildScrollView(
+        child: CatchSummary<Catch>(
+          filterOptionsBuilder: (_) => CatchFilterOptions(),
+        ),
+      ),
+      appManager: appManager,
+    );
+    expect(find.byType(Loading), findsOneWidget);
+    expect(find.byType(DateRangePickerInput), findsNothing);
   });
 
   testWidgets("Date picker hidden when static", (tester) async {
@@ -734,6 +751,26 @@ void main() {
 
     // 13 - 12 for each row, 1 for the back button.
     expect(find.byType(InkWell), findsNWidgets(13));
+  });
+
+  testWidgets("Catches per entity row opens entity list", (tester) async {
+    when(appManager.userPreferenceManager.isTrackingSpecies).thenReturn(true);
+    await pumpCatchSummary(
+      tester,
+      (context) => CatchSummary<Catch>(
+        filterOptionsBuilder: (_) => CatchFilterOptions(),
+      ),
+      // Ensures "Pike (4)" is tappable. For some reason, ensureVisible doesn't
+      // work here.
+      mediaQueryData: const MediaQueryData(
+        size: Size(500, 5000),
+      ),
+    );
+    expect(find.text("Per Species"), findsOneWidget);
+
+    await tester.ensureVisible(find.text("Pike (4)"));
+    await tapAndSettle(tester, find.text("Pike (4)"));
+    expect(find.byType(CatchListPage), findsOneWidget);
   });
 
   testWidgets("Catches per species shown", (tester) async {
@@ -1580,5 +1617,55 @@ void main() {
       ),
     );
     expect(find.text("Per Water Clarity"), findsNothing);
+  });
+
+  testWidgets("Default values are set for report input", (tester) async {
+    await pumpCatchSummary(
+      tester,
+      (context) => CatchSummary<WaterClarity>(
+        filterOptionsBuilder: (_) => CatchFilterOptions(),
+      ),
+    );
+
+    var result =
+        verify(appManager.isolatesWrapper.computeIntList(any, captureAny));
+    result.called(1);
+
+    var opt = CatchFilterOptions.fromBuffer(result.captured.first);
+    expect(opt.dateRanges.length, 1);
+    expect(opt.hasCurrentTimestamp(), isTrue);
+    expect(opt.hasCurrentTimeZone(), isTrue);
+  });
+
+  testWidgets("All entity lists are overridden", (tester) async {
+    await pumpCatchSummary(
+      tester,
+      (context) => CatchSummary<WaterClarity>(
+        filterOptionsBuilder: (_) => CatchFilterOptions(
+          allAnglers: {anglerId0.uuid: anglerMap.values.first},
+          allBaits: {baitId0.uuid: baitMap.values.first},
+          allBodiesOfWater: {bodyOfWaterId0.uuid: bodyOfWaterMap.values.first},
+          allCatches: {catchId0.uuid: catches.first},
+          allFishingSpots: {fishingSpotId0.uuid: fishingSpotMap.values.first},
+          allMethods: {methodId0.uuid: methodMap.values.first},
+          allSpecies: {speciesId0.uuid: speciesMap.values.first},
+          allWaterClarities: {clarityId0.uuid: clarityMap.values.first},
+        ),
+      ),
+    );
+
+    var result =
+        verify(appManager.isolatesWrapper.computeIntList(any, captureAny));
+    result.called(1);
+
+    var opt = CatchFilterOptions.fromBuffer(result.captured.first);
+    expect(opt.allAnglers.length, anglerMap.values.length);
+    expect(opt.allBaits.length, baitMap.values.length);
+    expect(opt.allBodiesOfWater.length, bodyOfWaterMap.values.length);
+    expect(opt.allCatches.length, catches.length);
+    expect(opt.allFishingSpots.length, fishingSpotMap.values.length);
+    expect(opt.allMethods.length, methodMap.values.length);
+    expect(opt.allSpecies.length, speciesMap.values.length);
+    expect(opt.allWaterClarities.length, clarityMap.values.length);
   });
 }

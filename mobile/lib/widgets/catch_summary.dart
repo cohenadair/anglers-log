@@ -1021,12 +1021,12 @@ extension CatchReportModels on CatchReportModel {
   }
 }
 
-List<int> computeCatchReport(List<int> inputBytes) {
+List<int> computeCatchReport(List<int> catchFilterOptionsBytes) {
   initializeTimeZones();
 
   var stopwatch = Stopwatch()..start();
 
-  var opt = CatchFilterOptions.fromBuffer(inputBytes);
+  var opt = CatchFilterOptions.fromBuffer(catchFilterOptionsBytes);
   assert(opt.hasCurrentTimestamp());
   assert(opt.hasCurrentTimeZone());
 

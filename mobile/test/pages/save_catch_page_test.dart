@@ -1381,6 +1381,64 @@ void main() {
     expect(cat.hasFishingSpotId(), isFalse);
   });
 
+  testWidgets("Save catch with a non-existing fishing spot", (tester) async {
+    when(appManager.fishingSpotManager.entityExists(any)).thenReturn(false);
+    when(appManager.fishingSpotManager.addOrUpdate(any))
+        .thenAnswer((_) => Future.value(true));
+
+    await tester.pumpWidget(
+      Testable(
+        (_) => SaveCatchPage(
+          speciesId: randomId(),
+          fishingSpot: FishingSpot(
+            id: randomId(),
+            lat: 1.23456,
+            lng: 2.34567,
+          ),
+        ),
+        appManager: appManager,
+      ),
+    );
+    await tapAndSettle(tester, find.text("SAVE"));
+
+    verify(appManager.fishingSpotManager.addOrUpdate(any)).called(1);
+
+    var result = verify(appManager.catchManager
+        .addOrUpdate(captureAny, imageFiles: anyNamed("imageFiles")));
+    result.called(1);
+
+    var cat = result.captured.first as Catch;
+    expect(cat.hasFishingSpotId(), isTrue);
+  });
+
+  testWidgets("Save catch with an existing fishing spot", (tester) async {
+    when(appManager.fishingSpotManager.entityExists(any)).thenReturn(true);
+
+    await tester.pumpWidget(
+      Testable(
+        (_) => SaveCatchPage(
+          speciesId: randomId(),
+          fishingSpot: FishingSpot(
+            id: randomId(),
+            lat: 1.23456,
+            lng: 2.34567,
+          ),
+        ),
+        appManager: appManager,
+      ),
+    );
+    await tapAndSettle(tester, find.text("SAVE"));
+
+    verify(appManager.fishingSpotManager.entityExists(any)).called(1);
+
+    var result = verify(appManager.catchManager
+        .addOrUpdate(captureAny, imageFiles: anyNamed("imageFiles")));
+    result.called(1);
+
+    var cat = result.captured.first as Catch;
+    expect(cat.hasFishingSpotId(), isTrue);
+  });
+
   testWidgets("Hidden catch and release doesn't set property", (tester) async {
     await tester.pumpWidget(
       Testable(
