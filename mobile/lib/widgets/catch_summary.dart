@@ -1,4 +1,7 @@
+import 'dart:isolate';
+
 import 'package:fixnum/fixnum.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:mobile/entity_manager.dart';
@@ -1024,8 +1027,6 @@ extension CatchReportModels on CatchReportModel {
 List<int> computeCatchReport(List<int> catchFilterOptionsBytes) {
   initializeTimeZones();
 
-  var stopwatch = Stopwatch()..start();
-
   var opt = CatchFilterOptions.fromBuffer(catchFilterOptionsBytes);
   assert(opt.hasCurrentTimestamp());
   assert(opt.hasCurrentTimeZone());
@@ -1051,9 +1052,5 @@ List<int> computeCatchReport(List<int> catchFilterOptionsBytes) {
         opt.currentTimestamp - report.lastCatch.timestamp.toInt();
   }
 
-  var bytes = report.writeToBuffer().toList();
-  const Log("CatchSummary")
-      .d("computeCatchReport took ${stopwatch.elapsedMilliseconds}ms");
-
-  return bytes;
+  return report.writeToBuffer().toList();
 }
