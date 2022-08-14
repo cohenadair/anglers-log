@@ -10,7 +10,6 @@ import 'package:version/version.dart';
 import '../../res/dimen.dart';
 import '../../res/gen/custom_icons.dart';
 import '../../widgets/widget.dart';
-import '../../wrappers/package_info_wrapper.dart';
 
 class ChangeLogPage extends StatelessWidget {
   final VoidCallback onTapContinue;
@@ -45,11 +44,11 @@ class ChangeLogPage extends StatelessWidget {
 
   Widget _build2_1_4(BuildContext context) {
     return ExpansionListItem(
-      title: Text(_buildVersionText(context, "2.1.4")),
+      title: Text(_buildVersionText(context, "2.1.5")),
       isExpanded: true,
       children: [
         _buildChangeList({
-          Strings.of(context).changeLog_214_1,
+          Strings.of(context).changeLog_215_1,
         }),
       ],
     );

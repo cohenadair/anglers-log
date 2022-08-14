@@ -10,7 +10,7 @@ description: Track, analyze, and share your catches in the sport of fishing.
 #
 # Both numbers must be incremented for Android. DO NOT add any suffix to the date, such as ".2". The
 # period will be removed on Google Play and builds with lower numbers cannot be uploaded.
-version: 2.1.4+20220814
+version: 2.1.5+20220815
 publish_to: none
 
 environment:
