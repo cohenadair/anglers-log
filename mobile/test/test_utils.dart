@@ -154,7 +154,7 @@ Future<BuildContext> pumpContext(
   return context;
 }
 
-String get defaultTimeZone => "America/New_York";
+const defaultTimeZone = "America/New_York";
 
 TZDateTime dateTime(
   int year, [

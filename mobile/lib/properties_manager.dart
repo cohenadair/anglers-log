@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:provider/provider.dart';
@@ -17,10 +16,6 @@ class PropertiesManager {
   final String _keyRevenueCatApiKey = "revenueCat.apiKey";
   final String _keyVisualCrossing = "visualCrossing.apiKey";
   final String _keyMapbox = "mapbox.apiKey";
-  final String _keyAdUnitIdAndroidDebug = "adUnitId.android.debug";
-  final String _keyAdUnitIdAppleDebug = "adUnitId.ios.debug";
-  final String _keyAdUnitIdAndroidRelease = "adUnitId.android.release";
-  final String _keyAdUnitIdAppleRelease = "adUnitId.ios.release";
   final String _keyFirebaseSecret = "firebase.secret";
 
   final String _path = "assets/sensitive.properties";
@@ -47,14 +42,6 @@ class PropertiesManager {
       _properties.stringForKey(_keyVisualCrossing);
 
   String get mapboxApiKey => _properties.stringForKey(_keyMapbox);
-
-  String get adUnitIdAndroid => kDebugMode
-      ? _properties.stringForKey(_keyAdUnitIdAndroidDebug)
-      : _properties.stringForKey(_keyAdUnitIdAndroidRelease);
-
-  String get adUnitIdApple => kDebugMode
-      ? _properties.stringForKey(_keyAdUnitIdAppleDebug)
-      : _properties.stringForKey(_keyAdUnitIdAppleRelease);
 
   String get firebaseSecret => _properties.stringForKey(_keyFirebaseSecret);
 

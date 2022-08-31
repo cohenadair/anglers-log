@@ -10,7 +10,6 @@ import 'package:version/version.dart';
 import '../../res/dimen.dart';
 import '../../res/gen/custom_icons.dart';
 import '../../widgets/widget.dart';
-import '../../wrappers/package_info_wrapper.dart';
 
 class ChangeLogPage extends StatelessWidget {
   final VoidCallback onTapContinue;
@@ -34,16 +33,61 @@ class ChangeLogPage extends StatelessWidget {
           ),
         ),
         const VerticalSpace(paddingDefault),
+        _build2_1_4(context),
+        _build2_1_3(context),
+        _build2_1_2(context),
         _build2_1_0(context),
         _build2_0_22(context),
       ],
     );
   }
 
+  Widget _build2_1_4(BuildContext context) {
+    return ExpansionListItem(
+      title: Text(_buildVersionText(context, "2.1.5")),
+      isExpanded: true,
+      children: [
+        _buildChangeList({
+          Strings.of(context).changeLog_215_1,
+        }),
+      ],
+    );
+  }
+
+  Widget _build2_1_3(BuildContext context) {
+    return ExpansionListItem(
+      title: Text(_buildVersionText(context, "2.1.3")),
+      isExpanded: false,
+      children: [
+        _buildChangeList({
+          Strings.of(context).changeLog_213_1,
+          Strings.of(context).changeLog_213_2,
+          Strings.of(context).changeLog_213_3,
+          Strings.of(context).changeLog_213_4,
+        }),
+      ],
+    );
+  }
+
+  Widget _build2_1_2(BuildContext context) {
+    return ExpansionListItem(
+      title: Text(_buildVersionText(context, "2.1.2")),
+      isExpanded: false,
+      children: [
+        _buildChangeList({
+          Strings.of(context).changeLog_212_1,
+          Strings.of(context).changeLog_212_2,
+          Strings.of(context).changeLog_212_3,
+          Strings.of(context).changeLog_212_4,
+        }),
+      ],
+    );
+  }
+
   Widget _build2_1_0(BuildContext context) {
     return ExpansionListItem(
-      title: Text(_buildVersionText(context, "2.1.0")),
-      isExpanded: true,
+      title: Text(_buildVersionText(context, "2.1.1")),
+      isExpanded: false,
       children: [
         _buildChangeList({
           Strings.of(context).changeLog_210_1,
@@ -92,8 +136,7 @@ class ChangeLogPage extends StatelessWidget {
   }
 
   Future<void> _onTapContinue(BuildContext context) async {
-    UserPreferenceManager.of(context).setAppVersion(
-        (await PackageInfoWrapper.of(context).fromPlatform()).version);
+    UserPreferenceManager.of(context).updateAppVersion();
     onTapContinue();
   }
 }

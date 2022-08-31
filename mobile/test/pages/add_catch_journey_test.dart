@@ -57,7 +57,8 @@ void main() {
     when(appManager.fishingSpotManager.list()).thenReturn([]);
     when(appManager.fishingSpotManager.listSortedByDisplayName(any))
         .thenReturn([]);
-    when(appManager.fishingSpotManager.withinPreferenceRadius(any)).thenReturn(null);
+    when(appManager.fishingSpotManager.withinPreferenceRadius(any))
+        .thenReturn(null);
     when(appManager.fishingSpotManager.addOrUpdate(any))
         .thenAnswer((_) => Future.value(false));
 

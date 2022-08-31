@@ -6,6 +6,7 @@ import 'package:mobile/model/gen/anglerslog.pb.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mockito/mockito.dart';
 
+import 'mocks/mocks.mocks.dart';
 import 'mocks/stubbed_app_manager.dart';
 
 void main() {
@@ -16,6 +17,9 @@ void main() {
 
   setUp(() {
     appManager = StubbedAppManager();
+
+    when(appManager.baitCategoryManager.listen(any))
+        .thenAnswer((_) => MockStreamSubscription());
 
     when(appManager.localDatabaseManager.insertOrReplace(any, any))
         .thenAnswer((_) => Future.value(true));

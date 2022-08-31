@@ -450,7 +450,7 @@ void main() {
     expect(catches.length, 4);
 
     expect(catches[0].timestamp.toInt(),
-        dateTime(2019, 8, 13, 0, 44).millisecondsSinceEpoch);
+        DateTime(2019, 8, 13, 0, 44).millisecondsSinceEpoch);
     expect(catches[0].hasTimeZone(), isTrue);
     expect(catches[0].hasFishingSpotId(), isTrue);
     expect(speciesManager.entity(catches[0].speciesId)!.name, "Carp - Common");
@@ -483,17 +483,17 @@ void main() {
     expect(measuredCatch.weight.fractionValue.unit, Unit.ounces);
 
     expect(catches[1].timestamp.toInt(),
-        dateTime(2019, 8, 12, 12, 44).millisecondsSinceEpoch);
+        DateTime(2019, 8, 12, 12, 44).millisecondsSinceEpoch);
     expect(catches[1].hasTimeZone(), isTrue);
     expect(catches[1].hasWasCatchAndRelease(), isFalse);
 
     expect(catches[2].timestamp.toInt(),
-        dateTime(2019, 8, 11, 8, 44).millisecondsSinceEpoch);
+        DateTime(2019, 8, 11, 8, 44).millisecondsSinceEpoch);
     expect(catches[2].hasTimeZone(), isTrue);
     expect(catches[2].hasWasCatchAndRelease(), isFalse);
 
     expect(catches[3].timestamp.toInt(),
-        dateTime(2019, 8, 10, 20, 44).millisecondsSinceEpoch);
+        DateTime(2019, 8, 10, 20, 44).millisecondsSinceEpoch);
     expect(catches[3].hasTimeZone(), isTrue);
     expect(catches[3].wasCatchAndRelease, isTrue);
     expect(catches[3].hasWaterClarityId(), isFalse);
@@ -514,7 +514,7 @@ void main() {
     expect(catches.length, 1);
 
     expect(catches[0].timestamp.toInt(),
-        dateTime(2021, 10, 2, 6, 10).millisecondsSinceEpoch);
+        DateTime(2021, 10, 2, 6, 10).millisecondsSinceEpoch);
   });
 
   test("Import iOS locations", () async {
@@ -594,7 +594,18 @@ void main() {
     expect(catchManager.entityCount, greaterThan(0));
     expect(
       catchManager.catches(await buildContext(tester)).first.timestamp,
-      Int64(1652216820000),
+      Int64(1652220420000),
+    );
+  });
+
+  testWidgets("Import iOS dotted AM", (tester) async {
+    var file = File("test/resources/backups/legacy_ios_dotted_am.zip");
+    await LegacyImporter(appManager.app, file).start();
+
+    expect(catchManager.entityCount, greaterThan(0));
+    expect(
+      catchManager.catches(await buildContext(tester)).first.timestamp,
+      Int64(1597757940000),
     );
   });
 
@@ -633,7 +644,7 @@ void main() {
     expect(catches.length, 1);
 
     expect(catches[0].timestamp.toInt(),
-        dateTime(2017, 10, 11, 17, 19, 19, 420).millisecondsSinceEpoch);
+        DateTime(2017, 10, 11, 17, 19, 19, 420).millisecondsSinceEpoch);
     expect(catches[0].hasTimeZone(), isTrue);
     expect(catches[0].hasFishingSpotId(), isTrue);
     expect(
@@ -866,12 +877,13 @@ void main() {
     var file = File("test/resources/backups/legacy_android_real.zip");
     await LegacyImporter(appManager.app, file).start();
 
-    expect(
-      catchManager
-          .catches(await buildContext(tester), isFavoritesOnly: true)
-          .length,
-      3,
+    var catches = catchManager.catches(
+      await buildContext(tester),
+      opt: CatchFilterOptions(
+        isFavoritesOnly: true,
+      ),
     );
+    expect(catches.length, 3);
 
     var hasIsFavoriteCount = 0;
     for (var cat in catchManager.list()) {
@@ -973,6 +985,7 @@ void main() {
       when(imagesDir.path).thenReturn("test/images");
       when(imagesDir.listSync()).thenReturn([img0, img1]);
       when(ioWrapper.directory("test/images")).thenReturn(imagesDir);
+      when(ioWrapper.isFileSync(any)).thenReturn(true);
 
       var databaseDir = MockDirectory();
       when(ioWrapper.directory("test/database")).thenReturn(databaseDir);
@@ -995,14 +1008,116 @@ void main() {
       }));
     });
 
+    test("Only File types are accepted as valid images", () async {
+      var imagesDir = MockDirectory();
+      when(imagesDir.path).thenReturn("Images");
+      when(imagesDir.listSync()).thenReturn([
+        File("img1.jpg"),
+        Directory("AnglersLog'"),
+        File("img2.jpg"),
+        File("img3.jpg"),
+        Directory("AnglersLog'2"),
+      ]);
+      when(ioWrapper.directory("test/images")).thenReturn(imagesDir);
+      when(ioWrapper.file(any)).thenReturn(MockFile());
+      when(ioWrapper.isFileSync(any)).thenAnswer((invocation) =>
+          (invocation.positionalArguments.first as String).endsWith(".jpg"));
+      var importer = LegacyImporter.migrate(
+        appManager.app,
+        LegacyJsonResult(
+          databasePath: "test/database",
+          imagesPath: "test/images",
+          json: {},
+        ),
+      );
+
+      await importer.start().catchError((e) {});
+      verifyNever(ioWrapper.file("AnglersLog'"));
+      verifyNever(ioWrapper.file("AnglersLog'2"));
+      verify(ioWrapper.file(any)).called(3);
+    });
+
+    test("Error in image cleanup continues on to the next image", () async {
+      var mockFile1 = MockFile();
+      when(mockFile1.path).thenReturn("img1.jpg");
+      when(mockFile1.delete(recursive: true))
+          .thenAnswer((_) => Future.value(mockFile1));
+
+      var mockFile2 = MockFile();
+      when(mockFile2.path).thenReturn("img2.jpg");
+      when(mockFile2.delete(recursive: true))
+          .thenAnswer((_) => Future.value(mockFile2));
+
+      var mockFile3 = MockFile();
+      when(mockFile3.path).thenReturn("img3.jpg");
+      when(mockFile3.delete(recursive: true))
+          .thenAnswer((_) => Future.value(mockFile3));
+
+      var mockDir = MockDirectory();
+      when(mockDir.path).thenReturn("test/images/images");
+
+      var imagesDir = MockDirectory();
+      when(imagesDir.path).thenReturn("test/images");
+      when(imagesDir.delete(recursive: true))
+          .thenAnswer((_) => Future.value(imagesDir));
+      when(imagesDir.listSync()).thenReturn([
+        mockFile1,
+        mockDir,
+        mockFile2,
+        mockFile3,
+      ]);
+      when(ioWrapper.directory("test/images")).thenReturn(imagesDir);
+      when(ioWrapper.file(any)).thenAnswer((invocation) {
+        var path = invocation.positionalArguments.first as String;
+        if (path == "test/images/img1.jpg") {
+          return mockFile1;
+        } else if (path == "test/images/img2.jpg") {
+          return mockFile2;
+        } else if (path == "test/images/img3.jpg") {
+          return mockFile3;
+        } else {
+          var file = MockFile();
+          when(file.path).thenReturn("test/images/images");
+          when(file.delete(recursive: true)).thenThrow(Exception());
+          return file;
+        }
+      });
+      when(ioWrapper.isFileSync(any)).thenReturn(true);
+
+      var databaseDir = MockDirectory();
+      when(databaseDir.delete(recursive: true))
+          .thenAnswer((_) => Future.value(databaseDir));
+      when(ioWrapper.directory("test/database")).thenReturn(databaseDir);
+
+      var importer = LegacyImporter.migrate(
+        appManager.app,
+        LegacyJsonResult(
+          databasePath: "test/database",
+          imagesPath: "test/images",
+          json: {
+            "journal": {
+              "userDefines": [],
+            },
+          },
+        ),
+      );
+
+      await importer.start();
+      verify(mockFile1.delete(recursive: true)).called(1);
+      verify(mockFile2.delete(recursive: true)).called(1);
+      verify(mockFile3.delete(recursive: true)).called(1);
+    });
+
     test("Successful migration deletes old data", () async {
       var imagesDir = MockDirectory();
-      when(imagesDir.deleteSync()).thenAnswer((_) {});
+      when(imagesDir.delete(recursive: true))
+          .thenAnswer((_) => Future.value(imagesDir));
       when(imagesDir.listSync()).thenReturn([]);
       when(ioWrapper.directory("test/images")).thenReturn(imagesDir);
 
       var databaseDir = MockDirectory();
-      when(databaseDir.deleteSync(recursive: true)).thenAnswer((_) {});
+      when(databaseDir.delete(recursive: true))
+          .thenAnswer((_) => Future.value(databaseDir));
       when(ioWrapper.directory("test/database")).thenReturn(databaseDir);
 
       var called = false;
@@ -1020,8 +1135,8 @@ void main() {
         () => called = true,
       );
       await importer.start();
-      verify(imagesDir.deleteSync()).called(1);
-      verify(databaseDir.deleteSync(recursive: true)).called(1);
+      verify(imagesDir.delete(recursive: true)).called(1);
+      verify(databaseDir.delete(recursive: true)).called(1);
       expect(called, isTrue);
     });
   });

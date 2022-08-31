@@ -100,8 +100,7 @@ void main() {
         .thenAnswer((_) => Future.value());
     when(appManager.methodManager.initialize())
         .thenAnswer((_) => Future.value());
-    when(appManager.pollManager.initialize())
-        .thenAnswer((_) => Future.value());
+    when(appManager.pollManager.initialize()).thenAnswer((_) => Future.value());
     when(appManager.reportManager.initialize())
         .thenAnswer((_) => Future.value());
     when(appManager.speciesManager.initialize())

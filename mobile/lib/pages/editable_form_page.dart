@@ -61,9 +61,9 @@ class EditableFormPage extends StatefulWidget {
   /// See [FormPage.onAddFields].
   final void Function(Set<Id> ids)? onAddFields;
 
-  /// Called when the "Save" button is pressed and form validation passes.
-  /// A map of [CustomEntity] ID to value objects included in the form is passed
-  /// into the callback.
+  /// Called when the "Save" button is pressed and form validation passes
+  /// (indicated by [isInputValid]). A map of [CustomEntity] ID to value objects
+  /// included in the form is passed into the callback.
   ///
   /// See [FormPage.onSave].
   final FutureOr<bool> Function(Map<Id, dynamic>)? onSave;

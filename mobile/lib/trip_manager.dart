@@ -108,10 +108,14 @@ class TripManager extends NamedEntityManager<Trip> {
     if (isEmpty(filter) && dateRange == null && tripIds.isEmpty) {
       trips = entities.values.toList();
     } else {
+      if (dateRange != null && !dateRange.hasTimeZone()) {
+        dateRange.timeZone = _timeManager.currentTimeZone;
+      }
+
       trips = list(tripIds).where((trip) {
         if (dateRange != null &&
             context != null &&
-            !dateRange.contains(context, trip.startTimestamp.toInt(),
+            !dateRange.contains(trip.startTimestamp.toInt(),
                 TimeManager.of(context).now(trip.timeZone))) {
           return false;
         }

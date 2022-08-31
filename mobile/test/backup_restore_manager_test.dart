@@ -29,6 +29,9 @@ void main() {
   setUp(() {
     appManager = StubbedAppManager();
 
+    when(appManager.catchManager.listen(any))
+        .thenAnswer((_) => MockStreamSubscription());
+
     driveApi = MockDriveApi();
     when(appManager.driveApiWrapper.newInstance(any)).thenReturn(driveApi);
 
@@ -42,6 +45,8 @@ void main() {
       where: anyNamed("where"),
       whereArgs: anyNamed("whereArgs"),
     )).thenAnswer((_) => Future.value(true));
+    when(appManager.localDatabaseManager.closeAndDeleteDatabase())
+        .thenAnswer((_) => Future.value());
 
     when(appManager.userPreferenceManager.didSetupBackup).thenReturn(true);
     when(appManager.userPreferenceManager.stream)
@@ -171,11 +176,11 @@ void main() {
         .thenReturn(userPreferenceManager);
 
     await backupRestoreManager.initialize();
-    verifyNever(appManager.catchManager.addListener(any));
+    verifyNever(appManager.catchManager.listen(any));
 
     await userPreferenceManager.setDidSetupBackup(true);
-    await untilCalled(appManager.catchManager.addListener(any));
-    verify(appManager.catchManager.addListener(any)).called(1);
+    await untilCalled(appManager.catchManager.listen(any));
+    verify(appManager.catchManager.listen(any)).called(1);
   });
 
   test("User is logged out when preferences changes", () async {
@@ -186,8 +191,8 @@ void main() {
         .thenReturn(userPreferenceManager);
 
     await backupRestoreManager.initialize();
-    await untilCalled(appManager.catchManager.addListener(any));
-    verify(appManager.catchManager.addListener(any)).called(1);
+    await untilCalled(appManager.catchManager.listen(any));
+    verify(appManager.catchManager.listen(any)).called(1);
 
     await userPreferenceManager.setDidSetupBackup(false);
     await untilCalled(googleSignIn.disconnect());
@@ -197,13 +202,13 @@ void main() {
   test("Authentication is skipped when the user hasn't setup backup", () async {
     when(appManager.userPreferenceManager.didSetupBackup).thenReturn(false);
     await backupRestoreManager.initialize();
-    verifyNever(appManager.catchManager.addListener(any));
+    verifyNever(appManager.catchManager.listen(any));
   });
 
   test("Authentication is setup when app starts", () async {
     when(appManager.userPreferenceManager.didSetupBackup).thenReturn(true);
     await backupRestoreManager.initialize();
-    verify(appManager.catchManager.addListener(any)).called(1);
+    verify(appManager.catchManager.listen(any)).called(1);
   });
 
   test("Authentication exits early if already signed in", () async {
@@ -301,6 +306,7 @@ void main() {
     // Trigger catch update.
     await catchManager.addOrUpdate(Catch(id: randomId()));
 
+    await untilCalled(appManager.subscriptionManager.isFree);
     verify(appManager.subscriptionManager.isFree).called(1);
     verifyNever(appManager.userPreferenceManager.autoBackup);
     verifyNever(appManager.userPreferenceManager.lastBackupAt);
@@ -330,6 +336,7 @@ void main() {
     // Trigger catch update.
     await catchManager.addOrUpdate(Catch(id: randomId()));
 
+    await untilCalled(appManager.subscriptionManager.isFree);
     verify(appManager.subscriptionManager.isFree).called(1);
     verifyNever(appManager.userPreferenceManager.autoBackup);
     verifyNever(appManager.userPreferenceManager.lastBackupAt);
@@ -348,6 +355,7 @@ void main() {
     // Trigger catch update.
     await catchManager.addOrUpdate(Catch(id: randomId()));
 
+    await untilCalled(appManager.userPreferenceManager.autoBackup);
     verify(appManager.userPreferenceManager.autoBackup).called(1);
     verifyNever(appManager.userPreferenceManager.lastBackupAt);
   });
@@ -392,6 +400,7 @@ void main() {
     await catchManager.addOrUpdate(Catch(id: randomId()));
     await untilCalled(appManager.ioWrapper.isConnected());
 
+    await untilCalled(appManager.userPreferenceManager.lastBackupAt);
     verify(appManager.userPreferenceManager.lastBackupAt).called(1);
     verify(appManager.timeManager.currentTimestamp).called(1);
     verifyNever(appManager.googleSignInWrapper.authenticatedClient(any));
@@ -417,6 +426,7 @@ void main() {
     await catchManager.addOrUpdate(Catch(id: randomId()));
     await untilCalled(appManager.ioWrapper.isConnected());
 
+    await untilCalled(appManager.userPreferenceManager.lastBackupAt);
     verify(appManager.userPreferenceManager.lastBackupAt).called(1);
     verify(appManager.googleSignInWrapper.authenticatedClient(any)).called(1);
   });

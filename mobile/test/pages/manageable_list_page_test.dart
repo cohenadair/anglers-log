@@ -1466,21 +1466,25 @@ void main() {
 
     // Trigger add.
     await speciesManager.addOrUpdate(species);
+    await tester.pumpAndSettle(const Duration(milliseconds: 50));
     expect(loadCount, 1);
     loadCount = 0;
 
     // Trigger delete.
     await speciesManager.delete(species.id);
+    await tester.pumpAndSettle(const Duration(milliseconds: 50));
     expect(loadCount, 1);
     loadCount = 0;
 
     // Trigger update.
     await speciesManager.addOrUpdate(species..name = "Test 2");
+    await tester.pumpAndSettle(const Duration(milliseconds: 50));
     expect(loadCount, 1);
     loadCount = 0;
 
     // Trigger reset.
     await speciesManager.initialize();
+    await tester.pumpAndSettle(const Duration(milliseconds: 50));
     expect(loadCount, 1);
   });
 

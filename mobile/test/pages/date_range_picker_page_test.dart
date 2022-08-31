@@ -4,6 +4,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
 import 'package:mobile/pages/date_range_picker_page.dart';
 import 'package:mockito/mockito.dart';
+import 'package:timezone/timezone.dart';
 
 import '../mocks/stubbed_app_manager.dart';
 import '../test_utils.dart';
@@ -13,9 +14,7 @@ void main() {
 
   setUp(() {
     appManager = StubbedAppManager();
-
-    when(appManager.timeManager.currentDateTime)
-        .thenReturn(dateTime(2020, 1, 1));
+    appManager.stubCurrentTime(DateTime(2020, 1, 1));
   });
 
   testWidgets("Initially set custom date range", (tester) async {
@@ -25,6 +24,7 @@ void main() {
           period: DateRange_Period.custom,
           startTimestamp: Int64(dateTime(2020, 1, 1).millisecondsSinceEpoch),
           endTimestamp: Int64(dateTime(2020, 2, 1).millisecondsSinceEpoch),
+          timeZone: defaultTimeZone,
         ),
         onDateRangePicked: (_) {},
       ),
@@ -111,8 +111,8 @@ void main() {
     await tapAndSettle(tester, find.text("OK"));
 
     var expected = DateRange(
-      startTimestamp: Int64(dateTime(2019, 12, 1).millisecondsSinceEpoch),
-      endTimestamp: Int64(dateTime(2019, 12, 2).millisecondsSinceEpoch),
+      startTimestamp: Int64(DateTime(2019, 12, 1).millisecondsSinceEpoch),
+      endTimestamp: Int64(DateTime(2019, 12, 2).millisecondsSinceEpoch),
     );
     expect(picked.startTimestamp, expected.startTimestamp);
     expect(picked.endTimestamp, expected.endTimestamp);
@@ -142,8 +142,8 @@ void main() {
     await tapAndSettle(tester, find.text("OK"));
 
     var expected = DateRange(
-      startTimestamp: Int64(dateTime(2020, 1, 1).millisecondsSinceEpoch),
-      endTimestamp: Int64(dateTime(2020, 1, 1).millisecondsSinceEpoch),
+      startTimestamp: Int64(DateTime(2020, 1, 1).millisecondsSinceEpoch),
+      endTimestamp: Int64(DateTime(2020, 1, 1).millisecondsSinceEpoch),
     );
     expect(picked.startTimestamp, expected.startTimestamp);
     expect(picked.endTimestamp, expected.endTimestamp);

@@ -158,7 +158,7 @@ class BackupRestoreManager {
 
   Future<void> _authenticateAndSetupAutoBackup() async {
     await _authenticateUser();
-    _catchManager.addListener(_catchManagerListener);
+    _catchManager.listen(_catchManagerListener);
   }
 
   Future<void> _authenticateUser() async {
@@ -335,6 +335,9 @@ class BackupRestoreManager {
 
     _notifyProgress(
         BackupRestoreProgress(BackupRestoreProgressEnum.restoringDatabase));
+
+    // Ensure database is cleaned up before downloading a new one.
+    await _localDatabaseManager.closeAndDeleteDatabase();
 
     // Download the database file first. If there's an error with this file,
     // there's no point in downloading images.

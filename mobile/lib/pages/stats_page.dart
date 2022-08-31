@@ -235,15 +235,15 @@ class StatsPageState extends State<StatsPage> {
 
   Widget _buildCustomSummary() {
     return _buildEntityCatchSummary<Catch>(
-      reportBuilder: (_, __) =>
-          _createCustomReport(_report, [_report.fromDateRange]),
+      filterOptionsBuilder: (_) =>
+          _createCustomReportFilterOptions(_report, [_report.fromDateRange]),
       isStatic: true,
     );
   }
 
   Widget _buildCustomComparison() {
     return _buildEntityCatchSummary<Catch>(
-      reportBuilder: (_, __) => _createCustomReport(
+      filterOptionsBuilder: (_) => _createCustomReportFilterOptions(
         _report,
         [_report.fromDateRange, _report.toDateRange],
       ),
@@ -255,10 +255,7 @@ class StatsPageState extends State<StatsPage> {
     // Note: isEmpty parameter isn't needed here since this widget will never
     // get built if there are no catches in the log.
     return _buildEntityCatchSummary<Catch>(
-      reportBuilder: (dateRange, _) => CatchSummaryReport<Catch>(
-        context: context,
-        ranges: [dateRange],
-      ),
+      filterOptionsBuilder: (_) => CatchFilterOptions(),
     );
   }
 
@@ -267,9 +264,7 @@ class StatsPageState extends State<StatsPage> {
     // get built if there are no catches in the log. If there are catches in
     // the log, there will be at least one species.
     return _buildEntityCatchSummary<Species>(
-      reportBuilder: (dateRange, species) => CatchSummaryReport<Species>(
-        context: context,
-        ranges: [dateRange],
+      filterOptionsBuilder: (species) => CatchFilterOptions(
         speciesIds: singleSet<Id>(species?.id),
       ),
       picker: CatchSummaryPicker<Species>(
@@ -284,9 +279,7 @@ class StatsPageState extends State<StatsPage> {
   Widget _buildAnglerSummary() {
     return _buildEntityCatchSummary<Angler>(
       isEmpty: !_anglerManager.hasEntities,
-      reportBuilder: (dateRange, angler) => CatchSummaryReport<Angler>(
-        context: context,
-        ranges: [dateRange],
+      filterOptionsBuilder: (angler) => CatchFilterOptions(
         anglerIds: singleSet<Id>(angler?.id),
       ),
       picker: CatchSummaryPicker<Angler>(
@@ -306,9 +299,7 @@ class StatsPageState extends State<StatsPage> {
   Widget _buildBaitSummary() {
     return _buildEntityCatchSummary<BaitAttachment>(
       isEmpty: !_baitManager.hasEntities,
-      reportBuilder: (range, attachment) => CatchSummaryReport<BaitAttachment>(
-        context: context,
-        ranges: [range],
+      filterOptionsBuilder: (attachment) => CatchFilterOptions(
         baits: singleSet<BaitAttachment>(attachment),
       ),
       picker: CatchSummaryPicker<BaitAttachment>(
@@ -337,10 +328,7 @@ class StatsPageState extends State<StatsPage> {
   Widget _buildBodyOfWaterSummary() {
     return _buildEntityCatchSummary<BodyOfWater>(
       isEmpty: !_bodyOfWaterManager.hasEntities,
-      reportBuilder: (dateRange, bodyOfWater) =>
-          CatchSummaryReport<BodyOfWater>(
-        context: context,
-        ranges: [dateRange],
+      filterOptionsBuilder: (bodyOfWater) => CatchFilterOptions(
         bodyOfWaterIds: singleSet<Id>(bodyOfWater?.id),
       ),
       picker: CatchSummaryPicker<BodyOfWater>(
@@ -361,10 +349,7 @@ class StatsPageState extends State<StatsPage> {
   Widget _buildFishingSpotSummary() {
     return _buildEntityCatchSummary<FishingSpot>(
       isEmpty: !_fishingSpotManager.hasEntities,
-      reportBuilder: (dateRange, fishingSpot) =>
-          CatchSummaryReport<FishingSpot>(
-        context: context,
-        ranges: [dateRange],
+      filterOptionsBuilder: (fishingSpot) => CatchFilterOptions(
         fishingSpotIds: singleSet<Id>(fishingSpot?.id),
       ),
       picker: CatchSummaryPicker<FishingSpot>(
@@ -386,9 +371,7 @@ class StatsPageState extends State<StatsPage> {
   Widget _buildMethodSummary() {
     return _buildEntityCatchSummary<Method>(
       isEmpty: !_methodManager.hasEntities,
-      reportBuilder: (dateRange, method) => CatchSummaryReport<Method>(
-        context: context,
-        ranges: [dateRange],
+      filterOptionsBuilder: (method) => CatchFilterOptions(
         methodIds: singleSet<Id>(method?.id),
       ),
       picker: CatchSummaryPicker<Method>(
@@ -407,9 +390,7 @@ class StatsPageState extends State<StatsPage> {
 
   Widget _buildMoonPhaseSummary() {
     return _buildEntityCatchSummary<MoonPhase>(
-      reportBuilder: (dateRange, moonPhase) => CatchSummaryReport<MoonPhase>(
-        context: context,
-        ranges: [dateRange],
+      filterOptionsBuilder: (moonPhase) => CatchFilterOptions(
         moonPhases: singleSet<MoonPhase>(moonPhase),
       ),
       picker: CatchSummaryPicker<MoonPhase>(
@@ -426,9 +407,7 @@ class StatsPageState extends State<StatsPage> {
 
   Widget _buildPeriodSummary() {
     return _buildEntityCatchSummary<Period>(
-      reportBuilder: (dateRange, period) => CatchSummaryReport<Period>(
-        context: context,
-        ranges: [dateRange],
+      filterOptionsBuilder: (period) => CatchFilterOptions(
         periods: singleSet<Period>(period),
       ),
       picker: CatchSummaryPicker<Period>(
@@ -445,9 +424,7 @@ class StatsPageState extends State<StatsPage> {
 
   Widget _buildSeasonSummary() {
     return _buildEntityCatchSummary<Season>(
-      reportBuilder: (dateRange, season) => CatchSummaryReport<Season>(
-        context: context,
-        ranges: [dateRange],
+      filterOptionsBuilder: (season) => CatchFilterOptions(
         seasons: singleSet<Season>(season),
       ),
       picker: CatchSummaryPicker<Season>(
@@ -464,9 +441,7 @@ class StatsPageState extends State<StatsPage> {
 
   Widget _buildTideSummary() {
     return _buildEntityCatchSummary<TideType>(
-      reportBuilder: (dateRange, tide) => CatchSummaryReport<TideType>(
-        context: context,
-        ranges: [dateRange],
+      filterOptionsBuilder: (tide) => CatchFilterOptions(
         tideTypes: singleSet<TideType>(tide),
       ),
       picker: CatchSummaryPicker<TideType>(
@@ -484,9 +459,7 @@ class StatsPageState extends State<StatsPage> {
   Widget _buildWaterClaritySummary() {
     return _buildEntityCatchSummary<WaterClarity>(
       isEmpty: !_waterClarityManager.hasEntities,
-      reportBuilder: (dateRange, clarity) => CatchSummaryReport<WaterClarity>(
-        context: context,
-        ranges: [dateRange],
+      filterOptionsBuilder: (clarity) => CatchFilterOptions(
         waterClarityIds: singleSet<Id>(clarity?.id),
       ),
       picker: CatchSummaryPicker<WaterClarity>(
@@ -505,7 +478,7 @@ class StatsPageState extends State<StatsPage> {
   }
 
   Widget _buildEntityCatchSummary<T>({
-    required CatchSummaryReport<T> Function(DateRange, T?) reportBuilder,
+    required CatchFilterOptions Function(T?) filterOptionsBuilder,
     EmptyListPlaceholder? emptyWidget,
     bool isEmpty = false,
     bool isStatic = false,
@@ -523,7 +496,7 @@ class StatsPageState extends State<StatsPage> {
       // selected. Having a unique key value here tells the build process that
       // the widget has changed.
       key: ValueKey(_report.id),
-      reportBuilder: reportBuilder,
+      filterOptionsBuilder: filterOptionsBuilder,
       picker: picker,
       isStatic: isStatic,
     );
@@ -548,15 +521,12 @@ class StatsPageState extends State<StatsPage> {
     _userPreferencesManager.setSelectedReportId(_report.id);
   }
 
-  CatchSummaryReport<Catch> _createCustomReport(
+  CatchFilterOptions _createCustomReportFilterOptions(
     Report report,
-    Iterable<DateRange> dateRanges, {
-    CatchSummarySortOrder sortOrder = CatchSummarySortOrder.alphabetical,
-  }) {
-    return CatchSummaryReport(
-      context: context,
-      sortOrder: sortOrder,
-      ranges: dateRanges,
+    Iterable<DateRange> dateRanges,
+  ) {
+    return CatchFilterOptions(
+      dateRanges: dateRanges,
       isCatchAndReleaseOnly: report.isCatchAndReleaseOnly,
       isFavoritesOnly: report.isFavoritesOnly,
       anglerIds: report.anglerIds.toSet(),

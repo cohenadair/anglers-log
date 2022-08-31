@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:mobile/entity_manager.dart';
 import 'package:mobile/time_manager.dart';
 import 'package:mockito/mockito.dart';
 import 'package:quiver/strings.dart';
@@ -38,13 +37,12 @@ class StubbedAppManager {
   MockDeviceInfoWrapper deviceInfoWrapper = MockDeviceInfoWrapper();
   MockDriveApiWrapper driveApiWrapper = MockDriveApiWrapper();
   MockFilePickerWrapper filePickerWrapper = MockFilePickerWrapper();
-  MockGoogleMobileAdsWrapper googleMobileAdsWrapper =
-      MockGoogleMobileAdsWrapper();
   MockGoogleSignInWrapper googleSignInWrapper = MockGoogleSignInWrapper();
   MockHttpWrapper httpWrapper = MockHttpWrapper();
   MockImageCompressWrapper imageCompressWrapper = MockImageCompressWrapper();
   MockImagePickerWrapper imagePickerWrapper = MockImagePickerWrapper();
   MockIoWrapper ioWrapper = MockIoWrapper();
+  MockIsolatesWrapper isolatesWrapper = MockIsolatesWrapper();
   MockNativeTimeZoneWrapper timeZoneWrapper = MockNativeTimeZoneWrapper();
   MockPackageInfoWrapper packageInfoWrapper = MockPackageInfoWrapper();
   MockPathProviderWrapper pathProviderWrapper = MockPathProviderWrapper();
@@ -83,12 +81,12 @@ class StubbedAppManager {
     when(app.deviceInfoWrapper).thenReturn(deviceInfoWrapper);
     when(app.driveApiWrapper).thenReturn(driveApiWrapper);
     when(app.filePickerWrapper).thenReturn(filePickerWrapper);
-    when(app.googleMobileAdsWrapper).thenReturn(googleMobileAdsWrapper);
     when(app.googleSignInWrapper).thenReturn(googleSignInWrapper);
     when(app.httpWrapper).thenReturn(httpWrapper);
     when(app.imageCompressWrapper).thenReturn(imageCompressWrapper);
     when(app.imagePickerWrapper).thenReturn(imagePickerWrapper);
     when(app.ioWrapper).thenReturn(ioWrapper);
+    when(app.isolatesWrapper).thenReturn(isolatesWrapper);
     when(app.nativeTimeZoneWrapper).thenReturn(timeZoneWrapper);
     when(app.packageInfoWrapper).thenReturn(packageInfoWrapper);
     when(app.pathProviderWrapper).thenReturn(pathProviderWrapper);
@@ -110,7 +108,7 @@ class StubbedAppManager {
       onUpdate: anyNamed("onUpdate"),
       onDelete: anyNamed("onDelete"),
       onReset: anyNamed("onReset"),
-    )).thenReturn(EntityListener());
+    )).thenReturn(MockStreamSubscription());
 
     // TODO: Don't stub these by default; lead to unnecessary investigations on
     //  failed tests.
@@ -121,7 +119,7 @@ class StubbedAppManager {
       onUpdate: anyNamed("onUpdate"),
       onDelete: anyNamed("onDelete"),
       onReset: anyNamed("onReset"),
-    )).thenReturn(EntityListener());
+    )).thenReturn(MockStreamSubscription());
     when(baitCategoryManager.entity(any)).thenReturn(null);
 
     when(baitManager.addTypedListener(
@@ -129,7 +127,7 @@ class StubbedAppManager {
       onUpdate: anyNamed("onUpdate"),
       onDelete: anyNamed("onDelete"),
       onReset: anyNamed("onReset"),
-    )).thenReturn(EntityListener());
+    )).thenReturn(MockStreamSubscription());
     when(baitManager.entity(any)).thenReturn(null);
     when(baitManager.list(any)).thenReturn([]);
 
@@ -138,7 +136,7 @@ class StubbedAppManager {
       onUpdate: anyNamed("onUpdate"),
       onDelete: anyNamed("onDelete"),
       onReset: anyNamed("onReset"),
-    )).thenReturn(EntityListener());
+    )).thenReturn(MockStreamSubscription());
     when(bodyOfWaterManager.entity(any)).thenReturn(null);
     when(bodyOfWaterManager.list(any)).thenReturn([]);
 
@@ -147,7 +145,7 @@ class StubbedAppManager {
       onUpdate: anyNamed("onUpdate"),
       onDelete: anyNamed("onDelete"),
       onReset: anyNamed("onReset"),
-    )).thenReturn(EntityListener());
+    )).thenReturn(MockStreamSubscription());
     when(catchManager.entity(any)).thenReturn(null);
 
     when(customEntityManager.addTypedListener(
@@ -155,7 +153,7 @@ class StubbedAppManager {
       onUpdate: anyNamed("onUpdate"),
       onDelete: anyNamed("onDelete"),
       onReset: anyNamed("onReset"),
-    )).thenReturn(EntityListener());
+    )).thenReturn(MockStreamSubscription());
     when(customEntityManager.entity(any)).thenReturn(null);
 
     when(fishingSpotManager.addTypedListener(
@@ -163,7 +161,7 @@ class StubbedAppManager {
       onUpdate: anyNamed("onUpdate"),
       onDelete: anyNamed("onDelete"),
       onReset: anyNamed("onReset"),
-    )).thenReturn(EntityListener());
+    )).thenReturn(MockStreamSubscription());
     when(fishingSpotManager.entity(any)).thenReturn(null);
 
     when(methodManager.addTypedListener(
@@ -171,7 +169,7 @@ class StubbedAppManager {
       onUpdate: anyNamed("onUpdate"),
       onDelete: anyNamed("onDelete"),
       onReset: anyNamed("onReset"),
-    )).thenReturn(EntityListener());
+    )).thenReturn(MockStreamSubscription());
     when(methodManager.entity(any)).thenReturn(null);
 
     when(reportManager.addTypedListener(
@@ -179,7 +177,7 @@ class StubbedAppManager {
       onUpdate: anyNamed("onUpdate"),
       onDelete: anyNamed("onDelete"),
       onReset: anyNamed("onReset"),
-    )).thenReturn(EntityListener());
+    )).thenReturn(MockStreamSubscription());
     when(reportManager.entity(any)).thenReturn(null);
 
     when(speciesManager.addTypedListener(
@@ -187,7 +185,7 @@ class StubbedAppManager {
       onUpdate: anyNamed("onUpdate"),
       onDelete: anyNamed("onDelete"),
       onReset: anyNamed("onReset"),
-    )).thenReturn(EntityListener());
+    )).thenReturn(MockStreamSubscription());
     when(speciesManager.entity(any)).thenReturn(null);
 
     when(tripManager.addTypedListener(
@@ -195,21 +193,21 @@ class StubbedAppManager {
       onUpdate: anyNamed("onUpdate"),
       onDelete: anyNamed("onDelete"),
       onReset: anyNamed("onReset"),
-    )).thenReturn(EntityListener());
+    )).thenReturn(MockStreamSubscription());
 
     when(waterClarityManager.addTypedListener(
       onAdd: anyNamed("onAdd"),
       onUpdate: anyNamed("onUpdate"),
       onDelete: anyNamed("onDelete"),
       onReset: anyNamed("onReset"),
-    )).thenReturn(EntityListener());
+    )).thenReturn(MockStreamSubscription());
     when(waterClarityManager.entity(any)).thenReturn(null);
   }
 
-  void stubCurrentTime(DateTime now) {
+  void stubCurrentTime(DateTime now, {String timeZone = defaultTimeZone}) {
     initializeTimeZones();
 
-    var defaultLocation = getLocation(defaultTimeZone);
+    var defaultLocation = getLocation(timeZone);
     var tzNow = TZDateTime.from(now, defaultLocation);
     when(timeManager.now(any)).thenReturn(tzNow);
     when(timeManager.currentDateTime).thenReturn(tzNow);
@@ -217,17 +215,17 @@ class StubbedAppManager {
     when(timeManager.currentTimestamp).thenReturn(tzNow.millisecondsSinceEpoch);
 
     when(timeManager.currentLocation)
-        .thenReturn(TimeZoneLocation.fromName(defaultTimeZone));
-    when(timeManager.currentTimeZone).thenReturn(defaultTimeZone);
+        .thenReturn(TimeZoneLocation.fromName(timeZone));
+    when(timeManager.currentTimeZone).thenReturn(timeZone);
     when(timeManager.dateTime(any, any)).thenAnswer((invocation) {
-      String? timeZone = invocation.positionalArguments.length == 2
+      String? tz = invocation.positionalArguments.length == 2
           ? invocation.positionalArguments[1]
           : null;
-      if (isEmpty(timeZone)) {
-        timeZone = defaultTimeZone;
+      if (isEmpty(tz)) {
+        tz = timeZone;
       }
       return TZDateTime.fromMillisecondsSinceEpoch(
-          getLocation(timeZone!), invocation.positionalArguments[0]);
+          getLocation(tz!), invocation.positionalArguments[0]);
     });
     when(timeManager.toTZDateTime(any)).thenAnswer((invocation) =>
         TZDateTime.from(invocation.positionalArguments.first, defaultLocation));

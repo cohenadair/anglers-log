@@ -201,7 +201,7 @@ void main() {
     );
   }
 
-  setUp(() async {
+  setUp(() {
     appManager = StubbedAppManager();
     resetSpecies();
     resetCatches();
@@ -209,7 +209,7 @@ void main() {
 
     when(appManager.catchManager.catches(
       any,
-      dateRange: anyNamed("dateRange"),
+      opt: anyNamed("opt"),
     )).thenReturn(catches);
 
     when(appManager.localDatabaseManager.insertOrReplace(any, any))
@@ -250,7 +250,7 @@ void main() {
     when(appManager.tripManager.list()).thenReturn([]);
     when(appManager.catchManager.catches(
       any,
-      dateRange: anyNamed("dateRange"),
+      opt: anyNamed("opt"),
     )).thenReturn([]);
 
     await pumpReport(tester);

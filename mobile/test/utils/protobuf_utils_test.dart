@@ -1218,10 +1218,9 @@ void main() {
       required TZDateTime expectedStart,
       TZDateTime? expectedEnd,
     }) async {
-      var context = await buildContext(tester);
       dateRange.timeZone = defaultTimeZone;
-      expect(dateRange.startDate(context, now), equals(expectedStart));
-      expect(dateRange.endDate(context, now), equals(expectedEnd ?? now));
+      expect(dateRange.startDate(now), equals(expectedStart));
+      expect(dateRange.endDate(now), equals(expectedEnd ?? now));
     }
 
     testWidgets("Today", (tester) async {
@@ -1896,6 +1895,55 @@ void main() {
           highTimestamp: Int64(1626976603000),
         ).displayValue(await buildContext(tester)),
         "High (L: 7:56 AM, H: 1:56 PM)",
+      );
+    });
+  });
+
+  group("BaitAttachments", () {
+    test("toPbMapKey", () {
+      var id0 = Id(uuid: "6b0e5765-6774-4757-9fdd-444dba53dd96");
+      var id1 = Id(uuid: "d1a1d454-9801-4302-83e3-ae62477c2997");
+
+      expect(
+        BaitAttachment(baitId: id0).toPbMapKey(),
+        "6b0e5765-6774-4757-9fdd-444dba53dd96",
+      );
+      expect(
+        BaitAttachment(baitId: id0, variantId: id1).toPbMapKey(),
+        "6b0e5765-6774-4757-9fdd-444dba53dd96.d1a1d454-9801-4302-83e3-ae62477c2997",
+      );
+    });
+
+    test("fromPbMapKey with variant", () {
+      expect(
+        BaitAttachments.fromPbMapKey(
+            "6b0e5765-6774-4757-9fdd-444dba53dd96.d1a1d454-9801-4302-83e3-ae62477c2997"),
+        BaitAttachment(
+          baitId: Id(uuid: "6b0e5765-6774-4757-9fdd-444dba53dd96"),
+          variantId: Id(uuid: "d1a1d454-9801-4302-83e3-ae62477c2997"),
+        ),
+      );
+    });
+
+    test("fromPbMapKey without variant", () {
+      expect(
+        BaitAttachments.fromPbMapKey("6b0e5765-6774-4757-9fdd-444dba53dd96"),
+        BaitAttachment(
+          baitId: Id(uuid: "6b0e5765-6774-4757-9fdd-444dba53dd96"),
+        ),
+      );
+    });
+
+    test("fromPbMapKey without invalid input", () {
+      expect(() => BaitAttachments.fromPbMapKey(""), throwsAssertionError);
+      expect(
+        BaitAttachments.fromPbMapKey("NOT A VALID ID"),
+        BaitAttachment(),
+      );
+      expect(
+        BaitAttachments.fromPbMapKey(
+            "6b0e5765-6774-4757-9fdd-444dba53dd96.d1a1d454-9801-4302-83e3-ae62477c2997.d1a1d454-9801-4302-83e3-ae62477c2997"),
+        BaitAttachment(),
       );
     });
   });

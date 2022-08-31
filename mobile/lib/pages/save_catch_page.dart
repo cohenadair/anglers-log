@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:collection/collection.dart' show IterableExtension;
 import 'package:fixnum/fixnum.dart';
 import 'package:flutter/material.dart';
@@ -607,7 +605,7 @@ class SaveCatchPageState extends State<SaveCatchPage> {
     );
   }
 
-  FutureOr<bool> _save(Map<Id, dynamic> customFieldValueMap) async {
+  bool _save(Map<Id, dynamic> customFieldValueMap) {
     // imageNames is set in _catchManager.addOrUpdate
     var cat = Catch()
       ..id = _oldCatch?.id ?? randomId()
@@ -615,18 +613,6 @@ class SaveCatchPageState extends State<SaveCatchPage> {
       ..timeZone = _timeZoneController.value
       ..speciesId = _speciesController.value!
       ..customEntityValues.addAll(entityValuesFromMap(customFieldValueMap));
-
-    if (_fishingSpotController.hasValue) {
-      cat.fishingSpotId = _fishingSpotController.value!.id;
-
-      // If the fishing spot doesn't yet exist in the database, add it now.
-      // This can happen when a user picks a completely new fishing spot, but
-      // doesn't save any property changes, such as setting a name or body of
-      // water.
-      if (!_fishingSpotManager.entityExists(cat.fishingSpotId)) {
-        await _fishingSpotManager.addOrUpdate(_fishingSpotController.value!);
-      }
-    }
 
     if (_baitsController.value.isNotEmpty) {
       cat.baits.addAll(_baitsController.value);
@@ -701,10 +687,25 @@ class SaveCatchPageState extends State<SaveCatchPage> {
       cat.tide.timeZone = cat.timeZone;
     }
 
-    await _catchManager.addOrUpdate(
-      cat,
-      imageFiles: _imagesController.originalFiles,
-    );
+    bool isWaitingForFishingSpot = false;
+    if (_fishingSpotController.hasValue) {
+      cat.fishingSpotId = _fishingSpotController.value!.id;
+
+      // If the fishing spot doesn't yet exist in the database, add it now.
+      // This can happen when a user picks a completely new fishing spot, but
+      // doesn't save any property changes, such as setting a name or body of
+      // water.
+      if (!_fishingSpotManager.entityExists(cat.fishingSpotId)) {
+        isWaitingForFishingSpot = true;
+        _fishingSpotManager
+            .addOrUpdate(_fishingSpotController.value!)
+            .then((_) => _addOrUpdateCatch(cat));
+      }
+    }
+
+    if (!isWaitingForFishingSpot) {
+      _addOrUpdateCatch(cat);
+    }
 
     if (widget.popOverride != null) {
       widget.popOverride!();
@@ -712,6 +713,10 @@ class SaveCatchPageState extends State<SaveCatchPage> {
     }
 
     return true;
+  }
+
+  void _addOrUpdateCatch(Catch cat) {
+    _catchManager.addOrUpdate(cat, imageFiles: _imagesController.originalFiles);
   }
 
   void _pushFishingSpotPicker() {

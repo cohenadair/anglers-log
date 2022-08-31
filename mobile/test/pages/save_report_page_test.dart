@@ -29,8 +29,13 @@ import '../test_utils.dart';
 void main() {
   late StubbedAppManager appManager;
 
+  // Must be set to the time zone within which the tests are run. This is due
+  // to a dependency on Flutter's date and time pickers.
+  const currentTimeZone = "America/Chicago";
+
   // Sunday, September 13, 2020 12:26:40 PM GMT
-  TZDateTime now() => dateTimestamp(1600000000000);
+  TZDateTime now() => TZDateTime.fromMillisecondsSinceEpoch(
+      getLocation(currentTimeZone), 1600000000000);
 
   var anglerList = <Angler>[
     Angler()
@@ -162,7 +167,7 @@ void main() {
             .listSortedByDisplayName(any, filter: anyNamed("filter")))
         .thenReturn(bodyOfWaterList);
 
-    appManager.stubCurrentTime(now());
+    appManager.stubCurrentTime(now(), timeZone: currentTimeZone);
 
     when(appManager.reportManager.addOrUpdate(any))
         .thenAnswer((_) => Future.value(false));
@@ -912,9 +917,9 @@ void main() {
     expect(report.name, "Report Name");
     expect(report.hasFromDateRange(), isTrue);
     expect(report.fromDateRange.period, DateRange_Period.lastMonth);
-    expect(report.fromDateRange.timeZone, defaultTimeZone);
+    expect(report.fromDateRange.timeZone, currentTimeZone);
     expect(report.hasToDateRange(), isFalse);
-    expect(report.timeZone, defaultTimeZone);
+    expect(report.timeZone, currentTimeZone);
     expect(report.anglerIds.isEmpty, isTrue);
     expect(report.baits.isEmpty, isTrue);
     expect(report.speciesIds.isEmpty, isTrue);
@@ -943,17 +948,17 @@ void main() {
         // Custom DisplayDateRange default to "this month".
         var fromDateRange = DateRange(
           period: DateRange_Period.thisMonth,
-          timeZone: defaultTimeZone,
+          timeZone: currentTimeZone,
         );
-        expectedFromStartMs = fromDateRange.startMs(context, now());
-        expectedFromEndMs = fromDateRange.endMs(context, now());
+        expectedFromStartMs = fromDateRange.startMs(now());
+        expectedFromEndMs = fromDateRange.endMs(now());
 
         var toDateRange = DateRange(
           period: DateRange_Period.thisMonth,
-          timeZone: defaultTimeZone,
+          timeZone: currentTimeZone,
         );
-        expectedToStartMs = toDateRange.startMs(context, now());
-        expectedToEndMs = toDateRange.endMs(context, now());
+        expectedToStartMs = toDateRange.startMs(now());
+        expectedToEndMs = toDateRange.endMs(now());
 
         return const SaveReportPage();
       },
@@ -987,14 +992,14 @@ void main() {
     expect(report.name, "Report Name");
     expect(report.hasFromDateRange(), isTrue);
     expect(report.fromDateRange.period, DateRange_Period.custom);
-    expect(report.fromDateRange.startTimestamp.toInt(), expectedFromStartMs);
+    expect(report.fromDateRange.startMs(now()), expectedFromStartMs);
     expect(report.fromDateRange.endTimestamp.toInt(), expectedFromEndMs);
-    expect(report.fromDateRange.timeZone, defaultTimeZone);
+    expect(report.fromDateRange.timeZone, currentTimeZone);
     expect(report.toDateRange.period, DateRange_Period.custom);
     expect(report.toDateRange.startTimestamp.toInt(), expectedToStartMs);
     expect(report.toDateRange.endTimestamp.toInt(), expectedToEndMs);
-    expect(report.toDateRange.timeZone, defaultTimeZone);
-    expect(report.timeZone, defaultTimeZone);
+    expect(report.toDateRange.timeZone, currentTimeZone);
+    expect(report.timeZone, currentTimeZone);
     expect(report.anglerIds, isEmpty);
     expect(report.baits, isEmpty);
     expect(report.speciesIds, isEmpty);
@@ -1214,6 +1219,24 @@ void main() {
     result.called(1);
 
     expect(result.captured.first, report);
+  });
+
+  testWidgets("Editing comparison with no end range does not crash",
+      (tester) async {
+    var report = Report(
+      id: randomId(),
+      name: "Test",
+      type: Report_Type.comparison,
+      fromDateRange: DateRange(period: DateRange_Period.yesterday),
+    );
+
+    await tester.pumpWidget(Testable(
+      (_) => SaveReportPage.edit(report),
+      appManager: appManager,
+    ));
+
+    await tapAndSettle(tester, find.text("SAVE"));
+    expect(find.byType(SaveReportPage), findsNothing);
   });
 
   /// https://github.com/cohenadair/anglers-log/issues/463

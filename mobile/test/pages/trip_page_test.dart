@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
 import 'package:mobile/pages/trip_page.dart';
-import 'package:mobile/utils/date_time_utils.dart';
+import 'package:mobile/utils/date_time_utils.dart' as date_time_utils;
 import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mobile/widgets/atmosphere_wrap.dart';
 import 'package:mobile/widgets/list_item.dart';
@@ -184,8 +184,10 @@ void main() {
 
     when(appManager.catchManager.list(any)).thenReturn(catches);
     when(appManager.catchManager.displayName(any, any)).thenAnswer(
-        (invocation) => formatTimestamp(invocation.positionalArguments[0],
-            invocation.positionalArguments[1].timestamp.toInt(), null));
+        (invocation) => date_time_utils.formatTimestamp(
+            invocation.positionalArguments[0],
+            invocation.positionalArguments[1].timestamp.toInt(),
+            null));
     when(appManager.catchManager.entity(any)).thenAnswer((invocation) => catches
         .firstWhereOrNull((e) => e.id == invocation.positionalArguments.first));
 

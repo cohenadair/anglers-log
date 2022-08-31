@@ -92,8 +92,8 @@ class DateRangePickerPageState extends State<DateRangePickerPage> {
     var pickedRange = await showDateRangePicker(
       context: context,
       initialDateRange: DateTimeRange(
-        start: _customDateRange.startDate(context, now),
-        end: _customDateRange.endDate(context, now),
+        start: _customDateRange.startDate(now),
+        end: _customDateRange.endDate(now),
       ),
       firstDate: DateTime.fromMillisecondsSinceEpoch(0),
       lastDate: now,
@@ -118,6 +118,7 @@ class DateRangePickerPageState extends State<DateRangePickerPage> {
     widget.onDateRangePicked(DateRange()
       ..period = DateRange_Period.custom
       ..startTimestamp = Int64(pickedRange.start.millisecondsSinceEpoch)
-      ..endTimestamp = Int64(endDate.millisecondsSinceEpoch));
+      ..endTimestamp = Int64(endDate.millisecondsSinceEpoch)
+      ..timeZone = _timeManager.currentTimeZone);
   }
 }

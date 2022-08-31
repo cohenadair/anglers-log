@@ -628,7 +628,6 @@ Map<String, Map<String, String>> get englishStrings => {
             "Instructions on how to reset your password have been sent to %s",
         "proPage_upgradeTitle": "Upgrade to Anglers' Log",
         "proPage_proTitle": "Pro",
-        "proPage_adFree": "Ad-free experience",
         "proPage_backup": "Automatic backup with Google Drive\u2122",
         "proPage_atmosphere": "Fetch atmosphere and weather data",
         "proPage_sync": "Sync data across all your devices",
@@ -1023,5 +1022,16 @@ Map<String, Map<String, String>> get englishStrings => {
             "Fixed issue where catch quantity values weren't being counted on the Stats page",
         "changeLog_2.1.0_4":
             "Automatic fishing spot picking distance is now configurable in Settings",
+        "changeLog_2.1.2_1": "Fixed crash while importing legacy data",
+        "changeLog_2.1.2_2": "Fixed crash while editing comparison reports",
+        "changeLog_2.1.2_3":
+            "Fixed map appearing for some users after returning to the foreground",
+        "changeLog_2.1.2_4": "Removed notes input field character limit",
+        "changeLog_2.1.3_1":
+            "Fixed issue where data restoring would sometimes fail",
+        "changeLog_2.1.3_2": "Fixed crash during legacy data migration",
+        "changeLog_2.1.3_3": "Performance improvements",
+        "changeLog_2.1.3_4": "Free users will no longer see ads",
+        "changeLog_2.1.5_1": "Improved efficiency of report calculations, which results in a smoother user experience",
       },
     };

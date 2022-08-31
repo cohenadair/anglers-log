@@ -10,6 +10,7 @@ import 'package:mobile/body_of_water_manager.dart';
 import 'package:mobile/local_database_manager.dart';
 import 'package:mobile/trip_manager.dart';
 import 'package:mobile/utils/date_time_utils.dart';
+import 'package:mobile/utils/io_utils.dart';
 import 'package:path/path.dart';
 import 'package:quiver/strings.dart';
 
@@ -177,7 +178,15 @@ class LegacyImporter {
     var imagesDir = _ioWrapper.directory(_legacyJsonResult!.imagesPath!);
     for (var image in imagesDir.listSync()) {
       var name = basename(image.path);
-      _images[name] = _ioWrapper.file("${imagesDir.path}/$name");
+      var path = "${imagesDir.path}/$name";
+
+      // Be safe, and ignore anything that isn't a File (#744).
+      if (_ioWrapper.isFileSync(path)) {
+        _images[name] = _ioWrapper.file(path);
+      } else {
+        _log.w(
+            "Expected File, got ${FileSystemEntity.typeSync(path)} at $path");
+      }
     }
 
     // Reset the 2.0 database and start fresh. If for some reason, the migration
@@ -186,11 +195,10 @@ class LegacyImporter {
     await _localDatabaseManager.resetDatabase();
     await _import();
 
-    // Cleanup old files.
-    imagesDir.deleteSync();
-    _ioWrapper
-        .directory(_legacyJsonResult!.databasePath!)
-        .deleteSync(recursive: true);
+    // Cleanup old directory and database.
+    await safeDeleteFileSystemEntity(imagesDir);
+    await safeDeleteFileSystemEntity(
+        _ioWrapper.directory(_legacyJsonResult!.databasePath!));
   }
 
   Future<void> _startArchive() async {
@@ -309,7 +317,7 @@ class LegacyImporter {
 
     // Cleanup old images.
     for (var tmpImg in _images.values) {
-      tmpImg.deleteSync();
+      await safeDeleteFileSystemEntity(tmpImg);
     }
 
     return Future.value();
@@ -531,6 +539,13 @@ class LegacyImporter {
 
       // DateFormat requires AM/PM, am/pm throws an exception.
       var dateString = (map[_keyDate] as String).toUpperCase();
+
+      // iOS has been known to format AM as A.M., which breaks the date
+      // formatter. Remove the periods if there are exactly 2; Android
+      // legitimately uses 1 to separate milliseconds.
+      if (".".allMatches(dateString).length == 2) {
+        dateString = dateString.replaceAll(".", "");
+      }
 
       // iOS and Android backed up dates differently.
       String dateFormat;

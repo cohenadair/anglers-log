@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/utils/atmosphere_utils.dart';
+import 'package:mobile/wrappers/package_info_wrapper.dart';
 import 'package:provider/provider.dart';
 import 'package:quiver/strings.dart';
 
@@ -44,6 +45,8 @@ class UserPreferenceManager extends PreferenceManager {
   static const _keyAppVersion = "app_version";
 
   UserPreferenceManager(AppManager appManager) : super(appManager);
+
+  PackageInfoWrapper get _packageInfoWrapper => appManager.packageInfoWrapper;
 
   @override
   String get tableName => "user_preference";
@@ -197,7 +200,8 @@ class UserPreferenceManager extends PreferenceManager {
 
   String? get mapType => preferences[_keyMapType];
 
-  Future<void> setAppVersion(String? version) => put(_keyAppVersion, version);
+  Future<void> updateAppVersion() async =>
+      put(_keyAppVersion, (await _packageInfoWrapper.fromPlatform()).version);
 
   String? get appVersion => preferences[_keyAppVersion];
 

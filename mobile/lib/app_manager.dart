@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/poll_manager.dart';
-import 'package:mobile/wrappers/google_mobile_ads_wrapper.dart';
 import 'package:mobile/wrappers/google_sign_in_wrapper.dart';
 import 'package:provider/provider.dart';
 
@@ -31,6 +30,7 @@ import 'wrappers/http_wrapper.dart';
 import 'wrappers/image_compress_wrapper.dart';
 import 'wrappers/image_picker_wrapper.dart';
 import 'wrappers/io_wrapper.dart';
+import 'wrappers/isolates_wrapper.dart';
 import 'wrappers/native_time_zone_wrapper.dart';
 import 'wrappers/package_info_wrapper.dart';
 import 'wrappers/path_provider_wrapper.dart';
@@ -73,12 +73,12 @@ class AppManager {
   DeviceInfoWrapper? _deviceInfoWrapper;
   DriveApiWrapper? _driveApiWrapper;
   FilePickerWrapper? _filePickerWrapper;
-  GoogleMobileAdsWrapper? _googleMobileAdsWrapper;
   GoogleSignInWrapper? _googleSignInWrapper;
   HttpWrapper? _httpWrapper;
   ImageCompressWrapper? _imageCompressWrapper;
   ImagePickerWrapper? _imagePickerWrapper;
   IoWrapper? _ioWrapper;
+  IsolatesWrapper? _isolatesWrapper;
   NativeTimeZoneWrapper? _nativeTimeZoneWrapper;
   PackageInfoWrapper? _packageInfoWrapper;
   PathProviderWrapper? _pathProviderWrapper;
@@ -210,11 +210,6 @@ class AppManager {
     return _filePickerWrapper!;
   }
 
-  GoogleMobileAdsWrapper get googleMobileAdsWrapper {
-    _googleMobileAdsWrapper ??= GoogleMobileAdsWrapper();
-    return _googleMobileAdsWrapper!;
-  }
-
   GoogleSignInWrapper get googleSignInWrapper {
     _googleSignInWrapper ??= GoogleSignInWrapper();
     return _googleSignInWrapper!;
@@ -238,6 +233,11 @@ class AppManager {
   IoWrapper get ioWrapper {
     _ioWrapper ??= IoWrapper();
     return _ioWrapper!;
+  }
+
+  IsolatesWrapper get isolatesWrapper {
+    _isolatesWrapper ??= IsolatesWrapper();
+    return _isolatesWrapper!;
   }
 
   NativeTimeZoneWrapper get nativeTimeZoneWrapper {

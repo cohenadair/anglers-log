@@ -34,6 +34,21 @@ class EntityListener<T> {
   });
 }
 
+enum EntityEventType {
+  add,
+  delete,
+  update,
+  reset,
+}
+
+class EntityEvent<T extends GeneratedMessage> {
+  final EntityEventType type;
+  final T? entity;
+
+  EntityEvent(this.type, this.entity)
+      : assert(type == EntityEventType.reset || entity != null);
+}
+
 /// An abstract class for managing a collection of [Entity] objects.
 ///
 /// There are two paths for data management. One for Pro users, and one for
@@ -67,7 +82,7 @@ abstract class EntityManager<T extends GeneratedMessage> {
   T entityFromBytes(List<int> bytes);
 
   final _log = Log("EntityManager<$T>");
-  final Set<EntityListener<T>> _listeners = {};
+  final _controller = StreamController<EntityEvent<T>>.broadcast();
 
   @protected
   final Map<Id, T> entities = {};
@@ -82,7 +97,7 @@ abstract class EntityManager<T extends GeneratedMessage> {
     for (var e in (await _fetchAll())) {
       entities[id(e)] = e;
     }
-    _notifyOnReset();
+    _notifyReset();
   }
 
   @protected
@@ -105,6 +120,9 @@ abstract class EntityManager<T extends GeneratedMessage> {
     Iterable<Id> ids = const [],
   }) =>
       (entities.isEmpty ? list(ids) : entities).map((e) => id(e)).toSet();
+
+  Map<String, T> uuidMap() =>
+      entities.map((key, value) => MapEntry(key.uuid, value));
 
   List<T> list([Iterable<Id> ids = const []]) {
     if (ids.isEmpty) {
@@ -166,13 +184,18 @@ abstract class EntityManager<T extends GeneratedMessage> {
     if (await localDatabaseManager.insertOrReplace(tableName, map, batch)) {
       var updated = entities.containsKey(id);
       entities[id] = entity;
-      if (notify) {
-        if (updated) {
-          notifyOnUpdate(entity);
-        } else {
-          notifyOnAdd(entity);
+
+      _log.sync("Notify", 400, () {
+        if (!notify) {
+          return;
         }
-      }
+        if (updated) {
+          notifyUpdate(entity);
+        } else {
+          notifyAdd(entity);
+        }
+      });
+
       return true;
     }
 
@@ -229,7 +252,7 @@ abstract class EntityManager<T extends GeneratedMessage> {
   }) {
     var deletedEntity = entities.remove(entityId);
     if (deletedEntity != null && notify) {
-      notifyOnDelete(deletedEntity);
+      notifyDelete(deletedEntity);
     }
   }
 
@@ -256,57 +279,58 @@ abstract class EntityManager<T extends GeneratedMessage> {
         .toList();
   }
 
-  void addListener(EntityListener<T> listener) {
-    _listeners.add(listener);
-  }
-
-  void removeListener(EntityListener<T> listener) {
-    if (!_listeners.remove(listener)) {
-      _log.w("Attempt to remove listener that isn't in stored in manager");
-    }
-  }
-
-  void _notify(void Function(EntityListener<T>) notify) {
-    for (var listener in _listeners) {
-      notify(listener);
-    }
-  }
-
-  @protected
-  void notifyOnAdd(T entity) {
-    _notify((listener) => listener.onAdd?.call(entity));
-  }
-
-  @protected
-  void notifyOnDelete(T entity) {
-    _notify((listener) => listener.onDelete?.call(entity));
+  StreamSubscription<EntityEvent<T>> listen(EntityListener<T> listener) {
+    return _controller.stream.listen((event) {
+      switch (event.type) {
+        case EntityEventType.add:
+          listener.onAdd?.call(event.entity!);
+          break;
+        case EntityEventType.delete:
+          listener.onDelete?.call(event.entity!);
+          break;
+        case EntityEventType.update:
+          listener.onUpdate?.call(event.entity!);
+          break;
+        case EntityEventType.reset:
+          listener.onReset?.call();
+          break;
+      }
+    });
   }
 
   @protected
-  void notifyOnUpdate(T entity) {
-    _notify((listener) => listener.onUpdate?.call(entity));
+  void notifyAdd(T entity) {
+    _controller.add(EntityEvent<T>(EntityEventType.add, entity));
   }
 
-  void _notifyOnReset() {
-    _notify((listener) => listener.onReset?.call());
+  @protected
+  void notifyDelete(T entity) {
+    _controller.add(EntityEvent<T>(EntityEventType.delete, entity));
+  }
+
+  @protected
+  void notifyUpdate(T entity) {
+    _controller.add(EntityEvent<T>(EntityEventType.update, entity));
+  }
+
+  void _notifyReset() {
+    _controller.add(EntityEvent<T>(EntityEventType.reset, null));
   }
 
   // Required to create a listener of type T, so EntityListenerBuilder doesn't
   // need to have a generic parameter.
-  EntityListener<T> addTypedListener({
+  StreamSubscription<EntityEvent<T>> addTypedListener({
     void Function(T entity)? onAdd,
     void Function(T entity)? onDelete,
     void Function(T entity)? onUpdate,
     void Function()? onReset,
   }) {
-    var listener = EntityListener<T>(
+    return listen(EntityListener<T>(
       onAdd: onAdd,
       onDelete: onDelete,
       onUpdate: onUpdate,
       onReset: onReset,
-    );
-    addListener(listener);
-    return listener;
+    ));
   }
 }
 
@@ -374,16 +398,16 @@ class EntityListenerBuilder extends StatefulWidget {
   EntityListenerBuilderState createState() => EntityListenerBuilderState();
 }
 
-class EntityListenerBuilderState extends State<EntityListenerBuilder> {
-  final List<EntityListener<GeneratedMessage>> _listeners = [];
-  final List<StreamSubscription> _streamSubscriptions = [];
+class _EntityListenerBuilderState extends State<EntityListenerBuilder> {
+  final _log = const Log("EntityListener");
+  final _subs = <StreamSubscription>[];
 
   @override
   void initState() {
     super.initState();
 
     for (var manager in widget.managers) {
-      _listeners.add(manager.addTypedListener(
+      _subs.add(manager.addTypedListener(
         onAdd: _onAdd,
         onDelete: _onDelete,
         onUpdate: _onUpdate,
@@ -392,8 +416,7 @@ class EntityListenerBuilderState extends State<EntityListenerBuilder> {
     }
 
     for (var stream in widget.streams) {
-      _streamSubscriptions
-          .add(stream.listen((_) => _notify(widget.onAnyChange)));
+      _subs.add(stream.listen((_) => _notify(widget.onAnyChange)));
     }
   }
 
@@ -401,11 +424,7 @@ class EntityListenerBuilderState extends State<EntityListenerBuilder> {
   void dispose() {
     super.dispose();
 
-    for (var i = 0; i < _listeners.length; i++) {
-      widget.managers[i].removeListener(_listeners[i]);
-    }
-
-    for (var subscription in _streamSubscriptions) {
+    for (var subscription in _subs) {
       subscription.cancel();
     }
   }

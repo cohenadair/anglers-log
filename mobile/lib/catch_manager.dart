@@ -1,5 +1,8 @@
 import 'dart:io';
 
+import 'package:collection/collection.dart';
+import 'package:fixnum/fixnum.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile/time_manager.dart';
 import 'package:mobile/trip_manager.dart';
@@ -20,15 +23,10 @@ import 'method_manager.dart';
 import 'model/gen/anglerslog.pb.dart';
 import 'species_manager.dart';
 import 'utils/catch_utils.dart';
+import 'utils/date_time_utils.dart';
 import 'utils/protobuf_utils.dart';
 import 'utils/string_utils.dart';
 import 'water_clarity_manager.dart';
-
-enum CatchSortOrder {
-  newestToOldest,
-  longestToShortest,
-  heaviestToLightest,
-}
 
 class CatchManager extends EntityManager<Catch> {
   static CatchManager of(BuildContext context) =>
@@ -153,155 +151,94 @@ class CatchManager extends EntityManager<Catch> {
 
   List<Catch> catches(
     BuildContext context, {
-    CatchSortOrder sortOrder = CatchSortOrder.newestToOldest,
     String? filter,
-    DateRange? dateRange,
-    bool isCatchAndReleaseOnly = false,
-    bool isFavoritesOnly = false,
-    Set<Id> anglerIds = const {},
-    Set<BaitAttachment> baits = const {},
-    Set<Id> catchIds = const {},
-    Set<Id> fishingSpotIds = const {},
-    Set<Id> bodyOfWaterIds = const {},
-    Set<Id> methodIds = const {},
-    Set<Id> speciesIds = const {},
-    Set<Id> waterClarityIds = const {},
-    Set<Period> periods = const {},
-    Set<Season> seasons = const {},
-    Set<Direction> windDirections = const {},
-    Set<SkyCondition> skyConditions = const {},
-    Set<MoonPhase> moonPhases = const {},
-    Set<TideType> tideTypes = const {},
-    NumberFilter? waterDepthFilter,
-    NumberFilter? waterTemperatureFilter,
-    NumberFilter? lengthFilter,
-    NumberFilter? weightFilter,
-    NumberFilter? quantityFilter,
-    NumberFilter? airTemperatureFilter,
-    NumberFilter? airPressureFilter,
-    NumberFilter? airHumidityFilter,
-    NumberFilter? airVisibilityFilter,
-    NumberFilter? windSpeedFilter,
-    int? hour,
-    int? month,
+    CatchFilterOptions? opt,
   }) {
-    var result = List.of(_filteredCatches(
-      context,
-      filter: filter,
-      dateRange: dateRange,
-      isCatchAndReleaseOnly: isCatchAndReleaseOnly,
-      isFavoritesOnly: isFavoritesOnly,
-      anglerIds: anglerIds,
-      baits: baits,
-      catchIds: catchIds,
-      fishingSpotIds: fishingSpotIds,
-      bodyOfWaterIds: bodyOfWaterIds,
-      methodIds: methodIds,
-      speciesIds: speciesIds,
-      waterClarityIds: waterClarityIds,
-      periods: periods,
-      seasons: seasons,
-      windDirections: windDirections,
-      skyConditions: skyConditions,
-      moonPhases: moonPhases,
-      tideTypes: tideTypes,
-      waterDepthFilter: waterDepthFilter,
-      waterTemperatureFilter: waterTemperatureFilter,
-      lengthFilter: lengthFilter,
-      weightFilter: weightFilter,
-      quantityFilter: quantityFilter,
-      airTemperatureFilter: airTemperatureFilter,
-      airPressureFilter: airPressureFilter,
-      airHumidityFilter: airHumidityFilter,
-      airVisibilityFilter: airVisibilityFilter,
-      windSpeedFilter: windSpeedFilter,
-      hour: hour,
-      month: month,
-    ));
+    opt ??= CatchFilterOptions();
 
-    switch (sortOrder) {
-      case CatchSortOrder.newestToOldest:
-        result.sort((lhs, rhs) => rhs.timestamp.compareTo(lhs.timestamp));
-        break;
-      case CatchSortOrder.longestToShortest:
-        result.sort((lhs, rhs) => rhs.length.compareTo(lhs.length));
-        break;
-      case CatchSortOrder.heaviestToLightest:
-        result.sort((lhs, rhs) => rhs.weight.compareTo(lhs.weight));
-        break;
+    if (!opt.hasCurrentTimeZone()) {
+      opt.currentTimeZone = _timeManager.currentTimeZone;
     }
 
-    return result;
+    if (!opt.hasCurrentTimestamp()) {
+      opt.currentTimestamp = Int64(_timeManager.currentTimestamp);
+    }
+
+    // Filter options' fields that should _always_ be equal to all entities
+    // are overridden it here. This is mostly so callers of .catches don't need
+    // to set the "all" entity fields directly. Note that right now, not all
+    // fields are required by isolatedFilteredCatches to be set.
+    if (opt.allFishingSpots.isNotEmpty) {
+      _log.w("Fishing spots field unnecessarily set; overriding...");
+    }
+    opt.allFishingSpots
+      ..clear()
+      ..addAll(_fishingSpotManager.uuidMap());
+
+    if (opt.allCatches.isNotEmpty) {
+      _log.w("Catches field unnecessarily set; overriding...");
+    }
+    opt.allCatches
+      ..clear()
+      ..addAll(uuidMap());
+
+    return isolatedFilteredCatches(opt)
+        .where((cat) => matchesFilter(cat.id, filter, context))
+        .toList();
   }
 
-  List<Catch> _filteredCatches(
-    BuildContext context, {
-    String? filter,
-    DateRange? dateRange,
-    bool isCatchAndReleaseOnly = false,
-    bool isFavoritesOnly = false,
-    Set<Id> anglerIds = const {},
-    Set<BaitAttachment> baits = const {},
-    Set<Id> catchIds = const {},
-    Set<Id> fishingSpotIds = const {},
-    Set<Id> bodyOfWaterIds = const {},
-    Set<Id> methodIds = const {},
-    Set<Id> speciesIds = const {},
-    Set<Id> waterClarityIds = const {},
-    Set<Period> periods = const {},
-    Set<Season> seasons = const {},
-    Set<Direction> windDirections = const {},
-    Set<SkyCondition> skyConditions = const {},
-    Set<MoonPhase> moonPhases = const {},
-    Set<TideType> tideTypes = const {},
-    NumberFilter? waterDepthFilter,
-    NumberFilter? waterTemperatureFilter,
-    NumberFilter? lengthFilter,
-    NumberFilter? weightFilter,
-    NumberFilter? quantityFilter,
-    NumberFilter? airTemperatureFilter,
-    NumberFilter? airPressureFilter,
-    NumberFilter? airHumidityFilter,
-    NumberFilter? airVisibilityFilter,
-    NumberFilter? windSpeedFilter,
-    int? hour,
-    int? month,
-  }) {
-    if (isEmpty(filter) &&
-        dateRange == null &&
-        !isCatchAndReleaseOnly &&
-        !isFavoritesOnly &&
-        anglerIds.isEmpty &&
-        baits.isEmpty &&
-        catchIds.isEmpty &&
-        fishingSpotIds.isEmpty &&
-        bodyOfWaterIds.isEmpty &&
-        methodIds.isEmpty &&
-        speciesIds.isEmpty &&
-        waterClarityIds.isEmpty &&
-        periods.isEmpty &&
-        seasons.isEmpty &&
-        windDirections.isEmpty &&
-        skyConditions.isEmpty &&
-        moonPhases.isEmpty &&
-        tideTypes.isEmpty &&
-        waterDepthFilter == null &&
-        waterTemperatureFilter == null &&
-        lengthFilter == null &&
-        weightFilter == null &&
-        quantityFilter == null &&
-        airTemperatureFilter == null &&
-        airPressureFilter == null &&
-        airHumidityFilter == null &&
-        airVisibilityFilter == null &&
-        windSpeedFilter == null &&
-        hour == null &&
-        month == null) {
-      return entities.values.toList();
+  /// A method that filters a list of given catches. This method is static, and
+  /// cannot depend on [BuildContext] so it can be run inside [compute] (Isolate).
+  /// It is not, however, required to be run in an isolate.
+  ///
+  /// Note that at this time, this method _does not_ support localized text
+  /// filtering. For searching, use [catches].
+  static Iterable<Catch> isolatedFilteredCatches(CatchFilterOptions opt) {
+    assert(isNotEmpty(opt.currentTimeZone));
+    assert(opt.hasCurrentTimestamp());
+
+    // Set a default time zone for any date ranges that don't have one set.
+    for (var dateRange in opt.dateRanges) {
+      if (dateRange.hasTimeZone()) {
+        continue;
+      }
+      dateRange.timeZone = opt.currentTimeZone;
+    }
+
+    if (opt.dateRanges.isEmpty &&
+        !opt.hasIsCatchAndReleaseOnly() &&
+        !opt.hasIsFavoritesOnly() &&
+        opt.anglerIds.isEmpty &&
+        opt.baits.isEmpty &&
+        opt.catchIds.isEmpty &&
+        opt.fishingSpotIds.isEmpty &&
+        opt.bodyOfWaterIds.isEmpty &&
+        opt.methodIds.isEmpty &&
+        opt.speciesIds.isEmpty &&
+        opt.waterClarityIds.isEmpty &&
+        opt.periods.isEmpty &&
+        opt.seasons.isEmpty &&
+        opt.windDirections.isEmpty &&
+        opt.skyConditions.isEmpty &&
+        opt.moonPhases.isEmpty &&
+        opt.tideTypes.isEmpty &&
+        !opt.hasWaterDepthFilter() &&
+        !opt.hasWaterTemperatureFilter() &&
+        !opt.hasLengthFilter() &&
+        !opt.hasWeightFilter() &&
+        !opt.hasQuantityFilter() &&
+        !opt.hasAirTemperatureFilter() &&
+        !opt.hasAirPressureFilter() &&
+        !opt.hasAirHumidityFilter() &&
+        !opt.hasAirVisibilityFilter() &&
+        !opt.hasWindSpeedFilter() &&
+        !opt.hasHour() &&
+        !opt.hasMonth()) {
+      return isolatedSortedCatches(opt.allCatches.values, opt);
     }
 
     bool isSetValid<T>(
-      Set<T> items,
+      List<T> items,
       T? value, {
       required bool hasValue,
     }) {
@@ -309,20 +246,22 @@ class CatchManager extends EntityManager<Catch> {
     }
 
     bool isNumberFilterMultiMeasurementValid(
-      NumberFilter? filter,
+      bool hasFilter,
+      NumberFilter filter,
       MultiMeasurement measurement, {
       required bool hasValue,
     }) {
-      return filter == null ||
+      return !hasFilter ||
           (hasValue && filter.containsMultiMeasurement(measurement));
     }
 
     bool isNumberFilterIntValid(
-      NumberFilter? filter,
+      bool hasFilter,
+      NumberFilter filter,
       int value, {
       required bool hasValue,
     }) {
-      return filter == null || (hasValue && filter.containsInt(value));
+      return !hasFilter || (hasValue && filter.containsInt(value));
     }
 
     // Returns true if the given catch has a bait attachment that intersects
@@ -331,11 +270,11 @@ class CatchManager extends EntityManager<Catch> {
     // true if one of the catch's bait attachments have the same bait ID,
     // regardless of whether it also has a variant ID.
     bool areBaitsValid(Catch cat) {
-      if (baits.isEmpty) {
+      if (opt.baits.isEmpty) {
         return true;
       }
 
-      for (var bait in baits) {
+      for (var bait in opt.baits) {
         for (var attachment in cat.baits) {
           if (bait.baitId == attachment.baitId &&
               (!bait.hasVariantId() ||
@@ -348,84 +287,125 @@ class CatchManager extends EntityManager<Catch> {
       return false;
     }
 
-    var timeManager = TimeManager.of(context);
+    var result = opt.allCatches.values.where((cat) {
+      var timeZone = isEmpty(cat.timeZone) ? opt.currentTimeZone : cat.timeZone;
+      var fishingSpot = opt.allFishingSpots.values
+          .firstWhereOrNull((spot) => spot.id == cat.fishingSpotId);
+      var dateRange = opt.dateRanges.firstOrNull;
 
-    return entities.values.where((cat) {
       var valid = true;
       valid &= dateRange == null ||
-          dateRange.contains(
-              context, cat.timestamp.toInt(), timeManager.now(cat.timeZone));
-      valid &=
-          isSetValid<Id>(anglerIds, cat.anglerId, hasValue: cat.hasAnglerId());
+          dateRange.contains(cat.timestamp.toInt(),
+              dateTime(opt.currentTimestamp.toInt(), timeZone));
+      valid &= isSetValid<Id>(opt.anglerIds, cat.anglerId,
+          hasValue: cat.hasAnglerId());
       valid &= areBaitsValid(cat);
-      valid &= isSetValid<Id>(catchIds, cat.id, hasValue: cat.hasId());
-      valid &= isSetValid<Id>(fishingSpotIds, cat.fishingSpotId,
+      valid &= isSetValid<Id>(opt.catchIds, cat.id, hasValue: cat.hasId());
+      valid &= isSetValid<Id>(opt.fishingSpotIds, cat.fishingSpotId,
           hasValue: cat.hasFishingSpotId());
-      valid &= isSetValid<Id>(bodyOfWaterIds,
-          _fishingSpotManager.entity(cat.fishingSpotId)?.bodyOfWaterId,
-          hasValue: _fishingSpotManager.entityExists(cat.fishingSpotId));
-      valid &= isSetValid<Id>(speciesIds, cat.speciesId,
+      valid &= isSetValid<Id>(opt.bodyOfWaterIds, fishingSpot?.bodyOfWaterId,
+          hasValue: fishingSpot != null);
+      valid &= isSetValid<Id>(opt.speciesIds, cat.speciesId,
           hasValue: cat.hasSpeciesId());
-      valid &= isSetValid<Id>(waterClarityIds, cat.waterClarityId,
+      valid &= isSetValid<Id>(opt.waterClarityIds, cat.waterClarityId,
           hasValue: cat.hasWaterClarityId());
-      valid &= methodIds.isEmpty ||
-          methodIds.intersection(cat.methodIds.toSet()).isNotEmpty;
-      valid &=
-          isSetValid<Period>(periods, cat.period, hasValue: cat.hasPeriod());
-      valid &=
-          isSetValid<Season>(seasons, cat.season, hasValue: cat.hasSeason());
+
+      var methodSet = opt.methodIds.toSet();
+      valid &= methodSet.isEmpty ||
+          methodSet.intersection(cat.methodIds.toSet()).isNotEmpty;
+
+      valid &= isSetValid<Period>(opt.periods, cat.period,
+          hasValue: cat.hasPeriod());
+      valid &= isSetValid<Season>(opt.seasons, cat.season,
+          hasValue: cat.hasSeason());
       valid &= isSetValid<Direction>(
-          windDirections, cat.atmosphere.windDirection,
+          opt.windDirections, cat.atmosphere.windDirection,
           hasValue: cat.hasAtmosphere() && cat.atmosphere.hasWindDirection());
-      valid &= isSetValid<MoonPhase>(moonPhases, cat.atmosphere.moonPhase,
+      valid &= isSetValid<MoonPhase>(opt.moonPhases, cat.atmosphere.moonPhase,
           hasValue: cat.hasAtmosphere() && cat.atmosphere.hasMoonPhase());
-      valid &= isSetValid<TideType>(tideTypes, cat.tide.type,
+      valid &= isSetValid<TideType>(opt.tideTypes, cat.tide.type,
           hasValue: cat.hasTide() && cat.tide.hasType());
-      valid &= skyConditions.isEmpty ||
+      var skyConditionsSet = opt.skyConditions.toSet();
+      valid &= skyConditionsSet.isEmpty ||
           (cat.hasAtmosphere() &&
-              skyConditions
+              skyConditionsSet
                   .intersection(cat.atmosphere.skyConditions.toSet())
                   .isNotEmpty);
-      valid &= !isFavoritesOnly || cat.isFavorite;
-      valid &= !isCatchAndReleaseOnly || cat.wasCatchAndRelease;
+      valid &= !opt.isFavoritesOnly || cat.isFavorite;
+      valid &= !opt.isCatchAndReleaseOnly || cat.wasCatchAndRelease;
       valid &= isNumberFilterMultiMeasurementValid(
-          waterDepthFilter, cat.waterDepth,
+          opt.hasWaterDepthFilter(), opt.waterDepthFilter, cat.waterDepth,
           hasValue: cat.hasWaterDepth());
       valid &= isNumberFilterMultiMeasurementValid(
-          waterTemperatureFilter, cat.waterTemperature,
+          opt.hasWaterTemperatureFilter(),
+          opt.waterTemperatureFilter,
+          cat.waterTemperature,
           hasValue: cat.hasWaterTemperature());
-      valid &= isNumberFilterMultiMeasurementValid(lengthFilter, cat.length,
+      valid &= isNumberFilterMultiMeasurementValid(
+          opt.hasLengthFilter(), opt.lengthFilter, cat.length,
           hasValue: cat.hasLength());
-      valid &= isNumberFilterMultiMeasurementValid(weightFilter, cat.weight,
+      valid &= isNumberFilterMultiMeasurementValid(
+          opt.hasWeightFilter(), opt.weightFilter, cat.weight,
           hasValue: cat.hasWeight());
-      valid &= isNumberFilterIntValid(quantityFilter, cat.quantity,
+      valid &= isNumberFilterIntValid(
+          opt.hasQuantityFilter(), opt.quantityFilter, cat.quantity,
           hasValue: cat.hasQuantity());
       valid &= isNumberFilterMultiMeasurementValid(
-          airTemperatureFilter, cat.atmosphere.temperature,
+          opt.hasAirTemperatureFilter(),
+          opt.airTemperatureFilter,
+          cat.atmosphere.temperature,
           hasValue: cat.hasAtmosphere() && cat.atmosphere.hasTemperature());
-      valid &= isNumberFilterMultiMeasurementValid(
-          airPressureFilter, cat.atmosphere.pressure,
+      valid &= isNumberFilterMultiMeasurementValid(opt.hasAirPressureFilter(),
+          opt.airPressureFilter, cat.atmosphere.pressure,
           hasValue: cat.hasAtmosphere() && cat.atmosphere.hasPressure());
-      valid &= isNumberFilterMultiMeasurementValid(
-          airHumidityFilter, cat.atmosphere.humidity,
+      valid &= isNumberFilterMultiMeasurementValid(opt.hasAirHumidityFilter(),
+          opt.airHumidityFilter, cat.atmosphere.humidity,
           hasValue: cat.hasAtmosphere() && cat.atmosphere.hasHumidity());
-      valid &= isNumberFilterMultiMeasurementValid(
-          airVisibilityFilter, cat.atmosphere.visibility,
+      valid &= isNumberFilterMultiMeasurementValid(opt.hasAirVisibilityFilter(),
+          opt.airVisibilityFilter, cat.atmosphere.visibility,
           hasValue: cat.hasAtmosphere() && cat.atmosphere.hasVisibility());
-      valid &= isNumberFilterMultiMeasurementValid(
-          windSpeedFilter, cat.atmosphere.windSpeed,
+      valid &= isNumberFilterMultiMeasurementValid(opt.hasWindSpeedFilter(),
+          opt.windSpeedFilter, cat.atmosphere.windSpeed,
           hasValue: cat.hasAtmosphere() && cat.atmosphere.hasWindSpeed());
 
-      var dateTime = timeManager.dateTime(cat.timestamp.toInt(), cat.timeZone);
-      valid &= hour == null || dateTime.hour == hour;
-      valid &= month == null || dateTime.month == month;
+      var dt = dateTime(cat.timestamp.toInt(), timeZone);
+      valid &= !opt.hasHour() || dt.hour == opt.hour;
+      valid &= !opt.hasMonth() || dt.month == opt.month;
 
-      if (!valid) {
-        return false;
-      }
-
-      return matchesFilter(cat.id, filter, context);
+      return valid;
     }).toList();
+
+    return isolatedSortedCatches(result, opt);
+  }
+
+  /// A method that sorts a list of given catches. This method is static, and
+  /// cannot depend on [BuildContext] so it can be run inside [compute] (Isolate).
+  /// It is not, however, required to be run in an isolate.
+  // TODO: Move to catch_utils.dart
+  static Iterable<Catch> isolatedSortedCatches(
+    Iterable<Catch> catches,
+    CatchFilterOptions opt,
+  ) {
+    var result = List.of(catches);
+    var sortOrder =
+        opt.hasOrder() ? opt.order : CatchFilterOptions_Order.newest_to_oldest;
+
+    switch (sortOrder) {
+      case CatchFilterOptions_Order.heaviest_to_lightest:
+        result.sort((lhs, rhs) => rhs.weight.compareTo(lhs.weight));
+        break;
+      case CatchFilterOptions_Order.longest_to_shortest:
+        result.sort((lhs, rhs) => rhs.length.compareTo(lhs.length));
+        break;
+      case CatchFilterOptions_Order.newest_to_oldest:
+        result.sort((lhs, rhs) => rhs.timestamp.compareTo(lhs.timestamp));
+        break;
+      case CatchFilterOptions_Order.unknown:
+        // Can't happen.
+        break;
+    }
+
+    return result;
   }
 
   /// Returns all image names from [Catch] objects, where the [Catch] objects
@@ -478,7 +458,7 @@ class CatchManager extends EntityManager<Catch> {
 
   /// Returns the total number of catches (including the quantity field) in the
   /// given [Id] set.
-  int totalQuantity(Set<Id> catchIds) {
+  int totalQuantity(List<Id> catchIds) {
     return catchIds.fold<int>(0, (prevValue, id) {
       var cat = entity(id);
       return prevValue + ((cat?.hasQuantity() ?? false) ? cat!.quantity : 1);

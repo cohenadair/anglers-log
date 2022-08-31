@@ -98,7 +98,7 @@ void main() {
   var catchId8 = randomId();
   var catchId9 = randomId();
 
-  var anglersMap = <Id, Angler>{
+  var anglerMap = <Id, Angler>{
     anglerId0: Angler()
       ..id = anglerId0
       ..name = "Cohen",
@@ -261,7 +261,13 @@ void main() {
         ..anglerId = anglerId0
         ..isFavorite = true
         ..tide = Tide(type: TideType.high)
-        ..quantity = 5,
+        ..atmosphere = Atmosphere(
+          moonPhase: MoonPhase.new_,
+        )
+        ..quantity = 5
+        ..methodIds.add(methodId0)
+        ..period = Period.morning
+        ..season = Season.autumn,
       Catch()
         ..id = catchId1
         ..timestamp = Int64(5000)
@@ -341,50 +347,28 @@ void main() {
   void stubCatchesByTimestamp([List<Catch>? catchesOverride]) {
     when(catchManager.catches(
       any,
-      sortOrder: anyNamed("sortOrder"),
-      filter: anyNamed("filter"),
-      dateRange: anyNamed("dateRange"),
-      isCatchAndReleaseOnly: anyNamed("isCatchAndReleaseOnly"),
-      isFavoritesOnly: anyNamed("isFavoritesOnly"),
-      anglerIds: anyNamed("anglerIds"),
-      baits: anyNamed("baits"),
-      catchIds: anyNamed("catchIds"),
-      fishingSpotIds: anyNamed("fishingSpotIds"),
-      bodyOfWaterIds: anyNamed("bodyOfWaterIds"),
-      methodIds: anyNamed("methodIds"),
-      speciesIds: anyNamed("speciesIds"),
-      waterClarityIds: anyNamed("waterClarityIds"),
-      periods: anyNamed("periods"),
-      seasons: anyNamed("seasons"),
-      windDirections: anyNamed("windDirections"),
-      skyConditions: anyNamed("skyConditions"),
-      moonPhases: anyNamed("moonPhases"),
-      tideTypes: anyNamed("tideTypes"),
-      waterDepthFilter: anyNamed("waterDepthFilter"),
-      waterTemperatureFilter: anyNamed("waterTemperatureFilter"),
-      lengthFilter: anyNamed("lengthFilter"),
-      weightFilter: anyNamed("weightFilter"),
-      quantityFilter: anyNamed("quantityFilter"),
-      airTemperatureFilter: anyNamed("airTemperatureFilter"),
-      airPressureFilter: anyNamed("airPressureFilter"),
-      airHumidityFilter: anyNamed("airHumidityFilter"),
-      airVisibilityFilter: anyNamed("airVisibilityFilter"),
-      windSpeedFilter: anyNamed("windSpeedFilter"),
+      opt: anyNamed("opt"),
     )).thenReturn(
       (catchesOverride ?? catches)
         ..sort((lhs, rhs) => rhs.timestamp.compareTo(lhs.timestamp)),
     );
+    when(catchManager.uuidMap()).thenReturn(
+        {for (var cat in (catchesOverride ?? catches)) cat.id.uuid: cat});
   }
 
   Future<void> pumpCatchSummary(
     WidgetTester tester,
-    CatchSummary Function(BuildContext) builder,
-  ) async {
+    CatchSummary Function(BuildContext) builder, {
+    MediaQueryData mediaQueryData = const MediaQueryData(),
+  }) async {
     await pumpContext(
       tester,
       (context) => SingleChildScrollView(child: builder(context)),
       appManager: appManager,
+      mediaQueryData: mediaQueryData,
     );
+    // Pump to redraw after summary future completes.
+    await tester.pumpAndSettle();
   }
 
   setUp(() {
@@ -396,9 +380,11 @@ void main() {
         .thenAnswer((invocation) => invocation.positionalArguments.first.name);
     when(anglerManager.displayName(any, any))
         .thenAnswer((invocation) => invocation.positionalArguments[1].name);
-    when(anglerManager.list()).thenReturn(anglersMap.values.toList());
+    when(anglerManager.list()).thenReturn(anglerMap.values.toList());
     when(anglerManager.entity(any)).thenAnswer(
-        (invocation) => anglersMap[invocation.positionalArguments[0]]);
+        (invocation) => anglerMap[invocation.positionalArguments[0]]);
+    when(anglerManager.uuidMap())
+        .thenReturn(anglerMap.map((key, value) => MapEntry(key.uuid, value)));
 
     baitManager = appManager.baitManager;
     when(baitManager.name(any))
@@ -412,6 +398,8 @@ void main() {
     when(baitManager.attachmentDisplayValue(any, any)).thenReturn("Attachment");
     when(baitManager.variant(any, any)).thenReturn(null);
     when(baitManager.formatNameWithCategory(any)).thenReturn("Name");
+    when(baitManager.uuidMap())
+        .thenReturn(baitMap.map((key, value) => MapEntry(key.uuid, value)));
 
     bodyOfWaterManager = appManager.bodyOfWaterManager;
     when(bodyOfWaterManager.name(any))
@@ -421,11 +409,15 @@ void main() {
     when(bodyOfWaterManager.list()).thenReturn(bodyOfWaterMap.values.toList());
     when(bodyOfWaterManager.entity(any)).thenAnswer(
         (invocation) => bodyOfWaterMap[invocation.positionalArguments[0]]);
+    when(bodyOfWaterManager.uuidMap()).thenReturn(
+        bodyOfWaterMap.map((key, value) => MapEntry(key.uuid, value)));
 
     catchManager = appManager.catchManager;
     when(catchManager.list()).thenReturn(catches);
     when(catchManager.deleteMessage(any, any)).thenReturn("Delete");
     when(catchManager.totalQuantity(any)).thenReturn(catches.length);
+    when(catchManager.uuidMap())
+        .thenReturn({for (var cat in catches) cat.id.uuid: cat});
 
     when(appManager.timeManager.currentDateTime)
         .thenReturn(dateTimestamp(105000));
@@ -438,6 +430,7 @@ void main() {
     when(fishingSpotManager.displayName(
       any,
       any,
+      useLatLngFallback: anyNamed("useLatLngFallback"),
       includeBodyOfWater: anyNamed("includeBodyOfWater"),
       includeLatLngLabels: anyNamed("includeLatLngLabels"),
     )).thenAnswer((invocation) => invocation.positionalArguments[1].name);
@@ -446,6 +439,8 @@ void main() {
         (invocation) => fishingSpotMap[invocation.positionalArguments[0]]);
     when(fishingSpotManager.displayNameComparator(any))
         .thenReturn((lhs, rhs) => compareIgnoreCase(lhs.name, rhs.name));
+    when(fishingSpotManager.uuidMap()).thenReturn(
+        fishingSpotMap.map((key, value) => MapEntry(key.uuid, value)));
 
     methodManager = appManager.methodManager;
     when(methodManager.name(any))
@@ -455,6 +450,8 @@ void main() {
     when(methodManager.list()).thenReturn(methodMap.values.toList());
     when(methodManager.entity(any)).thenAnswer(
         (invocation) => methodMap[invocation.positionalArguments[0]]);
+    when(methodManager.uuidMap())
+        .thenReturn(methodMap.map((key, value) => MapEntry(key.uuid, value)));
 
     speciesManager = appManager.speciesManager;
     when(speciesManager.name(any))
@@ -469,6 +466,8 @@ void main() {
         (invocation) => speciesMap[invocation.positionalArguments[0]]);
     when(speciesManager.displayNameComparator(any))
         .thenReturn((lhs, rhs) => compareIgnoreCase(lhs.name, rhs.name));
+    when(speciesManager.uuidMap())
+        .thenReturn(speciesMap.map((key, value) => MapEntry(key.uuid, value)));
 
     waterClarityManager = appManager.waterClarityManager;
     when(waterClarityManager.name(any))
@@ -478,6 +477,8 @@ void main() {
     when(waterClarityManager.list()).thenReturn(clarityMap.values.toList());
     when(waterClarityManager.entity(any)).thenAnswer(
         (invocation) => clarityMap[invocation.positionalArguments[0]]);
+    when(waterClarityManager.uuidMap())
+        .thenReturn(clarityMap.map((key, value) => MapEntry(key.uuid, value)));
 
     when(appManager.userPreferenceManager.isTrackingSpecies).thenReturn(true);
     when(appManager.userPreferenceManager.isTrackingAnglers).thenReturn(true);
@@ -497,15 +498,34 @@ void main() {
     when(appManager.propertiesManager.mapboxApiKey).thenReturn("KEY");
 
     when(appManager.ioWrapper.isAndroid).thenReturn(false);
+    when(appManager.isolatesWrapper.computeIntList(any, any))
+        .thenAnswer((invocation) {
+      return Future.value(invocation.positionalArguments
+          .first(invocation.positionalArguments[1]));
+    });
 
     stubCatchesByTimestamp();
+  });
+
+  testWidgets("Loading is shown until report is generated", (tester) async {
+    await pumpContext(
+      tester,
+      (context) => SingleChildScrollView(
+        child: CatchSummary<Catch>(
+          filterOptionsBuilder: (_) => CatchFilterOptions(),
+        ),
+      ),
+      appManager: appManager,
+    );
+    expect(find.byType(Loading), findsOneWidget);
+    expect(find.byType(DateRangePickerInput), findsNothing);
   });
 
   testWidgets("Date picker hidden when static", (tester) async {
     await pumpCatchSummary(
       tester,
       (context) => CatchSummary<Catch>(
-        reportBuilder: (_, __) => CatchSummaryReport(context: context),
+        filterOptionsBuilder: (_) => CatchFilterOptions(),
         isStatic: true,
       ),
     );
@@ -516,7 +536,7 @@ void main() {
     await pumpCatchSummary(
       tester,
       (context) => CatchSummary<Catch>(
-        reportBuilder: (_, __) => CatchSummaryReport(context: context),
+        filterOptionsBuilder: (_) => CatchFilterOptions(),
         isStatic: false,
       ),
     );
@@ -528,7 +548,7 @@ void main() {
     await pumpCatchSummary(
       tester,
       (context) => CatchSummary<Catch>(
-        reportBuilder: (_, __) => CatchSummaryReport(context: context),
+        filterOptionsBuilder: (_) => CatchFilterOptions(),
         isStatic: true,
         picker: null,
       ),
@@ -540,7 +560,7 @@ void main() {
     await pumpCatchSummary(
       tester,
       (context) => CatchSummary<Species>(
-        reportBuilder: (_, __) => CatchSummaryReport(context: context),
+        filterOptionsBuilder: (_) => CatchFilterOptions(),
         isStatic: true,
         picker: CatchSummaryPicker(
           pickerBuilder: (settings) => const Empty(),
@@ -558,9 +578,9 @@ void main() {
     await pumpCatchSummary(
       tester,
       (context) => CatchSummary<Species>(
-        reportBuilder: (_, __) {
+        filterOptionsBuilder: (_) {
           reportBuilderCount++;
-          return CatchSummaryReport(context: context);
+          return CatchFilterOptions();
         },
         isStatic: true,
         picker: CatchSummaryPicker(
@@ -594,9 +614,8 @@ void main() {
     await pumpCatchSummary(
       tester,
       (context) => CatchSummary<Catch>(
-        reportBuilder: (_, __) => CatchSummaryReport(
-          context: context,
-          ranges: [DateRange(period: DateRange_Period.lastWeek)],
+        filterOptionsBuilder: (_) => CatchFilterOptions(
+          dateRanges: [DateRange(period: DateRange_Period.lastWeek)],
         ),
       ),
     );
@@ -611,9 +630,8 @@ void main() {
     await pumpCatchSummary(
       tester,
       (context) => CatchSummary<Catch>(
-        reportBuilder: (_, __) => CatchSummaryReport(
-          context: context,
-          ranges: [DateRange(period: DateRange_Period.lastWeek)],
+        filterOptionsBuilder: (_) => CatchFilterOptions(
+          dateRanges: [DateRange(period: DateRange_Period.lastWeek)],
         ),
       ),
     );
@@ -630,9 +648,8 @@ void main() {
     await pumpCatchSummary(
       tester,
       (context) => CatchSummary<Catch>(
-        reportBuilder: (_, __) => CatchSummaryReport(
-          context: context,
-          ranges: [DateRange(period: DateRange_Period.lastWeek)],
+        filterOptionsBuilder: (_) => CatchFilterOptions(
+          dateRanges: [DateRange(period: DateRange_Period.lastWeek)],
         ),
       ),
     );
@@ -648,9 +665,8 @@ void main() {
     await pumpCatchSummary(
       tester,
       (context) => CatchSummary<Catch>(
-        reportBuilder: (_, __) => CatchSummaryReport(
-          context: context,
-          ranges: [
+        filterOptionsBuilder: (_) => CatchFilterOptions(
+          dateRanges: [
             DateRange(period: DateRange_Period.lastWeek),
             DateRange(period: DateRange_Period.thisWeek),
           ],
@@ -667,9 +683,8 @@ void main() {
     await pumpCatchSummary(
       tester,
       (context) => CatchSummary<Catch>(
-        reportBuilder: (_, __) => CatchSummaryReport(
-          context: context,
-          ranges: [DateRange(period: DateRange_Period.thisWeek)],
+        filterOptionsBuilder: (_) => CatchFilterOptions(
+          dateRanges: [DateRange(period: DateRange_Period.thisWeek)],
         ),
       ),
     );
@@ -685,7 +700,7 @@ void main() {
     await pumpCatchSummary(
       tester,
       (context) => CatchSummary<Catch>(
-        reportBuilder: (_, __) => CatchSummaryReport(context: context),
+        filterOptionsBuilder: (_) => CatchFilterOptions(),
       ),
     );
 
@@ -699,7 +714,7 @@ void main() {
     await pumpCatchSummary(
       tester,
       (context) => CatchSummary<Catch>(
-        reportBuilder: (_, __) => CatchSummaryReport(context: context),
+        filterOptionsBuilder: (_) => CatchFilterOptions(),
       ),
     );
 
@@ -711,7 +726,7 @@ void main() {
     await pumpCatchSummary(
       tester,
       (context) => CatchSummary<Catch>(
-        reportBuilder: (_, __) => CatchSummaryReport(context: context),
+        filterOptionsBuilder: (_) => CatchFilterOptions(),
       ),
     );
     expect(find.text("Per Hour"), findsOneWidget);
@@ -726,7 +741,7 @@ void main() {
     await pumpCatchSummary(
       tester,
       (context) => CatchSummary<Catch>(
-        reportBuilder: (_, __) => CatchSummaryReport(context: context),
+        filterOptionsBuilder: (_) => CatchFilterOptions(),
       ),
     );
     expect(find.text("Per Month"), findsOneWidget);
@@ -738,12 +753,32 @@ void main() {
     expect(find.byType(InkWell), findsNWidgets(13));
   });
 
+  testWidgets("Catches per entity row opens entity list", (tester) async {
+    when(appManager.userPreferenceManager.isTrackingSpecies).thenReturn(true);
+    await pumpCatchSummary(
+      tester,
+      (context) => CatchSummary<Catch>(
+        filterOptionsBuilder: (_) => CatchFilterOptions(),
+      ),
+      // Ensures "Pike (4)" is tappable. For some reason, ensureVisible doesn't
+      // work here.
+      mediaQueryData: const MediaQueryData(
+        size: Size(500, 5000),
+      ),
+    );
+    expect(find.text("Per Species"), findsOneWidget);
+
+    await tester.ensureVisible(find.text("Pike (4)"));
+    await tapAndSettle(tester, find.text("Pike (4)"));
+    expect(find.byType(CatchListPage), findsOneWidget);
+  });
+
   testWidgets("Catches per species shown", (tester) async {
     when(appManager.userPreferenceManager.isTrackingSpecies).thenReturn(true);
     await pumpCatchSummary(
       tester,
       (context) => CatchSummary<Catch>(
-        reportBuilder: (_, __) => CatchSummaryReport(context: context),
+        filterOptionsBuilder: (_) => CatchFilterOptions(),
       ),
     );
     expect(find.text("Per Species"), findsOneWidget);
@@ -754,7 +789,7 @@ void main() {
     await pumpCatchSummary(
       tester,
       (context) => CatchSummary<Catch>(
-        reportBuilder: (_, __) => CatchSummaryReport(context: context),
+        filterOptionsBuilder: (_) => CatchFilterOptions(),
       ),
     );
     expect(find.text("Per Species"), findsNothing);
@@ -766,7 +801,7 @@ void main() {
     await pumpCatchSummary(
       tester,
       (context) => CatchSummary<Catch>(
-        reportBuilder: (_, __) => CatchSummaryReport(context: context),
+        filterOptionsBuilder: (_) => CatchFilterOptions(),
       ),
     );
     expect(find.text("Per Fishing Spot"), findsOneWidget);
@@ -778,7 +813,7 @@ void main() {
     await pumpCatchSummary(
       tester,
       (context) => CatchSummary<Catch>(
-        reportBuilder: (_, __) => CatchSummaryReport(context: context),
+        filterOptionsBuilder: (_) => CatchFilterOptions(),
       ),
     );
     expect(find.text("Per Fishing Spot"), findsNothing);
@@ -789,7 +824,7 @@ void main() {
     await pumpCatchSummary(
       tester,
       (context) => CatchSummary<Catch>(
-        reportBuilder: (_, __) => CatchSummaryReport(context: context),
+        filterOptionsBuilder: (_) => CatchFilterOptions(),
       ),
     );
     expect(find.text("Per Bait"), findsOneWidget);
@@ -800,7 +835,7 @@ void main() {
     await pumpCatchSummary(
       tester,
       (context) => CatchSummary<Catch>(
-        reportBuilder: (_, __) => CatchSummaryReport(context: context),
+        filterOptionsBuilder: (_) => CatchFilterOptions(),
       ),
     );
     expect(find.text("Per Bait"), findsNothing);
@@ -812,7 +847,7 @@ void main() {
     await pumpCatchSummary(
       tester,
       (context) => CatchSummary<Catch>(
-        reportBuilder: (_, __) => CatchSummaryReport(context: context),
+        filterOptionsBuilder: (_) => CatchFilterOptions(),
       ),
     );
     expect(find.text("Per Moon Phase"), findsOneWidget);
@@ -824,7 +859,7 @@ void main() {
     await pumpCatchSummary(
       tester,
       (context) => CatchSummary<Catch>(
-        reportBuilder: (_, __) => CatchSummaryReport(context: context),
+        filterOptionsBuilder: (_) => CatchFilterOptions(),
       ),
     );
     expect(find.text("Per Moon Phase"), findsNothing);
@@ -835,7 +870,7 @@ void main() {
     await pumpCatchSummary(
       tester,
       (context) => CatchSummary<Catch>(
-        reportBuilder: (_, __) => CatchSummaryReport(context: context),
+        filterOptionsBuilder: (_) => CatchFilterOptions(),
       ),
     );
     expect(find.text("Per Tide"), findsOneWidget);
@@ -846,7 +881,7 @@ void main() {
     await pumpCatchSummary(
       tester,
       (context) => CatchSummary<Catch>(
-        reportBuilder: (_, __) => CatchSummaryReport(context: context),
+        filterOptionsBuilder: (_) => CatchFilterOptions(),
       ),
     );
     expect(find.text("Per Tide"), findsNothing);
@@ -857,7 +892,7 @@ void main() {
     await pumpCatchSummary(
       tester,
       (context) => CatchSummary<Catch>(
-        reportBuilder: (_, __) => CatchSummaryReport(context: context),
+        filterOptionsBuilder: (_) => CatchFilterOptions(),
       ),
     );
     expect(find.text("Per Angler"), findsOneWidget);
@@ -868,7 +903,7 @@ void main() {
     await pumpCatchSummary(
       tester,
       (context) => CatchSummary<Catch>(
-        reportBuilder: (_, __) => CatchSummaryReport(context: context),
+        filterOptionsBuilder: (_) => CatchFilterOptions(),
       ),
     );
     expect(find.text("Per Angler"), findsNothing);
@@ -878,7 +913,7 @@ void main() {
     await pumpCatchSummary(
       tester,
       (context) => CatchSummary<Catch>(
-        reportBuilder: (_, __) => CatchSummaryReport(context: context),
+        filterOptionsBuilder: (_) => CatchFilterOptions(),
       ),
     );
     expect(find.text("Per Body Of Water"), findsOneWidget);
@@ -888,7 +923,7 @@ void main() {
     await pumpCatchSummary(
       tester,
       (context) => CatchSummary<BodyOfWater>(
-        reportBuilder: (_, __) => CatchSummaryReport(context: context),
+        filterOptionsBuilder: (_) => CatchFilterOptions(),
       ),
     );
     expect(find.text("Per Body Of Water"), findsNothing);
@@ -899,7 +934,7 @@ void main() {
     await pumpCatchSummary(
       tester,
       (context) => CatchSummary<Catch>(
-        reportBuilder: (_, __) => CatchSummaryReport(context: context),
+        filterOptionsBuilder: (_) => CatchFilterOptions(),
       ),
     );
     expect(find.text("Per Fishing Method"), findsOneWidget);
@@ -910,7 +945,7 @@ void main() {
     await pumpCatchSummary(
       tester,
       (context) => CatchSummary<Catch>(
-        reportBuilder: (_, __) => CatchSummaryReport(context: context),
+        filterOptionsBuilder: (_) => CatchFilterOptions(),
       ),
     );
     expect(find.text("Per Fishing Method"), findsNothing);
@@ -921,7 +956,7 @@ void main() {
     await pumpCatchSummary(
       tester,
       (context) => CatchSummary<Catch>(
-        reportBuilder: (_, __) => CatchSummaryReport(context: context),
+        filterOptionsBuilder: (_) => CatchFilterOptions(),
       ),
     );
     expect(find.text("Per Time Of Day"), findsOneWidget);
@@ -932,7 +967,7 @@ void main() {
     await pumpCatchSummary(
       tester,
       (context) => CatchSummary<Catch>(
-        reportBuilder: (_, __) => CatchSummaryReport(context: context),
+        filterOptionsBuilder: (_) => CatchFilterOptions(),
       ),
     );
     expect(find.text("Per Time Of Day"), findsNothing);
@@ -943,7 +978,7 @@ void main() {
     await pumpCatchSummary(
       tester,
       (context) => CatchSummary<Catch>(
-        reportBuilder: (_, __) => CatchSummaryReport(context: context),
+        filterOptionsBuilder: (_) => CatchFilterOptions(),
       ),
     );
     expect(find.text("Per Season"), findsOneWidget);
@@ -954,7 +989,7 @@ void main() {
     await pumpCatchSummary(
       tester,
       (context) => CatchSummary<Catch>(
-        reportBuilder: (_, __) => CatchSummaryReport(context: context),
+        filterOptionsBuilder: (_) => CatchFilterOptions(),
       ),
     );
     expect(find.text("Per Season"), findsNothing);
@@ -966,7 +1001,7 @@ void main() {
     await pumpCatchSummary(
       tester,
       (context) => CatchSummary<Catch>(
-        reportBuilder: (_, __) => CatchSummaryReport(context: context),
+        filterOptionsBuilder: (_) => CatchFilterOptions(),
       ),
     );
     expect(find.text("Per Water Clarity"), findsOneWidget);
@@ -978,114 +1013,157 @@ void main() {
     await pumpCatchSummary(
       tester,
       (context) => CatchSummary<Catch>(
-        reportBuilder: (_, __) => CatchSummaryReport(context: context),
+        filterOptionsBuilder: (_) => CatchFilterOptions(),
       ),
     );
     expect(find.text("Per Water Clarity"), findsNothing);
   });
 
-  testWidgets("CatchSummaryReport multiple date ranges", (tester) async {
-    var report = CatchSummaryReport(
-      context: await buildContext(tester, appManager: appManager),
-      ranges: [
-        DateRange(period: DateRange_Period.lastWeek),
-        DateRange(period: DateRange_Period.thisWeek),
-      ],
+  testWidgets("Compute report multiple date ranges", (tester) async {
+    var report = CatchReport.fromBuffer(computeCatchReport(
+      CatchFilterOptions(
+        currentTimestamp: Int64(appManager.timeManager.currentTimestamp),
+        currentTimeZone: appManager.timeManager.currentTimeZone,
+        dateRanges: [
+          DateRange(period: DateRange_Period.lastWeek),
+          DateRange(period: DateRange_Period.thisWeek),
+        ],
+      ).writeToBuffer().toList(),
+    ));
+
+    expect(report.models.length, 2);
+    expect(
+      report.models[0].dateRange.period,
+      DateRange_Period.lastWeek,
     );
-    expect(report.dateRanges.length, 2);
-    expect(report.dateRanges[0], DateRange(period: DateRange_Period.lastWeek));
-    expect(report.dateRanges[1], DateRange(period: DateRange_Period.thisWeek));
+    expect(
+      report.models[1].dateRange.period,
+      DateRange_Period.thisWeek,
+    );
   });
 
-  testWidgets("CatchSummaryReport summary properties null if no catches",
-      (tester) async {
+  testWidgets("Compute report properties null if no catches", (tester) async {
     stubCatchesByTimestamp([]);
-    var report = CatchSummaryReport(
-      context: await buildContext(tester, appManager: appManager),
-    );
-    expect(report.lastCatch, isNull);
-    expect(report.hasLastCatch, isFalse);
-    expect(report.msSinceLastCatch, 0);
+
+    var report = CatchReport.fromBuffer(computeCatchReport(CatchFilterOptions(
+      currentTimestamp: Int64(appManager.timeManager.currentTimestamp),
+      currentTimeZone: appManager.timeManager.currentTimeZone,
+    ).writeToBuffer().toList()));
+
+    expect(report.hasLastCatch(), isFalse);
+    expect(report.hasMsSinceLastCatch(), isFalse);
   });
 
-  testWidgets("CatchSummaryReport summary properties null if comparing",
-      (tester) async {
-    var report = CatchSummaryReport(
-      context: await buildContext(tester, appManager: appManager),
-      ranges: [
-        DateRange(period: DateRange_Period.lastWeek),
-        DateRange(period: DateRange_Period.thisWeek),
-      ],
+  testWidgets("Compute report properties null if comparing", (tester) async {
+    var report = CatchReport.fromBuffer(
+      computeCatchReport(
+        CatchFilterOptions(
+          currentTimestamp: Int64(appManager.timeManager.currentTimestamp),
+          currentTimeZone: appManager.timeManager.currentTimeZone,
+          dateRanges: [
+            DateRange(period: DateRange_Period.lastWeek),
+            DateRange(period: DateRange_Period.thisWeek),
+          ],
+        ).writeToBuffer().toList(),
+      ),
     );
-    expect(report.lastCatch, isNull);
-    expect(report.hasLastCatch, isFalse);
-    expect(report.msSinceLastCatch, 0);
+
+    expect(report.hasLastCatch(), isFalse);
+    expect(report.hasMsSinceLastCatch(), isFalse);
   });
 
-  testWidgets("CatchSummaryReport summary filters includes date range",
-      (tester) async {
-    var report = CatchSummaryReport(
-      context: await buildContext(tester, appManager: appManager),
-      ranges: [
+  testWidgets("Compute report filters includes date range", (tester) async {
+    var opt = CatchFilterOptions(
+      currentTimestamp: Int64(appManager.timeManager.currentTimestamp),
+      currentTimeZone: appManager.timeManager.currentTimeZone,
+      dateRanges: [
         DateRange(period: DateRange_Period.lastWeek),
       ],
     );
-    var filters = report.filters();
+    var report = CatchReport.fromBuffer(
+        computeCatchReport(opt.writeToBuffer().toList()));
+
+    var filters = opt.displayFilters(
+      await buildContext(tester, appManager: appManager),
+      report,
+    );
     expect(filters.contains("Last week"), isTrue);
   });
 
-  testWidgets("CatchSummaryReport filters includes species", (tester) async {
-    var report = CatchSummaryReport(
-      context: await buildContext(tester, appManager: appManager),
+  testWidgets("Compute report filters includes species", (tester) async {
+    var opt = CatchFilterOptions(
+      currentTimestamp: Int64(appManager.timeManager.currentTimestamp),
+      currentTimeZone: appManager.timeManager.currentTimeZone,
       speciesIds: {speciesId0, speciesId1},
     );
+    var report = CatchReport.fromBuffer(
+        computeCatchReport(opt.writeToBuffer().toList()));
+    var context = await buildContext(tester, appManager: appManager);
 
-    var filters = report.filters(includeSpecies: true);
+    var filters = opt.displayFilters(context, report, includeSpecies: true);
     expect(filters.contains("Bluegill"), isTrue);
     expect(filters.contains("Pike"), isTrue);
 
-    filters = report.filters(includeSpecies: false);
+    filters = opt.displayFilters(context, report, includeSpecies: false);
     expect(filters.contains("Bluegill"), isFalse);
     expect(filters.contains("Pike"), isFalse);
   });
 
-  testWidgets("CatchSummaryReport filters includes catch and release",
+  testWidgets("Compute report filters includes catch and release",
       (tester) async {
-    var report = CatchSummaryReport(
-      context: await buildContext(tester, appManager: appManager),
+    var opt = CatchFilterOptions(
+      currentTimestamp: Int64(appManager.timeManager.currentTimestamp),
+      currentTimeZone: appManager.timeManager.currentTimeZone,
       isCatchAndReleaseOnly: true,
     );
-    var filters = report.filters();
+    var report = CatchReport.fromBuffer(
+        computeCatchReport(opt.writeToBuffer().toList()));
+    var filters = opt.displayFilters(
+      await buildContext(tester, appManager: appManager),
+      report,
+    );
     expect(filters.contains("Catch and release only"), isTrue);
   });
 
-  testWidgets("CatchSummaryReport filters includes favorites", (tester) async {
-    var report = CatchSummaryReport(
-      context: await buildContext(tester, appManager: appManager),
+  testWidgets("Compute report filters includes favorites", (tester) async {
+    var opt = CatchFilterOptions(
+      currentTimestamp: Int64(appManager.timeManager.currentTimestamp),
+      currentTimeZone: appManager.timeManager.currentTimeZone,
       isFavoritesOnly: true,
     );
-    var filters = report.filters();
+    var report = CatchReport.fromBuffer(
+        computeCatchReport(opt.writeToBuffer().toList()));
+    var filters = opt.displayFilters(
+      await buildContext(tester, appManager: appManager),
+      report,
+    );
     expect(filters.contains("Favorites only"), isTrue);
   });
 
-  testWidgets("CatchSummaryReport filters skip null number filters",
+  testWidgets("Compute report filters skip null number filters",
       (tester) async {
-    var report = CatchSummaryReport(
-      context: await buildContext(tester, appManager: appManager),
-      ranges: [
+    var opt = CatchFilterOptions(
+      currentTimestamp: Int64(appManager.timeManager.currentTimestamp),
+      currentTimeZone: appManager.timeManager.currentTimeZone,
+      dateRanges: [
         DateRange(period: DateRange_Period.lastWeek),
         DateRange(period: DateRange_Period.thisWeek),
       ],
     );
-    var filters = report.filters(includeSpecies: false);
+    var report = CatchReport.fromBuffer(
+        computeCatchReport(opt.writeToBuffer().toList()));
+    var filters = opt.displayFilters(
+      await buildContext(tester, appManager: appManager),
+      report,
+    );
     expect(filters.isEmpty, isTrue);
   });
 
-  testWidgets("CatchSummaryReport filters includes number filters",
-      (tester) async {
-    var report = CatchSummaryReport(
-      context: await buildContext(tester, appManager: appManager),
-      ranges: [
+  testWidgets("Compute report filters includes number filters", (tester) async {
+    var opt = CatchFilterOptions(
+      currentTimestamp: Int64(appManager.timeManager.currentTimestamp),
+      currentTimeZone: appManager.timeManager.currentTimeZone,
+      dateRanges: [
         DateRange(period: DateRange_Period.lastWeek),
         DateRange(period: DateRange_Period.thisWeek),
       ],
@@ -1100,18 +1178,28 @@ void main() {
         ),
       ),
     );
-    var filters = report.filters(includeSpecies: false);
+    var report = CatchReport.fromBuffer(
+        computeCatchReport(opt.writeToBuffer().toList()));
+    var filters = opt.displayFilters(
+      await buildContext(tester, appManager: appManager),
+      report,
+    );
     expect(filters.length, 1);
     expect(filters.first, "Length: = 25 cm");
   });
 
-  testWidgets("CatchSummaryReport filters skip null entities", (tester) async {
+  testWidgets("Compute report filters skip null entities", (tester) async {
     when(speciesManager.entity(speciesId0)).thenReturn(null);
-    var report = CatchSummaryReport(
-      context: await buildContext(tester, appManager: appManager),
+    var opt = CatchFilterOptions(
+      currentTimestamp: Int64(appManager.timeManager.currentTimestamp),
+      currentTimeZone: appManager.timeManager.currentTimeZone,
       speciesIds: {speciesId0, speciesId1},
     );
-    var filters = report.filters();
+    var report = CatchReport.fromBuffer(
+        computeCatchReport(opt.writeToBuffer().toList()));
+    var context = await buildContext(tester, appManager: appManager);
+
+    var filters = opt.displayFilters(context, report, includeSpecies: true);
     expect(filters.contains("Bluegill"), isFalse);
     expect(filters.contains("Pike"), isTrue);
   });
@@ -1121,7 +1209,7 @@ void main() {
     await pumpCatchSummary(
       tester,
       (context) => CatchSummary<Catch>(
-        reportBuilder: (_, __) => CatchSummaryReport(context: context),
+        filterOptionsBuilder: (_) => CatchFilterOptions(),
       ),
     );
     // There are 13 charts, each with 3 items, and all values should equal 0.
@@ -1137,7 +1225,7 @@ void main() {
     await pumpCatchSummary(
       tester,
       (context) => CatchSummary<Catch>(
-        reportBuilder: (_, __) => CatchSummaryReport(context: context),
+        filterOptionsBuilder: (_) => CatchFilterOptions(),
       ),
     );
 
@@ -1150,13 +1238,15 @@ void main() {
       (tester) async {
     when(appManager.userPreferenceManager.isTrackingFishingSpots)
         .thenReturn(false);
-    var report = CatchSummaryReport(
-      context: await buildContext(
-        tester,
-        appManager: appManager,
+
+    await pumpCatchSummary(
+      tester,
+      (context) => CatchSummary<Catch>(
+        filterOptionsBuilder: (_) => CatchFilterOptions(),
       ),
     );
-    expect(report.hasPerFishingSpot, isFalse);
+
+    expect(find.text("Per Fishing Spot"), findsNothing);
   });
 
   testWidgets("Model increment entities no baits", (tester) async {
@@ -1168,7 +1258,7 @@ void main() {
     await pumpCatchSummary(
       tester,
       (context) => CatchSummary<Catch>(
-        reportBuilder: (_, __) => CatchSummaryReport(context: context),
+        filterOptionsBuilder: (_) => CatchFilterOptions(),
       ),
     );
 
@@ -1186,7 +1276,7 @@ void main() {
     await pumpCatchSummary(
       tester,
       (context) => CatchSummary<Catch>(
-        reportBuilder: (_, __) => CatchSummaryReport(context: context),
+        filterOptionsBuilder: (_) => CatchFilterOptions(),
       ),
     );
 
@@ -1203,7 +1293,7 @@ void main() {
     await pumpCatchSummary(
       tester,
       (context) => CatchSummary<Catch>(
-        reportBuilder: (_, __) => CatchSummaryReport(context: context),
+        filterOptionsBuilder: (_) => CatchFilterOptions(),
       ),
     );
     expect(find.text("New (0)"), findsOneWidget);
@@ -1220,7 +1310,7 @@ void main() {
     await pumpCatchSummary(
       tester,
       (context) => CatchSummary<Catch>(
-        reportBuilder: (_, __) => CatchSummaryReport(context: context),
+        filterOptionsBuilder: (_) => CatchFilterOptions(),
       ),
     );
     expect(find.text("New (0)"), findsOneWidget);
@@ -1236,7 +1326,7 @@ void main() {
     await pumpCatchSummary(
       tester,
       (context) => CatchSummary<Catch>(
-        reportBuilder: (_, __) => CatchSummaryReport(context: context),
+        filterOptionsBuilder: (_) => CatchFilterOptions(),
       ),
     );
 
@@ -1255,7 +1345,7 @@ void main() {
     await pumpCatchSummary(
       tester,
       (context) => CatchSummary<Catch>(
-        reportBuilder: (_, __) => CatchSummaryReport(context: context),
+        filterOptionsBuilder: (_) => CatchFilterOptions(),
       ),
     );
 
@@ -1274,7 +1364,7 @@ void main() {
     await pumpCatchSummary(
       tester,
       (context) => CatchSummary<Catch>(
-        reportBuilder: (_, __) => CatchSummaryReport(context: context),
+        filterOptionsBuilder: (_) => CatchFilterOptions(),
       ),
     );
 
@@ -1294,7 +1384,7 @@ void main() {
     await pumpCatchSummary(
       tester,
       (context) => CatchSummary<Catch>(
-        reportBuilder: (_, __) => CatchSummaryReport(context: context),
+        filterOptionsBuilder: (_) => CatchFilterOptions(),
       ),
     );
 
@@ -1309,7 +1399,7 @@ void main() {
     await pumpCatchSummary(
       tester,
       (context) => CatchSummary<Catch>(
-        reportBuilder: (_, __) => CatchSummaryReport(context: context),
+        filterOptionsBuilder: (_) => CatchFilterOptions(),
       ),
     );
 
@@ -1327,7 +1417,7 @@ void main() {
     await tester.ensureVisible(find.text("View all fishing spots"));
     await tapAndSettle(tester, find.text("View all fishing spots"));
     expect(find.text("E (1)"), findsOneWidget);
-    expect(find.text("C (6)"), findsOneWidget);
+    expect(find.text("C (10)"), findsOneWidget);
     expect(find.text("B (1)"), findsOneWidget);
     expect(find.text("D (1)"), findsOneWidget);
     expect(find.text("A (1)"), findsOneWidget);
@@ -1337,7 +1427,7 @@ void main() {
     await tester.ensureVisible(find.text("View all baits"));
     await tapAndSettle(tester, find.text("View all baits"));
     expect(find.text("Attachment (1)"), findsNWidgets(2));
-    expect(find.text("Attachment (5)"), findsOneWidget);
+    expect(find.text("Attachment (9)"), findsOneWidget);
     expect(find.text("Attachment (3)"), findsOneWidget);
     expect(find.text("Attachment (0)"), findsOneWidget);
     await tapAndSettle(tester, find.byType(BackButton));
@@ -1345,7 +1435,7 @@ void main() {
     // Moon phases
     await tester.ensureVisible(find.text("View all moon phases"));
     await tapAndSettle(tester, find.text("View all moon phases"));
-    expect(find.text("New (1)"), findsOneWidget);
+    expect(find.text("New (6)"), findsOneWidget);
     expect(find.text("Waxing Crescent (0)"), findsOneWidget);
     expect(find.text("1st Quarter (1)"), findsOneWidget);
     expect(find.text("Waxing Gibbous (0)"), findsOneWidget);
@@ -1360,7 +1450,7 @@ void main() {
     await tapAndSettle(tester, find.text("View all tide types"));
     expect(find.text("Low (0)"), findsOneWidget);
     expect(find.text("Outgoing (0)"), findsOneWidget);
-    expect(find.text("High (1)"), findsOneWidget);
+    expect(find.text("High (5)"), findsOneWidget);
     expect(find.text("Slack (0)"), findsOneWidget);
     expect(find.text("Incoming (1)"), findsOneWidget);
     await tapAndSettle(tester, find.byType(BackButton));
@@ -1368,7 +1458,7 @@ void main() {
     // Anglers
     await tester.ensureVisible(find.text("View all anglers"));
     await tapAndSettle(tester, find.text("View all anglers"));
-    expect(find.text("Cohen (1)"), findsOneWidget);
+    expect(find.text("Cohen (5)"), findsOneWidget);
     expect(find.text("Eli (2)"), findsOneWidget);
     expect(find.text("Ethan (0)"), findsOneWidget);
     expect(find.text("Tim (0)"), findsOneWidget);
@@ -1379,7 +1469,7 @@ void main() {
     await tester.ensureVisible(find.text("View all bodies of water"));
     await tapAndSettle(tester, find.text("View all bodies of water"));
     expect(find.text("Lake Huron (1)"), findsOneWidget);
-    expect(find.text("Tennessee River (6)"), findsOneWidget);
+    expect(find.text("Tennessee River (10)"), findsOneWidget);
     expect(find.text("Bow River (1)"), findsOneWidget);
     expect(find.text("Nine Mile River (1)"), findsOneWidget);
     expect(find.text("Maitland River (1)"), findsOneWidget);
@@ -1388,7 +1478,7 @@ void main() {
     // Fishing methods
     await tester.ensureVisible(find.text("View all fishing methods"));
     await tapAndSettle(tester, find.text("View all fishing methods"));
-    expect(find.text("Casting (2)"), findsOneWidget);
+    expect(find.text("Casting (7)"), findsOneWidget);
     expect(find.text("Shore (1)"), findsOneWidget);
     expect(find.text("Kayak (0)"), findsOneWidget);
     expect(find.text("Drift (0)"), findsOneWidget);
@@ -1399,7 +1489,7 @@ void main() {
     await tester.ensureVisible(find.text("View all times of day"));
     await tapAndSettle(tester, find.text("View all times of day"));
     expect(find.text("Dawn (0)"), findsOneWidget);
-    expect(find.text("Morning (1)"), findsOneWidget);
+    expect(find.text("Morning (6)"), findsOneWidget);
     expect(find.text("Midday (0)"), findsOneWidget);
     expect(find.text("Afternoon (1)"), findsOneWidget);
     expect(find.text("Dusk (0)"), findsOneWidget);
@@ -1412,7 +1502,7 @@ void main() {
     expect(find.text("Winter (1)"), findsOneWidget);
     expect(find.text("Spring (0)"), findsOneWidget);
     expect(find.text("Summer (0)"), findsOneWidget);
-    expect(find.text("Autumn (1)"), findsOneWidget);
+    expect(find.text("Autumn (6)"), findsOneWidget);
     await tapAndSettle(tester, find.byType(BackButton));
 
     // Water clarities
@@ -1420,7 +1510,7 @@ void main() {
     await tapAndSettle(tester, find.text("View all water clarities"));
     expect(find.text("Clear (0)"), findsOneWidget);
     expect(find.text("Tea Stained (0)"), findsOneWidget);
-    expect(find.text("Chocolate Milk (1)"), findsOneWidget);
+    expect(find.text("Chocolate Milk (5)"), findsOneWidget);
     expect(find.text("Crystal (1)"), findsOneWidget);
     expect(find.text("1 Foot (1)"), findsOneWidget);
     await tapAndSettle(tester, find.byType(BackButton));
@@ -1430,7 +1520,7 @@ void main() {
     await pumpCatchSummary(
       tester,
       (context) => CatchSummary<Angler>(
-        reportBuilder: (_, __) => CatchSummaryReport(context: context),
+        filterOptionsBuilder: (_) => CatchFilterOptions(),
       ),
     );
     expect(find.text("Per Angler"), findsNothing);
@@ -1440,7 +1530,7 @@ void main() {
     await pumpCatchSummary(
       tester,
       (context) => CatchSummary<BaitAttachment>(
-        reportBuilder: (_, __) => CatchSummaryReport(context: context),
+        filterOptionsBuilder: (_) => CatchFilterOptions(),
       ),
     );
     expect(find.text("Per Bait"), findsNothing);
@@ -1451,7 +1541,7 @@ void main() {
     await pumpCatchSummary(
       tester,
       (context) => CatchSummary<BodyOfWater>(
-        reportBuilder: (_, __) => CatchSummaryReport(context: context),
+        filterOptionsBuilder: (_) => CatchFilterOptions(),
       ),
     );
     expect(find.text("Per Body Of Water"), findsNothing);
@@ -1461,7 +1551,7 @@ void main() {
     await pumpCatchSummary(
       tester,
       (context) => CatchSummary<Method>(
-        reportBuilder: (_, __) => CatchSummaryReport(context: context),
+        filterOptionsBuilder: (_) => CatchFilterOptions(),
       ),
     );
     expect(find.text("Per Fishing Method"), findsNothing);
@@ -1472,7 +1562,7 @@ void main() {
     await pumpCatchSummary(
       tester,
       (context) => CatchSummary<FishingSpot>(
-        reportBuilder: (_, __) => CatchSummaryReport(context: context),
+        filterOptionsBuilder: (_) => CatchFilterOptions(),
       ),
     );
     expect(find.text("Per Fishing Spot"), findsNothing);
@@ -1482,7 +1572,7 @@ void main() {
     await pumpCatchSummary(
       tester,
       (context) => CatchSummary<MoonPhase>(
-        reportBuilder: (_, __) => CatchSummaryReport(context: context),
+        filterOptionsBuilder: (_) => CatchFilterOptions(),
       ),
     );
     expect(find.text("Per Moon Phase"), findsNothing);
@@ -1492,7 +1582,7 @@ void main() {
     await pumpCatchSummary(
       tester,
       (context) => CatchSummary<Season>(
-        reportBuilder: (_, __) => CatchSummaryReport(context: context),
+        filterOptionsBuilder: (_) => CatchFilterOptions(),
       ),
     );
     expect(find.text("Per Season"), findsNothing);
@@ -1502,7 +1592,7 @@ void main() {
     await pumpCatchSummary(
       tester,
       (context) => CatchSummary<Species>(
-        reportBuilder: (_, __) => CatchSummaryReport(context: context),
+        filterOptionsBuilder: (_) => CatchFilterOptions(),
       ),
     );
     expect(find.text("Per Species"), findsNothing);
@@ -1512,7 +1602,7 @@ void main() {
     await pumpCatchSummary(
       tester,
       (context) => CatchSummary<TideType>(
-        reportBuilder: (_, __) => CatchSummaryReport(context: context),
+        filterOptionsBuilder: (_) => CatchFilterOptions(),
       ),
     );
     expect(find.text("Per Tide"), findsNothing);
@@ -1523,9 +1613,59 @@ void main() {
     await pumpCatchSummary(
       tester,
       (context) => CatchSummary<WaterClarity>(
-        reportBuilder: (_, __) => CatchSummaryReport(context: context),
+        filterOptionsBuilder: (_) => CatchFilterOptions(),
       ),
     );
     expect(find.text("Per Water Clarity"), findsNothing);
+  });
+
+  testWidgets("Default values are set for report input", (tester) async {
+    await pumpCatchSummary(
+      tester,
+      (context) => CatchSummary<WaterClarity>(
+        filterOptionsBuilder: (_) => CatchFilterOptions(),
+      ),
+    );
+
+    var result =
+        verify(appManager.isolatesWrapper.computeIntList(any, captureAny));
+    result.called(1);
+
+    var opt = CatchFilterOptions.fromBuffer(result.captured.first);
+    expect(opt.dateRanges.length, 1);
+    expect(opt.hasCurrentTimestamp(), isTrue);
+    expect(opt.hasCurrentTimeZone(), isTrue);
+  });
+
+  testWidgets("All entity lists are overridden", (tester) async {
+    await pumpCatchSummary(
+      tester,
+      (context) => CatchSummary<WaterClarity>(
+        filterOptionsBuilder: (_) => CatchFilterOptions(
+          allAnglers: {anglerId0.uuid: anglerMap.values.first},
+          allBaits: {baitId0.uuid: baitMap.values.first},
+          allBodiesOfWater: {bodyOfWaterId0.uuid: bodyOfWaterMap.values.first},
+          allCatches: {catchId0.uuid: catches.first},
+          allFishingSpots: {fishingSpotId0.uuid: fishingSpotMap.values.first},
+          allMethods: {methodId0.uuid: methodMap.values.first},
+          allSpecies: {speciesId0.uuid: speciesMap.values.first},
+          allWaterClarities: {clarityId0.uuid: clarityMap.values.first},
+        ),
+      ),
+    );
+
+    var result =
+        verify(appManager.isolatesWrapper.computeIntList(any, captureAny));
+    result.called(1);
+
+    var opt = CatchFilterOptions.fromBuffer(result.captured.first);
+    expect(opt.allAnglers.length, anglerMap.values.length);
+    expect(opt.allBaits.length, baitMap.values.length);
+    expect(opt.allBodiesOfWater.length, bodyOfWaterMap.values.length);
+    expect(opt.allCatches.length, catches.length);
+    expect(opt.allFishingSpots.length, fishingSpotMap.values.length);
+    expect(opt.allMethods.length, methodMap.values.length);
+    expect(opt.allSpecies.length, speciesMap.values.length);
+    expect(opt.allWaterClarities.length, clarityMap.values.length);
   });
 }

@@ -126,7 +126,7 @@ void main() {
         value: 30,
       ),
     ));
-    
+
     expect(
       userPreferenceManager.fishingSpotDistance,
       MultiMeasurement(

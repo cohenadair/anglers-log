@@ -427,8 +427,10 @@ class SaveTripPageState extends State<SaveTripPage> {
         if (ids.isNotEmpty) {
           var catches = _catchManager.catches(
             context,
-            sortOrder: CatchSortOrder.newestToOldest,
-            catchIds: ids,
+            opt: CatchFilterOptions(
+              order: CatchFilterOptions_Order.newest_to_oldest,
+              catchIds: ids,
+            ),
           );
 
           _updateTimestampControllers(catches);

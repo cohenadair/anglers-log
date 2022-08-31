@@ -112,6 +112,8 @@ void main() {
     when(appManager.locationMonitor.initialize()).thenAnswer(
         (_) => Future.delayed(const Duration(milliseconds: 50), () => true));
     when(appManager.userPreferenceManager.didOnboard).thenReturn(false);
+    when(appManager.userPreferenceManager.updateAppVersion())
+        .thenAnswer((_) => Future.value());
     when(appManager.permissionHandlerWrapper.isLocationGranted)
         .thenAnswer((_) => Future.value(false));
     when(appManager.permissionHandlerWrapper.requestLocation())
@@ -120,11 +122,7 @@ void main() {
     when(appManager.catchManager.catches(
       any,
       filter: anyNamed("filter"),
-      dateRange: anyNamed("dateRange"),
-      catchIds: anyNamed("catchIds"),
-      speciesIds: anyNamed("speciesIds"),
-      fishingSpotIds: anyNamed("fishingSpotIds"),
-      baits: anyNamed("baits"),
+      opt: anyNamed("opt"),
     )).thenReturn([]);
     when(appManager.customEntityManager.entityExists(any)).thenReturn(false);
     when(appManager.baitManager.attachmentsDisplayValues(any, any))
@@ -170,11 +168,7 @@ void main() {
     when(appManager.catchManager.catches(
       any,
       filter: anyNamed("filter"),
-      dateRange: anyNamed("dateRange"),
-      catchIds: anyNamed("catchIds"),
-      speciesIds: anyNamed("speciesIds"),
-      fishingSpotIds: anyNamed("fishingSpotIds"),
-      baits: anyNamed("baits"),
+      opt: anyNamed("opt"),
     )).thenReturn([]);
 
     await tester.pumpWidget(AnglersLog(appManager.app));
@@ -236,7 +230,7 @@ void main() {
     when(appManager.userPreferenceManager.didOnboard).thenReturn(true);
     when(appManager.userPreferenceManager.appVersion).thenReturn(null);
     when(appManager.packageInfoWrapper.fromPlatform()).thenAnswer(
-          (_) => Future.value(
+      (_) => Future.value(
         PackageInfo(
           buildNumber: "5",
           appName: "Test",
