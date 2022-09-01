@@ -308,7 +308,7 @@ class _FishingSpotActionsState extends State<_FishingSpotActions> {
         launched = true;
       }
     } else {
-      safeUseContext(this, () async {
+      await safeUseContext(this, () async {
         // There are multiple options, give the user a choice.
         String? url;
         await showOurBottomSheet(

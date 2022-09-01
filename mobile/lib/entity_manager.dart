@@ -398,8 +398,7 @@ class EntityListenerBuilder extends StatefulWidget {
   EntityListenerBuilderState createState() => EntityListenerBuilderState();
 }
 
-class _EntityListenerBuilderState extends State<EntityListenerBuilder> {
-  final _log = const Log("EntityListener");
+class EntityListenerBuilderState extends State<EntityListenerBuilder> {
   final _subs = <StreamSubscription>[];
 
   @override
