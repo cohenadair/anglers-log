@@ -40,7 +40,7 @@ import 'package:mobile/local_database_manager.dart' as _i3;
 import 'package:mobile/location_monitor.dart' as _i16;
 import 'package:mobile/method_manager.dart' as _i17;
 import 'package:mobile/model/gen/anglerslog.pb.dart' as _i4;
-import 'package:mobile/pages/manageable_list_page.dart' as _i77;
+import 'package:mobile/pages/manageable_list_page.dart' as _i76;
 import 'package:mobile/poll_manager.dart' as _i18;
 import 'package:mobile/preference_manager.dart' as _i69;
 import 'package:mobile/properties_manager.dart' as _i19;
@@ -53,7 +53,7 @@ import 'package:mobile/user_preference_manager.dart' as _i25;
 import 'package:mobile/utils/validator.dart' as _i74;
 import 'package:mobile/water_clarity_manager.dart' as _i26;
 import 'package:mobile/widgets/input_controller.dart' as _i61;
-import 'package:mobile/widgets/quantity_picker_input.dart' as _i76;
+import 'package:mobile/widgets/quantity_picker_input.dart' as _i75;
 import 'package:mobile/wrappers/crashlytics_wrapper.dart' as _i70;
 import 'package:mobile/wrappers/device_info_wrapper.dart' as _i27;
 import 'package:mobile/wrappers/drive_api_wrapper.dart' as _i28;
@@ -78,12 +78,11 @@ import 'package:mockito/mockito.dart' as _i1;
 import 'package:package_info_plus/package_info_plus.dart' as _i56;
 import 'package:photo_manager/photo_manager.dart' as _i59;
 import 'package:protobuf/protobuf.dart' as _i62;
-import 'package:purchases_flutter/models/transaction.dart' as _i75;
 import 'package:purchases_flutter/purchases_flutter.dart' as _i57;
 import 'package:sqflite/sqflite.dart' as _i60;
 import 'package:timezone/timezone.dart' as _i46;
 
-import 'mocks.dart' as _i78;
+import 'mocks.dart' as _i77;
 
 // ignore_for_file: type=lint
 // ignore_for_file: avoid_redundant_argument_values
@@ -338,7 +337,7 @@ class _FakePackageInfo_97 extends _i1.Fake implements _i56.PackageInfo {}
 
 class _FakeOfferings_98 extends _i1.Fake implements _i57.Offerings {}
 
-class _FakePurchaserInfo_99 extends _i1.Fake implements _i57.PurchaserInfo {}
+class _FakeCustomerInfo_99 extends _i1.Fake implements _i57.CustomerInfo {}
 
 class _FakeLogInResult_100 extends _i1.Fake implements _i57.LogInResult {}
 
@@ -378,19 +377,19 @@ class _Fake$OfferingCopyWith_113<$Res> extends _i1.Fake
 class _Fake$OfferingsCopyWith_114<$Res> extends _i1.Fake
     implements _i57.$OfferingsCopyWith<$Res> {}
 
-class _FakeProduct_115 extends _i1.Fake implements _i57.Product {}
+class _FakeStoreProduct_115 extends _i1.Fake implements _i57.StoreProduct {}
 
 class _Fake$PackageCopyWith_116<$Res> extends _i1.Fake
     implements _i57.$PackageCopyWith<$Res> {}
 
-class _Fake$ProductCopyWith_117<$Res> extends _i1.Fake
-    implements _i57.$ProductCopyWith<$Res> {}
+class _Fake$StoreProductCopyWith_117<$Res> extends _i1.Fake
+    implements _i57.$StoreProductCopyWith<$Res> {}
 
 class _FakeEntitlementInfos_118 extends _i1.Fake
     implements _i57.EntitlementInfos {}
 
-class _Fake$PurchaserInfoCopyWith_119<$Res> extends _i1.Fake
-    implements _i57.$PurchaserInfoCopyWith<$Res> {}
+class _Fake$CustomerInfoCopyWith_119<$Res> extends _i1.Fake
+    implements _i57.$CustomerInfoCopyWith<$Res> {}
 
 class _FakeSetInputController_120<T> extends _i1.Fake
     implements _i61.SetInputController<T> {}
@@ -5308,14 +5307,14 @@ class MockPurchasesWrapper extends _i1.Mock implements _i41.PurchasesWrapper {
       (super.noSuchMethod(Invocation.getter(#isAnonymous),
           returnValue: Future<bool>.value(false)) as _i5.Future<bool>);
   @override
-  void addPurchaserInfoUpdateListener(
-          dynamic Function(_i57.PurchaserInfo)? listener) =>
+  void addCustomerInfoUpdateListener(
+          dynamic Function(_i57.CustomerInfo)? listener) =>
       super.noSuchMethod(
-          Invocation.method(#addPurchaserInfoUpdateListener, [listener]),
+          Invocation.method(#addCustomerInfoUpdateListener, [listener]),
           returnValueForMissingStub: null);
   @override
-  _i5.Future<void> setup(String? apiKey) =>
-      (super.noSuchMethod(Invocation.method(#setup, [apiKey]),
+  _i5.Future<void> configure(String? apiKey) =>
+      (super.noSuchMethod(Invocation.method(#configure, [apiKey]),
           returnValue: Future<void>.value(),
           returnValueForMissingStub: Future<void>.value()) as _i5.Future<void>);
   @override
@@ -5328,34 +5327,31 @@ class MockPurchasesWrapper extends _i1.Mock implements _i41.PurchasesWrapper {
               returnValue: Future<_i57.Offerings>.value(_FakeOfferings_98()))
           as _i5.Future<_i57.Offerings>);
   @override
-  _i5.Future<_i57.PurchaserInfo> getPurchaserInfo() =>
-      (super.noSuchMethod(Invocation.method(#getPurchaserInfo, []),
-              returnValue:
-                  Future<_i57.PurchaserInfo>.value(_FakePurchaserInfo_99()))
-          as _i5.Future<_i57.PurchaserInfo>);
+  _i5.Future<_i57.CustomerInfo> getCustomerInfo() => (super.noSuchMethod(
+          Invocation.method(#getCustomerInfo, []),
+          returnValue: Future<_i57.CustomerInfo>.value(_FakeCustomerInfo_99()))
+      as _i5.Future<_i57.CustomerInfo>);
   @override
   _i5.Future<_i57.LogInResult> logIn(String? appUserId) => (super.noSuchMethod(
           Invocation.method(#logIn, [appUserId]),
           returnValue: Future<_i57.LogInResult>.value(_FakeLogInResult_100()))
       as _i5.Future<_i57.LogInResult>);
   @override
-  _i5.Future<_i57.PurchaserInfo> purchasePackage(_i57.Package? package) =>
+  _i5.Future<_i57.CustomerInfo> purchasePackage(_i57.Package? package) =>
       (super.noSuchMethod(Invocation.method(#purchasePackage, [package]),
               returnValue:
-                  Future<_i57.PurchaserInfo>.value(_FakePurchaserInfo_99()))
-          as _i5.Future<_i57.PurchaserInfo>);
+                  Future<_i57.CustomerInfo>.value(_FakeCustomerInfo_99()))
+          as _i5.Future<_i57.CustomerInfo>);
   @override
-  _i5.Future<_i57.PurchaserInfo> logOut() =>
-      (super.noSuchMethod(Invocation.method(#logOut, []),
-              returnValue:
-                  Future<_i57.PurchaserInfo>.value(_FakePurchaserInfo_99()))
-          as _i5.Future<_i57.PurchaserInfo>);
+  _i5.Future<_i57.CustomerInfo> logOut() => (super.noSuchMethod(
+          Invocation.method(#logOut, []),
+          returnValue: Future<_i57.CustomerInfo>.value(_FakeCustomerInfo_99()))
+      as _i5.Future<_i57.CustomerInfo>);
   @override
-  _i5.Future<_i57.PurchaserInfo> restoreTransactions() =>
-      (super.noSuchMethod(Invocation.method(#restoreTransactions, []),
-              returnValue:
-                  Future<_i57.PurchaserInfo>.value(_FakePurchaserInfo_99()))
-          as _i5.Future<_i57.PurchaserInfo>);
+  _i5.Future<_i57.CustomerInfo> restorePurchases() => (super.noSuchMethod(
+          Invocation.method(#restorePurchases, []),
+          returnValue: Future<_i57.CustomerInfo>.value(_FakeCustomerInfo_99()))
+      as _i5.Future<_i57.CustomerInfo>);
 }
 
 /// A class which mocks [ServicesWrapper].
@@ -5480,6 +5476,10 @@ class MockAssetPathEntity extends _i1.Mock implements _i59.AssetPathEntity {
       (super.noSuchMethod(Invocation.getter(#filterOption),
           returnValue: _FakeFilterOptionGroup_103()) as _i59.FilterOptionGroup);
   @override
+  _i5.Future<int> get assetCountAsync =>
+      (super.noSuchMethod(Invocation.getter(#assetCountAsync),
+          returnValue: Future<int>.value(0)) as _i5.Future<int>);
+  @override
   _i5.Future<_i59.AssetPathEntity> obtainForNewProperties(
           {bool? maxDateTimeToNow = true}) =>
       (super.noSuchMethod(
@@ -5521,7 +5521,6 @@ class MockAssetPathEntity extends _i1.Mock implements _i59.AssetPathEntity {
   _i59.AssetPathEntity copyWith(
           {String? id,
           String? name,
-          int? assetCount,
           int? albumType = 1,
           DateTime? lastModified,
           _i59.RequestType? type,
@@ -5531,7 +5530,6 @@ class MockAssetPathEntity extends _i1.Mock implements _i59.AssetPathEntity {
           Invocation.method(#copyWith, [], {
             #id: id,
             #name: name,
-            #assetCount: assetCount,
             #albumType: albumType,
             #lastModified: lastModified,
             #type: type,
@@ -6139,9 +6137,9 @@ class MockLogInResult extends _i1.Mock implements _i57.LogInResult {
       (super.noSuchMethod(Invocation.getter(#created), returnValue: false)
           as bool);
   @override
-  _i57.PurchaserInfo get purchaserInfo =>
-      (super.noSuchMethod(Invocation.getter(#purchaserInfo),
-          returnValue: _FakePurchaserInfo_99()) as _i57.PurchaserInfo);
+  _i57.CustomerInfo get customerInfo =>
+      (super.noSuchMethod(Invocation.getter(#customerInfo),
+          returnValue: _FakeCustomerInfo_99()) as _i57.CustomerInfo);
 }
 
 /// A class which mocks [MethodChannel].
@@ -6319,8 +6317,9 @@ class MockPackage extends _i1.Mock implements _i57.Package {
       (super.noSuchMethod(Invocation.getter(#packageType),
           returnValue: _i57.PackageType.unknown) as _i57.PackageType);
   @override
-  _i57.Product get product => (super.noSuchMethod(Invocation.getter(#product),
-      returnValue: _FakeProduct_115()) as _i57.Product);
+  _i57.StoreProduct get storeProduct =>
+      (super.noSuchMethod(Invocation.getter(#storeProduct),
+          returnValue: _FakeStoreProduct_115()) as _i57.StoreProduct);
   @override
   String get offeringIdentifier => (super
           .noSuchMethod(Invocation.getter(#offeringIdentifier), returnValue: '')
@@ -6366,11 +6365,11 @@ class MockPackageInfo extends _i1.Mock implements _i56.PackageInfo {
           as String);
 }
 
-/// A class which mocks [Product].
+/// A class which mocks [StoreProduct].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockProduct extends _i1.Mock implements _i57.Product {
-  MockProduct() {
+class MockStoreProduct extends _i1.Mock implements _i57.StoreProduct {
+  MockStoreProduct() {
     _i1.throwOnMissingStub(this);
   }
 
@@ -6399,21 +6398,21 @@ class MockProduct extends _i1.Mock implements _i57.Product {
       (super.noSuchMethod(Invocation.getter(#currencyCode), returnValue: '')
           as String);
   @override
-  _i57.$ProductCopyWith<_i57.Product> get copyWith =>
+  _i57.$StoreProductCopyWith<_i57.StoreProduct> get copyWith =>
       (super.noSuchMethod(Invocation.getter(#copyWith),
-              returnValue: _Fake$ProductCopyWith_117<_i57.Product>())
-          as _i57.$ProductCopyWith<_i57.Product>);
+              returnValue: _Fake$StoreProductCopyWith_117<_i57.StoreProduct>())
+          as _i57.$StoreProductCopyWith<_i57.StoreProduct>);
   @override
   Map<String, dynamic> toJson() =>
       (super.noSuchMethod(Invocation.method(#toJson, []),
           returnValue: <String, dynamic>{}) as Map<String, dynamic>);
 }
 
-/// A class which mocks [PurchaserInfo].
+/// A class which mocks [CustomerInfo].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockPurchaserInfo extends _i1.Mock implements _i57.PurchaserInfo {
-  MockPurchaserInfo() {
+class MockCustomerInfo extends _i1.Mock implements _i57.CustomerInfo {
+  MockCustomerInfo() {
     _i1.throwOnMissingStub(this);
   }
 
@@ -6434,9 +6433,10 @@ class MockPurchaserInfo extends _i1.Mock implements _i57.PurchaserInfo {
       (super.noSuchMethod(Invocation.getter(#allPurchasedProductIdentifiers),
           returnValue: <String>[]) as List<String>);
   @override
-  List<_i75.Transaction> get nonSubscriptionTransactions =>
+  List<_i57.StoreTransaction> get nonSubscriptionTransactions =>
       (super.noSuchMethod(Invocation.getter(#nonSubscriptionTransactions),
-          returnValue: <_i75.Transaction>[]) as List<_i75.Transaction>);
+              returnValue: <_i57.StoreTransaction>[])
+          as List<_i57.StoreTransaction>);
   @override
   String get firstSeen =>
       (super.noSuchMethod(Invocation.getter(#firstSeen), returnValue: '')
@@ -6454,11 +6454,10 @@ class MockPurchaserInfo extends _i1.Mock implements _i57.PurchaserInfo {
       (super.noSuchMethod(Invocation.getter(#requestDate), returnValue: '')
           as String);
   @override
-  _i57.$PurchaserInfoCopyWith<_i57.PurchaserInfo> get copyWith =>
+  _i57.$CustomerInfoCopyWith<_i57.CustomerInfo> get copyWith =>
       (super.noSuchMethod(Invocation.getter(#copyWith),
-              returnValue:
-                  _Fake$PurchaserInfoCopyWith_119<_i57.PurchaserInfo>())
-          as _i57.$PurchaserInfoCopyWith<_i57.PurchaserInfo>);
+              returnValue: _Fake$CustomerInfoCopyWith_119<_i57.CustomerInfo>())
+          as _i57.$CustomerInfoCopyWith<_i57.CustomerInfo>);
   @override
   Map<String, dynamic> toJson() =>
       (super.noSuchMethod(Invocation.method(#toJson, []),
@@ -6471,7 +6470,7 @@ class MockPurchaserInfo extends _i1.Mock implements _i57.PurchaserInfo {
 // ignore: must_be_immutable
 class MockQuantityPickerInputDelegate<PickerType extends _i62.GeneratedMessage,
         InputType> extends _i1.Mock
-    implements _i76.QuantityPickerInputDelegate<PickerType, InputType> {
+    implements _i75.QuantityPickerInputDelegate<PickerType, InputType> {
   MockQuantityPickerInputDelegate() {
     _i1.throwOnMissingStub(this);
   }
@@ -6487,7 +6486,7 @@ class MockQuantityPickerInputDelegate<PickerType extends _i62.GeneratedMessage,
           returnValue: <PickerType>{}) as Set<PickerType>);
   @override
   _i53.Widget pickerPage(
-          _i77.ManageableListPagePickerSettings<PickerType>? pickerSettings) =>
+          _i76.ManageableListPagePickerSettings<PickerType>? pickerSettings) =>
       (super.noSuchMethod(Invocation.method(#pickerPage, [pickerSettings]),
           returnValue: _FakeWidget_121()) as _i53.Widget);
   @override
@@ -6510,7 +6509,7 @@ class MockQuantityPickerInputDelegate<PickerType extends _i62.GeneratedMessage,
   @override
   InputType newInputItem(PickerType? pickerItem) =>
       (super.noSuchMethod(Invocation.method(#newInputItem, [pickerItem]),
-          returnValue: _i78.newInputItemShim(pickerItem)) as InputType);
+          returnValue: _i77.newInputItemShim(pickerItem)) as InputType);
   @override
   InputType? existingInputItem(PickerType? pickerItem) =>
       (super.noSuchMethod(Invocation.method(#existingInputItem, [pickerItem]))

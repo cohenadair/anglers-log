@@ -8,27 +8,27 @@ class PurchasesWrapper {
   static PurchasesWrapper of(BuildContext context) =>
       Provider.of<AppManager>(context, listen: false).purchasesWrapper;
 
-  void addPurchaserInfoUpdateListener(Function(PurchaserInfo) listener) =>
-      Purchases.addPurchaserInfoUpdateListener(listener);
+  void addCustomerInfoUpdateListener(Function(CustomerInfo) listener) =>
+      Purchases.addCustomerInfoUpdateListener(listener);
 
-  Future<void> setup(String apiKey) => Purchases.setup(apiKey);
+  Future<void> configure(String apiKey) =>
+      Purchases.configure(PurchasesConfiguration(apiKey));
 
   // ignore: avoid_positional_boolean_parameters
   void setDebugEnabled(bool enabled) => Purchases.setDebugLogsEnabled(enabled);
 
   Future<Offerings> getOfferings() => Purchases.getOfferings();
 
-  Future<PurchaserInfo> getPurchaserInfo() => Purchases.getPurchaserInfo();
+  Future<CustomerInfo> getCustomerInfo() => Purchases.getCustomerInfo();
 
   Future<LogInResult> logIn(String appUserId) => Purchases.logIn(appUserId);
 
-  Future<PurchaserInfo> purchasePackage(Package package) =>
+  Future<CustomerInfo> purchasePackage(Package package) =>
       Purchases.purchasePackage(package);
 
   Future<bool> get isAnonymous => Purchases.isAnonymous;
 
-  Future<PurchaserInfo> logOut() => Purchases.logOut();
+  Future<CustomerInfo> logOut() => Purchases.logOut();
 
-  Future<PurchaserInfo> restoreTransactions() =>
-      Purchases.restoreTransactions();
+  Future<CustomerInfo> restorePurchases() => Purchases.restorePurchases();
 }

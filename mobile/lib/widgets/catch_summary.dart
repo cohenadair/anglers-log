@@ -1,7 +1,4 @@
-import 'dart:isolate';
-
 import 'package:fixnum/fixnum.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:mobile/entity_manager.dart';
@@ -20,7 +17,6 @@ import '../body_of_water_manager.dart';
 import '../catch_manager.dart';
 import '../fishing_spot_manager.dart';
 import '../i18n/strings.dart';
-import '../log.dart';
 import '../method_manager.dart';
 import '../named_entity_manager.dart';
 import '../species_manager.dart';
@@ -31,8 +27,6 @@ import '../utils/date_time_utils.dart';
 import '../utils/protobuf_utils.dart';
 import '../utils/string_utils.dart';
 import '../water_clarity_manager.dart';
-import 'package:mobile/fishing_spot_manager.dart';
-import 'package:mobile/i18n/strings.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
 import 'package:mobile/pages/catch_list_page.dart';
 import 'package:quiver/strings.dart';

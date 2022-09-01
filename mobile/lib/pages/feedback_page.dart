@@ -205,7 +205,7 @@ class FeedbackPageState extends State<FeedbackPage> {
       var info = await _deviceInfoWrapper.androidInfo;
       osVersion = "Android (${info.version.sdkInt})";
       deviceModel = info.model;
-      deviceId = info.androidId;
+      deviceId = info.id;
     }
 
     // API data, per https://sendgrid.com/docs/api-reference/.

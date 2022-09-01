@@ -214,7 +214,7 @@ class AnglersLogState extends State<AnglersLog> {
     var oldVersion = _userPreferencesManager.appVersion;
     var newVersion = (await _packageInfoWrapper.fromPlatform()).version;
     return isEmpty(oldVersion) ||
-        Version.parse(oldVersion) < Version.parse(newVersion);
+        Version.parse(oldVersion!) < Version.parse(newVersion);
   }
 }
 

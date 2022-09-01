@@ -203,7 +203,7 @@ Widget _buildDialogButton({
 }) {
   return TextButton(
     style: TextButton.styleFrom(
-      primary: textColor,
+      foregroundColor: textColor,
     ),
     onPressed: enabled
         ? () {

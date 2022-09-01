@@ -28,7 +28,7 @@ class Button extends StatelessWidget {
         ? ElevatedButton(
             onPressed: onPressed,
             style: ElevatedButton.styleFrom(
-              primary: color,
+              backgroundColor: color,
             ),
             child: _textWidget,
           )
@@ -37,7 +37,7 @@ class Button extends StatelessWidget {
             icon: icon!,
             label: _textWidget,
             style: ElevatedButton.styleFrom(
-              primary: color,
+              backgroundColor: color,
             ),
           );
   }

@@ -1,7 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/pages/onboarding/change_log_page.dart';
 import 'package:mockito/mockito.dart';
-import 'package:package_info_plus/package_info_plus.dart';
 
 import '../../mocks/stubbed_app_manager.dart';
 import '../../test_utils.dart';

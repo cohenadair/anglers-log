@@ -19,7 +19,7 @@ void main() {
     when(appManager.purchasesWrapper.logIn(any))
         .thenAnswer((_) => Future.value(MockLogInResult()));
     when(appManager.purchasesWrapper.logOut())
-        .thenAnswer((_) => Future.value(MockPurchaserInfo()));
+        .thenAnswer((_) => Future.value(MockCustomerInfo()));
 
     subscriptionManager = SubscriptionManager(appManager.app);
   });
@@ -33,10 +33,10 @@ void main() {
       "pro": entitlementInfo,
     });
 
-    var purchaserInfo = MockPurchaserInfo();
+    var purchaserInfo = MockCustomerInfo();
     when(purchaserInfo.entitlements).thenReturn(entitlementInfos);
 
-    when(appManager.purchasesWrapper.restoreTransactions())
+    when(appManager.purchasesWrapper.restorePurchases())
         .thenAnswer((_) => Future.value(purchaserInfo));
 
     var restoreResult = await subscriptionManager.restoreSubscription();
@@ -45,7 +45,7 @@ void main() {
   });
 
   test("Restore error sets state to free", () async {
-    when(appManager.purchasesWrapper.restoreTransactions())
+    when(appManager.purchasesWrapper.restorePurchases())
         .thenThrow(PlatformException(code: "0"));
 
     var restoreResult = await subscriptionManager.restoreSubscription();
@@ -62,10 +62,10 @@ void main() {
       "pro": entitlementInfo,
     });
 
-    var purchaserInfo = MockPurchaserInfo();
+    var purchaserInfo = MockCustomerInfo();
     when(purchaserInfo.entitlements).thenReturn(entitlementInfos);
 
-    when(appManager.purchasesWrapper.restoreTransactions())
+    when(appManager.purchasesWrapper.restorePurchases())
         .thenAnswer((_) => Future.value(purchaserInfo));
 
     var restoreResult = await subscriptionManager.restoreSubscription();
@@ -121,10 +121,10 @@ void main() {
       "pro": entitlementInfo,
     });
 
-    var purchaserInfo = MockPurchaserInfo();
+    var purchaserInfo = MockCustomerInfo();
     when(purchaserInfo.entitlements).thenReturn(entitlementInfos);
 
-    when(appManager.purchasesWrapper.restoreTransactions())
+    when(appManager.purchasesWrapper.restorePurchases())
         .thenAnswer((_) => Future.value(purchaserInfo));
 
     var called = false;
