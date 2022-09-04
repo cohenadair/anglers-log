@@ -22,10 +22,10 @@ class DateRangePickerInput extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _DateRangePickerInputState createState() => _DateRangePickerInputState();
+  DateRangePickerInputState createState() => DateRangePickerInputState();
 }
 
-class _DateRangePickerInputState extends State<DateRangePickerInput> {
+class DateRangePickerInputState extends State<DateRangePickerInput> {
   late DateRange _currentDateRange;
 
   TimeManager get _timeManager => TimeManager.of(context);

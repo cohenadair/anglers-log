@@ -586,11 +586,11 @@ class _MeasurementPerSpecies extends StatelessWidget {
     // TableRowInkWell expands the InkWell to the entire table row, rather than
     // just the cell.
     return TableRowInkWell(
+      onTap: onTap,
       child: Padding(
         padding: padding,
         child: child,
       ),
-      onTap: onTap,
     );
   }
 

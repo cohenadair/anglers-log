@@ -31,10 +31,10 @@ class SaveNamePage extends StatefulWidget {
   });
 
   @override
-  _SaveNamePageState createState() => _SaveNamePageState();
+  SaveNamePageState createState() => SaveNamePageState();
 }
 
-class _SaveNamePageState extends State<SaveNamePage> {
+class SaveNamePageState extends State<SaveNamePage> {
   late final TextInputController _controller;
 
   @override

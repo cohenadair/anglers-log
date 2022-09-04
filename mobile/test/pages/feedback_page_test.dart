@@ -160,7 +160,7 @@ void main() {
         Icons.radio_button_checked);
   });
 
-  testWidgets("Snackbar shows for no connection", (tester) async {
+  testWidgets("Snack bar shows for no connection", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => const FeedbackPage(
         error: "Error",
@@ -180,7 +180,7 @@ void main() {
     );
   });
 
-  testWidgets("Error Snackbar shows for sending error", (tester) async {
+  testWidgets("Error snack bar shows for sending error", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => const FeedbackPage(
         error: "Error",
@@ -200,11 +200,12 @@ void main() {
 
     await tapAndSettle(tester, find.text("SEND"));
     expect(
-        find.widgetWithText(
-            SnackBar,
-            "Error sending feedback. Please try "
-            "again later, or email support@anglerslog.ca directly."),
-        findsOneWidget);
+      find.widgetWithText(
+          SnackBar,
+          "Error sending feedback. Please try "
+          "again later, or email support@anglerslog.ca directly."),
+      findsOneWidget,
+    );
     expect(
         findFirstWithText<ActionButton>(tester, "SEND").onPressed, isNotNull);
   });

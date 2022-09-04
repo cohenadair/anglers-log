@@ -76,10 +76,10 @@ class SaveCatchPage extends StatefulWidget {
         fishingSpot = null;
 
   @override
-  _SaveCatchPageState createState() => _SaveCatchPageState();
+  SaveCatchPageState createState() => SaveCatchPageState();
 }
 
-class _SaveCatchPageState extends State<SaveCatchPage> {
+class SaveCatchPageState extends State<SaveCatchPage> {
   static final _idAngler = catchFieldIdAngler;
   static final _idAtmosphere = catchFieldIdAtmosphere;
   static final _idBait = catchFieldIdBait;

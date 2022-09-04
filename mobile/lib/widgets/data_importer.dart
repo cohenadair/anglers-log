@@ -45,10 +45,10 @@ class DataImporter extends StatefulWidget {
   });
 
   @override
-  _DataImporterState createState() => _DataImporterState();
+  DataImporterState createState() => DataImporterState();
 }
 
-class _DataImporterState extends State<DataImporter> {
+class DataImporterState extends State<DataImporter> {
   var _progressState = AsyncFeedbackState.none;
 
   String? _importError;

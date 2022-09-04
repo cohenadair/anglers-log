@@ -67,14 +67,14 @@ void main() {
     await pumpContext(
       tester,
       (_) => ScrollPage(
-        children: const [
-          Text("Test"),
-        ],
         footer: [
           TextButton(
             child: const Text("Tap Me"),
             onPressed: () {},
           ),
+        ],
+        children: const [
+          Text("Test"),
         ],
       ),
     );
@@ -90,10 +90,10 @@ void main() {
     await pumpContext(
       tester,
       (_) => const ScrollPage(
+        footer: [],
         children: [
           Text("Test"),
         ],
-        footer: [],
       ),
     );
     expect(
@@ -108,10 +108,10 @@ void main() {
     await pumpContext(
       tester,
       (_) => const ScrollPage(
+        footer: [],
         children: [
           Text("Test"),
         ],
-        footer: [],
       ),
     );
     expect(
@@ -124,11 +124,11 @@ void main() {
     await pumpContext(
       tester,
       (_) => const ScrollPage(
-        children: [
-          Text("Test"),
-        ],
         footer: [
           Text("A"),
+        ],
+        children: [
+          Text("Test"),
         ],
       ),
     );
@@ -159,11 +159,11 @@ void main() {
     await pumpContext(
       tester,
       (_) => const ScrollPage(
-        children: [
-          Text("Test"),
-        ],
         footer: [
           Text("A"),
+        ],
+        children: [
+          Text("Test"),
         ],
       ),
     );

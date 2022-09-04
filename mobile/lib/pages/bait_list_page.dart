@@ -29,10 +29,10 @@ class BaitListPage extends StatefulWidget {
   const BaitListPage({this.pickerSettings});
 
   @override
-  _BaitListPageState createState() => _BaitListPageState();
+  BaitListPageState createState() => BaitListPageState();
 }
 
-class _BaitListPageState extends State<BaitListPage> {
+class BaitListPageState extends State<BaitListPage> {
   late final _BaitListPageModel _model;
   final _selectedVariants = <BaitVariant>{};
 

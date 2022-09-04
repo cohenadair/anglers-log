@@ -84,7 +84,6 @@ class RestorePage extends StatelessWidget {
 class _BackupRestorePage extends StatefulWidget {
   final String title;
   final String errorPageTitle;
-  final String? errorPageWarning;
   final String actionLabel;
   final String description;
   final IconData icon;
@@ -97,7 +96,6 @@ class _BackupRestorePage extends StatefulWidget {
   const _BackupRestorePage({
     required this.title,
     required this.errorPageTitle,
-    this.errorPageWarning,
     required this.actionLabel,
     required this.description,
     required this.icon,
@@ -203,7 +201,6 @@ class _BackupRestorePageState extends State<_BackupRestorePage> {
               feedbackPage: FeedbackPage(
                 title: widget.errorPageTitle,
                 error: _progressError,
-                warningMessage: widget.errorPageWarning,
               ),
             ),
           ),

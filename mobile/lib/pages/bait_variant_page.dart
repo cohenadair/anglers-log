@@ -32,10 +32,10 @@ class BaitVariantPage extends StatefulWidget {
   });
 
   @override
-  _BaitVariantPageState createState() => _BaitVariantPageState();
+  BaitVariantPageState createState() => BaitVariantPageState();
 }
 
-class _BaitVariantPageState extends State<BaitVariantPage> {
+class BaitVariantPageState extends State<BaitVariantPage> {
   Bait? _bait;
   late BaitVariant _variant;
 

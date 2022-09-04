@@ -6,5 +6,5 @@ protoc320 --dart_out=. anglerslog.proto
 mv *.dart ../lib/model/gen/
 
 for f in $(find ../lib/model/gen -iname '*.dart'); do
-  printf "// ignore_for_file: undefined_named_parameter,constant_identifier_names\n" >> "$f"
+  printf "// ignore_for_file: undefined_named_parameter,no_leading_underscores_for_local_identifiers\n" >> "$f"
 done

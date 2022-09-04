@@ -26,10 +26,10 @@ class OnboardingJourney extends StatefulWidget {
   });
 
   @override
-  _OnboardingJourneyState createState() => _OnboardingJourneyState();
+  OnboardingJourneyState createState() => OnboardingJourneyState();
 }
 
-class _OnboardingJourneyState extends State<OnboardingJourney> {
+class OnboardingJourneyState extends State<OnboardingJourney> {
   static const _routeRoot = "/";
   static const _routeMigrateOrCatchFields = "migrate";
   static const _routeCatchFields = "catch_fields";

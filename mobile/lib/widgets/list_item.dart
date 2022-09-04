@@ -41,8 +41,8 @@ class ListItem extends StatelessWidget {
     if (title is Text) {
       title = DefaultTextStyle(
         style: stylePrimary(context, enabled: enabled),
-        child: title,
         overflow: TextOverflow.ellipsis,
+        child: title,
       );
     }
 
@@ -50,8 +50,8 @@ class ListItem extends StatelessWidget {
     if (subtitle is Text) {
       subtitle = DefaultTextStyle(
         style: styleSubtitle(context, enabled: enabled),
-        child: subtitle,
         overflow: TextOverflow.ellipsis,
+        child: subtitle,
       );
     }
 
@@ -132,6 +132,9 @@ class ImageListItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ManageableListItem(
+      onTap: onTap,
+      // In this state, the delete button will never be shown.
+      onTapDeleteButton: () => false,
       child: ManageableListImageItem(
         imageName: imageName,
         title: title,
@@ -142,9 +145,6 @@ class ImageListItem extends StatelessWidget {
         showPlaceholder: showPlaceholder,
         showFullImageOnTap: showFullImageOnTap,
       ),
-      onTap: onTap,
-      // In this state, the delete button will never be shown.
-      onTapDeleteButton: () => false,
     );
   }
 }
@@ -239,10 +239,10 @@ class ExpansionListItem extends StatefulWidget {
   });
 
   @override
-  _ExpansionListItemState createState() => _ExpansionListItemState();
+  ExpansionListItemState createState() => ExpansionListItemState();
 }
 
-class _ExpansionListItemState extends State<ExpansionListItem> {
+class ExpansionListItemState extends State<ExpansionListItem> {
   final GlobalKey _key = GlobalKey();
 
   bool _expanded = false;
@@ -271,7 +271,6 @@ class _ExpansionListItemState extends State<ExpansionListItem> {
             child: ExpansionTile(
               key: _key,
               title: widget.title,
-              children: widget.children,
               trailing: widget.trailing,
               initiallyExpanded: widget.isExpanded,
               onExpansionChanged: (expanded) {
@@ -280,6 +279,7 @@ class _ExpansionListItemState extends State<ExpansionListItem> {
                 });
                 widget.onExpansionChanged?.call(expanded);
               },
+              children: widget.children,
             ),
           ),
           _divider,

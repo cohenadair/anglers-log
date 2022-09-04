@@ -22,21 +22,17 @@ class ImageInput extends StatefulWidget {
   });
 
   @override
-  _ImageInputState createState() => _ImageInputState();
+  ImageInputState createState() => ImageInputState();
 }
 
-class _ImageInputState extends State<ImageInput> {
-  Future<List<PickedImage>> _imagesFuture = Future.value([]);
+class ImageInputState extends State<ImageInput> {
+  Future<List<PickedImage>>? _imagesFuture;
 
   ListInputController<PickedImage> get _controller => widget.controller;
 
   ImageManager get _imageManager => ImageManager.of(context);
 
-  @override
-  void initState() {
-    super.initState();
-    _imagesFuture = _fetchInitialImage();
-  }
+  MediaQueryData get _mediaQuery => MediaQuery.of(context);
 
   @override
   void didUpdateWidget(ImageInput oldWidget) {
@@ -49,8 +45,11 @@ class _ImageInputState extends State<ImageInput> {
 
   @override
   Widget build(BuildContext context) {
+    // Need access to MediaQuery, so initialize future in the build method.
+    _imagesFuture ??= _fetchInitialImage();
+
     return EmptyFutureBuilder<List<PickedImage>>(
-      future: _imagesFuture,
+      future: _imagesFuture!,
       builder: (context, images) {
         return ImagePicker(
           initialImages: _controller.value,
@@ -81,9 +80,9 @@ class _ImageInputState extends State<ImageInput> {
     }
 
     var imageMap = await _imageManager.images(
-      context,
       imageNames: widget.initialImageNames,
       size: galleryMaxThumbSize,
+      devicePixelRatio: _mediaQuery.devicePixelRatio,
     );
 
     if (imageMap.isEmpty) {
@@ -115,10 +114,10 @@ class SingleImageInput extends StatefulWidget {
   });
 
   @override
-  _SingleImageInputState createState() => _SingleImageInputState();
+  SingleImageInputState createState() => SingleImageInputState();
 }
 
-class _SingleImageInputState extends State<SingleImageInput> {
+class SingleImageInputState extends State<SingleImageInput> {
   final _multiController = ImagesInputController();
   late final VoidCallback _multiControllerListener;
 

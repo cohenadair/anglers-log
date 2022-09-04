@@ -63,20 +63,20 @@ class SubscriptionManager {
   Stream<void> get stream => _controller.stream;
 
   Future<String> get userId async =>
-      (await _purchasesWrapper.getPurchaserInfo()).originalAppUserId;
+      (await _purchasesWrapper.getCustomerInfo()).originalAppUserId;
 
   Future<void> initialize() async {
     // Setup RevenueCat.
-    await _purchasesWrapper.setup(_propertiesManager.revenueCatApiKey);
+    await _purchasesWrapper.configure(_propertiesManager.revenueCatApiKey);
     _purchasesWrapper.setDebugEnabled(_debugPurchases);
 
     // Setup purchase state listener and initial state.
     _purchasesWrapper
-        .addPurchaserInfoUpdateListener(_setStateFromPurchaserInfo);
+        .addCustomerInfoUpdateListener(_setStateFromPurchaserInfo);
 
     // Set current state.
     try {
-      _setStateFromPurchaserInfo(await _purchasesWrapper.getPurchaserInfo());
+      _setStateFromPurchaserInfo(await _purchasesWrapper.getCustomerInfo());
     } on PlatformException catch (e) {
       _log.e(StackTrace.current, "Purchase info error: ${e.message}");
     }
@@ -99,7 +99,7 @@ class SubscriptionManager {
 
   Future<RestoreSubscriptionResult> restoreSubscription() async {
     try {
-      _setStateFromPurchaserInfo(await _purchasesWrapper.restoreTransactions());
+      _setStateFromPurchaserInfo(await _purchasesWrapper.restorePurchases());
       return isFree
           ? RestoreSubscriptionResult.noSubscriptionsFound
           : RestoreSubscriptionResult.success;
@@ -137,9 +137,9 @@ class SubscriptionManager {
     _controller.notify();
   }
 
-  void _setStateFromPurchaserInfo(PurchaserInfo purchaserInfo) {
+  void _setStateFromPurchaserInfo(CustomerInfo customerInfo) {
     _setState(
-        purchaserInfo.entitlements.all[_idProEntitlement]?.isActive ?? false
+        customerInfo.entitlements.all[_idProEntitlement]?.isActive ?? false
             ? SubscriptionState.pro
             : SubscriptionState.free);
   }
@@ -151,7 +151,7 @@ class Subscription {
 
   Subscription(this.package, this.trialLengthDays);
 
-  String get price => package.product.priceString;
+  String get price => package.storeProduct.priceString;
 }
 
 /// A convenience class that stores subscription options. A single class like

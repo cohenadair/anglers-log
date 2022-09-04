@@ -30,10 +30,10 @@ class SaveBaitVariantPage extends StatefulWidget {
   });
 
   @override
-  _SaveBaitVariantPageState createState() => _SaveBaitVariantPageState();
+  SaveBaitVariantPageState createState() => SaveBaitVariantPageState();
 }
 
-class _SaveBaitVariantPageState extends State<SaveBaitVariantPage> {
+class SaveBaitVariantPageState extends State<SaveBaitVariantPage> {
   // Unique IDs for each field. These are stored in the database and should not
   // be changed.
   static final _idColor = Id()..uuid = "8b803b47-f3e1-4233-bb4b-f25e3ea48694";

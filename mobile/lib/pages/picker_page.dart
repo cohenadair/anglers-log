@@ -88,10 +88,10 @@ class PickerPage<T> extends StatefulWidget {
         );
 
   @override
-  _PickerPageState<T> createState() => _PickerPageState<T>();
+  PickerPageState<T> createState() => PickerPageState<T>();
 }
 
-class _PickerPageState<T> extends State<PickerPage<T>> {
+class PickerPageState<T> extends State<PickerPage<T>> {
   late Set<T> _selectedValues;
 
   @override

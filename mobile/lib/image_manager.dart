@@ -81,10 +81,10 @@ class ImageManager {
   /// Returns encoded image data with the given [fileName] at the given [size].
   /// If an image of [size] does not exist in the cache, the full image is
   /// returned.
-  Future<Uint8List?> image(
-    BuildContext context, {
+  Future<Uint8List?> image({
     required String fileName,
     double? size,
+    double? devicePixelRatio,
   }) async {
     if (isEmpty(fileName)) {
       return null;
@@ -93,7 +93,7 @@ class ImageManager {
     var file = imageFile(fileName);
 
     // Return the correct thumbnail if it exists.
-    var thumb = await _thumbnail(context, fileName, size);
+    var thumb = await _thumbnail(fileName, size, devicePixelRatio);
     if (thumb != null) {
       return thumb;
     }
@@ -113,10 +113,10 @@ class ImageManager {
   ///
   /// If there are no images associated with the given [names], an empty map
   /// is returned.
-  Future<Map<File, Uint8List>> images(
-    BuildContext context, {
+  Future<Map<File, Uint8List>> images({
     required List<String> imageNames,
     double? size,
+    double? devicePixelRatio,
   }) async {
     if (imageNames.isEmpty) {
       return {};
@@ -127,9 +127,9 @@ class ImageManager {
       _addToCache(fileName);
 
       var bytes = await image(
-        context,
         fileName: fileName,
         size: size,
+        devicePixelRatio: devicePixelRatio,
       );
 
       if (bytes != null) {
@@ -177,7 +177,7 @@ class ImageManager {
       // Compress first, so image MD5 hashes are equal to existing files.
       List<int> jpgBytes;
       if (compress) {
-        jpgBytes = await _compress(null, file, _imageCompressionQuality, null);
+        jpgBytes = await _compress(file, _imageCompressionQuality, null, null);
       } else {
         jpgBytes = await file.readAsBytes();
       }
@@ -224,13 +224,13 @@ class ImageManager {
   }
 
   Future<Uint8List> _compress(
-      BuildContext? context, File source, int quality, double? size) async {
+      File source, int quality, double? size, double? devicePixelRatio) async {
     var intBytes = <int>[];
 
     if (await source.exists()) {
       double? pixels;
       if (size != null) {
-        pixels = MediaQuery.of(context!).devicePixelRatio * size;
+        pixels = (devicePixelRatio ?? 1) * size;
       }
       var bytes = await _imageCompressWrapper.compress(
           source.path, quality, pixels?.round());
@@ -254,7 +254,7 @@ class ImageManager {
   /// [_delegate.compress] is invoked and the result is saved to the file system
   /// and added to the memory cache.
   Future<Uint8List?> _thumbnail(
-      BuildContext context, String name, double? size) async {
+      String name, double? size, double? devicePixelRatio) async {
     if (isEmpty(name) || size == null) {
       return null;
     }
@@ -291,8 +291,8 @@ class ImageManager {
         }
 
         await thumbnail.writeAsBytes(
-          await _compress(
-              context, imageFile(fileName), _thumbnailCompressionQuality, size),
+          await _compress(imageFile(fileName), _thumbnailCompressionQuality,
+              size, devicePixelRatio),
           flush: true,
         );
       } on FileSystemException catch (e) {

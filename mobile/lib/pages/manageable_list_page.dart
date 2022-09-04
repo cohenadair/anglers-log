@@ -72,10 +72,10 @@ class ManageableListPage<T> extends StatefulWidget {
   });
 
   @override
-  _ManageableListPageState<T> createState() => _ManageableListPageState<T>();
+  ManageableListPageState<T> createState() => ManageableListPageState<T>();
 }
 
-class _ManageableListPageState<T> extends State<ManageableListPage<T>> {
+class ManageableListPageState<T> extends State<ManageableListPage<T>> {
   static const IconData _iconCheck = Icons.check;
   static const IconData _iconAdd = Icons.add;
 
@@ -359,10 +359,10 @@ class _ManageableListPageState<T> extends State<ManageableListPage<T>> {
 
     return ManageableListItem(
       editing: false,
-      child: Text(label),
       onTapDeleteButton: () => false,
       onTap: onTap,
       trailing: trailing,
+      child: Text(label),
     );
   }
 
@@ -424,7 +424,6 @@ class _ManageableListPageState<T> extends State<ManageableListPage<T>> {
         widget.itemManager.deleteItem != null;
 
     var listItem = ManageableListItem(
-      child: item.child,
       editing: canEdit,
       enabled: enabled,
       deleteMessageBuilder: canDelete
@@ -439,6 +438,7 @@ class _ManageableListPageState<T> extends State<ManageableListPage<T>> {
           : () => widget.itemManager.onTapDeleteButton!(itemValue),
       trailing: trailing,
       grandchild: item.grandchild,
+      child: item.child,
     );
 
     return AnimatedListTransition(

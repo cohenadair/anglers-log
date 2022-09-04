@@ -3,8 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
 import 'package:mobile/pages/date_range_picker_page.dart';
-import 'package:mockito/mockito.dart';
-import 'package:timezone/timezone.dart';
 
 import '../mocks/stubbed_app_manager.dart';
 import '../test_utils.dart';

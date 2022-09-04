@@ -19,10 +19,10 @@ class CatchFieldPickerPage extends StatefulWidget {
   });
 
   @override
-  _CatchFieldPickerPageState createState() => _CatchFieldPickerPageState();
+  CatchFieldPickerPageState createState() => CatchFieldPickerPageState();
 }
 
-class _CatchFieldPickerPageState extends State<CatchFieldPickerPage> {
+class CatchFieldPickerPageState extends State<CatchFieldPickerPage> {
   late List<Id> _selectedFields;
 
   UserPreferenceManager get _userPreferencesManager =>

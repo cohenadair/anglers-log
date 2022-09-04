@@ -18,7 +18,7 @@ void main() {
   setUp(() {
     appManager = StubbedAppManager();
 
-    when(appManager.imageManager.image(any, fileName: anyNamed("fileName")))
+    when(appManager.imageManager.image(fileName: anyNamed("fileName")))
         .thenAnswer((_) => Future.value(null));
 
     when(appManager.propertiesManager.mapboxApiKey).thenReturn("key");
@@ -33,7 +33,7 @@ void main() {
   });
 
   testWidgets("Failed request shows container", (tester) async {
-    when(appManager.imageManager.image(any, fileName: anyNamed("fileName")))
+    when(appManager.imageManager.image(fileName: anyNamed("fileName")))
         .thenAnswer((_) => Future.value(null));
 
     var response = MockResponse();
@@ -65,7 +65,7 @@ void main() {
       image = await File("test/resources/android_logo.png").readAsBytes();
     });
 
-    when(appManager.imageManager.image(any, fileName: anyNamed("fileName")))
+    when(appManager.imageManager.image(fileName: anyNamed("fileName")))
         .thenAnswer((_) => Future.value(image));
 
     await pumpContext(

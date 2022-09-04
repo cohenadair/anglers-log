@@ -21,10 +21,10 @@ class TideInput extends StatefulWidget {
   });
 
   @override
-  _TideInputState createState() => _TideInputState();
+  TideInputState createState() => TideInputState();
 }
 
-class _TideInputState extends State<TideInput> {
+class TideInputState extends State<TideInput> {
   bool get hasValue => widget.controller.hasValue;
 
   Tide? get value => widget.controller.value;

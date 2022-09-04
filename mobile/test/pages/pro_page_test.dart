@@ -24,15 +24,15 @@ void main() {
         .thenAnswer((_) => const Stream.empty());
     when(appManager.subscriptionManager.isPro).thenReturn(false);
 
-    var monthlyProduct = MockProduct();
+    var monthlyProduct = MockStoreProduct();
     when(monthlyProduct.priceString).thenReturn("\$2.99");
     monthlyPackage = MockPackage();
-    when(monthlyPackage.product).thenReturn(monthlyProduct);
+    when(monthlyPackage.storeProduct).thenReturn(monthlyProduct);
 
-    var yearlyProduct = MockProduct();
+    var yearlyProduct = MockStoreProduct();
     when(yearlyProduct.priceString).thenReturn("\$19.99");
     yearlyPackage = MockPackage();
-    when(yearlyPackage.product).thenReturn(yearlyProduct);
+    when(yearlyPackage.storeProduct).thenReturn(yearlyProduct);
 
     when(appManager.subscriptionManager.subscriptions()).thenAnswer((_) =>
         Future.value(Subscriptions(

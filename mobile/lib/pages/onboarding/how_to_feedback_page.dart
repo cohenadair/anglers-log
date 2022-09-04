@@ -22,10 +22,10 @@ class HowToFeedbackPage extends StatefulWidget {
   });
 
   @override
-  _HowToFeedbackPageState createState() => _HowToFeedbackPageState();
+  HowToFeedbackPageState createState() => HowToFeedbackPageState();
 }
 
-class _HowToFeedbackPageState extends State<HowToFeedbackPage> {
+class HowToFeedbackPageState extends State<HowToFeedbackPage> {
   static const _scrollAnimDuration = Duration(milliseconds: 500);
   static const _scrollToTopAfter = Duration(seconds: 2, milliseconds: 500);
   static const _scrollToFeedbackAfter = Duration(seconds: 1);

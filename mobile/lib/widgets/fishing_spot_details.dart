@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:mobile/res/dimen.dart';
+import 'package:mobile/utils/widget_utils.dart';
 import 'package:mobile/widgets/our_bottom_sheet.dart';
 import 'package:quiver/strings.dart';
 
@@ -140,7 +141,7 @@ class FishingSpotDetails extends StatelessWidget {
 
 /// A widget that shows a [Row] of [ChipButtons] related to the given
 /// [FishingSpot].
-class _FishingSpotActions extends StatelessWidget {
+class _FishingSpotActions extends StatefulWidget {
   static const _log = Log("_FishingSpotActions");
 
   /// Note that an [Id] is not used here because the [FishingSpot] being shown
@@ -159,13 +160,18 @@ class _FishingSpotActions extends StatelessWidget {
   });
 
   @override
+  State<_FishingSpotActions> createState() => _FishingSpotActionsState();
+}
+
+class _FishingSpotActionsState extends State<_FishingSpotActions> {
+  @override
   Widget build(BuildContext context) {
     var children = [
-      _buildAddCatch(context),
-      _buildSave(context),
-      _buildSaveDetails(context),
-      _buildDelete(context),
-      _buildDirections(context),
+      _buildAddCatch(),
+      _buildSave(),
+      _buildSaveDetails(),
+      _buildDelete(),
+      _buildDirections(),
     ];
     children.removeWhere((e) => e is Empty);
 
@@ -174,37 +180,39 @@ class _FishingSpotActions extends StatelessWidget {
     }
 
     return ChipList(
-      children: children,
       containerPadding: insetsBottomDefault,
       listPadding: insetsHorizontalDefault,
+      children: children,
     );
   }
 
-  Widget _buildSave(BuildContext context) {
-    if (_fishingSpotExists(context) || isPicking) {
+  Widget _buildSave() {
+    if (_fishingSpotExists() || widget.isPicking) {
       return const Empty();
     }
 
     return ChipButton(
       label: Strings.of(context).save,
       icon: Icons.save,
-      onPressed: () => FishingSpotManager.of(context).addOrUpdate(fishingSpot),
+      onPressed: () =>
+          FishingSpotManager.of(context).addOrUpdate(widget.fishingSpot),
     );
   }
 
-  Widget _buildSaveDetails(BuildContext context) {
-    var isEditing = _fishingSpotExists(context);
+  Widget _buildSaveDetails() {
+    var isEditing = _fishingSpotExists();
     return ChipButton(
       label: isEditing
           ? Strings.of(context).edit
           : Strings.of(context).fishingSpotDetailsAddDetails,
       icon: isEditing ? Icons.edit : Icons.add,
-      onPressed: () => present(context, SaveFishingSpotPage.edit(fishingSpot)),
+      onPressed: () =>
+          present(context, SaveFishingSpotPage.edit(widget.fishingSpot)),
     );
   }
 
-  Widget _buildAddCatch(BuildContext context) {
-    if (!_fishingSpotExists(context) || isPicking) {
+  Widget _buildAddCatch() {
+    if (!_fishingSpotExists() || widget.isPicking) {
       return const Empty();
     }
 
@@ -212,12 +220,12 @@ class _FishingSpotActions extends StatelessWidget {
       label: Strings.of(context).mapPageAddCatch,
       icon: Icons.add,
       onPressed: () =>
-          AddCatchJourney.presentIn(context, fishingSpot: fishingSpot),
+          AddCatchJourney.presentIn(context, fishingSpot: widget.fishingSpot),
     );
   }
 
-  Widget _buildDelete(BuildContext context) {
-    if (!_fishingSpotExists(context)) {
+  Widget _buildDelete() {
+    if (!_fishingSpotExists()) {
       return const Empty();
     }
 
@@ -228,16 +236,16 @@ class _FishingSpotActions extends StatelessWidget {
       onPressed: () {
         showDeleteDialog(
           context: context,
-          description:
-              Text(fishingSpotManager.deleteMessage(context, fishingSpot)),
-          onDelete: () => fishingSpotManager.delete(fishingSpot.id),
+          description: Text(
+              fishingSpotManager.deleteMessage(context, widget.fishingSpot)),
+          onDelete: () => fishingSpotManager.delete(widget.fishingSpot.id),
         );
       },
     );
   }
 
-  Widget _buildDirections(BuildContext context) {
-    if (isPicking) {
+  Widget _buildDirections() {
+    if (widget.isPicking) {
       return const Empty();
     }
 
@@ -248,36 +256,40 @@ class _FishingSpotActions extends StatelessWidget {
     );
   }
 
-  bool _fishingSpotExists(BuildContext context) =>
-      FishingSpotManager.of(context).entityExists(fishingSpot.id);
+  bool _fishingSpotExists() =>
+      FishingSpotManager.of(context).entityExists(widget.fishingSpot.id);
 
   Future<void> _launchDirections(BuildContext context) async {
+    var appleMaps = Strings.of(context).mapPageAppleMaps;
+    var googleMaps = Strings.of(context).mapPageGoogleMaps;
+    var waze = Strings.of(context).mapPageWaze;
+
     var navigationAppOptions = <String, String>{};
     var urlLauncher = UrlLauncherWrapper.of(context);
     var io = IoWrapper.of(context);
-    var destination = "${fishingSpot.lat}%2C${fishingSpot.lng}";
+    var destination = "${widget.fishingSpot.lat}%2C${widget.fishingSpot.lng}";
 
     // Openable on Android as standard URL. Do not include as an option on
     // Android devices.
     var appleMapsUrl = "https://maps.apple.com/?daddr=$destination";
     if (io.isIOS && await urlLauncher.canLaunch(appleMapsUrl)) {
-      navigationAppOptions[Strings.of(context).mapPageAppleMaps] = appleMapsUrl;
+      navigationAppOptions[appleMaps] = appleMapsUrl;
     }
 
     var googleMapsUrl = Platform.isAndroid
         ? "google.navigation:q=$destination"
         : "comgooglemaps://?daddr=$destination";
     if (await urlLauncher.canLaunch(googleMapsUrl)) {
-      navigationAppOptions[Strings.of(context).mapPageGoogleMaps] =
-          googleMapsUrl;
+      navigationAppOptions[googleMaps] = googleMapsUrl;
     }
 
     var wazeUrl = "waze://?ll=$destination&navigate=yes";
     if (await urlLauncher.canLaunch(wazeUrl)) {
-      navigationAppOptions[Strings.of(context).mapPageWaze] = wazeUrl;
+      navigationAppOptions[waze] = wazeUrl;
     }
 
-    _log.d("Available navigation apps: ${navigationAppOptions.keys}");
+    _FishingSpotActions._log
+        .d("Available navigation apps: ${navigationAppOptions.keys}");
     var launched = false;
 
     if (navigationAppOptions.isEmpty) {
@@ -296,23 +308,28 @@ class _FishingSpotActions extends StatelessWidget {
         launched = true;
       }
     } else {
-      // There are multiple options, give the user a choice.
-      String? url;
-      await showOurBottomSheet(
-        context,
-        (context) => BottomSheetPicker<String>(
-          onPicked: (pickedUrl) => url = pickedUrl,
-          items: navigationAppOptions,
-        ),
-      ).then((_) async {
-        // If empty, bottom sheet was dismissed.
-        launched = isEmpty(url) || await urlLauncher.launch(url!);
+      await safeUseContext(this, () async {
+        // There are multiple options, give the user a choice.
+        String? url;
+        await showOurBottomSheet(
+          context,
+          (context) => BottomSheetPicker<String>(
+            onPicked: (pickedUrl) => url = pickedUrl,
+            items: navigationAppOptions,
+          ),
+        ).then((_) async {
+          // If empty, bottom sheet was dismissed.
+          launched = isEmpty(url) || await urlLauncher.launch(url!);
+        });
       });
     }
 
     if (!launched) {
-      showErrorSnackBar(
-          context, Strings.of(context).mapPageErrorOpeningDirections);
+      safeUseContext(
+        this,
+        () => showErrorSnackBar(
+            context, Strings.of(context).mapPageErrorOpeningDirections),
+      );
     }
   }
 }

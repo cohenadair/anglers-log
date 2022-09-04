@@ -109,17 +109,17 @@ void main() {
     );
 
     verifyNever(appManager.imageManager.images(
-      any,
       imageNames: anyNamed("imageNames"),
       size: anyNamed("size"),
+      devicePixelRatio: anyNamed("devicePixelRatio"),
     ));
   });
 
   testWidgets("ImageManager returns no results", (tester) async {
     when(appManager.imageManager.images(
-      any,
       imageNames: anyNamed("imageNames"),
       size: anyNamed("size"),
+      devicePixelRatio: anyNamed("devicePixelRatio"),
     )).thenAnswer((_) => Future.value({}));
 
     var controller = ImagesInputController();
@@ -133,9 +133,9 @@ void main() {
     );
 
     verify(appManager.imageManager.images(
-      any,
       imageNames: anyNamed("imageNames"),
       size: anyNamed("size"),
+      devicePixelRatio: anyNamed("devicePixelRatio"),
     )).called(1);
     expect(controller.value.isEmpty, isTrue);
   });

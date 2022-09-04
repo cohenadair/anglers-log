@@ -179,10 +179,10 @@ class TextInput extends StatefulWidget {
         );
 
   @override
-  _TextInputState createState() => _TextInputState();
+  TextInputState createState() => TextInputState();
 }
 
-class _TextInputState extends State<TextInput> {
+class TextInputState extends State<TextInput> {
   static const _maxErrorHintLines = 2;
 
   ValidationCallback? get _validationCallback =>

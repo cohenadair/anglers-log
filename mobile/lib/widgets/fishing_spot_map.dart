@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:mapbox_gl/mapbox_gl.dart';
 import 'package:mobile/user_preference_manager.dart';
 import 'package:mobile/utils/collection_utils.dart';
+import 'package:mobile/utils/widget_utils.dart';
 import 'package:mobile/widgets/our_bottom_sheet.dart';
 import 'package:quiver/strings.dart';
 
@@ -85,10 +86,10 @@ class FishingSpotMap extends StatefulWidget {
         isPage = true;
 
   @override
-  _FishingSpotMapState createState() => _FishingSpotMapState();
+  FishingSpotMapState createState() => FishingSpotMapState();
 }
 
-class _FishingSpotMapState extends State<FishingSpotMap> {
+class FishingSpotMapState extends State<FishingSpotMap> {
   static const _pinActive = "active-pin";
   static const _pinInactive = "inactive-pin";
   static const _pinSize = 1.25;
@@ -154,7 +155,7 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
 
     // Refresh state so Mapbox attribution padding is updated. This needs to be
     // done after the fishing spot widget is rendered.
-    WidgetsBinding.instance?.addPostFrameCallback((_) => setState(() {}));
+    WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
   }
 
   @override
@@ -400,12 +401,13 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
 
         var currentLocation = _locationMonitor.currentLocation;
         if (currentLocation == null) {
-          showErrorSnackBar(
-              context, Strings.of(context).mapPageErrorGettingLocation);
+          safeUseContext(
+            this,
+            () => showErrorSnackBar(
+                context, Strings.of(context).mapPageErrorGettingLocation),
+          );
         } else {
-          setState(() {
-            _myLocationEnabled = true;
-          });
+          safeUseContext(this, () => setState(() => _myLocationEnabled = true));
 
           if (_isPicking) {
             await _dropPin(currentLocation);
@@ -761,15 +763,15 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
     }
 
     // The map may be refreshed while being disposed (for example, as part of
-    // a listener being notified). Ensure it is still mounted before updating
-    // the state.
-    if (mounted) {
-      setState(() {
+    // a listener being notified). Ensure it is still safe to update.
+    safeUseContext(
+      this,
+      () => setState(() {
         _activeSymbol = newActiveSymbol;
         _isDismissingFishingSpot = newIsDismissingFishingSpot;
         _oldFishingSpot = newOldFishingSpot;
-      });
-    }
+      }),
+    );
   }
 
   void _setupPickerIfNeeded() {

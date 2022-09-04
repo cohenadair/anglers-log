@@ -59,10 +59,10 @@ class AddCatchJourney extends StatefulWidget {
   const AddCatchJourney._({this.fishingSpot});
 
   @override
-  _AddCatchJourneyState createState() => _AddCatchJourneyState();
+  AddCatchJourneyState createState() => AddCatchJourneyState();
 }
 
-class _AddCatchJourneyState extends State<AddCatchJourney> {
+class AddCatchJourneyState extends State<AddCatchJourney> {
   final String _rootRoute = "/";
   final String _pickSpeciesRoute = "pick_species";
   final String _pickFishingSpotRoute = "pick_fishing_spot";

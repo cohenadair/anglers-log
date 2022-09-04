@@ -16,11 +16,10 @@ class OnboardingMigrationPage extends StatefulWidget {
   });
 
   @override
-  _OnboardingMigrationPageState createState() =>
-      _OnboardingMigrationPageState();
+  OnboardingMigrationPageState createState() => OnboardingMigrationPageState();
 }
 
-class _OnboardingMigrationPageState extends State<OnboardingMigrationPage> {
+class OnboardingMigrationPageState extends State<OnboardingMigrationPage> {
   var _nextEnabled = false;
 
   @override

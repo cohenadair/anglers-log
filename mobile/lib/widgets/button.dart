@@ -26,18 +26,18 @@ class Button extends StatelessWidget {
   Widget build(BuildContext context) {
     return icon == null
         ? ElevatedButton(
-            child: _textWidget,
             onPressed: onPressed,
             style: ElevatedButton.styleFrom(
-              primary: color,
+              backgroundColor: color,
             ),
+            child: _textWidget,
           )
         : ElevatedButton.icon(
             onPressed: onPressed,
             icon: icon!,
             label: _textWidget,
             style: ElevatedButton.styleFrom(
-              primary: color,
+              backgroundColor: color,
             ),
           );
   }
@@ -108,12 +108,12 @@ class ActionButton extends StatelessWidget {
       constraints: const BoxConstraints(),
       padding: EdgeInsets.all(condensed ? paddingSmall : paddingDefault),
       onPressed: onPressed,
-      child: textWidget,
       shape: const CircleBorder(side: BorderSide(color: Colors.transparent)),
       textStyle: const TextStyle(
         fontWeight: FontWeight.w500,
         color: Colors.black,
       ),
+      child: textWidget,
     );
 
     return EnabledOpacity(
@@ -360,7 +360,6 @@ class FloatingButton extends StatelessWidget {
             isCircle: true,
             isTransparent: transparentBackground,
             child: RawMaterialButton(
-              child: circleChild,
               shape: const CircleBorder(),
               fillColor: transparentBackground
                   ? null
@@ -368,6 +367,7 @@ class FloatingButton extends StatelessWidget {
               onPressed: _isBackButton || _isCloseButton
                   ? () => Navigator.of(context).pop()
                   : onPressed,
+              child: circleChild,
             ),
           ),
           isNotEmpty(label)
@@ -399,6 +399,7 @@ class SmallTextButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextButton(
+      onPressed: onPressed,
       child: Text(
         text,
         style: TextStyle(
@@ -407,7 +408,6 @@ class SmallTextButton extends StatelessWidget {
           fontWeight: FontWeight.normal,
         ),
       ),
-      onPressed: onPressed,
     );
   }
 }

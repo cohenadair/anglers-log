@@ -15,10 +15,10 @@ class PhotoGalleryPage extends StatefulWidget {
   }) : assert(fileNames.isNotEmpty);
 
   @override
-  _PhotoGalleryPageState createState() => _PhotoGalleryPageState();
+  PhotoGalleryPageState createState() => PhotoGalleryPageState();
 }
 
-class _PhotoGalleryPageState extends State<PhotoGalleryPage> {
+class PhotoGalleryPageState extends State<PhotoGalleryPage> {
   static const _minScale = 1.0;
   static const _maxScale = 5.0;
   static const _swipeDownVelocity = 500.0;

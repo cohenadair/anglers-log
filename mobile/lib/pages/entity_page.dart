@@ -46,10 +46,10 @@ class EntityPage extends StatefulWidget {
         assert(isStatic || onDelete != null);
 
   @override
-  _EntityPageState createState() => _EntityPageState();
+  EntityPageState createState() => EntityPageState();
 }
 
-class _EntityPageState extends State<EntityPage> {
+class EntityPageState extends State<EntityPage> {
   final double _imageHeightFactor = 3;
   final double _carouselDotSize = 8.0;
   final double _carouselOpacity = 0.5;

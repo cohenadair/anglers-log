@@ -113,10 +113,10 @@ class EditableFormPage extends StatefulWidget {
   });
 
   @override
-  _EditableFormPageState createState() => _EditableFormPageState();
+  EditableFormPageState createState() => EditableFormPageState();
 }
 
-class _EditableFormPageState extends State<EditableFormPage> {
+class EditableFormPageState extends State<EditableFormPage> {
   /// All possible fields of the form. These fields may or may not be showing.
   final Map<Id, Field> _fields = {};
 

@@ -34,10 +34,10 @@ class NumberFilterInput extends StatefulWidget {
   });
 
   @override
-  _NumberFilterInputState createState() => _NumberFilterInputState();
+  NumberFilterInputState createState() => NumberFilterInputState();
 }
 
-class _NumberFilterInputState extends State<NumberFilterInput> {
+class NumberFilterInputState extends State<NumberFilterInput> {
   NumberFilter get value => widget.controller.value!;
 
   @override

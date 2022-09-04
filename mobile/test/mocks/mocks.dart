@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
-import 'dart:typed_data';
 
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/material.dart';
@@ -150,8 +149,8 @@ Trip_CatchesPerEntity newInputItemShim(dynamic pickerItem) =>
 @GenerateMocks([Offerings])
 @GenerateMocks([Package])
 @GenerateMocks([PackageInfo])
-@GenerateMocks([Product])
-@GenerateMocks([PurchaserInfo])
+@GenerateMocks([StoreProduct])
+@GenerateMocks([CustomerInfo])
 @GenerateMocks([], customMocks: [
   MockSpec<QuantityPickerInputDelegate>(
     fallbackGenerators: {

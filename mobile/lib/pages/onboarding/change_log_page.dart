@@ -128,7 +128,7 @@ class ChangeLogPage extends StatelessWidget {
     var result = version;
     var oldVersion = UserPreferenceManager.of(context).appVersion;
     if (isNotEmpty(oldVersion) &&
-        Version.parse(oldVersion) == Version.parse(version)) {
+        Version.parse(oldVersion!) == Version.parse(version)) {
       result += " (${Strings.of(context).changeLogPagePreviousVersion})";
     }
 

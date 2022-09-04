@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mobile/utils/widget_utils.dart';
 import 'package:quiver/strings.dart';
 
 import '../i18n/strings.dart';
@@ -25,10 +26,10 @@ class ProPage extends StatefulWidget {
   });
 
   @override
-  _ProPageState createState() => _ProPageState();
+  ProPageState createState() => ProPageState();
 }
 
-class _ProPageState extends State<ProPage> {
+class ProPageState extends State<ProPage> {
   static const _logoHeight = 150.0;
   static const _checkSize = 30.0;
   static const _maxButtonsContainerWidth = 300.0;
@@ -271,15 +272,8 @@ class _ProPageState extends State<ProPage> {
   }
 
   void _setIsPendingTransaction(bool pending) {
-    // Check mounted here, since ProPage can be dismissed before
-    // purchaseSubscription has completed. If this happens, the setState call
-    // below throws an exception.
-    if (!mounted) {
-      return;
-    }
-
-    setState(() {
-      _isPendingTransaction = pending;
-    });
+    // ProPage can be dismissed before purchaseSubscription has completed,
+    // requiring safeUseContext here.
+    safeUseContext(this, () => setState(() => _isPendingTransaction = pending));
   }
 }

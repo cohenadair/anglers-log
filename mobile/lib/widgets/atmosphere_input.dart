@@ -5,6 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile/fishing_spot_manager.dart';
 import 'package:mobile/utils/date_time_utils.dart';
+import 'package:mobile/utils/widget_utils.dart';
 import 'package:mobile/widgets/list_item.dart';
 
 import '../atmosphere_fetcher.dart';
@@ -497,13 +498,13 @@ class __AtmosphereInputPageState extends State<_AtmosphereInputPage> {
     }
 
     var atmosphere = await widget.fetcher.fetch();
-    if (atmosphere == null) {
-      showErrorSnackBar(context, Strings.of(context).atmosphereInputFetchError);
-      return;
-    }
-
-    setState(() {
-      _updateFromAtmosphere(atmosphere);
+    safeUseContext(this, () {
+      if (atmosphere == null) {
+        showErrorSnackBar(
+            context, Strings.of(context).atmosphereInputFetchError);
+      } else {
+        setState(() => _updateFromAtmosphere(atmosphere));
+      }
     });
   }
 

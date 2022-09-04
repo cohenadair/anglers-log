@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
+import 'package:mobile/utils/widget_utils.dart';
 import 'package:protobuf/protobuf.dart';
 import 'package:quiver/strings.dart';
 import 'package:sqflite/sqflite.dart';
@@ -394,11 +395,10 @@ class EntityListenerBuilder extends StatefulWidget {
   });
 
   @override
-  _EntityListenerBuilderState createState() => _EntityListenerBuilderState();
+  EntityListenerBuilderState createState() => EntityListenerBuilderState();
 }
 
-class _EntityListenerBuilderState extends State<EntityListenerBuilder> {
-  final _log = const Log("EntityListener");
+class EntityListenerBuilderState extends State<EntityListenerBuilder> {
   final _subs = <StreamSubscription>[];
 
   @override
@@ -464,18 +464,14 @@ class _EntityListenerBuilderState extends State<EntityListenerBuilder> {
   }
 
   void _notify(VoidCallback? callback) {
-    // Because some callbacks will do async work, it's possible for this
-    // widget to be disposed before the callback is invoked. If this widget
-    // has already been unmounted, there's no need to notify listeners.
-    if (!mounted) {
-      _log.w("No longer mounted, not notifying listeners");
-      return;
-    }
-
-    if (widget.changesUpdatesState) {
-      setState(() => callback?.call());
-    } else {
-      callback?.call();
-    }
+    // safeUseContext is required here in case listeners do some asynchronous
+    // work.
+    safeUseContext(this, () {
+      if (widget.changesUpdatesState) {
+        setState(() => callback?.call());
+      } else {
+        callback?.call();
+      }
+    });
   }
 }

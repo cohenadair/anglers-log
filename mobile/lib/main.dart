@@ -26,8 +26,8 @@ import 'pages/onboarding/onboarding_journey.dart';
 import 'user_preference_manager.dart';
 import 'wrappers/services_wrapper.dart';
 
-void main() {
-  const _log = Log("main");
+void main() async {
+  const log = Log("main");
 
   void killReleaseApp() {
     if (kReleaseMode) {
@@ -35,52 +35,47 @@ void main() {
     }
   }
 
-  runZonedGuarded<Future<void>>(() async {
-    WidgetsFlutterBinding.ensureInitialized();
+  WidgetsFlutterBinding.ensureInitialized();
 
-    // Firebase.
-    await Firebase.initializeApp();
+  // Firebase.
+  await Firebase.initializeApp();
 
-    // Analytics.
-    await FirebaseAnalytics.instance
-        .setAnalyticsCollectionEnabled(kReleaseMode);
+  // Analytics.
+  await FirebaseAnalytics.instance.setAnalyticsCollectionEnabled(kReleaseMode);
 
-    // Crashlytics. See https://firebase.flutter.dev/docs/crashlytics/usage for
-    // error handling guidelines.
-    await FirebaseCrashlytics.instance
-        .setCrashlyticsCollectionEnabled(kReleaseMode);
+  // Crashlytics. See https://firebase.flutter.dev/docs/crashlytics/usage for
+  // error handling guidelines.
+  await FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(kReleaseMode);
 
-    // Catch Flutter errors.
-    FlutterError.onError = (details) {
-      FlutterError.presentError(details);
-      FirebaseCrashlytics.instance.recordFlutterError(details);
-      _log.d("Flutter error: $details");
-      killReleaseApp();
-    };
-
-    // Catch non-Flutter errors.
-    Isolate.current.addErrorListener(RawReceivePort((pair) async {
-      await FirebaseCrashlytics.instance
-          .recordError(pair.first, pair.last, fatal: true);
-      _log.d("Isolate error: ${pair.last}");
-      killReleaseApp();
-    }).sendPort);
-
-    // Restrict orientation to portrait for devices with a small width. A width
-    // of 740 is less than the smallest iPad, and most Android tablets.
-    var size = MediaQueryData.fromWindow(WidgetsBinding.instance!.window).size;
-    if (min(size.width, size.height) < 740) {
-      await SystemChrome.setPreferredOrientations(
-          [DeviceOrientation.portraitUp]);
-    }
-
-    runApp(AnglersLog(AppManager()));
-  }, (error, stack) {
-    // Catch zoned errors (i.e. calls to platform channels).
-    FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
-    _log.d("Zoned error: $stack");
+  // Catch Flutter errors.
+  FlutterError.onError = (details) {
+    FlutterError.presentError(details);
+    FirebaseCrashlytics.instance.recordFlutterError(details);
+    log.d("Flutter error: $details");
     killReleaseApp();
-  });
+  };
+
+  // Catch non-Flutter errors.
+  Isolate.current.addErrorListener(RawReceivePort((pair) async {
+    await FirebaseCrashlytics.instance
+        .recordError(pair.first, pair.last, fatal: true);
+    log.d("Isolate error: ${pair.last}");
+    killReleaseApp();
+  }).sendPort);
+
+  PlatformDispatcher.instance.onError = (error, stack) {
+    FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
+    return true;
+  };
+
+  // Restrict orientation to portrait for devices with a small width. A width
+  // of 740 is less than the smallest iPad, and most Android tablets.
+  var size = MediaQueryData.fromWindow(WidgetsBinding.instance.window).size;
+  if (min(size.width, size.height) < 740) {
+    await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+  }
+
+  runApp(AnglersLog(AppManager()));
 }
 
 class AnglersLog extends StatefulWidget {
@@ -89,10 +84,10 @@ class AnglersLog extends StatefulWidget {
   const AnglersLog(this.appManager);
 
   @override
-  _AnglersLogState createState() => _AnglersLogState();
+  AnglersLogState createState() => AnglersLogState();
 }
 
-class _AnglersLogState extends State<AnglersLog> {
+class AnglersLogState extends State<AnglersLog> {
   static const _minTextScale = 1.0;
   static const _maxTextScale = 1.35;
 
@@ -214,7 +209,7 @@ class _AnglersLogState extends State<AnglersLog> {
     var oldVersion = _userPreferencesManager.appVersion;
     var newVersion = (await _packageInfoWrapper.fromPlatform()).version;
     return isEmpty(oldVersion) ||
-        Version.parse(oldVersion) < Version.parse(newVersion);
+        Version.parse(oldVersion!) < Version.parse(newVersion);
   }
 }
 

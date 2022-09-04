@@ -135,7 +135,7 @@ class _StaticFishingSpotMapState extends State<StaticFishingSpotMap> {
         "${_mapType.mapboxStaticId}"
         ".png";
 
-    var cachedImage = await _imageManager.image(context, fileName: fileName);
+    var cachedImage = await _imageManager.image(fileName: fileName);
     if (cachedImage != null) {
       _log.d("Image $fileName found in cache");
       return cachedImage;

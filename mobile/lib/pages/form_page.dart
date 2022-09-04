@@ -188,10 +188,10 @@ class FormPage extends StatefulWidget {
         super(key: key);
 
   @override
-  _FormPageState createState() => _FormPageState();
+  FormPageState createState() => FormPageState();
 }
 
-class _FormPageState extends State<FormPage> {
+class FormPageState extends State<FormPage> {
   final _key = GlobalKey<FormState>();
 
   FormState get _formState {

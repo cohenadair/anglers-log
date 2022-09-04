@@ -406,9 +406,9 @@ void main() {
         ..tide = Tide(type: TideType.outgoing);
 
       when(appManager.imageManager.images(
-        any,
         imageNames: anyNamed("imageNames"),
         size: anyNamed("size"),
+        devicePixelRatio: anyNamed("devicePixelRatio"),
       )).thenAnswer((_) {
         var file = File("test/resources/flutter_logo.png");
         return Future.value({file: file.readAsBytesSync()});
@@ -681,9 +681,9 @@ void main() {
         ..tide = Tide(type: TideType.outgoing);
 
       when(appManager.imageManager.images(
-        any,
         imageNames: anyNamed("imageNames"),
         size: anyNamed("size"),
+        devicePixelRatio: anyNamed("devicePixelRatio"),
       )).thenAnswer((_) {
         var file = File("test/resources/flutter_logo.png");
         return Future.value({file: file.readAsBytesSync()});
@@ -720,9 +720,9 @@ void main() {
     /// https://github.com/cohenadair/anglers-log/issues/517
     testWidgets("Image is kept while editing", (tester) async {
       when(appManager.imageManager.images(
-        any,
         imageNames: anyNamed("imageNames"),
         size: anyNamed("size"),
+        devicePixelRatio: anyNamed("devicePixelRatio"),
       )).thenAnswer((_) {
         var file = File("test/resources/flutter_logo.png");
         return Future.value({file: file.readAsBytesSync()});
