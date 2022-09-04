@@ -26,7 +26,7 @@ import 'pages/onboarding/onboarding_journey.dart';
 import 'user_preference_manager.dart';
 import 'wrappers/services_wrapper.dart';
 
-void main() {
+void main() async {
   const log = Log("main");
 
   void killReleaseApp() {
@@ -38,14 +38,14 @@ void main() {
   WidgetsFlutterBinding.ensureInitialized();
 
   // Firebase.
-  Firebase.initializeApp();
+  await Firebase.initializeApp();
 
   // Analytics.
-  FirebaseAnalytics.instance.setAnalyticsCollectionEnabled(kReleaseMode);
+  await FirebaseAnalytics.instance.setAnalyticsCollectionEnabled(kReleaseMode);
 
   // Crashlytics. See https://firebase.flutter.dev/docs/crashlytics/usage for
   // error handling guidelines.
-  FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(kReleaseMode);
+  await FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(kReleaseMode);
 
   // Catch Flutter errors.
   FlutterError.onError = (details) {
@@ -72,7 +72,7 @@ void main() {
   // of 740 is less than the smallest iPad, and most Android tablets.
   var size = MediaQueryData.fromWindow(WidgetsBinding.instance.window).size;
   if (min(size.width, size.height) < 740) {
-    SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+    await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   }
 
   runApp(AnglersLog(AppManager()));
