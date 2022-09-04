@@ -231,9 +231,8 @@ class ImagePickerPageState extends State<ImagePickerPage> {
 
               _galleryAsset = snapshot.data;
 
-              // If there's no "all", or no assets, don't bother trying to fetch
-              // them.
-              if (_galleryAsset == null || _galleryAsset!.assetCount <= 0) {
+              // If there's no "all" don't bother trying to fetch them.
+              if (_galleryAsset == null) {
                 return _buildNoResults();
               }
 
@@ -249,6 +248,11 @@ class ImagePickerPageState extends State<ImagePickerPage> {
                 builder: (context, snapshot) {
                   if (!snapshot.hasData) {
                     return _buildPlaceholderGrid();
+                  }
+
+                  // Device has no photos to choose from.
+                  if (_assets.isEmpty && snapshot.data!.isEmpty) {
+                    return _buildNoResults();
                   }
 
                   var oldLength = _assets.length;
@@ -375,19 +379,7 @@ class ImagePickerPageState extends State<ImagePickerPage> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
                 widget.allowsMultipleSelection
-                    ? Padding(
-                        padding: insetsHorizontalDefault,
-                        child: Text(
-                          format(
-                            Strings.of(context).imagePickerPageSelectedLabel,
-                            [
-                              _selectedIndexes.length,
-                              _galleryAsset?.assetCount ?? 0
-                            ],
-                          ),
-                          style: stylePrimary(context),
-                        ),
-                      )
+                    ? _buildSelectedText()
                     : const Empty(),
                 ActionButton(
                   text: Strings.of(context).clear,
@@ -406,6 +398,22 @@ class ImagePickerPageState extends State<ImagePickerPage> {
           ),
         ),
       ],
+    );
+  }
+
+  Widget _buildSelectedText() {
+    return Padding(
+      padding: insetsHorizontalDefault,
+      child: FutureBuilder<int>(
+        future: _galleryAsset?.assetCountAsync ?? Future.value(0),
+        builder: (context, snapshot) => Text(
+          format(
+            Strings.of(context).imagePickerPageSelectedLabel,
+            [_selectedIndexes.length, snapshot.hasData ? snapshot.data : 0],
+          ),
+          style: stylePrimary(context),
+        ),
+      ),
     );
   }
 

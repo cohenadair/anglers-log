@@ -27,7 +27,8 @@ void main() {
       createMockAssetEntity(fileName: "flutter_logo.png"),
     ];
     allAlbum = MockAssetPathEntity();
-    when(allAlbum.assetCount).thenReturn(mockAssets.length);
+    when(allAlbum.assetCountAsync)
+        .thenAnswer((_) => Future.value(mockAssets.length));
     when(allAlbum.getAssetListPaged(
       page: anyNamed("page"),
       size: anyNamed("size"),

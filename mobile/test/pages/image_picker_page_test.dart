@@ -33,7 +33,8 @@ void main() {
       createMockAssetEntity(fileName: "flutter_logo.png"),
     ];
     allAlbum = MockAssetPathEntity();
-    when(allAlbum.assetCount).thenReturn(mockAssets.length);
+    when(allAlbum.assetCountAsync)
+        .thenAnswer((_) => Future.value(mockAssets.length));
     when(allAlbum.getAssetListPaged(
       page: anyNamed("page"),
       size: anyNamed("size"),
@@ -62,7 +63,12 @@ void main() {
   });
 
   testWidgets("Empty all album shows placeholder", (tester) async {
-    when(allAlbum.assetCount).thenReturn(0);
+    when(allAlbum.getAssetListPaged(
+      page: anyNamed("page"),
+      size: anyNamed("size"),
+    )).thenAnswer((_) => Future.value([]));
+    when(allAlbum.assetCountAsync).thenAnswer((_) => Future.value(0));
+
     await tester.pumpWidget(Testable(
       (_) => ImagePickerPage(
         onImagesPicked: (_, __) {},
@@ -326,6 +332,8 @@ void main() {
       ),
       appManager: appManager,
     ));
+    expect(find.text("0 / 0 Selected"), findsOneWidget);
+
     await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
     await tapAndSettle(tester, find.byType(Image).first);
@@ -534,7 +542,8 @@ void main() {
 
   testWidgets("Pagination", (tester) async {
     // Stub many more assets than can be shown at once.
-    when(allAlbum.assetCount).thenReturn(mockAssets.length * 100);
+    when(allAlbum.assetCountAsync)
+        .thenAnswer((_) => Future.value(mockAssets.length * 100));
 
     var w = galleryMaxThumbSize * 4;
     var h = galleryMaxThumbSize * 8;
