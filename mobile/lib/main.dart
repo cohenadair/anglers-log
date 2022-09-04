@@ -45,7 +45,8 @@ void main() async {
 
   // Crashlytics. See https://firebase.flutter.dev/docs/crashlytics/usage for
   // error handling guidelines.
-  await FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(kReleaseMode);
+  await FirebaseCrashlytics.instance
+      .setCrashlyticsCollectionEnabled(kReleaseMode);
 
   // Catch Flutter errors.
   FlutterError.onError = (details) {

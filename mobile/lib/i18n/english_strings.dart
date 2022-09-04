@@ -1032,6 +1032,7 @@ Map<String, Map<String, String>> get englishStrings => {
         "changeLog_2.1.3_2": "Fixed crash during legacy data migration",
         "changeLog_2.1.3_3": "Performance improvements",
         "changeLog_2.1.3_4": "Free users will no longer see ads",
-        "changeLog_2.1.5_1": "Improved efficiency of report calculations, which results in a smoother user experience",
+        "changeLog_2.1.5_1":
+            "Improved efficiency of report calculations, which results in a smoother user experience",
       },
     };

@@ -71,8 +71,7 @@ class SubscriptionManager {
     _purchasesWrapper.setDebugEnabled(_debugPurchases);
 
     // Setup purchase state listener and initial state.
-    _purchasesWrapper
-        .addCustomerInfoUpdateListener(_setStateFromPurchaserInfo);
+    _purchasesWrapper.addCustomerInfoUpdateListener(_setStateFromPurchaserInfo);
 
     // Set current state.
     try {
