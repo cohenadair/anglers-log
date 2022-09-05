@@ -276,15 +276,18 @@ class _FishingSpotActionsState extends State<_FishingSpotActions> {
       navigationAppOptions[appleMaps] = appleMapsUrl;
     }
 
-    var googleMapsUrl = Platform.isAndroid
+    var googleMapsUrl = io.isAndroid
         ? "google.navigation:q=$destination"
         : "comgooglemaps://?daddr=$destination";
     if (await urlLauncher.canLaunch(googleMapsUrl)) {
       navigationAppOptions[googleMaps] = googleMapsUrl;
     }
 
+    // Waze handles the google.navigation scheme, so Android will automatically
+    // prompt the user to pick which navigation app to use. Adding another nav
+    // option here will cause them to be prompted twice.
     var wazeUrl = "waze://?ll=$destination&navigate=yes";
-    if (await urlLauncher.canLaunch(wazeUrl)) {
+    if (io.isIOS && await urlLauncher.canLaunch(wazeUrl)) {
       navigationAppOptions[waze] = wazeUrl;
     }
 
@@ -297,14 +300,12 @@ class _FishingSpotActionsState extends State<_FishingSpotActions> {
       var defaultUrl = "https://www.google.com/maps/dir/?api=1&"
           "dir_action=preview&"
           "destination=$destination";
-      if (await urlLauncher.canLaunch(defaultUrl) &&
-          await urlLauncher.launch(defaultUrl)) {
+      if (await urlLauncher.launch(defaultUrl)) {
         launched = true;
       }
     } else if (navigationAppOptions.length == 1) {
       // There's only one option, open it.
-      var url = navigationAppOptions.values.first;
-      if (await urlLauncher.canLaunch(url) && await urlLauncher.launch(url)) {
+      if (await urlLauncher.launch(navigationAppOptions.values.first)) {
         launched = true;
       }
     } else {

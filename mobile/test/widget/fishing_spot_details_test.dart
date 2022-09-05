@@ -33,6 +33,7 @@ void main() {
     when(appManager.urlLauncherWrapper.canLaunch(any))
         .thenAnswer((_) => Future.value(true));
     when(appManager.ioWrapper.isIOS).thenReturn(true);
+    when(appManager.ioWrapper.isAndroid).thenReturn(false);
   });
 
   testWidgets("FishingSpotManager returns null falls back on input",
@@ -487,11 +488,11 @@ void main() {
     expect(find.byType(SnackBar), findsNothing);
   });
 
-  testWidgets("Single directions option", (tester) async {
+  testWidgets("Android has only 1 option", (tester) async {
     when(appManager.ioWrapper.isIOS).thenReturn(false);
-    when(appManager.urlLauncherWrapper.canLaunch(any)).thenAnswer(
-        (invocation) => Future.value(
-            invocation.positionalArguments.first.contains("waze")));
+    when(appManager.ioWrapper.isAndroid).thenReturn(true);
+    when(appManager.urlLauncherWrapper.canLaunch(any))
+        .thenAnswer((invocation) => Future.value(true));
     when(appManager.urlLauncherWrapper.launch(any))
         .thenAnswer((_) => Future.value(true));
 
@@ -508,7 +509,7 @@ void main() {
     var result = verify(appManager.urlLauncherWrapper.launch(captureAny));
     result.called(1);
 
-    expect(result.captured.first.contains("waze"), isTrue);
+    expect(result.captured.first.contains("google.navigation"), isTrue);
     expect(find.byType(SnackBar), findsNothing);
   });
 
