@@ -201,6 +201,8 @@ class _BackupRestorePageState extends State<_BackupRestorePage> {
               feedbackPage: FeedbackPage(
                 title: widget.errorPageTitle,
                 error: _progressError,
+                attachment:
+                    "BackupRestorePage - ${_progressDescription ?? "Unknown"}",
               ),
             ),
           ),
