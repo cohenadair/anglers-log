@@ -16,6 +16,7 @@ import 'package:mobile/widgets/checkbox_input.dart';
 import 'package:mobile/widgets/cloud_auth.dart';
 import 'package:mobile/widgets/label_value.dart';
 import 'package:mobile/widgets/widget.dart';
+import 'package:quiver/strings.dart';
 
 class BackupPage extends StatelessWidget {
   static const icon = Icons.cloud_upload;
@@ -110,6 +111,7 @@ class _BackupRestorePage extends StatefulWidget {
 class _BackupRestorePageState extends State<_BackupRestorePage> {
   late final StreamSubscription _authSubscription;
   late final StreamSubscription _progressSubscription;
+  final _scrollController = ScrollController();
 
   var _progressState = AsyncFeedbackState.none;
   String? _progressDescription;
@@ -124,8 +126,20 @@ class _BackupRestorePageState extends State<_BackupRestorePage> {
 
     _authSubscription =
         _backupRestoreManager.authStream.listen((authState) => setState(() {}));
-    _progressSubscription = _backupRestoreManager.progressStream
-        .listen((progress) => setState(() => _updateProgressState(progress)));
+    _progressSubscription =
+        _backupRestoreManager.progressStream.listen((progress) {
+      setState(() => _updateProgressState(progress));
+
+      // Scroll to the bottom when the state updates. Depending on screen size,
+      // users may not be able to see success or error messages.
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        _scrollController.animateTo(
+          _scrollController.position.maxScrollExtent,
+          duration: animDurationDefault,
+          curve: Curves.linear,
+        );
+      });
+    });
   }
 
   @override
@@ -138,6 +152,7 @@ class _BackupRestorePageState extends State<_BackupRestorePage> {
   @override
   Widget build(BuildContext context) {
     return ScrollPage(
+      controller: _scrollController,
       appBar: TransparentAppBar(
         context,
         leading: IconButton(
@@ -180,6 +195,15 @@ class _BackupRestorePageState extends State<_BackupRestorePage> {
       );
     }
 
+    FeedbackPage? feedbackPage;
+    if (isNotEmpty(_progressError)) {
+      feedbackPage = FeedbackPage(
+        title: widget.errorPageTitle,
+        error: _progressError,
+        attachment: "BackupRestorePage - ${_progressDescription ?? "Unknown"}",
+      );
+    }
+
     return Padding(
       padding: insetsDefault,
       child: Column(
@@ -198,12 +222,7 @@ class _BackupRestorePageState extends State<_BackupRestorePage> {
               actionText: widget.actionLabel,
               action:
                   _backupRestoreManager.isSignedIn ? widget.onTapAction : null,
-              feedbackPage: FeedbackPage(
-                title: widget.errorPageTitle,
-                error: _progressError,
-                attachment:
-                    "BackupRestorePage - ${_progressDescription ?? "Unknown"}",
-              ),
+              feedbackPage: feedbackPage,
             ),
           ),
         ],
@@ -240,6 +259,11 @@ class _BackupRestorePageState extends State<_BackupRestorePage> {
         _progressError = progress.value.toString();
         _progressDescription =
             Strings.of(context).backupRestoreDatabaseNotFound;
+        break;
+      case BackupRestoreProgressEnum.accessDenied:
+        _progressState = AsyncFeedbackState.error;
+        _progressError = null;
+        _progressDescription = Strings.of(context).backupRestoreAccessDenied;
         break;
       case BackupRestoreProgressEnum.authenticating:
         _progressState = AsyncFeedbackState.loading;

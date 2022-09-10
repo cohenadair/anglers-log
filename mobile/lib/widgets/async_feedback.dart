@@ -30,8 +30,7 @@ class AsyncFeedback extends StatelessWidget {
     required this.actionText,
     this.action,
     this.feedbackPage,
-  }) : assert(state != AsyncFeedbackState.error || feedbackPage != null,
-            "Error state must have a non-null feedbackPage value");
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -65,10 +64,12 @@ class AsyncFeedback extends StatelessWidget {
       case AsyncFeedbackState.error:
         children.add(WorkResult.error(description: description));
         children.add(const VerticalSpace(paddingDefault));
-        children.add(Button(
-          text: Strings.of(context).asyncFeedbackSendReport,
-          onPressed: () => present(context, feedbackPage!),
-        ));
+        if (feedbackPage != null) {
+          children.add(Button(
+            text: Strings.of(context).asyncFeedbackSendReport,
+            onPressed: () => present(context, feedbackPage!),
+          ));
+        }
         break;
     }
 

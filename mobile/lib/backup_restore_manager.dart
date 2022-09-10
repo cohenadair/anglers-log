@@ -2,8 +2,10 @@ import 'dart:async';
 import 'dart:io' as io;
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:googleapis/drive/v3.dart';
+import 'package:googleapis_auth/googleapis_auth.dart';
 import 'package:mobile/catch_manager.dart';
 import 'package:mobile/entity_manager.dart';
 import 'package:mobile/image_manager.dart';
@@ -35,6 +37,7 @@ enum BackupRestoreProgressEnum {
   folderNotFound,
   apiRequestError,
   databaseFileNotFound,
+  accessDenied, // Forwarded from Drive API
 
   // Progress states
   authenticating,
@@ -76,7 +79,7 @@ class BackupRestoreManager {
   /// Rate limit how often automatic backups are made.
   static const _autoBackupInterval = Duration.millisecondsPerMinute * 5;
 
-  final _log = const Log("BackupManager");
+  final _log = const Log("BackupRestoreManager");
   final _authController = StreamController<BackupRestoreAuthState>.broadcast();
   final _progressController =
       StreamController<BackupRestoreProgress>.broadcast();
@@ -175,8 +178,17 @@ class BackupRestoreManager {
               await _googleSignIn?.signIn();
       _log.d("Current user: ${_currentUser?.email}");
     } catch (error) {
-      _log.e(StackTrace.current, "Sign in error: $error");
-      _authController.add(BackupRestoreAuthState.error);
+      if (error is PlatformException && error.details == "access_denied") {
+        // User didn't grant permissions, notify that we're still signed out.
+        _authController.add(BackupRestoreAuthState.signedOut);
+      } else if (error is PlatformException &&
+          error.code == GoogleSignIn.kNetworkError) {
+        // Network error, don't log an error to Firebase.
+        _authController.add(BackupRestoreAuthState.error);
+      } else {
+        _log.e(StackTrace.current, "Sign in error: $error");
+        _authController.add(BackupRestoreAuthState.error);
+      }
     }
 
     if (_currentUser == null) {
@@ -251,8 +263,11 @@ class BackupRestoreManager {
       } else {
         return await _restore(drive);
       }
+    } on AccessDeniedException catch (_) {
+      _notifyError(
+          BackupRestoreProgress(BackupRestoreProgressEnum.accessDenied));
     } catch (error) {
-      _log.e(StackTrace.current, "Unknown backup or restore error: $error");
+      _log.d("Unknown backup or restore error: ${error.runtimeType} - $error");
 
       _notifyError(BackupRestoreProgress(
         BackupRestoreProgressEnum.apiRequestError,

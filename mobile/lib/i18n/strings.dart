@@ -1933,6 +1933,9 @@ class Strings {
   String get backupRestoreDatabaseNotFound =>
       _string("backupRestore_databaseNotFound");
 
+  String get backupRestoreAccessDenied =>
+      _string("backupRestore_accessDenied");
+
   String get backupRestoreAuthenticating =>
       _string("backupRestore_authenticating");
 

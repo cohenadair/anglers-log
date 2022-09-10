@@ -1,6 +1,9 @@
 import 'dart:async';
 
+import 'package:flutter/services.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:googleapis/drive/v3.dart';
+import 'package:googleapis_auth/auth.dart';
 import 'package:mobile/backup_restore_manager.dart';
 import 'package:mobile/catch_manager.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
@@ -247,6 +250,28 @@ void main() {
     expect(result.captured.first, false);
   });
 
+  test("Auth access denied is a no-op", () async {
+    when(googleSignIn.signInSilently(
+      reAuthenticate: anyNamed("reAuthenticate"),
+    )).thenThrow(PlatformException(code: "null", details: "access_denied"));
+
+    backupRestoreManager.authStream.listen(expectAsync1((state) {
+      expect(state, BackupRestoreAuthState.signedOut);
+    }));
+    await backupRestoreManager.initialize();
+  });
+
+  test("Auth network error is still an error", () async {
+    when(googleSignIn.signInSilently(
+      reAuthenticate: anyNamed("reAuthenticate"),
+    )).thenThrow(PlatformException(code: GoogleSignIn.kNetworkError));
+
+    backupRestoreManager.authStream.listen(expectAsync1((state) {
+      expect(state, BackupRestoreAuthState.error);
+    }));
+    await backupRestoreManager.initialize();
+  });
+
   test("Stream adds event when auth is successful", () async {
     backupRestoreManager.authStream.listen(expectAsync1((state) {
       expect(state, BackupRestoreAuthState.signedIn);
@@ -460,6 +485,17 @@ void main() {
       BackupRestoreProgressEnum.authenticating,
       BackupRestoreProgressEnum.fetchingFiles,
       BackupRestoreProgressEnum.apiRequestError,
+    ]);
+    await backupRestoreManager.backup();
+  });
+
+  test("Backup or restore throws AccessDeniedException", () async {
+    when(driveApi.files).thenThrow(AccessDeniedException(""));
+
+    verifyProgressStream([
+      BackupRestoreProgressEnum.authenticating,
+      BackupRestoreProgressEnum.fetchingFiles,
+      BackupRestoreProgressEnum.accessDenied,
     ]);
     await backupRestoreManager.backup();
   });

@@ -36,15 +36,24 @@ void main() {
     when(appManager.userPreferenceManager.lastBackupAt).thenReturn(null);
   });
 
-  Future<void> verifyProgressUpdate(
-      WidgetTester tester,
-      StreamController<BackupRestoreProgress> controller,
-      BackupRestoreProgressEnum value,
-      String label) async {
+  Future<void> sendProgressUpdate(
+    WidgetTester tester,
+    StreamController<BackupRestoreProgress> controller,
+    BackupRestoreProgressEnum value,
+  ) async {
     controller.add(BackupRestoreProgress(value));
     // Use pump() instead of pumpAndSettle() because a Loading() widget is
     // animating and will never settle.
     await tester.pump();
+  }
+
+  Future<void> verifyProgressUpdate(
+    WidgetTester tester,
+    StreamController<BackupRestoreProgress> controller,
+    BackupRestoreProgressEnum value,
+    String label,
+  ) async {
+    await sendProgressUpdate(tester, controller, value);
     expect(find.text(label), findsOneWidget);
   }
 
@@ -131,7 +140,13 @@ void main() {
         tester,
         controller,
         BackupRestoreProgressEnum.apiRequestError,
-        "Unknown error, please send Anglers' Log a report for investigation.");
+        "An error occurred. The network may have been interrupted; please verify your internet connection and try again. If the issue persists, please send Anglers' Log a report for investigation.");
+
+    await verifyProgressUpdate(
+        tester,
+        controller,
+        BackupRestoreProgressEnum.accessDenied,
+        "Anglers' Log doesn't have permission to backup your data. Please sign out and sign back in, ensuring the \"See, create, and delete its own configuration data in your Google Drive.\" box is checked, and try again.");
 
     await verifyProgressUpdate(
         tester,
@@ -165,5 +180,34 @@ void main() {
 
     await verifyProgressUpdate(
         tester, controller, BackupRestoreProgressEnum.finished, "Success!");
+  });
+
+  testWidgets("Access denied hides feedback button", (tester) async {
+    var controller =
+        StreamController<BackupRestoreProgress>.broadcast(sync: true);
+    when(appManager.backupRestoreManager.progressStream)
+        .thenAnswer((_) => controller.stream);
+
+    await pumpContext(tester, (_) => BackupPage(), appManager: appManager);
+    await verifyProgressUpdate(
+        tester,
+        controller,
+        BackupRestoreProgressEnum.accessDenied,
+        "Anglers' Log doesn't have permission to backup your data. Please sign out and sign back in, ensuring the \"See, create, and delete its own configuration data in your Google Drive.\" box is checked, and try again.");
+
+    expect(find.text("SEND REPORT"), findsNothing);
+  });
+
+  testWidgets("Errors show feedback button", (tester) async {
+    var controller =
+        StreamController<BackupRestoreProgress>.broadcast(sync: true);
+    when(appManager.backupRestoreManager.progressStream)
+        .thenAnswer((_) => controller.stream);
+
+    await pumpContext(tester, (_) => BackupPage(), appManager: appManager);
+    await sendProgressUpdate(
+        tester, controller, BackupRestoreProgressEnum.apiRequestError);
+
+    expect(find.text("SEND REPORT"), findsOneWidget);
   });
 }

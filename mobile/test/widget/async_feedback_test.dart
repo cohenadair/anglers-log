@@ -19,17 +19,6 @@ void main() {
     when(appManager.userPreferenceManager.userEmail).thenReturn(null);
   });
 
-  testWidgets("Assertion is thrown for errors without feedback page",
-      (tester) async {
-    expect(
-      () => AsyncFeedback(
-        actionText: "Action",
-        state: AsyncFeedbackState.error,
-      ),
-      throwsAssertionError,
-    );
-  });
-
   testWidgets("Action button disabled while loading", (tester) async {
     await pumpContext(
       tester,
@@ -118,5 +107,17 @@ void main() {
     await tapAndSettle(tester, find.text("SEND REPORT"));
 
     expect(find.byType(FeedbackPage), findsOneWidget);
+  });
+
+  testWidgets("Feedback page is hidden", (tester) async {
+    await pumpContext(
+      tester,
+      (_) => const AsyncFeedback(
+        actionText: "Action",
+        state: AsyncFeedbackState.error,
+      ),
+      appManager: appManager,
+    );
+    expect(find.text("SEND REPORT"), findsNothing);
   });
 }

@@ -960,9 +960,11 @@ Map<String, Map<String, String>> get englishStrings => {
         "backupRestore_folderNotFound":
             "Backup folder not found. You must backup your data before it can be restored.",
         "backupRestore_apiRequestError":
-            "Unknown error, please send Anglers' Log a report for investigation.",
+            "An error occurred. The network may have been interrupted; please verify your internet connection and try again. If the issue persists, please send Anglers' Log a report for investigation.",
         "backupRestore_databaseNotFound":
             "Backup data file not found. You must backup your data before it can be restored.",
+        "backupRestore_accessDenied":
+            "Anglers' Log doesn't have permission to backup your data. Please sign out and sign back in, ensuring the \"See, create, and delete its own configuration data in your Google Drive.\" box is checked, and try again.",
         "backupRestore_authenticating": "Authenticating...",
         "backupRestore_fetchingFiles": "Fetching data...",
         "backupRestore_creatingFolder": "Creating backup folder...",

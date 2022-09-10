@@ -3,6 +3,7 @@ import '../res/dimen.dart';
 import '../widgets/widget.dart';
 
 class ScrollPage extends StatelessWidget {
+  final ScrollController? controller;
   final AppBar? appBar;
   final List<Widget> children;
 
@@ -28,6 +29,7 @@ class ScrollPage extends StatelessWidget {
   final Key? refreshIndicatorKey;
 
   const ScrollPage({
+    this.controller,
     this.appBar,
     this.children = const [],
     this.footer = const [],
@@ -56,6 +58,7 @@ class ScrollPage extends StatelessWidget {
       // applies when a persistent footer isn't being used.
       clipBehavior: footer.isEmpty ? Clip.none : Clip.hardEdge,
       keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+      controller: controller,
       child: SafeArea(
         left: enableHorizontalSafeArea,
         right: enableHorizontalSafeArea,
