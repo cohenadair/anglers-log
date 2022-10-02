@@ -111,7 +111,10 @@ void main() {
   testWidgets("Controller updated on back navigation", (tester) async {
     when(appManager.fishingSpotManager.entityExists(any)).thenReturn(false);
 
-    var controller = InputController<FishingSpot>();
+    var controller = MockInputController<FishingSpot>();
+    when(controller.value = any).thenAnswer((_) {});
+    when(controller.value).thenReturn(null);
+
     await pumpMapWrapper(
       tester,
       FishingSpotMap(
@@ -121,11 +124,14 @@ void main() {
       ),
     );
 
-    expect(controller.hasValue, isFalse);
+    // Called on map loaded.
+    verify(controller.value = any).called(1);
     expect(find.text("New Fishing Spot"), findsNWidgets(2));
 
     await tapAndSettle(tester, find.byType(BackButton));
-    expect(controller.hasValue, isTrue);
+
+    // Called again when map is popped from the navigation stack.
+    verify(controller.value = any).called(1);
   });
 
   testWidgets("Scaffold rendered when widget is a page", (tester) async {
@@ -682,17 +688,19 @@ void main() {
     when(appManager.fishingSpotManager.withinPreferenceRadius(any))
         .thenReturn(fishingSpot);
 
+    var controller = InputController<FishingSpot>();
     await pumpMapWrapper(
       tester,
       FishingSpotMap(
         pickerSettings: FishingSpotMapPickerSettings(
-          controller: InputController<FishingSpot>(),
+          controller: controller,
         ),
       ),
     );
 
     // Text shows in the search bar and bottom container.
     expect(find.text("Spot 1"), findsNWidgets(2));
+    expect(controller.value, fishingSpot);
   });
 
   testWidgets("Selecting existing spot removes dropped pin", (tester) async {

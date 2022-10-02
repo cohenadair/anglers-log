@@ -39,6 +39,7 @@ import 'package:mobile/time_manager.dart';
 import 'package:mobile/trip_manager.dart';
 import 'package:mobile/utils/validator.dart';
 import 'package:mobile/water_clarity_manager.dart';
+import 'package:mobile/widgets/input_controller.dart';
 import 'package:mobile/widgets/quantity_picker_input.dart';
 import 'package:mobile/wrappers/crashlytics_wrapper.dart';
 import 'package:mobile/wrappers/device_info_wrapper.dart';
@@ -96,6 +97,7 @@ Trip_CatchesPerEntity newInputItemShim(dynamic pickerItem) =>
 @GenerateMocks([GoogleSignIn])
 @GenerateMocks([GoogleSignInAccount])
 @GenerateMocks([ImageManager])
+@GenerateMocks([], customMocks: [MockSpec<InputController>()])
 @GenerateMocks([IOSink])
 @GenerateMocks([LocalDatabaseManager])
 @GenerateMocks([LocationMonitor])

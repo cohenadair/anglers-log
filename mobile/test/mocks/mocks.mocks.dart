@@ -8,10 +8,10 @@ import 'dart:convert' as _i52;
 import 'dart:io' as _i51;
 import 'dart:math' as _i55;
 import 'dart:typed_data' as _i67;
-import 'dart:ui' as _i72;
+import 'dart:ui' as _i69;
 
 import 'package:device_info_plus/device_info_plus.dart' as _i6;
-import 'package:file_picker/file_picker.dart' as _i71;
+import 'package:file_picker/file_picker.dart' as _i72;
 import 'package:flutter/material.dart' as _i53;
 import 'package:flutter/services.dart' as _i58;
 import 'package:google_sign_in/google_sign_in.dart' as _i50;
@@ -42,7 +42,7 @@ import 'package:mobile/method_manager.dart' as _i17;
 import 'package:mobile/model/gen/anglerslog.pb.dart' as _i4;
 import 'package:mobile/pages/manageable_list_page.dart' as _i76;
 import 'package:mobile/poll_manager.dart' as _i18;
-import 'package:mobile/preference_manager.dart' as _i69;
+import 'package:mobile/preference_manager.dart' as _i70;
 import 'package:mobile/properties_manager.dart' as _i19;
 import 'package:mobile/report_manager.dart' as _i20;
 import 'package:mobile/species_manager.dart' as _i21;
@@ -54,7 +54,7 @@ import 'package:mobile/utils/validator.dart' as _i74;
 import 'package:mobile/water_clarity_manager.dart' as _i26;
 import 'package:mobile/widgets/input_controller.dart' as _i61;
 import 'package:mobile/widgets/quantity_picker_input.dart' as _i75;
-import 'package:mobile/wrappers/crashlytics_wrapper.dart' as _i70;
+import 'package:mobile/wrappers/crashlytics_wrapper.dart' as _i71;
 import 'package:mobile/wrappers/device_info_wrapper.dart' as _i27;
 import 'package:mobile/wrappers/drive_api_wrapper.dart' as _i28;
 import 'package:mobile/wrappers/file_picker_wrapper.dart' as _i29;
@@ -2674,6 +2674,51 @@ class MockImageManager extends _i1.Mock implements _i15.ImageManager {
           returnValue: Future<bool>.value(false)) as _i5.Future<bool>);
 }
 
+/// A class which mocks [InputController].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockInputController<T> extends _i1.Mock
+    implements _i61.InputController<T> {
+  MockInputController() {
+    _i1.throwOnMissingStub(this);
+  }
+
+  @override
+  set error(String? _error) =>
+      super.noSuchMethod(Invocation.setter(#error, _error),
+          returnValueForMissingStub: null);
+  @override
+  bool get hasValue =>
+      (super.noSuchMethod(Invocation.getter(#hasValue), returnValue: false)
+          as bool);
+  @override
+  set value(T? newValue) =>
+      super.noSuchMethod(Invocation.setter(#value, newValue),
+          returnValueForMissingStub: null);
+  @override
+  bool get hasListeners =>
+      (super.noSuchMethod(Invocation.getter(#hasListeners), returnValue: false)
+          as bool);
+  @override
+  void dispose() => super.noSuchMethod(Invocation.method(#dispose, []),
+      returnValueForMissingStub: null);
+  @override
+  void clear() => super.noSuchMethod(Invocation.method(#clear, []),
+      returnValueForMissingStub: null);
+  @override
+  void addListener(_i69.VoidCallback? listener) =>
+      super.noSuchMethod(Invocation.method(#addListener, [listener]),
+          returnValueForMissingStub: null);
+  @override
+  void removeListener(_i69.VoidCallback? listener) =>
+      super.noSuchMethod(Invocation.method(#removeListener, [listener]),
+          returnValueForMissingStub: null);
+  @override
+  void notifyListeners() =>
+      super.noSuchMethod(Invocation.method(#notifyListeners, []),
+          returnValueForMissingStub: null);
+}
+
 /// A class which mocks [IOSink].
 ///
 /// See the documentation for Mockito's code generation for more information.
@@ -3067,7 +3112,7 @@ class MockPollManager extends _i1.Mock implements _i18.PollManager {
 /// A class which mocks [PreferenceManager].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockPreferenceManager extends _i1.Mock implements _i69.PreferenceManager {
+class MockPreferenceManager extends _i1.Mock implements _i70.PreferenceManager {
   MockPreferenceManager() {
     _i1.throwOnMissingStub(this);
   }
@@ -4390,7 +4435,7 @@ class MockWaterClarityManager extends _i1.Mock
 ///
 /// See the documentation for Mockito's code generation for more information.
 class MockCrashlyticsWrapper extends _i1.Mock
-    implements _i70.CrashlyticsWrapper {
+    implements _i71.CrashlyticsWrapper {
   MockCrashlyticsWrapper() {
     _i1.throwOnMissingStub(this);
   }
@@ -4439,8 +4484,8 @@ class MockFilePickerWrapper extends _i1.Mock implements _i29.FilePickerWrapper {
   }
 
   @override
-  _i5.Future<_i71.FilePickerResult?> pickFiles(
-          {_i71.FileType? type = _i71.FileType.any,
+  _i5.Future<_i72.FilePickerResult?> pickFiles(
+          {_i72.FileType? type = _i72.FileType.any,
           List<String>? allowedExtensions,
           bool? allowMultiple = false}) =>
       (super.noSuchMethod(
@@ -4449,8 +4494,8 @@ class MockFilePickerWrapper extends _i1.Mock implements _i29.FilePickerWrapper {
                 #allowedExtensions: allowedExtensions,
                 #allowMultiple: allowMultiple
               }),
-              returnValue: Future<_i71.FilePickerResult?>.value())
-          as _i5.Future<_i71.FilePickerResult?>);
+              returnValue: Future<_i72.FilePickerResult?>.value())
+          as _i5.Future<_i72.FilePickerResult?>);
 }
 
 /// A class which mocks [GlobalKey].
@@ -5046,7 +5091,7 @@ class MockMapboxMapController extends _i1.Mock
           .Future<List<dynamic>>);
   @override
   _i5.Future<List<dynamic>> queryRenderedFeaturesInRect(
-          _i72.Rect? rect, List<String>? layerIds, String? filter) =>
+          _i69.Rect? rect, List<String>? layerIds, String? filter) =>
       (super.noSuchMethod(
               Invocation.method(
                   #queryRenderedFeaturesInRect, [rect, layerIds, filter]),
@@ -5202,11 +5247,11 @@ class MockMapboxMapController extends _i1.Mock
   void dispose() => super.noSuchMethod(Invocation.method(#dispose, []),
       returnValueForMissingStub: null);
   @override
-  void addListener(_i72.VoidCallback? listener) =>
+  void addListener(_i69.VoidCallback? listener) =>
       super.noSuchMethod(Invocation.method(#addListener, [listener]),
           returnValueForMissingStub: null);
   @override
-  void removeListener(_i72.VoidCallback? listener) =>
+  void removeListener(_i69.VoidCallback? listener) =>
       super.noSuchMethod(Invocation.method(#removeListener, [listener]),
           returnValueForMissingStub: null);
   @override
@@ -5400,7 +5445,7 @@ class MockSharePlusWrapper extends _i1.Mock implements _i44.SharePlusWrapper {
           {List<String>? mimeTypes,
           String? subject,
           String? text,
-          _i72.Rect? sharePositionOrigin}) =>
+          _i69.Rect? sharePositionOrigin}) =>
       (super.noSuchMethod(
           Invocation.method(#shareFiles, [
             paths
@@ -5414,7 +5459,7 @@ class MockSharePlusWrapper extends _i1.Mock implements _i44.SharePlusWrapper {
           returnValueForMissingStub: Future<void>.value()) as _i5.Future<void>);
   @override
   _i5.Future<void> share(String? text,
-          {String? subject, _i72.Rect? sharePositionOrigin}) =>
+          {String? subject, _i69.Rect? sharePositionOrigin}) =>
       (super.noSuchMethod(
           Invocation.method(#share, [text],
               {#subject: subject, #sharePositionOrigin: sharePositionOrigin}),

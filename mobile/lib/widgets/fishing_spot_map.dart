@@ -641,6 +641,7 @@ class FishingSpotMapState extends State<FishingSpotMap> {
 
     // Select the new pin.
     _selectFishingSpot(fishingSpot, animateMapMovement: true);
+    _pickerSettings?.controller.value = fishingSpot;
   }
 
   SymbolOptions _copySymbolOptions(SymbolOptions options, FishingSpot spot) {
