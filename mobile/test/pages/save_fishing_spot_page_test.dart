@@ -3,6 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
 import 'package:mobile/pages/save_fishing_spot_page.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
+import 'package:mobile/widgets/text_input.dart';
 import 'package:mockito/mockito.dart';
 
 import '../mocks/stubbed_app_manager.dart';
@@ -59,6 +60,7 @@ void main() {
     await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
     expect(find.text("Test Spot"), findsOneWidget);
+    expect(find.text("1.000000, 2.000000"), findsOneWidget);
     expect(find.text("Some test notes"), findsOneWidget);
     expect(find.text("Lake Huron"), findsOneWidget);
     expect(find.byType(Image), findsOneWidget);
@@ -72,9 +74,16 @@ void main() {
       appManager: appManager,
     ));
 
-    expect(find.text("Test Spot"), findsNothing);
-    expect(find.text("Some test notes"), findsNothing);
-    expect(find.text("Lake Huron"), findsNothing);
+    expect(find.text("Not Selected"), findsOneWidget); // Body of water
+    expect(find.text("0.000000, 0.000000"), findsOneWidget);
+    expect(
+      findFirstWithText<TextInput>(tester, "Name").controller?.value,
+      isNull,
+    );
     expect(find.byType(Image), findsNothing);
+    expect(
+      findFirstWithText<TextInput>(tester, "Notes").controller?.value,
+      isNull,
+    );
   });
 }

@@ -20,6 +20,7 @@ import 'package:timezone/timezone.dart';
 import 'mocks/mocks.dart';
 import 'mocks/mocks.mocks.dart';
 import 'mocks/stubbed_app_manager.dart';
+import 'mocks/stubbed_map_controller.dart';
 
 /// A widget that wraps a child in default localizations.
 class Testable extends StatelessWidget {
@@ -397,6 +398,18 @@ Future<List<Uint8List>> stubImages(
   });
 
   return images;
+}
+
+Future<void> pumpMap(WidgetTester tester, StubbedAppManager appManager,
+    StubbedMapController mapController, Widget mapWidget) async {
+  await tester.pumpWidget(Testable(
+    (_) => mapWidget,
+    appManager: appManager,
+  ));
+
+  // Wait for map future to finish.
+  await tester.pumpAndSettle(const Duration(milliseconds: 300));
+  await mapController.finishLoading(tester);
 }
 
 extension CommonFindersExt on CommonFinders {

@@ -61,7 +61,7 @@ class _StaticFishingSpotMapState extends State<StaticFishingSpotMap> {
       _mediaQuery.size.width - (widget.padding?.horizontal ?? 0),
       _mapHeight - (widget.padding?.vertical ?? 0),
     );
-    _mapType = MapType.fromContext(context);
+    _mapType = MapType.of(context);
     _imageFuture = _fetchImage();
   }
 

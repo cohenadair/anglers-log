@@ -64,8 +64,8 @@ class StubbedMapController {
   /// them when needed.
   Future<void> finishLoading(WidgetTester tester) async {
     var mapboxMap = findFirst<MapboxMap>(tester);
-    mapboxMap.onMapCreated!(value);
-    mapboxMap.onStyleLoadedCallback!();
+    mapboxMap.onMapCreated?.call(value);
+    mapboxMap.onStyleLoadedCallback?.call();
     await tester.pumpAndSettle(const Duration(milliseconds: 50));
   }
 
@@ -73,6 +73,6 @@ class StubbedMapController {
 
   void clearSymbols() => _symbols.clear();
 
-  Symbol _createSymbol(SymbolOptions options, Map<dynamic, dynamic> data) =>
+  Symbol _createSymbol(SymbolOptions options, Map<dynamic, dynamic>? data) =>
       Symbol(randomId().uuid, options, data);
 }

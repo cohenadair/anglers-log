@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/utils/map_utils.dart';
+import 'package:mobile/widgets/checkbox_input.dart';
+import 'package:mobile/widgets/list_item.dart';
 import 'package:mobile/widgets/mapbox_attribution.dart';
 import 'package:mockito/mockito.dart';
 
 import '../mocks/stubbed_app_manager.dart';
+import '../mocks/stubbed_map_controller.dart';
 import '../test_utils.dart';
 
 void main() {
@@ -58,31 +61,47 @@ void main() {
     verify(appManager.urlLauncherWrapper.launch(any)).called(1);
   });
 
-  testWidgets("Shows telemetry", (tester) async {
+  testWidgets("Telemetry is enabled", (tester) async {
+    var mapController = StubbedMapController();
+    when(mapController.value.getTelemetryEnabled())
+        .thenAnswer((_) => Future.value(true));
+
     await pumpContext(
       tester,
       (_) => MapboxAttribution(
+        mapController: mapController.value,
         mapType: MapType.satellite,
-        telemetry: MapboxTelemetry(isEnabled: true, onTogged: (_) {}),
       ),
       appManager: appManager,
     );
 
-    await tapAndSettle(tester, find.byIcon(Icons.info_outline).first);
-    expect(find.text("Mapbox Telemetry"), findsOneWidget);
+    await tapAndSettle(tester, find.byIcon(Icons.info_outline).first, 50);
+    expect(
+      findSiblingOfText<PaddedCheckbox>(tester, ListItem, "Mapbox Telemetry")
+          .checked,
+      isTrue,
+    );
   });
 
-  testWidgets("Hides telemetry", (tester) async {
+  testWidgets("Telemetry is disabled", (tester) async {
+    var mapController = StubbedMapController();
+    when(mapController.value.getTelemetryEnabled())
+        .thenAnswer((_) => Future.value(false));
+
     await pumpContext(
       tester,
-      (_) => const MapboxAttribution(
+      (_) => MapboxAttribution(
+        mapController: mapController.value,
         mapType: MapType.satellite,
-        telemetry: null,
       ),
       appManager: appManager,
     );
 
     await tapAndSettle(tester, find.byIcon(Icons.info_outline).first);
-    expect(find.text("Mapbox Telemetry"), findsNothing);
+    expect(
+      findSiblingOfText<PaddedCheckbox>(tester, ListItem, "Mapbox Telemetry")
+          .checked,
+      isFalse,
+    );
   });
 }

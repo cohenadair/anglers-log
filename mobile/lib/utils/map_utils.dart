@@ -8,8 +8,15 @@ import 'package:quiver/core.dart';
 
 import '../model/gen/anglerslog.pb.dart';
 
+import 'protobuf_utils.dart';
+
+const mapPinActive = "active-pin";
+const mapPinInactive = "inactive-pin";
+const mapPinSize = 1.25;
+const mapZoomDefault = 13.0;
+
 class MapType {
-  static MapType fromContext(BuildContext context) =>
+  static MapType of(BuildContext context) =>
       MapType.fromId(UserPreferenceManager.of(context).mapType) ??
       MapType.normal;
 
@@ -112,6 +119,17 @@ LatLngBounds? mapBounds(Iterable<FishingSpot> fishingSpots) {
   return LatLngBounds(
     southwest: LatLng(mostWestLat, mostSouthLng),
     northeast: LatLng(mostEastLat, mostNorthLng),
+  );
+}
+
+SymbolOptions createSymbolOptions(
+  FishingSpot fishingSpot, {
+  bool isActive = false,
+}) {
+  return SymbolOptions(
+    geometry: fishingSpot.latLng,
+    iconImage: isActive ? mapPinActive : mapPinInactive,
+    iconSize: mapPinSize,
   );
 }
 

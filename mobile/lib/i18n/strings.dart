@@ -892,6 +892,9 @@ class Strings {
   String get saveFishingSpotPageBodyOfWaterLabel =>
       _string("saveFishingSpotPage_bodyOfWaterLabel");
 
+  String get saveFishingSpotPageCoordinatesLabel =>
+      _string("saveFishingSpotPage_coordinatesLabel");
+
   String get formPageManageFieldText => _string("formPage_manageFieldText");
 
   String get formPageRemoveFieldsText => _string("formPage_removeFieldsText");
@@ -1010,6 +1013,8 @@ class Strings {
       _string("fishingSpotMap_locationPermissionOpenSettings");
 
   String get fishingSpotMapAddSpotHelp => _string("fishingSpotMap_addSpotHelp");
+
+  String get editCoordinatesHint => _string("editCoordinatesHint");
 
   String get customEntityListPageTitle => _string("customEntityListPage_title");
 
@@ -1933,8 +1938,7 @@ class Strings {
   String get backupRestoreDatabaseNotFound =>
       _string("backupRestore_databaseNotFound");
 
-  String get backupRestoreAccessDenied =>
-      _string("backupRestore_accessDenied");
+  String get backupRestoreAccessDenied => _string("backupRestore_accessDenied");
 
   String get backupRestoreAuthenticating =>
       _string("backupRestore_authenticating");

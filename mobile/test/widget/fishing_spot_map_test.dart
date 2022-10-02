@@ -59,21 +59,14 @@ void main() {
   MapboxMap findMap(WidgetTester tester) =>
       tester.widget<MapboxMap>(find.byType(MapboxMap));
 
-  Future<void> pumpMap(WidgetTester tester, Widget mapWidget) async {
-    await tester.pumpWidget(Testable(
-      (_) => mapWidget,
-      appManager: appManager,
-    ));
-
-    // Wait for map future to finish.
-    await tester.pumpAndSettle(const Duration(milliseconds: 300));
-    await mapController.finishLoading(tester);
+  Future<void> pumpMapWrapper(WidgetTester tester, Widget mapWidget) async {
+    await pumpMap(tester, appManager, mapController, mapWidget);
   }
 
   testWidgets("My location disabled if current location is null",
       (tester) async {
     when(appManager.locationMonitor.currentLocation).thenReturn(null);
-    await pumpMap(tester, FishingSpotMap());
+    await pumpMapWrapper(tester, FishingSpotMap());
     expect(findMap(tester).myLocationEnabled, isFalse);
   });
 
@@ -96,7 +89,7 @@ void main() {
     var controller = InputController<FishingSpot>();
     controller.value = fishingSpot1;
 
-    await pumpMap(
+    await pumpMapWrapper(
       tester,
       DidUpdateWidgetTester<InputController<FishingSpot>>(
         controller,
@@ -119,7 +112,7 @@ void main() {
     when(appManager.fishingSpotManager.entityExists(any)).thenReturn(false);
 
     var controller = InputController<FishingSpot>();
-    await pumpMap(
+    await pumpMapWrapper(
       tester,
       FishingSpotMap(
         pickerSettings: FishingSpotMapPickerSettings(
@@ -136,7 +129,7 @@ void main() {
   });
 
   testWidgets("Scaffold rendered when widget is a page", (tester) async {
-    await pumpMap(tester, FishingSpotMap());
+    await pumpMapWrapper(tester, FishingSpotMap());
     expect(find.byType(Scaffold), findsOneWidget);
   });
 
@@ -151,7 +144,7 @@ void main() {
 
     when(appManager.fishingSpotManager.list()).thenReturn([controller.value!]);
 
-    await pumpMap(
+    await pumpMapWrapper(
       tester,
       FishingSpotMap(
         pickerSettings: FishingSpotMapPickerSettings(
@@ -177,7 +170,7 @@ void main() {
     // previous test, we're ensuring that _activeSymbol cannot be set because
     // the fishing spot doesn't exist in the database.
 
-    await pumpMap(
+    await pumpMapWrapper(
       tester,
       FishingSpotMap(
         pickerSettings: FishingSpotMapPickerSettings(
@@ -194,7 +187,7 @@ void main() {
     when(appManager.locationMonitor.currentLocation)
         .thenReturn(const LatLng(5, 6));
 
-    await pumpMap(tester, FishingSpotMap());
+    await pumpMapWrapper(tester, FishingSpotMap());
 
     var map = findMap(tester);
     expect(map.initialCameraPosition.target.longitude, 6);
@@ -204,7 +197,7 @@ void main() {
   testWidgets("Start value is 0, 0", (tester) async {
     when(appManager.locationMonitor.currentLocation).thenReturn(null);
 
-    await pumpMap(tester, FishingSpotMap());
+    await pumpMapWrapper(tester, FishingSpotMap());
 
     var map = findMap(tester);
     expect(map.initialCameraPosition.target.longitude, 0);
@@ -215,7 +208,7 @@ void main() {
     when(appManager.locationMonitor.currentLocation)
         .thenReturn(const LatLng(5, 6));
 
-    await pumpMap(tester, FishingSpotMap());
+    await pumpMapWrapper(tester, FishingSpotMap());
 
     var map = findMap(tester);
     expect(map.initialCameraPosition.zoom, 13.0);
@@ -224,14 +217,14 @@ void main() {
   testWidgets("Uses 0 zoom when start value is 0, 0", (tester) async {
     when(appManager.locationMonitor.currentLocation).thenReturn(null);
 
-    await pumpMap(tester, FishingSpotMap());
+    await pumpMapWrapper(tester, FishingSpotMap());
 
     var map = findMap(tester);
     expect(map.initialCameraPosition.zoom, 0);
   });
 
   testWidgets("Search bar is hidden", (tester) async {
-    await pumpMap(
+    await pumpMapWrapper(
       tester,
       FishingSpotMap(
         showSearchBar: false,
@@ -243,7 +236,7 @@ void main() {
   testWidgets("Dropped pin at default location", (tester) async {
     when(appManager.fishingSpotManager.entityExists(any)).thenReturn(false);
 
-    await pumpMap(
+    await pumpMapWrapper(
       tester,
       FishingSpotMap(
         pickerSettings: FishingSpotMapPickerSettings(
@@ -271,7 +264,7 @@ void main() {
     var controller = InputController<FishingSpot>();
     controller.value = fishingSpot;
 
-    await pumpMap(
+    await pumpMapWrapper(
       tester,
       FishingSpotMap(
         pickerSettings: FishingSpotMapPickerSettings(
@@ -285,7 +278,7 @@ void main() {
   });
 
   testWidgets("Picking shows back button", (tester) async {
-    await pumpMap(
+    await pumpMapWrapper(
       tester,
       FishingSpotMap(
         pickerSettings: FishingSpotMapPickerSettings(
@@ -298,7 +291,7 @@ void main() {
 
   testWidgets("Picking with custom onNext widget", (tester) async {
     var invoked = false;
-    await pumpMap(
+    await pumpMapWrapper(
       tester,
       FishingSpotMap(
         pickerSettings: FishingSpotMapPickerSettings(
@@ -316,7 +309,7 @@ void main() {
   });
 
   testWidgets("Picking with null custom onNext widget", (tester) async {
-    await pumpMap(
+    await pumpMapWrapper(
       tester,
       FishingSpotMap(
         pickerSettings: FishingSpotMapPickerSettings(
@@ -344,7 +337,7 @@ void main() {
     when(appManager.fishingSpotManager.entityExists(any)).thenReturn(true);
     when(appManager.fishingSpotManager.list()).thenReturn([fishingSpot]);
 
-    await pumpMap(tester, FishingSpotMap());
+    await pumpMapWrapper(tester, FishingSpotMap());
 
     var result = verify(onSymbolTappedCallback.add(captureAny));
     result.called(1);
@@ -390,7 +383,7 @@ void main() {
   });
 
   testWidgets("Search bar shows placeholder when not selected", (tester) async {
-    await pumpMap(tester, FishingSpotMap());
+    await pumpMapWrapper(tester, FishingSpotMap());
     expect(find.text("Search fishing spots"), findsOneWidget);
   });
 
@@ -412,7 +405,7 @@ void main() {
     when(appManager.fishingSpotManager.filteredList(any))
         .thenReturn([fishingSpot1, fishingSpot2]);
 
-    await pumpMap(tester, FishingSpotMap());
+    await pumpMapWrapper(tester, FishingSpotMap());
     await tapAndSettle(tester, find.text("Search fishing spots"));
     expect(find.byType(FishingSpotListPage), findsOneWidget);
 
@@ -421,7 +414,7 @@ void main() {
   });
 
   testWidgets("Map style button hidden", (tester) async {
-    await pumpMap(
+    await pumpMapWrapper(
       tester,
       FishingSpotMap(
         showMapTypeButton: false,
@@ -441,7 +434,7 @@ void main() {
 
     var controller = InputController<FishingSpot>();
     controller.value = fishingSpot1;
-    await pumpMap(
+    await pumpMapWrapper(
       tester,
       FishingSpotMap(
         showMapTypeButton: true,
@@ -472,7 +465,7 @@ void main() {
   });
 
   testWidgets("Selecting same map style does not update state", (tester) async {
-    await pumpMap(
+    await pumpMapWrapper(
       tester,
       FishingSpotMap(
         showMapTypeButton: true,
@@ -491,7 +484,7 @@ void main() {
   });
 
   testWidgets("Current location button hidden", (tester) async {
-    await pumpMap(
+    await pumpMapWrapper(
       tester,
       FishingSpotMap(
         showMyLocationButton: false,
@@ -505,7 +498,7 @@ void main() {
     when(appManager.permissionHandlerWrapper.requestLocation())
         .thenAnswer((_) => Future.value(false));
 
-    await pumpMap(
+    await pumpMapWrapper(
       tester,
       FishingSpotMap(
         showMyLocationButton: true,
@@ -523,7 +516,7 @@ void main() {
         .thenAnswer((_) => Future.value(true));
     when(appManager.locationMonitor.currentLocation).thenReturn(null);
 
-    await pumpMap(
+    await pumpMapWrapper(
       tester,
       FishingSpotMap(
         showMyLocationButton: true,
@@ -541,7 +534,7 @@ void main() {
     when(appManager.permissionHandlerWrapper.requestLocation())
         .thenAnswer((_) => Future.value(true));
 
-    await pumpMap(
+    await pumpMapWrapper(
       tester,
       FishingSpotMap(
         showMyLocationButton: true,
@@ -579,7 +572,7 @@ void main() {
     when(appManager.fishingSpotManager.filteredList(any))
         .thenReturn([fishingSpot1, fishingSpot2]);
 
-    await pumpMap(tester, FishingSpotMap());
+    await pumpMapWrapper(tester, FishingSpotMap());
     await tapAndSettle(tester, find.text("Search fishing spots"));
     expect(find.byType(FishingSpotListPage), findsOneWidget);
 
@@ -592,7 +585,7 @@ void main() {
   });
 
   testWidgets("Zoom button hidden", (tester) async {
-    await pumpMap(
+    await pumpMapWrapper(
       tester,
       FishingSpotMap(
         showZoomExtentsButton: false,
@@ -604,7 +597,7 @@ void main() {
   testWidgets("Zoom button no-op when no fishing spots", (tester) async {
     when(appManager.fishingSpotManager.list()).thenReturn([]);
 
-    await pumpMap(
+    await pumpMapWrapper(
       tester,
       FishingSpotMap(
         showZoomExtentsButton: true,
@@ -624,7 +617,7 @@ void main() {
       ),
     ]);
 
-    await pumpMap(
+    await pumpMapWrapper(
       tester,
       FishingSpotMap(
         showZoomExtentsButton: true,
@@ -638,7 +631,7 @@ void main() {
   testWidgets("Mapbox telemetry toggled", (tester) async {
     when(appManager.ioWrapper.isAndroid).thenReturn(false);
 
-    await pumpMap(tester, FishingSpotMap());
+    await pumpMapWrapper(tester, FishingSpotMap());
     await tapAndSettle(tester, find.byIcon(Icons.info_outline).first);
     await tapAndSettle(tester, find.byType(PaddedCheckbox));
     verify(mapController.value.setTelemetryEnabled(any)).called(1);
@@ -662,7 +655,7 @@ void main() {
     when(appManager.fishingSpotManager.filteredList(any))
         .thenReturn([fishingSpot1, fishingSpot2]);
 
-    await pumpMap(tester, FishingSpotMap());
+    await pumpMapWrapper(tester, FishingSpotMap());
     await tapAndSettle(tester, find.text("Search fishing spots"));
     expect(find.byType(FishingSpotListPage), findsOneWidget);
 
@@ -689,7 +682,7 @@ void main() {
     when(appManager.fishingSpotManager.withinPreferenceRadius(any))
         .thenReturn(fishingSpot);
 
-    await pumpMap(
+    await pumpMapWrapper(
       tester,
       FishingSpotMap(
         pickerSettings: FishingSpotMapPickerSettings(
@@ -725,7 +718,7 @@ void main() {
     when(appManager.fishingSpotManager.entityExists(fishingSpot2.id))
         .thenReturn(true);
 
-    await pumpMap(
+    await pumpMapWrapper(
       tester,
       FishingSpotMap(
         pickerSettings: FishingSpotMapPickerSettings(
@@ -775,7 +768,7 @@ void main() {
 
     var controller = InputController<FishingSpot>();
     controller.value = fishingSpot1;
-    await pumpMap(
+    await pumpMapWrapper(
       tester,
       FishingSpotMap(
         pickerSettings: FishingSpotMapPickerSettings(
@@ -817,7 +810,7 @@ void main() {
     when(appManager.fishingSpotManager.filteredList(any))
         .thenReturn([fishingSpot1, fishingSpot2]);
 
-    await pumpMap(tester, FishingSpotMap());
+    await pumpMapWrapper(tester, FishingSpotMap());
     await tapAndSettle(tester, find.byType(SearchBar));
 
     mapController.clearSymbols();
@@ -837,7 +830,7 @@ void main() {
     when(appManager.fishingSpotManager.filteredList(any))
         .thenReturn([fishingSpot1]);
 
-    await pumpMap(tester, FishingSpotMap());
+    await pumpMapWrapper(tester, FishingSpotMap());
     await tapAndSettle(tester, find.byType(SearchBar));
     await tapAndSettle(tester, find.text("Spot 1"));
 
@@ -869,7 +862,7 @@ void main() {
       lng: 2,
     ));
 
-    await pumpMap(tester, FishingSpotMap());
+    await pumpMapWrapper(tester, FishingSpotMap());
     await tapAndSettle(tester, find.byType(SearchBar));
     await tapAndSettle(tester, find.text("Spot 1"));
     expect(find.text("Spot 1"), findsNWidgets(2));
@@ -884,7 +877,7 @@ void main() {
   });
 
   testWidgets("Setting up picker is no-op when not picking", (tester) async {
-    await pumpMap(tester, FishingSpotMap());
+    await pumpMapWrapper(tester, FishingSpotMap());
     verifyNever(appManager.fishingSpotManager.withinPreferenceRadius(any));
   });
 
@@ -900,7 +893,7 @@ void main() {
 
     var controller = InputController<FishingSpot>();
     controller.value = fishingSpot;
-    await pumpMap(
+    await pumpMapWrapper(
       tester,
       FishingSpotMap(
         pickerSettings: FishingSpotMapPickerSettings(controller: controller),
@@ -920,7 +913,7 @@ void main() {
 
     var controller = InputController<FishingSpot>();
     controller.value = fishingSpot1;
-    await pumpMap(
+    await pumpMapWrapper(
       tester,
       FishingSpotMap(
         pickerSettings: FishingSpotMapPickerSettings(
@@ -942,7 +935,7 @@ void main() {
       lng: 2,
     );
 
-    await pumpMap(
+    await pumpMapWrapper(
       tester,
       FishingSpotMap(
         pickerSettings: FishingSpotMapPickerSettings(
@@ -960,7 +953,7 @@ void main() {
     when(appManager.locationMonitor.currentLocation)
         .thenReturn(const LatLng(1, 2));
 
-    await pumpMap(
+    await pumpMapWrapper(
       tester,
       FishingSpotMap(
         pickerSettings: FishingSpotMapPickerSettings(
@@ -977,7 +970,7 @@ void main() {
     when(appManager.fishingSpotManager.entityExists(any)).thenReturn(false);
     when(appManager.locationMonitor.currentLocation).thenReturn(null);
 
-    await pumpMap(
+    await pumpMapWrapper(
       tester,
       FishingSpotMap(
         pickerSettings: FishingSpotMapPickerSettings(
@@ -996,7 +989,7 @@ void main() {
     when(appManager.permissionHandlerWrapper.requestLocation())
         .thenAnswer((_) => Future.value(true));
 
-    await pumpMap(tester, FishingSpotMap());
+    await pumpMapWrapper(tester, FishingSpotMap());
     await tapAndSettle(tester, find.byIcon(Icons.my_location));
     verify(mapController.value.animateCamera(any)).called(1);
   });
@@ -1012,7 +1005,7 @@ void main() {
     when(appManager.fishingSpotManager.filteredList(any))
         .thenReturn([fishingSpot1]);
 
-    await pumpMap(tester, FishingSpotMap());
+    await pumpMapWrapper(tester, FishingSpotMap());
     await tapAndSettle(tester, find.byType(SearchBar));
     await tapAndSettle(tester, find.text("Spot 1"));
 
@@ -1020,12 +1013,12 @@ void main() {
   });
 
   testWidgets("Map setup is only invoked once", (tester) async {
-    await pumpMap(tester, FishingSpotMap());
+    await pumpMapWrapper(tester, FishingSpotMap());
     verify(mapController.value.setSymbolIconAllowOverlap(any)).called(1);
   });
 
   testWidgets("No-op when camera moves and no dropped pin", (tester) async {
-    await pumpMap(tester, FishingSpotMap());
+    await pumpMapWrapper(tester, FishingSpotMap());
     await mapController.finishLoading(tester);
 
     var mapboxMap = findFirst<MapboxMap>(tester);
@@ -1036,7 +1029,7 @@ void main() {
   testWidgets("Pin updated on camera idle", (tester) async {
     when(appManager.fishingSpotManager.entityExists(any)).thenReturn(false);
 
-    await pumpMap(tester, FishingSpotMap());
+    await pumpMapWrapper(tester, FishingSpotMap());
     await mapController.finishLoading(tester);
 
     await tapAndSettle(tester, find.byIcon(Icons.add), 200);
@@ -1054,7 +1047,7 @@ void main() {
   });
 
   testWidgets("Target hidden when map is idle", (tester) async {
-    await pumpMap(tester, FishingSpotMap());
+    await pumpMapWrapper(tester, FishingSpotMap());
     await mapController.finishLoading(tester);
 
     expect(
@@ -1070,7 +1063,7 @@ void main() {
       listener = invocation.positionalArguments.first;
     });
 
-    await pumpMap(tester, FishingSpotMap());
+    await pumpMapWrapper(tester, FishingSpotMap());
     await mapController.finishLoading(tester);
 
     // Manually invoke controller update listener to trigger _updateTarget.
@@ -1085,7 +1078,7 @@ void main() {
     );
   });
 
-  testWidgets("Target is shown when map is movin", (tester) async {
+  testWidgets("Target is shown when map is moving", (tester) async {
     when(appManager.fishingSpotManager.entityExists(any)).thenReturn(false);
 
     when(mapController.value.isCameraMoving).thenReturn(true);
@@ -1095,7 +1088,7 @@ void main() {
       listener = invocation.positionalArguments.first;
     });
 
-    await pumpMap(tester, FishingSpotMap());
+    await pumpMapWrapper(tester, FishingSpotMap());
     await mapController.finishLoading(tester);
 
     // Add a pin.
@@ -1130,7 +1123,7 @@ void main() {
     when(appManager.fishingSpotManager.list()).thenReturn([fishingSpot]);
     when(appManager.fishingSpotManager.entityExists(any)).thenReturn(true);
 
-    await pumpMap(tester, FishingSpotMap());
+    await pumpMapWrapper(tester, FishingSpotMap());
     await mapController.finishLoading(tester);
 
     // Select an existing fishing spot.
@@ -1155,7 +1148,7 @@ void main() {
       (tester) async {
     when(mapController.value.cameraPosition).thenReturn(null);
 
-    await pumpMap(tester, FishingSpotMap());
+    await pumpMapWrapper(tester, FishingSpotMap());
     await mapController.finishLoading(tester);
 
     await tapAndSettle(tester, find.byIcon(Icons.add), 200);
@@ -1163,7 +1156,7 @@ void main() {
   });
 
   testWidgets("Tapping add button drops a pin", (tester) async {
-    await pumpMap(tester, FishingSpotMap());
+    await pumpMapWrapper(tester, FishingSpotMap());
     await mapController.finishLoading(tester);
 
     await tapAndSettle(tester, find.byIcon(Icons.add), 200);
@@ -1177,7 +1170,7 @@ void main() {
     when(appManager.locationMonitor.currentLocation)
         .thenReturn(const LatLng(0, 0));
 
-    await pumpMap(tester, FishingSpotMap());
+    await pumpMapWrapper(tester, FishingSpotMap());
     await mapController.finishLoading(tester);
 
     await tapAndSettle(tester, find.byIcon(Icons.my_location), 200);
@@ -1188,7 +1181,7 @@ void main() {
     when(appManager.permissionHandlerWrapper.requestLocation())
         .thenAnswer((_) => Future.value(true));
 
-    await pumpMap(tester, FishingSpotMap());
+    await pumpMapWrapper(tester, FishingSpotMap());
     await mapController.finishLoading(tester);
 
     // Default position is 0, 0. Set something else so the map actually moves.

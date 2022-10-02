@@ -433,6 +433,7 @@ Map<String, Map<String, String>> get englishStrings => {
         "saveFishingSpotPage_newTitle": "New Fishing Spot",
         "saveFishingSpotPage_editTitle": "Edit Fishing Spot",
         "saveFishingSpotPage_bodyOfWaterLabel": "Body Of Water",
+        "saveFishingSpotPage_coordinatesLabel": "Coordinates",
         "formPage_manageFieldText": "Manage Fields",
         "formPage_removeFieldsText": "Remove Fields",
         "formPage_confirmRemoveField": "Remove 1 Field",
@@ -510,6 +511,8 @@ Map<String, Map<String, String>> get englishStrings => {
         "fishingSpotMap_locationPermissionOpenSettings": "Open Settings",
         "fishingSpotMap_addSpotHelp":
             "Long press anywhere on the map to drop a pin and add a fishing spot.",
+        "editCoordinatesHint":
+            "Drag the map to update the fishing spot's coordinates.",
         "feedbackPage_title": "Send Feedback",
         "feedbackPage_send": "Send",
         "feedbackPage_message": "Message",

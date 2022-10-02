@@ -2,7 +2,11 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:mobile/pages/edit_coordinates_page.dart';
+import 'package:mobile/utils/page_utils.dart';
+import 'package:mobile/utils/string_utils.dart';
 import 'package:mobile/widgets/entity_picker_input.dart';
+import 'package:mobile/widgets/list_picker_input.dart';
 import 'package:quiver/strings.dart';
 
 import '../body_of_water_manager.dart';
@@ -32,6 +36,7 @@ class SaveFishingSpotPageState extends State<SaveFishingSpotPage> {
   final _nameController = TextInputController();
   final _imageController = InputController<PickedImage>();
   final _notesController = TextInputController();
+  final _coordinatesController = InputController<FishingSpot>();
 
   BodyOfWaterManager get _bodyOfWaterManager => BodyOfWaterManager.of(context);
 
@@ -50,6 +55,7 @@ class SaveFishingSpotPageState extends State<SaveFishingSpotPage> {
         _oldFishingSpot.hasName() ? _oldFishingSpot.name : null;
     _notesController.value =
         _oldFishingSpot.hasNotes() ? _oldFishingSpot.notes : null;
+    _coordinatesController.value = _oldFishingSpot;
   }
 
   @override
@@ -61,6 +67,7 @@ class SaveFishingSpotPageState extends State<SaveFishingSpotPage> {
       onSave: _onSave,
       fieldBuilder: (context) => [
         _buildBodyOfWater(),
+        _buildCoordinates(),
         _buildImage(),
         const VerticalSpace(paddingSmall),
         _buildName(),
@@ -77,6 +84,30 @@ class SaveFishingSpotPageState extends State<SaveFishingSpotPage> {
       controller: _bodyOfWaterController,
       title: Strings.of(context).saveFishingSpotPageBodyOfWaterLabel,
       listPage: (settings) => BodyOfWaterListPage(pickerSettings: settings),
+    );
+  }
+
+  Widget _buildCoordinates() {
+    return ValueListenableBuilder<FishingSpot?>(
+      valueListenable: _coordinatesController,
+      builder: (context, _, __) {
+        String? value;
+        if (_coordinatesController.hasValue) {
+          value = formatLatLng(
+            context: context,
+            lat: _coordinatesController.value!.lat,
+            lng: _coordinatesController.value!.lng,
+            includeLabels: false,
+          );
+        }
+
+        return ListPickerInput(
+          title: Strings.of(context).saveFishingSpotPageCoordinatesLabel,
+          value: value,
+          onTap: () =>
+              push(context, EditCoordinatesPage(_coordinatesController)),
+        );
+      },
     );
   }
 
@@ -112,8 +143,8 @@ class SaveFishingSpotPageState extends State<SaveFishingSpotPage> {
   FutureOr<bool> _onSave(BuildContext context) async {
     var newFishingSpot = FishingSpot()
       ..id = _oldFishingSpot.id
-      ..lat = _oldFishingSpot.lat
-      ..lng = _oldFishingSpot.lng;
+      ..lat = _coordinatesController.value!.lat
+      ..lng = _coordinatesController.value!.lng;
 
     if (_bodyOfWaterController.hasValue) {
       newFishingSpot.bodyOfWaterId = _bodyOfWaterController.value!;

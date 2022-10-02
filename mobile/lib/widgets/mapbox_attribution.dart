@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:mapbox_gl/mapbox_gl.dart';
 import 'package:mobile/i18n/strings.dart';
-import 'package:mobile/res/dimen.dart';
 import 'package:mobile/res/style.dart';
 import 'package:mobile/utils/map_utils.dart';
 import 'package:mobile/widgets/widget.dart';
@@ -13,17 +13,6 @@ import 'button.dart';
 import 'checkbox_input.dart';
 import 'our_bottom_sheet.dart';
 
-@immutable
-class MapboxTelemetry {
-  final bool isEnabled;
-  final void Function(bool) onTogged;
-
-  const MapboxTelemetry({
-    required this.isEnabled,
-    required this.onTogged,
-  });
-}
-
 class MapboxAttribution extends StatelessWidget {
   static const _urlMapbox = "https://www.mapbox.com/about/maps/";
   static const _urlOpenStreetMap = "http://www.openstreetmap.org/copyright";
@@ -32,12 +21,12 @@ class MapboxAttribution extends StatelessWidget {
 
   static const _size = Size(85, 20);
 
-  final MapType mapType;
-  final MapboxTelemetry? telemetry;
+  final MapType? mapType;
+  final MapboxMapController? mapController;
 
   const MapboxAttribution({
-    required this.mapType,
-    this.telemetry,
+    this.mapType,
+    this.mapController,
   });
 
   @override
@@ -50,15 +39,12 @@ class MapboxAttribution extends StatelessWidget {
           height: _size.height,
           child: SvgPicture.asset(
             "assets/mapbox-logo.svg",
-            color: mapIconColor(mapType),
+            color: mapIconColor(mapType ?? MapType.of(context)),
           ),
         ),
         MinimumIconButton(
           icon: Icons.info_outline,
-          onTap: () => showOurBottomSheet(
-            context,
-            _buildPicker,
-          ),
+          onTap: () => showOurBottomSheet(context, _buildPicker),
         ),
       ],
     );
@@ -77,15 +63,30 @@ class MapboxAttribution extends StatelessWidget {
         Strings.of(context).mapAttributionMaxar: _urlMaxar,
       },
       onPicked: (url) => UrlLauncherWrapper.of(context).launch(url!),
-      footer: telemetry == null
-          ? const VerticalSpace(paddingDefault)
-          : CheckboxInput(
-              label: Strings.of(context).mapAttributionTelemetryTitle,
-              description:
-                  Strings.of(context).mapAttributionTelemetryDescription,
-              value: telemetry!.isEnabled,
-              onChanged: telemetry!.onTogged,
-            ),
+      footer: _buildFooter(),
+    );
+  }
+
+  Widget _buildFooter() {
+    if (mapController == null) {
+      return const Empty();
+    }
+
+    return FutureBuilder<bool>(
+      future: mapController?.getTelemetryEnabled() ?? Future.value(false),
+      builder: (context, snapshot) {
+        if (!snapshot.hasData) {
+          return const Loading();
+        }
+
+        return CheckboxInput(
+          label: Strings.of(context).mapAttributionTelemetryTitle,
+          description: Strings.of(context).mapAttributionTelemetryDescription,
+          value: snapshot.data!,
+          onChanged: (isEnabled) async =>
+              await mapController?.setTelemetryEnabled(isEnabled),
+        );
+      },
     );
   }
 }

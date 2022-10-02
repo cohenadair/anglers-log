@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:mobile/res/dimen.dart';
 import 'package:mobile/utils/widget_utils.dart';

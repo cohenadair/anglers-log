@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:io';
-import 'dart:math';
 
 import 'package:collection/collection.dart' show IterableExtension;
 import 'package:flutter/material.dart';
@@ -18,9 +17,7 @@ import '../location_monitor.dart';
 import '../log.dart';
 import '../model/gen/anglerslog.pb.dart';
 import '../pages/fishing_spot_list_page.dart';
-import '../properties_manager.dart';
 import '../res/dimen.dart';
-import '../res/gen/custom_icons.dart';
 import '../utils/dialog_utils.dart';
 import '../utils/map_utils.dart';
 import '../utils/page_utils.dart';
@@ -31,8 +28,10 @@ import '../widgets/search_bar.dart';
 import '../widgets/widget.dart';
 import '../wrappers/permission_handler_wrapper.dart';
 import 'bottom_sheet_picker.dart';
+import 'default_mapbox_map.dart';
 import 'fishing_spot_details.dart';
 import 'input_controller.dart';
+import 'map_target.dart';
 import 'mapbox_attribution.dart';
 import 'slide_up_transition.dart';
 
@@ -90,20 +89,10 @@ class FishingSpotMap extends StatefulWidget {
 }
 
 class FishingSpotMapState extends State<FishingSpotMap> {
-  static const _pinActive = "active-pin";
-  static const _pinInactive = "inactive-pin";
-  static const _pinSize = 1.25;
-  static const _zoomDefault = 13.0;
-
   static const _log = Log("FishingSpotMap");
 
   final _fishingSpotKey = GlobalKey();
-  final _mapKey = GlobalKey();
   final _isTargetShowingNotifier = ValueNotifier<bool>(false);
-
-  // Wait for navigation animations to finish before loading the map. This
-  // allows for a smooth animation.
-  late final Future<bool> _mapFuture;
 
   MapboxMapController? _mapController;
   late MapType _mapType;
@@ -111,7 +100,6 @@ class FishingSpotMapState extends State<FishingSpotMap> {
   Symbol? _activeSymbol;
 
   bool _myLocationEnabled = true;
-  bool _isTelemetryEnabled = true;
   bool _didChangeMapType = false;
 
   // Displayed while dismissing the fishing spot container.
@@ -126,8 +114,6 @@ class FishingSpotMapState extends State<FishingSpotMap> {
 
   PermissionHandlerWrapper get _permissionHandlerWrapper =>
       PermissionHandlerWrapper.of(context);
-
-  PropertiesManager get _propertiesManager => PropertiesManager.of(context);
 
   UserPreferenceManager get _userPreferenceManager =>
       UserPreferenceManager.of(context);
@@ -149,9 +135,8 @@ class FishingSpotMapState extends State<FishingSpotMap> {
   void initState() {
     super.initState();
 
-    _mapType = MapType.fromContext(context);
+    _mapType = MapType.of(context);
     _myLocationEnabled = _locationMonitor.currentLocation != null;
-    _mapFuture = Future.delayed(const Duration(milliseconds: 300), () => true);
 
     // Refresh state so Mapbox attribution padding is updated. This needs to be
     // done after the fishing spot widget is rendered.
@@ -221,40 +206,24 @@ class FishingSpotMapState extends State<FishingSpotMap> {
   }
 
   Widget _buildMap() {
-    return EmptyFutureBuilder<bool>(
-      future: _mapFuture,
-      builder: (context, _) {
-        var start = _activeSymbol?.fishingSpot.latLng ??
-            _pickerSettings?.controller.value?.latLng ??
-            _locationMonitor.currentLocation ??
-            const LatLng(0, 0);
+    var start = _activeSymbol?.fishingSpot.latLng ??
+        _pickerSettings?.controller.value?.latLng ??
+        _locationMonitor.currentLocation ??
+        const LatLng(0, 0);
 
-        return MapboxMap(
-          key: _mapKey,
-          accessToken: _propertiesManager.mapboxApiKey,
-          // Hide default attribution views, so we can show our own and
-          // position them easier.
-          attributionButtonMargins: const Point(0, -1000),
-          logoViewMargins: const Point(0, -1000),
-          myLocationEnabled: _myLocationEnabled,
-          styleString: _mapType.url,
-          initialCameraPosition: CameraPosition(
-            target: start,
-            zoom: start.latitude == 0 ? 0 : _zoomDefault,
-          ),
-          onMapCreated: (controller) {
-            _mapController = controller;
-            _mapController?.addListener(_updateTarget);
-          },
-          onStyleLoadedCallback: _setupMap,
-          onCameraIdle: () {
-            if (_hasActiveDroppedPin) {
-              _updateDroppedPin();
-            }
-          },
-          trackCameraPosition: true,
-          compassEnabled: false,
-        );
+    return DefaultMapboxMap(
+      isMyLocationEnabled: _myLocationEnabled,
+      style: _mapType.url,
+      startPosition: start,
+      onMapCreated: (controller) {
+        _mapController = controller;
+        _mapController?.addListener(_updateTarget);
+      },
+      onStyleLoadedCallback: _setupMap,
+      onCameraIdle: () {
+        if (_hasActiveDroppedPin) {
+          _updateDroppedPin();
+        }
       },
     );
   }
@@ -523,14 +492,9 @@ class FishingSpotMapState extends State<FishingSpotMap> {
     return ValueListenableBuilder<bool>(
       valueListenable: _isTargetShowingNotifier,
       builder: (_, isShowing, __) {
-        return AnimatedVisibility(
-          visible: isShowing,
-          child: Center(
-            child: Icon(
-              CustomIcons.mapTarget,
-              color: mapIconColor(_mapType),
-            ),
-          ),
+        return MapTarget(
+          isShowing: _isTargetShowingNotifier.value,
+          mapType: _mapType,
         );
       },
     );
@@ -550,16 +514,8 @@ class FishingSpotMapState extends State<FishingSpotMap> {
 
   Widget _buildAttribution() {
     return MapboxAttribution(
+      mapController: _mapController,
       mapType: _mapType,
-      telemetry: MapboxTelemetry(
-        isEnabled: _isTelemetryEnabled,
-        onTogged: (enabled) async {
-          await _mapController?.setTelemetryEnabled(enabled);
-          _isTelemetryEnabled =
-              await _mapController?.getTelemetryEnabled() ?? false;
-          setState(() {});
-        },
-      ),
     );
   }
 
@@ -570,9 +526,6 @@ class FishingSpotMapState extends State<FishingSpotMap> {
     _mapController?.onSymbolTapped.remove(_onSymbolTapped);
     _mapController?.onSymbolTapped.add(_onSymbolTapped);
     _mapController?.setSymbolIconAllowOverlap(true);
-    _mapController
-        ?.getTelemetryEnabled()
-        .then((value) => _isTelemetryEnabled = value);
     if (_didChangeMapType) {
       await _mapController?.clearSymbols();
       _didChangeMapType = false;
@@ -600,6 +553,7 @@ class FishingSpotMapState extends State<FishingSpotMap> {
         symbolsToRemove.add(symbol);
       } else {
         symbol.fishingSpot = spot;
+        symbol.options = _copySymbolOptions(symbol.options, spot);
       }
     }
     await _mapController?.removeSymbols(symbolsToRemove);
@@ -616,7 +570,7 @@ class FishingSpotMapState extends State<FishingSpotMap> {
     var options = <SymbolOptions>[];
     var data = <Map<dynamic, dynamic>>[];
     for (var fishingSpot in spotsWithoutSymbols) {
-      options.add(_createSymbolOptions(
+      options.add(createSymbolOptions(
         fishingSpot,
         isActive: selectedFishingSpot?.id == fishingSpot.id,
       ));
@@ -677,7 +631,7 @@ class FishingSpotMapState extends State<FishingSpotMap> {
         ..lat = latLng.latitude
         ..lng = latLng.longitude;
       await _mapController?.addSymbol(
-        _createSymbolOptions(
+        createSymbolOptions(
           fishingSpot,
           isActive: true,
         ),
@@ -689,14 +643,12 @@ class FishingSpotMapState extends State<FishingSpotMap> {
     _selectFishingSpot(fishingSpot, animateMapMovement: true);
   }
 
-  SymbolOptions _createSymbolOptions(
-    FishingSpot fishingSpot, {
-    bool isActive = false,
-  }) {
+  SymbolOptions _copySymbolOptions(SymbolOptions options, FishingSpot spot) {
     return SymbolOptions(
-      geometry: fishingSpot.latLng,
-      iconImage: isActive ? _pinActive : _pinInactive,
-      iconSize: _pinSize,
+      geometry: spot.latLng,
+      iconImage: options.iconImage,
+      iconSize: options.iconSize,
+      draggable: options.draggable,
     );
   }
 
@@ -724,8 +676,8 @@ class FishingSpotMapState extends State<FishingSpotMap> {
         SymbolOptions(
           // If the active symbol didn't change, keep the same icon.
           iconImage: _activeSymbol?.fishingSpot.id == fishingSpot?.id
-              ? _pinActive
-              : _pinInactive,
+              ? mapPinActive
+              : mapPinInactive,
         ),
       );
     }
@@ -751,7 +703,7 @@ class FishingSpotMapState extends State<FishingSpotMap> {
         // Update map.
         await _mapController?.updateSymbol(
           newActiveSymbol,
-          const SymbolOptions(iconImage: _pinActive),
+          const SymbolOptions(iconImage: mapPinActive),
         );
 
         _moveMap(
@@ -804,7 +756,7 @@ class FishingSpotMapState extends State<FishingSpotMap> {
 
     var zoom = _mapController?.cameraPosition?.zoom;
     if (zoom == null || zoomToDefault) {
-      zoom = _zoomDefault;
+      zoom = mapZoomDefault;
     }
 
     var update = CameraUpdate.newCameraPosition(CameraPosition(
