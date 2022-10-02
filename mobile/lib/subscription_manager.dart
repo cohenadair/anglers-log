@@ -10,6 +10,7 @@ import 'app_manager.dart';
 import 'log.dart';
 import 'properties_manager.dart';
 import 'utils/void_stream_controller.dart';
+import 'wrappers/crashlytics_wrapper.dart';
 import 'wrappers/purchases_wrapper.dart';
 
 enum SubscriptionState {
@@ -49,6 +50,8 @@ class SubscriptionManager {
 
   SubscriptionManager(this._appManager);
 
+  CrashlyticsWrapper get _crashlyicsWrapper => _appManager.crashlyticsWrapper;
+
   PropertiesManager get _propertiesManager => _appManager.propertiesManager;
 
   PurchasesWrapper get _purchasesWrapper => _appManager.purchasesWrapper;
@@ -75,7 +78,9 @@ class SubscriptionManager {
 
     // Set current state.
     try {
-      _setStateFromPurchaserInfo(await _purchasesWrapper.getCustomerInfo());
+      var customerInfo = await _purchasesWrapper.getCustomerInfo();
+      _crashlyicsWrapper.setUserId(customerInfo.originalAppUserId);
+      _setStateFromPurchaserInfo(customerInfo);
     } on PlatformException catch (e) {
       _log.e(StackTrace.current, "Purchase info error: ${e.message}");
     }

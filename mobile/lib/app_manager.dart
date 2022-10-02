@@ -23,6 +23,7 @@ import 'time_manager.dart';
 import 'trip_manager.dart';
 import 'user_preference_manager.dart';
 import 'water_clarity_manager.dart';
+import 'wrappers/crashlytics_wrapper.dart';
 import 'wrappers/device_info_wrapper.dart';
 import 'wrappers/drive_api_wrapper.dart';
 import 'wrappers/file_picker_wrapper.dart';
@@ -70,6 +71,7 @@ class AppManager {
   WaterClarityManager? _waterClarityManager;
 
   // External dependency wrappers.
+  CrashlyticsWrapper? _crashlyticsWrapper;
   DeviceInfoWrapper? _deviceInfoWrapper;
   DriveApiWrapper? _driveApiWrapper;
   FilePickerWrapper? _filePickerWrapper;
@@ -193,6 +195,11 @@ class AppManager {
   WaterClarityManager get waterClarityManager {
     _waterClarityManager ??= WaterClarityManager(this);
     return _waterClarityManager!;
+  }
+
+  CrashlyticsWrapper get crashlyticsWrapper {
+    _crashlyticsWrapper ??= const CrashlyticsWrapper();
+    return _crashlyticsWrapper!;
   }
 
   DeviceInfoWrapper get deviceInfoWrapper {
