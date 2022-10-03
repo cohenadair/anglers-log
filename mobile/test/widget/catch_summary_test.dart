@@ -1,17 +1,26 @@
 import 'package:fixnum/fixnum.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mobile/angler_manager.dart';
+import 'package:mobile/bait_manager.dart';
+import 'package:mobile/body_of_water_manager.dart';
+import 'package:mobile/entity_manager.dart';
+import 'package:mobile/fishing_spot_manager.dart';
+import 'package:mobile/method_manager.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
 import 'package:mobile/pages/catch_list_page.dart';
 import 'package:mobile/pages/catch_page.dart';
 import 'package:mobile/pages/species_list_page.dart';
+import 'package:mobile/species_manager.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
+import 'package:mobile/water_clarity_manager.dart';
 import 'package:mobile/widgets/catch_summary.dart';
 import 'package:mobile/widgets/date_range_picker_input.dart';
 import 'package:mobile/widgets/list_picker_input.dart';
 import 'package:mobile/widgets/tile.dart';
 import 'package:mobile/widgets/widget.dart';
 import 'package:mockito/mockito.dart';
+import 'package:protobuf/protobuf.dart';
 import 'package:quiver/strings.dart';
 
 import '../mocks/mocks.mocks.dart';
@@ -371,6 +380,28 @@ void main() {
     await tester.pumpAndSettle();
   }
 
+  Future<void> testDeleteRealEntity<T extends GeneratedMessage>(
+      WidgetTester tester,
+      EntityManager<T> manager,
+      Iterable<T> entities,
+      Id entityToDelete) async {
+    // Use a real entity manager so widget is updated properly on changes.
+    for (var entity in entities) {
+      await manager.addOrUpdate(entity);
+    }
+
+    // Load a catch report with all default values.
+    await pumpCatchSummary(
+      tester,
+      (context) => CatchSummary<Catch>(
+        filterOptionsBuilder: (_) => CatchFilterOptions(),
+      ),
+    );
+
+    expect(await manager.delete(entityToDelete), isTrue);
+    await tester.pumpAndSettle(const Duration(milliseconds: 50));
+  }
+
   setUp(() {
     appManager = StubbedAppManager();
     resetCatches();
@@ -383,6 +414,8 @@ void main() {
     when(anglerManager.list()).thenReturn(anglerMap.values.toList());
     when(anglerManager.entity(any)).thenAnswer(
         (invocation) => anglerMap[invocation.positionalArguments[0]]);
+    when(anglerManager.entityExists(any)).thenAnswer(
+        (invocation) => anglerMap[invocation.positionalArguments[0]] != null);
     when(anglerManager.uuidMap())
         .thenReturn(anglerMap.map((key, value) => MapEntry(key.uuid, value)));
 
@@ -401,6 +434,9 @@ void main() {
     when(baitManager.uuidMap())
         .thenReturn(baitMap.map((key, value) => MapEntry(key.uuid, value)));
 
+    when(appManager.baitCategoryManager.listen(any))
+        .thenAnswer((_) => MockStreamSubscription());
+
     bodyOfWaterManager = appManager.bodyOfWaterManager;
     when(bodyOfWaterManager.name(any))
         .thenAnswer((invocation) => invocation.positionalArguments.first.name);
@@ -409,6 +445,8 @@ void main() {
     when(bodyOfWaterManager.list()).thenReturn(bodyOfWaterMap.values.toList());
     when(bodyOfWaterManager.entity(any)).thenAnswer(
         (invocation) => bodyOfWaterMap[invocation.positionalArguments[0]]);
+    when(bodyOfWaterManager.entityExists(any)).thenAnswer((invocation) =>
+        bodyOfWaterMap[invocation.positionalArguments[0]] != null);
     when(bodyOfWaterManager.uuidMap()).thenReturn(
         bodyOfWaterMap.map((key, value) => MapEntry(key.uuid, value)));
 
@@ -437,6 +475,8 @@ void main() {
     when(fishingSpotManager.list()).thenReturn(fishingSpotMap.values.toList());
     when(fishingSpotManager.entity(any)).thenAnswer(
         (invocation) => fishingSpotMap[invocation.positionalArguments[0]]);
+    when(fishingSpotManager.entityExists(any)).thenAnswer((invocation) =>
+        fishingSpotMap[invocation.positionalArguments[0]] != null);
     when(fishingSpotManager.displayNameComparator(any))
         .thenReturn((lhs, rhs) => compareIgnoreCase(lhs.name, rhs.name));
     when(fishingSpotManager.uuidMap()).thenReturn(
@@ -450,6 +490,8 @@ void main() {
     when(methodManager.list()).thenReturn(methodMap.values.toList());
     when(methodManager.entity(any)).thenAnswer(
         (invocation) => methodMap[invocation.positionalArguments[0]]);
+    when(methodManager.entityExists(any)).thenAnswer(
+        (invocation) => methodMap[invocation.positionalArguments[0]] != null);
     when(methodManager.uuidMap())
         .thenReturn(methodMap.map((key, value) => MapEntry(key.uuid, value)));
 
@@ -464,6 +506,8 @@ void main() {
         .thenReturn(speciesMap.values.toList());
     when(speciesManager.entity(any)).thenAnswer(
         (invocation) => speciesMap[invocation.positionalArguments[0]]);
+    when(speciesManager.entityExists(any)).thenAnswer(
+        (invocation) => speciesMap[invocation.positionalArguments[0]] != null);
     when(speciesManager.displayNameComparator(any))
         .thenReturn((lhs, rhs) => compareIgnoreCase(lhs.name, rhs.name));
     when(speciesManager.uuidMap())
@@ -477,6 +521,8 @@ void main() {
     when(waterClarityManager.list()).thenReturn(clarityMap.values.toList());
     when(waterClarityManager.entity(any)).thenAnswer(
         (invocation) => clarityMap[invocation.positionalArguments[0]]);
+    when(waterClarityManager.entityExists(any)).thenAnswer(
+        (invocation) => clarityMap[invocation.positionalArguments[0]] != null);
     when(waterClarityManager.uuidMap())
         .thenReturn(clarityMap.map((key, value) => MapEntry(key.uuid, value)));
 
@@ -503,6 +549,11 @@ void main() {
       return Future.value(invocation.positionalArguments
           .first(invocation.positionalArguments[1]));
     });
+
+    when(appManager.localDatabaseManager.insertOrReplace(any, any))
+        .thenAnswer((_) => Future.value(true));
+    when(appManager.localDatabaseManager.deleteEntity(any, any, any))
+        .thenAnswer((_) => Future.value(true));
 
     stubCatchesByTimestamp();
   });
@@ -1667,5 +1718,85 @@ void main() {
     expect(opt.allMethods.length, methodMap.values.length);
     expect(opt.allSpecies.length, speciesMap.values.length);
     expect(opt.allWaterClarities.length, clarityMap.values.length);
+  });
+
+  testWidgets("Deleting a species doesn't throw NPE", (tester) async {
+    when(catchManager.existsWith(speciesId: anyNamed("speciesId")))
+        .thenReturn(false);
+
+    var speciesManager = SpeciesManager(appManager.app);
+    when(appManager.app.speciesManager).thenReturn(speciesManager);
+    await testDeleteRealEntity(
+        tester, speciesManager, speciesMap.values, speciesId0);
+
+    // At this point, if the test finishes without throwing an NPE, it is
+    // working as expected.
+  });
+
+  testWidgets("Deleting a fishing spot doesn't throw NPE", (tester) async {
+    when(appManager.bodyOfWaterManager.displayNameFromId(any, any))
+        .thenReturn("Body Of Water");
+    when(appManager.imageManager.save(any, compress: anyNamed("compress")))
+        .thenAnswer((_) => Future.value([]));
+
+    var fishingSpotManager = FishingSpotManager(appManager.app);
+    when(appManager.app.fishingSpotManager).thenReturn(fishingSpotManager);
+    await testDeleteRealEntity(
+        tester, fishingSpotManager, fishingSpotMap.values, fishingSpotId0);
+
+    // At this point, if the test finishes without throwing an NPE, it is
+    // working as expected.
+  });
+
+  testWidgets("Deleting a bait doesn't throw NPE", (tester) async {
+    when(appManager.customEntityManager.customValuesDisplayValue(any, any))
+        .thenReturn("Custom Value");
+
+    var baitManager = BaitManager(appManager.app);
+    when(appManager.app.baitManager).thenReturn(baitManager);
+    await testDeleteRealEntity(tester, baitManager, baitMap.values, baitId0);
+
+    // At this point, if the test finishes without throwing an NPE, it is
+    // working as expected.
+  });
+
+  testWidgets("Deleting an angler doesn't throw NPE", (tester) async {
+    var anglerManager = AnglerManager(appManager.app);
+    when(appManager.app.anglerManager).thenReturn(anglerManager);
+    await testDeleteRealEntity(
+        tester, anglerManager, anglerMap.values, anglerId0);
+
+    // At this point, if the test finishes without throwing an NPE, it is
+    // working as expected.
+  });
+
+  testWidgets("Deleting a body of water doesn't throw NPE", (tester) async {
+    var bodyOfWaterManager = BodyOfWaterManager(appManager.app);
+    when(appManager.app.bodyOfWaterManager).thenReturn(bodyOfWaterManager);
+    await testDeleteRealEntity(
+        tester, bodyOfWaterManager, bodyOfWaterMap.values, bodyOfWaterId0);
+
+    // At this point, if the test finishes without throwing an NPE, it is
+    // working as expected.
+  });
+
+  testWidgets("Deleting a method doesn't throw NPE", (tester) async {
+    var methodManager = MethodManager(appManager.app);
+    when(appManager.app.methodManager).thenReturn(methodManager);
+    await testDeleteRealEntity(
+        tester, methodManager, methodMap.values, methodId0);
+
+    // At this point, if the test finishes without throwing an NPE, it is
+    // working as expected.
+  });
+
+  testWidgets("Deleting a water clarity doesn't throw NPE", (tester) async {
+    var waterClarityManager = WaterClarityManager(appManager.app);
+    when(appManager.app.waterClarityManager).thenReturn(waterClarityManager);
+    await testDeleteRealEntity(
+        tester, waterClarityManager, clarityMap.values, clarityId0);
+
+    // At this point, if the test finishes without throwing an NPE, it is
+    // working as expected.
   });
 }

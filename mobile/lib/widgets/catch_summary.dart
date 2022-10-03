@@ -333,12 +333,7 @@ class _CatchSummaryState<T> extends State<CatchSummary<T>> {
       viewAllTitle: Strings.of(context).reportSummaryViewSpecies,
       viewAllDescription:
           Strings.of(context).reportSummaryPerSpeciesDescription,
-      series: _report.toSeries<Species>(
-        (model) => {
-          for (var id in model.perSpecies.keys)
-            _speciesManager.entity(Id(uuid: id))!: model.perSpecies[id]!
-        },
-      ),
+      series: _entitySeries((model) => model.perSpecies, _speciesManager),
       labelBuilder: (entity) => _speciesManager.displayName(context, entity),
       catchListBuilder: (entity, dateRange) => _buildCatchList(
         dateRange,
@@ -357,12 +352,8 @@ class _CatchSummaryState<T> extends State<CatchSummary<T>> {
       viewAllTitle: Strings.of(context).reportSummaryViewFishingSpots,
       viewAllDescription:
           Strings.of(context).reportSummaryPerFishingSpotDescription,
-      series: _report.toSeries<FishingSpot>(
-        (model) => {
-          for (var id in model.perFishingSpot.keys)
-            _fishingSpotManager.entity(Id(uuid: id))!: model.perFishingSpot[id]!
-        },
-      ),
+      series:
+          _entitySeries((model) => model.perFishingSpot, _fishingSpotManager),
       labelBuilder: (entity) => _fishingSpotManager.displayName(
         context,
         entity,
@@ -386,7 +377,11 @@ class _CatchSummaryState<T> extends State<CatchSummary<T>> {
       viewAllDescription: Strings.of(context).reportSummaryPerBaitDescription,
       series: _report.toSeries<BaitAttachment>(
         (model) => {
-          for (var id in model.perBait.keys)
+          for (var id
+              // Remove baits don't exist. This can happen if a bait associated
+              // with a catch is deleted.
+              in List.of(model.perBait.keys)
+                ..removeWhere((id) => !_baitManager.entityExists(Id(uuid: id))))
             BaitAttachments.fromPbMapKey(id): model.perBait[id]!
         },
       ),
@@ -454,12 +449,7 @@ class _CatchSummaryState<T> extends State<CatchSummary<T>> {
       title: Strings.of(context).reportSummaryPerAngler,
       viewAllTitle: Strings.of(context).reportSummaryViewAnglers,
       viewAllDescription: Strings.of(context).reportSummaryPerAnglerDescription,
-      series: _report.toSeries<Angler>(
-        (model) => {
-          for (var id in model.perAngler.keys)
-            _anglerManager.entity(Id(uuid: id))!: model.perAngler[id]!
-        },
-      ),
+      series: _entitySeries((model) => model.perAngler, _anglerManager),
       labelBuilder: (entity) => _anglerManager.displayName(context, entity),
       catchListBuilder: (entity, dateRange) => _buildCatchList(
         dateRange,
@@ -478,12 +468,8 @@ class _CatchSummaryState<T> extends State<CatchSummary<T>> {
       viewAllTitle: Strings.of(context).reportSummaryViewBodiesOfWater,
       viewAllDescription:
           Strings.of(context).reportSummaryPerBodyOfWaterDescription,
-      series: _report.toSeries<BodyOfWater>(
-        (model) => {
-          for (var id in model.perBodyOfWater.keys)
-            _bodyOfWaterManager.entity(Id(uuid: id))!: model.perBodyOfWater[id]!
-        },
-      ),
+      series:
+          _entitySeries((model) => model.perBodyOfWater, _bodyOfWaterManager),
       labelBuilder: (entity) =>
           _bodyOfWaterManager.displayName(context, entity),
       catchListBuilder: (entity, dateRange) => _buildCatchList(
@@ -502,12 +488,7 @@ class _CatchSummaryState<T> extends State<CatchSummary<T>> {
       title: Strings.of(context).reportSummaryPerMethod,
       viewAllTitle: Strings.of(context).reportSummaryViewMethods,
       viewAllDescription: Strings.of(context).reportSummaryPerMethodDescription,
-      series: _report.toSeries<Method>(
-        (model) => {
-          for (var id in model.perMethod.keys)
-            _methodManager.entity(Id(uuid: id))!: model.perMethod[id]!
-        },
-      ),
+      series: _entitySeries((model) => model.perMethod, _methodManager),
       labelBuilder: (entity) => _methodManager.displayName(context, entity),
       catchListBuilder: (entity, dateRange) => _buildCatchList(
         dateRange,
@@ -572,13 +553,8 @@ class _CatchSummaryState<T> extends State<CatchSummary<T>> {
       viewAllTitle: Strings.of(context).reportSummaryViewWaterClarities,
       viewAllDescription:
           Strings.of(context).reportSummaryPerWaterClarityDescription,
-      series: _report.toSeries<WaterClarity>(
-        (model) => {
-          for (var id in model.perWaterClarity.keys)
-            _waterClarityManager.entity(Id(uuid: id))!:
-                model.perWaterClarity[id]!
-        },
-      ),
+      series:
+          _entitySeries((model) => model.perWaterClarity, _waterClarityManager),
       labelBuilder: (entity) =>
           _waterClarityManager.displayName(context, entity),
       catchListBuilder: (entity, dateRange) => _buildCatchList(
@@ -634,6 +610,19 @@ class _CatchSummaryState<T> extends State<CatchSummary<T>> {
     var value = _baitManager.attachmentDisplayValue(context, attachment);
     assert(isNotEmpty(value), "Cannot display a bait that doesn't exist");
     return value!;
+  }
+
+  List<Series<E>> _entitySeries<E extends GeneratedMessage>(
+      Map<String, int> Function(CatchReportModel) entityMap,
+      EntityManager<E> manager) {
+    return _report.toSeries<E>((model) {
+      // Filter out any entities that don't exist. This can happen when entities
+      // associated with catches are deleted.
+      var nonNullMap = Map<String, int>.of(entityMap(model))
+        ..removeWhere((key, value) => !manager.entityExists(Id(uuid: key)));
+      return nonNullMap.map<E, int>((key, value) =>
+          MapEntry(manager.entity(Id(uuid: key))!, entityMap(model)[key]!));
+    });
   }
 
   void _refreshReport() {
