@@ -64,14 +64,9 @@ void main() async {
     killReleaseApp();
   }).sendPort);
 
-  PlatformDispatcher.instance.onError = (error, stack) {
-    FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
-    return true;
-  };
-
   // Restrict orientation to portrait for devices with a small width. A width
   // of 740 is less than the smallest iPad, and most Android tablets.
-  var size = MediaQueryData.fromWindow(WidgetsBinding.instance.window).size;
+  var size = MediaQueryData.fromWindow(WidgetsBinding.instance!.window).size;
   if (min(size.width, size.height) < 740) {
     await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   }
