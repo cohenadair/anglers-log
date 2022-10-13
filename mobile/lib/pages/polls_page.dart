@@ -9,6 +9,7 @@ import 'package:mobile/utils/page_utils.dart';
 import 'package:mobile/widgets/button.dart';
 import 'package:mobile/widgets/empty_list_placeholder.dart';
 import 'package:mobile/widgets/widget.dart';
+import 'package:quiver/strings.dart';
 
 import '../i18n/strings.dart';
 import '../utils/number_utils.dart';
@@ -63,9 +64,9 @@ class _PollsPageState extends State<PollsPage> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         _buildIntroText(),
-        const VerticalSpace(paddingDefault),
+        const VerticalSpace(paddingXL),
         _buildFreePoll(),
-        const VerticalSpace(paddingLarge),
+        const VerticalSpace(paddingXL),
         _buildProPoll(),
         const VerticalSpace(paddingDefault),
       ],
@@ -86,6 +87,7 @@ class _PollsPageState extends State<PollsPage> {
 
     return _Poll(
       title: Strings.of(context).pollsPageNextFreeFeature,
+      comingSoon: _pollManager.freePoll?.comingSoon,
       optionValues: _pollManager.freePoll?.optionValues ?? {},
       canVote: _pollManager.canVoteFree,
       type: PollType.free,
@@ -99,6 +101,7 @@ class _PollsPageState extends State<PollsPage> {
 
     return _Poll(
       title: Strings.of(context).pollsPageNextProFeature,
+      comingSoon: _pollManager.proPoll?.comingSoon,
       optionValues: _pollManager.proPoll?.optionValues ?? {},
       canVote: _pollManager.canVotePro,
       type: PollType.pro,
@@ -126,12 +129,14 @@ enum _VoteState { none, waiting, success, fail }
 
 class _Poll extends StatefulWidget {
   final String title;
+  final String? comingSoon;
   final Map<String, int> optionValues;
   final bool canVote;
   final PollType type;
 
   const _Poll({
     required this.title,
+    required this.comingSoon,
     required this.optionValues,
     required this.canVote,
     required this.type,
@@ -197,8 +202,8 @@ class _PollState extends State<_Poll> {
             ),
           );
         }),
-        const VerticalSpace(paddingDefault),
         _buildResultText(),
+        _buildComingSoon(),
       ],
     );
   }
@@ -228,7 +233,41 @@ class _PollState extends State<_Poll> {
         break;
     }
 
-    return child;
+    if (child is Empty) {
+      return child;
+    }
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const VerticalSpace(paddingDefault),
+        child,
+      ],
+    );
+  }
+
+  Widget _buildComingSoon() {
+    if (isEmpty(widget.comingSoon)) {
+      return const Empty();
+    }
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const VerticalSpace(paddingDefault),
+        Text(
+          widget.type == PollType.free
+              ? Strings.of(context).pollsPageComingSoonFree
+              : Strings.of(context).pollsPageComingSoonPro,
+          style: styleListHeading(context),
+        ),
+        const VerticalSpace(paddingSmall),
+        Text(
+          widget.comingSoon!,
+          style: stylePrimary(context),
+        ),
+      ],
+    );
   }
 
   Future<void> _vote(String feature) async {

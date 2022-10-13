@@ -1008,6 +1008,8 @@ Map<String, Map<String, String>> get englishStrings => {
             "Thank you for voting in the pro feature poll!",
         "pollsPage_error":
             "There was an error casting your vote. Please try again later.",
+        "pollsPage_comingSoonFree": "Coming Soon To Free Users (As Voted)",
+        "pollsPage_comingSoonPro": "Coming Soon To Pro Users (As Voted)",
         "changeLogPage_title": "What's New",
         "changeLogPage_previousVersion": "Your Previous Version",
         "changeLog_2.0.22_1": "A complete rewrite of Anglers' Log",

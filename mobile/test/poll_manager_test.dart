@@ -22,7 +22,8 @@ void main() {
           "Free Feature 2": 0,
           "Free Feature 3": 0
         },
-        "updated_at_utc": 5000
+        "updated_at_utc": 5000,
+        "coming_soon": "Coming soon free"
       },
       "pro": {
         "options": {
@@ -30,7 +31,8 @@ void main() {
           "Pro Feature 2": 0,
           "Pro Feature 3": 0
         },
-        "updated_at_utc": 5000
+        "updated_at_utc": 5000,
+        "coming_soon": "Coming soon pro"
       }
     }""");
     when(appManager.httpWrapper.get(any))

@@ -19,8 +19,9 @@ class PollManager {
 
   static const _log = Log("PollManager");
   static const _url = "anglers-log.firebaseio.com";
-  static const _pathPolls = "/polls.json";
-  static const _pathValue = "/polls/%s/options/%s.json";
+  static const _root = "polls";
+  static const _pathPolls = "/$_root.json";
+  static const _pathValue = "/$_root/%s/options/%s.json";
 
   final _controller = VoidStreamController();
   final AppManager _appManager;
@@ -89,6 +90,7 @@ class PollManager {
           type: type,
           updatedAt: json[jsonPoll]["updated_at_utc"],
           optionValues: options,
+          comingSoon: json[jsonPoll]["coming_soon"],
         );
 
         if (type == PollType.free) {
@@ -160,11 +162,13 @@ class Poll {
   final PollType type;
   final Map<String, int> optionValues;
   final int updatedAt;
+  final String? comingSoon;
 
   Poll({
     required this.type,
     required this.optionValues,
     required this.updatedAt,
+    required this.comingSoon,
   });
 
   @override
@@ -172,5 +176,6 @@ class Poll {
       "  type: $type,\n"
       "  optionValues: $optionValues,\n"
       "  updatedAt: $updatedAt,\n"
+      "  comingSoon: $comingSoon,\n"
       "}";
 }

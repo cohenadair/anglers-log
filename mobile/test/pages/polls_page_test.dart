@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/pages/polls_page.dart';
 import 'package:mobile/poll_manager.dart';
@@ -25,6 +26,7 @@ void main() {
         "Free Feature 3": 3, // 13%
       },
       updatedAt: 5000,
+      comingSoon: "Coming soon free",
     ));
     when(appManager.pollManager.proPoll).thenReturn(Poll(
       type: PollType.pro,
@@ -34,6 +36,7 @@ void main() {
         "Pro Feature 3": 80, // 48%
       },
       updatedAt: 5000,
+      comingSoon: "Coming soon pro",
     ));
   });
 
@@ -73,7 +76,11 @@ void main() {
 
     expect(find.byType(Loading), findsNothing);
     expect(find.text("Next Free Feature"), findsOneWidget);
+    expect(find.text("Coming Soon To Free Users (As Voted)"), findsOneWidget);
+    expect(find.text("Coming soon free"), findsOneWidget);
     expect(find.text("Next Pro Feature"), findsOneWidget);
+    expect(find.text("Coming Soon To Pro Users (As Voted)"), findsOneWidget);
+    expect(find.text("Coming soon pro"), findsOneWidget);
     expect(find.text("No Polls"), findsNothing);
   });
 
@@ -116,6 +123,7 @@ void main() {
       find.text("Thank you for voting in the pro feature poll!"),
       findsOneWidget,
     );
+    expect(find.byType(Column), findsNWidgets(8));
 
     var filledRows = tester.widgetList<FilledRow>(find.byType(FilledRow));
     for (var row in filledRows) {
@@ -181,5 +189,27 @@ void main() {
           "There was an error casting your vote. Please try again later."),
       findsNWidgets(2),
     );
+  });
+
+  testWidgets("Result text is empty", (tester) async {
+    await pumpContext(tester, (_) => PollsPage(), appManager: appManager);
+    await tester.pumpAndSettle();
+    expect(find.byType(Column), findsNWidgets(6));
+  });
+
+  testWidgets("Coming soon text is empty", (tester) async {
+    when(appManager.pollManager.proPoll).thenReturn(Poll(
+      type: PollType.pro,
+      optionValues: {
+        "Pro Feature 1": 60, // 36%
+        "Pro Feature 2": 25, // 15%
+        "Pro Feature 3": 80, // 48%
+      },
+      updatedAt: 5000,
+      comingSoon: null,
+    ));
+    
+    expect(find.text("Coming Soon To Pro Users (As Voted)"), findsNothing);
+    expect(find.text("Coming soon pro"), findsNothing);
   });
 }

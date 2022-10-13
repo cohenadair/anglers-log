@@ -2018,6 +2018,10 @@ class Strings {
 
   String get pollsPageError => _string("pollsPage_error");
 
+  String get pollsPageComingSoonFree => _string("pollsPage_comingSoonFree");
+
+  String get pollsPageComingSoonPro => _string("pollsPage_comingSoonPro");
+
   String get changeLogPageTitle => _string("changeLogPage_title");
 
   String get changeLogPagePreviousVersion =>
