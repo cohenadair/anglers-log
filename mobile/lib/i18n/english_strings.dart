@@ -1041,5 +1041,10 @@ Map<String, Map<String, String>> get englishStrings => {
         "changeLog_2.1.3_4": "Free users will no longer see ads",
         "changeLog_2.1.5_1":
             "Improved efficiency of report calculations, which results in a smoother user experience",
+        "changeLog_2.1.6_1": "Fishing spot coordinates are now editable",
+        "changeLog_2.1.6_2": "Improved backup and restore error messages",
+        "changeLog_2.1.6_3": "Fixed issue where sometimes fishing spot \"Directions\" button didn't work",
+        "changeLog_2.1.6_4": "Fixed issue where the photo gallery would sometimes appear empty",
+        "changeLog_2.1.6_5": "Fixed several crashes",
       },
     };
