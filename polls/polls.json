@@ -1,18 +1,20 @@
 {
   "free": {
+    "coming_soon": "Calendar view of catches and trips.",
     "options": {
-      "Track gear (rod, reel, line, and more)": 0,
+      "Choose data backup location": 0,
       "General notes for entire log": 0,
-      "Calendar view of catches and trips": 0
+      "Track gear (rod, reel, line, and more)": 0
     },
-    "updated_at_utc": 1654343226000
+    "updated_at_utc": 1665698322000
   },
   "pro": {
+    "coming_soon": "Live GPS tracking while fishing.",
     "options": {
-      "Map contours with Navionics\u2122": 0,
       "Export to spreadsheet": 0,
-      "Live GPS tracking while fishing": 0
+      "Auto-fetch tide data": 0,
+      "Map contours with Navionics™": 0
     },
-    "updated_at_utc": 1654343226000
+    "updated_at_utc": 1665698322000
   }
 }
