@@ -208,7 +208,7 @@ void main() {
       updatedAt: 5000,
       comingSoon: null,
     ));
-    
+
     expect(find.text("Coming Soon To Pro Users (As Voted)"), findsNothing);
     expect(find.text("Coming soon pro"), findsNothing);
   });
