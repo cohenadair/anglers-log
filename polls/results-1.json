@@ -1,0 +1,18 @@
+{
+  "free": {
+    "options": {
+      "Calendar view of catches and trips": 279,
+      "General notes for entire log": 43,
+      "Track gear (rod, reel, line, and more)": 110
+    },
+    "updated_at_utc": 1654343226000
+  },
+  "pro": {
+    "options": {
+      "Export to spreadsheet": 101,
+      "Live GPS tracking while fishing": 147,
+      "Map contours with Navionics™": 103
+    },
+    "updated_at_utc": 1654343226000
+  }
+}
