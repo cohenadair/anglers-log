@@ -22,6 +22,12 @@ const TextStyle styleTitle2 = TextStyle(
   color: Colors.black,
 );
 
+const TextStyle styleTitleAppBar = TextStyle(
+  fontSize: 20,
+  color: Colors.black,
+  fontWeight: fontWeightBold,
+);
+
 const TextStyle styleTitleAlert = TextStyle(
   fontSize: 24,
   color: Colors.black,

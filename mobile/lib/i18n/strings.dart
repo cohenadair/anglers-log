@@ -2022,6 +2022,10 @@ class Strings {
 
   String get pollsPageComingSoonPro => _string("pollsPage_comingSoonPro");
 
+  String get calendarPageTitle => _string("calendarPage_title");
+
+  String get calendarPageTripLabel => _string("calendarPage_tripLabel");
+
   String get changeLogPageTitle => _string("changeLogPage_title");
 
   String get changeLogPagePreviousVersion =>

@@ -8,10 +8,12 @@ List<Color> accentColors() {
     ..remove(Colors.blueGrey);
 
   // Use opacity to flatten the color a little bit.
-  return primaries.map((e) => e.withOpacity(0.65)).toList();
+  return primaries.map((e) => flattenedAccentColor(e)).toList();
 }
 
 Color randomAccentColor() {
   var colors = accentColors();
   return colors[Random().nextInt(colors.length)];
 }
+
+Color flattenedAccentColor(Color color) => color.withOpacity(0.65);

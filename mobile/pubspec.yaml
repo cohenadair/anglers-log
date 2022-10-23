@@ -64,6 +64,13 @@ dependencies:
   shared_preferences: ^2.0.15       # https://pub.dev/packages/shared_preferences (Flutter)
   share_plus: ^4.0.10+1             # https://pub.dev/packages/share_plus (Flutter Community)
   sqflite: ^2.0.2                   # https://pub.dev/packages/sqflite (verified)
+
+  # TODO: Update when update to Flutter 3.
+  # https://pub.dev/packages/syncfusion_flutter_calendar (verified)
+  syncfusion_flutter_calendar: ^19.4.56
+  # https://pub.dev/packages/syncfusion_localizations (verified)
+  syncfusion_localizations: ^19.4.56
+
   timezone: ^0.8.0                  # https://pub.dev/packages/timezone
   url_launcher: ^6.1.5              # https://pub.dev/packages/url_launcher (Flutter)
   uuid: ^3.0.6                      # https://pub.dev/packages/uuid (verified)

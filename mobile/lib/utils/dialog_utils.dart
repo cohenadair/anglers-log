@@ -76,7 +76,7 @@ void showOkDialog({
       titleTextStyle: styleTitleAlert,
       content: description,
       actions: <Widget>[
-        _buildDialogButton(context: context, name: Strings.of(context).ok),
+        DialogButton(label: Strings.of(context).ok),
       ],
     ),
   );
@@ -98,13 +98,11 @@ void showCancelDialog(
       titleTextStyle: styleTitleAlert,
       content: isEmpty(description) ? null : Text(description!),
       actions: <Widget>[
-        _buildDialogButton(
-          context: context,
-          name: Strings.of(context).cancel,
+        DialogButton(
+          label: Strings.of(context).cancel,
         ),
-        _buildDialogButton(
-          context: context,
-          name: actionText,
+        DialogButton(
+          label: actionText,
           onTap: onTapAction,
         ),
       ],
@@ -140,16 +138,14 @@ bool showRateDialogIfNeeded(BuildContext context) {
       titleTextStyle: styleTitleAlert,
       content: Text(Strings.of(context).rateDialogDescription),
       actions: <Widget>[
-        _buildDialogButton(
-          context: context,
-          name: Strings.of(context).rateDialogLater,
+        DialogButton(
+          label: Strings.of(context).rateDialogLater,
           onTap: () =>
               // Reset timer to prompt them again later.
               preferences.setRateTimerStartedAt(timeManager.currentTimestamp),
         ),
-        _buildDialogButton(
-          context: context,
-          name: Strings.of(context).rateDialogRate,
+        DialogButton(
+          label: Strings.of(context).rateDialogRate,
           onTap: () {
             preferences.setDidRateApp(true);
             launchStore(context);
@@ -178,13 +174,11 @@ void _showDestructiveDialog({
       titleTextStyle: styleTitleAlert,
       content: description,
       actions: <Widget>[
-        _buildDialogButton(
-          context: context,
-          name: cancelText ?? Strings.of(context).cancel,
+        DialogButton(
+          label: cancelText ?? Strings.of(context).cancel,
         ),
-        _buildDialogButton(
-          context: context,
-          name: destroyText,
+        DialogButton(
+          label: destroyText,
           textColor: warning ? null : Colors.red,
           onTap: onTapDestroy,
         ),
@@ -193,26 +187,36 @@ void _showDestructiveDialog({
   );
 }
 
-Widget _buildDialogButton({
-  required BuildContext context,
-  required String name,
-  Color? textColor,
-  VoidCallback? onTap,
-  bool popOnTap = true,
-  bool enabled = true,
-}) {
-  return TextButton(
-    style: TextButton.styleFrom(
-      primary: textColor,
-    ),
-    onPressed: enabled
-        ? () {
-            onTap?.call();
-            if (popOnTap) {
-              Navigator.pop(context);
+class DialogButton extends StatelessWidget {
+  final String label;
+  final Color? textColor;
+  final VoidCallback? onTap;
+  final bool popOnTap;
+  final bool isEnabled;
+
+  const DialogButton({
+    required this.label,
+    this.textColor,
+    this.onTap,
+    this.popOnTap = true,
+    this.isEnabled = true,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return TextButton(
+      style: TextButton.styleFrom(
+        primary: textColor,
+      ),
+      onPressed: isEnabled
+          ? () {
+              onTap?.call();
+              if (popOnTap) {
+                Navigator.pop(context);
+              }
             }
-          }
-        : null,
-    child: Text(name.toUpperCase()),
-  );
+          : null,
+      child: Text(label.toUpperCase()),
+    );
+  }
 }

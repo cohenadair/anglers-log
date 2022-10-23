@@ -1010,6 +1010,8 @@ Map<String, Map<String, String>> get englishStrings => {
             "There was an error casting your vote. Please try again later.",
         "pollsPage_comingSoonFree": "Coming Soon To Free Users (As Voted)",
         "pollsPage_comingSoonPro": "Coming Soon To Pro Users (As Voted)",
+        "calendarPage_title": "Calendar",
+        "calendarPage_tripLabel": "Trip",
         "changeLogPage_title": "What's New",
         "changeLogPage_previousVersion": "Your Previous Version",
         "changeLog_2.0.22_1": "A complete rewrite of Anglers' Log",
@@ -1043,8 +1045,10 @@ Map<String, Map<String, String>> get englishStrings => {
             "Improved efficiency of report calculations, which results in a smoother user experience",
         "changeLog_2.1.6_1": "Fishing spot coordinates are now editable",
         "changeLog_2.1.6_2": "Improved backup and restore error messages",
-        "changeLog_2.1.6_3": "Fixed issue where sometimes fishing spot \"Directions\" button didn't work",
-        "changeLog_2.1.6_4": "Fixed issue where the photo gallery would sometimes appear empty",
+        "changeLog_2.1.6_3":
+            "Fixed issue where sometimes fishing spot \"Directions\" button didn't work",
+        "changeLog_2.1.6_4":
+            "Fixed issue where the photo gallery would sometimes appear empty",
         "changeLog_2.1.6_5": "Fixed several crashes",
       },
     };

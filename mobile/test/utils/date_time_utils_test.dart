@@ -762,4 +762,24 @@ void main() {
       isTrue,
     );
   });
+
+  test("isSameMonth", () {
+    expect(
+      date_time_utils.isSameYearAndMonth(
+          DateTime(2022, 10, 5), DateTime(2022, 10, 6)),
+      isTrue,
+    );
+
+    expect(
+      date_time_utils.isSameYearAndMonth(
+          DateTime(2022, 11, 5), DateTime(2022, 10, 6)),
+      isFalse,
+    );
+
+    expect(
+      date_time_utils.isSameYearAndMonth(
+          DateTime(2021, 11, 5), DateTime(2022, 10, 6)),
+      isFalse,
+    );
+  });
 }

@@ -31,6 +31,7 @@ import '../res/dimen.dart';
 import '../species_manager.dart';
 import '../user_preference_manager.dart';
 import '../utils/page_utils.dart';
+import '../widgets/app_bar_dropdown.dart';
 import '../widgets/widget.dart';
 import 'angler_list_page.dart';
 import 'bait_list_page.dart';
@@ -117,7 +118,9 @@ class StatsPageState extends State<StatsPage> {
   }
 
   Widget _buildReportDropdown() {
-    return InkWell(
+    return AppBarDropdown(
+      title: _reportManager.displayName(context, _report),
+      padding: insetsVerticalDefault,
       onTap: () {
         present(
           context,
@@ -138,16 +141,6 @@ class StatsPageState extends State<StatsPage> {
           ),
         );
       },
-      child: Padding(
-        padding: insetsVerticalDefault,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(_reportManager.displayName(context, _report)),
-            DropdownIcon(),
-          ],
-        ),
-      ),
     );
   }
 

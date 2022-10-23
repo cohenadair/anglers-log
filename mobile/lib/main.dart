@@ -14,10 +14,12 @@ import 'package:mobile/pages/onboarding/change_log_page.dart';
 import 'package:mobile/wrappers/package_info_wrapper.dart';
 import 'package:provider/provider.dart';
 import 'package:quiver/strings.dart';
+import 'package:syncfusion_localizations/syncfusion_localizations.dart';
 import 'package:version/version.dart';
 
 import 'app_manager.dart';
 import 'channels/migration_channel.dart';
+import 'i18n/sf_localizations_override.dart';
 import 'i18n/strings.dart';
 import 'log.dart';
 import 'pages/landing_page.dart';
@@ -150,6 +152,7 @@ class AnglersLogState extends State<AnglersLog> {
         debugShowCheckedModeBanner: false,
         localizationsDelegates: [
           StringsDelegate(),
+          const SfLocalizationsOverrideDelegate(),
           DefaultMaterialLocalizations.delegate,
           GlobalMaterialLocalizations.delegate,
           GlobalWidgetsLocalizations.delegate,

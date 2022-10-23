@@ -142,4 +142,45 @@ void main() {
       verify(appManager.userPreferenceManager.setRateTimerStartedAt(now));
     });
   });
+
+  testWidgets("DialogButton popsOnTap=true", (tester) async {
+    await pumpContext(
+      tester,
+      (_) => const DialogButton(
+        label: "Test",
+        isEnabled: true,
+        popOnTap: true,
+      ),
+    );
+
+    await tapAndSettle(tester, find.text("TEST"));
+    expect(find.byType(DialogButton), findsNothing);
+  });
+
+  testWidgets("DialogButton popsOnTap=false", (tester) async {
+    await pumpContext(
+      tester,
+      (_) => const DialogButton(
+        label: "Test",
+        isEnabled: true,
+        popOnTap: false,
+      ),
+    );
+
+    await tapAndSettle(tester, find.text("TEST"));
+    expect(find.byType(DialogButton), findsOneWidget);
+  });
+
+  testWidgets("DialogButton disabled", (tester) async {
+    await pumpContext(
+      tester,
+      (_) => const DialogButton(
+        label: "Test",
+        isEnabled: false,
+      ),
+    );
+
+    var button = findFirstWithText<TextButton>(tester, "TEST");
+    expect(button.onPressed, isNull);
+  });
 }

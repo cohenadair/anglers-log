@@ -14,6 +14,7 @@ const monthFormat = "MMMM";
 const monthDayFormat = "MMM d";
 const monthDayYearFormat = "MMM d, yyyy";
 const monthDayYearFormatFull = "MMMM d, yyyy";
+const monthYearFormat = "MMMM yyyy";
 
 /// Units of duration, ordered smallest to largest.
 enum DurationUnit {
@@ -101,6 +102,10 @@ bool isSameYear(TZDateTime a, TZDateTime b) {
 
 bool isSameMonth(TZDateTime a, TZDateTime b) {
   return a.month == b.month;
+}
+
+bool isSameYearAndMonth(DateTime a, DateTime b) {
+  return a.year == b.year && a.month == b.month;
 }
 
 bool isSameDay(TZDateTime a, TZDateTime b) {

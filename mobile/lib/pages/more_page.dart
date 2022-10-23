@@ -15,6 +15,7 @@ import '../utils/store_utils.dart';
 import '../widgets/list_item.dart';
 import '../widgets/widget.dart';
 import 'backup_restore_page.dart';
+import 'calendar_page.dart';
 import 'polls_page.dart';
 import 'pro_page.dart';
 import 'scroll_page.dart';
@@ -66,6 +67,12 @@ class MorePage extends StatelessWidget {
               );
             }).toList(),
             const MinDivider(),
+            _buildPageItem(
+              context,
+              icon: Icons.calendar_month,
+              title: Strings.of(context).calendarPageTitle,
+              page: CalendarPage(),
+            ),
             _buildPageItem(
               context,
               icon: Icons.photo_library,
