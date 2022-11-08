@@ -14,7 +14,6 @@ import 'package:mobile/pages/onboarding/change_log_page.dart';
 import 'package:mobile/wrappers/package_info_wrapper.dart';
 import 'package:provider/provider.dart';
 import 'package:quiver/strings.dart';
-import 'package:syncfusion_localizations/syncfusion_localizations.dart';
 import 'package:version/version.dart';
 
 import 'app_manager.dart';

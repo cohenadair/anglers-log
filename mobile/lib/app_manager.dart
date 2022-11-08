@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mobile/gps_trail_manager.dart';
 import 'package:mobile/poll_manager.dart';
 import 'package:mobile/wrappers/google_sign_in_wrapper.dart';
 import 'package:provider/provider.dart';
@@ -56,6 +57,7 @@ class AppManager {
   CatchManager? _catchManager;
   CustomEntityManager? _customEntityManager;
   FishingSpotManager? _fishingSpotManager;
+  GpsTrailManager? _gpsTrailManager;
   ImageManager? _imageManager;
   LocalDatabaseManager? _localDatabaseManager;
   LocationMonitor? _locationMonitor;
@@ -130,6 +132,11 @@ class AppManager {
   FishingSpotManager get fishingSpotManager {
     _fishingSpotManager ??= FishingSpotManager(this);
     return _fishingSpotManager!;
+  }
+
+  GpsTrailManager get gpsTrailManager {
+    _gpsTrailManager ??= GpsTrailManager(this);
+    return _gpsTrailManager!;
   }
 
   ImageManager get imageManager {
@@ -327,6 +334,7 @@ class AppManager {
     await catchManager.initialize();
     await customEntityManager.initialize();
     await fishingSpotManager.initialize();
+    await gpsTrailManager.initialize();
     await methodManager.initialize();
     await reportManager.initialize();
     await speciesManager.initialize();

@@ -357,6 +357,7 @@ message Trip {
   string notes = 13;
   Atmosphere atmosphere = 14;
   string time_zone = 15;
+  Id gps_trail_id = 16;
 }
 
 message Measurement {
@@ -488,4 +489,19 @@ message CatchReportModel {
   // by BaitAttachment, which have a bait ID and variant ID, so the key
   // in this map is "<bait ID>.<variant ID>"
   map<string, int32> per_bait = 15;
+}
+
+message GpsTrailPoint {
+  uint64 timestamp = 1;
+  double lat = 2;
+  double lng = 3;
+}
+
+message GpsTrail {
+  Id id = 1;
+  uint64 start_timestamp = 2;
+  uint64 end_timestamp = 3;
+  string time_zone = 4;
+  repeated GpsTrailPoint points = 5;
+  Id body_of_water_id = 6;
 }

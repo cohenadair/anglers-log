@@ -4,8 +4,12 @@ import 'dart:io';
 import 'package:collection/collection.dart' show IterableExtension;
 import 'package:flutter/material.dart';
 import 'package:mapbox_gl/mapbox_gl.dart';
+import 'package:mobile/gps_trail_manager.dart';
+import 'package:mobile/pages/pro_page.dart';
+import 'package:mobile/subscription_manager.dart';
 import 'package:mobile/user_preference_manager.dart';
 import 'package:mobile/utils/collection_utils.dart';
+import 'package:mobile/utils/permission_utils.dart';
 import 'package:mobile/utils/widget_utils.dart';
 import 'package:mobile/widgets/our_bottom_sheet.dart';
 import 'package:quiver/strings.dart';
@@ -18,7 +22,6 @@ import '../log.dart';
 import '../model/gen/anglerslog.pb.dart';
 import '../pages/fishing_spot_list_page.dart';
 import '../res/dimen.dart';
-import '../utils/dialog_utils.dart';
 import '../utils/map_utils.dart';
 import '../utils/page_utils.dart';
 import '../utils/protobuf_utils.dart';
@@ -26,7 +29,6 @@ import '../utils/snackbar_utils.dart';
 import '../widgets/button.dart';
 import '../widgets/search_bar.dart';
 import '../widgets/widget.dart';
-import '../wrappers/permission_handler_wrapper.dart';
 import 'bottom_sheet_picker.dart';
 import 'default_mapbox_map.dart';
 import 'fishing_spot_details.dart';
@@ -45,6 +47,7 @@ class FishingSpotMap extends StatefulWidget {
   final bool showMyLocationButton;
   final bool showZoomExtentsButton;
   final bool showMapTypeButton;
+  final bool showGpsTrailButton;
   final bool showFishingSpotActionButtons;
 
   /// Widgets placed in the map's stack, between the actual map, and the search
@@ -62,6 +65,7 @@ class FishingSpotMap extends StatefulWidget {
     this.showMyLocationButton = true,
     this.showZoomExtentsButton = true,
     this.showMapTypeButton = true,
+    this.showGpsTrailButton = false,
     this.showFishingSpotActionButtons = true,
     this.children = const [],
     this.isPage = true,
@@ -74,6 +78,7 @@ class FishingSpotMap extends StatefulWidget {
         showMyLocationButton = true,
         showZoomExtentsButton = true,
         showMapTypeButton = true,
+        showGpsTrailButton = false,
         showFishingSpotActionButtons = true,
         children = [
           const SafeArea(
@@ -96,6 +101,7 @@ class FishingSpotMapState extends State<FishingSpotMap> {
 
   MapboxMapController? _mapController;
   late MapType _mapType;
+  late StreamSubscription<EntityEvent<GpsTrail>> _gpsTrailManagerSub;
 
   Symbol? _activeSymbol;
 
@@ -110,10 +116,12 @@ class FishingSpotMapState extends State<FishingSpotMap> {
 
   FishingSpotManager get _fishingSpotManager => FishingSpotManager.of(context);
 
+  GpsTrailManager get _gpsTrailManager => GpsTrailManager.of(context);
+
   LocationMonitor get _locationMonitor => LocationMonitor.of(context);
 
-  PermissionHandlerWrapper get _permissionHandlerWrapper =>
-      PermissionHandlerWrapper.of(context);
+  SubscriptionManager get _subscriptionManager =>
+      SubscriptionManager.of(context);
 
   UserPreferenceManager get _userPreferenceManager =>
       UserPreferenceManager.of(context);
@@ -137,6 +145,7 @@ class FishingSpotMapState extends State<FishingSpotMap> {
 
     _mapType = MapType.of(context);
     _myLocationEnabled = _locationMonitor.currentLocation != null;
+    _gpsTrailManagerSub = _gpsTrailManager.stream.listen(_updateGpsTrail);
 
     // Refresh state so Mapbox attribution padding is updated. This needs to be
     // done after the fishing spot widget is rendered.
@@ -160,6 +169,7 @@ class FishingSpotMapState extends State<FishingSpotMap> {
     super.dispose();
     _mapController?.onSymbolTapped.remove(_onSymbolTapped);
     _mapController?.removeListener(_updateTarget);
+    _gpsTrailManagerSub.cancel();
   }
 
   @override
@@ -184,6 +194,7 @@ class FishingSpotMapState extends State<FishingSpotMap> {
                 _buildMapStyleButton(),
                 _buildCurrentLocationButton(),
                 _buildZoomExtentsButton(),
+                _buildGpsTrailButton(),
                 _buildAddButton(),
               ],
             ),
@@ -313,6 +324,7 @@ class FishingSpotMapState extends State<FishingSpotMap> {
 
     return FloatingButton.icon(
       icon: Icons.layers,
+      tooltip: Strings.of(context).mapPageMapTypeTooltip,
       onPressed: () {
         showOurBottomSheet(
           context,
@@ -349,23 +361,14 @@ class FishingSpotMapState extends State<FishingSpotMap> {
         right: paddingDefault,
         bottom: paddingDefault,
       ),
+      tooltip: Strings.of(context).mapPageMyLocationTooltip,
       icon: Icons.my_location,
       onPressed: () async {
-        if (!(await _permissionHandlerWrapper.requestLocation())) {
-          // If the user declines permission, let them know permission is
-          // required to show their location on the map.
-          showCancelDialog(
-            context,
-            title: Strings.of(context).fishingSpotMapLocationPermissionTitle,
-            description:
-                Strings.of(context).fishingSpotMapLocationPermissionDescription,
-            actionText: Strings.of(context)
-                .fishingSpotMapLocationPermissionOpenSettings,
-            onTapAction: _permissionHandlerWrapper.openSettings,
-          );
+        if (!(await requestLocationPermissionIfNeeded(
+          context: context,
+          requestAlways: false,
+        ))) {
           return;
-        } else {
-          await _locationMonitor.initialize();
         }
 
         var currentLocation = _locationMonitor.currentLocation;
@@ -402,6 +405,7 @@ class FishingSpotMapState extends State<FishingSpotMap> {
         right: paddingDefault,
         bottom: paddingDefault,
       ),
+      tooltip: Strings.of(context).mapPageShowAllTooltip,
       icon: Icons.zoom_out_map,
       onPressed: () async {
         var bounds = mapBounds(_fishingSpotManager.list());
@@ -424,6 +428,54 @@ class FishingSpotMapState extends State<FishingSpotMap> {
     );
   }
 
+  Widget _buildGpsTrailButton() {
+    if (!widget.showGpsTrailButton) {
+      return const Empty();
+    }
+
+    var tooltip = Strings.of(context).mapPageStartTrackingTooltip;
+    var icon = Icons.near_me;
+    var onPressed = () async {
+      if (await requestLocationPermissionIfNeeded(
+        context: context,
+        requestAlways: true,
+      )) {
+        _gpsTrailManager.startTracking(context);
+      }
+    };
+
+    if (_gpsTrailManager.hasActiveTrail) {
+      tooltip = Strings.of(context).mapPageStopTrackingTooltip;
+      icon = Icons.near_me_disabled;
+      onPressed = () async {
+        _gpsTrailManager.stopTracking();
+      };
+    }
+
+    return Padding(
+      padding: const EdgeInsets.only(
+        left: paddingDefault,
+        right: paddingDefault,
+        bottom: paddingDefault,
+      ),
+      child: BadgeContainer(
+        isBadgeVisible: _gpsTrailManager.hasActiveTrail,
+        child: FloatingButton.icon(
+          padding: insetsZero,
+          tooltip: tooltip,
+          icon: icon,
+          onPressed: () {
+            if (_subscriptionManager.isPro) {
+              onPressed();
+            } else {
+              present(context, const ProPage());
+            }
+          },
+        ),
+      ),
+    );
+  }
+
   Widget _buildAddButton() {
     return FloatingButton.icon(
       padding: const EdgeInsets.only(
@@ -431,6 +483,7 @@ class FishingSpotMapState extends State<FishingSpotMap> {
         right: paddingDefault,
         bottom: paddingDefault,
       ),
+      tooltip: Strings.of(context).mapPageAddTooltip,
       icon: Icons.add,
       onPressed: _updateDroppedPin,
     );
@@ -617,6 +670,13 @@ class FishingSpotMapState extends State<FishingSpotMap> {
 
     if (isMoving != _isTargetShowingNotifier.value) {
       _isTargetShowingNotifier.value = isMoving;
+    }
+  }
+
+  void _updateGpsTrail(EntityEvent<GpsTrail> event) {
+    if (event.type == GpsTrailEventType.startTracking ||
+        event.type == GpsTrailEventType.endTracking) {
+      setState(() {});
     }
   }
 

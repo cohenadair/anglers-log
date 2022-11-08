@@ -1,9 +1,13 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
-import 'package:geolocator/geolocator.dart';
+import 'package:geolocator/geolocator.dart' as geo;
+import 'package:location/location.dart';
 import 'package:mapbox_gl/mapbox_gl.dart';
 import 'package:provider/provider.dart';
 
 import 'app_manager.dart';
+import 'i18n/strings.dart';
 import 'log.dart';
 import 'wrappers/permission_handler_wrapper.dart';
 
@@ -12,11 +16,13 @@ class LocationMonitor {
       Provider.of<AppManager>(context, listen: false).locationMonitor;
 
   final _log = const Log("LocationMonitor");
-  final distanceFilterMeters = 20;
+  final _distanceFilterMeters = 10.0;
+  final _controller = StreamController<LatLng?>.broadcast();
 
   final AppManager _appManager;
+  final _location = Location();
 
-  Position? _lastKnownPosition;
+  LatLng? _lastKnownLocation;
   bool _initialized = false;
 
   PermissionHandlerWrapper get _permissionHandler =>
@@ -25,31 +31,56 @@ class LocationMonitor {
   LocationMonitor(this._appManager);
 
   Future<void> initialize() async {
-    if (_initialized || !(await _permissionHandler.isLocationGranted)) {
+    if (_initialized ||
+        (!(await _permissionHandler.isLocationAlwaysGranted) &&
+            !(await _permissionHandler.isLocationGranted))) {
       return;
     }
 
-    _lastKnownPosition = await Geolocator.getLastKnownPosition();
+    await _location.changeSettings(distanceFilter: _distanceFilterMeters);
 
-    Geolocator.getPositionStream(
-      locationSettings: LocationSettings(
-        distanceFilter: distanceFilterMeters,
-      ),
-    ).listen((position) {
-      _lastKnownPosition = position;
-      _log.d("Received location update $currentLocation");
-    }).onError((error, _) {
-      // Don't crash the app if there's a location error. This can happen
-      // occasionally when the app is in the background, and background modes
-      // aren't correctly setup on iOS. Since we don't currently use background
-      // locations, simply log an error.
-      _log.d("Location stream error: $error");
-    });
+    // TODO: Location package doesn't get the "last known" location on startup;
+    //  it waits for the next location to come in so we use Geolocator to get
+    //  the last location immediately. Location package v5+ fixes this.
+    geo.Geolocator.getCurrentPosition().then(
+        (value) => _onLocationChanged(LatLng(value.latitude, value.longitude)));
+
+    _location.onLocationChanged
+        .listen((value) => _onLocationChanged(
+            value.latitude == null || value.longitude == null
+                ? null
+                : LatLng(value.latitude!, value.longitude!)))
+        .onError((error, _) => _log.d("Location stream error: $error"));
 
     _initialized = true;
   }
 
-  LatLng? get currentLocation => _lastKnownPosition == null
-      ? null
-      : LatLng(_lastKnownPosition!.latitude, _lastKnownPosition!.longitude);
+  Stream<LatLng?> get stream => _controller.stream;
+
+  LatLng? get currentLocation => _lastKnownLocation;
+
+  Future<bool> enableBackgroundMode(BuildContext context) async {
+    await _location.changeNotificationOptions(
+      title: Strings.of(context).permissionLocationNotificationDescription,
+      iconName: "notification_icon",
+      // TODO: Uncomment when
+      //  https://github.com/Lyokone/flutterlocation/issues/702 is fixed.
+      // onTapBringToFront: true,
+    );
+    return _location.enableBackgroundMode(enable: true);
+  }
+
+  Future<bool> disableBackgroundMode() =>
+      _location.enableBackgroundMode(enable: false);
+
+  void _onLocationChanged(LatLng? latLng) {
+    if (latLng == null) {
+      _log.w("Coordinates are null, nothing to do...");
+      return;
+    }
+
+    _log.d("Received location update ${latLng.latitude}, ${latLng.longitude}");
+    _lastKnownLocation = latLng;
+    _controller.add(currentLocation);
+  }
 }

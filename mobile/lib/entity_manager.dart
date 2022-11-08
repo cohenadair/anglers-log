@@ -34,19 +34,30 @@ class EntityListener<T> {
   });
 }
 
-enum EntityEventType {
-  add,
-  delete,
-  update,
-  reset,
+@immutable
+class EntityEventType {
+  static const add = EntityEventType("add");
+  static const delete = EntityEventType("delete");
+  static const update = EntityEventType("update");
+  static const reset = EntityEventType("reset");
+
+  final String value;
+
+  const EntityEventType(this.value);
+
+  @override
+  bool operator ==(Object other) =>
+      other is EntityEventType && other.value == value;
+
+  @override
+  int get hashCode => value.hashCode;
 }
 
 class EntityEvent<T extends GeneratedMessage> {
   final EntityEventType type;
   final T? entity;
 
-  EntityEvent(this.type, this.entity)
-      : assert(type == EntityEventType.reset || entity != null);
+  EntityEvent(this.type, this.entity);
 }
 
 /// An abstract class for managing a collection of [Entity] objects.
@@ -82,7 +93,9 @@ abstract class EntityManager<T extends GeneratedMessage> {
   T entityFromBytes(List<int> bytes);
 
   final _log = Log("EntityManager<$T>");
-  final _controller = StreamController<EntityEvent<T>>.broadcast();
+  
+  @protected
+  final controller = StreamController<EntityEvent<T>>.broadcast();
 
   @protected
   final Map<Id, T> entities = {};
@@ -280,41 +293,38 @@ abstract class EntityManager<T extends GeneratedMessage> {
   }
 
   StreamSubscription<EntityEvent<T>> listen(EntityListener<T> listener) {
-    return _controller.stream.listen((event) {
-      switch (event.type) {
-        case EntityEventType.add:
-          listener.onAdd?.call(event.entity!);
-          break;
-        case EntityEventType.delete:
-          listener.onDelete?.call(event.entity!);
-          break;
-        case EntityEventType.update:
-          listener.onUpdate?.call(event.entity!);
-          break;
-        case EntityEventType.reset:
-          listener.onReset?.call();
-          break;
+    return controller.stream.listen((event) {
+      if (event.type == EntityEventType.add) {
+        listener.onAdd?.call(event.entity!);
+      } else if (event.type == EntityEventType.delete) {
+        listener.onDelete?.call(event.entity!);
+      } else if (event.type == EntityEventType.update) {
+        listener.onUpdate?.call(event.entity!);
+      } else if (event.type == EntityEventType.reset) {
+        listener.onReset?.call();
       }
     });
   }
 
+  Stream<EntityEvent<T>> get stream => controller.stream;
+
   @protected
   void notifyAdd(T entity) {
-    _controller.add(EntityEvent<T>(EntityEventType.add, entity));
+    controller.add(EntityEvent<T>(EntityEventType.add, entity));
   }
 
   @protected
   void notifyDelete(T entity) {
-    _controller.add(EntityEvent<T>(EntityEventType.delete, entity));
+    controller.add(EntityEvent<T>(EntityEventType.delete, entity));
   }
 
   @protected
   void notifyUpdate(T entity) {
-    _controller.add(EntityEvent<T>(EntityEventType.update, entity));
+    controller.add(EntityEvent<T>(EntityEventType.update, entity));
   }
 
   void _notifyReset() {
-    _controller.add(EntityEvent<T>(EntityEventType.reset, null));
+    controller.add(EntityEvent<T>(EntityEventType.reset, null));
   }
 
   // Required to create a listener of type T, so EntityListenerBuilder doesn't

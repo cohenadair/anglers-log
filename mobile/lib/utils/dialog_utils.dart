@@ -82,7 +82,7 @@ void showOkDialog({
   );
 }
 
-void showCancelDialog(
+Future<void> showCancelDialog(
   BuildContext context, {
   String? title,
   String? description,
@@ -91,7 +91,7 @@ void showCancelDialog(
 }) {
   assert(isNotEmpty(actionText));
 
-  showDialog(
+  return showDialog(
     context: context,
     builder: (context) => AlertDialog(
       title: isEmpty(title) ? null : Text(title!),

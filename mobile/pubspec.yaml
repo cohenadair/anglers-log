@@ -39,6 +39,9 @@ dependencies:
   flutter_native_timezone: ^2.0.0   # https://pub.dev/packages/flutter_native_timezone
   flutter_svg: ^1.0.3               # https://pub.dev/packages/flutter_svg (verified)
 
+  # TODO: After update to v5.0, check https://github.com/Lyokone/flutterlocation/issues/733, and update LocationMonitor.
+  location: ^4.4.0                  # https://pub.dev/packages/location (verified)
+
   # Update requires compileSdkVersion 33.
   geolocator: ^8.2.0                # https://pub.dev/packages/geolocator (verified)
 
@@ -54,7 +57,7 @@ dependencies:
   path_provider: ^2.0.11            # https://pub.dev/packages/path_provider (Flutter)
 
   # Update requires compileSdkVersion 33 and Android 13 granular media permission support.
-  permission_handler: ^8.3.0        # https://pub.dev/packages/permission_handler (verified)
+  permission_handler: ^9.2.0        # https://pub.dev/packages/permission_handler (verified)
 
   photo_manager: ^2.2.1             # https://pub.dev/packages/photo_manager (verified)
   protobuf: ^2.1.0                  # https://pub.dev/packages/protobuf (Dart)
@@ -82,7 +85,7 @@ dev_dependencies:
   flutter_lints: ^1.0.4             # https://pub.dev/packages/flutter_lints (Flutter)
   flutter_test:
     sdk: flutter
-  mockito: 5.2.0                    # https://pub.dev/packages/mockito (Dart)
+  mockito: ^5.2.0                   # https://pub.dev/packages/mockito (Dart)
   test: ^1.16.5                     # https://pub.dev/packages/test (Dart)
 
 flutter_icons:

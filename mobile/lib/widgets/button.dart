@@ -226,6 +226,9 @@ class FloatingButton extends StatelessWidget {
   /// The size of the overall button. Defaults to null.
   final double? size;
 
+  /// See [Tooltip.message].
+  final String tooltip;
+
   final VoidCallback? onPressed;
 
   /// See [FloatingContainer.isTransparent].
@@ -250,6 +253,7 @@ class FloatingButton extends StatelessWidget {
     this.label,
     this.pushed = false,
     this.transparentBackground = false,
+    this.tooltip = "",
   })  : assert((icon == null && isNotEmpty(text)) ||
             (icon != null && isEmpty(text))),
         _isBackButton = false,
@@ -266,6 +270,7 @@ class FloatingButton extends StatelessWidget {
     this.label,
     this.pushed = false,
     this.transparentBackground = false,
+    this.tooltip = "",
   })  : _isBackButton = false,
         _isCloseButton = false,
         text = null,
@@ -281,6 +286,7 @@ class FloatingButton extends StatelessWidget {
     this.label,
     this.pushed = false,
     this.transparentBackground = false,
+    this.tooltip = "",
   })  : _isBackButton = false,
         _isCloseButton = false,
         text = null,
@@ -292,6 +298,7 @@ class FloatingButton extends StatelessWidget {
     Key? key,
     this.padding,
     this.transparentBackground = false,
+    this.tooltip = "",
   })  : _isBackButton = true,
         _isCloseButton = false,
         onPressed = null,
@@ -307,6 +314,7 @@ class FloatingButton extends StatelessWidget {
     Key? key,
     this.padding,
     this.transparentBackground = false,
+    this.tooltip = "",
   })  : _isBackButton = false,
         _isCloseButton = true,
         onPressed = null,
@@ -354,20 +362,23 @@ class FloatingButton extends StatelessWidget {
       padding: padding ?? insetsDefault,
       child: Column(
         children: [
-          FloatingContainer(
-            width: size ?? _sizeDefault,
-            height: size ?? _sizeDefault,
-            isCircle: true,
-            isTransparent: transparentBackground,
-            child: RawMaterialButton(
-              shape: const CircleBorder(),
-              fillColor: transparentBackground
-                  ? null
-                  : (pushed ? Colors.grey : Colors.white),
-              onPressed: _isBackButton || _isCloseButton
-                  ? () => Navigator.of(context).pop()
-                  : onPressed,
-              child: circleChild,
+          Tooltip(
+            message: _tooltipText(context),
+            child: FloatingContainer(
+              width: size ?? _sizeDefault,
+              height: size ?? _sizeDefault,
+              isCircle: true,
+              isTransparent: transparentBackground,
+              child: RawMaterialButton(
+                shape: const CircleBorder(),
+                fillColor: transparentBackground
+                    ? null
+                    : (pushed ? Colors.grey : Colors.white),
+                onPressed: _isBackButton || _isCloseButton
+                    ? () => Navigator.of(context).pop()
+                    : onPressed,
+                child: circleChild,
+              ),
             ),
           ),
           isNotEmpty(label)
@@ -382,6 +393,16 @@ class FloatingButton extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  String _tooltipText(BuildContext context) {
+    if (_isBackButton) {
+      return Strings.of(context).back;
+    } else if (_isCloseButton) {
+      return Strings.of(context).close;
+    } else {
+      return tooltip;
+    }
   }
 }
 

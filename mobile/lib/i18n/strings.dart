@@ -120,6 +120,10 @@ class Strings {
 
   String get directions => _string("directions");
 
+  String get close => _string("close");
+
+  String get back => _string("back");
+
   String get latLng => _string("latLng");
 
   String get latLngNoLabels => _string("latLng_noLabels");
@@ -883,6 +887,20 @@ class Strings {
   String get mapPageErrorOpeningDirections =>
       _string("mapPage_errorOpeningDirections");
 
+  String get mapPageMapTypeTooltip => _string("mapPage_mapTypeTooltip");
+
+  String get mapPageMyLocationTooltip => _string("mapPage_myLocationTooltip");
+
+  String get mapPageShowAllTooltip => _string("mapPage_showAllTooltip");
+
+  String get mapPageStartTrackingTooltip =>
+      _string("mapPage_startTrackingTooltip");
+
+  String get mapPageStopTrackingTooltip =>
+      _string("mapPage_stopTrackingTooltip");
+
+  String get mapPageAddTooltip => _string("mapPage_addTooltip");
+
   String get saveFishingSpotPageNewTitle =>
       _string("saveFishingSpotPage_newTitle");
 
@@ -1002,15 +1020,6 @@ class Strings {
 
   String get fishingSpotListPageNoBodyOfWater =>
       _string("fishingSpotListPage_noBodyOfWater");
-
-  String get fishingSpotMapLocationPermissionTitle =>
-      _string("fishingSpotMap_locationPermissionTitle");
-
-  String get fishingSpotMapLocationPermissionDescription =>
-      _string("fishingSpotMap_locationPermissionDescription");
-
-  String get fishingSpotMapLocationPermissionOpenSettings =>
-      _string("fishingSpotMap_locationPermissionOpenSettings");
 
   String get fishingSpotMapAddSpotHelp => _string("fishingSpotMap_addSpotHelp");
 
@@ -2021,6 +2030,19 @@ class Strings {
   String get pollsPageComingSoonFree => _string("pollsPage_comingSoonFree");
 
   String get pollsPageComingSoonPro => _string("pollsPage_comingSoonPro");
+
+  String get permissionLocationTitle => _string("permission_locationTitle");
+
+  String get permissionCurrentLocationDescription =>
+      _string("permission_currentLocationDescription");
+
+  String get permissionGpsTrailDescription =>
+      _string("permission_gpsTrailDescription");
+
+  String get permissionOpenSettings => _string("permission_openSettings");
+
+  String get permissionLocationNotificationDescription =>
+      _string("permission_locationNotificationDescription");
 
   String get calendarPageTitle => _string("calendarPage_title");
 

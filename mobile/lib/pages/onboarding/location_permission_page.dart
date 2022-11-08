@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 
 import '../../i18n/strings.dart';
-import '../../location_monitor.dart';
 import '../../res/dimen.dart';
 import '../../res/style.dart';
+import '../../utils/permission_utils.dart';
 import '../../widgets/button.dart';
 import '../../widgets/widget.dart';
-import '../../wrappers/permission_handler_wrapper.dart';
 import 'onboarding_page.dart';
 
 class LocationPermissionPage extends StatelessWidget {
@@ -42,10 +41,10 @@ class LocationPermissionPage extends StatelessWidget {
           child: Button(
             text: Strings.of(context).onboardingJourneyLocationAccessButton,
             onPressed: () async {
-              if (await PermissionHandlerWrapper.of(context)
-                  .requestLocation()) {
-                await LocationMonitor.of(context).initialize();
-              }
+              await requestLocationPermissionIfNeeded(
+                context: context,
+                requestAlways: false,
+              );
               onNext?.call();
             },
           ),

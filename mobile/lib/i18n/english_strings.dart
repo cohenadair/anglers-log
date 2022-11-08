@@ -73,6 +73,8 @@ Map<String, Map<String, String>> get englishStrings => {
         "today": "Today",
         "yesterday": "Yesterday",
         "directions": "Directions",
+        "close": "Close",
+        "back": "Back",
         "latLng": "Lat: %s, Lng: %s",
         "latLng_noLabels": "%s, %s",
         "add": "Add",
@@ -430,6 +432,12 @@ Map<String, Map<String, String>> get englishStrings => {
         "mapPage_appleMaps": "Apple Maps\u2122",
         "mapPage_googleMaps": "Google Maps\u2122",
         "mapPage_waze": "Waze\u2122",
+        "mapPage_mapTypeTooltip": "Choose Map Type",
+        "mapPage_myLocationTooltip": "Show My Location",
+        "mapPage_showAllTooltip": "Show All Fishing Spots",
+        "mapPage_startTrackingTooltip": "Start GPS Trail",
+        "mapPage_stopTrackingTooltip": "Stop GPS Trail",
+        "mapPage_addTooltip": "Add Fishing Spot",
         "saveFishingSpotPage_newTitle": "New Fishing Spot",
         "saveFishingSpotPage_editTitle": "Edit Fishing Spot",
         "saveFishingSpotPage_bodyOfWaterLabel": "Body Of Water",
@@ -505,10 +513,6 @@ Map<String, Map<String, String>> get englishStrings => {
         "fishingSpotsSummary_empty":
             "When fishing spots are added to your log, a summary of their catches will be shown here.",
         "fishingSpotListPage_noBodyOfWater": "No Body Of Water",
-        "fishingSpotMap_locationPermissionTitle": "Location Access",
-        "fishingSpotMap_locationPermissionDescription":
-            "To show your current location, you must grant Anglers' Log access to read your device's location. To do so, open your device settings.",
-        "fishingSpotMap_locationPermissionOpenSettings": "Open Settings",
         "fishingSpotMap_addSpotHelp":
             "Long press anywhere on the map to drop a pin and add a fishing spot.",
         "editCoordinatesHint":
@@ -593,7 +597,7 @@ Map<String, Map<String, String>> get englishStrings => {
         "onboardingJourney_manageFieldsSpecies": "Rainbow Trout",
         "onboardingJourney_locationAccessTitle": "Location Access",
         "onboardingJourney_locationAccessDescription":
-            "To show your location on maps throughout Anglers' Log, device location access is required.",
+            "Anglers' Log uses location services to show your current location on the in-app map, to automatically create fishing spots when adding catches, and to create GPS trails while fishing.",
         "onboardingJourney_locationAccessButton": "Set Permission",
         "onboardingJourney_howToFeedbackTitle": "Send Feedback",
         "onboardingJourney_howToFeedbackDescription":
@@ -1010,6 +1014,13 @@ Map<String, Map<String, String>> get englishStrings => {
             "There was an error casting your vote. Please try again later.",
         "pollsPage_comingSoonFree": "Coming Soon To Free Users (As Voted)",
         "pollsPage_comingSoonPro": "Coming Soon To Pro Users (As Voted)",
+        "permission_locationTitle": "Location Access",
+        "permission_currentLocationDescription":
+            "To show your current location, you must grant Anglers' Log access to read your device's location. To do so, open your device settings.",
+        "permission_gpsTrailDescription":
+            "To create an accurate GPS trail, Anglers' Log must be able to access your device's location at all times while tracking is active. To grant the required permission, open your device's settings.",
+        "permission_openSettings": "Open Settings",
+        "permission_locationNotificationDescription": "GPS trail is active",
         "calendarPage_title": "Calendar",
         "calendarPage_tripLabel": "Trip",
         "changeLogPage_title": "What's New",

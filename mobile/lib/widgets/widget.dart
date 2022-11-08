@@ -651,3 +651,27 @@ class Badge extends StatelessWidget {
     );
   }
 }
+
+class BadgeContainer extends StatelessWidget {
+  final Widget child;
+  final bool isBadgeVisible;
+
+  const BadgeContainer({
+    required this.child,
+    required this.isBadgeVisible,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      children: <Widget>[
+        child,
+        Positioned(
+          top: 0.0,
+          right: 0.0,
+          child: Badge(isVisible: isBadgeVisible),
+        ),
+      ],
+    );
+  }
+}

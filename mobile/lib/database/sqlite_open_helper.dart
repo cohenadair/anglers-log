@@ -112,16 +112,26 @@ final List<String> _schema5 = [
   """,
 ];
 
+final List<String> _schema6 = [
+  """
+  CREATE TABLE gps_trail (
+    id BLOB PRIMARY KEY,
+    bytes BLOB NOT NULL
+  );
+  """,
+];
+
 final List<List<String>> _schema = [
   _schema0,
   _schema1,
   _schema2,
   _schema3,
   _schema4,
-  _schema5
+  _schema5,
+  _schema6,
 ];
 
-const int _version = 6;
+const int _version = 7;
 
 Future<String> _databasePath() async =>
     join(await getDatabasesPath(), "2.0", _name);

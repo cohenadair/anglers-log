@@ -1943,3 +1943,7 @@ extension Trips on Trip {
     }
   }
 }
+
+extension GpsTrails on GpsTrail {
+  bool get isFinished => hasStartTimestamp() && hasEndTimestamp();
+}

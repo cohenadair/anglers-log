@@ -15,21 +15,10 @@ import 'anglerslog.pbenum.dart';
 export 'anglerslog.pbenum.dart';
 
 class Id extends $pb.GeneratedMessage {
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
-      const $core.bool.fromEnvironment('protobuf.omit_message_names')
-          ? ''
-          : 'Id',
-      package: const $pb.PackageName(
-          const $core.bool.fromEnvironment('protobuf.omit_message_names')
-              ? ''
-              : 'anglerslog'),
-      createEmptyInstance: create)
-    ..aOS(
-        1,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'uuid')
-    ..hasRequiredFields = false;
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'Id', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'anglerslog'), createEmptyInstance: create)
+    ..aOS(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'uuid')
+    ..hasRequiredFields = false
+  ;
 
   Id._() : super();
   factory Id({
@@ -41,39 +30,31 @@ class Id extends $pb.GeneratedMessage {
     }
     return _result;
   }
-  factory Id.fromBuffer($core.List<$core.int> i,
-          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromBuffer(i, r);
-  factory Id.fromJson($core.String i,
-          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromJson(i, r);
-  @$core.Deprecated('Using this can add significant overhead to your binary. '
-      'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
-      'Will be removed in next major version')
+  factory Id.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory Id.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
   Id clone() => Id()..mergeFromMessage(this);
-  @$core.Deprecated('Using this can add significant overhead to your binary. '
-      'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
-      'Will be removed in next major version')
-  Id copyWith(void Function(Id) updates) =>
-      super.copyWith((message) => updates(message as Id))
-          as Id; // ignore: deprecated_member_use
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  Id copyWith(void Function(Id) updates) => super.copyWith((message) => updates(message as Id)) as Id; // ignore: deprecated_member_use
   $pb.BuilderInfo get info_ => _i;
   @$core.pragma('dart2js:noInline')
   static Id create() => Id._();
   Id createEmptyInstance() => create();
   static $pb.PbList<Id> createRepeated() => $pb.PbList<Id>();
   @$core.pragma('dart2js:noInline')
-  static Id getDefault() =>
-      _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<Id>(create);
+  static Id getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<Id>(create);
   static Id? _defaultInstance;
 
   @$pb.TagNumber(1)
   $core.String get uuid => $_getSZ(0);
   @$pb.TagNumber(1)
-  set uuid($core.String v) {
-    $_setString(0, v);
-  }
-
+  set uuid($core.String v) { $_setString(0, v); }
   @$pb.TagNumber(1)
   $core.bool hasUuid() => $_has(0);
   @$pb.TagNumber(1)
@@ -81,122 +62,25 @@ class Id extends $pb.GeneratedMessage {
 }
 
 class Atmosphere extends $pb.GeneratedMessage {
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
-      const $core.bool.fromEnvironment('protobuf.omit_message_names')
-          ? ''
-          : 'Atmosphere',
-      package: const $pb.PackageName(
-          const $core.bool.fromEnvironment('protobuf.omit_message_names')
-              ? ''
-              : 'anglerslog'),
-      createEmptyInstance: create)
-    ..aOM<Measurement>(
-        1,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'temperatureDeprecated',
-        subBuilder: Measurement.create)
-    ..pc<SkyCondition>(
-        2,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'skyConditions',
-        $pb.PbFieldType.PE,
-        valueOf: SkyCondition.valueOf,
-        enumValues: SkyCondition.values,
-        defaultEnumValue: SkyCondition.sky_condition_all)
-    ..aOM<Measurement>(
-        3,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'windSpeedDeprecated',
-        subBuilder: Measurement.create)
-    ..e<Direction>(
-        4,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'windDirection',
-        $pb.PbFieldType.OE,
-        defaultOrMaker: Direction.direction_all,
-        valueOf: Direction.valueOf,
-        enumValues: Direction.values)
-    ..aOM<Measurement>(
-        5,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'pressureDeprecated',
-        subBuilder: Measurement.create)
-    ..aOM<Measurement>(
-        6,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'humidityDeprecated',
-        subBuilder: Measurement.create)
-    ..aOM<Measurement>(
-        7,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'visibilityDeprecated',
-        subBuilder: Measurement.create)
-    ..e<MoonPhase>(
-        8,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'moonPhase',
-        $pb.PbFieldType.OE,
-        defaultOrMaker: MoonPhase.moon_phase_all,
-        valueOf: MoonPhase.valueOf,
-        enumValues: MoonPhase.values)
-    ..a<$fixnum.Int64>(
-        9,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'sunriseTimestamp',
-        $pb.PbFieldType.OU6,
-        defaultOrMaker: $fixnum.Int64.ZERO)
-    ..a<$fixnum.Int64>(
-        10,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'sunsetTimestamp',
-        $pb.PbFieldType.OU6,
-        defaultOrMaker: $fixnum.Int64.ZERO)
-    ..aOS(
-        11,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'timeZone')
-    ..aOM<MultiMeasurement>(
-        12,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'temperature',
-        subBuilder: MultiMeasurement.create)
-    ..aOM<MultiMeasurement>(
-        13,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'windSpeed',
-        subBuilder: MultiMeasurement.create)
-    ..aOM<MultiMeasurement>(
-        14,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'pressure',
-        subBuilder: MultiMeasurement.create)
-    ..aOM<MultiMeasurement>(
-        15,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'humidity',
-        subBuilder: MultiMeasurement.create)
-    ..aOM<MultiMeasurement>(
-        16,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'visibility',
-        subBuilder: MultiMeasurement.create)
-    ..hasRequiredFields = false;
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'Atmosphere', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'anglerslog'), createEmptyInstance: create)
+    ..aOM<Measurement>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'temperatureDeprecated', subBuilder: Measurement.create)
+    ..pc<SkyCondition>(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'skyConditions', $pb.PbFieldType.PE, valueOf: SkyCondition.valueOf, enumValues: SkyCondition.values, defaultEnumValue: SkyCondition.sky_condition_all)
+    ..aOM<Measurement>(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'windSpeedDeprecated', subBuilder: Measurement.create)
+    ..e<Direction>(4, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'windDirection', $pb.PbFieldType.OE, defaultOrMaker: Direction.direction_all, valueOf: Direction.valueOf, enumValues: Direction.values)
+    ..aOM<Measurement>(5, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'pressureDeprecated', subBuilder: Measurement.create)
+    ..aOM<Measurement>(6, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'humidityDeprecated', subBuilder: Measurement.create)
+    ..aOM<Measurement>(7, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'visibilityDeprecated', subBuilder: Measurement.create)
+    ..e<MoonPhase>(8, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'moonPhase', $pb.PbFieldType.OE, defaultOrMaker: MoonPhase.moon_phase_all, valueOf: MoonPhase.valueOf, enumValues: MoonPhase.values)
+    ..a<$fixnum.Int64>(9, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'sunriseTimestamp', $pb.PbFieldType.OU6, defaultOrMaker: $fixnum.Int64.ZERO)
+    ..a<$fixnum.Int64>(10, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'sunsetTimestamp', $pb.PbFieldType.OU6, defaultOrMaker: $fixnum.Int64.ZERO)
+    ..aOS(11, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'timeZone')
+    ..aOM<MultiMeasurement>(12, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'temperature', subBuilder: MultiMeasurement.create)
+    ..aOM<MultiMeasurement>(13, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'windSpeed', subBuilder: MultiMeasurement.create)
+    ..aOM<MultiMeasurement>(14, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'pressure', subBuilder: MultiMeasurement.create)
+    ..aOM<MultiMeasurement>(15, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'humidity', subBuilder: MultiMeasurement.create)
+    ..aOM<MultiMeasurement>(16, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'visibility', subBuilder: MultiMeasurement.create)
+    ..hasRequiredFields = false
+  ;
 
   Atmosphere._() : super();
   factory Atmosphere({
@@ -268,39 +152,31 @@ class Atmosphere extends $pb.GeneratedMessage {
     }
     return _result;
   }
-  factory Atmosphere.fromBuffer($core.List<$core.int> i,
-          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromBuffer(i, r);
-  factory Atmosphere.fromJson($core.String i,
-          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromJson(i, r);
-  @$core.Deprecated('Using this can add significant overhead to your binary. '
-      'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
-      'Will be removed in next major version')
+  factory Atmosphere.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory Atmosphere.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
   Atmosphere clone() => Atmosphere()..mergeFromMessage(this);
-  @$core.Deprecated('Using this can add significant overhead to your binary. '
-      'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
-      'Will be removed in next major version')
-  Atmosphere copyWith(void Function(Atmosphere) updates) =>
-      super.copyWith((message) => updates(message as Atmosphere))
-          as Atmosphere; // ignore: deprecated_member_use
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  Atmosphere copyWith(void Function(Atmosphere) updates) => super.copyWith((message) => updates(message as Atmosphere)) as Atmosphere; // ignore: deprecated_member_use
   $pb.BuilderInfo get info_ => _i;
   @$core.pragma('dart2js:noInline')
   static Atmosphere create() => Atmosphere._();
   Atmosphere createEmptyInstance() => create();
   static $pb.PbList<Atmosphere> createRepeated() => $pb.PbList<Atmosphere>();
   @$core.pragma('dart2js:noInline')
-  static Atmosphere getDefault() => _defaultInstance ??=
-      $pb.GeneratedMessage.$_defaultFor<Atmosphere>(create);
+  static Atmosphere getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<Atmosphere>(create);
   static Atmosphere? _defaultInstance;
 
   @$pb.TagNumber(1)
   Measurement get temperatureDeprecated => $_getN(0);
   @$pb.TagNumber(1)
-  set temperatureDeprecated(Measurement v) {
-    setField(1, v);
-  }
-
+  set temperatureDeprecated(Measurement v) { setField(1, v); }
   @$pb.TagNumber(1)
   $core.bool hasTemperatureDeprecated() => $_has(0);
   @$pb.TagNumber(1)
@@ -314,10 +190,7 @@ class Atmosphere extends $pb.GeneratedMessage {
   @$pb.TagNumber(3)
   Measurement get windSpeedDeprecated => $_getN(2);
   @$pb.TagNumber(3)
-  set windSpeedDeprecated(Measurement v) {
-    setField(3, v);
-  }
-
+  set windSpeedDeprecated(Measurement v) { setField(3, v); }
   @$pb.TagNumber(3)
   $core.bool hasWindSpeedDeprecated() => $_has(2);
   @$pb.TagNumber(3)
@@ -328,10 +201,7 @@ class Atmosphere extends $pb.GeneratedMessage {
   @$pb.TagNumber(4)
   Direction get windDirection => $_getN(3);
   @$pb.TagNumber(4)
-  set windDirection(Direction v) {
-    setField(4, v);
-  }
-
+  set windDirection(Direction v) { setField(4, v); }
   @$pb.TagNumber(4)
   $core.bool hasWindDirection() => $_has(3);
   @$pb.TagNumber(4)
@@ -340,10 +210,7 @@ class Atmosphere extends $pb.GeneratedMessage {
   @$pb.TagNumber(5)
   Measurement get pressureDeprecated => $_getN(4);
   @$pb.TagNumber(5)
-  set pressureDeprecated(Measurement v) {
-    setField(5, v);
-  }
-
+  set pressureDeprecated(Measurement v) { setField(5, v); }
   @$pb.TagNumber(5)
   $core.bool hasPressureDeprecated() => $_has(4);
   @$pb.TagNumber(5)
@@ -354,10 +221,7 @@ class Atmosphere extends $pb.GeneratedMessage {
   @$pb.TagNumber(6)
   Measurement get humidityDeprecated => $_getN(5);
   @$pb.TagNumber(6)
-  set humidityDeprecated(Measurement v) {
-    setField(6, v);
-  }
-
+  set humidityDeprecated(Measurement v) { setField(6, v); }
   @$pb.TagNumber(6)
   $core.bool hasHumidityDeprecated() => $_has(5);
   @$pb.TagNumber(6)
@@ -368,10 +232,7 @@ class Atmosphere extends $pb.GeneratedMessage {
   @$pb.TagNumber(7)
   Measurement get visibilityDeprecated => $_getN(6);
   @$pb.TagNumber(7)
-  set visibilityDeprecated(Measurement v) {
-    setField(7, v);
-  }
-
+  set visibilityDeprecated(Measurement v) { setField(7, v); }
   @$pb.TagNumber(7)
   $core.bool hasVisibilityDeprecated() => $_has(6);
   @$pb.TagNumber(7)
@@ -382,10 +243,7 @@ class Atmosphere extends $pb.GeneratedMessage {
   @$pb.TagNumber(8)
   MoonPhase get moonPhase => $_getN(7);
   @$pb.TagNumber(8)
-  set moonPhase(MoonPhase v) {
-    setField(8, v);
-  }
-
+  set moonPhase(MoonPhase v) { setField(8, v); }
   @$pb.TagNumber(8)
   $core.bool hasMoonPhase() => $_has(7);
   @$pb.TagNumber(8)
@@ -394,10 +252,7 @@ class Atmosphere extends $pb.GeneratedMessage {
   @$pb.TagNumber(9)
   $fixnum.Int64 get sunriseTimestamp => $_getI64(8);
   @$pb.TagNumber(9)
-  set sunriseTimestamp($fixnum.Int64 v) {
-    $_setInt64(8, v);
-  }
-
+  set sunriseTimestamp($fixnum.Int64 v) { $_setInt64(8, v); }
   @$pb.TagNumber(9)
   $core.bool hasSunriseTimestamp() => $_has(8);
   @$pb.TagNumber(9)
@@ -406,10 +261,7 @@ class Atmosphere extends $pb.GeneratedMessage {
   @$pb.TagNumber(10)
   $fixnum.Int64 get sunsetTimestamp => $_getI64(9);
   @$pb.TagNumber(10)
-  set sunsetTimestamp($fixnum.Int64 v) {
-    $_setInt64(9, v);
-  }
-
+  set sunsetTimestamp($fixnum.Int64 v) { $_setInt64(9, v); }
   @$pb.TagNumber(10)
   $core.bool hasSunsetTimestamp() => $_has(9);
   @$pb.TagNumber(10)
@@ -418,10 +270,7 @@ class Atmosphere extends $pb.GeneratedMessage {
   @$pb.TagNumber(11)
   $core.String get timeZone => $_getSZ(10);
   @$pb.TagNumber(11)
-  set timeZone($core.String v) {
-    $_setString(10, v);
-  }
-
+  set timeZone($core.String v) { $_setString(10, v); }
   @$pb.TagNumber(11)
   $core.bool hasTimeZone() => $_has(10);
   @$pb.TagNumber(11)
@@ -430,10 +279,7 @@ class Atmosphere extends $pb.GeneratedMessage {
   @$pb.TagNumber(12)
   MultiMeasurement get temperature => $_getN(11);
   @$pb.TagNumber(12)
-  set temperature(MultiMeasurement v) {
-    setField(12, v);
-  }
-
+  set temperature(MultiMeasurement v) { setField(12, v); }
   @$pb.TagNumber(12)
   $core.bool hasTemperature() => $_has(11);
   @$pb.TagNumber(12)
@@ -444,10 +290,7 @@ class Atmosphere extends $pb.GeneratedMessage {
   @$pb.TagNumber(13)
   MultiMeasurement get windSpeed => $_getN(12);
   @$pb.TagNumber(13)
-  set windSpeed(MultiMeasurement v) {
-    setField(13, v);
-  }
-
+  set windSpeed(MultiMeasurement v) { setField(13, v); }
   @$pb.TagNumber(13)
   $core.bool hasWindSpeed() => $_has(12);
   @$pb.TagNumber(13)
@@ -458,10 +301,7 @@ class Atmosphere extends $pb.GeneratedMessage {
   @$pb.TagNumber(14)
   MultiMeasurement get pressure => $_getN(13);
   @$pb.TagNumber(14)
-  set pressure(MultiMeasurement v) {
-    setField(14, v);
-  }
-
+  set pressure(MultiMeasurement v) { setField(14, v); }
   @$pb.TagNumber(14)
   $core.bool hasPressure() => $_has(13);
   @$pb.TagNumber(14)
@@ -472,10 +312,7 @@ class Atmosphere extends $pb.GeneratedMessage {
   @$pb.TagNumber(15)
   MultiMeasurement get humidity => $_getN(14);
   @$pb.TagNumber(15)
-  set humidity(MultiMeasurement v) {
-    setField(15, v);
-  }
-
+  set humidity(MultiMeasurement v) { setField(15, v); }
   @$pb.TagNumber(15)
   $core.bool hasHumidity() => $_has(14);
   @$pb.TagNumber(15)
@@ -486,10 +323,7 @@ class Atmosphere extends $pb.GeneratedMessage {
   @$pb.TagNumber(16)
   MultiMeasurement get visibility => $_getN(15);
   @$pb.TagNumber(16)
-  set visibility(MultiMeasurement v) {
-    setField(16, v);
-  }
-
+  set visibility(MultiMeasurement v) { setField(16, v); }
   @$pb.TagNumber(16)
   $core.bool hasVisibility() => $_has(15);
   @$pb.TagNumber(16)
@@ -499,41 +333,13 @@ class Atmosphere extends $pb.GeneratedMessage {
 }
 
 class CustomEntity extends $pb.GeneratedMessage {
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
-      const $core.bool.fromEnvironment('protobuf.omit_message_names')
-          ? ''
-          : 'CustomEntity',
-      package: const $pb.PackageName(
-          const $core.bool.fromEnvironment('protobuf.omit_message_names')
-              ? ''
-              : 'anglerslog'),
-      createEmptyInstance: create)
-    ..aOM<Id>(
-        1,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'id',
-        subBuilder: Id.create)
-    ..aOS(
-        2,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'name')
-    ..aOS(
-        3,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'description')
-    ..e<CustomEntity_Type>(
-        4,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'type',
-        $pb.PbFieldType.OE,
-        defaultOrMaker: CustomEntity_Type.boolean,
-        valueOf: CustomEntity_Type.valueOf,
-        enumValues: CustomEntity_Type.values)
-    ..hasRequiredFields = false;
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'CustomEntity', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'anglerslog'), createEmptyInstance: create)
+    ..aOM<Id>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'id', subBuilder: Id.create)
+    ..aOS(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'name')
+    ..aOS(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'description')
+    ..e<CustomEntity_Type>(4, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'type', $pb.PbFieldType.OE, defaultOrMaker: CustomEntity_Type.boolean, valueOf: CustomEntity_Type.valueOf, enumValues: CustomEntity_Type.values)
+    ..hasRequiredFields = false
+  ;
 
   CustomEntity._() : super();
   factory CustomEntity({
@@ -557,40 +363,31 @@ class CustomEntity extends $pb.GeneratedMessage {
     }
     return _result;
   }
-  factory CustomEntity.fromBuffer($core.List<$core.int> i,
-          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromBuffer(i, r);
-  factory CustomEntity.fromJson($core.String i,
-          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromJson(i, r);
-  @$core.Deprecated('Using this can add significant overhead to your binary. '
-      'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
-      'Will be removed in next major version')
+  factory CustomEntity.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory CustomEntity.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
   CustomEntity clone() => CustomEntity()..mergeFromMessage(this);
-  @$core.Deprecated('Using this can add significant overhead to your binary. '
-      'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
-      'Will be removed in next major version')
-  CustomEntity copyWith(void Function(CustomEntity) updates) =>
-      super.copyWith((message) => updates(message as CustomEntity))
-          as CustomEntity; // ignore: deprecated_member_use
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  CustomEntity copyWith(void Function(CustomEntity) updates) => super.copyWith((message) => updates(message as CustomEntity)) as CustomEntity; // ignore: deprecated_member_use
   $pb.BuilderInfo get info_ => _i;
   @$core.pragma('dart2js:noInline')
   static CustomEntity create() => CustomEntity._();
   CustomEntity createEmptyInstance() => create();
-  static $pb.PbList<CustomEntity> createRepeated() =>
-      $pb.PbList<CustomEntity>();
+  static $pb.PbList<CustomEntity> createRepeated() => $pb.PbList<CustomEntity>();
   @$core.pragma('dart2js:noInline')
-  static CustomEntity getDefault() => _defaultInstance ??=
-      $pb.GeneratedMessage.$_defaultFor<CustomEntity>(create);
+  static CustomEntity getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<CustomEntity>(create);
   static CustomEntity? _defaultInstance;
 
   @$pb.TagNumber(1)
   Id get id => $_getN(0);
   @$pb.TagNumber(1)
-  set id(Id v) {
-    setField(1, v);
-  }
-
+  set id(Id v) { setField(1, v); }
   @$pb.TagNumber(1)
   $core.bool hasId() => $_has(0);
   @$pb.TagNumber(1)
@@ -601,10 +398,7 @@ class CustomEntity extends $pb.GeneratedMessage {
   @$pb.TagNumber(2)
   $core.String get name => $_getSZ(1);
   @$pb.TagNumber(2)
-  set name($core.String v) {
-    $_setString(1, v);
-  }
-
+  set name($core.String v) { $_setString(1, v); }
   @$pb.TagNumber(2)
   $core.bool hasName() => $_has(1);
   @$pb.TagNumber(2)
@@ -613,10 +407,7 @@ class CustomEntity extends $pb.GeneratedMessage {
   @$pb.TagNumber(3)
   $core.String get description => $_getSZ(2);
   @$pb.TagNumber(3)
-  set description($core.String v) {
-    $_setString(2, v);
-  }
-
+  set description($core.String v) { $_setString(2, v); }
   @$pb.TagNumber(3)
   $core.bool hasDescription() => $_has(2);
   @$pb.TagNumber(3)
@@ -625,10 +416,7 @@ class CustomEntity extends $pb.GeneratedMessage {
   @$pb.TagNumber(4)
   CustomEntity_Type get type => $_getN(3);
   @$pb.TagNumber(4)
-  set type(CustomEntity_Type v) {
-    setField(4, v);
-  }
-
+  set type(CustomEntity_Type v) { setField(4, v); }
   @$pb.TagNumber(4)
   $core.bool hasType() => $_has(3);
   @$pb.TagNumber(4)
@@ -636,27 +424,11 @@ class CustomEntity extends $pb.GeneratedMessage {
 }
 
 class CustomEntityValue extends $pb.GeneratedMessage {
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
-      const $core.bool.fromEnvironment('protobuf.omit_message_names')
-          ? ''
-          : 'CustomEntityValue',
-      package: const $pb.PackageName(
-          const $core.bool.fromEnvironment('protobuf.omit_message_names')
-              ? ''
-              : 'anglerslog'),
-      createEmptyInstance: create)
-    ..aOM<Id>(
-        1,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'customEntityId',
-        subBuilder: Id.create)
-    ..aOS(
-        2,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'value')
-    ..hasRequiredFields = false;
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'CustomEntityValue', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'anglerslog'), createEmptyInstance: create)
+    ..aOM<Id>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'customEntityId', subBuilder: Id.create)
+    ..aOS(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'value')
+    ..hasRequiredFields = false
+  ;
 
   CustomEntityValue._() : super();
   factory CustomEntityValue({
@@ -672,40 +444,31 @@ class CustomEntityValue extends $pb.GeneratedMessage {
     }
     return _result;
   }
-  factory CustomEntityValue.fromBuffer($core.List<$core.int> i,
-          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromBuffer(i, r);
-  factory CustomEntityValue.fromJson($core.String i,
-          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromJson(i, r);
-  @$core.Deprecated('Using this can add significant overhead to your binary. '
-      'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
-      'Will be removed in next major version')
+  factory CustomEntityValue.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory CustomEntityValue.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
   CustomEntityValue clone() => CustomEntityValue()..mergeFromMessage(this);
-  @$core.Deprecated('Using this can add significant overhead to your binary. '
-      'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
-      'Will be removed in next major version')
-  CustomEntityValue copyWith(void Function(CustomEntityValue) updates) =>
-      super.copyWith((message) => updates(message as CustomEntityValue))
-          as CustomEntityValue; // ignore: deprecated_member_use
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  CustomEntityValue copyWith(void Function(CustomEntityValue) updates) => super.copyWith((message) => updates(message as CustomEntityValue)) as CustomEntityValue; // ignore: deprecated_member_use
   $pb.BuilderInfo get info_ => _i;
   @$core.pragma('dart2js:noInline')
   static CustomEntityValue create() => CustomEntityValue._();
   CustomEntityValue createEmptyInstance() => create();
-  static $pb.PbList<CustomEntityValue> createRepeated() =>
-      $pb.PbList<CustomEntityValue>();
+  static $pb.PbList<CustomEntityValue> createRepeated() => $pb.PbList<CustomEntityValue>();
   @$core.pragma('dart2js:noInline')
-  static CustomEntityValue getDefault() => _defaultInstance ??=
-      $pb.GeneratedMessage.$_defaultFor<CustomEntityValue>(create);
+  static CustomEntityValue getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<CustomEntityValue>(create);
   static CustomEntityValue? _defaultInstance;
 
   @$pb.TagNumber(1)
   Id get customEntityId => $_getN(0);
   @$pb.TagNumber(1)
-  set customEntityId(Id v) {
-    setField(1, v);
-  }
-
+  set customEntityId(Id v) { setField(1, v); }
   @$pb.TagNumber(1)
   $core.bool hasCustomEntityId() => $_has(0);
   @$pb.TagNumber(1)
@@ -716,10 +479,7 @@ class CustomEntityValue extends $pb.GeneratedMessage {
   @$pb.TagNumber(2)
   $core.String get value => $_getSZ(1);
   @$pb.TagNumber(2)
-  set value($core.String v) {
-    $_setString(1, v);
-  }
-
+  set value($core.String v) { $_setString(1, v); }
   @$pb.TagNumber(2)
   $core.bool hasValue() => $_has(1);
   @$pb.TagNumber(2)
@@ -727,54 +487,15 @@ class CustomEntityValue extends $pb.GeneratedMessage {
 }
 
 class Bait extends $pb.GeneratedMessage {
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
-      const $core.bool.fromEnvironment('protobuf.omit_message_names')
-          ? ''
-          : 'Bait',
-      package: const $pb.PackageName(
-          const $core.bool.fromEnvironment('protobuf.omit_message_names')
-              ? ''
-              : 'anglerslog'),
-      createEmptyInstance: create)
-    ..aOM<Id>(
-        1,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'id',
-        subBuilder: Id.create)
-    ..aOS(
-        2,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'name')
-    ..aOM<Id>(
-        3,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'baitCategoryId',
-        subBuilder: Id.create)
-    ..aOS(
-        4,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'imageName')
-    ..e<Bait_Type>(
-        5,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'type',
-        $pb.PbFieldType.OE,
-        defaultOrMaker: Bait_Type.artificial,
-        valueOf: Bait_Type.valueOf,
-        enumValues: Bait_Type.values)
-    ..pc<BaitVariant>(
-        6,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'variants',
-        $pb.PbFieldType.PM,
-        subBuilder: BaitVariant.create)
-    ..hasRequiredFields = false;
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'Bait', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'anglerslog'), createEmptyInstance: create)
+    ..aOM<Id>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'id', subBuilder: Id.create)
+    ..aOS(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'name')
+    ..aOM<Id>(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'baitCategoryId', subBuilder: Id.create)
+    ..aOS(4, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'imageName')
+    ..e<Bait_Type>(5, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'type', $pb.PbFieldType.OE, defaultOrMaker: Bait_Type.artificial, valueOf: Bait_Type.valueOf, enumValues: Bait_Type.values)
+    ..pc<BaitVariant>(6, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'variants', $pb.PbFieldType.PM, subBuilder: BaitVariant.create)
+    ..hasRequiredFields = false
+  ;
 
   Bait._() : super();
   factory Bait({
@@ -806,39 +527,31 @@ class Bait extends $pb.GeneratedMessage {
     }
     return _result;
   }
-  factory Bait.fromBuffer($core.List<$core.int> i,
-          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromBuffer(i, r);
-  factory Bait.fromJson($core.String i,
-          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromJson(i, r);
-  @$core.Deprecated('Using this can add significant overhead to your binary. '
-      'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
-      'Will be removed in next major version')
+  factory Bait.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory Bait.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
   Bait clone() => Bait()..mergeFromMessage(this);
-  @$core.Deprecated('Using this can add significant overhead to your binary. '
-      'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
-      'Will be removed in next major version')
-  Bait copyWith(void Function(Bait) updates) =>
-      super.copyWith((message) => updates(message as Bait))
-          as Bait; // ignore: deprecated_member_use
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  Bait copyWith(void Function(Bait) updates) => super.copyWith((message) => updates(message as Bait)) as Bait; // ignore: deprecated_member_use
   $pb.BuilderInfo get info_ => _i;
   @$core.pragma('dart2js:noInline')
   static Bait create() => Bait._();
   Bait createEmptyInstance() => create();
   static $pb.PbList<Bait> createRepeated() => $pb.PbList<Bait>();
   @$core.pragma('dart2js:noInline')
-  static Bait getDefault() =>
-      _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<Bait>(create);
+  static Bait getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<Bait>(create);
   static Bait? _defaultInstance;
 
   @$pb.TagNumber(1)
   Id get id => $_getN(0);
   @$pb.TagNumber(1)
-  set id(Id v) {
-    setField(1, v);
-  }
-
+  set id(Id v) { setField(1, v); }
   @$pb.TagNumber(1)
   $core.bool hasId() => $_has(0);
   @$pb.TagNumber(1)
@@ -849,10 +562,7 @@ class Bait extends $pb.GeneratedMessage {
   @$pb.TagNumber(2)
   $core.String get name => $_getSZ(1);
   @$pb.TagNumber(2)
-  set name($core.String v) {
-    $_setString(1, v);
-  }
-
+  set name($core.String v) { $_setString(1, v); }
   @$pb.TagNumber(2)
   $core.bool hasName() => $_has(1);
   @$pb.TagNumber(2)
@@ -861,10 +571,7 @@ class Bait extends $pb.GeneratedMessage {
   @$pb.TagNumber(3)
   Id get baitCategoryId => $_getN(2);
   @$pb.TagNumber(3)
-  set baitCategoryId(Id v) {
-    setField(3, v);
-  }
-
+  set baitCategoryId(Id v) { setField(3, v); }
   @$pb.TagNumber(3)
   $core.bool hasBaitCategoryId() => $_has(2);
   @$pb.TagNumber(3)
@@ -875,10 +582,7 @@ class Bait extends $pb.GeneratedMessage {
   @$pb.TagNumber(4)
   $core.String get imageName => $_getSZ(3);
   @$pb.TagNumber(4)
-  set imageName($core.String v) {
-    $_setString(3, v);
-  }
-
+  set imageName($core.String v) { $_setString(3, v); }
   @$pb.TagNumber(4)
   $core.bool hasImageName() => $_has(3);
   @$pb.TagNumber(4)
@@ -887,10 +591,7 @@ class Bait extends $pb.GeneratedMessage {
   @$pb.TagNumber(5)
   Bait_Type get type => $_getN(4);
   @$pb.TagNumber(5)
-  set type(Bait_Type v) {
-    setField(5, v);
-  }
-
+  set type(Bait_Type v) { setField(5, v); }
   @$pb.TagNumber(5)
   $core.bool hasType() => $_has(4);
   @$pb.TagNumber(5)
@@ -901,67 +602,18 @@ class Bait extends $pb.GeneratedMessage {
 }
 
 class BaitVariant extends $pb.GeneratedMessage {
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
-      const $core.bool.fromEnvironment('protobuf.omit_message_names')
-          ? ''
-          : 'BaitVariant',
-      package: const $pb.PackageName(
-          const $core.bool.fromEnvironment('protobuf.omit_message_names')
-              ? ''
-              : 'anglerslog'),
-      createEmptyInstance: create)
-    ..aOM<Id>(
-        1,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'id',
-        subBuilder: Id.create)
-    ..aOM<Id>(
-        2,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'baseId',
-        subBuilder: Id.create)
-    ..aOS(
-        3,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'color')
-    ..aOS(
-        4,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'modelNumber')
-    ..aOS(
-        5,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'size')
-    ..aOM<MultiMeasurement>(
-        6,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'minDiveDepth',
-        subBuilder: MultiMeasurement.create)
-    ..aOM<MultiMeasurement>(
-        7,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'maxDiveDepth',
-        subBuilder: MultiMeasurement.create)
-    ..aOS(
-        8,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'description')
-    ..pc<CustomEntityValue>(
-        9,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'customEntityValues',
-        $pb.PbFieldType.PM,
-        subBuilder: CustomEntityValue.create)
-    ..hasRequiredFields = false;
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'BaitVariant', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'anglerslog'), createEmptyInstance: create)
+    ..aOM<Id>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'id', subBuilder: Id.create)
+    ..aOM<Id>(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'baseId', subBuilder: Id.create)
+    ..aOS(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'color')
+    ..aOS(4, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'modelNumber')
+    ..aOS(5, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'size')
+    ..aOM<MultiMeasurement>(6, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'minDiveDepth', subBuilder: MultiMeasurement.create)
+    ..aOM<MultiMeasurement>(7, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'maxDiveDepth', subBuilder: MultiMeasurement.create)
+    ..aOS(8, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'description')
+    ..pc<CustomEntityValue>(9, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'customEntityValues', $pb.PbFieldType.PM, subBuilder: CustomEntityValue.create)
+    ..hasRequiredFields = false
+  ;
 
   BaitVariant._() : super();
   factory BaitVariant({
@@ -1005,39 +657,31 @@ class BaitVariant extends $pb.GeneratedMessage {
     }
     return _result;
   }
-  factory BaitVariant.fromBuffer($core.List<$core.int> i,
-          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromBuffer(i, r);
-  factory BaitVariant.fromJson($core.String i,
-          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromJson(i, r);
-  @$core.Deprecated('Using this can add significant overhead to your binary. '
-      'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
-      'Will be removed in next major version')
+  factory BaitVariant.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory BaitVariant.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
   BaitVariant clone() => BaitVariant()..mergeFromMessage(this);
-  @$core.Deprecated('Using this can add significant overhead to your binary. '
-      'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
-      'Will be removed in next major version')
-  BaitVariant copyWith(void Function(BaitVariant) updates) =>
-      super.copyWith((message) => updates(message as BaitVariant))
-          as BaitVariant; // ignore: deprecated_member_use
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  BaitVariant copyWith(void Function(BaitVariant) updates) => super.copyWith((message) => updates(message as BaitVariant)) as BaitVariant; // ignore: deprecated_member_use
   $pb.BuilderInfo get info_ => _i;
   @$core.pragma('dart2js:noInline')
   static BaitVariant create() => BaitVariant._();
   BaitVariant createEmptyInstance() => create();
   static $pb.PbList<BaitVariant> createRepeated() => $pb.PbList<BaitVariant>();
   @$core.pragma('dart2js:noInline')
-  static BaitVariant getDefault() => _defaultInstance ??=
-      $pb.GeneratedMessage.$_defaultFor<BaitVariant>(create);
+  static BaitVariant getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<BaitVariant>(create);
   static BaitVariant? _defaultInstance;
 
   @$pb.TagNumber(1)
   Id get id => $_getN(0);
   @$pb.TagNumber(1)
-  set id(Id v) {
-    setField(1, v);
-  }
-
+  set id(Id v) { setField(1, v); }
   @$pb.TagNumber(1)
   $core.bool hasId() => $_has(0);
   @$pb.TagNumber(1)
@@ -1048,10 +692,7 @@ class BaitVariant extends $pb.GeneratedMessage {
   @$pb.TagNumber(2)
   Id get baseId => $_getN(1);
   @$pb.TagNumber(2)
-  set baseId(Id v) {
-    setField(2, v);
-  }
-
+  set baseId(Id v) { setField(2, v); }
   @$pb.TagNumber(2)
   $core.bool hasBaseId() => $_has(1);
   @$pb.TagNumber(2)
@@ -1062,10 +703,7 @@ class BaitVariant extends $pb.GeneratedMessage {
   @$pb.TagNumber(3)
   $core.String get color => $_getSZ(2);
   @$pb.TagNumber(3)
-  set color($core.String v) {
-    $_setString(2, v);
-  }
-
+  set color($core.String v) { $_setString(2, v); }
   @$pb.TagNumber(3)
   $core.bool hasColor() => $_has(2);
   @$pb.TagNumber(3)
@@ -1074,10 +712,7 @@ class BaitVariant extends $pb.GeneratedMessage {
   @$pb.TagNumber(4)
   $core.String get modelNumber => $_getSZ(3);
   @$pb.TagNumber(4)
-  set modelNumber($core.String v) {
-    $_setString(3, v);
-  }
-
+  set modelNumber($core.String v) { $_setString(3, v); }
   @$pb.TagNumber(4)
   $core.bool hasModelNumber() => $_has(3);
   @$pb.TagNumber(4)
@@ -1086,10 +721,7 @@ class BaitVariant extends $pb.GeneratedMessage {
   @$pb.TagNumber(5)
   $core.String get size => $_getSZ(4);
   @$pb.TagNumber(5)
-  set size($core.String v) {
-    $_setString(4, v);
-  }
-
+  set size($core.String v) { $_setString(4, v); }
   @$pb.TagNumber(5)
   $core.bool hasSize() => $_has(4);
   @$pb.TagNumber(5)
@@ -1098,10 +730,7 @@ class BaitVariant extends $pb.GeneratedMessage {
   @$pb.TagNumber(6)
   MultiMeasurement get minDiveDepth => $_getN(5);
   @$pb.TagNumber(6)
-  set minDiveDepth(MultiMeasurement v) {
-    setField(6, v);
-  }
-
+  set minDiveDepth(MultiMeasurement v) { setField(6, v); }
   @$pb.TagNumber(6)
   $core.bool hasMinDiveDepth() => $_has(5);
   @$pb.TagNumber(6)
@@ -1112,10 +741,7 @@ class BaitVariant extends $pb.GeneratedMessage {
   @$pb.TagNumber(7)
   MultiMeasurement get maxDiveDepth => $_getN(6);
   @$pb.TagNumber(7)
-  set maxDiveDepth(MultiMeasurement v) {
-    setField(7, v);
-  }
-
+  set maxDiveDepth(MultiMeasurement v) { setField(7, v); }
   @$pb.TagNumber(7)
   $core.bool hasMaxDiveDepth() => $_has(6);
   @$pb.TagNumber(7)
@@ -1126,10 +752,7 @@ class BaitVariant extends $pb.GeneratedMessage {
   @$pb.TagNumber(8)
   $core.String get description => $_getSZ(7);
   @$pb.TagNumber(8)
-  set description($core.String v) {
-    $_setString(7, v);
-  }
-
+  set description($core.String v) { $_setString(7, v); }
   @$pb.TagNumber(8)
   $core.bool hasDescription() => $_has(7);
   @$pb.TagNumber(8)
@@ -1140,28 +763,11 @@ class BaitVariant extends $pb.GeneratedMessage {
 }
 
 class BaitAttachment extends $pb.GeneratedMessage {
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
-      const $core.bool.fromEnvironment('protobuf.omit_message_names')
-          ? ''
-          : 'BaitAttachment',
-      package: const $pb.PackageName(
-          const $core.bool.fromEnvironment('protobuf.omit_message_names')
-              ? ''
-              : 'anglerslog'),
-      createEmptyInstance: create)
-    ..aOM<Id>(
-        1,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'baitId',
-        subBuilder: Id.create)
-    ..aOM<Id>(
-        2,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'variantId',
-        subBuilder: Id.create)
-    ..hasRequiredFields = false;
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'BaitAttachment', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'anglerslog'), createEmptyInstance: create)
+    ..aOM<Id>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'baitId', subBuilder: Id.create)
+    ..aOM<Id>(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'variantId', subBuilder: Id.create)
+    ..hasRequiredFields = false
+  ;
 
   BaitAttachment._() : super();
   factory BaitAttachment({
@@ -1177,40 +783,31 @@ class BaitAttachment extends $pb.GeneratedMessage {
     }
     return _result;
   }
-  factory BaitAttachment.fromBuffer($core.List<$core.int> i,
-          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromBuffer(i, r);
-  factory BaitAttachment.fromJson($core.String i,
-          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromJson(i, r);
-  @$core.Deprecated('Using this can add significant overhead to your binary. '
-      'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
-      'Will be removed in next major version')
+  factory BaitAttachment.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory BaitAttachment.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
   BaitAttachment clone() => BaitAttachment()..mergeFromMessage(this);
-  @$core.Deprecated('Using this can add significant overhead to your binary. '
-      'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
-      'Will be removed in next major version')
-  BaitAttachment copyWith(void Function(BaitAttachment) updates) =>
-      super.copyWith((message) => updates(message as BaitAttachment))
-          as BaitAttachment; // ignore: deprecated_member_use
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  BaitAttachment copyWith(void Function(BaitAttachment) updates) => super.copyWith((message) => updates(message as BaitAttachment)) as BaitAttachment; // ignore: deprecated_member_use
   $pb.BuilderInfo get info_ => _i;
   @$core.pragma('dart2js:noInline')
   static BaitAttachment create() => BaitAttachment._();
   BaitAttachment createEmptyInstance() => create();
-  static $pb.PbList<BaitAttachment> createRepeated() =>
-      $pb.PbList<BaitAttachment>();
+  static $pb.PbList<BaitAttachment> createRepeated() => $pb.PbList<BaitAttachment>();
   @$core.pragma('dart2js:noInline')
-  static BaitAttachment getDefault() => _defaultInstance ??=
-      $pb.GeneratedMessage.$_defaultFor<BaitAttachment>(create);
+  static BaitAttachment getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<BaitAttachment>(create);
   static BaitAttachment? _defaultInstance;
 
   @$pb.TagNumber(1)
   Id get baitId => $_getN(0);
   @$pb.TagNumber(1)
-  set baitId(Id v) {
-    setField(1, v);
-  }
-
+  set baitId(Id v) { setField(1, v); }
   @$pb.TagNumber(1)
   $core.bool hasBaitId() => $_has(0);
   @$pb.TagNumber(1)
@@ -1221,10 +818,7 @@ class BaitAttachment extends $pb.GeneratedMessage {
   @$pb.TagNumber(2)
   Id get variantId => $_getN(1);
   @$pb.TagNumber(2)
-  set variantId(Id v) {
-    setField(2, v);
-  }
-
+  set variantId(Id v) { setField(2, v); }
   @$pb.TagNumber(2)
   $core.bool hasVariantId() => $_has(1);
   @$pb.TagNumber(2)
@@ -1234,27 +828,11 @@ class BaitAttachment extends $pb.GeneratedMessage {
 }
 
 class BaitCategory extends $pb.GeneratedMessage {
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
-      const $core.bool.fromEnvironment('protobuf.omit_message_names')
-          ? ''
-          : 'BaitCategory',
-      package: const $pb.PackageName(
-          const $core.bool.fromEnvironment('protobuf.omit_message_names')
-              ? ''
-              : 'anglerslog'),
-      createEmptyInstance: create)
-    ..aOM<Id>(
-        1,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'id',
-        subBuilder: Id.create)
-    ..aOS(
-        2,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'name')
-    ..hasRequiredFields = false;
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'BaitCategory', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'anglerslog'), createEmptyInstance: create)
+    ..aOM<Id>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'id', subBuilder: Id.create)
+    ..aOS(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'name')
+    ..hasRequiredFields = false
+  ;
 
   BaitCategory._() : super();
   factory BaitCategory({
@@ -1270,40 +848,31 @@ class BaitCategory extends $pb.GeneratedMessage {
     }
     return _result;
   }
-  factory BaitCategory.fromBuffer($core.List<$core.int> i,
-          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromBuffer(i, r);
-  factory BaitCategory.fromJson($core.String i,
-          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromJson(i, r);
-  @$core.Deprecated('Using this can add significant overhead to your binary. '
-      'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
-      'Will be removed in next major version')
+  factory BaitCategory.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory BaitCategory.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
   BaitCategory clone() => BaitCategory()..mergeFromMessage(this);
-  @$core.Deprecated('Using this can add significant overhead to your binary. '
-      'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
-      'Will be removed in next major version')
-  BaitCategory copyWith(void Function(BaitCategory) updates) =>
-      super.copyWith((message) => updates(message as BaitCategory))
-          as BaitCategory; // ignore: deprecated_member_use
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  BaitCategory copyWith(void Function(BaitCategory) updates) => super.copyWith((message) => updates(message as BaitCategory)) as BaitCategory; // ignore: deprecated_member_use
   $pb.BuilderInfo get info_ => _i;
   @$core.pragma('dart2js:noInline')
   static BaitCategory create() => BaitCategory._();
   BaitCategory createEmptyInstance() => create();
-  static $pb.PbList<BaitCategory> createRepeated() =>
-      $pb.PbList<BaitCategory>();
+  static $pb.PbList<BaitCategory> createRepeated() => $pb.PbList<BaitCategory>();
   @$core.pragma('dart2js:noInline')
-  static BaitCategory getDefault() => _defaultInstance ??=
-      $pb.GeneratedMessage.$_defaultFor<BaitCategory>(create);
+  static BaitCategory getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<BaitCategory>(create);
   static BaitCategory? _defaultInstance;
 
   @$pb.TagNumber(1)
   Id get id => $_getN(0);
   @$pb.TagNumber(1)
-  set id(Id v) {
-    setField(1, v);
-  }
-
+  set id(Id v) { setField(1, v); }
   @$pb.TagNumber(1)
   $core.bool hasId() => $_has(0);
   @$pb.TagNumber(1)
@@ -1314,10 +883,7 @@ class BaitCategory extends $pb.GeneratedMessage {
   @$pb.TagNumber(2)
   $core.String get name => $_getSZ(1);
   @$pb.TagNumber(2)
-  set name($core.String v) {
-    $_setString(1, v);
-  }
-
+  set name($core.String v) { $_setString(1, v); }
   @$pb.TagNumber(2)
   $core.bool hasName() => $_has(1);
   @$pb.TagNumber(2)
@@ -1325,159 +891,32 @@ class BaitCategory extends $pb.GeneratedMessage {
 }
 
 class Catch extends $pb.GeneratedMessage {
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
-      const $core.bool.fromEnvironment('protobuf.omit_message_names')
-          ? ''
-          : 'Catch',
-      package: const $pb.PackageName(
-          const $core.bool.fromEnvironment('protobuf.omit_message_names')
-              ? ''
-              : 'anglerslog'),
-      createEmptyInstance: create)
-    ..aOM<Id>(
-        1,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'id',
-        subBuilder: Id.create)
-    ..a<$fixnum.Int64>(
-        2,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'timestamp',
-        $pb.PbFieldType.OU6,
-        defaultOrMaker: $fixnum.Int64.ZERO)
-    ..pc<BaitAttachment>(
-        3,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'baits',
-        $pb.PbFieldType.PM,
-        subBuilder: BaitAttachment.create)
-    ..aOM<Id>(
-        4,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'fishingSpotId',
-        subBuilder: Id.create)
-    ..aOM<Id>(
-        5,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'speciesId',
-        subBuilder: Id.create)
-    ..pPS(
-        6,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'imageNames')
-    ..pc<CustomEntityValue>(
-        7,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'customEntityValues',
-        $pb.PbFieldType.PM,
-        subBuilder: CustomEntityValue.create)
-    ..aOM<Id>(
-        8,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'anglerId',
-        subBuilder: Id.create)
-    ..pc<Id>(
-        9,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'methodIds',
-        $pb.PbFieldType.PM,
-        subBuilder: Id.create)
-    ..e<Period>(
-        10,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'period',
-        $pb.PbFieldType.OE,
-        defaultOrMaker: Period.period_all,
-        valueOf: Period.valueOf,
-        enumValues: Period.values)
-    ..aOB(
-        11,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'isFavorite')
-    ..aOB(
-        12,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'wasCatchAndRelease')
-    ..e<Season>(
-        13,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'season',
-        $pb.PbFieldType.OE,
-        defaultOrMaker: Season.season_all,
-        valueOf: Season.valueOf,
-        enumValues: Season.values)
-    ..aOM<Id>(
-        14,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'waterClarityId',
-        subBuilder: Id.create)
-    ..aOM<MultiMeasurement>(
-        15,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'waterDepth',
-        subBuilder: MultiMeasurement.create)
-    ..aOM<MultiMeasurement>(
-        16,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'waterTemperature',
-        subBuilder: MultiMeasurement.create)
-    ..aOM<MultiMeasurement>(
-        17,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'length',
-        subBuilder: MultiMeasurement.create)
-    ..aOM<MultiMeasurement>(
-        18,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'weight',
-        subBuilder: MultiMeasurement.create)
-    ..a<$core.int>(
-        19,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'quantity',
-        $pb.PbFieldType.OU3)
-    ..aOS(
-        20,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'notes')
-    ..aOM<Atmosphere>(
-        21,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'atmosphere',
-        subBuilder: Atmosphere.create)
-    ..aOM<Tide>(
-        22,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'tide',
-        subBuilder: Tide.create)
-    ..aOS(
-        23,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'timeZone')
-    ..hasRequiredFields = false;
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'Catch', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'anglerslog'), createEmptyInstance: create)
+    ..aOM<Id>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'id', subBuilder: Id.create)
+    ..a<$fixnum.Int64>(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'timestamp', $pb.PbFieldType.OU6, defaultOrMaker: $fixnum.Int64.ZERO)
+    ..pc<BaitAttachment>(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'baits', $pb.PbFieldType.PM, subBuilder: BaitAttachment.create)
+    ..aOM<Id>(4, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'fishingSpotId', subBuilder: Id.create)
+    ..aOM<Id>(5, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'speciesId', subBuilder: Id.create)
+    ..pPS(6, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'imageNames')
+    ..pc<CustomEntityValue>(7, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'customEntityValues', $pb.PbFieldType.PM, subBuilder: CustomEntityValue.create)
+    ..aOM<Id>(8, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'anglerId', subBuilder: Id.create)
+    ..pc<Id>(9, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'methodIds', $pb.PbFieldType.PM, subBuilder: Id.create)
+    ..e<Period>(10, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'period', $pb.PbFieldType.OE, defaultOrMaker: Period.period_all, valueOf: Period.valueOf, enumValues: Period.values)
+    ..aOB(11, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'isFavorite')
+    ..aOB(12, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'wasCatchAndRelease')
+    ..e<Season>(13, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'season', $pb.PbFieldType.OE, defaultOrMaker: Season.season_all, valueOf: Season.valueOf, enumValues: Season.values)
+    ..aOM<Id>(14, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'waterClarityId', subBuilder: Id.create)
+    ..aOM<MultiMeasurement>(15, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'waterDepth', subBuilder: MultiMeasurement.create)
+    ..aOM<MultiMeasurement>(16, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'waterTemperature', subBuilder: MultiMeasurement.create)
+    ..aOM<MultiMeasurement>(17, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'length', subBuilder: MultiMeasurement.create)
+    ..aOM<MultiMeasurement>(18, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'weight', subBuilder: MultiMeasurement.create)
+    ..a<$core.int>(19, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'quantity', $pb.PbFieldType.OU3)
+    ..aOS(20, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'notes')
+    ..aOM<Atmosphere>(21, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'atmosphere', subBuilder: Atmosphere.create)
+    ..aOM<Tide>(22, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'tide', subBuilder: Tide.create)
+    ..aOS(23, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'timeZone')
+    ..hasRequiredFields = false
+  ;
 
   Catch._() : super();
   factory Catch({
@@ -1577,39 +1016,31 @@ class Catch extends $pb.GeneratedMessage {
     }
     return _result;
   }
-  factory Catch.fromBuffer($core.List<$core.int> i,
-          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromBuffer(i, r);
-  factory Catch.fromJson($core.String i,
-          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromJson(i, r);
-  @$core.Deprecated('Using this can add significant overhead to your binary. '
-      'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
-      'Will be removed in next major version')
+  factory Catch.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory Catch.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
   Catch clone() => Catch()..mergeFromMessage(this);
-  @$core.Deprecated('Using this can add significant overhead to your binary. '
-      'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
-      'Will be removed in next major version')
-  Catch copyWith(void Function(Catch) updates) =>
-      super.copyWith((message) => updates(message as Catch))
-          as Catch; // ignore: deprecated_member_use
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  Catch copyWith(void Function(Catch) updates) => super.copyWith((message) => updates(message as Catch)) as Catch; // ignore: deprecated_member_use
   $pb.BuilderInfo get info_ => _i;
   @$core.pragma('dart2js:noInline')
   static Catch create() => Catch._();
   Catch createEmptyInstance() => create();
   static $pb.PbList<Catch> createRepeated() => $pb.PbList<Catch>();
   @$core.pragma('dart2js:noInline')
-  static Catch getDefault() =>
-      _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<Catch>(create);
+  static Catch getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<Catch>(create);
   static Catch? _defaultInstance;
 
   @$pb.TagNumber(1)
   Id get id => $_getN(0);
   @$pb.TagNumber(1)
-  set id(Id v) {
-    setField(1, v);
-  }
-
+  set id(Id v) { setField(1, v); }
   @$pb.TagNumber(1)
   $core.bool hasId() => $_has(0);
   @$pb.TagNumber(1)
@@ -1620,10 +1051,7 @@ class Catch extends $pb.GeneratedMessage {
   @$pb.TagNumber(2)
   $fixnum.Int64 get timestamp => $_getI64(1);
   @$pb.TagNumber(2)
-  set timestamp($fixnum.Int64 v) {
-    $_setInt64(1, v);
-  }
-
+  set timestamp($fixnum.Int64 v) { $_setInt64(1, v); }
   @$pb.TagNumber(2)
   $core.bool hasTimestamp() => $_has(1);
   @$pb.TagNumber(2)
@@ -1635,10 +1063,7 @@ class Catch extends $pb.GeneratedMessage {
   @$pb.TagNumber(4)
   Id get fishingSpotId => $_getN(3);
   @$pb.TagNumber(4)
-  set fishingSpotId(Id v) {
-    setField(4, v);
-  }
-
+  set fishingSpotId(Id v) { setField(4, v); }
   @$pb.TagNumber(4)
   $core.bool hasFishingSpotId() => $_has(3);
   @$pb.TagNumber(4)
@@ -1649,10 +1074,7 @@ class Catch extends $pb.GeneratedMessage {
   @$pb.TagNumber(5)
   Id get speciesId => $_getN(4);
   @$pb.TagNumber(5)
-  set speciesId(Id v) {
-    setField(5, v);
-  }
-
+  set speciesId(Id v) { setField(5, v); }
   @$pb.TagNumber(5)
   $core.bool hasSpeciesId() => $_has(4);
   @$pb.TagNumber(5)
@@ -1669,10 +1091,7 @@ class Catch extends $pb.GeneratedMessage {
   @$pb.TagNumber(8)
   Id get anglerId => $_getN(7);
   @$pb.TagNumber(8)
-  set anglerId(Id v) {
-    setField(8, v);
-  }
-
+  set anglerId(Id v) { setField(8, v); }
   @$pb.TagNumber(8)
   $core.bool hasAnglerId() => $_has(7);
   @$pb.TagNumber(8)
@@ -1686,10 +1105,7 @@ class Catch extends $pb.GeneratedMessage {
   @$pb.TagNumber(10)
   Period get period => $_getN(9);
   @$pb.TagNumber(10)
-  set period(Period v) {
-    setField(10, v);
-  }
-
+  set period(Period v) { setField(10, v); }
   @$pb.TagNumber(10)
   $core.bool hasPeriod() => $_has(9);
   @$pb.TagNumber(10)
@@ -1698,10 +1114,7 @@ class Catch extends $pb.GeneratedMessage {
   @$pb.TagNumber(11)
   $core.bool get isFavorite => $_getBF(10);
   @$pb.TagNumber(11)
-  set isFavorite($core.bool v) {
-    $_setBool(10, v);
-  }
-
+  set isFavorite($core.bool v) { $_setBool(10, v); }
   @$pb.TagNumber(11)
   $core.bool hasIsFavorite() => $_has(10);
   @$pb.TagNumber(11)
@@ -1710,10 +1123,7 @@ class Catch extends $pb.GeneratedMessage {
   @$pb.TagNumber(12)
   $core.bool get wasCatchAndRelease => $_getBF(11);
   @$pb.TagNumber(12)
-  set wasCatchAndRelease($core.bool v) {
-    $_setBool(11, v);
-  }
-
+  set wasCatchAndRelease($core.bool v) { $_setBool(11, v); }
   @$pb.TagNumber(12)
   $core.bool hasWasCatchAndRelease() => $_has(11);
   @$pb.TagNumber(12)
@@ -1722,10 +1132,7 @@ class Catch extends $pb.GeneratedMessage {
   @$pb.TagNumber(13)
   Season get season => $_getN(12);
   @$pb.TagNumber(13)
-  set season(Season v) {
-    setField(13, v);
-  }
-
+  set season(Season v) { setField(13, v); }
   @$pb.TagNumber(13)
   $core.bool hasSeason() => $_has(12);
   @$pb.TagNumber(13)
@@ -1734,10 +1141,7 @@ class Catch extends $pb.GeneratedMessage {
   @$pb.TagNumber(14)
   Id get waterClarityId => $_getN(13);
   @$pb.TagNumber(14)
-  set waterClarityId(Id v) {
-    setField(14, v);
-  }
-
+  set waterClarityId(Id v) { setField(14, v); }
   @$pb.TagNumber(14)
   $core.bool hasWaterClarityId() => $_has(13);
   @$pb.TagNumber(14)
@@ -1748,10 +1152,7 @@ class Catch extends $pb.GeneratedMessage {
   @$pb.TagNumber(15)
   MultiMeasurement get waterDepth => $_getN(14);
   @$pb.TagNumber(15)
-  set waterDepth(MultiMeasurement v) {
-    setField(15, v);
-  }
-
+  set waterDepth(MultiMeasurement v) { setField(15, v); }
   @$pb.TagNumber(15)
   $core.bool hasWaterDepth() => $_has(14);
   @$pb.TagNumber(15)
@@ -1762,10 +1163,7 @@ class Catch extends $pb.GeneratedMessage {
   @$pb.TagNumber(16)
   MultiMeasurement get waterTemperature => $_getN(15);
   @$pb.TagNumber(16)
-  set waterTemperature(MultiMeasurement v) {
-    setField(16, v);
-  }
-
+  set waterTemperature(MultiMeasurement v) { setField(16, v); }
   @$pb.TagNumber(16)
   $core.bool hasWaterTemperature() => $_has(15);
   @$pb.TagNumber(16)
@@ -1776,10 +1174,7 @@ class Catch extends $pb.GeneratedMessage {
   @$pb.TagNumber(17)
   MultiMeasurement get length => $_getN(16);
   @$pb.TagNumber(17)
-  set length(MultiMeasurement v) {
-    setField(17, v);
-  }
-
+  set length(MultiMeasurement v) { setField(17, v); }
   @$pb.TagNumber(17)
   $core.bool hasLength() => $_has(16);
   @$pb.TagNumber(17)
@@ -1790,10 +1185,7 @@ class Catch extends $pb.GeneratedMessage {
   @$pb.TagNumber(18)
   MultiMeasurement get weight => $_getN(17);
   @$pb.TagNumber(18)
-  set weight(MultiMeasurement v) {
-    setField(18, v);
-  }
-
+  set weight(MultiMeasurement v) { setField(18, v); }
   @$pb.TagNumber(18)
   $core.bool hasWeight() => $_has(17);
   @$pb.TagNumber(18)
@@ -1804,10 +1196,7 @@ class Catch extends $pb.GeneratedMessage {
   @$pb.TagNumber(19)
   $core.int get quantity => $_getIZ(18);
   @$pb.TagNumber(19)
-  set quantity($core.int v) {
-    $_setUnsignedInt32(18, v);
-  }
-
+  set quantity($core.int v) { $_setUnsignedInt32(18, v); }
   @$pb.TagNumber(19)
   $core.bool hasQuantity() => $_has(18);
   @$pb.TagNumber(19)
@@ -1816,10 +1205,7 @@ class Catch extends $pb.GeneratedMessage {
   @$pb.TagNumber(20)
   $core.String get notes => $_getSZ(19);
   @$pb.TagNumber(20)
-  set notes($core.String v) {
-    $_setString(19, v);
-  }
-
+  set notes($core.String v) { $_setString(19, v); }
   @$pb.TagNumber(20)
   $core.bool hasNotes() => $_has(19);
   @$pb.TagNumber(20)
@@ -1828,10 +1214,7 @@ class Catch extends $pb.GeneratedMessage {
   @$pb.TagNumber(21)
   Atmosphere get atmosphere => $_getN(20);
   @$pb.TagNumber(21)
-  set atmosphere(Atmosphere v) {
-    setField(21, v);
-  }
-
+  set atmosphere(Atmosphere v) { setField(21, v); }
   @$pb.TagNumber(21)
   $core.bool hasAtmosphere() => $_has(20);
   @$pb.TagNumber(21)
@@ -1842,10 +1225,7 @@ class Catch extends $pb.GeneratedMessage {
   @$pb.TagNumber(22)
   Tide get tide => $_getN(21);
   @$pb.TagNumber(22)
-  set tide(Tide v) {
-    setField(22, v);
-  }
-
+  set tide(Tide v) { setField(22, v); }
   @$pb.TagNumber(22)
   $core.bool hasTide() => $_has(21);
   @$pb.TagNumber(22)
@@ -1856,10 +1236,7 @@ class Catch extends $pb.GeneratedMessage {
   @$pb.TagNumber(23)
   $core.String get timeZone => $_getSZ(22);
   @$pb.TagNumber(23)
-  set timeZone($core.String v) {
-    $_setString(22, v);
-  }
-
+  set timeZone($core.String v) { $_setString(22, v); }
   @$pb.TagNumber(23)
   $core.bool hasTimeZone() => $_has(22);
   @$pb.TagNumber(23)
@@ -1867,44 +1244,13 @@ class Catch extends $pb.GeneratedMessage {
 }
 
 class DateRange extends $pb.GeneratedMessage {
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
-      const $core.bool.fromEnvironment('protobuf.omit_message_names')
-          ? ''
-          : 'DateRange',
-      package: const $pb.PackageName(
-          const $core.bool.fromEnvironment('protobuf.omit_message_names')
-              ? ''
-              : 'anglerslog'),
-      createEmptyInstance: create)
-    ..e<DateRange_Period>(
-        1,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'period',
-        $pb.PbFieldType.OE,
-        defaultOrMaker: DateRange_Period.allDates,
-        valueOf: DateRange_Period.valueOf,
-        enumValues: DateRange_Period.values)
-    ..a<$fixnum.Int64>(
-        2,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'startTimestamp',
-        $pb.PbFieldType.OU6,
-        defaultOrMaker: $fixnum.Int64.ZERO)
-    ..a<$fixnum.Int64>(
-        3,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'endTimestamp',
-        $pb.PbFieldType.OU6,
-        defaultOrMaker: $fixnum.Int64.ZERO)
-    ..aOS(
-        23,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'timeZone')
-    ..hasRequiredFields = false;
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'DateRange', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'anglerslog'), createEmptyInstance: create)
+    ..e<DateRange_Period>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'period', $pb.PbFieldType.OE, defaultOrMaker: DateRange_Period.allDates, valueOf: DateRange_Period.valueOf, enumValues: DateRange_Period.values)
+    ..a<$fixnum.Int64>(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'startTimestamp', $pb.PbFieldType.OU6, defaultOrMaker: $fixnum.Int64.ZERO)
+    ..a<$fixnum.Int64>(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'endTimestamp', $pb.PbFieldType.OU6, defaultOrMaker: $fixnum.Int64.ZERO)
+    ..aOS(23, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'timeZone')
+    ..hasRequiredFields = false
+  ;
 
   DateRange._() : super();
   factory DateRange({
@@ -1928,39 +1274,31 @@ class DateRange extends $pb.GeneratedMessage {
     }
     return _result;
   }
-  factory DateRange.fromBuffer($core.List<$core.int> i,
-          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromBuffer(i, r);
-  factory DateRange.fromJson($core.String i,
-          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromJson(i, r);
-  @$core.Deprecated('Using this can add significant overhead to your binary. '
-      'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
-      'Will be removed in next major version')
+  factory DateRange.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory DateRange.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
   DateRange clone() => DateRange()..mergeFromMessage(this);
-  @$core.Deprecated('Using this can add significant overhead to your binary. '
-      'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
-      'Will be removed in next major version')
-  DateRange copyWith(void Function(DateRange) updates) =>
-      super.copyWith((message) => updates(message as DateRange))
-          as DateRange; // ignore: deprecated_member_use
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  DateRange copyWith(void Function(DateRange) updates) => super.copyWith((message) => updates(message as DateRange)) as DateRange; // ignore: deprecated_member_use
   $pb.BuilderInfo get info_ => _i;
   @$core.pragma('dart2js:noInline')
   static DateRange create() => DateRange._();
   DateRange createEmptyInstance() => create();
   static $pb.PbList<DateRange> createRepeated() => $pb.PbList<DateRange>();
   @$core.pragma('dart2js:noInline')
-  static DateRange getDefault() =>
-      _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<DateRange>(create);
+  static DateRange getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<DateRange>(create);
   static DateRange? _defaultInstance;
 
   @$pb.TagNumber(1)
   DateRange_Period get period => $_getN(0);
   @$pb.TagNumber(1)
-  set period(DateRange_Period v) {
-    setField(1, v);
-  }
-
+  set period(DateRange_Period v) { setField(1, v); }
   @$pb.TagNumber(1)
   $core.bool hasPeriod() => $_has(0);
   @$pb.TagNumber(1)
@@ -1969,10 +1307,7 @@ class DateRange extends $pb.GeneratedMessage {
   @$pb.TagNumber(2)
   $fixnum.Int64 get startTimestamp => $_getI64(1);
   @$pb.TagNumber(2)
-  set startTimestamp($fixnum.Int64 v) {
-    $_setInt64(1, v);
-  }
-
+  set startTimestamp($fixnum.Int64 v) { $_setInt64(1, v); }
   @$pb.TagNumber(2)
   $core.bool hasStartTimestamp() => $_has(1);
   @$pb.TagNumber(2)
@@ -1981,10 +1316,7 @@ class DateRange extends $pb.GeneratedMessage {
   @$pb.TagNumber(3)
   $fixnum.Int64 get endTimestamp => $_getI64(2);
   @$pb.TagNumber(3)
-  set endTimestamp($fixnum.Int64 v) {
-    $_setInt64(2, v);
-  }
-
+  set endTimestamp($fixnum.Int64 v) { $_setInt64(2, v); }
   @$pb.TagNumber(3)
   $core.bool hasEndTimestamp() => $_has(2);
   @$pb.TagNumber(3)
@@ -1993,10 +1325,7 @@ class DateRange extends $pb.GeneratedMessage {
   @$pb.TagNumber(23)
   $core.String get timeZone => $_getSZ(3);
   @$pb.TagNumber(23)
-  set timeZone($core.String v) {
-    $_setString(3, v);
-  }
-
+  set timeZone($core.String v) { $_setString(3, v); }
   @$pb.TagNumber(23)
   $core.bool hasTimeZone() => $_has(3);
   @$pb.TagNumber(23)
@@ -2004,27 +1333,11 @@ class DateRange extends $pb.GeneratedMessage {
 }
 
 class BodyOfWater extends $pb.GeneratedMessage {
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
-      const $core.bool.fromEnvironment('protobuf.omit_message_names')
-          ? ''
-          : 'BodyOfWater',
-      package: const $pb.PackageName(
-          const $core.bool.fromEnvironment('protobuf.omit_message_names')
-              ? ''
-              : 'anglerslog'),
-      createEmptyInstance: create)
-    ..aOM<Id>(
-        1,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'id',
-        subBuilder: Id.create)
-    ..aOS(
-        2,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'name')
-    ..hasRequiredFields = false;
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'BodyOfWater', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'anglerslog'), createEmptyInstance: create)
+    ..aOM<Id>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'id', subBuilder: Id.create)
+    ..aOS(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'name')
+    ..hasRequiredFields = false
+  ;
 
   BodyOfWater._() : super();
   factory BodyOfWater({
@@ -2040,39 +1353,31 @@ class BodyOfWater extends $pb.GeneratedMessage {
     }
     return _result;
   }
-  factory BodyOfWater.fromBuffer($core.List<$core.int> i,
-          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromBuffer(i, r);
-  factory BodyOfWater.fromJson($core.String i,
-          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromJson(i, r);
-  @$core.Deprecated('Using this can add significant overhead to your binary. '
-      'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
-      'Will be removed in next major version')
+  factory BodyOfWater.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory BodyOfWater.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
   BodyOfWater clone() => BodyOfWater()..mergeFromMessage(this);
-  @$core.Deprecated('Using this can add significant overhead to your binary. '
-      'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
-      'Will be removed in next major version')
-  BodyOfWater copyWith(void Function(BodyOfWater) updates) =>
-      super.copyWith((message) => updates(message as BodyOfWater))
-          as BodyOfWater; // ignore: deprecated_member_use
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  BodyOfWater copyWith(void Function(BodyOfWater) updates) => super.copyWith((message) => updates(message as BodyOfWater)) as BodyOfWater; // ignore: deprecated_member_use
   $pb.BuilderInfo get info_ => _i;
   @$core.pragma('dart2js:noInline')
   static BodyOfWater create() => BodyOfWater._();
   BodyOfWater createEmptyInstance() => create();
   static $pb.PbList<BodyOfWater> createRepeated() => $pb.PbList<BodyOfWater>();
   @$core.pragma('dart2js:noInline')
-  static BodyOfWater getDefault() => _defaultInstance ??=
-      $pb.GeneratedMessage.$_defaultFor<BodyOfWater>(create);
+  static BodyOfWater getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<BodyOfWater>(create);
   static BodyOfWater? _defaultInstance;
 
   @$pb.TagNumber(1)
   Id get id => $_getN(0);
   @$pb.TagNumber(1)
-  set id(Id v) {
-    setField(1, v);
-  }
-
+  set id(Id v) { setField(1, v); }
   @$pb.TagNumber(1)
   $core.bool hasId() => $_has(0);
   @$pb.TagNumber(1)
@@ -2083,10 +1388,7 @@ class BodyOfWater extends $pb.GeneratedMessage {
   @$pb.TagNumber(2)
   $core.String get name => $_getSZ(1);
   @$pb.TagNumber(2)
-  set name($core.String v) {
-    $_setString(1, v);
-  }
-
+  set name($core.String v) { $_setString(1, v); }
   @$pb.TagNumber(2)
   $core.bool hasName() => $_has(1);
   @$pb.TagNumber(2)
@@ -2094,55 +1396,16 @@ class BodyOfWater extends $pb.GeneratedMessage {
 }
 
 class FishingSpot extends $pb.GeneratedMessage {
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
-      const $core.bool.fromEnvironment('protobuf.omit_message_names')
-          ? ''
-          : 'FishingSpot',
-      package: const $pb.PackageName(
-          const $core.bool.fromEnvironment('protobuf.omit_message_names')
-              ? ''
-              : 'anglerslog'),
-      createEmptyInstance: create)
-    ..aOM<Id>(
-        1,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'id',
-        subBuilder: Id.create)
-    ..aOS(
-        2,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'name')
-    ..a<$core.double>(
-        3,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'lat',
-        $pb.PbFieldType.OD)
-    ..a<$core.double>(
-        4,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'lng',
-        $pb.PbFieldType.OD)
-    ..aOM<Id>(
-        5,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'bodyOfWaterId',
-        subBuilder: Id.create)
-    ..aOS(
-        6,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'imageName')
-    ..aOS(
-        7,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'notes')
-    ..hasRequiredFields = false;
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'FishingSpot', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'anglerslog'), createEmptyInstance: create)
+    ..aOM<Id>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'id', subBuilder: Id.create)
+    ..aOS(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'name')
+    ..a<$core.double>(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'lat', $pb.PbFieldType.OD)
+    ..a<$core.double>(4, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'lng', $pb.PbFieldType.OD)
+    ..aOM<Id>(5, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'bodyOfWaterId', subBuilder: Id.create)
+    ..aOS(6, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'imageName')
+    ..aOS(7, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'notes')
+    ..hasRequiredFields = false
+  ;
 
   FishingSpot._() : super();
   factory FishingSpot({
@@ -2178,39 +1441,31 @@ class FishingSpot extends $pb.GeneratedMessage {
     }
     return _result;
   }
-  factory FishingSpot.fromBuffer($core.List<$core.int> i,
-          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromBuffer(i, r);
-  factory FishingSpot.fromJson($core.String i,
-          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromJson(i, r);
-  @$core.Deprecated('Using this can add significant overhead to your binary. '
-      'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
-      'Will be removed in next major version')
+  factory FishingSpot.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory FishingSpot.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
   FishingSpot clone() => FishingSpot()..mergeFromMessage(this);
-  @$core.Deprecated('Using this can add significant overhead to your binary. '
-      'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
-      'Will be removed in next major version')
-  FishingSpot copyWith(void Function(FishingSpot) updates) =>
-      super.copyWith((message) => updates(message as FishingSpot))
-          as FishingSpot; // ignore: deprecated_member_use
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  FishingSpot copyWith(void Function(FishingSpot) updates) => super.copyWith((message) => updates(message as FishingSpot)) as FishingSpot; // ignore: deprecated_member_use
   $pb.BuilderInfo get info_ => _i;
   @$core.pragma('dart2js:noInline')
   static FishingSpot create() => FishingSpot._();
   FishingSpot createEmptyInstance() => create();
   static $pb.PbList<FishingSpot> createRepeated() => $pb.PbList<FishingSpot>();
   @$core.pragma('dart2js:noInline')
-  static FishingSpot getDefault() => _defaultInstance ??=
-      $pb.GeneratedMessage.$_defaultFor<FishingSpot>(create);
+  static FishingSpot getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<FishingSpot>(create);
   static FishingSpot? _defaultInstance;
 
   @$pb.TagNumber(1)
   Id get id => $_getN(0);
   @$pb.TagNumber(1)
-  set id(Id v) {
-    setField(1, v);
-  }
-
+  set id(Id v) { setField(1, v); }
   @$pb.TagNumber(1)
   $core.bool hasId() => $_has(0);
   @$pb.TagNumber(1)
@@ -2221,10 +1476,7 @@ class FishingSpot extends $pb.GeneratedMessage {
   @$pb.TagNumber(2)
   $core.String get name => $_getSZ(1);
   @$pb.TagNumber(2)
-  set name($core.String v) {
-    $_setString(1, v);
-  }
-
+  set name($core.String v) { $_setString(1, v); }
   @$pb.TagNumber(2)
   $core.bool hasName() => $_has(1);
   @$pb.TagNumber(2)
@@ -2233,10 +1485,7 @@ class FishingSpot extends $pb.GeneratedMessage {
   @$pb.TagNumber(3)
   $core.double get lat => $_getN(2);
   @$pb.TagNumber(3)
-  set lat($core.double v) {
-    $_setDouble(2, v);
-  }
-
+  set lat($core.double v) { $_setDouble(2, v); }
   @$pb.TagNumber(3)
   $core.bool hasLat() => $_has(2);
   @$pb.TagNumber(3)
@@ -2245,10 +1494,7 @@ class FishingSpot extends $pb.GeneratedMessage {
   @$pb.TagNumber(4)
   $core.double get lng => $_getN(3);
   @$pb.TagNumber(4)
-  set lng($core.double v) {
-    $_setDouble(3, v);
-  }
-
+  set lng($core.double v) { $_setDouble(3, v); }
   @$pb.TagNumber(4)
   $core.bool hasLng() => $_has(3);
   @$pb.TagNumber(4)
@@ -2257,10 +1503,7 @@ class FishingSpot extends $pb.GeneratedMessage {
   @$pb.TagNumber(5)
   Id get bodyOfWaterId => $_getN(4);
   @$pb.TagNumber(5)
-  set bodyOfWaterId(Id v) {
-    setField(5, v);
-  }
-
+  set bodyOfWaterId(Id v) { setField(5, v); }
   @$pb.TagNumber(5)
   $core.bool hasBodyOfWaterId() => $_has(4);
   @$pb.TagNumber(5)
@@ -2271,10 +1514,7 @@ class FishingSpot extends $pb.GeneratedMessage {
   @$pb.TagNumber(6)
   $core.String get imageName => $_getSZ(5);
   @$pb.TagNumber(6)
-  set imageName($core.String v) {
-    $_setString(5, v);
-  }
-
+  set imageName($core.String v) { $_setString(5, v); }
   @$pb.TagNumber(6)
   $core.bool hasImageName() => $_has(5);
   @$pb.TagNumber(6)
@@ -2283,10 +1523,7 @@ class FishingSpot extends $pb.GeneratedMessage {
   @$pb.TagNumber(7)
   $core.String get notes => $_getSZ(6);
   @$pb.TagNumber(7)
-  set notes($core.String v) {
-    $_setString(6, v);
-  }
-
+  set notes($core.String v) { $_setString(6, v); }
   @$pb.TagNumber(7)
   $core.bool hasNotes() => $_has(6);
   @$pb.TagNumber(7)
@@ -2294,37 +1531,12 @@ class FishingSpot extends $pb.GeneratedMessage {
 }
 
 class NumberFilter extends $pb.GeneratedMessage {
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
-      const $core.bool.fromEnvironment('protobuf.omit_message_names')
-          ? ''
-          : 'NumberFilter',
-      package: const $pb.PackageName(
-          const $core.bool.fromEnvironment('protobuf.omit_message_names')
-              ? ''
-              : 'anglerslog'),
-      createEmptyInstance: create)
-    ..e<NumberBoundary>(
-        1,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'boundary',
-        $pb.PbFieldType.OE,
-        defaultOrMaker: NumberBoundary.number_boundary_any,
-        valueOf: NumberBoundary.valueOf,
-        enumValues: NumberBoundary.values)
-    ..aOM<MultiMeasurement>(
-        2,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'from',
-        subBuilder: MultiMeasurement.create)
-    ..aOM<MultiMeasurement>(
-        3,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'to',
-        subBuilder: MultiMeasurement.create)
-    ..hasRequiredFields = false;
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'NumberFilter', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'anglerslog'), createEmptyInstance: create)
+    ..e<NumberBoundary>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'boundary', $pb.PbFieldType.OE, defaultOrMaker: NumberBoundary.number_boundary_any, valueOf: NumberBoundary.valueOf, enumValues: NumberBoundary.values)
+    ..aOM<MultiMeasurement>(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'from', subBuilder: MultiMeasurement.create)
+    ..aOM<MultiMeasurement>(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'to', subBuilder: MultiMeasurement.create)
+    ..hasRequiredFields = false
+  ;
 
   NumberFilter._() : super();
   factory NumberFilter({
@@ -2344,40 +1556,31 @@ class NumberFilter extends $pb.GeneratedMessage {
     }
     return _result;
   }
-  factory NumberFilter.fromBuffer($core.List<$core.int> i,
-          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromBuffer(i, r);
-  factory NumberFilter.fromJson($core.String i,
-          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromJson(i, r);
-  @$core.Deprecated('Using this can add significant overhead to your binary. '
-      'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
-      'Will be removed in next major version')
+  factory NumberFilter.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory NumberFilter.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
   NumberFilter clone() => NumberFilter()..mergeFromMessage(this);
-  @$core.Deprecated('Using this can add significant overhead to your binary. '
-      'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
-      'Will be removed in next major version')
-  NumberFilter copyWith(void Function(NumberFilter) updates) =>
-      super.copyWith((message) => updates(message as NumberFilter))
-          as NumberFilter; // ignore: deprecated_member_use
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  NumberFilter copyWith(void Function(NumberFilter) updates) => super.copyWith((message) => updates(message as NumberFilter)) as NumberFilter; // ignore: deprecated_member_use
   $pb.BuilderInfo get info_ => _i;
   @$core.pragma('dart2js:noInline')
   static NumberFilter create() => NumberFilter._();
   NumberFilter createEmptyInstance() => create();
-  static $pb.PbList<NumberFilter> createRepeated() =>
-      $pb.PbList<NumberFilter>();
+  static $pb.PbList<NumberFilter> createRepeated() => $pb.PbList<NumberFilter>();
   @$core.pragma('dart2js:noInline')
-  static NumberFilter getDefault() => _defaultInstance ??=
-      $pb.GeneratedMessage.$_defaultFor<NumberFilter>(create);
+  static NumberFilter getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<NumberFilter>(create);
   static NumberFilter? _defaultInstance;
 
   @$pb.TagNumber(1)
   NumberBoundary get boundary => $_getN(0);
   @$pb.TagNumber(1)
-  set boundary(NumberBoundary v) {
-    setField(1, v);
-  }
-
+  set boundary(NumberBoundary v) { setField(1, v); }
   @$pb.TagNumber(1)
   $core.bool hasBoundary() => $_has(0);
   @$pb.TagNumber(1)
@@ -2386,10 +1589,7 @@ class NumberFilter extends $pb.GeneratedMessage {
   @$pb.TagNumber(2)
   MultiMeasurement get from => $_getN(1);
   @$pb.TagNumber(2)
-  set from(MultiMeasurement v) {
-    setField(2, v);
-  }
-
+  set from(MultiMeasurement v) { setField(2, v); }
   @$pb.TagNumber(2)
   $core.bool hasFrom() => $_has(1);
   @$pb.TagNumber(2)
@@ -2400,10 +1600,7 @@ class NumberFilter extends $pb.GeneratedMessage {
   @$pb.TagNumber(3)
   MultiMeasurement get to => $_getN(2);
   @$pb.TagNumber(3)
-  set to(MultiMeasurement v) {
-    setField(3, v);
-  }
-
+  set to(MultiMeasurement v) { setField(3, v); }
   @$pb.TagNumber(3)
   $core.bool hasTo() => $_has(2);
   @$pb.TagNumber(3)
@@ -2413,27 +1610,11 @@ class NumberFilter extends $pb.GeneratedMessage {
 }
 
 class Species extends $pb.GeneratedMessage {
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
-      const $core.bool.fromEnvironment('protobuf.omit_message_names')
-          ? ''
-          : 'Species',
-      package: const $pb.PackageName(
-          const $core.bool.fromEnvironment('protobuf.omit_message_names')
-              ? ''
-              : 'anglerslog'),
-      createEmptyInstance: create)
-    ..aOM<Id>(
-        1,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'id',
-        subBuilder: Id.create)
-    ..aOS(
-        2,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'name')
-    ..hasRequiredFields = false;
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'Species', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'anglerslog'), createEmptyInstance: create)
+    ..aOM<Id>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'id', subBuilder: Id.create)
+    ..aOS(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'name')
+    ..hasRequiredFields = false
+  ;
 
   Species._() : super();
   factory Species({
@@ -2449,39 +1630,31 @@ class Species extends $pb.GeneratedMessage {
     }
     return _result;
   }
-  factory Species.fromBuffer($core.List<$core.int> i,
-          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromBuffer(i, r);
-  factory Species.fromJson($core.String i,
-          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromJson(i, r);
-  @$core.Deprecated('Using this can add significant overhead to your binary. '
-      'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
-      'Will be removed in next major version')
+  factory Species.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory Species.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
   Species clone() => Species()..mergeFromMessage(this);
-  @$core.Deprecated('Using this can add significant overhead to your binary. '
-      'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
-      'Will be removed in next major version')
-  Species copyWith(void Function(Species) updates) =>
-      super.copyWith((message) => updates(message as Species))
-          as Species; // ignore: deprecated_member_use
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  Species copyWith(void Function(Species) updates) => super.copyWith((message) => updates(message as Species)) as Species; // ignore: deprecated_member_use
   $pb.BuilderInfo get info_ => _i;
   @$core.pragma('dart2js:noInline')
   static Species create() => Species._();
   Species createEmptyInstance() => create();
   static $pb.PbList<Species> createRepeated() => $pb.PbList<Species>();
   @$core.pragma('dart2js:noInline')
-  static Species getDefault() =>
-      _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<Species>(create);
+  static Species getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<Species>(create);
   static Species? _defaultInstance;
 
   @$pb.TagNumber(1)
   Id get id => $_getN(0);
   @$pb.TagNumber(1)
-  set id(Id v) {
-    setField(1, v);
-  }
-
+  set id(Id v) { setField(1, v); }
   @$pb.TagNumber(1)
   $core.bool hasId() => $_has(0);
   @$pb.TagNumber(1)
@@ -2492,10 +1665,7 @@ class Species extends $pb.GeneratedMessage {
   @$pb.TagNumber(2)
   $core.String get name => $_getSZ(1);
   @$pb.TagNumber(2)
-  set name($core.String v) {
-    $_setString(1, v);
-  }
-
+  set name($core.String v) { $_setString(1, v); }
   @$pb.TagNumber(2)
   $core.bool hasName() => $_has(1);
   @$pb.TagNumber(2)
@@ -2503,231 +1673,41 @@ class Species extends $pb.GeneratedMessage {
 }
 
 class Report extends $pb.GeneratedMessage {
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
-      const $core.bool.fromEnvironment('protobuf.omit_message_names')
-          ? ''
-          : 'Report',
-      package: const $pb.PackageName(
-          const $core.bool.fromEnvironment('protobuf.omit_message_names')
-              ? ''
-              : 'anglerslog'),
-      createEmptyInstance: create)
-    ..aOM<Id>(
-        1,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'id',
-        subBuilder: Id.create)
-    ..aOS(
-        2,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'name')
-    ..aOS(
-        3,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'description')
-    ..e<Report_Type>(
-        4,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'type',
-        $pb.PbFieldType.OE,
-        defaultOrMaker: Report_Type.summary,
-        valueOf: Report_Type.valueOf,
-        enumValues: Report_Type.values)
-    ..aOM<DateRange>(
-        5,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'fromDateRange',
-        subBuilder: DateRange.create)
-    ..aOM<DateRange>(
-        6,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'toDateRange',
-        subBuilder: DateRange.create)
-    ..pc<BaitAttachment>(
-        7,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'baits',
-        $pb.PbFieldType.PM,
-        subBuilder: BaitAttachment.create)
-    ..pc<Id>(
-        8,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'fishingSpotIds',
-        $pb.PbFieldType.PM,
-        subBuilder: Id.create)
-    ..pc<Id>(
-        9,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'speciesIds',
-        $pb.PbFieldType.PM,
-        subBuilder: Id.create)
-    ..pc<Id>(
-        10,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'anglerIds',
-        $pb.PbFieldType.PM,
-        subBuilder: Id.create)
-    ..pc<Id>(
-        11,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'methodIds',
-        $pb.PbFieldType.PM,
-        subBuilder: Id.create)
-    ..pc<Period>(
-        12,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'periods',
-        $pb.PbFieldType.PE,
-        valueOf: Period.valueOf,
-        enumValues: Period.values,
-        defaultEnumValue: Period.period_all)
-    ..aOB(
-        13,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'isFavoritesOnly')
-    ..aOB(
-        14,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'isCatchAndReleaseOnly')
-    ..pc<Season>(
-        15,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'seasons',
-        $pb.PbFieldType.PE,
-        valueOf: Season.valueOf,
-        enumValues: Season.values,
-        defaultEnumValue: Season.season_all)
-    ..pc<Id>(
-        16,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'waterClarityIds',
-        $pb.PbFieldType.PM,
-        subBuilder: Id.create)
-    ..aOM<NumberFilter>(
-        17,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'waterDepthFilter',
-        subBuilder: NumberFilter.create)
-    ..aOM<NumberFilter>(
-        18,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'waterTemperatureFilter',
-        subBuilder: NumberFilter.create)
-    ..aOM<NumberFilter>(
-        19,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'lengthFilter',
-        subBuilder: NumberFilter.create)
-    ..aOM<NumberFilter>(
-        20,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'weightFilter',
-        subBuilder: NumberFilter.create)
-    ..aOM<NumberFilter>(
-        21,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'quantityFilter',
-        subBuilder: NumberFilter.create)
-    ..aOM<NumberFilter>(
-        22,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'airTemperatureFilter',
-        subBuilder: NumberFilter.create)
-    ..aOM<NumberFilter>(
-        23,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'airPressureFilter',
-        subBuilder: NumberFilter.create)
-    ..aOM<NumberFilter>(
-        24,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'airHumidityFilter',
-        subBuilder: NumberFilter.create)
-    ..aOM<NumberFilter>(
-        25,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'airVisibilityFilter',
-        subBuilder: NumberFilter.create)
-    ..aOM<NumberFilter>(
-        26,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'windSpeedFilter',
-        subBuilder: NumberFilter.create)
-    ..pc<Direction>(
-        27,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'windDirections',
-        $pb.PbFieldType.PE,
-        valueOf: Direction.valueOf,
-        enumValues: Direction.values,
-        defaultEnumValue: Direction.direction_all)
-    ..pc<SkyCondition>(
-        28,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'skyConditions',
-        $pb.PbFieldType.PE,
-        valueOf: SkyCondition.valueOf,
-        enumValues: SkyCondition.values,
-        defaultEnumValue: SkyCondition.sky_condition_all)
-    ..pc<MoonPhase>(
-        29,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'moonPhases',
-        $pb.PbFieldType.PE,
-        valueOf: MoonPhase.valueOf,
-        enumValues: MoonPhase.values,
-        defaultEnumValue: MoonPhase.moon_phase_all)
-    ..pc<TideType>(
-        30,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'tideTypes',
-        $pb.PbFieldType.PE,
-        valueOf: TideType.valueOf,
-        enumValues: TideType.values,
-        defaultEnumValue: TideType.tide_type_all)
-    ..pc<Id>(
-        31,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'bodyOfWaterIds',
-        $pb.PbFieldType.PM,
-        subBuilder: Id.create)
-    ..aOS(
-        32,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'timeZone')
-    ..hasRequiredFields = false;
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'Report', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'anglerslog'), createEmptyInstance: create)
+    ..aOM<Id>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'id', subBuilder: Id.create)
+    ..aOS(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'name')
+    ..aOS(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'description')
+    ..e<Report_Type>(4, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'type', $pb.PbFieldType.OE, defaultOrMaker: Report_Type.summary, valueOf: Report_Type.valueOf, enumValues: Report_Type.values)
+    ..aOM<DateRange>(5, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'fromDateRange', subBuilder: DateRange.create)
+    ..aOM<DateRange>(6, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'toDateRange', subBuilder: DateRange.create)
+    ..pc<BaitAttachment>(7, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'baits', $pb.PbFieldType.PM, subBuilder: BaitAttachment.create)
+    ..pc<Id>(8, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'fishingSpotIds', $pb.PbFieldType.PM, subBuilder: Id.create)
+    ..pc<Id>(9, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'speciesIds', $pb.PbFieldType.PM, subBuilder: Id.create)
+    ..pc<Id>(10, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'anglerIds', $pb.PbFieldType.PM, subBuilder: Id.create)
+    ..pc<Id>(11, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'methodIds', $pb.PbFieldType.PM, subBuilder: Id.create)
+    ..pc<Period>(12, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'periods', $pb.PbFieldType.PE, valueOf: Period.valueOf, enumValues: Period.values, defaultEnumValue: Period.period_all)
+    ..aOB(13, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'isFavoritesOnly')
+    ..aOB(14, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'isCatchAndReleaseOnly')
+    ..pc<Season>(15, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'seasons', $pb.PbFieldType.PE, valueOf: Season.valueOf, enumValues: Season.values, defaultEnumValue: Season.season_all)
+    ..pc<Id>(16, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'waterClarityIds', $pb.PbFieldType.PM, subBuilder: Id.create)
+    ..aOM<NumberFilter>(17, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'waterDepthFilter', subBuilder: NumberFilter.create)
+    ..aOM<NumberFilter>(18, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'waterTemperatureFilter', subBuilder: NumberFilter.create)
+    ..aOM<NumberFilter>(19, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'lengthFilter', subBuilder: NumberFilter.create)
+    ..aOM<NumberFilter>(20, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'weightFilter', subBuilder: NumberFilter.create)
+    ..aOM<NumberFilter>(21, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'quantityFilter', subBuilder: NumberFilter.create)
+    ..aOM<NumberFilter>(22, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'airTemperatureFilter', subBuilder: NumberFilter.create)
+    ..aOM<NumberFilter>(23, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'airPressureFilter', subBuilder: NumberFilter.create)
+    ..aOM<NumberFilter>(24, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'airHumidityFilter', subBuilder: NumberFilter.create)
+    ..aOM<NumberFilter>(25, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'airVisibilityFilter', subBuilder: NumberFilter.create)
+    ..aOM<NumberFilter>(26, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'windSpeedFilter', subBuilder: NumberFilter.create)
+    ..pc<Direction>(27, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'windDirections', $pb.PbFieldType.PE, valueOf: Direction.valueOf, enumValues: Direction.values, defaultEnumValue: Direction.direction_all)
+    ..pc<SkyCondition>(28, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'skyConditions', $pb.PbFieldType.PE, valueOf: SkyCondition.valueOf, enumValues: SkyCondition.values, defaultEnumValue: SkyCondition.sky_condition_all)
+    ..pc<MoonPhase>(29, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'moonPhases', $pb.PbFieldType.PE, valueOf: MoonPhase.valueOf, enumValues: MoonPhase.values, defaultEnumValue: MoonPhase.moon_phase_all)
+    ..pc<TideType>(30, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'tideTypes', $pb.PbFieldType.PE, valueOf: TideType.valueOf, enumValues: TideType.values, defaultEnumValue: TideType.tide_type_all)
+    ..pc<Id>(31, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'bodyOfWaterIds', $pb.PbFieldType.PM, subBuilder: Id.create)
+    ..aOS(32, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'timeZone')
+    ..hasRequiredFields = false
+  ;
 
   Report._() : super();
   factory Report({
@@ -2863,39 +1843,31 @@ class Report extends $pb.GeneratedMessage {
     }
     return _result;
   }
-  factory Report.fromBuffer($core.List<$core.int> i,
-          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromBuffer(i, r);
-  factory Report.fromJson($core.String i,
-          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromJson(i, r);
-  @$core.Deprecated('Using this can add significant overhead to your binary. '
-      'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
-      'Will be removed in next major version')
+  factory Report.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory Report.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
   Report clone() => Report()..mergeFromMessage(this);
-  @$core.Deprecated('Using this can add significant overhead to your binary. '
-      'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
-      'Will be removed in next major version')
-  Report copyWith(void Function(Report) updates) =>
-      super.copyWith((message) => updates(message as Report))
-          as Report; // ignore: deprecated_member_use
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  Report copyWith(void Function(Report) updates) => super.copyWith((message) => updates(message as Report)) as Report; // ignore: deprecated_member_use
   $pb.BuilderInfo get info_ => _i;
   @$core.pragma('dart2js:noInline')
   static Report create() => Report._();
   Report createEmptyInstance() => create();
   static $pb.PbList<Report> createRepeated() => $pb.PbList<Report>();
   @$core.pragma('dart2js:noInline')
-  static Report getDefault() =>
-      _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<Report>(create);
+  static Report getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<Report>(create);
   static Report? _defaultInstance;
 
   @$pb.TagNumber(1)
   Id get id => $_getN(0);
   @$pb.TagNumber(1)
-  set id(Id v) {
-    setField(1, v);
-  }
-
+  set id(Id v) { setField(1, v); }
   @$pb.TagNumber(1)
   $core.bool hasId() => $_has(0);
   @$pb.TagNumber(1)
@@ -2906,10 +1878,7 @@ class Report extends $pb.GeneratedMessage {
   @$pb.TagNumber(2)
   $core.String get name => $_getSZ(1);
   @$pb.TagNumber(2)
-  set name($core.String v) {
-    $_setString(1, v);
-  }
-
+  set name($core.String v) { $_setString(1, v); }
   @$pb.TagNumber(2)
   $core.bool hasName() => $_has(1);
   @$pb.TagNumber(2)
@@ -2918,10 +1887,7 @@ class Report extends $pb.GeneratedMessage {
   @$pb.TagNumber(3)
   $core.String get description => $_getSZ(2);
   @$pb.TagNumber(3)
-  set description($core.String v) {
-    $_setString(2, v);
-  }
-
+  set description($core.String v) { $_setString(2, v); }
   @$pb.TagNumber(3)
   $core.bool hasDescription() => $_has(2);
   @$pb.TagNumber(3)
@@ -2930,10 +1896,7 @@ class Report extends $pb.GeneratedMessage {
   @$pb.TagNumber(4)
   Report_Type get type => $_getN(3);
   @$pb.TagNumber(4)
-  set type(Report_Type v) {
-    setField(4, v);
-  }
-
+  set type(Report_Type v) { setField(4, v); }
   @$pb.TagNumber(4)
   $core.bool hasType() => $_has(3);
   @$pb.TagNumber(4)
@@ -2942,10 +1905,7 @@ class Report extends $pb.GeneratedMessage {
   @$pb.TagNumber(5)
   DateRange get fromDateRange => $_getN(4);
   @$pb.TagNumber(5)
-  set fromDateRange(DateRange v) {
-    setField(5, v);
-  }
-
+  set fromDateRange(DateRange v) { setField(5, v); }
   @$pb.TagNumber(5)
   $core.bool hasFromDateRange() => $_has(4);
   @$pb.TagNumber(5)
@@ -2956,10 +1916,7 @@ class Report extends $pb.GeneratedMessage {
   @$pb.TagNumber(6)
   DateRange get toDateRange => $_getN(5);
   @$pb.TagNumber(6)
-  set toDateRange(DateRange v) {
-    setField(6, v);
-  }
-
+  set toDateRange(DateRange v) { setField(6, v); }
   @$pb.TagNumber(6)
   $core.bool hasToDateRange() => $_has(5);
   @$pb.TagNumber(6)
@@ -2988,10 +1945,7 @@ class Report extends $pb.GeneratedMessage {
   @$pb.TagNumber(13)
   $core.bool get isFavoritesOnly => $_getBF(12);
   @$pb.TagNumber(13)
-  set isFavoritesOnly($core.bool v) {
-    $_setBool(12, v);
-  }
-
+  set isFavoritesOnly($core.bool v) { $_setBool(12, v); }
   @$pb.TagNumber(13)
   $core.bool hasIsFavoritesOnly() => $_has(12);
   @$pb.TagNumber(13)
@@ -3000,10 +1954,7 @@ class Report extends $pb.GeneratedMessage {
   @$pb.TagNumber(14)
   $core.bool get isCatchAndReleaseOnly => $_getBF(13);
   @$pb.TagNumber(14)
-  set isCatchAndReleaseOnly($core.bool v) {
-    $_setBool(13, v);
-  }
-
+  set isCatchAndReleaseOnly($core.bool v) { $_setBool(13, v); }
   @$pb.TagNumber(14)
   $core.bool hasIsCatchAndReleaseOnly() => $_has(13);
   @$pb.TagNumber(14)
@@ -3018,10 +1969,7 @@ class Report extends $pb.GeneratedMessage {
   @$pb.TagNumber(17)
   NumberFilter get waterDepthFilter => $_getN(16);
   @$pb.TagNumber(17)
-  set waterDepthFilter(NumberFilter v) {
-    setField(17, v);
-  }
-
+  set waterDepthFilter(NumberFilter v) { setField(17, v); }
   @$pb.TagNumber(17)
   $core.bool hasWaterDepthFilter() => $_has(16);
   @$pb.TagNumber(17)
@@ -3032,10 +1980,7 @@ class Report extends $pb.GeneratedMessage {
   @$pb.TagNumber(18)
   NumberFilter get waterTemperatureFilter => $_getN(17);
   @$pb.TagNumber(18)
-  set waterTemperatureFilter(NumberFilter v) {
-    setField(18, v);
-  }
-
+  set waterTemperatureFilter(NumberFilter v) { setField(18, v); }
   @$pb.TagNumber(18)
   $core.bool hasWaterTemperatureFilter() => $_has(17);
   @$pb.TagNumber(18)
@@ -3046,10 +1991,7 @@ class Report extends $pb.GeneratedMessage {
   @$pb.TagNumber(19)
   NumberFilter get lengthFilter => $_getN(18);
   @$pb.TagNumber(19)
-  set lengthFilter(NumberFilter v) {
-    setField(19, v);
-  }
-
+  set lengthFilter(NumberFilter v) { setField(19, v); }
   @$pb.TagNumber(19)
   $core.bool hasLengthFilter() => $_has(18);
   @$pb.TagNumber(19)
@@ -3060,10 +2002,7 @@ class Report extends $pb.GeneratedMessage {
   @$pb.TagNumber(20)
   NumberFilter get weightFilter => $_getN(19);
   @$pb.TagNumber(20)
-  set weightFilter(NumberFilter v) {
-    setField(20, v);
-  }
-
+  set weightFilter(NumberFilter v) { setField(20, v); }
   @$pb.TagNumber(20)
   $core.bool hasWeightFilter() => $_has(19);
   @$pb.TagNumber(20)
@@ -3074,10 +2013,7 @@ class Report extends $pb.GeneratedMessage {
   @$pb.TagNumber(21)
   NumberFilter get quantityFilter => $_getN(20);
   @$pb.TagNumber(21)
-  set quantityFilter(NumberFilter v) {
-    setField(21, v);
-  }
-
+  set quantityFilter(NumberFilter v) { setField(21, v); }
   @$pb.TagNumber(21)
   $core.bool hasQuantityFilter() => $_has(20);
   @$pb.TagNumber(21)
@@ -3088,10 +2024,7 @@ class Report extends $pb.GeneratedMessage {
   @$pb.TagNumber(22)
   NumberFilter get airTemperatureFilter => $_getN(21);
   @$pb.TagNumber(22)
-  set airTemperatureFilter(NumberFilter v) {
-    setField(22, v);
-  }
-
+  set airTemperatureFilter(NumberFilter v) { setField(22, v); }
   @$pb.TagNumber(22)
   $core.bool hasAirTemperatureFilter() => $_has(21);
   @$pb.TagNumber(22)
@@ -3102,10 +2035,7 @@ class Report extends $pb.GeneratedMessage {
   @$pb.TagNumber(23)
   NumberFilter get airPressureFilter => $_getN(22);
   @$pb.TagNumber(23)
-  set airPressureFilter(NumberFilter v) {
-    setField(23, v);
-  }
-
+  set airPressureFilter(NumberFilter v) { setField(23, v); }
   @$pb.TagNumber(23)
   $core.bool hasAirPressureFilter() => $_has(22);
   @$pb.TagNumber(23)
@@ -3116,10 +2046,7 @@ class Report extends $pb.GeneratedMessage {
   @$pb.TagNumber(24)
   NumberFilter get airHumidityFilter => $_getN(23);
   @$pb.TagNumber(24)
-  set airHumidityFilter(NumberFilter v) {
-    setField(24, v);
-  }
-
+  set airHumidityFilter(NumberFilter v) { setField(24, v); }
   @$pb.TagNumber(24)
   $core.bool hasAirHumidityFilter() => $_has(23);
   @$pb.TagNumber(24)
@@ -3130,10 +2057,7 @@ class Report extends $pb.GeneratedMessage {
   @$pb.TagNumber(25)
   NumberFilter get airVisibilityFilter => $_getN(24);
   @$pb.TagNumber(25)
-  set airVisibilityFilter(NumberFilter v) {
-    setField(25, v);
-  }
-
+  set airVisibilityFilter(NumberFilter v) { setField(25, v); }
   @$pb.TagNumber(25)
   $core.bool hasAirVisibilityFilter() => $_has(24);
   @$pb.TagNumber(25)
@@ -3144,10 +2068,7 @@ class Report extends $pb.GeneratedMessage {
   @$pb.TagNumber(26)
   NumberFilter get windSpeedFilter => $_getN(25);
   @$pb.TagNumber(26)
-  set windSpeedFilter(NumberFilter v) {
-    setField(26, v);
-  }
-
+  set windSpeedFilter(NumberFilter v) { setField(26, v); }
   @$pb.TagNumber(26)
   $core.bool hasWindSpeedFilter() => $_has(25);
   @$pb.TagNumber(26)
@@ -3173,10 +2094,7 @@ class Report extends $pb.GeneratedMessage {
   @$pb.TagNumber(32)
   $core.String get timeZone => $_getSZ(31);
   @$pb.TagNumber(32)
-  set timeZone($core.String v) {
-    $_setString(31, v);
-  }
-
+  set timeZone($core.String v) { $_setString(31, v); }
   @$pb.TagNumber(32)
   $core.bool hasTimeZone() => $_has(31);
   @$pb.TagNumber(32)
@@ -3184,27 +2102,11 @@ class Report extends $pb.GeneratedMessage {
 }
 
 class Angler extends $pb.GeneratedMessage {
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
-      const $core.bool.fromEnvironment('protobuf.omit_message_names')
-          ? ''
-          : 'Angler',
-      package: const $pb.PackageName(
-          const $core.bool.fromEnvironment('protobuf.omit_message_names')
-              ? ''
-              : 'anglerslog'),
-      createEmptyInstance: create)
-    ..aOM<Id>(
-        1,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'id',
-        subBuilder: Id.create)
-    ..aOS(
-        2,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'name')
-    ..hasRequiredFields = false;
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'Angler', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'anglerslog'), createEmptyInstance: create)
+    ..aOM<Id>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'id', subBuilder: Id.create)
+    ..aOS(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'name')
+    ..hasRequiredFields = false
+  ;
 
   Angler._() : super();
   factory Angler({
@@ -3220,39 +2122,31 @@ class Angler extends $pb.GeneratedMessage {
     }
     return _result;
   }
-  factory Angler.fromBuffer($core.List<$core.int> i,
-          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromBuffer(i, r);
-  factory Angler.fromJson($core.String i,
-          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromJson(i, r);
-  @$core.Deprecated('Using this can add significant overhead to your binary. '
-      'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
-      'Will be removed in next major version')
+  factory Angler.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory Angler.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
   Angler clone() => Angler()..mergeFromMessage(this);
-  @$core.Deprecated('Using this can add significant overhead to your binary. '
-      'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
-      'Will be removed in next major version')
-  Angler copyWith(void Function(Angler) updates) =>
-      super.copyWith((message) => updates(message as Angler))
-          as Angler; // ignore: deprecated_member_use
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  Angler copyWith(void Function(Angler) updates) => super.copyWith((message) => updates(message as Angler)) as Angler; // ignore: deprecated_member_use
   $pb.BuilderInfo get info_ => _i;
   @$core.pragma('dart2js:noInline')
   static Angler create() => Angler._();
   Angler createEmptyInstance() => create();
   static $pb.PbList<Angler> createRepeated() => $pb.PbList<Angler>();
   @$core.pragma('dart2js:noInline')
-  static Angler getDefault() =>
-      _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<Angler>(create);
+  static Angler getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<Angler>(create);
   static Angler? _defaultInstance;
 
   @$pb.TagNumber(1)
   Id get id => $_getN(0);
   @$pb.TagNumber(1)
-  set id(Id v) {
-    setField(1, v);
-  }
-
+  set id(Id v) { setField(1, v); }
   @$pb.TagNumber(1)
   $core.bool hasId() => $_has(0);
   @$pb.TagNumber(1)
@@ -3263,10 +2157,7 @@ class Angler extends $pb.GeneratedMessage {
   @$pb.TagNumber(2)
   $core.String get name => $_getSZ(1);
   @$pb.TagNumber(2)
-  set name($core.String v) {
-    $_setString(1, v);
-  }
-
+  set name($core.String v) { $_setString(1, v); }
   @$pb.TagNumber(2)
   $core.bool hasName() => $_has(1);
   @$pb.TagNumber(2)
@@ -3274,27 +2165,11 @@ class Angler extends $pb.GeneratedMessage {
 }
 
 class Method extends $pb.GeneratedMessage {
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
-      const $core.bool.fromEnvironment('protobuf.omit_message_names')
-          ? ''
-          : 'Method',
-      package: const $pb.PackageName(
-          const $core.bool.fromEnvironment('protobuf.omit_message_names')
-              ? ''
-              : 'anglerslog'),
-      createEmptyInstance: create)
-    ..aOM<Id>(
-        1,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'id',
-        subBuilder: Id.create)
-    ..aOS(
-        2,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'name')
-    ..hasRequiredFields = false;
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'Method', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'anglerslog'), createEmptyInstance: create)
+    ..aOM<Id>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'id', subBuilder: Id.create)
+    ..aOS(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'name')
+    ..hasRequiredFields = false
+  ;
 
   Method._() : super();
   factory Method({
@@ -3310,39 +2185,31 @@ class Method extends $pb.GeneratedMessage {
     }
     return _result;
   }
-  factory Method.fromBuffer($core.List<$core.int> i,
-          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromBuffer(i, r);
-  factory Method.fromJson($core.String i,
-          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromJson(i, r);
-  @$core.Deprecated('Using this can add significant overhead to your binary. '
-      'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
-      'Will be removed in next major version')
+  factory Method.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory Method.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
   Method clone() => Method()..mergeFromMessage(this);
-  @$core.Deprecated('Using this can add significant overhead to your binary. '
-      'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
-      'Will be removed in next major version')
-  Method copyWith(void Function(Method) updates) =>
-      super.copyWith((message) => updates(message as Method))
-          as Method; // ignore: deprecated_member_use
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  Method copyWith(void Function(Method) updates) => super.copyWith((message) => updates(message as Method)) as Method; // ignore: deprecated_member_use
   $pb.BuilderInfo get info_ => _i;
   @$core.pragma('dart2js:noInline')
   static Method create() => Method._();
   Method createEmptyInstance() => create();
   static $pb.PbList<Method> createRepeated() => $pb.PbList<Method>();
   @$core.pragma('dart2js:noInline')
-  static Method getDefault() =>
-      _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<Method>(create);
+  static Method getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<Method>(create);
   static Method? _defaultInstance;
 
   @$pb.TagNumber(1)
   Id get id => $_getN(0);
   @$pb.TagNumber(1)
-  set id(Id v) {
-    setField(1, v);
-  }
-
+  set id(Id v) { setField(1, v); }
   @$pb.TagNumber(1)
   $core.bool hasId() => $_has(0);
   @$pb.TagNumber(1)
@@ -3353,10 +2220,7 @@ class Method extends $pb.GeneratedMessage {
   @$pb.TagNumber(2)
   $core.String get name => $_getSZ(1);
   @$pb.TagNumber(2)
-  set name($core.String v) {
-    $_setString(1, v);
-  }
-
+  set name($core.String v) { $_setString(1, v); }
   @$pb.TagNumber(2)
   $core.bool hasName() => $_has(1);
   @$pb.TagNumber(2)
@@ -3364,27 +2228,11 @@ class Method extends $pb.GeneratedMessage {
 }
 
 class WaterClarity extends $pb.GeneratedMessage {
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
-      const $core.bool.fromEnvironment('protobuf.omit_message_names')
-          ? ''
-          : 'WaterClarity',
-      package: const $pb.PackageName(
-          const $core.bool.fromEnvironment('protobuf.omit_message_names')
-              ? ''
-              : 'anglerslog'),
-      createEmptyInstance: create)
-    ..aOM<Id>(
-        1,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'id',
-        subBuilder: Id.create)
-    ..aOS(
-        2,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'name')
-    ..hasRequiredFields = false;
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'WaterClarity', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'anglerslog'), createEmptyInstance: create)
+    ..aOM<Id>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'id', subBuilder: Id.create)
+    ..aOS(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'name')
+    ..hasRequiredFields = false
+  ;
 
   WaterClarity._() : super();
   factory WaterClarity({
@@ -3400,40 +2248,31 @@ class WaterClarity extends $pb.GeneratedMessage {
     }
     return _result;
   }
-  factory WaterClarity.fromBuffer($core.List<$core.int> i,
-          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromBuffer(i, r);
-  factory WaterClarity.fromJson($core.String i,
-          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromJson(i, r);
-  @$core.Deprecated('Using this can add significant overhead to your binary. '
-      'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
-      'Will be removed in next major version')
+  factory WaterClarity.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory WaterClarity.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
   WaterClarity clone() => WaterClarity()..mergeFromMessage(this);
-  @$core.Deprecated('Using this can add significant overhead to your binary. '
-      'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
-      'Will be removed in next major version')
-  WaterClarity copyWith(void Function(WaterClarity) updates) =>
-      super.copyWith((message) => updates(message as WaterClarity))
-          as WaterClarity; // ignore: deprecated_member_use
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  WaterClarity copyWith(void Function(WaterClarity) updates) => super.copyWith((message) => updates(message as WaterClarity)) as WaterClarity; // ignore: deprecated_member_use
   $pb.BuilderInfo get info_ => _i;
   @$core.pragma('dart2js:noInline')
   static WaterClarity create() => WaterClarity._();
   WaterClarity createEmptyInstance() => create();
-  static $pb.PbList<WaterClarity> createRepeated() =>
-      $pb.PbList<WaterClarity>();
+  static $pb.PbList<WaterClarity> createRepeated() => $pb.PbList<WaterClarity>();
   @$core.pragma('dart2js:noInline')
-  static WaterClarity getDefault() => _defaultInstance ??=
-      $pb.GeneratedMessage.$_defaultFor<WaterClarity>(create);
+  static WaterClarity getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<WaterClarity>(create);
   static WaterClarity? _defaultInstance;
 
   @$pb.TagNumber(1)
   Id get id => $_getN(0);
   @$pb.TagNumber(1)
-  set id(Id v) {
-    setField(1, v);
-  }
-
+  set id(Id v) { setField(1, v); }
   @$pb.TagNumber(1)
   $core.bool hasId() => $_has(0);
   @$pb.TagNumber(1)
@@ -3444,10 +2283,7 @@ class WaterClarity extends $pb.GeneratedMessage {
   @$pb.TagNumber(2)
   $core.String get name => $_getSZ(1);
   @$pb.TagNumber(2)
-  set name($core.String v) {
-    $_setString(1, v);
-  }
-
+  set name($core.String v) { $_setString(1, v); }
   @$pb.TagNumber(2)
   $core.bool hasName() => $_has(1);
   @$pb.TagNumber(2)
@@ -3455,28 +2291,11 @@ class WaterClarity extends $pb.GeneratedMessage {
 }
 
 class Trip_CatchesPerEntity extends $pb.GeneratedMessage {
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
-      const $core.bool.fromEnvironment('protobuf.omit_message_names')
-          ? ''
-          : 'Trip.CatchesPerEntity',
-      package: const $pb.PackageName(
-          const $core.bool.fromEnvironment('protobuf.omit_message_names')
-              ? ''
-              : 'anglerslog'),
-      createEmptyInstance: create)
-    ..aOM<Id>(
-        1,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'entityId',
-        subBuilder: Id.create)
-    ..a<$core.int>(
-        2,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'value',
-        $pb.PbFieldType.OU3)
-    ..hasRequiredFields = false;
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'Trip.CatchesPerEntity', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'anglerslog'), createEmptyInstance: create)
+    ..aOM<Id>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'entityId', subBuilder: Id.create)
+    ..a<$core.int>(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'value', $pb.PbFieldType.OU3)
+    ..hasRequiredFields = false
+  ;
 
   Trip_CatchesPerEntity._() : super();
   factory Trip_CatchesPerEntity({
@@ -3492,42 +2311,31 @@ class Trip_CatchesPerEntity extends $pb.GeneratedMessage {
     }
     return _result;
   }
-  factory Trip_CatchesPerEntity.fromBuffer($core.List<$core.int> i,
-          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromBuffer(i, r);
-  factory Trip_CatchesPerEntity.fromJson($core.String i,
-          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromJson(i, r);
-  @$core.Deprecated('Using this can add significant overhead to your binary. '
-      'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
-      'Will be removed in next major version')
-  Trip_CatchesPerEntity clone() =>
-      Trip_CatchesPerEntity()..mergeFromMessage(this);
-  @$core.Deprecated('Using this can add significant overhead to your binary. '
-      'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
-      'Will be removed in next major version')
-  Trip_CatchesPerEntity copyWith(
-          void Function(Trip_CatchesPerEntity) updates) =>
-      super.copyWith((message) => updates(message as Trip_CatchesPerEntity))
-          as Trip_CatchesPerEntity; // ignore: deprecated_member_use
+  factory Trip_CatchesPerEntity.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory Trip_CatchesPerEntity.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  Trip_CatchesPerEntity clone() => Trip_CatchesPerEntity()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  Trip_CatchesPerEntity copyWith(void Function(Trip_CatchesPerEntity) updates) => super.copyWith((message) => updates(message as Trip_CatchesPerEntity)) as Trip_CatchesPerEntity; // ignore: deprecated_member_use
   $pb.BuilderInfo get info_ => _i;
   @$core.pragma('dart2js:noInline')
   static Trip_CatchesPerEntity create() => Trip_CatchesPerEntity._();
   Trip_CatchesPerEntity createEmptyInstance() => create();
-  static $pb.PbList<Trip_CatchesPerEntity> createRepeated() =>
-      $pb.PbList<Trip_CatchesPerEntity>();
+  static $pb.PbList<Trip_CatchesPerEntity> createRepeated() => $pb.PbList<Trip_CatchesPerEntity>();
   @$core.pragma('dart2js:noInline')
-  static Trip_CatchesPerEntity getDefault() => _defaultInstance ??=
-      $pb.GeneratedMessage.$_defaultFor<Trip_CatchesPerEntity>(create);
+  static Trip_CatchesPerEntity getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<Trip_CatchesPerEntity>(create);
   static Trip_CatchesPerEntity? _defaultInstance;
 
   @$pb.TagNumber(1)
   Id get entityId => $_getN(0);
   @$pb.TagNumber(1)
-  set entityId(Id v) {
-    setField(1, v);
-  }
-
+  set entityId(Id v) { setField(1, v); }
   @$pb.TagNumber(1)
   $core.bool hasEntityId() => $_has(0);
   @$pb.TagNumber(1)
@@ -3538,10 +2346,7 @@ class Trip_CatchesPerEntity extends $pb.GeneratedMessage {
   @$pb.TagNumber(2)
   $core.int get value => $_getIZ(1);
   @$pb.TagNumber(2)
-  set value($core.int v) {
-    $_setUnsignedInt32(1, v);
-  }
-
+  set value($core.int v) { $_setUnsignedInt32(1, v); }
   @$pb.TagNumber(2)
   $core.bool hasValue() => $_has(1);
   @$pb.TagNumber(2)
@@ -3549,28 +2354,11 @@ class Trip_CatchesPerEntity extends $pb.GeneratedMessage {
 }
 
 class Trip_CatchesPerBait extends $pb.GeneratedMessage {
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
-      const $core.bool.fromEnvironment('protobuf.omit_message_names')
-          ? ''
-          : 'Trip.CatchesPerBait',
-      package: const $pb.PackageName(
-          const $core.bool.fromEnvironment('protobuf.omit_message_names')
-              ? ''
-              : 'anglerslog'),
-      createEmptyInstance: create)
-    ..aOM<BaitAttachment>(
-        1,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'attachment',
-        subBuilder: BaitAttachment.create)
-    ..a<$core.int>(
-        2,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'value',
-        $pb.PbFieldType.OU3)
-    ..hasRequiredFields = false;
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'Trip.CatchesPerBait', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'anglerslog'), createEmptyInstance: create)
+    ..aOM<BaitAttachment>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'attachment', subBuilder: BaitAttachment.create)
+    ..a<$core.int>(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'value', $pb.PbFieldType.OU3)
+    ..hasRequiredFields = false
+  ;
 
   Trip_CatchesPerBait._() : super();
   factory Trip_CatchesPerBait({
@@ -3586,40 +2374,31 @@ class Trip_CatchesPerBait extends $pb.GeneratedMessage {
     }
     return _result;
   }
-  factory Trip_CatchesPerBait.fromBuffer($core.List<$core.int> i,
-          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromBuffer(i, r);
-  factory Trip_CatchesPerBait.fromJson($core.String i,
-          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromJson(i, r);
-  @$core.Deprecated('Using this can add significant overhead to your binary. '
-      'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
-      'Will be removed in next major version')
+  factory Trip_CatchesPerBait.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory Trip_CatchesPerBait.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
   Trip_CatchesPerBait clone() => Trip_CatchesPerBait()..mergeFromMessage(this);
-  @$core.Deprecated('Using this can add significant overhead to your binary. '
-      'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
-      'Will be removed in next major version')
-  Trip_CatchesPerBait copyWith(void Function(Trip_CatchesPerBait) updates) =>
-      super.copyWith((message) => updates(message as Trip_CatchesPerBait))
-          as Trip_CatchesPerBait; // ignore: deprecated_member_use
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  Trip_CatchesPerBait copyWith(void Function(Trip_CatchesPerBait) updates) => super.copyWith((message) => updates(message as Trip_CatchesPerBait)) as Trip_CatchesPerBait; // ignore: deprecated_member_use
   $pb.BuilderInfo get info_ => _i;
   @$core.pragma('dart2js:noInline')
   static Trip_CatchesPerBait create() => Trip_CatchesPerBait._();
   Trip_CatchesPerBait createEmptyInstance() => create();
-  static $pb.PbList<Trip_CatchesPerBait> createRepeated() =>
-      $pb.PbList<Trip_CatchesPerBait>();
+  static $pb.PbList<Trip_CatchesPerBait> createRepeated() => $pb.PbList<Trip_CatchesPerBait>();
   @$core.pragma('dart2js:noInline')
-  static Trip_CatchesPerBait getDefault() => _defaultInstance ??=
-      $pb.GeneratedMessage.$_defaultFor<Trip_CatchesPerBait>(create);
+  static Trip_CatchesPerBait getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<Trip_CatchesPerBait>(create);
   static Trip_CatchesPerBait? _defaultInstance;
 
   @$pb.TagNumber(1)
   BaitAttachment get attachment => $_getN(0);
   @$pb.TagNumber(1)
-  set attachment(BaitAttachment v) {
-    setField(1, v);
-  }
-
+  set attachment(BaitAttachment v) { setField(1, v); }
   @$pb.TagNumber(1)
   $core.bool hasAttachment() => $_has(0);
   @$pb.TagNumber(1)
@@ -3630,10 +2409,7 @@ class Trip_CatchesPerBait extends $pb.GeneratedMessage {
   @$pb.TagNumber(2)
   $core.int get value => $_getIZ(1);
   @$pb.TagNumber(2)
-  set value($core.int v) {
-    $_setUnsignedInt32(1, v);
-  }
-
+  set value($core.int v) { $_setUnsignedInt32(1, v); }
   @$pb.TagNumber(2)
   $core.bool hasValue() => $_has(1);
   @$pb.TagNumber(2)
@@ -3641,111 +2417,25 @@ class Trip_CatchesPerBait extends $pb.GeneratedMessage {
 }
 
 class Trip extends $pb.GeneratedMessage {
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
-      const $core.bool.fromEnvironment('protobuf.omit_message_names')
-          ? ''
-          : 'Trip',
-      package: const $pb.PackageName(
-          const $core.bool.fromEnvironment('protobuf.omit_message_names')
-              ? ''
-              : 'anglerslog'),
-      createEmptyInstance: create)
-    ..aOM<Id>(
-        1,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'id',
-        subBuilder: Id.create)
-    ..aOS(
-        2,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'name')
-    ..a<$fixnum.Int64>(
-        3,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'startTimestamp',
-        $pb.PbFieldType.OU6,
-        defaultOrMaker: $fixnum.Int64.ZERO)
-    ..a<$fixnum.Int64>(
-        4,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'endTimestamp',
-        $pb.PbFieldType.OU6,
-        defaultOrMaker: $fixnum.Int64.ZERO)
-    ..pPS(
-        5,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'imageNames')
-    ..pc<Id>(
-        6,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'catchIds',
-        $pb.PbFieldType.PM,
-        subBuilder: Id.create)
-    ..pc<Id>(
-        7,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'bodyOfWaterIds',
-        $pb.PbFieldType.PM,
-        subBuilder: Id.create)
-    ..pc<Trip_CatchesPerEntity>(
-        8,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'catchesPerFishingSpot',
-        $pb.PbFieldType.PM,
-        subBuilder: Trip_CatchesPerEntity.create)
-    ..pc<Trip_CatchesPerEntity>(
-        9,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'catchesPerAngler',
-        $pb.PbFieldType.PM,
-        subBuilder: Trip_CatchesPerEntity.create)
-    ..pc<Trip_CatchesPerEntity>(
-        10,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'catchesPerSpecies',
-        $pb.PbFieldType.PM,
-        subBuilder: Trip_CatchesPerEntity.create)
-    ..pc<Trip_CatchesPerBait>(
-        11,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'catchesPerBait',
-        $pb.PbFieldType.PM,
-        subBuilder: Trip_CatchesPerBait.create)
-    ..pc<CustomEntityValue>(
-        12,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'customEntityValues',
-        $pb.PbFieldType.PM,
-        subBuilder: CustomEntityValue.create)
-    ..aOS(
-        13,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'notes')
-    ..aOM<Atmosphere>(
-        14,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'atmosphere',
-        subBuilder: Atmosphere.create)
-    ..aOS(
-        15,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'timeZone')
-    ..hasRequiredFields = false;
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'Trip', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'anglerslog'), createEmptyInstance: create)
+    ..aOM<Id>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'id', subBuilder: Id.create)
+    ..aOS(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'name')
+    ..a<$fixnum.Int64>(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'startTimestamp', $pb.PbFieldType.OU6, defaultOrMaker: $fixnum.Int64.ZERO)
+    ..a<$fixnum.Int64>(4, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'endTimestamp', $pb.PbFieldType.OU6, defaultOrMaker: $fixnum.Int64.ZERO)
+    ..pPS(5, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'imageNames')
+    ..pc<Id>(6, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'catchIds', $pb.PbFieldType.PM, subBuilder: Id.create)
+    ..pc<Id>(7, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'bodyOfWaterIds', $pb.PbFieldType.PM, subBuilder: Id.create)
+    ..pc<Trip_CatchesPerEntity>(8, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'catchesPerFishingSpot', $pb.PbFieldType.PM, subBuilder: Trip_CatchesPerEntity.create)
+    ..pc<Trip_CatchesPerEntity>(9, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'catchesPerAngler', $pb.PbFieldType.PM, subBuilder: Trip_CatchesPerEntity.create)
+    ..pc<Trip_CatchesPerEntity>(10, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'catchesPerSpecies', $pb.PbFieldType.PM, subBuilder: Trip_CatchesPerEntity.create)
+    ..pc<Trip_CatchesPerBait>(11, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'catchesPerBait', $pb.PbFieldType.PM, subBuilder: Trip_CatchesPerBait.create)
+    ..pc<CustomEntityValue>(12, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'customEntityValues', $pb.PbFieldType.PM, subBuilder: CustomEntityValue.create)
+    ..aOS(13, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'notes')
+    ..aOM<Atmosphere>(14, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'atmosphere', subBuilder: Atmosphere.create)
+    ..aOS(15, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'timeZone')
+    ..aOM<Id>(16, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'gpsTrailId', subBuilder: Id.create)
+    ..hasRequiredFields = false
+  ;
 
   Trip._() : super();
   factory Trip({
@@ -3764,6 +2454,7 @@ class Trip extends $pb.GeneratedMessage {
     $core.String? notes,
     Atmosphere? atmosphere,
     $core.String? timeZone,
+    Id? gpsTrailId,
   }) {
     final _result = create();
     if (id != null) {
@@ -3811,41 +2502,36 @@ class Trip extends $pb.GeneratedMessage {
     if (timeZone != null) {
       _result.timeZone = timeZone;
     }
+    if (gpsTrailId != null) {
+      _result.gpsTrailId = gpsTrailId;
+    }
     return _result;
   }
-  factory Trip.fromBuffer($core.List<$core.int> i,
-          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromBuffer(i, r);
-  factory Trip.fromJson($core.String i,
-          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromJson(i, r);
-  @$core.Deprecated('Using this can add significant overhead to your binary. '
-      'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
-      'Will be removed in next major version')
+  factory Trip.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory Trip.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
   Trip clone() => Trip()..mergeFromMessage(this);
-  @$core.Deprecated('Using this can add significant overhead to your binary. '
-      'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
-      'Will be removed in next major version')
-  Trip copyWith(void Function(Trip) updates) =>
-      super.copyWith((message) => updates(message as Trip))
-          as Trip; // ignore: deprecated_member_use
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  Trip copyWith(void Function(Trip) updates) => super.copyWith((message) => updates(message as Trip)) as Trip; // ignore: deprecated_member_use
   $pb.BuilderInfo get info_ => _i;
   @$core.pragma('dart2js:noInline')
   static Trip create() => Trip._();
   Trip createEmptyInstance() => create();
   static $pb.PbList<Trip> createRepeated() => $pb.PbList<Trip>();
   @$core.pragma('dart2js:noInline')
-  static Trip getDefault() =>
-      _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<Trip>(create);
+  static Trip getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<Trip>(create);
   static Trip? _defaultInstance;
 
   @$pb.TagNumber(1)
   Id get id => $_getN(0);
   @$pb.TagNumber(1)
-  set id(Id v) {
-    setField(1, v);
-  }
-
+  set id(Id v) { setField(1, v); }
   @$pb.TagNumber(1)
   $core.bool hasId() => $_has(0);
   @$pb.TagNumber(1)
@@ -3856,10 +2542,7 @@ class Trip extends $pb.GeneratedMessage {
   @$pb.TagNumber(2)
   $core.String get name => $_getSZ(1);
   @$pb.TagNumber(2)
-  set name($core.String v) {
-    $_setString(1, v);
-  }
-
+  set name($core.String v) { $_setString(1, v); }
   @$pb.TagNumber(2)
   $core.bool hasName() => $_has(1);
   @$pb.TagNumber(2)
@@ -3868,10 +2551,7 @@ class Trip extends $pb.GeneratedMessage {
   @$pb.TagNumber(3)
   $fixnum.Int64 get startTimestamp => $_getI64(2);
   @$pb.TagNumber(3)
-  set startTimestamp($fixnum.Int64 v) {
-    $_setInt64(2, v);
-  }
-
+  set startTimestamp($fixnum.Int64 v) { $_setInt64(2, v); }
   @$pb.TagNumber(3)
   $core.bool hasStartTimestamp() => $_has(2);
   @$pb.TagNumber(3)
@@ -3880,10 +2560,7 @@ class Trip extends $pb.GeneratedMessage {
   @$pb.TagNumber(4)
   $fixnum.Int64 get endTimestamp => $_getI64(3);
   @$pb.TagNumber(4)
-  set endTimestamp($fixnum.Int64 v) {
-    $_setInt64(3, v);
-  }
-
+  set endTimestamp($fixnum.Int64 v) { $_setInt64(3, v); }
   @$pb.TagNumber(4)
   $core.bool hasEndTimestamp() => $_has(3);
   @$pb.TagNumber(4)
@@ -3916,10 +2593,7 @@ class Trip extends $pb.GeneratedMessage {
   @$pb.TagNumber(13)
   $core.String get notes => $_getSZ(12);
   @$pb.TagNumber(13)
-  set notes($core.String v) {
-    $_setString(12, v);
-  }
-
+  set notes($core.String v) { $_setString(12, v); }
   @$pb.TagNumber(13)
   $core.bool hasNotes() => $_has(12);
   @$pb.TagNumber(13)
@@ -3928,10 +2602,7 @@ class Trip extends $pb.GeneratedMessage {
   @$pb.TagNumber(14)
   Atmosphere get atmosphere => $_getN(13);
   @$pb.TagNumber(14)
-  set atmosphere(Atmosphere v) {
-    setField(14, v);
-  }
-
+  set atmosphere(Atmosphere v) { setField(14, v); }
   @$pb.TagNumber(14)
   $core.bool hasAtmosphere() => $_has(13);
   @$pb.TagNumber(14)
@@ -3942,42 +2613,30 @@ class Trip extends $pb.GeneratedMessage {
   @$pb.TagNumber(15)
   $core.String get timeZone => $_getSZ(14);
   @$pb.TagNumber(15)
-  set timeZone($core.String v) {
-    $_setString(14, v);
-  }
-
+  set timeZone($core.String v) { $_setString(14, v); }
   @$pb.TagNumber(15)
   $core.bool hasTimeZone() => $_has(14);
   @$pb.TagNumber(15)
   void clearTimeZone() => clearField(15);
+
+  @$pb.TagNumber(16)
+  Id get gpsTrailId => $_getN(15);
+  @$pb.TagNumber(16)
+  set gpsTrailId(Id v) { setField(16, v); }
+  @$pb.TagNumber(16)
+  $core.bool hasGpsTrailId() => $_has(15);
+  @$pb.TagNumber(16)
+  void clearGpsTrailId() => clearField(16);
+  @$pb.TagNumber(16)
+  Id ensureGpsTrailId() => $_ensure(15);
 }
 
 class Measurement extends $pb.GeneratedMessage {
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
-      const $core.bool.fromEnvironment('protobuf.omit_message_names')
-          ? ''
-          : 'Measurement',
-      package: const $pb.PackageName(
-          const $core.bool.fromEnvironment('protobuf.omit_message_names')
-              ? ''
-              : 'anglerslog'),
-      createEmptyInstance: create)
-    ..e<Unit>(
-        1,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'unit',
-        $pb.PbFieldType.OE,
-        defaultOrMaker: Unit.feet,
-        valueOf: Unit.valueOf,
-        enumValues: Unit.values)
-    ..a<$core.double>(
-        2,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'value',
-        $pb.PbFieldType.OD)
-    ..hasRequiredFields = false;
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'Measurement', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'anglerslog'), createEmptyInstance: create)
+    ..e<Unit>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'unit', $pb.PbFieldType.OE, defaultOrMaker: Unit.feet, valueOf: Unit.valueOf, enumValues: Unit.values)
+    ..a<$core.double>(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'value', $pb.PbFieldType.OD)
+    ..hasRequiredFields = false
+  ;
 
   Measurement._() : super();
   factory Measurement({
@@ -3993,39 +2652,31 @@ class Measurement extends $pb.GeneratedMessage {
     }
     return _result;
   }
-  factory Measurement.fromBuffer($core.List<$core.int> i,
-          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromBuffer(i, r);
-  factory Measurement.fromJson($core.String i,
-          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromJson(i, r);
-  @$core.Deprecated('Using this can add significant overhead to your binary. '
-      'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
-      'Will be removed in next major version')
+  factory Measurement.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory Measurement.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
   Measurement clone() => Measurement()..mergeFromMessage(this);
-  @$core.Deprecated('Using this can add significant overhead to your binary. '
-      'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
-      'Will be removed in next major version')
-  Measurement copyWith(void Function(Measurement) updates) =>
-      super.copyWith((message) => updates(message as Measurement))
-          as Measurement; // ignore: deprecated_member_use
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  Measurement copyWith(void Function(Measurement) updates) => super.copyWith((message) => updates(message as Measurement)) as Measurement; // ignore: deprecated_member_use
   $pb.BuilderInfo get info_ => _i;
   @$core.pragma('dart2js:noInline')
   static Measurement create() => Measurement._();
   Measurement createEmptyInstance() => create();
   static $pb.PbList<Measurement> createRepeated() => $pb.PbList<Measurement>();
   @$core.pragma('dart2js:noInline')
-  static Measurement getDefault() => _defaultInstance ??=
-      $pb.GeneratedMessage.$_defaultFor<Measurement>(create);
+  static Measurement getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<Measurement>(create);
   static Measurement? _defaultInstance;
 
   @$pb.TagNumber(1)
   Unit get unit => $_getN(0);
   @$pb.TagNumber(1)
-  set unit(Unit v) {
-    setField(1, v);
-  }
-
+  set unit(Unit v) { setField(1, v); }
   @$pb.TagNumber(1)
   $core.bool hasUnit() => $_has(0);
   @$pb.TagNumber(1)
@@ -4034,10 +2685,7 @@ class Measurement extends $pb.GeneratedMessage {
   @$pb.TagNumber(2)
   $core.double get value => $_getN(1);
   @$pb.TagNumber(2)
-  set value($core.double v) {
-    $_setDouble(1, v);
-  }
-
+  set value($core.double v) { $_setDouble(1, v); }
   @$pb.TagNumber(2)
   $core.bool hasValue() => $_has(1);
   @$pb.TagNumber(2)
@@ -4045,37 +2693,12 @@ class Measurement extends $pb.GeneratedMessage {
 }
 
 class MultiMeasurement extends $pb.GeneratedMessage {
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
-      const $core.bool.fromEnvironment('protobuf.omit_message_names')
-          ? ''
-          : 'MultiMeasurement',
-      package: const $pb.PackageName(
-          const $core.bool.fromEnvironment('protobuf.omit_message_names')
-              ? ''
-              : 'anglerslog'),
-      createEmptyInstance: create)
-    ..e<MeasurementSystem>(
-        1,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'system',
-        $pb.PbFieldType.OE,
-        defaultOrMaker: MeasurementSystem.imperial_whole,
-        valueOf: MeasurementSystem.valueOf,
-        enumValues: MeasurementSystem.values)
-    ..aOM<Measurement>(
-        2,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'mainValue',
-        subBuilder: Measurement.create)
-    ..aOM<Measurement>(
-        3,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'fractionValue',
-        subBuilder: Measurement.create)
-    ..hasRequiredFields = false;
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'MultiMeasurement', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'anglerslog'), createEmptyInstance: create)
+    ..e<MeasurementSystem>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'system', $pb.PbFieldType.OE, defaultOrMaker: MeasurementSystem.imperial_whole, valueOf: MeasurementSystem.valueOf, enumValues: MeasurementSystem.values)
+    ..aOM<Measurement>(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'mainValue', subBuilder: Measurement.create)
+    ..aOM<Measurement>(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'fractionValue', subBuilder: Measurement.create)
+    ..hasRequiredFields = false
+  ;
 
   MultiMeasurement._() : super();
   factory MultiMeasurement({
@@ -4095,40 +2718,31 @@ class MultiMeasurement extends $pb.GeneratedMessage {
     }
     return _result;
   }
-  factory MultiMeasurement.fromBuffer($core.List<$core.int> i,
-          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromBuffer(i, r);
-  factory MultiMeasurement.fromJson($core.String i,
-          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromJson(i, r);
-  @$core.Deprecated('Using this can add significant overhead to your binary. '
-      'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
-      'Will be removed in next major version')
+  factory MultiMeasurement.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory MultiMeasurement.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
   MultiMeasurement clone() => MultiMeasurement()..mergeFromMessage(this);
-  @$core.Deprecated('Using this can add significant overhead to your binary. '
-      'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
-      'Will be removed in next major version')
-  MultiMeasurement copyWith(void Function(MultiMeasurement) updates) =>
-      super.copyWith((message) => updates(message as MultiMeasurement))
-          as MultiMeasurement; // ignore: deprecated_member_use
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  MultiMeasurement copyWith(void Function(MultiMeasurement) updates) => super.copyWith((message) => updates(message as MultiMeasurement)) as MultiMeasurement; // ignore: deprecated_member_use
   $pb.BuilderInfo get info_ => _i;
   @$core.pragma('dart2js:noInline')
   static MultiMeasurement create() => MultiMeasurement._();
   MultiMeasurement createEmptyInstance() => create();
-  static $pb.PbList<MultiMeasurement> createRepeated() =>
-      $pb.PbList<MultiMeasurement>();
+  static $pb.PbList<MultiMeasurement> createRepeated() => $pb.PbList<MultiMeasurement>();
   @$core.pragma('dart2js:noInline')
-  static MultiMeasurement getDefault() => _defaultInstance ??=
-      $pb.GeneratedMessage.$_defaultFor<MultiMeasurement>(create);
+  static MultiMeasurement getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<MultiMeasurement>(create);
   static MultiMeasurement? _defaultInstance;
 
   @$pb.TagNumber(1)
   MeasurementSystem get system => $_getN(0);
   @$pb.TagNumber(1)
-  set system(MeasurementSystem v) {
-    setField(1, v);
-  }
-
+  set system(MeasurementSystem v) { setField(1, v); }
   @$pb.TagNumber(1)
   $core.bool hasSystem() => $_has(0);
   @$pb.TagNumber(1)
@@ -4137,10 +2751,7 @@ class MultiMeasurement extends $pb.GeneratedMessage {
   @$pb.TagNumber(2)
   Measurement get mainValue => $_getN(1);
   @$pb.TagNumber(2)
-  set mainValue(Measurement v) {
-    setField(2, v);
-  }
-
+  set mainValue(Measurement v) { setField(2, v); }
   @$pb.TagNumber(2)
   $core.bool hasMainValue() => $_has(1);
   @$pb.TagNumber(2)
@@ -4151,10 +2762,7 @@ class MultiMeasurement extends $pb.GeneratedMessage {
   @$pb.TagNumber(3)
   Measurement get fractionValue => $_getN(2);
   @$pb.TagNumber(3)
-  set fractionValue(Measurement v) {
-    setField(3, v);
-  }
-
+  set fractionValue(Measurement v) { setField(3, v); }
   @$pb.TagNumber(3)
   $core.bool hasFractionValue() => $_has(2);
   @$pb.TagNumber(3)
@@ -4164,44 +2772,13 @@ class MultiMeasurement extends $pb.GeneratedMessage {
 }
 
 class Tide extends $pb.GeneratedMessage {
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
-      const $core.bool.fromEnvironment('protobuf.omit_message_names')
-          ? ''
-          : 'Tide',
-      package: const $pb.PackageName(
-          const $core.bool.fromEnvironment('protobuf.omit_message_names')
-              ? ''
-              : 'anglerslog'),
-      createEmptyInstance: create)
-    ..e<TideType>(
-        1,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'type',
-        $pb.PbFieldType.OE,
-        defaultOrMaker: TideType.tide_type_all,
-        valueOf: TideType.valueOf,
-        enumValues: TideType.values)
-    ..a<$fixnum.Int64>(
-        2,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'lowTimestamp',
-        $pb.PbFieldType.OU6,
-        defaultOrMaker: $fixnum.Int64.ZERO)
-    ..a<$fixnum.Int64>(
-        3,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'highTimestamp',
-        $pb.PbFieldType.OU6,
-        defaultOrMaker: $fixnum.Int64.ZERO)
-    ..aOS(
-        4,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'timeZone')
-    ..hasRequiredFields = false;
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'Tide', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'anglerslog'), createEmptyInstance: create)
+    ..e<TideType>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'type', $pb.PbFieldType.OE, defaultOrMaker: TideType.tide_type_all, valueOf: TideType.valueOf, enumValues: TideType.values)
+    ..a<$fixnum.Int64>(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'lowTimestamp', $pb.PbFieldType.OU6, defaultOrMaker: $fixnum.Int64.ZERO)
+    ..a<$fixnum.Int64>(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'highTimestamp', $pb.PbFieldType.OU6, defaultOrMaker: $fixnum.Int64.ZERO)
+    ..aOS(4, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'timeZone')
+    ..hasRequiredFields = false
+  ;
 
   Tide._() : super();
   factory Tide({
@@ -4225,39 +2802,31 @@ class Tide extends $pb.GeneratedMessage {
     }
     return _result;
   }
-  factory Tide.fromBuffer($core.List<$core.int> i,
-          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromBuffer(i, r);
-  factory Tide.fromJson($core.String i,
-          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromJson(i, r);
-  @$core.Deprecated('Using this can add significant overhead to your binary. '
-      'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
-      'Will be removed in next major version')
+  factory Tide.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory Tide.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
   Tide clone() => Tide()..mergeFromMessage(this);
-  @$core.Deprecated('Using this can add significant overhead to your binary. '
-      'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
-      'Will be removed in next major version')
-  Tide copyWith(void Function(Tide) updates) =>
-      super.copyWith((message) => updates(message as Tide))
-          as Tide; // ignore: deprecated_member_use
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  Tide copyWith(void Function(Tide) updates) => super.copyWith((message) => updates(message as Tide)) as Tide; // ignore: deprecated_member_use
   $pb.BuilderInfo get info_ => _i;
   @$core.pragma('dart2js:noInline')
   static Tide create() => Tide._();
   Tide createEmptyInstance() => create();
   static $pb.PbList<Tide> createRepeated() => $pb.PbList<Tide>();
   @$core.pragma('dart2js:noInline')
-  static Tide getDefault() =>
-      _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<Tide>(create);
+  static Tide getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<Tide>(create);
   static Tide? _defaultInstance;
 
   @$pb.TagNumber(1)
   TideType get type => $_getN(0);
   @$pb.TagNumber(1)
-  set type(TideType v) {
-    setField(1, v);
-  }
-
+  set type(TideType v) { setField(1, v); }
   @$pb.TagNumber(1)
   $core.bool hasType() => $_has(0);
   @$pb.TagNumber(1)
@@ -4266,10 +2835,7 @@ class Tide extends $pb.GeneratedMessage {
   @$pb.TagNumber(2)
   $fixnum.Int64 get lowTimestamp => $_getI64(1);
   @$pb.TagNumber(2)
-  set lowTimestamp($fixnum.Int64 v) {
-    $_setInt64(1, v);
-  }
-
+  set lowTimestamp($fixnum.Int64 v) { $_setInt64(1, v); }
   @$pb.TagNumber(2)
   $core.bool hasLowTimestamp() => $_has(1);
   @$pb.TagNumber(2)
@@ -4278,10 +2844,7 @@ class Tide extends $pb.GeneratedMessage {
   @$pb.TagNumber(3)
   $fixnum.Int64 get highTimestamp => $_getI64(2);
   @$pb.TagNumber(3)
-  set highTimestamp($fixnum.Int64 v) {
-    $_setInt64(2, v);
-  }
-
+  set highTimestamp($fixnum.Int64 v) { $_setInt64(2, v); }
   @$pb.TagNumber(3)
   $core.bool hasHighTimestamp() => $_has(2);
   @$pb.TagNumber(3)
@@ -4290,10 +2853,7 @@ class Tide extends $pb.GeneratedMessage {
   @$pb.TagNumber(4)
   $core.String get timeZone => $_getSZ(3);
   @$pb.TagNumber(4)
-  set timeZone($core.String v) {
-    $_setString(3, v);
-  }
-
+  set timeZone($core.String v) { $_setString(3, v); }
   @$pb.TagNumber(4)
   $core.bool hasTimeZone() => $_has(3);
   @$pb.TagNumber(4)
@@ -4301,371 +2861,60 @@ class Tide extends $pb.GeneratedMessage {
 }
 
 class CatchFilterOptions extends $pb.GeneratedMessage {
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
-      const $core.bool.fromEnvironment('protobuf.omit_message_names')
-          ? ''
-          : 'CatchFilterOptions',
-      package: const $pb.PackageName(
-          const $core.bool.fromEnvironment('protobuf.omit_message_names')
-              ? ''
-              : 'anglerslog'),
-      createEmptyInstance: create)
-    ..e<CatchFilterOptions_Order>(
-        1,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'order',
-        $pb.PbFieldType.OE,
-        defaultOrMaker: CatchFilterOptions_Order.unknown,
-        valueOf: CatchFilterOptions_Order.valueOf,
-        enumValues: CatchFilterOptions_Order.values)
-    ..a<$fixnum.Int64>(
-        2,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'currentTimestamp',
-        $pb.PbFieldType.OU6,
-        defaultOrMaker: $fixnum.Int64.ZERO)
-    ..aOS(
-        3,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'currentTimeZone')
-    ..m<$core.String, Angler>(
-        4,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'allAnglers',
-        entryClassName: 'CatchFilterOptions.AllAnglersEntry',
-        keyFieldType: $pb.PbFieldType.OS,
-        valueFieldType: $pb.PbFieldType.OM,
-        valueCreator: Angler.create,
-        packageName: const $pb.PackageName('anglerslog'))
-    ..m<$core.String, Bait>(
-        5,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'allBaits',
-        entryClassName: 'CatchFilterOptions.AllBaitsEntry',
-        keyFieldType: $pb.PbFieldType.OS,
-        valueFieldType: $pb.PbFieldType.OM,
-        valueCreator: Bait.create,
-        packageName: const $pb.PackageName('anglerslog'))
-    ..m<$core.String, BodyOfWater>(
-        6,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'allBodiesOfWater',
-        entryClassName: 'CatchFilterOptions.AllBodiesOfWaterEntry',
-        keyFieldType: $pb.PbFieldType.OS,
-        valueFieldType: $pb.PbFieldType.OM,
-        valueCreator: BodyOfWater.create,
-        packageName: const $pb.PackageName('anglerslog'))
-    ..m<$core.String, Catch>(
-        7,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'allCatches',
-        entryClassName: 'CatchFilterOptions.AllCatchesEntry',
-        keyFieldType: $pb.PbFieldType.OS,
-        valueFieldType: $pb.PbFieldType.OM,
-        valueCreator: Catch.create,
-        packageName: const $pb.PackageName('anglerslog'))
-    ..m<$core.String, FishingSpot>(
-        8,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'allFishingSpots',
-        entryClassName: 'CatchFilterOptions.AllFishingSpotsEntry',
-        keyFieldType: $pb.PbFieldType.OS,
-        valueFieldType: $pb.PbFieldType.OM,
-        valueCreator: FishingSpot.create,
-        packageName: const $pb.PackageName('anglerslog'))
-    ..m<$core.String, Method>(
-        9,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'allMethods',
-        entryClassName: 'CatchFilterOptions.AllMethodsEntry',
-        keyFieldType: $pb.PbFieldType.OS,
-        valueFieldType: $pb.PbFieldType.OM,
-        valueCreator: Method.create,
-        packageName: const $pb.PackageName('anglerslog'))
-    ..m<$core.String, Species>(
-        10,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'allSpecies',
-        entryClassName: 'CatchFilterOptions.AllSpeciesEntry',
-        keyFieldType: $pb.PbFieldType.OS,
-        valueFieldType: $pb.PbFieldType.OM,
-        valueCreator: Species.create,
-        packageName: const $pb.PackageName('anglerslog'))
-    ..m<$core.String, WaterClarity>(
-        11,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'allWaterClarities',
-        entryClassName: 'CatchFilterOptions.AllWaterClaritiesEntry',
-        keyFieldType: $pb.PbFieldType.OS,
-        valueFieldType: $pb.PbFieldType.OM,
-        valueCreator: WaterClarity.create,
-        packageName: const $pb.PackageName('anglerslog'))
-    ..aOB(
-        12,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'isCatchAndReleaseOnly')
-    ..aOB(
-        13,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'isFavoritesOnly')
-    ..pc<DateRange>(
-        14,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'dateRanges',
-        $pb.PbFieldType.PM,
-        subBuilder: DateRange.create)
-    ..pc<BaitAttachment>(
-        15,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'baits',
-        $pb.PbFieldType.PM,
-        subBuilder: BaitAttachment.create)
-    ..pc<Id>(
-        16,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'catchIds',
-        $pb.PbFieldType.PM,
-        subBuilder: Id.create)
-    ..pc<Id>(
-        17,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'anglerIds',
-        $pb.PbFieldType.PM,
-        subBuilder: Id.create)
-    ..pc<Id>(
-        18,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'fishingSpotIds',
-        $pb.PbFieldType.PM,
-        subBuilder: Id.create)
-    ..pc<Id>(
-        19,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'bodyOfWaterIds',
-        $pb.PbFieldType.PM,
-        subBuilder: Id.create)
-    ..pc<Id>(
-        20,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'methodIds',
-        $pb.PbFieldType.PM,
-        subBuilder: Id.create)
-    ..pc<Id>(
-        21,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'speciesIds',
-        $pb.PbFieldType.PM,
-        subBuilder: Id.create)
-    ..pc<Id>(
-        22,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'waterClarityIds',
-        $pb.PbFieldType.PM,
-        subBuilder: Id.create)
-    ..pc<Period>(
-        23,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'periods',
-        $pb.PbFieldType.PE,
-        valueOf: Period.valueOf,
-        enumValues: Period.values,
-        defaultEnumValue: Period.period_all)
-    ..pc<Season>(
-        24,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'seasons',
-        $pb.PbFieldType.PE,
-        valueOf: Season.valueOf,
-        enumValues: Season.values,
-        defaultEnumValue: Season.season_all)
-    ..pc<Direction>(
-        25,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'windDirections',
-        $pb.PbFieldType.PE,
-        valueOf: Direction.valueOf,
-        enumValues: Direction.values,
-        defaultEnumValue: Direction.direction_all)
-    ..pc<SkyCondition>(
-        26,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'skyConditions',
-        $pb.PbFieldType.PE,
-        valueOf: SkyCondition.valueOf,
-        enumValues: SkyCondition.values,
-        defaultEnumValue: SkyCondition.sky_condition_all)
-    ..pc<MoonPhase>(
-        27,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'moonPhases',
-        $pb.PbFieldType.PE,
-        valueOf: MoonPhase.valueOf,
-        enumValues: MoonPhase.values,
-        defaultEnumValue: MoonPhase.moon_phase_all)
-    ..pc<TideType>(
-        28,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'tideTypes',
-        $pb.PbFieldType.PE,
-        valueOf: TideType.valueOf,
-        enumValues: TideType.values,
-        defaultEnumValue: TideType.tide_type_all)
-    ..aOM<NumberFilter>(
-        29,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'waterDepthFilter',
-        subBuilder: NumberFilter.create)
-    ..aOM<NumberFilter>(
-        30,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'waterTemperatureFilter',
-        subBuilder: NumberFilter.create)
-    ..aOM<NumberFilter>(
-        31,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'lengthFilter',
-        subBuilder: NumberFilter.create)
-    ..aOM<NumberFilter>(
-        32,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'weightFilter',
-        subBuilder: NumberFilter.create)
-    ..aOM<NumberFilter>(
-        33,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'quantityFilter',
-        subBuilder: NumberFilter.create)
-    ..aOM<NumberFilter>(
-        34,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'airTemperatureFilter',
-        subBuilder: NumberFilter.create)
-    ..aOM<NumberFilter>(
-        35,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'airPressureFilter',
-        subBuilder: NumberFilter.create)
-    ..aOM<NumberFilter>(
-        36,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'airHumidityFilter',
-        subBuilder: NumberFilter.create)
-    ..aOM<NumberFilter>(
-        37,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'airVisibilityFilter',
-        subBuilder: NumberFilter.create)
-    ..aOM<NumberFilter>(
-        38,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'windSpeedFilter',
-        subBuilder: NumberFilter.create)
-    ..a<$core.int>(
-        39,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'hour',
-        $pb.PbFieldType.O3)
-    ..a<$core.int>(
-        40,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'month',
-        $pb.PbFieldType.O3)
-    ..aOB(
-        41,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'includeAnglers')
-    ..aOB(
-        42,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'includeBaits')
-    ..aOB(
-        43,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'includeBodiesOfWater')
-    ..aOB(
-        44,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'includeMethods')
-    ..aOB(
-        45,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'includeFishingSpots')
-    ..aOB(
-        46,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'includeMoonPhases')
-    ..aOB(
-        47,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'includeSeasons')
-    ..aOB(
-        48,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'includeSpecies')
-    ..aOB(
-        49,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'includeTideTypes')
-    ..aOB(
-        50,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'includePeriods')
-    ..aOB(
-        51,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'includeWaterClarities')
-    ..hasRequiredFields = false;
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'CatchFilterOptions', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'anglerslog'), createEmptyInstance: create)
+    ..e<CatchFilterOptions_Order>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'order', $pb.PbFieldType.OE, defaultOrMaker: CatchFilterOptions_Order.unknown, valueOf: CatchFilterOptions_Order.valueOf, enumValues: CatchFilterOptions_Order.values)
+    ..a<$fixnum.Int64>(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'currentTimestamp', $pb.PbFieldType.OU6, defaultOrMaker: $fixnum.Int64.ZERO)
+    ..aOS(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'currentTimeZone')
+    ..m<$core.String, Angler>(4, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'allAnglers', entryClassName: 'CatchFilterOptions.AllAnglersEntry', keyFieldType: $pb.PbFieldType.OS, valueFieldType: $pb.PbFieldType.OM, valueCreator: Angler.create, packageName: const $pb.PackageName('anglerslog'))
+    ..m<$core.String, Bait>(5, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'allBaits', entryClassName: 'CatchFilterOptions.AllBaitsEntry', keyFieldType: $pb.PbFieldType.OS, valueFieldType: $pb.PbFieldType.OM, valueCreator: Bait.create, packageName: const $pb.PackageName('anglerslog'))
+    ..m<$core.String, BodyOfWater>(6, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'allBodiesOfWater', entryClassName: 'CatchFilterOptions.AllBodiesOfWaterEntry', keyFieldType: $pb.PbFieldType.OS, valueFieldType: $pb.PbFieldType.OM, valueCreator: BodyOfWater.create, packageName: const $pb.PackageName('anglerslog'))
+    ..m<$core.String, Catch>(7, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'allCatches', entryClassName: 'CatchFilterOptions.AllCatchesEntry', keyFieldType: $pb.PbFieldType.OS, valueFieldType: $pb.PbFieldType.OM, valueCreator: Catch.create, packageName: const $pb.PackageName('anglerslog'))
+    ..m<$core.String, FishingSpot>(8, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'allFishingSpots', entryClassName: 'CatchFilterOptions.AllFishingSpotsEntry', keyFieldType: $pb.PbFieldType.OS, valueFieldType: $pb.PbFieldType.OM, valueCreator: FishingSpot.create, packageName: const $pb.PackageName('anglerslog'))
+    ..m<$core.String, Method>(9, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'allMethods', entryClassName: 'CatchFilterOptions.AllMethodsEntry', keyFieldType: $pb.PbFieldType.OS, valueFieldType: $pb.PbFieldType.OM, valueCreator: Method.create, packageName: const $pb.PackageName('anglerslog'))
+    ..m<$core.String, Species>(10, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'allSpecies', entryClassName: 'CatchFilterOptions.AllSpeciesEntry', keyFieldType: $pb.PbFieldType.OS, valueFieldType: $pb.PbFieldType.OM, valueCreator: Species.create, packageName: const $pb.PackageName('anglerslog'))
+    ..m<$core.String, WaterClarity>(11, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'allWaterClarities', entryClassName: 'CatchFilterOptions.AllWaterClaritiesEntry', keyFieldType: $pb.PbFieldType.OS, valueFieldType: $pb.PbFieldType.OM, valueCreator: WaterClarity.create, packageName: const $pb.PackageName('anglerslog'))
+    ..aOB(12, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'isCatchAndReleaseOnly')
+    ..aOB(13, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'isFavoritesOnly')
+    ..pc<DateRange>(14, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'dateRanges', $pb.PbFieldType.PM, subBuilder: DateRange.create)
+    ..pc<BaitAttachment>(15, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'baits', $pb.PbFieldType.PM, subBuilder: BaitAttachment.create)
+    ..pc<Id>(16, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'catchIds', $pb.PbFieldType.PM, subBuilder: Id.create)
+    ..pc<Id>(17, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'anglerIds', $pb.PbFieldType.PM, subBuilder: Id.create)
+    ..pc<Id>(18, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'fishingSpotIds', $pb.PbFieldType.PM, subBuilder: Id.create)
+    ..pc<Id>(19, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'bodyOfWaterIds', $pb.PbFieldType.PM, subBuilder: Id.create)
+    ..pc<Id>(20, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'methodIds', $pb.PbFieldType.PM, subBuilder: Id.create)
+    ..pc<Id>(21, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'speciesIds', $pb.PbFieldType.PM, subBuilder: Id.create)
+    ..pc<Id>(22, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'waterClarityIds', $pb.PbFieldType.PM, subBuilder: Id.create)
+    ..pc<Period>(23, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'periods', $pb.PbFieldType.PE, valueOf: Period.valueOf, enumValues: Period.values, defaultEnumValue: Period.period_all)
+    ..pc<Season>(24, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'seasons', $pb.PbFieldType.PE, valueOf: Season.valueOf, enumValues: Season.values, defaultEnumValue: Season.season_all)
+    ..pc<Direction>(25, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'windDirections', $pb.PbFieldType.PE, valueOf: Direction.valueOf, enumValues: Direction.values, defaultEnumValue: Direction.direction_all)
+    ..pc<SkyCondition>(26, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'skyConditions', $pb.PbFieldType.PE, valueOf: SkyCondition.valueOf, enumValues: SkyCondition.values, defaultEnumValue: SkyCondition.sky_condition_all)
+    ..pc<MoonPhase>(27, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'moonPhases', $pb.PbFieldType.PE, valueOf: MoonPhase.valueOf, enumValues: MoonPhase.values, defaultEnumValue: MoonPhase.moon_phase_all)
+    ..pc<TideType>(28, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'tideTypes', $pb.PbFieldType.PE, valueOf: TideType.valueOf, enumValues: TideType.values, defaultEnumValue: TideType.tide_type_all)
+    ..aOM<NumberFilter>(29, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'waterDepthFilter', subBuilder: NumberFilter.create)
+    ..aOM<NumberFilter>(30, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'waterTemperatureFilter', subBuilder: NumberFilter.create)
+    ..aOM<NumberFilter>(31, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'lengthFilter', subBuilder: NumberFilter.create)
+    ..aOM<NumberFilter>(32, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'weightFilter', subBuilder: NumberFilter.create)
+    ..aOM<NumberFilter>(33, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'quantityFilter', subBuilder: NumberFilter.create)
+    ..aOM<NumberFilter>(34, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'airTemperatureFilter', subBuilder: NumberFilter.create)
+    ..aOM<NumberFilter>(35, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'airPressureFilter', subBuilder: NumberFilter.create)
+    ..aOM<NumberFilter>(36, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'airHumidityFilter', subBuilder: NumberFilter.create)
+    ..aOM<NumberFilter>(37, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'airVisibilityFilter', subBuilder: NumberFilter.create)
+    ..aOM<NumberFilter>(38, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'windSpeedFilter', subBuilder: NumberFilter.create)
+    ..a<$core.int>(39, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'hour', $pb.PbFieldType.O3)
+    ..a<$core.int>(40, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'month', $pb.PbFieldType.O3)
+    ..aOB(41, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'includeAnglers')
+    ..aOB(42, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'includeBaits')
+    ..aOB(43, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'includeBodiesOfWater')
+    ..aOB(44, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'includeMethods')
+    ..aOB(45, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'includeFishingSpots')
+    ..aOB(46, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'includeMoonPhases')
+    ..aOB(47, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'includeSeasons')
+    ..aOB(48, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'includeSpecies')
+    ..aOB(49, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'includeTideTypes')
+    ..aOB(50, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'includePeriods')
+    ..aOB(51, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'includeWaterClarities')
+    ..hasRequiredFields = false
+  ;
 
   CatchFilterOptions._() : super();
   factory CatchFilterOptions({
@@ -4877,40 +3126,31 @@ class CatchFilterOptions extends $pb.GeneratedMessage {
     }
     return _result;
   }
-  factory CatchFilterOptions.fromBuffer($core.List<$core.int> i,
-          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromBuffer(i, r);
-  factory CatchFilterOptions.fromJson($core.String i,
-          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromJson(i, r);
-  @$core.Deprecated('Using this can add significant overhead to your binary. '
-      'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
-      'Will be removed in next major version')
+  factory CatchFilterOptions.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory CatchFilterOptions.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
   CatchFilterOptions clone() => CatchFilterOptions()..mergeFromMessage(this);
-  @$core.Deprecated('Using this can add significant overhead to your binary. '
-      'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
-      'Will be removed in next major version')
-  CatchFilterOptions copyWith(void Function(CatchFilterOptions) updates) =>
-      super.copyWith((message) => updates(message as CatchFilterOptions))
-          as CatchFilterOptions; // ignore: deprecated_member_use
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  CatchFilterOptions copyWith(void Function(CatchFilterOptions) updates) => super.copyWith((message) => updates(message as CatchFilterOptions)) as CatchFilterOptions; // ignore: deprecated_member_use
   $pb.BuilderInfo get info_ => _i;
   @$core.pragma('dart2js:noInline')
   static CatchFilterOptions create() => CatchFilterOptions._();
   CatchFilterOptions createEmptyInstance() => create();
-  static $pb.PbList<CatchFilterOptions> createRepeated() =>
-      $pb.PbList<CatchFilterOptions>();
+  static $pb.PbList<CatchFilterOptions> createRepeated() => $pb.PbList<CatchFilterOptions>();
   @$core.pragma('dart2js:noInline')
-  static CatchFilterOptions getDefault() => _defaultInstance ??=
-      $pb.GeneratedMessage.$_defaultFor<CatchFilterOptions>(create);
+  static CatchFilterOptions getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<CatchFilterOptions>(create);
   static CatchFilterOptions? _defaultInstance;
 
   @$pb.TagNumber(1)
   CatchFilterOptions_Order get order => $_getN(0);
   @$pb.TagNumber(1)
-  set order(CatchFilterOptions_Order v) {
-    setField(1, v);
-  }
-
+  set order(CatchFilterOptions_Order v) { setField(1, v); }
   @$pb.TagNumber(1)
   $core.bool hasOrder() => $_has(0);
   @$pb.TagNumber(1)
@@ -4919,10 +3159,7 @@ class CatchFilterOptions extends $pb.GeneratedMessage {
   @$pb.TagNumber(2)
   $fixnum.Int64 get currentTimestamp => $_getI64(1);
   @$pb.TagNumber(2)
-  set currentTimestamp($fixnum.Int64 v) {
-    $_setInt64(1, v);
-  }
-
+  set currentTimestamp($fixnum.Int64 v) { $_setInt64(1, v); }
   @$pb.TagNumber(2)
   $core.bool hasCurrentTimestamp() => $_has(1);
   @$pb.TagNumber(2)
@@ -4931,10 +3168,7 @@ class CatchFilterOptions extends $pb.GeneratedMessage {
   @$pb.TagNumber(3)
   $core.String get currentTimeZone => $_getSZ(2);
   @$pb.TagNumber(3)
-  set currentTimeZone($core.String v) {
-    $_setString(2, v);
-  }
-
+  set currentTimeZone($core.String v) { $_setString(2, v); }
   @$pb.TagNumber(3)
   $core.bool hasCurrentTimeZone() => $_has(2);
   @$pb.TagNumber(3)
@@ -4967,10 +3201,7 @@ class CatchFilterOptions extends $pb.GeneratedMessage {
   @$pb.TagNumber(12)
   $core.bool get isCatchAndReleaseOnly => $_getBF(11);
   @$pb.TagNumber(12)
-  set isCatchAndReleaseOnly($core.bool v) {
-    $_setBool(11, v);
-  }
-
+  set isCatchAndReleaseOnly($core.bool v) { $_setBool(11, v); }
   @$pb.TagNumber(12)
   $core.bool hasIsCatchAndReleaseOnly() => $_has(11);
   @$pb.TagNumber(12)
@@ -4979,10 +3210,7 @@ class CatchFilterOptions extends $pb.GeneratedMessage {
   @$pb.TagNumber(13)
   $core.bool get isFavoritesOnly => $_getBF(12);
   @$pb.TagNumber(13)
-  set isFavoritesOnly($core.bool v) {
-    $_setBool(12, v);
-  }
-
+  set isFavoritesOnly($core.bool v) { $_setBool(12, v); }
   @$pb.TagNumber(13)
   $core.bool hasIsFavoritesOnly() => $_has(12);
   @$pb.TagNumber(13)
@@ -5036,10 +3264,7 @@ class CatchFilterOptions extends $pb.GeneratedMessage {
   @$pb.TagNumber(29)
   NumberFilter get waterDepthFilter => $_getN(28);
   @$pb.TagNumber(29)
-  set waterDepthFilter(NumberFilter v) {
-    setField(29, v);
-  }
-
+  set waterDepthFilter(NumberFilter v) { setField(29, v); }
   @$pb.TagNumber(29)
   $core.bool hasWaterDepthFilter() => $_has(28);
   @$pb.TagNumber(29)
@@ -5050,10 +3275,7 @@ class CatchFilterOptions extends $pb.GeneratedMessage {
   @$pb.TagNumber(30)
   NumberFilter get waterTemperatureFilter => $_getN(29);
   @$pb.TagNumber(30)
-  set waterTemperatureFilter(NumberFilter v) {
-    setField(30, v);
-  }
-
+  set waterTemperatureFilter(NumberFilter v) { setField(30, v); }
   @$pb.TagNumber(30)
   $core.bool hasWaterTemperatureFilter() => $_has(29);
   @$pb.TagNumber(30)
@@ -5064,10 +3286,7 @@ class CatchFilterOptions extends $pb.GeneratedMessage {
   @$pb.TagNumber(31)
   NumberFilter get lengthFilter => $_getN(30);
   @$pb.TagNumber(31)
-  set lengthFilter(NumberFilter v) {
-    setField(31, v);
-  }
-
+  set lengthFilter(NumberFilter v) { setField(31, v); }
   @$pb.TagNumber(31)
   $core.bool hasLengthFilter() => $_has(30);
   @$pb.TagNumber(31)
@@ -5078,10 +3297,7 @@ class CatchFilterOptions extends $pb.GeneratedMessage {
   @$pb.TagNumber(32)
   NumberFilter get weightFilter => $_getN(31);
   @$pb.TagNumber(32)
-  set weightFilter(NumberFilter v) {
-    setField(32, v);
-  }
-
+  set weightFilter(NumberFilter v) { setField(32, v); }
   @$pb.TagNumber(32)
   $core.bool hasWeightFilter() => $_has(31);
   @$pb.TagNumber(32)
@@ -5092,10 +3308,7 @@ class CatchFilterOptions extends $pb.GeneratedMessage {
   @$pb.TagNumber(33)
   NumberFilter get quantityFilter => $_getN(32);
   @$pb.TagNumber(33)
-  set quantityFilter(NumberFilter v) {
-    setField(33, v);
-  }
-
+  set quantityFilter(NumberFilter v) { setField(33, v); }
   @$pb.TagNumber(33)
   $core.bool hasQuantityFilter() => $_has(32);
   @$pb.TagNumber(33)
@@ -5106,10 +3319,7 @@ class CatchFilterOptions extends $pb.GeneratedMessage {
   @$pb.TagNumber(34)
   NumberFilter get airTemperatureFilter => $_getN(33);
   @$pb.TagNumber(34)
-  set airTemperatureFilter(NumberFilter v) {
-    setField(34, v);
-  }
-
+  set airTemperatureFilter(NumberFilter v) { setField(34, v); }
   @$pb.TagNumber(34)
   $core.bool hasAirTemperatureFilter() => $_has(33);
   @$pb.TagNumber(34)
@@ -5120,10 +3330,7 @@ class CatchFilterOptions extends $pb.GeneratedMessage {
   @$pb.TagNumber(35)
   NumberFilter get airPressureFilter => $_getN(34);
   @$pb.TagNumber(35)
-  set airPressureFilter(NumberFilter v) {
-    setField(35, v);
-  }
-
+  set airPressureFilter(NumberFilter v) { setField(35, v); }
   @$pb.TagNumber(35)
   $core.bool hasAirPressureFilter() => $_has(34);
   @$pb.TagNumber(35)
@@ -5134,10 +3341,7 @@ class CatchFilterOptions extends $pb.GeneratedMessage {
   @$pb.TagNumber(36)
   NumberFilter get airHumidityFilter => $_getN(35);
   @$pb.TagNumber(36)
-  set airHumidityFilter(NumberFilter v) {
-    setField(36, v);
-  }
-
+  set airHumidityFilter(NumberFilter v) { setField(36, v); }
   @$pb.TagNumber(36)
   $core.bool hasAirHumidityFilter() => $_has(35);
   @$pb.TagNumber(36)
@@ -5148,10 +3352,7 @@ class CatchFilterOptions extends $pb.GeneratedMessage {
   @$pb.TagNumber(37)
   NumberFilter get airVisibilityFilter => $_getN(36);
   @$pb.TagNumber(37)
-  set airVisibilityFilter(NumberFilter v) {
-    setField(37, v);
-  }
-
+  set airVisibilityFilter(NumberFilter v) { setField(37, v); }
   @$pb.TagNumber(37)
   $core.bool hasAirVisibilityFilter() => $_has(36);
   @$pb.TagNumber(37)
@@ -5162,10 +3363,7 @@ class CatchFilterOptions extends $pb.GeneratedMessage {
   @$pb.TagNumber(38)
   NumberFilter get windSpeedFilter => $_getN(37);
   @$pb.TagNumber(38)
-  set windSpeedFilter(NumberFilter v) {
-    setField(38, v);
-  }
-
+  set windSpeedFilter(NumberFilter v) { setField(38, v); }
   @$pb.TagNumber(38)
   $core.bool hasWindSpeedFilter() => $_has(37);
   @$pb.TagNumber(38)
@@ -5176,10 +3374,7 @@ class CatchFilterOptions extends $pb.GeneratedMessage {
   @$pb.TagNumber(39)
   $core.int get hour => $_getIZ(38);
   @$pb.TagNumber(39)
-  set hour($core.int v) {
-    $_setSignedInt32(38, v);
-  }
-
+  set hour($core.int v) { $_setSignedInt32(38, v); }
   @$pb.TagNumber(39)
   $core.bool hasHour() => $_has(38);
   @$pb.TagNumber(39)
@@ -5188,10 +3383,7 @@ class CatchFilterOptions extends $pb.GeneratedMessage {
   @$pb.TagNumber(40)
   $core.int get month => $_getIZ(39);
   @$pb.TagNumber(40)
-  set month($core.int v) {
-    $_setSignedInt32(39, v);
-  }
-
+  set month($core.int v) { $_setSignedInt32(39, v); }
   @$pb.TagNumber(40)
   $core.bool hasMonth() => $_has(39);
   @$pb.TagNumber(40)
@@ -5200,10 +3392,7 @@ class CatchFilterOptions extends $pb.GeneratedMessage {
   @$pb.TagNumber(41)
   $core.bool get includeAnglers => $_getBF(40);
   @$pb.TagNumber(41)
-  set includeAnglers($core.bool v) {
-    $_setBool(40, v);
-  }
-
+  set includeAnglers($core.bool v) { $_setBool(40, v); }
   @$pb.TagNumber(41)
   $core.bool hasIncludeAnglers() => $_has(40);
   @$pb.TagNumber(41)
@@ -5212,10 +3401,7 @@ class CatchFilterOptions extends $pb.GeneratedMessage {
   @$pb.TagNumber(42)
   $core.bool get includeBaits => $_getBF(41);
   @$pb.TagNumber(42)
-  set includeBaits($core.bool v) {
-    $_setBool(41, v);
-  }
-
+  set includeBaits($core.bool v) { $_setBool(41, v); }
   @$pb.TagNumber(42)
   $core.bool hasIncludeBaits() => $_has(41);
   @$pb.TagNumber(42)
@@ -5224,10 +3410,7 @@ class CatchFilterOptions extends $pb.GeneratedMessage {
   @$pb.TagNumber(43)
   $core.bool get includeBodiesOfWater => $_getBF(42);
   @$pb.TagNumber(43)
-  set includeBodiesOfWater($core.bool v) {
-    $_setBool(42, v);
-  }
-
+  set includeBodiesOfWater($core.bool v) { $_setBool(42, v); }
   @$pb.TagNumber(43)
   $core.bool hasIncludeBodiesOfWater() => $_has(42);
   @$pb.TagNumber(43)
@@ -5236,10 +3419,7 @@ class CatchFilterOptions extends $pb.GeneratedMessage {
   @$pb.TagNumber(44)
   $core.bool get includeMethods => $_getBF(43);
   @$pb.TagNumber(44)
-  set includeMethods($core.bool v) {
-    $_setBool(43, v);
-  }
-
+  set includeMethods($core.bool v) { $_setBool(43, v); }
   @$pb.TagNumber(44)
   $core.bool hasIncludeMethods() => $_has(43);
   @$pb.TagNumber(44)
@@ -5248,10 +3428,7 @@ class CatchFilterOptions extends $pb.GeneratedMessage {
   @$pb.TagNumber(45)
   $core.bool get includeFishingSpots => $_getBF(44);
   @$pb.TagNumber(45)
-  set includeFishingSpots($core.bool v) {
-    $_setBool(44, v);
-  }
-
+  set includeFishingSpots($core.bool v) { $_setBool(44, v); }
   @$pb.TagNumber(45)
   $core.bool hasIncludeFishingSpots() => $_has(44);
   @$pb.TagNumber(45)
@@ -5260,10 +3437,7 @@ class CatchFilterOptions extends $pb.GeneratedMessage {
   @$pb.TagNumber(46)
   $core.bool get includeMoonPhases => $_getBF(45);
   @$pb.TagNumber(46)
-  set includeMoonPhases($core.bool v) {
-    $_setBool(45, v);
-  }
-
+  set includeMoonPhases($core.bool v) { $_setBool(45, v); }
   @$pb.TagNumber(46)
   $core.bool hasIncludeMoonPhases() => $_has(45);
   @$pb.TagNumber(46)
@@ -5272,10 +3446,7 @@ class CatchFilterOptions extends $pb.GeneratedMessage {
   @$pb.TagNumber(47)
   $core.bool get includeSeasons => $_getBF(46);
   @$pb.TagNumber(47)
-  set includeSeasons($core.bool v) {
-    $_setBool(46, v);
-  }
-
+  set includeSeasons($core.bool v) { $_setBool(46, v); }
   @$pb.TagNumber(47)
   $core.bool hasIncludeSeasons() => $_has(46);
   @$pb.TagNumber(47)
@@ -5284,10 +3455,7 @@ class CatchFilterOptions extends $pb.GeneratedMessage {
   @$pb.TagNumber(48)
   $core.bool get includeSpecies => $_getBF(47);
   @$pb.TagNumber(48)
-  set includeSpecies($core.bool v) {
-    $_setBool(47, v);
-  }
-
+  set includeSpecies($core.bool v) { $_setBool(47, v); }
   @$pb.TagNumber(48)
   $core.bool hasIncludeSpecies() => $_has(47);
   @$pb.TagNumber(48)
@@ -5296,10 +3464,7 @@ class CatchFilterOptions extends $pb.GeneratedMessage {
   @$pb.TagNumber(49)
   $core.bool get includeTideTypes => $_getBF(48);
   @$pb.TagNumber(49)
-  set includeTideTypes($core.bool v) {
-    $_setBool(48, v);
-  }
-
+  set includeTideTypes($core.bool v) { $_setBool(48, v); }
   @$pb.TagNumber(49)
   $core.bool hasIncludeTideTypes() => $_has(48);
   @$pb.TagNumber(49)
@@ -5308,10 +3473,7 @@ class CatchFilterOptions extends $pb.GeneratedMessage {
   @$pb.TagNumber(50)
   $core.bool get includePeriods => $_getBF(49);
   @$pb.TagNumber(50)
-  set includePeriods($core.bool v) {
-    $_setBool(49, v);
-  }
-
+  set includePeriods($core.bool v) { $_setBool(49, v); }
   @$pb.TagNumber(50)
   $core.bool hasIncludePeriods() => $_has(49);
   @$pb.TagNumber(50)
@@ -5320,10 +3482,7 @@ class CatchFilterOptions extends $pb.GeneratedMessage {
   @$pb.TagNumber(51)
   $core.bool get includeWaterClarities => $_getBF(50);
   @$pb.TagNumber(51)
-  set includeWaterClarities($core.bool v) {
-    $_setBool(50, v);
-  }
-
+  set includeWaterClarities($core.bool v) { $_setBool(50, v); }
   @$pb.TagNumber(51)
   $core.bool hasIncludeWaterClarities() => $_has(50);
   @$pb.TagNumber(51)
@@ -5331,41 +3490,13 @@ class CatchFilterOptions extends $pb.GeneratedMessage {
 }
 
 class CatchReport extends $pb.GeneratedMessage {
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
-      const $core.bool.fromEnvironment('protobuf.omit_message_names')
-          ? ''
-          : 'CatchReport',
-      package: const $pb.PackageName(
-          const $core.bool.fromEnvironment('protobuf.omit_message_names')
-              ? ''
-              : 'anglerslog'),
-      createEmptyInstance: create)
-    ..pc<CatchReportModel>(
-        1,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'models',
-        $pb.PbFieldType.PM,
-        subBuilder: CatchReportModel.create)
-    ..a<$fixnum.Int64>(
-        2,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'msSinceLastCatch',
-        $pb.PbFieldType.OU6,
-        defaultOrMaker: $fixnum.Int64.ZERO)
-    ..aOM<Catch>(
-        3,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'lastCatch',
-        subBuilder: Catch.create)
-    ..aOB(
-        6,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'containsNow')
-    ..hasRequiredFields = false;
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'CatchReport', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'anglerslog'), createEmptyInstance: create)
+    ..pc<CatchReportModel>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'models', $pb.PbFieldType.PM, subBuilder: CatchReportModel.create)
+    ..a<$fixnum.Int64>(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'msSinceLastCatch', $pb.PbFieldType.OU6, defaultOrMaker: $fixnum.Int64.ZERO)
+    ..aOM<Catch>(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'lastCatch', subBuilder: Catch.create)
+    ..aOB(6, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'containsNow')
+    ..hasRequiredFields = false
+  ;
 
   CatchReport._() : super();
   factory CatchReport({
@@ -5389,30 +3520,25 @@ class CatchReport extends $pb.GeneratedMessage {
     }
     return _result;
   }
-  factory CatchReport.fromBuffer($core.List<$core.int> i,
-          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromBuffer(i, r);
-  factory CatchReport.fromJson($core.String i,
-          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromJson(i, r);
-  @$core.Deprecated('Using this can add significant overhead to your binary. '
-      'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
-      'Will be removed in next major version')
+  factory CatchReport.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory CatchReport.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
   CatchReport clone() => CatchReport()..mergeFromMessage(this);
-  @$core.Deprecated('Using this can add significant overhead to your binary. '
-      'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
-      'Will be removed in next major version')
-  CatchReport copyWith(void Function(CatchReport) updates) =>
-      super.copyWith((message) => updates(message as CatchReport))
-          as CatchReport; // ignore: deprecated_member_use
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  CatchReport copyWith(void Function(CatchReport) updates) => super.copyWith((message) => updates(message as CatchReport)) as CatchReport; // ignore: deprecated_member_use
   $pb.BuilderInfo get info_ => _i;
   @$core.pragma('dart2js:noInline')
   static CatchReport create() => CatchReport._();
   CatchReport createEmptyInstance() => create();
   static $pb.PbList<CatchReport> createRepeated() => $pb.PbList<CatchReport>();
   @$core.pragma('dart2js:noInline')
-  static CatchReport getDefault() => _defaultInstance ??=
-      $pb.GeneratedMessage.$_defaultFor<CatchReport>(create);
+  static CatchReport getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<CatchReport>(create);
   static CatchReport? _defaultInstance;
 
   @$pb.TagNumber(1)
@@ -5421,10 +3547,7 @@ class CatchReport extends $pb.GeneratedMessage {
   @$pb.TagNumber(2)
   $fixnum.Int64 get msSinceLastCatch => $_getI64(1);
   @$pb.TagNumber(2)
-  set msSinceLastCatch($fixnum.Int64 v) {
-    $_setInt64(1, v);
-  }
-
+  set msSinceLastCatch($fixnum.Int64 v) { $_setInt64(1, v); }
   @$pb.TagNumber(2)
   $core.bool hasMsSinceLastCatch() => $_has(1);
   @$pb.TagNumber(2)
@@ -5433,10 +3556,7 @@ class CatchReport extends $pb.GeneratedMessage {
   @$pb.TagNumber(3)
   Catch get lastCatch => $_getN(2);
   @$pb.TagNumber(3)
-  set lastCatch(Catch v) {
-    setField(3, v);
-  }
-
+  set lastCatch(Catch v) { setField(3, v); }
   @$pb.TagNumber(3)
   $core.bool hasLastCatch() => $_has(2);
   @$pb.TagNumber(3)
@@ -5447,10 +3567,7 @@ class CatchReport extends $pb.GeneratedMessage {
   @$pb.TagNumber(6)
   $core.bool get containsNow => $_getBF(3);
   @$pb.TagNumber(6)
-  set containsNow($core.bool v) {
-    $_setBool(3, v);
-  }
-
+  set containsNow($core.bool v) { $_setBool(3, v); }
   @$pb.TagNumber(6)
   $core.bool hasContainsNow() => $_has(3);
   @$pb.TagNumber(6)
@@ -5458,146 +3575,24 @@ class CatchReport extends $pb.GeneratedMessage {
 }
 
 class CatchReportModel extends $pb.GeneratedMessage {
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
-      const $core.bool.fromEnvironment('protobuf.omit_message_names')
-          ? ''
-          : 'CatchReportModel',
-      package: const $pb.PackageName(
-          const $core.bool.fromEnvironment('protobuf.omit_message_names')
-              ? ''
-              : 'anglerslog'),
-      createEmptyInstance: create)
-    ..aOM<DateRange>(
-        1,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'dateRange',
-        subBuilder: DateRange.create)
-    ..pc<Id>(
-        2,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'catchIds',
-        $pb.PbFieldType.PM,
-        subBuilder: Id.create)
-    ..m<$core.int, $core.int>(
-        3,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'perHour',
-        entryClassName: 'CatchReportModel.PerHourEntry',
-        keyFieldType: $pb.PbFieldType.O3,
-        valueFieldType: $pb.PbFieldType.O3,
-        packageName: const $pb.PackageName('anglerslog'))
-    ..m<$core.int, $core.int>(
-        4,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'perMonth',
-        entryClassName: 'CatchReportModel.PerMonthEntry',
-        keyFieldType: $pb.PbFieldType.O3,
-        valueFieldType: $pb.PbFieldType.O3,
-        packageName: const $pb.PackageName('anglerslog'))
-    ..m<$core.int, $core.int>(
-        5,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'perMoonPhase',
-        entryClassName: 'CatchReportModel.PerMoonPhaseEntry',
-        keyFieldType: $pb.PbFieldType.O3,
-        valueFieldType: $pb.PbFieldType.O3,
-        packageName: const $pb.PackageName('anglerslog'))
-    ..m<$core.int, $core.int>(
-        6,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'perPeriod',
-        entryClassName: 'CatchReportModel.PerPeriodEntry',
-        keyFieldType: $pb.PbFieldType.O3,
-        valueFieldType: $pb.PbFieldType.O3,
-        packageName: const $pb.PackageName('anglerslog'))
-    ..m<$core.int, $core.int>(
-        7,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'perSeason',
-        entryClassName: 'CatchReportModel.PerSeasonEntry',
-        keyFieldType: $pb.PbFieldType.O3,
-        valueFieldType: $pb.PbFieldType.O3,
-        packageName: const $pb.PackageName('anglerslog'))
-    ..m<$core.int, $core.int>(
-        8,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'perTideType',
-        entryClassName: 'CatchReportModel.PerTideTypeEntry',
-        keyFieldType: $pb.PbFieldType.O3,
-        valueFieldType: $pb.PbFieldType.O3,
-        packageName: const $pb.PackageName('anglerslog'))
-    ..m<$core.String, $core.int>(
-        9,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'perAngler',
-        entryClassName: 'CatchReportModel.PerAnglerEntry',
-        keyFieldType: $pb.PbFieldType.OS,
-        valueFieldType: $pb.PbFieldType.O3,
-        packageName: const $pb.PackageName('anglerslog'))
-    ..m<$core.String, $core.int>(
-        10,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'perBodyOfWater',
-        entryClassName: 'CatchReportModel.PerBodyOfWaterEntry',
-        keyFieldType: $pb.PbFieldType.OS,
-        valueFieldType: $pb.PbFieldType.O3,
-        packageName: const $pb.PackageName('anglerslog'))
-    ..m<$core.String, $core.int>(
-        11,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'perMethod',
-        entryClassName: 'CatchReportModel.PerMethodEntry',
-        keyFieldType: $pb.PbFieldType.OS,
-        valueFieldType: $pb.PbFieldType.O3,
-        packageName: const $pb.PackageName('anglerslog'))
-    ..m<$core.String, $core.int>(
-        12,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'perFishingSpot',
-        entryClassName: 'CatchReportModel.PerFishingSpotEntry',
-        keyFieldType: $pb.PbFieldType.OS,
-        valueFieldType: $pb.PbFieldType.O3,
-        packageName: const $pb.PackageName('anglerslog'))
-    ..m<$core.String, $core.int>(
-        13,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'perSpecies',
-        entryClassName: 'CatchReportModel.PerSpeciesEntry',
-        keyFieldType: $pb.PbFieldType.OS,
-        valueFieldType: $pb.PbFieldType.O3,
-        packageName: const $pb.PackageName('anglerslog'))
-    ..m<$core.String, $core.int>(
-        14,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'perWaterClarity',
-        entryClassName: 'CatchReportModel.PerWaterClarityEntry',
-        keyFieldType: $pb.PbFieldType.OS,
-        valueFieldType: $pb.PbFieldType.O3,
-        packageName: const $pb.PackageName('anglerslog'))
-    ..m<$core.String, $core.int>(
-        15,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'perBait',
-        entryClassName: 'CatchReportModel.PerBaitEntry',
-        keyFieldType: $pb.PbFieldType.OS,
-        valueFieldType: $pb.PbFieldType.O3,
-        packageName: const $pb.PackageName('anglerslog'))
-    ..hasRequiredFields = false;
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'CatchReportModel', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'anglerslog'), createEmptyInstance: create)
+    ..aOM<DateRange>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'dateRange', subBuilder: DateRange.create)
+    ..pc<Id>(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'catchIds', $pb.PbFieldType.PM, subBuilder: Id.create)
+    ..m<$core.int, $core.int>(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'perHour', entryClassName: 'CatchReportModel.PerHourEntry', keyFieldType: $pb.PbFieldType.O3, valueFieldType: $pb.PbFieldType.O3, packageName: const $pb.PackageName('anglerslog'))
+    ..m<$core.int, $core.int>(4, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'perMonth', entryClassName: 'CatchReportModel.PerMonthEntry', keyFieldType: $pb.PbFieldType.O3, valueFieldType: $pb.PbFieldType.O3, packageName: const $pb.PackageName('anglerslog'))
+    ..m<$core.int, $core.int>(5, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'perMoonPhase', entryClassName: 'CatchReportModel.PerMoonPhaseEntry', keyFieldType: $pb.PbFieldType.O3, valueFieldType: $pb.PbFieldType.O3, packageName: const $pb.PackageName('anglerslog'))
+    ..m<$core.int, $core.int>(6, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'perPeriod', entryClassName: 'CatchReportModel.PerPeriodEntry', keyFieldType: $pb.PbFieldType.O3, valueFieldType: $pb.PbFieldType.O3, packageName: const $pb.PackageName('anglerslog'))
+    ..m<$core.int, $core.int>(7, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'perSeason', entryClassName: 'CatchReportModel.PerSeasonEntry', keyFieldType: $pb.PbFieldType.O3, valueFieldType: $pb.PbFieldType.O3, packageName: const $pb.PackageName('anglerslog'))
+    ..m<$core.int, $core.int>(8, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'perTideType', entryClassName: 'CatchReportModel.PerTideTypeEntry', keyFieldType: $pb.PbFieldType.O3, valueFieldType: $pb.PbFieldType.O3, packageName: const $pb.PackageName('anglerslog'))
+    ..m<$core.String, $core.int>(9, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'perAngler', entryClassName: 'CatchReportModel.PerAnglerEntry', keyFieldType: $pb.PbFieldType.OS, valueFieldType: $pb.PbFieldType.O3, packageName: const $pb.PackageName('anglerslog'))
+    ..m<$core.String, $core.int>(10, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'perBodyOfWater', entryClassName: 'CatchReportModel.PerBodyOfWaterEntry', keyFieldType: $pb.PbFieldType.OS, valueFieldType: $pb.PbFieldType.O3, packageName: const $pb.PackageName('anglerslog'))
+    ..m<$core.String, $core.int>(11, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'perMethod', entryClassName: 'CatchReportModel.PerMethodEntry', keyFieldType: $pb.PbFieldType.OS, valueFieldType: $pb.PbFieldType.O3, packageName: const $pb.PackageName('anglerslog'))
+    ..m<$core.String, $core.int>(12, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'perFishingSpot', entryClassName: 'CatchReportModel.PerFishingSpotEntry', keyFieldType: $pb.PbFieldType.OS, valueFieldType: $pb.PbFieldType.O3, packageName: const $pb.PackageName('anglerslog'))
+    ..m<$core.String, $core.int>(13, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'perSpecies', entryClassName: 'CatchReportModel.PerSpeciesEntry', keyFieldType: $pb.PbFieldType.OS, valueFieldType: $pb.PbFieldType.O3, packageName: const $pb.PackageName('anglerslog'))
+    ..m<$core.String, $core.int>(14, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'perWaterClarity', entryClassName: 'CatchReportModel.PerWaterClarityEntry', keyFieldType: $pb.PbFieldType.OS, valueFieldType: $pb.PbFieldType.O3, packageName: const $pb.PackageName('anglerslog'))
+    ..m<$core.String, $core.int>(15, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'perBait', entryClassName: 'CatchReportModel.PerBaitEntry', keyFieldType: $pb.PbFieldType.OS, valueFieldType: $pb.PbFieldType.O3, packageName: const $pb.PackageName('anglerslog'))
+    ..hasRequiredFields = false
+  ;
 
   CatchReportModel._() : super();
   factory CatchReportModel({
@@ -5665,40 +3660,31 @@ class CatchReportModel extends $pb.GeneratedMessage {
     }
     return _result;
   }
-  factory CatchReportModel.fromBuffer($core.List<$core.int> i,
-          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromBuffer(i, r);
-  factory CatchReportModel.fromJson($core.String i,
-          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromJson(i, r);
-  @$core.Deprecated('Using this can add significant overhead to your binary. '
-      'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
-      'Will be removed in next major version')
+  factory CatchReportModel.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory CatchReportModel.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
   CatchReportModel clone() => CatchReportModel()..mergeFromMessage(this);
-  @$core.Deprecated('Using this can add significant overhead to your binary. '
-      'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
-      'Will be removed in next major version')
-  CatchReportModel copyWith(void Function(CatchReportModel) updates) =>
-      super.copyWith((message) => updates(message as CatchReportModel))
-          as CatchReportModel; // ignore: deprecated_member_use
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  CatchReportModel copyWith(void Function(CatchReportModel) updates) => super.copyWith((message) => updates(message as CatchReportModel)) as CatchReportModel; // ignore: deprecated_member_use
   $pb.BuilderInfo get info_ => _i;
   @$core.pragma('dart2js:noInline')
   static CatchReportModel create() => CatchReportModel._();
   CatchReportModel createEmptyInstance() => create();
-  static $pb.PbList<CatchReportModel> createRepeated() =>
-      $pb.PbList<CatchReportModel>();
+  static $pb.PbList<CatchReportModel> createRepeated() => $pb.PbList<CatchReportModel>();
   @$core.pragma('dart2js:noInline')
-  static CatchReportModel getDefault() => _defaultInstance ??=
-      $pb.GeneratedMessage.$_defaultFor<CatchReportModel>(create);
+  static CatchReportModel getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<CatchReportModel>(create);
   static CatchReportModel? _defaultInstance;
 
   @$pb.TagNumber(1)
   DateRange get dateRange => $_getN(0);
   @$pb.TagNumber(1)
-  set dateRange(DateRange v) {
-    setField(1, v);
-  }
-
+  set dateRange(DateRange v) { setField(1, v); }
   @$pb.TagNumber(1)
   $core.bool hasDateRange() => $_has(0);
   @$pb.TagNumber(1)
@@ -5747,6 +3733,196 @@ class CatchReportModel extends $pb.GeneratedMessage {
 
   @$pb.TagNumber(15)
   $core.Map<$core.String, $core.int> get perBait => $_getMap(14);
+}
+
+class GpsTrailPoint extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'GpsTrailPoint', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'anglerslog'), createEmptyInstance: create)
+    ..a<$fixnum.Int64>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'timestamp', $pb.PbFieldType.OU6, defaultOrMaker: $fixnum.Int64.ZERO)
+    ..a<$core.double>(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'lat', $pb.PbFieldType.OD)
+    ..a<$core.double>(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'lng', $pb.PbFieldType.OD)
+    ..hasRequiredFields = false
+  ;
+
+  GpsTrailPoint._() : super();
+  factory GpsTrailPoint({
+    $fixnum.Int64? timestamp,
+    $core.double? lat,
+    $core.double? lng,
+  }) {
+    final _result = create();
+    if (timestamp != null) {
+      _result.timestamp = timestamp;
+    }
+    if (lat != null) {
+      _result.lat = lat;
+    }
+    if (lng != null) {
+      _result.lng = lng;
+    }
+    return _result;
+  }
+  factory GpsTrailPoint.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory GpsTrailPoint.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  GpsTrailPoint clone() => GpsTrailPoint()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  GpsTrailPoint copyWith(void Function(GpsTrailPoint) updates) => super.copyWith((message) => updates(message as GpsTrailPoint)) as GpsTrailPoint; // ignore: deprecated_member_use
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static GpsTrailPoint create() => GpsTrailPoint._();
+  GpsTrailPoint createEmptyInstance() => create();
+  static $pb.PbList<GpsTrailPoint> createRepeated() => $pb.PbList<GpsTrailPoint>();
+  @$core.pragma('dart2js:noInline')
+  static GpsTrailPoint getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<GpsTrailPoint>(create);
+  static GpsTrailPoint? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $fixnum.Int64 get timestamp => $_getI64(0);
+  @$pb.TagNumber(1)
+  set timestamp($fixnum.Int64 v) { $_setInt64(0, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasTimestamp() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearTimestamp() => clearField(1);
+
+  @$pb.TagNumber(2)
+  $core.double get lat => $_getN(1);
+  @$pb.TagNumber(2)
+  set lat($core.double v) { $_setDouble(1, v); }
+  @$pb.TagNumber(2)
+  $core.bool hasLat() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearLat() => clearField(2);
+
+  @$pb.TagNumber(3)
+  $core.double get lng => $_getN(2);
+  @$pb.TagNumber(3)
+  set lng($core.double v) { $_setDouble(2, v); }
+  @$pb.TagNumber(3)
+  $core.bool hasLng() => $_has(2);
+  @$pb.TagNumber(3)
+  void clearLng() => clearField(3);
+}
+
+class GpsTrail extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'GpsTrail', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'anglerslog'), createEmptyInstance: create)
+    ..aOM<Id>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'id', subBuilder: Id.create)
+    ..a<$fixnum.Int64>(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'startTimestamp', $pb.PbFieldType.OU6, defaultOrMaker: $fixnum.Int64.ZERO)
+    ..a<$fixnum.Int64>(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'endTimestamp', $pb.PbFieldType.OU6, defaultOrMaker: $fixnum.Int64.ZERO)
+    ..aOS(4, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'timeZone')
+    ..pc<GpsTrailPoint>(5, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'points', $pb.PbFieldType.PM, subBuilder: GpsTrailPoint.create)
+    ..aOM<Id>(6, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'bodyOfWaterId', subBuilder: Id.create)
+    ..hasRequiredFields = false
+  ;
+
+  GpsTrail._() : super();
+  factory GpsTrail({
+    Id? id,
+    $fixnum.Int64? startTimestamp,
+    $fixnum.Int64? endTimestamp,
+    $core.String? timeZone,
+    $core.Iterable<GpsTrailPoint>? points,
+    Id? bodyOfWaterId,
+  }) {
+    final _result = create();
+    if (id != null) {
+      _result.id = id;
+    }
+    if (startTimestamp != null) {
+      _result.startTimestamp = startTimestamp;
+    }
+    if (endTimestamp != null) {
+      _result.endTimestamp = endTimestamp;
+    }
+    if (timeZone != null) {
+      _result.timeZone = timeZone;
+    }
+    if (points != null) {
+      _result.points.addAll(points);
+    }
+    if (bodyOfWaterId != null) {
+      _result.bodyOfWaterId = bodyOfWaterId;
+    }
+    return _result;
+  }
+  factory GpsTrail.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory GpsTrail.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  GpsTrail clone() => GpsTrail()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  GpsTrail copyWith(void Function(GpsTrail) updates) => super.copyWith((message) => updates(message as GpsTrail)) as GpsTrail; // ignore: deprecated_member_use
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static GpsTrail create() => GpsTrail._();
+  GpsTrail createEmptyInstance() => create();
+  static $pb.PbList<GpsTrail> createRepeated() => $pb.PbList<GpsTrail>();
+  @$core.pragma('dart2js:noInline')
+  static GpsTrail getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<GpsTrail>(create);
+  static GpsTrail? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  Id get id => $_getN(0);
+  @$pb.TagNumber(1)
+  set id(Id v) { setField(1, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasId() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearId() => clearField(1);
+  @$pb.TagNumber(1)
+  Id ensureId() => $_ensure(0);
+
+  @$pb.TagNumber(2)
+  $fixnum.Int64 get startTimestamp => $_getI64(1);
+  @$pb.TagNumber(2)
+  set startTimestamp($fixnum.Int64 v) { $_setInt64(1, v); }
+  @$pb.TagNumber(2)
+  $core.bool hasStartTimestamp() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearStartTimestamp() => clearField(2);
+
+  @$pb.TagNumber(3)
+  $fixnum.Int64 get endTimestamp => $_getI64(2);
+  @$pb.TagNumber(3)
+  set endTimestamp($fixnum.Int64 v) { $_setInt64(2, v); }
+  @$pb.TagNumber(3)
+  $core.bool hasEndTimestamp() => $_has(2);
+  @$pb.TagNumber(3)
+  void clearEndTimestamp() => clearField(3);
+
+  @$pb.TagNumber(4)
+  $core.String get timeZone => $_getSZ(3);
+  @$pb.TagNumber(4)
+  set timeZone($core.String v) { $_setString(3, v); }
+  @$pb.TagNumber(4)
+  $core.bool hasTimeZone() => $_has(3);
+  @$pb.TagNumber(4)
+  void clearTimeZone() => clearField(4);
+
+  @$pb.TagNumber(5)
+  $core.List<GpsTrailPoint> get points => $_getList(4);
+
+  @$pb.TagNumber(6)
+  Id get bodyOfWaterId => $_getN(5);
+  @$pb.TagNumber(6)
+  set bodyOfWaterId(Id v) { setField(6, v); }
+  @$pb.TagNumber(6)
+  $core.bool hasBodyOfWaterId() => $_has(5);
+  @$pb.TagNumber(6)
+  void clearBodyOfWaterId() => clearField(6);
+  @$pb.TagNumber(6)
+  Id ensureBodyOfWaterId() => $_ensure(5);
 }
 
 // ignore_for_file: undefined_named_parameter,no_leading_underscores_for_local_identifiers

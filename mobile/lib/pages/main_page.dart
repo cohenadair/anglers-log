@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mobile/gps_trail_manager.dart';
 import 'package:mobile/poll_manager.dart';
 
 import '../i18n/strings.dart';
@@ -18,6 +19,8 @@ class MainPageState extends State<MainPage> {
   int _currentBarItem = 1; // Default to the "Catches" tab.
   late List<_BarItemModel> _navItems;
 
+  GpsTrailManager get _gpsTrailManager => GpsTrailManager.of(context);
+
   PollManager get _pollManager => PollManager.of(context);
 
   NavigatorState get _currentNavState {
@@ -33,9 +36,9 @@ class MainPageState extends State<MainPage> {
       _BarItemModel(
         page: _NavigatorPage(
           navigatorKey: GlobalKey<NavigatorState>(),
-          builder: (context) => FishingSpotMap(),
+          builder: (context) => FishingSpotMap(showGpsTrailButton: true),
         ),
-        iconBuilder: () => const Icon(Icons.map),
+        iconBuilder: _buildMapIcon,
         titleBuilder: (context) => Strings.of(context).mapPageMenuLabel,
       ),
       _BarItemModel(
@@ -119,15 +122,19 @@ class MainPageState extends State<MainPage> {
   Widget _buildMoreIcon() {
     return StreamBuilder<void>(
       stream: _pollManager.stream,
-      builder: (context, _) => Stack(
-        children: <Widget>[
-          const Icon(Icons.more_horiz),
-          Positioned(
-            top: 0.0,
-            right: 0.0,
-            child: Badge(isVisible: _pollManager.canVote),
-          ),
-        ],
+      builder: (context, _) => BadgeContainer(
+        child: const Icon(Icons.more_horiz),
+        isBadgeVisible: _pollManager.canVote,
+      ),
+    );
+  }
+
+  Widget _buildMapIcon() {
+    return StreamBuilder<void>(
+      stream: _gpsTrailManager.stream,
+      builder: (context, _) => BadgeContainer(
+        child: const Icon(Icons.map),
+        isBadgeVisible: _gpsTrailManager.hasActiveTrail,
       ),
     );
   }
