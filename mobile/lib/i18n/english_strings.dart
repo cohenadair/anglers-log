@@ -509,7 +509,7 @@ Map<String, Map<String, String>> get englishStrings => {
         "fishingSpotListPage_searchHint": "Search fishing spots",
         "fishingSpotListPage_emptyListTitle": "No Fishing Spots",
         "fishingSpotListPage_emptyListDescription":
-            "To add a fishing spot, tap on the map and save the dropped pin.",
+            "To add a fishing spot, tap the %s button on the map and save the dropped pin.",
         "fishingSpotsSummary_empty":
             "When fishing spots are added to your log, a summary of their catches will be shown here.",
         "fishingSpotListPage_noBodyOfWater": "No Body Of Water",
@@ -815,6 +815,7 @@ Map<String, Map<String, String>> get englishStrings => {
         "pickerTitle_bodiesOfWater": "Select Bodies Of Water",
         "pickerTitle_catches": "Select Catches",
         "pickerTitle_timeZone": "Select Time Zone",
+        "pickerTitle_gpsTrails": "Select GPS Trails",
         "keywords_temperatureMetric": "celsius temperature degrees c",
         "keywords_temperatureImperial": "fahrenheit temperature degrees f",
         "keywords_speedMetric": "kilometers kilometres per hour speed wind",
@@ -929,6 +930,8 @@ Map<String, Map<String, String>> get englishStrings => {
         "entityName_customField": "Custom Field",
         "entityName_fishingMethods": "Fishing Methods",
         "entityName_fishingMethod": "Fishing Method",
+        "entityName_gpsTrails": "GPS Trails",
+        "entityName_gpsTrail": "GPS Trail",
         "entityName_species": "Species",
         "entityName_trip": "Trip",
         "entityName_trips": "Trips",
@@ -1023,6 +1026,17 @@ Map<String, Map<String, String>> get englishStrings => {
         "permission_locationNotificationDescription": "GPS trail is active",
         "calendarPage_title": "Calendar",
         "calendarPage_tripLabel": "Trip",
+        "gpsTrailListPage_title": "GPS Trails (%s)",
+        "gpsTrailListPage_searchHint": "Search GPS trails",
+        "gpsTrailListPage_emptyListTitle": "No GPS Trails",
+        "gpsTrailListPage_emptyListDescription":
+            "To start a GPS trail, tap the %s button on the map.",
+        "gpsTrailListPage_deleteMessageSingular":
+            "This GPS trail is associated with %s trips; are you sure you want to delete it? This cannot be undone.",
+        "gpsTrailListPage_deleteMessage":
+            "This GPS trail is associated with %s trip; are you sure you want to delete it? This cannot be undone.",
+        "gpsTrailListPage_numberOfPoints": "%s Points",
+        "saveGpsTrailPage_editTitle": "Edit GPS Trail",
         "changeLogPage_title": "What's New",
         "changeLogPage_previousVersion": "Your Previous Version",
         "changeLog_2.0.22_1": "A complete rewrite of Anglers' Log",

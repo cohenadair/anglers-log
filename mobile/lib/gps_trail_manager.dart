@@ -8,13 +8,18 @@ import 'package:mapbox_gl/mapbox_gl.dart';
 import 'package:mobile/app_manager.dart';
 import 'package:mobile/location_monitor.dart';
 import 'package:mobile/time_manager.dart';
+import 'package:mobile/trip_manager.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:provider/provider.dart';
 import 'package:protobuf/protobuf.dart';
+import 'package:quiver/strings.dart';
 
+import 'body_of_water_manager.dart';
 import 'entity_manager.dart';
+import 'i18n/strings.dart';
 import 'log.dart';
 import 'model/gen/anglerslog.pb.dart';
+import 'utils/string_utils.dart';
 
 extension GpsTrailEventType on EntityEventType {
   static const startTracking = EntityEventType("start_tracking");
@@ -29,9 +34,13 @@ class GpsTrailManager extends EntityManager<GpsTrail> {
 
   GpsTrail? _activeTrail;
 
+  BodyOfWaterManager get _bodyOfWaterManager => appManager.bodyOfWaterManager;
+
   LocationMonitor get _locationMonitor => appManager.locationMonitor;
 
   TimeManager get _timeManager => appManager.timeManager;
+
+  TripManager get _tripManager => appManager.tripManager;
 
   GpsTrailManager(AppManager appManager) : super(appManager);
 
@@ -44,9 +53,8 @@ class GpsTrailManager extends EntityManager<GpsTrail> {
   }
 
   @override
-  String displayName(BuildContext context, GpsTrail entity) {
-    throw UnimplementedError();
-  }
+  String displayName(BuildContext context, GpsTrail entity) =>
+      entity.displayTimestamp(context);
 
   @override
   GpsTrail entityFromBytes(List<int> bytes) => GpsTrail.fromBuffer(bytes);
@@ -56,7 +64,11 @@ class GpsTrailManager extends EntityManager<GpsTrail> {
 
   @override
   bool matchesFilter(Id id, String? filter) {
-    throw UnimplementedError();
+    var trail = entity(id);
+    if (trail == null) {
+      return false;
+    }
+    return _bodyOfWaterManager.idsMatchesFilter([trail.bodyOfWaterId], filter);
   }
 
   @override
@@ -111,6 +123,34 @@ class GpsTrailManager extends EntityManager<GpsTrail> {
     _activeTrail = null;
     await _locationMonitor.disableBackgroundMode();
     _notifyOnStopTracking();
+  }
+
+  List<GpsTrail> gpsTrails({
+    String? filter,
+  }) {
+    List<GpsTrail> trails;
+
+    if (isEmpty(filter)) {
+      trails = entities.values.toList();
+    } else {
+      trails = list()
+          .where((trail) => matchesFilter(trail.id, filter))
+          .toList();
+    }
+
+    trails.sort((lhs, rhs) => rhs.startTimestamp.compareTo(lhs.startTimestamp));
+    return trails;
+  }
+
+  int numberOfTrips(Id? trailId) => numberOf<Trip>(trailId, _tripManager.list(),
+      (trip) => trip.gpsTrailIds.contains(trailId));
+
+  String deleteMessage(BuildContext context, GpsTrail trail) {
+    var numOfTrips = numberOfTrips(trail.id);
+    var string = numOfTrips == 1
+        ? Strings.of(context).gpsTrailListPageDeleteMessageSingular
+        : Strings.of(context).gpsTrailListPageDeleteMessage;
+    return format(string, [numOfTrips]);
   }
 
   void _onLocationUpdate(LatLng? latLng) {

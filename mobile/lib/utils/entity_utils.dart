@@ -25,6 +25,7 @@ import 'package:mobile/subscription_manager.dart';
 import 'package:mobile/user_preference_manager.dart';
 import 'package:mobile/widgets/widget.dart';
 
+import '../pages/gps_trail_list_page.dart';
 import 'page_utils.dart';
 
 @immutable
@@ -35,6 +36,7 @@ class EntitySpec {
   final Widget Function(BuildContext) listPageBuilder;
   final void Function(BuildContext) presentSavePage;
   final bool Function(BuildContext) isTracked;
+  final bool canAdd;
 
   const EntitySpec({
     required this.singularName,
@@ -43,6 +45,7 @@ class EntitySpec {
     required this.listPageBuilder,
     required this.presentSavePage,
     required this.isTracked,
+    required this.canAdd,
   });
 }
 
@@ -54,6 +57,7 @@ var allEntitySpecs = [
   catchesEntitySpec,
   customFieldsEntitySpec,
   fishingMethodsEntitySpec,
+  gpsTrailEntitySpec,
   speciesEntitySpec,
   tripsEntitySpec,
   waterClaritiesEntitySpec,
@@ -67,6 +71,7 @@ var anglersEntitySpec = EntitySpec(
   presentSavePage: (context) =>
       _presentSavePage(context, false, const SaveAnglerPage()),
   isTracked: (context) => UserPreferenceManager.of(context).isTrackingAnglers,
+  canAdd: true,
 );
 
 var baitCategoriesEntitySpec = EntitySpec(
@@ -77,6 +82,7 @@ var baitCategoriesEntitySpec = EntitySpec(
   presentSavePage: (context) =>
       _presentSavePage(context, false, const SaveBaitCategoryPage()),
   isTracked: (context) => UserPreferenceManager.of(context).isTrackingBaits,
+  canAdd: true,
 );
 
 var baitsEntitySpec = EntitySpec(
@@ -87,6 +93,7 @@ var baitsEntitySpec = EntitySpec(
   presentSavePage: (context) =>
       _presentSavePage(context, false, const SaveBaitPage()),
   isTracked: (context) => UserPreferenceManager.of(context).isTrackingBaits,
+  canAdd: true,
 );
 
 var bodiesOfWaterEntitySpec = EntitySpec(
@@ -98,6 +105,7 @@ var bodiesOfWaterEntitySpec = EntitySpec(
       _presentSavePage(context, false, const SaveBodyOfWaterPage()),
   isTracked: (context) =>
       UserPreferenceManager.of(context).isTrackingFishingSpots,
+  canAdd: true,
 );
 
 var catchesEntitySpec = EntitySpec(
@@ -108,6 +116,7 @@ var catchesEntitySpec = EntitySpec(
   presentSavePage: (context) => AddCatchJourney.presentIn(context),
   isTracked: (context) =>
       UserPreferenceManager.of(context).isTrackingFishingSpots,
+  canAdd: true,
 );
 
 var customFieldsEntitySpec = EntitySpec(
@@ -118,6 +127,7 @@ var customFieldsEntitySpec = EntitySpec(
   presentSavePage: (context) =>
       _presentSavePage(context, true, const SaveCustomEntityPage()),
   isTracked: (_) => true,
+  canAdd: true,
 );
 
 var fishingMethodsEntitySpec = EntitySpec(
@@ -128,6 +138,19 @@ var fishingMethodsEntitySpec = EntitySpec(
   presentSavePage: (context) =>
       _presentSavePage(context, false, const SaveMethodPage()),
   isTracked: (context) => UserPreferenceManager.of(context).isTrackingMethods,
+  canAdd: true,
+);
+
+var gpsTrailEntitySpec = EntitySpec(
+  singularName: (context) => Strings.of(context).entityNameGpsTrail,
+  pluralName: (context) => Strings.of(context).entityNameGpsTrails,
+  icon: iconGpsTrail,
+  listPageBuilder: (_) => const GpsTrailListPage(),
+  presentSavePage: (context) {
+    assert(false, "Save page does not exist for GPS trails");
+  },
+  isTracked: (context) => UserPreferenceManager.of(context).isTrackingMethods,
+  canAdd: false,
 );
 
 var speciesEntitySpec = EntitySpec(
@@ -138,6 +161,7 @@ var speciesEntitySpec = EntitySpec(
   presentSavePage: (context) =>
       _presentSavePage(context, false, const SaveSpeciesPage()),
   isTracked: (context) => UserPreferenceManager.of(context).isTrackingSpecies,
+  canAdd: true,
 );
 
 var tripsEntitySpec = EntitySpec(
@@ -148,6 +172,7 @@ var tripsEntitySpec = EntitySpec(
   presentSavePage: (context) =>
       _presentSavePage(context, false, const SaveTripPage()),
   isTracked: (_) => true,
+  canAdd: true,
 );
 
 var waterClaritiesEntitySpec = EntitySpec(
@@ -159,6 +184,7 @@ var waterClaritiesEntitySpec = EntitySpec(
       _presentSavePage(context, false, const SaveWaterClarityPage()),
   isTracked: (context) =>
       UserPreferenceManager.of(context).isTrackingWaterClarities,
+  canAdd: true,
 );
 
 void _presentSavePage(BuildContext context, bool isPro, Widget savePage) {

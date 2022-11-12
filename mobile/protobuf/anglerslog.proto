@@ -357,7 +357,7 @@ message Trip {
   string notes = 13;
   Atmosphere atmosphere = 14;
   string time_zone = 15;
-  Id gps_trail_id = 16;
+  repeated Id gps_trail_ids = 16;
 }
 
 message Measurement {

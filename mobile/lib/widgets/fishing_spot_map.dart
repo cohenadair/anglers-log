@@ -434,7 +434,6 @@ class FishingSpotMapState extends State<FishingSpotMap> {
     }
 
     var tooltip = Strings.of(context).mapPageStartTrackingTooltip;
-    var icon = Icons.near_me;
     var onPressed = () async {
       if (await requestLocationPermissionIfNeeded(
         context: context,
@@ -446,7 +445,6 @@ class FishingSpotMapState extends State<FishingSpotMap> {
 
     if (_gpsTrailManager.hasActiveTrail) {
       tooltip = Strings.of(context).mapPageStopTrackingTooltip;
-      icon = Icons.near_me_disabled;
       onPressed = () async {
         _gpsTrailManager.stopTracking();
       };
@@ -463,7 +461,7 @@ class FishingSpotMapState extends State<FishingSpotMap> {
         child: FloatingButton.icon(
           padding: insetsZero,
           tooltip: tooltip,
-          icon: icon,
+          icon: iconGpsTrail,
           onPressed: () {
             if (_subscriptionManager.isPro) {
               onPressed();

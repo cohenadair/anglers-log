@@ -2433,7 +2433,7 @@ class Trip extends $pb.GeneratedMessage {
     ..aOS(13, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'notes')
     ..aOM<Atmosphere>(14, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'atmosphere', subBuilder: Atmosphere.create)
     ..aOS(15, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'timeZone')
-    ..aOM<Id>(16, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'gpsTrailId', subBuilder: Id.create)
+    ..pc<Id>(16, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'gpsTrailIds', $pb.PbFieldType.PM, subBuilder: Id.create)
     ..hasRequiredFields = false
   ;
 
@@ -2454,7 +2454,7 @@ class Trip extends $pb.GeneratedMessage {
     $core.String? notes,
     Atmosphere? atmosphere,
     $core.String? timeZone,
-    Id? gpsTrailId,
+    $core.Iterable<Id>? gpsTrailIds,
   }) {
     final _result = create();
     if (id != null) {
@@ -2502,8 +2502,8 @@ class Trip extends $pb.GeneratedMessage {
     if (timeZone != null) {
       _result.timeZone = timeZone;
     }
-    if (gpsTrailId != null) {
-      _result.gpsTrailId = gpsTrailId;
+    if (gpsTrailIds != null) {
+      _result.gpsTrailIds.addAll(gpsTrailIds);
     }
     return _result;
   }
@@ -2620,15 +2620,7 @@ class Trip extends $pb.GeneratedMessage {
   void clearTimeZone() => clearField(15);
 
   @$pb.TagNumber(16)
-  Id get gpsTrailId => $_getN(15);
-  @$pb.TagNumber(16)
-  set gpsTrailId(Id v) { setField(16, v); }
-  @$pb.TagNumber(16)
-  $core.bool hasGpsTrailId() => $_has(15);
-  @$pb.TagNumber(16)
-  void clearGpsTrailId() => clearField(16);
-  @$pb.TagNumber(16)
-  Id ensureGpsTrailId() => $_ensure(15);
+  $core.List<Id> get gpsTrailIds => $_getList(15);
 }
 
 class Measurement extends $pb.GeneratedMessage {

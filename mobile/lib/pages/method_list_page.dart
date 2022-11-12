@@ -21,8 +21,8 @@ class MethodListPage extends StatelessWidget {
     var methodManager = MethodManager.of(context);
 
     return ManageableListPage<Method>(
-      titleBuilder: (anglers) => Text(
-        format(Strings.of(context).methodListPageTitle, [anglers.length]),
+      titleBuilder: (methods) => Text(
+        format(Strings.of(context).methodListPageTitle, [methods.length]),
       ),
       itemBuilder: (context, method) => ManageableListPageItemModel(
         child: Text(method.name, style: stylePrimary(context)),

@@ -25,6 +25,7 @@ const iconMethod = Icons.list;
 const iconSpecies = CustomIcons.species;
 const iconTrip = Icons.public;
 const iconWaterClarity = CustomIcons.waterClarities;
+const iconGpsTrail = Icons.route;
 
 const animDurationDefault = Duration(milliseconds: 150);
 const animDurationSlow = Duration(milliseconds: 450);

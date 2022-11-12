@@ -1642,6 +1642,8 @@ class Strings {
 
   String get pickerTitleTimeZone => _string("pickerTitle_timeZone");
 
+  String get pickerTitleGpsTrails => _string("pickerTitle_gpsTrails");
+
   String get keywordsTemperatureMetric => _string("keywords_temperatureMetric");
 
   String get keywordsTemperatureImperial =>
@@ -1872,6 +1874,10 @@ class Strings {
 
   String get entityNameFishingMethod => _string("entityName_fishingMethod");
 
+  String get entityNameGpsTrails => _string("entityName_gpsTrails");
+
+  String get entityNameGpsTrail => _string("entityName_gpsTrail");
+
   String get entityNameSpecies => _string("entityName_species");
 
   String get entityNameTrip => _string("entityName_trip");
@@ -2047,6 +2053,28 @@ class Strings {
   String get calendarPageTitle => _string("calendarPage_title");
 
   String get calendarPageTripLabel => _string("calendarPage_tripLabel");
+
+  String get gpsTrailListPageTitle => _string("gpsTrailListPage_title");
+
+  String get gpsTrailListPageSearchHint =>
+      _string("gpsTrailListPage_searchHint");
+
+  String get gpsTrailListPageEmptyListTitle =>
+      _string("gpsTrailListPage_emptyListTitle");
+
+  String get gpsTrailListPageEmptyListDescription =>
+      _string("gpsTrailListPage_emptyListDescription");
+
+  String get gpsTrailListPageDeleteMessageSingular =>
+      _string("gpsTrailListPage_deleteMessageSingular");
+
+  String get gpsTrailListPageDeleteMessage =>
+      _string("gpsTrailListPage_deleteMessage");
+
+  String get gpsTrailListPageNumberOfPoints =>
+      _string("gpsTrailListPage_numberOfPoints");
+
+  String get saveGpsTrailPageEditTitle => _string("saveGpsTrailPage_editTitle");
 
   String get changeLogPageTitle => _string("changeLogPage_title");
 

@@ -1946,4 +1946,7 @@ extension Trips on Trip {
 
 extension GpsTrails on GpsTrail {
   bool get isFinished => hasStartTimestamp() && hasEndTimestamp();
+
+  String displayTimestamp(BuildContext context) =>
+      formatTimestamp(context, startTimestamp.toInt(), timeZone);
 }
