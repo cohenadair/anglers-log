@@ -1,3 +1,4 @@
+import 'dart:math';
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
@@ -15,6 +16,7 @@ import 'package:mobile/wrappers/http_wrapper.dart';
 import '../log.dart';
 import '../utils/network_utils.dart';
 import 'fishing_spot_map.dart';
+import 'safe_image.dart';
 
 /// A widget that displays [FishingSpot] details on a small map.
 class StaticFishingSpotMap extends StatefulWidget {
@@ -58,8 +60,8 @@ class _StaticFishingSpotMapState extends State<StaticFishingSpotMap> {
     super.didChangeDependencies();
 
     _imageSize = Size(
-      _mediaQuery.size.width - (widget.padding?.horizontal ?? 0),
-      _mapHeight - (widget.padding?.vertical ?? 0),
+      max(0, _mediaQuery.size.width - (widget.padding?.horizontal ?? 0)),
+      max(0, _mapHeight - (widget.padding?.vertical ?? 0)),
     );
     _mapType = MapType.of(context);
     _imageFuture = _fetchImage();
@@ -106,12 +108,8 @@ class _StaticFishingSpotMapState extends State<StaticFishingSpotMap> {
     return FutureBuilder<Uint8List?>(
       future: _imageFuture,
       builder: (context, snapshot) {
-        if (!snapshot.hasData) {
-          return Container(color: Colors.grey.shade200);
-        }
-
-        return Image.memory(
-          snapshot.data!,
+        return SafeImage.memory(
+          snapshot.data,
           width: _imageSize.width,
           height: _imageSize.height,
           fit: BoxFit.cover,

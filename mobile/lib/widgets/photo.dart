@@ -10,6 +10,7 @@ import '../res/dimen.dart';
 import '../res/gen/custom_icons.dart';
 import '../utils/page_utils.dart';
 import '../widgets/widget.dart';
+import 'safe_image.dart';
 
 /// A widget that displays a photo on the screen. The photo source is one
 /// already saved to the app's sandbox (i.e. an image associated with an
@@ -112,39 +113,30 @@ class PhotoState extends State<Photo> {
         var h = widget.height;
         var hasSize = w != null && h != null;
 
-        Widget child = const Empty();
-        if (image == null && widget.showPlaceholder) {
-          // Use a default icon placeholder if a size was specified, otherwise
-          // use an empty widget.
-          child = hasSize
-              ? Container(
-                  width: w,
-                  height: h,
-                  decoration: BoxDecoration(
-                    color: Theme.of(context).primaryColor,
-                    shape: widget.isCircular
-                        ? BoxShape.circle
-                        : BoxShape.rectangle,
-                  ),
-                  child: Icon(
-                    CustomIcons.catches,
-                    size: min<double>(w!, h!) / 1.5,
-                    color: Colors.white,
-                  ),
-                )
-              : const Empty();
-        } else if (image != null) {
-          child = Image.memory(
-            image,
+        Widget fallback = const Empty();
+        if (widget.showPlaceholder && hasSize) {
+          fallback = Container(
             width: w,
             height: h,
-            fit: BoxFit.cover,
+            decoration: BoxDecoration(
+              color: Theme.of(context).primaryColor,
+              shape: widget.isCircular ? BoxShape.circle : BoxShape.rectangle,
+            ),
+            child: Icon(
+              CustomIcons.catches,
+              size: min<double>(w!, h!) / 1.5,
+              color: Colors.white,
+            ),
           );
         }
 
-        if (child is Empty) {
-          return child;
-        }
+        Widget child = SafeImage.memory(
+          image,
+          width: w,
+          height: h,
+          fit: BoxFit.cover,
+          fallback: fallback,
+        );
 
         // Note that an AnimatedSwitcher isn't used here for a couple reasons:
         //   1. Loading from cache is quicker than the animation, and

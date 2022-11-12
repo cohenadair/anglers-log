@@ -271,7 +271,7 @@ class SwipeChip extends StatelessWidget {
         width: _width,
         height: _height,
         decoration: BoxDecoration(
-          color: Colors.grey.shade300,
+          color: colorGreyAccent,
           borderRadius: BorderRadius.all(Radius.circular(_height / 2)),
         ),
       ),
@@ -538,7 +538,7 @@ class WatermarkLogo extends StatelessWidget {
         ClipOval(
           child: Container(
             padding: insetsXL,
-            color: Colors.grey.shade200,
+            color: colorGreyAccent,
             child: Icon(
               icon,
               size: _size,

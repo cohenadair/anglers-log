@@ -21,6 +21,7 @@ import '../utils/snackbar_utils.dart';
 import '../utils/string_utils.dart';
 import '../widgets/button.dart';
 import '../widgets/empty_list_placeholder.dart';
+import '../widgets/safe_image.dart';
 import '../widgets/widget.dart';
 import '../wrappers/file_picker_wrapper.dart';
 import '../wrappers/image_picker_wrapper.dart';
@@ -518,7 +519,7 @@ class ImagePickerPageState extends State<ImagePickerPage> {
       },
       child: Opacity(
         opacity: selected ? _pickedImageOpacity : _normalImageOpacity,
-        child: Image.memory(
+        child: SafeImage.memory(
           data,
           fit: BoxFit.cover,
         ),
