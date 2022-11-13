@@ -130,6 +130,10 @@ class PhotoState extends State<Photo> {
           );
         }
 
+        if (image == null && fallback is Empty) {
+          return fallback;
+        }
+
         Widget child = SafeImage.memory(
           image,
           width: w,

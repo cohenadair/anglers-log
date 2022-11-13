@@ -59,6 +59,7 @@ void main() {
     await tester.pump(const Duration(milliseconds: 250));
 
     expect(find.byType(Empty), findsOneWidget);
+    expect(find.byType(Padding), findsNothing);
   });
 
   testWidgets("Invalid image no size shows empty placeholder", (tester) async {
