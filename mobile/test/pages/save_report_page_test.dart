@@ -153,6 +153,7 @@ void main() {
     when(appManager.baitManager.attachmentList())
         .thenReturn(baitAttachmentList);
     when(appManager.baitManager.numberOfCatches(any)).thenReturn(0);
+    when(appManager.baitManager.numberOfCatchQuantities(any)).thenReturn(0);
 
     when(appManager.bodyOfWaterManager.displayName(any, any))
         .thenAnswer((invocation) => invocation.positionalArguments[1].name);

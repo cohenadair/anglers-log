@@ -928,7 +928,7 @@ void main() {
 
     await pumpCatchSummary(
       tester,
-        (context) => CatchSummary<Catch>(
+      (context) => CatchSummary<Catch>(
         filterOptionsBuilder: (_) => optionsWithEverything()
           ..baits.addAll([baitAttachment0, baitAttachment4]),
       ),
@@ -937,7 +937,7 @@ void main() {
     expect(find.text("Worm (Brown) (9)"), findsOneWidget);
     expect(find.text("Grub (1)"), findsOneWidget);
   });
- 
+
   testWidgets("Catches per bait hidden", (tester) async {
     when(appManager.userPreferenceManager.isTrackingBaits).thenReturn(false);
     await pumpCatchSummary(

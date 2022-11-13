@@ -540,8 +540,10 @@ class MockAnglerManager extends _i1.Mock implements _i7.AnglerManager {
           returnValue: Future<bool>.value(false)) as _i5.Future<bool>);
   @override
   int numberOf<E extends _i63.GeneratedMessage>(
-          _i4.Id? id, List<E>? items, bool Function(E)? matches) =>
-      (super.noSuchMethod(Invocation.method(#numberOf, [id, items, matches]),
+          _i4.Id? id, List<E>? items, bool Function(E)? matches,
+          [int Function(E)? quantity]) =>
+      (super.noSuchMethod(
+          Invocation.method(#numberOf, [id, items, matches, quantity]),
           returnValue: 0) as int);
   @override
   _i5.StreamSubscription<_i64.EntityEvent<_i4.Angler>> listen(
@@ -1145,8 +1147,10 @@ class MockBaitCategoryManager extends _i1.Mock
           returnValue: Future<bool>.value(false)) as _i5.Future<bool>);
   @override
   int numberOf<E extends _i63.GeneratedMessage>(
-          _i4.Id? id, List<E>? items, bool Function(E)? matches) =>
-      (super.noSuchMethod(Invocation.method(#numberOf, [id, items, matches]),
+          _i4.Id? id, List<E>? items, bool Function(E)? matches,
+          [int Function(E)? quantity]) =>
+      (super.noSuchMethod(
+          Invocation.method(#numberOf, [id, items, matches, quantity]),
           returnValue: 0) as int);
   @override
   _i5.StreamSubscription<_i64.EntityEvent<_i4.BaitCategory>> listen(
@@ -1263,6 +1267,10 @@ class MockBaitManager extends _i1.Mock implements _i10.BaitManager {
   @override
   int numberOfCatches(_i4.Id? baitId) =>
       (super.noSuchMethod(Invocation.method(#numberOfCatches, [baitId]),
+          returnValue: 0) as int);
+  @override
+  int numberOfCatchQuantities(_i4.Id? baitId) =>
+      (super.noSuchMethod(Invocation.method(#numberOfCatchQuantities, [baitId]),
           returnValue: 0) as int);
   @override
   int numberOfVariantCatches(_i4.Id? variantId) => (super.noSuchMethod(
@@ -1410,8 +1418,10 @@ class MockBaitManager extends _i1.Mock implements _i10.BaitManager {
           returnValue: Future<bool>.value(false)) as _i5.Future<bool>);
   @override
   int numberOf<E extends _i63.GeneratedMessage>(
-          _i4.Id? id, List<E>? items, bool Function(E)? matches) =>
-      (super.noSuchMethod(Invocation.method(#numberOf, [id, items, matches]),
+          _i4.Id? id, List<E>? items, bool Function(E)? matches,
+          [int Function(E)? quantity]) =>
+      (super.noSuchMethod(
+          Invocation.method(#numberOf, [id, items, matches, quantity]),
           returnValue: 0) as int);
   @override
   _i5.StreamSubscription<_i64.EntityEvent<_i4.Bait>> listen(
@@ -1592,8 +1602,10 @@ class MockBodyOfWaterManager extends _i1.Mock
           returnValue: Future<bool>.value(false)) as _i5.Future<bool>);
   @override
   int numberOf<E extends _i63.GeneratedMessage>(
-          _i4.Id? id, List<E>? items, bool Function(E)? matches) =>
-      (super.noSuchMethod(Invocation.method(#numberOf, [id, items, matches]),
+          _i4.Id? id, List<E>? items, bool Function(E)? matches,
+          [int Function(E)? quantity]) =>
+      (super.noSuchMethod(
+          Invocation.method(#numberOf, [id, items, matches, quantity]),
           returnValue: 0) as int);
   @override
   _i5.StreamSubscription<_i64.EntityEvent<_i4.BodyOfWater>> listen(
@@ -1778,8 +1790,10 @@ class MockCatchManager extends _i1.Mock implements _i12.CatchManager {
           returnValue: Future<bool>.value(false)) as _i5.Future<bool>);
   @override
   int numberOf<E extends _i63.GeneratedMessage>(
-          _i4.Id? id, List<E>? items, bool Function(E)? matches) =>
-      (super.noSuchMethod(Invocation.method(#numberOf, [id, items, matches]),
+          _i4.Id? id, List<E>? items, bool Function(E)? matches,
+          [int Function(E)? quantity]) =>
+      (super.noSuchMethod(
+          Invocation.method(#numberOf, [id, items, matches, quantity]),
           returnValue: 0) as int);
   @override
   _i5.StreamSubscription<_i64.EntityEvent<_i4.Catch>> listen(
@@ -1956,8 +1970,10 @@ class MockCustomEntityManager extends _i1.Mock
           returnValue: Future<bool>.value(false)) as _i5.Future<bool>);
   @override
   int numberOf<E extends _i63.GeneratedMessage>(
-          _i4.Id? id, List<E>? items, bool Function(E)? matches) =>
-      (super.noSuchMethod(Invocation.method(#numberOf, [id, items, matches]),
+          _i4.Id? id, List<E>? items, bool Function(E)? matches,
+          [int Function(E)? quantity]) =>
+      (super.noSuchMethod(
+          Invocation.method(#numberOf, [id, items, matches, quantity]),
           returnValue: 0) as int);
   @override
   _i5.StreamSubscription<_i64.EntityEvent<_i4.CustomEntity>> listen(
@@ -2487,8 +2503,10 @@ class MockFishingSpotManager extends _i1.Mock
           returnValue: Future<bool>.value(false)) as _i5.Future<bool>);
   @override
   int numberOf<E extends _i63.GeneratedMessage>(
-          _i4.Id? id, List<E>? items, bool Function(E)? matches) =>
-      (super.noSuchMethod(Invocation.method(#numberOf, [id, items, matches]),
+          _i4.Id? id, List<E>? items, bool Function(E)? matches,
+          [int Function(E)? quantity]) =>
+      (super.noSuchMethod(
+          Invocation.method(#numberOf, [id, items, matches, quantity]),
           returnValue: 0) as int);
   @override
   _i5.StreamSubscription<_i64.EntityEvent<_i4.FishingSpot>> listen(
@@ -3033,8 +3051,10 @@ class MockMethodManager extends _i1.Mock implements _i17.MethodManager {
           returnValue: Future<bool>.value(false)) as _i5.Future<bool>);
   @override
   int numberOf<E extends _i63.GeneratedMessage>(
-          _i4.Id? id, List<E>? items, bool Function(E)? matches) =>
-      (super.noSuchMethod(Invocation.method(#numberOf, [id, items, matches]),
+          _i4.Id? id, List<E>? items, bool Function(E)? matches,
+          [int Function(E)? quantity]) =>
+      (super.noSuchMethod(
+          Invocation.method(#numberOf, [id, items, matches, quantity]),
           returnValue: 0) as int);
   @override
   _i5.StreamSubscription<_i64.EntityEvent<_i4.Method>> listen(
@@ -3367,8 +3387,10 @@ class MockReportManager extends _i1.Mock implements _i20.ReportManager {
           returnValue: Future<bool>.value(false)) as _i5.Future<bool>);
   @override
   int numberOf<E extends _i63.GeneratedMessage>(
-          _i4.Id? id, List<E>? items, bool Function(E)? matches) =>
-      (super.noSuchMethod(Invocation.method(#numberOf, [id, items, matches]),
+          _i4.Id? id, List<E>? items, bool Function(E)? matches,
+          [int Function(E)? quantity]) =>
+      (super.noSuchMethod(
+          Invocation.method(#numberOf, [id, items, matches, quantity]),
           returnValue: 0) as int);
   @override
   _i5.StreamSubscription<_i64.EntityEvent<_i4.Report>> listen(
@@ -3539,8 +3561,10 @@ class MockSpeciesManager extends _i1.Mock implements _i21.SpeciesManager {
           returnValue: Future<int>.value(0)) as _i5.Future<int>);
   @override
   int numberOf<E extends _i63.GeneratedMessage>(
-          _i4.Id? id, List<E>? items, bool Function(E)? matches) =>
-      (super.noSuchMethod(Invocation.method(#numberOf, [id, items, matches]),
+          _i4.Id? id, List<E>? items, bool Function(E)? matches,
+          [int Function(E)? quantity]) =>
+      (super.noSuchMethod(
+          Invocation.method(#numberOf, [id, items, matches, quantity]),
           returnValue: 0) as int);
   @override
   _i5.StreamSubscription<_i64.EntityEvent<_i4.Species>> listen(
@@ -3882,8 +3906,10 @@ class MockTripManager extends _i1.Mock implements _i24.TripManager {
           returnValue: Future<bool>.value(false)) as _i5.Future<bool>);
   @override
   int numberOf<E extends _i63.GeneratedMessage>(
-          _i4.Id? id, List<E>? items, bool Function(E)? matches) =>
-      (super.noSuchMethod(Invocation.method(#numberOf, [id, items, matches]),
+          _i4.Id? id, List<E>? items, bool Function(E)? matches,
+          [int Function(E)? quantity]) =>
+      (super.noSuchMethod(
+          Invocation.method(#numberOf, [id, items, matches, quantity]),
           returnValue: 0) as int);
   @override
   _i5.StreamSubscription<_i64.EntityEvent<_i4.Trip>> listen(
@@ -4402,8 +4428,10 @@ class MockWaterClarityManager extends _i1.Mock
           returnValue: Future<bool>.value(false)) as _i5.Future<bool>);
   @override
   int numberOf<E extends _i63.GeneratedMessage>(
-          _i4.Id? id, List<E>? items, bool Function(E)? matches) =>
-      (super.noSuchMethod(Invocation.method(#numberOf, [id, items, matches]),
+          _i4.Id? id, List<E>? items, bool Function(E)? matches,
+          [int Function(E)? quantity]) =>
+      (super.noSuchMethod(
+          Invocation.method(#numberOf, [id, items, matches, quantity]),
           returnValue: 0) as int);
   @override
   _i5.StreamSubscription<_i64.EntityEvent<_i4.WaterClarity>> listen(
