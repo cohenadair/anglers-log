@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-Color colorGreyAccent = Colors.grey.shade300;
+Color colorGreyAccent = Colors.grey.shade200;
 
 const FontWeight fontWeightBold = FontWeight.w500;
 
