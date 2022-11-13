@@ -378,10 +378,11 @@ class _CatchSummaryState<T> extends State<CatchSummary<T>> {
       series: _report.toSeries<BaitAttachment>(
         (model) => {
           for (var id
-              // Remove baits don't exist. This can happen if a bait associated
-              // with a catch is deleted.
+              // Remove baits that don't exist. This can happen if a bait
+              // associated with a catch is deleted.
               in List.of(model.perBait.keys)
-                ..removeWhere((id) => !_baitManager.entityExists(Id(uuid: id))))
+                ..removeWhere((id) => !_baitManager
+                    .attachmentExists(BaitAttachments.fromPbMapKey(id))))
             BaitAttachments.fromPbMapKey(id): model.perBait[id]!
         },
       ),
@@ -851,45 +852,62 @@ extension CatchReportModels on CatchReportModel {
     if (opt.includeBaits) {
       for (var bait in opt.allBaits.values) {
         if (bait.variants.isEmpty) {
-          perBait.putIfAbsent(bait.toAttachment().toPbMapKey(), () => 0);
+          var attachment = bait.toAttachment();
+          if (opt.baits.isEmpty || opt.baits.contains(attachment)) {
+            perBait.putIfAbsent(attachment.toPbMapKey(), () => 0);
+          }
         } else {
           for (var variant in bait.variants) {
-            perBait.putIfAbsent(variant.toAttachment().toPbMapKey(), () => 0);
+            var attachment = variant.toAttachment();
+            if (opt.baits.isEmpty || opt.baits.contains(attachment)) {
+              perBait.putIfAbsent(attachment.toPbMapKey(), () => 0);
+            }
           }
         }
       }
     }
 
-    _fillWithZeros(
+    _fillWithZeros<int>(
         true, List<int>.generate(Duration.hoursPerDay, (i) => i), perHour);
-    _fillWithZeros(
+    _fillWithZeros<int>(
         true,
         List<int>.generate(Durations.monthsPerYear - 1, (i) => i + 1),
         perMonth);
 
-    _fillWithZeros(opt.includeAnglers, opt.allAnglers.keys, perAngler);
-    _fillWithZeros(
-        opt.includeBodiesOfWater, opt.allBodiesOfWater.keys, perBodyOfWater);
-    _fillWithZeros(opt.includeMethods, opt.allMethods.keys, perMethod);
-    _fillWithZeros(
-        opt.includeFishingSpots, opt.allFishingSpots.keys, perFishingSpot);
-    _fillWithZeros(
-        opt.includeMoonPhases, MoonPhases.selectableValues(), perMoonPhase);
-    _fillWithZeros(opt.includePeriods, Periods.selectableValues(), perPeriod);
-    _fillWithZeros(opt.includeSeasons, Seasons.selectableValues(), perSeason);
-    _fillWithZeros(opt.includeSpecies, opt.allSpecies.keys, perSpecies);
-    _fillWithZeros(
-        opt.includeTideTypes, TideTypes.selectableValues(), perTideType);
-    _fillWithZeros(
-        opt.includeWaterClarities, opt.allWaterClarities.keys, perWaterClarity);
+    _fillWithZeros<String>(opt.includeAnglers, opt.allAnglers.keys, perAngler,
+        opt.anglerIds.toUuids());
+    _fillWithZeros<String>(opt.includeBodiesOfWater, opt.allBodiesOfWater.keys,
+        perBodyOfWater, opt.bodyOfWaterIds.toUuids());
+    _fillWithZeros<String>(opt.includeMethods, opt.allMethods.keys, perMethod,
+        opt.methodIds.toUuids());
+    _fillWithZeros<String>(opt.includeFishingSpots, opt.allFishingSpots.keys,
+        perFishingSpot, opt.fishingSpotIds.toUuids());
+    _fillWithZeros<int>(opt.includeMoonPhases, MoonPhases.selectableValues(),
+        perMoonPhase, opt.moonPhases.values());
+    _fillWithZeros<int>(opt.includePeriods, Periods.selectableValues(),
+        perPeriod, opt.periods.values());
+    _fillWithZeros<int>(opt.includeSeasons, Seasons.selectableValues(),
+        perSeason, opt.seasons.values());
+    _fillWithZeros<String>(opt.includeSpecies, opt.allSpecies.keys, perSpecies,
+        opt.speciesIds.toUuids());
+    _fillWithZeros<int>(opt.includeTideTypes, TideTypes.selectableValues(),
+        perTideType, opt.tideTypes.values());
+    _fillWithZeros<String>(
+        opt.includeWaterClarities,
+        opt.allWaterClarities.keys,
+        perWaterClarity,
+        opt.waterClarityIds.toUuids());
   }
 
-  void _fillWithZeros<E>(bool include, Iterable<E> all, Map<E, int> sink) {
+  void _fillWithZeros<E>(bool include, Iterable<E> all, Map<E, int> sink,
+      [Iterable<E> filter = const []]) {
     if (!include) {
       return;
     }
     for (var item in all) {
-      sink.putIfAbsent(item, () => 0);
+      if (filter.isEmpty || filter.contains(item)) {
+        sink.putIfAbsent(item, () => 0);
+      }
     }
   }
 

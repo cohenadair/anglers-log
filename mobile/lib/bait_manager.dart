@@ -189,6 +189,10 @@ class BaitManager extends ImageEntityManager<Bait> {
     return result;
   }
 
+  bool attachmentExists(BaitAttachment attachment) {
+    return attachmentList().contains(attachment);
+  }
+
   BaitVariant? variant(Bait bait, Id variantId) {
     return bait.variants.firstWhereOrNull((e) => e.id == variantId);
   }

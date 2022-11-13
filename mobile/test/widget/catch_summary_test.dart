@@ -258,6 +258,40 @@ void main() {
       ..name = "1 Foot",
   };
 
+  CatchFilterOptions optionsWithEverything() {
+    return CatchFilterOptions(
+      currentTimestamp: Int64(appManager.timeManager.currentTimestamp),
+      currentTimeZone: appManager.timeManager.currentTimeZone,
+      dateRanges: [
+        DateRange(
+          period: DateRange_Period.allDates,
+          timeZone: appManager.timeManager.currentTimeZone,
+        )
+      ],
+      allBaits: baitMap.map((key, value) => MapEntry(key.uuid, value)),
+      allAnglers: anglerMap.map((key, value) => MapEntry(key.uuid, value)),
+      allBodiesOfWater:
+          bodyOfWaterMap.map((key, value) => MapEntry(key.uuid, value)),
+      allMethods: methodMap.map((key, value) => MapEntry(key.uuid, value)),
+      allFishingSpots:
+          fishingSpotMap.map((key, value) => MapEntry(key.uuid, value)),
+      allSpecies: speciesMap.map((key, value) => MapEntry(key.uuid, value)),
+      allWaterClarities:
+          clarityMap.map((key, value) => MapEntry(key.uuid, value)),
+      includeBaits: true,
+      includeAnglers: true,
+      includeBodiesOfWater: true,
+      includeMethods: true,
+      includeFishingSpots: true,
+      includeMoonPhases: true,
+      includePeriods: true,
+      includeSeasons: true,
+      includeSpecies: true,
+      includeTideTypes: true,
+      includeWaterClarities: true,
+    );
+  }
+
   void resetCatches() {
     catches = [
       Catch()
@@ -433,6 +467,7 @@ void main() {
     when(baitManager.formatNameWithCategory(any)).thenReturn("Name");
     when(baitManager.uuidMap())
         .thenReturn(baitMap.map((key, value) => MapEntry(key.uuid, value)));
+    when(baitManager.attachmentExists(any)).thenReturn(true);
 
     when(appManager.baitCategoryManager.listen(any))
         .thenAnswer((_) => MockStreamSubscription());
@@ -881,6 +916,28 @@ void main() {
     expect(find.text("Per Bait"), findsOneWidget);
   });
 
+  testWidgets("Catches per bait shows variants", (tester) async {
+    when(appManager.customEntityManager.customValuesDisplayValue(any, any))
+        .thenReturn("");
+
+    var baitManager = BaitManager(appManager.app);
+    for (var bait in baitMap.values) {
+      await baitManager.addOrUpdate(bait);
+    }
+    when(appManager.app.baitManager).thenReturn(baitManager);
+
+    await pumpCatchSummary(
+      tester,
+        (context) => CatchSummary<Catch>(
+        filterOptionsBuilder: (_) => optionsWithEverything()
+          ..baits.addAll([baitAttachment0, baitAttachment4]),
+      ),
+    );
+
+    expect(find.text("Worm (Brown) (9)"), findsOneWidget);
+    expect(find.text("Grub (1)"), findsOneWidget);
+  });
+ 
   testWidgets("Catches per bait hidden", (tester) async {
     when(appManager.userPreferenceManager.isTrackingBaits).thenReturn(false);
     await pumpCatchSummary(
@@ -1253,6 +1310,58 @@ void main() {
     var filters = opt.displayFilters(context, report, includeSpecies: true);
     expect(filters.contains("Bluegill"), isFalse);
     expect(filters.contains("Pike"), isTrue);
+  });
+
+  testWidgets("Compute fill zeros includes all values", (tester) async {
+    var report = CatchReport.fromBuffer(
+        computeCatchReport(optionsWithEverything().writeToBuffer().toList()));
+
+    expect(report.models.first.perBait.length, baitMap.length);
+    expect(report.models.first.perAngler.length, anglerMap.length);
+    expect(report.models.first.perBodyOfWater.length, bodyOfWaterMap.length);
+    expect(report.models.first.perMethod.length, methodMap.length);
+    expect(report.models.first.perFishingSpot.length, fishingSpotMap.length);
+    expect(report.models.first.perMoonPhase.length,
+        MoonPhases.selectableValues().length);
+    expect(report.models.first.perPeriod.length,
+        Periods.selectableValues().length);
+    expect(report.models.first.perSeason.length,
+        Seasons.selectableValues().length);
+    expect(report.models.first.perSpecies.length, speciesMap.length);
+    expect(report.models.first.perTideType.length,
+        TideTypes.selectableValues().length);
+    expect(report.models.first.perWaterClarity.length, clarityMap.length);
+  });
+
+  testWidgets("Compute fill zeros includes only filtered values",
+      (tester) async {
+    var opt = optionsWithEverything()
+      ..baits.addAll([baitAttachment0, baitAttachment1])
+      ..anglerIds.addAll([anglerId3])
+      ..bodyOfWaterIds.addAll([bodyOfWaterId0, bodyOfWaterId4])
+      ..methodIds.addAll([methodId0, methodId2, methodId4])
+      ..fishingSpotIds.addAll([fishingSpotId2])
+      ..moonPhases.addAll([MoonPhase.first_quarter, MoonPhase.full])
+      ..periods.addAll([Period.afternoon])
+      ..seasons.addAll([Season.autumn])
+      ..speciesIds.addAll([speciesId3, speciesId1])
+      ..tideTypes.addAll([TideType.high])
+      ..waterClarityIds.addAll([clarityId4]);
+
+    var report = CatchReport.fromBuffer(
+        computeCatchReport(opt.writeToBuffer().toList()));
+
+    expect(report.models.first.perBait.length, 2);
+    expect(report.models.first.perAngler.length, 1);
+    expect(report.models.first.perBodyOfWater.length, 2);
+    expect(report.models.first.perMethod.length, 3);
+    expect(report.models.first.perFishingSpot.length, 1);
+    expect(report.models.first.perMoonPhase.length, 2);
+    expect(report.models.first.perPeriod.length, 1);
+    expect(report.models.first.perSeason.length, 1);
+    expect(report.models.first.perSpecies.length, 2);
+    expect(report.models.first.perTideType.length, 1);
+    expect(report.models.first.perWaterClarity.length, 1);
   });
 
   testWidgets("Model filled with zeros", (tester) async {
