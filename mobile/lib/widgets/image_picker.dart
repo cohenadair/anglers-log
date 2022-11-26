@@ -8,6 +8,7 @@ import '../utils/dialog_utils.dart';
 import '../utils/page_utils.dart';
 import '../widgets/widget.dart';
 import 'button.dart';
+import 'safe_image.dart';
 
 /// An input widget that allows selection of one or more photos, as well as
 /// taking a photo from the device's camera.
@@ -116,8 +117,8 @@ class ImagePicker extends StatelessWidget {
       fit: StackFit.expand,
       children: [
         image.thumbData == null
-            ? Image.file(image.originalFile!, fit: BoxFit.cover)
-            : Image.memory(image.thumbData!, fit: BoxFit.cover),
+            ? SafeImage.file(image.originalFile!, fit: BoxFit.cover)
+            : SafeImage.memory(image.thumbData!, fit: BoxFit.cover),
         Align(
           alignment: Alignment.topRight,
           child: FloatingButton.smallIcon(

@@ -77,28 +77,44 @@ class ListPickerInput extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    String titleText;
+    String valueText;
+    if (isEmpty(title)) {
+      titleText = value!;
+      valueText = "";
+    } else {
+      titleText = title!;
+      valueText =
+          isEmpty(value) ? Strings.of(context).inputNotSelected : value!;
+    }
+
+    Widget titleWidget = Text(
+      titleText,
+      style: stylePrimary(context),
+    );
+    Widget valueWidget = Text(
+      valueText,
+      textAlign: TextAlign.right,
+      style: styleSecondary(context),
+    );
+    if (isEmpty(title)) {
+      titleWidget = Expanded(child: titleWidget);
+      valueWidget = const Empty();
+    } else {
+      valueWidget = Expanded(
+        child: Padding(
+          padding: insetsLeftDefault,
+          child: valueWidget,
+        ),
+      );
+    }
+
     return DetailInput(
       isEnabled: isEnabled,
       onTap: onTap,
       children: [
-        Text(
-          isEmpty(title) ? value! : title!,
-          style: stylePrimary(context),
-        ),
-        const HorizontalSpace(paddingDefault),
-        Expanded(
-          // If there's no title widget, the value widget will render at
-          // the start of the row.
-          child: isEmpty(title)
-              ? const Empty()
-              : Text(
-                  isEmpty(value)
-                      ? Strings.of(context).inputNotSelected
-                      : value!,
-                  textAlign: TextAlign.right,
-                  style: styleSecondary(context),
-                ),
-        ),
+        titleWidget,
+        valueWidget,
       ],
     );
   }

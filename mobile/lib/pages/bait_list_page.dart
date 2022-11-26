@@ -127,7 +127,7 @@ class BaitListPageState extends State<BaitListPage> {
         imageName: bait.hasImageName() ? bait.imageName : null,
         title: bait.name,
         subtitle: formatNumberOfCatches(
-            context, _baitManager.numberOfCatches(bait.id)),
+            context, _baitManager.numberOfCatchQuantities(bait.id)),
         trailing: MinChip(format(variantLabel, [bait.variants.length])),
       ),
     );

@@ -44,7 +44,7 @@ void main() {
     );
 
     await tapAndSettle(tester, find.text("Time Zone"));
-    await tapAndSettle(tester, find.text("America/Chicago (UTC-05:00)"));
+    await tapAndSettle(tester, find.text("America/Chicago (UTC-06:00)"));
 
     expect(invoked, isTrue);
     expect(controller.value, "America/Chicago");

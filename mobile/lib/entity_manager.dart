@@ -271,14 +271,15 @@ abstract class EntityManager<T extends GeneratedMessage> {
 
   @protected
   int numberOf<E extends GeneratedMessage>(
-      Id? id, List<E> items, bool Function(E) matches) {
+      Id? id, List<E> items, bool Function(E) matches,
+      [int Function(E)? quantity]) {
     if (id == null) {
       return 0;
     }
 
     var result = 0;
     for (var entity in items) {
-      result += matches(entity) ? 1 : 0;
+      result += matches(entity) ? (quantity?.call(entity) ?? 1) : 0;
     }
 
     return result;

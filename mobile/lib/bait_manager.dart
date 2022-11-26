@@ -120,6 +120,17 @@ class BaitManager extends ImageEntityManager<Bait> {
         (cat) => cat.baits.where((e) => e.baitId == baitId).isNotEmpty);
   }
 
+  /// Returns the number of catches made with the given [Bait] ID. This is
+  /// different from [numberOfCatches] in that [Catch.quantity] is used, instead
+  /// of 1.
+  int numberOfCatchQuantities(Id? baitId) {
+    return numberOf<Catch>(
+        baitId,
+        _catchManager.list(),
+        (cat) => cat.baits.where((e) => e.baitId == baitId).isNotEmpty,
+        (cat) => cat.hasQuantity() ? cat.quantity : 1);
+  }
+
   /// Returns the number of [Catch] objects associated with the given
   /// [BaitVariant] ID.
   int numberOfVariantCatches(Id? variantId) {
@@ -187,6 +198,10 @@ class BaitManager extends ImageEntityManager<Bait> {
     }
 
     return result;
+  }
+
+  bool attachmentExists(BaitAttachment attachment) {
+    return attachmentList().contains(attachment);
   }
 
   BaitVariant? variant(Bait bait, Id variantId) {

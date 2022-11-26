@@ -401,6 +401,10 @@ extension Ids on Id {
   Uint8List get uint8List => Uint8List.fromList(bytes);
 }
 
+extension IdList on List<Id> {
+  Iterable<String> toUuids() => map((e) => e.uuid);
+}
+
 extension FishingSpots on FishingSpot {
   LatLng get latLng => LatLng(lat, lng);
 }
@@ -840,6 +844,10 @@ extension Periods on Period {
   }
 }
 
+extension PeriodList on List<Period> {
+  Iterable<int> values() => map((e) => e.value);
+}
+
 extension Seasons on Season {
   /// Returns a [Season] from the given date and latitude. The Meteorological
   /// definition is used to calculate seasons:
@@ -911,6 +919,10 @@ extension Seasons on Season {
     }
     throw ArgumentError("Invalid input: $this");
   }
+}
+
+extension SeasonList on List<Season> {
+  Iterable<int> values() => map((e) => e.value);
 }
 
 extension Units on Unit {
@@ -1434,6 +1446,10 @@ extension MoonPhases on MoonPhase {
   }
 }
 
+extension MoonPhaseList on List<MoonPhase> {
+  Iterable<int> values() => map((e) => e.value);
+}
+
 extension Directions on Direction {
   static Set<Direction> selectable() {
     return _selectable<Direction>(
@@ -1802,6 +1818,10 @@ extension TideTypes on TideType {
     }
     throw ArgumentError("Invalid input: $this");
   }
+}
+
+extension TideTypeList on List<TideType> {
+  Iterable<int> values() => map((e) => e.value);
 }
 
 extension Tides on Tide {

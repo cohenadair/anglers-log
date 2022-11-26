@@ -135,6 +135,52 @@ void main() {
     expect(baitManager.numberOfCatches(baitId2), 1);
   });
 
+  test("Number of catches with quantity", () {
+    var speciesId0 = randomId();
+
+    var baitId0 = randomId();
+    var baitId1 = randomId();
+    var baitId2 = randomId();
+
+    var baitAttachment0 = BaitAttachment(baitId: baitId0);
+    var baitAttachment1 = BaitAttachment(baitId: baitId1);
+    var baitAttachment2 = BaitAttachment(baitId: baitId2);
+
+    when(catchManager.list()).thenReturn([
+      Catch()
+        ..id = randomId()
+        ..timestamp = Int64(0)
+        ..speciesId = speciesId0
+        ..baits.add(baitAttachment0)
+        ..quantity = 3,
+      Catch()
+        ..id = randomId()
+        ..timestamp = Int64(0)
+        ..speciesId = speciesId0
+        ..baits.add(baitAttachment1)
+        ..quantity = 5,
+      Catch()
+        ..id = randomId()
+        ..timestamp = Int64(0)
+        ..speciesId = speciesId0
+        ..baits.add(baitAttachment2),
+      Catch()
+        ..id = randomId()
+        ..timestamp = Int64(0)
+        ..speciesId = speciesId0
+        ..baits.add(baitAttachment0),
+      Catch()
+        ..id = randomId()
+        ..timestamp = Int64(0)
+        ..speciesId = speciesId0,
+    ]);
+
+    expect(baitManager.numberOfCatchQuantities(null), 0);
+    expect(baitManager.numberOfCatchQuantities(baitId0), 4);
+    expect(baitManager.numberOfCatchQuantities(baitId1), 5);
+    expect(baitManager.numberOfCatchQuantities(baitId2), 1);
+  });
+
   test("Format bait name", () async {
     var baitCategoryId0 = randomId();
     await baitCategoryManager.addOrUpdate(BaitCategory()

@@ -51,8 +51,9 @@ class TestEntityManager extends EntityManager<Species> {
 
   @override
   int numberOf<T extends GeneratedMessage>(
-          Id? id, List<T> items, bool Function(T) matches) =>
-      super.numberOf<T>(id, items, matches);
+          Id? id, List<T> items, bool Function(T) matches,
+          [int Function(T)? quantity]) =>
+      super.numberOf<T>(id, items, matches, quantity);
 
   @override
   StreamSubscription<EntityEvent<Species>> listen(
@@ -429,6 +430,31 @@ void main() {
       entityManager.numberOf<Catch>(
           anglerId3, catches, (cat) => cat.anglerId == anglerId3),
       1,
+    );
+  });
+
+  test("numberOf with custom quantity", () {
+    var anglerId0 = randomId();
+    var anglerId1 = randomId();
+
+    var catches = <Catch>[
+      Catch()
+        ..id = randomId()
+        ..anglerId = anglerId0,
+      Catch()
+        ..id = randomId()
+        ..anglerId = anglerId1,
+    ];
+
+    expect(
+      entityManager.numberOf<Catch>(
+          anglerId0, catches, (cat) => cat.anglerId == anglerId0, (cat) => 5),
+      5,
+    );
+    expect(
+      entityManager.numberOf<Catch>(
+          anglerId0, catches, (cat) => cat.anglerId == anglerId1, (cat) => 3),
+      3,
     );
   });
 

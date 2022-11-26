@@ -910,6 +910,7 @@ void main() {
       when(appManager.baitManager.variantFromAttachment(any))
           .thenReturn(BaitVariant(id: randomId(), baseId: bait.id));
       when(appManager.baitManager.numberOfCatches(any)).thenReturn(0);
+      when(appManager.baitManager.numberOfCatchQuantities(any)).thenReturn(0);
 
       var waterClarity = WaterClarity()
         ..id = randomId()

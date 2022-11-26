@@ -81,21 +81,21 @@ void main() {
   test("TimeZoneLocation displayNameUtc includes offset", () {
     expect(
       TimeZoneLocation.fromName("America/New_York").displayNameUtc,
-      "America/New York (UTC-04:00)",
+      "America/New York (UTC-05:00)",
     );
   });
 
   test("TimeZoneLocation displayUtc with 0 offset", () {
     expect(
       TimeZoneLocation.fromName("Atlantic/Azores").displayNameUtc,
-      "Atlantic/Azores (UTC)",
+      "Atlantic/Azores (UTC-01:00)",
     );
   });
 
   test("TimeZoneLocation displayUtc with negative offset", () {
     expect(
       TimeZoneLocation.fromName("America/New_York").displayNameUtc,
-      "America/New York (UTC-04:00)",
+      "America/New York (UTC-05:00)",
     );
   });
 
