@@ -1279,6 +1279,8 @@ class Strings {
 
   String get proPageCustomFields => _string("proPage_customFields");
 
+  String get proPageGpsTrails => _string("proPage_gpsTrails");
+
   String get proPageYearlyTitle => _string("proPage_yearlyTitle");
 
   String get proPageYearlyTrial => _string("proPage_yearlyTrial");
