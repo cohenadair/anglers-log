@@ -37,8 +37,13 @@ import 'map_target.dart';
 import 'mapbox_attribution.dart';
 import 'slide_up_transition.dart';
 
-/// A [GoogleMap] wrapper that listens and responds to [FishingSpot] changes.
-/// For a smaller, static map, use [StaticFishingSpotMap].
+/// A map widget that listens and responds to [FishingSpot] changes. This widget
+/// should be used for displaying all fishing spots and/or picking a fishing spot.
+///
+/// See:
+///  - [StaticFishingSpotMap]
+///  - [EditCoordinatesPage]
+///  - [DefaultMapboxMap]
 class FishingSpotMap extends StatefulWidget {
   /// When non-null, sets up the map as an input picker.
   late final FishingSpotMapPickerSettings? pickerSettings;
@@ -408,7 +413,7 @@ class FishingSpotMapState extends State<FishingSpotMap> {
       tooltip: Strings.of(context).mapPageShowAllTooltip,
       icon: Icons.zoom_out_map,
       onPressed: () async {
-        var bounds = mapBounds(_fishingSpotManager.list());
+        var bounds = fishingSpotMapBounds(_fishingSpotManager.list());
         if (bounds == null) {
           return;
         }

@@ -32,12 +32,12 @@ class LabelValue extends StatelessWidget {
   Widget build(BuildContext context) {
     var title = Text(
       label,
-      style: stylePrimary(context),
+      style: labelStyle ?? stylePrimary(context),
     );
 
     var subtitle = Text(
       value,
-      style: styleSecondary(context),
+      style: valueStyle ?? styleSecondary(context),
     );
 
     Widget child;

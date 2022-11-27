@@ -1036,6 +1036,7 @@ Map<String, Map<String, String>> get englishStrings => {
         "gpsTrailListPage_deleteMessage":
             "This GPS trail is associated with %s trip; are you sure you want to delete it? This cannot be undone.",
         "gpsTrailListPage_numberOfPoints": "%s Points",
+        "gpsTrailListPage_inProgress": "In Progress",
         "saveGpsTrailPage_editTitle": "Edit GPS Trail",
         "changeLogPage_title": "What's New",
         "changeLogPage_previousVersion": "Your Previous Version",

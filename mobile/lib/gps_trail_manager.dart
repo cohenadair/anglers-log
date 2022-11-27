@@ -9,6 +9,7 @@ import 'package:mobile/app_manager.dart';
 import 'package:mobile/location_monitor.dart';
 import 'package:mobile/time_manager.dart';
 import 'package:mobile/trip_manager.dart';
+import 'package:mobile/utils/map_utils.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:provider/provider.dart';
 import 'package:protobuf/protobuf.dart';
@@ -30,6 +31,8 @@ class GpsTrailManager extends EntityManager<GpsTrail> {
   static GpsTrailManager of(BuildContext context) =>
       Provider.of<AppManager>(context, listen: false).gpsTrailManager;
 
+  // Minimum number of meters between GPS trail points.
+  final _minPointDist = 5.0;
   final _log = const Log("GpsTrailManager");
 
   GpsTrail? _activeTrail;
@@ -133,9 +136,8 @@ class GpsTrailManager extends EntityManager<GpsTrail> {
     if (isEmpty(filter)) {
       trails = entities.values.toList();
     } else {
-      trails = list()
-          .where((trail) => matchesFilter(trail.id, filter))
-          .toList();
+      trails =
+          list().where((trail) => matchesFilter(trail.id, filter)).toList();
     }
 
     trails.sort((lhs, rhs) => rhs.startTimestamp.compareTo(lhs.startTimestamp));
@@ -154,7 +156,10 @@ class GpsTrailManager extends EntityManager<GpsTrail> {
   }
 
   void _onLocationUpdate(LatLng? latLng) {
-    if (latLng == null || !hasActiveTrail) {
+    if (latLng == null ||
+        !hasActiveTrail ||
+        distanceBetween(latLng, _activeTrail!.points.last.latLng) <
+            _minPointDist) {
       return;
     }
 
@@ -165,7 +170,7 @@ class GpsTrailManager extends EntityManager<GpsTrail> {
     ));
     addOrUpdate(_activeTrail!);
 
-    _log.d("Added to GPS trail: ${latLng.latitude}, ${latLng.latitude}");
+    _log.d("Added to GPS trail: ${latLng.latitude}, ${latLng.longitude}");
   }
 
   void _notifyOnStartTracking() {

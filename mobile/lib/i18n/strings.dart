@@ -2074,6 +2074,9 @@ class Strings {
   String get gpsTrailListPageNumberOfPoints =>
       _string("gpsTrailListPage_numberOfPoints");
 
+  String get gpsTrailListPageInProgress =>
+      _string("gpsTrailListPage_inProgress");
+
   String get saveGpsTrailPageEditTitle => _string("saveGpsTrailPage_editTitle");
 
   String get changeLogPageTitle => _string("changeLogPage_title");

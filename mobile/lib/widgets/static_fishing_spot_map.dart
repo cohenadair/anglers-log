@@ -18,7 +18,12 @@ import '../utils/network_utils.dart';
 import 'fishing_spot_map.dart';
 import 'safe_image.dart';
 
-/// A widget that displays [FishingSpot] details on a small map.
+/// A widget that displays [FishingSpot] details on a constrained map.
+///
+/// See:
+///  - [FishingSpotMap]
+///  - [EditCoordinatesPage]
+///  - [DefaultMapboxMap]
 class StaticFishingSpotMap extends StatefulWidget {
   final FishingSpot fishingSpot;
   final EdgeInsets? padding;

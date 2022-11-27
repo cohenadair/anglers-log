@@ -3,11 +3,17 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:mapbox_gl/mapbox_gl.dart';
 import 'package:mobile/utils/map_utils.dart';
+import 'package:mobile/widgets/static_fishing_spot_map.dart';
 
 import '../properties_manager.dart';
 import 'widget.dart';
 
 /// A [MapboxMap] wrapper with default values/functionality set for this app.
+///
+/// See:
+///  - [StaticFishingSpotMap]
+///  - [FishingSpotMap]
+///  - [EditCoordinatesPage]
 class DefaultMapboxMap extends StatefulWidget {
   final LatLng startPosition;
   final String? style;

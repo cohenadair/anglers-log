@@ -169,14 +169,16 @@ class ManageableListPageState<T> extends State<ManageableListPage<T>> {
     }
 
     Widget emptyWidget = const Empty();
-    if (widget.itemManager.emptyItemsSettings != null &&
+    var settings = widget.itemManager.emptyItemsSettings;
+    if (settings != null &&
         (widget.searchDelegate == null ||
             (isEmpty(_searchText) && _animatedList.isEmpty))) {
       emptyWidget = EmptyListPlaceholder.static(
-        title: widget.itemManager.emptyItemsSettings!.title,
-        description: widget.itemManager.emptyItemsSettings!.description,
-        descriptionIcon: _isAddable ? _iconAdd : null,
-        icon: widget.itemManager.emptyItemsSettings!.icon,
+        title: settings.title,
+        description: settings.description,
+        descriptionIcon:
+            settings.descriptionIcon ?? (_isAddable ? _iconAdd : null),
+        icon: settings.icon,
       );
     } else if (isNotEmpty(_searchText)) {
       emptyWidget = EmptyListPlaceholder.noSearchResults(
@@ -650,11 +652,13 @@ class ManageableListPageEmptyListSettings {
   final String title;
   final String description;
   final IconData icon;
+  final IconData? descriptionIcon;
 
   ManageableListPageEmptyListSettings({
     required this.title,
     required this.description,
     required this.icon,
+    this.descriptionIcon,
   });
 }
 

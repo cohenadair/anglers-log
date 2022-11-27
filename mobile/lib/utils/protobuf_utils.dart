@@ -19,6 +19,7 @@ import '../model/gen/anglerslog.pb.dart';
 import '../pages/picker_page.dart';
 import '../time_manager.dart';
 import '../user_preference_manager.dart';
+import '../utils/map_utils.dart' as map_utils;
 import '../utils/string_utils.dart';
 import 'catch_utils.dart';
 import 'date_time_utils.dart';
@@ -1967,6 +1968,31 @@ extension Trips on Trip {
 extension GpsTrails on GpsTrail {
   bool get isFinished => hasStartTimestamp() && hasEndTimestamp();
 
+  bool get isInProgress => !hasEndTimestamp();
+
+  LatLngBounds? get mapBounds =>
+      map_utils.mapBounds(points.map((e) => e.latLng));
+
+  LatLng? get center => mapBounds?.center;
+
   String displayTimestamp(BuildContext context) =>
       formatTimestamp(context, startTimestamp.toInt(), timeZone);
+
+  String startDisplayValue(BuildContext context) =>
+      formatTimestamp(context, startTimestamp.toInt(), timeZone);
+
+  String? elapsedDisplayValue(BuildContext context) {
+    if (!isFinished) {
+      return null;
+    }
+
+    return format(Strings.of(context).dateRangeFormat, [
+      startDisplayValue(context),
+      formatTimestamp(context, endTimestamp.toInt(), timeZone),
+    ]);
+  }
+}
+
+extension GpsTrailPoints on GpsTrailPoint {
+  LatLng get latLng => LatLng(lat, lng);
 }

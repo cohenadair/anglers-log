@@ -85,19 +85,23 @@ double distanceBetween(LatLng? latLng1, LatLng? latLng2) {
   return sqrt(pow(latDistance, 2) + pow(lngDistance, 2));
 }
 
-LatLngBounds? mapBounds(Iterable<FishingSpot> fishingSpots) {
-  if (fishingSpots.isEmpty) {
+LatLngBounds? fishingSpotMapBounds(Iterable<FishingSpot> fishingSpots) {
+  return mapBounds(fishingSpots.map((e) => e.latLng));
+}
+
+LatLngBounds? mapBounds(Iterable<LatLng> latLngs) {
+  if (latLngs.isEmpty) {
     return null;
   }
 
-  var mostWestLat = fishingSpots.first.lat;
-  var mostEastLat = fishingSpots.first.lat;
-  var mostNorthLng = fishingSpots.first.lng;
-  var mostSouthLng = fishingSpots.first.lng;
+  var mostWestLat = latLngs.first.latitude;
+  var mostEastLat = latLngs.first.latitude;
+  var mostNorthLng = latLngs.first.longitude;
+  var mostSouthLng = latLngs.first.longitude;
 
-  for (var fishingSpot in fishingSpots) {
-    var lat = fishingSpot.lat;
-    var lng = fishingSpot.lng;
+  for (var latLng in latLngs) {
+    var lat = latLng.latitude;
+    var lng = latLng.longitude;
 
     if (lat < mostWestLat) {
       mostWestLat = lat;
@@ -135,3 +139,10 @@ SymbolOptions createSymbolOptions(
 
 Color mapIconColor(MapType mapType) =>
     mapType == MapType.normal ? Colors.black : Colors.white;
+
+extension LatLngBoundsExt on LatLngBounds {
+  LatLng get center => LatLng(
+      southwest.latitude + (southwest.latitude - northeast.latitude).abs() / 2,
+      southwest.longitude +
+          (southwest.longitude - northeast.longitude).abs() / 2);
+}
