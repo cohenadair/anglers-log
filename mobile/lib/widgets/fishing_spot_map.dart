@@ -109,6 +109,7 @@ class FishingSpotMapState extends State<FishingSpotMap> {
   late StreamSubscription<EntityEvent<GpsTrail>> _gpsTrailManagerSub;
 
   Symbol? _activeSymbol;
+  GpsMapTrail? _activeTrail;
 
   bool _myLocationEnabled = true;
   bool _didChangeMapType = false;
@@ -140,7 +141,9 @@ class FishingSpotMapState extends State<FishingSpotMap> {
   bool get _isPicking => _pickerSettings != null;
 
   bool get _isDroppedPin =>
-      !_fishingSpotManager.entityExists(_activeSymbol?.fishingSpot.id);
+      !_fishingSpotManager.entityExists(_activeSymbol?.fishingSpot?.id);
+
+  bool get _hasActiveFishingSpot => _activeFishingSpot != null;
 
   FishingSpot? get _activeFishingSpot => _activeSymbol?.fishingSpot;
 
@@ -222,7 +225,7 @@ class FishingSpotMapState extends State<FishingSpotMap> {
   }
 
   Widget _buildMap() {
-    var start = _activeSymbol?.fishingSpot.latLng ??
+    var start = _activeSymbol?.fishingSpot?.latLng ??
         _pickerSettings?.controller.value?.latLng ??
         _locationMonitor.currentLocation ??
         const LatLng(0, 0);
@@ -251,12 +254,12 @@ class FishingSpotMapState extends State<FishingSpotMap> {
     }
 
     String? name;
-    if (_hasActiveSymbol) {
-      if (_fishingSpotManager.entityExists(_activeSymbol!.fishingSpot.id)) {
+    if (_hasActiveFishingSpot) {
+      if (_fishingSpotManager.entityExists(_activeSymbol!.fishingSpot?.id)) {
         // Showing active fishing spot.
         name = _fishingSpotManager.displayName(
           context,
-          _activeSymbol!.fishingSpot,
+          _activeFishingSpot!,
           includeLatLngLabels: false,
         );
       } else {
@@ -422,13 +425,7 @@ class FishingSpotMapState extends State<FishingSpotMap> {
 
         // Move map after updating fishing spot so widgets are hidden/shown
         // correctly.
-        _mapController?.animateCamera(CameraUpdate.newLatLngBounds(
-          bounds,
-          left: paddingXL,
-          right: paddingXL,
-          top: paddingXL,
-          bottom: paddingXL,
-        ));
+        _mapController?.animateToBounds(bounds);
       },
     );
   }
@@ -592,6 +589,7 @@ class FishingSpotMapState extends State<FishingSpotMap> {
           _activeFishingSpot ?? _pickerSettings?.controller.value,
     );
     _setupPickerIfNeeded();
+    _setupOrUpdateGpsTrail();
   }
 
   Future<void> _onSymbolTapped(Symbol symbol) async {
@@ -601,10 +599,13 @@ class FishingSpotMapState extends State<FishingSpotMap> {
   Future<void> _updateSymbols({
     required FishingSpot? selectedFishingSpot,
   }) async {
+    var fishingSpotSymbols =
+        _mapController?.symbols.where((e) => e.hasFishingSpot) ?? <Symbol>{};
+
     // Update and remove symbols, syncing them with FishingSpotManager.
     var symbolsToRemove = <Symbol>[];
-    for (var symbol in _mapController?.symbols ?? <Symbol>{}) {
-      var spot = _fishingSpotManager.entity(symbol.fishingSpot.id);
+    for (var symbol in fishingSpotSymbols) {
+      var spot = _fishingSpotManager.entity(symbol.fishingSpot!.id);
       if (spot == null) {
         symbolsToRemove.add(symbol);
       } else {
@@ -616,9 +617,8 @@ class FishingSpotMapState extends State<FishingSpotMap> {
 
     // Add symbols for new fishing spots.
     var spotsWithoutSymbols = _fishingSpotManager.list().whereNot((spot) =>
-        _mapController?.symbols
-            .containsWhere((symbol) => symbol.fishingSpot.id == spot.id) ??
-        true);
+        fishingSpotSymbols
+            .containsWhere((symbol) => symbol.fishingSpot!.id == spot.id));
 
     // Iterate all fishing spots without symbols, creating SymbolOptions and
     // data maps so all symbols can be added with one call to the platform
@@ -635,13 +635,13 @@ class FishingSpotMapState extends State<FishingSpotMap> {
     await _mapController?.addSymbols(options, data) ?? [];
 
     // Now that symbols are updated, select the passed in fishing spot.
-    FishingSpot? activeFishingSpot = _mapController?.symbols
-        .firstWhereOrNull((s) => s.fishingSpot.id == selectedFishingSpot?.id)
+    FishingSpot? activeFishingSpot = fishingSpotSymbols
+        .firstWhereOrNull((s) => s.fishingSpot!.id == selectedFishingSpot?.id)
         ?.fishingSpot;
 
     // Reset the active symbol to one of the updated symbols.
-    _activeSymbol = _mapController?.symbols
-        .firstWhereOrNull((s) => s.fishingSpot.id == activeFishingSpot?.id);
+    _activeSymbol = fishingSpotSymbols
+        .firstWhereOrNull((s) => s.fishingSpot!.id == activeFishingSpot?.id);
     if (_hasActiveSymbol) {
       _selectFishingSpot(_activeSymbol!.fishingSpot);
     } else {
@@ -677,9 +677,22 @@ class FishingSpotMapState extends State<FishingSpotMap> {
   }
 
   void _updateGpsTrail(EntityEvent<GpsTrail> event) {
+    _setupOrUpdateGpsTrail();
+
+    // Update FAB.
     if (event.type == GpsTrailEventType.startTracking ||
         event.type == GpsTrailEventType.endTracking) {
       setState(() {});
+    }
+  }
+
+  Future<void> _setupOrUpdateGpsTrail() async {
+    if (_gpsTrailManager.hasActiveTrail) {
+      _activeTrail = _activeTrail ?? GpsMapTrail(_mapController);
+      _activeTrail!.draw(context, _gpsTrailManager.activeTrial!);
+    } else {
+      await _activeTrail?.clear();
+      _activeTrail = null;
     }
   }
 
@@ -733,13 +746,13 @@ class FishingSpotMapState extends State<FishingSpotMap> {
         await _mapController?.removeSymbol(_activeSymbol!);
       }
       newActiveSymbol = null;
-    } else if (_hasActiveSymbol) {
+    } else if (_hasActiveFishingSpot) {
       // Mark the active symbol as inactive.
       await _mapController?.updateSymbol(
         _activeSymbol!,
         SymbolOptions(
           // If the active symbol didn't change, keep the same icon.
-          iconImage: _activeSymbol?.fishingSpot.id == fishingSpot?.id
+          iconImage: _activeFishingSpot!.id == fishingSpot?.id
               ? mapPinActive
               : mapPinInactive,
         ),
@@ -758,7 +771,7 @@ class FishingSpotMapState extends State<FishingSpotMap> {
     } else {
       // Find the symbol associated with the given fishing spot.
       newActiveSymbol = _mapController?.symbols
-          .firstWhereOrNull((s) => s.fishingSpot.id == fishingSpot.id);
+          .firstWhereOrNull((s) => fishingSpot.id == s.fishingSpot?.id);
 
       if (newActiveSymbol == null) {
         _log.e(StackTrace.current,
@@ -862,10 +875,12 @@ extension _Symbols on Symbol {
     };
   }
 
-  FishingSpot get fishingSpot => data![_keyFishingSpot] as FishingSpot;
+  bool get hasFishingSpot => fishingSpot != null;
 
-  set fishingSpot(FishingSpot fishingSpot) =>
-      data![_keyFishingSpot] = fishingSpot;
+  FishingSpot? get fishingSpot => data?[_keyFishingSpot] as FishingSpot;
+
+  set fishingSpot(FishingSpot? fishingSpot) =>
+      data?[_keyFishingSpot] = fishingSpot;
 
   LatLng get latLng => options.geometry!;
 }

@@ -8,12 +8,14 @@ import 'package:quiver/core.dart';
 
 import '../model/gen/anglerslog.pb.dart';
 
+import '../res/dimen.dart';
 import 'protobuf_utils.dart';
 
 const mapPinActive = "active-pin";
 const mapPinInactive = "inactive-pin";
 const mapPinSize = 1.25;
 const mapZoomDefault = 13.0;
+const mapLineDefaultWidth = 2.5;
 
 class MapType {
   static MapType of(BuildContext context) =>
@@ -25,14 +27,14 @@ class MapType {
 
   static const normal = MapType._(
     "normal",
-    "ckt1zqb8d1h1p17pglx4pmz4y",
+    "ckt1zqb8d1h1p17pglx4pmz4y/draft",
     "ckz1rne34000o14p36fu4of1y",
     "mapbox://styles/cohenadair/",
   );
 
   static const satellite = MapType._(
     "satellite",
-    "ckt1m613b127t17qqf3mmw47h",
+    "ckt1m613b127t17qqf3mmw47h/draft",
     "ckz1rts30002y15pq6t19lygy",
     "mapbox://styles/cohenadair/",
   );
@@ -65,6 +67,94 @@ class MapType {
 
   @override
   int get hashCode => hash3(id, mapboxId, _url);
+}
+
+class GpsMapTrail {
+  static const _sizeDirectionArrow = 0.75;
+
+  final MapboxMapController? controller;
+
+  Line? _line;
+  List<Symbol> _symbols = [];
+
+  GpsMapTrail(this.controller);
+
+  Future<void> clear() async {
+    if (_line != null) {
+      controller?.removeLine(_line!);
+    }
+    controller?.removeSymbols(_symbols);
+  }
+
+  Future<void> draw(BuildContext context, GpsTrail trail) async {
+    var newGeometry = _geometryFromTrail(trail);
+
+    if (_line == null) {
+      _line = await controller?.addLine(
+        LineOptions(
+          geometry: newGeometry,
+          lineColor: Theme.of(context).primaryColor.toHexStringRGB(),
+          lineWidth: mapLineDefaultWidth,
+          draggable: false,
+        ),
+      );
+    } else {
+      await controller?.updateLine(_line!, LineOptions(geometry: newGeometry));
+    }
+
+    return _addDirectionArrows(newGeometry);
+  }
+
+  Future<void> _addDirectionArrows(List<LatLng> geometry) async {
+    // Nothing needs to be added, exit early.
+    if (_symbols.length == geometry.length) {
+      return;
+    }
+
+    var symbols = <SymbolOptions>[];
+    for (int i = 0; i < geometry.length; i++) {
+      // Symbol already exists for this point.
+      if (_symbols.length > i) {
+        continue;
+      }
+
+      // Don't draw an arrow for the last point, because we have no reference
+      // from which to calculate the bearing.
+      if (i == geometry.length - 1) {
+        break;
+      }
+
+      symbols.add(SymbolOptions(
+        iconImage: "direction-arrow",
+        iconRotate: _bearing(geometry[i], geometry[i + 1]),
+        iconSize: _sizeDirectionArrow,
+        geometry: geometry[i],
+      ));
+    }
+
+    _symbols = await controller?.addSymbols(symbols) ?? [];
+  }
+
+  List<LatLng> _geometryFromTrail(GpsTrail trail) => trail.points
+      .sorted((a, b) => a.timestamp.compareTo(b.timestamp))
+      .map((e) => e.latLng)
+      .toList();
+
+  /// Copied from https://pub.dev/packages/geodesy.
+  double _bearing(LatLng l1, LatLng l2) {
+    var l1LatRadians = _degreeToRadian(l1.latitude);
+    var l2LatRadians = _degreeToRadian(l2.latitude);
+    var lngRadiansDiff = _degreeToRadian(l2.longitude - l1.longitude);
+    var y = sin(lngRadiansDiff) * cos(l2LatRadians);
+    var x = cos(l1LatRadians) * sin(l2LatRadians) -
+        sin(l1LatRadians) * cos(l2LatRadians) * cos(lngRadiansDiff);
+    var radians = atan2(y, x);
+    return (_radianToDegree(radians) + 360) % 360;
+  }
+
+  double _degreeToRadian(num degree) => degree * pi / 180;
+
+  double _radianToDegree(num radian) => radian * 180 / pi;
 }
 
 /// Returns an approximate distance, in meters, between the given [LatLng]
@@ -145,4 +235,19 @@ extension LatLngBoundsExt on LatLngBounds {
       southwest.latitude + (southwest.latitude - northeast.latitude).abs() / 2,
       southwest.longitude +
           (southwest.longitude - northeast.longitude).abs() / 2);
+}
+
+extension MapboxMapControllers on MapboxMapController {
+  Future<bool?> animateToBounds(LatLngBounds? bounds) {
+    if (bounds == null) {
+      return Future.value(false);
+    }
+    return animateCamera(CameraUpdate.newLatLngBounds(
+      bounds,
+      left: paddingXL,
+      right: paddingXL,
+      top: paddingXL,
+      bottom: paddingXL,
+    ));
+  }
 }

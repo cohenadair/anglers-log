@@ -5,6 +5,7 @@ import 'package:mobile/i18n/strings.dart';
 import 'package:mobile/res/style.dart';
 import 'package:mobile/time_manager.dart';
 import 'package:mobile/utils/date_time_utils.dart';
+import 'package:mobile/utils/map_utils.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:quiver/strings.dart';
 
@@ -24,6 +25,8 @@ class GpsTrailPage extends StatefulWidget {
 }
 
 class _GpsTrailPageState extends State<GpsTrailPage> {
+  static const mapZoomStart = 16.5;
+
   MapboxMapController? _mapController;
 
   BodyOfWaterManager get _bodyOfWaterManager => BodyOfWaterManager.of(context);
@@ -48,11 +51,13 @@ class _GpsTrailPageState extends State<GpsTrailPage> {
       startPosition: _trail.center ??
           _locationMonitor.currentLocation ??
           const LatLng(0, 0),
+      startZoom: mapZoomStart,
       onMapCreated: (controller) {
         _mapController = controller;
       },
-      onStyleLoadedCallback: () {
-        // TODO: Add trail points
+      onStyleLoadedCallback: () async {
+        await GpsMapTrail(_mapController).draw(context, _trail);
+        await _mapController?.animateToBounds(_trail.mapBounds);
       },
     );
   }

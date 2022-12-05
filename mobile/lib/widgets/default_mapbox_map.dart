@@ -16,6 +16,7 @@ import 'widget.dart';
 ///  - [EditCoordinatesPage]
 class DefaultMapboxMap extends StatefulWidget {
   final LatLng startPosition;
+  final double? startZoom;
   final String? style;
   final bool isMyLocationEnabled;
 
@@ -31,6 +32,7 @@ class DefaultMapboxMap extends StatefulWidget {
   const DefaultMapboxMap({
     required this.startPosition,
     Key? key,
+    this.startZoom,
     this.style,
     this.isMyLocationEnabled = false,
     this.onMapCreated,
@@ -68,7 +70,9 @@ class _DefaultMapboxMapState extends State<DefaultMapboxMap> {
           styleString: widget.style ?? MapType.of(context).url,
           initialCameraPosition: CameraPosition(
             target: widget.startPosition,
-            zoom: widget.startPosition.latitude == 0 ? 0 : mapZoomDefault,
+            zoom: widget.startPosition.latitude == 0
+                ? 0
+                : widget.startZoom ?? mapZoomDefault,
           ),
           onMapCreated: widget.onMapCreated,
           onStyleLoadedCallback: widget.onStyleLoadedCallback,
