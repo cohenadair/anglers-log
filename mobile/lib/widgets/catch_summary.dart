@@ -582,28 +582,93 @@ class _CatchSummaryState<T> extends State<CatchSummary<T>> {
     int? hour,
     int? month,
   }) {
+    var filterOptions = _reportOptions.deepCopy()
+      ..dateRanges.clear()
+      ..dateRanges.add(dateRange);
+
+    if (anglerIds != null) {
+      filterOptions.anglerIds
+        ..clear()
+        ..addAll(anglerIds);
+    }
+
+    if (baitAttachments != null) {
+      filterOptions.baits
+        ..clear()
+        ..addAll(baitAttachments);
+    }
+
+    if (bodyOfWaterIds != null) {
+      filterOptions.bodyOfWaterIds
+        ..clear()
+        ..addAll(bodyOfWaterIds);
+    }
+
+    if (catchIds != null) {
+      filterOptions.catchIds
+        ..clear()
+        ..addAll(catchIds);
+    }
+
+    if (fishingSpotIds != null) {
+      filterOptions.fishingSpotIds
+        ..clear()
+        ..addAll(fishingSpotIds);
+    }
+
+    if (methodIds != null) {
+      filterOptions.methodIds
+        ..clear()
+        ..addAll(methodIds);
+    }
+
+    if (moonPhases != null) {
+      filterOptions.moonPhases
+        ..clear()
+        ..addAll(moonPhases);
+    }
+
+    if (periods != null) {
+      filterOptions.periods
+        ..clear()
+        ..addAll(periods);
+    }
+
+    if (seasons != null) {
+      filterOptions.seasons
+        ..clear()
+        ..addAll(seasons);
+    }
+
+    if (speciesIds != null) {
+      filterOptions.speciesIds
+        ..clear()
+        ..addAll(speciesIds);
+    }
+
+    if (tideTypes != null) {
+      filterOptions.tideTypes
+        ..clear()
+        ..addAll(tideTypes);
+    }
+
+    if (waterClarityIds != null) {
+      filterOptions.waterClarityIds
+        ..clear()
+        ..addAll(waterClarityIds);
+    }
+
+    if (hour != null) {
+      filterOptions.hour = hour;
+    }
+
+    if (month != null) {
+      filterOptions.month = month;
+    }
+
     return CatchListPage(
       enableAdding: false,
-      catches: _catchManager.catches(
-        context,
-        opt: CatchFilterOptions(
-          dateRanges: [dateRange],
-          anglerIds: anglerIds ?? _reportOptions.anglerIds,
-          baits: baitAttachments ?? _reportOptions.baits,
-          bodyOfWaterIds: bodyOfWaterIds ?? _reportOptions.bodyOfWaterIds,
-          catchIds: catchIds ?? const [],
-          fishingSpotIds: fishingSpotIds ?? _reportOptions.fishingSpotIds,
-          methodIds: methodIds ?? _reportOptions.methodIds,
-          moonPhases: moonPhases ?? _reportOptions.moonPhases,
-          periods: periods ?? _reportOptions.periods,
-          seasons: seasons ?? _reportOptions.seasons,
-          speciesIds: speciesIds ?? _reportOptions.speciesIds,
-          tideTypes: tideTypes ?? _reportOptions.tideTypes,
-          waterClarityIds: waterClarityIds ?? _reportOptions.waterClarityIds,
-          hour: hour,
-          month: month,
-        ),
-      ),
+      catches: _catchManager.catches(context, opt: filterOptions),
     );
   }
 

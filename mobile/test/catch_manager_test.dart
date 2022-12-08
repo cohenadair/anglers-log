@@ -2526,7 +2526,7 @@ void main() {
     expect(catches, isNotNull);
   });
 
-  testWidgets("Catches overrides input fishing spots", (tester) async {
+  testWidgets("Catches doesn't override input fishing spots", (tester) async {
     when(dataManager.insertOrReplace(any, any))
         .thenAnswer((_) => Future.value(true));
     when(appManager.fishingSpotManager.uuidMap()).thenReturn({});
@@ -2539,8 +2539,7 @@ void main() {
       ..fishingSpotId = fishingSpotId0);
 
     // With strictly allFishingSpots input below, the number of catches in the
-    // result should be 1; however, when allFishingSpots is overridden, the
-    // number of catches in the result is 0.
+    // result should be 1
     var context = await buildContext(tester, appManager: appManager);
     var catches = catchManager.catches(
       context,
@@ -2555,10 +2554,10 @@ void main() {
         },
       ),
     );
-    expect(catches.isEmpty, isTrue);
+    expect(catches.length, 1);
   });
 
-  testWidgets("Catches overrides input catches", (tester) async {
+  testWidgets("Catches doesn't override input catches", (tester) async {
     when(dataManager.insertOrReplace(any, any))
         .thenAnswer((_) => Future.value(true));
 
@@ -2571,8 +2570,7 @@ void main() {
     await catchManager.addOrUpdate(Catch(id: catchId2));
 
     // With strictly allCatches input below, the number of catches in the
-    // result should be 2; however, when allCatches is overridden, the
-    // number of catches in the result is 3.
+    // result should be 2.
     var context = await buildContext(tester, appManager: appManager);
     var catches = catchManager.catches(
       context,
@@ -2583,7 +2581,7 @@ void main() {
         },
       ),
     );
-    expect(catches.length, 3);
+    expect(catches.length, 2);
   });
 
   testWidgets("imageNamesSortedByTimestamp", (tester) async {

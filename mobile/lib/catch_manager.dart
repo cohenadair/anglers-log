@@ -164,23 +164,23 @@ class CatchManager extends EntityManager<Catch> {
       opt.currentTimestamp = Int64(_timeManager.currentTimestamp);
     }
 
-    // Filter options' fields that should _always_ be equal to all entities
-    // are overridden it here. This is mostly so callers of .catches don't need
-    // to set the "all" entity fields directly. Note that right now, not all
-    // fields are required by isolatedFilteredCatches to be set.
-    if (opt.allFishingSpots.isNotEmpty) {
-      _log.w("Fishing spots field unnecessarily set; overriding...");
+    // There are some "all" fields required by isolatedFilteredCatches. Set
+    // them here if they aren't already set.
+    if (opt.allFishingSpots.isEmpty) {
+      opt.allFishingSpots
+        ..clear()
+        ..addAll(_fishingSpotManager.uuidMap());
+    } else {
+      _log.d("Catch filter options already includes allFishingSpots");
     }
-    opt.allFishingSpots
-      ..clear()
-      ..addAll(_fishingSpotManager.uuidMap());
 
-    if (opt.allCatches.isNotEmpty) {
-      _log.w("Catches field unnecessarily set; overriding...");
+    if (opt.allCatches.isEmpty) {
+      opt.allCatches
+        ..clear()
+        ..addAll(uuidMap());
+    } else {
+      _log.d("Catch filter options already includes allCatches");
     }
-    opt.allCatches
-      ..clear()
-      ..addAll(uuidMap());
 
     return isolatedFilteredCatches(opt)
         .where((cat) => matchesFilter(cat.id, filter, context))
