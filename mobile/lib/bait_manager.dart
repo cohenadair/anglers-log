@@ -249,11 +249,14 @@ class BaitManager extends ImageEntityManager<Bait> {
         return formattedBait;
       }
     } else {
-      return "$formattedBait (${variantDisplayValue(
+      var variantDisplay = variantDisplayValue(
         context,
         variant,
         includeCustomValues: true,
-      )})";
+      );
+      return isEmpty(variantDisplay)
+          ? formattedBait
+          : "$formattedBait ($variantDisplay)";
     }
   }
 
@@ -313,8 +316,11 @@ class BaitManager extends ImageEntityManager<Bait> {
     }
 
     if (includeCustomValues) {
-      values.add(_customEntityManager.customValuesDisplayValue(
-          variant.customEntityValues, context));
+      var value = _customEntityManager.customValuesDisplayValue(
+          variant.customEntityValues, context);
+      if (value.isNotEmpty) {
+        values.add(value);
+      }
     }
 
     if (values.isEmpty && variant.hasDescription()) {

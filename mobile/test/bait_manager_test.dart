@@ -26,6 +26,7 @@ void main() {
 
     customEntityManager = appManager.customEntityManager;
     when(customEntityManager.matchesFilter(any, any)).thenReturn(true);
+    when(customEntityManager.customValuesDisplayValue(any, any)).thenReturn("");
 
     dataManager = appManager.localDatabaseManager;
     when(dataManager.insertOrReplace(any, any))
@@ -770,6 +771,31 @@ void main() {
     );
   });
 
+  testWidgets("attachmentDisplayValue variant display value is empty",
+      (tester) async {
+    var context = await buildContext(tester);
+    var baitId = randomId();
+    var variantId = randomId();
+    await baitManager.addOrUpdate(Bait(
+      id: baitId,
+      name: "Test",
+      variants: [
+        BaitVariant(id: variantId),
+      ],
+    ));
+
+    expect(
+      baitManager.attachmentDisplayValue(
+        context,
+        BaitAttachment(
+          baitId: baitId,
+          variantId: variantId,
+        ),
+      ),
+      "Test",
+    );
+  });
+
   testWidgets("attachmentDisplayValue showAllVariantsLabel is true",
       (tester) async {
     var context = await buildContext(tester);
@@ -1002,6 +1028,20 @@ void main() {
     );
     expect(
       baitManager.variantDisplayValue(context, variant),
+      "Test description.",
+    );
+  });
+
+  testWidgets("variantDisplayValue includes description with custom values",
+      (tester) async {
+    var context = await buildContext(tester);
+    var variant = BaitVariant(
+      id: randomId(),
+      description: "Test description.",
+    );
+    expect(
+      baitManager.variantDisplayValue(context, variant,
+          includeCustomValues: true),
       "Test description.",
     );
   });
