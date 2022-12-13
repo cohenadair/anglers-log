@@ -441,7 +441,8 @@ extension Measurements on Measurement {
     return "${stringValue(decimalPlaces)}$unitString";
   }
 
-  String stringValue([int? decimalPlaces]) => value.displayValue(decimalPlaces);
+  String stringValue([int? decimalPlaces]) =>
+      value.displayValue(decimalPlaces: decimalPlaces);
 
   String filterString(BuildContext context) =>
       "${displayValue(context)} ${unit.filterString(context)}";

@@ -1,3 +1,8 @@
+import 'dart:ui';
+
+import 'package:intl/intl.dart';
+import 'package:quiver/strings.dart';
+
 import '../log.dart';
 
 const _log = Log("NumberUtils");
@@ -12,7 +17,7 @@ double? doubleFromDynamic(dynamic value) {
     // ignore: avoid_returning_null
     return null;
   } else if (value is String) {
-    return double.tryParse(value);
+    return Doubles.tryLocaleParse(value);
   } else if (value is int) {
     return value.toDouble();
   } else if (value is double) {
@@ -54,17 +59,47 @@ extension Doubles on double {
 
   int? roundIfWhole() => isWhole ? round() : null;
 
-  /// Returns a display value for the double. [decimalPlaces] defaults to 2.
-  String displayValue([int? decimalPlaces]) {
+  /// Returns a display value for the double. [decimalPlaces] defaults to 2, and
+  /// [locale] defaults to the device's current locale.
+  String displayValue({
+    int? decimalPlaces,
+    String? locale,
+  }) {
     if (isWhole || (decimalPlaces != null && decimalPlaces <= 0)) {
       return round().toString();
     }
 
-    var fixed = toStringAsFixed(decimalPlaces ?? 2);
+    var decimals = decimalPlaces ?? 2;
+    var fixed =
+        (NumberFormat.decimalPattern(locale ?? window.locale.toLanguageTag())
+              ..minimumFractionDigits = decimals
+              ..maximumFractionDigits = decimals)
+            .format(this);
+
     if (fixed[fixed.length - 1] == "0") {
       fixed = fixed.substring(0, fixed.length - 1);
     }
 
     return fixed;
+  }
+
+  /// Returns a parsed [double], taking the [locale] into account. [locale]
+  /// defaults to the device's current locale.
+  static double? tryLocaleParse(
+    String? input, {
+    String? locale,
+  }) {
+    if (isEmpty(input)) {
+      return null;
+    }
+
+    try {
+      return NumberFormat.decimalPattern(
+              locale ?? window.locale.toLanguageTag())
+          .parse(input!) as double;
+    } catch (e) {
+      _log.w("Failed to parse double: $input, ex: $e");
+      return null;
+    }
   }
 }

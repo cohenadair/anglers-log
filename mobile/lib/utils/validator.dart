@@ -1,4 +1,6 @@
 import 'package:flutter/cupertino.dart';
+import 'package:intl/intl.dart';
+import 'package:mobile/utils/number_utils.dart';
 import 'package:quiver/strings.dart';
 
 import '../i18n/strings.dart';
@@ -60,7 +62,7 @@ class NameValidator implements Validator {
 class DoubleValidator implements Validator {
   @override
   ValidationCallback? run(BuildContext context, String? newValue) {
-    if (isNotEmpty(newValue) && double.tryParse(newValue!) == null) {
+    if (isNotEmpty(newValue) && Doubles.tryLocaleParse(newValue!) == null) {
       return (context) => Strings.of(context).inputInvalidNumber;
     }
     return null;
