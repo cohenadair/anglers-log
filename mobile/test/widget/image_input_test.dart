@@ -39,6 +39,12 @@ void main() {
         .thenAnswer((_) => Future.value(allAlbum));
     when(appManager.permissionHandlerWrapper.requestPhotos())
         .thenAnswer((_) => Future.value(true));
+
+    var exif = MockExif();
+    when(exif.getLatLong()).thenAnswer((_) => Future.value(null));
+    when(exif.getOriginalDate()).thenAnswer((_) => Future.value(null));
+    when(appManager.exifWrapper.fromPath(any))
+        .thenAnswer((_) => Future.value(exif));
   });
 
   testWidgets("Controller updated when images picked", (tester) async {

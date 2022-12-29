@@ -116,18 +116,18 @@ class AddCatchJourneyState extends State<AddCatchJourney> {
                 if (_userPreferenceManager.isTrackingFishingSpots &&
                     !_isFishingSpotPrePicked) {
                   for (var image in _images) {
-                    if (image.position == null) {
+                    if (image.latLng == null) {
                       continue;
                     }
 
                     var existingSpot = _fishingSpotManager
-                        .withinPreferenceRadius(image.position);
+                        .withinPreferenceRadius(image.latLng);
 
                     if (existingSpot == null) {
                       _fishingSpotController.value = FishingSpot()
                         ..id = randomId()
-                        ..lat = image.position!.latitude
-                        ..lng = image.position!.longitude;
+                        ..lat = image.latLng!.latitude
+                        ..lng = image.latLng!.longitude;
                     } else {
                       _fishingSpotController.value = existingSpot;
                     }

@@ -10,6 +10,7 @@ import 'package:mobile/widgets/button.dart';
 import 'package:mobile/widgets/empty_list_placeholder.dart';
 import 'package:mobile/widgets/widget.dart';
 import 'package:mockito/mockito.dart';
+import 'package:native_exif/native_exif.dart';
 import 'package:photo_manager/photo_manager.dart';
 
 import '../mocks/mocks.dart';
@@ -45,6 +46,12 @@ void main() {
         .thenAnswer((_) => Future.value(allAlbum));
     when(appManager.permissionHandlerWrapper.requestPhotos())
         .thenAnswer((_) => Future.value(true));
+
+    var exif = MockExif();
+    when(exif.getLatLong()).thenAnswer((_) => Future.value(null));
+    when(exif.getOriginalDate()).thenAnswer((_) => Future.value(null));
+    when(appManager.exifWrapper.fromPath(any))
+        .thenAnswer((_) => Future.value(exif));
   });
 
   testWidgets("No device photos empty result", (tester) async {
@@ -414,8 +421,80 @@ void main() {
     await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
     await tapAndSettle(tester, find.byType(Image).first);
-    expect(result!.position, isNull);
+    expect(result!.latLng, isNull);
     expect(entity.latLngAsyncCalls, 1);
+  });
+
+  testWidgets("Picked image with invalid coordinates falls back on EXIF",
+      (tester) async {
+    var entity = createMockAssetEntity(
+      fileName: "android_logo.png",
+      latLngAsync: null,
+      latLngLegacy: null,
+    );
+    when(allAlbum.getAssetListPaged(
+      page: anyNamed("page"),
+      size: anyNamed("size"),
+    )).thenAnswer((_) => Future.value([entity]));
+
+    PickedImage? result;
+    await tester.pumpWidget(Testable(
+      (_) => ImagePickerPage.single(
+        onImagePicked: (_, image) => result = image,
+      ),
+      appManager: appManager,
+    ));
+    await tester.pumpAndSettle(const Duration(milliseconds: 50));
+
+    // Stub backup data.
+    var exif = MockExif();
+    when(exif.getLatLong()).thenAnswer(
+        (_) => Future.value(const ExifLatLong(latitude: 5, longitude: 6)));
+    when(exif.getOriginalDate())
+        .thenAnswer((_) => Future.value(DateTime(2022, 12, 28)));
+    when(appManager.exifWrapper.fromPath(any))
+        .thenAnswer((_) => Future.value(exif));
+
+    await tapAndSettle(tester, find.byType(Image).first);
+    expect(result!.latLng, isNotNull);
+    expect(result!.latLng!.latitude, 5);
+    expect(result!.latLng!.longitude, 6);
+    expect(result!.dateTime, isNotNull);
+    expect(result!.dateTime!.year, 2022);
+    expect(result!.dateTime!.month, 12);
+    expect(result!.dateTime!.day, 28);
+  });
+
+  testWidgets("Picked image with invalid coordinates and EXIF", (tester) async {
+    var entity = createMockAssetEntity(
+      fileName: "android_logo.png",
+      latLngAsync: null,
+      latLngLegacy: null,
+    );
+    when(allAlbum.getAssetListPaged(
+      page: anyNamed("page"),
+      size: anyNamed("size"),
+    )).thenAnswer((_) => Future.value([entity]));
+
+    PickedImage? result;
+    await tester.pumpWidget(Testable(
+      (_) => ImagePickerPage.single(
+        onImagePicked: (_, image) => result = image,
+      ),
+      appManager: appManager,
+    ));
+    await tester.pumpAndSettle(const Duration(milliseconds: 50));
+
+    // Stub backup data.
+    var exif = MockExif();
+    when(exif.getLatLong()).thenAnswer((_) => Future.value(null));
+    when(exif.getOriginalDate()).thenAnswer((_) => Future.value(null));
+    when(appManager.exifWrapper.fromPath(any))
+        .thenAnswer((_) => Future.value(exif));
+
+    await tapAndSettle(tester, find.byType(Image).first);
+    expect(result!.latLng, isNull);
+    expect(result!.dateTime, isNull);
   });
 
   testWidgets("Picked image with valid legacy coordinates", (tester) async {
@@ -439,7 +518,7 @@ void main() {
     await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
     await tapAndSettle(tester, find.byType(Image).first);
-    expect(result!.position, isNotNull);
+    expect(result!.latLng, isNotNull);
     expect(entity.latLngAsyncCalls, 0);
   });
 
@@ -464,7 +543,7 @@ void main() {
     await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
     await tapAndSettle(tester, find.byType(Image).first);
-    expect(result!.position, isNotNull);
+    expect(result!.latLng, isNotNull);
     expect(entity.latLngAsyncCalls, 1);
   });
 

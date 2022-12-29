@@ -137,6 +137,12 @@ void main() {
 
     when(mapController.value.cameraPosition)
         .thenReturn(const map.CameraPosition(target: map.LatLng(0, 0)));
+
+    var exif = MockExif();
+    when(exif.getLatLong()).thenAnswer((_) => Future.value(null));
+    when(exif.getOriginalDate()).thenAnswer((_) => Future.value(null));
+    when(appManager.exifWrapper.fromPath(any))
+        .thenAnswer((_) => Future.value(exif));
   });
 
   testWidgets("Picked image uses location data to fetch existing fishing spot",
