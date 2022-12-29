@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/gps_trail_manager.dart';
 import 'package:mobile/poll_manager.dart';
+import 'package:mobile/wrappers/exif_wrapper.dart';
 import 'package:mobile/wrappers/google_sign_in_wrapper.dart';
 import 'package:provider/provider.dart';
 
@@ -76,6 +77,7 @@ class AppManager {
   CrashlyticsWrapper? _crashlyticsWrapper;
   DeviceInfoWrapper? _deviceInfoWrapper;
   DriveApiWrapper? _driveApiWrapper;
+  ExifWrapper? _exifWrapper;
   FilePickerWrapper? _filePickerWrapper;
   GoogleSignInWrapper? _googleSignInWrapper;
   HttpWrapper? _httpWrapper;
@@ -217,6 +219,11 @@ class AppManager {
   DriveApiWrapper get driveApiWrapper {
     _driveApiWrapper ??= DriveApiWrapper();
     return _driveApiWrapper!;
+  }
+
+  ExifWrapper get exifWrapper {
+    _exifWrapper ??= ExifWrapper();
+    return _exifWrapper!;
   }
 
   FilePickerWrapper get filePickerWrapper {

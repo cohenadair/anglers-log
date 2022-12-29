@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:mapbox_gl/mapbox_gl.dart' as maps;
 import 'package:image_picker/image_picker.dart';
 import 'package:mobile/time_manager.dart';
+import 'package:mobile/wrappers/exif_wrapper.dart';
 import 'package:photo_manager/photo_manager.dart';
 import 'package:quiver/strings.dart';
 import 'package:timezone/timezone.dart';
@@ -44,7 +45,7 @@ class PickedImage {
   final Uint8List? thumbData;
 
   /// The location the image was taken, or null if unknown.
-  final maps.LatLng? position;
+  final maps.LatLng? latLng;
 
   /// The UTC date time the photo was taken, or null if unknown.
   final TZDateTime? dateTime;
@@ -53,7 +54,7 @@ class PickedImage {
     this.originalFile,
     this.thumbData,
     this.originalFileId,
-    this.position,
+    this.latLng,
     this.dateTime,
   });
 
@@ -61,7 +62,7 @@ class PickedImage {
   String toString() => "originalFile=${originalFile?.path}; "
       "originalFileId=$originalFileId; "
       "thumbData=${thumbData?.length}; "
-      "position=$position; "
+      "latLng=$latLng; "
       "dateTime=$dateTime";
 }
 
@@ -573,11 +574,21 @@ class ImagePickerPageState extends State<ImagePickerPage> {
     );
   }
 
-  void _openCamera() async {
+  Future<void> _openCamera() async {
     var image = await _imagePicker.pickImage(ImageSource.camera);
-    if (image != null) {
-      _pop([PickedImage(originalFile: File(image.path))], showError: false);
+    if (image == null) {
+      return;
     }
+
+    var file = File(image.path);
+    var exif = await _Exif.fromFile(file, context);
+    var pickedImage = PickedImage(
+      originalFile: file,
+      dateTime: exif.dateTime,
+      latLng: exif.latLng,
+    );
+
+    _pop([pickedImage], showError: false);
   }
 
   void _openFilePicker() async {
@@ -601,10 +612,17 @@ class ImagePickerPageState extends State<ImagePickerPage> {
       return;
     }
 
-    _pop(
-      images.map((image) => PickedImage(originalFile: image)).toList(),
-      showError: false,
-    );
+    var pickedImages = <PickedImage>[];
+    for (var image in images) {
+      var exif = await _Exif.fromFile(image, context);
+      pickedImages.add(PickedImage(
+        originalFile: image,
+        dateTime: exif.dateTime,
+        latLng: exif.latLng,
+      ));
+    }
+
+    _pop(pickedImages, showError: false);
   }
 
   Future<void> _finishPickingImageFromGallery(Uint8List data, int index) async {
@@ -677,15 +695,15 @@ class ImagePickerPageState extends State<ImagePickerPage> {
   }) async {
     var lat = entity.latitude;
     var lng = entity.longitude;
-    maps.LatLng? position;
+    maps.LatLng? latLng;
 
     if (_coordinatesAreValid(lat, lng)) {
-      position = maps.LatLng(lat!, lng!);
+      latLng = maps.LatLng(lat!, lng!);
     } else {
       // Coordinates are invalid, attempt to retrieve from OS.
-      var latLng = await entity.latlngAsync();
-      if (_coordinatesAreValid(latLng.latitude, latLng.longitude)) {
-        position = maps.LatLng(latLng.latitude!, latLng.longitude!);
+      var osLatLng = await entity.latlngAsync();
+      if (_coordinatesAreValid(osLatLng.latitude, osLatLng.longitude)) {
+        latLng = maps.LatLng(osLatLng.latitude!, osLatLng.longitude!);
       }
     }
 
@@ -698,12 +716,24 @@ class ImagePickerPageState extends State<ImagePickerPage> {
       return null;
     }
 
+    TZDateTime? dateTime = entity.createDateSecond == null
+        ? null
+        : _timeManager.dateTimeFromSeconds(entity.createDateSecond!);
+
+    // If position and timestamp aren't included, try extracting them from the
+    // data.
+    if (latLng == null || dateTime == null) {
+      var exif = await _Exif.fromFile(originFile, context);
+      latLng = latLng ?? exif.latLng;
+      dateTime = dateTime ?? exif.dateTime;
+    }
+
     return PickedImage(
       originalFile: originFile,
       originalFileId: entity.id,
       thumbData: thumbData ?? await entity.thumbnailData,
-      position: position,
-      dateTime: _timeManager.toTZDateTime(entity.createDateTime),
+      latLng: latLng,
+      dateTime: dateTime,
     );
   }
 
@@ -731,5 +761,33 @@ class ImagePickerPageState extends State<ImagePickerPage> {
       page: _currentPage++,
       size: _approxThumbsOnScreen() * 2,
     );
+  }
+}
+
+class _Exif {
+  static Future<_Exif> fromFile(File file, BuildContext context) async {
+    var exif = await ExifWrapper.of(context).fromPath(file.path);
+
+    // NOTE: Observed apps that do _not_ include EXIF data:
+    //   - Google Photos (Android)
+
+    var timestamp = await exif.getOriginalDate();
+    var latLng = await exif.getLatLong();
+
+    return _Exif._(
+      latLng == null ? null : maps.LatLng(latLng.latitude, latLng.longitude),
+      timestamp == null
+          ? null
+          : TimeManager.of(context).toTZDateTime(timestamp),
+    );
+  }
+
+  final _log = const Log("_Exif");
+
+  late final maps.LatLng? latLng;
+  late final TZDateTime? dateTime;
+
+  _Exif._(this.latLng, this.dateTime) {
+    _log.d("latLng=$latLng; dateTime:$dateTime");
   }
 }

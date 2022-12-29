@@ -89,6 +89,11 @@ class TimeManager {
   TZDateTime toTZDateTime(DateTime dateTime) {
     return TZDateTime.from(dateTime, currentLocation.value);
   }
+
+  TZDateTime dateTimeFromSeconds(int timestampSeconds) {
+    return toTZDateTime(DateTime.fromMillisecondsSinceEpoch(
+        timestampSeconds * Duration.millisecondsPerSecond));
+  }
 }
 
 @immutable

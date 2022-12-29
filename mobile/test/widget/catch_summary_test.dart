@@ -4,6 +4,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/angler_manager.dart';
 import 'package:mobile/bait_manager.dart';
 import 'package:mobile/body_of_water_manager.dart';
+import 'package:mobile/catch_manager.dart';
 import 'package:mobile/entity_manager.dart';
 import 'package:mobile/fishing_spot_manager.dart';
 import 'package:mobile/method_manager.dart';
@@ -16,6 +17,7 @@ import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mobile/water_clarity_manager.dart';
 import 'package:mobile/widgets/catch_summary.dart';
 import 'package:mobile/widgets/date_range_picker_input.dart';
+import 'package:mobile/widgets/list_item.dart';
 import 'package:mobile/widgets/list_picker_input.dart';
 import 'package:mobile/widgets/tile.dart';
 import 'package:mobile/widgets/widget.dart';
@@ -362,6 +364,7 @@ void main() {
         ..baits.add(baitAttachment1)
         ..atmosphere = Atmosphere(
           moonPhase: MoonPhase.first_quarter,
+          skyConditions: [SkyCondition.clear],
         ),
       Catch()
         ..id = catchId7
@@ -412,6 +415,34 @@ void main() {
     );
     // Pump to redraw after summary future completes.
     await tester.pumpAndSettle();
+  }
+
+  Future<void> pumpAndShowCatchList(
+    WidgetTester tester,
+    CatchFilterOptions opt,
+    String tappableText,
+  ) async {
+    // Use a real CatchManager instance so real filtering is done.
+    var catchManager = CatchManager(appManager.app);
+    when(appManager.app.catchManager).thenReturn(catchManager);
+
+    for (var cat in catches) {
+      await catchManager.addOrUpdate(cat);
+    }
+
+    await pumpCatchSummary(
+      tester,
+      (context) => CatchSummary<Catch>(filterOptionsBuilder: (_) => opt),
+      // Ensures tappableText is visible. For some reason, ensureVisible doesn't
+      // work here.
+      mediaQueryData: const MediaQueryData(
+        size: Size(500, 5000),
+      ),
+    );
+
+    await tester.ensureVisible(find.text(tappableText));
+    await tapAndSettle(tester, find.text(tappableText));
+    expect(find.byType(CatchListPage), findsOneWidget);
   }
 
   Future<void> testDeleteRealEntity<T extends GeneratedMessage>(
@@ -584,6 +615,9 @@ void main() {
       return Future.value(invocation.positionalArguments
           .first(invocation.positionalArguments[1]));
     });
+
+    when(appManager.imageManager.save(any, compress: anyNamed("compress")))
+        .thenAnswer((_) => Future.value([]));
 
     when(appManager.localDatabaseManager.insertOrReplace(any, any))
         .thenAnswer((_) => Future.value(true));
@@ -857,6 +891,133 @@ void main() {
     await tester.ensureVisible(find.text("Pike (4)"));
     await tapAndSettle(tester, find.text("Pike (4)"));
     expect(find.byType(CatchListPage), findsOneWidget);
+  });
+
+  testWidgets("Catch list shows correct species and sky conditions (#790)",
+      (tester) async {
+    await pumpAndShowCatchList(
+      tester,
+      CatchFilterOptions(
+        speciesIds: [speciesId1],
+        skyConditions: [SkyCondition.clear],
+      ),
+      "Pike (1)",
+    );
+    expect(find.byType(ManageableListItem), findsOneWidget);
+  });
+
+  testWidgets("Catch list shows correct anglers", (tester) async {
+    await pumpAndShowCatchList(
+      tester,
+      CatchFilterOptions(anglerIds: [anglerId1]),
+      "Eli (2)",
+    );
+    expect(find.byType(ManageableListItem), findsNWidgets(2));
+  });
+
+  testWidgets("Catch list shows correct baits", (tester) async {
+    await pumpAndShowCatchList(
+      tester,
+      CatchFilterOptions(baits: [baitAttachment4]),
+      "Attachment (1)",
+    );
+    expect(find.byType(ManageableListItem), findsOneWidget);
+  });
+
+  testWidgets("Catch list shows correct bodies of water", (tester) async {
+    await pumpAndShowCatchList(
+      tester,
+      CatchFilterOptions(bodyOfWaterIds: [bodyOfWaterId0]),
+      "Lake Huron (1)",
+    );
+    expect(find.byType(ManageableListItem), findsOneWidget);
+  });
+
+  testWidgets("Catch list shows correct fishing spots", (tester) async {
+    await pumpAndShowCatchList(
+      tester,
+      CatchFilterOptions(fishingSpotIds: [fishingSpotId0]),
+      "E (1)",
+    );
+    expect(find.byType(ManageableListItem), findsOneWidget);
+  });
+
+  testWidgets("Catch list shows correct methods", (tester) async {
+    await pumpAndShowCatchList(
+      tester,
+      CatchFilterOptions(methodIds: [methodId0]),
+      "Casting (7)",
+    );
+    expect(find.byType(ManageableListItem), findsNWidgets(3));
+  });
+
+  testWidgets("Catch list shows correct moon phases", (tester) async {
+    await pumpAndShowCatchList(
+      tester,
+      CatchFilterOptions(moonPhases: [MoonPhase.first_quarter]),
+      "1st Quarter (1)",
+    );
+    expect(find.byType(ManageableListItem), findsNWidgets(1));
+  });
+
+  testWidgets("Catch list shows correct periods", (tester) async {
+    await pumpAndShowCatchList(
+      tester,
+      CatchFilterOptions(periods: [Period.morning]),
+      "Morning (6)",
+    );
+    expect(find.byType(ManageableListItem), findsNWidgets(2));
+  });
+
+  testWidgets("Catch list shows correct seasons", (tester) async {
+    await pumpAndShowCatchList(
+      tester,
+      CatchFilterOptions(seasons: [Season.autumn]),
+      "Autumn (6)",
+    );
+    expect(find.byType(ManageableListItem), findsNWidgets(2));
+  });
+
+  testWidgets("Catch list shows correct tide types", (tester) async {
+    await pumpAndShowCatchList(
+      tester,
+      CatchFilterOptions(tideTypes: [TideType.high]),
+      "High (5)",
+    );
+    expect(find.byType(ManageableListItem), findsNWidgets(1));
+  });
+
+  testWidgets("Catch list shows correct water clarities", (tester) async {
+    await pumpAndShowCatchList(
+      tester,
+      CatchFilterOptions(waterClarityIds: [clarityId4]),
+      "1 Foot (1)",
+    );
+    expect(find.byType(ManageableListItem), findsNWidgets(1));
+  });
+
+  testWidgets("Catch list shows correct hours", (tester) async {
+    await pumpAndShowCatchList(
+      tester,
+      CatchFilterOptions(hour: 19),
+      "7:00 PM to 8:00 PM (14)",
+    );
+    expect(
+      find.byType(ManageableListItem, skipOffstage: false),
+      findsNWidgets(10),
+    );
+  });
+
+  testWidgets("Catch list shows correct months", (tester) async {
+    await pumpAndShowCatchList(
+      tester,
+      CatchFilterOptions(month: 12),
+      "December (14)",
+    );
+    expect(
+      find.byType(ManageableListItem, skipOffstage: false),
+      findsNWidgets(10),
+    );
   });
 
   testWidgets("Catches per species shown", (tester) async {
@@ -1845,8 +2006,6 @@ void main() {
   testWidgets("Deleting a fishing spot doesn't throw NPE", (tester) async {
     when(appManager.bodyOfWaterManager.displayNameFromId(any, any))
         .thenReturn("Body Of Water");
-    when(appManager.imageManager.save(any, compress: anyNamed("compress")))
-        .thenAnswer((_) => Future.value([]));
 
     var fishingSpotManager = FishingSpotManager(appManager.app);
     when(appManager.app.fishingSpotManager).thenReturn(fishingSpotManager);

@@ -1077,8 +1077,10 @@ Map<String, Map<String, String>> get englishStrings => {
         "changeLog_2.1.6_4":
             "Fixed issue where the photo gallery would sometimes appear empty",
         "changeLog_2.1.6_5": "Fixed several crashes",
-        "changeLog_2.2.0_1": "Added a calendar view of trips and catches to the \"More\" page",
-        "changeLog_2.2.0_2": "Fixed multiple issues with displaying baits on the \"Stats\" page",
+        "changeLog_2.2.0_1":
+            "Added a calendar view of trips and catches to the \"More\" page",
+        "changeLog_2.2.0_2":
+            "Fixed multiple issues with displaying baits on the \"Stats\" page",
         "changeLog_2.2.0_3": "Fixed crash when photo data became unreadable",
       },
     };

@@ -203,9 +203,10 @@ class NumberInputController extends TextInputController {
 
   bool get hasDoubleValue => doubleValue != null;
 
-  double? get doubleValue => value == null ? null : double.tryParse(value!);
+  double? get doubleValue =>
+      value == null ? null : Doubles.tryLocaleParse(value!);
 
-  set doubleValue(double? value) => super.value = value?.toString();
+  set doubleValue(double? value) => super.value = value?.displayValue();
 
   bool get hasIntValue => intValue != null;
 
@@ -436,8 +437,8 @@ class MultiMeasurementInputController
 
   /// Rounds values to a reasonable value for displaying to the user.
   void _round() {
-    mainController.value = mainController.doubleValue
-        ?.displayValue(spec.mainValueDecimalPlaces?.call(context));
+    mainController.value = mainController.doubleValue?.displayValue(
+        decimalPlaces: spec.mainValueDecimalPlaces?.call(context));
 
     // Round to whole number if using imperial_whole system.
     if (mainController.hasDoubleValue &&

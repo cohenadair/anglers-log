@@ -45,6 +45,7 @@ import 'package:mobile/widgets/quantity_picker_input.dart';
 import 'package:mobile/wrappers/crashlytics_wrapper.dart';
 import 'package:mobile/wrappers/device_info_wrapper.dart';
 import 'package:mobile/wrappers/drive_api_wrapper.dart';
+import 'package:mobile/wrappers/exif_wrapper.dart';
 import 'package:mobile/wrappers/file_picker_wrapper.dart';
 import 'package:mobile/wrappers/google_sign_in_wrapper.dart';
 import 'package:mobile/wrappers/http_wrapper.dart';
@@ -64,6 +65,7 @@ import 'package:mobile/wrappers/shared_preferences_wrapper.dart';
 import 'package:mobile/wrappers/url_launcher_wrapper.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
+import 'package:native_exif/native_exif.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:photo_manager/photo_manager.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
@@ -94,6 +96,7 @@ Trip_CatchesPerEntity newInputItemShim(dynamic pickerItem) =>
 @GenerateMocks([drive.FileList])
 @GenerateMocks([drive.FilesResource])
 @GenerateMocks([DriveApiWrapper])
+@GenerateMocks([Exif])
 @GenerateMocks([FishingSpotManager])
 @GenerateMocks([GoogleSignIn])
 @GenerateMocks([GoogleSignInAccount])
@@ -116,6 +119,7 @@ Trip_CatchesPerEntity newInputItemShim(dynamic pickerItem) =>
 @GenerateMocks([WaterClarityManager])
 @GenerateMocks([CrashlyticsWrapper])
 @GenerateMocks([DeviceInfoWrapper])
+@GenerateMocks([ExifWrapper])
 @GenerateMocks([FilePickerWrapper])
 @GenerateMocks([], customMocks: [MockSpec<GlobalKey>()])
 @GenerateMocks([GoogleSignInWrapper])

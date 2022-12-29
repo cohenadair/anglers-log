@@ -28,7 +28,25 @@ void main() {
     expect(10.50.displayValue(), "10.5");
 
     // Set decimal places.
-    expect(10.5556.displayValue(3), "10.556");
+    expect(10.5556.displayValue(decimalPlaces: 3), "10.556");
+
+    // Floating number with comma locale.
+    expect(10.55.displayValue(locale: "fi_FI"), "10,55");
+  });
+
+  test ("tryLocaleParse", () {
+    // Empty input.
+    expect(null, Doubles.tryLocaleParse(null));
+    expect(null, Doubles.tryLocaleParse(""));
+
+    // Invalid input.
+    expect(null, Doubles.tryLocaleParse("Not a double"));
+
+    // Valid input for current locale.
+    expect(10.5, Doubles.tryLocaleParse("10.5"));
+
+    // Valid input for foreign locale.
+    expect(10.5, Doubles.tryLocaleParse("10,5", locale: "fi_FI"));
   });
 
   test("percent", () {
