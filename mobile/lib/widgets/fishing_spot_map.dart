@@ -5,6 +5,7 @@ import 'package:collection/collection.dart' show IterableExtension;
 import 'package:flutter/material.dart';
 import 'package:mapbox_gl/mapbox_gl.dart';
 import 'package:mobile/gps_trail_manager.dart';
+import 'package:mobile/pages/gps_trail_page.dart';
 import 'package:mobile/pages/pro_page.dart';
 import 'package:mobile/subscription_manager.dart';
 import 'package:mobile/user_preference_manager.dart';
@@ -113,6 +114,7 @@ class FishingSpotMapState extends State<FishingSpotMap> {
 
   bool _myLocationEnabled = true;
   bool _didChangeMapType = false;
+  bool _isTrackingUser = false;
 
   // Displayed while dismissing the fishing spot container.
   FishingSpot? _oldFishingSpot;
@@ -244,6 +246,8 @@ class FishingSpotMapState extends State<FishingSpotMap> {
           _updateDroppedPin();
         }
       },
+      onCameraTrackingChanged: (mode) =>
+          _isTrackingUser = mode == MyLocationTrackingMode.Tracking,
     );
   }
 
@@ -396,7 +400,14 @@ class FishingSpotMapState extends State<FishingSpotMap> {
           }
 
           // Move map after pin changes so widgets are hidden/shown correctly.
-          _moveMap(currentLocation, zoomToDefault: true);
+          await _moveMap(
+            currentLocation,
+            zoomToDefault: !_gpsTrailManager.hasActiveTrail,
+          );
+
+          if (_gpsTrailManager.hasActiveTrail) {
+            await _mapController?.startTracking();
+          }
         }
       },
     );
@@ -684,15 +695,41 @@ class FishingSpotMapState extends State<FishingSpotMap> {
         event.type == GpsTrailEventType.endTracking) {
       setState(() {});
     }
+
+    if (event.type == GpsTrailEventType.endTracking && event.entity != null) {
+      present(context, GpsTrailPage(event.entity!, isPresented: true));
+    }
   }
 
   Future<void> _setupOrUpdateGpsTrail() async {
-    if (_gpsTrailManager.hasActiveTrail) {
-      _activeTrail = _activeTrail ?? GpsMapTrail(_mapController);
-      _activeTrail!.draw(context, _gpsTrailManager.activeTrial!);
-    } else {
+    var gpsTrail = _gpsTrailManager.activeTrial;
+    if (gpsTrail == null) {
       await _activeTrail?.clear();
+      await _mapController?.stopTracking();
       _activeTrail = null;
+      return;
+    }
+
+    if (_activeTrail == null) {
+      _activeTrail = GpsMapTrail(_mapController);
+      await _mapController?.startTracking();
+    }
+
+    await _activeTrail!.draw(context, _gpsTrailManager.activeTrial!);
+
+    // Update the cameras zoom only if needed. Note that you _could_ update
+    // latLng here as well, but using updateMyLocationTrackingMode is a
+    // smoother animation.
+    var zoom = _mapController?.cameraPosition?.zoom;
+    if (gpsTrail.points.isNotEmpty &&
+        _isTrackingUser &&
+        (zoom == null || zoom != mapZoomFollowingUser)) {
+      await _mapController?.animateCamera(
+        CameraUpdate.newCameraPosition(CameraPosition(
+          target: gpsTrail.points.last.latLng,
+          zoom: mapZoomFollowingUser,
+        )),
+      );
     }
   }
 

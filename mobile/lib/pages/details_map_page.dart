@@ -13,12 +13,14 @@ class DetailsMapPage extends StatelessWidget {
   final DefaultMapboxMap map;
   final Widget details;
   final List<Widget> children;
+  final bool isPresented;
 
   const DetailsMapPage({
     required this.controller,
     required this.map,
     required this.details,
     this.children = const [],
+    this.isPresented = false,
   });
 
   @override
@@ -36,10 +38,12 @@ class DetailsMapPage extends StatelessWidget {
   }
 
   Widget _buildBackButton() {
-    return const SafeArea(
+    return SafeArea(
       child: Align(
         alignment: Alignment.topLeft,
-        child: FloatingButton.back(),
+        child: isPresented
+            ? const FloatingButton.close()
+            : const FloatingButton.back(),
       ),
     );
   }

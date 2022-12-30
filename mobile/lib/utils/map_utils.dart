@@ -15,6 +15,7 @@ const mapPinActive = "active-pin";
 const mapPinInactive = "inactive-pin";
 const mapPinSize = 1.25;
 const mapZoomDefault = 13.0;
+const mapZoomFollowingUser = 18.0;
 const mapLineDefaultWidth = 2.5;
 
 class MapType {
@@ -73,9 +74,9 @@ class GpsMapTrail {
   static const _sizeDirectionArrow = 0.75;
 
   final MapboxMapController? controller;
+  final List<Symbol> _symbols = [];
 
   Line? _line;
-  List<Symbol> _symbols = [];
 
   GpsMapTrail(this.controller);
 
@@ -87,25 +88,8 @@ class GpsMapTrail {
   }
 
   Future<void> draw(BuildContext context, GpsTrail trail) async {
-    var newGeometry = _geometryFromTrail(trail);
+    var geometry = _geometryFromTrail(trail);
 
-    if (_line == null) {
-      _line = await controller?.addLine(
-        LineOptions(
-          geometry: newGeometry,
-          lineColor: Theme.of(context).primaryColor.toHexStringRGB(),
-          lineWidth: mapLineDefaultWidth,
-          draggable: false,
-        ),
-      );
-    } else {
-      await controller?.updateLine(_line!, LineOptions(geometry: newGeometry));
-    }
-
-    return _addDirectionArrows(newGeometry);
-  }
-
-  Future<void> _addDirectionArrows(List<LatLng> geometry) async {
     // Nothing needs to be added, exit early.
     if (_symbols.length == geometry.length) {
       return;
@@ -132,7 +116,7 @@ class GpsMapTrail {
       ));
     }
 
-    _symbols = await controller?.addSymbols(symbols) ?? [];
+    _symbols.addAll(await controller?.addSymbols(symbols) ?? []);
   }
 
   List<LatLng> _geometryFromTrail(GpsTrail trail) => trail.points
@@ -250,4 +234,10 @@ extension MapboxMapControllers on MapboxMapController {
       bottom: paddingXL,
     ));
   }
+
+  Future<void> startTracking() =>
+      updateMyLocationTrackingMode(MyLocationTrackingMode.Tracking);
+
+  Future<void> stopTracking() =>
+      updateMyLocationTrackingMode(MyLocationTrackingMode.None);
 }

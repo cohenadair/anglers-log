@@ -29,6 +29,9 @@ class DefaultMapboxMap extends StatefulWidget {
   /// See [MapboxMap.onCameraIdle].
   final OnCameraIdleCallback? onCameraIdle;
 
+  /// See [MapboxMap.onCameraTrackingChanged].
+  final OnCameraTrackingChangedCallback? onCameraTrackingChanged;
+
   const DefaultMapboxMap({
     required this.startPosition,
     Key? key,
@@ -38,6 +41,7 @@ class DefaultMapboxMap extends StatefulWidget {
     this.onMapCreated,
     this.onStyleLoadedCallback,
     this.onCameraIdle,
+    this.onCameraTrackingChanged,
   });
 
   @override
@@ -77,6 +81,7 @@ class _DefaultMapboxMapState extends State<DefaultMapboxMap> {
           onMapCreated: widget.onMapCreated,
           onStyleLoadedCallback: widget.onStyleLoadedCallback,
           onCameraIdle: widget.onCameraIdle,
+          onCameraTrackingChanged: widget.onCameraTrackingChanged,
           trackCameraPosition: true,
           compassEnabled: false,
         );

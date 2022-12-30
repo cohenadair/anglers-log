@@ -17,8 +17,12 @@ import 'details_map_page.dart';
 
 class GpsTrailPage extends StatefulWidget {
   final GpsTrail trail;
+  final bool isPresented;
 
-  const GpsTrailPage(this.trail);
+  const GpsTrailPage(
+    this.trail, {
+    this.isPresented = false,
+  });
 
   @override
   State<GpsTrailPage> createState() => _GpsTrailPageState();
@@ -43,6 +47,7 @@ class _GpsTrailPageState extends State<GpsTrailPage> {
       controller: _mapController,
       map: _buildMap(),
       details: _buildDetails(),
+      isPresented: widget.isPresented,
     );
   }
 

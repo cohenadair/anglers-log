@@ -123,9 +123,10 @@ class GpsTrailManager extends EntityManager<GpsTrail> {
     _activeTrail!.endTimestamp = Int64(_timeManager.currentTimestamp);
     await addOrUpdate(_activeTrail!);
 
+    var finishedTrail = _activeTrail;
     _activeTrail = null;
     await _locationMonitor.disableBackgroundMode();
-    _notifyOnStopTracking();
+    _notifyOnStopTracking(finishedTrail!);
   }
 
   List<GpsTrail> gpsTrails({
@@ -178,7 +179,7 @@ class GpsTrailManager extends EntityManager<GpsTrail> {
         .add(EntityEvent<GpsTrail>(GpsTrailEventType.startTracking, null));
   }
 
-  void _notifyOnStopTracking() {
-    controller.add(EntityEvent<GpsTrail>(GpsTrailEventType.endTracking, null));
+  void _notifyOnStopTracking(GpsTrail trail) {
+    controller.add(EntityEvent<GpsTrail>(GpsTrailEventType.endTracking, trail));
   }
 }
