@@ -143,7 +143,7 @@ class FishingSpotMapState extends State<FishingSpotMap> {
   bool get _isPicking => _pickerSettings != null;
 
   bool get _isDroppedPin =>
-      !_fishingSpotManager.entityExists(_activeSymbol?.fishingSpot?.id);
+      !_fishingSpotManager.entityExists(_activeFishingSpot?.id);
 
   bool get _hasActiveFishingSpot => _activeFishingSpot != null;
 
@@ -227,7 +227,7 @@ class FishingSpotMapState extends State<FishingSpotMap> {
   }
 
   Widget _buildMap() {
-    var start = _activeSymbol?.fishingSpot?.latLng ??
+    var start = _activeFishingSpot?.latLng ??
         _pickerSettings?.controller.value?.latLng ??
         _locationMonitor.currentLocation ??
         const LatLng(0, 0);
@@ -259,7 +259,7 @@ class FishingSpotMapState extends State<FishingSpotMap> {
 
     String? name;
     if (_hasActiveFishingSpot) {
-      if (_fishingSpotManager.entityExists(_activeSymbol!.fishingSpot?.id)) {
+      if (_fishingSpotManager.entityExists(_activeFishingSpot!.id)) {
         // Showing active fishing spot.
         name = _fishingSpotManager.displayName(
           context,
@@ -610,8 +610,7 @@ class FishingSpotMapState extends State<FishingSpotMap> {
   Future<void> _updateSymbols({
     required FishingSpot? selectedFishingSpot,
   }) async {
-    var fishingSpotSymbols =
-        _mapController?.symbols.where((e) => e.hasFishingSpot) ?? <Symbol>{};
+    var fishingSpotSymbols = _mapController?.fishingSpotSymbols ?? <Symbol>{};
 
     // Update and remove symbols, syncing them with FishingSpotManager.
     var symbolsToRemove = <Symbol>[];
@@ -644,6 +643,9 @@ class FishingSpotMapState extends State<FishingSpotMap> {
       data.add(_Symbols.fishingSpotData(fishingSpot));
     }
     await _mapController?.addSymbols(options, data) ?? [];
+
+    // Need to reset fishingSpotSymbols variable after adding new symbols.
+    fishingSpotSymbols = _mapController?.fishingSpotSymbols ?? <Symbol>{};
 
     // Now that symbols are updated, select the passed in fishing spot.
     FishingSpot? activeFishingSpot = fishingSpotSymbols
@@ -920,4 +922,9 @@ extension _Symbols on Symbol {
       data?[_keyFishingSpot] = fishingSpot;
 
   LatLng get latLng => options.geometry!;
+}
+
+extension _MapboxMapControllers on MapboxMapController {
+  Iterable<Symbol> get fishingSpotSymbols =>
+      symbols.where((e) => e.hasFishingSpot);
 }

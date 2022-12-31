@@ -75,6 +75,8 @@ void main() {
   testWidgets("Navigation skips permission page", (tester) async {
     when(appManager.permissionHandlerWrapper.isLocationGranted)
         .thenAnswer((_) => Future.value(true));
+    when(appManager.permissionHandlerWrapper.isLocationAlwaysGranted)
+        .thenAnswer((_) => Future.value(true));
 
     var finished = false;
     await tester.pumpWidget(
@@ -110,6 +112,12 @@ void main() {
   testWidgets("Navigation", (tester) async {
     when(appManager.permissionHandlerWrapper.isLocationGranted)
         .thenAnswer((_) => Future.value(false));
+    when(appManager.permissionHandlerWrapper.isLocationAlwaysGranted)
+        .thenAnswer((_) => Future.value(false));
+    when(appManager.permissionHandlerWrapper.requestLocationAlways())
+        .thenAnswer((_) => Future.value(false));
+    when(appManager.ioWrapper.isIOS).thenReturn(true);
+    when(appManager.ioWrapper.isAndroid).thenReturn(false);
 
     var finished = false;
     await tester.pumpWidget(
@@ -143,6 +151,7 @@ void main() {
     expect(find.byType(LocationPermissionPage), findsOneWidget);
     expect(findFirstWithText<ActionButton>(tester, "NEXT").onPressed, isNull);
     await tapAndSettle(tester, find.text("SET PERMISSION"));
+    await tapAndSettle(tester, find.text("CANCEL"));
 
     expect(find.byType(HowToFeedbackPage), findsOneWidget);
     await tapAndSettle(tester, find.text("FINISH"));
@@ -175,6 +184,8 @@ void main() {
         .thenAnswer((_) => Future.value(null));
 
     when(appManager.permissionHandlerWrapper.isLocationGranted)
+        .thenAnswer((_) => Future.value(true));
+    when(appManager.permissionHandlerWrapper.isLocationAlwaysGranted)
         .thenAnswer((_) => Future.value(true));
 
     var finished = false;

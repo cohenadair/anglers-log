@@ -23,7 +23,7 @@ void main() {
     });
 
     test("Normal case", () {
-      var bounds = mapBounds({
+      var bounds = fishingSpotMapBounds({
         FishingSpot()
           ..lat = 50
           ..lng = 1,

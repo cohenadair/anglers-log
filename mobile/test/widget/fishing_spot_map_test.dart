@@ -42,6 +42,11 @@ void main() {
       includeBodyOfWater: anyNamed("includeBodyOfWater"),
     )).thenAnswer((invocation) => invocation.positionalArguments[1].name);
 
+    when(appManager.gpsTrailManager.stream)
+        .thenAnswer((_) => const Stream.empty());
+    when(appManager.gpsTrailManager.activeTrial).thenReturn(null);
+    when(appManager.gpsTrailManager.hasActiveTrail).thenReturn(false);
+
     when(appManager.ioWrapper.isAndroid).thenReturn(false);
 
     when(appManager.locationMonitor.currentLocation).thenReturn(null);
@@ -80,8 +85,8 @@ void main() {
     var fishingSpot2 = FishingSpot(
       id: randomId(),
       name: "Spot 2",
-      lat: 1,
-      lng: 2,
+      lat: 3,
+      lng: 4,
     );
     when(appManager.fishingSpotManager.list())
         .thenReturn([fishingSpot1, fishingSpot2]);
@@ -501,7 +506,10 @@ void main() {
 
   testWidgets("Current location prompts for permission; declined",
       (tester) async {
-    when(appManager.permissionHandlerWrapper.requestLocation())
+    when(appManager.ioWrapper.isIOS).thenReturn(true);
+    when(appManager.permissionHandlerWrapper.isLocationGranted)
+        .thenAnswer((_) => Future.value(false));
+    when(appManager.permissionHandlerWrapper.requestLocationAlways())
         .thenAnswer((_) => Future.value(false));
 
     await pumpMapWrapper(
@@ -513,12 +521,12 @@ void main() {
 
     await tapAndSettle(tester, find.byIcon(Icons.my_location));
 
-    verify(appManager.permissionHandlerWrapper.requestLocation()).called(1);
+    verify(appManager.permissionHandlerWrapper.isLocationGranted).called(1);
     expect(find.text("Location Access"), findsOneWidget);
   });
 
   testWidgets("Error getting current location", (tester) async {
-    when(appManager.permissionHandlerWrapper.requestLocation())
+    when(appManager.permissionHandlerWrapper.isLocationGranted)
         .thenAnswer((_) => Future.value(true));
     when(appManager.locationMonitor.currentLocation).thenReturn(null);
 
@@ -537,7 +545,7 @@ void main() {
     when(appManager.fishingSpotManager.entityExists(any)).thenReturn(false);
     when(appManager.locationMonitor.currentLocation)
         .thenReturn(const LatLng(1, 2));
-    when(appManager.permissionHandlerWrapper.requestLocation())
+    when(appManager.permissionHandlerWrapper.isLocationGranted)
         .thenAnswer((_) => Future.value(true));
 
     await pumpMapWrapper(
@@ -558,7 +566,7 @@ void main() {
       (tester) async {
     when(appManager.locationMonitor.currentLocation)
         .thenReturn(const LatLng(1, 2));
-    when(appManager.permissionHandlerWrapper.requestLocation())
+    when(appManager.permissionHandlerWrapper.isLocationGranted)
         .thenAnswer((_) => Future.value(true));
 
     var fishingSpot1 = FishingSpot(
@@ -994,7 +1002,7 @@ void main() {
   testWidgets("Map movement is animated", (tester) async {
     when(appManager.locationMonitor.currentLocation)
         .thenReturn(const LatLng(1, 2));
-    when(appManager.permissionHandlerWrapper.requestLocation())
+    when(appManager.permissionHandlerWrapper.isLocationGranted)
         .thenAnswer((_) => Future.value(true));
 
     await pumpMapWrapper(tester, FishingSpotMap());
@@ -1172,7 +1180,7 @@ void main() {
   });
 
   testWidgets("Move map exits early if already at position", (tester) async {
-    when(appManager.permissionHandlerWrapper.requestLocation())
+    when(appManager.permissionHandlerWrapper.isLocationGranted)
         .thenAnswer((_) => Future.value(true));
 
     when(appManager.locationMonitor.currentLocation)
@@ -1186,7 +1194,7 @@ void main() {
   });
 
   testWidgets("Move map zooms to default", (tester) async {
-    when(appManager.permissionHandlerWrapper.requestLocation())
+    when(appManager.permissionHandlerWrapper.isLocationGranted)
         .thenAnswer((_) => Future.value(true));
 
     await pumpMapWrapper(tester, FishingSpotMap());

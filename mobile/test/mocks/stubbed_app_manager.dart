@@ -20,6 +20,7 @@ class StubbedAppManager {
   MockCatchManager catchManager = MockCatchManager();
   MockCustomEntityManager customEntityManager = MockCustomEntityManager();
   MockFishingSpotManager fishingSpotManager = MockFishingSpotManager();
+  MockGpsTrailManager gpsTrailManager = MockGpsTrailManager();
   MockImageManager imageManager = MockImageManager();
   MockLocalDatabaseManager localDatabaseManager = MockLocalDatabaseManager();
   MockLocationMonitor locationMonitor = MockLocationMonitor();
@@ -66,6 +67,7 @@ class StubbedAppManager {
     when(app.catchManager).thenReturn(catchManager);
     when(app.customEntityManager).thenReturn(customEntityManager);
     when(app.fishingSpotManager).thenReturn(fishingSpotManager);
+    when(app.gpsTrailManager).thenReturn(gpsTrailManager);
     when(app.imageManager).thenReturn(imageManager);
     when(app.localDatabaseManager).thenReturn(localDatabaseManager);
     when(app.locationMonitor).thenReturn(locationMonitor);

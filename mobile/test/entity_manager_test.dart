@@ -101,15 +101,6 @@ void main() {
     entityManager = TestEntityManager(appManager.app);
   });
 
-  test("Invalid EntityEvent input", () {
-    expect(
-      () => EntityEvent<Species>(EntityEventType.add, null),
-      throwsAssertionError,
-    );
-    expect(EntityEvent<Species>(EntityEventType.reset, null), isNotNull);
-    expect(EntityEvent<Species>(EntityEventType.add, Species()), isNotNull);
-  });
-
   test("Test initialize local data", () async {
     var id0 = randomId();
     var id1 = randomId();

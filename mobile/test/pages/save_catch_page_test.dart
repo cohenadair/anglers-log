@@ -66,6 +66,11 @@ void main() {
     when(appManager.customEntityManager.list()).thenReturn([]);
     when(appManager.customEntityManager.entityExists(any)).thenReturn(false);
 
+    when(appManager.gpsTrailManager.stream)
+        .thenAnswer((_) => const Stream.empty());
+    when(appManager.gpsTrailManager.hasActiveTrail).thenReturn(false);
+    when(appManager.gpsTrailManager.activeTrial).thenReturn(null);
+
     when(appManager.ioWrapper.isAndroid).thenReturn(false);
 
     when(appManager.fishingSpotManager.entityExists(any))

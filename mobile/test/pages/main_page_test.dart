@@ -31,6 +31,11 @@ void main() {
     )).thenReturn([]);
     when(appManager.catchManager.hasEntities).thenReturn(false);
 
+    when(appManager.gpsTrailManager.stream)
+        .thenAnswer((_) => const Stream.empty());
+    when(appManager.gpsTrailManager.hasActiveTrail).thenReturn(false);
+    when(appManager.gpsTrailManager.activeTrial).thenReturn(null);
+
     when(appManager.ioWrapper.isAndroid).thenReturn(false);
 
     when(appManager.pollManager.canVote).thenReturn(false);
@@ -148,11 +153,11 @@ void main() {
     await tester.pumpAndSettle(const Duration(milliseconds: 300));
     await mapController.finishLoading(tester);
 
-    var badge = tester.widget<Badge>(find.descendant(
-      of: find.byType(BottomNavigationBar),
-      matching: find.byType(Badge),
-    ));
-    expect(badge.isVisible, isTrue);
+    expect(
+      findFirstWithIcon<BadgeContainer>(tester, Icons.more_horiz)
+          .isBadgeVisible,
+      isTrue,
+    );
   });
 
   testWidgets("Poll badge hidden", (tester) async {
@@ -166,10 +171,10 @@ void main() {
     await tester.pumpAndSettle(const Duration(milliseconds: 300));
     await mapController.finishLoading(tester);
 
-    var badge = tester.widget<Badge>(find.descendant(
-      of: find.byType(BottomNavigationBar),
-      matching: find.byType(Badge),
-    ));
-    expect(badge.isVisible, isFalse);
+    expect(
+      findFirstWithIcon<BadgeContainer>(tester, Icons.more_horiz)
+          .isBadgeVisible,
+      isFalse,
+    );
   });
 }

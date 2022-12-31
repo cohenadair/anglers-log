@@ -25,7 +25,14 @@ void main() {
 
     when(appManager.catchManager.hasEntities).thenReturn(false);
     when(appManager.fishingSpotManager.entityExists(any)).thenReturn(false);
+
+    when(appManager.gpsTrailManager.stream)
+        .thenAnswer((_) => const Stream.empty());
+    when(appManager.gpsTrailManager.hasActiveTrail).thenReturn(false);
+    when(appManager.gpsTrailManager.activeTrial).thenReturn(null);
+
     when(appManager.ioWrapper.isAndroid).thenReturn(false);
+    when(appManager.ioWrapper.isIOS).thenReturn(true);
 
     when(appManager.reportManager.entityExists(any)).thenReturn(false);
     when(appManager.reportManager.defaultReport).thenReturn(Report());
@@ -116,7 +123,11 @@ void main() {
         .thenAnswer((_) => Future.value());
     when(appManager.permissionHandlerWrapper.isLocationGranted)
         .thenAnswer((_) => Future.value(false));
+    when(appManager.permissionHandlerWrapper.isLocationAlwaysGranted)
+        .thenAnswer((_) => Future.value(false));
     when(appManager.permissionHandlerWrapper.requestLocation())
+        .thenAnswer((_) => Future.value(false));
+    when(appManager.permissionHandlerWrapper.requestLocationAlways())
         .thenAnswer((_) => Future.value(false));
     when(appManager.fishingSpotManager.list()).thenReturn([]);
     when(appManager.catchManager.catches(
@@ -143,6 +154,7 @@ void main() {
     await tapAndSettle(tester, find.text("NEXT"));
     await tapAndSettle(tester, find.text("NEXT"));
     await tapAndSettle(tester, find.text("SET PERMISSION"));
+    await tapAndSettle(tester, find.text("CANCEL"));
     await tapAndSettle(tester, find.text("FINISH"));
 
     verify(appManager.userPreferenceManager.setDidOnboard(true)).called(1);

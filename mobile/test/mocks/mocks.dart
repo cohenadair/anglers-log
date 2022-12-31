@@ -20,6 +20,7 @@ import 'package:mobile/bait_category_manager.dart';
 import 'package:mobile/bait_manager.dart';
 import 'package:mobile/body_of_water_manager.dart';
 import 'package:mobile/catch_manager.dart';
+import 'package:mobile/gps_trail_manager.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
 import 'package:mobile/poll_manager.dart';
 import 'package:mobile/report_manager.dart';
@@ -100,6 +101,7 @@ Trip_CatchesPerEntity newInputItemShim(dynamic pickerItem) =>
 @GenerateMocks([FishingSpotManager])
 @GenerateMocks([GoogleSignIn])
 @GenerateMocks([GoogleSignInAccount])
+@GenerateMocks([GpsTrailManager])
 @GenerateMocks([ImageManager])
 @GenerateMocks([], customMocks: [MockSpec<InputController>()])
 @GenerateMocks([IOSink])
