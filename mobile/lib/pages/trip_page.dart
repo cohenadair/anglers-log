@@ -4,8 +4,10 @@ import 'package:mobile/bait_manager.dart';
 import 'package:mobile/body_of_water_manager.dart';
 import 'package:mobile/catch_manager.dart';
 import 'package:mobile/fishing_spot_manager.dart';
+import 'package:mobile/gps_trail_manager.dart';
 import 'package:mobile/i18n/strings.dart';
 import 'package:mobile/pages/catch_page.dart';
+import 'package:mobile/pages/gps_trail_page.dart';
 import 'package:mobile/res/style.dart';
 import 'package:mobile/trip_manager.dart';
 import 'package:mobile/utils/catch_utils.dart';
@@ -23,6 +25,7 @@ import '../model/gen/anglerslog.pb.dart';
 import '../pages/entity_page.dart';
 import '../res/dimen.dart';
 import '../species_manager.dart';
+import '../utils/gps_trail_utils.dart';
 import '../utils/page_utils.dart';
 import '../utils/protobuf_utils.dart';
 import 'save_trip_page.dart';
@@ -67,6 +70,7 @@ class TripPage extends StatelessWidget {
             _buildHeader(context, trip),
             _buildBodiesOfWater(context, trip),
             _buildCatches(context, trip),
+            _buildGpsTrails(context, trip),
             _buildAtmosphere(context, trip),
             _buildCatchesPerAngler(context, trip),
             _buildCatchesPerSpecies(context, trip),
@@ -141,6 +145,36 @@ class TripPage extends StatelessWidget {
           subtitle: model.subtitle,
           trailing: RightChevronIcon(),
           onTap: () => push(context, CatchPage(cat)),
+        );
+      }).toList(),
+    );
+  }
+
+  Widget _buildGpsTrails(BuildContext context, Trip trip) {
+    if (trip.gpsTrailIds.isEmpty) {
+      return const Empty();
+    }
+
+    return Column(
+      children: trip.gpsTrailIds.map((e) {
+        var gpsTrailManager = GpsTrailManager.of(context);
+
+        var trail = gpsTrailManager.entity(e);
+        if (trail == null) {
+          return const Empty();
+        }
+
+        var model = GpsTrailListItemModel(context, trail);
+        return ListItem(
+          title: Text(model.title),
+          trailing: Row(
+            children: [
+              model.trailing,
+              const HorizontalSpace(paddingDefault),
+              RightChevronIcon(),
+            ],
+          ),
+          onTap: () => push(context, GpsTrailPage(trail)),
         );
       }).toList(),
     );

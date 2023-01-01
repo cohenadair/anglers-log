@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/body_of_water_manager.dart';
 import 'package:mobile/gps_trail_manager.dart';
+import 'package:mobile/utils/gps_trail_utils.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mobile/widgets/list_item.dart';
 import 'package:mobile/widgets/widget.dart';
@@ -56,26 +57,12 @@ class GpsTrailListPage extends StatelessWidget {
   }
 
   Widget _buildListItem(BuildContext context, GpsTrail trail) {
-    var bodyOfWaterManager = BodyOfWaterManager.of(context);
-    var gpsTrailManager = GpsTrailManager.of(context);
-
-    var subtitle =
-        bodyOfWaterManager.displayNameFromId(context, trail.bodyOfWaterId);
-    TextStyle? subtitleStyle;
-    if (trail.isInProgress) {
-      subtitle = Strings.of(context).gpsTrailListPageInProgress;
-      subtitleStyle = styleSuccess(context)
-          .copyWith(fontSize: styleSubtitle(context).fontSize);
-    }
-
+    var model = GpsTrailListItemModel(context, trail);
     return ManageableListImageItem(
-      title: gpsTrailManager.displayName(context, trail),
-      subtitle: subtitle,
-      subtitleStyle: subtitleStyle,
-      trailing: MinChip(
-        format(Strings.of(context).gpsTrailListPageNumberOfPoints,
-            [trail.points.length]),
-      ),
+      title: model.title,
+      subtitle: model.subtitle,
+      subtitleStyle: model.subtitleStyle,
+      trailing: model.trailing,
       showPlaceholder: false,
     );
   }

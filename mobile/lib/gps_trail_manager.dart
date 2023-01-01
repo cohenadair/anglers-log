@@ -32,7 +32,7 @@ class GpsTrailManager extends EntityManager<GpsTrail> {
       Provider.of<AppManager>(context, listen: false).gpsTrailManager;
 
   // Minimum number of meters between GPS trail points.
-  final _minPointDist = 5.0;
+  final _minPointDist = 10.0;
   final _log = const Log("GpsTrailManager");
 
   GpsTrail? _activeTrail;

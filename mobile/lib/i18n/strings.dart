@@ -226,6 +226,8 @@ class Strings {
   String get saveTripPageNoBodiesOfWater =>
       _string("saveTripPage_noBodiesOfWater");
 
+  String get saveTripPageNoGpsTrails => _string("saveTripPage_noGpsTrails");
+
   String get tripCatchesPerSpecies => _string("trip_catchesPerSpecies");
 
   String get tripCatchesPerFishingSpot => _string("trip_catchesPerFishingSpot");

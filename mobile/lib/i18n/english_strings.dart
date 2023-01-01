@@ -376,6 +376,7 @@ Map<String, Map<String, String>> get englishStrings => {
         "saveTripPage_catchesDesc": "Trophies logged on this trip.",
         "saveTripPage_noCatches": "No catches",
         "saveTripPage_noBodiesOfWater": "No bodies of water",
+        "saveTripPage_noGpsTrails": "No GPS trails",
         "trip_catchesPerSpecies": "Catches Per Species",
         "trip_catchesPerFishingSpot": "Catches Per Fishing Spot",
         "trip_catchesPerAngler": "Catches Per Angler",

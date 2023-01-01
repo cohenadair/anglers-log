@@ -168,6 +168,14 @@ class StubbedAppManager {
     )).thenReturn(MockStreamSubscription());
     when(fishingSpotManager.entity(any)).thenReturn(null);
 
+    when(gpsTrailManager.addTypedListener(
+      onAdd: anyNamed("onAdd"),
+      onUpdate: anyNamed("onUpdate"),
+      onDelete: anyNamed("onDelete"),
+      onReset: anyNamed("onReset"),
+    )).thenReturn(MockStreamSubscription());
+    when(gpsTrailManager.entity(any)).thenReturn(null);
+
     when(methodManager.addTypedListener(
       onAdd: anyNamed("onAdd"),
       onUpdate: anyNamed("onUpdate"),

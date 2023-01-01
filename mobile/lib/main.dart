@@ -25,6 +25,7 @@ import 'pages/landing_page.dart';
 import 'pages/main_page.dart';
 import 'pages/onboarding/onboarding_journey.dart';
 import 'user_preference_manager.dart';
+import 'utils/trip_utils.dart';
 import 'wrappers/services_wrapper.dart';
 
 void main() async {
@@ -205,8 +206,19 @@ class AnglersLogState extends State<AnglersLog> {
 
     var oldVersion = _userPreferencesManager.appVersion;
     var newVersion = (await _packageInfoWrapper.fromPlatform()).version;
-    return isEmpty(oldVersion) ||
+    var didUpdate = isEmpty(oldVersion) ||
         Version.parse(oldVersion!) < Version.parse(newVersion);
+
+    // Sometimes we need to setup defaults values after the app is updated.
+    // Do it here.
+    if (didUpdate) {
+      if (oldVersion == "2.2.0") {
+        _userPreferencesManager.setTripFieldIds(
+            _userPreferencesManager.tripFieldIds..add(tripIdGpsTrails));
+      }
+    }
+
+    return didUpdate;
   }
 }
 
