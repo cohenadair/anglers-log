@@ -715,4 +715,11 @@ void main() {
       "Bluegill",
     );
   });
+
+  test("EntityEventType equals", () {
+    expect(EntityEventType.add == EntityEventType.add, isTrue);
+    expect(EntityEventType.add == EntityEventType.delete, isFalse);
+    // ignore: unrelated_type_equality_checks
+    expect(EntityEventType.add == "String", isFalse);
+  });
 }

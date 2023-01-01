@@ -81,11 +81,6 @@ class GpsTrailManager extends EntityManager<GpsTrail> {
 
   bool get hasActiveTrail => _activeTrail != null;
 
-  List<GpsTrail> sortedTrails() {
-    return list()
-      ..sort((lhs, rhs) => rhs.startTimestamp.compareTo(lhs.endTimestamp));
-  }
-
   Future<void> startTracking(BuildContext context) async {
     if (hasActiveTrail) {
       _log.w("Already tracking a gps trail");
@@ -156,9 +151,8 @@ class GpsTrailManager extends EntityManager<GpsTrail> {
     return format(string, [numOfTrips]);
   }
 
-  void _onLocationUpdate(LatLng? latLng) {
-    if (latLng == null ||
-        !hasActiveTrail ||
+  void _onLocationUpdate(LatLng latLng) {
+    if (!hasActiveTrail ||
         distanceBetween(latLng, _activeTrail!.points.last.latLng) <
             _minPointDist) {
       return;

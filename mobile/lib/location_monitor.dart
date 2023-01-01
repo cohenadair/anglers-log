@@ -17,7 +17,7 @@ class LocationMonitor {
 
   final _log = const Log("LocationMonitor");
   final _distanceFilterMeters = 10.0;
-  final _controller = StreamController<LatLng?>.broadcast();
+  final _controller = StreamController<LatLng>.broadcast();
 
   final AppManager _appManager;
   final _location = Location();
@@ -55,7 +55,7 @@ class LocationMonitor {
     _initialized = true;
   }
 
-  Stream<LatLng?> get stream => _controller.stream;
+  Stream<LatLng> get stream => _controller.stream;
 
   LatLng? get currentLocation => _lastKnownLocation;
 
@@ -81,6 +81,6 @@ class LocationMonitor {
 
     _log.d("Received location update ${latLng.latitude}, ${latLng.longitude}");
     _lastKnownLocation = latLng;
-    _controller.add(currentLocation);
+    _controller.add(currentLocation!);
   }
 }

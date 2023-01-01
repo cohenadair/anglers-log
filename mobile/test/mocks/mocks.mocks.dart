@@ -2855,10 +2855,6 @@ class MockGpsTrailManager extends _i1.Mock implements _i15.GpsTrailManager {
       (super.noSuchMethod(Invocation.method(#matchesFilter, [id, filter]),
           returnValue: false) as bool);
   @override
-  List<_i5.GpsTrail> sortedTrails() =>
-      (super.noSuchMethod(Invocation.method(#sortedTrails, []),
-          returnValue: <_i5.GpsTrail>[]) as List<_i5.GpsTrail>);
-  @override
   _i2.Future<void> startTracking(_i56.BuildContext? context) =>
       (super.noSuchMethod(Invocation.method(#startTracking, [context]),
           returnValue: Future<void>.value(),
@@ -3245,9 +3241,9 @@ class MockLocationMonitor extends _i1.Mock implements _i17.LocationMonitor {
   }
 
   @override
-  _i2.Stream<_i58.LatLng?> get stream => (super.noSuchMethod(
-      Invocation.getter(#stream),
-      returnValue: Stream<_i58.LatLng?>.empty()) as _i2.Stream<_i58.LatLng?>);
+  _i2.Stream<_i58.LatLng> get stream =>
+      (super.noSuchMethod(Invocation.getter(#stream),
+          returnValue: Stream<_i58.LatLng>.empty()) as _i2.Stream<_i58.LatLng>);
   @override
   _i2.Future<void> initialize() =>
       (super.noSuchMethod(Invocation.method(#initialize, []),
