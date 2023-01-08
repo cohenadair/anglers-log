@@ -93,7 +93,7 @@ abstract class EntityManager<T extends GeneratedMessage> {
   T entityFromBytes(List<int> bytes);
 
   final _log = Log("EntityManager<$T>");
-  
+
   @protected
   final controller = StreamController<EntityEvent<T>>.broadcast();
 

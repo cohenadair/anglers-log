@@ -450,8 +450,7 @@ void main() {
   testWidgets("GPS trails shown", (tester) async {
     when(appManager.bodyOfWaterManager.displayNameFromId(any, any))
         .thenReturn(null);
-    when(appManager.gpsTrailManager.displayName(any, any))
-        .thenReturn("Trail");
+    when(appManager.gpsTrailManager.displayName(any, any)).thenReturn("Trail");
     when(appManager.gpsTrailManager.entity(any)).thenReturn(GpsTrail());
     when(appManager.tripManager.entity(any)).thenReturn(Trip(
       id: randomId(),

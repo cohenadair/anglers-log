@@ -34,9 +34,8 @@ class _SaveGpsTrailPageState extends State<SaveGpsTrailPage> {
   @override
   void initState() {
     super.initState();
-    _bodyOfWaterController.value = _oldTrail.hasBodyOfWaterId()
-        ? _oldTrail.bodyOfWaterId
-        : null;
+    _bodyOfWaterController.value =
+        _oldTrail.hasBodyOfWaterId() ? _oldTrail.bodyOfWaterId : null;
   }
 
   @override

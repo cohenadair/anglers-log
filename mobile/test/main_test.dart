@@ -270,7 +270,7 @@ void main() {
         .thenAnswer((_) => Future.value());
     when(appManager.userPreferenceManager.tripFieldIds).thenReturn([]);
     when(appManager.packageInfoWrapper.fromPlatform()).thenAnswer(
-        (_) => Future.value(
+      (_) => Future.value(
         PackageInfo(
           buildNumber: "5",
           appName: "Test",

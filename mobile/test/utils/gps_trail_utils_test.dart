@@ -21,9 +21,12 @@ void main() {
     when(appManager.gpsTrailManager.displayName(any, any)).thenReturn("");
 
     var context = await buildContext(tester, appManager: appManager);
-    var model = GpsTrailListItemModel(context, GpsTrail(
-      startTimestamp: Int64(50000),
-    ));
+    var model = GpsTrailListItemModel(
+      context,
+      GpsTrail(
+        startTimestamp: Int64(50000),
+      ),
+    );
 
     expect(model.subtitle, "In Progress");
   });
@@ -35,10 +38,8 @@ void main() {
         .thenReturn("GPS Trail");
 
     var context = await buildContext(tester, appManager: appManager);
-    var model = GpsTrailListItemModel(context, GpsTrail(
-      startTimestamp: Int64(50000),
-      endTimestamp: Int64(500000)
-    ));
+    var model = GpsTrailListItemModel(context,
+        GpsTrail(startTimestamp: Int64(50000), endTimestamp: Int64(500000)));
 
     expect(model.title, "GPS Trail");
     expect(model.subtitle, "Lake Huron");
