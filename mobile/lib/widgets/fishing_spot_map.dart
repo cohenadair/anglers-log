@@ -227,15 +227,11 @@ class FishingSpotMapState extends State<FishingSpotMap> {
   }
 
   Widget _buildMap() {
-    var start = _activeFishingSpot?.latLng ??
-        _pickerSettings?.controller.value?.latLng ??
-        _locationMonitor.currentLocation ??
-        const LatLng(0, 0);
-
     return DefaultMapboxMap(
       isMyLocationEnabled: _myLocationEnabled,
       style: _mapType.url,
-      startPosition: start,
+      startPosition: _activeFishingSpot?.latLng ??
+          _pickerSettings?.controller.value?.latLng,
       onMapCreated: (controller) {
         _mapController = controller;
         _mapController?.addListener(_updateTarget);
@@ -476,7 +472,10 @@ class FishingSpotMapState extends State<FishingSpotMap> {
           tooltip: tooltip,
           icon: iconGpsTrail,
           onPressed: () {
-            if (_subscriptionManager.isPro) {
+            // Always allow users to stop tracking, regardless of subscription
+            // status. This handles an edge case where their membership runs
+            // out while a GPS trail is active.
+            if (_subscriptionManager.isPro || _gpsTrailManager.hasActiveTrail) {
               onPressed();
             } else {
               present(context, const ProPage());

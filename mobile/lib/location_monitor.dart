@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:geolocator/geolocator.dart' as geo;
 import 'package:location/location.dart';
 import 'package:mapbox_gl/mapbox_gl.dart';
 import 'package:provider/provider.dart';
@@ -9,6 +8,7 @@ import 'package:provider/provider.dart';
 import 'app_manager.dart';
 import 'i18n/strings.dart';
 import 'log.dart';
+import 'wrappers/geolocator_wrapper.dart';
 import 'wrappers/permission_handler_wrapper.dart';
 
 class LocationMonitor {
@@ -20,7 +20,7 @@ class LocationMonitor {
   final _controller = StreamController<LatLng>.broadcast();
 
   final AppManager _appManager;
-  final _location = Location();
+  final Location _location;
 
   LatLng? _lastKnownLocation;
   bool _initialized = false;
@@ -28,7 +28,10 @@ class LocationMonitor {
   PermissionHandlerWrapper get _permissionHandler =>
       _appManager.permissionHandlerWrapper;
 
-  LocationMonitor(this._appManager);
+  LocationMonitor(this._appManager)
+      : _location = _appManager.locationWrapper.newLocation();
+
+  GeolocatorWrapper get _geolocatorWrapper => _appManager.geolocatorWrapper;
 
   Future<void> initialize() async {
     if (_initialized ||
@@ -42,7 +45,7 @@ class LocationMonitor {
     // TODO: Location package doesn't get the "last known" location on startup;
     //  it waits for the next location to come in so we use Geolocator to get
     //  the last location immediately. Location package v5+ fixes this.
-    geo.Geolocator.getCurrentPosition().then(
+    _geolocatorWrapper.getCurrentPosition().then(
         (value) => _onLocationChanged(LatLng(value.latitude, value.longitude)));
 
     _location.onLocationChanged
@@ -74,7 +77,7 @@ class LocationMonitor {
       _location.enableBackgroundMode(enable: false);
 
   void _onLocationChanged(LatLng? latLng) {
-    if (latLng == null) {
+    if (latLng == null || latLng.latitude == 0 || latLng.longitude == 0) {
       _log.w("Coordinates are null, nothing to do...");
       return;
     }

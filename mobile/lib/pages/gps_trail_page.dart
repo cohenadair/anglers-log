@@ -9,7 +9,6 @@ import 'package:mobile/utils/map_utils.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:quiver/strings.dart';
 
-import '../location_monitor.dart';
 import '../model/gen/anglerslog.pb.dart';
 import '../widgets/default_mapbox_map.dart';
 import '../widgets/widget.dart';
@@ -35,8 +34,6 @@ class _GpsTrailPageState extends State<GpsTrailPage> {
 
   BodyOfWaterManager get _bodyOfWaterManager => BodyOfWaterManager.of(context);
 
-  LocationMonitor get _locationMonitor => LocationMonitor.of(context);
-
   TimeManager get _timeManager => TimeManager.of(context);
 
   GpsTrail get _trail => widget.trail;
@@ -53,13 +50,9 @@ class _GpsTrailPageState extends State<GpsTrailPage> {
 
   DefaultMapboxMap _buildMap() {
     return DefaultMapboxMap(
-      startPosition: _trail.center ??
-          _locationMonitor.currentLocation ??
-          const LatLng(0, 0),
+      startPosition: _trail.center,
       startZoom: mapZoomStart,
-      onMapCreated: (controller) {
-        _mapController = controller;
-      },
+      onMapCreated: (controller) => _mapController = controller,
       onStyleLoadedCallback: () async {
         await GpsMapTrail(_mapController).draw(context, _trail);
         await _mapController?.animateToBounds(_trail.mapBounds);

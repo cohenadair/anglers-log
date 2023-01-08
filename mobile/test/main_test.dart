@@ -236,6 +236,7 @@ void main() {
     expect(find.byType(ChangeLogPage), findsOneWidget);
     expect(find.byType(OnboardingJourney), findsNothing);
     expect(find.byType(MainPage), findsNothing);
+    verifyNever(appManager.userPreferenceManager.setTripFieldIds(any));
   });
 
   testWidgets("Show change log page with empty old version", (tester) async {
@@ -259,5 +260,30 @@ void main() {
     expect(find.byType(ChangeLogPage), findsOneWidget);
     expect(find.byType(OnboardingJourney), findsNothing);
     expect(find.byType(MainPage), findsNothing);
+    verifyNever(appManager.userPreferenceManager.setTripFieldIds(any));
+  });
+
+  testWidgets("Update trip field IDs when updating from 2.2.0", (tester) async {
+    when(appManager.userPreferenceManager.didOnboard).thenReturn(true);
+    when(appManager.userPreferenceManager.appVersion).thenReturn("2.2.0");
+    when(appManager.userPreferenceManager.setTripFieldIds(any))
+        .thenAnswer((_) => Future.value());
+    when(appManager.userPreferenceManager.tripFieldIds).thenReturn([]);
+    when(appManager.packageInfoWrapper.fromPlatform()).thenAnswer(
+        (_) => Future.value(
+        PackageInfo(
+          buildNumber: "5",
+          appName: "Test",
+          version: "2.3.0",
+          packageName: "test.com",
+        ),
+      ),
+    );
+
+    await tester.pumpWidget(AnglersLog(appManager.app));
+    // Wait for delayed initialization + AnimatedSwitcher.
+    await tester.pump(const Duration(milliseconds: 200));
+
+    verify(appManager.userPreferenceManager.setTripFieldIds(any)).called(1);
   });
 }

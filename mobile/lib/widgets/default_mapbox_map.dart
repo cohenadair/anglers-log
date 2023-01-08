@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:mapbox_gl/mapbox_gl.dart';
+import 'package:mobile/location_monitor.dart';
 import 'package:mobile/utils/map_utils.dart';
 import 'package:mobile/widgets/static_fishing_spot_map.dart';
 
@@ -15,7 +16,7 @@ import 'widget.dart';
 ///  - [FishingSpotMap]
 ///  - [EditCoordinatesPage]
 class DefaultMapboxMap extends StatefulWidget {
-  final LatLng startPosition;
+  final LatLng? startPosition;
   final double? startZoom;
   final String? style;
   final bool isMyLocationEnabled;
@@ -33,7 +34,7 @@ class DefaultMapboxMap extends StatefulWidget {
   final OnCameraTrackingChangedCallback? onCameraTrackingChanged;
 
   const DefaultMapboxMap({
-    required this.startPosition,
+    this.startPosition,
     Key? key,
     this.startZoom,
     this.style,
@@ -53,6 +54,8 @@ class _DefaultMapboxMapState extends State<DefaultMapboxMap> {
   // allows for a smooth animation.
   late final Future<bool> _mapFuture;
 
+  LocationMonitor get _locationMonitor => LocationMonitor.of(context);
+
   @override
   void initState() {
     super.initState();
@@ -61,6 +64,10 @@ class _DefaultMapboxMapState extends State<DefaultMapboxMap> {
 
   @override
   Widget build(BuildContext context) {
+    var start = widget.startPosition ??
+        _locationMonitor.currentLocation ??
+        const LatLng(0, 0);
+
     return EmptyFutureBuilder<bool>(
       future: _mapFuture,
       builder: (context, _) {
@@ -73,10 +80,8 @@ class _DefaultMapboxMapState extends State<DefaultMapboxMap> {
           myLocationEnabled: widget.isMyLocationEnabled,
           styleString: widget.style ?? MapType.of(context).url,
           initialCameraPosition: CameraPosition(
-            target: widget.startPosition,
-            zoom: widget.startPosition.latitude == 0
-                ? 0
-                : widget.startZoom ?? mapZoomDefault,
+            target: start,
+            zoom: start.latitude == 0 ? 0 : widget.startZoom ?? mapZoomDefault,
           ),
           onMapCreated: widget.onMapCreated,
           onStyleLoadedCallback: widget.onStyleLoadedCallback,

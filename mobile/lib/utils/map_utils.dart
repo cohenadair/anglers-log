@@ -28,14 +28,14 @@ class MapType {
 
   static const normal = MapType._(
     "normal",
-    "ckt1zqb8d1h1p17pglx4pmz4y/draft",
+    "ckt1zqb8d1h1p17pglx4pmz4y",
     "ckz1rne34000o14p36fu4of1y",
     "mapbox://styles/cohenadair/",
   );
 
   static const satellite = MapType._(
     "satellite",
-    "ckt1m613b127t17qqf3mmw47h/draft",
+    "ckt1m613b127t17qqf3mmw47h",
     "ckz1rts30002y15pq6t19lygy",
     "mapbox://styles/cohenadair/",
   );
@@ -76,14 +76,9 @@ class GpsMapTrail {
   final MapboxMapController? controller;
   final List<Symbol> _symbols = [];
 
-  Line? _line;
-
   GpsMapTrail(this.controller);
 
   Future<void> clear() async {
-    if (_line != null) {
-      controller?.removeLine(_line!);
-    }
     controller?.removeSymbols(_symbols);
   }
 

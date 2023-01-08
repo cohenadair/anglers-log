@@ -271,6 +271,7 @@ void main() {
             .onPressed,
         isNotNull,
       );
+      expect(findFirst<Tooltip>(tester).message, "Back");
     });
 
     testWidgets("iOS back button", (tester) async {
@@ -286,6 +287,7 @@ void main() {
             .onPressed,
         isNotNull,
       );
+      expect(findFirst<Tooltip>(tester).message, "Back");
     });
 
     testWidgets("Close button", (tester) async {
@@ -299,6 +301,7 @@ void main() {
         findFirstWithIcon<RawMaterialButton>(tester, Icons.close).onPressed,
         isNotNull,
       );
+      expect(findFirst<Tooltip>(tester).message, "Close");
     });
 
     testWidgets("Text", (tester) async {
@@ -306,11 +309,13 @@ void main() {
         Testable(
           (_) => FloatingButton(
             text: "Test",
+            tooltip: "Tooltip",
           ),
         ),
       );
       expect(find.byType(Icon), findsNothing);
       expect(find.text("TEST"), findsOneWidget);
+      expect(findFirst<Tooltip>(tester).message, "Tooltip");
     });
 
     testWidgets("Transparent background", (tester) async {

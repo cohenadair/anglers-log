@@ -2226,4 +2226,29 @@ void main() {
       expect(catchesPerBait.last.value, 6);
     });
   });
+
+  group("GpsTrails", () {
+    testWidgets("elapsedDisplayValue returns null if not finished",
+        (tester) async {
+      var context = await buildContext(tester);
+      var gpsTrail = GpsTrail(
+        startTimestamp: Int64(DateTime(2022, 1, 1).millisecondsSinceEpoch),
+        timeZone: "America/Chicago",
+      );
+      expect(gpsTrail.elapsedDisplayValue(context), isNull);
+    });
+
+    testWidgets("elapsedDisplayValue returns valid value", (tester) async {
+      var context = await buildContext(tester);
+      var gpsTrail = GpsTrail(
+        startTimestamp: Int64(DateTime(2022, 1, 1).millisecondsSinceEpoch),
+        endTimestamp: Int64(DateTime(2022, 2, 1).millisecondsSinceEpoch),
+        timeZone: "America/Chicago",
+      );
+      expect(
+        gpsTrail.elapsedDisplayValue(context),
+        "Jan 1, 2022 at 12:00 AM to Feb 1, 2022 at 12:00 AM",
+      );
+    });
+  });
 }

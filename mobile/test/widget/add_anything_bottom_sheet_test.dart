@@ -37,6 +37,7 @@ void main() {
     expect(find.text("Species"), findsOneWidget);
     expect(find.text("Trip"), findsOneWidget);
     expect(find.text("Water Clarity"), findsOneWidget);
+    expect(find.text("GPS Trail"), findsNothing);
   });
 
   testWidgets("Entities not tracked aren't visible", (tester) async {

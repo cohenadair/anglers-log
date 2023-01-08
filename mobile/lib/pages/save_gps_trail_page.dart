@@ -69,7 +69,6 @@ class _SaveGpsTrailPageState extends State<SaveGpsTrailPage> {
       newFishingSpot.bodyOfWaterId = _bodyOfWaterController.value!;
     }
 
-    _gpsTrailManager.addOrUpdate(newFishingSpot);
-    return true;
+    return _gpsTrailManager.addOrUpdate(newFishingSpot);
   }
 }

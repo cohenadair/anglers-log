@@ -412,4 +412,60 @@ void main() {
       "Shared with #AnglersLogApp for iOS.",
     );
   });
+
+  testWidgets("GPS trails hidden", (tester) async {
+    when(appManager.tripManager.entity(any)).thenReturn(Trip(
+      id: randomId(),
+      startTimestamp: Int64(DateTime.now().millisecondsSinceEpoch),
+      endTimestamp: Int64(DateTime.now().millisecondsSinceEpoch - 10000),
+    ));
+
+    await pumpContext(
+      tester,
+      (_) => TripPage(Trip()),
+      appManager: appManager,
+    );
+
+    expect(find.byType(MinChip), findsNothing);
+  });
+
+  testWidgets("GPS trails that don't exist are hidden", (tester) async {
+    when(appManager.gpsTrailManager.entity(any)).thenReturn(null);
+    when(appManager.tripManager.entity(any)).thenReturn(Trip(
+      id: randomId(),
+      startTimestamp: Int64(DateTime.now().millisecondsSinceEpoch),
+      endTimestamp: Int64(DateTime.now().millisecondsSinceEpoch - 10000),
+      gpsTrailIds: [randomId()],
+    ));
+
+    await pumpContext(
+      tester,
+      (_) => TripPage(Trip()),
+      appManager: appManager,
+    );
+
+    expect(find.byType(MinChip), findsNothing);
+  });
+
+  testWidgets("GPS trails shown", (tester) async {
+    when(appManager.bodyOfWaterManager.displayNameFromId(any, any))
+        .thenReturn(null);
+    when(appManager.gpsTrailManager.displayName(any, any))
+        .thenReturn("Trail");
+    when(appManager.gpsTrailManager.entity(any)).thenReturn(GpsTrail());
+    when(appManager.tripManager.entity(any)).thenReturn(Trip(
+      id: randomId(),
+      startTimestamp: Int64(DateTime.now().millisecondsSinceEpoch),
+      endTimestamp: Int64(DateTime.now().millisecondsSinceEpoch - 10000),
+      gpsTrailIds: [randomId(), randomId()],
+    ));
+
+    await pumpContext(
+      tester,
+      (_) => TripPage(Trip()),
+      appManager: appManager,
+    );
+
+    expect(find.byType(MinChip), findsNWidgets(2));
+  });
 }

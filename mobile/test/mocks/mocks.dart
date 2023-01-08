@@ -11,6 +11,7 @@ import 'package:googleapis_auth/googleapis_auth.dart';
 import 'package:googleapis/drive/v3.dart' as drive;
 import 'package:http/http.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:location/location.dart';
 import 'package:mapbox_gl/mapbox_gl.dart' as map;
 import 'package:mobile/angler_manager.dart';
 import 'package:mobile/app_manager.dart';
@@ -48,11 +49,13 @@ import 'package:mobile/wrappers/device_info_wrapper.dart';
 import 'package:mobile/wrappers/drive_api_wrapper.dart';
 import 'package:mobile/wrappers/exif_wrapper.dart';
 import 'package:mobile/wrappers/file_picker_wrapper.dart';
+import 'package:mobile/wrappers/geolocator_wrapper.dart';
 import 'package:mobile/wrappers/google_sign_in_wrapper.dart';
 import 'package:mobile/wrappers/http_wrapper.dart';
 import 'package:mobile/wrappers/image_compress_wrapper.dart';
 import 'package:mobile/wrappers/image_picker_wrapper.dart';
 import 'package:mobile/wrappers/isolates_wrapper.dart';
+import 'package:mobile/wrappers/location_wrapper.dart';
 import 'package:mobile/wrappers/native_time_zone_wrapper.dart';
 import 'package:mobile/wrappers/purchases_wrapper.dart';
 import 'package:mobile/wrappers/io_wrapper.dart';
@@ -99,6 +102,7 @@ Trip_CatchesPerEntity newInputItemShim(dynamic pickerItem) =>
 @GenerateMocks([DriveApiWrapper])
 @GenerateMocks([Exif])
 @GenerateMocks([FishingSpotManager])
+@GenerateMocks([GeolocatorWrapper])
 @GenerateMocks([GoogleSignIn])
 @GenerateMocks([GoogleSignInAccount])
 @GenerateMocks([GpsTrailManager])
@@ -106,7 +110,9 @@ Trip_CatchesPerEntity newInputItemShim(dynamic pickerItem) =>
 @GenerateMocks([], customMocks: [MockSpec<InputController>()])
 @GenerateMocks([IOSink])
 @GenerateMocks([LocalDatabaseManager])
+@GenerateMocks([Location])
 @GenerateMocks([LocationMonitor])
+@GenerateMocks([LocationWrapper])
 @GenerateMocks([MethodManager])
 @GenerateMocks([PollManager])
 @GenerateMocks([PreferenceManager])

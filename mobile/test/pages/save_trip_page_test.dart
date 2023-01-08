@@ -24,6 +24,7 @@ void main() {
   late List<Catch> catches;
   late List<Angler> anglers;
   late List<BodyOfWater> bodiesOfWater;
+  late List<GpsTrail> gpsTrails;
   late List<Species> species;
   late List<FishingSpot> fishingSpots;
   late List<Bait> baits;
@@ -104,6 +105,14 @@ void main() {
     ];
   }
 
+  List<GpsTrail> defaultGpsTrails() {
+    return [
+      GpsTrail(id: randomId(), points: [GpsTrailPoint()]),
+      GpsTrail(id: randomId(), points: [GpsTrailPoint(), GpsTrailPoint()]),
+      GpsTrail(id: randomId(), points: [GpsTrailPoint()]),
+    ];
+  }
+
   List<Catch> defaultCatches() {
     return [
       Catch(
@@ -145,6 +154,7 @@ void main() {
       name: "Test Trip",
       catchIds: [catches[0].id, catches[2].id],
       bodyOfWaterIds: [bodiesOfWater[2].id],
+      gpsTrailIds: [gpsTrails[0].id, gpsTrails[1].id],
       atmosphere: atmosphere,
       notes: "Test notes for a test trip.",
       catchesPerSpecies: [
@@ -184,6 +194,7 @@ void main() {
     atmosphere = defaultAtmosphere();
     anglers = defaultAnglers();
     bodiesOfWater = defaultBodiesOfWater();
+    gpsTrails = defaultGpsTrails();
     species = defaultSpecies();
     fishingSpots = defaultFishingSpots();
     baits = defaultBaits();
@@ -220,6 +231,11 @@ void main() {
     when(appManager.bodyOfWaterManager.list(any)).thenReturn(bodiesOfWater);
     when(appManager.bodyOfWaterManager.displayName(any, any))
         .thenAnswer((invocation) => invocation.positionalArguments[1].name);
+
+    when(appManager.gpsTrailManager.list(any)).thenReturn(gpsTrails);
+    when(appManager.gpsTrailManager.displayName(any, any)).thenAnswer(
+        (invocation) =>
+            "${invocation.positionalArguments[1].points.length} Points");
 
     when(appManager.catchManager.catches(
       any,
@@ -318,6 +334,8 @@ void main() {
     expect(find.text("Jan 1, 2020 at 12:00 AM"), findsOneWidget);
     expect(find.text("Mar 1, 2020 at 12:00 AM"), findsOneWidget);
     expect(find.text("BOW 3"), findsOneWidget);
+    expect(find.text("1 Points"), findsOneWidget);
+    expect(find.text("2 Points"), findsOneWidget);
   });
 
   testWidgets("Editing title", (tester) async {
@@ -425,6 +443,7 @@ void main() {
     expect(newTrip.hasTimeZone(), isTrue);
     expect(newTrip.catchIds, isEmpty);
     expect(newTrip.bodyOfWaterIds, isEmpty);
+    expect(newTrip.gpsTrailIds, isEmpty);
     expect(newTrip.catchesPerSpecies, isEmpty);
     expect(newTrip.catchesPerAngler, isEmpty);
     expect(newTrip.catchesPerFishingSpot, isEmpty);
