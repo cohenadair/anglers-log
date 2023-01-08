@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:mobile/gps_trail_manager.dart';
 import 'package:mobile/poll_manager.dart';
 import 'package:mobile/wrappers/exif_wrapper.dart';
+import 'package:mobile/wrappers/geolocator_wrapper.dart';
 import 'package:mobile/wrappers/google_sign_in_wrapper.dart';
+import 'package:mobile/wrappers/location_wrapper.dart';
 import 'package:provider/provider.dart';
 
 import 'angler_manager.dart';
@@ -57,6 +60,7 @@ class AppManager {
   CatchManager? _catchManager;
   CustomEntityManager? _customEntityManager;
   FishingSpotManager? _fishingSpotManager;
+  GpsTrailManager? _gpsTrailManager;
   ImageManager? _imageManager;
   LocalDatabaseManager? _localDatabaseManager;
   LocationMonitor? _locationMonitor;
@@ -77,12 +81,14 @@ class AppManager {
   DriveApiWrapper? _driveApiWrapper;
   ExifWrapper? _exifWrapper;
   FilePickerWrapper? _filePickerWrapper;
+  GeolocatorWrapper? _geolocatorWrapper;
   GoogleSignInWrapper? _googleSignInWrapper;
   HttpWrapper? _httpWrapper;
   ImageCompressWrapper? _imageCompressWrapper;
   ImagePickerWrapper? _imagePickerWrapper;
   IoWrapper? _ioWrapper;
   IsolatesWrapper? _isolatesWrapper;
+  LocationWrapper? _locationWrapper;
   NativeTimeZoneWrapper? _nativeTimeZoneWrapper;
   PackageInfoWrapper? _packageInfoWrapper;
   PathProviderWrapper? _pathProviderWrapper;
@@ -132,6 +138,11 @@ class AppManager {
   FishingSpotManager get fishingSpotManager {
     _fishingSpotManager ??= FishingSpotManager(this);
     return _fishingSpotManager!;
+  }
+
+  GpsTrailManager get gpsTrailManager {
+    _gpsTrailManager ??= GpsTrailManager(this);
+    return _gpsTrailManager!;
   }
 
   ImageManager get imageManager {
@@ -219,6 +230,11 @@ class AppManager {
     return _exifWrapper!;
   }
 
+  GeolocatorWrapper get geolocatorWrapper {
+    _geolocatorWrapper ??= GeolocatorWrapper();
+    return _geolocatorWrapper!;
+  }
+
   FilePickerWrapper get filePickerWrapper {
     _filePickerWrapper ??= FilePickerWrapper();
     return _filePickerWrapper!;
@@ -252,6 +268,11 @@ class AppManager {
   IsolatesWrapper get isolatesWrapper {
     _isolatesWrapper ??= IsolatesWrapper();
     return _isolatesWrapper!;
+  }
+
+  LocationWrapper get locationWrapper {
+    _locationWrapper ??= LocationWrapper();
+    return _locationWrapper!;
   }
 
   NativeTimeZoneWrapper get nativeTimeZoneWrapper {
@@ -334,6 +355,7 @@ class AppManager {
     await catchManager.initialize();
     await customEntityManager.initialize();
     await fishingSpotManager.initialize();
+    await gpsTrailManager.initialize();
     await methodManager.initialize();
     await reportManager.initialize();
     await speciesManager.initialize();

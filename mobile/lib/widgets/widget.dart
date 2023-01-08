@@ -25,6 +25,7 @@ const iconMethod = Icons.list;
 const iconSpecies = CustomIcons.species;
 const iconTrip = Icons.public;
 const iconWaterClarity = CustomIcons.waterClarities;
+const iconGpsTrail = Icons.route;
 
 const animDurationDefault = Duration(milliseconds: 150);
 const animDurationSlow = Duration(milliseconds: 450);
@@ -648,6 +649,30 @@ class Badge extends StatelessWidget {
         size: _size,
         color: Colors.redAccent,
       ),
+    );
+  }
+}
+
+class BadgeContainer extends StatelessWidget {
+  final Widget child;
+  final bool isBadgeVisible;
+
+  const BadgeContainer({
+    required this.child,
+    required this.isBadgeVisible,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      children: <Widget>[
+        child,
+        Positioned(
+          top: 0.0,
+          right: 0.0,
+          child: Badge(isVisible: isBadgeVisible),
+        ),
+      ],
     );
   }
 }

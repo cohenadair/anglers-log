@@ -20,6 +20,7 @@ class StubbedAppManager {
   MockCatchManager catchManager = MockCatchManager();
   MockCustomEntityManager customEntityManager = MockCustomEntityManager();
   MockFishingSpotManager fishingSpotManager = MockFishingSpotManager();
+  MockGpsTrailManager gpsTrailManager = MockGpsTrailManager();
   MockImageManager imageManager = MockImageManager();
   MockLocalDatabaseManager localDatabaseManager = MockLocalDatabaseManager();
   MockLocationMonitor locationMonitor = MockLocationMonitor();
@@ -38,12 +39,14 @@ class StubbedAppManager {
   MockDriveApiWrapper driveApiWrapper = MockDriveApiWrapper();
   MockExifWrapper exifWrapper = MockExifWrapper();
   MockFilePickerWrapper filePickerWrapper = MockFilePickerWrapper();
+  MockGeolocatorWrapper geolocatorWrapper = MockGeolocatorWrapper();
   MockGoogleSignInWrapper googleSignInWrapper = MockGoogleSignInWrapper();
   MockHttpWrapper httpWrapper = MockHttpWrapper();
   MockImageCompressWrapper imageCompressWrapper = MockImageCompressWrapper();
   MockImagePickerWrapper imagePickerWrapper = MockImagePickerWrapper();
   MockIoWrapper ioWrapper = MockIoWrapper();
   MockIsolatesWrapper isolatesWrapper = MockIsolatesWrapper();
+  MockLocationWrapper locationWrapper = MockLocationWrapper();
   MockNativeTimeZoneWrapper timeZoneWrapper = MockNativeTimeZoneWrapper();
   MockPackageInfoWrapper packageInfoWrapper = MockPackageInfoWrapper();
   MockPathProviderWrapper pathProviderWrapper = MockPathProviderWrapper();
@@ -66,6 +69,7 @@ class StubbedAppManager {
     when(app.catchManager).thenReturn(catchManager);
     when(app.customEntityManager).thenReturn(customEntityManager);
     when(app.fishingSpotManager).thenReturn(fishingSpotManager);
+    when(app.gpsTrailManager).thenReturn(gpsTrailManager);
     when(app.imageManager).thenReturn(imageManager);
     when(app.localDatabaseManager).thenReturn(localDatabaseManager);
     when(app.locationMonitor).thenReturn(locationMonitor);
@@ -83,12 +87,14 @@ class StubbedAppManager {
     when(app.driveApiWrapper).thenReturn(driveApiWrapper);
     when(app.exifWrapper).thenReturn(exifWrapper);
     when(app.filePickerWrapper).thenReturn(filePickerWrapper);
+    when(app.geolocatorWrapper).thenReturn(geolocatorWrapper);
     when(app.googleSignInWrapper).thenReturn(googleSignInWrapper);
     when(app.httpWrapper).thenReturn(httpWrapper);
     when(app.imageCompressWrapper).thenReturn(imageCompressWrapper);
     when(app.imagePickerWrapper).thenReturn(imagePickerWrapper);
     when(app.ioWrapper).thenReturn(ioWrapper);
     when(app.isolatesWrapper).thenReturn(isolatesWrapper);
+    when(app.locationWrapper).thenReturn(locationWrapper);
     when(app.nativeTimeZoneWrapper).thenReturn(timeZoneWrapper);
     when(app.packageInfoWrapper).thenReturn(packageInfoWrapper);
     when(app.pathProviderWrapper).thenReturn(pathProviderWrapper);
@@ -165,6 +171,14 @@ class StubbedAppManager {
       onReset: anyNamed("onReset"),
     )).thenReturn(MockStreamSubscription());
     when(fishingSpotManager.entity(any)).thenReturn(null);
+
+    when(gpsTrailManager.addTypedListener(
+      onAdd: anyNamed("onAdd"),
+      onUpdate: anyNamed("onUpdate"),
+      onDelete: anyNamed("onDelete"),
+      onReset: anyNamed("onReset"),
+    )).thenReturn(MockStreamSubscription());
+    when(gpsTrailManager.entity(any)).thenReturn(null);
 
     when(methodManager.addTypedListener(
       onAdd: anyNamed("onAdd"),

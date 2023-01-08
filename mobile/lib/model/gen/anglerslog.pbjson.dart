@@ -1237,6 +1237,14 @@ const Trip$json = const {
       '10': 'atmosphere'
     },
     const {'1': 'time_zone', '3': 15, '4': 1, '5': 9, '10': 'timeZone'},
+    const {
+      '1': 'gps_trail_ids',
+      '3': 16,
+      '4': 3,
+      '5': 11,
+      '6': '.anglerslog.Id',
+      '10': 'gpsTrailIds'
+    },
   ],
   '3': const [Trip_CatchesPerEntity$json, Trip_CatchesPerBait$json],
 };
@@ -1275,7 +1283,7 @@ const Trip_CatchesPerBait$json = const {
 
 /// Descriptor for `Trip`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List tripDescriptor = $convert.base64Decode(
-    'CgRUcmlwEh4KAmlkGAEgASgLMg4uYW5nbGVyc2xvZy5JZFICaWQSEgoEbmFtZRgCIAEoCVIEbmFtZRInCg9zdGFydF90aW1lc3RhbXAYAyABKARSDnN0YXJ0VGltZXN0YW1wEiMKDWVuZF90aW1lc3RhbXAYBCABKARSDGVuZFRpbWVzdGFtcBIfCgtpbWFnZV9uYW1lcxgFIAMoCVIKaW1hZ2VOYW1lcxIrCgljYXRjaF9pZHMYBiADKAsyDi5hbmdsZXJzbG9nLklkUghjYXRjaElkcxI5ChFib2R5X29mX3dhdGVyX2lkcxgHIAMoCzIOLmFuZ2xlcnNsb2cuSWRSDmJvZHlPZldhdGVySWRzEloKGGNhdGNoZXNfcGVyX2Zpc2hpbmdfc3BvdBgIIAMoCzIhLmFuZ2xlcnNsb2cuVHJpcC5DYXRjaGVzUGVyRW50aXR5UhVjYXRjaGVzUGVyRmlzaGluZ1Nwb3QSTwoSY2F0Y2hlc19wZXJfYW5nbGVyGAkgAygLMiEuYW5nbGVyc2xvZy5UcmlwLkNhdGNoZXNQZXJFbnRpdHlSEGNhdGNoZXNQZXJBbmdsZXISUQoTY2F0Y2hlc19wZXJfc3BlY2llcxgKIAMoCzIhLmFuZ2xlcnNsb2cuVHJpcC5DYXRjaGVzUGVyRW50aXR5UhFjYXRjaGVzUGVyU3BlY2llcxJJChBjYXRjaGVzX3Blcl9iYWl0GAsgAygLMh8uYW5nbGVyc2xvZy5UcmlwLkNhdGNoZXNQZXJCYWl0Ug5jYXRjaGVzUGVyQmFpdBJPChRjdXN0b21fZW50aXR5X3ZhbHVlcxgMIAMoCzIdLmFuZ2xlcnNsb2cuQ3VzdG9tRW50aXR5VmFsdWVSEmN1c3RvbUVudGl0eVZhbHVlcxIUCgVub3RlcxgNIAEoCVIFbm90ZXMSNgoKYXRtb3NwaGVyZRgOIAEoCzIWLmFuZ2xlcnNsb2cuQXRtb3NwaGVyZVIKYXRtb3NwaGVyZRIbCgl0aW1lX3pvbmUYDyABKAlSCHRpbWVab25lGlUKEENhdGNoZXNQZXJFbnRpdHkSKwoJZW50aXR5X2lkGAEgASgLMg4uYW5nbGVyc2xvZy5JZFIIZW50aXR5SWQSFAoFdmFsdWUYAiABKA1SBXZhbHVlGmIKDkNhdGNoZXNQZXJCYWl0EjoKCmF0dGFjaG1lbnQYASABKAsyGi5hbmdsZXJzbG9nLkJhaXRBdHRhY2htZW50UgphdHRhY2htZW50EhQKBXZhbHVlGAIgASgNUgV2YWx1ZQ==');
+    'CgRUcmlwEh4KAmlkGAEgASgLMg4uYW5nbGVyc2xvZy5JZFICaWQSEgoEbmFtZRgCIAEoCVIEbmFtZRInCg9zdGFydF90aW1lc3RhbXAYAyABKARSDnN0YXJ0VGltZXN0YW1wEiMKDWVuZF90aW1lc3RhbXAYBCABKARSDGVuZFRpbWVzdGFtcBIfCgtpbWFnZV9uYW1lcxgFIAMoCVIKaW1hZ2VOYW1lcxIrCgljYXRjaF9pZHMYBiADKAsyDi5hbmdsZXJzbG9nLklkUghjYXRjaElkcxI5ChFib2R5X29mX3dhdGVyX2lkcxgHIAMoCzIOLmFuZ2xlcnNsb2cuSWRSDmJvZHlPZldhdGVySWRzEloKGGNhdGNoZXNfcGVyX2Zpc2hpbmdfc3BvdBgIIAMoCzIhLmFuZ2xlcnNsb2cuVHJpcC5DYXRjaGVzUGVyRW50aXR5UhVjYXRjaGVzUGVyRmlzaGluZ1Nwb3QSTwoSY2F0Y2hlc19wZXJfYW5nbGVyGAkgAygLMiEuYW5nbGVyc2xvZy5UcmlwLkNhdGNoZXNQZXJFbnRpdHlSEGNhdGNoZXNQZXJBbmdsZXISUQoTY2F0Y2hlc19wZXJfc3BlY2llcxgKIAMoCzIhLmFuZ2xlcnNsb2cuVHJpcC5DYXRjaGVzUGVyRW50aXR5UhFjYXRjaGVzUGVyU3BlY2llcxJJChBjYXRjaGVzX3Blcl9iYWl0GAsgAygLMh8uYW5nbGVyc2xvZy5UcmlwLkNhdGNoZXNQZXJCYWl0Ug5jYXRjaGVzUGVyQmFpdBJPChRjdXN0b21fZW50aXR5X3ZhbHVlcxgMIAMoCzIdLmFuZ2xlcnNsb2cuQ3VzdG9tRW50aXR5VmFsdWVSEmN1c3RvbUVudGl0eVZhbHVlcxIUCgVub3RlcxgNIAEoCVIFbm90ZXMSNgoKYXRtb3NwaGVyZRgOIAEoCzIWLmFuZ2xlcnNsb2cuQXRtb3NwaGVyZVIKYXRtb3NwaGVyZRIbCgl0aW1lX3pvbmUYDyABKAlSCHRpbWVab25lEjIKDWdwc190cmFpbF9pZHMYECADKAsyDi5hbmdsZXJzbG9nLklkUgtncHNUcmFpbElkcxpVChBDYXRjaGVzUGVyRW50aXR5EisKCWVudGl0eV9pZBgBIAEoCzIOLmFuZ2xlcnNsb2cuSWRSCGVudGl0eUlkEhQKBXZhbHVlGAIgASgNUgV2YWx1ZRpiCg5DYXRjaGVzUGVyQmFpdBI6CgphdHRhY2htZW50GAEgASgLMhouYW5nbGVyc2xvZy5CYWl0QXR0YWNobWVudFIKYXR0YWNobWVudBIUCgV2YWx1ZRgCIAEoDVIFdmFsdWU=');
 @$core.Deprecated('Use measurementDescriptor instead')
 const Measurement$json = const {
   '1': 'Measurement',
@@ -2206,4 +2214,60 @@ const CatchReportModel_PerBaitEntry$json = const {
 /// Descriptor for `CatchReportModel`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List catchReportModelDescriptor = $convert.base64Decode(
     'ChBDYXRjaFJlcG9ydE1vZGVsEjQKCmRhdGVfcmFuZ2UYASABKAsyFS5hbmdsZXJzbG9nLkRhdGVSYW5nZVIJZGF0ZVJhbmdlEisKCWNhdGNoX2lkcxgCIAMoCzIOLmFuZ2xlcnNsb2cuSWRSCGNhdGNoSWRzEkQKCHBlcl9ob3VyGAMgAygLMikuYW5nbGVyc2xvZy5DYXRjaFJlcG9ydE1vZGVsLlBlckhvdXJFbnRyeVIHcGVySG91chJHCglwZXJfbW9udGgYBCADKAsyKi5hbmdsZXJzbG9nLkNhdGNoUmVwb3J0TW9kZWwuUGVyTW9udGhFbnRyeVIIcGVyTW9udGgSVAoOcGVyX21vb25fcGhhc2UYBSADKAsyLi5hbmdsZXJzbG9nLkNhdGNoUmVwb3J0TW9kZWwuUGVyTW9vblBoYXNlRW50cnlSDHBlck1vb25QaGFzZRJKCgpwZXJfcGVyaW9kGAYgAygLMisuYW5nbGVyc2xvZy5DYXRjaFJlcG9ydE1vZGVsLlBlclBlcmlvZEVudHJ5UglwZXJQZXJpb2QSSgoKcGVyX3NlYXNvbhgHIAMoCzIrLmFuZ2xlcnNsb2cuQ2F0Y2hSZXBvcnRNb2RlbC5QZXJTZWFzb25FbnRyeVIJcGVyU2Vhc29uElEKDXBlcl90aWRlX3R5cGUYCCADKAsyLS5hbmdsZXJzbG9nLkNhdGNoUmVwb3J0TW9kZWwuUGVyVGlkZVR5cGVFbnRyeVILcGVyVGlkZVR5cGUSSgoKcGVyX2FuZ2xlchgJIAMoCzIrLmFuZ2xlcnNsb2cuQ2F0Y2hSZXBvcnRNb2RlbC5QZXJBbmdsZXJFbnRyeVIJcGVyQW5nbGVyElsKEXBlcl9ib2R5X29mX3dhdGVyGAogAygLMjAuYW5nbGVyc2xvZy5DYXRjaFJlcG9ydE1vZGVsLlBlckJvZHlPZldhdGVyRW50cnlSDnBlckJvZHlPZldhdGVyEkoKCnBlcl9tZXRob2QYCyADKAsyKy5hbmdsZXJzbG9nLkNhdGNoUmVwb3J0TW9kZWwuUGVyTWV0aG9kRW50cnlSCXBlck1ldGhvZBJaChBwZXJfZmlzaGluZ19zcG90GAwgAygLMjAuYW5nbGVyc2xvZy5DYXRjaFJlcG9ydE1vZGVsLlBlckZpc2hpbmdTcG90RW50cnlSDnBlckZpc2hpbmdTcG90Ek0KC3Blcl9zcGVjaWVzGA0gAygLMiwuYW5nbGVyc2xvZy5DYXRjaFJlcG9ydE1vZGVsLlBlclNwZWNpZXNFbnRyeVIKcGVyU3BlY2llcxJdChFwZXJfd2F0ZXJfY2xhcml0eRgOIAMoCzIxLmFuZ2xlcnNsb2cuQ2F0Y2hSZXBvcnRNb2RlbC5QZXJXYXRlckNsYXJpdHlFbnRyeVIPcGVyV2F0ZXJDbGFyaXR5EkQKCHBlcl9iYWl0GA8gAygLMikuYW5nbGVyc2xvZy5DYXRjaFJlcG9ydE1vZGVsLlBlckJhaXRFbnRyeVIHcGVyQmFpdBo6CgxQZXJIb3VyRW50cnkSEAoDa2V5GAEgASgFUgNrZXkSFAoFdmFsdWUYAiABKAVSBXZhbHVlOgI4ARo7Cg1QZXJNb250aEVudHJ5EhAKA2tleRgBIAEoBVIDa2V5EhQKBXZhbHVlGAIgASgFUgV2YWx1ZToCOAEaPwoRUGVyTW9vblBoYXNlRW50cnkSEAoDa2V5GAEgASgFUgNrZXkSFAoFdmFsdWUYAiABKAVSBXZhbHVlOgI4ARo8Cg5QZXJQZXJpb2RFbnRyeRIQCgNrZXkYASABKAVSA2tleRIUCgV2YWx1ZRgCIAEoBVIFdmFsdWU6AjgBGjwKDlBlclNlYXNvbkVudHJ5EhAKA2tleRgBIAEoBVIDa2V5EhQKBXZhbHVlGAIgASgFUgV2YWx1ZToCOAEaPgoQUGVyVGlkZVR5cGVFbnRyeRIQCgNrZXkYASABKAVSA2tleRIUCgV2YWx1ZRgCIAEoBVIFdmFsdWU6AjgBGjwKDlBlckFuZ2xlckVudHJ5EhAKA2tleRgBIAEoCVIDa2V5EhQKBXZhbHVlGAIgASgFUgV2YWx1ZToCOAEaQQoTUGVyQm9keU9mV2F0ZXJFbnRyeRIQCgNrZXkYASABKAlSA2tleRIUCgV2YWx1ZRgCIAEoBVIFdmFsdWU6AjgBGjwKDlBlck1ldGhvZEVudHJ5EhAKA2tleRgBIAEoCVIDa2V5EhQKBXZhbHVlGAIgASgFUgV2YWx1ZToCOAEaQQoTUGVyRmlzaGluZ1Nwb3RFbnRyeRIQCgNrZXkYASABKAlSA2tleRIUCgV2YWx1ZRgCIAEoBVIFdmFsdWU6AjgBGj0KD1BlclNwZWNpZXNFbnRyeRIQCgNrZXkYASABKAlSA2tleRIUCgV2YWx1ZRgCIAEoBVIFdmFsdWU6AjgBGkIKFFBlcldhdGVyQ2xhcml0eUVudHJ5EhAKA2tleRgBIAEoCVIDa2V5EhQKBXZhbHVlGAIgASgFUgV2YWx1ZToCOAEaOgoMUGVyQmFpdEVudHJ5EhAKA2tleRgBIAEoCVIDa2V5EhQKBXZhbHVlGAIgASgFUgV2YWx1ZToCOAE=');
+@$core.Deprecated('Use gpsTrailPointDescriptor instead')
+const GpsTrailPoint$json = const {
+  '1': 'GpsTrailPoint',
+  '2': const [
+    const {'1': 'timestamp', '3': 1, '4': 1, '5': 4, '10': 'timestamp'},
+    const {'1': 'lat', '3': 2, '4': 1, '5': 1, '10': 'lat'},
+    const {'1': 'lng', '3': 3, '4': 1, '5': 1, '10': 'lng'},
+  ],
+};
+
+/// Descriptor for `GpsTrailPoint`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List gpsTrailPointDescriptor = $convert.base64Decode(
+    'Cg1HcHNUcmFpbFBvaW50EhwKCXRpbWVzdGFtcBgBIAEoBFIJdGltZXN0YW1wEhAKA2xhdBgCIAEoAVIDbGF0EhAKA2xuZxgDIAEoAVIDbG5n');
+@$core.Deprecated('Use gpsTrailDescriptor instead')
+const GpsTrail$json = const {
+  '1': 'GpsTrail',
+  '2': const [
+    const {
+      '1': 'id',
+      '3': 1,
+      '4': 1,
+      '5': 11,
+      '6': '.anglerslog.Id',
+      '10': 'id'
+    },
+    const {
+      '1': 'start_timestamp',
+      '3': 2,
+      '4': 1,
+      '5': 4,
+      '10': 'startTimestamp'
+    },
+    const {'1': 'end_timestamp', '3': 3, '4': 1, '5': 4, '10': 'endTimestamp'},
+    const {'1': 'time_zone', '3': 4, '4': 1, '5': 9, '10': 'timeZone'},
+    const {
+      '1': 'points',
+      '3': 5,
+      '4': 3,
+      '5': 11,
+      '6': '.anglerslog.GpsTrailPoint',
+      '10': 'points'
+    },
+    const {
+      '1': 'body_of_water_id',
+      '3': 6,
+      '4': 1,
+      '5': 11,
+      '6': '.anglerslog.Id',
+      '10': 'bodyOfWaterId'
+    },
+  ],
+};
+
+/// Descriptor for `GpsTrail`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List gpsTrailDescriptor = $convert.base64Decode(
+    'CghHcHNUcmFpbBIeCgJpZBgBIAEoCzIOLmFuZ2xlcnNsb2cuSWRSAmlkEicKD3N0YXJ0X3RpbWVzdGFtcBgCIAEoBFIOc3RhcnRUaW1lc3RhbXASIwoNZW5kX3RpbWVzdGFtcBgDIAEoBFIMZW5kVGltZXN0YW1wEhsKCXRpbWVfem9uZRgEIAEoCVIIdGltZVpvbmUSMQoGcG9pbnRzGAUgAygLMhkuYW5nbGVyc2xvZy5HcHNUcmFpbFBvaW50UgZwb2ludHMSNwoQYm9keV9vZl93YXRlcl9pZBgGIAEoCzIOLmFuZ2xlcnNsb2cuSWRSDWJvZHlPZldhdGVySWQ=');
 // ignore_for_file: undefined_named_parameter,no_leading_underscores_for_local_identifiers

@@ -73,6 +73,8 @@ Map<String, Map<String, String>> get englishStrings => {
         "today": "Today",
         "yesterday": "Yesterday",
         "directions": "Directions",
+        "close": "Close",
+        "back": "Back",
         "latLng": "Lat: %s, Lng: %s",
         "latLng_noLabels": "%s, %s",
         "add": "Add",
@@ -374,6 +376,7 @@ Map<String, Map<String, String>> get englishStrings => {
         "saveTripPage_catchesDesc": "Trophies logged on this trip.",
         "saveTripPage_noCatches": "No catches",
         "saveTripPage_noBodiesOfWater": "No bodies of water",
+        "saveTripPage_noGpsTrails": "No GPS trails",
         "trip_catchesPerSpecies": "Catches Per Species",
         "trip_catchesPerFishingSpot": "Catches Per Fishing Spot",
         "trip_catchesPerAngler": "Catches Per Angler",
@@ -430,6 +433,12 @@ Map<String, Map<String, String>> get englishStrings => {
         "mapPage_appleMaps": "Apple Maps\u2122",
         "mapPage_googleMaps": "Google Maps\u2122",
         "mapPage_waze": "Waze\u2122",
+        "mapPage_mapTypeTooltip": "Choose Map Type",
+        "mapPage_myLocationTooltip": "Show My Location",
+        "mapPage_showAllTooltip": "Show All Fishing Spots",
+        "mapPage_startTrackingTooltip": "Start GPS Trail",
+        "mapPage_stopTrackingTooltip": "Stop GPS Trail",
+        "mapPage_addTooltip": "Add Fishing Spot",
         "saveFishingSpotPage_newTitle": "New Fishing Spot",
         "saveFishingSpotPage_editTitle": "Edit Fishing Spot",
         "saveFishingSpotPage_bodyOfWaterLabel": "Body Of Water",
@@ -501,14 +510,10 @@ Map<String, Map<String, String>> get englishStrings => {
         "fishingSpotListPage_searchHint": "Search fishing spots",
         "fishingSpotListPage_emptyListTitle": "No Fishing Spots",
         "fishingSpotListPage_emptyListDescription":
-            "To add a fishing spot, tap on the map and save the dropped pin.",
+            "To add a fishing spot, tap the %s button on the map and save the dropped pin.",
         "fishingSpotsSummary_empty":
             "When fishing spots are added to your log, a summary of their catches will be shown here.",
         "fishingSpotListPage_noBodyOfWater": "No Body Of Water",
-        "fishingSpotMap_locationPermissionTitle": "Location Access",
-        "fishingSpotMap_locationPermissionDescription":
-            "To show your current location, you must grant Anglers' Log access to read your device's location. To do so, open your device settings.",
-        "fishingSpotMap_locationPermissionOpenSettings": "Open Settings",
         "fishingSpotMap_addSpotHelp":
             "Long press anywhere on the map to drop a pin and add a fishing spot.",
         "editCoordinatesHint":
@@ -593,7 +598,7 @@ Map<String, Map<String, String>> get englishStrings => {
         "onboardingJourney_manageFieldsSpecies": "Rainbow Trout",
         "onboardingJourney_locationAccessTitle": "Location Access",
         "onboardingJourney_locationAccessDescription":
-            "To show your location on maps throughout Anglers' Log, device location access is required.",
+            "Anglers' Log uses location services to show your current location on the in-app map, to automatically create fishing spots when adding catches, and to create GPS trails while fishing.",
         "onboardingJourney_locationAccessButton": "Set Permission",
         "onboardingJourney_howToFeedbackTitle": "Send Feedback",
         "onboardingJourney_howToFeedbackDescription":
@@ -636,6 +641,7 @@ Map<String, Map<String, String>> get englishStrings => {
         "proPage_sync": "Sync data across all your devices",
         "proPage_reports": "Create custom reports and filters",
         "proPage_customFields": "Create custom input fields",
+        "proPage_gpsTrails": "Create and track realtime GPS trails",
         "proPage_yearlyTitle": "%s/year",
         "proPage_yearlyTrial": "+%s days free",
         "proPage_yearlySubtext": "Billed annually",
@@ -811,6 +817,7 @@ Map<String, Map<String, String>> get englishStrings => {
         "pickerTitle_bodiesOfWater": "Select Bodies Of Water",
         "pickerTitle_catches": "Select Catches",
         "pickerTitle_timeZone": "Select Time Zone",
+        "pickerTitle_gpsTrails": "Select GPS Trails",
         "keywords_temperatureMetric": "celsius temperature degrees c",
         "keywords_temperatureImperial": "fahrenheit temperature degrees f",
         "keywords_speedMetric": "kilometers kilometres per hour speed wind",
@@ -925,6 +932,8 @@ Map<String, Map<String, String>> get englishStrings => {
         "entityName_customField": "Custom Field",
         "entityName_fishingMethods": "Fishing Methods",
         "entityName_fishingMethod": "Fishing Method",
+        "entityName_gpsTrails": "GPS Trails",
+        "entityName_gpsTrail": "GPS Trail",
         "entityName_species": "Species",
         "entityName_trip": "Trip",
         "entityName_trips": "Trips",
@@ -1010,8 +1019,27 @@ Map<String, Map<String, String>> get englishStrings => {
             "There was an error casting your vote. Please try again later.",
         "pollsPage_comingSoonFree": "Coming Soon To Free Users (As Voted)",
         "pollsPage_comingSoonPro": "Coming Soon To Pro Users (As Voted)",
+        "permission_locationTitle": "Location Access",
+        "permission_currentLocationDescription":
+            "To show your current location, you must grant Anglers' Log access to read your device's location. To do so, open your device settings.",
+        "permission_gpsTrailDescription":
+            "To create an accurate GPS trail, Anglers' Log must be able to access your device's location at all times while tracking is active. To grant the required permission, open your device's settings.",
+        "permission_openSettings": "Open Settings",
+        "permission_locationNotificationDescription": "GPS trail is active",
         "calendarPage_title": "Calendar",
         "calendarPage_tripLabel": "Trip",
+        "gpsTrailListPage_title": "GPS Trails (%s)",
+        "gpsTrailListPage_searchHint": "Search GPS trails",
+        "gpsTrailListPage_emptyListTitle": "No GPS Trails",
+        "gpsTrailListPage_emptyListDescription":
+            "To start a GPS trail, tap the %s button on the map.",
+        "gpsTrailListPage_deleteMessageSingular":
+            "This GPS trail is associated with %s trip; are you sure you want to delete it? This cannot be undone.",
+        "gpsTrailListPage_deleteMessage":
+            "This GPS trail is associated with %s trips; are you sure you want to delete it? This cannot be undone.",
+        "gpsTrailListPage_numberOfPoints": "%s Points",
+        "gpsTrailListPage_inProgress": "In Progress",
+        "saveGpsTrailPage_editTitle": "Edit GPS Trail",
         "changeLogPage_title": "What's New",
         "changeLogPage_previousVersion": "Your Previous Version",
         "changeLog_2.0.22_1": "A complete rewrite of Anglers' Log",

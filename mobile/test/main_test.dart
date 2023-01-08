@@ -25,7 +25,14 @@ void main() {
 
     when(appManager.catchManager.hasEntities).thenReturn(false);
     when(appManager.fishingSpotManager.entityExists(any)).thenReturn(false);
+
+    when(appManager.gpsTrailManager.stream)
+        .thenAnswer((_) => const Stream.empty());
+    when(appManager.gpsTrailManager.hasActiveTrail).thenReturn(false);
+    when(appManager.gpsTrailManager.activeTrial).thenReturn(null);
+
     when(appManager.ioWrapper.isAndroid).thenReturn(false);
+    when(appManager.ioWrapper.isIOS).thenReturn(true);
 
     when(appManager.reportManager.entityExists(any)).thenReturn(false);
     when(appManager.reportManager.defaultReport).thenReturn(Report());
@@ -116,7 +123,11 @@ void main() {
         .thenAnswer((_) => Future.value());
     when(appManager.permissionHandlerWrapper.isLocationGranted)
         .thenAnswer((_) => Future.value(false));
+    when(appManager.permissionHandlerWrapper.isLocationAlwaysGranted)
+        .thenAnswer((_) => Future.value(false));
     when(appManager.permissionHandlerWrapper.requestLocation())
+        .thenAnswer((_) => Future.value(false));
+    when(appManager.permissionHandlerWrapper.requestLocationAlways())
         .thenAnswer((_) => Future.value(false));
     when(appManager.fishingSpotManager.list()).thenReturn([]);
     when(appManager.catchManager.catches(
@@ -143,6 +154,7 @@ void main() {
     await tapAndSettle(tester, find.text("NEXT"));
     await tapAndSettle(tester, find.text("NEXT"));
     await tapAndSettle(tester, find.text("SET PERMISSION"));
+    await tapAndSettle(tester, find.text("CANCEL"));
     await tapAndSettle(tester, find.text("FINISH"));
 
     verify(appManager.userPreferenceManager.setDidOnboard(true)).called(1);
@@ -224,6 +236,7 @@ void main() {
     expect(find.byType(ChangeLogPage), findsOneWidget);
     expect(find.byType(OnboardingJourney), findsNothing);
     expect(find.byType(MainPage), findsNothing);
+    verifyNever(appManager.userPreferenceManager.setTripFieldIds(any));
   });
 
   testWidgets("Show change log page with empty old version", (tester) async {
@@ -247,5 +260,30 @@ void main() {
     expect(find.byType(ChangeLogPage), findsOneWidget);
     expect(find.byType(OnboardingJourney), findsNothing);
     expect(find.byType(MainPage), findsNothing);
+    verifyNever(appManager.userPreferenceManager.setTripFieldIds(any));
+  });
+
+  testWidgets("Update trip field IDs when updating from 2.2.0", (tester) async {
+    when(appManager.userPreferenceManager.didOnboard).thenReturn(true);
+    when(appManager.userPreferenceManager.appVersion).thenReturn("2.2.0");
+    when(appManager.userPreferenceManager.setTripFieldIds(any))
+        .thenAnswer((_) => Future.value());
+    when(appManager.userPreferenceManager.tripFieldIds).thenReturn([]);
+    when(appManager.packageInfoWrapper.fromPlatform()).thenAnswer(
+      (_) => Future.value(
+        PackageInfo(
+          buildNumber: "5",
+          appName: "Test",
+          version: "2.3.0",
+          packageName: "test.com",
+        ),
+      ),
+    );
+
+    await tester.pumpWidget(AnglersLog(appManager.app));
+    // Wait for delayed initialization + AnimatedSwitcher.
+    await tester.pump(const Duration(milliseconds: 200));
+
+    verify(appManager.userPreferenceManager.setTripFieldIds(any)).called(1);
   });
 }

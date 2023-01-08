@@ -30,8 +30,10 @@ class _AddAnythingBottomSheet extends StatelessWidget {
       title: Strings.of(context).addAnythingTitle,
       children: [
         Wrap(
-          children:
-              allEntitySpecs.map((spec) => _buildItem(context, spec)).toList(),
+          children: allEntitySpecs
+              .where((e) => e.canAdd)
+              .map((spec) => _buildItem(context, spec))
+              .toList(),
         ),
       ],
     );

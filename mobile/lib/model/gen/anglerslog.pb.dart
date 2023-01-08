@@ -3745,6 +3745,13 @@ class Trip extends $pb.GeneratedMessage {
         const $core.bool.fromEnvironment('protobuf.omit_field_names')
             ? ''
             : 'timeZone')
+    ..pc<Id>(
+        16,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'gpsTrailIds',
+        $pb.PbFieldType.PM,
+        subBuilder: Id.create)
     ..hasRequiredFields = false;
 
   Trip._() : super();
@@ -3764,6 +3771,7 @@ class Trip extends $pb.GeneratedMessage {
     $core.String? notes,
     Atmosphere? atmosphere,
     $core.String? timeZone,
+    $core.Iterable<Id>? gpsTrailIds,
   }) {
     final _result = create();
     if (id != null) {
@@ -3810,6 +3818,9 @@ class Trip extends $pb.GeneratedMessage {
     }
     if (timeZone != null) {
       _result.timeZone = timeZone;
+    }
+    if (gpsTrailIds != null) {
+      _result.gpsTrailIds.addAll(gpsTrailIds);
     }
     return _result;
   }
@@ -3950,6 +3961,9 @@ class Trip extends $pb.GeneratedMessage {
   $core.bool hasTimeZone() => $_has(14);
   @$pb.TagNumber(15)
   void clearTimeZone() => clearField(15);
+
+  @$pb.TagNumber(16)
+  $core.List<Id> get gpsTrailIds => $_getList(15);
 }
 
 class Measurement extends $pb.GeneratedMessage {
@@ -5747,6 +5761,293 @@ class CatchReportModel extends $pb.GeneratedMessage {
 
   @$pb.TagNumber(15)
   $core.Map<$core.String, $core.int> get perBait => $_getMap(14);
+}
+
+class GpsTrailPoint extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      const $core.bool.fromEnvironment('protobuf.omit_message_names')
+          ? ''
+          : 'GpsTrailPoint',
+      package: const $pb.PackageName(
+          const $core.bool.fromEnvironment('protobuf.omit_message_names')
+              ? ''
+              : 'anglerslog'),
+      createEmptyInstance: create)
+    ..a<$fixnum.Int64>(
+        1,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'timestamp',
+        $pb.PbFieldType.OU6,
+        defaultOrMaker: $fixnum.Int64.ZERO)
+    ..a<$core.double>(
+        2,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'lat',
+        $pb.PbFieldType.OD)
+    ..a<$core.double>(
+        3,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'lng',
+        $pb.PbFieldType.OD)
+    ..hasRequiredFields = false;
+
+  GpsTrailPoint._() : super();
+  factory GpsTrailPoint({
+    $fixnum.Int64? timestamp,
+    $core.double? lat,
+    $core.double? lng,
+  }) {
+    final _result = create();
+    if (timestamp != null) {
+      _result.timestamp = timestamp;
+    }
+    if (lat != null) {
+      _result.lat = lat;
+    }
+    if (lng != null) {
+      _result.lng = lng;
+    }
+    return _result;
+  }
+  factory GpsTrailPoint.fromBuffer($core.List<$core.int> i,
+          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(i, r);
+  factory GpsTrailPoint.fromJson($core.String i,
+          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(i, r);
+  @$core.Deprecated('Using this can add significant overhead to your binary. '
+      'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+      'Will be removed in next major version')
+  GpsTrailPoint clone() => GpsTrailPoint()..mergeFromMessage(this);
+  @$core.Deprecated('Using this can add significant overhead to your binary. '
+      'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+      'Will be removed in next major version')
+  GpsTrailPoint copyWith(void Function(GpsTrailPoint) updates) =>
+      super.copyWith((message) => updates(message as GpsTrailPoint))
+          as GpsTrailPoint; // ignore: deprecated_member_use
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static GpsTrailPoint create() => GpsTrailPoint._();
+  GpsTrailPoint createEmptyInstance() => create();
+  static $pb.PbList<GpsTrailPoint> createRepeated() =>
+      $pb.PbList<GpsTrailPoint>();
+  @$core.pragma('dart2js:noInline')
+  static GpsTrailPoint getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<GpsTrailPoint>(create);
+  static GpsTrailPoint? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $fixnum.Int64 get timestamp => $_getI64(0);
+  @$pb.TagNumber(1)
+  set timestamp($fixnum.Int64 v) {
+    $_setInt64(0, v);
+  }
+
+  @$pb.TagNumber(1)
+  $core.bool hasTimestamp() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearTimestamp() => clearField(1);
+
+  @$pb.TagNumber(2)
+  $core.double get lat => $_getN(1);
+  @$pb.TagNumber(2)
+  set lat($core.double v) {
+    $_setDouble(1, v);
+  }
+
+  @$pb.TagNumber(2)
+  $core.bool hasLat() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearLat() => clearField(2);
+
+  @$pb.TagNumber(3)
+  $core.double get lng => $_getN(2);
+  @$pb.TagNumber(3)
+  set lng($core.double v) {
+    $_setDouble(2, v);
+  }
+
+  @$pb.TagNumber(3)
+  $core.bool hasLng() => $_has(2);
+  @$pb.TagNumber(3)
+  void clearLng() => clearField(3);
+}
+
+class GpsTrail extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      const $core.bool.fromEnvironment('protobuf.omit_message_names')
+          ? ''
+          : 'GpsTrail',
+      package: const $pb.PackageName(
+          const $core.bool.fromEnvironment('protobuf.omit_message_names')
+              ? ''
+              : 'anglerslog'),
+      createEmptyInstance: create)
+    ..aOM<Id>(
+        1,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'id',
+        subBuilder: Id.create)
+    ..a<$fixnum.Int64>(
+        2,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'startTimestamp',
+        $pb.PbFieldType.OU6,
+        defaultOrMaker: $fixnum.Int64.ZERO)
+    ..a<$fixnum.Int64>(
+        3,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'endTimestamp',
+        $pb.PbFieldType.OU6,
+        defaultOrMaker: $fixnum.Int64.ZERO)
+    ..aOS(
+        4,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'timeZone')
+    ..pc<GpsTrailPoint>(
+        5,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'points',
+        $pb.PbFieldType.PM,
+        subBuilder: GpsTrailPoint.create)
+    ..aOM<Id>(
+        6,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'bodyOfWaterId',
+        subBuilder: Id.create)
+    ..hasRequiredFields = false;
+
+  GpsTrail._() : super();
+  factory GpsTrail({
+    Id? id,
+    $fixnum.Int64? startTimestamp,
+    $fixnum.Int64? endTimestamp,
+    $core.String? timeZone,
+    $core.Iterable<GpsTrailPoint>? points,
+    Id? bodyOfWaterId,
+  }) {
+    final _result = create();
+    if (id != null) {
+      _result.id = id;
+    }
+    if (startTimestamp != null) {
+      _result.startTimestamp = startTimestamp;
+    }
+    if (endTimestamp != null) {
+      _result.endTimestamp = endTimestamp;
+    }
+    if (timeZone != null) {
+      _result.timeZone = timeZone;
+    }
+    if (points != null) {
+      _result.points.addAll(points);
+    }
+    if (bodyOfWaterId != null) {
+      _result.bodyOfWaterId = bodyOfWaterId;
+    }
+    return _result;
+  }
+  factory GpsTrail.fromBuffer($core.List<$core.int> i,
+          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(i, r);
+  factory GpsTrail.fromJson($core.String i,
+          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(i, r);
+  @$core.Deprecated('Using this can add significant overhead to your binary. '
+      'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+      'Will be removed in next major version')
+  GpsTrail clone() => GpsTrail()..mergeFromMessage(this);
+  @$core.Deprecated('Using this can add significant overhead to your binary. '
+      'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+      'Will be removed in next major version')
+  GpsTrail copyWith(void Function(GpsTrail) updates) =>
+      super.copyWith((message) => updates(message as GpsTrail))
+          as GpsTrail; // ignore: deprecated_member_use
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static GpsTrail create() => GpsTrail._();
+  GpsTrail createEmptyInstance() => create();
+  static $pb.PbList<GpsTrail> createRepeated() => $pb.PbList<GpsTrail>();
+  @$core.pragma('dart2js:noInline')
+  static GpsTrail getDefault() =>
+      _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<GpsTrail>(create);
+  static GpsTrail? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  Id get id => $_getN(0);
+  @$pb.TagNumber(1)
+  set id(Id v) {
+    setField(1, v);
+  }
+
+  @$pb.TagNumber(1)
+  $core.bool hasId() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearId() => clearField(1);
+  @$pb.TagNumber(1)
+  Id ensureId() => $_ensure(0);
+
+  @$pb.TagNumber(2)
+  $fixnum.Int64 get startTimestamp => $_getI64(1);
+  @$pb.TagNumber(2)
+  set startTimestamp($fixnum.Int64 v) {
+    $_setInt64(1, v);
+  }
+
+  @$pb.TagNumber(2)
+  $core.bool hasStartTimestamp() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearStartTimestamp() => clearField(2);
+
+  @$pb.TagNumber(3)
+  $fixnum.Int64 get endTimestamp => $_getI64(2);
+  @$pb.TagNumber(3)
+  set endTimestamp($fixnum.Int64 v) {
+    $_setInt64(2, v);
+  }
+
+  @$pb.TagNumber(3)
+  $core.bool hasEndTimestamp() => $_has(2);
+  @$pb.TagNumber(3)
+  void clearEndTimestamp() => clearField(3);
+
+  @$pb.TagNumber(4)
+  $core.String get timeZone => $_getSZ(3);
+  @$pb.TagNumber(4)
+  set timeZone($core.String v) {
+    $_setString(3, v);
+  }
+
+  @$pb.TagNumber(4)
+  $core.bool hasTimeZone() => $_has(3);
+  @$pb.TagNumber(4)
+  void clearTimeZone() => clearField(4);
+
+  @$pb.TagNumber(5)
+  $core.List<GpsTrailPoint> get points => $_getList(4);
+
+  @$pb.TagNumber(6)
+  Id get bodyOfWaterId => $_getN(5);
+  @$pb.TagNumber(6)
+  set bodyOfWaterId(Id v) {
+    setField(6, v);
+  }
+
+  @$pb.TagNumber(6)
+  $core.bool hasBodyOfWaterId() => $_has(5);
+  @$pb.TagNumber(6)
+  void clearBodyOfWaterId() => clearField(6);
+  @$pb.TagNumber(6)
+  Id ensureBodyOfWaterId() => $_ensure(5);
 }
 
 // ignore_for_file: undefined_named_parameter,no_leading_underscores_for_local_identifiers

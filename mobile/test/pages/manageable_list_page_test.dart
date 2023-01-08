@@ -1283,6 +1283,32 @@ void main() {
     expect(find.byIcon(Icons.update), findsOneWidget);
   });
 
+  testWidgets("Empty list description icon is shown", (tester) async {
+    items = [];
+    await tester.pumpWidget(
+      Testable(
+        (_) => ManageableListPage<String>(
+          itemManager: ManageableListPageItemManager<String>(
+            loadItems: loadItems,
+            deleteWidget: deleteWidget,
+            deleteItem: deleteItem,
+            detailPageBuilder: (_) => const Empty(),
+            emptyItemsSettings: ManageableListPageEmptyListSettings(
+              title: "Test",
+              description: "Description %s",
+              descriptionIcon: Icons.style,
+              icon: Icons.update,
+            ),
+          ),
+          itemBuilder: defaultItemBuilder,
+          searchDelegate: null,
+        ),
+      ),
+    );
+
+    expect(find.byIcon(Icons.style), findsOneWidget);
+  });
+
   testWidgets(
       "Empty list placeholder shown when no search text and list is empty",
       (tester) async {

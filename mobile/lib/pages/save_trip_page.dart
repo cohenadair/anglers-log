@@ -7,10 +7,12 @@ import 'package:mobile/bait_manager.dart';
 import 'package:mobile/body_of_water_manager.dart';
 import 'package:mobile/catch_manager.dart';
 import 'package:mobile/fishing_spot_manager.dart';
+import 'package:mobile/gps_trail_manager.dart';
 import 'package:mobile/location_monitor.dart';
 import 'package:mobile/pages/body_of_water_list_page.dart';
 import 'package:mobile/pages/catch_list_page.dart';
 import 'package:mobile/pages/editable_form_page.dart';
+import 'package:mobile/pages/gps_trail_list_page.dart';
 import 'package:mobile/res/dimen.dart';
 import 'package:mobile/species_manager.dart';
 import 'package:mobile/trip_manager.dart';
@@ -32,6 +34,7 @@ import '../log.dart';
 import '../model/gen/anglerslog.pb.dart';
 import '../time_manager.dart';
 import '../utils/protobuf_utils.dart';
+import '../utils/trip_utils.dart';
 import '../widgets/input_controller.dart';
 import '../widgets/text_input.dart';
 import '../widgets/time_zone_input.dart';
@@ -72,6 +75,7 @@ class SaveTripPageState extends State<SaveTripPage> {
       Id(uuid: "ad35c21c-13cb-486b-812d-6315d0bf5004");
   static final _idNotes = Id(uuid: "3d3bc3c9-e316-49fe-8427-ae344dffe38e");
   static final _idAtmosphere = Id(uuid: "b7f6ad7f-e1b8-4e15-b29c-688429787dd9");
+  static final _idGpsTrails = tripIdGpsTrails;
 
   final _log = const Log("SaveTripPage");
   final Map<Id, Field> _fields = {};
@@ -94,6 +98,8 @@ class SaveTripPageState extends State<SaveTripPage> {
   CatchManager get _catchManager => CatchManager.of(context);
 
   FishingSpotManager get _fishingSpotManager => FishingSpotManager.of(context);
+
+  GpsTrailManager get _gpsTrailManager => GpsTrailManager.of(context);
 
   LocationMonitor get _locationMonitor => LocationMonitor.of(context);
 
@@ -148,6 +154,9 @@ class SaveTripPageState extends State<SaveTripPage> {
   SetInputController<Trip_CatchesPerBait> get _baitCatchesController =>
       _fields[_idCatchesPerBait]!.controller
           as SetInputController<Trip_CatchesPerBait>;
+
+  SetInputController<Id> get _gpsTrailsController =>
+      _fields[_idGpsTrails]!.controller as SetInputController<Id>;
 
   @override
   void initState() {
@@ -235,6 +244,12 @@ class SaveTripPageState extends State<SaveTripPage> {
       controller: SetInputController<Trip_CatchesPerEntity>(),
     );
 
+    _fields[_idGpsTrails] = Field(
+      id: _idGpsTrails,
+      name: (context) => Strings.of(context).entityNameGpsTrails,
+      controller: SetInputController<Id>(),
+    );
+
     if (_isEditing) {
       _startTimestampController.value = _oldTrip!.startDateTime(context);
       _endTimestampController.value = _oldTrip!.endDateTime(context);
@@ -251,6 +266,7 @@ class SaveTripPageState extends State<SaveTripPage> {
           _oldTrip!.catchesPerFishingSpot.toSet();
       _baitCatchesController.value = _oldTrip!.catchesPerBait.toSet();
       _customEntityValues = _oldTrip!.customEntityValues;
+      _gpsTrailsController.value = _oldTrip!.gpsTrailIds.toSet();
     }
   }
 
@@ -300,6 +316,8 @@ class SaveTripPageState extends State<SaveTripPage> {
       return _buildBodiesOfWater();
     } else if (id == _idAtmosphere) {
       return _buildAtmosphere();
+    } else if (id == _idGpsTrails) {
+      return _buildGpsTrails();
     } else {
       _log.e(StackTrace.current, "Unknown input key: $id");
       return const Empty();
@@ -487,6 +505,18 @@ class SaveTripPageState extends State<SaveTripPage> {
     );
   }
 
+  Widget _buildGpsTrails() {
+    return EntityPickerInput<GpsTrail>.multi(
+      manager: _gpsTrailManager,
+      controller: _gpsTrailsController,
+      emptyValue: Strings.of(context).saveTripPageNoGpsTrails,
+      isHidden: !_fields[_idGpsTrails]!.isShowing,
+      listPage: (pickerSettings) =>
+          GpsTrailListPage(pickerSettings: pickerSettings),
+      onPicked: (ids) => setState(() => _gpsTrailsController.value = ids),
+    );
+  }
+
   /// Update date and time values based on picked catches. This will not update
   /// the time if "All day" checkboxes are checked. This will overwrite any
   /// changes the user made to the time.
@@ -584,6 +614,7 @@ class SaveTripPageState extends State<SaveTripPage> {
       catchesPerFishingSpot: _fishingSpotCatchesController.value,
       catchesPerBait: _baitCatchesController.value,
       customEntityValues: entityValuesFromMap(customFieldValueMap),
+      gpsTrailIds: _gpsTrailsController.value,
     );
 
     if (isNotEmpty(_nameController.value)) {

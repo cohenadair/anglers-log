@@ -34,7 +34,7 @@ void main() {
     expect(10.55.displayValue(locale: "fi_FI"), "10,55");
   });
 
-  test ("tryLocaleParse", () {
+  test("tryLocaleParse", () {
     // Empty input.
     expect(null, Doubles.tryLocaleParse(null));
     expect(null, Doubles.tryLocaleParse(""));

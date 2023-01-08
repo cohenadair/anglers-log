@@ -1,13 +1,20 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mapbox_gl/mapbox_gl.dart';
 import 'package:mobile/entity_manager.dart';
 import 'package:mobile/fishing_spot_manager.dart';
+import 'package:mobile/gps_trail_manager.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
 import 'package:mobile/pages/fishing_spot_list_page.dart';
+import 'package:mobile/pages/gps_trail_page.dart';
+import 'package:mobile/pages/pro_page.dart';
 import 'package:mobile/res/gen/custom_icons.dart';
+import 'package:mobile/utils/map_utils.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mobile/widgets/checkbox_input.dart';
+import 'package:mobile/widgets/default_mapbox_map.dart';
 import 'package:mobile/widgets/fishing_spot_details.dart';
 import 'package:mobile/widgets/fishing_spot_map.dart';
 import 'package:mobile/widgets/input_controller.dart';
@@ -41,6 +48,11 @@ void main() {
       includeLatLngLabels: anyNamed("includeLatLngLabels"),
       includeBodyOfWater: anyNamed("includeBodyOfWater"),
     )).thenAnswer((invocation) => invocation.positionalArguments[1].name);
+
+    when(appManager.gpsTrailManager.stream)
+        .thenAnswer((_) => const Stream.empty());
+    when(appManager.gpsTrailManager.activeTrial).thenReturn(null);
+    when(appManager.gpsTrailManager.hasActiveTrail).thenReturn(false);
 
     when(appManager.ioWrapper.isAndroid).thenReturn(false);
 
@@ -80,8 +92,8 @@ void main() {
     var fishingSpot2 = FishingSpot(
       id: randomId(),
       name: "Spot 2",
-      lat: 1,
-      lng: 2,
+      lat: 3,
+      lng: 4,
     );
     when(appManager.fishingSpotManager.list())
         .thenReturn([fishingSpot1, fishingSpot2]);
@@ -501,7 +513,10 @@ void main() {
 
   testWidgets("Current location prompts for permission; declined",
       (tester) async {
-    when(appManager.permissionHandlerWrapper.requestLocation())
+    when(appManager.ioWrapper.isIOS).thenReturn(true);
+    when(appManager.permissionHandlerWrapper.isLocationGranted)
+        .thenAnswer((_) => Future.value(false));
+    when(appManager.permissionHandlerWrapper.requestLocationAlways())
         .thenAnswer((_) => Future.value(false));
 
     await pumpMapWrapper(
@@ -513,12 +528,12 @@ void main() {
 
     await tapAndSettle(tester, find.byIcon(Icons.my_location));
 
-    verify(appManager.permissionHandlerWrapper.requestLocation()).called(1);
+    verify(appManager.permissionHandlerWrapper.isLocationGranted).called(1);
     expect(find.text("Location Access"), findsOneWidget);
   });
 
   testWidgets("Error getting current location", (tester) async {
-    when(appManager.permissionHandlerWrapper.requestLocation())
+    when(appManager.permissionHandlerWrapper.isLocationGranted)
         .thenAnswer((_) => Future.value(true));
     when(appManager.locationMonitor.currentLocation).thenReturn(null);
 
@@ -537,7 +552,7 @@ void main() {
     when(appManager.fishingSpotManager.entityExists(any)).thenReturn(false);
     when(appManager.locationMonitor.currentLocation)
         .thenReturn(const LatLng(1, 2));
-    when(appManager.permissionHandlerWrapper.requestLocation())
+    when(appManager.permissionHandlerWrapper.isLocationGranted)
         .thenAnswer((_) => Future.value(true));
 
     await pumpMapWrapper(
@@ -558,7 +573,7 @@ void main() {
       (tester) async {
     when(appManager.locationMonitor.currentLocation)
         .thenReturn(const LatLng(1, 2));
-    when(appManager.permissionHandlerWrapper.requestLocation())
+    when(appManager.permissionHandlerWrapper.isLocationGranted)
         .thenAnswer((_) => Future.value(true));
 
     var fishingSpot1 = FishingSpot(
@@ -588,6 +603,19 @@ void main() {
     await tapAndSettle(tester, find.byIcon(Icons.my_location));
     expect(find.text("Spot 1"), findsNothing);
     expect(find.byType(FishingSpotDetails), findsNothing);
+  });
+
+  testWidgets("Current location button starts tracking if GPS trail is active",
+      (tester) async {
+    when(appManager.locationMonitor.currentLocation)
+        .thenReturn(const LatLng(1, 2));
+    when(appManager.permissionHandlerWrapper.isLocationGranted)
+        .thenAnswer((_) => Future.value(true));
+    when(appManager.gpsTrailManager.hasActiveTrail).thenReturn(true);
+
+    await pumpMapWrapper(tester, FishingSpotMap());
+    await tapAndSettle(tester, find.byIcon(Icons.my_location));
+    verify(mapController.value.startTracking()).called(1);
   });
 
   testWidgets("Zoom button hidden", (tester) async {
@@ -994,7 +1022,7 @@ void main() {
   testWidgets("Map movement is animated", (tester) async {
     when(appManager.locationMonitor.currentLocation)
         .thenReturn(const LatLng(1, 2));
-    when(appManager.permissionHandlerWrapper.requestLocation())
+    when(appManager.permissionHandlerWrapper.isLocationGranted)
         .thenAnswer((_) => Future.value(true));
 
     await pumpMapWrapper(tester, FishingSpotMap());
@@ -1172,7 +1200,7 @@ void main() {
   });
 
   testWidgets("Move map exits early if already at position", (tester) async {
-    when(appManager.permissionHandlerWrapper.requestLocation())
+    when(appManager.permissionHandlerWrapper.isLocationGranted)
         .thenAnswer((_) => Future.value(true));
 
     when(appManager.locationMonitor.currentLocation)
@@ -1186,7 +1214,7 @@ void main() {
   });
 
   testWidgets("Move map zooms to default", (tester) async {
-    when(appManager.permissionHandlerWrapper.requestLocation())
+    when(appManager.permissionHandlerWrapper.isLocationGranted)
         .thenAnswer((_) => Future.value(true));
 
     await pumpMapWrapper(tester, FishingSpotMap());
@@ -1202,5 +1230,120 @@ void main() {
 
     var update = result.captured.first as CameraUpdate;
     expect(update.toJson()[1]["zoom"], 13.0);
+  });
+
+  testWidgets("GPS trail button is hidden", (tester) async {
+    await pumpMapWrapper(tester, FishingSpotMap(showGpsTrailButton: false));
+    expect(find.byIcon(iconGpsTrail), findsNothing);
+  });
+
+  testWidgets("GPS trail button starts tracking", (tester) async {
+    when(appManager.permissionHandlerWrapper.isLocationAlwaysGranted)
+        .thenAnswer((_) => Future.value(true));
+    when(appManager.gpsTrailManager.startTracking(any))
+        .thenAnswer((_) => Future.value());
+    when(appManager.subscriptionManager.isPro).thenReturn(true);
+
+    await pumpMapWrapper(tester, FishingSpotMap(showGpsTrailButton: true));
+    await tapAndSettle(tester, find.byIcon(iconGpsTrail));
+
+    verify(appManager.gpsTrailManager.startTracking(any)).called(1);
+  });
+
+  testWidgets("GPS trail button stops tracking", (tester) async {
+    when(appManager.permissionHandlerWrapper.isLocationAlwaysGranted)
+        .thenAnswer((_) => Future.value(true));
+    when(appManager.gpsTrailManager.hasActiveTrail).thenReturn(true);
+    when(appManager.subscriptionManager.isPro).thenReturn(true);
+
+    await pumpMapWrapper(tester, FishingSpotMap(showGpsTrailButton: true));
+    await tapAndSettle(tester, find.byIcon(iconGpsTrail));
+
+    verify(appManager.gpsTrailManager.stopTracking()).called(1);
+  });
+
+  testWidgets("GPS trail tracking ends if not pro", (tester) async {
+    when(appManager.permissionHandlerWrapper.isLocationAlwaysGranted)
+        .thenAnswer((_) => Future.value(true));
+    when(appManager.gpsTrailManager.hasActiveTrail).thenReturn(true);
+    when(appManager.subscriptionManager.isPro).thenReturn(false);
+
+    await pumpMapWrapper(tester, FishingSpotMap(showGpsTrailButton: true));
+    await tapAndSettle(tester, find.byIcon(iconGpsTrail));
+
+    expect(find.byType(ProPage), findsNothing);
+  });
+
+  testWidgets("GPS trail button shows Pro page", (tester) async {
+    when(appManager.permissionHandlerWrapper.isLocationAlwaysGranted)
+        .thenAnswer((_) => Future.value(true));
+    when(appManager.gpsTrailManager.hasActiveTrail).thenReturn(false);
+    when(appManager.subscriptionManager.isPro).thenReturn(false);
+    when(appManager.subscriptionManager.subscriptions())
+        .thenAnswer((_) => Future.value(null));
+
+    await pumpMapWrapper(tester, FishingSpotMap(showGpsTrailButton: true));
+    await tapAndSettle(tester, find.byIcon(iconGpsTrail));
+
+    verifyNever(appManager.gpsTrailManager.startTracking(any));
+    expect(find.byType(ProPage), findsOneWidget);
+  });
+
+  testWidgets("GpsTrailPage shown after tracking ends", (tester) async {
+    var controller = StreamController<EntityEvent<GpsTrail>>.broadcast();
+    when(appManager.gpsTrailManager.stream)
+        .thenAnswer((_) => controller.stream);
+    when(appManager.gpsTrailManager.hasActiveTrail).thenReturn(true);
+    when(appManager.bodyOfWaterManager.displayNameFromId(any, any))
+        .thenReturn(null);
+
+    await pumpMapWrapper(tester, FishingSpotMap(showGpsTrailButton: true));
+
+    // Trail is active.
+    expect(findFirst<BadgeContainer>(tester).isBadgeVisible, isTrue);
+
+    // Deactivate the trail.
+    when(appManager.gpsTrailManager.hasActiveTrail).thenReturn(false);
+    controller
+        .add(EntityEvent<GpsTrail>(GpsTrailEventType.endTracking, GpsTrail()));
+    await tester.pumpAndSettle();
+    expect(find.byType(GpsTrailPage), findsOneWidget);
+
+    // Ensure active trail badge is no longer showing.
+    await tapAndSettle(tester, find.byIcon(Icons.close));
+    expect(findFirst<BadgeContainer>(tester).isBadgeVisible, isFalse);
+  });
+
+  testWidgets("GPS trail is setup correctly", (tester) async {
+    var controller = StreamController<EntityEvent<GpsTrail>>.broadcast();
+    when(appManager.gpsTrailManager.stream)
+        .thenAnswer((_) => controller.stream);
+
+    when(appManager.gpsTrailManager.hasActiveTrail).thenReturn(true);
+    when(appManager.gpsTrailManager.activeTrial).thenReturn(GpsTrail(
+      points: [
+        GpsTrailPoint(
+          lat: 5.0,
+          lng: 6.0,
+        ),
+        GpsTrailPoint(
+          lat: 7.0,
+          lng: 8.0,
+        ),
+      ],
+    ));
+    when(mapController.value.addSymbols(any))
+        .thenAnswer((_) => Future.value([]));
+
+    await pumpMapWrapper(tester, FishingSpotMap(showGpsTrailButton: true));
+    verify(mapController.value.startTracking()).called(1);
+
+    findFirst<DefaultMapboxMap>(tester)
+        .onCameraTrackingChanged!(MyLocationTrackingMode.Tracking);
+    controller.add(
+        EntityEvent<GpsTrail>(GpsTrailEventType.startTracking, GpsTrail()));
+    await tester.pumpAndSettle();
+
+    verify(mapController.value.animateCamera(any)).called(1);
   });
 }

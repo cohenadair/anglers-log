@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_test/flutter_test.dart';
 import 'package:mapbox_gl/mapbox_gl.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
 import 'package:mobile/utils/map_utils.dart';
-import 'package:test/test.dart';
+import 'package:mockito/mockito.dart';
+import 'package:uuid/uuid.dart';
+
+import '../mocks/mocks.mocks.dart';
+import '../test_utils.dart';
 
 void main() {
   group("distanceBetween", () {
@@ -23,7 +28,7 @@ void main() {
     });
 
     test("Normal case", () {
-      var bounds = mapBounds({
+      var bounds = fishingSpotMapBounds({
         FishingSpot()
           ..lat = 50
           ..lng = 1,
@@ -49,6 +54,63 @@ void main() {
 
     test("Black icon", () {
       expect(mapIconColor(MapType.normal), Colors.black);
+    });
+  });
+
+  group("GpsMapTrail", () {
+    testWidgets("Draw exits early if there's nothing to draw", (tester) async {
+      var controller = MockMapboxMapController();
+      when(controller.addSymbols(any)).thenAnswer(
+          (invocation) => Future.value(invocation.positionalArguments.first));
+
+      var context = await buildContext(tester);
+      var gpsMapTrail = GpsMapTrail(controller);
+      gpsMapTrail.draw(context, GpsTrail());
+      verifyNever(controller.addSymbols(any));
+    });
+
+    testWidgets("Only new points are drawn", (tester) async {
+      var controller = MockMapboxMapController();
+      when(controller.addSymbols(any)).thenAnswer((invocation) => Future.value(
+          (invocation.positionalArguments.first as List<SymbolOptions>)
+              .map((e) => Symbol(const Uuid().v4(), e))
+              .toList()));
+
+      var context = await buildContext(tester);
+      var gpsMapTrail = GpsMapTrail(controller);
+
+      await gpsMapTrail.draw(
+        context,
+        GpsTrail(
+          points: [
+            GpsTrailPoint(lat: 37.32475413, lng: -122.02195627),
+            GpsTrailPoint(lat: 37.32475794, lng: -122.02207001),
+            GpsTrailPoint(lat: 37.32475426, lng: -122.02218992),
+          ],
+        ),
+      );
+
+      // The last point isn't drawn.
+      var result = verify(controller.addSymbols(captureAny));
+      result.called(1);
+      expect((result.captured.first as List<SymbolOptions>).length, 2);
+
+      await gpsMapTrail.draw(
+        context,
+        GpsTrail(
+          points: [
+            GpsTrailPoint(lat: 37.32475413, lng: -122.02195627),
+            GpsTrailPoint(lat: 37.32475794, lng: -122.02207001),
+            GpsTrailPoint(lat: 37.32475426, lng: -122.02218992),
+            GpsTrailPoint(lat: 37.32475499, lng: -122.02230437),
+          ],
+        ),
+      );
+
+      // Only one more point is drawn.
+      result = verify(controller.addSymbols(captureAny));
+      result.called(1);
+      expect((result.captured.first as List<SymbolOptions>).length, 1);
     });
   });
 }

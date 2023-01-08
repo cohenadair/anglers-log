@@ -8,15 +8,17 @@ class PermissionHandlerWrapper {
   static PermissionHandlerWrapper of(BuildContext context) =>
       Provider.of<AppManager>(context, listen: false).permissionHandlerWrapper;
 
-  /// Prompts the use for location permission if needed. Returns true if the
-  /// app has permission to access location; false otherwise.
   Future<bool> requestLocation() async =>
       (await Permission.location.request()).isGranted;
 
   Future<bool> get isLocationGranted async => Permission.location.isGranted;
 
-  /// Prompts the use for photos permission if needed. Returns true if the app
-  /// has permission to access photos; false otherwise.
+  Future<bool> requestLocationAlways() async =>
+      (await Permission.locationAlways.request()).isGranted;
+
+  Future<bool> get isLocationAlwaysGranted async =>
+      Permission.locationAlways.isGranted;
+
   Future<bool> requestPhotos() async =>
       (await Permission.photos.request()).isGranted;
 

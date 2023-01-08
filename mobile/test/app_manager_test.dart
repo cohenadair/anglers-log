@@ -27,6 +27,9 @@ class TestAppManager extends AppManager {
   MockFishingSpotManager fishingSpotManager = MockFishingSpotManager();
 
   @override
+  MockGpsTrailManager gpsTrailManager = MockGpsTrailManager();
+
+  @override
   MockMethodManager methodManager = MockMethodManager();
 
   @override
@@ -97,6 +100,8 @@ void main() {
     when(appManager.customEntityManager.initialize())
         .thenAnswer((_) => Future.value());
     when(appManager.fishingSpotManager.initialize())
+        .thenAnswer((_) => Future.value());
+    when(appManager.gpsTrailManager.initialize())
         .thenAnswer((_) => Future.value());
     when(appManager.methodManager.initialize())
         .thenAnswer((_) => Future.value());

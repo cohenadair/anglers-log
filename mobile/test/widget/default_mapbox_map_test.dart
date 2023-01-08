@@ -43,4 +43,20 @@ void main() {
       mapZoomDefault,
     );
   });
+
+  testWidgets("Zoom set to start zoom", (tester) async {
+    await pumpMap(
+      tester,
+      appManager,
+      mapController,
+      const DefaultMapboxMap(
+        startPosition: LatLng(1, 2),
+        startZoom: mapZoomDefault - 1,
+      ),
+    );
+    expect(
+      findFirst<MapboxMap>(tester).initialCameraPosition.zoom,
+      mapZoomDefault - 1,
+    );
+  });
 }

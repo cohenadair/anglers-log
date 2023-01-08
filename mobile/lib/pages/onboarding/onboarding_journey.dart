@@ -63,7 +63,7 @@ class OnboardingJourneyState extends State<OnboardingJourney> {
           return MaterialPageRoute(
             builder: (context) => HowToManageFieldsPage(
               onNext: () async => Navigator.of(context).pushNamed(
-                  (await _permissionHandlerWrapper.isLocationGranted)
+                  (await _permissionHandlerWrapper.isLocationAlwaysGranted)
                       ? _routeFeedback
                       : _routeLocationPermission),
             ),

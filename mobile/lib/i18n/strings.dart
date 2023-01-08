@@ -120,6 +120,10 @@ class Strings {
 
   String get directions => _string("directions");
 
+  String get close => _string("close");
+
+  String get back => _string("back");
+
   String get latLng => _string("latLng");
 
   String get latLngNoLabels => _string("latLng_noLabels");
@@ -221,6 +225,8 @@ class Strings {
 
   String get saveTripPageNoBodiesOfWater =>
       _string("saveTripPage_noBodiesOfWater");
+
+  String get saveTripPageNoGpsTrails => _string("saveTripPage_noGpsTrails");
 
   String get tripCatchesPerSpecies => _string("trip_catchesPerSpecies");
 
@@ -883,6 +889,20 @@ class Strings {
   String get mapPageErrorOpeningDirections =>
       _string("mapPage_errorOpeningDirections");
 
+  String get mapPageMapTypeTooltip => _string("mapPage_mapTypeTooltip");
+
+  String get mapPageMyLocationTooltip => _string("mapPage_myLocationTooltip");
+
+  String get mapPageShowAllTooltip => _string("mapPage_showAllTooltip");
+
+  String get mapPageStartTrackingTooltip =>
+      _string("mapPage_startTrackingTooltip");
+
+  String get mapPageStopTrackingTooltip =>
+      _string("mapPage_stopTrackingTooltip");
+
+  String get mapPageAddTooltip => _string("mapPage_addTooltip");
+
   String get saveFishingSpotPageNewTitle =>
       _string("saveFishingSpotPage_newTitle");
 
@@ -1002,15 +1022,6 @@ class Strings {
 
   String get fishingSpotListPageNoBodyOfWater =>
       _string("fishingSpotListPage_noBodyOfWater");
-
-  String get fishingSpotMapLocationPermissionTitle =>
-      _string("fishingSpotMap_locationPermissionTitle");
-
-  String get fishingSpotMapLocationPermissionDescription =>
-      _string("fishingSpotMap_locationPermissionDescription");
-
-  String get fishingSpotMapLocationPermissionOpenSettings =>
-      _string("fishingSpotMap_locationPermissionOpenSettings");
 
   String get fishingSpotMapAddSpotHelp => _string("fishingSpotMap_addSpotHelp");
 
@@ -1269,6 +1280,8 @@ class Strings {
   String get proPageReports => _string("proPage_reports");
 
   String get proPageCustomFields => _string("proPage_customFields");
+
+  String get proPageGpsTrails => _string("proPage_gpsTrails");
 
   String get proPageYearlyTitle => _string("proPage_yearlyTitle");
 
@@ -1633,6 +1646,8 @@ class Strings {
 
   String get pickerTitleTimeZone => _string("pickerTitle_timeZone");
 
+  String get pickerTitleGpsTrails => _string("pickerTitle_gpsTrails");
+
   String get keywordsTemperatureMetric => _string("keywords_temperatureMetric");
 
   String get keywordsTemperatureImperial =>
@@ -1863,6 +1878,10 @@ class Strings {
 
   String get entityNameFishingMethod => _string("entityName_fishingMethod");
 
+  String get entityNameGpsTrails => _string("entityName_gpsTrails");
+
+  String get entityNameGpsTrail => _string("entityName_gpsTrail");
+
   String get entityNameSpecies => _string("entityName_species");
 
   String get entityNameTrip => _string("entityName_trip");
@@ -2022,9 +2041,47 @@ class Strings {
 
   String get pollsPageComingSoonPro => _string("pollsPage_comingSoonPro");
 
+  String get permissionLocationTitle => _string("permission_locationTitle");
+
+  String get permissionCurrentLocationDescription =>
+      _string("permission_currentLocationDescription");
+
+  String get permissionGpsTrailDescription =>
+      _string("permission_gpsTrailDescription");
+
+  String get permissionOpenSettings => _string("permission_openSettings");
+
+  String get permissionLocationNotificationDescription =>
+      _string("permission_locationNotificationDescription");
+
   String get calendarPageTitle => _string("calendarPage_title");
 
   String get calendarPageTripLabel => _string("calendarPage_tripLabel");
+
+  String get gpsTrailListPageTitle => _string("gpsTrailListPage_title");
+
+  String get gpsTrailListPageSearchHint =>
+      _string("gpsTrailListPage_searchHint");
+
+  String get gpsTrailListPageEmptyListTitle =>
+      _string("gpsTrailListPage_emptyListTitle");
+
+  String get gpsTrailListPageEmptyListDescription =>
+      _string("gpsTrailListPage_emptyListDescription");
+
+  String get gpsTrailListPageDeleteMessageSingular =>
+      _string("gpsTrailListPage_deleteMessageSingular");
+
+  String get gpsTrailListPageDeleteMessage =>
+      _string("gpsTrailListPage_deleteMessage");
+
+  String get gpsTrailListPageNumberOfPoints =>
+      _string("gpsTrailListPage_numberOfPoints");
+
+  String get gpsTrailListPageInProgress =>
+      _string("gpsTrailListPage_inProgress");
+
+  String get saveGpsTrailPageEditTitle => _string("saveGpsTrailPage_editTitle");
 
   String get changeLogPageTitle => _string("changeLogPage_title");
 
