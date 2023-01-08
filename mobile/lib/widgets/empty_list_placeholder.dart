@@ -78,7 +78,7 @@ class EmptyListPlaceholder extends StatelessWidget {
       } else {
         descriptionWidget = IconLabel(
           text: description,
-          icon: Icon(
+          textArg: Icon(
             descriptionIcon,
             color: Colors.black,
           ),

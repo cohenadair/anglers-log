@@ -161,7 +161,7 @@ class PickerPageState<T> extends State<PickerPage<T>> {
                     ? Text(item.title!, style: styleNote(context))
                     : IconLabel(
                         text: item.title!,
-                        icon: Icon(
+                        textArg: Icon(
                           item.noteIcon,
                           color: Colors.black,
                         ),

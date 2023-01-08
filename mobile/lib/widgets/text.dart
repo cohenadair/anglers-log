@@ -31,18 +31,18 @@ class SingleLineText extends StatelessWidget {
   }
 }
 
-/// A text widget that inserts an [Icon] into a [String]. The given [String]
+/// A text widget that inserts an [Widget] into a [String]. The given [String]
 /// can only have a single "%s" substitution.
 class IconLabel extends StatelessWidget {
   final String text;
   final TextStyle? textStyle;
   final TextAlign? align;
   final TextOverflow? overflow;
-  final Icon icon;
+  final Widget textArg;
 
   IconLabel({
     required this.text,
-    required this.icon,
+    required this.textArg,
     this.align,
     this.overflow,
     this.textStyle,
@@ -64,7 +64,7 @@ class IconLabel extends StatelessWidget {
             style: style,
           ),
           WidgetSpan(
-            child: icon,
+            child: textArg,
             alignment: PlaceholderAlignment.middle,
           ),
           TextSpan(

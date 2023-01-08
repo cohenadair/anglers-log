@@ -1083,5 +1083,14 @@ Map<String, Map<String, String>> get englishStrings => {
         "changeLog_2.2.0_2":
             "Fixed multiple issues with displaying baits on the \"Stats\" page",
         "changeLog_2.2.0_3": "Fixed crash when photo data became unreadable",
+        "changeLog_2.3.0_1":
+            "Add live GPS tracking that can be enabled by tapping the %s button on the map",
+        "changeLog_2.3.0_2":
+            "Countries whose locale allows it, can now use commas as decimal points",
+        "changeLog_2.3.0_3":
+            "Fixed issue where a photo's time and location weren't always used when adding a catch",
+        "changeLog_2.3.0_4":
+            "Fixed a bug where the wrong catches were being shown on the stats page",
+        "changeLog_2.3.0_5": "Minor UI bug fixes",
       },
     };

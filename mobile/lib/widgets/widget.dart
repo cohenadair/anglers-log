@@ -188,7 +188,7 @@ class HeadingNoteDivider extends StatelessWidget {
                 bottom: false,
                 child: IconLabel(
                   text: note!,
-                  icon: Icon(
+                  textArg: Icon(
                     noteIcon,
                     color: Colors.black,
                   ),

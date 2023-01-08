@@ -9,6 +9,7 @@ import 'package:version/version.dart';
 
 import '../../res/dimen.dart';
 import '../../res/gen/custom_icons.dart';
+import '../../widgets/button.dart';
 import '../../widgets/widget.dart';
 
 class ChangeLogPage extends StatelessWidget {
@@ -33,6 +34,7 @@ class ChangeLogPage extends StatelessWidget {
           ),
         ),
         const VerticalSpace(paddingDefault),
+        _build2_3_0(context),
         _build2_2_0(context),
         _build2_1_6(context),
         _build2_1_5(context),
@@ -44,12 +46,34 @@ class ChangeLogPage extends StatelessWidget {
     );
   }
 
+  Widget _build2_3_0(BuildContext context) {
+    return ExpansionListItem(
+      title: Text(_buildVersionText(context, "2.3.0")),
+      isExpanded: true,
+      children: [
+        BulletList(
+          padding: insetsHorizontalDefaultBottomDefault,
+          items: {
+            BulletListItem(
+              Strings.of(context).changeLog_230_1,
+              const Icon(iconGpsTrail, color: Colors.black),
+            ),
+            BulletListItem(Strings.of(context).changeLog_230_2),
+            BulletListItem(Strings.of(context).changeLog_230_3),
+            BulletListItem(Strings.of(context).changeLog_230_4),
+            BulletListItem(Strings.of(context).changeLog_230_5),
+          },
+        ),
+      ],
+    );
+  }
+
   Widget _build2_2_0(BuildContext context) {
     return ExpansionListItem(
       title: Text(_buildVersionText(context, "2.2.0")),
-      isExpanded: true,
+      isExpanded: false,
       children: [
-        _buildChangeList({
+        _buildStringChangeList({
           Strings.of(context).changeLog_220_1,
           Strings.of(context).changeLog_220_2,
           Strings.of(context).changeLog_220_3,
@@ -63,7 +87,7 @@ class ChangeLogPage extends StatelessWidget {
       title: Text(_buildVersionText(context, "2.1.6")),
       isExpanded: false,
       children: [
-        _buildChangeList({
+        _buildStringChangeList({
           Strings.of(context).changeLog_216_1,
           Strings.of(context).changeLog_216_2,
           Strings.of(context).changeLog_216_3,
@@ -79,7 +103,7 @@ class ChangeLogPage extends StatelessWidget {
       title: Text(_buildVersionText(context, "2.1.5")),
       isExpanded: false,
       children: [
-        _buildChangeList({
+        _buildStringChangeList({
           Strings.of(context).changeLog_215_1,
         }),
       ],
@@ -91,7 +115,7 @@ class ChangeLogPage extends StatelessWidget {
       title: Text(_buildVersionText(context, "2.1.3")),
       isExpanded: false,
       children: [
-        _buildChangeList({
+        _buildStringChangeList({
           Strings.of(context).changeLog_213_1,
           Strings.of(context).changeLog_213_2,
           Strings.of(context).changeLog_213_3,
@@ -106,7 +130,7 @@ class ChangeLogPage extends StatelessWidget {
       title: Text(_buildVersionText(context, "2.1.2")),
       isExpanded: false,
       children: [
-        _buildChangeList({
+        _buildStringChangeList({
           Strings.of(context).changeLog_212_1,
           Strings.of(context).changeLog_212_2,
           Strings.of(context).changeLog_212_3,
@@ -121,7 +145,7 @@ class ChangeLogPage extends StatelessWidget {
       title: Text(_buildVersionText(context, "2.1.1")),
       isExpanded: false,
       children: [
-        _buildChangeList({
+        _buildStringChangeList({
           Strings.of(context).changeLog_210_1,
           Strings.of(context).changeLog_210_2,
           Strings.of(context).changeLog_210_3,
@@ -135,7 +159,7 @@ class ChangeLogPage extends StatelessWidget {
     return ExpansionListItem(
       title: Text(_buildVersionText(context, "2.0.22")),
       children: [
-        _buildChangeList({
+        _buildStringChangeList({
           Strings.of(context).changeLog_2022_1,
           Strings.of(context).changeLog_2022_2,
           Strings.of(context).changeLog_2022_3,
@@ -147,10 +171,10 @@ class ChangeLogPage extends StatelessWidget {
     );
   }
 
-  Widget _buildChangeList(Set<String> items) {
+  Widget _buildStringChangeList(Set<String> items) {
     return BulletList(
       padding: insetsHorizontalDefaultBottomDefault,
-      items: items,
+      items: items.map((e) => BulletListItem(e)).toSet(),
     );
   }
 

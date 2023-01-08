@@ -32,7 +32,7 @@ void main() {
         Testable(
           (_) => IconLabel(
             text: "Test",
-            icon: const Icon(Icons.group),
+            textArg: const Icon(Icons.group),
           ),
         ),
       );
@@ -44,7 +44,7 @@ void main() {
         Testable(
           (_) => IconLabel(
             text: "Test %s",
-            icon: const Icon(Icons.group),
+            textArg: const Icon(Icons.group),
           ),
         ),
       );
