@@ -202,7 +202,14 @@ class MultiMeasurementInput extends StatelessWidget {
       return null;
     }
 
-    return controller.value.convertToSystem(specSystem, specUnit);
+    var result = controller.value.convertToSystem(specSystem, specUnit);
+
+    var decimalPlaces = spec.mainValueDecimalPlaces?.call(context);
+    if (decimalPlaces == null || decimalPlaces > 0) {
+      return result;
+    }
+
+    return result..clearFractionValue();
   }
 }
 
@@ -350,6 +357,18 @@ class MultiMeasurementInputSpec {
               UserPreferenceManager.of(context).fishingSpotDistance.system,
           title: (context) =>
               Strings.of(context).settingsPageFishingSpotDistanceTitle,
+          mainValueDecimalPlaces: (_) => 0,
+        );
+
+  MultiMeasurementInputSpec.minGpsTrailDistance(BuildContext context)
+      : this._(
+          context,
+          imperialUnit: (_) => Unit.feet,
+          metricUnit: Unit.meters,
+          system: (context) =>
+              UserPreferenceManager.of(context).minGpsTrailDistance.system,
+          title: (context) =>
+              Strings.of(context).settingsPageMinGpsTrailDistanceTitle,
           mainValueDecimalPlaces: (_) => 0,
         );
 

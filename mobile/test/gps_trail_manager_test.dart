@@ -32,6 +32,15 @@ void main() {
         .thenAnswer((_) => Future.value(false));
     when(appManager.locationMonitor.currentLocation).thenReturn(null);
 
+    when(appManager.userPreferenceManager.minGpsTrailDistance)
+        .thenReturn(MultiMeasurement(
+      system: MeasurementSystem.imperial_whole,
+      mainValue: Measurement(
+        unit: Unit.feet,
+        value: 150,
+      ),
+    ));
+
     gpsTrailManager = GpsTrailManager(appManager.app);
   });
 

@@ -29,6 +29,14 @@ void main() {
         ),
       ),
     );
+    when(appManager.userPreferenceManager.minGpsTrailDistance)
+        .thenReturn(MultiMeasurement(
+      system: MeasurementSystem.imperial_whole,
+      mainValue: Measurement(
+        unit: Unit.feet,
+        value: 150,
+      ),
+    ));
   });
 
   testWidgets("Pro user sets auto fetch atmosphere", (tester) async {
@@ -114,5 +122,24 @@ void main() {
 
     MultiMeasurement value = result.captured.first;
     expect(value.mainValue.value, 50);
+  });
+
+  testWidgets("GPS trail distance updated in preferences", (tester) async {
+    when(appManager.userPreferenceManager.setMinGpsTrailDistance(any))
+        .thenAnswer((_) => Future.value());
+
+    await tester.pumpWidget(Testable(
+      (_) => SettingsPage(),
+      appManager: appManager,
+    ));
+
+    await enterTextAndSettle(tester, find.text("150"), "100");
+
+    var result = verify(
+        appManager.userPreferenceManager.setMinGpsTrailDistance(captureAny));
+    result.called(1);
+
+    MultiMeasurement value = result.captured.first;
+    expect(value.mainValue.value, 100);
   });
 }

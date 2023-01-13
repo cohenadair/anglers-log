@@ -392,6 +392,9 @@ Map<String, Map<String, String>> get englishStrings => {
         "settingsPage_fishingSpotDistanceTitle": "Auto-fishing Spot Distance",
         "settingsPage_fishingSpotDistanceDescription":
             "The distance within which to automatically pick fishing spots when adding catches.",
+        "settingsPage_minGpsTrailDistanceTitle": "GPS Trail Distance",
+        "settingsPage_minGpsTrailDistanceDescription":
+            "The minimum distance between points in a GPS trail.",
         "unitsPage_title": "Measurement Units",
         "unitsPage_catchLengthFractionalInches": "Fractional inches (%s)",
         "unitsPage_catchLengthInches": "Inches (%s)",
@@ -409,6 +412,7 @@ Map<String, Map<String, String>> get englishStrings => {
         "unitsPage_airPressureMillibars": "Millibars (%s)",
         "unitsPage_airVisibilityMiles": "Miles (%s)",
         "unitsPage_windSpeedMiles": "Miles per hour (%s)",
+        "unitsPage_distanceTitle": "Distance",
         "unitsPage_distanceFeet": "Feet (%s)",
         "mapPage_menuLabel": "Map",
         "mapPage_deleteFishingSpot":

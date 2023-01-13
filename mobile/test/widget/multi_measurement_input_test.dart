@@ -642,4 +642,76 @@ void main() {
     expect(invoked, isTrue);
     expect(find.byType(ChipList), findsNothing);
   });
+
+  testWidgets("Conversion includes fraction value", (tester) async {
+    when(appManager.userPreferenceManager.waterDepthSystem)
+        .thenReturn(MeasurementSystem.imperial_whole);
+
+    late MultiMeasurementInputSpec spec;
+    late MultiMeasurementInputController controller;
+    await pumpContext(
+      tester,
+      (context) {
+        spec = MultiMeasurementInputSpec.waterDepth(context);
+        controller = spec.newInputController();
+        controller.value = MultiMeasurement(
+          system: MeasurementSystem.metric,
+          mainValue: Measurement(
+            unit: Unit.meters,
+            value: 50,
+          ),
+        );
+
+        return MultiMeasurementInput(
+          spec: spec,
+          controller: controller,
+          onChanged: () {},
+        );
+      },
+      appManager: appManager,
+    );
+
+    expect(find.byType(ChipList), findsOneWidget);
+    expect(find.text("Convert to 164 ft 1 in"), findsOneWidget);
+    expect(find.text("Convert to 50 ft"), findsOneWidget);
+  });
+
+  testWidgets("Conversion drops fraction value", (tester) async {
+    when(appManager.userPreferenceManager.minGpsTrailDistance)
+        .thenReturn(MultiMeasurement(
+      system: MeasurementSystem.imperial_whole,
+      mainValue: Measurement(
+        unit: Unit.feet,
+        value: 150,
+      ),
+    ));
+
+    late MultiMeasurementInputSpec spec;
+    late MultiMeasurementInputController controller;
+    await pumpContext(
+      tester,
+      (context) {
+        spec = MultiMeasurementInputSpec.minGpsTrailDistance(context);
+        controller = spec.newInputController();
+        controller.value = MultiMeasurement(
+          system: MeasurementSystem.metric,
+          mainValue: Measurement(
+            unit: Unit.meters,
+            value: 50,
+          ),
+        );
+
+        return MultiMeasurementInput(
+          spec: spec,
+          controller: controller,
+          onChanged: () {},
+        );
+      },
+      appManager: appManager,
+    );
+
+    expect(find.byType(ChipList), findsOneWidget);
+    expect(find.text("Convert to 164 ft"), findsOneWidget);
+    expect(find.text("Convert to 50 ft"), findsOneWidget);
+  });
 }

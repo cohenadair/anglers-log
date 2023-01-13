@@ -786,6 +786,12 @@ class Strings {
   String get settingsPageFishingSpotDistanceTitle =>
       _string("settingsPage_fishingSpotDistanceTitle");
 
+  String get settingsPageMinGpsTrailDistanceTitle =>
+      _string("settingsPage_minGpsTrailDistanceTitle");
+
+  String get settingsPageMinGpsTrailDistanceDescription =>
+      _string("settingsPage_minGpsTrailDistanceDescription");
+
   String get settingsPageFishingSpotDistanceDescription =>
       _string("settingsPage_fishingSpotDistanceDescription");
 
@@ -845,6 +851,8 @@ class Strings {
       _string("unitsPage_airVisibilityMiles");
 
   String get unitsPageWindSpeedMiles => _string("unitsPage_windSpeedMiles");
+
+  String get unitsPageDistanceTitle => _string("unitsPage_distanceTitle");
 
   String get unitsPageDistanceFeet => _string("unitsPage_distanceFeet");
 

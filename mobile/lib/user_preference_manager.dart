@@ -28,6 +28,7 @@ class UserPreferenceManager extends PreferenceManager {
   static const _keyWindSpeedSystem = "wind_speed_system";
   static const _keyAutoFetchAtmosphere = "auto_fetch_atmosphere";
   static const _keyFishingSpotDistance = "fishing_spot_distance";
+  static const _keyMinGpsTrailDistance = "min_gps_trail_distance";
 
   static const _keyRateTimerStartedAt = "rate_timer_started_at";
   static const _keyProTimerStartedAt = "pro_timer_started_at";
@@ -150,6 +151,23 @@ class UserPreferenceManager extends PreferenceManager {
         mainValue: Measurement(
           unit: Unit.feet,
           value: 100,
+        ),
+      );
+    }
+    return MultiMeasurement.fromJson(json);
+  }
+
+  Future<void> setMinGpsTrailDistance(MultiMeasurement? distance) =>
+      put(_keyMinGpsTrailDistance, distance?.writeToJson());
+
+  MultiMeasurement get minGpsTrailDistance {
+    var json = preferences[_keyMinGpsTrailDistance];
+    if (isEmpty(json)) {
+      return MultiMeasurement(
+        system: MeasurementSystem.imperial_whole,
+        mainValue: Measurement(
+          unit: Unit.feet,
+          value: 150,
         ),
       );
     }

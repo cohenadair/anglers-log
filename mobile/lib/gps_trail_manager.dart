@@ -9,6 +9,7 @@ import 'package:mobile/app_manager.dart';
 import 'package:mobile/location_monitor.dart';
 import 'package:mobile/time_manager.dart';
 import 'package:mobile/trip_manager.dart';
+import 'package:mobile/user_preference_manager.dart';
 import 'package:mobile/utils/map_utils.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:provider/provider.dart';
@@ -31,8 +32,6 @@ class GpsTrailManager extends EntityManager<GpsTrail> {
   static GpsTrailManager of(BuildContext context) =>
       Provider.of<AppManager>(context, listen: false).gpsTrailManager;
 
-  // Minimum number of meters between GPS trail points.
-  final _minPointDist = 10.0;
   final _log = const Log("GpsTrailManager");
 
   GpsTrail? _activeTrail;
@@ -44,6 +43,9 @@ class GpsTrailManager extends EntityManager<GpsTrail> {
   TimeManager get _timeManager => appManager.timeManager;
 
   TripManager get _tripManager => appManager.tripManager;
+
+  UserPreferenceManager get _userPreferenceManager =>
+      appManager.userPreferenceManager;
 
   GpsTrailManager(AppManager appManager) : super(appManager);
 
@@ -76,6 +78,11 @@ class GpsTrailManager extends EntityManager<GpsTrail> {
 
   @override
   String get tableName => "gps_trail";
+
+  double get _minPointDist => _userPreferenceManager.minGpsTrailDistance
+      .convertToSystem(MeasurementSystem.metric, Unit.meters)
+      .mainValue
+      .value;
 
   GpsTrail? get activeTrial => _activeTrail?.deepCopy();
 

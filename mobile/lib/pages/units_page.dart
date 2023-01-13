@@ -39,7 +39,7 @@ class UnitsPage extends StatelessWidget {
         const MinDivider(),
         _buildWindSpeed(context),
         const MinDivider(),
-        _buildFishingSpotDistance(context),
+        _buildDistance(context),
       ],
     );
   }
@@ -349,11 +349,15 @@ class UnitsPage extends StatelessWidget {
     );
   }
 
-  Widget _buildFishingSpotDistance(BuildContext context) {
+  Widget _buildDistance(BuildContext context) {
+    var userPreferenceManager = UserPreferenceManager.of(context);
+
     return _UnitSelector(
-      title: Strings.of(context).settingsPageFishingSpotDistanceTitle,
+      title: Strings.of(context).unitsPageDistanceTitle,
       initialSystem:
-          UserPreferenceManager.of(context).fishingSpotDistance.system,
+          // Doesn't matter which distance preference is used here since they
+          // are all the same.
+          userPreferenceManager.fishingSpotDistance.system,
       options: [
         _UnitSelectorOption(
           value: MultiMeasurement(
@@ -377,9 +381,18 @@ class UnitsPage extends StatelessWidget {
         ),
       ],
       onSelect: (system, unit) {
-        var userPreferenceManager = UserPreferenceManager.of(context);
+        // Update all distance preferences.
         userPreferenceManager.setFishingSpotDistance(
           userPreferenceManager.fishingSpotDistance.convertUnitsOnly(
+            MultiMeasurement(
+              system: system,
+              mainValue: Measurement(unit: unit),
+            ),
+          ),
+        );
+
+        userPreferenceManager.setMinGpsTrailDistance(
+          userPreferenceManager.minGpsTrailDistance.convertUnitsOnly(
             MultiMeasurement(
               system: system,
               mainValue: Measurement(unit: unit),

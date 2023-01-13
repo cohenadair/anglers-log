@@ -41,6 +41,14 @@ void main() {
         ),
       ),
     );
+    when(appManager.userPreferenceManager.minGpsTrailDistance)
+        .thenReturn(MultiMeasurement(
+      system: MeasurementSystem.imperial_whole,
+      mainValue: Measurement(
+        unit: Unit.feet,
+        value: 150,
+      ),
+    ));
   });
 
   testWidgets("Initial index when preferences is not null", (tester) async {
@@ -87,7 +95,7 @@ void main() {
         .called(1);
   });
 
-  testWidgets("Fishing spot distance is updated on selection", (tester) async {
+  testWidgets("Distance preferences are updated on selection", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => UnitsPage(),
       appManager: appManager,
@@ -104,5 +112,14 @@ void main() {
     expect(value.system, MeasurementSystem.metric);
     expect(value.mainValue.unit, Unit.meters);
     expect(value.mainValue.value, 20);
+
+    result = verify(
+        appManager.userPreferenceManager.setMinGpsTrailDistance(captureAny));
+    result.called(1);
+
+    value = result.captured.first;
+    expect(value.system, MeasurementSystem.metric);
+    expect(value.mainValue.unit, Unit.meters);
+    expect(value.mainValue.value, 150);
   });
 }

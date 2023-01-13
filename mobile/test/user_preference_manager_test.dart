@@ -108,14 +108,15 @@ void main() {
 
   test("Default fishing spot distance", () {
     expect(
-        userPreferenceManager.fishingSpotDistance,
-        MultiMeasurement(
-          system: MeasurementSystem.imperial_whole,
-          mainValue: Measurement(
-            unit: Unit.feet,
-            value: 100,
-          ),
-        ));
+      userPreferenceManager.fishingSpotDistance,
+      MultiMeasurement(
+        system: MeasurementSystem.imperial_whole,
+        mainValue: Measurement(
+          unit: Unit.feet,
+          value: 100,
+        ),
+      ),
+    );
   });
 
   test("Non-default fishing spot distance", () {
@@ -134,6 +135,40 @@ void main() {
         mainValue: Measurement(
           unit: Unit.meters,
           value: 30,
+        ),
+      ),
+    );
+  });
+
+  test("Default GPS trail distance", () {
+    expect(
+      userPreferenceManager.minGpsTrailDistance,
+      MultiMeasurement(
+        system: MeasurementSystem.imperial_whole,
+        mainValue: Measurement(
+          unit: Unit.feet,
+          value: 150,
+        ),
+      ),
+    );
+  });
+
+  test("Non-default fishing spot distance", () {
+    userPreferenceManager.setMinGpsTrailDistance(MultiMeasurement(
+      system: MeasurementSystem.metric,
+      mainValue: Measurement(
+        unit: Unit.meters,
+        value: 50,
+      ),
+    ));
+
+    expect(
+      userPreferenceManager.minGpsTrailDistance,
+      MultiMeasurement(
+        system: MeasurementSystem.metric,
+        mainValue: Measurement(
+          unit: Unit.meters,
+          value: 50,
         ),
       ),
     );

@@ -4549,6 +4549,10 @@ class MockUserPreferenceManager extends _i1.Mock
       (super.noSuchMethod(Invocation.getter(#fishingSpotDistance),
           returnValue: _FakeMultiMeasurement_93()) as _i5.MultiMeasurement);
   @override
+  _i5.MultiMeasurement get minGpsTrailDistance =>
+      (super.noSuchMethod(Invocation.getter(#minGpsTrailDistance),
+          returnValue: _FakeMultiMeasurement_93()) as _i5.MultiMeasurement);
+  @override
   bool get didRateApp =>
       (super.noSuchMethod(Invocation.getter(#didRateApp), returnValue: false)
           as bool);
@@ -4702,6 +4706,12 @@ class MockUserPreferenceManager extends _i1.Mock
   _i2.Future<void> setFishingSpotDistance(_i5.MultiMeasurement? distance) =>
       (super.noSuchMethod(
           Invocation.method(#setFishingSpotDistance, [distance]),
+          returnValue: Future<void>.value(),
+          returnValueForMissingStub: Future<void>.value()) as _i2.Future<void>);
+  @override
+  _i2.Future<void> setMinGpsTrailDistance(_i5.MultiMeasurement? distance) =>
+      (super.noSuchMethod(
+          Invocation.method(#setMinGpsTrailDistance, [distance]),
           returnValue: Future<void>.value(),
           returnValueForMissingStub: Future<void>.value()) as _i2.Future<void>);
   @override

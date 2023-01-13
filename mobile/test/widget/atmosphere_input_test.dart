@@ -64,6 +64,14 @@ void main() {
         ),
       ),
     );
+    when(appManager.userPreferenceManager.minGpsTrailDistance)
+        .thenReturn(MultiMeasurement(
+      system: MeasurementSystem.imperial_whole,
+      mainValue: Measurement(
+        unit: Unit.feet,
+        value: 150,
+      ),
+    ));
     when(appManager.userPreferenceManager.stream)
         .thenAnswer((_) => const Stream.empty());
 
