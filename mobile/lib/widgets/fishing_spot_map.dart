@@ -53,7 +53,11 @@ class FishingSpotMap extends StatefulWidget {
   final bool showMyLocationButton;
   final bool showZoomExtentsButton;
   final bool showMapTypeButton;
+
+  /// Regardless of this value, the GPS trail button is hidden if a new fishing
+  /// spot is being picked (i.e. [pickerSettings] is not null).
   final bool showGpsTrailButton;
+
   final bool showFishingSpotActionButtons;
 
   /// Widgets placed in the map's stack, between the actual map, and the search
@@ -438,7 +442,7 @@ class FishingSpotMapState extends State<FishingSpotMap> {
   }
 
   Widget _buildGpsTrailButton() {
-    if (!widget.showGpsTrailButton) {
+    if (!widget.showGpsTrailButton || _isPicking) {
       return const Empty();
     }
 
@@ -689,6 +693,10 @@ class FishingSpotMapState extends State<FishingSpotMap> {
   }
 
   void _updateGpsTrail(EntityEvent<GpsTrail> event) {
+    if (_isPicking) {
+      return;
+    }
+
     _setupOrUpdateGpsTrail();
 
     // Update FAB.
@@ -703,6 +711,10 @@ class FishingSpotMapState extends State<FishingSpotMap> {
   }
 
   Future<void> _setupOrUpdateGpsTrail() async {
+    if (_isPicking) {
+      return;
+    }
+
     var gpsTrail = _gpsTrailManager.activeTrial;
     if (gpsTrail == null) {
       await _activeTrail?.clear();
@@ -915,7 +927,7 @@ extension _Symbols on Symbol {
 
   bool get hasFishingSpot => fishingSpot != null;
 
-  FishingSpot? get fishingSpot => data?[_keyFishingSpot] as FishingSpot;
+  FishingSpot? get fishingSpot => data?[_keyFishingSpot];
 
   set fishingSpot(FishingSpot? fishingSpot) =>
       data?[_keyFishingSpot] = fishingSpot;

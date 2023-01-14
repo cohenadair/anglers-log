@@ -3,9 +3,12 @@ import 'dart:math';
 import 'package:collection/collection.dart' show IterableExtension;
 import 'package:flutter/material.dart';
 import 'package:mapbox_gl/mapbox_gl.dart';
+import 'package:mobile/fishing_spot_manager.dart';
 import 'package:mobile/user_preference_manager.dart';
 import 'package:quiver/core.dart';
+import 'package:quiver/strings.dart';
 
+import '../catch_manager.dart';
 import '../model/gen/anglerslog.pb.dart';
 
 import '../res/dimen.dart';
@@ -14,9 +17,13 @@ import 'protobuf_utils.dart';
 const mapPinActive = "active-pin";
 const mapPinInactive = "inactive-pin";
 const mapPinSize = 1.25;
+const mapImageDirectionArrow = "direction-arrow";
 const mapZoomDefault = 13.0;
 const mapZoomFollowingUser = 18.0;
 const mapLineDefaultWidth = 2.5;
+
+// From https://sciencing.com/convert-distances-degrees-meters-7858322.html.
+const metersPerDegree = 111139;
 
 class MapType {
   static MapType of(BuildContext context) =>
@@ -72,23 +79,33 @@ class MapType {
 
 class GpsMapTrail {
   static const _sizeDirectionArrow = 0.75;
+  static const _symbolDataCatchId = "catch_id";
 
   final MapboxMapController? controller;
+  final void Function(Id catchId)? onCatchSymbolTapped;
   final List<Symbol> _symbols = [];
 
-  GpsMapTrail(this.controller);
+  GpsMapTrail(this.controller, [this.onCatchSymbolTapped]) {
+    controller?.onSymbolTapped.add(_onSymbolTapped);
+  }
 
   Future<void> clear() async {
     controller?.removeSymbols(_symbols);
+    controller?.onSymbolTapped.remove(_onSymbolTapped);
   }
 
-  Future<void> draw(BuildContext context, GpsTrail trail) async {
+  Future<void> draw(
+    BuildContext context,
+    GpsTrail trail, {
+    bool includeCatches = false,
+  }) async {
     // Nothing needs to be added, exit early.
     if (_symbols.length == trail.points.length) {
       return;
     }
 
     var symbols = <SymbolOptions>[];
+    var data = <Map<String, dynamic>>[];
     for (int i = 0; i < trail.points.length; i++) {
       // Symbol already exists for this point.
       if (_symbols.length > i) {
@@ -96,14 +113,41 @@ class GpsMapTrail {
       }
 
       symbols.add(SymbolOptions(
-        iconImage: "direction-arrow",
+        iconImage: mapImageDirectionArrow,
         iconRotate: trail.points[i].heading,
         iconSize: _sizeDirectionArrow,
         geometry: trail.points[i].latLng,
       ));
+      data.add({});
     }
 
-    _symbols.addAll(await controller?.addSymbols(symbols) ?? []);
+    if (includeCatches) {
+      var catches = CatchManager.of(context).catchesForGpsTrail(trail);
+      for (var cat in catches) {
+        symbols.add(SymbolOptions(
+          iconImage: mapPinInactive,
+          iconSize: mapPinSize,
+          geometry:
+              FishingSpotManager.of(context).entity(cat.fishingSpotId)!.latLng,
+        ));
+        data.add({_symbolDataCatchId: cat.id.uuid});
+      }
+    }
+
+    _symbols.addAll(await controller?.addSymbols(symbols, data) ?? []);
+  }
+
+  void _onSymbolTapped(Symbol symbol) {
+    if (onCatchSymbolTapped == null) {
+      return;
+    }
+
+    var id = symbol.data?[_symbolDataCatchId];
+    if (isEmpty(id)) {
+      return;
+    }
+
+    onCatchSymbolTapped!(Id(uuid: id));
   }
 }
 
@@ -113,9 +157,6 @@ double distanceBetween(LatLng? latLng1, LatLng? latLng2) {
   if (latLng1 == null || latLng2 == null) {
     return 0;
   }
-
-  // From https://sciencing.com/convert-distances-degrees-meters-7858322.html.
-  var metersPerDegree = 111139;
 
   var latDelta = (latLng1.latitude - latLng2.latitude).abs();
   var lngDelta = (latLng1.longitude - latLng2.longitude).abs();
@@ -185,6 +226,23 @@ extension LatLngBoundsExt on LatLngBounds {
       southwest.latitude + (southwest.latitude - northeast.latitude).abs() / 2,
       southwest.longitude +
           (southwest.longitude - northeast.longitude).abs() / 2);
+
+  LatLngBounds grow(double byMeters) {
+    var offset = byMeters / metersPerDegree;
+    return LatLngBounds(
+      northeast:
+          LatLng(northeast.latitude + offset, northeast.longitude + offset),
+      southwest:
+          LatLng(southwest.latitude - offset, southwest.longitude - offset),
+    );
+  }
+
+  bool contains(LatLng latLng) {
+    return latLng.latitude <= northeast.latitude &&
+        latLng.latitude >= southwest.latitude &&
+        latLng.longitude <= northeast.longitude &&
+        latLng.longitude >= southwest.longitude;
+  }
 }
 
 extension MapboxMapControllers on MapboxMapController {

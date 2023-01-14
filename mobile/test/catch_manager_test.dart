@@ -2584,6 +2584,162 @@ void main() {
     expect(catches.length, 2);
   });
 
+  test("catchesForGpsTrail with null bounds", () {
+    expect(catchManager.catchesForGpsTrail(GpsTrail()), isEmpty);
+  });
+
+  test("catchesForGpsTrail with fishing spots that don't exist", () async {
+    var mockFishingSpotManager = MockFishingSpotManager();
+    when(mockFishingSpotManager.entity(any)).thenReturn(null);
+    when(appManager.app.fishingSpotManager).thenReturn(mockFishingSpotManager);
+
+    await catchManager
+        .addOrUpdate(Catch(id: randomId(), fishingSpotId: randomId()));
+    await catchManager
+        .addOrUpdate(Catch(id: randomId(), fishingSpotId: randomId()));
+    await catchManager
+        .addOrUpdate(Catch(id: randomId(), fishingSpotId: randomId()));
+
+    var gpsTrail = GpsTrail(
+      points: [
+        GpsTrailPoint(lat: 1, lng: 2, heading: 1),
+        GpsTrailPoint(lat: 1, lng: 2, heading: 1),
+      ],
+    );
+
+    expect(catchManager.catchesForGpsTrail(gpsTrail), isEmpty);
+    verify(mockFishingSpotManager.entity(any)).called(3);
+  });
+
+  test("catchesForGpsTrail with catches outside of time range", () async {
+    var mockFishingSpotManager = MockFishingSpotManager();
+    when(mockFishingSpotManager.entity(any)).thenReturn(FishingSpot(
+      lat: 1.5,
+      lng: 1.5,
+    ));
+
+    when(appManager.app.fishingSpotManager).thenReturn(mockFishingSpotManager);
+
+    // All catches are within the correct map bounds, but only 1 is within the
+    // time range.
+    await catchManager.addOrUpdate(Catch(
+      id: randomId(),
+      fishingSpotId: randomId(),
+      timestamp: Int64(12),
+    ));
+    await catchManager.addOrUpdate(Catch(
+      id: randomId(),
+      fishingSpotId: randomId(),
+      timestamp: Int64(3),
+    ));
+    await catchManager.addOrUpdate(Catch(
+      id: randomId(),
+      fishingSpotId: randomId(),
+      timestamp: Int64(8),
+    ));
+
+    var gpsTrail = GpsTrail(
+      startTimestamp: Int64(5),
+      endTimestamp: Int64(10),
+      points: [
+        GpsTrailPoint(lat: 1, lng: 1, heading: 1),
+        GpsTrailPoint(lat: 2, lng: 2, heading: 1),
+      ],
+    );
+
+    expect(catchManager.catchesForGpsTrail(gpsTrail).length, 1);
+  });
+
+  test("catchesForGpsTrail with catches outside of bounds", () async {
+    var fishingSpotId0 = randomId();
+
+    var mockFishingSpotManager = MockFishingSpotManager();
+    when(mockFishingSpotManager.entity(any)).thenAnswer((invocation) {
+      var id = invocation.positionalArguments.first as Id;
+      if (id == fishingSpotId0) {
+        return FishingSpot(
+          lat: 1.5,
+          lng: 1.5,
+        );
+      } else {
+        return FishingSpot(
+          lat: 4.5,
+          lng: 4.5,
+        );
+      }
+    });
+
+    when(appManager.app.fishingSpotManager).thenReturn(mockFishingSpotManager);
+
+    // All catches are within the correct time range, but only 1 is within the
+    // map bounds.
+    await catchManager.addOrUpdate(Catch(
+      id: randomId(),
+      fishingSpotId: randomId(),
+      timestamp: Int64(7),
+    ));
+    await catchManager.addOrUpdate(Catch(
+      id: randomId(),
+      fishingSpotId: randomId(),
+      timestamp: Int64(6),
+    ));
+    await catchManager.addOrUpdate(Catch(
+      id: randomId(),
+      fishingSpotId: fishingSpotId0,
+      timestamp: Int64(8),
+    ));
+
+    var gpsTrail = GpsTrail(
+      startTimestamp: Int64(5),
+      endTimestamp: Int64(10),
+      points: [
+        GpsTrailPoint(lat: 1, lng: 1, heading: 1),
+        GpsTrailPoint(lat: 2, lng: 2, heading: 1),
+      ],
+    );
+
+    expect(catchManager.catchesForGpsTrail(gpsTrail).length, 1);
+  });
+
+  test("catchesForGpsTrail for in progress trail", () async {
+    var mockFishingSpotManager = MockFishingSpotManager();
+    when(mockFishingSpotManager.entity(any)).thenReturn(FishingSpot(
+      lat: 1.5,
+      lng: 1.5,
+    ));
+
+    when(appManager.app.fishingSpotManager).thenReturn(mockFishingSpotManager);
+    when(appManager.timeManager.currentTimestamp).thenReturn(15);
+
+    // All catches are within the correct map bounds, but only 2 are within the
+    // time range.
+    await catchManager.addOrUpdate(Catch(
+      id: randomId(),
+      fishingSpotId: randomId(),
+      timestamp: Int64(12),
+    ));
+    await catchManager.addOrUpdate(Catch(
+      id: randomId(),
+      fishingSpotId: randomId(),
+      timestamp: Int64(3),
+    ));
+    await catchManager.addOrUpdate(Catch(
+      id: randomId(),
+      fishingSpotId: randomId(),
+      timestamp: Int64(8),
+    ));
+
+    var gpsTrail = GpsTrail(
+      startTimestamp: Int64(5),
+      points: [
+        GpsTrailPoint(lat: 1, lng: 1, heading: 1),
+        GpsTrailPoint(lat: 2, lng: 2, heading: 1),
+      ],
+    );
+
+    expect(catchManager.catchesForGpsTrail(gpsTrail).length, 2);
+  });
+
   testWidgets("imageNamesSortedByTimestamp", (tester) async {
     var catch1 = Catch()
       ..id = randomId()

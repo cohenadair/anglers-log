@@ -1235,6 +1235,17 @@ void main() {
   testWidgets("GPS trail button is hidden", (tester) async {
     await pumpMapWrapper(tester, FishingSpotMap(showGpsTrailButton: false));
     expect(find.byIcon(iconGpsTrail), findsNothing);
+
+    await pumpMapWrapper(
+      tester,
+      FishingSpotMap(
+        showGpsTrailButton: true,
+        pickerSettings: FishingSpotMapPickerSettings(
+          controller: InputController<FishingSpot>(),
+        ),
+      ),
+    );
+    expect(find.byIcon(iconGpsTrail), findsNothing);
   });
 
   testWidgets("GPS trail button starts tracking", (tester) async {
@@ -1345,5 +1356,38 @@ void main() {
     await tester.pumpAndSettle();
 
     verify(mapController.value.animateCamera(any)).called(1);
+  });
+
+  testWidgets("GPS trail update exits early if picking", (tester) async {
+    var controller = StreamController<EntityEvent<GpsTrail>>.broadcast();
+    when(appManager.gpsTrailManager.stream)
+        .thenAnswer((_) => controller.stream);
+
+    await pumpMapWrapper(
+      tester,
+      FishingSpotMap(
+        showGpsTrailButton: true,
+        pickerSettings: FishingSpotMapPickerSettings(
+          controller: InputController<FishingSpot>(),
+        ),
+      ),
+    );
+
+    controller.add(
+        EntityEvent<GpsTrail>(GpsTrailEventType.startTracking, GpsTrail()));
+    verifyNever(appManager.gpsTrailManager.activeTrial);
+  });
+
+  testWidgets("GPS trail setup exits early if picking", (tester) async {
+    await pumpMapWrapper(
+      tester,
+      FishingSpotMap(
+        showGpsTrailButton: true,
+        pickerSettings: FishingSpotMapPickerSettings(
+          controller: InputController<FishingSpot>(),
+        ),
+      ),
+    );
+    verifyNever(appManager.gpsTrailManager.activeTrial);
   });
 }

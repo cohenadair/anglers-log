@@ -165,6 +165,7 @@ Trip_CatchesPerEntity newInputItemShim(dynamic pickerItem) =>
 @GenerateMocks([Package])
 @GenerateMocks([PackageInfo])
 @GenerateMocks([StoreProduct])
+@GenerateMocks([map.Symbol])
 @GenerateMocks([CustomerInfo])
 @GenerateMocks([], customMocks: [
   MockSpec<QuantityPickerInputDelegate>(

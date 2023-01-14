@@ -421,16 +421,18 @@ class _Fake$PackageCopyWith_127<$Res> extends _i1.Fake
 class _Fake$StoreProductCopyWith_128<$Res> extends _i1.Fake
     implements _i66.$StoreProductCopyWith<$Res> {}
 
-class _FakeEntitlementInfos_129 extends _i1.Fake
+class _FakeSymbolOptions_129 extends _i1.Fake implements _i63.SymbolOptions {}
+
+class _FakeEntitlementInfos_130 extends _i1.Fake
     implements _i66.EntitlementInfos {}
 
-class _Fake$CustomerInfoCopyWith_130<$Res> extends _i1.Fake
+class _Fake$CustomerInfoCopyWith_131<$Res> extends _i1.Fake
     implements _i66.$CustomerInfoCopyWith<$Res> {}
 
-class _FakeSetInputController_131<T> extends _i1.Fake
+class _FakeSetInputController_132<T> extends _i1.Fake
     implements _i70.SetInputController<T> {}
 
-class _FakeWidget_132 extends _i1.Fake implements _i61.Widget {
+class _FakeWidget_133 extends _i1.Fake implements _i61.Widget {
   @override
   String toString(
           {_i61.DiagnosticLevel? minLevel = _i61.DiagnosticLevel.info}) =>
@@ -1809,6 +1811,10 @@ class MockCatchManager extends _i1.Mock implements _i12.CatchManager {
       (super.noSuchMethod(
           Invocation.method(#catches, [context], {#filter: filter, #opt: opt}),
           returnValue: <_i5.Catch>[]) as List<_i5.Catch>);
+  @override
+  Iterable<_i5.Catch> catchesForGpsTrail(_i5.GpsTrail? trail) =>
+      (super.noSuchMethod(Invocation.method(#catchesForGpsTrail, [trail]),
+          returnValue: <_i5.Catch>[]) as Iterable<_i5.Catch>);
   @override
   List<String> imageNamesSortedByTimestamp(_i61.BuildContext? context) => (super
       .noSuchMethod(Invocation.method(#imageNamesSortedByTimestamp, [context]),
@@ -7069,6 +7075,35 @@ class MockStoreProduct extends _i1.Mock implements _i66.StoreProduct {
           returnValue: <String, dynamic>{}) as Map<String, dynamic>);
 }
 
+/// A class which mocks [Symbol].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockSymbol extends _i1.Mock implements _i63.Symbol {
+  MockSymbol() {
+    _i1.throwOnMissingStub(this);
+  }
+
+  @override
+  _i63.SymbolOptions get options =>
+      (super.noSuchMethod(Invocation.getter(#options),
+          returnValue: _FakeSymbolOptions_129()) as _i63.SymbolOptions);
+  @override
+  set options(_i63.SymbolOptions? _options) =>
+      super.noSuchMethod(Invocation.setter(#options, _options),
+          returnValueForMissingStub: null);
+  @override
+  String get id =>
+      (super.noSuchMethod(Invocation.getter(#id), returnValue: '') as String);
+  @override
+  Map<String, dynamic> toGeoJson() =>
+      (super.noSuchMethod(Invocation.method(#toGeoJson, []),
+          returnValue: <String, dynamic>{}) as Map<String, dynamic>);
+  @override
+  void translate(_i63.LatLng? delta) =>
+      super.noSuchMethod(Invocation.method(#translate, [delta]),
+          returnValueForMissingStub: null);
+}
+
 /// A class which mocks [CustomerInfo].
 ///
 /// See the documentation for Mockito's code generation for more information.
@@ -7080,7 +7115,7 @@ class MockCustomerInfo extends _i1.Mock implements _i66.CustomerInfo {
   @override
   _i66.EntitlementInfos get entitlements =>
       (super.noSuchMethod(Invocation.getter(#entitlements),
-          returnValue: _FakeEntitlementInfos_129()) as _i66.EntitlementInfos);
+          returnValue: _FakeEntitlementInfos_130()) as _i66.EntitlementInfos);
   @override
   Map<String, String> get allPurchaseDates =>
       (super.noSuchMethod(Invocation.getter(#allPurchaseDates),
@@ -7117,7 +7152,7 @@ class MockCustomerInfo extends _i1.Mock implements _i66.CustomerInfo {
   @override
   _i66.$CustomerInfoCopyWith<_i66.CustomerInfo> get copyWith =>
       (super.noSuchMethod(Invocation.getter(#copyWith),
-              returnValue: _Fake$CustomerInfoCopyWith_130<_i66.CustomerInfo>())
+              returnValue: _Fake$CustomerInfoCopyWith_131<_i66.CustomerInfo>())
           as _i66.$CustomerInfoCopyWith<_i66.CustomerInfo>);
   @override
   Map<String, dynamic> toJson() =>
@@ -7139,7 +7174,7 @@ class MockQuantityPickerInputDelegate<PickerType extends _i72.GeneratedMessage,
   @override
   _i70.SetInputController<InputType> get controller =>
       (super.noSuchMethod(Invocation.getter(#controller),
-              returnValue: _FakeSetInputController_131<InputType>())
+              returnValue: _FakeSetInputController_132<InputType>())
           as _i70.SetInputController<InputType>);
   @override
   Set<PickerType> get pickerTypeInitialValues =>
@@ -7149,7 +7184,7 @@ class MockQuantityPickerInputDelegate<PickerType extends _i72.GeneratedMessage,
   _i61.Widget pickerPage(
           _i84.ManageableListPagePickerSettings<PickerType>? pickerSettings) =>
       (super.noSuchMethod(Invocation.method(#pickerPage, [pickerSettings]),
-          returnValue: _FakeWidget_132()) as _i61.Widget);
+          returnValue: _FakeWidget_133()) as _i61.Widget);
   @override
   bool inputTypeEntityExists(InputType? item) =>
       (super.noSuchMethod(Invocation.method(#inputTypeEntityExists, [item]),

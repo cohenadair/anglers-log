@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:mobile/time_manager.dart';
 import 'package:mobile/trip_manager.dart';
 import 'package:mobile/user_preference_manager.dart';
+import 'package:mobile/utils/map_utils.dart';
 import 'package:provider/provider.dart';
 import 'package:quiver/strings.dart';
 
@@ -31,6 +32,10 @@ import 'water_clarity_manager.dart';
 class CatchManager extends EntityManager<Catch> {
   static CatchManager of(BuildContext context) =>
       Provider.of<AppManager>(context, listen: false).catchManager;
+
+  /// The number of meters by which to increase a [GpsTrail] bounds when
+  /// determining if a catch occurred with that [GpsTrail].
+  static const _gpsTrailCatchTolerance = 200.0;
 
   final _log = const Log("CatchManager");
 
@@ -185,6 +190,30 @@ class CatchManager extends EntityManager<Catch> {
     return isolatedFilteredCatches(opt)
         .where((cat) => matchesFilter(cat.id, filter, context))
         .toList();
+  }
+
+  /// Returns a list of catches that occurred within the given [GpsTrail].
+  Iterable<Catch> catchesForGpsTrail(GpsTrail trail) {
+    var trailBounds = mapBounds(trail.points.map((e) => e.latLng))
+        ?.grow(_gpsTrailCatchTolerance);
+    if (trailBounds == null) {
+      return [];
+    }
+
+    return list().where((cat) {
+      var fishingSpot = _fishingSpotManager.entity(cat.fishingSpotId);
+      if (fishingSpot == null) {
+        return false;
+      }
+
+      var endTimestamp = trail.hasEndTimestamp()
+          ? trail.endTimestamp
+          : _timeManager.currentTimestamp;
+
+      return cat.timestamp >= trail.startTimestamp &&
+          cat.timestamp < endTimestamp &&
+          trailBounds.contains(fishingSpot.latLng);
+    });
   }
 
   /// A method that filters a list of given catches. This method is static, and
