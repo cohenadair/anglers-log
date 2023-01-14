@@ -69,6 +69,7 @@ class _FishingSpotListPageState extends State<FishingSpotListPage> {
           title: Strings.of(context).fishingSpotListPageEmptyListTitle,
           description:
               Strings.of(context).fishingSpotListPageEmptyListDescription,
+          descriptionIcon: Icons.add,
         ),
         deleteWidget: (context, fishingSpot) =>
             Text(_fishingSpotManager.deleteMessage(context, fishingSpot)),
