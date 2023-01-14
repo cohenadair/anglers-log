@@ -4,7 +4,6 @@ import 'package:collection/collection.dart';
 import 'package:fixnum/fixnum.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:mapbox_gl/mapbox_gl.dart';
 import 'package:mobile/app_manager.dart';
 import 'package:mobile/location_monitor.dart';
 import 'package:mobile/time_manager.dart';
@@ -94,21 +93,17 @@ class GpsTrailManager extends EntityManager<GpsTrail> {
       return;
     }
 
-    var currentTimestamp = Int64(_timeManager.currentTimestamp);
+    var currentTimestamp = _timeManager.currentTimestamp;
 
     _activeTrail = GpsTrail(
       id: randomId(),
-      startTimestamp: currentTimestamp,
+      startTimestamp: Int64(currentTimestamp),
       timeZone: _timeManager.currentTimeZone,
     );
 
-    var currentLatLng = _locationMonitor.currentLocation;
-    if (currentLatLng != null) {
-      _activeTrail!.points.add(GpsTrailPoint(
-        timestamp: currentTimestamp,
-        lat: currentLatLng.latitude,
-        lng: currentLatLng.longitude,
-      ));
+    var currentLoc = _locationMonitor.currentLocation;
+    if (currentLoc != null) {
+      _activeTrail!.points.add(currentLoc.toGpsTrailPoint(currentTimestamp));
     }
 
     await addOrUpdate(_activeTrail!);
@@ -158,21 +153,18 @@ class GpsTrailManager extends EntityManager<GpsTrail> {
     return format(string, [numOfTrips]);
   }
 
-  void _onLocationUpdate(LatLng latLng) {
+  void _onLocationUpdate(LocationPoint loc) {
     if (!hasActiveTrail ||
-        distanceBetween(latLng, _activeTrail!.points.last.latLng) <
+        distanceBetween(loc.latLng, _activeTrail!.points.last.latLng) <
             _minPointDist) {
       return;
     }
 
-    _activeTrail!.points.add(GpsTrailPoint(
-      timestamp: Int64(_timeManager.currentTimestamp),
-      lat: latLng.latitude,
-      lng: latLng.longitude,
-    ));
+    _activeTrail!.points
+        .add(loc.toGpsTrailPoint(_timeManager.currentTimestamp));
     addOrUpdate(_activeTrail!);
 
-    _log.d("Added to GPS trail: ${latLng.latitude}, ${latLng.longitude}");
+    _log.d("Added to GPS trail: $loc");
   }
 
   void _notifyOnStartTracking() {

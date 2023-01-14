@@ -2221,12 +2221,13 @@ const GpsTrailPoint$json = const {
     const {'1': 'timestamp', '3': 1, '4': 1, '5': 4, '10': 'timestamp'},
     const {'1': 'lat', '3': 2, '4': 1, '5': 1, '10': 'lat'},
     const {'1': 'lng', '3': 3, '4': 1, '5': 1, '10': 'lng'},
+    const {'1': 'heading', '3': 4, '4': 1, '5': 1, '10': 'heading'},
   ],
 };
 
 /// Descriptor for `GpsTrailPoint`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List gpsTrailPointDescriptor = $convert.base64Decode(
-    'Cg1HcHNUcmFpbFBvaW50EhwKCXRpbWVzdGFtcBgBIAEoBFIJdGltZXN0YW1wEhAKA2xhdBgCIAEoAVIDbGF0EhAKA2xuZxgDIAEoAVIDbG5n');
+    'Cg1HcHNUcmFpbFBvaW50EhwKCXRpbWVzdGFtcBgBIAEoBFIJdGltZXN0YW1wEhAKA2xhdBgCIAEoAVIDbGF0EhAKA2xuZxgDIAEoAVIDbG5nEhgKB2hlYWRpbmcYBCABKAFSB2hlYWRpbmc=');
 @$core.Deprecated('Use gpsTrailDescriptor instead')
 const GpsTrail$json = const {
   '1': 'GpsTrail',

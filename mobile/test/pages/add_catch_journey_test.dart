@@ -70,7 +70,7 @@ void main() {
     when(appManager.localDatabaseManager.insertOrReplace(any, any))
         .thenAnswer((_) => Future.value(true));
 
-    when(appManager.locationMonitor.currentLocation).thenReturn(null);
+    when(appManager.locationMonitor.currentLatLng).thenReturn(null);
 
     when(appManager.propertiesManager.mapboxApiKey).thenReturn("");
 

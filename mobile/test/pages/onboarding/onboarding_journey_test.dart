@@ -30,7 +30,7 @@ void main() {
 
     when(appManager.locationMonitor.initialize())
         .thenAnswer((_) => Future.value(null));
-    when(appManager.locationMonitor.currentLocation).thenReturn(null);
+    when(appManager.locationMonitor.currentLatLng).thenReturn(null);
 
     when(appManager.pollManager.canVote).thenReturn(false);
 

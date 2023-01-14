@@ -38,7 +38,7 @@ void main() {
     when(appManager.reportManager.defaultReport).thenReturn(Report());
     when(appManager.reportManager.displayName(any, any)).thenReturn("Test");
 
-    when(appManager.locationMonitor.currentLocation).thenReturn(null);
+    when(appManager.locationMonitor.currentLatLng).thenReturn(null);
 
     when(appManager.pollManager.canVote).thenReturn(false);
     when(appManager.pollManager.stream).thenAnswer((_) => const Stream.empty());

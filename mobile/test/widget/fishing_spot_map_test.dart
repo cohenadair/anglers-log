@@ -56,7 +56,7 @@ void main() {
 
     when(appManager.ioWrapper.isAndroid).thenReturn(false);
 
-    when(appManager.locationMonitor.currentLocation).thenReturn(null);
+    when(appManager.locationMonitor.currentLatLng).thenReturn(null);
 
     when(appManager.propertiesManager.mapboxApiKey).thenReturn("");
 
@@ -77,7 +77,7 @@ void main() {
 
   testWidgets("My location disabled if current location is null",
       (tester) async {
-    when(appManager.locationMonitor.currentLocation).thenReturn(null);
+    when(appManager.locationMonitor.currentLatLng).thenReturn(null);
     await pumpMapWrapper(tester, FishingSpotMap());
     expect(findMap(tester).myLocationEnabled, isFalse);
   });
@@ -202,7 +202,7 @@ void main() {
   });
 
   testWidgets("Start value is current location", (tester) async {
-    when(appManager.locationMonitor.currentLocation)
+    when(appManager.locationMonitor.currentLatLng)
         .thenReturn(const LatLng(5, 6));
 
     await pumpMapWrapper(tester, FishingSpotMap());
@@ -213,7 +213,7 @@ void main() {
   });
 
   testWidgets("Start value is 0, 0", (tester) async {
-    when(appManager.locationMonitor.currentLocation).thenReturn(null);
+    when(appManager.locationMonitor.currentLatLng).thenReturn(null);
 
     await pumpMapWrapper(tester, FishingSpotMap());
 
@@ -223,7 +223,7 @@ void main() {
   });
 
   testWidgets("Uses default zoom when start is not null", (tester) async {
-    when(appManager.locationMonitor.currentLocation)
+    when(appManager.locationMonitor.currentLatLng)
         .thenReturn(const LatLng(5, 6));
 
     await pumpMapWrapper(tester, FishingSpotMap());
@@ -233,7 +233,7 @@ void main() {
   });
 
   testWidgets("Uses 0 zoom when start value is 0, 0", (tester) async {
-    when(appManager.locationMonitor.currentLocation).thenReturn(null);
+    when(appManager.locationMonitor.currentLatLng).thenReturn(null);
 
     await pumpMapWrapper(tester, FishingSpotMap());
 
@@ -535,7 +535,7 @@ void main() {
   testWidgets("Error getting current location", (tester) async {
     when(appManager.permissionHandlerWrapper.isLocationGranted)
         .thenAnswer((_) => Future.value(true));
-    when(appManager.locationMonitor.currentLocation).thenReturn(null);
+    when(appManager.locationMonitor.currentLatLng).thenReturn(null);
 
     await pumpMapWrapper(
       tester,
@@ -550,7 +550,7 @@ void main() {
 
   testWidgets("Picking current location button drops pin", (tester) async {
     when(appManager.fishingSpotManager.entityExists(any)).thenReturn(false);
-    when(appManager.locationMonitor.currentLocation)
+    when(appManager.locationMonitor.currentLatLng)
         .thenReturn(const LatLng(1, 2));
     when(appManager.permissionHandlerWrapper.isLocationGranted)
         .thenAnswer((_) => Future.value(true));
@@ -571,7 +571,7 @@ void main() {
 
   testWidgets("Current location button clears fishing spot when not picking",
       (tester) async {
-    when(appManager.locationMonitor.currentLocation)
+    when(appManager.locationMonitor.currentLatLng)
         .thenReturn(const LatLng(1, 2));
     when(appManager.permissionHandlerWrapper.isLocationGranted)
         .thenAnswer((_) => Future.value(true));
@@ -607,7 +607,7 @@ void main() {
 
   testWidgets("Current location button starts tracking if GPS trail is active",
       (tester) async {
-    when(appManager.locationMonitor.currentLocation)
+    when(appManager.locationMonitor.currentLatLng)
         .thenReturn(const LatLng(1, 2));
     when(appManager.permissionHandlerWrapper.isLocationGranted)
         .thenAnswer((_) => Future.value(true));
@@ -986,7 +986,7 @@ void main() {
   testWidgets("Setting up picker drops pin at current location",
       (tester) async {
     when(appManager.fishingSpotManager.entityExists(any)).thenReturn(false);
-    when(appManager.locationMonitor.currentLocation)
+    when(appManager.locationMonitor.currentLatLng)
         .thenReturn(const LatLng(1, 2));
 
     await pumpMapWrapper(
@@ -1004,7 +1004,7 @@ void main() {
 
   testWidgets("Setting up picker drops pin at 0, 0", (tester) async {
     when(appManager.fishingSpotManager.entityExists(any)).thenReturn(false);
-    when(appManager.locationMonitor.currentLocation).thenReturn(null);
+    when(appManager.locationMonitor.currentLatLng).thenReturn(null);
 
     await pumpMapWrapper(
       tester,
@@ -1020,7 +1020,7 @@ void main() {
   });
 
   testWidgets("Map movement is animated", (tester) async {
-    when(appManager.locationMonitor.currentLocation)
+    when(appManager.locationMonitor.currentLatLng)
         .thenReturn(const LatLng(1, 2));
     when(appManager.permissionHandlerWrapper.isLocationGranted)
         .thenAnswer((_) => Future.value(true));
@@ -1203,7 +1203,7 @@ void main() {
     when(appManager.permissionHandlerWrapper.isLocationGranted)
         .thenAnswer((_) => Future.value(true));
 
-    when(appManager.locationMonitor.currentLocation)
+    when(appManager.locationMonitor.currentLatLng)
         .thenReturn(const LatLng(0, 0));
 
     await pumpMapWrapper(tester, FishingSpotMap());
@@ -1221,7 +1221,7 @@ void main() {
     await mapController.finishLoading(tester);
 
     // Default position is 0, 0. Set something else so the map actually moves.
-    when(appManager.locationMonitor.currentLocation)
+    when(appManager.locationMonitor.currentLatLng)
         .thenReturn(const LatLng(1, 1));
     await tapAndSettle(tester, find.byIcon(Icons.my_location), 200);
 

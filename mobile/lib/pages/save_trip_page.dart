@@ -474,7 +474,7 @@ class SaveTripPageState extends State<SaveTripPage> {
 
   Widget _buildAtmosphere() {
     // Use the first location we know about.
-    var latLng = _locationMonitor.currentLocation;
+    var latLng = _locationMonitor.currentLatLng;
     FishingSpot? fishingSpot;
     for (var id in _catchesController.value) {
       var cat = _catchManager.entity(id);

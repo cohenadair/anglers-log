@@ -65,7 +65,7 @@ class _DefaultMapboxMapState extends State<DefaultMapboxMap> {
   @override
   Widget build(BuildContext context) {
     var start = widget.startPosition ??
-        _locationMonitor.currentLocation ??
+        _locationMonitor.currentLatLng ??
         const LatLng(0, 0);
 
     return EmptyFutureBuilder<bool>(

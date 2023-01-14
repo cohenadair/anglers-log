@@ -3362,9 +3362,10 @@ class MockLocationMonitor extends _i1.Mock implements _i17.LocationMonitor {
   }
 
   @override
-  _i2.Stream<_i63.LatLng> get stream =>
+  _i2.Stream<_i17.LocationPoint> get stream =>
       (super.noSuchMethod(Invocation.getter(#stream),
-          returnValue: Stream<_i63.LatLng>.empty()) as _i2.Stream<_i63.LatLng>);
+              returnValue: Stream<_i17.LocationPoint>.empty())
+          as _i2.Stream<_i17.LocationPoint>);
   @override
   _i2.Future<void> initialize() =>
       (super.noSuchMethod(Invocation.method(#initialize, []),

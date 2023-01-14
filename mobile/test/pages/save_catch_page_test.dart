@@ -85,7 +85,7 @@ void main() {
     when(appManager.localDatabaseManager.insertOrReplace(any, any))
         .thenAnswer((_) => Future.value(true));
 
-    when(appManager.locationMonitor.currentLocation).thenReturn(null);
+    when(appManager.locationMonitor.currentLatLng).thenReturn(null);
 
     when(appManager.methodManager.entityExists(any)).thenReturn(false);
     when(appManager.methodManager.displayName(any, any))
@@ -1645,7 +1645,7 @@ void main() {
       (tester) async {
     when(appManager.subscriptionManager.isFree).thenReturn(false);
     when(appManager.userPreferenceManager.autoFetchAtmosphere).thenReturn(true);
-    when(appManager.locationMonitor.currentLocation)
+    when(appManager.locationMonitor.currentLatLng)
         .thenReturn(const LatLng(0, 0));
     when(appManager.httpWrapper.get(any))
         .thenAnswer((_) => Future.value(Response("", HttpStatus.ok)));
@@ -1666,7 +1666,7 @@ void main() {
         .thenReturn(dateTime(2020, 1, 1, 15, 30));
     when(appManager.subscriptionManager.isFree).thenReturn(false);
     when(appManager.userPreferenceManager.autoFetchAtmosphere).thenReturn(true);
-    when(appManager.locationMonitor.currentLocation)
+    when(appManager.locationMonitor.currentLatLng)
         .thenReturn(const LatLng(0, 0));
     when(appManager.httpWrapper.get(any))
         .thenAnswer((_) => Future.value(Response("", HttpStatus.ok)));
@@ -1711,7 +1711,7 @@ void main() {
   testWidgets("Atmosphere not fetched for free users", (tester) async {
     when(appManager.subscriptionManager.isFree).thenReturn(true);
     when(appManager.userPreferenceManager.autoFetchAtmosphere).thenReturn(true);
-    when(appManager.locationMonitor.currentLocation)
+    when(appManager.locationMonitor.currentLatLng)
         .thenReturn(const LatLng(0, 0));
     when(appManager.httpWrapper.get(any))
         .thenAnswer((_) => Future.value(Response("", HttpStatus.ok)));
@@ -1729,7 +1729,7 @@ void main() {
   testWidgets("Atmosphere not fetched if not tracking", (tester) async {
     when(appManager.subscriptionManager.isFree).thenReturn(false);
     when(appManager.userPreferenceManager.autoFetchAtmosphere).thenReturn(true);
-    when(appManager.locationMonitor.currentLocation)
+    when(appManager.locationMonitor.currentLatLng)
         .thenReturn(const LatLng(0, 0));
     when(appManager.httpWrapper.get(any))
         .thenAnswer((_) => Future.value(Response("", HttpStatus.ok)));
@@ -1754,7 +1754,7 @@ void main() {
     when(appManager.subscriptionManager.isFree).thenReturn(false);
     when(appManager.userPreferenceManager.autoFetchAtmosphere)
         .thenReturn(false);
-    when(appManager.locationMonitor.currentLocation)
+    when(appManager.locationMonitor.currentLatLng)
         .thenReturn(const LatLng(0, 0));
     when(appManager.httpWrapper.get(any))
         .thenAnswer((_) => Future.value(Response("", HttpStatus.ok)));

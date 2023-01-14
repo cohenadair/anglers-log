@@ -1,8 +1,11 @@
 import 'dart:async';
 
+import 'package:fixnum/fixnum.dart';
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:location/location.dart';
 import 'package:mapbox_gl/mapbox_gl.dart';
+import 'package:mobile/model/gen/anglerslog.pb.dart';
 import 'package:provider/provider.dart';
 
 import 'app_manager.dart';
@@ -17,12 +20,12 @@ class LocationMonitor {
 
   final _log = const Log("LocationMonitor");
   final _distanceFilterMeters = 10.0;
-  final _controller = StreamController<LatLng>.broadcast();
+  final _controller = StreamController<LocationPoint>.broadcast();
 
   final AppManager _appManager;
   final Location _location;
 
-  LatLng? _lastKnownLocation;
+  LocationPoint? _lastKnownLocation;
   bool _initialized = false;
 
   PermissionHandlerWrapper get _permissionHandler =>
@@ -45,22 +48,23 @@ class LocationMonitor {
     // TODO: Location package doesn't get the "last known" location on startup;
     //  it waits for the next location to come in so we use Geolocator to get
     //  the last location immediately. Location package v5+ fixes this.
-    _geolocatorWrapper.getCurrentPosition().then(
-        (value) => _onLocationChanged(LatLng(value.latitude, value.longitude)));
+    _geolocatorWrapper
+        .getCurrentPosition()
+        .then((value) => _onLocationChanged(LocationPoint.fromPosition(value)));
 
     _location.onLocationChanged
-        .listen((value) => _onLocationChanged(
-            value.latitude == null || value.longitude == null
-                ? null
-                : LatLng(value.latitude!, value.longitude!)))
+        .listen((value) =>
+            _onLocationChanged(LocationPoint.fromLocationData(value)))
         .onError((error, _) => _log.d("Location stream error: $error"));
 
     _initialized = true;
   }
 
-  Stream<LatLng> get stream => _controller.stream;
+  Stream<LocationPoint> get stream => _controller.stream;
 
-  LatLng? get currentLocation => _lastKnownLocation;
+  LatLng? get currentLatLng => _lastKnownLocation?.latLng;
+
+  LocationPoint? get currentLocation => _lastKnownLocation;
 
   Future<bool> enableBackgroundMode(BuildContext context) async {
     await _location.changeNotificationOptions(
@@ -76,14 +80,68 @@ class LocationMonitor {
   Future<bool> disableBackgroundMode() =>
       _location.enableBackgroundMode(enable: false);
 
-  void _onLocationChanged(LatLng? latLng) {
-    if (latLng == null || latLng.latitude == 0 || latLng.longitude == 0) {
-      _log.w("Coordinates are null, nothing to do...");
+  void _onLocationChanged(LocationPoint loc) {
+    if (!loc.isValid) {
+      _log.w("Location not valid, nothing to do...");
       return;
     }
 
-    _log.d("Received location update ${latLng.latitude}, ${latLng.longitude}");
-    _lastKnownLocation = latLng;
-    _controller.add(currentLocation!);
+    _log.d("Received location update $loc");
+    _lastKnownLocation = loc;
+    _controller.add(_lastKnownLocation!);
   }
+}
+
+class LocationPoint {
+  static LocationPoint fromLocationData(LocationData data) {
+    if (data.latitude == null ||
+        data.longitude == null ||
+        data.heading == null) {
+      return LocationPoint.invalid();
+    }
+    return LocationPoint(
+      lat: data.latitude!,
+      lng: data.longitude!,
+      heading: data.heading!,
+    );
+  }
+
+  static LocationPoint fromPosition(Position pos) {
+    return LocationPoint(
+      lat: pos.latitude,
+      lng: pos.longitude,
+      heading: pos.heading,
+    );
+  }
+
+  double lat;
+  double lng;
+  double heading;
+
+  LocationPoint({
+    required this.lat,
+    required this.lng,
+    required this.heading,
+  });
+
+  LocationPoint.invalid()
+      : lat = 0,
+        lng = 0,
+        heading = 0;
+
+  LatLng get latLng => LatLng(lat, lng);
+
+  bool get isValid => lat != 0 && lng != 0 && heading != 0;
+
+  GpsTrailPoint toGpsTrailPoint(int timestamp) {
+    return GpsTrailPoint(
+      timestamp: Int64(timestamp),
+      lat: lat,
+      lng: lng,
+      heading: heading,
+    );
+  }
+
+  @override
+  String toString() => "{lat=$lat, lng=$lng, heading=$heading}";
 }

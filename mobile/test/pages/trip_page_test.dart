@@ -206,7 +206,7 @@ void main() {
 
     when(appManager.ioWrapper.isAndroid).thenReturn(false);
 
-    when(appManager.locationMonitor.currentLocation).thenReturn(null);
+    when(appManager.locationMonitor.currentLatLng).thenReturn(null);
 
     when(appManager.speciesManager.entityExists(species[0].id))
         .thenReturn(true);

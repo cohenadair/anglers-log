@@ -90,10 +90,9 @@ void main() {
         ),
       );
 
-      // The last point isn't drawn.
       var result = verify(controller.addSymbols(captureAny));
       result.called(1);
-      expect((result.captured.first as List<SymbolOptions>).length, 2);
+      expect((result.captured.first as List<SymbolOptions>).length, 3);
 
       await gpsMapTrail.draw(
         context,

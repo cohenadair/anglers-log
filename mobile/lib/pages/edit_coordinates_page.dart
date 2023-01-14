@@ -51,8 +51,7 @@ class _EditCoordinatesPageState extends State<EditCoordinatesPage> {
     super.initState();
 
     if (!widget.controller.hasValue) {
-      var currentLatLng =
-          _locationMonitor.currentLocation ?? const LatLng(0, 0);
+      var currentLatLng = _locationMonitor.currentLatLng ?? const LatLng(0, 0);
       widget.controller.value = FishingSpot(
         lat: currentLatLng.latitude,
         lng: currentLatLng.longitude,

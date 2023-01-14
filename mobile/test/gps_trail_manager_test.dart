@@ -5,6 +5,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mapbox_gl/mapbox_gl.dart';
 import 'package:mobile/entity_manager.dart';
 import 'package:mobile/gps_trail_manager.dart';
+import 'package:mobile/location_monitor.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mockito/mockito.dart';
@@ -74,7 +75,7 @@ void main() {
   testWidgets("startTracking adds current location if not null",
       (tester) async {
     when(appManager.locationMonitor.currentLocation)
-        .thenReturn(const LatLng(1, 2));
+        .thenReturn(LocationPoint(lat: 1, lng: 2, heading: 3));
 
     var context = await buildContext(tester);
 
@@ -251,24 +252,28 @@ void main() {
   });
 
   test("_onLocationUpdate exits early if trail isn't active", () async {
-    var testStreamController = StreamController<LatLng>.broadcast();
+    var testStreamController = StreamController<LocationPoint>.broadcast();
     when(appManager.locationMonitor.stream)
         .thenAnswer((_) => testStreamController.stream);
 
     // Reset GpsTrailManager to listen to the updated location stream.
     gpsTrailManager = GpsTrailManager(appManager.app);
 
-    testStreamController.add(const LatLng(35.75919, 105.88602));
+    testStreamController.add(LocationPoint(
+      lat: 35.75919,
+      lng: 105.88602,
+      heading: 100,
+    ));
     expect(gpsTrailManager.hasActiveTrail, isFalse);
   });
 
   testWidgets("_onLocationUpdate exits early if point is too close to last",
       (tester) async {
-    var testStreamController = StreamController<LatLng>.broadcast();
+    var testStreamController = StreamController<LocationPoint>.broadcast();
     when(appManager.locationMonitor.stream)
         .thenAnswer((_) => testStreamController.stream);
     when(appManager.locationMonitor.currentLocation)
-        .thenReturn(const LatLng(35.75919, 105.88602));
+        .thenReturn(LocationPoint(lat: 35.75919, lng: 105.88602, heading: 3));
 
     // Reset GpsTrailManager to listen to the updated location stream.
     gpsTrailManager = GpsTrailManager(appManager.app);
@@ -281,16 +286,20 @@ void main() {
     expect(gpsTrailManager.activeTrial!.points.length, 1);
 
     // Add LatLng that's too close to the first and verify it wasn't added.
-    testStreamController.add(const LatLng(35.75919, 105.88602));
+    testStreamController.add(LocationPoint(
+      lat: 35.75919,
+      lng: 105.88602,
+      heading: 100,
+    ));
     expect(gpsTrailManager.activeTrial!.points.length, 1);
   });
 
   testWidgets("_onLocationUpdate adds point to active trail", (tester) async {
-    var testStreamController = StreamController<LatLng>.broadcast();
+    var testStreamController = StreamController<LocationPoint>.broadcast();
     when(appManager.locationMonitor.stream)
         .thenAnswer((_) => testStreamController.stream);
     when(appManager.locationMonitor.currentLocation)
-        .thenReturn(const LatLng(35.75919, 105.88602));
+        .thenReturn(LocationPoint(lat: 35.75919, lng: 105.88602, heading: 3));
 
     // Reset GpsTrailManager to listen to the updated location stream.
     gpsTrailManager = GpsTrailManager(appManager.app);
@@ -308,8 +317,20 @@ void main() {
       () => gpsTrailManager.activeTrial!.points.length == 4,
     ));
 
-    testStreamController.add(const LatLng(-19.96447, 112.55213));
-    testStreamController.add(const LatLng(-11.66778, -161.35861));
-    testStreamController.add(const LatLng(10.86326, -81.34905));
+    testStreamController.add(LocationPoint(
+      lat: -19.96447,
+      lng: 112.55213,
+      heading: 100,
+    ));
+    testStreamController.add(LocationPoint(
+      lat: -11.66778,
+      lng: -161.35861,
+      heading: 100,
+    ));
+    testStreamController.add(LocationPoint(
+      lat: 10.86326,
+      lng: -81.34905,
+      heading: 100,
+    ));
   });
 }

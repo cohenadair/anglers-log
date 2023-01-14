@@ -83,57 +83,28 @@ class GpsMapTrail {
   }
 
   Future<void> draw(BuildContext context, GpsTrail trail) async {
-    var geometry = _geometryFromTrail(trail);
-
     // Nothing needs to be added, exit early.
-    if (_symbols.length == geometry.length) {
+    if (_symbols.length == trail.points.length) {
       return;
     }
 
     var symbols = <SymbolOptions>[];
-    for (int i = 0; i < geometry.length; i++) {
+    for (int i = 0; i < trail.points.length; i++) {
       // Symbol already exists for this point.
       if (_symbols.length > i) {
         continue;
       }
 
-      // Don't draw an arrow for the last point, because we have no reference
-      // from which to calculate the bearing.
-      if (i == geometry.length - 1) {
-        break;
-      }
-
       symbols.add(SymbolOptions(
         iconImage: "direction-arrow",
-        iconRotate: _bearing(geometry[i], geometry[i + 1]),
+        iconRotate: trail.points[i].heading,
         iconSize: _sizeDirectionArrow,
-        geometry: geometry[i],
+        geometry: trail.points[i].latLng,
       ));
     }
 
     _symbols.addAll(await controller?.addSymbols(symbols) ?? []);
   }
-
-  List<LatLng> _geometryFromTrail(GpsTrail trail) => trail.points
-      .sorted((a, b) => a.timestamp.compareTo(b.timestamp))
-      .map((e) => e.latLng)
-      .toList();
-
-  /// Copied from https://pub.dev/packages/geodesy.
-  double _bearing(LatLng l1, LatLng l2) {
-    var l1LatRadians = _degreeToRadian(l1.latitude);
-    var l2LatRadians = _degreeToRadian(l2.latitude);
-    var lngRadiansDiff = _degreeToRadian(l2.longitude - l1.longitude);
-    var y = sin(lngRadiansDiff) * cos(l2LatRadians);
-    var x = cos(l1LatRadians) * sin(l2LatRadians) -
-        sin(l1LatRadians) * cos(l2LatRadians) * cos(lngRadiansDiff);
-    var radians = atan2(y, x);
-    return (_radianToDegree(radians) + 360) % 360;
-  }
-
-  double _degreeToRadian(num degree) => degree * pi / 180;
-
-  double _radianToDegree(num radian) => radian * 180 / pi;
 }
 
 /// Returns an approximate distance, in meters, between the given [LatLng]

@@ -20,7 +20,7 @@ void main() {
     when(appManager.customEntityManager.entity(any)).thenReturn(null);
     when(appManager.customEntityManager.entityExists(any)).thenReturn(false);
 
-    when(appManager.locationMonitor.currentLocation).thenReturn(null);
+    when(appManager.locationMonitor.currentLatLng).thenReturn(null);
 
     when(appManager.subscriptionManager.isFree).thenReturn(false);
 

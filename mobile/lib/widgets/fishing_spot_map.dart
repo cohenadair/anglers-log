@@ -154,7 +154,7 @@ class FishingSpotMapState extends State<FishingSpotMap> {
     super.initState();
 
     _mapType = MapType.of(context);
-    _myLocationEnabled = _locationMonitor.currentLocation != null;
+    _myLocationEnabled = _locationMonitor.currentLatLng != null;
     _gpsTrailManagerSub = _gpsTrailManager.stream.listen(_updateGpsTrail);
 
     // Refresh state so Mapbox attribution padding is updated. This needs to be
@@ -379,7 +379,7 @@ class FishingSpotMapState extends State<FishingSpotMap> {
           return;
         }
 
-        var currentLocation = _locationMonitor.currentLocation;
+        var currentLocation = _locationMonitor.currentLatLng;
         if (currentLocation == null) {
           safeUseContext(
             this,
@@ -856,7 +856,7 @@ class FishingSpotMapState extends State<FishingSpotMap> {
     }
 
     // If there is no picker value, fallback on the user's current location.
-    _dropPin(_locationMonitor.currentLocation ?? const LatLng(0, 0));
+    _dropPin(_locationMonitor.currentLatLng ?? const LatLng(0, 0));
   }
 
   Future<void> _moveMap(

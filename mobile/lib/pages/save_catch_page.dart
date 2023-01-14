@@ -745,7 +745,7 @@ class SaveCatchPageState extends State<SaveCatchPage> {
     return AtmosphereFetcher(
       _appManager,
       _timestampController.value,
-      fishingSpot?.latLng ?? _locationMonitor.currentLocation,
+      fishingSpot?.latLng ?? _locationMonitor.currentLatLng,
     );
   }
 

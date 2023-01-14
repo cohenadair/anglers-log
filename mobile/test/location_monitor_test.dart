@@ -72,11 +72,39 @@ void main() {
     locationMonitor.stream.listen(expectAsync1((_) => true, count: 1));
 
     controller.add(LocationData.fromMap({"latitude": null}));
-    controller.add(LocationData.fromMap({"latitude": 0.0}));
-    controller.add(LocationData.fromMap({"longitude": 0.0}));
     controller.add(LocationData.fromMap({
       "latitude": 5.0,
       "longitude": 8.0,
+      "heading": 1.0,
     }));
+  });
+
+  test("LocationPoint.fromLocationData returns invalid result", () {
+    expect(
+      LocationPoint.fromLocationData(LocationData.fromMap({"latitude": null}))
+          .isValid,
+      isFalse,
+    );
+    expect(
+      LocationPoint.fromLocationData(LocationData.fromMap({"longitude": null}))
+          .isValid,
+      isFalse,
+    );
+    expect(
+      LocationPoint.fromLocationData(LocationData.fromMap({"heading": null}))
+          .isValid,
+      isFalse,
+    );
+  });
+
+  test("LocationPoint.fromLocationData returns valid", () {
+    expect(
+      LocationPoint.fromLocationData(LocationData.fromMap({
+        "latitude": 5.0,
+        "longitude": 3.0,
+        "heading": 1.0,
+      })).isValid,
+      isTrue,
+    );
   });
 }

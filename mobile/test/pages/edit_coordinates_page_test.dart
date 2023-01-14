@@ -29,7 +29,7 @@ void main() {
   });
 
   testWidgets("Controller defaults to 0, 0", (tester) async {
-    when(appManager.locationMonitor.currentLocation).thenReturn(null);
+    when(appManager.locationMonitor.currentLatLng).thenReturn(null);
 
     var spotController = InputController<FishingSpot>();
     await pumpMap(

@@ -264,7 +264,7 @@ void main() {
       includeLatLngLabels: anyNamed("includeLatLngLabels"),
     )).thenAnswer((invocation) => invocation.positionalArguments[1].name);
 
-    when(appManager.locationMonitor.currentLocation).thenReturn(null);
+    when(appManager.locationMonitor.currentLatLng).thenReturn(null);
 
     when(appManager.speciesManager.entityExists(species[0].id))
         .thenReturn(true);
@@ -357,7 +357,7 @@ void main() {
   });
 
   testWidgets("Atmosphere fetcher uses current location", (tester) async {
-    when(appManager.locationMonitor.currentLocation)
+    when(appManager.locationMonitor.currentLatLng)
         .thenReturn(const map.LatLng(1, 2));
 
     await tester.pumpWidget(Testable(

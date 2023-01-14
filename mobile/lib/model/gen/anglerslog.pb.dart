@@ -5792,6 +5792,12 @@ class GpsTrailPoint extends $pb.GeneratedMessage {
             ? ''
             : 'lng',
         $pb.PbFieldType.OD)
+    ..a<$core.double>(
+        4,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'heading',
+        $pb.PbFieldType.OD)
     ..hasRequiredFields = false;
 
   GpsTrailPoint._() : super();
@@ -5799,6 +5805,7 @@ class GpsTrailPoint extends $pb.GeneratedMessage {
     $fixnum.Int64? timestamp,
     $core.double? lat,
     $core.double? lng,
+    $core.double? heading,
   }) {
     final _result = create();
     if (timestamp != null) {
@@ -5809,6 +5816,9 @@ class GpsTrailPoint extends $pb.GeneratedMessage {
     }
     if (lng != null) {
       _result.lng = lng;
+    }
+    if (heading != null) {
+      _result.heading = heading;
     }
     return _result;
   }
@@ -5874,6 +5884,18 @@ class GpsTrailPoint extends $pb.GeneratedMessage {
   $core.bool hasLng() => $_has(2);
   @$pb.TagNumber(3)
   void clearLng() => clearField(3);
+
+  @$pb.TagNumber(4)
+  $core.double get heading => $_getN(3);
+  @$pb.TagNumber(4)
+  set heading($core.double v) {
+    $_setDouble(3, v);
+  }
+
+  @$pb.TagNumber(4)
+  $core.bool hasHeading() => $_has(3);
+  @$pb.TagNumber(4)
+  void clearHeading() => clearField(4);
 }
 
 class GpsTrail extends $pb.GeneratedMessage {
