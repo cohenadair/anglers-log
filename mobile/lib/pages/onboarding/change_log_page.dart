@@ -9,7 +9,6 @@ import 'package:version/version.dart';
 
 import '../../res/dimen.dart';
 import '../../res/gen/custom_icons.dart';
-import '../../widgets/button.dart';
 import '../../widgets/widget.dart';
 
 class ChangeLogPage extends StatelessWidget {
@@ -48,7 +47,7 @@ class ChangeLogPage extends StatelessWidget {
 
   Widget _build2_3_0(BuildContext context) {
     return ExpansionListItem(
-      title: Text(_buildVersionText(context, "2.3.0")),
+      title: Text(_buildVersionText(context, "2.3.1")),
       isExpanded: true,
       children: [
         BulletList(
