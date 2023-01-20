@@ -1067,4 +1067,18 @@ void main() {
     expect(find.text("3:00 PM"), findsNothing);
     expect(find.text("12:00 AM"), findsNWidgets(2));
   });
+
+  testWidgets("Timestamps show if not included in tracked IDs", (tester) async {
+    when(appManager.userPreferenceManager.tripFieldIds)
+        .thenReturn([randomId()]);
+    appManager.stubCurrentTime(dateTime(2020, 1, 1, 3, 30));
+
+    await tester.pumpWidget(Testable(
+      (_) => const SaveTripPage(),
+      appManager: appManager,
+    ));
+
+    expect(find.text("Jan 1, 2020"), findsNWidgets(2));
+    expect(find.text("3:30 AM"), findsNWidgets(2));
+  });
 }

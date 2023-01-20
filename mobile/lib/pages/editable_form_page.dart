@@ -25,10 +25,10 @@ class EditableFormPage extends StatefulWidget {
 
   /// A list of field IDs being tracked by the user. Used to hide/show fields
   /// accordingly. This value should include custom entity IDs.
-  final List<Id> trackedFieldIds;
+  final Iterable<Id> trackedFieldIds;
 
   /// A list of [CustomEntityValue] objects associated with custom fields.
-  final List<CustomEntityValue> customEntityValues;
+  final Iterable<CustomEntityValue> customEntityValues;
 
   /// When true, users can add custom entities to the form. When false,
   /// [customEntityValues] are ignored. Defaults to true.

@@ -212,9 +212,14 @@ class AnglersLogState extends State<AnglersLog> {
     // Sometimes we need to setup defaults values after the app is updated.
     // Do it here.
     if (didUpdate) {
+      // TODO #800: Remove addition of timestamp IDs when there are no more 2.2.0
+      //  users.
       if (oldVersion == "2.2.0") {
-        _userPreferencesManager.setTripFieldIds(
-            _userPreferencesManager.tripFieldIds..add(tripIdGpsTrails));
+        var currentIds = _userPreferencesManager.tripFieldIds;
+        if (currentIds.isNotEmpty) {
+          _userPreferencesManager
+              .setTripFieldIds(currentIds..add(tripIdGpsTrails));
+        }
       }
     }
 
