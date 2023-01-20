@@ -1096,5 +1096,6 @@ Map<String, Map<String, String>> get englishStrings => {
         "changeLog_2.3.0_4":
             "Fixed a bug where the wrong catches were being shown on the stats page",
         "changeLog_2.3.0_5": "Minor UI bug fixes",
+        "changeLog_2.3.2_1": "Fixed issue where Trip start and end times could not be set",
       },
     };
