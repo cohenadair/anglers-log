@@ -189,7 +189,7 @@ class EditableFormPageState extends State<EditableFormPage> {
       padding: widget.padding,
       fieldBuilder: (context) =>
           <Id, Widget>{for (var id in _fields.keys) id: _inputWidget(id)},
-      onSave: (_) {
+      onSave: () {
         if (widget.onSave == null) {
           return false;
         } else {

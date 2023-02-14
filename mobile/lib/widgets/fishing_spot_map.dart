@@ -376,10 +376,11 @@ class FishingSpotMapState extends State<FishingSpotMap> {
       tooltip: Strings.of(context).mapPageMyLocationTooltip,
       icon: Icons.my_location,
       onPressed: () async {
-        if (!(await requestLocationPermissionIfNeeded(
+        var isGranted = await requestLocationPermissionIfNeeded(
           context: context,
           requestAlways: false,
-        ))) {
+        );
+        if (!isGranted) {
           return;
         }
 
@@ -391,7 +392,7 @@ class FishingSpotMapState extends State<FishingSpotMap> {
                 context, Strings.of(context).mapPageErrorGettingLocation),
           );
         } else {
-          safeUseContext(this, () => setState(() => _myLocationEnabled = true));
+          setState(() => _myLocationEnabled = true);
 
           if (_isPicking) {
             await _dropPin(currentLocation);
@@ -446,21 +447,20 @@ class FishingSpotMapState extends State<FishingSpotMap> {
       return const Empty();
     }
 
-    var tooltip = Strings.of(context).mapPageStartTrackingTooltip;
-    var onPressed = () async {
-      if (await requestLocationPermissionIfNeeded(
+    Future<void> Function() onPressed = () async {
+      var isGranted = await requestLocationPermissionIfNeeded(
         context: context,
         requestAlways: true,
-      )) {
+      );
+      if (isGranted && context.mounted) {
         _gpsTrailManager.startTracking(context);
       }
     };
 
+    var tooltip = Strings.of(context).mapPageStartTrackingTooltip;
     if (_gpsTrailManager.hasActiveTrail) {
       tooltip = Strings.of(context).mapPageStopTrackingTooltip;
-      onPressed = () async {
-        _gpsTrailManager.stopTracking();
-      };
+      onPressed = () => _gpsTrailManager.stopTracking();
     }
 
     return Padding(
@@ -728,7 +728,9 @@ class FishingSpotMapState extends State<FishingSpotMap> {
       await _mapController?.startTracking();
     }
 
-    await _activeTrail!.draw(context, _gpsTrailManager.activeTrial!);
+    if (context.mounted) {
+      await _activeTrail!.draw(context, _gpsTrailManager.activeTrial!);
+    }
 
     // Update the cameras zoom only if needed. Note that you _could_ update
     // latLng here as well, but using updateMyLocationTrackingMode is a

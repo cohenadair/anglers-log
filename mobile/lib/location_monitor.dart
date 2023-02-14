@@ -9,7 +9,6 @@ import 'package:mobile/model/gen/anglerslog.pb.dart';
 import 'package:provider/provider.dart';
 
 import 'app_manager.dart';
-import 'i18n/strings.dart';
 import 'log.dart';
 import 'wrappers/geolocator_wrapper.dart';
 import 'wrappers/permission_handler_wrapper.dart';
@@ -66,9 +65,9 @@ class LocationMonitor {
 
   LocationPoint? get currentLocation => _lastKnownLocation;
 
-  Future<bool> enableBackgroundMode(BuildContext context) async {
+  Future<bool> enableBackgroundMode(String notificationDescription) async {
     await _location.changeNotificationOptions(
-      title: Strings.of(context).permissionLocationNotificationDescription,
+      title: notificationDescription,
       iconName: "notification_icon",
       // TODO: Uncomment when
       //  https://github.com/Lyokone/flutterlocation/issues/702 is fixed.

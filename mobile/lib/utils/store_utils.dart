@@ -19,7 +19,7 @@ Future<void> launchStore(BuildContext context) async {
 
   if (await launcher.canLaunch(url)) {
     launcher.launch(url);
-  } else {
+  } else if (context.mounted) {
     showErrorSnackBar(context, error);
   }
 }

@@ -726,7 +726,7 @@ class SaveReportPageState extends State<SaveReportPage> {
     );
   }
 
-  FutureOr<bool> _save(BuildContext context) {
+  FutureOr<bool> _save() {
     var report = Report()
       ..id = _oldReport?.id ?? randomId()
       ..name = _nameController.value!

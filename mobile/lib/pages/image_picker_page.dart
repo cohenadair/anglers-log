@@ -581,7 +581,7 @@ class ImagePickerPageState extends State<ImagePickerPage> {
     }
 
     var file = File(image.path);
-    var exif = await _Exif.fromFile(file, context);
+    var exif = await _exifFromFile(file);
     var pickedImage = PickedImage(
       originalFile: file,
       dateTime: exif.dateTime,
@@ -614,7 +614,7 @@ class ImagePickerPageState extends State<ImagePickerPage> {
 
     var pickedImages = <PickedImage>[];
     for (var image in images) {
-      var exif = await _Exif.fromFile(image, context);
+      var exif = await _exifFromFile(image);
       pickedImages.add(PickedImage(
         originalFile: image,
         dateTime: exif.dateTime,
@@ -723,7 +723,7 @@ class ImagePickerPageState extends State<ImagePickerPage> {
     // If position and timestamp aren't included, try extracting them from the
     // data.
     if (latLng == null || dateTime == null) {
-      var exif = await _Exif.fromFile(originFile, context);
+      var exif = await _exifFromFile(originFile);
       latLng = latLng ?? exif.latLng;
       dateTime = dateTime ?? exif.dateTime;
     }
@@ -762,11 +762,20 @@ class ImagePickerPageState extends State<ImagePickerPage> {
       size: _approxThumbsOnScreen() * 2,
     );
   }
+
+  Future<_Exif> _exifFromFile(File file) {
+    return _Exif.fromFile(
+        file, ExifWrapper.of(context), TimeManager.of(context));
+  }
 }
 
 class _Exif {
-  static Future<_Exif> fromFile(File file, BuildContext context) async {
-    var exif = await ExifWrapper.of(context).fromPath(file.path);
+  static Future<_Exif> fromFile(
+    File file,
+    ExifWrapper exifWrapper,
+    TimeManager timeManager,
+  ) async {
+    var exif = await exifWrapper.fromPath(file.path);
 
     // NOTE: Observed apps that do _not_ include EXIF data:
     //   - Google Photos (Android)
@@ -776,9 +785,7 @@ class _Exif {
 
     return _Exif._(
       latLng == null ? null : maps.LatLng(latLng.latitude, latLng.longitude),
-      timestamp == null
-          ? null
-          : TimeManager.of(context).toTZDateTime(timestamp),
+      timestamp == null ? null : timeManager.toTZDateTime(timestamp),
     );
   }
 

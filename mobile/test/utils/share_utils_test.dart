@@ -74,7 +74,7 @@ void main() {
   });
 
   testWidgets("With images", (tester) async {
-    when(appManager.imageManager.imagePaths(any)).thenReturn([]);
+    when(appManager.imageManager.imageXFiles(any)).thenReturn([]);
 
     await share(await context(tester), ["test.png"]);
 
@@ -85,7 +85,7 @@ void main() {
   });
 
   testWidgets("Without images", (tester) async {
-    when(appManager.imageManager.imagePaths(any)).thenReturn([]);
+    when(appManager.imageManager.imageXFiles(any)).thenReturn([]);
     await share(await context(tester), []);
     verify(appManager.sharePlusWrapper.share(any)).called(1);
   });

@@ -172,7 +172,7 @@ class FeedbackPageState extends State<FeedbackPage> {
     }
   }
 
-  Future<bool> _send(BuildContext context) async {
+  Future<bool> _send() async {
     if (!await _io.isConnected()) {
       safeUseContext(
         this,

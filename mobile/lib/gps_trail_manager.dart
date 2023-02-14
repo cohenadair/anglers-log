@@ -94,6 +94,8 @@ class GpsTrailManager extends EntityManager<GpsTrail> {
     }
 
     var currentTimestamp = _timeManager.currentTimestamp;
+    var notificationDescription =
+        Strings.of(context).permissionLocationNotificationDescription;
 
     _activeTrail = GpsTrail(
       id: randomId(),
@@ -107,7 +109,7 @@ class GpsTrailManager extends EntityManager<GpsTrail> {
     }
 
     await addOrUpdate(_activeTrail!);
-    await _locationMonitor.enableBackgroundMode(context);
+    await _locationMonitor.enableBackgroundMode(notificationDescription);
     _notifyOnStartTracking();
   }
 

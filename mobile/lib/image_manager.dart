@@ -3,6 +3,7 @@ import 'dart:typed_data';
 
 import 'package:crypto/crypto.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:path/path.dart';
 import 'package:provider/provider.dart';
 import 'package:quiver/collection.dart';
@@ -73,8 +74,8 @@ class ImageManager {
 
   String imagePath(String name) => "$_imagePath/$name";
 
-  List<String> imagePaths(List<String> names) =>
-      names.map((e) => imagePath(e)).toList();
+  List<XFile> imageXFiles(List<String> names) =>
+      names.map((e) => XFile(imagePath(e))).toList();
 
   File imageFile(String name) => _ioWrapper.file(imagePath(name));
 

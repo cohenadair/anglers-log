@@ -140,7 +140,7 @@ class SaveFishingSpotPageState extends State<SaveFishingSpotPage> {
     );
   }
 
-  FutureOr<bool> _onSave(BuildContext context) async {
+  FutureOr<bool> _onSave() {
     var newFishingSpot = FishingSpot()
       ..id = _oldFishingSpot.id
       ..lat = _coordinatesController.value!.lat

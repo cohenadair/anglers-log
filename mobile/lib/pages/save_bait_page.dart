@@ -133,7 +133,7 @@ class SaveBaitPageState extends State<SaveBaitPage> {
     return BaitVariantListInput(controller: _variantsController);
   }
 
-  FutureOr<bool> _save(BuildContext context) {
+  FutureOr<bool> _save() {
     // imageName is set in _baitManager.addOrUpdate.
     var newBait = Bait()
       ..id = _oldBait?.id ?? randomId()

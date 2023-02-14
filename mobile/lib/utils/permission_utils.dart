@@ -26,12 +26,14 @@ Future<bool> requestLocationPermissionIfNeeded({
   if (ioWrapper.isIOS ||
       (await permissionWrapper.isLocationGranted && requestAlways)) {
     if (ioWrapper.isAndroid) {
-      await _showLocationDialog(
-        context: context,
-        msg: Strings.of(context).permissionGpsTrailDescription,
-        openSettingsAction: () async =>
-            isGranted = await permissionWrapper.requestLocationAlways(),
-      );
+      if (context.mounted) {
+        await _showLocationDialog(
+          context: context,
+          msg: Strings.of(context).permissionGpsTrailDescription,
+          openSettingsAction: () async =>
+              isGranted = await permissionWrapper.requestLocationAlways(),
+        );
+      }
     } else {
       isGranted = await permissionWrapper.requestLocationAlways();
       showDeniedDialog = true;
@@ -49,7 +51,7 @@ Future<bool> requestLocationPermissionIfNeeded({
     return true;
   }
 
-  if (showDeniedDialog) {
+  if (showDeniedDialog && context.mounted) {
     await _showLocationDialog(
       context: context,
       msg: Strings.of(context).permissionCurrentLocationDescription,

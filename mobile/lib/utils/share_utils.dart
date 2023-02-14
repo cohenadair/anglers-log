@@ -27,7 +27,7 @@ Future<void> share(
     return shareWrapper.share(shareText);
   } else {
     return shareWrapper.shareFiles(
-      imageManager.imagePaths(imageNames),
+      imageManager.imageXFiles(imageNames),
       text: shareText,
     );
   }

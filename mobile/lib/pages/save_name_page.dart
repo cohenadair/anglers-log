@@ -58,7 +58,7 @@ class SaveNamePageState extends State<SaveNamePage> {
   Widget build(BuildContext context) {
     return FormPage.immutable(
       title: widget.title,
-      onSave: (_) {
+      onSave: () {
         if (isNotEmpty(widget.oldName) &&
             isNotEmpty(_controller.value) &&
             equalsTrimmedIgnoreCase(widget.oldName!, _controller.value!)) {

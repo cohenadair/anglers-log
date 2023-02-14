@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:collection/collection.dart' show IterableExtension;
 import 'package:flutter/material.dart';
 import 'package:mobile/utils/collection_utils.dart';
+import 'package:mobile/utils/widget_utils.dart';
 
 import '../custom_entity_manager.dart';
 import '../entity_manager.dart';
@@ -71,10 +72,7 @@ class FormPage extends StatefulWidget {
 
   /// Called when the save button is pressed. Returning true will dismiss
   /// the form page; false will leave it open.
-  ///
-  /// A unique [BuildContext] is passed into the function if the current
-  /// [Scaffold] needs to be accessed. For example, to show a [SnackBar].
-  final FutureOr<bool> Function(BuildContext)? onSave;
+  final FutureOr<bool> Function()? onSave;
 
   /// Space between form input widgets.
   final double? runSpacing;
@@ -135,7 +133,7 @@ class FormPage extends StatefulWidget {
     Widget? title,
     Widget? header,
     required FieldListBuilder fieldBuilder,
-    FutureOr<bool> Function(BuildContext)? onSave,
+    FutureOr<bool> Function()? onSave,
     EdgeInsets padding = insetsHorizontalDefault,
     double? runSpacing,
     bool isInputValid = true,
@@ -222,7 +220,7 @@ class FormPageState extends State<FormPage> {
               return ActionButton(
                 text: widget.saveButtonText ?? Strings.of(context).save,
                 onPressed:
-                    widget.isInputValid ? () => _onPressedSave(context) : null,
+                    widget.isInputValid ? () => _onPressedSave() : null,
                 condensed: widget.isEditable,
               );
             },
@@ -294,15 +292,15 @@ class FormPageState extends State<FormPage> {
     );
   }
 
-  void _onPressedSave(BuildContext saveContext) async {
+  Future<void> _onPressedSave() async {
     if (!_formState.validate()) {
       return;
     }
 
     _formState.save();
 
-    if (widget.onSave == null || await widget.onSave!(saveContext)) {
-      Navigator.pop(context);
+    if (widget.onSave == null || await widget.onSave!()) {
+      safeUseContext(this, () => Navigator.pop(context));
     }
   }
 }

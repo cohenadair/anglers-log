@@ -111,7 +111,7 @@ class SaveCustomEntityPageState extends State<SaveCustomEntityPage> {
     );
   }
 
-  FutureOr<bool> _save(BuildContext _) {
+  FutureOr<bool> _save() {
     var customEntity = CustomEntity()
       ..id = _oldEntity?.id ?? randomId()
       ..name = _nameController.value!

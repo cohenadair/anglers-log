@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:share_plus/share_plus.dart';
 
@@ -9,15 +10,13 @@ class SharePlusWrapper {
       Provider.of<AppManager>(context, listen: false).sharePlusWrapper;
 
   Future<void> shareFiles(
-    List<String> paths, {
-    List<String>? mimeTypes,
+    List<XFile> files, {
     String? subject,
     String? text,
     Rect? sharePositionOrigin,
   }) {
-    return Share.shareFiles(
-      paths,
-      mimeTypes: mimeTypes,
+    return Share.shareXFiles(
+      files,
       subject: subject,
       text: text,
       sharePositionOrigin: sharePositionOrigin,

@@ -61,7 +61,7 @@ class _SaveGpsTrailPageState extends State<SaveGpsTrailPage> {
     );
   }
 
-  FutureOr<bool> _onSave(BuildContext context) async {
+  FutureOr<bool> _onSave() {
     var newFishingSpot = _oldTrail.deepCopy();
 
     if (_bodyOfWaterController.hasValue) {

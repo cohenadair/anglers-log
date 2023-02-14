@@ -242,7 +242,7 @@ void main() {
       (_) => FormPage.immutable(
         fieldBuilder: (_) => [],
         isInputValid: true,
-        onSave: (_) => false,
+        onSave: () => false,
       ),
     ));
 
@@ -255,7 +255,7 @@ void main() {
       (_) => FormPage.immutable(
         fieldBuilder: (_) => [],
         isInputValid: true,
-        onSave: (_) => true,
+        onSave: () => true,
       ),
     ));
 
@@ -281,7 +281,7 @@ void main() {
             ),
           ],
           isInputValid: true,
-          onSave: (_) => onFormSaveCalled = true,
+          onSave: () => onFormSaveCalled = true,
         ),
       ),
     );
