@@ -206,7 +206,7 @@ class DialogButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextButton(
       style: TextButton.styleFrom(
-        primary: textColor,
+        foregroundColor: textColor,
       ),
       onPressed: isEnabled
           ? () {

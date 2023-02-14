@@ -123,8 +123,8 @@ class MainPageState extends State<MainPage> {
     return StreamBuilder<void>(
       stream: _pollManager.stream,
       builder: (context, _) => BadgeContainer(
-        child: const Icon(Icons.more_horiz),
         isBadgeVisible: _pollManager.canVote,
+        child: const Icon(Icons.more_horiz),
       ),
     );
   }
@@ -133,8 +133,8 @@ class MainPageState extends State<MainPage> {
     return StreamBuilder<void>(
       stream: _gpsTrailManager.stream,
       builder: (context, _) => BadgeContainer(
-        child: const Icon(Icons.map),
         isBadgeVisible: _gpsTrailManager.hasActiveTrail,
+        child: const Icon(Icons.map),
       ),
     );
   }

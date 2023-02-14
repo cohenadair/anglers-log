@@ -678,7 +678,7 @@ class ImagePickerPageState extends State<ImagePickerPage> {
       // Show error in a post frame callback so the SnackBar animation is
       // correct. This must be done after the navigation, plus any setState
       // calls from onImagesPicked.
-      WidgetsBinding.instance?.addPostFrameCallback((_) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
         showErrorSnackBar(
           context,
           widget.allowsMultipleSelection

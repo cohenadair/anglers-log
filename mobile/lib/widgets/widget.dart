@@ -429,7 +429,7 @@ class AppBarDropdownItem<T> extends DropdownMenuItem<T> {
           child: Text(
             text,
             // Use the same theme as default AppBar title text.
-            style: Theme.of(context).textTheme.headline6,
+            style: Theme.of(context).textTheme.titleLarge,
           ),
           value: value,
         );
@@ -631,12 +631,12 @@ class NoneFormHeader extends StatelessWidget {
   }
 }
 
-class Badge extends StatelessWidget {
+class MyBadge extends StatelessWidget {
   static const _size = 12.0;
 
   final bool isVisible;
 
-  const Badge({
+  const MyBadge({
     required this.isVisible,
   });
 
@@ -670,7 +670,7 @@ class BadgeContainer extends StatelessWidget {
         Positioned(
           top: 0.0,
           right: 0.0,
-          child: Badge(isVisible: isBadgeVisible),
+          child: MyBadge(isVisible: isBadgeVisible),
         ),
       ],
     );

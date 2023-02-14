@@ -39,7 +39,7 @@ void main() {
               matching: find.byType(Container),
             ))
             .key as GlobalKey)
-        .currentContext!)!;
+        .currentContext!);
     expect(scrollable.widget.controller!.offset, 0.0);
 
     // Wait for scroll animation. Duration is scroll delay + duration from

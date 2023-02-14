@@ -252,7 +252,7 @@ class MorePage extends StatelessWidget {
   }) {
     return Row(
       children: [
-        Badge(isVisible: showBadge),
+        MyBadge(isVisible: showBadge),
         const HorizontalSpace(paddingSmall),
         presentPage || onTap != null
             ? (trailing ?? const Empty())

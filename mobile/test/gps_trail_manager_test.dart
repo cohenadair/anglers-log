@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:fixnum/fixnum.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mapbox_gl/mapbox_gl.dart';
 import 'package:mobile/entity_manager.dart';
 import 'package:mobile/gps_trail_manager.dart';
 import 'package:mobile/location_monitor.dart';

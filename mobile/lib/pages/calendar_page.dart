@@ -71,8 +71,8 @@ class _CalendarPageState extends State<CalendarPage> {
     return Scaffold(
       appBar: AppBar(
         bottom: PreferredSize(
-          child: _buildHeader(),
           preferredSize: const Size.fromHeight(_appBarBottomHeight),
+          child: _buildHeader(),
         ),
       ),
       body: EntityListenerBuilder(

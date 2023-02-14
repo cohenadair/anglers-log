@@ -14,8 +14,7 @@ class PurchasesWrapper {
   Future<void> configure(String apiKey) =>
       Purchases.configure(PurchasesConfiguration(apiKey));
 
-  // ignore: avoid_positional_boolean_parameters
-  void setDebugEnabled(bool enabled) => Purchases.setDebugLogsEnabled(enabled);
+  void setLogLevel(LogLevel level) => Purchases.setLogLevel(level);
 
   Future<Offerings> getOfferings() => Purchases.getOfferings();
 

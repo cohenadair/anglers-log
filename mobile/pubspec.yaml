@@ -25,15 +25,15 @@ dependencies:
   archive: ^3.3.1                   # https://pub.dev/packages/archive (verified)
   collection: ^1.15.0               # https://pub.dev/packages/collection (Dart)
   crypto: ^3.0.2                    # https://pub.dev/packages/crypto (Dart)
-  device_info_plus: ^3.2.1          # https://pub.dev/packages/device_info_plus (Flutter)
+  device_info_plus: ^8.1.0          # https://pub.dev/packages/device_info_plus (Flutter)
 
   # https://pub.dev/packages/extension_google_sign_in_as_googleapis_auth (Google)
   extension_google_sign_in_as_googleapis_auth: ^2.0.7
 
-  file_picker: ^4.3.3               # https://pub.dev/packages/file_picker (verified)
-  firebase_analytics: ^9.3.3        # https://pub.dev/packages/firebase_analytics (Google)
-  firebase_core: ^1.21.1            # https://pub.dev/packages/firebase_core (Google)
-  firebase_crashlytics: ^2.8.9      # https://pub.dev/packages/firebase_crashlytics (Google)
+  file_picker: ^5.2.5               # https://pub.dev/packages/file_picker (verified)
+  firebase_analytics: ^10.1.1       # https://pub.dev/packages/firebase_analytics (Google)
+  firebase_core: ^2.5.0             # https://pub.dev/packages/firebase_core (Google)
+  firebase_crashlytics: ^3.0.12     # https://pub.dev/packages/firebase_crashlytics (Google)
   fixnum: ^1.0.1                    # https://pub.dev/packages/fixnum (Dart)
   flutter_image_compress: ^1.1.2    # https://pub.dev/packages/flutter_image_compress
   flutter_native_timezone: ^2.0.0   # https://pub.dev/packages/flutter_native_timezone
@@ -69,13 +69,11 @@ dependencies:
   share_plus: ^4.0.10+1             # https://pub.dev/packages/share_plus (Flutter Community)
   sqflite: ^2.0.2                   # https://pub.dev/packages/sqflite (verified)
 
-  # TODO: Update when update to Flutter 3.
-  # https://pub.dev/packages/syncfusion_flutter_calendar (verified)
-  syncfusion_flutter_calendar: ^19.4.56
-  # https://pub.dev/packages/syncfusion_localizations (verified)
-  syncfusion_localizations: ^19.4.56
+  syncfusion_flutter_calendar: ^20.4.49     # https://pub.dev/packages/syncfusion_flutter_calendar (verified)
+  syncfusion_flutter_core: ^20.4.49         # https://pub.dev/packages/syncfusion_flutter_core (verified)
+  syncfusion_localizations: ^20.4.49        # https://pub.dev/packages/syncfusion_localizations (verified)
 
-  timezone: ^0.8.0                  # https://pub.dev/packages/timezone
+  timezone: ^0.9.1                  # https://pub.dev/packages/timezone
   url_launcher: ^6.1.5              # https://pub.dev/packages/url_launcher (Flutter)
   uuid: ^3.0.6                      # https://pub.dev/packages/uuid (verified)
   version: ^3.0.2                   # https://pub.dev/packages/version (verified)
@@ -83,7 +81,7 @@ dependencies:
 dev_dependencies:
   build_runner: ^2.2.0              # https://pub.dev/packages/build_runner (Dart)
   flutter_launcher_icons: ^0.10.0   # https://pub.dev/packages/flutter_launcher_icons (Flutter)
-  flutter_lints: ^1.0.4             # https://pub.dev/packages/flutter_lints (Flutter)
+  flutter_lints: ^2.0.1             # https://pub.dev/packages/flutter_lints (Flutter)
   flutter_test:
     sdk: flutter
   mockito: ^5.2.0                   # https://pub.dev/packages/mockito (Dart)

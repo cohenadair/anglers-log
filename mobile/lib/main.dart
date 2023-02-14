@@ -67,7 +67,7 @@ void main() async {
 
   // Restrict orientation to portrait for devices with a small width. A width
   // of 740 is less than the smallest iPad, and most Android tablets.
-  var size = MediaQueryData.fromWindow(WidgetsBinding.instance!.window).size;
+  var size = MediaQueryData.fromWindow(WidgetsBinding.instance.window).size;
   if (min(size.width, size.height) < 740) {
     await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   }
@@ -116,14 +116,14 @@ class AnglersLogState extends State<AnglersLog> {
       child: MaterialApp(
         onGenerateTitle: (context) => Strings.of(context).appName,
         theme: ThemeData(
-          primarySwatch: Colors.lightBlue,
           buttonTheme: ButtonThemeData(
             disabledColor: Colors.lightBlue.shade500,
           ),
           iconTheme: const IconThemeData(
             color: Colors.lightBlue,
           ),
-          errorColor: Colors.red,
+          colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.lightBlue)
+              .copyWith(error: Colors.red),
         ),
         home: FutureBuilder<bool>(
           future: _appInitializedFuture,

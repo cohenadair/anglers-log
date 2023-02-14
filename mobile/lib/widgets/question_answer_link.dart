@@ -26,7 +26,7 @@ class QuestionAnswerLink extends StatelessWidget {
         TextSpan(
           text: question,
           style: stylePrimary(context).copyWith(
-            color: Theme.of(context).textTheme.bodyText2!.color,
+            color: Theme.of(context).textTheme.bodyMedium!.color,
           ),
         ),
         const TextSpan(text: " "),

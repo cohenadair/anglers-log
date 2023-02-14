@@ -70,7 +70,7 @@ class _MigrationPageState extends State<MigrationPage> {
         const VerticalSpace(paddingDefault),
         Text(
           Strings.of(context).migrationPageNothingToDoDescription,
-          style: Theme.of(context).textTheme.subtitle1,
+          style: Theme.of(context).textTheme.titleMedium,
           textAlign: TextAlign.center,
         ),
         const VerticalSpace(paddingDefault),

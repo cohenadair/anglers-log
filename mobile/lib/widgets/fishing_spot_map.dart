@@ -163,7 +163,7 @@ class FishingSpotMapState extends State<FishingSpotMap> {
 
     // Refresh state so Mapbox attribution padding is updated. This needs to be
     // done after the fishing spot widget is rendered.
-    WidgetsBinding.instance?.addPostFrameCallback((_) => setState(() {}));
+    WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
   }
 
   @override

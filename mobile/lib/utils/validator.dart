@@ -1,5 +1,4 @@
 import 'package:flutter/cupertino.dart';
-import 'package:intl/intl.dart';
 import 'package:mobile/utils/number_utils.dart';
 import 'package:quiver/strings.dart';
 

@@ -66,9 +66,9 @@ TextStyle stylePrimary(
   BuildContext context, {
   bool enabled = true,
 }) {
-  return Theme.of(context).textTheme.subtitle1!.copyWith(
+  return Theme.of(context).textTheme.titleMedium!.copyWith(
         color: enabled
-            ? Theme.of(context).textTheme.subtitle1!.color
+            ? Theme.of(context).textTheme.titleMedium!.color
             : Theme.of(context).disabledColor,
       );
 }
@@ -83,14 +83,14 @@ TextStyle styleSubtitle(
   BuildContext context, {
   bool enabled = true,
 }) {
-  return Theme.of(context).textTheme.subtitle2!.copyWith(
+  return Theme.of(context).textTheme.titleSmall!.copyWith(
         color: enabled ? Colors.grey : Theme.of(context).disabledColor,
         fontWeight: FontWeight.normal,
       );
 }
 
 TextStyle styleListHeading(BuildContext context) {
-  return Theme.of(context).textTheme.bodyText1!.copyWith(
+  return Theme.of(context).textTheme.bodyLarge!.copyWith(
         color: Theme.of(context).primaryColor,
       );
 }

@@ -132,7 +132,7 @@ class _BackupRestorePageState extends State<_BackupRestorePage> {
 
       // Scroll to the bottom when the state updates. Depending on screen size,
       // users may not be able to see success or error messages.
-      WidgetsBinding.instance?.addPostFrameCallback((_) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
         _scrollController.animateTo(
           _scrollController.position.maxScrollExtent,
           duration: animDurationDefault,

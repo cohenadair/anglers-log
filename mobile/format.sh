@@ -1,2 +1,2 @@
 #!/bin/bash
-flutter format lib/* test/*
+dart format lib/* test/*

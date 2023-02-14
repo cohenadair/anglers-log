@@ -105,7 +105,7 @@ class HowToFeedbackPageState extends State<HowToFeedbackPage> {
     }
 
     var controller =
-        Scrollable.of(_feedbackKey.currentContext!)?.widget.controller;
+        Scrollable.of(_feedbackKey.currentContext!).widget.controller;
     if (controller != null) {
       controller.jumpTo(0.0);
       _isFeedbackShowing = false;

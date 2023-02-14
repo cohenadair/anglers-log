@@ -133,7 +133,7 @@ class SearchBarState extends State<SearchBar> {
                   placeholder: widget.hint,
                   placeholderStyle: Theme.of(context)
                       .textTheme
-                      .subtitle1!
+                      .titleMedium!
                       .copyWith(color: Theme.of(context).disabledColor),
                   controller: _controller,
                   focusNode: _focusNode,

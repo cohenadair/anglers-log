@@ -71,7 +71,8 @@ class SubscriptionManager {
   Future<void> initialize() async {
     // Setup RevenueCat.
     await _purchasesWrapper.configure(_propertiesManager.revenueCatApiKey);
-    _purchasesWrapper.setDebugEnabled(_debugPurchases);
+    _purchasesWrapper
+        .setLogLevel(_debugPurchases ? LogLevel.verbose : LogLevel.error);
 
     // Setup purchase state listener and initial state.
     _purchasesWrapper.addCustomerInfoUpdateListener(_setStateFromPurchaserInfo);
