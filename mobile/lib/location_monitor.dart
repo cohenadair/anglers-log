@@ -81,7 +81,7 @@ class LocationMonitor {
 
   void _onLocationChanged(LocationPoint loc) {
     if (!loc.isValid) {
-      _log.w("Location not valid, nothing to do...");
+      _log.w("Location ($loc) not valid, nothing to do...");
       return;
     }
 
@@ -94,14 +94,13 @@ class LocationMonitor {
 class LocationPoint {
   static LocationPoint fromLocationData(LocationData data) {
     if (data.latitude == null ||
-        data.longitude == null ||
-        data.heading == null) {
+        data.longitude == null) {
       return LocationPoint.invalid();
     }
     return LocationPoint(
       lat: data.latitude!,
       lng: data.longitude!,
-      heading: data.heading!,
+      heading: data.heading,
     );
   }
 
@@ -115,7 +114,7 @@ class LocationPoint {
 
   double lat;
   double lng;
-  double heading;
+  double? heading;
 
   LocationPoint({
     required this.lat,
@@ -126,11 +125,11 @@ class LocationPoint {
   LocationPoint.invalid()
       : lat = 0,
         lng = 0,
-        heading = 0;
+        heading = null;
 
   LatLng get latLng => LatLng(lat, lng);
 
-  bool get isValid => lat != 0 && lng != 0 && heading != 0;
+  bool get isValid => lat != 0 && lng != 0;
 
   GpsTrailPoint toGpsTrailPoint(int timestamp) {
     return GpsTrailPoint(

@@ -90,11 +90,6 @@ void main() {
           .isValid,
       isFalse,
     );
-    expect(
-      LocationPoint.fromLocationData(LocationData.fromMap({"heading": null}))
-          .isValid,
-      isFalse,
-    );
   });
 
   test("LocationPoint.fromLocationData returns valid", () {
@@ -103,6 +98,15 @@ void main() {
         "latitude": 5.0,
         "longitude": 3.0,
         "heading": 1.0,
+      })).isValid,
+      isTrue,
+    );
+
+    expect(
+      LocationPoint.fromLocationData(LocationData.fromMap({
+        "latitude": 5.0,
+        "longitude": 3.0,
+        "heading": null,
       })).isValid,
       isTrue,
     );
