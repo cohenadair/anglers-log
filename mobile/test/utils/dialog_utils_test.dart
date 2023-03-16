@@ -54,7 +54,7 @@ void main() {
       when(appManager.userPreferenceManager.didRateApp).thenReturn(false);
       when(appManager.userPreferenceManager.rateTimerStartedAt).thenReturn(10);
       when(appManager.timeManager.currentTimestamp)
-          .thenReturn((Duration.millisecondsPerDay * (365 / 4) + 10).toInt());
+          .thenReturn((Duration.millisecondsPerDay * (365 / 12) + 10).toInt());
 
       await tapAndSettle(tester, find.byType(Button));
       expect(find.byType(AlertDialog), findsNothing);
@@ -74,7 +74,7 @@ void main() {
       when(appManager.userPreferenceManager.didRateApp).thenReturn(false);
       when(appManager.userPreferenceManager.rateTimerStartedAt).thenReturn(10);
       when(appManager.timeManager.currentTimestamp)
-          .thenReturn((Duration.millisecondsPerDay * (365 / 4) + 20).toInt());
+          .thenReturn((Duration.millisecondsPerDay * (365 / 12) + 20).toInt());
 
       await tapAndSettle(tester, find.byType(Button));
       expect(find.byType(AlertDialog), findsOneWidget);

@@ -125,7 +125,7 @@ bool showRateDialogIfNeeded(BuildContext context) {
     timeManager: timeManager,
     timerStartedAt: preferences.rateTimerStartedAt,
     setTimer: preferences.setRateTimerStartedAt,
-    frequency: (Duration.millisecondsPerDay * (365 / 4)).round(),
+    frequency: (Duration.millisecondsPerDay * (365 / 12)).round(),
   )) {
     return false;
   }
