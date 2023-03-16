@@ -81,7 +81,9 @@ void main() {
   test("TimeZoneLocation displayNameUtc includes offset", () {
     expect(
       TimeZoneLocation.fromName("America/New_York").displayNameUtc,
-      "America/New York (UTC-05:00)",
+      TimeZoneLocation.fromName("America/New_York").currentTimeZone.isDst
+          ? "America/New York (UTC-04:00)"
+          : "America/New York (UTC-05:00)",
     );
   });
 
@@ -95,7 +97,9 @@ void main() {
   test("TimeZoneLocation displayUtc with negative offset", () {
     expect(
       TimeZoneLocation.fromName("America/New_York").displayNameUtc,
-      "America/New York (UTC-05:00)",
+      TimeZoneLocation.fromName("America/New_York").currentTimeZone.isDst
+          ? "America/New York (UTC-04:00)"
+          : "America/New York (UTC-05:00)",
     );
   });
 

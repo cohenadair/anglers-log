@@ -3,6 +3,7 @@ import 'package:mobile/time_manager.dart';
 import 'package:mobile/widgets/input_controller.dart';
 import 'package:mobile/widgets/time_zone_input.dart';
 import 'package:mockito/mockito.dart';
+import 'package:timezone/timezone.dart';
 
 import '../mocks/stubbed_app_manager.dart';
 import '../test_utils.dart';
@@ -43,8 +44,11 @@ void main() {
       appManager: appManager,
     );
 
+    var timezoneToTap = getLocation(defaultTimeZone).currentTimeZone.isDst
+        ? "America/Chicago (UTC-05:00)"
+        : "America/Chicago (UTC-06:00)";
     await tapAndSettle(tester, find.text("Time Zone"));
-    await tapAndSettle(tester, find.text("America/Chicago (UTC-06:00)"));
+    await tapAndSettle(tester, find.text(timezoneToTap));
 
     expect(invoked, isTrue);
     expect(controller.value, "America/Chicago");
