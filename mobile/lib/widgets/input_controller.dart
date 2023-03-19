@@ -279,6 +279,7 @@ class DateTimeInputController extends InputController<TZDateTime?> {
     date = dateTimeToDayAccuracy(dateTime, dateTime.locationName);
     time = TimeOfDay.fromDateTime(dateTime);
 
+    // TODO: Listeners aren't notified when date and time variables are set.
     super.value = value;
   }
 

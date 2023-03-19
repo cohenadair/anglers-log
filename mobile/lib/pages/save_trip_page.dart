@@ -342,6 +342,7 @@ class SaveTripPageState extends State<SaveTripPage> {
         controller: _startTimestampController,
         dateLabel: Strings.of(context).saveTripPageStartDate,
         timeLabel: Strings.of(context).saveTripPageStartDate,
+        onChange: () => setState(() {}),
       ),
     );
   }
@@ -353,6 +354,7 @@ class SaveTripPageState extends State<SaveTripPage> {
         controller: _endTimestampController,
         dateLabel: Strings.of(context).saveTripPageEndDate,
         timeLabel: Strings.of(context).saveTripPageEndDate,
+        onChange: () => setState(() {}),
       ),
     );
   }
@@ -654,11 +656,13 @@ class _DateTimeAllDayPicker extends StatefulWidget {
   final DateTimeInputController controller;
   final String dateLabel;
   final String timeLabel;
+  final VoidCallback? onChange;
 
   const _DateTimeAllDayPicker({
     required this.controller,
     required this.dateLabel,
     required this.timeLabel,
+    this.onChange,
   });
 
   @override
@@ -684,12 +688,14 @@ class _DateTimeAllDayPickerState extends State<_DateTimeAllDayPicker> {
               context,
               controller: widget.controller,
               label: widget.dateLabel,
+              onChange: (_) => widget.onChange?.call(),
             ),
             timePicker: TimePicker(
               context,
               controller: widget.controller,
               label: widget.timeLabel,
               enabled: !_isAllDay,
+              onChange: (_) => widget.onChange?.call(),
             ),
           ),
         ),
