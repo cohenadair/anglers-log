@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:collection/collection.dart' show IterableExtension;
 import 'package:flutter/material.dart';
 import 'package:mobile/utils/collection_utils.dart';
+import 'package:mobile/utils/dialog_utils.dart';
 import 'package:mobile/utils/widget_utils.dart';
 
 import '../custom_entity_manager.dart';
@@ -219,8 +220,7 @@ class FormPageState extends State<FormPage> {
 
               return ActionButton(
                 text: widget.saveButtonText ?? Strings.of(context).save,
-                onPressed:
-                    widget.isInputValid ? () => _onPressedSave() : null,
+                onPressed: widget.isInputValid ? () => _onPressedSave() : null,
                 condensed: widget.isEditable,
               );
             },
@@ -228,21 +228,33 @@ class FormPageState extends State<FormPage> {
           _buildOverflowMenu(),
         ],
       ),
-      body: Padding(
-        padding: widget.padding,
-        child: Form(
-          key: _key,
-          child: ScrollPage(
-            padding: insetsBottomDefault,
-            enableHorizontalSafeArea: false,
-            onRefresh: widget.onRefresh,
-            refreshIndicatorKey: widget.refreshIndicatorKey,
-            children: [
-              Wrap(
-                runSpacing: widget.runSpacing ?? paddingSmall,
-                children: _buildChildren(),
-              ),
-            ],
+      body: WillPopScope(
+        // Note that this isn't called when using a nested Navigator. For
+        // example, in AddCatchJourney.
+        onWillPop: () async {
+          if (widget.showSaveButton) {
+            showDiscardChangesDialog(context);
+            return false;
+          } else {
+            return true;
+          }
+        },
+        child: Padding(
+          padding: widget.padding,
+          child: Form(
+            key: _key,
+            child: ScrollPage(
+              padding: insetsBottomDefault,
+              enableHorizontalSafeArea: false,
+              onRefresh: widget.onRefresh,
+              refreshIndicatorKey: widget.refreshIndicatorKey,
+              children: [
+                Wrap(
+                  runSpacing: widget.runSpacing ?? paddingSmall,
+                  children: _buildChildren(),
+                ),
+              ],
+            ),
           ),
         ),
       ),

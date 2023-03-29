@@ -93,8 +93,7 @@ class LocationMonitor {
 
 class LocationPoint {
   static LocationPoint fromLocationData(LocationData data) {
-    if (data.latitude == null ||
-        data.longitude == null) {
+    if (data.latitude == null || data.longitude == null) {
       return LocationPoint.invalid();
     }
     return LocationPoint(

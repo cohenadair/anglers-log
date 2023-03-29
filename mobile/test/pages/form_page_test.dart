@@ -4,6 +4,7 @@ import 'package:mobile/model/gen/anglerslog.pb.dart';
 import 'package:mobile/pages/form_page.dart';
 import 'package:mobile/pages/pro_page.dart';
 import 'package:mobile/pages/save_custom_entity_page.dart';
+import 'package:mobile/utils/page_utils.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mobile/widgets/button.dart';
 import 'package:mobile/widgets/checkbox_input.dart';
@@ -65,6 +66,60 @@ void main() {
       ),
     );
     expect(find.text("SAVE"), findsNothing);
+  });
+
+  testWidgets("Confirmation dialog shown when save button is shown",
+      (tester) async {
+    await tester.pumpWidget(
+      Testable(
+        (context) => Scaffold(
+          body: Button(
+            text: "TEST",
+            onPressed: () => push(
+              context,
+              FormPage(
+                fieldBuilder: (_) => {},
+                showSaveButton: true,
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+    await tapAndSettle(tester, find.text("TEST"));
+    expect(find.byType(FormPage), findsOneWidget);
+
+    await tapAndSettle(tester, find.byType(BackButton));
+    expect(find.text("DISCARD"), findsOneWidget);
+
+    await tapAndSettle(tester, find.text("DISCARD"));
+    expect(find.byType(FormPage), findsNothing);
+  });
+
+  testWidgets("Confirmation dialog not shown when save button is hidden",
+      (tester) async {
+    await tester.pumpWidget(
+      Testable(
+        (context) => Scaffold(
+          body: Button(
+            text: "TEST",
+            onPressed: () => push(
+              context,
+              FormPage(
+                fieldBuilder: (_) => {},
+                showSaveButton: false,
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+    await tapAndSettle(tester, find.text("TEST"));
+    expect(find.byType(FormPage), findsOneWidget);
+
+    await tapAndSettle(tester, find.byType(BackButton));
+    expect(find.text("DISCARD"), findsNothing);
+    expect(find.byType(FormPage), findsNothing);
   });
 
   testWidgets("Custom save button text", (tester) async {

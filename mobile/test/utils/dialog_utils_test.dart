@@ -183,4 +183,39 @@ void main() {
     var button = findFirstWithText<TextButton>(tester, "TEST");
     expect(button.onPressed, isNull);
   });
+
+  testWidgets("Discard dialog pops by default", (tester) async {
+    await tester.pumpWidget(
+      Testable(
+        (context) => Button(
+          text: "Test",
+          onPressed: () => showDiscardChangesDialog(context),
+        ),
+        appManager: appManager,
+      ),
+    );
+
+    await tapAndSettle(tester, find.byType(Button));
+    await tapAndSettle(tester, find.text("DISCARD"));
+    expect(find.byType(Button), findsNothing);
+  });
+
+  testWidgets("Discard dialog calls onDiscard", (tester) async {
+    var invoked = false;
+    await tester.pumpWidget(
+      Testable(
+        (context) => Button(
+          text: "Test",
+          onPressed: () =>
+              showDiscardChangesDialog(context, () => invoked = true),
+        ),
+        appManager: appManager,
+      ),
+    );
+
+    await tapAndSettle(tester, find.byType(Button));
+    await tapAndSettle(tester, find.text("DISCARD"));
+    expect(find.byType(Button), findsOneWidget);
+    expect(invoked, isTrue);
+  });
 }

@@ -862,4 +862,61 @@ void main() {
     // Ensure stubbed future above finishes before test ends.
     await tester.pump(const Duration(milliseconds: 500));
   });
+
+  testWidgets(
+      "Do not invoke picked callback when backInvokesOnImagesPicked=false",
+      (tester) async {
+    var invoked = false;
+    await tester.pumpWidget(
+      Testable(
+        (context) => Scaffold(
+          body: Button(
+            text: "TEST",
+            onPressed: () => push(
+              context,
+              ImagePickerPage(
+                onImagesPicked: (_, __) => invoked = true,
+                backInvokesOnImagesPicked: false,
+              ),
+            ),
+          ),
+        ),
+        appManager: appManager,
+      ),
+    );
+    await tapAndSettle(tester, find.text("TEST"), 50);
+    expect(find.byType(ImagePickerPage), findsOneWidget);
+
+    await tapAndSettle(tester, find.byType(BackButton));
+    expect(find.byType(ImagePickerPage), findsNothing);
+    expect(invoked, isFalse);
+  });
+
+  testWidgets("Invoke picked callback when backInvokesOnImagesPicked=true",
+      (tester) async {
+    var invoked = false;
+    await tester.pumpWidget(
+      Testable(
+        (context) => Scaffold(
+          body: Button(
+            text: "TEST",
+            onPressed: () => push(
+              context,
+              ImagePickerPage(
+                onImagesPicked: (_, __) => invoked = true,
+                backInvokesOnImagesPicked: true,
+              ),
+            ),
+          ),
+        ),
+        appManager: appManager,
+      ),
+    );
+    await tapAndSettle(tester, find.text("TEST"), 50);
+    expect(find.byType(ImagePickerPage), findsOneWidget);
+
+    await tapAndSettle(tester, find.byType(BackButton));
+    expect(find.byType(ImagePickerPage), findsNothing);
+    expect(invoked, isTrue);
+  });
 }

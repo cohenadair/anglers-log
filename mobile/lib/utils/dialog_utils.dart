@@ -8,6 +8,21 @@ import '../time_manager.dart';
 import '../user_preference_manager.dart';
 import 'store_utils.dart';
 
+void showDiscardChangesDialog(BuildContext context, [VoidCallback? onDiscard]) {
+  _showDestructiveDialog(
+    context: context,
+    description: Text(Strings.of(context).formPageConfirmBackDesc),
+    destroyText: Strings.of(context).formPageConfirmBackAction,
+    onTapDestroy: () {
+      if (onDiscard == null) {
+        Navigator.of(context).pop();
+      } else {
+        onDiscard();
+      }
+    },
+  );
+}
+
 void showDeleteDialog({
   required BuildContext context,
   String? title,

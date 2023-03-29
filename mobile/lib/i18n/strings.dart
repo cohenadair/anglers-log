@@ -943,6 +943,10 @@ class Strings {
 
   String get formPageManageUnits => _string("formPage_manageUnits");
 
+  String get formPageConfirmBackDesc => _string("formPage_confirmBackDesc");
+
+  String get formPageConfirmBackAction => _string("formPage_confirmBackAction");
+
   String get imagePickerConfirmDelete => _string("imagePicker_confirmDelete");
 
   String get imagePickerPageNoPhotosFoundTitle =>

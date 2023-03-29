@@ -457,6 +457,9 @@ Map<String, Map<String, String>> get englishStrings => {
         "formPage_manageFieldsProDescription":
             "You must be an Anglers' Log Pro subscriber to use custom fields.",
         "formPage_manageUnits": "Manage Units",
+        "formPage_confirmBackDesc":
+            "Any unsaved changes will be lost. Are you sure you want to discard changes and go back?",
+        "formPage_confirmBackAction": "Discard",
         "saveCustomEntityPage_newTitle": "New Field",
         "saveCustomEntityPage_editTitle": "Edit Field",
         "saveCustomEntityPage_nameExists": "Field name already exists",

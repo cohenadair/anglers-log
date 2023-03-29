@@ -90,7 +90,9 @@ void main() {
   test("TimeZoneLocation displayUtc with 0 offset", () {
     expect(
       TimeZoneLocation.fromName("Atlantic/Azores").displayNameUtc,
-      "Atlantic/Azores (UTC-01:00)",
+      TimeZoneLocation.fromName("Atlantic/Azores").currentTimeZone.isDst
+          ? "Atlantic/Azores (UTC)"
+          : "Atlantic/Azores (UTC-01:00)",
     );
   });
 

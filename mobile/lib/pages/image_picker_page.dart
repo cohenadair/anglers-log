@@ -98,9 +98,14 @@ class PickedImage {
 ///   attached from the app.
 /// There's no known way to solve both problems in a user-friendly way.
 class ImagePickerPage extends StatefulWidget {
-  /// Invoked when the user presses the back button, and all images have been
-  /// loaded from the device's gallery.
+  /// Invoked when the user presses the back button (if
+  /// [backInvokesOnImagesPicked] is true), and all images have been loaded from
+  /// the device's gallery.
   final void Function(BuildContext context, List<PickedImage>) onImagesPicked;
+
+  /// When true (default), [onImagesPicked] is invoked when the back button is
+  /// pressed. If false, [onImagesPicked] is not invoked.
+  final bool backInvokesOnImagesPicked;
 
   final bool allowsMultipleSelection;
 
@@ -122,6 +127,7 @@ class ImagePickerPage extends StatefulWidget {
 
   const ImagePickerPage({
     required this.onImagesPicked,
+    this.backInvokesOnImagesPicked = true,
     this.allowsMultipleSelection = true,
     this.actionText,
     this.popsOnFinish = true,
@@ -277,11 +283,16 @@ class ImagePickerPageState extends State<ImagePickerPage> {
 
     return WillPopScope(
       onWillPop: () {
-        _finishPickingImagesFromGallery();
-
-        // Always return false here. The page will be popped manually after
-        // picked images are fetched.
-        return Future.value(false);
+        if (widget.backInvokesOnImagesPicked) {
+          _finishPickingImagesFromGallery();
+          // Always return false here. The page will be popped manually after
+          // picked images are fetched.
+          return Future.value(false);
+        } else {
+          // Pop the page, since there will be no manual pop since the finished
+          // callback is not invoked.
+          return Future.value(true);
+        }
       },
       child: child,
     );
