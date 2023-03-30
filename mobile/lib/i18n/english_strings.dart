@@ -1100,6 +1100,13 @@ Map<String, Map<String, String>> get englishStrings => {
             "Fixed a bug where the wrong catches were being shown on the stats page",
         "changeLog_2.3.0_5": "Minor UI bug fixes",
         "changeLog_2.3.2_1":
-            "Fixed issue where Trip start and end times could not be set",
+            "Fixed an issue where trip start and end times could not be set",
+        "changeLog_2.3.3_1":
+            "Fixed an issue where trip start and end dates weren't selectable from the \"Manage Fields\" menu",
+        "changeLog_2.3.3_2": "Some general stability improvements",
+        "changeLog_2.3.4_1": "You will now be warned when leaving a page without first pressing the \"SAVE\" button",
+        "changeLog_2.3.4_2": "A trip's manually set start time is now used when fetching atmosphere and weather data",
+        "changeLog_2.3.4_3": "Fixed an issue where photos didn't show in the gallery when adding a catch",
+        "changeLog_2.3.4_4": "Fixed an issue where the map wasn't always able to fetch your current location",
       },
     };
