@@ -8,7 +8,9 @@ import 'package:flutter/material.dart';
 import 'package:mapbox_gl/mapbox_gl.dart' as maps;
 import 'package:image_picker/image_picker.dart';
 import 'package:mobile/time_manager.dart';
+import 'package:mobile/wrappers/device_info_wrapper.dart';
 import 'package:mobile/wrappers/exif_wrapper.dart';
+import 'package:mobile/wrappers/io_wrapper.dart';
 import 'package:photo_manager/photo_manager.dart';
 import 'package:quiver/strings.dart';
 import 'package:timezone/timezone.dart';
@@ -188,9 +190,13 @@ class ImagePickerPageState extends State<ImagePickerPage> {
 
   late Future<bool> _isPermissionGrantedFuture;
 
+  DeviceInfoWrapper get _deviceInfoWrapper => DeviceInfoWrapper.of(context);
+
   FilePickerWrapper get _filePicker => FilePickerWrapper.of(context);
 
   ImagePickerWrapper get _imagePicker => ImagePickerWrapper.of(context);
+
+  IoWrapper get _ioWrapper => IoWrapper.of(context);
 
   PermissionHandlerWrapper get _permissionHandlerWrapper =>
       PermissionHandlerWrapper.of(context);
@@ -202,7 +208,8 @@ class ImagePickerPageState extends State<ImagePickerPage> {
   @override
   void initState() {
     super.initState();
-    _isPermissionGrantedFuture = _permissionHandlerWrapper.requestPhotos();
+    _isPermissionGrantedFuture =
+        _permissionHandlerWrapper.requestPhotos(_deviceInfoWrapper, _ioWrapper);
   }
 
   @override

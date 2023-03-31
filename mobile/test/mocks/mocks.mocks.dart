@@ -1336,9 +1336,8 @@ class _FakeRequestType_116 extends _i1.SmartFake implements _i68.RequestType {
         );
 }
 
-class _FakeFilterOptionGroup_117 extends _i1.SmartFake
-    implements _i68.FilterOptionGroup {
-  _FakeFilterOptionGroup_117(
+class _FakePMFilter_117 extends _i1.SmartFake implements _i68.PMFilter {
+  _FakePMFilter_117(
     Object parent,
     Invocation parentInvocation,
   ) : super(
@@ -12839,10 +12838,17 @@ class MockPermissionHandlerWrapper extends _i1.Mock
         returnValue: _i2.Future<bool>.value(false),
       ) as _i2.Future<bool>);
   @override
-  _i2.Future<bool> requestPhotos() => (super.noSuchMethod(
+  _i2.Future<bool> requestPhotos(
+    _i29.DeviceInfoWrapper? deviceInfo,
+    _i38.IoWrapper? ioWrapper,
+  ) =>
+      (super.noSuchMethod(
         Invocation.method(
           #requestPhotos,
-          [],
+          [
+            deviceInfo,
+            ioWrapper,
+          ],
         ),
         returnValue: _i2.Future<bool>.value(false),
       ) as _i2.Future<bool>);
@@ -13180,13 +13186,13 @@ class MockAssetPathEntity extends _i1.Mock implements _i68.AssetPathEntity {
         returnValue: false,
       ) as bool);
   @override
-  _i68.FilterOptionGroup get filterOption => (super.noSuchMethod(
+  _i68.PMFilter get filterOption => (super.noSuchMethod(
         Invocation.getter(#filterOption),
-        returnValue: _FakeFilterOptionGroup_117(
+        returnValue: _FakePMFilter_117(
           this,
           Invocation.getter(#filterOption),
         ),
-      ) as _i68.FilterOptionGroup);
+      ) as _i68.PMFilter);
   @override
   _i2.Future<int> get assetCountAsync => (super.noSuchMethod(
         Invocation.getter(#assetCountAsync),
