@@ -31,7 +31,9 @@ class AboutPage extends StatelessWidget {
           trailing: FutureBuilder<PackageInfo>(
             future: packageInfo.fromPlatform(),
             builder: (context, snapshot) => Text(
-              snapshot.hasData ? snapshot.data!.version : "",
+              snapshot.hasData
+                  ? "${snapshot.data!.version} (${snapshot.data!.buildNumber})"
+                  : "",
               style: styleSecondary(context),
             ),
           ),
