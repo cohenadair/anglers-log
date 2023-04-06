@@ -696,10 +696,11 @@ packages:
   mapbox_gl:
     dependency: "direct main"
     description:
-      name: mapbox_gl
-      sha256: d78907338ff232e3cf6c1d6dba45e6a8814069496fd352e49bb1967d498f09af
-      url: "https://pub.dev"
-    source: hosted
+      path: "."
+      ref: "fix-flutter-3.x-crashes"
+      resolved-ref: a9a72c2c262b0e1265f366f5910b98267e4229cc
+      url: "git@github.com:flutter-mapbox-gl/maps.git"
+    source: git
     version: "0.16.0"
   mapbox_gl_dart:
     dependency: transitive
@@ -712,18 +713,20 @@ packages:
   mapbox_gl_platform_interface:
     dependency: transitive
     description:
-      name: mapbox_gl_platform_interface
-      sha256: b7c1490b022e650afd20412bdf8ae45a1897118b7ce6049ef6c42df09193d4b2
-      url: "https://pub.dev"
-    source: hosted
+      path: mapbox_gl_platform_interface
+      ref: HEAD
+      resolved-ref: dd20462f2db58a23f9a4bc0333f6a5398e57b479
+      url: "https://github.com/tobrun/flutter-mapbox-gl.git"
+    source: git
     version: "0.16.0"
   mapbox_gl_web:
     dependency: transitive
     description:
-      name: mapbox_gl_web
-      sha256: e77113bf95a4f321ff44938232517e0f2725aae991f0b283af1afaa7e7a58aca
-      url: "https://pub.dev"
-    source: hosted
+      path: mapbox_gl_web
+      ref: HEAD
+      resolved-ref: dd20462f2db58a23f9a4bc0333f6a5398e57b479
+      url: "https://github.com/tobrun/flutter-mapbox-gl.git"
+    source: git
     version: "0.16.0"
   matcher:
     dependency: transitive

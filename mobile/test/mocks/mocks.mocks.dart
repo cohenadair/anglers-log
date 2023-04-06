@@ -11686,11 +11686,31 @@ class MockMapboxMapController extends _i1.Mock
         returnValue: false,
       ) as bool);
   @override
-  _i2.Future<bool?> animateCamera(_i63.CameraUpdate? cameraUpdate) =>
+  void resizeWebMap() => super.noSuchMethod(
+        Invocation.method(
+          #resizeWebMap,
+          [],
+        ),
+        returnValueForMissingStub: null,
+      );
+  @override
+  void forceResizeWebMap() => super.noSuchMethod(
+        Invocation.method(
+          #forceResizeWebMap,
+          [],
+        ),
+        returnValueForMissingStub: null,
+      );
+  @override
+  _i2.Future<bool?> animateCamera(
+    _i63.CameraUpdate? cameraUpdate, {
+    Duration? duration,
+  }) =>
       (super.noSuchMethod(
         Invocation.method(
           #animateCamera,
           [cameraUpdate],
+          {#duration: duration},
         ),
         returnValue: _i2.Future<bool?>.value(),
       ) as _i2.Future<bool?>);
@@ -11850,6 +11870,38 @@ class MockMapboxMapController extends _i1.Mock
         returnValueForMissingStub: _i2.Future<void>.value(),
       ) as _i2.Future<void>);
   @override
+  _i2.Future<void> addFillExtrusionLayer(
+    String? sourceId,
+    String? layerId,
+    _i63.FillExtrusionLayerProperties? properties, {
+    String? belowLayerId,
+    String? sourceLayer,
+    double? minzoom,
+    double? maxzoom,
+    dynamic filter,
+    bool? enableInteraction = true,
+  }) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #addFillExtrusionLayer,
+          [
+            sourceId,
+            layerId,
+            properties,
+          ],
+          {
+            #belowLayerId: belowLayerId,
+            #sourceLayer: sourceLayer,
+            #minzoom: minzoom,
+            #maxzoom: maxzoom,
+            #filter: filter,
+            #enableInteraction: enableInteraction,
+          },
+        ),
+        returnValue: _i2.Future<void>.value(),
+        returnValueForMissingStub: _i2.Future<void>.value(),
+      ) as _i2.Future<void>);
+  @override
   _i2.Future<void> addCircleLayer(
     String? sourceId,
     String? layerId,
@@ -11922,6 +11974,34 @@ class MockMapboxMapController extends _i1.Mock
       (super.noSuchMethod(
         Invocation.method(
           #addHillshadeLayer,
+          [
+            sourceId,
+            layerId,
+            properties,
+          ],
+          {
+            #belowLayerId: belowLayerId,
+            #sourceLayer: sourceLayer,
+            #minzoom: minzoom,
+            #maxzoom: maxzoom,
+          },
+        ),
+        returnValue: _i2.Future<void>.value(),
+        returnValueForMissingStub: _i2.Future<void>.value(),
+      ) as _i2.Future<void>);
+  @override
+  _i2.Future<void> addHeatmapLayer(
+    String? sourceId,
+    String? layerId,
+    _i63.HeatmapLayerProperties? properties, {
+    String? belowLayerId,
+    String? sourceLayer,
+    double? minzoom,
+    double? maxzoom,
+  }) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #addHeatmapLayer,
           [
             sourceId,
             layerId,
@@ -12511,6 +12591,24 @@ class MockMapboxMapController extends _i1.Mock
         returnValueForMissingStub: _i2.Future<void>.value(),
       ) as _i2.Future<void>);
   @override
+  _i2.Future<void> updateImageSource(
+    String? imageSourceId,
+    _i76.Uint8List? bytes,
+    _i63.LatLngQuad? coordinates,
+  ) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #updateImageSource,
+          [
+            imageSourceId,
+            bytes,
+            coordinates,
+          ],
+        ),
+        returnValue: _i2.Future<void>.value(),
+        returnValueForMissingStub: _i2.Future<void>.value(),
+      ) as _i2.Future<void>);
+  @override
   _i2.Future<void> removeImageSource(String? imageSourceId) =>
       (super.noSuchMethod(
         Invocation.method(
@@ -12722,6 +12820,15 @@ class MockMapboxMapController extends _i1.Mock
         returnValue: _i2.Future<void>.value(),
         returnValueForMissingStub: _i2.Future<void>.value(),
       ) as _i2.Future<void>);
+  @override
+  _i2.Future<String> takeSnapshot(_i63.SnapshotOptions? snapshotOptions) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #takeSnapshot,
+          [snapshotOptions],
+        ),
+        returnValue: _i2.Future<String>.value(''),
+      ) as _i2.Future<String>);
   @override
   void dispose() => super.noSuchMethod(
         Invocation.method(
