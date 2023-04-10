@@ -81,6 +81,7 @@ class FilledRow extends StatelessWidget {
   Widget _buildEmptyContainer(BuildContext context) {
     return Ink(
       width: MediaQuery.of(context).size.width,
+      height: height,
       color: _emptyBgColor,
     );
   }
