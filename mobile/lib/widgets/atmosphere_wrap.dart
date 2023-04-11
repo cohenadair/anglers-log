@@ -19,17 +19,27 @@ class AtmosphereWrap extends StatelessWidget {
   Widget build(BuildContext context) {
     var children = <Widget>[];
 
-    if (atmosphere.hasTemperature()) {
-      children.add(_Item(
-        icon: Icons.cloud,
-        title: atmosphere.temperature.displayValue(
+    if (atmosphere.hasTemperature() || atmosphere.skyConditions.isNotEmpty) {
+      var skyConditions =
+          SkyConditions.displayNameForList(context, atmosphere.skyConditions);
+
+      var title = skyConditions;
+      var subtitle = "";
+
+      if (atmosphere.hasTemperature()) {
+        title = atmosphere.temperature.displayValue(
           context,
           mainDecimalPlaces: MultiMeasurementInputSpec.airTemperature(context)
               .mainValueDecimalPlaces
               ?.call(context),
-        ),
-        subtitle:
-            SkyConditions.displayNameForList(context, atmosphere.skyConditions),
+        );
+        subtitle = skyConditions;
+      }
+
+      children.add(_Item(
+        icon: Icons.cloud,
+        title: title,
+        subtitle: subtitle,
       ));
     }
 

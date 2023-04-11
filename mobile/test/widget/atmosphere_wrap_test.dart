@@ -161,4 +161,18 @@ void main() {
     expect(find.text("15 mph"), findsOneWidget);
     expect(find.text("N"), findsOneWidget);
   });
+
+  testWidgets("No temperature shows sky conditions", (tester) async {
+    var context = await pumpContext(
+      tester,
+      (_) => AtmosphereWrap(
+        Atmosphere(
+          skyConditions: [SkyCondition.sunny, SkyCondition.clear],
+        ),
+      ),
+      appManager: appManager,
+    );
+    expect(find.text("Sunny, Clear"), findsOneWidget);
+    expect(find.subtitleText(context), findsNothing);
+  });
 }

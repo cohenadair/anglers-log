@@ -80,6 +80,7 @@ enum SkyCondition {
   overcast = 13;
   cloudy = 14;
   clear = 15;
+  sunny = 16;
 }
 
 enum TideType {

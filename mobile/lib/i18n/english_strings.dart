@@ -794,6 +794,7 @@ Map<String, Map<String, String>> get englishStrings => {
         "skyCondition_overcast": "Overcast",
         "skyCondition_cloudy": "Cloudy",
         "skyCondition_clear": "Clear",
+        "skyCondition_sunny": "Sunny",
         "pickerTitle_bait": "Select Bait",
         "pickerTitle_baits": "Select Baits",
         "pickerTitle_baitCategory": "Select Bait Category",

@@ -1598,6 +1598,8 @@ class Strings {
 
   String get skyConditionClear => _string("skyCondition_clear");
 
+  String get skyConditionSunny => _string("skyCondition_sunny");
+
   String get pickerTitleBait => _string("pickerTitle_bait");
 
   String get pickerTitleBaits => _string("pickerTitle_baits");

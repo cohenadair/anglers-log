@@ -1751,6 +1751,8 @@ extension SkyConditions on SkyCondition {
         return Strings.of(context).skyConditionCloudy;
       case SkyCondition.clear:
         return Strings.of(context).skyConditionClear;
+      case SkyCondition.sunny:
+        return Strings.of(context).skyConditionSunny;
     }
     throw ArgumentError("Invalid input: $this");
   }
