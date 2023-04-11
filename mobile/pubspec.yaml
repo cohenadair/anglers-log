@@ -62,7 +62,7 @@ dependencies:
   purchases_flutter: ^4.2.1         # https://pub.dev/packages/purchases_flutter (verified)
   quiver: ^3.1.0                    # https://pub.dev/packages/quiver (Google)
   shared_preferences: ^2.0.15       # https://pub.dev/packages/shared_preferences (Flutter)
-  share_plus: ^4.0.10+1             # https://pub.dev/packages/share_plus (Flutter Community)
+  share_plus: ^6.3.2                # https://pub.dev/packages/share_plus (Flutter Community)
   sqflite: ^2.0.2                   # https://pub.dev/packages/sqflite (verified)
 
   syncfusion_flutter_calendar: ^20.4.49     # https://pub.dev/packages/syncfusion_flutter_calendar (verified)
