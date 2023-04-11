@@ -10593,6 +10593,16 @@ class MockUserPreferenceManager extends _i1.Mock
         returnValueForMissingStub: _i2.Future<void>.value(),
       ) as _i2.Future<void>);
   @override
+  _i2.Future<void> setStatsDateRange(_i5.DateRange? dateRange) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #setStatsDateRange,
+          [dateRange],
+        ),
+        returnValue: _i2.Future<void>.value(),
+        returnValueForMissingStub: _i2.Future<void>.value(),
+      ) as _i2.Future<void>);
+  @override
   _i2.Future<void> setFreePollVotedAt(int? timestamp) => (super.noSuchMethod(
         Invocation.method(
           #setFreePollVotedAt,

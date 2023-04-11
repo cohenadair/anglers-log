@@ -606,6 +606,9 @@ void main() {
     when(appManager.userPreferenceManager.isTrackingWaterClarities)
         .thenReturn(true);
     when(appManager.userPreferenceManager.mapType).thenReturn("satellite");
+    when(appManager.userPreferenceManager.statsDateRange).thenReturn(null);
+    when(appManager.userPreferenceManager.setStatsDateRange(any))
+        .thenAnswer((_) => Future.value());
 
     when(appManager.propertiesManager.mapboxApiKey).thenReturn("KEY");
 
@@ -661,6 +664,29 @@ void main() {
       ),
     );
     expect(find.byType(DateRangePickerInput), findsOneWidget);
+  });
+
+  testWidgets("Date range is loaded from preferences", (tester) async {
+    when(appManager.userPreferenceManager.statsDateRange).thenReturn(DateRange(
+      period: DateRange_Period.yesterday,
+    ));
+
+    await pumpCatchSummary(
+      tester,
+      (context) => CatchSummary<Catch>(
+        filterOptionsBuilder: (_) => CatchFilterOptions(),
+        isStatic: false,
+      ),
+    );
+
+    expect(find.byType(DateRangePickerInput), findsOneWidget);
+    expect(
+      find.descendant(
+        of: find.byType(DateRangePickerInput),
+        matching: find.text("Yesterday"),
+      ),
+      findsOneWidget,
+    );
   });
 
   testWidgets("Entity picker hidden when widget.picker is null",

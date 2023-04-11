@@ -29,7 +29,6 @@ class UserPreferenceManager extends PreferenceManager {
   static const _keyAutoFetchAtmosphere = "auto_fetch_atmosphere";
   static const _keyFishingSpotDistance = "fishing_spot_distance";
   static const _keyMinGpsTrailDistance = "min_gps_trail_distance";
-
   static const _keyRateTimerStartedAt = "rate_timer_started_at";
   static const _keyProTimerStartedAt = "pro_timer_started_at";
   static const _keyDidRateApp = "did_rate_app";
@@ -44,6 +43,7 @@ class UserPreferenceManager extends PreferenceManager {
   static const _keySelectedReportId = "selected_report_id";
   static const _keyMapType = "map_type";
   static const _keyAppVersion = "app_version";
+  static const _keyStatsDateRange = "stats_date_range";
 
   UserPreferenceManager(AppManager appManager) : super(appManager);
 
@@ -230,6 +230,14 @@ class UserPreferenceManager extends PreferenceManager {
   Future<void> setUserName(String? name) => put(_keyUserName, name);
 
   String? get userName => preferences[_keyUserName];
+
+  Future<void> setStatsDateRange(DateRange? dateRange) =>
+      put(_keyStatsDateRange, dateRange?.writeToJson());
+
+  DateRange? get statsDateRange {
+    var json = preferences[_keyStatsDateRange];
+    return isEmpty(json) ? null : DateRange.fromJson(json);
+  }
 
   Future<void> setFreePollVotedAt(int? timestamp) =>
       put(_keyFreePollVotedAt, timestamp);

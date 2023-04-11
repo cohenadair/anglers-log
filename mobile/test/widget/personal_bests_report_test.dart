@@ -7,6 +7,7 @@ import 'package:mobile/res/style.dart';
 import 'package:mobile/utils/collection_utils.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mobile/utils/string_utils.dart';
+import 'package:mobile/widgets/date_range_picker_input.dart';
 import 'package:mobile/widgets/empty_list_placeholder.dart';
 import 'package:mobile/widgets/personal_bests_report.dart';
 import 'package:mobile/widgets/photo.dart';
@@ -244,6 +245,19 @@ void main() {
         .thenReturn(MeasurementSystem.metric);
     when(appManager.userPreferenceManager.isTrackingLength).thenReturn(true);
     when(appManager.userPreferenceManager.isTrackingWeight).thenReturn(true);
+    when(appManager.userPreferenceManager.statsDateRange).thenReturn(null);
+    when(appManager.userPreferenceManager.setStatsDateRange(any))
+        .thenAnswer((_) => Future.value());
+  });
+
+  testWidgets("Date range is loaded from preferences", (tester) async {
+    when(appManager.userPreferenceManager.statsDateRange).thenReturn(DateRange(
+      period: DateRange_Period.yesterday,
+    ));
+
+    await pumpReport(tester);
+    expect(find.byType(DateRangePickerInput), findsOneWidget);
+    expect(find.text("Yesterday"), findsOneWidget);
   });
 
   testWidgets("Placeholder shown when there is no data", (tester) async {

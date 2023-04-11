@@ -64,9 +64,8 @@ class _CatchSummaryState<T> extends State<CatchSummary<T>> {
   late Future<List<int>> _reportFuture;
   late CatchReport _report;
   late CatchFilterOptions _reportOptions;
+  late DateRange _dateRange;
   T? _entity;
-
-  var _dateRange = DateRange(period: DateRange_Period.allDates);
 
   AnglerManager get _anglerManager => AnglerManager.of(context);
 
@@ -95,6 +94,8 @@ class _CatchSummaryState<T> extends State<CatchSummary<T>> {
   @override
   void initState() {
     super.initState();
+    _dateRange = _userPreferenceManager.statsDateRange ??
+        DateRange(period: DateRange_Period.allDates);
     _entity = widget.picker?.initialValue;
     _refreshReport();
   }
@@ -166,6 +167,7 @@ class _CatchSummaryState<T> extends State<CatchSummary<T>> {
     return DateRangePickerInput(
       initialDateRange: _dateRange,
       onPicked: (dateRange) => setState(() {
+        _userPreferenceManager.setStatsDateRange(dateRange);
         _dateRange = dateRange;
         _refreshReport();
       }),

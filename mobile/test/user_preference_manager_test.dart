@@ -1,3 +1,4 @@
+import 'package:fixnum/fixnum.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/app_manager.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
@@ -23,6 +24,11 @@ void main() {
 
     when(appManager.localDatabaseManager.insertOrReplace(any, any))
         .thenAnswer((_) => Future.value(true));
+    when(appManager.localDatabaseManager.delete(
+      any,
+      where: anyNamed("where"),
+      whereArgs: anyNamed("whereArgs"),
+    )).thenAnswer((_) => Future.value(true));
 
     when(appManager.subscriptionManager.stream)
         .thenAnswer((_) => const Stream.empty());
@@ -172,5 +178,22 @@ void main() {
         ),
       ),
     );
+  });
+
+  test("statsDateRange returns null if absent", () {
+    expect(userPreferenceManager.statsDateRange, isNull);
+  });
+
+  test("statsDateRange returns non-null", () async {
+    var dateRange = DateRange(
+      startTimestamp: Int64(10),
+      endTimestamp: Int64(15),
+    );
+    await userPreferenceManager.setStatsDateRange(dateRange);
+    expect(userPreferenceManager.statsDateRange, isNotNull);
+    expect(userPreferenceManager.statsDateRange, dateRange);
+
+    await userPreferenceManager.setStatsDateRange(null);
+    expect(userPreferenceManager.statsDateRange, isNull);
   });
 }

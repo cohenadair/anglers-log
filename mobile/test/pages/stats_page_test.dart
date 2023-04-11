@@ -349,6 +349,9 @@ void main() {
         .thenReturn(MeasurementSystem.metric);
     when(appManager.userPreferenceManager.windSpeedSystem)
         .thenReturn(MeasurementSystem.metric);
+    when(appManager.userPreferenceManager.statsDateRange).thenReturn(null);
+    when(appManager.userPreferenceManager.setStatsDateRange(any))
+        .thenAnswer((_) => Future.value());
 
     when(appManager.isolatesWrapper.computeIntList(any, any))
         .thenAnswer((invocation) {

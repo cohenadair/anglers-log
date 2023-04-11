@@ -41,8 +41,8 @@ class _PersonalBestsReportState extends State<PersonalBestsReport> {
   static const _rowsPerSpeciesTable = 5;
 
   final _log = const Log("PersonalBestsReport");
-  var _dateRange = DateRange(period: DateRange_Period.allDates);
 
+  late DateRange _dateRange;
   late _PersonalBestsReportModel _model;
 
   CatchManager get _catchManager => CatchManager.of(context);
@@ -57,6 +57,8 @@ class _PersonalBestsReportState extends State<PersonalBestsReport> {
   @override
   void initState() {
     super.initState();
+    _dateRange = _userPreferenceManager.statsDateRange ??
+        DateRange(period: DateRange_Period.allDates);
     _refreshModel();
   }
 
@@ -112,6 +114,7 @@ class _PersonalBestsReportState extends State<PersonalBestsReport> {
     return DateRangePickerInput(
       initialDateRange: _dateRange,
       onPicked: (dateRange) => setState(() {
+        _userPreferenceManager.setStatsDateRange(dateRange);
         _dateRange = dateRange;
         _refreshModel();
       }),

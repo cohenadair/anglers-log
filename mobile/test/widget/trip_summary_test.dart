@@ -5,6 +5,7 @@ import 'package:mobile/model/gen/anglerslog.pb.dart';
 import 'package:mobile/pages/trip_list_page.dart';
 import 'package:mobile/pages/trip_page.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
+import 'package:mobile/widgets/date_range_picker_input.dart';
 import 'package:mobile/widgets/tile.dart';
 import 'package:mobile/widgets/trip_summary.dart';
 import 'package:mockito/mockito.dart';
@@ -171,6 +172,9 @@ void main() {
         .thenReturn(MeasurementSystem.metric);
     when(appManager.userPreferenceManager.catchWeightSystem)
         .thenReturn(MeasurementSystem.metric);
+    when(appManager.userPreferenceManager.statsDateRange).thenReturn(null);
+    when(appManager.userPreferenceManager.setStatsDateRange(any))
+        .thenAnswer((_) => Future.value());
 
     when(appManager.ioWrapper.isAndroid).thenReturn(false);
   });
@@ -182,6 +186,16 @@ void main() {
       appManager: appManager,
     );
   }
+
+  testWidgets("Date range is loaded from preferences", (tester) async {
+    when(appManager.userPreferenceManager.statsDateRange).thenReturn(DateRange(
+      period: DateRange_Period.yesterday,
+    ));
+
+    await pumpSummary(tester);
+    expect(find.byType(DateRangePickerInput), findsOneWidget);
+    expect(find.text("Yesterday"), findsOneWidget);
+  });
 
   testWidgets("Number of trips: 1", (tester) async {
     trips.removeRange(0, trips.length - 1);
