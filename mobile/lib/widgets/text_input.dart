@@ -101,9 +101,6 @@ class TextInput extends StatefulWidget {
           enabled: enabled,
           autofocus: autofocus,
           onChanged: onChanged,
-          // Use done here to blank lines can't be entered. Also an easy way
-          // to remove the keyboard on iOS.
-          textInputAction: TextInputAction.done,
           hintText: hintText,
         );
 
