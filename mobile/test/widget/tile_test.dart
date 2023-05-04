@@ -34,11 +34,11 @@ void main() {
   });
 
   testWidgets("Tile subtitle is not empty", (tester) async {
-    await pumpContext(
+    var context = await pumpContext(
       tester,
       (_) => Tile(TileItem(subtitle: "Subtitle")),
     );
-    expect(find.textStyle("Subtitle", styleTitle2), findsOneWidget);
+    expect(find.textStyle("Subtitle", styleTitle2(context)), findsOneWidget);
   });
 
   testWidgets("Tile subtitle2 is empty", (tester) async {

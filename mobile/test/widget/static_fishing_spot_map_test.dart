@@ -23,8 +23,7 @@ void main() {
 
     when(appManager.propertiesManager.mapboxApiKey).thenReturn("key");
 
-    when(appManager.userPreferenceManager.mapType)
-        .thenReturn(MapType.normal.id);
+    when(appManager.userPreferenceManager.mapType).thenReturn(MapType.light.id);
 
     var response = MockResponse();
     when(response.statusCode).thenReturn(HttpStatus.ok);

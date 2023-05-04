@@ -11,6 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:mobile/pages/onboarding/change_log_page.dart';
+import 'package:mobile/res/theme.dart';
 import 'package:mobile/wrappers/package_info_wrapper.dart';
 import 'package:provider/provider.dart';
 import 'package:quiver/strings.dart';
@@ -25,6 +26,7 @@ import 'pages/landing_page.dart';
 import 'pages/main_page.dart';
 import 'pages/onboarding/onboarding_journey.dart';
 import 'user_preference_manager.dart';
+import 'utils/map_utils.dart';
 import 'utils/trip_utils.dart';
 import 'wrappers/services_wrapper.dart';
 
@@ -90,6 +92,7 @@ class AnglersLogState extends State<AnglersLog> {
 
   late Future<bool> _appInitializedFuture;
   late _State _state;
+  late StreamSubscription<String> _userPreferenceSub;
   LegacyJsonResult? _legacyJsonResult;
 
   AppManager get _appManager => widget.appManager;
@@ -98,7 +101,7 @@ class AnglersLogState extends State<AnglersLog> {
 
   ServicesWrapper get _servicesWrapper => _appManager.servicesWrapper;
 
-  UserPreferenceManager get _userPreferencesManager =>
+  UserPreferenceManager get _userPreferenceManager =>
       _appManager.userPreferenceManager;
 
   @override
@@ -107,35 +110,45 @@ class AnglersLogState extends State<AnglersLog> {
 
     // Wait for all app initializations before showing the app as "ready".
     _appInitializedFuture = _initialize();
+
+    _userPreferenceSub = _userPreferenceManager.stream.listen((event) {
+      if (event == UserPreferenceManager.keyThemeMode) {
+        setState(() {});
+        context.rebuildAllChildren();
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _userPreferenceSub.cancel();
   }
 
   @override
   Widget build(BuildContext context) {
+    return FutureBuilder(
+      future: _appInitializedFuture,
+      builder: (context, snapshot) {
+        if (snapshot.hasError || !snapshot.hasData) {
+          return _buildMaterialApp(LandingPage(), null);
+        }
+        return _buildMaterialApp(
+            _buildStartPage(), _userPreferenceManager.themeMode);
+      },
+    );
+  }
+
+  Widget _buildMaterialApp(Widget home, ThemeMode? themeMode) {
     return Provider<AppManager>.value(
       value: _appManager,
       child: MaterialApp(
         onGenerateTitle: (context) => Strings.of(context).appName,
-        theme: ThemeData(
-          buttonTheme: ButtonThemeData(
-            disabledColor: Colors.lightBlue.shade500,
-          ),
-          iconTheme: const IconThemeData(
-            color: Colors.lightBlue,
-          ),
-          colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.lightBlue)
-              .copyWith(error: Colors.red),
-        ),
-        home: FutureBuilder<bool>(
-          future: _appInitializedFuture,
-          builder: (context, snapshot) {
-            Widget child;
-
-            if (snapshot.hasError || !snapshot.hasData) {
-              child = LandingPage();
-            } else {
-              child = _buildStartPage();
-            }
-
+        theme: themeLight(),
+        darkTheme: themeDark(),
+        themeMode: themeMode,
+        home: Builder(
+          builder: (context) {
             return MediaQuery(
               // Don't allow font sizes too large. After 1.35, the app starts to
               // look very bad.
@@ -144,7 +157,7 @@ class AnglersLogState extends State<AnglersLog> {
                     .textScaleFactor
                     .clamp(_minTextScale, _maxTextScale),
               ),
-              child: child,
+              child: home,
             );
           },
         ),
@@ -169,8 +182,8 @@ class AnglersLogState extends State<AnglersLog> {
         return OnboardingJourney(
           legacyJsonResult: _legacyJsonResult,
           onFinished: () async {
-            await _userPreferencesManager.setDidOnboard(true);
-            await _userPreferencesManager.updateAppVersion();
+            await _userPreferenceManager.setDidOnboard(true);
+            await _userPreferenceManager.updateAppVersion();
             setState(() => _state = _State.mainPage);
           },
         );
@@ -185,7 +198,7 @@ class AnglersLogState extends State<AnglersLog> {
 
     if (await _shouldShowChangeLog()) {
       _state = _State.changeLog;
-    } else if (_userPreferencesManager.didOnboard) {
+    } else if (_userPreferenceManager.didOnboard) {
       _state = _State.mainPage;
     } else {
       // If the user hasn't yet onboarded, see if there is any legacy data to
@@ -200,11 +213,11 @@ class AnglersLogState extends State<AnglersLog> {
 
   Future<bool> _shouldShowChangeLog() async {
     // Never show a change log for brand new users.
-    if (!_userPreferencesManager.didOnboard) {
+    if (!_userPreferenceManager.didOnboard) {
       return false;
     }
 
-    var oldVersion = _userPreferencesManager.appVersion;
+    var oldVersion = _userPreferenceManager.appVersion;
     var newVersion = (await _packageInfoWrapper.fromPlatform()).version;
     var didUpdate = isEmpty(oldVersion) ||
         Version.parse(oldVersion!) < Version.parse(newVersion);
@@ -215,10 +228,20 @@ class AnglersLogState extends State<AnglersLog> {
       // TODO #800: Remove addition of timestamp IDs when there are no more 2.2.0
       //  users.
       if (oldVersion == "2.2.0") {
-        var currentIds = _userPreferencesManager.tripFieldIds;
+        var currentIds = _userPreferenceManager.tripFieldIds;
         if (currentIds.isNotEmpty) {
-          _userPreferencesManager
+          _userPreferenceManager
               .setTripFieldIds(currentIds..add(tripIdGpsTrails));
+        }
+      }
+
+      // TODO: Remove when there are no more 2.3.5 users.
+      if (newVersion == "2.3.5") {
+        // If the user hasn't specifically set their map type to satellite,
+        // reset their selection so the correct dark/light map is used.
+        var mapType = MapType.fromId(_userPreferenceManager.mapType);
+        if (mapType != null && mapType != MapType.satellite) {
+          _userPreferenceManager.setMapType(null);
         }
       }
     }

@@ -192,7 +192,7 @@ void main() {
           ),
         ),
       );
-      expect(findFirst<RawMaterialButton>(tester).fillColor, Colors.white);
+      expect(findFirst<RawMaterialButton>(tester).fillColor, isNull);
     });
 
     testWidgets("Pushed color", (tester) async {

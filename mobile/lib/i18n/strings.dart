@@ -795,6 +795,16 @@ class Strings {
   String get settingsPageFishingSpotDistanceDescription =>
       _string("settingsPage_fishingSpotDistanceDescription");
 
+  String get settingsPageThemeTitle => _string("settingsPage_themeTitle");
+
+  String get settingsPageThemeSystem => _string("settingsPage_themeSystem");
+
+  String get settingsPageThemeLight => _string("settingsPage_themeLight");
+
+  String get settingsPageThemeDark => _string("settingsPage_themeDark");
+
+  String get settingsPageThemeSelect => _string("settingsPage_themeSelect");
+
   String get unitsPageTitle => _string("unitsPage_title");
 
   String get unitsPageCatchLengthCentimeters =>
@@ -877,13 +887,11 @@ class Strings {
 
   String get mapPageDroppedPin => _string("mapPage_droppedPin");
 
-  String get mapPageMapTypeNormal => _string("mapPage_mapTypeNormal");
+  String get mapPageMapTypeLight => _string("mapPage_mapTypeLight");
 
   String get mapPageMapTypeSatellite => _string("mapPage_mapTypeSatellite");
 
-  String get mapPageMapTypeTerrain => _string("mapPage_mapTypeTerrain");
-
-  String get mapPageMapTypeHybrid => _string("mapPage_mapTypeHybrid");
+  String get mapPageMapTypeDark => _string("mapPage_mapTypeDark");
 
   String get mapPageErrorGettingLocation =>
       _string("mapPage_errorGettingLocation");

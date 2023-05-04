@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/gps_trail_manager.dart';
 import 'package:mobile/poll_manager.dart';
+import 'package:mobile/res/theme.dart';
 
 import '../i18n/strings.dart';
 import '../pages/catch_list_page.dart';
@@ -77,8 +78,8 @@ class MainPageState extends State<MainPage> {
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-      // Ensure clicking the Android physical back button closes a pushed page
-      // rather than the entire app, if possible.
+      // Ensure clicking the Android physical back button closes a pushed
+      // page rather than the entire app, if possible.
       onWillPop: () async => !await _currentNavState.maybePop(),
       child: Scaffold(
         // An IndexedStack is an easy way to persist state when switching
@@ -89,6 +90,7 @@ class MainPageState extends State<MainPage> {
               _navItems.map((data) => data.page ?? const Empty()).toList(),
         ),
         bottomNavigationBar: BottomNavigationBar(
+          selectedItemColor: context.colorDefault,
           currentIndex: _currentBarItem,
           type: BottomNavigationBarType.fixed,
           items: _navItems
@@ -109,9 +111,7 @@ class MainPageState extends State<MainPage> {
               // Reset navigation stack if already on the current item.
               _currentNavState.popUntil((r) => r.isFirst);
             } else {
-              setState(() {
-                _currentBarItem = index;
-              });
+              setState(() => _currentBarItem = index);
             }
           },
         ),

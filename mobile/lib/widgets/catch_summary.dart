@@ -273,7 +273,7 @@ class _CatchSummaryState<T> extends State<CatchSummary<T>> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         const VerticalSpace(paddingDefault),
-        TitleLabel.style2(title),
+        TitleLabel.style2(context, title),
         const VerticalSpace(paddingDefault),
         Chart<E>(
           series: series,

@@ -27,20 +27,26 @@ import 'mocks/stubbed_map_controller.dart';
 class Testable extends StatelessWidget {
   final Widget Function(BuildContext) builder;
   final MediaQueryData mediaQueryData;
-  final AppManager appManager;
+  final StubbedAppManager appManager;
   final TargetPlatform? platform;
+  final ThemeMode? themeMode;
 
   Testable(
     this.builder, {
     this.mediaQueryData = const MediaQueryData(),
     this.platform,
+    this.themeMode,
     StubbedAppManager? appManager,
-  }) : appManager = appManager?.app ?? StubbedAppManager().app;
+  }) : appManager = appManager ?? StubbedAppManager();
 
   @override
   Widget build(BuildContext context) {
+    // Always default to light mode.
+    when(appManager.userPreferenceManager.themeMode)
+        .thenReturn(themeMode ?? ThemeMode.light);
+
     return Provider<AppManager>.value(
-      value: appManager,
+      value: appManager.app,
       child: MaterialApp(
         theme: ThemeData(
           primarySwatch: Colors.lightBlue,
@@ -142,6 +148,7 @@ Future<BuildContext> pumpContext(
   Widget Function(BuildContext) builder, {
   StubbedAppManager? appManager,
   MediaQueryData mediaQueryData = const MediaQueryData(),
+  ThemeMode? themeMode,
 }) async {
   late BuildContext context;
   await tester.pumpWidget(
@@ -152,6 +159,7 @@ Future<BuildContext> pumpContext(
       },
       appManager: appManager,
       mediaQueryData: mediaQueryData,
+      themeMode: themeMode,
     ),
   );
   return context;

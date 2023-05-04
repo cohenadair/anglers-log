@@ -89,7 +89,7 @@ class RadioInputState extends State<RadioInput> {
             children: [
               AnimatedSwitcher(
                 duration: animDurationDefault,
-                child: Icon(icon, key: ValueKey(selected)),
+                child: DefaultColorIcon(icon, key: ValueKey(selected)),
               ),
               Expanded(
                 child: Padding(

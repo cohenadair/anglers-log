@@ -8360,10 +8360,10 @@ class MockPreferenceManager extends _i1.Mock implements _i80.PreferenceManager {
         returnValue: '',
       ) as String);
   @override
-  _i2.Stream<void> get stream => (super.noSuchMethod(
+  _i2.Stream<String> get stream => (super.noSuchMethod(
         Invocation.getter(#stream),
-        returnValue: _i2.Stream<void>.empty(),
-      ) as _i2.Stream<void>);
+        returnValue: _i2.Stream<String>.empty(),
+      ) as _i2.Stream<String>);
   @override
   _i2.Future<void> initialize() => (super.noSuchMethod(
         Invocation.method(
@@ -10244,6 +10244,11 @@ class MockUserPreferenceManager extends _i1.Mock
         returnValue: false,
       ) as bool);
   @override
+  _i61.ThemeMode get themeMode => (super.noSuchMethod(
+        Invocation.getter(#themeMode),
+        returnValue: _i61.ThemeMode.system,
+      ) as _i61.ThemeMode);
+  @override
   bool get isTrackingMoonPhases => (super.noSuchMethod(
         Invocation.getter(#isTrackingMoonPhases),
         returnValue: false,
@@ -10322,10 +10327,10 @@ class MockUserPreferenceManager extends _i1.Mock
         ),
       ) as _i3.AppManager);
   @override
-  _i2.Stream<void> get stream => (super.noSuchMethod(
+  _i2.Stream<String> get stream => (super.noSuchMethod(
         Invocation.getter(#stream),
-        returnValue: _i2.Stream<void>.empty(),
-      ) as _i2.Stream<void>);
+        returnValue: _i2.Stream<String>.empty(),
+      ) as _i2.Stream<String>);
   @override
   _i2.Future<void> setAtmosphereFieldIds(List<_i5.Id>? ids) =>
       (super.noSuchMethod(
@@ -10598,6 +10603,16 @@ class MockUserPreferenceManager extends _i1.Mock
         Invocation.method(
           #setStatsDateRange,
           [dateRange],
+        ),
+        returnValue: _i2.Future<void>.value(),
+        returnValueForMissingStub: _i2.Future<void>.value(),
+      ) as _i2.Future<void>);
+  @override
+  _i2.Future<void> setThemeMode(_i61.ThemeMode? themeMode) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #setThemeMode,
+          [themeMode],
         ),
         returnValue: _i2.Future<void>.value(),
         returnValueForMissingStub: _i2.Future<void>.value(),

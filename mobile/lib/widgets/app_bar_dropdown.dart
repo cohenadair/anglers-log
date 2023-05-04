@@ -28,7 +28,7 @@ class AppBarDropdown extends StatelessWidget {
           children: [
             Text(
               title,
-              style: styleTitleAppBar,
+              style: styleTitleAppBar(context),
             ),
             DropdownIcon(),
           ],

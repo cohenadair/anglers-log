@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mobile/res/theme.dart';
 
 import '../res/dimen.dart';
 import '../res/style.dart';
@@ -40,9 +41,9 @@ class FloatingContainer extends StatelessWidget {
       );
     }
 
-    var decoration = const BoxDecoration(
-      color: Colors.white,
-      boxShadow: boxShadowDefault,
+    var decoration = BoxDecoration(
+      color: context.colorFloatingContainerBackground,
+      boxShadow: boxShadowDefault(context),
     );
 
     if (isCircle) {

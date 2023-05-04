@@ -7,6 +7,7 @@ import 'package:mobile/pages/feedback_page.dart';
 import 'package:mobile/pages/scroll_page.dart';
 import 'package:mobile/res/dimen.dart';
 import 'package:mobile/res/style.dart';
+import 'package:mobile/res/theme.dart';
 import 'package:mobile/time_manager.dart';
 import 'package:mobile/user_preference_manager.dart';
 import 'package:mobile/utils/date_time_utils.dart';
@@ -157,7 +158,7 @@ class _BackupRestorePageState extends State<_BackupRestorePage> {
         context,
         leading: IconButton(
           icon: const Icon(Icons.close),
-          color: Theme.of(context).primaryColor,
+          color: context.colorDefault,
           onPressed: _backupRestoreManager.isInProgress
               ? null
               : Navigator.of(context).pop,

@@ -23,7 +23,7 @@ void main() {
 
     await pumpContext(
       tester,
-      (_) => const MapboxAttribution(mapType: MapType.normal),
+      (_) => const MapboxAttribution(mapType: MapType.light),
       appManager: appManager,
     );
 
@@ -36,7 +36,7 @@ void main() {
 
     await pumpContext(
       tester,
-      (_) => const MapboxAttribution(mapType: MapType.normal),
+      (_) => const MapboxAttribution(mapType: MapType.light),
       appManager: appManager,
     );
 
@@ -51,7 +51,7 @@ void main() {
 
     await pumpContext(
       tester,
-      (_) => const MapboxAttribution(mapType: MapType.normal),
+      (_) => const MapboxAttribution(mapType: MapType.light),
       appManager: appManager,
     );
 

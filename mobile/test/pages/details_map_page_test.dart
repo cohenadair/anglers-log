@@ -15,8 +15,7 @@ void main() {
 
   setUp(() {
     appManager = StubbedAppManager();
-    when(appManager.userPreferenceManager.mapType)
-        .thenReturn(MapType.normal.id);
+    when(appManager.userPreferenceManager.mapType).thenReturn(MapType.light.id);
     when(appManager.propertiesManager.mapboxApiKey).thenReturn("");
   });
 

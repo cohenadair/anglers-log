@@ -9,11 +9,14 @@ import 'package:mobile/widgets/multi_measurement_input.dart';
 import '../i18n/strings.dart';
 import '../model/gen/anglerslog.pb.dart';
 import '../user_preference_manager.dart';
+import '../utils/map_utils.dart';
 import '../utils/page_utils.dart';
 import '../widgets/checkbox_input.dart';
 import '../widgets/list_item.dart';
+import '../widgets/list_picker_input.dart';
 import '../widgets/widget.dart';
 import 'about_page.dart';
+import 'picker_page.dart';
 import 'units_page.dart';
 
 class SettingsPage extends StatefulWidget {
@@ -34,6 +37,7 @@ class SettingsPageState extends State<SettingsPage> {
       body: ListView(
         children: <Widget>[
           _buildFetchAtmosphere(context),
+          _buildTheme(),
           _buildUnits(context),
           _buildFishingSpotDistance(context),
           _buildMinGpsTrailDistance(context),
@@ -54,6 +58,60 @@ class SettingsPageState extends State<SettingsPage> {
       value: _userPreferenceManager.autoFetchAtmosphere,
       onSetValue: (checked) =>
           _userPreferenceManager.setAutoFetchAtmosphere(checked),
+    );
+  }
+
+  Widget _buildTheme() {
+    var currentTheme = _userPreferenceManager.themeMode;
+    String themeName;
+    switch (currentTheme) {
+      case ThemeMode.system:
+        themeName = Strings.of(context).settingsPageThemeSystem;
+        break;
+      case ThemeMode.light:
+        themeName = Strings.of(context).settingsPageThemeLight;
+        break;
+      case ThemeMode.dark:
+        themeName = Strings.of(context).settingsPageThemeDark;
+        break;
+    }
+
+    return ListPickerInput(
+      title: Strings.of(context).settingsPageThemeTitle,
+      value: themeName,
+      onTap: () {
+        push(
+          context,
+          PickerPage<ThemeMode>.single(
+            title: Text(Strings.of(context).settingsPageThemeSelect),
+            initialValue: currentTheme,
+            itemBuilder: () => [
+              PickerPageItem<ThemeMode>(
+                title: Strings.of(context).settingsPageThemeSystem,
+                value: ThemeMode.system,
+              ),
+              PickerPageItem<ThemeMode>(
+                title: Strings.of(context).settingsPageThemeLight,
+                value: ThemeMode.light,
+              ),
+              PickerPageItem<ThemeMode>(
+                title: Strings.of(context).settingsPageThemeDark,
+                value: ThemeMode.dark,
+              ),
+            ],
+            onFinishedPicking: (context, pickedItem) {
+              if (MapType.of(context) != MapType.satellite) {
+                _userPreferenceManager.setMapType(pickedItem == ThemeMode.light
+                    ? MapType.light.id
+                    : MapType.dark.id);
+              }
+
+              _userPreferenceManager.setThemeMode(pickedItem);
+              Navigator.of(context).pop();
+            },
+          ),
+        );
+      },
     );
   }
 

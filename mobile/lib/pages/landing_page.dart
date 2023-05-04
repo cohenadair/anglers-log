@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mobile/res/theme.dart';
 
 import '../i18n/strings.dart';
 import '../res/dimen.dart';
@@ -10,7 +11,7 @@ class LandingPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Theme.of(context).primaryColor,
+      backgroundColor: context.colorDefault,
       body: Stack(children: [
         const Align(
           alignment: Alignment(0.0, -0.5),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mobile/res/theme.dart';
 
 import '../../i18n/strings.dart';
 import '../../res/dimen.dart';
@@ -50,7 +51,7 @@ class OnboardingPage extends StatelessWidget {
       ActionButton(
         text: nextButtonText ?? Strings.of(context).next,
         onPressed: nextButtonEnabled ? onPressedNextButton : null,
-        textColor: Theme.of(context).primaryColor,
+        textColor: context.colorDefault,
       ),
     ];
   }

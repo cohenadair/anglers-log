@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:mobile/res/theme.dart';
 import 'package:quiver/strings.dart';
 
 import '../i18n/strings.dart';
-import '../res/color.dart';
 import '../res/dimen.dart';
 import '../res/style.dart';
 import '../utils/dialog_utils.dart';
@@ -52,15 +52,6 @@ class ListItem extends StatelessWidget {
         style: styleSubtitle(context, enabled: enabled),
         overflow: TextOverflow.ellipsis,
         child: subtitle,
-      );
-    }
-
-    // Use the Material default for icon color.
-    var leading = this.leading;
-    if (leading is Icon) {
-      leading = IconTheme.merge(
-        data: const IconThemeData(color: Colors.black45),
-        child: leading,
       );
     }
 
@@ -213,10 +204,7 @@ class PickerListItem extends StatelessWidget {
     // A simple check mark icon for initial value for single item pickers.
     return AnimatedVisibility(
       visible: isSelected,
-      child: Icon(
-        Icons.check,
-        color: Theme.of(context).primaryColor,
-      ),
+      child: const ItemSelectedIcon(),
     );
   }
 }
@@ -264,9 +252,9 @@ class ExpansionListItemState extends State<ExpansionListItem> {
           Theme(
             data: Theme.of(context).copyWith(
               dividerColor: Colors.transparent,
-              unselectedWidgetColor: colorInputIconAccent,
+              unselectedWidgetColor: context.colorGreyAccent,
               colorScheme: ColorScheme.fromSwatch()
-                  .copyWith(secondary: colorInputIconAccent),
+                  .copyWith(secondary: context.colorGreyAccent),
             ),
             child: ExpansionTile(
               key: _key,
@@ -493,7 +481,7 @@ class ManageableListGrandchild extends StatelessWidget {
           border: Border(
             left: BorderSide(
               width: leftBorderWidth,
-              color: Theme.of(context).primaryColor,
+              color: context.colorDefault,
             ),
           ),
         ),

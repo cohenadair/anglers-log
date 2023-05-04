@@ -1,7 +1,9 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
 import 'package:mobile/pages/pro_page.dart';
 import 'package:mobile/pages/settings_page.dart';
+import 'package:mobile/utils/map_utils.dart';
 import 'package:mobile/widgets/checkbox_input.dart';
 import 'package:mockito/mockito.dart';
 
@@ -141,5 +143,77 @@ void main() {
 
     MultiMeasurement value = result.captured.first;
     expect(value.mainValue.value, 100);
+  });
+
+  testWidgets("Picking dark theme updates preferences", (tester) async {
+    when(appManager.userPreferenceManager.mapType).thenReturn(MapType.light.id);
+
+    await pumpContext(tester, (_) => SettingsPage(), appManager: appManager);
+    expect(find.text("Dark"), findsNothing);
+    expect(find.text("Light"), findsOneWidget);
+
+    await tapAndSettle(tester, find.text("Theme"));
+    expect(find.text("Select Theme"), findsOneWidget);
+
+    await tapAndSettle(tester, find.text("Dark"));
+    expect(find.text("Select Theme"), findsNothing);
+
+    verify(appManager.userPreferenceManager.setMapType(MapType.dark.id))
+        .called(1);
+    verify(appManager.userPreferenceManager.setThemeMode(ThemeMode.dark))
+        .called(1);
+  });
+
+  testWidgets("Picking light theme updates preferences", (tester) async {
+    when(appManager.userPreferenceManager.mapType).thenReturn(MapType.dark.id);
+
+    await pumpContext(
+      tester,
+      (_) => SettingsPage(),
+      appManager: appManager,
+      themeMode: ThemeMode.dark,
+    );
+    expect(find.text("Dark"), findsOneWidget);
+    expect(find.text("Light"), findsNothing);
+
+    await tapAndSettle(tester, find.text("Theme"));
+    expect(find.text("Select Theme"), findsOneWidget);
+
+    await tapAndSettle(tester, find.text("Light"));
+    expect(find.text("Select Theme"), findsNothing);
+
+    verify(appManager.userPreferenceManager.setMapType(MapType.light.id))
+        .called(1);
+    verify(appManager.userPreferenceManager.setThemeMode(ThemeMode.light))
+        .called(1);
+  });
+
+  testWidgets("Current theme is system", (tester) async {
+    await pumpContext(
+      tester,
+      (_) => SettingsPage(),
+      appManager: appManager,
+      themeMode: ThemeMode.system,
+    );
+    expect(find.text("System"), findsOneWidget);
+  });
+
+  testWidgets("Picking a theme doesn't update preferences", (tester) async {
+    when(appManager.userPreferenceManager.mapType)
+        .thenReturn(MapType.satellite.id);
+
+    await pumpContext(tester, (_) => SettingsPage(), appManager: appManager);
+    expect(find.text("Dark"), findsNothing);
+    expect(find.text("Light"), findsOneWidget);
+
+    await tapAndSettle(tester, find.text("Theme"));
+    expect(find.text("Select Theme"), findsOneWidget);
+
+    await tapAndSettle(tester, find.text("Dark"));
+    expect(find.text("Select Theme"), findsNothing);
+
+    verifyNever(appManager.userPreferenceManager.setMapType(any));
+    verify(appManager.userPreferenceManager.setThemeMode(ThemeMode.dark))
+        .called(1);
   });
 }

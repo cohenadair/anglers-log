@@ -55,7 +55,7 @@ void main() {
     });
 
     test("Black icon", () {
-      expect(mapIconColor(MapType.normal), Colors.black);
+      expect(mapIconColor(MapType.light), Colors.black);
     });
   });
 

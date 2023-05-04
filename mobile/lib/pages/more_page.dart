@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mobile/poll_manager.dart';
 import 'package:mobile/res/dimen.dart';
 import 'package:mobile/res/gen/custom_icons.dart';
+import 'package:mobile/res/theme.dart';
 import 'package:mobile/user_preference_manager.dart';
 import 'package:mobile/utils/entity_utils.dart';
 import 'package:mobile/wrappers/url_launcher_wrapper.dart';
@@ -113,6 +114,7 @@ class MorePage extends StatelessWidget {
             _buildHashtagItem(
               context,
               icon: CustomIcons.instagram,
+              iconColor: context.colorGreyAccent,
               appUrl: _instagramAppUrl,
               webUrl: _instagramWebUrl,
             ),
@@ -140,7 +142,7 @@ class MorePage extends StatelessWidget {
     var rateItem = _buildPageItem(
       context,
       icon: Icons.star,
-      trailing: const Icon(Icons.open_in_new),
+      trailing: const OpenInWebIcon(),
       title: Strings.of(context).morePageRateApp,
       onTap: () => launchStore(context),
     );
@@ -189,7 +191,7 @@ class MorePage extends StatelessWidget {
         icon,
         color: iconColor,
       ),
-      trailing: const Icon(Icons.open_in_new),
+      trailing: const OpenInWebIcon(),
       onTap: () async {
         var urlLauncher = UrlLauncherWrapper.of(context);
         if (await urlLauncher.canLaunch(appUrl)) {
@@ -222,7 +224,7 @@ class MorePage extends StatelessWidget {
     return ListItem(
       key: key,
       title: Text(title),
-      leading: Icon(icon),
+      leading: GreyAccentIcon(icon),
       trailing: _buildTrailing(
         presentPage: presentPage,
         onTap: onTap,

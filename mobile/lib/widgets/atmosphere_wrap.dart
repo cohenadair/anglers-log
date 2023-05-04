@@ -144,7 +144,7 @@ class _Item extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Icon(icon),
+        DefaultColorIcon(icon),
         Text(
           title,
           textAlign: TextAlign.center,

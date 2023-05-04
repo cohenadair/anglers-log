@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mobile/res/theme.dart';
 import 'package:mobile/widgets/button.dart';
 import 'package:mobile/widgets/month_year_picker.dart';
 import 'package:mockito/mockito.dart';
@@ -66,13 +67,13 @@ void main() {
     );
 
     await tapAndSettle(tester, find.text("TEST"));
-    verifyMonth(tester, "Oct", Theme.of(context).primaryColor);
+    verifyMonth(tester, "Oct", context.colorDefault);
 
     await tapAndSettle(tester, find.text("Mar"));
     await tester.pumpAndSettle(const Duration(milliseconds: 300));
 
-    verifyMonth(tester, "Oct", Colors.white);
-    verifyMonth(tester, "Mar", Theme.of(context).primaryColor);
+    verifyMonth(tester, "Oct", Colors.transparent);
+    verifyMonth(tester, "Mar", context.colorDefault);
   });
 
   testWidgets("Non-null result", (tester) async {

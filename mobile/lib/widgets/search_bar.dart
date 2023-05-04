@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:mobile/res/theme.dart';
 import 'package:quiver/strings.dart';
 
 import '../res/dimen.dart';
@@ -89,7 +90,7 @@ class SearchBarState extends State<SearchBar> {
             left: paddingDefault,
             right: widget.leadingPadding ?? paddingDefault,
           ),
-          child: const Icon(Icons.search, color: Colors.black),
+          child: Icon(Icons.search, color: context.colorIconFloatingButton),
         );
 
     Widget trailing = const Empty();
@@ -135,9 +136,12 @@ class SearchBarState extends State<SearchBar> {
                       .textTheme
                       .titleMedium!
                       .copyWith(color: Theme.of(context).disabledColor),
+                  style: TextStyle(
+                    color: context.colorAppBarContent,
+                  ),
                   controller: _controller,
                   focusNode: _focusNode,
-                  cursorColor: Theme.of(context).primaryColor,
+                  cursorColor: context.colorDefault,
                 ),
               ),
             ),

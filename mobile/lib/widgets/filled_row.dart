@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mobile/res/theme.dart';
 
 import '../res/dimen.dart';
 import '../widgets/widget.dart';
@@ -95,7 +96,7 @@ class FilledRow extends StatelessWidget {
       duration: animDurationSlow,
       width: showValue ? filledWidth : 0,
       child: Container(
-        color: fillColor ?? Theme.of(context).primaryColor,
+        color: fillColor ?? context.colorDefault,
       ),
     );
   }

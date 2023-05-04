@@ -41,7 +41,7 @@ class AboutPage extends StatelessWidget {
         _buildAppleEula(context),
         ListItem(
           title: Text(Strings.of(context).aboutPagePrivacy),
-          trailing: const Icon(Icons.open_in_new),
+          trailing: const OpenInWebIcon(),
           onTap: () => urlLauncher.launch(_urlPrivacy),
         ),
       ],
@@ -55,7 +55,7 @@ class AboutPage extends StatelessWidget {
 
     return ListItem(
       title: Text(Strings.of(context).aboutPageEula),
-      trailing: const Icon(Icons.open_in_new),
+      trailing: const OpenInWebIcon(),
       onTap: () => UrlLauncherWrapper.of(context).launch(_urlAppleEula),
     );
   }

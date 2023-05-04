@@ -367,7 +367,7 @@ class _PersonalBest extends StatelessWidget {
                     const VerticalSpace(paddingDefault),
                     Row(
                       children: [
-                        TitleLabel.style2(title),
+                        TitleLabel.style2(context, title),
                         MinChip(chipText),
                       ],
                     ),
@@ -471,7 +471,7 @@ class _MeasurementPerSpecies extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         const VerticalSpace(paddingDefault),
-        isEmpty(title) ? const Empty() : TitleLabel.style2(title!),
+        isEmpty(title) ? const Empty() : TitleLabel.style2(context, title!),
         Table(
           defaultVerticalAlignment: TableCellVerticalAlignment.middle,
           columnWidths: const <int, TableColumnWidth>{

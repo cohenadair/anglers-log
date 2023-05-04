@@ -88,7 +88,7 @@ void showOkDialog({
     context: context,
     builder: (context) => AlertDialog(
       title: isEmpty(title) ? null : Text(title!),
-      titleTextStyle: styleTitleAlert,
+      titleTextStyle: styleTitleAlert(context),
       content: description,
       actions: <Widget>[
         DialogButton(label: Strings.of(context).ok),
@@ -110,7 +110,7 @@ Future<void> showCancelDialog(
     context: context,
     builder: (context) => AlertDialog(
       title: isEmpty(title) ? null : Text(title!),
-      titleTextStyle: styleTitleAlert,
+      titleTextStyle: styleTitleAlert(context),
       content: isEmpty(description) ? null : Text(description!),
       actions: <Widget>[
         DialogButton(
@@ -150,7 +150,7 @@ bool showRateDialogIfNeeded(BuildContext context) {
     barrierDismissible: false,
     builder: (context) => AlertDialog(
       title: Text(Strings.of(context).rateDialogTitle),
-      titleTextStyle: styleTitleAlert,
+      titleTextStyle: styleTitleAlert(context),
       content: Text(Strings.of(context).rateDialogDescription),
       actions: <Widget>[
         DialogButton(
@@ -186,7 +186,7 @@ void _showDestructiveDialog({
     context: context,
     builder: (context) => AlertDialog(
       title: title == null ? null : Text(title),
-      titleTextStyle: styleTitleAlert,
+      titleTextStyle: styleTitleAlert(context),
       content: description,
       actions: <Widget>[
         DialogButton(

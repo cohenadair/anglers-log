@@ -395,6 +395,11 @@ Map<String, Map<String, String>> get englishStrings => {
         "settingsPage_minGpsTrailDistanceTitle": "GPS Trail Distance",
         "settingsPage_minGpsTrailDistanceDescription":
             "The minimum distance between points in a GPS trail.",
+        "settingsPage_themeTitle": "Theme",
+        "settingsPage_themeSystem": "System",
+        "settingsPage_themeLight": "Light",
+        "settingsPage_themeDark": "Dark",
+        "settingsPage_themeSelect": "Select Theme",
         "unitsPage_title": "Measurement Units",
         "unitsPage_catchLengthFractionalInches": "Fractional inches (%s)",
         "unitsPage_catchLengthInches": "Inches (%s)",
@@ -426,10 +431,9 @@ Map<String, Map<String, String>> get englishStrings => {
         "mapPage_addCatch": "Add Catch",
         "mapPage_searchHint": "Search fishing spots",
         "mapPage_droppedPin": "New Fishing Spot",
-        "mapPage_mapTypeNormal": "Normal",
+        "mapPage_mapTypeLight": "Light",
         "mapPage_mapTypeSatellite": "Satellite",
-        "mapPage_mapTypeTerrain": "Terrain",
-        "mapPage_mapTypeHybrid": "Hybrid",
+        "mapPage_mapTypeDark": "Dark",
         "mapPage_errorGettingLocation":
             "Unable to retrieve current location. Please try again later.",
         "mapPage_errorOpeningDirections":
@@ -1105,9 +1109,13 @@ Map<String, Map<String, String>> get englishStrings => {
         "changeLog_2.3.3_1":
             "Fixed an issue where trip start and end dates weren't selectable from the \"Manage Fields\" menu",
         "changeLog_2.3.3_2": "Some general stability improvements",
-        "changeLog_2.3.4_1": "You will now be warned when leaving a page without first pressing the \"SAVE\" button",
-        "changeLog_2.3.4_2": "A trip's manually set start time is now used when fetching atmosphere and weather data",
-        "changeLog_2.3.4_3": "Fixed an issue where photos didn't show in the gallery when adding a catch",
-        "changeLog_2.3.4_4": "Fixed an issue where the map wasn't always able to fetch your current location",
+        "changeLog_2.3.4_1":
+            "You will now be warned when leaving a page without first pressing the \"SAVE\" button",
+        "changeLog_2.3.4_2":
+            "A trip's manually set start time is now used when fetching atmosphere and weather data",
+        "changeLog_2.3.4_3":
+            "Fixed an issue where photos didn't show in the gallery when adding a catch",
+        "changeLog_2.3.4_4":
+            "Fixed an issue where the map wasn't always able to fetch your current location",
       },
     };

@@ -5,6 +5,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
 import 'package:mobile/pages/entity_page.dart';
 import 'package:mobile/res/dimen.dart';
+import 'package:mobile/res/theme.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mobile/widgets/button.dart';
 import 'package:mobile/widgets/list_item.dart';
@@ -72,7 +73,7 @@ void main() {
           .toList();
       expect(carouselDots.length, 4);
       expect(((carouselDots[0] as Container).decoration as BoxDecoration).color,
-          Theme.of(context).primaryColor);
+          context.colorDefault);
       expect(((carouselDots[1] as Container).decoration as BoxDecoration).color,
           Colors.white.withOpacity(0.5));
       expect(((carouselDots[2] as Container).decoration as BoxDecoration).color,
@@ -99,7 +100,7 @@ void main() {
       expect(((carouselDots[0] as Container).decoration as BoxDecoration).color,
           Colors.white.withOpacity(0.5));
       expect(((carouselDots[1] as Container).decoration as BoxDecoration).color,
-          Theme.of(context).primaryColor);
+          context.colorDefault);
       expect(((carouselDots[2] as Container).decoration as BoxDecoration).color,
           Colors.white.withOpacity(0.5));
       expect(((carouselDots[3] as Container).decoration as BoxDecoration).color,

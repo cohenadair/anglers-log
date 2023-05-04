@@ -2,6 +2,7 @@ import 'dart:math';
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
+import 'package:mobile/res/theme.dart';
 import 'package:quiver/strings.dart';
 
 import '../image_manager.dart';
@@ -119,7 +120,7 @@ class PhotoState extends State<Photo> {
             width: w,
             height: h,
             decoration: BoxDecoration(
-              color: Theme.of(context).primaryColor,
+              color: context.colorDefault,
               shape: widget.isCircular ? BoxShape.circle : BoxShape.rectangle,
             ),
             child: Icon(

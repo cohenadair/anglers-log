@@ -11,6 +11,7 @@ import 'package:mobile/pages/fishing_spot_list_page.dart';
 import 'package:mobile/pages/gps_trail_page.dart';
 import 'package:mobile/pages/pro_page.dart';
 import 'package:mobile/res/gen/custom_icons.dart';
+import 'package:mobile/user_preference_manager.dart';
 import 'package:mobile/utils/map_utils.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mobile/widgets/checkbox_input.dart';
@@ -63,6 +64,8 @@ void main() {
     when(appManager.userPreferenceManager.setMapType(any))
         .thenAnswer((_) => Future.value());
     when(appManager.userPreferenceManager.mapType).thenReturn(null);
+    when(appManager.userPreferenceManager.stream)
+        .thenAnswer((_) => const Stream.empty());
 
     when(mapController.value.cameraPosition)
         .thenReturn(const CameraPosition(target: LatLng(0, 0)));
@@ -495,7 +498,7 @@ void main() {
     expect(findMap(tester).styleString!.contains(normal), isTrue);
 
     await tapAndSettle(tester, find.byIcon(Icons.layers));
-    await tapAndSettle(tester, find.text("Normal"));
+    await tapAndSettle(tester, find.text("Light"));
 
     expect(findMap(tester).styleString!.contains(normal), isTrue);
     verifyNever(appManager.userPreferenceManager.setMapType(any));
@@ -1389,5 +1392,34 @@ void main() {
       ),
     );
     verifyNever(appManager.gpsTrailManager.activeTrial);
+  });
+
+  testWidgets("Map type updates when theme mode changes", (tester) async {
+    var controller = StreamController<String>.broadcast();
+    when(appManager.userPreferenceManager.stream)
+        .thenAnswer((_) => controller.stream);
+    when(appManager.userPreferenceManager.themeMode)
+        .thenReturn(ThemeMode.light);
+
+    await pumpMapWrapper(
+      tester,
+      FishingSpotMap(
+        pickerSettings: FishingSpotMapPickerSettings(
+          controller: InputController<FishingSpot>(),
+        ),
+      ),
+    );
+    expect(findFirst<DefaultMapboxMap>(tester).style, MapType.light.url);
+
+    // Trigger update, but not a theme change.
+    controller.add("not a theme mode change event");
+    await tester.pumpAndSettle(const Duration(milliseconds: 50));
+    expect(findFirst<DefaultMapboxMap>(tester).style, MapType.light.url);
+
+    // Trigger a theme change.
+    when(appManager.userPreferenceManager.themeMode).thenReturn(ThemeMode.dark);
+    controller.add(UserPreferenceManager.keyMapType);
+    await tester.pumpAndSettle(const Duration(milliseconds: 50));
+    expect(findFirst<DefaultMapboxMap>(tester).style, MapType.dark.url);
   });
 }

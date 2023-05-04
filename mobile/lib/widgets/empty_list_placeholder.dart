@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mobile/res/theme.dart';
 import 'package:quiver/strings.dart';
 
 import '../i18n/strings.dart';
@@ -80,7 +81,7 @@ class EmptyListPlaceholder extends StatelessWidget {
           text: description,
           textArg: Icon(
             descriptionIcon,
-            color: Colors.black,
+            color: context.colorAppBarContent,
           ),
           textStyle: stylePrimary(context, enabled: enabled),
           overflow: overflow,

@@ -153,7 +153,7 @@ class BaitVariantListInputState extends State<BaitVariantListInput> {
       );
     } else if (widget.onPicked != null &&
         widget.selectedItems.contains(variant)) {
-      trailing = const Icon(Icons.check);
+      trailing = const ItemSelectedIcon();
     }
 
     return AnimatedListTransition(

@@ -94,12 +94,13 @@ class TitleLabel extends StatelessWidget {
   })  : _style = styleTitle1,
         _offset = 2.0;
 
-  const TitleLabel.style2(
+  TitleLabel.style2(
+    BuildContext context,
     this.text, {
     this.align,
     this.overflow,
     this.maxLines,
-  })  : _style = styleTitle2,
+  })  : _style = styleTitle2(context),
         _offset = 1.0;
 
   @override
@@ -138,7 +139,7 @@ class AlertTitleLabel extends StatelessWidget {
   Widget build(BuildContext context) {
     return Text(
       text,
-      style: styleTitleAlert,
+      style: styleTitleAlert(context),
       textAlign: align,
       overflow: overflow,
     );

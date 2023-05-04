@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mobile/res/theme.dart';
 import 'package:mobile/utils/widget_utils.dart';
 import 'package:quiver/strings.dart';
 
@@ -52,18 +53,19 @@ class ProPageState extends State<ProPage> {
   Widget build(BuildContext context) {
     var children = [
       const VerticalSpace(paddingDefault),
-      const Icon(
+      Icon(
         CustomIcons.catches,
         size: _logoHeight,
+        color: context.colorDefault,
       ),
       Text(
         Strings.of(context).proPageUpgradeTitle,
-        style: styleTitle2,
+        style: styleTitle2(context),
       ),
       const VerticalSpace(paddingSmall),
       TitleLabel.style1(Strings.of(context).proPageProTitle),
       const VerticalSpace(paddingSmall),
-      const Icon(Icons.stars),
+      const DefaultColorIcon(Icons.stars),
       const VerticalSpace(paddingXL),
       _buildFeatureRow(Strings.of(context).proPageBackup),
       const VerticalSpace(paddingDefault),

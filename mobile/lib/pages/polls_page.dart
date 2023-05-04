@@ -5,6 +5,7 @@ import 'package:mobile/pages/scroll_page.dart';
 import 'package:mobile/poll_manager.dart';
 import 'package:mobile/res/dimen.dart';
 import 'package:mobile/res/style.dart';
+import 'package:mobile/res/theme.dart';
 import 'package:mobile/utils/page_utils.dart';
 import 'package:mobile/widgets/button.dart';
 import 'package:mobile/widgets/empty_list_placeholder.dart';
@@ -189,7 +190,7 @@ class _PollState extends State<_Poll> {
               maxValue: _rowMaxValue,
               value: value,
               showValue: _voteState == _VoteState.success,
-              fillColor: Theme.of(context).primaryColor,
+              fillColor: context.colorDefault,
               label: option,
               cornerRadius: _rowHeight / 2,
               valueBuilder: () => MultiMeasurement(

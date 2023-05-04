@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-
-Color colorGreyAccent = Colors.grey.shade200;
+import 'package:mobile/res/theme.dart';
 
 const FontWeight fontWeightBold = FontWeight.w500;
 
@@ -19,21 +18,21 @@ const TextStyle styleTitle1 = TextStyle(
   fontWeight: fontWeightBold,
 );
 
-const TextStyle styleTitle2 = TextStyle(
-  fontSize: 24,
-  color: Colors.black,
-);
+TextStyle styleTitle2(BuildContext context) => TextStyle(
+      fontSize: 24,
+      color: context.colorText,
+    );
 
-const TextStyle styleTitleAppBar = TextStyle(
-  fontSize: 20,
-  color: Colors.black,
-  fontWeight: fontWeightBold,
-);
+TextStyle styleTitleAppBar(BuildContext context) => TextStyle(
+      fontSize: 20,
+      color: context.colorAppBarContent,
+      fontWeight: fontWeightBold,
+    );
 
-const TextStyle styleTitleAlert = TextStyle(
-  fontSize: 24,
-  color: Colors.black,
-);
+TextStyle styleTitleAlert(BuildContext context) => TextStyle(
+      fontSize: 24,
+      color: context.colorText,
+    );
 
 TextStyle styleHyperlink(BuildContext context) =>
     stylePrimary(context).copyWith(
@@ -49,10 +48,6 @@ TextStyle styleWarning(BuildContext context) =>
 
 TextStyle styleSuccess(BuildContext context) =>
     stylePrimary(context).copyWith(color: Colors.green);
-
-/// For displaying on dark backgrounds.
-TextStyle styleLight(BuildContext context) =>
-    stylePrimary(context).copyWith(color: Colors.white);
 
 const TextStyle styleSubtext = TextStyle(
   fontSize: 11.0,
@@ -74,7 +69,7 @@ TextStyle stylePrimary(
 }
 
 TextStyle styleSecondary(BuildContext context) =>
-    stylePrimary(context).copyWith(color: Colors.black54);
+    stylePrimary(context).copyWith(color: Colors.grey);
 
 TextStyle styleDisabled(BuildContext context) =>
     stylePrimary(context, enabled: false);
@@ -91,14 +86,16 @@ TextStyle styleSubtitle(
 
 TextStyle styleListHeading(BuildContext context) {
   return Theme.of(context).textTheme.bodyLarge!.copyWith(
-        color: Theme.of(context).primaryColor,
+        color: context.colorDefault,
       );
 }
 
-const List<BoxShadow> boxShadowDefault = [
-  BoxShadow(
-    color: Colors.grey,
-    blurRadius: 1.0,
-    offset: Offset(0, 1.0),
-  ),
-];
+List<BoxShadow> boxShadowDefault(BuildContext context) {
+  return [
+    BoxShadow(
+      color: context.colorBoxShadow,
+      blurRadius: 1.0,
+      offset: const Offset(0, 1.0),
+    ),
+  ];
+}

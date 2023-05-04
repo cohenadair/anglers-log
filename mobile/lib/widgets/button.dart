@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mobile/res/theme.dart';
 import 'package:mobile/widgets/floating_container.dart';
 import 'package:quiver/strings.dart';
 
@@ -109,9 +110,9 @@ class ActionButton extends StatelessWidget {
       padding: EdgeInsets.all(condensed ? paddingSmall : paddingDefault),
       onPressed: onPressed,
       shape: const CircleBorder(side: BorderSide(color: Colors.transparent)),
-      textStyle: const TextStyle(
+      textStyle: TextStyle(
         fontWeight: FontWeight.w500,
-        color: Colors.black,
+        color: context.colorAppBarContent,
       ),
       child: textWidget,
     );
@@ -156,7 +157,7 @@ class ChipButton extends StatelessWidget {
           fontWeight: fontWeightBold,
         ),
       ),
-      backgroundColor: Theme.of(context).colorScheme.secondary,
+      backgroundColor: context.colorDefault,
       pressElevation: 1,
       onPressed: onPressed == null ? () {} : onPressed!,
     );
@@ -190,7 +191,7 @@ class MinimumIconButton extends StatelessWidget {
           icon,
           color: onTap == null
               ? Theme.of(context).disabledColor
-              : color ?? Theme.of(context).primaryColor,
+              : color ?? context.colorDefault,
         ),
       ),
     );
@@ -333,7 +334,7 @@ class FloatingButton extends StatelessWidget {
       if (Theme.of(context).platform == TargetPlatform.android) {
         circleChild = Icon(
           Icons.arrow_back,
-          color: Colors.black,
+          color: context.colorIconFloatingButton,
           size: iconSize,
         );
       } else {
@@ -342,7 +343,7 @@ class FloatingButton extends StatelessWidget {
           padding: insetsLeftSmall,
           child: Icon(
             Icons.arrow_back_ios,
-            color: Colors.black,
+            color: context.colorIconFloatingButton,
             size: iconSize,
           ),
         );
@@ -352,7 +353,7 @@ class FloatingButton extends StatelessWidget {
     } else {
       circleChild = Icon(
         _isCloseButton ? Icons.close : icon,
-        color: Colors.black,
+        color: context.colorIconFloatingButton,
         size: iconSize,
       );
     }
@@ -373,7 +374,7 @@ class FloatingButton extends StatelessWidget {
                 shape: const CircleBorder(),
                 fillColor: transparentBackground
                     ? null
-                    : (pushed ? Colors.grey : Colors.white),
+                    : (pushed ? Colors.grey : null),
                 onPressed: _isBackButton || _isCloseButton
                     ? () => Navigator.of(context).pop()
                     : onPressed,
@@ -406,33 +407,6 @@ class FloatingButton extends StatelessWidget {
   }
 }
 
-class SmallTextButton extends StatelessWidget {
-  static const _fontSize = 14.0;
-
-  final String text;
-  final VoidCallback? onPressed;
-
-  const SmallTextButton({
-    required this.text,
-    this.onPressed,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return TextButton(
-      onPressed: onPressed,
-      child: Text(
-        text,
-        style: TextStyle(
-          color: Theme.of(context).primaryColor,
-          fontSize: _fontSize,
-          fontWeight: FontWeight.normal,
-        ),
-      ),
-    );
-  }
-}
-
 class FakeTextButton extends StatelessWidget {
   final String text;
 
@@ -443,7 +417,7 @@ class FakeTextButton extends StatelessWidget {
     return Text(
       text.toUpperCase(),
       style: TextStyle(
-        color: Theme.of(context).primaryColor,
+        color: context.colorDefault,
         fontWeight: fontWeightBold,
       ),
       overflow: TextOverflow.visible,

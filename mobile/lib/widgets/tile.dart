@@ -29,6 +29,7 @@ class Tile extends StatelessWidget {
       subtitle1 = Padding(
         padding: insetsHorizontalSmall,
         child: TitleLabel.style2(
+          context,
           item.subtitle!,
           align: TextAlign.center,
           maxLines: 2,

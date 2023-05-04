@@ -42,10 +42,7 @@ class BottomSheetPicker<T> extends StatelessWidget {
       title: titleWidget,
       trailing: Visibility(
         visible: currentValue != null && currentValue == value,
-        child: Icon(
-          Icons.check,
-          color: Theme.of(context).primaryColor,
-        ),
+        child: const ItemSelectedIcon(),
       ),
       onTap: () {
         Navigator.pop(context);

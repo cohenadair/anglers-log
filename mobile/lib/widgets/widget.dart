@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:mobile/res/gen/custom_icons.dart';
+import 'package:mobile/res/theme.dart';
 import 'package:quiver/strings.dart';
 
 import '../i18n/strings.dart';
 import '../model/gen/anglerslog.pb.dart';
-import '../res/color.dart';
 import '../res/dimen.dart';
 import '../res/style.dart';
 import '../widgets/text.dart';
@@ -166,13 +166,13 @@ class HeadingNoteDivider extends StatelessWidget {
               showDivider: !hideDivider,
             ),
           ),
-          _buildNote(),
+          _buildNote(context),
         ],
       ),
     );
   }
 
-  Widget _buildNote() {
+  Widget _buildNote(BuildContext context) {
     return AnimatedSwitcher(
       duration: animDurationDefault,
       child: hideNote
@@ -183,14 +183,12 @@ class HeadingNoteDivider extends StatelessWidget {
                 right: paddingDefault,
                 top: paddingDefault,
               ),
-              child: SafeArea(
-                top: false,
-                bottom: false,
+              child: HorizontalSafeArea(
                 child: IconLabel(
                   text: note!,
                   textArg: Icon(
                     noteIcon,
-                    color: Colors.black,
+                    color: context.colorAppBarContent,
                   ),
                 ),
               ),
@@ -272,7 +270,7 @@ class SwipeChip extends StatelessWidget {
         width: _width,
         height: _height,
         decoration: BoxDecoration(
-          color: colorGreyAccent,
+          color: context.colorGreyAccentLight,
           borderRadius: BorderRadius.all(Radius.circular(_height / 2)),
         ),
       ),
@@ -303,23 +301,63 @@ class EnabledOpacity extends StatelessWidget {
   }
 }
 
+class GreyAccentIcon extends StatelessWidget {
+  final IconData data;
+
+  const GreyAccentIcon(this.data);
+
+  @override
+  Widget build(BuildContext context) {
+    return Icon(
+      data,
+      color: context.colorGreyAccent,
+    );
+  }
+}
+
 class RightChevronIcon extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return const Icon(
-      Icons.chevron_right,
-      color: colorInputIconAccent,
-    );
+    return const GreyAccentIcon(Icons.chevron_right);
   }
 }
 
 class DropdownIcon extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return const Icon(
-      Icons.arrow_drop_down,
-      color: colorInputIconAccent,
+    return const GreyAccentIcon(Icons.arrow_drop_down);
+  }
+}
+
+class DefaultColorIcon extends StatelessWidget {
+  final IconData data;
+
+  const DefaultColorIcon(this.data, {Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Icon(
+      data,
+      color: context.colorDefault,
     );
+  }
+}
+
+class OpenInWebIcon extends StatelessWidget {
+  const OpenInWebIcon();
+
+  @override
+  Widget build(BuildContext context) {
+    return const DefaultColorIcon(Icons.open_in_new);
+  }
+}
+
+class ItemSelectedIcon extends StatelessWidget {
+  const ItemSelectedIcon();
+
+  @override
+  Widget build(BuildContext context) {
+    return const DefaultColorIcon(Icons.check);
   }
 }
 
@@ -539,11 +577,11 @@ class WatermarkLogo extends StatelessWidget {
         ClipOval(
           child: Container(
             padding: insetsXL,
-            color: colorGreyAccent,
+            color: context.colorGreyAccentLight,
             child: Icon(
               icon,
               size: _size,
-              color: color ?? Theme.of(context).primaryColor,
+              color: color ?? context.colorDefault,
             ),
           ),
         ),
@@ -563,7 +601,7 @@ class TransparentAppBar extends AppBar {
           elevation: 0.0,
           leading: leading ??
               CloseButton(
-                color: Theme.of(context).primaryColor,
+                color: context.colorDefault,
                 onPressed: onCloseOverride,
               ),
           systemOverlayStyle: SystemUiOverlayStyle.dark,
@@ -592,6 +630,7 @@ class CatchFavoriteStar extends StatelessWidget {
       child: Icon(
         Icons.star,
         size: large ? _largeSize : null,
+        color: context.colorDefault,
       ),
     );
   }

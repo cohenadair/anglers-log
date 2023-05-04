@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mobile/res/theme.dart';
 import 'package:quiver/strings.dart';
 
 import '../i18n/strings.dart';
@@ -197,7 +198,7 @@ class TextInputState extends State<TextInput> {
       top: false,
       bottom: false,
       child: TextFormField(
-        cursorColor: Theme.of(context).primaryColor,
+        cursorColor: context.colorDefault,
         initialValue: widget.initialValue,
         controller: widget.controller?.editingController,
         decoration: InputDecoration(

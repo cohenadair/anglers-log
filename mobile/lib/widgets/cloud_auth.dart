@@ -142,10 +142,11 @@ class _GoogleButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: const BoxDecoration(
-        color: Color(_backgroundColor),
-        boxShadow: boxShadowDefault,
-        borderRadius: BorderRadius.all(Radius.circular(_borderRadiusButton)),
+      decoration: BoxDecoration(
+        color: const Color(_backgroundColor),
+        boxShadow: boxShadowDefault(context),
+        borderRadius:
+            const BorderRadius.all(Radius.circular(_borderRadiusButton)),
       ),
       height: _height,
       child: Material(

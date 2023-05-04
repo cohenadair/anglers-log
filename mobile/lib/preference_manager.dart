@@ -8,7 +8,6 @@ import 'local_database_manager.dart';
 import 'log.dart';
 import 'model/gen/anglerslog.pb.dart';
 import 'utils/protobuf_utils.dart';
-import 'utils/void_stream_controller.dart';
 
 /// An abstract class for managing a collection of preferences.
 abstract class PreferenceManager {
@@ -24,7 +23,7 @@ abstract class PreferenceManager {
   @protected
   final AppManager appManager;
 
-  final _controller = VoidStreamController();
+  final _controller = StreamController<String>.broadcast();
 
   late Log _log;
 
@@ -33,7 +32,7 @@ abstract class PreferenceManager {
   }
 
   /// A [Stream] that fires events when any preference updates.
-  Stream<void> get stream => _controller.stream;
+  Stream<String> get stream => _controller.stream;
 
   LocalDatabaseManager get _localDatabaseManager =>
       appManager.localDatabaseManager;
@@ -57,7 +56,7 @@ abstract class PreferenceManager {
     _log.d("Setting key=$key, value=$value");
     putLocal(key, value);
 
-    _controller.notify();
+    _controller.add(key);
   }
 
   @protected

@@ -3,6 +3,7 @@ import 'package:intl/intl.dart';
 import 'package:mobile/i18n/strings.dart';
 import 'package:mobile/res/dimen.dart';
 import 'package:mobile/res/style.dart';
+import 'package:mobile/res/theme.dart';
 import 'package:mobile/time_manager.dart';
 import 'package:mobile/utils/dialog_utils.dart';
 import 'package:mobile/widgets/widget.dart';
@@ -65,7 +66,7 @@ class _MonthYearPickerState extends State<_MonthYearPicker> {
 
   Widget _buildYearPicker() {
     return Container(
-      color: Theme.of(context).primaryColor,
+      color: context.colorDefault,
       child: Material(
         color: Colors.transparent,
         child: Row(
@@ -73,7 +74,7 @@ class _MonthYearPickerState extends State<_MonthYearPicker> {
             IconButton(
               icon: const Icon(Icons.chevron_left),
               onPressed: () => setState(() => _year--),
-              color: Colors.black,
+              color: context.colorAppBarContent,
             ),
             Expanded(
               child: Padding(
@@ -81,14 +82,14 @@ class _MonthYearPickerState extends State<_MonthYearPicker> {
                 child: Text(
                   _year.toString(),
                   textAlign: TextAlign.center,
-                  style: styleTitleAlert,
+                  style: styleTitleAlert(context),
                 ),
               ),
             ),
             IconButton(
               icon: const Icon(Icons.chevron_right),
               onPressed: () => setState(() => _year++),
-              color: Colors.black,
+              color: context.colorAppBarContent,
             ),
           ],
         ),
@@ -149,8 +150,7 @@ class _MonthYearPickerState extends State<_MonthYearPicker> {
         height: _monthHeight,
         width: _monthWidth,
         decoration: BoxDecoration(
-          color:
-              _month == month ? Theme.of(context).primaryColor : Colors.white,
+          color: _month == month ? context.colorDefault : Colors.transparent,
           borderRadius: borderRadius,
         ),
         child: Material(

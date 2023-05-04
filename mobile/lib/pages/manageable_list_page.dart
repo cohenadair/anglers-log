@@ -76,7 +76,6 @@ class ManageableListPage<T> extends StatefulWidget {
 }
 
 class ManageableListPageState<T> extends State<ManageableListPage<T>> {
-  static const IconData _iconCheck = Icons.check;
   static const IconData _iconAdd = Icons.add;
 
   static const _appBarExpandedHeight = 100.0;
@@ -340,7 +339,7 @@ class ManageableListPageState<T> extends State<ManageableListPage<T>> {
     Widget? trailing;
     VoidCallback? onTap;
     if (_isPickingSingle) {
-      trailing = _selectedValues.isEmpty ? const Icon(_iconCheck) : null;
+      trailing = _selectedValues.isEmpty ? const ItemSelectedIcon() : null;
       onTap = () => _finishPicking({});
     } else if (_isPickingMulti) {
       label = Strings.of(context).all;
@@ -396,7 +395,7 @@ class ManageableListPageState<T> extends State<ManageableListPage<T>> {
         widget.itemManager.detailPageBuilder == null) {
       // Don't show detail disclosure indicator if we're picking a single
       // value, or if there isn't any detail to show.
-      trailing = _isItemSelected(itemValue) ? const Icon(_iconCheck) : null;
+      trailing = _isItemSelected(itemValue) ? const ItemSelectedIcon() : null;
     }
 
     // For now, only allow selecting items with a grandchild in a single picker.

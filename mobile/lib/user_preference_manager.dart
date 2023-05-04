@@ -41,9 +41,11 @@ class UserPreferenceManager extends PreferenceManager {
   static const _keyFreePollVotedAt = "free_poll_voted_at";
   static const _keyProPollVotedAt = "pro_poll_voted_at";
   static const _keySelectedReportId = "selected_report_id";
-  static const _keyMapType = "map_type";
   static const _keyAppVersion = "app_version";
   static const _keyStatsDateRange = "stats_date_range";
+
+  static const keyMapType = "map_type";
+  static const keyThemeMode = "theme_mode";
 
   UserPreferenceManager(AppManager appManager) : super(appManager);
 
@@ -214,9 +216,9 @@ class UserPreferenceManager extends PreferenceManager {
 
   Id? get selectedReportId => id(_keySelectedReportId);
 
-  Future<void> setMapType(String? type) => put(_keyMapType, type);
+  Future<void> setMapType(String? type) => put(keyMapType, type);
 
-  String? get mapType => preferences[_keyMapType];
+  String? get mapType => preferences[keyMapType];
 
   Future<void> updateAppVersion() async =>
       put(_keyAppVersion, (await _packageInfoWrapper.fromPlatform()).version);
@@ -237,6 +239,14 @@ class UserPreferenceManager extends PreferenceManager {
   DateRange? get statsDateRange {
     var json = preferences[_keyStatsDateRange];
     return isEmpty(json) ? null : DateRange.fromJson(json);
+  }
+
+  Future<void> setThemeMode(ThemeMode? themeMode) =>
+      put(keyThemeMode, themeMode?.index);
+
+  ThemeMode get themeMode {
+    var mode = preferences[keyThemeMode];
+    return mode == null ? ThemeMode.light : ThemeMode.values[mode];
   }
 
   Future<void> setFreePollVotedAt(int? timestamp) =>

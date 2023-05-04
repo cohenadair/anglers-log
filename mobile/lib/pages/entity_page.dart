@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mobile/res/theme.dart';
 import 'package:mobile/utils/share_utils.dart';
 import 'package:mobile/widgets/blurred_background_photo.dart';
 import 'package:quiver/strings.dart';
@@ -153,7 +154,7 @@ class EntityPageState extends State<EntityPage> {
           height: _carouselDotSize,
           decoration: BoxDecoration(
             color: imageNames.indexOf(imageNames[i]) == _imageIndex
-                ? Theme.of(context).primaryColor
+                ? context.colorDefault
                 : Colors.white.withOpacity(_carouselOpacity),
             shape: BoxShape.circle,
           ),

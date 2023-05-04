@@ -2,8 +2,7 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
-
-import '../res/style.dart';
+import 'package:mobile/res/theme.dart';
 
 /// An [Image] wrapper that catches "Invalid image data" exceptions.
 class SafeImage extends StatelessWidget {
@@ -60,7 +59,7 @@ class SafeImage extends StatelessWidget {
         Container(
           width: width,
           height: height,
-          color: colorGreyAccent,
+          color: context.colorGreyAccentLight,
         );
   }
 }

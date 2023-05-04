@@ -1,4 +1,5 @@
 import 'package:fixnum/fixnum.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/app_manager.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
@@ -195,5 +196,14 @@ void main() {
 
     await userPreferenceManager.setStatsDateRange(null);
     expect(userPreferenceManager.statsDateRange, isNull);
+  });
+
+  test("Theme mode defaults to light", () async {
+    expect(userPreferenceManager.themeMode, ThemeMode.light);
+  });
+
+  test("Saved theme mode is returned", () async {
+    await userPreferenceManager.setThemeMode(ThemeMode.dark);
+    expect(userPreferenceManager.themeMode, ThemeMode.dark);
   });
 }

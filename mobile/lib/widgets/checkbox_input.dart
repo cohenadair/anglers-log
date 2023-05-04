@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/pages/pro_page.dart';
+import 'package:mobile/res/theme.dart';
 import 'package:mobile/subscription_manager.dart';
 import 'package:mobile/utils/page_utils.dart';
 import 'package:quiver/strings.dart';
@@ -163,6 +164,7 @@ class PaddedCheckboxState extends State<PaddedCheckbox> {
           width: checkboxSizeDefault,
           height: checkboxSizeDefault,
           child: Checkbox(
+            activeColor: context.colorDefault,
             value: _checked,
             onChanged: widget.enabled
                 ? (value) {

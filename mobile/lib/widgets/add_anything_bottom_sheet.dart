@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/i18n/strings.dart';
+import 'package:mobile/res/theme.dart';
 import 'package:mobile/utils/entity_utils.dart';
 import 'package:mobile/widgets/our_bottom_sheet.dart';
 import 'package:mobile/widgets/widget.dart';
@@ -59,10 +60,10 @@ class _AddAnythingBottomSheet extends StatelessWidget {
                   color: Colors.transparent,
                   shape: BoxShape.circle,
                   border: Border.all(
-                    color: Colors.black12,
+                    color: context.colorGreyMedium,
                   ),
                 ),
-                child: Icon(spec.icon, color: Theme.of(context).primaryColor),
+                child: DefaultColorIcon(spec.icon),
               ),
               Padding(
                 padding: insetsTopSmall,

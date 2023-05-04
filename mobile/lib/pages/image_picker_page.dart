@@ -7,6 +7,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:mapbox_gl/mapbox_gl.dart' as maps;
 import 'package:image_picker/image_picker.dart';
+import 'package:mobile/res/theme.dart';
 import 'package:mobile/time_manager.dart';
 import 'package:mobile/wrappers/device_info_wrapper.dart';
 import 'package:mobile/wrappers/exif_wrapper.dart';
@@ -509,7 +510,7 @@ class ImagePickerPageState extends State<ImagePickerPage> {
         return Container(
           constraints: const BoxConstraints.expand(), // Fill parent.
           decoration: BoxDecoration(
-            color: Theme.of(context).primaryColor,
+            color: context.colorDefault,
           ),
           child: Icon(
             CustomIcons.catches,

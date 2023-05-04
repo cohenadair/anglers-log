@@ -7,6 +7,7 @@ import 'package:mapbox_gl/mapbox_gl.dart';
 import 'package:mobile/gps_trail_manager.dart';
 import 'package:mobile/pages/gps_trail_page.dart';
 import 'package:mobile/pages/pro_page.dart';
+import 'package:mobile/res/theme.dart';
 import 'package:mobile/subscription_manager.dart';
 import 'package:mobile/user_preference_manager.dart';
 import 'package:mobile/utils/collection_utils.dart';
@@ -112,6 +113,7 @@ class FishingSpotMapState extends State<FishingSpotMap> {
   MapboxMapController? _mapController;
   late MapType _mapType;
   late StreamSubscription<EntityEvent<GpsTrail>> _gpsTrailManagerSub;
+  late StreamSubscription<String> _userPreferenceSub;
 
   Symbol? _activeSymbol;
   GpsMapTrail? _activeTrail;
@@ -157,9 +159,10 @@ class FishingSpotMapState extends State<FishingSpotMap> {
   void initState() {
     super.initState();
 
-    _mapType = MapType.of(context);
     _myLocationEnabled = _locationMonitor.currentLatLng != null;
     _gpsTrailManagerSub = _gpsTrailManager.stream.listen(_updateGpsTrail);
+    _userPreferenceSub =
+        _userPreferenceManager.stream.listen(_onUserPreferenceUpdate);
 
     // Refresh state so Mapbox attribution padding is updated. This needs to be
     // done after the fishing spot widget is rendered.
@@ -179,11 +182,18 @@ class FishingSpotMapState extends State<FishingSpotMap> {
   }
 
   @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _mapType = MapType.of(context);
+  }
+
+  @override
   void dispose() {
     super.dispose();
     _mapController?.onSymbolTapped.remove(_onSymbolTapped);
     _mapController?.removeListener(_updateTarget);
     _gpsTrailManagerSub.cancel();
+    _userPreferenceSub.cancel();
   }
 
   @override
@@ -281,7 +291,7 @@ class FishingSpotMapState extends State<FishingSpotMap> {
           child: ActionButton(
             condensed: true,
             text: Strings.of(context).next,
-            textColor: Theme.of(context).primaryColor,
+            textColor: context.colorDefault,
             onPressed: () {
               _pickerSettings!.controller.value = _activeFishingSpot;
               _pickerSettings!.onNext!.call();
@@ -343,7 +353,8 @@ class FishingSpotMapState extends State<FishingSpotMap> {
           (context) => BottomSheetPicker<MapType>(
             currentValue: _mapType,
             items: {
-              Strings.of(context).mapPageMapTypeNormal: MapType.normal,
+              Strings.of(context).mapPageMapTypeLight: MapType.light,
+              Strings.of(context).mapPageMapTypeDark: MapType.dark,
               Strings.of(context).mapPageMapTypeSatellite: MapType.satellite,
             },
             onPicked: (newType) {
@@ -351,7 +362,7 @@ class FishingSpotMapState extends State<FishingSpotMap> {
                 return;
               }
               setState(() {
-                _mapType = newType ?? MapType.normal;
+                _mapType = newType ?? MapType.of(context);
                 _userPreferenceManager.setMapType(_mapType.id);
                 _didChangeMapType = true;
               });
@@ -707,6 +718,12 @@ class FishingSpotMapState extends State<FishingSpotMap> {
 
     if (event.type == GpsTrailEventType.endTracking && event.entity != null) {
       present(context, GpsTrailPage(event.entity!, isPresented: true));
+    }
+  }
+
+  void _onUserPreferenceUpdate(String event) {
+    if (event == UserPreferenceManager.keyMapType) {
+      setState(() => _mapType = MapType.of(context));
     }
   }
 

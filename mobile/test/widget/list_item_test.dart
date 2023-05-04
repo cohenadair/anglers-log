@@ -20,16 +20,6 @@ void main() {
       expect(find.byType(DefaultTextStyle), findsNWidgets(4));
     });
 
-    testWidgets("Leading icons use default style", (tester) async {
-      await tester.pumpWidget(Testable(
-        (_) => const ListItem(
-          leading: Icon(Icons.check),
-        ),
-      ));
-
-      expect(find.byType(IconTheme), findsNWidgets(3));
-    });
-
     testWidgets("Default padding", (tester) async {
       await tester.pumpWidget(Testable((_) => const ListItem()));
       expect(

@@ -30,10 +30,7 @@ class IconList extends StatelessWidget {
         Opacity(
           // Use Opacity so items are horizontally aligned.
           opacity: values.indexOf(value) >= 1 ? 0.0 : 1.0,
-          child: Icon(
-            icon,
-            color: Theme.of(context).disabledColor,
-          ),
+          child: GreyAccentIcon(icon),
         ),
         const HorizontalSpace(paddingXL),
         Expanded(

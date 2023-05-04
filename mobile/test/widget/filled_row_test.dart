@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mobile/res/theme.dart';
 import 'package:mobile/widgets/filled_row.dart';
 
 import '../test_utils.dart';
@@ -25,8 +26,7 @@ void main() {
 
     var container = findFirst<AnimatedContainer>(tester);
     expect(container.constraints?.maxWidth, 190);
-    expect(
-        (container.child as Container).color, Theme.of(context).primaryColor);
+    expect((container.child as Container).color, context.colorDefault);
   });
 
   testWidgets("Filled container has 0 width when value is hidden",

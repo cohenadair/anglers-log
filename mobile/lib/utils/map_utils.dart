@@ -4,6 +4,7 @@ import 'package:collection/collection.dart' show IterableExtension;
 import 'package:flutter/material.dart';
 import 'package:mapbox_gl/mapbox_gl.dart';
 import 'package:mobile/fishing_spot_manager.dart';
+import 'package:mobile/res/theme.dart';
 import 'package:mobile/user_preference_manager.dart';
 import 'package:quiver/core.dart';
 import 'package:quiver/strings.dart';
@@ -28,12 +29,12 @@ const metersPerDegree = 111139;
 class MapType {
   static MapType of(BuildContext context) =>
       MapType.fromId(UserPreferenceManager.of(context).mapType) ??
-      MapType.normal;
+      (context.isDarkTheme ? MapType.dark : MapType.light);
 
   static MapType? fromId(String? id) =>
       _allTypes.firstWhereOrNull((e) => e.id == id);
 
-  static const normal = MapType._(
+  static const light = MapType._(
     "normal",
     "ckt1zqb8d1h1p17pglx4pmz4y",
     "ckz1rne34000o14p36fu4of1y",
@@ -47,9 +48,17 @@ class MapType {
     "mapbox://styles/cohenadair/",
   );
 
+  static const dark = MapType._(
+    "dark",
+    "clgo7x3ne008a01pa2pi4e0h2",
+    "clgo8mr7o008k01nu7oj86r25",
+    "mapbox://styles/cohenadair/",
+  );
+
   static const _allTypes = [
-    normal,
+    light,
     satellite,
+    dark,
   ];
 
   final String id;
@@ -219,7 +228,7 @@ SymbolOptions createSymbolOptions(
 }
 
 Color mapIconColor(MapType mapType) =>
-    mapType == MapType.normal ? Colors.black : Colors.white;
+    mapType == MapType.light ? Colors.black : Colors.white;
 
 extension LatLngBoundsExt on LatLngBounds {
   LatLng get center => LatLng(

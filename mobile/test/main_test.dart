@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/main.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
@@ -7,6 +8,8 @@ import 'package:mobile/pages/landing_page.dart';
 import 'package:mobile/pages/main_page.dart';
 import 'package:mobile/pages/onboarding/change_log_page.dart';
 import 'package:mobile/pages/onboarding/onboarding_journey.dart';
+import 'package:mobile/user_preference_manager.dart';
+import 'package:mobile/utils/map_utils.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mockito/mockito.dart';
 import 'package:package_info_plus/package_info_plus.dart';
@@ -85,6 +88,8 @@ void main() {
     when(appManager.userPreferenceManager.stream)
         .thenAnswer((_) => const Stream.empty());
     when(appManager.userPreferenceManager.mapType).thenReturn(null);
+    when(appManager.userPreferenceManager.themeMode)
+        .thenReturn(ThemeMode.light);
 
     when(appManager.timeManager.currentDateTime)
         .thenReturn(dateTime(2020, 1, 1));
@@ -312,5 +317,107 @@ void main() {
     await tester.pump(const Duration(milliseconds: 200));
 
     verify(appManager.userPreferenceManager.setTripFieldIds(any)).called(1);
+  });
+
+  testWidgets("Clear map type when updating to 2.3.5 and type is not satellite",
+      (tester) async {
+    when(appManager.userPreferenceManager.didOnboard).thenReturn(true);
+    when(appManager.userPreferenceManager.appVersion).thenReturn("2.3.4");
+    when(appManager.packageInfoWrapper.fromPlatform()).thenAnswer(
+      (_) => Future.value(
+        PackageInfo(
+          buildNumber: "5",
+          appName: "Test",
+          version: "2.3.5",
+          packageName: "test.com",
+        ),
+      ),
+    );
+    when(appManager.userPreferenceManager.mapType).thenReturn(MapType.light.id);
+
+    await tester.pumpWidget(AnglersLog(appManager.app));
+    // Wait for delayed initialization + AnimatedSwitcher.
+    await tester.pump(const Duration(milliseconds: 200));
+
+    verify(appManager.userPreferenceManager.setMapType(null)).called(1);
+  });
+
+  testWidgets(
+      "Don't clear map type when updating to 2.3.5 if type is satellite",
+      (tester) async {
+    when(appManager.userPreferenceManager.didOnboard).thenReturn(true);
+    when(appManager.userPreferenceManager.appVersion).thenReturn("2.3.4");
+    when(appManager.packageInfoWrapper.fromPlatform()).thenAnswer(
+      (_) => Future.value(
+        PackageInfo(
+          buildNumber: "5",
+          appName: "Test",
+          version: "2.3.5",
+          packageName: "test.com",
+        ),
+      ),
+    );
+    when(appManager.userPreferenceManager.mapType)
+        .thenReturn(MapType.satellite.id);
+
+    await tester.pumpWidget(AnglersLog(appManager.app));
+    // Wait for delayed initialization + AnimatedSwitcher.
+    await tester.pump(const Duration(milliseconds: 200));
+
+    verify(appManager.userPreferenceManager.mapType).called(1);
+    verifyNever(appManager.userPreferenceManager.setMapType(any));
+  });
+
+  testWidgets("UserPreferenceManager listener", (tester) async {
+    // Stub AppManager so MainPage is shown. This is the path that uses
+    // ThemeMode from UserPreferenceManager.
+    when(appManager.userPreferenceManager.didOnboard).thenReturn(true);
+    when(appManager.userPreferenceManager.appVersion).thenReturn("2.0.0");
+    when(appManager.packageInfoWrapper.fromPlatform()).thenAnswer(
+      (_) => Future.value(
+        PackageInfo(
+          buildNumber: "5",
+          appName: "Test",
+          version: "1.0.0",
+          packageName: "test.com",
+        ),
+      ),
+    );
+    when(appManager.fishingSpotManager.list()).thenReturn([]);
+    when(appManager.catchManager.catches(
+      any,
+      filter: anyNamed("filter"),
+      opt: anyNamed("opt"),
+    )).thenReturn([]);
+
+    var controller = StreamController<String>.broadcast();
+    when(appManager.userPreferenceManager.stream)
+        .thenAnswer((_) => controller.stream);
+
+    await pumpContext(
+      tester,
+      (_) => AnglersLog(appManager.app),
+      appManager: appManager,
+    );
+    await tester.pump(const Duration(milliseconds: 300));
+
+    // Verify default theme.
+    var app = findLast<MaterialApp>(tester);
+    expect(app.themeMode, ThemeMode.light);
+
+    // Trigger preference change, and verify theme didn't change.
+    controller.add("not a real event");
+    await tester.pumpAndSettle(const Duration(milliseconds: 50));
+
+    app = findLast<MaterialApp>(tester);
+    expect(app.themeMode, ThemeMode.light);
+
+    // Trigger theme change.
+    when(appManager.userPreferenceManager.themeMode).thenReturn(ThemeMode.dark);
+    controller.add(UserPreferenceManager.keyThemeMode);
+    await tester.pumpAndSettle(const Duration(milliseconds: 50));
+
+    app = findLast<MaterialApp>(tester);
+    expect(app.themeMode, ThemeMode.dark);
   });
 }

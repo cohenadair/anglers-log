@@ -210,7 +210,7 @@ class CatchPageState extends State<CatchPage> {
     }
 
     return ListItem(
-      leading: const Icon(iconAngler),
+      leading: const GreyAccentIcon(iconAngler),
       title: Text(angler.name),
     );
   }
@@ -222,12 +222,12 @@ class CatchPageState extends State<CatchPage> {
 
     if (_catch.wasCatchAndRelease) {
       return ListItem(
-        leading: const Icon(Icons.check_circle),
+        leading: const GreyAccentIcon(Icons.check_circle),
         title: Text(Strings.of(context).catchPageReleased),
       );
     } else {
       return ListItem(
-        leading: const Icon(Icons.error),
+        leading: const GreyAccentIcon(Icons.error),
         title: Text(Strings.of(context).catchPageKept),
       );
     }
@@ -293,7 +293,7 @@ class CatchPageState extends State<CatchPage> {
     }
 
     return ListItem(
-      leading: const Icon(CustomIcons.ruler),
+      leading: const GreyAccentIcon(CustomIcons.ruler),
       title: Text(values.join(", ")),
     );
   }
