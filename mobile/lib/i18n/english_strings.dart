@@ -1117,5 +1117,11 @@ Map<String, Map<String, String>> get englishStrings => {
             "Fixed an issue where photos didn't show in the gallery when adding a catch",
         "changeLog_2.3.4_4":
             "Fixed an issue where the map wasn't always able to fetch your current location",
+        "changeLog_2.4.0_1": "Added support for Dark Mode",
+        "changeLog_2.4.0_2": "Removed decimal digits on a trip's length stats tiles",
+        "changeLog_2.4.0_3": "Stats time period selection is now saved across app launches",
+        "changeLog_2.4.0_4": "Added \"Sunny\" as a sky condition",
+        "changeLog_2.4.0_5": "Note fields can now include blank lines",
+        "changeLog_2.4.0_6": "Note fields are no longer truncated to 4 lines",
       },
     };
