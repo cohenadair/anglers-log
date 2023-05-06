@@ -243,6 +243,7 @@ class _TripSummaryState extends State<TripSummary> {
             title: _report.averageLengthPerTrip?.displayValue(
               context,
               includeFraction: false,
+              mainDecimalPlaces: 0,
             ),
             subtitle: Strings.of(context).tripSummaryLengthPerTrip,
           ),
@@ -250,6 +251,7 @@ class _TripSummaryState extends State<TripSummary> {
             title: _report.mostLengthInSingleTrip?.displayValue(
               context,
               includeFraction: false,
+              mainDecimalPlaces: 0,
             ),
             subtitle: Strings.of(context).tripSummaryBestLength,
             onTap: () => push(context, TripPage(_report.mostLengthTrip!)),
