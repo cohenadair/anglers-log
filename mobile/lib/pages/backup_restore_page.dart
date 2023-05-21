@@ -179,8 +179,8 @@ class _BackupRestorePageState extends State<_BackupRestorePage> {
   }
 
   Widget _buildAuthWidget() {
-    return Column(
-      children: const [
+    return const Column(
+      children: [
         CloudAuth(padding: insetsDefault),
         MinDivider(),
       ],

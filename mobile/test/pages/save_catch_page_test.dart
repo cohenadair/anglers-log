@@ -24,7 +24,7 @@ import 'package:mobile/widgets/fishing_spot_details.dart';
 import 'package:mobile/widgets/image_input.dart';
 import 'package:mobile/widgets/image_picker.dart';
 import 'package:mobile/widgets/list_item.dart';
-import 'package:mobile/widgets/search_bar.dart';
+import 'package:mobile/widgets/our_search_bar.dart';
 import 'package:mobile/widgets/text_input.dart';
 import 'package:mockito/mockito.dart';
 import 'package:path/path.dart';
@@ -1561,7 +1561,7 @@ void main() {
     await tester.pumpAndSettle(const Duration(milliseconds: 300));
     await mapController.finishLoading(tester);
 
-    await tapAndSettle(tester, find.byType(SearchBar));
+    await tapAndSettle(tester, find.byType(OurSearchBar));
     await tapAndSettle(tester, find.text("Spot B"));
     await tapAndSettle(tester, find.byType(BackButton));
 

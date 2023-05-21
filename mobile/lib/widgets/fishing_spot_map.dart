@@ -29,7 +29,7 @@ import '../utils/page_utils.dart';
 import '../utils/protobuf_utils.dart';
 import '../utils/snackbar_utils.dart';
 import '../widgets/button.dart';
-import '../widgets/search_bar.dart';
+import '../widgets/our_search_bar.dart';
 import '../widgets/widget.dart';
 import 'bottom_sheet_picker.dart';
 import 'default_mapbox_map.dart';
@@ -264,7 +264,7 @@ class FishingSpotMapState extends State<FishingSpotMap> {
   Widget _buildSearchBar() {
     if (!widget.showSearchBar) {
       // Row so it extends across the page.
-      return Row(children: const [Empty()]);
+      return const Row(children: [Empty()]);
     }
 
     String? name;
@@ -310,7 +310,7 @@ class FishingSpotMapState extends State<FishingSpotMap> {
       );
     }
 
-    return SearchBar(
+    return OurSearchBar(
       leading: leading,
       trailing: trailing,
       text: isEmpty(name) ? null : name,

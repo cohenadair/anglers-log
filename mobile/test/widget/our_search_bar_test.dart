@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mobile/widgets/search_bar.dart';
+import 'package:mobile/widgets/our_search_bar.dart';
 import 'package:mobile/widgets/widget.dart';
 
 import '../test_utils.dart';
@@ -10,7 +10,7 @@ void main() {
   testWidgets("Custom leading widget", (tester) async {
     await tester.pumpWidget(
       Testable(
-        (_) => SearchBar(
+        (_) => OurSearchBar(
           delegate: InputSearchBarDelegate((_) {}),
           leading: const Text("LEAD"),
         ),
@@ -23,7 +23,7 @@ void main() {
   testWidgets("Default leading widget", (tester) async {
     await tester.pumpWidget(
       Testable(
-        (_) => SearchBar(
+        (_) => OurSearchBar(
           delegate: InputSearchBarDelegate((_) {}),
         ),
       ),
@@ -34,7 +34,7 @@ void main() {
   testWidgets("Custom trailing widget", (tester) async {
     await tester.pumpWidget(
       Testable(
-        (_) => SearchBar(
+        (_) => OurSearchBar(
           delegate: InputSearchBarDelegate((_) {}),
           trailing: const Text("TRAIL"),
         ),
@@ -47,7 +47,7 @@ void main() {
   testWidgets("Initial text is shown", (tester) async {
     await tester.pumpWidget(
       Testable(
-        (_) => SearchBar(
+        (_) => OurSearchBar(
           delegate: InputSearchBarDelegate((_) {}),
           text: "A search term",
         ),
@@ -60,7 +60,7 @@ void main() {
     testWidgets("Default trailing widget for button", (tester) async {
       await tester.pumpWidget(
         Testable(
-          (_) => SearchBar(
+          (_) => OurSearchBar(
             delegate: ButtonSearchBarDelegate(() {}),
           ),
         ),
@@ -73,13 +73,13 @@ void main() {
       var tapped = false;
       await tester.pumpWidget(
         Testable(
-          (_) => SearchBar(
+          (_) => OurSearchBar(
             delegate: ButtonSearchBarDelegate(() => tapped = true),
           ),
         ),
       );
 
-      await tester.tap(find.byType(SearchBar));
+      await tester.tap(find.byType(OurSearchBar));
       await tester.pumpAndSettle();
       expect(tapped, isTrue);
     });
@@ -89,7 +89,7 @@ void main() {
     testWidgets("Default trailing widget for input", (tester) async {
       await tester.pumpWidget(
         Testable(
-          (_) => SearchBar(
+          (_) => OurSearchBar(
             delegate: InputSearchBarDelegate((_) {}),
           ),
         ),
@@ -102,7 +102,7 @@ void main() {
       var invokedCount = 0;
       await tester.pumpWidget(
         Testable(
-          (_) => SearchBar(
+          (_) => OurSearchBar(
             delegate: InputSearchBarDelegate((_) => invokedCount++),
           ),
         ),
@@ -117,7 +117,7 @@ void main() {
       var invokedCount = 0;
       await tester.pumpWidget(
         Testable(
-          (_) => SearchBar(
+          (_) => OurSearchBar(
             delegate: InputSearchBarDelegate((_) => invokedCount++),
           ),
         ),
@@ -137,7 +137,7 @@ void main() {
       var invokedCount = 0;
       await tester.pumpWidget(
         Testable(
-          (_) => SearchBar(
+          (_) => OurSearchBar(
             delegate: InputSearchBarDelegate((_) => invokedCount++),
           ),
         ),

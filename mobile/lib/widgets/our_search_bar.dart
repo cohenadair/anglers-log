@@ -7,7 +7,7 @@ import '../res/dimen.dart';
 import '../widgets/widget.dart';
 import 'floating_container.dart';
 
-class SearchBar extends StatefulWidget {
+class OurSearchBar extends StatefulWidget {
   static const height = 40.0;
 
   final String? text;
@@ -27,12 +27,13 @@ class SearchBar extends StatefulWidget {
   /// input is allowed, defaults to a close button to clear the text.
   final Widget? trailing;
 
-  /// When true, a shadow is rendered beneath the [SearchBar]. Defaults to true.
+  /// When true, a shadow is rendered beneath the [OurSearchBar]. Defaults to
+  /// true.
   final bool elevated;
 
   final SearchBarDelegate delegate;
 
-  const SearchBar({
+  const OurSearchBar({
     this.text,
     this.hint,
     this.margin,
@@ -44,10 +45,10 @@ class SearchBar extends StatefulWidget {
   });
 
   @override
-  SearchBarState createState() => SearchBarState();
+  OurSearchBarState createState() => OurSearchBarState();
 }
 
-class SearchBarState extends State<SearchBar> {
+class OurSearchBarState extends State<OurSearchBar> {
   final TextEditingController _controller = TextEditingController();
   final FocusNode _focusNode = FocusNode();
 
@@ -68,7 +69,7 @@ class SearchBarState extends State<SearchBar> {
   }
 
   @override
-  void didUpdateWidget(SearchBar oldWidget) {
+  void didUpdateWidget(OurSearchBar oldWidget) {
     super.didUpdateWidget(oldWidget);
 
     // Reset controller text and cursor position in case the parent changed
@@ -116,7 +117,7 @@ class SearchBarState extends State<SearchBar> {
 
     return SafeArea(
       child: FloatingContainer(
-        height: SearchBar.height,
+        height: OurSearchBar.height,
         margin: widget.margin,
         onTap: widget.delegate.onTap(),
         child: Row(
@@ -165,10 +166,10 @@ class SearchBarState extends State<SearchBar> {
 
 enum SearchBarType { button, input }
 
-/// Defines the behavior of a [SearchBar].
+/// Defines the behavior of a [OurSearchBar].
 abstract class SearchBarDelegate {
-  /// Tells the [SearchBar] to act like a button and is invoked when the
-  /// [SearchBar] is tapped. When a non-null value is returned, the [SearchBar]
+  /// Tells the [OurSearchBar] to act like a button and is invoked when the
+  /// [OurSearchBar] is tapped. When a non-null value is returned, the [OurSearchBar]
   /// text input is disabled.
   ///
   /// Return a non-null value to use the Flutter [showSearch] function.

@@ -16,7 +16,7 @@ import '../widgets/button.dart';
 import '../widgets/checkbox_input.dart';
 import '../widgets/empty_list_placeholder.dart';
 import '../widgets/list_item.dart';
-import '../widgets/search_bar.dart';
+import '../widgets/our_search_bar.dart';
 import '../widgets/widget.dart';
 
 /// A page that is able to manage a list of a given type, [T]. The page includes
@@ -288,7 +288,7 @@ class ManageableListPageState<T> extends State<ManageableListPage<T>> {
         ),
         child: Align(
           alignment: Alignment.bottomCenter,
-          child: SearchBar(
+          child: OurSearchBar(
             text: _searchText,
             hint: widget.searchDelegate!.hint,
             leadingPadding:

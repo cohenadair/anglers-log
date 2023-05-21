@@ -1,5 +1,4 @@
-import 'dart:ui';
-
+import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:quiver/strings.dart';
 
@@ -70,11 +69,12 @@ extension Doubles on double {
     }
 
     var decimals = decimalPlaces ?? 2;
-    var fixed =
-        (NumberFormat.decimalPattern(locale ?? window.locale.toLanguageTag())
-              ..minimumFractionDigits = decimals
-              ..maximumFractionDigits = decimals)
-            .format(this);
+    var languageTag =
+        WidgetsBinding.instance.platformDispatcher.locale.toLanguageTag();
+    var fixed = (NumberFormat.decimalPattern(locale ?? languageTag)
+          ..minimumFractionDigits = decimals
+          ..maximumFractionDigits = decimals)
+        .format(this);
 
     if (fixed[fixed.length - 1] == "0") {
       fixed = fixed.substring(0, fixed.length - 1);
@@ -94,9 +94,10 @@ extension Doubles on double {
     }
 
     try {
-      return NumberFormat.decimalPattern(
-              locale ?? window.locale.toLanguageTag())
-          .parse(input!) as double;
+      var languageTag =
+          WidgetsBinding.instance.platformDispatcher.locale.toLanguageTag();
+      return NumberFormat.decimalPattern(locale ?? languageTag).parse(input!)
+          as double;
     } catch (e) {
       _log.w("Failed to parse double: $input, ex: $e");
       return null;

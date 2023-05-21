@@ -2,6 +2,8 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/utils/number_utils.dart';
 
 void main() {
+  TestWidgetsFlutterBinding.ensureInitialized();
+
   test("isWhole", () {
     expect(2.5.isWhole, isFalse);
     expect(2.0.isWhole, isTrue);

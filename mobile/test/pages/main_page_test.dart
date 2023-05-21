@@ -6,16 +6,13 @@ import 'package:mobile/widgets/widget.dart';
 import 'package:mockito/mockito.dart';
 
 import '../mocks/stubbed_app_manager.dart';
-import '../mocks/stubbed_map_controller.dart';
 import '../test_utils.dart';
 
 void main() {
   late StubbedAppManager appManager;
-  late StubbedMapController mapController;
 
   setUp(() {
     appManager = StubbedAppManager();
-    mapController = StubbedMapController();
 
     when(appManager.baitCategoryManager.listSortedByDisplayName(
       any,
@@ -81,7 +78,6 @@ void main() {
     ));
     // Let map timers settle.
     await tester.pumpAndSettle(const Duration(milliseconds: 300));
-    await mapController.finishLoading(tester);
 
     // Starts on Catches page.
     expect(findFirst<IndexedStack>(tester).index, 1);
@@ -112,7 +108,6 @@ void main() {
     ));
     // Let map timers settle.
     await tester.pumpAndSettle(const Duration(milliseconds: 300));
-    await mapController.finishLoading(tester);
 
     await tapAndSettle(tester, find.byIcon(Icons.more_horiz));
     await tapAndSettle(tester, find.text("Bait Categories"));
@@ -120,6 +115,7 @@ void main() {
     expect(find.text("Bait Categories (0)"), findsOneWidget);
 
     await tapAndSettle(tester, find.text("Catches"));
+    await tapAndSettle(tester, find.byIcon(Icons.more_horiz));
     expect(find.text("Bait Categories (0)"), findsOneWidget);
   });
 
@@ -131,7 +127,6 @@ void main() {
     ));
     // Let map timers settle.
     await tester.pumpAndSettle(const Duration(milliseconds: 300));
-    await mapController.finishLoading(tester);
 
     await tapAndSettle(tester, find.byIcon(Icons.more_horiz));
     await tapAndSettle(tester, find.text("Bait Categories"));
@@ -151,7 +146,6 @@ void main() {
     ));
     // Let map timers settle.
     await tester.pumpAndSettle(const Duration(milliseconds: 300));
-    await mapController.finishLoading(tester);
 
     expect(
       findFirstWithIcon<BadgeContainer>(tester, Icons.more_horiz)
@@ -169,7 +163,6 @@ void main() {
     ));
     // Let map timers settle.
     await tester.pumpAndSettle(const Duration(milliseconds: 300));
-    await mapController.finishLoading(tester);
 
     expect(
       findFirstWithIcon<BadgeContainer>(tester, Icons.more_horiz)

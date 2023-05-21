@@ -69,9 +69,13 @@ void main() async {
 
   // Restrict orientation to portrait for devices with a small width. A width
   // of 740 is less than the smallest iPad, and most Android tablets.
-  var size = MediaQueryData.fromWindow(WidgetsBinding.instance.window).size;
-  if (min(size.width, size.height) < 740) {
-    await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+  var view = WidgetsBinding.instance.platformDispatcher.views.firstOrNull;
+  if (view != null) {
+    var size = MediaQueryData.fromView(view).size;
+    if (min(size.width, size.height) < 740) {
+      await SystemChrome.setPreferredOrientations(
+          [DeviceOrientation.portraitUp]);
+    }
   }
 
   runApp(AnglersLog(AppManager()));

@@ -191,7 +191,6 @@ void main() {
 
     await tester.pumpWidget(AnglersLog(appManager.app));
     await tester.pumpAndSettle(const Duration(milliseconds: 300));
-    await mapController.finishLoading(tester);
 
     expect(find.byType(OnboardingJourney), findsNothing);
     expect(find.byType(MainPage), findsOneWidget);

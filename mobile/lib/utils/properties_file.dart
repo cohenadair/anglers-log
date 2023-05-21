@@ -2,8 +2,6 @@ import 'package:quiver/strings.dart';
 
 import '../log.dart';
 
-// TODO: Possibly replace with a launch config:
-//  https://dartcode.org/docs/launch-configuration/
 class PropertiesFile {
   final _log = const Log("PropertiesFile");
 

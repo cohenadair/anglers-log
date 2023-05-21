@@ -19,7 +19,7 @@ import 'package:mobile/widgets/default_mapbox_map.dart';
 import 'package:mobile/widgets/fishing_spot_details.dart';
 import 'package:mobile/widgets/fishing_spot_map.dart';
 import 'package:mobile/widgets/input_controller.dart';
-import 'package:mobile/widgets/search_bar.dart';
+import 'package:mobile/widgets/our_search_bar.dart';
 import 'package:mobile/widgets/widget.dart';
 import 'package:mockito/mockito.dart';
 
@@ -251,7 +251,7 @@ void main() {
         showSearchBar: false,
       ),
     );
-    expect(find.byType(SearchBar), findsNothing);
+    expect(find.byType(OurSearchBar), findsNothing);
   });
 
   testWidgets("Dropped pin at default location", (tester) async {
@@ -771,7 +771,7 @@ void main() {
     expect(mapController.symbolCount, 3); // 2 spots, 1 dropped pin
 
     // Select an existing spot.
-    await tapAndSettle(tester, find.byType(SearchBar));
+    await tapAndSettle(tester, find.byType(OurSearchBar));
     expect(find.byType(FishingSpotListPage), findsOneWidget);
 
     await tapAndSettle(tester, find.text("Spot 1"));
@@ -822,7 +822,7 @@ void main() {
     verify(mapController.value.updateSymbol(any, any)).called(2);
 
     // Select a new spot.
-    await tapAndSettle(tester, find.byType(SearchBar));
+    await tapAndSettle(tester, find.byType(OurSearchBar));
     expect(find.byType(FishingSpotListPage), findsOneWidget);
 
     await tapAndSettle(tester, find.text("Spot 2"));
@@ -850,7 +850,7 @@ void main() {
         .thenReturn([fishingSpot1, fishingSpot2]);
 
     await pumpMapWrapper(tester, FishingSpotMap());
-    await tapAndSettle(tester, find.byType(SearchBar));
+    await tapAndSettle(tester, find.byType(OurSearchBar));
 
     mapController.clearSymbols();
     await tapAndSettle(tester, find.text("Spot 1"));
@@ -870,7 +870,7 @@ void main() {
         .thenReturn([fishingSpot1]);
 
     await pumpMapWrapper(tester, FishingSpotMap());
-    await tapAndSettle(tester, find.byType(SearchBar));
+    await tapAndSettle(tester, find.byType(OurSearchBar));
     await tapAndSettle(tester, find.text("Spot 1"));
 
     var result = verify(mapController.value.updateSymbol(any, captureAny));
@@ -902,7 +902,7 @@ void main() {
     ));
 
     await pumpMapWrapper(tester, FishingSpotMap());
-    await tapAndSettle(tester, find.byType(SearchBar));
+    await tapAndSettle(tester, find.byType(OurSearchBar));
     await tapAndSettle(tester, find.text("Spot 1"));
     expect(find.text("Spot 1"), findsNWidgets(2));
 
@@ -1045,7 +1045,7 @@ void main() {
         .thenReturn([fishingSpot1]);
 
     await pumpMapWrapper(tester, FishingSpotMap());
-    await tapAndSettle(tester, find.byType(SearchBar));
+    await tapAndSettle(tester, find.byType(OurSearchBar));
     await tapAndSettle(tester, find.text("Spot 1"));
 
     verify(mapController.value.moveCamera(any)).called(1);
@@ -1166,7 +1166,7 @@ void main() {
     await mapController.finishLoading(tester);
 
     // Select an existing fishing spot.
-    await tapAndSettle(tester, find.byType(SearchBar));
+    await tapAndSettle(tester, find.byType(OurSearchBar));
     await tapAndSettle(tester, find.text("Spot 1"), 200);
     expect(find.byType(FishingSpotDetails), findsOneWidget);
 

@@ -274,8 +274,13 @@ void main() {
           ),
         ),
       );
-      // One for image, one for trailing.
-      expect(find.byType(Padding), findsNWidgets(2));
+
+      expect(
+        find.byWidgetPredicate((widget) =>
+            widget is Padding &&
+            widget.padding.resolve(TextDirection.ltr).left == paddingDefault),
+        findsOneWidget,
+      );
     });
 
     testWidgets("No trailing widget", (tester) async {
@@ -288,8 +293,12 @@ void main() {
           ),
         ),
       );
-      // One for image.
-      expect(find.byType(Padding), findsOneWidget);
+      expect(
+        find.byWidgetPredicate((widget) =>
+            widget is Padding &&
+            widget.padding.resolve(TextDirection.ltr).left == paddingDefault),
+        findsNothing,
+      );
     });
 
     testWidgets("Empty subtitle3", (tester) async {
