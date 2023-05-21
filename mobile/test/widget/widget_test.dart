@@ -206,6 +206,16 @@ void main() {
 
       expect(find.byType(Column), findsNothing);
     });
+
+    testWidgets("App bar uses custom color", (tester) async {
+      await pumpContext(tester, (_) => const Loading.appBar());
+      expect(findFirst<CircularProgressIndicator>(tester).color, isNotNull);
+    });
+
+    testWidgets("Default has null color", (tester) async {
+      await pumpContext(tester, (_) => const Loading(isAppBar: false));
+      expect(findFirst<CircularProgressIndicator>(tester).color, isNull);
+    });
   });
 
   group("CatchFavoriteStar", () {

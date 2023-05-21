@@ -204,13 +204,13 @@ class Loading extends StatelessWidget {
   final EdgeInsets padding;
   final String? label;
   final bool isCentered;
-  final Color? color;
+  final bool isAppBar;
 
   const Loading({
     this.padding = insetsZero,
     this.label,
     this.isCentered = true,
-    this.color,
+    this.isAppBar = false,
   });
 
   /// A [Loading] widget to be used in an [AppBar].
@@ -221,7 +221,7 @@ class Loading extends StatelessWidget {
             top: paddingDefault,
           ),
           isCentered: true,
-          color: Colors.black,
+          isAppBar: true,
         );
 
   @override
@@ -230,7 +230,7 @@ class Loading extends StatelessWidget {
       size: const Size(_size, _size),
       child: CircularProgressIndicator(
         strokeWidth: _strokeWidth,
-        backgroundColor: color,
+        color: isAppBar ? context.colorText : null,
       ),
     );
 
