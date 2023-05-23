@@ -193,6 +193,7 @@ class EntityQuantityPickerInputDelegate<T extends GeneratedMessage>
     extends QuantityPickerInputDelegate<T, Trip_CatchesPerEntity> {
   final EntityManager<T> manager;
   final Widget Function(ManageableListPagePickerSettings<T>) listPageBuilder;
+  final VoidCallback? didUpdateValue;
 
   final SetInputController<Trip_CatchesPerEntity> _controller;
 
@@ -200,6 +201,7 @@ class EntityQuantityPickerInputDelegate<T extends GeneratedMessage>
     required this.manager,
     required SetInputController<Trip_CatchesPerEntity> controller,
     required this.listPageBuilder,
+    this.didUpdateValue,
   }) : _controller = controller;
 
   @override
@@ -238,7 +240,10 @@ class EntityQuantityPickerInputDelegate<T extends GeneratedMessage>
       : manager.list(controller.value.map((e) => e.entityId)).toSet();
 
   @override
-  void updateValue(Trip_CatchesPerEntity item, int value) => item.value = value;
+  void updateValue(Trip_CatchesPerEntity item, int value) {
+    item.value = value;
+    didUpdateValue?.call();
+  }
 
   @override
   void clearValue(Trip_CatchesPerEntity item) => item.clearValue();
@@ -248,12 +253,14 @@ class EntityQuantityPickerInputDelegate<T extends GeneratedMessage>
 class BaitQuantityPickerInputDelegate
     extends QuantityPickerInputDelegate<BaitAttachment, Trip_CatchesPerBait> {
   final BaitManager baitManager;
+  final VoidCallback? didUpdateValue;
 
   final SetInputController<Trip_CatchesPerBait> _controller;
 
   BaitQuantityPickerInputDelegate({
     required this.baitManager,
     required SetInputController<Trip_CatchesPerBait> controller,
+    this.didUpdateValue,
   }) : _controller = controller;
 
   @override
@@ -305,7 +312,10 @@ class BaitQuantityPickerInputDelegate
       controller.value.map((e) => e.attachment).toSet();
 
   @override
-  void updateValue(Trip_CatchesPerBait item, int value) => item.value = value;
+  void updateValue(Trip_CatchesPerBait item, int value) {
+    item.value = value;
+    didUpdateValue?.call();
+  }
 
   @override
   void clearValue(Trip_CatchesPerBait item) => item.clearValue();
@@ -316,6 +326,7 @@ class FishingSpotQuantityPickerInputDelegate
   FishingSpotQuantityPickerInputDelegate({
     required FishingSpotManager manager,
     required SetInputController<Trip_CatchesPerEntity> controller,
+    VoidCallback? didUpdateValue,
   }) : super(
           manager: manager,
           controller: controller,
@@ -324,6 +335,7 @@ class FishingSpotQuantityPickerInputDelegate
             initialValues: settings.initialValues,
             onPicked: settings.onPicked,
           )),
+          didUpdateValue: didUpdateValue,
         );
 
   FishingSpotManager get _fishingSpotManager => manager as FishingSpotManager;

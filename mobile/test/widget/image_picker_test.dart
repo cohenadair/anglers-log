@@ -101,10 +101,10 @@ void main() {
         (_) => ImagePicker(
           onImagesPicked: (_) {},
           onImageDeleted: (_) {},
-          initialImages: [
+          initialImages: {
             PickedImage(originalFile: File("test/resources/flutter_logo.png")),
             PickedImage(originalFile: File("test/resources/flutter_logo.png")),
-          ],
+          },
         ),
       ),
     );
@@ -119,10 +119,10 @@ void main() {
         (_) => ImagePicker(
           onImagesPicked: (_) {},
           onImageDeleted: (_) {},
-          initialImages: [
+          initialImages: {
             PickedImage(originalFile: File("test/resources/flutter_logo.png")),
             PickedImage(originalFile: File("test/resources/flutter_logo.png")),
-          ],
+          },
           isEnabled: false,
         ),
       ),
@@ -138,9 +138,9 @@ void main() {
         (_) => ImagePicker(
           onImagesPicked: (_) {},
           onImageDeleted: (_) {},
-          initialImages: [
+          initialImages: {
             PickedImage(originalFile: File("test/resources/flutter_logo.png")),
-          ],
+          },
         ),
       ),
     );
@@ -154,12 +154,12 @@ void main() {
         (_) => ImagePicker(
           onImagesPicked: (_) {},
           onImageDeleted: (_) {},
-          initialImages: [
+          initialImages: {
             PickedImage(
               thumbData:
                   File("test/resources/flutter_logo.png").readAsBytesSync(),
             ),
-          ],
+          },
         ),
       ),
     );
@@ -175,12 +175,12 @@ void main() {
         (_) => ImagePicker(
           onImagesPicked: (_) {},
           onImageDeleted: (_) => invoked = true,
-          initialImages: [
+          initialImages: {
             PickedImage(
               thumbData:
                   File("test/resources/flutter_logo.png").readAsBytesSync(),
             ),
-          ],
+          },
         ),
       ),
     );

@@ -264,7 +264,7 @@ class SaveCatchPageState extends State<SaveCatchPage> {
         _timestampController.value = widget.images.first.dateTime;
       }
       _speciesController.value = widget.speciesId;
-      _imagesController.value = widget.images;
+      _imagesController.value = widget.images.toSet();
       _fishingSpotController.value = widget.fishingSpot;
       _methodsController.value = {};
 

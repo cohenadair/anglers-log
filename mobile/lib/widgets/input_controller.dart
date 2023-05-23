@@ -68,10 +68,17 @@ class SetInputController<T> extends InputController<Set<T>> {
 
   @override
   bool get hasValue {
-    _log.w(
-        "hasValue will always return true; did you mean to use value.isEmpty?");
+    _log.w("hasValue will always return true; did you mean to call isEmpty?");
     return super.hasValue;
   }
+
+  bool get isEmpty => value.isEmpty;
+
+  bool get isNotEmpty => value.isNotEmpty;
+
+  void addAll(Iterable<T> items) => value = Set.of(value)..addAll(items);
+
+  void remove(T item) => value = Set.of(value)..remove(item);
 }
 
 /// An [InputController] subclass for a [List], where the value of the
@@ -102,7 +109,7 @@ class ListInputController<T> extends InputController<List<T>> {
   void remove(T item) => value = List.of(value)..remove(item);
 }
 
-class ImagesInputController extends ListInputController<PickedImage> {
+class ImagesInputController extends SetInputController<PickedImage> {
   List<File> get originalFiles => value
       .where((img) => img.originalFile != null)
       .map((img) => img.originalFile!)

@@ -599,7 +599,7 @@ void main() {
   group("ImagesInputController", () {
     test("originalFiles", () {
       var controller = ImagesInputController();
-      controller.value = [
+      controller.value = {
         PickedImage(
           originalFile: MockFile(),
         ),
@@ -607,7 +607,7 @@ void main() {
           originalFile: MockFile(),
         ),
         PickedImage(),
-      ];
+      };
 
       expect(controller.originalFiles.length, 2);
     });
