@@ -170,6 +170,7 @@ void main() {
     when(img0.exists()).thenAnswer((_) => Future.value(true));
     when(img0.readAsBytes())
         .thenAnswer((_) => Future.value(Uint8List.fromList([1, 2, 3])));
+    when(img0.hashCode).thenReturn(0);
     when(appManager.ioWrapper.file("$_imagePath/2.0/images/image0.jpg"))
         .thenReturn(img0);
 
@@ -177,6 +178,7 @@ void main() {
     when(img1.exists()).thenAnswer((_) => Future.value(false));
     when(img1.readAsBytes())
         .thenAnswer((_) => Future.value(Uint8List.fromList([3, 2, 1])));
+    when(img1.hashCode).thenReturn(1);
     when(appManager.ioWrapper.file("$_imagePath/2.0/images/image1.jpg"))
         .thenReturn(img1);
 

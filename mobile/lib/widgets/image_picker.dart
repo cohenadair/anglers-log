@@ -18,17 +18,20 @@ import 'safe_image.dart';
 class ImagePicker extends StatelessWidget {
   final bool isEnabled;
   final bool isMulti;
-  final List<PickedImage> currentImages;
-  final void Function(List<PickedImage>) onImagesPicked;
+  final void Function(Set<PickedImage>) onImagesPicked;
   final void Function(PickedImage) onImageDeleted;
 
-  const ImagePicker({
+  late final List<PickedImage> _currentImages;
+
+  ImagePicker({
     required this.onImagesPicked,
     required this.onImageDeleted,
     this.isEnabled = true,
     this.isMulti = true,
-    List<PickedImage> initialImages = const [],
-  }) : currentImages = initialImages;
+    Set<PickedImage> initialImages = const {},
+  }) {
+    _currentImages = initialImages.toList();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +44,8 @@ class ImagePicker extends StatelessWidget {
                   context,
                   ImagePickerPage(
                     allowsMultipleSelection: isMulti,
-                    onImagesPicked: (_, images) => onImagesPicked(images),
+                    onImagesPicked: (_, images) =>
+                        onImagesPicked(images.toSet()),
                   ),
                 );
               }
@@ -77,7 +81,7 @@ class ImagePicker extends StatelessWidget {
   }
 
   Widget _buildThumbnails() {
-    if (currentImages.isEmpty) {
+    if (_currentImages.isEmpty) {
       return const Empty();
     }
 
@@ -87,12 +91,12 @@ class ImagePicker extends StatelessWidget {
       child: ListView.separated(
         physics: isEnabled ? null : const NeverScrollableScrollPhysics(),
         scrollDirection: Axis.horizontal,
-        itemCount: currentImages.length,
+        itemCount: _currentImages.length,
         itemBuilder: (context, i) {
-          var image = currentImages[i];
+          var image = _currentImages[i];
           var leftPadding = i == 0 ? paddingDefault : 0.0;
           var rightPadding =
-              i == currentImages.length - 1 ? paddingDefault : 0.0;
+              i == _currentImages.length - 1 ? paddingDefault : 0.0;
           return Container(
             padding: EdgeInsets.only(
               left: leftPadding,

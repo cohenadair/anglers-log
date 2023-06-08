@@ -1,9 +1,9 @@
 import 'dart:collection';
 import 'dart:io';
 import 'dart:math';
-import 'dart:typed_data';
 
 import 'package:file_picker/file_picker.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:mapbox_gl/mapbox_gl.dart' as maps;
 import 'package:image_picker/image_picker.dart';
@@ -12,7 +12,9 @@ import 'package:mobile/time_manager.dart';
 import 'package:mobile/wrappers/device_info_wrapper.dart';
 import 'package:mobile/wrappers/exif_wrapper.dart';
 import 'package:mobile/wrappers/io_wrapper.dart';
+import 'package:path/path.dart' as path;
 import 'package:photo_manager/photo_manager.dart';
+import 'package:quiver/core.dart';
 import 'package:quiver/strings.dart';
 import 'package:timezone/timezone.dart';
 
@@ -61,12 +63,32 @@ class PickedImage {
     this.dateTime,
   });
 
+  String get fileName => path.basename(originalFile?.path ?? "");
+
   @override
-  String toString() => "originalFile=${originalFile?.path}; "
+  String toString() => "originalFile=$fileName; "
       "originalFileId=$originalFileId; "
       "thumbData=${thumbData?.length}; "
       "latLng=$latLng; "
       "dateTime=$dateTime";
+
+  @override
+  bool operator ==(Object other) =>
+      other is PickedImage &&
+      fileName == other.fileName &&
+      originalFileId == other.originalFileId &&
+      listEquals(thumbData?.toList(), other.thumbData?.toList()) &&
+      latLng == other.latLng &&
+      dateTime == other.dateTime;
+
+  @override
+  int get hashCode => hashObjects([
+        fileName.hashCode,
+        originalFileId?.hashCode ?? 0,
+        thumbData?.hashCode ?? 0,
+        latLng?.hashCode ?? 0,
+        dateTime?.hashCode ?? 0,
+      ]);
 }
 
 /// [ImagePickerPage] is a custom image picking widget that allows the user to

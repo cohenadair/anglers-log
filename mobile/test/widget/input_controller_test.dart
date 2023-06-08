@@ -597,17 +597,24 @@ void main() {
   });
 
   group("ImagesInputController", () {
+    MockFile stubFile(int hashCode, String path) {
+      var result = MockFile();
+      when(result.hashCode).thenReturn(hashCode);
+      when(result.path).thenReturn(path);
+      return result;
+    }
+
     test("originalFiles", () {
       var controller = ImagesInputController();
-      controller.value = [
+      controller.value = {
         PickedImage(
-          originalFile: MockFile(),
+          originalFile: stubFile(1, "Test"),
         ),
         PickedImage(
-          originalFile: MockFile(),
+          originalFile: stubFile(2, "Test 2"),
         ),
         PickedImage(),
-      ];
+      };
 
       expect(controller.originalFiles.length, 2);
     });

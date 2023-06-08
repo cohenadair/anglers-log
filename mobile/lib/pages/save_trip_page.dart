@@ -79,9 +79,15 @@ class SaveTripPageState extends State<SaveTripPage> {
 
   final _log = const Log("SaveTripPage");
   final Map<Id, Field> _fields = {};
+  final Set<String> _catchImages = {};
 
   List<CustomEntityValue> _customEntityValues = [];
-  List<String> _catchImages = [];
+  bool _userDidChangeStartTime = false;
+  bool _userDidChangeEndTime = false;
+  bool _userDidChangeCatchesPerFishingSpot = false;
+  bool _userDidChangeCatchesPerAngler = false;
+  bool _userDidChangeCatchesPerBait = false;
+  bool _userDidChangeCatchesPerSpecies = false;
 
   Trip? get _oldTrip => widget.oldTrip;
 
@@ -342,7 +348,7 @@ class SaveTripPageState extends State<SaveTripPage> {
         controller: _startTimestampController,
         dateLabel: Strings.of(context).saveTripPageStartDate,
         timeLabel: Strings.of(context).saveTripPageStartDate,
-        onChange: () => setState(() {}),
+        onChange: () => setState(() => _userDidChangeStartTime = true),
       ),
     );
   }
@@ -354,7 +360,7 @@ class SaveTripPageState extends State<SaveTripPage> {
         controller: _endTimestampController,
         dateLabel: Strings.of(context).saveTripPageEndDate,
         timeLabel: Strings.of(context).saveTripPageEndDate,
-        onChange: () => setState(() {}),
+        onChange: () => setState(() => _userDidChangeEndTime = true),
       ),
     );
   }
@@ -396,6 +402,7 @@ class SaveTripPageState extends State<SaveTripPage> {
       delegate: FishingSpotQuantityPickerInputDelegate(
         manager: _fishingSpotManager,
         controller: _fishingSpotCatchesController,
+        didUpdateValue: () => _userDidChangeCatchesPerFishingSpot = true,
       ),
     );
   }
@@ -407,6 +414,7 @@ class SaveTripPageState extends State<SaveTripPage> {
         manager: _anglerManager,
         controller: _anglerCatchesController,
         listPageBuilder: (settings) => AnglerListPage(pickerSettings: settings),
+        didUpdateValue: () => _userDidChangeCatchesPerAngler = true,
       ),
     );
   }
@@ -417,6 +425,7 @@ class SaveTripPageState extends State<SaveTripPage> {
       delegate: BaitQuantityPickerInputDelegate(
         baitManager: _baitManager,
         controller: _baitCatchesController,
+        didUpdateValue: () => _userDidChangeCatchesPerBait = true,
       ),
     );
   }
@@ -429,6 +438,7 @@ class SaveTripPageState extends State<SaveTripPage> {
         controller: _speciesCatchesController,
         listPageBuilder: (settings) =>
             SpeciesListPage(pickerSettings: settings),
+        didUpdateValue: () => _userDidChangeCatchesPerSpecies = true,
       ),
     );
   }
@@ -464,8 +474,8 @@ class SaveTripPageState extends State<SaveTripPage> {
             ),
           );
 
-          _updateTimestampControllers(catches);
-          _updateCatchesPerEntityControllers(catches);
+          _updateTimestampControllersIfNeeded(catches);
+          _updateCatchesPerEntityControllersIfNeeded(catches);
           _updateBodiesOfWaterController(catches);
           _updateCatchImages(catches);
         }
@@ -531,28 +541,32 @@ class SaveTripPageState extends State<SaveTripPage> {
   }
 
   /// Update date and time values based on picked catches. This will not update
-  /// the time if "All day" checkboxes are checked. This will overwrite any
+  /// the time if "All day" checkboxes are checked. This will _not_ overwrite any
   /// changes the user made to the time.
-  void _updateTimestampControllers(List<Catch> catches) {
-    var startDateTime = catches.last.dateTime(context);
-    if (_startTimestampController.isMidnight) {
-      _startTimestampController.date = startDateTime;
-    } else {
-      _startTimestampController.value = startDateTime;
+  void _updateTimestampControllersIfNeeded(List<Catch> catches) {
+    if (!_userDidChangeStartTime) {
+      var startDateTime = catches.last.dateTime(context);
+      if (_startTimestampController.isMidnight) {
+        _startTimestampController.date = startDateTime;
+      } else {
+        _startTimestampController.value = startDateTime;
+      }
     }
 
-    var endDateTime = catches.first.dateTime(context);
-    if (_endTimestampController.isMidnight) {
-      _endTimestampController.date = endDateTime;
-    } else {
-      _endTimestampController.value = endDateTime;
+    if (!_userDidChangeEndTime) {
+      var endDateTime = catches.first.dateTime(context);
+      if (_endTimestampController.isMidnight) {
+        _endTimestampController.date = endDateTime;
+      } else {
+        _endTimestampController.value = endDateTime;
+      }
     }
   }
 
   /// Updates "Catches Per Entity" values based on the given catches.
-  /// This will overwrite any changes the user made to the catches per entity
-  /// values.
-  void _updateCatchesPerEntityControllers(List<Catch> catches) {
+  /// This will _not_ overwrite any changes the user made to the catches per
+  /// entity values.
+  void _updateCatchesPerEntityControllersIfNeeded(List<Catch> catches) {
     var catchesPerAngler = <Trip_CatchesPerEntity>[];
     var catchesPerBait = <Trip_CatchesPerBait>[];
     var catchesPerFishingSpot = <Trip_CatchesPerEntity>[];
@@ -577,14 +591,26 @@ class SaveTripPageState extends State<SaveTripPage> {
       }
     }
 
-    _anglerCatchesController.value = catchesPerAngler.toSet();
-    _baitCatchesController.value = catchesPerBait.toSet();
-    _fishingSpotCatchesController.value = catchesPerFishingSpot.toSet();
-    _speciesCatchesController.value = catchesPerSpecies.toSet();
+    // Only update fields if the user hasn't already changed them.
+    if (!_userDidChangeCatchesPerAngler) {
+      _anglerCatchesController.value = catchesPerAngler.toSet();
+    }
+
+    if (!_userDidChangeCatchesPerBait) {
+      _baitCatchesController.value = catchesPerBait.toSet();
+    }
+
+    if (!_userDidChangeCatchesPerFishingSpot) {
+      _fishingSpotCatchesController.value = catchesPerFishingSpot.toSet();
+    }
+
+    if (!_userDidChangeCatchesPerSpecies) {
+      _speciesCatchesController.value = catchesPerSpecies.toSet();
+    }
   }
 
-  /// Updates body of water values based on the given catches. This will
-  /// overwrite any changes the user made to the bodies of water values.
+  /// Adds body of water values based on the given catches. This will add to
+  /// the body of water values already selected by the user, if any.
   void _updateBodiesOfWaterController(List<Catch> catches) {
     if (!_fields[_idBodiesOfWater]!.isShowing) {
       return;
@@ -599,18 +625,18 @@ class SaveTripPageState extends State<SaveTripPage> {
       }
     }
 
-    if (bowIds.isNotEmpty) {
-      _bodiesOfWaterController.value = bowIds;
-    }
+    _bodiesOfWaterController.addAll(bowIds);
   }
 
+  /// Adds images based on the given catches. This will add photos to any
+  /// existing photos already attached by the user.
   void _updateCatchImages(List<Catch> catches) {
     if (!_fields[_idImages]!.isShowing) {
       return;
     }
 
-    _catchImages = catches.fold<List<String>>(
-        <String>[], (prev, cat) => prev..addAll(cat.imageNames));
+    _catchImages.addAll(catches.fold<List<String>>(
+        <String>[], (prev, cat) => prev..addAll(cat.imageNames)));
   }
 
   FutureOr<bool> _save(Map<Id, dynamic> customFieldValueMap) {

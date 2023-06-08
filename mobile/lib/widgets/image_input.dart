@@ -12,7 +12,7 @@ import 'widget.dart';
 /// For picking a single image, consider using [SingleImageInput].
 class ImageInput extends StatefulWidget {
   final List<String> initialImageNames;
-  final ListInputController<PickedImage> controller;
+  final SetInputController<PickedImage> controller;
   final bool isMulti;
 
   const ImageInput({
@@ -26,9 +26,9 @@ class ImageInput extends StatefulWidget {
 }
 
 class ImageInputState extends State<ImageInput> {
-  Future<List<PickedImage>>? _imagesFuture;
+  Future<Set<PickedImage>>? _imagesFuture;
 
-  ListInputController<PickedImage> get _controller => widget.controller;
+  SetInputController<PickedImage> get _controller => widget.controller;
 
   ImageManager get _imageManager => ImageManager.of(context);
 
@@ -48,7 +48,7 @@ class ImageInputState extends State<ImageInput> {
     // Need access to MediaQuery, so initialize future in the build method.
     _imagesFuture ??= _fetchInitialImage();
 
-    return EmptyFutureBuilder<List<PickedImage>>(
+    return EmptyFutureBuilder<Set<PickedImage>>(
       future: _imagesFuture!,
       builder: (context, images) {
         return ImagePicker(
@@ -74,9 +74,9 @@ class ImageInputState extends State<ImageInput> {
     );
   }
 
-  Future<List<PickedImage>> _fetchInitialImage() async {
+  Future<Set<PickedImage>> _fetchInitialImage() async {
     if (widget.initialImageNames.isEmpty) {
-      return Future.value([]);
+      return Future.value({});
     }
 
     var imageMap = await _imageManager.images(
@@ -86,10 +86,10 @@ class ImageInputState extends State<ImageInput> {
     );
 
     if (imageMap.isEmpty) {
-      return Future.value([]);
+      return Future.value({});
     }
 
-    var result = <PickedImage>[];
+    var result = <PickedImage>{};
     imageMap.forEach(
       (file, bytes) => result.add(
         PickedImage(
@@ -99,8 +99,8 @@ class ImageInputState extends State<ImageInput> {
       ),
     );
 
-    _controller.value = result;
-    return result;
+    _controller.addAll(result);
+    return _controller.value;
   }
 }
 
