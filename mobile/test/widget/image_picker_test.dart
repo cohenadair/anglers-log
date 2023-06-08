@@ -103,7 +103,7 @@ void main() {
           onImageDeleted: (_) {},
           initialImages: {
             PickedImage(originalFile: File("test/resources/flutter_logo.png")),
-            PickedImage(originalFile: File("test/resources/flutter_logo.png")),
+            PickedImage(originalFile: File("test/resources/android_logo.png")),
           },
         ),
       ),
@@ -121,7 +121,7 @@ void main() {
           onImageDeleted: (_) {},
           initialImages: {
             PickedImage(originalFile: File("test/resources/flutter_logo.png")),
-            PickedImage(originalFile: File("test/resources/flutter_logo.png")),
+            PickedImage(originalFile: File("test/resources/android_logo.png")),
           },
           isEnabled: false,
         ),

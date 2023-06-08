@@ -100,7 +100,6 @@ class ImageInputState extends State<ImageInput> {
     );
 
     _controller.addAll(result);
-    print(_controller.value);
     return _controller.value;
   }
 }

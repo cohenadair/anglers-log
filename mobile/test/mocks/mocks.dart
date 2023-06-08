@@ -178,6 +178,14 @@ Trip_CatchesPerEntity newInputItemShim(dynamic pickerItem) =>
 // @GenerateMocks can't generate mock because of an internal type used in API.
 class MockFile extends Mock implements File {
   @override
+  int get hashCode =>
+      (super.noSuchMethod(Invocation.getter(#hashCode), returnValue: 0) as int);
+
+  // Mockito can't stub operator overrides.
+  @override
+  bool operator ==(Object other) => false;
+
+  @override
   String get path =>
       (super.noSuchMethod(Invocation.getter(#path), returnValue: "") as String);
 

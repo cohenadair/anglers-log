@@ -1,7 +1,10 @@
+import 'dart:typed_data';
+
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:mapbox_gl/mapbox_gl.dart' as maps;
 import 'package:mobile/pages/image_picker_page.dart';
 import 'package:mobile/res/dimen.dart';
 import 'package:mobile/utils/page_utils.dart';
@@ -12,6 +15,7 @@ import 'package:mobile/widgets/widget.dart';
 import 'package:mockito/mockito.dart';
 import 'package:native_exif/native_exif.dart';
 import 'package:photo_manager/photo_manager.dart';
+import 'package:timezone/timezone.dart';
 
 import '../mocks/mocks.dart';
 import '../mocks/mocks.mocks.dart';
@@ -918,5 +922,159 @@ void main() {
     await tapAndSettle(tester, find.byType(BackButton));
     expect(find.byType(ImagePickerPage), findsNothing);
     expect(invoked, isTrue);
+  });
+
+  test("PickedImage fileName returns original file name", () {
+    var file = MockFile();
+    when(file.path).thenReturn("Test");
+    expect(PickedImage(originalFile: file).fileName, "Test");
+  });
+
+  test("PickedImage fileName returns empty string", () {
+    expect(PickedImage().fileName, "");
+  });
+
+  test("PickedImage == override", () {
+    expect(PickedImage(), PickedImage());
+
+    var file = MockFile();
+    when(file.path).thenReturn("Test");
+    expect(PickedImage(originalFile: file), PickedImage(originalFile: file));
+
+    expect(
+      PickedImage(
+        originalFile: file,
+        originalFileId: "Test",
+      ),
+      PickedImage(
+        originalFile: file,
+        originalFileId: "Test",
+      ),
+    );
+
+    expect(
+      PickedImage(
+        originalFile: file,
+        originalFileId: "Test",
+        thumbData: Uint8List.fromList([0, 1, 2]),
+      ),
+      PickedImage(
+        originalFile: file,
+        originalFileId: "Test",
+        thumbData: Uint8List.fromList([0, 1, 2]),
+      ),
+    );
+
+    expect(
+      PickedImage(
+        originalFile: file,
+        originalFileId: "Test",
+        thumbData: Uint8List.fromList([0, 1, 2]),
+        latLng: const maps.LatLng(5, 5),
+      ),
+      PickedImage(
+        originalFile: file,
+        originalFileId: "Test",
+        thumbData: Uint8List.fromList([0, 1, 2]),
+        latLng: const maps.LatLng(5, 5),
+      ),
+    );
+
+    expect(
+      PickedImage(
+        originalFile: file,
+        originalFileId: "Test",
+        thumbData: Uint8List.fromList([0, 1, 2]),
+        latLng: const maps.LatLng(5, 5),
+        dateTime: TZDateTime.utc(2023),
+      ),
+      PickedImage(
+        originalFile: file,
+        originalFileId: "Test",
+        thumbData: Uint8List.fromList([0, 1, 2]),
+        latLng: const maps.LatLng(5, 5),
+        dateTime: TZDateTime.utc(2023),
+      ),
+    );
+
+    var image1 = PickedImage(
+      originalFile: null,
+      originalFileId: "Test",
+      thumbData: Uint8List.fromList([0, 1, 2]),
+      latLng: const maps.LatLng(5, 5),
+      dateTime: TZDateTime.utc(2023),
+    );
+    var image2 = PickedImage(
+      originalFile: file,
+      originalFileId: "Test",
+      thumbData: Uint8List.fromList([0, 1, 2]),
+      latLng: const maps.LatLng(5, 5),
+      dateTime: TZDateTime.utc(2023),
+    );
+    expect(image1 == image2, isFalse);
+
+    image1 = PickedImage(
+      originalFile: file,
+      originalFileId: "Test 1",
+      thumbData: Uint8List.fromList([0, 1, 2]),
+      latLng: const maps.LatLng(5, 5),
+      dateTime: TZDateTime.utc(2023),
+    );
+    image2 = PickedImage(
+      originalFile: file,
+      originalFileId: "Test",
+      thumbData: Uint8List.fromList([0, 1, 2]),
+      latLng: const maps.LatLng(5, 5),
+      dateTime: TZDateTime.utc(2023),
+    );
+    expect(image1 == image2, isFalse);
+
+    image1 = PickedImage(
+      originalFile: file,
+      originalFileId: "Test",
+      thumbData: Uint8List.fromList([0, 1, 3]),
+      latLng: const maps.LatLng(5, 5),
+      dateTime: TZDateTime.utc(2023),
+    );
+    image2 = PickedImage(
+      originalFile: file,
+      originalFileId: "Test",
+      thumbData: Uint8List.fromList([0, 1, 2]),
+      latLng: const maps.LatLng(5, 5),
+      dateTime: TZDateTime.utc(2023),
+    );
+    expect(image1 == image2, isFalse);
+
+    image1 = PickedImage(
+      originalFile: file,
+      originalFileId: "Test",
+      thumbData: Uint8List.fromList([0, 1, 2]),
+      latLng: const maps.LatLng(5, 6),
+      dateTime: TZDateTime.utc(2023),
+    );
+    image2 = PickedImage(
+      originalFile: file,
+      originalFileId: "Test",
+      thumbData: Uint8List.fromList([0, 1, 2]),
+      latLng: const maps.LatLng(5, 5),
+      dateTime: TZDateTime.utc(2023),
+    );
+    expect(image1 == image2, isFalse);
+
+    image1 = PickedImage(
+      originalFile: file,
+      originalFileId: "Test",
+      thumbData: Uint8List.fromList([0, 1, 2]),
+      latLng: const maps.LatLng(5, 5),
+      dateTime: TZDateTime.utc(2022),
+    );
+    image2 = PickedImage(
+      originalFile: file,
+      originalFileId: "Test",
+      thumbData: Uint8List.fromList([0, 1, 2]),
+      latLng: const maps.LatLng(5, 5),
+      dateTime: TZDateTime.utc(2023),
+    );
+    expect(image1 == image2, isFalse);
   });
 }

@@ -254,6 +254,32 @@ void main() {
       var idArg = result.captured.first.first;
       expect(idArg, delegate.controller.value.first.entityId);
     });
+
+    test("didUpdateValue is invoked", () {
+      when(appManager.speciesManager.list(any)).thenReturn([]);
+
+      var catchesPerEntity = Trip_CatchesPerEntity(
+        entityId: randomId(),
+        value: 5,
+      );
+
+      var invoked = false;
+      var delegate = EntityQuantityPickerInputDelegate<Species>(
+        manager: appManager.speciesManager,
+        controller: SetInputController<Trip_CatchesPerEntity>()
+          ..value = {
+            catchesPerEntity,
+          },
+        listPageBuilder: (_) => const Empty(),
+        didUpdateValue: () => invoked = true,
+      );
+
+      expect(delegate.inputTypeValue(catchesPerEntity), 5);
+      delegate.updateValue(catchesPerEntity, 10);
+
+      expect(delegate.inputTypeValue(catchesPerEntity), 10);
+      expect(invoked, isTrue);
+    });
   });
 
   group("BaitQuantityPickerInputDelegate", () {
