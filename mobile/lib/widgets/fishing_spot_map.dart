@@ -252,6 +252,8 @@ class FishingSpotMapState extends State<FishingSpotMap> {
       },
       onStyleLoadedCallback: _setupMap,
       onCameraIdle: () {
+        // Note that onCameraIdle is called quite often, even when the camera
+        // didn't move.
         if (_hasActiveDroppedPin) {
           _updateDroppedPin();
         }
@@ -684,6 +686,12 @@ class FishingSpotMapState extends State<FishingSpotMap> {
       return;
     }
 
+    // Camera didn't actually move, no need to do anything.
+    if (_hasActiveFishingSpot && _activeFishingSpot!.latLng == latLng) {
+      return;
+    }
+
+    _log.d("Updating dropped pin");
     _isTargetShowingNotifier.value = false;
     _dropPin(latLng);
   }
@@ -766,13 +774,13 @@ class FishingSpotMapState extends State<FishingSpotMap> {
   }
 
   Future<void> _dropPin(LatLng latLng) async {
-    // Select an existing fishing spot if
+    // Select an existing fishing spot if found within the user's radius.
     var fishingSpot = _fishingSpotManager.withinPreferenceRadius(latLng);
 
     if (fishingSpot == null) {
       // Add a new pin to the map.
       fishingSpot = FishingSpot()
-        ..id = randomId()
+        ..id = _activeFishingSpot?.id ?? randomId()
         ..lat = latLng.latitude
         ..lng = latLng.longitude;
       await _mapController?.addSymbol(
