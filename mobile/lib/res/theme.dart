@@ -14,7 +14,47 @@ ThemeData themeLight() {
   );
 }
 
-ThemeData themeDark() => ThemeData.dark();
+ThemeData themeDark(BuildContext context) {
+  return ThemeData.dark().copyWith(
+    inputDecorationTheme: inputTheme(context),
+    textSelectionTheme: textSelectionTheme(context),
+    textButtonTheme: textButtonTheme(context),
+  );
+}
+
+InputDecorationTheme inputTheme(BuildContext context) {
+  return InputDecorationTheme(
+    floatingLabelStyle: MaterialStateTextStyle.resolveWith((states) {
+      return TextStyle(
+        color: (states.contains(MaterialState.focused) &&
+                !states.contains(MaterialState.error))
+            ? context.colorDefault
+            : null,
+      );
+    }),
+    focusedBorder: UnderlineInputBorder(
+      borderSide: BorderSide(
+        color: context.colorDefault,
+        width: 2.0,
+      ),
+    ),
+  );
+}
+
+TextSelectionThemeData textSelectionTheme(BuildContext context) {
+  return TextSelectionThemeData(
+    cursorColor: context.colorDefault,
+  );
+}
+
+TextButtonThemeData textButtonTheme(BuildContext context) {
+  return TextButtonThemeData(
+    style: ButtonStyle(
+      foregroundColor:
+      MaterialStateColor.resolveWith((_) => context.colorDefault),
+    ),
+  );
+}
 
 extension BuildContexts on BuildContext {
   /// Rebuilds all children of this [BuildContext], including const widgets.

@@ -149,7 +149,7 @@ class AnglersLogState extends State<AnglersLog> {
       child: MaterialApp(
         onGenerateTitle: (context) => Strings.of(context).appName,
         theme: themeLight(),
-        darkTheme: themeDark(),
+        darkTheme: themeDark(context),
         themeMode: themeMode,
         home: Builder(
           builder: (context) {

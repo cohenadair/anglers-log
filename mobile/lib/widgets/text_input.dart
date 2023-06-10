@@ -198,7 +198,6 @@ class TextInputState extends State<TextInput> {
       top: false,
       bottom: false,
       child: TextFormField(
-        cursorColor: context.colorDefault,
         initialValue: widget.initialValue,
         controller: widget.controller?.editingController,
         decoration: InputDecoration(
