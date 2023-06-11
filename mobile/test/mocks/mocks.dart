@@ -113,6 +113,7 @@ Trip_CatchesPerEntity newInputItemShim(dynamic pickerItem) =>
 @GenerateMocks([LocationMonitor])
 @GenerateMocks([LocationWrapper])
 @GenerateMocks([MethodManager])
+@GenerateMocks([PlatformException])
 @GenerateMocks([PollManager])
 @GenerateMocks([PreferenceManager])
 @GenerateMocks([PropertiesManager])

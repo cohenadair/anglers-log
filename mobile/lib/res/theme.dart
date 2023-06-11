@@ -51,7 +51,7 @@ TextButtonThemeData textButtonTheme(BuildContext context) {
   return TextButtonThemeData(
     style: ButtonStyle(
       foregroundColor:
-      MaterialStateColor.resolveWith((_) => context.colorDefault),
+          MaterialStateColor.resolveWith((_) => context.colorDefault),
     ),
   );
 }

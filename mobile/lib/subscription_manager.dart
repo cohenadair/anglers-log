@@ -83,6 +83,15 @@ class SubscriptionManager {
       _crashlyicsWrapper.setUserId(customerInfo.originalAppUserId);
       _setStateFromPurchaserInfo(customerInfo);
     } on PlatformException catch (e) {
+      var code = PurchasesErrorHelper.getErrorCode(e);
+
+      // Don't log network or user account errors since they'll likely fix
+      // themselves on next startup.
+      if (code == PurchasesErrorCode.networkError ||
+          code == PurchasesErrorCode.offlineConnectionError ||
+          code == PurchasesErrorCode.purchaseNotAllowedError) {
+        return;
+      }
       _log.e(StackTrace.current, "Purchase info error: ${e.message}");
     }
   }
