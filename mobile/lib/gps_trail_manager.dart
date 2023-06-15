@@ -124,7 +124,7 @@ class GpsTrailManager extends EntityManager<GpsTrail> {
 
     var finishedTrail = _activeTrail;
     _activeTrail = null;
-    await _locationMonitor.disableBackgroundMode();
+    _locationMonitor.disableBackgroundMode();
     _notifyOnStopTracking(finishedTrail!);
   }
 

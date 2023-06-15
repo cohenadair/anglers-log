@@ -4,7 +4,6 @@ import 'package:mobile/poll_manager.dart';
 import 'package:mobile/wrappers/exif_wrapper.dart';
 import 'package:mobile/wrappers/geolocator_wrapper.dart';
 import 'package:mobile/wrappers/google_sign_in_wrapper.dart';
-import 'package:mobile/wrappers/location_wrapper.dart';
 import 'package:provider/provider.dart';
 
 import 'angler_manager.dart';
@@ -88,7 +87,6 @@ class AppManager {
   ImagePickerWrapper? _imagePickerWrapper;
   IoWrapper? _ioWrapper;
   IsolatesWrapper? _isolatesWrapper;
-  LocationWrapper? _locationWrapper;
   NativeTimeZoneWrapper? _nativeTimeZoneWrapper;
   PackageInfoWrapper? _packageInfoWrapper;
   PathProviderWrapper? _pathProviderWrapper;
@@ -268,11 +266,6 @@ class AppManager {
   IsolatesWrapper get isolatesWrapper {
     _isolatesWrapper ??= IsolatesWrapper();
     return _isolatesWrapper!;
-  }
-
-  LocationWrapper get locationWrapper {
-    _locationWrapper ??= LocationWrapper();
-    return _locationWrapper!;
   }
 
   NativeTimeZoneWrapper get nativeTimeZoneWrapper {

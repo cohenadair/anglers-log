@@ -39,11 +39,8 @@ dependencies:
   flutter_native_timezone: ^2.0.0   # https://pub.dev/packages/flutter_native_timezone
   flutter_svg: ^1.0.3               # https://pub.dev/packages/flutter_svg (verified)
 
-  # TODO: After update to v5.0, check https://github.com/Lyokone/flutterlocation/issues/733, and update LocationMonitor.
-  location: ^4.4.0                  # https://pub.dev/packages/location (verified)
-
-  # Update requires compileSdkVersion 33.
-  geolocator: ^8.2.0                # https://pub.dev/packages/geolocator (verified)
+  # TODO: Update dependent on Mapbox update: https://github.com/flutter-mapbox-gl/maps/issues/1270#issuecomment-1558930224
+  geolocator: ^8.2.1                # https://pub.dev/packages/geolocator (verified)
 
   googleapis: ^9.1.0                # https://pub.dev/packages/googleapis (Google)
   googleapis_auth: ^1.3.1           # https://pub.dev/packages/googleapis_auth (Google)
@@ -90,7 +87,7 @@ dev_dependencies:
   test: ^1.16.5                     # https://pub.dev/packages/test (Dart)
 
 flutter_icons:
-  android: "launcher_icon"
+  android: "ic_launcher"
   ios: true
   image_path: "../img/app_icon.png"
   adaptive_icon_background: "#03A9F4"

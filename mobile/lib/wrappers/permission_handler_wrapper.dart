@@ -35,5 +35,8 @@ class PermissionHandlerWrapper {
     }
   }
 
+  Future<bool> requestNotification() async =>
+      (await Permission.notification.request()).isGranted;
+
   Future<bool> openSettings() => openAppSettings();
 }

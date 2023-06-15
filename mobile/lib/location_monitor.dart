@@ -3,10 +3,11 @@ import 'dart:async';
 import 'package:fixnum/fixnum.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:location/location.dart';
 import 'package:mapbox_gl/mapbox_gl.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
+import 'package:mobile/wrappers/io_wrapper.dart';
 import 'package:provider/provider.dart';
+import 'package:quiver/strings.dart';
 
 import 'app_manager.dart';
 import 'log.dart';
@@ -18,20 +19,21 @@ class LocationMonitor {
       Provider.of<AppManager>(context, listen: false).locationMonitor;
 
   final _log = const Log("LocationMonitor");
-  final _distanceFilterMeters = 10.0;
+  final _distanceFilterMeters = 10;
   final _controller = StreamController<LocationPoint>.broadcast();
 
   final AppManager _appManager;
-  final Location _location;
 
+  StreamSubscription<Position>? _positionUpdateSub;
   LocationPoint? _lastKnownLocation;
   bool _initialized = false;
+
+  IoWrapper get _ioWrapper => _appManager.ioWrapper;
 
   PermissionHandlerWrapper get _permissionHandler =>
       _appManager.permissionHandlerWrapper;
 
-  LocationMonitor(this._appManager)
-      : _location = _appManager.locationWrapper.newLocation();
+  LocationMonitor(this._appManager);
 
   GeolocatorWrapper get _geolocatorWrapper => _appManager.geolocatorWrapper;
 
@@ -42,20 +44,13 @@ class LocationMonitor {
       return;
     }
 
-    await _location.changeSettings(distanceFilter: _distanceFilterMeters);
+    _geolocatorWrapper.getLastKnownPosition().then((value) {
+      if (value != null) {
+        _onLocationChanged(LocationPoint.fromPosition(value));
+      }
+    });
 
-    // TODO: Location package doesn't get the "last known" location on startup;
-    //  it waits for the next location to come in so we use Geolocator to get
-    //  the last location immediately. Location package v5+ fixes this.
-    _geolocatorWrapper
-        .getCurrentPosition()
-        .then((value) => _onLocationChanged(LocationPoint.fromPosition(value)));
-
-    _location.onLocationChanged
-        .listen((value) =>
-            _onLocationChanged(LocationPoint.fromLocationData(value)))
-        .onError((error, _) => _log.d("Location stream error: $error"));
-
+    _updatePositionStream();
     _initialized = true;
   }
 
@@ -65,19 +60,50 @@ class LocationMonitor {
 
   LocationPoint? get currentLocation => _lastKnownLocation;
 
-  Future<bool> enableBackgroundMode(String notificationDescription) async {
-    await _location.changeNotificationOptions(
-      title: notificationDescription,
-      iconName: "notification_icon",
-      // TODO: Uncomment when
-      //  https://github.com/Lyokone/flutterlocation/issues/702 is fixed.
-      // onTapBringToFront: true,
-    );
-    return _location.enableBackgroundMode(enable: true);
+  void _updatePositionStream([String? notificationDescription]) {
+    bool isBackgroundMode = isNotEmpty(notificationDescription);
+
+    LocationSettings? settings;
+    if (_ioWrapper.isIOS) {
+      settings = AppleSettings(
+        distanceFilter: _distanceFilterMeters,
+        showBackgroundLocationIndicator: isBackgroundMode,
+        allowBackgroundLocationUpdates: isBackgroundMode,
+        pauseLocationUpdatesAutomatically: !isBackgroundMode,
+      );
+    } else if (_ioWrapper.isAndroid) {
+      ForegroundNotificationConfig? foregroundConfig;
+      if (isBackgroundMode) {
+        // TODO: Set notification icon color - https://github.com/Baseflow/flutter-geolocator/issues/1277
+        foregroundConfig = ForegroundNotificationConfig(
+          notificationTitle: notificationDescription!,
+          notificationText: "",
+        );
+      }
+
+      settings = AndroidSettings(
+        distanceFilter: _distanceFilterMeters,
+        foregroundNotificationConfig: foregroundConfig,
+      );
+    } else {
+      _log.w("Unsupported OS");
+    }
+
+    _positionUpdateSub?.cancel();
+    _positionUpdateSub = _geolocatorWrapper
+        .getPositionStream(locationSettings: settings)
+        .listen(
+            (value) => _onLocationChanged(LocationPoint.fromPosition(value)));
   }
 
-  Future<bool> disableBackgroundMode() =>
-      _location.enableBackgroundMode(enable: false);
+  Future<void> enableBackgroundMode(String notificationDescription) async {
+    if (_ioWrapper.isAndroid) {
+      await _permissionHandler.requestNotification();
+    }
+    _updatePositionStream(notificationDescription);
+  }
+
+  void disableBackgroundMode() => _updatePositionStream();
 
   void _onLocationChanged(LocationPoint loc) {
     if (!loc.isValid) {
@@ -92,17 +118,6 @@ class LocationMonitor {
 }
 
 class LocationPoint {
-  static LocationPoint fromLocationData(LocationData data) {
-    if (data.latitude == null || data.longitude == null) {
-      return LocationPoint.invalid();
-    }
-    return LocationPoint(
-      lat: data.latitude!,
-      lng: data.longitude!,
-      heading: data.heading,
-    );
-  }
-
   static LocationPoint fromPosition(Position pos) {
     return LocationPoint(
       lat: pos.latitude,
