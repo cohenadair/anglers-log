@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
@@ -431,20 +432,7 @@ void main() {
     expect(find.widgetWithText(ChipButton, "Directions"), findsOneWidget);
   });
 
-  testWidgets("Directions action launches directions", (tester) async {
-    await tester.pumpWidget(Testable(
-      (_) => FishingSpotDetails(
-        FishingSpot(lat: 1.23456, lng: 6.54321),
-        showActionButtons: true,
-        isPicking: false,
-      ),
-      appManager: appManager,
-    ));
-
-    await tapAndSettle(tester, find.widgetWithText(ChipButton, "Directions"));
-  });
-
-  testWidgets("All directions options", (tester) async {
+  testWidgets("Directions action shows all options", (tester) async {
     await tester.pumpWidget(Testable(
       (_) => FishingSpotDetails(
         FishingSpot(lat: 1.23456, lng: 6.54321),
@@ -539,6 +527,26 @@ void main() {
       result.captured.first.contains("https://www.google.com/maps/dir/?"),
       isTrue,
     );
+  });
+
+  testWidgets("Apple directions throws exception", (tester) async {
+    await tester.pumpWidget(Testable(
+      (_) => FishingSpotDetails(
+        FishingSpot(lat: 1.23456, lng: 6.54321),
+        showActionButtons: true,
+      ),
+      appManager: appManager,
+    ));
+
+    when(appManager.urlLauncherWrapper.launch(any))
+        .thenAnswer((_) => throw PlatformException(code: "CODE"));
+
+    // Open bottom sheet.
+    await tapAndSettle(tester, find.text("Directions"));
+    await tapAndSettle(tester, find.text("Apple Maps\u2122"));
+
+    verify(appManager.urlLauncherWrapper.launch(any)).called(1);
+    expect(find.byType(SnackBar), findsNothing);
   });
 
   testWidgets("Failed directions launch shows error snack bar", (tester) async {

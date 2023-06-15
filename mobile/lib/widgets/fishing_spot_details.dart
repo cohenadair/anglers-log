@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:mobile/res/dimen.dart';
 import 'package:mobile/utils/widget_utils.dart';
 import 'package:mobile/widgets/our_bottom_sheet.dart';
@@ -318,7 +319,23 @@ class _FishingSpotActionsState extends State<_FishingSpotActions> {
           ),
         ).then((_) async {
           // If empty, bottom sheet was dismissed.
-          launched = isEmpty(url) || await urlLauncher.launch(url!);
+          if (isEmpty(url)) {
+            launched = true;
+            return;
+          }
+
+          if (url != null && url!.contains("maps.apple.com")) {
+            // TODO: Opening URLs in Safari (Apple Maps, in this case) results
+            //  in a PlatformException, even though the launch was successful.
+            //  https://github.com/flutter/flutter/issues/75691
+            try {
+              launched = await urlLauncher.launch(url!);
+            } on PlatformException {
+              launched = true;
+            }
+          } else {
+            launched = await urlLauncher.launch(url!);
+          }
         });
       });
     }
