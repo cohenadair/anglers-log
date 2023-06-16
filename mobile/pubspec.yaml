@@ -56,7 +56,7 @@ dependencies:
   photo_manager: ^2.6.0             # https://pub.dev/packages/photo_manager (verified)
   protobuf: ^2.1.0                  # https://pub.dev/packages/protobuf (Dart)
   provider: ^6.0.3                  # https://pub.dev/packages/provider (verified)
-  purchases_flutter: ^4.2.1         # https://pub.dev/packages/purchases_flutter (verified)
+  purchases_flutter: ^5.0.0         # https://pub.dev/packages/purchases_flutter (verified)
   quiver: ^3.1.0                    # https://pub.dev/packages/quiver (Google)
   shared_preferences: ^2.0.15       # https://pub.dev/packages/shared_preferences (Flutter)
   share_plus: ^7.0.1                # https://pub.dev/packages/share_plus (Flutter Community)
