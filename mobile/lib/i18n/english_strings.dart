@@ -1005,6 +1005,8 @@ Map<String, Map<String, String>> get englishStrings => {
         "cloudAuth_description":
             "To continue, you must sign in to your Google\u2122 account. Data is saved to a private Google Drive\u2122 folder and can only be accessed by Anglers' Log.",
         "cloudAuth_error": "Error signing in, please try again later.",
+        "cloudAuth_networkError":
+            "There was a network error while signing in. Please ensure you are connected to the internet and try again.",
         "asyncFeedback_sendReport": "Send Report",
         "addAnything_title": "Add New",
         "proBlur_upgradeButton": "Upgrade",

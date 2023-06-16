@@ -28,6 +28,7 @@ enum BackupRestoreAuthState {
   signedOut,
   signedIn,
   error,
+  networkError,
 }
 
 enum BackupRestoreProgressEnum {
@@ -183,7 +184,10 @@ class BackupRestoreManager {
         _authController.add(BackupRestoreAuthState.signedOut);
       } else if (error is PlatformException &&
           error.code == GoogleSignIn.kNetworkError) {
-        // Network error, don't log an error to Firebase.
+        _authController.add(BackupRestoreAuthState.networkError);
+      } else if (error is PlatformException &&
+          error.code == GoogleSignIn.kSignInFailedError) {
+        // Unknown error from SDK, don't log an error to Firebase.
         _authController.add(BackupRestoreAuthState.error);
       } else {
         _log.e(StackTrace.current, "Sign in error: $error");

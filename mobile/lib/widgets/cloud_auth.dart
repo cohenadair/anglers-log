@@ -65,11 +65,14 @@ class _CloudAuthState extends State<CloudAuth> {
 
   Widget _buildSignInWidget(Key key) {
     Widget errorText = const Empty();
-    if (_authState == BackupRestoreAuthState.error) {
+    if (_authState == BackupRestoreAuthState.error ||
+        _authState == BackupRestoreAuthState.networkError) {
       errorText = Padding(
         padding: insetsTopDefault,
         child: Text(
-          Strings.of(context).cloudAuthError,
+          _authState == BackupRestoreAuthState.error
+              ? Strings.of(context).cloudAuthError
+              : Strings.of(context).cloudAuthNetworkError,
           style: styleError(context),
         ),
       );

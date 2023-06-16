@@ -23,7 +23,7 @@ void main() {
     when(appManager.backupRestoreManager.currentUser).thenReturn(account);
   });
 
-  testWidgets("BackupRestoreManager auth changes updates state",
+  testWidgets("BackupRestoreManager auth changes updates state/shows errors",
       (tester) async {
     var controller =
         StreamController<BackupRestoreAuthState>.broadcast(sync: true);
@@ -38,12 +38,23 @@ void main() {
     // Sign in.
     expect(find.text("Sign in with Google"), findsOneWidget);
 
-    // Sign in error.
+    // Sign in generic error.
     controller.add(BackupRestoreAuthState.error);
     await tester.pumpAndSettle();
 
     expect(
       find.text("Error signing in, please try again later."),
+      findsOneWidget,
+    );
+    expect(find.text("Sign in with Google"), findsOneWidget);
+
+    // Sign in network error.
+    controller.add(BackupRestoreAuthState.networkError);
+    await tester.pumpAndSettle();
+
+    expect(
+      find.text(
+          "There was a network error while signing in. Please ensure you are connected to the internet and try again."),
       findsOneWidget,
     );
     expect(find.text("Sign in with Google"), findsOneWidget);
@@ -55,9 +66,5 @@ void main() {
 
     expect(find.text("Sign in with Google"), findsNothing);
     expect(find.text("SIGN OUT"), findsOneWidget);
-  });
-
-  testWidgets("Signed out widget shows error", (tester) async {
-    // TODO
   });
 }

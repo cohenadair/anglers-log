@@ -2019,6 +2019,8 @@ class Strings {
 
   String get cloudAuthError => _string("cloudAuth_error");
 
+  String get cloudAuthNetworkError => _string("cloudAuth_networkError");
+
   String get asyncFeedbackSendReport => _string("asyncFeedback_sendReport");
 
   String get addAnythingTitle => _string("addAnything_title");

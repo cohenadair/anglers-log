@@ -261,10 +261,21 @@ void main() {
     await backupRestoreManager.initialize();
   });
 
-  test("Auth network error is still an error", () async {
+  test("Auth network error is adds network error event", () async {
     when(googleSignIn.signInSilently(
       reAuthenticate: anyNamed("reAuthenticate"),
     )).thenThrow(PlatformException(code: GoogleSignIn.kNetworkError));
+
+    backupRestoreManager.authStream.listen(expectAsync1((state) {
+      expect(state, BackupRestoreAuthState.networkError);
+    }));
+    await backupRestoreManager.initialize();
+  });
+
+  test("Auth failed sign in error is still an error", () async {
+    when(googleSignIn.signInSilently(
+      reAuthenticate: anyNamed("reAuthenticate"),
+    )).thenThrow(PlatformException(code: GoogleSignIn.kSignInFailedError));
 
     backupRestoreManager.authStream.listen(expectAsync1((state) {
       expect(state, BackupRestoreAuthState.error);
