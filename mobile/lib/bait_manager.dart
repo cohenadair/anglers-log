@@ -228,17 +228,13 @@ class BaitManager extends ImageEntityManager<Bait> {
   ///
   /// If [showAllVariantsLabel] is true, and [attachment] has a valid variant:
   ///   - Big O (All Variants)
-  String? attachmentDisplayValue(
+  String attachmentDisplayValue(
     BuildContext context,
     BaitAttachment attachment, {
     bool showAllVariantsLabel = false,
   }) {
-    var bait = entity(attachment.baitId);
-    if (bait == null) {
-      return null;
-    }
-
-    var formattedBait = formatNameWithCategory(bait.id)!;
+    var formattedBait = formatNameWithCategory(entity(attachment.baitId)?.id) ??
+        Strings.of(context).unknownBait;
     var variant = variantFromAttachment(attachment);
 
     if (variant == null) {

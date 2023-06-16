@@ -301,14 +301,12 @@ class StatsPageState extends State<StatsPage> {
           pickerSettings:
               BaitListPagePickerSettings.fromManageableList(settings),
         ),
-        // The fact that this is called at all means the attachment exists
-        // and attachmentDisplayValue will return a non-null value.
         nameBuilder: (context, attachment) =>
             _baitManager.attachmentDisplayValue(
           context,
           attachment,
           showAllVariantsLabel: true,
-        )!,
+        ),
       ),
       emptyWidget: EmptyListPlaceholder.static(
         icon: iconBait,

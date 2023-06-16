@@ -747,7 +747,7 @@ void main() {
     var context = await buildContext(tester);
     expect(
       baitManager.attachmentDisplayValue(context, BaitAttachment()),
-      isNull,
+      "Unknown Bait",
     );
   });
 
@@ -911,6 +911,7 @@ void main() {
       [
         "Test (Blue)",
         "Test 2 (Red)",
+        "Unknown Bait",
       ],
     );
   });

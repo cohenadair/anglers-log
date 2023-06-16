@@ -3584,19 +3584,22 @@ class MockBaitManager extends _i1.Mock implements _i10.BaitManager {
         [attachment],
       )) as _i5.BaitVariant?);
   @override
-  String? attachmentDisplayValue(
+  String attachmentDisplayValue(
     _i57.BuildContext? context,
     _i5.BaitAttachment? attachment, {
     bool? showAllVariantsLabel = false,
   }) =>
-      (super.noSuchMethod(Invocation.method(
-        #attachmentDisplayValue,
-        [
-          context,
-          attachment,
-        ],
-        {#showAllVariantsLabel: showAllVariantsLabel},
-      )) as String?);
+      (super.noSuchMethod(
+        Invocation.method(
+          #attachmentDisplayValue,
+          [
+            context,
+            attachment,
+          ],
+          {#showAllVariantsLabel: showAllVariantsLabel},
+        ),
+        returnValue: '',
+      ) as String);
   @override
   List<String> attachmentsDisplayValues(
     _i57.BuildContext? context,
@@ -14773,6 +14776,11 @@ class MockOffering extends _i1.Mock implements _i62.Offering {
         Invocation.getter(#serverDescription),
         returnValue: '',
       ) as String);
+  @override
+  Map<String, Object> get metadata => (super.noSuchMethod(
+        Invocation.getter(#metadata),
+        returnValue: <String, Object>{},
+      ) as Map<String, Object>);
   @override
   List<_i62.Package> get availablePackages => (super.noSuchMethod(
         Invocation.getter(#availablePackages),

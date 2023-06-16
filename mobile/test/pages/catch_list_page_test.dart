@@ -16,7 +16,7 @@ void main() {
     appManager = StubbedAppManager();
 
     when(appManager.baitManager.attachmentDisplayValue(any, any))
-        .thenReturn(null);
+        .thenReturn("");
 
     when(appManager.catchManager.catches(
       any,

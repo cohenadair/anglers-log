@@ -218,7 +218,7 @@ void main() {
       var variant =
           bait?.variants.firstWhereOrNull((e) => e.id == attachment.variantId);
       if (bait == null && variant == null) {
-        return null;
+        return "";
       } else if (bait == null) {
         return variant!.color;
       } else if (variant == null) {

@@ -168,7 +168,7 @@ void main() {
       var variant =
           bait?.variants.firstWhereOrNull((e) => e.id == attachment.variantId);
       if (bait == null && variant == null) {
-        return null;
+        return "";
       } else if (bait == null) {
         return variant!.color;
       } else if (variant == null) {
@@ -332,7 +332,7 @@ void main() {
   testWidgets("Bait is skipped if it doesn't exist", (tester) async {
     when(appManager.tripManager.entity(any)).thenReturn(null);
     when(appManager.baitManager.attachmentDisplayValue(any, any))
-        .thenReturn(null);
+        .thenReturn("");
 
     await pumpContext(
       tester,

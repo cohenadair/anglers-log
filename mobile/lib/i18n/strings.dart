@@ -148,6 +148,8 @@ class Strings {
 
   String get unknownSpecies => _string("unknownSpecies");
 
+  String get unknownBait => _string("unknownBait");
+
   String get viewDetails => _string("viewDetails");
 
   String get viewAll => _string("viewAll");

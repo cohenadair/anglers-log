@@ -87,6 +87,7 @@ Map<String, Map<String, String>> get englishStrings => {
         "numberOfCatches": "%s Catches",
         "numberOfCatchesSingular": "%s Catch",
         "unknownSpecies": "Unknown Species",
+        "unknownBait": "Unknown Bait",
         "viewDetails": "View Details",
         "viewAll": "View All",
         "fieldType_number": "Number",
