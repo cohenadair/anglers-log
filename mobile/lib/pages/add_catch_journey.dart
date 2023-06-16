@@ -64,8 +64,6 @@ class AddCatchJourney extends StatefulWidget {
 class AddCatchJourneyState extends State<AddCatchJourney> {
   final _fishingSpotController = InputController<FishingSpot>();
 
-  FishingSpotManager get _fishingSpotManager => FishingSpotManager.of(context);
-
   UserPreferenceManager get _userPreferenceManager =>
       UserPreferenceManager.of(context);
 
@@ -120,8 +118,8 @@ class AddCatchJourneyState extends State<AddCatchJourney> {
               continue;
             }
 
-            var existingSpot =
-                _fishingSpotManager.withinPreferenceRadius(image.latLng);
+            var existingSpot = FishingSpotManager.of(context)
+                .withinPreferenceRadius(image.latLng);
 
             if (existingSpot == null) {
               _fishingSpotController.value = FishingSpot()
@@ -150,7 +148,7 @@ class AddCatchJourneyState extends State<AddCatchJourney> {
 
           // If the fishing spot already exists in the database, skip
           // the fishing spot picker page.
-          if (_fishingSpotManager
+          if (FishingSpotManager.of(context)
                   .entityExists(_fishingSpotController.value?.id) ||
               !_userPreferenceManager.isTrackingFishingSpots) {
             push(context, _buildSaveCatchPage());
