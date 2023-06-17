@@ -230,6 +230,14 @@ SymbolOptions createSymbolOptions(
 Color mapIconColor(MapType mapType) =>
     mapType == MapType.light ? Colors.black : Colors.white;
 
+extension LatLngs on LatLng {
+  static const numOfDigits = 6;
+
+  String get latitudeString => latitude.toStringAsFixed(numOfDigits);
+
+  String get longitudeString => latitude.toStringAsFixed(numOfDigits);
+}
+
 extension LatLngBoundsExt on LatLngBounds {
   LatLng get center => LatLng(
       southwest.latitude + (southwest.latitude - northeast.latitude).abs() / 2,

@@ -1,6 +1,7 @@
 import 'package:fixnum/fixnum.dart';
 import 'package:mapbox_gl/mapbox_gl.dart';
 import 'package:mobile/utils/date_time_utils.dart';
+import 'package:mobile/utils/map_utils.dart';
 import 'package:quiver/strings.dart';
 import 'package:timezone/timezone.dart';
 
@@ -175,8 +176,8 @@ class AtmosphereFetcher {
     var uri = Uri.https(
       _authority,
       format(_path, [
-        latLng!.latitude,
-        latLng!.longitude,
+        latLng!.latitudeString,
+        latLng!.longitudeString,
         (dateTime.millisecondsSinceEpoch / Duration.millisecondsPerSecond)
             .round(),
       ]),
